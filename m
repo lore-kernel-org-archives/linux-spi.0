@@ -1,93 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B24B36606B;
-	Mon,  9 Feb 2026 09:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D9D30F927
+	for <linux-spi@vger.kernel.org>; Mon,  9 Feb 2026 09:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770630506; cv=none; b=c72BBiTJOHheDPdBinTp+aEC2kyYgAEO9BI/hz3/ZNLtr+3h3dNKY3kZdsnLEua+fB8TjTsKZsMjZlOw83QFMTl+2zkLRyk1MC7vlDBOUWhSvn01JgvrtlHioAut2VW3ND3x93BKDNuXDwlOcqsXYdttZa1eeakvIIVXLV1YeXc=
+	t=1770630605; cv=none; b=Tmn7s81zws2gJpExEHmcZjTULsP8HwDDFnIJNcsjvoBTGSRsZa6S3ldA6patErhvp5k1HXeB15td9nngsZlE4RpFHz3vBzovej0/puKSJ54qTQgcbSDfE6ToB3HwOyKQ2PVzmmsH0/9fuOdET409B0LcvAsSs4Tbg1XB2RPvfd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770630506; c=relaxed/simple;
-	bh=w/k37mANKnb9tE0V6Kub9ubfuIj32EQidedBAveARXk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
-	 References:In-Reply-To; b=DKTeX7stZ6Q4IKLaNYcGy51RJmPwKWBF2GxlkoUng4pkZd6QYwT2XWP9ODAOIgSfLefo2NjZXK8WgC24iXnU+7qOoOU7yAXhzQIZKHwLLb/vPi7qKht6K65fpmwTGrVEkBkiAnzYocbOIMVhEDEKB6OhKWN5ueoWXLycRwlkR14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sl+XPEEP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770630605; c=relaxed/simple;
+	bh=FKuGCI70l5OyuRPWKZHe/fQbeGoZhbYIYCioBwk5EQE=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=kFkJeP58Sm9dhiowBQoG1B6BjhOLYOkHmSSQXMDv+COABf3CQa4m5Iz3Q1rLMIACYqwxxOkFpuKnds0nVswPDCQVAz5YL/ke+JFpSlSrluFzpEKRl3zwLixbI3Znbeo9M02kmw6MrttZmJ5Depxyt1tzxmpx1s0EfrNLqTaX/C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BfXAqkMk; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sl+XPEEP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA2AC16AAE;
-	Mon,  9 Feb 2026 09:48:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770630505;
-	bh=w/k37mANKnb9tE0V6Kub9ubfuIj32EQidedBAveARXk=;
-	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
-	b=sl+XPEEPcBuTtRE9+reIUogcwKdqmLbonc5R0mA77HsibgCIvB9G9qucr/m42/oRE
-	 w0GPdS7CvYZ4+2i2SVMeXXrA50euzmgBq29E1Q6kUSQXdwSSo4P2NBgpk47BnJ2TlH
-	 X/0tSpo5+xw48Je5vD7LGbEX0d+ldPSA6kq0GIF4Gv3zOsaanSedgduJEOfM9g5sLk
-	 r1/t9vIiITBneOxgIxElQtvJqbTQjJacJBpwmYCB3BGi5IpdoVUm+Spfxgwt5I4EwE
-	 OLQES1Y7EaJKp9mOmW6FXvS3hfQDDzg1n6syAPe8cFAMBtB725DnlNUpM2FdWdlC9z
-	 Q1NGlffK9b7Ig==
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BfXAqkMk"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48068ed1eccso42138855e9.2
+        for <linux-spi@vger.kernel.org>; Mon, 09 Feb 2026 01:50:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1770630603; x=1771235403; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=o0nR1XwmgwW/lra1bMoEkgIFa7LZKv7Hh/PRz7una/k=;
+        b=BfXAqkMkhep3ZETxXCMBfSWs8yT35rueVkm5Znh+bLlClcC8jvCPgKaeTdsTdynq0a
+         LRf6P2JMgW8CWaQAMCqoJfA3aU3LX/fTyg8Pbx7mC9sy6vlJB578FYhWU3lCIfv8Ni5w
+         o43IAx/hU/LIBEpULlzpZx3cu5K2JGl/so5jmUq0U2Gy7KZs24mPt4iMDmM6yY/lFEwn
+         mdIhMOxbqc89jnQHoEJmtPnIk+Gc+6qV7R7Puvguc5Q43kG0kojXbsZYNAjJv6iS8bwm
+         RaB6FXq+OMZXWz3Mr3x8PFpfwMuWH6KgwEwUuUUfDhln86iNYKVvdPNdDJ6eqhpc6kQC
+         Bj3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770630603; x=1771235403;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o0nR1XwmgwW/lra1bMoEkgIFa7LZKv7Hh/PRz7una/k=;
+        b=oUScSvkmv2DYnjr3DfRX1196BX5aDUax+1SRhvRC5tRDnEqa5i+Px9X2PfWCiZ54se
+         PJjtgWi1Ed3+6B7cm/Tly+6gjV5Q+9AIq6uosJccbozVT60O+SqfxGkGv5qZ+2tb6Gbo
+         qKxBVPAt4QYboSxbzF36rKCKsF3/2i8NMPvVGRDYQdBNEODDb9r/ec7fCFw1IbzhGDvl
+         Rt1B7EGUIQ6ZrrXYnB7SdfOV6mwmPNpIQQ9Vk8Gl7HfGgzjX1n/KazouemNMy+XWo7bH
+         I/hZlBK0KK/BVq8nzz5VzRuXv7H+FJaLXg+OFGFXoJqmEWlgngPvlgjcus7YrEwK6wp3
+         C32w==
+X-Forwarded-Encrypted: i=1; AJvYcCUqBp2vaX+fjoqqNbNMIwXa+8inAfL3PuFEsUYdhRWtNXtwOgSFUpVZ2p+3T+xkldMbfIrjbi5L/Zk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyisYz5ONbvKqedY0YF43renhzAUUuzmNOlXlPxnMW2UZhngSRu
+	3/ug71K/RfddP5XnkyK+qbC5mQT8u576qkHSjOkJiSWyk8g+RqhKjSFjfxdAeeeg7L8=
+X-Gm-Gg: AZuq6aIKJO6VnyzdV2Q92bz/61iqWBIH8D721/o+v27pwvgUT+5qRfaMZhXsUMukDja
+	wT/a6JrJt4AT6JWdrs7+Zu5thQSHUdT6FZR+mGR0N6QP7aA3p0rYMEZPR8xSouc40GEgeHH5BgP
+	oBamPlslEiVenhVuYESFzQJDmnHYHkgdtV1iqifaodiv+CJDAF6IKywpt0G0YqThKvqTfbR6ECR
+	mJEetAczB+zceCJ1/kWq91d7V3d7feCNL1Fnq1psSoC3Zml4Yko8on5M5M1Qr3BUrwBKqIOqF91
+	EFoNfeUTUOdq1Nyiu69EAEk61NYIUz/4HqjbUNtYXJadaleuQHp4aahLsGa+eNA+mqQZd85W/da
+	Z0BDjirEWR3N1K1iDFuAqQrtzFNCX2lRO49B6SQrEG4U14YQPXg1+XHs9EEfDiEizdJkIfJydFK
+	cE
+X-Received: by 2002:a05:600c:3b03:b0:477:93f7:bbc5 with SMTP id 5b1f17b1804b1-483201e496dmr164726095e9.10.1770630603429;
+        Mon, 09 Feb 2026 01:50:03 -0800 (PST)
+Received: from localhost ([151.57.91.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48320961701sm166117755e9.5.2026.02.09.01.50.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 01:50:03 -0800 (PST)
+From: Francesco Lavra <flavra@baylibre.com>
+To: Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: tools: Add include folder to .gitignore
+Date: Mon,  9 Feb 2026 10:50:01 +0100
+Message-Id: <20260209095001.556495-1-flavra@baylibre.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed;
- boundary=3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be;
- micalg=pgp-sha384; protocol="application/pgp-signature"
-Date: Mon, 09 Feb 2026 10:48:21 +0100
-Message-Id: <DGAC4N62UZQQ.3R7TLX87PECU3@kernel.org>
-Subject: Re: [RFC PATCH v2 09/12] spi: cadence-quadspi: add PHY tuning
- infrastructure
-Cc: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
- <praneeth@ti.com>, <u-kumar1@ti.com>, <p-mantena@ti.com>, <a-dutta@ti.com>
-From: "Michael Walle" <mwalle@kernel.org>
-To: "Santhosh Kumar K" <s-k6@ti.com>, <broonie@kernel.org>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
- <tudor.ambarus@linaro.org>, <pratyush@kernel.org>
-X-Mailer: aerc 0.20.0
-References: <20260113141617.1905039-1-s-k6@ti.com>
- <20260113141617.1905039-10-s-k6@ti.com>
-In-Reply-To: <20260113141617.1905039-10-s-k6@ti.com>
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=686; i=flavra@baylibre.com; h=from:subject; bh=FKuGCI70l5OyuRPWKZHe/fQbeGoZhbYIYCioBwk5EQE=; b=owEB7QES/pANAwAKAe3xO3POlDZfAcsmYgBpia2UV0WJ6jwE9DTobvVNETH7xE5TLiVePn74M /UQtkK+AceJAbMEAAEKAB0WIQSGV4VPlTvcox7DFObt8TtzzpQ2XwUCaYmtlAAKCRDt8TtzzpQ2 XwzRC/9Oj4DMGW/nAoGtJEhigXUl58mVaC6Ae9TrYPnwoRn7e7XtAPqeXb2mdTCFWeAej2HVxnQ Wnw7U6g2iTq+Vclk+Q0V6nsBQtViIJ0e+Bf5GcVUMXYGlo/5NzkKqq/LuWIoiSRItkuALVS+3Ne +p6GJEkxZEeoSp4MZ2YTl1z0aanXC96dOMSVijC/dQIOEAwVar1Ta9ioKp805NiiDxp+nbJNFqm f/sXymCjspml1BqWOwYprp4gqCQ1IcGVxKwwgDWL+G71fZYYZU3P6faatTJLK2uIFYlkZFz18Eu FkLaCWy8R3MkHYp9wlnWGJ9wdyjCY1dgLjiNPbUyQt4HjU1Jm96YmfOeW1XjCzVyFrJhcIzt+vB eMYI3h/AeVn5VKeikyGEz/xVqzcWNiYvOGqKx5VPMWSayNW8vPXZ+Iy8XCRDNlVo+7cPkisv+3q d7xcUXek1s0RwE0Zch7jOcgB6Vx2BnLo1E8rnJTZm/duqGwE1C+opXafp7knRo50bHY+E=
+X-Developer-Key: i=flavra@baylibre.com; a=openpgp; fpr=8657854F953BDCA31EC314E6EDF13B73CE94365F
+Content-Transfer-Encoding: 8bit
 
---3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+The Makefile for the SPI tools creates an include/linux/spi folder and some
+symlinks inside it. After running `make -C spi/tools`, this folder shows up
+as untracked in the git status.
+Add the above folder to the .gitignore file.
 
-On Tue Jan 13, 2026 at 3:16 PM CET, Santhosh Kumar K wrote:
-> +static int cqspi_get_phy_pattern_offset(struct device *dev, u32 *offset)
+Fixes: f325b73dc4db ("spi: tools: move to tools buildsystem")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+---
+ tools/spi/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-..
+diff --git a/tools/spi/.gitignore b/tools/spi/.gitignore
+index 14ddba3d2195..038261b34ed8 100644
+--- a/tools/spi/.gitignore
++++ b/tools/spi/.gitignore
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ spidev_fdx
+ spidev_test
++include/
+-- 
+2.39.5
 
-> +	partition_np =3D of_get_child_by_name(flash_np, "partitions");
-> +	if (!partition_np) {
-> +		of_node_put(flash_np);
-> +		return -ENODEV;
-> +	}
-> +
-> +	for_each_child_of_node(partition_np, part_np) {
-> +		if (of_property_read_string(part_np, "label", &label) ||
-> +		    !strstr(label, "phypattern"))
-> +			continue;
-
-There was already a review comment on the last version. Moving this
-into the driver doesn't make it any better. In fact this might
-create a (bad) precedent for future drivers.
-
--michael
-
---3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaYmtZhIcbXdhbGxlQGtl
-cm5lbC5vcmcACgkQEic87j4CH/g3nQF/ZehnFdPDNUb+qGtsugnARG8Gyx1wWmE7
-KDHWkQsA/FeRC0O99ri4eyaI0daM3gcQAX9e7sCThdOPCBfvyBk7S8UhyVXKTiGF
-1O3T7/Re6avtBysjtj8ooo9Fia8wiIqdViM=
-=4bKt
------END PGP SIGNATURE-----
-
---3fae006473f93b202e9fe7468c884ebf0118ef603a7a5dbb515b94d9e3be--

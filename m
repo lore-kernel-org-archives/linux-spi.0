@@ -1,92 +1,103 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821E5358D1A
-	for <linux-spi@vger.kernel.org>; Thu, 12 Feb 2026 12:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A550A4A21;
+	Thu, 12 Feb 2026 15:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770900934; cv=none; b=ZZVY1OWJ21r11j5ZjKScORA5MdPdz+QHT/urHsqFSDBhSQinMcOlcZbwjRbkm85pN00gQSte0ttQ04+Qr2kOsqkC9v0KMOSABEnyydUAAzg/7+/+V6nqwhfi5JPUyaz5/3Glq7a8Oe47efNTlpsrW4ZRKv9odZZPo5K62mkFSu8=
+	t=1770911621; cv=none; b=q0F/zR/opbEXFI4OtT7kQyLC9D+zTIfpnxwoDvr21eMS0dILrTuhmO1tdVOJYDMos57X6dgliNmJ+Jmgre+JKosZexfYB6DiZisNAxxruHC/RefKwICVW99yY3TJ9YJvvPAs1GPpS/Q+4fqLbaAdS5WX2jhXs2MXVMIfZsuGSS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770900934; c=relaxed/simple;
-	bh=ZYUfg9IUcgRG8xYMOhkK38+v+A+PEda94EvJZMMhZFg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WPHT92r3Gg6Nx/864A82lOOG+QHsjB7+bR5f87aMKjCNcXcaQ6l3fQLO1xZE+pGmRvjVPjWD5HA6p5XktIb6vA74VWQeq8m11+kDvbQcedTn6Lc09bjHrUFomdCgZIdvAEMXQlQPbdlt8jININHGScyFyrEPJjoHZvLwMDd0UKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QbzF9AnV; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770911621; c=relaxed/simple;
+	bh=jAMNABpc9UUDOujXV5IS7s+RU6Lxa17KFA1XyY/C9wk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=GY4tPL9s7NhCLu7CQlox/zB8ZpB7EtOXgvzsUutW+65lRWdkbsx/y8VS3wBF5+bY2kHO8NcxVC0QA4SiXqbNktfuIU04QukireYsLcDHw4+IrSXJESioxjfGd2bAvWKD2lU7Mi6WqafVY/qSUs+85KxfJ2hRXlHC3mvWpudqJRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=aWDBL94p; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QbzF9AnV"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E92F04E40CA2;
-	Thu, 12 Feb 2026 12:55:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BA1F7606CA;
-	Thu, 12 Feb 2026 12:55:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A630119708B8;
-	Thu, 12 Feb 2026 13:55:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770900928; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BMPMAwMYqQ+DI8Ds4Z6rKLFfzIVUJJ2dJif7/RBD8oM=;
-	b=QbzF9AnVvDC59V1wOBN8pTDC7nakFCw23N+yQJD0Lqmjaw1ZBPUDK+zaT7F2viH4Wuwcoj
-	nPGsE9TCLsMOjqB4iBzzzLkvWgxlqS8Zbwd/0X1iqmE+FcPCKMCJsuUEiuKwkdQ8DvlFB+
-	1WbmMqWFSiILEqk6UTDf/VQQ8WaDeCUg2B37Wbe9yOyb6ywpI+caMOdSvAE/gV7hl64Yom
-	R3ICAFwWKGVSBIL9fHqdDrbKJonFG3y4G8sQcN9XGV8Y9tKPsusVqvRtcP0vzEfiyAH3QR
-	MeO2PwPzZjxQ+lbVIJKVWeSWqKQxdAAKbJ1Rl+EOOE/5Q5y+JdkXK9qfAywurg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: "Michael Walle" <mwalle@kernel.org>
-Cc: "Santhosh Kumar K" <s-k6@ti.com>,  <broonie@kernel.org>,
-  <robh@kernel.org>,  <krzk+dt@kernel.org>,  <conor+dt@kernel.org>,
-  <richard@nod.at>,  <vigneshr@ti.com>,  <tudor.ambarus@linaro.org>,
-  <pratyush@kernel.org>,  <linux-spi@vger.kernel.org>,
-  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,  <u-kumar1@ti.com>,
-  <p-mantena@ti.com>,  <a-dutta@ti.com>
-Subject: Re: [RFC PATCH v2 09/12] spi: cadence-quadspi: add PHY tuning
- infrastructure
-In-Reply-To: <DGCXTWSCAH6R.22SIL82AUVGYI@kernel.org> (Michael Walle's message
-	of "Thu, 12 Feb 2026 12:14:05 +0100")
-References: <20260113141617.1905039-1-s-k6@ti.com>
-	<20260113141617.1905039-10-s-k6@ti.com>
-	<DGAC4N62UZQQ.3R7TLX87PECU3@kernel.org> <87qzqqxml7.fsf@bootlin.com>
-	<DGCXTWSCAH6R.22SIL82AUVGYI@kernel.org>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 12 Feb 2026 13:55:22 +0100
-Message-ID: <87fr76xgsl.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="aWDBL94p"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F301E4326E;
+	Thu, 12 Feb 2026 15:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
+	t=1770911611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jNACE6+Hol33I7jrQNVMHpR4ZMYpWR2iwsgQkhdPOPI=;
+	b=aWDBL94p/puKTNn62lJ+Od5rzTOLdZMtAl+IcBNEzGvEXdsMd4nCHVbno+Hfphw5d3f2Mo
+	Guvq2XnpwxR53D3O0kEC8AqCZQnNu/Dg4baDMdfFrmH7TcbP0z59KvcxJ8m/XBxRYsgEKw
+	vjLpEpzi+laeYDQe9js7nf5ObCoqVD2JB+ihBRClso2AlRRWc1kyJF/k53KVbjCQW/c/vM
+	c+1y6t0p1k6BxEqSkIVUCpf6sCLDiiL1bY0aeDQk+ZIfOeVbbUggY2L+fsOP0OQQ77/vrI
+	Bxb1T0klo39lMqOCOKcf6opheVhcU0PLebxJUkyEtT7spZiiONBbyOMQMb4Eyg==
+Message-ID: <941806a6-0deb-415d-8af3-e78d6104da1c@yoseli.org>
+Date: Thu, 12 Feb 2026 16:53:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Subject: [RFC] omap2-mcspi: periodic zero TX in target mode - debugging help
+ needed
+Content-Language: en-MW
+To: linux-spi@vger.kernel.org
+Cc: broonie@kernel.org, peter.ujfalusi@gmail.com, vkoul@kernel.org,
+ dmaengine@vger.kernel.org, vigneshr@ti.com
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: jeanmichel.hautbois@yoseli.org
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdehjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfhffuvfevtgfgsehtjeertddtvdejnecuhfhrohhmpeflvggrnhdqofhitghhvghlucfjrghuthgsohhishcuoehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrgheqnecuggftrfgrthhtvghrnhepueevgfejiefhleelgeeiffejgefftefhgeefkeejueeigeeigeegfeffjefhtdegnecukfhppedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmeduieelmeejudegtdemvdgrgedtmehffegrrgemjedujegvmedufegsvddphhgvlhhopeglkffrggeimedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvngdpmhgrihhlfhhrohhmpehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrghdpqhhiugephfeftddugfegfedviefgpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhsphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghro
+ hhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhhujhhfrghluhhsihesghhmrghilhdrtghomhdprhgtphhtthhopehvkhhouhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegumhgrvghnghhinhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomh
 
-Hello,
+Hi,
 
->>>> +	for_each_child_of_node(partition_np, part_np) {
->>>> +		if (of_property_read_string(part_np, "label", &label) ||
->>>> +		    !strstr(label, "phypattern"))
->>>> +			continue;
->>>
->>> There was already a review comment on the last version. Moving this
->>> into the driver doesn't make it any better. In fact this might
->>> create a (bad) precedent for future drivers.
->>
->> I remember complaining about it but not if there was a solution
->> foreseen. In SPI NAND the solution has been found: the pattern is in the
->> driver and we load it into cache before PHY tuning. But for SPI NOR I
->> understood this wasn't possible. What would be an alternative?
->
-> I'm not complaining about using a partition for the pattern but
-> about the hardcoded name of it.
->
-> It was proposed to use at least a device tree phandle to point to a
-> partition (or so).
+I'm seeing a puzzling issue with omap2-mcspi in target mode on AM64x
+and could use some help understanding what might be happening.
 
-Ah, yes indeed, thanks for clarifying this up (again) for me. I also
-agree the hardcoded name is not ideal.
+Here is my setup:
+- AM64x as SPI target, external controller at ~1 MHz, 1 Hz frame rate
+- Target mode, DMA enabled (k3-udma, not legacy EDMA)
+- Fixed 64-byte transfers (matches MCSPI FIFO depth)
+- Full-duplex, using spi_async() for continuous operation
+- Kernel 6.12.y (also tried mainline, same behaviour) + PREEMPT_RT
 
-Thanks,
-Miqu=C3=A8l
+Periodically, MISO outputs all zeros instead of the prepared TX buffer.
+The pattern is surprisingly regular: every 42 or 43 transfers.
+If transfer #10 fails, then #52 or #53, #94 or #95, etc.
+
+This number (~42) doesn't obviously match any power of 2 or buffer
+size I'm using, which makes it more puzzling.
+
+I have verified a few things:
+- TX buffer is correctly filled before spi_async() returns
+- Added debug check: buffer is NOT zeros at submit time when failure occurs
+- RX works fine (master data received correctly)
+- System is mostly idle (basic Yocto, systemd, no heavy load)
+- Logic analyser confirms: zeros on MISO, correct clock/CS from master
+- Forcing single CPU (maxcpus=1) does not change behaviour
+
+This suggests the data is correctly prepared but doesn't make it to
+the FIFO in time. The issue seems to be in omap2-mcspi or k3-udma,
+not in my slave protocol driver.
+
+DMA configuration:
+- Using k3-udma (AM64x UDMA subsystem)
+- Single DMA descriptor per transfer (not cyclic)
+- DMA-coherent buffers allocated with dma_alloc_coherent()
+
+Questions:
+1. Are there known timing constraints for target mode DMA that
+    could explain this periodic behaviour?
+2. Could this be related to k3-udma descriptor recycling or
+    ring management around ~42 iterations?
+3. Is there recommended tracing/debug I should enable to
+    investigate the DMA/FIFO timing?
+4. Has anyone seen similar periodic failures in target mode?
+
+I can provide more details, traces, or test patches if helpful.
+
+Thanks for any pointers!
+Jean-Michel

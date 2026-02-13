@@ -1,65 +1,66 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF18364EAD
-	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 16:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E59218ACC
+	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 16:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771000769; cv=none; b=Ibqq3zC+pgPOCW+wn/t1HwY4hcYIOnnOBbURUXODh+S+N80VNU6RLu70Ufgj8W82xTYegx/pphQu80Sl6jmgYmEtzuIPAQOQ5QY7pVjBlFS8AuzCCRuIbFGOVE2aGZHXjzNVC5ktetutiMIBbM3mOKA0roG86PJvKa2/5hPgI50=
+	t=1771000943; cv=none; b=Ol2UVAb2pwTcuzDEQ0XmB6a5/eUz59eGWNvp1W+vgxTp5EJSKhu98g2/crCnd9AAtwvbzCgE46W7cqOHGu17JB+ACUfrhRrPRGZLDWnRPEJHaxvnnGcFk0X68HmY4SIwfz2NtQUATCOF7zsV3oqCJyV9Q4Zfp3xImSNidK9TBsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771000769; c=relaxed/simple;
-	bh=I5t+AuxYw7p7Xyx85rveOZeK24TscG2Fhq1FrAYn1hw=;
+	s=arc-20240116; t=1771000943; c=relaxed/simple;
+	bh=+rPJ8IGhcUaqVAqqa35kdQr+IXm7xCvJXMuXTiK4AlM=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Apakx4zouAmsSN5j+3vmIP16Ii3QCd6+lCr0WOfps7/5LjG+wOMJsy3N3H6LREj9rWj8uAK6xIs/yHrarIkXmR5xV03QLjXHj1WAjYDdPhECDBut065+yFPikAFDtubh4U0JUEDxeysOwmM1wSgO3r4FdadLNx/1plzzrVoLcVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OSb+eb6s; arc=none smtp.client-ip=209.85.128.47
+	 Content-Type:MIME-Version; b=FXQJu32G31cNOO4Z55J8ClDAB9mH4GfeBKkZVZd55TiibDnrI4ILUaR7SYAi4gBTzpeDoynR+67uA6S0eBRDOSvf/H2quQajCya3RauqPAQF9/GuC42cGk3QvjeBH4tDahte1OG3FZONzCQZIYgcEKcgOTwl1WjphpPBP0ZNlqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPrZ7G5N; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OSb+eb6s"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4834826e555so11343395e9.2
-        for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 08:39:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RPrZ7G5N"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4375d4fb4d4so911308f8f.0
+        for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 08:42:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771000764; x=1771605564; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771000939; x=1771605739; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IYpnXoF4mkHSRo0JO+Wo5zILS4TZKjxUVcEjwxhz2As=;
-        b=OSb+eb6sGoq1Xz0rDLY7B3NG6KlKT5trRdjEdWC9lUP7GxFtHixEJ0YQz37IElpwWE
-         wC8VvY8s/VbEvWJbiuMU5/TVSxLVV2JqsHEbUcei4oqytBwwOKxk/BwvR4c/bNi7tgUU
-         skMpvj+k6BSgkgF5Bk8jAcQ9YamrUA/fAJmAchMc5uLQlqiNJnB4+3sE7CoORMsORJHH
-         Z21hNQ0ACqYxLJVUjiVwnf+9oYHjqFefafJGosw1MlDa9X+nxgcgtLy+XZ5iQzYI49xx
-         w62i7XOs/LYtH5UlGn8hkCi4I5woYyavprBn96QvhV63MlQMNrw3N1VdatcEOe+8vI/t
-         ZJ/Q==
+        bh=H508M25Ra11GxFQpKrqPgpHCnIkk142vasyCERWo7BE=;
+        b=RPrZ7G5NhK1p4Xv/dHKNBwnuPcYTWGH7ffDWoJqXnDfj0XyJOMxOqn6dMgAI3ag+MW
+         VRqpK9rqeg/cG48YK2WmfmJ9kpddKGXwpRLKLzgWRAo3M1A0Tp3Tv3XOHFxUpYEupJt6
+         QLbLHQGmeykBIvMAXNc7YRhzcyNd33MvzuuNc9U4P3CZMmz+Kpq4MIOun58b1VgzLz4/
+         ZqZWG6058y6Jq3DJhajzlIYHlrY1TMCxRP3C2Kk+peuJas1IuKOOTWvlb7lMD5/AWbcA
+         ItvjO06l8w5tc/qvSNbbwOpkCvfFd+i7ZVDqpYqluH+aD/HIWLBLhsTLpByCpz/YOt3h
+         JQEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771000764; x=1771605564;
+        d=1e100.net; s=20230601; t=1771000939; x=1771605739;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IYpnXoF4mkHSRo0JO+Wo5zILS4TZKjxUVcEjwxhz2As=;
-        b=lGjr1olO8549eKaI1K/V755/6CM3Yr5wtK6iP/lDCBixLRk1VauXIPkS0GYRdORSse
-         O2R4rcGnXqvVnpO/0B/LzpDtfLA7hg+KcD7dCRvZA1XRUiNUyErzO5gL1n55S00bTwND
-         zQHtsKh37L/js+TcV22SE32wd08phBeBYNw09zPWclkGPrhG8biNyKLShbBk8Bp2s9NL
-         OTLpj5DJdToTVALYDVeh8Ya2uh1AaeOBS4I9/5BvyOrasM681oGNWsMtRKbMCxd55CJt
-         NnVDw+d7UfPosJ0ZeNS6DZQkSsUtvikMl0Cx9Xx6PQyb42lXWZOtdOeU8Xdhubi/6ZX3
-         n1fg==
-X-Forwarded-Encrypted: i=1; AJvYcCUjBaxNtDnRH8afP3S5UcJ9i03x53u6TZz6QdlChPlIiluqD2Z1kTomlLHCTM3na8vouHVif4fW8/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ6KG9Q7JuoXKWAfRFRcC17Z2PTf5XHRm/7DmNrrI9WnO55B3c
-	2UavRAgnPUav7lpGNaYuovV8GdReTBPM3C0iJ7Rkex/3V3ldKhgCaWqk5FtvS4fI
-X-Gm-Gg: AZuq6aL2edGN9pugBlI6IyFCELXED3Nlre8AHQg2Zznw+uMyMHUCBpZ9BvzS0f+uvWF
-	mAfMrLrj/dq1WOMBaCvnlX4g5XhhL4cf8WB6o6kFoXLeuSu5dc7ktQxNeUFFa1Z5ToXw6TQnYtW
-	xhRjeKqPmy5Gl07V/1IPl4aTj4zMLH4LyIr4d+FY6Iz+pE8DV4WCwx4RgVre7Lx1g8XZ3AKbYqq
-	x8Rf193TZa4x4ox0LkM+C28lJbB5W/Or9sByF71NWjJ+0WhabbkXhb6V0su/8SLUv76X8tK/tEz
-	hc2jujTFHPQb8GV581JiQkCjOx4CuLbE1hHKJmlxEYQVQOi+hWn1R37tFjsn2KgCFfgpafxZC0m
-	1XEXi+FE1aJVfIRE5iixhZnnbq5JAASpx4RudUc0ofvSyKA6iJhtwRFNKu0ZEDCedBjOTfowYLA
-	usBqbyZbL23Hq7+GoSg03HViC5XVjEcB4=
-X-Received: by 2002:a05:600c:4e86:b0:47e:e20e:bbb2 with SMTP id 5b1f17b1804b1-48373a15ff4mr40626655e9.7.1771000763657;
-        Fri, 13 Feb 2026 08:39:23 -0800 (PST)
+        bh=H508M25Ra11GxFQpKrqPgpHCnIkk142vasyCERWo7BE=;
+        b=bjIaf+fGk4YK/KCOSyEscTmDf/R9XT/xHjBw8IMPO3XUH8Bp1Z1KtmLk/dox3Uf9Qi
+         TnU8e+1fxEhAkroBdmI0USsHLW1tMTsoIrOAGOOxAbDJ3idSwJWBl0Ry44Z/xj+YpWpM
+         rtgUzl3ZBWZqHuBsEadM7KUWF70NU2OxYI5A2tBkLigVbDuyOvp1y0yiGQ8857qbnGPc
+         MHIqEMTiu9xbxioXk+ee4gz34wc1M2PnAgCjx9sEF1Kal+7B7oQmrRxAeg5J//q9ZuMA
+         vEFs3NBANTqGdlqaMo4jmu5zhZ9DBvmcJfUohCc5qC4GfoorHzLxWpcjWkfqJrY0qV1U
+         EpQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrF/vS6GILcH1Jvlc6q3QmhHjINLUVIKf4st9VfgK8fBG4JHFVGTKdVxCNRgN2BI+0nLfCOdAzvSM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRiWAx8SgyUCrxWfg3T2unlLQRaDhlynq7voR4/PzMqAMEwzzu
+	9HiJf6OBbNyT4SnaZ3wvQrAM4DZAPQ2zgiSBiNnG6lWkUM3qkRqIcw6e
+X-Gm-Gg: AZuq6aJu8LGM4Qotjs24L95RX7Mc9mkyUAJDNb5Jvcal80fUBzuwwe9JMN9BRNB3wrW
+	l2+z/qdcgGlsvpJE1qv2/S+j69FlUA1mHezZvl0v0egMUZcw3m4yc6Lfb5GZirpYhZm+QQrOn04
+	bjEqRz/3v3jgJo3i6c92ssUG+uajAxRvpGkbwiBHdFgrRa6oxaQmRBC8KqFh62u+urdTbXMmYe4
+	NARMJ0wrbAp7WiNC1woeaym1sU6AX5gdRPDKOoYEcXFNMV3ageu6MHKqKApj9B1SF5To8302sbp
+	FNhN/qws9mG46oUYYqT9n5datW/gRAdCQBaoV+Mnq9cGyDn4gqMGTzg8ICrNj5P8pCN5bkeEtVT
+	5Jguf0mxhpIcVU0DMmlUexJYjU68HVDtbPlW4nVrnAb4rGPJfmow/woPQVR3skfWSvjzKhTRiZk
+	GoYCYlbrMO+JkoMNZZyNpQOFA/rnHBk4I=
+X-Received: by 2002:a05:6000:220d:b0:436:1d80:b663 with SMTP id ffacd0b85a97d-437979279dfmr4772760f8f.58.1771000938666;
+        Fri, 13 Feb 2026 08:42:18 -0800 (PST)
 Received: from [192.168.1.187] ([148.63.225.166])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d8334a8sm283255245e9.12.2026.02.13.08.39.22
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-437969fd36dsm6910185f8f.0.2026.02.13.08.42.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 08:39:23 -0800 (PST)
-Message-ID: <c956f310b31e608520e203186ffdc753e55c045c.camel@gmail.com>
-Subject: Re: [PATCH v3 2/5] spi: add devm_spi_new_ancillary_device()
+        Fri, 13 Feb 2026 08:42:18 -0800 (PST)
+Message-ID: <562d21574f46214cbb02433519e4e52b1520a916.camel@gmail.com>
+Subject: Re: [PATCH v3 5/5] iio: adc: ad4080: add support for AD4880
+ dual-channel ADC
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen	
  <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
@@ -71,10 +72,10 @@ To: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen
  Brown	 <broonie@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
  linux-spi@vger.kernel.org
-Date: Fri, 13 Feb 2026 16:40:05 +0000
-In-Reply-To: <20260213144742.16394-3-antoniu.miclaus@analog.com>
+Date: Fri, 13 Feb 2026 16:43:01 +0000
+In-Reply-To: <20260213144742.16394-6-antoniu.miclaus@analog.com>
 References: <20260213144742.16394-1-antoniu.miclaus@analog.com>
-	 <20260213144742.16394-3-antoniu.miclaus@analog.com>
+	 <20260213144742.16394-6-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.58.3 
@@ -86,98 +87,574 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Fri, 2026-02-13 at 16:47 +0200, Antoniu Miclaus wrote:
-> Add a devres-managed version of spi_new_ancillary_device() that
-> automatically unregisters the ancillary SPI device when the parent
-> device is removed.
+> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC with
+> integrated fully differential amplifiers (FDA).
 >=20
-> This follows the same devm_add_action_or_reset() pattern used by the
-> other managed SPI functions (devm_spi_optimize_message,
-> devm_spi_register_controller, etc.) and eliminates the need for drivers
-> to open-code their own devm cleanup callbacks for ancillary devices.
+> The AD4880 has two independent ADC channels, each with its own SPI
+> configuration interface. The driver uses spi_new_ancillary_device() to
+> create an additional SPI device for the second channel, allowing both
+> channels to share the same SPI bus with different chip selects.
 >=20
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
 
-Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
 > Changes in v3:
-> =C2=A0 - New patch
+> =C2=A0 - Use devm_spi_new_ancillary_device() instead of manual
+> =C2=A0=C2=A0=C2=A0 spi_new_ancillary_device() + devm_add_action_or_reset(=
+)
+> =C2=A0 - Remove ad4080_unregister_ancillary() cleanup function
+> =C2=A0 - Generalize ancillary device setup with loop instead of
+> =C2=A0=C2=A0=C2=A0 hardcoding channel 1
 >=20
-> =C2=A0drivers/spi/spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 40 ++++++++=
-++++++++++++++++++++++++++++++++
-> =C2=A0include/linux/spi/spi.h |=C2=A0 1 +
-> =C2=A02 files changed, 41 insertions(+)
+> =C2=A0drivers/iio/adc/ad4080.c | 248 +++++++++++++++++++++++++++++++-----=
+---
+> =C2=A01 file changed, 197 insertions(+), 51 deletions(-)
 >=20
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 693bdcc5a12a..1b48ec67b8e0 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -2612,6 +2612,46 @@ struct spi_device *spi_new_ancillary_device(struct=
- spi_device *spi,
-> =C2=A0}
-> =C2=A0EXPORT_SYMBOL_GPL(spi_new_ancillary_device);
-> =C2=A0
-> +static void devm_spi_unregister_device(void *spi)
-> +{
-> +	spi_unregister_device(spi);
-> +}
+> diff --git a/drivers/iio/adc/ad4080.c b/drivers/iio/adc/ad4080.c
+> index 7cf3b6ed7940..36a265ded80d 100644
+> --- a/drivers/iio/adc/ad4080.c
+> +++ b/drivers/iio/adc/ad4080.c
+> @@ -16,6 +16,7 @@
+> =C2=A0#include <linux/mod_devicetable.h>
+> =C2=A0#include <linux/module.h>
+> =C2=A0#include <linux/mutex.h>
+> +#include <linux/property.h>
+> =C2=A0#include <linux/regmap.h>
+> =C2=A0#include <linux/regulator/consumer.h>
+> =C2=A0#include <linux/spi/spi.h>
+> @@ -131,6 +132,9 @@
+> =C2=A0#define AD4084_CHIP_ID						0x0054
+> =C2=A0#define AD4086_CHIP_ID						0x0056
+> =C2=A0#define AD4087_CHIP_ID						0x0057
+> +#define AD4880_CHIP_ID						0x0750
 > +
-> +/**
-> + * devm_spi_new_ancillary_device() - Register managed ancillary SPI devi=
-ce
-> + * @spi:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Pointer to the =
-main SPI device registering the ancillary device
-> + * @chip_select: Chip Select of the ancillary device
-> + *
-> + * Register an ancillary SPI device; for example some chips have a chip-=
-select
-> + * for normal device usage and another one for setup/firmware upload.
-> + *
-> + * This is the managed version of spi_new_ancillary_device(). The ancill=
-ary
-> + * device will be unregistered automatically when the parent SPI device =
-is
-> + * unregistered.
-> + *
-> + * This may only be called from main SPI device's probe routine.
-> + *
-> + * Return: Pointer to new ancillary device on success; ERR_PTR on failur=
-e
-> + */
-> +struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi,
-> +						 u8 chip_select)
+> +#define AD4080_MAX_CHANNELS					2
+> =C2=A0
+> =C2=A0#define AD4080_LVDS_CNV_CLK_CNT_MAX				7
+> =C2=A0
+> @@ -176,8 +180,9 @@ struct ad4080_chip_info {
+> =C2=A0};
+> =C2=A0
+> =C2=A0struct ad4080_state {
+> -	struct regmap			*regmap;
+> -	struct iio_backend		*back;
+> +	struct spi_device		*spi[AD4080_MAX_CHANNELS];
+> +	struct regmap			*regmap[AD4080_MAX_CHANNELS];
+> +	struct iio_backend		*back[AD4080_MAX_CHANNELS];
+> =C2=A0	const struct ad4080_chip_info	*info;
+> =C2=A0	/*
+> =C2=A0	 * Synchronize access to members the of driver state, and ensure
+> @@ -203,10 +208,11 @@ static int ad4080_reg_access(struct iio_dev *indio_=
+dev, unsigned int reg,
+> =C2=A0{
+> =C2=A0	struct ad4080_state *st =3D iio_priv(indio_dev);
+> =C2=A0
+> +	/* Use channel 0 regmap for debugfs access */
+> =C2=A0	if (readval)
+> -		return regmap_read(st->regmap, reg, readval);
+> +		return regmap_read(st->regmap[0], reg, readval);
+> =C2=A0
+> -	return regmap_write(st->regmap, reg, writeval);
+> +	return regmap_write(st->regmap[0], reg, writeval);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int ad4080_get_scale(struct ad4080_state *st, int *val, int =
+*val2)
+> @@ -227,8 +233,9 @@ static unsigned int ad4080_get_dec_rate(struct iio_de=
+v *dev,
+> =C2=A0	struct ad4080_state *st =3D iio_priv(dev);
+> =C2=A0	int ret;
+> =C2=A0	unsigned int data;
+> +	unsigned int ch =3D chan->channel;
+> =C2=A0
+> -	ret =3D regmap_read(st->regmap, AD4080_REG_FILTER_CONFIG, &data);
+> +	ret =3D regmap_read(st->regmap[ch], AD4080_REG_FILTER_CONFIG, &data);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> @@ -240,13 +247,14 @@ static int ad4080_set_dec_rate(struct iio_dev *dev,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int mode)
+> =C2=A0{
+> =C2=A0	struct ad4080_state *st =3D iio_priv(dev);
+> +	unsigned int ch =3D chan->channel;
+> =C2=A0
+> =C2=A0	guard(mutex)(&st->lock);
+> =C2=A0
+> =C2=A0	if ((st->filter_type >=3D SINC_5 && mode >=3D 512) || mode < 2)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> -	return regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
+> +	return regmap_update_bits(st->regmap[ch], AD4080_REG_FILTER_CONFIG,
+> =C2=A0				=C2=A0 AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
+> =C2=A0				=C2=A0 FIELD_PREP(AD4080_FILTER_CONFIG_SINC_DEC_RATE_MSK,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 (ilog2(mode) - 1)));
+> @@ -304,23 +312,23 @@ static int ad4080_write_raw(struct iio_dev *indio_d=
+ev,
+> =C2=A0	}
+> =C2=A0}
+> =C2=A0
+> -static int ad4080_lvds_sync_write(struct ad4080_state *st)
+> +static int ad4080_lvds_sync_write(struct ad4080_state *st, unsigned int =
+ch)
+> =C2=A0{
+> -	struct device *dev =3D regmap_get_device(st->regmap);
+> +	struct device *dev =3D regmap_get_device(st->regmap[ch]);
+> =C2=A0	int ret;
+> =C2=A0
+> -	ret =3D regmap_set_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
+> +	ret =3D regmap_set_bits(st->regmap[ch], AD4080_REG_ADC_DATA_INTF_CONFIG=
+_A,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_ADC_DATA_INTF_CONFIG_A_INT=
+F_CHK_EN);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D iio_backend_interface_data_align(st->back, 10000);
+> +	ret =3D iio_backend_interface_data_align(st->back[ch], 10000);
+> =C2=A0	if (ret)
+> =C2=A0		return dev_err_probe(dev, ret,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "Data alignment process failed\n");
+> =C2=A0
+> =C2=A0	dev_dbg(dev, "Success: Pattern correct and Locked!\n");
+> -	return regmap_clear_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
+> +	return regmap_clear_bits(st->regmap[ch], AD4080_REG_ADC_DATA_INTF_CONFI=
+G_A,
+> =C2=A0				 AD4080_ADC_DATA_INTF_CONFIG_A_INTF_CHK_EN);
+> =C2=A0}
+> =C2=A0
+> @@ -329,9 +337,10 @@ static int ad4080_get_filter_type(struct iio_dev *de=
+v,
+> =C2=A0{
+> =C2=A0	struct ad4080_state *st =3D iio_priv(dev);
+> =C2=A0	unsigned int data;
+> +	unsigned int ch =3D chan->channel;
+> =C2=A0	int ret;
+> =C2=A0
+> -	ret =3D regmap_read(st->regmap, AD4080_REG_FILTER_CONFIG, &data);
+> +	ret =3D regmap_read(st->regmap[ch], AD4080_REG_FILTER_CONFIG, &data);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> @@ -343,6 +352,7 @@ static int ad4080_set_filter_type(struct iio_dev *dev=
+,
+> =C2=A0				=C2=A0 unsigned int mode)
+> =C2=A0{
+> =C2=A0	struct ad4080_state *st =3D iio_priv(dev);
+> +	unsigned int ch =3D chan->channel;
+> =C2=A0	int dec_rate;
+> =C2=A0	int ret;
+> =C2=A0
+> @@ -355,11 +365,11 @@ static int ad4080_set_filter_type(struct iio_dev *d=
+ev,
+> =C2=A0	if (mode >=3D SINC_5 && dec_rate >=3D 512)
+> =C2=A0		return -EINVAL;
+> =C2=A0
+> -	ret =3D iio_backend_filter_type_set(st->back, mode);
+> +	ret =3D iio_backend_filter_type_set(st->back[ch], mode);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_update_bits(st->regmap, AD4080_REG_FILTER_CONFIG,
+> +	ret =3D regmap_update_bits(st->regmap[ch], AD4080_REG_FILTER_CONFIG,
+> =C2=A0				 AD4080_FILTER_CONFIG_FILTER_SEL_MSK,
+> =C2=A0				 FIELD_PREP(AD4080_FILTER_CONFIG_FILTER_SEL_MSK,
+> =C2=A0					=C2=A0=C2=A0=C2=A0 mode));
+> @@ -399,6 +409,29 @@ static int ad4080_read_avail(struct iio_dev *indio_d=
+ev,
+> =C2=A0	}
+> =C2=A0}
+> =C2=A0
+> +static int ad4880_update_scan_mode(struct iio_dev *indio_dev,
+> +				=C2=A0=C2=A0 const unsigned long *scan_mask)
 > +{
-> +	struct spi_device *ancillary;
+> +	struct ad4080_state *st =3D iio_priv(indio_dev);
+> +	unsigned int ch;
 > +	int ret;
 > +
-> +	ancillary =3D spi_new_ancillary_device(spi, chip_select);
-> +	if (IS_ERR(ancillary))
-> +		return ancillary;
+> +	for (ch =3D 0; ch < st->info->num_channels; ch++) {
+> +		/*
+> +		 * Each backend has a single channel (channel 0 from the
+> +		 * backend's perspective), so always use channel index 0.
+> +		 */
+> +		if (test_bit(ch, scan_mask))
+> +			ret =3D iio_backend_chan_enable(st->back[ch], 0);
+> +		else
+> +			ret =3D iio_backend_chan_disable(st->back[ch], 0);
+> +		if (ret)
+> +			return ret;
+> +	}
 > +
-> +	ret =3D devm_add_action_or_reset(&spi->dev, devm_spi_unregister_device,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ancillary);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	return ancillary;
+> +	return 0;
 > +}
-> +EXPORT_SYMBOL_GPL(devm_spi_new_ancillary_device);
 > +
-> =C2=A0#ifdef CONFIG_ACPI
-> =C2=A0struct acpi_spi_lookup {
-> =C2=A0	struct spi_controller=C2=A0	*ctlr;
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index cb2c2df31089..9aef1987b12f 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -374,6 +374,7 @@ static inline void spi_unregister_driver(struct spi_d=
-river *sdrv)
+> =C2=A0static const struct iio_info ad4080_iio_info =3D {
+> =C2=A0	.debugfs_reg_access =3D ad4080_reg_access,
+> =C2=A0	.read_raw =3D ad4080_read_raw,
+> @@ -406,6 +439,19 @@ static const struct iio_info ad4080_iio_info =3D {
+> =C2=A0	.read_avail =3D ad4080_read_avail,
+> =C2=A0};
+> =C2=A0
+> +/*
+> + * AD4880 needs update_scan_mode to enable/disable individual backend ch=
+annels.
+> + * Single-channel devices don't need this as their backends may not impl=
+ement
+> + * chan_enable/chan_disable operations.
+> + */
+> +static const struct iio_info ad4880_iio_info =3D {
+> +	.debugfs_reg_access =3D ad4080_reg_access,
+> +	.read_raw =3D ad4080_read_raw,
+> +	.write_raw =3D ad4080_write_raw,
+> +	.read_avail =3D ad4080_read_avail,
+> +	.update_scan_mode =3D ad4880_update_scan_mode,
+> +};
+> +
+> =C2=A0static const struct iio_enum ad4080_filter_type_enum =3D {
+> =C2=A0	.items =3D ad4080_filter_type_iio_enum,
+> =C2=A0	.num_items =3D ARRAY_SIZE(ad4080_filter_type_iio_enum),
+> @@ -420,17 +466,51 @@ static struct iio_chan_spec_ext_info ad4080_ext_inf=
+o[] =3D {
+> =C2=A0	{ }
+> =C2=A0};
+> =C2=A0
+> -#define AD4080_CHANNEL_DEFINE(bits, storage) {				\
+> +/*
+> + * AD4880 needs per-channel filter configuration since each channel has
+> + * its own independent ADC with separate SPI interface.
+> + */
+> +static struct iio_chan_spec_ext_info ad4880_ext_info[] =3D {
+> +	IIO_ENUM("filter_type", IIO_SEPARATE, &ad4080_filter_type_enum),
+> +	IIO_ENUM_AVAILABLE("filter_type", IIO_SEPARATE,
+> +			=C2=A0=C2=A0 &ad4080_filter_type_enum),
+> +	{ }
+> +};
+> +
+> +#define AD4080_CHANNEL_DEFINE(bits, storage, idx) {			\
+> =C2=A0	.type =3D IIO_VOLTAGE,						\
+> =C2=A0	.indexed =3D 1,							\
+> -	.channel =3D 0,							\
+> +	.channel =3D (idx),						\
+> =C2=A0	.info_mask_separate =3D BIT(IIO_CHAN_INFO_SCALE),			\
+> =C2=A0	.info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_SAMP_FREQ) |	\
+> =C2=A0			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+> =C2=A0	.info_mask_shared_by_all_available =3D				\
+> =C2=A0			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+> =C2=A0	.ext_info =3D ad4080_ext_info,					\
+> -	.scan_index =3D 0,						\
+> +	.scan_index =3D (idx),						\
+> +	.scan_type =3D {							\
+> +		.sign =3D 's',						\
+> +		.realbits =3D (bits),					\
+> +		.storagebits =3D (storage),				\
+> +	},								\
+> +}
+> +
+> +/*
+> + * AD4880 has per-channel attributes (filter_type, oversampling_ratio,
+> + * sampling_frequency) since each channel has its own independent ADC
+> + * with separate SPI configuration interface.
+> + */
+> +#define AD4880_CHANNEL_DEFINE(bits, storage, idx) {		\
+> +	.type =3D IIO_VOLTAGE,						\
+> +	.indexed =3D 1,							\
+> +	.channel =3D (idx),						\
+> +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_SCALE) |		\
+> +			BIT(IIO_CHAN_INFO_SAMP_FREQ) |			\
+> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+> +	.info_mask_separate_available =3D					\
+> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+> +	.ext_info =3D ad4880_ext_info,				\
+> +	.scan_index =3D (idx),						\
+> =C2=A0	.scan_type =3D {							\
+> =C2=A0		.sign =3D 's',						\
+> =C2=A0		.realbits =3D (bits),					\
+> @@ -438,17 +518,22 @@ static struct iio_chan_spec_ext_info ad4080_ext_inf=
+o[] =3D {
+> =C2=A0	},								\
 > =C2=A0}
 > =C2=A0
-> =C2=A0extern struct spi_device *spi_new_ancillary_device(struct spi_devic=
-e *spi, u8 chip_select);
-> +extern struct spi_device *devm_spi_new_ancillary_device(struct spi_devic=
-e *spi, u8 chip_select);
+> -static const struct iio_chan_spec ad4080_channel =3D AD4080_CHANNEL_DEFI=
+NE(20, 32);
+> +static const struct iio_chan_spec ad4080_channel =3D AD4080_CHANNEL_DEFI=
+NE(20, 32, 0);
 > =C2=A0
-> =C2=A0/* Use a define to avoid include chaining to get THIS_MODULE */
-> =C2=A0#define spi_register_driver(driver) \
+> -static const struct iio_chan_spec ad4081_channel =3D AD4080_CHANNEL_DEFI=
+NE(20, 32);
+> +static const struct iio_chan_spec ad4081_channel =3D AD4080_CHANNEL_DEFI=
+NE(20, 32, 0);
+> =C2=A0
+> -static const struct iio_chan_spec ad4083_channel =3D AD4080_CHANNEL_DEFI=
+NE(16, 16);
+> +static const struct iio_chan_spec ad4083_channel =3D AD4080_CHANNEL_DEFI=
+NE(16, 16, 0);
+> =C2=A0
+> -static const struct iio_chan_spec ad4084_channel =3D AD4080_CHANNEL_DEFI=
+NE(16, 16);
+> +static const struct iio_chan_spec ad4084_channel =3D AD4080_CHANNEL_DEFI=
+NE(16, 16, 0);
+> =C2=A0
+> -static const struct iio_chan_spec ad4086_channel =3D AD4080_CHANNEL_DEFI=
+NE(14, 16);
+> +static const struct iio_chan_spec ad4086_channel =3D AD4080_CHANNEL_DEFI=
+NE(14, 16, 0);
+> =C2=A0
+> -static const struct iio_chan_spec ad4087_channel =3D AD4080_CHANNEL_DEFI=
+NE(14, 16);
+> +static const struct iio_chan_spec ad4087_channel =3D AD4080_CHANNEL_DEFI=
+NE(14, 16, 0);
+> +
+> +static const struct iio_chan_spec ad4880_channels[] =3D {
+> +	AD4880_CHANNEL_DEFINE(20, 32, 0),
+> +	AD4880_CHANNEL_DEFINE(20, 32, 1),
+> +};
+> =C2=A0
+> =C2=A0static const struct ad4080_chip_info ad4080_chip_info =3D {
+> =C2=A0	.name =3D "ad4080",
+> @@ -510,25 +595,34 @@ static const struct ad4080_chip_info ad4087_chip_in=
+fo =3D {
+> =C2=A0	.lvds_cnv_clk_cnt_max =3D 1,
+> =C2=A0};
+> =C2=A0
+> -static int ad4080_setup(struct iio_dev *indio_dev)
+> +static const struct ad4080_chip_info ad4880_chip_info =3D {
+> +	.name =3D "ad4880",
+> +	.product_id =3D AD4880_CHIP_ID,
+> +	.scale_table =3D ad4080_scale_table,
+> +	.num_scales =3D ARRAY_SIZE(ad4080_scale_table),
+> +	.num_channels =3D 2,
+> +	.channels =3D ad4880_channels,
+> +	.lvds_cnv_clk_cnt_max =3D AD4080_LVDS_CNV_CLK_CNT_MAX,
+> +};
+> +
+> +static int ad4080_setup_channel(struct ad4080_state *st, unsigned int ch=
+)
+> =C2=A0{
+> -	struct ad4080_state *st =3D iio_priv(indio_dev);
+> -	struct device *dev =3D regmap_get_device(st->regmap);
+> +	struct device *dev =3D regmap_get_device(st->regmap[ch]);
+> =C2=A0	__le16 id_le;
+> =C2=A0	u16 id;
+> =C2=A0	int ret;
+> =C2=A0
+> -	ret =3D regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
+> +	ret =3D regmap_write(st->regmap[ch], AD4080_REG_INTERFACE_CONFIG_A,
+> =C2=A0			=C2=A0=C2=A0 AD4080_INTERFACE_CONFIG_A_SW_RESET);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_write(st->regmap, AD4080_REG_INTERFACE_CONFIG_A,
+> +	ret =3D regmap_write(st->regmap[ch], AD4080_REG_INTERFACE_CONFIG_A,
+> =C2=A0			=C2=A0=C2=A0 AD4080_INTERFACE_CONFIG_A_SDO_ENABLE);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_bulk_read(st->regmap, AD4080_REG_PRODUCT_ID_L, &id_le,
+> +	ret =3D regmap_bulk_read(st->regmap[ch], AD4080_REG_PRODUCT_ID_L, &id_l=
+e,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(id_le));
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> @@ -537,18 +631,18 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> =C2=A0	if (id !=3D st->info->product_id)
+> =C2=A0		dev_info(dev, "Unrecognized CHIP_ID 0x%X\n", id);
+> =C2=A0
+> -	ret =3D regmap_set_bits(st->regmap, AD4080_REG_GPIO_CONFIG_A,
+> +	ret =3D regmap_set_bits(st->regmap[ch], AD4080_REG_GPIO_CONFIG_A,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_GPIO_CONFIG_A_GPO_1_EN);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D regmap_write(st->regmap, AD4080_REG_GPIO_CONFIG_B,
+> +	ret =3D regmap_write(st->regmap[ch], AD4080_REG_GPIO_CONFIG_B,
+> =C2=A0			=C2=A0=C2=A0 FIELD_PREP(AD4080_GPIO_CONFIG_B_GPIO_1_SEL_MSK,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_GPIO_CONFIG_B_GPIO_FILTER=
+_RES_RDY));
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	ret =3D iio_backend_num_lanes_set(st->back, st->num_lanes);
+> +	ret =3D iio_backend_num_lanes_set(st->back[ch], st->num_lanes);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> @@ -556,7 +650,7 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> =C2=A0		return 0;
+> =C2=A0
+> =C2=A0	/* Set maximum LVDS Data Transfer Latency */
+> -	ret =3D regmap_update_bits(st->regmap,
+> +	ret =3D regmap_update_bits(st->regmap[ch],
+> =C2=A0				 AD4080_REG_ADC_DATA_INTF_CONFIG_B,
+> =C2=A0				 AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_CLK_CNT_MSK,
+> =C2=A0				 FIELD_PREP(AD4080_ADC_DATA_INTF_CONFIG_B_LVDS_CNV_CLK_CNT_MSK,
+> @@ -565,24 +659,39 @@ static int ad4080_setup(struct iio_dev *indio_dev)
+> =C2=A0		return ret;
+> =C2=A0
+> =C2=A0	if (st->num_lanes > 1) {
+> -		ret =3D regmap_set_bits(st->regmap, AD4080_REG_ADC_DATA_INTF_CONFIG_A,
+> +		ret =3D regmap_set_bits(st->regmap[ch], AD4080_REG_ADC_DATA_INTF_CONFI=
+G_A,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_ADC_DATA_INTF_CONFIG_A_SP=
+I_LVDS_LANES);
+> =C2=A0		if (ret)
+> =C2=A0			return ret;
+> =C2=A0	}
+> =C2=A0
+> -	ret =3D regmap_set_bits(st->regmap,
+> +	ret =3D regmap_set_bits(st->regmap[ch],
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_REG_ADC_DATA_INTF_CONFIG_B=
+,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD4080_ADC_DATA_INTF_CONFIG_B_LVD=
+S_CNV_EN);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> -	return ad4080_lvds_sync_write(st);
+> +	return ad4080_lvds_sync_write(st, ch);
+> +}
+> +
+> +static int ad4080_setup(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4080_state *st =3D iio_priv(indio_dev);
+> +	unsigned int ch;
+> +	int ret;
+> +
+> +	for (ch =3D 0; ch < st->info->num_channels; ch++) {
+> +		ret =3D ad4080_setup_channel(st, ch);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int ad4080_properties_parse(struct ad4080_state *st)
+> =C2=A0{
+> -	struct device *dev =3D regmap_get_device(st->regmap);
+> +	struct device *dev =3D regmap_get_device(st->regmap[0]);
+> =C2=A0
+> =C2=A0	st->lvds_cnv_en =3D device_property_read_bool(dev, "adi,lvds-cnv-e=
+nable");
+> =C2=A0
+> @@ -602,6 +711,7 @@ static int ad4080_probe(struct spi_device *spi)
+> =C2=A0	struct device *dev =3D &spi->dev;
+> =C2=A0	struct ad4080_state *st;
+> =C2=A0	struct clk *clk;
+> +	unsigned int ch;
+> =C2=A0	int ret;
+> =C2=A0
+> =C2=A0	indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> @@ -610,6 +720,10 @@ static int ad4080_probe(struct spi_device *spi)
+> =C2=A0
+> =C2=A0	st =3D iio_priv(indio_dev);
+> =C2=A0
+> +	st->info =3D spi_get_device_match_data(spi);
+> +	if (!st->info)
+> +		return -ENODEV;
+> +
+> =C2=A0	ret =3D devm_regulator_bulk_get_enable(dev,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 ARRAY_SIZE(ad4080_power_supplies),
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 ad4080_power_supplies);
+> @@ -617,13 +731,34 @@ static int ad4080_probe(struct spi_device *spi)
+> =C2=A0		return dev_err_probe(dev, ret,
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to get and enable supplies\n")=
+;
+> =C2=A0
+> -	st->regmap =3D devm_regmap_init_spi(spi, &ad4080_regmap_config);
+> -	if (IS_ERR(st->regmap))
+> -		return PTR_ERR(st->regmap);
+> +	/* Setup primary SPI device (channel 0) */
+> +	st->spi[0] =3D spi;
+> +	st->regmap[0] =3D devm_regmap_init_spi(spi, &ad4080_regmap_config);
+> +	if (IS_ERR(st->regmap[0]))
+> +		return PTR_ERR(st->regmap[0]);
+> =C2=A0
+> -	st->info =3D spi_get_device_match_data(spi);
+> -	if (!st->info)
+> -		return -ENODEV;
+> +	/* Setup ancillary SPI devices for additional channels */
+> +	if (st->info->num_channels > 1) {
+> +		u32 reg[AD4080_MAX_CHANNELS];
+> +
+> +		ret =3D device_property_read_u32_array(dev, "reg", reg,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 st->info->num_channels);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					=C2=A0=C2=A0=C2=A0=C2=A0 "missing reg entries for multi-channel dev=
+ice\n");
+> +
+> +		for (int i =3D 1; i < st->info->num_channels; i++) {
+> +			st->spi[i] =3D devm_spi_new_ancillary_device(spi, reg[i]);
+> +			if (IS_ERR(st->spi[i]))
+> +				return dev_err_probe(dev, PTR_ERR(st->spi[i]),
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 "failed to register ancillary device\n");
+> +
+> +			st->regmap[i] =3D devm_regmap_init_spi(st->spi[i],
+> +							=C2=A0=C2=A0=C2=A0=C2=A0 &ad4080_regmap_config);
+> +			if (IS_ERR(st->regmap[i]))
+> +				return PTR_ERR(st->regmap[i]);
+> +		}
+> +	}
+> =C2=A0
+> =C2=A0	ret =3D devm_mutex_init(dev, &st->lock);
+> =C2=A0	if (ret)
+> @@ -632,7 +767,8 @@ static int ad4080_probe(struct spi_device *spi)
+> =C2=A0	indio_dev->name =3D st->info->name;
+> =C2=A0	indio_dev->channels =3D st->info->channels;
+> =C2=A0	indio_dev->num_channels =3D st->info->num_channels;
+> -	indio_dev->info =3D &ad4080_iio_info;
+> +	indio_dev->info =3D st->info->num_channels > 1 ?
+> +			=C2=A0 &ad4880_iio_info : &ad4080_iio_info;
+> =C2=A0
+> =C2=A0	ret =3D ad4080_properties_parse(st);
+> =C2=A0	if (ret)
+> @@ -644,15 +780,23 @@ static int ad4080_probe(struct spi_device *spi)
+> =C2=A0
+> =C2=A0	st->clk_rate =3D clk_get_rate(clk);
+> =C2=A0
+> -	st->back =3D devm_iio_backend_get(dev, NULL);
+> -	if (IS_ERR(st->back))
+> -		return PTR_ERR(st->back);
+> +	/* Get backends for all channels */
+> +	for (ch =3D 0; ch < st->info->num_channels; ch++) {
+> +		st->back[ch] =3D devm_iio_backend_get_by_index(dev, ch);
+> +		if (IS_ERR(st->back[ch]))
+> +			return PTR_ERR(st->back[ch]);
+> =C2=A0
+> -	ret =3D devm_iio_backend_request_buffer(dev, st->back, indio_dev);
+> -	if (ret)
+> -		return ret;
+> +		ret =3D devm_iio_backend_enable(dev, st->back[ch]);
+> +		if (ret)
+> +			return ret;
+> +	}
+> =C2=A0
+> -	ret =3D devm_iio_backend_enable(dev, st->back);
+> +	/*
+> +	 * Request buffer from the first backend only. For multi-channel
+> +	 * devices (e.g., AD4880), all backends share a single IIO buffer
+> +	 * as data from all ADC channels is interleaved into one stream.
+> +	 */
+> +	ret =3D devm_iio_backend_request_buffer(dev, st->back[0], indio_dev);
+> =C2=A0	if (ret)
+> =C2=A0		return ret;
+> =C2=A0
+> @@ -670,6 +814,7 @@ static const struct spi_device_id ad4080_id[] =3D {
+> =C2=A0	{ "ad4084", (kernel_ulong_t)&ad4084_chip_info },
+> =C2=A0	{ "ad4086", (kernel_ulong_t)&ad4086_chip_info },
+> =C2=A0	{ "ad4087", (kernel_ulong_t)&ad4087_chip_info },
+> +	{ "ad4880", (kernel_ulong_t)&ad4880_chip_info },
+> =C2=A0	{ }
+> =C2=A0};
+> =C2=A0MODULE_DEVICE_TABLE(spi, ad4080_id);
+> @@ -681,6 +826,7 @@ static const struct of_device_id ad4080_of_match[] =
+=3D {
+> =C2=A0	{ .compatible =3D "adi,ad4084", &ad4084_chip_info },
+> =C2=A0	{ .compatible =3D "adi,ad4086", &ad4086_chip_info },
+> =C2=A0	{ .compatible =3D "adi,ad4087", &ad4087_chip_info },
+> +	{ .compatible =3D "adi,ad4880", &ad4880_chip_info },
+> =C2=A0	{ }
+> =C2=A0};
+> =C2=A0MODULE_DEVICE_TABLE(of, ad4080_of_match);

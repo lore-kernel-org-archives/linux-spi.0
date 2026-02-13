@@ -1,103 +1,131 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A550A4A21;
-	Thu, 12 Feb 2026 15:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71118313546
+	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 08:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770911621; cv=none; b=q0F/zR/opbEXFI4OtT7kQyLC9D+zTIfpnxwoDvr21eMS0dILrTuhmO1tdVOJYDMos57X6dgliNmJ+Jmgre+JKosZexfYB6DiZisNAxxruHC/RefKwICVW99yY3TJ9YJvvPAs1GPpS/Q+4fqLbaAdS5WX2jhXs2MXVMIfZsuGSS0=
+	t=1770970750; cv=none; b=Q3GpFzp9HZ6QiV4P2Wa7aDzSxI0pPJr75Uf0cSBGTy2rSvCjlPoi3EGVpUL5Ccg/6WMEyyEcQtDiLDsuNdd/tfDgUU5zEVm7i4m0ydh/eSCrcELZz2IOY/SwYTGvNeAS5D6eNYnb3vdW3LYGiyJ7FVKvJkYXXkYayDnLEG+XEWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770911621; c=relaxed/simple;
-	bh=jAMNABpc9UUDOujXV5IS7s+RU6Lxa17KFA1XyY/C9wk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=GY4tPL9s7NhCLu7CQlox/zB8ZpB7EtOXgvzsUutW+65lRWdkbsx/y8VS3wBF5+bY2kHO8NcxVC0QA4SiXqbNktfuIU04QukireYsLcDHw4+IrSXJESioxjfGd2bAvWKD2lU7Mi6WqafVY/qSUs+85KxfJ2hRXlHC3mvWpudqJRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=aWDBL94p; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+	s=arc-20240116; t=1770970750; c=relaxed/simple;
+	bh=75NWZpzG3PgHqXnpAb2JqUhfWyvzCwxFFpQ5zHepM6c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KLdg/n7aVW19iAXjahorl05pg8riumtTOP/eIBPC2R1RJa4niEZPLtV5A1WLngXDGmUwmEDHO9IyBHWm03w/ZOWJ+C893+rEYXgW6CpwTFCnbkvJ4IMR7oSIxL0KaQDjkiCZGrlR/FZADwZT/OYHoKEVA84MUeGKWr2/q0mFhx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R/rh10fv; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="aWDBL94p"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F301E4326E;
-	Thu, 12 Feb 2026 15:53:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
-	t=1770911611;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jNACE6+Hol33I7jrQNVMHpR4ZMYpWR2iwsgQkhdPOPI=;
-	b=aWDBL94p/puKTNn62lJ+Od5rzTOLdZMtAl+IcBNEzGvEXdsMd4nCHVbno+Hfphw5d3f2Mo
-	Guvq2XnpwxR53D3O0kEC8AqCZQnNu/Dg4baDMdfFrmH7TcbP0z59KvcxJ8m/XBxRYsgEKw
-	vjLpEpzi+laeYDQe9js7nf5ObCoqVD2JB+ihBRClso2AlRRWc1kyJF/k53KVbjCQW/c/vM
-	c+1y6t0p1k6BxEqSkIVUCpf6sCLDiiL1bY0aeDQk+ZIfOeVbbUggY2L+fsOP0OQQ77/vrI
-	Bxb1T0klo39lMqOCOKcf6opheVhcU0PLebxJUkyEtT7spZiiONBbyOMQMb4Eyg==
-Message-ID: <941806a6-0deb-415d-8af3-e78d6104da1c@yoseli.org>
-Date: Thu, 12 Feb 2026 16:53:16 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R/rh10fv"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 27F64C237F7;
+	Fri, 13 Feb 2026 08:19:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A815606CC;
+	Fri, 13 Feb 2026 08:19:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C830710368E05;
+	Fri, 13 Feb 2026 09:18:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770970739; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=6yDp974LQrt0MDs5mJhTng5R7kqy2mlSjAEqesT+EHc=;
+	b=R/rh10fv12ZrMWg0slw6wc48DOkSeuVDzW4lm8J3U750kw3QXJaYY2JMIDvuKx7RCtBT6e
+	zEngr6rKknPHs/3rzngK/zf6s2b+p1F5BcuJ3Wq2PsdSZNC+tfjkn3SJJY5TgV1topTCHM
+	E2MKb0oDbYlhU/LKhrA7o3VbjHzm9lh0j3hSLH8iZzmC9YDU7UhYXZfheJR3F1vU3CBKGr
+	tMQJpIegyGXz81nU2eyg651tatAv/r/9iTuKtyTTSAiuZgCp6qpcimtRpddZfPT04lddha
+	KrwYagkq9XaW6ZkXwYmdW5T7kzbnkymA0MI8u33A/3zIa0rClONyWUWgv7di6w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Santhosh Kumar K <s-k6@ti.com>
+Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
+  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
+  <tudor.ambarus@linaro.org>,  <pratyush@kernel.org>,  <mwalle@kernel.org>,
+  <linux-spi@vger.kernel.org>,  <devicetree@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-mtd@lists.infradead.org>,
+  <praneeth@ti.com>,  <u-kumar1@ti.com>,  <p-mantena@ti.com>,
+  <a-dutta@ti.com>
+Subject: Re: [RFC PATCH v2 09/12] spi: cadence-quadspi: add PHY tuning
+ infrastructure
+In-Reply-To: <012a44f3-973f-4f34-be69-286cf924a6c6@ti.com> (Santhosh Kumar
+	K.'s message of "Sat, 7 Feb 2026 00:55:49 +0530")
+References: <20260113141617.1905039-1-s-k6@ti.com>
+	<20260113141617.1905039-10-s-k6@ti.com> <87bji3gkda.fsf@bootlin.com>
+	<012a44f3-973f-4f34-be69-286cf924a6c6@ti.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Fri, 13 Feb 2026 09:18:54 +0100
+Message-ID: <87a4xdxdht.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Subject: [RFC] omap2-mcspi: periodic zero TX in target mode - debugging help
- needed
-Content-Language: en-MW
-To: linux-spi@vger.kernel.org
-Cc: broonie@kernel.org, peter.ujfalusi@gmail.com, vkoul@kernel.org,
- dmaengine@vger.kernel.org, vigneshr@ti.com
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: jeanmichel.hautbois@yoseli.org
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdehjeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfhffuvfevtgfgsehtjeertddtvdejnecuhfhrohhmpeflvggrnhdqofhitghhvghlucfjrghuthgsohhishcuoehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrgheqnecuggftrfgrthhtvghrnhepueevgfejiefhleelgeeiffejgefftefhgeefkeejueeigeeigeegfeffjefhtdegnecukfhppedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmeduieelmeejudegtdemvdgrgedtmehffegrrgemjedujegvmedufegsvddphhgvlhhopeglkffrggeimedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvngdpmhgrihhlfhhrohhmpehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrghdpqhhiugephfeftddugfegfedviefgpdhmohguvgepshhmthhpohhuthdpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhsphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghro
- hhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhhujhhfrghluhhsihesghhmrghilhdrtghomhdprhgtphhtthhopehvkhhouhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegumhgrvghnghhinhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomh
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+On 07/02/2026 at 00:55:49 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 
-I'm seeing a puzzling issue with omap2-mcspi in target mode on AM64x
-and could use some help understanding what might be happening.
+> On 05/02/26 23:09, Miquel Raynal wrote:
+>> On 13/01/2026 at 19:46:14 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
+>>=20
+>>> Implement the spi_controller_mem_ops execute_tuning callback to enable
+>>> PHY tuning support for the Cadence controller. PHY tuning optimizes data
+>>> capture timing at high frequencies by calibrating the read data capture
+>>> delay through the controller's PHY interface.
+>>>
+>>> Tuning algorithm functions (cqspi_phy_tuning_ddr/sdr and
+>>> cqspi_phy_pre/post_config) are placeholders to be implemented
+>>> in subsequent commits.
+>>>
+>>> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+>>> ---
+>>>   drivers/spi/spi-cadence-quadspi.c | 241 ++++++++++++++++++++++++++++++
+>>>   1 file changed, 241 insertions(+)
+>>>
+>>> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadenc=
+e-quadspi.c
+>>> index 0df286d24256..b8b0e85f4f68 100644
+>>> --- a/drivers/spi/spi-cadence-quadspi.c
+>>> +++ b/drivers/spi/spi-cadence-quadspi.c
+>>> @@ -32,6 +32,7 @@
+>>>     #define CQSPI_NAME			"cadence-qspi"
+>>>   #define CQSPI_MAX_CHIPSELECT		4
+>>> +#define CQSPI_AM654_NON_PHY_CLK_RATE	25000000
+>>>     static_assert(CQSPI_MAX_CHIPSELECT <=3D SPI_DEVICE_CS_CNT_MAX);
+>>>   @@ -65,6 +66,7 @@ struct cqspi_st;
+>>>   struct cqspi_flash_pdata {
+>>>   	struct cqspi_st	*cqspi;
+>>>   	u32		clk_rate;
+>>> +	u32		non_phy_clk_rate;
+>> This is the second (and last) main issue I have with the series as it
+>> is
+>> right now. We cannot set this type of frequency in the driver IMO, it is
+>> too board specific.
+>> We currently have a DT property for the SPI maximum supported
+>> frequency. I believe this is no longer enough. Why not making this
+>> frequency property an array? First frequency would be the default,
+>> non tuned maximum frequency. The second would be the maximum frequency
+>> reachable when tuning the PHY.
+>
+> If the concern is only about where this is set, we could introduce a DT
+> property such as "non-phy-max-freq" to carry this information. This
+> would allow us to avoid any changes to the existing "spi-max-frequency"
+> handling. Let me know your thoughts on this.
 
-Here is my setup:
-- AM64x as SPI target, external controller at ~1 MHz, 1 Hz frame rate
-- Target mode, DMA enabled (k3-udma, not legacy EDMA)
-- Fixed 64-byte transfers (matches MCSPI FIFO depth)
-- Full-duplex, using spi_async() for continuous operation
-- Kernel 6.12.y (also tried mainline, same behaviour) + PREEMPT_RT
+Naming is difficult, non-phy-max-freq is too TI specific. I was
+proposing the evolution of spi-max-frequency because it is backward
+compatible. The naming can be discussed after you send a proposal, but
+do not include "non-phy" in it. It shall reflect the fact that with fine
+tuning we can reach higher frequencies on certain operations.
 
-Periodically, MISO outputs all zeros instead of the prepared TX buffer.
-The pattern is surprisingly regular: every 42 or 43 transfers.
-If transfer #10 fails, then #52 or #53, #94 or #95, etc.
+Mark, any take on this?
 
-This number (~42) doesn't obviously match any power of 2 or buffer
-size I'm using, which makes it more puzzling.
+> I'll also test the approach you suggested and share my inputs based on
+> the results. By the way, where are you insisting to adjust/switch to
+> the maximum frequency - within the controller driver or in the
+> spi-core?
 
-I have verified a few things:
-- TX buffer is correctly filled before spi_async() returns
-- Added debug check: buffer is NOT zeros at submit time when failure occurs
-- RX works fine (master data received correctly)
-- System is mostly idle (basic Yocto, systemd, no heavy load)
-- Logic analyser confirms: zeros on MISO, correct clock/CS from master
-- Forcing single CPU (maxcpus=1) does not change behaviour
+It is preferable to make the decisions in the core and avoid being smart
+in controller drivers, if possible.
 
-This suggests the data is correctly prepared but doesn't make it to
-the FIFO in time. The issue seems to be in omap2-mcspi or k3-udma,
-not in my slave protocol driver.
-
-DMA configuration:
-- Using k3-udma (AM64x UDMA subsystem)
-- Single DMA descriptor per transfer (not cyclic)
-- DMA-coherent buffers allocated with dma_alloc_coherent()
-
-Questions:
-1. Are there known timing constraints for target mode DMA that
-    could explain this periodic behaviour?
-2. Could this be related to k3-udma descriptor recycling or
-    ring management around ~42 iterations?
-3. Is there recommended tracing/debug I should enable to
-    investigate the DMA/FIFO timing?
-4. Has anyone seen similar periodic failures in target mode?
-
-I can provide more details, traces, or test patches if helpful.
-
-Thanks for any pointers!
-Jean-Michel
+Thanks,
+Miqu=C3=A8l

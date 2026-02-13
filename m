@@ -1,56 +1,46 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846662609FD
-	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 09:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F43321FF21
+	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 11:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770973298; cv=none; b=tjhQIryoEczO2Bfk2KqC8garpoA7XUattf8CLFcNy0DwIb9u/0k+2zYgTZOSrXM0J47lVi1N/pReBYXLbZtVFXW9JtCwdhzq0zV19RzNTeZvv4+3rKuE5Acrq0db1YsA4LfraWKSUJtLnKy0pFe0qi5MaNRBZLIWwf0voKc6BvI=
+	t=1770980431; cv=none; b=JoWrwhgT72YNhc/Q3wNKBvrTh38m7OSgvFPAtt342VQuL6549/XjSMhzxvMygAYtJbCAcllLgAr3X+Ef64i6QbtUAI7cCHgmn+pAJHQTKd5O7t/JEkx/SK30CRsHE+oVlNxgFesJha4EGhqJJsxYpn1rA7vC5SrfES7j9dAznes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770973298; c=relaxed/simple;
-	bh=jNO73u+i65xkf0YweV1puplp8BRnzGz5roCr1o00jwY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EdU3M5Dn9y4kP4OtFz9Yx9+IjbBjxseXCFwuWxGxtFUPPBszki8q9gw7hfUoslu3f+sBHd+VlyHXL/FbW7+MoAoMhAEkbzFbmkoZXxd9zIIVqrw16pY55LOlVEQ0bFsUGi2ifuP9IEncypkzEkk5r0eytkLKqCXYnHklPaqBjLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ajnFwvyb; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770980431; c=relaxed/simple;
+	bh=T8C0kW3L8kfQ8lEZOMNDH8DIXhN49QbsDcqIXTGf1uU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdbcnjmQFMWvVve49OdGdPKIJhn0sMhpzQp4zB0jTet0s7dIIqlIeEU81O7+N8MRC3DN3FR3D82Vg3hUwHXafHwM90xAlNwg39jCw0lZ3WGHTkt5Vb24XJH07Oir4P39UbTxJ+Surqr0BWmJUN0L4+8D+ymVRbnoldguVOedHyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=X2g2njXx; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ajnFwvyb"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id F1B794E40D27;
-	Fri, 13 Feb 2026 09:01:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C2E35606CC;
-	Fri, 13 Feb 2026 09:01:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8D05910368D90;
-	Fri, 13 Feb 2026 10:01:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770973292; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=rp1eDOIRhaqWCkYz+NWbK33lJyO3gCS1N2c/2rJWg/E=;
-	b=ajnFwvybN/0XFrBUedxR74LHa2roePtEFDzO102eE0A34vTv8r/teN6VmAyqa5UaQ3PAS5
-	nCSZFLxbHzsN0+Gwxsk0vV/Fc7Gp3KOXPPhgR8ATlUbvlAkNk1BRb9AFPJHWbKennAVtes
-	zWj8QxYJpIFfqHx5V6o8iIA62QSD5hwxd8lacmpYG2mNdSFsf5m+bhEUXxzM205MJYcIQ2
-	4Ac7speu6a2fbuuV1FGAoHu7eNwrOYxfnMXTCrKA9B6ng3mv46LV7UmvhFkMzbz4GyiELR
-	hOn/psaAkqctQA8IQUKxZTjiRERWxnwFnwZh9sKNQ0ft1qzBvDK/fVTVembZKA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
-  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
-  <tudor.ambarus@linaro.org>,  <pratyush@kernel.org>,  <mwalle@kernel.org>,
-  <linux-spi@vger.kernel.org>,  <devicetree@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-mtd@lists.infradead.org>,
-  <praneeth@ti.com>,  <u-kumar1@ti.com>,  <p-mantena@ti.com>,
-  <a-dutta@ti.com>
-Subject: Re: [RFC PATCH v2 00/12] spi: cadence-quadspi: add PHY tuning support
-In-Reply-To: <775d8dce-b567-4f21-963c-a843e409fea5@ti.com> (Santhosh Kumar
-	K.'s message of "Sat, 7 Feb 2026 00:58:03 +0530")
-References: <20260113141617.1905039-1-s-k6@ti.com>
-	<87343ghkek.fsf@bootlin.com> <87v7gbdwdh.fsf@bootlin.com>
-	<775d8dce-b567-4f21-963c-a843e409fea5@ti.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Fri, 13 Feb 2026 10:01:28 +0100
-Message-ID: <87y0kxvwyf.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="X2g2njXx"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 0DBD5240027
+	for <linux-spi@vger.kernel.org>; Fri, 13 Feb 2026 12:00:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1770980421; bh=DkXQFRF6rnThdSPYfiSLSD241i5nICJqc3BVoN723YA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=X2g2njXx8+MMcA1akYv0HBbC7bzhH2RhKZOuCe4Y+A3rLk4Z4A3FGrb4CsD6yxekR
+	 PVqW9rTvuIrYzpxlhT8cU7yVFspBhPU9o9XUSMICBnqhU4VVsWoLqZFFsPeqqBHnlm
+	 6Gm0Xk7T/Nus/kc93Ih5uAqxSEy2SYBUcw6TBpymXddppHDCa30iBQEEMg+oK+JfTr
+	 hvFFOGSD+1ZFAZBBg2O/e5PEqW0zjfFGQ6bKlXx8yGgacHRTOzeJxTP2V4LBdWfFkG
+	 oJPPxd0hbKT5BNziMjyetQIrTti1PwSJKUkTiwmkoQ0NECNAFW2VxWm2BEBgjupSI7
+	 hloV7W8ny+HFw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fC8Ml6gzsz9rxF;
+	Fri, 13 Feb 2026 12:00:19 +0100 (CET)
+Date: Fri, 13 Feb 2026 11:00:20 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, openbmc@lists.ozlabs.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: wpcm-fiu: Fix potential NULL pointer dereference in
+ wpcm_fiu_probe()
+Message-ID: <aY8EQ_7Oho-5BeM_@probook>
+References: <20260212-wpcm-v1-1-5b7c4f526aac@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -58,64 +48,53 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212-wpcm-v1-1-5b7c4f526aac@gmail.com>
 
-On 07/02/2026 at 00:58:03 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
+On Thu, Feb 12, 2026 at 08:41:40PM +0800, Felix Gu wrote:
+> platform_get_resource_byname() can return NULL, which would cause a crash
+> when passed the pointer to resource_size().
+> 
+> Move the fiu->memory_size assignment after the error check for
+> devm_ioremap_resource() to prevent the potential NULL pointer dereference.
+> 
+> Fixes: 9838c182471e ("spi: wpcm-fiu: Add direct map support")
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> ---
 
-> On 05/02/26 21:18, Miquel Raynal wrote:
->> Hi Santhosh,
->>=20
->>> I am surprised by these numbers, I would expect these to get higher for
->>> SPI NANDs. I will test the series and report my observations, especially
->>> since there is also ODDR SPI NAND support now (in nand/next, should be
->>> part of my upcoming merge request to Linus for 6.19+1);
->> I just tested the series, here are some numbers I grabbed on TI AM62A7
->> LP SK with a Winbond W35N02 SPI NAND chip (so in the end very close to
->> your report):
->>   +-----------------+-----------+------------+
->>   | SPI NAND        | no tuning | PHY tuning |
->>   | Unit: MiB/s     |   25MHz   |   166MHz   |
->>   |-----------------+-----------+------------|
->>   | Octal SDR read  |   13.8    |    34.2    |
->>   |           write |    7.2    |    10.2    |
->>   |-----------------+-----------+------------|
->>   | Octal DTR read  |   21.2    |     N/A    |
->>   |           write |    9.0    |     N/A    |
->>   +-----------------+-----------+------------+
->> Please mind I used MiB/s and not MB/s (so kiB / 1024), I don't know
->> which one you used for measuring, as you marked MB, whereas the most
->> common unit seems to be MiB.
->> However PHY tuning failed in Octal DTR mode (your series applied on
->> top
->> of nand/next) with the following logs, can you have a look?
->> [    2.261647] spi-nand spi0.0: Winbond SPI NAND was found.
->> [    2.266956] spi-nand spi0.0: 128 MiB, block size: 256 KiB, page size:=
- 4096, OOB size: 128
->> [    2.285257] cadence-qspi fc40000.spi: PHY tuning failed: -2
->> [    2.290835] spi-nand spi0.0: Failed to execute PHY tuning: -2
->
-> Unfortunately, due to a known erratum in the Cadence controller, PHY DDR
-> mode cannot be used with 2-byte addressing.
->
-> Refer:
-> Errata i2383: OSPI: 2-byte address is not supported in PHY DDR mode [1]
->
-> As a result, the Cadence controller supports only the following
-> operating modes:
->  - PHY DDR mode with 4-byte addressing
->  - PHY SDR mode
->  - TAP (non-PHY) DDR mode
->  - TAP (non-PHY) SDR mode
+Seems reasonable.
 
-I do not think we have 4-byte addressing capabilities on SPI NAND chips,
-esp. Winbond's chips. So there is a down side: the core will pick-up
-Octal DTR modes rather than Octal SDR (with PHY) mode, which is not the
-fastest mode. Maybe we can guess that once we have access to the max
-(tuned PHY) spi frequency, with an extra flag in the driver indicating
-that the PHY speed is not accessible in DTR mode. But this again
-requires different handling between SPI NAND and SPI NOR, as SPI NOR
-IIRC may have 4-byte addressing capabilities.
+Reviewed-by: J. Neuschäfer <j.ne@posteo.net>
 
-Thanks,
-Miqu=C3=A8l
+Thanks!
+
+>  drivers/spi/spi-wpcm-fiu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-wpcm-fiu.c b/drivers/spi/spi-wpcm-fiu.c
+> index 0e3ee5516587..0e26ff178505 100644
+> --- a/drivers/spi/spi-wpcm-fiu.c
+> +++ b/drivers/spi/spi-wpcm-fiu.c
+> @@ -459,11 +459,11 @@ static int wpcm_fiu_probe(struct platform_device *pdev)
+>  
+>  	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "memory");
+>  	fiu->memory = devm_ioremap_resource(dev, res);
+> -	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+>  	if (IS_ERR(fiu->memory))
+>  		return dev_err_probe(dev, PTR_ERR(fiu->memory),
+>  			       "Failed to map flash memory window\n");
+>  
+> +	fiu->memory_size = min_t(size_t, resource_size(res), MAX_MEMORY_SIZE_TOTAL);
+>  	fiu->shm_regmap = syscon_regmap_lookup_by_phandle_optional(dev->of_node, "nuvoton,shm");
+>  
+>  	wpcm_fiu_hw_init(fiu);
+> 
+> ---
+> base-commit: 9152bc8cebcb14dc16b03ec81f2377ee8ce12268
+> change-id: 20260212-wpcm-d86f76761645
+> 
+> Best regards,
+> -- 
+> Felix Gu <ustc.gu@gmail.com>
+> 

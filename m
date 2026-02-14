@@ -1,46 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845217B506;
-	Sat, 14 Feb 2026 01:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17D32147E5;
+	Sat, 14 Feb 2026 01:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771031021; cv=none; b=DY73zaxSlzam4qxlPmeGc1vXNitbTW/h3r2CcB4EWdghUAM4XsVme0b56u5kDtmWW4/HEMVry9771UBqvBo6rfhJVGcAfWYHY9aNW3yzFCP9LrAEvLv9wql/L3/RAsoj5Is6k4+dyaHbbIqbVM0fiFOMtfExDHZb7KCGn89/89g=
+	t=1771031029; cv=none; b=k43wbkQPdq5bDpPF8fMAQ1k48mwBV4NrY0h2yPvzVPj13Yew3ahIannlHLso4Uk+ZNbWou7P4OBeQpNUFCZxA/4rRgf/XwHkcuxwD//t54FiGq53Cw5YaKBAwDTh0oFVmkf7tNtWd+2YXCVBnCJ4CgGLGVlMSmaKwEwkYm/FBW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771031021; c=relaxed/simple;
-	bh=7oaLobErMN+TqGfRqdKOgM0ev89zKKixrOyBKVO11YY=;
+	s=arc-20240116; t=1771031029; c=relaxed/simple;
+	bh=R6oVUFjWz+kXLS9nG8628lUUvyLt6G5fnWHB9B+hzfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kOS4U1gwTeCa5wTLbVr9x15Jw4W+5nmJHdMn9hEF6fe0RFGCiAa5ftYNMsMa2qzi5buOIde6TVPOg5apLxltrfEs4MbQt+gbNKAJhF/KP+sZcKFoDohffRaBTwFIKPS+OU04capO4RPvAgEqzlt8O43vHWbOiCTx/NOXZDrhlYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGJbC/Mc; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=qXza00YaB6J/bGunIGt8YdFZc17OVHfTx0Es7e6D29+OKHCWKDGeh8ELLSmrTE1Ab0Opt8QzDLpk52Ql4Vpsi1NNccngEaGW0ijuWIThXKT/t3qnxqNB3ZgEfy6HjGaKB3H8dt3hqZylBwzYSNbHp8sJTreUIqOOTxxS5EF89oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVr5wzIl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGJbC/Mc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA34C116C6;
-	Sat, 14 Feb 2026 01:03:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVr5wzIl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B58C19423;
+	Sat, 14 Feb 2026 01:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771031020;
-	bh=7oaLobErMN+TqGfRqdKOgM0ev89zKKixrOyBKVO11YY=;
+	s=k20201202; t=1771031029;
+	bh=R6oVUFjWz+kXLS9nG8628lUUvyLt6G5fnWHB9B+hzfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGJbC/McbabnXVMb/Zb7aN5nhUu7eH98WB/EZ9OdLsMZDIFM6wCmxkPWWSZM+CW3F
-	 NHySveadHLrGcTf4JzxG4B2F0FX87xLhnQJasMEFKyyh+XULLwASQ3qIQH/jXfsDme
-	 5H9sK2/DcPwlTZq0mGpg55HdJn2TRZ4Oe3oDZ8oKSTK/8bcmB1ur8xuB/coQfXypa4
-	 SSs73x4CPktLV+gDJhDzfS5e1OtzBuPDx61exnNtN4ArUgazCtFRdho6bLKnIq7lRI
-	 5swWxVkmLAShzIxBXy+2ggbSaUEYy/on7GajOzlys77ysn7vMFXeKV1uXFth+ZqKx7
-	 h9MRbg63UpAgA==
+	b=jVr5wzIlMGmEZPyB8/5n+HnNwpTX28Xl1SQaaKzNl2hQlbLmWJLXKkRx3dbiW/kYb
+	 FJJRktTpNJODZRTSF9sU72J1nUrJHvsIi66sMr1nUkSH4CCepZd4Lua29dUOQgZvnd
+	 9R1dZYu8KXYI6xdhb9DrRtJPaRuO5/v3ciE948pS4Sa3fnYPoLrh8cYCHw9q6HZ3c3
+	 OIUAUJmFNK9TXz9OPAb4iLvZ+Wo+GTelry+smsbgOMNFE+6QqOrXtcasNiEBngHWwa
+	 6T8ek099xaWVW7xTZP92FhkFtSVrGRE35dCbmfSpPSVk56lywoRd6ZYjYfXEgdBCky
+	 hHeQt/yZA7zqg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Deepak Kumar <deepak.kumar01@st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
+Cc: Jonathan Marek <jonathan@marek.ca>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-5.15] spi: stm32: fix Overrun issue at < 8bpw
-Date: Fri, 13 Feb 2026 19:58:26 -0500
-Message-ID: <20260214010245.3671907-26-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.6] spi-geni-qcom: use xfer->bits_per_word for can_dma()
+Date: Fri, 13 Feb 2026 19:58:30 -0500
+Message-ID: <20260214010245.3671907-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
 References: <20260214010245.3671907-1-sashal@kernel.org>
@@ -56,207 +52,208 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Deepak Kumar <deepak.kumar01@st.com>
+From: Jonathan Marek <jonathan@marek.ca>
 
-[ Upstream commit 1ac3be217c01d5df55ec5052f81e4f1708f46552 ]
+[ Upstream commit fb2bbe3838728f572485706677590e4fc41eec5c ]
 
-When SPI communication is suspended by hardware automatically, it could
-happen that few bits of next frame are already clocked out due to
-internal synchronization delay.
+mas->cur_bits_per_word may not reflect the value of xfer->bits_per_word
+when can_dma() is called. Use the right value instead.
 
-To achieve a safe suspension, we need to ensure that each word must be
-at least 8 SPI clock cycles long. That's why, if bpw is less than 8
-bits, we need to use midi to reach 8 SPI clock cycles at least.
-
-This will ensure that each word achieve safe suspension and prevent
-overrun condition.
-
-Signed-off-by: Deepak Kumar <deepak.kumar01@st.com>
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://patch.msgid.link/20251218-stm32-spi-enhancements-v2-2-3b69901ca9fe@foss.st.com
+Signed-off-by: Jonathan Marek <jonathan@marek.ca>
+Link: https://patch.msgid.link/20251120211204.24078-3-jonathan@marek.ca
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the information needed for a comprehensive analysis.
+Here is my complete analysis:
 
-## Comprehensive Analysis
+---
 
-### 1. COMMIT MESSAGE ANALYSIS
+## Commit Analysis: spi-geni-qcom: use xfer->bits_per_word for can_dma()
 
-The subject line is **"spi: stm32: fix Overrun issue at < 8bpw"** -- a
-clear bug fix. The body explains a hardware-level problem on the STM32H7
-SPI controller: when SPI communication is suspended by the hardware
-automatically, a few bits of the next frame can already be clocked out
-due to internal synchronization delay. To achieve safe suspension, each
-word must be at least 8 SPI clock cycles long. When `bits_per_word`
-(bpw) is less than 8, the MIDI (Minimum Inter-Data Idleness) delay must
-be increased to pad the total word time to at least 8 SPI clock cycles.
+### 1. Problem Description
 
-The commit is authored by an ST Microelectronics engineer (Deepak Kumar
-at `st.com`), co-authored/signed by Alain Volmat (STM32 SPI maintainer
-at `foss.st.com`), and merged by Mark Brown (SPI subsystem maintainer).
-This lends high credibility.
+The `geni_can_dma()` function and its helper `get_xfer_len_in_words()`
+use `mas->cur_bits_per_word` (a cached state variable on the driver
+struct) to compute the transfer length in SPI words and the effective
+FIFO size. However, **`mas->cur_bits_per_word` may not reflect the
+actual `bits_per_word` of the current transfer** when `can_dma()` is
+called by the SPI core.
 
-### 2. CODE CHANGE ANALYSIS
+### 2. Root Cause - Call Order Mismatch
 
-The diff modifies `stm32h7_spi_data_idleness()` in `drivers/spi/spi-
-stm32.c`:
+The SPI core's `__spi_pump_transfer_message()` calls operations in this
+order:
 
-**Old code (lines 1909-1912):**
-```c
-u32 midi = min_t(u32,
-                 DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
-                 FIELD_GET(STM32H7_SPI_CFG2_MIDI,
-                 STM32H7_SPI_CFG2_MIDI));
+```1726:1825:drivers/spi/spi.c
+// Step 1: prepare_message
+if (ctlr->prepare_message) {
+    ret = ctlr->prepare_message(ctlr, msg);
+    // ...
+}
+
+// Step 2: spi_map_msg → calls can_dma() for EACH transfer
+ret = spi_map_msg(ctlr, msg);
+
+// Step 3: transfer_one_message → calls transfer_one per-xfer
+ret = ctlr->transfer_one_message(ctlr, msg);
 ```
 
-**New code:**
-```c
-u32 midi = DIV_ROUND_UP(spi->cur_midi, sck_period_ns);
+Looking at Step 1, `spi_geni_prepare_message` calls `setup_fifo_params`,
+which sets:
 
-if ((spi->cur_bpw + midi) < 8)
-    midi = 8 - spi->cur_bpw;
-
-midi = min_t(u32, midi, FIELD_MAX(STM32H7_SPI_CFG2_MIDI));
+```419:419:drivers/spi/spi-geni-qcom.c
+mas->cur_bits_per_word = spi_slv->bits_per_word;
 ```
 
-The changes are:
-1. **Core fix (3 lines):** After computing the initial midi value, check
-   if `bpw + midi < 8`. If so, increase midi to `8 - bpw`, ensuring a
-   minimum total of 8 SPI clock cycles per word. This prevents the
-   overrun condition.
-2. **Style cleanup:** Replace `FIELD_GET(STM32H7_SPI_CFG2_MIDI,
-   STM32H7_SPI_CFG2_MIDI)` with `FIELD_MAX(STM32H7_SPI_CFG2_MIDI)`. Both
-   evaluate to 15 (the field is GENMASK(7,4), a 4-bit field), but
-   `FIELD_MAX` is the semantically correct macro for getting the maximum
-   field value.
-3. **Reorder:** The clamping to maximum is now done AFTER the overrun
-   adjustment, ensuring the adjustment isn't clamped away prematurely.
+But **only if mode changed** (`mas->last_mode != spi_slv->mode` at line
+405). If the mode hasn't changed between messages,
+`mas->cur_bits_per_word` retains whatever value was set during the
+**last transfer** of the **previous message**.
 
-**Example scenario:** With bpw=4 and midi=1 (from a 100ns delay at 10MHz
-clock):
-- **Old:** Total = 4+1 = 5 cycles/word. Hardware suspension can corrupt
-  next frame. → Overrun
-- **New:** Since 4+1 < 8, midi is set to 4. Total = 4+4 = 8 cycles/word.
-  → Safe suspension
+In Step 2, `spi_map_msg` → `__spi_map_msg` iterates over **all
+transfers** in the message and calls `can_dma()` for each:
 
-### 3. THE BUG AND ITS IMPACT
-
-When the STM32H7 SPI controller's overrun condition fires
-(`STM32H7_SPI_SR_OVR`), the interrupt handler at line 1111-1113 logs
-`"Overrun: RX data lost"` and sets `end = true`, which terminates the
-transfer. This means:
-- **Data loss** - received SPI data is discarded
-- **Transfer failure** - the SPI communication is aborted
-- Any device using bpw < 8 with MIDI configured experiences
-  corrupted/failed SPI transfers
-
-This is a real hardware bug affecting real STM32H7/STM32MP25 users with
-SPI devices that use fewer than 8 bits per word.
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-- **Lines changed:** Net +3 lines of logic. Very small.
-- **Files touched:** 1 file (`drivers/spi/spi-stm32.c`).
-- **Risk:** Very low. The new logic only activates when `spi->cur_bpw <
-  8` AND `cur_midi > 0`. For all transfers with bpw >= 8 (the vast
-  majority), behavior is completely unchanged. Even for bpw < 8 cases,
-  the fix just increases the inter-data delay slightly, which is correct
-  per the hardware spec.
-- **Side effects:** Slightly longer word timing for bpw < 8. This is the
-  desired behavior to prevent overrun.
-
-### 5. DEPENDENCY ANALYSIS
-
-This is the most significant concern. The function
-`stm32h7_spi_data_idleness()` was significantly modified by:
-- **`4956bf4452439`** ("spi: stm32: deprecate `st,spi-midi-ns`
-  property", June 2025, v6.17-rc1): Changed the function signature from
-  `(struct stm32_spi *spi, u32 len)` to `(struct stm32_spi *spi, struct
-  spi_transfer *xfer)` and added the `spi_delay_ns` word_delay logic.
-- **`244bc18e5f187`** ("spi: stm32: delete stray tabs", June 2025,
-  v6.17-rc1+): Fixed indentation.
-
-Both of these are post-6.16. Stable trees (6.12.y, 6.6.y, 6.1.y, 5.15.y)
-have the **old** version of this function with the simpler `(spi, len)`
-signature. However, the critical MIDI calculation block exists in ALL
-versions since the driver's inception:
-
-```c
-if ((len > 1) && (spi->cur_midi > 0)) {
-    u32 sck_period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->cur_speed);
-    u32 midi = min_t(u32,
-                     DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
-                     FIELD_GET(STM32H7_SPI_CFG2_MIDI,
-STM32H7_SPI_CFG2_MIDI));
+```1246:1251:drivers/spi/spi.c
+list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+    unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
+    if (!ctlr->can_dma(ctlr, msg->spi, xfer))
+        continue;
 ```
 
-The core 3-line overrun fix can be applied to the old function with
-trivial context adjustment. The fix does not depend on the new function
-signature -- it only uses `spi->cur_bpw` which has existed since the
-driver was added.
+At this point, `mas->cur_bits_per_word` could be **wrong** for any
+transfer whose `bits_per_word` differs from the stale cached value.
 
-### 6. CLASSIFICATION
+Step 3 is where `setup_se_xfer()` (line 863-865) finally updates
+`mas->cur_bits_per_word = xfer->bits_per_word` — but this is **too
+late** for the `can_dma()` decision, which already happened in Step 2.
 
-This is a **hardware bug workaround / driver bug fix**. It's analogous
-to a hardware quirk -- the STM32H7 SPI hardware requires at least 8
-clock cycles per word for safe suspension, and the driver was not
-enforcing this. The fix adds the enforcement.
+### 3. Bug Impact
 
-### 7. VERDICT
+The buggy `geni_can_dma()` function uses the wrong `bits_per_word` in
+two calculations:
 
-**Positive factors:**
-- Fixes a real, documented hardware issue (overrun = data loss +
-  transfer failure)
-- Extremely small and surgical (3 lines of logic)
-- Very low regression risk (only affects bpw < 8 with midi configured)
-- Authored by the hardware vendor (ST Microelectronics) who understands
-  the hardware
-- Reviewed and merged by the SPI subsystem maintainer
-- The affected code exists in all stable trees since the driver was
-  added (2017)
+**a) Transfer length in words (`get_xfer_len_in_words`):**
 
-**Concerns:**
-- The patch as-is won't apply cleanly to stable trees due to the
-  function signature change from `4956bf4452439`, but the fix logic is
-  self-contained and can be trivially adapted
-- The fix only applies when `cur_midi > 0` (some inter-data delay is
-  configured), so overrun with zero midi is not addressed (but this
-  appears intentional)
+```551:554:drivers/spi/spi-geni-qcom.c
+if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
+    len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
+else
+    len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
+```
 
-The fix is small, surgical, and meets all stable kernel criteria. It
-fixes a real hardware bug causing data loss for STM32H7 SPI users using
-bpw < 8.
+**b) FIFO size calculation:**
+
+```574:574:drivers/spi/spi-geni-qcom.c
+fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits /
+mas->cur_bits_per_word;
+```
+
+If `mas->cur_bits_per_word` is wrong, both `len` and `fifo_size` are
+incorrect. This causes the wrong DMA vs FIFO mode selection:
+- If the stale value is **smaller** than actual, `fifo_size` is inflated
+  and `len` deflated → **FIFO chosen when DMA should be used** →
+  potential FIFO overflow for large transfers
+- If the stale value is **larger** than actual, the opposite happens →
+  **unnecessary DMA for small transfers**
+
+### 4. Fix Analysis
+
+The fix is trivially correct: replace `mas->cur_bits_per_word` with
+`xfer->bits_per_word` in both `get_xfer_len_in_words()` and
+`geni_can_dma()`. The `xfer` parameter is already available, and the SPI
+core guarantees `xfer->bits_per_word` is always populated via
+`__spi_validate()`:
+
+```4079:4080:drivers/spi/spi.c
+if (!xfer->bits_per_word)
+    xfer->bits_per_word = spi->bits_per_word;
+```
+
+This validation runs in the `spi_async()` path, well before `can_dma()`
+is called.
+
+The fix is also correct for the other caller of
+`get_xfer_len_in_words()` — `setup_se_xfer()` at line 876. In that
+context, `mas->cur_bits_per_word` was already set to
+`xfer->bits_per_word` (line 865), so using `xfer->bits_per_word`
+directly is equivalent and always correct.
+
+### 5. Scope and Risk
+
+- **Size**: Only 4 lines changed across 2 functions in a single file
+- **Risk**: Very low — the change replaces a potentially-stale cached
+  value with the authoritative source of truth that was always available
+- **No behavioral change** for the common case where all transfers use
+  the same `bits_per_word`
+- **Fixes the bug** for devices using per-transfer `bits_per_word`
+  overrides
+
+### 6. Series Dependency
+
+The message-id (`24078-3-jonathan@marek.ca`) indicates this is patch 3
+of a series. However, this change is entirely **self-contained** — it
+only swaps `mas->cur_bits_per_word` for `xfer->bits_per_word` in
+functions that already receive the `xfer` parameter. No dependency on
+other patches.
+
+### 7. Affected Stable Versions
+
+- `geni_can_dma` was introduced in commit b59c122484ecb ("spi: spi-geni-
+  qcom: Add support for GPI dma") — around v5.16
+- `get_xfer_len_in_words` was introduced in commit 3a76c7ca9e772 ("spi:
+  spi-geni-qcom: Do not do DMA map/unmap inside driver, use framework
+  instead") — v6.5-rc1
+- The bug in `geni_can_dma` (using `mas->cur_bits_per_word` for
+  fifo_size) has existed since `geni_can_dma` was added, but
+  `get_xfer_len_in_words` was refactored in v6.5
+
+### 8. Conclusion
+
+This is a clear bug fix. The commit:
+- Fixes a real bug: wrong value used for DMA/FIFO mode selection,
+  potentially causing incorrect SPI transfers
+- Is small and surgical: 4 line changes, self-contained
+- Has very low regression risk: uses the correct data source that was
+  always available
+- Applies to stable trees v6.5+ (where `get_xfer_len_in_words` exists),
+  with a simpler variant applicable to v5.16+
+- Does not introduce new features or APIs
 
 **YES**
 
- drivers/spi/spi-stm32.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 2c804c1aef989..80986bd251d29 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -1906,11 +1906,12 @@ static void stm32h7_spi_data_idleness(struct stm32_spi *spi, struct spi_transfer
- 	cfg2_clrb |= STM32H7_SPI_CFG2_MIDI;
- 	if ((len > 1) && (spi->cur_midi > 0)) {
- 		u32 sck_period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->cur_speed);
--		u32 midi = min_t(u32,
--				 DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
--				 FIELD_GET(STM32H7_SPI_CFG2_MIDI,
--				 STM32H7_SPI_CFG2_MIDI));
-+		u32 midi = DIV_ROUND_UP(spi->cur_midi, sck_period_ns);
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 9e9953469b3a0..5ab20d7955121 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -548,10 +548,10 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
+ {
+ 	u32 len;
  
-+		if ((spi->cur_bpw + midi) < 8)
-+			midi = 8 - spi->cur_bpw;
-+
-+		midi = min_t(u32, midi, FIELD_MAX(STM32H7_SPI_CFG2_MIDI));
+-	if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
+-		len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
++	if (!(xfer->bits_per_word % MIN_WORD_LEN))
++		len = xfer->len * BITS_PER_BYTE / xfer->bits_per_word;
+ 	else
+-		len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
++		len = xfer->len / (xfer->bits_per_word / BITS_PER_BYTE + 1);
+ 	len &= TRANS_LEN_MSK;
  
- 		dev_dbg(spi->dev, "period=%dns, midi=%d(=%dns)\n",
- 			sck_period_ns, midi, midi * sck_period_ns);
+ 	return len;
+@@ -571,7 +571,7 @@ static bool geni_can_dma(struct spi_controller *ctlr,
+ 		return true;
+ 
+ 	len = get_xfer_len_in_words(xfer, mas);
+-	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / mas->cur_bits_per_word;
++	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / xfer->bits_per_word;
+ 
+ 	if (len > fifo_size)
+ 		return true;
 -- 
 2.51.0
 

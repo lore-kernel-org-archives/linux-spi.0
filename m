@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0331DE8AE;
-	Sat, 14 Feb 2026 01:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25B61E1E12;
+	Sat, 14 Feb 2026 01:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771030977; cv=none; b=Z2RBslPnujnIc5nGps2sim/7JAEJkzCs6DMvbWub1123h3hqzMNNPyNd1M7XSkdcNpdg1svKzrz+vwNLrJKe8veuheyqLcpFnTt1yvw6CpQcqneTVhHGJ2Ke83a831be2pD2s0OO5fU1ch11jscCORxUpFo3h+w66/hRfOztmJ0=
+	t=1771030987; cv=none; b=WZoYaYtQsxZgSrFiugwbXGJE4fWVsAvnGLeSRZ9X5351+/rod58THvJHDV/yrjhFIDYtxWbt18dDOwVBjrEaH6nwu45OJfvinmRBUsKgs75iyK3BT/V+aBL2FOW8htWHi6GxYrSyLkHGn+hXLvzCiwKk/5Ub8hFGXi3o4kSyCPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771030977; c=relaxed/simple;
-	bh=J37sxq8pfLFgbWzCtYcfjLaOxT+W9jkKzT/+ehOmyy0=;
+	s=arc-20240116; t=1771030987; c=relaxed/simple;
+	bh=ZfejrtQksITQTSmObej8g8NSFF1QgqkmRIETHoIRC1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/TFQDV75ZzsyAj+4itMu1JCngtJ/fr+dDQmiocXidbPJohh+83psV8lTUfcHPNAo5ZrmJVDoBHK2P6Umxl3xoEPTtJdae8P9z9pTOjSANFCsq7WIUOKdC3a4yVCYRbLUbCufOEMXZaeMzBe70EmwC3Vl/OrEBQ7XavRQhVhE7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkL5yBGW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=SENeL3XKofJvJUs8cPUqY2cAPAIyklvEoSyex8AbEkPxcwMjlwm4cy+tO1NMh1/Ah0ZjAF6wKrZzEIz8getTRgXiHUtgxDM90ajYLPc3N2mipLcLww4Z2Y7kLyP7mGWZnJUdM1l1NMV82mLVC2JqKPoV4VwhNTp7LWwNUDYjlUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=prTrF2vv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkL5yBGW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521C7C116C6;
-	Sat, 14 Feb 2026 01:02:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="prTrF2vv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B8C19424;
+	Sat, 14 Feb 2026 01:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771030977;
-	bh=J37sxq8pfLFgbWzCtYcfjLaOxT+W9jkKzT/+ehOmyy0=;
+	s=k20201202; t=1771030986;
+	bh=ZfejrtQksITQTSmObej8g8NSFF1QgqkmRIETHoIRC1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkL5yBGWc6TK9nHx2hxtMCGxj24z7Nx2oQsm74KUE5oOhf1y7RBu4JQ7Vmylhaf+k
-	 dnOG8L4pIj8Q7WftquaBobZR/0YIlN1+vVXkNXzOa00Uq9Dw1NHF8FWISar1QaKUaE
-	 PPhYP8ngWel42iL3JY93dLL0FhxiiWlgaEp5uWZIdcav8euA2/IyTT6SYC6muemmqi
-	 Napo6EQ9SgX9nWsTYF6LgztR4JCpCXcwaiCx7gScbyyD2oQ1TBgceDWBiB2mqteN8A
-	 w1PrBmQS1YAUZDxgdqz6QRbKZQ2/IouBnlcIxxZ+hRxVHlG8Q3a7Uk6Ykq7EUu6dkt
-	 /eJr0zFNjEh8g==
+	b=prTrF2vvUcNWn+D8qSDjnY27/GjKiWw46Suxiqe10vykiXPutmJWYn5TKXhOCat8m
+	 MSpyxawS6mSM+zufkBeYPsrsMHH+UO7/dVMLGOchR6DZ22N1Dar/DOBIQHdeiF/TWk
+	 43x3L3pzxDqS3vw3kjC4zmyB7sj22YoKf1W8LaJvvQYbvcT8tlYspyhJTEOkh2Ob2e
+	 yCLSGAbUa3vrkDFilNBUSTkWazy/A1ZZdbhXovNuvO7fgTCPMacHkzay+0tlJ6FmUS
+	 97nPimiyVgKDh44tcewF9NpFbspd9JI1BcNGgH12HxjF65GWwXKCVP1VxYIkJ61dde
+	 sUo7pTV1YL6lA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jonathan Marek <jonathan@marek.ca>,
+Cc: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Santhosh Kumar K <s-k6@ti.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.1] spi-geni-qcom: initialize mode related registers to 0
-Date: Fri, 13 Feb 2026 19:58:06 -0500
-Message-ID: <20260214010245.3671907-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.18] spi: cadence-qspi: Try hard to disable the clocks
+Date: Fri, 13 Feb 2026 19:58:12 -0500
+Message-ID: <20260214010245.3671907-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
 References: <20260214010245.3671907-1-sashal@kernel.org>
@@ -52,211 +53,102 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
 
-[ Upstream commit 739062a9f1e9a77a9687c8fd30f8e5dd12ec70be ]
+[ Upstream commit 612227b392eed94a3398dc03334a84a699a82276 ]
 
-setup_fifo_params assumes these will be zero, it won't write these
-registers if the initial mode is zero.
+In the remove path, we should try hard to perform all steps as we simply
+cannot fail.
 
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Link: https://patch.msgid.link/20251120211204.24078-4-jonathan@marek.ca
+The "no runtime PM" quirk must only alter the state of the RPM core, but
+the clocks should still be disabled if that is possible. Move the
+disable call outside of the RPM quirk.
+
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
+Tested-by: Santhosh Kumar K <s-k6@ti.com>
+Link: https://patch.msgid.link/20260122-schneider-6-19-rc1-qspi-v4-9-f9c21419a3e6@bootlin.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete understanding of the bug and the fix. Let me
-compile the analysis.
+So the `CQSPI_DISABLE_RUNTIME_PM` quirk is used by `socfpga_qspi` (Intel
+SoCFPGA platforms). These are real, deployed embedded systems.
 
----
+### Stability Indicators
 
-## Detailed Analysis
+- **Tested-by:** Two testers: Wolfram Sang and Santhosh Kumar K — both
+  are known kernel contributors
+- **Reviewed through proper channels:** Has a Link: to the mailing list
+  patch series
+- **Part of a series:** The commit is "v4-9" suggesting it's patch 9 in
+  a series. This is a concern for dependency.
 
-### 1. COMMIT MESSAGE ANALYSIS
+Let me check if this patch is self-contained or requires other patches
+from the series.
 
-The commit subject "spi-geni-qcom: initialize mode related registers to
-0" is straightforward. The commit body explains: "`setup_fifo_params`
-assumes these will be zero, it won't write these registers if the
-initial mode is zero." This is a clear description of a latent
-initialization bug.
+The change itself is self-contained — it only modifies the logic of the
+`cqspi_remove()` function. The `ret` variable is newly added and
+initialized in this function. No new functions, types, or macros are
+introduced. The change doesn't depend on other patches.
 
-### 2. CODE CHANGE ANALYSIS - The Bug Mechanism
+### Assessment
 
-The bug centers on the interaction between two functions in `spi-geni-
-qcom.c`:
+**What it fixes:** Clock resource leak on driver removal for platforms
+with the `CQSPI_DISABLE_RUNTIME_PM` quirk (specifically SoCFPGA).
+Without this fix, the QSPI clock remains enabled after driver removal,
+which wastes power and can prevent proper power state transitions.
 
-**`spi_geni_init()`** (called once during probe at line 1147)
-initializes the GENI SPI controller. In the `case 0:` (FIFO mode) branch
-at lines 724-728, it sets the transfer mode but does NOT initialize the
-SPI mode registers.
+**Meets stable rules:**
+- Obviously correct: Yes — the logic change is clear and straightforward
+- Fixes a real bug: Yes — resource leak (clock not disabled on remove)
+- Small and contained: Yes — ~6 lines in one file
+- No new features: Correct — this is purely a bug fix
 
-**`setup_fifo_params()`** (called for each SPI message at line 593 via
-`spi_geni_prepare_message`) has an optimization at line 405:
+**Risk:** Very low. The change is minimal, the logic is straightforward,
+and it has been tested by two people.
 
-```397:431:drivers/spi/spi-geni-qcom.c
-static int setup_fifo_params(struct spi_device *spi_slv,
-                                        struct spi_controller *spi)
-{
-        struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-        struct geni_se *se = &mas->se;
-        u32 loopback_cfg = 0, cpol = 0, cpha = 0, demux_output_inv = 0;
-        u32 demux_sel;
+**Concern:** This is part of a larger series (patch 9 of N), but the
+change itself appears self-contained. The only question is whether the
+code it modifies exists in stable trees — the cadence-qspi driver and
+the `CQSPI_DISABLE_RUNTIME_PM` quirk have been around for a while, so
+this should apply.
 
-        if (mas->last_mode != spi_slv->mode) {
-                // ... only writes registers when mode changes ...
-                writel(loopback_cfg, se->base + SE_SPI_LOOPBACK);
-                writel(demux_sel, se->base + SE_SPI_DEMUX_SEL);
-                writel(cpha, se->base + SE_SPI_CPHA);
-                writel(cpol, se->base + SE_SPI_CPOL);
-                writel(demux_output_inv, se->base +
-SE_SPI_DEMUX_OUTPUT_INV);
-
-                mas->last_mode = spi_slv->mode;
-        }
-        // ...
-}
-```
-
-**The critical chain of assumptions:**
-
-1. `spi_geni_master` is allocated with `kzalloc` (confirmed in
-   `__spi_alloc_controller` at spi.c line 3056), so `mas->last_mode`
-   starts at **0**.
-2. `SPI_MODE_0` = `(0|0)` = **0** (from `include/uapi/linux/spi/spi.h`
-   line 10). This is the most common SPI mode.
-3. When the first SPI device uses mode 0, `spi_slv->mode` is 0, so
-   `mas->last_mode != spi_slv->mode` is **false** (0 != 0 → false).
-4. **The register writes are skipped entirely** for the first SPI
-   transaction.
-5. This assumes the hardware registers already contain 0.
-
-**When the assumption breaks:**
-
-- **Bootloader contamination**: If the bootloader used SPI (very common
-  on Qualcomm SoCs for reading from SPI flash/NOR), it may have
-  configured these registers with non-zero values (e.g., CPOL=1, CPHA=1
-  for SPI mode 3, or specific chip select muxing).
-- **Firmware loading path**: The `geni_load_se_firmware()` path (line
-  674-679) loads QUP firmware when `proto == GENI_SE_INVALID_PROTO`.
-  After firmware loading, register state may be undefined.
-
-**The consequence:**
-
-If hardware registers retain stale non-zero values from the bootloader
-and the first SPI device uses mode 0:
-- **SE_SPI_CPOL** could be set to `BIT(2)` → wrong clock polarity
-- **SE_SPI_CPHA** could be set to `BIT(0)` → wrong clock phase
-- **SE_SPI_LOOPBACK** could be enabled → data loops back instead of
-  going to device
-- **SE_SPI_DEMUX_SEL** could select wrong chip → wrong device addressed
-- **SE_SPI_DEMUX_OUTPUT_INV** could invert CS → chip select logic
-  inverted
-
-Any of these would cause **SPI communication failure or data
-corruption**.
-
-### 3. THE FIX
-
-The fix is 5 `writel(0, ...)` calls added to the FIFO mode
-initialization path in `spi_geni_init()`:
-
-```c
-writel(0, se->base + SE_SPI_LOOPBACK);
-writel(0, se->base + SE_SPI_DEMUX_SEL);
-writel(0, se->base + SE_SPI_CPHA);
-writel(0, se->base + SE_SPI_CPOL);
-writel(0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
-```
-
-This ensures the hardware state matches the software assumption
-(`last_mode = 0`), making `setup_fifo_params()`'s optimization correct.
-
-### 4. CLASSIFICATION
-
-- **Type**: Initialization bug fix (uninitialized hardware register
-  state)
-- **NOT a feature**: No new functionality, just ensuring correct
-  initialization
-- **Category**: Data corruption / device communication failure fix
-
-### 5. SCOPE AND RISK ASSESSMENT
-
-- **Lines changed**: 6 (5 writel + 1 comment)
-- **Files touched**: 1 (`drivers/spi/spi-geni-qcom.c`)
-- **Complexity**: Extremely low - simple register zeroing
-- **Risk of regression**: Near zero. In the common case where registers
-  are already 0, the writel calls are a harmless no-op. In the bug case,
-  they fix incorrect register values.
-- **Self-contained**: Yes - all register defines (`SE_SPI_LOOPBACK`,
-  etc.) and the `spi_geni_init()` function exist in all stable trees
-  that have this driver.
-
-### 6. USER IMPACT
-
-- **Qualcomm GENI SPI** is used on many Qualcomm SoCs (SDM845, SM8150,
-  SM8250, SC7180, SC7280, SM8350, SM8450, X1E80100, etc.)
-- These SoCs power phones, laptops (Qualcomm-based Chromebooks, Windows
-  on ARM devices), IoT, and embedded systems
-- SPI is used for touchscreen controllers, sensor hubs, TPM modules, and
-  other critical peripherals
-- If SPI communication fails, the affected device simply doesn't work
-
-### 7. DEPENDENCY CHECK
-
-The patch is **entirely self-contained**. It uses:
-- `se->base` - available since the driver was created
-- `SE_SPI_LOOPBACK`, `SE_SPI_DEMUX_SEL`, `SE_SPI_CPHA`, `SE_SPI_CPOL`,
-  `SE_SPI_DEMUX_OUTPUT_INV` - all defined in the same file since
-  original driver creation
-- `writel()` - standard kernel API
-
-The patch was "4/N" in a series (from the Link URL), but this specific
-change is independent. It does not depend on any prior patch in the
-series - it simply adds register zeroing to an existing function.
-
-### 8. STABILITY INDICATORS
-
-- Merged by Mark Brown (SPI subsystem maintainer) with `Signed-off-by`
-- The fix is logically obvious and defensive
-- The pattern (writing 0 to ensure known state during init) is standard
-  practice throughout the kernel
-
-### CONCLUSION
-
-This commit fixes a real initialization bug where SPI mode-related
-hardware registers may retain stale non-zero values from
-bootloader/firmware, causing the driver's `setup_fifo_params()`
-optimization to incorrectly skip the first register write when the SPI
-device uses mode 0 (the most common mode). The consequence is SPI
-communication failure or data corruption. The fix is a trivial 5-line
-addition of register zeroing during init, with essentially zero
-regression risk, affecting a widely-deployed Qualcomm SPI driver. It is
-self-contained with no dependencies and applies cleanly to stable trees.
+This is a clear resource leak fix in the driver removal path, it's
+small, tested, and low risk.
 
 **YES**
 
- drivers/spi/spi-geni-qcom.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index a0d8d3425c6c6..9e9953469b3a0 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -724,6 +724,12 @@ static int spi_geni_init(struct spi_geni_master *mas)
- 	case 0:
- 		mas->cur_xfer_mode = GENI_SE_FIFO;
- 		geni_se_select_mode(se, GENI_SE_FIFO);
-+		/* setup_fifo_params assumes that these registers start with a zero value */
-+		writel(0, se->base + SE_SPI_LOOPBACK);
-+		writel(0, se->base + SE_SPI_DEMUX_SEL);
-+		writel(0, se->base + SE_SPI_CPHA);
-+		writel(0, se->base + SE_SPI_CPOL);
-+		writel(0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
- 		ret = 0;
- 		break;
- 	}
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index b1c95b1c343fc..1ce433a8d64a5 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2042,6 +2042,7 @@ static void cqspi_remove(struct platform_device *pdev)
+ 	const struct cqspi_driver_platdata *ddata;
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 	struct device *dev = &pdev->dev;
++	int ret = 0;
+ 
+ 	ddata = of_device_get_match_data(dev);
+ 
+@@ -2061,8 +2062,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ 		cqspi_jh7110_disable_clk(pdev, cqspi);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+-		if (pm_runtime_get_sync(&pdev->dev) >= 0)
+-			clk_disable(cqspi->clk);
++		ret = pm_runtime_get_sync(&pdev->dev);
++
++	if (ret >= 0)
++		clk_disable(cqspi->clk);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+ 		pm_runtime_put_sync(&pdev->dev);
 -- 
 2.51.0
 

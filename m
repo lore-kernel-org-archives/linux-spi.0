@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17D32147E5;
-	Sat, 14 Feb 2026 01:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5905B1D5ABA;
+	Sat, 14 Feb 2026 01:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771031029; cv=none; b=k43wbkQPdq5bDpPF8fMAQ1k48mwBV4NrY0h2yPvzVPj13Yew3ahIannlHLso4Uk+ZNbWou7P4OBeQpNUFCZxA/4rRgf/XwHkcuxwD//t54FiGq53Cw5YaKBAwDTh0oFVmkf7tNtWd+2YXCVBnCJ4CgGLGVlMSmaKwEwkYm/FBW8=
+	t=1771031141; cv=none; b=h4LYhu7oQ69RSpqQx4ZjU7PLygiWmJ6jdVKb5520i8Beq2koHagqrwJjjNERZmeDCvkMdf/S9KetIM7fWzdEwP3Ol/3G4fER45b9v9rgB2rQrj05XVVeYPdBPVdT4TBxfA7pXgmgAfBHx1I6XN7ypVy3kGCbIh1DqvnH2107IUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771031029; c=relaxed/simple;
-	bh=R6oVUFjWz+kXLS9nG8628lUUvyLt6G5fnWHB9B+hzfU=;
+	s=arc-20240116; t=1771031141; c=relaxed/simple;
+	bh=PaO56kiA8/v9E8MkTgfzvmtNojBYeVDqlrH9GB3WikI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qXza00YaB6J/bGunIGt8YdFZc17OVHfTx0Es7e6D29+OKHCWKDGeh8ELLSmrTE1Ab0Opt8QzDLpk52Ql4Vpsi1NNccngEaGW0ijuWIThXKT/t3qnxqNB3ZgEfy6HjGaKB3H8dt3hqZylBwzYSNbHp8sJTreUIqOOTxxS5EF89oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jVr5wzIl; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=H3xqx0lDA2g00KEcrS9csjtSZr70ArnJgG7JHKce1qJNSmKdtx7XWQROdn3mxHGSsqB9VeKM1pwrPZpIM4NjLugpy3SjhJW385RKNTSd/RvyE8SFLjm1bydmFNpHsjFc9JvejJ7G29aVg71b5GJbOQQhQQpklwi7RqtUbHGK4lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhWuih4V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jVr5wzIl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B58C19423;
-	Sat, 14 Feb 2026 01:03:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhWuih4V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9186DC116C6;
+	Sat, 14 Feb 2026 01:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771031029;
-	bh=R6oVUFjWz+kXLS9nG8628lUUvyLt6G5fnWHB9B+hzfU=;
+	s=k20201202; t=1771031141;
+	bh=PaO56kiA8/v9E8MkTgfzvmtNojBYeVDqlrH9GB3WikI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVr5wzIlMGmEZPyB8/5n+HnNwpTX28Xl1SQaaKzNl2hQlbLmWJLXKkRx3dbiW/kYb
-	 FJJRktTpNJODZRTSF9sU72J1nUrJHvsIi66sMr1nUkSH4CCepZd4Lua29dUOQgZvnd
-	 9R1dZYu8KXYI6xdhb9DrRtJPaRuO5/v3ciE948pS4Sa3fnYPoLrh8cYCHw9q6HZ3c3
-	 OIUAUJmFNK9TXz9OPAb4iLvZ+Wo+GTelry+smsbgOMNFE+6QqOrXtcasNiEBngHWwa
-	 6T8ek099xaWVW7xTZP92FhkFtSVrGRE35dCbmfSpPSVk56lywoRd6ZYjYfXEgdBCky
-	 hHeQt/yZA7zqg==
+	b=MhWuih4VyFED3pBhOV4qErPOvR0Yyi9EOe7Poav2Rne1Z8ygrl7hAGGRQGfVptGp6
+	 RXhHps9jWM7dJb2Z1yMsLQ7PGTvrm1k5eM/dNGIzzhnmjJcxPrNcMfaLRzMc8hgvRY
+	 Uz1FxOf3U2E9jGohk23blUFpTDz3yug5W8CHKCU3TKBkU3OwtCx+NguRiy3sKzM9LE
+	 LNj+OOQmasajGl0vILw2cdyg70r6NlkyC3FGDwxS2YgzDx57R0hWAzDIW2ds7Y8vB3
+	 5hqBIfbu2L75Cn8cACkuE2zrq0ptp5xKt17GGQ9jJ0vget1Lnmogh2aedKhWdvM8WH
+	 SY0R+TcnZLdSw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jonathan Marek <jonathan@marek.ca>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Mark Brown <broonie@kernel.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
 	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.6] spi-geni-qcom: use xfer->bits_per_word for can_dma()
-Date: Fri, 13 Feb 2026 19:58:30 -0500
-Message-ID: <20260214010245.3671907-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-6.18] spi: cadence-quadspi: Parse DT for flashes with the rest of the DT parsing
+Date: Fri, 13 Feb 2026 19:59:19 -0500
+Message-ID: <20260214010245.3671907-79-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
 References: <20260214010245.3671907-1-sashal@kernel.org>
@@ -49,211 +48,239 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit fb2bbe3838728f572485706677590e4fc41eec5c ]
+[ Upstream commit 9f0736a4e136a6eb61e0cf530ddc18ab6d816ba3 ]
 
-mas->cur_bits_per_word may not reflect the value of xfer->bits_per_word
-when can_dma() is called. Use the right value instead.
+The recent refactoring of where runtime PM is enabled done in commit
+f1eb4e792bb1 ("spi: spi-cadence-quadspi: Enable pm runtime earlier to
+avoid imbalance") made the fact that when we do a pm_runtime_disable()
+in the error paths of probe() we can trigger a runtime disable which in
+turn results in duplicate clock disables.  This is particularly likely
+to happen when there is missing or broken DT description for the flashes
+attached to the controller.
 
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Link: https://patch.msgid.link/20251120211204.24078-3-jonathan@marek.ca
+Early on in the probe function we do a pm_runtime_get_noresume() since
+the probe function leaves the device in a powered up state but in the
+error path we can't assume that PM is enabled so we also manually
+disable everything, including clocks. This means that when runtime PM is
+active both it and the probe function release the same reference to the
+main clock for the IP, triggering warnings from the clock subsystem:
+
+[    8.693719] clk:75:7 already disabled
+[    8.693791] WARNING: CPU: 1 PID: 185 at /usr/src/kernel/drivers/clk/clk.c:1188 clk_core_disable+0xa0/0xb
+...
+[    8.694261]  clk_core_disable+0xa0/0xb4 (P)
+[    8.694272]  clk_disable+0x38/0x60
+[    8.694283]  cqspi_probe+0x7c8/0xc5c [spi_cadence_quadspi]
+[    8.694309]  platform_probe+0x5c/0xa4
+
+Dealing with this issue properly is complicated by the fact that we
+don't know if runtime PM is active so can't tell if it will disable the
+clocks or not.  We can, however, sidestep the issue for the flash
+descriptions by moving their parsing to when we parse the controller
+properties which also save us doing a bunch of setup which can never be
+used so let's do that.
+
+Reported-by: Francesco Dolcini <francesco@dolcini.it>
+Closes: https://lore.kernel.org/r/20251201072844.GA6785@francesco-nb
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20251204-spi-cadence-qspi-runtime-pm-imbalance-v2-1-10af9115d531@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Here is my complete analysis:
+Now I have all the information I need. Let me compile a comprehensive
+analysis.
 
 ---
 
-## Commit Analysis: spi-geni-qcom: use xfer->bits_per_word for can_dma()
+## Comprehensive Analysis
 
-### 1. Problem Description
+### 1. COMMIT MESSAGE ANALYSIS
 
-The `geni_can_dma()` function and its helper `get_xfer_len_in_words()`
-use `mas->cur_bits_per_word` (a cached state variable on the driver
-struct) to compute the transfer length in SPI words and the effective
-FIFO size. However, **`mas->cur_bits_per_word` may not reflect the
-actual `bits_per_word` of the current transfer** when `can_dma()` is
-called by the SPI core.
+The commit by Mark Brown (SPI subsystem maintainer) addresses a double
+clock disable triggered during `cqspi_probe()` error handling,
+specifically when device tree flash descriptions are missing or broken.
+The commit references:
 
-### 2. Root Cause - Call Order Mismatch
+- **Root cause commit**: `f1eb4e792bb1` ("spi: spi-cadence-quadspi:
+  Enable pm runtime earlier to avoid imbalance") - merged in v6.18
+- **Reporter**: Francesco Dolcini (Toradex engineer) with a specific bug
+  link
+- **Symptom**: Kernel WARNING "clk:75:7 already disabled" plus a full
+  stack trace from `clk_core_disable` -> `clk_disable` -> `cqspi_probe`
 
-The SPI core's `__spi_pump_transfer_message()` calls operations in this
-order:
+### 2. CODE CHANGE ANALYSIS
 
-```1726:1825:drivers/spi/spi.c
-// Step 1: prepare_message
-if (ctlr->prepare_message) {
-    ret = ctlr->prepare_message(ctlr, msg);
-    // ...
-}
+The change is very simple: it moves the `cqspi_setup_flash()` call from
+**after** PM runtime is configured to **before** any resource
+acquisition:
 
-// Step 2: spi_map_msg → calls can_dma() for EACH transfer
-ret = spi_map_msg(ctlr, msg);
+**Before (current v6.19 code)** - `cqspi_setup_flash()` at line 1990,
+after pm_runtime_enable + pm_runtime_get_noresume:
 
-// Step 3: transfer_one_message → calls transfer_one per-xfer
-ret = ctlr->transfer_one_message(ctlr, msg);
+```1983:1994:/home/sasha/linux-autosel/drivers/spi/spi-cadence-quadspi.c
+        if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+                pm_runtime_enable(dev);
+                pm_runtime_set_autosuspend_delay(dev,
+CQSPI_AUTOSUSPEND_TIMEOUT);
+                pm_runtime_use_autosuspend(dev);
+                pm_runtime_get_noresume(dev);
+        }
+
+        ret = cqspi_setup_flash(cqspi);
+        if (ret) {
+                dev_err(dev, "failed to setup flash parameters %d\n",
+ret);
+                goto probe_setup_failed;
+        }
 ```
 
-Looking at Step 1, `spi_geni_prepare_message` calls `setup_fifo_params`,
-which sets:
+**After (with patch applied)** - `cqspi_setup_flash()` right after
+`cqspi_of_get_pdata()`, before clock/resource acquisition:
 
-```419:419:drivers/spi/spi-geni-qcom.c
-mas->cur_bits_per_word = spi_slv->bits_per_word;
+```c
+        ret = cqspi_of_get_pdata(cqspi);
+        if (ret) { ... return -ENODEV; }
+
+        ret = cqspi_setup_flash(cqspi);
+        if (ret) {
+                dev_err(dev, "failed to setup flash parameters %d\n",
+ret);
+                return ret;
+        }
+
+        /* Obtain QSPI clock. */
+        cqspi->clk = devm_clk_get(dev, NULL);
 ```
 
-But **only if mode changed** (`mas->last_mode != spi_slv->mode` at line
-405). If the mode hasn't changed between messages,
-`mas->cur_bits_per_word` retains whatever value was set during the
-**last transfer** of the **previous message**.
+**Why this is safe**: Looking at `cqspi_setup_flash()` (lines
+1727-1765), it:
+- Iterates device tree child nodes with
+  `for_each_available_child_of_node_scoped`
+- Reads DT properties (`reg`, `cdns,read-delay`, `cdns,tshsl-ns`, etc.)
+- Populates `f_pdata` structures and `cqspi->num_chipselect`
+- Has **zero** hardware dependencies (no clock access, no IO access, no
+  IRQ, no PM runtime)
 
-In Step 2, `spi_map_msg` → `__spi_map_msg` iterates over **all
-transfers** in the message and calls `can_dma()` for each:
+Its only dependency is `cqspi->num_chipselect` which is set by
+`cqspi_of_get_pdata()` (called just before in both old and new code).
 
-```1246:1251:drivers/spi/spi.c
-list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-    unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-    if (!ctlr->can_dma(ctlr, msg->spi, xfer))
-        continue;
+### 3. THE BUG MECHANISM
+
+The error path when `cqspi_setup_flash()` fails in the current code:
+
+```2021:2033:/home/sasha/linux-autosel/drivers/spi/spi-cadence-quadspi.c
+probe_setup_failed:
+        if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+                pm_runtime_disable(dev);
+        cqspi_controller_enable(cqspi, 0);
+probe_reset_failed:
+        if (cqspi->is_jh7110)
+                cqspi_jh7110_disable_clk(pdev, cqspi);
+
+        if (pm_runtime_get_sync(&pdev->dev) >= 0)
+                clk_disable_unprepare(cqspi->clk);
+probe_clk_failed:
+        return ret;
 ```
 
-At this point, `mas->cur_bits_per_word` could be **wrong** for any
-transfer whose `bits_per_word` differs from the stale cached value.
+The problem: `pm_runtime_disable()` can interact with the PM runtime
+state in a way that the runtime suspend callback
+(`cqspi_runtime_suspend`) gets invoked, which calls
+`clk_disable_unprepare(cqspi->clk)`. Then the error path falls through
+to `probe_reset_failed` which also calls
+`clk_disable_unprepare(cqspi->clk)` via `pm_runtime_get_sync()` +
+explicit disable, causing the double disable WARNING.
 
-Step 3 is where `setup_se_xfer()` (line 863-865) finally updates
-`mas->cur_bits_per_word = xfer->bits_per_word` — but this is **too
-late** for the `can_dma()` decision, which already happened in Step 2.
+### 4. FIX APPROACH COMPARISON
 
-### 3. Bug Impact
+This commit represents the subsystem maintainer's preferred approach.
+Instead of patching the complex error path interactions (as done in the
+earlier attempts: `295fe8406a357`, `1889dd2081975`), it eliminates the
+problem entirely by moving the DT parsing before any resource that needs
+cleanup. If flash DT is broken, probe fails with a simple `return` - no
+PM runtime, no clocks, nothing to clean up.
 
-The buggy `geni_can_dma()` function uses the wrong `bits_per_word` in
-two calculations:
+### 5. CLASSIFICATION AND IMPACT
 
-**a) Transfer length in words (`get_xfer_len_in_words`):**
+- **Bug type**: Resource management error (double clock disable) causing
+  kernel WARNING
+- **Severity**: Medium - kernel WARNING, potential clock framework
+  confusion
+- **Trigger**: Missing or broken DT flash descriptions for Cadence QSPI
+  controller
+- **Real-world impact**: Confirmed by Francesco Dolcini (Toradex), a
+  major embedded Linux vendor
+- **Affected versions**: v6.18+ (where `f1eb4e792bb1` was merged)
 
-```551:554:drivers/spi/spi-geni-qcom.c
-if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
-    len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
-else
-    len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
-```
+### 6. SCOPE AND RISK
 
-**b) FIFO size calculation:**
+- **Lines changed**: ~12 lines moved (6 lines added in new location, 6
+  lines removed from old location)
+- **Files changed**: 1 (`drivers/spi/spi-cadence-quadspi.c`)
+- **Risk**: Very low - pure DT parsing function moved earlier with no
+  functional side effects
+- **Author**: Mark Brown, the SPI subsystem maintainer
 
-```574:574:drivers/spi/spi-geni-qcom.c
-fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits /
-mas->cur_bits_per_word;
-```
+### 7. DEPENDENCIES
 
-If `mas->cur_bits_per_word` is wrong, both `len` and `fifo_size` are
-incorrect. This causes the wrong DMA vs FIFO mode selection:
-- If the stale value is **smaller** than actual, `fifo_size` is inflated
-  and `len` deflated → **FIFO chosen when DMA should be used** →
-  potential FIFO overflow for large transfers
-- If the stale value is **larger** than actual, the opposite happens →
-  **unnecessary DMA for small transfers**
+- Requires `f1eb4e792bb1` in the tree (v6.18+) since that's the commit
+  that introduced the regression
+- Compatible with `295fe8406a357` and `1889dd2081975` which are also
+  present
+- Self-contained; no other patches needed
 
-### 4. Fix Analysis
+### 8. STABLE CRITERIA CHECK
 
-The fix is trivially correct: replace `mas->cur_bits_per_word` with
-`xfer->bits_per_word` in both `get_xfer_len_in_words()` and
-`geni_can_dma()`. The `xfer` parameter is already available, and the SPI
-core guarantees `xfer->bits_per_word` is always populated via
-`__spi_validate()`:
-
-```4079:4080:drivers/spi/spi.c
-if (!xfer->bits_per_word)
-    xfer->bits_per_word = spi->bits_per_word;
-```
-
-This validation runs in the `spi_async()` path, well before `can_dma()`
-is called.
-
-The fix is also correct for the other caller of
-`get_xfer_len_in_words()` — `setup_se_xfer()` at line 876. In that
-context, `mas->cur_bits_per_word` was already set to
-`xfer->bits_per_word` (line 865), so using `xfer->bits_per_word`
-directly is equivalent and always correct.
-
-### 5. Scope and Risk
-
-- **Size**: Only 4 lines changed across 2 functions in a single file
-- **Risk**: Very low — the change replaces a potentially-stale cached
-  value with the authoritative source of truth that was always available
-- **No behavioral change** for the common case where all transfers use
-  the same `bits_per_word`
-- **Fixes the bug** for devices using per-transfer `bits_per_word`
-  overrides
-
-### 6. Series Dependency
-
-The message-id (`24078-3-jonathan@marek.ca`) indicates this is patch 3
-of a series. However, this change is entirely **self-contained** — it
-only swaps `mas->cur_bits_per_word` for `xfer->bits_per_word` in
-functions that already receive the `xfer` parameter. No dependency on
-other patches.
-
-### 7. Affected Stable Versions
-
-- `geni_can_dma` was introduced in commit b59c122484ecb ("spi: spi-geni-
-  qcom: Add support for GPI dma") — around v5.16
-- `get_xfer_len_in_words` was introduced in commit 3a76c7ca9e772 ("spi:
-  spi-geni-qcom: Do not do DMA map/unmap inside driver, use framework
-  instead") — v6.5-rc1
-- The bug in `geni_can_dma` (using `mas->cur_bits_per_word` for
-  fifo_size) has existed since `geni_can_dma` was added, but
-  `get_xfer_len_in_words` was refactored in v6.5
-
-### 8. Conclusion
-
-This is a clear bug fix. The commit:
-- Fixes a real bug: wrong value used for DMA/FIFO mode selection,
-  potentially causing incorrect SPI transfers
-- Is small and surgical: 4 line changes, self-contained
-- Has very low regression risk: uses the correct data source that was
-  always available
-- Applies to stable trees v6.5+ (where `get_xfer_len_in_words` exists),
-  with a simpler variant applicable to v5.16+
-- Does not introduce new features or APIs
+- **Obviously correct and tested**: Yes - authored by subsystem
+  maintainer, function only does DT parsing
+- **Fixes a real bug**: Yes - double clock disable with kernel WARNING
+- **Important issue**: Yes - regression from v6.18 on real hardware
+- **Small and contained**: Yes - ~12 lines in 1 file
+- **No new features**: Correct - pure bug fix
+- **Reported-by**: Francesco Dolcini with bug link
 
 **YES**
 
- drivers/spi/spi-geni-qcom.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 9e9953469b3a0..5ab20d7955121 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -548,10 +548,10 @@ static u32 get_xfer_len_in_words(struct spi_transfer *xfer,
- {
- 	u32 len;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 965b4cea3388a..597a04dbbe2e7 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1844,6 +1844,12 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
--	if (!(mas->cur_bits_per_word % MIN_WORD_LEN))
--		len = xfer->len * BITS_PER_BYTE / mas->cur_bits_per_word;
-+	if (!(xfer->bits_per_word % MIN_WORD_LEN))
-+		len = xfer->len * BITS_PER_BYTE / xfer->bits_per_word;
- 	else
--		len = xfer->len / (mas->cur_bits_per_word / BITS_PER_BYTE + 1);
-+		len = xfer->len / (xfer->bits_per_word / BITS_PER_BYTE + 1);
- 	len &= TRANS_LEN_MSK;
++	ret = cqspi_setup_flash(cqspi);
++	if (ret) {
++		dev_err(dev, "failed to setup flash parameters %d\n", ret);
++		return ret;
++	}
++
+ 	/* Obtain QSPI clock. */
+ 	cqspi->clk = devm_clk_get(dev, NULL);
+ 	if (IS_ERR(cqspi->clk)) {
+@@ -1987,12 +1993,6 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		pm_runtime_get_noresume(dev);
+ 	}
  
- 	return len;
-@@ -571,7 +571,7 @@ static bool geni_can_dma(struct spi_controller *ctlr,
- 		return true;
+-	ret = cqspi_setup_flash(cqspi);
+-	if (ret) {
+-		dev_err(dev, "failed to setup flash parameters %d\n", ret);
+-		goto probe_setup_failed;
+-	}
+-
+ 	host->num_chipselect = cqspi->num_chipselect;
  
- 	len = get_xfer_len_in_words(xfer, mas);
--	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / mas->cur_bits_per_word;
-+	fifo_size = mas->tx_fifo_depth * mas->fifo_width_bits / xfer->bits_per_word;
- 
- 	if (len > fifo_size)
- 		return true;
+ 	if (ddata && (ddata->quirks & CQSPI_SUPPORT_DEVICE_RESET))
 -- 
 2.51.0
 

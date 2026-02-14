@@ -1,42 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4AF2147E5;
-	Sat, 14 Feb 2026 01:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845217B506;
+	Sat, 14 Feb 2026 01:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771031002; cv=none; b=mPSnJON2mjNwImhDFcWuYkJNX77djsyaplGrriONPH5e0Mt086ipF9FvUZrl0/R0nxbP6HplYgFhp0WH9YjDqyydg6wNV03wN6+FgGCfs1OWEnAeighkNI51eOawsTkAOOrGW50LyijQ6GBumRzrh85JMpH5h0DoIfgXVepDJzQ=
+	t=1771031021; cv=none; b=DY73zaxSlzam4qxlPmeGc1vXNitbTW/h3r2CcB4EWdghUAM4XsVme0b56u5kDtmWW4/HEMVry9771UBqvBo6rfhJVGcAfWYHY9aNW3yzFCP9LrAEvLv9wql/L3/RAsoj5Is6k4+dyaHbbIqbVM0fiFOMtfExDHZb7KCGn89/89g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771031002; c=relaxed/simple;
-	bh=WfSGLbx2Gb4pPiNqLpvLMFeRhj+5Ut+9o4V69WRrGmw=;
+	s=arc-20240116; t=1771031021; c=relaxed/simple;
+	bh=7oaLobErMN+TqGfRqdKOgM0ev89zKKixrOyBKVO11YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h/LhEonE+uFIS30X0cMELH8V94QlgH06e1gWnRU5RQjr2D3Q47Btj+0lWpRZMmGaSe9TxqxI9dE+GyfPW8sLbgidCjZ7DsCRSPp4HxBdYORxMxN4fnE67N1c6KbUVcOQh8WJewyVokCxGu2aaZuqGaS+J35G0MH/tuzlRI6qIgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sFKYLODG; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=kOS4U1gwTeCa5wTLbVr9x15Jw4W+5nmJHdMn9hEF6fe0RFGCiAa5ftYNMsMa2qzi5buOIde6TVPOg5apLxltrfEs4MbQt+gbNKAJhF/KP+sZcKFoDohffRaBTwFIKPS+OU04capO4RPvAgEqzlt8O43vHWbOiCTx/NOXZDrhlYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGJbC/Mc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sFKYLODG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4C2C16AAE;
-	Sat, 14 Feb 2026 01:03:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGJbC/Mc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA34C116C6;
+	Sat, 14 Feb 2026 01:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771031001;
-	bh=WfSGLbx2Gb4pPiNqLpvLMFeRhj+5Ut+9o4V69WRrGmw=;
+	s=k20201202; t=1771031020;
+	bh=7oaLobErMN+TqGfRqdKOgM0ev89zKKixrOyBKVO11YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFKYLODGiUmJfhv4umzLlTZApLjmOLcqoxKOB7EHyw6KgBD9rlHL8ykteHpKmprDj
-	 kpn5WSqZ3MLYNCFtC3oKZj6nIHQA3QEp0ekwVWjoEcsFSIsYytKplvCegxeQzf7/gd
-	 s/2M9/Kr1tW6pC2xBjVwCCC+UmP1LUGfdL3cTmZzVJ6RcRTm9Q1D8O/3p+71KQ3DGK
-	 I5r4Gc5JL4pWj8Zdh39rr322WmH9FxxkoDcCUQLbUgegRmayPcBqYcIiBRTCHaYhP7
-	 IkYBmfWJEAzg6lJHfINPTg5/JJ4AxkphoucnJYhToip1kQqL/X1cgZFSDwr27zbwfQ
-	 qvUp1YVjfs3pQ==
+	b=jGJbC/McbabnXVMb/Zb7aN5nhUu7eH98WB/EZ9OdLsMZDIFM6wCmxkPWWSZM+CW3F
+	 NHySveadHLrGcTf4JzxG4B2F0FX87xLhnQJasMEFKyyh+XULLwASQ3qIQH/jXfsDme
+	 5H9sK2/DcPwlTZq0mGpg55HdJn2TRZ4Oe3oDZ8oKSTK/8bcmB1ur8xuB/coQfXypa4
+	 SSs73x4CPktLV+gDJhDzfS5e1OtzBuPDx61exnNtN4ArUgazCtFRdho6bLKnIq7lRI
+	 5swWxVkmLAShzIxBXy+2ggbSaUEYy/on7GajOzlys77ysn7vMFXeKV1uXFth+ZqKx7
+	 h9MRbg63UpAgA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+Cc: Deepak Kumar <deepak.kumar01@st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.6] spi: spi-mem: Limit octal DTR constraints to octal DTR situations
-Date: Fri, 13 Feb 2026 19:58:20 -0500
-Message-ID: <20260214010245.3671907-20-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-spi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.19-5.15] spi: stm32: fix Overrun issue at < 8bpw
+Date: Fri, 13 Feb 2026 19:58:26 -0500
+Message-ID: <20260214010245.3671907-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260214010245.3671907-1-sashal@kernel.org>
 References: <20260214010245.3671907-1-sashal@kernel.org>
@@ -52,115 +56,207 @@ X-stable-base: Linux 6.19
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Deepak Kumar <deepak.kumar01@st.com>
 
-[ Upstream commit 8618271887ca10ac5108fe7e1d82ba8f1b152cf9 ]
+[ Upstream commit 1ac3be217c01d5df55ec5052f81e4f1708f46552 ]
 
-In this helper, any operation with a single DTR cycle (like 1S-1S-8D) is
-considered requiring a duplicated command opcode. This is wrong as this
-constraint only applies to octal DTR operations (8D-8D-8D).
+When SPI communication is suspended by hardware automatically, it could
+happen that few bits of next frame are already clocked out due to
+internal synchronization delay.
 
-Narrow the application of this constraint to the concerned bus
-interface.
+To achieve a safe suspension, we need to ensure that each word must be
+at least 8 SPI clock cycles long. That's why, if bpw is less than 8
+bits, we need to use midi to reach 8 SPI clock cycles at least.
 
-Note: none of the possible XD-XD-XD pattern, with X being one of {1, 2,
-4} would benefit from this check either as there is only in octal DTR
-mode that a single clock edge would be enough to transmit the full
-opcode.
+This will ensure that each word achieve safe suspension and prevent
+overrun condition.
 
-Make sure the constraint of expecting two bytes for the command is
-applied to the relevant bus interface.
-
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260109-winbond-v6-17-rc1-oddr-v2-3-1fff6a2ddb80@bootlin.com
+Signed-off-by: Deepak Kumar <deepak.kumar01@st.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://patch.msgid.link/20251218-stm32-spi-enhancements-v2-2-3b69901ca9fe@foss.st.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The core of the fix — moving the `op->cmd.nbytes != 2` check inside a
-tighter condition — is self-contained. It doesn't depend on the `swap16`
-feature (that's a separate, pre-existing check). The new even-byte
-checks for addr/dummy/data in 8D-8D-8D mode are a tightening of
-validation that could also be backported.
+Now I have all the information needed for a comprehensive analysis.
 
-However, the presence of the `swap16` check in the surrounding context
-means the patch won't apply cleanly to older stable trees that lack
-commit `030ace430afcf` (from 6.12 cycle). The fix would need minor
-adaptation for older stable trees, but the logic change itself is
-independent.
+## Comprehensive Analysis
 
-### 7. Assessment Summary
+### 1. COMMIT MESSAGE ANALYSIS
 
-**What the bug is:** `spi_mem_default_supports_op()` incorrectly rejects
-valid non-8D-8D-8D DTR operations (like 1S-1S-8D) by requiring
-`cmd.nbytes == 2` for ALL DTR operations, not just 8D-8D-8D ones.
+The subject line is **"spi: stm32: fix Overrun issue at < 8bpw"** -- a
+clear bug fix. The body explains a hardware-level problem on the STM32H7
+SPI controller: when SPI communication is suspended by the hardware
+automatically, a few bits of the next frame can already be clocked out
+due to internal synchronization delay. To achieve safe suspension, each
+word must be at least 8 SPI clock cycles long. When `bits_per_word`
+(bpw) is less than 8, the MIDI (Minimum Inter-Data Idleness) delay must
+be increased to pad the total word time to at least 8 SPI clock cycles.
 
-**Impact:** Real functional bug — any SPI memory device using mixed DTR
-modes (where only the data phase is DTR but not the command phase) would
-have its operations rejected. This prevents legitimate device
-operations.
+The commit is authored by an ST Microelectronics engineer (Deepak Kumar
+at `st.com`), co-authored/signed by Alain Volmat (STM32 SPI maintainer
+at `foss.st.com`), and merged by Mark Brown (SPI subsystem maintainer).
+This lends high credibility.
 
-**Scope of the fix:** The change is confined to a single function in one
-file. It narrows a condition check and adds additional validation only
-for the specific 8D-8D-8D case.
+### 2. CODE CHANGE ANALYSIS
 
-**Risk:** Low. The fix is logically correct — it restricts a previously
-over-broad check. It can't introduce new failures for 8D-8D-8D mode
-(those checks are preserved and even strengthened), and it unblocks
-mixed-DTR modes that were incorrectly blocked.
+The diff modifies `stm32h7_spi_data_idleness()` in `drivers/spi/spi-
+stm32.c`:
 
-**Who benefits:** Users with SPI memory devices that use non-8D-8D-8D
-DTR modes (e.g., some flash chips using 1S-1S-8D for certain
-operations).
+**Old code (lines 1909-1912):**
+```c
+u32 midi = min_t(u32,
+                 DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
+                 FIELD_GET(STM32H7_SPI_CFG2_MIDI,
+                 STM32H7_SPI_CFG2_MIDI));
+```
+
+**New code:**
+```c
+u32 midi = DIV_ROUND_UP(spi->cur_midi, sck_period_ns);
+
+if ((spi->cur_bpw + midi) < 8)
+    midi = 8 - spi->cur_bpw;
+
+midi = min_t(u32, midi, FIELD_MAX(STM32H7_SPI_CFG2_MIDI));
+```
+
+The changes are:
+1. **Core fix (3 lines):** After computing the initial midi value, check
+   if `bpw + midi < 8`. If so, increase midi to `8 - bpw`, ensuring a
+   minimum total of 8 SPI clock cycles per word. This prevents the
+   overrun condition.
+2. **Style cleanup:** Replace `FIELD_GET(STM32H7_SPI_CFG2_MIDI,
+   STM32H7_SPI_CFG2_MIDI)` with `FIELD_MAX(STM32H7_SPI_CFG2_MIDI)`. Both
+   evaluate to 15 (the field is GENMASK(7,4), a 4-bit field), but
+   `FIELD_MAX` is the semantically correct macro for getting the maximum
+   field value.
+3. **Reorder:** The clamping to maximum is now done AFTER the overrun
+   adjustment, ensuring the adjustment isn't clamped away prematurely.
+
+**Example scenario:** With bpw=4 and midi=1 (from a 100ns delay at 10MHz
+clock):
+- **Old:** Total = 4+1 = 5 cycles/word. Hardware suspension can corrupt
+  next frame. → Overrun
+- **New:** Since 4+1 < 8, midi is set to 4. Total = 4+4 = 8 cycles/word.
+  → Safe suspension
+
+### 3. THE BUG AND ITS IMPACT
+
+When the STM32H7 SPI controller's overrun condition fires
+(`STM32H7_SPI_SR_OVR`), the interrupt handler at line 1111-1113 logs
+`"Overrun: RX data lost"` and sets `end = true`, which terminates the
+transfer. This means:
+- **Data loss** - received SPI data is discarded
+- **Transfer failure** - the SPI communication is aborted
+- Any device using bpw < 8 with MIDI configured experiences
+  corrupted/failed SPI transfers
+
+This is a real hardware bug affecting real STM32H7/STM32MP25 users with
+SPI devices that use fewer than 8 bits per word.
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** Net +3 lines of logic. Very small.
+- **Files touched:** 1 file (`drivers/spi/spi-stm32.c`).
+- **Risk:** Very low. The new logic only activates when `spi->cur_bpw <
+  8` AND `cur_midi > 0`. For all transfers with bpw >= 8 (the vast
+  majority), behavior is completely unchanged. Even for bpw < 8 cases,
+  the fix just increases the inter-data delay slightly, which is correct
+  per the hardware spec.
+- **Side effects:** Slightly longer word timing for bpw < 8. This is the
+  desired behavior to prevent overrun.
+
+### 5. DEPENDENCY ANALYSIS
+
+This is the most significant concern. The function
+`stm32h7_spi_data_idleness()` was significantly modified by:
+- **`4956bf4452439`** ("spi: stm32: deprecate `st,spi-midi-ns`
+  property", June 2025, v6.17-rc1): Changed the function signature from
+  `(struct stm32_spi *spi, u32 len)` to `(struct stm32_spi *spi, struct
+  spi_transfer *xfer)` and added the `spi_delay_ns` word_delay logic.
+- **`244bc18e5f187`** ("spi: stm32: delete stray tabs", June 2025,
+  v6.17-rc1+): Fixed indentation.
+
+Both of these are post-6.16. Stable trees (6.12.y, 6.6.y, 6.1.y, 5.15.y)
+have the **old** version of this function with the simpler `(spi, len)`
+signature. However, the critical MIDI calculation block exists in ALL
+versions since the driver's inception:
+
+```c
+if ((len > 1) && (spi->cur_midi > 0)) {
+    u32 sck_period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->cur_speed);
+    u32 midi = min_t(u32,
+                     DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
+                     FIELD_GET(STM32H7_SPI_CFG2_MIDI,
+STM32H7_SPI_CFG2_MIDI));
+```
+
+The core 3-line overrun fix can be applied to the old function with
+trivial context adjustment. The fix does not depend on the new function
+signature -- it only uses `spi->cur_bpw` which has existed since the
+driver was added.
+
+### 6. CLASSIFICATION
+
+This is a **hardware bug workaround / driver bug fix**. It's analogous
+to a hardware quirk -- the STM32H7 SPI hardware requires at least 8
+clock cycles per word for safe suspension, and the driver was not
+enforcing this. The fix adds the enforcement.
+
+### 7. VERDICT
+
+**Positive factors:**
+- Fixes a real, documented hardware issue (overrun = data loss +
+  transfer failure)
+- Extremely small and surgical (3 lines of logic)
+- Very low regression risk (only affects bpw < 8 with midi configured)
+- Authored by the hardware vendor (ST Microelectronics) who understands
+  the hardware
+- Reviewed and merged by the SPI subsystem maintainer
+- The affected code exists in all stable trees since the driver was
+  added (2017)
 
 **Concerns:**
-- Part of a larger patch series (v2-3), but the fix to
-  `spi_mem_default_supports_op()` is self-contained
-- May need minor context adjustment for older stable trees (due to
-  `swap16` context)
-- The even-byte-count validation is technically a new constraint for
-  8D-8D-8D mode, but it enforces existing hardware requirements that
-  were previously unchecked
+- The patch as-is won't apply cleanly to stable trees due to the
+  function signature change from `4956bf4452439`, but the fix logic is
+  self-contained and can be trivially adapted
+- The fix only applies when `cur_midi > 0` (some inter-data delay is
+  configured), so overrun with zero midi is not addressed (but this
+  appears intentional)
 
-This is a clear correctness fix for a real bug that has existed since
-kernel 5.18. It's small, contained, well-reviewed (Reviewed-by from
-Tudor Ambarus, a key MTD maintainer), and fixes incorrect rejection of
-valid SPI operations.
+The fix is small, surgical, and meets all stable kernel criteria. It
+fixes a real hardware bug causing data loss for STM32H7 SPI users using
+bpw < 8.
 
 **YES**
 
- drivers/spi/spi-mem.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/spi/spi-stm32.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index c8b2add2640e5..6c7921469b90b 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -178,8 +178,19 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 		if (op->data.swap16 && !spi_mem_controller_is_capable(ctlr, swap16))
- 			return false;
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 2c804c1aef989..80986bd251d29 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -1906,11 +1906,12 @@ static void stm32h7_spi_data_idleness(struct stm32_spi *spi, struct spi_transfer
+ 	cfg2_clrb |= STM32H7_SPI_CFG2_MIDI;
+ 	if ((len > 1) && (spi->cur_midi > 0)) {
+ 		u32 sck_period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->cur_speed);
+-		u32 midi = min_t(u32,
+-				 DIV_ROUND_UP(spi->cur_midi, sck_period_ns),
+-				 FIELD_GET(STM32H7_SPI_CFG2_MIDI,
+-				 STM32H7_SPI_CFG2_MIDI));
++		u32 midi = DIV_ROUND_UP(spi->cur_midi, sck_period_ns);
  
--		if (op->cmd.nbytes != 2)
--			return false;
-+		/* Extra 8D-8D-8D limitations */
-+		if (op->cmd.dtr && op->cmd.buswidth == 8) {
-+			if (op->cmd.nbytes != 2)
-+				return false;
++		if ((spi->cur_bpw + midi) < 8)
++			midi = 8 - spi->cur_bpw;
 +
-+			if ((op->addr.nbytes % 2) ||
-+			    (op->dummy.nbytes % 2) ||
-+			    (op->data.nbytes % 2)) {
-+				dev_err(&ctlr->dev,
-+					"Even byte numbers not allowed in octal DTR operations\n");
-+				return false;
-+			}
-+		}
- 	} else {
- 		if (op->cmd.nbytes != 1)
- 			return false;
++		midi = min_t(u32, midi, FIELD_MAX(STM32H7_SPI_CFG2_MIDI));
+ 
+ 		dev_dbg(spi->dev, "period=%dns, midi=%d(=%dns)\n",
+ 			sck_period_ns, midi, midi * sck_period_ns);
 -- 
 2.51.0
 

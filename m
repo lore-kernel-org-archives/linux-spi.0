@@ -1,118 +1,172 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0641D798E;
-	Sun, 15 Feb 2026 18:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787C23043B2
+	for <linux-spi@vger.kernel.org>; Sun, 15 Feb 2026 22:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771180965; cv=none; b=aWtB969ZqFeEhPZcfylGbQ20U48lztcyNF9xMI9DqFz/LFbvq4SZtnxOBC/wWxSo16tvMgq4C48o/qCqjpVtUTb1Sp95dd/58yfP02k6PnUJbaWq1tDQTFJPCTmZLAQLoi1ipZORkCFd9Br2IaRnMqJcm9xH97tPYlTMlU0l240=
+	t=1771196118; cv=none; b=VXnQXcFG1NoR9pjhyj4b+o/HcWHKTvVEuHJpt8npltEKVItX7sVVlFJJqdomHteR1rnnIR4Pv6P4tA7FUm/9ipq1GGrj9bDeUS1VqDlqJ0jnLs1+56ejX7KXG3xNQkVS6g8OhmdpNathe7+WKaktPhM2p3Jp1xg/dyls4SWkqlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771180965; c=relaxed/simple;
-	bh=ywWcPTltKimiru4H9ss3Q54YkrwPZ//an3ET9kV+eB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iCi/w2fMTt/Y6+4jfebUF/3kOY4EvfczZWvLOjuPsoddXuRlcIXsWKl7Pmrc0shJFfdkNfVzUYSNZ5CEn+f8I8A6KNTXiGuloGiQhCF+QSgaEIkBpjBgKZwMSajzJWU46i+sqZNbBQ1th/X4d9HVywruSygqZpNjfMnVad8Biyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5gBwvYp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771196118; c=relaxed/simple;
+	bh=TNyRzSBr/AtNCce67q749OZFUSphAmrWNkHgydf587w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pugB8OQTiyO4HNQhVnv4qw314ZAVN9a4y/7FwFLPXPd8NtIelrk1mOzhrSzDma42gEcS71akiQbCOPiCDY9N8TrSYrfbMOAty2CR5pNhcold81mFcdj4BgcyygLplKJtugNLinv95qFpx88x6V46W6QpcwV2FmUmtQGjMKHWx0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Khem6T/L; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5gBwvYp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3A5C4CEF7;
-	Sun, 15 Feb 2026 18:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771180964;
-	bh=ywWcPTltKimiru4H9ss3Q54YkrwPZ//an3ET9kV+eB8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=r5gBwvYpCCv8bnN+Cmlx5uJd7Hk3wlhYlXZ2F+fswVShw5h0KYyhrEVKQ2D8OLuQ8
-	 sWMvHlbaT48CjqLb2LGz9/dzcvQesWLWSmuU3ETQlXT+RZUOK3yeUrBJJmEdCXK1Cg
-	 3tz0eYSScQbmNq7cAvm1d9Y3S1vvNsKSlZABnnJqRxc2zOB4T/1EekM1ZNXhdjDn28
-	 g6ECAlbg9TdsAa3+nLs8zzKtOiy6mCS9r25GTUmH7byf6mBZU9CvAnYfMJX5D+jxab
-	 96YcMBz/6ClvZCwiMZfPcs2LPJY0EDbbxI+4nvsuTGK+OAAD5c4H46SVANzbY0dZm6
-	 hi9U4D+bDyKyg==
-Date: Sun, 15 Feb 2026 18:42:34 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Mark Brown <broonie@kernel.org>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH v3 5/5] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-Message-ID: <20260215184234.7822f94a@jic23-huawei>
-In-Reply-To: <20260213144742.16394-6-antoniu.miclaus@analog.com>
-References: <20260213144742.16394-1-antoniu.miclaus@analog.com>
-	<20260213144742.16394-6-antoniu.miclaus@analog.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Khem6T/L"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=fjqK1CnmMLnynK
+	mUkq2NGNXQxQWHiqDXRDV1cxXQMFc=; b=Khem6T/LPXw9DcbGo2IAw6sOzSG6U5
+	H+3X7IjRDdV59N8cB8IV56DQabVc5sY0EGs7isNQKWgzIcrflS0xfTsyWykrOCIN
+	uXqpNDup5wRHcdl/ovjJEz4Kph6I3yNxxllxraRzP/cLNeSBfT24ixK4hIpVTbFu
+	KPhRq0XDDSGz0w/xy9Jv1AYH2A9nrni1JQ2Z+U+GiSqkbGNbWo9dEOvx68PTFusm
+	BA+a4Gt8A7K2lky5w3aEzE14WxR8ylMT5G5nh+AxRcgKht+aPrFfq2KQigyR28W+
+	r4SDphAActIw7+YT8hOnwMb1RpfMPbwjCPddRcsyeOy0MBMvVqYD3Zag==
+Received: (qmail 3011230 invoked from network); 15 Feb 2026 23:55:04 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 15 Feb 2026 23:55:04 +0100
+X-UD-Smtp-Session: l3s3148p1@reycuuRKXIQujns5
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-renesas-soc@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	driver-core@lists.linux.dev,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	Mark Brown <broonie@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
+	Will Deacon <will@kernel.org>
+Subject: [RFC v2 PATCH 00/13] hwspinlock: move device alloc into core and refactor includes
+Date: Sun, 15 Feb 2026 23:54:40 +0100
+Message-ID: <20260215225501.6365-1-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 13 Feb 2026 16:47:37 +0200
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+My ultimate goal is to allow hwspinlock provider drivers outside of the
+subsystem directory. It turned out that a simple split of the headers
+files into a public provider and a public consumer header file is not
+enough because core internal structure need to stay hidden. Even more,
+their opaqueness could and should even be increased. That would also
+allow the core to handle the de-/allocation of the hwspinlock device
+itself.
 
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC with
-> integrated fully differential amplifiers (FDA).
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface. The driver uses spi_new_ancillary_device() to
-> create an additional SPI device for the second channel, allowing both
-> channels to share the same SPI bus with different chip selects.
-> 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+This series does all that. Patches 1-7 abstract access to internal
+structures away using helpers. Patch 8 then move hwspinlock device
+handling to the core, simplifying drivers. The remaining patches
+refactor the headers until the internal one is gone and the public ones
+are divided into provider and consumer parts. More details are given in
+the patch descriptions.
 
-One small thing inline.
+One note about using a callback to initialize hwspinlock priv: I also
+experimented with a dedicated 'set_priv' helper function. It felt a bit
+clumsy to me. Drivers would need to save the 'bank' pointer again and
+iterate over it. Because most drivers will only have a simple callback
+anyhow, it looked leaner to me.
 
-> @@ -617,13 +731,34 @@ static int ad4080_probe(struct spi_device *spi)
->  		return dev_err_probe(dev, ret,
->  				     "failed to get and enable supplies\n");
->  
-> -	st->regmap = devm_regmap_init_spi(spi, &ad4080_regmap_config);
-> -	if (IS_ERR(st->regmap))
-> -		return PTR_ERR(st->regmap);
-> +	/* Setup primary SPI device (channel 0) */
-> +	st->spi[0] = spi;
-> +	st->regmap[0] = devm_regmap_init_spi(spi, &ad4080_regmap_config);
-> +	if (IS_ERR(st->regmap[0]))
-> +		return PTR_ERR(st->regmap[0]);
->  
-> -	st->info = spi_get_device_match_data(spi);
-> -	if (!st->info)
-> -		return -ENODEV;
-> +	/* Setup ancillary SPI devices for additional channels */
-> +	if (st->info->num_channels > 1) {
-> +		u32 reg[AD4080_MAX_CHANNELS];
-> +
-> +		ret = device_property_read_u32_array(dev, "reg", reg,
-> +						     st->info->num_channels);
-Can we just use
+This series is based on the cleanup series "hwspinlock: remove
+platform_data from subsystem" and has been tested on a Renesas
+SparrowHawk board (R-Car V4H) with a yet-to-be-upstreamed hwspinlock
+driver for the MFIS IP core. A branch can be found here (the MFIS driver
+is still WIP):
 
-		spi_get_chipselect(spi, 1) ?
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/hwspinlock/refactor-alloc-buildtest
 
-I think the generic firmware parser will have already parsed the DT and filled
-that in by this point.
+Buildbots seem to be happy, too.
 
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "missing reg entries for multi-channel device\n");
-> +
-> +		for (int i = 1; i < st->info->num_channels; i++) {
-> +			st->spi[i] = devm_spi_new_ancillary_device(spi, reg[i]);
-> +			if (IS_ERR(st->spi[i]))
-> +				return dev_err_probe(dev, PTR_ERR(st->spi[i]),
-> +						     "failed to register ancillary device\n");
-> +
-> +			st->regmap[i] = devm_regmap_init_spi(st->spi[i],
-> +							     &ad4080_regmap_config);
-> +			if (IS_ERR(st->regmap[i]))
-> +				return PTR_ERR(st->regmap[i]);
-> +		}
-> +	}
+Looking forward to comments. I especially wonder if the last patch
+should stay as-is or if it should be broken out, so individual
+subsystems can pick up their part (with a fallback in place, of course,
+until the last user is converted).
 
+Happy hacking,
+
+   Wolfram
+
+
+Wolfram Sang (13):
+  hwspinlock: add helpers to retrieve core data
+  hwspinlock: add callback to fill private data of a hwspinlock
+  hwspinlock: omap: use new callback to initialize hwspinlock priv
+  hwspinlock: qcom: use new callback to initialize hwspinlock priv
+  hwspinlock: sprd: use new callback to initialize hwspinlock priv
+  hwspinlock: stm32: use new callback to initialize hwspinlock priv
+  hwspinlock: sun6i: use new callback to initialize hwspinlock priv
+  hwspinlock: handle hwspinlock device allocation in the core
+  hwspinlock: move entries from internal to public header
+  hwspinlock: remove internal header
+  hwspinlock: sort include and update copyright
+  hwspinlock: refactor provider.h from public header
+  hwspinlock: refactor consumer.h from public header
+
+ Documentation/locking/hwspinlock.rst          |   2 +-
+ MAINTAINERS                                   |   2 +-
+ drivers/base/regmap/regmap.c                  |   2 +-
+ drivers/hwspinlock/hwspinlock_core.c          | 129 +++++++++++++-----
+ drivers/hwspinlock/hwspinlock_internal.h      |  72 ----------
+ drivers/hwspinlock/omap_hwspinlock.c          |  29 ++--
+ drivers/hwspinlock/qcom_hwspinlock.c          |  69 +++++-----
+ drivers/hwspinlock/sprd_hwspinlock.c          |  41 +++---
+ drivers/hwspinlock/stm32_hwspinlock.c         |  28 ++--
+ drivers/hwspinlock/sun6i_hwspinlock.c         |  38 ++----
+ drivers/iio/adc/sc27xx_adc.c                  |   2 +-
+ drivers/irqchip/irq-stm32mp-exti.c            |   2 +-
+ drivers/mfd/syscon.c                          |   2 +-
+ drivers/nvmem/sc27xx-efuse.c                  |   2 +-
+ drivers/nvmem/sprd-efuse.c                    |   2 +-
+ drivers/pinctrl/stm32/pinctrl-stm32.c         |   2 +-
+ drivers/soc/qcom/smem.c                       |   2 +-
+ drivers/spi/spi-sprd-adi.c                    |   2 +-
+ .../{hwspinlock.h => hwspinlock/consumer.h}   |  29 +---
+ include/linux/hwspinlock/provider.h           |  60 ++++++++
+ 20 files changed, 268 insertions(+), 249 deletions(-)
+ delete mode 100644 drivers/hwspinlock/hwspinlock_internal.h
+ rename include/linux/{hwspinlock.h => hwspinlock/consumer.h} (93%)
+ create mode 100644 include/linux/hwspinlock/provider.h
+
+-- 
+2.51.0
 

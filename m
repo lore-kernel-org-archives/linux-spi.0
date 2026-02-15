@@ -1,156 +1,144 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195F51FC7C5;
-	Sun, 15 Feb 2026 08:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBFC290DBB
+	for <linux-spi@vger.kernel.org>; Sun, 15 Feb 2026 13:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771142614; cv=none; b=IU4UJMBXLRC9HTTdg1/plmmi4bciwAQnVE5IozJ8ZHujDGfzRmLGN+c36yr+w2Eki7H8dPHgsBYfWY/4cA+o6AsCyGyGckd0Clz3wUlpwXo31l1v+mKstcAFrRqxWGf/OJpfo3H41LRYh/1SUkdm+KErZjqbKd/zlWL+KGaUZHU=
+	t=1771163777; cv=none; b=cocIEGOS+xG/N2crBO6QuPoPznCngMmAQ0CMLcX4Dze46KxM1zSZFGcOtDl+jDvq6NOqUlX0wn2m2SqVmdcWyysuM4Rn1XgNVfjy7+G1l24J+Wv1IhaKV+mhx9mTiXif59l5FGe/GU3vRsanGqmi9MtG7I6eZI31eg1lkroMMbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771142614; c=relaxed/simple;
-	bh=eM4rQYhZZLvvDldIUzDPHDXYwzeYHd8jF5H7MNZ8kmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dTApP98pjdbfqmfD/wHwmgzFTzl1XyhUeQ0f45GkXttvVtoH9mPxL0CtLFDuqbQPBHYPON8ywe+BYtbTE3Vx8k7m/9suFH347FsK2ThzQ5QCE2vl6vFxEs1f+oE4kDt7xuR/Y7pMQQEkaJplVMFv/l1ubkUm6I7+nAqWCJZpVp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cF4wANW7; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1771163777; c=relaxed/simple;
+	bh=+WJiQte+AsZ/dUhzrC0dzyP1leIpbrUwR2RY5EQmbUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BpYe6cNdTxnnamzJY8BMiUKssiAnCoakrHOYC2NtKYtf+sqrI750q8FKC0C/cuGQR17n578NEUc0Qvr8+WwWTutpKRZgASPxwL2YlNnbqzw0fjjucMwxbkfuAQeChg9R+2ZYYfcZ/ZXaouQIE0w9T24DiyfZLmqTsJ5yTBvL6cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OfxO+zZa; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cF4wANW7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771142613; x=1802678613;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eM4rQYhZZLvvDldIUzDPHDXYwzeYHd8jF5H7MNZ8kmE=;
-  b=cF4wANW7RtcEP4eq8mrtsOEcI6UtIXJ2/RvGLOrV9D+CtrrUOWf4/oUx
-   3TYH7wyopeYrXrpjN6s6LIv6/00d6PDIxP6741vipOkHwhEZH3Au0rZoH
-   cYdg1RU/WxMfjaie4g//3MeoXfbpQZMLOxg2kBlcQm97RYD4+kSzlw/oV
-   CfDCou5JirAEThnAMYAY5o3qRZMHvFnngOibEKKOx/YWW3b29WuzRD9xc
-   +Cn+RiuUsNGZHF3b9DWCvyD72KewcYrvtbE92zCk2HBbOhgxccil7e7wK
-   hNa06juij/RQDdpviYX0dnqVsSnCvw2YCkSh318M4C8lYrHi3a6j9jOMp
-   Q==;
-X-CSE-ConnectionGUID: rJkEvmlLSxqLkFQ3j5IPew==
-X-CSE-MsgGUID: KU02drmhRIOKyDhJLyYS0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11701"; a="83627893"
-X-IronPort-AV: E=Sophos;i="6.21,292,1763452800"; 
-   d="scan'208";a="83627893"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2026 00:03:32 -0800
-X-CSE-ConnectionGUID: cl1r0fUaRNOCzh9VYMZWqA==
-X-CSE-MsgGUID: 3hEt8fSQT4e/53JsMv0frA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,292,1763452800"; 
-   d="scan'208";a="218283076"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.136])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2026 00:03:29 -0800
-Date: Sun, 15 Feb 2026 10:03:26 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-Message-ID: <aZF9zoWHL9iHSK3q@smile.fi.intel.com>
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <aYiGj_TYelvJdVaR@smile.fi.intel.com>
- <20260214160852.6862b58d@jic23-huawei>
- <aZC6wIWDdS8J_1eJ@smile.fi.intel.com>
- <897bd4d4-bbdf-4cbf-84f6-05c110d75d03@baylibre.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OfxO+zZa"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-65a26c220b6so3216294a12.0
+        for <linux-spi@vger.kernel.org>; Sun, 15 Feb 2026 05:56:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771163773; x=1771768573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KHB6jjovGvHbln1wA1V5AA9RwOqt3Q1qKjY8PY62RDI=;
+        b=OfxO+zZaMwjqD4WcNT/NsXIyJgXO76LfX/Ce+MU5e9o9GOEY39Y3jD+0DE2QVY9+1D
+         Gaq9vJGTpyQmxJ2vJQXeQFL1VO+JIEdWPJjrxH2h2e9yN5Igv9q5ZaPiSbjSRLn49aHo
+         lhSj35j/Ty1k00tY8mX+Luo1ttOiBXGmSjVA+U2IF3dLxsy/ATxoCeW90s8vRWgVhTKF
+         xFRkSKEgEp8nvyEo0UoI6InyEqnknKi/sU4pOKbjo58gDE7kGxnoOIawilvPfA5h2eUX
+         DVjMa+456/4r3cu9azTey0duVx78dl8UZ6aEm7V6WLtiOdrHqkV2IxTA/xD3oSwxyXka
+         ifwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771163773; x=1771768573;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KHB6jjovGvHbln1wA1V5AA9RwOqt3Q1qKjY8PY62RDI=;
+        b=efJhjq7EgDy8eQXOR/xmiplqVJhtzgb74IzsqQGUdKG1NmtaRUDeTzEUZhiBiYeXtr
+         4AgdAqnG+3ga22Wlb+j158wM/cbpJ7ZqXxpZzzp36IPBbd9HEFhQ8DsGJL/rZBHp/zVl
+         Oukq8w72JLQygVsGvWGyNQjr3TBStglfOx5DxBVf5yX92jD9s2V4UVegk7jH6lO+0u/5
+         6VOI4UTEsDQdjkFFIGQbBVnhzgSHOZQbNPBvAF0/Sym4NjLlMb2eAqi4ozvfFGp2lLMs
+         pqRIdQ6/ZGTaH+b5nlTL2K+ngKFB4w8ydFWFkYX82y7L3qyBBq6qIwS/UFkH5txVNYgO
+         dvmA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1AMOJDdLVuWBEujftYLPb/uYSCotn01sbowsQNGykxnGxPbq6mo/VcloPaXhdUlWW45GyiJEuWKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaHNRUVt3OXcc7Wg5zNGKjpfqTjkG3Npv1SGTlLdM+GYwXUGOU
+	Od6zfINotxhXFXWb/eI3D/lLRxh1ZILb7xxcDhCeMV8tlc5Lz4NryzNw
+X-Gm-Gg: AZuq6aJ/daLpDy5edeWCqCa7Ovk4XXiWWjCToFFxrX5mJpDn6jv6HI3HtpPnQOmGvyz
+	BCBTkF8MJHIodhAmbeJ+BEPoASqyjpSnWJhOEzfU0+t6O8BTtu9CW/i6VDpNfteqIZUVDid7hnj
+	alRBPjnDXsXl7ipMjn9c2dp1be06f8wqu3+rrlrhokiStCL/k3P53plOjih/qoKT30N1hCLjU81
+	Tn95xU5Z/PORXwtxJ4ITZ0QyFZOhv5/01K8k8ybXnKCU/528jSnPEK8zVDAgEVEuWI5QZlRhjb5
+	cmnU5D1jOFGIIxO+E6Li5lfEnVEtAlN2nofhB1FXK/Y0Toink1Q7uMbva+74W6fcW8DgOzkcMDe
+	sR+ubQj/PNnjyR4l7ucE2jK0LSvXFLXyijeM4LDtHV0VPfWXvFYLYnd6z9rwoEjxEtuAEEP9jXn
+	rt1O0BENSJXnYub/SvANttcQ==
+X-Received: by 2002:a17:907:6d17:b0:b8f:ad62:edc7 with SMTP id a640c23a62f3a-b8fb41fc64bmr418527566b.24.1771163773144;
+        Sun, 15 Feb 2026 05:56:13 -0800 (PST)
+Received: from khalil-hp.home ([62.250.67.33])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8fc7626bdbsm164179166b.40.2026.02.15.05.56.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Feb 2026 05:56:11 -0800 (PST)
+From: Khalil <khalilst@gmail.com>
+X-Google-Original-From: Khalil <khalil@rentman.nl>
+To: broonie@kernel.org,
+	hdegoede@kernel.org,
+	ilpo.jarvinen@linux.intel.com
+Cc: rf@opensource.cirrus.com,
+	linux-spi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/2] Fix second CS35L56 amplifier on Intel LPSS SPI with broken ACPI cs-gpios
+Date: Sun, 15 Feb 2026 14:55:22 +0100
+Message-ID: <20260215135524.1171065-1-khalil@rentman.nl>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <897bd4d4-bbdf-4cbf-84f6-05c110d75d03@baylibre.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 14, 2026 at 12:31:12PM -0600, David Lechner wrote:
-> On 2/14/26 12:11 PM, Andy Shevchenko wrote:
-> > On Sat, Feb 14, 2026 at 04:08:52PM +0000, Jonathan Cameron wrote:
-> >> On Sun, 8 Feb 2026 14:50:23 +0200
-> >> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
-> >>> On Fri, Feb 06, 2026 at 06:07:12PM +0200, Antoniu Miclaus wrote:
+To: broonie@kernel.org, hdegoede@kernel.org, ilpo.jarvinen@linux.intel.com
+Cc: rf@opensource.cirrus.com, linux-spi@vger.kernel.org,
+    platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
 
-...
+Hi,
 
-> >>> I believe there is a better approach, what you need is rather a flag
-> >>> to SPI core to tell that this is the device with shared CS.
-> >>
-> >> Antoniu, this comment from Andy needs addressing before we move
-> >> on. It seems fairly fundamental and I'm not seeing a reply to it on list.
-> >>
-> >> I'm not entirely sure what Andy is suggesting will work but this
-> >> is perhaps a mismatch in really understanding what is going on here.
-> >> Andy, how would a flag work given they seem to be separately addressable
-> >> SPI buses. I think this isn't a shared SPI CS, but rather a device
-> >> with two entirely separate SPI buses. I think the only reason
-> >> we are bothering to implement it as a single device at all is the
-> >> shared backend.
-> > 
-> > My understanding that there are two devices that for whatever reason share
-> 
-> It is the opposite. It is a _single_ device with _two_ CS lines.
+This patch series fixes an issue where the second Cirrus Logic CS35L56
+amplifier fails to probe on several HP and ASUS laptops with Intel Lunar
+Lake processors. The amplifiers are connected via SPI, and the second
+one (CS1) always times out reading HALO_STATE (returns all zeros).
+Speakers work correctly in Windows.
 
-Don't we have already support for that? This changes the picture even more towards
-NAKing this. See below why.
+The root cause is a broken ACPI DSDT on these machines. The SPI
+controller's _DSD declares:
 
-> adc@0 {
-> 	reg = <0>, <1>;
-> 	...
-> };
-> 
-> > the same CS line. Yes, I probably misread the idea behind, but I meant
-> > some flag for SPI device that tells SPI core that the CS it wants is shared
-> > (maybe a high bit in the cs field or so), then CS core won't complain on
-> > validation about using the same cs number which is "already in use".
-> 
-> There was one existing user in the kernel of spi_new_ancillary_device()
-> that looked like this, so it seemed the right way to approach it. However,
-> code was added later that caused the primary SPI device to "claim" both
-> CS lines for itself and probably broke the one existing user of
-> spi_new_ancillary_device() (hard to tell without hardware to test).
-> 
-> The idea here was to unbreak that so we could use spi_new_ancillary_device()
-> just as in the existing use case.
-> 
-> The patch for that could have been a bit more strict to only allow the
-> spi_new_ancillary_device() to take CS 1 and fail otherwise, but users
-> are going to notice if it isn't working right anyway, so I didn't ask
-> for more checking.
+    "cs-gpios", Package (0x01) { Zero }
 
-> >> There is an argument that maybe we should be looking at how
-> >> to do data muxing backends to support the more general case of two
-> >> separate chips feeding into a single buffer, but that's a complex
-> >> beast and I'm not sure if it is something we actually need.
-> 
-> I think it would actually be quite similar to what is done in this
-> series.
+This only defines CS0 (native). The CS1 GPIO entry is missing entirely,
+even though the ACPI device node (CSC3556) does define a GpioIo resource
+for CS1 and both SpiSerialBusV2 resources correctly specify
+DeviceSelection 0 and 1.
 
-TBH, the change sounds to me like a hack. It doesn't cover other potential ways
-of the multi-cs devices come into play. Given that SPI core supports multi-cs
-I don't see a good justification for this patch.
+This causes two problems:
 
-What did I miss?
+1. The SPI framework has no GPIO descriptor for CS1, so it never toggles
+   the actual chip select line to the second amplifier.
 
-> > Yeah, if possible I prefer to look at the (ASCII art) schematics
-> > on how the HW looks like (connections with busses and CS lines).
+2. On Intel LPSS controllers with dynamic clock gating
+   (cs_clk_stays_gated=true, e.g., Cannon Lake and later), the SPI
+   clock is gated when no native CS is asserted. With GPIO chip select,
+   the native CS register is never asserted, so the clock never runs.
 
--- 
-With Best Regards,
-Andy Shevchenko
+The fix is in two parts:
 
+Patch 1 modifies serial-multi-instantiate to acquire the CS GPIO from
+the ACPI GpioIo resource and install it on the controller's cs_gpiods
+array. Setting it directly on the spi_device doesn't work because
+__spi_add_device() unconditionally overwrites spi->cs_gpiod[] from
+ctlr->cs_gpiods[cs]. The array is reallocated to accommodate the
+additional chip select.
 
+Patch 2 modifies spi-pxa2xx to handle GPIO chip select on LPSS
+controllers with dynamic clock gating. When spi_is_csgpiod() is true,
+cs_assert asserts the native CS in the control register (to enable the
+clock domain) and forces the clock gate on. cs_deassert reverses both.
+
+Tested on HP EliteBook 8 G1i (Intel Core Ultra 7 258V, Lunar Lake-M)
+with 2x CS35L56 Rev B0. Both amplifiers now probe successfully, load
+calibration and tuning, and produce audio.
+
+Related bug reports:
+- https://bugs.launchpad.net/ubuntu/+source/alsa-driver/+bug/2131138
+- https://bugzilla.kernel.org/show_bug.cgi?id=221064
+- https://github.com/thesofproject/linux/issues/5621
+
+Khalil Laleh (2):
+  platform/x86: serial-multi-instantiate: Add GPIO chip select support
+    for SPI devices
+  spi: pxa2xx: Handle dynamic clock gating for GPIO chip select devices
+
+ drivers/platform/x86/serial-multi-instantiate.c | 83 ++++++++++++++++++
+ drivers/spi/spi-pxa2xx.c                        | 35 +++++++-
+ 2 files changed, 114 insertions(+), 4 deletions(-)
+
+--

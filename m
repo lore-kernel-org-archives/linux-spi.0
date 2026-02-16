@@ -1,107 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D2A28D8DB;
-	Mon, 16 Feb 2026 16:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC2117AE11;
+	Mon, 16 Feb 2026 18:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771258039; cv=none; b=lUYmyNiQMPCsGvZTz34idD0vVgMf6Nm5xDeNCtxrbrHE+m7okKDSaDWK0NWCKDp9EXIVBDtnHbE0wxTXYaZP6uuddVuydQ3gPwJUqfD59Jcn7S/dlSVdekhXvTIkXbkSUgCSoLyRSb02j84dVjFwFNYqsQScRa+/oeFsEjy6Nkc=
+	t=1771265307; cv=none; b=fVS7/kCSqErVAzRNZJ2p/g6+DpzyAh964LnFzgLCtw/wKuWixEs07CGIAXwvlFpmavWIOH7gK96CcfFSpB53w8FoIXa2X6I7w2z2HTyqvRgz+pmMJOaD6LuEajH8VtI8NUubTFB6nn9xDrw493LZzCEs8ERMFK9RHfXdFCKvkSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771258039; c=relaxed/simple;
-	bh=hEPLR8cnMpgueHZG50gYeR0KoXwhGhymV94A/W+Z2Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZKAsjtsxIUyX49tkuev7LfFCF+UCz9uwQ8QoRo+jUyNYXZZywNKiZ3dCW0WHFhY5MZFzFF2hKeMsLwoWwGQJubOTM+t2iWrGYh6vRLiVM61rkHlpxdCpoVRxEgW2ltz66VqnbGp2CC6bnpfZHyDYz72t1xHaGoUv4uA9ntJyClY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7bhGQ4i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771265307; c=relaxed/simple;
+	bh=17Ji2Yw1wMoI3NDkXjlPEvp0s8IDgFaWCzLP9yCO1ng=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=GWJdiTgaeHXK7mZnQ3XTlRjl+VkAcAx2oxPbIwyMljIqt3gSrI+MmwZQmtscRoESOkwibyvC9Fnu1iBEXMlyZtu2sArWEUx8ANT8loG2GnKdtmEOI04uG15e0FlBOn499ij5VTfM1mDKYnM9uPjSuQpaDdd2azr9ju9/j84ybH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eFbOkB0L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7bhGQ4i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2960C19425;
-	Mon, 16 Feb 2026 16:07:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eFbOkB0L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE01C116C6;
+	Mon, 16 Feb 2026 18:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771258038;
-	bh=hEPLR8cnMpgueHZG50gYeR0KoXwhGhymV94A/W+Z2Pk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=s7bhGQ4iHc5VxfRhPoZKY2dwSlBIf7egpLYIQgCKHFuqypDasXrw2FJNLPVe1tehz
-	 Bb6abyCh4X8yjy+pJQqILtmAAGQQpP68mbn11T8fLDPR/+GaW9ujE7Nmfh0I6f+6Yd
-	 7GnkjwGy7p7u/An1ROb+kpAheOvzK6SLpdqKRsujbbSrgybdu7xGkDtPyakDyx1gr2
-	 aunERHIyXbyXkpWd09WaDGmffdeHBmSx8RGOW43INddzw8l/FjqOkOBZj8F0ernRwN
-	 0cVBhXurMlzXAogKLNBhhqEMq2GXPjNUW5S7okQ1erhe7ssnKpizafyfCHFdlokcXP
-	 2+lK8I52iV8Jw==
-Date: Mon, 16 Feb 2026 16:07:08 +0000
+	s=k20201202; t=1771265306;
+	bh=17Ji2Yw1wMoI3NDkXjlPEvp0s8IDgFaWCzLP9yCO1ng=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=eFbOkB0L6OZw9TLZ3+s6A/lvKgzU/M3tD36XjfJ3M+KNSdruoI70ahEtj1jKeSwn5
+	 twePNArkbroa5dvrQ+LGKC9088414SOBfMXpAUqJowMtIoEUcOI0iiVVsANqciUR9m
+	 2bYahXvS+Vk8irHhh+T9kNU3ekuBCbeHcfxM7nQokRMW202S1eC6ssX4NTUwAWT/+U
+	 AYxqp4VTxQZYo9ftCmNliUGfYTbtBfnzRoO82Ii0fC2IZ/AqWApOtJkdzV4x0q+m0J
+	 nBn0Zj1rjyMbr59cy7zmnlvHsFOwKf4ut00DnbeeeIZFEj0/6nZiAAhP8zd3wukJnY
+	 8o3ckzsTVMcuw==
 From: Mark Brown <broonie@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Orson Zhai <orsonzhai@gmail.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lee Jones <lee@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-remoteproc@vger.kernel.org, linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [RFC PATCH v2 13/13] hwspinlock: refactor consumer.h from public
- header
-Message-ID: <97c1ffb9-e661-4021-8ebc-a5be1f650d42@sirena.org.uk>
-References: <20260215225501.6365-1-wsa+renesas@sang-engineering.com>
- <20260215225501.6365-14-wsa+renesas@sang-engineering.com>
+To: =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Felix Gu <ustc.gu@gmail.com>
+Cc: openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260212-wpcm-v1-1-5b7c4f526aac@gmail.com>
+References: <20260212-wpcm-v1-1-5b7c4f526aac@gmail.com>
+Subject: Re: [PATCH] spi: wpcm-fiu: Fix potential NULL pointer dereference
+ in wpcm_fiu_probe()
+Message-Id: <177126530558.153476.16439337159534333967.b4-ty@kernel.org>
+Date: Mon, 16 Feb 2026 18:08:25 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HvgiA0QUjJpkbfJw"
-Content-Disposition: inline
-In-Reply-To: <20260215225501.6365-14-wsa+renesas@sang-engineering.com>
-X-Cookie: Beware the one behind you.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
+On Thu, 12 Feb 2026 20:41:40 +0800, Felix Gu wrote:
+> platform_get_resource_byname() can return NULL, which would cause a crash
+> when passed the pointer to resource_size().
+> 
+> Move the fiu->memory_size assignment after the error check for
+> devm_ioremap_resource() to prevent the potential NULL pointer dereference.
+> 
+> 
+> [...]
 
---HvgiA0QUjJpkbfJw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Sun, Feb 15, 2026 at 11:54:53PM +0100, Wolfram Sang wrote:
-> Factor out the entries only needed for consumers from the generic public
-> header. This allows for a clean separation between providers and
-> consumers.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Thanks!
 
---HvgiA0QUjJpkbfJw
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: wpcm-fiu: Fix potential NULL pointer dereference in wpcm_fiu_probe()
+      commit: 888a0a802c467bbe34a42167bdf9d7331333440a
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmTQKwACgkQJNaLcl1U
-h9Dr4gf/dawn1jflZdEr4KfMA/MruyXk1IsoKKd6nHfm1oO8lk65Zor92E7Xmfx4
-fv2GB5hE6qadTOAvHqXE7x79fteb3IQklPN/wT3cu2aTI/rjEgZ0sRP8ppDwAFl8
-Y+uWW4fiu0/GF3r0JU+w0eUmNySB2x6iuzQYbSAt0kHRupCUL+7oMfkYUpFloTGP
-gXpYBXwh3vIHVbl82mqSr64E76why0OmoRZ742fRWj4PVB+Db4B928d6tVNMV2dq
-a1dzjyT+6l1OFHdgN7X4XZQbtdLAhmz6Dk++pV55q+WvAYKpU0jg21AXf9al99U6
-k/uHzg/1zB+99V44BT6S1tVSG7Udww==
-=dPJC
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---HvgiA0QUjJpkbfJw--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

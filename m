@@ -1,67 +1,66 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB11D2E5B32
-	for <linux-spi@vger.kernel.org>; Mon, 16 Feb 2026 18:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFAF1C4A20
+	for <linux-spi@vger.kernel.org>; Tue, 17 Feb 2026 06:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771267999; cv=none; b=BWohKevfWksNe9UDvW1K6G2bBOkbZH0AgSwvWSr3weASTx1ZcRycprELWe0ANdxlAzEt8RqmdsTkwJTVqhXs9nRmiXHMx6wW1NTGAyYrYaC9Xe6jqs67sZntX1PthLDH6FsgPlz4MhIFo4NCJwa6gAMUyLQxy9xSxziz3FJ+u5Y=
+	t=1771308655; cv=none; b=mhw7L0w9YZPHSVPz1zo+jxPWo/vhjEoMcDyMYIFV3WjhveQSUjAiXDvzaXPGgoIHFxiXqumYe3RunCBkbCw1+VmGFo6S5smqxfpoEJeS1Nwt09Ana3e0ssKLzF88VUdv+sR9ZTZwN7RWV49g4T+WBFWS47Vnfnbe3qt5CGB2G1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771267999; c=relaxed/simple;
-	bh=xXwfcFKB8CzFUyxLd95qfxY8XKTEIeiJ1uum/PvThEc=;
+	s=arc-20240116; t=1771308655; c=relaxed/simple;
+	bh=RZNIWl6tGl3E2IWfidbVZrbrr100fglzO0Fmmh8y6+A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lFDlsotg8nxZRLtRSlylRZEvU1KPpYgMTdjUHIf3qgjb82Byjm1+tAZzEZ0gkm5+EfCRqpCiw9JMySmRCuKTYab9KorGM8vTWOh79KZOXfLpDk5q8KYLNEaYMlMdzu3lmnJj8FkxjO/bPs0z9L3UjJcJ5L+t5kksMLaZaXxNUTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bRSc3VxH; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	 In-Reply-To:Content-Type; b=E0tcHZXJpHJmadwYnDQ0hX102+z/dRKTuEVzsECeZzBxCIq81oRw8Ja7fLmT3k00fnDCd9yq+5IbNGlEpnDWv0jVMg6vakTx3OS4xt2JdcGhIDNI6Qe/RdUqS9oYMSIX308gzUR8N9tg5iMUUDpmdSJ90pXfc9hzCvxDp3lGJ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a6WiyaIm; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bRSc3VxH"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d4bc9e48bbso1397625a34.2
-        for <linux-spi@vger.kernel.org>; Mon, 16 Feb 2026 10:53:17 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a6WiyaIm"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59e5f52b13eso3732042e87.2
+        for <linux-spi@vger.kernel.org>; Mon, 16 Feb 2026 22:10:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1771267997; x=1771872797; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771308653; x=1771913453; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=flLYJCvb8ulr0CmalyULUpn6SChFpx51neWX5LGkNPY=;
-        b=bRSc3VxHt0WF12/DEF3zwHyzGmTISKknY5bwhR2F9D97Bdp53vF1vcduFjk5LqFT/E
-         fdQmHEI9Pq32WfbbbZk09Y63e+A1ltEhz6YvKsxPjkbcoBqYCQwsmxFaYCcwS+OzdFPv
-         FHELNVpWatZ9K/B2DggG602s0QBk7hwYl5NXIQwI9tvz+n3txrQOPDJsXF/+Q8Ke+DOF
-         vdhL9yd3y9pqOrk2DkIiygkufvPWH1ZJpeKUTVuh748l4JBpl1E/U2t2HF6niG9viB3P
-         n+Zk74aL9/UJHk1lAoSFUKV0UezlZPUeKnUPa4OlY0X4x6fLsaNYOwp9JnSpNaz176o6
-         xMcg==
+        bh=u2EmaR+jdHZmVae9mRMz72mzoy+uR0gNkmyjhuxhcrE=;
+        b=a6WiyaImZb0auFHUIOvyDTb3kTVIsBEezsCb/JIPcLMi1a/jnqkoWQot+djcnAUNLk
+         0G5B4oUZjSJ2xvFEX0vgkqMyTsnCjLMhasKBmDwcEjVUdj4ag/XByZsDfonytXm35w6j
+         bPW4TBxayDZLXvUajRbnXKKx6G/hjk1zDx/3ORDh/H25Wma5OC9dgM/pA+loAJEWt1td
+         BMC1hnLJOFjk8mbrF46Nxd+tV9qpo/U78ABdQ2VawQDDoOWQZUQIxVa3fLdLpeskGwPP
+         3kjwVHwCRUYUg/Bn2XR5GCWY68GvckJfLViGeCRyA+LhFDOMvHb579EUTkh8senxpg4D
+         38Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771267997; x=1771872797;
+        d=1e100.net; s=20230601; t=1771308653; x=1771913453;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=flLYJCvb8ulr0CmalyULUpn6SChFpx51neWX5LGkNPY=;
-        b=Wnkp+wBqVOshpjZozFRJdy79vDjHH0sE9R6dGAv1ml0HOvVrK3/EMcPP6qmEb1A7Qe
-         rpEKsWyrK4+d5y3T7ISpdAhcPuv2i25H/NgdEc5Mt9aE0JRUIdztaUv74KG/Cv2ve2mO
-         8NLgmvPVDk/ndbzUa2kjzzTL0JXMeyfd4vX+2vJ/jgAhGQqgxQmEKafzaILYIRNP5C4K
-         cijpeayK/k4Q2zwoInLPNqiWC4lZmCBqZYdp4028L/H1LbBpVwnqm++Bw/Ny4VC19qfC
-         Rn4Rg9jUFmUC9FaB7QTqY5yMiYRqYzHbkj9zBt1i8tOK/dyMMpN9NAqs/iWtq96pYe4p
-         QsjA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+uvbsr40RY5KopkPm+xAFd237lIO+7BBV7ZiOzlzb8BpryFAy4/PNZSmXk4itos8KrXU+upB6qDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEe0y2nyrit6OD0ZfwTAt9+GW0oLQHLqZ/t7OyrHMmnTT/6URZ
-	qepyaHDQbM3D56QWyneRa3ATgg9Jvokt9ALCGAX6g0+H7VNkPcJ2+oEx17DmaOtoMWk=
-X-Gm-Gg: AZuq6aIv4AwCK45l4kFNTRGfe6xjwfl0oVtgdrfs79ARfFFGIPGc08M+ZiGBOBizViq
-	vy7IafuNY4d+fo9y4WW3KWq/LlhJXWEe6J3WVPjj0DAA/iWAlrEybjTmWiecLo07e4XqW8w4Tdc
-	6t3R08zMZhjd4udMkc+VsLn7kNTchwBS1pHfa1Hz0MQFBbI7FkLgIw89SqGR5HidgCHplSyxOxB
-	0czZcRM8vYNieDGsVD/0ryVbt3nqJp2WZSv7IlREloR7DSuJtFodv/JPa6sCvr2nagMTTFo/LxD
-	EOcAZPeQqbzeoKXJbySnGMXkrnt2BROeRhjXj+vNK/pbwlhPlHKn2rfk0+kTtdUELmAxAKPmfAC
-	C9ZYRaQ3REIBhodlL9KIPlciL3le+vEnKQBIkl++ZIFGK7ScoXDeAXdUnTXYPTDkYh2GAWB4OSZ
-	Nbd6/t90YBeHxgpPMQoe1r6zD7KLsj4aUeLCZt4ED2HfjQCndkEZZhkF9Jw55ujjPGHVWnKA1IM
-	6ehgXM15aI=
-X-Received: by 2002:a05:6830:43a3:b0:7cf:cf19:cc62 with SMTP id 46e09a7af769-7d4d0c7f3edmr6175611a34.38.1771267991908;
-        Mon, 16 Feb 2026 10:53:11 -0800 (PST)
-Received: from ?IPV6:2600:8803:e7e4:500:2d75:8cf2:6289:6a96? ([2600:8803:e7e4:500:2d75:8cf2:6289:6a96])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4c7288d34sm8058133a34.18.2026.02.16.10.53.10
+        bh=u2EmaR+jdHZmVae9mRMz72mzoy+uR0gNkmyjhuxhcrE=;
+        b=HLbGEBh5RxCtLSBzBVOO++6DFhd2NrdXS1Xsk76pTTehXnbUSOIgpU+au1QFet0jZy
+         UeskqH0U+hi0k8KK3F4YNjY0yUFc4p0iEwlMNKUL2K9sw3u/yxysWk4wrYTMy2yG4lAw
+         99JyBgzky5j5D1tnE3cPKXIocY3DJPmaBdVPfjcOx6v+6yUwehA094dbgcGPeGy9RSXN
+         IqLiihQmPYuzLmSI7fTGQ1Wr9Ht7ifWrg1lWkWXGQXYlhjZkhudtut7yPBWJnc/tZL1n
+         2pg+a/7eYfesTD8noR/cVbD+/LWtVAiCOiKJgn0vAHXwHfLp+ziHMkFQ6ouwz17hX9MP
+         /mEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpeguu3oIAGd/QjAzQc31fIhpjCDyJrZpwgmXtiUh1kw2wr/XbFJmvoc7sokHrrzlgQgZfqd5g1C4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj6vv3yWm54lQ9GRdfrHWxcpnrwHV6XLZdEAcRD0oF131FwOsa
+	jTuMp9+C2gIBo2VqcKL+yA4LkmWT31lHPoL6mFXglHrxS635zRC3L/LG
+X-Gm-Gg: AZuq6aJhjnjOkv5GvDDpwkJI5s7svnbIjNo1kFkHnfv2CYw049dItO5eSuF9u938Hwq
+	qqlVVlZsrVsF0binBm+/tK8+ldNhE8HkxciC08Xu7a2vIRLuwInWwBece+PRzeGaJ0l9TPaBcxZ
+	zvq0cL6796IgZZTBxrhsmkV8ve7vSUpjwKVLxPZopqYPs/NlNmgCfkLYNHkwR9gg5bCex6s9onu
+	IvZ1JkA/ukrpNL0yJPtUnTapBFWLtgJnpwF1Ze34iAmzvFTbQnUvA3VSjVoGNjeHi1PePZuTthO
+	b5SWi+J4KonFI9y+du0P1Mr2k9c8wLy69U1KCQIoCgx+0XSgjel4/YDus2i5O7cyskG4OD7wb62
+	gzapY/UUDC8yS9WalM2RCpK/oaBGpx1pQarDtdRWmF0XLQoCp3dPUOYlcBx7JzMxjDKuwSlVhqp
+	0q4sRV4Fqa94K/JNcXVRxHLSlLv4zrlfl82ihYgC2SE7KIH6AAjpjESlcPEr8sMGKZVvFpEO0=
+X-Received: by 2002:a05:6512:3ca1:b0:59e:1727:fcff with SMTP id 2adb3069b0e04-59f6d3879demr3028546e87.44.1771308652390;
+        Mon, 16 Feb 2026 22:10:52 -0800 (PST)
+Received: from [10.0.0.100] (host-185-69-74-59.kaisa-laajakaista.fi. [185.69.74.59])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e5f56867fsm3665403e87.24.2026.02.16.22.10.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Feb 2026 10:53:11 -0800 (PST)
-Message-ID: <2f9fc7fa-dd55-44f2-9b78-c9902b8b1bbf@baylibre.com>
-Date: Mon, 16 Feb 2026 12:53:10 -0600
+        Mon, 16 Feb 2026 22:10:51 -0800 (PST)
+Message-ID: <d1ba23bc-d8cc-4109-985f-76bb454c6d4a@gmail.com>
+Date: Tue, 17 Feb 2026 08:12:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,128 +68,85 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Subject: Re: [RFC] omap2-mcspi: periodic zero TX in target mode - debugging
+ help needed
+To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
  linux-spi@vger.kernel.org
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
- <aYiGj_TYelvJdVaR@smile.fi.intel.com> <20260214160852.6862b58d@jic23-huawei>
- <aZC6wIWDdS8J_1eJ@smile.fi.intel.com>
- <897bd4d4-bbdf-4cbf-84f6-05c110d75d03@baylibre.com>
- <aZF9zoWHL9iHSK3q@smile.fi.intel.com>
- <dce24f01-2a8e-4b36-9685-6ff4293e2d5a@baylibre.com>
- <aZLDyWICGB_j0Z1Y@smile.fi.intel.com>
+Cc: broonie@kernel.org, vkoul@kernel.org, dmaengine@vger.kernel.org,
+ vigneshr@ti.com
+References: <941806a6-0deb-415d-8af3-e78d6104da1c@yoseli.org>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aZLDyWICGB_j0Z1Y@smile.fi.intel.com>
+From: =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@gmail.com>
+In-Reply-To: <941806a6-0deb-415d-8af3-e78d6104da1c@yoseli.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2/16/26 1:14 AM, Andy Shevchenko wrote:
-> On Sun, Feb 15, 2026 at 05:16:47PM -0600, David Lechner wrote:
->> On 2/15/26 2:03 AM, Andy Shevchenko wrote:
->>> On Sat, Feb 14, 2026 at 12:31:12PM -0600, David Lechner wrote:
->>>> On 2/14/26 12:11 PM, Andy Shevchenko wrote:
->>>>> On Sat, Feb 14, 2026 at 04:08:52PM +0000, Jonathan Cameron wrote:
->>>>>> On Sun, 8 Feb 2026 14:50:23 +0200
->>>>>> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
->>>>>>> On Fri, Feb 06, 2026 at 06:07:12PM +0200, Antoniu Miclaus wrote:
-> 
-> ...
-> 
->>>>>>> I believe there is a better approach, what you need is rather a flag
->>>>>>> to SPI core to tell that this is the device with shared CS.
->>>>>>
->>>>>> Antoniu, this comment from Andy needs addressing before we move
->>>>>> on. It seems fairly fundamental and I'm not seeing a reply to it on list.
->>>>>>
->>>>>> I'm not entirely sure what Andy is suggesting will work but this
->>>>>> is perhaps a mismatch in really understanding what is going on here.
->>>>>> Andy, how would a flag work given they seem to be separately addressable
->>>>>> SPI buses. I think this isn't a shared SPI CS, but rather a device
->>>>>> with two entirely separate SPI buses. I think the only reason
->>>>>> we are bothering to implement it as a single device at all is the
->>>>>> shared backend.
->>>>>
->>>>> My understanding that there are two devices that for whatever reason share
->>>>
->>>> It is the opposite. It is a _single_ device with _two_ CS lines.
->>>
->>> Don't we have already support for that? This changes the picture even more towards
->>> NAKing this. See below why.
->>
->> Yes, spi_new_ancillary_device() was introduced exactly for this sort
->> of thing, which is why I think it makes sense to use it.
->>
->>>> adc@0 {
->>>> 	reg = <0>, <1>;
->>>> 	...
->>>> };
->>>>
->>>>> the same CS line. Yes, I probably misread the idea behind, but I meant
->>>>> some flag for SPI device that tells SPI core that the CS it wants is shared
->>>>> (maybe a high bit in the cs field or so), then CS core won't complain on
->>>>> validation about using the same cs number which is "already in use".
->>>>
->>>> There was one existing user in the kernel of spi_new_ancillary_device()
->>>> that looked like this, so it seemed the right way to approach it. However,
->>>> code was added later that caused the primary SPI device to "claim" both
->>>> CS lines for itself and probably broke the one existing user of
->>>> spi_new_ancillary_device() (hard to tell without hardware to test).
->>>>
->>>> The idea here was to unbreak that so we could use spi_new_ancillary_device()
->>>> just as in the existing use case.
->>>>
->>>> The patch for that could have been a bit more strict to only allow the
->>>> spi_new_ancillary_device() to take CS 1 and fail otherwise, but users
->>>> are going to notice if it isn't working right anyway, so I didn't ask
->>>> for more checking.
->>>
->>>>>> There is an argument that maybe we should be looking at how
->>>>>> to do data muxing backends to support the more general case of two
->>>>>> separate chips feeding into a single buffer, but that's a complex
->>>>>> beast and I'm not sure if it is something we actually need.
->>>>
->>>> I think it would actually be quite similar to what is done in this
->>>> series.
->>>
->>> TBH, the change sounds to me like a hack. It doesn't cover other potential ways
->>> of the multi-cs devices come into play. Given that SPI core supports multi-cs
->>> I don't see a good justification for this patch.
->>>
->>> What did I miss?
->>
->> As far as I can tell, other than the one existing user of
->> spi_new_ancillary_device(), other SPI multi-CS stuff is only used
->> by SPI flash memory devices, not general SPI devices. There code
->> that is being modified here was introduced to support the SPI
->> flash memory devices, so that use case is already covered by
->> existing code.
-> 
-> Right. And obvious question why can't we apply the same approach
-> to any SPI device? Like extending existing code to cover generic
-> cases.
-> 
+Hi,
 
-spi_new_ancillary_device() was already accepted in the kernel as the
-solution for this sort of use case, so isn't it already the generic
-approach?
+On 12/02/2026 17:53, Jean-Michel Hautbois wrote:
+> Hi,
+> 
+> I'm seeing a puzzling issue with omap2-mcspi in target mode on AM64x
+> and could use some help understanding what might be happening.
+> 
+> Here is my setup:
+> - AM64x as SPI target, external controller at ~1 MHz, 1 Hz frame rate
+> - Target mode, DMA enabled (k3-udma, not legacy EDMA)
+> - Fixed 64-byte transfers (matches MCSPI FIFO depth)
+> - Full-duplex, using spi_async() for continuous operation
+> - Kernel 6.12.y (also tried mainline, same behaviour) + PREEMPT_RT
+> 
+> Periodically, MISO outputs all zeros instead of the prepared TX buffer.
+> The pattern is surprisingly regular: every 42 or 43 transfers.
+> If transfer #10 fails, then #52 or #53, #94 or #95, etc.
+> 
+> This number (~42) doesn't obviously match any power of 2 or buffer
+> size I'm using, which makes it more puzzling.
 
-I can see that it could possibly be nice if the SPI core saw that
-there was more than one CS and called spi_new_ancillary_device()
-automatically and somehow passed that along with the main SPI device
-to the driver probe function. But since this is only the second user
-of spi_new_ancillary_device(), I don't think we have enough data
-points to be able to say if this is really what all peripheral drivers
-would want.
+Curiously matches with the answer to the ultimate question (THGG) ;)
+
+> I have verified a few things:
+> - TX buffer is correctly filled before spi_async() returns
+> - Added debug check: buffer is NOT zeros at submit time when failure occurs
+> - RX works fine (master data received correctly)
+> - System is mostly idle (basic Yocto, systemd, no heavy load)
+> - Logic analyser confirms: zeros on MISO, correct clock/CS from master
+> - Forcing single CPU (maxcpus=1) does not change behaviour
+> 
+> This suggests the data is correctly prepared but doesn't make it to
+> the FIFO in time. The issue seems to be in omap2-mcspi or k3-udma,
+> not in my slave protocol driver.
+> 
+> DMA configuration:
+> - Using k3-udma (AM64x UDMA subsystem)
+> - Single DMA descriptor per transfer (not cyclic)
+> - DMA-coherent buffers allocated with dma_alloc_coherent()
+> 
+> Questions:
+> 1. Are there known timing constraints for target mode DMA that
+>    could explain this periodic behaviour?
+> 2. Could this be related to k3-udma descriptor recycling or
+>    ring management around ~42 iterations?
+> 3. Is there recommended tracing/debug I should enable to
+>    investigate the DMA/FIFO timing?
+> 4. Has anyone seen similar periodic failures in target mode?
+> 
+> I can provide more details, traces, or test patches if helpful.
+
+I would enable all interrupts (channel 0 is the relevant for
+non-provider mode) FULL/UNDERFLOW/EMPTY and see if McSPI itself reports
+any starvation.
+
+Iteration is number of one-shot transfers (of equal size or variable size?)
+
+I cannot recall anything which would result such an issue, but the
+consistency is more than interesting. Re-reading the TRM for SPI + PDMA
+and BCDMA (or PKTDMA is servicing McSPI?) might give some clues.
+
+> 
+> Thanks for any pointers!
+> Jean-Michel
+
+-- 
+Péter
 

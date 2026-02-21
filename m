@@ -1,71 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876CF36606C;
-	Fri, 20 Feb 2026 19:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64F9320A0C;
+	Sat, 21 Feb 2026 01:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771614613; cv=none; b=nRf9d5BDiInPdMp4hOk0N9t/q3/mPS+/VeWnXYLqGudCKXSSF/71EJehDvm84qMW1VhRT8wfuJa/sHZ4l9ulMxl03+2J6nL6rgxGXLvLHebRt7kKoi57e1aEAi59XrktWQ44+w6ntR8vaJr4+omNHT60AgWft66raAeYPTvRNok=
+	t=1771636840; cv=none; b=EdgEwxFci3GixWkXT7clgmMwZj4LsRA9ipl3Y+3HCai9mifDAZ0KVIdxnVACienuCgYdxFmFSP059m1ZdthVbMM8rrnL/ysPS/bufZe2hiRw6f8Jxr+3/rro32rZrPVDiBHo9hQ8KPTBmg6NIAWNeWjku8cvgkLXVMUY8s52UW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771614613; c=relaxed/simple;
-	bh=NgPLERcKi1k4Td+mzo68bEDAt1hzHxhXdDObuuvT3/w=;
-	h=Message-ID:From:To:Cc:Subject:Date; b=kWEEbsWlBmTeNCTEtf56KnPtl+80tPULEf88yimFNEXr1ND9K61D7LWi4UmFuSb2e6s6E6NOUBunvBMQUnvM0IQHmxFPnosjLnffM8lRQdsl/CWBZ2j3XdYGGynpuKdyR6x/GthnpMa/S4lcPfnpNmuixYfBmTxbp3mugJ7yr1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=md2l6KrL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771636840; c=relaxed/simple;
+	bh=ihY0ZRvsVxQjl/m36gmGh8dcY6uMA8D7IgJQZ3EiSBo=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=gQv7Xy8G5niMV1SpNQ+lJsz+LwZbBly2RDp8jQ/5wcpg6xl2clOSbQaTUu0buyzCVzQdUWXnmMyN2u9m0D2C9kLQjotUppDvF/tMNE30ujZgAZ1f5VhTZgdWblsQDoHuuPi6QXQ0Tv5wJtvr5i5V2iQSo4iDqlu6womzhiA3jqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDi2y4lx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="md2l6KrL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDABFC116C6;
-	Fri, 20 Feb 2026 19:10:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDi2y4lx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A943C19423;
+	Sat, 21 Feb 2026 01:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771614613;
-	bh=NgPLERcKi1k4Td+mzo68bEDAt1hzHxhXdDObuuvT3/w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=md2l6KrLOVCYivUjDiTcaCPTqOEPjxt1UVO7ok3SdXU1tuFjuWTaPU8FI9qZi9cD6
-	 EMcCrept6j1TaP5k7t217uyzScom5uvWHk1MpjSouqbqi5SQ5I9nVJWRaGW2haVdGM
-	 /edcAOdvccPutPXDlvW16QWd9i+foimlauatlUqVT3UgwIBaea0+XDzp5pgSA4ifEa
-	 ciQvA32E1kIwRrXhlJikWwNB5u/vHwtYLKRRKayjU8YE2a3UCSjW72ZH5CeImx2T9A
-	 5ErRp+SAohM673d9S7JJXeJjgy1FtXgf6qnLB6HerbY+n57zmt533wOZOcNS+ouZnx
-	 Ii/EN4uMxH6OQ==
-Message-ID: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.0-merge-window
-Date: Fri, 20 Feb 2026 19:10:05 +0000
+	s=k20201202; t=1771636840;
+	bh=ihY0ZRvsVxQjl/m36gmGh8dcY6uMA8D7IgJQZ3EiSBo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=iDi2y4lxwe0X1zM8NpwZfoNCXfqWQ4GyRBLgOyS02Jeamyo+0dc9uIydcWbyoRfsc
+	 rsfKfjNnvRPIsDMigI3ghyrWUelX/AZStCg+jmj3a9Y6+HtS7Bwez0U8sUddjKEF4Y
+	 Qcoob2TDR9fDFM7c2iipX690SSET4gV3GikdPVfwTaShqHjEwMZrrxHaCy/wirK8yN
+	 rGFvobFXb+0llRn0HMF+iKBd35NawcEtswXAhW/QDK4O9lm6M20H1SvNO5rI3mtgr0
+	 rA7dHo8Ls4rGjeKnLbM8jqgwlO9rvPrOLp971MrFL3Okp7Ab4K06Eh8Kv6NSEEfszE
+	 LYnZooSlw1NPQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E823808200;
+	Sat, 21 Feb 2026 01:20:49 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.0-merge-window
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
+References: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-merge-window
+X-PR-Tracked-Commit-Id: 40534d19ed2afb880ecf202dab26a8e7a5808d16
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: d79526b89571ae447c1a5cfd3d627efa07098348
+Message-Id: <177163684843.970518.17592996587998979572.pr-tracker-bot@kernel.org>
+Date: Sat, 21 Feb 2026 01:20:48 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 
-The following changes since commit 5af56f30c4fcbade4a92f94dadfea517d1db9703:
+The pull request you sent on Fri, 20 Feb 2026 19:10:05 +0000:
 
-  spi: tools: Add include folder to .gitignore (2026-02-09 12:27:31 +0000)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-merge-window
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/d79526b89571ae447c1a5cfd3d627efa07098348
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-merge-window
+Thank you!
 
-for you to fetch changes up to 40534d19ed2afb880ecf202dab26a8e7a5808d16:
-
-  spi: spidev: fix lock inversion between spi_lock and buf_lock (2026-02-17 15:29:16 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v7.0 merge window
-
-There's a relatively large but ultimately simple fix for spidev here
-which addresses some ABBA races by simplifying down to just using a
-single lock, it's not clear to me that there was ever any benefit in
-having the two separate locks in the first place.
-
-We also have simple missing error check fix in in the wpcm-fiu driver.
-
-----------------------------------------------------------------
-Fabian Godehardt (1):
-      spi: spidev: fix lock inversion between spi_lock and buf_lock
-
-Felix Gu (1):
-      spi: wpcm-fiu: Fix potential NULL pointer dereference in wpcm_fiu_probe()
-
- drivers/spi/spi-wpcm-fiu.c |  2 +-
- drivers/spi/spidev.c       | 63 ++++++++++++++++------------------------------
- 2 files changed, 23 insertions(+), 42 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

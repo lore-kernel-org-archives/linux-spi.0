@@ -1,86 +1,189 @@
-Received: from mail-m1973190.qiye.163.com (mail-m1973190.qiye.163.com [220.197.31.90])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79ED9208D0;
-	Mon, 23 Feb 2026 15:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FBC3019D8
+	for <linux-spi@vger.kernel.org>; Mon, 23 Feb 2026 16:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862386; cv=none; b=qS/q13NF6f6ijPvO0zo4PSevd40Lrz90fkFOQm/uw/u5ucDORg12/IHidSbAMkg7n8EY/GxmptH238qHjTN8IZSSZfeRsb/8Rl4yYmTZ/LlA9c98009e325UZHZ1rRPREkzDBF24LUD5KMY2C0RaBTHJXaplgj8VuZI3La5AplM=
+	t=1771862907; cv=none; b=ahYtc8z9m73Iw+2hk9BsAmJz1KTz7SaWY4YfPEfRTm8INNYin6jE+QxFeVYrNq+m2vjQYNOKqkg30gEkSwI4hIddIcBpKn1IUSQoXcTOIUOeZRusFOsEFS8Owj6lpzRUVSQJUwgqzCWuLMuK8yLMMxcepPcYjPvJO9Sl09fcKXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771862386; c=relaxed/simple;
-	bh=Aqlv822LWY6fqNHstwfAntZtXixRmCSUC8Z5bGJ5Rb0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=ft9WdXPiZaB39f/Aoatrsm/MwSVIgLSiEetiKKjHAmnUBpA4+yLM+ZHt0bZK/5TKje2ON/ir5XKyRWh20bcGztr8zADBIgDak7NmN0qKwRjQYrL03o6trVq2c2ZwO0l+82EXhavL6DA3UyXvC3Vra+0SzU/EOvHqYUP1BWG8pmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=fUb44OLv; arc=none smtp.client-ip=220.197.31.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1771862907; c=relaxed/simple;
+	bh=WuJu9Czo5A8pwAD99Zocf4aJMfdjElBkVdtYwH+N7OM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=K58zHeA0tOFwvqbPk7/vFk4shYjib6giS1FO4j+xpzOj77oli/78f54MNgsSeR6aJJD6nVhZjJsNhaXakmq19UzG/J5xrJEMjmTXZMYT8zo2y7GIV769Wkp9GBDYTSBYVvx1Sq7y/WXmY4vt46FDnRgzmpIIrvntywNXNu1QARU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OW5FqC1/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="fUb44OLv"
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34b3c921d;
-	Mon, 23 Feb 2026 23:44:24 +0800 (GMT+08:00)
-From: Shawn Lin <shawn.lin@rock-chips.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-spi@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	linux-pci@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 08/37] spi: pxa2xx: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
-Date: Mon, 23 Feb 2026 23:44:20 +0800
-Message-Id: <1771861460-85953-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
-References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9c8b2c544e09cckunm395df14a9871a9
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkofH1ZMS0kYSEMfSxlLSEhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=fUb44OLvoK37K0C2XeRl53VTv7Uzw71SJe8zzsyhGmkvwaWQJcHLCCqaZDlmqRVHMIWdxmff07fQSJclAZMEpwOAaiaZq57x4Zo9eVGWbrAq2jBB4+VkRKxRffOhaftwUVNoxYlqAg1BrXS0WqwPbV8Sjrl/jC8/lBjUoXXdBoE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=9nsMX5dFvhUj/8iAiKw7vGR/DLP2u1uPwaVo+Vk8InU=;
-	h=date:mime-version:subject:message-id:from;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OW5FqC1/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638BCC116C6;
+	Mon, 23 Feb 2026 16:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771862907;
+	bh=WuJu9Czo5A8pwAD99Zocf4aJMfdjElBkVdtYwH+N7OM=;
+	h=Subject:From:Date:To:From;
+	b=OW5FqC1/i9kucJquJDwZe1LA3abQGal3Y/3nG0ac5rmM+xNQ9j9ladTk3PFB5/0FT
+	 CLd8pdUWwgXlEWmlqd7bRPHSnTFqJi2yyuwu3jsh3nmCu0CsLCVAO2hDHBqe9lm+T2
+	 kkfzvu6WkmfcAOX21cfCwCAtQxoGumrJyky2A8vS7mEIcKz2+XaPlHULU95O6slx82
+	 81c0n7IDjB2H2K5AwOpSeJfQeLyAgolfkjhJeqhxPBxX1RocJ9GlA6aKAXD56CnYso
+	 gPa/gvdDZd4ZC3goE1M0IgfB+uBE6g7hjbEHf+457OntoTVo/QDN04LgrIoj/T4bSq
+	 sHUVOGlatqacA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BCF4D3808200;
+	Mon, 23 Feb 2026 16:08:34 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177186291324.2372049.9152414702394981148.git-patchwork-summary@kernel.org>
+Date: Mon, 23 Feb 2026 16:08:33 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-pcim_enable_device() no longer automatically manages IRQ vectors via devres.
-Drivers must now manually call pci_free_irq_vectors() for cleanup. Alternatively,
-pcim_alloc_irq_vectors() should be used.
+Hello:
 
-To: Mark Brown <broonie@kernel.org>
-Cc: Daniel Mack <daniel@zonque.org>
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: linux-spi@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Philipp Stanner <phasta@kernel.org>
-Cc: linux-pci@vger.kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
----
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
- drivers/spi/spi-pxa2xx-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: mtd: spinand: Octal DTR support
+  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1040574
+  Lore link: https://lore.kernel.org/r/20260109-winbond-v6-17-rc1-oddr-v2-0-1fff6a2ddb80@bootlin.com
+    Patches: [v2,01/27] spi: spi-mem: Make the DTR command operation macro more suitable
+             [v2,04/27] mtd: spinand: Fix kernel doc
+             [v2,05/27] mtd: spinand: Add missing check
+             [v2,06/27] mtd: spinand: Remove stale definitions
+             [v2,07/27] mtd: spinand: Use standard return values
+             [v2,08/27] mtd: spinand: Decouple write enable and write disable operations
+             [v2,09/27] mtd: spinand: Create an array of operation templates
+             [v2,10/27] mtd: spinand: Make use of the operation templates through SPINAND_OP()
+             [v2,11/27] mtd: spinand: macronix: Convert vendor specific operation to SPINAND_OP()
+             [v2,12/27] mtd: spinand: winbond: Convert W25N specific operation to SPINAND_OP()
+             [v2,13/27] mtd: spinand: winbond: Convert W35N specific operation to SPINAND_OP()
+             [v2,14/27] mtd: spinand: List vendor specific operations and make sure they are supported
+             [v2,15/27] mtd: spinand: macronix: Register vendor specific operation
+             [v2,16/27] mtd: spinand: winbond: Register W25N vendor specific operation
+             [v2,17/27] mtd: spinand: winbond: Register W35N vendor specific operation
+             [v2,18/27] mtd: spinand: winbond: Fix style
+             [v2,19/27] mtd: spinand: winbond: Rename IO_MODE register macro
+             [v2,20/27] mtd: spinand: winbond: Configure the IO mode after the dummy cycles
+             [v2,21/27] mtd: spinand: Gather all the bus interface steps in one single function
+             [v2,22/27] mtd: spinand: Add support for setting a bus interface
+             [v2,23/27] mtd: spinand: Propagate the bus interface across core helpers
+             [v2,24/27] mtd: spinand: Give the bus interface to the configuration helper
+             [v2,25/27] mtd: spinand: Warn if using SSDR-only vendor commands in a non SSDR mode
+             [v2,26/27] mtd: spinand: Add octal DTR support
+             [v2,27/27] mtd: spinand: winbond: W35N octal DTR support
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index cae77ac..551e8e7 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -291,7 +291,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 
- 	pci_set_master(dev);
- 
--	ret = pci_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	ret = pcim_alloc_irq_vectors(dev, 1, 1, PCI_IRQ_ALL_TYPES);
- 	if (ret < 0)
- 		return ret;
- 	ssp->irq = pci_irq_vector(dev, 0);
+Series: ASoC: rt5575: Add the codec driver for the ALC5575
+  Submitter: Oder Chiou <oder_chiou@realtek.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033644
+  Lore link: https://lore.kernel.org/r/20251216071853.3929135-1-oder_chiou@realtek.com
+    Patches: [v10,1/3] spi: export of_find_spi_controller_by_node()
+             [v10,2/3] ASoC: dt-bindings: realtek,rt5575: add support for ALC5575
+
+Series: [1/4] spi: export of_find_spi_controller_by_node()
+  Submitter: Oder Chiou <oder_chiou@realtek.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1036664
+  Lore link: https://lore.kernel.org/r/20251226083101.1052156-1-oder_chiou@realtek.com
+    Patches: [1/4] spi: export of_find_spi_controller_by_node()
+             [2/4] spi: change of_find_spi_controller_by_node() gating to CONFIG_OF
+
+Series: [v11,1/4] spi: export of_find_spi_controller_by_node()
+  Submitter: Oder Chiou <oder_chiou@realtek.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1036671
+  Lore link: https://lore.kernel.org/r/20251226083904.1052630-1-oder_chiou@realtek.com
+    Patches: [v11,1/4] spi: export of_find_spi_controller_by_node()
+             [v11,2/4] spi: change of_find_spi_controller_by_node() gating to CONFIG_OF
+
+Series: ASoC: rt5575: Add the codec driver for the ALC5575
+  Submitter: Oder Chiou <oder_chiou@realtek.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1037516
+  Lore link: https://lore.kernel.org/r/cover.1767148150.git.oder_chiou@realtek.com
+    Patches: [v11,1/4] spi: export of_find_spi_controller_by_node()
+             [v11,2/4] spi: change of_find_spi_controller_by_node() gating to CONFIG_OF
+
+Series: LED: Add basic LP5860 LED matrix driver
+  Submitter: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+  Committer: Lee Jones <lee@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1029227
+  Lore link: https://lore.kernel.org/r/20251201-v6-14-topic-ti-lp5860-v6-0-be9a21218157@pengutronix.de
+    Patches: [v6,1/2] dt-bindings: leds: add lp5860 LED controller
+
+Series: [v2,01/19] include: dt-bindings: add LAN969x clock bindings
+  Submitter: Robert Marko <robert.marko@sartura.hr>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033379
+  Lore link: https://lore.kernel.org/r/20251215163820.1584926-1-robert.marko@sartura.hr
+    Patches: [v2,01/19] include: dt-bindings: add LAN969x clock bindings
+             [v2,06/19] dt-bindings: mfd: atmel,sama5d2-flexcom: add microchip,lan9691-flexcom
+             [v2,09/19] dt-bindings: i2c: atmel,at91sam: add microchip,lan9691-i2c
+             [v2,11/19] dt-bindings: crypto: atmel,at91sam9g46-aes: add microchip,lan9691-aes
+             [v2,12/19] dt-bindings: crypto: atmel,at91sam9g46-sha: add microchip,lan9691-sha
+             [v2,14/19] dt-bindings: net: mscc-miim: add microchip,lan9691-miim
+             [v2,15/19] dt-bindings: hwmon: sparx5: add microchip,lan9691-temp
+             [v2,16/19] dt-bindings: pinctrl: pinctrl-microchip-sgpio: add LAN969x
+
+Series: Add support for Microchip LAN969x
+  Submitter: Robert Marko <robert.marko@sartura.hr>
+  Committer: Lee Jones <lee@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1042779
+  Lore link: https://lore.kernel.org/r/20260115114021.111324-1-robert.marko@sartura.hr
+    Patches: [v5,01/11] dt-bindings: mfd: atmel,sama5d2-flexcom: add microchip,lan9691-flexcom
+             [v5,04/11] dt-bindings: crypto: atmel,at91sam9g46-aes: add microchip,lan9691-aes
+             [v5,05/11] dt-bindings: crypto: atmel,at91sam9g46-sha: add microchip,lan9691-sha
+             [v5,06/11] dt-bindings: pinctrl: pinctrl-microchip-sgpio: add LAN969x
+             [v5,10/11] dt-bindings: net: sparx5: do not require phys when RGMII is used
+
+Series: spi: stm32: stability & performance enhancements
+  Submitter: Alain Volmat <alain.volmat@foss.st.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1034541
+  Lore link: https://lore.kernel.org/r/20251218-stm32-spi-enhancements-v2-0-3b69901ca9fe@foss.st.com
+    Patches: [v2,1/4] spi: stm32: properly fail on dma_request_chan error
+             [v2,4/4] ARM: dts: stm32: add spi1 sleep state pinctrl on stm32mp157c-ev1
+
+Series: fsi: Convert to bus probe mechanism
+  Submitter: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+  Committer: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1028913
+  Lore link: https://lore.kernel.org/r/cover.1764434226.git.ukleinek@kernel.org
+    Patches: [05/12] spi: fsi: Drop assigning fsi bus
+             [12/12] spi: fsi: Convert to fsi bus probe mechanism
+
+Series: fsi: Convert to bus probe mechanism
+  Submitter: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+  Committer: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1031693
+  Lore link: https://lore.kernel.org/r/cover.1765279318.git.u.kleine-koenig@baylibre.com
+    Patches: [v2,05/13] spi: fsi: Drop assigning fsi bus
+             [v2,13/13] spi: fsi: Convert to fsi bus probe mechanism
+
+Series: spi: st: add power-domains on stm32mp2x
+  Submitter: Alain Volmat <alain.volmat@foss.st.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1033229
+  Lore link: https://lore.kernel.org/r/20251215-stm32-spi-mp2x-dt-updates-v1-0-464a5fd20f13@foss.st.com
+    Patches: [1/3] dt-bindings: spi: st,stm32-spi: add 'power-domains' property
+             [2/3] arm64: dts: st: add power-domains in all spi of stm32mp251.dtsi
+             [3/3] arm64: dts: st: add power-domains in all spi of stm32mp231.dtsi
+
+Series: arm64: allwinner: a523: Support SPI controllers
+  Submitter: Chen-Yu Tsai <wens@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1035470
+  Lore link: https://lore.kernel.org/r/20251221110513.1850535-1-wens@kernel.org
+    Patches: [1/4] spi: dt-bindings: sun6i: Add compatibles for A523's SPI controllers
+             [3/4] arm64: dts: allwinner: sun55i: Add SPI controllers
+             [4/4] arm64: dts: allwinner: t527: orangepi-4a: Enable SPI-NOR flash
+
+
+Total patches: 59
+
 -- 
-2.7.4
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

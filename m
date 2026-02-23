@@ -1,63 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Atcsqr.andestech.com (exmail.andestech.com [60.248.187.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6481320A0A;
-	Sat, 21 Feb 2026 01:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF06146588;
+	Mon, 23 Feb 2026 02:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.248.187.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771636840; cv=none; b=hYEfrZbyGPlo1741yqMmL9r4kD6PKdJFGN1S0vwRYXIPn+SqXkZqWfGpXmhtZ4LpZ7AshrtVUyES3iRxvCwjXuFGPZKIrBggRtZsNykgLBUw/YGH5ykFeJvikCZcpdTdwB2TGeufPFypq6mKkXy22BfdQBS6b9E+Oc7McSwUAGk=
+	t=1771813500; cv=none; b=mq3Bve9Jsb1NfFXbyAGpvAaTu/GIbntTFhiH+NWmM9VsPylqCS78ErmBP8297nJLxxsgdYHAxt503UjIORyFHJsZ/F1tHwMecHRDd9En40GrohPCfJ5SBBGIrP3cxok50haWqQkwoJtMGAzJWAfxFdh3mXgMVFIzVreIl2FUkJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771636840; c=relaxed/simple;
-	bh=ihY0ZRvsVxQjl/m36gmGh8dcY6uMA8D7IgJQZ3EiSBo=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=DMBnFWF1Wi4kX1LhbiaSLrLagW77DCRlUgXKjzx3cQOMOoeHnaHVsp2YQUIK4YYhS34w4s+5Kcf+8EK/Qfn0i8/BNPee15/ckCBATOb5H1/bmts38snSb979cLeZDhBg6nWD/6r1u4P+Mytghzvd0yfNucNUdKlRVSq1mCFh1Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDi2y4lx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDi2y4lx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A788C116C6;
-	Sat, 21 Feb 2026 01:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771636840;
-	bh=ihY0ZRvsVxQjl/m36gmGh8dcY6uMA8D7IgJQZ3EiSBo=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=iDi2y4lxwe0X1zM8NpwZfoNCXfqWQ4GyRBLgOyS02Jeamyo+0dc9uIydcWbyoRfsc
-	 rsfKfjNnvRPIsDMigI3ghyrWUelX/AZStCg+jmj3a9Y6+HtS7Bwez0U8sUddjKEF4Y
-	 Qcoob2TDR9fDFM7c2iipX690SSET4gV3GikdPVfwTaShqHjEwMZrrxHaCy/wirK8yN
-	 rGFvobFXb+0llRn0HMF+iKBd35NawcEtswXAhW/QDK4O9lm6M20H1SvNO5rI3mtgr0
-	 rA7dHo8Ls4rGjeKnLbM8jqgwlO9rvPrOLp971MrFL3Okp7Ab4K06Eh8Kv6NSEEfszE
-	 LYnZooSlw1NPQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA2003808201;
-	Sat, 21 Feb 2026 01:20:49 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v7.0-merge-window
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
-References: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <c1e196dc59d936e0cbd1f6e1c64c004f@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-merge-window
-X-PR-Tracked-Commit-Id: 40534d19ed2afb880ecf202dab26a8e7a5808d16
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d79526b89571ae447c1a5cfd3d627efa07098348
-Message-Id: <177163684863.969912.1450698574112878432.pr-tracker-bot@kernel.org>
-Date: Sat, 21 Feb 2026 01:20:48 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	s=arc-20240116; t=1771813500; c=relaxed/simple;
+	bh=LN9dTCxSPqW5Q2xEhH/QKBvUpu9pnqQt7yTqdf6bgUc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OVk/ElliM0Ti7CbgOByN0uDa9ZW9dbh+wVTGSJYMPqGZsSxBs+FG/5EysoJfAev1Es1Z0sYQ9cAxqVI35Rnhw2Jz3o1qbyMSpIPL0dNDjIfELKSzqMEEAEowFKOpR2lZKbFWjKxeMNMIRoAcEQFLqGNICaFrWZa/k4qK5MIq9Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com; spf=pass smtp.mailfrom=andestech.com; arc=none smtp.client-ip=60.248.187.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=andestech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=andestech.com
+Received: from mail.andestech.com (ATCPCS34.andestech.com [10.0.1.134])
+	by Atcsqr.andestech.com with ESMTP id 61N2OSeF001972;
+	Mon, 23 Feb 2026 10:24:28 +0800 (+08)
+	(envelope-from cl634@andestech.com)
+Received: from swlinux02 (10.0.15.183) by ATCPCS34.andestech.com (10.0.1.134)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 23 Feb
+ 2026 10:24:28 +0800
+Date: Mon, 23 Feb 2026 10:24:27 +0800
+From: CL Wang <cl634@andestech.com>
+To: <xiaopeitux@foxmail.com>
+CC: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Pei Xiao <xiaopei01@kylinos.cn>,
+        <cl634@andestech.com>
+Subject: Re: [PATCH] spi: atcspi200: Remove redundant assignment to .owner
+Message-ID: <aZu5_JjLtET11PBo@swlinux02>
+References: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-ClientProxiedBy: ATCPCS33.andestech.com (10.0.1.100) To
+ ATCPCS34.andestech.com (10.0.1.134)
+X-DKIM-Results: atcpcs34.andestech.com; dkim=none;
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:Atcsqr.andestech.com 61N2OSeF001972
 
-The pull request you sent on Fri, 20 Feb 2026 19:10:05 +0000:
+Hi Pei,
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-merge-window
+Thanks for the patch. It looks good to me.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d79526b89571ae447c1a5cfd3d627efa07098348
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Acked-by: CL Wang <cl634@andestech.com>

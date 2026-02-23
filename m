@@ -1,321 +1,223 @@
-Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CE82FF153;
-	Mon, 23 Feb 2026 15:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.149.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF021303C93
+	for <linux-spi@vger.kernel.org>; Mon, 23 Feb 2026 15:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771861840; cv=fail; b=g9ckJdVbYY6h0otVFapur9+5B7U3jla2Qa4kra0lCey/jP9Q7ayJv/vLOfEAmbOFDKiooYYj42+JJMLTdVF2cHnHox9LgCUSz13e4HEkcIfjRjJMgUJlTXxo4Xkwc/3FU0AL91fLH7chl9SHfPRXe+W46Px8AMhLsSYHqKf6Bec=
+	t=1771861899; cv=pass; b=SqrSfG1Jgrj6gfxShgk8gn5GDNlqdbtGDHsnQu5m1zWqXw/H2EJmAD53MACMW44OWrTOzZv+fnkQCD8kKYTkwE/hpvpkOIkZwb+5+JmBNYKqWh66FWeRmNZ4rmJrnhPiI45Bf2bvHCrCnkvnQl7ofFHAGsp6hz01Cqo24C2l6L4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771861840; c=relaxed/simple;
-	bh=AAydPUfd6r+43vdt2wfoTPFiBE7w4cx/UrHFh5AOZtg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nc6X/L53u3/b1fiuYmqKahuOHaSPeaeX/2hcepUkscQrlxO7TqKxFACO5+W+p1b1CxzH52zkIp8DekJ69GUvRHHD02RsFrUOqYrI+3sJyc6zEdHZk6MqLpfKeOIU60Yolwwd0JdFlYUPj01N0h6n5ronMcG1MGakGyOhj/+hoC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=c80XY20A; dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b=kQR6Ss35; arc=fail smtp.client-ip=67.231.149.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	s=arc-20240116; t=1771861899; c=relaxed/simple;
+	bh=d5zCa3ysNLijKNaGOI7tuajauNFQ8GHfuuwERS7PUF0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QUtrEeD9TQbRRpjAf2bcyAsAb+e9DxLmPmkX4BVE8fohck9zLPysQuxAwVvjuE1tjGBbNEJ7jgvRqdB/Swdlgq1IvwyQoXRppdpkPvKXuQufy+YqsuB//czZQf71IoVya2822HglEi87DukvWRRKX3PTuKL3l3dMYEJZedqAKbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bez0+ejt; arc=pass smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="c80XY20A";
-	dkim=pass (1024-bit key) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.b="kQR6Ss35"
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-	by mx0a-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NF9QXH1991874;
-	Mon, 23 Feb 2026 09:50:35 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	PODMain02222019; bh=MTnGULPPBpVNWCOVN13Xb6AY4r57BeO8vUuKmPmQoTw=; b=
-	c80XY20APZOizTax8xovOzbqcQeuAsgvKRZ/fVyTtpqWVnqB91wPMwDmepyT65o+
-	SPBELYNESA07WEmnZaaEfjHM3uaFq6laJURLqbBr6o5nKIE9O3f9xFU3+jFpNnFR
-	IbDSe87sy34IGyi7uZfLU80tz57y1dtlWD08wzLy/8qFfkYZORrAcvaRzUQMoy8B
-	BkeGs1A+YWWx1vM2DlOSpQIUT3NaX+s+oySbncVr2xjrIFWxidQ4/B5YSm+TKg0K
-	Cb5mW2ixpar8ELEOOoZYMpOfVksJjLNl4HeaQjldUstYwKUEeU7fvJlkAmy//Cja
-	wEEmEWUWph8KK9FF+/9uXw==
-Received: from ch1pr05cu001.outbound.protection.outlook.com (mail-northcentralusazon11020124.outbound.protection.outlook.com [52.101.193.124])
-	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 4cfb019q3k-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 23 Feb 2026 09:50:35 -0600 (CST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LVJK8oNOIumKNZRxHGo4eWVEboPYQPpRdSFiG/P/MPOD+WO4BUP7JTwqXsgW6oOMH8DQgtTvLHK2U6Byn7p6K4JccyvPUG1GWJnqfp6N2v+u5bEDvgx3AoP7v6S1XVsyeq71gH1K7gFoCT1HanhxKcvrFez1WRJF9shsKsjXtWPL5OMz5K/4dspPQefkSx418fOcMdlwPP1Nqfvr0FYHZVuQ1yGlGdyr1UhtqskevnD3PoZWS8J7KgB0hyOpT53mKbigkaMLJ4ppLMV/lY72R/lmj/fKeoBQ97Fahg8GP0o6WhmCajLH5FJLX9rNWuXvBxLJdoM1c9Tre9O9YWf/Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MTnGULPPBpVNWCOVN13Xb6AY4r57BeO8vUuKmPmQoTw=;
- b=vcJZcZdAjMBFvZMtBjz++QVxzdIJWp5C3rANVJ96LINhsV+UhBnG0evrbNzDZHu4TKjN/6rj9RCSysbGUEVMlGFJtJY9Hy69VIO5ccdI8J5NhH1RngXpA/LWrgmtpzIvTlDtbplj7Bv2hDkbH8rGb3gH944sKlpdudem6DFIggUDINCU8fiPW2f8XJH5hdI5IR7KQ567IV71CvOJPzwnKQtrV7jvz1gFKqNcvsDAdlBcM9cOMKYaKus367WEiRME/TWLfOsIDiDuTO7q9AoB2+XPmMBulgRPTZ8zY4dmzjjyARSxg3+VppPawH5RUjaebUxcCpgWMs+uyd/btULTxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 84.19.233.75) smtp.rcpttodomain=gmail.com
- smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
- action=oreject header.from=opensource.cirrus.com; dkim=none (message not
- signed); arc=none (0)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bez0+ejt"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b8f86167d39so567861566b.0
+        for <linux-spi@vger.kernel.org>; Mon, 23 Feb 2026 07:51:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771861896; cv=none;
+        d=google.com; s=arc-20240605;
+        b=C0Bpa5Iwar+9mg5G8sxgGB5qeiOFBYyzAtT4smRwTnoKfhX+Srr2mb7i/FQLotiJB/
+         6IY14XcV1MA9Dz98yK/bM/WbWaug1Bm2cmjSopj8OfH9D+A9WCP7EvnbHRjHte9SqE9h
+         pHPSpXZRz44Yx9+JOB0TKN0A8jXEiBO50C/v+m4Kcm88BYdM2QIz1/Vz29zrogNSqpHe
+         SBCZ1PJWHTZq+9hLnmCa9kR0tvcRTYZuoTY+hHXEZ8uKLnkJUDqrWI1io8fR5H+YeEOS
+         LeSh9Oxn5lUvS303TYM9AZx/W7mpHOV8k7yIjBArRPhuhyKgYWTgbTYiDG42OF4Kr40z
+         k9MA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=npGY86N71VPo4TOfv73Omx9yZ3z0Eb9N82/SaZDWxbc=;
+        fh=YdQc98udEoy6jzoIxtezefwKgactw71lXYI0DM6FF5s=;
+        b=MRa+iupfsltzFpC+YLLH3qouXQkPIJt8QUMsqUjGiW58hYI9rB3kFzmdL8iAalQbXC
+         KoYVxVkaoeI5Wi0vlAU7Syf0zGBea2W5Ke3AxY6Fe6Q5XV83gthn7bz7Vwlch/ILMZdI
+         wIaDKr7vcniZtoMNy3lD/h/69aXElTe7llQKyi7CiSxiCW81S0fpaKmdMx94d/ttWTkP
+         Wmp24940QBsXiGYm5N7s6IoTSB17fmK8ntdwiHIZc2w4P6rVAm0Kvh/UAP/ZYwQWC9jL
+         tQXi0Hiru5m95RKbiSpsR4bUiqEGUdrnW5icM4iPS6DbY81lXQ3QL1S6TlurGKW9+Val
+         UMkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MTnGULPPBpVNWCOVN13Xb6AY4r57BeO8vUuKmPmQoTw=;
- b=kQR6Ss35Ib9Li1ZbQ+W5T/KcnIrh18ft+XjUsDS6SirDMvDNz1HmYiPu+A3XG23Jjoa69yioKK/pzZx1V3khsBiUAIqKgidbgAgRGGqvs82N9F5jBQc5tOVzCnbaE35+R0lnVLtSRfkw3ZDZ134qbhEH/E8dof159C9ybN+VUac=
-Received: from CH2PR14CA0023.namprd14.prod.outlook.com (2603:10b6:610:60::33)
- by LV3PR19MB8780.namprd19.prod.outlook.com (2603:10b6:408:288::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
- 2026 15:50:27 +0000
-Received: from DS2PEPF00003446.namprd04.prod.outlook.com
- (2603:10b6:610:60:cafe::3f) by CH2PR14CA0023.outlook.office365.com
- (2603:10b6:610:60::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.21 via Frontend Transport; Mon,
- 23 Feb 2026 15:50:26 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 84.19.233.75)
- smtp.mailfrom=opensource.cirrus.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=opensource.cirrus.com;
-Received-SPF: Fail (protection.outlook.com: domain of opensource.cirrus.com
- does not designate 84.19.233.75 as permitted sender)
- receiver=protection.outlook.com; client-ip=84.19.233.75;
- helo=edirelay1.ad.cirrus.com;
-Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
- DS2PEPF00003446.mail.protection.outlook.com (10.167.17.73) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.12
- via Frontend Transport; Mon, 23 Feb 2026 15:50:26 +0000
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 7D584406541;
-	Mon, 23 Feb 2026 15:50:25 +0000 (UTC)
-Received: from [198.90.208.24] (ediswws06.ad.cirrus.com [198.90.208.24])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 70CF282024B;
-	Mon, 23 Feb 2026 15:50:25 +0000 (UTC)
-Message-ID: <16fc29fb-f6e7-4d64-91cd-419bb7d42c2d@opensource.cirrus.com>
-Date: Mon, 23 Feb 2026 15:50:25 +0000
+        d=gmail.com; s=20230601; t=1771861896; x=1772466696; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=npGY86N71VPo4TOfv73Omx9yZ3z0Eb9N82/SaZDWxbc=;
+        b=Bez0+ejtvpYWPD6Kti1bkjLrHh/4ih0eYIM0CLxjHJVlyC5lHQHjEKF0CNkHaDuEqj
+         cX2cnDEAf7qRrLs8/C3MibBqjq4NnO55kbXTfuH8/Nxx6jwnOMpahcd+BT6S/CdCi1JH
+         KUJtx0cspJycQjPwSfacE7jXqTjOKa2T5ILFwWyAwyTfTP05EQrGoHDnILUdu9FWad3o
+         qbEmW4NoUFk3SaZ6xWr4LES3oxs34gzL9jKWeuyFPeI3DkWSJDZv4Gpd6GKXlNwQMJpf
+         nVxvrZuxvOrPFJhe7ZUNsnwKzjKRrU4q7YjLGxGI51cWL7miac2P1Y9+lB0iWh/Q5Nv6
+         YUlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771861896; x=1772466696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=npGY86N71VPo4TOfv73Omx9yZ3z0Eb9N82/SaZDWxbc=;
+        b=t567Q7KGQnI3OcF4iopyQWYoIkPt0yxm2MsQEzNUUTHjjOsYpcALZXdaB9CHP+qYfC
+         rVT/GtrWNYvfZaE75wn3cWWfP/4KnQaTGjDDqRkThrdvGxNqiveZZpDPaadRsHuwYSdB
+         y6kpN7LgMxFfCmMfSrTNXOQBpai8bY7ZfOOZ3rl5HFdmpurC1GqZt4F3hy8vGWiZof1z
+         2Mh/BHLsPJcL4iJiIRpie0b5pLdqFzSEQP3EOjifCerOH+cX280JB1sTDgi2SngZvyjR
+         J48yPIgpw8PUD6s1CZdvcAgtrpaS5ODQeOXA+zocsPRqD4A++5WIlQUtGb+rh/tuQerE
+         rLYA==
+X-Forwarded-Encrypted: i=1; AJvYcCVC2bwF5Yj0l0W7Yn5faugpaEx9zUSnbnyY+0CsrfYIHQ8rbnSRklGXcBM2zHH5EArj9tIjF0Xhx7s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnQ1lE8vEF6po5zbOx7BYg06p1e/2is8SZZyx6In0tf+oQz2u+
+	O3hLPLy7EaFFlMnVO8Qv9m58i/vYET+UI9BBTxXQo1PSoGwgA18ZzKWK1oH9CQ7UyrnRb6dtkps
+	3fhYdBw8E0/mW5eUxxbJ47dsGsWwBoEk=
+X-Gm-Gg: AZuq6aIt70VchkwC8Qs7iDTo3cHQl+IFFuI6qD7evVkIVCB3tLhzOYwh+CweylXIymz
+	rtjR455y03GcSnNwa1uz9Fr0RDburNz6djJrTi2zo+BtJW4jeIyVnDv+2lpKzJZcltwaOVZ5zA/
+	OFvAIChUfRho7rPMMIuN5O3IbJ19b0fBLIGT/GNJ+nYLcVUyfDmg1LkmUSzz96xY/3N6QrkrfLG
+	LMZeuQ/jILynhbtseMfQJaelNr41jF51BZhS4cr/OotKtnlsRlP2NtqRPsI27ELR0kVQHE6jSkw
+	kOlVcbB5HF9G2ORO+yS0eVa9O8dq99NOS1zrDAymZANOnJyCfXqf8iLcHHLuTSC1V3yP5Xy9Cbn
+	3PxVi2RI=
+X-Received: by 2002:a17:906:5ad6:b0:b8f:e424:ae56 with SMTP id
+ a640c23a62f3a-b9081badd6emr413937066b.44.1771861895691; Mon, 23 Feb 2026
+ 07:51:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] platform/x86: serial-multi-instantiate: Add GPIO
- chip select support for SPI devices
-To: Khalil <khalilst@gmail.com>, broonie@kernel.org, hdegoede@kernel.org,
-        ilpo.jarvinen@linux.intel.com
-Cc: linux-spi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260215135524.1171065-1-khalil@rentman.nl>
- <20260215135524.1171065-2-khalil@rentman.nl>
-Content-Language: en-GB
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
-In-Reply-To: <20260215135524.1171065-2-khalil@rentman.nl>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003446:EE_|LV3PR19MB8780:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6a81461-90ac-43a7-4181-08de72f34398
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|61400799027|82310400026|36860700013|376014|54012099003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UEh0ZFhuQkZLSDQySzZQTzNrNi9uOWJZbGtPcjNkY0ZVUjEvZVJaMXFVVE9E?=
- =?utf-8?B?aXl4dkY3aE9FV21CclhiL3M2dVZLT3V3cTB2NFM1cjZ3VmhteHRjb1NLUVZP?=
- =?utf-8?B?M05tSU1kK1N5dnJVSUJZdkN1V1RSVlpaZ1JFQjZJYnc1NjJKb3BLMGpmUkp4?=
- =?utf-8?B?aEVrNXBpZTg0bW5QdHVTblM1eU9NR29LSzlzL3grRlpSTUltdHZ2YmVmRExq?=
- =?utf-8?B?dXZMeDR3aHRSekJ4SWQrL0pObUtQYWlEd2xKR2ROY2dobVNVVlkrN2lxejlr?=
- =?utf-8?B?QzlQckVaYVordXBoNkhmQzk4b29FeUFYVDNjVXpRM1Q2ZmxPbktSZ1dtZndW?=
- =?utf-8?B?NHlScHRRUzhLT21nTUFRYUdQRXZqYlY3VHZITENwZ2R1ZU9Cem0wVjBkVUtH?=
- =?utf-8?B?bEFPLytrSU13ZDIzd29YM0xXMXdkNzJWR2IyaUV0cUtZd1VPMFFtbm1CTFJ4?=
- =?utf-8?B?ZHZTcjRFY0JocmVQbVFTRTdDQ1pSaG1rVWVESFkva0pmV2d5OVc4NVdtTFVZ?=
- =?utf-8?B?dEdrdzdzWUtsd1pnSjhIRXNkY2lwMkpNNjBINi9RekNReDYyMU5rbzIwcGV4?=
- =?utf-8?B?K2NIQk55VVRQVUluQWYxZlNCWnZHaXEzS3UwM1R5OTRXOWEvc0VaYmJpWEsz?=
- =?utf-8?B?TXc0TGJ3N2JTZDBEa3FMczdkcXIrZlRId3cydW11b2RUc3VUMlY4MzNTZzlr?=
- =?utf-8?B?RXFkeUtocGFxbkVVL1J1S3VVb3JBR3hYUSsrcE1Xb096d1ZVL3ZxMWpKam9h?=
- =?utf-8?B?NHpiSkRwNkpDdUpJZjNVSnNhdmhwRlIzVGJHM0E3Mk5oeW1md0Fnd0pCYld5?=
- =?utf-8?B?cGhVNGRYa2ZLaUhlYkJLc3VuR0ppdmd4UUVSbkdVNk9kcVN0OXlZZDlqMGtR?=
- =?utf-8?B?NGdrYzM5MFMxK09zUm1yY25QQ1JTVU8wUE94aVdOSU9KNzFEdGZqY2xpUExv?=
- =?utf-8?B?RHJjTitKejEzWmtuNi91ZXhyM0RpZ0tzUXJtZ1RXU3pEdnNpMGZzSXcvWnJR?=
- =?utf-8?B?dHVNdk9PellCWmorR0IyZStQMDNzMGZ4bS85UEg4OE5BWVVEa0RjaHpPTzVp?=
- =?utf-8?B?YXhFYWJaM2JUQnFoa0NWUEMxOTUxbVNyeTNJYk9nZFJXdHMwa3g0VFJXWXpu?=
- =?utf-8?B?Lyt1WmpyQUlOU2haZnVwemVsa0g3RGFJOUhoaEFWWHA0UGh6NVM2RTE5ZkZ2?=
- =?utf-8?B?bkpaeDExYllFazJBRzBad3NDQzI1TGVINlhuakdNN3RHYnYvWWlZcjkyMUpq?=
- =?utf-8?B?aFIwVngyeHE3cVhrN0VuYm5JcDd2ZjVhbG1PcjR5c3UzVTMzZ2YzSGw4TFd1?=
- =?utf-8?B?MmJPelg3S0lyYkFETWZjMUhDTFBxdkxDM2ZyeVZsYzMrc3RpNmNZNXpKOG1l?=
- =?utf-8?B?UmxrZkdJMVBTa29lYWhaa3pmM2w3ZUhld0NnOUxPamVvczIvOEEvbDkvU3VV?=
- =?utf-8?B?V2VUZWJYV3NSMkE1RGVFRTh0UnUzYXBDYzhuZWZuUkhRQ1RYUHhjcitncDVH?=
- =?utf-8?B?d0JGcUloL2Q4amN4TzRRQURENzJNRWtsYmlTOW5xOUFOc0NuM20xR3Q5MmlZ?=
- =?utf-8?B?cktJaEJPdGVtQTJCaW1NUDR3bFMrbkx3QUtNbW5COXZVNi9KUHlvZmFNeW00?=
- =?utf-8?B?QmtraUdyYjNtMWpaekpRU1VnOStlZUFPR3ZlZFhFNTU2SmRQZGNXNjRZNnB4?=
- =?utf-8?B?K1hoY3FNNjR2RDFkTjJiL1lFL2srR3NYNDh6d3VkTVphNWIzQisxRmM4MEZ1?=
- =?utf-8?B?QnAzNnRLN1BuOUxpOENEbmRyZXVFVjlxY2JTbEJNTXhWbDZrcUhmb0xNK1JE?=
- =?utf-8?B?cjdXRXhNcmZYamdjTnowYm1qbnpGWUVOckE1QmcyVm9hbS9vSlpVV25sVUhm?=
- =?utf-8?B?YWZCMmVkYkRIbVRMZUtCWXA5bkdFRVJzL1VJRzY4bG5HL29qKzNwRklKZnZw?=
- =?utf-8?B?d0xQZ1N6eUFhOFZpd3M4SFQ5SWt2MW8zQmVwZ1JKNWcrOC9KenJMa0FGYkNV?=
- =?utf-8?B?dGdYSlhMZTBiU3Z3VThhbjZJcm5SU0Z4bFEzdkU3WjZEZ3NuczU3Nmc3Rkta?=
- =?utf-8?B?ek84V3FZSUNWWjJRTFJBUTB4bjlLaGZnWFZjYzhBcm51TDRFdEFvdE8vT0pl?=
- =?utf-8?B?clY4d1pFZXEwT0NqN3NpNWV3M0R3MkRwYmdGa0hNZEE3ZzZmOEtwTzF5Z2po?=
- =?utf-8?B?Q2M2TUl1dnV6NlFTVTRyTGVkRmQ5N2NzUXIzbytxL2R5dVZPN0hrSURTZEFm?=
- =?utf-8?B?ejBKRVQ3SnQzL2k0WHI3c3BqaUJRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(61400799027)(82310400026)(36860700013)(376014)(54012099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ZKmqs/lS9i5mmp4bTzY5e283gB6buGG3CKhw7YU1eVWpboS+uwGWUS+9fCmpSG0TwDN+JfxfheOw74bNttEGO929TZRuiVb9zJLOGcjYxgOm2Ic3L7WMixUxHuXJsf4tcDl8HJmBY69jroK4K9advLeeeng1UthCEKiZYGllSMZ5c3AUe85CUxgLAWODEm665HmQsH60jGiG5HAIMViDMlF1S4/NgaFbHW0Hx/iq/0ZeoP8Wprr29zs+FLZ55iZ5Wp9S+3f049LliJYJYvbx7dpGcaOafxu8gJlyPyJDOslS//wWwS6NRhk2m+M+zm21THcrLpJY9/GYw40tGbSb2VI9tcZm6PEKA2eqZ/HIW5E5oWrmhcMafavRBDrWN9dWYy2xXVCtuhpnZgtWwaGwgIqkL7fFqH7vcKVVgGGCJCcqAsIVhGpnzu0/VDzdsrj1
-X-OriginatorOrg: opensource.cirrus.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 15:50:26.7091
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6a81461-90ac-43a7-4181-08de72f34398
-X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-DS2PEPF00003446.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR19MB8780
-X-Proofpoint-ORIG-GUID: 6b9xUetQXuGSPXrx6DNBP9oQX__0gdUl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDEzNiBTYWx0ZWRfX2aloI9mr6x3P
- aj8ZxbjugpcBtGDT6WSSuF9XjIKK2x7s502ua2AfXd3VtqwiA7FtAeRz8dwoEf2d9v4dLSOpCZI
- TOMvP87jS2Dn+jQuIR4sBSmCmnVcR8pN4jmdRWf0SaPG4euuG+XUOX8VeLj0t09mqqLmb6TQHRv
- GShG2Tzq01HFpGmv/O2nNtrmpSbGQTYLdf0H1XS4Tp+xe/ZzSgxKEXo9YwNxUfi49s+v6PCmrXU
- h/hRrGeu1sDcRm8cRpVgcEA0Jlm8ZRfvHriP/vmx+SgwQUCJQdSWpD7Lm+yHnv0GE2sMK0oDaFE
- SsqiE9dVGdKnYTzNpBwGO3n3njwVeq837bM8e4uOFWr4zOlyO5rJD2AGVd8T+P38HecR0gEjL0V
- 7cPt1w8uxwLMj5ZLAazlc+6Lk1KU9WFGqY5VHu77mmg7kIxhDSYVeidD4HkWsXMTS8dLPK/Rk6P
- /xW6ePAnrwar+WLuzjg==
-X-Authority-Analysis: v=2.4 cv=V99wEOni c=1 sm=1 tr=0 ts=699c774b cx=c_pps
- a=gCYXggIpC+w3u2dojYR5Vg==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=iX4cTi3TZMoOKdANLEfx:22 a=Dj2-6B8FqX4mGL0U3gbX:22
- a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=w1d2syhTAAAA:8 a=_7ZiBY8qa2YVD9SfQ3EA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 6b9xUetQXuGSPXrx6DNBP9oQX__0gdUl
-X-Proofpoint-Spam-Reason: safe
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 23 Feb 2026 17:50:59 +0200
+X-Gm-Features: AaiRm51McMZohKyigNQFIbQDImiJ8vF_g2F0DjapyVKPe6Rkgx4x17MorqEdw1M
+Message-ID: <CAHp75VeWD5A0r7-Uayyte1ZXXxdhLixd+z_y0xNeki0N+Ro=jQ@mail.gmail.com>
+Subject: Re: [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector management by
+ removing devres auto-free
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, 
+	"Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>, 
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>, Even Xu <even.xu@intel.com>, 
+	Xinpeng Sun <xinpeng.sun@intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Jiri Kosina <jikos@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Zhou Wang <wangzhou1@hisilicon.com>, 
+	Longfang Liu <liulongfang@huawei.com>, Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+	Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>, 
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>, 
+	Karol Wachowski <karol.wachowski@linux.intel.com>, Min Ma <mamin506@gmail.com>, 
+	Lizhi Hou <lizhi.hou@amd.com>, Andreas Noever <andreas.noever@gmail.com>, 
+	Mika Westerberg <westeri@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>, 
+	Will Deacon <will@kernel.org>, Xinliang Liu <xinliang.liu@linaro.org>, 
+	Tian Tao <tiantao6@hisilicon.com>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Srujana Challa <schalla@marvell.com>, 
+	Bharat Bhushan <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>, 
+	Hans de Goede <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Nirmal Patel <nirmal.patel@linux.intel.com>, 
+	Kurt Schwemmer <kurt.schwemmer@microsemi.com>, Logan Gunthorpe <logang@deltatee.com>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao <bingbu.cao@intel.com>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
+	linux-i3c@lists.infradead.org, dmaengine@vger.kernel.org, 
+	Philipp Stanner <phasta@kernel.org>, netdev@vger.kernel.org, nic_swsd@realtek.com, 
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-usb@vger.kernel.org, iommu@lists.linux.dev, 
+	linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org, 
+	mhi@lists.linux.dev, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org, 
+	Jonathan Derrick <jonathan.derrick@linux.dev>, linux-pci@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 15/02/2026 1:55 pm, Khalil wrote:
-> To: broonie@kernel.org, hdegoede@kernel.org, ilpo.jarvinen@linux.intel.com
-> Cc: rf@opensource.cirrus.com, linux-spi@vger.kernel.org,
->      platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-> 
-> Some ACPI platforms (e.g., HP/ASUS laptops with Intel Lunar Lake and
-> dual CS35L56 amplifiers) have a broken cs-gpios property in the SPI
-
-The only Asus model we are aware of with CS35L56 and a cs-gpios problem
-is the GU605C. That was fixed by a BIOS update so doesn't need a kernel
-workaround. Is this the Asus you are referring to? Or is there another?
-
-> controller's _DSD that only declares the first chip select. The second
-> chip select GPIO is defined as a GpioIo resource in the peripheral's
-
-Maybe the second. Maybe the first. It depends on the hardware.
-Some laptops have four amps and four chip selects.
-
-> ACPI node but is not referenced by the controller.
-> 
-> This causes the SPI framework to have no GPIO descriptor for CS > 0,
-> so the chip select line is never toggled for the second device.
+On Mon, Feb 23, 2026 at 5:32=E2=80=AFPM Shawn Lin <shawn.lin@rock-chips.com=
+> wrote:
 >
+> This patch series addresses a long-standing design issue in the PCI/MSI
+> subsystem where the implicit, automatic management of IRQ vectors by
+> the devres framework conflicts with explicit driver cleanup, creating
+> ambiguity and potential resource management bugs.
+>
+> =3D=3D=3D=3D The Problem: Implicit vs. Explicit Management =3D=3D=3D=3D
+> Historically, `pcim_enable_device()` not only manages standard PCI resour=
+ces
+> (BARs) via devres but also implicitly triggers automatic IRQ vector manag=
+ement
+> by setting a flag that registers `pcim_msi_release()` as a cleanup action=
+.
+>
+> This creates an ambiguous ownership model. Many drivers follow a pattern =
+of:
+> 1. Calling `pci_alloc_irq_vectors()` to allocate interrupts.
+> 2. Also calling `pci_free_irq_vectors()` in their error paths or remove r=
+outines.
+>
+> When such a driver also uses `pcim_enable_device()`, the devres framework=
+ may
+> attempt to free the IRQ vectors a second time upon device release, leadin=
+g to
+> a double-free. Analysis of the tree shows this hazardous pattern exists w=
+idely,
+> while 35 other drivers correctly rely solely on the implicit cleanup.
 
-It fails before that matters. The driver for that device will never be
-probed because SPI core rejects the invalid chip select.
+Is this confirmed? What I read from the cover letter, this series was
+only compile-tested, so how can you prove the problem exists in the
+first place?
 
-> Fix this by acquiring the chip select GPIO from the ACPI GpioIo resource
-> in serial-multi-instantiate and installing it on the controller's
-> cs_gpiods array. The GPIO must be set on the controller (not the device)
-> because __spi_add_device() unconditionally overwrites spi->cs_gpiod[]
-> from ctlr->cs_gpiods[cs].
+> =3D=3D=3D=3D The Solution: Making Management Explicit =3D=3D=3D=3D
+> This series enforces a clear, predictable model:
+> 1.  New Managed API (Patch 1/37): Introduces pcim_alloc_irq_vectors() and
+>     pcim_alloc_irq_vectors_affinity(). Drivers that desire devres-managed=
+ IRQ
+>     vectors should use these functions, which set the is_msi_managed flag=
+ and
+>     ensure automatic cleanup.
+> 2.  Patches 2 through 36 convert each driver that uses pcim_enable_device=
+() alongside
+>     pci_alloc_irq_vectors() and relies on devres for IRQ vector cleanup t=
+o instead
+>     make an explicit call to pcim_alloc_irq_vectors().
+> 3.  Core Change (Patch 37/37): With the former cleanup, now modifies pcim=
+_setup_msi_release()
+>     to check only the is_msi_managed flag. This decouples automatic IRQ c=
+leanup from
+>     pcim_enable_device(). IRQ vectors allocated via pci_alloc_irq_vectors=
+*()
+>     are now solely the driver's responsibility to free with pci_free_irq_=
+vectors().
+>
+> With these changes, we clear ownership model: Explicit resource managemen=
+t eliminates
+> ambiguity and follows the "principle of least surprise." New drivers choo=
+se one model and
+> be consistent.
+> - Use `pci_alloc_irq_vectors()` + `pci_free_irq_vectors()` for explicit c=
+ontrol.
+> - Use `pcim_alloc_irq_vectors()` for devres-managed, automatic cleanup.
 
-If you change __spi_add_device() so it doesn't overwrite preset cs_gpiod
-you could set it on the device. You wouldn't have to mess around with
-the controller configuration after the controller has probed.
+Have you checked previous attempts? Why is your series better than those?
 
-Alternatively, if you can make the amp driver probe, it can fix itself
-up like the cs35l41_hda driver does. Maybe you can use this
-special case in the SPI core:
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/spi/spi.c?h=linux-6.19.y#n616
+> =3D=3D=3D=3D Testing And Review =3D=3D=3D=3D
+> 1. This series is only compiled test with allmodconfig.
+> 2. Given the substantial size of this patch series, I have structured the=
+ mailing
+>    to facilitate efficient review. The cover letter, the first patch and =
+the last one will be sent
+>    to all relevant mailing lists and key maintainers to ensure broad visi=
+bility and
+>    initial feedback on the overall approach. The remaining subsystem-spec=
+ific patches
+>    will be sent only to the respective subsystem maintainers and their as=
+sociated
+>    mailing lists, reducing noise.
 
-...
-
-> +/*
-> + * ACPI GPIO mapping for the chip select GpioIo resource.
-> + * Maps "cs-gpios" to the first GpioIo resource in the ACPI _CRS.
-> + */
-> +static const struct acpi_gpio_params smi_cs_gpio_params = { 0, 0, false };
-> +
-> +static const struct acpi_gpio_mapping smi_cs_gpio_mapping[] = {
-> +	{ "cs-gpios", &smi_cs_gpio_params, 1 },
-> +	{ }
-> +};
-> +
->   #define IRQ_RESOURCE_TYPE	GENMASK(1, 0)
->   #define IRQ_RESOURCE_NONE	0
->   #define IRQ_RESOURCE_GPIO	1
-> @@ -114,8 +128,11 @@
->   	struct acpi_device *adev = ACPI_COMPANION(dev);
->   	struct spi_controller *ctlr;
->   	struct spi_device *spi_dev;
-> +	struct gpio_desc *cs_gpio = NULL;
->   	char name[50];
->   	int i, ret, count;
-> +	bool gpio_mapped = false;
-> +	u16 cs;
-> 
->   	ret = acpi_spi_count_resources(adev);
->   	if (ret < 0)
-> @@ -139,6 +156,72 @@
->   		}
-> 
->   		ctlr = spi_dev->controller;
-> +		cs = spi_get_chipselect(spi_dev, 0);
-> +
-> +		if (cs >= ctlr->num_chipselect) {
-> +			dev_info(dev, "Increasing num_chipselect from %u to %u for CS%u\n",
-> +				 ctlr->num_chipselect, cs + 1, cs);
-> +			ctlr->num_chipselect = cs + 1;
-> +		}
-> +
-> +		/*
-> +		 * For devices with CS > 0, use GPIO chip select from ACPI
-> +		 * GpioIo resource. The GPIO must be set on the controller's
-> +		 * cs_gpiods array (not the device's cs_gpiod) because
-> +		 * __spi_add_device() overwrites spi->cs_gpiod from
-> +		 * ctlr->cs_gpiods[cs]. Also reallocate the array since
-> +		 * a broken ACPI cs-gpios property may have undersized it.
-> +		 *
-> +		 * SPI_CONTROLLER_GPIO_SS ensures the framework calls both
-> +		 * the GPIO toggle and controller->set_cs (for clock gate
-> +		 * management on Intel LPSS controllers).
-> +		 */
-
-Only do this fixup for models where you know what the cs-gpios mappings
-should be.
-
-> +		if (cs > 0 && !gpio_mapped) {
-> +			ret = devm_acpi_dev_add_driver_gpios(dev, smi_cs_gpio_mapping);
-> +			if (ret)
-> +				dev_warn(dev, "Failed to add GPIO mapping: %d\n", ret);
-> +			else
-> +				gpio_mapped = true;
-> +		}
-> +
-> +		if (cs > 0 && gpio_mapped && !cs_gpio) {
-> +			cs_gpio = devm_gpiod_get(dev, "cs", GPIOD_OUT_HIGH);
-> +			if (IS_ERR(cs_gpio)) {
-> +				dev_warn(dev, "Failed to get CS GPIO: %ld\n",
-> +					 PTR_ERR(cs_gpio));
-> +				cs_gpio = NULL;
-> +			} else {
-> +				dev_info(dev, "Got CS GPIO for amp CS%u\n", cs);
-> +			}
-> +		}
-> +
-> +		if (cs > 0 && cs_gpio) {
-> +			/*
-> +			 * Set GPIO on the controller's cs_gpiods array so
-> +			 * __spi_add_device() will propagate it to the device.
-> +			 * Reallocate the array to fit the new num_chipselect.
-> +			 */
-> +			struct gpio_desc **new_gpiods;
-> +
-> +			new_gpiods = devm_kcalloc(&ctlr->dev,
-> +						  ctlr->num_chipselect,
-> +						  sizeof(*new_gpiods),
-> +						  GFP_KERNEL);
-> +			if (new_gpiods) {
-> +				if (ctlr->cs_gpiods)
-> +					new_gpiods[0] = ctlr->cs_gpiods[0];
-> +				new_gpiods[cs] = cs_gpio;
-> +				ctlr->cs_gpiods = new_gpiods;
-> +				ctlr->flags |= SPI_CONTROLLER_GPIO_SS;
-
-Messing with the configuration of a probed SPI controller seems risky.
-
+--=20
+With Best Regards,
+Andy Shevchenko

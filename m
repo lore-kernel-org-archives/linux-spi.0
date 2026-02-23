@@ -1,176 +1,148 @@
-Received: from mail-m3274.qiye.163.com (mail-m3274.qiye.163.com [220.197.32.74])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4044C3090C1;
-	Mon, 23 Feb 2026 16:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E543A2F3620;
+	Mon, 23 Feb 2026 16:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862993; cv=none; b=NZWiBPIlGdmnFAg3C+bwqlesBjeaxNCoVhpHyuSf2OVtmR+7ETv2ehkBtOlM8nm9C/Y0z/FIqBhUNWU03Ftq+uIpEXP9vlMzI4Yxp/TBXr2H5/pFrUN0p7ijiRuQEM/RE4i+RGp0g22jfwirHwZn+Yht4hon1Pm+npx1SmvTnno=
+	t=1771863779; cv=none; b=qe9CEQtoutmVCFs6GGrQUmvQ2B2yLO8GRXyjBZs2GxHKtieKSKkLizo+uVlGEIlBb/pC5wJOAXnIS7BDzWbEH8WuSvnCmGiBMhyvOkjSwC6lq0x7KWi5kOHrA0+JU9JhSDj4TkzpRCjcRhzRryiiSr5cNs9Vvx65O4BdO2Tncxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771862993; c=relaxed/simple;
-	bh=AHx0h1hO5knesFXxZVApDK1swS5oE7zMU5mMkaIob88=;
-	h=Cc:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=gZPtP7sBDWcXNLShBalb+Y2iEoEZxwfbJ8Bi48jQEm+hWXxoddw8cWJT49xKfIkcajFyx/rzcHN/UE6ytJau09R6W7AqO9sb80tUHdNfe/a63OdFKgXbYdgPlGGd0dReAEhrN+ZZI6Lo3e3PyFRdJsUmd0dL00girDGCcY3r/2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=QIa8w6+m; arc=none smtp.client-ip=220.197.32.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1771863779; c=relaxed/simple;
+	bh=Cdaxi19l2TGGr4992XgL6FO46fr0lrMEMsHoFPXvz1w=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ddoqUD3w8NJgRjOsIuNqB0wP2qyN+EAWH28gCzEMS83jqSD71h7nmQxWCS5t+cMf2NvC0kr8Yjq+cxe2LxdGRcMi1vFeIg9TxJrKjTix/T6CTDPwgOW+WptXNDfzFEV/rkMwVlfR4RdSSDb5X+fDfePuxc+nSXm5qeKF7fWOfl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=gUusct6g; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="QIa8w6+m"
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34b44f421;
-	Tue, 24 Feb 2026 00:09:40 +0800 (GMT+08:00)
-Cc: shawn.lin@rock-chips.com, Bjorn Helgaas <bhelgaas@google.com>,
- "Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
- Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
- Even Xu <even.xu@intel.com>, Xinpeng Sun <xinpeng.sun@intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Jiri Kosina <jikos@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>,
- Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>,
- Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
- Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- "David S . Miller" <davem@davemloft.net>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
- Maciej Falkowski <maciej.falkowski@linux.intel.com>,
- Karol Wachowski <karol.wachowski@linux.intel.com>,
- Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Tomasz Jeznach
- <tjeznach@rivosinc.com>, Will Deacon <will@kernel.org>,
- Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Srujana Challa <schalla@marvell.com>, Bharat Bhushan
- <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>,
- Hans de Goede <hansg@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>,
- Mark Brown <broonie@kernel.org>, Nirmal Patel
- <nirmal.patel@linux.intel.com>, Kurt Schwemmer
- <kurt.schwemmer@microsemi.com>, Logan Gunthorpe <logang@deltatee.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bingbu Cao <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
- linux-input@vger.kernel.org, linux-i3c@lists.infradead.org,
- dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>,
- netdev@vger.kernel.org, nic_swsd@realtek.com, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
- iommu@lists.linux.dev, linux-riscv@lists.infradead.org,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
- mhi@lists.linux.dev, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>,
- linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux-mmc@vger.kernel.org
-Subject: Re: [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector management by
- removing devres auto-free
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
- <CAHp75VeWD5A0r7-Uayyte1ZXXxdhLixd+z_y0xNeki0N+Ro=jQ@mail.gmail.com>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <cb878741-7b61-b72c-5a72-6ed6d5091b1f@rock-chips.com>
-Date: Tue, 24 Feb 2026 00:09:37 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="gUusct6g"
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NBpInR3320843;
+	Mon, 23 Feb 2026 11:22:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=ac9Kvi9CHa4lgEFGFhZIyprjUM9
+	pkhV9WRe+ewKRBnU=; b=gUusct6gn0n1RKTUkt28N4UvlVZ3EXh5zFm36qlRTSX
+	jO7215llHyXQjLsNBvgL2M2fkaCxjp7pcxoCTBKYT62pmZLEHUe3UkspzTslrSqX
+	akFkCYl3laGHLHCX3eRe8XhkrmiFDWKtYSFaQxa18ty2aSq8GmJXEj8M0uPylSRy
+	a04mkCBS1U2HfvxI2krdi5/iDgokd3ELoUWew2xjLm+hgXodxQdiJ4d5GQITQ1Pc
+	Vy506tkt8/esOfnQnsdq5s0MxDxl+Kv+k7Erc3wAi+l2/QitIC69xlRI2KuO4K6C
+	SflNEp+tUWjv0e6pKptMBmLY0FdeIXv5PXcnNZkiuAQ==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4cf7e1ywdd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 11:22:37 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 61NGMaeM031798
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 23 Feb 2026 11:22:36 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Mon, 23 Feb
+ 2026 11:22:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Mon, 23 Feb 2026 11:22:36 -0500
+Received: from HYB-b1tGeUj4GP1.ad.analog.com (HYB-b1tGeUj4GP1.ad.analog.com [10.48.65.247])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 61NGMJUb015342;
+	Mon, 23 Feb 2026 11:22:21 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Lars-Peter Clausen
+	<lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan
+ Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko
+	<andy@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sebastian
+ Reichel <sebastian.reichel@collabora.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+Subject: [PATCH v4 0/5] iio: adc: ad4080: add support for AD4880 dual-channel ADC
+Date: Mon, 23 Feb 2026 18:20:59 +0200
+Message-ID: <20260223162110.156746-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAHp75VeWD5A0r7-Uayyte1ZXXxdhLixd+z_y0xNeki0N+Ro=jQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c8b4376c609cckunm3fddd3f4988fc3
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQh9CQlYeGUkeS01CTB5IS0tWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUJNS0
-	pVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=QIa8w6+mvkPs5yiMg8fVRt+gi3F6m/qkhqhjD+6XgiSvEJjtpIRJHvdkclp/pXy7G5fSEbf/NetLr/rXCYIFm/CQEBB6zjl+aiz8R4JS9N+fvFShWzFTgOlhNPDfffXHGWPxdi8/iAaZQWZ16BNVBWgFXcFRVBUKCW34Wu0UCFI=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=scr8hCA+aPfGKwMjupeE8viSs7WuDndPG1pZF3mByMQ=;
-	h=date:mime-version:subject:message-id:from;
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=WsUm8Nfv c=1 sm=1 tr=0 ts=699c7ecd cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=0sLvza09kfJOxVLZPwjg:22 a=uXIjobp8t2wMuQ0fPvqm:22 a=gAnH3GRIAAAA:8
+ a=JEplbj-ZQJa3tgTfUoEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: kwCogNv7Wfgr9LUrJ-pDWMj7U249_wme
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDE0MCBTYWx0ZWRfX7n9/WxYbmUEp
+ LeIdbFu4gbYo9nqHHvWwWmcq0XxVTXGUXkecYsUIhjxBdL14YT5CU1Apc5EWSXAbMekzataWKjd
+ o6NzoHH0ANOBH4DD2Q1yw2/sRGZKdSR3Ls9J1J35etlpqJweqaxc+1AYUWpetZCM+4loOOORVOU
+ Ozwt3Z9fKFYQ4PuSs3O1GEZV64Qx+SmdTuQIUeVEiuBfe2+Yw2FicoCCfUfcdj7DWt2ey3Esvrf
+ e/7xxjgVxWWVY3+u8GmumbQs2d4jFB2GMEaNsNYA1tcr+aqded2ZRUrrjK+gi2vgWSsT6S5S1it
+ bZMkiHdcV0wdFeBYuJLLY3JbxPaw6Gthg/SqXOSj0kmyCNuhb5+yVyUREW1LsavM1zHgCoy9JD+
+ UusrUkWmHOfMrDcIKAUaB0Qhjy4VY9N0Czixzkfz1sCds6lbOjBNQosbrkEwvsoKd7tELDHKAsa
+ Zg3H4kD0q1STtQ37oYg==
+X-Proofpoint-ORIG-GUID: kwCogNv7Wfgr9LUrJ-pDWMj7U249_wme
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_03,2026-02-23_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 spamscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602230140
 
-Hi Andy
+Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
+the same family as AD4080.
 
-在 2026/02/23 星期一 23:50, Andy Shevchenko 写道:
-> On Mon, Feb 23, 2026 at 5:32 PM Shawn Lin <shawn.lin@rock-chips.com> wrote:
->>
->> This patch series addresses a long-standing design issue in the PCI/MSI
->> subsystem where the implicit, automatic management of IRQ vectors by
->> the devres framework conflicts with explicit driver cleanup, creating
->> ambiguity and potential resource management bugs.
->>
->> ==== The Problem: Implicit vs. Explicit Management ====
->> Historically, `pcim_enable_device()` not only manages standard PCI resources
->> (BARs) via devres but also implicitly triggers automatic IRQ vector management
->> by setting a flag that registers `pcim_msi_release()` as a cleanup action.
->>
->> This creates an ambiguous ownership model. Many drivers follow a pattern of:
->> 1. Calling `pci_alloc_irq_vectors()` to allocate interrupts.
->> 2. Also calling `pci_free_irq_vectors()` in their error paths or remove routines.
->>
->> When such a driver also uses `pcim_enable_device()`, the devres framework may
->> attempt to free the IRQ vectors a second time upon device release, leading to
->> a double-free. Analysis of the tree shows this hazardous pattern exists widely,
->> while 35 other drivers correctly rely solely on the implicit cleanup.
-> 
-> Is this confirmed? What I read from the cover letter, this series was
-> only compile-tested, so how can you prove the problem exists in the
-> first place?
+The AD4880 has two independent ADC channels, each with its own SPI
+configuration interface and LVDS data output. The driver uses
+spi_new_ancillary_device() for the second channel's SPI and requires
+two io-backend instances for the data interfaces.
 
-Yes, it's confirmed. My debug of a double free issue of a out-of-tree
-PCIe wifi driver which uses
-pcim_enable_device + pci_alloc_irq_vectors + pci_free_irq_vectors expose
-it. And we did have a TODO to cleanup this hybrid usage, targeted in
-this cycle[1] suggested by Philipp:
+This series includes:
+  - SPI core fix to allow ancillary devices to share parent's chip selects
+  - New devm_spi_new_ancillary_device() managed helper
+  - Refactored devm_iio_backend_get_by_index() for multi-channel backend lookup
+  - DT bindings update for AD4880
+  - Driver support for AD4880
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=msi
+Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4880.pdf
 
-> 
->> ==== The Solution: Making Management Explicit ====
->> This series enforces a clear, predictable model:
->> 1.  New Managed API (Patch 1/37): Introduces pcim_alloc_irq_vectors() and
->>      pcim_alloc_irq_vectors_affinity(). Drivers that desire devres-managed IRQ
->>      vectors should use these functions, which set the is_msi_managed flag and
->>      ensure automatic cleanup.
->> 2.  Patches 2 through 36 convert each driver that uses pcim_enable_device() alongside
->>      pci_alloc_irq_vectors() and relies on devres for IRQ vector cleanup to instead
->>      make an explicit call to pcim_alloc_irq_vectors().
->> 3.  Core Change (Patch 37/37): With the former cleanup, now modifies pcim_setup_msi_release()
->>      to check only the is_msi_managed flag. This decouples automatic IRQ cleanup from
->>      pcim_enable_device(). IRQ vectors allocated via pci_alloc_irq_vectors*()
->>      are now solely the driver's responsibility to free with pci_free_irq_vectors().
->>
->> With these changes, we clear ownership model: Explicit resource management eliminates
->> ambiguity and follows the "principle of least surprise." New drivers choose one model and
->> be consistent.
->> - Use `pci_alloc_irq_vectors()` + `pci_free_irq_vectors()` for explicit control.
->> - Use `pcim_alloc_irq_vectors()` for devres-managed, automatic cleanup.
-> 
-> Have you checked previous attempts? Why is your series better than those?
+Changes in v4:
+  - Add Fixes tag for the SPI ancillary CS conflict (patch 1)
+  - Collect Acked-by/Reviewed-by tags from Nuno Sá
+  - Drop redundant maxItems from io-backends in dt-bindings since
+    the items list already constrains the maximum (patch 4)
+  - Use spi_get_chipselect() instead of device_property_read_u32_array()
+    for ancillary device chip select lookup (patch 5)
 
-There seems not previous attempts.
+Antoniu Miclaus (5):
+  spi: allow ancillary devices to share parent's chip selects
+  spi: add devm_spi_new_ancillary_device()
+  iio: backend: add devm_iio_backend_get_by_index()
+  dt-bindings: iio: adc: ad4080: add AD4880 support
+  iio: adc: ad4080: add support for AD4880 dual-channel ADC
 
-> 
->> ==== Testing And Review ====
->> 1. This series is only compiled test with allmodconfig.
->> 2. Given the substantial size of this patch series, I have structured the mailing
->>     to facilitate efficient review. The cover letter, the first patch and the last one will be sent
->>     to all relevant mailing lists and key maintainers to ensure broad visibility and
->>     initial feedback on the overall approach. The remaining subsystem-specific patches
->>     will be sent only to the respective subsystem maintainers and their associated
->>     mailing lists, reducing noise.
-> 
+ .../bindings/iio/adc/adi,ad4080.yaml          |  53 +++-
+ drivers/iio/adc/ad4080.c                      | 243 ++++++++++++++----
+ drivers/iio/industrialio-backend.c            |  61 +++--
+ drivers/spi/spi.c                             |  69 ++++-
+ include/linux/iio/backend.h                   |   2 +
+ include/linux/spi/spi.h                       |   1 +
+ 6 files changed, 350 insertions(+), 79 deletions(-)
+
+-- 
+2.43.0
+

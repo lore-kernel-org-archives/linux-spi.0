@@ -1,188 +1,153 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4923377556;
-	Tue, 24 Feb 2026 10:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5DA36B05A;
+	Tue, 24 Feb 2026 10:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771928698; cv=none; b=SEbJpxHTywS2hhqMYf0NBVfQPfOs4jZyoDX1npIR7SVpSSq5z8XQ5bUXw9cG+Mq4hWsPSs9BzyZ4BEltmrrsyXtdIxzfgs/qU0QmCAMv1qKH602Z2fd5Sg8DHuMCVipUHa7q1Ng1CNWqV9A+cQpt2ZemRayxHbaKG6bUAMCrMrE=
+	t=1771929071; cv=none; b=OLVTFFyl4+E4Zghd82ow6BUOfe/43qb7kD/4VL3IJPFOzHSL+uO6lFIqZAe69O8iqHUAmde/lUJEd4zPw7A4C1y6KVeWZ7gy9FWseXn0Vxs4uNR9jlt/6PKfrs20szbR63E7PyRP1Yx0dmeMFeLelc0yITK16vHObzjDE/s49Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771928698; c=relaxed/simple;
-	bh=rN6bOSsyonJiEFKFzW6StaJ9I+cOMBZ+XopFVnwO9Hg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bi14nkNdlNjMd+Hqv6QSaF9q43tcXw1f/FC2o2rkYSfyKfqElec2QX+tRYHjQw/NlhZp8XO5Qy1O5JgbGO6KGNqttFv2pCmXTi/u90WQHQkgaOptIiYw/+CdmQU1LGfdrUOrjrv4NhHG7YBE2fa/CkZyO5D+Ebgi5cHuMYAgd+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XiuIMyb8; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1771929071; c=relaxed/simple;
+	bh=Xkb2MDt6xGYtR4mFfmU26Ues6I+i7U04Zx4BHV01rL4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mOPDpzWBI3TmKfZezm9PgCfYHi1te630UCuf0zPBXdsuWLYGQqcPLKbFAs1ZWjj9MvtrUZJhTgcOebVX8DDCsL2lQw6Kd/6YVwGf4v7eLob9HRkXrJPpRMxQg2Mb3PxIR8tzuJ3DXPRBDTB2Qe9z+CS5l9oJjsw5N3+p3gNZJIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oKvIyHka; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XiuIMyb8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771928697; x=1803464697;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rN6bOSsyonJiEFKFzW6StaJ9I+cOMBZ+XopFVnwO9Hg=;
-  b=XiuIMyb88odydvXw2I8YFdflwnP/6QRJy+pvMYFl9h8v/B+HN4H2zUC6
-   5n7eESVZvv0YAp8gYn2HO5oJ/Nld6YlmcXd31bPwmOYM3WUAS3+Ouc0Qh
-   HKrQ/6+HD+yZpIM9fZ6gCvXoq7PDEus3GIbqpirVeesyJFNnAoIZmDxZv
-   rsdY+2lOYN1iLd+boKVUt/iN8w/EepxY2KREm0rR+8rQqUrUDIQ4SB4GQ
-   h9D5/txMwtJvroACdpQrwT+Xm7y0xVeN+BOL4Yx906cYSa+QhagcANsiY
-   Z4xLrmcCfzVZi5oP+1/bre3ZRqDWDSSViHkq1buiybRSWpNTLDZ3gSIR9
-   Q==;
-X-CSE-ConnectionGUID: BydyrjkQR/qD+tevQpX0JQ==
-X-CSE-MsgGUID: ZZcFd1bGTZysYO/rE5eoUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="95554646"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="95554646"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 02:24:57 -0800
-X-CSE-ConnectionGUID: 87JvPVP8Qo2/kbxVj8XchA==
-X-CSE-MsgGUID: cw7/m4ZqRFC3mFKaRvcDpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="216025581"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.146])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 02:24:53 -0800
-Date: Tue, 24 Feb 2026 12:24:49 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-Message-ID: <aZ18cWyJ0KtcoU4B@smile.fi.intel.com>
-References: <20260223162110.156746-1-antoniu.miclaus@analog.com>
- <20260223162110.156746-6-antoniu.miclaus@analog.com>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oKvIyHka"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fKvBw4sPGz9vVL;
+	Tue, 24 Feb 2026 11:31:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1771929064; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xkb2MDt6xGYtR4mFfmU26Ues6I+i7U04Zx4BHV01rL4=;
+	b=oKvIyHkagUt14YjcbYzCVNDJBTWvjXhzWlALbZZ6Lw0fPfmU2t4YpBcyc2Qdi+4KzuI8TV
+	PjvG94lhGB3d4tDbhN17up+D5FZdjhr7Eh1RuLqgokQP0yhg0vn3xjpuF4oElqvj77ZKNu
+	uegXUTacyzp1TOx6rlp6O2U8X1QWdS9tD4xfi3YzpmsWUuiAO19VrBdX1JYDjqskBsAe26
+	7ZrmtEb59iLMfke4uJ9HpLJf18h82NcDhAuMAtTl7ubBJmU3SnbXScrAQtdjXn85JSKagc
+	9zeQm+tEOXbVSneuae/jh1kiLSnfiulfgc1bIwLohIi+JMrl0dUDX04SszIMag==
+Message-ID: <48297cc524736e7452def05448ece84260a4fd83.camel@mailbox.org>
+Subject: Re: [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector management by
+ removing devres auto-free
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, phasta@kernel.org
+Cc: Simon Richter <Simon.Richter@hogyros.de>, Shawn Lin
+ <shawn.lin@rock-chips.com>, Bjorn Helgaas <bhelgaas@google.com>, "Vaibhaav
+ Ram T . L" <vaibhaavram.tl@microchip.com>, Kumaravel Thiagarajan
+ <kumaravel.thiagarajan@microchip.com>,  Even Xu <even.xu@intel.com>,
+ Xinpeng Sun <xinpeng.sun@intel.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Jiri Kosina <jikos@kernel.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Zhou Wang
+ <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>, Vinod
+ Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, Jijie Shao
+ <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Sunil Goutham
+ <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,  Karol Wachowski
+ <karol.wachowski@linux.intel.com>, Min Ma <mamin506@gmail.com>, Lizhi Hou
+ <lizhi.hou@amd.com>,  Andreas Noever <andreas.noever@gmail.com>, Mika
+ Westerberg <westeri@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
+ Will Deacon <will@kernel.org>, Xinliang Liu <xinliang.liu@linaro.org>, Tian
+ Tao <tiantao6@hisilicon.com>, Davidlohr Bueso <dave@stgolabs.net>, Jonathan
+ Cameron <jonathan.cameron@huawei.com>, Srujana Challa
+ <schalla@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Antoine
+ Tenart <atenart@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Raag
+ Jadav <raag.jadav@intel.com>, Hans de Goede <hansg@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ Robert Richter <rric@kernel.org>, Mark Brown <broonie@kernel.org>, Nirmal
+ Patel <nirmal.patel@linux.intel.com>, Kurt Schwemmer
+ <kurt.schwemmer@microsemi.com>,  Logan Gunthorpe <logang@deltatee.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao
+ <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann
+ <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org,  linux-i3c@lists.infradead.org,
+ dmaengine@vger.kernel.org, netdev@vger.kernel.org,  nic_swsd@realtek.com,
+ linux-arm-msm@vger.kernel.org,  dri-devel@lists.freedesktop.org,
+ linux-usb@vger.kernel.org,  iommu@lists.linux.dev,
+ linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ linux-serial@vger.kernel.org, mhi@lists.linux.dev, Jan Dabros
+ <jsd@semihalf.com>,  linux-i2c@vger.kernel.org, Daniel Mack
+ <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>,
+ linux-pci@vger.kernel.org,  linux-gpio@vger.kernel.org, Mauro Carvalho
+ Chehab <mchehab@kernel.org>,  linux-media@vger.kernel.org,
+ linux-mmc@vger.kernel.org
+Date: Tue, 24 Feb 2026 11:30:28 +0100
+In-Reply-To: <aZ1rb8zoqmQmakDP@smile.fi.intel.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+	 <6223f3cb-693f-42e7-9147-30f659f08563@hogyros.de>
+	 <7ca512d133f7a3bcfe00e9b0b2af5fe5f147ad77.camel@mailbox.org>
+	 <aZ1rb8zoqmQmakDP@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223162110.156746-6-antoniu.miclaus@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-MBO-RS-ID: 60f04246675bc741d14
+X-MBO-RS-META: yon5wtfjc3h8rjostgzzw3ydtwwsf3ne
 
-On Mon, Feb 23, 2026 at 06:21:04PM +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC with
-> integrated fully differential amplifiers (FDA).
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface. The driver uses spi_new_ancillary_device() to
-> create an additional SPI device for the second channel, allowing both
-> channels to share the same SPI bus with different chip selects.
+On Tue, 2026-02-24 at 11:12 +0200, Andy Shevchenko wrote:
+> On Tue, Feb 24, 2026 at 08:39:43AM +0100, Philipp Stanner wrote:
+> > On Tue, 2026-02-24 at 13:14 +0900, Simon Richter wrote:
+> > > On 2/24/26 12:29 AM, Shawn Lin wrote:
+>=20
+> > > > When such a driver also uses `pcim_enable_device()`, the devres fra=
+mework may
+> > > > attempt to free the IRQ vectors a second time upon device release, =
+leading to
+> > > > a double-free. Analysis of the tree shows this hazardous pattern ex=
+ists widely,
+> > > > while 35 other drivers correctly rely solely on the implicit cleanu=
+p.
+> > >=20
+> > > Would it make sense to have a function pcim_free_irq_vectors(), to al=
+low=20
+> > > explicit freeing even if the device is otherwise managed, analogous t=
+o=20
+> > > pcim_iounmap()?
+> >=20
+> > We used to add those. In part because it is easier to port old users.
+> >=20
+> > Nowadays I tend to think that those APIs were more on the too-complex
+> > than too-simple side for a long time. As an expert or as the API
+> > designer you wouldn't expect it, but there are actually far too many
+> > users who came to believe they always have to use pcim_iounmap() and
+> > counter parts.
+> >=20
+> > If I could design it from scratch I would probably try to tell users to
+> > use the unmanaged versions instead of revoking the devres consequence.
+>=20
+> +many.
 
-...
+hm?
 
-> +static int ad4880_update_scan_mode(struct iio_dev *indio_dev,
-> +				   const unsigned long *scan_mask)
-> +{
-> +	struct ad4080_state *st = iio_priv(indio_dev);
-> +	unsigned int ch;
+>=20
+> > Devres is actually about your consequence always happening whenever the
+> > driver unloads, for whatever reason.
+>=20
+> I believe you meant "unbinds". The device<-->driver link can be broken
+> without unloading the driver.
 
-Not used outside of the loop, hence
+Yes, thx for pointing that out. Greg KH AFAIK always calls it "driver
+detach".
 
-> +	int ret;
-> +
-> +	for (ch = 0; ch < st->info->num_channels; ch++) {
-
-	for (unsigned int ch = 0; ch < st->info->num_channels; ch++) {
-
-should suffice.
-
-> +		/*
-> +		 * Each backend has a single channel (channel 0 from the
-> +		 * backend's perspective), so always use channel index 0.
-> +		 */
-> +		if (test_bit(ch, scan_mask))
-> +			ret = iio_backend_chan_enable(st->back[ch], 0);
-> +		else
-> +			ret = iio_backend_chan_disable(st->back[ch], 0);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int ad4080_setup(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4080_state *st = iio_priv(indio_dev);
-> +	unsigned int ch;
-> +	int ret;
-> +
-> +	for (ch = 0; ch < st->info->num_channels; ch++) {
-
-Same.
-
-> +		ret = ad4080_setup_channel(st, ch);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
->  }
-
-...
-
-> +	/* Setup ancillary SPI devices for additional channels */
-
-> +	if (st->info->num_channels > 1) {
-
-Isn't this an exact check the for-loop performs the first?
-
-> +		for (int i = 1; i < st->info->num_channels; i++) {
-
-Why is 'i' signed? And why not name it 'ch'?
-
-> +			st->spi[i] = devm_spi_new_ancillary_device(spi,
-> +					spi_get_chipselect(spi, i));
-> +			if (IS_ERR(st->spi[i]))
-> +				return dev_err_probe(dev, PTR_ERR(st->spi[i]),
-> +						     "failed to register ancillary device\n");
-> +
-> +			st->regmap[i] = devm_regmap_init_spi(st->spi[i],
-> +							     &ad4080_regmap_config);
-> +			if (IS_ERR(st->regmap[i]))
-> +				return PTR_ERR(st->regmap[i]);
-> +		}
-> +	}
-
-...
-
-> +	/* Get backends for all channels */
-> +	for (ch = 0; ch < st->info->num_channels; ch++) {
-
-	for (unsigned int ch = 0; ch < st->info->num_channels; ch++) {
-
-?
-
-> +		st->back[ch] = devm_iio_backend_get_by_index(dev, ch);
-> +		if (IS_ERR(st->back[ch]))
-> +			return PTR_ERR(st->back[ch]);
->  
-> +		ret = devm_iio_backend_enable(dev, st->back[ch]);
-> +		if (ret)
-> +			return ret;
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+P.

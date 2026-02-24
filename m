@@ -1,232 +1,176 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010050.outbound.protection.outlook.com [52.101.85.50])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013026.outbound.protection.outlook.com [52.101.72.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA52136BCF0;
-	Tue, 24 Feb 2026 09:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC28B36E47C;
+	Tue, 24 Feb 2026 09:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.26
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771925114; cv=fail; b=aub4UFeEBIBjcjTPl8372bmSksTSlNPDq08ZEnBaRDT1QmCWapRq3WRmwTEVzG5YPcPCBCQTo2bkHgGsjZx0IO4UNAZOl+H27pot3e7dQ1QGFKXepNVPJApD1+clAa6ILYDcz51uCDTiLCoTkoO68NEq4egViNNt78iy/XA0SMI=
+	t=1771925929; cv=fail; b=Goz8oXseDM9CxAxgv1ygOWWWU7ZbNB0fYK/9xN/1aaGM6YdcWPoDN0pDLmQKHXdIZQrvmJwtRx5AFCRTxQU2WK16GCI0cTuOBGsfJuNqMFrqlnwtxsN3DQTGkS7ZOnmpztwxbhwzPo3zaJDL93hpVQ2zNTLZpO3tjqkVUrqFeYo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771925114; c=relaxed/simple;
-	bh=3QQCCM1UipEVTgiLyvQHbuhxGVSUNaesVtLszLPrRtI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BpwHSydKHtsBPkGp36Y3BEFWU2/4O687/iKeQLPiLLlVuRAZv87xElUXQD7TrjuueiWmiOK5S9VP1nENamFQtzDDNrkL4dRiW/iWzaIMyAsUpDADNisPyNmDNg7ueWGgA4Sw/o/Ac+GY/puq5mdGT8wPiFptVTD0T7ocmiJv15M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VRCYetFX; arc=fail smtp.client-ip=52.101.85.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1771925929; c=relaxed/simple;
+	bh=0UnfWv6vTx6vfoH+zfTUelTnsUdgaWurD2DgZgpPpP0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i4NalDSKb7Zk8rELN00lW31FokdXXAIDV0gZJlwxFXqbwh6kFdFcjAN4AQ/xg1whKKMT16lUaOPLkAR7UvcJQFWGWKnhAcayjYb0U5BOALJiPl/fw4aq3s009QyNNM67TxUkXGoBN5X4SVLQ0dIAsMIB/yUvKj6BfMija3Xa2jI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=m5nwIRE0; arc=fail smtp.client-ip=52.101.72.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VRCYetFX"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="m5nwIRE0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZHofVGV3KImmG/C8rsj6zJ9wRCXIsIPWWjB5cZE/zxI53kH2+riPDh79ZXWQm5ElOIYSpp8Inim8cmrUzafiNc6Kg8S9/LDaXuu2SK8DxJMuOyK408czo3aandzthy90vu6PSCJo58Nq2ovXibQ9EC4Y8joQpWjj47Uu7on6AMWSLIY0JEoLqILIWn0eMQhtV9Wp+8NVx8vGmezDKCNnF3fr0wz+dPLAdPWiQFQtndjZDHqgul82/Q577kyBVx/IDEHQpFOdFmiezFZbTTi0+mQHhJdpm8aFP+SZ6sVb987fQ4ZBUiZpi/qVIG28g84UKPEf9gF43DxAvzBwg3aPNA==
+ b=MuFp+OOZvsFtX70fh7xP+PVytw0xb/pCSjD9tkK/Mx3TPuwppuZuGGwBzMNzrauPru/meJvJrE5YDu0WboAlSh2cTO/cYZ6pyKcaV3kpqJqrOsfN2eES/t2dT5r1BK2gLyG/9Rx8a0N3zzK4asV+CxDlxK3oQRAR2+vseFoQIiADO7vjlMRy3cdmsYqg36x++Vm8DEs7Xypgy6SQrp1Ud4x4FwchQN/cmHNkDV/p0XM040KLy+8g6pjaHnBeVLDn91KrjijZO5QbF4dNzaDPWuMkJGLncow5bKcH3jYgqYGY40yEDKwyvBdQL4cOBLmIVuYxnEuWcmTMOGSuyX1KiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jy80q0mBqaB/iS2mI3iDq4DUPT+Yt5krfQjLm625UAU=;
- b=VCFH15aq0K9JJrMkvfEVCNWiRJeji/IfFXJHdiK/j0uW0yWCeC0TLary/eBBCyZNKpfPlMgmSOZJVzRrLQW5y0a7sKcLFQjF4Zm8IvZ6OhCscEI1yW2P7uKz0wRd5+kJb0JQ6QHMUoDNc/BLZNS3MQsaaLyRLEk0cWGyYs8zQg2yvgatoEOSGbPiryT3B2LjT4vCyxRAob1wwyIRm1vxHo6icqiNp7fpHwq+HyzwWkA2NIFy8PjmMsmr3cWlMcCkT20CPwaP+R10KWwjEDasLmkvNWuAmwGj66DxlZocv0xv3qMMjyz8vKr200zjfDYK7iYqMTjldUAXVAktIX03bA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=gmail.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ bh=tbMrX8dEjwBmXe/M1xKs3MrYROJDUxcdPy0FKieOI3w=;
+ b=x/ZeSpaRyKNHXxGvxPjHbxt1JPWP8RaLT+5LO5KcJTTP1x2Chd2Zxf+aKLA/9unqc/VA/wQOI+4uT4FS9+EPJoTiDfqW5Y2IDeNTGlv6ltRDWuY6SMqcvA6wrGdWo3DLEwezG87AvcqLZBqdogVvSyVhp4hxoZN1kQP0gPIkX7vIR07m+qGjwLAbwAmM0B/rv0YD6YqLVzv8AYXoQ5OR3aW7cygo6ykrOjjwHUDHu2kMiaiAfwThkCL3alsL+FTlkDCVE1AiXcbDfeOhgJ89u0b6jrO1GFTKCQeX3AVZNWOKZaTThHTxD199dPS+IDLbL4rzJFdTNgCx44S0mnDnCg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=oss.qualcomm.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
  dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jy80q0mBqaB/iS2mI3iDq4DUPT+Yt5krfQjLm625UAU=;
- b=VRCYetFXUehQjPz8F4nqAdxmHvkpxSLEm26mqtjtCWi+NpybEkfc02Mm3nHHbtO6TReeEmQYpEjCbFqf/Ip3fSX79eUBf0f+C6F5iPqAjRaFacePOj4eqyRJ8sqLlmXEIX8yGLSos2xO6tcFSIs6zy4jrdqc+dLJD/aX8dKnJSzOpxPxzPgmwnR6zuq+ezEAzo5FBPguy3pbHOHyCIrnNzJQK5U4gp1GW/StETlCSUZNybNCnuMGu13ZAfQ+lu4Owkz67iNrISzp40GGB8KDw9w/Cc2syXQUcVIYSY706F99MEvQsN8sz3VY7YFKsazD3sRYVBAU6AQeVeLXwDM2zg==
-Received: from BY5PR13CA0030.namprd13.prod.outlook.com (2603:10b6:a03:180::43)
- by LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
- 2026 09:25:07 +0000
-Received: from SJ1PEPF000026C4.namprd04.prod.outlook.com
- (2603:10b6:a03:180:cafe::df) by BY5PR13CA0030.outlook.office365.com
- (2603:10b6:a03:180::43) with Microsoft SMTP Server (version=TLS1_3,
+ bh=tbMrX8dEjwBmXe/M1xKs3MrYROJDUxcdPy0FKieOI3w=;
+ b=m5nwIRE0gayxfOWy2eEib7UPnG50knDm6JyxWJVu61leQL4JFf34vUcJ9EasqsqMBY8opmWxvzCjrCkalu80QBI786Xk8o6trp2tB9ccow+42Vu9bbbfVTfHXcsHg2gqan/Z+qw+ohTB0mWq5T7j934fcDp09r0XrC3KIOliBbTSnuVCMwJ5L7KVCDLCxDGboKfcTP8/IBiv6u6xZJy5MHHY5hrOXGFN2OxHneQ8UXqTGYRjBkHOkE9A2J5Znbcx9pL+a3kSMmaFS0QPj0dlOKOP4Zoc+vo+9d+k8J36b6LD6X+ivuLVRh8Gf8P0onzHkQm5MVcFLqK5gVHsnU/8rw==
+Received: from DB9PR01CA0005.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:1d8::10) by VE1PR10MB3805.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:800:164::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
+ 2026 09:38:41 +0000
+Received: from DB3PEPF0000885F.eurprd02.prod.outlook.com
+ (2603:10a6:10:1d8:cafe::e9) by DB9PR01CA0005.outlook.office365.com
+ (2603:10a6:10:1d8::10) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Tue,
- 24 Feb 2026 09:25:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF000026C4.mail.protection.outlook.com (10.167.244.101) with Microsoft
+ 24 Feb 2026 09:38:22 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ DB3PEPF0000885F.mail.protection.outlook.com (10.167.242.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Tue, 24 Feb 2026 09:25:07 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Feb
- 2026 01:24:55 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Feb
- 2026 01:24:55 -0800
-Received: from build-va-bionic-20251122.nvidia.com (10.127.8.14) by
- mail.nvidia.com (10.129.68.8) with Microsoft SMTP Server id 15.2.2562.20 via
- Frontend Transport; Tue, 24 Feb 2026 01:24:54 -0800
-From: Vishwaroop A <va@nvidia.com>
-To: <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-	<skomatineni@nvidia.com>
-CC: <broonie@kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <va@nvidia.com>
-Subject: [PATCH] spi: tegra210-quad: Add runtime autosuspend support
-Date: Tue, 24 Feb 2026 09:24:52 +0000
-Message-ID: <20260224092452.1482800-1-va@nvidia.com>
-X-Mailer: git-send-email 2.17.1
+ 15.20.9632.12 via Frontend Transport; Tue, 24 Feb 2026 09:38:40 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 24 Feb
+ 2026 10:40:56 +0100
+Received: from gnbcxd0016.gnb.st.com (10.130.77.119) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 24 Feb
+ 2026 10:38:39 +0100
+Date: Tue, 24 Feb 2026 10:38:29 +0100
+From: Alain Volmat <alain.volmat@foss.st.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+CC: Mark Brown <broonie@kernel.org>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	<linux-spi@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] spi: stm32: Use NULL instead of 0 for pointer
+Message-ID: <aZ1xlV_E1NqsGm7P@gnbcxd0016.gnb.st.com>
+References: <20260216085816.69888-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-NV-OnPremToCloud: ExternallySecured
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260216085816.69888-2-krzysztof.kozlowski@oss.qualcomm.com>
+X-Disclaimer: ce message est personnel / this message is private
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000026C4:EE_|LV3PR12MB9411:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63886b6e-be46-4626-3d10-08de738699b0
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885F:EE_|VE1PR10MB3805:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29e59ee4-bc84-42c7-9c44-08de73887e61
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L1ZzTWp1TkQrSXFCME5kZVhwTU4wdlFsSm1uNlphMjJKbXdMaU8rMzdrbjBm?=
- =?utf-8?B?b0MzekR4Ni9PZ004cVlnT3JSUWdiR0N3QkpyRG82VCtBenlsSVpkZkwrWHRJ?=
- =?utf-8?B?UDIzQmVCL1E1QUtuVitrdTRHc1FuVVdDZHk2eFdKOEIyUzFZdlc0d2g4bjFL?=
- =?utf-8?B?b2xJbnVuOWhBYWp5bUdvbjFuK0NQRlh5bkZMOXlNR3RJaUdvWWhlQ05GZTd1?=
- =?utf-8?B?Z2U2VExtUGV6MlVrcjBnSytUa2UyVG5lbVFGd1RUdzFBSG02R1lhM09YZlAx?=
- =?utf-8?B?UDhQaEZkbFVSb1lPR0lKb21DM0tvSGRocGdNMnpveWoxQTdMV3VKMVN6dEJJ?=
- =?utf-8?B?QTNXT1JXK002RmNFaWMwcVUxSytJMVpjc01KZk16b2FaaTNlUkowLzJpYXhW?=
- =?utf-8?B?NmtaS0h5OEhoN0U4Y0ZxeTFlQlZ0OXBLakNTU2VtNVpiemlHdW9YMnZGdEFZ?=
- =?utf-8?B?QUVtcDZMZnJQTGJPMVZNcDhmYThNb3hFaUZmMXdLWGd4SUU2eGpHYURSY2Ur?=
- =?utf-8?B?Q0QwNkd0YnZsOWhpOUlhTFVxYVBqVVVuUDlkeVVVR1RyT1NpOHhGV2xFTjRq?=
- =?utf-8?B?bVh0NEtuUERNS2owWXhhNHNLalBLMjlvSXgrY09Xb0FPcHFLb25va2YxK2xI?=
- =?utf-8?B?ZCtZdmRVZ0Jna3NETlNPdEFPOG4veG5Sa3FzNytncXlOWnFLRUpqZEJ4dDJU?=
- =?utf-8?B?enBSZDVSS00rY1JKVGN2UjRpNTJUY0wxcm56ZmRJR2ZLSWxGazJkWkdMRGN6?=
- =?utf-8?B?YlV6ektCYzFKZkoyYW9yaTRVenJmL0F4NHdiRDJlMHdmcTkwUDJ6dnhRemhw?=
- =?utf-8?B?Q09lbHBTQTd5TGcvckhOb1UzNHowR3lJY3BrRGxTNmdwcUxzamZySXM2dGhz?=
- =?utf-8?B?Vzk1d2gxdW8zelBOUGpUU3d3b1pCN2w1WFp0Qk9pQlZOZHMvaFNWcTB5bVlu?=
- =?utf-8?B?ay9IOFY5SDlFUkNkc3Q0NnhPckZWbFQzYm4wcmVrWVpMdVRNb3hYY3U0YkpN?=
- =?utf-8?B?ZGxiNUNWK3YvWUtkOWxKdDlub0FOeUg4RC9veDVBcTZtejFlM1Y5OWkwRmVO?=
- =?utf-8?B?VlYxalZmK1NZMVZ3UTRWTStHbTloK0F3NnkzcnRkdmZGRE1RSk9PS3ErcWZv?=
- =?utf-8?B?NlZZd2FIdnh0Ky9TcDR6UkJjbnU1eS9tdGgvOVI5MFhFT1B3VE4yLzM2dlFY?=
- =?utf-8?B?Q1BLc3lWTU92OU5lTmFibC93aTlldk9aK3ByLzNQaU14N1JoaHFMTFR1SWNN?=
- =?utf-8?B?Rlh2TU9iNytiNWZidzEydlFyWTRCWE1PbTIyaEoxaVlPbVkwQjhNNEVVRGw3?=
- =?utf-8?B?Q0N2a09QSEpqaVpORkh0cmpCWDVKem04T3lPSWFZcWpET0pvRmdPV2p4ZG9Q?=
- =?utf-8?B?bE1IQ3B3WDRLMUViNldyRm1vbXZIKzQzb3JNZ09CNWVPaHhyb0twTTdNYVNV?=
- =?utf-8?B?MkJzM29PK1ZYOWIxSFhRZW94anpiVkFVZDZHbTRRT0ozZm05T0RaejRuaS8z?=
- =?utf-8?B?Q2xybE9PQmJnNXdkWkRnMjk3WVlNbXp1dWdmYWp3U2hldk84MzhzT05oZzl1?=
- =?utf-8?B?d29HM09YZ3E5VHUvUVZkaHZtY0x1VlpkMEplem9PV3k1eWFyS0hLVmRHblc0?=
- =?utf-8?B?NHJaS3hqMEkxcDZzNENRYjkrREJCU0pUN0pjdlRGdjhVaTJxZVlNSWIwdGJt?=
- =?utf-8?B?L0VSMGplKzZlVjd0UEtyWERUQlBJQ0FRQ1c0SmE4S1VZcDUyckdGN3pDOUxR?=
- =?utf-8?B?VTJKWDRaQlc2VUI3aXdwZ1hUcUN5cFYzYWtteWtaYkN1b3g5SUpvaitKaUZD?=
- =?utf-8?B?VTlqeFhWQTNkRWVwTVlFUE4reEp2Vk1PMU9DUFhDWHVRWkQ4alM1djhlU0xP?=
- =?utf-8?B?U2U3dE9SMG9uYkJPd0tKcFgzeFBBNkwwM1k2Q05Ybi92Rk9SNFhJbmljWnZY?=
- =?utf-8?B?eE9zcjIzZHExTVcrYnFFSFFuTTVybVBob3RuSXA1cDV3ejRSdkFMUzBSUDZP?=
- =?utf-8?B?eXNNanc0WDBjODJSZG5RaCtFNWw1L0MrZENFSnpxUno3STdBUDRwZ0JoZExV?=
- =?utf-8?B?bExMZFZMRTY2M1Z2K3pHT3hucUlDM1B0dlZMV0pOSlBiSjVNR2I0RnlZeUkx?=
- =?utf-8?B?My8yQTFpcnpHZFlFdk0ybndFUHhHVUo5KzVmVThPb3VNNWpjRmhUNmJ1UUdi?=
- =?utf-8?B?R0dHVEpLWDdab29qSHNaWmFFTUJ5bWk5WWpPcjM4bll4dUo4V3daLzF3eHVh?=
- =?utf-8?B?Z0pTdFA0bC9wZ1c0M0wvOXlNazFnPT0=?=
+	=?us-ascii?Q?OPgXd0NQJ/5RcVWu/r3YP38H8Sx9yAnIV/IZV6XiIC0fuOMokgkaiXtan0lC?=
+ =?us-ascii?Q?nmfXeOvloHwpdBn/MuQOOlxpCDE6nF107O+2Iq61VKIsLcTN2to1I1kqe59c?=
+ =?us-ascii?Q?OXwtEB+ryflzTxR1F1h8UtwZnbgh9gqtW4BYUm2LDFJx8BqPO9hCZGciAD7S?=
+ =?us-ascii?Q?qwsYmPFW9ImFscR8a9azxNVBE1UNx7H5uZJZrBC1b5mIJdOA07EXqqQM7OMh?=
+ =?us-ascii?Q?8A9ZXGswjSnQyi5SKIB0JPNbJ4wSet46Ao6bLkXbalUyMZMynoCh2OO9BV3+?=
+ =?us-ascii?Q?FEYYSU7J0H93/lNeHfbvxOAIPKYm2KYeEKmMWxmlQAC98FxIQJkxayHXWnpk?=
+ =?us-ascii?Q?wIb53tR9bTECsTHfbIimC2gYaM/O38s4Rrwg6GhmWMuVCqy1vyvHcp76XLWr?=
+ =?us-ascii?Q?bYsu/DdWUIpKNtgAieKW1NruYEqEWAPEWZOMo81KMndY7gM8uDCBbXGQWm8k?=
+ =?us-ascii?Q?pccU/XgIDwa1qiXsJJXfuKlBW3z4W5mJ84z6GeZm24ma5hGAiQIM9gqg/4Tl?=
+ =?us-ascii?Q?LCVRHHyLn7yNwSm/5kI4kkUb0ePG9mcTh/KyLAlFi72qKeqUCLyshU8ZqRRw?=
+ =?us-ascii?Q?3jsncx2/1qSBhG99lnwZW66tLhSZ5EDvuKbqQtbSLDZ7NYErbB0yPo47Tudv?=
+ =?us-ascii?Q?J3K14PEAcIROhExLHTgoOb6lOjVkAwlNhbmO9rntUXRfheiazgcAbeirZFs7?=
+ =?us-ascii?Q?Bi4R2xsLNKFI/KStNvJ8uvplQRuEFaMrfi7hXCGmIjNOK7dSxFMlaugNbhXn?=
+ =?us-ascii?Q?GCiURqlsM20fK/uo4kFiiNSiYYeW6bYzFaB3SXkjdG+uW/K5zDeoLakbSGg1?=
+ =?us-ascii?Q?gIsZCOEzgN9f3deZhumhskw2OE6mGz2S1Xcg/i3WybShIDXzrtt3LigsPIXX?=
+ =?us-ascii?Q?wP719GEExPmZP77IUlOK93UD+6djZvwerq/QcVByF9gKDRV/9rejQnj2KEC6?=
+ =?us-ascii?Q?LLqqVMe5t++3Fm6bh4I45MiC7TuUof3BCK3Cj+M031TVu10iMAXNczKbXn7A?=
+ =?us-ascii?Q?FY1InEE1XQVL6Wz8XNgQifGeMpkbhq4y+v3Jqmt8/FRaWy4UPxz66wntxeA8?=
+ =?us-ascii?Q?smQA85jWxf68MNnr0zWWl4Va05FEmvnoyw+X3X0qaLCuoXn7Kfp8lmInbZ4V?=
+ =?us-ascii?Q?q2m6ahBduXvTKnv/IJPSABSCo7SYp+DfG8IdbmrKJkB6qImut/ThplxEfQdv?=
+ =?us-ascii?Q?tH0FNBzY8oqS0wzkjhoc86UQvzBBo900+sJa9NPhqxCti7xt/8wwbzMv6byl?=
+ =?us-ascii?Q?dDRa+GYVFzaOic5vx/f4NZwjHy1AWHDL4XenS+PtwpcPtuH3N5q2l07Os4PG?=
+ =?us-ascii?Q?TZOf30MUzI2HmDT9vLlX3NJBCmqPIxwUlE98TDEQdUmqtKCRQn5W6RyJ1aa2?=
+ =?us-ascii?Q?X3/C+KuIm/zXaePdHruta02MU9rVT+780ycLSvbpnsKgGY6gBBS3npwEiR8b?=
+ =?us-ascii?Q?aL5Tbz73E2gRLv/0+rkwYRDaL8008C+ZQJYL62ETg2qAHuCxrrLSgVALsx+Q?=
+ =?us-ascii?Q?8XtYbkGCty9KBNa3Xnr14eNLH/qKj+qfNQotpt/2tq0nJuHaSadgDJrwpThi?=
+ =?us-ascii?Q?yHpPgwEYjZIxEmxH5FbtK9QZD1njIM+vazz2hzofqqorCDvQu6ZcYz0R9ZcA?=
+ =?us-ascii?Q?eWT+AbyTDctDHCm5DUmWzE1cfL+7fjaizuwti1QZEk31Z0Ajurs+hwKEQNm0?=
+ =?us-ascii?Q?+UBqcg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Mxb9/0QoVrq9aNA3hJpXQLhuL/AT/+TBrQTaqMdB8DWhexQEf1ZnIHE448KjsaVvbTQaWyzRVDO+F97vbK3D/hbWNUnUEXtUHSFcEs5Qgm/MXUB0zAQM3zyXhdZg8M7LmYX7vO5H4apHPcVi07H88Fl2KPj3UcB/SQSFFPEXbBAUn42RPmhJ6iFTtPRCtKnZL0hSgXuTJ9yy50aN+miAizVZ3mZ6jm0AURu0EPzLo0wVyqvHwxEoVWZdU0yQC5rfand4jiAh/Zw+xlc1HXPDcAFWBBKnEfaZ9Hmf1WLdD9ufmuWIQ2G4gGuZVgWsviRGkNg60hR9nfK5D8UZpuXl1LVWGN956S+3WaCtLIxjV7fw7kwQzJJihc3VObdj4AHOvPjNNSNd5V6ezE7vQiuo5jtiYaFtufPdY6qLP4ycTsqbXktwyrJKJ2ryNUlzMskZ
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 09:25:07.4053
+	neYYKSCkRBzA+Ss+7bAatA6YjXXnu1Cb3pcd8ebWFVXHTeMolMoJUJPlsqc1+/7PZJWAHy3tkLOf7xLcFP7zJFVcrC/nbC/p9V5XFjODjAKlkJ1yvS00cDZQ+ZhFA83jrXYZgEXcyT+G4EgjyMO+fzC5gRhY0mbmHdeIE1i21lk1U2guqtV7uoGzZPH4R7pdDda+l+U6FtTqr742us7nODLD4R9ZyCOdeDYOFwPYIhqGGowqB0UVUG4KSM0ZQyDZ6UQijI9xOohDR/FcTKa+DjKlXi/6KiJT5yr/ID+G1BDJn383C3m3imS15TReJvvC2B1OeiHS7uqrJNXhXFI10ZO45Wakbq8dbAFJqj5QgwVt46nWqjG2oFfD515xoo5fafOU4q/j97bDbEfD71ZS4Ki1WCMcDlKw8XieebT2GOckaczmd8aUBz5ZHqRzPw9k
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 09:38:40.5118
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63886b6e-be46-4626-3d10-08de738699b0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29e59ee4-bc84-42c7-9c44-08de73887e61
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000026C4.namprd04.prod.outlook.com
+	DB3PEPF0000885F.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9411
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR10MB3805
 
-Using Tegra234, it was found that it takes about 10us to disable clocks
-and 20us to enable clocks, adding about 30us overhead per operation.
-For a 4MB firmware update with 16,384 page programs, this results in
-~491ms total overhead (12% impact).
+Hi Krzysztof,
 
-With Tegra234, flash operations were observed to occur in bursts with
-50-200μs gaps between page programs. Testing on Tegra234 with various
-operation patterns shows 500ms delay provides optimal balance, and for
-longer operations (>500ms), the overhead is negligible. Therefore,
-update the driver to use pm-runtime autosuspend with the default timeout
-of 500ms to reduce the clock gating overhead during consecutive QSPI
-transfers.
+thanks for this patch.
 
-Signed-off-by: Vishwaroop A <va@nvidia.com>
----
- drivers/spi/spi-tegra210-quad.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+On Mon, Feb 16, 2026 at 09:58:17AM +0100, Krzysztof Kozlowski wrote:
+> Pointers should use NULL instead of explicit '0', as pointed out by
+> sparse:
+> 
+>   spi-stm32.c:1659:65: warning: Using plain integer as NULL pointer
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
+>  drivers/spi/spi-stm32.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index b99de8c4cc99..38f6bba38b07 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -1656,7 +1656,7 @@ static int stm32_spi_transfer_one_dma(struct stm32_spi *spi,
+>  			ret = stm32_spi_prepare_rx_dma_mdma_chaining(spi, xfer, &rx_dma_conf,
+>  								     &rx_dma_desc, &rx_mdma_desc);
+>  			if (ret) { /* RX DMA MDMA chaining not possible, fallback to DMA only */
+> -				rx_dma_conf.peripheral_config = 0;
+> +				rx_dma_conf.peripheral_config = NULL;
+>  				rx_dma_desc = NULL;
+>  			}
+>  		}
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 7ea5aa993596..7fac695b5142 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1000,7 +1000,8 @@ static int tegra_qspi_setup(struct spi_device *spi)
- 
- 	spin_unlock_irqrestore(&tqspi->lock, flags);
- 
--	pm_runtime_put(tqspi->dev);
-+	pm_runtime_mark_last_busy(tqspi->dev);
-+	pm_runtime_put_autosuspend(tqspi->dev);
- 
- 	return 0;
- }
-@@ -1765,6 +1766,14 @@ static int tegra_qspi_probe(struct platform_device *pdev)
- 	init_completion(&tqspi->rx_dma_complete);
- 	init_completion(&tqspi->xfer_completion);
- 
-+	/*
-+	 * Set autosuspend delay to 500ms. Testing shows this value eliminates
-+	 * suspend/resume overhead during burst operations while allowing quick
-+	 * suspension during idle. For longer operations, the overhead is negligible.
-+	 */
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, 500);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+
- 	pm_runtime_enable(&pdev->dev);
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0) {
-@@ -1781,7 +1790,8 @@ static int tegra_qspi_probe(struct platform_device *pdev)
- 	tqspi->spi_cs_timing2 = tegra_qspi_readl(tqspi, QSPI_CS_TIMING2);
- 	tqspi->def_command2_reg = tegra_qspi_readl(tqspi, QSPI_COMMAND2);
- 
--	pm_runtime_put(&pdev->dev);
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 
- 	ret = request_threaded_irq(tqspi->irq, NULL,
- 				   tegra_qspi_isr_thread, IRQF_ONESHOT,
-@@ -1802,6 +1812,7 @@ static int tegra_qspi_probe(struct platform_device *pdev)
- exit_free_irq:
- 	free_irq(qspi_irq, tqspi);
- exit_pm_disable:
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_force_suspend(&pdev->dev);
- 	tegra_qspi_deinit_dma(tqspi);
- 	return ret;
-@@ -1814,6 +1825,7 @@ static void tegra_qspi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_controller(host);
- 	free_irq(tqspi->irq, tqspi);
-+	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_force_suspend(&pdev->dev);
- 	tegra_qspi_deinit_dma(tqspi);
- }
-@@ -1839,7 +1851,8 @@ static int __maybe_unused tegra_qspi_resume(struct device *dev)
- 
- 	tegra_qspi_writel(tqspi, tqspi->command1_reg, QSPI_COMMAND1);
- 	tegra_qspi_writel(tqspi, tqspi->def_command2_reg, QSPI_COMMAND2);
--	pm_runtime_put(dev);
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
- 
- 	return spi_controller_resume(host);
- }
--- 
-2.17.1
+Reviewed-by: Alain Volmat <alain.volmat@foss.st.com>
 
+Regards,
+Alain
+
+> -- 
+> 2.51.0
+> 

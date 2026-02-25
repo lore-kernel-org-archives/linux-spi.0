@@ -1,40 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61D3EFD30
-	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 19:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B407F3EFD1C;
+	Wed, 25 Feb 2026 19:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046467; cv=none; b=euQnrByNTP2KT2xFDnxze1EBpdQH+K2m7s4n/JUJiPBpblxgKIvOCBRWMqe8TgajMhc0rLom1OgcHgx18LLsKm1qXrTWYOtyjhC1niXYDNHqraHWMyD2hYFr7HaCuhLWk1ZWRJ9Pq+wib32Kme5MIyaaWZAoYXeSmbKVcfiObeo=
+	t=1772046469; cv=none; b=UKfa/a5Mivb8QH9JfXrSPghr41H4Vti6+o+jGbITY5S3Dlu6vXn/5jHf0YK3ZCcwd1d/XRtaNPAY461+YuvVOgqTtC9T3daqGo5kaTpXCYUTjcax/QcDMPCjT6kpR+J/0jMW/cMIT3QNv4XuygOM9yYeRpvrZQBQF8OfP5sCpWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046467; c=relaxed/simple;
-	bh=18KrzD73tV483P0digm1KXHEf3KGVhXigdocu5NeW30=;
+	s=arc-20240116; t=1772046469; c=relaxed/simple;
+	bh=/fC8mtMNV8v0M5K9EhKSE0JzfsOboD027+MkCKRsFVM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=giQfg8G2tfadKW2VpmUGRtUV2JRl3I3UMIu4UWy0r8JIyHwAnERwn4y6LmbLAZ+KM//6KgbxYml2V/L5YRzZC6VSchCzIS/tpWdGJORv0uHHnn6nkUaC8OevErGscsLO739K3fn8lGi1XW/Ewz3IH70h83UYIAXUOTc1iBEBFoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNkmeMzW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=c/o3gVF2fXQwgpNhf8fus9chn9cYI1RpNys7/8x7yv9G8jG6IcoePCFoOOl5ItIzkUZs3kFpCehb0eIrMfTWyclElH4PN+piHo3bWYNo/x1GqJjO9g7bA2rsYMN2qg3LSUCQqyXhRi5wJJEDzRXgNIHUMJA60vfvkSPunezKG8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1MYwCei; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNkmeMzW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00871C116D0;
-	Wed, 25 Feb 2026 19:07:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1MYwCei"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EF8C19421;
+	Wed, 25 Feb 2026 19:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046467;
-	bh=18KrzD73tV483P0digm1KXHEf3KGVhXigdocu5NeW30=;
+	s=k20201202; t=1772046469;
+	bh=/fC8mtMNV8v0M5K9EhKSE0JzfsOboD027+MkCKRsFVM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=MNkmeMzWZEmt0ZbUr3H7NvxOHt5q9c8yfW23BGNU6zSQJ9bpO5uDx42/eSW34U8C5
-	 4VBHiw2a4bz+oests9Rveew0o+Smh/EBbIRIdYc/dxuExyqAMQ1V0vWTiiZMD2yf6c
-	 N4Gqgw+Q8Tu/jbHUqYJQ+voeO82AQlXnSHS4ftleDjIoBnblBBPsCNoOQn3nipcfTG
-	 3nLR1P5t01LA9c7K+ASm0bIhvuUSNXD2i5GyjwdQBfjdVDIfjM3S0rJneUI8BoTJIp
-	 YuJK7S4unoy/GUjLKdMRmRixwr5HvOFDlHIPzxPwKOHQCORXN0sVpgIFvsHjF+pWMk
-	 H7F0GF8Jdfsdw==
+	b=D1MYwCeihEtPbugUoN66TcSmkPwEuC13KnKlBhIfCu5HOeOkL7ZIAgzcDz+Kdn0jR
+	 17sslS44CPGIb2a4sqcMsZDBnUa0vsZYcdYYptVT0Xz8vSZnnM27Y2IMfEGmA/Bw/c
+	 GifLKy37po9Yk/D0JK2HmF3r64o6C0jA+r8eOlCmVdNhymGybK8kGmQR2KKKny8mIt
+	 hBZ3Nsa12A8E7aiRiWbm7vcv3dEbQndr25h7ePUbypRszc8OaJGCpLS4resRVhScmQ
+	 M3fktNxF+mKN1fSDOOuLa41jNlpOoZfn2FDqyAYzk91YytmmqYxZ7i8npATl4ykvqQ
+	 JM87f7eNUZ44Q==
 From: Mark Brown <broonie@kernel.org>
-To: Charles Keepax <ckeepax@opensource.cirrus.com>
-Cc: linux-spi@vger.kernel.org, patches@opensource.cirrus.com
-In-Reply-To: <20260223100717.4011114-1-ckeepax@opensource.cirrus.com>
-References: <20260223100717.4011114-1-ckeepax@opensource.cirrus.com>
-Subject: Re: [PATCH RESEND] spi: cs42l43: Don't support sidecar properties
- on device tree systems
-Message-Id: <177204646675.169139.18421333390518395178.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:07:46 +0000
+To: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Daniel Mack <daniel@zonque.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>
+In-Reply-To: <20260223144437.2836369-1-andriy.shevchenko@linux.intel.com>
+References: <20260223144437.2836369-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: pxa2xx: use min() instead of min_t()
+Message-Id: <177204646782.169139.4278556764726477870.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 19:07:47 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,15 +48,13 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Mon, 23 Feb 2026 10:07:17 +0000, Charles Keepax wrote:
-> On some systems the cs42l43 has amplifiers attached to its
-> SPI controller that are not properly defined in ACPI. However,
-> this exists to provide compatibility with existing Windows ACPI.
+On Mon, 23 Feb 2026 15:44:37 +0100, Andy Shevchenko wrote:
+> min_t(int, a, b) casts an 'unsigned long' to 'int'. This might lead
+> to the cases when big number is wrongly chosen. On the other hand,
+> the SPI transfer speed rate is unsigned and driver uses signed type
+> for an unknown reason. Change the type of the SPI transfer speed
+> to be unsigned and convert to use min() instead of min_t().
 > 
-> On device tree systems this functionality should never be used,
-> there is no reason not to specify the amplifiers properly through
-> device tree.  Make this more clear by only allowing the "sidecar"
-> functionality to be used on non-DT systems.
 > 
 > [...]
 
@@ -63,8 +64,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: cs42l43: Don't support sidecar properties on device tree systems
-      commit: 20a88c156f37634fdd88b746fa34e3622f567130
+[1/1] spi: pxa2xx: use min() instead of min_t()
+      commit: 507a071d9868cb60e4e76f8a06fc8eb014f59ae4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

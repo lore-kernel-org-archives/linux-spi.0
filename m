@@ -1,96 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D342BDC0B;
-	Wed, 25 Feb 2026 19:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64222D481F
+	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 19:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046580; cv=none; b=cYoUNsJZkqY9SeAw9BWyL4wUTUTf4L7NaQM/bwEvcu9+V6coCAiBR+wlcN18qpGYMvsVjlMCKXKNnadY8dQCS1tY56RMWM35eHug+eRSvMJXGPh6rhkWHqClwmTEaUA+u0HLugEvmsFIFJYz7m9eCLUwGYnofXKwMbLXlHRVh5Y=
+	t=1772046615; cv=none; b=deddOeuddqlqQ6CwGuGbsrKQIrs5VBDVwWedRhH+hpmUDP88nYkHbYZNrF3nduk3IADyQgFxkFBJX95SWfz6AEsXoXamjK1udQuKM0yPQSpVGE3iHmB1Xa4nqS+ckIAgM+KqWTLP2ptp+cBCIQgOY72a9epyeKYvYSptRQ/xvtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046580; c=relaxed/simple;
-	bh=noh+6VhnrLno4CMeO8qob/Mp3YWzLfTF2cssXTDsSpg=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=NR6iGMF4JPkvgUepz5jD1F3tjk3ZvaSfCsmz0hq7UzeJvkmX8hbWyooKnO1OzZxTKGeWfJi81sb9CYLRnxKmBmBn+8raH2ndbO8IFCuFRtPhPot21T0TSlSbUgn8XJT9YdmQD3XpXuxMOwn4KnNXDztLRXWB1X/ohqIQj9VD7sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BejJRzvY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772046615; c=relaxed/simple;
+	bh=r8PjZgsILplbNFI9Dk16zZAmoSOipmJ3Luwlb0O7SVQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=GTVC3pBY6k3QcnhJdVhUKDokwmbZ/kCMHQWZ9lfT5QDtEciv8aY94PJBm1khjta79loYhq8mwfoMV8oX6AdI0Xgqt0lFSkNeF+jYV8mXCpv3tnNzmu1y5tTQgRTZ5qoT7vMSJ1Uqc2ZtU7G1g8dr0j3tpZ/TLHM7j+ozS2nxzKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Au/j+CuR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BejJRzvY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985C2C116D0;
-	Wed, 25 Feb 2026 19:09:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Au/j+CuR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37585C116D0;
+	Wed, 25 Feb 2026 19:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046580;
-	bh=noh+6VhnrLno4CMeO8qob/Mp3YWzLfTF2cssXTDsSpg=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=BejJRzvYBjofFZ379gj4g3EV4OJTUbN6+Jj8C6cJrRsZ2Jl+dOtRKgVEUSWMjg6CP
-	 qPgVWGYVh8mKjclPde4LfHtNYeRzsQAtOrtsPDbOk3HRPX4isr/4VXwL2JHkb5HC2/
-	 4/ksGFNlOosT1DgZPIKoifjaUwxDay6xl0imVJyPqfp2VXPRNBSADgLF55Alg3xrH4
-	 3ool2Bn1NiS4WvHJEuvHv6pxB+DAOclk/IsN53KSFUNAMbEMPKwdHGyDxGYylz8vp5
-	 BoFCs0imSbc37oEbN9d3k7KsNaDx4Eada+rVXPOCXMeuXBXgVPVk76AF3jhOCPGIxQ
-	 NdJNOClubWx9A==
-From: Mark Brown <broonie@kernel.org>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>
-In-Reply-To: <20260223162110.156746-1-antoniu.miclaus@analog.com>
-References: <20260223162110.156746-1-antoniu.miclaus@analog.com>
-Subject: Re: (subset) [PATCH v4 0/5] iio: adc: ad4080: add support for
- AD4880 dual-channel ADC
-Message-Id: <177204657734.171265.1894729966536357038.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:09:37 +0000
+	s=k20201202; t=1772046615;
+	bh=r8PjZgsILplbNFI9Dk16zZAmoSOipmJ3Luwlb0O7SVQ=;
+	h=Subject:From:Date:To:From;
+	b=Au/j+CuRuR4Bk4it9bCMkH4sTGdqsDY3kXQWbes32+w4s3Y1oxeORw5Yjwd4vMbUe
+	 Q0PTFsfsNHODljtzN7fbHjrvFDSFDNVZdX4vLmzUtjAAt6ivnBackYCtv54iOvwUZD
+	 4wlrA+sejAXX2dp1HTwWd20pV521ijHnh4IAspjnNKoMDBDi8ZaYAdlIpNo0UsJ6B9
+	 5RbuwA7K8J3ggqlUEvzEmYFi/ubi2HQ7ApHPTzUdLxuYEbGJU6ygwhfIOwHUNmiyDF
+	 M31BGovWTOJp+t9Y8kDfbcfF3b4kRoh9gPAoaQsaY+H40T4gOWmzGKZnXv+gBaVTm4
+	 qXQjPvndAHFrA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 428E63809A90;
+	Wed, 25 Feb 2026 19:10:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177204661982.875724.10346781126684114168.git-patchwork-summary@kernel.org>
+Date: Wed, 25 Feb 2026 19:10:19 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, 23 Feb 2026 18:20:59 +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
-> the same family as AD4080.
-> 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface and LVDS data output. The driver uses
-> spi_new_ancillary_device() for the second channel's SPI and requires
-> two io-backend instances for the data interfaces.
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: spi: stm32: Use NULL instead of 0 for pointer
+  Submitter: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1054443
+  Lore link: https://lore.kernel.org/r/20260216085816.69888-2-krzysztof.kozlowski@oss.qualcomm.com
 
-Thanks!
+Series: iio: adc: ad4080: add support for AD4880 dual-channel ADC
+  Submitter: Antoniu Miclaus <antoniu.miclaus@analog.com>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056650
+  Lore link: https://lore.kernel.org/r/20260223162110.156746-1-antoniu.miclaus@analog.com
+    Patches: [v4,1/5] spi: allow ancillary devices to share parent's chip selects
+             [v4,2/5] spi: add devm_spi_new_ancillary_device()
 
-[2/5] spi: add devm_spi_new_ancillary_device()
-      commit: e02902dd493bf9c9b05353c761737ac514ad7a5c
+Patch: spi: atcspi200: Remove redundant assignment to .owner
+  Submitter: None <xiaopeitux@foxmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1055751
+  Lore link: https://lore.kernel.org/r/tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Patch: spi: stm32: fix rx DMA request error handling
+  Submitter: Alain Volmat <alain.volmat@foss.st.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1053525
+  Lore link: https://lore.kernel.org/r/20260212-spi-stm32-fix-dma-rx-release-v1-1-53a37c31626b@foss.st.com
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Patch: spi: omap2-mcspi: add support for 3-wire transfers
+  Submitter: Antoni Pokusinski <apokusinski01@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1054218
+  Lore link: https://lore.kernel.org/r/20260214212800.262461-1-apokusinski01@gmail.com
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Patch: [RESEND] spi: cs42l43: Don't support sidecar properties on device tree systems
+  Submitter: Charles Keepax <ckeepax@opensource.cirrus.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056416
+  Lore link: https://lore.kernel.org/r/20260223100717.4011114-1-ckeepax@opensource.cirrus.com
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Patch: [v2,1/1] spi: pxa2xx: use min() instead of min_t()
+  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056597
+  Lore link: https://lore.kernel.org/r/20260223153117.2838840-1-andriy.shevchenko@linux.intel.com
 
-Thanks,
-Mark
+Series: Add DMA support for RZ/T2H RSPI
+  Submitter: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1048273
+  Lore link: https://lore.kernel.org/r/20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com
+    Patches: [v3,1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow multiple DMAs
+
+Patch: spi: tegra210-quad: Add runtime autosuspend support
+  Submitter: Vishwaroop A <va@nvidia.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1057108
+  Lore link: https://lore.kernel.org/r/20260224092452.1482800-1-va@nvidia.com
+
+Patch: spi: stm32-ospi: Remove exec_op() callback debug log
+  Submitter: Patrice Chotard <patrice.chotard@foss.st.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1053835
+  Lore link: https://lore.kernel.org/r/20260213-upstream_ospi_remove_exec_op_debug_log-v1-1-164f17515fd0@foss.st.com
+
+
+Total patches: 11
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

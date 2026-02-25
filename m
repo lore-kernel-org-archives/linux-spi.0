@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B407F3EFD1C;
-	Wed, 25 Feb 2026 19:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F5D3F0747;
+	Wed, 25 Feb 2026 19:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046469; cv=none; b=UKfa/a5Mivb8QH9JfXrSPghr41H4Vti6+o+jGbITY5S3Dlu6vXn/5jHf0YK3ZCcwd1d/XRtaNPAY461+YuvVOgqTtC9T3daqGo5kaTpXCYUTjcax/QcDMPCjT6kpR+J/0jMW/cMIT3QNv4XuygOM9yYeRpvrZQBQF8OfP5sCpWw=
+	t=1772046472; cv=none; b=HeyD4x9T7K/uwCarGfn2QBQ38OUB7iL4E2lxsFSjXZqKuPzWoX1j7ICzUgbOo/OW62IFY06vqiP0ThBkJ8+ui9W2iSf2oHcXlPvHXRwB5aBx47BUeg2iiWnjYxjKbd4u+yN+KMQOawxjOQoHYLEOwcrLD/GL3MfrAKDpRqI6hZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046469; c=relaxed/simple;
-	bh=/fC8mtMNV8v0M5K9EhKSE0JzfsOboD027+MkCKRsFVM=;
+	s=arc-20240116; t=1772046472; c=relaxed/simple;
+	bh=kuPZcC4xYX0NxDfKAgqQFbXlA8WTqevQDuVsHbHTpz4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=c/o3gVF2fXQwgpNhf8fus9chn9cYI1RpNys7/8x7yv9G8jG6IcoePCFoOOl5ItIzkUZs3kFpCehb0eIrMfTWyclElH4PN+piHo3bWYNo/x1GqJjO9g7bA2rsYMN2qg3LSUCQqyXhRi5wJJEDzRXgNIHUMJA60vfvkSPunezKG8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1MYwCei; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GN3pCGa/Yk8qyrOxUgMu4Vd2QDGtJuVxFbZENMNAkuCtT0dAqzjPSq7EJHX4sL7fsDsq/3oUQQ5oRM2YQ28i8V7HgJfic2mztvbGXbD90vyRBDppJF8EHDz7IY9at5e++fv0NjzafCx0H0tsw3BnbYa8TR2Yi+Fsqj9EkwxgcOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnEm5fHg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1MYwCei"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EF8C19421;
-	Wed, 25 Feb 2026 19:07:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnEm5fHg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060BEC19421;
+	Wed, 25 Feb 2026 19:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046469;
-	bh=/fC8mtMNV8v0M5K9EhKSE0JzfsOboD027+MkCKRsFVM=;
+	s=k20201202; t=1772046472;
+	bh=kuPZcC4xYX0NxDfKAgqQFbXlA8WTqevQDuVsHbHTpz4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=D1MYwCeihEtPbugUoN66TcSmkPwEuC13KnKlBhIfCu5HOeOkL7ZIAgzcDz+Kdn0jR
-	 17sslS44CPGIb2a4sqcMsZDBnUa0vsZYcdYYptVT0Xz8vSZnnM27Y2IMfEGmA/Bw/c
-	 GifLKy37po9Yk/D0JK2HmF3r64o6C0jA+r8eOlCmVdNhymGybK8kGmQR2KKKny8mIt
-	 hBZ3Nsa12A8E7aiRiWbm7vcv3dEbQndr25h7ePUbypRszc8OaJGCpLS4resRVhScmQ
-	 M3fktNxF+mKN1fSDOOuLa41jNlpOoZfn2FDqyAYzk91YytmmqYxZ7i8npATl4ykvqQ
-	 JM87f7eNUZ44Q==
+	b=mnEm5fHgBImgJ1VWWPPobRPL8HcgIvUiFME5vIi9ej99vmNd0WF8hNfi8luKp4hse
+	 zKL/kzPQZxzW7zF4q9DvME4smMUukq4WNd7LQmq2akuGITsVkj0vWFwnW/iJnZPioU
+	 ys3bFXHZnK9TH6q0mCq0NNgb7zeT8sy17ijcxWvKwPro+7xpVZ2KFF6PmVYUjS+oyt
+	 mglkHYMBGRAiz6A9qsJnv+tyhRyRvRFCWpDXjR05ewFkF9ay2YXXKOBjS2AvoG2bn9
+	 JZK4HWfbzYjx/XrL2uBqJPTDZ5G1L8DUPEd4KA1j0bMWFU6O+p56Va0P/tntScdrNC
+	 wgswAIL4Eo4IA==
 From: Mark Brown <broonie@kernel.org>
 To: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
  linux-kernel@vger.kernel.org, 
@@ -33,11 +33,11 @@ To: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
 Cc: Daniel Mack <daniel@zonque.org>, 
  Haojian Zhuang <haojian.zhuang@gmail.com>, 
  Robert Jarzmik <robert.jarzmik@free.fr>
-In-Reply-To: <20260223144437.2836369-1-andriy.shevchenko@linux.intel.com>
-References: <20260223144437.2836369-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] spi: pxa2xx: use min() instead of min_t()
-Message-Id: <177204646782.169139.4278556764726477870.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:07:47 +0000
+In-Reply-To: <20260223153117.2838840-1-andriy.shevchenko@linux.intel.com>
+References: <20260223153117.2838840-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/1] spi: pxa2xx: use min() instead of min_t()
+Message-Id: <177204646977.169139.5577327712485866551.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 19:07:49 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,9 +48,9 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Mon, 23 Feb 2026 15:44:37 +0100, Andy Shevchenko wrote:
-> min_t(int, a, b) casts an 'unsigned long' to 'int'. This might lead
-> to the cases when big number is wrongly chosen. On the other hand,
+On Mon, 23 Feb 2026 16:30:54 +0100, Andy Shevchenko wrote:
+> min_t(int, a, b) casts an 'u32' to 'int'. This might lead to
+> the cases when big number is wrongly chosen. On the other hand,
 > the SPI transfer speed rate is unsigned and driver uses signed type
 > for an unknown reason. Change the type of the SPI transfer speed
 > to be unsigned and convert to use min() instead of min_t().

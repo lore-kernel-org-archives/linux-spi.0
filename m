@@ -1,40 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B333EFD1C;
-	Wed, 25 Feb 2026 19:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC61D3EFD30
+	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 19:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046466; cv=none; b=QpzfJomz2nsvBd1sv+VdCAgYXw8Asq7pZTe8/suDGt6s6MOI8C9fx84xOpBKsiT8o5qQ1xOQuZqop8aIEsZaYSvkZOFAR30t6YZY6UV1wQWxXDnAoD2KdTqbaIp+BgwarCTpToPGGKvccPoiOkLaIuFXecki3prwq/tmvexOcHI=
+	t=1772046467; cv=none; b=euQnrByNTP2KT2xFDnxze1EBpdQH+K2m7s4n/JUJiPBpblxgKIvOCBRWMqe8TgajMhc0rLom1OgcHgx18LLsKm1qXrTWYOtyjhC1niXYDNHqraHWMyD2hYFr7HaCuhLWk1ZWRJ9Pq+wib32Kme5MIyaaWZAoYXeSmbKVcfiObeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046466; c=relaxed/simple;
-	bh=NlzHSOnUk9c8rbvQ5YPcEaErRc0oE9Zi9vfJT9liX+Q=;
+	s=arc-20240116; t=1772046467; c=relaxed/simple;
+	bh=18KrzD73tV483P0digm1KXHEf3KGVhXigdocu5NeW30=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZjgInxB8fWazMJJMePxfKS5U3LU9KWlO1QYZpt6yqrSI9n9PoZnzpVg6VKJe2OwFwH4PQJ506vF2B84OICzEXtL4GVYFHcTPsfknMTVy/AdclBl65NTp13M4OvAB0QUcdd83/z5LBnyB1bYG3pIDuEIpyo6MD9S6i4bU3lFuQ0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcMzGJcL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=giQfg8G2tfadKW2VpmUGRtUV2JRl3I3UMIu4UWy0r8JIyHwAnERwn4y6LmbLAZ+KM//6KgbxYml2V/L5YRzZC6VSchCzIS/tpWdGJORv0uHHnn6nkUaC8OevErGscsLO739K3fn8lGi1XW/Ewz3IH70h83UYIAXUOTc1iBEBFoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNkmeMzW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcMzGJcL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968CEC2BCAF;
-	Wed, 25 Feb 2026 19:07:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNkmeMzW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00871C116D0;
+	Wed, 25 Feb 2026 19:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046466;
-	bh=NlzHSOnUk9c8rbvQ5YPcEaErRc0oE9Zi9vfJT9liX+Q=;
+	s=k20201202; t=1772046467;
+	bh=18KrzD73tV483P0digm1KXHEf3KGVhXigdocu5NeW30=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=XcMzGJcLOwZvuJq9b9NUR8zfvh2JgiFVU71xfm4pg1OBoNmXC4XyLOHA7zgE4kQmO
-	 MPGD4V9eZb4mS9Pf/IZg+sQ5B0r0Sje2nyD6D5AYw0uTQ+aktX/MEhjRQFqlLi92eK
-	 RTzk1XbE8Nslq6yfI+ORwFqI4oqpYLtqO6KkoK7Cv5dXg772kaske72xDwASA6EJRR
-	 Lep5QItqFozowPTL53clyh1Yu/vVNbxtLsOvn8qA18jYbokAHLIzHfqqssoC1+O7HI
-	 /VYmTwfjb6IVdxF9nBFHsnqwWUv99MiOlx5a4iZuvtP6DnH4rkU01455DzBgqgUKfk
-	 HiQ+EHjj3fxIA==
+	b=MNkmeMzWZEmt0ZbUr3H7NvxOHt5q9c8yfW23BGNU6zSQJ9bpO5uDx42/eSW34U8C5
+	 4VBHiw2a4bz+oests9Rveew0o+Smh/EBbIRIdYc/dxuExyqAMQ1V0vWTiiZMD2yf6c
+	 N4Gqgw+Q8Tu/jbHUqYJQ+voeO82AQlXnSHS4ftleDjIoBnblBBPsCNoOQn3nipcfTG
+	 3nLR1P5t01LA9c7K+ASm0bIhvuUSNXD2i5GyjwdQBfjdVDIfjM3S0rJneUI8BoTJIp
+	 YuJK7S4unoy/GUjLKdMRmRixwr5HvOFDlHIPzxPwKOHQCORXN0sVpgIFvsHjF+pWMk
+	 H7F0GF8Jdfsdw==
 From: Mark Brown <broonie@kernel.org>
-To: cl634@andestech.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, xiaopeitux@foxmail.com
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
-References: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
-Subject: Re: [PATCH] spi: atcspi200: Remove redundant assignment to .owner
-Message-Id: <177204646536.169139.3769749599119720671.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:07:45 +0000
+To: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: linux-spi@vger.kernel.org, patches@opensource.cirrus.com
+In-Reply-To: <20260223100717.4011114-1-ckeepax@opensource.cirrus.com>
+References: <20260223100717.4011114-1-ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH RESEND] spi: cs42l43: Don't support sidecar properties
+ on device tree systems
+Message-Id: <177204646675.169139.18421333390518395178.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 19:07:46 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,15 +45,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Fri, 20 Feb 2026 10:44:25 +0800, xiaopeitux@foxmail.com wrote:
-> The coccicheck tool reports the following warning for this driver:
+On Mon, 23 Feb 2026 10:07:17 +0000, Charles Keepax wrote:
+> On some systems the cs42l43 has amplifiers attached to its
+> SPI controller that are not properly defined in ACPI. However,
+> this exists to provide compatibility with existing Windows ACPI.
 > 
-> ./spi-atcspi200.c:670:3-8: No need to set .owner here. The core will do it.
-> 
-> The manual assignment of .owner = THIS_MODULE; in the platform_driver
-> struct is redundant. The platform_driver_register() function, which is
-> called to register the driver, is a macro that automatically sets the
-> driver's owner to THIS_MODULE.
+> On device tree systems this functionality should never be used,
+> there is no reason not to specify the amplifiers properly through
+> device tree.  Make this more clear by only allowing the "sidecar"
+> functionality to be used on non-DT systems.
 > 
 > [...]
 
@@ -63,8 +63,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: atcspi200: Remove redundant assignment to .owner
-      commit: fed6e5084894373d76270cad4a32eb6479ad8247
+[1/1] spi: cs42l43: Don't support sidecar properties on device tree systems
+      commit: 20a88c156f37634fdd88b746fa34e3622f567130
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

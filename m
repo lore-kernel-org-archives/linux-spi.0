@@ -1,45 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4416A3D6488;
-	Wed, 25 Feb 2026 19:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B333EFD1C;
+	Wed, 25 Feb 2026 19:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046465; cv=none; b=cvW0Q+UFm/TQ/f+AoS83hV/ddYpARhpaMFTAjm2HDmr6d0L7FwajCMjlEbXs7SqROroPopOigpr6KvWUhDs32NTkgfZ2mUox4zNxEfhFPEPbw5K4v8cygVZHoLRpAsph7Eyb+nw5e//hi+uJjTOwSakvQi9g0cKJzxnq0q/LNIk=
+	t=1772046466; cv=none; b=QpzfJomz2nsvBd1sv+VdCAgYXw8Asq7pZTe8/suDGt6s6MOI8C9fx84xOpBKsiT8o5qQ1xOQuZqop8aIEsZaYSvkZOFAR30t6YZY6UV1wQWxXDnAoD2KdTqbaIp+BgwarCTpToPGGKvccPoiOkLaIuFXecki3prwq/tmvexOcHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046465; c=relaxed/simple;
-	bh=PiDW0q+4QNESSXA7sLgepEPjfL/u0WLT2kREDP9X0IY=;
+	s=arc-20240116; t=1772046466; c=relaxed/simple;
+	bh=NlzHSOnUk9c8rbvQ5YPcEaErRc0oE9Zi9vfJT9liX+Q=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=TJT/Pdw0BkpR/hkJeUz6LP8GChcmUg4YRNTQN9EiUo4s9j4pEXQun2zAStU8ooK9Ny+Y7aos2evBr56h5j6Yhyxql8nnGvpYTOrs1nF9CbgzevmJ9i4Wpb2eyqvHRQAGzscFQ/Z46PihsXS41wCP2xVDNJEuAYbSeym53Rvc3Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDa2LDRw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=ZjgInxB8fWazMJJMePxfKS5U3LU9KWlO1QYZpt6yqrSI9n9PoZnzpVg6VKJe2OwFwH4PQJ506vF2B84OICzEXtL4GVYFHcTPsfknMTVy/AdclBl65NTp13M4OvAB0QUcdd83/z5LBnyB1bYG3pIDuEIpyo6MD9S6i4bU3lFuQ0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcMzGJcL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDa2LDRw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9F5C19421;
-	Wed, 25 Feb 2026 19:07:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcMzGJcL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968CEC2BCAF;
+	Wed, 25 Feb 2026 19:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046465;
-	bh=PiDW0q+4QNESSXA7sLgepEPjfL/u0WLT2kREDP9X0IY=;
+	s=k20201202; t=1772046466;
+	bh=NlzHSOnUk9c8rbvQ5YPcEaErRc0oE9Zi9vfJT9liX+Q=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=bDa2LDRw+egmKVhsjwL8cb0y9ICwRAXbvUwotuSrguwNZLgUXTTfQJhYLqbMEA6/9
-	 ikUHrxHv9+wGmU6703KphaUKzO0Mka+eQ/3jZOI0w+bkPI9TKiHhLKD197H2mPXent
-	 h9n5eNwowkbUKkmiASjLHaaJPYFIg0KVnXpyiuF3X/8kFjneqASgXMQx6aON0PbluG
-	 W38ydlckemBH9mQwqENqunCGaHK5BCFzvMZ2bVhyDgLm3mi4Q3kcjyaYZg6YeTKuHw
-	 xdbaHH92MaXcgTNi9CdIuTHb5rEYwwbihoCSPgAKZ74jBfEOrMjJpLNJ7KoYcVi+SK
-	 b5CAerljthhrg==
+	b=XcMzGJcLOwZvuJq9b9NUR8zfvh2JgiFVU71xfm4pg1OBoNmXC4XyLOHA7zgE4kQmO
+	 MPGD4V9eZb4mS9Pf/IZg+sQ5B0r0Sje2nyD6D5AYw0uTQ+aktX/MEhjRQFqlLi92eK
+	 RTzk1XbE8Nslq6yfI+ORwFqI4oqpYLtqO6KkoK7Cv5dXg772kaske72xDwASA6EJRR
+	 Lep5QItqFozowPTL53clyh1Yu/vVNbxtLsOvn8qA18jYbokAHLIzHfqqssoC1+O7HI
+	 /VYmTwfjb6IVdxF9nBFHsnqwWUv99MiOlx5a4iZuvtP6DnH4rkU01455DzBgqgUKfk
+	 HiQ+EHjj3fxIA==
 From: Mark Brown <broonie@kernel.org>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
-References: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com>
-Subject: Re: (subset) [PATCH v3 0/3] Add DMA support for RZ/T2H RSPI
-Message-Id: <177204646186.169139.3925826072902502630.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:07:41 +0000
+To: cl634@andestech.com, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, xiaopeitux@foxmail.com
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+In-Reply-To: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
+References: <tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com>
+Subject: Re: [PATCH] spi: atcspi200: Remove redundant assignment to .owner
+Message-Id: <177204646536.169139.3769749599119720671.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 19:07:45 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -50,14 +45,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Wed, 28 Jan 2026 23:51:29 +0200, Cosmin Tanislav wrote:
-> The DMA controller can be used to transfer data to and from the SPI
-> controller without involving the CPU for each word of a SPI transfer.
+On Fri, 20 Feb 2026 10:44:25 +0800, xiaopeitux@foxmail.com wrote:
+> The coccicheck tool reports the following warning for this driver:
 > 
-> Add support for DMA mode, and do some other cleanups while touching the
-> same code.
+> ./spi-atcspi200.c:670:3-8: No need to set .owner here. The core will do it.
 > 
-> The dts changes in this series depend on the DMA series [1].
+> The manual assignment of .owner = THIS_MODULE; in the platform_driver
+> struct is redundant. The platform_driver_register() function, which is
+> called to register the driver, is a macro that automatically sets the
+> driver's owner to THIS_MODULE.
 > 
 > [...]
 
@@ -67,8 +63,8 @@ Applied to
 
 Thanks!
 
-[1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow multiple DMAs
-      commit: 4d28f38f64ef69ab27839069ef3346c3c878d137
+[1/1] spi: atcspi200: Remove redundant assignment to .owner
+      commit: fed6e5084894373d76270cad4a32eb6479ad8247
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -1,48 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714C62ED848;
-	Wed, 25 Feb 2026 19:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E953EDAD2;
+	Wed, 25 Feb 2026 19:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046454; cv=none; b=TdxoWd+2sDoKB3IqYleBq6em/p80ei7Y1d2ETaTXem2Ukhxo/TglBMvKWUCP77VBsjSiq3JssiQcGdkZUntv9ea0i9ZbpB9uC/bSYplg1U2VzZVB1vuV8Q6scFCCczLOoXV/V/bFIFIjzTX8LD83LycH/R6ZTygHptSO0hMsNSk=
+	t=1772046456; cv=none; b=LoYMvCuhmUMUTayaVgxJ44qowzFd88eqUvQiE/FkrXk9adMto7O2rb7sgSIPgSk6GDllJ7SQWKPefLX/Ddcg8zapNcSfx+6aPcGz+9yvr8C184cwScjhZvd25WuTczaZ9wHthL0yRTZiUnxdqt3ncMboXCHUcTUN43vy53IHOMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046454; c=relaxed/simple;
-	bh=n2ThqRKc1AVWhg9cT24RDtRVQbfzmfNVs8WJEir8WL4=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fr2TBGOm6MT8+6j3nfd7Ea6l8oTfRP0VSZr5P8Tt4mjB9ELqlwGhCWhq5HKH/vc7PliKaIDYDBeO84Bm9q1cMyAR2+UeaiVemjThYxh5vHmHUqh5sOMVS4KmG4plmCfFhBcHZfg06MM88Nn6eSUS1PBdKiyH0PepAxWyYHP2OVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eKWhlnlD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772046456; c=relaxed/simple;
+	bh=hSiieK6gw9zhLfbluo0StCtR2+HseDZumG3VzdZ9QbM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=NAwdAoIzSrr4Ff1rEx/98oj8J3gN26zSOImuk9ztal0rvIbn81tuKugT4e2RM/Gg43Hf/hNhwykbE54hYBt9Z9CX7tlm2cEFWLdck/QGTMfVfL0rSdxyEr9SdSdfjQHbsjdZ3bhWWnPlElnS25T2cj5B0t82wj/CAL/1FUasGsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEtFRoAo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eKWhlnlD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584F1C116D0;
-	Wed, 25 Feb 2026 19:07:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEtFRoAo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9527C2BC87;
+	Wed, 25 Feb 2026 19:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046454;
-	bh=n2ThqRKc1AVWhg9cT24RDtRVQbfzmfNVs8WJEir8WL4=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=eKWhlnlDDPaFKVpRi2Ix1lTUPacf8fV45r8m348II1HYnmB2UxwK+VyqxECLO0Nli
-	 7WmQVpF6T32cplZLTBa9z6flhd35Yiya55DL6pvXRrjk4/HWnjpC5XTq1Ut0wopkg+
-	 ON0OvaA3AFFrS+atnElbcG+VtlFWaHDB6lnbl1vpN6q6wXTSk+seUPr7C9Kai3kcnu
-	 lnEmJgIK3ShSinAZk3c/pNy22BtYS+ssAqz5JmzufFjnF6ntN8z5KFRdHLiIwmcJlC
-	 bhMVkEipvRc+qeM4H1K+H5wLelX3jtF8YUxyLIZ0g3EftEiPEMN3FAfzCFDDvCDYCC
-	 smeoFzQRN8XxA==
+	s=k20201202; t=1772046456;
+	bh=hSiieK6gw9zhLfbluo0StCtR2+HseDZumG3VzdZ9QbM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ZEtFRoAo4oBPAzYCOLiT0/TNL8/2/puRvEflRaFGh4v/KtesRLapwNI0L893w7erB
+	 osV4riLBUHl2O9Er+SvS/VXX5N/zfsBOSS5jurMNC7pKrPmC3ZeZbbJRBI6u24xin3
+	 JzFCkpxHaOhEptevS2DHJKcvElbDArVPxQHlBfACaTuQxcT/xHMpuY8eu4STKiI+Kh
+	 iYPoK93WEBNfFgGuJJy1XH2POwDxQPbjLDaKiEKY2AbefKwfdgKe1jhbiXTsJvvFbW
+	 i1WjvguwLO9V7VQooRyxN0E2tnID42yBMQiq8e1dIrwkDzTbGpjn0pedGFq5jrCpxw
+	 RLjr/QbjoJHLg==
 From: Mark Brown <broonie@kernel.org>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Antoniu Miclaus <antoniu.miclaus@analog.com>
-In-Reply-To: <cover.1770393792.git.antoniu.miclaus@analog.com>
-References: <cover.1770393792.git.antoniu.miclaus@analog.com>
-Subject: Re: (subset) [PATCH v2 0/4] iio: adc: ad4080: add support for
- AD4880 dual-channel ADC
-Message-Id: <177204645111.169139.7163032381688312306.b4-ty@kernel.org>
-Date: Wed, 25 Feb 2026 19:07:31 +0000
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>
+Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Dan Carpenter <dan.carpenter@linaro.org>
+In-Reply-To: <20260212-spi-stm32-fix-dma-rx-release-v1-1-53a37c31626b@foss.st.com>
+References: <20260212-spi-stm32-fix-dma-rx-release-v1-1-53a37c31626b@foss.st.com>
+Subject: Re: [PATCH] spi: stm32: fix rx DMA request error handling
+Message-Id: <177204645457.169139.2112213155210381085.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 19:07:34 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -53,16 +48,12 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Fri, 06 Feb 2026 18:07:12 +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
-> the same family as AD4080.
+On Thu, 12 Feb 2026 12:49:10 +0100, Alain Volmat wrote:
+> Avoid trying to release the RX DMA channel when an error occurs
+> during RX dma_request_chan() call. Instead, jump directly to
+> release the TX channel, if applicable.
 > 
-> The AD4880 has two independent ADC channels, each with its own SPI
-> configuration interface and LVDS data output. The driver uses
-> spi_new_ancillary_device() for the second channel's SPI and requires
-> two io-backend instances for the data interfaces.
 > 
-> [...]
 
 Applied to
 
@@ -70,8 +61,8 @@ Applied to
 
 Thanks!
 
-[1/4] spi: allow ancillary devices to share parent's chip selects
-      commit: ffef4123043c5bb29e61052a41e577ae1ee6837a
+[1/1] spi: stm32: fix rx DMA request error handling
+      commit: 837f6691d5f39ea6453e4489dded40fb17755c60
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

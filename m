@@ -1,54 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC2E2E719B
-	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 08:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D23A28C854;
+	Wed, 25 Feb 2026 11:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772009802; cv=none; b=OwW/WuUApkWXT/1NlnDTT40eotSbwffgeTKb6Ok/PpxJF3qFPDVQUi9iUoMTAEH4hbElk6+SHQEg0HKnUn4hBy0wEP3n4ga1DzmMZNykVOTKDutX/W8xFzbF2sd+TrRnUgDwf5Ra8jThvR3+UBzxrttW8WzsK1womreWa3/cK8k=
+	t=1772020678; cv=none; b=nIVllYkJxBSoCnv1+3uLk5Mg6VQR0iNRlZ3zItsn5pUcAiaF/C34SFwfnxTzwHeEGIOGQmQug2n33BgpWSGuvZdPo/VWHx3ZhI67aVE8dHC6KmJMdaOc+fjgouUtGLKJig5mYjGreOSlgxi8ybu0hVLDmCxsHZi4HkKMpUZwUgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772009802; c=relaxed/simple;
-	bh=MUIgmvbQ6XZr+jvOJRgZn1v+U7r8DaWzI7blduBXGR8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=qRMAht8KNXYetW8RYcx9v/ZCTXtutsv87ApAeVS6KXxWpRbbBJeMSfaTboXM+VkHQEU9hHAsOmKJjP+xnvkjj2BpyQ9A0h6coZt5QD8BUsLSrhdqvO8oBfeeVMh5KzeAzqEQ7f2Bk5JoA85ZQJWpS8pRAeag3GT9W+csfBOCL4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVTcxxLX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772020678; c=relaxed/simple;
+	bh=SnDXFB2r7V70zXXX74nuud6OwDW85g5QuoA0tIzR1Bw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TszD8CUHHuS2jJ3Tr+1O6vMpOx8GBAj3FMCY6C4WioFIR7gb47rCjTOpFYJCUJb4d4EqJ/dGVeB9m0kbHBnErLCwqUM+I9NQA+tBzgS7rMfmYvdGZLdLGZBsIV0BmlVStjKrUve3Id9OLAjLty4mLd/JHFZtlHH7vG9qF9fENQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kS1SMVVg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVTcxxLX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A5DC2BC86;
-	Wed, 25 Feb 2026 08:56:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kS1SMVVg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8F3C116D0;
+	Wed, 25 Feb 2026 11:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772009801;
-	bh=MUIgmvbQ6XZr+jvOJRgZn1v+U7r8DaWzI7blduBXGR8=;
-	h=Subject:From:Date:To:From;
-	b=uVTcxxLXLyqPxRBEDnbaq6uceuafY+3G+8Q5uR5mKdxgaBFQI8tOXjWCWtiyguikR
-	 7l0KEYf3Dc6mEquEyMKCbJXdXPrjcmZILJWndapmNmIIKAFkGPtrtIJcq9xhxuZN1s
-	 ftxBvC34oNUuJLdPgCBe62LutfYlPCrlAMLjwGSO+Qz9pXXBZ5bxrCebgpCuaIHAuM
-	 /fB2n+f4uzzbOlBSaWCT5sa3jM9DaZdArRkyjbVkkMy3Sa9nj6hIfOpmHvI+ciw8WF
-	 I+lm16ps7M0L86bvWMxn0X1lnbBrs5Sptk3BCXW9nTNSC+P7OYIC5m406mtaJU1ucj
-	 h939nM+peBIuQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EDE173809A0B;
-	Wed, 25 Feb 2026 08:56:47 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1772020678;
+	bh=SnDXFB2r7V70zXXX74nuud6OwDW85g5QuoA0tIzR1Bw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=kS1SMVVg4dpBNtAVkaoeTgL3uXcK30vOxBlBfsNFnOIf6c1kCC0vdl7LMqHf6BAAB
+	 jmFugA4/Lm0wWT4irUvp1+wu+o023yNqDAIyBblHQ/NofdEaMc6+j4TAUr84QN4q0m
+	 8gTTf0U/0FoPtcG2zXKvvI+pca6+Xpam71d6XhoItR/0EXhy5rdvtWr1vb+QLURpxw
+	 StIv6xr0KzAgIm5QmIi17eR0P0Hvotj1ssAzsnHNZ5oT/nihtMSQz0t2miEwV8L/QM
+	 nhk/v8/6286T7YKNn78n1zwUA6hswGb7hZZUkH51peY+T1+dZuv05SljCEvkLvT6UE
+	 UUjrWyjdGfKlg==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260224115218.3499222-1-andriy.shevchenko@linux.intel.com>
+References: <20260224115218.3499222-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 1/1] spi: dt-bindings: snps,dw-abp-ssi: Remove
+ unused bindings
+Message-Id: <177202067638.44572.11511981026229804023.b4-ty@kernel.org>
+Date: Wed, 25 Feb 2026 11:57:56 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177200980666.213668.10218584091453334451.git-patchwork-housekeeping@kernel.org>
-Date: Wed, 25 Feb 2026 08:56:46 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-Latest series: [v1] spi: cadence-quadspi: Implement refcount to handle unbind during busy (2026-02-25T08:02:39)
-  Superseding: [v1] spi: cadence-quadspi: Implement refcount to handle unbind during busy (2026-02-12T08:17:43):
-    [6.6.y] spi: cadence-quadspi: Implement refcount to handle unbind during busy
+On Tue, 24 Feb 2026 12:52:18 +0100, Andy Shevchenko wrote:
+> As stated in the da0a672268b3 ("spi: dw: Remove not-going-to-be-supported
+> code for Baikal SoC") the Baikal platforms are not supported and
+> the respective driver code was removed. Remove the currently unused bindings.
+> 
+> 
 
+Applied to
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: dt-bindings: snps,dw-abp-ssi: Remove unused bindings
+      commit: 297318a1c26dabb5a2d8540fdf436c22094eb2d7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

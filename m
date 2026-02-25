@@ -1,41 +1,34 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAB030E842;
-	Wed, 25 Feb 2026 08:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC2E2E719B
+	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 08:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772006580; cv=none; b=BFyWwkBqehQdLuc9YA+4hKr65jEgTKPNNsVfWEo65rAAGkjeWheCyFgUNFsqqlBzjaSLDGi4wVUOwuOt4GQhRKmCkjRJ1hAOfx/uA/Dfohknd0McM+P3IRAFfy6F9VZqlBdyDVZ2fb3JTnQsuBsL46sF6nKtk2EHjIbMU3kIzMw=
+	t=1772009802; cv=none; b=OwW/WuUApkWXT/1NlnDTT40eotSbwffgeTKb6Ok/PpxJF3qFPDVQUi9iUoMTAEH4hbElk6+SHQEg0HKnUn4hBy0wEP3n4ga1DzmMZNykVOTKDutX/W8xFzbF2sd+TrRnUgDwf5Ra8jThvR3+UBzxrttW8WzsK1womreWa3/cK8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772006580; c=relaxed/simple;
-	bh=05HYwy2erpJLKB7Mh8DoTKgJhjWHXkPPnFJKMaluA2I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YfK2jZ8SD0DBskk/xGWYBlNfF4uXsgTV3dS1iCpYuCOErGVoR+KVPUhBa6OmLii5HvcfvgVRJuWst21o3hpSa/Bhdm6XbmCXT/7dCDJLKsxqoOdxU7EzvUjZL+RuOEGWwZaYLX5uJJTAI86M6f/wscF2RwJ09C+ggcBp4zhnKRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=csI7P1yE; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1772009802; c=relaxed/simple;
+	bh=MUIgmvbQ6XZr+jvOJRgZn1v+U7r8DaWzI7blduBXGR8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=qRMAht8KNXYetW8RYcx9v/ZCTXtutsv87ApAeVS6KXxWpRbbBJeMSfaTboXM+VkHQEU9hHAsOmKJjP+xnvkjj2BpyQ9A0h6coZt5QD8BUsLSrhdqvO8oBfeeVMh5KzeAzqEQ7f2Bk5JoA85ZQJWpS8pRAeag3GT9W+csfBOCL4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVTcxxLX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="csI7P1yE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=6j
-	4FIPp0ly8uif79IFwRDcphLeNtFMFlSHTupDt8554=; b=csI7P1yEqzm2dU9tbH
-	el46Ezg5edXKSp+liSm0BGO6NAOovhDSnB52i6OdVUtPKZdDjMIjPxcKEWnJVyrt
-	EIh4x5tXWzvJhIYl6HUks2vfU9wGAWXmBQ9LP0qpGW3T80zExRDh7UNN+6t+qo8M
-	TOX9jhBTud8Zwy7oQu06FKxlQ=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wAXBgqfrJ5pkhArMg--.61139S2;
-	Wed, 25 Feb 2026 16:02:40 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Niravkumar L Rabara <nirav.rabara@altera.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.12.y] spi: cadence-quadspi: Implement refcount to handle unbind during busy
-Date: Wed, 25 Feb 2026 16:02:39 +0800
-Message-Id: <20260225080239.3844427-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVTcxxLX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A5DC2BC86;
+	Wed, 25 Feb 2026 08:56:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772009801;
+	bh=MUIgmvbQ6XZr+jvOJRgZn1v+U7r8DaWzI7blduBXGR8=;
+	h=Subject:From:Date:To:From;
+	b=uVTcxxLXLyqPxRBEDnbaq6uceuafY+3G+8Q5uR5mKdxgaBFQI8tOXjWCWtiyguikR
+	 7l0KEYf3Dc6mEquEyMKCbJXdXPrjcmZILJWndapmNmIIKAFkGPtrtIJcq9xhxuZN1s
+	 ftxBvC34oNUuJLdPgCBe62LutfYlPCrlAMLjwGSO+Qz9pXXBZ5bxrCebgpCuaIHAuM
+	 /fB2n+f4uzzbOlBSaWCT5sa3jM9DaZdArRkyjbVkkMy3Sa9nj6hIfOpmHvI+ciw8WF
+	 I+lm16ps7M0L86bvWMxn0X1lnbBrs5Sptk3BCXW9nTNSC+P7OYIC5m406mtaJU1ucj
+	 h939nM+peBIuQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EDE173809A0B;
+	Wed, 25 Feb 2026 08:56:47 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,129 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAXBgqfrJ5pkhArMg--.61139S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZFWrXFykur4rAw1fXw4DCFg_yoWrWFWUpF
-	4UJ3y5tF4xtFWIq3ZrJa4DZF1akrWxJ34fW39rt34avry3Jwn0ya4F9FyUtr43AF97AF1U
-	WF409ry2kF43ZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UP9N-UUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAQBVwGmerKByxwAA3a
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177200980666.213668.10218584091453334451.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 25 Feb 2026 08:56:46 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Latest series: [v1] spi: cadence-quadspi: Implement refcount to handle unbind during busy (2026-02-25T08:02:39)
+  Superseding: [v1] spi: cadence-quadspi: Implement refcount to handle unbind during busy (2026-02-12T08:17:43):
+    [6.6.y] spi: cadence-quadspi: Implement refcount to handle unbind during busy
 
-[ Upstream commit 7446284023e8ef694fb392348185349c773eefb3 ]
 
-driver support indirect read and indirect write operation with
-assumption no force device removal(unbind) operation. However
-force device removal(removal) is still available to root superuser.
-
-Unbinding driver during operation causes kernel crash. This changes
-ensure driver able to handle such operation for indirect read and
-indirect write by implementing refcount to track attached devices
-to the controller and gracefully wait and until attached devices
-remove operation completed before proceed with removal operation.
-
-Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
-Link: https://patch.msgid.link/8704fd6bd2ff4d37bba4a0eacf5eba3ba001079e.1756168074.git.khairul.anuar.romli@altera.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- drivers/spi/spi-cadence-quadspi.c | 33 +++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index e1d64a9a3446..288a0467c937 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -105,6 +105,8 @@ struct cqspi_st {
- 
- 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
- 	bool			disable_stig_mode;
-+	refcount_t		refcount;
-+	refcount_t		inflight_ops;
- 
- 	const struct cqspi_driver_platdata *ddata;
- };
-@@ -731,6 +733,9 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
- 	u8 *rxbuf_end = rxbuf + n_rx;
- 	int ret = 0;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
- 
-@@ -1058,6 +1063,9 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 	unsigned int write_bytes;
- 	int ret;
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -ENODEV;
-+
- 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
- 
-@@ -1450,12 +1458,26 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
- 	struct device *dev = &cqspi->pdev->dev;
- 
-+	if (refcount_read(&cqspi->inflight_ops) == 0)
-+		return -ENODEV;
-+
- 	ret = pm_runtime_resume_and_get(dev);
- 	if (ret) {
- 		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
- 		return ret;
- 	}
- 
-+	if (!refcount_read(&cqspi->refcount))
-+		return -EBUSY;
-+
-+	refcount_inc(&cqspi->inflight_ops);
-+
-+	if (!refcount_read(&cqspi->refcount)) {
-+		if (refcount_read(&cqspi->inflight_ops))
-+			refcount_dec(&cqspi->inflight_ops);
-+		return -EBUSY;
-+	}
-+
- 	ret = cqspi_mem_process(mem, op);
- 
- 	pm_runtime_mark_last_busy(dev);
-@@ -1464,6 +1486,9 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	if (ret)
- 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
- 
-+	if (refcount_read(&cqspi->inflight_ops) > 1)
-+		refcount_dec(&cqspi->inflight_ops);
-+
- 	return ret;
- }
- 
-@@ -1916,6 +1941,9 @@ static int cqspi_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	refcount_set(&cqspi->refcount, 1);
-+	refcount_set(&cqspi->inflight_ops, 1);
-+
- 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
- 			       pdev->name, cqspi);
- 	if (ret) {
-@@ -1978,6 +2006,11 @@ static void cqspi_remove(struct platform_device *pdev)
- {
- 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
- 
-+	refcount_set(&cqspi->refcount, 0);
-+
-+	if (!refcount_dec_and_test(&cqspi->inflight_ops))
-+		cqspi_wait_idle(cqspi);
-+
- 	spi_unregister_controller(cqspi->host);
- 	cqspi_controller_enable(cqspi, 0);
- 
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

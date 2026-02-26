@@ -1,34 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64222D481F
-	for <linux-spi@vger.kernel.org>; Wed, 25 Feb 2026 19:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B9332909;
+	Thu, 26 Feb 2026 05:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772046615; cv=none; b=deddOeuddqlqQ6CwGuGbsrKQIrs5VBDVwWedRhH+hpmUDP88nYkHbYZNrF3nduk3IADyQgFxkFBJX95SWfz6AEsXoXamjK1udQuKM0yPQSpVGE3iHmB1Xa4nqS+ckIAgM+KqWTLP2ptp+cBCIQgOY72a9epyeKYvYSptRQ/xvtU=
+	t=1772082766; cv=none; b=FXGEOeHez1TTMbVzahPLa9gKdDvJqQwqF8UV+fM5T1xISO2LrstgBvfQtcm2Vogg7+cZkJMk5mz3aQvn0fj9vUgxTG2wejOoW1zprolXU4scQYNEVHQhk6mN3V5FLJpNNqhRaROTcS2B+E5aZg18MFXRFI6pHWcnKrBvRCoHBl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772046615; c=relaxed/simple;
-	bh=r8PjZgsILplbNFI9Dk16zZAmoSOipmJ3Luwlb0O7SVQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=GTVC3pBY6k3QcnhJdVhUKDokwmbZ/kCMHQWZ9lfT5QDtEciv8aY94PJBm1khjta79loYhq8mwfoMV8oX6AdI0Xgqt0lFSkNeF+jYV8mXCpv3tnNzmu1y5tTQgRTZ5qoT7vMSJ1Uqc2ZtU7G1g8dr0j3tpZ/TLHM7j+ozS2nxzKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Au/j+CuR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772082766; c=relaxed/simple;
+	bh=fMgYq2PDaZBZ/wSt9cuVATEI5Kvmz1VS8TlIeuwbGRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sy7i35TnIMcqSoeY2I8/RXl9eSnZawaGNWs4MRxPjzw4z9NxZ266YaC3Miw6OUas2qAK9CaY15Lqn1mcpGwPEmZZlI3AeeQOmvOdaMo3ZoRXHxogBUardF6xJYos6GXQCi9Hx5OkeNVubEMP79DYQylD756lvwANp+l3OnOj2cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Eo9c+ia2; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Au/j+CuR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37585C116D0;
-	Wed, 25 Feb 2026 19:10:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772046615;
-	bh=r8PjZgsILplbNFI9Dk16zZAmoSOipmJ3Luwlb0O7SVQ=;
-	h=Subject:From:Date:To:From;
-	b=Au/j+CuRuR4Bk4it9bCMkH4sTGdqsDY3kXQWbes32+w4s3Y1oxeORw5Yjwd4vMbUe
-	 Q0PTFsfsNHODljtzN7fbHjrvFDSFDNVZdX4vLmzUtjAAt6ivnBackYCtv54iOvwUZD
-	 4wlrA+sejAXX2dp1HTwWd20pV521ijHnh4IAspjnNKoMDBDi8ZaYAdlIpNo0UsJ6B9
-	 5RbuwA7K8J3ggqlUEvzEmYFi/ubi2HQ7ApHPTzUdLxuYEbGJU6ygwhfIOwHUNmiyDF
-	 M31BGovWTOJp+t9Y8kDfbcfF3b4kRoh9gPAoaQsaY+H40T4gOWmzGKZnXv+gBaVTm4
-	 qXQjPvndAHFrA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 428E63809A90;
-	Wed, 25 Feb 2026 19:10:21 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Eo9c+ia2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=46vgJhPG/YVPWGTPSjyw8RcvoaZIp217ejgrPwHtGCI=; b=Eo9c+ia2dnsba41ep9kPCiQFB6
+	on5lu11EmlRxrmwcP6GpWQNAe2AjkxcvRz4wr9exVmrnMYyJtqthQDFN5zIu6jjUdry4i9xlGEhdF
+	d5ZQLmxCfP2wV1WkJxqooxgfKmaMDOYK05t4AC1gRCzMAKEke+pBrgctSHMBsmQC6P8xsVthZCldC
+	MwNhnCTMtsiIq5KmwRy9s/t3g4sWewO86JfI/d04dsHR5MPA5WxmIrX8hL7ocn4yrE9AhKpJafoTV
+	fDogX2/e0QtXrnFSa91cZlRqVVY5RjufZsq1bVBrKJiPEk8d9QYgc2ydIEjsGtwqwsLhw62zm+peU
+	RG2KKeGA==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvTg4-00000005PLK-3sbR;
+	Thu, 26 Feb 2026 05:12:44 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	linux-spi@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org
+Subject: [PATCH] spi: s3c64xx: fix all kernel-doc warnings
+Date: Wed, 25 Feb 2026 21:12:44 -0800
+Message-ID: <20260226051244.552959-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,85 +47,42 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177204661982.875724.10346781126684114168.git-patchwork-summary@kernel.org>
-Date: Wed, 25 Feb 2026 19:10:19 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+Add kernel-doc for one struct member and use the correct function name
+to eliminate kernel-doc warnings:
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Warning: include/linux/platform_data/spi-s3c64xx.h:40 struct member
+ 'polling' not described in 's3c64xx_spi_info'
+Warning: include/linux/platform_data/spi-s3c64xx.h:51 expecting prototype
+ for s3c64xx_spi_set_platdata(). Prototype was for
+ s3c64xx_spi0_set_platdata() instead
 
-Patch: spi: stm32: Use NULL instead of 0 for pointer
-  Submitter: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1054443
-  Lore link: https://lore.kernel.org/r/20260216085816.69888-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
 
-Series: iio: adc: ad4080: add support for AD4880 dual-channel ADC
-  Submitter: Antoniu Miclaus <antoniu.miclaus@analog.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056650
-  Lore link: https://lore.kernel.org/r/20260223162110.156746-1-antoniu.miclaus@analog.com
-    Patches: [v4,1/5] spi: allow ancillary devices to share parent's chip selects
-             [v4,2/5] spi: add devm_spi_new_ancillary_device()
+ include/linux/platform_data/spi-s3c64xx.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Patch: spi: atcspi200: Remove redundant assignment to .owner
-  Submitter: None <xiaopeitux@foxmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1055751
-  Lore link: https://lore.kernel.org/r/tencent_65C9C09CBD2B68C400F7145521A4B217E606@qq.com
-
-Patch: spi: stm32: fix rx DMA request error handling
-  Submitter: Alain Volmat <alain.volmat@foss.st.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1053525
-  Lore link: https://lore.kernel.org/r/20260212-spi-stm32-fix-dma-rx-release-v1-1-53a37c31626b@foss.st.com
-
-Patch: spi: omap2-mcspi: add support for 3-wire transfers
-  Submitter: Antoni Pokusinski <apokusinski01@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1054218
-  Lore link: https://lore.kernel.org/r/20260214212800.262461-1-apokusinski01@gmail.com
-
-Patch: [RESEND] spi: cs42l43: Don't support sidecar properties on device tree systems
-  Submitter: Charles Keepax <ckeepax@opensource.cirrus.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056416
-  Lore link: https://lore.kernel.org/r/20260223100717.4011114-1-ckeepax@opensource.cirrus.com
-
-Patch: [v2,1/1] spi: pxa2xx: use min() instead of min_t()
-  Submitter: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1056597
-  Lore link: https://lore.kernel.org/r/20260223153117.2838840-1-andriy.shevchenko@linux.intel.com
-
-Series: Add DMA support for RZ/T2H RSPI
-  Submitter: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1048273
-  Lore link: https://lore.kernel.org/r/20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com
-    Patches: [v3,1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow multiple DMAs
-
-Patch: spi: tegra210-quad: Add runtime autosuspend support
-  Submitter: Vishwaroop A <va@nvidia.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1057108
-  Lore link: https://lore.kernel.org/r/20260224092452.1482800-1-va@nvidia.com
-
-Patch: spi: stm32-ospi: Remove exec_op() callback debug log
-  Submitter: Patrice Chotard <patrice.chotard@foss.st.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1053835
-  Lore link: https://lore.kernel.org/r/20260213-upstream_ospi_remove_exec_op_debug_log-v1-1-164f17515fd0@foss.st.com
-
-
-Total patches: 11
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+--- linux-next-20260225.orig/include/linux/platform_data/spi-s3c64xx.h
++++ linux-next-20260225/include/linux/platform_data/spi-s3c64xx.h
+@@ -30,6 +30,7 @@ struct s3c64xx_spi_csinfo {
+  * @src_clk_nr: Clock source index for the CLK_CFG[SPI_CLKSEL] field.
+  * @num_cs: Number of CS this controller emulates.
+  * @no_cs: Used when CS line is not connected.
++ * @polling: Using polling mode when %true (no 'dmas' property in devicetree)
+  * @cfg_gpio: Configure pins for this SPI controller.
+  */
+ struct s3c64xx_spi_info {
+@@ -41,7 +42,7 @@ struct s3c64xx_spi_info {
+ };
+ 
+ /**
+- * s3c64xx_spi_set_platdata - SPI Controller configure callback by the board
++ * s3c64xx_spi0_set_platdata - SPI Controller configure callback by the board
+  *				initialization code.
+  * @src_clk_nr: Clock the SPI controller is to use to generate SPI clocks.
+  * @num_cs: Number of elements in the 'cs' array.

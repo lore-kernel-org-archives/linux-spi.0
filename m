@@ -1,248 +1,145 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B322C86D
-	for <linux-spi@vger.kernel.org>; Fri, 27 Feb 2026 16:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C4421D3F4;
+	Fri, 27 Feb 2026 17:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772211492; cv=none; b=K5tTZxt8zHVggyv82OZ18KLo4huT2oN1zZSyvyhP5x90NM+n3cBDJyWCXhj0DcoWJrog8PqZ7LeW72NBemhCV2hDSOtP27SICZ6LbxvMDP57eqtSqwX1G8fr49lbwvffZBrNp9pSrMtjJcNRD8snM0AhpSYXiKENeSIL22nXwjA=
+	t=1772214725; cv=none; b=TP0DodEzoVWWLmQ+1DRj7Fe1lOmiNmYmlFeUSoVMW6zSyiwrzo9IaHiFCJvVDx4RwWZP49tKj+4okzmEjTQYVRvh8NS37HdHwbvQTUwkbnbS07Y05bjpuX8fEH7xuoWC+bQNjLaSQXmiLcH11tu1/QPH84sAfg7os7QfGHzoynQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772211492; c=relaxed/simple;
-	bh=8QooufOo4pPMQ94Tm+1S+IKUXQJzBKWDChzX4qil09A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qtG9elCjN/XZhR5i54V0qwbaGL8u0eKiR3B0o3w1iBbP1pOk8ZHktOQKIkdp07wNUyqkcK4yCBz8VUgK/fMRjvqjqGZ+yEBDQER/B5Mkks29B3FVAgETqtxZYZ5txdmXTPuxSJRaMyl52ceTJl8FGqok0vIpGH9n0XRqibec5QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82748095963so864723b3a.2
-        for <linux-spi@vger.kernel.org>; Fri, 27 Feb 2026 08:58:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772211490; x=1772816290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AIGPgG8NajjCLfKfqfkEsLDhUiGu4xrfbhUgqAmvE/8=;
-        b=Q/ZFtK7Nm3OqHPpFIfCN8OFBHOnPnABP3ytm8gSJXLLOnjdRN8OvWHBAB+hXYMfvJi
-         G8ozHzfqsS8jAu6LXlh93UJ5kvawywvM/nT5hfgwyXhw26S5UYr8wYUCgSnBV1bGHW5k
-         ErT/kqRmFKpll3UzYIy/f9A9eYg5NWygYUAApUpzFuaF1sCAD8uD9y9xuSlUCmJmGnhQ
-         Iuhgk4F25goIdZWeIlKCYKnUFoqdkofnHDjXNKlyFxkCvIt375VBh8A1aGCHXLVKsnD8
-         44mg78LhQP24rmPvYXSUvSB1+u44zqpj+0ysVTgonS4svGuyjnx0dHcBPtAGbEArosgX
-         qc5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUBQ1szwW8cWO2pBrDvLI61fz1MYcuOis0MQ1gwXJZJp5LFMMFo43Rx3FwdKVNoRKh5VG3dXQ0+Cf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqFCWs8M8DLUZc374WxHw+lfeJx9JfkP2z9tNXTg1S/4ps5ldA
-	X7KyBYurpTC/da1tJWaLxzBHs9GmM/r6Iu/35IpmT6VkXbzG9GrhclqMSKRN1uPhc7g=
-X-Gm-Gg: ATEYQzwrpUZswnrypk5MzSeRlW7Hj/U0qPwppt06bYrAEgBs5zxpcVnmt6a0PPOEs9Z
-	8y4VbGvBsbvuXDzdAshhs68Wtwwjwpbf6SO7D3nzEHGjbwGplhtT/2Hn3yyC0ITOZvhGy4sV+Nb
-	7tmQFUFEAgfHlTucUKLOP+jeZTipCbf2wtNofEPZLvcJMAeLAzSLcbVgIxq/TLrMSpR19lRH7ML
-	bha3mv85/YVAT6Zl53erx1L6f5w/lKifMlFQ5dZcIqpMQYmCU7cW/V655JVzatx9JWvcFaNpzEu
-	gFv2f/NxQ5yE0ebEJr5haBOF+et1sK0rCyAkHLjlG+fDlR2MALkEi+ujXdJ6Rtkj8UQ2rR7hF4H
-	PU0nmqov7jPgpqo+H6gn6Xb1sVrYw9ZbhSFMwCHh9brI0Jm+HgfPbXrzC+byyRzUKLtk47C3GiY
-	RNE2EQjHxhsdvDV9VlQgwzlUiD578SEx2b7pbNvv6pOepd4WY56RR/rvNad4bn5Es=
-X-Received: by 2002:a05:6a00:3316:b0:827:4bca:f1a2 with SMTP id d2e1a72fcca58-8274d92df4fmr2575193b3a.10.1772211490340;
-        Fri, 27 Feb 2026 08:58:10 -0800 (PST)
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com. [74.125.82.172])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a056544sm5760391b3a.57.2026.02.27.08.58.09
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Feb 2026 08:58:10 -0800 (PST)
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2bddf5091c0so2193331eec.1
-        for <linux-spi@vger.kernel.org>; Fri, 27 Feb 2026 08:58:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXFFUfrSUbwc0JaFPdvP8rOAW88BufDCmOp3Gn2vHVuj4vKa/gVtzbvKFLtLhdasxLQ2wWeGa0uFWc=@vger.kernel.org
-X-Received: by 2002:a05:6102:c01:b0:5f5:33c9:c9b3 with SMTP id
- ada2fe7eead31-5ff32536408mr1676835137.29.1772211026292; Fri, 27 Feb 2026
- 08:50:26 -0800 (PST)
+	s=arc-20240116; t=1772214725; c=relaxed/simple;
+	bh=rbxhkxoFkbgVJcHFFqOrA4/4vQ1RgZNPDVV7X5oTc9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Zeq0EwSTkdx1OaAt6vQ3qifo4VcZYkvzWP+ra8CpKGK2DuLfdpAfo7pNTUlkJmUNpHwmUOHvyeSz1IDBr9z/USBC/Dkgwe9TNlEulPiHMSd5KX8lEkKJVtSHxz2CtOYujkGnmvFIzRKtzDCD8OOSeSCO6AFPrhjtVAGp2oxoGNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHMUBrwN; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHMUBrwN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93165C2BC87;
+	Fri, 27 Feb 2026 17:52:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772214724;
+	bh=rbxhkxoFkbgVJcHFFqOrA4/4vQ1RgZNPDVV7X5oTc9I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kHMUBrwNR1dSDEPxiwjji5YgXG1sVOeJaLHndrWPf0urS20mOLrpKvNY7obAdT/YA
+	 +4Boi4EcubM28rxBW7O7AvHFWILbgVKEKQoscqgRcTUHvyYd17epCl2Xo/a0e69dBt
+	 TH87WGO7FIZ4R+WHxnBpPBTUyoyKm0XAllkbeE308cdr6UVO6ULtlHLZ7CVcaTdLP+
+	 mahUq5LDvdf12eUSt4+yixkVbOD4L1V7CdjpTUxQQ5uX2vWiuSC3ZhXfuzSrtOvszI
+	 JXypgCvzDIbzDeYKU/KKkuwTpgWnn0VX4gAd/W4+l15X3mHZtGsI6rbB4zR4/D6ELV
+	 AQoykA5oVzAWw==
+Received: by wens.tw (Postfix, from userid 1000)
+	id 23DD65FEB2; Sat, 28 Feb 2026 01:52:02 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-sunxi@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 2/3] arm64: dts: allwinner: sun55i-a523: Add pinmux for spi0 on PJ pins
+Date: Sat, 28 Feb 2026 01:51:54 +0800
+Message-ID: <20260227175157.2339758-3-wens@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260227175157.2339758-1-wens@kernel.org>
+References: <20260227175157.2339758-1-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227135428.783983-1-herve.codina@bootlin.com> <20260227135428.783983-4-herve.codina@bootlin.com>
-In-Reply-To: <20260227135428.783983-4-herve.codina@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 27 Feb 2026 17:50:14 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUAHXNbGfJFcUMQbzPqRS0S_RErU8u7t=AdmX0ZFQMjhQ@mail.gmail.com>
-X-Gm-Features: AaiRm53ZqgozcqNHytSHwR_CUbVuY8sQSeRMANHqThlNEOeyZsxQir9SPbAYLBo
-Message-ID: <CAMuHMdUAHXNbGfJFcUMQbzPqRS0S_RErU8u7t=AdmX0ZFQMjhQ@mail.gmail.com>
-Subject: Re: [PATCH v5 03/28] of: dynamic: Fix overlayed devices not probing
- because of fw_devlink
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Herv=C3=A9,
+The Avaota A1 board uses spi0 on the PJ pins to connect a SPI NAND
+chip.
 
-On Fri, 27 Feb 2026 at 14:56, Herve Codina <herve.codina@bootlin.com> wrote=
-:
-> From: Saravana Kannan <saravanak@google.com>
->
-> When an overlay is applied, if the target device has already probed
-> successfully and bound to a device, then some of the fw_devlink logic
-> that ran when the device was probed needs to be rerun. This allows newly
-> created dangling consumers of the overlayed device tree nodes to be
-> moved to become consumers of the target device.
->
-> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
-> Reported-by: Herve Codina <herve.codina@bootlin.com>
-> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
-x6=3D9F9rZ+-KzjOg@mail.gmail.com/
-> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
-> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> Link: https://lore.kernel.org/lkml/20240411235623.1260061-3-saravanak@goo=
-gle.com/
-> [Herve: Rebase on top of recent kernel and use get_device_from_fwnode()]
-> [Herve: Add the call to driver_deferred_probe_trigger()]
+Add the full set of pins. Even though this board doesn't use CS1, other
+boards may do so in the future.
 
-Thanks, that last change did the trick, finally!
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+---
+ .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+index b8263e2872af..fbdf23e90cf7 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+@@ -245,6 +245,13 @@ spi0_pc_pins: spi0-pc-pins {
+ 				allwinner,pinmux = <4>;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_pj_pins: spi0-pj-pins {
++				pins = "PJ21", "PJ22", "PJ23";
++				function = "spi0";
++				allwinner,pinmux = <5>;
++			};
++
+ 			/omit-if-no-ref/
+ 			spi0_cs0_pc_pin: spi0-cs0-pc-pin {
+ 				pins = "PC3";
+@@ -252,6 +259,13 @@ spi0_cs0_pc_pin: spi0-cs0-pc-pin {
+ 				allwinner,pinmux = <4>;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_cs0_pj_pin: spi0-cs0-pj-pin {
++				pins = "PJ20";
++				function = "spi0";
++				allwinner,pinmux = <5>;
++			};
++
+ 			/omit-if-no-ref/
+ 			spi0_cs1_pc_pin: spi0-cs1-pc-pin {
+ 				pins = "PC7";
+@@ -259,6 +273,13 @@ spi0_cs1_pc_pin: spi0-cs1-pc-pin {
+ 				allwinner,pinmux = <4>;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_cs1_pj_pin: spi0-cs1-pj-pin {
++				pins = "PJ24";
++				function = "spi0";
++				allwinner,pinmux = <5>;
++			};
++
+ 			/omit-if-no-ref/
+ 			spi0_hold_pc_pin: spi0-hold-pc-pin {
+ 				/* conflicts with eMMC D7 */
+@@ -267,6 +288,13 @@ spi0_hold_pc_pin: spi0-hold-pc-pin {
+ 				allwinner,pinmux = <4>;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_hold_pj_pin: spi0-hold-pj-pin {
++				pins = "PJ26";
++				function = "spi0";
++				allwinner,pinmux = <5>;
++			};
++
+ 			/omit-if-no-ref/
+ 			spi0_wp_pc_pin: spi0-wp-pc-pin {
+ 				/* conflicts with eMMC D2 */
+@@ -275,6 +303,13 @@ spi0_wp_pc_pin: spi0-wp-pc-pin {
+ 				allwinner,pinmux = <4>;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_wp_pj_pin: spi0-wp-pj-pin {
++				pins = "PJ25";
++				function = "spi0";
++				allwinner,pinmux = <5>;
++			};
++
+ 			uart0_pb_pins: uart0-pb-pins {
+ 				pins = "PB9", "PB10";
+ 				allwinner,pinmux = <2>;
+-- 
+2.47.3
 
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -235,6 +235,79 @@ static void __fw_devlink_pickup_dangling_consumers(s=
-truct fwnode_handle *fwnode,
->                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
->  }
->
-> +static void fw_devlink_pickup_dangling_consumers(struct device *dev)
-> +{
-> +       struct fwnode_handle *child;
-> +
-> +       guard(mutex)(&fwnode_link_lock);
-> +
-> +       fwnode_for_each_available_child_node(dev->fwnode, child)
-> +               __fw_devlink_pickup_dangling_consumers(child, dev->fwnode=
-);
-> +       __fw_devlink_link_to_consumers(dev);
-> +}
-> +
-> +/**
-> + * fw_devlink_refresh_fwnode - Recheck the tree under this firmware node
-> + * @fwnode: The fwnode under which the fwnode tree has changed
-> + *
-> + * This function is mainly meant to adjust the supplier/consumer depende=
-ncies
-> + * after a fwnode tree overlay has occurred.
-> + */
-> +void fw_devlink_refresh_fwnode(struct fwnode_handle *fwnode)
-> +{
-> +       struct device *dev;
-> +
-> +       /*
-> +        * Find the closest ancestor fwnode that has been converted to a =
-device
-> +        * that can bind to a driver (bus device).
-> +        */
-> +       fwnode_handle_get(fwnode);
-> +       do {
-> +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
-> +                       continue;
-> +
-> +               dev =3D get_device_from_fwnode(fwnode);
-> +               if (!dev)
-> +                       continue;
-> +
-> +               if (dev->bus)
-> +                       break;
-> +
-> +               put_device(dev);
-> +       } while ((fwnode =3D fwnode_get_next_parent(fwnode)));
-> +
-> +       /*
-> +        * If none of the ancestor fwnodes have (yet) been converted to a=
- device
-> +        * that can bind to a driver, there's nothing to fix up.
-> +        */
-> +       if (!fwnode)
-> +               return;
-> +
-> +       WARN(device_is_bound(dev) && dev->links.status !=3D DL_DEV_DRIVER=
-_BOUND,
-> +            "Don't multithread overlaying and probing the same device!\n=
-");
-> +
-> +       /*
-> +        * If the device has already bound to a driver, then we need to r=
-edo
-> +        * some of the work that was done after the device was bound to a
-> +        * driver. If the device hasn't bound to a driver, running thing =
-too
-
-things
-
-> +        * soon would incorrectly pick up consumers that it shouldn't.
-> +        */
-> +       if (dev->links.status =3D=3D DL_DEV_DRIVER_BOUND) {
-> +               fw_devlink_pickup_dangling_consumers(dev);
-> +               /*
-> +                * Some of dangling consumers could have been put previou=
-sly in
-> +                * the deferred probe list due to the unavailability of t=
-heir
-> +                * suppliers. Those consumers have been picked up and som=
-e of
-> +                * their suppliers links have been update. Time to re-try=
- their
-
-updated
-
-> +                * probe sequence.
-> +                */
-> +               driver_deferred_probe_trigger();
-> +       }
-> +
-> +       put_device(dev);
-> +       fwnode_handle_put(fwnode);
-> +}
-> +
->  static DEFINE_MUTEX(device_links_lock);
->  DEFINE_STATIC_SRCU(device_links_srcu);
->
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds

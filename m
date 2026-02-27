@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D8B362149;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E1C3624AB;
 	Fri, 27 Feb 2026 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772214725; cv=none; b=u2F6U594NET/YxG4PJ/uanQB9BnjzaDjVREeb1+e6riIbhadGzS3nPTzweq5VKE6NB8GEdFb/gfHho5NWihfL8p8ikAW95YzxZAf35h+QeCLT/zq2NAxfIl+u9GNNDqLIZWZnWJX73c6JeOfkg+NvXJslQuiJ1A/Yw8m38G5aDI=
+	t=1772214725; cv=none; b=PQdFI+Tr1DZX+WeTFowlDa06GEa7LPUgKjqI11s1ASk/xua5gE82l8ulL0B8Er99Q9S5B26TI8A2jl1LvG0KJG+LwGyXBikBn9UstpmsdT4rbcGqaqVfaUvfaQ7ggggYUYA4Qe1Zfdxb5FPkabDSTBldJpEkQzUcsuMr8BjEaaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772214725; c=relaxed/simple;
-	bh=wFLm7k88fcySk3WbqBdNrrXtxAUhx3c2WSVbqeGab6k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtaSmFW/PT5ZcBiXOeshf0bdLdMI6rFoVX86IisJxHA/NYWn3LHGpcr+e/zVIGHC5p1zqP/YDx9tNiww1axaYniR1PWNBCxf+A1E4kZUViZvOBdk0Ghyp68Bz1LZMm8YJA3zaLWAUS6XakSLvYJmXpkq9lTOIEhpfMpGc9H2lRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=heXXfdoP; arc=none smtp.client-ip=10.30.226.201
+	bh=7/mNYFgufSdB6BoZBYMJzzr2bJpmHixlEJwwGWkR4yU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m8xyLoDwXVDI0nNLLZUKcsVPxor6wRYMHb1LaGBVJ3cOGZoQnLj/uIQaExEzaUlvbYsFKGL/jTMAcvOa9NDUQep2Tk9nF/yErzFzF1Rg9dPz7zBb9RhP8cMtLClWLC25dLjrBFRiEYNfVl8WlM8Fk/lET1KuWFqFUWtt8G+MbBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHJl3mv2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="heXXfdoP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E91BC19421;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHJl3mv2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BFFC2BC86;
 	Fri, 27 Feb 2026 17:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772214724;
-	bh=wFLm7k88fcySk3WbqBdNrrXtxAUhx3c2WSVbqeGab6k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heXXfdoP5arDJG3XvK6VZxm+PHg6R8na5fMOeoSlO2E6O4YGrgRkiBriyJHTSr8bX
-	 /R86Tpaugnokera4ihUa40vBWWIz7TRrKhxpJEjvXX8flVv0QoRThSIrMEjFo2XnkC
-	 zK5CU8cebHKiUc+b9vp0ekw3EfyRtcOmiNalvLJLxg97tMNa4J0A+C+MtOaVDFmmyl
-	 N59oSqG8Zxb4UyVAw/zfertnV0JIdCcedq+fPs3k6JpO+Xf5vmc9YVZ0M9PBgvFVT0
-	 T0FA3ylv0Rz6q2tk+pG261JRF2j9fYATOU3+hcfL+BKwB5TUGjWbpBPCrv30SkEF1D
-	 sVNE6RmUGJDXQ==
+	bh=7/mNYFgufSdB6BoZBYMJzzr2bJpmHixlEJwwGWkR4yU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nHJl3mv29lUbaGLD1RfzlNxAcOILEaDl/Vv70oToycDi4XWRLApSVVY4X0bxwio7P
+	 rHJO67CO8ZCYdUEpeMPwmB2R1QKoAehF90iapkiSpnx5YIwH32jScLP9R9LJ0WMQpz
+	 LAfpL+pyIaL3zD2O82cso/eleaRb2FGk/FAvvuCiXslsD8BOQJV13+z/lOhKOa0iWO
+	 TORze1c4hGoZTixoQY0KAJAHDDKi/XnEmmZ1McKbjJ6ChAzZAbTVZ3KOTxXYXY9Ei9
+	 CbGIjUfiIrvh7wv9S2Q/nVxiLf1eAW3GHBNpKK3qY3P0XAKP+C5Dr7rWB0aZFKywu0
+	 8VLCaEqfvQkkA==
 Received: by wens.tw (Postfix, from userid 1000)
-	id 1C4DE5F9D2; Sat, 28 Feb 2026 01:52:02 +0800 (CST)
+	id 1388E5FDB1; Sat, 28 Feb 2026 01:52:02 +0800 (CST)
 From: Chen-Yu Tsai <wens@kernel.org>
 To: Chen-Yu Tsai <wens@kernel.org>,
 	Jernej Skrabec <jernej@kernel.org>,
@@ -41,12 +40,10 @@ Cc: linux-sunxi@lists.linux.dev,
 	linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
-Date: Sat, 28 Feb 2026 01:51:53 +0800
-Message-ID: <20260227175157.2339758-2-wens@kernel.org>
+Subject: [PATCH 0/3] arm64: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
+Date: Sat, 28 Feb 2026 01:51:52 +0800
+Message-ID: <20260227175157.2339758-1-wens@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260227175157.2339758-1-wens@kernel.org>
-References: <20260227175157.2339758-1-wens@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -55,74 +52,39 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Support for Dual SPI and Quad SPI was added to the Linux driver in
-commit 0605d9fb411f ("spi: sun6i: add quirk for dual and quad SPI modes
-support") and commit 25453d797d7a ("spi: sun6i: add dual and quad SPI
-modes support for R329/D1/R528/T113s").
+Hi,
 
-However the binding was never updated to allow these modes. Allow them
-by adding 2 and 4 to the allowed bus widths for the newer variants.
+This series enables the SPI NAND found on the Avaota A1 in Quad SPI
+mode. The SPI driver already supports Dual SPI and Quad SPI, but the
+bindings need to be updated to allow it.
 
-While at it, also add 0 to the allowed bus widths. This signals that
-RX or TX is not available, i.e. the MISO or MOSI pin is disconnected.
+Patch 1 updates the binding to allow Dual SPI and Quad SPI on the newer
+SoCs. It also allows describing no TX or no RX available.
 
-Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
----
- .../bindings/spi/allwinner,sun6i-a31-spi.yaml | 31 ++++++++++++++++---
- 1 file changed, 26 insertions(+), 5 deletions(-)
+Patch 2 adds another set of pins for spi0 on the A523 SoC family. This
+set is used for the SPI NAND on the Avaota A1 board.
 
-diff --git a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-index a6067030c5ed..2197f65d878b 100644
---- a/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-+++ b/Documentation/devicetree/bindings/spi/allwinner,sun6i-a31-spi.yaml
-@@ -6,9 +6,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Allwinner A31 SPI Controller
- 
--allOf:
--  - $ref: spi-controller.yaml
--
- maintainers:
-   - Chen-Yu Tsai <wens@csie.org>
-   - Maxime Ripard <mripard@kernel.org>
-@@ -82,11 +79,35 @@ patternProperties:
- 
-       spi-rx-bus-width:
-         items:
--          - const: 1
-+          enum: [0, 1, 2, 4]
- 
-       spi-tx-bus-width:
-         items:
--          - const: 1
-+          enum: [0, 1, 2, 4]
-+
-+allOf:
-+  - $ref: spi-controller.yaml
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              enum:
-+                - allwinner,sun50i-r329-spi
-+                - allwinner,sun55i-a523-spi
-+    then:
-+      patternProperties:
-+        "^.*@[0-9a-f]+":
-+          type: object
-+
-+          properties:
-+            spi-rx-bus-width:
-+              items:
-+                enum: [0, 1]
-+
-+            spi-tx-bus-width:
-+              items:
-+                enum: [0, 1]
- 
- required:
-   - compatible
+Patch 3 enables the SPI NAND found on the board. No partition layout
+is provided at the moment.
+
+
+Please have a look.
+
+
+Thanks
+ChenYu
+
+
+Chen-Yu Tsai (3):
+  spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
+  arm64: dts: allwinner: sun55i-a523: Add pinmux for spi0 on PJ pins
+  arm64: dts: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
+
+ .../bindings/spi/allwinner,sun6i-a31-spi.yaml | 31 +++++++++++++---
+ .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 35 +++++++++++++++++++
+ .../dts/allwinner/sun55i-t527-avaota-a1.dts   | 15 ++++++++
+ 3 files changed, 76 insertions(+), 5 deletions(-)
+
 -- 
 2.47.3
 

@@ -1,84 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE1F428470;
-	Sat, 28 Feb 2026 12:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600BC33DEC9;
+	Sat, 28 Feb 2026 13:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772283315; cv=none; b=Yw7FJor31eKxc3prJinReaa56hvdl9tvG3Ur3JTuyTlgOpyDB60zQ4LLsxoK/w3J3g3JVPCDIydt+35xBxj8tqvqtHWPNwYZoNZtMR9ylhi4ywSTP+NoChA5DJ5Tg9dvonjbe20jeqhMnuFM9PiLVeLtUslzL52pl1yxoyt56Yk=
+	t=1772283824; cv=none; b=r2uhFHV8l5ut9vt1KM1hEA4pUg1X1yBhUbXUH7Ht10Gc/zAVY79lL2DLaUWE78UXC3CRx+/dIu9BZkWsRu6+QVJOmsU2LqtYiJqOspeODjZ0vEJyf3PqdWMvN7b8khqWPDlqGR9FiddGY+qkf9MKbA7CXpuwC/E1+KqUogDOM+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772283315; c=relaxed/simple;
-	bh=ILsuvpu34TptHZIsDyYLy7kIz5rYs6MyQQFKOpyiEM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MsuYiVniC9rHf86+s++BDzExHBZFET7WUkAcktqN4vvfd4N0nlMWuHlB/etwYQ+9ZdS/9yR5sb2YRjWRBBp4EgVSh84Togw3WPnQn5GvcXCtYJT2KoyUNybrR7NZ10KZmEZLP9DlZOkTU92kYO25ObAB2aAoOvpCxpaKdvsqn/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNbycovW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772283824; c=relaxed/simple;
+	bh=xtDJJsh+MizGbuvSU4iqxXE8ztBRHIlu33POVWilcmg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=kkbCPbPq/hlekAa8rUjHndBSXAds1IV0YkqT26R6PsRSLxDS0M3tD7qd82e3Y+iRjFSGOCkdxkK9eO7PGSr0fraVuJjTTfiq7Iof74OncVfCQhnxsMgNy41II8+XS19Hjl16F5/73rhcMhuODgT8rwX2bwjngkJK1U9CHzoX9ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMWBADPm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNbycovW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC053C116D0;
-	Sat, 28 Feb 2026 12:55:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMWBADPm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD123C116D0;
+	Sat, 28 Feb 2026 13:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772283315;
-	bh=ILsuvpu34TptHZIsDyYLy7kIz5rYs6MyQQFKOpyiEM0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HNbycovWG1VG0yXlJZilZfcO+jggSPDYDJc0Zzg6nt3P95gX1UteyPS1McYtD1VZ7
-	 tHvnERElvMLNe7PIVLmxOHJU+i2XWsa0KQablTH/U87wHbyJgitjm7jCsB1/LRsKyL
-	 EOLE5IsZ/eP3pd7hBjlpv/gT3fott8/fKEnUQKrLpJQVV/J8smKnZKwEJyh7Kb6ZVB
-	 4uKByLEFBqVqfGmmwL62JBjsIbDQm9LjjNAUlRlVroz5mLehL0QZIGBRoQbva8RYOP
-	 XIoLo3WvaKdVcnz40L8it7Q3ZRu2ym9sElcJ9mKOfQfdzh5dKIWYCcj+M7n09aZxmJ
-	 MeZaWRaC/P5Kg==
+	s=k20201202; t=1772283824;
+	bh=xtDJJsh+MizGbuvSU4iqxXE8ztBRHIlu33POVWilcmg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EMWBADPm4y5kg7ycPpjnEvS0Wx/gQKNFbx+NF1uFgpXjKAtOe6f26tUavEjJrN7KF
+	 ZA0XJT4PUgocTbU5MO+whj97hop9/pl6IMHoG9XwMJyCQ7l7QwWn7LUx9AigAEA/Ow
+	 NTwpdDjoAA2E58+6pr/Dck5l7mcFiYx+MoBVnjZODlFN0GozZRSIozHog4+iw/IlRy
+	 B3Mwk0QKkhJ1gKVw/CGFQXViARUiIfJV+gzTCBLMd3DCWy45DqCx7IvtNj98sI8mwW
+	 4tPt9LYXkFQE78izBp6RcTvIY79HkaUeBjIXlsJtMEwKo2ysfwIRcNa5f+ZziBNa56
+	 zu0OU8A6LC7iA==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 889D81AC58E5; Sat, 28 Feb 2026 12:55:09 +0000 (GMT)
-Date: Sat, 28 Feb 2026 12:55:09 +0000
+	id 543831AC58E4; Sat, 28 Feb 2026 13:03:41 +0000 (GMT)
 From: Mark Brown <broonie@kernel.org>
-To: =?utf-8?B?yKvvv73vv73vv73vv70gKFlKIEhvbmcp?= <yj.hong@telechips.com>
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [BUG] Possible circular locking dependency in spidev (buf_lock
- <-> spi_lock)
-Message-ID: <aaLlrRjiHrr4NEIB@sirena.co.uk>
-References: <PU4P216MB11829B6BE6520C897F0DCE0EFF70A@PU4P216MB1182.KORP216.PROD.OUTLOOK.COM>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.0-rc1
+Date: Sat, 28 Feb 2026 13:03:34 +0000
+Message-Id: <20260228130341.543831AC58E4@finisterre.sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n4+/nfwjbbCP30zZ"
-Content-Disposition: inline
-In-Reply-To: <PU4P216MB11829B6BE6520C897F0DCE0EFF70A@PU4P216MB1182.KORP216.PROD.OUTLOOK.COM>
-X-Cookie: Think big.  Pollute the Mississippi.
 
+The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
 
---n4+/nfwjbbCP30zZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
 
-On Sat, Feb 28, 2026 at 03:38:17AM +0000, =C8=AB=EF=BF=BD=EF=BF=BD=EF=BF=BD=
-=EF=BF=BD (YJ Hong) wrote:
-> Hello,
->=20
-> I am seeing a lockdep warning in spidev reporting a possible circular
-> locking dependency between buf_lock and spi_lock.
+are available in the Git repository at:
 
-There was a change just applied to Linus' tree recently which should
-avoid this, it removes buf_lock and just uses spi_lock.  I guess it'll
-end up in stable, not sure.
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-rc1
 
---n4+/nfwjbbCP30zZ
-Content-Type: application/pgp-signature; name="signature.asc"
+for you to fetch changes up to e96493229a6399e902062213c6381162464cdd50:
 
------BEGIN PGP SIGNATURE-----
+  spi: stm32: fix missing pointer assignment in case of dma chaining (2026-02-26 23:16:12 +0000)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmi5awACgkQJNaLcl1U
-h9CNdgf8CUH2ouI7+ZsbO8vihOCFjpacJ26h9oOTABYAW5Bwzog3IhGdjxFzoTog
-4Es4MWrBHZ5nwW9shF/x8mjHFo0Yf6TOQH+h1JOruO80Emo1A5Wbz+NtVnshQv8B
-30umbh0TrdeCyYtVQdFUWf3bxueIVgK3wXNVrijinEwD3lPAV3YFZIYT8fUW/ayR
-E1LCKqBoqOS8euHmg9kDJk845sq26FZBQ1fiepLQEpZc3boLqEZHIcJFTqxRhYGg
-rdgvh9LnqrnV7sZm/UpVYLGnsCwGXIp4kEXSpSldNELtlkNunBZyaM5WPh7/+G2f
-PkguPvrO/Wb2QH/dzMlhIm3u31SwKQ==
-=pp+1
------END PGP SIGNATURE-----
+----------------------------------------------------------------
+spi: Fixes for v7.0
 
---n4+/nfwjbbCP30zZ--
+One fix for the stm32 driver which got broken for DMA chaining cases,
+plus a removal of some straggling bindings for the Bikal SoC which has
+been pulled out of the kernel.
+
+----------------------------------------------------------------
+Alain Volmat (1):
+      spi: stm32: fix missing pointer assignment in case of dma chaining
+
+Andy Shevchenko (1):
+      spi: dt-bindings: snps,dw-abp-ssi: Remove unused bindings
+
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   | 31 +---------------------
+ drivers/spi/spi-stm32.c                            |  3 +++
+ 2 files changed, 4 insertions(+), 30 deletions(-)

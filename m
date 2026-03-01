@@ -1,143 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C779E27F010;
-	Sat, 28 Feb 2026 21:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E8D2820A9;
+	Sun,  1 Mar 2026 01:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772314526; cv=none; b=gmuCroIhYwBeb9IZqzZ5l6KbzOVUX49Zc6GrRWf5+1QcimoSzB5dxI/CjSM38gr62v0tnp7KeKxXQpjXR2qCU3mAqxArtprzcXJOU0dq/bNF32ad4mxOTcIW6LhzRnFNdOm1i7XnffRLzas40Hc2eT8S5MlqYW4NvvjIbeVR0I4=
+	t=1772329666; cv=none; b=kVDP/fK1XUvi1ebS4klrYshWE1+Ny7S6FnhExy1+2/UNLMHuP4SmuA7sCt7fJt3gqhtLfQt4ZczS83Q8vDH9jYWLsj+RxHK56FGA+j4NUDy64rw32A3T7MvAFrYckvDb6LIDRr8NXo+pPhurJUO8MCWJsObFoSIAXt1RQiIKRM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772314526; c=relaxed/simple;
-	bh=uE+NY26oLrKW+yztywRPuIT9/z0NETykFwOtblclvtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pp83kdnj6YsU6HGtNwAykEVp6/8sX/5VQ4DBaSQJoOkqfb2O731tyLCBHDPYTce8/pdaLsQXUwRzF/qePRKsIrcKG9ruu/TpMYMrEo/u+SqxfJEsn3kfi0Np9RMXM+N6jwbW1B7cB2wjPF2UBShT3jqenfMenKw15nm0oNYlVpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8Oej7sk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772329666; c=relaxed/simple;
+	bh=O9vsDruYfHebzjNzheHpKkJEJBdF1X0kQ/JrXbtXGNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MtxsY6dY1v+cfrBwNg+6hJcCLo1rGfMad/zEn1ah/xfuo5QzR5e8FqFO8/SdLQZIavZ+mNJ4fm5Q2anZSy4r0tD73rLp3IoeeHAjEOxsZyBbpQXVSmC1WPJrWG3zma/DMNbDVCDcVzeHnD0K96lzWGEkAFGN3T59saL39qvY3Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GkvEfBEF; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8Oej7sk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2271DC116D0;
-	Sat, 28 Feb 2026 21:35:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772314526;
-	bh=uE+NY26oLrKW+yztywRPuIT9/z0NETykFwOtblclvtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L8Oej7sk73HAJfyxRZvzVKcQAKmPIkq4fCNxQfOFS7UUa1vixkF7JZc9o2s8oOP80
-	 Uz4oYrtshFQMGJk8HzzD4vGd+lBvBSoNSpsqhYL69pUBWqHa7uBJDf2AQxFNGfPUog
-	 BKTPDaydA3JvPcd5oeAutnfEaENsxpqywrh0S4Y5+vQ4OHfKtzKxpuTYSWlz578Ldx
-	 JJGA4nslyioZh2rfHOipND6OKARHmyk1IALOzgkxYh3sw0EVcJBV4ibTuZvkzXxn2x
-	 csk8XYXZAx5ULBypR7aG18tz7SUCFAEYUk2fx0hMoTZZI4Jt/T7qgq6KKJ+O2yZ+kS
-	 43I1cvKsKmCng==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 251761AC597D; Sat, 28 Feb 2026 21:35:23 +0000 (GMT)
-Date: Sat, 28 Feb 2026 21:35:22 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v4 0/5] iio: adc: ad4080: add support for AD4880
- dual-channel ADC
-Message-ID: <aaNfmu8Wubizo5Go@sirena.co.uk>
-References: <20260223162110.156746-1-antoniu.miclaus@analog.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GkvEfBEF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=rw9ffD6UMobURwaxZzMbLNNCvWV7xCQaBWw/IH/6nHM=; b=GkvEfBEF1DVU1HJ19NLKha5gGm
+	c3AKXqTlmav4DG3AV8A4aGU/BQlMYkjagwMR9E5FupHY6QqK2zl9ctAExikhX6SStWbd8RATJ/iFw
+	hoFKS8tK4jtLsKVewXUmvNOJ3+s9JWObxwoiCIcP5NuHXuq0RVlXW/MOwiVsrbsvedPa9rrWzIeKV
+	dsTxSjImcRZPyBdDOgqdTx+oSRSWJ+yrzk0f9KjqrWjmzrXC+tHF3aThyssDsIMR99YHQoYZHANcc
+	66Vov3KkRLzY1fGE/Vx/0SjUhjTzk71xYgXzxhn93MR3V2NpJWPD7WP2s6shLneGTOhRJnQf2hKYB
+	WUXyWWDQ==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vwVuK-0000000AeMZ-0DgA;
+	Sun, 01 Mar 2026 01:47:44 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Subject: [PATCH] spi: spi-mem: clean up kernel-doc in spi-mem.h
+Date: Sat, 28 Feb 2026 17:47:43 -0800
+Message-ID: <20260301014743.3133167-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TMuLw1nB3GMyikBv"
-Content-Disposition: inline
-In-Reply-To: <20260223162110.156746-1-antoniu.miclaus@analog.com>
-X-Cookie: Think big.  Pollute the Mississippi.
+Content-Transfer-Encoding: 8bit
 
+Eliminate all kernel-doc warnings in spi-mem.h:
+- add missing struct member descriptions
+- don't use "struct" for function descrptions
 
---TMuLw1nB3GMyikBv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Warning: include/linux/spi/spi-mem.h:202 struct member 'cmd' not described
+ in 'spi_mem_op'
+Warning: include/linux/spi/spi-mem.h:202 struct member 'addr' not described
+ in 'spi_mem_op'
+Warning: include/linux/spi/spi-mem.h:202 struct member 'dummy' not
+ described in 'spi_mem_op'
+Warning: include/linux/spi/spi-mem.h:202 struct member 'data' not described
+ in 'spi_mem_op'
 
-On Mon, Feb 23, 2026 at 06:20:59PM +0200, Antoniu Miclaus wrote:
-> Add support for the AD4880, a dual-channel 20-bit 40MSPS SAR ADC from
-> the same family as AD4080.
+Warning: include/linux/spi/spi-mem.h:286 Incorrect use of kernel-doc
+ format: * struct spi_mem_get_drvdata() - get driver private data
+ attached to a SPI mem
+Warning: include/linux/spi/spi-mem.h:298 Incorrect use of kernel-doc
+ format: * struct spi_controller_mem_ops - SPI memory operations
+Warning: include/linux/spi/spi-mem.h:362 expecting prototype for struct
+ spi_mem_set_drvdata. Prototype was for struct spi_controller_mem_ops instead
 
-The following changes since commit 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f:
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org
 
-  Linux 7.0-rc1 (2026-02-22 13:18:59 -0800)
+ include/linux/spi/spi-mem.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-devm-ancilliary
-
-for you to fetch changes up to e02902dd493bf9c9b05353c761737ac514ad7a5c:
-
-  spi: add devm_spi_new_ancillary_device() (2026-02-24 17:41:42 +0000)
-
-----------------------------------------------------------------
-spi: add devm_spi_new_ancillary_device()
-
-Add a managed version of spi_new_ancillary_device()
-
-----------------------------------------------------------------
-Alain Volmat (1):
-      spi: stm32: fix rx DMA request error handling
-
-Andy Shevchenko (1):
-      spi: pxa2xx: use min() instead of min_t()
-
-Antoni Pokusinski (1):
-      spi: omap2-mcspi: add support for 3-wire transfers
-
-Antoniu Miclaus (2):
-      spi: allow ancillary devices to share parent's chip selects
-      spi: add devm_spi_new_ancillary_device()
-
-Charles Keepax (1):
-      spi: cs42l43: Don't support sidecar properties on device tree systems
-
-Cosmin Tanislav (1):
-      spi: dt-bindings: renesas,rzv2h-rspi: allow multiple DMAs
-
-Krzysztof Kozlowski (1):
-      spi: stm32: Use NULL instead of 0 for pointer
-
-Patrice Chotard (1):
-      spi: stm32-ospi: Remove exec_op() callback debug log
-
-Pei Xiao (1):
-      spi: atcspi200: Remove redundant assignment to .owner
-
- .../bindings/spi/renesas,rzv2h-rspi.yaml           | 16 ++++-
- drivers/spi/spi-atcspi200.c                        |  1 -
- drivers/spi/spi-cs42l43.c                          |  4 +-
- drivers/spi/spi-omap2-mcspi.c                      | 17 ++++--
- drivers/spi/spi-pxa2xx.c                           | 11 ++--
- drivers/spi/spi-stm32-ospi.c                       |  5 --
- drivers/spi/spi-stm32.c                            | 10 ++--
- drivers/spi/spi.c                                  | 69 ++++++++++++++++++++--
- include/linux/spi/spi.h                            |  1 +
- 9 files changed, 101 insertions(+), 33 deletions(-)
-
---TMuLw1nB3GMyikBv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmjX5oACgkQJNaLcl1U
-h9D+TAf+Ipw8Gc/+B70hMbEpqZhtsYP7GT49dptCsIuN0RBputuTYeqcfujd+mNs
-psu87ms4bHWnarM7TseX1h2QqCF4q5kbZFfLxalWKzuk/99jsBSIZGOUYi0y/DJP
-PeCCXBEj4OWUK7cRGUISyDHTe5TpB4kQMpL79GuODzifE0z6d2HwIXywUmUBcIlD
-mHxXyRQGiuRmPVcaVEIGJCdiADujd7+cL6sjPP4r2iz0FD9gYtlGtgLU2/I5/ECi
-li8nxM9cqvREqAk0u2zv/0HTnXrdtyQVZHFO5gzUXKE9K0EwrQTYyNpAvvPnmVJH
-BF/SDVfqiPmhvQlVhSp95yMy+/a/jg==
-=hOiC
------END PGP SIGNATURE-----
-
---TMuLw1nB3GMyikBv--
+--- linux-next-20260227.orig/include/linux/spi/spi-mem.h
++++ linux-next-20260227/include/linux/spi/spi-mem.h
+@@ -130,11 +130,13 @@ enum spi_mem_data_dir {
+ 
+ /**
+  * struct spi_mem_op - describes a SPI memory operation
++ * @cmd: the complete command
+  * @cmd.nbytes: number of opcode bytes (only 1 or 2 are valid). The opcode is
+  *		sent MSB-first.
+  * @cmd.buswidth: number of IO lines used to transmit the command
+  * @cmd.opcode: operation opcode
+  * @cmd.dtr: whether the command opcode should be sent in DTR mode or not
++ * @addr: the address attributes
+  * @addr.nbytes: number of address bytes to send. Can be zero if the operation
+  *		 does not need to send an address
+  * @addr.buswidth: number of IO lines used to transmit the address cycles
+@@ -143,10 +145,12 @@ enum spi_mem_data_dir {
+  *	      Note that only @addr.nbytes are taken into account in this
+  *	      address value, so users should make sure the value fits in the
+  *	      assigned number of bytes.
++ * @dummy: data for dummy operation
+  * @dummy.nbytes: number of dummy bytes to send after an opcode or address. Can
+  *		  be zero if the operation does not require dummy bytes
+  * @dummy.buswidth: number of IO lanes used to transmit the dummy bytes
+  * @dummy.dtr: whether the dummy bytes should be sent in DTR mode or not
++ * @data: the data attributes
+  * @data.buswidth: number of IO lanes used to send/receive the data
+  * @data.dtr: whether the data should be sent in DTR mode or not
+  * @data.ecc: whether error correction is required or not
+@@ -273,7 +277,7 @@ struct spi_mem {
+ };
+ 
+ /**
+- * struct spi_mem_set_drvdata() - attach driver private data to a SPI mem
++ * spi_mem_set_drvdata() - attach driver private data to a SPI mem
+  *				  device
+  * @mem: memory device
+  * @data: data to attach to the memory device
+@@ -284,7 +288,7 @@ static inline void spi_mem_set_drvdata(s
+ }
+ 
+ /**
+- * struct spi_mem_get_drvdata() - get driver private data attached to a SPI mem
++ * spi_mem_get_drvdata() - get driver private data attached to a SPI mem
+  *				  device
+  * @mem: memory device
+  *

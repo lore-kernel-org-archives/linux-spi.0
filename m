@@ -1,95 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D664014A3;
-	Mon,  2 Mar 2026 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A140641161A;
+	Mon,  2 Mar 2026 15:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772458346; cv=none; b=oi6Pbwu+npXtZthIQQpJoUq+9vfl9k+ecIxTDkTLM4wYUkeFfAmRzydFrhlejQYEMhl34lk5ewvycvn0bTyQnnMyujkKtIjEdoIQihzyW/2FwnBeugNPMj9t7ynGLzqj8TuX6O00Kzz+lzqfMJ+fqkUv2IDuyxCxIz3QwvFE78s=
+	t=1772465764; cv=none; b=um/jD3pVHX8l54BQAW090dMKB5qymYyQN+d08dcqkwDbSU7j+x6pvNaBI6rvX+CX5QQjNrhBsrWgo2dqXAP5Fb0LQZwZMsFu7v7x1Fm1OPPYrsowSrRRhXNovHMzHZ4H+JIS/bftJUF4XF/LvB+kIrDkSbXyNdVnhrcDtGObIaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772458346; c=relaxed/simple;
-	bh=F8Xw8lWDT/yc2wnHXHmLX3Wm4Jj163DI6NFS3w0OUI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cawvR+o5IL4syRtKvzLqUfMb9lvIXmNf8bMeq0/diVBG+z+kldCZNsVfGp6g1wWCchGfZuGTsWEC5viuMfr6vhY+9M4qWmS9q9UCqlUyAgjKPwvz4tNvP7mh5u4ZNXkKx5jzonpgM4v+3l7mRtOYoGOQm+OAoTPMCVcZN2nObRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3hDWFHn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772465764; c=relaxed/simple;
+	bh=GwfYq0+TY5ANRavFRxvs9n8sWwS/ZEOhNTjVOS3rCpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dQBUXF/imTPFgu0xQKrPT+qGDi0UICmVl9woS8k4QsbFxteAc+Q+ztJPcRVXDtOQ2cqQqBqxmtfFQ00MnT0W/zuSY09hrRmByVQIxKSYJztJFEFVceCEGXseTM74UxjfZzxbj8L18KtoLHVAQnzHxh9sga3nQeA4bYPtgKBSvI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QO98pFpC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3hDWFHn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2376C2BCB2;
-	Mon,  2 Mar 2026 13:32:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QO98pFpC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C753C2BC86;
+	Mon,  2 Mar 2026 15:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772458345;
-	bh=F8Xw8lWDT/yc2wnHXHmLX3Wm4Jj163DI6NFS3w0OUI4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A3hDWFHn4CzfYrzHJ93HteExyHF8rvHwNWYj7WEjNiFe5E1zk+4V7uUoj0osGkM5v
-	 rs1CRdShOtQYU8blbVCVOlgP2JD63V9vHV83d6vY1HKemOa6rmIUnn+z5qTiF1KwvF
-	 yDWUCj+c74npOGpyyAAbHVBmFkvghh3kHqy7rlTRpUFWUXnzpcA2+qYs2pMW3gZPxT
-	 a6i5vmUBpwo+f2gcZWqWEDi1TA624ZB/vCQBv2k/8+umTLvwYbag+gd8A6dAkMuZQJ
-	 YQB4Lxg9Sp4GcvyqXm0F6O7uhg2itMlQBE7EVTpyjdXjcAMdUHMmMQtEYx12UEP4+t
-	 ifh0v//nPcsmA==
-Date: Mon, 2 Mar 2026 13:32:21 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Vladimir Yakovlev <vovchkir@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: spi-dw-dma: fix print error log when wait finish
- transaction
-Message-ID: <28070766-b06f-4036-9c70-2e8b80810299@sirena.org.uk>
-References: <20260302113233.773414-1-vovchkir@gmail.com>
+	s=k20201202; t=1772465764;
+	bh=GwfYq0+TY5ANRavFRxvs9n8sWwS/ZEOhNTjVOS3rCpM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QO98pFpCvITBwuapY2ZRNtWBp5puOOg3BmSnLz6RcO7v7C/JuQiyKCVZqVE0oTEU5
+	 e3nxrAN/Hbc0QzINb7QP6bnCEgBIr87S7Lpkm2Yi/B4uAjyRi22irijTr4wHlL3aL7
+	 Mfl9Zk0BdFuYK3yIzvN+0UiOQJBrk1R86JTYO9fYjI3WVJqu7WbSLqX+Dk5hWtAc/h
+	 0uQ4Y6NB1ALgwXd9RPXLkp7yHQq672qDjaceY29eRIXm6v7kBQ9qSO83vuNgmZ0qYb
+	 3und91Gb+dPaJgpxQYwO1wN6eBnRrQOvVH6cShRvCsLfBMpXUpEggUTq13KNowzw+e
+	 S7aw5dXVPIIVQ==
+Received: by wens.tw (Postfix, from userid 1000)
+	id 117AE5FCAC; Mon, 02 Mar 2026 23:36:02 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-sunxi@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/3] arm64: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
+Date: Mon,  2 Mar 2026 23:35:55 +0800
+Message-ID: <20260302153559.3199783-1-wens@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ed4b5Xff5i/fGoWZ"
-Content-Disposition: inline
-In-Reply-To: <20260302113233.773414-1-vovchkir@gmail.com>
-X-Cookie: You love peace.
+Content-Transfer-Encoding: 8bit
+
+Hi,
+
+This is v2 of my Avaota A1 SPI NAND enablement series.
+
+Changes since v1:
+- DT bindings (Krzysztof)
+  - Moved "allOf:" block after "required:" block
+  - Dropped "type:" from child node in conditional block
+- Collected tags
+- Link to v1:
+  https://lore.kernel.org/linux-sunxi/20260227175157.2339758-1-wens@kernel.org/
+
+This series enables the SPI NAND found on the Avaota A1 in Quad SPI
+mode. The SPI driver already supports Dual SPI and Quad SPI, but the
+bindings need to be updated to allow it.
+
+Patch 1 updates the binding to allow Dual SPI and Quad SPI on the newer
+SoCs. It also allows describing no TX or no RX available.
+
+Patch 2 adds another set of pins for spi0 on the A523 SoC family. This
+set is used for the SPI NAND on the Avaota A1 board.
+
+Patch 3 enables the SPI NAND found on the board. No partition layout
+is provided at the moment.
 
 
---Ed4b5Xff5i/fGoWZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Mar 02, 2026 at 02:32:33PM +0300, Vladimir Yakovlev wrote:
-> If an error occurs, the device may not have a current message. In this
-> case, the system will crash.
->=20
-> In this case, it's better to use dev from the struct host.
-
-Are you sure:
-
-/build/stage/linux/drivers/spi/spi-dw-dma.c: In function =E2=80=98dw_spi_dm=
-a_wait=E2=80=99:
-/build/stage/linux/drivers/spi/spi-dw-dma.c:274:29: error: =E2=80=98struct =
-dw_spi=E2=80=99 has no member named =E2=80=98host=E2=80=99
-  274 |                 dev_err(&dws->host->dev,
-      |                             ^~
-/build/stage/linux/include/linux/dev_printk.h:110:25: note: in definition o=
-f macro =E2=80=98dev_printk_index_wrap=E2=80=99
-  110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                  =
-     \
-      |                         ^~~
-/build/stage/linux/drivers/spi/spi-dw-dma.c:274:17: note: in expansion of m=
-acro =E2=80=98dev_err=E2=80=99
-  274 |                 dev_err(&dws->host->dev,
-      |                 ^~~~~~~
+Please have a look.
 
 
---Ed4b5Xff5i/fGoWZ
-Content-Type: application/pgp-signature; name="signature.asc"
+Thanks
+ChenYu
 
------BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmlkWUACgkQJNaLcl1U
-h9BHaAf9GGanqq5hHMB9v0IzN1MbU2n/16hFE9jJzUIE14YwHo6AjYsOnjsbDH6R
-/2riUGpileS7rFEWgr888MTMn2DEVgXbkPGCXO9QZZXAldZ021T52DygW4WRs1Yn
-NjE3VjrrWv4d92rwZiPF0YIv7tIzNHwNZqzNzJw6kDZEgDqrKlomUndP98eCd6x6
-dxoVljt7wtUL868Grm3lFY9JvdU2h2MjwTCfwSJU8L20+3m54tWD37TG4CpBBGHV
-3CaxjcbAfGqYCavNqj4JJg9u9gAn0DuHkxAYxhIm8ljsO7V8qCmMZCsP9NP/U2bM
-mr9WkXCQf1kZQ1U4GmI+M+Shq9SiAw==
-=3xZk
------END PGP SIGNATURE-----
+Chen-Yu Tsai (3):
+  spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
+  arm64: dts: allwinner: sun55i-a523: Add pinmux for spi0 on PJ pins
+  arm64: dts: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
 
---Ed4b5Xff5i/fGoWZ--
+ .../bindings/spi/allwinner,sun6i-a31-spi.yaml | 29 ++++++++++++---
+ .../arm64/boot/dts/allwinner/sun55i-a523.dtsi | 35 +++++++++++++++++++
+ .../dts/allwinner/sun55i-t527-avaota-a1.dts   | 15 ++++++++
+ 3 files changed, 74 insertions(+), 5 deletions(-)
+
+-- 
+2.47.3
+

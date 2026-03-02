@@ -1,94 +1,70 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2AB362135
-	for <linux-spi@vger.kernel.org>; Mon,  2 Mar 2026 11:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D7532861F
+	for <linux-spi@vger.kernel.org>; Mon,  2 Mar 2026 11:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772450539; cv=none; b=onhrdzJmsiCsHyA5Zuw6dpKzanbvhZw+KKTngBQhgn4o0WDu4dbCzIq77UY0ehndftsmHXIlRYJWXpg2CWmqO8QD8iD0LcrKU7Hp7X6EJi27lpOUVGEbdZRwxQQMlihgqET491hXPQlr8H3B7hyLqRd1Q1WBza4/NrOlw32x8ag=
+	t=1772451165; cv=none; b=kzN5xtPB+lZlL5Nj7LXuYXLAkpCsKr8Aa3Ha2W9KNT1nHSVJbXVf/UkzoT4LI5cxbj8jNyhmzqPoAMWg2lgaTRxHlYcDXGRCa3iqHeOJZrNPhFjOJ8ia4OLUfPcppqhyDeaa6t0+4M0P5KU6ipmIsgVFDCUziKwSdOCfJyYS61o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772450539; c=relaxed/simple;
-	bh=yKxKlPFwHHfnfIe8NOO4ftQvMM/ItC6tkW/NSKi27zk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpX7pMn4+VfxolqjgNKAvXMFNf9ZI0dfNF/fCnjYCs5W08AkQCYK/dI0ViWhTPvkTvR5UcDi/t+8RfNZ/TftU42FqsANRF3Iv8ZIvpHyd2X+B1Enek9XWh8047r/VK0pAON/qfo2yqzMFj4jDihJo1HNfI8EyDskUPUwPkaz1Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=ljScMi+O; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+	s=arc-20240116; t=1772451165; c=relaxed/simple;
+	bh=xsXkTsqDybP01DU0M5+eSUTyxbeltoVBrnL25UXqDS8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hMs+BhfRbMoAmyCDtHkWCfP4Q/T359EcKCXC7+1Z2GFyQJ8ZwdO0JYauGzGaibQ99lEICZNGnDWfUZmFXA4giSgnIIfx2mffoEUNLkt/5aDU5uEA508D7fzlQBFMOjA4d8RvcwNdHI6kTypcSgyFFaDQ+MeSS4ooW0FyXSJgltg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6Q+tVHO; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="ljScMi+O"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4836d4c26d3so32144355e9.2
-        for <linux-spi@vger.kernel.org>; Mon, 02 Mar 2026 03:22:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6Q+tVHO"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-389f173b91fso71062211fa.1
+        for <linux-spi@vger.kernel.org>; Mon, 02 Mar 2026 03:32:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1772450532; x=1773055332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=thg/hbiihCY04+UIp7gvux8UYhsB5SO5bPjGIUDMt48=;
-        b=ljScMi+OQEMU8TGdiJSIysgosjuFC6GFHRBfIXQqHpsu3j9gBh1wL02JtzqGeUMTxQ
-         wwqTlP68Q00cvVn+cq/mW47AUg9Byaxxtaakk45I1n6G1dRCt611W1S/1csqmp7u66f2
-         aK91Lh5n05RJzFdM3jWGUg0of+LCGx9mwj2D8CcJ0LbGNWsgClTdZvMV7a9DKQWJDciE
-         8yFcgqZwaZIZM+WqTb8TWx0Og7gnHU8Pcy3okPGt1+ZZ6PY651jNPrBq248TUnLqep7T
-         LO3TJ3XThka1ceOlpg1pNNDz4gdA5ATGaei6mwM8aBDvLL8lLr9+mUynfoiDjDR2vU4P
-         5rOg==
+        d=gmail.com; s=20230601; t=1772451162; x=1773055962; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ph0mJgB7HYIwW0nvueRiYt9vnVAPWkrPvs+Wvblhxfg=;
+        b=D6Q+tVHOxFz7VvCzZ+W0a4aaKfrLjM9Wm8dKeigKHCksD2DxLJ8aP7M4uxISVvo2ZO
+         nsBdyARcLSpbkUUCp35OsTpRZzZ6iUTOcCmagxu4zuRM4MwCSC/KqbsJIEcqLTyPMJ+e
+         3OsP/GlgDj+rIwpkKaso2wcMS6S3febGCb+1A3J8hgC2kUddbeiX0dyDdugMTgTvkXr4
+         jwtQUfT+Ja95WX8zd84BLtchTD8WRJ1M7xad77SjvvDilHS4vugfwCHK/syGm9TROr5L
+         2k7QQ3ZGbUacZ1W8evlrDpn5CkhOAP4rES/Br/hvBtgsS10iElGptX8ANz720uRGRX8S
+         7wtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772450532; x=1773055332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=thg/hbiihCY04+UIp7gvux8UYhsB5SO5bPjGIUDMt48=;
-        b=OFGTzwik+MliS0lXSjgVqn3/onO2h7lIjjULhj9y+uirjTNRCm2ff2Z9e2fnuKRIbj
-         1PPLZQhWiHTq6wjakFvdTvYOEHeQABHCxlUwaGjIO2My4w6abwYb0iXQxgQBrXiebDgL
-         CunCIUq03TcPlR/463S6CqKdyQf2/SttFPcOFFvuJyrwQLy8/W+ZZCPnYAn4Eut4veDE
-         R92ep1QRzjRkS8OPEJp7cFUVSWAkh+1Xnr89f6Vd8NCYhg74Hz4J3bnKlTjWF145oyMo
-         DAMlLqAjiphZEDtrxEDoOPfPYNVq/i1btS1NjGfNJ3uQHbrNFkQ+cAY++R6Zt3oYxECC
-         eIKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYE52YFlPxXrSF380HZSEdn/TCHsz1MebJAGg9OaijQrAGePnkB17+nQpmka7FwKnmkCO9hvIYC3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxohnNCuXvv3XO+sLmChcTkQiEBTiKdZU0+D2gcN6O2Ko4P2ar
-	nDxqkBllVAxkVniVDSOc4d6zWTT8IIoIStQUT1mYXiOBz2gziPCFZI84tf1GxqZQED0=
-X-Gm-Gg: ATEYQzxgPbBH1YwqA4FDDbg+uF83LsTZotCZerAhKR1BOaq9sdDd5MYQW0fWLPk73w5
-	NOgg/i9Mqd1SQx1OtKALIri8I+YyTpmogqkmQL6ufy1Hs0PqjOAjoSTQckcN7huZ67byM2dHRr3
-	UqaLL4cS/mqpYMp/TRpg2lDAoyYhXGEJMSrjh9j9SZMzNCnJhFkAg3Fb9O37B6sqKpnUJeJT73X
-	Q19CUo014n5GH5ZDyPwXiNMpO++/aJLabGOIwkM3jl/FHcHT/ZJcIy/iE6i87FNIMOj/yK3KnMr
-	vSaXe0u/PrSg7Zb7/oIin+mwz48FuSVBGHxa76N3E7a2eM5dZwmd6zhotazh9eM8AnTpmynC0dK
-	/a3OjUGcY6x6xwMT7XmiDk5KGc7+AzaXonuhf+BJlm4LR8rHu1HFVs3nRnqmr18pYWfNVY1ZWEg
-	IZRcwoBQpisioJAaAeXGn7V/38Sk5EJWuVSwzj3BhM7FJ1FruSLmA9xiNzp5fYFvFzUkdCf+ATL
-	AbSC48orfkjP/JhwKPW4am5xX4VO9Xlrvo5dSRggBk=
-X-Received: by 2002:a05:600c:468f:b0:477:7bca:8b2b with SMTP id 5b1f17b1804b1-483c9bca601mr213676955e9.15.1772450532402;
-        Mon, 02 Mar 2026 03:22:12 -0800 (PST)
-Received: from fedora (cpe-109-60-83-135.zg3.cable.xnet.hr. [109.60.83.135])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-483bfbb465bsm292493035e9.3.2026.03.02.03.22.10
+        d=1e100.net; s=20230601; t=1772451162; x=1773055962;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ph0mJgB7HYIwW0nvueRiYt9vnVAPWkrPvs+Wvblhxfg=;
+        b=l+mdcP8QvD7Ve1fIDPDO9aEgLjhM8J39/YvVi+dHEdc0Ro6pbi23Y9QT1RhEmTIq4m
+         eYOt5XdmEifTZ/KtQ9zLP1X4nWnmLnTwB07vD5VUhwvMka/LDfhB1gpaHH2ZI6H0CulG
+         raObs1azht2TkDvGPLcHsSu2JOq/LDgBFN+b/LT9wpPx6jYefYHRiFY5jX9FYC0ahfKb
+         j1opkUd74jG5QpH92jI2AwNXAXiTqESmTq8WG9MgJaZ/iOmBfF6rv/iz9k3snnn9k3dx
+         1k0sZtqTOh3TvwUZdWGYEyPcRW6ZTcE0KrrXLc7F+TXCT3/u6SDCBNcTXF3+ENrkLcCv
+         MAfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcsoOnwcoM+A7tuci/34qKQWxT3OvE+hleWXDZR14UW+ZZHcUNxCGYrrS35sJQjxztSelLy6agmaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUIS0uM1pTuniYmxddnU8KSTa1JPYaIt7mwwm63qtu62zUVpNI
+	HoG+ESgTvzSpumEtrCSbMEKBnqctY4G4t/pex0vU/l2X0pvrEhXiYXQ2
+X-Gm-Gg: ATEYQzy/XXUi6HbsBp+lj7sFbIeMe1bCoSlsdhEn3FM3dG7KihkYjSOwfDAcMvCgLMd
+	FX6JS774C5Ktul+wYrCuJpzx5uSFCMSjzwMhwbmgTAkjVFWpNv+g4rSUU0IB8mqGYgfXrMVS3+s
+	63hKWfC/j7TT7o5H8Xjhw5heIVdZkbPdowQ27I39xe2QvmdW2USTw/T7nUYyivr9I298r5DJ8WC
+	oo99SQ2yrXfzflkC0kSAkU/NtPPGy5IMUTcvaRS+M8Z6dm7FAoKMY22nicTrXCB7rqltYVAOxo/
+	boTDWftJyzbB+W9Mq+WkPbFpsBF4UhDpGGwMsQnOt/vOfGW0r8sYASvAdVt9IY1bW+Rhuq+/BPL
+	CJt6B1VvZ/GUrP2Ok/9zoetADo4TGTfI+I+Ivp2k77UrxgTbZ0c5LElCWPgivDji90O5Kf0Ak6X
+	BkAM8l5vy0Q6NofezDX1dwKvmb0Si8CYQ=
+X-Received: by 2002:a2e:bd82:0:b0:385:d061:cde7 with SMTP id 38308e7fff4ca-389ff34cc4emr79196991fa.21.1772451161951;
+        Mon, 02 Mar 2026 03:32:41 -0800 (PST)
+Received: from vovchkir.localdomain ([95.161.223.42])
+        by smtp.googlemail.com with ESMTPSA id 38308e7fff4ca-389f2f70ceasm30101631fa.20.2026.03.02.03.32.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 03:22:12 -0800 (PST)
-From: Robert Marko <robert.marko@sartura.hr>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	nicolas.ferre@microchip.com,
-	alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev,
-	olivia@selenic.com,
-	herbert@gondor.apana.org.au,
-	radu_nicolae.pirea@upb.ro,
-	richard.genoud@bootlin.com,
-	gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	horatiu.vultur@microchip.com,
-	Ryan.Wanner@microchip.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
+        Mon, 02 Mar 2026 03:32:41 -0800 (PST)
+From: Vladimir Yakovlev <vovchkir@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Vladimir Yakovlev <vovchkir@gmail.com>,
 	linux-spi@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	daniel.machon@microchip.com
-Cc: luka.perkov@sartura.hr,
-	Robert Marko <robert.marko@sartura.hr>
-Subject: [PATCH v6 6/6] arm64: dts: microchip: add EV23X71A board
-Date: Mon,  2 Mar 2026 12:20:14 +0100
-Message-ID: <20260302112153.464422-7-robert.marko@sartura.hr>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260302112153.464422-1-robert.marko@sartura.hr>
-References: <20260302112153.464422-1-robert.marko@sartura.hr>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: spi-dw-dma: fix print error log when wait finish transaction
+Date: Mon,  2 Mar 2026 14:32:33 +0300
+Message-Id: <20260302113233.773414-1-vovchkir@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -97,805 +73,29 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Microchip EV23X71A is an LAN9696 based evaluation board.
+If an error occurs, the device may not have a current message. In this
+case, the system will crash.
 
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Acked-by: Daniel Machon <daniel.machon@microchip.com>
-Tested-by: Daniel Machon <daniel.machon@microchip.com>
+In this case, it's better to use dev from the struct host.
+
+Signed-off-by: Vladimir Yakovlev <vovchkir@gmail.com>
 ---
-Changes in v6:
-* Pick Reviewed-by from Claudiu
-* Pick Tested-by and Acked-by from Daniel
+ drivers/spi/spi-dw-dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v5:
-* Remove phys property from port 29
-* Alphanumericaly sort pin nodes
-
-Changes in v2:
-* Split from SoC DTSI commit
-* Apply DTS coding style
-* Enclose array in i2c-mux
-* Alphanumericaly sort nodes
-* Change management port mode to RGMII-ID 
-
- arch/arm64/boot/dts/microchip/Makefile        |   1 +
- .../boot/dts/microchip/lan9696-ev23x71a.dts   | 756 ++++++++++++++++++
- 2 files changed, 757 insertions(+)
- create mode 100644 arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dts
-
-diff --git a/arch/arm64/boot/dts/microchip/Makefile b/arch/arm64/boot/dts/microchip/Makefile
-index c6e0313eea0f..09d16fc1ce9a 100644
---- a/arch/arm64/boot/dts/microchip/Makefile
-+++ b/arch/arm64/boot/dts/microchip/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_ARCH_LAN969X) += lan9696-ev23x71a.dtb
- dtb-$(CONFIG_ARCH_SPARX5) += sparx5_pcb125.dtb
- dtb-$(CONFIG_ARCH_SPARX5) += sparx5_pcb134.dtb sparx5_pcb134_emmc.dtb
- dtb-$(CONFIG_ARCH_SPARX5) += sparx5_pcb135.dtb sparx5_pcb135_emmc.dtb
-diff --git a/arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dts b/arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dts
-new file mode 100644
-index 000000000000..4012ea7d07bb
---- /dev/null
-+++ b/arch/arm64/boot/dts/microchip/lan9696-ev23x71a.dts
-@@ -0,0 +1,756 @@
-+// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
-+/*
-+ * Copyright (c) 2025 Microchip Technology Inc. and its subsidiaries.
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
-+#include "lan9691.dtsi"
-+
-+/ {
-+	model = "Microchip EV23X71A";
-+	compatible = "microchip,ev23x71a", "microchip,lan9696", "microchip,lan9691";
-+
-+	aliases {
-+		serial0 = &usart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	gpio-restart {
-+		compatible = "gpio-restart";
-+		gpios = <&gpio 60 GPIO_ACTIVE_LOW>;
-+		open-source;
-+		priority = <200>;
-+	};
-+
-+	i2c-mux {
-+		compatible = "i2c-mux-gpio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		i2c-parent = <&i2c3>;
-+		idle-state = <0x8>;
-+		mux-gpios = <&sgpio_out 0 1 GPIO_ACTIVE_HIGH>,
-+			    <&sgpio_out 0 2 GPIO_ACTIVE_HIGH>,
-+			    <&sgpio_out 0 3 GPIO_ACTIVE_HIGH>;
-+		settle-time-us = <100>;
-+
-+		i2c_sfp0: i2c@0 {
-+			reg = <0x0>;
-+		};
-+
-+		i2c_sfp1: i2c@1 {
-+			reg = <0x1>;
-+		};
-+
-+		i2c_sfp2: i2c@2 {
-+			reg = <0x2>;
-+		};
-+
-+		i2c_sfp3: i2c@3 {
-+			reg = <0x3>;
-+		};
-+
-+		i2c_poe: i2c@7 {
-+			reg = <0x7>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led-status {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_STATUS;
-+			gpios = <&gpio 61 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		led-sfp1-green {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <0>;
-+			gpios = <&sgpio_out 6 0 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp1-yellow {
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <0>;
-+			gpios = <&sgpio_out 6 1 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp2-green {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <1>;
-+			gpios = <&sgpio_out 7 0 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp2-yellow {
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <1>;
-+			gpios = <&sgpio_out 7 1 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp3-green {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <2>;
-+			gpios = <&sgpio_out 8 0 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp3-yellow {
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <2>;
-+			gpios = <&sgpio_out 8 1 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp4-green {
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <3>;
-+			gpios = <&sgpio_out 9 0 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+
-+		led-sfp4-yellow {
-+			color = <LED_COLOR_ID_YELLOW>;
-+			function = LED_FUNCTION_LAN;
-+			function-enumerator = <3>;
-+			gpios = <&sgpio_out 9 1 GPIO_ACTIVE_LOW>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	mux-controller {
-+		compatible = "gpio-mux";
-+		#mux-control-cells = <0>;
-+		mux-gpios = <&sgpio_out 1 2 GPIO_ACTIVE_LOW>,
-+			    <&sgpio_out 1 3 GPIO_ACTIVE_LOW>;
-+	};
-+
-+	sfp0: sfp0 {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp0>;
-+		tx-disable-gpios = <&sgpio_out 6 2 GPIO_ACTIVE_HIGH>;
-+		los-gpios = <&sgpio_in 6 0 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sgpio_in 6 1 GPIO_ACTIVE_LOW>;
-+		tx-fault-gpios = <&sgpio_in 6 2 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	sfp1: sfp1 {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp1>;
-+		tx-disable-gpios = <&sgpio_out 7 2 GPIO_ACTIVE_HIGH>;
-+		los-gpios = <&sgpio_in 7 0 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sgpio_in 7 1 GPIO_ACTIVE_LOW>;
-+		tx-fault-gpios = <&sgpio_in 7 2 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	sfp2: sfp2 {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp2>;
-+		tx-disable-gpios = <&sgpio_out 8 2 GPIO_ACTIVE_HIGH>;
-+		los-gpios = <&sgpio_in 8 0 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sgpio_in 8 1 GPIO_ACTIVE_LOW>;
-+		tx-fault-gpios = <&sgpio_in 8 2 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	sfp3: sfp3 {
-+		compatible = "sff,sfp";
-+		i2c-bus = <&i2c_sfp3>;
-+		tx-disable-gpios = <&sgpio_out 9 2 GPIO_ACTIVE_HIGH>;
-+		los-gpios = <&sgpio_in 9 0 GPIO_ACTIVE_HIGH>;
-+		mod-def0-gpios = <&sgpio_in 9 1 GPIO_ACTIVE_LOW>;
-+		tx-fault-gpios = <&sgpio_in 9 2 GPIO_ACTIVE_HIGH>;
-+	};
-+};
-+
-+&gpio {
-+	emmc_sd_pins: emmc-sd-pins {
-+		/* eMMC_SD - CMD, CLK, D0, D1, D2, D3, D4, D5, D6, D7, RSTN */
-+		pins = "GPIO_14", "GPIO_15", "GPIO_16", "GPIO_17",
-+		       "GPIO_18", "GPIO_19", "GPIO_20", "GPIO_21",
-+		       "GPIO_22", "GPIO_23", "GPIO_24";
-+		function = "emmc_sd";
-+	};
-+
-+	fan_pins: fan-pins {
-+		pins = "GPIO_25", "GPIO_26";
-+		function = "fan";
-+	};
-+
-+	fc0_pins: fc0-pins {
-+		pins = "GPIO_3", "GPIO_4";
-+		function = "fc";
-+	};
-+
-+	fc2_pins: fc2-pins {
-+		pins = "GPIO_64", "GPIO_65", "GPIO_66";
-+		function = "fc";
-+	};
-+
-+	fc3_pins: fc3-pins {
-+		pins = "GPIO_55", "GPIO_56";
-+		function = "fc";
-+	};
-+
-+	mdio_irq_pins: mdio-irq-pins {
-+		pins = "GPIO_11";
-+		function = "miim_irq";
-+	};
-+
-+	mdio_pins: mdio-pins {
-+		pins = "GPIO_9", "GPIO_10";
-+		function = "miim";
-+	};
-+
-+	ptp_ext_pins: ptp-ext-pins {
-+		pins = "GPIO_59";
-+		function = "ptpsync_5";
-+	};
-+
-+	ptp_out_pins: ptp-out-pins {
-+		pins = "GPIO_58";
-+		function = "ptpsync_4";
-+	};
-+
-+	sgpio_pins: sgpio-pins {
-+		/* SCK, D0, D1, LD */
-+		pins = "GPIO_5", "GPIO_6", "GPIO_7", "GPIO_8";
-+		function = "sgpio_a";
-+	};
-+
-+	usb_over_pins: usb-over-pins {
-+		pins = "GPIO_13";
-+		function = "usb_over_detect";
-+	};
-+
-+	usb_power_pins: usb-power-pins {
-+		pins = "GPIO_1";
-+		function = "usb_power";
-+	};
-+
-+	usb_rst_pins: usb-rst-pins {
-+		pins = "GPIO_12";
-+		function = "usb2phy_rst";
-+	};
-+
-+	usb_ulpi_pins: usb-ulpi-pins {
-+		pins = "GPIO_30", "GPIO_31", "GPIO_32", "GPIO_33",
-+		       "GPIO_34", "GPIO_35", "GPIO_36", "GPIO_37",
-+		       "GPIO_38", "GPIO_39", "GPIO_40", "GPIO_41";
-+		function = "usb_ulpi";
-+	};
-+};
-+
-+&flx0 {
-+	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_USART>;
-+	status = "okay";
-+};
-+
-+&flx2 {
-+	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_SPI>;
-+	status = "okay";
-+};
-+
-+&flx3 {
-+	atmel,flexcom-mode = <ATMEL_FLEXCOM_MODE_TWI>;
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	pinctrl-0 = <&fc3_pins>;
-+	pinctrl-names = "default";
-+	i2c-analog-filter;
-+	i2c-digital-filter;
-+	i2c-digital-filter-width-ns = <35>;
-+	i2c-sda-hold-time-ns = <1500>;
-+	status = "okay";
-+};
-+
-+&mdio0 {
-+	pinctrl-0 = <&mdio_pins>, <&mdio_irq_pins>;
-+	pinctrl-names = "default";
-+	reset-gpios = <&gpio 62 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	phy3: phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <3>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy4: phy@4 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <4>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy5: phy@5 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <5>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy6: phy@6 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <6>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy7: phy@7 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <7>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy8: phy@8 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <8>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy9: phy@9 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <9>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy10: phy@10 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <10>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy11: phy@11 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <11>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy12: phy@12 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <12>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy13: phy@13 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <13>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy14: phy@14 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <14>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy15: phy@15 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <15>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy16: phy@16 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <16>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy17: phy@17 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <17>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy18: phy@18 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <18>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy19: phy@19 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <19>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy20: phy@20 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <20>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy21: phy@21 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <21>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy22: phy@22 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <22>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy23: phy@23 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <23>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy24: phy@24 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <24>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy25: phy@25 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <25>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy26: phy@26 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <26>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+
-+	phy27: phy@27 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <27>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		interrupt-parent = <&gpio>;
-+	};
-+};
-+
-+&serdes {
-+	status = "okay";
-+};
-+
-+&sgpio {
-+	pinctrl-0 = <&sgpio_pins>;
-+	pinctrl-names = "default";
-+	microchip,sgpio-port-ranges = <0 1>, <6 9>;
-+	status = "okay";
-+
-+	gpio@0 {
-+		ngpios = <128>;
-+	};
-+	gpio@1 {
-+		ngpios = <128>;
-+	};
-+};
-+
-+&spi2 {
-+	pinctrl-0 = <&fc2_pins>;
-+	pinctrl-names = "default";
-+	cs-gpios = <&gpio 63 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+};
-+
-+&switch {
-+	pinctrl-0 = <&ptp_out_pins>, <&ptp_ext_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	ethernet-ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		port0: port@0 {
-+			reg = <0>;
-+			phy-handle = <&phy4>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 0>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port1: port@1 {
-+			reg = <1>;
-+			phy-handle = <&phy5>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 0>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port2: port@2 {
-+			reg = <2>;
-+			phy-handle = <&phy6>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 0>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port3: port@3 {
-+			reg = <3>;
-+			phy-handle = <&phy7>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 0>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port4: port@4 {
-+			reg = <4>;
-+			phy-handle = <&phy8>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 1>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port5: port@5 {
-+			reg = <5>;
-+			phy-handle = <&phy9>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 1>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port6: port@6 {
-+			reg = <6>;
-+			phy-handle = <&phy10>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 1>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port7: port@7 {
-+			reg = <7>;
-+			phy-handle = <&phy11>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 1>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port8: port@8 {
-+			reg = <8>;
-+			phy-handle = <&phy12>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 2>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port9: port@9 {
-+			reg = <9>;
-+			phy-handle = <&phy13>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 2>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port10: port@10 {
-+			reg = <10>;
-+			phy-handle = <&phy14>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 2>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port11: port@11 {
-+			reg = <11>;
-+			phy-handle = <&phy15>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 2>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port12: port@12 {
-+			reg = <12>;
-+			phy-handle = <&phy16>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 3>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port13: port@13 {
-+			reg = <13>;
-+			phy-handle = <&phy17>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 3>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port14: port@14 {
-+			reg = <14>;
-+			phy-handle = <&phy18>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 3>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port15: port@15 {
-+			reg = <15>;
-+			phy-handle = <&phy19>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 3>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port16: port@16 {
-+			reg = <16>;
-+			phy-handle = <&phy20>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 4>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port17: port@17 {
-+			reg = <17>;
-+			phy-handle = <&phy21>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 4>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port18: port@18 {
-+			reg = <18>;
-+			phy-handle = <&phy22>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 4>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port19: port@19 {
-+			reg = <19>;
-+			phy-handle = <&phy23>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 4>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port20: port@20 {
-+			reg = <20>;
-+			phy-handle = <&phy24>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 5>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port21: port@21 {
-+			reg = <21>;
-+			phy-handle = <&phy25>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 5>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port22: port@22 {
-+			reg = <22>;
-+			phy-handle = <&phy26>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 5>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port23: port@23 {
-+			reg = <23>;
-+			phy-handle = <&phy27>;
-+			phy-mode = "qsgmii";
-+			phys = <&serdes 5>;
-+			microchip,bandwidth = <1000>;
-+		};
-+
-+		port24: port@24 {
-+			reg = <24>;
-+			phys = <&serdes 6>;
-+			phy-mode = "10gbase-r";
-+			sfp = <&sfp0>;
-+			managed = "in-band-status";
-+			microchip,bandwidth = <10000>;
-+			microchip,sd-sgpio = <24>;
-+		};
-+
-+		port25: port@25 {
-+			reg = <25>;
-+			phys = <&serdes 7>;
-+			phy-mode = "10gbase-r";
-+			sfp = <&sfp1>;
-+			managed = "in-band-status";
-+			microchip,bandwidth = <10000>;
-+			microchip,sd-sgpio = <28>;
-+		};
-+
-+		port26: port@26 {
-+			reg = <26>;
-+			phys = <&serdes 8>;
-+			phy-mode = "10gbase-r";
-+			sfp = <&sfp2>;
-+			managed = "in-band-status";
-+			microchip,bandwidth = <10000>;
-+			microchip,sd-sgpio = <32>;
-+		};
-+
-+		port27: port@27 {
-+			reg = <27>;
-+			phys = <&serdes 9>;
-+			phy-mode = "10gbase-r";
-+			sfp = <&sfp3>;
-+			managed = "in-band-status";
-+			microchip,bandwidth = <10000>;
-+			microchip,sd-sgpio = <36>;
-+		};
-+
-+		port29: port@29 {
-+			reg = <29>;
-+			phy-handle = <&phy3>;
-+			phy-mode = "rgmii-id";
-+			microchip,bandwidth = <1000>;
-+		};
-+	};
-+};
-+
-+&tmon {
-+	pinctrl-0 = <&fan_pins>;
-+	pinctrl-names = "default";
-+};
-+
-+&usart0 {
-+	pinctrl-0 = <&fc0_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&usb {
-+	pinctrl-0 = <&usb_ulpi_pins>, <&usb_rst_pins>, <&usb_over_pins>, <&usb_power_pins>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
+diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
+index 65adec7c7524..d83466166abe 100644
+--- a/drivers/spi/spi-dw-dma.c
++++ b/drivers/spi/spi-dw-dma.c
+@@ -271,7 +271,7 @@ static int dw_spi_dma_wait(struct dw_spi *dws, unsigned int len, u32 speed)
+ 					 msecs_to_jiffies(ms));
+ 
+ 	if (ms == 0) {
+-		dev_err(&dws->ctlr->cur_msg->spi->dev,
++		dev_err(&dws->host->dev,
+ 			"DMA transaction timed out\n");
+ 		return -ETIMEDOUT;
+ 	}
 -- 
-2.53.0
+2.34.1
 

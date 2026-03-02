@@ -1,73 +1,38 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8135D3909A2
-	for <linux-spi@vger.kernel.org>; Mon,  2 Mar 2026 22:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3D1342CB1;
+	Mon,  2 Mar 2026 22:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772490030; cv=none; b=FRle/a3NwgA/xnBpTxYX9GeZ8i4bAdpHkIIQp37XyB06PjiFuk6tW+UcQB8fTDsd0CVo2/iNdwvOVAdCoVHL5bCmAeaW4/LSvmJBOdXlIMMtSCMqNqAzYkzVTtPhZaUBWo7VXeyx8/BQ8H+YonjSeOkchmQ1oSrL1j5XusFx1pM=
+	t=1772490786; cv=none; b=HUUd7vYFGhI6vAIyqJQOU/YlijixnAjho2F937LGmtY0D2XEWC94SKrTwCklzkwx39calbbyF9rvdEerhEVyWpFXHJQ5v31FISCYH2o+bq5Zwo8e4ATsPBZbpsIWpah5mJfu8BZnvxrGoPGfBFz+pt9d7Ye9+Xx/vCWSSmq6Raw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772490030; c=relaxed/simple;
-	bh=nYXqTiHo10dtSNfnAo7DD+bsKJSvSj2cDsnWEaTfvUA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f2ooV1zvCIBExD224iB0UxB3u4Whp3dpxJjyFciqM6QSUBBDEclXMOplQih7BVV8RwY8gy+pvkHb8fEU378Dd3cwi9E/0iDeZ841Ijqp+mDi3v3ilaSmT3TgycWoDhTkdABKFZYp2P7oFwSDKc3q9MpUr/zyKoZy+Xm9jXcNl4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UJtPS69w; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772490786; c=relaxed/simple;
+	bh=swa+ka/TD7SNyo2fpp7AqcNfu5+Ha1vhXniwl676quk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hzTsNi4urJaMqQ5AYh+Hfs+b76UeFgYqRKltyz9IT0O3tg1ygT/Y0pu/YZlqTJV3pWMh+oT4jeGB7TgQVqBz1Qm0uuQ2rpBXUeSKx4FDulLyyCdHr3dXngqV/exuhdQH/ZNTFcMKMlSbe4BZD0qNnsqSxdJEHq/7QHTg+/4QUv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XswFFd52; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJtPS69w"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-389fb626b67so78341611fa.2
-        for <linux-spi@vger.kernel.org>; Mon, 02 Mar 2026 14:20:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772490028; x=1773094828; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ONkOXxIQWVnb1+anzni8v6vBr1Rywoh4igMBRPKykbk=;
-        b=UJtPS69wmXc4E2CSsWKdOIA2AY/jbmneaosQCRYGeczuAWY7f1QTfloljYpr1yhvwZ
-         Z652jvbkQBOzIRuJfj0wJj8X2HlbxxAZilbZxBIS+UVYAokjmnDBigMwrbo+GMw2tP+h
-         qsgZzmMOalq46BtYqaX4lNxImfgno8o/e+J2qSPtwZGxy5rvvqoEdSIXzmmRbrdhZEE4
-         0PsE2xFvWKZZ9bqe2rAu9aQ8u5wK3N9xHnIyoOD17ROV66BVlrt3zNwaIZPPkL1+/T8v
-         tnmaJJlAX4TpgIUTMuROccOztd18TCQAh89ZasCbwHMCdsgA3lScjh6EBrvau62z8Bsx
-         Bj0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772490028; x=1773094828;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ONkOXxIQWVnb1+anzni8v6vBr1Rywoh4igMBRPKykbk=;
-        b=DfsqCfvjoExdQjIaNJwWN4jxZI8qpnP+mjWH5kmXtAplkPhMORnlH2sGga+0uSIwPZ
-         PiQF6fLhEdtJCIEUXJdMgwNBRQ8pKnLSSPiG8jU3bWh21poA3aYQ+YKG4fo4wcULfIgr
-         SAzVwvOmwBO3wSenPKmPblu0Uu10CEYOigboBaEel5jhC9L42KQ+WdSGTE6AVIqvCQyl
-         SEbLW/P6DroYL74pxAtTeLMxf7OUqxBnycOaQj6M6bU+eBAeUx/ZBDmrowisczNZnlUN
-         JZnWmD/CjKKEUZrgrJYufXrUeipvzDdcHEK3fNkkG3ghMVD3pSQhyF6gTJz0CJjSa9hM
-         tw3w==
-X-Forwarded-Encrypted: i=1; AJvYcCV4qikc95Gv1wi20O8lQBnS+i4v11nlDJMWEepWCaDXZ5DsgWicCl1lcH7WvACyuMF4xBShDtVtjrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIm1OvA0rGOsnzkrwqS4m91c8wjO/tNmLJaAhYDr5vjgCFMSv9
-	kAkAJQ54+IR5SEzZW0JiPL7ogQb7x4BGys26qjgDNa5U/vZoBqN5RUQI
-X-Gm-Gg: ATEYQzxRQHS7BTJIVymwoMR5iS2n9J0s6gdJZXUH/JoSxA9t3XJSO4MANKnhqHu2NAH
-	Kd9glAAYm/8PxmV67c2gYWD99IkeHOfU653W6wPHT02UlCc0U+ml6EpvVFh4hRDeOBS093f+tbl
-	ivUIBkEard8+BRdEeE49bzUvri/zSNDO2cFTuBnk6rrP81P+0jNN07Dg8kWO2d2EoKsuZJBucZM
-	Yu/tarQzNjgN4D3gM2Y+K5VN5VDNvEr762rN+PSa2IeYqoPkIY2prP0T8GTjA0zBNRnypJ3NNVH
-	5I1rtsmQ5O1xUFHFTiU34yWLrpvChkjy6ymQyF2Lv4XoLS0cZnJYkoUviyZNaaCVfZ8MVneFbrM
-	ZJwav0fJwuY87uqpV4vnbi1rnzavWd8SNp3EdleugLuh8lSXDvaRl/fwMe/+I89zAXqD+99S39H
-	3swpUNjqvgpRk44dImK18vfjLpyc0QSeWt3i9RtTkLPA==
-X-Received: by 2002:a05:651c:1511:b0:385:e793:fb11 with SMTP id 38308e7fff4ca-389ff350b5emr90028181fa.20.1772490027626;
-        Mon, 02 Mar 2026 14:20:27 -0800 (PST)
-Received: from vovchkir.localdomain ([95.161.223.42])
-        by smtp.googlemail.com with ESMTPSA id 2adb3069b0e04-5a12356ff20sm159739e87.78.2026.03.02.14.20.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Mar 2026 14:20:27 -0800 (PST)
-From: Vladimir Yakovlev <vovchkir@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Vladimir Yakovlev <vovchkir@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] spi: spi-dw-dma: fix print error log when wait finish transaction
-Date: Tue,  3 Mar 2026 01:20:17 +0300
-Message-Id: <20260302222017.992228-2-vovchkir@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: 20260302113233.773414-1-vovchkir@gmail.com
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XswFFd52"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A0BC19423;
+	Mon,  2 Mar 2026 22:33:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772490785;
+	bh=swa+ka/TD7SNyo2fpp7AqcNfu5+Ha1vhXniwl676quk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XswFFd52PV0SV80Lhivmnn5v4rpriiNSLcHdmLHLhq5Acm1iipl0zDayWmiA9UU1W
+	 XDkZQc31a4LbG5PXm3Ij34AJvBWREenQTXnwpg9jrBTzqzQ/q4CKM3mqxyY9SAlxyB
+	 j5aoPswdlTUQqeyoFKPwqvhgcdfSBAJb1jdD8xk8JVp/Z7qHdHAGwA63gmYtzqCg9N
+	 QYUVXuoaicyTT/dqnQGMxW80YunbGSwhFw3uATUQfmvkSh836gcHPdwSEn81OBFK/A
+	 SO99bE5jn4bpdjrtOe9ygm5Z74Qp9CWUASpo7xlfJiBHIYQLJf50oipZUwnal+B29M
+	 5vXQincIniT1g==
+Date: Mon, 2 Mar 2026 22:33:02 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Yakovlev <vovchkir@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/1] spi: spi-dw-dma: fix print error log when wait
+ finish transaction
+Message-ID: <692f55cc-d93f-4fed-b638-b9cce4d779a0@sirena.org.uk>
 References: <20260302222017.992228-1-vovchkir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -75,31 +40,43 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="d9zQMK3IfY/Sola8"
+Content-Disposition: inline
+In-Reply-To: <20260302222017.992228-1-vovchkir@gmail.com>
+X-Cookie: You love peace.
 
-If an error occurs, the device may not have a current message. In this
-case, the system will crash.
 
-In this case, it's better to use dev from the struct ctlr (struct spi_controller*).
+--d9zQMK3IfY/Sola8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Vladimir Yakovlev <vovchkir@gmail.com>
----
- drivers/spi/spi-dw-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Mar 03, 2026 at 01:20:16AM +0300, Vladimir Yakovlev wrote:
+> Hello!
+>=20
+> This patch fixes a system crash if there is no current message
+> for a transaction.
 
-diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index 65adec7c7524..fe726b9b1780 100644
---- a/drivers/spi/spi-dw-dma.c
-+++ b/drivers/spi/spi-dw-dma.c
-@@ -271,7 +271,7 @@ static int dw_spi_dma_wait(struct dw_spi *dws, unsigned int len, u32 speed)
- 					 msecs_to_jiffies(ms));
- 
- 	if (ms == 0) {
--		dev_err(&dws->ctlr->cur_msg->spi->dev,
-+		dev_err(&dws->ctlr->dev,
- 			"DMA transaction timed out\n");
- 		return -ETIMEDOUT;
- 	}
--- 
-2.34.1
+Please don't send cover letters for single patches, if there is anything
+that needs saying put it in the changelog of the patch or after the ---
+if it's administrative stuff.  This reduces mail volume and ensures that=20
+any important information is recorded in the changelog rather than being
+lost.=20
 
+--d9zQMK3IfY/Sola8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmmEB0ACgkQJNaLcl1U
+h9BWqQf+JEVH4bcKul4rm/LG+kX8xyB7f7JVrHOoRY1R9/QQwSiAXmXBuVeWO2Gm
+rEvNwn8tUA5u2vwsluQ0MwPs3lDhpX/anT2oxdvNmTbW8r3sq+a6n7oAiRR7mL+K
+aS5K2IJhlcZwLAqko3sbAwY7GtuBl8nEx+U7sl8w4g7NgDuyRChCP1uQ+FK52T3+
+DeyNvvPkXtEbPWKFYoBechvX15ECR15Ew07AfKO75iDydaxY1zuBqCZLSKo0xUA7
+xzcVcMIJUEqFhXEe1Qmr5l3Etvzb8/Zv9OOgxtiflKHa+Ad30Xk5bR9c87IBtAI2
+EgodhlRvOEqljlFOr5lZN++GxSoE5g==
+=QBhu
+-----END PGP SIGNATURE-----
+
+--d9zQMK3IfY/Sola8--

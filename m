@@ -1,115 +1,90 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6119336C9C0;
-	Mon,  2 Mar 2026 12:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656983E0C55;
+	Mon,  2 Mar 2026 13:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772454295; cv=none; b=TD9pabN5H9t/N6Xwhx/ROn+PhQN+IRiLbhgHGrJlj4050xQctgoHiHlPL2raltdVG/G65/UPyD3HYTaCAyry+gyPjCTuwIFpss8Y777jLfBYIqF6fXK2AUuIZUOfd2OEmE92URRAMXKtPbYN5alnOthdAz6JjtnbFwkqDX/pwak=
+	t=1772456500; cv=none; b=F5oC0KkYZ4GOeqptKGjHjjpni7M/BYFlAKdCOMxhAwQCEqxIEfKpc0+wEDuPCqyZS4t5AB63OGxwJCHaggQqzChcABNDLGZjco97KD7mFjILGDYMgj3x3fQoJ+TQJtwmUC6LEDe3KLMstw/pV+qmsZhZadZZiGnB+OejYqL80pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772454295; c=relaxed/simple;
-	bh=x7t/iAkWcnd9QyYdAw+6vUuJizpL9ieaOGsdRW/mZTI=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Plzmmjwo/rkdSWqDPiCNpKpq5/enW0sgvoeIhjIAs7uRGmj+ntrdJ3RQOvGPSzV2978iyH1zEEAU/RbAWWCysC/zy9BY90O90H6Tccr+QCg8Uoy19NOFASmyWuYwT0BZctuCsCmS2T3CxDoan6wo/7MAs+7uSzZXkNPsBRk2ktc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fPdQT1L9qzHnH7x;
-	Mon,  2 Mar 2026 20:24:01 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id E1AB340584;
-	Mon,  2 Mar 2026 20:24:52 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Mar
- 2026 12:24:50 +0000
-Date: Mon, 2 Mar 2026 12:24:49 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Herve Codina <herve.codina@bootlin.com>
-CC: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
- Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha Hauer"
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, "Michael Turquette"
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, "Andi Shyti"
-	<andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, "Arnd Bergmann" <arnd@arndb.de>, Saravana
- Kannan <saravanak@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>, Charles
- Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
-	<rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
- Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
- Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
- Jiang" <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, "Shawn Guo" <shawnguo@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-clk@vger.kernel.org>,
-	<linux-i2c@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-sound@vger.kernel.org>,
-	<patches@opensource.cirrus.com>, <linux-gpio@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Allan Nielsen
-	<allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli
-	<luca.ceresoli@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 11/28] cxl/test: Use fw_devlink_set_device()
-Message-ID: <20260302122449.00006c77@huawei.com>
-In-Reply-To: <20260227135428.783983-12-herve.codina@bootlin.com>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
-	<20260227135428.783983-12-herve.codina@bootlin.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1772456500; c=relaxed/simple;
+	bh=sY9jYK17uO62iqtXQmvMqOz12i3TagPRGRIPOY8q3pQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZCTHDAXQYmecK23Vhr6vtg0lrY1OOAdF/QwjADc4KriCgOQKXYtdgx0gWc9A4vW4koJj3yeiLkWpRqrmb2zP++YNsEW3HNdA9Kg1FCA8m5gKyj31AgZVPxlxohcacU+wzP163mBpThtIp/70l++KSifdDg/HKK4CPO56TqP/rkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TN0T3gxE; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TN0T3gxE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77317C2BC86;
+	Mon,  2 Mar 2026 13:01:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772456500;
+	bh=sY9jYK17uO62iqtXQmvMqOz12i3TagPRGRIPOY8q3pQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=TN0T3gxE1/LTuQloFsUkmWeO+zO+c3yIIVJCIOhFZw+u3NjJj7Ra7NxMPF7Hr8RFP
+	 MShT55kddATXU7z781IXbuvWK7VhkONx8BrLoLTrYrV2PPGGqcgjOHD8AEINxWUNyR
+	 L1xE9jDTBLntNbmfZlf+QsFn8pEoCZbUbbWButCoklzLMMhbZKr5WPuBp8E+PhxPCl
+	 WA+n6EX+3DuEBmUefRg+n2uieZKyAML22hBIJzhPYGPFnlz+lGnhx0EUXrOqO3TZCJ
+	 fFF5SzHEKKQZzk2Yhz00a7B8t80Ln9d1tHF8LnqtbYjydwsp5hZ0vt1oyJYufER3aG
+	 rvBezXQLLpJGw==
+From: Mark Brown <broonie@kernel.org>
+To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-spi@vger.kernel.org
+In-Reply-To: <20260301014743.3133167-1-rdunlap@infradead.org>
+References: <20260301014743.3133167-1-rdunlap@infradead.org>
+Subject: Re: [PATCH] spi: spi-mem: clean up kernel-doc in spi-mem.h
+Message-Id: <177245649923.39631.9940299666569186725.b4-ty@kernel.org>
+Date: Mon, 02 Mar 2026 13:01:39 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-38bf1
 
-On Fri, 27 Feb 2026 14:54:08 +0100
-Herve Codina <herve.codina@bootlin.com> wrote:
+On Sat, 28 Feb 2026 17:47:43 -0800, Randy Dunlap wrote:
+> Eliminate all kernel-doc warnings in spi-mem.h:
+> - add missing struct member descriptions
+> - don't use "struct" for function descrptions
+> 
+> Warning: include/linux/spi/spi-mem.h:202 struct member 'cmd' not described
+>  in 'spi_mem_op'
+> Warning: include/linux/spi/spi-mem.h:202 struct member 'addr' not described
+>  in 'spi_mem_op'
+> Warning: include/linux/spi/spi-mem.h:202 struct member 'dummy' not
+>  described in 'spi_mem_op'
+> Warning: include/linux/spi/spi-mem.h:202 struct member 'data' not described
+>  in 'spi_mem_op'
+> 
+> [...]
 
-> The code set directly fwnode.dev field.
->=20
-> Use the dedicated fw_devlink_set_device() helper to perform this
-> operation.
->=20
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Applied to
 
-=46rom practical point of view, what path do you expect this to take?
-Is there urgency to make the change, or does it make more sense to
-add the helper this cycle and cleanup up the various places it can be
-used next?
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-> ---
->  tools/testing/cxl/test/cxl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
-> index 3d9107b2661c..7f232a869389 100644
-> --- a/tools/testing/cxl/test/cxl.c
-> +++ b/tools/testing/cxl/test/cxl.c
-> @@ -1137,7 +1137,7 @@ static void mock_companion(struct acpi_device *adev=
-, struct device *dev)
->  	device_initialize(&adev->dev);
->  	fwnode_init(&adev->fwnode, NULL);
->  	device_set_node(dev, &adev->fwnode);
-> -	adev->fwnode.dev =3D dev;
-> +	fw_devlink_set_device(&adev->fwnode, dev);
->  }
-> =20
->  #ifndef SZ_64G
+Thanks!
+
+[1/1] spi: spi-mem: clean up kernel-doc in spi-mem.h
+      commit: d3b693a13b39bce16e284e1c737874966b3a96de
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

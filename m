@@ -1,164 +1,165 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00321946DA
-	for <linux-spi@vger.kernel.org>; Sun,  1 Mar 2026 17:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1115539A;
+	Mon,  2 Mar 2026 03:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772384927; cv=none; b=X3Zh7xwTGCkvwAEcAcYTx77t3s7P4edoAEKbqXeDIUgp4RMvxnNJ49SP0Mu2vaaQ0yONCoyz2wjSRnvr0blfpqjZUufZspnZKkdXp4paH2BO/fFz39DsQ3iB0BQE9PjgS3E5rTaKlXJqLxttCQR89/SDVf9y2yJq6RshbQA3ce4=
+	t=1772421044; cv=none; b=gpaYCNZ20V2ZGQxeIXDaocWWtgrgaBe0SaQxRmbHIQhEJS9nRw0Kc2mNkxH00PczN3tgdh3spUnafXrD8v3YOCtsGf+4z2ZsD+mlksR63hGfOV9eUA9toGRHTDTs5r/GvfLco/+oWUlu49PB0986WrR8nkXu3fL3Zt1R253SnVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772384927; c=relaxed/simple;
-	bh=yRcPxQvhGF4Ecv8niJ2audTUHBcYg9U8KcKsj1DASZI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lBGQOrAH0Jbu6SPS+r7Wkvh0AwoLen3xU5rTP5W5ODnRsxMP8chS2OBnJmTUZj1a0CDyErpxlKqBIbFLcnKs/l9Mx5+vF/o8Xsz59OpYCYAtO0KYS2OojGZAMl9tciqlQlyQWPysnjzx1sh55LVjUn0qc+WLTTG2sJb/XgSHyag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DaL4ONfe; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772421044; c=relaxed/simple;
+	bh=gUTzNrMfgs+tDHQ+LOw0o37eEB3pdSvw1kSHIpxvVgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LP9ZFrvleBypUSMSncdthYI/Hn5VrswVhRa1raIbFVhU6rniDmlxDVmhD7Hz5lT3OJHCBnWtOSdcxG5LGaO5nHcy63z4KQEKlD2Ob0iYyUm+O07UThHCiPbTsxpcPXi+5coSk0PXYSIz4/iqd/KoJ7S5ADT2afja4eTscOW3OVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=d2d+HNg6; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DaL4ONfe"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c70ea5e9e9dso1325815a12.1
-        for <linux-spi@vger.kernel.org>; Sun, 01 Mar 2026 09:08:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772384925; x=1772989725; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JC8dtCejMLT5Ebas54y2Sb5Ey1Dlmdy+AbqrqYYmf+k=;
-        b=DaL4ONfeVzP0B7gbzDeGEKvBjLLXzLadxcKSGR53fVSRzPIs8c14Pef0N/MJc6tfXu
-         6PPkxv4WrEUJl9sHOCg5UoozCmvlOLLEFCApuP3zg0LKGtlNZ5SPOKSk9X1xNCbPOxHs
-         s4sKQZqJj7FnBIrBSqugOmFb/xeEUcvPpvU2mkicR5p7pMm50ZqI9L6bvmAaWYQCLdyh
-         IpQ7FTNZ7sM+v6swyl4hA3YX8V5m1f56HNSeDA7FIFNBzb6NBW6jbPem4cEZeyZvT0MN
-         KiYZdWbS0fdrXeD3VYJtLvS6JwEAlNBLAkuA0eko3pxRicg8Qnu+N7i3uSh1PqirxOue
-         8gzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772384925; x=1772989725;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JC8dtCejMLT5Ebas54y2Sb5Ey1Dlmdy+AbqrqYYmf+k=;
-        b=LUprpiyokCAz4pgRBnIGJqD4344UvdA0cgoQGGMikzfKXbutRU9T1dWcEA+oEFhn9A
-         vnoIdNUc8Qm9fZy1IrHoj6+VynfeEb9QQ2fOjpznonx4tY14sfAcsOmuX4YUPdOvs0RL
-         5VntOUX0udAeYeu0exqA3c6corpEFu5J8Iixbb3D6UyuNdU4EzkSB0veO9DSwOrI0Flp
-         5sn5Fg5U7Ffp45IZdhILZ2jnwq5BkM1GTarP8f90AR8zJV0S3Rc3TuTLrZDUz0dvI8lS
-         lDA/xpxGHI3jsqaB6XD8ILoZWf8Lk9l2hkqBNvi+8wX2VeI0qwxmbfpXelHZtaJJXpn6
-         1q6w==
-X-Gm-Message-State: AOJu0YxlM7btFnApGL/4bq85cdU4w9S7COjmC0na+WrfHJrwucGYyL15
-	hfYH7s2/PVvUDCSPgVNOv3E/DAwgyDWx4RM4GhDF+rprWrH4HfUxRC25N30zwaDjM+g=
-X-Gm-Gg: ATEYQzxnX0NdwJVYLHsPkRvI8C4+086Ifl1w7oU00hz4jN8a4s/j/h3QXBq8F/rpwvN
-	zFIAsVkMEeyWdKiDoHjCiIBeQz1ZJyCZmgUQ9KzK2aImE4FEAHrIoGz9Ohc6+tDSPZVVDbogSMb
-	l+bACHIS02P2WqfT2WaDeRqO5D8ZiXqcTzfuw1n8F42xg94UpqtzTdaxuYhzNKA5+nUu7f1a/Hj
-	fq7aDRD8BfbnVdOD59R6BpwOeZK0QUtBiwVV8JmU1trzJxdbZLF+EIpuUg0qnc2uTJ5AGxq5fDB
-	QM/y3VqZDynJbgmT/3vKWqWpjEx9oeTJ7KA3kYQxsH2R9mmG10zspwGL/yR04PJ5bJAOjzpmoR1
-	8oUIZWr51we/qAiGbJ1wyDAXr2U4ZrU9pQ5uGcnQMSP2dHG/f9QDbtKCqgxbDQ84X1QQi2uNSxk
-	lt2SP4ZK1rtwUz8XohrPBu7qGs2BROY/emYQzJ
-X-Received: by 2002:a17:902:e884:b0:2ad:ae41:76c2 with SMTP id d9443c01a7336-2ae2e496e4dmr118882715ad.26.1772384925120;
-        Sun, 01 Mar 2026 09:08:45 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:fcc8:844a:f21c:8d7f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b257esm113727485ad.4.2026.03.01.09.08.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 09:08:44 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Mon, 02 Mar 2026 01:08:40 +0800
-Subject: [PATCH] spi: axiado: Fix double-free in ax_spi_probe()
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="d2d+HNg6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Yq
+	STCjcPUw6J3JZXlqT0+hhApEQL3FkkNPm8nTHHHeo=; b=d2d+HNg6HMsI5eepwD
+	VRO4l1Altdx8ZjFyx1aMV4dAgOmL842/S+EqO5l7/hoz4sF/cLfuEVNwGA3xgitv
+	q3DcHa7aChcPc81FQuq0HoUi5ZQ9Ce20xaObBiU2GAwJPHDrxuFT9P2Vawuu108a
+	u2RZZXim5NWApFTO50VVPGNyc=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgDn5_CX_6RpCjgLQA--.6902S2;
+	Mon, 02 Mar 2026 11:10:17 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Niravkumar L Rabara <nirav.rabara@altera.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] spi: cadence-quadspi: Implement refcount to handle unbind during busy
+Date: Mon,  2 Mar 2026 11:10:15 +0800
+Message-Id: <20260302031015.1319477-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-axiado-v1-1-1132819f1cb7@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJdypGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYwMj3cSKzMSUfN0kQ4OkNIskExPL1CQloOKCotS0zAqwQdGxtbUATZB
- QCVgAAAA=
-X-Change-ID: 20260302-axiado-b10bf8b449eb
-To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
- Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
- Prasad Bolisetty <pbolisetty@axiado.com>, Mark Brown <broonie@kernel.org>, 
- Harshit Shah <hshah@axiado.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772384921; l=2297;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=yRcPxQvhGF4Ecv8niJ2audTUHBcYg9U8KcKsj1DASZI=;
- b=6ZyludJkVlCPWMcgh0edieK7UilddIXrENzghd58O7RYYEezPlqmEAkZztl66/zJRQ+npqbeV
- Uk98OQPSAFoCPV+XJQpBmGIpVwAwS1M7RjQGYCVPeocfqiPnTaDYOMb
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgDn5_CX_6RpCjgLQA--.6902S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFWrXFykur4rAw1fWrWkCrg_yoWrXrWfpF
+	4UGw45tF4xKFWIqFnrJa4DZF1fKrWxJ34fW39Fy34a9ry3Jwn8Za4FkF1Utr43AF97AF1U
+	WF409FyIkFsxZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07US-ewUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAhmpFWmk-5ng1QAA35
 
-ctlr is allocated using devm_spi_alloc_host(), which automatically
-handles reference counting via the devm framework.
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-Calling spi_controller_put() manually in the probe error path is
-redundant and results in a double-free.
+[ Upstream commit 7446284023e8ef694fb392348185349c773eefb3 ]
 
-Fixes: e75a6b00ad79 ("spi: axiado: Add driver for Axiado SPI DB controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+driver support indirect read and indirect write operation with
+assumption no force device removal(unbind) operation. However
+force device removal(removal) is still available to root superuser.
+
+Unbinding driver during operation causes kernel crash. This changes
+ensure driver able to handle such operation for indirect read and
+indirect write by implementing refcount to track attached devices
+to the controller and gracefully wait and until attached devices
+remove operation completed before proceed with removal operation.
+
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
+Link: https://patch.msgid.link/8704fd6bd2ff4d37bba4a0eacf5eba3ba001079e.1756168074.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[Add cqspi defination in cqspi_exec_mem_op and minor context change fixed.]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- drivers/spi/spi-axiado.c | 31 +++++++++++--------------------
- 1 file changed, 11 insertions(+), 20 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 34 +++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
-index 8cea81432c5b..8ddcd27def22 100644
---- a/drivers/spi/spi-axiado.c
-+++ b/drivers/spi/spi-axiado.c
-@@ -765,30 +765,22 @@ static int ax_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, ctlr);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 5b0ce13521f2..feaaf4ec0f15 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -100,6 +100,8 @@ struct cqspi_st {
+ 	bool			apb_ahb_hazard;
  
- 	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(xspi->regs)) {
--		ret = PTR_ERR(xspi->regs);
--		goto remove_ctlr;
--	}
-+	if (IS_ERR(xspi->regs))
-+		return PTR_ERR(xspi->regs);
+ 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
++	refcount_t		refcount;
++	refcount_t		inflight_ops;
+ };
  
- 	xspi->pclk = devm_clk_get(&pdev->dev, "pclk");
--	if (IS_ERR(xspi->pclk)) {
--		dev_err(&pdev->dev, "pclk clock not found.\n");
--		ret = PTR_ERR(xspi->pclk);
--		goto remove_ctlr;
--	}
-+	if (IS_ERR(xspi->pclk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(xspi->pclk),
-+				     "pclk clock not found.\n");
+ struct cqspi_driver_platdata {
+@@ -686,6 +688,9 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	u8 *rxbuf_end = rxbuf + n_rx;
+ 	int ret = 0;
  
- 	xspi->ref_clk = devm_clk_get(&pdev->dev, "ref");
--	if (IS_ERR(xspi->ref_clk)) {
--		dev_err(&pdev->dev, "ref clock not found.\n");
--		ret = PTR_ERR(xspi->ref_clk);
--		goto remove_ctlr;
--	}
-+	if (IS_ERR(xspi->ref_clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(xspi->ref_clk),
-+				     "ref clock not found.\n");
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
++
+ 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
  
- 	ret = clk_prepare_enable(xspi->pclk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
--		goto remove_ctlr;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret, "Unable to enable APB clock.\n");
+@@ -973,6 +978,9 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
+ 	unsigned int write_bytes;
+ 	int ret;
  
- 	ret = clk_prepare_enable(xspi->ref_clk);
- 	if (ret) {
-@@ -869,8 +861,7 @@ static int ax_spi_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(xspi->ref_clk);
- clk_dis_apb:
- 	clk_disable_unprepare(xspi->pclk);
--remove_ctlr:
--	spi_controller_put(ctlr);
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
++
+ 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
+ 
+@@ -1365,11 +1373,29 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
+ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	int ret;
++	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
++
++	if (refcount_read(&cqspi->inflight_ops) == 0)
++		return -ENODEV;
++
++	if (!refcount_read(&cqspi->refcount))
++		return -EBUSY;
++
++	refcount_inc(&cqspi->inflight_ops);
++
++	if (!refcount_read(&cqspi->refcount)) {
++		if (refcount_read(&cqspi->inflight_ops))
++			refcount_dec(&cqspi->inflight_ops);
++		return -EBUSY;
++	}
+ 
+ 	ret = cqspi_mem_process(mem, op);
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++	if (refcount_read(&cqspi->inflight_ops) > 1)
++		refcount_dec(&cqspi->inflight_ops);
 +
  	return ret;
  }
  
-
----
-base-commit: 3fa5e5702a82d259897bd7e209469bc06368bf31
-change-id: 20260302-axiado-b10bf8b449eb
-
-Best regards,
+@@ -1800,6 +1826,9 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	refcount_set(&cqspi->refcount, 1);
++	refcount_set(&cqspi->inflight_ops, 1);
++
+ 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
+ 			       pdev->name, cqspi);
+ 	if (ret) {
+@@ -1852,6 +1881,11 @@ static int cqspi_remove(struct platform_device *pdev)
+ {
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 
++	refcount_set(&cqspi->refcount, 0);
++
++	if (!refcount_dec_and_test(&cqspi->inflight_ops))
++		cqspi_wait_idle(cqspi);
++
+ 	spi_unregister_master(cqspi->master);
+ 	cqspi_controller_enable(cqspi, 0);
+ 
 -- 
-Felix Gu <ustc.gu@gmail.com>
+2.34.1
 

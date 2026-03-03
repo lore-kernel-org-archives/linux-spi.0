@@ -1,120 +1,81 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83383AEF53;
-	Tue,  3 Mar 2026 14:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7583C2768;
+	Tue,  3 Mar 2026 14:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772547163; cv=none; b=VQrRfjVWg51egNW5LaoUVok+SJkAhy31rauFTB/vtUbDszqLIgfKHpRKjDaBCGtbfuqVwmgyajqz1f11CqSGYuHHXvKJ38Mt+ROFaSrHSoXI0lA/n1rgZ3AhqGGA/Xn9k+6Ka+/wI8P6qJud6XM4/ZkJnEPI2tivsCUXk58bG2k=
+	t=1772547615; cv=none; b=brZzZPGtiAPXGe+gFDuyJSE5duw20zce89FaALypRgtdXMu50c/nVYZMQY5X51XLfzBp5TQ84htO/KmkJrIKXFcvR4CyA9qGeF5fJjY6ojlCo4PX/1YGAmOZ7RibrEqo3ApAbWYjw9aEV38XF9LU1q9gAaVc+Rw27ypAzAm87Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772547163; c=relaxed/simple;
-	bh=dPGInr9bJSJ4aaTC8V6Vfs27BwEv/iSgsWjWG9xQ8Pk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VgGNSRa/nRW5IUISlBVLbf+ovl5eEyjETSImOEm7ZHdN6xbs09HGwUiqCOD9N5rkwRvh5+5wy0VtvRYM6iNiW8ozPXwpeLp2AzAzmdgZ0XA7900RLSh2scJtePmNbDrAurC4XHdAOjg4ge0m18Xp2EONxBKsdHQmhZQHwKW0PJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PKXnJBTJ; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1772547615; c=relaxed/simple;
+	bh=ofivp0B1nbe1j1DkdafI9OBLxqcUuIMZvL8HnOoz8ko=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZV78oZDHXJ9k/jsdaIxUfJhK9GhXpDk5k3wj8pDn5D339/Trakl3h/Mp5Nr1CXWuXZyMraO9TNQeSV/Wf8HGKtTrgkY++sSdhDEvCh0vTbFLbYXYLOdMxN6uTVmtMxo2YqnPbZ3QUgMIgYa1aq0vPoZpMA43JTMdCP8a2dIztp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYGf7j8h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PKXnJBTJ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 838BCC40FAB;
-	Tue,  3 Mar 2026 14:12:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B0FF95FF87;
-	Tue,  3 Mar 2026 14:12:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29A51102F19D0;
-	Tue,  3 Mar 2026 15:12:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772547155; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=NDntnEFk19MkiUVyHnkpMvjEQ0xuOComNTKHqxzRgtY=;
-	b=PKXnJBTJeOSAhEFdsakoatz9eZVQJsYsja7QCQMQzgMh/5rn1PRNYjh0Y43mXfXGOsBQe3
-	ylbpcNlkEYOZJgf5w2TjuKlN6BoKRqaUv2T7NSWnft4+R5CB1JRZXmzrvE9foIFtljC0dX
-	9lnks0jyXkMRsFdgc/AIne583SVg0IBmmZGSlbX4ZFFiZoIRIMxN3ep1XEp5lG3ykQNMTV
-	2MMAGU53bJevHap0Qjn6XIWdND7dFzJBZWAWKL1cGUcMwe1FByNjIm1aDXdWkatlTF4u4d
-	eRAAosIijuZ77ayzdkxgCV3s0AjnR8VvyjdUbgJKG2IeDC3gKeA+0ZFLN444JQ==
-Date: Tue, 3 Mar 2026 15:12:10 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Geert
- Uytterhoeven" <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, "Michael
- Turquette" <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- "Andi Shyti" <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, "Arnd
- Bergmann" <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, "Bjorn
- Helgaas" <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, "Linus
- Walleij" <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, "Mark
- Brown" <broonie@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Dave
- Jiang" <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- "Shawn Guo" <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
- <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-clk@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <patches@opensource.cirrus.com>,
- <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
- <linux-cxl@vger.kernel.org>, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 07/28] driver core: fw_devlink: Introduce
- fw_devlink_set_device()
-Message-ID: <20260303151210.6e8462b8@bootlin.com>
-In-Reply-To: <20260302122336.00006bd8@huawei.com>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
-	<20260227135428.783983-8-herve.codina@bootlin.com>
-	<20260302122336.00006bd8@huawei.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYGf7j8h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7A8C116C6;
+	Tue,  3 Mar 2026 14:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772547614;
+	bh=ofivp0B1nbe1j1DkdafI9OBLxqcUuIMZvL8HnOoz8ko=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=dYGf7j8hxyGWgRv3nnKMyXbyb8UfEBpacQ8Y3xvQcnbsKcyoHpbRiAevZcyOgo+Rc
+	 voW38lKCQaUVq/SNXIthk+PnHbksB8eyoGe4DZn30mFtfrlhtv7HYcUbpuptCsNFYc
+	 pssam9AWt4FLj4IMEAF/4SzmOiqv+Z41R/XOPao9B63XtkjLeMoYxy1AXEgfptOFz6
+	 H0JukVqBYWg0dLqy3MZr39DIupQ6hgL1pC14cs4YkRCAvbgU4vmKaBSCf4FDGuMOUz
+	 tKtHTOF3dOfGxN4uPp3E3ISdkXs51NNAO2RmEM+byGmTo6aly2M1o7KM+fWdPwnfYM
+	 3HzFj0XyaA0Ng==
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Yakovlev <vovchkir@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260302113233.773414-1-vovchkir@gmail.com>
+References: <20260302113233.773414-1-vovchkir@gmail.com>
+Subject: Re: [PATCH] spi: spi-dw-dma: fix print error log when wait finish
+ transaction
+Message-Id: <177254761385.95700.14624648151530211972.b4-ty@kernel.org>
+Date: Tue, 03 Mar 2026 14:20:13 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-6ac23
 
-Hi Jonathan,
-
-On Mon, 2 Mar 2026 12:23:36 +0000
-Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-
-> On Fri, 27 Feb 2026 14:54:04 +0100
-> Herve Codina <herve.codina@bootlin.com> wrote:
+On Mon, 02 Mar 2026 14:32:33 +0300, Vladimir Yakovlev wrote:
+> If an error occurs, the device may not have a current message. In this
+> case, the system will crash.
 > 
-> > Setting fwnode->dev is specific to fw_devlink.
-> > 
-> > In order to avoid having a direct 'fwnode->dev = dev;' in several
-> > place in the kernel, introduce fw_devlink_set_device() helper to perform
-> > this operation.
-> >   
-> I don't mind the helper, but the description could do with a little
-> detail on why.  Is it just to avoid visibility of internal details, or
-> is there a stronger reason?
+> In this case, it's better to use dev from the struct host.
 
-I think the idea was to avoid visibility.
+Applied to
 
-It cames from feedback received on my first iteration
-  https://lore.kernel.org/all/20250408145139.293c79a2@bootlin.com/
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-I found the idea relevant and so I did the patch.
+Thanks!
 
-Best regards,
-Hervé
+[1/1] spi: spi-dw-dma: fix print error log when wait finish transaction
+      commit: 3b46d61890632c8f8b117147b6923bff4b42ccb7
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

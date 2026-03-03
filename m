@@ -1,37 +1,35 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9344F796C;
-	Tue,  3 Mar 2026 16:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F355D480979;
+	Tue,  3 Mar 2026 16:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555832; cv=none; b=Q/tL0VKXrJSVicSvruF/ofNKBD8x+OV5Bjb82WdDAZ2YgSzfARSmNBa6I60sBuxytxKkhc5sWH/m4uwbv2x95OfN4Gr0v8XbbEZE5JNrD4tnmBf51QsfCxt+pPfa4ZjVA+0wY0I/DG0t3kvw1dN8O4Cn2XqSfE3R8BcgrhmWyq8=
+	t=1772555832; cv=none; b=eU+PT+5C9oqF4zaR3Uy+rfNNrD8/bp4LTsGQFVVlh89MfR58zqL8LOTAp+CaPnoVn99Cgh6GGDAfkK4hSAWVX7xxMqBC9sbjEzsrrs01bUxVeS2I6ivDw0q45o9sFWutXdpO2GkOdoOw7VnOKrDhk6lwTFtXNogjUNBez2SxR3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772555832; c=relaxed/simple;
-	bh=ZnYngTlVQzycdtY2m/RKcREfQ/63W022ZEx/xYzEu6g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JfL2bYJb20PpUDQmRvcOG9Cllbl26FC2wNK/ou8wBLhz1jXhhVvj+fFJlXjbjJ+IcM+9nsyR2w+5WearGx4aq/ky/+hra72c8oh32tNK7QV5JK5GMYEoAHMpWQxOqa1VO+vCbXBGjdlfOW8/NLbSym3mFk0+RuFUhhnsaLL6OOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=RJ7ZVyJG; arc=none smtp.client-ip=116.203.77.234
+	bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HMw0rpmwj5t3NZoyrEBb/M0RwVdC/FZs26FCEPQfMCclBRuxUcRqcNhEjHLVfcblAQP7+KwuS0HsPOFxB7Zsez1Z3HrvW3AGheGRmH6YT6XEhuLFs9AiSSPEZLs4Eax7otSjsHeuxtTlzpAkz9tWnQn4CEIhNjjIr5p4dPCVBug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=J8D4EZ6B; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="RJ7ZVyJG"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="J8D4EZ6B"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	t=1772555396;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BQpGPSsrmt5iFf8ycx5AlTFs3GDIIi8/v45rG7lvG9E=;
-	b=RJ7ZVyJG+KcCDsqtEKVaft96gFljbG0QnrDqcEaQhES+7duAAfX9XINpkZukPWPpxkQAiT
-	ObisQQAu7sFaBTTgu0IgG9BsNECNUic/ml4yyp0cjs2sr+vTF6boKHhnZ167h4+WexxYRc
-	qXpCUxRKwiKqJ8ftvhF5jIjwC3MaO94llQMZ1JZOEbjKRwG7Z63eTESJFx9jxEr/p0LfRL
-	xw0t/xF5P+4PsdGnOkw3Ed8B2ZQC1+FPr3dxDyIdqixE2tuKRjfHMgW/0pZ3WkNtBz2tX/
-	y/ijtE6uisHrTzbbHXhx7leBJv2D3sEarAbLex26HU8x+n2r7ahL7pUogiwnZQ==
-Date: Tue, 03 Mar 2026 17:29:22 +0100
-Subject: [PATCH RFC 1/7] spi: Add 'rx_sampling_delay_ns' parameter for
- clock to RX delay
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yyUqdUEqhJyknAkJorlxRX2q3YtJbxtKcmib+aj9K9c=;
+	b=J8D4EZ6By/kAutGk56KiJkwZi/LnkHlnmvP+lm+lDnFc2ftdzb0zwc4GZrv331+baXn3/c
+	1pqto+EsmpSk0m370KTbHaMuq0LkKMDSZKapc3bJGBw569vQWyJtLKo9YPS9BLELBkCuWy
+	ZZV8HwVNXxvzskFmDUK4brWuq9S39MrZgeQHz154g19UN7lxIAF7fLzT0MMIGGShavPDkG
+	ku1yuGUhHrRHX5g96dQPGt7P6cJrjjYHpbal8e/xvV7s69x8QK15pPF07yTbB/RngcJB/D
+	9wCyFMLEcuTNX4p4ruWuEv49q3tVw/NqxcrdqFEMbsqp30uUQoJuYOgULH0iNA==
+Subject: [PATCH RFC 0/7] Support for SPI RX Sampling Delay Compensation
+Date: Tue, 03 Mar 2026 17:29:21 +0100
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,9 +38,10 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-1-9326bbc492d6@kontron.de>
-References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
-In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQqDMAwA0F+RnA20BoV5HfgBXmWHotEFalcbG
+ B3iv694fJd3gnISVuirExJ/ReUTCmxdwfx2YWOUpRga03SGDOGqHg+Ngimjuj16CRsu7N0PH5a
+ IWztzawhKEBOvku98gnF4wuu6/ojaOc5xAAAA
+X-Change-ID: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
 To: Mark Brown <broonie@kernel.org>, 
  Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
@@ -53,68 +52,103 @@ Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
  Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mtd@lists.infradead.org, imx@lists.linux.dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2060;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4091;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=XlqBJm6qGT+yufD3x6JPfqlL1/qFkwpILnGBWgECzFk=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9OFDXvSpisb72j5uznvPbPw02vpJ/ZntCx4pCG9w
- v3sRnaPjlIWBjEuBlkxRRYpfovXtmaxPvLHqqNg5rAygQxh4OIUgImcfsbwPzT+ugjrrn1B97v9
- 9zXN3j/Rr5G/wptL/tuMrt+SLF8vXWJk2Hr1cm7jOe9JRpKBu2ecjPu7OXmiaPC77y1v1MQDEn5
- N4gUA
+ bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9O1gN/bt7Cx5ixWrG/lFfpxen7CC8GVy6s+sJ74Y
+ BkXPdm0o5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCIz5jEyrC9s2bq4tH1BIFP4
+ rRjRk3fZQ0RuNK9pt7r/e1/Obun+mYwMmz62L+gX9mOUC64ut6hj2PSFS6Fks3J2aW9DwY/Lbh6
+ 8AA==
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-From: Eberhard Stoll <eberhard.stoll@kontron.de>
+This is an attempt to continue the efforts started in [1] to support
+SPI devices that are clocked at high speeds and have a significant
+delay in the RX path.
 
-Some high speed SPI devices require a delay between the controller
-clock and the sampling point of the client device. This 'clock to
-receive data delay' value is often referenced as tCLQV in SPI device
-data sheets.
+This aims to handle the known RX path delay introduced by the SPI
+device itself and specified in the datasheet as maximum tCLQV value
+by:
 
-Not respecting this can lead to data being sampled too early when
-the client doesn't yet reflect the correct level at the data out
-pin(s).
+1. Applying compensation if the controller driver supports it
+2. Reducing the clock frequency to a safe value if the controller
+   driver's compensation capabilities are exceeded.
 
-There are two ways to handle the situation:
+I'm sending this as a new RFC as quite a few things have changed
+compared to [1] and a lot of time has passed. Also I'm quite unsure
+if the layering for this implementation is correct and wether
+it conflicts or overlaps with the PHY tuning series [2] in some
+way.
 
-1. Reduce the controller clock to the amount where the sampling
-   point requirement of the client is still met, meaning the
-   clock period being greater than two times tCLQV.
+This approach adds a new attribute for SPI devices to track the
+RX sampling delay requirements of the device and extends the SPI
+NAND drivers for Toshiba and Winbond devices to specify the values
+from the datasheets (patch 1-4).
 
-2. If the host controller supports it, compensate by delaying the
-   sampling point to meet the tCLQV requirement of the client.
+Then it adds calls to a new handler in the SPI controller drivers to
+the core and provides a generic helper to calculate the delay cycles
+(patch 5-6).
 
-Add a parameter 'rx_sampling_delay_ns' in struct spi_device to enable
-setting the clock to RX data delay for each SPI device, so drivers
-can check and act upon this timing requirement.
+At last it implements the new handler for the FSL QSPI driver in
+order to compensate the RX sampling delay, or as a fallback reduce
+the clock rate to a value that is safe to use without violating the
+RX sampling delay requirement of the device (patch 7).
 
-Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+This does not yet implement the fallback to reduce the clock rate
+for controllers that don't have compensation capabilities or that
+have not yet implemented the compensation handler. Therefore this
+series doesn't cause changes in behavior for controllers other than
+FSL QSPI.
+
+Please note that some drivers such as spi-stm32-qspi.c currently
+enable a RX sampling delay of one half clock cycle unconditionally
+for all devices. While this works in general, as all currently known
+devices are in range of sampling the data at this point, when testing
+this approach with FSL QSPI it failed at low clock rates (e.g.
+100 kHz). This is probably due to the sampling happening too late,
+when the data line is alredy changing its state as the delay is
+negligible compared to the (rather long) clock period in this case.
+
+This series was tested on i.MX6UL with the following SPI NAND devices:
+
+* Toshiba/Kioxia TC58CVG2S0HRAIJ (133 MHz, tCLQV max. 6 ns)
+* Winbond W25M02GV (104 MHz, tCLQV max. 7 ns)
+* Winbond W25N02KV (104 MHz, tCLQV max. 7 ns)
+
+The former two chips seem to work fine even without this patchset,
+probably due to the actual RX sampling delay being lower than the
+maximum value specified in the datasheet. The latter chip fails
+reading at 104 MHz without RX sampling delay compensation.
+
+[1] https://lore.kernel.org/all/20231026152316.2729575-1-estl@gmx.net/
+[2] https://patchwork.ozlabs.org/project/linux-mtd/cover/20260113141617.1905039-1-s-k6@ti.com/
+
 ---
- include/linux/spi/spi.h | 3 +++
- 1 file changed, 3 insertions(+)
+Eberhard Stoll (4):
+      spi: Add 'rx_sampling_delay_ns' parameter for clock to RX delay
+      mtd: spinand: Add support for clock to RX delay setting
+      mtd: spinand: winbond: Add RX sampling delay values
+      spi: spi-fsl-qspi: Add support for RX data sampling point adjustment
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index af7cfee7b8f60..4f8a0c28e1d46 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -181,6 +181,7 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
-  * @num_tx_lanes: Number of transmit lanes wired up.
-  * @rx_lane_map: Map of peripheral lanes (index) to controller lanes (value).
-  * @num_rx_lanes: Number of receive lanes wired up.
-+ * @rx_sampling_delay_ns: spi clk to spi rx data delay
-  *
-  * A @spi_device is used to interchange data between an SPI target device
-  * (usually a discrete chip) and CPU memory.
-@@ -235,6 +236,8 @@ struct spi_device {
- 	struct spi_delay	cs_setup;
- 	struct spi_delay	cs_hold;
- 	struct spi_delay	cs_inactive;
-+	/* Transfer characteristics */
-+	u32			rx_sampling_delay_ns; /* clk to rx data delay */
- 
- 	u8			chip_select[SPI_DEVICE_CS_CNT_MAX];
- 	u8			num_chipselect;
+Frieder Schrempf (3):
+      mtd: spinand: toshiba: Add RX sampling delay values
+      spi: Add RX sampling point adjustment
+      spi: spi-mem: Call spi_set_rx_sampling_point() for each op
 
+ drivers/mtd/nand/spi/core.c    |  1 +
+ drivers/mtd/nand/spi/toshiba.c | 48 ++++++++++++++++---------
+ drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++--------
+ drivers/spi/spi-fsl-qspi.c     | 80 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-mem.c          |  2 ++
+ drivers/spi/spi.c              | 73 ++++++++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h    |  5 +++
+ include/linux/spi/spi.h        | 11 ++++++
+ 8 files changed, 231 insertions(+), 31 deletions(-)
+---
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
+
+Best regards,
 -- 
-2.53.0
+Frieder Schrempf <frieder.schrempf@kontron.de>
 

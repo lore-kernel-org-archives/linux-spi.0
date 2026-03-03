@@ -1,315 +1,156 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013028.outbound.protection.outlook.com [40.107.159.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343FD3976BF
-	for <linux-spi@vger.kernel.org>; Tue,  3 Mar 2026 19:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772566332; cv=none; b=r5kfUgn0INzUHQJvFNdE/8d/JGmWCTQu7WmMng35mrRBbh5DretrsDDZR1r6cJt9V/W9ZIjcoFdPJHsWxC0FbvfqPDMljoC/xWS5sVNjMyIJ7yyLduKe2u/1wImgWG842/m59dQ093FkRfW6AXj9Fo3AwQLK6hymOpjul33ow3Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772566332; c=relaxed/simple;
-	bh=Gf5eeNAe7Cr11h709c9BHil3kb9/QlMdiA0MqCeCitE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B889C3CD8A6;
+	Tue,  3 Mar 2026 21:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772571772; cv=fail; b=GTGNGe3jd1rm/5ayFH4G6U9A4zKdEUXUNoQ+6ZH2LSa3KOA/YiTeLgJw+FH/jkG0gh84FdCPFb/+g0J0ToqQubSdJxs9Ck0wB3djhnmaJ8mAtdV7jeul8c0ICR8OCUuNYAbPrLzhZKvMwyAdHvINk8tyFxyhybULJICYoobUleI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772571772; c=relaxed/simple;
+	bh=L0Yzy7GpzDKYyAy2xEV5uMIDuB6RsyIxaIqZmrG6YLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBY0V6uIh1X9pQSjb5T+j0cN6lZcyqMOn/uwFwvngHxMJII7oHSo3jMLlgcjG511WP7/LHhbV57u3Y5HFNJVGFbRPGCpLLwwpkVX4JxCgXscfY5kvDdFcWNP7eIt5eXhzn8PQbXTZMWaqAwL1eX3jeARrvfofZx3n9+98ojZZHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=cw10SYVS; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:MIME-Version; b=ByO4xKSD0Xd/fb20V20E2DNTciQYyj5Rr+YMVVN75BH2U8V2d0rge2dLFAyP+BcA1eda/hRRzvhbgKGNFjfRanHITUjg9VOVnMA/Wo+jRucrc20tbJxPkPDJ98zoSlKeJwWVILffMbo/JbWqa6zLupsnbLKFQbzbx+xiI5DYsUc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GEETgBT4; arc=fail smtp.client-ip=40.107.159.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="cw10SYVS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=j/Bo7yrFMAchCRfI3p9FgYu/8TRsrIClVI/vqJrM62s=; b=cw10SY
-	VSDDBIMncjsw9I85vcm2bgHLq7GMJJRqXG4XOCLpKthxayrGp0paHslau+AHGd1s
-	dR41SlnooKWBRS8WQoeERXhsFMeKBFnUJHbpmo0xuvwX11+tn20s+k0HMLsgSdLY
-	xjO7f7YY6NifLL67g3Pa2rMyTfIz/05/F4/m0Sa53CMoMzd260GMPJQiALXfCYOb
-	aTFMxQa0XV8IO7FniitASuMiiUYnduYueiKjggYfTq83Ux53lIZcymTfSxrbz1bO
-	Rk6viyJBLq9nz++IZTB+sXzV85siip/fIdJy0H5nZjq5esig8X24Hlkx9QtEe41R
-	eAsC59fy2I51GD0A==
-Received: (qmail 430895 invoked from network); 3 Mar 2026 20:31:43 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Mar 2026 20:31:43 +0100
-X-UD-Smtp-Session: l3s3148p1@/BzYwCNMXKgujnu+
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GEETgBT4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=M8JLsAs+pjoqIhDvOMGMUHvYl84X2vxuLV8eB8jze8tPiRp5/41TUQERDemRJl+yD2IgntIbq6MmYDW48gTRwBvvYrI6LpJTbkrhr1yLYXdmPIGJt+u4sVf2egL+SHPE+MSxPve5KjjuqGxEX3awC6wo+ixikJAwtma/fcgMTsIb/5HS2Pw9Ypaw+i7JHlYk14d4JTOyjxs1Kwmy17+YxNlUijzrMedd3FDVpIdwUkzpz2l2fQ8cNBaJy1wqdB0BKi46P9R3PE4aULyohIrljx88N8sZ2FvdIVwXALs1piJ2osfUdnLCIqqXnctzIco58vM/bVePrvqIX61AB7mxxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QzpOpfqWxq1sjBklZ4fn4D904gQyT5qoOso4ouqZHMI=;
+ b=s+2WOgDLWxmoF+QpKRJmTMMbeWrdBgb0RLOtQf2LRFAsSrtA8/R7/3OQbGzxn65Wod61qA2godEN9XvrrQUSGUldLwfIC9/AdaRkANeWBLAbaFazZA5J5A5rFG1GvQ8vIodQHB5fawYEH3Rw1n7FJqvF0nhcGCpIZRXsCZd23NGMDv9tCx8+HbLo+g0V+8KuajhlQHCrraFX/23YCxCcNB6syYfmeq4QUCYv8F/0Iry0eTDd7a3/I+pYtvzICjQ6tyvjtDrq7egkMGIHvOkrVEMV60TiD/NB4fZyRy6/6MJTGyjHpPY8fUAxImYLsUMT7Enjh6z7DcSlEKWZMnZERw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QzpOpfqWxq1sjBklZ4fn4D904gQyT5qoOso4ouqZHMI=;
+ b=GEETgBT4MuFneerJ5+Zw03EXDyUVdm3GDkgPFo4+Ku2480FoVB/dzS9wcuXfcqV1peyD6t0rS7FArVke7Vwht0Ddvxx1OeoiUv9K02pj3YN+G+bcqvVoPh68ZVExmUlz3giwomD3PCJpFMdgCY4gAyXPlMw/nEzImbVQq81ZhIzc0jFP3Zf3iLTXBGBKS7uMa28qtOzXnOqDTt0kZ1WkYyFLDwSOjtAlqf25cpc0ZGg/t8vCrPJYRkwyu0U1k4SPelvYxVy1B9vRixkG8jOzLY9GI6Lob2AU9ahxWI9yh36KCV1jF11aCS/lTLX7u9URkUBkmmm/WNcy74r5DtCs/Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DB8PR04MB6858.eurprd04.prod.outlook.com (2603:10a6:10:113::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Tue, 3 Mar
+ 2026 21:02:47 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9654.020; Tue, 3 Mar 2026
+ 21:02:47 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lee Jones <lee@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	linux-remoteproc@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH v3 15/15] hwspinlock/treewide: refactor consumer.h from public header
-Date: Tue,  3 Mar 2026 20:26:07 +0100
-Message-ID: <20260303192600.7224-32-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260303192600.7224-17-wsa+renesas@sang-engineering.com>
-References: <20260303192600.7224-17-wsa+renesas@sang-engineering.com>
+	Frank Li <Frank.Li@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Felix Gu <ustc.gu@gmail.com>
+Subject: Re: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated operations
+Date: Tue,  3 Mar 2026 16:01:10 -0500
+Message-ID: <20260303210131.2966214-15-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260303-spi-nxp-v1-1-b78570db28ce@gmail.com>
+References: <20260303-spi-nxp-v1-1-b78570db28ce@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SA1PR05CA0014.namprd05.prod.outlook.com
+ (2603:10b6:806:2d2::23) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB8PR04MB6858:EE_
+X-MS-Office365-Filtering-Correlation-Id: b2cb1f1d-7ca7-45b8-7091-08de796838ea
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	jbCvaZcJpT2OQqgmR9cDBq75CGHLUbBNt7P/QRr9N7WkUqnmPYqeXu5Vcyuwpceeq27wFQMvjST9E5mRtykBd/fEDiK82UBwbx0RuRCIVTw6To2t6xnKYtVPp8UF2POtruacT6aNZui6znQfgLI3D6s9CPvYwSc6Vc7q35j91U/wYZLcxCoBZqd5eOSZyp/ViLv2zVw6964rfFK86IhPOEMeFgbk7lSZ0XasowD2EwfA4PD5NwtIbcwnqaPZ2EQluLkLOOhoMhP6yAoavlxluy6HtSNv9Qd6lOEMlM3mvR9myCaDNy8RI50q13WXQB+C+FDWwkm2ufVQWd6DHCS5y3tcEQIVHBIwOAO+Zq8FFtxWeLc4EVCt7FSeSZALl7k6Gfu8ckz7LtJ87krufeOYwNSxgU5OOHhqy90ywlzA9pyxNztT45uxvsoUYCQG924ybNgpgkcd8mdMzd/xzK7MJwggjpAZsC5gle5vlvUJ6PVuGS1+9tdjXKdOzsaCISj1m3fXs2ED1QgFGixSexj8dIoqoG7FTmAocXQ6+eUSHjuiUw7lm23vZFNXwemugHlqXltbkWhRoPC+R3eTuEeLqz5MYpqN1DW73MVusVVB4Vxt0QEyUXytOzKj3z9XByyTYpbg2yfGaCY/WzKeFXkniQGh5l9yJjlT3RIOQAwgWHHD529BVNVS1duCfE2dPH3JkEKGCZ1k9AbL0HGV5QaWbIiC5Zr+lOL+F42jEufsnfwffLApCkNTpsQJFUr669J6LhbXj1gP6sTxehKFatAJBxTxLgn5XTiBW6KOHmW+5xM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?J4H7ZRNJoMDnjUs2dnpkXBsU0tDl1MzGUkvTTMsWrVnEV7V1jh2ZDle1k4oi?=
+ =?us-ascii?Q?H5/hIvSUXNVT6jyso4OhDh0d7e9jrzUiMqTDNgkvIblP7tVEft70xMkz87Ur?=
+ =?us-ascii?Q?UxfY+vsrKxY4InIdkOFqZz6jcb/jUfgwQpcyHCIGEsZQpFGNN+bPYoxbIYJX?=
+ =?us-ascii?Q?eXtxhissAhV4IykZvC8xdLyGhqimrdJOnaCFQjfBhGnc48y6n61STZL+JX45?=
+ =?us-ascii?Q?qgdi3tM70/tI4mbqEvQCfDUJsYgyClluAdsjH5945U1kj1SSu6K9RohVycaw?=
+ =?us-ascii?Q?h00wqERFYO0ZBddykDfnAdubSffXGlNR2u1gG5i+qCI8G2F7/URB6eKh+Y1m?=
+ =?us-ascii?Q?8ABJo9GOySJpWhYLZqfUl8Jr0Sfw5UQcDeN5v44SgXO2eK1F7RLxYg+2IM6z?=
+ =?us-ascii?Q?rCsJoF//BKXHwUx10UOCxlOBOviEWjFT5iQ3S196OXTWhiWfO1QOHYQanrEQ?=
+ =?us-ascii?Q?BHX1yYaQroxTk+NKhg+jBIPy7UnrIUqXUjAsFgIVmOjUqgAnnNgxNXiId5pk?=
+ =?us-ascii?Q?DoqNA7T6llmuiPYjDEYtAA0bYpxQQJuvyowyA7kFL/NOxAuyMvocUAjvsFT9?=
+ =?us-ascii?Q?KfMJwnp+YzMpmy9eeIBBHfFWedosMN/vnvJdq6S6xQB3YmTJVuknKXwSlt7y?=
+ =?us-ascii?Q?KSqwt93ou5T7AGlJn+mAWtqDLHKNo6uiqvS4PxDzxgUCogtGls7hu0gpES/5?=
+ =?us-ascii?Q?cC6jJSZmsI6ZXjyz3IIu/DrRTFKXiHI4NxPgd2wJO5SDKjVGSnG7BEKdquHc?=
+ =?us-ascii?Q?cNtvs2vcMFpXs8n8cZjnKqr/WhryDBRtYE66KnJM6JGRGbdMhDedPvbu+FJF?=
+ =?us-ascii?Q?LLNekGO3NHcabWsDFZMmL6MXnOIsrni2eEX1B8/kS87zNrOLCCnsUpBjXU8i?=
+ =?us-ascii?Q?ldHoktqmfI7JlTOhFP3NTWZd9MhcRx6fSH/2XQtofS6H5VnvencGDO23HSg1?=
+ =?us-ascii?Q?/CD75zarVe3UipX1nUI/SUhs8Wn45LnPjzL9bALAXtlXjJX6m053cgulls1P?=
+ =?us-ascii?Q?N2mMzb2xtkZPtyHBTEk4LYsLE+EjfI2dJz2wx+HwsolIpgYxh3PFsHpfJY1v?=
+ =?us-ascii?Q?YrpFgRyit3gk8c7GJzI1h/LqaE3RjygxNLbZ/cMoyZ7z0ciWcAyDW0XFzuEL?=
+ =?us-ascii?Q?kmNNg6a7kY625HyXNau7RDFTQr6McACkSJyU5/Leg2fO6VI/NjWf5UEf1X5R?=
+ =?us-ascii?Q?Jhj5qkRxb/h9ibHY35OOGnONjNQARwmeUXKQTa9E7NvAlrl4NNY6j6PqYHY1?=
+ =?us-ascii?Q?qX56p7Q2zyV6hMhE6Tb+2+3AmK2mcevk/MoL7Gy3K7OGdvEFULWOYU5G9dFc?=
+ =?us-ascii?Q?vqH9HYYDttS4omX/4eFdXYpfku0CiqKn5fq33aMuxWvNkIcxCCi/Nygyk8Xc?=
+ =?us-ascii?Q?CJJ063QIE33/Ls8NyQqQqOc9jTq29xUyxodm1KetsKdG/ZUxbVXo9LShYake?=
+ =?us-ascii?Q?LL99tjvdnphQSxBlcDfdh+ysmVcJ610hC6sL3oy9UGXB904HXOFFbGwK+JHF?=
+ =?us-ascii?Q?2Zx8wZlKn0rO6nPXhEopYC0Id0jVaP5VXKlDOE8noWo2gfBoMl5HJGVuRUgG?=
+ =?us-ascii?Q?+RWVS3A0RTE+RxgFucWBUJMYgj4rGSUI8IBzjxSnCcrB20C4fOSnz4sA1a/P?=
+ =?us-ascii?Q?ZQIeCTwfo59+z9iUMrmbANfcJzNZBr/sflIivIs/UGwhPe2OnqYedCGTBSin?=
+ =?us-ascii?Q?INObetwt63ONVKfR7Ws5otFqsr9qhFizFR5FJ8ZTDuveoz24AmunrA0Wm24c?=
+ =?us-ascii?Q?acgsBsqV6g=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2cb1f1d-7ca7-45b8-7091-08de796838ea
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2026 21:02:47.4795
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WfnljHZr0mQjdGe6oEwOTCRBhYfAf6Xb/1kgB/2mJI5Yl1oXTvmvlV5ySPMizy71wzeR069SSdZf85FSMkyBPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6858
 
-Factor out the entries only needed for consumers from the generic public
-header. This allows for a clean separation between providers and
-consumers. Also remove contact field in favor of MAINTAINERS entries.
-Fix the users, too.
+From: Frank Li (AI-BOT) <frank.li@nxp.com>
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> # for IIO
----
- Documentation/locking/hwspinlock.rst              |  2 +-
- MAINTAINERS                                       |  1 -
- drivers/base/regmap/regmap.c                      |  2 +-
- drivers/hwspinlock/hwspinlock_core.c              |  2 +-
- drivers/iio/adc/sc27xx_adc.c                      |  2 +-
- drivers/irqchip/irq-stm32mp-exti.c                |  2 +-
- drivers/mfd/syscon.c                              |  2 +-
- drivers/nvmem/sc27xx-efuse.c                      |  2 +-
- drivers/nvmem/sprd-efuse.c                        |  2 +-
- drivers/pinctrl/stm32/pinctrl-stm32.c             |  2 +-
- drivers/soc/qcom/smem.c                           |  2 +-
- drivers/spi/spi-sprd-adi.c                        |  2 +-
- .../linux/{hwspinlock.h => hwspinlock/consumer.h} | 15 ++++++---------
- 13 files changed, 17 insertions(+), 21 deletions(-)
- rename include/linux/{hwspinlock.h => hwspinlock/consumer.h} (98%)
+Subject: Re: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated
+operations
 
-diff --git a/Documentation/locking/hwspinlock.rst b/Documentation/locking/hwspinlock.rst
-index a737c702a7d1..001bcab86690 100644
---- a/Documentation/locking/hwspinlock.rst
-+++ b/Documentation/locking/hwspinlock.rst
-@@ -306,7 +306,7 @@ Typical usage
- 
- ::
- 
--	#include <linux/hwspinlock.h>
-+	#include <linux/hwspinlock/consumer.h>
- 	#include <linux/err.h>
- 
- 	int hwspinlock_example(void)
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 4e95cbb48dd8..e1acfc1d6656 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11216,7 +11216,6 @@ F:	Documentation/devicetree/bindings/hwlock/
- F:	Documentation/locking/hwspinlock.rst
- F:	drivers/hwspinlock/
- F:	include/linux/hwspinlock/
--F:	include/linux/hwspinlock.h
- 
- HARDWARE TRACING FACILITIES
- M:	Alexander Shishkin <alexander.shishkin@linux.intel.com>
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 607c1246d994..d25494495469 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -16,7 +16,7 @@
- #include <linux/sched.h>
- #include <linux/delay.h>
- #include <linux/log2.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/unaligned.h>
- 
- #define CREATE_TRACE_POINTS
-diff --git a/drivers/hwspinlock/hwspinlock_core.c b/drivers/hwspinlock/hwspinlock_core.c
-index 6c8a03deb00c..e78ec4b5cfa3 100644
---- a/drivers/hwspinlock/hwspinlock_core.c
-+++ b/drivers/hwspinlock/hwspinlock_core.c
-@@ -12,7 +12,7 @@
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/err.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/hwspinlock/provider.h>
- #include <linux/jiffies.h>
- #include <linux/kernel.h>
-diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
-index 6209499c5c37..8a881d63b7dd 100644
---- a/drivers/iio/adc/sc27xx_adc.c
-+++ b/drivers/iio/adc/sc27xx_adc.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (C) 2018 Spreadtrum Communications Inc.
- 
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/iio/iio.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-diff --git a/drivers/irqchip/irq-stm32mp-exti.c b/drivers/irqchip/irq-stm32mp-exti.c
-index a24f4f1a4f8f..25d5aa67728a 100644
---- a/drivers/irqchip/irq-stm32mp-exti.c
-+++ b/drivers/irqchip/irq-stm32mp-exti.c
-@@ -6,7 +6,7 @@
-  */
- 
- #include <linux/bitops.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/irq.h>
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 21a7fcdd2737..8ec74f8513d7 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -11,7 +11,7 @@
- #include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/err.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/list.h>
- #include <linux/mutex.h>
- #include <linux/of.h>
-diff --git a/drivers/nvmem/sc27xx-efuse.c b/drivers/nvmem/sc27xx-efuse.c
-index 4e2ffefac96c..309090cd4ff0 100644
---- a/drivers/nvmem/sc27xx-efuse.c
-+++ b/drivers/nvmem/sc27xx-efuse.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (C) 2018 Spreadtrum Communications Inc.
- 
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
-diff --git a/drivers/nvmem/sprd-efuse.c b/drivers/nvmem/sprd-efuse.c
-index 1a7e4e5d8b86..92e3092719ba 100644
---- a/drivers/nvmem/sprd-efuse.c
-+++ b/drivers/nvmem/sprd-efuse.c
-@@ -3,7 +3,7 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/nvmem-provider.h>
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 6a99708a5a23..17b2072d609e 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -10,7 +10,7 @@
- #include <linux/clk.h>
- #include <linux/export.h>
- #include <linux/gpio/driver.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/io.h>
- #include <linux/irq.h>
- #include <linux/mfd/syscon.h>
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index d5c94b47f431..6d574d65b4a3 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -4,7 +4,7 @@
-  * Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
-  */
- 
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/of.h>
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index e7d83c16b46c..04313e4a63dd 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -5,7 +5,7 @@
-  */
- 
- #include <linux/delay.h>
--#include <linux/hwspinlock.h>
-+#include <linux/hwspinlock/consumer.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-diff --git a/include/linux/hwspinlock.h b/include/linux/hwspinlock/consumer.h
-similarity index 98%
-rename from include/linux/hwspinlock.h
-rename to include/linux/hwspinlock/consumer.h
-index 4fe1c8831cd1..f476222ec924 100644
---- a/include/linux/hwspinlock.h
-+++ b/include/linux/hwspinlock/consumer.h
-@@ -1,17 +1,16 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- * Hardware spinlock public header
-+ * Hardware spinlock public header for consumers
-  *
-  * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com
-- *
-- * Contact: Ohad Ben-Cohen <ohad@wizery.com>
-+ * Copyright (C) 2026 Sang Engineering
-+ * Copyright (C) 2026 Renesas Solutions Corp.
-  */
- 
--#ifndef __LINUX_HWSPINLOCK_H
--#define __LINUX_HWSPINLOCK_H
-+#ifndef __LINUX_HWSPINLOCK_CONSUMER_H
-+#define __LINUX_HWSPINLOCK_CONSUMER_H
- 
- #include <linux/err.h>
--#include <linux/sched.h>
- 
- /* hwspinlock mode argument */
- #define HWLOCK_IRQSTATE		0x01 /* Disable interrupts, save state */
-@@ -22,8 +21,6 @@
- struct device;
- struct device_node;
- struct hwspinlock;
--struct hwspinlock_device;
--struct hwspinlock_ops;
- 
- #ifdef CONFIG_HWSPINLOCK
- 
-@@ -403,4 +400,4 @@ static inline void hwspin_unlock(struct hwspinlock *hwlock)
- 	__hwspin_unlock(hwlock, 0, NULL);
- }
- 
--#endif /* __LINUX_HWSPINLOCK_H */
-+#endif /* __LINUX_HWSPINLOCK_CONSUMER_H */
--- 
-2.51.0
+> -	init_completion(&xspi->c);
+> +	reinit_completion(&xspi->c);
 
+Good catch. This is the correct pattern for repeated operations on the
+same completion object.
+
+> +	init_completion(&xspi->c);
+> +
+> 	ret = devm_request_irq(dev, irq,
+
+Looks good. Initialization happens once at probe time, then
+reinit_completion() resets the state for each operation.
+
+One minor note: the blank line after init_completion() is unnecessary
+per coding style. Consider removing it to keep the probe function
+compact.
+
+> Fixes: 29c8c00d9f9d ("spi: add driver for NXP XSPI controller")
+
+Commit message has a typo: "perations" should be "operations". Please
+fix before sending.
+
+Overall the change is sound. Moving initialization to probe and using
+reinit_completion() in the hot path is the recommended pattern.
+
+AI bot review and may be useless.

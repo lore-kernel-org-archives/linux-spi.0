@@ -1,147 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67814423175;
-	Tue,  3 Mar 2026 15:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4354B8DDC;
+	Tue,  3 Mar 2026 16:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772551480; cv=none; b=G2yhSBmBykhXkJ/WADRSzsrTEd0rlpV7VNykf5oFDGhlFZvpJrFRjj/mcYHBYFR71I71Up5Zg3v9Qn85wVgDBHaXwVFBIuw9mbqAN5o7fVtKoe0ggLkHPF+njwf/uNIJJ7vBbSgbjSlVCRECTBlkqkYoLFLgpMpbk0MR4lx3o0M=
+	t=1772555409; cv=none; b=K49Xc+SeNb8kWLz47WTIrUTDNcHhVUgXfR8BI93gmrgmEaf7Q7WIWKYmoei0xMg3V2T4Xutd6ywuTqP6V9GIPncBNS0izCxp6SwQtqe133FkKJzSC4FU5A4XBLtyNlPB24z/X0srRgsZcV2iH7YCC2HUwVUGl4Boy86QDtQ6zM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772551480; c=relaxed/simple;
-	bh=ezIjOizC8RAT3P5qFtSymLpkn/IPMdhnAN93KcIKjO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VxwCw/V3L3WL5bP8x+KQaF700SmT4y7MJTavj/5RcFrRo/lLgwf3wj51xRiEfteu6P9seotXxJIPQty+fb/dizFl70RwAz9Hrq93VUQ6NJ+KEMLU+XjJUt5lpc/Mcupq0KZtOl3fkmCRKw/1+cQ9QYTcY0YKangN3OsvXFaLkQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g2lKT83P; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1772555409; c=relaxed/simple;
+	bh=yL/xSbcaZwuUOu6gkmddpGfg1RNwAiNrd9YKVZaYdN4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iA21YfKT7j6yb2ptsSOvEN7trQo+qPavhqlHVB5qA3otboVWGsVPSNZo3DoCd5ic6SGipXBYoPUv/8hc7BzaprcWaC6Zd24zZwYdQ9UcmCM30C8VqygEBnNUPwjNTRPQrsfT5TxsMsuAjJxZ5q85VBRUryaPPv572tzQA0nDgrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=uh8WI7mG; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g2lKT83P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772551479; x=1804087479;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ezIjOizC8RAT3P5qFtSymLpkn/IPMdhnAN93KcIKjO8=;
-  b=g2lKT83PCVDXdE/G1YlMMkkjIjJTI4SKcJyJYnBsc1VNm2dXL/VN/Zk2
-   lrtowPuerKv5i+UF0PagWc/6uFJI8RDqIvm/tpvufhahuM+lO19DD+dBb
-   mFmyzRT3FLICbmEjps6kb0cwYV25JZ6Qn7x+l+2uoxChuI4aHwUkZCM/L
-   aE6Sv7c+fy64QjAF+AoLXCO8cdp3op88BgyjeKPxsVFlBb47cZLPHcLbf
-   JcqIQ5LfPNqRcHMGuBiWouQi8/+7NQZH1NNprgM6KFLDFoJhYpKadpe0B
-   iN+GqlYZ5JMmw55z9MEj1DYNHexlddlah8iEr9bX2zqyjd6a3IiWTeBtF
-   A==;
-X-CSE-ConnectionGUID: xGE6+JdZQXyak+SI9MqpCQ==
-X-CSE-MsgGUID: m5NTSEq/SXy6lmorKSnlTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73505063"
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="73505063"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:24:38 -0800
-X-CSE-ConnectionGUID: 8EDCa8VCSnelhlWlG1ZesA==
-X-CSE-MsgGUID: 5BGaqm/dSdmyx5dAFD99/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="217269195"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.32])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 07:24:25 -0800
-Date: Tue, 3 Mar 2026 17:24:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v5 07/28] driver core: fw_devlink: Introduce
- fw_devlink_set_device()
-Message-ID: <aab9Js6nRaeH3pn9@ashevche-desk.local>
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
- <20260227135428.783983-8-herve.codina@bootlin.com>
- <20260302122336.00006bd8@huawei.com>
- <20260303151210.6e8462b8@bootlin.com>
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="uh8WI7mG"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1772555398;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0jEzN+ZbuPiy2X43ltzsOH8xhPtq3QTkuVtmlsPHM9I=;
+	b=uh8WI7mG1o6aI/mjEFxWTylQAQHFKTSjYQ96O6N7o74Oo8x/T7qAALbKOm4Fn3qWQ3z3EA
+	dfVXtmnGsKr6kRsxyhIL07ctqko0sq8dVVW3l6sIZctd0O0VuTEU6WYjKPngwiGvhQfJyc
+	ijO04WpWy1+rMVySo93grJ5edJATcvU8CzFTfZyhog53+knXMm4/buPCNyPZ6Nh2T1DvyM
+	28h89o48kWGG7Mffxn07dXfFk/4jmawRLZ5NLEkNRxDdZzXkoz3mD8bvv9XDJUEuZSdFPa
+	qXa73xU0NW8g8Ot8i/88+gvV2IJSco/Sujdvnq7X0T4QzjyAsjkCzv3NwbemfQ==
+Date: Tue, 03 Mar 2026 17:29:27 +0100
+Subject: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point() for
+ each op
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303151210.6e8462b8@bootlin.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+To: Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Han Xu <han.xu@nxp.com>
+Cc: Eberhard Stoll <eberhard.stoll@kontron.de>, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, imx@lists.linux.dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=789;
+ i=frieder.schrempf@kontron.de; h=from:subject:message-id;
+ bh=LwNCpqII5STHerKJFGgtW51z+gveZ5FdSLV1sPEkDaQ=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T1P05w+c/q8f1HEL/z9e/rvzbY+NyWeGXpP/6wQ/3
+ bgsUW7ZUcrCIMbFICumyCLFb/Ha1izWR/5YdRTMHFYmkCEMXJwCMJHcOIb/HoluqStOqzE3b4qy
+ +nDB45R3uEPozJs2q9cbHDpUoaH4lOGvoJtN7NmJf64wx6T4qTF9z9qRK2F/MEEjoXFpik9k1EU
+ WAA==
+X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
+ fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-On Tue, Mar 03, 2026 at 03:12:10PM +0100, Herve Codina wrote:
-> On Mon, 2 Mar 2026 12:23:36 +0000
-> Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
-> > On Fri, 27 Feb 2026 14:54:04 +0100
-> > Herve Codina <herve.codina@bootlin.com> wrote:
-> > 
-> > > Setting fwnode->dev is specific to fw_devlink.
-> > > 
-> > > In order to avoid having a direct 'fwnode->dev = dev;' in several
-> > > place in the kernel, introduce fw_devlink_set_device() helper to perform
-> > > this operation.
-> > >   
-> > I don't mind the helper, but the description could do with a little
-> > detail on why.  Is it just to avoid visibility of internal details, or
-> > is there a stronger reason?
-> 
-> I think the idea was to avoid visibility.
-> 
-> It cames from feedback received on my first iteration
->   https://lore.kernel.org/all/20250408145139.293c79a2@bootlin.com/
-> 
-> I found the idea relevant and so I did the patch.
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-Yes, the idea is to hide the fwnode devlink related stuff behind the getters
-and setters. Ideally, everything in fwnode_handle related to devlinks should
-be marked as __private.
+With clock rates changing on a per-op basis, we need to make sure
+that we meet the RX sampling point delay constraint of the underlying
+SPI chip.
+
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ drivers/spi/spi-mem.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index a09371a075d2e..6b8bee7d6f5e3 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -589,6 +589,8 @@ void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op)
+ {
+ 	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
+ 		op->max_freq = mem->spi->max_speed_hz;
++
++	op->max_freq = spi_set_rx_sampling_point(mem->spi, op->max_freq);
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_adjust_op_freq);
+ 
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.53.0
 

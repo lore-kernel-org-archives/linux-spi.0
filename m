@@ -1,21 +1,21 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C24F7971;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1332B4F796D;
 	Tue,  3 Mar 2026 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555832; cv=none; b=P8EiOA+RHPJqsZ5UHvLfF1Mh3lT1KdzQWGa7A+epfBQHZdSjNU6QACVdi6iukFYHT9O821FenUqj4KjNBhNKmH+BWPpwZPDkyfGj9nFjsQr4j30ZTZvxT4gaFn5SkFgj7JVYExlf+A2lGBNFqOICFqAy7uahkDgkovVRyh2/XJk=
+	t=1772555833; cv=none; b=Mb6C5PfRmP1X57CuUrxYXSIzX5bkYcbQksn+7MnQKFUgKLA8B6KkCRwj8k+LygIdihuHd4p6jvuBjqXkSfTquUs6BgEyo9rdPrZtyqz47r69x5V0IgoEEdxrSf/JcrXBnA8sw7FVDkY0tZ3ebovYL++PZKGWhBOZOSm5FjmEJyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772555832; c=relaxed/simple;
-	bh=3dxAEGYFIqAqyI+u7aPXsRpynh8jkjO6QlWcUu1EGzA=;
+	s=arc-20240116; t=1772555833; c=relaxed/simple;
+	bh=u/mj6enjZVhQTntyAzChX6YGjn8caASUn1GrbNlmsRY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CKJnyof6WbfWwWqVVhkAHl4JVlj79nsCzedrXrKJEZ1e8dFt7tDvEFEqtCP9MSWCxbH4ZxWws4yxtAgFdTDaN2kUpniLYRvSx/dpax+iy1hEwp5Ld3X4gG9UgvOYO9qYdjhMUhum0fb2GhtS1RwR+qdarQcc0NrfJLF5+4sf3wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=GtRhefMy; arc=none smtp.client-ip=116.203.77.234
+	 In-Reply-To:To:Cc; b=OWUb6LhI9LxAxbzUVPMLvxDbm4pRSQlDoKhFWkHBwYB5XlyOGdHlWI9UtEircwXuWpd8ptaFbpvNjsLBT7peWGPWfy/LHHKRgcDDNNM0nirfQXSLtaqtR4Ga95BVme48d9TQ+ZJXCtccfomdlEaFlxwxxW+z77sL60jhY0RkL3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=Pr5md9R9; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="GtRhefMy"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="Pr5md9R9"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	t=1772555397;
@@ -23,14 +23,14 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2+skttbdyrA8Trf6AOYgOJnf/VuyEM70c9jGuM4BuX0=;
-	b=GtRhefMyG/e2ydTOzhaZXw17Gur7lx/Fkm3pW3bz8MjGnlbMC7hACU2+3bysb15phxT/9p
-	Azdb25sbCcYaVt+IurGic7rF7Z+ZO+jNEDmq4QVIssHtCiGhUW7PLvRLf6Q4CZfshVbNeP
-	VEEbwm9kkatEU5/4PBow1jXnC3xxbrutzJeiRTDjqRCCS/bgdsls/iTyGGM2Sks74e275K
-	NFB691brGGJHNkhPFN60eze4tixdZPcbR84wBVbWU8W5o/hZ65sneHg54NAmWXZlJkzeso
-	zyJuTrfEMBkv5uaSypDL9EV8B+wq5B5fGIA4M1ImhUaInH3J4+ZHe1tZWs7Z5Q==
-Date: Tue, 03 Mar 2026 17:29:24 +0100
-Subject: [PATCH RFC 3/7] mtd: spinand: winbond: Add RX sampling delay
+	bh=n4V326l6j+UN/QUc6C6H7//EMmn8uimk+2KtK4YoNFE=;
+	b=Pr5md9R9pPJa1rWI6bCDoa9yT9iO6BLgDEl6wtN5sjCoQ7OLktynCTxAUCIktNmBpgNor7
+	i+TCleRAdZL7RW2bTcXgs8AHpK5Kd3oW19FtJ4XfqzNXL/dSkPAMjRs6oeH4Lrp6FTqK1a
+	dyBlxXfF8bfrPff26q+heIpY+BBhTmzq8kWv9tNyA6EsikQa7FlRZVuHCjpyB+ZqPWVH+S
+	te15eCRncYbcisgU9Byr4U6t4auQo/m2SNpEyE3InOQGdeEcO1gHwEueU4Da/aNPpXTQ+6
+	4lFO+jYgGDqJ+euBpvKEQ6TyscBA2p6XFY6QQumVoMlPo3YYUtl5pD/Ld9EYXQ==
+Date: Tue, 03 Mar 2026 17:29:25 +0100
+Subject: [PATCH RFC 4/7] mtd: spinand: toshiba: Add RX sampling delay
  values
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-3-9326bbc492d6@kontron.de>
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-4-9326bbc492d6@kontron.de>
 References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
 In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
 To: Mark Brown <broonie@kernel.org>, 
@@ -53,172 +53,198 @@ Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
  Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mtd@lists.infradead.org, imx@lists.linux.dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7571;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8132;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=1iBTtmlkMnqLSBaVo3JQ8I4m6OqPWy8zqvU+a/8yVOk=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9NjlS+XJllv2L+kKMag/btF7VrLZTVzm9xzjx15k
- HZmXtyHjlIWBjEuBlkxRRYpfovXtmaxPvLHqqNg5rAygQxh4OIUgIk0JzEyHMnoWfN0gefloDMP
- teLMZKd5qH+qcpSS6xFn4gs/tLbWipHhhYD/Hnd/GYkqzeTDLZyzl6yZeSEpqyxR44e8rbV+YCY
- /AA==
+ bh=YS9m+8/VwL0xEzMaavaBPStGEta14s9GR3DcIa/S2T4=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9NcLc6rK749PvtjZb989Iwvn8Qi3Is/T3yWyniqQ
+ qiYR0Wto5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCJxNYwMJ9dMmLr/6m49VjXb
+ h5senFN68zVswfXjGXPeuhU53zzq38TwP/fnogvK9kcnRx5w1RARLT3k/5WzVu3nmuDLvInmjm+
+ u8wEA
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-From: Eberhard Stoll <eberhard.stoll@kontron.de>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
 Add tCLQV (Clock Low to Output Valid) parameter from datasheets
-for Winbond SPI NAND chips. This allows to let the drivers
+for Toshiba/Kioxia SPI NAND chips. This allows to let the drivers
 properly handle high sampling delays at high clock speeds.
 
-Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
- drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ drivers/mtd/nand/spi/toshiba.c | 48 +++++++++++++++++++++++++++---------------
+ 1 file changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 6dfd0dcc8ee7a..ec223e6d695a7 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -458,7 +458,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
+diff --git a/drivers/mtd/nand/spi/toshiba.c b/drivers/mtd/nand/spi/toshiba.c
+index ef649162ee680..7679f3acbae07 100644
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -118,7 +118,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
  					      &update_cache_variants),
  		     0,
--		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
-+		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
 +		     SPINAND_RX_SAMPLING_DELAY(6)),
- 	/* 1G-bit densities */
- 	SPINAND_INFO("W25N01GV", /* 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x21),
-@@ -468,7 +469,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
+ 	/* 3.3V 2Gb (1st generation) */
+ 	SPINAND_INFO("TC58CVG1S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xCB),
+@@ -129,7 +130,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
  					      &update_cache_variants),
  		     0,
--		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
-+		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W25N01GW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x21),
- 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
-@@ -477,7 +479,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
-+		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
 +		     SPINAND_RX_SAMPLING_DELAY(8)),
- 	SPINAND_INFO("W25N01JW", /* high-speed 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbc, 0x21),
- 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
-@@ -487,7 +490,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 	/* 3.3V 4Gb (1st generation) */
+ 	SPINAND_INFO("TC58CVG2S0HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xCD),
+@@ -140,7 +142,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
  					      &update_cache_variants),
  		     0,
- 		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
--		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
-+		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg),
-+		     SPINAND_RX_SAMPLING_DELAY(6)),
- 	SPINAND_INFO("W25N01KV", /* 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
- 		     NAND_MEMORG(1, 2048, 96, 64, 1024, 20, 1, 1, 1),
-@@ -496,7 +500,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25n01kv_ooblayout, w25n02kv_ecc_get_status)),
-+		     SPINAND_ECCINFO(&w25n01kv_ooblayout, w25n02kv_ecc_get_status),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W35N01JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdc, 0x21),
- 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 1, 1),
-@@ -507,7 +512,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     0,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
--		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
-+		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
-+		     SPINAND_RX_SAMPLING_DELAY(6)),
- 	SPINAND_INFO("W35N02JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x22),
- 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 2, 1),
-@@ -518,7 +524,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     0,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
--		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
-+		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
-+		     SPINAND_RX_SAMPLING_DELAY(6)),
- 	SPINAND_INFO("W35N04JW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x23),
- 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 4, 1),
-@@ -529,7 +536,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     0,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
- 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
--		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
-+		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
-+		     SPINAND_RX_SAMPLING_DELAY(6)),
- 	/* 2G-bit densities */
- 	SPINAND_INFO("W25M02GV", /* 2x1G-bit 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xab, 0x21),
-@@ -541,7 +549,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 		     0,
- 		     SPINAND_INFO_VENDOR_OPS(&winbond_w25_ops),
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
--		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
-+		     SPINAND_SELECT_TARGET(w25m02gv_select_target),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W25N02JW", /* high-speed 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbf, 0x22),
- 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 2, 1),
-@@ -551,7 +560,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &update_cache_variants),
- 		     0,
- 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
--		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
-+		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W25N02KV", /* 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x22),
- 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-@@ -560,7 +570,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
-+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W25N02KW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x22),
- 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-@@ -569,7 +580,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
-+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
 +		     SPINAND_RX_SAMPLING_DELAY(8)),
- 	/* 4G-bit densities */
- 	SPINAND_INFO("W25N04KV", /* 3.3V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x23),
-@@ -579,7 +591,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
+ 	/* 1.8V 1Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG0S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xB2),
+@@ -151,7 +154,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
  					      &update_cache_variants),
  		     0,
--		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
-+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
-+		     SPINAND_RX_SAMPLING_DELAY(7)),
- 	SPINAND_INFO("W25N04KW", /* 1.8V */
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x23),
- 		     NAND_MEMORG(1, 2048, 128, 64, 4096, 40, 1, 1, 1),
-@@ -588,7 +601,8 @@ static const struct spinand_info winbond_spinand_table[] = {
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     0,
--		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
-+		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
 +		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 1.8V 2Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG1S3HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xBB),
+@@ -162,7 +166,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 1.8V 4Gb (1st generation) */
+ 	SPINAND_INFO("TC58CYG2S0HRAIG",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xBD),
+@@ -173,7 +178,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 
+ 	/*
+ 	 * 2nd generation serial nand has HOLD_D which is equivalent to
+@@ -189,7 +195,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 2Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CVG1S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xEB),
+@@ -200,7 +207,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 4Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CVG2S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xED),
+@@ -211,7 +219,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 3.3V 8Gb (2nd generation) */
+ 	SPINAND_INFO("TH58CVG3S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xE4),
+@@ -222,7 +231,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 1Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG0S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD2),
+@@ -233,7 +243,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 2Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG1S3HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xDB),
+@@ -244,7 +255,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 4Gb (2nd generation) */
+ 	SPINAND_INFO("TC58CYG2S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xDD),
+@@ -255,7 +267,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 8Gb (2nd generation) */
+ 	SPINAND_INFO("TH58CYG3S0HRAIJ",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xD4),
+@@ -266,7 +279,8 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1.8V 1Gb (1st generation) */
+ 	SPINAND_INFO("TC58NYG0S3HBAI4",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xA1),
+@@ -277,7 +291,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
+ 	/* 1.8V 4Gb (1st generation) */
+ 	SPINAND_INFO("TH58NYG2S3HBAI4",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xAC),
+@@ -288,7 +302,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
+ 	/* 1.8V 8Gb (1st generation) */
+ 	SPINAND_INFO("TH58NYG3S0HBAI6",
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xA3),
+@@ -299,7 +313,7 @@ static const struct spinand_info toshiba_spinand_table[] = {
+ 					      &update_cache_x4_variants),
+ 		     SPINAND_HAS_QE_BIT,
+ 		     SPINAND_ECCINFO(&tx58cxgxsxraix_ooblayout,
+-				     tx58cxgxsxraix_ecc_get_status)),
++				     tx58cxgxsxraix_ecc_get_status),
  };
  
- static int winbond_spinand_init(struct spinand_device *spinand)
+ static const struct spinand_manufacturer_ops toshiba_spinand_manuf_ops = {
 
 -- 
 2.53.0

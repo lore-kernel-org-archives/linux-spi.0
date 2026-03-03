@@ -1,35 +1,37 @@
 Received: from mail.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F355D480979;
-	Tue,  3 Mar 2026 16:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293C24F7971;
+	Tue,  3 Mar 2026 16:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555832; cv=none; b=eU+PT+5C9oqF4zaR3Uy+rfNNrD8/bp4LTsGQFVVlh89MfR58zqL8LOTAp+CaPnoVn99Cgh6GGDAfkK4hSAWVX7xxMqBC9sbjEzsrrs01bUxVeS2I6ivDw0q45o9sFWutXdpO2GkOdoOw7VnOKrDhk6lwTFtXNogjUNBez2SxR3c=
+	t=1772555832; cv=none; b=P8EiOA+RHPJqsZ5UHvLfF1Mh3lT1KdzQWGa7A+epfBQHZdSjNU6QACVdi6iukFYHT9O821FenUqj4KjNBhNKmH+BWPpwZPDkyfGj9nFjsQr4j30ZTZvxT4gaFn5SkFgj7JVYExlf+A2lGBNFqOICFqAy7uahkDgkovVRyh2/XJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772555832; c=relaxed/simple;
-	bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HMw0rpmwj5t3NZoyrEBb/M0RwVdC/FZs26FCEPQfMCclBRuxUcRqcNhEjHLVfcblAQP7+KwuS0HsPOFxB7Zsez1Z3HrvW3AGheGRmH6YT6XEhuLFs9AiSSPEZLs4Eax7otSjsHeuxtTlzpAkz9tWnQn4CEIhNjjIr5p4dPCVBug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=J8D4EZ6B; arc=none smtp.client-ip=116.203.77.234
+	bh=3dxAEGYFIqAqyI+u7aPXsRpynh8jkjO6QlWcUu1EGzA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=CKJnyof6WbfWwWqVVhkAHl4JVlj79nsCzedrXrKJEZ1e8dFt7tDvEFEqtCP9MSWCxbH4ZxWws4yxtAgFdTDaN2kUpniLYRvSx/dpax+iy1hEwp5Ld3X4gG9UgvOYO9qYdjhMUhum0fb2GhtS1RwR+qdarQcc0NrfJLF5+4sf3wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=GtRhefMy; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="J8D4EZ6B"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="GtRhefMy"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1772555396;
+	t=1772555397;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=yyUqdUEqhJyknAkJorlxRX2q3YtJbxtKcmib+aj9K9c=;
-	b=J8D4EZ6By/kAutGk56KiJkwZi/LnkHlnmvP+lm+lDnFc2ftdzb0zwc4GZrv331+baXn3/c
-	1pqto+EsmpSk0m370KTbHaMuq0LkKMDSZKapc3bJGBw569vQWyJtLKo9YPS9BLELBkCuWy
-	ZZV8HwVNXxvzskFmDUK4brWuq9S39MrZgeQHz154g19UN7lxIAF7fLzT0MMIGGShavPDkG
-	ku1yuGUhHrRHX5g96dQPGt7P6cJrjjYHpbal8e/xvV7s69x8QK15pPF07yTbB/RngcJB/D
-	9wCyFMLEcuTNX4p4ruWuEv49q3tVw/NqxcrdqFEMbsqp30uUQoJuYOgULH0iNA==
-Subject: [PATCH RFC 0/7] Support for SPI RX Sampling Delay Compensation
-Date: Tue, 03 Mar 2026 17:29:21 +0100
-Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2+skttbdyrA8Trf6AOYgOJnf/VuyEM70c9jGuM4BuX0=;
+	b=GtRhefMyG/e2ydTOzhaZXw17Gur7lx/Fkm3pW3bz8MjGnlbMC7hACU2+3bysb15phxT/9p
+	Azdb25sbCcYaVt+IurGic7rF7Z+ZO+jNEDmq4QVIssHtCiGhUW7PLvRLf6Q4CZfshVbNeP
+	VEEbwm9kkatEU5/4PBow1jXnC3xxbrutzJeiRTDjqRCCS/bgdsls/iTyGGM2Sks74e275K
+	NFB691brGGJHNkhPFN60eze4tixdZPcbR84wBVbWU8W5o/hZ65sneHg54NAmWXZlJkzeso
+	zyJuTrfEMBkv5uaSypDL9EV8B+wq5B5fGIA4M1ImhUaInH3J4+ZHe1tZWs7Z5Q==
+Date: Tue, 03 Mar 2026 17:29:24 +0100
+Subject: [PATCH RFC 3/7] mtd: spinand: winbond: Add RX sampling delay
+ values
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -38,10 +40,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQqDMAwA0F+RnA20BoV5HfgBXmWHotEFalcbG
- B3iv694fJd3gnISVuirExJ/ReUTCmxdwfx2YWOUpRga03SGDOGqHg+Ngimjuj16CRsu7N0PH5a
- IWztzawhKEBOvku98gnF4wuu6/ojaOc5xAAAA
-X-Change-ID: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
+Message-Id: <20260303-fsl-qspi-rx-sampling-delay-v1-3-9326bbc492d6@kontron.de>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
 To: Mark Brown <broonie@kernel.org>, 
  Miquel Raynal <miquel.raynal@bootlin.com>, 
  Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
@@ -52,103 +53,173 @@ Cc: Eberhard Stoll <eberhard.stoll@kontron.de>,
  Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mtd@lists.infradead.org, imx@lists.linux.dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4091;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7571;
  i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=xstZJYw1Dm12lkQHmBUHQZrWV6Wnaa8/ASUkX26e8tU=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9O1gN/bt7Cx5ixWrG/lFfpxen7CC8GVy6s+sJ74Y
- BkXPdm0o5SFQYyLQVZMkUWK3+K1rVmsj/yx6iiYOaxMIEMYuDgFYCIz5jEyrC9s2bq4tH1BIFP4
- rRjRk3fZQ0RuNK9pt7r/e1/Obun+mYwMmz62L+gX9mOUC64ut6hj2PSFS6Fks3J2aW9DwY/Lbh6
- 8AA==
+ bh=1iBTtmlkMnqLSBaVo3JQ8I4m6OqPWy8zqvU+a/8yVOk=;
+ b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIXM5T9NjlS+XJllv2L+kKMag/btF7VrLZTVzm9xzjx15k
+ HZmXtyHjlIWBjEuBlkxRRYpfovXtmaxPvLHqqNg5rAygQxh4OIUgIk0JzEyHMnoWfN0gefloDMP
+ teLMZKd5qH+qcpSS6xFn4gs/tLbWipHhhYD/Hnd/GYkqzeTDLZyzl6yZeSEpqyxR44e8rbV+YCY
+ /AA==
 X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
  fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
 
-This is an attempt to continue the efforts started in [1] to support
-SPI devices that are clocked at high speeds and have a significant
-delay in the RX path.
+From: Eberhard Stoll <eberhard.stoll@kontron.de>
 
-This aims to handle the known RX path delay introduced by the SPI
-device itself and specified in the datasheet as maximum tCLQV value
-by:
+Add tCLQV (Clock Low to Output Valid) parameter from datasheets
+for Winbond SPI NAND chips. This allows to let the drivers
+properly handle high sampling delays at high clock speeds.
 
-1. Applying compensation if the controller driver supports it
-2. Reducing the clock frequency to a safe value if the controller
-   driver's compensation capabilities are exceeded.
-
-I'm sending this as a new RFC as quite a few things have changed
-compared to [1] and a lot of time has passed. Also I'm quite unsure
-if the layering for this implementation is correct and wether
-it conflicts or overlaps with the PHY tuning series [2] in some
-way.
-
-This approach adds a new attribute for SPI devices to track the
-RX sampling delay requirements of the device and extends the SPI
-NAND drivers for Toshiba and Winbond devices to specify the values
-from the datasheets (patch 1-4).
-
-Then it adds calls to a new handler in the SPI controller drivers to
-the core and provides a generic helper to calculate the delay cycles
-(patch 5-6).
-
-At last it implements the new handler for the FSL QSPI driver in
-order to compensate the RX sampling delay, or as a fallback reduce
-the clock rate to a value that is safe to use without violating the
-RX sampling delay requirement of the device (patch 7).
-
-This does not yet implement the fallback to reduce the clock rate
-for controllers that don't have compensation capabilities or that
-have not yet implemented the compensation handler. Therefore this
-series doesn't cause changes in behavior for controllers other than
-FSL QSPI.
-
-Please note that some drivers such as spi-stm32-qspi.c currently
-enable a RX sampling delay of one half clock cycle unconditionally
-for all devices. While this works in general, as all currently known
-devices are in range of sampling the data at this point, when testing
-this approach with FSL QSPI it failed at low clock rates (e.g.
-100 kHz). This is probably due to the sampling happening too late,
-when the data line is alredy changing its state as the delay is
-negligible compared to the (rather long) clock period in this case.
-
-This series was tested on i.MX6UL with the following SPI NAND devices:
-
-* Toshiba/Kioxia TC58CVG2S0HRAIJ (133 MHz, tCLQV max. 6 ns)
-* Winbond W25M02GV (104 MHz, tCLQV max. 7 ns)
-* Winbond W25N02KV (104 MHz, tCLQV max. 7 ns)
-
-The former two chips seem to work fine even without this patchset,
-probably due to the actual RX sampling delay being lower than the
-maximum value specified in the datasheet. The latter chip fails
-reading at 104 MHz without RX sampling delay compensation.
-
-[1] https://lore.kernel.org/all/20231026152316.2729575-1-estl@gmx.net/
-[2] https://patchwork.ozlabs.org/project/linux-mtd/cover/20260113141617.1905039-1-s-k6@ti.com/
-
+Signed-off-by: Eberhard Stoll <eberhard.stoll@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 ---
-Eberhard Stoll (4):
-      spi: Add 'rx_sampling_delay_ns' parameter for clock to RX delay
-      mtd: spinand: Add support for clock to RX delay setting
-      mtd: spinand: winbond: Add RX sampling delay values
-      spi: spi-fsl-qspi: Add support for RX data sampling point adjustment
+ drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++++++++++++++++--------------
+ 1 file changed, 28 insertions(+), 14 deletions(-)
 
-Frieder Schrempf (3):
-      mtd: spinand: toshiba: Add RX sampling delay values
-      spi: Add RX sampling point adjustment
-      spi: spi-mem: Call spi_set_rx_sampling_point() for each op
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 6dfd0dcc8ee7a..ec223e6d695a7 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -458,7 +458,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 1G-bit densities */
+ 	SPINAND_INFO("W25N01GV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x21),
+@@ -468,7 +469,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W25N01GW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x21),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+@@ -477,7 +479,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL)),
++		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	SPINAND_INFO("W25N01JW", /* high-speed 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbc, 0x21),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 1, 1),
+@@ -487,7 +490,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&w25n01jw_ooblayout, NULL),
+-		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
++		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	SPINAND_INFO("W25N01KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xae, 0x21),
+ 		     NAND_MEMORG(1, 2048, 96, 64, 1024, 20, 1, 1, 1),
+@@ -496,7 +500,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n01kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n01kv_ooblayout, w25n02kv_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W35N01JW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdc, 0x21),
+ 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 1, 1),
+@@ -507,7 +512,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     0,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
+ 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
+-		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
++		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	SPINAND_INFO("W35N02JW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x22),
+ 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 2, 1),
+@@ -518,7 +524,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     0,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
+ 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
+-		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
++		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	SPINAND_INFO("W35N04JW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xdf, 0x23),
+ 		     NAND_MEMORG(1, 4096, 128, 64, 512, 10, 1, 4, 1),
+@@ -529,7 +536,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     0,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
+ 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
+-		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
++		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg),
++		     SPINAND_RX_SAMPLING_DELAY(6)),
+ 	/* 2G-bit densities */
+ 	SPINAND_INFO("W25M02GV", /* 2x1G-bit 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xab, 0x21),
+@@ -541,7 +549,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     0,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w25_ops),
+ 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
+-		     SPINAND_SELECT_TARGET(w25m02gv_select_target)),
++		     SPINAND_SELECT_TARGET(w25m02gv_select_target),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W25N02JW", /* high-speed 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xbf, 0x22),
+ 		     NAND_MEMORG(1, 2048, 64, 64, 1024, 20, 1, 2, 1),
+@@ -551,7 +560,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &update_cache_variants),
+ 		     0,
+ 		     SPINAND_ECCINFO(&w25m02gv_ooblayout, NULL),
+-		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg)),
++		     SPINAND_CONFIGURE_CHIP(w25n0xjw_hs_cfg),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W25N02KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x22),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+@@ -560,7 +570,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W25N02KW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x22),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+@@ -569,7 +580,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ 	/* 4G-bit densities */
+ 	SPINAND_INFO("W25N04KV", /* 3.3V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xaa, 0x23),
+@@ -579,7 +591,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(7)),
+ 	SPINAND_INFO("W25N04KW", /* 1.8V */
+ 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0xba, 0x23),
+ 		     NAND_MEMORG(1, 2048, 128, 64, 4096, 40, 1, 1, 1),
+@@ -588,7 +601,8 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 					      &write_cache_variants,
+ 					      &update_cache_variants),
+ 		     0,
+-		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status)),
++		     SPINAND_ECCINFO(&w25n02kv_ooblayout, w25n02kv_ecc_get_status),
++		     SPINAND_RX_SAMPLING_DELAY(8)),
+ };
+ 
+ static int winbond_spinand_init(struct spinand_device *spinand)
 
- drivers/mtd/nand/spi/core.c    |  1 +
- drivers/mtd/nand/spi/toshiba.c | 48 ++++++++++++++++---------
- drivers/mtd/nand/spi/winbond.c | 42 ++++++++++++++--------
- drivers/spi/spi-fsl-qspi.c     | 80 ++++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-mem.c          |  2 ++
- drivers/spi/spi.c              | 73 ++++++++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h    |  5 +++
- include/linux/spi/spi.h        | 11 ++++++
- 8 files changed, 231 insertions(+), 31 deletions(-)
----
-base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-change-id: 20260303-fsl-qspi-rx-sampling-delay-9133e51ce503
-
-Best regards,
 -- 
-Frieder Schrempf <frieder.schrempf@kontron.de>
+2.53.0
 

@@ -1,134 +1,145 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC0D1DF256
-	for <linux-spi@vger.kernel.org>; Wed,  4 Mar 2026 12:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB0A1E5B68;
+	Wed,  4 Mar 2026 12:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772628474; cv=none; b=qjH/lGe2G3qDMcA/3OoxgpKiPN6rhlugLbDOhv1xCNqi1xTws0iV6m4lSXxxN/LbIzzAMOLB8t0ec2QoZxuGUG5X+w9UhMYt58FJfJf2X070ywHvMnyJ/nF/l1QTiPxV/r49wFq6e2GVFJE/t4gDJWlFVFRTSkwZgqTVCvNvEDU=
+	t=1772628492; cv=none; b=T7JMNVU4O0qVbH+hZ9kFF873vfg8YZHC4ZBEWq2YPicKQaZk0MYgQI1Xu9yCJZ7zCZOeEGN3McuAhahB0GJAZZeVlgD4Jj6eLOmdMH26fbP9oytkinlRcacgCm/9JCq+b13GJQjwrplm80iMsoli8ySrDEy3HHqTXMb0hY9SYgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772628474; c=relaxed/simple;
-	bh=I4G5BmiSRVnXsdaiwq2zZZ8p2iMKTYQ+oZxjqJ+xHa8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YUv8w16LZGmbe1F3NWOQYuW8foU7jPNSJH+aIYNC7wcS6JPF04mHZjle5tUrm4K9ld+PWsURUKYxXl2MqV8EtqOfEADByYOLplcCffxbGeur+kjqPRtoCtSu9q5rXwBTWkBKV9EO+Zy89oRB+iaulIlzE1u3RPBn2JjQawmUcDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNWGGQuA; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772628492; c=relaxed/simple;
+	bh=ZqxKumdP+DNsxXXslcjyg5g3aU/VfpjJU2mvzXFg4hE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dy1SJW5kA264gHFLvdfEHrvMBsl4yppJR340k91AqnYcVap1dAXWhIak3rsYMddSlzDUlzdjHUKDt14MzyMWl2c1p8kyFSgZjnr41TdafcLhb+dJL9a3MHPgoUnqPjKaB8EdGKMbnUREn8kMH2aJr1CMLZvQ/zCztAIVI4/mbeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=U5NhpZCn; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNWGGQuA"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-358d80f60ccso3144434a91.3
-        for <linux-spi@vger.kernel.org>; Wed, 04 Mar 2026 04:47:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772628473; x=1773233273; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pXrbV0EXDox64nj0mJqXgXN5XJkcx97TQuO0RxgmpN8=;
-        b=jNWGGQuA1FJiQ+3+qQa92d8rjiw1l+jgJ4XqzTGN9OsoFw2CN8s6ox/LazUdGyeuTJ
-         ZabBnXZoQmg3hVbmzLX4GH2buEgL+wKre1+VIc2zptPsTOjOq/WdhULAF2hrnK6RJ2UD
-         JL9FWs7WXxKbneXQYJwttRLKmMy9QnDEp73AwFiBV2tmEHx0G35EpWWgevi0uNG9Woj8
-         FVwE/iEivO2KNRfkHib1kxR9MojreWMrHcx4L1I6374jFB0mACqB1z3wvoroOonVBjMM
-         s8CwLlppdrchtmwWAqUSqM33x5t+z+Sv6sStcrqGvSTdmugkaTsdLA/LxF7BoVA8/XG1
-         E5lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772628473; x=1773233273;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pXrbV0EXDox64nj0mJqXgXN5XJkcx97TQuO0RxgmpN8=;
-        b=XO0tGk22e6qPi9nlv7eA/Dp1B4szep02xSR4RgEnc/NCLU/UyP3tQ5zlYL1+oznptI
-         UdD77yyjL/o1cd3r3wV231wBb8bxFiehYaXVeh5C3/zKpyU4CyjeJPhobw2iYiGDn0Y0
-         kEVVk+NSho0w3TCyBoD4RLUmrNCEY1X0b1wNnmEXy+aQNhH+43gPxZ+R13u24eGbjF+M
-         7HFm6w+MbRf5j6gUkQM+DCLk6ExCrXTa+m7Mt7/psjsqwYaIVWpeGVRNOMs+VZFqobxz
-         Q5RFMvtZshIr/qgGEdkAEsIKKoPhFWLazheNE+ll+RFLeB7KoytOD5vOZDJbfbJaPyF8
-         dvPg==
-X-Gm-Message-State: AOJu0YxEnkUvvuoIFpIwXYcdZ4XSviwkJ5ABIbSn1Afdq3FWzuj+65c+
-	IEQ19mmQJ/QAr6mFnJGf63WZhEva41Pfwkl578jxZdrGiVuK1zTWSpHz
-X-Gm-Gg: ATEYQzwM5sk6pXLdSMFV11CbD8oUUVBkGiGxMHzt4eNYWWkpdnrJavG6DOvQcCe/Fu4
-	sPywzfaRagXIf+6hQoafaFVBCBUwVtJw6G0VjwFLd59aluOfFV6EWVpw+0BsRtpvmg9PO6FJ03r
-	+iBauo9/e2kdtqYGsp3ov/2PJ4F1VGoG9bRGhkNlNn3sQ0vEKZ0mgP0mKlYVFrV/UU/OLUs4Ozb
-	YAHaMNhAFhTeB5B51P9sDz5rp8Aq0m3n9rqMivds134DyszUyiEKWIfbFENFEbKPN4/FWWTC/RG
-	wqGD2q8ABbEOYSbXWFOW1hhjJkAl/9NYRraI/vPNcEefi5WONZp2u1XbO+IqAFROGI/O1Gy3ho4
-	tXrjG/6DVuuBcJ2/VJ2DACWxYgF2L9Nb8NUlvau/9FGjh0Xu9lH0d6WyjvZp9txc3nbqGhJyOym
-	olw3d1OqOpQKtpNWgDcLY5ruF/BzD1Gr0docFF
-X-Received: by 2002:a17:90b:5630:b0:34c:fe7e:84fe with SMTP id 98e67ed59e1d1-359a6a6433fmr1633791a91.28.1772628472939;
-        Wed, 04 Mar 2026 04:47:52 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:c48d:9c04:d04e:c13a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c4c0625sm5000450a91.13.2026.03.04.04.47.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 04:47:52 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Wed, 04 Mar 2026 20:47:21 +0800
-Subject: [PATCH v2 3/3] spi: fsl-qspi: Use reinit_completion() for repeated
- operations
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="U5NhpZCn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YsXg2qDZ+ZjnQnj/eNfiIgU3SLUyimkRR7bx5y5oB4w=; b=U5NhpZCn934XojSyVFL1nj1S/W
+	2SwNvFKnKgDXQSzq6m51IMvSlZX+ne4bEh4E01vZtYgpLee5ixUDi8qEHb4R97fy2f4d2ReNAtXFl
+	2Myy/FM9yjpIi4F5MCjGcXNEoyN2WDgyc7039UPkredIXwYhk1etVNasHnwai+IB6c4ro8VQTd24m
+	dlAjACdWYLWNFfSy+VdBxKivYhNczBRSHxMPHao0CvqQusPNjCznq/i4rksmb+FqExqEhxu3s5ruZ
+	HIicL8wW2i2h8YBWX0vQS1a34HK9wPAQFs79TabY9VaeD6tSKbvzAdMAvOXPYXBWy7iVhi1jbb7PJ
+	KVa5pNSQ==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vxle2-00000004Z41-2FWR;
+	Wed, 04 Mar 2026 12:48:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 07040300666; Wed, 04 Mar 2026 13:48:06 +0100 (CET)
+Date: Wed, 4 Mar 2026 13:48:05 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna Schumaker <anna@kernel.org>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chao Yu <chao@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Linus Walleij <linusw@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 0/8] mm: globalize rest_of_page() macro
+Message-ID: <20260304124805.GB2277644@noisy.programming.kicks-ass.net>
+References: <20260304012717.201797-1-ynorov@nvidia.com>
+ <20260303182845.250bb2de@kernel.org>
+ <f8d86743-6231-414d-a5e8-65e867123fea@kernel.dk>
+ <aaedwFwXh9QXS3Ju@google.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-spi-nxp-v2-3-cd7d7726a27e@gmail.com>
-References: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
-In-Reply-To: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
-To: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
- Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>, 
- Boris Brezillon <bbrezillon@kernel.org>, 
- Frieder Schrempf <frieder.schrempf@kontron.de>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772628443; l=1465;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=I4G5BmiSRVnXsdaiwq2zZZ8p2iMKTYQ+oZxjqJ+xHa8=;
- b=cJacyzDOyUDA2/PYdVXT/xwkdqZtYGL92jgOWdz/UHbRz0p1Vee9zlUm0eB+D2wf9urWa55bX
- Dl/LD5HOTwmDNyfe1VujlN6zBz8uoMBAbxcOfG4c99bRs7+xjA+zsa2
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaedwFwXh9QXS3Ju@google.com>
 
-The driver currently calls init_completion() during every spi_mem_op.
-Tchnically it may work, but it's not the recommended pattern.
+On Tue, Mar 03, 2026 at 06:49:36PM -0800, Sean Christopherson wrote:
+> On Tue, Mar 03, 2026, Jens Axboe wrote:
+> > On 3/3/26 7:28 PM, Jakub Kicinski wrote:
+> > > On Tue,  3 Mar 2026 20:27:08 -0500 Yury Norov wrote:
+> > >> The net/9p networking driver has a handy macro to calculate the
+> > >> amount of bytes from a given pointer to the end of page. Move it
+> > >> to core/mm, and apply tree-wide. No functional changes intended.
+> > >>
+> > >> This series was originally introduced as a single patch #07/12 in:
+> > >>
+> > >> https://lore.kernel.org/all/20260219181407.290201-1-ynorov@nvidia.com/
+> > >>
+> > >> Split it for better granularity and submit separately.
+> > > 
+> > > I don't get what the motivation is here. Another helper developers
+> > > and readers of the code will need to know about just to replace 
+> > > obvious and easy to comprehend math.
+> > 
+> > I fully agree, I had the same thought reading this.
+> 
+> +1 from KVM-land.
 
-According to the kernel documentation: Calling init_completion() on
-the same completion object twice is most likely a bug as it
-re-initializes the queue to an empty queue and enqueued tasks could
-get "lost" - use reinit_completion() in that case, but be aware of
-other races.
+Right, this. I hate these pointless helpers that obscure perfectly
+sensible and obvious code -- and for me that includes things like
+rounddown() and DIV_ROUND_UP().
 
-So moves the initial initialization to probe function and uses
-reinit_completion() for subsequent operations.
-
-Fixes: 84d043185dbe ("spi: Add a driver for the Freescale/NXP QuadSPI controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-fsl-qspi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-fsl-qspi.c b/drivers/spi/spi-fsl-qspi.c
-index a223b4bc6e63..57358851029b 100644
---- a/drivers/spi/spi-fsl-qspi.c
-+++ b/drivers/spi/spi-fsl-qspi.c
-@@ -633,7 +633,7 @@ static int fsl_qspi_do_op(struct fsl_qspi *q, const struct spi_mem_op *op)
- 	void __iomem *base = q->iobase;
- 	int err = 0;
- 
--	init_completion(&q->c);
-+	reinit_completion(&q->c);
- 
- 	/*
- 	 * Always start the sequence at the same index since we update
-@@ -965,6 +965,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		return ret;
- 
-+	init_completion(&q->c);
- 	ret = devm_request_irq(dev, ret,
- 			fsl_qspi_irq_handler, 0, pdev->name, q);
- 	if (ret) {
-
--- 
-2.43.0
-
+It just makes the code harder to read.

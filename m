@@ -1,140 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C143A4F25;
-	Wed,  4 Mar 2026 11:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772622631; cv=none; b=aZtHzLQpweEt+kh840pINpvzSE+nKnyhcJoOhxo+6R1N7Yw31nPRCynTzOGkPzNmmZJZRYKnQIgwHQsOfoZhbxhnjQv+KKhyj4y/jh6dN9In27WClQl1bg1Awldy4VcrF1MHVjT7ozDtmmCBbM9Y/+sJ3o7kDLmOcFQ97kz4LrY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772622631; c=relaxed/simple;
-	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mOwlADegZNWRm0dv1I4xMg8DdkrRZbC46fUuw/aLiMnSDMLdPP8/cLmuhRe9Vw96PeB0QSAmg+sms6aFjjxTSOFAZjwpi9F7k594FFvGPhAoOOuNfBGe+Fx1beGv1+HxaEnI950JuPzQtAN/CqdL+7qCjmLB4Lo2GwEd3jnJrWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtxESzLT; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F9118FDBD
+	for <linux-spi@vger.kernel.org>; Wed,  4 Mar 2026 12:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772628056; cv=pass; b=oKX61l9FZJWw3ygnqRXTb/Zv8/1LFzMvbMo2k4lzgckSW7zuZqsmrtwLMZiTLbPTK5hm6skG9Z2GcsFB+FQ4FGGuJQJQHMjqLNQdWvaSm5LZJKav2Vjlh48uUmLxWuUNiOClpkAe8LYtvXVsIchWBRVDejFVvuDAOjYcr6pTc4w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772628056; c=relaxed/simple;
+	bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X/7KAWdAVF/r8e5/hUD/ymBCx2qKXTMCbRMlZ+Hnj28vpMYLqeIuc/DBPmxDP/+7aOxsB8afZGZARVeEW/CVu2Ty/hnI/xbr09JSO3Km2dNETmu5DzHj2R12wsTjhWnZCOKU9hFavnN3i5qvC8Wc60UVQVWF6DzIQ4q556KRylU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BWy3MsYk; arc=pass smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtxESzLT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64839C19423;
-	Wed,  4 Mar 2026 11:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772622630;
-	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KtxESzLTRevMkC0RMT3EArDVMk2FhTkCghz7l84S/Sl/uRFMKbvYjBO6WKTPLXZG2
-	 hDd+jtXTkQDCPlsNqrRNNBIS69FSEG3kyCqhhWldcKaA7lgmXmclpmibkTkxFDGx05
-	 L1mWc9QOtddQl0a6TEhhiss3l8edtqg3iz0dJiofY0wVH+4yeCbYY1MzoD2oPWrjdR
-	 EnDw2NjEjLAGM8p4Zym2vHqMmJuBYJNQQtn7Ix1yH9YiSler1bu8kJQI/BP/hsAWKP
-	 HCA4EbtIlLqW3pzKVaXGzu0CeEXA+pozdgRHL7CTE7jTeamnzsicmpnlaw5LC2gU+C
-	 eQD2mqeeLI41g==
-Date: Wed, 4 Mar 2026 11:10:13 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Anna Schumaker <anna@kernel.org>,
-	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Aswin Karuvally <aswin@linux.ibm.com>,
-	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chao Yu <chao@kernel.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Airlie <airlied@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Dongsheng Yang <dongsheng.yang@linux.dev>,
-	Eric Dumazet <edumazet@google.com>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Jaroslav Kysela <perex@perex.cz>, Jens Axboe <axboe@kernel.dk>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Linus Walleij <linusw@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 5/8] spi: use rest_of_page() macro where appropriate
-Message-ID: <e731e101-bf06-44d7-ac91-0756c5b8bbc8@sirena.org.uk>
-References: <20260304012717.201797-1-ynorov@nvidia.com>
- <20260304012717.201797-6-ynorov@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BWy3MsYk"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ae5423b02aso25040025ad.1
+        for <linux-spi@vger.kernel.org>; Wed, 04 Mar 2026 04:40:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772628055; cv=none;
+        d=google.com; s=arc-20240605;
+        b=flQGjRWgRIV5zu6l14z/X4K2CikPV3rssgBrLoSIOciyvOPSgerh1Nh3Xd+0jLs7AD
+         3yLTL8fkmdol/7mIr5z9wo/xAjt8u/VmuBTKG57o9HeNLtZqZ1TS7sn5fR7TO6yohAnB
+         FR0YXKZArdGiTgM4G3+OKWXg/KhsGfny+Iq23IOh5dmf3jJaXag/WUyWsUNM/nO3bGmZ
+         i8anp1UpEv4pQx64Cal/QV2UURko2qwvc1x03Ms+Yyh+w6mDIN0hN4SiN04CWPKxD9yU
+         9ZkCbEtTiFIktaqxN5v1N46zZpJE0QXZLXUTJQF/JAg81FrqFpKR5EZhbUS4TG5XbGHW
+         UqtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
+        fh=GB9mur+Vp/v/vYMjvaiKdS1tviS05Q53OHnOwR+r/3g=;
+        b=Ix9yI0YdR6jQFWWUqMvyvhGxipDVx3yYblfM2zZmQmsZKrO75T6OLsKy1gFfhiamGp
+         oS1mXH9HUxjeWABYb1O96imV4oQTg4s3BB/PIi66faAVUJfya+TaTFWBNadVVdgdPV9O
+         xs/p7gNfTqJy40hs3QaTHe4fEIhhuAh2iuyL4/PHBkq/6Yob7kMjo9V6f/FQa/Bjx6RN
+         3JtZxQ31ztfRYWdifQmHmlgSGe3XsJTcCE63EkpVskbd0Eer+DvEnXQfiby+TrjMyxCz
+         XIdZhdZ2gVZD4pLhcM2mVINuZiOrTGi7eU4cDAh5IIRPYaaBU2aWK99nKEDWA9ReV0yp
+         KP5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772628055; x=1773232855; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
+        b=BWy3MsYkfspdphXTwX6bQoT6yOLLGeaw8icLCUR9lJpQxfWx0joQIfrk6C3bj4l8E2
+         WArJJKI5utT8AOEL1H7SLY9/8t1xXQCSY4NqMLkZ/MVBUbPNouvCXWGWGiOsp82iBKxp
+         uzViR9WtmziZ3prarRb9TPvcTsOaO+Gs9VoE0VaV0ocgW6Ex2yv2zAWaVw7xNi38C345
+         236IV68IFf4NpFkEzlK/eVK6rByQQvUU3BWdUM2e0hXPFs0sp/Wq4fX8chE+xOxDIQ09
+         /ldbPPhs7aRP9i2lk+8nlAS3v0HaU7+9og3JbWAkCBGcooREOwEqjgPNxw5UCZTJAHcj
+         6ZBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772628055; x=1773232855;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2/WAS/0pzPoroLAGh2PLMGdVZ54HV/z1BsjWlFv4VDw=;
+        b=P4ukeImrB1Yu8bUowfuBCemAwNpcZk8SdhSVwCsE9YRMVez/tFUqNNVoKZr84en7n4
+         60xnP30colby1cQSf2aJFS0lE8QU5pm4BrS0guML2l2pHSqcLG52WDSH3W7GV1zFNM8e
+         POQM9ck07LjMQ7asyCy+UUE4cZQXlcCVyqx8qde1I7LzrwGP3PSIbWrUCulGXyyV92qo
+         pJfhxDfxXwciORK34SNQH90vx7bzEQMi/bVaPB2l0r5Bw28RL4NdzO2xPiU5GCvUJVon
+         vRW+j8Lerm/ZZ9YRu3J2JdTPw2jIlev0YTJinq8Nt7Xq0NREy5RTuDbO4vT9LwdCHt9l
+         oxVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVQt9sAJaA7bCG4KM9DbqzAFKhxhelS+A6KsADKhKEeih+No0Caoq5nkAiM/SdfCKP1Lgoe2jaLj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrIol1EqYMXHEQj8KmqZQFVJLht77UoH+X4tKmSRZGAM7gAmxU
+	WhpTgUgEB57Xh72hx/nDGefskyhNaKpXpGKwmJ+XqtDivgV6kTgW6VcaMZjGo3c47CanrJWSHV4
+	/8pvopKD960lsUJFr9Dq++NFIejPjo14=
+X-Gm-Gg: ATEYQzyV0sppT5cUUlJ69zYFCO0vLNQpKy2FvutPd85Xe11ULjghnPILvK1fR2DYBwa
+	cH/naNJmVwTqOlE/QOvTOMWwnCejTDzMGThKpmiI4N1co2g6EfXqEFsJ26R1F1sJncvKBqoqS/Q
+	LvV9QhoornOz205AGSr/rX12BCgHrezdJwMQKEumANXp67mxaNdC5Alc8uyXMMEnF/rc/yX2jL0
+	TxNunXaitE9031KdMK3RjbU4xJtHGcrR9JRVa27kuowVDUIYa8nOBv1hpGrBPSINnxHlBiQMRK0
+	cZ36T0WnOCpY5BgvdIU=
+X-Received: by 2002:a17:902:ce8e:b0:2ae:4a4e:1e25 with SMTP id
+ d9443c01a7336-2ae6aa649dcmr19233535ad.25.1772628054893; Wed, 04 Mar 2026
+ 04:40:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="MuL6cN1k4g/DbVd2"
-Content-Disposition: inline
-In-Reply-To: <20260304012717.201797-6-ynorov@nvidia.com>
-X-Cookie: Take it easy, we're in a hurry.
-
-
---MuL6cN1k4g/DbVd2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260303-spi-nxp-v1-1-b78570db28ce@gmail.com> <DU4PR04MB12275755ABE75588FF75BF65C907CA@DU4PR04MB12275.eurprd04.prod.outlook.com>
+In-Reply-To: <DU4PR04MB12275755ABE75588FF75BF65C907CA@DU4PR04MB12275.eurprd04.prod.outlook.com>
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Wed, 4 Mar 2026 20:40:43 +0800
+X-Gm-Features: AaiRm519fMWevOrxACIjx0JfN7SzPZoQPXxnqjFQdS-XzmfkrSmDhriX6o8zRcM
+Message-ID: <CAN4SLj2P3qzN-N4dsjzo-0bF9NPLG_-Ad5YWkL97rOrGo-gW5w@mail.gmail.com>
+Subject: Re: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated operations
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, 
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 03, 2026 at 08:27:13PM -0500, Yury Norov wrote:
-> Switch SPI code to using the macro. No functional changes intended.
->=20
+On Wed, Mar 4, 2026 at 3:23=E2=80=AFPM Bough Chen <haibo.chen@nxp.com> wrot=
+e:
+>
+> > -----Original Message-----
+> > From: Felix Gu <ustc.gu@gmail.com>
+> > Sent: 2026=E5=B9=B43=E6=9C=883=E6=97=A5 21:21
+> > To: Han Xu <han.xu@nxp.com>; Bough Chen <haibo.chen@nxp.com>; Mark
+> > Brown <broonie@kernel.org>; Frank Li <frank.li@nxp.com>
+> > Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-kernel@vger.k=
+ernel.org;
+> > Felix Gu <ustc.gu@gmail.com>
+> > Subject: [PATCH] spi: nxp-xspi: Use reinit_completion() for repeated op=
+erations
+> >
+> > The driver currently calls init_completion() during every spi_mem_op.
+> > Tchnically it may work, but it's not the recommended pattern.
+> >
+> > According to the kernel documentation: Calling init_completion() on the=
+ same
+> > completion object twice is most likely a bug as it re-initializes the q=
+ueue to an
+> > empty queue and enqueued tasks could get "lost" - use reinit_completion=
+() in
+> > that case, but be aware of other races.
+> >
+> > So moves the initial initialization to probe function and uses
+> > reinit_completion() for subsequent perations.
+>
+> Hi Felix,
+>
+> Good catch, I think spi-nxp-fspi.c and spi-fsl-qspi.c also have the same =
+issue, can you help fix?
+>
+> As Frank's comment, there is one typo: perations -> operations, please fi=
+x it and feel free to add my tag in next version.
+> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+>
+> Regards
+> Haibo Chen
+Hi Bough and Frank,
+Thanks for review, I will send V2 for this.
 
-Acked-by: Mark Brown <broonie@kernel.org>
-
---MuL6cN1k4g/DbVd2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmoExQACgkQJNaLcl1U
-h9CfwQf+I/XcN+BTYZLFcHPKTZ6Gt21+q3GLOzdkgChqzxOybf6b2qD+OHDN55Te
-HvnosWIFzWzrD0ZP4eNe1TE0j1djIs+y2hdX6fElOOuJijsn21UWvVZXuuGdENdA
-tPZDWrSzxJ8sU12FFYyBJDxsnWysekc1llPy00e37sfeetOZOLaYg/1jnttOl6oU
-a3i0DGlMSVCN0pIYah+1R5Vbe35l4DlrcyOoswdwqqqEAzPLr0ysycWbbVmelm0M
-U/y3gvpx6ZZBlMMio/3WWZfu3pM/Kwc8nzHkdzsstdqSIsRHEWru1MF5W4E+IcwO
-Id51vK66wgwDVauWcfBpUUDez8/oEA==
-=1DSJ
------END PGP SIGNATURE-----
-
---MuL6cN1k4g/DbVd2--
+Best regards,
+Felix

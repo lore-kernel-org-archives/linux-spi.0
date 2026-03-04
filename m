@@ -1,125 +1,140 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD08B388369
-	for <linux-spi@vger.kernel.org>; Wed,  4 Mar 2026 07:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C143A4F25;
+	Wed,  4 Mar 2026 11:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772610555; cv=none; b=Q/v4uO9FySZ6+WJhUvfVkPXcXhJFSr4A+QGcTNt5OuM8JIRnbiGOEV4gak2zmZ39atfjsCbY1VnM9NKs5cdmKGZCjfIJQDx19s+M3PPmtKTRt+2YFndC8f9MOGiS5XqoUvwiBQkX3sUpgMFicuODIbyyfp7QQnxZVDX5kO/iIhQ=
+	t=1772622631; cv=none; b=aZtHzLQpweEt+kh840pINpvzSE+nKnyhcJoOhxo+6R1N7Yw31nPRCynTzOGkPzNmmZJZRYKnQIgwHQsOfoZhbxhnjQv+KKhyj4y/jh6dN9In27WClQl1bg1Awldy4VcrF1MHVjT7ozDtmmCBbM9Y/+sJ3o7kDLmOcFQ97kz4LrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772610555; c=relaxed/simple;
-	bh=MSzaNuALHMLFQAjDLF5TT6OSC0jpCyqT7K/HEkrOBsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ic1MBMq/jkwT14euBygRC7rrWPNdL0fQy5OfuKUdtXtQK5atXi//Jbapflb5fHtD0ozJmJCLhrnojTuWmiovf8qgvPH05x8Vm3YLY3vX9Q90/ThqtKDUEdKO87Y6D0NaKyffFKW8xjhUnc1+0XbLgsZ8rhL9rn7fyGPxIINYtYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HDwQheJF; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772622631; c=relaxed/simple;
+	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mOwlADegZNWRm0dv1I4xMg8DdkrRZbC46fUuw/aLiMnSDMLdPP8/cLmuhRe9Vw96PeB0QSAmg+sms6aFjjxTSOFAZjwpi9F7k594FFvGPhAoOOuNfBGe+Fx1beGv1+HxaEnI950JuPzQtAN/CqdL+7qCjmLB4Lo2GwEd3jnJrWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KtxESzLT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HDwQheJF"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439bcec8613so1895197f8f.3
-        for <linux-spi@vger.kernel.org>; Tue, 03 Mar 2026 23:49:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772610550; x=1773215350; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8h7+v5F+lsgUU3PHsknJQhpHG6M7boIKCxK5QGbGk00=;
-        b=HDwQheJF6/36wkOKUHaEFS81N3LrGhAjj9sazJCRLPf2E6W0Aa5f6aDUi752msYH0m
-         v/TLti4hTZ6aOkGhi4r6OgtJNZf0edzfsfNJyl6iHmMgaa5SbCHpHdkz3tNwnAg/qB52
-         TdN2WqhoPgfqW0QWndyGNa1wRhs5SSZgzDp2ucXqqNB3cON4ztEKQTfz7q/xjyoXq9UB
-         emS1/j5jMb827HisCcfOju/7M7Crs+AIg3pWfkxITb4Lday5W9309jfELQYnJ4FEiS3D
-         rKKPXthLyAcOXn8ghs58dCGvLSZH/8LztV7i4JfjAEmJgwKaJ6tc95Bzi2HxJwn2j2av
-         pWpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772610550; x=1773215350;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8h7+v5F+lsgUU3PHsknJQhpHG6M7boIKCxK5QGbGk00=;
-        b=AFQiuEl0wVkYztHu2CB3l+q+AJUFnbVCDoXUpB/wScn6HjOvQIkcttFxPGIx51XCpX
-         kj1iqQeWd60tKqzv3j1yD1oyeL5yPyW6y6s5Tc74SYJvKTZo2IIJnCPQznUiIy9qhMXe
-         FtYwrXVwbmYrSut0uIiXT/0g047VilDyLTM3y7AtnoDpxYEV2/tvkQLUvAGIWjUUzbge
-         /irg56DEF8htdM+yTaBW+2FDOoo+gGue0TOdg50hbJw/GUkUER1s4MjcnxciEPtG+YUs
-         5yOSpHn9i37dVhETEMw0+XEXtfzzTpDSxeZl6s6BojrYtW4KUz+sRAP05ofA8hJH5Jvk
-         Vk5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVY4gmXVceAI9mGei1m6+8dPtXAXh0t+OMu4gv2qTWotzx7fKFXTphrUEhqZtxMQ3VxahT3ngyLrYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3kKvPXgwdPwYuafAo092lzlLnF366bzQ3f+02id5uQ/oSZAfo
-	pnM2yVBzC7b5KZ7CmD9z539+iG8JoYa+BMJ6rqcs9UD5avmMt5dumyjz
-X-Gm-Gg: ATEYQzwcERqrAZ+8Qltq8/QmHbgFtqu2DNLT8rVy7mqpt3pQnncfWNoQ7wPHi1qeddw
-	Nxi7ABNlrfUgDCJ48P9vK+/n7zEpegjxxgD4yg2eD/O85ZH9HNHquHhpZ9hf/FJdAhzpLowjcWj
-	/olRLwMsLM2q6rKPSyMkBJCHw3YTAK4mNpj3CBX4Xm7gRIy6rzn1Ks4BrDRPq2nhBNPXGbQ0mLm
-	PjfuCVag2EmCTkwNt1vXkc4voSDs0FvtroQoF5lTjvY0/O4h/RC8HCNV9Zlada7nCs1ETiASwAa
-	GcY7px7ZG1KhSsizmwgEeczOoSVRe0zLuU4iYnrHYM5AMdOMe5AKFdUy33sQC3LV5DtS/MVvxcq
-	SBDs2IE1GZKTylJNFWh+yDQTHJH/3AqGxicMzOsjm0pjyvSoQowiD8oM76BpdOEyMOB9crbcQKv
-	fBrLC1tFQY7sOAbKdUZOq4se1AIX3eqG0=
-X-Received: by 2002:a5d:6851:0:b0:439:ca85:8848 with SMTP id ffacd0b85a97d-439ca858923mr501859f8f.16.1772610550030;
-        Tue, 03 Mar 2026 23:49:10 -0800 (PST)
-Received: from biju.lan ([2a00:23c4:a758:8a01:de3f:f927:40ff:12a6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c75a25dsm39957572f8f.21.2026.03.03.23.49.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:49:09 -0800 (PST)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	linux-spi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH 2/2] spi: rzv2h-rspi: Add support for RZ/G3L (R9A08G046)
-Date: Wed,  4 Mar 2026 07:49:02 +0000
-Message-ID: <20260304074907.9697-3-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260304074907.9697-1-biju.das.jz@bp.renesas.com>
-References: <20260304074907.9697-1-biju.das.jz@bp.renesas.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KtxESzLT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64839C19423;
+	Wed,  4 Mar 2026 11:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772622630;
+	bh=NqNfQqjBGfmbAJo/aZtHMPo7003kq0HNHUa3oLLM9rE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KtxESzLTRevMkC0RMT3EArDVMk2FhTkCghz7l84S/Sl/uRFMKbvYjBO6WKTPLXZG2
+	 hDd+jtXTkQDCPlsNqrRNNBIS69FSEG3kyCqhhWldcKaA7lgmXmclpmibkTkxFDGx05
+	 L1mWc9QOtddQl0a6TEhhiss3l8edtqg3iz0dJiofY0wVH+4yeCbYY1MzoD2oPWrjdR
+	 EnDw2NjEjLAGM8p4Zym2vHqMmJuBYJNQQtn7Ix1yH9YiSler1bu8kJQI/BP/hsAWKP
+	 HCA4EbtIlLqW3pzKVaXGzu0CeEXA+pozdgRHL7CTE7jTeamnzsicmpnlaw5LC2gU+C
+	 eQD2mqeeLI41g==
+Date: Wed, 4 Mar 2026 11:10:13 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Theodore Ts'o <tytso@mit.edu>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna Schumaker <anna@kernel.org>,
+	Anton Yakovlev <anton.yakovlev@opensynergy.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Aswin Karuvally <aswin@linux.ibm.com>,
+	Borislav Petkov <bp@alien8.de>, Carlos Maiolino <cem@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chao Yu <chao@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Dongsheng Yang <dongsheng.yang@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ingo Molnar <mingo@redhat.com>, Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Jaroslav Kysela <perex@perex.cz>, Jens Axboe <axboe@kernel.dk>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Linus Walleij <linusw@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, Paul Walmsley <pjw@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Simona Vetter <simona@ffwll.ch>, Takashi Iwai <tiwai@suse.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>, Zheng Gu <cengku@gmail.com>,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-block@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	dm-devel@lists.linux.dev, netdev@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+	v9fs@lists.linux.dev, virtualization@lists.linux.dev,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 5/8] spi: use rest_of_page() macro where appropriate
+Message-ID: <e731e101-bf06-44d7-ac91-0756c5b8bbc8@sirena.org.uk>
+References: <20260304012717.201797-1-ynorov@nvidia.com>
+ <20260304012717.201797-6-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MuL6cN1k4g/DbVd2"
+Content-Disposition: inline
+In-Reply-To: <20260304012717.201797-6-ynorov@nvidia.com>
+X-Cookie: Take it easy, we're in a hurry.
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
 
-Add support for RZ/G3L RSPI. The RZ/G3L variant requires only
-2 clocks (pclk + tclk), unlike the RZ/V2H which needs 3.
+--MuL6cN1k4g/DbVd2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
- drivers/spi/spi-rzv2h-rspi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Tue, Mar 03, 2026 at 08:27:13PM -0500, Yury Norov wrote:
+> Switch SPI code to using the macro. No functional changes intended.
+>=20
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 23f0e92ae208..38ee09e389c9 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -811,6 +811,13 @@ static const struct rzv2h_rspi_info rzv2h_info = {
- 	.num_clks = 3,
- };
- 
-+static const struct rzv2h_rspi_info rzg3l_info = {
-+	.find_tclk_rate = rzv2h_rspi_find_rate_fixed,
-+	.tclk_name = "tclk",
-+	.fifo_size = 16,
-+	.num_clks = 2,
-+};
-+
- static const struct rzv2h_rspi_info rzt2h_info = {
- 	.find_tclk_rate = rzv2h_rspi_find_rate_variable,
- 	.find_pclk_rate = rzv2h_rspi_find_rate_fixed,
-@@ -820,6 +827,7 @@ static const struct rzv2h_rspi_info rzt2h_info = {
- };
- 
- static const struct of_device_id rzv2h_rspi_match[] = {
-+	{ .compatible = "renesas,r9a08g046-rspi", &rzg3l_info },
- 	{ .compatible = "renesas,r9a09g057-rspi", &rzv2h_info },
- 	{ .compatible = "renesas,r9a09g077-rspi", &rzt2h_info },
- 	{ /* sentinel */ }
--- 
-2.43.0
+Acked-by: Mark Brown <broonie@kernel.org>
 
+--MuL6cN1k4g/DbVd2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmoExQACgkQJNaLcl1U
+h9CfwQf+I/XcN+BTYZLFcHPKTZ6Gt21+q3GLOzdkgChqzxOybf6b2qD+OHDN55Te
+HvnosWIFzWzrD0ZP4eNe1TE0j1djIs+y2hdX6fElOOuJijsn21UWvVZXuuGdENdA
+tPZDWrSzxJ8sU12FFYyBJDxsnWysekc1llPy00e37sfeetOZOLaYg/1jnttOl6oU
+a3i0DGlMSVCN0pIYah+1R5Vbe35l4DlrcyOoswdwqqqEAzPLr0ysycWbbVmelm0M
+U/y3gvpx6ZZBlMMio/3WWZfu3pM/Kwc8nzHkdzsstdqSIsRHEWru1MF5W4E+IcwO
+Id51vK66wgwDVauWcfBpUUDez8/oEA==
+=1DSJ
+-----END PGP SIGNATURE-----
+
+--MuL6cN1k4g/DbVd2--

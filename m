@@ -1,87 +1,105 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1744D2F747A
-	for <linux-spi@vger.kernel.org>; Thu,  5 Mar 2026 19:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D531D282F11;
+	Thu,  5 Mar 2026 22:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772737561; cv=none; b=QNh16gzqKBBcdOnXGHNc3GZuJbFrdGQjrCjlGMsu9lcIUFLpDRqaS+l63G8PGkZsI/n0dGoVRC8S+AtddneivFYkjLNjFvpxLWQ4X+nC2pCGbJ8fa9qLUm9i/FrPYJRF+3ihNJ5FUK8fWpWb2kKiOURaO4lJB1HUGOOHKjp5/hs=
+	t=1772748868; cv=none; b=bICqhmiG8resHn/3pZViUbWYPr+/J1guC2KXVgN3qcvTGadhC8DFZxdAE4ve6J3+op1j1cgc9hFnWcjGqyoh3u3k/y1Uyu2QmKVQVA6c926BRSmBCjkUWxMDdDCRHvzZ5dyALevc/EgpOrt61Gxv0zvSvgDdYACpi/ouhhMB5do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772737561; c=relaxed/simple;
-	bh=PoZhjt3uQ53hew80uagXcdFkYbFd19jlnF8DaZB6F8M=;
+	s=arc-20240116; t=1772748868; c=relaxed/simple;
+	bh=w9TjvGcKwJt8/ARHSEztsvDfZLAllFDGqn1q3g9Xd0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IplWqCtkvSjE9SZi6mUsKc69jcrRFojOeZf6hlx7TzdA+aCPNjNB4SDs7hAG1QAQgFlM+3y9Eo5qi+pja9NhcPusJHoDdaVM4vjer7CdgI/roknJ/ZU7peQaXv4JPieAZwR2zojKJznTHYcIv5AUvSnVXtMKsSABlNz+lYnLbKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=EcVy/bhL; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nhl0qlwnOELBESPBeLaUkbb6jonE65K+e5nh+8BxgoBCRiizmzFCSVY/L5MeOgpYSMpvLateBRVz5twJrLtNQLgiUU7ThBU3j4KVImknqJgqmiSaRQU6KvU95GyE5IkzxzQqHyiSUcObb7nSKX2C5qm7kQAiV0yU0hOX8Swkhj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8LIfBUN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="EcVy/bhL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=PoZh
-	jt3uQ53hew80uagXcdFkYbFd19jlnF8DaZB6F8M=; b=EcVy/bhLK2eBwgExPMJ3
-	1rbX27cmhWjc3rjGsjxF5dRov7fUUDlpNwgi9pngCGqJG5rKUq+J2C7p8l7IBa1n
-	wAix8At/9KEPwT6JYyilYtj2K1NUn9Fe6iLpr+kWvIBDV6i4EuUfuN6Gi8/pycHE
-	4vAwn6qRsLPrTXt0uIMwoQrYoe5V27+qZp4xfOoSuWX7fTIVZ0s80690f6qBtlHQ
-	aykgx+mmEG8fCS2XDtombi/a32mAZGwytbmjpk8rnYFTpCSaNVHVEBXYPEPH+iwl
-	s9fnwEBco4uAbN1zFVh8Nns87WyRd1m0ExV4cifwtmIFoWYBRJWERmLoh5POBXHa
-	bA==
-Received: (qmail 1304730 invoked from network); 5 Mar 2026 20:05:54 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Mar 2026 20:05:54 +0100
-X-UD-Smtp-Session: l3s3148p1@FM0uoEtMkO4ujns5
-Date: Thu, 5 Mar 2026 20:05:53 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, driver-core@lists.linux.dev,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Konrad Dybcio <konradybcio@kernel.org>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Waiman Long <longman@redhat.com>,
-	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v3 00/15] hwspinlock: move device alloc into core and
- refactor includes
-Message-ID: <aanUEX9jq0Y9iNIe@shikoro>
-References: <20260303192600.7224-17-wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8LIfBUN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BF0C116C6;
+	Thu,  5 Mar 2026 22:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772748868;
+	bh=w9TjvGcKwJt8/ARHSEztsvDfZLAllFDGqn1q3g9Xd0A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y8LIfBUNHfNlibr/LWwaJVc97mlmmpka3bZTOtYcYLewV61glSEY65BPIi89kVjse
+	 aktYtnm8J8wbRpWVH6pQlpHVXyj57XCUBqn7uvSMs6oRTgTNTEvdFG0o9X9MBJBhjf
+	 H3JgF4iPNGjmU2x/kKAIQXB9q0kj6ByzShtSMNLC4Rqj5BLZ3irmhbFoN6G4hooGRS
+	 h6nqq8pycmsEKZ6ywT14M4laQkXWpZ0o2NgkM4lRgC0WWAGNIbIZ5cJxu5NsZobzph
+	 LbbNyAhJ73PMLjO3VyswNRriU/pQS+AxYFPQx8gb3YuZe8C6mHDs/SvfpDV9obO1wj
+	 ffjs0SNWQKyIQ==
+Date: Thu, 5 Mar 2026 22:14:22 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, Han Xu <han.xu@nxp.com>,
+	Eberhard Stoll <eberhard.stoll@kontron.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH RFC 1/7] spi: Add 'rx_sampling_delay_ns' parameter for
+ clock to RX delay
+Message-ID: <c5c762db-86f5-4ca8-b2da-a7e0b73b8f27@sirena.org.uk>
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-1-9326bbc492d6@kontron.de>
+ <20260303210131.2966214-19-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="b1uVgqjIjfycBOiD"
+Content-Disposition: inline
+In-Reply-To: <20260303210131.2966214-19-Frank.Li@nxp.com>
+X-Cookie: Onward through the fog.
+
+
+--b1uVgqjIjfycBOiD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303192600.7224-17-wsa+renesas@sang-engineering.com>
 
+On Tue, Mar 03, 2026 at 04:01:14PM -0500, Frank Li wrote:
+> From: Frank Li (AI-BOT) <frank.li@nxp.com>
 
-I need to fix __iomem annotations. Sorry, I didn't know I have to update
-to top-of-tree sparse which is now required for v7.0-rc1...
+Please add a human step before sending these reviews.
 
+> > + * @rx_sampling_delay_ns: spi clk to spi rx data delay
+
+> Comment is too terse. Expand to clarify the unit and purpose:
+> "clock-to-RX-data delay in nanoseconds; see tCLQV in device datasheets"
+
+I'm not sure restating the unit in the comment as well as the name is
+super useful...
+
+> > +	/* Transfer characteristics */
+> > +	u32			rx_sampling_delay_ns; /* clk to rx data delay */
+
+> The inline comment duplicates the field name. Remove it or expand the
+> block comment above to explain when/how drivers should use this field.
+> Also: is u32 the right type? Consider if negative values or larger
+> ranges are possible, or if this should be `struct spi_delay` for
+> consistency with cs_setup, cs_hold, cs_inactive above.
+
+...especially given the contradictory feedback here, and the comment
+about a negative delay is obviously not appropriate.  I'm not convinced
+anyone needs an explanation of what to do with the field either.
+
+--b1uVgqjIjfycBOiD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmqAD4ACgkQJNaLcl1U
+h9AnSgf/aUqkU1qA+35Es3IE9yRd/Tn35gI+K3cIbQwk2tKVgQ3JnJBxhVyqE0XV
+RCO3HXJTjOF/G+5OUcCyE5O0fPnHv/83+tKYdO6gteK2qDmL4FQOoxEo7uyhck0A
+wCEyYwQ+mA30wOE8S5d4npnhB9K1aIw1gMGFjvUfWUc2gHysTVL7mJOM7oo24dCB
+kbfSgaXXcavf8j8YQQLMzjuJ6xAAYf0Rkgw6cNr7nuxI3bUK6jJPY1z9FpcKj6rT
+MNcV9et+BaiGEpoVKmx8sGybIkhD9XNHhFHJLlNLi9LKhsVhzzmGQ/n3mUmpaeE1
+8B5vtuGNBMwiL4K5tZ/FoXEL0RhlaA==
+=yiHr
+-----END PGP SIGNATURE-----
+
+--b1uVgqjIjfycBOiD--

@@ -1,123 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658343750DC;
-	Thu,  5 Mar 2026 08:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425AE39C62F
+	for <linux-spi@vger.kernel.org>; Thu,  5 Mar 2026 12:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772700524; cv=none; b=u5L3iKg+UO+vIMQ+FTB43Z3G2Ry86PPcJRgLTz3d8n8gBQBi7BPp4FldzaP3UNi7+KoBdQGpIYyOrnlNer3zfVEXbcCpquOxTXRmXnS+Oy5ZeT7fu7/UHw9XPN6b3cfFsnk1BEbxEmkPBWRW6pkYY5CYZST9L88btQyMgm+A7SE=
+	t=1772713367; cv=none; b=fhifuBIT0/P2Pe51jnuZa10Z+b8gtDAyRgEgvmkpcBgRG4vbfqsShTnnCSAenv7JTz9oTWzBY5Otmi1E/5z/hxiufWxQgj3/v0XoUAXpWjSPFgL4b8o97/fr+gzeYzUw8bqv1Ou9d8Y2ypLPKIbtFL41z5f3+om/YkFOsVHU++U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772700524; c=relaxed/simple;
-	bh=EcZ+a9tuBlJ/zUrhdvgSANCnV474o7Fae3JBtqeQnck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YC20YAv0DlgZ1AaJHHbJOKqAraHakM0T56MK6wf5jCxg0VCnlNBKd4KXOIzMbkSVPOybbaxxfkreHti7jIOC4G0jPXV6SY/xXf2ry1BqQTRAZjif6a4uyBmyRNfod7uLfeUmAoF5gSLgY4x27oKFtc0gQJIyjRxTc2B84BLu1G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6bDB/YZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772713367; c=relaxed/simple;
+	bh=8iORgatfmVP5UgG6g/BlL+aXI02Kvp/zHKVDzC4+mnQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Hd1XSKhX6Q5uBxKN4HjNuFGY0Xua2+og85wwMbh+DlNMp+Easr2SrvleyKiT4fCLeSnf3f8gA4pGToo+ANmPd/GNOPwW+SDZ5oR2lxskx4olpobmvXQMBCDZNbp5poN30vn9MgJxf8V6qOHvM0FgPTYB4WtWysJYAYxM/LB0yuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eCtJMVlg; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6bDB/YZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EC0C116C6;
-	Thu,  5 Mar 2026 08:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772700524;
-	bh=EcZ+a9tuBlJ/zUrhdvgSANCnV474o7Fae3JBtqeQnck=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H6bDB/YZGFvlfGu7wH7LI8/kMzQHpZiaME/GUOJDKCPZwE/07i2KpQhSuFkY6gwm/
-	 ewcFw+KVDAuRh+hBsqWqy8ciP0j6yTSCfN0PPIBnnZZa0g2+BQ8yH0ZzdFlgT6yvxE
-	 WfgIyQsxc3Cwx8dxrv8FsW7gKKWxnKQ2b7u1ukxVqguUbigHYXFARdeXMUIpaotM1n
-	 nTMy707AwBWk0S1jKotg/8rGfSxdfr7turtD/I971ydlwfZwhobFP6zSP2cewTuw4w
-	 jd9BVftmqWO2SZbT4e4SFk02sJPGYtVMgAwHe6QyJyvwWyd/EUGHbIvZi5ytMRirm7
-	 KASn32cdZUr8Q==
-Message-ID: <fff3ea87-54b0-44b6-b4c8-89b8dad31402@kernel.org>
-Date: Thu, 5 Mar 2026 09:48:38 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eCtJMVlg"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-354bc7c2c46so4461728a91.0
+        for <linux-spi@vger.kernel.org>; Thu, 05 Mar 2026 04:22:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772713363; x=1773318163; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DwncuHxUK8rN3Qk5GxAhA3CfVLVPC2HWFVZLds7JF8E=;
+        b=eCtJMVlgAKQ4fHqcQVLUND5dOWjJXtlDItjpWgxycL2Q88btEVnRqMGTTD57QauEzl
+         n/Whkx1yrMaEFCpWMrLCtkJouhhqyvRr5KY2G2S6zOZmI9YRImT/Cg/eCrvSM75XjbVK
+         ur1h842FDxFMAklwxMFZJYwAZwTXgZjN7Te6Ny2cbIVLuVWTHQ0VP3jqRppJOQkW8jaJ
+         a6Tv7EDmzFD1qcgf5yeV4wE/+urBrOqYKYLYrEuWc0ZL6ITxbLlSSh+KbXKULN2HI6Kp
+         TGCkpz0CLz6/yl2/gOoUMfdI87X0SS9279sOfCNDJKIgllwk/fwPhyRCoDZTok0DdMgH
+         Z6Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772713363; x=1773318163;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DwncuHxUK8rN3Qk5GxAhA3CfVLVPC2HWFVZLds7JF8E=;
+        b=SMzDu14s6z6jeiq9yZs5noVdTPX8R1AW+TtXEVMBIRLuMnVvZhSUy9uryJqLanR+5B
+         KNLTgnohk9tUR6aSGuP5jt76wQW/A6shL9G5L/f5LCArqsTc7Q9jZkfAlMvnP3SNUq/I
+         0lDALRqzeJOrh3tfjWdP2rmvtyqJScsWmuQ50AuN1DgjIwoPO5e4Z1nbNMyIat8KukD2
+         SEP87Ynt/QBUDOJtryClW57LdEgUfRXZENayIf6daL2WF9cZgBhyCUVSjcq1OoiF5imD
+         PDBdY7MlPp/eIidOEr4wcv7Jr9j9Aa0HrdXXbXGjvz1XNgJuPbk7clQJB3dM/pq4DADS
+         zNKA==
+X-Gm-Message-State: AOJu0YxhG/C8BRXS7iwFrpQeCUXY5pgUk0nBrHPeC3cN6tzqxzqglf4I
+	o/GFaSXUhy1S10LN2+NG2p1WDiNPVa30TqXQh2ClQXashPjr81BU2dj+
+X-Gm-Gg: ATEYQzxIT4uTxUQl3y+CCRmCFnB4FPj9OMQ2gPPIKHwLgGEB5u9ubJ9Ia0ra57PIHbN
+	I+BbiDOPT8GTkair9ehtz+ylcVwtJjLI0sNDhGTVbrkpjpNbbVFcX+x/sUcoOgXR6goUQiKo9UL
+	qyrJE8up/GK5Zib+g8qVZr0/GFR3cx8WltB7AjU9oJGdtpfGxa96WuE4ZhjNaSLwJo1+/nXC354
+	RaZ7EHAwLyBlVYD58DRqSsaBEkU+QiAgNW/tVqwLZSYDwA9fXaGzImaFh1R50FICtz8lcVjHuyP
+	fCu8aKzAWwI2ipens0wlXUAgOJOYan+KQV+cFK4Or2U7O8ORwStsHSTvCvkcpZ0cUFfbxU6iC3W
+	O5Aj8nsN70ZKid9RT5VAgMWqTaXj70yfnMdgxmmU80vyhiaW00pnPqMlXoS9iSqR+ED4eD7PkMA
+	nczXUH8ywFvwXxwCuBWQ==
+X-Received: by 2002:a17:90b:3f86:b0:356:2fc5:30d9 with SMTP id 98e67ed59e1d1-359a69ca6aemr5100049a91.10.1772713362487;
+        Thu, 05 Mar 2026 04:22:42 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2::3a87])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2d407fcsm1880943a91.8.2026.03.05.04.22.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 04:22:42 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Thu, 05 Mar 2026 20:22:38 +0800
+Subject: [PATCH] spi: atcspi200: Fix double-free in atcspi_configure_dma()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: dt-bindings: mediatek,spi-mtk-nor: Add clock
- bindings for mt8189
-To: Meiker Gao <ot_meiker.gao@mediatek.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Bayi Cheng <bayi.cheng@mediatek.com>, Chuanhong Guo <gch981213@gmail.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,
- Project_Global_Chrome_Upstream_Group@mediatek.com, sirius.wang@mediatek.com,
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-References: <20260305071546.2603378-1-ot_meiker.gao@mediatek.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260305071546.2603378-1-ot_meiker.gao@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260305-atcspi2000-v1-1-eafe08dcca60@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAI11qWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwNT3cSS5OKCTCMDAwPdlFRTCwtLE0tji+QUJaCGgqLUtMwKsGHRsbW
+ 1AH2S1QNcAAAA
+X-Change-ID: 20260305-atcspi2000-de58894938cd
+To: CL Wang <cl634@andestech.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772713361; l=2038;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=8iORgatfmVP5UgG6g/BlL+aXI02Kvp/zHKVDzC4+mnQ=;
+ b=vMRyfx3/zILQoCMjgQ3ELPlDxIylxxeiaXj0qqP+KYsGEDh6wjysxWva4RQul+SFvZCNnI1lB
+ EKiXOwIupqXBMz/5t0cn1Ca9lIqWfqDm+WJa6NNCM3RqHFdJ+PQ1KYD
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On 05/03/2026 08:15, Meiker Gao wrote:
-> Update mediatek,spi-mtk-nor.yaml to add conditional clock and
-> clock-names bindings for the mt8189-nor platform. The mt8189-nor
-> controller requires five specific clocks and corresponding clock-names
-> ("spi", "sf", "axi_f", "axi_h", "axi_p"). This change enforces these
-> requirements in the device tree binding schema.
-> 
-> For other platforms, the minimum number of clocks and clock-names
-> remains unchanged. The patch also adds an example for mt8189-nor,
-> illustrating the new clock configuration.
-> 
-> This update ensures correct hardware description and validation for
-> mt8189-nor, improving compatibility and reducing configuration errors.
-> 
-> Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-> (cherry picked from commit c3180d35e52b5213764a89403e71f9a34d7bb842)
+The driver uses devm_dma_request_chan() which registers automatic cleanup
+via devm_add_action_or_reset(). Calling dma_release_channel() manually on
+the RX channel when TX channel request fails causes a double-free when
+the devm cleanup runs.
 
-NAK
+Remove the unnecessary manual cleanup and simplify the error handling
+since devm will properly release channels on probe failure or driver
+detach.
 
-Stop sending same stuff multiple times.
+Fixes: 34e3815ea459 ("spi: atcspi200: Add ATCSPI200 SPI controller driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-atcspi200.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
+index 2075058387f3..dd19fe9f9ee7 100644
+--- a/drivers/spi/spi-atcspi200.c
++++ b/drivers/spi/spi-atcspi200.c
+@@ -497,31 +497,17 @@ static int atcspi_init_resources(struct platform_device *pdev,
+ 
+ static int atcspi_configure_dma(struct atcspi_dev *spi)
+ {
+-	struct dma_chan *dma_chan;
+-	int ret = 0;
++	spi->host->dma_rx = devm_dma_request_chan(spi->dev, "rx");
++	if (IS_ERR(spi->host->dma_rx))
++		return PTR_ERR(spi->host->dma_rx);
+ 
+-	dma_chan = devm_dma_request_chan(spi->dev, "rx");
+-	if (IS_ERR(dma_chan)) {
+-		ret = PTR_ERR(dma_chan);
+-		goto err_exit;
+-	}
+-	spi->host->dma_rx = dma_chan;
++	spi->host->dma_tx = devm_dma_request_chan(spi->dev, "tx");
++	if (IS_ERR(spi->host->dma_tx))
++		return PTR_ERR(spi->host->dma_tx);
+ 
+-	dma_chan = devm_dma_request_chan(spi->dev, "tx");
+-	if (IS_ERR(dma_chan)) {
+-		ret = PTR_ERR(dma_chan);
+-		goto free_rx;
+-	}
+-	spi->host->dma_tx = dma_chan;
+ 	init_completion(&spi->dma_completion);
+ 
+-	return ret;
+-
+-free_rx:
+-	dma_release_channel(spi->host->dma_rx);
+-	spi->host->dma_rx = NULL;
+-err_exit:
+-	return ret;
++	return 0;
+ }
+ 
+ static int atcspi_enable_clk(struct atcspi_dev *spi)
+
+---
+base-commit: fc7b1a72c6cd5cbbd989c6c32a6486e3e4e3594d
+change-id: 20260305-atcspi2000-de58894938cd
 
 Best regards,
-Krzysztof
+-- 
+Felix Gu <ustc.gu@gmail.com>
+

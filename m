@@ -1,108 +1,121 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A9A35AC2A
-	for <linux-spi@vger.kernel.org>; Sat,  7 Mar 2026 07:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D1B299959
+	for <linux-spi@vger.kernel.org>; Sat,  7 Mar 2026 07:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772868368; cv=none; b=Cw9nD/vB1L3kLlTByJaX3hAVhkckvI/0Ie/Zg4zhfdUnlUy9kffg7LHqRW7N4YconQTSwyurjQ4RLAdlNBZY6v4fIRU50phNmE4uTfdhlmOGrjOomO3V9XIXQHWg9zLvmR9Lt8nl9eipmv/YouojKUNKBrNr+0BBOTRQ3gBigWo=
+	t=1772869643; cv=none; b=N9xkHTDN3ys4Izr0DA8DBy34tzk2DKWDf2JhgNVM75lp0oPqtUGMmGhm10uCPoJAd0XoJdoS7BfzAzYKHnoqhD9Ral4+toXXirLIoRZb+6rFi4JXbWQ0WTFTbvQLy9sPZjtNhHtElHalChkrrJcB0IKWn2RKo0Ruuml3SyUACgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772868368; c=relaxed/simple;
-	bh=Mzr7y4QH1IzyO44ZlhNV88cM61KS6U7bP9zhV9sW7JY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b0TezCpv/8JyBhWoUmYpDOtpSC9Fg02gDJyr2nYY9eYhYuOfEEB6xmkR7CkY8feIciMy3P0IyCWZIPm90d5bU4kQRQ1NhdTHUjlfhkepCEgv6ardAZ5jepo91KDwwNNjWOdp2fD6KAYQBNXma/7sUPn3W7phNhRCeTDCVd+/G0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=F6Cmsd/B; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+	s=arc-20240116; t=1772869643; c=relaxed/simple;
+	bh=75e1lv9Zspk1Yn0ZaGCEQTR5dnPaiJ708BBDY7KFgho=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lnapoq0eUr/cD2EmCEFW1jL1cg22OG+K5EaHE9UY72XtlsYrROdgN1rQyeekahtCALMY3FMYR7349Dv3VJQV0CL+7DXH7PM1yW+s5ymXAotVFuNBns8YQL1IxRVfMCddheGMyZzq1k9Manzq6bHJswCwqdq9FiWaj6+Q8CWmnV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HygSlVJS; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="F6Cmsd/B"
-Message-ID: <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
-	s=key1; t=1772868354;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/2+6NWzTpol+frWt/3c7B3LJfpEfyNZMXCdsBfpvUEw=;
-	b=F6Cmsd/BYepDn38XmUEHEczMxHTa1zURkFgn8+XYAvwoAIo14tvO2fl9Fzi31PO3nOsU/L
-	d2hbN8PlvzxwKNerfH3vDN1Wv+JVYu3LF0gRjJQ3z8UVNDMiu8Zzpum79j+L1JrFR861Si
-	9j07WFQZ4qPZEd5be0waEn2QT1FT2nQuJea4kKu1UJZ1r8c/Gspbv86LUDLE0ejTPml2eo
-	aQEt/Thkha2LmzcANcfO9pUjNNZzqmuQ1gCQeVzpzvX832SUrTVKvNfbluVVFv8EZiaJ3h
-	x/lHgZbT8nap0ngrW02gfr1c2s/2WP1I0Ol0Q12hbf+lB9yW0sXdpmcWMHeBtA==
-Date: Sat, 7 Mar 2026 04:25:44 -0300
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HygSlVJS"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829a568f3ccso641861b3a.0
+        for <linux-spi@vger.kernel.org>; Fri, 06 Mar 2026 23:47:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772869642; x=1773474442; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nmJQIvtiaxODiCsUsq3Jno3CVTZP2FwDaPbHG1QOL54=;
+        b=HygSlVJSENfv4tgDgb+PBvNdGonPZJ2PIhtl2mgOu8wTLFHwmR0MhCCiKD/LOtVvFQ
+         O57YX+iY+OKGpfyuhuaAQGoVLgiY0u/Meaqx0K51wntuhgC1vyfHSuPR+/WZn8fe3f0T
+         dMXtlYtbTMMvMwjkSzzRJJfxtUG2z0erIOSDkyA/fwBI72RLm6wH6OsVj1nSbGK9qOdh
+         mvCkp5l9SzstjERTaehYwarp4aS3JyhSE7QK9gWXjnC5NqU6SlmaoQ34jY5Wscnu6f/s
+         7aJPk8dj7SkeIq9vtVCt2kJnqNuzTc78PoL9G8Tic2PBL6v12MgEctaX0mIBSW6BcqW/
+         VYgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772869642; x=1773474442;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nmJQIvtiaxODiCsUsq3Jno3CVTZP2FwDaPbHG1QOL54=;
+        b=h5JxW8jhTEZgv1bwzRldOyWcEyr/FMgXKBcsB42WTS3vY5tHNh+cQ2PRLwCFQk1ciT
+         v7U475h1v4WFCcQ178vPH4E4IJqank9s9NeZW9VPHef+/tZUNpp2qximyo8MnQWYsRgq
+         4LHRW/8g1AU2fcaXaqzPR4Ff34iB8dig0WfHXoTAapV1uEaRSs7fTEDlUxgxVQby16yG
+         XOq2mT9uPGM2a1r+sOy8mHfGj872K+CwSDJpAyfmpbD9VpkfkvXRN/AaWDj0fnUrgq9o
+         EvMoRy89zN5uUekQ9ggyXjuxBbZ50K8CaxHztj2905hF+6QqXNB8WLu4cMrPZ2qh0BCB
+         CtHA==
+X-Gm-Message-State: AOJu0YydDb7mOU8jCrF9GXSjX7Fb+4phk/hROZTVJ0L9FKkntguey077
+	nJ0rHbe0YSNe8SbKfzITfZUWWrm+lGHXH5nL56hS+ohLZMCaWqe0r/sh
+X-Gm-Gg: ATEYQzxU8n9YtON+QY9fyQ0bYITHZxOQGon6QcogcR1M+e/00GZyPjCbFqZQZzNKu3r
+	Ak+Bw3RHSW5g3oR5mXK0QkY0VLffhXbcK4iqNcQREKzbsNhb27CmEHKRNRM4DCd5XM68XrAbUjI
+	wQzp6nH2cqwl+ks0YubV1Tw3Zvg3IrgieANQckaZB8CzoIQ+Yg0VWnwR3OjBYrafD+nad+BuAQJ
+	Sg0vfYzmCU9e4h7cT/CxMJfguXJzvFmzfHi5McVczV2ueglLLiOt2QagIEUjQULhuroyMY23maS
+	v5sQmETIFC0fezvr64a7rXFtnrPgWlOw6Ch08g9VZymzQDZyTGblfDoYzWlveKFLN0/t+LdA/86
+	pgLzwwDzTPwFtJWom9MyrteltZzQiL65v+i01tAA3pje/zNeHK532vV6uvXHSVsdam9vvfbq1vo
+	5oBvA5LvSQEl4J2k1jj2T8WpdvT/SlYKjw1ao=
+X-Received: by 2002:a05:6a00:2d19:b0:827:4372:dd1f with SMTP id d2e1a72fcca58-829a2f348e2mr4772406b3a.41.1772869641947;
+        Fri, 06 Mar 2026 23:47:21 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:59cb:c81:de53:1143])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a4657445sm3970820b3a.17.2026.03.06.23.47.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 23:47:20 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Sat, 07 Mar 2026 15:47:15 +0800
+Subject: [PATCH] spi: axiado: Remove redundant pm_runtime_mark_last_busy()
+ call
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 09/12] dt-bindings: input: Document hid-over-spi DT schema
-To: Jingyuan Liang <jingyliang@chromium.org>, Jiri Kosina <jikos@kernel.org>,
- Benjamin Tissoires <bentiss@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Mark Brown <broonie@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- hbarnor@chromium.org, Dmitry Antipov <dmanti@microsoft.com>,
- Jarrett Schultz <jaschultz@microsoft.com>
-References: <20260303-send-upstream-v1-0-1515ba218f3d@chromium.org>
- <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Val Packett <val@packett.cool>
-In-Reply-To: <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260307-axiado-1-v1-1-e90aa1b6dd9b@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAALYq2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwNz3cSKzMSUfF1DXbNkCxMjS7OkVJNEIyWg8oKi1LTMCrBR0bG1tQD
+ gdghEWgAAAA==
+X-Change-ID: 20260307-axiado-1-6c84296be4a2
+To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
+ Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
+ Prasad Bolisetty <pbolisetty@axiado.com>, Mark Brown <broonie@kernel.org>, 
+ Harshit Shah <hshah@axiado.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772869637; l=1011;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=75e1lv9Zspk1Yn0ZaGCEQTR5dnPaiJ708BBDY7KFgho=;
+ b=2/Bv0N9XW6gxyCPmTUnBk/9Q3k+xdUY5JCrXf/I2nuBVZwXriVFmO+IsoPc5uwksPKv9TisXF
+ R712Si5ImMpClUWifArZ2bpP+lMC7Z8XADU8hLFYzsNMod19xsIjdru
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
+The pm_runtime_mark_last_busy() call is redundant in the probe function
+as pm_runtime_put_autosuspend() already calls pm_runtime_mark_last_busy()
+internally to update the last access time of the device before queuing
+autosuspend.
 
-On 3/3/26 3:13 AM, Jingyuan Liang wrote:
-> Documentation describes the required and optional properties for
-> implementing Device Tree for a Microsoft G6 Touch Digitizer that
-> supports HID over SPI Protocol 1.0 specification.
-> […]
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - microsoft,g6-touch-digitizer
-> +          - const: hid-over-spi
-> +      - description: Just "hid-over-spi" alone is allowed, but not recommended.
-> […]
-> +required:
-> +  - compatible
-> +  - interrupts
-> +  - reset-gpios
+Fixes: e75a6b00ad79 ("spi: axiado: Add driver for Axiado SPI DB controller")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-axiado.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Why is reset required? Is it so implausible on some device implementing 
-the spec there wouldn't be a reset gpio?
+diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
+index 8cea81432c5b..bd5f67acc4f6 100644
+--- a/drivers/spi/spi-axiado.c
++++ b/drivers/spi/spi-axiado.c
+@@ -850,7 +850,6 @@ static int ax_spi_probe(struct platform_device *pdev)
+ 
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+ 
+-	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+ 
+ 	ctlr->mem_ops = &ax_spi_mem_ops;
 
-> +  - vdd-supply
-Linux makes up a dummy regulator if DT doesn't provide one, so can 
-regulators even be required?
-> […]
-> +        compatible = "hid-over-spi";
-Not following your own recommendation from above :)
-> +        reg = <0x0>;
-> +        interrupts-extended = <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
-> +        reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
-> +        vdd-supply = <&pm8350c_l3>;
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&ts_d6_reset_assert &ts_d6_int_bias>;
+---
+base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
+change-id: 20260307-axiado-1-6c84296be4a2
 
-Heh, "reset_assert" is a name implying it would actually set the value 
-from the pinctrl properties, which is what had to be done before 
-reset-gpios were supported. But now reset-gpios are supported.
-
-
-Thanks,
-~val
-
-
-P.S. happy to see work on this happen again!
+Best regards,
+-- 
+Felix Gu <ustc.gu@gmail.com>
 

@@ -1,64 +1,34 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D1B299959
-	for <linux-spi@vger.kernel.org>; Sat,  7 Mar 2026 07:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AA01339A4;
+	Sat,  7 Mar 2026 09:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772869643; cv=none; b=N9xkHTDN3ys4Izr0DA8DBy34tzk2DKWDf2JhgNVM75lp0oPqtUGMmGhm10uCPoJAd0XoJdoS7BfzAzYKHnoqhD9Ral4+toXXirLIoRZb+6rFi4JXbWQ0WTFTbvQLy9sPZjtNhHtElHalChkrrJcB0IKWn2RKo0Ruuml3SyUACgk=
+	t=1772877056; cv=none; b=QkN5xXyE4eBN5RnIfLCZkqtfciBF5wNesPPsFxV5c/XEHVcsdb5fYyK2/07nCIu5c7qnpZiuPGuMvKct06YY8RMAQ6rjWr8gOMDXcVZurwThAaDbp5rUJtIEOINKH8DHkftFGwdO0+KDQaeiiF5Aarnx3gunpZihndTTuXuUJyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772869643; c=relaxed/simple;
-	bh=75e1lv9Zspk1Yn0ZaGCEQTR5dnPaiJ708BBDY7KFgho=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lnapoq0eUr/cD2EmCEFW1jL1cg22OG+K5EaHE9UY72XtlsYrROdgN1rQyeekahtCALMY3FMYR7349Dv3VJQV0CL+7DXH7PM1yW+s5ymXAotVFuNBns8YQL1IxRVfMCddheGMyZzq1k9Manzq6bHJswCwqdq9FiWaj6+Q8CWmnV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HygSlVJS; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772877056; c=relaxed/simple;
+	bh=xtUClKEUaxMc0AVjz0TDLnnYbcwSJf7nwhjr3+OT8Uo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cq5gzFLDhpevsapGleEkkW9msW2VVfkaoZHPJalO+WLwmH2rh9p54BhjTbi11LIAMrUfagnAEDaC6idUru5hGQJR7aNNzoESLkAtlX+BWfJYH59u5EmdqNPcMDOAsalBVpBBJg7vwPTwLQvhDfMkia9JgzPEM2Sp415eVv5sfb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUCFmocM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HygSlVJS"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-829a568f3ccso641861b3a.0
-        for <linux-spi@vger.kernel.org>; Fri, 06 Mar 2026 23:47:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772869642; x=1773474442; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nmJQIvtiaxODiCsUsq3Jno3CVTZP2FwDaPbHG1QOL54=;
-        b=HygSlVJSENfv4tgDgb+PBvNdGonPZJ2PIhtl2mgOu8wTLFHwmR0MhCCiKD/LOtVvFQ
-         O57YX+iY+OKGpfyuhuaAQGoVLgiY0u/Meaqx0K51wntuhgC1vyfHSuPR+/WZn8fe3f0T
-         dMXtlYtbTMMvMwjkSzzRJJfxtUG2z0erIOSDkyA/fwBI72RLm6wH6OsVj1nSbGK9qOdh
-         mvCkp5l9SzstjERTaehYwarp4aS3JyhSE7QK9gWXjnC5NqU6SlmaoQ34jY5Wscnu6f/s
-         7aJPk8dj7SkeIq9vtVCt2kJnqNuzTc78PoL9G8Tic2PBL6v12MgEctaX0mIBSW6BcqW/
-         VYgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772869642; x=1773474442;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nmJQIvtiaxODiCsUsq3Jno3CVTZP2FwDaPbHG1QOL54=;
-        b=h5JxW8jhTEZgv1bwzRldOyWcEyr/FMgXKBcsB42WTS3vY5tHNh+cQ2PRLwCFQk1ciT
-         v7U475h1v4WFCcQ178vPH4E4IJqank9s9NeZW9VPHef+/tZUNpp2qximyo8MnQWYsRgq
-         4LHRW/8g1AU2fcaXaqzPR4Ff34iB8dig0WfHXoTAapV1uEaRSs7fTEDlUxgxVQby16yG
-         XOq2mT9uPGM2a1r+sOy8mHfGj872K+CwSDJpAyfmpbD9VpkfkvXRN/AaWDj0fnUrgq9o
-         EvMoRy89zN5uUekQ9ggyXjuxBbZ50K8CaxHztj2905hF+6QqXNB8WLu4cMrPZ2qh0BCB
-         CtHA==
-X-Gm-Message-State: AOJu0YydDb7mOU8jCrF9GXSjX7Fb+4phk/hROZTVJ0L9FKkntguey077
-	nJ0rHbe0YSNe8SbKfzITfZUWWrm+lGHXH5nL56hS+ohLZMCaWqe0r/sh
-X-Gm-Gg: ATEYQzxU8n9YtON+QY9fyQ0bYITHZxOQGon6QcogcR1M+e/00GZyPjCbFqZQZzNKu3r
-	Ak+Bw3RHSW5g3oR5mXK0QkY0VLffhXbcK4iqNcQREKzbsNhb27CmEHKRNRM4DCd5XM68XrAbUjI
-	wQzp6nH2cqwl+ks0YubV1Tw3Zvg3IrgieANQckaZB8CzoIQ+Yg0VWnwR3OjBYrafD+nad+BuAQJ
-	Sg0vfYzmCU9e4h7cT/CxMJfguXJzvFmzfHi5McVczV2ueglLLiOt2QagIEUjQULhuroyMY23maS
-	v5sQmETIFC0fezvr64a7rXFtnrPgWlOw6Ch08g9VZymzQDZyTGblfDoYzWlveKFLN0/t+LdA/86
-	pgLzwwDzTPwFtJWom9MyrteltZzQiL65v+i01tAA3pje/zNeHK532vV6uvXHSVsdam9vvfbq1vo
-	5oBvA5LvSQEl4J2k1jj2T8WpdvT/SlYKjw1ao=
-X-Received: by 2002:a05:6a00:2d19:b0:827:4372:dd1f with SMTP id d2e1a72fcca58-829a2f348e2mr4772406b3a.41.1772869641947;
-        Fri, 06 Mar 2026 23:47:21 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:59cb:c81:de53:1143])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a4657445sm3970820b3a.17.2026.03.06.23.47.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 23:47:20 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Sat, 07 Mar 2026 15:47:15 +0800
-Subject: [PATCH] spi: axiado: Remove redundant pm_runtime_mark_last_busy()
- call
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUCFmocM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAC2C19422;
+	Sat,  7 Mar 2026 09:50:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772877055;
+	bh=xtUClKEUaxMc0AVjz0TDLnnYbcwSJf7nwhjr3+OT8Uo=;
+	h=From:Date:Subject:To:Cc:From;
+	b=pUCFmocMA4fvnwvMnE3wBR8z8cgW4PzxD4AF0Hc7Kj54me5cYg3uLjFIoUhD52YTm
+	 pq/YO76C+CBmHht2g9J3nknNaywLNwQm//dxLV9yTRa3Dc3WhA249+d0wmHqpAZbLu
+	 xYM5KhTx13oqylo3zPuOAG4a+CGS/dg6EDm1++EX27lp7dKtRxDAtXQay+QjgyfuLf
+	 FJTpV2PpGo8IBAp7CFiOVdk8FPnDDsUVUC0Fy+hQt2NEDlcGDqqtZa4e0Ma8tuDw9p
+	 kVtqfdkHBseUJ7eg+3iUga6JR7j4osGOuzyBHCXovxHf5dX5wfUdagrAzghrfX2Dol
+	 q8D5FTVWYfxNw==
+From: Mark Brown <broonie@kernel.org>
+Date: Sat, 07 Mar 2026 09:50:35 +0000
+Subject: [PATCH] spi: cadence-qspi: Fix requesting of APB and AHB clocks on
+ JH7110
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -67,55 +37,75 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260307-axiado-1-v1-1-e90aa1b6dd9b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAALYq2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYwNz3cSKzMSUfF1DXbNkCxMjS7OkVJNEIyWg8oKi1LTMCrBR0bG1tQD
- gdghEWgAAAA==
-X-Change-ID: 20260307-axiado-1-6c84296be4a2
-To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
- Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
- Prasad Bolisetty <pbolisetty@axiado.com>, Mark Brown <broonie@kernel.org>, 
- Harshit Shah <hshah@axiado.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772869637; l=1011;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=75e1lv9Zspk1Yn0ZaGCEQTR5dnPaiJ708BBDY7KFgho=;
- b=2/Bv0N9XW6gxyCPmTUnBk/9Q3k+xdUY5JCrXf/I2nuBVZwXriVFmO+IsoPc5uwksPKv9TisXF
- R712Si5ImMpClUWifArZ2bpP+lMC7Z8XADU8hLFYzsNMod19xsIjdru
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Message-Id: <20260307-spi-cadence-qspi-fix-jh7110-v1-1-c9f37b8c58b1@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOr0q2kC/yXMQQrCMBBG4auUWTswqZharyIuYvJrp4tYM1WE0
+ rub6vLjwVvIUBRGp2ahgreaPnKF2zUUh5DvYE3V1ErrZS+ebVKOISFH8HPDTT88Dp1zwl6O6Po
+ gfXIHqoepoNbf/Xz5217XEXHelrSuX7rtoK1/AAAA
+X-Change-ID: 20260306-spi-cadence-qspi-fix-jh7110-608e79a09d15
+To: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
+Cc: Ron Economos <re@w6rz.net>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.15-dev-002f7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1921; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=xtUClKEUaxMc0AVjz0TDLnnYbcwSJf7nwhjr3+OT8Uo=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpq/T6l8+D08aPKFm/THA07lSGjTwJzz0/Ougwv
+ SDq1OoKcPaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaav0+gAKCRAk1otyXVSH
+ 0F6rB/0bcov2kdGIC8V4YFusvogZVo/fllq0NIHth/WldB79/AabU4NGzAE/0zvPPKS6+r2PaqW
+ zsVVCygIh3eS9X3/g0F9S4w4isqc7QWhxpnQqUpPT5YwEVXLLBLMxV0IkVz+8iBV5bRJirO5Be6
+ M/qkkpFdfEf3s+laeX7sXLZZ3Gh3ZupLz2uM8W8VpG0XX8G9BPBytl+hz1zMTr2oxwBJj6HQ4Bi
+ NqNmzRbTd4YhY18AAxMNArAczI/oObTPNLJyfrsqlg2LUSczBfRCCnGVhJtx5X25IKKNwBYAfLH
+ YgLidoWGFWj/nN1DUxU+x/dS4lIcFnwTKAzNoyvxAHkpj5+A
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The pm_runtime_mark_last_busy() call is redundant in the probe function
-as pm_runtime_put_autosuspend() already calls pm_runtime_mark_last_busy()
-internally to update the last access time of the device before queuing
-autosuspend.
+The move of the AHB and APB clocks from a JH7110 specific quirk to the
+main clock init dropped the specification of the clock names to request
+for the AHB and APB clocks, resulting in the clock framework requesting
+a clock with a NULL name three times.  On most platforms where the
+clocks are physically the same or some are always on this makes no
+difference but the reason we had the specific quirk for JH7110 is that
+it does actually have separate, controllable clocks.  Update the new
+code to request the AHB and APB clocks by name to restore the original
+behaviour on JH7110.
 
-Fixes: e75a6b00ad79 ("spi: axiado: Add driver for Axiado SPI DB controller")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Fixes: 324ecc7788c2 ("spi: cadence-qspi: Kill cqspi_jh7110_clk_init")
+Reported-by: Ron Economos <re@w6rz.net>
+Closes: https://lore.kernel.org/r/a3ca5e9b-7446-497e-8df2-7ef2b42a02e9@w6rz.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-axiado.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
-index 8cea81432c5b..bd5f67acc4f6 100644
---- a/drivers/spi/spi-axiado.c
-+++ b/drivers/spi/spi-axiado.c
-@@ -850,7 +850,6 @@ static int ax_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 649ff55333f0..5fb0cb07c110 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -76,6 +76,11 @@ struct cqspi_flash_pdata {
+ 	u8		cs;
+ };
  
- 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
++static const struct clk_bulk_data cqspi_clks[CLK_QSPI_NUM] = {
++	[CLK_QSPI_APB] = { .id = "apb" },
++	[CLK_QSPI_AHB] = { .id = "ahb" },
++};
++
+ struct cqspi_st {
+ 	struct platform_device	*pdev;
+ 	struct spi_controller	*host;
+@@ -1823,6 +1828,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 	}
  
--	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(&pdev->dev);
- 
- 	ctlr->mem_ops = &ax_spi_mem_ops;
+ 	/* Obtain QSPI clocks. */
++	memcpy(&cqspi->clks, &cqspi_clks, sizeof(cqspi->clks));
+ 	ret = devm_clk_bulk_get_optional(dev, CLK_QSPI_NUM, cqspi->clks);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to get clocks\n");
 
 ---
-base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
-change-id: 20260307-axiado-1-6c84296be4a2
+base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
+change-id: 20260306-spi-cadence-qspi-fix-jh7110-608e79a09d15
 
 Best regards,
--- 
-Felix Gu <ustc.gu@gmail.com>
+--  
+Mark Brown <broonie@kernel.org>
 

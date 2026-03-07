@@ -1,201 +1,138 @@
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6523148D3
-	for <linux-spi@vger.kernel.org>; Fri,  6 Mar 2026 23:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236C6330B30
+	for <linux-spi@vger.kernel.org>; Sat,  7 Mar 2026 07:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772840251; cv=none; b=udcPzaB5iIXV4vvkoEuEqZEWZBaTLEaaXl36CY+oRTsRHK6cKIKgm1Q0HV2DfalMetG96M8h15Nhk5VhavJfVe5qx2AUbcQa8ibGEPXIl1ZxL17GbdazXjzy2gkTNQwb5n8RGpUcWR88S7dMR9PWmG2dny3x7c+GWfw5SAkyyF8=
+	t=1772868293; cv=none; b=DajtOwARA7bZFaUOUp7XX8pwgsdojZAejs4ota7yQtwUH6C0Mg6+/03pFo0XeB9g8z98YAeqW3nr6h8HqJ9hG2kkxU6nWHhwOejQR/YL4ZED0fJ8cIvg6hTQPYqS0wQeDjekJgrIBhvcn/CPIlJubqOAIFFX4sOVqb9hwKKPnw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772840251; c=relaxed/simple;
-	bh=YXrfxx+SlB/oWENyu6t2j0MOogXZ6HQNTGOFPuzE06U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nbo7ksTjmmI9avAfcwpPocbS7tUmaOC7Yltvn0pn/cIA6nlkD8Asn670ileRpkDcVQtmv2knd6Q8tjvr1lKpS9C66UcBStYIaMxPVpZoD6bMLRDdpTxUuvqa0sd4oV3Cpm3bSd1hpiNNWovjcITpCEy2We4kobbOhJeXqOeIuJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=yiWBKtih; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+	s=arc-20240116; t=1772868293; c=relaxed/simple;
+	bh=DnhrfTpoqQP0Gz7wQMlEMENHf6+HnkuBCFqW+aSeYnk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HOx5IDhvATuuInumwvlowLDj+saqD/H/AQldM7HBJkJ1UcldPSxTu7BWh/JHt3jx0BjiHx0zu04GmPT1UIvwllvLdg+7NB8WHHFkPQtXIWeuc36roo5Mhl+JPu+HfN2dPh78ozEYTGXfzKKQODOBfiCDr6IQWJbBEhCm06Z5Npc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E1NtuXyM; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="yiWBKtih"
-Received: from eig-obgw-5003b.ext.cloudfilter.net ([10.0.29.155])
-	by cmsmtp with ESMTPS
-	id ybhrv3vcPCxrGyejZvz3ro; Fri, 06 Mar 2026 23:37:29 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id yejYvT3tM2l0kyejYvUK9d; Fri, 06 Mar 2026 23:37:28 +0000
-X-Authority-Analysis: v=2.4 cv=UfRRSLSN c=1 sm=1 tr=0 ts=69ab6538
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10 a=qNABUOcEAAAA:8
- a=VwQbUJbxAAAA:8 a=xnXoI3Q-Js2OMDcH0-MA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=Ytm653ucTKQjCvbzLygB:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=R7eSIQ9PWsy1l0xwhOzzafvIk3P6i6NImXb6Jaj1Ic8=; b=yiWBKtihdLLUr6EF7dmIsIHt64
-	YBvRcsRdYSHf6JFVbc9P4+iDuvfXGL9UxB4r2mI4GZWL21c9srjn0oBNBuQ4CyIZ3dtzeY1336+Z7
-	/QDT6TrR+b9V3tfy271iR82K5ml2kEGJIF5jw2RNWrd2ed5m3Yqnst7pf84Wjo+r5qM6goeI3WfgZ
-	XlOhhD0IoVRcZ7WB5sgwdwYCudG3u1EWRTTW3+tXz867RhN3VvCmOHlS3FjwRM8ponCjbNVzxB71F
-	p8IT1xghsZbsrjLRsZ+zBCTh7FLEgd9pLeBPgy4gS9h+z9+N2vOagNzOENZrtVZnELgAKPpyHOZVR
-	n6OXiYxA==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:42920 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vyejX-000000044Yt-4A1d;
-	Fri, 06 Mar 2026 16:37:28 -0700
-Message-ID: <c965f23f-4e71-46e8-915f-7c9ab3e5385a@w6rz.net>
-Date: Fri, 6 Mar 2026 15:37:26 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E1NtuXyM"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-359a5d8b3f8so2462508a91.3
+        for <linux-spi@vger.kernel.org>; Fri, 06 Mar 2026 23:24:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772868291; x=1773473091; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=g/X3H2rOzzx5YHCEmX+zODgRnC+Epx7QrZClKaRyRVk=;
+        b=E1NtuXyMjMHGzqkkoWZ4umzEZ0OgUXcjZiRodJz5YrLxqzxCKuQSRA6oPMdMYod7NP
+         oJtLMSE1bQE5K97V7ZAaVyfhUwCblWuwXpQSQ+E6w+wH+Pmqef+g4kjSQ9Xetuk1fiVN
+         4aIN90SgadeHe3BjRIBvch6OWBX48DY1gqp6iYUb4V7LYN1/ps0/kWNEspj/YUxeadLI
+         QSo4GM+XZvDvl3aNLaRGW4IuVS0rQOIaw0t1y4A4OZy9FEvyqoKCWtLiGivn6niHpkSZ
+         5ioCFxwGdAqzoB5kdYt5nL37XI0bvCV+/b/4/M7nVaZJPtFeGEzT1aSl1HsFVElJBdcf
+         LUmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772868291; x=1773473091;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g/X3H2rOzzx5YHCEmX+zODgRnC+Epx7QrZClKaRyRVk=;
+        b=CuxU4fJiKjfykp5EPi66yOFO6NpusgK2Sn0Mn6H3WNnIZ7PbbbbRh0QzyHziAvPdvf
+         KfOnEO64L/fCAPc+E3Tk9bho0HO7JAp7CElxVjK3dh0n7A7HIkqLUlbvrzfaQ69AS5TX
+         Kw7S6FhOg/1UxwlzLLygtyj7jNe/XLSvqADm3SJ1rl6zNO0I8DgF7zjIZk00p/+woOcW
+         M8wQoH2VZ0brbPeIDj90EVMiRpY3SfCEyvX+WoK192jDUPoOo2GRterXwmi3FhCzyjMf
+         ExXjTZpwsIL2YRePBzuG6i4i/h5k29NGGnA7DgO1vmOJzVIbLQGF+rHFilCsDfjORv6T
+         Hlag==
+X-Forwarded-Encrypted: i=1; AJvYcCWi7K3EWhYNSEw9ieWae408nEwJr7oHvDYLX3jXt9lF0OYhXMyc/JZ1bmkJFJRDtbJ1Xi4UTjv5BXY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBzHy6RVdxZpJkX7pJil1CVIgkfTLD4efC9c12W58N9S3NI3n4
+	ix48y5vVCJfPwYZs5ppsURlvIeyPzxKRrRJcIbz+M1VUCAdiP1HtwuMeNnI6iCeeF7g=
+X-Gm-Gg: ATEYQzyAG6UlUEzb119b8F1UaIO924GVb9hm/Nl3BS3XQKSxcQaeKp2icfySOdfLIjK
+	wth0O89KAZSH667O9URDYnmiMd1vO1r6XDOOMUra8fhawxpUptU7jX2RvMMbfP7Jdaz12inPh65
+	/Hp6UqpFby+JBQ6GHlINNLiyP9BAwUoGTKpcEujR1BdQEvSA1JuMCFP2UIZ75Vdn8niR4zHfAN+
+	MgkdOAXuwGSFVa55sikjjhiU/7ZqLOe00gd44fQzwgGCaI1C7+ss5QvsvTrRpsU2Z56qWch+eNT
+	vrlJhOTO4n2X8tUcqig4YA0d6zfgzanEZwTcQ9G6Ga0pBsUfuWsUkyVY5h4irUTWXYSrdbvkBRr
+	ua6q8SnXLty/zfFUNFyvlFTHYsxTsYRG6N8tN9GkR7DEGHbsMg9S4dlWPYHHTOWxb5gGpjlAGQe
+	1t6tJr7QYGqT1HxIs+ljg7/E62cROApizwja8=
+X-Received: by 2002:a17:90b:268a:b0:356:2c7b:c026 with SMTP id 98e67ed59e1d1-359be3217ccmr4437933a91.23.1772868291381;
+        Fri, 06 Mar 2026 23:24:51 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:59cb:c81:de53:1143])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2de7932sm8771067a91.10.2026.03.06.23.24.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Mar 2026 23:24:51 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Sat, 07 Mar 2026 15:24:45 +0800
+Subject: [PATCH] spi: tegra210-quad: Remove redundant
+ pm_runtime_mark_last_busy() calls
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: spi: Regression with v7.0-rc1 on VisionFive 2
-To: Mark Brown <broonie@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Conor Dooley
- <conor@kernel.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, wsa+renesas@sang-engineering.com
-References: <a3ca5e9b-7446-497e-8df2-7ef2b42a02e9@w6rz.net>
- <aaL2WVO_7bl6vNp5@sirena.co.uk> <20260228-ragweed-theater-b02967937353@spud>
- <20260228-defuse-extenuate-cf2a90ae66ea@spud> <87tsuvh6iw.fsf@bootlin.com>
- <96e93ca0-ea10-4071-99ca-98f7219833d7@w6rz.net>
- <aatIrfp7fIznkgsq@sirena.co.uk>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <aatIrfp7fIznkgsq@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vyejX-000000044Yt-4A1d
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:42920
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 4
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNTwEdFbQFoUV2DBmY3/0bRUt7nDMUYfHvm4VRdLBYPqAT0j2l7R2M1nwtypWleJ6hcfqAVqIgzO/4oqdR/oRbH8cv2OvqNtDMOPc7jJruSiFA4YwQZh
- 6C7BokTZ3tdjaavjdTZXH51OkUlXh2WD/wnM5BoiciN160VbsmF4Xuwx7Ysu34jXo7AIQzVb23H4eEegSIvn0ZAx+ZcUnh3aUrc=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260307-quad-v1-1-f103515db501@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALzSq2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwNz3cLSxBTd5BSz5MRUUwuDZGNjJaDSgqLUtMwKsDHRsbW1AMePXvl
+ WAAAA
+X-Change-ID: 20260307-quad-cd6cae580c33
+To: Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Sowjanya Komatineni <skomatineni@nvidia.com>, 
+ Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>, 
+ Vishwaroop A <va@nvidia.com>
+Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772868288; l=1684;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=DnhrfTpoqQP0Gz7wQMlEMENHf6+HnkuBCFqW+aSeYnk=;
+ b=IEraBS2OLNJDNH+FaVM/+ejP3HTtIK1IW6JwxK8aw9S99xwDsO5H3Q62bsDhfM+YJGWUbWi6P
+ P+iRp84xfXiCrIU+fEkHdbPxBbTZh9+Hmy48A9+itlDqJP5x7pdG0Sq
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On 3/6/26 13:35, Mark Brown wrote:
-> On Wed, Mar 04, 2026 at 01:52:08PM -0800, Ron Economos wrote:
->> On 3/4/26 09:02, Miquel Raynal wrote:
->>> The other change that could be "it" is the change of order between reset
->>> handling and clock. That would be quite messy if that was the error but
->>> I cannot find another explanation. Ron, can you please try to revert
->>> this patch locally and then move the clk_prepare_enable() of the APB and
->>> AHB clocks earlier, right after the ref clock is also enabled? If the
->>> platform fails to boot, there is maybe a weird internal relationship
->>> with the resets.
->>> Otherwise can you compare the clk_get_rate() on all three clocks in both
->>> cases?
->> I'm happy to help you debug this, but you have to send me a patch to
->> the reverted file. I have no idea where the ref clock is enabled.
-> I think Miquel means
->
-> commit c9117602a87c441c4f05a2cc4d9be45c96140146
-> Author: Mark Brown <broonie@kernel.org>
-> Date:   Fri Mar 6 20:16:33 2026 +0000
->
->      test
->
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-> index 2d287950d44c..d74446f6db5a 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -1932,6 +1932,12 @@ static int cqspi_probe(struct platform_device *pdev)
->   	reset_control_assert(rstc_ocp);
->   	reset_control_deassert(rstc_ocp);
->   
-> +	if (ddata->jh7110_clk_init) {
-> +		ret = cqspi_jh7110_clk_init(pdev, cqspi);
-> +		if (ret)
-> +			goto disable_clk;
-> +	}
-> +
->   	cqspi->master_ref_clk_hz = clk_get_rate(cqspi->clk);
->   	host->max_speed_hz = cqspi->master_ref_clk_hz;
->   
-> @@ -1959,11 +1965,6 @@ static int cqspi_probe(struct platform_device *pdev)
->   		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
->   			cqspi->apb_ahb_hazard = true;
->   
-> -		if (ddata->jh7110_clk_init) {
-> -			ret = cqspi_jh7110_clk_init(pdev, cqspi);
-> -			if (ret)
-> -				goto disable_clk;
-> -		}
->   		if (ddata->quirks & CQSPI_DISABLE_STIG_MODE)
->   			cqspi->disable_stig_mode = true;
->   
-> which does the right thing:
->
->     https://lava.sirena.org.uk/scheduler/job/2535610
->
-> but I'm fairly sure it's not an ordering thing.  The patch includes:
->
-> -       static struct clk_bulk_data qspiclk[] = {
-> -               { .id = "apb" },
-> -               { .id = "ahb" },
-> -       };
->
-> but never adds those names back, this means that while we do ask for
-> three clocks none of them have IDs specified so we just end up
-> requesting the same clock three times which might be what's needed on
-> most integrations but not here.  The below seems to do the trick for me,
-> I'll write a commit log and post - testing appreciated:
->
->    https://lava.sirena.org.uk/scheduler/job/2535662
->
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-> index 649ff55333f0..7a7f92e9c7a3 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -76,6 +76,11 @@ struct cqspi_flash_pdata {
->   	u8		cs;
->   };
->   
-> +static struct clk_bulk_data cqspi_clks[CLK_QSPI_NUM] = {
-> +	[CLK_QSPI_APB] = { .id = "apb" },
-> +	[CLK_QSPI_AHB] = { .id = "ahb" },
-> +};
-> +
->   struct cqspi_st {
->   	struct platform_device	*pdev;
->   	struct spi_controller	*host;
-> @@ -1823,6 +1828,7 @@ static int cqspi_probe(struct platform_device *pdev)
->   	}
->   
->   	/* Obtain QSPI clocks. */
-> +	memcpy(&cqspi->clks, &cqspi_clks, sizeof(cqspi->clks));
->   	ret = devm_clk_bulk_get_optional(dev, CLK_QSPI_NUM, cqspi->clks);
->   	if (ret)
->   		return dev_err_probe(dev, ret, "Failed to get clocks\n");
+pm_runtime_put_autosuspend() already internally updates the last_busy
+timestamp before scheduling the autosuspend, making explicit
+pm_runtime_mark_last_busy() calls immediately before it redundant.
 
-Works good here. I'll send a tested-by: when you post the patch.
+Fixes: 7c12f6ead467 ("spi: tegra210-quad: Add runtime autosuspend support")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-tegra210-quad.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-ubuntu@visionfive:~$ lsblk
-NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
-mtdblock0     31:0    0    16M  0 disk     <-----
-mmcblk1      179:0    0 119.3G  0 disk
-└─mmcblk1p1  179:1    0 119.2G  0 part
-nvme0n1      259:0    0 465.8G  0 disk
-├─nvme0n1p1  259:1    0 465.6G  0 part /
-├─nvme0n1p2  259:2    0    16M  0 part
-├─nvme0n1p12 259:3    0     4M  0 part
-├─nvme0n1p13 259:4    0     2M  0 part
-└─nvme0n1p15 259:5    0   100M  0 part /boot/efi
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 7fac695b5142..7cca5578eba3 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1000,7 +1000,6 @@ static int tegra_qspi_setup(struct spi_device *spi)
+ 
+ 	spin_unlock_irqrestore(&tqspi->lock, flags);
+ 
+-	pm_runtime_mark_last_busy(tqspi->dev);
+ 	pm_runtime_put_autosuspend(tqspi->dev);
+ 
+ 	return 0;
+@@ -1790,7 +1789,6 @@ static int tegra_qspi_probe(struct platform_device *pdev)
+ 	tqspi->spi_cs_timing2 = tegra_qspi_readl(tqspi, QSPI_CS_TIMING2);
+ 	tqspi->def_command2_reg = tegra_qspi_readl(tqspi, QSPI_COMMAND2);
+ 
+-	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+ 
+ 	ret = request_threaded_irq(tqspi->irq, NULL,
+@@ -1851,7 +1849,6 @@ static int __maybe_unused tegra_qspi_resume(struct device *dev)
+ 
+ 	tegra_qspi_writel(tqspi, tqspi->command1_reg, QSPI_COMMAND1);
+ 	tegra_qspi_writel(tqspi, tqspi->def_command2_reg, QSPI_COMMAND2);
+-	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
+ 
+ 	return spi_controller_resume(host);
+
+---
+base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
+change-id: 20260307-quad-cd6cae580c33
+
+Best regards,
+-- 
+Felix Gu <ustc.gu@gmail.com>
 

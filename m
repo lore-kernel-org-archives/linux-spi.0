@@ -1,65 +1,64 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980392D6401
-	for <linux-spi@vger.kernel.org>; Sun,  8 Mar 2026 06:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D146A1F3D56
+	for <linux-spi@vger.kernel.org>; Sun,  8 Mar 2026 13:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772953198; cv=none; b=dVftfH/DygA51Qu0CVwFbnieby5vzJwGuz9VHd71lqLxgZc95O/u8XFTryDxIInp7BbM7qzImkGUbDXOp4yr0L/gL5e9FS31jea0hNHzljsPbCw9UHNG5XnjFPUviT90dGReS/Ta9Wrj3v8k20Yonv7QWkuZbbaIlHbSZ4hMl10=
+	t=1772976903; cv=none; b=fE0A56C7NNs8H/A09U6N66ReZagAvipWSurEGiK16rDtNK/bI6XCV7YwUhqgTrat0bFd9AgCwSPfkCLzs65wzwmy3y1N6rdZOKa/p4YotDF9/h04YdREz/gbpUyHKWHbbu9cTgHtNNuDfRR7oew23IA9TEZ1/P8BYx+bQ5Qv88s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772953198; c=relaxed/simple;
-	bh=+RNmhyrfQMWHwu+8od84odlXgRn/4U7kSubd4dXtgmo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RKJHq9EymMAt2Y9YUL80mMOmeUzR3/Ipx7SqoI6504RA75UAU+lLAq4/GZNKDQQvV2idPzkIz5fttlkoqV0fNWAjYtu/diANqgNa6JOGhr53DMggJrdBJQv+0EAJ8aGiXV+UazzTIefyq+IS8SsFxdgp+aklKy7UYhD8q7KjSTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mvzYUbPK; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1772976903; c=relaxed/simple;
+	bh=IdkYZcqSAsfDr/v01fcZng8MKVvKs612Vz+/y2dFwAw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hG6+6HKxfg9Ve3aeKNNgLilCTlRXYfRBx7STFslqZRUgQpDcgNjm/tt2QfNBWSLlrxYNl9H/ohf87ZdnJtsPs35MA4Wq1WGW60kwNws/c7oup2p8cO/Rev+wjUeaIzxlSDddeJufG6pU4gvbrVOCxpSGOE9XMiXi928+VHa03QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eMCjaptE; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mvzYUbPK"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35994d84c6dso2882230a91.2
-        for <linux-spi@vger.kernel.org>; Sat, 07 Mar 2026 22:59:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eMCjaptE"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-829ac4670c4so1236396b3a.0
+        for <linux-spi@vger.kernel.org>; Sun, 08 Mar 2026 06:35:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772953196; x=1773557996; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772976901; x=1773581701; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I0nWv8X0cARRJ4XJPERkEaD5MqJj6WxTqHyPFa/TlB8=;
-        b=mvzYUbPKNixCeuuUrGiB3hBRFd2w44t7P7kkckQIytwxekxqjvnFuZutq+vPlptW68
-         sAhbP8bDJf4VHLrysUK6jvYi3BP8wraugz7AKz8c5BOx+kwmSBOFc1qWMun9K4rHRftp
-         HT3cB1LMpHMAypMIYCSXNO7TU5lo70v5ryMyGDWYk7W3Px3PT2Y34QmiC/E0kDpgcu7G
-         hu4i/UWz98h2U+wz0PDytm8nnTClrGxaoOo4HHAvS4QyqIZZxEKoq9Y75QyPIdbScktq
-         lOCAu13pU4WfCkOeCyijmAT32V495ywwCA8IhwV9+dBJs7BS3h9J4cMt2yq9sUvk/Cia
-         mV0g==
+        bh=JltE6+8Ow4XXeaqmNG/IJKeoUqa+n358vgCzVseFfy4=;
+        b=eMCjaptEfWwLFBwnK5ob5bYSNiyCW6XIbjpLWi/Lnv80o9e+ykuZ59eg1e1MXcZEWA
+         ObG31TEpjkV5vTwPeQRGXikKEqC2ZABEzvBcAsf6bz2IUJG3nyJPduvEaSn7/dSQdUfP
+         6z28/OXe0v+eXORpalEnVLnesgbSvIi792Jngmya+qyktODSTzLwhxZ33OL18z6piEfb
+         gFaZKYzPBnWfqN5SFnSsJiUIk5g95H0iJPA59TG6v6mpm0tv6adAYgHAh2+oDRX6Z7j4
+         JUeZ8ML6UJ9Lf2Fe8/LOkhHtWjCnmIsyib8LOD2WX4qohgsxHFvkFmGRssI7XrBAzJ+y
+         6eOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772953196; x=1773557996;
+        d=1e100.net; s=20230601; t=1772976901; x=1773581701;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I0nWv8X0cARRJ4XJPERkEaD5MqJj6WxTqHyPFa/TlB8=;
-        b=QBG3YJDs3J83yU0JwvIe37LN/CQFXPPN9gvspd3ltaY5lG1vJ9bijyk3lEPMljaEtz
-         BD5WXKyB+TM0trXQ55N6xLS9GNgqCBH5hPl4RIkdd1fH/EdZGCPu+9iK6IJfvm3YUneI
-         lXK9gACl9Js6cLFlRUHBee4UvfPh7cqjnY7aOEIBurw0AzybyBA/PXpu39jV50y2NKLf
-         P7atLegU4G6LiN/Z7ux+CS5PXqFtuGU6a+88Trr+aYM4jLzSKSmB0GAvvLzb292CC1ss
-         rBTC2aTKTVWACSbwJxpVEk+3fDpz4PRtLKT5TIqQjm8k6ilayv9Vye5fSXaCrgKWpQvH
-         2jZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVx4l4hJCU/VQxJMG6WubM8/MKuhfoOpwpDUTo8rA41MDm9UgMG+m0Flo9iZ0jVBTHq6BQuw0WvZ+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAtzzC1SsZcDTR6seW5kc4BVw/Gin33KxVCt82TtMjPdnbyfug
-	41kfVn+2pL/HOtAVn+hwZnCdA9lVVJHdOIhcTlmzp5DxV5u65yBtt0xh2ZphgT1tOc8=
-X-Gm-Gg: ATEYQzy43sc5pPlEBxjy90HRx9nNCsuBdWCwBt/8OL0eZtzAIwN1gliL2mQWnP0XBSl
-	o7CvLxYK5kIAJm3452AAj8yqq2yBruUOOCBTH30wb3qRm1UbSRiysls6PUC0DhN8IO1lYufcYrL
-	A8AQF+rPQ67VjSb024q2QGisqHtaWetiTi4RqEmk+CF7MaYA6VEW0dL2ZfI0bqnpFtO+3uUkj9T
-	dexoLCorIFHb0SCjHegK5RKJujOkNJ34OWlHPn8DgV9pc8VDB3SmM+z6wk9iIMQM2PU+kjEPf3V
-	xbIddt6bfx6FoVT6KzeNed2OGIfeLp9frjUbTHSHyol874dLARCfQjlnW+KOM/F7IlyDdOOSCy0
-	0YUGqRmYJ3nkLwJlrExJCkA+OSnAVmsgMwU7N3pD9WL6Mw53/cKIYI6+QzB53iPrbeBqw1c20Pn
-	hXIYlOIf00kLjekjopLae1PnLSgtm2jOx68xXd6TWxDDOoCXs=
-X-Received: by 2002:a17:90b:3c4a:b0:356:24f0:af08 with SMTP id 98e67ed59e1d1-359be28d404mr6645265a91.1.1772953195878;
-        Sat, 07 Mar 2026 22:59:55 -0800 (PST)
+        bh=JltE6+8Ow4XXeaqmNG/IJKeoUqa+n358vgCzVseFfy4=;
+        b=YfpkwD1H/n64nNfi5Hs0/Ikw7haTP0CxdBg8OPDpYED1Tt+ZxqiSeWt93UMr3Xg5vz
+         N9cDp905F3jrHUKq2brufSx+kUjVnpyF+0jB++mO5nzdMXAkqLJV/aizxSN0y0Rc6OXu
+         R7U/qJ57Ym0WyH+3WIr1cSjBmVK7+Moikj0cDgDQA7dpHNVoVBZ44A/pUdB5RGBBrVB3
+         XjETBjHkfSR2hC0hkzDPwO4l+mHTTEMeMYhqTDx3v9Uv1OCOfuPo/vu2bdBxxVixBn9a
+         dqjxCx9t3f5bIeWZ+8WbnJk3nXuqG5Jr29D3yy/RZpIpcSuV7+yMUWDMDxIgwgl2GQuT
+         TG5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWxGK1HmYrr8JeNyFLdTtMdAu68dmbSeJ+mBkzALQjFd9ZzexhSFNabBnUfhI+JWqz2y3bGUOEdNfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRN9kU8C+xedj9uirnkqaunGRrSTvMRiSQ2NQgzfLTklxoOPtK
+	ax6Un2iPRHHpMWf8axDCruGpdQGC5x4WGanvOsF7xw5a1Bc4bQg4sp7n
+X-Gm-Gg: ATEYQzyMHdLHQKdLo0GzPnob8V2zELX4YHm6i0l9zIQiX15a1dPOE1jUkUlAlT2dqgv
+	jK3jlAd6HSXiOt1FhFuUSG3IP7GOSN0bM+ukeb+nJKI7tf/XybdNbWWvl3itLfgpGeZUiEMDWgp
+	jb3xNumoE6PQGT6J5n+8ox4zkbcUjt248/Kj9HuIu1iMMTeZ7R1lauSXt1i1VnLj5wO82wAoYuB
+	yBMXzksqo6GnBeEJlEoZYb1DnAL+/5bK9VQq8rVaKcsroECp1FEVgjkASmafyTRp4nQIbfvyLSW
+	5+mXOK0+CWN09vMtiJyi+XdO5TMQWoHDyt45IO++x6rP2lvsNKXu9wXzamLthQNghlHpU5bJA0V
+	mAyF3M/KPkKZqVZO20o1T+S5/fimmKRO9//WggCg+JuY8u8SbEEHQoak5nV8t3Sp+nleZM7jz6a
+	LDy7XA8tWY709OEmeJo8QtnInXC+L0CZB1SzSW
+X-Received: by 2002:a05:6a00:1c87:b0:824:374a:1424 with SMTP id d2e1a72fcca58-829a2f699dbmr7046957b3a.58.1772976901013;
+        Sun, 08 Mar 2026 06:35:01 -0700 (PDT)
 Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:4507:7fb4:bc3a:eca9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2e00177sm14464792a91.14.2026.03.07.22.59.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a48d696bsm6895996b3a.58.2026.03.08.06.34.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 22:59:55 -0800 (PST)
+        Sun, 08 Mar 2026 06:35:00 -0700 (PDT)
 From: Felix Gu <ustc.gu@gmail.com>
-Date: Sun, 08 Mar 2026 14:59:50 +0800
-Subject: [PATCH] spi: amlogic-spisg: Use IS_ERR() instead of
- IS_ERR_OR_NULL()
+Date: Sun, 08 Mar 2026 21:34:55 +0800
+Subject: [PATCH] spi: amlogic: spifc-a4: Remove redundant clock cleanup
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,66 +67,128 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260308-spisg-1-v1-1-4e209faf228d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAGUerWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYwML3eKCzOJ0XUPdNGMTo5QkC4skM/NkJaDqgqLUtMwKsEnRsbW1AEG
- WhcNZAAAA
-X-Change-ID: 20260308-spisg-1-f342db88b67c
-To: Sunny Luo <sunny.luo@amlogic.com>, 
+Message-Id: <20260308-spifc-a4-1-v1-1-77e286c26832@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAP56rWkC/x3MQQqAIBBA0avIrBtQC5GuEi3MZmo2JgoRSHdPW
+ r7F/w0qFaEKs2pQ6JYqV+owg4J4hnQQyt4NVlunR+2xZuGIYUKDzjNvxrnAzNCDXIjl+WfL+r4
+ fJLtx3FwAAAA=
+X-Change-ID: 20260308-spifc-a4-1-68ffb166afff
+To: Liang Yang <liang.yang@amlogic.com>, Feng Chen <feng.chen@amlogic.com>, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>, Mark Brown <broonie@kernel.org>
 Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772953192; l=1524;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772976897; l=3322;
  i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=+RNmhyrfQMWHwu+8od84odlXgRn/4U7kSubd4dXtgmo=;
- b=IivQ04b4Vat5+bqGtsxOs3thUBaQ4qZSzLSCErKbdMYgH9O5udI1OrEO0OIVeU7zaYEynhEKL
- 7JVo11RZSD5DP1oCd8kKsBx5xoGTFTrr5ibxXTg2UI39dFfvBr8ZQfn
+ bh=IdkYZcqSAsfDr/v01fcZng8MKVvKs612Vz+/y2dFwAw=;
+ b=ZfSJgryJPy5aIsot/eh+rHeNfAWOTkrwIbpOT+IyH6Dk59HdDBzl90AJrxWPOzvfYj5ChX+9G
+ NRb8Zp5gGxUD17R8GomZSUGQhE3vo+0fTosH2TwvmNc8b76FJ2UE1KA
 X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
  pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-devm_clk_get_enabled() and devm_clk_hw_get_clk() return error pointers
-on failure and never return NULL. So IS_ERR_OR_NULL() is unnecessary,
-replace them with IS_ERR().
+The driver uses devm_clk_get_enabled() which enables the clock and
+registers a callback to automatically disable it when the device
+is unbound.
 
+Remove the redundant aml_sfc_disable_clk() call in the error paths
+and remove callback.
+
+Fixes: 4670db6f32e9 ("spi: amlogic: add driver for Amlogic SPI Flash Controller")
 Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 ---
- drivers/spi/spi-amlogic-spisg.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-amlogic-spifc-a4.c | 46 ++++++--------------------------------
+ 1 file changed, 7 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index 1509df2b17ae..665f889dc8d3 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -647,13 +647,13 @@ static int aml_spisg_clk_init(struct spisg_device *spisg, void __iomem *base)
- 	int ret, i;
+diff --git a/drivers/spi/spi-amlogic-spifc-a4.c b/drivers/spi/spi-amlogic-spifc-a4.c
+index 2aef528cfc1b..d3061c870ff8 100644
+--- a/drivers/spi/spi-amlogic-spifc-a4.c
++++ b/drivers/spi/spi-amlogic-spifc-a4.c
+@@ -1084,14 +1084,6 @@ static int aml_sfc_clk_init(struct aml_sfc *sfc)
+ 	return clk_set_rate(sfc->core_clk, SFC_BUS_DEFAULT_CLK);
+ }
  
- 	spisg->core = devm_clk_get_enabled(dev, "core");
--	if (IS_ERR_OR_NULL(spisg->core)) {
-+	if (IS_ERR(spisg->core)) {
- 		dev_err(dev, "core clock request failed\n");
- 		return PTR_ERR(spisg->core);
- 	}
+-static int aml_sfc_disable_clk(struct aml_sfc *sfc)
+-{
+-	clk_disable_unprepare(sfc->core_clk);
+-	clk_disable_unprepare(sfc->gate_clk);
+-
+-	return 0;
+-}
+-
+ static int aml_sfc_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -1142,16 +1134,12 @@ static int aml_sfc_probe(struct platform_device *pdev)
  
- 	spisg->pclk = devm_clk_get_enabled(dev, "pclk");
--	if (IS_ERR_OR_NULL(spisg->pclk)) {
-+	if (IS_ERR(spisg->pclk)) {
- 		dev_err(dev, "pclk clock request failed\n");
- 		return PTR_ERR(spisg->pclk);
- 	}
-@@ -703,7 +703,7 @@ static int aml_spisg_clk_init(struct spisg_device *spisg, void __iomem *base)
- 	}
+ 	/* Enable Amlogic flash controller spi mode */
+ 	ret = regmap_write(sfc->regmap_base, SFC_SPI_CFG, SPI_MODE_EN);
+-	if (ret) {
+-		dev_err(dev, "failed to enable SPI mode\n");
+-		goto err_out;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to enable SPI mode\n");
  
- 	spisg->sclk = devm_clk_hw_get_clk(dev, &div->hw, NULL);
--	if (IS_ERR_OR_NULL(spisg->sclk)) {
-+	if (IS_ERR(spisg->sclk)) {
- 		dev_err(dev, "get clock failed\n");
- 		return PTR_ERR(spisg->sclk);
- 	}
+ 	ret = dma_set_mask(sfc->dev, DMA_BIT_MASK(32));
+-	if (ret) {
+-		dev_err(sfc->dev, "failed to set dma mask\n");
+-		goto err_out;
+-	}
++	if (ret)
++		return dev_err_probe(sfc->dev, ret, "failed to set dma mask\n");
+ 
+ 	sfc->ecc_eng.dev = &pdev->dev;
+ 	sfc->ecc_eng.integration = NAND_ECC_ENGINE_INTEGRATION_PIPELINED;
+@@ -1159,10 +1147,8 @@ static int aml_sfc_probe(struct platform_device *pdev)
+ 	sfc->ecc_eng.priv = sfc;
+ 
+ 	ret = nand_ecc_register_on_host_hw_engine(&sfc->ecc_eng);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register Aml host ecc engine.\n");
+-		goto err_out;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "failed to register Aml host ecc engine.\n");
+ 
+ 	ret = of_property_read_u32(np, "amlogic,rx-adj", &val);
+ 	if (!ret)
+@@ -1178,24 +1164,7 @@ static int aml_sfc_probe(struct platform_device *pdev)
+ 	ctrl->min_speed_hz = SFC_MIN_FREQUENCY;
+ 	ctrl->num_chipselect = SFC_MAX_CS_NUM;
+ 
+-	ret = devm_spi_register_controller(dev, ctrl);
+-	if (ret)
+-		goto err_out;
+-
+-	return 0;
+-
+-err_out:
+-	aml_sfc_disable_clk(sfc);
+-
+-	return ret;
+-}
+-
+-static void aml_sfc_remove(struct platform_device *pdev)
+-{
+-	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+-	struct aml_sfc *sfc = spi_controller_get_devdata(ctlr);
+-
+-	aml_sfc_disable_clk(sfc);
++	return devm_spi_register_controller(dev, ctrl);
+ }
+ 
+ static const struct of_device_id aml_sfc_of_match[] = {
+@@ -1213,7 +1182,6 @@ static struct platform_driver aml_sfc_driver = {
+ 		.of_match_table = aml_sfc_of_match,
+ 	},
+ 	.probe = aml_sfc_probe,
+-	.remove = aml_sfc_remove,
+ };
+ module_platform_driver(aml_sfc_driver);
+ 
 
 ---
 base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
-change-id: 20260308-spisg-1-f342db88b67c
+change-id: 20260308-spifc-a4-1-68ffb166afff
 
 Best regards,
 -- 

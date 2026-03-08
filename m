@@ -1,142 +1,149 @@
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59A939E6E0
-	for <linux-spi@vger.kernel.org>; Sat,  7 Mar 2026 13:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B92B3126C0
+	for <linux-spi@vger.kernel.org>; Sun,  8 Mar 2026 06:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772888902; cv=none; b=cnp/FTIMcAMJ8tAUOF/kpHl4t4jL45cnLmMXoXsbwAMK6UsiZCNDVlN0KAECLd7WzrmMOAzGr4VKIIb04DxEZw/nwT5oQqU89lyFlwSaQjIqFnICq7W+xu3JAKQxiw/H/YH1LvbWo2G5UC4E9DNl6FVGN7r139fSAcTlQcHyRMc=
+	t=1772952572; cv=none; b=hv4Y8Zj+VMCfO9zbHThcxxs2gbVBPB+/fNjCTNiXPxYKqVVABnfGhBmdPYlkpnPfVssV5VAwdBUizoW0a+EBhKUBeokds8sXeOap9Ty0rWlr5PuwPLAMqoQVU0w6Ar54X5SEC019TnWAhfLPJhTL8J4d/NAuQbOqqqY+9EaCg0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772888902; c=relaxed/simple;
-	bh=6ZueMwC5TQvpvKLpbqMnKp8v4IHcY2ATl0BWBsjdG24=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uAFBlvpb9/T5yR5jCtvk+OQGwBZ1d9R7Ee+FO53Z7+LBWQ9imISpsKpYB8ni7a1JmkEtCzNv9gfR1xNIWsWHWOvfgJgyJaptQoWFBHvPGoVkw3T8OVSm6ck+rESQsOqQP42XhXrbxQyo1ybHrdG64j9yl7BNbpASBC0RRgxZkkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=uDEWI0PM; arc=none smtp.client-ip=35.89.44.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+	s=arc-20240116; t=1772952572; c=relaxed/simple;
+	bh=/BKTkOJbNK8vWv0xzW8hwFc3TcYc2Ah5zzUcDxFOowk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UpulwZQoD3n3kPsAfoor3zd0v0g+3NEfw9B3lScnWMN+DvyPQU9jYKVvLGggsLea6aZ3b7j9ZVY13THXoPfn50PgJgz0kNlHxjPqt5p8AyIRh7Qk+G32rhwLieRzL6EELauFuOqbMpWXqyk4twbU9A8C/bs2bG5fEtKPAdanFTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PdbopySu; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="uDEWI0PM"
-Received: from eig-obgw-5004b.ext.cloudfilter.net ([10.0.29.208])
-	by cmsmtp with ESMTPS
-	id yqKEvZbtLKjfoyrOGv5Hmn; Sat, 07 Mar 2026 13:08:20 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id yrO9vUcS8qfpWyrO9vOrpQ; Sat, 07 Mar 2026 13:08:13 +0000
-X-Authority-Analysis: v=2.4 cv=A55sP7WG c=1 sm=1 tr=0 ts=69ac2344
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=4SagQa6AY7hvVoN6pvcA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ARXowE8k1fH/dnVCY7yvpHlIGYpIl/GW5K2hyx6Xi8c=; b=uDEWI0PMvf0ZPhN9BX1BAk92to
-	0Jz+fJEHMZtTwbZ5GYjxot6hjqRQL4nDJX0/TA4pZ4NVAoo38jow57mBfJ/W79ymJUIYS2IY8Oxsd
-	aFaHqrqia8AqvW1DD3kNWOFvDJ5PoQ4jcjItQy1Eq6ZMeytubvtQFn64LnYgypYbsRKonUKL8AEss
-	Z9Yjq83Pd2L5NDcr3xjyNIp67S+v8EjXqIChtfAf4/OS/4t4RE4XO/w90nhBaRe2Joc/NBVEyX9ey
-	wR8UUeNNVc2IK6lvp24EpcbnHbGEtC3bVovj6a0AfJbx0myhT7iBgPCn3eeoc15ZhV3JXq3UQBoTr
-	/wrgkPSQ==;
-Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:33810 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vyrO8-00000000Zji-0t9k;
-	Sat, 07 Mar 2026 06:08:12 -0700
-Message-ID: <a2cc3687-7814-4f63-83d8-6ca731eb5e4d@w6rz.net>
-Date: Sat, 7 Mar 2026 05:08:10 -0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PdbopySu"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so118752955ad.2
+        for <linux-spi@vger.kernel.org>; Sat, 07 Mar 2026 22:49:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772952570; x=1773557370; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oHZ3b8kIQa/ldmjcMemF0gGgYf2JewffGcklskFCxDY=;
+        b=PdbopySuYtgWry5Mu8DmCfw+cmnHilQSUS6qORvibKCTv/MibXD+fp3zCkpAb8WOI/
+         eOHaee3kuJwC1f0nQOdeDF23VZoZyL7Jv5z7ZvRBikAHnDjgzmEE7oUAAvL9JBxzoCNw
+         tZDKkkN9YgKDaujAWUpthjoCktYRopWF59qKOe8Ua9HbgXDlKd9HNcR6EvNt9qx3+Wow
+         SQZg6YwvxaMXhqbtOzztOjIohMAx63v8AT9zq/+MVvDpOT3491DVXuLQAvpaiSSNE4Sn
+         eIoIjiSd8Z+VMluw3c1SfEMu0r0x1mRHyjZTCwgA9xBG/EPSPybeGxaHtjq3cRAluDYP
+         7vYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772952570; x=1773557370;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oHZ3b8kIQa/ldmjcMemF0gGgYf2JewffGcklskFCxDY=;
+        b=llRAXsrf22DjHK5A/tIqjuQ7q/cY1ib7rlRM+0RiE1zoSVrHp0L7NuScLA7ikicwjq
+         u8vT2wqc9B574cMLatpmACYFtfBtrf7vBhZFmRIK1HgjNUSzV4KetSpQWoOC2+1eLseh
+         EEeEFP5r7Hyadg6pSQrpo6hd0qpEJ3W2GMB0j1RGrpXARg4rwqtmTtXR5vv67Y/FM58y
+         L02YSFdLieVlCNZpCU2og5b/f4Lt7LNtQBfMifa5CvQ3TIyF1cl2qdzP6HzMSFe068Bf
+         0roCSaecLoCNFzDqvwJYIg2nTnd9wcGMGqtJIC6OFeXmHvTfOuKkRHREqnTy0mV1S2R0
+         qx5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWfsUJTUJ+2wz+xikwugVeFW+204TVX2bq4kpq7Kvbu+r70NpyykmZxdcrH6aZY67nzwgPJEWz2beA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7kXuVbi50JHxv0mR3prsVA969dQd7Hs2wyNPM0Ouv/8XIJOwb
+	kWD396lO8HQL9w7oXVB7tOvsZDiTQDONTvsybvccwRP0D6/PAh3iax0B
+X-Gm-Gg: ATEYQzwLNr9Ak370m0P9H5O9Zu1VR28VYP4N59kbY0Q4cTrqqmdp8O1uLqs65zfosxJ
+	cbqTUOvfpwYAuxgPbHeJYAmethLwYES5O+MVb5TP8YtyIXKTnTdOB44PMQitzxLga+TNZZ/18SU
+	qh99zTv8ndJPU2AqaXhtwMdHCsuwgoaYcFJJnb8NZcWBlng/+5YUlEjdzJLAkkxqX11iTxyA2zq
+	7nYFA+xPvw/Z6bMqpmGhzjuySdfldQRrO7RGt/cS+abpFv7zl8rSpP8hUwCzWN082RYtkRnZFhO
+	QYnNKJ+/OxmXuLNQ6jvCEOG67OwFv9ikILljbPine7yCzESwF9i0JZDqGvh5r99Y/vzlSZHhz8l
+	RaiG9XK1fNt1nBjYK1kmotZtvM26B2fsspG1YNHmH9uD9ybWkwaDrvlTQz/dmx95GIgNayR6GWn
+	ikINyXJe23FrWUI5lXfpUR8wBUPk61ktlh1EnZS6usYFKj0jw=
+X-Received: by 2002:a17:903:182:b0:2ae:8077:b1c7 with SMTP id d9443c01a7336-2ae8242d3a5mr82140785ad.37.1772952569794;
+        Sat, 07 Mar 2026 22:49:29 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9009:3f2:4507:7fb4:bc3a:eca9])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f8b9e4sm68061485ad.64.2026.03.07.22.49.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 22:49:29 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Sun, 08 Mar 2026 14:49:21 +0800
+Subject: [PATCH] spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: cadence-qspi: Fix requesting of APB and AHB clocks
- on JH7110
-To: Mark Brown <broonie@kernel.org>,
- "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260307-spi-cadence-qspi-fix-jh7110-v1-1-c9f37b8c58b1@kernel.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260307-spi-cadence-qspi-fix-jh7110-v1-1-c9f37b8c58b1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.206.103
-X-Source-L: No
-X-Exim-ID: 1vyrO8-00000000Zji-0t9k
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:33810
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfM3uhHotm5zHgbfsIkiBmVHHkh9KuwgqeLGu/SlxRCn6bpmj/ueaFgL8koFcxTSlTCMMncjAdyrzzv8XhLBNnPfW1aaphX0e7Z07euoMlNyOarGfc3L1
- d+68uo6HGOx261PZBQyTObQT9eB5nqjIB+VFWoPyewQ4onHac6CauhpIn58u+DleEIWm6JBnWjsyQWdt3EXgFLCcJ5F46tDgIc4=
+Message-Id: <20260308-spisg-v1-1-2cace5cafc24@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPAbrWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYwMz3eKCzOJ0XVNj02TzVMsUS3MzYyWg2oKi1LTMCrA50bG1tQCt9OM
+ RVwAAAA==
+X-Change-ID: 20260306-spisg-535c7e9d9763
+To: Sunny Luo <sunny.luo@amlogic.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772952565; l=1876;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=/BKTkOJbNK8vWv0xzW8hwFc3TcYc2Ah5zzUcDxFOowk=;
+ b=vqPfmsD3moqSuGNU//cr5LUBXukDIbjFj7/CSdRC3m4i2jFFtcz9i39Ori8w8ss8YVIkLBES7
+ sJ2vompmXO+AQdSJ9BACro3T5AkTRjSLiwE1/jgb9LMxnG6ea3eBrLp
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On 3/7/26 01:50, Mark Brown wrote:
-> The move of the AHB and APB clocks from a JH7110 specific quirk to the
-> main clock init dropped the specification of the clock names to request
-> for the AHB and APB clocks, resulting in the clock framework requesting
-> a clock with a NULL name three times.  On most platforms where the
-> clocks are physically the same or some are always on this makes no
-> difference but the reason we had the specific quirk for JH7110 is that
-> it does actually have separate, controllable clocks.  Update the new
-> code to request the AHB and APB clocks by name to restore the original
-> behaviour on JH7110.
->
-> Fixes: 324ecc7788c2 ("spi: cadence-qspi: Kill cqspi_jh7110_clk_init")
-> Reported-by: Ron Economos <re@w6rz.net>
-> Closes: https://lore.kernel.org/r/a3ca5e9b-7446-497e-8df2-7ef2b42a02e9@w6rz.net
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> ---
->   drivers/spi/spi-cadence-quadspi.c | 6 ++++++
->   1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-> index 649ff55333f0..5fb0cb07c110 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -76,6 +76,11 @@ struct cqspi_flash_pdata {
->   	u8		cs;
->   };
->   
-> +static const struct clk_bulk_data cqspi_clks[CLK_QSPI_NUM] = {
-> +	[CLK_QSPI_APB] = { .id = "apb" },
-> +	[CLK_QSPI_AHB] = { .id = "ahb" },
-> +};
-> +
->   struct cqspi_st {
->   	struct platform_device	*pdev;
->   	struct spi_controller	*host;
-> @@ -1823,6 +1828,7 @@ static int cqspi_probe(struct platform_device *pdev)
->   	}
->   
->   	/* Obtain QSPI clocks. */
-> +	memcpy(&cqspi->clks, &cqspi_clks, sizeof(cqspi->clks));
->   	ret = devm_clk_bulk_get_optional(dev, CLK_QSPI_NUM, cqspi->clks);
->   	if (ret)
->   		return dev_err_probe(dev, ret, "Failed to get clocks\n");
->
-> ---
-> base-commit: 11439c4635edd669ae435eec308f4ab8a0804808
-> change-id: 20260306-spi-cadence-qspi-fix-jh7110-608e79a09d15
->
-> Best regards,
-> --
-> Mark Brown <broonie@kernel.org>
+In aml_spisg_probe(), ctlr is allocated by
+spi_alloc_target()/spi_alloc_host(), but fails to call
+spi_controller_put() in several error paths. This leads
+to a memory leak whenever the driver fails to probe after
+the initial allocation.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Convert to use devm_spi_alloc_host()/devm_spi_alloc_target()
+to fix the memory leak.
+
+Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-amlogic-spisg.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
+index 1509df2b17ae..9d568e385f05 100644
+--- a/drivers/spi/spi-amlogic-spisg.c
++++ b/drivers/spi/spi-amlogic-spisg.c
+@@ -729,9 +729,9 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 	};
+ 
+ 	if (of_property_read_bool(dev->of_node, "spi-slave"))
+-		ctlr = spi_alloc_target(dev, sizeof(*spisg));
++		ctlr = devm_spi_alloc_target(dev, sizeof(*spisg));
+ 	else
+-		ctlr = spi_alloc_host(dev, sizeof(*spisg));
++		ctlr = devm_spi_alloc_host(dev, sizeof(*spisg));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -750,10 +750,8 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(spisg->map), "regmap init failed\n");
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto out_controller;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	ret = device_reset_optional(dev);
+ 	if (ret)
+@@ -817,8 +815,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 	if (spisg->core)
+ 		clk_disable_unprepare(spisg->core);
+ 	clk_disable_unprepare(spisg->pclk);
+-out_controller:
+-	spi_controller_put(ctlr);
+ 
+ 	return ret;
+ }
+
+---
+base-commit: a0ae2a256046c0c5d3778d1a194ff2e171f16e5f
+change-id: 20260306-spisg-535c7e9d9763
+
+Best regards,
+-- 
+Felix Gu <ustc.gu@gmail.com>
 

@@ -1,70 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D7D33F8BC
-	for <linux-spi@vger.kernel.org>; Mon,  9 Mar 2026 20:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D8A38944D;
+	Mon,  9 Mar 2026 22:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773089807; cv=none; b=NXMbkHYJjDLSCZMRieNY6KB0MBzgC6MhW0T2ETPKC4jRW+148qvwh/T9/X2Hf/Mt29dRw0GWkl6egmPqDhi7zC0sXp4GcLJUiU41Ey2veOc1EksBJv0rMZc5mYoHyNtTbXZcocZiHvM/vfKl10/cLh8YPPdnGts7Y1b3Apab96I=
+	t=1773095833; cv=none; b=XMOf2H2/rAOyKj2v5a9YdIinJAugg80Nuj3OYebRk851PNbmmgyyXuXwhNwlCMG054YFQB9M4MY6QitgA9JSMEzFlPzj8kAchaA4n5SRmnCAHvNFONWp3t0/XYc2CpyT0daK0yeK5JPNL7JEsDoBFR9F0IJ4Teifb3ssuLIDpGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773089807; c=relaxed/simple;
-	bh=lzLaCSn0mWx5XTUN0MUmqq/XQnOWjhp4Gbb4I9ZMJuA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=uSS5ZNRRZqPngnZlaEEySzbkGXGlZdDPQAEsR2EjTRkV6l62IEcKL6YTWPKMYGc48nZVtkjloeGF2uWt+eIC+9nsvHK9lN9aRmYfjCztcCBlBzjXSl8nmf43h4FTmKE15/NHY+7TtcY+zsJklNz1XlAi2IVkYS/Jf7+9qWK1XdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUwJ/F95; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773095833; c=relaxed/simple;
+	bh=6BnqkIlhVLViOxVryE2C/8Z+o2ZWDSXu/1ZvCYaDXaI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Kc6OBQZt0jGyh9pDAL2yiQB+j/2g65CEpmaKjVWB/aHGlvZKV66FJqpfPgh9tYQVS6tg88loEs8oTe+b2woR18RkiFb38crHPZNQK5UbZeIChBJ+4igfrcP4JCiOtUyMS/cReGkZYuNVQN1P8+fAHOS6se4/oTjL/dD0/LtHHcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tf3H4xez; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUwJ/F95"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8C0C4CEF7;
-	Mon,  9 Mar 2026 20:56:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tf3H4xez"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC18EC4CEF7;
+	Mon,  9 Mar 2026 22:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773089806;
-	bh=lzLaCSn0mWx5XTUN0MUmqq/XQnOWjhp4Gbb4I9ZMJuA=;
-	h=Subject:From:Date:To:From;
-	b=jUwJ/F95Gf0ByoEQZjunKjJEwybRfBI05UOWFIHJ5eFi9SUG3DT/OK3NtqigGL8EF
-	 klgLBL7N3H1RAdc4G7aoclYxE0d9shu7f/myNAvtE1uz3j0S34aDPNBWMTpQxwx1vS
-	 fAw1JMAwpKp4GPhR0BRZV7u22HEWrApwumvEG6uv5RITrz+cQSyNsd0F79jVkLWAmK
-	 5hOX80tDX8mCQOSosch50Kr38pMMYxk96nY7Qh2eUDiCsvgOD8YWiO/rD6rSkE3tQf
-	 fnbfDTrEYzEkojoXr8SPoFeX97EePwQRbL+DJvYmHrrMqxu7d8Z0RVfg2CQ6KLx10H
-	 7MvNqFy0wABaQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE7A3808200;
-	Mon,  9 Mar 2026 20:56:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773095833;
+	bh=6BnqkIlhVLViOxVryE2C/8Z+o2ZWDSXu/1ZvCYaDXaI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=tf3H4xezIDRsTefv5vg+Fi29V0HK0hXba7SX8Qjpff2LIMJyrIdAUlfUphLpz0vXt
+	 VQpGFEczR5IAjz3w0nxB8MKfbmHs4/aNlNfd+DGOIIOp6l134w/5Rp2To/2e5JfMwX
+	 jka3hl9HgNEm6orCxeH/SfP3w8jvX/m5fYle80bUygWWmiwJcRPR27vaKPH8K2+jSn
+	 2iA8h2SwCIPEPEdAOWaWyB1A1B9vQ5bLuZBgaON2BkDvHjIYMQS0GC1DnqWefCyonN
+	 /H0sDUjE5hGE9wW/AFoF2BHq5ToC8S60Ncuv3QlHZK5gJX2tIU+UUy0yH9Lc0MEaig
+	 BwfzfclgNVaDg==
+From: Mark Brown <broonie@kernel.org>
+To: Heiko Stuebner <heiko@sntech.de>, Jon Lin <jon.lin@rock-chips.com>, 
+ Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260310-sfc-v2-1-67fab04b097f@gmail.com>
+References: <20260310-sfc-v2-1-67fab04b097f@gmail.com>
+Subject: Re: [PATCH v2] spi: rockchip-sfc: Fix double-free in remove()
+ callback
+Message-Id: <177309583151.321088.16829523155005247397.b4-ty@kernel.org>
+Date: Mon, 09 Mar 2026 22:37:11 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177308980398.1777985.246050875948989110.git-patchwork-summary@kernel.org>
-Date: Mon, 09 Mar 2026 20:56:43 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-83dbb
 
-Hello:
+On Tue, 10 Mar 2026 02:01:34 +0800, Felix Gu wrote:
+> The driver uses devm_spi_register_controller() for registration, which
+> automatically unregisters the controller via devm cleanup when the
+> device is removed. The manual call to spi_unregister_controller() in
+> the remove() callback can lead to a double-free.
+> 
+> And to make sure controller is unregistered before DMA buffer is
+> unmapped, switch to use spi_register_controller() in probe().
+> 
+> [...]
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: spi: atcspi200: Fix double-free in atcspi_configure_dma()
-  Submitter: Felix Gu <ustc.gu@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1061950
-  Lore link: https://lore.kernel.org/r/20260305-atcspi2000-v1-1-eafe08dcca60@gmail.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Patch: spi: amlogic: spifc-a4: Fix DMA mapping error handling
-  Submitter: Felix Gu <ustc.gu@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1062099
-  Lore link: https://lore.kernel.org/r/20260306-spifc-a4-v1-1-f22c9965f64a@gmail.com
+Thanks!
 
+[1/1] spi: rockchip-sfc: Fix double-free in remove() callback
+      commit: 111e2863372c322e836e0c896f6dd9cf4ee08c71
 
-Total patches: 2
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

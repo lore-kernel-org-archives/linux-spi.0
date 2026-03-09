@@ -1,135 +1,95 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC63332623
-	for <linux-spi@vger.kernel.org>; Mon,  9 Mar 2026 05:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573123A63EC;
+	Mon,  9 Mar 2026 12:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773035094; cv=none; b=eCxsH+kh1scxB2b7cXAUm0gLNJ7Og9RGU33uUj46AL6gWcoMcARC/bI0cWb2gfdT+EfE+KMCD2pqc4hjq0aabFT7LTUL9vSL8xoyEev9fCNayaB3SWX5WEgGE/x91fG2X+JFzG+IpWw5l72NBwwCz3dlFY1iq5itAkqLAi9s0wI=
+	t=1773059380; cv=none; b=aeqiQeru7ETubv7K+LwgD/Toj9ZcDcbKhsDrnJ2x83AJHssiqNcTsNcyskGS9+Mvale/EP1QNXulY3EseH9AUuHLhyNn0kcHTpgBr5yJ2obkKzwNI6+rb+CjVVBHnxTerdehZ5/HRfJlc3Ebl9/qBsHfegqCjCYQvkrM9tDL3OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773035094; c=relaxed/simple;
-	bh=hqi/Df1JPDp/BlPm0GTdyjJF+qjIicQyIWh3azQlrf8=;
+	s=arc-20240116; t=1773059380; c=relaxed/simple;
+	bh=sdACc/Vbt9m0Tf3WatUwZZmOXL5NI62/15tUJ8fQl8M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLu6UsuddlqucznDvXNzGNzzuPORlG43iKi94EhkuHLDDB6nZOruN2YgSrOUGHd6U9mbtOIIC9pR7K4PRhhF5cD+FelpNWmg1963miXfVjq875Qn+sruffACdHdfjRc/4sBcjuBiKoaTOWYZJjRsjHIaol51TCqOQW2dvM2U+Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH9kTvFY; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RxBoMIJBZNSWYGB+eFbwcwANLjMsXzyOTJrM4rWQgesy7fS3o0ZUtWLxvyNW8hCn3D8vRfMoEB5Vi89432L3Le9vOSlRzvayAZJADSSgl9Ej+VnuWvIdnXUwGsWvXihHMFXjjdh35TMUoHixSO/CQd1PCrGCkouxeESi3rzos7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMDb8XsI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH9kTvFY"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12776bebe9fso4362588c88.1
-        for <linux-spi@vger.kernel.org>; Sun, 08 Mar 2026 22:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773035093; x=1773639893; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ug9w3Bfo3Ur8mbdFfczjnMxT2pbrXyiERJeMtAuIh8g=;
-        b=PH9kTvFYazGcAHB330To/OeFzVVVoAetzeAqLqtqgO8FTevOSlJFg0vBVgSis1D2qx
-         ei4tNvhFPmh9rlOXr2szTzSoqAD0b7HIcOIrEvL5+ngd6IVklpLZT6rHLnG7PimKZxJ9
-         WNgr1m+pUKPVhXczgU5mbe5tNGgj5xXXBCyEvkqnAFWkvr0DnL5lcVxj8bcLuaBKAWQj
-         nuRXFxAHJBYhnJ9oofghicqrvnLlnsy7xl+xR5W6CAGNw7Ab3S8+FdKBlMHTEgwLb98/
-         MWsGRvDGo8vDBF/Va9cyyNDPmbCaaATQfCaHXHHlieVPDqYlbgqs+bSBorjqAbNtezJr
-         wD2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773035093; x=1773639893;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug9w3Bfo3Ur8mbdFfczjnMxT2pbrXyiERJeMtAuIh8g=;
-        b=skKvrn4XKktoE0/haP4uXUjf4h/4NdRMpfpZKSRxrOaW88Vs4LUrbwfO9msiqno7st
-         ZVhHkq4jBLidehoXBYHICOSiTpPT9N5TgXp5PUIa2V7SBTHgyYgAX2mmzfAwVNVCbuky
-         wsPlTnxH9td1L03TiDGsKvlmX15qPfHjXGmsLfyaojTvasMTR9Om4Cd87FvTJuxh9W3m
-         PfTYyO2e+I9Lw15LDq7QV+11WFgerrQ2ZPXF1broThjt6RHRoZADd2T13kg4ssOE9p6e
-         S2QXmY1tde3nGTlwMXjLP5FANQUAmCUbXiGYeUW7SvvvnVPXhyfAxYDYAjLjz8f+kSF6
-         oEpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqD4O/aHaqX4cCIfsQc0vtiyvpCx5fF76dw/wQjsHSJTWynaemXIAHkauB0mlOSJQtAu+rgOkJkg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDc+Uh0m3dfcZ+EWsxXo6IZEpwe5LCRNOU241yL17GKSUVoiK8
-	dE8fY+ppxiv8Fqg2iDigCSt4RODHCjvjB7cPp7kEsAKQVc97SVHkNcE8
-X-Gm-Gg: ATEYQzwqkmaRQm1p+PxmlCrbaK52AQ0pXqBPrcuZC6cDXDMWeTGsbImvH37+2DcO+dn
-	1nhuZMO3y2XIfP5iqbsqcYzn5UiV2uTEGih1FqcU9T7Q+VFGkYyTKS02NBFm3JXTSLbos7fXL8X
-	OCHU5pzubPVuB6L7sh9TD3wlEzrb4md9qLYSOdaQikAxrWD7xzftOVOfccOSTuaWJzMD5E6gj+n
-	3TctAYRglVtTo++IgJBoj6R3HVa9/lKxDm7mFXSAEKM8U/LUi4pbLPDvClgtAjPumpKnOrrYiA9
-	F/+GGD2UWXFWffYWzwAf2SYdZyN4VPM9SpNTykBJB5lftE1Drv3icm4mN6tlwTa962+ZjTbswcs
-	oBTFbM+IAZQi/3+QUEFvjUKebLLkzJMzpas7IEDqtA6g/4YnVTHDK77C3FnJUViMOpT4jvOrlC4
-	n/EW34GQrLHXcG2cIGWfAUzNhb7+s+nOc=
-X-Received: by 2002:a05:7022:906:b0:127:5cfd:785 with SMTP id a92af1059eb24-128c2d8f553mr4232707c88.4.1773035092704;
-        Sun, 08 Mar 2026 22:44:52 -0700 (PDT)
-Received: from google.com ([2601:647:5e00:4acd:af9:a43b:9d9e:841c])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-128c3f43593sm8122381c88.9.2026.03.08.22.44.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Mar 2026 22:44:52 -0700 (PDT)
-Date: Mon, 9 Mar 2026 05:44:48 +0000
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Val Packett <val@packett.cool>
-Cc: Jingyuan Liang <jingyliang@chromium.org>, 
-	Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org, hbarnor@chromium.org, 
-	Dmitry Antipov <dmanti@microsoft.com>, Jarrett Schultz <jaschultz@microsoft.com>
-Subject: Re: [PATCH 09/12] dt-bindings: input: Document hid-over-spi DT schema
-Message-ID: <aa5cxFcZrI89g-8s@google.com>
-References: <20260303-send-upstream-v1-0-1515ba218f3d@chromium.org>
- <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org>
- <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMDb8XsI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82263C4CEF7;
+	Mon,  9 Mar 2026 12:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773059380;
+	bh=sdACc/Vbt9m0Tf3WatUwZZmOXL5NI62/15tUJ8fQl8M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JMDb8XsIm65PkNu73oLSZoi0tfbQDim/GSj7cTRxWJMUOPPHL2GFZ1NF3os0/1jQ1
+	 KSqFUuUZkKacY7gSY8VK0MpssUjeTR5dRxOs6lKincVkR/h8SSvWLSmRweSFReyqJ7
+	 fgzYbHiMie8oxNTlQhPYonhvAUqG9b54NebTJb+EvL6QLlyFYxhKBRUQ4OcCfW/8+0
+	 496unukW4tkQpsDz1WqSo0UavpBwMHSyI5lQlOSAYuy1hCKHWKcGN9Gj9gHa7q3CLo
+	 xjbKUXlkxLsvXFmoF1KSijZ96TjG58B9jJbTLpYeM9xdXdPZy4nQQ1hEVbwnGmX7ZU
+	 0uwBoAfd0PhDg==
+Date: Mon, 9 Mar 2026 12:29:35 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Heiko Stuebner <heiko@sntech.de>, Jon Lin <jon.lin@rock-chips.com>,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: rockchip-sfc: Remove redundant
+ spi_unregister_controller() call
+Message-ID: <52755ab9-7387-4f4b-95d4-2bfdeedc3e5f@sirena.org.uk>
+References: <20260305-sfc-v1-1-6fbf6df0e899@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AClr4NiypPa3ZHRv"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
+In-Reply-To: <20260305-sfc-v1-1-6fbf6df0e899@gmail.com>
+X-Cookie: I don't understand you anymore.
 
-On Sat, Mar 07, 2026 at 04:25:44AM -0300, Val Packett wrote:
-> 
-> On 3/3/26 3:13 AM, Jingyuan Liang wrote:
-> > Documentation describes the required and optional properties for
-> > implementing Device Tree for a Microsoft G6 Touch Digitizer that
-> > supports HID over SPI Protocol 1.0 specification.
-> > […]
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - microsoft,g6-touch-digitizer
-> > +          - const: hid-over-spi
-> > +      - description: Just "hid-over-spi" alone is allowed, but not recommended.
-> > […]
-> > +required:
-> > +  - compatible
-> > +  - interrupts
-> > +  - reset-gpios
-> 
-> Why is reset required? Is it so implausible on some device implementing the
-> spec there wouldn't be a reset gpio?
 
-No, because it is mandated by the spec:
+--AClr4NiypPa3ZHRv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-"HID SPI peripheral must provide a dedicated reset line, driven by the
-HOST, which, when toggled (pulled LOW for at least 10ms, normally HIGH),
-will have the effect of resetting the device. If a HID SPI peripheral is
-enumerated via ACPI, the device ASL configuration must expose an ACPI
-FLDR (_RST) method to control this line."
+On Thu, Mar 05, 2026 at 11:38:21PM +0800, Felix Gu wrote:
 
-The spec also states that the host must initiate reset during
-initialization of the device.
+> The driver uses devm_spi_register_controller() for registration, which
+> automatically unregisters the controller via devm cleanup when the
+> device is removed.
 
-> 
-> > +  - vdd-supply
-> Linux makes up a dummy regulator if DT doesn't provide one, so can
-> regulators even be required?
+> The manual call to spi_unregister_controller() in the remove() callback
+> is therefore redundant and should be removed.
 
-There is still a supply line to the chip even if it is not exposed to
-the OS control. So as far as chip is concerned the supply is required.
+Not just redundant, it'll be a double free.
 
-Thanks.
+> -	spi_unregister_controller(host);
+>  	dma_unmap_single(&pdev->dev, sfc->dma_buffer, sfc->max_iosize,
+>  			 DMA_BIDIRECTIONAL);
+>  	free_pages((unsigned long)sfc->buffer, get_order(sfc->max_iosize));
 
--- 
-Dmitry
+This does mean that if the device is being force unregistered with
+children still present those children might still be submitting SPI
+requests while the DMA buffer is unmapped, but in the normal course of
+affairs it's more likely that the devices will be unregistered before
+the controller.  It would be best to either roll back the use of devm or
+add a devm based unmap of the buffer here, the current remove function
+has correct ordering.
+
+--AClr4NiypPa3ZHRv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmuvS4ACgkQJNaLcl1U
+h9Chiwf9HWSa3dh2cae/FqNy2jBr53e+UB+ij8++KuKvJ4c9nWTndSDG8yv26YUJ
+U0WQ7a8K4o0lnfzzdba92bwMC0HbkvNaK37jUBWjv2jfb0VaviYe/DPIRIEaXdJ7
+9Ahv5K09vfBXWvzlGmBpaDX0mI1n7agTLuDTnIOAhe0vGuCDJFyQy7O5eg3Vzazs
+vC8THtwX0jIsWXId9lRQkdu5dcg6+8z5jLgdzJkg7BEsPvadhk4mgUsNeuUKc7rZ
+m8ajxOr9qxHM8WAYrn7J0R50rJCl+gVQmT8m3U+NvRjCbfjuD9+uhttWdPw7mK+k
+fg3ykuWMZWrzhsIQLnSr8vY+RnyLzQ==
+=JX79
+-----END PGP SIGNATURE-----
+
+--AClr4NiypPa3ZHRv--

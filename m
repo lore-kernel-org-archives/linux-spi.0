@@ -1,95 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573123A63EC;
-	Mon,  9 Mar 2026 12:29:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1933D6695
+	for <linux-spi@vger.kernel.org>; Mon,  9 Mar 2026 15:09:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773059380; cv=none; b=aeqiQeru7ETubv7K+LwgD/Toj9ZcDcbKhsDrnJ2x83AJHssiqNcTsNcyskGS9+Mvale/EP1QNXulY3EseH9AUuHLhyNn0kcHTpgBr5yJ2obkKzwNI6+rb+CjVVBHnxTerdehZ5/HRfJlc3Ebl9/qBsHfegqCjCYQvkrM9tDL3OA=
+	t=1773068982; cv=none; b=j5U1mAXd3AOhn04m1rHPdTDgumE5d5fxnGl5UhTd9vcxYhs2eGbpvbEB7wyoXNZJvw2tZATAgoFDekS+na3+zuWsi8t1OKn9fYiXQVl6ndd9p8nne9vFmZx6hR67lgdD6kcmQj9jBngEhLWEQAAPhIeIltqmFoKrVWKpqMD6gGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773059380; c=relaxed/simple;
-	bh=sdACc/Vbt9m0Tf3WatUwZZmOXL5NI62/15tUJ8fQl8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RxBoMIJBZNSWYGB+eFbwcwANLjMsXzyOTJrM4rWQgesy7fS3o0ZUtWLxvyNW8hCn3D8vRfMoEB5Vi89432L3Le9vOSlRzvayAZJADSSgl9Ej+VnuWvIdnXUwGsWvXihHMFXjjdh35TMUoHixSO/CQd1PCrGCkouxeESi3rzos7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JMDb8XsI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773068982; c=relaxed/simple;
+	bh=tbgwiF7SQ0yJqQDNrmdnVuN0QKIUVZ8LG5892E/0JxM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dop7qknX4rAEzwS4M2SeWLjTQvHwXSgEQwUHW5CTzo71akAtzwFuFjmG6fpRPs7riBZPsq/YscxaKIYUmFMmk0AW+ezDZ6riOs3aoeBi7Lc+DFwKIbjquXrUnVcoTe/5Qm4syJkxASMJ3vXfoRZ+ZuzmCMfhT2wVcYSKWBxH2eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=t4p/zCDl; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JMDb8XsI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82263C4CEF7;
-	Mon,  9 Mar 2026 12:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773059380;
-	bh=sdACc/Vbt9m0Tf3WatUwZZmOXL5NI62/15tUJ8fQl8M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JMDb8XsIm65PkNu73oLSZoi0tfbQDim/GSj7cTRxWJMUOPPHL2GFZ1NF3os0/1jQ1
-	 KSqFUuUZkKacY7gSY8VK0MpssUjeTR5dRxOs6lKincVkR/h8SSvWLSmRweSFReyqJ7
-	 fgzYbHiMie8oxNTlQhPYonhvAUqG9b54NebTJb+EvL6QLlyFYxhKBRUQ4OcCfW/8+0
-	 496unukW4tkQpsDz1WqSo0UavpBwMHSyI5lQlOSAYuy1hCKHWKcGN9Gj9gHa7q3CLo
-	 xjbKUXlkxLsvXFmoF1KSijZ96TjG58B9jJbTLpYeM9xdXdPZy4nQQ1hEVbwnGmX7ZU
-	 0uwBoAfd0PhDg==
-Date: Mon, 9 Mar 2026 12:29:35 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>, Jon Lin <jon.lin@rock-chips.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: rockchip-sfc: Remove redundant
- spi_unregister_controller() call
-Message-ID: <52755ab9-7387-4f4b-95d4-2bfdeedc3e5f@sirena.org.uk>
-References: <20260305-sfc-v1-1-6fbf6df0e899@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="t4p/zCDl"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6ECC6C4287A;
+	Mon,  9 Mar 2026 15:09:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C62235FFB8;
+	Mon,  9 Mar 2026 15:09:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EF20210369BEB;
+	Mon,  9 Mar 2026 16:09:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773068977; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FG158/EGLhvDrEBET0uUhkr+ZO0S5F0PmANWPFGizsc=;
+	b=t4p/zCDlMFLItGdvjJ9LmtxrzqYp5G0961EWkTkCQ1SM4rc1m2qiB3rc2DNYjQIFP1/pvl
+	cl+VGECcrRL0qGrHE+5fgReQci+ZYDJ2tAKs2GUZlgbbFm/8xKS6htxbVFU4c0LWfh/UzF
+	1HW+276a2wckS8E3q1dEAOD+eriyUFIw02l04f3HXYkmz4GYFuBqTVhu/Y2zr7Q/7IdKsE
+	NyP/niJ9uud7IArG5WfOM3nllieq0xw0TqHAVxhThVcztrx21U7ULQNB+kv/aBThwvk5YP
+	jusabS4SZmvddMlnCBoULgmKmklq3UyJBGkoIo7CkgMVh6O9Sbn1JEJAFiv4sQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Frieder Schrempf <frieder@fris.de>
+Cc: Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  Han Xu <han.xu@nxp.com>,
+  Eberhard Stoll <eberhard.stoll@kontron.de>,  Frieder Schrempf
+ <frieder.schrempf@kontron.de>,  Tudor Ambarus <tudor.ambarus@linaro.org>,
+  Pratyush Yadav <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  imx@lists.linux.dev
+Subject: Re: [PATCH RFC 6/7] spi: spi-mem: Call spi_set_rx_sampling_point()
+ for each op
+In-Reply-To: <20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+	(Frieder Schrempf's message of "Tue, 03 Mar 2026 17:29:27 +0100")
+References: <20260303-fsl-qspi-rx-sampling-delay-v1-0-9326bbc492d6@kontron.de>
+	<20260303-fsl-qspi-rx-sampling-delay-v1-6-9326bbc492d6@kontron.de>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 09 Mar 2026 16:09:34 +0100
+Message-ID: <87wlzlnioh.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="AClr4NiypPa3ZHRv"
-Content-Disposition: inline
-In-Reply-To: <20260305-sfc-v1-1-6fbf6df0e899@gmail.com>
-X-Cookie: I don't understand you anymore.
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Frieder,
 
---AClr4NiypPa3ZHRv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+First, thanks for the series! I believe it will conflict with the SPI
+tuning series as you mentioned, but we should be able to make them live
+side by side.
 
-On Thu, Mar 05, 2026 at 11:38:21PM +0800, Felix Gu wrote:
+On 03/03/2026 at 17:29:27 +01, Frieder Schrempf <frieder@fris.de> wrote:
 
-> The driver uses devm_spi_register_controller() for registration, which
-> automatically unregisters the controller via devm cleanup when the
-> device is removed.
+> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>
+> With clock rates changing on a per-op basis, we need to make sure
+> that we meet the RX sampling point delay constraint of the underlying
+> SPI chip.
+>
+> Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+> ---
+>  drivers/spi/spi-mem.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index a09371a075d2e..6b8bee7d6f5e3 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -589,6 +589,8 @@ void spi_mem_adjust_op_freq(struct spi_mem *mem, stru=
+ct spi_mem_op *op)
+>  {
+>  	if (!op->max_freq || op->max_freq > mem->spi->max_speed_hz)
+>  		op->max_freq =3D mem->spi->max_speed_hz;
+> +
+> +	op->max_freq =3D spi_set_rx_sampling_point(mem->spi,
+> op->max_freq);
 
-> The manual call to spi_unregister_controller() in the remove() callback
-> is therefore redundant and should be removed.
+How can this work with the above 2 lines? Maybe there will be the need
+to use a "min of the max" frequencies?
 
-Not just redundant, it'll be a double free.
-
-> -	spi_unregister_controller(host);
->  	dma_unmap_single(&pdev->dev, sfc->dma_buffer, sfc->max_iosize,
->  			 DMA_BIDIRECTIONAL);
->  	free_pages((unsigned long)sfc->buffer, get_order(sfc->max_iosize));
-
-This does mean that if the device is being force unregistered with
-children still present those children might still be submitting SPI
-requests while the DMA buffer is unmapped, but in the normal course of
-affairs it's more likely that the devices will be unregistered before
-the controller.  It would be best to either roll back the use of devm or
-add a devm based unmap of the buffer here, the current remove function
-has correct ordering.
-
---AClr4NiypPa3ZHRv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmuvS4ACgkQJNaLcl1U
-h9Chiwf9HWSa3dh2cae/FqNy2jBr53e+UB+ij8++KuKvJ4c9nWTndSDG8yv26YUJ
-U0WQ7a8K4o0lnfzzdba92bwMC0HbkvNaK37jUBWjv2jfb0VaviYe/DPIRIEaXdJ7
-9Ahv5K09vfBXWvzlGmBpaDX0mI1n7agTLuDTnIOAhe0vGuCDJFyQy7O5eg3Vzazs
-vC8THtwX0jIsWXId9lRQkdu5dcg6+8z5jLgdzJkg7BEsPvadhk4mgUsNeuUKc7rZ
-m8ajxOr9qxHM8WAYrn7J0R50rJCl+gVQmT8m3U+NvRjCbfjuD9+uhttWdPw7mK+k
-fg3ykuWMZWrzhsIQLnSr8vY+RnyLzQ==
-=JX79
------END PGP SIGNATURE-----
-
---AClr4NiypPa3ZHRv--
+Thanks,
+Miqu=C3=A8l

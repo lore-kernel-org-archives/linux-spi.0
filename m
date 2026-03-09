@@ -1,89 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52C721507F;
-	Mon,  9 Mar 2026 23:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484B9335540
+	for <linux-spi@vger.kernel.org>; Mon,  9 Mar 2026 23:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773098557; cv=none; b=SqCcLlB/9+VqZ+BfzxzhgA/tCrl/DjxQxVz9ViQfPuAs7aEIG5wphMxhXRXqDeMKDgm8uLN9L6OUQvr8HOgu612i7yE3VBmAIxlYzvPVe+MliLui/xhc4Nvw2DsR4QciMVzRPGJIAygHaZ3pk2WN1nGhAGi6dG1dWOzZz5bvW3c=
+	t=1773099010; cv=none; b=RO1HCBQYJ+N/93g9nXGGwh6bub67rkxlYmtPaYhmKG+hEiqrBZm6kuGLviwwnTGxkN/TgoIJREqmwqSSVqxKEP4sifPuy5Q4rn8uFviLiPK/BhJ2FFVlhJNDLzcvQ5ZJQTwii/OoJRSPXsOEz1eFa7kOnzu4RU8NAagMu3d1wYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773098557; c=relaxed/simple;
-	bh=0TgbHMXAeR4vf27hmcHH2wiJqapPz5uhcsC3p/ANjuw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UrhBGZUHnTm6ocW9IjtKHujXQVTNZDRoVyQtd24RGcMYE805fSn9WSjzu8MUYRu0QkvxFkA1w/x9iixNalG9748PwdS0QUSjxZ9Srnv+GuDQIVz4Bk9yhC6aPulf493emgWeq1T3z9TTU0mKT+JEZnUxI94zoUt4TUkENr1Or58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtUXrY2b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773099010; c=relaxed/simple;
+	bh=2mcNYkOPAu3U9ZfvaITdR9YY1LXoGTNLBIdMH1VMCho=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=YkvV2f0va5Ibg9RzxIwKLaxCyWOjx54/RGvd6wsLmOPnzj059RbVEMc9slArKjo9waTJpOYyw5WgPlIVETuUcU7sroKSzVa8PrF7Te0e5LvdEDwdC/b0iIBOLEcBtTgQrYdKgDnzSEfxRqc0EHY9xnCDNN8IsAMjUgXCjaU3wco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uSaG+0LU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtUXrY2b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B66C4CEF7;
-	Mon,  9 Mar 2026 23:22:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uSaG+0LU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D47C2BC86;
+	Mon,  9 Mar 2026 23:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773098557;
-	bh=0TgbHMXAeR4vf27hmcHH2wiJqapPz5uhcsC3p/ANjuw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=JtUXrY2b9l9Cxdg1kuylzN8uciuDoG2sqDtQGFx1gJorl7gHTp9iT0jdYJJBjuleW
-	 o1TxxXZ7cNvfSLZZ1WB1JU4hA7RMYOPtIcEp7VfcIvL9dU6UtgXbtYU5cwUqp3XMz3
-	 9ijBaotIXvFsE2aIJU8b87SzTwHreQaC+Dd4Yo/Cq7NR88sdCqZ76uk43e4O9phCFO
-	 NXxagCw6WtTRWFuSO4jJ3ujnh4xVjobAqYk9F14EJ2XW+hlnYfO09MMcV/4Nk+N9aa
-	 XzgjM4qnO5DPUotJptq+pDz44m1GeCUacA9TXDgWXx5HiVaUcm8fBM1MOA+MDvIMe2
-	 qE4rZi1x4fUEQ==
-From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
- Frank Li <Frank.Li@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- Yogesh Narayan Gaur <yogeshnarayan.gaur@nxp.com>, 
- Boris Brezillon <bbrezillon@kernel.org>, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, 
- Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
-References: <20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com>
-Subject: Re: [PATCH v2 0/3] spi: nxp: Use reinit_completion() for repeated
- operations
-Message-Id: <177309855508.332379.13716109857910431455.b4-ty@kernel.org>
-Date: Mon, 09 Mar 2026 23:22:35 +0000
+	s=k20201202; t=1773099010;
+	bh=2mcNYkOPAu3U9ZfvaITdR9YY1LXoGTNLBIdMH1VMCho=;
+	h=Subject:From:Date:To:From;
+	b=uSaG+0LUj7oDFryPZ7Imsgy5li14B6BWVbIO2E7KcGLygcEs82MbgAfd1tAqU6pJV
+	 8dn2ttpqIQEmqJmv84iDLWANu4mt2mA1rYWpYoDmsoqMjMGmqV9piUDx7SHOsCJnND
+	 etsWkqFCy0IvFKzLeqZ97yLwypfdqLB5uDDRos0n7IC5KomIujQL+WBAaUv8Bd1+Np
+	 jFt1bbI0czVERc0XqNVcI2AY2mHy/LLCCRSy86YYi3o6LeIX/8VArbXj/QzN46ihZS
+	 hAb+cBTS/nB1GKkPDXrcpkhhu1NG2nRTKA6k4fSyVUQ75ye3WeklBrJ7p6ptbO/iU9
+	 0uuJlwUCDY6TA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7FD8B3808200;
+	Mon,  9 Mar 2026 23:30:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-83dbb
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177309900705.1977374.8550065961262578446.git-patchwork-summary@kernel.org>
+Date: Mon, 09 Mar 2026 23:30:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Wed, 04 Mar 2026 20:47:18 +0800, Felix Gu wrote:
-> 
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Series: spi: nxp: Use reinit_completion() for repeated operations
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1061265
+  Lore link: https://lore.kernel.org/r/20260304-spi-nxp-v2-0-cd7d7726a27e@gmail.com
+    Patches: [v2,1/3] spi: nxp-xspi: Use reinit_completion() for repeated operations
+             [v2,2/3] spi: nxp-fspi: Use reinit_completion() for repeated operations
+             [v2,3/3] spi: fsl-qspi: Use reinit_completion() for repeated operations
 
 
-Applied to
+Total patches: 3
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks!
-
-[1/3] spi: nxp-xspi: Use reinit_completion() for repeated operations
-      commit: 40f9bc646db5aa89fb85f2cda1e55a2bf9d6a30c
-[2/3] spi: nxp-fspi: Use reinit_completion() for repeated operations
-      commit: 68c8c93fdb0de7e528dc3dfb1d17eb0f652259b8
-[3/3] spi: fsl-qspi: Use reinit_completion() for repeated operations
-      commit: 981b080a79724738882b0af1c5bb7ade30d94f24
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

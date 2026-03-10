@@ -1,89 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0599534B1AD
-	for <linux-spi@vger.kernel.org>; Tue, 10 Mar 2026 19:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72763E5EF6;
+	Tue, 10 Mar 2026 20:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773172203; cv=none; b=lUV2v2MwfQwgRM8AkE2qT333AXF++a4GIqgkVGvIkjXYt+gr4TcaCZPQA8EyMTKHbpto5cyARdcgzDLISwm4/wNo6A4Y14t2uL+lfzL/Mt2neUfCZhyEBxm4jfMmEolb1D6eqJdVxt2jf29DlMm4fTiTk0gus/gqJ0hC1FC0/q8=
+	t=1773175465; cv=none; b=ql9Rm12eX04eZBNZRqwWIyIgf9WXEgAOrnb3i0HIWYr+cLdk1uxs2mF4VJJSsBLZvkZtd6sWInfIedTxllQGNam3kpNFpmm9XBeGb/GYGelY33ypqvDJ92FyL3qS4Ed8xhjcCo2KmXWvKmL7f6s5EcYMAZ0aYicGia1nqOpC1tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773172203; c=relaxed/simple;
-	bh=61cOWIluLg/ri0kKZLFIWkcAPP0PDIF1kYNAbzD/75Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BIg1B33xyci6cUeLxUGGY0v/mpBD8rqYRQmfZM0W9LzT9+FFRsaTOvceashKhQkOrVfxef1CozZV/3T+iQOgG83KYCi7/FahHi9RQXfuyG7v+uXbyVj1oVlp/X2gmjnZO6PWG9XPiV3XOABmMzcVjGmRZRER5wNtw1M7qzrekto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUVPnUpu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773175465; c=relaxed/simple;
+	bh=6qMrLtx1HkCxpdBNJCz60aOmbbnnraZYUi4qvVGQTWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j8mtGkueaD5/o1wn/x9dEW2KZZ+8iMoirfay68M8pk7ch6gADU60A7po9UhXazYmFjFyp8/0hxzxwo+bF3W5qoq5EVKv3t6ZpI94WO8cQxr05JeWXVDZVrYmhsmedyjySWAuSB/Xr610TU+FT1Kh2TRPNp1ZEayLL25C2fXOZ2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hCEemFlO; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUVPnUpu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC239C2BCB2
-	for <linux-spi@vger.kernel.org>; Tue, 10 Mar 2026 19:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773172202;
-	bh=61cOWIluLg/ri0kKZLFIWkcAPP0PDIF1kYNAbzD/75Y=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=aUVPnUpuvlUwp4RHysc462fQn4me0YVYvbhbzJufggMjzp05DwUo5Qkp7Wnx+cQvK
-	 ZhoJcPCgtP3AtMoj8k9wCEHYI9AeYbRnakHmhpYubM6zpJ03fP+iCtIlZciP7P597P
-	 3dkzQ01jsxTBzXl1lVB2umzWj51J1FlWQ0p2kNsRmgyo8p6i4NPV6RZ2GIqTWB/bJQ
-	 hsoc5MXiNbZzGTnA+vlUNX9cgWmcAwFhje3e+eUbWYR1iNzWmm6qrTRplr/Sa/m6NX
-	 ssO2aSr4IGGkqfc7pvg89RUi6tqQoKAQake9wsSg4Mk6MaxUBAXRorURuIOkZRIKk/
-	 Iq+HqbfTdXs5Q==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-38a2f196cbaso59341231fa.1
-        for <linux-spi@vger.kernel.org>; Tue, 10 Mar 2026 12:50:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUJayyVLCWIANy9h4DAR7Micnommax2mJT1Ww44zz6siCQmoIw9QEJ1sccZytWKFTPOKHNnHIBE/7E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJJg5SCM2EKDSsb1XmLW4GDnXTijUHBXC/6JTzv+Slv76BEv3o
-	vP8ItmUiuDxsWy5FIy+Gox0Q0NlYSpnkmCHLhlroBBWmtuos9goCTsm1EpQ7SyLZBrNQQmUJa4m
-	6d1GJz0US51k8w9NQOwR3woFqkfVnaEg=
-X-Received: by 2002:a2e:a54e:0:b0:38a:5402:a9e9 with SMTP id
- 38308e7fff4ca-38a67dc914bmr84071fa.5.1773172201072; Tue, 10 Mar 2026 12:50:01
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hCEemFlO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773175464; x=1804711464;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6qMrLtx1HkCxpdBNJCz60aOmbbnnraZYUi4qvVGQTWw=;
+  b=hCEemFlOnSde/Mu6YUhSP6TWTnlnWeazAVH102cWn+KHDvHo0t21/1J6
+   0O1vF/S92gO765hSkOClstlThRViReJsayCW5vzB6DcKcCSlI3yIwRZ43
+   WyJtfZOACoIXK6oa1uv2ARa/2XC7Gn+UYqQEWcQdbae+ecemZVY4t+KE2
+   6gfdw10X7C4tDlNaYmNB5G+Xum1yl76QBBdxdD5EXYyNMoDrDXosAwFBo
+   TRTYAZpxXpZ6XO3OBd7FuUqZEo0rRQrTINYNZnKzuiqFXksUSwpNo1ZPe
+   4RmB5YhfvU30cL+iWzvg04GDQFA1jpY9kGpVHQftEY1wleF3an5dOT5fX
+   w==;
+X-CSE-ConnectionGUID: gxlUZ0ibT9ivpMcERrBHWw==
+X-CSE-MsgGUID: wBWO8nCfQyifW6Jez/2hAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="78092627"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="78092627"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 13:44:23 -0700
+X-CSE-ConnectionGUID: jSBQVH6jQSmmOZidMf3YVg==
+X-CSE-MsgGUID: IJHzyH/GSNu3AwFkeRl8FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="217753107"
+Received: from lkp-server01.sh.intel.com (HELO 418530b1a366) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 10 Mar 2026 13:44:21 -0700
+Received: from kbuild by 418530b1a366 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w03wA-000000000H8-2xtx;
+	Tue, 10 Mar 2026 20:44:18 +0000
+Date: Wed, 11 Mar 2026 04:43:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pei Xiao <xiaopei01@kylinos.cn>, cl634@andestech.com,
+	broonie@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Pei Xiao <xiaopei01@kylinos.cn>
+Subject: Re: [PATCH] spi: atcspi200: Use helper function
+ devm_clk_get_enabled()
+Message-ID: <202603110449.mxLAYdGU-lkp@intel.com>
+References: <9f6e31608a24f3cdbd6e1429c1e006ccf9f7d9c1.1773132237.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260302153559.3199783-1-wens@kernel.org> <177317166704.379398.1719490251066452420.b4-ty@kernel.org>
- <f3ed7b81-4e43-4baa-8a56-b18fa7f56436@sirena.org.uk> <CAGb2v65TyEkirWpfynKnSCiuOAyTW1FZQyXncnTFEHGGOQr_Fw@mail.gmail.com>
- <33204e68-5e65-4486-a473-79d09def88a8@sirena.org.uk>
-In-Reply-To: <33204e68-5e65-4486-a473-79d09def88a8@sirena.org.uk>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Wed, 11 Mar 2026 03:49:47 +0800
-X-Gmail-Original-Message-ID: <CAGb2v67N3svujuzPZ7uwv7kYbiah2iJFW3jZS2kmMmRvV92L9w@mail.gmail.com>
-X-Gm-Features: AaiRm53gGy9JdNfY71v2inWqDsCjb0-wpAlLC2cqpxhEcDisNL_wKASMji7aaAA
-Message-ID: <CAGb2v67N3svujuzPZ7uwv7kYbiah2iJFW3jZS2kmMmRvV92L9w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] arm64: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
-To: Mark Brown <broonie@kernel.org>
-Cc: Jernej Skrabec <jernej@kernel.org>, Samuel Holland <samuel@sholland.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-sunxi@lists.linux.dev, devicetree@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9f6e31608a24f3cdbd6e1429c1e006ccf9f7d9c1.1773132237.git.xiaopei01@kylinos.cn>
 
-On Wed, Mar 11, 2026 at 3:48=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Wed, Mar 11, 2026 at 03:44:01AM +0800, Chen-Yu Tsai wrote:
-> > On Wed, Mar 11, 2026 at 3:42=E2=80=AFAM Mark Brown <broonie@kernel.org>=
- wrote:
-> > > On Wed, Mar 11, 2026 at 03:41:07AM +0800, Chen-Yu Tsai wrote:
->
-> > > > [1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newe=
-r SoCs
-> > > >       commit: e2f93f45d38f7b6dacb44203cfc7bb5d7e287b8e
->
-> > > I'd have expected to take this one?
->
-> > Normally you merge patches pretty quickly, so I thought maybe you weren=
-'t
-> > going to take this one.
->
-> I tend to leave a week or two if I think it's likely someone's going to
-> review.
->
-> > I can back it out if you want to take it through the SPI tree.
->
-> Probably safer for conflicts.
+Hi Pei,
 
-Now backed out.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on broonie-spi/for-next]
+[also build test WARNING on linus/master v7.0-rc3 next-20260309]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pei-Xiao/spi-atcspi200-Use-helper-function-devm_clk_get_enabled/20260310-165916
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+patch link:    https://lore.kernel.org/r/9f6e31608a24f3cdbd6e1429c1e006ccf9f7d9c1.1773132237.git.xiaopei01%40kylinos.cn
+patch subject: [PATCH] spi: atcspi200: Use helper function devm_clk_get_enabled()
+config: riscv-randconfig-001-20260310 (https://download.01.org/0day-ci/archive/20260311/202603110449.mxLAYdGU-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260311/202603110449.mxLAYdGU-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603110449.mxLAYdGU-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/spi/spi-atcspi200.c:510:6: warning: unused variable 'ret' [-Wunused-variable]
+     510 |         int ret;
+         |             ^~~
+   1 warning generated.
+
+
+vim +/ret +510 drivers/spi/spi-atcspi200.c
+
+34e3815ea459713 CL Wang  2025-12-15  507  
+34e3815ea459713 CL Wang  2025-12-15  508  static int atcspi_enable_clk(struct atcspi_dev *spi)
+34e3815ea459713 CL Wang  2025-12-15  509  {
+34e3815ea459713 CL Wang  2025-12-15 @510  	int ret;
+34e3815ea459713 CL Wang  2025-12-15  511  
+7dd262df6a0fc29 Pei Xiao 2026-03-10  512  	spi->clk = devm_clk_get_enabled(spi->dev, NULL);
+7dd262df6a0fc29 Pei Xiao 2026-03-10  513  	if (IS_ERR(spi->clk))
+7dd262df6a0fc29 Pei Xiao 2026-03-10  514  		return dev_err_probe(spi->dev, PTR_ERR(spi->clk),
+7dd262df6a0fc29 Pei Xiao 2026-03-10  515  				     "Failed to get SPI clock\n");
+34e3815ea459713 CL Wang  2025-12-15  516  	spi->clk_rate = clk_get_rate(spi->clk);
+34e3815ea459713 CL Wang  2025-12-15  517  	if (!spi->clk_rate)
+34e3815ea459713 CL Wang  2025-12-15  518  		return dev_err_probe(spi->dev, -EINVAL,
+34e3815ea459713 CL Wang  2025-12-15  519  				     "Failed to get SPI clock rate\n");
+34e3815ea459713 CL Wang  2025-12-15  520  
+34e3815ea459713 CL Wang  2025-12-15  521  	return 0;
+34e3815ea459713 CL Wang  2025-12-15  522  }
+34e3815ea459713 CL Wang  2025-12-15  523  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

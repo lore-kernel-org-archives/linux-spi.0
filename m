@@ -1,72 +1,78 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEB737E308
-	for <linux-spi@vger.kernel.org>; Tue, 10 Mar 2026 10:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483E731283E;
+	Tue, 10 Mar 2026 13:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140216; cv=none; b=d9NsiL6dnVctCGCBd11weQizlHG7qx88LyxHUN0uNEz4rPsix3852pqTbC9vcsVn3DbblPJ3f3yRovGtKDSdrNm04EvdwVFfdhEYZceQBZl+4bBMmK18N5UbHvIrKHK4OjsFi48GicOaQQaHuj679DHG4BgMKinmo6euywy6Tj4=
+	t=1773149590; cv=none; b=ud6pXUx8ObftpAho9Nr77i02s0T7KgQdb5kl0w+Slyb69K+cPBXDJURnvnkaNYlUcddnpGhs1Qu9wDklpPoCstLuf/0Y+WnA6DtNKAW5SddPZ1fJF/CVAHUWCUfZnAlgMv3FqWyHVy0W8/gWe3S1ZH2GG3QSoa5cJ7IMT0s95Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140216; c=relaxed/simple;
-	bh=wBZpPm4FYL+nkwBThAO7ls7WJgnd3ewyWAQhJxEFD0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CtK4ae72usq3AVtfIa77NAiUDlGBLr2gFGRsNnR96D3RdFkvcsL35C3Q3g+tqd7IS61jXiA/bkKa0G7DAc5Fx+dS7yRnBEnrHv194rrS/WAE0Jg23hfT2/ileHe6RLQvvlHhPR3/m5aeMaN5y3x9qlVtb82o2s0p8Ibq4WG/a7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bDhbYJvc; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1773149590; c=relaxed/simple;
+	bh=bH9wsSa3EYk7Hl9peg/9qJCP2klvL39kco0sIyLiBoE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oiPu7KJHXbVu3fCrZVlPdup8zzOZ6o+lA4lpzclaVX9LulFDeX5e86PmRQtWoWxZjB2gaWdoOXb/gs9RJSrypqaItFzbxjHKWeSiuaR2UvWz+hclO+DMG2XS0i8Pd7OGr+LFAk/TTX4RqpzRZnoE9X6zsb0MaSmNokkfCNrLCyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=znfysqWf; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bDhbYJvc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773140215; x=1804676215;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wBZpPm4FYL+nkwBThAO7ls7WJgnd3ewyWAQhJxEFD0M=;
-  b=bDhbYJvc3xTpk++Ol3Phz5FU1oifZa6Vx+pdxlcF6u/xVPy+3mrBLeYb
-   8WJHmVMh3rEoQ3ChIP6EUUMdy3hPZUNfMbGiRLOLQZF3eb9F0T4+fWx4Y
-   OYXTdGDP0t7d1P2shViESukcqdI5KrsWnPof4sN3L7Cf6WYwaZX9T1RAO
-   Amm9mA9Zh4/w6maRfehaze6L2xQW5o2KD83a5iPZLCp/NZe3daZW33MGz
-   ZoJAsUrccKejCXjTlbrXMU0azIuKIAwtV0SRvD3GOuhyo6Xk9s/P2BN9X
-   yPxUyVA58H8yOuisgM8IbGkPfQBOD+rVbY3FC3eXp2lVLPRbLM+SLk9Ru
-   g==;
-X-CSE-ConnectionGUID: QvhtXjbBT8GfSSK+ZE2VtQ==
-X-CSE-MsgGUID: nxnTHlAORuSFyV6vzWVOAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="78037448"
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="78037448"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 03:56:54 -0700
-X-CSE-ConnectionGUID: 8EGlpKjMRA6QG7kqfMicKg==
-X-CSE-MsgGUID: chDfZFTzSTO5DAJ85HFJrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
-   d="scan'208";a="220115580"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2026 03:56:53 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id A110495; Tue, 10 Mar 2026 11:56:51 +0100 (CET)
-Date: Tue, 10 Mar 2026 11:56:51 +0100
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH] spi: intel-pci: Add support for Nova Lake mobile SPI
- flash
-Message-ID: <20260310105651.GT2275908@black.igk.intel.com>
-References: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="znfysqWf"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id 45AC322A65;
+	Tue, 10 Mar 2026 14:32:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1773149578;
+	bh=bH9wsSa3EYk7Hl9peg/9qJCP2klvL39kco0sIyLiBoE=; h=From:To:Subject;
+	b=znfysqWfExM7cPHusyDhydf5zzo7j4bcGjsjby59JKFD6XqoPRTK8UFHxsG0F7VQl
+	 Shj9rxhtCvecsz97Nr2PW18VvdQxw6vbqDCV0MNL3dD3BAsgS6vPh+zwj/vgN8bwm5
+	 azSBmgXfE6FlLBLZOOZ4ZlULK885xqURxydV5KCL8lRMY/anOG8UaT2NyHVR5obCWz
+	 wKVuFE1zgHlt031TQPdsFrGXZxJzIDDIFIwTXJK6tBbToUicncpcMRYoQQCDjc8vUR
+	 MUWpKhHly+IHCBVqb0o7Ecsl7xUfcF6ocmb9SqId+diCNFN+7sKlN3dMmd16RRPHxr
+	 pWiRDFJqvXT+w==
+Date: Tue, 10 Mar 2026 14:32:54 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor@kernel.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, Max Krummenacher <max.oss.09@gmail.com>
+Subject: SPI loopback tests
+Message-ID: <20260310133254.GA51497@francesco-nb>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
 
-On Mon, Mar 09, 2026 at 04:37:03PM +0100, Alan Borzeszkowski wrote:
-> Add Intel Nova Lake PCD-H SPI serial flash PCI ID to the list of
-> supported devices.
-> 
-> Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Hello all,
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+I am writing to you SPI, test and DT people with reference to some need
+we see in our testing infrastructure.
+
+On our embedded boards we regularly (on mailine linux, on Linux LTS, and
+on multiple hardware) run SPI tests, using a loopback connection (SPI
+MISO/MOSI are connected together). The HW provide just some pin header
+and there is no actual SPI slave device connected.
+
+So far to test this we had some out-of-tree DT overlay abusing the spidev
+compatible, however we'd like to move away from this approach and have a
+solution that is 100% in mainline.
+
+Manually unbinding/binding the driver in userspace does not seems as an
+option, because there is no device node.
+
+One option that I could think of would be to add a new compatible that
+to describe this single wire loopback connection (something like
+`linux,spi-miso-mosi-loopback`) that would bind to the spidev driver.
+
+I am aware that you all DT maintainers shared in a pretty clear way your
+view on the abuse of the spidev multiple times.
+
+What would you be your advice to handle the need of an SPI loopback
+test? Am I missing something and there is a solution already available?
+
+Thanks in advance,
+Francesco
+
+

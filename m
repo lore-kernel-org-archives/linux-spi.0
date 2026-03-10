@@ -1,102 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68802DEA95;
-	Tue, 10 Mar 2026 18:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D637635836A;
+	Tue, 10 Mar 2026 19:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773167209; cv=none; b=D8T2vvwmq3JeKg1qtgCQ0VZpPlkd9AmIjxTp9TfiStaX/IRu2D3mvXjrdH2+TcYabIT2lmEhZAfT4xDo/BlOh7IP6vWhSJ1S9BPtUaKOp8ljxydPpiAH5MBuNQFkUMwcFbNBPtghfSwI7HtHs+5ntjvRSPr1Adcb1NgMdF68P3M=
+	t=1773171669; cv=none; b=fRMcFF6wED+iTZCF8EKFSLw2kYFlI0jKclmuHjMhm5jMkxJjjabIcTDy+CmeCQj4EnboPpvlpCXAaxsEL+GkQmemumfg5nXxBhUP3yDpCUrQKEWx4Y6HUCNxs8/UYq/6Xd5USkMNFlpk5JJWpJmqyOQmCFYMmNaho1aiTGR8IpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773167209; c=relaxed/simple;
-	bh=u71ylBXX43bPBzfPHncR52udzq5yhNxIRgu1+tDOHuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GCB5B9QrbU/EywsMqubxUdJNEchAS4JbJ5NmJ2jvquJ9CjtwZ5VXTmlMkijGoVZ30MwLRj78fZ/kd3/taGMwWZMfEZw+A1lRyGcQS9FAn0G6TZxR/r2vW5RQtrVHSkVaWnDKLUono5etGDc6MeuQ49rBY7+V85AFQl7xMzHvGsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BncYExWG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773171669; c=relaxed/simple;
+	bh=uRuTui0xDsqEK6tmEHWYymsoNQxWbfPW1yTO/F4Fpfw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nlhFJNXG3m0PgngampslsztT4mOsuIeYnyhkGQocrukUlFt92C34RViAGkb9ulNs9yshXFAZMcBJhzmBhPc+v03vpW1JrOX31GxShqTjAfW3Tu7i6nahoY8kdCnByVlXnncwCySc41tWIJy9qKki//JgXG2+aDdqmCpPKJG5xHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9pyI3B0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BncYExWG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2210C19423;
-	Tue, 10 Mar 2026 18:26:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9pyI3B0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CBCC19423;
+	Tue, 10 Mar 2026 19:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773167209;
-	bh=u71ylBXX43bPBzfPHncR52udzq5yhNxIRgu1+tDOHuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BncYExWGjos66rGnQhUNyNFKwc+tOVy2HTAuCPEuZtgZSRyZ0pzKVj046+ZN//nEk
-	 qmxjlmQHLuB7Igx3zfVPe2a5N3fw3c5vaHqvDt47LOzYR8hm8vcKznw9JHBB9BW8xr
-	 Dyxv3yFSf81Uxzi8Q6dZC6Gr5Suon/BIIV108S0eblCXpBOocM7TrA5KEg0Jz2zcK0
-	 5BN9lwAB/vz7zRS9R1uvtUwR4QntbWNDmKLLsFAjEAF8CMXoOp7HHWMoQkIlzndO3t
-	 GNHBtJ6UZQH7fCjszAcolz5H0MJjNXUN6xpsaKuK5CFKoFL+3cxhdsMbPSMrRVKjzK
-	 aeEt4vqow8D9w==
-Date: Tue, 10 Mar 2026 18:26:45 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, Max Krummenacher <max.oss.09@gmail.com>
-Subject: Re: SPI loopback tests
-Message-ID: <f35c50cc-741c-407d-97e5-81c62fcc15e7@sirena.org.uk>
-References: <20260310133254.GA51497@francesco-nb>
- <09f06ce4-0405-442b-bf3d-5722a6977a4d@sirena.org.uk>
- <20260310-marlin-untoasted-ecca1e3e80e8@spud>
+	s=k20201202; t=1773171669;
+	bh=uRuTui0xDsqEK6tmEHWYymsoNQxWbfPW1yTO/F4Fpfw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=P9pyI3B0o0kr1YSj6A7xUWAiervv+2glz9ZVyWFtQZvl42Zs5tdmmBEkGSR9Rs1au
+	 K7U4og2f6wLlckHdZc1bo/WmaUr/pgwIo84EJQgiYDe2+/blYLrx+7i3SliM30WK5D
+	 KPH4E1fQ2LGWEJ5f8CBzx2X5HG5oQlslz4ldboj7FF+kuvHOcaRS/CF3tb54DDxz/e
+	 zgl1kCoJ7hd2X2SkzSJlhExQDGYaROgJR1JDk2s+LoD2i41SWoq+W/EwngPC/cIezk
+	 auWwrio2KAqSCqJC9jXpXX98hfSTNpwmy7sSwLIUS7JNJgRMtlfFgTZ8psU1VarOHo
+	 SpGgE+PI2FYVg==
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Jernej Skrabec <jernej@kernel.org>, 
+ Samuel Holland <samuel@sholland.org>, Mark Brown <broonie@kernel.org>, 
+ Chen-Yu Tsai <wens@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-sunxi@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260302153559.3199783-1-wens@kernel.org>
+References: <20260302153559.3199783-1-wens@kernel.org>
+Subject: Re: [PATCH v2 0/3] arm64: allwinner: sun55i-t527: avaota-a1: Add
+ SPI NAND
+Message-Id: <177317166704.379398.1719490251066452420.b4-ty@kernel.org>
+Date: Wed, 11 Mar 2026 03:41:07 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nZMcoPOh+3SQznGO"
-Content-Disposition: inline
-In-Reply-To: <20260310-marlin-untoasted-ecca1e3e80e8@spud>
-X-Cookie: A fool and his honey are soon parted.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
+On Mon, 02 Mar 2026 23:35:55 +0800, Chen-Yu Tsai wrote:
+> This is v2 of my Avaota A1 SPI NAND enablement series.
+> 
+> Changes since v1:
+> - DT bindings (Krzysztof)
+>   - Moved "allOf:" block after "required:" block
+>   - Dropped "type:" from child node in conditional block
+> - Collected tags
+> - Link to v1:
+>   https://lore.kernel.org/linux-sunxi/20260227175157.2339758-1-wens@kernel.org/
+> 
+> [...]
 
---nZMcoPOh+3SQznGO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to sunxi/dt-for-7.1 in local tree, thanks!
 
-On Tue, Mar 10, 2026 at 06:12:38PM +0000, Conor Dooley wrote:
-> On Tue, Mar 10, 2026 at 03:55:51PM +0000, Mark Brown wrote:
-> > On Tue, Mar 10, 2026 at 02:32:54PM +0100, Francesco Dolcini wrote:
+[1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
+      commit: e2f93f45d38f7b6dacb44203cfc7bb5d7e287b8e
+[2/3] arm64: dts: allwinner: sun55i-a523: Add pinmux for spi0 on PJ pins
+      commit: 1a5ff6a0a8c2a0dc9f2d55039997c1cd928eb53c
+[3/3] arm64: dts: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
+      commit: 1b07332bf2ee816130e139a8966d312bf1aa32f9
 
-> > > I am aware that you all DT maintainers shared in a pretty clear way your
-> > > view on the abuse of the spidev multiple times.
+Best regards,
+-- 
+Chen-Yu Tsai <wens@kernel.org>
 
-> > > What would you be your advice to handle the need of an SPI loopback
-> > > test? Am I missing something and there is a solution already available?
-
-> > I'm not aware of any idiomatic way to deal with this with DT
-> > unfortunately.  Perhaps the DT people have some ideas here?
-
-> I dunno, the suggestion seems fairly reasonable to me. I don't think
-> it's really abuse of anything, because the compatible would represent a
-> real hardware configuration. The only think that feels "abusive" is the
-> fake reg property you'd need.
-
-In theory we should have a compatible specifically for loopback usage I
-suppose.  Depending on how the device does it's loopbacks there may
-actually be a genuine reg (if there's a chip select that's still
-selecting.
-
-> Not sure that there should be a "linux," vendor prefix though, there's
-> nothing linux-specific about doing loopback. Probably should be
-> vendor-less?
-
-I think at this point it's old enough that it's just ABI and adding the
-option of having it vendorless would just cause people to ask why.
-
---nZMcoPOh+3SQznGO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmwYmQACgkQJNaLcl1U
-h9BFmwf+MwUeHgh6Ij5dEMubDN8hQYH+KaCAy5I9qYlsOchTp28/HBBsRu025Vbj
-C/FC8lFeu4CZO+yAilfm0gY2psB7Ec6xNDvckywzxBdrHCUDcP5WW+avq5ssMyzs
-Z8FSspfccdPTIe4lvyy28njFmCsNBJRv1V7i+BMy2X50QiOnOPOop8IHWnl8GzDs
-KDEeeYkVR6PbUVXMkQQJvjCAxLA+DTmEl2VFhyGa9EcAHgvKV8Ak7523iwyVB950
-0y3oN7DWCclsC8YGtTwYLW17U3lS2Eo8Pq0tQQmDIsj7/lGyHDbjb94NGeDKC6eY
-Z+fkfXD3/TQvLBViFAXLJH5hFlbhDg==
-=U2Mo
------END PGP SIGNATURE-----
-
---nZMcoPOh+3SQznGO--

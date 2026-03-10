@@ -1,109 +1,72 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00D5251793;
-	Tue, 10 Mar 2026 09:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEB737E308
+	for <linux-spi@vger.kernel.org>; Tue, 10 Mar 2026 10:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773136573; cv=none; b=XR6CucT0bYOVvCi+5b6lAkbLhePRlPHhoztdGe5xBCDOFyoVdgmI9L8VHPUXoMeWs4Sd3nYE2bg86C+4S1XDfJVYY+bdcSHVgq5W5MAanEXeg2PF/7/AQMfzBIkejAND8jmiQuakGez1LDrZh3+tKMVyiNnmQXMju03u1hizEz0=
+	t=1773140216; cv=none; b=d9NsiL6dnVctCGCBd11weQizlHG7qx88LyxHUN0uNEz4rPsix3852pqTbC9vcsVn3DbblPJ3f3yRovGtKDSdrNm04EvdwVFfdhEYZceQBZl+4bBMmK18N5UbHvIrKHK4OjsFi48GicOaQQaHuj679DHG4BgMKinmo6euywy6Tj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773136573; c=relaxed/simple;
-	bh=axT85wWOTIFLh/otlLvjpGKPHTYJX7LisSHvZugPnN8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f/8No//K0lK/2T8T2XN5QvqpuhOF+QlHOVHdvWubP6QsTejgFyBCqtJoujjK/ZZSNlbtvEZigZIK3wvb5hdYqXWV2snxD+R6LICETNiO9hs7pM/gYjYVTx2h8JruCxV2KaqrWxHbGoPPvrP92yzYGeLo8cj7TxHWXeNaQ7Yq/I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5883e4641c6711f1a21c59e7364eecb8-20260310
-X-CTIC-Tags:
-	HR_CC_AS_FROM, HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
-	HR_FROM_NAME, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
-	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT
-	HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED
-	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
-	DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO
-	GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:f95be1db-8236-4a41-8f69-6f34c68bf7d1,IP:10,
-	URL:0,TC:0,Content:-25,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,A
-	CTION:release,TS:-20
-X-CID-INFO: VERSION:1.3.11,REQID:f95be1db-8236-4a41-8f69-6f34c68bf7d1,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:25,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACT
-	ION:release,TS:-20
-X-CID-META: VersionHash:89c9d04,CLOUDID:c8c656178c68f393bba4283d96777e1a,BulkI
-	D:260310175604J87QXWXT,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
-	|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
-	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
-	C:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5883e4641c6711f1a21c59e7364eecb8-20260310
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2021223679; Tue, 10 Mar 2026 17:56:01 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: cl634@andestech.com,
-	broonie@kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH] spi: atcspi200: fix mutex initialization order
-Date: Tue, 10 Mar 2026 17:55:47 +0800
-Message-Id: <09d5b199fa1f375b2fcdc3236ca9b2ee4a1fba77.1773136472.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1773140216; c=relaxed/simple;
+	bh=wBZpPm4FYL+nkwBThAO7ls7WJgnd3ewyWAQhJxEFD0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CtK4ae72usq3AVtfIa77NAiUDlGBLr2gFGRsNnR96D3RdFkvcsL35C3Q3g+tqd7IS61jXiA/bkKa0G7DAc5Fx+dS7yRnBEnrHv194rrS/WAE0Jg23hfT2/ileHe6RLQvvlHhPR3/m5aeMaN5y3x9qlVtb82o2s0p8Ibq4WG/a7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bDhbYJvc; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bDhbYJvc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773140215; x=1804676215;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wBZpPm4FYL+nkwBThAO7ls7WJgnd3ewyWAQhJxEFD0M=;
+  b=bDhbYJvc3xTpk++Ol3Phz5FU1oifZa6Vx+pdxlcF6u/xVPy+3mrBLeYb
+   8WJHmVMh3rEoQ3ChIP6EUUMdy3hPZUNfMbGiRLOLQZF3eb9F0T4+fWx4Y
+   OYXTdGDP0t7d1P2shViESukcqdI5KrsWnPof4sN3L7Cf6WYwaZX9T1RAO
+   Amm9mA9Zh4/w6maRfehaze6L2xQW5o2KD83a5iPZLCp/NZe3daZW33MGz
+   ZoJAsUrccKejCXjTlbrXMU0azIuKIAwtV0SRvD3GOuhyo6Xk9s/P2BN9X
+   yPxUyVA58H8yOuisgM8IbGkPfQBOD+rVbY3FC3eXp2lVLPRbLM+SLk9Ru
+   g==;
+X-CSE-ConnectionGUID: QvhtXjbBT8GfSSK+ZE2VtQ==
+X-CSE-MsgGUID: nxnTHlAORuSFyV6vzWVOAg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="78037448"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="78037448"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 03:56:54 -0700
+X-CSE-ConnectionGUID: 8EGlpKjMRA6QG7kqfMicKg==
+X-CSE-MsgGUID: chDfZFTzSTO5DAJ85HFJrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="220115580"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa008.jf.intel.com with ESMTP; 10 Mar 2026 03:56:53 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id A110495; Tue, 10 Mar 2026 11:56:51 +0100 (CET)
+Date: Tue, 10 Mar 2026 11:56:51 +0100
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org
+Subject: Re: [PATCH] spi: intel-pci: Add support for Nova Lake mobile SPI
+ flash
+Message-ID: <20260310105651.GT2275908@black.igk.intel.com>
+References: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
 
-The atcspi_exec_mem_op() function may call mutex_lock() on the
-driver's mutex before it is properly initialized if a SPI memory
-operation is initiated immediately after devm_spi_register_controller()
-is called. The mutex initialization currently occurs after the
-controller registration, which leaves a window where the mutex could
-be used uninitialized.
+On Mon, Mar 09, 2026 at 04:37:03PM +0100, Alan Borzeszkowski wrote:
+> Add Intel Nova Lake PCD-H SPI serial flash PCI ID to the list of
+> supported devices.
+> 
+> Signed-off-by: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
 
-Move the mutex initialization to the beginning of the probe function,
-before any registration or resource allocation. Also replace the
-plain mutex_init() with devm_mutex_init() to benefit from automatic
-cleanup on driver unbind, preventing potential resource leaks.
-
-Fixes: 34e3815ea459 ("spi: atcspi200: Add ATCSPI200 SPI controller driver")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/spi/spi-atcspi200.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
-index 6d4f3ff3d602..b0cc49c93740 100644
---- a/drivers/spi/spi-atcspi200.c
-+++ b/drivers/spi/spi-atcspi200.c
-@@ -567,6 +567,10 @@ static int atcspi_probe(struct platform_device *pdev)
- 	spi->dev = &pdev->dev;
- 	dev_set_drvdata(&pdev->dev, host);
- 
-+	ret = devm_mutex_init(spi->dev, &spi->mutex_lock);
-+	if (ret)
-+		return ret;
-+
- 	ret = atcspi_init_resources(pdev, spi, &mem_res);
- 	if (ret)
- 		goto free_controller;
-@@ -592,7 +596,6 @@ static int atcspi_probe(struct platform_device *pdev)
- 		else
- 			spi->use_dma = true;
- 	}
--	mutex_init(&spi->mutex_lock);
- 
- 	return 0;
- 
--- 
-2.25.1
-
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>

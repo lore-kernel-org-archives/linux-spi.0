@@ -1,39 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788903C943F;
-	Tue, 10 Mar 2026 17:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B6A3D47DE;
+	Tue, 10 Mar 2026 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773164384; cv=none; b=BYPlR6SjLfqKw9difXQYaWeEg7px1/SkhQ5818TkGSBrvnLm1sLLUF2Anb8TDvs9xPEclOPHXVuz2kRwrbNdZJucIxIr3sPf1yfzPac0X/mPMROqopO3EvomJJsW8BnEQzPntQZC7Lqjg4gceN6bhL6en6snBd5SH1u84gQkIe0=
+	t=1773165074; cv=none; b=D5nxQ8ahSULZxPQOKWsWFSI4xXvDcXUv6n3IC3IE5juUfVxUKv+8LLwhYBuAW2IwPSC/C77naf8htdBH6YMSvZj3/DMzGo+wKYEPzxIHgsSKikzqhWSdrwbdyeU7Vj9wZP33qWs2Lzhpf+Qah6I2/11RJdqYM0J/28hN3cXrlZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773164384; c=relaxed/simple;
-	bh=oSHifN4rjfWLWngOPdHD8IlkX/TGgTWveU9beYmIoOc=;
+	s=arc-20240116; t=1773165074; c=relaxed/simple;
+	bh=TQ8NAOHe3S4Tgt64Lk4Bs52nBwPgcoDwQr04trMpgCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B84lhzB00MKKfBikwO8T+krGrtl4Jm2DyFyQOJOp/3VALk7ZkuA3+wE2qvwgTVqKz9ASL75F0BUAiOAQpwfI9v5YUxCB/LCm+FmTr+z/zC4ke5T6trsS2tLA9iXMDkidMEsam8apbVUudgrUhQnfYZe95qp+j9rjLj5NMvhjas0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I54GKpue; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=caHarqB0n6vlAo32n6RogX7+38m8OM0lMgkBMtdZZewf1cdWTcqz6fPd3DcgimDU4OoFKKmBU/5Aj89kNvdLSovI+S8FJGKLgxjmdpSYAyg7nEFudSO7tjfgZxqF8L93Jb4EK+ncJqP4ZfJoGnvte18iNBFCYyNN/MoqPyN6JCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NsGzmEKe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I54GKpue"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B05C19423;
-	Tue, 10 Mar 2026 17:39:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NsGzmEKe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EABC2BC9E;
+	Tue, 10 Mar 2026 17:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773164384;
-	bh=oSHifN4rjfWLWngOPdHD8IlkX/TGgTWveU9beYmIoOc=;
+	s=k20201202; t=1773165074;
+	bh=TQ8NAOHe3S4Tgt64Lk4Bs52nBwPgcoDwQr04trMpgCA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I54GKpueEmjP+LdXwCxzJPMLeweIWlb+fCJeYMQXSweXwNIkFb5f1ncKkcGbeIDQD
-	 LMkfdJPdkBCeHfvTHzaTaDfVumEqER0l1c2+f2htHXEIrYMPWWYovLC6wFQs30H5WM
-	 9b1XK9ZqyyK2GaBX2uXSWQqpPS05GTBU7R4D4+VcC1Hta3TXJPnIRjQBHmWH/xgBJs
-	 Us1nCBice7ral1FXdSbwMgqjRbhCMm6PBTiZT0EutBkwl3KetrIcW9kpSco3Q4rf5e
-	 lz4gZtpQLo5dtFE3KW1oJE1V9dEtKHcjARf+uholsBfMORKnUn3x0IeChW4luq3zeA
-	 D5k8kc7/gsrTA==
-Date: Tue, 10 Mar 2026 17:39:40 +0000
+	b=NsGzmEKeYrSUJdWKf114pGjAics9cD4iLzQXnnRdzJbR1pXzjHdB+zXt+N5hGA5X0
+	 y/yDe/unTUyK3+5ZzTg0MEY9XBN6PKKRbj8eD2HmBrxLTz0s8NpP+FpgDnBkzkbyLR
+	 LRjqgPxslKbAy3mLEBik3IWCsUPWA6mA2PE4J5Wdv+9xC/mFfkG5TZDsC2380j/Alg
+	 3wHD8Mz9tRL4bO3VIh68J3RVpafXBhBgWseloLTLDktt1LDMIrLvKoyDYK/AKIf1Gu
+	 KXpxfSpkj+fk3xM4+YRDilqOHdLIJoM/LvUd/IvtdopTMr3jGv8Jnh8EqO1U4gpN71
+	 /HZWAUJ/V2CSg==
+Date: Tue, 10 Mar 2026 17:51:10 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Pei Xiao <xiaopei01@kylinos.cn>
 Cc: cl634@andestech.com, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: atcspi200: fix mutex initialization order
-Message-ID: <9320992e-7caf-46dd-a0ad-7df31e48cc24@sirena.org.uk>
-References: <09d5b199fa1f375b2fcdc3236ca9b2ee4a1fba77.1773136472.git.xiaopei01@kylinos.cn>
+Subject: Re: [PATCH] spi: atcspi200: Use helper function
+ devm_clk_get_enabled()
+Message-ID: <854b2c44-24da-441e-a667-c8512913ab9d@sirena.org.uk>
+References: <9f6e31608a24f3cdbd6e1429c1e006ccf9f7d9c1.1773132237.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,53 +42,48 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="9RB+mo0dDqQ0r8nt"
+	protocol="application/pgp-signature"; boundary="JNRm/CNWn0illbqN"
 Content-Disposition: inline
-In-Reply-To: <09d5b199fa1f375b2fcdc3236ca9b2ee4a1fba77.1773136472.git.xiaopei01@kylinos.cn>
+In-Reply-To: <9f6e31608a24f3cdbd6e1429c1e006ccf9f7d9c1.1773132237.git.xiaopei01@kylinos.cn>
 X-Cookie: A fool and his honey are soon parted.
 
 
---9RB+mo0dDqQ0r8nt
+--JNRm/CNWn0illbqN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 05:55:47PM +0800, Pei Xiao wrote:
+On Tue, Mar 10, 2026 at 04:53:02PM +0800, Pei Xiao wrote:
 
-> Move the mutex initialization to the beginning of the probe function,
-> before any registration or resource allocation. Also replace the
-> plain mutex_init() with devm_mutex_init() to benefit from automatic
-> cleanup on driver unbind, preventing potential resource leaks.
+> -	ret = atcspi_setup(spi);
+> -	if (ret)
+> -		goto disable_clk;
+> +	atcspi_setup(spi);
 
-> +++ b/drivers/spi/spi-atcspi200.c
-> @@ -567,6 +567,10 @@ static int atcspi_probe(struct platform_device *pdev)
->  	spi->dev =3D &pdev->dev;
->  	dev_set_drvdata(&pdev->dev, host);
-> =20
-> +	ret =3D devm_mutex_init(spi->dev, &spi->mutex_lock);
+Previously we checked the return code here, now we ignore it?
+
+>  	ret = devm_spi_register_controller(&pdev->dev, host);
+> -	if (ret) {
 > +	if (ret)
-> +		return ret;
-> +
->  	ret =3D atcspi_init_resources(pdev, spi, &mem_res);
->  	if (ret)
->  		goto free_controller;
+>  		dev_err_probe(spi->dev, ret,
+>  			      "Failed to register SPI controller\n");
+> -		goto disable_clk;
+> -	}
 
-Shouldn't we be using free_controller if the mutex allocation fails too?
-We'll leak the controller struct if that happens.
+Similarly (and more seriously) here?
 
---9RB+mo0dDqQ0r8nt
+--JNRm/CNWn0illbqN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmwV1sACgkQJNaLcl1U
-h9CYsQf7BdHoOtgabjJ9wrfT2uASawSwfHZ5gFvFDBRDQQwguJbyFYCKQiCdQBVj
-/ttE/dzpivfaxblBYP8LinQYUTHBDPEx/SjUwDYgCIolQQfwmHqActOftlTW3siM
-Uk6B1zuNV7TsevvMz2je4lUI9x1gn6vGPjm9k9RA+IfkB0vO1IB0RwG3SfuaVScm
-US1qNDtm87zB1MYcQwUGN/HW9Inh54ZMVWB5UQymDFwTQZ/JHKI1LYdHMWTm1PFE
-ApeIt5HP6pL5wYQF4u6JdSMgYii37CuldHadZb+16kL9wdlONWjjxAjyccZUYL3U
-30VuC1+KZEzZiLqg3lEngPi3rlw+7Q==
-=J4Vl
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmwWg0ACgkQJNaLcl1U
+h9D20Qf/fA1KtGcGnADtnOsujWlofmF6JIqNCtTx4rN3FGmoXHa5XXpEfoAuTp9L
+NSs9uI5nHULiR+ksa52bFEu1pan9bz+oTatsaNzOW98WF21LskZdh64P47RgAS3T
+U2rPjVXIjNRc4Xf3NfaRMB2km+uR1pLgz/hXxYkKBE8vy3EZE32+3D4LtBPvRFWe
+8+J0A9oWJYXomP2CXjX1O/uy4W17KBjJX3TqgY2Nk6U2qi9mRPK1DRMrSN+sM3u2
+uCqxUmiKlBHrSWiVM5pzEBrUNDB8atYV/452Sd1U6wpdvuBzEM7L7Tdf5T9jCN7x
+m+bdwRuSAqAAVKTwzC8RCpPesmC+7Q==
+=ZMz+
 -----END PGP SIGNATURE-----
 
---9RB+mo0dDqQ0r8nt--
+--JNRm/CNWn0illbqN--

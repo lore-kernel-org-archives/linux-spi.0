@@ -1,109 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8E431E844;
-	Wed, 11 Mar 2026 10:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5723D1714
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 10:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773223860; cv=none; b=TAVf511TWcBgcti2RDjkw9QeOhKERoTsaDzNRROOYMYOzem2dlZuZJom4qnR/lo384EJ11ooy5Ye/QmfR/OO9PwrmyelFfT39deo/SJMUiZQCES0AWSsg4fwxftUHjQoRxKm11dMHibmx/cAMPctwiLOH5UGcSKs3DXXkbS6rGg=
+	t=1773226071; cv=none; b=EM/tIIToos3pn2aU0REEpqwOVWO7QYJsomA1P85Atwkr47WwwSMM/vDSXVPZyXVgKiNDvyQNRthMASV2mE3+ALa2ZTEFurCbVJffLUkp3Ham7XnN/DBcSiaKeihOPrfYASwsfVHzEBsLWaIXbH3KDZDvO1crPq4Y+YFcQhKVXPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773223860; c=relaxed/simple;
-	bh=1sphpO4kW4lKXuuPA66/6QQwudKM3Ht8eYtxAAIbFzg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VzRB7BHp0XaIvdK1CXS95kToFMzcZ5jSMRJ5S5Ixuf3zOBhrNY7jOTY5vzu/yPiTzD2Dr05nJ1TfziC5JdauH3q9+/V3TsWxRKGF+uTlINnuj+qifym4VNIEHayDsrT4O3g6BkonX561WODWpP/K8/Caf4NA+HMFCQbFye39n0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKux0UPU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773226071; c=relaxed/simple;
+	bh=Tt/gzW5Q9wooSfIbzLNJn7PmJO8jsAkPI/aIt3efRgc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Pe3/KRC2yifWf9RP36T03igeoEAV1kxi0szxtRDZmDZ+AptqZeDNDUb2ptqcQ58tc8mO3nSN9pEKhDJvrfxxLuLu9WZRZxn3wvzZaSEGQF4WELv/+5eFp+TJwy+PkDMS9KtZTxpiYvIBpNTTxrvIqrQwaPKjtt3bgiIvH19XQAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oy783K79; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKux0UPU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB7C4CEF7;
-	Wed, 11 Mar 2026 10:10:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oy783K79"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28673C4CEF7;
+	Wed, 11 Mar 2026 10:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773223859;
-	bh=1sphpO4kW4lKXuuPA66/6QQwudKM3Ht8eYtxAAIbFzg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pKux0UPUiKKMRN+42S4lnNRqcyC7QilxKbRDUBJT4iQSUEpelIo3oHtTmLChtOrBt
-	 J2aHSqBlAxB1ZTYjqu+d6xuVkeXyVIRk2HL4e7b6NjWA01oTm6yvxH1W88XQC2UPnp
-	 UlLFHdhcrTXeZHt5cGl3gJn0uFBKlfN25HXjnoDGlaAmCba/kJTFReLbp1rBXI1ZI9
-	 H/EEoIfjIx/IxEl+c/5uuLs4R0PHueyMlUJW5W5amR0HTBgPc1LG677IiEslUPqtFZ
-	 USY75XCTg6VlxrA+iT0wrZLeIGBzUapaPW8ODx0JQmA24URyBLybbT6dQvreNj1cIe
-	 0fNk8BpWBNOPw==
-Date: Wed, 11 Mar 2026 10:10:56 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, Max Krummenacher <max.oss.09@gmail.com>
-Subject: Re: SPI loopback tests
-Message-ID: <20260311-passably-pampered-314ea21b9f1f@spud>
-References: <20260310133254.GA51497@francesco-nb>
- <09f06ce4-0405-442b-bf3d-5722a6977a4d@sirena.org.uk>
- <20260310-marlin-untoasted-ecca1e3e80e8@spud>
- <f35c50cc-741c-407d-97e5-81c62fcc15e7@sirena.org.uk>
+	s=k20201202; t=1773226071;
+	bh=Tt/gzW5Q9wooSfIbzLNJn7PmJO8jsAkPI/aIt3efRgc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=oy783K79iDUZVHi8p3FF53HkzICdFDVy5bsBaz07WvvVXO2y6nUrH2rk151e41Qhc
+	 6sSa0spLPM8Cf260Z1G4wKE/w6pSbw+wo1W8YFHnjwldM5eORXAW8Ut5MY2SI4jpHo
+	 zliGILm4PWJBv11gd0InI38ArqCdIcINvWegHXbOXdREEImNt00wyA1hDAWUYOg7cP
+	 Y8ox7pPgwc9K0eAChjkaC4Prjqw2wPndWK20S4JkZ7XlA5yOUuC7zldXjD5DkPwBf9
+	 KeVCZw8GQEPlFLTWahGlamUrpRIJTzBasUkztsrykT6FjMv65Ms5N2llnH6RDWMQlH
+	 y6ogokKnH3PsA==
+From: Mark Brown <broonie@kernel.org>
+To: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+Cc: linux-spi@vger.kernel.org, mika.westerberg@linux.intel.com
+In-Reply-To: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
+References: <20260309153703.74282-1-alan.borzeszkowski@linux.intel.com>
+Subject: Re: [PATCH] spi: intel-pci: Add support for Nova Lake mobile SPI
+ flash
+Message-Id: <177322607090.10718.7153559066230282123.b4-ty@kernel.org>
+Date: Wed, 11 Mar 2026 10:47:50 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Sg6O97Ulhk1afUCK"
-Content-Disposition: inline
-In-Reply-To: <f35c50cc-741c-407d-97e5-81c62fcc15e7@sirena.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-68380
 
+On Mon, 09 Mar 2026 16:37:03 +0100, Alan Borzeszkowski wrote:
+> Add Intel Nova Lake PCD-H SPI serial flash PCI ID to the list of
+> supported devices.
 
---Sg6O97Ulhk1afUCK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Tue, Mar 10, 2026 at 06:26:45PM +0000, Mark Brown wrote:
-> On Tue, Mar 10, 2026 at 06:12:38PM +0000, Conor Dooley wrote:
-> > On Tue, Mar 10, 2026 at 03:55:51PM +0000, Mark Brown wrote:
-> > > On Tue, Mar 10, 2026 at 02:32:54PM +0100, Francesco Dolcini wrote:
->=20
-> > > > I am aware that you all DT maintainers shared in a pretty clear way=
- your
-> > > > view on the abuse of the spidev multiple times.
->=20
-> > > > What would you be your advice to handle the need of an SPI loopback
-> > > > test? Am I missing something and there is a solution already availa=
-ble?
->=20
-> > > I'm not aware of any idiomatic way to deal with this with DT
-> > > unfortunately.  Perhaps the DT people have some ideas here?
->=20
-> > I dunno, the suggestion seems fairly reasonable to me. I don't think
-> > it's really abuse of anything, because the compatible would represent a
-> > real hardware configuration. The only think that feels "abusive" is the
-> > fake reg property you'd need.
->=20
-> In theory we should have a compatible specifically for loopback usage I
-> suppose.  Depending on how the device does it's loopbacks there may
-> actually be a genuine reg (if there's a chip select that's still
-> selecting.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Okay, fair enough.
+Thanks!
 
-> > Not sure that there should be a "linux," vendor prefix though, there's
-> > nothing linux-specific about doing loopback. Probably should be
-> > vendor-less?
->=20
-> I think at this point it's old enough that it's just ABI and adding the
-> option of having it vendorless would just cause people to ask why.
+[1/1] spi: intel-pci: Add support for Nova Lake mobile SPI flash
+      commit: 85b731ad4bbf6eb3fedf267ab00be3596f148432
 
-I'm not sure what you mean by "it's old enough", as this proposed loopback
-compatible is new, right? Don't think this is any different to i2c-mux
-or regulator-fixed etc etc. Unless you thought that I was saying that
-"spidev" should be a compatible? Definitely was not suggesting that!
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---Sg6O97Ulhk1afUCK
-Content-Type: application/pgp-signature; name="signature.asc"
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
------BEGIN PGP SIGNATURE-----
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabE/rwAKCRB4tDGHoIJi
-0l/PAP0VS6cznCqy9RY/4yr+s4yuSiXNsDrMdVfhH7Dxx0Tg6wD/TRpGc9BZlAwX
-+PkUH/lFqKh70YJWoJnk0iobXFDNAQs=
-=anzb
------END PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
---Sg6O97Ulhk1afUCK--
+Thanks,
+Mark
+

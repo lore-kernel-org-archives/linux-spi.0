@@ -1,64 +1,59 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A727F13FEE;
-	Wed, 11 Mar 2026 01:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840AF296BAF;
+	Wed, 11 Mar 2026 01:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773193947; cv=none; b=g0A7dDKCCS8OTb9Xx16tEfHvSfg3T5DZhyeJ5+jP1Bf4TImX5OhvtyRVEmRXMgTOVRQbcMsAikDUeInBcuJQZW5JJRbiMwoM3lWB6/Tav+XoLxomXGLYHIcs28J1s7TG52O65YJ0jq/lm9VnOhIRvBNdDgG1Et4HijbCsnmHW9E=
+	t=1773194164; cv=none; b=Vi5yFfYBE0GzNbq712mO2AjKFY8auEYbqOAEm2+L81e/n90kje+wOjNUORyulo6jrlxAgQh2edLQ9cLd+5qS73ukplT9MWD33Co2mxlBuoywPacFTIV7Yr5hW2UMZh7LUZZyi0NqzmMqWPBxz5eNmevArcyKLBBMi2U7GAZPy3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773193947; c=relaxed/simple;
-	bh=VoKNIIpOJGQ4fPt69EJkKn8trrLgK03vK6b59yBpoj4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gtGplxJMjcIcIN3sJarYSCo4uSR5cJ6HL7hkWXIFm3vCmc+twTFFpzqbPOUJpixZRnChGlmRyxBOV9/xK0W/a4wBJpNZE+vgNc1FFYKcSeVfbikkQSPG1OLMSlGGYl/H/o2mzU8h8FRPDrGzHXjP6fRgKKtoCMxKGaaUjGRbXnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=o07oAuXI; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="o07oAuXI"
-X-UUID: f13fdf7a1cec11f1a39cd589f645bc18-20260311
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=CHIhPpxedpxUtfuf19NsO6sYd8OBMqAij6YecxTLJjI=;
-	b=o07oAuXIdQ/RGN0jFX41RaSmqeXtcZcxwuBIFEtxmN2oySs8KxcvRtgwf8Cw+Xw/JRhUZryyZREVzqZdPVVdZQ+FDPVfGBpPpCjMmZev2ChGNYOzFzYzbSpMlrB2e93TVabGxWbZJqKUIj6X+fXkTYaQr+1+1yKYAG9BhoD6jQg=;
+	s=arc-20240116; t=1773194164; c=relaxed/simple;
+	bh=vpQIPre32H9LBlfeD8ehOCS6WsRhJKLy4RzsZrJSIqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XhzYlnBO3wMMEwuPxvji1it6eqEFzFExo1UcbgJniJ+EkxOYzpcT3QOnwkePMFjN5qFcwA178WE9Hy5tkydE5vk7P0RLrdJO1TIKWMOTuP0RBjZ7oZZmR3tPgPjT9uYckR9VZpHKnUWeoqpyV9Q07uv2+yjbG5GEw+Fod3zMf4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 6cbf7c461ced11f1a21c59e7364eecb8-20260311
+X-CTIC-Tags:
+	HR_CC_AS_FROM, HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED
+	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:a7696750-a506-4bf8-b3ab-8978092e7795,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+X-CID-O-INFO: VERSION:1.3.11,REQID:5bd3716b-86a1-4fb3-acea-2b6050028e6d,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-25
+X-CID-INFO: VERSION:1.3.11,REQID:5bd3716b-86a1-4fb3-acea-2b6050028e6d,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:-30,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
 	N:release,TS:-25
-X-CID-META: VersionHash:89c9d04,CLOUDID:54af7ff1-16bd-4243-b4ca-b08ca08ab1d8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|836|888|898,TC:-5,Content:0|15|5
-	0,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:422b830c1254eb8ac3dc169e809ca798,BulkI
+	D:260311095550AOYODZ3M,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|850
+	|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
 X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f13fdf7a1cec11f1a39cd589f645bc18-20260311
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <ot_meiker.gao@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 866010244; Wed, 11 Mar 2026 09:52:21 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 11 Mar 2026 09:52:19 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 11 Mar 2026 09:52:19 +0800
-From: Meiker Gao <ot_meiker.gao@mediatek.com>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias
- Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Bayi Cheng
-	<bayi.cheng@mediatek.com>, Chuanhong Guo <gch981213@gmail.com>
-CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>,
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
-	<sirius.wang@mediatek.com>, <vince-wl.liu@mediatek.com>,
-	<jh.hsu@mediatek.com>, Meiker Gao <ot_meiker.gao@mediatek.com>
-Subject: [PATCH] spi: dt-bindings: mediatek,spi-mtk-nor: Add clock bindings for mt8189
-Date: Wed, 11 Mar 2026 09:51:27 +0800
-Message-ID: <20260311015214.655555-1-ot_meiker.gao@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+X-UUID: 6cbf7c461ced11f1a21c59e7364eecb8-20260311
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(116.128.244.169)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 553752640; Wed, 11 Mar 2026 09:55:48 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: cl634@andestech.com,
+	broonie@kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH v2 0/2] two cleanups in atcspi200
+Date: Wed, 11 Mar 2026 09:55:12 +0800
+Message-Id: <cover.1773193726.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -66,148 +61,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-Update mediatek,spi-mtk-nor.yaml to add conditional clock and clock-names
-bindings for the mt8189-nor platform. The mt8189-nor controller requires
-five specific clocks and corresponding clock-names ("spi", "sf", "axi_f",
-"axi_h", "axi_p"). This change enforces these requirements in the device
-tree binding schema.
-
-For other platforms, the minimum number of clocks and clock-names remains
-unchanged. The patch also adds an example for mt8189-nor, illustrating the
-new clock configuration.
-
-This update ensures correct hardware description and validation for
-mt8189-nor, improving compatibility and reducing configuration errors.
-
-Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-(cherry picked from commit de637a2fea765a92d4b06efef34671c74f8bc109)
+1.Use helper function devm_clk_get_enabled() to simple code.
+2.fix mutex initialization order
 ---
- .../bindings/spi/mediatek,spi-mtk-nor.yaml    | 71 +++++++++++++++----
- 1 file changed, 59 insertions(+), 12 deletions(-)
+changlog in v2: fix return code error and leak the controller
+---
+Pei Xiao (2):
+  spi: atcspi200: Use helper function devm_clk_get_enabled()
+  spi: atcspi200: fix mutex initialization order
 
-diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-index a453996c13f2..904c25279e2d 100644
---- a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-+++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-@@ -17,9 +17,6 @@ description: |
-   for devices other than SPI NOR flash due to limited transfer
-   capability of this controller.
- 
--allOf:
--  - $ref: /schemas/spi/spi-controller.yaml#
--
- properties:
-   compatible:
-     oneOf:
-@@ -27,6 +24,7 @@ properties:
-           - mediatek,mt8173-nor
-           - mediatek,mt8186-nor
-           - mediatek,mt8192-nor
-+          - mediatek,mt8189-nor
-       - items:
-           - enum:
-               - mediatek,mt2701-nor
-@@ -39,6 +37,7 @@ properties:
-       - items:
-           - enum:
-               - mediatek,mt8188-nor
-+              - mediatek,mt8189-nor
-           - const: mediatek,mt8186-nor
- 
-   reg:
-@@ -56,14 +55,8 @@ properties:
-                      design, so this is optional.
-       - description: clock used for controller axi slave bus.
-                      this depends on hardware design, so it is optional.
--
--  clock-names:
--    minItems: 2
--    items:
--      - const: spi
--      - const: sf
--      - const: axi
--      - const: axi_s
-+      - description: clock used for controller axi_f, axi_h, and
-+                     axi_p to support the new platform.
- 
- required:
-   - compatible
-@@ -71,6 +64,35 @@ required:
-   - clocks
-   - clock-names
- 
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: mediatek,mt8189-nor
-+    then:
-+      properties:
-+        clocks:
-+          maxItems: 5
-+        clock-names:
-+          maxItems: 5
-+          items:
-+            - const: spi
-+            - const: sf
-+            - const: axi_f
-+            - const: axi_h
-+            - const: axi_p
-+    else:
-+      properties:
-+        clocks:
-+          maxItems: 4
-+        clock-names:
-+          items:
-+            - const: spi
-+            - const: sf
-+            - const: axi
-+
- unevaluatedProperties: false
- 
- examples:
-@@ -81,7 +103,7 @@ examples:
-       #address-cells = <2>;
-       #size-cells = <2>;
- 
--      nor_flash: spi@1100d000 {
-+      spi@1100d000 {
-         compatible = "mediatek,mt8173-nor";
-         reg = <0 0x1100d000 0 0xe0>;
-         interrupts = <1>;
-@@ -97,3 +119,28 @@ examples:
-         };
-       };
-     };
-+
-+  - |
-+    #include <dt-bindings/clock/mediatek,mt8189-clk.h>
-+
-+    soc {
-+      #address-cells = <2>;
-+      #size-cells = <2>;
-+
-+      spi@11018000 {
-+        compatible = "mediatek,mt8189-nor";
-+        reg = <0 0x1100d000 0 0xe0>;
-+        interrupts = <1>;
-+        clocks = <&pericfg CLK_PERI_SPI>, <&topckgen CLK_TOP_SPINFI_IFR_SEL>,
-+                 <&pericfg CLK_PERAO_SFLASH_F>, <&topckgen CLK_PERAO_SFLASH_H>,
-+                 <&pericfg CLK_PERAO_SFLASH_P>;
-+        clock-names = "spi", "sf", "axi_f", "axi_h", "axi_p";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        flash@0 {
-+          compatible = "jedec,spi-nor";
-+          reg = <0>;
-+        };
-+      };
-+    };
+ drivers/spi/spi-atcspi200.c | 29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
+
 -- 
-2.45.2
+2.25.1
 

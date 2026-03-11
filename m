@@ -1,227 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EA33644C1;
-	Wed, 11 Mar 2026 06:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2F43DDDD8
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 09:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773209364; cv=none; b=bs8bB9rRsXeeIka9/wvKdTCNdKmolN7beIPnrinin2U2dK2KPUpA1+/Yukpqf+ae41u6jyItkQen2kjEKv7A4iR/9SikI4+g0gLbXfTSSTxz2fyBYTpMiLKcMKs5OJnq3xIOk4gdXpbTxYDMeG8hLsTGPBXCKV2h1zqW2XKm0Dk=
+	t=1773221113; cv=none; b=ClltdjC/eOJnwhwEO6BxXpuxxmth6TZkZZ7OgMN/nylD9eCpR+NN7X6jTuVo78d1NoWkeZTd6QznwHxG/wsWnfOSpferBGCRJ2cpSdLkXsDurQrPjwcd4eXhOMu7lJrUb74G8VYQplqvBN6Q7nJgs8ESWtZ0YrZSPFdftY35Vz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773209364; c=relaxed/simple;
-	bh=NCpaP4S5EWWShh4y1c0yl/2Oq1KwijpKLQzgL16A1CQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=arsGZ7W3LkHjZA2B3lI1obgFZMy4bupcPPKdG7X8Q7J476eou1oZ/aVPDrjrE5U5S8tYWMPsJGL6sHwKNGpN1aHFjUNjjizcUwX33XdtvD3JReyuCwSBU6BwChFy4wwsDqhTXsk4lAIFOipLIvQAbrQ9Ck4PUhxTk3gdvYVXjMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqeDGkST; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773221113; c=relaxed/simple;
+	bh=01GKf65j/jScrwoKQ+C2Gxr6oYYNcBqF+y3kaUEjbLo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L2Xyc/I9hTRF5wm7cBifkxgbBbgoxqjDoN8E0NxtcE+OCgSWxeIThV7eHOhYluLjaXuIrv2AdfB9CEydEWhEaybMTG8OQLgcj9+mofMQcIFTPvSFJci5rvrZviPRefbz+T1+F4O2TjISAnY5VIu6Ddnq4IyJUJSO9LaPXl0tzfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF3vSz27; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqeDGkST"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECF7C4CEF7;
-	Wed, 11 Mar 2026 06:09:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF3vSz27"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F8BC2BCB0
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 09:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773209364;
-	bh=NCpaP4S5EWWShh4y1c0yl/2Oq1KwijpKLQzgL16A1CQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YqeDGkSTUiahSsx1wq+pBJdBr4NKKDQDTos02v3jd0PIpnve3ZMNueZuFX1isLkXw
-	 WiZsJ1hwmSTqSy1avqVJyfAUps9ADRkfRbPMeUiuj1aslQekPGNPkbGDpWO2yUpKtJ
-	 KdOHdw+sHxc69P/QXbFeToPaHukjSDvaRuC+fgoEUQiLnddYqArvgc/CYvRUTiqKyf
-	 KZZ2lJ3igLUWxfH+Hd5PMPDVOuhtxhk6cTy/+PzwX82JF3ieDmNl0ZKv9jGriUvWL6
-	 4AyWraUA+4uDii6Um4L7YgMeg4tD+Ke8LBprkGfrmBG8Qh7pOYYzKFmfp+AM1KjslB
-	 yqpoc8gCrWIbw==
-Message-ID: <8bfdcc26-a640-47ba-81ff-ba8e8aa0ae9d@kernel.org>
-Date: Wed, 11 Mar 2026 07:09:18 +0100
+	s=k20201202; t=1773221112;
+	bh=01GKf65j/jScrwoKQ+C2Gxr6oYYNcBqF+y3kaUEjbLo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=MF3vSz279c7gxTZF7NgmWXEwUO6gRL13DHvShsuI2CRziUEddwspHwDaaJCHkRV8i
+	 1e8zOtRrOs0iqe9JzaJ68RtW/nQ1cvGHa1wiWmmW48FlI7kwj/kEddAkxcXjR1yDzp
+	 SJIQlrnxZuj6GGfdBmJRR8x1vTwehdyhvu4FbSRfBaZTFT8aPShUh3ZNLiLOPgRB95
+	 yQdLMmafhM6TBUlKOPZylVs34PzLhbNs5nvhVRvc3stp3hfCZaU9UkVuxIOh1zjH1Z
+	 +6oVrXcP7tP8GQ//avpnN2ZW+fNxiu/UD5Y1l3+K74rROfInQkbqpAvv3i0u6ejBkK
+	 xqNFoTovsi7HQ==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-79800183233so11822527b3.1
+        for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 02:25:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVrA1BTu8MFC2W+dn+hxnm6Kq65/iIj1HeGbhYkz/u1uOa0fBVSlma1X+DqJ2ZvGxxyfUKM3CY28M8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx04WnfNjR2r+WUl8ty9sEni3z5gN4EGxYly4hyRkNrW/IDNHrM
+	fqy2ZTcv/5jBS82NghBycofmt6JoJUVBQCfbXtI6oZxDt62V4kdVdLtnRoc/t2mVXSRpu/gsvVo
+	7hWbbgUmjU3Tia0VKjAzbS1RzpkpYvPQ=
+X-Received: by 2002:a05:690c:6d84:b0:794:f400:2bfb with SMTP id
+ 00721157ae682-79917f593b5mr14822137b3.26.1773221111798; Wed, 11 Mar 2026
+ 02:25:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: dt-bindings: mediatek,spi-mtk-nor: Add clock
- bindings for mt8189
-To: Meiker Gao <ot_meiker.gao@mediatek.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Bayi Cheng <bayi.cheng@mediatek.com>, Chuanhong Guo <gch981213@gmail.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,
- Project_Global_Chrome_Upstream_Group@mediatek.com, sirius.wang@mediatek.com,
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-References: <20260311053335.785292-1-ot_meiker.gao@mediatek.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260311053335.785292-1-ot_meiker.gao@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260310075539.11701-1-wsa+renesas@sang-engineering.com> <20260310075539.11701-16-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20260310075539.11701-16-wsa+renesas@sang-engineering.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 11 Mar 2026 10:24:59 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkoWCcBvB4G-2EDYU4kezPhVF6943TY6PmK5ooGwruLzA@mail.gmail.com>
+X-Gm-Features: AaiRm52-5ccgCpLSKuxxaehFi73jWhXjY0Lv_AX860GJVRZU0Kw14nXERH-rf2Y
+Message-ID: <CAD++jLkoWCcBvB4G-2EDYU4kezPhVF6943TY6PmK5ooGwruLzA@mail.gmail.com>
+Subject: Re: [PATCH v4 15/15] hwspinlock/treewide: refactor consumer.h from
+ public header
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Lee Jones <lee@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Orson Zhai <orsonzhai@gmail.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Srinivas Kandagatla <srini@kernel.org>, 
+	Antonio Borneo <antonio.borneo@foss.st.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+	linux-remoteproc@vger.kernel.org, linux-doc@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-iio@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/03/2026 06:33, Meiker Gao wrote:
-> Update mediatek,spi-mtk-nor.yaml to add conditional clock and
-> clock-names bindings for the mt8189-nor platform. The mt8189-nor
-> controller requires five specific clocks and corresponding clock-names
-> ("spi", "sf", "axi_f", "axi_h", "axi_p"). This change enforces these
-> requirements in the device tree binding schema.
-> 
-> For other platforms, the minimum number of clocks and clock-names
-> remains unchanged. The patch also adds an example for mt8189-nor,
-> illustrating the new clock configuration.
-> 
-> This update ensures correct hardware description and validation for
-> mt8189-nor, improving compatibility and reducing configuration errors.
-> 
-> Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-> (cherry picked from commit c3180d35e52b5213764a89403e71f9a34d7bb842)
+On Tue, Mar 10, 2026 at 8:56=E2=80=AFAM Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
 
-Clean your patches before sending them.
+> Factor out the entries only needed for consumers from the generic public
+> header. This allows for a clean separation between providers and
+> consumers. Also remove contact field in favor of MAINTAINERS entries.
+> Fix the users, too.
+>
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> # for IIO
+> Acked-by: Lee Jones <lee@kernel.org> # for MFD
 
-> ---
->  .../bindings/spi/mediatek,spi-mtk-nor.yaml    | 45 ++++++++++++++-----
->  1 file changed, 33 insertions(+), 12 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-> index a453996c13f2..bd6f43a0c399 100644
-> --- a/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-> +++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mtk-nor.yaml
-> @@ -17,9 +17,6 @@ description: |
->    for devices other than SPI NOR flash due to limited transfer
->    capability of this controller.
->  
-> -allOf:
-> -  - $ref: /schemas/spi/spi-controller.yaml#
-> -
->  properties:
->    compatible:
->      oneOf:
-> @@ -27,6 +24,7 @@ properties:
->            - mediatek,mt8173-nor
->            - mediatek,mt8186-nor
->            - mediatek,mt8192-nor
-> +          - mediatek,mt8189-nor
->        - items:
->            - enum:
->                - mediatek,mt2701-nor
-> @@ -39,6 +37,7 @@ properties:
->        - items:
->            - enum:
->                - mediatek,mt8188-nor
-> +              - mediatek,mt8189-nor
->            - const: mediatek,mt8186-nor
->  
->    reg:
-> @@ -56,14 +55,8 @@ properties:
->                       design, so this is optional.
->        - description: clock used for controller axi slave bus.
->                       this depends on hardware design, so it is optional.
-> -
-> -  clock-names:
+Acked-by: Linus Walleij <linusw@kernel.org>
 
-You cannot remove properties.
-
-> -    minItems: 2
-> -    items:
-> -      - const: spi
-> -      - const: sf
-> -      - const: axi
-> -      - const: axi_s
-> +      - description: clock used for controller axi_f, axi_h, and
-> +                     axi_p to support the new platform.
->  
->  required:
->    - compatible
-> @@ -71,6 +64,34 @@ required:
->    - clocks
->    - clock-names
->  
-> +allOf:
-> +  - $ref: /schemas/spi/spi-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: mediatek,mt8189-nor
-> +    then:
-> +      properties:
-> +        clocks:
-
-minItems
-
-> +          maxItems: 5
-> +        clock-names:
-> +          items:
-> +            - const: spi
-> +            - const: sf
-> +            - const: axi_f
-
-That's just axi, no? Thus keep the list in top-level.
-
-> +            - const: axi_h
-
-And that's axi_s
-
-> +            - const: axi_p
-
-And what does p stand for? Do you understand these are names of clock
-inputs, not names of clocks?
-
-
-> +    else:
-> +      properties:
-> +        clocks:
-
-Missing minItems
-
-> +          maxItems: 4
-> +        clock-names:
-> +          items:
-> +            - const: spi
-> +            - const: sf
-> +            - const: axi
-
-And that's ABI change, NAK.
-
-
-Best regards,
-Krzysztof
+Yours,
+Linus Walleij

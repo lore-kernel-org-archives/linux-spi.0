@@ -1,78 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FDF3EBF1C;
-	Wed, 11 Mar 2026 18:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4442C3245
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 19:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773255447; cv=none; b=LD6sCjzXvqh3IFbKB5Le8fLb7+lMkolfk682VBWbBHLTrCht6U/AuS+9YPNrsO4hrAcj7hxWPdibOIvyzjUhnpTM34oPmO+x6BVasmE1EqW3T3hlMs3HELDyOf0IMoMYpDlbz0H6hNkXSUT/WBQn6wvlt5n1bxA4rpX91JA9YEk=
+	t=1773255613; cv=none; b=m/UCBb+NYupL7yNUBuC4YXCCbGBv3SCTJOdQO850+qKsTAauzti/aOoEznDQdTE/A/c3AfcYIIMciLG8XG7XB1xnwnUlKWHcV4BzIO7mu5WMTod5x6v08b/cjo+W8W5iMkmO/GJ66OhNtA2NVbg+4ZQKvkXHmgV3GzVohCzAenA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773255447; c=relaxed/simple;
-	bh=RidVbGC9mU2xxmkvIRvsi2MJXiN1kV5l6UrdEnON/PA=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=WjdpqIccUKcI+gc5BUaOQ1obRNtaASOc6fJL/rHCMfR8qPxxbHwaBlHqh07hvGx2nKE0cRaPzHOWmlfWoWoPL2Vtm5cBvPLVcobPzljYQUbdid1EMvjzq3F95iqoXtVGv2kjFsGFLob33jpiOwqxlPnL6bcckFWt40gznF3HzB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaYsJG+y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773255613; c=relaxed/simple;
+	bh=3jlSbZwG79qUcA6FHdSnhybiXF0iHF+69nCSAtiuiwE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=ggvKA6gS8IhR4c+/lyGNq4HX7ou8SyovdXJBNwmfQ4nMFF4H1t6Fj2RnChw4Wt5XwWwrlhXSVRWfKltaaLUhRQQmMAfJyoZZtISrQo7xDr0a8bQms6d8e5HX8hg0/MbJrZfgvsxHxSomoSJCThv6fZEpiTCO7jdMImHWfgNNZtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qg4AHuu9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaYsJG+y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62F2C116C6;
-	Wed, 11 Mar 2026 18:57:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qg4AHuu9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851EAC4CEF7;
+	Wed, 11 Mar 2026 19:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773255446;
-	bh=RidVbGC9mU2xxmkvIRvsi2MJXiN1kV5l6UrdEnON/PA=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=CaYsJG+y2ay//ZEN4F7URc7/XMDRJ2oI2klieogZ0PcbnU7Jer/702guv78IEvKEi
-	 SfszeO3MqALtiw8HZU7j7SiUpw1bKHZCPbzIf2wuBY6+mrxRfirl8mgHdnckyDKoaX
-	 Rukm+bN3GQPn3QY0uYu/Z2zFxgy+MRBp0n5lwsDFjMlOqMUMCyg2phJsXFO/Wf8O/T
-	 4/gHXmwD437KoOh/6panPhVlkxp7DK7TtvE0sZo1hTpdgm1JLkD+n13zzFMS7r10wU
-	 /NEOtA7AaMia6eWuTfPhBKFRu0b24BgmAaH8+mCPwvegYpk+DOx4wBtXDWSjnaldOA
-	 3BgEY52dnQycA==
-From: Mark Brown <broonie@kernel.org>
-To: cl634@andestech.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <cover.1773193726.git.xiaopei01@kylinos.cn>
-References: <cover.1773193726.git.xiaopei01@kylinos.cn>
-Subject: Re: (subset) [PATCH v2 0/2] two cleanups in atcspi200
-Message-Id: <177325544556.227890.3315912927938517762.b4-ty@kernel.org>
-Date: Wed, 11 Mar 2026 18:57:25 +0000
+	s=k20201202; t=1773255613;
+	bh=3jlSbZwG79qUcA6FHdSnhybiXF0iHF+69nCSAtiuiwE=;
+	h=Subject:From:Date:To:From;
+	b=qg4AHuu9ZuxQA+7JPUKPbfSNGHCydByvfIzogWtJAjet0iPX//Q59j/QMQoGwWthD
+	 h7FRBlOys7b8WWCdhA1m+fcMb8OOH2agYm5iCF3Zn+aIdVjdk0hF+HNSPrSlpssvoV
+	 b4SdqEfhXYJZvGz7SgF/adS5UFPqHv17faZXLJBE30j/dCGTC8Q+0I1g/EGSUKgiyq
+	 3uWUQiByktdMW0yTp79ppoirBs5f4u4Uyq1no0fKgmKwqPO3afkhxADvB90c1PlTZG
+	 Is5AAFu6lnz/Ge4VQIT9kgNbO/uFs7B94cKpghVKNcJwAsNmZzvS+8QQetqYNklon+
+	 RBp+DqlA+YBCw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA2C23808200;
+	Wed, 11 Mar 2026 19:00:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-68380
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177325560935.3793965.9843521114799616048.git-patchwork-summary@kernel.org>
+Date: Wed, 11 Mar 2026 19:00:09 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Wed, 11 Mar 2026 09:55:12 +0800, Pei Xiao wrote:
-> 1.Use helper function devm_clk_get_enabled() to simple code.
-> 2.fix mutex initialization order
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Series: arm64: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
+  Submitter: Chen-Yu Tsai <wens@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1060109
+  Lore link: https://lore.kernel.org/r/20260302153559.3199783-1-wens@kernel.org
+    Patches: [v2,1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
 
-Thanks!
+Series: two cleanups in atcspi200
+  Submitter: Pei Xiao <xiaopei01@kylinos.cn>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1064727
+  Lore link: https://lore.kernel.org/r/cover.1773193726.git.xiaopei01@kylinos.cn
+    Patches: [v2,1/2] spi: atcspi200: Use helper function devm_clk_get_enabled()
 
-[1/2] spi: atcspi200: Use helper function devm_clk_get_enabled()
-      commit: 97545e37234fdbe457f5104a09f55033550b3d84
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

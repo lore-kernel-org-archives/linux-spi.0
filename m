@@ -1,85 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018CC37A49F;
-	Wed, 11 Mar 2026 10:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3093B3880
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 10:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773226074; cv=none; b=LDSz/NiOsW2MGj3xY8Ibj+1WC7gTmnBy6Im/YGQDR3FABrQK249vvAG3TwQmTJhEL45jGruAJQTQgyUiLUJTcJnxUrg6Q2TKSlx80YdLPfgTwrh7AKrxH0EOq44sqXHvdw95xqhuLv8GJRQEPd3sXWLk3M8erthvMYdTjWh/fXE=
+	t=1773226210; cv=none; b=lyVUMeDLBcbTqRB3W8BC3aRtJvJmqDk+uJUgCrlf2tpm8A8pgiV6Q9cKnN4LHY/e8LNbLTOavLX8VLv0JRUm7Yn4yKj9Q9dzCGqaszSvPDOkj6USQcRA+dJsn8muIjC9o5Wt+tz9asQ8AxtkQmazwMmfomaYe702pVuY0VPsVqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773226074; c=relaxed/simple;
-	bh=QzsNINDiOOaeW+/k9aWRWovcFPnCSIYMiDryqSjzgtc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pU9M5tqvHUfR9130kn1gwVUsrFqWvqZxpwjIbBQJmQPf6GVJ2n50oymOq75E2lQjxhC8ErwE+GPnokH6CGkY4ivQctcDXq2SXGgLMmW4wQyMMUCGV5xX/Oy3+RjLEjOYMaRlv9NsAEpQbDQ/GOoEq+79fcquoANNGn1l9BQSGks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g40ykOAv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773226210; c=relaxed/simple;
+	bh=vSJmMzk4BgR27tOcmNnonH/ok/L40P4sfIzgUkigcr0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=akZ/oDjzZaU3OMao9+6tyGdGTecOIOAG4zyGKfkoWhJ/n6VOJNRFF/ECAaFljxrUJ6GmMH8IWfReGqo87JMD3WNAPgYL5Eve3qU9A5L3XHOmQIU8anwr225rP+y1FwSm5STT3IQKR9NVXdu6HS3X9++HsMd2y7dTLNeLkuGTmMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anmenrZS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g40ykOAv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44535C2BC86;
-	Wed, 11 Mar 2026 10:47:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anmenrZS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD83C4CEF7;
+	Wed, 11 Mar 2026 10:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773226073;
-	bh=QzsNINDiOOaeW+/k9aWRWovcFPnCSIYMiDryqSjzgtc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=g40ykOAvXIyU6ZlXBF62klKPGz5v4I4P96eKHMUSV/zNk4ifPUzAjd5QQVeFB63fT
-	 eFiiXVoTDnq4Xbqr0+uggeOzHVIhj/ac5MsXkWKvONyvcKYOu1KD3k0HtpHHjOMea1
-	 UmMQSj6yjAIVTVJ4p4NwrN9mMF25OLFr/AN7BXUiI1kpbKQCDjGu72g6MP4jBvW6GB
-	 bAlnwh1aMBpA0dLeyQikgQxhhbH4oA3jtTJ5Mqxu6oGfdpAZCfQeas6AC3WLRdqVRW
-	 +mhR9lju4FP9qiagO/ONhL4c8Y2jvr3MZXZYET3ukr1bsRL54f9JRbGumpQsBk3SHO
-	 GQOLyhcsPWZKQ==
-From: Mark Brown <broonie@kernel.org>
-To: Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Laxman Dewangan <ldewangan@nvidia.com>, Vishwaroop A <va@nvidia.com>, 
- Felix Gu <ustc.gu@gmail.com>
-Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260307-quad-v1-1-f103515db501@gmail.com>
-References: <20260307-quad-v1-1-f103515db501@gmail.com>
-Subject: Re: [PATCH] spi: tegra210-quad: Remove redundant
- pm_runtime_mark_last_busy() calls
-Message-Id: <177322607201.10718.11513895360308353153.b4-ty@kernel.org>
-Date: Wed, 11 Mar 2026 10:47:52 +0000
+	s=k20201202; t=1773226210;
+	bh=vSJmMzk4BgR27tOcmNnonH/ok/L40P4sfIzgUkigcr0=;
+	h=Subject:From:Date:To:From;
+	b=anmenrZSiCMNHfOZsjGB8cFnxCV+/N0U+U5o18ClOHhczhr+ApTi+y+nMvhpK53cG
+	 OVfa2pwrCb6iisyPceEHvx5fBYQs6m8xGprBmiYPspt8WDZ1dKEfAsydvqXqMfJ7wA
+	 kpSE7PI5hsePJ5tP0orCUdzGaUK8+77PHKgzJZwk/FaP8POT+Jo8kfSYBHcbjQa4zY
+	 ZYY36JUoRCADuCQm3VC/Nn3sFxZuZ2oFiUsbbwLg8fRAftgy/uoYTBjwrA4kDOcdhg
+	 UVvG9cwyb9TlvVf+Tt4ZIYZ7jL/nrO3bPIp7RwVSmYfOPpkSEsu1wmv2jWIMpNWrvH
+	 sTu6LW9XdgJJg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BCAC53808200;
+	Wed, 11 Mar 2026 10:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-68380
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177322620630.3195438.18254569396716978914.git-patchwork-summary@kernel.org>
+Date: Wed, 11 Mar 2026 10:50:06 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Sat, 07 Mar 2026 15:24:45 +0800, Felix Gu wrote:
-> pm_runtime_put_autosuspend() already internally updates the last_busy
-> timestamp before scheduling the autosuspend, making explicit
-> pm_runtime_mark_last_busy() calls immediately before it redundant.
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Patch: spi: axiado: Remove redundant pm_runtime_mark_last_busy() call
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1062966
+  Lore link: https://lore.kernel.org/r/20260307-axiado-1-v1-1-e90aa1b6dd9b@gmail.com
 
-Thanks!
+Patch: spi: tegra210-quad: Remove redundant pm_runtime_mark_last_busy() calls
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1062961
+  Lore link: https://lore.kernel.org/r/20260307-quad-v1-1-f103515db501@gmail.com
 
-[1/1] spi: tegra210-quad: Remove redundant pm_runtime_mark_last_busy() calls
-      commit: d1008a8e29b09ea57c77ddf82d688f8c2ea6cbe8
+Patch: spi: intel-pci: Add support for Nova Lake mobile SPI flash
+  Submitter: Alan Borzeszkowski <alan.borzeszkowski@linux.intel.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1063758
+  Lore link: https://lore.kernel.org/r/20260309153703.74282-1-alan.borzeszkowski@linux.intel.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 3
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

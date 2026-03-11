@@ -1,92 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2F43DDDD8
-	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 09:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8E431E844;
+	Wed, 11 Mar 2026 10:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773221113; cv=none; b=ClltdjC/eOJnwhwEO6BxXpuxxmth6TZkZZ7OgMN/nylD9eCpR+NN7X6jTuVo78d1NoWkeZTd6QznwHxG/wsWnfOSpferBGCRJ2cpSdLkXsDurQrPjwcd4eXhOMu7lJrUb74G8VYQplqvBN6Q7nJgs8ESWtZ0YrZSPFdftY35Vz0=
+	t=1773223860; cv=none; b=TAVf511TWcBgcti2RDjkw9QeOhKERoTsaDzNRROOYMYOzem2dlZuZJom4qnR/lo384EJ11ooy5Ye/QmfR/OO9PwrmyelFfT39deo/SJMUiZQCES0AWSsg4fwxftUHjQoRxKm11dMHibmx/cAMPctwiLOH5UGcSKs3DXXkbS6rGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773221113; c=relaxed/simple;
-	bh=01GKf65j/jScrwoKQ+C2Gxr6oYYNcBqF+y3kaUEjbLo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L2Xyc/I9hTRF5wm7cBifkxgbBbgoxqjDoN8E0NxtcE+OCgSWxeIThV7eHOhYluLjaXuIrv2AdfB9CEydEWhEaybMTG8OQLgcj9+mofMQcIFTPvSFJci5rvrZviPRefbz+T1+F4O2TjISAnY5VIu6Ddnq4IyJUJSO9LaPXl0tzfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF3vSz27; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773223860; c=relaxed/simple;
+	bh=1sphpO4kW4lKXuuPA66/6QQwudKM3Ht8eYtxAAIbFzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VzRB7BHp0XaIvdK1CXS95kToFMzcZ5jSMRJ5S5Ixuf3zOBhrNY7jOTY5vzu/yPiTzD2Dr05nJ1TfziC5JdauH3q9+/V3TsWxRKGF+uTlINnuj+qifym4VNIEHayDsrT4O3g6BkonX561WODWpP/K8/Caf4NA+HMFCQbFye39n0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKux0UPU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF3vSz27"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F8BC2BCB0
-	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 09:25:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKux0UPU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB7C4CEF7;
+	Wed, 11 Mar 2026 10:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773221112;
-	bh=01GKf65j/jScrwoKQ+C2Gxr6oYYNcBqF+y3kaUEjbLo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MF3vSz279c7gxTZF7NgmWXEwUO6gRL13DHvShsuI2CRziUEddwspHwDaaJCHkRV8i
-	 1e8zOtRrOs0iqe9JzaJ68RtW/nQ1cvGHa1wiWmmW48FlI7kwj/kEddAkxcXjR1yDzp
-	 SJIQlrnxZuj6GGfdBmJRR8x1vTwehdyhvu4FbSRfBaZTFT8aPShUh3ZNLiLOPgRB95
-	 yQdLMmafhM6TBUlKOPZylVs34PzLhbNs5nvhVRvc3stp3hfCZaU9UkVuxIOh1zjH1Z
-	 +6oVrXcP7tP8GQ//avpnN2ZW+fNxiu/UD5Y1l3+K74rROfInQkbqpAvv3i0u6ejBkK
-	 xqNFoTovsi7HQ==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-79800183233so11822527b3.1
-        for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 02:25:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVrA1BTu8MFC2W+dn+hxnm6Kq65/iIj1HeGbhYkz/u1uOa0fBVSlma1X+DqJ2ZvGxxyfUKM3CY28M8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx04WnfNjR2r+WUl8ty9sEni3z5gN4EGxYly4hyRkNrW/IDNHrM
-	fqy2ZTcv/5jBS82NghBycofmt6JoJUVBQCfbXtI6oZxDt62V4kdVdLtnRoc/t2mVXSRpu/gsvVo
-	7hWbbgUmjU3Tia0VKjAzbS1RzpkpYvPQ=
-X-Received: by 2002:a05:690c:6d84:b0:794:f400:2bfb with SMTP id
- 00721157ae682-79917f593b5mr14822137b3.26.1773221111798; Wed, 11 Mar 2026
- 02:25:11 -0700 (PDT)
+	s=k20201202; t=1773223859;
+	bh=1sphpO4kW4lKXuuPA66/6QQwudKM3Ht8eYtxAAIbFzg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pKux0UPUiKKMRN+42S4lnNRqcyC7QilxKbRDUBJT4iQSUEpelIo3oHtTmLChtOrBt
+	 J2aHSqBlAxB1ZTYjqu+d6xuVkeXyVIRk2HL4e7b6NjWA01oTm6yvxH1W88XQC2UPnp
+	 UlLFHdhcrTXeZHt5cGl3gJn0uFBKlfN25HXjnoDGlaAmCba/kJTFReLbp1rBXI1ZI9
+	 H/EEoIfjIx/IxEl+c/5uuLs4R0PHueyMlUJW5W5amR0HTBgPc1LG677IiEslUPqtFZ
+	 USY75XCTg6VlxrA+iT0wrZLeIGBzUapaPW8ODx0JQmA24URyBLybbT6dQvreNj1cIe
+	 0fNk8BpWBNOPw==
+Date: Wed, 11 Mar 2026 10:10:56 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, Max Krummenacher <max.oss.09@gmail.com>
+Subject: Re: SPI loopback tests
+Message-ID: <20260311-passably-pampered-314ea21b9f1f@spud>
+References: <20260310133254.GA51497@francesco-nb>
+ <09f06ce4-0405-442b-bf3d-5722a6977a4d@sirena.org.uk>
+ <20260310-marlin-untoasted-ecca1e3e80e8@spud>
+ <f35c50cc-741c-407d-97e5-81c62fcc15e7@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260310075539.11701-1-wsa+renesas@sang-engineering.com> <20260310075539.11701-16-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20260310075539.11701-16-wsa+renesas@sang-engineering.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 11 Mar 2026 10:24:59 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkoWCcBvB4G-2EDYU4kezPhVF6943TY6PmK5ooGwruLzA@mail.gmail.com>
-X-Gm-Features: AaiRm52-5ccgCpLSKuxxaehFi73jWhXjY0Lv_AX860GJVRZU0Kw14nXERH-rf2Y
-Message-ID: <CAD++jLkoWCcBvB4G-2EDYU4kezPhVF6943TY6PmK5ooGwruLzA@mail.gmail.com>
-Subject: Re: [PATCH v4 15/15] hwspinlock/treewide: refactor consumer.h from
- public header
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Lee Jones <lee@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
-	Waiman Long <longman@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Orson Zhai <orsonzhai@gmail.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Srinivas Kandagatla <srini@kernel.org>, 
-	Antonio Borneo <antonio.borneo@foss.st.com>, Konrad Dybcio <konradybcio@kernel.org>, 
-	linux-remoteproc@vger.kernel.org, linux-doc@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-iio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Sg6O97Ulhk1afUCK"
+Content-Disposition: inline
+In-Reply-To: <f35c50cc-741c-407d-97e5-81c62fcc15e7@sirena.org.uk>
+
+
+--Sg6O97Ulhk1afUCK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 10, 2026 at 8:56=E2=80=AFAM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Tue, Mar 10, 2026 at 06:26:45PM +0000, Mark Brown wrote:
+> On Tue, Mar 10, 2026 at 06:12:38PM +0000, Conor Dooley wrote:
+> > On Tue, Mar 10, 2026 at 03:55:51PM +0000, Mark Brown wrote:
+> > > On Tue, Mar 10, 2026 at 02:32:54PM +0100, Francesco Dolcini wrote:
+>=20
+> > > > I am aware that you all DT maintainers shared in a pretty clear way=
+ your
+> > > > view on the abuse of the spidev multiple times.
+>=20
+> > > > What would you be your advice to handle the need of an SPI loopback
+> > > > test? Am I missing something and there is a solution already availa=
+ble?
+>=20
+> > > I'm not aware of any idiomatic way to deal with this with DT
+> > > unfortunately.  Perhaps the DT people have some ideas here?
+>=20
+> > I dunno, the suggestion seems fairly reasonable to me. I don't think
+> > it's really abuse of anything, because the compatible would represent a
+> > real hardware configuration. The only think that feels "abusive" is the
+> > fake reg property you'd need.
+>=20
+> In theory we should have a compatible specifically for loopback usage I
+> suppose.  Depending on how the device does it's loopbacks there may
+> actually be a genuine reg (if there's a chip select that's still
+> selecting.
 
-> Factor out the entries only needed for consumers from the generic public
-> header. This allows for a clean separation between providers and
-> consumers. Also remove contact field in favor of MAINTAINERS entries.
-> Fix the users, too.
->
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> # for IIO
-> Acked-by: Lee Jones <lee@kernel.org> # for MFD
+Okay, fair enough.
 
-Acked-by: Linus Walleij <linusw@kernel.org>
+> > Not sure that there should be a "linux," vendor prefix though, there's
+> > nothing linux-specific about doing loopback. Probably should be
+> > vendor-less?
+>=20
+> I think at this point it's old enough that it's just ABI and adding the
+> option of having it vendorless would just cause people to ask why.
 
-Yours,
-Linus Walleij
+I'm not sure what you mean by "it's old enough", as this proposed loopback
+compatible is new, right? Don't think this is any different to i2c-mux
+or regulator-fixed etc etc. Unless you thought that I was saying that
+"spidev" should be a compatible? Definitely was not suggesting that!
+
+--Sg6O97Ulhk1afUCK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCabE/rwAKCRB4tDGHoIJi
+0l/PAP0VS6cznCqy9RY/4yr+s4yuSiXNsDrMdVfhH7Dxx0Tg6wD/TRpGc9BZlAwX
++PkUH/lFqKh70YJWoJnk0iobXFDNAQs=
+=anzb
+-----END PGP SIGNATURE-----
+
+--Sg6O97Ulhk1afUCK--

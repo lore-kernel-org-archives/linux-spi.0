@@ -1,44 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F093E3C4A;
-	Wed, 11 Mar 2026 18:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FDF3EBF1C;
+	Wed, 11 Mar 2026 18:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773255445; cv=none; b=Xnx07ws4xgL3IqsXOmrS7PxbItqB9NhZ3Jyp7gx4Z/3qqxIRnwrvnq58JKeH80mQ1WHtHj7JJU7t6Z6dd0fr6/DjQM27UCqt8fA/wvVwAoW70HXA6y3Zed4jhWA33xZjFNmsGU0ptQBqEy7PDV/UVPHcidGOSXVArKaqvF2IRlU=
+	t=1773255447; cv=none; b=LD6sCjzXvqh3IFbKB5Le8fLb7+lMkolfk682VBWbBHLTrCht6U/AuS+9YPNrsO4hrAcj7hxWPdibOIvyzjUhnpTM34oPmO+x6BVasmE1EqW3T3hlMs3HELDyOf0IMoMYpDlbz0H6hNkXSUT/WBQn6wvlt5n1bxA4rpX91JA9YEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773255445; c=relaxed/simple;
-	bh=EllHdPAyyZV7VwzLSIJTJ8+9ynxlnCPpH9WOd28KvPk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Baty6HaRVGpsZ1zMw4i3vSJOL06ouIFHYa5ki7rVnBAheqQdDKt0T1AkwcNXJAIirBp3lxMo46EuWNvsGimhsIrWBJyzMwz8ygg4yUrFhae9e8eLMkhWZFBvDBn5mA+ZW6W6U+VhFXNh51AF782iYvq6q+VKGbYGOn6nN6nNhQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTD5Je3v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773255447; c=relaxed/simple;
+	bh=RidVbGC9mU2xxmkvIRvsi2MJXiN1kV5l6UrdEnON/PA=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WjdpqIccUKcI+gc5BUaOQ1obRNtaASOc6fJL/rHCMfR8qPxxbHwaBlHqh07hvGx2nKE0cRaPzHOWmlfWoWoPL2Vtm5cBvPLVcobPzljYQUbdid1EMvjzq3F95iqoXtVGv2kjFsGFLob33jpiOwqxlPnL6bcckFWt40gznF3HzB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaYsJG+y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTD5Je3v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B661C4CEF7;
-	Wed, 11 Mar 2026 18:57:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaYsJG+y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62F2C116C6;
+	Wed, 11 Mar 2026 18:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773255445;
-	bh=EllHdPAyyZV7VwzLSIJTJ8+9ynxlnCPpH9WOd28KvPk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=cTD5Je3vCdG2C1YtPvwToGcDh4rU+61MliHgWGu9bN/vhxX6FtoMA8LmXe9bkbcI7
-	 ofr++LFvkaIGYluj/UsggEwBJ8Kq2R7WDxlR9uZwz/arUHU3ER1tvO9uojzN7ZFsVU
-	 CBFJgsxbClNMJV1v2ZcBLVH+M0O62GGKY7FHK+02vQkyQ+a05Ss1GkJP+keZNwsv76
-	 pelhNoHWzGo09xZTOsLRR/+xEJs7x13SmAR5vtyPNoWBzsSamzl5Rr86gIjGkmTTFp
-	 zsVehJlCOlzmAivTBT/TFFRxR0FcwdIzT5Qcb5GVyjDjLjA4lAKgRFtm8+iSLgQeJz
-	 JLttTqdOcliwA==
+	s=k20201202; t=1773255446;
+	bh=RidVbGC9mU2xxmkvIRvsi2MJXiN1kV5l6UrdEnON/PA=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=CaYsJG+y2ay//ZEN4F7URc7/XMDRJ2oI2klieogZ0PcbnU7Jer/702guv78IEvKEi
+	 SfszeO3MqALtiw8HZU7j7SiUpw1bKHZCPbzIf2wuBY6+mrxRfirl8mgHdnckyDKoaX
+	 Rukm+bN3GQPn3QY0uYu/Z2zFxgy+MRBp0n5lwsDFjMlOqMUMCyg2phJsXFO/Wf8O/T
+	 4/gHXmwD437KoOh/6panPhVlkxp7DK7TtvE0sZo1hTpdgm1JLkD+n13zzFMS7r10wU
+	 /NEOtA7AaMia6eWuTfPhBKFRu0b24BgmAaH8+mCPwvegYpk+DOx4wBtXDWSjnaldOA
+	 3BgEY52dnQycA==
 From: Mark Brown <broonie@kernel.org>
-To: Jernej Skrabec <jernej@kernel.org>, 
- Samuel Holland <samuel@sholland.org>, Chen-Yu Tsai <wens@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, linux-sunxi@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260302153559.3199783-1-wens@kernel.org>
-References: <20260302153559.3199783-1-wens@kernel.org>
-Subject: Re: (subset) [PATCH v2 0/3] arm64: allwinner: sun55i-t527:
- avaota-a1: Add SPI NAND
-Message-Id: <177325544317.227890.7006024907910628189.b4-ty@kernel.org>
-Date: Wed, 11 Mar 2026 18:57:23 +0000
+To: cl634@andestech.com, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Pei Xiao <xiaopei01@kylinos.cn>
+In-Reply-To: <cover.1773193726.git.xiaopei01@kylinos.cn>
+References: <cover.1773193726.git.xiaopei01@kylinos.cn>
+Subject: Re: (subset) [PATCH v2 0/2] two cleanups in atcspi200
+Message-Id: <177325544556.227890.3315912927938517762.b4-ty@kernel.org>
+Date: Wed, 11 Mar 2026 18:57:25 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,18 +44,9 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-68380
 
-On Mon, 02 Mar 2026 23:35:55 +0800, Chen-Yu Tsai wrote:
-> This is v2 of my Avaota A1 SPI NAND enablement series.
-> 
-> Changes since v1:
-> - DT bindings (Krzysztof)
->   - Moved "allOf:" block after "required:" block
->   - Dropped "type:" from child node in conditional block
-> - Collected tags
-> - Link to v1:
->   https://lore.kernel.org/linux-sunxi/20260227175157.2339758-1-wens@kernel.org/
-> 
-> [...]
+On Wed, 11 Mar 2026 09:55:12 +0800, Pei Xiao wrote:
+> 1.Use helper function devm_clk_get_enabled() to simple code.
+> 2.fix mutex initialization order
 
 Applied to
 
@@ -68,8 +54,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
-      commit: 743956bb9990214ff1dac66ef59e27221dc3c2d8
+[1/2] spi: atcspi200: Use helper function devm_clk_get_enabled()
+      commit: 97545e37234fdbe457f5104a09f55033550b3d84
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

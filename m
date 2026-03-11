@@ -1,87 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420693BAD98;
-	Wed, 11 Mar 2026 12:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701D93382E8
+	for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 13:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773232172; cv=none; b=MF7lvXO2XLjg4iVWK//wOdsw+WNf3Yo9YSGgzrUqJdjwpRg7Y6HGLMaLOCokWrJ9wW+ssZKKshaycl2lR9S+KGvPL6RwDEQf2+GnYpvqsYVxyl142Vcg+3u+4Eo9h2DmRNvpLdKqoIcqigVdK8zktbyTsSMUR6VbDSQrCUNR9Yw=
+	t=1773236795; cv=none; b=gTR/gHJxcfX9tX4GzUr/y+PRD5nYjOf3Yq+dZWard3MnIQqqpNWkc+3fXpbCvjcIqyUTyxvo6MXWDFfZ2PapYilojvIk1sSlvExDPCLBli4zpwCGj2N4dr5tm7kmR0kXYjy8rq4emn4+kae9C9ZgpXkY4PnsyHEKr70IYo4fcfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773232172; c=relaxed/simple;
-	bh=MgIYIl2Box2oWc5Sxfmic531MvK0GpFDwNWak6rTEvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h1MGJLyO0GE08LD4oDk9xKA3LMfEduGZfVhXO8uGAkBlgmtWF+PbllPwa78+CiHjO0efoyqAurAMvIv+0KHLAxIIahyZ+TwVkjnOUTD5+6DG997tU4PfUvye3a0SQgIvXTUb0OlC3p6yUSkFawKwKVujmWIZvLZHY1vImsfF0Lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ETXCXNEK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ETXCXNEK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2B6C4CEF7;
-	Wed, 11 Mar 2026 12:29:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773232171;
-	bh=MgIYIl2Box2oWc5Sxfmic531MvK0GpFDwNWak6rTEvE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ETXCXNEKQ5wzrybbyWxBv0ce3Qt3+3TjP5xEwAwrS8bUWFmfy3gYOM11NcpCmq97l
-	 eJPBRDQbPqG/29A975iCRVEzztxCdrn7WEaDvO9TF/jDw7AsNarJdhIt2EiK+3pvTk
-	 a2b8oZ0wqGu7x/rqYA2YtLq1uETGvScfO8wav+1k9J+Sfvo00z0GArLQEHs2XIQETy
-	 kuqtUipxCW26fy6YTAQD852oBYX6koGxmwmC2YBx6p5lNiagoAAAeNQtI5Lcv7tuBX
-	 QXteoa3ctinr3z+Z4wtyIbj4Lu16zzZQrWEflsigE5MvCEtBLd8kMIF5UH2+QM7F4f
-	 IHBs5QCEvn1Vw==
-Date: Wed, 11 Mar 2026 12:29:28 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: cl634@andestech.com, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] spi: atcspi200: fix mutex initialization order
-Message-ID: <dd58aff2-2408-4aac-b39a-bca8fe4cd64e@sirena.org.uk>
-References: <cover.1773193726.git.xiaopei01@kylinos.cn>
- <f47d4c292bdff7a0bad8d316c28c83c0fda36a0c.1773193726.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1773236795; c=relaxed/simple;
+	bh=5xYUudxznhB/9gI0iYC0XCpk27j9+cjg1Iajg5XCHoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RUdOBijQV3m8fY63dtA7s8/01KrQZX88TEy/G/Wt/WdmZCH+oYjjxgtXC7XZEii293T/6McjIhAuhJ5jIhXRqe6CGbMCK/hJfCsosxpFe01wUL/WzpoSMfr6fkIXCFqS4Txmflndm8KK9LhcsIHeN7xgwLeFAB4b9A7+zs6JcFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-509134ab2d2so33407511cf.0
+        for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 06:46:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773236791; x=1773841591;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cArsbpNTjSz4s4xSJeS/zGPEDFrbSvYY3oJhygDvULo=;
+        b=XSRNhkCr9rKN5jCvk/H1sqBWyUBH3YE+TMYtUW2wIIf7XxR6hoQDe267fCLaFQ9C13
+         poYv7yK9lAF+nvrE7TtSlEm/Yo7PFlxQQee6ycKUBrbMI5cTCRQmiac/iXjnC2nMFW8Z
+         /7z5Z8zYz9e6fZqA1nj6lEdpyh+q2LMYJzv5nTEwSne9mjSY5yu9GX27469InIpM9O7N
+         8hRbzCoKngGRAtH12GCYFF4tUlJC2f5ahlcCimVlceGi1GR0SHjtb4rAsiOHarIRXulD
+         9bGJQO4Dto0R0l8CMIMbK9cWtyAqsUDejC73m2mWM1lLMX+o2AgvnKUIjCnMJiJaxfu0
+         4Z7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXs3uI+Y5eltr/MLljX7GWLrtPTOiWz0oKZgdnOJjliujrIM61ucjwwjjGsCwxb0ml9zX53B6PVTTg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQvJGh/z1lgBVDPfNdYmIFvUNsfEyAtYmhDlCu8avhhmi3I5YH
+	wWaEgFiyrtiv38JWKoU/66S/fsm6qAIUUTvRPovOERdPxchCNiJHwi+b/zswmj8M
+X-Gm-Gg: ATEYQzyWrW6b69UaW/ETlEiWcu2MphgzILjtfuXjXg5AJ04K1LYll00RQpUBJXcDxtG
+	TX7/LkpnkRXWuoYx8CBJNZKmcBlI8ln44nbVc7jHu7oOemI7GctkB+MdigOzh8RHjP2UIA9VEY6
+	LxxVhUTZF4CjdXNxAoZVybcLiBw3w055UsF4dumiKytZyGJnZKjh6bUUe22WlGhH9x4W9vkTgMA
+	WXVIXMkNj0CiXkg44RpMw0G7+uLCvx3CTftnoHzZ3wdWFr7o/6i5PzF+CGtCzQd03VDUfkIEzEA
+	Ti2cAbxyX8+KmpaKFLOPFEaEsdS14Kutvue+MTN3NTAs8WaG1ZU0IioVdZFjTD+Vu8CSjnAl4EX
+	RWjn4VXRFK7x2lKBgm5v1KDdA0paMQ4pujUOa2XW2g0+BqYJbYhqMy1lurQ/ZCcfGLJv7pZqzyI
+	nyZKdgXgENyg0yXkjV8z0xvy5QK0unvrVT8jqD0008z4WE2G8a+fdqtT+yzv+pGKsO
+X-Received: by 2002:ac8:7e85:0:b0:509:f36:496d with SMTP id d75a77b69052e-50939fc63camr29107061cf.33.1773236791113;
+        Wed, 11 Mar 2026 06:46:31 -0700 (PDT)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com. [209.85.222.179])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5093a0ea844sm14499511cf.17.2026.03.11.06.46.30
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Mar 2026 06:46:30 -0700 (PDT)
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8ca01dc7d40so1422096885a.1
+        for <linux-spi@vger.kernel.org>; Wed, 11 Mar 2026 06:46:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWyb6U109MLMVSYEXu4+76a9cCjv5VmV+Hf9JBDuQuZDTvYNChWQq/CS6v+Jx8EB86akwfnRZothXU=@vger.kernel.org
+X-Received: by 2002:a05:6102:162c:b0:5f5:2e63:f574 with SMTP id
+ ada2fe7eead31-601defb72a6mr1104622137.29.1773236445414; Wed, 11 Mar 2026
+ 06:40:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Vio9+FbWuPDpDTZg"
-Content-Disposition: inline
-In-Reply-To: <f47d4c292bdff7a0bad8d316c28c83c0fda36a0c.1773193726.git.xiaopei01@kylinos.cn>
-X-Cookie: When all else fails, EAT!!!
+References: <20260205-schneider-6-19-rc1-qspi-v5-0-843632b3c674@bootlin.com> <20260205-schneider-6-19-rc1-qspi-v5-4-843632b3c674@bootlin.com>
+In-Reply-To: <20260205-schneider-6-19-rc1-qspi-v5-4-843632b3c674@bootlin.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 11 Mar 2026 14:40:32 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVcwnYyN56Ktee0wR=oT3oMoZ=5KD=5RF4Bq2ohueJNiQ@mail.gmail.com>
+X-Gm-Features: AaiRm509ZGDpwutdpDixUlMdHUAqZXZJALvV2NTJJn7lmkLWEJoaky0AqQwCh4s
+Message-ID: <CAMuHMdVcwnYyN56Ktee0wR=oT3oMoZ=5KD=5RF4Bq2ohueJNiQ@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] ARM: dts: r9a06g032: Describe the QSPI controller
+To: "Miquel Raynal (Schneider Electric)" <miquel.raynal@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Magnus Damm <magnus.damm@gmail.com>, Vaishnav Achath <vaishnav.a@ti.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, =?UTF-8?Q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Vignesh Raghavendra <vigneshr@ti.com>, 
+	Santhosh Kumar K <s-k6@ti.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Pascal Eberhard <pascal.eberhard@se.com>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 5 Feb 2026 at 19:10, Miquel Raynal (Schneider Electric)
+<miquel.raynal@bootlin.com> wrote:
+> Add a node describing the QSPI controller.
+> There are 2 clocks feeding this controller:
+> - one for the reference clock
+> - one that feeds both the ahb and the apb interfaces
+> As the binding expect either the ref clock, or all three (ref, ahb and
+> apb) clocks, it makes sense to provide the same clock twice.
+>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Signed-off-by: Miquel Raynal (Schneider Electric) <miquel.raynal@bootlin.com>
 
---Vio9+FbWuPDpDTZg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks, will queue in renesas-devel for v7.1.
 
-On Wed, Mar 11, 2026 at 09:55:14AM +0800, Pei Xiao wrote:
+Gr{oetje,eeting}s,
 
-> @@ -551,6 +551,10 @@ static int atcspi_probe(struct platform_device *pdev)
->  	spi->dev =3D &pdev->dev;
->  	dev_set_drvdata(&pdev->dev, host);
-> =20
-> +	ret =3D devm_mutex_init(spi->dev, &spi->mutex_lock);
-> +	if (ret)
-> +		goto free_controller;
-> +
+                        Geert
 
-This means we're now using devm to free the mutex that is in spi, but
-when we pass spi into devm_spi_register_controller() we'll cause spi to
-be freed before we free the mutex.  This pattern gets a bit clunky with
-devm...
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
---Vio9+FbWuPDpDTZg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmxYCcACgkQJNaLcl1U
-h9AfJgf/X64IpNsFEcCA3B8/QlupaMw4r7EYNqZuxa8RbgHQzmdV6H4NStZJnUKq
-ywuMSOzfiVQt3E9R0ZwimEko0rtEz6lw4mEWNYQcpMmz0wbMGkPNRfAJUpBZQ+x4
-5phd63hPyyXoChe2LkVc9nH2yLsD16DiyWmsYF5om7I4zLES65SAZySbGrmjHGB3
-EvwH4QLdYstIazJpdEOjiYi6QPhFxj9AoYDnYu+ESiq6ggWoVrjzaqusLL208Sfg
-dzik+OSdOpqh3M164yYjzj48eGIiCPGuA2KfN9fP3hUmp9Eib5/6py0kol1D01nf
-i2mt3nRdsYXXcz7u18Eaqx0ekVTzbw==
-=Pflv
------END PGP SIGNATURE-----
-
---Vio9+FbWuPDpDTZg--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

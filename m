@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8667A2BEFF5;
-	Thu, 12 Mar 2026 12:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A30D3C5527;
+	Thu, 12 Mar 2026 13:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773320218; cv=none; b=nJVni+PPkkwDd7ohruCglYqoHQyPSG8WZtKDQs2nyyey2kvkSrKolwek2NBXR+zzvTUIb50VGhZOfzufCHJnq3SWH7ZuWkNfXdSwF34mQwYvJRhyWvSplwhRUv72dicX8j0HOX4S5kcejYnE7jHL/fEp/IgZchBPeQhCd2JYsig=
+	t=1773320546; cv=none; b=oHNw1fDImWr1HXpYjFPpoZ79cQyyNHvQjlYP+jl0g+4bLimaJRVkWUDEKb2m6qeSXizs6jq74t5nZHHKzO4lsx6fiI8DsYSVUi+d5z/R2daWO9QAT4T+uUMHa3ZBw5UqRAIHiBn1XBlU7qgTXAzIRiLn0cXWyGYRoJOgMfh5fVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773320218; c=relaxed/simple;
-	bh=cJK3mpyT79e9qtgSDmo9xoFCS+6kGW9BW2Ply5mwOwY=;
+	s=arc-20240116; t=1773320546; c=relaxed/simple;
+	bh=6JGSpqVxm5Xk2m9ccSi9/f5mq6saFDm1oVr7MCpFyr4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qmR/2ciBjMLX61fZSDlcm50119riQ8LKb4aTsPAp7NmcicUeTSdgv8tG7NZqsqQpOVrbzVUBH4HX0MqlaiWg/KELGXJ5KyTZ2z0X/gBkfldvj3P0mRJfpk9YCaGkyFx4UUWnnYyxYeOlYuMTFrYN1DqItAoy0waWT95NuJUnYcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hcs9nRxf; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OjfzWGF4ycE2MP7q2Yr+5IOzVjqpM7f6FX7RPDx9bTGdqnMdR+9b44Q2lUzAHIuZ1dy0rdAjyF9ka/RgI8Mu2u9+R1p+qZHIF5TBcBEaH7adyVh+I3PhgMzDKoZlzAJB2S3ogO9q6QdgD1XFx8gjhjegK33DSI617LOiyIiczTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijzuRMZa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hcs9nRxf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CA1C2BC86;
-	Thu, 12 Mar 2026 12:56:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijzuRMZa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75297C19424;
+	Thu, 12 Mar 2026 13:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773320218;
-	bh=cJK3mpyT79e9qtgSDmo9xoFCS+6kGW9BW2Ply5mwOwY=;
+	s=k20201202; t=1773320545;
+	bh=6JGSpqVxm5Xk2m9ccSi9/f5mq6saFDm1oVr7MCpFyr4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hcs9nRxfcpQv9i4VUoc9iF/DJrAf6Id276T6HxF/Ib7iBm1MqhkwzZ4IfPqId91sf
-	 ZqTwIP18zfG/TDbMGdttgXRsihfieBSg6vZsmvZlImvkzzxOM0cbpwIWcjHdiCXdPv
-	 Mnl7ZTawiavyFdyTgK0aGIm/S1C8HO1unx7GoIKoxbDPOCjCfAnvIJuHbvOV4y+If3
-	 c/x8YlSrdrUims11yxA5JjlEFzCFR/MJugKWJ+UGBCgaTYfuLSBJJ9FYMWZ9LXsf4k
-	 RmzAIPbd77QF9MTrRJ0zFetOCQiNctC2pXXkacBo0ec7YFR0rxvC9WEyHJpYYooXGy
-	 eB/ColMjmpvyw==
-Date: Thu, 12 Mar 2026 12:56:53 +0000
+	b=ijzuRMZaAG0cxBMl7gDHrSzew3fvUz+nBqTiXPU+NIp69zqt1wfJfesyFC/fVZS3+
+	 fpJQfT7RAlMy6CdCes95jyDBXqJ9b0oy2+/mIhMf1FRNGI13AM1NqmAm86j3/A/552
+	 5kQ9+UXYzpoZsbEKqCumRSSwg+UQG2vj14Bds3PbgErv5h43Bs/xRG8wi00G2nRngr
+	 EIIwDGkg6bJW4vTpgIQrRiJEabuw4Tb1FNbFO22KU/UjrislDHxxzWqcPdnp2DTFq5
+	 sey6Gzv43mUHHEgvpwlNQvy8QnAR90ilRc2oUbTs2Xh0giY+jhiCjSVqkQ2SFWQMPl
+	 im56x+2su4L1w==
+Date: Thu, 12 Mar 2026 13:02:20 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Pei Xiao <xiaopei01@kylinos.cn>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -34,11 +34,11 @@ Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
 	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 02/17] spi: bcm63xx-hsspi: Use helper function
+Subject: Re: [PATCH 13/17] spi: stm32: Use helper function
  devm_clk_get_enabled()
-Message-ID: <62a5a878-f88c-4ecf-a0e6-fe5430de16e1@sirena.org.uk>
+Message-ID: <8fe16029-2830-44c3-bf32-5aea31f72c62@sirena.org.uk>
 References: <cover.1773306858.git.xiaopei01@kylinos.cn>
- <9391f0c3a62e698e66a4b6630ae10b329faf3c11.1773306858.git.xiaopei01@kylinos.cn>
+ <d239cda51bb3dcc84da4a7194a30f3be82422f70.1773306858.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,43 +46,37 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yl7jQAg1ktMo1H3W"
+	protocol="application/pgp-signature"; boundary="9knHiRnV8mpI+WJ7"
 Content-Disposition: inline
-In-Reply-To: <9391f0c3a62e698e66a4b6630ae10b329faf3c11.1773306858.git.xiaopei01@kylinos.cn>
+In-Reply-To: <d239cda51bb3dcc84da4a7194a30f3be82422f70.1773306858.git.xiaopei01@kylinos.cn>
 X-Cookie: I feel better about world problems now!
 
 
---yl7jQAg1ktMo1H3W
+--9knHiRnV8mpI+WJ7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Mar 12, 2026 at 05:28:54PM +0800, Pei Xiao wrote:
+On Thu, Mar 12, 2026 at 05:29:05PM +0800, Pei Xiao wrote:
 
-> -		ret = clk_prepare_enable(pll_clk);
-> -		if (ret)
-> -			goto out_disable_clk;
-> +		pll_clk = devm_clk_get_enabled(dev, "pll");
-> +		if (IS_ERR(pll_clk))
-> +			return dev_err_probe(dev, PTR_ERR(pll_clk), "failed
-> +					     enable pll clk\n");
+> +	if (!cfg->has_device_mode && device_mode)
+> +		return dev_err_probe(&pdev->dev, -EPERM, "spi-slave not
+> +				     supported\n");
 
-It's nice to print an error message but having a line break in the
-middle of a string not so much, put the "failed bit on the same line as
-the rest of the error.
+Similar thing in this driver here.
 
---yl7jQAg1ktMo1H3W
+--9knHiRnV8mpI+WJ7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyuBQACgkQJNaLcl1U
-h9CEzAf/ecvpiU7/HU5Fp3TOFVTXTv8suK734EdILMdPMYzg2XQ5APg0FjZnaDWK
-n27vFo4zq7eUDrvGme1Dzv10k/4Cjpw2DrQx/Ahqa3jpKOCHGmSxpijsGaAXLiJx
-+LsKIWIOva86JU+2aUnnG2N/OYF8veII4MzVSaJohLty0G5K0iDpFd0LfzMJe3Me
-unarWsC/fxwcVKrf6PagZGMg1lH37wpcAC2In9I7FrtGsoZCLS1JOZrLonKf1P7w
-l3S+1h6hvY2cZtV5YrpK99SnkNKC6NSRw80K3GIUzkqT6P7RiaCbldAabB4newkT
-u2aU/H0zcagXZXr0ZHcpjfYPMZXG6A==
-=BmZA
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyuVsACgkQJNaLcl1U
+h9CkwggAg24YBsU71i5Djghu/lHhxeErxA+7HBjAV3TstCzfospFBacxZTrIypgS
+mWtgo+SwmXbDn6WiyjDlwpIMTI6PFDzzMn6x6sxwj5/OD1osR2cJ2SYzYSbwFxbQ
+uoJphNgSht3FEaDioOtHfdrgiLIkMm+/TYlf1u7+ZzrgI4ueyhtCfs0dN8EfdB+q
+pAJUva6gft4S6N3uS4kagfQP8e+IwxXr5fekxL3p7Y9XYpa30rHE56Oc7sbGWGma
++WP0OfGjImbuvKtGxAPKoGBte/kLIrsSHoAFhTLSytjUxs4uuftK3Y5g3d7zq1fh
++TRESnlE15ixsifgA+1umZAfcpBjfA==
+=ouCy
 -----END PGP SIGNATURE-----
 
---yl7jQAg1ktMo1H3W--
+--9knHiRnV8mpI+WJ7--

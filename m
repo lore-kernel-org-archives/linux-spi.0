@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF3D3B6C1C;
-	Thu, 12 Mar 2026 09:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D963B584E;
+	Thu, 12 Mar 2026 09:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773307767; cv=none; b=dsVNt0bBulmsa8V53I5PAGzHbdukONJdYILIVP980Q+fuJ00bBHaTpV6KtJoxnajQpwMda8RnGBl39HUKGT3qqE0b7adTIxLf67ipuPiAnUnvDmMscRFNzAyG4O6zG/uUyHibGkqdtngC8McjGHWfj49Z+KWnIfU6o6FG/amLRQ=
+	t=1773307769; cv=none; b=D5NFZy1Dz0jatPOQHeb+c2ThYQmqEaWBC85fs4jrzdRp/6XLhAqxrryeIdCwN1K+UlDEe1uAPdsf3ZDyjQv/kSqEL/3JteJpIRhwklJVi0WPds6WPvPd7qrz/qVAe3K5j5Cw6vhXa5pGrlvcqAhBwhTmIrBfmYYnuDSPHfv0Ym0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773307767; c=relaxed/simple;
-	bh=IfoeA6FedpeBRUjIGtCriIOs/Pt47N0e1ZtnZ3NuT4A=;
+	s=arc-20240116; t=1773307769; c=relaxed/simple;
+	bh=XIVT0r2GJCsvjRw74BKgnXHXhN5ESbxwi1/JohOcCik=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EAua2NGols5TQX1aZZv3rCeA04I/7cDbQuSyKihdR256gpr+rGe15/by483scthZ+q2W4KUQ7nMsgzvlJupuLclQW+F5bKBQyIGCuupTUkjnu2fL2anD1EjR8cfqbODF8n4NJEkWYw3S1c/NDoEA4mTS7osefeuuH7D3Q601Fuc=
+	 MIME-Version; b=RgTL0ikvBTz7Sgtq+iUT/F4JD4sGE7R0R6JyfLvdze6wxyib/vPUWk8K3/blPV+q7T+ec1pzo6giG0XXQUUnyOgx7Bdzv0YJBPmLVbA7n/jpTGv080fbGmCQeXK35jrF0cj8xjoMbgmjjC+QtXnIk0Nj4pBWnrH09WX1KAIGwPk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f31692f81df511f1a21c59e7364eecb8-20260312
+X-UUID: f1f707541df511f1a21c59e7364eecb8-20260312
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:5c7d72ec-6917-4184-a30d-799bb4b7a730,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:6fcc4f1c-14c9-4cf4-8aa9-59a6b6b26187,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:8f1d373fe3b520d8e6249f0ae27cb419,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:9b9ce31f68ec8156caa4929c046ab439,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f31692f81df511f1a21c59e7364eecb8-20260312
+X-UUID: f1f707541df511f1a21c59e7364eecb8-20260312
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 502394402; Thu, 12 Mar 2026 17:29:20 +0800
+	with ESMTP id 1623409013; Thu, 12 Mar 2026 17:29:18 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -45,9 +45,9 @@ To: linux-spi@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	broonie@kernel.org
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 03/17] spi: bcmbca-hsspi: Use helper function devm_clk_get_enabled()
-Date: Thu, 12 Mar 2026 17:28:55 +0800
-Message-Id: <6e9e73c6001daf6641f1a3424c8e14633511d77f.1773306858.git.xiaopei01@kylinos.cn>
+Subject: [PATCH 02/17] spi: bcm63xx-hsspi: Use helper function devm_clk_get_enabled()
+Date: Thu, 12 Mar 2026 17:28:54 +0800
+Message-Id: <9391f0c3a62e698e66a4b6630ae10b329faf3c11.1773306858.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773306858.git.xiaopei01@kylinos.cn>
 References: <cover.1773306858.git.xiaopei01@kylinos.cn>
@@ -66,92 +66,80 @@ Simplify code.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 47 ++++++++++++----------------------
- 1 file changed, 16 insertions(+), 31 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 44 +++++++++------------------------
+ 1 file changed, 12 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index ece22260f570..08d12606e91d 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -452,39 +452,30 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(spim_ctrl))
- 		return PTR_ERR(spim_ctrl);
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 612f8802e690..7449e582e8c8 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -758,8 +758,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
 -	clk = devm_clk_get(dev, "hsspi");
+-
 +	clk = devm_clk_get_enabled(dev, "hsspi");
  	if (IS_ERR(clk))
--		return PTR_ERR(clk);
--
+ 		return PTR_ERR(clk);
+ 
+@@ -767,41 +766,26 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
+ 
 -	ret = clk_prepare_enable(clk);
 -	if (ret)
 -		return ret;
-+		return dev_err_probe(dev, PTR_ERR(clk),
-+				     "Failed to get hsspi clock\n");
+-
+ 	ret = reset_control_reset(reset);
+-	if (ret) {
+-		dev_err(dev, "unable to reset device: %d\n", ret);
+-		goto out_disable_clk;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "unable to reset device: %d\n", ret);
  
  	rate = clk_get_rate(clk);
  	if (!rate) {
 -		pll_clk = devm_clk_get(dev, "pll");
-+		pll_clk = devm_clk_get_enabled(dev, "pll");
- 
- 		if (IS_ERR(pll_clk)) {
+-
+-		if (IS_ERR(pll_clk)) {
 -			ret = PTR_ERR(pll_clk);
 -			goto out_disable_clk;
-+			return dev_err_probe(dev, PTR_ERR(pll_clk),
-+					     "Failed to get pll clock\n");
- 		}
- 
+-		}
+-
 -		ret = clk_prepare_enable(pll_clk);
 -		if (ret)
 -			goto out_disable_clk;
--
++		pll_clk = devm_clk_get_enabled(dev, "pll");
++		if (IS_ERR(pll_clk))
++			return dev_err_probe(dev, PTR_ERR(pll_clk), "failed
++					     enable pll clk\n");
+ 
  		rate = clk_get_rate(pll_clk);
 -		if (!rate) {
 -			ret = -EINVAL;
 -			goto out_disable_pll_clk;
 -		}
 +		if (!rate)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "Failed to get pll clock rate\n");
++			return dev_err_probe(dev, -EINVAL, "failed get pll
++					     clk rate\n");
  	}
  
- 	host = devm_spi_alloc_host(&pdev->dev, sizeof(*bs));
+ 	host = spi_alloc_host(&pdev->dev, sizeof(*bs));
 -	if (!host) {
 -		ret = -ENOMEM;
 -		goto out_disable_pll_clk;
 -	}
 +	if (!host)
-+		return dev_err_probe(dev, -ENOMEM,
-+				     "Failed alloc spi host\n");
++		return dev_err_probe(dev, -ENOMEM, "no mem\n");
  
  	bs = spi_controller_get_devdata(host);
  	bs->pdev = pdev;
-@@ -535,18 +526,16 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 		ret = devm_request_irq(dev, irq, bcmbca_hsspi_interrupt, IRQF_SHARED,
- 			       pdev->name, bs);
- 		if (ret)
--			goto out_disable_pll_clk;
-+			return dev_err_probe(dev, ret, "Failed request irq\n");
- 	}
- 
- 	ret = devm_pm_runtime_enable(&pdev->dev);
- 	if (ret)
--		goto out_disable_pll_clk;
-+		return dev_err_probe(dev, ret, "Failed pm runtime enable\n");
- 
- 	ret = sysfs_create_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
--	if (ret) {
--		dev_err(&pdev->dev, "couldn't register sysfs group\n");
--		goto out_disable_pll_clk;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "couldn't register sysfs group\n");
- 
- 	/* register and we are done */
- 	ret = devm_spi_register_controller(dev, host);
-@@ -559,10 +548,6 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 
- out_sysgroup_disable:
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
+@@ -887,10 +871,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ out_put_host:
+ 	spi_controller_put(host);
 -out_disable_pll_clk:
 -	clk_disable_unprepare(pll_clk);
 -out_disable_clk:

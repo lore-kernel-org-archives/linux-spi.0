@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8AB396D16;
-	Thu, 12 Mar 2026 11:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8667A2BEFF5;
+	Thu, 12 Mar 2026 12:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773314537; cv=none; b=OYNTXSWyTvbKhVFT2wHpk7b7T3OMpJ8ek33zuaeVbGDrHYcae5NRSMnsVcQe71qC8Cd/KxkBGouoJ1wOOkiMD2Afs1iU3q9Rixq+yDVrjadAdP9w+yxnquuGlhTch/o1id0V8KFl68mObdn1YJBWLrRIqJZDZU5dN/fWzp4YH+M=
+	t=1773320218; cv=none; b=nJVni+PPkkwDd7ohruCglYqoHQyPSG8WZtKDQs2nyyey2kvkSrKolwek2NBXR+zzvTUIb50VGhZOfzufCHJnq3SWH7ZuWkNfXdSwF34mQwYvJRhyWvSplwhRUv72dicX8j0HOX4S5kcejYnE7jHL/fEp/IgZchBPeQhCd2JYsig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773314537; c=relaxed/simple;
-	bh=n1nyacseKQZGGEJ1k1fJu0PAgJLlkvnCzlmgpYMhDy4=;
+	s=arc-20240116; t=1773320218; c=relaxed/simple;
+	bh=cJK3mpyT79e9qtgSDmo9xoFCS+6kGW9BW2Ply5mwOwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFnNuiwCGXqGIYuQhpXJ5yNWsXhKiLjtIRn52N8ApNIdxsUjbqpUmKiMxKTKEB3xLiT0VJnsREdrHpIEbjBqHB0N8C29yW1cCt7ZqoscAmOq0uBYHwm5zup2bodMNPEDfxwlm6g5eNg7IwnNrgcsbSNST8i9FQ7+tIG0kSbuYX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeovAqBN; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qmR/2ciBjMLX61fZSDlcm50119riQ8LKb4aTsPAp7NmcicUeTSdgv8tG7NZqsqQpOVrbzVUBH4HX0MqlaiWg/KELGXJ5KyTZ2z0X/gBkfldvj3P0mRJfpk9YCaGkyFx4UUWnnYyxYeOlYuMTFrYN1DqItAoy0waWT95NuJUnYcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hcs9nRxf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeovAqBN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF58EC4CEF7;
-	Thu, 12 Mar 2026 11:22:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hcs9nRxf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CA1C2BC86;
+	Thu, 12 Mar 2026 12:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773314537;
-	bh=n1nyacseKQZGGEJ1k1fJu0PAgJLlkvnCzlmgpYMhDy4=;
+	s=k20201202; t=1773320218;
+	bh=cJK3mpyT79e9qtgSDmo9xoFCS+6kGW9BW2Ply5mwOwY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oeovAqBNHFs5Q5oqGD2LLaEBwcoSqPSd7A2lcw5FNqv7g4BS4ncxXEqjwnJgcaUp5
-	 P1ExOQ7Tj2rIQiWg6zIwouSXgQZb0z+8hH2Cw7N3aIKLknOYtv7O7grZlrYjlIOsb2
-	 xAn2dom6zU8jUzao3QXIhs13tpIFJyQOAS6fxaLFtHQ5vLjNLP2+P4xkaOTgxJyOCn
-	 LW7JBFr0s2hmsnsQYKm8v3e4SBLqSCgG8S+boUTrQZaPf60pqXQe4RQ6AURT8665g8
-	 tuUx3ZrwIjaD9Mu+y3SQApdDxgo+RyRlt6Z2JrIx2RUrzcwkAJ5+WToJI8jmYXk1I8
-	 aoKZdF4JRpJ/A==
-Date: Thu, 12 Mar 2026 11:22:13 +0000
+	b=Hcs9nRxfcpQv9i4VUoc9iF/DJrAf6Id276T6HxF/Ib7iBm1MqhkwzZ4IfPqId91sf
+	 ZqTwIP18zfG/TDbMGdttgXRsihfieBSg6vZsmvZlImvkzzxOM0cbpwIWcjHdiCXdPv
+	 Mnl7ZTawiavyFdyTgK0aGIm/S1C8HO1unx7GoIKoxbDPOCjCfAnvIJuHbvOV4y+If3
+	 c/x8YlSrdrUims11yxA5JjlEFzCFR/MJugKWJ+UGBCgaTYfuLSBJJ9FYMWZ9LXsf4k
+	 RmzAIPbd77QF9MTrRJ0zFetOCQiNctC2pXXkacBo0ec7YFR0rxvC9WEyHJpYYooXGy
+	 eB/ColMjmpvyw==
+Date: Thu, 12 Mar 2026 12:56:53 +0000
 From: Mark Brown <broonie@kernel.org>
 To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: cl634@andestech.com, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] spi: atcspi200: fix mutex initialization order
-Message-ID: <8313fa0b-9c15-41da-aff6-4228a2b1f03e@sirena.org.uk>
-References: <cover.1773193726.git.xiaopei01@kylinos.cn>
- <f47d4c292bdff7a0bad8d316c28c83c0fda36a0c.1773193726.git.xiaopei01@kylinos.cn>
- <dd58aff2-2408-4aac-b39a-bca8fe4cd64e@sirena.org.uk>
- <c95608b9-4912-4b42-a188-1265d603ddb0@kylinos.cn>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH 02/17] spi: bcm63xx-hsspi: Use helper function
+ devm_clk_get_enabled()
+Message-ID: <62a5a878-f88c-4ecf-a0e6-fe5430de16e1@sirena.org.uk>
+References: <cover.1773306858.git.xiaopei01@kylinos.cn>
+ <9391f0c3a62e698e66a4b6630ae10b329faf3c11.1773306858.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,53 +46,43 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Z0EM2gQe7uRzGP59"
+	protocol="application/pgp-signature"; boundary="yl7jQAg1ktMo1H3W"
 Content-Disposition: inline
-In-Reply-To: <c95608b9-4912-4b42-a188-1265d603ddb0@kylinos.cn>
+In-Reply-To: <9391f0c3a62e698e66a4b6630ae10b329faf3c11.1773306858.git.xiaopei01@kylinos.cn>
 X-Cookie: I feel better about world problems now!
 
 
---Z0EM2gQe7uRzGP59
-Content-Type: text/plain; charset=utf-8
+--yl7jQAg1ktMo1H3W
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 12, 2026 at 10:25:11AM +0800, Pei Xiao wrote:
-> =E5=9C=A8 2026/3/11 20:29, Mark Brown =E5=86=99=E9=81=93:
-> > On Wed, Mar 11, 2026 at 09:55:14AM +0800, Pei Xiao wrote:
+On Thu, Mar 12, 2026 at 05:28:54PM +0800, Pei Xiao wrote:
 
-> >> +	ret =3D devm_mutex_init(spi->dev, &spi->mutex_lock);
-> >> +	if (ret)
-> >> +		goto free_controller;
-> >> +
+> -		ret = clk_prepare_enable(pll_clk);
+> -		if (ret)
+> -			goto out_disable_clk;
+> +		pll_clk = devm_clk_get_enabled(dev, "pll");
+> +		if (IS_ERR(pll_clk))
+> +			return dev_err_probe(dev, PTR_ERR(pll_clk), "failed
+> +					     enable pll clk\n");
 
-> > This means we're now using devm to free the mutex that is in spi, but
-> > when we pass spi into devm_spi_register_controller() we'll cause spi to
-> > be freed before we free the mutex.  This pattern gets a bit clunky with
-> > devm...
+It's nice to print an error message but having a line break in the
+middle of a string not so much, put the "failed bit on the same line as
+the rest of the error.
 
-> Thanks for review! I will use=C2=A0mutex_init() for V3 version.
-
-That's still going to have trouble because if you do the free in the
-removal function the lock will go away before the controller which is
-it's own issue (this is what I mean about clunky).  It's especially
-annoying as it's only an issue for debugging builds.  I can't actually
-see a good way of dealing with this, perhaps just a plain mutex_init()
-without a free is the least bad option.
-
---Z0EM2gQe7uRzGP59
+--yl7jQAg1ktMo1H3W
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyoeQACgkQJNaLcl1U
-h9CGEwf/YRDAWYbPb4HqIiUZ+cruSBGASNC2FUFyH/pLBlWw4Vvt7i0W4dmbwUUR
-i307+hCrWclU8cG6mxFI37yvmWfJAucNdG9z09E+QIMhGBNWkCbqvVc1a4SvSouk
-rGeed4fhVkuk20KnbjttZGZIdIg60wP9TlogLspDGembG82yVSyyDEbJbBuRl5Yh
-QGVP+ovLbImYhWYPqS4qCXjBb2DQY/ib22qpuhMfKEhT7XhaTnBD7TaAn6lLuAP0
-l3pNwPB/3w782eA4Hc/jLKMjNfslfh5ffBxEVZdUkFFmRn3k7IdSYOe8P6S6Jaxy
-C/foSAVChqkIQn+h1iB/a4kapzTyNw==
-=PdNn
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmyuBQACgkQJNaLcl1U
+h9CEzAf/ecvpiU7/HU5Fp3TOFVTXTv8suK734EdILMdPMYzg2XQ5APg0FjZnaDWK
+n27vFo4zq7eUDrvGme1Dzv10k/4Cjpw2DrQx/Ahqa3jpKOCHGmSxpijsGaAXLiJx
++LsKIWIOva86JU+2aUnnG2N/OYF8veII4MzVSaJohLty0G5K0iDpFd0LfzMJe3Me
+unarWsC/fxwcVKrf6PagZGMg1lH37wpcAC2In9I7FrtGsoZCLS1JOZrLonKf1P7w
+l3S+1h6hvY2cZtV5YrpK99SnkNKC6NSRw80K3GIUzkqT6P7RiaCbldAabB4newkT
+u2aU/H0zcagXZXr0ZHcpjfYPMZXG6A==
+=BmZA
 -----END PGP SIGNATURE-----
 
---Z0EM2gQe7uRzGP59--
+--yl7jQAg1ktMo1H3W--

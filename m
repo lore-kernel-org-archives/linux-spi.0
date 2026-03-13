@@ -1,77 +1,77 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F503093B2
-	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 01:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EA241C71
+	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 01:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773363644; cv=pass; b=fkcMZrgRWLpJXulpSOXinU+nhQwAuXkZ3MX3GzCsLCQjONcA2PS9tBI1EG8I1+om2BbWFxIIEkmyO/HDVlNR5rFs5CTLEZa+0STqIr15MHy9v48vyg3OXQPZ6ztxnE+uKh6EV9VK3+wtsr02I65NcFb6bAQIiBsGU1LVyhRNxLQ=
+	t=1773364468; cv=pass; b=XXM1ZteFwGM/LT56RHnKGoB+iFR/1mKbJHcW+yyHo5eFx8pvQxaDXcH3VqEnxLGByaxajnnLaoBgY721+dpdsgyHNUArgUkz12azabflKFrMUvEB7zRLtUxMQFHbbgkpl8xa32Hnl7Jdofhn998IvCfNpMdVzAiLynNGQlFwyRs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773363644; c=relaxed/simple;
-	bh=sWXbHUNWyCssRT+Z0j94kKl4zmDZN0doACSqgWVnHEM=;
+	s=arc-20240116; t=1773364468; c=relaxed/simple;
+	bh=psKktp/nup6nZMgzTPATdryw8+DhKQuOchQeXOfmWq4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uAHvSHLOyZs008CnvU3zPnDxGUmSJIOnNmjpF4t8X59DQSK4arvfymOBa1kBMTSa19oeDWSyo2JBvlhiLA6DFG+asYQHmsHdhxpFjdPGKlYriOwngQ6z/zna7IH0irksRZmNVhxhY4ssgbh4wBvcWJDqyG49x9z+n7B2ZFFjM7U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZA/lz0jz; arc=pass smtp.client-ip=74.125.224.52
+	 To:Cc:Content-Type; b=OfMlZTaMkSj80SDH8PkjANjpozDAkA8GK/AjXthOBU/RXOrSDFXKpgybo14qRh+kqF/yaSNGVZHkqegUdE4AFIRFQrPSUJLuYUd22s/275wkWEiMhBw7gzS1sU73VBFZf3OVRN8wTo5kY8OvxLryg2xQIeq8J2H+a3BvWvsK3+Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QNMdAt9O; arc=pass smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZA/lz0jz"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-64937edbc9eso1740188d50.2
-        for <linux-spi@vger.kernel.org>; Thu, 12 Mar 2026 18:00:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773363641; cv=none;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QNMdAt9O"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64ca9ec3ee7so1961821d50.3
+        for <linux-spi@vger.kernel.org>; Thu, 12 Mar 2026 18:14:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773364466; cv=none;
         d=google.com; s=arc-20240605;
-        b=du4DBV+lPPkd1rXd+6ZlzhUIyCDMvmqq7mULWcsTIMGUhAIfBvqpP4wCqmir+2wnv9
-         WreVu1+dODkkG9tyVj5aIjBACJTt38XaAKB5m5qLNimq7uAKaq0b7XjPpBz0XeQA2s19
-         aPd2xamuA5ThgMeIQciK3L+BIWdhTaZEyWIVbubfB88CcZMf6bdveQ1YGaWN67wTzwVE
-         gLJ3nPP4scIu44WvZzUbBe6kfh6YXhc2YU7fM0WHBf1LZ0WySVVO73kxTHpLYx3ZICBm
-         ranIJlTWFSqY47tRNsHYK2fXogvNJxCa2cuQ1hvclaGXhc+0wSwtsdlKOs+AQ0u7YHrx
-         76Ag==
+        b=fJ7cPpXNiS4ybfZnZl3nGK1dycb9WuUTrRz3kv6f6A0g49ogYEYXKfWUHvUMvEs35U
+         OkEQG7nsRvsIzNH2L2CpX1bcIbw3yzG4ShJFu5wU1Ggp4kzOIbr1VU4Uy9V3wDHlELsg
+         TfFQw+pQY6JjVP/Pu2Skh1V/X0DNSCis1woUjO3oTv4AMDeY6FL5AZVjugx9ZV4Rv1Pb
+         UUKlCqEqjJI5EF5iaNMFrqva6g00O1mvsU+BYox1q80uGH9VvydZ0YS1HtZCh56CmuKq
+         Y2ie+NIgnFE9zaD/qtRDwfHBb3v5kiR24kNrwUF2A16jXvDqKT45HnhfnoaWL8G7ZOw5
+         ERzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
-        fh=k3zrtz42OVslb+2KCx/l0TER2rflS8OfKu1AdnqdPCA=;
-        b=hKHLD4Z7JobvNJMMGyUpNJVuH1RUtou+wpqHTUTdD4Q3EvuhYE5nStFVxlvih8VGuy
-         SGCTk6gGZ4hqCc0UWKY0paLyE6WDXhh6Hy2W/YeyqsHAjT4BOftse09LrXLXhNXtIdyb
-         MK2zUbqZkldV2BGW5fQ32QkoD2NkKP9SFBVySI/+pKBWY2LM+g1vow89g+/sT0MkR7cA
-         fvu8EETAf22jwT81KBgnxDGF8lRnNyzB7jpF1jtMpZkeDcVsoyZD6Rlr/EoAYkLbdY7P
-         hBDnSzvd18rc0ov2bLzRWvmgeg8cK5Z6U9AdP4Jv0ZpOLPO14LniYumKFmgmkscbwC4U
-         Yz/g==;
+        bh=XsVwh2464IoFcXnN+yaN2QavLIXog4pSrjEAjn/PCrA=;
+        fh=C5UShESrdK3bBbZx6MxaunsWsGkYmMP+MOj5gClhNTM=;
+        b=KOYizp9gJ1NJJo4qfw/udHYx1vknZ9hktTCb8kw9o1dh8umHeMr6TD2ZwZdVnREELb
+         QKUf0KSwAb2UZKGaAVYkc4herT5FJqV5prj7ULR+uwoa4gA5Oby+fa5ulTirZg/S/k7b
+         xf+HRlP37sWxYZ2cBZ16u6uL0HjZ7RhcwMnxT79hFQ99Greb7yta6TPVJ/tZveSwSqFk
+         pwDfmHj0J8JnLFjDppUB/5Foov1r5mygAQNzGK+yTFSUW5Jz20+uPzVFARib40oncVgs
+         iUrOtvoW8+cFO0sVTgCG5tSlc3c3CKuYwFA/xlO1SF8D+uZmbLxNaKVfaMgHiZU7OgJf
+         0PSg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773363641; x=1773968441; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1773364466; x=1773969266; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
-        b=ZA/lz0jzZ5SnEt27k5mt290nazi42vhGGnOyNcbDIrJk0WzjSHSUXA0OXFphwHSWli
-         WNhDUXBka7oi/+/SldIRtUuf1Po9CwQ6Y0+CSBiC/7rRru2Mvrwgy2C7Lvu84y8UZU3c
-         nmLVa2qKS2YKHBiYT/MZ/bSmE8EFdQz3BwQto=
+        bh=XsVwh2464IoFcXnN+yaN2QavLIXog4pSrjEAjn/PCrA=;
+        b=QNMdAt9Ov1YHfhL+lLr19x1w72S5dTMgRwKkyoaA/JlGg5OOeJKuh6tX/82tkcetHs
+         65Qk4HvMBWhISc/eX8p2x8FTB9nC4218HQsRNK0aVyl6D2CHXn44UDN9Pnh9iPYk0uHJ
+         HpDnW+Rk0E/JsHQjcdolwdxyt7gOkCR+SgoPI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773363641; x=1773968441;
+        d=1e100.net; s=20251104; t=1773364466; x=1773969266;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
-        b=VZhcSkT8f0//UDjCh8Dtr+mQQdiLw7W9MXFpIdWgieFYlTQ5F4NujU02SJu5wDQMqg
-         1rp5yZeHqtKMGplk9skASNXt+dka8DO8w/LaHPQnfEo1iqeIzfeVppDTAmZWI+6mMTLy
-         PFwrVkFjJr7AXVQPL7vQXNw+a8pAGFvxXJTjhieJkgVQi9CiibfBIGlrUBqc2oODIVrr
-         Ny1//u9FdGxLNJDdXqFs4Z8hhsamOlsf5wrRp8CM3VUxOnIW+Xg8NBTaRL5holr6EbZl
-         Wcm4LSDC4wHTh05nDAUUbVnRTw5bRuOXkQOKfAtUJCkvKYYZDGgVyzzxRf7vDFCyClI9
-         YXgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7SNd0v6SI+nKenVakXRzIIJO2vKohcuRoJ7Toqf4BZ3JqoGCzlX2LJGdIZb+7KrUCgbIXrf0JLWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/OZW/xKqxKs9CPekuw1Rdf4b3U4nLPEACOhTOS1ZHUv4sWE0u
-	RAH8Iw5T2iA2A1xrevF46UHxvWAyfDEouu88FejaDRe1NhDYcJiLu/YEeKvkMage0K7qT6xAkCe
-	uulR6vX9ppDEYofI9VnO3V+VmstQzYEOqvYhUZeZ8
-X-Gm-Gg: ATEYQzxifKVErS/F4y/RXcHGW5ulJYRASdRp9TQAd8L6V8cJDwFNA4nI/4RPl4tUUCv
-	0Wj3Blq20ygjzsZoPdXqZ+5MFiZ/rVz/RbUeDwl2PLxFsDIZBnlRNsH4IRsHdyHAqAgR01/PMdd
-	XvqA05dfJnm6ROmqV+qtsSRgDNsGxNbUI/l/yawaBA3nzqanoWSRGrtcn6QeJCRqU1dzLMJDoxk
-	wJw/kHpSp0t0ZYCqHnP/7WfINJlEq4WWUAAg+8H3/uJARXXT6vlpWhru3IpWghNft6ychjZvWbl
-	2VamL/yRl2NAUFcj16FrDJFagESU0Ibgx+A56haB
-X-Received: by 2002:a05:690e:23c6:b0:64c:a815:511b with SMTP id
- 956f58d0204a3-64e62f59679mr1215624d50.3.1773363641056; Thu, 12 Mar 2026
- 18:00:41 -0700 (PDT)
+        bh=XsVwh2464IoFcXnN+yaN2QavLIXog4pSrjEAjn/PCrA=;
+        b=YFtMF8Wq5A3BXaPqQtY5ljC6DZICfMOQhnpHVNj2sSa0mAcdeV9/jXzKbVF6t9UUTZ
+         GAqirkk85vP6KmTnjt0epQIX90PG52syvjrm23HuVaidDtFuoDv6xCs4g0obaNOtvSlq
+         bTxNR4YLanxdwkoR8NryejNt7aj2RylUDojVxpLPejG3C4e+kEp7cqG6zHoL4B+UjjIL
+         uHdo+QuZucMgLLe5AFAKE/n2wyone8AGN3jQRLiRd2DD34GGWdY+i78vDlU0TrEqF9Uc
+         lS92N9HO7yjBQkrTjU/OV9A6KQc9EmaefQcHxtbjnMzK5HCVTwFAbsTIJEWxfjRWNlBb
+         1t1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVA2nMb2BYSHeSIGvCA08X52PsWsI3dF907fRkYU6GY70kER8iegAS2+RkBYwRhe/FysG1GUGaK4YA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKvGSQ/NOjuLl3PPd/HhPUCbz851AmR6wtowgEwG5nlyfIQ71W
+	sjuIBPjxgzuPCP3DuKxTHOTtMRmINrHP9gWO5w4wvAOk0UbAmfcXCxEfjtZ5ftHgR7AQSUDOIt4
+	DP69BvC73OYFg/Tc+YLahIcx/0blMftvl5Gk1VkLv
+X-Gm-Gg: ATEYQzzlkUwUU6lMOxf6/TT0VSzF9JEF41ME62xnydTkwMCtH8HB3D/jBd18m8h33/i
+	LV+djSspHy3jFEvS7WMMPTcHKokDqWPnyjzQ/Jru3XFGDYnM52TfWY02RlY7QS1fsmady3CDZ4U
+	+2SHzLDUl/eHUB7nSnrkyCuXKQgrPMIsj4Vu9CekLAvCNPIpc3HLCHlofNPysq9TeF46ytJkWaQ
+	qzPaEWQA8A7UTbG+sh28LZNSVHfj9/EkfFJZz9OyF7asPer+ngl3sf6mdy8G+soaoDqMq2xAHNq
+	gB7HUibasuZIbxr9SmX30DI/t/xAmb8XwNr7ga95
+X-Received: by 2002:a05:690e:4397:b0:64c:a4ab:e4e8 with SMTP id
+ 956f58d0204a3-64e62f82e22mr1347986d50.20.1773364466142; Thu, 12 Mar 2026
+ 18:14:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -79,81 +79,287 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260303-send-upstream-v1-0-1515ba218f3d@chromium.org>
- <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org> <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
-In-Reply-To: <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
+ <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org> <CAL_JsqKN45FswZjo+27OzoHMeM7ec3hS7piF7SKNykmXNSmA0g@mail.gmail.com>
+ <CAEe3GZHSqepvjjopLwrWX3_n4+RnCeVVQnAO=Swixgu2z3OpUw@mail.gmail.com> <CAEe3GZE_79Lqtzv4ZRi6zWuV_DgkCREBDcZJjpR+X9OaGZCA2g@mail.gmail.com>
+In-Reply-To: <CAEe3GZE_79Lqtzv4ZRi6zWuV_DgkCREBDcZJjpR+X9OaGZCA2g@mail.gmail.com>
 From: Jingyuan Liang <jingyliang@chromium.org>
-Date: Thu, 12 Mar 2026 18:00:30 -0700
-X-Gm-Features: AaiRm529-VNRFl8j9TL1yc6G4h205p6aiqQ4Ar4V5wWtWy0meX15btognc57fcQ
-Message-ID: <CAEe3GZF7ct1ZFH2Zd6AJnO1vBJQZobGaQKO+hTMJjFcCQddq6Q@mail.gmail.com>
+Date: Thu, 12 Mar 2026 18:14:14 -0700
+X-Gm-Features: AaiRm53z2pwybc4kbLAIMgl_PixN23FG-WeD36EXTB7vuwi5JCVo-2fq7v7lJcI
+Message-ID: <CAEe3GZEOYCFRfz8W3p2_JpYrRTfqSzp7mdGtS+wMHP7oYgSHDA@mail.gmail.com>
 Subject: Re: [PATCH 09/12] dt-bindings: input: Document hid-over-spi DT schema
-To: Val Packett <val@packett.cool>
+To: Rob Herring <robh@kernel.org>
 Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
 	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
 	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
+	linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
 	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, hbarnor@chromium.org, 
+	devicetree@vger.kernel.org, Henry Barnor <hbarnor@chromium.org>, 
 	Dmitry Antipov <dmanti@microsoft.com>, Jarrett Schultz <jaschultz@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 6, 2026 at 11:25=E2=80=AFPM Val Packett <val@packett.cool> wrot=
+On Wed, Mar 11, 2026 at 5:58=E2=80=AFPM Jingyuan Liang <jingyliang@chromium=
+.org> wrote:
+>
+> (Resending to the list. Apologies, I accidentally dropped the CCs on
+> my initial reply!)
+>
+> On Tue, Mar 3, 2026 at 5:53=E2=80=AFAM Rob Herring <robh@kernel.org> wrot=
 e:
+> >
+> > On Tue, Mar 3, 2026 at 12:14=E2=80=AFAM Jingyuan Liang <jingyliang@chro=
+mium.org> wrote:
+> > >
+> > > Documentation describes the required and optional properties for
+> > > implementing Device Tree for a Microsoft G6 Touch Digitizer that
+> > > supports HID over SPI Protocol 1.0 specification.
+> > >
+> > > The properties are common to HID over SPI.
+> > >
+> > > Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+> > > Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
+> > > Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
+> > > ---
+> > >  .../devicetree/bindings/input/hid-over-spi.yaml    | 153 +++++++++++=
+++++++++++
+> > >  1 file changed, 153 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yam=
+l b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> > > new file mode 100644
+> > > index 000000000000..b623629ed9d3
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> > > @@ -0,0 +1,153 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/input/hid-over-spi.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: HID over SPI Devices
+> > > +
+> > > +maintainers:
+> > > +  - Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> > > +  - Jiri Kosina <jkosina@suse.cz>
+> > > +
+> > > +description: |+
+> > > +  HID over SPI provides support for various Human Interface Devices =
+over the
+> > > +  SPI bus. These devices can be for example touchpads, keyboards, to=
+uch screens
+> > > +  or sensors.
+> > > +
+> > > +  The specification has been written by Microsoft and is currently a=
+vailable here:
+> > > +  https://www.microsoft.com/en-us/download/details.aspx?id=3D103325
+> > > +
+> > > +  If this binding is used, the kernel module spi-hid will handle the=
+ communication
+> > > +  with the device and the generic hid core layer will handle the pro=
+tocol.
+> > > +
+> > > +allOf:
+> > > +  - $ref: /schemas/input/touchscreen/touchscreen.yaml#
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    oneOf:
+> > > +      - items:
+> > > +          - enum:
+> > > +              - microsoft,g6-touch-digitizer
+> > > +          - const: hid-over-spi
+> > > +      - description: Just "hid-over-spi" alone is allowed, but not r=
+ecommended.
+> > > +        const: hid-over-spi
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  reset-gpios:
+> > > +    maxItems: 1
+> > > +    description:
+> > > +      GPIO specifier for the digitizer's reset pin (active low). The=
+ line must
+> > > +      be flagged with GPIO_ACTIVE_LOW.
+> > > +
+> > > +  vdd-supply:
+> > > +    description:
+> > > +      Regulator for the VDD supply voltage.
+> >
+> > Is this part of the spec? This won't scale for multiple devices with
+> > different power rails.
 >
+> This is not part of the spec but is needed for power management. Is it ok=
+ay I
+> mark it as optional? Thank you.
 >
-> On 3/3/26 3:13 AM, Jingyuan Liang wrote:
-> > Documentation describes the required and optional properties for
-> > implementing Device Tree for a Microsoft G6 Touch Digitizer that
-> > supports HID over SPI Protocol 1.0 specification.
-> > [=E2=80=A6]
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - items:
-> > +          - enum:
-> > +              - microsoft,g6-touch-digitizer
-> > +          - const: hid-over-spi
-> > +      - description: Just "hid-over-spi" alone is allowed, but not rec=
-ommended.
-> > [=E2=80=A6]
-> > +required:
-> > +  - compatible
-> > +  - interrupts
-> > +  - reset-gpios
+> >
+> > > +
+> > > +  input-report-header-address:
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > +    minimum: 0
+> > > +    maximum: 0xffffff
+> > > +    description:
+> > > +      A value to be included in the Read Approval packet, listing an=
+ address of
+> > > +      the input report header to be put on the SPI bus. This address=
+ has 24
+> > > +      bits.
+> > > +
+> > > +  input-report-body-address:
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > +    minimum: 0
+> > > +    maximum: 0xffffff
+> > > +    description:
+> > > +     A value to be included in the Read Approval packet, listing an =
+address of
+> > > +      the input report body to be put on the SPI bus. This address h=
+as 24 bits.
+> > > +
+> > > +  output-report-address:
+> > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > +    minimum: 0
+> > > +    maximum: 0xffffff
+> > > +    description:
+> > > +      A value to be included in the Output Report sent by the host, =
+listing an
+> > > +      address where the output report on the SPI bus is to be writte=
+n to. This
+> > > +      address has 24 bits.
+> > > +
+> > > +  post-power-on-delay-ms:
+> > > +    description:
+> > > +      Optional time in ms required by the device after enabling its =
+regulators
+> > > +      or powering it on, before it is ready for communication.
+> >
+> > Drop. This should be implied by the compatible.
 >
-> Why is reset required? Is it so implausible on some device implementing
-> the spec there wouldn't be a reset gpio?
+> Thank you, I will fix this in v2.
 >
-> > +  - vdd-supply
-> Linux makes up a dummy regulator if DT doesn't provide one, so can
-> regulators even be required?
-> > [=E2=80=A6]
-> > +        compatible =3D "hid-over-spi";
-> Not following your own recommendation from above :)
+> >
+> > > +
+> > > +  minimal-reset-delay-ms:
+> > > +    description:
+> > > +      Optional minimum amount of time in ms that device needs to be =
+in reset
+> > > +      state for the reset to take effect.
+> >
+> > Drop. This should be implied by the compatible.
+>
+> I will fix this in v2.
+>
+> >
+> > > +
+> > > +  read-opcode:
+> > > +  $ref: /schemas/types.yaml#/definitions/uint8
+> > > +    description:
+> > > +      Value to be used in Read Approval packets. 1 byte.
+> > > +
+> > > +  write-opcode:
+> > > +  $ref: /schemas/types.yaml#/definitions/uint8
+> > > +    description:
+> > > +      Value to be used in Write Approval packets. 1 byte.
+> >
+> > Why are these and the address properties above not defined by the
+> > spec? Do they vary for a specific device? If not, then they should be
+> > implied by the compatible.
+>
+> These properties are not defined by the spec:
+>
+> "The Input Report Address (header or body) and READ opcode are retrieved
+> from ACPI."
+>
+> Same for the output report address and write opcode. I will drop these in=
+ v2.
 
-Thanks! I will fix this in v2.
+Hi Rob,
 
-> > +        reg =3D <0x0>;
-> > +        interrupts-extended =3D <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
-> > +        reset-gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
-> > +        vdd-supply =3D <&pm8350c_l3>;
-> > +        pinctrl-names =3D "default";
-> > +        pinctrl-0 =3D <&ts_d6_reset_assert &ts_d6_int_bias>;
->
-> Heh, "reset_assert" is a name implying it would actually set the value
-> from the pinctrl properties, which is what had to be done before
-> reset-gpios were supported. But now reset-gpios are supported.
-
-Taken from the original patch. Will fix this in v2.
+Please disregard my previous reply about dropping the read/write opcodes an=
+d
+input/output addresses. The spec does not define these fields. Instead, it =
+says
+these values are retrieved from ACPI _DSM methods. If we remove them from
+the binding, the driver is not very generic. Would it be okay to keep them?
 
 >
+> >
+> > > +
+> > > +  hid-over-spi-flags:
+> > > +  $ref: /schemas/types.yaml#/definitions/uint16
+> > > +    description:
+> > > +      16 bits.
+> > > +      Bits 0-12 - Reserved (must be 0)
+> > > +      Bit 13 - SPI Write Mode. Possible values -
+> > > +        * 0b0- Writes are carried out in Single-SPI mode
+> > > +        * 0b1- Writes are carried out in the Multi-SPI mode specifie=
+d by bits
+> > > +               14-15
+> > > +      Bits 14-15 - Multi-SPI Mode. Possible values -
+> > > +        * 0b00- Single SPI
+> > > +        * 0b01- Dual SPI
+> > > +        * 0b10- Quad SPI
+> >
+> > We already have SPI properties to define the bus width for read and wri=
+te.
 >
-> Thanks,
-> ~val
+> Will fix this in v2.
 >
+> >
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - interrupts
+> > > +  - reset-gpios
+> > > +  - vdd-supply
+> > > +  - input-report-header-address
+> > > +  - input-report-body-address
+> > > +  - output-report-address
+> > > +  - read-opcode
+> > > +  - write-opcode
+> > > +  - hid-over-spi-flags
+> > > +
+> > > +additionalProperties: false
+> > > +
+> > > +examples:
+> > > +  - |
+> > > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > > +    #include <dt-bindings/gpio/gpio.h>
+> > > +
+> > > +    spi {
+> > > +      #address-cells =3D <1>;
+> > > +      #size-cells =3D <0>;
+> > > +
+> > > +      hid@0 {
+> > > +        compatible =3D "hid-over-spi";
+> > > +        reg =3D <0x0>;
+> > > +        interrupts-extended =3D <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
+> > > +        reset-gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
+> > > +        vdd-supply =3D <&pm8350c_l3>;
+> > > +        pinctrl-names =3D "default";
+> > > +        pinctrl-0 =3D <&ts_d6_reset_assert &ts_d6_int_bias>;
+> > > +        input-report-header-address =3D <0x1000>;
+> > > +        input-report-body-address =3D <0x1004>;
+> > > +        output-report-address =3D <0x2000>;
+> > > +        read-opcode =3D <0x0b>;
+> > > +        write-opcode =3D <0x02>;
+> > > +        hid-over-spi-flags =3D <0x0000>;
+> > > +        post-power-on-delay-ms =3D <5>;
+> > > +        minimal-reset-delay-ms =3D <5>;
+> > > +      };
+> > > +    };
+> > > \ No newline at end of file
+> >
+> > Fix this.
 >
-> P.S. happy to see work on this happen again!
+> Will fix this in v2.
 >
+> >
+> > Rob

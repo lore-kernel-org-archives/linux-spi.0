@@ -1,56 +1,34 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F423352C28;
-	Fri, 13 Mar 2026 06:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CFC331215
+	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 06:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773382160; cv=none; b=LH9EyDc34zpq+b8h6d6j9bhr0iN/+eSR/AsOFvJ/p0sWBpcc2FDsSDHT8+NDX57F8/JijQFSYbVTPpVFu3iemvmyHoiPar4LpFuANOlPAQs/++V63izq4nj21EcgXGYOdyRwULNt2uSsHH7Kw0fe4Te3fdc1fP5mEiwYedTeO/c=
+	t=1773385062; cv=none; b=u1dNkG7Al+FCt05XHnIaEFdBLVeJalS4RtucV7/0F2wKx2JRiBng1kEOO+QGMR3umYvXQfrdGNauI6BTumn9ZjOT/2kJAA2CXSfyU835W66McwtYXVmfa76ZFWvc6L9wQEJTbRUpQCV32O35V+S7s4PMsXiGm1A1KlAVvH6ONNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773382160; c=relaxed/simple;
-	bh=dKBnh8sJQftJQFNU1M/dsyI1ASCji+nDI1LiBDmOXwg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gvBnWH4l6EftEtlP4kEFZzSXJfzkDtaC0VKcWfNqgRHeJFZVbP8j4Yb+neNNEwaOLpsVr5v24KlcLgPy61XVx8tqAyo7ePVDUM8tlGIpJXnJmubZHA/iti6amLGtn7S1L4A+91a39A1eWV5PBxMxKBd/WXq1xpGN0S1QiA0ErVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 2250e20a1ea311f1a21c59e7364eecb8-20260313
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:be500e60-1ecc-4643-8493-a33481b3c948,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:c3a3e7e624be805ff82687162505ea97,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
-	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 2250e20a1ea311f1a21c59e7364eecb8-20260313
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1722470595; Fri, 13 Mar 2026 14:09:02 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: broonie@kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	openbmc@lists.ozlabs.org,
-	linux-rockchip@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v2 12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
-Date: Fri, 13 Mar 2026 14:08:28 +0800
-Message-Id: <74030eaa592b4a27ec75a4dffe49a5029c5dc6b8.1773381582.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1773381582.git.xiaopei01@kylinos.cn>
-References: <cover.1773381582.git.xiaopei01@kylinos.cn>
+	s=arc-20240116; t=1773385062; c=relaxed/simple;
+	bh=rAP7CzXWyOUg4zZXTdoYMmrD2gLpLrmbbgsxamjlBYA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=rvymCg5M5SD6BcSkwD9Sfsrjf30pouZ7G/F8FOo3OtTnujk08EYw1m0IxfZtVXgs56sGUPwFNZqsmbW64u+KeOPgN6A1qmhEcDrgVa1wLHjQHjH4dgsivJVc3IhHZmIULVbma5N9poCGK7I2EMDwiltCMIJAp29as7bRB+Bi3+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q40rVbuk; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q40rVbuk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86305C19421;
+	Fri, 13 Mar 2026 06:57:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773385061;
+	bh=rAP7CzXWyOUg4zZXTdoYMmrD2gLpLrmbbgsxamjlBYA=;
+	h=Subject:From:Date:To:From;
+	b=q40rVbukfO4rZPpKubpp05mvrjJwsq+T4Qy9JTEZBn8+6VEK7bLL8saIk3aXIAl/p
+	 bbKpj7DG5HtK0DItKkLsvKaRAV0v2wfzJNHaZ7noYBLl4ksZDdCmszmaxed+zgDf4V
+	 +1DXL1e1xJIxmtvshGidnNJBWfk2ELcEki3durHqIN/FQWgo14qZJJgPLT/xi+7lVw
+	 3dpndXYVj7BTNK1CTNLwuSXK7XDvx+LKgAQ7FV9Nkla+I7OxS3cVpNr0t8azpobT9q
+	 J3OoGh/eWS9a0wmGNp2lkNTSgycE+LARe2gMbmfmKDOAEBDyX1gFyZN92X7/RL3QjV
+	 TsEd+0ni1amOw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA2033808200;
+	Fri, 13 Mar 2026 06:57:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -58,61 +36,35 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177338505635.728663.18185654558181048044.git-patchwork-housekeeping@kernel.org>
+Date: Fri, 13 Mar 2026 06:57:36 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-devm_clk_get() and clk_prepare_enable() can now be replaced by
-devm_clk_get_enabled() when driver enables the clocks. Moreover, it is no
-longer necessary to unprepare and disable the clocks explicitly.
-Simplify code.
+Latest series: [v2] cleanup in spi by use devm_clk_get_enabled (2026-03-13T06:08:16)
+  Superseding: [v1] cleanup in spi by use devm_clk_get_enabled (2026-03-12T09:28:52):
+    [01/17] spi: axiado: Use helper function devm_clk_get_enabled()
+    [02/17] spi: bcm63xx-hsspi: Use helper function devm_clk_get_enabled()
+    [03/17] spi: bcmbca-hsspi: Use helper function devm_clk_get_enabled()
+    [04/17] spi: img-spfi: Use helper function devm_clk_get_enabled()
+    [05/17] spi: imx: Use helper function devm_clk_get_enabled()
+    [06/17] spi: npcm-pspi: Use helper function devm_clk_get_enabled()
+    [07/17] spi: orion: Use helper function devm_clk_get_enabled()
+    [08/17] spi: rockchip-sfc: Use helper function devm_clk_get_enabled()
+    [09/17] spi: sifive: Use helper function devm_clk_get_enabled()
+    [10/17] spi: slave-mt27xx: Use helper function devm_clk_get_enabled()
+    [11/17] spi: st: Use helper function devm_clk_get_enabled()
+    [12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
+    [13/17] spi: stm32: Use helper function devm_clk_get_enabled()
+    [14/17] spi: sunplus-sp7021: Use helper function devm_clk_get_enabled()
+    [15/17] spi: uniphier: Use helper function devm_clk_get_enabled()
+    [16/17] spi: zynq-qspi: Use helper function devm_clk_get_enabled()
+    [17/17] spi: zynqmp-gqspi: Use helper function devm_clk_get_enabled()
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/spi/spi-stm32-qspi.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..9ff9975edef4 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -819,25 +819,19 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 
- 	init_completion(&qspi->match_completion);
- 
--	qspi->clk = devm_clk_get(dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(qspi->clk))
--		return PTR_ERR(qspi->clk);
--
-+		return dev_err_probe(dev, PTR_ERR(qspi->clk),
-+				     "can not enable the clock\n");
- 	qspi->clk_rate = clk_get_rate(qspi->clk);
- 	if (!qspi->clk_rate)
- 		return -EINVAL;
- 
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
--		return ret;
--	}
--
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		if (ret == -EPROBE_DEFER)
--			goto err_clk_disable;
-+			goto err_defer;
- 	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
-@@ -886,8 +880,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
- err_dma_free:
- 	stm32_qspi_dma_free(qspi);
--err_clk_disable:
--	clk_disable_unprepare(qspi->clk);
-+err_defer:
- 
- 	return ret;
- }
 -- 
-2.25.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

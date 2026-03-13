@@ -1,125 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4A81B4224;
-	Fri, 13 Mar 2026 13:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE0832C937
+	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 13:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773407740; cv=none; b=F4FFNhxbggcCWhaeUZmNy4V7AO3JisC7MXGHPFZTJMrLGTnX6rTs4JUQHU+wBSXpSo9S4B60hcvRwSTmAxPtdAotUhml6ymf6FPFQh2xnLUM3Ic3YBMhlQz9WWNuxiO8pJ9q+BEFhRE7E7L0PGnLVHcjmdnLnPTcJxYAYP1r7cc=
+	t=1773409980; cv=none; b=Vb7ASMqkNPMMg7oN/9ytiLOUlgIgatZjwbvqaqEx0Af5UL0ZpX0mF3ZWo5BcrAzAH1facQHBGRjcX23eSCGUdBTYT6dVUxkizL2fsWlB+NcBr0t9IVBoBItCR3aNfp2Gdlu0xQjSBwD3uKPcEo0KJyIbp3DSR0d7Xwud5lYQ+uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773407740; c=relaxed/simple;
-	bh=Qw/LcwSMdovwaZO6KN+5dsJbL865DdR+kv448gNqyYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YK2xKPxAJpFA2L9BjDFj8kPvsAFGir2l/O7feEVffVPVqohwT/fz0zGfIIp8P9hZoQjodCjHm95OuoBjTTBm/NFkI7vr6LT5EojIkkieeCt9Rx5JuMWZhWRiCn6dsW37Mu5uwV2bprW7aYvvNweTuJHk5W1PDVkEtxbj/ulHgUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7KArtpN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773409980; c=relaxed/simple;
+	bh=l0zF3ej8aQms2XTunb0vRjXBt1VP0mDbI74gU5Fkie0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rvo8pB4NPz0MHZknO4nLb7UOVI2SvQgfuxDWaAehGLSqDpC/hlBrTUBtOWdN0NaIE+Qt9/TuuSUnh1Zp2RfV7c/i6w9fyxjJg+RQCucpWCmhmHdx18hQTKFmyo00xKl9AzCLRwILS6fdQbHBsHcas9gPo4+ZBEk1/Evj/fYxFPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/qvAEqr; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7KArtpN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F433C19421;
-	Fri, 13 Mar 2026 13:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773407739;
-	bh=Qw/LcwSMdovwaZO6KN+5dsJbL865DdR+kv448gNqyYA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E7KArtpNHlSpMc177+PemtgESfaY/CWfV/tk3gFV4oz5uBFJbZ4QXIP7CWyIDIDf6
-	 IzKcRWD6gafYmQgcKt1FKUP0UJCSHV7KBxH5o7c4hffPRVBv9JCQvn037VLNRCekUT
-	 Ey/GeKLdw6PPLe7o9eyFz+20H4ARvVeAWsUbynNKHjiDhTlmE3+uLUCgzYsl+B4Zr1
-	 4mks966RHrWmDuO+TnowQbSgeDGEJjnmxqR1SJHZB0iZpIsb5fKC4aPlkXUY6+tPDN
-	 JE3nRWTOkPPZgbX4awLmvEcNUGWttY8vu22M1X4huvipbfxn9BS7itOkqwfLJFf6WA
-	 lIx2jk6mdI5wg==
-Message-ID: <3b947ce4-a054-4ac0-b8c7-f8afa03df333@kernel.org>
-Date: Fri, 13 Mar 2026 14:15:34 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/qvAEqr"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso19977295e9.3
+        for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 06:52:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773409973; x=1774014773; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dX48aVLfTgFvgth3UwNoAcH/+u5VTaLKWTUPbGKCPbY=;
+        b=W/qvAEqrNLJfCc+Nn6Rmr7/Ar5Iq4HQ0V/tpYpizC+C3Z4Blr4Af38Um7UlKJTCUEV
+         DBAL2Dg8wJXvqozJcLmXM6HlI3eSFCQVXwe5GXaSf/AtmIw720K83PxLjNdGkCM7a323
+         YSyZUc2A95r1YON0pjCDEHOO5/kAikHZmpFX1zkw+fIAhJ8WGnOnPIbssjwpe32AmWcG
+         O6WZ3UmTgAX+cyvYp0t0N6xAlAxEXWaeJCq7hBVxXca5isZ70jmSz5pKH3UzzrgV1OF2
+         zLeeyJIqhtTaln8tbevWOc2d4ObQcmjumQ0CVGpF5YBLZtcKb/qatSWnwfvD16ugTRlN
+         tfVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773409973; x=1774014773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dX48aVLfTgFvgth3UwNoAcH/+u5VTaLKWTUPbGKCPbY=;
+        b=T81+AQ3ndWvvRExisNeHijqvzfRF3fOWeiPKLLlUriLNyBB1VPD+Xm4w7te+5O7eBg
+         hydr6vgl0FobvEhclk7y2+CF10rZRa4XtTLHI7eEOI357QiNbhTXCfjeAgY5Igy8yxYr
+         FSwHR+I9xryCG9gnGPm7sqd6BDnZXmg3KoivjElAiGmmpVsp+GBPt8A2HgOvbJk8GGpr
+         iC5tWUz0yLcuz0jIN9NZXq6OzMuonO2FdeLXjqWWrJhtd0DRpj7Mv0TykS4mTT1SR8yy
+         YHXk+JPiXyJ2gQ5OHW/im7AtDO3LM1QGkxnA4C7piYHqdtN43QJTQyo8ep/PvGIvGuod
+         uQFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUAZvAF5KCCs8GkU4DuhZ6M1JzD/vhq0nlK8XFiQYya3iK/EHDoD7PTGrU22aLxr36gkdGKDmzxU18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvGDd82Wm9J3uNCkf9sac18zVLaKa6WBsqC0R2sBn8TkGoCd8g
+	GRYLc+UAsLpMx58F4wnKpSUhCjwA2/cZI1qbzbFOjhnzy9+Yf9Z0a8kP
+X-Gm-Gg: ATEYQzzEorzxmt07Ugw2IWf1garZ/Kg6K5319sNrb9XFlVEwvQN9JUikq+h2KK02Mk1
+	Inyti01C34xpSvHSlT3WVc974w0sPl+Huut+gI53OeGM2SwiXQ+Co9CfWs4PzWT2A9fChNrWPpL
+	3c6KMKM7RORVWufufF2SMPlCsxiWcB1+2rjUMbKgU+H2Qbwy7JiVwt8svHeYwjqTYjD1olMuWcG
+	wKdf9KSV7MyISdrPjEQE7KGgHWSmacrnm3vGoeBvzL1U3Szf7rqi1viUmcd768y/BzyvtrpSaVb
+	J5r3u2ArMuEGznwJkU5DvyRQuBHbxKyQm/u7eXMx7EiJq+rjJXDdczXvBgbZ8GxmuPBQABHTfFd
+	E441Ft9XFYI5nKAP1S1N6wXjB803NKpE4DMhNZ8nJFIWl/lNt3t2qIBaQyOvu5cegoKgobNM/5o
+	OOVs3UfQXDyDIQd/p6jaBsDaciB5+NAP+avRUyqeQmWlVvDePlUQ//IbTP+5VqHQRIXzlX
+X-Received: by 2002:a05:600c:1395:b0:485:2fc5:3a5 with SMTP id 5b1f17b1804b1-48556709d85mr52860705e9.26.1773409973305;
+        Fri, 13 Mar 2026 06:52:53 -0700 (PDT)
+Received: from emanueleg-nb.. (93-34-120-147.ip49.fastwebnet.it. [93.34.120.147])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48556414295sm39850805e9.3.2026.03.13.06.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2026 06:52:52 -0700 (PDT)
+From: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	miquel.raynal@bootlin.com,
+	a-dutta@ti.com,
+	s-vadapalli@ti.com,
+	mkorpershoek@kernel.org,
+	khairul.anuar.romli@altera.com,
+	stable@vger.kernel.org
+Subject: [PATCH v1] spi: cadence-qspi: Fix exec_mem_op error handling
+Date: Fri, 13 Mar 2026 14:52:31 +0100
+Message-ID: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: dt-bindings: mediatek,spi-mtk-nor: Add clock
- bindings for mt8189
-To: Meiker Gao <ot_meiker.gao@mediatek.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Bayi Cheng <bayi.cheng@mediatek.com>, Chuanhong Guo <gch981213@gmail.com>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,
- Project_Global_Chrome_Upstream_Group@mediatek.com, sirius.wang@mediatek.com,
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-References: <20260311034342.721583-1-ot_meiker.gao@mediatek.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260311034342.721583-1-ot_meiker.gao@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/03/2026 04:43, Meiker Gao wrote:
-> Update mediatek,spi-mtk-nor.yaml to add conditional clock and
-> clock-names bindings for the mt8189-nor platform. The mt8189-nor
-> controller requires five specific clocks and corresponding clock-names
-> ("spi", "sf", "axi_f", "axi_h", "axi_p"). This change enforces these
-> requirements in the device tree binding schema.
-> 
-> For other platforms, the minimum number of clocks and clock-names
-> remains unchanged. The patch also adds an example for mt8189-nor,
-> illustrating the new clock configuration.
-> 
-> This update ensures correct hardware description and validation for
-> mt8189-nor, improving compatibility and reducing configuration errors.
-> 
-> Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-> (cherry picked from commit c3180d35e52b5213764a89403e71f9a34d7bb842)
-> ---
->  .../bindings/spi/mediatek,spi-mtk-nor.yaml    | 46 ++++++++++++++-----
->  1 file changed, 34 insertions(+), 12 deletions(-)
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-How many times are you going to send it? I got three in my mailbox. But
-still no answer to provided review...
+cqspi_exec_mem_op() increments the runtime PM usage counter before all
+refcount checks are performed. If one of these checks fails, the function
+returns without dropping the PM reference.
 
-Best regards,
-Krzysztof
+Move the pm_runtime_resume_and_get() call after the refcount checks so
+that runtime PM is only acquired when the operation can proceed and
+drop the inflight_ops refcount if the PM resume fails.
+
+Cc: stable@vger.kernel.org
+Fixes: 7446284023e8 ("spi: cadence-quadspi: Implement refcount to handle unbind during busy")
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+---
+ drivers/spi/spi-cadence-quadspi.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 5fb0cb07c110..2ead419e896e 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1483,14 +1483,6 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (refcount_read(&cqspi->inflight_ops) == 0)
+ 		return -ENODEV;
+ 
+-	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
+-		ret = pm_runtime_resume_and_get(dev);
+-		if (ret) {
+-			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+-			return ret;
+-		}
+-	}
+-
+ 	if (!refcount_read(&cqspi->refcount))
+ 		return -EBUSY;
+ 
+@@ -1502,6 +1494,14 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		return -EBUSY;
+ 	}
+ 
++	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM))) {
++		ret = pm_runtime_resume_and_get(dev);
++		if (ret) {
++			dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
++			goto dec_inflight_refcount;
++		}
++	}
++
+ 	ret = cqspi_mem_process(mem, op);
+ 
+ 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
+@@ -1510,6 +1510,7 @@ static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++dec_inflight_refcount:
+ 	if (refcount_read(&cqspi->inflight_ops) > 1)
+ 		refcount_dec(&cqspi->inflight_ops);
+ 
+-- 
+2.43.0
+

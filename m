@@ -1,175 +1,138 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF8C359A90
-	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 09:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773395055; cv=pass; b=Bth2OhxmlUUiid47OT9o8LsEZsOwU576iJy3A8VpteZnEI1y2ao2TFc4l/iI6KdjtlmMzws+Z0MCXmXG306c0zmtoLsFwW19uKCCL0NI4GVb1MalsUxQRySUOT5PGeFJ4e0VbP/+eC3ZA77IKfIez7pBDZgiQG1bXZaM6MAyPT4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773395055; c=relaxed/simple;
-	bh=a4PkyDJIX7KyCPscZwhkhXLXTwGONJMI97/AnswuOLU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uNhCfYu0te5rT3smnSILya2p9pwPy3GU5pH4Ig+dcchzUVoe3+9YFF0n5bnpzrX9fdLLTbhhZwUCxU3LowfDL4288M9pgNkk/E7BsS1yptsPn8gqra6kmYKFKvqtFiGdqrLLXc8wBOQzqvBkb10ETtKPAl2wl+BeLe2xNH/xEFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CVJB0EpM; arc=pass smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD17732ED32;
+	Fri, 13 Mar 2026 09:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773395245; cv=none; b=oWVNwkDabPNKX2YDtrnoqaUbIqpTnISmgm/Dtm3JW0GGRwP6Q3JzrVic7XpDyWLgGFDZRfdWfpdeh+ysk8oD/GsipJWEqmgzp9NQQrHWHMA6lF0Ujpaep9C1TGqh7n3obUJNfZxDQ/Q9CCLlivmcipBj1QgSCip8ZGJ0RfUu1y8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773395245; c=relaxed/simple;
+	bh=shbEn4UYXRSF/93kbIkRAJWzAwqCM62LTnDiD1zvGnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZRLrYPUOSepWif2dLfUGrx8JLTNUMHAeKotkqqRBzAGtGmjNMvXIgm3Amx26FoNImheeZgZVxj12QidjdpsWnBJTw44vQcJLAXuLf0xaRairhz6o3x7HO6DPwL2NXQzzqtmUVDvuRnfNkuI3fXjzLXlYaRI++7y99STC5nObBeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DgXKGB+J; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CVJB0EpM"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a13f6bcbf4so3002613e87.1
-        for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 02:44:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773395051; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LR4G9irEINbqiwtTjXS9tsbQusylMwECnhnX75ytA8yMwCSwpjkbfj4vwP5Uw3bLFR
-         AF2OF8+NbVYNwI7WjBC4XzVn6lE6R7AzVBXTTIDjSV00EbFZXSfga28r0vXgeW8td2E9
-         iayVHKR/m5fRuaBLgXqDyS9fFk6M97X8QNSnPN+YLDnMK3uvTfiYZsc9Xqqmv0J90PLe
-         FUj8r0Bv4W4T7XHSppvEhjgZwjR/BMAs4unxcQ8ti2B4PDcAq4iRtqfy4XbTOKszhq3C
-         /fSZpbTn/AegR8ytyzlj5bB1RTq9DUZa6qzZt2P+9XI1dFNhnN6qz6Ik45q37tgA26jz
-         zO3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        fh=Ouslpf8wxRStlHdU/BdnN1uJPo1HDf4aWZ5is28l434=;
-        b=jsbt4V0ouGLucSAdoAf0EgmXspjnQZTbUfDISJ5ZWRXXTP4NdsjR6qDTYb7BR1Va7E
-         FI1aMM2XzeNLAkCUgycg0y07APrfIR6flmFiEahNuJoz33yQ3QHxCRzJdir20sRelMVa
-         jWaBnbu2zWXbTFDMvjyCcS+z+MxgA6BrahxvREBesY1B5zp4U0ufBsR44qb/Oc55nW/F
-         J6KVne4R8x2LRiHt8EIlT5jlPC9kbWdcx3t6KYczHBK1ckmHk3DxXUxt1C4y5LsvgpmN
-         /v0yqJWGhKsw6nIf74AI/q8Tcv5bEBvg8Tdud+/DGJPmaQMqNUuiK3nzuHbisc+By3Bp
-         i0vA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1773395051; x=1773999851; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        b=CVJB0EpMEVa6sLzbpbpZgC6oxzg2jOtTdosOr5xZNtsl8bsqrxagaYbJB1fdwaFsDi
-         MU38WYuy9AWHvdgCpCuHaIpr0k74xYGQOeELdWDSwcfyzs8cqYkIXiRIRrqyxiibpEVP
-         wMrz3HxyzbyPSSjmSzWbKbBJgizyZo+BgjwH4r+2CXA44MTS6E41EE0YnfUJRp2yUitr
-         rl9LQ9jslbZWwEoeHXtCnBIpFBQl7bMUoyyvJJ1DVrzW8G12l73vTupZQjGfuJkAAf20
-         jQIIgy05OQGFnn5ib4SoM+EKD7qPNjwSuIvoucoWtcAxJOQaShYcNfKbcoRIEG60ZMKr
-         agpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773395051; x=1773999851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zhNoTkJIeGg7k6SX7++UNulbkoe8PKd3t4WsYSulIm0=;
-        b=O/mqIxynCSswZrPJR8s3Fy+tLdHscBq2Zbup4wW9dEBJgxcjtb50gHtQSP8BXph4WE
-         4L7S2dvGg7CmLkVPRg2qC2NV/sIeMjFYkMItQmfGswCh+etLLcSnaga6Du9pLtYevgZ9
-         D9hHl8/eprAoG2yc8o1hmDWsCFytWLFuy9mafvCMLLIRqAHKko5hyi4cBAAUlzgCdwwG
-         YgWhfAHSUPzpThI8rHaZWJzwmuCKdl8U5gDh9jMde1+BbFRgxcKGFC7p06ZpY0uMnOLe
-         7Fd1yX4M/eeRVaQ1qH7VZjrQ1IBlI/sAxR9bYECYsofzKkQGYEVRivY4zCV2eD44qRVL
-         CEEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgQMXqCm9PxuDsk+KWup6iWXNxq4AvvHMENCyW3Ms1jOSzB6EOTYlEsdFQGeyP7OMJRhWgEitT0JM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyc/sZ/KOpKUY+BWjosU0C4MK8dKXLs4ocNIyCk7vnxeFF5XtMW
-	dQXBakiHYynJ+9HQB+eW9w2auruIz6zdvsjhrEFJ9Iptgxx826JRlBqOI0MdcUytcQBLOJmeCKi
-	gNLNZrJI5tF+QN5CX2SYJZXZEUn2hkOIQcBmptvFYgA==
-X-Gm-Gg: ATEYQzw2yr9SLlbc0RoBQiC5ZTcnDSQrtDkwFUDYNB/xYYXRDgMwZOjSy0aq1/47msH
-	0cM1Z5bz4jBAe9Jo7kMh1O3a0fQhVOFjB1GNdBTntCONMgD4ATvn0qCq98HKJokpklsTJulUDOA
-	F4zPEsMFHCBuucACYTXKBbnKMeFZlTqKuw84pCRLzod1r0RQoaRaDb1RlUpDF+eWy6GZSRQ+caa
-	qLRNeH/BXMuuicU602gbT9hKnhw+awnQcL95J3tjHX2Nrw8m8TSxwkkTh906K3B7+moNZJRs/rJ
-	biRxBh4G
-X-Received: by 2002:a05:6512:1589:b0:5a1:381b:fae2 with SMTP id
- 2adb3069b0e04-5a162b0d32fmr863539e87.33.1773395050576; Fri, 13 Mar 2026
- 02:44:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DgXKGB+J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773395244; x=1804931244;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=shbEn4UYXRSF/93kbIkRAJWzAwqCM62LTnDiD1zvGnQ=;
+  b=DgXKGB+JvS21y7vHgIVpacnu+0eX0C0Q2yW6tGXOaUfH9SHhtBJoq/5G
+   lALqC6e+ckEbhZ+PVBr9CzPUyaVama3PvbKqHPRej93s0d68zZPFYoA4C
+   nkNRpskDfI731Bbk+j0kfK3AsEfpOR3YODzG1iI5gS7nWuEG4rpQiJkha
+   EbvxnP2DQ82l/1LB4Dv/CUtaB53K8306VWew5VawDqflhcUMfew3aiUeh
+   YAgDwHpFh8Ard5LleH1Zk0/USU7/VymoOmqEvct/yePKDcnBqaPoTt0R8
+   A8eqYn/1HAHNkKC/QdDOoO2JxNCRTCY5Tdm9wiyC7XELEbAYkZjSMcrFP
+   w==;
+X-CSE-ConnectionGUID: UZm1B10dTAeJKABAv0tdhA==
+X-CSE-MsgGUID: KjR92nrcQR6XarHRWVWOfg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11727"; a="99961773"
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="99961773"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 02:47:23 -0700
+X-CSE-ConnectionGUID: GsebdnTlT/SDLdY0V6biEA==
+X-CSE-MsgGUID: 10eCGMq3Tca5BCiKpXMAoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,118,1770624000"; 
+   d="scan'208";a="251629178"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.246])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2026 02:47:17 -0700
+Date: Fri, 13 Mar 2026 11:47:14 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Steve French <sfrench@samba.org>,
+	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Subject: Re: [PATCH] lib: count_zeros: fix 32/64-bit inconsistency in
+ count_trailing_zeros()
+Message-ID: <abPdItJ152oMzGd6@ashevche-desk.local>
+References: <20260312230817.372878-1-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227135428.783983-1-herve.codina@bootlin.com>
- <20260227135428.783983-3-herve.codina@bootlin.com> <CAMuHMdVVsEB-xb8Jz4ujBam2NxtxAOb7byYa3VR_eHsbTD5rXw@mail.gmail.com>
- <2026031242-debug-aviation-19b8@gregkh>
-In-Reply-To: <2026031242-debug-aviation-19b8@gregkh>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Fri, 13 Mar 2026 10:43:33 +0100
-X-Gm-Features: AaiRm535RzzFrlMRqNsLHd1XM8yzn674dd-38MKB2CsmserIvJfHsK0fUYGtRYw
-Message-ID: <CAPDyKFpX3A3r4s72PNjBz5QaZUsq1xaGhn5vXwegue7Tyh_Zew@mail.gmail.com>
-Subject: Re: [PATCH v5 02/28] driver core: Rename get_dev_from_fwnode()
- wrapper to get_device_from_fwnode()
-To: Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linusw@kernel.org>, Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Alison Schofield <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan <saravanak@google.com>, 
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312230817.372878-1-ynorov@nvidia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, 12 Mar 2026 at 16:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Mar 10, 2026 at 04:03:42PM +0100, Geert Uytterhoeven wrote:
-> > Hi Herv=C3=A9,
-> >
-> > On Fri, 27 Feb 2026 at 14:55, Herve Codina <herve.codina@bootlin.com> w=
-rote:
-> > > get_dev_from_fwnode() calls get_device() and so it acquires a referen=
-ce
-> > > on the device returned.
-> > >
-> > > In order to be more obvious that this wrapper is a get_device() varia=
-nt,
-> > > rename it to get_device_from_fwnode().
-> > >
-> > > Suggested-by: Mark Brown <broonie@kernel.org>
-> > > Link: https://lore.kernel.org/lkml/CAGETcx97QjnjVR8Z5g0ndLHpK96hLd4aY=
-SV=3DiEkKPNbNOccYmA@mail.gmail.com/
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Reviewed-by: Saravana Kannan <saravanak@google.com>
-> > > Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> > > Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-> >
-> > FTR, one more user of get_dev_from_fwnode() appeared in commit
-> > 9035073d0ef1de81 ("reset: convert reset core to using firmware nodes")
-> > in reset/next.
->
-> Ick, that's going to make this hard to land anywhere.  This is a rough
-> series, perhaps it should be split up to make it easier somehow?
->
-> thanks,
->
-> greg k-h
+On Thu, Mar 12, 2026 at 07:08:16PM -0400, Yury Norov wrote:
+> Based on 'sizeof(x) == 4' condition, in 32-bit case the function is wired
+> to ffs(), while in 64-bit case to __ffs(). The difference is substantial:
+> ffs(x) == __ffs(x) + 1. Also, ffs(0) == 0, while __ffs(0) is undefined.
+> 
+> The 32-bit behaviour is inconsistent with the function description, so it
+> needs to get fixed.
+> 
+> There are 9 individual users for the function in 6 different subsystems.
+> Some arches and drivers are 64-bit only:
+>  - arch/loongarch/kvm/intc/eiointc.c;
+>  - drivers/hv/mshv_vtl_main.c;
+>  - kernel/liveupdate/kexec_handover.c;
+> 
+> The others are:
+>  - ib_umem_find_best_pgsz(): as per comment, __ffs() should be correct;
+>  - rzv2m_csi_reg_write_bit(): ARCH_RENESAS only, unclear;
+>  - lz77_match_len(): CIFS_COMPRESSION only, unclear, experimental;
+> 
+> None of them explicitly tweak their code for a word length, or x == 0.
+> 
+> Requesting comments from the corresponding maintainers on how to proceed
+> with this.
+> 
+> The attached patch gets rid of 32-bit explicit support, so that both
+> 32- and 64-bit versions rely on __ffs().
 
-I fully agree with the above. Renaming the function isn't necessary
-for the $subject series.
+> CC: "K. Y. Srinivasan" <kys@microsoft.com> (hyperv)
+> CC: Haiyang Zhang <haiyangz@microsoft.com> (hyperv)
+> CC: Jason Gunthorpe <jgg@ziepe.ca> (infiniband)
+> CC: Leon Romanovsky <leon@kernel.org> (infiniband)
+> CC: Mark Brown <broonie@kernel.org> (spi)
+> CC: Steve French <sfrench@samba.org> (smb)
+> CC: Alexander Graf <graf@amazon.com> (kexec)
+> CC: Mike Rapoport <rppt@kernel.org> (kexec)
+> CC: Pasha Tatashin <pasha.tatashin@soleen.com> (kexec)
 
-I suggest we simply drop this patch from the series - and if the
-renaming really makes sense in the end, we can deal with that
-separately later on.
+Please, move the Cc: list to the...
 
-So withdrawing my ack from this one.
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
 
-Kind regards
-Uffe
+...comments block. It will have the same effect on emails, but drastically
+reduces unneeded noise in the commit message in the Git history.
+
+You may also read this subthread (patch 18) on how to handle it locally:
+https://lore.kernel.org/linux-iio/20260123113708.416727-19-bigeasy@linutronix.de/
+
+>  include/linux/count_zeros.h | 9 +++------
+
+...
+
+> +#define COUNT_TRAILING_ZEROS_0 (-1)
+
+Shouldn't we also saturate this to BITS_PER_LONG?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

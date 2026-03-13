@@ -1,227 +1,159 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCB408255
-	for <linux-spi@vger.kernel.org>; Thu, 12 Mar 2026 23:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773359681; cv=none; b=GpxzyuzCpQ6RMt4dFMUwXdCpdIvYqMdsYjhg0U7WGAdS7quFwYhOiAGhgOQuWGU9qmbFZIpthsl/1E7+tK9q+qlsofpi184hf/pmjGJ8E/pUd8yjrviK75PGiBZS1aEMABwNVWDBMwmOaJIhd3ONnIdGmEamT0Fb2XKPKE5Q9AA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773359681; c=relaxed/simple;
-	bh=DlEs47g+0P4QzsWSD4V/FyGf/EgdMLa8LqEPSZOP0wI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aUWCQZNOvs/iP9jHd+RLALSubhZPz5NSgvH6/nLMeqJeBK6ew5sxy83xwfjXfSx2w+ff7boMzh6jcmVGncwNi0/6e7HT2pZORWthSnhbkOEQS3KmAV0QcrfCXoiP9fpKcqMZ09si6rk1ECdOHHLUA9S8hLTP5LqqMWZ5nFttcpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fk+HrQFz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=GjeLT5PO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nK3FApym; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6EDt9gxw; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F503093B2
+	for <linux-spi@vger.kernel.org>; Fri, 13 Mar 2026 01:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773363644; cv=pass; b=fkcMZrgRWLpJXulpSOXinU+nhQwAuXkZ3MX3GzCsLCQjONcA2PS9tBI1EG8I1+om2BbWFxIIEkmyO/HDVlNR5rFs5CTLEZa+0STqIr15MHy9v48vyg3OXQPZ6ztxnE+uKh6EV9VK3+wtsr02I65NcFb6bAQIiBsGU1LVyhRNxLQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773363644; c=relaxed/simple;
+	bh=sWXbHUNWyCssRT+Z0j94kKl4zmDZN0doACSqgWVnHEM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uAHvSHLOyZs008CnvU3zPnDxGUmSJIOnNmjpF4t8X59DQSK4arvfymOBa1kBMTSa19oeDWSyo2JBvlhiLA6DFG+asYQHmsHdhxpFjdPGKlYriOwngQ6z/zna7IH0irksRZmNVhxhY4ssgbh4wBvcWJDqyG49x9z+n7B2ZFFjM7U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZA/lz0jz; arc=pass smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fk+HrQFz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="GjeLT5PO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nK3FApym";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6EDt9gxw"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DBF7F4DE48;
-	Thu, 12 Mar 2026 23:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773359673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bwmhrK1mTh+MLga869G8X7ffK5a55BOcYDLNgMLau3w=;
-	b=fk+HrQFzF538OaZee5zKteZcA0YzllQN4x1inGCAbXjNlo6QUNFUqNbGrCH5EeTJbbl1jk
-	FTvU17qIJfkQDV+ln6qt+1UPpVopM6PIvAMUtTOjZZJ3/a+RYpvPc0tmmUajk0tARslnmX
-	EHrtJDNB0KVkLkU4HiHWqk3laOWGWpA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773359673;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bwmhrK1mTh+MLga869G8X7ffK5a55BOcYDLNgMLau3w=;
-	b=GjeLT5POJ2ppQv2V8UcAch81RQWi73SsE94ZqWuISHtXbtVGKO30Qb71oigY1fJWtdCROD
-	hJQD5w9T4bPhNBAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nK3FApym;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6EDt9gxw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773359672; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bwmhrK1mTh+MLga869G8X7ffK5a55BOcYDLNgMLau3w=;
-	b=nK3FApym7tfNn1DYJAjxANwZrZkOi+7diHoNWII3ULI7GL59N/yI/X6ge92tRZaTNO+iDP
-	rbkiSLfVzTovlXnwx+sm2XdjW+milZHXwHV3OFqONrs/aDXtvH33MrKfrw0c8b1brwsruE
-	f+oOYH59XwjN26di3wGpoeV3fGBkJnk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773359672;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bwmhrK1mTh+MLga869G8X7ffK5a55BOcYDLNgMLau3w=;
-	b=6EDt9gxwjTnn8WVNa/iDDOJbUxG4c6IPQDPESQ58T74caGcpdtTs0tWldMb3C2Klzv+2cX
-	aUwaMbUSyMcQ9xBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A3794022C;
-	Thu, 12 Mar 2026 23:54:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QCh3CDhSs2lNPAAAD6G6ig
-	(envelope-from <ematsumiya@suse.de>); Thu, 12 Mar 2026 23:54:32 +0000
-Date: Thu, 12 Mar 2026 20:54:29 -0300
-From: Enzo Matsumiya <ematsumiya@suse.de>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Yury Norov <yury.norov@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	Eric Biggers <ebiggers@kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-cifs@vger.kernel.org, linux-spi@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Steve French <sfrench@samba.org>, 
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: Re: [PATCH] lib: count_zeros: fix 32/64-bit inconsistency in
- count_trailing_zeros()
-Message-ID: <atnytehtvt6h6kp2ndxsa3x257usezp3bk5hp4ch7gf5w2zake@omihp5zbio3l>
-References: <20260312230817.372878-1-ynorov@nvidia.com>
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZA/lz0jz"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-64937edbc9eso1740188d50.2
+        for <linux-spi@vger.kernel.org>; Thu, 12 Mar 2026 18:00:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773363641; cv=none;
+        d=google.com; s=arc-20240605;
+        b=du4DBV+lPPkd1rXd+6ZlzhUIyCDMvmqq7mULWcsTIMGUhAIfBvqpP4wCqmir+2wnv9
+         WreVu1+dODkkG9tyVj5aIjBACJTt38XaAKB5m5qLNimq7uAKaq0b7XjPpBz0XeQA2s19
+         aPd2xamuA5ThgMeIQciK3L+BIWdhTaZEyWIVbubfB88CcZMf6bdveQ1YGaWN67wTzwVE
+         gLJ3nPP4scIu44WvZzUbBe6kfh6YXhc2YU7fM0WHBf1LZ0WySVVO73kxTHpLYx3ZICBm
+         ranIJlTWFSqY47tRNsHYK2fXogvNJxCa2cuQ1hvclaGXhc+0wSwtsdlKOs+AQ0u7YHrx
+         76Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
+        fh=k3zrtz42OVslb+2KCx/l0TER2rflS8OfKu1AdnqdPCA=;
+        b=hKHLD4Z7JobvNJMMGyUpNJVuH1RUtou+wpqHTUTdD4Q3EvuhYE5nStFVxlvih8VGuy
+         SGCTk6gGZ4hqCc0UWKY0paLyE6WDXhh6Hy2W/YeyqsHAjT4BOftse09LrXLXhNXtIdyb
+         MK2zUbqZkldV2BGW5fQ32QkoD2NkKP9SFBVySI/+pKBWY2LM+g1vow89g+/sT0MkR7cA
+         fvu8EETAf22jwT81KBgnxDGF8lRnNyzB7jpF1jtMpZkeDcVsoyZD6Rlr/EoAYkLbdY7P
+         hBDnSzvd18rc0ov2bLzRWvmgeg8cK5Z6U9AdP4Jv0ZpOLPO14LniYumKFmgmkscbwC4U
+         Yz/g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1773363641; x=1773968441; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
+        b=ZA/lz0jzZ5SnEt27k5mt290nazi42vhGGnOyNcbDIrJk0WzjSHSUXA0OXFphwHSWli
+         WNhDUXBka7oi/+/SldIRtUuf1Po9CwQ6Y0+CSBiC/7rRru2Mvrwgy2C7Lvu84y8UZU3c
+         nmLVa2qKS2YKHBiYT/MZ/bSmE8EFdQz3BwQto=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773363641; x=1773968441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WEIoHUDBRKW7sPjWtgozpXFsqYAeqWilfaHlivAXGTA=;
+        b=VZhcSkT8f0//UDjCh8Dtr+mQQdiLw7W9MXFpIdWgieFYlTQ5F4NujU02SJu5wDQMqg
+         1rp5yZeHqtKMGplk9skASNXt+dka8DO8w/LaHPQnfEo1iqeIzfeVppDTAmZWI+6mMTLy
+         PFwrVkFjJr7AXVQPL7vQXNw+a8pAGFvxXJTjhieJkgVQi9CiibfBIGlrUBqc2oODIVrr
+         Ny1//u9FdGxLNJDdXqFs4Z8hhsamOlsf5wrRp8CM3VUxOnIW+Xg8NBTaRL5holr6EbZl
+         Wcm4LSDC4wHTh05nDAUUbVnRTw5bRuOXkQOKfAtUJCkvKYYZDGgVyzzxRf7vDFCyClI9
+         YXgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7SNd0v6SI+nKenVakXRzIIJO2vKohcuRoJ7Toqf4BZ3JqoGCzlX2LJGdIZb+7KrUCgbIXrf0JLWY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/OZW/xKqxKs9CPekuw1Rdf4b3U4nLPEACOhTOS1ZHUv4sWE0u
+	RAH8Iw5T2iA2A1xrevF46UHxvWAyfDEouu88FejaDRe1NhDYcJiLu/YEeKvkMage0K7qT6xAkCe
+	uulR6vX9ppDEYofI9VnO3V+VmstQzYEOqvYhUZeZ8
+X-Gm-Gg: ATEYQzxifKVErS/F4y/RXcHGW5ulJYRASdRp9TQAd8L6V8cJDwFNA4nI/4RPl4tUUCv
+	0Wj3Blq20ygjzsZoPdXqZ+5MFiZ/rVz/RbUeDwl2PLxFsDIZBnlRNsH4IRsHdyHAqAgR01/PMdd
+	XvqA05dfJnm6ROmqV+qtsSRgDNsGxNbUI/l/yawaBA3nzqanoWSRGrtcn6QeJCRqU1dzLMJDoxk
+	wJw/kHpSp0t0ZYCqHnP/7WfINJlEq4WWUAAg+8H3/uJARXXT6vlpWhru3IpWghNft6ychjZvWbl
+	2VamL/yRl2NAUFcj16FrDJFagESU0Ibgx+A56haB
+X-Received: by 2002:a05:690e:23c6:b0:64c:a815:511b with SMTP id
+ 956f58d0204a3-64e62f59679mr1215624d50.3.1773363641056; Thu, 12 Mar 2026
+ 18:00:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260312230817.372878-1-ynorov@nvidia.com>
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,rasmusvillemoes.dk,kernel.org,zx2c4.com,vger.kernel.org,lists.infradead.org,microsoft.com,ziepe.ca,samba.org,amazon.com,soleen.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: DBF7F4DE48
+References: <20260303-send-upstream-v1-0-1515ba218f3d@chromium.org>
+ <20260303-send-upstream-v1-9-1515ba218f3d@chromium.org> <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
+In-Reply-To: <1cc6de61-8b56-492e-ab78-e3aa448f58ad@packett.cool>
+From: Jingyuan Liang <jingyliang@chromium.org>
+Date: Thu, 12 Mar 2026 18:00:30 -0700
+X-Gm-Features: AaiRm529-VNRFl8j9TL1yc6G4h205p6aiqQ4Ar4V5wWtWy0meX15btognc57fcQ
+Message-ID: <CAEe3GZF7ct1ZFH2Zd6AJnO1vBJQZobGaQKO+hTMJjFcCQddq6Q@mail.gmail.com>
+Subject: Re: [PATCH 09/12] dt-bindings: input: Document hid-over-spi DT schema
+To: Val Packett <val@packett.cool>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, hbarnor@chromium.org, 
+	Dmitry Antipov <dmanti@microsoft.com>, Jarrett Schultz <jaschultz@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Yury,
+On Fri, Mar 6, 2026 at 11:25=E2=80=AFPM Val Packett <val@packett.cool> wrot=
+e:
+>
+>
+> On 3/3/26 3:13 AM, Jingyuan Liang wrote:
+> > Documentation describes the required and optional properties for
+> > implementing Device Tree for a Microsoft G6 Touch Digitizer that
+> > supports HID over SPI Protocol 1.0 specification.
+> > [=E2=80=A6]
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - microsoft,g6-touch-digitizer
+> > +          - const: hid-over-spi
+> > +      - description: Just "hid-over-spi" alone is allowed, but not rec=
+ommended.
+> > [=E2=80=A6]
+> > +required:
+> > +  - compatible
+> > +  - interrupts
+> > +  - reset-gpios
+>
+> Why is reset required? Is it so implausible on some device implementing
+> the spec there wouldn't be a reset gpio?
+>
+> > +  - vdd-supply
+> Linux makes up a dummy regulator if DT doesn't provide one, so can
+> regulators even be required?
+> > [=E2=80=A6]
+> > +        compatible =3D "hid-over-spi";
+> Not following your own recommendation from above :)
 
-On 03/12, Yury Norov wrote:
->Based on 'sizeof(x) == 4' condition, in 32-bit case the function is wired
->to ffs(), while in 64-bit case to __ffs(). The difference is substantial:
->ffs(x) == __ffs(x) + 1. Also, ffs(0) == 0, while __ffs(0) is undefined.
->
->The 32-bit behaviour is inconsistent with the function description, so it
->needs to get fixed.
->
->There are 9 individual users for the function in 6 different subsystems.
->Some arches and drivers are 64-bit only:
-> - arch/loongarch/kvm/intc/eiointc.c;
-> - drivers/hv/mshv_vtl_main.c;
-> - kernel/liveupdate/kexec_handover.c;
->
->The others are:
-> - ib_umem_find_best_pgsz(): as per comment, __ffs() should be correct;
-> - rzv2m_csi_reg_write_bit(): ARCH_RENESAS only, unclear;
-> - lz77_match_len(): CIFS_COMPRESSION only, unclear, experimental;
->
->None of them explicitly tweak their code for a word length, or x == 0.
+Thanks! I will fix this in v2.
 
-Context for lz77_match_len() case:
-
-	const u64 diff = lz77_read64(cur) ^ lz77_read64(wnd);
-
-	if (!diff) {
-	...
-	}
-
-	cur += count_trailing_zeros(diff) >> 3;
-
-So x == 0 is checked, however it does assume that
-sizeof(unsigned long) == sizeof(u64).  I'll have to fix it for when
-that's not the case (even with your patch in, as __ffs() casts x to
-unsigned long down the line).  Thanks for the heads up.
-
-
-Cheers,
-
-Enzo
-
->Requesting comments from the corresponding maintainers on how to proceed
->with this.
+> > +        reg =3D <0x0>;
+> > +        interrupts-extended =3D <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
+> > +        reset-gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
+> > +        vdd-supply =3D <&pm8350c_l3>;
+> > +        pinctrl-names =3D "default";
+> > +        pinctrl-0 =3D <&ts_d6_reset_assert &ts_d6_int_bias>;
 >
->The attached patch gets rid of 32-bit explicit support, so that both
->32- and 64-bit versions rely on __ffs().
+> Heh, "reset_assert" is a name implying it would actually set the value
+> from the pinctrl properties, which is what had to be done before
+> reset-gpios were supported. But now reset-gpios are supported.
+
+Taken from the original patch. Will fix this in v2.
+
 >
->CC: "K. Y. Srinivasan" <kys@microsoft.com> (hyperv)
->CC: Haiyang Zhang <haiyangz@microsoft.com> (hyperv)
->CC: Jason Gunthorpe <jgg@ziepe.ca> (infiniband)
->CC: Leon Romanovsky <leon@kernel.org> (infiniband)
->CC: Mark Brown <broonie@kernel.org> (spi)
->CC: Steve French <sfrench@samba.org> (smb)
->CC: Alexander Graf <graf@amazon.com> (kexec)
->CC: Mike Rapoport <rppt@kernel.org> (kexec)
->CC: Pasha Tatashin <pasha.tatashin@soleen.com> (kexec)
->Signed-off-by: Yury Norov <ynorov@nvidia.com>
->---
-> include/linux/count_zeros.h | 9 +++------
-> 1 file changed, 3 insertions(+), 6 deletions(-)
 >
->diff --git a/include/linux/count_zeros.h b/include/linux/count_zeros.h
->index 4e5680327ece..5034a30b5c7c 100644
->--- a/include/linux/count_zeros.h
->+++ b/include/linux/count_zeros.h
->@@ -10,6 +10,8 @@
+> Thanks,
+> ~val
 >
-> #include <asm/bitops.h>
 >
->+#define COUNT_TRAILING_ZEROS_0 (-1)
->+
-> /**
->  * count_leading_zeros - Count the number of zeros from the MSB back
->  * @x: The value
->@@ -40,12 +42,7 @@ static inline int count_leading_zeros(unsigned long x)
->  */
-> static inline int count_trailing_zeros(unsigned long x)
-> {
->-#define COUNT_TRAILING_ZEROS_0 (-1)
->-
->-	if (sizeof(x) == 4)
->-		return ffs(x);
->-	else
->-		return (x != 0) ? __ffs(x) : COUNT_TRAILING_ZEROS_0;
->+	return (x != 0) ? __ffs(x) : COUNT_TRAILING_ZEROS_0;
-> }
->
-> #endif /* _LINUX_BITOPS_COUNT_ZEROS_H_ */
->-- 
->2.43.0
->
+> P.S. happy to see work on this happen again!
 >

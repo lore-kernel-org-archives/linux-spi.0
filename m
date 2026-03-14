@@ -1,82 +1,107 @@
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF5322C78;
-	Sat, 14 Mar 2026 05:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDF122D785;
+	Mon, 16 Mar 2026 01:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773464838; cv=none; b=ZjGuPvWUflFmKWcNliWBx4+vujESy58Im4tHFOXncItnwO94oOSRz4V0mBHu1C6lolReCkthH3oLwB1Trid+ZqQ3uoW4MnsRxxZTONhRvicP5YGzwZE+A2mQtKg1flJJPN8U9Egsa4kvaN0xfk7SXrDJ5wESN9s2kQEeizUsB6c=
+	t=1773625063; cv=none; b=LQqZq/uYYTxAXtg2xTWXmm06Bd9XeYABoF1k2Rn+ApDt3W2Xp5MpXLJHVns9Epv/096gi9wQXqQ8kyo8LoAagVz6AVu7VKvIy2ZcZ2UWqJ0XkCnjqj548vE/uLpgrRy4nbt2KtL/55EcNTrFP8WW+IwsyapPaV/1bcdCH6wl5y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773464838; c=relaxed/simple;
-	bh=8ugnbo23foEUCR/+yALd2xdodJqCGBiYJojIv7YqAMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mCaoXJytaehkjgYgBnePZzqudhW9aa7PlOkCm5YamzMzFGNoGdJLdceF5XLuwzyYJcy9V4OiLUnAo0IziEiGzBpUi5kgc7lxzriux8+uTfCE6rXb/Gi1YpTgwxYttrKxccAD3RR4yEeT+joZ/RqV7jkCEzPP71O4KighB8k53Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=MpGyM0n6; arc=none smtp.client-ip=180.181.231.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+	s=arc-20240116; t=1773625063; c=relaxed/simple;
+	bh=TGQIw/q/zFMyHgT9wXEpWPAd2N2W6JnYL+lx6HkddLk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Vcir6blr3tf05Caz75Xrtmk9d+lyROWcNcTs15PrhssaH1omTbwXSgeybg8Pi3kvyJUvOj0U7+8brQQ7NFs53P43kx+K6UVh7EFsUF+HfIPovMU5sXYISTrViAIIKoYNfAHZiONEaYvsK1ZjSYs/yjiUldn7h/qKTEtlnPjSr0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FRzD8sxt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="MpGyM0n6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=HN4c/md7ubCwGFV8iB4QQzxgqPerbYJNq+32KO8z7Z8=; 
-	b=MpGyM0n68D6QdNiLKQ1JFuuyEnUZ7u9mToS5Y4vXL6GAmMzXQgTJ+dh+7WD1L6fyiDIWx06tem9
-	+B3PiDe6OfX4FAf7GkdaEFM9Z1OBhbuKSF+3Yzot7SCxsa5LBAO3TnEH6X0jr0McEYcLTyrpkFbTA
-	j/gbE54UZOWYr+GgWJYZFqEkM83fY7PETke6zr8LmEJcuxvwOiA1v6PC4rNfWFZvxtxzYRFXCqMQ3
-	9z9aNGDl0kZJ0ybv2adSuhYEDn6MOy0nzQZZdnTLnNP4TbZ8KbUkxCuuETJNoFNLFEliztUkvES7z
-	pWcIPX2FfsD/EN/6Kk6auxPb5qWCL8TnycNQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1w1HDB-00EL1R-1V;
-	Sat, 14 Mar 2026 13:06:54 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Mar 2026 14:06:53 +0900
-Date: Sat, 14 Mar 2026 14:06:53 +0900
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, olivia@selenic.com,
-	radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
-	gregkh@linuxfoundation.org, jirislaby@kernel.org,
-	horatiu.vultur@microchip.com, Ryan.Wanner@microchip.com,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-	daniel.machon@microchip.com, luka.perkov@sartura.hr,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH v6 2/6] dt-bindings: rng: atmel,at91-trng: add
- microchip,lan9691-trng
-Message-ID: <abTs7exXXVPcvULD@gondor.apana.org.au>
-References: <20260302112153.464422-1-robert.marko@sartura.hr>
- <20260302112153.464422-3-robert.marko@sartura.hr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FRzD8sxt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CF8C19425;
+	Mon, 16 Mar 2026 01:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773625062;
+	bh=TGQIw/q/zFMyHgT9wXEpWPAd2N2W6JnYL+lx6HkddLk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=FRzD8sxtWGzZf04kzC7Xi/txIeltFmL7gxMkHHZhlxDQcObQTW7bT1CEcFWxmAxZY
+	 1o+6rc64q4fh6e6ahab9n03frJz8mZ3rvcOkdgKvlZYrbMWLahfiylHFyDDYfQNmaO
+	 OQ9vqB6MXJeubc69yr4l+rSQGAg4hihvqsoyxyiVprNtfXfV4pU3lePKCQwWPQFmv2
+	 1e9LPCKyw61UXetoeVulORj/r6wrJuvRWa/1JczJAsB2KWV8GreUb7qpk3Fy6DfYba
+	 qzIT8KP9I2iNo2HLLyIWy3VzHVHs/u9FiwvljbmhzWkQVhQqJVWBlobXjNieLrR9UV
+	 zNCmusXetr/cA==
+From: Mark Brown <broonie@kernel.org>
+To: Jernej Skrabec <jernej@kernel.org>, 
+ Samuel Holland <samuel@sholland.org>, Chen-Yu Tsai <wens@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-sunxi@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260302153559.3199783-1-wens@kernel.org>
+References: <20260302153559.3199783-1-wens@kernel.org>
+Subject: Re: (subset) [PATCH v2 0/3] arm64: allwinner: sun55i-t527:
+ avaota-a1: Add SPI NAND
+Message-Id: <177352554724.149922.11236010638417672034.b4-ty@kernel.org>
+Date: Sat, 14 Mar 2026 21:59:07 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302112153.464422-3-robert.marko@sartura.hr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-5154a
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1508; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=TGQIw/q/zFMyHgT9wXEpWPAd2N2W6JnYL+lx6HkddLk=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpt17jchZo0gt311TnfM91Px7xeMUnDDWgGnHg5
+ aPZt2gS/jyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabde4wAKCRAk1otyXVSH
+ 0NkBB/96GMZnNoZeWsfT+kcGAZx6S+Ao310k+PbeK/xJt271Tz0NrWNlPvQZCLXxs4SQNIZFO5M
+ Dr4zSEidJE/ORmsiypIqH6qztsrTp9KGh0DMZt1wZgeIrWETeDJenvDAP2BxhnRhER7hcEkbEjO
+ dPj1MGZqdoZBCb4pEn/bQ2itm7AAsbKhMPTIT+fMfNoP+awzQn1AvEBL1w6eSPkRJtGe/PzF2vs
+ 4apTXsrYWgR1Muwe2Aqo6FqdXLCUZVZRLtV3QqIrNVoVqlc1EqFdBZKwysXbk0Krry4Kgs2iFih
+ zwZ7tpICsIacOmo1RYoCA1etZDpvw+NSmN3HLmdihBnINnoB
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, Mar 02, 2026 at 12:20:10PM +0100, Robert Marko wrote:
-> Document Microchip LAN969X TRNG compatible.
+On Mon, 02 Mar 2026 23:35:55 +0800, Chen-Yu Tsai wrote:
+> arm64: allwinner: sun55i-t527: avaota-a1: Add SPI NAND
 > 
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-> ---
-> Changes in v5:
-> * Pick Reviewed-by from Claudiu
+> Hi,
 > 
-> Changes in v3:
-> * Pick Acked-by from Conor
+> This is v2 of my Avaota A1 SPI NAND enablement series.
 > 
->  Documentation/devicetree/bindings/rng/atmel,at91-trng.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> Changes since v1:
+> - DT bindings (Krzysztof)
+>   - Moved "allOf:" block after "required:" block
+>   - Dropped "type:" from child node in conditional block
+> - Collected tags
+> - Link to v1:
+>   https://lore.kernel.org/linux-sunxi/20260227175157.2339758-1-wens@kernel.org/
+> 
+> [...]
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
+
+Thanks!
+
+[1/3] spi: dt-bindings: sun6i: Allow Dual SPI and Quad SPI for newer SoCs
+      https://git.kernel.org/broonie/misc/c/743956bb9990
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

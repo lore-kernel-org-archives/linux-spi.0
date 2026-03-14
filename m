@@ -1,88 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C744315F;
-	Sat, 14 Mar 2026 01:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF5322C78;
+	Sat, 14 Mar 2026 05:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773453075; cv=none; b=SiqyKmDXOboVPvwDc80hXfoKH1gStzI1D8AAG+VKraWI4iIaYT5C63CUPSNcPmrNmitFKNUW4ju/TI9LosdyqZsObQ/zZSZUMpQf9Mp2h1I9h46r8bik+Ge6voNi6xUjJXEtCXe5yLLmbhrhMdWS4qSeushnFz543uYGftwknfU=
+	t=1773464838; cv=none; b=ZjGuPvWUflFmKWcNliWBx4+vujESy58Im4tHFOXncItnwO94oOSRz4V0mBHu1C6lolReCkthH3oLwB1Trid+ZqQ3uoW4MnsRxxZTONhRvicP5YGzwZE+A2mQtKg1flJJPN8U9Egsa4kvaN0xfk7SXrDJ5wESN9s2kQEeizUsB6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773453075; c=relaxed/simple;
-	bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Eu0hCfr6lvBLIygmvaohQNKzXTPFGO0SW4mHsVqWSoDFUfWf0/Z2z58Z7UdBfCbKPGN9iYhJ9D2b79e6ozQ1qVA2f3oQoyES7ep5Jq/ohLruorTnt07wLglOeoLWMw9xnrF/RqI/V1ul8kJ9QDJ5ZDPOooedWUDvrC1/6vwIiJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iq/yVHNw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773464838; c=relaxed/simple;
+	bh=8ugnbo23foEUCR/+yALd2xdodJqCGBiYJojIv7YqAMs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mCaoXJytaehkjgYgBnePZzqudhW9aa7PlOkCm5YamzMzFGNoGdJLdceF5XLuwzyYJcy9V4OiLUnAo0IziEiGzBpUi5kgc7lxzriux8+uTfCE6rXb/Gi1YpTgwxYttrKxccAD3RR4yEeT+joZ/RqV7jkCEzPP71O4KighB8k53Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=MpGyM0n6; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iq/yVHNw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D7C19421;
-	Sat, 14 Mar 2026 01:51:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773453074;
-	bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=Iq/yVHNwD1Mmoqiug1CJEadZQHJ9Svs2liFTXk4wPeK94rC6ky+e5m9SGXh/LaSIS
-	 gEk++QsSkksTQvsYu1Klsm1g0aAbdmMdwQlYZR5zxM6pi3Ny0m6f/eUDrDlY9J9NDp
-	 iMX2X/32uCUeegbqBxwQ13RXVHs0Tpgf+bc3j40Wqq4t6UEmQf2LBV1ngh3LWifOUq
-	 CSEXfudPSwDvZjL/yEzHJS+QQwdlMSbE/OIQMLiAF3DOYLDe00d3e95PD8vpOTgvFF
-	 JwvXRN5gm9cUv/Deepc9AigUGJVuxL+4iq2D52xO5Ed0vWMYzwHSkvhOdXBvvMyQik
-	 nkMfD3+5kO2Xg==
-From: Mark Brown <broonie@kernel.org>
-To: cl634@andestech.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <15a71241affc25108a97d40d9d3dd1bc3d2d69ed.1773282905.git.xiaopei01@kylinos.cn>
-References: <15a71241affc25108a97d40d9d3dd1bc3d2d69ed.1773282905.git.xiaopei01@kylinos.cn>
-Subject: Re: [PATCH v3] spi: atcspi200: fix mutex initialization order
-Message-Id: <177345303954.139979.11258013600538771788.b4-ty@kernel.org>
-Date: Sat, 14 Mar 2026 01:50:39 +0000
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="MpGyM0n6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=HN4c/md7ubCwGFV8iB4QQzxgqPerbYJNq+32KO8z7Z8=; 
+	b=MpGyM0n68D6QdNiLKQ1JFuuyEnUZ7u9mToS5Y4vXL6GAmMzXQgTJ+dh+7WD1L6fyiDIWx06tem9
+	+B3PiDe6OfX4FAf7GkdaEFM9Z1OBhbuKSF+3Yzot7SCxsa5LBAO3TnEH6X0jr0McEYcLTyrpkFbTA
+	j/gbE54UZOWYr+GgWJYZFqEkM83fY7PETke6zr8LmEJcuxvwOiA1v6PC4rNfWFZvxtxzYRFXCqMQ3
+	9z9aNGDl0kZJ0ybv2adSuhYEDn6MOy0nzQZZdnTLnNP4TbZ8KbUkxCuuETJNoFNLFEliztUkvES7z
+	pWcIPX2FfsD/EN/6Kk6auxPb5qWCL8TnycNQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1w1HDB-00EL1R-1V;
+	Sat, 14 Mar 2026 13:06:54 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 14 Mar 2026 14:06:53 +0900
+Date: Sat, 14 Mar 2026 14:06:53 +0900
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Robert Marko <robert.marko@sartura.hr>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev, olivia@selenic.com,
+	radu_nicolae.pirea@upb.ro, richard.genoud@bootlin.com,
+	gregkh@linuxfoundation.org, jirislaby@kernel.org,
+	horatiu.vultur@microchip.com, Ryan.Wanner@microchip.com,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+	daniel.machon@microchip.com, luka.perkov@sartura.hr,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v6 2/6] dt-bindings: rng: atmel,at91-trng: add
+ microchip,lan9691-trng
+Message-ID: <abTs7exXXVPcvULD@gondor.apana.org.au>
+References: <20260302112153.464422-1-robert.marko@sartura.hr>
+ <20260302112153.464422-3-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-046bd
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=broonie@kernel.org;
- h=from:subject:message-id; bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBptL8QMHOd/8W2c4v4jR8cM9Rl1NVJEz76A7X8b
- eDWmuVcRWCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabS/EAAKCRAk1otyXVSH
- 0FaEB/449zCbdbooTM8wxK88+jZQIp+26FKP53rpybDjB8c+RcVmhMMVmwDQ7ORmfoPg0+wM1Eg
- 75uqRFuDB087JIMhoeAKkAATaXenm+/0NhYWwAhLi5eaCFbFMdQVZxw7hyARPiPjsSQy4ZpmuiN
- 7dcuW9dzSbY73X97PAVKyZdMNrkhmW11pUXcvJ8hhQKfkfRb8ALKUQvU+OTj2PID336KWv0KD7v
- 9KuhELl6A5uWUD6XUOSIJJBvUq0rQsIV2Ay/erFQEel7G474gC+ithcB+U6kCtWo8u5rpJAhRzN
- oLsxsla0LlFR9hS2n9Jimh2uqnvQmq0Ia/izDKwvmXd8S5QV
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260302112153.464422-3-robert.marko@sartura.hr>
 
-On Thu, 12 Mar 2026 10:47:55 +0800, Pei Xiao wrote:
-> spi: atcspi200: fix mutex initialization order
+On Mon, Mar 02, 2026 at 12:20:10PM +0100, Robert Marko wrote:
+> Document Microchip LAN969X TRNG compatible.
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> ---
+> Changes in v5:
+> * Pick Reviewed-by from Claudiu
+> 
+> Changes in v3:
+> * Pick Acked-by from Conor
+> 
+>  Documentation/devicetree/bindings/rng/atmel,at91-trng.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
-
-Thanks!
-
-[1/1] spi: atcspi200: fix mutex initialization order
-      https://git.kernel.org/broonie/misc/c/869d5b4b2a80
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

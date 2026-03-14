@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672D02DEA8C;
-	Mon, 16 Mar 2026 01:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE54D27A47F;
+	Mon, 16 Mar 2026 01:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773625083; cv=none; b=Lg7XLfLLR9W6B4IGbezkkcajglpc6T1Cwlewg7hHIWk3Ozyq0YVpkUT+5khiyoPKSXcU4IhOKeciGnwC2uZZHe0w/CPrsQw3LwkqAFDm82MAebetbwjnT8X8Qv/8usxpSowHgOOwdCz3AcO5cpv44i0QqS9pe+ud1dSrDrZJYrY=
+	t=1773625089; cv=none; b=h63zLB8xwKcXXZTkWzBLMP+G+UoPuSh2OdFXn0O9zlXyA23wUpNhfOpgrOVGCvp9kapT4VtBHwxQmdh1Er8DsyqAVHUYDKPH7Sd5NUFp2kogiSWmZyzcLcQz23vykJUvhlWGMcTPM6Q7SbtVZYrM1dvAch0qChzU3h06ZjFb/Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773625083; c=relaxed/simple;
-	bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
+	s=arc-20240116; t=1773625089; c=relaxed/simple;
+	bh=QaMYSj2E3J2MiJ1HFej1CfGH/Zo9YEH4AIY/2x7kc6k=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uBq6sC3IbhG6blCVW7QnPbbCfuaYmFD5SetxkKQKnk7eBwTTPeL22Bi/FazI1Cn5u/UhFKVtT9s57hdPaYsNKxf7TQc82bACBRGQEsN23t+mTCGCm37L90rrCYZQEpQRMplu9WnsW+yVBvvBieQ/a4LlOQ8x5sW94e7UMA7wrSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZZWERnP; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=LkqMj+xRJe1r5moDSuUyhcUHjr8q2YG05/nHXZpQghfOiZP4tUPh800BGRxgyxMoT0+vJ5xfADSC/dAF9PYVBm/TMk+mKvN5tkxrHV4cBeHtZvXr1nl0118x0NEMcT6sQEMLueJdzEUtM8O3b1ltDV+bnwVpPp940NwQH3j2mbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DaP/7Yn1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZZWERnP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D990C2BCB6;
-	Mon, 16 Mar 2026 01:38:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DaP/7Yn1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A9DC2BCFC;
+	Mon, 16 Mar 2026 01:38:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773625083;
-	bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
+	s=k20201202; t=1773625088;
+	bh=QaMYSj2E3J2MiJ1HFej1CfGH/Zo9YEH4AIY/2x7kc6k=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=AZZWERnPCexOjD3/N6/LKCPNZ+r/wZCMKFiip7tIBYKzCPg5/90oTiTEoPfS1Epjj
-	 zbjSBgrE/D6O9iJCHNrZjdqSbFTTG2xMXXVbpb22Ny9jSA6/ifUzIdG8EVZ9xTrJhN
-	 8qyaShZNnfocDF0Bat+iuE3fozRIFtZ9sCZwAqYKtXHMNFsvu09lG0u6+L4kBaH0m5
-	 cEnJRlmffzupXReYUo8dlwZUuxQPjtNbx6hrYl8LC4jRIF9KpD+Pgmaf2zuT9IxtCL
-	 PbddZt02bi/Glt9Obs5L6Ek/BEoojrRz34kvOtEJQ3JA5dqjjc4aIR6WswHpI76tE2
-	 1i7u8uZRGvFTg==
+	b=DaP/7Yn1Lyyz84iHMAPsxm/qSwP0EfH5+hC/rFbj1O6Ev4WzdOuclEkfIwWiZHhTg
+	 tgvrFZa7gd9d/fvfPZMCFIQoNCSBKJldwauUy57+flwzijOaH+QGe54uEh9RVOu85d
+	 k8tjMd831JDHXr5Yzlk2lB/j+rCV/aiejgVUHhW0sGHaiAy5pwbfN+StUo/BVinC4E
+	 Yt8j5eLKP7LPw0Be1ayiFjFO54ohdwbgYI6EjR/mNiCmQDnYI6+OxSBR6ex/9vGBdZ
+	 OdS18Hxgddn9LTBu5Zk0ha+r73sF+OOfiPvM7fJvLBHPq7e5CniOScmN/lYr0qU+yd
+	 7bZoEcSghSKkA==
 From: Mark Brown <broonie@kernel.org>
-To: Sunny Luo <sunny.luo@amlogic.com>, 
- Xianwei Zhao <xianwei.zhao@amlogic.com>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
+To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
+ Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
+ Prasad Bolisetty <pbolisetty@axiado.com>, Harshit Shah <hshah@axiado.com>, 
+ Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260308-spisg-v1-1-2cace5cafc24@gmail.com>
-References: <20260308-spisg-v1-1-2cace5cafc24@gmail.com>
-Subject: Re: [PATCH] spi: amlogic-spisg: Fix memory leak in
- aml_spisg_probe()
-Message-Id: <177361914653.162791.17263190036268237449.b4-ty@kernel.org>
-Date: Sun, 15 Mar 2026 23:59:06 +0000
+In-Reply-To: <20260307-axiado-1-v1-1-e90aa1b6dd9b@gmail.com>
+References: <20260307-axiado-1-v1-1-e90aa1b6dd9b@gmail.com>
+Subject: Re: [PATCH] spi: axiado: Remove redundant
+ pm_runtime_mark_last_busy() call
+Message-Id: <177352554001.149922.7199933321657961901.b4-ty@kernel.org>
+Date: Sat, 14 Mar 2026 21:59:00 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,29 +48,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=broonie@kernel.org;
- h=from:subject:message-id; bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpt174v79gvROVz2tFRcLX3taQ8ONQQkzfXz74y
- IWMhyBceCeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabde+AAKCRAk1otyXVSH
- 0PoyB/0bPz2aVcxdIpmRoDC6AR6uEe836PhOqcJEbi9qY7B/INxG8LY5j5bKH+XLa0jwoRKtzN8
- xYmG8PRC+lQGDUri950SghPEYj+BJ0Zx6MmysJPYKMc9h32fy+w5uT5IpDVclDik79uTrVwDruN
- zFKDXTWCMy3PHPwLgdYOQVA67kmO6ifVFZGpemO3jWqQLmeIy26RYYkOgFSVlhnRee9BVg4fL3Y
- nK9qWpOibESY62qrNhqvPxhdztyuoXErMNv1ZwyAwyMraJl8xm13piHdfCmS3Uw+U64gu/v2g58
- cia+QLXowSJSuNe3dngtrxWI4MpyXqNVhqkLQSHgYE7K/gMp
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=QaMYSj2E3J2MiJ1HFej1CfGH/Zo9YEH4AIY/2x7kc6k=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpt179BQywpjfiFhRqfaWhbs29/PtRQgdd1Wt8j
+ J9Xu/QMqReJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabde/QAKCRAk1otyXVSH
+ 0ARIB/4tfl1/Rpme4nsvh6yVGFj6HPUurTbgCCS3NwoEpjAnw+kMZaLmJ7CJa+GORxoQH4RfnrQ
+ o5ZcP0nSOgwZpu/RqedRj3rspEm51Tnn7mv7H//pfpPKWRTW6/drWm77RlMR1jXnn+GIparOhzs
+ A9qv+HxE8CLXfDgOEXhpOVIuPZLi6icMxNdp2ytbyM1twmtxDIGfP0Hd+prHplOwvBg8lQDKpVK
+ bliTcyk02eyy40cLJr23voQBH+zTR/AzxhaTjwi9PYM9baI0TEfW1YF+ZvbaWcWVoajoLpWFiM8
+ DCyRagtOi9edpYBArTGuAXtKZSEFqCAwjo7qZT4y6geOr6mP
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, 08 Mar 2026 14:49:21 +0800, Felix Gu wrote:
-> spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
+On Sat, 07 Mar 2026 15:47:15 +0800, Felix Gu wrote:
+> spi: axiado: Remove redundant pm_runtime_mark_last_busy() call
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
 Thanks!
 
-[1/1] spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
-      https://git.kernel.org/broonie/spi/c/b8db95529979
+[1/1] spi: axiado: Remove redundant pm_runtime_mark_last_busy() call
+      https://git.kernel.org/broonie/misc/c/ec6c2e15a42f
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

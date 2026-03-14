@@ -1,134 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C91E1DFC;
-	Sat, 14 Mar 2026 00:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C744315F;
+	Sat, 14 Mar 2026 01:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773447857; cv=none; b=OmkocTklgA31pph7YOFzSAPAIu9zBaDf4y45ruIhU0+40SD0g/vLUJ7qimS2NoWqjMLV1VnwcOzEEMoNfFwCtJp11/tE55yrT/tlaOaf/te6EbxJXo5rPn3UsJ+BGfgL3hd5/fnKrokdT+gM4fx1cJodd0sUuGlZ9NWiLxeKbtY=
+	t=1773453075; cv=none; b=SiqyKmDXOboVPvwDc80hXfoKH1gStzI1D8AAG+VKraWI4iIaYT5C63CUPSNcPmrNmitFKNUW4ju/TI9LosdyqZsObQ/zZSZUMpQf9Mp2h1I9h46r8bik+Ge6voNi6xUjJXEtCXe5yLLmbhrhMdWS4qSeushnFz543uYGftwknfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773447857; c=relaxed/simple;
-	bh=WQRXpjIwf6KYkSpJNf4xnZTekqBOFUxWV+yK0mOoxb8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IuXgEA8LGhFGAY716oX5be948llbvXznJxvd45NbEuNc0+F6rONKtXKYfWsPqkyhToOiDU0x9i09RVRYOv1NEaLi90l2V7mzYTW5u5is/EJ21nH6vc8euzuipTFjZN/qNJMlKrtJJbLKBCgHsYrSpZkuemFfRjcR4XX5iP4fVxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i0nggihj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773453075; c=relaxed/simple;
+	bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Eu0hCfr6lvBLIygmvaohQNKzXTPFGO0SW4mHsVqWSoDFUfWf0/Z2z58Z7UdBfCbKPGN9iYhJ9D2b79e6ozQ1qVA2f3oQoyES7ep5Jq/ohLruorTnt07wLglOeoLWMw9xnrF/RqI/V1ul8kJ9QDJ5ZDPOooedWUDvrC1/6vwIiJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iq/yVHNw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i0nggihj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088E7C19421;
-	Sat, 14 Mar 2026 00:24:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iq/yVHNw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8D7C19421;
+	Sat, 14 Mar 2026 01:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773447856;
-	bh=WQRXpjIwf6KYkSpJNf4xnZTekqBOFUxWV+yK0mOoxb8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i0nggihjXmXTKML8sut6lB5srcFWHmMKN3tSb0vnbiKDcMNVltZU2CmPxcxFrG3o3
-	 nQrXA1wQ5YuTbmhgcTPNORS+379TzqDGm/7lSrQ1+WOrB6YJhRCIjKA7zUUcBgPch0
-	 EYChM4p2xmMbNvogwcdaYFHJ9nHAZ56sOZLrj4G67jwJtQWWuJzeM6LK+rXxZtPvPL
-	 7hsCy1/fez24lkAmdr6y8xZG7yqBOpidyJ0h37yL3W7fcEPRQk675mEsDmHjbA8Xn+
-	 hN93oY8bX37rGdXAEkgAe3QI7f5zrI2DHLm42gIk1V7HmETARtzUHgwH52MHcPBfBz
-	 VF6ZMYEbGWSgg==
-Date: Fri, 13 Mar 2026 18:24:12 -0600
-From: Keith Busch <kbusch@kernel.org>
-To: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Dmitry Ilvokhin <d@ilvokhin.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net, dev@openvswitch.org,
-	Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>,
-	dri-devel@lists.freedesktop.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Len Brown <lenb@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	linaro-mm-sig@lists.linaro.org, Eddie James <eajames@linux.ibm.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>, amd-gfx@lists.freedesktop.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	linux-i2c@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-spi@vger.kernel.org,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org, Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/15] tracepoint: Add trace_invoke_##name() API
-Message-ID: <abSqrJ1J59RQC47U@kbusch-mbp>
-References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
- <20260312150523.2054552-2-vineeth@bitbyteword.org>
- <20260312111255.7925b4e2@gandalf.local.home>
- <CAO7JXPhg-Etspj9YahZrq8cmZ2K6AGWDrMnHO+oD96P_SmOLBw@mail.gmail.com>
- <20260312155326.GB1282955@noisy.programming.kicks-ass.net>
- <CAO7JXPiu8-LE_gG001_GQLoGVYakPdzmH2SXLqfzJjEUxbn1Rw@mail.gmail.com>
+	s=k20201202; t=1773453074;
+	bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=Iq/yVHNwD1Mmoqiug1CJEadZQHJ9Svs2liFTXk4wPeK94rC6ky+e5m9SGXh/LaSIS
+	 gEk++QsSkksTQvsYu1Klsm1g0aAbdmMdwQlYZR5zxM6pi3Ny0m6f/eUDrDlY9J9NDp
+	 iMX2X/32uCUeegbqBxwQ13RXVHs0Tpgf+bc3j40Wqq4t6UEmQf2LBV1ngh3LWifOUq
+	 CSEXfudPSwDvZjL/yEzHJS+QQwdlMSbE/OIQMLiAF3DOYLDe00d3e95PD8vpOTgvFF
+	 JwvXRN5gm9cUv/Deepc9AigUGJVuxL+4iq2D52xO5Ed0vWMYzwHSkvhOdXBvvMyQik
+	 nkMfD3+5kO2Xg==
+From: Mark Brown <broonie@kernel.org>
+To: cl634@andestech.com, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Pei Xiao <xiaopei01@kylinos.cn>
+In-Reply-To: <15a71241affc25108a97d40d9d3dd1bc3d2d69ed.1773282905.git.xiaopei01@kylinos.cn>
+References: <15a71241affc25108a97d40d9d3dd1bc3d2d69ed.1773282905.git.xiaopei01@kylinos.cn>
+Subject: Re: [PATCH v3] spi: atcspi200: fix mutex initialization order
+Message-Id: <177345303954.139979.11258013600538771788.b4-ty@kernel.org>
+Date: Sat, 14 Mar 2026 01:50:39 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAO7JXPiu8-LE_gG001_GQLoGVYakPdzmH2SXLqfzJjEUxbn1Rw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-046bd
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=cpVrVzt8vQlp4zt6OgvL8swXdh5uXFGDsSmGTijUevQ=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBptL8QMHOd/8W2c4v4jR8cM9Rl1NVJEz76A7X8b
+ eDWmuVcRWCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabS/EAAKCRAk1otyXVSH
+ 0FaEB/449zCbdbooTM8wxK88+jZQIp+26FKP53rpybDjB8c+RcVmhMMVmwDQ7ORmfoPg0+wM1Eg
+ 75uqRFuDB087JIMhoeAKkAATaXenm+/0NhYWwAhLi5eaCFbFMdQVZxw7hyARPiPjsSQy4ZpmuiN
+ 7dcuW9dzSbY73X97PAVKyZdMNrkhmW11pUXcvJ8hhQKfkfRb8ALKUQvU+OTj2PID336KWv0KD7v
+ 9KuhELl6A5uWUD6XUOSIJJBvUq0rQsIV2Ay/erFQEel7G474gC+ithcB+U6kCtWo8u5rpJAhRzN
+ oLsxsla0LlFR9hS2n9Jimh2uqnvQmq0Ia/izDKwvmXd8S5QV
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Thu, Mar 12, 2026 at 12:05:37PM -0400, Vineeth Remanan Pillai wrote:
-> On Thu, Mar 12, 2026 at 11:53 AM Peter Zijlstra <peterz@infradead.org> wrote:
-> >
-> > That seems like an unreasonable waste of energy. You could've had claude
-> > write a Coccinelle script for you and saved a ton of tokens.
-> 
-> Yeah true, Steve also mentioned this to me offline. Haven't used
-> Coccinelle before, but now I know :-)
+On Thu, 12 Mar 2026 10:47:55 +0800, Pei Xiao wrote:
+> spi: atcspi200: fix mutex initialization order
 
-[+ Chris Mason]
+Applied to
 
-At the risk of creating a distraction...
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-This discussion got me thinking the right skill loaded should have the
-AI implicitly use coccinelle to generate the patchset rather than do it
-by hand. You could prompt with simple language for a pattern
-substitution rather than explicitly request coccinelle, and it should
-generate a patch set using a script rather than spending tokens on doing
-it "by hand".
+Thanks!
 
-I sent such a "skill" to Chris' kernel "review-prompts":
+[1/1] spi: atcspi200: fix mutex initialization order
+      https://git.kernel.org/broonie/misc/c/869d5b4b2a80
 
-  https://github.com/masoncl/review-prompts/pull/35
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-I used patch one from this series as the starting point and let the AI
-figure the rest out. The result actually found additional patterns that
-could take advantage of the optimisation that this series did not
-include. The resulting kernel tree that the above github pull request
-references cost 2.8k tokens to create with the skill.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

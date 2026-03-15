@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E9F274FEB;
-	Mon, 16 Mar 2026 01:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672D02DEA8C;
+	Mon, 16 Mar 2026 01:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773625073; cv=none; b=PaaxNYxk8pav1udthhN7tvYsemcX1Uwi1SzqOJpPdqnG3snbntFdd/v2zElKhQr4Vw/oUAVzBMH3DxLb5KagGvNxQa+4mkYyIcGdCXSKUTbJiRQ0z3GHx0shP+XyAlz84GpY1olK8pKiCDweJfFu72713/tya63gUJ0B/sUDDtA=
+	t=1773625083; cv=none; b=Lg7XLfLLR9W6B4IGbezkkcajglpc6T1Cwlewg7hHIWk3Ozyq0YVpkUT+5khiyoPKSXcU4IhOKeciGnwC2uZZHe0w/CPrsQw3LwkqAFDm82MAebetbwjnT8X8Qv/8usxpSowHgOOwdCz3AcO5cpv44i0QqS9pe+ud1dSrDrZJYrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773625073; c=relaxed/simple;
-	bh=Glq6+9XIxCd/jbXJKc9VoKiZnzvS4fGwihV1NGcUWkM=;
+	s=arc-20240116; t=1773625083; c=relaxed/simple;
+	bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DwMD9BpxL3SnyEcPqFOQ0R1lheUoELMnEHHOMX6TtOrGZnSa2WOVHslOdO7p5ziFPxybcD2cYSv39riU+R45JT5HnaVIQoUiA5GQBvnZHEnswB0wum8pJ+yMHpY8LTwfyHjmMmX7xtVX5K/bKTpeXDBFDf6UX5jwUzeh+aS4WKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgxra6gd; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=uBq6sC3IbhG6blCVW7QnPbbCfuaYmFD5SetxkKQKnk7eBwTTPeL22Bi/FazI1Cn5u/UhFKVtT9s57hdPaYsNKxf7TQc82bACBRGQEsN23t+mTCGCm37L90rrCYZQEpQRMplu9WnsW+yVBvvBieQ/a4LlOQ8x5sW94e7UMA7wrSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZZWERnP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgxra6gd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA15C2BCAF;
-	Mon, 16 Mar 2026 01:37:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZZWERnP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D990C2BCB6;
+	Mon, 16 Mar 2026 01:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773625073;
-	bh=Glq6+9XIxCd/jbXJKc9VoKiZnzvS4fGwihV1NGcUWkM=;
+	s=k20201202; t=1773625083;
+	bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=sgxra6gdshGQIKJe0znZKli2r9Lgi8D+0zFGpdmTnkm3rgG+eMMyqzO0Svd1wLtx5
-	 9jjIHnyRdOMOygmOeqUka9Kf87umnBfX9mRJTT1VHtbuHvFDXf2degfV98LHrgVXD2
-	 SThO78HzeEH9J72DOUt65atgzarcqh1JjW5zRdqbz5+q17mkS3zNuXZDUhuFz7WJ28
-	 8XdHvychqYRGPy5plp/4SNOEYwH7EoI6sglSuwvM2IL7ORYRRuilvZi0E21nR0nbId
-	 KCVrpv8eDKyYx2IvkDBUV6AsryPfxB3NfyiSbo67KtK5fI4cio6ajyjxTT+zCnHzao
-	 Akq4V43g9hbhA==
+	b=AZZWERnPCexOjD3/N6/LKCPNZ+r/wZCMKFiip7tIBYKzCPg5/90oTiTEoPfS1Epjj
+	 zbjSBgrE/D6O9iJCHNrZjdqSbFTTG2xMXXVbpb22Ny9jSA6/ifUzIdG8EVZ9xTrJhN
+	 8qyaShZNnfocDF0Bat+iuE3fozRIFtZ9sCZwAqYKtXHMNFsvu09lG0u6+L4kBaH0m5
+	 cEnJRlmffzupXReYUo8dlwZUuxQPjtNbx6hrYl8LC4jRIF9KpD+Pgmaf2zuT9IxtCL
+	 PbddZt02bi/Glt9Obs5L6Ek/BEoojrRz34kvOtEJQ3JA5dqjjc4aIR6WswHpI76tE2
+	 1i7u8uZRGvFTg==
 From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- xiaopeitux@foxmail.com, CL Wang <cl634@andestech.com>
-Cc: kernel test robot <lkp@intel.com>, Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <20260303024737.1791196-1-cl634@andestech.com>
-References: <20260303024737.1791196-1-cl634@andestech.com>
-Subject: Re: [PATCH] spi: atcspi200: Handle invalid buswidth and fix
- compiler warning
-Message-Id: <177352554518.149922.6765955948112155408.b4-ty@kernel.org>
-Date: Sat, 14 Mar 2026 21:59:05 +0000
+To: Sunny Luo <sunny.luo@amlogic.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, Felix Gu <ustc.gu@gmail.com>
+Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260308-spisg-v1-1-2cace5cafc24@gmail.com>
+References: <20260308-spisg-v1-1-2cace5cafc24@gmail.com>
+Subject: Re: [PATCH] spi: amlogic-spisg: Fix memory leak in
+ aml_spisg_probe()
+Message-Id: <177361914653.162791.17263190036268237449.b4-ty@kernel.org>
+Date: Sun, 15 Mar 2026 23:59:06 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,20 +46,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1138; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Glq6+9XIxCd/jbXJKc9VoKiZnzvS4fGwihV1NGcUWkM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpt17ucVvsa2eBiLUMXho+NHDJcgYta1MkJVCTD
- FgoKQflSLCJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabde7gAKCRAk1otyXVSH
- 0OwDB/9ZooaQ5Ju/wBd0u9c8C54OdBroO70INLKApJ22A/HXT7J7ekvn1Xaww7Ph2jC88+Oh8KP
- PYWniO2+Xql5Rs0slsPT8c5O/NqFiYtETpyUsGcj+B7Q+//SkUugwS2aaJ87yMIMt7y+O4/sal5
- vqnxwfSUX4dBwhNf+2qIQR74Yh1X19CTDwFt3aeBBPM6a1lm7Uz5+TMAzmUkKrMIzakOm9dJz4o
- afAedyOcoSTUknFSXWatSt2DaaZQxCSnaEesuR10yuYbAOltZjJDQiSJhCjTvYnvHTtjseExehU
- jSbPJn8zgLKbCDtsI1Y61gjmSdicDq1jG2P+YxSq39nhapXv
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ZtzQFmnCAD6t2ycuWdAVnZ+vHyzhsgiuLsjiGiqGaPE=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpt174v79gvROVz2tFRcLX3taQ8ONQQkzfXz74y
+ IWMhyBceCeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabde+AAKCRAk1otyXVSH
+ 0PoyB/0bPz2aVcxdIpmRoDC6AR6uEe836PhOqcJEbi9qY7B/INxG8LY5j5bKH+XLa0jwoRKtzN8
+ xYmG8PRC+lQGDUri950SghPEYj+BJ0Zx6MmysJPYKMc9h32fy+w5uT5IpDVclDik79uTrVwDruN
+ zFKDXTWCMy3PHPwLgdYOQVA67kmO6ifVFZGpemO3jWqQLmeIy26RYYkOgFSVlhnRee9BVg4fL3Y
+ nK9qWpOibESY62qrNhqvPxhdztyuoXErMNv1ZwyAwyMraJl8xm13piHdfCmS3Uw+U64gu/v2g58
+ cia+QLXowSJSuNe3dngtrxWI4MpyXqNVhqkLQSHgYE7K/gMp
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 03 Mar 2026 10:47:37 +0800, CL Wang wrote:
-> spi: atcspi200: Handle invalid buswidth and fix compiler warning
+On Sun, 08 Mar 2026 14:49:21 +0800, Felix Gu wrote:
+> spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
 
 Applied to
 
@@ -66,8 +67,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: atcspi200: Handle invalid buswidth and fix compiler warning
-      https://git.kernel.org/broonie/misc/c/f879365c5bb2
+[1/1] spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
+      https://git.kernel.org/broonie/spi/c/b8db95529979
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

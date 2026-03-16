@@ -1,143 +1,64 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A02C33CEAA
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 17:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E86031E822
+	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 18:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773683961; cv=none; b=f4/IGRAbE83FaxJsDOhilgHxdSBvRrnseUhGx1TFLu7yDxWb5OH1mwxVGFw25CXPnHyu/jJ86ezzlTmqvrhfOsTvb49zxx1Q4lGvEBD+VGCmZEZ3t7dq/rn9OTyM2KFzpE3PNpHMoJz+tFs3Q2N58l22J82DbC3pO3cuPHPqatw=
+	t=1773684029; cv=none; b=HzTC3/hzsyDFHLsAkNO2LnlV/ARkvc/cc3uobSjr1LReRvsfPWrtguV2iRO31Srqz/cdBtIBCXCfgxo/2YkyM4DnwgC5UCQXv3HrfQwKUJ86phW2zNzIMZgKwhF/M44DufN6i8eFghhUtQQH/lUvAHg6hYqeRwalNx9xSljO3sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773683961; c=relaxed/simple;
-	bh=rOGn258mN84P9DbXEBwnZP1jjIPNLbWnCQVmDOu/lTE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UIqg4fvxch7UnKodryoq0QygXIL+55Yn9ICZXwGWOZrMLGmjS36jTh+kCuFxrAzs7EqzlT0PKkBHqs56ut5iocs3QVvlluW9yj0BFw1V92lF8puL9qU40Q/B/upVLhpr63K8WPZyJzYRkCcqVMNuMmfBRp9eNi9YIze6Ll4ajtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w2CDh-0001qZ-0X; Mon, 16 Mar 2026 18:59:13 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w2CDg-000brV-2G;
-	Mon, 16 Mar 2026 18:59:12 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3B403505314;
-	Mon, 16 Mar 2026 17:59:12 +0000 (UTC)
-Date: Mon, 16 Mar 2026 18:59:12 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-Message-ID: <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
- <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
- <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
- <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
- <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
+	s=arc-20240116; t=1773684029; c=relaxed/simple;
+	bh=Hov+x4qj1xVZLlZwcRh+T5IUERH7vHciRAYrjBF0u3U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=luEAZ+/FrcUd2D1tpPjLvwfyt2GiyAlcKoqr7uCa5pXk62aSIksDixnoLRMlX2sJT3zMtjSi9K+ydM8BJ7xd+Meyduh2hx9qjJGpoRNlTlkKm4l89XkSaEyicLOPUPUboqP4SXOhRBylDxTEsgHjC5FP1u4unGDZLltJHLWqp2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WACYKzne; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WACYKzne"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5F2C2BC9E;
+	Mon, 16 Mar 2026 18:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773684029;
+	bh=Hov+x4qj1xVZLlZwcRh+T5IUERH7vHciRAYrjBF0u3U=;
+	h=Subject:From:Date:To:From;
+	b=WACYKznesmiVPJFJu9UnkD/LfwyvIfmjdeBW80Zf7PzYO0MwpaWszkslJimxqsopK
+	 anW4WpsIAh/cTEht9I9+BYct1b9ahDdbvFP7JyoOCGoG5VFimhyjQIRxvBbbpW+J6e
+	 hSactjuD9rr+uLrHoDEgyif0b1dQO7v1+AMfxIefYcnAtDRdNrq777LfvKLXuEgovp
+	 e4O+lSfVH2XVdQReRUEGlfRLJDm2YkExFfUNs1SkkRub7OEg2yaCivqRrjzt7rN9pN
+	 w5u7Cf+QHEucpND9fnGjET9jc9xCqcHMJVZ7959xuudxzahMfYZ/umxv1+wMHOUY6l
+	 Z1VWQts/2K3Yw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42E9D3808200;
+	Mon, 16 Mar 2026 18:00:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pnuz3hhbybrsc2sd"
-Content-Disposition: inline
-In-Reply-To: <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177368402185.2784985.18325794505840235320.git-patchwork-summary@kernel.org>
+Date: Mon, 16 Mar 2026 18:00:21 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Patch: [v1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
+  Submitter: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1067333
+  Lore link: https://lore.kernel.org/r/20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com
 
 
---pnuz3hhbybrsc2sd
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-MIME-Version: 1.0
+Total patches: 1
 
-On 16.03.2026 17:37:45, Mark Brown wrote:
-> On Mon, Mar 16, 2026 at 05:49:48PM +0100, Marc Kleine-Budde wrote:
-> > On 16.03.2026 14:39:03, Mark Brown wrote:
-> > > On Mon, Mar 16, 2026 at 09:39:05AM +0100, Marc Kleine-Budde wrote:
->
-> > > The source of the watermark values appears to be
->
-> > > 	temp =3D readl(fsl_lpspi->base + IMX7ULP_PARAM);
-> > > 	fsl_lpspi->txfifosize =3D 1 << (temp & 0x0f);
-> > > 	fsl_lpspi->rxfifosize =3D 1 << ((temp >> 8) & 0x0f);
->
-> > > which suggests 4 bits of watermark not 3?  Or at least that something
-> > > isn't joined up somewhere.
->
-> > The param register's default value on the i.MX93 is:
->
-> > | LPSPI1=E2=80=93LPSPI3:  0002_0303h
-> > | LPSPI4:         0003_0303h
-> > | LPSPI5=E2=80=93LPSPI8:  0002_0303h
->
-> > This means a RX/TX-FIFO size of 1 << 3 =3D=3D 8.
->
-> Right, so the parsing code is using the wrong mask to extract the width
-> here but with actual values it's fine.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-No, the parsing code is correct, the width of the fields are 8 bits
-(datasheet of all supported SoCs), but the values are "2" (i.MX7ulp,
-S32G2) resp. "3" (i.MX93).
 
-> > We can increase the the FCR_RXWATER and FCR_TXWATER to be 8 bits wide,
-> > the rest of the register is reserved.
->
-> It seems safer to restrict the mask used to extract the FIFO sizes, that
-> way we don't trample over any bits that get defined in future and people
-> comparing with the datasheet aren't confused.
-
-The width of the watermark fields are "2" (i.MX7ulp, S32G2) resp. "3"
-(i.MX93).
-
-In fsl_lpspi_setup_transfer() the driver restricts the watermark to:
-
-| fsl_lpspi->watermark =3D min(fsl_lpspi->txfifosize, t->len);
-
-and writes
-
-| fsl_lpspi->watermark >> 1
-
-into the watermark fields. So using the 3 bit mask in FIELD_PREP should
-not be a problem, even on the IP cores with just 2 bit wide mask.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---pnuz3hhbybrsc2sd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabhE7QAKCRDMOmT6rpmt
-0nRRAP9uYM30z4lH6sLjEkXxcccQZBi+ZYHFS4PJ9/AbmENj3AD/XuqLDaX0dW/d
-UTyFC3EnRi6xM/xkBuUH1xZ48W6EhAs=
-=qLD+
------END PGP SIGNATURE-----
-
---pnuz3hhbybrsc2sd--

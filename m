@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF87733F5B9;
-	Mon, 16 Mar 2026 17:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203DE3264ED;
+	Mon, 16 Mar 2026 17:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773683579; cv=none; b=h/bDB1uhc9J04rn+Bt4V8n+p9Lrc73YJP8mihta78ZFQ/c81z3hD+fGXUVJEOoJfe7jC3u0foviOWQFHOkCms6tdqMp7yU1AtplPUteKPxTTIjGsCz95JlHp1uWIpskfwYp4mayrX3VtfR3/9F54muHg4CBAhGlEv3E3xn0+TQM=
+	t=1773683582; cv=none; b=AP5LDpua9cZb3TLDxnDMWrgV7CkAo/Fj5VGpUjxhPYP72tmxz07ZCfZ1O1bR5tlLBxaz6sp2iznbxHakqs47zOeZqZ8pQAlidKzAhS3ZfNRDSoDN5FpHgdeyiCe5xOmu+n0puhUhNSoXODqU3ePfu1aV3rnhvZ3qppR2nGfv9qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773683579; c=relaxed/simple;
-	bh=getjwqKgNmfq6BzmmTQiHcZudhJOJnw/iMntCINEbFw=;
+	s=arc-20240116; t=1773683582; c=relaxed/simple;
+	bh=u6U72LK80q94E6wcmoifhQSRmxvgkHJMXXRBRH+wuGw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jfLvx4zC0ink7MiZ5o5672FpmCAgvOHlgNwq7FpYTmgNkpxhdxha4hOE4Ow3BLGJu+GocPe1fp0kjqeb1PchgQsVwGVgbSrcqx0+1Sku9/knyImmxk3guXjdVpleXW2q1fMoaqBLykvPmlXlHtqfTZ+5sI0BMs5DpBlrRGgQoZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ViS4wNTa; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=XUqXMgrzibKZrhW9SB3NBUNbYunjrh8gKTFnqU0PaI7okznePpu2McklDfzJnNmJExb8CVQnzlNtIeblxd/yMaMvA/0UuFDUpEj5yYkJTVtyQOZijj92czQKCEAl/wgSUbq1WeNA9TNjV1pNFS1Yphx78MhiOZdIZpBVXs6JmPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6U8wUd8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ViS4wNTa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D651C2BC87;
-	Mon, 16 Mar 2026 17:52:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6U8wUd8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E73C19425;
+	Mon, 16 Mar 2026 17:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773683578;
-	bh=getjwqKgNmfq6BzmmTQiHcZudhJOJnw/iMntCINEbFw=;
+	s=k20201202; t=1773683581;
+	bh=u6U72LK80q94E6wcmoifhQSRmxvgkHJMXXRBRH+wuGw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ViS4wNTa1ZHgMdsTM50AyxsY2fwxoCk5PMsa+Zqn0xkpHkUzzBBa4yil+gLgXOHOk
-	 t4nXT4JBUF3PXhQe9Y75B0GgLZGpdpe2r7EOwFyhnMAOI5sGBCE6dTKlH1zec7AQPL
-	 AICnAywmBQ9VHXewPtV9YYTwyuW2oVjB9bl7pUl1Xo0vx08NhurgWxNoKIjPGsaYOJ
-	 kQgqCiewgYUjbHy6RtpDJ2mBLeDE8GrPQC6yJ1fip+3VxmAMnkVE2iCO/UHhq481lD
-	 7llUI3qlacmNf+SbMxD+t5RqnDge1kzNDykr+ZnHhpcTxetJ3pAZT+CERuRnp3bDnY
-	 y50Q3Xzpq2IhQ==
+	b=F6U8wUd8LZZxah+4N4b+GMuY3FMkSeHxFCAXlvkIyFtI3Tuf3YQf5w3tn16iMMJ5W
+	 0Eh7TuNWMLTTqRSc51lBN4dtRaD0S0yUSaLhzWN1tngFzeF8tmEKax7NKgzLxgyiKn
+	 dwyPJWnhG3GRY2Eh0LQ13IGJKctpzKDAc4+oKHSIoZGUpaeOO1HC398dxD6tuE9gP8
+	 ub2jUO2ob6jci308BG0tUgo6V6p9Rx0Ao7SE+u4Wj9nRTZXlhM+lKJXe6EtJ/sArgX
+	 BRqmeyg1lzvOJUoUJAUtfCU7TCOXB+ggLj/hiJ1ksXBaBmEinP/ORrAVvO+7gQfK/t
+	 BepXUR8nxH1lg==
 From: Mark Brown <broonie@kernel.org>
-To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
- Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
- Prasad Bolisetty <pbolisetty@axiado.com>, Harshit Shah <hshah@axiado.com>, 
- Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260302-axiado-v1-1-1132819f1cb7@gmail.com>
-References: <20260302-axiado-v1-1-1132819f1cb7@gmail.com>
-Subject: Re: [PATCH] spi: axiado: Fix double-free in ax_spi_probe()
-Message-Id: <177368357691.147197.14162826062674228144.b4-ty@kernel.org>
-Date: Mon, 16 Mar 2026 17:52:56 +0000
+To: Jonathan Marek <jonathan@marek.ca>, konrad.dybcio@oss.qualcomm.com, 
+ Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
+Cc: kernel@quicinc.com, linux-arm-msm@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com, 
+ bjorande@quicinc.com, mukesh.savaliya@oss.qualcomm.com, 
+ praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
+In-Reply-To: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+References: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+Subject: Re: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change
+ detection
+Message-Id: <177368357914.147197.2736857067753744270.b4-ty@kernel.org>
+Date: Mon, 16 Mar 2026 17:52:59 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,13 +50,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-c239c
 
-On Mon, 02 Mar 2026 01:08:40 +0800, Felix Gu wrote:
-> ctlr is allocated using devm_spi_alloc_host(), which automatically
-> handles reference counting via the devm framework.
+On Mon, 16 Mar 2026 18:53:31 +0530, Maramaina Naresh wrote:
+> setup_fifo_params computes mode_changed from spi->mode flags but tests
+> it against SE_SPI_CPHA and SE_SPI_CPOL, which are register offsets,
+> not SPI mode bits. This causes CPHA and CPOL updates to be skipped
+> on mode switches, leaving the controller with stale clock phase
+> and polarity settings.
 > 
-> Calling spi_controller_put() manually in the probe error path is
-> redundant and results in a double-free.
-> 
+> Fix this by using SPI_CPHA and SPI_CPOL to detect mode changes before
+> updating the corresponding registers.
 > 
 > [...]
 
@@ -64,8 +68,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: axiado: Fix double-free in ax_spi_probe()
-      https://git.kernel.org/broonie/misc/c/7fc5e2f5603c
+[1/1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
+      https://git.kernel.org/broonie/misc/c/ba3402f6c85b
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

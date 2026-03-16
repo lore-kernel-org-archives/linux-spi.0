@@ -1,131 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18923EA8A;
-	Mon, 16 Mar 2026 08:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD3355F48
+	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 08:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773650206; cv=none; b=j8g2SVBNH2PnzfnKUxLcoFEzgntUoA7nMJ1fKdicWHkaGfjB2Ca8dQvHiFZKwlCWQIEsD+TgZQlAKukdnHvT0hlo4X9Ma87ikJePAnEVMTnMwCr8JJ84xWReOl8pju0BKYCV1RYDtFWZZC6Pi7hlWq+pbMG0mFwsXc3mlO6AodY=
+	t=1773650398; cv=none; b=EX9l37BIJn1sPwipUPSwvXROxAcSoX5JsjQJlYuHvKuSnR1baNV1HjekeqgPDxYzYifyuVUGY/V7W4xFrQkIgW8VrE87exquJWhcV6ZZusk5czMlWfy55r9+0VGJHpk5tyvivNcEAw6igbyRS2rsjAq/1SLsIqwGLQcWMsuw3as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773650206; c=relaxed/simple;
-	bh=j5XqXvo+8WUpL16FpwNBiVLr3/TQXp1vN1Ye/sajw3A=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ohFhKJ/bqwzkzJGuhedi73hadmZLb3HbA0SOrbQc6kK31SN9qQybdJ78geTW0nVvf1ZAg544G8YZIQ/iAlK7jIsh5hxht6iZMOY5F/rCtv8FPE4ms7zk9lC1k2BPqUgreXO6YckWPKD/nMCBaMLt0TUEw3zhLj0FeQzLOCOFSto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mvqu9nka; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mvqu9nka"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48567C19421;
-	Mon, 16 Mar 2026 08:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773650206;
-	bh=j5XqXvo+8WUpL16FpwNBiVLr3/TQXp1vN1Ye/sajw3A=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Mvqu9nkacTl7zejRGMu7LhdYgEzQ5ryFtnj1tNktDMdj2YMHBS++PwgN5HR9DoS2Y
-	 f8wa0H08sEmZWGQXvsapw9Lpq1wzFQw/XcjVKVbjom+nVrQPlWwL222d4mWMN7twt+
-	 odsmaMgcZSNShICI2WdKoVkvWBOEQkY4sD93V3qynQsqziG1dbKvyLYtR13VJQg90k
-	 Hair4ySqPWkH4GUVAT2+HBcBPzebmVSXWsKDsLbn8GdYPPIYYkU01mvAX1S61tjRPF
-	 /VLLk08v3LKHSdyfMhOhSnc7TnuIzo6MbvgwhYkujNHNR7Ehc07nlRkNj41vG3iQNO
-	 dnodMBQyt51jw==
-Message-ID: <cde8671f-bb38-41d8-b27f-c54aa7242899@kernel.org>
-Date: Mon, 16 Mar 2026 09:36:42 +0100
+	s=arc-20240116; t=1773650398; c=relaxed/simple;
+	bh=xfuZBuTtOxab+LBEJpXSlzw9L/LLXDkIoyaxaIUuh+E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=U2M8M1Xu4GQsxVzUJ2Za8qAht1IDB2GSJj0KrWWmHphC+gawI5UBL1PypJ44uLgtzY1bLrDJD6fEvrv1lfOwE0ANCnZMMOYHISpx8eCHeDghAeBygsKfUFDaRNPIESPGWZx6T+GXTYdKH3xtXH1k0yaeKXHDI0nQRYTMVHKZbI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w23UG-0005Rz-6q; Mon, 16 Mar 2026 09:39:44 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w23UF-000XVK-30;
+	Mon, 16 Mar 2026 09:39:43 +0100
+Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 931E65049C2;
+	Mon, 16 Mar 2026 08:39:43 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Mon, 16 Mar 2026 09:39:06 +0100
+Subject: [PATCH spi-next 05/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_setup_transfer(): remove useless spi_transfer NULL pointer check
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
- spi-miso-mosi-loopback
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org
-References: <20260316073547.11437-1-francesco@dolcini.it>
- <20260316073547.11437-2-francesco@dolcini.it>
- <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260316-spi-fsl-lpspi-cleanups-v1-5-1b695607702d@pengutronix.de>
+References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+In-Reply-To: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
+ Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15-dev-5154a
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1149; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=xfuZBuTtOxab+LBEJpXSlzw9L/LLXDkIoyaxaIUuh+E=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcfvCgVvS2qe+FMmft38e2Usa33FNy580+w8K7niaz7
+ sV4nxf83VHKwiDGxSArpsiy9McJRYFAh9LelwmTYOawMoEMYeDiFICJ8GUwMjzI7jROXv3Ku/Gb
+ T+a+YnMZu5jObYYvOGwXbFdTqP6VsovhD/fk1V/mzdzAncD893DJ8UJRDhXei5oHJ0mLCLe8v58
+ 7jw8A
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-On 16/03/2026 09:35, Krzysztof Kozlowski wrote:
-> On 16/03/2026 08:35, Francesco Dolcini wrote:
->> From: Francesco Dolcini <francesco.dolcini@toradex.com>
->>
->> Add a compatible to describe a single wire loopback between SPI MISO and
->> MOSI signals.
->>
->> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
->> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
->> ---
->>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
->> index a482aeadcd44..2cb973c157f6 100644
->> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
->> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
->> @@ -432,6 +432,8 @@ properties:
->>            - socionext,uniphier-smpctrl
->>              # SparkFun Qwiic Joystick (COM-15168) with i2c interface
->>            - sparkfun,qwiic-joystick
->> +            # Single wire loopback between SPI MISO and MOSI signals
->> +          - spi-miso-mosi-loopback
-> 
-> If you decided to go against my approach, then at least document it in
-> proper place - incomplete-devices - so this won't be ever used in DTS.
->
+fsl_lpspi_setup_transfer() is either called via:
 
-... and then you will notice existing linux,spi-loopback-test, so
-explain the differences and why spi-loopback-test cannot be used for
-your loopback test.
+| fsl_lpspi_prepare_message()
+| -> fsl_lpspi_setup_transfer()
 
-Best regards,
-Krzysztof
+or
+
+| -> spi_transfer_one_message()
+| -> controller->transfer_one == fsl_lpspi_transfer_one()
+| -> fsl_lpspi_setup_transfer()
+
+The first call path already has a spi_transfer NULL pointer check, the
+second one explicitly iterates over all spi_transfer of the spi_message.
+
+Simplify the code by removing the useless NULL pointer check.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/spi/spi-fsl-lpspi.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 139d6573a013..1da2084f582d 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -476,9 +476,6 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+ 	struct fsl_lpspi_data *fsl_lpspi =
+ 				spi_controller_get_devdata(spi->controller);
+ 
+-	if (t == NULL)
+-		return -EINVAL;
+-
+ 	fsl_lpspi->config.mode = spi->mode;
+ 	fsl_lpspi->config.bpw = t->bits_per_word;
+ 	fsl_lpspi->config.speed_hz = t->speed_hz;
+
+-- 
+2.51.0
+

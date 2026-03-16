@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A31351C0F;
-	Mon, 16 Mar 2026 08:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18923EA8A;
+	Mon, 16 Mar 2026 08:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773650140; cv=none; b=A8WlPGe2NKYiqmGPrlDXM1dyrbUmViY/J+DC/MUW8zPuOoZs0I1+M86ssl0ROebnmES27Gl6Nka6nC9foYFPhjlNdQAX53UlBIqQs26CGswZg4Q44qC2Kgc6OWg6wCx8fxfSX2GXob8XbqaK47UOjD/krBymh/Pbr7j6b4zpkrY=
+	t=1773650206; cv=none; b=j8g2SVBNH2PnzfnKUxLcoFEzgntUoA7nMJ1fKdicWHkaGfjB2Ca8dQvHiFZKwlCWQIEsD+TgZQlAKukdnHvT0hlo4X9Ma87ikJePAnEVMTnMwCr8JJ84xWReOl8pju0BKYCV1RYDtFWZZC6Pi7hlWq+pbMG0mFwsXc3mlO6AodY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773650140; c=relaxed/simple;
-	bh=eAe3vFiVRXuKk/3ha0qkCgL/xapdr+gWemxLChmfyEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PInDv0kUmdMi+IWs6xhZewK0tAjvb6M0YVagIkbpAbXsdLXtckEJgLqT9rWkJ2WRx15MTJQFPZzOCP9CbSFZuQc5TFEUvWrjR9XXeJhFsk/t2iHT0TrzkIJpqK6++HTSRCR/mJX2ykigNnwKzpD/zxo+9ytKKcTPN5DT2exPDKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YutBcPFw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773650206; c=relaxed/simple;
+	bh=j5XqXvo+8WUpL16FpwNBiVLr3/TQXp1vN1Ye/sajw3A=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ohFhKJ/bqwzkzJGuhedi73hadmZLb3HbA0SOrbQc6kK31SN9qQybdJ78geTW0nVvf1ZAg544G8YZIQ/iAlK7jIsh5hxht6iZMOY5F/rCtv8FPE4ms7zk9lC1k2BPqUgreXO6YckWPKD/nMCBaMLt0TUEw3zhLj0FeQzLOCOFSto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mvqu9nka; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YutBcPFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF79C19425;
-	Mon, 16 Mar 2026 08:35:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mvqu9nka"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48567C19421;
+	Mon, 16 Mar 2026 08:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773650140;
-	bh=eAe3vFiVRXuKk/3ha0qkCgL/xapdr+gWemxLChmfyEQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YutBcPFwm5ve5/s79es72nYp0MsWCNtrwYsiwZxE/ggOuW2x1dI5n2cA7iTQIskzd
-	 zFgDl77a73MA+isNKsYN/n4Q1g9f6qayK7LLiuBIAI8qZ/RLUJAt875HYXSaFw5fK7
-	 mYMX0RHT5bXyw/w6iQH8iBqLS5YLZt9F7g0PdNhRYIvlfchfSXvjyG//7sMrrc2ilE
-	 VAv2r4ujffJC2C4Hm9a4nes2ujx+Ibn30abDBqPmjKG18+t4Egk/ZhRdEg77oIC4GA
-	 zCe3GB3dU7eDD6Ze1RfJ+VbiYb+7sYTLkEdmUaNI0QRWM26U7jgpwfD0YpHdoBKjsu
-	 6VgDQzzKbLcDA==
-Message-ID: <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
-Date: Mon, 16 Mar 2026 09:35:36 +0100
+	s=k20201202; t=1773650206;
+	bh=j5XqXvo+8WUpL16FpwNBiVLr3/TQXp1vN1Ye/sajw3A=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Mvqu9nkacTl7zejRGMu7LhdYgEzQ5ryFtnj1tNktDMdj2YMHBS++PwgN5HR9DoS2Y
+	 f8wa0H08sEmZWGQXvsapw9Lpq1wzFQw/XcjVKVbjom+nVrQPlWwL222d4mWMN7twt+
+	 odsmaMgcZSNShICI2WdKoVkvWBOEQkY4sD93V3qynQsqziG1dbKvyLYtR13VJQg90k
+	 Hair4ySqPWkH4GUVAT2+HBcBPzebmVSXWsKDsLbn8GdYPPIYYkU01mvAX1S61tjRPF
+	 /VLLk08v3LKHSdyfMhOhSnc7TnuIzo6MbvgwhYkujNHNR7Ehc07nlRkNj41vG3iQNO
+	 dnodMBQyt51jw==
+Message-ID: <cde8671f-bb38-41d8-b27f-c54aa7242899@kernel.org>
+Date: Mon, 16 Mar 2026 09:36:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -37,6 +37,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
  spi-miso-mosi-loopback
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
@@ -45,7 +46,7 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
  linux-spi@vger.kernel.org
 References: <20260316073547.11437-1-francesco@dolcini.it>
  <20260316073547.11437-2-francesco@dolcini.it>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -90,35 +91,41 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260316073547.11437-2-francesco@dolcini.it>
+In-Reply-To: <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/03/2026 08:35, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On 16/03/2026 09:35, Krzysztof Kozlowski wrote:
+> On 16/03/2026 08:35, Francesco Dolcini wrote:
+>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+>>
+>> Add a compatible to describe a single wire loopback between SPI MISO and
+>> MOSI signals.
+>>
+>> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
+>> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+>> ---
+>>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+>> index a482aeadcd44..2cb973c157f6 100644
+>> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+>> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+>> @@ -432,6 +432,8 @@ properties:
+>>            - socionext,uniphier-smpctrl
+>>              # SparkFun Qwiic Joystick (COM-15168) with i2c interface
+>>            - sparkfun,qwiic-joystick
+>> +            # Single wire loopback between SPI MISO and MOSI signals
+>> +          - spi-miso-mosi-loopback
 > 
-> Add a compatible to describe a single wire loopback between SPI MISO and
-> MOSI signals.
-> 
-> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index a482aeadcd44..2cb973c157f6 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -432,6 +432,8 @@ properties:
->            - socionext,uniphier-smpctrl
->              # SparkFun Qwiic Joystick (COM-15168) with i2c interface
->            - sparkfun,qwiic-joystick
-> +            # Single wire loopback between SPI MISO and MOSI signals
-> +          - spi-miso-mosi-loopback
+> If you decided to go against my approach, then at least document it in
+> proper place - incomplete-devices - so this won't be ever used in DTS.
+>
 
-If you decided to go against my approach, then at least document it in
-proper place - incomplete-devices - so this won't be ever used in DTS.
+... and then you will notice existing linux,spi-loopback-test, so
+explain the differences and why spi-loopback-test cannot be used for
+your loopback test.
 
 Best regards,
 Krzysztof

@@ -1,89 +1,124 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D78C3502A5;
-	Mon, 16 Mar 2026 07:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A31351C0F;
+	Mon, 16 Mar 2026 08:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773646568; cv=none; b=tDdoXFT6SG0lcsVXRorTyCdKvyoQAN5HTJT7QU5LysvowsfS+EJaMZFi5MA5zC2MEV8qVWYrBG1br0GIFXrSZ+wQthi4DxcHKTBay4mj8KEsPtMD2Ov6E5yOMg8L2BjYAj5dg7Oay82HKp2hy+IdjipzpAY7qdJ28f8mZZykNsM=
+	t=1773650140; cv=none; b=A8WlPGe2NKYiqmGPrlDXM1dyrbUmViY/J+DC/MUW8zPuOoZs0I1+M86ssl0ROebnmES27Gl6Nka6nC9foYFPhjlNdQAX53UlBIqQs26CGswZg4Q44qC2Kgc6OWg6wCx8fxfSX2GXob8XbqaK47UOjD/krBymh/Pbr7j6b4zpkrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773646568; c=relaxed/simple;
-	bh=2ubS2qnPkPudQEnTuJ3t2t63NV81Kdy+xZzs1jM9VaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ev74A6svLIq/bykpKw3ra9i+pQyZFFbVEsIlLmNzXGAr5lpaEqcOX+6SMiMbWp4YHstdLDJmCrSvRL4uoMjVJ5382jk1+l4BTfIlQsqISntvTpGOEzPdIr6gkA5KfE38p/xNSGM9PDyvbJn1LBTn4NOtI9FqSvkBBUyfqr3Dbgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=LkozeCjE; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1773650140; c=relaxed/simple;
+	bh=eAe3vFiVRXuKk/3ha0qkCgL/xapdr+gWemxLChmfyEQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PInDv0kUmdMi+IWs6xhZewK0tAjvb6M0YVagIkbpAbXsdLXtckEJgLqT9rWkJ2WRx15MTJQFPZzOCP9CbSFZuQc5TFEUvWrjR9XXeJhFsk/t2iHT0TrzkIJpqK6++HTSRCR/mJX2ykigNnwKzpD/zxo+9ytKKcTPN5DT2exPDKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YutBcPFw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="LkozeCjE"
-Received: from francesco-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id C86B520735;
-	Mon, 16 Mar 2026 08:35:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1773646557;
-	bh=jWspq/mVUrwz2X5u/LQpuWjjmowam1smt13kBCpMazw=; h=From:To:Subject;
-	b=LkozeCjEFYbV0XUbpaFaXgbpgzU7jwK/53gftC5UPAUKgwUurlD8HwQSyElgRiGGj
-	 LNb/7crzcX9uBxSBJ0ASwVFV9qRm7tczsMk4l2aMQ9boKuDX/C7W9GzB0SsOh6pJnB
-	 SOQMtVN7ArjqrKbTE7PAS7EvupRCSpJrq8UO8B9dNdgChxycrIw1X/MBgFXr8v4h72
-	 26RUSIUewozGcC5l3dInPnKctafSSV5ctOd4Q09bE67yZqAyw9UIuxd2V1r53vEZSl
-	 0xZQJeW4COnqD6AGITDZ4gYWv1PFS8VSGhQTXfjXk8xW602CMnRQw5OGtcenkDh2W5
-	 zlAcbdjZNcAiA==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH v1 2/2] spi: spidev: Add data loopback OF compatible
-Date: Mon, 16 Mar 2026 08:35:44 +0100
-Message-ID: <20260316073547.11437-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260316073547.11437-1-francesco@dolcini.it>
-References: <20260316073547.11437-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YutBcPFw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF79C19425;
+	Mon, 16 Mar 2026 08:35:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773650140;
+	bh=eAe3vFiVRXuKk/3ha0qkCgL/xapdr+gWemxLChmfyEQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YutBcPFwm5ve5/s79es72nYp0MsWCNtrwYsiwZxE/ggOuW2x1dI5n2cA7iTQIskzd
+	 zFgDl77a73MA+isNKsYN/n4Q1g9f6qayK7LLiuBIAI8qZ/RLUJAt875HYXSaFw5fK7
+	 mYMX0RHT5bXyw/w6iQH8iBqLS5YLZt9F7g0PdNhRYIvlfchfSXvjyG//7sMrrc2ilE
+	 VAv2r4ujffJC2C4Hm9a4nes2ujx+Ibn30abDBqPmjKG18+t4Egk/ZhRdEg77oIC4GA
+	 zCe3GB3dU7eDD6Ze1RfJ+VbiYb+7sYTLkEdmUaNI0QRWM26U7jgpwfD0YpHdoBKjsu
+	 6VgDQzzKbLcDA==
+Message-ID: <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
+Date: Mon, 16 Mar 2026 09:35:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
+ spi-miso-mosi-loopback
+To: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+References: <20260316073547.11437-1-francesco@dolcini.it>
+ <20260316073547.11437-2-francesco@dolcini.it>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
+ QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
+ +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
+ ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
+ 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
+ hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
+ tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
+ 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
+ naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
+ hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
+ whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
+ qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
+ RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
+ Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
+ H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
+ dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
+ AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
+ jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
+ zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
+ XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
+In-Reply-To: <20260316073547.11437-2-francesco@dolcini.it>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On 16/03/2026 08:35, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Add a compatible to describe a single wire loopback between SPI MISO and
+> MOSI signals.
+> 
+> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> ---
+>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
+> index a482aeadcd44..2cb973c157f6 100644
+> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
+> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
+> @@ -432,6 +432,8 @@ properties:
+>            - socionext,uniphier-smpctrl
+>              # SparkFun Qwiic Joystick (COM-15168) with i2c interface
+>            - sparkfun,qwiic-joystick
+> +            # Single wire loopback between SPI MISO and MOSI signals
+> +          - spi-miso-mosi-loopback
 
-Add "spi-miso-mosi-loopback" OF compatible, that describes a
-single wire loopback between the two data signals, MISO and MOSI.
+If you decided to go against my approach, then at least document it in
+proper place - incomplete-devices - so this won't be ever used in DTS.
 
-This kind of setup can be used for testing the SPI functionality.
-
-Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- drivers/spi/spidev.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 638221178384..3874fd449580 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -701,6 +701,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
- 	{ .name = /* semtech */ "sx1301" },
- 	{ .name = /* silabs */ "em3581" },
- 	{ .name = /* silabs */ "si3210" },
-+	{ .name = "spi-miso-mosi-loopback" },
- 	{},
- };
- MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
-@@ -735,6 +736,7 @@ static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
- 	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
- 	{ .compatible = "silabs,si3210", .data = &spidev_of_check },
-+	{ .compatible = "spi-miso-mosi-loopback", .data = &spidev_of_check },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
--- 
-2.47.3
-
+Best regards,
+Krzysztof

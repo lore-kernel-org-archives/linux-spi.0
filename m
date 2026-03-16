@@ -1,184 +1,158 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B6D361663
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E462472A2
+	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773667460; cv=none; b=kQB2R1VTYulLPTzx2SUfJ6zD4kI+E1HVbbWntg2UqlaKNowk8RGEKIgj9zojYTvd8XJDoUaDwGoApmYVEghYfSMvgBoq/gZQyROhCneNLOtu3OtjI7Lz1rea/w/SF9l7CJFpA20wc5j4EMQEP0T006WIr3LWnk4YP800hPIPdDM=
+	t=1773667742; cv=none; b=JYShNydv+FYdMw0hUdE4X3UoQEyWCps0zH2m6xwxpRY7s5Tfj0JQCLQZpejGuDw/lwaq72+an2U+2A+ZF2j2oDYKD8siIlUqxGAPJlsaAniRmudwvjuU+VMAA936vof6GHiTSfpJlvqj0Is/ap+dywI1Xcz3TNIbC+u14Y7MhS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773667460; c=relaxed/simple;
-	bh=nzqy+hSON4ND/X1vo5z3WIJHZSGtctE4GPV5DLK9Pgw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pwHAyUc3dfq+cRhub1bhTJgqnKnzEhGlrhBkZwgqgvEsuH2f6HA0Rj9vst85zlFochUfxK5ArYHTcH7SVmQi7Q2j5sNXCESn6Yde2CfLF9rpAo8r+qDRHaYa82vcS0SsCTKOCrmqE/Y3U87gbjes8kGhMdZuTdwDJ9gmSpupmYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=djTK11N+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GLk7JEtu; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1773667742; c=relaxed/simple;
+	bh=VjPa5dKBAL0HC5Ak2oFuEazOPoP1X2PPGkhAT5vG8+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oiMAT+rmIOeDhPO7Gs9nS11bwkFqQHvCoHKvd5nZl4NnOiDuD97hzAdzZdz7XZmiz/S7VpaUxpgQtbZSyffuBuJRwG7mWwippV2shUSHuLakW4r0IGWUeDk1r8olCnSxpjAo1zSXfzgoorfK0hax9zc0Ghdu1IUAmVNC3aisdE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=e77zl26j; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UIJNeIqO; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="djTK11N+";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GLk7JEtu"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GBqosS538832
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:24:19 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="e77zl26j";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UIJNeIqO"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62GBkYOm1068005
+	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:29:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=TykivBUS0GQn7Dlm1dBGtz
-	uFnfmr8W6go4PhlR2QyM0=; b=djTK11N+YBMw7tqp98Wqs5otQiFVZuX+g3R6F2
-	VaI6Ctf0B37TclyT5uAAGEU7NPwODLhWoMxDyLuQlEVSkMo2RELHpfjVZBwCrFYv
-	cgE9UGTM13ueYgz+j/fnjRvcWo0yyaHBHTnSs80maPOQo4G4B7JUGSKPaK8WzCj6
-	dIOL3garX0YglUUjOr7IoBTnWff3IVsTTlRto1KKahFRr1YNz9VLNyxuyyULRIwc
-	q8X9ZaXgDjXQxV/c8MZy+mLdGjUmqfaut3XY2damcEltmLJyyT+bBHRCTjIg7OBF
-	BMg3N1/lUVpbkmBXbg8g4kgY/LpmAmNgX6YmG1AhuQxvaSSw==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cvyy5nw0q-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fIboW9VuwE0EORPl7TKuMP0oFZdyasnxlARwx2DUE0w=; b=e77zl26jnmtKd24Z
+	kvoS9enBzZRClRgwEQIxDDzM/H6edfYJ0M3wuT49dP8cbhpz+NeHyYQCu6lsA/hK
+	KZaBsWMh2OQE46d4IAYglcIOfWT3c6hHc/Z8qspEMrvO+Al56XH9sscBC1s5oxil
+	RyfZTibsCKwRMJ3JbXGpLEfMjPFee6Z6HXqeZgBZyhBtWlWHpfR9lt5yqM5fKro8
+	eMEyOLCuqw8lWN4/wBEWKtB3EOXulKCCdDUkdcFR7zFMEDWZLs1B8baM3raC/LVs
+	E3Ua2q/+6F//1Nfgj5NFqMiZYnmc9W6yhH//MU2xhP6qf0E3MMYGzluapUtYaQsB
+	fEZpxQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cw027e0kh-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:24:18 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso5273096a91.2
-        for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 06:24:18 -0700 (PDT)
+	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 13:29:00 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cd90210336so248997085a.3
+        for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 06:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1773667458; x=1774272258; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TykivBUS0GQn7Dlm1dBGtzuFnfmr8W6go4PhlR2QyM0=;
-        b=GLk7JEtukgU68/ysbbVoNgPACYSwI8nxe0fJTUv9g1pbyvsEujOfuvbpaFV2y5cOeq
-         EcImSaM+KY9SHKDNN0oHZlUycdGL4Z97YWLR3EMjE28TRVOcXQjxdD57V2UthuHOiLqN
-         9AQBVSqyQEYx1hSo+6e1UFxe8x3i1yVmxSVwtiQxmWhVcFWFWdRfUBSIgZusfRfmgJoY
-         BPXrD3Sl6B+OCyrETNvPny3drkYD+8dbhyHZa1Y9B6RNoowAySv0cl3YGWRwa5DOJ/1i
-         dRXklAiJf42LO1gfOjWj/app619hNguqTuAOyHixp/0QTrS7SRdqubC9RGPf+k3iEcyZ
-         lVMg==
+        d=oss.qualcomm.com; s=google; t=1773667739; x=1774272539; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fIboW9VuwE0EORPl7TKuMP0oFZdyasnxlARwx2DUE0w=;
+        b=UIJNeIqO7tik4tSy4IWZsTvDlQIVxFmO/tM8WPBYiUgE1UYsknX3GPhxcuim7Q/0wq
+         1zLokzwKG7JTmeBPIj8WHkktoJqw1cewtPUka/PDnL0teZHb2aBVVx8XQrkEmpooJlRM
+         f+A9kJd2UkvTjnwR194OJAQGosmPTNf3r2BCZ4d2Ixx4QJAf/W0Vr+0v1jepPox/CobG
+         R4re/mqC/TUjZjcPzvgIZ2vToYoc7MVpUlHzSwATimK7dcQJRZh5Ha8UQwGtb2xzTKCf
+         qpKlL/qbPZ6z2Vg06DvTj7PS72FjWJSKnAvjHkZB0FPQB85q3Lwqa6MWxTGInOvrPaA8
+         gPiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773667458; x=1774272258;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TykivBUS0GQn7Dlm1dBGtzuFnfmr8W6go4PhlR2QyM0=;
-        b=sNevYh0NSMJqpwd/Hfcz3DeqCcW1x0ZpaFyGTC4YVJ/Cl09uxuSMFQkAfQpnBHLpuS
-         Z7AhEAetY/GeaCYFTP695omzmDgxKEzBBQBxA4mgjQ70PjJQq2x2CRSwKdZelw07aZ2N
-         kb4h685soZz3l94y5Q1jbfp+yO9kHEelnTVQDd3bYNFlcA1K9ryL3fJIkTgOJfc34O6Y
-         ZzXrrESAr9Kxdt8uggSA74lJ+/gMyGScJGNZPWllVXi8fzbGD9NqKBH3nyOrbRrigxxI
-         jXeOZW32NG2ORSZ4Ak02vaQoMnoqPAj68bU6qqQGBmUc2gvuMPlj0bnNVOMM3FbwutMf
-         xMRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnah2elBwNS6iKrMycqr62zrv5L/SZuNlsVZEhli8+OCL6+bybng6P3OfTFAhp1k/t2eFAh63RP2M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrmdDqcSFIez8u4HJyKR1T+9T3Zm8iPu709tzMOlbKGZAzvqlb
-	2HFpxp1L82vuOTgqz/xrWuroQ7uCcKwmnwBlJexxCHUYIsE8BQs09gqBRHTgbrgewjUb5qq///c
-	vwI3/RcUnqP2BSSxoQxCPt2EJzmfahaMah4m4KsXwRtLqig2zO+mvRgTtQMY6mj0AyhGIQw9TsQ
-	==
-X-Gm-Gg: ATEYQzzfVpyaISWS2/fcg7Y7r8qIgk6QcoZHHrsZ5USQqcMbUN1wbIh/RuPvYgtMEgh
-	HrAxGPxnDYHJUFYJa9wWvGLn2un9CBnnUOUM/tdx5vw8HLjQdDehdI8HuT6f/tcpYugd6JdPyX7
-	gZ6X0UqK1ijJbKogSC91R2UUOcJl6oAjIOjPVabIKhc7dIbyT3WYx8MjJHJtgAUnePzDQ5UhtS9
-	qQAKcv0h0eZa9dBgRNEKfkRRqygRWWaVqkqEUg4b/pHbqezNvTNjazpRp0hHHR+c6p2AbyArVun
-	eO/+Fe5kC5Mm0WO6WQaPNjcEaFk6SOt71q4i2VY/+cjg0/v+ac98eQg97al3/aMDKmisNT58A10
-	xEVG0XplFsPkx43pCgfjNOZ7iUnZiB3NkRWtujqlf6k0=
-X-Received: by 2002:a17:90b:5345:b0:35b:93d8:6ab7 with SMTP id 98e67ed59e1d1-35b93d86c97mr5359855a91.28.1773667457987;
-        Mon, 16 Mar 2026 06:24:17 -0700 (PDT)
-X-Received: by 2002:a17:90b:5345:b0:35b:93d8:6ab7 with SMTP id 98e67ed59e1d1-35b93d86c97mr5359817a91.28.1773667457498;
-        Mon, 16 Mar 2026 06:24:17 -0700 (PDT)
-Received: from [10.213.103.163] ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35b929558d1sm2493497a91.4.2026.03.16.06.24.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2026 06:24:17 -0700 (PDT)
-From: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
-Date: Mon, 16 Mar 2026 18:53:31 +0530
-Subject: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
+        d=1e100.net; s=20251104; t=1773667739; x=1774272539;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fIboW9VuwE0EORPl7TKuMP0oFZdyasnxlARwx2DUE0w=;
+        b=KGfneg7mZRSEfC4SKR6rkOTxIb4hIV7ZaatDBhqz6hfac9kJYdPv3pmb+WTcwcv7aK
+         nMTotHWW4tpwW8/rMjiE5qaZYYC6RNLUk53cXymGho457G79f2Mn5TfEoNy+FfbpbJBZ
+         jFiPybgpgVdAfUeFuYdgghDA7ZPJdTgoiTObdJuAJN+3ljV3a/cwCrmGqdarDPMEd/Xu
+         uxn2SshlV28gv/2njeJhtFl0jhr0CK8EFfCjrBL8cd/m5r+8+OzI3GYi862YecOdfBMp
+         KWx5Ww8ayOu+1rekBagq9e4lPVSVxLnqmgCgObSqtmOfo4BSPISzkBO1GBR88nIS+mUh
+         k0Yg==
+X-Forwarded-Encrypted: i=1; AJvYcCWx2/b6ezrxw/iUn57xQF1PRxM/PzmthkTWsbY7XJJoXEWtYUz1PC58Qkx/dr1oNWZSKc004g4l0yQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwybBdyl6BiiPWX/sjybhJ7DPqpQn+Xec4Tw9v8FJXqD3htNPDb
+	+aXrdTYMF31Lhm8pXmlteK6QD3diA4kMe9jWEImgn7bhPeieieoLmXSfJvmgxTuZIcf4bYkYXLt
+	h8TV+9doPVp85VBOJ+A6J0L5DGQ0UTtsQRyPQVvyLeBJiXD2gD+gvyFZsj2DHKy0QmnDrypI=
+X-Gm-Gg: ATEYQzzaD8eKAyWRyuoQHqA18KAz/YI0hTHspKL93sjEQEIWrV1NytPQbQ6BXNuSPKo
+	4+B4zeym8b1Na7wiE06TWYOePDkO8n5+BZv+qXFqVsltduKiMD6uLdVpIur1ydTHP9BGzZtZW/f
+	gKnjxlid6CtaqiH4Q4b3yXqt7zrakJMj8cqtJi3iZ417hi6kmsVm66Ub1+vDxYsv5hSOH9hAsA3
+	jp5GGNrU6fVhwpzgEwhm0O9wP+fiOnOb8cvrdboQpRHQT06cQPOkxUwyrObnIVRoR4FNqDCfwmX
+	TRGyAbsJEH6tgMdb9f97Ai5AGDD15YzHSuxdtd6LvNflRTyVPE1APu2kPg2xjCY2RmD5yTFn13+
+	qFCO330NPGkdrj5NpBn22183BSiXIGx7iJkPX2lb707inJyxP7VMyTAcQ0yDtAs5BpE8CZ1ZISa
+	SCYYk=
+X-Received: by 2002:a05:620a:290e:b0:8cd:8736:9fc3 with SMTP id af79cd13be357-8cdb5b8a614mr1344673385a.7.1773667739390;
+        Mon, 16 Mar 2026 06:28:59 -0700 (PDT)
+X-Received: by 2002:a05:620a:290e:b0:8cd:8736:9fc3 with SMTP id af79cd13be357-8cdb5b8a614mr1344669185a.7.1773667738744;
+        Mon, 16 Mar 2026 06:28:58 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a156033a29sm3400429e87.37.2026.03.16.06.28.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Mar 2026 06:28:57 -0700 (PDT)
+Message-ID: <2a6698ea-c7b8-4038-b4ed-7a7c9acf3d05@oss.qualcomm.com>
+Date: Mon, 16 Mar 2026 14:28:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAFIEuGkC/x2MUQqAIBAFrxL73UIqSnWV6ENyq4VQUYggvHtLP
- wMz8N4LlQpThbl7odDNlVMUUX0H2+njQchBHPSg3WCUw5oZD4qMWz69IF2484PjpLSjYK3RFmS
- cC0n+jxe4FaytfaIAwpNsAAAA
-X-Change-ID: 20260316-spi-geni-cpha-cpol-fix-89126ed55325
-To: Mark Brown <broonie@kernel.org>, Jonathan Marek <jonathan@marek.ca>,
-        konrad.dybcio@oss.qualcomm.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change
+ detection
+To: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>,
+        Mark Brown <broonie@kernel.org>, Jonathan Marek <jonathan@marek.ca>
 Cc: kernel@quicinc.com, linux-arm-msm@vger.kernel.org,
         linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com,
         bjorande@quicinc.com, mukesh.savaliya@oss.qualcomm.com,
-        praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
-        naresh.maramaina@oss.qualcomm.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773667453; l=2079;
- i=naresh.maramaina@oss.qualcomm.com; s=20260316; h=from:subject:message-id;
- bh=nzqy+hSON4ND/X1vo5z3WIJHZSGtctE4GPV5DLK9Pgw=;
- b=KbIDaMv5XyHWZjr46USGkKLK+8aSZrOHTD5aWp+gPDk0pGYv+SkDzPx0VBHJiKYblI5nL6Rty
- 4WFB3ovD672DVJ6361LFXPP11MuuvDoe9iONv9nRSMj4cKxWbQSs/jb
-X-Developer-Key: i=naresh.maramaina@oss.qualcomm.com; a=ed25519;
- pk=j7iST9yrLbsgWcWrqdlUNIOWl2WBl4wV1q35/n9SCkg=
-X-Proofpoint-GUID: HaqjGuduOxfzL5E0MRku7kDPnnW9WnL3
-X-Authority-Analysis: v=2.4 cv=QOxlhwLL c=1 sm=1 tr=0 ts=69b80482 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+        praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
+References: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: SCerrM8EJT2M7ipJBqvtjk8z8YdRBB2Q
+X-Proofpoint-ORIG-GUID: SCerrM8EJT2M7ipJBqvtjk8z8YdRBB2Q
+X-Authority-Analysis: v=2.4 cv=AqXjHe9P c=1 sm=1 tr=0 ts=69b8059c cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=D3EvElEm-D6odJYB-dYA:9 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-ORIG-GUID: HaqjGuduOxfzL5E0MRku7kDPnnW9WnL3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDEwMiBTYWx0ZWRfX+MUQ7UnUO75F
- Q5BcNKfs6OfAOAYjSnUkEEuV+cNHtwCh/jAqsz4D4AUTRWmCDGqvs9dBg27QJJNkztgxKWW1Pc0
- HPrhZBsOCxMYjt8DpBjsT9crpUzW7ZpyIerQ4Gt9cr1eE/cpXQOkay8spULRb2t0zuvWOhB296M
- RzHZ+luPIRT6hoioKRgzwczAmYfiA+Bxg0GgktfkSCejUkIiADz+769UHa5Bpqz0xgb1mZfQOdo
- tchkRfrpgGAoLs7vSxwESHDIbrb0JGhNpDh3gfH01xDw3RVybDPv4lMN/hKgqwFimJ3p5xEu8C4
- /D8RGVqtjlZMiwusXG7F78XqTezWl0SR5PyV0FYhEYsd+YBvmfh0n3/29fFbvi3OL+R3LFmuhXv
- Bk2RUpEbaNzqpciuaj3pFTN1TEMvme7ghlELMc2rgPmklSCfFHkhlv7N22vaM/EBhJLCCSPsc4+
- OIrH/30kX4f9pyRV87A==
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=tN-bM4_ZalV-NnDHEpgA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE2MDEwMiBTYWx0ZWRfX+YSa3/OrxGez
+ Im44uCpxGgC91BwyO14ySfyzllxqu7sTdd1RntYBGGZFqpdxaIDuVLymnMTciafiZzYPY/W2YgK
+ UJi0LW710TuS2zpTCSvkDDse5LSzHmOq6u06UMsxGhs6zmFNTAmXQLXuDY4DySVl6bDdZVa4IWG
+ Gfj9ej9yl2zx+nFoQ0c3k1qUmH8hR3JOzpvrnIhtUMhpNRR22FFKpYZ0C40VIXs+J/gJxAKJIR3
+ 6oHL3G0FPLtWeofSm1jWdph6YTiHAB5hccM+Agr1cMefbq6ex35GFzHQVJtIu5Ylxuq26hFJEMh
+ 97BYezR31+gpXf9czf89EVE6N45E681HvWMBJs3o0uHR8qG2WmFhImKkS8DV5zHeA1dM7sVNgvt
+ WGac049n+Huie8oQShd9QhxV/p/VzgA1XTIdTAlyM5N6tPIABkiDMAFUuDY+akhWb4DXQkL5io7
+ P8gabsMUeIHnxTxvV/A==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-16_04,2026-03-16_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 suspectscore=0 clxscore=1011 adultscore=0 priorityscore=1501
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015 phishscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603160102
 
-setup_fifo_params computes mode_changed from spi->mode flags but tests
-it against SE_SPI_CPHA and SE_SPI_CPOL, which are register offsets,
-not SPI mode bits. This causes CPHA and CPOL updates to be skipped
-on mode switches, leaving the controller with stale clock phase
-and polarity settings.
+On 3/16/26 2:23 PM, Maramaina Naresh wrote:
+> setup_fifo_params computes mode_changed from spi->mode flags but tests
+> it against SE_SPI_CPHA and SE_SPI_CPOL, which are register offsets,
+> not SPI mode bits. This causes CPHA and CPOL updates to be skipped
+> on mode switches, leaving the controller with stale clock phase
+> and polarity settings.
+> 
+> Fix this by using SPI_CPHA and SPI_CPOL to detect mode changes before
+> updating the corresponding registers.
+> 
+> Fixes: 781c3e71c94c ("spi: spi-geni-qcom: rework setup_fifo_params")
+> Signed-off-by: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
+> ---
+> This patch fixes SPI mode change detection in the spi-geni-qcom driver.
+> 
+> setup_fifo_params compared spi->mode against SE_SPI_CPHA/SE_SPI_CPOL,
+> which are register offsets instead of SPI_CPHA/SPI_CPOL mode bits.
+> This could skip CPHA/CPOL updates on mode switches and leave stale
+> clock configuration.
+> 
+> This is a single-patch series.
 
-Fix this by using SPI_CPHA and SPI_CPOL to detect mode changes before
-updating the corresponding registers.
+Note this ""cover letter"" is unnecessary for such single-patch
 
-Fixes: 781c3e71c94c ("spi: spi-geni-qcom: rework setup_fifo_params")
-Signed-off-by: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
----
-This patch fixes SPI mode change detection in the spi-geni-qcom driver.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-setup_fifo_params compared spi->mode against SE_SPI_CPHA/SE_SPI_CPOL,
-which are register offsets instead of SPI_CPHA/SPI_CPOL mode bits.
-This could skip CPHA/CPOL updates on mode switches and leave stale
-clock configuration.
-
-This is a single-patch series.
----
- drivers/spi/spi-geni-qcom.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 43ce47f2454c..772b7148ba5f 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -359,9 +359,9 @@ static int setup_fifo_params(struct spi_device *spi_slv,
- 		writel((spi_slv->mode & SPI_LOOP) ? LOOPBACK_ENABLE : 0, se->base + SE_SPI_LOOPBACK);
- 	if (cs_changed)
- 		writel(chipselect, se->base + SE_SPI_DEMUX_SEL);
--	if (mode_changed & SE_SPI_CPHA)
-+	if (mode_changed & SPI_CPHA)
- 		writel((spi_slv->mode & SPI_CPHA) ? CPHA : 0, se->base + SE_SPI_CPHA);
--	if (mode_changed & SE_SPI_CPOL)
-+	if (mode_changed & SPI_CPOL)
- 		writel((spi_slv->mode & SPI_CPOL) ? CPOL : 0, se->base + SE_SPI_CPOL);
- 	if ((mode_changed & SPI_CS_HIGH) || (cs_changed && (spi_slv->mode & SPI_CS_HIGH)))
- 		writel((spi_slv->mode & SPI_CS_HIGH) ? BIT(chipselect) : 0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
-
----
-base-commit: 7109a2155340cc7b21f27e832ece6df03592f2e8
-change-id: 20260316-spi-geni-cpha-cpol-fix-89126ed55325
-
-Best regards,
--- 
-Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
-
+Konrad

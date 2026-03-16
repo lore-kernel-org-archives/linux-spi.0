@@ -1,101 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F253DEFF6;
-	Mon, 16 Mar 2026 18:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85B8369224;
+	Mon, 16 Mar 2026 21:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773686960; cv=none; b=pRNjvkn2A5qGFMDFCH8sRnkjAbRCT/srdkV7Gtll8IPfpHePmst5l5dh1BloUWFI6ffnAB0VoAWyVZ3plvhWVHFY9rHLma7DfmD4uQv1m2ukYQuCIM/r58DPKGQurr4hrHSOVGldwMDZtI3YdRuhWjnkzeymaFVHkC7wCv65lgA=
+	t=1773698120; cv=none; b=PhvLeSjkSZFeMPlIqcsMIdZK9wnRW7wN/pZ3//prkFFregfswyGWpUaR+FhFXtn1kH0VlhajXoJpirURGX3cC+kVtkg5IIkcyX49voU6eAsvs72WswzKwuFpLGtyUEY2L9rggd078JX19HKgwwWkWEDP8HShoFI3KEyEAd+e3GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773686960; c=relaxed/simple;
-	bh=2IxvQZYqeeFGPbIivEchlH+syjCBxggxKe+799lUBJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tt6Jz7kAj+CSefFnOpqHFQtLKbr0BL8OXaKYrUVC8KSdFmq/TC9FD0ZWKbIosVYBqz2WNU+zYFo4pqmFzZMXsPbnxYENlUP/QDwxGPRUfsLTKQm7/el9ZkHZEvQKTw9owCU+2APxQx1H73++b7NIgi6upjB/kQholJ2dtZgP73I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UbPIaRr9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773698120; c=relaxed/simple;
+	bh=fXrS2qP78PC1NuWS+SY0vBIlZ1LAiBvGveSb0AyiSVM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=A3ziViEfrpQzaTy3D6ydXp4H+LTDGHOQZ2xrN/4kIvSqXX3/bi6iB44wNhiUoDB3mKw+gpPmTodHqpBjD8czbgOZQl4RmbjBFokEA4YdNxAPRogAZQZOntKP94FiEEOYGpqOTPEJUIjJSh9wAGrUbFFsIpkls3JSW6uWCXyZlq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3Qj8vWV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UbPIaRr9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D39C2BC87;
-	Mon, 16 Mar 2026 18:49:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3Qj8vWV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1202C19424;
+	Mon, 16 Mar 2026 21:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773686959;
-	bh=2IxvQZYqeeFGPbIivEchlH+syjCBxggxKe+799lUBJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UbPIaRr9VUsDQXpDKYWPASJn7CctFBA9UncZ+o+Wy9BWCtlNZQoUKecUqGcWtfbGy
-	 vadef+uXrkQWA5k+N45WMJSBmKIUH1Vy0E2Y6pm+PsG7Mz4B8/DePBjOa1XPEm7zR9
-	 1eTEpvb6Q/9mDaiRfIVVTgBee//XEdnzg20r78baG5myWTHQaYNGQAAtuBHU25rCDn
-	 PxUCmeG8c+sNKjVw6ASDhLMDLjTjK8CKQdHWKc51YFmlNcxd6lV8m5WtTcz0t95ke5
-	 Euz8lWA0TFp18Jm/u1Aonc5arraver8m2OYzRAyMF4L2nXGJljfvM0fEyU/UN2ax5o
-	 vTX9+orYYFUKQ==
-Date: Mon, 16 Mar 2026 18:49:15 +0000
+	s=k20201202; t=1773698120;
+	bh=fXrS2qP78PC1NuWS+SY0vBIlZ1LAiBvGveSb0AyiSVM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=K3Qj8vWVi3CptCedoa34UizbTuiNPvXDjHecEM+BePCemi0xRh0YtUjDuQ0ZXi/mc
+	 7zIX5mnI9wEW8SVHS6UIhDX6YJrHiFsILWXPAQPAicWfctSxxTVubZZNFUlbt1Od2f
+	 kjLobNu5LW+fvqHcZ2q2ExK9xC6O3a8UA3+2sRjf1DwGLrEwpgSjrQeSrRjGuyOfF+
+	 6pYxujB4XZ79KNbDrW9mPMDdr5NL/mCEkr7Y6AnKLeLq6md0ss35aQ+ZmA14RKZ+NQ
+	 Ye6fAla59m2dAl2iGDda0ekUYDd2OQGGB0rdvqvfvbkfRlTfyhW8NuPZXr9+4tnJS8
+	 YSixdIjbMTbkg==
 From: Mark Brown <broonie@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-Message-ID: <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
-References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
- <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
- <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
- <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
- <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
- <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
- <b6787850-11cf-4b38-a5ea-da2c5d0811f4@sirena.org.uk>
- <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260312151817.32100-1-johan@kernel.org>
+References: <20260312151817.32100-1-johan@kernel.org>
+Subject: Re: [PATCH 0/5] spi: controller registration fixes
+Message-Id: <177368638238.156281.277659246762433559.b4-ty@kernel.org>
+Date: Mon, 16 Mar 2026 18:39:42 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Rw9a4v8lJ2g0AlWx"
-Content-Disposition: inline
-In-Reply-To: <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
-X-Cookie: Not a flying toy.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-f420f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1679; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=fXrS2qP78PC1NuWS+SY0vBIlZ1LAiBvGveSb0AyiSVM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpuHxG0zUbJqmK76rty+13RpNR2xvjoL1CzwhFu
+ RbATflc1muJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabh8RgAKCRAk1otyXVSH
+ 0KKYB/wNQ0nHpRARyL7cO/uZDxHKtzWA8zMBZ271hpkYcSUykF5YAymvE2maVifWNk1a6raxk76
+ coiy7jaVh72wJ0IzEYbquTv7JE3JoMqJWFY9p3yaiAjCxzIQHfXuaIASIaN2+y/1yeTZdIB1NxZ
+ MaP0v0dQJyzXkt93vnqq7CzLRciN6P7W1hg/ZM0JfNLorakA57yvcH7QCKoAGPOPOQFRmJuJWSy
+ 9rfS7DJji+zFSANS6Z0FGCrraueRkjjM+7p722XRB2DOpc+La4Y9u3LzyvnrMlhRhs2i1DJCQ0s
+ GywsrU3Ishy2Tc+6kttCFhgdoLMgAbF4mbHHQmLrenZ6BFa6
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 12 Mar 2026 16:18:12 +0100, Johan Hovold wrote:
+> spi: controller registration fixes
+> 
+> This series fixes a few issues related to controller registration found
+> through inspection.
+> 
+> Johan
+> 
+> [...]
 
---Rw9a4v8lJ2g0AlWx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Mar 16, 2026 at 07:31:04PM +0100, Marc Kleine-Budde wrote:
-> On 16.03.2026 18:16:01, Mark Brown wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-> > Oh, dear, so that's potentially going to go badly if there's a SoC with
-> > a bigger FIFO that didn't also increase the watermark field width.  We
-> > should at least warn about that, and ideally do something sensible.
+Thanks!
 
-> Good idea, I'll add a warning if the FIFO is bigger than the watermark
-> field.
+[1/5] spi: fix use-after-free on controller registration failure
+      https://git.kernel.org/broonie/spi/c/8634e05b08ea
+[2/5] spi: fix statistics allocation
+      https://git.kernel.org/broonie/spi/c/dee0774bbb2a
+[3/5] spi: drop unused devres statistics allocation
+      https://git.kernel.org/broonie/spi/c/d5b4cb41b9a2
+[4/5] spi: fix misleading controller registration kernel-doc
+      https://git.kernel.org/broonie/spi/c/edc463d72d69
+[5/5] spi: fix misleading controller deregistration kernel-doc
+      https://git.kernel.org/broonie/spi/c/3f174274d224
 
-> To handle this situation I see 2 options:
-> - warning + limit the FIFO to the usable size due to the currently
->   hard-coded watermark width - this will result in reduced throughput
-> - increase the watermark mask to 8 bits - which is basically how the
->   unpatched driver works.
->   As outlined in my previous mail, the other code in the driver takes
->   care that the watermark stays within the limits.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-I guess it depends how optimistic we are about hardware engineers
-keeping the FIFO and watermark depths in sync.  The first option is more
-defensive, but like you say it'll hit performance on future devices that
-do expand the FIFO.  I guess I have a slight preference for that?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---Rw9a4v8lJ2g0AlWx
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm4UKoACgkQJNaLcl1U
-h9CEjAf+KX4+iymhin68XpboextOC8PLGsCkhHStdjVb/VglAcc//7Nn4NwkZrQf
-lR51mQXi/VlkfjZL0LJg6c/U19pfjT10arDI0M98pqpjUIcwieAvjCuzQVKjMDKr
-Z0WbORCnZxYuU2WMNouDxd09DHUZw2LGtyBP0nNj7cnZlg3hfb58wmt4xh3DVQjt
-x562KjthLTQqYPATWVTExekjLQc2iLnCKppKvJ9N+x7LWb6f+qWeyEW0vr2W3Zv6
-319hd99BGZStC1ztY0ibrhMjh961O6rn8l2cPneispqgHUvfR5drfgym0xUz2WPr
-4S7yduT8k2TkDWts05MQn9U/ghbrrw==
-=kcd0
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---Rw9a4v8lJ2g0AlWx--

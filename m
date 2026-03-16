@@ -1,34 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A4330ACE3
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 02:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8123502AC;
+	Mon, 16 Mar 2026 07:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773627010; cv=none; b=J5Ri/mpSEpNvjdWttW1fryCZxl9gNIC3H+k3I2kRFYfHQC87VU2sjhwlWNv0s0n7tjzaIPNAk5dqoZz9nskSgNVVrX2Ud6QcA6zFmxdto9riSwNkw95Dc17HIu8e5biGwr4ghoLXvoUSwjrVeMPhYXYjTvGLCGqqyJVqhp9PA+o=
+	t=1773646567; cv=none; b=gIc6qxVqK3q3mReT1PNqVIPyGf7p34ShpzbWcQpFjp7xcNC7XxRniRWN/RvJLQlGB0jajMWPlhLuuH31Q0fzys7WKzmrPIhA0lrByLMAOcqf+dyefXrAVT4wYsICM6P+HH7GmpaSBeqqw+M9vHTFuiXKTDqIvpqjrk5RXwzci5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773627010; c=relaxed/simple;
-	bh=AEbjAzeKR18FNSrrk3mKf1BcIF/JJ18nxqp1knl5XsI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=s5EyRMTz2OuiBD8obCiLoyBX1YZMORuXYS7cHqGrsdmKZaUwe4R/lsRlGFppZJ9nYaXidz11m9U5Wa66iWS4hse4Q0oD2Z/SWFCCfHYATgGjnaABzlfdYvHtFDWa2WN50OizimoyXRnf08KhTVBLM2LIDrjwuzh7KGrMYcenhDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NsAenQ91; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773646567; c=relaxed/simple;
+	bh=pURDc7OaFVz+/BW3jfbaFBTr8kmIx1bSO7X67TBUrs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y7K2Yvr5tQhIJyF4AjTsqPraGYa9D3xYTnc++cBiBT6mq/1G79kcex2gPAESWG7zQ1nPivZRPsh6Necd7Whuvi6z20nKZgwyRrJVz9txHa1AAbflhlhk624dyARQnrKfFwNh20TBKkTPm42Samy36NtKbFMHwJ7S4Ra7t3Y7Nyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WFWZVrz+; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NsAenQ91"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B4AC4CEF7;
-	Mon, 16 Mar 2026 02:10:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773627009;
-	bh=AEbjAzeKR18FNSrrk3mKf1BcIF/JJ18nxqp1knl5XsI=;
-	h=Subject:From:Date:To:From;
-	b=NsAenQ91CfNXmiZaVC6RcK+jYo+xczi3izKO2MkVOSA/oCgcyxU2HMcsXVBCObYqK
-	 meIVOPpJwXmsASMYUexLyJSV5fik/uEy/wOgR4JEaXlKoA6PixkboMlKaEIbMpYUFW
-	 q/VPgRba1pquk1adEw0Cc9hx4YrzmEgNbw6datuyNV5PC1rUxiDGXkPOEzO2wyqv5u
-	 TtQGIjUPEv1fzikr/3EF08VjloDnd5S464kuiN0iYGQCzmb6Ya0yOmyvJ5xNPcXO5Y
-	 TTS7lWSS44IHZ+QMhtg8dNfQXrf4KUXp7xqyHS0t7yb2d1qVtAmHjZcZ1qcmRXdb6G
-	 DOlhYfz17lFzA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42C633808200;
-	Mon, 16 Mar 2026 02:10:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WFWZVrz+"
+Received: from francesco-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id A5F9D20205;
+	Mon, 16 Mar 2026 08:35:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1773646556;
+	bh=wOZMuNw1ZPDjvWEnM8CHFX9oZa0bb/YAzydxqZOFIME=; h=From:To:Subject;
+	b=WFWZVrz+AQ89/V0rHugUQl+N8FMOgV/Dq7hJpTJ5G5bDgnfjcu/IZx7+78VOpNTuG
+	 n3IukDslWwVDUymQfLRI08tmt8/4rpSxk18N7CQUUq736ljwtxudUEji8+xFKgWcbm
+	 mMjldYeBgZtqc011/8P4d/6gkaYtss5r/HmvzBXu8eFoSSYxCe2SYyrk2Fwr34ffpy
+	 dKqTrBFH00fXTLXty3hlcNUiLfzuIoMKIqVlRfj670WFhFQUWzJ61X5xKbfdSvoPDQ
+	 mFvAwA9gc2/J16/xxNRGDNDXI9ZLOUkD8l0HdJQP6R0DuwzdyUj3UxnM3ppIemIbhh
+	 vRDfKMd+Lw2fA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: [PATCH v1 0/2] spi: Add data loopback OF compatible
+Date: Mon, 16 Mar 2026 08:35:42 +0100
+Message-ID: <20260316073547.11437-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,29 +47,24 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177362700290.2462110.16657360244361081644.git-patchwork-summary@kernel.org>
-Date: Mon, 16 Mar 2026 02:10:02 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Add "spi-miso-mosi-loopback" OF compatible, that describes a
+single wire loopback between the two data signals, MISO and MOSI.
 
-Patch: spi: amlogic-spisg: Use IS_ERR() instead of IS_ERR_OR_NULL()
-  Submitter: Felix Gu <ustc.gu@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1063181
-  Lore link: https://lore.kernel.org/r/20260308-spisg-1-v1-1-4e209faf228d@gmail.com
+This kind of setup can be used for testing the SPI functionality.
 
+Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
 
-Total patches: 1
+Francesco Dolcini (2):
+  dt-bindings: trivial-devices: add spi-miso-mosi-loopback
+  spi: spidev: Add data loopback OF compatible
+
+ Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
+ drivers/spi/spidev.c                                   | 2 ++
+ 2 files changed, 4 insertions(+)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.47.3
 

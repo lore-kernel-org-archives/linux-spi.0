@@ -1,64 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E86031E822
-	for <linux-spi@vger.kernel.org>; Mon, 16 Mar 2026 18:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7478C34AB01;
+	Mon, 16 Mar 2026 18:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773684029; cv=none; b=HzTC3/hzsyDFHLsAkNO2LnlV/ARkvc/cc3uobSjr1LReRvsfPWrtguV2iRO31Srqz/cdBtIBCXCfgxo/2YkyM4DnwgC5UCQXv3HrfQwKUJ86phW2zNzIMZgKwhF/M44DufN6i8eFghhUtQQH/lUvAHg6hYqeRwalNx9xSljO3sc=
+	t=1773684927; cv=none; b=N4CpXhnQ/837i2KerCIE5i2oECZjwOT8NHcObe7v9ROcbWqIe8xmH5NUS9bsTg4sgdXVdKIHLBUs/Xsjqc2VQgPKpLjV9HimnFDZuzT51/0OS8wMaIYF7XhN+toGzzqKpiENYQaWlpwtAOtM4XFiHvXDqN1nQkChq9QSj4nxdbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773684029; c=relaxed/simple;
-	bh=Hov+x4qj1xVZLlZwcRh+T5IUERH7vHciRAYrjBF0u3U=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=luEAZ+/FrcUd2D1tpPjLvwfyt2GiyAlcKoqr7uCa5pXk62aSIksDixnoLRMlX2sJT3zMtjSi9K+ydM8BJ7xd+Meyduh2hx9qjJGpoRNlTlkKm4l89XkSaEyicLOPUPUboqP4SXOhRBylDxTEsgHjC5FP1u4unGDZLltJHLWqp2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WACYKzne; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773684927; c=relaxed/simple;
+	bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=G3K5mUbwIxqYyFX3gYYRMJatr9TuW5PShbIHI6AQT9t0MKgGt+3aLH9E00ZlTsTnGKbCnRW9oFFXOGz+XAZ+NNoyMaBguOpVs502kTMdsg7rjKEaHHW4StCAekoF6Hba7EcBwpMEnLzPwCweJ3RlTcAuKxRUBvcWcemKjTTjIVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gblBs/uQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WACYKzne"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5F2C2BC9E;
-	Mon, 16 Mar 2026 18:00:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gblBs/uQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E20C19421;
+	Mon, 16 Mar 2026 18:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773684029;
-	bh=Hov+x4qj1xVZLlZwcRh+T5IUERH7vHciRAYrjBF0u3U=;
-	h=Subject:From:Date:To:From;
-	b=WACYKznesmiVPJFJu9UnkD/LfwyvIfmjdeBW80Zf7PzYO0MwpaWszkslJimxqsopK
-	 anW4WpsIAh/cTEht9I9+BYct1b9ahDdbvFP7JyoOCGoG5VFimhyjQIRxvBbbpW+J6e
-	 hSactjuD9rr+uLrHoDEgyif0b1dQO7v1+AMfxIefYcnAtDRdNrq777LfvKLXuEgovp
-	 e4O+lSfVH2XVdQReRUEGlfRLJDm2YkExFfUNs1SkkRub7OEg2yaCivqRrjzt7rN9pN
-	 w5u7Cf+QHEucpND9fnGjET9jc9xCqcHMJVZ7959xuudxzahMfYZ/umxv1+wMHOUY6l
-	 Z1VWQts/2K3Yw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42E9D3808200;
-	Mon, 16 Mar 2026 18:00:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773684927;
+	bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=gblBs/uQnCo1hzsx+i1mnoUIn+ygiKKU7KZQDpNLNnMzCrF7Bfw7kjLq9KiBBiuKs
+	 8Y7XOu2JZS6fxe62CmetSOyr/Y/zAzUZUr/t1puX2oekM82FVsfoBHoYOkgtPuJomX
+	 ZlGoxbf4DSarEeQhVOlZ4Yq0SWajiMwRpRoTJErVKNnAKFd/hFDWaM0Lo9YbIihCQA
+	 Q+i1OFSG2T5m/QcX40B87lPKNjL+xTedNKnN+o3GiF/i+j4XptyyokHN+t7dzL0lr8
+	 naLhV0ndCmtbjUm9MyAoD8+z4TWPQVxrHQ2FHvg5nvIjNwnGdyadpoTrNhQE5JydyL
+	 P7xlasTuOKT/w==
+From: Mark Brown <broonie@kernel.org>
+To: Jonathan Marek <jonathan@marek.ca>, konrad.dybcio@oss.qualcomm.com, 
+ Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
+Cc: kernel@quicinc.com, linux-arm-msm@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com, 
+ bjorande@quicinc.com, mukesh.savaliya@oss.qualcomm.com, 
+ praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
+In-Reply-To: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+References: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+Subject: Re: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change
+ detection
+Message-Id: <177367248800.88614.6533439150057723684.b4-ty@kernel.org>
+Date: Mon, 16 Mar 2026 14:48:08 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177368402185.2784985.18325794505840235320.git-patchwork-summary@kernel.org>
-Date: Mon, 16 Mar 2026 18:00:21 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c239c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1128; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=caReioqul8HmTtNpAbXVIVhgQLmW3WA1ZnlN3gQn/nI=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpuEi7krKr001FTWyaeUED0fslvcGMiS7eKHip3
+ pm37botAwOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabhIuwAKCRAk1otyXVSH
+ 0J8kB/4rJhDDxY6QohwJqf6wrPrt2fXvD+yk8IFIxisasIN9DXuBSwGcuQMyBWAoF/10+9Zp2En
+ lGh+tC09FRon+y356FXJvg8xo1Gn+mhFq0Pp6talbvJWKN4KvnOFl+VeZoVD6HaZeN0HWsqHhnc
+ vWL8U5k0jhH6qcC0OjmupOJKYCJ33QVIAMHxVJaIUGrp5bHyiCKcVuZ6H+accFpBY+6Zoa4GNgY
+ CnDj93/38PD9ab1MLWkvhNtR2lGaF1dXJ6ayK55++3SIWQ8dbOLIrUONeH3ERcsns7WOm6GGvwr
+ 3Z7x0f878taMB6MR1k5pjLjv4hzDAek9D6WtZ3l2j2ds01QY
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+On Mon, 16 Mar 2026 18:53:31 +0530, Maramaina Naresh wrote:
+> spi: geni-qcom: Fix CPHA and CPOL mode change detection
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: [v1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
-  Submitter: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1067333
-  Lore link: https://lore.kernel.org/r/20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
 
+Thanks!
 
-Total patches: 1
+[1/1] spi: geni-qcom: Fix CPHA and CPOL mode change detection
+      https://git.kernel.org/broonie/spi/c/ba3402f6c85b
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

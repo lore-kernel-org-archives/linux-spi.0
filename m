@@ -1,85 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442E835838B;
-	Tue, 17 Mar 2026 10:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90B37107F;
+	Tue, 17 Mar 2026 10:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773741762; cv=none; b=jCzAFskxAKNxosihU3I3/FgNDWb1M4Egjm1mz5r2XvByxTtafbKNawEQREpItUX91tg1x5ZyC2y0obSVRaO+PyCLDKTaAN1lc7hPwvhwBkQgf3RZ5nz4dM2c36wwF91Iqb+FH8ZSWXIa1dlu296BCHNpGHToHMQgU0WNogf9M+Q=
+	t=1773742622; cv=none; b=n5Gjd6NdyL5mpGybkvNitR6HBjQQcF2c42yhSh0GctfuU71bzSlLBJuVAOny6iOiPcemAJscxNyYtnNll/Mf067f9k69yW9bqK10qWuVDIJ+WCCQiTIi32ctYwP2E3JsgOWiwv2YbsUx2CUqy604VhkVHyFHDu86KNkuC62MB3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773741762; c=relaxed/simple;
-	bh=zOhE3MyoOIAA0bgcSSk1uYsIQSRxBFkKa/QEeH/yO6Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=YiJ4YCIVG2AZ7kT+KrGi37ikAEv67pMEp6W7gfirU3nxzrrAZJtLF+dplIuaEl/MJ62HVkbaFxZlrJI2Lf0xhyYDcCLPAa0TzxyUdz+4hlBpNkSIoEbvV65GC2lSSLw3qNj1tfCBoBJu5K1RStwN0clVIULujcOL/bK4p3S+nWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLK1kV0b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773742622; c=relaxed/simple;
+	bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rm299cs6U4o38mzIJnMJTgLpa1bTVUmGuM/1UAgALq5m2eBHDgyGEYjBloq5vyS4h1B9/YETXCP+v6V4pheIwOGr58fCCpR1d2ngmas7WfKVNGhUFVEksVsSufTmlcIWEzfIqDx+g6qkasvMKFOMJ8OUBRmM2cpg+PJa3W6To+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YYbI37Ve; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLK1kV0b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0BCC4CEF7;
-	Tue, 17 Mar 2026 10:02:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773741761;
-	bh=zOhE3MyoOIAA0bgcSSk1uYsIQSRxBFkKa/QEeH/yO6Y=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=iLK1kV0bEUnBKSlVECk17rCfbiRFOK8e9m2VQ9Eam8FJnejzsncMSvQLAFJIvb1Pr
-	 Vrqp1T/Wu3PeHwdqqCKwH5HHxvI/GlAmEOIi3tfcPHkHrB8vT93is7PF8gwaUAqxb5
-	 JzSXmNuoes9ApijJJRYovbhvzhwBUi9fykKAQygrEKxHzTjISn8Gl4qVh9MTfnmzrh
-	 TNuhmnwPHHmX99KzVtklCPpGYF2T12iw9QXIf1B/lIEfIYXfpjXuCSQXEHjD38avMb
-	 Glyz74CIMcdU9eEVsElTX638WBp72ugjDLW4ZSO4Lo+vmLbkcaTgsemgoqv6sedF7Q
-	 8HzUvbG0bQqeA==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YYbI37Ve"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773742621; x=1805278621;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
+  b=YYbI37Ve1DwcnLOdyc1IFDHH/M5KC4JKjl3sYpf6RV2kN6nTpaFqulLS
+   f55dgdNA/OKDZKcGDoXDlA08roYg2y5CyRGExEIrgluXw9iM+FCZXOFUp
+   oKJsvlnBEgtwofH+AjsTFspkdmERgiM7vs1plt8oBQI06cVKebs5IFKYk
+   8yrqegNf41MCQq3saMo9k36PQr/dxfm+V+6uV8Ad6s88jJetq5hcZXzlg
+   anGxg9L9JauEmrl4o2ki/PX98Bv22CJKP/GVObaLC7ENVF4bxfR/g5qJj
+   wugOuO6soUYpp0U1hZv5wljAJlfMB1nfWqQvxt1VaAwVus1OSo0FvL2dE
+   A==;
+X-CSE-ConnectionGUID: TVOe+36MSs+0zOcZq1Y3BA==
+X-CSE-MsgGUID: 0AX8aTP8TQGnMkQYmJ+S3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74472222"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="74472222"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:17:01 -0700
+X-CSE-ConnectionGUID: YWwwfd8QSr+Yegj693ADXA==
+X-CSE-MsgGUID: Bjwo4+7+Q/OCfHxBHIvODg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="260126206"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:16:53 -0700
+Date: Tue, 17 Mar 2026 12:16:50 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <abkqEni3phP8dqqw@ashevche-desk.local>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
+ <abkLEgrZbdb03VWg@ashevche-desk.local>
+ <abkLY4AAQuFlTRC7@ashevche-desk.local>
+ <abkT_jpjIki6pvX1@shikoro>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Mar 2026 11:02:34 +0100
-Message-Id: <DH4YZ4XEWDVH.25QOLQ4QJ4PXD@kernel.org>
-Cc: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>, "Douglas
- Anderson" <dianders@chromium.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
- <stable@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>, "Daniel Scally"
- <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Fabio Estevam" <festevam@gmail.com>,
- "Frank Li" <Frank.Li@nxp.com>, "Heikki Krogerus"
- <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
- <lenb@kernel.org>, "Mark Brown" <broonie@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Pengutronix Kernel Team" <kernel@pengutronix.de>,
- "Rob Herring" <robh@kernel.org>, "Russell King" <linux@armlinux.org.uk>,
- "Sakari Ailus" <sakari.ailus@linux.intel.com>, "Saravana Kannan"
- <saravanak@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- <devicetree@vger.kernel.org>, <driver-core@lists.linux.dev>,
- <imx@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-i2c@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
- <netdev@vger.kernel.org>
-To: "Wolfram Sang" <wsa+renesas@sang-engineering.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid> <abkCPU3rxHI49N4_@shikoro> <abkD-VLprcbbEbB1@ashevche-desk.local> <abkF0GO01sMcOhvb@shikoro> <abkLEgrZbdb03VWg@ashevche-desk.local> <abkLY4AAQuFlTRC7@ashevche-desk.local> <abkT_jpjIki6pvX1@shikoro>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <abkT_jpjIki6pvX1@shikoro>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue Mar 17, 2026 at 9:42 AM CET, Wolfram Sang wrote:
->
->> > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes=
-?
->> > (I assume it's 64-bit SoC.)
->>=20
->> FWIW, with the given change it will be still inside 64-byte data structu=
-re
->> which most likely occupies a single cache line (before this patch and af=
-ter
->> as well).
->
+On Tue, Mar 17, 2026 at 09:42:38AM +0100, Wolfram Sang wrote:
+> 
+> > > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
+> > > (I assume it's 64-bit SoC.)
+> > 
+> > FWIW, with the given change it will be still inside 64-byte data structure
+> > which most likely occupies a single cache line (before this patch and after
+> > as well).
+> 
 > I consider this directon of the discussion irrelevant. If the number is
 > (maybe? That's to be discussed!) needlessly bigger than 0, then it
 > doesn't matter how big the number is.
->
+
+That's why it was written 'FWIW', so it doesn't worth :-)
+
 > Why don't you like the idea of taking the lock?
 
-Which lock are we talking about, the device lock? If so, please not use it =
-to
-protect arbitrary other structures.
+Like Danilo I am also not sure what lock protects fwnode accesses.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

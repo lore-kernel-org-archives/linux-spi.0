@@ -1,138 +1,114 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459DF3E716E
-	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 15:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C1284880;
+	Tue, 17 Mar 2026 16:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773760636; cv=none; b=s7TEHLViYHwvxxlT6sN5EWjJ5nvZeHiv3nNzuAmoKPlB5V2sJIVvnKSV/zhoK2+157+KCMPp1BRZz9dMWO+4VC32lunl4On+8Hqb6z4kewp7BgTUVp+kIAUBx7k/FGz5NgYe9phO6fAXBf5R2lJbTKJVzfEHh0AZZSuvPs+hiCY=
+	t=1773763262; cv=none; b=IvBJD1tUpstreucyZicV1V+yIi7ZSHFUhEHLLmp7BC4+Ajh7ZKy22pgH9jTTmT3IT+h6qqq5YBBJTAI8mRaDYsXhsUS3wFpgGE/ZJk1ht4XfsgDJbNlMPyI0DZBilK9l8aaa3CTEqGYSbIhcrm7vw7wAOHFJU3GNaagUdksT6H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773760636; c=relaxed/simple;
-	bh=30310tFKIh8x/3yyzC42vNsJR/nPWZblvYY82XDZEqw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PYtPefI2df8dpzOvQaqZvRA+HQCaLDBg3Jt+VSw4I4IMPwFCo5Y6oHSWkyv3qaOjwxLqkjnszJT25VXMXhc1t1R9ejFaSnMJarMdJZCj9hmkIiGH/1ycHHouS70mrfJkL6DSbg+j5biaRfbY0lw23GrKOP/5coPcSsFzKeNvjvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QQvpvM2E; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QQvpvM2E"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B74C74E425F5;
-	Tue, 17 Mar 2026 15:17:12 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8548C5FC9A;
-	Tue, 17 Mar 2026 15:17:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B4E010450613;
-	Tue, 17 Mar 2026 16:17:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773760631; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=HpYyC+ESVa00QuajRPpqFr8FQgzikq4Z2svdSNuwJ88=;
-	b=QQvpvM2EbLtLTfmSDKs3yu9GXEBWBukP/xZdkwHdilmyi8kUSnR5ookupTpLcgFw4sTxiF
-	0KQCD5WzB/rQ+RSbzB5nRtZnrttb2pvF7JUmteDrxdMCHaypTp+L39l789GzARM0WX/lqc
-	HTRDHrjqCuS4tEsJWb+23I154wt64EOqwd0bJthZBDLnLzm6+OZtK0hXvOp+ZEANoH4QoI
-	uLXFIPnbAKE2zMuDfdrVbeTRF9LrZ174/HC7DiB3PuNW9vTczrGWq/yat1ci1ljXQg5Ev0
-	2w1t+pFmH9lvZSL/iL/kHcfycUmJpfFg8KMJHhVaeFFa2u0U0TY0mQ61QpS+RA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
-  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
-  <tudor.ambarus@linaro.org>,  <pratyush@kernel.org>,  <mwalle@kernel.org>,
-  <linux-spi@vger.kernel.org>,  <devicetree@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-mtd@lists.infradead.org>,
-  <praneeth@ti.com>,  <u-kumar1@ti.com>,  <p-mantena@ti.com>,
-  <a-dutta@ti.com>, Frieder Schrempf <frieder.schrempf@kontron.de>,
- Eberhard Stoll <eberhard.stoll@kontron.de>, 
-Subject: Re: [RFC PATCH v2 11/12] spi: cadence-quadspi: restrict PHY
- frequency to tuned operations
-In-Reply-To: <874inlxde0.fsf@bootlin.com> (Miquel Raynal's message of "Fri, 13
-	Feb 2026 09:21:11 +0100")
-References: <20260113141617.1905039-1-s-k6@ti.com>
-	<20260113141617.1905039-12-s-k6@ti.com> <87zf5nf5g1.fsf@bootlin.com>
-	<fdcb19ff-c949-4538-8819-88720e514f04@ti.com>
-	<874inlxde0.fsf@bootlin.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Tue, 17 Mar 2026 16:17:06 +0100
-Message-ID: <87zf46cwp9.fsf@bootlin.com>
+	s=arc-20240116; t=1773763262; c=relaxed/simple;
+	bh=GV6iBi3pSdNVXd8yD+APD3iD5U8pEoZAWjKTtickfCc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ik9TulYnmUjn2BZMknzC8cQDR41wnDwSPfmVbpX2aieuHCcBbgZupRxw/wJ1Rd9H2krUjS5LOHmp0PWfBtuTZq+3eFNkoyTgkNVHnoZu8zOOqoiaXM4jAruzVW/SuENdTbCM8GVpudZfEXb767Klx7Wow6UqJ/Rbkmo4HFn8u70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 86DB61A02AC;
+	Tue, 17 Mar 2026 16:00:51 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf14.hostedemail.com (Postfix) with ESMTPA id D0DF733;
+	Tue, 17 Mar 2026 16:00:23 +0000 (UTC)
+Date: Tue, 17 Mar 2026 12:00:49 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+ io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner
+ <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon Maloy
+ <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
+ <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Oded Gabbay
+ <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>,
+ dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy"
+ <gautham.shenoy@amd.com>, Huang Rui <ray.huang@amd.com>, Mario Limonciello
+ <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, Srinivas
+ Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
+ <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Sumit Semwal
+ <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, Eddie James
+ <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
+ Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
+ <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, Matthew
+ Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, Harry
+ Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
+ amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
+ Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
+ <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
+ Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Chris
+ Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ linux-btrfs@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
+ at guarded call sites
+Message-ID: <20260317120049.6a60fa88@gandalf.local.home>
+In-Reply-To: <CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
+References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+	<1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com>
+	<20260312112354.3dd99e36@gandalf.local.home>
+	<219d015d-076b-4c80-8f63-88569115fdad@efficios.com>
+	<20260312114041.5193c729@gandalf.local.home>
+	<1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com>
+	<CAO7JXPjnnruhM5oC6xMgnYaQ9efzYFqMCFiJLNM3HCQ+ZeCiJw@mail.gmail.com>
+	<CAEf4BzbnfyhCqp0ne=2gRnVxp-mdGmuZwDeFRyhRYH+eDcz2-w@mail.gmail.com>
+	<20260312130255.6476e560@gandalf.local.home>
+	<CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: eiowgk7zro9iwz8nfcjutbggq8cc8mcu
+X-Rspamd-Server: rspamout08
+X-Rspamd-Queue-Id: D0DF733
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1/EZ/m41FERFj32TQCYYTyPgc7E7WqasUA=
+X-HE-Tag: 1773763223-363035
+X-HE-Meta: U2FsdGVkX1+o+fNh+z7n3E+PiUwqBZ68nGRwauLM+oVgtgpFs5MonLd3fqHB3rXD6BFYZexukj4pxl1VM45GwWde/4JCtp52s0VQK6pZ4Xqa4tvZvLsT4iKLFRi+KAPOR9ciwGsqu0KypbHl9hRVpw7ii/Socjjk14+RdTNwtL/9W3CF6CygSSKoXB/8hsfV+wEeLIu0+Vu7k1X1TT489JEuNfPyBVCGV+jWtTwa1GJMzmbQZEKNLjPpFlUNh0lxNaKm6XtoF736vhCLAK8SYy2ZwNIf/KDqLxnTevPHb/LrRG7US/kzn6HxPRPvbJNoIgt7v+iuU8ZuIBjndA9wdY4FVl8DtE3i2S6cBnN1WxdJr/SxTYBW2cUmiC+3UkuX
 
-Hi Santhosh,
+On Fri, 13 Mar 2026 10:02:32 -0400
+Vineeth Remanan Pillai <vineeth@bitbyteword.org> wrote:
 
-+ Frieder and Eberhard
+> >
+> > Perhaps: call_trace_foo() ?
+> >  
+> call_trace_foo has one collision with the tracepoint
+> sched_update_nr_running and a function
+> call_trace_sched_update_nr_running. I had considered this and later
+> moved to trace_invoke_foo() because of the collision. But I can rename
+> call_trace_sched_update_nr_running to something else if call_trace_foo
+> is the general consensus.
 
-On 13/02/2026 at 09:21:11 +01, Miquel Raynal <miquel.raynal@bootlin.com> wr=
-ote:
+OK, then lets go with: trace_call__foo()
 
-> On 07/02/2026 at 00:57:04 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
->
->> On 05/02/26 23:17, Miquel Raynal wrote:
->>> Hi Santhosh,
->>>=20
->>>> +	/*
->>>> +	 * PHY tuning allows high-frequency operation only for calibrated
->>>> +	 * commands. Uncalibrated operations use safe non-PHY frequency to
->>>> +	 * avoid timing violations.
->>>> +	 */
->>>> +	if (cqspi->ddata->execute_tuning && f_pdata->use_phy &&
->>>> +	    (cqspi_op_matches_tuned(op, &f_pdata->phy_read_op) ||
->>>> +	     cqspi_op_matches_tuned(op, &f_pdata->phy_write_op))) {
->>>> +		cqspi_configure(f_pdata, op->max_freq);
->>>> +	} else if (cqspi->ddata->execute_tuning) {
->>>> +		/* Use safe frequency for untuned operations */
->>>> +		cqspi_configure(f_pdata, f_pdata->non_phy_clk_rate);
->>>> +	} else {
->>>> +		/* No tuning support, always use requested frequency */
->>>> +		cqspi_configure(f_pdata, op->max_freq);
->>>> +	}
->>> Shouldn't we handle this at the core level? We know what kind of
->>> operation pattern we provided, so it is easy to set the correct
->>> frequency in the operation structure.
->>> Can you please make this happen? Perhaps you can return the operation
->>> frequency once the calibration is successful (in the read and write op
->>> templates maybe?) so this can be picked up by the core and used for the
->>> following operations. This way the controller driver no longer needs to
->>> check if the operation has been tuned or not, it can just look at the
->>> frequency. When using the highest frequency, PHY tuning must be
->>> used/enabled, otherwise not.
->>
->> No, Miquel, this may not be correct. There can be cases where an
->> operation does not require tuning but still can run at maximum
->> frequency (166 MHz, for instance).
->
-> This is currently not the case. Currently you tune for one or two ops
-> (read/write) and you enable PHY tuning only on these. Do you plan on
-> adding such a feature? If not, I would not bother with this now.
->
->> In such scenarios, simply setting
->> op->max_freq to the maximum frequency value and deciding whether to
->> enable tuning based on an op->max_freq comparison would not be
->> sufficient.
->
-> If there are such cases, can they be listed? I am sorry but I fail to
-> see where this would not work. Any examples to share?
+The double underscore should prevent any name collisions.
 
-I don't know if you got my feedback, but I would like to have all cases
-in mind to decide in which direction we must go. Especially, I would
-like to make the bridge with Frieder's work who is also "playing" with
-the maximum frequency.
+Does anyone have an objections?
 
-We need to clarify our mental picture of the max_freq handling. How it
-should be derived, how autonomous shall the SPI controllers be wrt this
-value, shall we flag operations that can go faster and if yes, can we
-attach a meaningful value to these operations, etc etc.
-
-I feel like this is the part that needs extra thinking. The rest of the
-series is promising. I would like us to clarify the needs, maybe propose
-some kind of drawing/slides or even take half an hour to discuss in a
-call once we have all cases in mind.
-
-Thanks,
-Miqu=C3=A8l
+-- Steve

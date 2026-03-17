@@ -1,126 +1,85 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C282390C82
-	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 09:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442E835838B;
+	Tue, 17 Mar 2026 10:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773740699; cv=none; b=QEkf67ZHce+X9PQC1StSHO9QQCtL+84D7B1hbl/lbSJejx917WfsBXqttjgKfDCezIfg3qPFMFLOgdsl5zqsM03p7rvzXAxMjYO6g6pqE7Au0Cu8BJXLgUoILLpNmwwlTlfPHlltWjQc8OFQKh66WfzJb5/yRODHtO1tXYH1nug=
+	t=1773741762; cv=none; b=jCzAFskxAKNxosihU3I3/FgNDWb1M4Egjm1mz5r2XvByxTtafbKNawEQREpItUX91tg1x5ZyC2y0obSVRaO+PyCLDKTaAN1lc7hPwvhwBkQgf3RZ5nz4dM2c36wwF91Iqb+FH8ZSWXIa1dlu296BCHNpGHToHMQgU0WNogf9M+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773740699; c=relaxed/simple;
-	bh=rbkGXZUTbzl4wjQApSCgMFx0j1VLIx6SsyEX3z6TrXM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lIByhXzlF38Ld9EDMQ4czMSYhqrJZI+eesaaQEEkxgOHzlHnnUdbemEae61g13KU8N4fGaZVCmn5gCKrjNvc9RlcZ6pi6bIFzDmY/8ynEtc1300LV1iXUERdz3EbtQUGfu5ZHtwNHX2/nPxz+ke/iKAHc0jvaVg4a6iDhI6Cixw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w2Qyq-0002yP-8g; Tue, 17 Mar 2026 10:44:52 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w2Qyp-000iXV-2z;
-	Tue, 17 Mar 2026 10:44:51 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A5B83505B19;
-	Tue, 17 Mar 2026 09:44:51 +0000 (UTC)
-Date: Tue, 17 Mar 2026 10:44:51 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-Message-ID: <20260317-beautiful-intrepid-chihuahua-6113b0-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
- <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
- <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
- <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
- <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
- <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
- <b6787850-11cf-4b38-a5ea-da2c5d0811f4@sirena.org.uk>
- <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
- <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
+	s=arc-20240116; t=1773741762; c=relaxed/simple;
+	bh=zOhE3MyoOIAA0bgcSSk1uYsIQSRxBFkKa/QEeH/yO6Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=YiJ4YCIVG2AZ7kT+KrGi37ikAEv67pMEp6W7gfirU3nxzrrAZJtLF+dplIuaEl/MJ62HVkbaFxZlrJI2Lf0xhyYDcCLPAa0TzxyUdz+4hlBpNkSIoEbvV65GC2lSSLw3qNj1tfCBoBJu5K1RStwN0clVIULujcOL/bK4p3S+nWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLK1kV0b; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLK1kV0b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0BCC4CEF7;
+	Tue, 17 Mar 2026 10:02:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773741761;
+	bh=zOhE3MyoOIAA0bgcSSk1uYsIQSRxBFkKa/QEeH/yO6Y=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=iLK1kV0bEUnBKSlVECk17rCfbiRFOK8e9m2VQ9Eam8FJnejzsncMSvQLAFJIvb1Pr
+	 Vrqp1T/Wu3PeHwdqqCKwH5HHxvI/GlAmEOIi3tfcPHkHrB8vT93is7PF8gwaUAqxb5
+	 JzSXmNuoes9ApijJJRYovbhvzhwBUi9fykKAQygrEKxHzTjISn8Gl4qVh9MTfnmzrh
+	 TNuhmnwPHHmX99KzVtklCPpGYF2T12iw9QXIf1B/lIEfIYXfpjXuCSQXEHjD38avMb
+	 Glyz74CIMcdU9eEVsElTX638WBp72ugjDLW4ZSO4Lo+vmLbkcaTgsemgoqv6sedF7Q
+	 8HzUvbG0bQqeA==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qdry5lnhogdwtgll"
-Content-Disposition: inline
-In-Reply-To: <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
-
-
---qdry5lnhogdwtgll
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
- fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Mar 2026 11:02:34 +0100
+Message-Id: <DH4YZ4XEWDVH.25QOLQ4QJ4PXD@kernel.org>
+Cc: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>, "Douglas
+ Anderson" <dianders@chromium.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ <stable@vger.kernel.org>, "Andrew Lunn" <andrew@lunn.ch>, "Daniel Scally"
+ <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Fabio Estevam" <festevam@gmail.com>,
+ "Frank Li" <Frank.Li@nxp.com>, "Heikki Krogerus"
+ <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
+ <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Mark Brown" <broonie@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+ "Rob Herring" <robh@kernel.org>, "Russell King" <linux@armlinux.org.uk>,
+ "Sakari Ailus" <sakari.ailus@linux.intel.com>, "Saravana Kannan"
+ <saravanak@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ <devicetree@vger.kernel.org>, <driver-core@lists.linux.dev>,
+ <imx@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-i2c@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+ <netdev@vger.kernel.org>
+To: "Wolfram Sang" <wsa+renesas@sang-engineering.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid> <abkCPU3rxHI49N4_@shikoro> <abkD-VLprcbbEbB1@ashevche-desk.local> <abkF0GO01sMcOhvb@shikoro> <abkLEgrZbdb03VWg@ashevche-desk.local> <abkLY4AAQuFlTRC7@ashevche-desk.local> <abkT_jpjIki6pvX1@shikoro>
+In-Reply-To: <abkT_jpjIki6pvX1@shikoro>
 
-On 16.03.2026 18:49:15, Mark Brown wrote:
-> > > Oh, dear, so that's potentially going to go badly if there's a SoC wi=
-th
-> > > a bigger FIFO that didn't also increase the watermark field width.  We
-> > > should at least warn about that, and ideally do something sensible.
+On Tue Mar 17, 2026 at 9:42 AM CET, Wolfram Sang wrote:
 >
-> > Good idea, I'll add a warning if the FIFO is bigger than the watermark
-> > field.
+>> > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes=
+?
+>> > (I assume it's 64-bit SoC.)
+>>=20
+>> FWIW, with the given change it will be still inside 64-byte data structu=
+re
+>> which most likely occupies a single cache line (before this patch and af=
+ter
+>> as well).
 >
-> > To handle this situation I see 2 options:
-> > - warning + limit the FIFO to the usable size due to the currently
-> >   hard-coded watermark width - this will result in reduced throughput
-> > - increase the watermark mask to 8 bits - which is basically how the
-> >   unpatched driver works.
-> >   As outlined in my previous mail, the other code in the driver takes
-> >   care that the watermark stays within the limits.
+> I consider this directon of the discussion irrelevant. If the number is
+> (maybe? That's to be discussed!) needlessly bigger than 0, then it
+> doesn't matter how big the number is.
 >
-> I guess it depends how optimistic we are about hardware engineers
-> keeping the FIFO and watermark depths in sync.
+> Why don't you like the idea of taking the lock?
 
-Right, we're talking about FSL/NXP hardware :D
-
-> The first option is more
-> defensive, but like you say it'll hit performance on future devices that
-> do expand the FIFO.  I guess I have a slight preference for that?
-
-Yes - I'll increase the watermark width to 8 bits and add a comment next
-to the GENMASK.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---qdry5lnhogdwtgll
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabkikAAKCRDMOmT6rpmt
-0uTHAP9DENCerrIPfeSLS2ISSv6ZjZ+tZ99q8JdjYRfKE3zwnwD/W+xi9wJnZykB
-CSsLfSxOtU+ClhZ4eC0ARhnCMQNb6A8=
-=OlS7
------END PGP SIGNATURE-----
-
---qdry5lnhogdwtgll--
+Which lock are we talking about, the device lock? If so, please not use it =
+to
+protect arbitrary other structures.

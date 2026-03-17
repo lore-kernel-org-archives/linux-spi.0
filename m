@@ -1,51 +1,37 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90B37107F;
-	Tue, 17 Mar 2026 10:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E113A6F0C
+	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 10:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773742622; cv=none; b=n5Gjd6NdyL5mpGybkvNitR6HBjQQcF2c42yhSh0GctfuU71bzSlLBJuVAOny6iOiPcemAJscxNyYtnNll/Mf067f9k69yW9bqK10qWuVDIJ+WCCQiTIi32ctYwP2E3JsgOWiwv2YbsUx2CUqy604VhkVHyFHDu86KNkuC62MB3c=
+	t=1773743677; cv=none; b=p63pQxYfpscP5Zyj0O7X+cAW2dQPakIAKSTKbbXiMMu2qfxxkigk+jqwrNSyS0d3+uwkmBmXmeBWsnjSZ1A8z2PVsIdTCCApHPvLNyU+wmqO6mym7cWfabiG8p3Xdv5KR//2Ngcl5HeSz+KdaGSupfMxCJh6pDQI2OU6GNRAh2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773742622; c=relaxed/simple;
-	bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
+	s=arc-20240116; t=1773743677; c=relaxed/simple;
+	bh=FlGrEkibMU7jAxa/nAeVCmJI/B374Ki2x5uFqqjET4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rm299cs6U4o38mzIJnMJTgLpa1bTVUmGuM/1UAgALq5m2eBHDgyGEYjBloq5vyS4h1B9/YETXCP+v6V4pheIwOGr58fCCpR1d2ngmas7WfKVNGhUFVEksVsSufTmlcIWEzfIqDx+g6qkasvMKFOMJ8OUBRmM2cpg+PJa3W6To+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YYbI37Ve; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=NAFFHmGJ2rdLIg32oHAQXO+UC3kZen1mXli3JIZ/kxZ2Eh30WBCIF6ZR/y6t50ckfsdsrmhFaoqIFSBdKm7BrB/SoLRAuhZfmBeGV6dPZhRR51+9CauJH+H7u4K3G+Snh55aHT6mzB5H5G6YFm9Vxz0tEkAjRRYgNGAmelUaDMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=eFh0XkAG; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YYbI37Ve"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773742621; x=1805278621;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=I2H5RJoMGFDqFLBEur/g+zezU/OdI5LfzcovXuA1vSY=;
-  b=YYbI37Ve1DwcnLOdyc1IFDHH/M5KC4JKjl3sYpf6RV2kN6nTpaFqulLS
-   f55dgdNA/OKDZKcGDoXDlA08roYg2y5CyRGExEIrgluXw9iM+FCZXOFUp
-   oKJsvlnBEgtwofH+AjsTFspkdmERgiM7vs1plt8oBQI06cVKebs5IFKYk
-   8yrqegNf41MCQq3saMo9k36PQr/dxfm+V+6uV8Ad6s88jJetq5hcZXzlg
-   anGxg9L9JauEmrl4o2ki/PX98Bv22CJKP/GVObaLC7ENVF4bxfR/g5qJj
-   wugOuO6soUYpp0U1hZv5wljAJlfMB1nfWqQvxt1VaAwVus1OSo0FvL2dE
-   A==;
-X-CSE-ConnectionGUID: TVOe+36MSs+0zOcZq1Y3BA==
-X-CSE-MsgGUID: 0AX8aTP8TQGnMkQYmJ+S3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="74472222"
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="74472222"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:17:01 -0700
-X-CSE-ConnectionGUID: YWwwfd8QSr+Yegj693ADXA==
-X-CSE-MsgGUID: Bjwo4+7+Q/OCfHxBHIvODg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
-   d="scan'208";a="260126206"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 03:16:53 -0700
-Date: Tue, 17 Mar 2026 12:16:50 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="eFh0XkAG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=FlGr
+	EkibMU7jAxa/nAeVCmJI/B374Ki2x5uFqqjET4Q=; b=eFh0XkAGzMPNjtcmbgff
+	QOZPMTGhym26jBZOfBrQp5jdXXOXo7UUlMfNPmPoWR8Dxu7QTbJLJ6CzfclOrJ7N
+	5pAJufP17U/rg1k57+UhxOkrGs3RKsZLMRDmmhRWfZAznOWUisF92lPnxuozG5Q8
+	YCnIWrCduQMe+FABVERNeM8QN85Sby1Y4DRnhpRJ1T/wzRhpZFth+STBXAJpK7LD
+	RDtZgOlUxY0GXh+SiBHs6/pv7JDSeDyxsUCSD7HC+zgXPumwIsWLe14e5/TIKZcg
+	fkFC8tf3AZXbE2owx+TISJ6/NRNPs36iNKMwuQmFeYGCAWxM9hkc04XQIfij//Ds
+	QA==
+Received: (qmail 235590 invoked from network); 17 Mar 2026 11:34:30 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 17 Mar 2026 11:34:30 +0100
+X-UD-Smtp-Session: l3s3148p1@pjNn4TVNpshSwmvS
+Date: Tue, 17 Mar 2026 11:34:30 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Douglas Anderson <dianders@chromium.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
@@ -69,7 +55,7 @@ Cc: Douglas Anderson <dianders@chromium.org>,
 	linux-spi@vger.kernel.org, netdev@vger.kernel.org
 Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
  thread safe
-Message-ID: <abkqEni3phP8dqqw@ashevche-desk.local>
+Message-ID: <abkuNpwmYGa6qJPZ@shikoro>
 References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
  <abkCPU3rxHI49N4_@shikoro>
  <abkD-VLprcbbEbB1@ashevche-desk.local>
@@ -77,6 +63,7 @@ References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid
  <abkLEgrZbdb03VWg@ashevche-desk.local>
  <abkLY4AAQuFlTRC7@ashevche-desk.local>
  <abkT_jpjIki6pvX1@shikoro>
+ <abkqEni3phP8dqqw@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -85,31 +72,11 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abkT_jpjIki6pvX1@shikoro>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <abkqEni3phP8dqqw@ashevche-desk.local>
 
-On Tue, Mar 17, 2026 at 09:42:38AM +0100, Wolfram Sang wrote:
-> 
-> > > What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
-> > > (I assume it's 64-bit SoC.)
-> > 
-> > FWIW, with the given change it will be still inside 64-byte data structure
-> > which most likely occupies a single cache line (before this patch and after
-> > as well).
-> 
-> I consider this directon of the discussion irrelevant. If the number is
-> (maybe? That's to be discussed!) needlessly bigger than 0, then it
-> doesn't matter how big the number is.
 
-That's why it was written 'FWIW', so it doesn't worth :-)
+> Like Danilo I am also not sure what lock protects fwnode accesses.
 
-> Why don't you like the idea of taking the lock?
-
-Like Danilo I am also not sure what lock protects fwnode accesses.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+This is basically the question I asked to Doug. If he also don't see
+one, let's take this patch as is.
 

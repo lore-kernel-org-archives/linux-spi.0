@@ -1,64 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05AF363C4F
-	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 18:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD54C3F7896;
+	Tue, 17 Mar 2026 19:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773771611; cv=none; b=VkTb/wyKxVPMH2oWJz2iuFrGjTvnqokV59yipUWvp3vN5lH2SJcBoix2lnI2V6gzqkr9R+4vRtTIO4AF1tcyqonWJYlwa95zG8beGrHuBvW3qjyv3EGuaiitUak2x2oeFKsBSeK9pkrRUP9sx21o5vOklUrLRyY4/9fXYKOxcik=
+	t=1773774076; cv=none; b=P5qt3BIFI9L4ORph9Jdq7lokl/onsvU8Jh83bT83LI2JB3RMk6bcyVVQP3H8P2WHMGv9qAgcSVVfqWGKTcHXfeEsXseblO2tFTvU72qngroRByuPgruBtp3IsXY5gpHVmMN7/QbbjIcm9P5KXrucxVkdXTskLl487LkPmTKxS7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773771611; c=relaxed/simple;
-	bh=xNGZBdBiWu189//1Udy/dtBPpqmAT+MBUSFMnQCG5Vk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=cWwvCnlIO1W37BWQpj+OWC7AcxHaYWp20B/oT07Bcte3SInZLJ552zmUyYsuulv3KoflAGHiDUtVb+/AeGp38agoyA4JrHs+1ngb5SI52I5d6MYGwUxZbvlZCF1SlY2zStYKEkLLGiB0/+3UPOhAXW+G5tKYJ9BpYMnDMz6fmwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOQXYDUq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773774076; c=relaxed/simple;
+	bh=70uFBpIkG6zJn31CeBEkpGdC6DKn/lCnoJjmFPoaaqU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TLTQGoTnBhUI+KczDYpufqsuYPlKzgoJp7FQODLqFRJq6MQQyMcPXLVe+prNfpETNgVFBlUO8d85GC1XDto+m78Uh9FrOqjYjr+XujW2DnzHogeIBjFkOS2i4jDKEdQ8BdQ/2FsVMFkMnCfNTU0vyu31DkXrOgFWNu/AniT90Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RQvdaKw2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOQXYDUq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA74C4CEF7;
-	Tue, 17 Mar 2026 18:20:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RQvdaKw2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDDFC4CEF7;
+	Tue, 17 Mar 2026 19:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773771611;
-	bh=xNGZBdBiWu189//1Udy/dtBPpqmAT+MBUSFMnQCG5Vk=;
-	h=Subject:From:Date:To:From;
-	b=aOQXYDUqEDzqEg+JURqQba9hbv9luqUfZ6uS2z29NZmTZMb7yOmiG4Li8nlmnKdBT
-	 s3rJKdtGkXj+3LURMASNTBz//wBKbN6FCoYaahTCdgc2naYfFIDvoX+G9p8i1Sxco8
-	 yoI72+TMH1J7gckBy+fBUSGwollBkzWe7Li7zxQ7naeXGNTqf+KUSq3nC4emhva3iX
-	 Wux9XoDzpOx5HMVBiPaMrK/dzKbLdwbx8apDjRtZ+I3/HlYrSOypMJjWRCD6DGTr4F
-	 jhWNoSIV1rU4x+oB+MEOJmlyNU7XBH71nv+M1rquJAbk/KLJkENnGuiedov7yqQcC0
-	 YlQ6HtLE/GVmA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7F8CF3808200;
-	Tue, 17 Mar 2026 18:20:04 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1773774076;
+	bh=70uFBpIkG6zJn31CeBEkpGdC6DKn/lCnoJjmFPoaaqU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=RQvdaKw2Q9zPjO9xCkTC9d8HT8RZoip1L8X6aIO4ww/rRAcu6xwQDtjvVihmjFooQ
+	 76yxIwmh7U4WhDcqd3NqfmXHOWLDnDOb2lBFOst8Bzovpca3gVRwqY1VQbS57/GT2o
+	 eWSXM2Bo9eMdb/6tfzcwThynl7dtXxaFPpbY3jQ66XbOD1fK3Ysj+zNvdNX7zMe45y
+	 OGMQ1caYPihS9/uLWVXHiNgFl5UndC57gvDNRQq1VupuakzQ0eX+3rh3WfVh0G9O1C
+	 0t38SiwPemvpmoKpSdyO4Tf54PYa90+k4Wxifc8BXnYgBQIToF3x7gDmgsHoYLBtJ+
+	 JAGYiC+CFOXHA==
+From: Mark Brown <broonie@kernel.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bjorn.andersson@oss.qualcomm.com, 
+ konrad.dybcio@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com, 
+ jyothi.seerapu@oss.qualcomm.com
+In-Reply-To: <20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com>
+References: <20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com>
+Subject: Re: [PATCH v1] spi: geni-qcom: Check DMA interrupts early in ISR
+Message-Id: <177376733121.112898.6684043486446588264.b4-ty@b4>
+Date: Tue, 17 Mar 2026 17:08:51 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177377160310.4150137.9340211735427374477.git-patchwork-summary@kernel.org>
-Date: Tue, 17 Mar 2026 18:20:03 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-e1b5b
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1114; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=70uFBpIkG6zJn31CeBEkpGdC6DKn/lCnoJjmFPoaaqU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpuaT56I0NutYsaNTM2u1wINFRWmitgr7ISEF3J
+ HQ5oaJym+iJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCabmk+QAKCRAk1otyXVSH
+ 0FmpB/40rGdbaevWLi2Fnyvedp6jEvN7FHuR3ZUj3zkqCzPLFtEsEQi714CD5098IIHFVIa61Ux
+ B8N3lT/fU+2UYL+RNZxj9ikAXDVMhc3YIglV6CsqPDNyWDxHUMqtgo9H26gMl88nxGKxELHtxK8
+ 6F5WDYemrGGV4996s0OnEZ1gs0kZU59qmdDrdRRo/Gc3ALu/nc9HNnmmzQ9BQ2/i4FGObu6uGVd
+ zT41/yEUws4w9YV5cm6SGY6b5o73RpW95iE6pAuoel3hBeve/5E2kg3TUsY95a/VuVZ1yChDAz3
+ cnCg35Czy/BwnYjaR5Rwc5bRJmNQRj8J+D4jxGk3SSMTVmwb
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+On Fri, 13 Mar 2026 21:49:01 +0530, Praveen Talari wrote:
+> spi: geni-qcom: Check DMA interrupts early in ISR
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: [v1] spi: geni-qcom: Check DMA interrupts early in ISR
-  Submitter: Praveen Talari <praveen.talari@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1066462
-  Lore link: https://lore.kernel.org/r/20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
 
+Thanks!
 
-Total patches: 1
+[1/1] spi: geni-qcom: Check DMA interrupts early in ISR
+      https://git.kernel.org/broonie/spi/c/8c89a077ca79
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

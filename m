@@ -1,80 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BE636EAB9;
-	Tue, 17 Mar 2026 17:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E750637F014;
+	Tue, 17 Mar 2026 18:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773768959; cv=none; b=qdunNrR7KnsaTzfNjk/CS4LkIGLUmGjkJRd3wkj+SVp/DmKKH7xr0N8I2WMZBGc+IsPI9mmugoTOHAUylzSMaGh5zVifddDo4S3S/eLue2aNPNzDEPGYHhcaS8tv17lOoL2jenNGWt2LN+44lsChszOnRq8g58AjQ4r6vQkPpCw=
+	t=1773771052; cv=none; b=W89fcN8JTtG0qSOt22vhh+w2kZ51aPaVmBKCLMbH0/zG59idudFgGKUwlW1YrkOl7HTd6cXJHhA2Mte9g09d4EWBRVXEpEnFk/J2H6V1s1WPVn2DFlspnjfopml2HeAQu17fSnxJUab9Sz0jhyXStIVnuYdh3Jz5RxkDDHQrjLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773768959; c=relaxed/simple;
-	bh=nL58ZTyQgQKeDQgN2UccFUvwuyhxP5wYCPpEzCsd5nY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a83WgulwzZ5sCmIRldtWB7RWRsxoudjAih89SkYIOkkhnGyuOS8hQXq9h6Bouox6fbAcm8uw2kQqvYatiwH4CUfcsvx8xo6Tuw3PIKCna2l8Tm/YhlhkprsFBbB8XRbv9pOuu4oMi+4Y8puMLkTuQSOyMTO2Mnhm74vNbjR2Ix0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gR1WX1Pd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773771052; c=relaxed/simple;
+	bh=RZvn1dic6EIVlx7N2+rM18xb8N8/qb8v0jUhv5SSeF8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sbg2OaWyl/f70j/Rxfyl3gpPN5e0gwvoqRDA0zd1XwW2Zbk/OuKUXL+t0pFwp0jHBFz5HueCVz4t3l+yMCNo1lJvKYetUs3YshqkbylgCIoky3cpLMJjzK5H1gQVbOIkp0s3Wx2huff2uBbxu8gsJb1WZLwzxsnds8CG3LMi5sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDCqJ8iD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gR1WX1Pd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B83C4CEF7;
-	Tue, 17 Mar 2026 17:35:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDCqJ8iD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F95DC4CEF7;
+	Tue, 17 Mar 2026 18:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773768959;
-	bh=nL58ZTyQgQKeDQgN2UccFUvwuyhxP5wYCPpEzCsd5nY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gR1WX1PdxZLsTNofifTCt//xBohxPiKCWGQV51kn0MRunWIrCvncGfheigoO45CVK
-	 9cKpS+OyhP8F73lOgN/8lciZrNj6+ujqb7EDqoAAghVk8x4lLQSLcDOtNCpcaKEg7P
-	 qyT5CJwsrN09ZWbvRwh+KiSaOGEb1+hG0ASV9rRDIo692oFPy/8pikXmc/kBo7BvQO
-	 qkj5s+LwsvcWhiu9uAiu1CxedUH7FuDL250C8BOpZxY3nnghvmJPTB8m2C2rw9OqDW
-	 kmpytxOWAnRopjXGl0lTpIZbMRhhSDDGPdOscexft7WOhjNtSjh4oFFWVmmkKLOAry
-	 fUkpxI9tFd+cQ==
-Date: Tue, 17 Mar 2026 17:35:55 +0000
+	s=k20201202; t=1773771051;
+	bh=RZvn1dic6EIVlx7N2+rM18xb8N8/qb8v0jUhv5SSeF8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=gDCqJ8iDiOVqxQgLn7uBkZSx/AWRK6sCSAo8+44HT75A7fvdv93HM8zUsTeXc9bDZ
+	 9j3rEu7nkeheE8fq1XVbL+M/6/zfuGIunuV/YQreyJcBYqP86eJ9vjCkIT12psg348
+	 yBTNMSjSy/d3i4taf2g21Y9sud7DFak73aYx+e/kvU3Fdzw3ys/nzLg5UPx7gvpfqN
+	 aEnZ+B2PZXthpOfTjOSTbpxBUJZo103B1NXAgKc8Sj4lhgkXxmfzX8dHHKJmn+2loz
+	 Cyu1u6fo6GV0fQ7q1zrUw5F/ofo8+0/6bEHy1JEwnY3vGnoHJYoLVm57eXSyVLjbmm
+	 ya/fMcfPDFfWA==
 From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
-	Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>,
-	Prasad Bolisetty <pbolisetty@axiado.com>,
-	Harshit Shah <hshah@axiado.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: axiado: fix use-after-free on probe failure
-Message-ID: <df8998fc-f3c9-48a6-a4a4-33a8726bb386@sirena.org.uk>
-References: <20260312102811.29223-1-johan@kernel.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bjorn.andersson@oss.qualcomm.com, 
+ konrad.dybcio@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com, 
+ jyothi.seerapu@oss.qualcomm.com
+In-Reply-To: <20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com>
+References: <20260313-spi-geni-qcom-fix-dma-irq-handling-v1-1-0bd122589e02@oss.qualcomm.com>
+Subject: Re: [PATCH v1] spi: geni-qcom: Check DMA interrupts early in ISR
+Message-Id: <177377104979.579754.15377826467433145988.b4-ty@b4>
+Date: Tue, 17 Mar 2026 18:10:49 +0000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CZljpLV+cYBxkItS"
-Content-Disposition: inline
-In-Reply-To: <20260312102811.29223-1-johan@kernel.org>
-X-Cookie: Must be over 18.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-e1b5b
 
+On Fri, 13 Mar 2026 21:49:01 +0530, Praveen Talari wrote:
+> The current interrupt handler only checks the GENI main IRQ status
+> (m_irq) before deciding to return IRQ_NONE. This can lead to spurious
+> IRQ_NONE returns when DMA interrupts are pending but m_irq is zero.
+> 
+> Move the DMA TX/RX status register reads to the beginning of the ISR,
+> right after reading m_irq. Update the early return condition to check
+> all three status registers (m_irq, dma_tx_status, dma_rx_status) before
+> returning IRQ_NONE.
+> 
+> [...]
 
---CZljpLV+cYBxkItS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Thu, Mar 12, 2026 at 11:28:11AM +0100, Johan Hovold wrote:
-> The SPI controller allocation is device managed and must not be released
-> before returning on probe failures (e.g. probe deferral) to avoid
-> use-after-free.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Felix Gu already sent a version of this which was applied, please check
-if there's anything remaining to be fixed here.
+Thanks!
 
---CZljpLV+cYBxkItS
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: geni-qcom: Check DMA interrupts early in ISR
+      https://git.kernel.org/broonie/misc/c/8c89a077ca79
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmm5kPoACgkQJNaLcl1U
-h9CrpAgAgDpv5+EP99knD/ps1fLFaukjL88bAiAylF+AD69XHGUPyVAfOP6ttgi1
-WpGU5a7OQA1QVs9BfvT9KftHt/7qZGGt+z34+x9+KYK8PhmBzqCM3mapxF7X1sQS
-U4ZRLvsrU8FEe4IO/qXzD6hzgIbNWiVjEWJrduuQjyx3cU91+3XIXpUlMuOj0tLh
-Af0Acg0DL33bO6HQFhF78lVSJD+zaRov7xYZiMlqqQzgidYQEQRcpP/ikJIvbUOV
-8lhGc0Zw6Km6MlCFv336FnmFQjsjtv/VOwVIwSKdGSsxcguIxBkxs/ik7n0CPblh
-1eMPXt0nxCNqxYcYeLLfUe2YKDgEcQ==
-=EADA
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---CZljpLV+cYBxkItS--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

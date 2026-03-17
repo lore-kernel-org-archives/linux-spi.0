@@ -1,102 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5E35CB7C;
-	Tue, 17 Mar 2026 09:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C282390C82
+	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 09:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773738857; cv=none; b=TeXRv+etojWGSqkWM5J3Zi+KIihLsMDtF+aHSlIeb3WNcY17xe2Ew97b/fVOleaqO1+4e6q5qYwGuDf0aq/V71LCRb22dSt+6Icr9eU348UlociuXgFZVv0jEh3ujTPpmI5HZVdnThQZlfeaOyUIH0k9wYyzC9gkXG3ZsS0hop4=
+	t=1773740699; cv=none; b=QEkf67ZHce+X9PQC1StSHO9QQCtL+84D7B1hbl/lbSJejx917WfsBXqttjgKfDCezIfg3qPFMFLOgdsl5zqsM03p7rvzXAxMjYO6g6pqE7Au0Cu8BJXLgUoILLpNmwwlTlfPHlltWjQc8OFQKh66WfzJb5/yRODHtO1tXYH1nug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773738857; c=relaxed/simple;
-	bh=VqaxHKKej1VPNV8dxEaXOdj9pYOUPcwOgCKCVcNAmMk=;
+	s=arc-20240116; t=1773740699; c=relaxed/simple;
+	bh=rbkGXZUTbzl4wjQApSCgMFx0j1VLIx6SsyEX3z6TrXM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+w9ywUJYisoJ+bQZEOhuvinjKlipVFntneZ8+CU+pfkXNMlpzRjn+ojEFMUT/3hbYyhoaAJwXAfVqs6/sSLVOfGKduiIrxZZ7rkzGbzb+mwkR0PLfVmdKoi4Vy1B8gu+4BfZZRUNyN7or2sMIoQ9Wd5+VeZMKZrYkc0PFrcj+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2rc01gu; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2rc01gu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69EEC4CEF7;
-	Tue, 17 Mar 2026 09:14:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773738856;
-	bh=VqaxHKKej1VPNV8dxEaXOdj9pYOUPcwOgCKCVcNAmMk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D2rc01guiw9Cpys9eOyvTfYMYhUXyqWFR22DiHTmUiGXY0YS9Z2+lIoJQzFsPuGYc
-	 6ssP+5IMaxl0RfuzBfH4ByEZVINpBQ2amGQu+pv3jPhUOjGgEHA6t/PNDhRPBH+kYd
-	 QheyiFU22YkTa24E3P/SZVbV8+zz+KPyqDx4Od6WnTYDcA6ZsLU+wka2TEZqle54iG
-	 V2Oa43NXgpUNu6F8Fap2EQVbCm17uGiW5pPfHjn/SORnHV4mHj5DTyT5HjHWzqfCoR
-	 EXxotjwvhj9jPx1jdoKv3QF6pn/kHi1GDuRFwb9E793qc14KYZv8aTVX6KzBXDJOp8
-	 w0Dy0QKxcnasQ==
-Date: Tue, 17 Mar 2026 11:14:11 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>, Yury Norov <yury.norov@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Mark Brown <broonie@kernel.org>, Steve French <sfrench@samba.org>,
-	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: Re: [PATCH] lib: count_zeros: fix 32/64-bit inconsistency in
- count_trailing_zeros()
-Message-ID: <20260317091411.GQ61385@unreal>
-References: <20260312230817.372878-1-ynorov@nvidia.com>
- <20260313171855.GA1744604@nvidia.com>
- <abRUGVW6ZuGioa4Z@yury>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lIByhXzlF38Ld9EDMQ4czMSYhqrJZI+eesaaQEEkxgOHzlHnnUdbemEae61g13KU8N4fGaZVCmn5gCKrjNvc9RlcZ6pi6bIFzDmY/8ynEtc1300LV1iXUERdz3EbtQUGfu5ZHtwNHX2/nPxz+ke/iKAHc0jvaVg4a6iDhI6Cixw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w2Qyq-0002yP-8g; Tue, 17 Mar 2026 10:44:52 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w2Qyp-000iXV-2z;
+	Tue, 17 Mar 2026 10:44:51 +0100
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A5B83505B19;
+	Tue, 17 Mar 2026 09:44:51 +0000 (UTC)
+Date: Tue, 17 Mar 2026 10:44:51 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-spi@vger.kernel.org, 
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+Message-ID: <20260317-beautiful-intrepid-chihuahua-6113b0-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+ <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
+ <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
+ <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
+ <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
+ <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
+ <b6787850-11cf-4b38-a5ea-da2c5d0811f4@sirena.org.uk>
+ <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
+ <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qdry5lnhogdwtgll"
 Content-Disposition: inline
-In-Reply-To: <abRUGVW6ZuGioa4Z@yury>
+In-Reply-To: <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-On Fri, Mar 13, 2026 at 02:14:49PM -0400, Yury Norov wrote:
-> On Fri, Mar 13, 2026 at 02:18:55PM -0300, Jason Gunthorpe wrote:
-> > On Thu, Mar 12, 2026 at 07:08:16PM -0400, Yury Norov wrote:
-> > > Based on 'sizeof(x) == 4' condition, in 32-bit case the function is wired
-> > > to ffs(), while in 64-bit case to __ffs(). The difference is substantial:
-> > > ffs(x) == __ffs(x) + 1. Also, ffs(0) == 0, while __ffs(0) is undefined.
-> > > 
-> > > The 32-bit behaviour is inconsistent with the function description, so it
-> > > needs to get fixed.
-> > > 
-> > > There are 9 individual users for the function in 6 different subsystems.
-> > > Some arches and drivers are 64-bit only:
-> > >  - arch/loongarch/kvm/intc/eiointc.c;
-> > >  - drivers/hv/mshv_vtl_main.c;
-> > >  - kernel/liveupdate/kexec_handover.c;
-> > > 
-> > > The others are:
-> > >  - ib_umem_find_best_pgsz(): as per comment, __ffs() should be correct;
-> > 
-> > So long as 32 bit works the same as 64 bit it is correct for ib
-> 
-> This is what the patch does, except that it doesn't account for the
-> word length. In you case, 'mask' is dma_addr_t, which is u32 or u64
-> depending ARCH_DMA_ADDR_T_64BIT.
-> 
-> This config is:
-> 
->         config ARCH_DMA_ADDR_T_64BIT
->                 def_bool 64BIT || PHYS_ADDR_T_64BIT
-> 
-> And PHYS_ADDR_T_64BIT is simply def_bool 64BIT. So, at least now
-> dma_addr_t simply follows unsigned long, and thus, the patch is
-> correct. But IDK what's the history behind this configurations.
-> 
-> Anyways, the patch aligns 32-bit count_trailing_zeros() with the
-> 64-bit one. If you OK with that, as you said, can you please send
-> an explicit ack?
 
-I can do that, 32 bits architectures are rarely used in the IB world.
+--qdry5lnhogdwtgll
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+MIME-Version: 1.0
 
-Thanks,
-Acked-by: Leon Romanovsky <leon@kernel.org>
+On 16.03.2026 18:49:15, Mark Brown wrote:
+> > > Oh, dear, so that's potentially going to go badly if there's a SoC wi=
+th
+> > > a bigger FIFO that didn't also increase the watermark field width.  We
+> > > should at least warn about that, and ideally do something sensible.
+>
+> > Good idea, I'll add a warning if the FIFO is bigger than the watermark
+> > field.
+>
+> > To handle this situation I see 2 options:
+> > - warning + limit the FIFO to the usable size due to the currently
+> >   hard-coded watermark width - this will result in reduced throughput
+> > - increase the watermark mask to 8 bits - which is basically how the
+> >   unpatched driver works.
+> >   As outlined in my previous mail, the other code in the driver takes
+> >   care that the watermark stays within the limits.
+>
+> I guess it depends how optimistic we are about hardware engineers
+> keeping the FIFO and watermark depths in sync.
+
+Right, we're talking about FSL/NXP hardware :D
+
+> The first option is more
+> defensive, but like you say it'll hit performance on future devices that
+> do expand the FIFO.  I guess I have a slight preference for that?
+
+Yes - I'll increase the watermark width to 8 bits and add a comment next
+to the GENMASK.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--qdry5lnhogdwtgll
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabkikAAKCRDMOmT6rpmt
+0uTHAP9DENCerrIPfeSLS2ISSv6ZjZ+tZ99q8JdjYRfKE3zwnwD/W+xi9wJnZykB
+CSsLfSxOtU+ClhZ4eC0ARhnCMQNb6A8=
+=OlS7
+-----END PGP SIGNATURE-----
+
+--qdry5lnhogdwtgll--

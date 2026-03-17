@@ -1,70 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1712F38E11E
-	for <linux-spi@vger.kernel.org>; Tue, 17 Mar 2026 07:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5940E2BEFFD;
+	Tue, 17 Mar 2026 08:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773734209; cv=none; b=UQlUcqrFiNJGEugH8DhL01gbM3PGZS4sf5SuyVp1fMQVBtYqBwYEOGHFQAShHn7vyjtlc15g8MWkLQZ85r8EudQSCShJocZc6WKRZtRUCL43fz3m80P0A9Mv/fOuXYmLbf2v3rvGruS4wv4lzBvgCZBJXiHf9UzxDW0D4RZf3i8=
+	t=1773734689; cv=none; b=Ru58mMLmZ9T4UVefwZmmqCKG85Nbzwb7mkVJWZ74QWAsVe+b7Igjk+5UWNiXMCY+AWZ1TfObRY8CSdm7yi2C9sO2A44Z/Oxnnbj3l4Y2Cc7kGTzV2uQdhqNfkJ8v5N2xsjVRt2ZyJQ3x9wx5b5sV6N+EurxcctxhleD1wqZFwcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773734209; c=relaxed/simple;
-	bh=LW8g5duyPpAXGe1iV4heIdxfhiWq/VZYm6N8p+AnY3w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Gs6G4x7XzW+ekDiKKr6TyY4s6WRry9SiT+O6aTzdYHG1dX6LJNA6UndehU6I2oNO1Kip6iWH26VrAXV7fwz4Am+9a6LvK8zokq2JZZLsg7ZjiRCQ80v0m13v660z6YzoQGED992oN4+Z9AdCsMFbSjd2z6hFvB4u5uA+DFUSCRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbLhZqHR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773734689; c=relaxed/simple;
+	bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ksnGRuHM7Gu7cRkWb3Vxh46SeVQoE3uWDu8SKNVgQaJHWZpVX+G0QF3VVKvYkymDzhy/DlFl8W+r00c39cGDecKmXU86jEL61ACuOtfuMbsbS5x+SOnZOMx4lbQLVdApWDv7Kn47jSXOe6rilVRwvn7BY06vw/AmD+dw5VDXT/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TgoO7a9/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbLhZqHR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DBDC4CEF7;
-	Tue, 17 Mar 2026 07:56:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773734208;
-	bh=LW8g5duyPpAXGe1iV4heIdxfhiWq/VZYm6N8p+AnY3w=;
-	h=Subject:From:Date:To:From;
-	b=NbLhZqHRXjh7ZPmX20d4x/Lyv5ZDcM3ccnGAjz2E3aNmm7SJHa7KLAbam3xiGImaa
-	 lA7WtRYCc6Tnx0wgOAu9wrhKc1trwxmgX+CPCxE4+4wsFIxvq9fhDp1dg4txbicUXe
-	 Y6wropCZSpT6qzgLP6IcsefwXb6z2ZdTqwuOyNJAkDIdaVvzgMz/1SeSJ90EkBwRir
-	 NKkvZHTR1Inq+jrqOo/CrmWCEAS+5jnesqVk1i81MKrMFZXi7aT6y76UvLD+9dkcd5
-	 tdwx4aIDeO7Uhu+9HPPmKKEiw9vaOkXe1mkaj77mBSNXv20RNnkoF2IjcHzowCLFId
-	 bdMTSqLzykdzA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D21E3808200;
-	Tue, 17 Mar 2026 07:56:42 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TgoO7a9/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773734688; x=1805270688;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C5+6ibWMe+6CGLCJ89fg6/WRPHNmqm+d8HkwRrykciE=;
+  b=TgoO7a9/ZtqohlD5M0xeGtc3gBMWEyxFVTJO5/cmHgLU523yAw3rtxbM
+   9W0Kxw2iOdJYKVmHPdhErmw1fFWTIzvR+bG+bmsHMYxN2UUzQnroPfwuR
+   YlZ6Z8ZyX+S5tBEnEs9/fLIhKLkdc7+8U8NoXRoCVJ2aQezjLZ9mKs0zH
+   XSRbhQc+1g5NPMNU0P5iTmwcNaLU40FEBYd0ewV5ewwAJxkHfrWdIXmw9
+   BjZecKgENs0+hOaM2fl02yJ009g4LR5Z5Egv5LViBBpqj1i8X2xjmrmXm
+   3TWya89xm9/1mXJXMYVRPzQg+hBFs14iAuAdgwEQv35ePx7x6ToWZVKk1
+   A==;
+X-CSE-ConnectionGUID: jDXmnQDbQO+VY5AfZuYQIg==
+X-CSE-MsgGUID: NUouNz5iTFi988rd/HmXJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11731"; a="100214527"
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="100214527"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:44 -0700
+X-CSE-ConnectionGUID: 2FRFFUu5ROiSZGHfQOS4eQ==
+X-CSE-MsgGUID: 6ilrKriWSSuart1nhUvBbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,124,1770624000"; 
+   d="scan'208";a="222244723"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.97])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2026 01:04:37 -0700
+Date: Tue, 17 Mar 2026 10:04:34 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Douglas Anderson <dianders@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev, imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
+ thread safe
+Message-ID: <abkLEgrZbdb03VWg@ashevche-desk.local>
+References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+ <abkCPU3rxHI49N4_@shikoro>
+ <abkD-VLprcbbEbB1@ashevche-desk.local>
+ <abkF0GO01sMcOhvb@shikoro>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177373420105.3480844.300273473556279540.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 17 Mar 2026 07:56:41 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abkF0GO01sMcOhvb@shikoro>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Latest series: [v3] cleanup in spi by use devm_clk_get_enabled (2026-03-17T07:41:46)
-  Superseding: [v2] cleanup in spi by use devm_clk_get_enabled (2026-03-13T06:08:16):
-    [v2,01/17] spi: axiado: Use helper function devm_clk_get_enabled()
-    [v2,02/17] spi: bcm63xx-hsspi: Use helper function devm_clk_get_enabled()
-    [v2,03/17] spi: bcmbca-hsspi: Use helper function devm_clk_get_enabled()
-    [v2,04/17] spi: img-spfi: Use helper function devm_clk_get_enabled()
-    [v2,05/17] spi: imx: Use helper function devm_clk_get_enabled()
-    [v2,06/17] spi: npcm-pspi: Use helper function devm_clk_get_enabled()
-    [v2,07/17] spi: orion: Use helper function devm_clk_get_enabled()
-    [v2,08/17] spi: rockchip-sfc: Use helper function devm_clk_get_enabled()
-    [v2,09/17] spi: sifive: Use helper function devm_clk_get_enabled()
-    [v2,10/17] spi: slave-mt27xx: Use helper function devm_clk_get_enabled()
-    [v2,11/17] spi: st: Use helper function devm_clk_get_enabled()
-    [v2,12/17] spi: stm32-qspi: Use helper function devm_clk_get_enabled()
-    [v2,13/17] spi: stm32: Use helper function devm_clk_get_enabled()
-    [v2,14/17] spi: sunplus-sp7021: Use helper function devm_clk_get_enabled()
-    [v2,15/17] spi: uniphier: Use helper function devm_clk_get_enabled()
-    [v2,16/17] spi: zynq-qspi: Use helper function devm_clk_get_enabled()
-    [v2,17/17] spi: zynqmp-gqspi: Use helper function devm_clk_get_enabled()
+On Tue, Mar 17, 2026 at 08:42:08AM +0100, Wolfram Sang wrote:
 
+> > > ... this change costs some memory on every system. Maybe it can be
+> > > avoided?
+> > 
+> > How much memory does it cost? On most 64-bit architectures is +4 bytes,
+> > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
+> > +0 bytes. I expect that 64-bit machines will cope with this bump.
+> 
+> I am not opposing that the issue should be fixed. If it is not possible
+> to take the lock everywhere, this is a proper solution. But if we don't
+> have to use more memory, then we could save it. Our new SoC easily has
+> 'struct device' in the hundreds.
+
+What's the alignment for the u8 member in your SoC? 4 bytes or 8 bytes?
+(I assume it's 64-bit SoC.)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+With Best Regards,
+Andy Shevchenko
+
 

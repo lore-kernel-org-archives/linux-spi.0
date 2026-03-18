@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57942836A6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795ED27FB3C;
 	Wed, 18 Mar 2026 02:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773801627; cv=none; b=gx6g4wpilAWJBMxN7CSjkASlYh5i4NQ6MBF4MmfH49kqSHu7+UFqJxP5M9u48vTZ/G1aDNdd+qKYVdPv56zD1DkOmoa/yd89bkqTg357MjvIp90fpHE/tFbsT/tz25zTQFV8VOg3eJfGrwvSKjEi9myTwmyFY7CpWIyZB6uokjs=
+	t=1773801627; cv=none; b=XPn/0yIbPLgMn2kHvrj4wyZJSDKfUcQAc52lEsJm/gvGFh+DZXYX41zhjlhudKY71HSPVmfZDbhQt37vYR3vbFJTgXwkMAMpmVI65JuQbxv+OSH/qCEsZKq53QSd7bYOj0TkUGp+SXq9qDN1WHgJZK0/UzGkaQDUmmojs+cUOqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773801627; c=relaxed/simple;
-	bh=hJp0Hwkv/zUMQIXKtnF4FC4VYjxIHIdOdrp5NibXHbc=;
+	bh=A1MJ9wWkpixAWy8C9s6wEsfvFD7RNOB5Y5hCdpz7UU8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bxFo79STkmBXDGOGM7bWu//tlC2IxI4Ko6BuHiSC94acLX6xhsmvdErrN8cB9+QYXfMKNjyWnr/smPc6nM3aCKa1iaKfr7MtrrmCfWjCWd1HiIF5mKjaSrlLVzvcAdDoUnt/M92yJ8G5RT4jpSLcng1iAgdC3pAt1JS7yaLqw+A=
+	 MIME-Version; b=Qhi/BoDjGP1MYnOMShnD9L7PoSZO55XkNFg5sX3d7rGjOD/UgX2GayXTFegPFCCr3r2YfJpldMgW6aUBELPtYGZupQC31+xVjdcSXPVQ8ky+XxbuuXyOLmuAYE6mkdkKsv8iNLRLmDxX10OaFs8C7D7+8Zvg6/mk5C9hfFyHd9g=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: cbb7b502227311f1a21c59e7364eecb8-20260318
+X-UUID: c9797834227311f1a21c59e7364eecb8-20260318
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:978c6859-ceed-4cb1-bc54-43ea149250e1,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:af16772b-9312-4293-8750-6a8c73e092ac,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:e90d316a69b4551724c48877068f06c1,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:b031f29c16b08f0b744fb72c088f818d,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: cbb7b502227311f1a21c59e7364eecb8-20260318
+X-UUID: c9797834227311f1a21c59e7364eecb8-20260318
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 90819857; Wed, 18 Mar 2026 10:40:15 +0800
+	with ESMTP id 511542544; Wed, 18 Mar 2026 10:40:12 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -44,9 +44,9 @@ To: linux-spi@vger.kernel.org,
 	linux-mediatek@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v4 12/17] spi: stm32-qspi: Simplify clock handling with devm_clk_get_enabled()
-Date: Wed, 18 Mar 2026 10:40:02 +0800
-Message-Id: <35b4ff674610f77310e84815c15cd59e609c95db.1773801401.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v4 02/17] spi: bcm63xx-hsspi: Simplify clock handling with devm_clk_get_enabled()
+Date: Wed, 18 Mar 2026 10:39:52 +0800
+Message-Id: <774bc1c792c8469914f7192dc7a657fef6d8ccc5.1773801401.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773801401.git.xiaopei01@kylinos.cn>
 References: <cover.1773801401.git.xiaopei01@kylinos.cn>
@@ -59,70 +59,107 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the clock. This removes the need for
-explicit clock enable and disable calls, as the managed API automatically
-handles clock disabling on device removal or probe failure.
+devm_clk_get_enabled() for both the "hsspi" and "pll" clocks. This
+reduces boilerplate code and error handling, as the managed API
+automatically disables the clocks when the device is removed or if
+probe fails.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the probe
-error path and the remove callback. Adjust error labels accordingly.
+Remove the now-unnecessary clk_disable_unprepare() calls from the
+probe error paths and the remove callback. Accordingly, adjust the
+error handling labels to direct returns where possible.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-stm32-qspi.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 46 +++++++++------------------------
+ 1 file changed, 12 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32-qspi.c b/drivers/spi/spi-stm32-qspi.c
-index df1bbacec90a..a8436f70fdfd 100644
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -819,25 +819,19 @@ static int stm32_qspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 612f8802e690..266eabd3715b 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -758,8 +758,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
- 	init_completion(&qspi->match_completion);
- 
--	qspi->clk = devm_clk_get(dev, NULL);
-+	qspi->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(qspi->clk))
--		return PTR_ERR(qspi->clk);
+-	clk = devm_clk_get(dev, "hsspi");
 -
-+		return dev_err_probe(dev, PTR_ERR(qspi->clk),
-+				     "can not enable the clock\n");
- 	qspi->clk_rate = clk_get_rate(qspi->clk);
- 	if (!qspi->clk_rate)
- 		return -EINVAL;
++	clk = devm_clk_get_enabled(dev, "hsspi");
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
  
--	ret = clk_prepare_enable(qspi->clk);
--	if (ret) {
--		dev_err(dev, "can not enable the clock\n");
+@@ -767,41 +766,26 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
+ 
+-	ret = clk_prepare_enable(clk);
+-	if (ret)
 -		return ret;
--	}
 -
- 	rstc = devm_reset_control_get_exclusive(dev, NULL);
- 	if (IS_ERR(rstc)) {
- 		ret = PTR_ERR(rstc);
- 		if (ret == -EPROBE_DEFER)
--			goto err_clk_disable;
-+			goto err_defer;
- 	} else {
- 		reset_control_assert(rstc);
- 		udelay(2);
-@@ -886,8 +880,7 @@ static int stm32_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
- err_dma_free:
- 	stm32_qspi_dma_free(qspi);
--err_clk_disable:
--	clk_disable_unprepare(qspi->clk);
-+err_defer:
+ 	ret = reset_control_reset(reset);
+-	if (ret) {
+-		dev_err(dev, "unable to reset device: %d\n", ret);
+-		goto out_disable_clk;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "unable to reset device: %d\n", ret);
  
+ 	rate = clk_get_rate(clk);
+ 	if (!rate) {
+-		pll_clk = devm_clk_get(dev, "pll");
+-
+-		if (IS_ERR(pll_clk)) {
+-			ret = PTR_ERR(pll_clk);
+-			goto out_disable_clk;
+-		}
+-
+-		ret = clk_prepare_enable(pll_clk);
+-		if (ret)
+-			goto out_disable_clk;
++		pll_clk = devm_clk_get_enabled(dev, "pll");
++		if (IS_ERR(pll_clk))
++			return dev_err_probe(dev, PTR_ERR(pll_clk),
++					     "failed enable pll clk\n");
+ 
+ 		rate = clk_get_rate(pll_clk);
+-		if (!rate) {
+-			ret = -EINVAL;
+-			goto out_disable_pll_clk;
+-		}
++		if (!rate)
++			return dev_err_probe(dev, -EINVAL,
++					     "failed get pll clk rate\n");
+ 	}
+ 
+ 	host = spi_alloc_host(&pdev->dev, sizeof(*bs));
+-	if (!host) {
+-		ret = -ENOMEM;
+-		goto out_disable_pll_clk;
+-	}
++	if (!host)
++		return dev_err_probe(dev, -ENOMEM, "alloc host no mem\n");
+ 
+ 	bs = spi_controller_get_devdata(host);
+ 	bs->pdev = pdev;
+@@ -887,10 +871,6 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ out_put_host:
+ 	spi_controller_put(host);
+-out_disable_pll_clk:
+-	clk_disable_unprepare(pll_clk);
+-out_disable_clk:
+-	clk_disable_unprepare(clk);
  	return ret;
  }
-@@ -906,7 +899,6 @@ static void stm32_qspi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(qspi->dev);
- 	pm_runtime_set_suspended(qspi->dev);
- 	pm_runtime_dont_use_autosuspend(qspi->dev);
--	clk_disable_unprepare(qspi->clk);
+ 
+@@ -902,8 +882,6 @@ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
+ 
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+-	clk_disable_unprepare(bs->pll_clk);
+-	clk_disable_unprepare(bs->clk);
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcm63xx_hsspi_group);
  }
  
- static int stm32_qspi_runtime_suspend(struct device *dev)
 -- 
 2.25.1
 

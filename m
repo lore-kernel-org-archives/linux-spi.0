@@ -1,141 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4808F3806D9;
-	Wed, 18 Mar 2026 09:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773824814; cv=none; b=WiHAnvIZuhqlEgWJWw40e15wIlpjcIE+t6d9Ye9NH/tpIfQ+IwDGb+coSvQtu4sTNTi5oM6X0wM1XZ5MJ4uVyhBqxDMVBBXC8p/dbZlWtDjRIj35ftzV/Bi57l3ZKB/Vv1qWJITADFGITw/c4A3f2B4XZPgolp4nMPAEm316wLg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773824814; c=relaxed/simple;
-	bh=OOpz2QLVOMmh9KY2GRGxQ6h+0tnAzCc8jxynqR/fL8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rf4bEBjizwgm8EdOcW3auquIs8OkwfzXAOrXJ2LE94C53ZO64cj1ie2Vrh4/ry1uxGb7Q8xAlL0sgHfCfYSv9uUaVJFr8QHDl12nQTurJUwUcGmuJSvHpWsbqF8RlxhM+eFe3osVfj6A+9qr3n5zdxyEZ814q8OTxJ8tTSPvdNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VLY1dV3s; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAABE3B7775
+	for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 10:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773831542; cv=pass; b=IGd7D0mGSnCy4YI/0AWz3CPlCIxV7oIXk/9+skGSKKNWj6CWe4bhwUs3koDO2pyN0sskp4FIhwCQBqdZgDdkxQyI2H2psMPgQe6PDAMtUmhf6NvVTfjIH879kRfJDSRgp/Hmt+7LZWRfdzxK4g8oNwzxBgdkYkI6Q0/yENKLVXA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773831542; c=relaxed/simple;
+	bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BdZ0gO+QHRYIH9GdMkC+tSWxZ/OZTaYnzgTHpWBosYgpGF4iDsjueqvsp03B7QD+g6BVJR1qaZa77eEz2Zy21FaimEz1gQNu2ZiOwL4wdc6o04HSqMkRmWt9E/Tj2mDxDN/IqUX2z4LAS5+FdcVW7rwmZSfqJ0hq/tbbcbwbO4M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=Y+F4gIrC; arc=pass smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VLY1dV3s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773824813; x=1805360813;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OOpz2QLVOMmh9KY2GRGxQ6h+0tnAzCc8jxynqR/fL8c=;
-  b=VLY1dV3sVmWq3gJTWrFSVViPbCnFtyc2GcbLiLD3QqGf5w9n7Tn/sjAg
-   BUbeOdkvfd6Nx8zNp/gLZ/ImnLRD4i3DZNp6sbg6Y5Vn8FOemBvk/Cz1v
-   yDswofBEh6LvGKlVOtV0BDHue5yd++YjKZcJtsbiDXfBM34gEPZ5oIrTU
-   xHRdH3xVbQkIb+rtH3Z5H0xW/qFTyz9pI1QrW77YMNvAzXUZOnoL/IDjk
-   tajQ2tEK0V26vaghBKQ6bbw+koMb9we5D5EswiVCrWldwRgVjI7IIDYIh
-   AJBuEGs7lrQkl+LhOQ0sUQNUes8mPZI84tEvgFWrSeL9BpM57/Mh4WGgh
-   A==;
-X-CSE-ConnectionGUID: R4xC4tmMTU28wQFRZ0zGew==
-X-CSE-MsgGUID: IqpuriG9S2yAIoES04+teA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74573983"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="74573983"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:06:53 -0700
-X-CSE-ConnectionGUID: bGaVs8xpTUCoR2u709K5aQ==
-X-CSE-MsgGUID: hk9DpRDxSG2N5wW8ulwWpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="253045856"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.240])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:06:44 -0700
-Date: Wed, 18 Mar 2026 11:06:41 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abprIZ4_LUScJrSd@ashevche-desk.local>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="Y+F4gIrC"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-79a5a37113aso28012327b3.2
+        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 03:58:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773831537; cv=none;
+        d=google.com; s=arc-20240605;
+        b=InIyn9GTby0fEZNQNB6sXDTlOkpUU9C0Br1JFVpnuJJaR0cGGrnqRBiZPdP9gMK8ay
+         hpCDgNx3B+bJl14OCFlwSxlFiHa2sYXoJKdMc+au14WKA+rFoma1p/YFD0UI9BmwRRGS
+         tutDYmPdi7S02M+kg+7X4rULYG5eG56revkcNan2DbsTcJ8/HkJq3S0eYOp8BNr80Lid
+         IwIC4p9y3SasTA2aK8/tFv4raO/sCEC2bNbdA4LKZWVO+xDJFDxWOjQQBG7jmCUc6ptx
+         9fk5FEmAW1flwiZo6sZFGiNW2bkJ0DQqb8kZ6j/BIvVGjKW+Cb+9dhFzjJJlfY6UXxXo
+         8k8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        fh=3biTc7X4l//eBI6ft7BMXCWbSs1EJjpqRVk2FA4dvNk=;
+        b=DfD8hUV+CTrKaXSSaY4Cc7u8mmsgl8TUbLb3B8oqD63F4iNjq33OlE9nQQzt1sYUqw
+         oxJNKaFZJAilDkw2c9RPdtJn3fD6C6Np9RINNzdpd7hLodoZz2boRe6+qhL979mjb+2o
+         Gis79ukBPsO/eneNNUXAEd7kWgiOIcoIn2ULPEOWTJYr6taJi8f+C+9lo2eDQYkcz0Kz
+         hFwFtumPSZ9z5oAX0PWkTkPDOLFh6671iz/WgWiB0uOVt1TTFqcM1k7fImMNrlWmBc6m
+         5fnMM4uHkV6AI07u1ZSddJWnY2asCMloXR3iTjC2HGfDKIVrxkKj19qHAC1+IQZPzAuc
+         Tplg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bitbyteword.org; s=google; t=1773831537; x=1774436337; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        b=Y+F4gIrCy3AlMDM7CSYzAY8MdpN5nfDAenVYSS8jF8/QGMe0BtbaqtvpoNu4HHsdwI
+         eCHGz033wV+iu7o9yHNzl8ab1W8iVYNVNBYMUrCHRQLI9DZgf1n+KJ5WGJM874ZC8E1f
+         V8AfDwxwo6eY0vCZpRljMsNdbb7jgkZbz3BUBCDiRZdtki+wXyJ231XN2e5CQzBOtHl2
+         RNzehobgF8tA59rhsLrK604RjKLDzwzujNWXDWsClMTvJ5qFhXeMw/pwvPnR1XkeD7qu
+         tmTv/A7/XayQthiGv4k2dz99RPffdzi9GNohb9QPIB0xHVtAoLzYczErYFx/GTFFdjmi
+         QFOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773831537; x=1774436337;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LVVELEXkmiKTU/p+oy+of4jebFSUmNrxF9w9nex4moo=;
+        b=LCmeCU92EqoffQ0WzCNtkJTTkuTkcx9aVGT/vBHJkUpXznzLQ3t/kD0dtwdeJv4QnP
+         LEYzFdkyiAnlbJ5gATNDGgXTvrJU7jm5ojhUiqYs3Xnjz5Br1t9VNWRDeCMCYQTyIemW
+         oXKkeQANSlfOHUzBBJwFT0GlTSrlC+zUDD/B3x/RrLaZYCKyNaxTH3aGj/DVos6N4TBu
+         qY/NyTQYGLug7EM7lgf/C8GmS4mIz07ZMt6Bsnko74JnyjZllVTT3Vxb6u/vSCYqC0ja
+         RX1Vm0wsy3EHhNdMkEtgpgfWnZGj/tYlmLRZ/hd48oERAxFCv0JxrlrgkFL/LT9XO2Sk
+         w77w==
+X-Forwarded-Encrypted: i=1; AJvYcCXWdzF6GeCXnCD9j8EICK0fAJmx/p9JFqiRhtwiaZlEMEetsXzSwtrCjhTh/B/Fqm4EaF9S1yPbNIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPWiOnoKPrQonznlYwLPSdsPD05qSagnt+Czg/Jb8hBucYs6Np
+	VyYaButQ5oJ3SNdWdBasRXDgnu2LehPaAsjyaXrwX9FGbv2NXoD9mBAp24OldBK9RSotyTGS/DW
+	s4QfiKdiqc3Nz9gk4711qE+962KFewImseioHHSGybA==
+X-Gm-Gg: ATEYQzw7NCq71yGYBI/vA+18k4Xhed9Z2MwefhpHKJ1WsvONLPdB1QXztDi7kEVBZj7
+	ATSVCP9Rdcbuu/NezE57B48BolUAa/j5OM9dLxVTqYd5wYAiM4HT5MHXEXolcb0E+s3dhE/B4wF
+	z0s98DeJ4aTFCLQfucJh7ABRPh71fAQNvlaHYAJfsXEqI05FZ/v556P635m6Dr0gHY2YxI0UFLk
+	sbHOmcpNT/UmResHrDCSUeGV3g+B7zRHRxLAnrObMhQnyGGq/f+I7quIfqr5TtzEnxCwp3GGelE
+	40tiGDA=
+X-Received: by 2002:a05:690c:c50e:b0:79a:3a33:933 with SMTP id
+ 00721157ae682-79a71ad413dmr29714557b3.31.1773831537485; Wed, 18 Mar 2026
+ 03:58:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20260312150523.2054552-1-vineeth@bitbyteword.org>
+ <1e3c2830-765e-4271-89f7-0b6784b37597@efficios.com> <20260312112354.3dd99e36@gandalf.local.home>
+ <219d015d-076b-4c80-8f63-88569115fdad@efficios.com> <20260312114041.5193c729@gandalf.local.home>
+ <1becdbce-2c01-468a-bbab-42b5dea9fdf8@efficios.com> <CAO7JXPjnnruhM5oC6xMgnYaQ9efzYFqMCFiJLNM3HCQ+ZeCiJw@mail.gmail.com>
+ <CAEf4BzbnfyhCqp0ne=2gRnVxp-mdGmuZwDeFRyhRYH+eDcz2-w@mail.gmail.com>
+ <20260312130255.6476e560@gandalf.local.home> <CAO7JXPgHYZ9zF1HFahb2447X85YRZCQQBHB6ihOwKSDtiZi8kQ@mail.gmail.com>
+ <20260317120049.6a60fa88@gandalf.local.home> <6ca9f884-9566-4a82-9995-4c802a0bf8a0@efficios.com>
+In-Reply-To: <6ca9f884-9566-4a82-9995-4c802a0bf8a0@efficios.com>
+From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
+Date: Wed, 18 Mar 2026 06:58:46 -0400
+X-Gm-Features: AaiRm52iP799baA3h48fwfLjW02Pe87nEMlmDoXLIPKYRV2LFYQQkuww_KlSUU0
+Message-ID: <CAO7JXPgbERfc_P+aPFB1+nR5ua3mZGbhdkbxCr0TFR4Cr6Khuw@mail.gmail.com>
+Subject: Re: [PATCH 00/15] tracepoint: Avoid double static_branch evaluation
+ at guarded call sites
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+	io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Jon Maloy <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, 
+	Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, 
+	Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz <koby.elbaz@intel.com>, 
+	dri-devel@lists.freedesktop.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, 
+	Len Brown <lenb@kernel.org>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	linux-pm@vger.kernel.org, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
+	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
+	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
+	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 18, 2026 at 09:41:44AM +0100, Geert Uytterhoeven wrote:
-> On Tue, 17 Mar 2026 at 08:34, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Mar 17, 2026 at 08:26:53AM +0100, Wolfram Sang wrote:
-
-...
-
-> > > Thanks for tackling this issue! I agree it should be fixed, just
-> > > wondered about one thing:
-> > >
-> > > > While flags are often modified while under the "fwnode_link_lock",
-> > > > this is not universally true.
-> > >
-> > > Is it a possibility to use the lock in all code paths instead?
-> > > Because...
-> > >
-> > > >     struct list_head consumers;
-> > > > -   u8 flags;
-> > > > +   unsigned long flags;
-> > >
-> > > ... this change costs some memory on every system. Maybe it can be
-> > > avoided?
+On Tue, Mar 17, 2026 at 12:02=E2=80=AFPM Mathieu Desnoyers
+<mathieu.desnoyers@efficios.com> wrote:
+>
+> On 2026-03-17 12:00, Steven Rostedt wrote:
+> > On Fri, 13 Mar 2026 10:02:32 -0400
+> > Vineeth Remanan Pillai <vineeth@bitbyteword.org> wrote:
 > >
-> > How much memory does it cost? On most 64-bit architectures is +4 bytes,
-> > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
-> > +0 bytes. I expect that 64-bit machines will cope with this bump.
-> 
-> On all architectures with natural alignment of pointers and longs,
-> it won't cost a thing: struct list_head contains pointers, so the
-> struct must be padded to a multiple of 4 or 8 bytes anyway.
-> On m68k[*],  it will cost 2 bytes, as the existing padding is just a
-> single byte.
-> 
-> [*] Iff m68k ever switches to 32-bit alignment, there won't be an
->     additional cost due to the change of flags here, but of course
->     there would be a cost all over the place.
+> >>>
+> >>> Perhaps: call_trace_foo() ?
+> >>>
+> >> call_trace_foo has one collision with the tracepoint
+> >> sched_update_nr_running and a function
+> >> call_trace_sched_update_nr_running. I had considered this and later
+> >> moved to trace_invoke_foo() because of the collision. But I can rename
+> >> call_trace_sched_update_nr_running to something else if call_trace_foo
+> >> is the general consensus.
+> >
+> > OK, then lets go with: trace_call__foo()
+> >
+> > The double underscore should prevent any name collisions.
+> >
+> > Does anyone have an objections?
+> I'm OK with it.
+>
+Great thanks! I shall send a v2 with s/trace_invoke_foo/trace_call__foo/ so=
+on.
 
-Thanks!
-
-Yes, the worst case is 64-bit architecture with 4-byte alignment. This
-will cost +4 bytes.
-
-But I think we are really wasting time on this part of the discussion
-(and any similar) as long as nobody targets struct device or any other
-BIG FAT data type, that will bring much more benefit than saving 4 bytes
-in some struct fwnode_handle.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Vineeth

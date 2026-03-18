@@ -1,87 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C9136B07C;
-	Wed, 18 Mar 2026 07:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C13A377ED5;
+	Wed, 18 Mar 2026 08:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773820457; cv=none; b=E6ml+W72rqOGYedTANaEtn0xanHaj5GklX2o3TbMmr8DDBs5CRShuXoZ15EFMYYxIuOcth9ghum5odwe+y7cPHeyXHlFkuG6FitE5S2u7Z2p4mSZJ9dVW19HCWMAP+J0wweafHsmUWJfiRG97g3Q3UEe2Ty5BlhxtqxxajTNUHw=
+	t=1773820976; cv=none; b=A8Sd6PNVgR6ahAaZO6b5HraY7YRQpQGjCzJDblglAHEKzSy0nvMAX8Z6Y/l5m1S2Ut1gHp4qB2w1zdAi9hGCBcgEEUgkvgsniH3X/mn1A5hnah/PhpoFnlEhUkJzb3+z/Ah9iPxi+TLGH36W3G+4RPf+vOsuu4BneWS36oC7Zlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773820457; c=relaxed/simple;
-	bh=bk4wnamFVrTawAELOt9eEX4xVNZGHRQD1ApgpP4wf3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YB5b+urJqVhYsXtgFMNOTKwtnSukfGaynN18lr8NkPuPvlpT+fF6u1gOurPsOUhmbjL4Un/4R1lbW5zNNE6WfPF7htnIKyHCVf4+/NRJAxkGnbgS3UmmC0sjq5j3qR9us13tO3Ua6cMRbl9e7NFO/Edg/6r9j9birmCHkQ0LtwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hs8svr+Y; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hs8svr+Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93864C19421;
-	Wed, 18 Mar 2026 07:54:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773820456;
-	bh=bk4wnamFVrTawAELOt9eEX4xVNZGHRQD1ApgpP4wf3s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hs8svr+Y5W5blUFJJY4rkdg1xasKU2xi5NfqKhojiPuresAviLCtBvwNKJvRUKvIh
-	 LuN4PgfcgBtZ3qj2EaYv9ZN/YMX6OcvLZ9+1zzTBcuj9qDKPlLOklOyyB1idGwKiOK
-	 Ym+BZqwerJCO6cyr/OKND+mipc4MTwT1FmqzHbDSaBnLsLuLgb0rEDKZBp/275L9WF
-	 Oq1VLFwXYTY4EBdbwvrUn/7O0PkNaeek3+NjNk1utstnD2bewniH3wWzBeQc/FVF5n
-	 elr+nErpGnnVpR5IYlJNSdlV2fHq3axS9sThSXtdT4aIDP4+r890P4d8D/96T1W6mx
-	 GtmrQuMYcuvaw==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w2ljK-00000000655-0fr0;
-	Wed, 18 Mar 2026 08:54:14 +0100
-Date: Wed, 18 Mar 2026 08:54:14 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
-	Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>,
-	Prasad Bolisetty <pbolisetty@axiado.com>,
-	Harshit Shah <hshah@axiado.com>, linux-spi@vger.kernel.org,
+	s=arc-20240116; t=1773820976; c=relaxed/simple;
+	bh=+FoqLs9wp10nbH8n86rMaUeZyef9aXqfopQ2B/cTqzU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EUwILf6P3iTbA1Bu5hfGYaf6xBJYssfGE0xMc2mQmfbGdzzpak12obRpG7Dd8qNvkQIMOwZeBlT9zsbCTx494ZVnVWtx2wN5w/pFqhbQ2ihsAXN1KLiyPEEFPmFveeceJN4T7g9o43dUEqNu1bhrYoRHKhzchFLPJ2HGVWNAY+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: d9dab58a22a011f1a21c59e7364eecb8-20260318
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.11,REQID:ed2e6b62-ed24-4144-be66-1f36421b7210,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:97b96f502b745670ee5d2f8660c4f1ea,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|850|898,TC:nil,Content:0|15|50,EDM:5
+	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: d9dab58a22a011f1a21c59e7364eecb8-20260318
+X-User: xiaopei01@kylinos.cn
+Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1662788400; Wed, 18 Mar 2026 16:02:47 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: shenyang39@huawei.com,
+	broonie@kernel.org,
+	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: axiado: fix use-after-free on probe failure
-Message-ID: <abpaJu19LN1Z0U8o@hovoldconsulting.com>
-References: <20260312102811.29223-1-johan@kernel.org>
- <df8998fc-f3c9-48a6-a4a4-33a8726bb386@sirena.org.uk>
+Cc: Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH] spi: hisi-kunpeng: prevent infinite while() loop in hisi_spi_flush_fifo
+Date: Wed, 18 Mar 2026 16:02:43 +0800
+Message-Id: <d50f1f46b2ee2bba05de9e2d4199353b545194e3.1773820898.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W57NZo3JaH3v67w0"
-Content-Disposition: inline
-In-Reply-To: <df8998fc-f3c9-48a6-a4a4-33a8726bb386@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
 
+The hisi_spi_flush_fifo()'s inner while loop that lacks any timeout
+mechanism. Maybe the hardware never becomes empty, the loop will spin
+forever, causing the CPU to hang.
 
---W57NZo3JaH3v67w0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix this by adding a inner_limit based on loops_per_jiffy. The inner loop
+now exits after approximately one jiffy if the FIFO remains non-empty, logs
+a ratelimited warning, and breaks out of the outer loop. Additionally, add
+a cpu_relax() inside the busy loop to improve power efficiency.
 
-On Tue, Mar 17, 2026 at 05:35:55PM +0000, Mark Brown wrote:
-> On Thu, Mar 12, 2026 at 11:28:11AM +0100, Johan Hovold wrote:
-> > The SPI controller allocation is device managed and must not be released
-> > before returning on probe failures (e.g. probe deferral) to avoid
-> > use-after-free.
->=20
-> Felix Gu already sent a version of this which was applied, please check
-> if there's anything remaining to be fixed here.
+Also add a ratelimited warning when the outer limit expires, to aid in
+debugging hardware stalls.
 
-That diff looks correct.
+Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/spi/spi-hisi-kunpeng.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Johan
+diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
+index 216a0a91fc47..b3359ac3a366 100644
+--- a/drivers/spi/spi-hisi-kunpeng.c
++++ b/drivers/spi/spi-hisi-kunpeng.c
+@@ -196,9 +196,22 @@ static void hisi_spi_flush_fifo(struct hisi_spi *hs)
+ 	unsigned long limit = loops_per_jiffy << 1;
+ 
+ 	do {
+-		while (hisi_spi_rx_not_empty(hs))
++		unsigned long inner_limit = loops_per_jiffy;
++
++		while (hisi_spi_rx_not_empty(hs) && inner_limit--) {
+ 			readl(hs->regs + HISI_SPI_DOUT);
++			cpu_relax();
++		}
++
++		if (!inner_limit) {
++			dev_warn_ratelimited(hs->dev, "RX FIFO flush timeout\n");
++			break;
++		}
++
+ 	} while (hisi_spi_busy(hs) && limit--);
++
++	if (!limit)
++		dev_warn_ratelimited(hs->dev, "SPI busy timeout\n");
+ }
+ 
+ /* Disable the controller and all interrupts */
+-- 
+2.25.1
 
---W57NZo3JaH3v67w0
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCabpaIhsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQC8XNwux9ZQjM1AEAq8M+l3T7LBvC4YDPQTUZ
-gmG+ugdhUC2/m2iRTnPBjy8A/0gZVYM8/a5nnErqTnZ8Hpu1nrUP20sSTLKRbBtU
-KksL
-=QYSH
------END PGP SIGNATURE-----
-
---W57NZo3JaH3v67w0--

@@ -1,102 +1,184 @@
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010004.outbound.protection.outlook.com [40.93.198.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFE43D5670
-	for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 16:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773851103; cv=none; b=aeOQPWlIfHzbNJzbC0ksa9uJfrr8LjeBMZCpsuBdU7iC9ZiRINczIugCwvyltRISYK3EBRZPqMO3Q05MgS82TT0Qm4L3IZfUlaInqrTScYkD93wPW5QvU3dPurmyJiwX2tiPCgswpXiwswekRoj4KplRrpWOEdofrvn2CRa1YXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773851103; c=relaxed/simple;
-	bh=J9AoQJqhss2LsfIv36b73QdQdOLW9HvVXjRl/JvP07g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t0QDmcrAiJwmlrKQMLhOCLrEIVaeMMxr6TA13pFtVlFTSZecn7TeI6G0VVm5sGCR3pOkC6KXbu3aTSB4Tyfk2mPdQxqC/RzcBUJBSe7/5T+PUtKDXn2JYQhoOF0KVLeRZSjAMNc18ykrTuFBqrNrQ4wLu7RDTMmrEyLW5a2hsQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-94aca174532so1630047241.3
-        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 09:25:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773851099; x=1774455899;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oyAgld3HIOm1wYub494sLGOg4YlSEABoZlx1Bb+ypLQ=;
-        b=itI5fS/GL+8Tkklk7Kr9l7PnxcRhQhzGh67dU2m4N7GXdqxg2PHemYJMhXFEyhusnE
-         2wRRY5bi6k96gV/aTq/iDag+mulwm4odVFmLL/8/jSHvh5Zd0VzEG4lZEI+Z01hWDdjw
-         nSqBagvsbgaLIhnZecn1GyziBgDAwIDoMqsa8gs6wEFufSLE/4KfTBPzsA8G8yunK4N/
-         HWQYG68JHttBHqErO/NmfAUMYRAD4PsvBQtjdeVR1qonEx2YaNwOP3SJHNuqSq/3a4Bs
-         DjIGDfpwux2+tQCOqy/DzgsRNGz9VDafp+43IEvj4pXcRFO2Oj31a6TpvOrL39Wx6aFZ
-         JLDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCWMlhcEvWCc7KW2M+9jld+wWqLOM26H+BnqjaeLVSKX4Voo5yK9djZeZyIimCmhX+a2KZt6gnPKU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7H6FPnSEe7KSLfukMhsjBQLJz+oPB60XCwkwIkm6o8mvkf96f
-	33+LSWrxQ6rUbREA6EpgRryOv7CQDJZ7k7gWc/DkmWjWa/wxTk0nbNqbgtlw0xahZEg=
-X-Gm-Gg: ATEYQzxUPFwLmiGJDk6AQAjvRnPuAJyev9uumJoGGHLotZoeyryd0FRg++O2jV7KpbL
-	8XJ7vzmHlOZR4cr+4JCxooRIBqhg6QZqbNPtHkcLnFa3McIT4cOjJ7h2o0pmeTpOmx2cHPbNW3Q
-	2CXb7wUDoQU5DH6SPzBcHsXbauwnDIOPb9uYOcyYL1KTl20ey7a/l5MX5zNXQ5YR6lWwtiI5/9L
-	H2z0DBHd7nTU1sNVf08aEVZlavKS6qbUBR71BGSdvR2GSDxas/1Y4QCqUxuYfUvBEtzUcl9c9Wh
-	diz4j9X3hnFAPJ1AFN+i416vr6QQs7UKrKbXCBTtJwN+fZQ1goD5EGaPgd2CtsuLsGm+i/WKO5V
-	zSmUiGYZTG+3QrhzAjA8AVxnTDZrKQb5GCsJKI2D/SsC5ueiU+upzAHbx0+q6EImORMK0welRqY
-	TDJmsOhCnvaOkmZ7nMwCcot66kHfBd89Cioirg9qIsqvq6f7X7SgLKb/KIX2tr
-X-Received: by 2002:a05:6102:a4b:b0:5ff:ea33:2be with SMTP id ada2fe7eead31-6027d320cc8mr1527067137.19.1773851099077;
-        Wed, 18 Mar 2026 09:24:59 -0700 (PDT)
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com. [209.85.217.44])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-6027ee242b4sm1618877137.10.2026.03.18.09.24.58
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Mar 2026 09:24:58 -0700 (PDT)
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-5fff77ff69bso9965137.2
-        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 09:24:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU48fxBzbXwUTA5SD2p1O6R7h049DGJKwp6T/WoHhzqELgupi94pgVo16FGguQf2CKk3TAE674CYto=@vger.kernel.org
-X-Received: by 2002:a05:6102:374a:b0:5f5:4055:4558 with SMTP id
- ada2fe7eead31-6027d0b9ec5mr1976763137.2.1773851098056; Wed, 18 Mar 2026
- 09:24:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80A99460;
+	Wed, 18 Mar 2026 16:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773851526; cv=fail; b=f1zRRXdqEo1n6mUm9j6dJv+lefV1cPcmER/zqCxhXdOUI+womTBM+SDyJQe2gJ48/tGcT3KA7qaFCfMHB/cf144S5EUYNHKwr8xjB+Usmudmgm1McskqMuOHQWnGZsTk3M6TNncwrD9e7hEeQ8funUgK0X/vLNC4w9P0Am97cCw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773851526; c=relaxed/simple;
+	bh=27dIAcUvQAMUobWXY48JduMIqn2FV5mY+LaO9eOdOoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=T5Z4uFqqDzjUbm/j96jD361rINDkYfK006pWVCHRWbZ0tXUeiLn98MlDKjUpu706d/zVas54EBxLCEypZGSHnJ9ws1RQze+mkb+ou6IeCDl7ovLj6HHR8uds0AyNYlkDanbNtu4+mS2YeFeBOnpfJ3SG2kZmnCN0MBqpAfwlAUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Z1CD70Uh; arc=fail smtp.client-ip=40.93.198.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Z1CD70Uh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bRg173z7hSdzWagjpLxOWiAVeF0w/JwFz7Hh8gjYVHeu6G115eDNdo80fj3mIqh1SIk3Sr8K2kzj+mtmBTUs5G6T+gIUhESQ9a8Bzsf+5dE5nlFATYcddX+oLlXXa75vwylSQ7TzKf3fLYbXQ4wTEhYvIabmQ/RgdKMMlit2Ts4xZ9yiPQRVQVvvrQnYST1Quv+IXaxFafkAUrA8KrXONFTQm/SiF5kzq0wAaAmQ0lXfiCTbKYxmJ1ZE1epCCIO4x8eW/2ymD1U2m2lJV3uaYeiNyN5IBRY5kQgL4edPIxJBYNmUJMD4Akqx+XTZFLEyfgHMr+3uvrkWbZ53mnT2qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a6LWo2Etf5lOG9GyKZT/ZZeH7ZSfCnz9P0CyKvpumdQ=;
+ b=dJMjxHEm+sx6YypQfyWZT0rOY/DUm3A3JGN4ymJx/fYhCWP1mQGPH24QrsCxTcxxIqAam58OmVk8oitb0hXp0sbnlcC85Qr7Qh71ykTKkVirGBKdXkqwqzSFdPJmrAP1DgImQl8mS7QopaXDvBmgxcKff+aavIRWEVY/dX+eAfcp8vCGANGLj2C+7l79AzKr9hhzhT25r0O1y9zgHuE2zqE4fkTXWGfFiQWRp9L00+Z4A5jxB9dscbAUJqHelNaV/6zKntfbHKoFpBDQa9fW5aTxEouUvCFcRJuyt0CqHrvhINm8pQ7de/7pYgheVfPPeZV9m7HKkJZ83OcrZ9bKDw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a6LWo2Etf5lOG9GyKZT/ZZeH7ZSfCnz9P0CyKvpumdQ=;
+ b=Z1CD70UhYTGmoGw5I9cC93aBL0r4YI3dAiAj5sx8lmBnikTY1AzLemn/YFRJbc/cFLm6MVuIElAl36jyf4suuU44Q5LesrMbmSlDaRLThl/uSDGkDf+xvor2EpPrrtJpITVmT5FKFQmqg/CMUu8wRNX/j6BiS086vbIZ6yifFvY5tSBl+/lqxO2KvtTQwBcN6yT0dQ08LAPWsfKDKpD89Puh0RCopUA3cSDNzT/sTLTIW/pfXQvukyynsmB+nFC1YgZHgJghEQJ1NLE0+IhWCh9DxoCymGjmM/XBdcIViHhsK77UVXYRu+4sREv9C/76fZhCjSIVQ6wiOEJP5evDmA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com (2603:10b6:510:26f::12)
+ by DS0PR12MB999105.namprd12.prod.outlook.com (2603:10b6:8:301::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Wed, 18 Mar
+ 2026 16:31:57 +0000
+Received: from PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d]) by PH0PR12MB8800.namprd12.prod.outlook.com
+ ([fe80::f79d:ddc5:2ad7:762d%4]) with mapi id 15.20.9745.007; Wed, 18 Mar 2026
+ 16:31:57 +0000
+Date: Wed, 18 Mar 2026 12:31:55 -0400
+From: Yury Norov <ynorov@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Yury Norov <yury.norov@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Eric Biggers <ebiggers@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-cifs@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Mark Brown <broonie@kernel.org>, Steve French <sfrench@samba.org>,
+	Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Subject: Re: [PATCH] lib: count_zeros: fix 32/64-bit inconsistency in
+ count_trailing_zeros()
+Message-ID: <abrTexSs8F3jiJtf@yury>
+References: <20260312230817.372878-1-ynorov@nvidia.com>
+ <20260313171855.GA1744604@nvidia.com>
+ <abRUGVW6ZuGioa4Z@yury>
+ <20260317091411.GQ61385@unreal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260317091411.GQ61385@unreal>
+X-ClientProxiedBy: BN0PR03CA0001.namprd03.prod.outlook.com
+ (2603:10b6:408:e6::6) To PH0PR12MB8800.namprd12.prod.outlook.com
+ (2603:10b6:510:26f::12)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1771344527.git.tommaso.merciai.xr@bp.renesas.com> <f6b43f0dc64e13b1c9942c164dea30002d4c4466.1771344527.git.tommaso.merciai.xr@bp.renesas.com>
-In-Reply-To: <f6b43f0dc64e13b1c9942c164dea30002d4c4466.1771344527.git.tommaso.merciai.xr@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 18 Mar 2026 17:24:47 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdW+d8_SCBtRH3St2SBWKND1Q=vtcK48C6i9PyQZbjs9Zg@mail.gmail.com>
-X-Gm-Features: AaiRm50_PfHsI_l0RjZzNnYxExZrNf0xwI7nlPt_QmbbgWorEasSrObC0tCBcTk
-Message-ID: <CAMuHMdW+d8_SCBtRH3St2SBWKND1Q=vtcK48C6i9PyQZbjs9Zg@mail.gmail.com>
-Subject: Re: [PATCH 3/5] spi: dt-bindings: renesas,rzv2h-rspi: Document RZ/G3E
- SoC support
-To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Cc: tomm.merciai@gmail.com, linux-renesas-soc@vger.kernel.org, 
-	biju.das.jz@bp.renesas.com, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Magnus Damm <magnus.damm@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB8800:EE_|DS0PR12MB999105:EE_
+X-MS-Office365-Filtering-Correlation-Id: 40d8b044-ac7a-4283-f458-08de850bdf88
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|7053199007|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	w/i7RWR9YlCmIyHZIGi4Q+PLQNoczacZWSGQLlNqEyZ1qc8eOMG1KYCLkCnnd/gN6dXYtiT3KR6WaZX/zx67jLKE3+mxJG8GdRy28B0cS2lOWpLzlEekkcosn4p9thEgJ35Z/WaSJuhcda30c2+nkOy8LAX+aknE6O5yQ34X797qVJKADrwcyCXOfDCu5Ay3su0vXL43fQckwU0iKtJ67zo9DO1RCUunCPpyy425AKN8IJAXPgLDVNMeBYJUv28o9W/0VA2tNsIXeUWGA7hocOjUTI/3wWZn7MimgROfp0RY31G2ytdMM6CXEf6SThPZyUQRYJoFANVZfLhb+wOAQkxm7yvs6wdkXuKEB/xsw8ZZX0VIUyabgXg1mRWFR4MpHDdi88GHWvRsOuSGhosQZP0Pkoq7Rzwz9GnDGnYAH9by3sd0zGoYblQhnCFO9UIsb4MN14fFnoDC8efS3+5F4urQk6adFUjP0MQ+Yw+3Nwj9GWxs8M7cbaPTRJIkMKQJr0wsGN05GnXNllFUpwi5VwphoWRMIbCbOyVCVFl6Five3DYBMpGoBaJndKWlGAqmYkqiZKWnx2KHBGpnjWtC/+deSO4wQweJf5EpROKLv9lv1q2P92gLFWqCNzUhUzIsEa4F91oCJfM0TJvQX9EsmRwl5LnGIM9oU+PN3kl4pXJTS0tZbUEbY+Tm+X5n8BS3tJtJf2a7R5+phRO2hFEY8AQxI5NBMr40PRgf7t1QO9c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB8800.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(7053199007)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?pKaEOcxCzlhge3+sRqiSyK3UAzGMuIkn/KQTz/2ETFmDfCd46TI0lfgjZrKO?=
+ =?us-ascii?Q?dTYONyAKRRm1iQc2q6NMefi3JTL5F5syklkHT2UrJqIOqG6fgfJM7aO0943Q?=
+ =?us-ascii?Q?AkZ1AMs+IDdd2JJdAeXf2dw/SLe6buKUPF04Lt1OjKn9pcdvOsV7wxAbT7Gr?=
+ =?us-ascii?Q?UISzjZTqaqUlbbakEZnzgqIaP/pbKTXIDMVVPr3ZInCeIplnA0P81iqZEL+S?=
+ =?us-ascii?Q?PDaoKFqpAiwpfDdOBdRTGvkCWuX5A+bSvG2ewblNMhqMnXa3vOiS0jUfAiMx?=
+ =?us-ascii?Q?F181zks0XGwfhEfdb+EPpm7/Wg+W9Gn0r7GbPlNiIXjgRA1lct5eMKlS/X8D?=
+ =?us-ascii?Q?v1U6co4Ntx/2Cjo94pbxMdMEHhCNzd85mfpHDvM64qMF7TQacpgeBqLGoBe+?=
+ =?us-ascii?Q?QyC4gL8Fjmu+tN+BQt7AwLxqmhs71niRQxXTm9mN2JRYx1YwYRjzbSJQaN75?=
+ =?us-ascii?Q?p+NPoeYQlv/O5R2NIEbJ61xBhkHaSZJc+5x+HshXpMBSMHklcPzI4DHBpIXs?=
+ =?us-ascii?Q?0RPxdehuTycS2Fs4jLJEdpfMjk0TkyyfXJBoGX8KV9vhrGSwQ5WrZqMq7LKK?=
+ =?us-ascii?Q?7a2mmeTTfkz39dq6UnRyGfNqutyAGZjwkXAPRd1BJ51Uer5ZIwHDalLd50+D?=
+ =?us-ascii?Q?JdqAjBfpRV/UVkRVLmvdVjG20Co5r9oICOeRAV37zdW0if9LT+XmRFUGU/8B?=
+ =?us-ascii?Q?lO3Tui1qO4zhz6/yPBfZ7BhWHF6THlhQ/GOUNqOjb3f6qtrvpz/OI6mszraR?=
+ =?us-ascii?Q?46BtkMbP0WrGWEy3Oc556NZa/NXcnE1tEbh09uuXcesMcjomnq5a+IF+0LNg?=
+ =?us-ascii?Q?B1c7rxgyzVeQ0UJWunaSOoio8pmgfzEJfntcLmlSj2qe9FpSlosjsXB+QqMP?=
+ =?us-ascii?Q?uLjFRpbIZ3rYXmO0uTZWsRWF1u4TNuvYg34iexUnImwyfqkbYZy46h96RzvE?=
+ =?us-ascii?Q?SIgHNGiFaq7Pjf7KYhU2Q0yFpvZcafnzUjgEA4RXjZ6iT4OVLh/RS3bVgwnH?=
+ =?us-ascii?Q?fpuv7YI7nONpP4qwBOWFoqrp4waIIOjYrrr30irfJb5XHCIoSYdEXk6Y8ny8?=
+ =?us-ascii?Q?W8HxxtbxJbCpkkcg5VicA2Jf317Kmsz87Wfz0EMVgyhZ1nXjqxezH9PPW1nZ?=
+ =?us-ascii?Q?FCj6hFmcuKzIx+unXQpWn/uDqHnIdDvIha0ZEazelk+vUr5JKhKucc1CVWxk?=
+ =?us-ascii?Q?XXQJuwKfQdGFIhHqvsnieUHzfaZ8cJP+Y4RpsUi42karAdE1UcSEOKrHmLPY?=
+ =?us-ascii?Q?iIQWUPpTI481+pN8cn3cE9jYtmvwzSBufLQLrkpWilAAqO/pIUgjqVYOod3K?=
+ =?us-ascii?Q?hyn/YPXjivFsobi3+2SdorIct2WKguNSVdlbrZYhg7SAxxVY/UUjrfuhlGaV?=
+ =?us-ascii?Q?KRSKqp+EpGxvbfbyLd0L6KGYx2/9SYKuuN1jORSrnV4kH6vpgyasvCokjBrv?=
+ =?us-ascii?Q?HvRWW1hmudUrmy/8VVZh6Ynq7kctC3/AB1iUXCSJ4Wy3me8RXTmSM3MDfpfG?=
+ =?us-ascii?Q?OhP3tUUGSW/qfXamtVi62507286EveXQzHTqqFMvcLZbCVjnyJJjqOXsHgng?=
+ =?us-ascii?Q?5qRNZY0y9AsktofAJYcVFRgLaEOkXyWHPCvqXzPpHRSm+MWFzdwtpehqrqFx?=
+ =?us-ascii?Q?w/pR1t89a2gFUJTeuv9MfaqkBqghCiuU3efHqNibCE6LNnFR9yssP2ZHAiot?=
+ =?us-ascii?Q?b1SgS44iH4+2nkSny0xDjNNR9M8AJfXZ4eNtjEyW0pMLb705yHwSi2TP6aTp?=
+ =?us-ascii?Q?zqKO97L1s56Op44NesP8RL7ZiYDRJE0/QHMqYxypbUj6EICvHUof?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40d8b044-ac7a-4283-f458-08de850bdf88
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB8800.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 16:31:57.6621
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GPhE0tqNmUOcMV0kyK7gOdyeX9hs9h230SaKnEW520aZNqJ4kE/Hf8uDBrHRFyjy+RrdUByAouSir8ZFt535ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999105
 
-On Tue, 17 Feb 2026 at 17:25, Tommaso Merciai
-<tommaso.merciai.xr@bp.renesas.com> wrote:
-> Document the RSPI controller on the Renesas RZ/G3E SoC. The block is
-> compatible with the RSPI implementation found on the RZ/V2H(P) family.
->
-> Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-> ---
->  - This patch depend up on [0]
->  - [0] https://lore.kernel.org/all/20260128215132.1353381-2-cosmin-gabriel.tanislav.xa@renesas.com/
+On Tue, Mar 17, 2026 at 11:14:11AM +0200, Leon Romanovsky wrote:
+> On Fri, Mar 13, 2026 at 02:14:49PM -0400, Yury Norov wrote:
+> > On Fri, Mar 13, 2026 at 02:18:55PM -0300, Jason Gunthorpe wrote:
+> > > On Thu, Mar 12, 2026 at 07:08:16PM -0400, Yury Norov wrote:
+> > > > Based on 'sizeof(x) == 4' condition, in 32-bit case the function is wired
+> > > > to ffs(), while in 64-bit case to __ffs(). The difference is substantial:
+> > > > ffs(x) == __ffs(x) + 1. Also, ffs(0) == 0, while __ffs(0) is undefined.
+> > > > 
+> > > > The 32-bit behaviour is inconsistent with the function description, so it
+> > > > needs to get fixed.
+> > > > 
+> > > > There are 9 individual users for the function in 6 different subsystems.
+> > > > Some arches and drivers are 64-bit only:
+> > > >  - arch/loongarch/kvm/intc/eiointc.c;
+> > > >  - drivers/hv/mshv_vtl_main.c;
+> > > >  - kernel/liveupdate/kexec_handover.c;
+> > > > 
+> > > > The others are:
+> > > >  - ib_umem_find_best_pgsz(): as per comment, __ffs() should be correct;
+> > > 
+> > > So long as 32 bit works the same as 64 bit it is correct for ib
+> > 
+> > This is what the patch does, except that it doesn't account for the
+> > word length. In you case, 'mask' is dma_addr_t, which is u32 or u64
+> > depending ARCH_DMA_ADDR_T_64BIT.
+> > 
+> > This config is:
+> > 
+> >         config ARCH_DMA_ADDR_T_64BIT
+> >                 def_bool 64BIT || PHYS_ADDR_T_64BIT
+> > 
+> > And PHYS_ADDR_T_64BIT is simply def_bool 64BIT. So, at least now
+> > dma_addr_t simply follows unsigned long, and thus, the patch is
+> > correct. But IDK what's the history behind this configurations.
+> > 
+> > Anyways, the patch aligns 32-bit count_trailing_zeros() with the
+> > 64-bit one. If you OK with that, as you said, can you please send
+> > an explicit ack?
+> 
+> I can do that, 32 bits architectures are rarely used in the IB world.
+> 
+> Thanks,
+> Acked-by: Leon Romanovsky <leon@kernel.org>
 
-The dependency is now in spi/for-next.
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Thanks, Leon. Seemingly no headwinds for the patch. Taking in in -next
+for testing.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+Yury

@@ -1,146 +1,125 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFBF3F7A80
-	for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 16:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFD3B3BFB
+	for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 16:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850367; cv=none; b=Ia7Mqb+sRL4mkqr5xhhUWTFCKa0ScYaMwilEEgBE5cQetUaIDihSopJa9LTWsz7rDmBBdOdL9Owidxq83GO0eXrTbnvGYIAEoq6qbFpXE3hV08ojERvUH+eg+zky94PE/zZbn9a/h34HGnJFFcz0rsokU7Epj/uDuO9WX/54kSc=
+	t=1773850484; cv=none; b=DIIHSTu/uomnXBCEBg696YmEQ3nTm3uwvzPavaMjT7HF4WAYKr12CtaCiCOB9NAXS/dOwbe2R94KlMfnM7i8mcxaVLpJ4pVHFSD1ra15Az9pU2KkHIM8zMdaP9hcqAu4YFfauJ5jKnG7nNkYkPGg0w8IXw/uHjPRv5J0rbXvvdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850367; c=relaxed/simple;
-	bh=zi/HkF2Wrkfy5CiTfwxTMFNPw3MG5goQInCNL8HtPhw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aGIG4Hr3te4DhKT1SOXA4epJKV8GBP1yFne6s7A803WwZjXe6FWgQUuIXvNEBDYdbt3ErjbgbQUFUjzNHyNYlL7ueb/VDzLLN09WOJGa461sT/TtzlCBliu9mCWmb+AzB9BelqWQQOHs565FXxUD72cPygPx16b3AxvSxRqFsoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1/FdMlF; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1773850484; c=relaxed/simple;
+	bh=61LThXM6TkHf22dtxLqfIwd9R5jJPl9iMytA9rm+YuE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xf0gE+4zLCpxXTHuDPdBQQ/lYVfPyFpsErrpt6+C0kOxQ/AwEFmnPS3VTXuz82zEkiocxByIW5y8f1Z1R3IRcdjbi6pCTI62pJPY5jBXcOcVI3XPNbLfivIX/8rBuGKu0BCWLUuTnJunSkk1lEASrE+LRF2U/YQF4lLSPOpYL3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1/FdMlF"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so84904a91.0
-        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 09:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773850362; x=1774455162; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=scfnBMasoyrA80IqKi88Qi6oH/ECziYOs5/FKq35hhw=;
-        b=H1/FdMlFYYg54dTyVpOcd4+9EtPZcajt4SPTfHuDYY4V0r1ruFFd+xlCtAl0kBj6g4
-         WAq6C6fvLvJoQdTzfdGYMNbCTGX+Eh0zcYPkT9Rlpsq6cVuXGfefV0RBqOUtelGkpmgV
-         RWCtr/822IZHBGyjXEoYYSNu8vRS4sC175yrKh+QFPpYcY0Z3svsKrkCkVL56akUBqTp
-         gCivA7hg0ccTypWLwOfj/On3AI08PLH5UUl3fxc0WeCWc//iPdnu8OIIruKrKU8s+wUo
-         DeiWT1ZYPtj2UwyhG3RYOnjuMQBAzbaFuaaSyu6K4A0oWEVcdwHvinTrf8r06Okud6g3
-         F0hQ==
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-94ac8cbf3feso3733590241.0
+        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 09:14:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773850362; x=1774455162;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=scfnBMasoyrA80IqKi88Qi6oH/ECziYOs5/FKq35hhw=;
-        b=C38cYqdul3lJJMtl70PLDGBLmfiS9/ZJeXc5gWKj5UldBhI+CZFetdDKKbyMXfSH6G
-         c16VIzIOrvf/Si4ItSnJ0A3I+AnJBxrAlHcxVuFM6OphCL6ThDijEyegz4/5ipBSJLki
-         aTToQ9ZJcrKgwIGTJL92CmKzuUQoOTaAWouQyF6rvSsdnp4YqKRl3aIGyoMuY16cftaK
-         WZ29CSmLhdxHHVUKt7qNrhLDooO3L5K9mQ12TBcSpCEtH5bHsUdhlfUnxJKzXFFG9TSn
-         lP9KGTdOIFrHJMIV96JQBHPLSY1AG4PELRlXnnPsvOhy1pXspBoUfxKdVe3fm4sL3T1Y
-         5XEA==
-X-Gm-Message-State: AOJu0YwXatxm+6sD6Zbr+6vwNNMa+7xiHIoUmWoU4LiwhX/LiFnKZGuL
-	rMuC7XDGmWek/xm14knEW8Ff05It9MFPHNXg9RA800Ak9kLbJ++CMwabmXnWUw==
-X-Gm-Gg: ATEYQzyTpZ0DQrYEfjZKSkTQhnTEAVjOBx0tpitsvFB45VO6/2LyM4vhQWzodAtQsWp
-	sy+pVgZI15+wUluM9TsT+v1PFwbCKnbttpHwoeiNJt3mdOR8ljI32VapbOg0u/yMgFSH7F/4IZ9
-	Urx8bXuWGgsFHNHI0NCzU1ou9wR8DCPbmtfAoDU9FUMSnexQbHoQmvx7AlJrHHex2jHZVnn/l/G
-	Q9RRwOQVVph02mKiW2i3Wf+jHEHdko7o+ubxYEBQJdnAFWKCC5aSBeJq028Y6AeS66PI1LSczxW
-	rYR1RjpPKTd8cePcdvYhVVBDgyJQSzD+PYuBz5WczQhF0yu+JAJFdy1znkZ8sbLSQ7cUSzjZrUS
-	VD6DMHNyRCAhrWS6kfm0NDd97isKleeuF2h2cqEzlYVBMiR8WHJkm7WsWiu9e1r3HSDQh6jF88s
-	GRWRpFOg6tgTyE0CQ5Rd9jo3186PAj4p8wtsJy
-X-Received: by 2002:a17:902:d50b:b0:2ae:4d23:3364 with SMTP id d9443c01a7336-2b06e4353f8mr39579345ad.52.1773850361933;
-        Wed, 18 Mar 2026 09:12:41 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.167.147.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e430864sm43040915ad.18.2026.03.18.09.12.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 09:12:41 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Thu, 19 Mar 2026 00:12:35 +0800
-Subject: [PATCH 2/2] spi: sn-f-ospi: Use devm_mutex_init() to simplify code
+        d=1e100.net; s=20251104; t=1773850477; x=1774455277;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YQg3ZojwgSHDqijm0VNHDAW00kkVZrPeOY6PyIIDxp4=;
+        b=adHglzw1mG+M8DjxsUK3folM7kC2I/HcUMt0MlhKlugZGsSHle9AYih72loUCEQHV/
+         G1L9fsQspdmHZBabrsasRaCzb7uxtU5KgRGBDaGTFqw/ZRclDLrsGuB8YKVQUOul4A5X
+         1a1Mq7epyPfhJZK9sIAi1Ze1Px2p8cdEn8xWuEEZw0QsxGbP9JAdoGPQAjint2tFpS9Z
+         SB+p8BWrse8BkeMFprHcJB7uG9b1F/DnNC1gqR6dtzMMYBRH3VQDTGnky/5cUSQ35XUT
+         MYS3cC9XEjXWgcCYNpXMPn7lZ7Um35eMbRwTvzFjEAEbwGrDAEl8T4pG+ifwoNiD15s9
+         +PWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIpl3PTbrjlwop21OSvnodb8VtcU5L/j2iLY/XEUH42ecaaEpgdiyIvhcbO+XX4DbpdMXTFlojsTw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw75p6Eco0ycTjEdltjHyL6qcuvMVg1Z9Ct67p791TmIrN6Gw43
+	GzyCR4OZTbwpe+XIwoZiKaKynqL89WssuGuqauZUeHn5Dp4c2lnqaxbRoyJX9+HO82c=
+X-Gm-Gg: ATEYQzx9fY5NhhgqeU6NtzwZ6zSKGbdgI1zbSTWrRg4OV8vJybDpskWmWt0RC/5wLBF
+	4koBPQDKJen2X7FTOmYBkMXJ3pp5Fo1wniaeNGAvixA8IFYzBqLyUG2/lsKOYPsIEj5X4QgDrur
+	dpZvl6Oc1auym3cXuCs17qY4gVhzMOqK2ddMYvG84lLxAcwtpMYcEKPQc1HN6G0nwDt87PtZlRq
+	auJRNhdcCCqO/2+Tse4u0Uqx7nU6g/oC04qWvOSQ6pDuT4UJY8UKmmrBqfWxWikQXXqwR00fCuC
+	S1/EE7tCG3eVh4EmKPwAaTJOSBvcvDNoqQaf9rikGeMnHScqzTy5x2Mf9cDQPl/GI01rnfWBydB
+	jXaAq9D6wt9IcYpCgLhenU/k1lHcdu94JjOMLDxTm6gjHRZqEqc2zxffuBE3YS1iU8iGFn2Q3sU
+	Z8f1ipTVugG0fB9+WRk7C8BSeKv3RcEBH9iq5MYajP9GP+PqtUdcovoSMnRomv
+X-Received: by 2002:a05:6102:441c:b0:5ff:a34:6ce8 with SMTP id ada2fe7eead31-6027d2b6f08mr1909531137.20.1773850476848;
+        Wed, 18 Mar 2026 09:14:36 -0700 (PDT)
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com. [209.85.217.45])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9510325cfafsm1543241241.2.2026.03.18.09.14.36
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Mar 2026 09:14:36 -0700 (PDT)
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-5ffca37e8cdso9020137.2
+        for <linux-spi@vger.kernel.org>; Wed, 18 Mar 2026 09:14:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+cysir5z5eUKp62fenh3MjhnxcF6YKsIo2hEdWbjUKaf0dYt+OI977slqVRvOxAZ4l2frU9FOUQk=@vger.kernel.org
+X-Received: by 2002:a05:6102:3596:b0:602:7a74:fbcc with SMTP id
+ ada2fe7eead31-6027d12667emr2198273137.15.1773850475876; Wed, 18 Mar 2026
+ 09:14:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-sn-f-v1-2-33a6738d2da8@gmail.com>
-References: <20260319-sn-f-v1-0-33a6738d2da8@gmail.com>
-In-Reply-To: <20260319-sn-f-v1-0-33a6738d2da8@gmail.com>
-To: Mark Brown <broonie@kernel.org>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773850356; l=1566;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=zi/HkF2Wrkfy5CiTfwxTMFNPw3MG5goQInCNL8HtPhw=;
- b=Kt/80OoYepkAeakLlWwJRXmeLEu7GZ66hRYgm6U94ml5XAN9epfJjHYCybbDgD2fCvosO5WTH
- A34I8ji1JvdApq3Z3Hv7BJeGpnYRFcLoYAWmk7nQr93ieIHf4X+ECkA
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+References: <20260128215132.1353381-1-cosmin-gabriel.tanislav.xa@renesas.com> <20260128215132.1353381-2-cosmin-gabriel.tanislav.xa@renesas.com>
+In-Reply-To: <20260128215132.1353381-2-cosmin-gabriel.tanislav.xa@renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 18 Mar 2026 17:14:24 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVF9=CVokdAoAKxr6QcEoftqTv8GcUTd2y2NhMcBWRFmA@mail.gmail.com>
+X-Gm-Features: AaiRm53rX4HCYWST9itRTskWWhbI-bKvKrF3W9m6D7fYdmf48lf66Cz3h9Y7xcM
+Message-ID: <CAMuHMdVF9=CVokdAoAKxr6QcEoftqTv8GcUTd2y2NhMcBWRFmA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: spi: renesas,rzv2h-rspi: allow
+ multiple DMAs
+To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Switch to devm_mutex_init() to handle mutex destruction automatically.
-This simplifies the error paths in probe() and removes the need for an
-explicit mutex_destroy() in remove() callback.
+On Wed, 28 Jan 2026 at 22:52, Cosmin Tanislav
+<cosmin-gabriel.tanislav.xa@renesas.com> wrote:
+> All supported SoCs have multiple DMA controllers that can be used with
+> the RSPI peripheral. The current bindings only allow a single pair of RX
+> and TX DMAs.
+>
+> The DMA core allows specifying multiple DMAs with the same name, and it
+> will pick the first available one.
+>
+> There is an exception in the base dt-schema rules specifically for
+> allowing this behavior (dtschema/schemas/dma/dma.yaml).
+>
+> dma-names:
+>   anyOf:
+>     - uniqueItems: true
+>     - items:
+>         # Hack around Renesas bindings which repeat entries to support
+>         # multiple possible DMA providers
+>         enum: [rx, tx]
+>
+> Allow multiple DMAs to have the same name and only restrict the possible
+> names of the DMA channels, not their count.
+>
+> For RZ/T2H and RZ/N2H SoCs, limit the number of DMA channels to 6, as
+> they have 3 DMA controllers.
+>
+> For RZ/V2H and RZ/V2N SoCs, limit the number of DMA channels to 10, as
+> they have 5 DMA controllers.
+>
+> Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+> ---
+>
+> V3:
+>  * impose proper maxItems for each device
+>  * impose maxItems for dmas property
 
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-sn-f-ospi.c | 25 +++++--------------------
- 1 file changed, 5 insertions(+), 20 deletions(-)
+FTR
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/drivers/spi/spi-sn-f-ospi.c b/drivers/spi/spi-sn-f-ospi.c
-index 1f554aa7ca27..3c61c799723b 100644
---- a/drivers/spi/spi-sn-f-ospi.c
-+++ b/drivers/spi/spi-sn-f-ospi.c
-@@ -642,29 +642,15 @@ static int f_ospi_probe(struct platform_device *pdev)
- 	if (IS_ERR(ospi->clk))
- 		return PTR_ERR(ospi->clk);
- 
--	mutex_init(&ospi->mlock);
--
--	ret = f_ospi_init(ospi);
-+	ret = devm_mutex_init(dev, &ospi->mlock);
- 	if (ret)
--		goto err_destroy_mutex;
-+		return ret;
- 
--	ret = devm_spi_register_controller(dev, ctlr);
-+	ret = f_ospi_init(ospi);
- 	if (ret)
--		goto err_destroy_mutex;
--
--	return 0;
--
--err_destroy_mutex:
--	mutex_destroy(&ospi->mlock);
--
--	return ret;
--}
--
--static void f_ospi_remove(struct platform_device *pdev)
--{
--	struct f_ospi *ospi = platform_get_drvdata(pdev);
-+		return ret;
- 
--	mutex_destroy(&ospi->mlock);
-+	return devm_spi_register_controller(dev, ctlr);
- }
- 
- static const struct of_device_id f_ospi_dt_ids[] = {
-@@ -679,7 +665,6 @@ static struct platform_driver f_ospi_driver = {
- 		.of_match_table = f_ospi_dt_ids,
- 	},
- 	.probe = f_ospi_probe,
--	.remove = f_ospi_remove,
- };
- module_platform_driver(f_ospi_driver);
- 
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-2.43.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

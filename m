@@ -1,54 +1,65 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E9F39E184;
-	Wed, 18 Mar 2026 14:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680F53E3D98;
+	Wed, 18 Mar 2026 15:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773843291; cv=none; b=JdICSZS+7SStxrbZFY99116ywpeIVM4jal3txCSajDbS8WKmAudThPunNzpwUHs2tUbsXFEF6qpSuaQ7ldyJ8yFlGx4A2n6lV+mywe/bEcwgmbszb2DWPQqGgmLRyDiZzJOwg9TE6fITqlhqRSVGv5tLOITGfOr4qFNN4LLUchU=
+	t=1773846376; cv=none; b=KizJHs2VQ+fdl5ZPUfvSQ/f2nI6sccvNg5eHssYYtMA0QQozaHEuoFQnQKFKWxcnbWVJPsMTLvkzeDZsYzeXv2iQVK501IzxKlexF07Blg7trqnH/sjNf4G78BnF6m0mKd6W5XpnBCFWQkYRX1GA2GdXCwvT2YXWAGaFuwkdXYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773843291; c=relaxed/simple;
-	bh=nJnO+nHuROOt9bxV9p3sgb3U2PCwDvkJeUITLSMqKVg=;
+	s=arc-20240116; t=1773846376; c=relaxed/simple;
+	bh=4mKNZGsMnx96h+U53BOOHWYmauvrjAENdqFmFNmU85o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mpub/KjE4M5kW0M3rJkzHhdEq7lcNAjxawPQBHbQ98xbnX9pD3qcTvAp+fJFa6HkVRtAPOCYnENG4E4gTa1wxzrzudfZq7ST27iQFaYlpGjzZAlFhXztncno+iuhFATJ9Z4Ywt3zV1uXK2vBr9FQRgyKTXLyBSyUBKf/+oaoOlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=GOtre5dG; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDQlnfQRnno7Xkd1Mn2e5GuRwZcCVTrp4bLqgkQwZWHeeC/Uq5GpMFfi1iP1FhZYpvuJ3ztnZnGN/3VNFIfIGuZRl6Ba8aeOOzwlgh4dFljWgLeZPSP4jNOt9cRQ9FXI9LikyLBs7WcDwQjwkVBDw1JSE9YcRZofAk/8idYFh2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LebXoTOk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="GOtre5dG"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1980F1FE0B;
-	Wed, 18 Mar 2026 15:14:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1773843285;
-	bh=/QtY4uteqozq4VaY4eoX3FFr3qESdHtk+Hmcb4iQwaI=;
-	h=Received:From:To:Subject;
-	b=GOtre5dGnJrY9U5IdpK1yadwta1I09F+su2N7ZRC8P3d17Ss2b/WASyhNhoGr+85Y
-	 DIDTXmEFebQ+nnFl66jeXJzgTkLhx8GyvfLvEqybnvNph4cE/U+SUCdAxBsW47slGr
-	 fhHM/WW0eBSKwpfIEsZKQ+wsl3i0aWvbzPVaZTtOTTUp59Oa/e3SPr/L9x/QQ+0Vrf
-	 Bir/NCXjMyNX4Ga0sg3zPFpd65TEVnDZxDu+Y+mSjXT6a+Q2QWWC+Uw15VgVl+EkeT
-	 fpC68UUYICrWHHxbGT/A9wDkOnrX13X6mnN2IXwyS5BtRjGEyF1SXePtVnG0ZXOe3P
-	 ytclV43URu6AA==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id B96497F86A; Wed, 18 Mar 2026 15:14:44 +0100 (CET)
-Date: Wed, 18 Mar 2026 15:14:44 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
- spi-miso-mosi-loopback
-Message-ID: <abqzVJTb4TNxa8pZ@gaggiata.pivistrello.it>
-References: <20260316073547.11437-1-francesco@dolcini.it>
- <20260316073547.11437-2-francesco@dolcini.it>
- <bbfa2a62-7113-433b-91ad-0693ed6f8e36@kernel.org>
- <cde8671f-bb38-41d8-b27f-c54aa7242899@kernel.org>
- <20260316085751.GA23443@francesco-nb>
- <a3796f8b-f94c-4d0d-a0b9-b2970e43e28d@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LebXoTOk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773846373; x=1805382373;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4mKNZGsMnx96h+U53BOOHWYmauvrjAENdqFmFNmU85o=;
+  b=LebXoTOkU3k5eaXxR02elrSmRO8ZalyxL65st5SEKle86Csm8qwf0HEv
+   rqJljE96LGu3pwFcwyR7PpbK4/DEJe9MAkljyzVSR/HxCcADdJzn2ziMX
+   lKlUMDHE7B2RYZPb/DDrWUQ1VoTLpfZVLfn5g5ml6ncKZgmAHOrbeJvOl
+   acNylwC9zBIqsgIuUlS//XYnWkZY8k1CTyI6UKu7Sl4c+02N4ANBNMnoK
+   JhDu5PgZ3B55iC+ywEas2IYzaKzFiBUacaYwD7Z8bw1951NB2M66q8Lqq
+   Aq+78EKiOkniRziZsj0Oqi97NzPRCRV42aLM12efvtHhpTtiOd+BiTEmk
+   w==;
+X-CSE-ConnectionGUID: C9FI+263TSGQTAGyFVyQFg==
+X-CSE-MsgGUID: 5WZZ4Z6XRbugoe0vpYwbjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="74601745"
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="74601745"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 08:06:08 -0700
+X-CSE-ConnectionGUID: 45FZNnEETzigI3hiwWOn+w==
+X-CSE-MsgGUID: 9Lplwp4OTDGMa1328tMtMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
+   d="scan'208";a="227341270"
+Received: from lkp-server01.sh.intel.com (HELO 63737dd503cb) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 18 Mar 2026 08:06:04 -0700
+Received: from kbuild by 63737dd503cb with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w2sTC-0000000031t-0fMK;
+	Wed, 18 Mar 2026 15:06:02 +0000
+Date: Wed, 18 Mar 2026 23:05:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pei Xiao <xiaopei01@kylinos.cn>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, openbmc@lists.ozlabs.org,
+	linux-rockchip@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, broonie@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Pei Xiao <xiaopei01@kylinos.cn>
+Subject: Re: [PATCH v3 01/17] spi: axiado: Use helper function
+ devm_clk_get_enabled()
+Message-ID: <202603182309.Rj2JxGYZ-lkp@intel.com>
+References: <a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -57,106 +68,62 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a3796f8b-f94c-4d0d-a0b9-b2970e43e28d@kernel.org>
+In-Reply-To: <a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01@kylinos.cn>
 
-Hello Krzysztof,
+Hi Pei,
 
-On Mon, Mar 16, 2026 at 05:56:02PM +0100, Krzysztof Kozlowski wrote:
-> On 16/03/2026 09:57, Francesco Dolcini wrote:
-> > Hello Krzysztof,
-> > thanks for taking the time to answer this
-> > 
-> > On Mon, Mar 16, 2026 at 09:36:42AM +0100, Krzysztof Kozlowski wrote:
-> >> On 16/03/2026 09:35, Krzysztof Kozlowski wrote:
-> >>> On 16/03/2026 08:35, Francesco Dolcini wrote:
-> >>>> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >>>>
-> >>>> Add a compatible to describe a single wire loopback between SPI MISO and
-> >>>> MOSI signals.
-> >>>>
-> >>>> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
-> >>>> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >>>> ---
-> >>>>  Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
-> >>>>  1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> >>>> index a482aeadcd44..2cb973c157f6 100644
-> >>>> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> >>>> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> >>>> @@ -432,6 +432,8 @@ properties:
-> >>>>            - socionext,uniphier-smpctrl
-> >>>>              # SparkFun Qwiic Joystick (COM-15168) with i2c interface
-> >>>>            - sparkfun,qwiic-joystick
-> >>>> +            # Single wire loopback between SPI MISO and MOSI signals
-> >>>> +          - spi-miso-mosi-loopback
-> >>>
-> >>> If you decided to go against my approach, then at least document it in
-> >>> proper place - incomplete-devices - so this won't be ever used in DTS.
-> >>>
-> >>
-> >> ... and then you will notice existing linux,spi-loopback-test, so
-> >> explain the differences and why spi-loopback-test cannot be used for
-> >> your loopback test.
-> > 
-> > Yes, this spi-loopback-test will work.
-> > 
-> > I was not aware of it (no-one mentioned it in the email thread I opened)
-> > and I misread your answer as an alternative suggestion, and not as a nack.
-> > 
-> > There is still an open question, I can any driver probe/bind to the
-> > actual SPI device? My plan, once this discussion is settled, is to send
-> > patches to add dtso file enabling this test, however, according to
-> > trivial-devices.yaml, I cannot submit such a DT file using
-> 
-> I think you meant incomplete-devices and then yes, such DT upstream is
-> not allowed.
+kernel test robot noticed the following build warnings:
 
-yes, thanks for correcting me.
+[auto build test WARNING on broonie-spi/for-next]
+[also build test WARNING on next-20260317]
+[cannot apply to atorgue-stm32/stm32-next rockchip/for-next xilinx-xlnx/master clk/clk-next shawnguo/for-next soc/for-next linus/master v7.0-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> > linux,spi-loopback-test as a compatible.
-> > 
-> > On the actual HW I have a pins header and a wire between MISO/MOSI.
-> 
-> pins header, if I understood correctly what you are talking about, is a
-> connector. Connecting there a jumper to short circuit there is out of
-> scope, because it is not part of the board. Thus cannot be send upstream
-> DTS, unless it is really embedded in the design like USB-A dongles which
-> could not be removed by end user.
-> 
-> Otherwise you could say that every evalkit board can have such device,
-> because they all have pin headers...
-> 
-> > 
-> > I am clearly missing something obvious, any advise is appreciated.
-> 
-> Describe your hardware... Nothing in this patchset helps in
-> understanding it.
+url:    https://github.com/intel-lab-lkp/linux/commits/Pei-Xiao/spi-axiado-Use-helper-function-devm_clk_get_enabled/20260318-110300
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+patch link:    https://lore.kernel.org/r/a78f25f1b15b90121e9723ecb5bd606bbb1868d4.1773733017.git.xiaopei01%40kylinos.cn
+patch subject: [PATCH v3 01/17] spi: axiado: Use helper function devm_clk_get_enabled()
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260318/202603182309.Rj2JxGYZ-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260318/202603182309.Rj2JxGYZ-lkp@intel.com/reproduce)
 
-Let me describe the need first, and after that I'll describe the HW.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603182309.Rj2JxGYZ-lkp@intel.com/
 
-The need we have is to have a way, with Linux mainline kernel, to test the SPI
-functionality (subsystem, driver and the actual HW). So far this was
-done using the spidev out-of-tree and with a loopback between the SPI MOSI and
-MISO signals.
+All warnings (new ones prefixed by >>):
 
-We have a variety of HW that have various signals available on some sort of
-connector or pins headers [1].
+   drivers/spi/spi-axiado.c: In function 'ax_spi_remove':
+>> drivers/spi/spi-axiado.c:865:24: warning: unused variable 'xspi' [-Wunused-variable]
+     865 |         struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+         |                        ^~~~
 
-This https://docs.toradex.com/112710-mallow-carrier-board_back.png is just one
-example, I know you are familiar with this kind of HW, I am writing it here the
-link just for completness and for everyone else.
 
-So yes, your understanding is correct.
+vim +/xspi +865 drivers/spi/spi-axiado.c
 
-About the HW, we have various test boards, that plugs into this connector(s),
-as test fixture, and, with traces on the PCB, they do connect together the SPI
-MISO and MOSI signals.
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  853  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  854  /**
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  855   * ax_spi_remove - Remove method for the SPI driver
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  856   * @pdev:	Pointer to the platform_device structure
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  857   *
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  858   * This function is called if a device is physically removed from the system or
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  859   * if the driver module is being unloaded. It frees all resources allocated to
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  860   * the device.
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  861   */
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  862  static void ax_spi_remove(struct platform_device *pdev)
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  863  {
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  864  	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07 @865  	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  866  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  867  	spi_unregister_controller(ctlr);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  868  
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  869  	pm_runtime_set_suspended(&pdev->dev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  870  	pm_runtime_disable(&pdev->dev);
+e75a6b00ad7962a Vladimir Moravcevic 2026-01-07  871  
 
-Here a couple of picture as an example, of the "Aquila Lava HAT",
-https://gist.github.com/dolcini/33c332f0b2174a9d495baf7c79341abf
-
-Francesco
-
-[1] https://en.wikipedia.org/wiki/Pin_header
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki

@@ -1,218 +1,135 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED92C3F167F
-	for <linux-spi@vger.kernel.org>; Thu, 19 Mar 2026 17:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EBF391E6F
+	for <linux-spi@vger.kernel.org>; Thu, 19 Mar 2026 18:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773943197; cv=none; b=RshCG7DbqN48CEiLltmxmZu2h8um22ZxFswFkPqPoF7s02cKHTQEjZ2aISqCDGdDoIv+Sz253C2s+5sxzMtJU4DVNKXyjPM1xwS2jw7AS7MX3tc/hOsmNLNM9FpLLGZHnCNwtlAjJorPRPZPoXdOTrv1klYxGSBl/z5S2v1LCXE=
+	t=1773944241; cv=none; b=Ll3E3KejXTfs2yYpaq36RwZPqDgppYjGaEi59NMk5Pxbnxs9pLGGtlNqms9iXub6shlhY5q9AnyMDqS6tcVNbo71Gh3wY5OKEgce5Fr7kXXe9wPiwi1AwfyIejuDCbgRQOfL+TR2BXuafyFRVXng/Q4ZfZ0EjFD3PPzBkoug7tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773943197; c=relaxed/simple;
-	bh=1qiYzC4e4C5Osb7cyOfG+hx3gfnhgiG4CgnJdnnYqWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L820vr7GkOfO8qgEZxd0Wbq2KouZIpoEztudZREgUAx2bGXlQvLn26ktiKpIYEFEoR2onI/7s6Q6fswVauOa/zS9bVEkaWUVhzDqb01Mqk2U2wNQytXVh++qdqn5Tw4ixZ32u+IW45HpxbQhdGR9YRZGnL6he172Oh1DsTBuX20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZcI4tmRH; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZcI4tmRH"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38bf1561215so5762991fa.2
-        for <linux-spi@vger.kernel.org>; Thu, 19 Mar 2026 10:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773943194; x=1774547994; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=ZcI4tmRHPcVWvRRnp6uZagIkAzjhTGLNnPae/yY1X7Sk+TnsRGmrY6GITMDxfn6py7
-         oQQ8i1KgNkb11x2k+PuyfRonxvwwpT3mUqRP+DxKHl2gXV1ZO5dJ80F3bBTBShCdrk5Z
-         6pCykLTGvHeV9v1hHe5q/DVmN+MioGigGACjo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773943194; x=1774547994;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=KfxctuxSAn0g2sar7RcLrFdE3oPLtllY31PQE//Xp17BJNDE7bv7qt3po54KaBlL3T
-         OF8zXyH0WMcJ9Tj2+6fuFQ9wnic5RdTHqbzhLEbQT3s7dLH6wmPHuTJ38SSJppTasCLR
-         DU5GSB96mTQpoPczf+eR3sSPIqvCAYh4/+xLGqK44TyWD64X9lsj6/n66hZDOpXdt+FN
-         C/HrbVpp2eeboLwJDxhjrNGNpjMKZvcQdFqPTziyodwbN9N5SHB4/ZQ2ELKLRT5M/NZO
-         ItIDDu+GKEYxJdI6JB3Sh04+1JnuOS5gAczHCCCwVzoq+R7set0LqdnrPVm2jTcuu6YZ
-         N8/g==
-X-Forwarded-Encrypted: i=1; AJvYcCXlsAmSG49bGwAQ4DAwEy4ew5PBb4dPUOjXJg/zTLzZnWV1+M7To+bLzLSGUkCeBCjL98lrFYDkTgE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVFakZNS1kviwMusci6cs5J3c3cE2Q3Rb+F+TSXzidffSDwpnr
-	LRrTCuB10B4PgbgranfVnJOZyX437V7Jl2bpchRH1bZb/1iXai8RJW3o0l4Wosqgsiixx0J73IO
-	ZjDNLn8xF
-X-Gm-Gg: ATEYQzwzmSYkyVlV51wEkS4u9z+wHoQ/emUIvSjFzf8XBWiFCWTUWXoMIPlcloanzrL
-	oLN0UobGVYsYyjund52HVYDKoA2Bq2dpEf64OrUPwUANzf6BDCQQ/og3awpoGy+2oQhJLSxhK/0
-	2YJwO57umD4Z/xb1K9XcWWzIqKXOWj6coqhbWgOek6D8v4Y8qkCxVXWPSgJOvKcPoqPtckyeL2r
-	u4BbWwNjm1/waJXTHGrMQw7Jp2Rp+BrOWgM3QG54VkiZK52O4nYLXwRZ9PGUAzsHErI7LLrcr1p
-	TnMMZcga2p0Hzko48wWu99/3j31HAIQ93l/EWVYKb7hHFGkOYefJGKyAYUAhXXwRiM46Wuu53j2
-	HjJIIrg9HIsp68S5RqrhQ0WB4MV5Di7CbuvaY7wXeOVrRHRkXMroDGm2zM3RaOFJDa1SzBFSd5K
-	WmzlMnu9sl443nWSfv5YW9x4BjCYoh6EdJDfoR7oHVWHZGYUhR3DkdHHdgrmid+v4RVv0Z8qTIh
-	3Go
-X-Received: by 2002:a05:651c:551:b0:38a:aba:9c0b with SMTP id 38308e7fff4ca-38bf972d34fmr1409461fa.27.1773943193701;
-        Thu, 19 Mar 2026 10:59:53 -0700 (PDT)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf972bbaasm505241fa.6.2026.03.19.10.59.53
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2026 10:59:53 -0700 (PDT)
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38bf1561215so5762881fa.2
-        for <linux-spi@vger.kernel.org>; Thu, 19 Mar 2026 10:59:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU3Y38u6iYbLqtB38+iHpmPRRoNWL7Kh/gU1XON2zz5SUZtoUAqazYRmevvmfuAQf4nOzRsvU/fnzQ=@vger.kernel.org
-X-Received: by 2002:a05:6000:18a6:b0:439:beee:43b5 with SMTP id
- ffacd0b85a97d-43b6423d90bmr470716f8f.3.1773942745211; Thu, 19 Mar 2026
- 10:52:25 -0700 (PDT)
+	s=arc-20240116; t=1773944241; c=relaxed/simple;
+	bh=vxRZAIklotJCvF8rEPlW7kj66ZfHUAsbk9thy43JhIQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EhxKrWSiro+IO8wJ8u+I5AM5ZmjdTnVnW8Fh3ATCamYkdkzysLShCmzvUXr9bcY1XjyGovW6JHrbt1fdX0NrYZG4sEtWWdJDBjM3+KEjmrYheHaF6fS1Zgp1HOxGAx1kgPuLCkvTRAE4T7JqlJIowQJGc/WmkDun9Hs0ZXZWa0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w3Hvj-000223-LW; Thu, 19 Mar 2026 19:17:11 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w3Hvj-0017PB-16;
+	Thu, 19 Mar 2026 19:17:11 +0100
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 084AF5088D5;
+	Thu, 19 Mar 2026 18:17:11 +0000 (UTC)
+Date: Thu, 19 Mar 2026 19:17:09 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>, 
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de, linux-spi@vger.kernel.org
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+Message-ID: <20260319-hilarious-emotional-kiwi-20e44b-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de>
+ <20260316-spi-fsl-lpspi-cleanups-v1-4-1b695607702d@pengutronix.de>
+ <e4c711c1-5229-4685-aadf-f88aca9fbd3d@sirena.org.uk>
+ <20260316-original-dove-of-respect-1a6e04-mkl@pengutronix.de>
+ <0f04cc7e-c960-42fd-9a45-49777e49dd4b@sirena.org.uk>
+ <20260316-venerable-caracara-of-advertising-a9e9b8-mkl@pengutronix.de>
+ <b6787850-11cf-4b38-a5ea-da2c5d0811f4@sirena.org.uk>
+ <20260316-imperious-amusing-dogfish-0ca492-mkl@pengutronix.de>
+ <585afe0e-0ffc-44bc-b3d2-63e5075ab1f5@sirena.org.uk>
+ <20260317-beautiful-intrepid-chihuahua-6113b0-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-In-Reply-To: <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 19 Mar 2026 10:52:13 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-X-Gm-Features: AaiRm51jE-pJGKyYKekSNJEdkSVtbmzl88hjmcc-VHWIT0EUhGVU2WYljuGhtW4
-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
- thread safe
-To: Saravana Kannan <saravanak@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4ufz3xlgtua5p3yi"
+Content-Disposition: inline
+In-Reply-To: <20260317-beautiful-intrepid-chihuahua-6113b0-mkl@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
+
+
+--4ufz3xlgtua5p3yi
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH spi-next 04/11] spi: spi-fsl-lpspi:
+ fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Status register
+MIME-Version: 1.0
 
-Hi,
-
-On Thu, Mar 19, 2026 at 10:25=E2=80=AFAM Saravana Kannan <saravanak@kernel.=
-org> wrote:
+On 17.03.2026 10:44:51, Marc Kleine-Budde wrote:
+> On 16.03.2026 18:49:15, Mark Brown wrote:
+> > > > Oh, dear, so that's potentially going to go badly if there's a SoC =
+with
+> > > > a bigger FIFO that didn't also increase the watermark field width. =
+ We
+> > > > should at least warn about that, and ideally do something sensible.
+> >
+> > > Good idea, I'll add a warning if the FIFO is bigger than the watermark
+> > > field.
+> >
+> > > To handle this situation I see 2 options:
+> > > - warning + limit the FIFO to the usable size due to the currently
+> > >   hard-coded watermark width - this will result in reduced throughput
+> > > - increase the watermark mask to 8 bits - which is basically how the
+> > >   unpatched driver works.
+> > >   As outlined in my previous mail, the other code in the driver takes
+> > >   care that the watermark stays within the limits.
+> >
+> > I guess it depends how optimistic we are about hardware engineers
+> > keeping the FIFO and watermark depths in sync.
 >
-> On Tue, Mar 17, 2026 at 9:04=E2=80=AFAM Douglas Anderson <dianders@chromi=
-um.org> wrote:
-> >
-> > In various places in the kernel, we modify the fwnode "flags" member
-> > by doing either:
-> >   fwnode->flags |=3D SOME_FLAG;
-> >   fwnode->flags &=3D ~SOME_FLAG;
-> >
-> > This type of modification is not thread-safe. If two threads are both
-> > mucking with the flags at the same time then one can clobber the
-> > other.
-> >
-> > While flags are often modified while under the "fwnode_link_lock",
-> > this is not universally true.
-> >
-> > Create some accessor functions for setting, clearing, and testing the
-> > FWNODE flags and move all users to these accessor functions. New
-> > accessor functions use set_bit() and clear_bit(), which are
-> > thread-safe.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Acked-by: Mark Brown <broonie@kernel.org>
-> > Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > ---
-> > While this patch is not known for sure to fix any specific issues, it
-> > seems possible that it could fix some rare problems. I'm currently
-> > trying to track down a hard-to-reproduce heisenbug and one (currently
-> > unproven) theory I had was that the fwnode flags could be getting
-> > messed up like this. Even if turns out not to fix my heisenbug,
-> > though, this seems like a worthwhile change to take.
+> Right, we're talking about FSL/NXP hardware :D
 >
-> Reviewed-by: Saravana Kannan <saravanak@kernel.org>
+> > The first option is more
+> > defensive, but like you say it'll hit performance on future devices that
+> > do expand the FIFO.  I guess I have a slight preference for that?
+>
+> Yes - I'll increase the watermark width to 8 bits and add a comment next
+> to the GENMASK.
 
-Thanks for the review!
+FTR: I decided to use the watermark width of the i.MX93 as an upper
+limit for the FIFO order and print an info message.
 
+See https://lore.kernel.org/all/20260319-spi-fsl-lpspi-cleanups-v2-3-02b56c=
+5d44a8@pengutronix.de
 
-> Thanks Doug. Hope this isn't the cause of the hisenbug. If you report
-> it here, I might be able to take a look at it too (no promises).
+regards,
+Marc
 
-I don't _think_ it fixes my bug, but I'm still not 100% sure because
-the bug can take a day or so to reproduce and it appears to only
-reproduce on official kernels built by the builder. :( This makes it
-hard to say anything for certain and also hard for me to inject extra
-debug logic.
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-I did finally capture a ramdump of a device in the bad state and
-managed to inspect the state of all the fwnode and fwnode_link
-objects.
+--4ufz3xlgtua5p3yi
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The problem (simplified) is that I have a pinctrl device:
+-----BEGIN PGP SIGNATURE-----
 
-  max77779_pinctrl {
-    pin1: pin1 {
-      ...;
-    };
-    pin2: pin2 {
-      ...;
-    };
-  };
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCabw9owAKCRDMOmT6rpmt
+0n8HAP9Wx8wZyUJh4PX82ssmuG4a4S7hguaYFYlhFLSE7LxUBQD9GdK7gQ5pXaIl
+mnSfrPAfLVMnSgAy0JVb5MnQFyEErQo=
+=nALl
+-----END PGP SIGNATURE-----
 
-...and then a client of the pinctrl device:
-
-  client1 {
-    pinctrl-0 =3D <&pin1>;
-    ...
-  };
-
-  client2 {
-    pinctrl-0 =3D <&pin2>;
-    ...
-  };
-
-At parse time, we get a link between the "client1" node and the "pin1"
-node (and "client2" and "pin2").
-
-In a normal boot (where the bug doesn't reproduce), when
-max77779_pinctrl finishes probing, all of the links to its children
-(which don't have a "dev" associated with them) get moved to point to
-"max77779_pinctrl" (__fw_devlink_pickup_dangling_consumers).
-
-When I detect the bug, the max77779_pinctrl device clearly has
-finished probing, but the client devices still point to the child
-nodes.
-
-In the debugger, I can inspect things. I can see:
-* The fwnodes for "pin1" and "pin2" clearly don't have a "dev" node.
-They also don't have "FWNODE_FLAG_NOT_DEVICE" set.
-* The fwnode for "max77779_pinctrl" clearly has a dev node (and a bus).
-* The fwnodes for "pin1" and "pin2" show zero consumers.
-* The fwnodes for "client1" and "client2" _do_ still show suppliers.
-* When I look at the fwnode_link between the clients and the pins, the
-"supplier" points to the node for the pin.
-* When I look at the fwnode_link between the clients and the pins, the
-"c_hook" is non-empty.
-* When I look at the fwnode_link between the clients and the pins, the
-"consumer" points to the node for the client.
-* When I look at the fwnode_link between the clients and the pins, the
-"s_hook" is an empty list (next =3D=3D prev).
-
-It's a bit baffling because everything looks nice and consistent with
-half the link being severed, which doesn't seem possible when looking
-at the code. The code seems to always add to a consumer list and
-supplier list at the same time and remove at the same time.
-
-I've started to run out of ideas on how it could possibly get into
-this state. If you have any, or want me to look at any other data
-structures in the ramdump let me know.
-
--Doug
+--4ufz3xlgtua5p3yi--

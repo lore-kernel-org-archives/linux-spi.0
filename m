@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603FE3F0765
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5933EF0A7
 	for <linux-spi@vger.kernel.org>; Thu, 19 Mar 2026 16:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773939377; cv=none; b=nviD0ECI418R+d2NHfzgUIhq/2R2Ok2YqS/ZaNdByamdHFk9rWSZ5KYr8CHMfh2jgV2y79rdfg1FUhToyDs7cbwG2qbZWk3upoIBflUBWtqPkIPpAxunMo91PxMMXqwjUfYXq8fcRfk5RP/tfp7jKPZp6xiMhUM/jK2Nio+p5Jk=
+	t=1773939376; cv=none; b=kr0s3Jbg5kK0KMbgyWoFrwQ6pVf+/UENDOnsj1j/n3nTBz/eLRTNOqBwFceioRg+yQ4TPcyeFvYImfvaNe0bcGhfkNNbOzSRG9hz0dT8sI+QkpSq8jvQBYZwUI9+4DXAVSbJGIRqr38M9ua60sQMfnUhqSgnF8zfITdKjvR4vW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773939377; c=relaxed/simple;
-	bh=KxiwZ0iwLDKyLQQM0h9K6zpDDhS6fHBzGkiS6fXqY3w=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EhpI82w+ytpCXnUexLNau5KK9FsPIJFU++mfTjIQ26sSw+YtpboDNHhCc7afrxVyWo9sitp5u9iO20I9RKKnnWK8V1SgsMCptn0+bcBC4ANrTilGg6QO+C43VEA5wUcDX+ac45J50xugQPrkIYhZkoqh9K/T575Ka4n0ALLET4Q=
+	s=arc-20240116; t=1773939376; c=relaxed/simple;
+	bh=dy11iQJKxpsIuMdWWq+CSR2WKBQnNeC1vmiLhqqUDtU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=s7I613HRoGWM2LdNCR00RI9sfcrJDunPsWeML2LNE6GumVK/NonuvLzLWehtVvR9O9wB13JrbEQRAHpYYbqfHtZxIUffyJIrWTyvg2aT4NYX6+CGvemwXdJPVjkpermL6dOvhsEKq9KUnV2CFE54VVykxuKt+rG18eqpV/LrEZU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,25 +18,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf1-000546-Ac; Thu, 19 Mar 2026 17:55:51 +0100
+	id 1w3Gf1-00054C-Ij; Thu, 19 Mar 2026 17:55:51 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1w3Gf0-0016i8-2f;
-	Thu, 19 Mar 2026 17:55:50 +0100
+	id 1w3Gf1-0016iH-0Z;
+	Thu, 19 Mar 2026 17:55:51 +0100
 Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7FBB750877C;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B8D18508781;
 	Thu, 19 Mar 2026 16:55:50 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH spi-next v2 00/11] spi: spi-fsl-lpspi: various cleanup and
- enhancement patches
-Date: Thu, 19 Mar 2026 17:55:34 +0100
-Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+Date: Thu, 19 Mar 2026 17:55:39 +0100
+Subject: [PATCH spi-next v2 05/11] spi: spi-fsl-lpspi: fsl_lpspi_set_cmd():
+ remove obfuscated and obsolete assignment of TCR_CPOL and SPI_CPHA
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,22 +44,20 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIYqvGkC/3VOSw6CMBC9ipm1NW3FElx5D8MC6ABjSGk6hWAId
- 5eiW3fv5X1XYAyEDPfTCgFnYhrdTvT5BE1fuQ4F2Z2DltrIq8oEexItD2LwCTUDVm7yLDKpsla
- iqXVhYQ/7gC0tR/ETktPhEqH8KjzVL2xi6k3enjiO4X18mNWR+M2Zf3OzElKo2hQ3I/Ncavvw6
- LophtHRcrEI5bZtH24F2GDdAAAA
-X-Change-ID: 20260314-spi-fsl-lpspi-cleanups-4014f0e6b29d
+Message-Id: <20260319-spi-fsl-lpspi-cleanups-v2-5-02b56c5d44a8@pengutronix.de>
+References: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
+In-Reply-To: <20260319-spi-fsl-lpspi-cleanups-v2-0-02b56c5d44a8@pengutronix.de>
 To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
 Cc: Marek Vasut <marex@nabladev.com>, linux-spi@vger.kernel.org, 
  imx@lists.linux.dev, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
  Marc Kleine-Budde <mkl@pengutronix.de>
 X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1791; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=KxiwZ0iwLDKyLQQM0h9K6zpDDhS6fHBzGkiS6fXqY3w=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjco9XR1nj41up7rL2Mf16dkyltSqtz5LngzXxwevL6/
- lX/ZJwMOkpZGMS4GGTFFFmW/jihKBDoUNr7MmESzBxWJpAhDFycAjCRs4sYfjHbB+oq3P/qanAk
- u95tv8784o0TYu5/SmmSS7+YV53MPo+RYXe04oY7M2e4xU1v+HuV/d8eRwvjEHtD0Rl8sqKMYud
- ZeAE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1545; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=dy11iQJKxpsIuMdWWq+CSR2WKBQnNeC1vmiLhqqUDtU=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsjco9Vrvu5mXZNJ0I5bP1l/bv8c1m4YW9/W0TU/rn0r1
+ 47jE0t6OkpZGMS4GGTFFFmW/jihKBDoUNr7MmESzBxWJpAhDFycAjARdQlGhm+OnjUzUmobnulp
+ blslM8G433NVt3H8kkNBnf8CZ61NSWVk+PXiivXqQG/dO9tjtRds0bac2vRQy8Pa88TaTU6KLU6
+ bOQA=
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -67,39 +65,42 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-While optimizing the spi-fsl-lpspi driver, I created some cleanup and
-enhacement patches.
+Commit 7ae4d097b752 ("spi: spi-fsl-lpspi: Handle clock polarity and phase")
+enhances the driver with clock polarity and phase handling.
 
+Among other things that commit in fsl_lpspi_set_cmd() explicitly set the
+bits TCR_CPOL and TCR_CPHA bits in the TCR register depending on their
+corresponding bits in the SPI mode (SPI_CPOL and SPI_CPHA), to configure
+clock polarity and phase.
+
+That change made the assignment of the lowest 2 bits of lpspi_config::mode
+shifted by << 30 to the TCR register obsolete. The lowest 2 bits of struct
+lpspi_config::mode (= SPI_CPOL and SPI_CPHA) match the corresponding bits
+in the TCR register (TCR_CPOL and TCR_CPHA) if shifted.
+
+Keep the better readable and maintainable version provided in commit
+7ae4d097b752 ("spi: spi-fsl-lpspi: Handle clock polarity and phase") and
+remove the obfuscated version.
+
+Cc: Marek Vasut <marex@nabladev.com>
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
-Changes in v2:
-- reorder patches
-- patch#3: add sanity check of FIFO size against watermark width
-- patch#5: new, remove obsolete assignment of TCR_CPOL and SPI_CPHA
-- patch#11: dropped
-- Link to v1: https://patch.msgid.link/20260316-spi-fsl-lpspi-cleanups-v1-0-1b695607702d@pengutronix.de
+ drivers/spi/spi-fsl-lpspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
----
-Marc Kleine-Budde (11):
-      spi: spi-fsl-lpspi: adapt to kernel coding style
-      spi: spi-fsl-lpspi: fsl_lpspi_set_watermark(): use FIELD_PREP() to encode FIFO Control register
-      spi: spi-fsl-lpspi: fsl_lpspi_probe(): use FIELD_GET to decode Parameter register and add size check
-      spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): use mode from struct fsl_lpspi_data::config::mode
-      spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): remove obfuscated and obsolete assignment of TCR_CPOL and SPI_CPHA
-      spi: spi-fsl-lpspi: fsl_lpspi_set_cmd(): use FIELD_PREP to encode Transmit Command register
-      spi: spi-fsl-lpspi: fsl_lpspi_setup_transfer(): remove useless spi_transfer NULL pointer check
-      spi: spi-fsl-lpspi: fsl_lpspi_can_dma(): directly assign return value to fsl_lpspi->usedma
-      spi: spi-fsl-lpspi: fsl_lpspi_reset(): convert to void function
-      spi: spi-fsl-lpspi: fsl_lpspi_write_tx_fifo(): simplify while() loop check
-      spi: spi-fsl-lpspi: make struct lpspi_config::mode u32
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index c20376da1d37..4cf73e56d2f2 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -294,7 +294,6 @@ static void fsl_lpspi_set_cmd(struct fsl_lpspi_data *fsl_lpspi)
+ 	u32 temp = 0;
+ 
+ 	temp |= fsl_lpspi->config.bpw - 1;
+-	temp |= (fsl_lpspi->config.mode & 0x3) << 30;
+ 	temp |= (fsl_lpspi->config.chip_select & 0x3) << 24;
+ 	if (!fsl_lpspi->is_target) {
+ 		temp |= fsl_lpspi->config.prescale << 27;
 
- drivers/spi/spi-fsl-lpspi.c | 90 ++++++++++++++++++++++++---------------------
- 1 file changed, 49 insertions(+), 41 deletions(-)
----
-base-commit: b876ebf2c06042f78b2c9c47c53ffe54c7e480a2
-change-id: 20260314-spi-fsl-lpspi-cleanups-4014f0e6b29d
-
-Best regards,
---  
-Marc Kleine-Budde <mkl@pengutronix.de>
+-- 
+2.53.0
 

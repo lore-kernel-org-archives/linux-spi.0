@@ -1,25 +1,25 @@
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C18384245;
-	Thu, 19 Mar 2026 02:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13838387376;
+	Thu, 19 Mar 2026 02:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773885872; cv=none; b=K8Kar4AsV4+YIzLJyGkKvRiY9vimddw2J5Tqrbd5FcQacEghcJLC1A0I2R+QjSChCYTyLT37AaqBts8ILrDHyJaJkCJk1DLpG6cfbm6c6IN4in1vOXxRj+OCmv+zQHT2jBUTkOOS/oy/bspHOKpLdmJuCN/cO4RE8eJtzlHujqk=
+	t=1773885873; cv=none; b=Ajeg9bqXa6aPC11g3YmFn69fPLs6gHV6ewI7UWJk5rpZ5J9pMZxyXMHXpRB+bc5vlNuNFSH382+VYqFNkT/HNT7Dx4qSaHNqgsFQvv1iScyCcKIpNW6HFFhV8gUZrQcMREcBWBsK3mlW5VGlrjXyne3oQtlYQJv5i1Ag/KHYWjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773885872; c=relaxed/simple;
-	bh=ylLgnFAHNr+C6sueQ675YRZWIAhgLynjxGpNw/eADVY=;
+	s=arc-20240116; t=1773885873; c=relaxed/simple;
+	bh=3RzpcZKna8QyIK7dQXL9CAtXxwYGpDAnHiPfG/k4g2M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IWWdxq0GXTJgF/y3tYsimRqSMjZubeMnZWOgxjLdC7q8H2M3arvR3aFQY9Db2nz8tKEIdwirbI3Z25LesVu2m2jBSzJ1F7MCrB3RFmcGfBUCqqFzSXiTTo2OhGXDj9vyBbbfbf/Jt7yijUxiQqHHWiWxXEQNr8xgysEoZEuMhEM=
+	 MIME-Version; b=WCrkMsRr5OwQN3dcZ9FZGg8JxSsTWsAqz/JA+1BskX29uXUIrm/POWnZ8Wb2sA4PuwEEbdQ2PzJtAzkKiUdO5zJvilbaCIy49/DMGjEW5/sYy+nndKnd9fm8pBoAMsnc2BQDmvrM/gLIzTkwZdfLvEEpB/7e0Ox6bcv6sJ4+Pwc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: f23b122c233711f1a21c59e7364eecb8-20260319
+X-UUID: f3535ac0233711f1a21c59e7364eecb8-20260319
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:d1078b2a-9657-4c59-b481-163762ab0170,IP:0,U
+X-CID-O-INFO: VERSION:1.3.11,REQID:a44ca008-d1ba-4472-b7ff-443f1045baa9,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
 	ON:release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:b7e6ae2e2bf0bb57789677155632f165,BulkI
+X-CID-META: VersionHash:89c9d04,CLOUDID:01771772bd513303bc6f8e60329af1db,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
 	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
 	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -27,12 +27,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f23b122c233711f1a21c59e7364eecb8-20260319
+X-UUID: f3535ac0233711f1a21c59e7364eecb8-20260319
 X-User: xiaopei01@kylinos.cn
 Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
 	(envelope-from <xiaopei01@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 702188644; Thu, 19 Mar 2026 10:04:21 +0800
+	with ESMTP id 518993943; Thu, 19 Mar 2026 10:04:23 +0800
 From: Pei Xiao <xiaopei01@kylinos.cn>
 To: linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -47,9 +47,9 @@ To: linux-spi@vger.kernel.org,
 	Frank.Li@nxp.com,
 	amelie.delaunay@foss.st.com
 Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH v5 07/17] spi: orion: Simplify clock handling with devm_clk_get_enabled()
-Date: Thu, 19 Mar 2026 10:04:03 +0800
-Message-Id: <387f2fa1b3e1a356c524bb36eab07e1b431b6382.1773885292.git.xiaopei01@kylinos.cn>
+Subject: [PATCH v5 09/17] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
+Date: Thu, 19 Mar 2026 10:04:05 +0800
+Message-Id: <73d0d8ecb4e1af5a558d6a7866c0f886d94fe3d1.1773885292.git.xiaopei01@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1773885292.git.xiaopei01@kylinos.cn>
 References: <cover.1773885292.git.xiaopei01@kylinos.cn>
@@ -62,76 +62,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for the "axi" clock. This reduces
-boilerplate code and error handling, as the managed API automatically
-disables the clock when the device is removed or if probe fails.
+devm_clk_get_enabled() for the bus clock. This reduces boilerplate code
+and error handling, as the managed API automatically disables the clock
+when the device is removed or if probe fails.
 
-Remove the now-unnecessary clk_disable_unprepare() call from the
-probe error path and the remove callback. Adjust error handling labels
-accordingly.
+Remove the now-unnecessary clk_disable_unprepare() calls from the probe
+error path and the remove callback. Adjust the error handling to use the
+existing put_host label.
 
 Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 ---
- drivers/spi/spi-orion.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/spi/spi-sifive.c | 21 ++++++---------------
+ 1 file changed, 6 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 7a2186b51b4c..a1b489b51115 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -695,13 +695,11 @@ static int orion_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 6c7aba8befa0..54adbc057af6 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -312,7 +312,8 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
  	}
  
- 	/* The following clock is only used by some SoCs */
--	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
-+	spi->axi_clk = devm_clk_get_enabled(&pdev->dev, "axi");
- 	if (PTR_ERR(spi->axi_clk) == -EPROBE_DEFER) {
- 		status = -EPROBE_DEFER;
- 		goto out;
- 	}
--	if (!IS_ERR(spi->axi_clk))
--		clk_prepare_enable(spi->axi_clk);
- 
- 	tclk_hz = clk_get_rate(spi->clk);
- 
-@@ -726,7 +724,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	spi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
- 	if (IS_ERR(spi->base)) {
- 		status = PTR_ERR(spi->base);
--		goto out_rel_axi_clk;
-+		goto out;
+-	spi->clk = devm_clk_get(&pdev->dev, NULL);
++	/* Spin up the bus clock before hitting registers */
++	spi->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(spi->clk)) {
+ 		dev_err(&pdev->dev, "Unable to find bus clock\n");
+ 		ret = PTR_ERR(spi->clk);
+@@ -342,13 +343,6 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 		goto put_host;
  	}
  
- 	for_each_available_child_of_node(pdev->dev.of_node, np) {
-@@ -764,7 +762,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		if (!dir_acc->vaddr) {
- 			status = -ENOMEM;
- 			of_node_put(np);
--			goto out_rel_axi_clk;
-+			goto out;
- 		}
- 		dir_acc->size = PAGE_SIZE;
+-	/* Spin up the bus clock before hitting registers */
+-	ret = clk_prepare_enable(spi->clk);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Unable to enable bus clock\n");
+-		goto put_host;
+-	}
+-
+ 	/* probe the number of CS lines */
+ 	spi->cs_inactive = sifive_spi_read(spi, SIFIVE_SPI_REG_CSDEF);
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_CSDEF, 0xffffffffU);
+@@ -357,14 +351,14 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	if (!cs_bits) {
+ 		dev_err(&pdev->dev, "Could not auto probe CS lines\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
  
-@@ -788,8 +786,6 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	num_cs = ilog2(cs_bits) + 1;
+ 	if (num_cs > SIFIVE_SPI_MAX_CS) {
+ 		dev_err(&pdev->dev, "Invalid number of spi targets\n");
+ 		ret = -EINVAL;
+-		goto disable_clk;
++		goto put_host;
+ 	}
  
- out_rel_pm:
- 	pm_runtime_disable(&pdev->dev);
--out_rel_axi_clk:
--	clk_disable_unprepare(spi->axi_clk);
- out:
+ 	/* Define our host */
+@@ -392,7 +386,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 			       dev_name(&pdev->dev), spi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Unable to bind to interrupt\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+@@ -401,13 +395,11 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	ret = devm_spi_register_controller(&pdev->dev, host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+-		goto disable_clk;
++		goto put_host;
+ 	}
+ 
+ 	return 0;
+ 
+-disable_clk:
+-	clk_disable_unprepare(spi->clk);
+ put_host:
  	spi_controller_put(host);
- 	return status;
-@@ -799,10 +795,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- static void orion_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
--	struct orion_spi *spi = spi_controller_get_devdata(host);
  
- 	pm_runtime_get_sync(&pdev->dev);
--	clk_disable_unprepare(spi->axi_clk);
+@@ -421,7 +413,6 @@ static void sifive_spi_remove(struct platform_device *pdev)
  
- 	spi_unregister_controller(host);
- 	pm_runtime_disable(&pdev->dev);
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
+-	clk_disable_unprepare(spi->clk);
+ }
+ 
+ static int sifive_spi_suspend(struct device *dev)
 -- 
 2.25.1
 

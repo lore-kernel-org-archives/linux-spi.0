@@ -1,81 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEA0383C7C;
-	Fri, 20 Mar 2026 15:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AD531F9B0;
+	Fri, 20 Mar 2026 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774019694; cv=none; b=CiSmL+CjohpWy33Ux1CVC5dYAJyNMK9Z6JyWA4hkSPfTvp941+7pt5HuGktOHDx5Gs1hb4IRfnlRNIjezT/LzlMFW7r96mSNW6D0Cuarp9hcJRha5vd4E9VOdtjzMNV7sbzDuAq8OsEWcjKgdEuag/D+mdzeq4BeiqAZxOhlff4=
+	t=1774026845; cv=none; b=SKAGYV9In3K+CEKARzD0PIdf/9+lAglC8sTDniQnI3cFjolf0Bwhv45e3cPMvGctnM5Aj4EA53UJlS1Q3bESS25zh+HvLF5JaDx7pxn7FmoLt+gRiYnMaIppPfndN15skdvfMequTZVGKOBE4tS9J9Ihum1VlC8BvVsPgqe3yzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774019694; c=relaxed/simple;
-	bh=2+VmlrLSANN9QkMNRHlgSyklgrMPf9LqkvQOCKGXV1o=;
-	h=Message-ID:From:To:Cc:Subject:Date; b=aTDvpjfzteq88GICBjwWCI/+hBBfikBPU3/AR1VOOEVPfLoTXjE9EVRW9iB4oNwbiX0kmzIIfa4Ioq1mvD83EN4FEMI6xzrXmEQDzzmEHUT+8I2SizBxOGiiYv6T18iMNWgXiBWRKSSH0GhUdmNrB1nlqJXyeTWJi3HGaXzjQuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebw9saRX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774026845; c=relaxed/simple;
+	bh=wCtGKGiouo5CV82ZX/9gm3S4rdBbxeQY10ks9ekVGSk=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=kjFZ1gQ33/EdVzImETKAX9YzftKCFQyXaQhsii1ufYfmoyTFO4hNldCGbLtNCYkyfDw8BtVjSE4rmauMgsuXJdOVBrs8sQEKS4Ak73ucGTxexUN6gbML1f4Jfzb/v6ZCiDJMkV8OXHefh8dheCxbpKRFgw17o4NWvGmp8zsUFk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwQvgKgH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebw9saRX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D4FC4CEF7;
-	Fri, 20 Mar 2026 15:14:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwQvgKgH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF91EC4CEF7;
+	Fri, 20 Mar 2026 17:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774019694;
-	bh=2+VmlrLSANN9QkMNRHlgSyklgrMPf9LqkvQOCKGXV1o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ebw9saRXjmKUNcKm079s1AfbTpk03od7ws5urSKBsV7T3tkMTx/cj+cND6geewbu6
-	 sw7A68yOTsdus02kflMIcppm8wl1EDtvx8wg2Y7AN9DNqMqz2diQn0DVamoH1SloPi
-	 r1sAs3Vf/llQutUr0vy9dbCdIvG3dddlTeS6hL50zHGrs5LmEdC1GSwzlKAGYR3Bk+
-	 lvHrHGFgFkMTvRAVu2XINPaA3H21dh5jKMZsZXwSTQdVWwGnFaJmaILuwUikHV+kSx
-	 Vrw5MvH4jjqkAfE49d5EIH2KG0ACQegL6GiATKnrnrIuRoXdqoloJWcy/fy42mAOTA
-	 ggridhPdKJLCQ==
-Message-ID: <a4e342d6b3bc37b9a25872843d25f5db@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.0-rc4
-Date: Fri, 20 Mar 2026 15:14:39 +0000
+	s=k20201202; t=1774026845;
+	bh=wCtGKGiouo5CV82ZX/9gm3S4rdBbxeQY10ks9ekVGSk=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=iwQvgKgHs42vuqZ86Gyp5GXVKgENH2Z4ztlweKT2N19DWYsNvv+NKhbV/UwA4mCAa
+	 slVDLCxDUWFuW2jR2rlZPBs2J7AYhPXkJuqvK2iP6w2PbbsjB/mOtjuC3/p5R7fO0s
+	 vbdtpwJ8zuhWH8ap7JcwHZxytL6NhmKRrGeZYI5BusMzTxRrsuniOQWgIiAx3ebLv7
+	 1MF/II6n2B2ED6Y5hlaYCDBYx1hWgnRVEQyp7i8MbHzc9RIpL/XBZ5jp2+/Ag8I4n0
+	 h4Tp3EZz5dBimEMOsghLJviCNbPPF25GplYPALOXkvOBzVntQWpfPh/CnlTi90Vn+E
+	 QHHUwD002EPWA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CFCD380820D;
+	Fri, 20 Mar 2026 17:13:56 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.0-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <a4e342d6b3bc37b9a25872843d25f5db@kernel.org>
+References: <a4e342d6b3bc37b9a25872843d25f5db@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <a4e342d6b3bc37b9a25872843d25f5db@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-rc4
+X-PR-Tracked-Commit-Id: 8c89a077ca796a2fe248c584e9d7e66cff0388c8
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 9f582e39712f950f13dfa1ad49748a90937e48be
+Message-Id: <177402683510.2580860.2501099941952404452.pr-tracker-bot@kernel.org>
+Date: Fri, 20 Mar 2026 17:13:55 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 
-The following changes since commit f338e77383789c0cae23ca3d48adcc5e9e137e3c:
+The pull request you sent on Fri, 20 Mar 2026 15:14:39 +0000:
 
-  Linux 7.0-rc4 (2026-03-15 13:52:05 -0700)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-rc4
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/9f582e39712f950f13dfa1ad49748a90937e48be
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-rc4
+Thank you!
 
-for you to fetch changes up to 8c89a077ca796a2fe248c584e9d7e66cff0388c8:
-
-  spi: geni-qcom: Check DMA interrupts early in ISR (2026-03-17 17:07:47 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v7.0
-
-There's a couple of core fixes here from Johan, fixing a race condition
-and an error handling path, plus a bunch of driver specific fixups.
-The Qualcomm issues could be nasty if you ran into them, especially the
-DMA ordering one.
-
-----------------------------------------------------------------
-Felix Gu (3):
-      spi: amlogic: spifc-a4: Remove redundant clock cleanup
-      spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
-      spi: axiado: Fix double-free in ax_spi_probe()
-
-Johan Hovold (2):
-      spi: fix use-after-free on controller registration failure
-      spi: fix statistics allocation
-
-Maramaina Naresh (1):
-      spi: geni-qcom: Fix CPHA and CPOL mode change detection
-
-Praveen Talari (1):
-      spi: geni-qcom: Check DMA interrupts early in ISR
-
- drivers/spi/spi-amlogic-spifc-a4.c | 46 ++++++--------------------------------
- drivers/spi/spi-amlogic-spisg.c    | 12 ++++------
- drivers/spi/spi-axiado.c           | 31 +++++++++----------------
- drivers/spi/spi-geni-qcom.c        | 13 ++++++-----
- drivers/spi/spi.c                  | 25 ++++++++++-----------
- 5 files changed, 41 insertions(+), 86 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

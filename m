@@ -1,38 +1,40 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.65.219])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648013009D6;
-	Sat, 21 Mar 2026 11:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.65.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0F73203A0;
+	Sat, 21 Mar 2026 11:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774090861; cv=none; b=tk1j0BH94FIVIbAssu9GuptZFRhscCttS6YDwb8ebHGQdTu9xjVZxjWgV9CD4Mx868pWe+ywcQTDRhuhR/Q5uHdxgSL41MOcKLqTgDXMNIoOfpSQJFUsC100RyewrKm79pbjnOnHb1Se4ZENXZcfZtO4Hd2siIjHsaC7Uhz1ET8=
+	t=1774090865; cv=none; b=AaWY94nfdxAq91/2Y48itY3rxiHgewRf/lU68dcVuVs87BcMNlu1sYeV60FVsMiz3MhPLwRKzhD4HYZVG+FVAhE30l5Lps3O2yD+oqwan2T/0kt+hv66WYxePFrnciwXVTcg6F4LgYGUsMMXtvYYoZYurMj3NFySES76Tv7VNDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774090861; c=relaxed/simple;
-	bh=IFOAUB8RUVKmjpD6h7dVtxKglQhnCwJTVWI0mKGMvgQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tlgWlws+4drHqTlm9AdcFnxPur8Sn76iDwrPmRqlkXnpVSRW6etUgnphWYPJml3xEFl4h7+8kdPA7NmkaWXBnPrA5BVQqaWIuVssyTo9MCrAR0RNjgIsws+gtXjvFY8xHPS2J2QWwq5IADEwT8WtBL4q1MQXHaNt+Eps++D5IFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=H8OnLUc4; arc=none smtp.client-ip=114.132.65.219
+	s=arc-20240116; t=1774090865; c=relaxed/simple;
+	bh=lGnQ+qg2i6Q83laeKFgxwTm9ehR1fEQqLBVUU3b3e9c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r50CwQKEVSvFoNzKP1EsfgzIqiDINcTazLjAihDEBJMxZTDiPqJ3QZ/+HVvAX53lq/Lhsqp6V4QgAnL5i//ByBHa4LBBYhSxEz38vsB1OAbCtCSvlWmvJu6OH4qCh0ziA1kLlqjXcgqZqCZhzINVKythA5QxRVCbbG1RE7gdXrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=CAGvFGT/; arc=none smtp.client-ip=18.194.254.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="H8OnLUc4"
+	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="CAGvFGT/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
-	s=iohv2404; t=1774090790;
-	bh=ooCyWJDJGQ2ju349DViWIFG+H1R2tWk787dbjOmduyI=;
+	s=iohv2404; t=1774090792;
+	bh=oOotOs/ctlIraeRmjW/9DsRhuEEOxJU6EA0pVyPeSiY=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=H8OnLUc4WFMJqsHI/8jQUwoKenZ87fq1NLoOONuNVo/dyWledWzrlnqDK4n04GtJl
-	 3Z8FD12kruJMSSQ5pdXqSIm7/TyE+gx1bEHpC0ohlSb19mZWg7p0GjLgTeiorJCSIk
-	 ONeybWRj11fokt6WJEfzaiDC082nMnVbT35H1oFs=
-X-QQ-mid: zesmtpgz9t1774090783te0150bfd
-X-QQ-Originating-IP: ESyRAv8fja4MvPrq83ciTVZul0L43JGDktef8Dmc0Co=
+	b=CAGvFGT/Zq2UVK/hw1uDrDuhYd1y9RsMqTXg5s1j0KEg3RKBBG/57oUeW3XIZI2Y0
+	 q3YlkPE+SFuURYsWhmSH9POl0HqduiQSA1S6QX35/beA7CZfx6sxBcbQO53LKmuwYa
+	 dElwGqK7yhMDk8MZZ1j5URQQbF1nnuSnstEUiNkM=
+X-QQ-mid: zesmtpsz5t1774090788t795305cb
+X-QQ-Originating-IP: Xmmk9C+dJ5H3lxuXwZB/lw75AEOGTDP2jMQu+s+hbMM=
 Received: from localhost.localdomain ( [116.172.93.199])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sat, 21 Mar 2026 18:59:41 +0800 (CST)
+	id ; Sat, 21 Mar 2026 18:59:45 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8580062653679907244
-EX-QQ-RecipientCnt: 10
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16498299433407112095
+EX-QQ-RecipientCnt: 12
 From: Kexin Sun <kexinsun@smail.nju.edu.cn>
-To: linusw@kernel.org,
+To: daniel@zonque.org,
+	haojian.zhuang@gmail.com,
+	robert.jarzmik@free.fr,
 	broonie@kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-spi@vger.kernel.org,
@@ -42,9 +44,9 @@ Cc: julia.lawall@inria.fr,
 	kexinsun@smail.nju.edu.cn,
 	yunbolyu@smu.edu.sg,
 	ratnadiraw@smu.edu.sg
-Subject: [PATCH] spi: pl022: update outdated references to pump_transfers()
-Date: Sat, 21 Mar 2026 18:59:40 +0800
-Message-Id: <20260321105940.8143-1-kexinsun@smail.nju.edu.cn>
+Subject: [PATCH] spi: pxa2xx: update outdated reference to pump_transfers()
+Date: Sat, 21 Mar 2026 18:59:45 +0800
+Message-Id: <20260321105945.8224-1-kexinsun@smail.nju.edu.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -52,68 +54,61 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
-X-QQ-XMAILINFO: OC0Q7tWN8iCRFbFV2cDRJs1+P1lRxYY/PXVQ5lPyNIctrcaaedLHSVkG
-	dOJAnjIb/ZYHLHSdZs1Y2JRH6mFDrFEn+hkOqcCk2SF4jmnJ7QIlISkDdz/PEMFyhXyxvvP
-	FnzuJOmHSoO2+yT/ttDW+jFxyoAhdq2T5gUZrsbIS5oOdx3YmvIRqyz8g+VRa7fWYMQsS+x
-	DcNmXnzjfNPHqh/HxaRZaxL18xOSr/9Kwdbimvd7yQD8m5L+XL6uFKmEzMmZR8KXZNQINKb
-	vrbOH+DBy/+T2K+NK7GeaqMkvKMAeRy60QEFNIWOMluW+eXoVi3y0VT4CFLVrdtckelzB+t
-	p7WhR9IVwLTBGAkqHpxyCSe8ZiJwU1y9+C/7f1ym5qtcM5GjFJQE47uj9lh+mQuAICxwH/o
-	DaL6crGWJg0hi2wVrv2RhC57I0jZhHm/gxZktlgWxt7xQChHxxAhq8NCRuwtOSTH9U68gRU
-	GA3e5/tF6jKjWhGcRERSPJ16wESeG/vg9advMdxQsmRYvpYmKMXHPZuXD1wnISNW68hKFb9
-	d4Xpn5bfZ0SkpqIPYWDw/UVINv7l2x/d7k5u42VThPiDBnMr/EzclI58e9WS7adzODNHihL
-	G7tSyLz2++1fOdCO54w/CmOMj5CuC8XhbzKig5jWLf39IZwQZnMazeOqdMFuQ7LkkCvZNUF
-	LCQCzta1U9yYJ5ImgnOW5x/xwU8A1n+Dm7HfK8KSG0splTeDHw2ueO7BwUZt2t/hdJmk6FW
-	vh6RjpjjCjbKg/D9XEf7d58XzlFQZeVuHogAg9TVbYJaO1g9B3ibokiq2fa/G6E3Wxhfz2P
-	plxkn5VopLsVJzcp4Md0DNedH7JieCAnEGubGzJkEwOYPzD/fW16iAA/udtmJQ2S5mZmbUT
-	Mt2f+yOYWtv10wtJum+i2N516ve3N1ULCeudmLZSbLsv5JlwV+pDW7HD0T4knkeJBo9pygs
-	omNvJR2OCrATJHEu/mssFXOjkPiWCSHEFEJb2i4lBQ9Z7Oe3GoKAeRxR1u6rD8bHyUTn2rm
-	+YU+hNjKfoE+sBywO4Lada3MF1lYzk5l8DN/rRHGHEaKm3N9WKFNHpP4unHuY4L1RlQtsL6
-	eG0mx4lDefouhrg+1nUjYc=
+Feedback-ID: zesmtpsz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
+X-QQ-XMAILINFO: NhVJZi/nXXk/yRjx5B8AAaBaG8FIvfYi+lXTyhFNz+DKWPW8jhUS7Cy4
+	XHyB1cBwRoiBQLPTo4i6TuvwGj/Bv2MHemo/5fWwbbDwVoKzHATC8s7HNcipHIQ6/ugKakY
+	kYJHV+suRjTJmKCh5O02AFvSiaDHp+3g3xLLagr/uRFAkFbNPRqvlVL2ivOVWX8j/0hLabO
+	v0zF9M7ahoAUXkmV+ZRptyT9tAX2PzCj8k4xOXwkBGXDHe3GRMiS00kaoU/6oNca6P9fTz0
+	MXLUJn4VCVwcUIAAELdBmD73RYXc8Cw/10LhbiIhBhuYv5f9ZUiGnTQ+O1hioglCwDzGIk7
+	zSYg0Zr2cd28/Ddul6S/Qw7HMTnuEUrSiQVC12ebYQl+KL3gnd/mVe9VULVczT/iHX1CzW7
+	XqqoR3sLY9HMUA2CRymPUUe0EvgOH28J77GUST/rWWZi33Ao/K2/Vzkbf2gHVxGsNZrZkZE
+	xL7J1Bxh6JqG3lcSthDdbmSajFNHpihEXhkvRfGnlFKiIZc+b/2Obc1mYgYpcf+izLpeZBg
+	yJj5vlW1mNeYy0l8g4x5FBmmVONMCyQXj6pM4pGvYabdMeipOlRiK507xF6+RkVQaS4oseC
+	BgYE2X2t524cq+P1940gGCIdpmGImZjeLq/MQ8fHFo4ZUVmlUy4g3PgDOEGCjaPzEjY38Hl
+	xW7nSKX7yLO7Y31kv2aobyoeG6la00TmVn0UpTVcFLiTwQoeJ7YZOX/8PE3JD6yUUtD7n4U
+	ixAtFor6a6Q3xVHZCh/6rPMOAlBfBRYMQl9huF1bgLQAAqev1sNthnKDYaYf7oEvWACJxMK
+	X/DiCrd+TMNQF7ySgp23sBJg5VQLdGyX+GWlN+AZd4nnCRS39KwY/PCC2QWsgs9ltycO5xn
+	Bekogp/oxc7o+/Y8nqztsHVeELMWl6SJXo12hl4K8fWKuR8TR3zfP0Sgi6W8wVulgmF462L
+	+RfAb26bFQ6hTa4938ObAdhM9SeIFr2eyAdKDi5w9mxAYiY1oC0mgJZaW9lnOhfYSk0TAbG
+	GvCMBZY4VfLXk3CjcC6BHUFEVqiCUJGIS2eBxV7n3mV94Y5Qw12idrIQDtbjYvcaxbmeuNm
+	+8+kcR3ju9q
 X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
 
-The pump_transfers tasklet was removed when the driver
-switched to the SPI core message processing loop in commit
-9b2ef250b31d ("spi: spl022: switch to use default
-spi_transfer_one_message()").  The kdoc of
-pl022_interrupt_handler() still describes the old flow: scheduling
-the pump_transfers tasklet, calling giveback(), and flagging
-STATE_ERROR — none of which exist in the current code.  Rewrite
-the kdoc to reflect the current paths, which flag errors via
-SPI_TRANS_FAIL_IO and call spi_finalize_current_transfer()
-directly.
+The function pump_transfers() was split into
+pxa2xx_spi_transfer_one(), pxa2xx_spi_handle_err() and
+pxa2xx_spi_set_cs() in commit d5898e19c0d7 ("spi: pxa2xx: Use
+core message processing loop").  The comment in
+pxa2xx_spi_dma_transfer_complete() still warns about concurrent
+calls to pump_transfers(), but the actual operation protected by
+dma_running is now spi_finalize_current_transfer().  Update the
+reference.
 
 Assisted-by: unnamed:deepseek-v3.2 coccinelle
 Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
 ---
- drivers/spi/spi-pl022.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-pxa2xx-dma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index c82cc522776d..bd1d28caa51e 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -1127,11 +1127,11 @@ static inline void pl022_dma_remove(struct pl022 *pl022)
-  *
-  * This function handles interrupts generated for an interrupt based transfer.
-  * If a receive overrun (ROR) interrupt is there then we disable SSP, flag the
-- * current message's state as STATE_ERROR and schedule the tasklet
-- * pump_transfers which will do the postprocessing of the current message by
-- * calling giveback(). Otherwise it reads data from RX FIFO till there is no
-- * more data, and writes data in TX FIFO till it is not full. If we complete
-- * the transfer we move to the next transfer and schedule the tasklet.
-+ * current transfer with SPI_TRANS_FAIL_IO and call
-+ * spi_finalize_current_transfer() to let the core finish the message.
-+ * Otherwise it reads data from RX FIFO till there is no more data, and writes
-+ * data in TX FIFO till it is not full. When the transfer is complete we call
-+ * spi_finalize_current_transfer() so the core can schedule the next one.
-  */
- static irqreturn_t pl022_interrupt_handler(int irq, void *dev_id)
- {
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index 08cb6e96ac94..c94d1d192e74 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -29,9 +29,9 @@ static void pxa2xx_spi_dma_transfer_complete(struct driver_data *drv_data,
+ 
+ 	/*
+ 	 * It is possible that one CPU is handling ROR interrupt and other
+-	 * just gets DMA completion. Calling pump_transfers() twice for the
+-	 * same transfer leads to problems thus we prevent concurrent calls
+-	 * by using dma_running.
++	 * just gets DMA completion. Calling spi_finalize_current_transfer()
++	 * twice for the same transfer leads to problems thus we prevent
++	 * concurrent calls by using dma_running.
+ 	 */
+ 	if (atomic_dec_and_test(&drv_data->dma_running)) {
+ 		/*
 -- 
 2.25.1
 

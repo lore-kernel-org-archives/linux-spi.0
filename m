@@ -1,80 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3475037E2E6;
-	Mon, 23 Mar 2026 10:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43076392802
+	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 11:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774263335; cv=none; b=kDbw08cjVEdfSIntLmwXkt9pkHOyEg7p5jvTwCfy/xDw4dVTOOporZfV1ye2JzX96I3vuHuD19WCTelpCSVqy1d8Njbrp8TPShRr+KeZyvg5OEmDo35wvEy7kVDyeA0Yf5UgOyAtVa7r9v7kXl6BjW5An10hIQRu6kPtORrsuGw=
+	t=1774263670; cv=none; b=gQzM2Y/edagKSwR1Madu1iyIyPdkJCt2PbHRP6QTLZgThdfQGVj5x+psN6aud068ywTzueVYVQ+mNzWL2fx70SnGAeRSi/xJz15GDdI2NfDRX2qK2+MZFSO+KrUfHPL5S3Q0IXTdItcfoSbHfM16g8sziqgGB2FYCAp1hVJqnL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774263335; c=relaxed/simple;
-	bh=fIITDcaGNwe5JP28V/vDN52AYvBQ5hQKU+YhsH32KVM=;
+	s=arc-20240116; t=1774263670; c=relaxed/simple;
+	bh=xiMy2n0h2WpsAoBsk50jpY36hluSHQTq+ZP6gM04BK8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ugR80PoYl+6X6KX9z22DnKe03lcok33mLTaQCrNwSWsjD26OzifWm7bciQ+D+srgMxQ0pR2dDc3dlN3KMxVl8ry3NmatpD9h/Ki2GrP08IolDAr1hJgFtOEJXUPAksYUqfxGbInZ7A5qQKghuz4HooG8W8JxTw5B5GiYij6Sjds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/PsizxY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/PsizxY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA31FC2BC9E;
-	Mon, 23 Mar 2026 10:55:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774263334;
-	bh=fIITDcaGNwe5JP28V/vDN52AYvBQ5hQKU+YhsH32KVM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b/PsizxYuPyh6p+66BxpCqyKvwMg0/n0RigMKooGpzRMCF4lzfCXQyW3dQsZ+5rXZ
-	 XjqstYEDmG0E8vAJiy9gQhC7NZ9hX8sCxg7l5D988q6XMD+SILzjhyGAU8q3dRAN78
-	 JNVtoTFgUuHHodeau+xR5peYZmjlDr0LbMwUe4A83DvMOd4wuYFoRkroDNcMrDxZWB
-	 Hs37S+U9xt3IKK/WhCXPklgEGRT2k15gX4lH6tQxbn44J31YcQfDOQCQ0rXEqkaipC
-	 nIeSNcnZxdQq+zPtvOdFGIWQi4c2sYryx+aEUt+VyE8U1UCOrISPvVJnPADHDb8w66
-	 aSFONyy70KK4A==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w4cwW-00000003XqX-1ggo;
-	Mon, 23 Mar 2026 11:55:32 +0100
-Date: Mon, 23 Mar 2026 11:55:32 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Dongliang Mu <mudongliangabcd@gmail.com>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: meson-spicc: Fix double-put in remove path
-Message-ID: <acEcJJgoaaOdBz70@hovoldconsulting.com>
-References: <20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QJRrO0QAkMEVcWTkSh2BxZBskG0kQX8YszFp09wt6OFmJPDvS9EY2SQK9Gt7Og8stlmblJ4JZq2hOhuo+pX2+wwBMku2f8uApG1zO+cKiIdjoljqEq1E2nn57ZO4pT28GonAy3Kt66lxrBdH+9pqyg84ll2aEuiZqOtLmT/hPyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w4d1o-0003tW-SV; Mon, 23 Mar 2026 12:01:00 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w4d1o-001iEY-0z;
+	Mon, 23 Mar 2026 12:01:00 +0100
+Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 00B8E50A88E;
+	Mon, 23 Mar 2026 11:00:59 +0000 (UTC)
+Date: Mon, 23 Mar 2026 12:00:59 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Johan Hovold <johan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Heiko Stuebner <heiko@sntech.de>, 
+	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
+Message-ID: <20260323-demonic-worthy-guillemot-c2abb8-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260323104948.844583-1-johan@kernel.org>
+ <20260323104948.844583-2-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ljhv27eikzb6qhcw"
 Content-Disposition: inline
-In-Reply-To: <20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com>
+In-Reply-To: <20260323104948.844583-2-johan@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-spi@vger.kernel.org
 
-On Sun, Mar 22, 2026 at 09:29:56PM +0800, Felix Gu wrote:
-> meson_spicc_probe() registers the controller with
-> devm_spi_register_controller(), so teardown already drops the
-> controller reference via devm cleanup.
-> 
-> Calling spi_controller_put() again in meson_spicc_remove()
-> causes a double-put.
 
-Indeed it does: 
+--ljhv27eikzb6qhcw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
+MIME-Version: 1.0
 
-Reviewed-by: Johan Hovold <johan@kernel.org>
+On 23.03.2026 11:49:44, Johan Hovold wrote:
+> The SPI subsystem frees the controller and any subsystem allocated
+> driver data as part of deregistration (unless the allocation is device
+> managed).
+>
+> Take another reference before deregistering the controller so that the
+> driver data is not freed until the driver is done with it.
 
-> Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+Would re-ordering the spi_imx_remove() function be an alternative fix?
+I.e. call spi_unregister_controller() last?
 
-While only root can trigger this it should probably still go stable:
+regards,
+Marc
 
-Cc: stable@vger.kernel.org
+>
+> Fixes: 307c897db762 ("spi: spi-imx: replace struct spi_imx_data::bitbang =
+by pointer to struct spi_controller")
+> Cc: stable@vger.kernel.org	# 5.19
+> Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+>  drivers/spi/spi-imx.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 64c6c09e1e7b..a8d90c86a8a1 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -2401,6 +2401,8 @@ static void spi_imx_remove(struct platform_device *=
+pdev)
+>  	struct spi_imx_data *spi_imx =3D spi_controller_get_devdata(controller);
+>  	int ret;
+>
+> +	spi_controller_get(controller);
+> +
+>  	spi_unregister_controller(controller);
+>
+>  	ret =3D pm_runtime_get_sync(spi_imx->dev);
+> @@ -2414,6 +2416,8 @@ static void spi_imx_remove(struct platform_device *=
+pdev)
+>  	pm_runtime_disable(spi_imx->dev);
+>
+>  	spi_imx_sdma_exit(spi_imx);
+> +
+> +	spi_controller_put(controller);
+>  }
+>
+>  static int spi_imx_runtime_resume(struct device *dev)
+> --
+> 2.52.0
+>
+>
 
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-How did you find this one? Are you using some kind of static analysis
-tool or LLM?
+--ljhv27eikzb6qhcw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Johan
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCacEdaQAKCRDMOmT6rpmt
+0vdmAQDl2tOYzInI6kiatpAaexhYpTZll2Fs6FunvhoKrocdHgD/Wg1W8ppiIlVs
+ZGFsRytoRorexXMxURMC2/DM0/D/EgI=
+=arGX
+-----END PGP SIGNATURE-----
+
+--ljhv27eikzb6qhcw--

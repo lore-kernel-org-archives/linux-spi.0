@@ -1,62 +1,64 @@
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3498217F33
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 01:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F3C21D3CC
+	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 01:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774230880; cv=none; b=SgviUSeJcV47MjEAlG7zEHtic7o0siYxFpH1D9C9n9U76IpauHJSBSJXIrNQoLeHvpmHz2xH5WPB2XiZLtb0PZgm1b2MoRUT9DDWSccxdGygK+Oi9eZ4y22LTmCwKxqTOBtl64ihVQHsnPSzQyP29LB2mEBd1cW4YyTxhTn99VY=
+	t=1774230882; cv=none; b=KNTAfepvAnatfz+kkVRACHrntyEeNsVtrf/vzrojQ1Im/hoIPq+vrPMb9SkC3eQgtJznsLx3bXVVeuPjpd763fltAH5h16AbKJCiMeMhDeF3tAENuIRkr7ohZTn+Cy4NTnGVyZB5j56e+VHK5cEnQlWYlSgAYx9Z9dDfDBZkCVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774230880; c=relaxed/simple;
-	bh=JUqh9KjJr81PA08LAGWLpc/TnqC1KKCJHttSUso4Mis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qBQq2DX8Rr4h6JKR40DxzLSlPgNe4c33Go9/11nH/TTx/y286Zpb/0SxwghPmO7eHzAIJm4njoUTcnps+lTJeJrXlq86AnM/9qDffo27upvoJu88Nurg+iE5pDdx+yDyQsH0PwVl2Qp4lq9cA9qsYzEHHjZAM8txdFA0t3gW9WA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iZihrLDn; arc=none smtp.client-ip=74.125.82.180
+	s=arc-20240116; t=1774230882; c=relaxed/simple;
+	bh=xbnlmh3BuRwGW7Lqvh/ofqvfdIvaooTvMkXqmF1U+S8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ipKknMjwOctS7CVOQWbwBP8ApxNXsswRJiMmDKhyuZso4u+7dyk6fYdt8aQOXBKHbDJF+OP0zmjA8ZFhwhwkxNHyQLPfLuvaKBK3AP0+b11grsNEQdzEzkx+r0EOxyCPyyhLhLxGZcvzTaVEqsXPwTTY2aH1ZtHkTkJGFXPH5pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NB11JN3D; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iZihrLDn"
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2c11c43aca0so882153eec.1
-        for <linux-spi@vger.kernel.org>; Sun, 22 Mar 2026 18:54:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NB11JN3D"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c0ea57fea7so4332628eec.0
+        for <linux-spi@vger.kernel.org>; Sun, 22 Mar 2026 18:54:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774230878; x=1774835678; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CFNqFKHYHzU+/IYMzEM9SYl6am5Pz+NCaLhPwszpQBw=;
-        b=iZihrLDn3uemS80BJaK0ZbnZyZPK2nOhEbJEKP9Ll6ZnR//Egc8auBEu1gY8L7f5cE
-         vGvkiZtql2gdyP16RHs2zH7kzoNOG7ofXC1iRXWSmSKsMyYNdGKTIolRt7xdondUtWAV
-         BzjD/cMkNClaTXZfnu4Z4TliktptCHKPofnbghtnSwTPk+HJZnI8ZGovdU41MDyZqlGl
-         ZhKPuG1YF0fHUflmZwL5ltOscujQ8xhH/ZXK+Qk6sMFvlSvfNudRUSFwNbCiOnkbxgQx
-         XAVg0mXyudvTdU6egJD+nS/ZZstD/tcd7Pq3pSfv2CP+pCaS9NUQdfrM5BQmCjDdSSfg
-         yuUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774230878; x=1774835678;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1774230880; x=1774835680; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CFNqFKHYHzU+/IYMzEM9SYl6am5Pz+NCaLhPwszpQBw=;
-        b=Hif2AiWtJi08ZuxnREMkGUFn7PAPDkHv3hSKNsDp59AgjEbicEhFSMPWJbGg5HY5Lv
-         HLR3gxgfj+PW8+YsJRYHplH9PblVYCBX3iCNEnLAOCkYq86b5nvRYoWfsDAlzaDaNLWa
-         wqrxT2fNN5sf/4YdGtjUtsjfzhIODH/NzFvvmvowMByjIv8ISqNr8PEfsJQBKm7vd83i
-         kkb4kgrVRuo7fKXNRN2i+G78rr/T6dBGUahMKsrstTnzyUFG8fXiSB6TFa4gwRsck9vb
-         F8liSxZLJPy7y5c2lNevLc+2A5QqbIeNCLSgkyo1kv9Yx3/W6pqk5yLrkTu5WOkOmS7j
-         SLLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkxHaPxMiAuw17cjx54JjUfInPd2ua9dtlGnekOtUMMkbl0BdtyLvQoLFOXMNt8uKMMzm8HTvOkKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjjV8397//MXrlYIPJCHFyzDul8FdAm3IwS5YyBIceexCwLXyI
-	04lw/7Zt0kzQTFf+QvU8bweuQue4SM5m8ncg8eU4WW5k32lj6xRF7QIb
-X-Gm-Gg: ATEYQzxfaOMUS49DXpzGgguGb9AgS0OqDapIMJESivbloGXt6m8tLiDd0YugPMfCCIf
-	0+CoxoGQNsvTJhieqxnEx8tzgOB4vDAQgx3YfOfvElUh2yV8SCuh7zrTIM99EJVmo/Mz7fl9DuK
-	EKEfRIugRpQW7r1IgK1BTRNH2vDEyIl/spOROnslOEwJ+AoU4fJpKG8j6Ait0thO7Ux85yHqB4I
-	bkemnjn7JPiU8MqxdCa1Hy4u7B809IThy8OevotYblJDl6U/DrZ195hCEL1wdFEvoraSkV+901O
-	HSw6z468c7VFuaOA9dqwEVB4Nl+bDbuEqAkzqvc1euZ5y4DpRglhfv32H3z0Yia+YHEdKeE2caR
-	dI9Q98ic5CxRchAeAfkJ4u12Zut7aVwy7ZQJXEyAtYK3dn5afUKmtHRgO0N5xWpqabsr22FdGaa
-	VZHV9hFw538XlC/xby7sdEuFas4EhmubhycmfSO4Wrw8FKnJRSO1oZHw92ru4Xf7b/OOBBcMMWA
-	MgFchv69kLplbQ=
-X-Received: by 2002:a05:7300:571e:b0:2ba:a1a6:c73 with SMTP id 5a478bee46e88-2c10974ccb6mr3875035eec.6.1774230877711;
-        Sun, 22 Mar 2026 18:54:37 -0700 (PDT)
+        bh=PnwwlSjzqxBbkaN2QOiq4ejjgo89iMENabtsUNWy5zQ=;
+        b=NB11JN3DRmrEq/F1+ZU5+wKHjSa9j6UypHsCv0QhfvFaVO3Aylm7Nq3K0ZTxgZlfnQ
+         lTDcXaei8GXF/Raj0P6phvzD7btSvi54sXWtuv8lAreghZ7c9SCohgCd4lS/UL4lmiT8
+         W94uLTAwFL0MSCI/WW6WGBHG2QS+8C22oxgsHhX0uAnCJPW2BureWxUvPSMUEHI/mn57
+         vwyv9kMmA4gaSgbWlRqsMYjIBxwjmYVg4TZXdHVWuMRxw3SaopdXg9nSsx0fetuIdJ8H
+         I/RNR7hVt0vgvtvZ5B4bsA1yyddxWgzffR2h+GhiKn93cXxwI/8lwGNQukS8y5wcYEBs
+         2/OQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774230880; x=1774835680;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PnwwlSjzqxBbkaN2QOiq4ejjgo89iMENabtsUNWy5zQ=;
+        b=gP28UHlQogisFqn/m10DDIU/EHUFkB5E1MaXK0BFzYrf2/ylFnYMZMc+uYb7GGdqlu
+         voqZXLoO9xW8c91ZwMWKC+Bzr4eYoVo9+HsxCwKNjGzAj5Ob+gD57tATE5ML2di47dDW
+         n7GkOtkmAoN22+R/InlqsPAkksUAwq/Pdf/srXm0YWhzi/tbL9bLtJwFjZcRNgRfmmvj
+         iBDUwgBJUFTSYVML90SZ33miiiqQ7cjw+ER2KHKmDEABVkP+6X5rA2HFrrAfLfJgvGSo
+         ogpl0V7C69L/jUIog6NqnKkq4lv/7WRH7XqCCYDGeDtCrzh9XGalRvZZ2JZthfMfI5st
+         7n9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWvDs+FclTS51ZdpOYlXr2jZSCKBDonsPY75qEMS1AuI8UZLZMs3nTKMr83POJ2ZyfvVJHsR+5WEbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3WXW8JYOxCKCS56Sy8ySBrPe/A4W6X2cka3VNskDoFY2I57GX
+	xrxJvPu8CJi0VkbzG5ZYj5JmMg3wvSoVLvMnNduquSP4blMTbWEW/GYL
+X-Gm-Gg: ATEYQzxDPEACkwtncSWspKk1GBFRximgVgUym1AMWTD1NzNMXMFe4hMxi5Rn67iBnxt
+	wY3XwmB/MGfPS0BycZD9hcNDnZhuqNfZa5qdt6iLKTwax6ri171DGNG8wwvJfRFLz2bexTxScWT
+	mhdZnZJzuvJuW2dqIxpZYWguaD2Ws2v5oLYFdrStvIlxyRd8tbrmdsImXOcHyP/xIVh57rmN0ef
+	HGHCO9ejVuWaQ0bEfGrQIAr0SaPgUTMWHtLT6CMsOKdBLCd5Pngt1joNJh/0/vUVebNGQv2Asrn
+	QVy8ZFRbvkeP+M7PH50n5hBk8qFRBcXZlt8kBs/FTFpQS0QOS9gZtDje3KgXWp7heuql8N+SDlH
+	+nJCuUJJfkhI06FMmIKN1QrXbANzwCEigbh1K2kTSRUDYhjsTstV6Ab7AvCk89xnhSAJIBAEYhx
+	ki7oGlp7IecftHyO4djECOjABCrO67UxDC/LoSd/a8e1DwuvMTKBwWhmajgVYHq/rzxodoUgxnl
+	U2bnKdL5+vE9pE=
+X-Received: by 2002:a05:7301:4198:b0:2c0:c415:cfd0 with SMTP id 5a478bee46e88-2c109666ba0mr4196054eec.15.1774230879729;
+        Sun, 22 Mar 2026 18:54:39 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:b768:22ed:3eba:aeb3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b2cf068sm10976952eec.22.2026.03.22.18.54.35
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b2cf068sm10976952eec.22.2026.03.22.18.54.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 18:54:37 -0700 (PDT)
+        Sun, 22 Mar 2026 18:54:39 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -86,11 +88,13 @@ Cc: netdev@vger.kernel.org,
 	linux-leds@vger.kernel.org,
 	linux-fpga@vger.kernel.org,
 	driver-core@lists.linux.dev
-Subject: [PATCH 00/10] Remove class_find_device_by_of_node in favor of
- finding by firmware node
-Date: Sun, 22 Mar 2026 18:54:18 -0700
-Message-ID: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+Subject: [PATCH net-next 01/10] net: wan: framer: switch to using
+ class_find_device_by_fwnode()
+Date: Sun, 22 Mar 2026 18:54:19 -0700
+Message-ID: <20260322-remove-device-find-by-of-node-v1-1-b72eb22a1215@gmail.com>
 X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -98,51 +102,34 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260220-remove-device-find-by-of-node-077784fa109c
 X-Mailer: b4 0.15-dev-a6826
 Content-Transfer-Encoding: quoted-printable
 
-Firmware nodes are generalization of OF device nodes and generic APIs=0D
-should offer only fwnode variants instead of providing firmware-specific=0D
-handlers.=0D
-=0D
-This series switches all users of class_find_device_by_of_node() to=0D
-class_find_device_by_fwnode() and removes the OF variant.=0D
-=0D
-I believe this can be applied through individual subsystems and then the=0D
-last patch can go into the driver core.=0D
+In preparation to class_find_device_by_of_node() going away switch to=0D
+using class_find_device_by_fwnode().=0D
 =0D
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>=0D
 ---=0D
-Dmitry Torokhov (10):=0D
-      net: wan: framer: switch to using class_find_device_by_fwnode()=0D
-      phy: core: switch to using class_find_device_by_fwnode()=0D
-      spi: switch to using class_find_device_by_fwnode()=0D
-      regulator: of: switch to using class_find_device_by_fwnode()=0D
-      leds: led-class: switch to using class_find_device_by_fwnode()=0D
-      mux: switch to using class_find_device_by_fwnode()=0D
-      net: phy: switch to using class_find_device_by_fwnode()=0D
-      fpga: bridge: switch to using class_find_device_by_fwnode()=0D
-      fpga: manager: switch to using class_find_device_by_fwnode()=0D
-      driver core: class: remove class_find_device_by_of_node()=0D
+ drivers/net/wan/framer/framer-core.c | 2 +-=0D
+ 1 file changed, 1 insertion(+), 1 deletion(-)=0D
 =0D
- drivers/fpga/fpga-bridge.c           |  4 +++-=0D
- drivers/fpga/fpga-mgr.c              |  3 ++-=0D
- drivers/leds/led-class.c             |  2 +-=0D
- drivers/mux/core.c                   |  2 +-=0D
- drivers/net/phy/mdio_bus_provider.c  |  4 +++-=0D
- drivers/net/wan/framer/framer-core.c |  2 +-=0D
- drivers/phy/phy-core.c               |  3 ++-=0D
- drivers/regulator/of_regulator.c     |  2 +-=0D
- drivers/spi/spi.c                    |  6 ++++--=0D
- include/linux/device/class.h         | 12 ------------=0D
- 10 files changed, 18 insertions(+), 22 deletions(-)=0D
----=0D
-base-commit: 785f0eb2f85decbe7c1ef9ae922931f0194ffc2e=0D
-change-id: 20260220-remove-device-find-by-of-node-077784fa109c=0D
-=0D
-Thanks.=0D
+diff --git a/drivers/net/wan/framer/framer-core.c b/drivers/net/wan/framer/=
+framer-core.c=0D
+index d779b03a9e1b..77ef1bfd476c 100644=0D
+--- a/drivers/net/wan/framer/framer-core.c=0D
++++ b/drivers/net/wan/framer/framer-core.c=0D
+@@ -745,7 +745,7 @@ struct framer *framer_provider_simple_of_xlate(struct d=
+evice *dev,=0D
+ {=0D
+ 	struct device *target_dev;=0D
+ =0D
+-	target_dev =3D class_find_device_by_of_node(&framer_class, args->np);=0D
++	target_dev =3D class_find_device_by_fwnode(&framer_class, of_fwnode_handl=
+e(args->np));=0D
+ 	if (!target_dev)=0D
+ 		return ERR_PTR(-ENODEV);=0D
+ =0D
 =0D
 -- =0D
-Dmitry=0D
+2.53.0.959.g497ff81fa9-goog=0D
 =0D

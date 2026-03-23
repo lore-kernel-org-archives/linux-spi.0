@@ -1,81 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D342BE644
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 22:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7FD381B14;
+	Mon, 23 Mar 2026 22:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303819; cv=none; b=CPnn6a7i5TR4Utr/469sqakm64QtBBIdcFzGOV5m8Hc93VFRzPLFP0PlGyhet6l2Wc58Qt/oFWJ4hJ0TJmJukYNz2V8FU0v+Tu6xL3P2x+O5ZURzOlm4tD6Ui44ePNEMbUzpejUaETeMrdVg/8DjMdkOQsP2K6v5ubJKBIqpG6g=
+	t=1774303935; cv=none; b=GCerr6/vFEvXynE9FYVJVV7J5ZzRK0M4BSt80zzHc7ZkASv2DtBeO7L69L48g2JxecfnkN402m+7y/Li8hqUt5yFbCaa9yThxT0/3ok5W6PiOWZauX2+b7yhsK8KatJvVg8BArrSOIi4bBBwAQiDfRFJT3R0JXUeqhVsRuQE7hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303819; c=relaxed/simple;
-	bh=mlM9eillJHG/OIysh7QqzL0SL8XgmxM/WElPfP9gbAs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=c+H88eQFTY0BL8OJuOYhAy3szgvNRUE16F9+t2WdxzP6xtpDOtvq2k4W3AS4D9ligtgAm3r/0H5zTzHHqFPmOl6uAHCmzC3wDNvF+NL0Dj76fdCqpWNhYFA44CTiRhC81xY2+e8ED8WEg5i8Na/HUWthEOxACq5eSozeLtLCBi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5W1UPfm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774303935; c=relaxed/simple;
+	bh=3xLIvwqrrXfWdoPtAt7OK3eVmeQqeYbfqRtKss4uPX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SsOCufXk7nXctT8FmxnEAavFvqpC2+UGwqdqX5Jz7gG0SUPxotrydXlEkjnnKqfROgx4Ui3ngSf/0kFGIfXzlsPgZaXGfEPmmqyuzEW0xbqMHWgT3xuEDDgy0UO23t7AHiqUnz35qloo93eHSRctYzgkFXtyh2S7LLaXmfz5wZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=noCTwJeM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5W1UPfm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B416C2BC9E;
-	Mon, 23 Mar 2026 22:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774303819;
-	bh=mlM9eillJHG/OIysh7QqzL0SL8XgmxM/WElPfP9gbAs=;
-	h=Subject:From:Date:To:From;
-	b=p5W1UPfm+0shD1o8MPudS6KiLcp/dYN5rrB/jNlPn6ueVGYQ2ve6QEcBkBjOw2CRb
-	 Aw8HQzPNnfM7MqalCCv7+pSyMzpfgqddu1g+KRNzhRGP01uX3kMRavJajRVqBjwQAX
-	 jyw8G3JOJaRPj+V3OsEPZ2BbLjPClXqLfIdzNQHZ0Mw7+dSqhW0WzqGqb4Uxs1DjrW
-	 KUzEoDZJpNuqCY6rOGaVW+5L7M5HNcvx4ifzxidsyMGuexYbRwu5n+ytYg4YZJhOgR
-	 e+s29bwJQ9GcDucPknM4fSLkmmSFjIdlgOVC3ZKlwZC8VpwS/So7qdWkoEuHH5OHou
-	 S5Zh48la6grVQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7FBB13808200;
-	Mon, 23 Mar 2026 22:10:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="noCTwJeM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SI0+KwkPfwgoDdX+0jEvH5cFTJRTk67LUQ/ONMeOpow=; b=noCTwJeMau3v7UV4VnKCLpWr8W
+	hRXYUl4+OExs9pxY2TJcr2o32iliV9RSn3RC+oFjgYV3efZnpsd8Du461lFenp5kt1BIelV4DQcSa
+	W2WRCGcQidhFzFUWZuanxinEGa7W4CUzIfW5/C4vR82SiVdrk1Xqrb1bwK2BKSLS5DeA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1w4nV8-00D0AX-Ki; Mon, 23 Mar 2026 23:11:58 +0100
+Date: Mon, 23 Mar 2026 23:11:58 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 04/10] regulator: of: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <09072374-65e7-4792-af7e-97d7df93f9bd@lunn.ch>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+ <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
+ <acGFksyx3SA0kJ5b@google.com>
+ <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
+ <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
+ <193e194a-498f-464f-b22c-c283c16db6c1@sirena.org.uk>
+ <acGzJV3vKhuty3nd@google.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177430380704.341600.7708020230766794037.git-patchwork-summary@kernel.org>
-Date: Mon, 23 Mar 2026 22:10:07 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acGzJV3vKhuty3nd@google.com>
 
-Hello:
+On Mon, Mar 23, 2026 at 02:41:03PM -0700, Dmitry Torokhov wrote:
+> On Mon, Mar 23, 2026 at 09:36:07PM +0000, Mark Brown wrote:
+> > On Mon, Mar 23, 2026 at 09:01:47PM +0100, Andrew Lunn wrote:
+> > 
+> > > How do you handle deprecated OF properties? This is a problem i've run
+> > > into before. A developer needs an ACPI binding, so they blindly
+> > > convert from of_ to device_ without engaging brain. As a result, they
+> > > bring all the deprecated OF properties we want to die into the brand
+> > > new ACPI bindings.
+> > 
+> > Honestly that one hasn't really come up much for me - not too many
+> > deprecated properties.
+> 
+> Given that we position properties as an ABI even if they are deprecated
+> we supposed to handle them forever. Newer properties usually offer
+> benefits over old ones and that is how users get moved over.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+~/linux/Documentation/devicetree/bindings/net$ grep -r deprecated * | wc
+     75     361    4195
 
-Series: cleanup in spi by use devm_clk_get_enabled
-  Submitter: Pei Xiao <xiaopei01@kylinos.cn>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1068954
-  Lore link: https://lore.kernel.org/r/cover.1773885292.git.xiaopei01@kylinos.cn
-    Patches: [v5,01/17] spi: axiado: Simplify clock management with devm_clk_get_enabled()
-             [v5,02/17] spi: bcm63xx-hsspi: Simplify clock handling with devm_clk_get_enabled()
-             [v5,03/17] spi: bcmbca-hsspi: Simplify clock handling with devm_clk_get_enabled()
-             [v5,09/17] spi: sifive: Simplify clock handling with devm_clk_get_enabled()
-             [v5,13/17] spi: stm32: Simplify clock handling with devm_clk_get_enabled()
-             [v5,14/17] spi: sunplus-sp7021: Simplify clock handling with devm_clk_get_enabled()
+So networking has ~ 75 of them.
 
-Patch: spi: pl022: update outdated references to pump_transfers()
-  Submitter: Kexin Sun <kexinsun@smail.nju.edu.cn>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1070293
-  Lore link: https://lore.kernel.org/r/20260321105940.8143-1-kexinsun@smail.nju.edu.cn
+Within the OF world, they are ABI and we need to keep them. But we
+don't want them in ACPI or any other firmware. Any code looking for
+properties needs to know what is underneath so it can decide if it
+should look for the deprecated, OF only property, or not.
 
-Patch: spi: meson-spicc: Fix double-put in remove path
-  Submitter: Felix Gu <ustc.gu@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1070489
-  Lore link: https://lore.kernel.org/r/20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com
-
-
-Total patches: 8
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+     Andrew

@@ -1,50 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC93B2FE3;
-	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D23AF660;
+	Mon, 23 Mar 2026 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274392; cv=none; b=rJjiQbrRRvDr/QGTDbMVrpCoQzbpuJaRDPWJwnD/HSA0gKX74m0GQHy5E97/dHHrtnoTYduXpj+Vx49GCic6+S5t2bPGLeMFUtFZIZGQ8gZj3GHZbsW2fJ5qdTU7jyTCefxlfMundu+cWmSEANqfBucHYQV90tPpcNF9JUPyJxw=
+	t=1774274451; cv=none; b=hGFgx0gOA81d1grpvhYvnT573pL/rIAg2dz6BAIzXHwwQ36IORgSTNBWO0ngFDxelbgjooSJjV4DeSSH+1AI8GRhsDMoFaY6rW6LhgG8giqUyRMu4XsV1+0r52OTD/eH/0AZqOt/625LjG1uQG1qXQBrELqsZ/ZM2grluGFtjsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274392; c=relaxed/simple;
-	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
+	s=arc-20240116; t=1774274451; c=relaxed/simple;
+	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIYcZ7Bl8Z0M2GqPn80CgZgMLHjRJF6d5zEEyUgIHASHCjuu5l+6pyE8g9Uxxb5M7s2zPy2bTOzFkBlsFPF5WtO0EJlvDA+6kB4og8HmHpkXDWpShBwxUKzNtthE4r8CLv+Gcnx7kih/c0m3ohXVRQPIz3JJD1MVWCRIXmaRhPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUXWOahi; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oskn+JXnDJOUJBXmM9izdfLFNoDIKshVjc7QjmmgvSmFuArmJ7Hz04Ywhkn50QmlnFnw1fNIREacbsRoli13bPgr1B/fzr3tUS7U+Dkq5nCMIOW8ZqATv+lA9xLfYI0SgT5lFD/LJACAv1QkzVWciHCrXJfJ4ejL/o0ta4DPAiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b054mkjT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUXWOahi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F6EC2BC9E;
-	Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b054mkjT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B55C2BCB3;
+	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274392;
-	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
+	s=k20201202; t=1774274451;
+	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iUXWOahiotCOexAWqwMx1xmtmRUXRKlFieRloAcWMX1nzbTuRJGbe9fTHnieFpDV4
-	 hZpTKLDoeqGjAwGoEvkLxTxnBBstmpEbxHERmQHO4P3G4oo76QYuYQ7HcigI0/YwcZ
-	 C686etZd4Fd4FDus+iLGR+ZP7zS309eoZzIAy8oEhheEKRAHsMcVMsHICw0BJ6PlfI
-	 KkMEY3dn+dBapORdXhFBRwDFL0VYGWXfIkAACrVxrK6pHtRUsmQ46hCyilHxcKVkFO
-	 NMR0KH0VVBQca4e4IEhwx1h8DFPZ2r4ZaQYEdkB/GnskXEi6+BL8pZ37lC1g4BckIw
-	 khV2eKde94wYA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w4for-00000003aId-2OvU;
-	Mon, 23 Mar 2026 14:59:49 +0100
-Date: Mon, 23 Mar 2026 14:59:49 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
-Message-ID: <acFHVTsDIbQm6GG6@hovoldconsulting.com>
-References: <20260323104948.844583-1-johan@kernel.org>
- <20260323104948.844583-2-johan@kernel.org>
- <20260323-demonic-worthy-guillemot-c2abb8-mkl@pengutronix.de>
- <acEh6KiKMfBehoZO@hovoldconsulting.com>
- <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
+	b=b054mkjTtYEqGgZaf4/JWuUUq+D1cbRn4oz+QgtcGRhBaIsSbcON5Hb+Z9fSLN+87
+	 D3JRT6J6hpQddK+TiwTbVmM/j+IGVTqI6cIYI+1EyX/r8HsrIbB0u22Ites7TsWKQs
+	 81kFH9ISPKCWxz+aNcJGkqt8IDLtiOBBk3N7icL40mZ9fErys8BIcMZEEgSrMMM6R5
+	 Puc/JmGYoAFl4bsGGnSL/8xqG4pZHj1Kf0U2M8T2cj//L+iTpI6bP2/yYtaMlB9wjG
+	 1x3AEiHbs/P9jIeIacaotOzOBa6gYyC9lz0ri8huA4pt9BzDXFJiU7QoftyGNpgYXl
+	 BFzFTDjlQAg/Q==
+Date: Mon, 23 Mar 2026 14:00:43 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 04/10] regulator: of: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,67 +60,43 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cmheixEO6Qo7xv6g"
+	protocol="application/pgp-signature"; boundary="vparQmoOwDu5fr6U"
 Content-Disposition: inline
-In-Reply-To: <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+X-Cookie: Avoid gunfire in the bathroom tonight.
 
 
---cmheixEO6Qo7xv6g
+--vparQmoOwDu5fr6U
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 23, 2026 at 12:57:42PM +0100, Marc Kleine-Budde wrote:
-> On 23.03.2026 12:20:08, Johan Hovold wrote:
-> > On Mon, Mar 23, 2026 at 12:00:59PM +0100, Marc Kleine-Budde wrote:
-> > > On 23.03.2026 11:49:44, Johan Hovold wrote:
-> > > > The SPI subsystem frees the controller and any subsystem allocated
-> > > > driver data as part of deregistration (unless the allocation is dev=
-ice
-> > > > managed).
-> > > >
-> > > > Take another reference before deregistering the controller so that =
-the
-> > > > driver data is not freed until the driver is done with it.
-> > >
-> > > Would re-ordering the spi_imx_remove() function be an alternative fix?
-> > > I.e. call spi_unregister_controller() last?
-> >
-> > No, the controller needs to be deregistered before disabling clocks and
-> > releasing other resources.
->=20
-> I see. So the API is a bit strange to use:
->=20
-> Allocate with spi_alloc_host(), free with spi_controller_put() before
-> spi_register_controller(), the free with spi_unregister_controller()
-> afterwards.
->
-> But spi_unregister_controller() shuts down the SPI interface _and_ frees
-> the memory. Which is the culprit here.
+On Sun, Mar 22, 2026 at 06:54:22PM -0700, Dmitry Torokhov wrote:
+> In preparation to class_find_device_by_of_node() going away switch to
+> using class_find_device_by_fwnode().
 
-Indeed, it's a known issue with the SPI API. See for example:
+>  	struct device *dev;
+> =20
+> -	dev =3D class_find_device_by_of_node(&regulator_class, np);
+> +	dev =3D class_find_device_by_fwnode(&regulator_class, of_fwnode_handle(=
+np));
 
-	68b892f1fdc4 ("spi: document odd controller reference handling")
-	5e844cc37a5c ("spi: Introduce device-managed SPI controller allocation")
-	f0c35a024cce ("spi: fix misleading controller deregistration kernel-doc")
+The regulator API is very deliberately specifically using the OF APIs,
+not the ACPI APIs, since ACPI really doesn't want to model regulators.
 
-> Would using devm_spi_alloc_host() be an option here?
-
-It can also be used, but that's more intrusive so I did that as a
-follow-on cleanup to the fix (see patch 2/5).
-
-Johan
-
---cmheixEO6Qo7xv6g
-Content-Type: application/pgp-signature; name=signature.asc
+--vparQmoOwDu5fr6U
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCacFHThsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQC8XNwux9ZQiczgEAgFAtXQwuMDPEX+tSENHm
-cTTnkpGjWt3fAIBRygsEH1MBAKgFuollphgJ2NGAem3qc6lwPoVExuyElb8lP2cg
-2JML
-=AxEu
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBR4oACgkQJNaLcl1U
+h9CUPQf9Gr18nCuis7I7DLt40fSEPA95DJmYkmottRjJCAQ2LQSO6j6vqvSDa1Df
+SkKWemoGYfYr0SipGuWaT94X5ReYqWmBIwW/Il1ONQ9TwpnUYHCaps4N7hA8uwV7
+kLDMXftyQVR4qt24ZcpjI298/kWsaY1P28fMcRYfR+WUv1B5ijfMjjyS4jv9gwqZ
+72/JD3NajSRbUpMYwM4nJxUnDlzj1C1YcTJC9TFDFRjMIrGVN1g1AiadGXA7h7pd
+4d9DFlsweMKG1uUpdhPFZ0MDamVJzN+e6OMfXCMqSAYch0H0FyRAnXjhK5RUGRt4
+Os3QT9yimnEfhwuE+VHBI8lUrD1mug==
+=RApe
 -----END PGP SIGNATURE-----
 
---cmheixEO6Qo7xv6g--
+--vparQmoOwDu5fr6U--

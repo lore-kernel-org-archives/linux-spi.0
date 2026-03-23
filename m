@@ -1,102 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D23AF660;
-	Mon, 23 Mar 2026 14:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E49D3947A6;
+	Mon, 23 Mar 2026 14:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274451; cv=none; b=hGFgx0gOA81d1grpvhYvnT573pL/rIAg2dz6BAIzXHwwQ36IORgSTNBWO0ngFDxelbgjooSJjV4DeSSH+1AI8GRhsDMoFaY6rW6LhgG8giqUyRMu4XsV1+0r52OTD/eH/0AZqOt/625LjG1uQG1qXQBrELqsZ/ZM2grluGFtjsc=
+	t=1774274704; cv=none; b=hgPxCacOYYx0+FYeNdWqgs9mqqt9hkg5lwQMuGgcsxkwtzIbDdwkr6cu/BgqDCQkzKKSw73REZkRZWh99TM6zJFCq1eFUgy9OUS37eF0QCJgV/QnHI5MDeosGyarjx7VNRqmTR+SdCwGn2zkVXYI9IqmeFzZu+kHqGWs7o0KjDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274451; c=relaxed/simple;
-	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oskn+JXnDJOUJBXmM9izdfLFNoDIKshVjc7QjmmgvSmFuArmJ7Hz04Ywhkn50QmlnFnw1fNIREacbsRoli13bPgr1B/fzr3tUS7U+Dkq5nCMIOW8ZqATv+lA9xLfYI0SgT5lFD/LJACAv1QkzVWciHCrXJfJ4ejL/o0ta4DPAiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b054mkjT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774274704; c=relaxed/simple;
+	bh=+6JAnqgvLbCSLMxeRMOC3mfdsHu0U8+mHf/+OubjbUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iP0ExpMJz1tb4YuNi60/p6khVH3DrLJrLf5HnLGYQe925Zoo7EHrZsP+BbnALbqJ9k+mxn2T37ACuJxDfrBpYD2+PTdM2lbW5KrfZobpgXoLlXyeDmWxZIES/AQouTXixN7GZZN1j9d97FahpMdTD3qaeYHjXaQwmCQHj7IXnLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WIjFrYiy; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b054mkjT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B55C2BCB3;
-	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274451;
-	bh=wsIPtE9gLfUlD7CfcHAkLJ1WaXHfJ/+7bt2n8V8whaQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b054mkjTtYEqGgZaf4/JWuUUq+D1cbRn4oz+QgtcGRhBaIsSbcON5Hb+Z9fSLN+87
-	 D3JRT6J6hpQddK+TiwTbVmM/j+IGVTqI6cIYI+1EyX/r8HsrIbB0u22Ites7TsWKQs
-	 81kFH9ISPKCWxz+aNcJGkqt8IDLtiOBBk3N7icL40mZ9fErys8BIcMZEEgSrMMM6R5
-	 Puc/JmGYoAFl4bsGGnSL/8xqG4pZHj1Kf0U2M8T2cj//L+iTpI6bP2/yYtaMlB9wjG
-	 1x3AEiHbs/P9jIeIacaotOzOBa6gYyC9lz0ri8huA4pt9BzDXFJiU7QoftyGNpgYXl
-	 BFzFTDjlQAg/Q==
-Date: Mon, 23 Mar 2026 14:00:43 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 04/10] regulator: of: switch to using
- class_find_device_by_fwnode()
-Message-ID: <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WIjFrYiy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774274703; x=1805810703;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+6JAnqgvLbCSLMxeRMOC3mfdsHu0U8+mHf/+OubjbUo=;
+  b=WIjFrYiyw2FGf0Wiw1GHLBP2Vhkxmd3LR45c5yemfmsbtQ1GH4g8RYln
+   iWu+IZLMGDLhhBfC6zaiJd2cCf/SQ3WQGUnB6iHOVJoP5pAIeSKrlw7KE
+   nv++aFpC/Lg8yXkIh0Bu+8isp9MQGL539qSGC6dC6jN8hy6uWEjjaG2x0
+   /lqro3ooSF+LSSNRu8Ydy4PZT6pgvt96dw5kgx4D15RnAnTdz8x41KvAJ
+   jtkwuvium9nxJJ/pxdZiVNEp0askn8uyZ6EQK3eFkHV8KAxhu/jPBBe26
+   B900NjLvdWr0O+rRYY+EVUWLZTIvSffyj+xh4TI8ZENDav9rVHJo7voTf
+   Q==;
+X-CSE-ConnectionGUID: ckb7GsxzSm2lUjXxny0F+g==
+X-CSE-MsgGUID: pyB19DCqRhKQ1kUtpHmzgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75337558"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="75337558"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 07:04:57 -0700
+X-CSE-ConnectionGUID: JQmpqqk7Q6WjoweX5NapEA==
+X-CSE-MsgGUID: 9NqlkHQDQZeIOzJ4fmLfkQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="223107048"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa006.jf.intel.com with ESMTP; 23 Mar 2026 07:04:55 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 6CB4D98; Mon, 23 Mar 2026 15:04:49 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] spi: Replace open coded variant of spi_bpw_to_bytes()
+Date: Mon, 23 Mar 2026 15:04:45 +0100
+Message-ID: <20260323140445.3496736-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vparQmoOwDu5fr6U"
-Content-Disposition: inline
-In-Reply-To: <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
-X-Cookie: Avoid gunfire in the bathroom tonight.
+Content-Transfer-Encoding: 8bit
 
+__spi_validate() open codes the functionality of spi_bpw_to_bytes().
+Replace the custom piece by the call to the mentioned function.
 
---vparQmoOwDu5fr6U
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-On Sun, Mar 22, 2026 at 06:54:22PM -0700, Dmitry Torokhov wrote:
-> In preparation to class_find_device_by_of_node() going away switch to
-> using class_find_device_by_fwnode().
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 200d942c85bb..cd1561d84e73 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -4222,12 +4222,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 		 * SPI transfer length should be multiple of SPI word size
+ 		 * where SPI word size should be power-of-two multiple.
+ 		 */
+-		if (xfer->bits_per_word <= 8)
+-			w_size = 1;
+-		else if (xfer->bits_per_word <= 16)
+-			w_size = 2;
+-		else
+-			w_size = 4;
++		w_size = spi_bpw_to_bytes(xfer->bits_per_word);
+ 
+ 		/* No partial transfers accepted */
+ 		if (xfer->len % w_size)
+-- 
+2.50.1
 
->  	struct device *dev;
-> =20
-> -	dev =3D class_find_device_by_of_node(&regulator_class, np);
-> +	dev =3D class_find_device_by_fwnode(&regulator_class, of_fwnode_handle(=
-np));
-
-The regulator API is very deliberately specifically using the OF APIs,
-not the ACPI APIs, since ACPI really doesn't want to model regulators.
-
---vparQmoOwDu5fr6U
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBR4oACgkQJNaLcl1U
-h9CUPQf9Gr18nCuis7I7DLt40fSEPA95DJmYkmottRjJCAQ2LQSO6j6vqvSDa1Df
-SkKWemoGYfYr0SipGuWaT94X5ReYqWmBIwW/Il1ONQ9TwpnUYHCaps4N7hA8uwV7
-kLDMXftyQVR4qt24ZcpjI298/kWsaY1P28fMcRYfR+WUv1B5ijfMjjyS4jv9gwqZ
-72/JD3NajSRbUpMYwM4nJxUnDlzj1C1YcTJC9TFDFRjMIrGVN1g1AiadGXA7h7pd
-4d9DFlsweMKG1uUpdhPFZ0MDamVJzN+e6OMfXCMqSAYch0H0FyRAnXjhK5RUGRt4
-Os3QT9yimnEfhwuE+VHBI8lUrD1mug==
-=RApe
------END PGP SIGNATURE-----
-
---vparQmoOwDu5fr6U--

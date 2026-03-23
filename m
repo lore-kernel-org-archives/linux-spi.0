@@ -1,45 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA33C3D5670;
-	Mon, 23 Mar 2026 19:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856313C552A;
+	Mon, 23 Mar 2026 19:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774295197; cv=none; b=nNWdIe5MKpK/1MyReKg6QO80iranpnYNAk1AbUkFoRu6est84Efwh8LiRrzfqweijUXqsnPupYqREhYZpkB6yk0kkop0S9v6fd5jgt74WcE/Iwr0d8ZLsLG6Jclk8akQ5vmz9A3Za8vL5ljFeQP2n3uefDdt64GKK8p2bBB7few=
+	t=1774295902; cv=none; b=FGlmu14Fq3TgzglAGr2sSiz/NHROmTWH4X+RlSCgKdeULlYr6VP78G5u3813Ofg1xCdrm0fYL0ekF3tkOFEguGGy9QPrsR5ewmetbHzgONVXwjRZd8mutwwCRkxamKiJgCvPOBodUiv1UBtlWHln6kf6MkLK3vXoyT7xxB/B9ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774295197; c=relaxed/simple;
-	bh=/dmtorY8LlAopvLU37QPmGzNGM+3mvzFRJJMdAu2qDw=;
+	s=arc-20240116; t=1774295902; c=relaxed/simple;
+	bh=kyAdyLIolc1pNRtfh868lkR+JbIUB6zZ7QrqvXFofdY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P/+j72qSJZhpfpe74/Zp0qaVgWoQla2d1Sgpgf1ZqPLiZ1w+P/tK/Z2DUlv35+mE3QZrt36py6+tpTHB6vsx2my1kpx5RW0tSb6Lid+t9+Dicf5SiK3Yex7qDJnmTskBS0PSK549ACSg6fITPYBN74nwCsmab0MoHsFicY4CsZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rShQHzbr; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kc5fo/cSgni6DtvCOJVURq1xeb4CPDxL42dLEDU0ZSHt8qm94bKsPJFoD1SVaj67S6/pqNBAS96r1VAujaF3pR73D7KD64uzuoHvN+ObUW6wL7N/2jBDyXJr+48yn/JPboFgA0YIyU59Wns2vN7omPVJe1mS7kxYc/jPqE96aVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhjQuV1r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rShQHzbr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D6CC4CEF7;
-	Mon, 23 Mar 2026 19:46:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhjQuV1r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3FAC4CEF7;
+	Mon, 23 Mar 2026 19:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774295197;
-	bh=/dmtorY8LlAopvLU37QPmGzNGM+3mvzFRJJMdAu2qDw=;
+	s=k20201202; t=1774295902;
+	bh=kyAdyLIolc1pNRtfh868lkR+JbIUB6zZ7QrqvXFofdY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rShQHzbr+/e0vr8yznZXZLi0IadcEXyXmTC90VkLLCkDaKMyZV6XVtlDucYuLRq74
-	 cw8in6D0nwJYmsWUzDM5DUNt7b7dv5ZP9BgpIbj55v3YyI9+xYELCUmp3kPYHs7x0C
-	 00JUcr6l+IiGJ2xPxQM/T0R+R/AxSBcBKqUj20bwgr7zgL1F4QraMYx7OEzbxPleal
-	 UhrfMUKHBGqXIXHQZtqkMmt/ioegcjIoDyE/8AluJ3QflhBk8vVAiE0QoMZKdFT6Y0
-	 mUyw1ezBl/MjVbtx5ejQ3Exaog+afTr36miFzTZGTx45Rg10COYbaTuthczwezddX0
-	 8h16B0dBoRPdQ==
-Date: Mon, 23 Mar 2026 19:46:32 +0000
+	b=BhjQuV1rlQNkZRRUPQzUEHiGemWYvxwGUUwFprKqnvBZvIVTyWQFx/DOnFVIztija
+	 MPlohAzCjzApu8WeTQ65I+ChX1qkWiXY+NloB3CFncACPeKUJ9gqzBaA2TFhUC7F+C
+	 NpydNTsGaSMtNU4c8nF8vyTGUWBeM3DaxWktWG/AOE56ayJaWV86+Qew9HjiLxGE3O
+	 oFKgs43bcPf7uU9PNgRmuAZ+JSQtjSEap6fY0IgEPbaCb8GVdrfbDqGGikWzJqpeIV
+	 G3mOwk96C6MmV5G8nHEUJRfO2O3dtJ2tBzMu79ygfRL6PVYmWQdiwfk5xrU1bcv0WF
+	 UGpTukMnf4SjA==
+Date: Mon, 23 Mar 2026 19:58:14 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	openbmc@lists.ozlabs.org, linux-rockchip@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, Frank.Li@nxp.com,
-	amelie.delaunay@foss.st.com
-Subject: Re: [PATCH v5 17/17] spi: zynqmp-gqspi: Simplify clock handling with
- devm_clk_get_enabled()
-Message-ID: <cc7f3fec-e314-4f46-8c62-75feb919b778@sirena.org.uk>
-References: <cover.1773885292.git.xiaopei01@kylinos.cn>
- <611b4c4b67aaa8d86a7aeba9707ada47e6fd5dc3.1773885292.git.xiaopei01@kylinos.cn>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 04/10] regulator: of: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <55abcc68-747a-468a-abdf-b6340d658c4f@sirena.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+ <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
+ <acGFksyx3SA0kJ5b@google.com>
+ <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
+ <acGWJf1AGXT1xduM@google.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,38 +64,58 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yXZTZfMj8/cYjg5u"
+	protocol="application/pgp-signature"; boundary="O4OhYRZFw2wrFe70"
 Content-Disposition: inline
-In-Reply-To: <611b4c4b67aaa8d86a7aeba9707ada47e6fd5dc3.1773885292.git.xiaopei01@kylinos.cn>
-X-Cookie: The only perfect science is hind-sight.
+In-Reply-To: <acGWJf1AGXT1xduM@google.com>
+X-Cookie: This is a good time to punt work.
 
 
---yXZTZfMj8/cYjg5u
+--O4OhYRZFw2wrFe70
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 19, 2026 at 10:04:13AM +0800, Pei Xiao wrote:
-> Replace devm_clk_get() followed by clk_prepare_enable() with
-> devm_clk_get_enabled() for both "pclk" and "ref_clk". This removes
-> the need for explicit clock enable and disable calls, as the managed
-> API automatically disables the clocks on device removal or probe
-> failure.
+On Mon, Mar 23, 2026 at 12:41:59PM -0700, Dmitry Torokhov wrote:
+> On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
 
-Another runtime PM.
+> > I think this is a worrying idea for core code like this, we have
+> > specific firmware bindings for specific firmware interfaces with the
+> > different interfaces having very different ideas of how things should be
+> > modelled.  The chances that firmware agnostic code is going to do the
+> > right thing seem low, and encouraging the use of generic APIs that might
+> > happen to run OK raises the risk that we'll get firmware vendors relying
+> > on them and leaving us with a conceptual mishmash to sort through.
 
---yXZTZfMj8/cYjg5u
+> Firmware vendors can introduce incompatible DT bindings and have them in
+> their devices too and we have to deal with that...=20
+
+The case that's worrying me is mixing the ACPI and DT design models in
+one system, and especially having that happen to actually work without
+modification purely by luck rather than by design.
+
+> I think if this pushes closer ACPI and OF schemas for at least some
+> subsystems closer to each other it would not be a bad thing.
+
+I think we shouldn't be encouraging people to just throw random stuff at
+the wall and see if it happens to run OK with whatever OS they tried
+booting.  The differences between ACPI and DT in areas like the
+regulator bindings are fundamental conceptual ones.  There's some areas
+where things are closer and it winds up being fine actually, especially
+for leaf devices, but there's others where that's less likely.
+
+--O4OhYRZFw2wrFe70
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBmJcACgkQJNaLcl1U
-h9Azogf/QlfWQKZIDTkEDnV1hRWkQlKZGgabUOpCAe5hOywhIwsKTsN0RsdWj4pu
-gZ5CUwol9/peWzpl3LUtT438fl+Tj1jWbjNJWSBHy4o6uSnLSIedjHJuFrA5nBb7
-Nw2JPIwe1Sxk3ooG6qCf1RLFclZHxcvjbAeTDIUbRmnA2ZeOMuDQ030AbISPi50p
-TwkulHE1Mfd6zQ/Dtfv6azyFxBMfirgdLPblRWmXkYp9zgnDKfOxgy29A30V/0zb
-NBeZSB5HZVYUCjuCMpe3hbq8MYLGL+d/khvAy8r/tnghN49BcXv9/LG798apXkXC
-FKZxce5d98Cm2HnL8Suce3/z9c3sKA==
-=quxv
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBm1UACgkQJNaLcl1U
+h9Djrwf9Ffmb+F+09voA/X0mCKzR62vN4Kz++KKsVLf3+BEctfWovkX/itnqcwhx
+s9V5mECd0QLrKeSG5E/NNmFrjJz3TliTHZSab+DpflQbDb+EVvqTnwCgVF1g+Fln
+vujBPEAADK/0xJILG6Ofvj3jmTtI4d8vr0yaG2zf1sxs/hfSs/H5md5+Z4hhXsuS
++aIRYxppLQmblj8oBi94jqkz95GHs5/eG9Xe7BmVRgnnkqRWbS2RmRDhmnPRG/aj
+4k5BAgW89+EZGjNjNhZ+ssjenO27Q4qisrmpQunxMoi6FzdOUc6AhVo0sOy1Qj8u
+VJtMn/EIAQUKnKtotxHlw4yduM3PBA==
+=chN5
 -----END PGP SIGNATURE-----
 
---yXZTZfMj8/cYjg5u--
+--O4OhYRZFw2wrFe70--

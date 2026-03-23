@@ -1,57 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50463AC0E3;
-	Mon, 23 Mar 2026 13:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC93B2FE3;
+	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274299; cv=none; b=C2VPtPvdsp3QUMLUlOF2Un+E0LfgSYMxRfP/GYMsBS1iKfoBTKgkGsuQJQ7NFa0aoid1FX4Jb7GQYANjXBLlZnwK4NUPDwXrnD+5fXEB8q368/d8IVmPpTR58grJv8w9YLAdYjeAOhiZYOjaZliyYw4Eci8UjWWqzIfKCCIWzn0=
+	t=1774274392; cv=none; b=rJjiQbrRRvDr/QGTDbMVrpCoQzbpuJaRDPWJwnD/HSA0gKX74m0GQHy5E97/dHHrtnoTYduXpj+Vx49GCic6+S5t2bPGLeMFUtFZIZGQ8gZj3GHZbsW2fJ5qdTU7jyTCefxlfMundu+cWmSEANqfBucHYQV90tPpcNF9JUPyJxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274299; c=relaxed/simple;
-	bh=DqfWL4BSTBiaLqTmikifLZdJR1EIole67SS90j6+wPs=;
+	s=arc-20240116; t=1774274392; c=relaxed/simple;
+	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GoNQdafm4RgLplD0Z502TQFI5EMv1xY2c2wifOwE24UVmfFs3J9xYoxp8tA315qJUIIQ5i8XUtDRfqNMkygAlXxEZk4CfoiHuGfw7I/ikMq14gcJirhbTFFtnwZrK/9hcktdaA4v10L48vCUBne6/eV9lHy8V9FXce5Q43d7qqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ug7FqFPO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=rIYcZ7Bl8Z0M2GqPn80CgZgMLHjRJF6d5zEEyUgIHASHCjuu5l+6pyE8g9Uxxb5M7s2zPy2bTOzFkBlsFPF5WtO0EJlvDA+6kB4og8HmHpkXDWpShBwxUKzNtthE4r8CLv+Gcnx7kih/c0m3ohXVRQPIz3JJD1MVWCRIXmaRhPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUXWOahi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ug7FqFPO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A146DC4CEF7;
-	Mon, 23 Mar 2026 13:58:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUXWOahi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F6EC2BC9E;
+	Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274299;
-	bh=DqfWL4BSTBiaLqTmikifLZdJR1EIole67SS90j6+wPs=;
+	s=k20201202; t=1774274392;
+	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ug7FqFPOxtjqtkSadBjpkd4bQYSehH4p2u3pHmJk9tmOoZu6fr0+vdVBUekcgA6/A
-	 QnXwgH5xZaTtuisppuO7Isa5gwywmd5oZCkMmzQqAUk1xRyPfjBZkWYdt4jDFLtgce
-	 jG6/HZKk7u6DP1SsWQWgCLGs3au+Dh/HpT8FZ5a9XULG7e+Ot4MU70ST2AC/mB472J
-	 3WU43zruM06Q0aL1wgWvCiWoxpf7uin9XCKjJQhFzvY9Ij7zDpAAa1hWZGfhn/HuWA
-	 TzEF+P8h5nrJG5gDl+i34duuOTOggqENQN21Fhq30HCbMyyNAklfwWsCb2t5CgQ7yX
-	 cGR0rCKZ3nXrg==
-Date: Mon, 23 Mar 2026 13:58:12 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 03/10] spi: switch to using class_find_device_by_fwnode()
-Message-ID: <03c80468-b097-47ac-b7b5-4170eb782772@sirena.org.uk>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
+	b=iUXWOahiotCOexAWqwMx1xmtmRUXRKlFieRloAcWMX1nzbTuRJGbe9fTHnieFpDV4
+	 hZpTKLDoeqGjAwGoEvkLxTxnBBstmpEbxHERmQHO4P3G4oo76QYuYQ7HcigI0/YwcZ
+	 C686etZd4Fd4FDus+iLGR+ZP7zS309eoZzIAy8oEhheEKRAHsMcVMsHICw0BJ6PlfI
+	 KkMEY3dn+dBapORdXhFBRwDFL0VYGWXfIkAACrVxrK6pHtRUsmQ46hCyilHxcKVkFO
+	 NMR0KH0VVBQca4e4IEhwx1h8DFPZ2r4ZaQYEdkB/GnskXEi6+BL8pZ37lC1g4BckIw
+	 khV2eKde94wYA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w4for-00000003aId-2OvU;
+	Mon, 23 Mar 2026 14:59:49 +0100
+Date: Mon, 23 Mar 2026 14:59:49 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
+Message-ID: <acFHVTsDIbQm6GG6@hovoldconsulting.com>
+References: <20260323104948.844583-1-johan@kernel.org>
+ <20260323104948.844583-2-johan@kernel.org>
+ <20260323-demonic-worthy-guillemot-c2abb8-mkl@pengutronix.de>
+ <acEh6KiKMfBehoZO@hovoldconsulting.com>
+ <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,35 +52,67 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/Y4JH2eUDT/w1Qo1"
+	protocol="application/pgp-signature"; boundary="cmheixEO6Qo7xv6g"
 Content-Disposition: inline
-In-Reply-To: <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
-X-Cookie: Avoid gunfire in the bathroom tonight.
+In-Reply-To: <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
 
 
---/Y4JH2eUDT/w1Qo1
+--cmheixEO6Qo7xv6g
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 22, 2026 at 06:54:21PM -0700, Dmitry Torokhov wrote:
-> In preparation to class_find_device_by_of_node() going away switch to
-> using class_find_device_by_fwnode().
+On Mon, Mar 23, 2026 at 12:57:42PM +0100, Marc Kleine-Budde wrote:
+> On 23.03.2026 12:20:08, Johan Hovold wrote:
+> > On Mon, Mar 23, 2026 at 12:00:59PM +0100, Marc Kleine-Budde wrote:
+> > > On 23.03.2026 11:49:44, Johan Hovold wrote:
+> > > > The SPI subsystem frees the controller and any subsystem allocated
+> > > > driver data as part of deregistration (unless the allocation is dev=
+ice
+> > > > managed).
+> > > >
+> > > > Take another reference before deregistering the controller so that =
+the
+> > > > driver data is not freed until the driver is done with it.
+> > >
+> > > Would re-ordering the spi_imx_remove() function be an alternative fix?
+> > > I.e. call spi_unregister_controller() last?
+> >
+> > No, the controller needs to be deregistered before disabling clocks and
+> > releasing other resources.
+>=20
+> I see. So the API is a bit strange to use:
+>=20
+> Allocate with spi_alloc_host(), free with spi_controller_put() before
+> spi_register_controller(), the free with spi_unregister_controller()
+> afterwards.
+>
+> But spi_unregister_controller() shuts down the SPI interface _and_ frees
+> the memory. Which is the culprit here.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Indeed, it's a known issue with the SPI API. See for example:
 
---/Y4JH2eUDT/w1Qo1
-Content-Type: application/pgp-signature; name="signature.asc"
+	68b892f1fdc4 ("spi: document odd controller reference handling")
+	5e844cc37a5c ("spi: Introduce device-managed SPI controller allocation")
+	f0c35a024cce ("spi: fix misleading controller deregistration kernel-doc")
+
+> Would using devm_spi_alloc_host() be an option here?
+
+It can also be used, but that's more intrusive so I did that as a
+follow-on cleanup to the fix (see patch 2/5).
+
+Johan
+
+--cmheixEO6Qo7xv6g
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBRvMACgkQJNaLcl1U
-h9CsIgf/RCKdllt9YwSLySimmbBJtkTLmhOS6EPJCqGv19zWp+V0LMQR7m+UNTGr
-FnR+LwzGc6hEHm/6jhjD198BnnVCOW82zCI8Bs+E6y5/EdupkUDZ+b3g3SeURJAF
-+QJq5bdoCW1CTTRSIGfA5rvSFcvntN7Zq8M1wxHw3tCGu9nFjd6zgDl89+AftFxf
-y229F5tEErnywkxr7uTfooW7t6VMKlhRVBg4yrPvoa6Uya8sSLjcXMPA/rF9358P
-K9Rq1TRyca20qXzUtriw7Az+/rk7ZBkCZoYVUBcihEdjyfxrORCd5RqlM6pxH80i
-lcMvh6jcdGoRkTwa6/zxTPScelZsuw==
-=oQMa
+iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCacFHThsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMSwyLDIACgkQC8XNwux9ZQiczgEAgFAtXQwuMDPEX+tSENHm
+cTTnkpGjWt3fAIBRygsEH1MBAKgFuollphgJ2NGAem3qc6lwPoVExuyElb8lP2cg
+2JML
+=AxEu
 -----END PGP SIGNATURE-----
 
---/Y4JH2eUDT/w1Qo1--
+--cmheixEO6Qo7xv6g--

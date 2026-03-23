@@ -1,83 +1,93 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80BF1E2614
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 13:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50463AC0E3;
+	Mon, 23 Mar 2026 13:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774272589; cv=none; b=ondY6MKOtD2YATurSzrFb71g+nHb/DWer0AcjdWYrLZmXiSawSev2YHOlCjEY0oQd3dzc35jQDrIURENha4RmiHcMoOwrpb0Ap7ewl6KgPWdPVN9zCPZQUW4GPBX3t9ULbMNaju4zp0euPmmeXeQVCq5ABYgXItu5is6lkhUdHs=
+	t=1774274299; cv=none; b=C2VPtPvdsp3QUMLUlOF2Un+E0LfgSYMxRfP/GYMsBS1iKfoBTKgkGsuQJQ7NFa0aoid1FX4Jb7GQYANjXBLlZnwK4NUPDwXrnD+5fXEB8q368/d8IVmPpTR58grJv8w9YLAdYjeAOhiZYOjaZliyYw4Eci8UjWWqzIfKCCIWzn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774272589; c=relaxed/simple;
-	bh=4ALTHeR/nNtas+TDhmepd92xZJjPlPAcg1f9T5Oy/uk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PQNshR0yxoW2RB424ko1hVO9tYbSkZwwGRvvdi6PnsoDnmi9aFhFYLHFOQuQ64umVK6RHw1QIdjgv7NOkLiuKDG4PebSBb7+m7Vyyv2fFyl2cfiKMstDoezkTEzrAvukF/KSNHMYR8VdXwc7Ixrfxb2LwLvO0otc/wI8ZAmRDmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbLaED3C; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774274299; c=relaxed/simple;
+	bh=DqfWL4BSTBiaLqTmikifLZdJR1EIole67SS90j6+wPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GoNQdafm4RgLplD0Z502TQFI5EMv1xY2c2wifOwE24UVmfFs3J9xYoxp8tA315qJUIIQ5i8XUtDRfqNMkygAlXxEZk4CfoiHuGfw7I/ikMq14gcJirhbTFFtnwZrK/9hcktdaA4v10L48vCUBne6/eV9lHy8V9FXce5Q43d7qqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ug7FqFPO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbLaED3C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C1FC4CEF7
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 13:29:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ug7FqFPO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A146DC4CEF7;
+	Mon, 23 Mar 2026 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774272589;
-	bh=4ALTHeR/nNtas+TDhmepd92xZJjPlPAcg1f9T5Oy/uk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BbLaED3CAjWVtLICPIXk7HRfAOzZMYev+4Fa67GGJwgDZUSnf2h7plQi2hxda3A7T
-	 EokkWtXxAJXS9FqEd2y7KVt42JoG9xy5lhq7vJovoRSluYicA6Rub2MW2u4izAbdFO
-	 MQEN3WySzN4LsB7x1pPikZXom4Ye2MBnM+y8ocsZpMmU9w9YxMx+nc1vS+EffMyL4+
-	 32Rkmi4s/6Rlcm44DpRmNcb27ie4AfKcgCNfBtwU25uK6scWTuhl+s0kvEVId0yDvc
-	 jpd0VUCbanej6ji5XvOQtqmxzTCgdAvv3LoAFJz1glK8UyVAPjXttCJASIdfu9WtLi
-	 rfbZz5LTnKhsg==
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64eb84d1e37so1576090d50.2
-        for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 06:29:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXgTth8rMLwCOZN2dqgThR19v2WcvsqpyV2F3AhyfJ/AMrIOWfW9gquRRieMFKBJFKLVHjiPZXRBs8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUJvloJ3YbrazCEeFZkj5k1hYAAm0p4uO9UquBPOfROTvCnqVk
-	yy/q1Ns7CJaWinK6Y+0hFdlANxDzZQb/ATI9mYRMyayk8QxognCuudLHbvmYJtyJr+gBbYtWKe+
-	0z5XvkASeb/8zz0Idtbc3jeECwHbI8Yk=
-X-Received: by 2002:a53:b465:0:b0:64c:cfc8:6baf with SMTP id
- 956f58d0204a3-64eaa6a1fe0mr8465672d50.4.1774272588715; Mon, 23 Mar 2026
- 06:29:48 -0700 (PDT)
+	s=k20201202; t=1774274299;
+	bh=DqfWL4BSTBiaLqTmikifLZdJR1EIole67SS90j6+wPs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ug7FqFPOxtjqtkSadBjpkd4bQYSehH4p2u3pHmJk9tmOoZu6fr0+vdVBUekcgA6/A
+	 QnXwgH5xZaTtuisppuO7Isa5gwywmd5oZCkMmzQqAUk1xRyPfjBZkWYdt4jDFLtgce
+	 jG6/HZKk7u6DP1SsWQWgCLGs3au+Dh/HpT8FZ5a9XULG7e+Ot4MU70ST2AC/mB472J
+	 3WU43zruM06Q0aL1wgWvCiWoxpf7uin9XCKjJQhFzvY9Ij7zDpAAa1hWZGfhn/HuWA
+	 TzEF+P8h5nrJG5gDl+i34duuOTOggqENQN21Fhq30HCbMyyNAklfwWsCb2t5CgQ7yX
+	 cGR0rCKZ3nXrg==
+Date: Mon, 23 Mar 2026 13:58:12 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 03/10] spi: switch to using class_find_device_by_fwnode()
+Message-ID: <03c80468-b097-47ac-b7b5-4170eb782772@sirena.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260321105940.8143-1-kexinsun@smail.nju.edu.cn>
-In-Reply-To: <20260321105940.8143-1-kexinsun@smail.nju.edu.cn>
-From: Linus Walleij <linusw@kernel.org>
-Date: Mon, 23 Mar 2026 14:29:37 +0100
-X-Gmail-Original-Message-ID: <CAD++jLn9MTbJjLh27U37w_Jj_GEZkaEztdPTk8T0y8ZQxqJ+aw@mail.gmail.com>
-X-Gm-Features: AQROBzA1Eb81EhPJamujnyXMjjtWiy-G55hD9WEFMzQ9Pozas-rkYtdPkHd9Eag
-Message-ID: <CAD++jLn9MTbJjLh27U37w_Jj_GEZkaEztdPTk8T0y8ZQxqJ+aw@mail.gmail.com>
-Subject: Re: [PATCH] spi: pl022: update outdated references to pump_transfers()
-To: Kexin Sun <kexinsun@smail.nju.edu.cn>
-Cc: broonie@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg, 
-	ratnadiraw@smu.edu.sg
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/Y4JH2eUDT/w1Qo1"
+Content-Disposition: inline
+In-Reply-To: <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
+X-Cookie: Avoid gunfire in the bathroom tonight.
 
-On Sat, Mar 21, 2026 at 12:00=E2=80=AFPM Kexin Sun <kexinsun@smail.nju.edu.=
-cn> wrote:
 
-> The pump_transfers tasklet was removed when the driver
-> switched to the SPI core message processing loop in commit
-> 9b2ef250b31d ("spi: spl022: switch to use default
-> spi_transfer_one_message()").  The kdoc of
-> pl022_interrupt_handler() still describes the old flow: scheduling
-> the pump_transfers tasklet, calling giveback(), and flagging
-> STATE_ERROR =E2=80=94 none of which exist in the current code.  Rewrite
-> the kdoc to reflect the current paths, which flag errors via
-> SPI_TRANS_FAIL_IO and call spi_finalize_current_transfer()
-> directly.
->
-> Assisted-by: unnamed:deepseek-v3.2 coccinelle
-> Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
+--/Y4JH2eUDT/w1Qo1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Impressive use of AI and impeccably correctly tagged,
-this is exactly how I want AI-assisted submissions to look.
+On Sun, Mar 22, 2026 at 06:54:21PM -0700, Dmitry Torokhov wrote:
+> In preparation to class_find_device_by_of_node() going away switch to
+> using class_find_device_by_fwnode().
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Acked-by: Mark Brown <broonie@kernel.org>
 
-Yours,
-Linus Walleij
+--/Y4JH2eUDT/w1Qo1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnBRvMACgkQJNaLcl1U
+h9CsIgf/RCKdllt9YwSLySimmbBJtkTLmhOS6EPJCqGv19zWp+V0LMQR7m+UNTGr
+FnR+LwzGc6hEHm/6jhjD198BnnVCOW82zCI8Bs+E6y5/EdupkUDZ+b3g3SeURJAF
++QJq5bdoCW1CTTRSIGfA5rvSFcvntN7Zq8M1wxHw3tCGu9nFjd6zgDl89+AftFxf
+y229F5tEErnywkxr7uTfooW7t6VMKlhRVBg4yrPvoa6Uya8sSLjcXMPA/rF9358P
+K9Rq1TRyca20qXzUtriw7Az+/rk7ZBkCZoYVUBcihEdjyfxrORCd5RqlM6pxH80i
+lcMvh6jcdGoRkTwa6/zxTPScelZsuw==
+=oQMa
+-----END PGP SIGNATURE-----
+
+--/Y4JH2eUDT/w1Qo1--

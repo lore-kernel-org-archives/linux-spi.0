@@ -1,64 +1,64 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8B32236FD
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 01:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD20F21A447
+	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 01:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774230887; cv=none; b=YiDKF4S/RUqntfwaSRy4qKoseXuIORcHjELpLWFstG3bA6TWiOpEQf+IPFs4UqATMsHRbeHulZy1j1lunttJKVpCEUCW3eFbHfJU5cebLsWf7TOvSYIKd27GCgAX4X9TqVqqey/W2MnbdlNPArBYJ6qatPZP/oZsvJRSd8izbEM=
+	t=1774230888; cv=none; b=d9a7la/SnVQkj5bS6Wf4gA/aOUvFuOogHk9spPJSfri1LnBV43tzx4X7uxrpyWydTHWqtDN9emOt2SwqncRm/QheWLEBT04pyPcbnnRBjN156VqEkvhQLS/rDkDvMxzzZ3dxjQzze8U9ciXIHqri+UZ1ZUjnfMR9AfBE+d93UCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774230887; c=relaxed/simple;
-	bh=vhx5QpoROnyh2q914MrL5geRu8AVJM0r0udOxsoTw6g=;
+	s=arc-20240116; t=1774230888; c=relaxed/simple;
+	bh=xYIn8ABDkpyr0YTUtgQcAiZf9GrzpDD84nxgrE/YbUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lkPXlWpr561DPU7f2sBOXjcsVfXpdww8cSN2NbGQB7C7bpK+nNcVZ+i88jtwjMr8x+URAZU9ntfVU7oI4M7t1ShUHhmI5vcNjhFSz4EKev33iXAVzd30JvkB8OmtKlQrkm5M25IAr1g08OkoYTyLslvfDvmqJuCFh89NBPp/FIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VK1KsAcb; arc=none smtp.client-ip=74.125.82.173
+	 MIME-Version:Content-Type; b=dakzZ8+hp0Om0rbC7S94rmE+NiKu3Jceiw7DBwQoOQyWU98XSgXn5sTGwAIr73c9kallOXsgrDBAcNyh7KaWerm/mNa7/8uqI9rxm6IYURoWPYwSQlO6PEB4sUrNb5SVPf2PxwyCjGwuhFHyBNg2Fi1qcwFwnsuy61GdwFOaspc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UuH0ewt6; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VK1KsAcb"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ba9c484e5eso2165291eec.1
-        for <linux-spi@vger.kernel.org>; Sun, 22 Mar 2026 18:54:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UuH0ewt6"
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c0e3a2605fso652883eec.0
+        for <linux-spi@vger.kernel.org>; Sun, 22 Mar 2026 18:54:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774230884; x=1774835684; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774230886; x=1774835686; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hFZooOyb7hfKDEpM9yx+Ztfv9BY6tuw4luVBl13uVrY=;
-        b=VK1KsAcbFk0ksbY+/+vt6XBw+4QjtQuHRNv2SEHPfOltUX5iNis2R33+Du5wZHsRqr
-         WrIvRasmCEwSh7fqmeugCo6feE8XtxjYVAWVs/aJTax+83KN+3yRpRiZCmHHN41kGc2E
-         76E2GGvW0zof2A8SVr/BVlPkGidLkiOUt0hgfTa+VgwSDTvrIJY6IurRqy40KFb+FtEB
-         wko5608F7xyI/q7h8A/GWDyJCZ0HJ7yB298qb2dIQbetqQ8w+Pcud+IFZJPxpS6mn9WL
-         8sIGtXhR2VICewq97fNB6oQcilgCg1aGpsGvaPbSi+wk7JHrmVt562VfDZYB8cq9XLjF
-         K0TA==
+        bh=HAxXxv6aPc5DTLbEJ2x2im/U0EJHM/Tk3mhYybeVkPQ=;
+        b=UuH0ewt6j9doYzRgftaipYEooiTTIkDnwEeL664oX3BBapBISM72bytNNZxMAa4h0v
+         smKp+BAMqQWX3Sb+cN3IAx1jyosIzqncLh5td1Q9uOwjBJ90T/rjLttujrT8V1XKlDT0
+         uvj2KTy0eGCzCSWlgmzXzSDF+9XDCFr/2FkOqoaayc4xcFv4J3c/r6gV3IwQ5PSTV09M
+         pbS+v333WMk01T3Xzm62pIMmp8j1NPCA1fQyT5heASGjKBHsP7b7Hp/aKiugs8PBmfqy
+         OkFLzXNcpf8kU0KlAgEoMS1MJ7X8wAWB1uQWR69fdgcEdV3a96R/zx2MHWpHqimVjv5O
+         EPzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774230884; x=1774835684;
+        d=1e100.net; s=20251104; t=1774230886; x=1774835686;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hFZooOyb7hfKDEpM9yx+Ztfv9BY6tuw4luVBl13uVrY=;
-        b=CHd0YjENj82OVTKmx8+lk/ZbT2NOsrNCJYbSPH1z3uryjN+dWkxwayCRo2WSF3+EdV
-         JKkYNvrAjPEX/WdgavIHHn6F2SQUHcxLlQeuJUxnxqqs+aenzm9c5xARtxOuk5l/EleS
-         02T+fA2Gw73pRIE1rmvcU4GIQn67l8SYOZe1Amvt98/C8kMbafVsT8hPusTQq3WwXBJa
-         25N1l6dJEU25AMfnKhHOjtt9v43vmv7JHMhH40zwxhJGllkFnNASng+d/m77lWSfXcQt
-         t1ZjFNvxM1+9jLnHjBCE2JSNyMWG5rXugEuIDELjy9UN+CKNbTgK9Ib/nToHi75Rn+62
-         JJ/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUjpINDn2ase0UZem+jOdkSdxw0YBBf9YRxAoDavr7KqBmt0J4XSDjMPM1TLE2yOKqhsZSWbGqOcAc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6Eqcagw3dQ6wrH38pQznUNNkFY7qEEvlzXzuyFhLfMjqQorlC
-	LwpnVqWe3SUyaUHnRIKiFUZPOMcaheLgceNkA94uWTdHk4dnorx6JAt0
-X-Gm-Gg: ATEYQzwRo3dMrVMQsP4Cn7i10k586zgAFl68BUNdyHLja6mjBPD25NG9UixQzlOq0kF
-	RO668mAuoEeDvMG6Fre+ZXyK6jNpF077Q05sM8QyMvidJnhinJfvtYRCnLHPysUGtnDKx7ss0lw
-	weLSTyRv6cn4eWtTOeCbdKGtrMYdxXffYQwM7q3d2RlYLKKCOmiZfQ+rcaZQXQXceYs1TLykxFd
-	jimQ6J+v5ElX1e8RgibuGXVJjv14WVFa/o6Uf+mLNzl/oi2c7ig4AqgJEXpx5rqZQyP41uPbWD+
-	vOp/F31089u4NqGUxLtMj13Zp4hApd28kK5bzuJ6YlzRs/ZnLmgzivv2MlmHnMPXNYV8r89HWon
-	XcgSyOgzda+c5CsCD69r5P61GrQuFAz1DJ/5eTB26fO7EXYoaEtV3KrCAwoiffhSzbZGEyj0CZB
-	GwrYKijjVpMT0DP3TgGQ6Zck0Iq8FtRkJ687TDt1BLwJ/DAN6XvvGzLpGeTAEqNhAr2MjlsyQZ7
-	EgP8tq53p5w19k=
-X-Received: by 2002:a05:7300:d517:b0:2be:1cb2:3a6 with SMTP id 5a478bee46e88-2c10980a523mr4129993eec.33.1774230883846;
-        Sun, 22 Mar 2026 18:54:43 -0700 (PDT)
+        bh=HAxXxv6aPc5DTLbEJ2x2im/U0EJHM/Tk3mhYybeVkPQ=;
+        b=DmljwdYZ/aLKwNk+kY1BQ75oHQ9GXpW+A8zfSQhj+VOkc9wSz7Rz1Y5InvDo22/jKa
+         cqAOvsUm3w0Y9Q1RzWpyQO4h+14v3TupG9n2DGLap9JiwgiLvt5CvwtM0NYYiB/rJdZl
+         sF65tiRtyoDGZzY/P8NGIE931YQjne/RigPPe5gYLiT8O81KQFVmb2xJ9L6Egb7kFwNP
+         b7jNSlVdN+gLTWwD6ot8/rRtbxrd84pnY+r1euVm0VildzRNOLgCeTNbL8zpOJaG3RbJ
+         VlKVN2ojsTuCMHZF4cPIR3OZ5vZJ/2wl5zwAuWav30F7VrNUAPI3B3bWo5QUzSaYfZaT
+         tChQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1g7DPj4IoeUrzkzKHYopXerM7SWwBJUbq14OWtNckrU+R03HsVrK2Ns9x6NAkEjLhTGrtociuYDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydl5xEe7j42zeuP4ynsm5/e83eb37YHYW6sxT+/cSd+AIfGpsm
+	ZnAG7xBRlUfRQfcM8RlrZmldfNES6kJOuhXaHexQyr7QynuNtPQROGRyU2crJmEo
+X-Gm-Gg: ATEYQzw2CeYQa/I28WMAOrWdyfXRRN5/DHsrCjtx/UyXiVJlnzMIZEuOj2L65u3iTjQ
+	TpE2V0/S0I5Mx/1+d0p1bTIQJ7OkIPddiwYu1nuo46QL5ueOL/61psgZYauGbOgtdhns5DozEkd
+	ozL14PcihM/zUVgfXJEdZJXmqjgHDqxlNPDIkQ7R4RJRM6MGoDUe/yYOoS4Sg8ep0hV+KouTOOe
+	UtxerhIvnktFPG8kBY1N0JKcPsATJfcjE0GkgFgCrnQN0bR1Ez44xx1jVv49LiY7pjpTrvllc4U
+	eIyFfGoiR5uFaGaiFPOk4ifXbnWdWTdt4sy3v6ROKkf1hPvh92IDe5FQ06rq01VVVb8QwA6+Hp1
+	G9PwBzXqEYNiVUUxnvX+IX+idSjCeqmRlXw8vOUT3IJqEEtrFlAZ+HSa7ARJvyv2y7rRI/L3ZQ5
+	LvzlNPyz2aPqtUe6uJOyAg2J/LH9ibdHWDOKuBrhOadytrX2Gy9mxWCNvFgKgFcLEh6+ou1kIDF
+	9l5Vo4r0nwLQh3CSxK5NjY7/Q==
+X-Received: by 2002:a05:7301:3f07:b0:2b8:30b8:58cf with SMTP id 5a478bee46e88-2c1095f867cmr4580068eec.8.1774230885998;
+        Sun, 22 Mar 2026 18:54:45 -0700 (PDT)
 Received: from dtor-ws.sjc.corp.google.com ([2a00:79e0:2ebe:8:b768:22ed:3eba:aeb3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b2cf068sm10976952eec.22.2026.03.22.18.54.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b2cf068sm10976952eec.22.2026.03.22.18.54.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 18:54:43 -0700 (PDT)
+        Sun, 22 Mar 2026 18:54:45 -0700 (PDT)
 From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -88,9 +88,9 @@ Cc: netdev@vger.kernel.org,
 	linux-leds@vger.kernel.org,
 	linux-fpga@vger.kernel.org,
 	driver-core@lists.linux.dev
-Subject: [PATCH 03/10] spi: switch to using class_find_device_by_fwnode()
-Date: Sun, 22 Mar 2026 18:54:21 -0700
-Message-ID: <20260322-remove-device-find-by-of-node-v1-3-b72eb22a1215@gmail.com>
+Subject: [PATCH 04/10] regulator: of: switch to using class_find_device_by_fwnode()
+Date: Sun, 22 Mar 2026 18:54:22 -0700
+Message-ID: <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
 X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
 In-Reply-To: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
 References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
@@ -109,36 +109,22 @@ using class_find_device_by_fwnode().
 
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 ---
- drivers/spi/spi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/regulator/of_regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index bf1df365f795..071a9ffdb59d 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -21,6 +21,7 @@
- #include <linux/kthread.h>
- #include <linux/mod_devicetable.h>
- #include <linux/mutex.h>
-+#include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
- #include <linux/percpu.h>
-@@ -4948,11 +4949,12 @@ EXPORT_SYMBOL_GPL(spi_write_then_read);
- /* The spi controllers are not using spi_bus, so we find it with another way */
- struct spi_controller *of_find_spi_controller_by_node(struct device_node *node)
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index c0cc6cc0afd8..43ec0845c940 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -637,7 +637,7 @@ static struct regulator_dev *of_find_regulator_by_node(struct device_node *np)
  {
-+	struct fwnode_handle *fwnode = of_fwnode_handle(node);
  	struct device *dev;
  
--	dev = class_find_device_by_of_node(&spi_controller_class, node);
-+	dev = class_find_device_by_fwnode(&spi_controller_class, fwnode);
- 	if (!dev && IS_ENABLED(CONFIG_SPI_SLAVE))
--		dev = class_find_device_by_of_node(&spi_target_class, node);
-+		dev = class_find_device_by_fwnode(&spi_target_class, fwnode);
- 	if (!dev)
- 		return NULL;
+-	dev = class_find_device_by_of_node(&regulator_class, np);
++	dev = class_find_device_by_fwnode(&regulator_class, of_fwnode_handle(np));
  
+ 	return dev ? dev_to_rdev(dev) : NULL;
+ }
 
 -- 
 2.53.0.959.g497ff81fa9-goog

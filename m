@@ -1,119 +1,83 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FE4399359
-	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 11:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80BF1E2614
+	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 13:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774267071; cv=none; b=HFWNyV4O/sVgPOYOxh3Z0Yu50C8H5UKv4RxZf5vEN4PTVgrKqFdGNCL1U186spXJskLUz6U73ec1u8UPPzyXl25Gv8SyMD460EqQ72em3mwr6vrftAjI8MM5fI3z9ezifpySF3j7zCXr8MP2blVfalsaAsIjRNXV4SIrAxiJJis=
+	t=1774272589; cv=none; b=ondY6MKOtD2YATurSzrFb71g+nHb/DWer0AcjdWYrLZmXiSawSev2YHOlCjEY0oQd3dzc35jQDrIURENha4RmiHcMoOwrpb0Ap7ewl6KgPWdPVN9zCPZQUW4GPBX3t9ULbMNaju4zp0euPmmeXeQVCq5ABYgXItu5is6lkhUdHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774267071; c=relaxed/simple;
-	bh=0GEHw3O1Oq6BqaFe1Cdqj4TpK8O/uQhDjjVI6uLu1pc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WL4Jj0IOCP4bR9h61XXD3oRB524nVFgUvVyz/IDGcUrF+8bh1PhXi8iFgkIzYTcZyqurn8n1oFyCmKRGLNk/BRMuEhYA0ardR0kPTQgx9oj+z8eStMU6SH1to00Ep4EgMeg7ww4ri3g7CwFao3HQFesggL74rnE/kT4aprbTcWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w4duh-0002kn-8c; Mon, 23 Mar 2026 12:57:43 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w4dug-001igy-2d;
-	Mon, 23 Mar 2026 12:57:42 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 785FF50A949;
-	Mon, 23 Mar 2026 11:57:42 +0000 (UTC)
-Date: Mon, 23 Mar 2026 12:57:42 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Johan Hovold <johan@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Heiko Stuebner <heiko@sntech.de>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
-Message-ID: <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260323104948.844583-1-johan@kernel.org>
- <20260323104948.844583-2-johan@kernel.org>
- <20260323-demonic-worthy-guillemot-c2abb8-mkl@pengutronix.de>
- <acEh6KiKMfBehoZO@hovoldconsulting.com>
+	s=arc-20240116; t=1774272589; c=relaxed/simple;
+	bh=4ALTHeR/nNtas+TDhmepd92xZJjPlPAcg1f9T5Oy/uk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PQNshR0yxoW2RB424ko1hVO9tYbSkZwwGRvvdi6PnsoDnmi9aFhFYLHFOQuQ64umVK6RHw1QIdjgv7NOkLiuKDG4PebSBb7+m7Vyyv2fFyl2cfiKMstDoezkTEzrAvukF/KSNHMYR8VdXwc7Ixrfxb2LwLvO0otc/wI8ZAmRDmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbLaED3C; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbLaED3C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C1FC4CEF7
+	for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 13:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774272589;
+	bh=4ALTHeR/nNtas+TDhmepd92xZJjPlPAcg1f9T5Oy/uk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BbLaED3CAjWVtLICPIXk7HRfAOzZMYev+4Fa67GGJwgDZUSnf2h7plQi2hxda3A7T
+	 EokkWtXxAJXS9FqEd2y7KVt42JoG9xy5lhq7vJovoRSluYicA6Rub2MW2u4izAbdFO
+	 MQEN3WySzN4LsB7x1pPikZXom4Ye2MBnM+y8ocsZpMmU9w9YxMx+nc1vS+EffMyL4+
+	 32Rkmi4s/6Rlcm44DpRmNcb27ie4AfKcgCNfBtwU25uK6scWTuhl+s0kvEVId0yDvc
+	 jpd0VUCbanej6ji5XvOQtqmxzTCgdAvv3LoAFJz1glK8UyVAPjXttCJASIdfu9WtLi
+	 rfbZz5LTnKhsg==
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64eb84d1e37so1576090d50.2
+        for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 06:29:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXgTth8rMLwCOZN2dqgThR19v2WcvsqpyV2F3AhyfJ/AMrIOWfW9gquRRieMFKBJFKLVHjiPZXRBs8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUJvloJ3YbrazCEeFZkj5k1hYAAm0p4uO9UquBPOfROTvCnqVk
+	yy/q1Ns7CJaWinK6Y+0hFdlANxDzZQb/ATI9mYRMyayk8QxognCuudLHbvmYJtyJr+gBbYtWKe+
+	0z5XvkASeb/8zz0Idtbc3jeECwHbI8Yk=
+X-Received: by 2002:a53:b465:0:b0:64c:cfc8:6baf with SMTP id
+ 956f58d0204a3-64eaa6a1fe0mr8465672d50.4.1774272588715; Mon, 23 Mar 2026
+ 06:29:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oc3ekvkopuutzogv"
-Content-Disposition: inline
-In-Reply-To: <acEh6KiKMfBehoZO@hovoldconsulting.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-spi@vger.kernel.org
-
-
---oc3ekvkopuutzogv
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+References: <20260321105940.8143-1-kexinsun@smail.nju.edu.cn>
+In-Reply-To: <20260321105940.8143-1-kexinsun@smail.nju.edu.cn>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 23 Mar 2026 14:29:37 +0100
+X-Gmail-Original-Message-ID: <CAD++jLn9MTbJjLh27U37w_Jj_GEZkaEztdPTk8T0y8ZQxqJ+aw@mail.gmail.com>
+X-Gm-Features: AQROBzA1Eb81EhPJamujnyXMjjtWiy-G55hD9WEFMzQ9Pozas-rkYtdPkHd9Eag
+Message-ID: <CAD++jLn9MTbJjLh27U37w_Jj_GEZkaEztdPTk8T0y8ZQxqJ+aw@mail.gmail.com>
+Subject: Re: [PATCH] spi: pl022: update outdated references to pump_transfers()
+To: Kexin Sun <kexinsun@smail.nju.edu.cn>
+Cc: broonie@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	julia.lawall@inria.fr, xutong.ma@inria.fr, yunbolyu@smu.edu.sg, 
+	ratnadiraw@smu.edu.sg
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
-MIME-Version: 1.0
 
-On 23.03.2026 12:20:08, Johan Hovold wrote:
-> On Mon, Mar 23, 2026 at 12:00:59PM +0100, Marc Kleine-Budde wrote:
-> > On 23.03.2026 11:49:44, Johan Hovold wrote:
-> > > The SPI subsystem frees the controller and any subsystem allocated
-> > > driver data as part of deregistration (unless the allocation is device
-> > > managed).
-> > >
-> > > Take another reference before deregistering the controller so that the
-> > > driver data is not freed until the driver is done with it.
-> >
-> > Would re-ordering the spi_imx_remove() function be an alternative fix?
-> > I.e. call spi_unregister_controller() last?
+On Sat, Mar 21, 2026 at 12:00=E2=80=AFPM Kexin Sun <kexinsun@smail.nju.edu.=
+cn> wrote:
+
+> The pump_transfers tasklet was removed when the driver
+> switched to the SPI core message processing loop in commit
+> 9b2ef250b31d ("spi: spl022: switch to use default
+> spi_transfer_one_message()").  The kdoc of
+> pl022_interrupt_handler() still describes the old flow: scheduling
+> the pump_transfers tasklet, calling giveback(), and flagging
+> STATE_ERROR =E2=80=94 none of which exist in the current code.  Rewrite
+> the kdoc to reflect the current paths, which flag errors via
+> SPI_TRANS_FAIL_IO and call spi_finalize_current_transfer()
+> directly.
 >
-> No, the controller needs to be deregistered before disabling clocks and
-> releasing other resources.
+> Assisted-by: unnamed:deepseek-v3.2 coccinelle
+> Signed-off-by: Kexin Sun <kexinsun@smail.nju.edu.cn>
 
-I see. So the API is a bit strange to use:
+Impressive use of AI and impeccably correctly tagged,
+this is exactly how I want AI-assisted submissions to look.
 
-Allocate with spi_alloc_host(), free with spi_controller_put() before
-spi_register_controller(), the free with spi_unregister_controller()
-afterwards.
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-But spi_unregister_controller() shuts down the SPI interface _and_ frees
-the memory. Which is the culprit here.
-
-Would using devm_spi_alloc_host() be an option here?
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---oc3ekvkopuutzogv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCacEqswAKCRDMOmT6rpmt
-0iRnAQDbf2ytPLs0BNfsXOUD4zDDeyHAMjvP4Ik56CAjrDLFdgEAmOygzR66Rk5V
-7aGwLx7qtXaGDP6+haazZPB2gf/EMg0=
-=e5n1
------END PGP SIGNATURE-----
-
---oc3ekvkopuutzogv--
+Yours,
+Linus Walleij

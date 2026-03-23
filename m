@@ -1,166 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3520F391E7F;
-	Mon, 23 Mar 2026 10:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3475037E2E6;
+	Mon, 23 Mar 2026 10:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774263001; cv=none; b=cqybGr+lok5Isn38AKhCuXPOm1RFStCQbnXFCmtBqzcSvNAEx+ZkI0AuvGZhPgex7fUN0ec4x8hEeSjaz/lDdw1knVgdziPr+dyN/1IpmwsdibOwsTAul+Y+6PxiEPOVm24AFcCBc11KgxUAiQ93/m5kVoPxkrhHGq++qJe0N5w=
+	t=1774263335; cv=none; b=kDbw08cjVEdfSIntLmwXkt9pkHOyEg7p5jvTwCfy/xDw4dVTOOporZfV1ye2JzX96I3vuHuD19WCTelpCSVqy1d8Njbrp8TPShRr+KeZyvg5OEmDo35wvEy7kVDyeA0Yf5UgOyAtVa7r9v7kXl6BjW5An10hIQRu6kPtORrsuGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774263001; c=relaxed/simple;
-	bh=VARrRBCImFUXBLN3AofHXXDlpxj1GOHl1SFpB9FPolM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbqnu4omNX8ZDhF4FPNyqS4RE7bSnDvg8ELcD+Dr/FZyYKIa+DOJR3zowJx1Kt+RIS9u3yb/980DLXDm3YiRBNlGB+X8xxMuEpTsQKwzmn/HDRQQWuGk7HPXOWG8bf1OtXuf4Kcg7gBCRqQWCCyjE1jlLKXyGbg8peYIi+Tqk1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRR0b2nH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774263335; c=relaxed/simple;
+	bh=fIITDcaGNwe5JP28V/vDN52AYvBQ5hQKU+YhsH32KVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ugR80PoYl+6X6KX9z22DnKe03lcok33mLTaQCrNwSWsjD26OzifWm7bciQ+D+srgMxQ0pR2dDc3dlN3KMxVl8ry3NmatpD9h/Ki2GrP08IolDAr1hJgFtOEJXUPAksYUqfxGbInZ7A5qQKghuz4HooG8W8JxTw5B5GiYij6Sjds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/PsizxY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRR0b2nH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD798C2BCB5;
-	Mon, 23 Mar 2026 10:50:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/PsizxY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA31FC2BC9E;
+	Mon, 23 Mar 2026 10:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774263000;
-	bh=VARrRBCImFUXBLN3AofHXXDlpxj1GOHl1SFpB9FPolM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRR0b2nH2J7+sVWt5mpJL3F0mhyQlSKTPMy1+LeYa4wCvYsHh2vXMtHfg+mcWhTqA
-	 hr7kOjQxmDKCUFI5Ap8SqdQifsuj+9IniZMa9nkB9FZYOK7gS2AxJ5AoSr+aF+L0NQ
-	 l0PC97NduE5DD9eYuq7SC5Uvpjd7iPcGhcezkQbBqRH4giUpiU4RVq4xSxDqff+dks
-	 iQZii9WuHFHwG6KtB9LBhlaBUfYnOIXO5PhfXa71I1uNKlBqSkDLVG93iizr4+fzK/
-	 undrIpEYhm/XqbJXcF7J7cLPvLWCJmU7IP2+NM8W0UoZJj3GE8hbd6Uh+E1Bet/VoL
-	 BAv1AvQuZOzYw==
+	s=k20201202; t=1774263334;
+	bh=fIITDcaGNwe5JP28V/vDN52AYvBQ5hQKU+YhsH32KVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b/PsizxYuPyh6p+66BxpCqyKvwMg0/n0RigMKooGpzRMCF4lzfCXQyW3dQsZ+5rXZ
+	 XjqstYEDmG0E8vAJiy9gQhC7NZ9hX8sCxg7l5D988q6XMD+SILzjhyGAU8q3dRAN78
+	 JNVtoTFgUuHHodeau+xR5peYZmjlDr0LbMwUe4A83DvMOd4wuYFoRkroDNcMrDxZWB
+	 Hs37S+U9xt3IKK/WhCXPklgEGRT2k15gX4lH6tQxbn44J31YcQfDOQCQ0rXEqkaipC
+	 nIeSNcnZxdQq+zPtvOdFGIWQi4c2sYryx+aEUt+VyE8U1UCOrISPvVJnPADHDb8w66
+	 aSFONyy70KK4A==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w4cr8-00000003Xiu-1gIr;
-	Mon, 23 Mar 2026 11:49:58 +0100
+	id 1w4cwW-00000003XqX-1ggo;
+	Mon, 23 Mar 2026 11:55:32 +0100
+Date: Mon, 23 Mar 2026 11:55:32 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5/5] spi: rockchip: switch to managed controller allocation
-Date: Mon, 23 Mar 2026 11:49:48 +0100
-Message-ID: <20260323104948.844583-6-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260323104948.844583-1-johan@kernel.org>
-References: <20260323104948.844583-1-johan@kernel.org>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Dongliang Mu <mudongliangabcd@gmail.com>, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: meson-spicc: Fix double-put in remove path
+Message-ID: <acEcJJgoaaOdBz70@hovoldconsulting.com>
+References: <20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260322-rockchip-v1-1-fac3f0c6dad8@gmail.com>
 
-Switch to device managed controller allocation to simplify error
-handling and to avoid having to take another reference during
-deregistration.
+On Sun, Mar 22, 2026 at 09:29:56PM +0800, Felix Gu wrote:
+> meson_spicc_probe() registers the controller with
+> devm_spi_register_controller(), so teardown already drops the
+> controller reference via devm cleanup.
+> 
+> Calling spi_controller_put() again in meson_spicc_remove()
+> causes a double-put.
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-rockchip.c | 36 +++++++++++++-----------------------
- 1 file changed, 13 insertions(+), 23 deletions(-)
+Indeed it does: 
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index eb1992b4178e..14cd1b9d9793 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -767,9 +767,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	target_mode = of_property_read_bool(np, "spi-slave");
- 
- 	if (target_mode)
--		ctlr = spi_alloc_target(&pdev->dev, sizeof(struct rockchip_spi));
-+		ctlr = devm_spi_alloc_target(&pdev->dev, sizeof(*rs));
- 	else
--		ctlr = spi_alloc_host(&pdev->dev, sizeof(struct rockchip_spi));
-+		ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*rs));
- 
- 	if (!ctlr)
- 		return -ENOMEM;
-@@ -780,35 +780,31 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 
- 	/* Get basic io resource and map it */
- 	rs->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &mem);
--	if (IS_ERR(rs->regs)) {
--		ret = PTR_ERR(rs->regs);
--		goto err_put_ctlr;
--	}
-+	if (IS_ERR(rs->regs))
-+		return PTR_ERR(rs->regs);
- 
- 	rs->apb_pclk = devm_clk_get_enabled(&pdev->dev, "apb_pclk");
- 	if (IS_ERR(rs->apb_pclk)) {
--		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->apb_pclk),
--				    "Failed to get apb_pclk\n");
--		goto err_put_ctlr;
-+		return dev_err_probe(&pdev->dev, PTR_ERR(rs->apb_pclk),
-+				     "Failed to get apb_pclk\n");
- 	}
- 
- 	rs->spiclk = devm_clk_get_enabled(&pdev->dev, "spiclk");
- 	if (IS_ERR(rs->spiclk)) {
--		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->spiclk),
--				    "Failed to get spi_pclk\n");
--		goto err_put_ctlr;
-+		return dev_err_probe(&pdev->dev, PTR_ERR(rs->spiclk),
-+				     "Failed to get spi_pclk\n");
- 	}
- 
- 	spi_enable_chip(rs, false);
- 
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto err_put_ctlr;
-+		return ret;
- 
- 	ret = devm_request_irq(&pdev->dev, ret, rockchip_spi_isr, 0,
- 			       dev_name(&pdev->dev), ctlr);
- 	if (ret)
--		goto err_put_ctlr;
-+		return ret;
- 
- 	rs->dev = &pdev->dev;
- 	rs->freq = clk_get_rate(rs->spiclk);
-@@ -830,10 +826,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	rs->fifo_len = get_fifo_len(rs);
--	if (!rs->fifo_len) {
--		ret = dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
--		goto err_put_ctlr;
--	}
-+	if (!rs->fifo_len)
-+		return dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, ROCKCHIP_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
-@@ -924,15 +918,13 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 		dma_release_channel(ctlr->dma_tx);
- err_disable_pm_runtime:
- 	pm_runtime_disable(&pdev->dev);
--err_put_ctlr:
--	spi_controller_put(ctlr);
- 
- 	return ret;
- }
- 
- static void rockchip_spi_remove(struct platform_device *pdev)
- {
--	struct spi_controller *ctlr = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-@@ -946,8 +938,6 @@ static void rockchip_spi_remove(struct platform_device *pdev)
- 		dma_release_channel(ctlr->dma_tx);
- 	if (ctlr->dma_rx)
- 		dma_release_channel(ctlr->dma_rx);
--
--	spi_controller_put(ctlr);
- }
- 
- #ifdef CONFIG_PM_SLEEP
--- 
-2.52.0
+Reviewed-by: Johan Hovold <johan@kernel.org>
 
+> Fixes: 8311ee2164c5 ("spi: meson-spicc: fix memory leak in meson_spicc_remove")
+
+While only root can trigger this it should probably still go stable:
+
+Cc: stable@vger.kernel.org
+
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+
+How did you find this one? Are you using some kind of static analysis
+tool or LLM?
+
+Johan

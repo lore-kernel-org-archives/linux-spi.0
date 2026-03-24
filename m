@@ -1,129 +1,188 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013047.outbound.protection.outlook.com [52.101.83.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579A401493
-	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 14:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774364183; cv=none; b=MMNFbRNY2JOM350qcTZV74ASxRNDYfO4U73VWobOa5iv1h65qKNcRmBYjvjtwzKAymLobq5dGZBCjWlvhmiTGC4Urgv8uUM1gknT0G0Nxf/YchAmrGY96waIx4dlm7o50SvAUmCgL623DZF7ajeHzQbF/KyJ16Ij5Bfukbxh/80=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774364183; c=relaxed/simple;
-	bh=Bwrq0gb8/yR+srwxT1tUhL+MbcNcm8n+1HAzCx3FxPY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kssqd2zEV9LuZn2wUMjd9POfmonUaoY4NCsLxht//f+ls6FqZF3wx998JzLjFzklSsYyq/Zo40N9FeWe4LYrlwOnrK4CwsAgj2+D0jsrk3sSgoh6HWXYh1SQQz7/JuhHmlqZ7Szop2+uHoV71SSeFYSl9M1j9I3UEjasjqgD/b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kWdHLgA7; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B454A402B95;
+	Tue, 24 Mar 2026 15:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774364724; cv=fail; b=qTMLhqppglX5Pw+sKcsUMiuRXKa5zhFQ41zVfdUvG/4TqVuzwSzh9sKylfHqAYO2IZO9UDf4cd+CNg+/UMB8MAwqQ62hhPd/E9pQYFKhnSPGfBBYDHfcy7/KdfuH+Cz+SclkWYiwYQ7wOw6QaZDPQYJ23OfUtuSVvzIVQGlrLAk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774364724; c=relaxed/simple;
+	bh=zsqn0u75XhPZRcWw9Gi2bNBA/crKxzYXiLr+fNkYsvs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=GHPieO/ArdA5fFw45UBWrVq8y+mck2VnBupo/3S9GYysYpb+mJsOrW+8oAbQGB1cTBPBjlUjnJ0xeFWPOgqrizSNagQ7d38cbiCM+ql7RHouteipQYMMFJsqaI1NDfZLPMWdiX2LyfjhcmPBJ7aW8LPoLtipWQKPi2ab9ni7xsE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=IkVsjd7R; arc=fail smtp.client-ip=52.101.83.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kWdHLgA7"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adff872068so18751145ad.1
-        for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 07:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774364182; x=1774968982; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8HHibtnmiK9oJAgymjSpcI+L0uHNFarSU3Q1Wq/KbvI=;
-        b=kWdHLgA7ucW1sBw3Y+na3Vpr+qGlBrQdEjItitJJSJgs5oU6Kal5n9EMxyiUKS0rSG
-         bCs1ONyNUdaUuKjpfepX3njbctpy28BmqSGOgs7mmZILijmHQMas1Pazc9rd4pSW3O3S
-         5599SXpjcbDNf1QxsheaUHF+W6il+xybtTJN06gOuwEzgwbODEer9VL0uGueXyr02Loc
-         OVyVgbj1Tz4I69wsduoWcwOnG3YU7E+fiTEVVpqdcWYMXIcCMkoVXS6oAyuHTMBSuuEf
-         BEuyKhZX005cPE/2QGhbgDSeKXwsLGzPRfT32a69f1g+mRt5RsSPXj7mLh8RKG6zbc6g
-         dlWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774364182; x=1774968982;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8HHibtnmiK9oJAgymjSpcI+L0uHNFarSU3Q1Wq/KbvI=;
-        b=YE9LwrH9NmgRweD1zbiUQmi9ZSFbr8F23mrjzXOh2ddtj9eQx5OHIZ6CCa3Rchg3Z9
-         gON+iOo3p4LkbRn2BuOFzPhLSI2QmJ6hsfRlPKBEAYs/01OhltYTiGL5Lc4I6AI2COzA
-         fMIWsyflM9aQ3G2c11Qy55Z/qo6JTExwGFgUolhBVZJhMnD68w4p18OKxnY9rtfc0gbX
-         mzG9XnvxD6BnDuzGyVQUyHbiPmbhUQzqdfbJpeshGdX9MUGBcdu0/L+4H/vkFii3VcVU
-         ZreVZpdltuzEYTeR/1YyK+n7XPBFqEUlK3vfA1K6g+lSdP5O6hdsXtcUDmQChoS7lneA
-         sLxw==
-X-Gm-Message-State: AOJu0YzGSEjmabcoT+wNJHKmuxKsfqP7zRN8URhsfvqsiBis7Hf34ZQn
-	pWS1jTPtWkumkSHMKclZGdNwkMIPTsaXnD1HIUBX9fgntTc6OwOxyR48
-X-Gm-Gg: ATEYQzySSfw46AfhCzPscPJzlzlBuxHjYLoriVCOMDwBsQVTd04VYYv9HM2vpPp5cjx
-	VXz7hd7D8hjlnrnI0t/psY4NebawcnEqsUFY3PBtr/kyuVLmhJMwtB0ko/HeYz6GHba7j2ZMVlU
-	dW/Oa44FwTlQqWS4J8eNk+cyaUstmM45H29JXUpQqMjWPJluMjr4MUmQfqksqMd12cVWUa0T+LE
-	5Rc3i746F3LVFl08teSR9KJ1eaICmpD2q4tf8YRmQMIsBt8R8qubmVBy4zsmDoZk9aCnaIuuOal
-	M74eYXdCxyuEN4jW6IBs8Yh6/flSIRXl4Cj+QnreHjHzuB1Rp8DSSOpAUr386FGXERCVlGtWx+F
-	x+3ptMmJ7BTyp1Z8amxjHQ5w0SmBPdSv93L0KxfaX9DUNqnB8YwTYdQREeK5TtxwUbDN3k5x/IE
-	iDmMxZnwm6eQVYFfgtTHzzylQHhlg3uGSTew==
-X-Received: by 2002:a17:902:da84:b0:2ae:c67c:3b05 with SMTP id d9443c01a7336-2b0826d82fcmr169631255ad.10.1774364179268;
-        Tue, 24 Mar 2026 07:56:19 -0700 (PDT)
-Received: from localhost.localdomain ([223.167.147.240])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655474sm191851225ad.48.2026.03.24.07.56.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Mar 2026 07:56:18 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Felix Gu <ustc.gu@gmail.com>
-Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
-Date: Tue, 24 Mar 2026 22:55:48 +0800
-Message-ID: <20260324145548.139952-1-ustc.gu@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
-References: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="IkVsjd7R"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=igGFRlMmrT+gDbEWC82nk1JCJGQ8002YAkHhUBUFOzpYNcHhcv+HdmtgGLov83vy68pyZYzLzG/kd/Jw818/5jHfz0nLSVADRWvUTxqSomxDbjnMJ4oQofJ+HxeTnF1iqYqDUOMP00IpWASBP3WSbmGFJONWcokqrxiy9NQUdFDq6ZinNg96VWzkygPHQP4FI5FTP1GHWUpPGfVW4yF6EJdPdr/oToDacbFBlyhUR1Wa9P+1AP7dPy16Kls1VSlA+yivhZAxG+nscvhHqZ7lVcCHN1WtZk1rcv7Q9MoLElM5XSyfwUs4UUKySP8BYAPGu/ITgFYNKm3pdxsnvnNPAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ismAlXcJCSsWC//Df30vQf/mQMEBKK0LsmAV5vvy/Mg=;
+ b=bnwTfCqh7EY8rnJ+x5lN5DF3FoVhOyjdD0FQYuv4/+/InPne4GzZ/KF2eZ93k//+sARMsKunGxQvB3vreXFpLcWKgti0FZhQRRrjVCNaF0lhrSxvrdoDQNz6X/gmug9k62ilQf2DgnPilVhtivklTb2AA82PeR0Ju4EdNnWLEy8oYFLAsUdn4RLMqhiln42oHlZwo4fW+2ANRNApF9WdNVtslC+Phi0cLGkKtoKHguTVIjbPxiDZb6bAv+uFvWA4hss3MLpO7DSzBSf/CQ3vc0adElCUpYnUJ3dQgM5Q6oQGhPoPCmWwB55mHTIozh1aXdm6ZHc+dkEkEcPyPXZm6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ismAlXcJCSsWC//Df30vQf/mQMEBKK0LsmAV5vvy/Mg=;
+ b=IkVsjd7RFqRvJrvKSgrpFItTDhEw8Z/kIbORajPFnXldn50DGIHCIbC5TW7Jo/blnbIlCx9aO+Ewy0kSD5NEfdWl+RYXt/sFyV2U6h9IsNQc9o11JEarKEc7gN4y9KzZiaLeoOWhGdlb6rTa45wS41ZA34XJRHmUwYK2R2NsI+/KuC0EMsVVkl2sXvJJCFae7CsHHRTE9xt43SmakESUo299fW9D0imhbzso6zQHR8aIpJ8NUPZuhtcvGNc3CDXp15/Z5KmMlfa+bOX9x/yNNL4rr6LwpYXNzOdIB66ddIH2O/rtrODKSXLzJ94bm41FbkH+TzoaKSocGpDCe+f+XA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by GV2PR04MB11423.eurprd04.prod.outlook.com (2603:10a6:150:2a3::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.31; Tue, 24 Mar
+ 2026 15:04:53 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9723.030; Tue, 24 Mar 2026
+ 15:05:09 +0000
+Date: Tue, 24 Mar 2026 11:05:11 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Mark Brown <broonie@kernel.org>, Gao Pan <pandy.gao@nxp.com>,
+	Fugang Duan <B38611@freescale.com>, kernel@pengutronix.de,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH spi] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
+Message-ID: <acKoJ3Ca_q40baDS@lizhi-Precision-Tower-5810>
+References: <20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de>
+X-ClientProxiedBy: SN7P222CA0005.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::22) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|GV2PR04MB11423:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2539006-7393-4104-4d47-08de89b6bd88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|19092799006|366016|38350700014|22082099003|56012099003|18002099003|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	2FCgmUgaBoM3t4bMjRFbHsHN/SIDq/Rz3Hnf3d2YT7ZYDJnwKxMAZKb0q8CHMA1lNPKVs1U8+3cxjyPg+dwiMf/sqIZP4JBbmwW9iAodIZjNQFW1JBEzAS2yk7a8nmAOcHAyRcQhhVzuTgDTkAmnQajFw/dc0ONXZb3w1R1KCEpTuR5jWCfNbi/0ITrByqC3+8pigU3XTRS+ZebNYf/rXa3aBrhgz05c7uMhMqfgf6kSYAD1omfYv1k2RJHKWaevxEWOHnHBABrCnenEebId5CPRoeKCmT3MdMytnWNIa1/v1PzVaOyiBVzQcpCMF6ggTWURykFry21aYj+BS19I948LcMpvXzJjxf/nvFdqPkE9PM3N4H6ORtU56FaSPC6WeTvQavcfDGlzwCiaj5gQ67SX0T9fw3ZpONJQRTziKqZa6Q8Yd3iUKyKj87dzykOI8SmPyROIvCL8LR1WhfQeOD9rjILn9reAkpQDxAMWNeFXGuKF/nqXzUrbwd1oDhu1h+iay5i40q02HUaqtDSqUj09Wx+o5Z9gCm/jgwiI+NrsRCAjXIEsSBbf4hhvuCAlAju+xKgKd4r7YiT00z4/18r49REmZ1h7XQrbDaEtMhb/ThNtULE7mSlwsFReaaOWs6Upht5ggGVr1EeMY9aaRJ2j/1pKhsH3cVBiMdLNLLc2nW91kV0RhCyApfnklYYMlxsYuCncRJHBNIwSyhjXqsswc5k84atfA5ZQqjPAgMnKD/YiU9l72tkKHgh9eKdcPsFSGQFgMygoV0SPURhInuQ8St1CWMiMjrnp4DsgyfE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(19092799006)(366016)(38350700014)(22082099003)(56012099003)(18002099003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2ou9Wxn5Jky0wqM5xi9UR7vkKBUQoIBA9QcJjGgoWOeOufb2b1p1SAmpB7uc?=
+ =?us-ascii?Q?NqQClc5QTY1lYBuSFUbYbeSXTLEzVGg7zScNC/nVzIikx2jfMFUfoiKlE1IT?=
+ =?us-ascii?Q?F0YAYr+1KtlXFTvTjQJhkB1TvyJBSZ13Gz0LAuoOYvUqZlK84QzTLcC+8rRw?=
+ =?us-ascii?Q?eREcSD9B53cKHtXPNrnT4Ltii0+frkiREM8uURyE6C+r6ycR6zzRwhJng4X9?=
+ =?us-ascii?Q?l37BncSqrJAZUKRQ1j2wEtT1ECTRfZDvxiWjbXx5A3QZkKJdJIxuA6IBZQDU?=
+ =?us-ascii?Q?N6LwhLMKuIEkR/O8pKB2TvG7wUT0Efm3lDLm9Bl8Y7VoH6N+gsMywUW8LawR?=
+ =?us-ascii?Q?UYxbYCFxclAxebykIHtLCFGsNQqbgAOp2V2C/0Yut2Hc/vN/nZg8yLsO9GhF?=
+ =?us-ascii?Q?gdmUO4EOYUtMk0G/xuWJYZxMv5/wTYSJeMKGHveSE1+yCMr9fFG4C804p8yw?=
+ =?us-ascii?Q?D5Gqa+M2lP57bFbz5pnCsVvod8bu4jubPNZEqXS6EcNZGX0hSdgySc35Wnkk?=
+ =?us-ascii?Q?SU036XGj3p7qf3Vkw01awtOgYazLyQOIKGT2X6UwD350sdvvVkY1q0WZ2GAn?=
+ =?us-ascii?Q?iaRl0aIEQqqADzFIhvmiGomAMDc3qZcMVyq7p4kyJQQGfojbc0C+xp7IUPrG?=
+ =?us-ascii?Q?J+CFh89sYuqHj0QVTCqcEgIj9BcolVJ4HkoDYFCs6+hRtRKQ1ogGSeaC3gxp?=
+ =?us-ascii?Q?FKFPY20ilQavXg+NuBhZnjx8C04nHlds5M3TUAEHi1WcaQASg4OK0N4MxXpH?=
+ =?us-ascii?Q?VXhdRsuifOgebBDt1IeLIFCBz1qvZu/fGqetfyUHoMv5ykuiJ/mf+/+UlySz?=
+ =?us-ascii?Q?r+s7SjbsP9HBdC4kOsdhJjYrBlvqHUHpeKJcyf3/2mgIeh+Snyq5tkaVlQ8m?=
+ =?us-ascii?Q?ibQhTeFFPaKd4fPA/1V+BWbdEOP6PyzZQrrAdLjSAiF1Ky+7ggQo7LB9pxTS?=
+ =?us-ascii?Q?q7I+IM/I3gW2Qax74PN71uDEP7ezOkqVF7mlNklEe401ZkGx6v4uyw3diw9r?=
+ =?us-ascii?Q?+ScXsmY3VdBmSXRx9mtpBxBOdD4sde/Nj30HxYgvhKAWhcJ2P/wB6ck3H5MP?=
+ =?us-ascii?Q?KhLCII2SS0Cj9Z5CGWj37K++0XUnw6wqs3vmuMZgEPh/M4A0mI3BcAHSF/yc?=
+ =?us-ascii?Q?QmQ1af5jVSiZh6aE9JnnetCWMygK9o8rtGNdfLbdh1DZhlQ+5FqNU3hY8Moj?=
+ =?us-ascii?Q?AukES3lHZPqbvxYEQIKHgB86Ao3hnYZyzn8Be8l1qXEE6YFkZee3lMZyymMg?=
+ =?us-ascii?Q?vYL0CM0VoVQD9RGoJzUVOwPYgM+NgPVNmQkEXTIbYiGjXVAp/iIsmnDkox2d?=
+ =?us-ascii?Q?vg1qk178NQwjC0an2ZCtLRw+YK7dLHCx1FBxn9IOEhuwPzAlAPNoTKQ9IXBj?=
+ =?us-ascii?Q?5Fz5PpxvC5Rs7WEOzXb/lufVszhIf+uYm9fC8F48DyviMGiWJzY/nL689Vni?=
+ =?us-ascii?Q?GkSeBgG2AbvIdRe6f6BY8BdmQQilwDPtjN+8HyNbiy+FbKwJqM9rnZp/O6N9?=
+ =?us-ascii?Q?9aoZwsDFg1wVJV3HQdpP0SvL+NJR1DsHSAWI1uK8klTAtlJ4G0Mc3qTxxPYU?=
+ =?us-ascii?Q?zQPDC4m2UI7/9XHPh4y7+9Hx+SgsTI78QcyJehCbTMNvXM0XAL9QayZj17vC?=
+ =?us-ascii?Q?XmjRXOsut86oRAJkGFV7fAawFQXFaUzuOg7RvkmsbP2Ff7oY94oya4F85unq?=
+ =?us-ascii?Q?nHgk/18ChatvFJRJX5SG8UgSXxuMky//XzbjK2WXxBvdjcrX?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2539006-7393-4104-4d47-08de89b6bd88
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Mar 2026 15:05:09.1981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y96VQu8rfABVjYPwNL4uW8KwqN4vHOwwFJyHdDW4olxQmxq+ovWkMlOZHGrEUIXOjtQDqKEGUxEeT2rG8ZMKKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11423
 
->  /**
-> @@ -3398,22 +3395,14 @@ static void devm_spi_unregister(struct device *dev, void *res)
->  int devm_spi_register_controller(struct device *dev,
->  				 struct spi_controller *ctlr)
->  {
-> -	struct spi_controller **ptr;
->  	int ret;
->  
-> -	ptr = devres_alloc(devm_spi_unregister, sizeof(*ptr), GFP_KERNEL);
-> -	if (!ptr)
-> -		return -ENOMEM;
-> -
->  	ret = spi_register_controller(ctlr);
-> -	if (!ret) {
-> -		*ptr = ctlr;
-> -		devres_add(dev, ptr);
-> -	} else {
-> -		devres_free(ptr);
-> -	}
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
->  
-> -	return ret;
->  }
->  EXPORT_SYMBOL_GPL(devm_spi_register_controller);
-Hi Andy and Mark,
-It seems has a potential corner case in this commit.
+On Thu, Mar 19, 2026 at 07:38:12PM +0100, Marc Kleine-Budde wrote:
+> There is a teardown order issue in the driver. The SPI controller is
+> registered using devm_spi_register_controller(), which delays
+> unregistration of the SPI controller until after the fsl_lpspi_remove()
+> function returns.
+>
+> As the fsl_lpspi_remove() function synchronously tears down the DMA
+> channels, a running SPI transfer triggers the following NULL pointer
+> dereference due to use after free:
+>
+> | fsl_lpspi 42550000.spi: I/O Error in DMA RX
+> | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> [...]
+> | Call trace:
+> |  fsl_lpspi_dma_transfer+0x260/0x340 [spi_fsl_lpspi]
+> |  fsl_lpspi_transfer_one+0x198/0x448 [spi_fsl_lpspi]
+> |  spi_transfer_one_message+0x49c/0x7c8
+> |  __spi_pump_transfer_message+0x120/0x420
+> |  __spi_sync+0x2c4/0x520
+> |  spi_sync+0x34/0x60
+> |  spidev_message+0x20c/0x378 [spidev]
+> |  spidev_ioctl+0x398/0x750 [spidev]
+> [...]
+>
+> Switch from devm_spi_register_controller() to spi_register_controller() in
+> fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
+> fsl_lpspi_remove().
 
-The issue is that devm_add_action_or_reset() triggers its callback 
-immediately if the internal devres allocation fails. This creates the 
-following sequence:
-1. spi_register_controller(ctlr) succeeds.
-2. devm_add_action_or_reset() is called but fails.
-3. The "reset" triggers devm_spi_unregister_controller(ctlr) immediately.
-4. This calls spi_unregister_controller(ctlr).
-5. For controllers allocated via spi_alloc_host() (where 
-   ctlr->devm_allocated is false), spi_unregister_controller() calls 
-   put_device(&ctlr->dev).
-6. This drops the reference count to zero and frees the ctlr structure.
+Feel like it is not correct's fix. devm_spi_register_controller() is quite
+common, other SPI controller should have similar problem.
 
-However, the driver still holds the ctlr pointer and will typically 
-attempt its own cleanup, leading to a use-after-free or double-free.
-
-What are your thoughts on this? Does this analysis seem correct, or am
-I missing a detail in how the refcounting is handled here?
-
-Best regards,
-Felix
+Frank
+>
+> Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/spi/spi-fsl-lpspi.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+> index b361c1bb3e43..45390e9b8cae 100644
+> --- a/drivers/spi/spi-fsl-lpspi.c
+> +++ b/drivers/spi/spi-fsl-lpspi.c
+> @@ -1009,7 +1009,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+>  		enable_irq(irq);
+>  	}
+>
+> -	ret = devm_spi_register_controller(&pdev->dev, controller);
+> +	ret = spi_register_controller(controller);
+>  	if (ret < 0) {
+>  		dev_err_probe(&pdev->dev, ret, "spi_register_controller error\n");
+>  		goto free_dma;
+> @@ -1035,6 +1035,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
+>  	struct fsl_lpspi_data *fsl_lpspi =
+>  				spi_controller_get_devdata(controller);
+>
+> +	spi_unregister_controller(controller);
+>  	fsl_lpspi_dma_exit(controller);
+>
+>  	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
+>
+> ---
+> base-commit: 8c89a077ca796a2fe248c584e9d7e66cff0388c8
+> change-id: 20260319-spi-fsl-lpspi-fixes-725c6653c745
+>
+> Best regards,
+> --
+> Marc Kleine-Budde <mkl@pengutronix.de>
+>

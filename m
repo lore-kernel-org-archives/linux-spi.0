@@ -1,89 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F2124468C;
-	Tue, 24 Mar 2026 00:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDEC2248B9;
+	Tue, 24 Mar 2026 00:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311143; cv=none; b=fm+6en1gHmF6wNPpNVh6tUy7+yI4UtB5GakMldqTNFsu4ueUAC0zJOMhmWJuqF54d85lY+lzek2QYrFZZ3qkUUjcCqaULAiwvkOWuyPipLxFOn5RRR+enRttfRbVR1u61Ig48K7F4URVcxj/B34tq4yJYphdCl1Q8e0F87rmfcA=
+	t=1774311489; cv=none; b=FHGG6eCcS/dpNQ5YSQRgJpKi++jvx+D8B7ZW6RflkGmsZkWHc+olcGAx8NLyF9JH7eXAUndqaDzufLwFRAr1HRIrGvylwi0/9sTtYYJ9VJkFpMT74camBgDEIF8cRc5qQ7lU5QPXggGPFZdv+kz6ARDSup9yzTB+NyyfL7WfR2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311143; c=relaxed/simple;
-	bh=iUC1F/QWIQoH81SLgzIValo+5s42zljAjLlp1ygjj8A=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=H4gLg/juSMbdJAuD8JjlZBvVFdH0GmzbbwoLowU9aBuMXTCK7aQbecoGP1TwAMtJYEMOtxQJ9OOA7PkxKPNVdZm6zX7bwUgg5IBiOFa3VeHSpRg23hvNEOnhNW8zUg9lShpv/IR7s2lunOJaO4tMcWVjmXeFaPDXADaQyot8OJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTJQKE16; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774311489; c=relaxed/simple;
+	bh=orAPuInm4zLrdumPOA24e1Op/6f0xyztBgvPPT5KutA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S7AAOtAJBi/bB4yGgRDv6ghYoSUmTS8v7yp0wvxmU4yg368YGoxl+F5xX/QCdDqasRb1B/ctSuTB+6zMAx2YVKgwuJ1z9xuyylKD4CSP8goDgHsrZQZuJoWW7SPMQhliLmCe3N0n33U1n8gvgCjjg2W6/jNlgx5tyvnA+sDShoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=sZ662905; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTJQKE16"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F69C4CEF7;
-	Tue, 24 Mar 2026 00:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774311143;
-	bh=iUC1F/QWIQoH81SLgzIValo+5s42zljAjLlp1ygjj8A=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=qTJQKE163VywPPUAscu1OHU8ATV/aVPhMgOV3a2r61RYi0tkEYp6/cvP+wGHWXJGl
-	 Ot4fmKYkJFRUKV8GVgI80R68zojbEJUUdzv/7lX7ZZFQNfSyOHcyg4G5mq+YwyhIO0
-	 ZhJiMg+msu8xPys7U8PaZaeL87aBPcFGgMAYcyTwrfoshSHpcilStIqMxro/SkUhTp
-	 bbW9pNH8AASNUGcLK+cB00UhaeeRK+x4EIi2pX1oT7dWmzNYf4Ce5reh35++54zE3Q
-	 HAFHirlCfB7HCbeRpq1//W+wdQFLYfd/66eEtig85619yTktYb4InZaW6yJOJxfMZR
-	 9AakIjBK3s+Pg==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20260323140445.3496736-1-andriy.shevchenko@linux.intel.com>
-References: <20260323140445.3496736-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 1/1] spi: Replace open coded variant of
- spi_bpw_to_bytes()
-Message-Id: <177428077551.99914.2674079117686691917.b4-ty@b4>
-Date: Mon, 23 Mar 2026 15:46:15 +0000
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="sZ662905"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=MSX287mEj1PJ0+XbuTwc2jwqBFKpfZ05vKNTdfaTtl4=; b=sZ6629058AagkkFpPjIjx6Cghk
+	K9W+B1mGljVY0+QGbgArajLwE1zhg89Swm31V/nmbkqUtcRr+qRgUnIq/wFde9SAvZon5yHXMCR3R
+	swwp20keUYq/Qyzmf9poS31TdRaJBaz68aWG2vueLZDl/FBclewi7+23aK7ar1tkRgxAV7ivvQu/9
+	tfJAb9Ys+E/NFEGFipZsb6C8HnMelzE0+RLVxF1RYRtBPHr9sNnSPa9nIxfS2ConDfzlsGqr8n/rA
+	OBj1uUMIjrahpkwOvhnfq4TBw95ZrW1smdWB4yy/WSqoZcHSvxH3Q9/KkKy2C/QYibzUfvne6lgLf
+	kgeUMN4g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60384)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1w4pSt-0000000016k-1WXx;
+	Tue, 24 Mar 2026 00:17:47 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1w4pSo-000000004XZ-45Va;
+	Tue, 24 Mar 2026 00:17:43 +0000
+Date: Tue, 24 Mar 2026 00:17:42 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Mark Brown <broonie@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
+Subject: Re: [PATCH 04/10] regulator: of: switch to using
+ class_find_device_by_fwnode()
+Message-ID: <acHYJvbSZVPldSCU@shell.armlinux.org.uk>
+References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
+ <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
+ <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
+ <acGFksyx3SA0kJ5b@google.com>
+ <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
+ <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev-17187
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1123; i=broonie@kernel.org;
- h=from:subject:message-id; bh=iUC1F/QWIQoH81SLgzIValo+5s42zljAjLlp1ygjj8A=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpwdblBY2oGvOGjd5Vzqp8abx7tT/jGlOyVaAdj
- zFyicFKXSWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCacHW5QAKCRAk1otyXVSH
- 0JMIB/9xISaV0lJSS338/NSdveuNg/wX8GMjGnBErCJsooz2VX+yWFwh5Z02oAGk0vav25XVmBJ
- 2KnJgS9i0hpVZCv42TfHjvHeLDB5/sDSBm4/bbDuG/+bbs2RyaPxtgg5lA765JzXUYpMWIs1rAf
- Az5iTfpcUrvV6LlhxrOPlNFuf7F2spli4k8SxJvIvgkhR+PA0Id2UQH9KPB5mVkr98ur/11iZ37
- +P0bTrF4KoVOdPoVlQL2hbkXaGmkGJu29k9eG5c0vQASV1i7OOPK1x/oN2vhmzJLMnuxntLLwQe
- C4wmX4bS+342Yc8viVhzn8AEFS5YpLQIyjHYlV+K33Zgcc4t
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, 23 Mar 2026 15:04:45 +0100, Andy Shevchenko wrote:
-> spi: Replace open coded variant of spi_bpw_to_bytes()
+On Mon, Mar 23, 2026 at 09:01:47PM +0100, Andrew Lunn wrote:
+> On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
+> > On Mon, Mar 23, 2026 at 11:28:27AM -0700, Dmitry Torokhov wrote:
+> > > On Mon, Mar 23, 2026 at 02:00:43PM +0000, Mark Brown wrote:
+> > 
+> > > > The regulator API is very deliberately specifically using the OF APIs,
+> > > > not the ACPI APIs, since ACPI really doesn't want to model regulators.
+> > 
+> > > For now? We also have software nodes and maybe we come up with something
+> > > else in the future...
+> > 
+> > > I think we should use firmware-agnostic APIs as much as possible, and
+> > > only use OF- or ACPI-specific ones when there is no generic equivalent.
+> > > This makes the code most flexible.
+> > 
+> > I think this is a worrying idea for core code like this, we have
+> > specific firmware bindings for specific firmware interfaces with the
+> > different interfaces having very different ideas of how things should be
+> > modelled.  The chances that firmware agnostic code is going to do the
+> > right thing seem low, and encouraging the use of generic APIs that might
+> > happen to run OK raises the risk that we'll get firmware vendors relying
+> > on them and leaving us with a conceptual mishmash to sort through.
+> 
+> How do you handle deprecated OF properties? This is a problem i've run
+> into before. A developer needs an ACPI binding, so they blindly
+> convert from of_ to device_ without engaging brain. As a result, they
+> bring all the deprecated OF properties we want to die into the brand
+> new ACPI bindings.
+> 
+> A agree with Mark here. OF != ACPI, and anything which makes it appear
+> they are the same is just going to lead developers down the wrong path
+> and increase Maintainers work pointing out all the problems.
 
-Applied to
+That's three who agree.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
-
-Thanks!
-
-[1/1] spi: Replace open coded variant of spi_bpw_to_bytes()
-      https://git.kernel.org/broonie/spi/c/9861e15f6347
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!

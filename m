@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F6F3E1216;
-	Tue, 24 Mar 2026 09:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEB4366DA4;
+	Tue, 24 Mar 2026 09:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774346145; cv=none; b=hTub6NfiQKkdW21KLjOrsSPmXHcAcuVIGZQC3WBITeDqJJOenspyCTWwEEvDhTMtppz1xRRiTY/7GMesE71SBNHKwG0YVr9QiHrge880SzwFBF7mKylM/0+v5VWFrquSc3cfR0U6AVg6wk+9YwCXcgfsICjyKg8G85LoNQDATcM=
+	t=1774346196; cv=none; b=lz20FZxjJoP9ux1Zfp0/mMlwUws7W+AWreArtYP9q+tC6qjmsF0rdoNnl6QsLbLPsfkNCYeaRPb0l68NS3PTj2OrPVI274dxIIJgen0nWvhZGSHCW6VvdJ3xCShf7VUS6zLNk2+nweszYIBL0wSuwaY9Rwn2dIv/RzDcotTbIVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774346145; c=relaxed/simple;
-	bh=7Tvmse4jl2DA6m307iJJJ2AZlRxoIEqakV8s/vY8cQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qy3B/WOk3NKVZCG/kcMgte7RPppZ5Jxy2zqomzGY1jMTkAjb2+y8/jV4pHY1Kx58axQZQP/gM2KwdTjq6DKoVUdxEoYtUoGX3na9rdiN9BSk6q37/Fo/XCrSP6fQmQzlObpr1DzFgpQ98ujX5KSdNFxw288Fe7qz5tdxrapQc3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VozjEumq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774346196; c=relaxed/simple;
+	bh=/3X9rC995UjH/XgALEr7PdbxiI6AgS0UiCkSUfP7tC0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aoY/sjekhB8Qia/1ysbDMzUKGpDFWm4DfAi4wcFUyFINUDXylNvEUcp8ejAdnKP4Aqkr6AaSswoN0l0uaTGO2gn6S2NO385ThqheSMrLXp7+tcIEhcL8lHt7dakcmQHDSbyQpLIKK/fuvjyU5bXWTy6Z/PTJwGZXAZM3ToYfGec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F1eLEFke; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VozjEumq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60099C2BCB1;
-	Tue, 24 Mar 2026 09:55:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F1eLEFke"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A6EC19424;
+	Tue, 24 Mar 2026 09:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774346144;
-	bh=7Tvmse4jl2DA6m307iJJJ2AZlRxoIEqakV8s/vY8cQQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VozjEumqpRV/La1rGaeOw09G5YRLG9e1kiekpoJSqDKa4DA27sLFec3YieZ35eb5f
-	 Kre189dyUYtBeOmbai0wZp1gflesSpbJuTaoAwLuodkX+6uSQP1Mj5U+a4JUgpX1Y9
-	 2Ho7XIgPFEcOXSaTMT9ICbgbwS6rh7evG62ioW1IdJPmkAcd/l4WdNvyDrYnpzmpNu
-	 Ac9dquNv0u+eY55AoZxA7SmVkFZJbNOTzGs8gcfZuZ2WC4pdPGi9JPHD5oQ4mDZYkW
-	 iLODCkGCEsQcbIv+n4GGO+Cy/rPafQqgMCOpz+5/rNkpshK4kiRfNORFkyZ4kWubJf
-	 gTv9ZE4e3DLyw==
-Message-ID: <fb3c4fc0-eb8f-431e-8c20-f90428d4c26e@kernel.org>
-Date: Tue, 24 Mar 2026 10:55:39 +0100
+	s=k20201202; t=1774346195;
+	bh=/3X9rC995UjH/XgALEr7PdbxiI6AgS0UiCkSUfP7tC0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=F1eLEFkeF38qZO0ywIbAjdcicAlPTYBtc3Ht57OVv1F34IbZY92py2cQESc6qKEy3
+	 kdjWsxQm/reY+4UB10kICLXJtlntsmDX8ByvDz3GRny60GFWgKfX9OTFSEfAh4PLoZ
+	 d+Dp9Tame+DJhGkfIVUcW//iA5gboYEhpXBrw8bgS2jxSuVikZCewJn2qC0VuY84bK
+	 7CRntuxVw56If2LHTkotoIDaZljftaHvTu63Ms7S+sHGKZCHfvwKrigJngAw56cbJO
+	 b6nwAlkeeBLfyPmfL6jRGOrLaXLPxeCA3LIMjNs3vfFIE/M44xEJkDfSQG/7pny694
+	 IItu2Dnzov4eg==
+Message-ID: <82132127-e8b4-4e14-9873-93d4396ad931@kernel.org>
+Date: Tue, 24 Mar 2026 10:56:30 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,6 +36,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] dt-bindings: spi: Fix clock-names definition
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Meiker Gao <ot_meiker.gao@mediatek.com>, Mark Brown <broonie@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
@@ -48,7 +49,7 @@ Cc: Bayi Cheng <bayi.cheng@mediatek.com>,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
 References: <20260324062835.1747943-1-ot_meiker.gao@mediatek.com>
  <20260324062835.1747943-2-ot_meiker.gao@mediatek.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <fb3c4fc0-eb8f-431e-8c20-f90428d4c26e@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -93,22 +94,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20260324062835.1747943-2-ot_meiker.gao@mediatek.com>
+In-Reply-To: <fb3c4fc0-eb8f-431e-8c20-f90428d4c26e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 24/03/2026 07:28, Meiker Gao wrote:
-> Update the device tree binding for the Mediatek
-> MT8196 NOR controller to require that the 'clock-names'
-> property contains exactly six entries, in the strict order:
-> "spi", "sf", "axi", "axi_s", "bclk", "27m".
+On 24/03/2026 10:55, Krzysztof Kozlowski wrote:
+> On 24/03/2026 07:28, Meiker Gao wrote:
+>> Update the device tree binding for the Mediatek
+>> MT8196 NOR controller to require that the 'clock-names'
+>> property contains exactly six entries, in the strict order:
+>> "spi", "sf", "axi", "axi_s", "bclk", "27m".
+>>
+>> Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
+>> Change-Id: I0542d6d726f1af34ef76c1a58ba4e4b02ec45fe6
 > 
-> Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-> Change-Id: I0542d6d726f1af34ef76c1a58ba4e4b02ec45fe6
+> You just sent multiple same patches with same errors.
+> 
+> Same feedback.
 
-You just sent multiple same patches with same errors.
-
-Same feedback.
+Heh, I already asked you that last time, two weeks ago... so you keep
+repeating same mistakes.
 
 Best regards,
 Krzysztof

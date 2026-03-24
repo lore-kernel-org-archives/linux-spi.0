@@ -1,110 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6722E3B47E8;
-	Tue, 24 Mar 2026 08:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8148634753F;
+	Tue, 24 Mar 2026 08:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774339785; cv=none; b=M68Hrj4Qe1lVN4vnyd8bmsuiDv5PyXkl88VyWUIIQNH30CGzxF3Zxy/HeUkijgSFH/0FsyFlHVvQOZNLmQfo/SD08+6xhr8cbHVhIlYFw8kg8O67oxGgDYb8vHS9mIxDXGt3knOjpbKrsKSRxbtAjjmEmyWoW0wV1BUoGmPEVPc=
+	t=1774339796; cv=none; b=eKjeTilkUGUb54VrYJTr9e0K4JRaPl+04p1gHZ+hTOdipknxRDZI9xmO6PMtBqn+IrHhk8cd/3xD3k7OdNXxOOiUIG3RbK96ykYwjyWV/PLdOErxFW61PtS5g25wpp1uNMlzFJmpAxrNJbADEfynBCbnVEM+bnks4B+UjbOHmsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774339785; c=relaxed/simple;
-	bh=XxlmSGIl4mWpDTTaOZhCX1H7/OQdVvYCpZcSuPQyLLc=;
+	s=arc-20240116; t=1774339796; c=relaxed/simple;
+	bh=IKKPJZ+MZDaoxP4vPPsLme6gW/n7DEGEiTEMcgMuYp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kdOQmmUtKH4X5JYg20dR11WSv8UL3yQvSv6u8ctoiHfeQmxewAbEvNEQLYTPPif3SjepNA1CQpV2RY2cnLQZhBY2JV76UFiTOo8pFRKA2NMZY28zyUuY+HdjHIvKdzJmZSXGR2BpwhP62uOTj/Yr9Fcc4VjJvC3ytDDUA9H0qaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCXqFsLu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eCstLSOCKQfQIGaM6HV7tt1KasuIH8E+yrqXSqmQoAQ2M0nlQdivOHAnptuHOs8xbUrgv2uHVABgExmtcefcsdmhCiUwI6TAdcfKHVR+O4nw1X5U7Qd7j25wcX4KWt5EeMmrLoP72FJuOC6tKq7fLB/E03U3WxVW/1CLncICSVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0L8IR6Pk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCXqFsLu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7949C19424;
-	Tue, 24 Mar 2026 08:09:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774339784;
-	bh=XxlmSGIl4mWpDTTaOZhCX1H7/OQdVvYCpZcSuPQyLLc=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L8IR6Pk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1B8C19424;
+	Tue, 24 Mar 2026 08:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774339795;
+	bh=IKKPJZ+MZDaoxP4vPPsLme6gW/n7DEGEiTEMcgMuYp0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YCXqFsLu0AIRrvFgwpQ0Y+8J0dGCqKNJ52R11Zh/2AOKGPq2JoYTmVMnY6MHYhJts
-	 p3w0PqiBbY6iNzV8kt8BOAfTKN+WHB4FQdNw1sWuZ3pLoYmqWVGjMFk0F3AUdlMCaK
-	 P4qJdYZunfLObtg7O8iQSqHRMFq78zR9LTjGKy+JQn2M69azwObf+7g+qbb9P6SN6h
-	 7Ud2BHQ6V2Ii5+9Vrg5FplaUcYiX5PijtD0EYa4Io9SpgHa1QpWmxjHgtCaWm9NK6y
-	 AcZT9ub8Po8eNLa+oXKizg9l5T12hLgmgVxfs4goFDHnhPA5xAvMu+BfTyqelVLVrq
-	 WzDUqYgmy547Q==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w4wpa-00000003iZU-1ZXL;
-	Tue, 24 Mar 2026 09:09:42 +0100
-Date: Tue, 24 Mar 2026 09:09:42 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/5] spi: rockchip: fix controller deregistration
-Message-ID: <acJGxl66BDmd2-Xs@hovoldconsulting.com>
-References: <20260323104948.844583-1-johan@kernel.org>
- <20260323104948.844583-5-johan@kernel.org>
- <2ef1dcd6-68f0-4111-b8ac-fdaf4aea36d9@sirena.org.uk>
- <acFviPkEwqJb4y36@hovoldconsulting.com>
- <696a4dc3-9095-48d5-bfac-51de204af89e@sirena.org.uk>
+	b=0L8IR6Pk68bAp9++dR6ItzOnWZf2MgvBLl2UV5zaHXNUbsVb9RAc04NnLuD2YNf+G
+	 GmqZcQvouuvrdE0xPt4YHI6OTcY19NxN8kIn1pWJKzLM1zFnqP+nevgcl7t5hQ7vTE
+	 9EDRgh/2RJsqQNRl7woh8a9xc4H6xKdllWSA+5ec=
+Date: Tue, 24 Mar 2026 09:09:28 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 12/12] driver core: remove driver_set_override()
+Message-ID: <2026032412-finally-lubricant-7fe2@gregkh>
+References: <20260324005919.2408620-1-dakr@kernel.org>
+ <20260324005919.2408620-13-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xMkArMJ48MhKAW00"
-Content-Disposition: inline
-In-Reply-To: <696a4dc3-9095-48d5-bfac-51de204af89e@sirena.org.uk>
-
-
---xMkArMJ48MhKAW00
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260324005919.2408620-13-dakr@kernel.org>
 
-On Mon, Mar 23, 2026 at 05:02:49PM +0000, Mark Brown wrote:
-> On Mon, Mar 23, 2026 at 05:51:20PM +0100, Johan Hovold wrote:
-> > On Mon, Mar 23, 2026 at 04:35:39PM +0000, Mark Brown wrote:
->=20
-> > > Fixes should go before any non-fix patches in the series to avoid
-> > > spurious dependencies and make it easier to manage applying the serie=
-s.
->=20
-> > Sure, but here there are no inter-driver dependencies (that is, the sets
-> > of patches for each driver respectively are independent).
->=20
-> If you're treating the patches as independent then send a series per
-> driver.
+On Tue, Mar 24, 2026 at 01:59:16AM +0100, Danilo Krummrich wrote:
+> All buses have been converted from driver_set_override() to the generic
+> driver_override infrastructure introduced in commit cb3d1049f4ea
+> ("driver core: generalize driver_override in struct device").
+> 
+> Buses now either opt into the generic sysfs callbacks via the
+> bus_type::driver_override flag, or use device_set_driver_override() /
+> __device_set_driver_override() directly.
+> 
+> Thus, remove the now-unused driver_set_override() helper.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  drivers/base/driver.c         | 75 -----------------------------------
+>  include/linux/device/driver.h |  2 -
+>  2 files changed, 77 deletions(-)
 
-I sent these as a series as the changes are related, but sure, it is
-possible to split it in three series as well.
-
-> > And I didn't expect this one to go into 7.0-rc (no stable tag).
->=20
-> Why wouldn't we apply bug fixes as bug fixes?
-
-Not all bug fixes meet the stable backport criteria, and late in the
-release cycle we tend to defer non-critical fixes to the next cycle.
-
-This one is border line, but I'll include a stable tag when respinning.
-=20
-> > Do you want me to resend a reordered series?
->=20
-> Please.
-
-Will do.
-
-Johan
-
---xMkArMJ48MhKAW00
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCacJGwxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQC8XNwux9ZQjZygD9EvJ9jD8Hyh5IG/DGvaWj
-E1mSXPqIbAKqybfP2HzSuLYA/jRh84qwJs5FNnBr9An+oxYn9RgghUTTa8m6sizM
-cy4E
-=YRfU
------END PGP SIGNATURE-----
-
---xMkArMJ48MhKAW00--
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>

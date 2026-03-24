@@ -1,107 +1,129 @@
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC053624BC;
-	Tue, 24 Mar 2026 14:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579A401493
+	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 14:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774362484; cv=none; b=h3iPYxXvfn0HYV7ftl81qTGxxKBG2lf/F0Qg3hhLshSQL1MV+BSDizgUyiJkbdJF8qy9SuWMkK5899VCqoQB1EaX96zgWHQF6KepC4Gx91RDol7GHEAcNut1k0//iKz8e5Ii9c2aB5p5PFtDfVWYCeU/kwz/EuZgs3WGn8PkyAk=
+	t=1774364183; cv=none; b=MMNFbRNY2JOM350qcTZV74ASxRNDYfO4U73VWobOa5iv1h65qKNcRmBYjvjtwzKAymLobq5dGZBCjWlvhmiTGC4Urgv8uUM1gknT0G0Nxf/YchAmrGY96waIx4dlm7o50SvAUmCgL623DZF7ajeHzQbF/KyJ16Ij5Bfukbxh/80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774362484; c=relaxed/simple;
-	bh=Tli2X3y0LVZah9JzvHCs3qERanTby0V0BrV4nXSA3Js=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EDiC7YBWVSVjd1xuN7MVDRcf1lwlemnAX/FkCSHp/Ezdt1+m+mPid5mVMNdulCjbxsxh4eT78D7rBs8HwjJ/iKvV8gjj9zg0VDoo27Fby5ccARnIYHDa1LrGYzOUjtE/gLloBphqYFyF+ujqub7B3s3H2caxCrixTxF3dwC49Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
-Received: from omf02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1F17D9396F;
-	Tue, 24 Mar 2026 14:27:53 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf02.hostedemail.com (Postfix) with ESMTPA id DC83180011;
-	Tue, 24 Mar 2026 14:27:20 +0000 (UTC)
-Date: Tue, 24 Mar 2026 10:28:02 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Ingo Molnar <mingo@redhat.com>, Jens
- Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo
- Leitner <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon
- Maloy <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco
- Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Jiri Pirko
- <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz
- <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org, "Rafael J.
- Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
- "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Huang Rui
- <ray.huang@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, Len
- Brown <lenb@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org, MyungJoo
- Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- linaro-mm-sig@lists.linaro.org, Eddie James <eajames@linux.ibm.com>, Andrew
- Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
- linux-fsi@lists.ozlabs.org, David Airlie <airlied@gmail.com>, Simona Vetter
- <simona@ffwll.ch>, Alex Deucher <alexander.deucher@amd.com>, Danilo
- Krummrich <dakr@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Philipp Stanner <phasta@kernel.org>, Harry Wentland
- <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
- Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
- <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K.
- Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, Chris
- Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
- linux-btrfs@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Andrew
- Morton <akpm@linux-foundation.org>, SeongJae Park <sj@kernel.org>,
- linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 00/19] tracepoint: Avoid double static_branch
- evaluation at guarded call sites
-Message-ID: <20260324102802.4f8af148@gandalf.local.home>
-In-Reply-To: <20260323160052.17528-1-vineeth@bitbyteword.org>
-References: <20260323160052.17528-1-vineeth@bitbyteword.org>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1774364183; c=relaxed/simple;
+	bh=Bwrq0gb8/yR+srwxT1tUhL+MbcNcm8n+1HAzCx3FxPY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Kssqd2zEV9LuZn2wUMjd9POfmonUaoY4NCsLxht//f+ls6FqZF3wx998JzLjFzklSsYyq/Zo40N9FeWe4LYrlwOnrK4CwsAgj2+D0jsrk3sSgoh6HWXYh1SQQz7/JuhHmlqZ7Szop2+uHoV71SSeFYSl9M1j9I3UEjasjqgD/b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kWdHLgA7; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kWdHLgA7"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2adff872068so18751145ad.1
+        for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 07:56:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774364182; x=1774968982; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8HHibtnmiK9oJAgymjSpcI+L0uHNFarSU3Q1Wq/KbvI=;
+        b=kWdHLgA7ucW1sBw3Y+na3Vpr+qGlBrQdEjItitJJSJgs5oU6Kal5n9EMxyiUKS0rSG
+         bCs1ONyNUdaUuKjpfepX3njbctpy28BmqSGOgs7mmZILijmHQMas1Pazc9rd4pSW3O3S
+         5599SXpjcbDNf1QxsheaUHF+W6il+xybtTJN06gOuwEzgwbODEer9VL0uGueXyr02Loc
+         OVyVgbj1Tz4I69wsduoWcwOnG3YU7E+fiTEVVpqdcWYMXIcCMkoVXS6oAyuHTMBSuuEf
+         BEuyKhZX005cPE/2QGhbgDSeKXwsLGzPRfT32a69f1g+mRt5RsSPXj7mLh8RKG6zbc6g
+         dlWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774364182; x=1774968982;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8HHibtnmiK9oJAgymjSpcI+L0uHNFarSU3Q1Wq/KbvI=;
+        b=YE9LwrH9NmgRweD1zbiUQmi9ZSFbr8F23mrjzXOh2ddtj9eQx5OHIZ6CCa3Rchg3Z9
+         gON+iOo3p4LkbRn2BuOFzPhLSI2QmJ6hsfRlPKBEAYs/01OhltYTiGL5Lc4I6AI2COzA
+         fMIWsyflM9aQ3G2c11Qy55Z/qo6JTExwGFgUolhBVZJhMnD68w4p18OKxnY9rtfc0gbX
+         mzG9XnvxD6BnDuzGyVQUyHbiPmbhUQzqdfbJpeshGdX9MUGBcdu0/L+4H/vkFii3VcVU
+         ZreVZpdltuzEYTeR/1YyK+n7XPBFqEUlK3vfA1K6g+lSdP5O6hdsXtcUDmQChoS7lneA
+         sLxw==
+X-Gm-Message-State: AOJu0YzGSEjmabcoT+wNJHKmuxKsfqP7zRN8URhsfvqsiBis7Hf34ZQn
+	pWS1jTPtWkumkSHMKclZGdNwkMIPTsaXnD1HIUBX9fgntTc6OwOxyR48
+X-Gm-Gg: ATEYQzySSfw46AfhCzPscPJzlzlBuxHjYLoriVCOMDwBsQVTd04VYYv9HM2vpPp5cjx
+	VXz7hd7D8hjlnrnI0t/psY4NebawcnEqsUFY3PBtr/kyuVLmhJMwtB0ko/HeYz6GHba7j2ZMVlU
+	dW/Oa44FwTlQqWS4J8eNk+cyaUstmM45H29JXUpQqMjWPJluMjr4MUmQfqksqMd12cVWUa0T+LE
+	5Rc3i746F3LVFl08teSR9KJ1eaICmpD2q4tf8YRmQMIsBt8R8qubmVBy4zsmDoZk9aCnaIuuOal
+	M74eYXdCxyuEN4jW6IBs8Yh6/flSIRXl4Cj+QnreHjHzuB1Rp8DSSOpAUr386FGXERCVlGtWx+F
+	x+3ptMmJ7BTyp1Z8amxjHQ5w0SmBPdSv93L0KxfaX9DUNqnB8YwTYdQREeK5TtxwUbDN3k5x/IE
+	iDmMxZnwm6eQVYFfgtTHzzylQHhlg3uGSTew==
+X-Received: by 2002:a17:902:da84:b0:2ae:c67c:3b05 with SMTP id d9443c01a7336-2b0826d82fcmr169631255ad.10.1774364179268;
+        Tue, 24 Mar 2026 07:56:19 -0700 (PDT)
+Received: from localhost.localdomain ([223.167.147.240])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083655474sm191851225ad.48.2026.03.24.07.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Mar 2026 07:56:18 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Felix Gu <ustc.gu@gmail.com>
+Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
+Date: Tue, 24 Mar 2026 22:55:48 +0800
+Message-ID: <20260324145548.139952-1-ustc.gu@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+References: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: rgnt1g9q8d9rzsk6azwgoui85joqhwik
-X-Rspamd-Server: rspamout04
-X-Rspamd-Queue-Id: DC83180011
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19u4yDoihzmlvbQbp4GBKk4Sx0FsrK0H8g=
-X-HE-Tag: 1774362440-296898
-X-HE-Meta: U2FsdGVkX18Kg3NfvHLPV0rnp3UrERb/HeySVgjR0PuCDys+LVJ4s2L8fsy1rJHv82yu9UO4h+xU9iEx3z3YFKVS1OFx2Vvti4rEmq0enV2xaTwbpZ+YWf60TFzb8QMlheid4NsXOVqOYcFPHCn+ZrWqPDCdrmq0l+tkyLSeYhbpJixFuANIjXhtSBZInyEBtAAqHPqUuWZ3PdZupXAY7JMTASH2KNw+CMFxYOXnDTbb38gpzJzBKiUcyoxK6GlO0db0aEPLlOAMHWKzcQEu5msgaweBGFFWtD9G0uWRbe+OcS9gBl+SI1CDJFvGCt0Z8gh5xinNWW7KF0gSIEh3ZlA0AO0+B5wCRjivVxgdquYH5bWbk7CtReb5es0u0tOp
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Mar 2026 12:00:19 -0400
-"Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
+>  /**
+> @@ -3398,22 +3395,14 @@ static void devm_spi_unregister(struct device *dev, void *res)
+>  int devm_spi_register_controller(struct device *dev,
+>  				 struct spi_controller *ctlr)
+>  {
+> -	struct spi_controller **ptr;
+>  	int ret;
+>  
+> -	ptr = devres_alloc(devm_spi_unregister, sizeof(*ptr), GFP_KERNEL);
+> -	if (!ptr)
+> -		return -ENOMEM;
+> -
+>  	ret = spi_register_controller(ctlr);
+> -	if (!ret) {
+> -		*ptr = ctlr;
+> -		devres_add(dev, ptr);
+> -	} else {
+> -		devres_free(ptr);
+> -	}
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
+>  
+> -	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(devm_spi_register_controller);
+Hi Andy and Mark,
+It seems has a potential corner case in this commit.
 
-> When a caller already guards a tracepoint with an explicit enabled check:
-> 
->   if (trace_foo_enabled() && cond)
->       trace_foo(args);
+The issue is that devm_add_action_or_reset() triggers its callback 
+immediately if the internal devres allocation fails. This creates the 
+following sequence:
+1. spi_register_controller(ctlr) succeeds.
+2. devm_add_action_or_reset() is called but fails.
+3. The "reset" triggers devm_spi_unregister_controller(ctlr) immediately.
+4. This calls spi_unregister_controller(ctlr).
+5. For controllers allocated via spi_alloc_host() (where 
+   ctlr->devm_allocated is false), spi_unregister_controller() calls 
+   put_device(&ctlr->dev).
+6. This drops the reference count to zero and frees the ctlr structure.
 
-Thanks Vineeth!
+However, the driver still holds the ctlr pointer and will typically 
+attempt its own cleanup, leading to a use-after-free or double-free.
 
-I'm going to start pulling in this series. I'll take the first patch, and
-then any patch that has an Acked-by or Reviewed-by from the maintainer.
+What are your thoughts on this? Does this analysis seem correct, or am
+I missing a detail in how the refcounting is handled here?
 
-For patches without acks, I'll leave alone and then after the first patch
-gets merged into mainline, the maintainers could pull in their own patches
-at their own convenience. Unless of course they speak up now if they want
-me to take them ;-)
-
--- Steve
+Best regards,
+Felix

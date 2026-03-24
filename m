@@ -1,67 +1,57 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mail115-171.sinamail.sina.com.cn (mail115-171.sinamail.sina.com.cn [218.30.115.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BD2399009;
-	Tue, 24 Mar 2026 03:26:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056DA3AD513
+	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 06:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774322800; cv=none; b=jgYNLrsscqaZDSBVynHuxmJAMjFbpM4pruiXRN/okkCJpKohww44sfcYWqtwNIPYQrPFJTBPnhronKdqNnXubyV37K6vZdmdQdvMxaeh2sdoxFQfaLw4iKNqawBvy56dOdoJwP2YA5aY5vQR1V3WkvwqtNVbkIoq/6iCGpA0is4=
+	t=1774332533; cv=none; b=ktR4VHC5tGHUcSdCFOMgXwD6E7kGv5IeRDNUzU/FtYeiFpMxa9M7KWLNu/mb7gFPUr2g3l1Yc8yd42LXyU/kjugHmr3Im/LFTJAZ0s2q1Qi49QUetlmKjnej8J7I0tUTVuGy/A0FzM+AZn+MhHvTtXVhawN8DuFF4M+gpPa99K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774322800; c=relaxed/simple;
-	bh=RgazcpxgNV6UefChTRA7FT3xj6F0R4EVVWYK5UXURoE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SpxSU8bbMJ90z/iwqcjhoZPhJ5XipMFCFAcmgsPd658HbJZ2Zswlnck8NOvxExk7DdxoL4K7mEEtXXuo5BPiYTYzVZleQQ7OykIRA0Ar5TSb2tunjtvHH63yDPMco1lGdVYFfWlljRG3PXeyU+26JXufTj5vCvVzmUL9T16ZjFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=scr16/UR; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	s=arc-20240116; t=1774332533; c=relaxed/simple;
+	bh=NHlIIQJlyhTjT8FAs/JqW6E3uA9plhEOOXkdFAwdfe4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kd5Eeuh7nflOE8WnQ5jEoHpCn5BFO4JOVONngTg6siJqJqbIG194+3qDflEp1kOMjDOOE/piK0QRCyOW4qISUXanj11OFlS6r3wPkXKCidAHI4gXK8NTtBRJ2OEic9hKfHic3bIHkFmfum6ueH426QpTuXBoR6dX5m61w1ZHSkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=SRNJkE1z; arc=none smtp.client-ip=218.30.115.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="scr16/UR"
-X-UUID: 412c8850273111f1a02d4725871ece0b-20260324
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=AxNLCKQ9ddz7+TDTiXJxhPHv6/rZ1vPdRVALXT4wAJk=;
-	b=scr16/URaN+UQdkWCxUWsOAFaif1VrryuADEkNyEgDve8NjrHBrImhdNJ9DJEvOyFtnmBz8X//WFuVh+YlU/9muLi6OgRbhx3KVRGgwy1e9LxMevGyUqWhYAdGC/7LWZrPnUFTH9SPA7eElTAG+1CozpqyTkgZ5TJK81f6+UUjg=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c7c38461-0367-4be8-b477-fbcddeec44b2,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:f3dd0ed5-060f-4ecc-9ee0-121eeeb4a682,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
-	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 412c8850273111f1a02d4725871ece0b-20260324
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <ot_meiker.gao@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1414971507; Tue, 24 Mar 2026 11:26:32 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 24 Mar 2026 11:26:31 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 24 Mar 2026 11:26:31 +0800
-From: Meiker Gao <ot_meiker.gao@mediatek.com>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias
- Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>
-CC: Bayi Cheng <bayi.cheng@mediatek.com>,
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>,
-	<sirius.wang@mediatek.com>, <vince-wl.liu@mediatek.com>,
-	<jh.hsu@mediatek.com>, <linux-spi@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	Meiker Gao <ot_meiker.gao@mediatek.com>
-Subject: [PATCH 2/2] [v3] spi: spi-mtk-nor: Modify and optimization the SNFC.
-Date: Tue, 24 Mar 2026 11:26:18 +0800
-Message-ID: <20260324032624.1708029-3-ot_meiker.gao@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260324032624.1708029-1-ot_meiker.gao@mediatek.com>
-References: <20260324032624.1708029-1-ot_meiker.gao@mediatek.com>
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="SRNJkE1z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1774332531;
+	bh=qgnBCkgus4C3JeV2aFGnoI4lXC+JO8798ruCRc8QCFk=;
+	h=From:Subject:Date:Message-Id;
+	b=SRNJkE1zdWL4RcCIE/6ZHCxSfZKcroJoupeNBz/QiJ78E1z/yV6XVWQLkOFz0al6I
+	 1RWBYkPKaRJX477SmG+vLOSvFov3B93bEYe+fx9sY7tsAZOIBrrFM3nG80j03otjF4
+	 AZ0N/rN7LYHn/2KIulT1aC/+46KaMiIHoLRHX4cQ=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.24) with ESMTP
+	id 69C22A6000002D58; Tue, 24 Mar 2026 14:08:39 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 25143110748017
+X-SMAIL-UIID: FD7F7D2A21814E41830FC47941554F61-20260324-140839-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	leitao@debian.org
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	skomatineni@nvidia.com,
+	ldewangan@nvidia.com,
+	treding@nvidia.com,
+	broonie@kernel.org,
+	va@nvidia.com,
+	linux-tegra@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: [PATCH 6.12.y] spi: tegra210-quad: Protect curr_xfer check in IRQ handler
+Date: Tue, 24 Mar 2026 14:08:32 +0800
+Message-Id: <20260324060832.724228-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,82 +59,114 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-Changes in v3:
-    -this patch is a further optimization for version v2.
+From: Breno Leitao <leitao@debian.org>
 
-Changes in v2:
-    -Use clk_bulk_xxx related functions to enable/disable clocks.
+[ Upstream commit edf9088b6e1d6d88982db7eb5e736a0e4fbcc09e ]
 
-Changes in v1:
-    -Add new function mtk_nor_parse_clk() to parse nor clock parameters.
+Now that all other accesses to curr_xfer are done under the lock,
+protect the curr_xfer NULL check in tegra_qspi_isr_thread() with the
+spinlock. Without this protection, the following race can occur:
 
-Signed-off-by: Meiker Gao <ot_meiker.gao@mediatek.com>
-Change-Id: Ifa13f9f08aebf6feb376ca98b0fd69f379037ff3
+  CPU0 (ISR thread)              CPU1 (timeout path)
+  ----------------               -------------------
+  if (!tqspi->curr_xfer)
+    // sees non-NULL
+                                 spin_lock()
+                                 tqspi->curr_xfer = NULL
+                                 spin_unlock()
+  handle_*_xfer()
+    spin_lock()
+    t = tqspi->curr_xfer  // NULL!
+    ... t->len ...        // NULL dereference!
+
+With this patch, all curr_xfer accesses are now properly synchronized.
+
+Although all accesses to curr_xfer are done under the lock, in
+tegra_qspi_isr_thread() it checks for NULL, releases the lock and
+reacquires it later in handle_cpu_based_xfer()/handle_dma_based_xfer().
+There is a potential for an update in between, which could cause a NULL
+pointer dereference.
+
+To handle this, add a NULL check inside the handlers after acquiring
+the lock. This ensures that if the timeout path has already cleared
+curr_xfer, the handler will safely return without dereferencing the
+NULL pointer.
+
+Fixes: b4e002d8a7ce ("spi: tegra210-quad: Fix timeout handling")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20260126-tegra_xfer-v2-6-6d2115e4f387@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- drivers/spi/spi-mtk-nor.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index 702339a6c817..6d24932053e5 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -100,7 +100,6 @@
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index edc9d400728a..14dd98b92bd9 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1351,6 +1351,11 @@ static irqreturn_t handle_cpu_based_xfer(struct tegra_qspi *tqspi)
+ 	spin_lock_irqsave(&tqspi->lock, flags);
+ 	t = tqspi->curr_xfer;
  
- #define CLK_TO_US(sp, clkcnt)		DIV_ROUND_UP(clkcnt, sp->spi_freq / 1000000)
++	if (!t) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
++		return IRQ_HANDLED;
++	}
++
+ 	if (tqspi->tx_status ||  tqspi->rx_status) {
+ 		tegra_qspi_handle_error(tqspi);
+ 		complete(&tqspi->xfer_completion);
+@@ -1419,6 +1424,11 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+ 	spin_lock_irqsave(&tqspi->lock, flags);
+ 	t = tqspi->curr_xfer;
  
--#define MAX_CLOCK_CNT		6
- 
- struct mtk_nor_caps {
- 	u8 dma_bits;
-@@ -119,8 +118,8 @@ struct mtk_nor {
- 	void __iomem *base;
- 	u8 *buffer;
- 	dma_addr_t buffer_dma;
--	struct clk_bulk_data clocks[MAX_CLOCK_CNT];
--	int clock_cnt;
-+	struct clk_bulk_data *clocks;
-+	u8 clock_cnt;
- 	unsigned int spi_freq;
- 	bool wbuf_en;
- 	bool has_irq;
-@@ -733,19 +732,16 @@ static int mtk_nor_enable_clk(struct mtk_nor *sp)
- static int mtk_nor_parse_clk(struct device *dev, struct mtk_nor *sp)
++	if (!t) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
++		return IRQ_HANDLED;
++	}
++
+ 	if (err) {
+ 		tegra_qspi_dma_unmap_xfer(tqspi, t);
+ 		tegra_qspi_handle_error(tqspi);
+@@ -1457,6 +1467,7 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi)
+ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
  {
- 	struct device_node *np = dev->of_node;
--	int ret;
- 	const char *name;
--	int cnt,i;
-+	int cnt,i,ret;
+ 	struct tegra_qspi *tqspi = context_data;
++	unsigned long flags;
+ 	u32 status;
  
- 	cnt = of_property_count_strings(np, "clock-names");
- 	if (!cnt || (cnt == -EINVAL)) {
- 		dev_err(dev, "Unable to find clocks\n");
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	} else if (cnt < 0) {
- 		dev_err(dev, "Count clock strings failed, err %d\n", cnt);
--		ret = cnt;
--		goto out;
-+		return cnt;
- 	}
+ 	/*
+@@ -1474,7 +1485,9 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ 	 * If no transfer is in progress, check if this was a real interrupt
+ 	 * that the timeout handler already processed, or a spurious one.
+ 	 */
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	if (!tqspi->curr_xfer) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
+ 		/* Spurious interrupt - transfer not ready */
+ 		if (!(status & QSPI_RDY))
+ 			return IRQ_NONE;
+@@ -1491,7 +1504,14 @@ static irqreturn_t tegra_qspi_isr_thread(int irq, void *context_data)
+ 		tqspi->rx_status = tqspi->status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
  
- 	sp->clock_cnt = cnt;
-@@ -760,9 +756,10 @@ static int mtk_nor_parse_clk(struct device *dev, struct mtk_nor *sp)
- 	}
+ 	tegra_qspi_mask_clear_irq(tqspi);
++	spin_unlock_irqrestore(&tqspi->lock, flags);
  
- 	ret = devm_clk_bulk_get(dev, sp->clock_cnt, sp->clocks);
-+	if (ret)
-+		return ret;
++	/*
++	 * Lock is released here but handlers safely re-check curr_xfer under
++	 * lock before dereferencing.
++	 * DMA handler also needs to sleep in wait_for_completion_*(), which
++	 * cannot be done while holding spinlock.
++	 */
+ 	if (!tqspi->is_curr_dma_xfer)
+ 		return handle_cpu_based_xfer(tqspi);
  
--out:
--	return ret;
-+	return 0;
- }
- 
- static void mtk_nor_init(struct mtk_nor *sp)
 -- 
-2.45.2
+2.34.1
 

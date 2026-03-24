@@ -1,119 +1,167 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D59383C79
-	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 08:13:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AA38C2CA;
+	Tue, 24 Mar 2026 08:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774340034; cv=none; b=sl5rqMX/0EMGTVMs+V9juNhTULFucK0jMCLMyhfAVyY1fmMO7DJQvn8fkLHurZ0ErQvwwPFVOX6SIH6c2mCUePnfxajh/gx7tZ4xWIZjLbiElLV6zZvFZqeZTNaEwBcbCmVNZ/sjBriSwa5qlQ5BNQcnNsbzPKHQpKKsdnbWeXo=
+	t=1774340630; cv=none; b=jmr3QEQ9rH8eOCw3NmCBzAOC1TsZ3s77qYNiMErZwvPhFWCdxOAQ70R63wSFIRrgumv3TsvOYFH9bCGEUrNv0ndXxAWcV/mj4lwnO21NzBl8RJkPckLJfOFu6rveNsMytmAVrVc2mpJ9Zz9Pc73QlU8YhDLxN8AeMgCeLcqX7sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774340034; c=relaxed/simple;
-	bh=nHqONSZjdb098tvVQGVqDUIs7yNyqIzIH8MV+w/a2Vc=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=LH3cMGRIM0QwkajmRALdtVpWp+j802Dy+0ENzYSdXZGSpOKmn88KLa/xoo447gY/Rcu09Is4lfaSuvfiLOvZ17ncj6qkndC3bYfi2OUfslkYhcGOliaV1y6DH4BxoHMCafwtwIBr5UrF6So2Rw7+bsaw4pqwDz7ehMqXu7PvVUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 5d76fc66275911f1a21c59e7364eecb8-20260324
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:cc8218af-c463-4ddd-862b-0e6a3ced43f6,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:23a5c5945be010a137b780863f6ba5d4,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|83|102|817|898,TC:nil,Content:-10|-8|
-	-5|14|50,EDM:-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,CO
-	L:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5d76fc66275911f1a21c59e7364eecb8-20260324
-X-User: xiaopei01@kylinos.cn
-Received: from [10.42.12.251] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 385815658; Tue, 24 Mar 2026 16:13:39 +0800
-Message-ID: <f1d16bbb-85d2-4906-99b0-28c4b6fdb03e@kylinos.cn>
-Date: Tue, 24 Mar 2026 16:13:37 +0800
+	s=arc-20240116; t=1774340630; c=relaxed/simple;
+	bh=VARrRBCImFUXBLN3AofHXXDlpxj1GOHl1SFpB9FPolM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rWb6ZT16TVfmZL9i0/qovehcjgmzye0LW5iwfkVKuMaRLN4TRdON3zcua1rzbrFTaprD0JOjwivOSB2HT+DVWQYU67DNMIyLagGHIeidqJCmomu97Tem7rvhHPvEZynbDFfCyZdnQkRIv5LzMVg0TIgk7nHrSPl/QqaKGQtLNtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltsWJ+1o; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltsWJ+1o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 839B3C2BC9E;
+	Tue, 24 Mar 2026 08:23:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774340630;
+	bh=VARrRBCImFUXBLN3AofHXXDlpxj1GOHl1SFpB9FPolM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ltsWJ+1oll9d3qAwfmY3Ih5OZTJpV+A5EY++Pm1mjoI2od6aAeIjhlfV67e3+o0vX
+	 ylNeb5q9eXIZpjMpxbTed7/FmDqp5R29ZClkzU2b5BncvmK5cZ2giYPUEyW/L8bzrK
+	 1Gh0+KGChFGZnxno0yWLPKb4Mn7JzjZXCwkFQ5jhRvzcyF4aS+y9Z3OmFNsJ2VQOuK
+	 Y6wS/Rgdd1CMGSIVdx+X+kHTjr5In6BgX/TAmgQgpaCK6P8XY3N24X1AGqjRf46E9J
+	 YKaTMAKi3Xr5OcUeVaFCdfWCtj6yn0rzhpsPxEgWNS2IakqweNNUqMEQkJObKE8y26
+	 glQWdDcV/Wx8A==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w4x3E-00000003mQL-1Rba;
+	Tue, 24 Mar 2026 09:23:48 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH v2 5/5] spi: rockchip: switch to managed controller allocation
+Date: Tue, 24 Mar 2026 09:23:26 +0100
+Message-ID: <20260324082326.901043-6-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260324082326.901043-1-johan@kernel.org>
+References: <20260324082326.901043-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: ot_meiker.gao@mediatek.com, linux-spi@vger.kernel.org
-Reply-To: 20260324062835.1747943-3-ot_meiker.gao@mediatek.com
-Subject: Re:[PATCH 2/2] [v3] spi: spi-mtk-nor: Modify and optimization the
- SNFC.
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
->  drivers/spi/spi-mtk-nor.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-> index 702339a6c817..6d24932053e5 100644
-> --- a/drivers/spi/spi-mtk-nor.c
-> +++ b/drivers/spi/spi-mtk-nor.c
-> @@ -100,7 +100,6 @@
->  
->  #define CLK_TO_US(sp, clkcnt)		DIV_ROUND_UP(clkcnt, sp->spi_freq / 1000000)
->  
-> -#define MAX_CLOCK_CNT		6
->  
->  struct mtk_nor_caps {
->  	u8 dma_bits;
-> @@ -119,8 +118,8 @@ struct mtk_nor {
->  	void __iomem *base;
->  	u8 *buffer;
->  	dma_addr_t buffer_dma;
-> -	struct clk_bulk_data clocks[MAX_CLOCK_CNT];
-> -	int clock_cnt;
-> +	struct clk_bulk_data *clocks;
-> +	u8 clock_cnt;
->  	unsigned int spi_freq;
->  	bool wbuf_en;
->  	bool has_irq;
-> @@ -733,19 +732,16 @@ static int mtk_nor_enable_clk(struct mtk_nor *sp)
->  static int mtk_nor_parse_clk(struct device *dev, struct mtk_nor *sp)
-What is the baseline you modified, I can't find this code at this link：
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/spi/spi-mtk-nor.c
+Switch to device managed controller allocation to simplify error
+handling and to avoid having to take another reference during
+deregistration.
 
-Thanks！
-Pei.
->  {
->  	struct device_node *np = dev->of_node;
-> -	int ret;
->  	const char *name;
-> -	int cnt,i;
-> +	int cnt,i,ret;
->  
->  	cnt = of_property_count_strings(np, "clock-names");
->  	if (!cnt || (cnt == -EINVAL)) {
->  		dev_err(dev, "Unable to find clocks\n");
-> -		ret = -EINVAL;
-> -		goto out;
-> +		return -EINVAL;
->  	} else if (cnt < 0) {
->  		dev_err(dev, "Count clock strings failed, err %d\n", cnt);
-> -		ret = cnt;
-> -		goto out;
-> +		return cnt;
->  	}
->  
->  	sp->clock_cnt = cnt;
-> @@ -760,9 +756,10 @@ static int mtk_nor_parse_clk(struct device *dev, struct mtk_nor *sp)
->  	}
->  
->  	ret = devm_clk_bulk_get(dev, sp->clock_cnt, sp->clocks);
-> +	if (ret)
-> +		return ret;
->  
-> -out:
-> -	return ret;
-> +	return 0;
->  }
->  
->  static void mtk_nor_init(struct mtk_nor *sp)
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-rockchip.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index eb1992b4178e..14cd1b9d9793 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -767,9 +767,9 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	target_mode = of_property_read_bool(np, "spi-slave");
+ 
+ 	if (target_mode)
+-		ctlr = spi_alloc_target(&pdev->dev, sizeof(struct rockchip_spi));
++		ctlr = devm_spi_alloc_target(&pdev->dev, sizeof(*rs));
+ 	else
+-		ctlr = spi_alloc_host(&pdev->dev, sizeof(struct rockchip_spi));
++		ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*rs));
+ 
+ 	if (!ctlr)
+ 		return -ENOMEM;
+@@ -780,35 +780,31 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 
+ 	/* Get basic io resource and map it */
+ 	rs->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &mem);
+-	if (IS_ERR(rs->regs)) {
+-		ret = PTR_ERR(rs->regs);
+-		goto err_put_ctlr;
+-	}
++	if (IS_ERR(rs->regs))
++		return PTR_ERR(rs->regs);
+ 
+ 	rs->apb_pclk = devm_clk_get_enabled(&pdev->dev, "apb_pclk");
+ 	if (IS_ERR(rs->apb_pclk)) {
+-		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->apb_pclk),
+-				    "Failed to get apb_pclk\n");
+-		goto err_put_ctlr;
++		return dev_err_probe(&pdev->dev, PTR_ERR(rs->apb_pclk),
++				     "Failed to get apb_pclk\n");
+ 	}
+ 
+ 	rs->spiclk = devm_clk_get_enabled(&pdev->dev, "spiclk");
+ 	if (IS_ERR(rs->spiclk)) {
+-		ret = dev_err_probe(&pdev->dev, PTR_ERR(rs->spiclk),
+-				    "Failed to get spi_pclk\n");
+-		goto err_put_ctlr;
++		return dev_err_probe(&pdev->dev, PTR_ERR(rs->spiclk),
++				     "Failed to get spi_pclk\n");
+ 	}
+ 
+ 	spi_enable_chip(rs, false);
+ 
+ 	ret = platform_get_irq(pdev, 0);
+ 	if (ret < 0)
+-		goto err_put_ctlr;
++		return ret;
+ 
+ 	ret = devm_request_irq(&pdev->dev, ret, rockchip_spi_isr, 0,
+ 			       dev_name(&pdev->dev), ctlr);
+ 	if (ret)
+-		goto err_put_ctlr;
++		return ret;
+ 
+ 	rs->dev = &pdev->dev;
+ 	rs->freq = clk_get_rate(rs->spiclk);
+@@ -830,10 +826,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	rs->fifo_len = get_fifo_len(rs);
+-	if (!rs->fifo_len) {
+-		ret = dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
+-		goto err_put_ctlr;
+-	}
++	if (!rs->fifo_len)
++		return dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
+ 
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, ROCKCHIP_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+@@ -924,15 +918,13 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		dma_release_channel(ctlr->dma_tx);
+ err_disable_pm_runtime:
+ 	pm_runtime_disable(&pdev->dev);
+-err_put_ctlr:
+-	spi_controller_put(ctlr);
+ 
+ 	return ret;
+ }
+ 
+ static void rockchip_spi_remove(struct platform_device *pdev)
+ {
+-	struct spi_controller *ctlr = spi_controller_get(platform_get_drvdata(pdev));
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
+@@ -946,8 +938,6 @@ static void rockchip_spi_remove(struct platform_device *pdev)
+ 		dma_release_channel(ctlr->dma_tx);
+ 	if (ctlr->dma_rx)
+ 		dma_release_channel(ctlr->dma_rx);
+-
+-	spi_controller_put(ctlr);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+-- 
+2.52.0
 

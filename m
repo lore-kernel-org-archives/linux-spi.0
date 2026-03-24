@@ -1,120 +1,181 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDEC2248B9;
-	Tue, 24 Mar 2026 00:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AAB1DF26E;
+	Tue, 24 Mar 2026 00:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774311489; cv=none; b=FHGG6eCcS/dpNQ5YSQRgJpKi++jvx+D8B7ZW6RflkGmsZkWHc+olcGAx8NLyF9JH7eXAUndqaDzufLwFRAr1HRIrGvylwi0/9sTtYYJ9VJkFpMT74camBgDEIF8cRc5qQ7lU5QPXggGPFZdv+kz6ARDSup9yzTB+NyyfL7WfR2o=
+	t=1774313972; cv=none; b=e0uMYgmfNy/rshUduBxdi0B9wUWtN3hz9m2ktjZ0O5aujPlDQyc94Q4G/4ouusribSVtlB9LDDndU6aSsebn4IeVrZp5Hg+8pQGSsDHlPXEMCBR0F/3cPvm7s/BvZH+eqdJMpOo3ouYM2NvsiTP+APg/F6EXolP+wxaukMAYkUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774311489; c=relaxed/simple;
-	bh=orAPuInm4zLrdumPOA24e1Op/6f0xyztBgvPPT5KutA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S7AAOtAJBi/bB4yGgRDv6ghYoSUmTS8v7yp0wvxmU4yg368YGoxl+F5xX/QCdDqasRb1B/ctSuTB+6zMAx2YVKgwuJ1z9xuyylKD4CSP8goDgHsrZQZuJoWW7SPMQhliLmCe3N0n33U1n8gvgCjjg2W6/jNlgx5tyvnA+sDShoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=sZ662905; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1774313972; c=relaxed/simple;
+	bh=g9n6egUYTuF5ke2JJ6m74go1iA9dbs1LNBwQX9Kfxdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KAB09zD+vGfQS/hpeTaOSW2W5R7Oj+LilVeml7NfvtNEMgPfwcX4Pqo0AA6CR+BsdlJ1sCGIAyO+RLXiyU3xMxMJzz0fl1j+1hyDOYTUnt6GorWD1gzPfxLmMDO0rgY9fqOo4JbrvHyl9Rzr2vKoPGA+/U1A5w/L/WbSnhW8lU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r79tvbMT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="sZ662905"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MSX287mEj1PJ0+XbuTwc2jwqBFKpfZ05vKNTdfaTtl4=; b=sZ6629058AagkkFpPjIjx6Cghk
-	K9W+B1mGljVY0+QGbgArajLwE1zhg89Swm31V/nmbkqUtcRr+qRgUnIq/wFde9SAvZon5yHXMCR3R
-	swwp20keUYq/Qyzmf9poS31TdRaJBaz68aWG2vueLZDl/FBclewi7+23aK7ar1tkRgxAV7ivvQu/9
-	tfJAb9Ys+E/NFEGFipZsb6C8HnMelzE0+RLVxF1RYRtBPHr9sNnSPa9nIxfS2ConDfzlsGqr8n/rA
-	OBj1uUMIjrahpkwOvhnfq4TBw95ZrW1smdWB4yy/WSqoZcHSvxH3Q9/KkKy2C/QYibzUfvne6lgLf
-	kgeUMN4g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60384)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1w4pSt-0000000016k-1WXx;
-	Tue, 24 Mar 2026 00:17:47 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1w4pSo-000000004XZ-45Va;
-	Tue, 24 Mar 2026 00:17:43 +0000
-Date: Tue, 24 Mar 2026 00:17:42 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Mark Brown <broonie@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, Lee Jones <lee@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Tom Rix <trix@redhat.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r79tvbMT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2ECC4CEF7;
+	Tue, 24 Mar 2026 00:59:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774313972;
+	bh=g9n6egUYTuF5ke2JJ6m74go1iA9dbs1LNBwQX9Kfxdo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r79tvbMTbzL0ftvYwrYFxtc47UR6uhBnmMbW/y7VVV1iRybB+2M4JpIoiYURI0KHc
+	 xbQi6Hae6AoFoJmbmbDJaHU6H4twMWZBNd3LQspzN5XukCR8uOrEpuyEmdRt0aOb0U
+	 mOwgSJ8cLDV9T8BHYl+ocS0L8OVgW58qmKn8ydBwrFxSGxlpZWrzAsZEqo1gSY7MVu
+	 kkOnSl/PVHu6HAiahaLq+b8nbHuZsE8hCdipD5o7lr0426ClKDJ0QYolowXlhy4fkV
+	 i8IvftFPJDTfcclR/4ZCSmDk8L1PXC7Ak76kNlhT/lIjYoVE7r0UGtOBo25YTrAjXS
+	 EFJsJ4/WWZ6pw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-fpga@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH 04/10] regulator: of: switch to using
- class_find_device_by_fwnode()
-Message-ID: <acHYJvbSZVPldSCU@shell.armlinux.org.uk>
-References: <20260322-remove-device-find-by-of-node-v1-0-b72eb22a1215@gmail.com>
- <20260322-remove-device-find-by-of-node-v1-4-b72eb22a1215@gmail.com>
- <360a8b4a-6507-417a-9fc1-c53b14868657@sirena.org.uk>
- <acGFksyx3SA0kJ5b@google.com>
- <7d46803e-b285-4e9c-8856-10100fa0ea85@sirena.org.uk>
- <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-arm-kernel@lists.infradead.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 00/12] treewide: Convert buses to use generic driver_override
+Date: Tue, 24 Mar 2026 01:59:04 +0100
+Message-ID: <20260324005919.2408620-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf92122d-6b15-458a-bf89-189a0a6874f7@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 23, 2026 at 09:01:47PM +0100, Andrew Lunn wrote:
-> On Mon, Mar 23, 2026 at 07:05:13PM +0000, Mark Brown wrote:
-> > On Mon, Mar 23, 2026 at 11:28:27AM -0700, Dmitry Torokhov wrote:
-> > > On Mon, Mar 23, 2026 at 02:00:43PM +0000, Mark Brown wrote:
-> > 
-> > > > The regulator API is very deliberately specifically using the OF APIs,
-> > > > not the ACPI APIs, since ACPI really doesn't want to model regulators.
-> > 
-> > > For now? We also have software nodes and maybe we come up with something
-> > > else in the future...
-> > 
-> > > I think we should use firmware-agnostic APIs as much as possible, and
-> > > only use OF- or ACPI-specific ones when there is no generic equivalent.
-> > > This makes the code most flexible.
-> > 
-> > I think this is a worrying idea for core code like this, we have
-> > specific firmware bindings for specific firmware interfaces with the
-> > different interfaces having very different ideas of how things should be
-> > modelled.  The chances that firmware agnostic code is going to do the
-> > right thing seem low, and encouraging the use of generic APIs that might
-> > happen to run OK raises the risk that we'll get firmware vendors relying
-> > on them and leaving us with a conceptual mishmash to sort through.
-> 
-> How do you handle deprecated OF properties? This is a problem i've run
-> into before. A developer needs an ACPI binding, so they blindly
-> convert from of_ to device_ without engaging brain. As a result, they
-> bring all the deprecated OF properties we want to die into the brand
-> new ACPI bindings.
-> 
-> A agree with Mark here. OF != ACPI, and anything which makes it appear
-> they are the same is just going to lead developers down the wrong path
-> and increase Maintainers work pointing out all the problems.
+This is the follow-up of the driver_override generalization in [1], converting
+the remaining 11 busses and removing the now-unused driver_set_override()
+helper.
 
-That's three who agree.
+All of them (except AP, which has a different race condition) are prone to the
+potential UAF described in [2], caused by accessing the driver_override field
+from their corresponding match() callback.
 
+In order to address this, the generalized driver_override field in struct device
+is protected with a spinlock. The driver-core provides accessors, such as
+device_match_driver_override(), device_has_driver_override() and
+device_set_driver_override(), which all ensure proper locking internally.
+
+Additionally, the driver-core provides a driver_override flag in struct
+bus_type, which, once enabled, automatically registers generic sysfs callbacks,
+allowing userspace to modify the driver_override field.
+
+SPI and AP are a bit special; both print "\n" when driver_override is not set,
+whereas all other buses (and thus the driver-core) produce "(null)\n" in this
+case.
+
+Hence, SPI and AP do not take advantage of the driver_override flag in struct
+bus_type; AP additionally maintains a counter in its custom sysfs store().
+
+Technically, we could support a custom fallback string when driver_override is
+unset in struct bus_type, but only SPI would benefit from this, since AP has
+additional custom logic in store() anyways.
+
+(I'm not sure if there are userspace programs that strictly rely on this;
+driverctl seems to check for both, but I rather not break some userspace tool
+I'm not aware of. :)
+
+This series is based on v7.0-rc5 with no additional dependencies, hence those
+patches can be picked up by subsystems individually.
+
+[1] https://lore.kernel.org/driver-core/20260303115720.48783-1-dakr@kernel.org/
+[2] https://bugzilla.kernel.org/show_bug.cgi?id=220789
+[3] https://gitlab.com/driverctl/driverctl/-/blob/0.121/driverctl?ref_type=tags#L99
+
+Danilo Krummrich (12):
+  amba: use generic driver_override infrastructure
+  bus: fsl-mc: use generic driver_override infrastructure
+  cdx: use generic driver_override infrastructure
+  hv: vmbus: use generic driver_override infrastructure
+  PCI: use generic driver_override infrastructure
+  platform/wmi: use generic driver_override infrastructure
+  rpmsg: use generic driver_override infrastructure
+  vdpa: use generic driver_override infrastructure
+  s390/cio: use generic driver_override infrastructure
+  s390/ap: use generic driver_override infrastructure
+  spi: use generic driver_override infrastructure
+  driver core: remove driver_set_override()
+
+ drivers/amba/bus.c                 | 37 +++------------
+ drivers/base/driver.c              | 75 ------------------------------
+ drivers/bus/fsl-mc/fsl-mc-bus.c    | 43 +++--------------
+ drivers/cdx/cdx.c                  | 40 ++--------------
+ drivers/hv/vmbus_drv.c             | 36 ++------------
+ drivers/pci/pci-driver.c           | 11 +++--
+ drivers/pci/pci-sysfs.c            | 28 -----------
+ drivers/pci/probe.c                |  1 -
+ drivers/platform/wmi/core.c        | 36 ++------------
+ drivers/rpmsg/qcom_glink_native.c  |  2 -
+ drivers/rpmsg/rpmsg_core.c         | 43 +++--------------
+ drivers/rpmsg/virtio_rpmsg_bus.c   |  1 -
+ drivers/s390/cio/cio.h             |  5 --
+ drivers/s390/cio/css.c             | 34 ++------------
+ drivers/s390/crypto/ap_bus.c       | 34 +++++++-------
+ drivers/s390/crypto/ap_bus.h       |  1 -
+ drivers/s390/crypto/ap_queue.c     | 24 +++-------
+ drivers/spi/spi.c                  | 19 +++-----
+ drivers/vdpa/vdpa.c                | 48 ++-----------------
+ drivers/vfio/fsl-mc/vfio_fsl_mc.c  |  4 +-
+ drivers/vfio/pci/vfio_pci_core.c   |  5 +-
+ drivers/xen/xen-pciback/pci_stub.c |  6 ++-
+ include/linux/amba/bus.h           |  5 --
+ include/linux/cdx/cdx_bus.h        |  4 --
+ include/linux/device/driver.h      |  2 -
+ include/linux/fsl/mc.h             |  4 --
+ include/linux/hyperv.h             |  5 --
+ include/linux/pci.h                |  6 ---
+ include/linux/rpmsg.h              |  4 --
+ include/linux/spi/spi.h            |  5 --
+ include/linux/vdpa.h               |  4 --
+ include/linux/wmi.h                |  4 --
+ 32 files changed, 88 insertions(+), 488 deletions(-)
+
+
+base-commit: c369299895a591d96745d6492d4888259b004a9e
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.53.0
+

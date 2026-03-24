@@ -1,97 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DA6366546;
-	Tue, 24 Mar 2026 16:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14BB407110
+	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 17:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774369491; cv=none; b=PodjEKguK09s4qd+0tAsMu8LAcFvKWJkBv3tZhyPGLKfANXmOQsK90D2V8wiT8yKPILw0eaSUxTK/t1GdCFnZyg5kXTko0NAcZTHBfi9LZjRf1o5V0LL9pAKXrOvETzV5sIlxPcqWuDVk19zv5RFRnP6jYeABORCaa5kSSpIs+I=
+	t=1774371618; cv=none; b=oa8RQDOIZDPFy3xBCpCnSXU4qhuWPnFPG2WyAwv/X7D9oHfasF+Uzd64tZ2eXN0BTDFWBt9SM8aA0xbnhleMbsHiGd+IbHlKWXAJgEO+owTxfgmSGxdR4nzg9cRxVXYSXYOJPB/Ar+okCjJo4/a4iWuEyFrkK6q3AJ2Yjry+Wsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774369491; c=relaxed/simple;
-	bh=AV3JSQKuN5JjsAMvQHvfmEmII0cPQmEt6VWTDstHTBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r7YqAeA4Iz/e/4gxYKjXkzEkPctxgJA/gRPwZvvabGq9/G+SePJ4i3Xj4RxHhTGks5YlennpAuZrKD/s2UVEjadHK99TEgjPsfvcdqPsv8sE5NXCTqu34OVWOd8s79mwC75kv9QjqMobwu+UjjERhanYVs55zqc8+ExuQDiagfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+sqRzDa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774371618; c=relaxed/simple;
+	bh=rl+vJArOGcdkfdw8lU+2E/D+D0KziEHbdrrQowy9Hhc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=FC9RHbtU3GrNTTiPb6v8MJfAzQs6IfZYIp2QOEOpaEs7rfUCKBSfBmuPtJ+016JIkFfveokpw/dEoS5M73A92MI1FjlRQE42wav4Z0+4jh+wUpx3S2QrKetgwbaWbMopY9SjrxgTKOn1N8HJaupkgxBr/+J6zDWMKhcnYYfba/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7ugzNEe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+sqRzDa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0284C2BCB2;
-	Tue, 24 Mar 2026 16:24:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7ugzNEe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA21C19424;
+	Tue, 24 Mar 2026 17:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774369491;
-	bh=AV3JSQKuN5JjsAMvQHvfmEmII0cPQmEt6VWTDstHTBk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A+sqRzDaWhJwlRd8o7WxCj0yhm1IoCk4TASkn6BLPiYCjhSjAsUOmXxAGGuGKyfRO
-	 k8kzcbV+JtU1oB70Sc8uidyX7+9Wf+yLtT9O+KtxIxTBkX0hhNCKSz2+NXXfrJmzLp
-	 WlqcL6bJ3Q/6kknkguWOgy87/VM6Ebc7vixzLzaPjkePX8m9931unsB9Lr2xRmHVUF
-	 ybDg348tkmiYW9iXnoE0df9uFr1VtfFQtsvXdH3kcank6h1lEwLcm3Eo0GRqVQ77fo
-	 OWy8fmnh5a+Y3rGvBBOzIaaTmj8+f6rEz161fhEWLf4ZdkgXFxcA03Kgw0zCUiMqm0
-	 B3hHY3MmA5pQA==
-Date: Tue, 24 Mar 2026 16:24:46 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/6] spi: spi-qcom-qspi: Add interconnect support for
- memory path
-Message-ID: <92c58ea3-5492-4de9-bcf7-d4a419480002@sirena.org.uk>
-References: <20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com>
- <20260324-spi-nor-v1-2-3efe59c1c119@oss.qualcomm.com>
+	s=k20201202; t=1774371618;
+	bh=rl+vJArOGcdkfdw8lU+2E/D+D0KziEHbdrrQowy9Hhc=;
+	h=Subject:From:Date:To:From;
+	b=G7ugzNEevF/22Hhs8zx3GoS6YqRz71E1YC8H/HQVXMvwyDur2z0L3cMpEwfOwV4yL
+	 9bAuIXWupdfr1bV8vE05F7z/7aYszt+LfZQ4RQNN7mPoJKF72nSbb3JDSVjtia4kE4
+	 jXo6kT/74GAP1gMTpLtXmnT+hnErg0SmpZgSP6wl5OcsdZs19SOMzKL0wPn7XT72dr
+	 grCKN+/U8p7jitxPbRsIQ/Xu1t2jdsqTjxgD1hDTqDyN2Kuacp09jTVFxxF5ug7syI
+	 c/Y3Ytboi8Y31fgdMWFMHaCnOvoDW4VBAX2oI56Hjr74Gy1oQZi8KMt+Iwbh1XDQLT
+	 mdqchNytPsirQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 428DC3808203;
+	Tue, 24 Mar 2026 17:00:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+9dB+3TDrc5h9gea"
-Content-Disposition: inline
-In-Reply-To: <20260324-spi-nor-v1-2-3efe59c1c119@oss.qualcomm.com>
-X-Cookie: To make an enemy, do someone a favor.
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177437160587.1210317.13843484127508292251.git-patchwork-summary@kernel.org>
+Date: Tue, 24 Mar 2026 17:00:05 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Series: treewide: Convert buses to use generic driver_override
+  Submitter: Danilo Krummrich <dakr@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1071294
+  Lore link: https://lore.kernel.org/r/20260324005919.2408620-1-dakr@kernel.org
+    Patches: [01/12] amba: use generic driver_override infrastructure
+             [11/12] spi: use generic driver_override infrastructure
+
+Series: spi: imx: fix use-after-free on unbind
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1071484
+  Lore link: https://lore.kernel.org/r/20260324082326.901043-1-johan@kernel.org
+    Patches: [v2,1/5] spi: imx: fix use-after-free on unbind
+             [v2,2/5] spi: rockchip: fix controller deregistration
+             [v2,3/5] spi: imx: switch to managed controller allocation
+             [v2,4/5] spi: tegra20-slink: switch to managed controller allocation
+             [v2,5/5] spi: rockchip: switch to managed controller allocation
 
 
---+9dB+3TDrc5h9gea
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Total patches: 7
 
-On Tue, Mar 24, 2026 at 06:43:19PM +0530, Viken Dadhaniya wrote:
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> @@ -829,6 +842,13 @@ static int __maybe_unused qcom_qspi_runtime_suspend(=
-struct device *dev)
->  		return ret;
->  	}
-> =20
-> +	ret =3D icc_disable(ctrl->icc_path_mem);
-> +	if (ret) {
-> +		dev_err_ratelimited(ctrl->dev, "ICC disable failed for memory: %d\n", =
-ret);
-> +		icc_enable(ctrl->icc_path_cpu_to_qspi);
-> +		return ret;
-> +	}
-> +
 
-This reenables the ICC but not the clocks on error (which is a
-preexisting bug with the error handling if the other ICC fails but
-still...).
-
---+9dB+3TDrc5h9gea
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCus0ACgkQJNaLcl1U
-h9CSBwf/SlssMZysnjl/o8P4q4C0hXZGv8rwgCV/cDjkmFh8QLdE1R1hUkbBS+aK
-7ecv/Mtj3NzB4bWuD/CnYmRWW07YajfBupommj0nf6aJr4xbufDbzWilo7pQDSSu
-40HmJscewLPrL6kLT5F1YC+7AUgoui/eKKeZ/o87Hd4v1SebZexmBMvrKu3ztXYo
-dXcGrOBz7McDvDk74QOxz3KPgHbk8bBW2iTisJev7fEclDYSY9SncnJhj9vkzTth
-9lSkluzZnsrGHP8qq2ZqVIy+kF6e8Q8MwEL7pfYmF3RJV65nt4mH/YxhulgZw5W8
-3eoGxDakn46tzr6HvQ9OeI88yMMGRg==
-=AfuE
------END PGP SIGNATURE-----
-
---+9dB+3TDrc5h9gea--

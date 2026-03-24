@@ -1,63 +1,65 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6903C456E
-	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 06:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9703B3C5520
+	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 06:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774334406; cv=none; b=FPiGCqlWCOXdBt2wl/rcOcq2FG7y0IlRfk4Z9TCZmivQBHWEo+dDXGlYUgtnff3gO06g2vHwms8i2bbH4x3+kbUPoCCVCqKLwiC0o0pVVhEI86iZPvCcTTsAczsyqRlIi2fJdqhcAHL5bgd78f+sIWVYICCklAUe7dzNQA26hr0=
+	t=1774334407; cv=none; b=SyjvLTPudtV/jyoAiWgmQmfBZOQtHkB2IqOx0ct5XBprDhMp/j1I3U4ivBwxP9NVrq2dkBA82syvZtnW5dhIXMyFCSN4RvgU5wFZ2AxvzryGJEsiiko8vPMeOxiHhoy4zVWOHGx6UYNEXcfy6Co1Nf+JoYxlebwfhD3xt9Gc+JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774334406; c=relaxed/simple;
-	bh=kWMVHrbTgq59qsBF4CpPuynsRpdHuf4qfybAUgKcv1Y=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ti+nrALAkdlkmvpJZ+8QHsAbJak9AaIqtPOT0dQuzkQEP9xEFKNpi+TEFhHAc0dNAEjqty25afNs6C/kUoDVupy987h2LUAZM2zK7Po3rBaB0dMaM3/VyLpKtxS9ZfoHRNrYeWMXnGL1zkcyJI0Tz0FxS8Ne2VMxDZux5QG23MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Bayty719; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1774334407; c=relaxed/simple;
+	bh=0MRwoqw5wBg+zBFOjDilpjbp56zFoFLhnDMQTh6a7UY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JHAFqjv0sbSTtB30eOm9g9lGm/v+oIhC8K3iid3kweNDaUc8hHMZmq/+XQmxR/vjOIkDW+v/V1+fZcLUiGihyG8lxrMfuRoaElgqyGi5XmYMMPwuy+CKw/e3OWVnwh7TBJ1qxJJEUOv/pkCwM3Mt3bNF+USUl2xPB00Buw6BSkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=CeY9lp5Y; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Bayty719"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2b056b7f783so25519255ad.1
-        for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 23:40:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="CeY9lp5Y"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c739561f0d3so2787486a12.3
+        for <linux-spi@vger.kernel.org>; Mon, 23 Mar 2026 23:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774334402; x=1774939202; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=M1IUdQ9vciBV4vtJJEjMhyajLdYSBJmzXHlAoFV09cM=;
-        b=Bayty719eLyEssE+D+sV7sxnwd3YzJX/N2JvH6d1IMTp5T2Hc6FTt4RU3pi/uklzv7
-         1GRDTN5+KbE8hkEp5TbTp5rrxZ18TQXE07sTjhBK6E1+Hsnl9QCEh+E6jIIvB6bWoGZI
-         f/u8lMsQU1Lg/5VFN2gEvR+UZDC1+WWGybCO4=
+        d=chromium.org; s=google; t=1774334403; x=1774939203; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LhItGXqvjBzAtcGycfEOYT3KW2DCoWkdBzqgD2ulkLc=;
+        b=CeY9lp5YU2BQ6NgnzLbQIEn+Ur+2f5QHwOmeVWdz/5n2YnouTw+AjJr7MWVg64nDAA
+         M5hBSFDSSOVHbaEXiSQKCshYNoGtoW3V0x3ICDqPv0pd9K2KyqMqm2HBXbVuO+0Lq+ry
+         rap5uiysgw+4GOvebqoZQmuJIJXPQqzsl1QMM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774334402; x=1774939202;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M1IUdQ9vciBV4vtJJEjMhyajLdYSBJmzXHlAoFV09cM=;
-        b=IjCvQMoMaZF6M3mtNSziLwnl5k+HrKRxY3sDttagkQfchLPVCdYHe3IYiKJ9WtutH8
-         nIctUOyMJ1dhFZoAxhnyia837V2OYPHrAH076ZA9XHmVy9XUmPXQPFGYpYyit33L6gYs
-         uwHzA+Rmfp8FPr1TtVwKDKstPo4cSRzmCyOmTcMcHIAogmpftuDYDOLGsWc6qa0qzkNW
-         7XcKqCn2Evedmu+gE1ZLizhC9ymx3mCL/GH+vjjI4VocuHQdRWBiG2KutoY6HsMdg/cy
-         kWafwRLRAhSApQ9nZPdWFLquW2tIjK5c12l9+GpcvGdehFhTUolu8VAzG+jrvgPc2X6x
-         gySA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1axqqz5NkkmDbiX/XRLGttvB7aCPFxim0dTHlhNkybmuQ4ShHooCkCafH2MIFXGAKB1GYTvzRsGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiOuPVrf0x7aIa4SjnbJdH+IAbflS6iGfNKONl+1DgXxEhOdHD
-	WW5Jn4d5Cwd3LDrqlujWMRYhwd3zDAUnkCV2EYj/HetixQ/Gm+ukzjRiIJvbb07VsA==
-X-Gm-Gg: ATEYQzwItQjiFra4GWDLYZu/Y2za/yCZN6DV+HJ2UrmLgnupmnNSH9PEANkCAkw8951
-	esGuvuHebn1mDjUj319XwnFQ9FhMm7SuzFm9AcMxcCbIz5vCWr6rJwSZ1uV5GKHhWY6/UAVsGzr
-	VarVBo2g5n5+vtt6eVY7UdE6/KKkCXMzGM2R6/wTXKnDNEtfQB3rdvHpjY66nIQTXuSv2BPCSou
-	mDoFG+7h021UT2s8Vi1eMZg2qqGbUo31EmA+7d3xFd8iNwWF8WoK6oYg1FTnXWc2OYR94xFsgVR
-	eBr92Mq0gEuVaJo7rxTgld6g8VcmkDxx8KYc1p0VXW0Utl6e9JMFP6sjcb7uxFN/bm+yPjmHTxi
-	V96LhvIis6xT9+KY7Xwm/7YVdLeTJBbruQNKB+Q8jIB3bF1QkbQOXysSPk19tR6H2JZmLBHWifC
-	/l2NMNQjJsUa+VLU4FITcqR8sCwPeW0Ur3THBGVyUdvqK68Nlc57V4rqW8H0l65WIp5L4ylvJOM
-	Uu13U0/hVTrAioCc4hV2H3y6JvG0bUjHg==
-X-Received: by 2002:a17:902:e550:b0:2ae:a7e2:e80b with SMTP id d9443c01a7336-2b0a4e0e487mr23771835ad.19.1774334402101;
+        d=1e100.net; s=20251104; t=1774334403; x=1774939203;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LhItGXqvjBzAtcGycfEOYT3KW2DCoWkdBzqgD2ulkLc=;
+        b=WYh3H0lKdBvItFCAHpi9lsrE74DHg0xAOSAxd51i8wuBzIZ7UPdbzvCrRd/0bNpukv
+         s0pfDssfx3zD0hQtkx2f6Xg0HiEgBKC+NeCyqaDGPhwWvyIkmEZDsxrme8v8q37n/lyb
+         1FjhpHJw6zyvqRMGf7TO1Srqt05RxjDfq/+3cy6s97hj+2eXWHfkWcrACAb5ac4kQuQ4
+         bCixky6Y0Wfqkg0kylkLEfhVKDi78fwmv0L5np7GOUsnnDAwIK+8T7ayzKM9OkdIHg2u
+         Jfy1FixjQUwpJYHZfXPH887buHNvP7ri7zcDxdVHDYveqlqIIJ55m2TLrOsff9U9woUA
+         lDXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLCvJ6Ci3TTAgVWmf+fHOSRIz5DGMtfKKcwoHHcNMxaT1S2zgKebnJUGR7RU3SBj2Fj6QehO1q//s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM8kfQjFQu+KxIeMMmY4Unar9lzcePsHsfDe2ekU5Krx3mkeTc
+	m+3vmc2ffF2Za5AUxEWj1ZxsBTN+E+5RpcXmTjaJ1CiNG2gw33mQ3n9QUWPtlArM/Q==
+X-Gm-Gg: ATEYQzyp5Bl4Wm88otnIpSt+FmiJ74aUso0Pcp2rkMw4psGEuc5DWTVPhD5j/tnX/T6
+	hZvUdzaiNaKxLFpEYZkEDqRYXLJMc77n3qKN0cDnMMGgje4yAOvOQUVr2ukKj3PqWjINyuehWym
+	Zm8Jjxt2+9MTnivrxAWAwinthqj7agaChXCnYYo2RftnL+Q/HfCZVo3SJBHZq5HO/V310/5uPUG
+	hS0IBilZTyUSCdnk7wABP+JP0LHNnI/HkJIF6Sr0V5CXuN1Fk4l6U2IK7nRSb7Hth/g027TNi7v
+	WEPcBySn+XlLVtZUOvLgXoNDqb7Q1CzbTmkH5ke8AqghTmyINxvxYKR9Ij3HLm6xmOz6LeIv44/
+	g0FYe3rFEA9ElJkOkJH9OJIdGS5UbE6+kjpI7VOCspBzB2tlSatwogvHo1a3VIl9Hkevdt+t/hC
+	OBmrTpf6+WJrdshVg0lwzsw75i8FZLOPE1vknSOig6DPGMyFHceDXzWJknx9pEbn26R6R7IJ4M2
+	UDHksP7/VG1Xw5ZnJ1+DfKHyEbRLlwI7A==
+X-Received: by 2002:a17:902:f690:b0:2b0:7ab2:d6b8 with SMTP id d9443c01a7336-2b0827a927bmr149389995ad.36.1774334402723;
         Mon, 23 Mar 2026 23:40:02 -0700 (PDT)
 Received: from jingyliang-input-linux.c.googlers.com (111.169.168.34.bc.googleusercontent.com. [34.168.169.111])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835429afsm128416545ad.26.2026.03.23.23.40.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b0835429afsm128416545ad.26.2026.03.23.23.40.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 23:40:01 -0700 (PDT)
+        Mon, 23 Mar 2026 23:40:02 -0700 (PDT)
 From: Jingyuan Liang <jingyliang@chromium.org>
-Subject: [PATCH v2 00/11] Add spi-hid transport driver
-Date: Tue, 24 Mar 2026 06:39:33 +0000
-Message-Id: <20260324-send-upstream-v2-0-521ce8afff86@chromium.org>
+Date: Tue, 24 Mar 2026 06:39:34 +0000
+Subject: [PATCH v2 01/11] Documentation: Correction in HID output_report
+ callback description.
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -66,11 +68,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKUxwmkC/13MQQ6CMBCF4auQWVvTDimKK+9hWCCdwiygZApEQ
- 3p3K+5c/i953w6RhCnCrdhBaOPIYcqBpwK6oZ16UuxyA2qsNBpUkSan1jkuQu2oLtZX3tXkaiT
- In1nI8+vwHk3ugeMS5H3wm/muP6nU5Z+0GaWVscY+WzRXX7p7N0gYeR3PQXpoUkofx4Lc6a0AA
- AA=
-X-Change-ID: 20260212-send-upstream-75f6fd9ed92e
+Message-Id: <20260324-send-upstream-v2-1-521ce8afff86@chromium.org>
+References: <20260324-send-upstream-v2-0-521ce8afff86@chromium.org>
+In-Reply-To: <20260324-send-upstream-v2-0-521ce8afff86@chromium.org>
 To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
  Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
  Steven Rostedt <rostedt@goodmis.org>, 
@@ -85,78 +85,45 @@ Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
  hbarnor@chromium.org, tfiga@chromium.org, 
  Jingyuan Liang <jingyliang@chromium.org>, 
  Jarrett Schultz <jaschultz@microsoft.com>, 
- Dmitry Antipov <dmanti@microsoft.com>, Angela Czubak <acz@semihalf.com>
+ Dmitry Antipov <dmanti@microsoft.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774334401; l=3002;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774334401; l=1212;
  i=jingyliang@chromium.org; s=20260213; h=from:subject:message-id;
- bh=kWMVHrbTgq59qsBF4CpPuynsRpdHuf4qfybAUgKcv1Y=;
- b=dfMXFcVFCiOJHI71GrEDcRWBXlTgiM2SynaQouSI8EGuy2k+Pi8LYvBDwf6lHmC0T/Yh23G15
- 5xiYrgKpCW+Bcn6RVOA6XgqL9LfcYcABPhbNEW7nCKYlr2kGEzFiAjH
+ bh=g0tTzL+m8OoXUsAyqNr7/kY2I7leLpyd2bbtWafD9xc=;
+ b=e9WXzKEaP6dKZsubkQtfy4jQ5em+iOpYLHwdy+xoCyJJ+pWSMrJ8EtnerWdutqavxYwIMquzd
+ W+ZBPSj7126A1zOwtkXYQKscPXUXvqC5leMmWC5njPZNofkO+xsI7Tm
 X-Developer-Key: i=jingyliang@chromium.org; a=ed25519;
  pk=VTYSdqslTtYOjWWoIGgYoWupGWqNSidrggReKMgfPo4=
 
-This series picks up the spi-hid driver work originally started by
-Microsoft. The patch breakdown has been modified and the implementation
-has been refactored to address upstream feedback and testing issues. We
-are submitting this as a new series while keeping the original sign-off
-chain to reflect the history.
+From: Jarrett Schultz <jaschultz@microsoft.com>
 
-Same as the original series, there is a change to HID documentation, some
-HID core changes to support a SPI device, the SPI HID transport driver,
-and HID over SPI Device Tree binding. We have added the HID over SPI ACPI
-support, power management, panel follower, and quirks for Ilitek touch
-controllers.
+Originally output_report callback was described as must-be asynchronous,
+but that is not the case in some implementations, namely i2c-hid.
+Correct the documentation to say that it may be asynchronous.
 
-Original authors: Jarrett Schultz <jaschultz@microsoft.com>,
-		  Dmitry Antipov <dmanti@microsoft.com>
-Link: https://lore.kernel.org/r/86b63b7b-afda-d7f4-7bfa-175085d5a8ef@gmail.com
-
+Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
 ---
-Changes in v2:
-- Fix style problems and remove unnecessary fields from the DT binding file
-- Drop patch 12 as it is vendor specific
-- Add a lock to fix input/output concurrency race
-- Link to v1: https://lore.kernel.org/r/20260303-send-upstream-v1-0-1515ba218f3d@chromium.org
+ Documentation/hid/hid-transport.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Angela Czubak (2):
-      HID: spi-hid: add transport driver skeleton for HID over SPI bus
-      HID: spi_hid: add ACPI support for SPI over HID
+diff --git a/Documentation/hid/hid-transport.rst b/Documentation/hid/hid-transport.rst
+index 6f1692da296c..2008cf432af1 100644
+--- a/Documentation/hid/hid-transport.rst
++++ b/Documentation/hid/hid-transport.rst
+@@ -327,8 +327,8 @@ The available HID callbacks are:
+ 
+    Send raw output report via intr channel. Used by some HID device drivers
+    which require high throughput for outgoing requests on the intr channel. This
+-   must not cause SET_REPORT calls! This must be implemented as asynchronous
+-   output report on the intr channel!
++   must not cause SET_REPORT calls! This call might be asynchronous, so the
++   caller should not expect an immediate response!
+ 
+    ::
+ 
 
-Jarrett Schultz (3):
-      Documentation: Correction in HID output_report callback description.
-      HID: Add BUS_SPI support and define HID_SPI_DEVICE macro
-      HID: spi_hid: add device tree support for SPI over HID
-
-Jingyuan Liang (6):
-      HID: spi-hid: add spi-hid driver HID layer
-      HID: spi-hid: add HID SPI protocol implementation
-      HID: spi_hid: add spi_hid traces
-      dt-bindings: input: Document hid-over-spi DT schema
-      HID: spi-hid: add power management implementation
-      HID: spi-hid: add panel follower support
-
- .../devicetree/bindings/input/hid-over-spi.yaml    |  126 ++
- Documentation/hid/hid-transport.rst                |    4 +-
- drivers/hid/Kconfig                                |    2 +
- drivers/hid/Makefile                               |    2 +
- drivers/hid/hid-core.c                             |    3 +
- drivers/hid/spi-hid/Kconfig                        |   45 +
- drivers/hid/spi-hid/Makefile                       |   11 +
- drivers/hid/spi-hid/spi-hid-acpi.c                 |  254 ++++
- drivers/hid/spi-hid/spi-hid-core.c                 | 1417 ++++++++++++++++++++
- drivers/hid/spi-hid/spi-hid-core.h                 |   93 ++
- drivers/hid/spi-hid/spi-hid-of.c                   |  244 ++++
- drivers/hid/spi-hid/spi-hid.h                      |   46 +
- include/linux/hid.h                                |    2 +
- include/trace/events/spi_hid.h                     |  156 +++
- 14 files changed, 2403 insertions(+), 2 deletions(-)
----
-base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-change-id: 20260212-send-upstream-75f6fd9ed92e
-
-Best regards,
 -- 
-Jingyuan Liang <jingyliang@chromium.org>
+2.53.0.983.g0bb29b3bc5-goog
 

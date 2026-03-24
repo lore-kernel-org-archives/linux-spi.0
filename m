@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A94A3DA5B0;
-	Tue, 24 Mar 2026 15:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68B218EB1;
+	Tue, 24 Mar 2026 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774366962; cv=none; b=FsVnYCJ4qE0uAnhLNHk554MvQPAhA41ODYUCj1DsEfVEiwF3OfSy3rij/92BHODgn4YRkorFEiV1Z80G+HYU+++8EXJxJqbQd16/mBQUYiAF2jLLr/anYQjUGPOZQtraN1ISvcBI2PlG7IMxviQUpKCrV6BBZO5Z/d1SwZc28e4=
+	t=1774369167; cv=none; b=pz473scnYhL1W0+43wEMJDHP7Wt6VJCkmoWY584nRuIfYQGhsQw1iC/eIp5ZPWeO8B6/bJtKCNvDtMLXnaufL1QXdY/LkBEjflA2fQb640fJwiJ0TOO0y9Ke1VVecJngje24NTlfYtDjRu4KYGHJ+mLMSrYZBj8Qcyxzu97OdYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774366962; c=relaxed/simple;
-	bh=Co/d2NDkbaQXI361U9Sc2MPF55Vr1okW3xEKdK1jJTk=;
+	s=arc-20240116; t=1774369167; c=relaxed/simple;
+	bh=Vzn4kK1OCgM0Du86XVzwCGWpQkxeiTsel/ZSclDtI4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BpTQG438sBE3ugKNImHiz30Tg3a+hgPoUD7ARrox7aNvj66dVYRFLf9YEuMgwFU3lynKp4bpfG+oUldaenriV5OQBzS8ySS06Xbd/HjSUJqvics76q6D7JvjsSjxsrDn6zpRC9rKI38BaoAvtduu5OdJ5eDEsMliYpRfa+XfPMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8LxwvCw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LamjUUzeD2B+FwFQf5rn3ED7Ab/Rvh9kgynEc+3K6txZkYRx0/ls0PbM3PDGBBC+CDNQzRyS7Liz3J8YLSE30NmuCSnvVQEcXUhdWaI1Hu8nDHjuv423+xALXA/uZfhNIb6t3WWHXriabZkrZsIIh6FkDAXrQokynEy8BfSJNGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeoOa94U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8LxwvCw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA30C2BC87;
-	Tue, 24 Mar 2026 15:42:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeoOa94U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C59C19424;
+	Tue, 24 Mar 2026 16:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774366962;
-	bh=Co/d2NDkbaQXI361U9Sc2MPF55Vr1okW3xEKdK1jJTk=;
+	s=k20201202; t=1774369167;
+	bh=Vzn4kK1OCgM0Du86XVzwCGWpQkxeiTsel/ZSclDtI4Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E8LxwvCweAs9jESn+YD1k/K6y+xJwetx0yMYGG3jtso20FUY8ms+iV8K2yEdece6c
-	 m2zggM/BQ3zUm5KtpAl+Mh+RuLGFxUADdIFVYuQT48UMqYMz73f9cJRMJ6Z/CSR8Ja
-	 XXYAnaIzoWRZa/U+tmfDnIArN7QPV+R9+aDQOZUBvHCF1idtSYBJ3tzBlL82lM0f7q
-	 mCXBTOGaWSl+J7hLtNlA+z7hEEnnP3tF7VIeTzYtw6ROIdK7jK7FamKoOdVpaprmoP
-	 cDNuX2cUwCtU40rCk7ZM6Q5SJ3BCYVyggy/N5y4SoDqmCzu0wvJYAcqC/towzMlRXu
-	 94jXvaZqZa9GA==
-Date: Tue, 24 Mar 2026 15:42:37 +0000
+	b=UeoOa94UORI96bBXQAySKUUV4lPOU5GgV/F0PP+tM2+qfdQcPDPGORvycEu59NGMf
+	 GmeBMCuc743ZB9v9NfJXzeHDR3P5uvVcFVNOE1vs07g/S8faGrHZEmMm6SciO+NtT/
+	 itfrqauIjX4n8AESW/eczPc4YcufV1pQvT2fu/c20aWivWwVynKVSZMt27gE6B5D7h
+	 GRhCtnyvt8KjFoGPzNF7KiuIl7F/pzVCQwx2J9J2IxSn5Gv9QzvBg/Rd0nK6d8KSQ2
+	 XtzpVMl4U/giunzl+qDtH3JUKpyC7MQCK5PE2hCdJppdd7SSFUPJUSK8Pm6n7nb74j
+	 TFR5ztzBFWAaA==
+Date: Tue, 24 Mar 2026 16:19:21 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Frank Li <Frank.li@nxp.com>, imx@lists.linux.dev,
-	Gao Pan <pandy.gao@nxp.com>, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH spi] spi: spi-fsl-lpspi: fix teardown order issue (UAF)
-Message-ID: <14f61443-f332-4f24-9d8d-4ecb8ed9138a@sirena.org.uk>
-References: <20260319-spi-fsl-lpspi-fixes-v1-1-b433e435b2d8@pengutronix.de>
- <acKoJ3Ca_q40baDS@lizhi-Precision-Tower-5810>
- <20260324-wooden-rattlesnake-from-avalon-2bc1ed-mkl@pengutronix.de>
+To: Meiker Gao <ot_meiker.gao@mediatek.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Bayi Cheng <bayi.cheng@mediatek.com>,
+	Project_Global_Chrome_Upstream_Group@mediatek.com,
+	sirius.wang@mediatek.com, vince-wl.liu@mediatek.com,
+	jh.hsu@mediatek.com, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH 2/2] [v3] spi: spi-mtk-nor: Modify and optimization the
+ SNFC.
+Message-ID: <9091b9d4-d32e-426f-835e-b62a933dbee0@sirena.org.uk>
+References: <20260324062835.1747943-1-ot_meiker.gao@mediatek.com>
+ <20260324062835.1747943-3-ot_meiker.gao@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,51 +52,46 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PhMS7nNQeaZ4550i"
+	protocol="application/pgp-signature"; boundary="sjEoEUTHZWdhbgFK"
 Content-Disposition: inline
-In-Reply-To: <20260324-wooden-rattlesnake-from-avalon-2bc1ed-mkl@pengutronix.de>
+In-Reply-To: <20260324062835.1747943-3-ot_meiker.gao@mediatek.com>
 X-Cookie: Forest fires cause Smokey Bears.
 
 
---PhMS7nNQeaZ4550i
+--sjEoEUTHZWdhbgFK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 04:22:30PM +0100, Marc Kleine-Budde wrote:
-> On 24.03.2026 11:05:11, Frank Li wrote:
-> > On Thu, Mar 19, 2026 at 07:38:12PM +0100, Marc Kleine-Budde wrote:
+On Tue, Mar 24, 2026 at 02:28:25PM +0800, Meiker Gao wrote:
+> Changes in v3:
+>     -this patch is a further optimization for version v2.
+>=20
+> Changes in v2:
+>     -Use clk_bulk_xxx related functions to enable/disable clocks.
+>=20
+> Changes in v1:
+>     -Add new function mtk_nor_parse_clk() to parse nor clock parameters.
+>=20
 
-> > > fsl_lpspi_probe() and add the corresponding spi_unregister_controller() in
-> > > fsl_lpspi_remove().
+As covered in submtting-patches.rst inter-version changelogs should be
+after the --- so they get cut out of the git commits by tools.  There
+doesn't appear ot be an actual changelog for this patch beyond the
+(somewhat vague) subject.
 
-> > Feel like it is not correct's fix. devm_spi_register_controller() is quite
-> > common, other SPI controller should have similar problem.
-
-...
-
-> The patch unregisters the SPI controller prior the tearing down thee DMA
-> support.
-
-> Another options would be to push everything in the fsl_lpspi_remove() to
-> devm, too.
-
-Right, this is the thing with using devm_ for the controller - either
-the driver needs to fully use devm_ or it can't use it for registering
-the controller itself since you get unwind ordering issues.
-
---PhMS7nNQeaZ4550i
+--sjEoEUTHZWdhbgFK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCsO0ACgkQJNaLcl1U
-h9Bjxgf+OIiwDUL32BatKquysmM4BEwdXkmJUWg4CYuLrhIT9X7IBJ0IYsA/V1yD
-ulaAC+wGEcZhXtnoFv2/OOKqpnYYBHvv56RYU7cH33CTl32vAX4oIpDn36mMQbsb
-2mZ+ESBxqFcf35YesMIhpEYZrNJjV/FRxlrVQQEudEQhag4ZOxXqmmACQoZg277Y
-+M+NgDRezh+ghu26PcwqJhTrOn/AB3xstTUto+bw2+Mox2MchHdpjC7+4gZ4KqZ5
-09wFsD9I4xgP22fHWCThNPEKlgBZO+AGhTsvHjUpEtH9A4oWVlfHFJ3kf2+L/G5W
-oBq252CPrdLh/mqnTVCp6BnXYOybQw==
-=mWg2
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnCuYgACgkQJNaLcl1U
+h9BzOAf7BRKbdHMggUaXtpn7x4H6OdzYZO6/WAWJJz1vmMRz8ulzUUGezTKvUUa9
+40SehQQSX1sukWrSh0OQSB5rDbbWOWXw6eX4MjjH73JrQo0J4EKakFKmPfLMDVqY
+zhNMJv9jgZ2AF9Cr1DLa022zE+iaGyfR7e4x+LHVVbnXfH8pbzljlL7nIVfEbTI+
+efYwSUmrLw/9S58F9UtnZPBh0DWzWm2feecZowRf0lLQa+U5zg/24fMsAN6iaKAP
+9MvsvPiVg1/C7rfftkRppTcLboBVwEosCZqFF/hNtjufGxz/i0DpxaFtMBC72ZPo
+Oqh7O7cKGclP473yIFVNwmPtGCtT7w==
+=v1zA
 -----END PGP SIGNATURE-----
 
---PhMS7nNQeaZ4550i--
+--sjEoEUTHZWdhbgFK--

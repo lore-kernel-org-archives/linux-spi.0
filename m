@@ -1,70 +1,65 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87923E8668;
-	Tue, 24 Mar 2026 06:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EEE28751B
+	for <linux-spi@vger.kernel.org>; Tue, 24 Mar 2026 06:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774334814; cv=none; b=rsPzs2HFOUPy4t7ih36sJxRmI1mHOVSOfulZiWnBUtPPXG528M2ze05DEp6szMSGZ9cuqsNVt50a/uSfQMyefdW50gjHvQX/bfYZe+vkxujq8zp+dGQO6Aiwkef9bgp3ZG31Gyj3aJqTLDpH7ExMIz8iasYKzW2hRsQEj72J2xk=
+	t=1774335439; cv=none; b=I0yR5A3/IbNnQq+LyM5KeTtNFYSheXdXYfr8Q1TmEkYs61hTnAm4RRznMNsO195PLtdjcQCrdPyjyVNprR7rCSbZK+IVX6hVSI5c0N+uYsPOK+wmF0xgClhF/1TKAaNK3X5jGc1YMcJHAdwJUOQwGCrIsyOs87ThB2eOyfu3x78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774334814; c=relaxed/simple;
-	bh=0pWcvd/aW2rfxKceBG4iYf0JYDeJLmiozIsWTIsl6/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZN0X0/CVgqHs+Z7XQYJwmqvlbJBqjBxswj9i6hJZ0Rv5iUJJCvmKCXwuNW6CbZzAZuAKxYhjwdMOgFPXorhGmg5UOyHQxHn0waNzjaye4V/wN6Y9nG+gjSwEVeH4dp+CejBDcCqMO314tgrcebZjSI7dKMu9i8vUsGe5x4aoQoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 35703176274d11f1a21c59e7364eecb8-20260324
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:502c63d9-27e6-4aac-9b67-3149ec8525f8,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:31cd9a5d2e26af3804cbf8aa4ad155a9,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|898,TC:nil,Content:0|15|
-	52,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0
-	,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 35703176274d11f1a21c59e7364eecb8-20260324
-X-User: xiaopei01@kylinos.cn
-Received: from [10.42.12.251] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1741746068; Tue, 24 Mar 2026 14:46:38 +0800
-Message-ID: <1267145f-5843-4976-a777-5c251cd55fa2@kylinos.cn>
-Date: Tue, 24 Mar 2026 14:46:36 +0800
+	s=arc-20240116; t=1774335439; c=relaxed/simple;
+	bh=elBEOM+MANnIy/06BTL+UE3SApdegp+gIDe+sZtpdnE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=ncfofktrO1fRIr5VbztP3YxWw8TXfD8Gmtjf0RiNMEq7iSSY54UWbdzjav49p9sVPBL2sr7ZKDDhGk0jMga1NB0HwnT6QF56YzdSSGvx8pND+nqvhqQmwAkP7YuJyWXGzEiXegkjldXIF0vhOqgpD6i9VI9onVZ+u6dJoEPC6tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SodgiuqO; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SodgiuqO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3400FC19424;
+	Tue, 24 Mar 2026 06:57:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774335438;
+	bh=elBEOM+MANnIy/06BTL+UE3SApdegp+gIDe+sZtpdnE=;
+	h=Subject:From:Date:To:From;
+	b=SodgiuqONT/FNwSxbBnRIQQGkS3LxnaoUffa7plarsN8JMdj6i8AIYLdp6PQr2LR8
+	 jq9Mspm0kQu0lgzJhx5L8sOs81KpfIFErPVUP7+R0/dwWVyKX1tr3ftVeQT/qhXSn9
+	 ej82LnaHG6nhxXQDI9U+usBSnzeYwT2KgjNXlqUcDY9Q4w1MZ6oS2KYwNinZ5OiX63
+	 FKSP6ks09GOXDwMNqMuzhnT0LqBIJAbuZXJ2O11PuEQqpcsAFClvv2NU6sAgU19g5H
+	 kKuVkYL0WB0pyKYUFppULK2n9ggLGyh+TKeaEX+ODXKnkWy18qT7NGWaMo3eGP5WWh
+	 7y+H0H6GQ5t0Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF543808200;
+	Tue, 24 Mar 2026 06:57:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/17] spi: axiado: Simplify clock management with
- devm_clk_get_enabled()
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1773885292.git.xiaopei01@kylinos.cn>
- <52f7e0ebd2f0ece71929384444e1ae87506e5e2d.1773885292.git.xiaopei01@kylinos.cn>
- <8f92f6e7-93aa-48ab-a183-fe8167dcc517@sirena.org.uk>
-From: Pei Xiao <xiaopei01@kylinos.cn>
-In-Reply-To: <8f92f6e7-93aa-48ab-a183-fe8167dcc517@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177433542612.530904.4541944264007054838.git-patchwork-housekeeping@kernel.org>
+Date: Tue, 24 Mar 2026 06:57:06 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Latest series: [v2] Add spi-hid transport driver (2026-03-24T06:39:33)
+  Superseding: [v1] Add spi-hid transport driver (2026-03-03T06:12:53):
+    [01/12] Documentation: Correction in HID output_report callback description.
+    [02/12] HID: Add BUS_SPI support and define HID_SPI_DEVICE macro
+    [03/12] HID: spi-hid: add transport driver skeleton for HID over SPI bus
+    [04/12] HID: spi-hid: add spi-hid driver HID layer
+    [05/12] HID: spi-hid: add HID SPI protocol implementation
+    [06/12] HID: spi_hid: add spi_hid traces
+    [07/12] HID: spi_hid: add ACPI support for SPI over HID
+    [08/12] HID: spi_hid: add device tree support for SPI over HID
+    [09/12] dt-bindings: input: Document hid-over-spi DT schema
+    [10/12] HID: spi-hid: add power management implementation
+    [11/12] HID: spi-hid: add panel follower support
+    [12/12] HID: spi-hid: add quirkis to support mode switch for Ilitek touch
 
 
-在 2026/3/24 03:38, Mark Brown 写道:
-> On Thu, Mar 19, 2026 at 10:03:57AM +0800, Pei Xiao wrote:
->> Replace devm_clk_get() followed by clk_prepare_enable() with
->> devm_clk_get_enabled() for both the "pclk" and "ref" clocks. This
->> reduces boilerplate code and error handling, as the managed API
->> automatically disables the clocks when the device is removed or if
->> probe fails.
-> This driver is doing runtime management of the clocks via runtime
-> suspend/resume so this isn't appropriate.
-Got it, thank you for your review and valuable time.
-Pei.
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

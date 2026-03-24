@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1394236CE19;
-	Tue, 24 Mar 2026 08:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FBD390C95;
+	Tue, 24 Mar 2026 08:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774340631; cv=none; b=liPmW4jY/4TVF404Q6LUCXPmN1/1zMyDCT8fATrnpINgiTVO7xMfMcydCyTwke8vIA6yo4RX3ft33QYwpN2K6txfPZ37oMhTu77sBIRrI/Evvqpn5iPS1rJLbS0s6tBaloBbQ5DkLbdEwHWnobohVRQYJUCMSf+lTS9gRVaG508=
+	t=1774340631; cv=none; b=GNvTLU23BgQP2xxi7tsTN2raoTTcW+I3MLM18zGVK1ifR0Ui4rDsrteFdnxXDM2UNrmjnJg2lBFbT6k+75nU32Ebs0d4FzXgvUkmoqyy/znytU1jC3uDZHKWMNUT7KzFfV5LyEf336pUtrsVxZpy75unEHG48hizC3ZRNpEahxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774340631; c=relaxed/simple;
-	bh=67pnIC+A2geoNacxUmxh6sPMQbZzlDjvy4uNoR1sE/4=;
+	bh=k3YtsUOZ02FudyzraP3IJRi+FC88W1D4DLa4KDfOTDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUgA9ZsNoGgQeFpsNDjy1ZqiTfbTNVksY0mR7+2pTtpX9d7YJXO8VcwzxTAl67JXI9uXWf3QV8jfPZ3oSVYVx8W2MgDWk5t2cu8DSFwL7VqupabLMA6Spt1Aoexo0dqg0Xq3Pox9bOawegDrPNGkxR4coBJROGe3ruNXTWLdUqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXi565sw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=rxwjLYkn0R1WmG7Ian+e6fifRQPnYw9HmXfCi+FrFYyNlLraB7iNiWm8eOXpY5xDvBZCxvRZQOKp6RP4tjcn0gxiLrL6lbMRqrmwYTvOhM/g2tPcpoJk0W6tOJtqBpw4y3dGbS93ePVnQywfYxvGtJhbJNToQJNoM6LFLD/IrSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3ft6Tf2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXi565sw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EF8C2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3ft6Tf2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F84C2BCB4;
 	Tue, 24 Mar 2026 08:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774340630;
-	bh=67pnIC+A2geoNacxUmxh6sPMQbZzlDjvy4uNoR1sE/4=;
+	bh=k3YtsUOZ02FudyzraP3IJRi+FC88W1D4DLa4KDfOTDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXi565swY7iEfbsqZ6sRInRNWbsj875aYEUolSA1NtoEW2wXEQlakVzwzX+IgYFAt
-	 ciKxDXOXHjSJElD+cH71BwDRuzELYiwwzYE4QZXUv02hh0CDtr1RO3TpdCW4L+L/+6
-	 dmtE9BaRaYBHJmMXfcfKND3h9hmn4MsSVmqlTSiUy+zkb/itB/bLRXzdKIIaAvg23V
-	 NCbe1za6tPwIsYvFPdSDbgFbgCsnXHyasK+e9sE1MHqp07KDFtGKCWDB+PGkBHAIW0
-	 gRwBIgygMyM15TMaNHhq/XNBOJZJD9gQY6RSYWVNaLWkrA8pmd8ikSS4ZV7hT5pHzD
-	 g1fhZleLw518Q==
+	b=l3ft6Tf20pZaf/bAr/pt+6rq8cuNfY2CE7Q0miiUhYO8kKyYv76tgy/UvxbsVS8q5
+	 HHcfCnnM90nGytDuQrQX0NErGLfPkEWk/EstbhrpnYGX8iVJLghN+nDoFqbc/BgSCW
+	 zdE7S3iP4o8urBlJyE3EXg2GL28DGET0zBqlv1mSNH6DIesJlpLrIZqaQtv/XXP/bE
+	 HMGnC29ublElFNAaY2ZgHcOtdk9R6P73Yp5Zr8TgEp5Ra5WC8Bby0TUhtn2EFXvmLQ
+	 M0UzicKnYqWJuk3cs+xznSPrL+bTkRAowdb58/2dKs6b3tJMZzNy5hF23EhySTctcF
+	 D4i1tsr9tzlBg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w4x3E-00000003mQI-1PSh;
+	id 1w4x3E-00000003mQE-1Kq7;
 	Tue, 24 Mar 2026 09:23:48 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,10 +39,12 @@ Cc: Frank Li <Frank.Li@nxp.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH v2 4/5] spi: tegra20-slink: switch to managed controller allocation
-Date: Tue, 24 Mar 2026 09:23:25 +0100
-Message-ID: <20260324082326.901043-5-johan@kernel.org>
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	addy ke <addy.ke@rock-chips.com>
+Subject: [PATCH v2 2/5] spi: rockchip: fix controller deregistration
+Date: Tue, 24 Mar 2026 09:23:23 +0100
+Message-ID: <20260324082326.901043-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260324082326.901043-1-johan@kernel.org>
 References: <20260324082326.901043-1-johan@kernel.org>
@@ -54,99 +56,39 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to device managed controller allocation to simplify error
-handling and to avoid having to take another reference during
-deregistration.
+Make sure to deregister the controller before freeing underlying
+resources like DMA channels during driver unbind.
 
+Fixes: 64e36824b32b ("spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI")
+Cc: stable@vger.kernel.org	# 3.17
+Cc: addy ke <addy.ke@rock-chips.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ drivers/spi/spi-rockchip.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 8c608abd6076..c15c076295cd 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1007,7 +1007,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 
- 	cdata = of_device_get_match_data(&pdev->dev);
- 
--	host = spi_alloc_host(&pdev->dev, sizeof(*tspi));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*tspi));
- 	if (!host) {
- 		dev_err(&pdev->dev, "host allocation failed\n");
- 		return -ENOMEM;
-@@ -1034,37 +1034,34 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 		host->max_speed_hz = 25000000; /* 25MHz */
- 
- 	tspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
--	if (IS_ERR(tspi->base)) {
--		ret = PTR_ERR(tspi->base);
--		goto exit_free_host;
--	}
-+	if (IS_ERR(tspi->base))
-+		return PTR_ERR(tspi->base);
-+
- 	tspi->phys = r->start;
- 
- 	/* disabled clock may cause interrupt storm upon request */
- 	tspi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(tspi->clk)) {
- 		ret = PTR_ERR(tspi->clk);
--		dev_err(&pdev->dev, "Can not get clock %d\n", ret);
--		goto exit_free_host;
-+		return dev_err_probe(&pdev->dev, ret, "Can not get clock\n");
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index fd2ebef4903f..eb1992b4178e 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -908,7 +908,7 @@ static int rockchip_spi_probe(struct platform_device *pdev)
+ 		break;
  	}
  
- 	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
- 	if (IS_ERR(tspi->rst)) {
--		dev_err(&pdev->dev, "can not get reset\n");
- 		ret = PTR_ERR(tspi->rst);
--		goto exit_free_host;
-+		return dev_err_probe(&pdev->dev, ret, "can not get reset\n");
- 	}
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register controller\n");
+ 		goto err_free_dma_rx;
+@@ -936,6 +936,8 @@ static void rockchip_spi_remove(struct platform_device *pdev)
  
- 	ret = devm_tegra_core_dev_init_opp_table_common(&pdev->dev);
- 	if (ret)
--		goto exit_free_host;
-+		return ret;
+ 	pm_runtime_get_sync(&pdev->dev);
  
- 	tspi->max_buf_size = SLINK_FIFO_DEPTH << 2;
- 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
- 
- 	ret = tegra_slink_init_dma_param(tspi, true);
- 	if (ret < 0)
--		goto exit_free_host;
-+		return ret;
- 	ret = tegra_slink_init_dma_param(tspi, false);
- 	if (ret < 0)
- 		goto exit_rx_dma_free;
-@@ -1125,14 +1122,13 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	tegra_slink_deinit_dma_param(tspi, false);
- exit_rx_dma_free:
- 	tegra_slink_deinit_dma_param(tspi, true);
--exit_free_host:
--	spi_controller_put(host);
++	spi_unregister_controller(ctlr);
 +
- 	return ret;
- }
- 
- static void tegra_slink_remove(struct platform_device *pdev)
- {
--	struct spi_controller *host = spi_controller_get(platform_get_drvdata(pdev));
-+	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_slink_data	*tspi = spi_controller_get_devdata(host);
- 
- 	spi_unregister_controller(host);
-@@ -1146,8 +1142,6 @@ static void tegra_slink_remove(struct platform_device *pdev)
- 
- 	if (tspi->rx_dma_chan)
- 		tegra_slink_deinit_dma_param(tspi, true);
--
--	spi_controller_put(host);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 -- 
 2.52.0
 

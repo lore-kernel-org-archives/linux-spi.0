@@ -1,220 +1,164 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0A232D441
-	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEC32E8B6B
+	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774430999; cv=none; b=Mw+7Xaeuvrts3D43B5e+0kSDEGURl/tVINQfdFKowjQxrPaYpKEX3t2dKuwBxHTgnSjvI5pa1EdKbG/htmpu1H1h2qslfNNaVzNKVVZBoQqBailIGDFW+UB0KH+J68lt2dSdDnohnsRkua/kepSd//HkeiJqakUyiqQ6QrDgMgY=
+	t=1774431159; cv=none; b=Ik2w53kJV9AyISmmoRYGSaSp6P+WkFLx2U4yCKSHtK+1nG0UPNhT5HZbt43I7i/W2dg7bs8AnYNsKDF6eiLi5Hvs7p1+dLDIAwbySlKgNqjVoFDyrNPEumMcw1eDJHAybnI9glyYrVievvzvGP8LMtKX55pdUtMM+4u1oHCzM4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774430999; c=relaxed/simple;
-	bh=hzAY3ZoPFk3ktxoVDsUh6drVK7glBEle7ZgqK1lKcjk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=Z5RKF5fQmKtyfYosvl3Y6Wt5NyK05Hv4oLIiwl/khBx6AZ1cJGIa32/672WOhf/g99wn4D84dYYQokIbIhAW9samPTiaPDxraKXqh0eM/tNA4v97xHhaKEA1LL7F3XSHdLgSIT9SGO4/mqTBOsXqUs3FVvkrexU3JfPpDtmTjzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UIIwNU+n; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1774431159; c=relaxed/simple;
+	bh=fSUL9igBA3KN4gm9BjiayxKw1TnmPlLVceGWkB0osq4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k7iCL6NM6vvA3LY9nxsh7IU2cl9FyfVm1xJzlz0dCwHlgSsAK6MT6jZf2dLrPVTWCwo6u3/NloT0Ztdg0Tr95DXQ6Vja/Qu0vaXMQ8Aui+XtMEh0W+XTl8VYXSLbiVVFjvZE7ttRjGaZ0hSKArC+bPwknv2r0LaiKZwLrGhliV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pvpx+3rB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=R4jsUSwT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UIIwNU+n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774430996;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/X6OQFIMMVlzQpHVcxvz5zk00vazKEddYu1a8TXBALA=;
-	b=UIIwNU+nPUJJvHBBie22wcCjzDVg3JpRuHuXBHiy0rjpN6rDxNAzNlOeQY2QG9m8DWuxEm
-	iaNmUUXhpXPFoYwUfpFYc/GchGtfpCQlnmZs/FYSLP7O1jEI3zV30Rr3AOr8Y9H0wsXSVL
-	jcPPi+BUVu4IYinrziQaqTXzZ8OPLkY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-QKpX5u6QMSKKxR9jZoqkug-1; Wed, 25 Mar 2026 05:29:55 -0400
-X-MC-Unique: QKpX5u6QMSKKxR9jZoqkug-1
-X-Mimecast-MFC-AGG-ID: QKpX5u6QMSKKxR9jZoqkug_1774430994
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43b3e0a73f8so2562135f8f.3
-        for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 02:29:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pvpx+3rB";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="R4jsUSwT"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P9D0Gr4158093
+	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=; b=Pvpx+3rBKH6CGRq5
+	Kq3BLyUlf5QmLyzMWs5tWe2hgeQvRlM7uvjnAbPhhsIUuF4XXct21C0kN7IyALPT
+	nAgyyttVxyIeQ5Z+qj/+Y7+FHQHLohgESbxgB5phhFklO79nUpnTZbz1a8Ddz3k3
+	1AMAwK+XmFWA/eOQMSXCTAVExsxz2hFRwc1Hymh3urAygOmIQ/HCadXEbvh2wq7B
+	SXe58CC6AlCRIIYVB1LWSKnS9Qd6jcXD3wqcRFue4+DDLIWbcpdDmCOVKxwr/DPt
+	mguiPNKmJlGEzjp4nz/S492AgJycvDcThaFbfjFMNrhzFmtUcofRImMjhBKMzXKT
+	g/dXLA==
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4cvp02mv-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:36 +0000 (GMT)
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-89c471045c9so34430256d6.2
+        for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774431156; x=1775035956; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=;
+        b=R4jsUSwTN4HMuo0IVU5b6NfkJ42QTx4qnWHnOz4wDvNMY9VpsNtMFyODsaP+BxS2LT
+         bWzfyq53zScTayH4m0SQcKvlhnBIMMEba8CtQlHf4sk92dBiTxDA4ETDRCRNyikqPebU
+         ycAf7+WxB4BZCrbUSAluZ2EvG2WJlHe08OP+wpAdo+BGoKBy+YT1EiAD4JQVzdh1T/MC
+         rWadfL1EjDP5gjv7HBl2mVPprDuxvruHHvv4PRfqkaprZtYVVJTIJZlppreRIi5+nIXv
+         mS6ZNUwQ1xSRdBbsWoRJsob81hWERYNN/HbRzDryqNhVkc+sRcDKXjTjgeY09xA25x52
+         Yv7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774430994; x=1775035794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/X6OQFIMMVlzQpHVcxvz5zk00vazKEddYu1a8TXBALA=;
-        b=s8bRc3TsMtfvAr8Pk6DBqRqRU7LDBbAO91tOyJzsHtp76rqXl5WPBIiF9ws1gF/rcO
-         n2HtcwLxP9f0brvrCiiIqR4voQ+wqCIeB3rpiTdYCfSyh33wMhatsmCVFfHhwik99UoG
-         BY5eaPEo7jze9eBVi7/3EGG7Ap3qZRxLm1mOIO6hgI3gst3AIu/jdOcT6y7uY8L+8++h
-         /NHV57vwvpvX+ieWt5db5CiKHelbJpQEr2BfZkWYZEWneB0omhvjCi2Y40tidN1zip7s
-         IwOLzV/KwzpViV1lArgHhMvr1EK8RSldwwbLQCXYoqfivWSIJsUvYkBLMGFFDi1i3XDN
-         LC6A==
-X-Forwarded-Encrypted: i=1; AJvYcCU7AISGFK9rlaw7O9eTPyDOa/w2G9Wno04YKttcIBVPk9+MOmNGyYWTSXqS4r9I39/Y1yGCdmSnOJM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdNrTrU8gSyKoi/EqXK5MWJVVbXv2FHVeO3Uz4tq940yxzRMGQ
-	y9Jvc6yOZ1eGKwvUy3Gk7dM4DN5WqYGVtBm6bGTnlxfLxK0KW3LrnOZFq0phXPH7ImVuWXsTw2F
-	sYd2joghCxj3zQlihwHTtqsyjkWLo7VBPn6mj6eTqsP5M0G58WSvElRrYCOF8Tg==
-X-Gm-Gg: ATEYQzylp13VjHDfav2E1pWxq0r1TfqdEbxwBO8pm/1zpowC4CSLDSDM5McqsJoSFsR
-	VWaZj+fVZ+nIY17o7bWYU7id6lTGIhpHxHdX6RGtBJzz9FSnYcmXJ4jyM4G7IYrzXeZ0alS8R6Q
-	HojkUdBzDqTmI/FQdySSNP+0hueA1DPg0mby1Ws9AF2MedMH2UmBCbxXKh1EQOmd4+HJrD2Ihkn
-	z7ExOqntfv356s5PxKM/KagBDXcYQRfHu1Du1Eym/9rBmpXGWcmjFhbuinmPb6lguoawQB9j76m
-	faUAGGz4RSkLNt1JoxtIc1jwUod1gtWE4saWCVUDzXYMNIZq4j0VKQZ3kmReJJl3t7eCn88V7gA
-	7QxcHq7PtGNd1ivOy
-X-Received: by 2002:a05:6000:400c:b0:439:be78:e1e9 with SMTP id ffacd0b85a97d-43b88a3d3cdmr3692802f8f.14.1774430993569;
-        Wed, 25 Mar 2026 02:29:53 -0700 (PDT)
-X-Received: by 2002:a05:6000:400c:b0:439:be78:e1e9 with SMTP id ffacd0b85a97d-43b88a3d3cdmr3692727f8f.14.1774430992928;
-        Wed, 25 Mar 2026 02:29:52 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b6470380asm44280922f8f.24.2026.03.25.02.29.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2026 02:29:52 -0700 (PDT)
-Date: Wed, 25 Mar 2026 05:29:45 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Nipun Gupta <nipun.gupta@amd.com>,
-	Nikhil Agarwal <nikhil.agarwal@amd.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	Armin Wolf <W_Armin@gmx.de>, Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Mark Brown <broonie@kernel.org>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alex Williamson <alex@shazbot.org>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-hyperv@vger.kernel.org,
-	linux-pci@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-spi@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/12] treewide: Convert buses to use generic
- driver_override
-Message-ID: <20260325052919-mutt-send-email-mst@kernel.org>
-References: <20260324005919.2408620-1-dakr@kernel.org>
+        d=1e100.net; s=20251104; t=1774431156; x=1775035956;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=;
+        b=DeDCZgvwpPNJ4JsIPbmaHMMse6cAmoctAzsg2qPMUcDgoB2p1W7iGibBGAmGs6Rf8U
+         c5ManyIX5m6J5ONqGDIwIobDI7Rz8x6NMkWEhaxk6RjKn2IzJrYJxUZUtRhxZnIc1OOR
+         KziTxDnZx8ekhBJ2iRIv/qgWe6DS8nDkBC5D8bzUdJ53GVes1uaE0Y8p1SdSFx9IMQbg
+         4O2ZUmZ6d0NjZnH6h+yrv7FknLbID0gvp3Ne80kLTXGJ03DdlB8zh0hS7lGrp2sHgep9
+         afZe/BiNjKoHRw2cvsQpnb7YUqU8Yhcbhr4Z7zs+Xpqy4iWkAH4obYFpQQytsALjgvVn
+         MwpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVdWS4/UprEYlrW7LAJau2kgacg8ro0YVU8rHw4eMw6CGCE4R4M2GHpm+Kfgc+/HgSwUP/GZp1E84Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxucfee2hnSt/VO7V8rcm7mLcw5YoMIaWdVIPM1cJ7jg9d8Jvd6
+	2il0TWJjuxVZrvEz3Ttdn4QAhS25/faVIHvT6n0eP27cwSNgQjZjhKh7yAOOaaM0tFKbevwqmbq
+	9zYwx1RVRjb1+uhSZhq8zO6KvGDNBoKBA7JRV6CTpQJ+QGbBvYPoGxjZSzzAQd0A=
+X-Gm-Gg: ATEYQzyFbB67N2yTj8Zms5i7nlIDWztEb5QlfV3IrB6WtFh6kGDDm3gaALxjlf9GD12
+	49Dfle8uxwQxe8d3Jb4Jfw98eJGLJWk8TTWCX1z4N21wbomd+6rVbN7wQmvKw9DLUdtKT7znJQg
+	e9WIQJ6/bXlJVblI86TMdpAuDoV9KzWQ/Ja3lZZ9Xe55Kx0lVtuOsnHSAxcxgT8JKAdcYaNBLmT
+	QsK/jWidiMPydxIDeC3fzKKfhc06inj0eFQ2fpqbfJMvN9IGHyTbbq7h8u3jIdqjRJE+BXkt0nc
+	0add7DdnTZbFvckZzKoaMNvyfrZApGYgmA9leQy08pCOtTeXG9k4B9j+47LuxF2lCEgJF06xTe3
+	TFLjz2OICrmEDFCH+qtVED9mTw1VJzkST4e8FQGj3Cn5C7a7OuGrtfEyQUbkEgScVSEvU+lyFUy
+	Cv4b8=
+X-Received: by 2002:a05:6214:5191:b0:89a:50b4:bc94 with SMTP id 6a1803df08f44-89cc4738ca7mr29547326d6.0.1774431156427;
+        Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
+X-Received: by 2002:a05:6214:5191:b0:89a:50b4:bc94 with SMTP id 6a1803df08f44-89cc4738ca7mr29547166d6.0.1774431156025;
+        Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b983365d86asm779950166b.48.2026.03.25.02.32.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Mar 2026 02:32:34 -0700 (PDT)
+Message-ID: <9d7c5d36-c981-43ed-a08b-3b75c25fad1e@oss.qualcomm.com>
+Date: Wed, 25 Mar 2026 10:32:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260324005919.2408620-1-dakr@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8akcHUCN1x7g0EgcoigZ6dbEEBwCTKMv5RHL6KWZNRw_1774430994
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/6] arm64: dts: qcom: talos: Add QSPI support
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com>
+ <20260324-spi-nor-v1-3-3efe59c1c119@oss.qualcomm.com>
+ <34cifkyw3pgky4nhcu4jwf2uveszre23kvesr7ksyjvmqhfspo@avsvwa3quvsp>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <34cifkyw3pgky4nhcu4jwf2uveszre23kvesr7ksyjvmqhfspo@avsvwa3quvsp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: YaopYy7cb-0w8zVtib7Bf4p1Qs1kAozd
+X-Proofpoint-GUID: YaopYy7cb-0w8zVtib7Bf4p1Qs1kAozd
+X-Authority-Analysis: v=2.4 cv=Q73fIo2a c=1 sm=1 tr=0 ts=69c3abb5 cx=c_pps
+ a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=EUspDBNiAAAA:8 a=Va9S0ePWEawDROJu0VIA:9 a=QEXdDO2ut3YA:10
+ a=OIgjcC2v60KrkQgK7BGD:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA2NyBTYWx0ZWRfX3reQjr70SbXt
+ 2pjuRz4QS7PBMDMHeVRm6ezEfGOjS1cv1BKkPwb1M4NFABwp4k9/323vHk4eFV/54hPezkVSYOU
+ aevLT3YtAQzfDmtbpj0APUc0ONq66UNCgTgWo3g+lzBsZ8+0DCyltVH9LwA7yaOV2x/2vTslszD
+ 6oJNKphFy5wD93vlMvgz4igWfTg2g1UT5BHeoDwuJhMCwxklXkpMB2IgViRFIck87exGEe+sryC
+ Vm7tS4LyfcDSAoeDIRT1SUorv3ZKUbv3c424YIkOX85/MdMiGPxTLUAzF6AWNzF79YXGPlcLXVb
+ AZmSzVVGqHo1xZjiWC/VaCo6XAKqK2zlwHfqj/FEVnGXh/DyxEnbJuTAQit5KdSpQk16IL7L41D
+ whXa0cN1m2UVwXQg66EEixvuR2HJtMkT3P6XRvdNkA+mXv76vPEQwC8snPG+dkInnKDWnU/T53y
+ GltkGXiQcxdyjqljDVw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-25_03,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250067
 
-On Tue, Mar 24, 2026 at 01:59:04AM +0100, Danilo Krummrich wrote:
-> This is the follow-up of the driver_override generalization in [1], converting
-> the remaining 11 busses and removing the now-unused driver_set_override()
-> helper.
+On 3/24/26 9:51 PM, Dmitry Baryshkov wrote:
+> On Tue, Mar 24, 2026 at 06:43:20PM +0530, Viken Dadhaniya wrote:
+>> The Talos (QCS615) platform includes a QSPI controller used for accessing
+>> external flash storage. Add the QSPI OPP table, TLMM pinmux entries, and
+>> the QSPI controller node to enable support for this hardware.
+>>
+>> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+>> ---
+>>  arch/arm64/boot/dts/qcom/talos.dtsi | 80 +++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 80 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/talos.dtsi b/arch/arm64/boot/dts/qcom/talos.dtsi
+>> index 75716b4a58d6..fd727924b8ca 100644
+>> --- a/arch/arm64/boot/dts/qcom/talos.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/talos.dtsi
+>> @@ -530,6 +530,25 @@ cdsp_smp2p_in: slave-kernel {
+>>  
+>>  	};
+>>  
+>> +	qspi_opp_table: opp-table-qspi {
 > 
-> All of them (except AP, which has a different race condition) are prone to the
-> potential UAF described in [2], caused by accessing the driver_override field
-> from their corresponding match() callback.
-> 
-> In order to address this, the generalized driver_override field in struct device
-> is protected with a spinlock. The driver-core provides accessors, such as
-> device_match_driver_override(), device_has_driver_override() and
-> device_set_driver_override(), which all ensure proper locking internally.
-> 
-> Additionally, the driver-core provides a driver_override flag in struct
-> bus_type, which, once enabled, automatically registers generic sysfs callbacks,
-> allowing userspace to modify the driver_override field.
-> 
-> SPI and AP are a bit special; both print "\n" when driver_override is not set,
-> whereas all other buses (and thus the driver-core) produce "(null)\n" in this
-> case.
-> 
-> Hence, SPI and AP do not take advantage of the driver_override flag in struct
-> bus_type; AP additionally maintains a counter in its custom sysfs store().
-> 
-> Technically, we could support a custom fallback string when driver_override is
-> unset in struct bus_type, but only SPI would benefit from this, since AP has
-> additional custom logic in store() anyways.
-> 
-> (I'm not sure if there are userspace programs that strictly rely on this;
-> driverctl seems to check for both, but I rather not break some userspace tool
-> I'm not aware of. :)
-> 
-> This series is based on v7.0-rc5 with no additional dependencies, hence those
-> patches can be picked up by subsystems individually.
-> 
-> [1] https://lore.kernel.org/driver-core/20260303115720.48783-1-dakr@kernel.org/
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=220789
-> [3] https://gitlab.com/driverctl/driverctl/-/blob/0.121/driverctl?ref_type=tags#L99
+> Why is it not defined inside the QSPI device itself?
 
-vdpa bits:
+The QSPI device has #address-cells = <1>, so we'd get:
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Warning (spi_bus_reg): /soc@0/spi@88dc000/opp-table-qspi: missing or empty reg property
 
-I assume it'll all be merged together?
-
-> Danilo Krummrich (12):
->   amba: use generic driver_override infrastructure
->   bus: fsl-mc: use generic driver_override infrastructure
->   cdx: use generic driver_override infrastructure
->   hv: vmbus: use generic driver_override infrastructure
->   PCI: use generic driver_override infrastructure
->   platform/wmi: use generic driver_override infrastructure
->   rpmsg: use generic driver_override infrastructure
->   vdpa: use generic driver_override infrastructure
->   s390/cio: use generic driver_override infrastructure
->   s390/ap: use generic driver_override infrastructure
->   spi: use generic driver_override infrastructure
->   driver core: remove driver_set_override()
-> 
->  drivers/amba/bus.c                 | 37 +++------------
->  drivers/base/driver.c              | 75 ------------------------------
->  drivers/bus/fsl-mc/fsl-mc-bus.c    | 43 +++--------------
->  drivers/cdx/cdx.c                  | 40 ++--------------
->  drivers/hv/vmbus_drv.c             | 36 ++------------
->  drivers/pci/pci-driver.c           | 11 +++--
->  drivers/pci/pci-sysfs.c            | 28 -----------
->  drivers/pci/probe.c                |  1 -
->  drivers/platform/wmi/core.c        | 36 ++------------
->  drivers/rpmsg/qcom_glink_native.c  |  2 -
->  drivers/rpmsg/rpmsg_core.c         | 43 +++--------------
->  drivers/rpmsg/virtio_rpmsg_bus.c   |  1 -
->  drivers/s390/cio/cio.h             |  5 --
->  drivers/s390/cio/css.c             | 34 ++------------
->  drivers/s390/crypto/ap_bus.c       | 34 +++++++-------
->  drivers/s390/crypto/ap_bus.h       |  1 -
->  drivers/s390/crypto/ap_queue.c     | 24 +++-------
->  drivers/spi/spi.c                  | 19 +++-----
->  drivers/vdpa/vdpa.c                | 48 ++-----------------
->  drivers/vfio/fsl-mc/vfio_fsl_mc.c  |  4 +-
->  drivers/vfio/pci/vfio_pci_core.c   |  5 +-
->  drivers/xen/xen-pciback/pci_stub.c |  6 ++-
->  include/linux/amba/bus.h           |  5 --
->  include/linux/cdx/cdx_bus.h        |  4 --
->  include/linux/device/driver.h      |  2 -
->  include/linux/fsl/mc.h             |  4 --
->  include/linux/hyperv.h             |  5 --
->  include/linux/pci.h                |  6 ---
->  include/linux/rpmsg.h              |  4 --
->  include/linux/spi/spi.h            |  5 --
->  include/linux/vdpa.h               |  4 --
->  include/linux/wmi.h                |  4 --
->  32 files changed, 88 insertions(+), 488 deletions(-)
-> 
-> 
-> base-commit: c369299895a591d96745d6492d4888259b004a9e
-> -- 
-> 2.53.0
-
+Konrad

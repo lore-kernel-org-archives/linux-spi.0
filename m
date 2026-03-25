@@ -1,251 +1,168 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B321A3B9616
-	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 10:18:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774433907; cv=none; b=j403jNmqjQGdy6h2xs4QTb0EoK6rU7hDAV4+bicaQiQDtbFFmBe0BKwX/7FiSs5yRuXVuG1LrnQLW67pew03hsMPdUJdvHNnqQg7hNU84WJpZipdy1esDttNTBVSwkcO1baUwPm/pNvurlB58C7d7JX08gBcJl25UwjLZl+9JXM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774433907; c=relaxed/simple;
-	bh=1Uc6t1cwxW0MzD1dqSUvlR5rqITAHKLiUYzFlCfYbCs=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ADF30BB94
+	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 10:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774434166; cv=pass; b=deX+PfNf/6YH3Z7XoPvzJ2w7xQOEWl5w0orpop4g8cNcWWkDUNp5AHZcGlGelAI9lH9VCrhD1vBYmlkykNuErX10aV6WLfm1EUBLo3AW6jSqOj7kSUwwGk0ibVPLZVKpizRJHjovTR8hZlCmR3QxwwBKil9LjigxrdMFsKUFwGo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774434166; c=relaxed/simple;
+	bh=ak/OG2lAGEZSwH/OhUCjLYanzmvBa4sFEeeu6PK08is=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UNFAp2hxIQmBJXxd8t+1mQ5CUUQqv+WELKVI4CQ37mFIWXwOWHeXC9ZHZnH0nofPuoNKUsT4xe4gCfIVZ+t7vXrXFCCdhTZGd6YC6HlO3u05UhevhuGLKSqLP7JS5HkR3bubV2k1PJ5mImRb7xDu/h2kqX5e5UDN6uwh4FFvXsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jHOZW0NK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=FYw/73y99/CpcJ04fyydp7E5hq+KG1Sgmifr+cqNjp9qrSEWvP6/L6dy07ukKPtzRph6t74j1Qks2NHEd2Sqne8oySrW8RUrHxkib6z8a5JWp30uIwlJyMpW855vkIHQfcicfzhT8hj0d/3fNb3Atlf1BYM9Wv80pREtkKGRxLg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O6E4VH7w; arc=pass smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jHOZW0NK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1774433902;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HBOh/aoPlGxYDPbqkk5UK0G4/ytz0Hu0GxFXOarsu9g=;
-	b=jHOZW0NK4ph+nCIJtYbvMbiUxhKSecQKP3lRboTMJ/wC/susilImFdkTeVMDXxSLG97Nar
-	W+vkI4YrRS5PUnC/g/l7L9/ukhyoOe+IvvcZPz/qLET2y2XH2OghLxBMNgbO9aN/8pxbXp
-	AnPtpPyYDcfF17Ftp3L2xu1ISskNauM=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-Q6AXVU0-O72_MvsE9vwnRA-1; Wed, 25 Mar 2026 06:18:21 -0400
-X-MC-Unique: Q6AXVU0-O72_MvsE9vwnRA-1
-X-Mimecast-MFC-AGG-ID: Q6AXVU0-O72_MvsE9vwnRA_1774433901
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7986f771f69so19576567b3.1
-        for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 03:18:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O6E4VH7w"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c7358a7a8d1so1415530a12.3
+        for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 03:22:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774434165; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Q9rlMeM6x1mVhf8Q6RxIgBm+DRXDU4wWxbVCeGj6As+X7PIS+SJvtThWJHiDQeYnha
+         YblX56NxJupUxPRNRDvhOX2ORlt/uBUyzO8R+OssqDRLg8cLs6O1bsyyWqWRTlJRnUrs
+         TyvH80CTWEi1mSSZiZoZKXcT/XavKZlB34s931qzCTwSD31vKoXAaDeBmP4UUKfIGMhV
+         6+oQX0n9Hv59j1r2vPlIXaMDhi2US3RCOkWtI9FhYfID4WmMODVuR39ibQvobDGHhs4h
+         L8/bqYH3kkgSHoLlMJFzEsHyrktMHyHqiukQrS4slcxtUEuTdgq9FBSe30H3jex53sqf
+         UsTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8nZJE6MXg4INlJLa4tIZbHcF5ur/snqPoQ3m4+4x9vg=;
+        fh=fNinHbCHazAcoP+wbKhtfIDCAw3nVgVIB+X3rikTbpI=;
+        b=acZ7scKu12QoK07I9S2tHHWZG3rFhnlkvSij9DPUUX9uzsJ2cXjdolkoTnkJNwEBQ6
+         DrGX52TrcWLYUJ8Uo5YcQms1SW6/6jrRrn3BS5e78miqU5xCVg7/ZELMouSLPyd74TsS
+         qb8EZOBCKDvXVqMYPnyImzU9C+2VMfezC3KIU0/VM/jFRCpcAd1rfPSkqoqrYK7Oj5OH
+         Q7AqG/ZuwmHKOPAlqVIoMAAwXxhycyPc7lMlRWaFYLmF9ig2NxJQmiFCMppvvckk7bMg
+         d1K9icPV4Sd5UUnvylcXTma7B6CspO1PRDACgGeqrL8D2zl2BhTjLnswE6QixBbCOJ3p
+         iKtw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774434165; x=1775038965; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8nZJE6MXg4INlJLa4tIZbHcF5ur/snqPoQ3m4+4x9vg=;
+        b=O6E4VH7wOExLa7+f/b/ys7NB52/uASNFyGqFR6dnNeFBuT9YALQZh80VNo4bo1q0PT
+         A/yzWQsNo4FBWwLbYp+c7TIaq60NnJHR4Ued93PTode7AcbEzpd6am0dPWZHRYeFT7f0
+         dl7WSPJ7HgAVhvEFys1irRxKRm+XBvA544q3j2cHf0s/YafzCMUk+x0kBAXW6IcuJYSh
+         vAz9qlIThZxbqVnytLaemEOFiUjDCdssoWsO3dGPhoAN6/oelXRsb/sbHyR+Oxri3GjN
+         MtkJcFTj4mLVZPj1R+zMSyG+uHLI7BO2jS1FYwoVIBKHiyWP2mV2mUZQtVMMS4CVcX0E
+         unEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774433901; x=1775038701;
+        d=1e100.net; s=20251104; t=1774434165; x=1775038965;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=HBOh/aoPlGxYDPbqkk5UK0G4/ytz0Hu0GxFXOarsu9g=;
-        b=FepE57O8k7M+wDhzaUwpuRqOx1K9rSErc9RvNSwy63yasGXfVrMrk6Bo9UkeIdAQlc
-         NEmMmQd1Cb+eXPtaFnTgcorX8NAhM8evaUt+KK2imXI3vO6JhrXdeL/QuEJvPLeESjj1
-         8SQQn08Y/lF/LRMxp3/mGfXI7V35L8qFcxutBt+m+FayGc97QHBfmlCUNKRHPaMnk0X3
-         7AaDWQ9h45Px4mbBQ7XunpnOb6NYWTXSOi+yeIDLhLbDzNQgNNjd7kly49NbJzV1Xef5
-         HKAutDo3qMdxgEHfd6df2hGkL82Ihmc5yVfSArjB1+zV7s0YmzUjBNuaMMqOy1kIv/Q9
-         KOSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTKw+aZyyo/Re6YnwlJ9U4PDO/nth+hkc6vzOpyP1ermIRuhbo7xXrCSKg8vXzcedHXaVHEQ0rarU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXfOrTY0vLNZMiB3WvyfhL1OIADpt/RKPb9CLIuX7/nqPZS3Ts
-	E4i1Avtc2aK7epq+123g//CSnKILvxgxH1ohPOKCSODjNd3/mscehpmc5qrqK9C3JJfLij9993Q
-	4uUeOQDZtoN2kS0Bol32aLxmTQfe21Y9McmttqCYmfU+Nnc6pco0FLk+J+MJmflMhVb8kFhzNmM
-	htKgQIRACrpyP9SZJNF4aYCADRtigbDkrFz/Fy
-X-Gm-Gg: ATEYQzzblaBsuVoAD12F3aT5tRUm5IIgBSZyTc2siDDwHsXcsVJC+H+frafbr1En9RP
-	swlwfUTyTt2SzWvxuqjtwJgmLeG025oTdrtGqgirHLO2SCthE/o8SOYVGb+mydMLANH3WJMGBbv
-	IQkKDWHQk6oP4jXGV1CFPNllSQVQ9aR3wRSq8eCOky5OXZDW8Y34SwOdiEqUqEYM5wPyd5PzEVp
-	omFmw==
-X-Received: by 2002:a53:acd1:0:20b0:64c:9f60:19d4 with SMTP id 956f58d0204a3-64ed77ef1ecmr4805302d50.8.1774433900769;
-        Wed, 25 Mar 2026 03:18:20 -0700 (PDT)
-X-Received: by 2002:a53:acd1:0:20b0:64c:9f60:19d4 with SMTP id
- 956f58d0204a3-64ed77ef1ecmr4805242d50.8.1774433900219; Wed, 25 Mar 2026
- 03:18:20 -0700 (PDT)
+        bh=8nZJE6MXg4INlJLa4tIZbHcF5ur/snqPoQ3m4+4x9vg=;
+        b=GPvgYMRpv7IoQYoSFTwqr1T6t7cZx8GPHthahORC4qnjdo1LWqYnFIYx8MznLJ7C9p
+         3REtJTArIDVhmLh/5zKL/6pZcWmn9Nd+iy5jJt2g1cJtJeWmj/TXl7JZnXS4AoZNi+xH
+         2g/8tsJ6y7hmcBZbah31Nn6nlU0nhouS7geCY6k5NbgJ5FMDcMb869MRb16KKIlbSfbY
+         gnBnqjhDXX/L1qNrub00KOaV7T84mbwpM3Kiq4oUzH2vv5bPawSsp7MbICN25hJdluBF
+         WFMaODo3bFahKVbzYn/Phcw0Q054bXhkV8ZMyXch5bQKLCluZdwiprmx9vpynRLCOaE4
+         9E6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXWzBU5qbYNm6WYaAcALPmwsTReCPlaum1bio2cdfUBNTz00mrw8KDFF1OY9qMqwZ6Ro/+ScOVfu3Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyumrpQxC/a+1imp4w3kRWiazTGENa8eVAYlfpnDUeHgeQSmv57
+	3t0dDsVKua3UvHdbmq7pd+R7fTxEuj1NpEwrhQ3bvOlrTmhaDroLbWKele7wlvmF58QWxr3nq4W
+	vDmKN2y4RDhxVvweuE/7uiLB2+GIuRB4=
+X-Gm-Gg: ATEYQzxFiYb7pFEBJ+prJSCenflH8w0gPwAzD9nuXAJLbiBRg1jtzTT10kWLG//mHiz
+	TxhrZyiavOtWSAHjWdgi/G7VjouGUsOLZW9Ky7oazNIcHlah1/4DScP0vmN6CG5euoyC6tFzGEG
+	VL2sCrVN4GIbTNV9XO1oIHI8UdTPnOsn4ukK3A2+Sxhbpo3b4oMFau/EF1rsTbTzUNv+sT3T4Pa
+	F/2ewKeq06J01TEbLNtIdZcWXRKGkq3e5Gl9lxMZlE3Nq56zNRWqNOp1rWcYagKUftb3obOe1ut
+	7N5Y2gw=
+X-Received: by 2002:a17:903:37c3:b0:2ae:c795:6b4a with SMTP id
+ d9443c01a7336-2b0b0987036mr34202215ad.11.1774434164682; Wed, 25 Mar 2026
+ 03:22:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260324005919.2408620-1-dakr@kernel.org> <20260324005919.2408620-9-dakr@kernel.org>
-In-Reply-To: <20260324005919.2408620-9-dakr@kernel.org>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 25 Mar 2026 11:17:43 +0100
-X-Gm-Features: AaiRm50qMzjkKEJ7Fkr-Roi7I1a_DrzOw3E963yu_3LAy7xQt4ygKXGG9Px12Pc
-Message-ID: <CAJaqyWeuvD+XntgE9q4epQELpYYTOs1CznFn_tuOxeh_LurrcA@mail.gmail.com>
-Subject: Re: [PATCH 08/12] vdpa: use generic driver_override infrastructure
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
-	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Armin Wolf <W_Armin@gmx.de>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Vineeth Vijayan <vneethv@linux.ibm.com>, Peter Oberparleiter <oberpar@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Harald Freudenberger <freude@linux.ibm.com>, 
-	Holger Dengler <dengler@linux.ibm.com>, Mark Brown <broonie@kernel.org>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Alex Williamson <alex@shazbot.org>, 
-	Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, 
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-spi@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-arm-kernel@lists.infradead.org, Gui-Dong Han <hanguidong02@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FLLnlGcCzO9BZLiaZSTsarL1wne4uh5DwyjVkiodlyc_1774433901
-X-Mimecast-Originator: redhat.com
+References: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+ <20260324145548.139952-1-ustc.gu@gmail.com> <acOw2lGiQbPr-MGf@ashevche-desk.local>
+In-Reply-To: <acOw2lGiQbPr-MGf@ashevche-desk.local>
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Wed, 25 Mar 2026 18:22:33 +0800
+X-Gm-Features: AaiRm51YWFT8anCioGgl8yM1WeHNLe_RhM6XZkQVTolKhCp1zmENTHCNBVxy7XQ
+Message-ID: <CAN4SLj2ybx6Hici+KDbfQScxOcoVSxV56mTncCn7OVpKVRXEDQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 24, 2026 at 2:00=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Wed, Mar 25, 2026 at 5:54=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> When a driver is probed through __driver_attach(), the bus' match()
-> callback is called without the device lock held, thus accessing the
-> driver_override field without a lock, which can cause a UAF.
+> > It seems has a potential corner case in this commit.
+> >
+> > The issue is that devm_add_action_or_reset() triggers its callback
+> > immediately if the internal devres allocation fails.
 >
-> Fix this by using the driver-core driver_override infrastructure taking
-> care of proper locking internally.
+> Yes, it does.
 >
-> Note that calling match() from __driver_attach() without the device lock
-> held is intentional. [1]
+> > This creates the following sequence:
+> > 1. spi_register_controller(ctlr) succeeds.
+> > 2. devm_add_action_or_reset() is called but fails.
+> > 3. The "reset" triggers devm_spi_unregister_controller(ctlr) immediatel=
+y.
+> > 4. This calls spi_unregister_controller(ctlr).
+> > 5. For controllers allocated via spi_alloc_host() (where
+> >    ctlr->devm_allocated is false), spi_unregister_controller() calls
+> >    put_device(&ctlr->dev).
+> > 6. This drops the reference count to zero and frees the ctlr structure.
 >
-> Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kern=
-el.org/ [1]
-> Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D220789
-> Fixes: 539fec78edb4 ("vdpa: add driver_override support")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  drivers/vdpa/vdpa.c  | 48 +++++---------------------------------------
->  include/linux/vdpa.h |  4 ----
->  2 files changed, 5 insertions(+), 47 deletions(-)
+> I am not sure I see how the sequence is different from the say this
 >
-
-Consolidate this logic is great, thanks!
-
-> diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
-> index 34874beb0152..caf0ee5d6856 100644
-> --- a/drivers/vdpa/vdpa.c
-> +++ b/drivers/vdpa/vdpa.c
-> @@ -67,57 +67,20 @@ static void vdpa_dev_remove(struct device *d)
+>         ret =3D spi_register_controller(...)
+>         if (ret)
+>                 goto err;
+>         // ...if success do something else...
+>         ret =3D foo();
+>         if (ret) {
+>                 spi_unregister_controller(...);
+>                 goto err;
+>         }
 >
->  static int vdpa_dev_match(struct device *dev, const struct device_driver=
- *drv)
->  {
-> -       struct vdpa_device *vdev =3D dev_to_vdpa(dev);
-> +       int ret;
+> So, each driver should be prepared for an error handling in which it shou=
+ld
+> release resources in the reversed order.
 >
->         /* Check override first, and if set, only use the named driver */
-> -       if (vdev->driver_override)
-> -               return strcmp(vdev->driver_override, drv->name) =3D=3D 0;
-> +       ret =3D device_match_driver_override(dev, drv);
-> +       if (ret >=3D 0)
-> +               return ret;
+> > However, the driver still holds the ctlr pointer and will typically
+> > attempt its own cleanup, leading to a use-after-free or double-free.
 >
->         /* Currently devices must be supported by all vDPA bus drivers */
->         return 1;
-
-Nit: Maybe all of this can be replaced by
-abs(device_match_driver_override(dev,drv))? Or maybe we're putting too
-much in the same line.
-
-Either way,
-
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
-Thanks!
-
-
-
-
->  }
+> You mean buggy driver? Any real example of the use case?
 >
-> -static ssize_t driver_override_store(struct device *dev,
-> -                                    struct device_attribute *attr,
-> -                                    const char *buf, size_t count)
-> -{
-> -       struct vdpa_device *vdev =3D dev_to_vdpa(dev);
-> -       int ret;
-> -
-> -       ret =3D driver_set_override(dev, &vdev->driver_override, buf, cou=
-nt);
-> -       if (ret)
-> -               return ret;
-> -
-> -       return count;
-> -}
-> -
-> -static ssize_t driver_override_show(struct device *dev,
-> -                                   struct device_attribute *attr, char *=
-buf)
-> -{
-> -       struct vdpa_device *vdev =3D dev_to_vdpa(dev);
-> -       ssize_t len;
-> -
-> -       device_lock(dev);
-> -       len =3D sysfs_emit(buf, "%s\n", vdev->driver_override);
-> -       device_unlock(dev);
-> -
-> -       return len;
-> -}
-> -static DEVICE_ATTR_RW(driver_override);
-> -
-> -static struct attribute *vdpa_dev_attrs[] =3D {
-> -       &dev_attr_driver_override.attr,
-> -       NULL,
-> -};
-> -
-> -static const struct attribute_group vdpa_dev_group =3D {
-> -       .attrs  =3D vdpa_dev_attrs,
-> -};
-> -__ATTRIBUTE_GROUPS(vdpa_dev);
-> -
->  static const struct bus_type vdpa_bus =3D {
->         .name  =3D "vdpa",
-> -       .dev_groups =3D vdpa_dev_groups,
-> +       .driver_override =3D true,
->         .match =3D vdpa_dev_match,
->         .probe =3D vdpa_dev_probe,
->         .remove =3D vdpa_dev_remove,
-> @@ -132,7 +95,6 @@ static void vdpa_release_dev(struct device *d)
->                 ops->free(vdev);
+> In the 5. you implied something like
 >
->         ida_free(&vdpa_index_ida, vdev->index);
-> -       kfree(vdev->driver_override);
->         kfree(vdev);
->  }
+>         ret =3D spi_alloc_host();
+>         ...
+>         ret =3D devm_spi_register_controller()
 >
-> diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
-> index 2bfe3baa63f4..782c42d25db1 100644
-> --- a/include/linux/vdpa.h
-> +++ b/include/linux/vdpa.h
-> @@ -72,9 +72,6 @@ struct vdpa_mgmt_dev;
->   * struct vdpa_device - representation of a vDPA device
->   * @dev: underlying device
->   * @vmap: the metadata passed to upper layer to be used for mapping
-> - * @driver_override: driver name to force a match; do not set directly,
-> - *                   because core frees it; use driver_set_override() to
-> - *                   set or clear it.
->   * @config: the configuration ops for this device.
->   * @map: the map ops for this device
->   * @cf_lock: Protects get and set access to configuration layout.
-> @@ -90,7 +87,6 @@ struct vdpa_mgmt_dev;
->  struct vdpa_device {
->         struct device dev;
->         union virtio_map vmap;
-> -       const char *driver_override;
->         const struct vdpa_config_ops *config;
->         const struct virtio_map_ops *map;
->         struct rw_semaphore cf_lock; /* Protects get/set config */
+> ?
+>
+> But this is against the rule how devm must be used.
+>
+> > What are your thoughts on this? Does this analysis seem correct, or am
+> > I missing a detail in how the refcounting is handled here?
+>
+> Is this analysis AI assisted?
+>
 > --
-> 2.53.0
+> With Best Regards,
+> Andy Shevchenko
+>
 >
 
+Hi Andy,
+I got the thoughts from an AI review from sashiko and  verified it on my ow=
+n.
+https://sashiko.dev/#/patchset/20260322-rockchip-v1-1-fac3f0c6dad8%40gmail.=
+com
+
+Best Regards,
+Felix

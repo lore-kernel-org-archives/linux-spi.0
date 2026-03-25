@@ -1,45 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55863BC670;
-	Wed, 25 Mar 2026 14:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F933E3149
+	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774450414; cv=none; b=XgeR0DDKWuVp2egOlQ+P1IH8GoD6p0i3MJF6zGxJNn3ydyedwtE9R3Bk+Qk56HMkNO1D0oO7MlmCVO9qN2/AO9p73TkmbA1S3j9oXqYzXhtnzOjx+SRlczgomUyuIgCwO5HbjEkummqOdx/V15ToWqvOC6sr7ohUXKBlGFfPIWw=
+	t=1774450625; cv=none; b=Y5J8zOrVc99uancPE59cPM0Gtn18LRKUy/AO1MA9IiOt5wcOA6mtuAKHpNZy/KUDq1xRJ4uAURms2cbQoqfDjHiHFFt+9RzdAGOg7ungsl+2CY2OJChUrhew58GsMJXdamY0xZNtrJByIq6n+WPZgqFtDA6VyhIsuiP+E9yaGhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774450414; c=relaxed/simple;
-	bh=aeIUHCs+I1FvnACDtVOzqzmisSohDwE6rwC/ECyDq7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFRoqar24JIac+gpFu4stn7b5HnmRGNAXy4gjucV2LhnRhBF1lR/Pnp/XLruRHAzOz90Sn/+WBIGOZ/TlW3jfGGaopeAomH6tLhsol9DFaZX1FEVudIMgvf2PTRoL9YMqQ+SMZKJXrLmoMFVuVKmp8ymfVWoRWFZviNeMngLRco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHyTQe5X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774450625; c=relaxed/simple;
+	bh=C2kbDuVqLVzbyIC7bBO7XZeiD6u8NcB/09XWPH73g3g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=TOyWBz2RJ5P5RDb20ku8E3dxZn+PzzyAtmLsOeayERb/awcHRuZluzPbXf21Jxd3KHUgYpxevfb1CnbBX7z1IoS9tVEf5Lq8q40SAjz1poM2NDbC0wPrkSU4C5kaZoDwGT8ixUUl8mO6DdduH0MK23Zfdh3xoXmjqrPHDfszp2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTChLLNS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHyTQe5X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97959C19423;
-	Wed, 25 Mar 2026 14:53:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTChLLNS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B58C4CEF7;
+	Wed, 25 Mar 2026 14:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774450414;
-	bh=aeIUHCs+I1FvnACDtVOzqzmisSohDwE6rwC/ECyDq7M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nHyTQe5Xe05pFbs40LbnXiFy29cTzb7vEdlrdJVGU+0EeKxHXTJUjDYfkKrdLF53e
-	 qO9LMQCf1/Lyl4wyZuXHSveSvEo37LbS813oEFrmzJxPgqHIF/0w2KARJkereMvGRs
-	 SmgB3h3qrV2Mw0fv5b008HO5UyylLRIl39h50J/x3VZ43ubNpXu6WYw986f4zfCN53
-	 rXSFJuIzkDtVLTRRfNVyOvd0qBzOoiHYnk1qHwKT4y+7tvspRmwmJb6iyv2mgu3FOT
-	 CezZVXzMQetiggi/D3i4cTA96Mq1xHzTgVuF+lr3d2CMBoC4W0BIJ4/5hV5ofkmC5+
-	 ox3oWphzCNf6A==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w5Pbw-00000004kVY-15YF;
-	Wed, 25 Mar 2026 15:53:32 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	Felix Gu <ustc.gu@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH] spi: fix use-after-free on managed registration failure
-Date: Wed, 25 Mar 2026 15:53:19 +0100
-Message-ID: <20260325145319.1132072-1-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
+	s=k20201202; t=1774450624;
+	bh=C2kbDuVqLVzbyIC7bBO7XZeiD6u8NcB/09XWPH73g3g=;
+	h=Subject:From:Date:To:From;
+	b=sTChLLNSjJsROcfl5HPyIbjOHLKUlRy/FtRrbZXE7yeq9IFlraO2c650ButSpgp4J
+	 zxVhrlUD0aMgMB9V3W+jSFWqb4TWNRVFkVL/xchGR+tAJjmOyUqZw6pVYg/UJwQ0dF
+	 T64BFEgaz0o7W4Jsf8aJQN+SEXfSwweLlec4MsZUPDd5MVEe389Untk/T3+tcMqJ7T
+	 F5ORZTGtza2M0VviSmyLuoiWbfCk0X962feZKTvLywtzZbKYGXqP6TC4cze+FcSd+D
+	 E9879zJIuHTSAsAU7m6WxqZhWhy4a1uon/s9oYr3BXs1g/NOC2uEwQZzsEfC5mNWI1
+	 5pb5kWhgE/PfA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF4C3808205;
+	Wed, 25 Mar 2026 14:56:53 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,60 +36,46 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177445061183.1665755.8902212080584416706.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 25 Mar 2026 14:56:51 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-The SPI API is asymmetric and the controller is freed as part of
-deregistration (unless it has been allocated using
-devm_spi_alloc_host/target()).
+Latest series: [v6] lan966x pci device: Add support for SFPs (2026-03-25T14:35:27)
+  Superseding: [v5] lan966x pci device: Add support for SFPs (2026-02-27T13:53:57):
+    [v5,01/28] Revert "treewide: Fix probing of devices in DT overlays"
+    [v5,02/28] driver core: Rename get_dev_from_fwnode() wrapper to get_device_from_fwnode()
+    [v5,03/28] of: dynamic: Fix overlayed devices not probing because of fw_devlink
+    [v5,04/28] driver core: Avoid warning when removing a device while its supplier is unbinding
+    [v5,05/28] bus: simple-pm-bus: Remove child devices when the bus is unbound
+    [v5,06/28] bus: simple-pm-bus: Populate child nodes at probe
+    [v5,07/28] driver core: fw_devlink: Introduce fw_devlink_set_device()
+    [v5,08/28] drivers: core: Use fw_devlink_set_device()
+    [v5,09/28] pinctrl: cs42l43: Use fw_devlink_set_device()
+    [v5,10/28] cxl/test: Use device_set_node()
+    [v5,11/28] cxl/test: Use fw_devlink_set_device()
+    [v5,12/28] PCI: of: Use fw_devlink_set_device()
+    [v5,13/28] PCI: of: Set fwnode device of newly created PCI device nodes
+    [v5,14/28] PCI: of: Remove fwnode_dev_initialized() call for a PCI root bridge node
+    [v5,15/28] i2c: core: Introduce i2c_get_adapter_physdev()
+    [v5,16/28] i2c: mux: Set adapter physical device
+    [v5,17/28] i2c: mux: Create missing devlink between mux and adapter physical device
+    [v5,18/28] of: property: Allow fw_devlink device-tree on x86
+    [v5,19/28] clk: lan966x: Add MCHP_LAN966X_PCI dependency
+    [v5,20/28] i2c: busses: at91: Add MCHP_LAN966X_PCI dependency
+    [v5,21/28] misc: lan966x_pci: Fix dtso nodes ordering
+    [v5,22/28] misc: lan966x_pci: Split dtso in dtsi/dtso
+    [v5,23/28] misc: lan966x_pci: Rename lan966x_pci.dtso to lan966x_evb_lan9662_nic.dtso
+    [v5,24/28] PCI: Add Microchip LAN9662 PCI Device ID
+    [v5,25/28] misc: lan966x_pci: Introduce board specific data
+    [v5,26/28] misc: lan966x_pci: Add dtsi/dtso nodes in order to support SFPs
+    [v5,27/28] misc: lan966x_pci: Sort the drivers list in Kconfig help
+    [v5,28/28] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
 
-A recent change converting the managed registration function to use
-devm_add_action_or_reset() inadvertently introduced a (mostly
-theoretical) regression where a non-devres managed controller could be
-freed as part of failed registration. This in turn would lead to
-use-after-free in controller driver error paths.
 
-Fix this by taking another reference before calling
-devm_add_action_or_reset() and not releasing it on errors for
-non-devres allocated controllers.
-
-An alternative would be a partial revert of the offending commit, but
-it is better to handle this explicitly until the API has been fixed
-(e.g. see 5e844cc37a5c ("spi: Introduce device-managed SPI controller
-allocation")).
-
-Fixes: b6376dbed8e1 ("spi: Simplify devm_spi_*_controller()")
-Reported-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://lore.kernel.org/all/20260324145548.139952-1-ustc.gu@gmail.com/
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index cb00619864cf..aac378e668a8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3537,8 +3537,19 @@ int devm_spi_register_controller(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	return devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
-+	/*
-+	 * Prevent controller from being freed by spi_unregister_controller()
-+	 * if devm_add_action_or_reset() fails for a non-devres allocated
-+	 * controller.
-+	 */
-+	spi_controller_get(ctlr);
-+
-+	ret = devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
- 
-+	if (ret == 0 || ctlr->devm_allocated)
-+		spi_controller_put(ctlr);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(devm_spi_register_controller);
- 
 -- 
-2.52.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

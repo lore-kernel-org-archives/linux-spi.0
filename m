@@ -1,164 +1,152 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEC32E8B6B
-	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E7E30AD05;
+	Wed, 25 Mar 2026 09:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774431159; cv=none; b=Ik2w53kJV9AyISmmoRYGSaSp6P+WkFLx2U4yCKSHtK+1nG0UPNhT5HZbt43I7i/W2dg7bs8AnYNsKDF6eiLi5Hvs7p1+dLDIAwbySlKgNqjVoFDyrNPEumMcw1eDJHAybnI9glyYrVievvzvGP8LMtKX55pdUtMM+4u1oHCzM4Y=
+	t=1774432480; cv=none; b=V2AzGAAgd5qFEmBg3NQGLbJw59vO3CBPJRzWdqPO+oHJB3/caRxpwzeJL/bPHiW+BXXH/fLAKmtb5aPk8Vr8lhMu23TybLs7IzQJgY+tZlZoBzuU6L1RCuXEJB/6v/Cv5XowrH5rZELFaqqymp8GoN0GBMFXvCsbcZVjxWoH8Wo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774431159; c=relaxed/simple;
-	bh=fSUL9igBA3KN4gm9BjiayxKw1TnmPlLVceGWkB0osq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k7iCL6NM6vvA3LY9nxsh7IU2cl9FyfVm1xJzlz0dCwHlgSsAK6MT6jZf2dLrPVTWCwo6u3/NloT0Ztdg0Tr95DXQ6Vja/Qu0vaXMQ8Aui+XtMEh0W+XTl8VYXSLbiVVFjvZE7ttRjGaZ0hSKArC+bPwknv2r0LaiKZwLrGhliV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Pvpx+3rB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=R4jsUSwT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1774432480; c=relaxed/simple;
+	bh=7EiaRxmsVIzYa72CFW/2suQxXAhsJxx/5bUpYhqx88w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jkDoKJ3YQViLvnkfYBV9l6xuPLiGgNzHdFVizXDL7iYkOJTGNXVEdRBzAttJ6HjMjJv/xBBzqTFSZxHVi70kWclCM20wQV/Hy51sT4e8JfAFlCg12FZlC9UR5+7XwRn/X+ml+DHzB98BHXqdEKAuBCuoallLqOhmfInwEEt9z04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ebcqzko2; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Pvpx+3rB";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="R4jsUSwT"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62P9D0Gr4158093
-	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=; b=Pvpx+3rBKH6CGRq5
-	Kq3BLyUlf5QmLyzMWs5tWe2hgeQvRlM7uvjnAbPhhsIUuF4XXct21C0kN7IyALPT
-	nAgyyttVxyIeQ5Z+qj/+Y7+FHQHLohgESbxgB5phhFklO79nUpnTZbz1a8Ddz3k3
-	1AMAwK+XmFWA/eOQMSXCTAVExsxz2hFRwc1Hymh3urAygOmIQ/HCadXEbvh2wq7B
-	SXe58CC6AlCRIIYVB1LWSKnS9Qd6jcXD3wqcRFue4+DDLIWbcpdDmCOVKxwr/DPt
-	mguiPNKmJlGEzjp4nz/S492AgJycvDcThaFbfjFMNrhzFmtUcofRImMjhBKMzXKT
-	g/dXLA==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4cvp02mv-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 09:32:36 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-89c471045c9so34430256d6.2
-        for <linux-spi@vger.kernel.org>; Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1774431156; x=1775035956; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=;
-        b=R4jsUSwTN4HMuo0IVU5b6NfkJ42QTx4qnWHnOz4wDvNMY9VpsNtMFyODsaP+BxS2LT
-         bWzfyq53zScTayH4m0SQcKvlhnBIMMEba8CtQlHf4sk92dBiTxDA4ETDRCRNyikqPebU
-         ycAf7+WxB4BZCrbUSAluZ2EvG2WJlHe08OP+wpAdo+BGoKBy+YT1EiAD4JQVzdh1T/MC
-         rWadfL1EjDP5gjv7HBl2mVPprDuxvruHHvv4PRfqkaprZtYVVJTIJZlppreRIi5+nIXv
-         mS6ZNUwQ1xSRdBbsWoRJsob81hWERYNN/HbRzDryqNhVkc+sRcDKXjTjgeY09xA25x52
-         Yv7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774431156; x=1775035956;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FJUFvWx22X5sgVS+otV+IEBw7LizmRlEPkfCL66YKKs=;
-        b=DeDCZgvwpPNJ4JsIPbmaHMMse6cAmoctAzsg2qPMUcDgoB2p1W7iGibBGAmGs6Rf8U
-         c5ManyIX5m6J5ONqGDIwIobDI7Rz8x6NMkWEhaxk6RjKn2IzJrYJxUZUtRhxZnIc1OOR
-         KziTxDnZx8ekhBJ2iRIv/qgWe6DS8nDkBC5D8bzUdJ53GVes1uaE0Y8p1SdSFx9IMQbg
-         4O2ZUmZ6d0NjZnH6h+yrv7FknLbID0gvp3Ne80kLTXGJ03DdlB8zh0hS7lGrp2sHgep9
-         afZe/BiNjKoHRw2cvsQpnb7YUqU8Yhcbhr4Z7zs+Xpqy4iWkAH4obYFpQQytsALjgvVn
-         MwpA==
-X-Forwarded-Encrypted: i=1; AJvYcCVdWS4/UprEYlrW7LAJau2kgacg8ro0YVU8rHw4eMw6CGCE4R4M2GHpm+Kfgc+/HgSwUP/GZp1E84Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxucfee2hnSt/VO7V8rcm7mLcw5YoMIaWdVIPM1cJ7jg9d8Jvd6
-	2il0TWJjuxVZrvEz3Ttdn4QAhS25/faVIHvT6n0eP27cwSNgQjZjhKh7yAOOaaM0tFKbevwqmbq
-	9zYwx1RVRjb1+uhSZhq8zO6KvGDNBoKBA7JRV6CTpQJ+QGbBvYPoGxjZSzzAQd0A=
-X-Gm-Gg: ATEYQzyFbB67N2yTj8Zms5i7nlIDWztEb5QlfV3IrB6WtFh6kGDDm3gaALxjlf9GD12
-	49Dfle8uxwQxe8d3Jb4Jfw98eJGLJWk8TTWCX1z4N21wbomd+6rVbN7wQmvKw9DLUdtKT7znJQg
-	e9WIQJ6/bXlJVblI86TMdpAuDoV9KzWQ/Ja3lZZ9Xe55Kx0lVtuOsnHSAxcxgT8JKAdcYaNBLmT
-	QsK/jWidiMPydxIDeC3fzKKfhc06inj0eFQ2fpqbfJMvN9IGHyTbbq7h8u3jIdqjRJE+BXkt0nc
-	0add7DdnTZbFvckZzKoaMNvyfrZApGYgmA9leQy08pCOtTeXG9k4B9j+47LuxF2lCEgJF06xTe3
-	TFLjz2OICrmEDFCH+qtVED9mTw1VJzkST4e8FQGj3Cn5C7a7OuGrtfEyQUbkEgScVSEvU+lyFUy
-	Cv4b8=
-X-Received: by 2002:a05:6214:5191:b0:89a:50b4:bc94 with SMTP id 6a1803df08f44-89cc4738ca7mr29547326d6.0.1774431156427;
-        Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
-X-Received: by 2002:a05:6214:5191:b0:89a:50b4:bc94 with SMTP id 6a1803df08f44-89cc4738ca7mr29547166d6.0.1774431156025;
-        Wed, 25 Mar 2026 02:32:36 -0700 (PDT)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b983365d86asm779950166b.48.2026.03.25.02.32.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Mar 2026 02:32:34 -0700 (PDT)
-Message-ID: <9d7c5d36-c981-43ed-a08b-3b75c25fad1e@oss.qualcomm.com>
-Date: Wed, 25 Mar 2026 10:32:31 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ebcqzko2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774432479; x=1805968479;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7EiaRxmsVIzYa72CFW/2suQxXAhsJxx/5bUpYhqx88w=;
+  b=Ebcqzko2yl/LzAktYB9/u7XG6UasohYvCx9M6qupQQdA60HneiDChE5d
+   GpHH2ZmbV1r5s+zdr2nMDdVs253sPsA9G6SuYxjhlH4faVhzNPCWoJGWd
+   mno6KTxvx3VT+WfwmZJL8FuUtwg4FZkTHGeNPCutUF+SKN9j+9XrgkG8/
+   3KGN5JmqtdFE6vBKnVFFfeLJ1W/wzJxe+MPrFW6hBS4aU9grEsaAJFT2c
+   H/pykYP4+NuYxmETewjRK1vL+pedvLifHmpoqLRPx35KYYmeMNhcvOuL/
+   /gcSljccZmcKLJCIXtkIZSyM9eA/MEsETXJkus2ksVN6xmjtm5nW3X+qc
+   A==;
+X-CSE-ConnectionGUID: t8UsG0yrRFGJdX3Cj24TfQ==
+X-CSE-MsgGUID: feZy6lo+TOir7+Y9Uui84A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11739"; a="98085772"
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
+   d="scan'208";a="98085772"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 02:54:39 -0700
+X-CSE-ConnectionGUID: /IZhftTwRFeN8RRbIFHKAQ==
+X-CSE-MsgGUID: 5hkeYRO+TG2NXMhTecI1FQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,139,1770624000"; 
+   d="scan'208";a="226267337"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.32])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2026 02:54:37 -0700
+Date: Wed, 25 Mar 2026 11:54:34 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
+Message-ID: <acOw2lGiQbPr-MGf@ashevche-desk.local>
+References: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+ <20260324145548.139952-1-ustc.gu@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 3/6] arm64: dts: qcom: talos: Add QSPI support
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com>
- <20260324-spi-nor-v1-3-3efe59c1c119@oss.qualcomm.com>
- <34cifkyw3pgky4nhcu4jwf2uveszre23kvesr7ksyjvmqhfspo@avsvwa3quvsp>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <34cifkyw3pgky4nhcu4jwf2uveszre23kvesr7ksyjvmqhfspo@avsvwa3quvsp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: YaopYy7cb-0w8zVtib7Bf4p1Qs1kAozd
-X-Proofpoint-GUID: YaopYy7cb-0w8zVtib7Bf4p1Qs1kAozd
-X-Authority-Analysis: v=2.4 cv=Q73fIo2a c=1 sm=1 tr=0 ts=69c3abb5 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=Va9S0ePWEawDROJu0VIA:9 a=QEXdDO2ut3YA:10
- a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI1MDA2NyBTYWx0ZWRfX3reQjr70SbXt
- 2pjuRz4QS7PBMDMHeVRm6ezEfGOjS1cv1BKkPwb1M4NFABwp4k9/323vHk4eFV/54hPezkVSYOU
- aevLT3YtAQzfDmtbpj0APUc0ONq66UNCgTgWo3g+lzBsZ8+0DCyltVH9LwA7yaOV2x/2vTslszD
- 6oJNKphFy5wD93vlMvgz4igWfTg2g1UT5BHeoDwuJhMCwxklXkpMB2IgViRFIck87exGEe+sryC
- Vm7tS4LyfcDSAoeDIRT1SUorv3ZKUbv3c424YIkOX85/MdMiGPxTLUAzF6AWNzF79YXGPlcLXVb
- AZmSzVVGqHo1xZjiWC/VaCo6XAKqK2zlwHfqj/FEVnGXh/DyxEnbJuTAQit5KdSpQk16IL7L41D
- whXa0cN1m2UVwXQg66EEixvuR2HJtMkT3P6XRvdNkA+mXv76vPEQwC8snPG+dkInnKDWnU/T53y
- GltkGXiQcxdyjqljDVw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-25_03,2026-03-24_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603250067
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260324145548.139952-1-ustc.gu@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 3/24/26 9:51 PM, Dmitry Baryshkov wrote:
-> On Tue, Mar 24, 2026 at 06:43:20PM +0530, Viken Dadhaniya wrote:
->> The Talos (QCS615) platform includes a QSPI controller used for accessing
->> external flash storage. Add the QSPI OPP table, TLMM pinmux entries, and
->> the QSPI controller node to enable support for this hardware.
->>
->> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
->> ---
->>  arch/arm64/boot/dts/qcom/talos.dtsi | 80 +++++++++++++++++++++++++++++++++++++
->>  1 file changed, 80 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/talos.dtsi b/arch/arm64/boot/dts/qcom/talos.dtsi
->> index 75716b4a58d6..fd727924b8ca 100644
->> --- a/arch/arm64/boot/dts/qcom/talos.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/talos.dtsi
->> @@ -530,6 +530,25 @@ cdsp_smp2p_in: slave-kernel {
->>  
->>  	};
->>  
->> +	qspi_opp_table: opp-table-qspi {
+On Tue, Mar 24, 2026 at 10:55:48PM +0800, Felix Gu wrote:
+
+...
+
+> >  int devm_spi_register_controller(struct device *dev,
+> >  				 struct spi_controller *ctlr)
+> >  {
+> > -	struct spi_controller **ptr;
+> >  	int ret;
+> >  
+> > -	ptr = devres_alloc(devm_spi_unregister, sizeof(*ptr), GFP_KERNEL);
+> > -	if (!ptr)
+> > -		return -ENOMEM;
+> > -
+> >  	ret = spi_register_controller(ctlr);
+> > -	if (!ret) {
+> > -		*ptr = ctlr;
+> > -		devres_add(dev, ptr);
+> > -	} else {
+> > -		devres_free(ptr);
+> > -	}
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
+> >  
+> > -	return ret;
+> >  }
+
+> It seems has a potential corner case in this commit.
 > 
-> Why is it not defined inside the QSPI device itself?
+> The issue is that devm_add_action_or_reset() triggers its callback 
+> immediately if the internal devres allocation fails.
 
-The QSPI device has #address-cells = <1>, so we'd get:
+Yes, it does.
 
-Warning (spi_bus_reg): /soc@0/spi@88dc000/opp-table-qspi: missing or empty reg property
+> This creates the following sequence:
+> 1. spi_register_controller(ctlr) succeeds.
+> 2. devm_add_action_or_reset() is called but fails.
+> 3. The "reset" triggers devm_spi_unregister_controller(ctlr) immediately.
+> 4. This calls spi_unregister_controller(ctlr).
+> 5. For controllers allocated via spi_alloc_host() (where 
+>    ctlr->devm_allocated is false), spi_unregister_controller() calls 
+>    put_device(&ctlr->dev).
+> 6. This drops the reference count to zero and frees the ctlr structure.
 
-Konrad
+I am not sure I see how the sequence is different from the say this
+
+	ret = spi_register_controller(...)
+	if (ret)
+		goto err;
+	// ...if success do something else...
+	ret = foo();
+	if (ret) {
+		spi_unregister_controller(...);
+		goto err;
+	}
+
+So, each driver should be prepared for an error handling in which it should
+release resources in the reversed order.
+
+> However, the driver still holds the ctlr pointer and will typically 
+> attempt its own cleanup, leading to a use-after-free or double-free.
+
+You mean buggy driver? Any real example of the use case?
+
+In the 5. you implied something like
+
+	ret = spi_alloc_host();
+	...
+	ret = devm_spi_register_controller()
+
+?
+
+But this is against the rule how devm must be used.
+
+> What are your thoughts on this? Does this analysis seem correct, or am
+> I missing a detail in how the refcounting is handled here?
+
+Is this analysis AI assisted?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

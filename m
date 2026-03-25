@@ -1,108 +1,45 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CC23E92A8;
-	Wed, 25 Mar 2026 14:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55863BC670;
+	Wed, 25 Mar 2026 14:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774449858; cv=none; b=PGCXeDX5FEwwSMgKkbKRKLn69ZEwpMAMqWZcyWVqDi6udNWVRA/v16hgAF64Izb6YfrVyFKjkv3BfqCYIcWeuVTmlZnUeegkJZ8GFfMdawX8VXxOMoT+BrvO08wo0msyA0nESk6mBi7v5oZIGNkgC5bkEDERK6oaB0qmxD93I9Q=
+	t=1774450414; cv=none; b=XgeR0DDKWuVp2egOlQ+P1IH8GoD6p0i3MJF6zGxJNn3ydyedwtE9R3Bk+Qk56HMkNO1D0oO7MlmCVO9qN2/AO9p73TkmbA1S3j9oXqYzXhtnzOjx+SRlczgomUyuIgCwO5HbjEkummqOdx/V15ToWqvOC6sr7ohUXKBlGFfPIWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774449858; c=relaxed/simple;
-	bh=jT14jpW+74aFxWT5k0JsiKiyPP15AQVRZS7/5fdgNS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYDc/5iW2CHOx5ZgfhAAj1KRbS6I39RSH4laO+67WdlL17Qyy/MnSu6MvWYf8YW1DgDwv3xc5YMHjTW8dg57MAASqsY8ljwaGNF8hqhXJ2SnAoTUj5djXNaQ+Xp/Lhgk9znJPufplAXn5Ac9GPxWqvH6Mu4v7dJKV4aPqy7Z/Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gqvjBLpm; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1774450414; c=relaxed/simple;
+	bh=aeIUHCs+I1FvnACDtVOzqzmisSohDwE6rwC/ECyDq7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFRoqar24JIac+gpFu4stn7b5HnmRGNAXy4gjucV2LhnRhBF1lR/Pnp/XLruRHAzOz90Sn/+WBIGOZ/TlW3jfGGaopeAomH6tLhsol9DFaZX1FEVudIMgvf2PTRoL9YMqQ+SMZKJXrLmoMFVuVKmp8ymfVWoRWFZviNeMngLRco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHyTQe5X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gqvjBLpm"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 52CC34E427EE;
-	Wed, 25 Mar 2026 14:44:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 217C9601FA;
-	Wed, 25 Mar 2026 14:44:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 56D7D10451522;
-	Wed, 25 Mar 2026 15:43:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1774449852; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JD+Fs5XfMyLydBRoehNihG/5lsm5NM0S4zMf8NGpirs=;
-	b=gqvjBLpmkSLJAYbmDeGzZRLD9Ccx0kGJ+DN1N+YpWxaW5rwGSimaQrzjJDOYlV9EYSCJXC
-	EGclYReSW/RNCSO1Hu4WTUKD57Ziz1RKr8cPgpsfGmAP4WEPw+vgCwWkjKY9MSUY9LEVJ5
-	6tZHX14Ux3GOzP2naksiasYRWY6SGCxOeInkkhKHnjF3KzqTlDE/RonHW77l2feenMrKtZ
-	cSTYd0V7ODBlSM4QX1RMj5id3x2Ob313sCSnE3Hd+xGsT3juXCzJcIYBFohtcxaPyYLz+X
-	eKq3F87xw+izeQvuGGtry4ygCvsiMBpIw+2Bl/K7VPxnw+SA0SbnFtvGb6ObSA==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kalle Niemi <kaleposti@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Wolfram Sang <wsa@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHyTQe5X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97959C19423;
+	Wed, 25 Mar 2026 14:53:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774450414;
+	bh=aeIUHCs+I1FvnACDtVOzqzmisSohDwE6rwC/ECyDq7M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nHyTQe5Xe05pFbs40LbnXiFy29cTzb7vEdlrdJVGU+0EeKxHXTJUjDYfkKrdLF53e
+	 qO9LMQCf1/Lyl4wyZuXHSveSvEo37LbS813oEFrmzJxPgqHIF/0w2KARJkereMvGRs
+	 SmgB3h3qrV2Mw0fv5b008HO5UyylLRIl39h50J/x3VZ43ubNpXu6WYw986f4zfCN53
+	 rXSFJuIzkDtVLTRRfNVyOvd0qBzOoiHYnk1qHwKT4y+7tvspRmwmJb6iyv2mgu3FOT
+	 CezZVXzMQetiggi/D3i4cTA96Mq1xHzTgVuF+lr3d2CMBoC4W0BIJ4/5hV5ofkmC5+
+	 ox3oWphzCNf6A==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w5Pbw-00000004kVY-15YF;
+	Wed, 25 Mar 2026 15:53:32 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH v6 27/27] misc: lan966x_pci: Add drivers needed to support SFPs in Kconfig help
-Date: Wed, 25 Mar 2026 15:35:54 +0100
-Message-ID: <20260325143555.451852-28-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260325143555.451852-1-herve.codina@bootlin.com>
-References: <20260325143555.451852-1-herve.codina@bootlin.com>
+	Johan Hovold <johan@kernel.org>,
+	Felix Gu <ustc.gu@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH] spi: fix use-after-free on managed registration failure
+Date: Wed, 25 Mar 2026 15:53:19 +0100
+Message-ID: <20260325145319.1132072-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -110,45 +47,60 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Recently, new device-tree nodes were added in the overlay to add support
-for SFPs on LAN966x PCI device.
+The SPI API is asymmetric and the controller is freed as part of
+deregistration (unless it has been allocated using
+devm_spi_alloc_host/target()).
 
-The LAN966X Kconfig help section mentions drivers related to devices
-added based on the overlay description.
+A recent change converting the managed registration function to use
+devm_add_action_or_reset() inadvertently introduced a (mostly
+theoretical) regression where a non-devres managed controller could be
+freed as part of failed registration. This in turn would lead to
+use-after-free in controller driver error paths.
 
-Add drivers related to devices described by those new nodes in the
-already existing driver list.
+Fix this by taking another reference before calling
+devm_add_action_or_reset() and not releasing it on errors for
+non-devres allocated controllers.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+An alternative would be a partial revert of the offending commit, but
+it is better to handle this explicitly until the API has been fixed
+(e.g. see 5e844cc37a5c ("spi: Introduce device-managed SPI controller
+allocation")).
+
+Fixes: b6376dbed8e1 ("spi: Simplify devm_spi_*_controller()")
+Reported-by: Felix Gu <ustc.gu@gmail.com>
+Link: https://lore.kernel.org/all/20260324145548.139952-1-ustc.gu@gmail.com/
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/misc/Kconfig | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 9c285a7c88ba..69825dc0f85e 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -635,13 +635,18 @@ config MCHP_LAN966X_PCI
- 	  Even if this driver does not depend on those other drivers, in order
- 	  to have a fully functional board, the following drivers are needed:
- 	    - fixed-clock (COMMON_CLK)
-+	    - i2c-mux-pinctrl (I2C_MUX_PINCTRL)
- 	    - lan966x-cpu-syscon (MFD_SYSCON)
-+	    - lan966x-gck (COMMON_CLK_LAN966X)
- 	    - lan966x-miim (MDIO_MSCC_MIIM)
- 	    - lan966x-oic (LAN966X_OIC)
- 	    - lan966x-pinctrl (PINCTRL_OCELOT)
- 	    - lan966x-serdes (PHY_LAN966X_SERDES)
- 	    - lan966x-switch (LAN966X_SWITCH)
- 	    - lan966x-switch-reset (RESET_MCHP_SPARX5)
-+	    - sam9x60-i2c (I2C_AT91)
-+	    - sama5d2-flexcom (MFD_ATMEL_FLEXCOM)
-+	    - sfp (SFP)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index cb00619864cf..aac378e668a8 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3537,8 +3537,19 @@ int devm_spi_register_controller(struct device *dev,
+ 	if (ret)
+ 		return ret;
  
- source "drivers/misc/c2port/Kconfig"
- source "drivers/misc/eeprom/Kconfig"
+-	return devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
++	/*
++	 * Prevent controller from being freed by spi_unregister_controller()
++	 * if devm_add_action_or_reset() fails for a non-devres allocated
++	 * controller.
++	 */
++	spi_controller_get(ctlr);
++
++	ret = devm_add_action_or_reset(dev, devm_spi_unregister_controller, ctlr);
+ 
++	if (ret == 0 || ctlr->devm_allocated)
++		spi_controller_put(ctlr);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(devm_spi_register_controller);
+ 
 -- 
-2.53.0
+2.52.0
 

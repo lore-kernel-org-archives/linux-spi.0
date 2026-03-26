@@ -1,177 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FBAF4F1;
-	Thu, 26 Mar 2026 01:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A323346782
+	for <linux-spi@vger.kernel.org>; Thu, 26 Mar 2026 09:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774488531; cv=none; b=PfZcJtRbXoGVAEVhBuPV/c8amRd0+d9nPDDbcTRhcSRkSlozRgxI4LJvZx1N/VrC80RHM3LZ/ocKuQPJV2arhQoYk01jYtCCA0qkqOho9eL/k0wiHSDMoc/DEqUrWTYJt3YsffIBxctROBTU7nowukEM4Y3mghA7t7ve9zuE9P4=
+	t=1774516067; cv=none; b=DaWfq3AkuJo4WNL68ubT+Iv78iSnNxS+t89uzQCRb6y9IIIknPhSJz8JUzTU/xll7kcGwEcq18znF/uP2busKrg4IQHHac6iLFbdxnnfTrJFRaHx61K3YFy0VZ8aMIPmfpEMdL4sEc1KKjw8yEafE/7I3Rp5e7RCguD3Ea0l5Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774488531; c=relaxed/simple;
-	bh=0Cq7OMqDyz29Hy/YQIvOOTgh39yp/jjxAwDycnlq/O0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=WUy6Adt/wTSA2KclWJzTRK3DBM6NvXfdRYO9O51OS3uJiN2S7VmuEBVqfV8fJKFB2cSIbxPioovUs2hkuyPWfq91a2RmVbTK4c8EEq1oxtWUObO/STRlK9n4A+qNfMA5NFkC4CyQ1uy1srPr8fUy2zIJnxggaM3wMmZZPJef4YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLfhqhkz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774516067; c=relaxed/simple;
+	bh=nApw0kQWc810vBzMMiVPM+TGaNIYxGfE/VG104jP+ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QUNEKwhRwk5txEdHHzyldak+8JaKma/8taPhKWiQW3CTsaVScahC0UoEw9sWkE/2FGQGzGyHuINK0Vp9ZxjyIsZHmYOh5KX20NV6q8PmvEauJQ/IGRymcDfVLdXbG4kDHdHnUY1KhTEIZl0Tk1NYR463f0yrT7pHf6zK/MfXF/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cM7llEjV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Th6M0IGS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLfhqhkz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3592AC4CEF7;
-	Thu, 26 Mar 2026 01:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774488531;
-	bh=0Cq7OMqDyz29Hy/YQIvOOTgh39yp/jjxAwDycnlq/O0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MLfhqhkzsxa7tc0jHzhytzV6qchl81dHU9KAPgpYRYmOHYLzk4wblKHPtqEHyv28p
-	 Q/b1ZGVBAKVMA2DtsWIH4xs0i1VJ2p7crVWlc/njQGIq3j2rxJcz4zZlqQtGtXSKGY
-	 qE7kmn3skAAmdHpynUh6G1IcDYzRBpRJQJ2v9dHtuEYl1SHM9u79m3ODxDTtFbRHwF
-	 TrXVRIXikjQcC748T/h8YzRRuj5Is74hno4IqadGPqhCATzpJM+vXtHmT1645lImlw
-	 xbcKSEnaeY6vjDCFgor9rDZ7RPAf5TB+nN0PUncVs3G3ToCrGTMxxDR5q52eHlIdvK
-	 yL93d9yknBOTA==
-Date: Thu, 26 Mar 2026 10:28:40 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: "Vineeth Pillai (Google)" <vineeth@bitbyteword.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra
- <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>,
- io-uring@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner
- <marcelo.leitner@gmail.com>, Xin Long <lucien.xin@gmail.com>, Jon Maloy
- <jmaloy@redhat.com>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
- <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-sctp@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, dev@openvswitch.org, Jiri Pirko
- <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, Koby Elbaz
- <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org,
- "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar
- <viresh.kumar@linaro.org>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
- Huang Rui <ray.huang@amd.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, Srinivas
- Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org,
- MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
- <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Sumit Semwal
- <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, Eddie James
- <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, Joel
- Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alex Deucher
- <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, Matthew
- Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, Harry
- Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
- amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, Benjamin
- Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, Mark Brown
- <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Chris Mason <clm@fb.com>, David Sterba
- <dsterba@suse.com>, linux-btrfs@vger.kernel.org, Thomas Gleixner
- <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, SeongJae
- Park <sj@kernel.org>, linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/19] tracepoint: Add trace_call__##name() API
-Message-Id: <20260326102840.80a270ec818fea7e000aeef4@kernel.org>
-In-Reply-To: <20260323160052.17528-2-vineeth@bitbyteword.org>
-References: <20260323160052.17528-1-vineeth@bitbyteword.org>
-	<20260323160052.17528-2-vineeth@bitbyteword.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cM7llEjV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Th6M0IGS"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62Q6RV5W141453
+	for <linux-spi@vger.kernel.org>; Thu, 26 Mar 2026 09:07:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	bPOQVGT19JgyNGrZiOTEkpfw4lSjz21DJ8/El5Wk6Dc=; b=cM7llEjV9Pqx/Ofs
+	yztUbSsV+3CYEZ4anEKerucU+EooHmf2IqFcBpQscjxmHMeK3drUYBDe6e88CMuQ
+	6vGwGVLNpgxCBcj7FUlyije4c1RGDZbqBuQy0f6s7YC5xriDEnfc7/mPV2SI4Bwx
+	RoB6bIwV7tZAl0osH51K7m7gI7QGkxYD66tzM3gfNbHcUkMOzffMoYU7tAA5ySmD
+	sCZNqMHX3fNwjrK/UfqNxjKgMAIq4gzDibkVHG3Tyk2XTrkY+dK0uqenGDVt7aKQ
+	wH/x7OhTS/vC3JclQucsnUllpEe/qSPv2Q+6lLwW5js6kl6KpHS2UFECFrC2qSoG
+	XEpLMw==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d4q09248u-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Thu, 26 Mar 2026 09:07:45 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50b9074bd42so2697421cf.0
+        for <linux-spi@vger.kernel.org>; Thu, 26 Mar 2026 02:07:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1774516065; x=1775120865; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bPOQVGT19JgyNGrZiOTEkpfw4lSjz21DJ8/El5Wk6Dc=;
+        b=Th6M0IGSxfKCwj3AeOokEgNVcgEsAVLWAbuWESX4TO7tRr4c4aSCPrw9VITye77Q5x
+         oHWpHO8fBebn6CVNGMJ4xaK5QhPaUh5+e9q3ptZSP8gOHI8Do/bhxLIPodA4mxnMdZN7
+         oQM371W8R/theUvRczXfGShToe92JV2QV0UrYQc3I40f2uiXnxDv+yAegYyGy1n++4Zv
+         yi5ts6idO+xVEAUDXo1TtZnjL3/rU2O39U1tAX05Z5wJriX62uZuwCRCHdFBOkViLHOj
+         /RfyshjpitppwW7yFXa2rS0uZ44sQt6JuDWeU6pfwQy6xUzdx1DXPJMA+XJgDAmZnorB
+         j7RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774516065; x=1775120865;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bPOQVGT19JgyNGrZiOTEkpfw4lSjz21DJ8/El5Wk6Dc=;
+        b=OXGoTLW7PaEBvi5EN6DfY1ZRvFElOWu6B3OxmOceE6jSOPec5A1AgR6blaTeHvWXMK
+         owT+91Zbw4kmksg1ilsRCy2C4jzf530eMywi2B/pRb9qxSxAvMm2qBdzfOOLtdOZ7Jl2
+         cMTFBd3tu+aazCNJXXXmbfFHxfhv09HaXoyojEqSWdFsSZ4YoKXIOsXmox6eUI7dxzTJ
+         7Q8Nj5otOKi6kbgyoWRV71PMiacWZ3ZBPsppYKZH6AnsdfuIVtqU3kNK6/B7WE3wHMEs
+         2mustb9ik8+C5QZ/UbhOEOKYzCLT4p5gLBFbHp0I+iAX47JzzjB2g8TwyWw10m9aUm6A
+         yQFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWg6l6NJbh6O/Obc0scvsml80zPEWvv5Od+5tAs9tf9ivJ3z4Ho//HnN8TyxS6TtoYh/xJev5AuNx8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiW8ioDK694/+LFSPdzuynBZMfm17SjNnjIS1q7zO/O+dYjkbT
+	afiEz8BgwczwS5iajmtxCTslOdduSu/zlEoVcUlW6HttzM6dvXTWAzn9MfI8vI8d7nOZadFKJ7c
+	Wa2z26blIH5rkwXg6z3cq9e3h3t4xm9lg1p3PU9UBIsenb+mxh2ewV5xwasfwnXE=
+X-Gm-Gg: ATEYQzy+Y60wXesKGezkJfFeDYsdyc3DkCM0YBzFJWN8FXhvXfaD6YFGVcivZ+PzTKv
+	Rtt6r7oCJ4PXCSt31QpvxijJg3898bK9WJBcCMWbRxZhSltoiI6XsBWqSR/HcWURoaFsb4FZgfs
+	md45qxLp17p+ED/qiHotl57WNITvijymd0faY58ezejLps6LX0J1mD2RZKKL4sKjhaLuy5uDgMS
+	sJiu41wcwdpN2Xq0krL3IxfL5lbXBLoH7D9JujeRt8HnuyDrWnrSjYwWd0BQIksNVCHhRb3ReYS
+	ShwvE9Eugb9FQ9/6j++YHDrcGvoJXftIgXqSrP3xawkwi8Y0TfMX003c8VQGSV4urfErfji9ZfG
+	ohg/uN2QOxiH03ck3qEqbSQ9cmV3NDfsV5YjYgSzFDyG/HS3BUGqp7BsVlJEc07/pBjVnqXc1W8
+	A5dBg=
+X-Received: by 2002:a05:622a:6209:b0:50b:6b21:2a7f with SMTP id d75a77b69052e-50b80ccc148mr66925301cf.2.1774516064757;
+        Thu, 26 Mar 2026 02:07:44 -0700 (PDT)
+X-Received: by 2002:a05:622a:6209:b0:50b:6b21:2a7f with SMTP id d75a77b69052e-50b80ccc148mr66925031cf.2.1774516064301;
+        Thu, 26 Mar 2026 02:07:44 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-66ad5e3bb1csm770802a12.4.2026.03.26.02.07.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Mar 2026 02:07:43 -0700 (PDT)
+Message-ID: <0c3c0d7d-b108-4295-96da-a261e65cd16e@oss.qualcomm.com>
+Date: Thu, 26 Mar 2026 10:07:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/6] spi: dt-bindings: qcom-qspi: Add QCS615 compatible
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com>
+ <20260324-spi-nor-v1-1-3efe59c1c119@oss.qualcomm.com>
+ <20260325-vehement-bronze-manul-ce6bcb@quoll>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260325-vehement-bronze-manul-ce6bcb@quoll>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=fufRpV4f c=1 sm=1 tr=0 ts=69c4f761 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=EUspDBNiAAAA:8 a=-OTHMHjyIvLZNMc1xfQA:9 a=QEXdDO2ut3YA:10
+ a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-GUID: D77aS-akjrtwb1yXIyukE412q7klyMhA
+X-Proofpoint-ORIG-GUID: D77aS-akjrtwb1yXIyukE412q7klyMhA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzI2MDA2NiBTYWx0ZWRfXydkl9h9cdZJK
+ rdQdY/ViWpEJBD+v9sZNOk3eRAxkS95Zfp6/cu2cdLG+jnkHRt2IXQD/AL3Wfv8hQhyMGFVuHvP
+ xzrSm5YrJvbtSB+a2BmniY+P8LkARyqGfb6ic9DaIbKyzqhNXBitS6Vwd28+onn9IV7+kBS9u3P
+ 8oV5x1lqvYE8i8+907oafSoQYaP/D39wkTWaVUiFpa0PbKhGPB9djHCWU3PDHdOyvJsAW4kCOBr
+ hUyzFFrK+ptV2gu9W/JauRYbxWggzLHxylnMXM8PFiLfBXaZdO2fOj/VmczZbkEeje1YI5bm8SG
+ RaNtWXnA4gcBjCv0l4tNbU0qO6gxrTfFieIw9o+bX5TIRuK7ImLSDEgoWpazTRWCqx1KIy8xS2b
+ AedWyxADdObre3IEqreo2kxFaGK8jqRTjkBMf4TvhYtIR4p8bTvHOCKRg6Y5YmVg2NpsnO+wmc6
+ wgpwUbLmKMXEXwI8Srg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-26_02,2026-03-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 phishscore=0 impostorscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603260066
 
-On Mon, 23 Mar 2026 12:00:20 -0400
-"Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
-
-> Add trace_call__##name() as a companion to trace_##name().  When a
-> caller already guards a tracepoint with an explicit enabled check:
+On 3/25/26 12:12 PM, Krzysztof Kozlowski wrote:
+> On Tue, Mar 24, 2026 at 06:43:18PM +0530, Viken Dadhaniya wrote:
+>> Add the "qcom,qcs615-qspi" compatible string to the Qualcomm QSPI device-
+>> tree binding
 > 
->   if (trace_foo_enabled() && cond)
->       trace_foo(args);
+> ^^ Full stop
 > 
-> trace_foo() internally repeats the static_branch_unlikely() test, which
-> the compiler cannot fold since static branches are patched binary
-> instructions.  This results in two static-branch evaluations for every
-> guarded call site.
+>> to enable QCS615-based platforms to use the existing QSPI
+>> controller binding.
 > 
-> trace_call__##name() calls __do_trace_##name() directly, skipping the
-> redundant static-branch re-check.  This avoids leaking the internal
-> __do_trace_##name() symbol into call sites while still eliminating the
-> double evaluation:
+> That's obvious, no need to state it. Writing longer texts without actual
+> useful message is not helpful.
 > 
->   if (trace_foo_enabled() && cond)
->       trace_invoke_foo(args);   /* calls __do_trace_foo() directly */
-
-nit: trace_call_foo() instead of trace_invoke_foo()?
-
-Anyway looks good to me.
-
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-
+>>
+>> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+>> ---
+>>  Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
+>> index 1696ac46a660..d9aac33b695b 100644
+>> --- a/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
+>> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qcom-qspi.yaml
+>> @@ -20,6 +20,7 @@ properties:
+>>    compatible:
+>>      items:
+>>        - enum:
+>> +          - qcom,qcs615-qspi
 > 
-> Three locations are updated:
-> - __DECLARE_TRACE: invoke form omits static_branch_unlikely, retains
->   the LOCKDEP RCU-watching assertion.
-> - __DECLARE_TRACE_SYSCALL: same, plus retains might_fault().
-> - !TRACEPOINTS_ENABLED stub: empty no-op so callers compile cleanly
->   when tracepoints are compiled out.
-> 
-> Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-> Suggested-by: Peter Zijlstra <peterz@infradead.org>
-> Signed-off-by: Vineeth Pillai (Google) <vineeth@bitbyteword.org>
-> Assisted-by: Claude:claude-sonnet-4-6
-> ---
->  include/linux/tracepoint.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-> index 22ca1c8b54f32..ed969705341f1 100644
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -294,6 +294,10 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  			WARN_ONCE(!rcu_is_watching(),			\
->  				  "RCU not watching for tracepoint");	\
->  		}							\
-> +	}								\
-> +	static inline void trace_call__##name(proto)			\
-> +	{								\
-> +		__do_trace_##name(args);				\
->  	}
->  
->  #define __DECLARE_TRACE_SYSCALL(name, proto, args, data_proto)		\
-> @@ -313,6 +317,11 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  			WARN_ONCE(!rcu_is_watching(),			\
->  				  "RCU not watching for tracepoint");	\
->  		}							\
-> +	}								\
-> +	static inline void trace_call__##name(proto)			\
-> +	{								\
-> +		might_fault();						\
-> +		__do_trace_##name(args);				\
->  	}
->  
->  /*
-> @@ -398,6 +407,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
->  #define __DECLARE_TRACE_COMMON(name, proto, args, data_proto)		\
->  	static inline void trace_##name(proto)				\
->  	{ }								\
-> +	static inline void trace_call__##name(proto)			\
-> +	{ }								\
->  	static inline int						\
->  	register_trace_##name(void (*probe)(data_proto),		\
->  			      void *data)				\
-> -- 
-> 2.53.0
-> 
+> Existing bindings allow flexible interconnects, but it should be
+> constrained. At least for new variants. Please move allOf: to the bottom
+> (after required:) and add there if:then: requiring min two interconnects
+> for qcs615.
 
+FWIW they should have never been flexible on any platform
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Konrad

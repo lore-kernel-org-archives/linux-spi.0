@@ -1,115 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F215B3B2FD5;
-	Thu, 26 Mar 2026 09:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310CA23EABA;
+	Thu, 26 Mar 2026 09:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774516244; cv=none; b=ZoNQkZ1f3EdFUk4EmLj7DcAgBSTyedcIzc5kw0/K0o70M0AVj75L6Ksj5uRWAt8ahUw0vK6TFNZb2Zk6dKaM8eEAjQR/lyuUZWQxNOlLMddkvi4qCiGycDAkySLTHhSqvFJ2YC0PRhipu9NUTzwBO/pl9F2hG/JJb9BU9iR/m3o=
+	t=1774517392; cv=none; b=UPz2iOmLkdgs23X3JIrXh1qvLdVomzaKLmJlAQhpWj+HZrb/9DB2R5ouJSJ4WCRlPI8qrpXCfPX5zTZDd4YCrMidfNFniaWr2cyfgTTNFV4ybgMaRHkS2BVGrCkYkG/jt5VopHURVmJ1NiChUduVvnW9griq8wDZmjA2GPSv8Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774516244; c=relaxed/simple;
-	bh=EjZpcrAur5FvPQc3moL8Cjlg6WecnKEFT1b2Hs2brFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CqVf8RbncxZIaHvlvX+l/IH7KAV/icjEoRspWx7fBIyydEbLPzvKy2QiPgx36Ulb4RcLs8g99DNkNTrxfvgp8cI0bMdI40g9Y9+3kk7/F64rQMul1VlgC0i/dbEsYpXXA4FbfMpc+MVjQds+wx+TbEhcv1NnSPFl8diCyqTYsVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmSft1bQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774517392; c=relaxed/simple;
+	bh=gFSHtDzLUvWzklpfenFzaXBp3qo4cR0W75zxcVPWhbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jdzQyxqWhiWDh35qnaGPYnGpwbyEhUijcbPrLtJG9jt6y9+s6Fgj4gPvNUfLsLhywPI8/WaDrHf1QdRgFzHOdjj77fGEuyNpcnlSmCm88lQla71E3sxzvYuTuUnjqgnZiGGPWiqR8CvzNeJnI44IzKlWntuAYvzEjYwDFEOq9Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BzuHTgwa; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmSft1bQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB356C116C6;
-	Thu, 26 Mar 2026 09:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774516243;
-	bh=EjZpcrAur5FvPQc3moL8Cjlg6WecnKEFT1b2Hs2brFw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LmSft1bQVS/1dyrNQEjpMff3JZHX1EVmAysV2Xvi0FJXKGHqAY02o4gyUDpiuMPsl
-	 ECLMhUplMpUusTDRJrum0stIp8WOKg5QTw4U22m8LJ2ox9Vxnn41wikdr6jFYc2XQJ
-	 2CMHJeMOwR6H7KKE/fJluXVP704NF56Y4Qp5pZDHTAjvKtZusVsl2zktzDMOKqlMuy
-	 hJm+r8fSNHQHaQC8HgNWJlFpGF0YARHe/0zp/hEhqrhObwKzyEIB8lHmW0o3kl5EX3
-	 aLoFiNBeLPJuF5zL87oTqLTAzSmi7zaAwLVpuALRk6PwJLBtgr0+GKLgLT3m4MutSk
-	 l/2eSx/xaQ1KA==
-Message-ID: <9687b21e-e6f9-4d66-b8ad-a5f2e60bb787@kernel.org>
-Date: Thu, 26 Mar 2026 10:10:39 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BzuHTgwa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774517390; x=1806053390;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gFSHtDzLUvWzklpfenFzaXBp3qo4cR0W75zxcVPWhbw=;
+  b=BzuHTgwaEjvzeTAY/8a/BcewjqbW6lKwDrhW+2HIfEXcafyMDqgRduLt
+   SkcdTyl705QiRqFi6q2+UPtuwnWmBXTiY6VEXPsFAv1OsEGl5wiU2v7Wd
+   KdpBCIfU8j/MjV3o6+Rl8s9Vkef3FCx7QjiXd3dC3v6rH3auhgHTFThCE
+   MK/b1Vd3eiP51k0QphtPheKlJhEJ3/hkiuaItSmGZACpWc/HCkwJ9pgqn
+   xaE+O+IUspW/l1bydM8T9yWWF0r3Y5N82B6o6TTolK7slus+8v3CkZwXt
+   nG7Huvv585WcznsJUws2S4ntpWr4/LbOtW6WSFo/kGb8SKV7VoRUgZmgm
+   w==;
+X-CSE-ConnectionGUID: cKqMfuqTT3u8jVUNrW+DfQ==
+X-CSE-MsgGUID: /BKuM0pkRXmRBkO6bKV/mg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11740"; a="101023297"
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="101023297"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 02:29:50 -0700
+X-CSE-ConnectionGUID: GI+r1oluSQauWLTOPlnm1A==
+X-CSE-MsgGUID: zEM+TkWMTgWOclhqfz5OWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,141,1770624000"; 
+   d="scan'208";a="224013963"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.216])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2026 02:29:48 -0700
+Date: Thu, 26 Mar 2026 11:29:44 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Felix Gu <ustc.gu@gmail.com>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] spi: Simplify devm_spi_*_controller()
+Message-ID: <acT8iPKXzSCtM7d5@ashevche-desk.local>
+References: <176797260995.67850.318976521283878747.b4-ty@kernel.org>
+ <20260324145548.139952-1-ustc.gu@gmail.com>
+ <acOw2lGiQbPr-MGf@ashevche-desk.local>
+ <acP5T-pwlOfPdlQ0@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/6] spi: dt-bindings: qcom-qspi: Add QCS615 compatible
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, cros-qcom-dts-watchers@chromium.org,
- linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com>
- <20260324-spi-nor-v1-1-3efe59c1c119@oss.qualcomm.com>
- <20260325-vehement-bronze-manul-ce6bcb@quoll>
- <0c3c0d7d-b108-4295-96da-a261e65cd16e@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <0c3c0d7d-b108-4295-96da-a261e65cd16e@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <acP5T-pwlOfPdlQ0@hovoldconsulting.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On 26/03/2026 10:07, Konrad Dybcio wrote:
->>>        - enum:
->>> +          - qcom,qcs615-qspi
->>
->> Existing bindings allow flexible interconnects, but it should be
->> constrained. At least for new variants. Please move allOf: to the bottom
->> (after required:) and add there if:then: requiring min two interconnects
->> for qcs615.
+On Wed, Mar 25, 2026 at 04:03:43PM +0100, Johan Hovold wrote:
+> On Wed, Mar 25, 2026 at 11:54:34AM +0200, Andy Shevchenko wrote:
+> > On Tue, Mar 24, 2026 at 10:55:48PM +0800, Felix Gu wrote:
 > 
-> FWIW they should have never been flexible on any platform
+> > You mean buggy driver? Any real example of the use case?
+> > 
+> > In the 5. you implied something like
+> > 
+> > 	ret = spi_alloc_host();
+> > 	...
+> > 	ret = devm_spi_register_controller()
+> > 
+> > ?
+> 
+> We have some 50 spi driver using a non-managed controller allocation
+> with managed registration.
 
-Changing existing ones affects ABI and I do not wamt to stall this
-contribution. New code however must be correct.
+Ouch!
 
-Best regards,
-Krzysztof
+> This was the only way to use these interfaces before managed allocation was
+> added much later.
+> 
+> > But this is against the rule how devm must be used.
+> 
+> SPI is "special"... But yeah, we should eventually fix the API to avoid
+> inconsistencies like this.
+
+I see, yeah, it's better to do so.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

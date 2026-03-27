@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FA3382C5;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C0C346A08;
 	Fri, 27 Mar 2026 10:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774608197; cv=none; b=dSCdPqUMb62iVRo+1KoVuzpiAnC1A2S5nQPRsTRsLa4gOoFsN/iPmRXu7D/mPfnhItWgVWxYG/4nTHDbq647Ho03gdua05sDi8bVYG9S9vZ/hkD+7XthZ5cDpomnR7y4U6SEqUxdamknQkI4dCKN6KR5XokvytOzOemS9g7f34A=
+	t=1774608197; cv=none; b=b/XDl/9hRAXu1q53j+jp0MfdQaUIC5avvGvH+Igw5Kt8a3jOitehig2b4oqFUJ/AdUgZ4KZg1qecjr4/XKfH5KlirCZnzB08fyJJlkGcilgtsCZxByRyMDaHtdrFR6cSnoRgbB/6HUZXS2oRjVe+JdM6AdK+5xinNufjL7n6KEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774608197; c=relaxed/simple;
-	bh=06nKPiYAs+uiYFgsj7ZNA0z7q+/cAsl7BATEDCAZzvU=;
+	bh=P+b/76Q5D8tsdfUser9wn1Tp9CUID1FpPhgoB3vBf+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J86svgUuUwpYiGQKKBmvWdsOXHgQrFShmozsi8NDddj400YyQzXsAgAuMxeivTNxEzfPSH2n6+NJmajmR9Pv5AdNiQZHei5uCA8SqmUdY9jSoCjzIPmhTrUL0zsQ9hSimUDQ/DZdnnBMR9Q4HHRgMy1lpeb3XUqEbdfK1eRIkS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=deG4wqq8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=DudaJBjpt6qhiTVefH90WKwdvE38nEYEQ8J5d3ZWbpWl8gp6w6+LdrS/DS/zx3YUR2GukA1fibpnKxMDLUdNQgTewG0KA/JVMCW7a5eDeIwXYtjSzDnW1/e22vHsLFU4TvU9FAOZdvi4bvlcS3kJ51uLN3FOTuXpVysMrBQ1KFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6gHhpXw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="deG4wqq8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01322C19423;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6gHhpXw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36816C2BC9E;
 	Fri, 27 Mar 2026 10:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1774608197;
-	bh=06nKPiYAs+uiYFgsj7ZNA0z7q+/cAsl7BATEDCAZzvU=;
+	bh=P+b/76Q5D8tsdfUser9wn1Tp9CUID1FpPhgoB3vBf+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deG4wqq8fs9UVE1J4IYK3uajLV0nVUkWcOA2wkeHngrrzZ8oghi+inqmRqmXSTCxL
-	 IIb9iTLkKhkmkloIWJykfpfxTMqqUgwSVuv5fxRDbXHv8CCbcWyHbKOcw78CVqFvWE
-	 gEnx4k6jg6r9bZQ70DwR8oK2A+pjsw3uYt6ENWN0Ll7FBJyKZCO6HVZvpq8LJ01W9B
-	 FeYHa8eEebRkRgJXQXT9txQcYXfQKCWll7W4tPSgbUKIayFUUxQrwEjSvZ+teEj2Jk
-	 vXsqY8d75gdpjx1CTypiwef74FgtVrlhXqi6YuoxCW5qRKMBXyJjtjqdcv+h51xUtt
-	 fpcguyLLcQXUg==
+	b=O6gHhpXw0ojhHKTb/cqpZmmwNF0wBYbuoAJI/wDPFobq+BXzKd36JC0CbESFeVOxP
+	 qxz90DR1CrWfaxV/u0YcekHEgxKCjFWJ5u898ef+rBabbGzM0MIUUBhj2/5ki1RPQJ
+	 cajf69iViWkKQgNTyPOhhDmhdx6mLivlTfcJs9NbSHQOT7OJeNARW8JKZh9wV0iUqj
+	 T/whun5mzP/4L2nq3szNCGR+PMmxdwu+oZkoZyEuAtYpRLMzTRqzMqiLc0NHbf4PB2
+	 lLY38lR2fs5e95ynRFbxCzDNiYbjhMin+IibbmgkQdl3uGc4XN0JUY0acWJqIVFyv0
+	 VgrbvzFDLHxjw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1w64eo-00000005Um6-3c5X;
+	id 1w64eo-00000005Um8-3ePF;
 	Fri, 27 Mar 2026 11:43:14 +0100
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -37,9 +37,9 @@ Cc: Johannes Thumshirn <jth@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] spi: ch341: fix memory leaks on probe failures
-Date: Fri, 27 Mar 2026 11:43:04 +0100
-Message-ID: <20260327104305.1309915-2-johan@kernel.org>
+Subject: [PATCH 2/2] spi: ch341: fix devres lifetime
+Date: Fri, 27 Mar 2026 11:43:05 +0100
+Message-ID: <20260327104305.1309915-3-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260327104305.1309915-1-johan@kernel.org>
 References: <20260327104305.1309915-1-johan@kernel.org>
@@ -51,98 +51,58 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller, disable pins, and kill and free
-the RX URB on probe failures to mirror disconnect and avoid memory
-leaks and use-after-free.
+USB drivers bind to USB interfaces and any device managed resources
+should have their lifetime tied to the interface rather than parent USB
+device. This avoids issues like memory leaks when drivers are unbound
+without their devices being physically disconnected (e.g. on probe
+deferral or configuration changes).
 
-Also add an explicit URB kill on disconnect for symmetry (even if that
-is not strictly required as USB core would have stopped it in the
-current setup).
+Fix the controller and driver data lifetime so that they are released
+on driver unbind.
+
+Note that this also makes sure that the SPI controller is placed
+correctly under the USB interface in the device tree.
 
 Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
 Cc: stable@vger.kernel.org	# 6.11
 Cc: Johannes Thumshirn <jth@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-ch341.c | 36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ drivers/spi/spi-ch341.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
-index 2fdb1c020339..ea92ba986201 100644
+index ea92ba986201..0e71a32900b3 100644
 --- a/drivers/spi/spi-ch341.c
 +++ b/drivers/spi/spi-ch341.c
-@@ -173,17 +173,17 @@ static int ch341_probe(struct usb_interface *intf,
- 
- 	ch341->tx_buf =
- 		devm_kzalloc(&udev->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
--	if (!ch341->tx_buf)
--		return -ENOMEM;
-+	if (!ch341->tx_buf) {
-+		ret = -ENOMEM;
-+		goto err_free_urb;
-+	}
- 
- 	usb_fill_bulk_urb(ch341->rx_urb, udev, ch341->read_pipe, ch341->rx_buf,
- 			  ch341->rx_len, ch341_recv, ch341);
- 
- 	ret = usb_submit_urb(ch341->rx_urb, GFP_KERNEL);
--	if (ret) {
--		usb_free_urb(ch341->rx_urb);
--		return -ENOMEM;
--	}
-+	if (ret)
-+		goto err_free_urb;
- 
- 	ctrl->bus_num = -1;
- 	ctrl->mode_bits = SPI_CPHA;
-@@ -195,21 +195,34 @@ static int ch341_probe(struct usb_interface *intf,
- 
- 	ret = ch341_config_stream(ch341);
+@@ -152,7 +152,7 @@ static int ch341_probe(struct usb_interface *intf,
  	if (ret)
--		return ret;
-+		goto err_kill_urb;
+ 		return ret;
  
- 	ret = ch341_enable_pins(ch341, true);
- 	if (ret)
--		return ret;
-+		goto err_kill_urb;
+-	ctrl = devm_spi_alloc_host(&udev->dev, sizeof(struct ch341_spi_dev));
++	ctrl = devm_spi_alloc_host(&intf->dev, sizeof(struct ch341_spi_dev));
+ 	if (!ctrl)
+ 		return -ENOMEM;
  
- 	ret = spi_register_controller(ctrl);
- 	if (ret)
--		return ret;
-+		goto err_disable_pins;
+@@ -163,7 +163,7 @@ static int ch341_probe(struct usb_interface *intf,
+ 	ch341->read_pipe = usb_rcvbulkpipe(udev, usb_endpoint_num(in));
  
- 	ch341->spidev = spi_new_device(ctrl, &chip);
--	if (!ch341->spidev)
--		return -ENOMEM;
-+	if (!ch341->spidev) {
-+		ret = -ENOMEM;
-+		goto err_unregister;
-+	}
+ 	ch341->rx_len = usb_endpoint_maxp(in);
+-	ch341->rx_buf = devm_kzalloc(&udev->dev, ch341->rx_len, GFP_KERNEL);
++	ch341->rx_buf = devm_kzalloc(&intf->dev, ch341->rx_len, GFP_KERNEL);
+ 	if (!ch341->rx_buf)
+ 		return -ENOMEM;
  
- 	return 0;
-+
-+err_unregister:
-+	spi_unregister_controller(ctrl);
-+err_disable_pins:
-+	ch341_enable_pins(ch341, false);
-+err_kill_urb:
-+	usb_kill_urb(ch341->rx_urb);
-+err_free_urb:
-+	usb_free_urb(ch341->rx_urb);
-+
-+	return ret;
- }
+@@ -171,8 +171,7 @@ static int ch341_probe(struct usb_interface *intf,
+ 	if (!ch341->rx_urb)
+ 		return -ENOMEM;
  
- static void ch341_disconnect(struct usb_interface *intf)
-@@ -219,6 +232,7 @@ static void ch341_disconnect(struct usb_interface *intf)
- 	spi_unregister_device(ch341->spidev);
- 	spi_unregister_controller(ch341->ctrl);
- 	ch341_enable_pins(ch341, false);
-+	usb_kill_urb(ch341->rx_urb);
- 	usb_free_urb(ch341->rx_urb);
- }
- 
+-	ch341->tx_buf =
+-		devm_kzalloc(&udev->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
++	ch341->tx_buf = devm_kzalloc(&intf->dev, CH341_PACKET_LENGTH, GFP_KERNEL);
+ 	if (!ch341->tx_buf) {
+ 		ret = -ENOMEM;
+ 		goto err_free_urb;
 -- 
 2.52.0
 

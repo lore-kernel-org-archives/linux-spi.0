@@ -1,93 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176DA346E63;
-	Thu, 26 Mar 2026 21:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C46F3C3BEB;
+	Fri, 27 Mar 2026 07:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774558991; cv=none; b=AGrv5rwy69ZCxe0ocg/aMu8YX+EgIh5k7FGi1LMOpytl7OAnhHzvtycrciYQWXSmTqgQBpCDTL3wKeY27PfaWy4iXvBdr1mI3N1jPZrndAOS5EMbC9iC0uUVAenJh7+NHgjhdLRN/TtDDNAmxjhutK3OimS8w3YyzPUHVFQuT9I=
+	t=1774596019; cv=none; b=q+V6aqAx+bUfLaEpkun/+t2QI2sxt9ZpLwk4vImBpNBzBdMVR2t+SRkjhHP4gn/fh3zITI4Ptid7gc8uyilvv1z9QTV0kw0FfNOWBr13TZePGrmIaB5uMWXzvho6yDmnMmshGPExGJfq1yHIR+kq7Ex3OIoR7YEOxk4VKdRIYrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774558991; c=relaxed/simple;
-	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=szeZkdJJEMaEKEac4/jeT1SsUEMRT55nf43o96zp0tzF4C0WskdEWf4Do1YrS0zir83x9XuewaUh6xPvnopAOvBxU18C/h+q6XCVThmbSeWtLBo55oJbX0nW8TKedAgWHjzOkk+wMsNUfkZyGPeEplpJHZwCwuG4U0d8EHEpmf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPAAIB3f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1774596019; c=relaxed/simple;
+	bh=7Q2xrf/zmOZu+aG0pdnFP4ISWJUMYatAYhqZmBO/ehM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dmQXkX6bsmTrU5WClMQKiax5MjzXAkXd2xKnK3fYqYoCUQ9EuK4TxNZ0dSqDg6y6BjbQe9ryqgHN6OFMrJLYHWFjooRDd/I25QYkxgvCdAPEbNjDCSJYzctHxM+rzgHbqIeG/T1muFRVKa4lB0+DS8JySz08u+au2VikwCKlK0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rqptxv+u; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPAAIB3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9306BC116C6;
-	Thu, 26 Mar 2026 21:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774558990;
-	bh=Oga/OddxY2WJCZhkLe7zcVGjS6Fu4I4k5/6EH62Urbk=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=gPAAIB3fsENGAvoB1ls1d+lyJstfElum/pLWj2DuNK2WleRkSJpZzbuOcSRguNRex
-	 LE7yjFpGJeYqgeiTWSX6kkVoDPXfYgQsoiYvVNcYBuRy7Weff6IyhdJ7LJejW3y2q7
-	 Lu58LJqd2qR99uWpkNGFPfJeYhdGTH7gmxUd9PImDf3hgeIKuz12xa1bfI6GtosZ25
-	 zz/3VILPimPfvECimlah9QRnSQlerX84zqBcJ1XtWuuz4pCn2J3IQkAwYpmSsY+R6p
-	 Vq0PeeQgRdA6sV45AaVZZ3KVJItFvjXCg6L1WvlZQDmeunZRkvtTNmqHb/caoBZYIw
-	 rdfYLFPYbjpsg==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rqptxv+u"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774596013; x=1806132013;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7Q2xrf/zmOZu+aG0pdnFP4ISWJUMYatAYhqZmBO/ehM=;
+  b=Rqptxv+ut4WHKsAojN83L1Bq4HXYKeIvQ/GpRoyXuy/s5zuw+4bq/ghL
+   8vCMhdktfb7fu/WhdkHXx14FYTKLE4LFBJoqiGbiiQqD1BBL9rlGaNenC
+   NhdtpKtsp7KY3PHYCK3jdeud9Q5mV3ApFheHG/rj1ubNi4OEC9IlEcgyz
+   BEkuK0u/51u0kpIn7CmcTSdgQzRMPnS0KKYvcBFY4MQIGuI6yFIxRBXav
+   I8yfvnq594ViUSj4MUXgyqq+G3HVFWS+2y75z0V/Lun7oYmJ9tNh94VCs
+   AhJhW+xMkyd3XtFlX+ygfKGIic1gMr5jMPf3BZ8t+rQENOhaP0ZsclkTp
+   A==;
+X-CSE-ConnectionGUID: HOnN7w9aQ6CQjBLx5RU4QA==
+X-CSE-MsgGUID: YqkYVndQRTOdhA23l1eD2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11741"; a="79523925"
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="79523925"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:20:12 -0700
+X-CSE-ConnectionGUID: v51ttp9/R+uESe1sJ/KP6g==
+X-CSE-MsgGUID: Rl6sbizKQLuwMk48ivKcsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,143,1770624000"; 
+   d="scan'208";a="225164915"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.127])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Mar 2026 00:20:12 -0700
+Date: Fri, 27 Mar 2026 09:20:08 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Johan Hovold <johan@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+Subject: Re: [PATCH] spi: fix use-after-free on managed registration failure
+Message-ID: <acYvqDTmQljmzXcg@ashevche-desk.local>
+References: <20260325145319.1132072-1-johan@kernel.org>
+ <acT9-MoL5zfss8Hp@ashevche-desk.local>
+ <acWGuheUdu4Bdb8S@ashevche-desk.local>
+ <e8588793-02ad-4339-bca7-fe55db697e89@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Mar 2026 22:03:02 +0100
-Message-Id: <DHD0NQH9UJ21.3J691DBDXS0K0@kernel.org>
-To: "Douglas Anderson" <dianders@chromium.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode
- "flags" thread safe
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, <stable@vger.kernel.org>, "Andy Shevchenko"
- <andriy.shevchenko@linux.intel.com>, "Mark Brown" <broonie@kernel.org>,
- "Wolfram Sang" <wsa+renesas@sang-engineering.com>, "Andrew Lunn"
- <andrew@lunn.ch>, "Daniel Scally" <djrscally@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Fabio
- Estevam" <festevam@gmail.com>, "Frank Li" <Frank.Li@nxp.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Jakub Kicinski" <kuba@kernel.org>, "Len Brown"
- <lenb@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Pengutronix Kernel
- Team" <kernel@pengutronix.de>, "Rob Herring" <robh@kernel.org>, "Russell
- King" <linux@armlinux.org.uk>, "Sakari Ailus"
- <sakari.ailus@linux.intel.com>, "Saravana Kannan" <saravanak@kernel.org>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, <devicetree@vger.kernel.org>,
- <driver-core@lists.linux.dev>, <imx@lists.linux.dev>,
- <linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-i2c@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-spi@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
-In-Reply-To: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e8588793-02ad-4339-bca7-fe55db697e89@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue Mar 17, 2026 at 5:01 PM CET, Douglas Anderson wrote:
-> In various places in the kernel, we modify the fwnode "flags" member
-> by doing either:
->   fwnode->flags |=3D SOME_FLAG;
->   fwnode->flags &=3D ~SOME_FLAG;
->
-> This type of modification is not thread-safe. If two threads are both
-> mucking with the flags at the same time then one can clobber the
-> other.
->
-> While flags are often modified while under the "fwnode_link_lock",
-> this is not universally true.
->
-> Create some accessor functions for setting, clearing, and testing the
-> FWNODE flags and move all users to these accessor functions. New
-> accessor functions use set_bit() and clear_bit(), which are
-> thread-safe.
->
-> Cc: stable@vger.kernel.org
-> Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Signed-off-by: Douglas Anderson <dianders@chromium.org>
+On Thu, Mar 26, 2026 at 07:25:14PM +0000, Mark Brown wrote:
+> On Thu, Mar 26, 2026 at 09:19:22PM +0200, Andy Shevchenko wrote:
+> > On Thu, Mar 26, 2026 at 11:35:56AM +0200, Andy Shevchenko wrote:
+> > > On Wed, Mar 25, 2026 at 03:53:19PM +0100, Johan Hovold wrote:
 
-    [ Fix fwnode_clear_flag() argument alignment, restore dropped blank
-      line in fwnode_dev_initialized(), and remove unnecessary parentheses
-      around fwnode_test_flag() calls. - Danilo ]
+...
 
-Applied to driver-core-testing, thanks!
+> > > > An alternative would be a partial revert of the offending commit, but
+> > > > it is better to handle this explicitly until the API has been fixed
+> > > > (e.g. see 5e844cc37a5c ("spi: Introduce device-managed SPI controller
+> > > > allocation")).
+> 
+> > > Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> > Seems Mark dropped the original change, so this is not needed.
+> 
+> Not intentionally?
+
+I don't know, but it allows to start from fixing the users to avoid regressions.
+I'm fine with the current state of affairs.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

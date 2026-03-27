@@ -1,124 +1,97 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69E437C90A
-	for <linux-spi@vger.kernel.org>; Fri, 27 Mar 2026 11:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3E18D636;
+	Fri, 27 Mar 2026 16:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774611812; cv=none; b=ruX+48dlbwvrK9mlwYcABNQRB8ipByFl834UAZEseVpfdUpwDs1v+Ud+P1ggr8TopioYZHPYyldthhiZzJrDIO+85tXaBpErexsd+RmbXe1i5VbwPBM/HzjZdvxiT4RnsnXDvaifqomSvGxXgB7JOTAITJqwgoLpfCU/Pbdep6s=
+	t=1774629868; cv=none; b=csiIIbPOeQe+YZDax/L3pguEApuMevbJmc2EhYCPMeTZPivi+a0aDroef8F+mBappEAqsd3kwvaw4MuPxCd+iHz35RcgmoeveEyTbFFoIzqr3RGOwW/lFRwPih7UmFplbH2+JtlQ2Qeu6YNZ+WdqBxmGlaM7ilCY/5+Zl2J0P0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774611812; c=relaxed/simple;
-	bh=uYAApojvLTIkmyKoZpYwJZCokmKbnpF9c6WhaIacVG4=;
+	s=arc-20240116; t=1774629868; c=relaxed/simple;
+	bh=SE1WhOqQPUMFE9Thv1jjp1Bu+KDf4pBHRInpLkIaOJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sqE1/H71xU0/eDtLU2q16FBjs8eSvRNn1OpaV8Vt9WpD9d1KcWgM/dYP2mYAZ/ginJmDC9L7ZltUknkzrm71094v46pr7p5c1GHFGtiZ0ZCGJPQ3qQvmDymrBi8vmn5ADewFGlSjObgzPjEMLFCu3ZYoJuO4Vlw7Mittn68lEWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=k4QvSzox; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=seWjkKvS3FV4vveiz1gzTopwNtuCKVCLN1nOr+R1B1i9CvLkvcPi6EtAmETk8tCDUhwnLQScxkkclbbn4XuEZ/E1bJzUl8n514GT6G6J/flRyH2aKkjYi4sYY0TlO4zWsS9qAT1HZwKVp1i+aKo8XYD5m7Vjz0i3J7KNr8uVutQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpmE6PZa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="k4QvSzox"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=H/mm
-	EvjF+xhmn9Wns9betMD2C6MNmROj8DyAiLE02zM=; b=k4QvSzox0bVkfsfDjzFG
-	LGuc3RY6Nc4A01kHbyNKckXguVBwpBOKFgCosfhLsRsjq4eDoNRYZpMIVCJ0O3hr
-	gfeanKsyTEOWbah1eONyp6cI2lvZTWiinFUqQ1+gY2hdjjx+hPdnLjDCYK70TUJ4
-	aFc/YaBf28GDjSGd7mxe254RWqDfD9attVFCtj8ikS1PeMOzQ7Wq1WpZ9OE7cTEW
-	LWHjg90xTnSXm5laQso2Th3BJmrtN84wxdyQWCBE0l/PveVIj91/BXi11wFJWf4A
-	0Ik6WG0aYRHLixjG/wpRM3UOW+oQhTX4llCiif+gTG5sUZ6tFSGGFUkiiWl6Oq3N
-	Rg==
-Received: (qmail 174700 invoked from network); 27 Mar 2026 12:43:25 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 27 Mar 2026 12:43:25 +0100
-X-UD-Smtp-Session: l3s3148p1@m9s6AgBO++RUhsJN
-Date: Fri, 27 Mar 2026 12:43:24 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, driver-core@lists.linux.dev,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Konrad Dybcio <konradybcio@kernel.org>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev, Mark Brown <broonie@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Orson Zhai <orsonzhai@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Samuel Holland <samuel@sholland.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Waiman Long <longman@redhat.com>,
-	Wilken Gottwalt <wilken.gottwalt@posteo.net>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 00/15] hwspinlock: move device alloc into core and
- refactor includes
-Message-ID: <acZtXL7OiM0ceyMe@shikoro>
-References: <20260319105947.6237-1-wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpmE6PZa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E07C19423;
+	Fri, 27 Mar 2026 16:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774629867;
+	bh=SE1WhOqQPUMFE9Thv1jjp1Bu+KDf4pBHRInpLkIaOJA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fpmE6PZaehyOWJ3puS8y1OQDnKePm+ZFPGFHoMlXwLsdGcjqIYvs7ZF8Gpn2OGcPL
+	 JbWlW73o+tSVoq93TKg6EpmS5TgyXoN3oVFEVhywGRYZSLk4WjbtbkrRgFXk0v/zF7
+	 HE2ZwEVpmLFrihgwxs3fcBjbg2x5Ary1LSXvf/CLJ+tLgkh4Os/VfVROtHGBCBEJIe
+	 P+tYU4BqfAYTDy6ZWQH3QNZF7u456SaL2uo2E/En3gIMMcqpFW/3OQfj4v84wBMpo5
+	 oZHwdrUhkkL8SpymtmrXb4uC5fTlWhBjnRGDRZDp/73KzKvMuZ2vCLDVlqdKa4m/gQ
+	 HFnRaPGxeHp8g==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 34DE81AC5731; Fri, 27 Mar 2026 16:44:24 +0000 (GMT)
+Date: Fri, 27 Mar 2026 16:44:24 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Johan Hovold <johan@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+Subject: Re: [PATCH] spi: fix use-after-free on managed registration failure
+Message-ID: <acaz6J6-5Cstxu8h@sirena.co.uk>
+References: <20260325145319.1132072-1-johan@kernel.org>
+ <acT9-MoL5zfss8Hp@ashevche-desk.local>
+ <acWGuheUdu4Bdb8S@ashevche-desk.local>
+ <e8588793-02ad-4339-bca7-fe55db697e89@sirena.org.uk>
+ <acYvqDTmQljmzXcg@ashevche-desk.local>
+ <acZED01B-WdJbr2D@hovoldconsulting.com>
+ <acZFnCmcA1UK0xRw@ashevche-desk.local>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cTedQMO9bRMoQAar"
+Content-Disposition: inline
+In-Reply-To: <acZFnCmcA1UK0xRw@ashevche-desk.local>
+X-Cookie: Identify your visitor.
+
+
+--cTedQMO9bRMoQAar
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260319105947.6237-1-wsa+renesas@sang-engineering.com>
 
-On Thu, Mar 19, 2026 at 11:59:22AM +0100, Wolfram Sang wrote:
-> Changes since v4:
-> 
-> * update Documentation, too, when ABI gets changed (Thanks Antonio!)
-> * rebased to 7.0-rc4
-> * added more tags (Thanks!)
-> 
-> My ultimate goal is to allow hwspinlock provider drivers outside of the
-> subsystem directory. It turned out that a simple split of the headers
-> files into a public provider and a public consumer header file is not
-> enough because core internal structures need to stay hidden. Even more,
-> their opaqueness could and should even be increased. That would also
-> allow the core to handle the de-/allocation of the hwspinlock device
-> itself.
-> 
-> This series does all that. Patches 1-2 remove the meanwhile unused
-> platform_data to ease further refactoring. Patches 3-9 abstract access
-> to internal structures away using helpers. Patch 10 then moves
-> hwspinlock device handling to the core, simplifying drivers. The
-> remaining patches refactor the headers until the internal one is gone
-> and the public ones are divided into provider and consumer parts. More
-> details are given in the patch descriptions.
-> 
-> One note about using a callback to initialize hwspinlock priv: I also
-> experimented with a dedicated 'set_priv' helper function. It felt a bit
-> clumsy to me. Drivers would need to save the 'bank' pointer again and
-> iterate over it. Because most drivers will only have a simple callback
-> anyhow, it looked leaner to me.
-> 
-> This series has been tested on a Renesas SparrowHawk board (R-Car V4H)
-> with a yet-to-be-upstreamed hwspinlock driver for the MFIS IP core. A
-> branch can be found here (without the MFIS driver currently):
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git renesas/hwspinlock/refactor-alloc-buildtest
-> 
-> Build bots reported success.
+On Fri, Mar 27, 2026 at 10:53:48AM +0200, Andy Shevchenko wrote:
+> On Fri, Mar 27, 2026 at 09:47:11AM +0100, Johan Hovold wrote:
+> > On Fri, Mar 27, 2026 at 09:20:08AM +0200, Andy Shevchenko wrote:
+> > > On Thu, Mar 26, 2026 at 07:25:14PM +0000, Mark Brown wrote:
 
-Sashiko found some valid issues[1], so I am already working on a v6.
+> > > > Not intentionally?
 
-[1] https://sashiko.dev/#/patchset/20260319105947.6237-1-wsa%2Brenesas%40sang-engineering.com
+> > > I don't know, but it allows to start from fixing the users to avoid regressions.
+> > > I'm fine with the current state of affairs.
 
+> > The offending commit is already in mainline and hasn't been reverted in
+> > Mark's tree. This fix has been merged there though so nothing more is
+> > needed for now.
+
+> Ah, I only looked into Linux Next (without looking into the base, which is
+> v7.0-rc5 as of today). Thanks for clarification.
+
+Oh, that's a relief!  I thought I'd managed to throw some commits away
+by mistake.
+
+--cTedQMO9bRMoQAar
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnGs+cACgkQJNaLcl1U
+h9CeXQf8C/8M3D3IHRqmsVVVh3iiuWzlHf4LpxH25aLf87V/P/hahkNqtf1vsJ3q
+Nl7yMmC9bSNbTw3tGffMSGEFFGOZ3RoNdrSa9p7kPbCyTgITORCt1QUeodc1eRDQ
+biRrZ136+LACpmP1K5WI78EUD6N6jmGB1/PazJphg+0SJusO0mNADz3AeDh5yRRG
+z0nNYS3ou56JU42xO4g2VasTxlnqEB7EVyd0+RNNjpoSUxvlVA7EzGQUQx6BQn6V
+FJC/ZPyNLj+enhGZ7s9EfxjkKAwGrMPICa3DS3742nBqoBVjZGxLQ8eLY0uELJ/N
+10ZHcWZCUJwNO9xh/eSSDLqZPJHSdg==
+=zZtw
+-----END PGP SIGNATURE-----
+
+--cTedQMO9bRMoQAar--

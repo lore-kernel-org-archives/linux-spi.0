@@ -1,47 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E3E18D636;
-	Fri, 27 Mar 2026 16:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036EC405ACD;
+	Fri, 27 Mar 2026 18:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774629868; cv=none; b=csiIIbPOeQe+YZDax/L3pguEApuMevbJmc2EhYCPMeTZPivi+a0aDroef8F+mBappEAqsd3kwvaw4MuPxCd+iHz35RcgmoeveEyTbFFoIzqr3RGOwW/lFRwPih7UmFplbH2+JtlQ2Qeu6YNZ+WdqBxmGlaM7ilCY/5+Zl2J0P0A=
+	t=1774636156; cv=none; b=Azf3zWCGY0Nqn7BwP7IWYtSLAGnGq8rvI7QkaU7cT/g+E1rYdX3t7rx1G1gBpGbjiIoaysZk+lDgoN6LNR6mhmENo15RPe5PgDag5X+lDS1vrTFOAShWvZPTOjfOpm7hymr5BaICSsxluNfncsrAeUBQIFUNl00nRjmG2+qLT1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774629868; c=relaxed/simple;
-	bh=SE1WhOqQPUMFE9Thv1jjp1Bu+KDf4pBHRInpLkIaOJA=;
+	s=arc-20240116; t=1774636156; c=relaxed/simple;
+	bh=NDz+90Jdc/SZ/butywbtcmFIT/1o0ws3FQ4pUfMYGYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=seWjkKvS3FV4vveiz1gzTopwNtuCKVCLN1nOr+R1B1i9CvLkvcPi6EtAmETk8tCDUhwnLQScxkkclbbn4XuEZ/E1bJzUl8n514GT6G6J/flRyH2aKkjYi4sYY0TlO4zWsS9qAT1HZwKVp1i+aKo8XYD5m7Vjz0i3J7KNr8uVutQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fpmE6PZa; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XAKXH77oxlxm0wj+SPPkoDb5bvimZNNfy+LiWeDuY/OXref6sFPI48DKpRUcvEG0Mc30m+ESxz1+ln5WLGu6ecHmrQfcM6EjaAZnAqetkCouo1BEUXd/uCCAfOGOt5eHbMFUyR+1YjcmA8j5CGuLTCsAwXeuHAEw46s9OLbNmrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHPyT+kj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fpmE6PZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E07C19423;
-	Fri, 27 Mar 2026 16:44:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHPyT+kj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D08FC19423;
+	Fri, 27 Mar 2026 18:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774629867;
-	bh=SE1WhOqQPUMFE9Thv1jjp1Bu+KDf4pBHRInpLkIaOJA=;
+	s=k20201202; t=1774636155;
+	bh=NDz+90Jdc/SZ/butywbtcmFIT/1o0ws3FQ4pUfMYGYA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fpmE6PZaehyOWJ3puS8y1OQDnKePm+ZFPGFHoMlXwLsdGcjqIYvs7ZF8Gpn2OGcPL
-	 JbWlW73o+tSVoq93TKg6EpmS5TgyXoN3oVFEVhywGRYZSLk4WjbtbkrRgFXk0v/zF7
-	 HE2ZwEVpmLFrihgwxs3fcBjbg2x5Ary1LSXvf/CLJ+tLgkh4Os/VfVROtHGBCBEJIe
-	 P+tYU4BqfAYTDy6ZWQH3QNZF7u456SaL2uo2E/En3gIMMcqpFW/3OQfj4v84wBMpo5
-	 oZHwdrUhkkL8SpymtmrXb4uC5fTlWhBjnRGDRZDp/73KzKvMuZ2vCLDVlqdKa4m/gQ
-	 HFnRaPGxeHp8g==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 34DE81AC5731; Fri, 27 Mar 2026 16:44:24 +0000 (GMT)
-Date: Fri, 27 Mar 2026 16:44:24 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Johan Hovold <johan@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-Subject: Re: [PATCH] spi: fix use-after-free on managed registration failure
-Message-ID: <acaz6J6-5Cstxu8h@sirena.co.uk>
-References: <20260325145319.1132072-1-johan@kernel.org>
- <acT9-MoL5zfss8Hp@ashevche-desk.local>
- <acWGuheUdu4Bdb8S@ashevche-desk.local>
- <e8588793-02ad-4339-bca7-fe55db697e89@sirena.org.uk>
- <acYvqDTmQljmzXcg@ashevche-desk.local>
- <acZED01B-WdJbr2D@hovoldconsulting.com>
- <acZFnCmcA1UK0xRw@ashevche-desk.local>
+	b=BHPyT+kjT/MoUDsn1H/nBS8PzFXknynlJX4BJwAmL05eH+UehIMtE8XgSnxGF1aye
+	 lzohE8oOGax4aKimmY9+Aa3Y36+0f/gH9mqXFC9yYtKZrMh3SjcGCqwAHiYSKXfFD+
+	 scuIUxxlxuV8vLaWyjUFrE/7pkDEVrfJ84yAqk7pfEdCknPERVj12FfxAcgZxeC0Wh
+	 7q29qqoB+uQrK4t+OO/n3xJPIqr43CkrmVQxcMN9kAz1rplYrFmWaTtvsJsFexZvNr
+	 2+lCBxfXzDGXLxcJXW2J5kO8bQ2awmBTGm407Zfd4Xsqa73D9gT3jlmJvs1h12ADYa
+	 6TUq3pAZFtM6g==
+Date: Fri, 27 Mar 2026 18:29:11 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Cc: broonie@kernel.org, kdasu.kdev@gmail.com,
+	bcm-kernel-feedback-list@broadcom.com, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] spi: spi-mem: fallback to using transfers when CS
+ gpios are used
+Message-ID: <20260327-renewal-poking-7ae0f0345cb9@spud>
+References: <20191107044235.4864-1-chris.packham@alliedtelesis.co.nz>
+ <20191107044235.4864-3-chris.packham@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,49 +44,69 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cTedQMO9bRMoQAar"
+	protocol="application/pgp-signature"; boundary="Ukxw8MLqOlid/7Pv"
 Content-Disposition: inline
-In-Reply-To: <acZFnCmcA1UK0xRw@ashevche-desk.local>
-X-Cookie: Identify your visitor.
+In-Reply-To: <20191107044235.4864-3-chris.packham@alliedtelesis.co.nz>
 
 
---cTedQMO9bRMoQAar
+--Ukxw8MLqOlid/7Pv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 27, 2026 at 10:53:48AM +0200, Andy Shevchenko wrote:
-> On Fri, Mar 27, 2026 at 09:47:11AM +0100, Johan Hovold wrote:
-> > On Fri, Mar 27, 2026 at 09:20:08AM +0200, Andy Shevchenko wrote:
-> > > On Thu, Mar 26, 2026 at 07:25:14PM +0000, Mark Brown wrote:
+On Thu, Nov 07, 2019 at 05:42:35PM +1300, Chris Packham wrote:
+> Devices with chip selects driven via GPIO are not compatible with the
+> spi-mem operations. Fallback to using standard spi transfers when the
+> device is connected with a gpio CS.
 
-> > > > Not intentionally?
+Bitta necromancy, but why are they not compatible?
+Couldn't you have just done an if/else in your driver to call
+gpiod_set_value(spi_get_csgpiod())?
 
-> > > I don't know, but it allows to start from fixing the users to avoid regressions.
-> > > I'm fine with the current state of affairs.
+For some context, I've been trying to resolve some issues with using
+the standard transfers code when used with flash devices in the
+microchip-core-qspi driver, but if I delete this !mem->spi->cs_gpiod
+check, and add the aforementioned if/else in my driver, the mem ops
+work fine.
 
-> > The offending commit is already in mainline and hasn't been reverted in
-> > Mark's tree. This fix has been merged there though so nothing more is
-> > needed for now.
+What am I missing that makes them incompatible?
 
-> Ah, I only looked into Linux Next (without looking into the base, which is
-> v7.0-rc5 as of today). Thanks for clarification.
+Cheers,
+Conor.
 
-Oh, that's a relief!  I thought I'd managed to throw some commits away
-by mistake.
+>=20
+> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+> ---
+>  drivers/spi/spi-mem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> index 9f0fa9f3116d..e5a46f0eb93b 100644
+> --- a/drivers/spi/spi-mem.c
+> +++ b/drivers/spi/spi-mem.c
+> @@ -286,7 +286,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct=
+ spi_mem_op *op)
+>  	if (!spi_mem_internal_supports_op(mem, op))
+>  		return -ENOTSUPP;
+> =20
+> -	if (ctlr->mem_ops) {
+> +	if (ctlr->mem_ops && !mem->spi->cs_gpiod) {
+>  		ret =3D spi_mem_access_start(mem);
+>  		if (ret)
+>  			return ret;
+> --=20
+> 2.24.0
+>=20
 
---cTedQMO9bRMoQAar
+--Ukxw8MLqOlid/7Pv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnGs+cACgkQJNaLcl1U
-h9CeXQf8C/8M3D3IHRqmsVVVh3iiuWzlHf4LpxH25aLf87V/P/hahkNqtf1vsJ3q
-Nl7yMmC9bSNbTw3tGffMSGEFFGOZ3RoNdrSa9p7kPbCyTgITORCt1QUeodc1eRDQ
-biRrZ136+LACpmP1K5WI78EUD6N6jmGB1/PazJphg+0SJusO0mNADz3AeDh5yRRG
-z0nNYS3ou56JU42xO4g2VasTxlnqEB7EVyd0+RNNjpoSUxvlVA7EzGQUQx6BQn6V
-FJC/ZPyNLj+enhGZ7s9EfxjkKAwGrMPICa3DS3742nBqoBVjZGxLQ8eLY0uELJ/N
-10ZHcWZCUJwNO9xh/eSSDLqZPJHSdg==
-=zZtw
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCacbMdwAKCRB4tDGHoIJi
+0onEAQDei/TwO/HDQuUwMrnmMLgYKMLaeS9UaXuK3oVt1Y+/rgEAwJm7175oq4+g
+hvN0W+nDpiXQRDO5vYRrdUDHVvEJvAo=
+=to0R
 -----END PGP SIGNATURE-----
 
---cTedQMO9bRMoQAar--
+--Ukxw8MLqOlid/7Pv--

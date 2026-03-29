@@ -1,66 +1,63 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A880039B486
-	for <linux-spi@vger.kernel.org>; Sat, 28 Mar 2026 16:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DC4302163
+	for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 11:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774714040; cv=none; b=lHxj5FDA4MsQ+1cApj3jUCs8XPffGgGNm+L8lcmYuJt6Or9EcKI33GUe+mBeratMK10Rw/UooTeMVa8AYisKFzII+FjCbgNR8Cj7J9MQi/hTBYImkImE8Ft7KSvTe/Gc8KDPWJk+YQPAULXJ/VH6ZecNha1tyfQ5FGx2fqYFPJI=
+	t=1774782853; cv=none; b=irUr5+00Ut3wGnOI5cwv2UDwrq+mYXcrZB6EIo6xx8oYXPWULpQukSqPLgfWxa9A+Ugug3UGJotemWN9Xb0/5k1Y86KhVqnHK7taxa4nNIwO1SjdMFNpqxPc0VG4rnxcTLdxF9qxPmQn1OVitz0aIPKKgYQdx4oWRuXNVqIJcvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774714040; c=relaxed/simple;
-	bh=g/NC5thUm9GobODU/U36/p17WTlVCj1qLtVx9sZkHSc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l9NlevyyK86bWZcYGwRPfMnLq3P/ZN1lEZkryF5tEy8TbDx0CUg0H4RGs9V7rReFRdEePy4UMErE/LO9P1rXqz0cFUASyUhnbsPCIu3JXGD1FUb5Uy/nhoI3xLN20A7SUgT0tjSmAvK16MHduSu9rpirRBvrp/+ZD00iUdmMdF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m620CFb8; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1774782853; c=relaxed/simple;
+	bh=u+hbg2H3lOYYW1ebDQugMjdlCQVFZ+T5/ivVf6GLPhs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mvgPgYFR2M2MMoBfhxCEL/kEkXOovgaylM9bkuJEw1PM8lEPbnusugdybokJzM14rIQyLaTpNj0HXbOULqkqIaIY64ypC24nIc49rF1txCbpEqJrJtTFcxBQfXiGvLg/3ZVwvZjovVsqIuCrM9YAoDqosgi0oP4j8EEORPB1Wp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFB4ahsb; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m620CFb8"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35d94f4ee36so335567a91.3
-        for <linux-spi@vger.kernel.org>; Sat, 28 Mar 2026 09:07:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFB4ahsb"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82c20b9fb15so1620411b3a.3
+        for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 04:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774714036; x=1775318836; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UqrrS9uvTvJ0weuIXquOC2uG3YCXwOkehaDJ4cbhf3E=;
-        b=m620CFb86Qw+HQGwYsbXD0J6lJMiP/5bZLwlVUJcNSVFSNKp3d33P38db9EMetR5nU
-         ZRzewV4zF3NzNz5Jc2eMNpGUsxPoB3VEqJZLwIREaAlw3bMS0eM2RTCqEnnV6BgrDTt3
-         wyhy/oFFTogMEEZmXcyLshJ0x1TIo+MKQZSLhWOVtf/a2J9YGPnKKNPcuXIiVi/5lvE+
-         UiI6J7RIZBZOj7rN9T/A9QUhlJtwNiNiqN4lHi3UwR/5vgN91vvfE2t1XoPO533FXhsp
-         tnfGt5X4RFrtcxhYrPDZIsUlgES8cgHjff4kqRw9jz1SZl/vsbdEF530naRKWnnwh7H5
-         ctOQ==
+        d=gmail.com; s=20251104; t=1774782851; x=1775387651; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QVjoQBkXiGI1oWD/lbihuPbS4PWSjwfos2KaFS/Ehss=;
+        b=VFB4ahsbL4hP9rarNw17ILy0GK3Z61xPKH+2vGDAFBLI6V93xFuni46Euau4U/sNYx
+         bkaIwqTPoxuhRy3ghgSjYqzJKgtRFUENyxdMDzTPKQ/l7Fv2YcluwfoLr5+EklPtjBcS
+         9ktSxziGIJrv5F1csjPQweOcoiIGYP+ySKnY7lp6P4yz2GNeKhXAkoWzTIJye9bxDFCl
+         Yg+58pH7ERfyvKuKOQwkjvP9TQ3ry+J6ss7zfB+WNilEkSqRItHYCduIlyiPM8j57nrW
+         6vrxCwjT6Q6U9KDKJZ0eKdOBpGviUJkCSV8pgr76zDIaGP1HMVhNHhx0YPzDSjcuOZfr
+         b9bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774714036; x=1775318836;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UqrrS9uvTvJ0weuIXquOC2uG3YCXwOkehaDJ4cbhf3E=;
-        b=G1sbAHPGyMxPy+EnghVkuEkBAA0rYiklbLEOPjsrrMsBBbcOFJvZm2qIjLhtaiQPhd
-         6YaL7Nrc/qwP8vvjV+lshbKlTQfU/yEQqMoq4qbE6Z49pT2xm5maw4RnAGjoiAaBsVot
-         9ZcSFvyHsA2HnB1r/6278kW8YB6/MevD0D6T3vRsvLZoXgbkp9RB2vFXZXYUH8Gi9Xjf
-         jImSDhKhbx73/YyY2gQtXPSsuS5PyKqrqwqHyLEoQ5rl4f32r/36wBupRJrPPw6fcdOD
-         woPV1OHg5SEC4/wO2sp5wYAIunGQkX6Ne1agQqwNWk1R4Z0iIq9fOBPPl057iONmHMh+
-         liYA==
-X-Gm-Message-State: AOJu0YyB7qoyCJZnSl5tEc7Y75w0bfodQmfoM/fd2pAiv5wgrgnQsOu/
-	mF1Qbc8k+m6fb/qYhCmTbSQOkSErXymaXi74B+4qQBSUsbKs2KVxNumn
-X-Gm-Gg: ATEYQzwxDhMoEIxP2r+wGrsWNVuoeBd7q3Xci2ycYRjPZ74tw9UK6yLIoMftZ0qRG+B
-	yQzbXOW+CLAYGYNGwJwf6GgyPXDKWs6pON4mJ/iM42RqN9H/uC6hWdcOtN8TMB0SbHKPQryTW2s
-	LYrfBRfNEbtN0xF9+JkQENzhBoA5t5X7WG/BMyDXX/oOMAj/QOQQuzAKff3JLkUighizn8WciPp
-	e2b8eL8wYelca631Ar7l4iTtD9EoZxl94wSw2rjYsDfUFkusgpUfTOTB29Or6XvMn50o/uzjVZV
-	La9lz022JZjD+1rFzdO5BTpZ7MhXEWGqb+jjQRUJNB1aCsw/MuyrvKFrhdW05GqYtiV1KGAvJrn
-	QdU+362HnzTUNM3XDpmrjqNK8zReJjYtSF/MbzZ7rs6qM9H/bAB6InxrNISC1wL5uyy8MHAYczE
-	XeeqzvbALYtMLbyz6Dh6a+XeC0qRtQSZpo2/nz
-X-Received: by 2002:a17:90b:390b:b0:35c:812:6126 with SMTP id 98e67ed59e1d1-35c300f9db0mr5029057a91.24.1774714036132;
-        Sat, 28 Mar 2026 09:07:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1774782851; x=1775387651;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QVjoQBkXiGI1oWD/lbihuPbS4PWSjwfos2KaFS/Ehss=;
+        b=TaMrvBSJAqoKqHfnQSiOPxDDkK/czfOx9QOx0cza3oFi8ltJOXhT4cRwYyHpXZlxP9
+         UVVvz0SksSHmDVifEFkQQSeyM206jlOFpEuqYqYC57jJmDHWhljEjbv5UGVpB1dUcJHf
+         gpA5meDZjHLto7MqrtJaOPkYhuLRVC8AJ7rKdQIO3WrdxSHts4oGrVmMMFh0lrPrq/5q
+         0JqSBiv4a7Gpz8NTfrEWX7TTAxD2XhRMULnrLbC5ux+B038kuETlsY2iFAB3c/pysHQa
+         BVgNWBsSfjk2VSg/eRQH53nZsSWKWnS6iFp9KnmonYyqKQtK5g40IBBPgcMhhF5Y1jdX
+         Ak5g==
+X-Gm-Message-State: AOJu0YyWBNwwKyb9S7HScmRfJxuFKXvymTuAUqYXAV+GS4vaszozajY1
+	u4hDzYtuKrxqruYfVG7lkJeUAFHTagh9TUg2hphAw7CE6J8WenUeRBwz
+X-Gm-Gg: ATEYQzx4TIxAcLAofD4gkH8FhdYnGcHkZ4JxAZUd4qbk0hRx5sLUuD0aIezULtYywW8
+	b6c1ZjqnLkWiNpGmDiF57j2iq3OJOFUnmfeXm97Bj3dcNY7BoI3m6xBwdjes7aPkL0o0fUQUE97
+	vZGRXM6zlsI+t7eiiKBmcHsEC5lEaMM1GNLpCHyHIcvionbs2EaEHRUW+LxkNVKPRiOgZW/hN5g
+	NTatpSAnarDMYteevwvTXOBqbGfCEqYwpSR4nRbZEQOTNx6GkbHQ4e5gQtz7rlu0uwOMNGDwr5Q
+	YVo5IKtefPZhZLMwkCUf6AfcIesROce+XjG5Fm6nltcbPGKbnQaw2tLoIdVrNwfx7ZKQIapCs2O
+	FjXxBxubTOmdoXFcZMU+eQj7Vtrcg702SF1ygOySG5LRMfzfbdjk3cGcEyLsawng6F8yaEEh5Us
+	KUL3SVha2TYNw3z1tXmLm3PkQFPBh2ikok/Ztq
+X-Received: by 2002:a05:6a00:2395:b0:823:ad3:4ff4 with SMTP id d2e1a72fcca58-82c9605da6amr8434908b3a.37.1774782850914;
+        Sun, 29 Mar 2026 04:14:10 -0700 (PDT)
 Received: from junjungu-PC.localdomain ([223.167.147.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35c2ec27da0sm1988140a91.8.2026.03.28.09.07.13
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc72asm4266744b3a.48.2026.03.29.04.14.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Mar 2026 09:07:15 -0700 (PDT)
+        Sun, 29 Mar 2026 04:14:10 -0700 (PDT)
 From: Felix Gu <ustc.gu@gmail.com>
-Date: Sun, 29 Mar 2026 00:07:07 +0800
-Subject: [PATCH 2/2] spi: stm32-ospi: Fix DMA channel leak on
- stm32_ospi_dma_setup() failure
+Date: Sun, 29 Mar 2026 19:14:05 +0800
+Subject: [PATCH] spi: stm32-ospi: Fix resource leak in remove() callback
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,58 +66,62 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260329-stm32-ospi-v1-2-142122466412@gmail.com>
-References: <20260329-stm32-ospi-v1-0-142122466412@gmail.com>
-In-Reply-To: <20260329-stm32-ospi-v1-0-142122466412@gmail.com>
+Message-Id: <20260329-ospi-v1-1-cc8cf1c82c4a@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAH0JyWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDYyNL3fzigkxds8REUwMzgzQDS4NUJaDSgqLUtMwKsDHRsbW1AK/8AIF
+ WAAAA
+X-Change-ID: 20260329-ospi-6aa5060f090e
 To: Mark Brown <broonie@kernel.org>, 
  Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
  Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
  Patrice Chotard <patrice.chotard@foss.st.com>
 Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Felix Gu <ustc.gu@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774714028; l=1104;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1774782848; l=1157;
  i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=g/NC5thUm9GobODU/U36/p17WTlVCj1qLtVx9sZkHSc=;
- b=aSWLNSCRp0D8866dSgcbY+JT4XedGUT6QeFZ4e3z25/G+O1t9HoLZs4yvCDebAVPEe6SBW0MI
- wJBP5VFN2niD5tp1lOmoFBkjn9PFB5InUP/CCkXoqJ2mkl3cCcQcxGB
+ bh=u+hbg2H3lOYYW1ebDQugMjdlCQVFZ+T5/ivVf6GLPhs=;
+ b=Wc+RgivG/glkyD6BlqKjX69NgtVzBwdBy7l8yiL6UpV2oi7bjj4Pt1hW9blTiLqjXXkYTkr2Q
+ oNytratwqJCBjE2tZt6rpcUGtyqOf5tFXsRvhdA1IK+XuVfSZ9CeaiD
 X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
  pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-When stm32_ospi_dma_setup() fails, the DMA channels allocated by
-stm32_ospi_get_resources() were never released. Add proper cleanup
-in the error path.
+The remove() callback returned early if pm_runtime_resume_and_get()
+failed, skipping the cleanup of spi controller and other resources.
 
-Fixes: e35a7607e05d ("spi: stm32-ospi: Set DMA maxburst dynamically")
+Remove the early return so cleanup completes regardless of PM resume
+result.
+
+Fixes: 79b8a705e26c ("spi: stm32: Add OSPI driver")
 Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 ---
- drivers/spi/spi-stm32-ospi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-stm32-ospi.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index 52997c3f7174..34498939bcdf 100644
+index acf2d182e8b1..192a20de1ae6 100644
 --- a/drivers/spi/spi-stm32-ospi.c
 +++ b/drivers/spi/spi-stm32-ospi.c
-@@ -923,7 +923,7 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- 	dma_cfg.dst_addr = ospi->regs_phys_base + OSPI_DR;
- 	ret = stm32_ospi_dma_setup(ospi, &dma_cfg);
- 	if (ret)
--		return ret;
-+		goto err_dma_free;
+@@ -984,11 +984,8 @@ static int stm32_ospi_probe(struct platform_device *pdev)
+ static void stm32_ospi_remove(struct platform_device *pdev)
+ {
+ 	struct stm32_ospi *ospi = platform_get_drvdata(pdev);
+-	int ret;
  
- 	mutex_init(&ospi->lock);
+-	ret = pm_runtime_resume_and_get(ospi->dev);
+-	if (ret < 0)
+-		return;
++	pm_runtime_resume_and_get(ospi->dev);
  
-@@ -975,6 +975,7 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- err_pm_enable:
- 	pm_runtime_force_suspend(ospi->dev);
- 	mutex_destroy(&ospi->lock);
-+err_dma_free:
- 	if (ospi->dma_chtx)
- 		dma_release_channel(ospi->dma_chtx);
- 	if (ospi->dma_chrx)
+ 	spi_unregister_controller(ospi->ctrl);
+ 	/* Disable ospi */
 
+---
+base-commit: 3b058d1aeeeff27a7289529c4944291613b364e9
+change-id: 20260329-ospi-6aa5060f090e
+
+Best regards,
 -- 
-2.43.0
+Felix Gu <ustc.gu@gmail.com>
 

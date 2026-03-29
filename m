@@ -1,127 +1,103 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DC4302163
-	for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 11:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D0336E46F
+	for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 12:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774782853; cv=none; b=irUr5+00Ut3wGnOI5cwv2UDwrq+mYXcrZB6EIo6xx8oYXPWULpQukSqPLgfWxa9A+Ugug3UGJotemWN9Xb0/5k1Y86KhVqnHK7taxa4nNIwO1SjdMFNpqxPc0VG4rnxcTLdxF9qxPmQn1OVitz0aIPKKgYQdx4oWRuXNVqIJcvw=
+	t=1774789110; cv=none; b=JHfpH5m2r589CI+ZLCMRQt67aWS+ynibJUL+TGT3sVsUl0Bo7iDDCuwQX1/qIkdG1mNQ4KXiiBJ+qAawj670k36x8nQrog/IPTkrkT258lLmgkIwxPh3XNOmB6CXnEcAwdOLwGFpqqU+KvLWsBeNQVpIFfBZELcLvUjl50/oA3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774782853; c=relaxed/simple;
-	bh=u+hbg2H3lOYYW1ebDQugMjdlCQVFZ+T5/ivVf6GLPhs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mvgPgYFR2M2MMoBfhxCEL/kEkXOovgaylM9bkuJEw1PM8lEPbnusugdybokJzM14rIQyLaTpNj0HXbOULqkqIaIY64ypC24nIc49rF1txCbpEqJrJtTFcxBQfXiGvLg/3ZVwvZjovVsqIuCrM9YAoDqosgi0oP4j8EEORPB1Wp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFB4ahsb; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1774789110; c=relaxed/simple;
+	bh=RBC5GxO6F5suUqCq8w4WYm8YQ4Tf53aE1zRPpsXfF2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cUU/Xf8as5eM6cbvbC7NFMs28T6ZmFoHxStucI2E98rG2O//Wy5em+cArW7qcdVTXJMeDE6yFghaUebwbkWw3PIRwvqDgE/yg2ddTGYs/Op6K9aiRu9P7HuyKZ1QGwxBbr7zzzKNA6nuw09O/ENJQAwNi5afao7V6r8J04o2S/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be; spf=pass smtp.mailfrom=essensium.com; dkim=pass (2048-bit key) header.d=mind.be header.i=@mind.be header.b=WndLfhm3; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=essensium.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFB4ahsb"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-82c20b9fb15so1620411b3a.3
-        for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 04:14:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mind.be header.i=@mind.be header.b="WndLfhm3"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso28429275e9.3
+        for <linux-spi@vger.kernel.org>; Sun, 29 Mar 2026 05:58:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774782851; x=1775387651; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QVjoQBkXiGI1oWD/lbihuPbS4PWSjwfos2KaFS/Ehss=;
-        b=VFB4ahsbL4hP9rarNw17ILy0GK3Z61xPKH+2vGDAFBLI6V93xFuni46Euau4U/sNYx
-         bkaIwqTPoxuhRy3ghgSjYqzJKgtRFUENyxdMDzTPKQ/l7Fv2YcluwfoLr5+EklPtjBcS
-         9ktSxziGIJrv5F1csjPQweOcoiIGYP+ySKnY7lp6P4yz2GNeKhXAkoWzTIJye9bxDFCl
-         Yg+58pH7ERfyvKuKOQwkjvP9TQ3ry+J6ss7zfB+WNilEkSqRItHYCduIlyiPM8j57nrW
-         6vrxCwjT6Q6U9KDKJZ0eKdOBpGviUJkCSV8pgr76zDIaGP1HMVhNHhx0YPzDSjcuOZfr
-         b9bw==
+        d=mind.be; s=google; t=1774789105; x=1775393905; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=inofcFwjL2pXLFDjLTfYp+79qm9f/pucKjLePX2HrbY=;
+        b=WndLfhm3t698Dvlk0s1uqp0IpR+Y/h5Re6F2IKT6qxQ9+BwtQZ8iIs8wzcTnLRBp/R
+         Kfc3KRoOVMhQhjKcenu/peODHm9S9420ub/QC7EYM6jf3EGqCQpIhJuWQCXjnCIKPnfn
+         wX/ohwFiAlo4HAxdXBhOkmtjXXhuRGfgowprWrinG3d70MKfy1iM8NeJRxlNvcbuX3kW
+         eH0vtaYdp7v4PCSqjgwbGRbZ70JXegsM2axJWd3Pt96FQvUFdw5ilR4603aHs1gak9z5
+         nzUm9eRf0CnAxWiLvBOPiJ2FQ2gLeblHDRf9xZBHU9s6BAuODLELtmGxaqPvACCm3vam
+         DRwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774782851; x=1775387651;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1774789105; x=1775393905;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QVjoQBkXiGI1oWD/lbihuPbS4PWSjwfos2KaFS/Ehss=;
-        b=TaMrvBSJAqoKqHfnQSiOPxDDkK/czfOx9QOx0cza3oFi8ltJOXhT4cRwYyHpXZlxP9
-         UVVvz0SksSHmDVifEFkQQSeyM206jlOFpEuqYqYC57jJmDHWhljEjbv5UGVpB1dUcJHf
-         gpA5meDZjHLto7MqrtJaOPkYhuLRVC8AJ7rKdQIO3WrdxSHts4oGrVmMMFh0lrPrq/5q
-         0JqSBiv4a7Gpz8NTfrEWX7TTAxD2XhRMULnrLbC5ux+B038kuETlsY2iFAB3c/pysHQa
-         BVgNWBsSfjk2VSg/eRQH53nZsSWKWnS6iFp9KnmonYyqKQtK5g40IBBPgcMhhF5Y1jdX
-         Ak5g==
-X-Gm-Message-State: AOJu0YyWBNwwKyb9S7HScmRfJxuFKXvymTuAUqYXAV+GS4vaszozajY1
-	u4hDzYtuKrxqruYfVG7lkJeUAFHTagh9TUg2hphAw7CE6J8WenUeRBwz
-X-Gm-Gg: ATEYQzx4TIxAcLAofD4gkH8FhdYnGcHkZ4JxAZUd4qbk0hRx5sLUuD0aIezULtYywW8
-	b6c1ZjqnLkWiNpGmDiF57j2iq3OJOFUnmfeXm97Bj3dcNY7BoI3m6xBwdjes7aPkL0o0fUQUE97
-	vZGRXM6zlsI+t7eiiKBmcHsEC5lEaMM1GNLpCHyHIcvionbs2EaEHRUW+LxkNVKPRiOgZW/hN5g
-	NTatpSAnarDMYteevwvTXOBqbGfCEqYwpSR4nRbZEQOTNx6GkbHQ4e5gQtz7rlu0uwOMNGDwr5Q
-	YVo5IKtefPZhZLMwkCUf6AfcIesROce+XjG5Fm6nltcbPGKbnQaw2tLoIdVrNwfx7ZKQIapCs2O
-	FjXxBxubTOmdoXFcZMU+eQj7Vtrcg702SF1ygOySG5LRMfzfbdjk3cGcEyLsawng6F8yaEEh5Us
-	KUL3SVha2TYNw3z1tXmLm3PkQFPBh2ikok/Ztq
-X-Received: by 2002:a05:6a00:2395:b0:823:ad3:4ff4 with SMTP id d2e1a72fcca58-82c9605da6amr8434908b3a.37.1774782850914;
-        Sun, 29 Mar 2026 04:14:10 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.167.147.240])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82ca85fc72asm4266744b3a.48.2026.03.29.04.14.08
+        bh=inofcFwjL2pXLFDjLTfYp+79qm9f/pucKjLePX2HrbY=;
+        b=hOmc9/nOuy3dudXWXs0foEEX3eX9iXJOOhDsmnXK4dSSfBu2U4Yo6/sPdCP+VMCLmR
+         9dj0eQzOHzx3yubHsLv4n76PJhBYVw8DLYrywjkYqkCBmEXpvN7YI+Ly3oCwXWwjW4I6
+         08LhY5OQbfvlcALhoSmgoUwcEcARgscua/E38OfCdCW93V9rQLgkPVz0V8EmP4QS4dM9
+         Z8T575/q3nVUSzNGlMLpKCGhsR6GR/sHI3PXdTSBzxFr2zRRgurgyId6q67YpjEYT8mJ
+         C66JZrue/6Fs2ecfslxLIZJs1lbhsQN85+gf82aokE5w8qVUrKqMKagzWtMKwDXuu35W
+         jTYg==
+X-Gm-Message-State: AOJu0YwaskwSMQlcZCkg4NL6rSNQaUoTqGovGF4HprXYLrNy7UXQjmDd
+	XfkxTyomjodDFeHIoKKpcVx2Yw+9LbOQNbweQj7xuZlElLUmtOlfmsXXSDDtdyJw1I+Km/6XU0/
+	2zTTG
+X-Gm-Gg: ATEYQzyJHMzNl391GPYEkwCqiDp6WhqtpiB6tU16Apx7gKHHYwFy44Ffb/FBU8I8Mad
+	9loNEdqE67FN0AgdQO/TW4SFNv7pDwn9auMmkitNtht06HktNiB1RtgHoezuq182iyt03X0rQr7
+	UzMGPMxr/Ke1T8p3wPTHnLSbvBt/QT+9I542JuvwII8DsBekPsSiD9DRblrr4DarWdfIannWy06
+	4CkOJX2nTb/yhaKFrdbpKeBWcOyLPCC7uTHs/pcQyobekJ4WqiSTJ/U0e+yQEb61BZ1C/UjqYci
+	7a2mBjGtHIQ57iueabUgMVNaErXAafCi6dFOC/hynvTqempVc5h6mg+2UHUhbu8xP+LMS/JDhx6
+	6xrsTUIEJ3UbXhMh9ZyLYJTzVVylvPf4L5Gg+4hhow8f8q+6dX5Vmga8iCnCL9LZ2NvxVAtb3Or
+	r1ZgZUZNkyRkRIjLpeYdFCjdY6XHqu92ymdnr69a4snOmgX1MDIs0UKg==
+X-Received: by 2002:a05:600d:1c:b0:485:3f17:425 with SMTP id 5b1f17b1804b1-48727ec7681mr117472845e9.21.1774789105432;
+        Sun, 29 Mar 2026 05:58:25 -0700 (PDT)
+Received: from Jimmy.fritz.box ([2a02:578:85c6:1101:1ab9:445:1169:11e3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48730629033sm105579845e9.6.2026.03.29.05.58.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Mar 2026 04:14:10 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Sun, 29 Mar 2026 19:14:05 +0800
-Subject: [PATCH] spi: stm32-ospi: Fix resource leak in remove() callback
+        Sun, 29 Mar 2026 05:58:25 -0700 (PDT)
+From: charles-antoine.couret@mind.be
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Charles-Antoine Couret <charles-antoine.couret@mind.be>
+Subject: [PATCH 1/2 v2] spi: add SPI_MOSI_IDLE_LOW support from device tree
+Date: Sun, 29 Mar 2026 14:57:25 +0200
+Message-ID: <20260329125725.2984756-1-charles-antoine.couret@mind.be>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260329-ospi-v1-1-cc8cf1c82c4a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAH0JyWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYyNL3fzigkxds8REUwMzgzQDS4NUJaDSgqLUtMwKsDHRsbW1AK/8AIF
- WAAAA
-X-Change-ID: 20260329-ospi-6aa5060f090e
-To: Mark Brown <broonie@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Patrice Chotard <patrice.chotard@foss.st.com>
-Cc: linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1774782848; l=1157;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=u+hbg2H3lOYYW1ebDQugMjdlCQVFZ+T5/ivVf6GLPhs=;
- b=Wc+RgivG/glkyD6BlqKjX69NgtVzBwdBy7l8yiL6UpV2oi7bjj4Pt1hW9blTiLqjXXkYTkr2Q
- oNytratwqJCBjE2tZt6rpcUGtyqOf5tFXsRvhdA1IK+XuVfSZ9CeaiD
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Transfer-Encoding: 8bit
 
-The remove() callback returned early if pm_runtime_resume_and_get()
-failed, skipping the cleanup of spi controller and other resources.
+From: Charles-Antoine Couret <charles-antoine.couret@mind.be>
 
-Remove the early return so cleanup completes regardless of PM resume
-result.
+This flag was introduced but was not added as device tree property which is
+limiting the possibility to use this flag on real devices.
 
-Fixes: 79b8a705e26c ("spi: stm32: Add OSPI driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+This flag can be configured as done for other flags.
+
+Signed-off-by: Charles-Antoine Couret <charles-antoine.couret@mind.be>
 ---
- drivers/spi/spi-stm32-ospi.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-stm32-ospi.c b/drivers/spi/spi-stm32-ospi.c
-index acf2d182e8b1..192a20de1ae6 100644
---- a/drivers/spi/spi-stm32-ospi.c
-+++ b/drivers/spi/spi-stm32-ospi.c
-@@ -984,11 +984,8 @@ static int stm32_ospi_probe(struct platform_device *pdev)
- static void stm32_ospi_remove(struct platform_device *pdev)
- {
- 	struct stm32_ospi *ospi = platform_get_drvdata(pdev);
--	int ret;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9b1125556d29..489a64e20305 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2363,6 +2363,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+ 		spi->mode |= SPI_LSB_FIRST;
+ 	if (of_property_read_bool(nc, "spi-cs-high"))
+ 		spi->mode |= SPI_CS_HIGH;
++	if (of_property_read_bool(nc, "spi-mosi-idle-low"))
++		spi->mode |= SPI_MOSI_IDLE_LOW;
  
--	ret = pm_runtime_resume_and_get(ospi->dev);
--	if (ret < 0)
--		return;
-+	pm_runtime_resume_and_get(ospi->dev);
+ 	/* Device DUAL/QUAD mode */
  
- 	spi_unregister_controller(ospi->ctrl);
- 	/* Disable ospi */
-
----
-base-commit: 3b058d1aeeeff27a7289529c4944291613b364e9
-change-id: 20260329-ospi-6aa5060f090e
-
-Best regards,
 -- 
-Felix Gu <ustc.gu@gmail.com>
+2.53.0
 

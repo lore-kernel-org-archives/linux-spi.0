@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C081B391E6A;
-	Mon, 30 Mar 2026 22:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5573E3C6E;
+	Mon, 30 Mar 2026 22:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774910534; cv=none; b=p5on7Zf7VHVwNFpDWdVggpF4rZYhJNZz0ZCaBT9UBEZ+R2epvt90P7YvMLkX3sVSmwnXGxXFRW+iN6AiICLuwB+4ppJMc5xzcSgydF823Hdo4qWLDgCJfPA3NzLWpodGrjN8yttoFAfSO1ua2bAk3Axhud1PbKKiyM47Px1Y/mQ=
+	t=1774910541; cv=none; b=J3r7VW+Wgz1F8cEo/EimR+PqeluUFNbKQjFdAzUetRffDYLKv//Mx7C+wvdwC/gJZhEGnEinpp0t/3UJIgKrj5PwvjrK8/rGei+Jix5PD+hTMIY16t1kvtpBErGVfEmA9hZfbpzyxcNvThmfauVF0pBGyXjwOTYWiE4PmldasPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774910534; c=relaxed/simple;
-	bh=MiUdjd1ElIy6O+EmAN5j9TphnhlN1KKDDIGXOr0wtvo=;
+	s=arc-20240116; t=1774910541; c=relaxed/simple;
+	bh=gwATsu8ZZjXHQkyabRMdm97pkQYai65eXJBnHZ15OMA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=R3x2rTVd2/xT0yZuTDimt55aT795a8SviQJjNX4Mce1pEO7FZacaT/bWnMduwBA6c/xwgUfHB3Ok4VeTC0IpOxG83LERBv0/z3KCHo4yk4sfqFoVHNbsqWLtL43cRtteVYu+EbXMD+PLfELF0mz4z4y4DEi5CiSSEZ8ytNx4AF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hk9jcoi0; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=gzkbHqzXLsIvf/4AO7aTAxsf7bBhtcz1koknM42lomvS28mMFGTMNTkunBEli8NplnYITBQ3TgdwAvYEWquKGniDTPEZtdDXQw9ih7dvd1CMaXahjSwp8Mce2JCbIU95ZscLFuTtWNwP1HgUwUxTXgmUWvaeMWAnwUNOzzSiw/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faHov3gX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hk9jcoi0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1684C4CEF7;
-	Mon, 30 Mar 2026 22:42:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faHov3gX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96B5C2BCB1;
+	Mon, 30 Mar 2026 22:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774910534;
-	bh=MiUdjd1ElIy6O+EmAN5j9TphnhlN1KKDDIGXOr0wtvo=;
+	s=k20201202; t=1774910540;
+	bh=gwATsu8ZZjXHQkyabRMdm97pkQYai65eXJBnHZ15OMA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=hk9jcoi0C5zFsVz3zow84mFzcKyBLWJ7Hl+PD++Y+8aBg/i1hEPnwl70BERuT3GjE
-	 sfUA/QRrW1OmGtjP1MinUn6LFZef8u+dou/UNmn1LuyK3qaBuoMS/grxPSTGwtqcOP
-	 dZ16pYk7+YRPockoQ0dzWLY8NJBJQwJen5k7O94OVMx1qjbsZom9c/4nWouOOgcpdZ
-	 JN3OOvjuYgKVFwqTMTCzcpijOIpKlBpVXdGZOrWTDQaWZnWvTXrgxjVmIyJbh84GWt
-	 JD49jvX8GhK/fXrAsxOq2MZoao2Y1Y+Siz22/ahMV9KatvxGU7J0aI5VvrOE6U2Unv
-	 oNcW6N/6GQNZg==
+	b=faHov3gXtvlYY4u2L5fM39dYt0wL4qFpOOnADVRPKyMZOWmwmhGRfLL/vlha7jQhe
+	 BKj1POUnz3UqIVt266XIzgBMvXsUd5HjZ6U7RXTc2IepPzQKO2msn93NjxvLMu4ixh
+	 tCRVch1+f9xSFDog3cxYo89/zud7ZgKkZM5uw2YYzbaCpJwz2BQINvMNYEEA1msw6e
+	 r31ItkLXi7le/shCFd6cOvA9CqxtjGzlg8sHwFiHmAEwgTYJNW6LnmzWlchOW1+7va
+	 7hAR2ICztX4Opr2yzFOIV/KgtuFrcVSVp0r03rajhZOLA7xiZuaEp9kSUT5t8yaiRf
+	 NoP//jgLvnDmQ==
 From: Mark Brown <broonie@kernel.org>
-To: Liang Yang <liang.yang@amlogic.com>, Feng Chen <feng.chen@amlogic.com>, 
- Xianwei Zhao <xianwei.zhao@amlogic.com>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260322-spifc-a4-v1-1-2dc5ebcbe0a9@gmail.com>
-References: <20260322-spifc-a4-v1-1-2dc5ebcbe0a9@gmail.com>
-Subject: Re: [PATCH] spi: amlogic: spifc-a4: unregister ECC engine on probe
- failure and remove() callback
-Message-Id: <177489325833.222960.6647008477014034465.b4-ty@b4>
-Date: Mon, 30 Mar 2026 18:54:18 +0100
+To: Emanuele Ghidoli <ghidoliemanuele@gmail.com>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ miquel.raynal@bootlin.com, a-dutta@ti.com, s-vadapalli@ti.com, 
+ mkorpershoek@kernel.org, khairul.anuar.romli@altera.com, 
+ stable@vger.kernel.org
+In-Reply-To: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
+References: <20260313135236.46642-1-ghidoliemanuele@gmail.com>
+Subject: Re: [PATCH v1] spi: cadence-qspi: Fix exec_mem_op error handling
+Message-Id: <177491053855.513566.10943555752858611940.b4-ty@b4>
+Date: Mon, 30 Mar 2026 23:42:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,29 +47,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev-3ac6c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1178; i=broonie@kernel.org;
- h=from:subject:message-id; bh=MiUdjd1ElIy6O+EmAN5j9TphnhlN1KKDDIGXOr0wtvo=;
- b=owGbwMvMwMWocq27KDak/QLjabUkhsxTf5wZ5kwzcFLmv2a9Rmp5TKJbhcKC5sL/jhOO/La4x
- 5Zp67uuk9GYhYGRi0FWTJFl7bOMVenhElvnP5r/CmYQKxPYFC5OAZhIkS77f6dmfZ23HC1h554G
- 1v1Ps/0qcdN64hYR4+Zn5wRNNex/KzVwP1/pJ9dw327S9Sd1fXXn1E+53zrpv6gx2+7l1WV/OxJ
- X6ZiffKN6pJ3dqtuxY7m5Z/PlP/ujjxrsEZvyy1v822TRhdYnRbnyOK1v1/qyGyk+vWJu7M8fd7
- uicPX5XC77xcfPs+23yjl+/GDWId+ZUgdne0YbPFbnM2s1T5pgVt5iHdvzR9Jj9Qr5Pgf76sWG1
- pOlQucrRbPPtzoqzDSLfQe/tLHrP83pSdLntp684p8dtjtc0uAtl41c4AFP3iUyM84Kf/ZLeenn
- O22K6d1VthsfqpyyWvPWj+PA+03OTMufNkh9/bfOlOsEAA==
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, 22 Mar 2026 22:28:45 +0800, Felix Gu wrote:
-> spi: amlogic: spifc-a4: unregister ECC engine on probe failure and remove() callback
+On Fri, 13 Mar 2026 14:52:31 +0100, Emanuele Ghidoli wrote:
+> cqspi_exec_mem_op() increments the runtime PM usage counter before all
+> refcount checks are performed. If one of these checks fails, the function
+> returns without dropping the PM reference.
+> 
+> Move the pm_runtime_resume_and_get() call after the refcount checks so
+> that runtime PM is only acquired when the operation can proceed and
+> drop the inflight_ops refcount if the PM resume fails.
+> 
+> [...]
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
 Thanks!
 
-[1/1] spi: amlogic: spifc-a4: unregister ECC engine on probe failure and remove() callback
-      https://git.kernel.org/broonie/spi/c/b0dc7e7c5657
+[1/1] spi: cadence-qspi: Fix exec_mem_op error handling
+      https://git.kernel.org/broonie/misc/c/59e1be1278f0
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

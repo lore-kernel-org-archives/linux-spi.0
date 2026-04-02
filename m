@@ -1,129 +1,100 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705EA3E5EF8
-	for <linux-spi@vger.kernel.org>; Thu,  2 Apr 2026 13:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5439A2ED17B;
+	Thu,  2 Apr 2026 13:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775135432; cv=none; b=s3Q01fAUWhqDyDrdy6ASDX+9r5GMtjWRqm7rgprc1HZT1XGl6suko3VYvUu3QISaOHcjBY97/uxmBQPlhr4vrv/jvuyd2vLehpzqq801oeS7bEM37V0FJIymsY3m76ucoyfrwN2yLdvMvK7gNnnHeS8fNvQVADh1jHPs6XLJZjA=
+	t=1775136028; cv=none; b=X7eSoHcW1V83plk4cKkLb4BxngHkW6pKQjpquYnw8GYyieiIuIrv/YhnQLFibMg1KkupSObToK4viAEWBLYzXtxr6UWnHsRnSFiw9hI7MxXlEN9xdOIBeUkW2MR/vtk89/7NkJ1MQFQQiuipXi6uxN+7Btyn9/SdsOu7WAnS7a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775135432; c=relaxed/simple;
-	bh=U4PLVNmitmFk0IAzfLOjKlCSu5Fm4qOHd5/vnDMdH+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwApYzzIh5AQe+KgmiWvsFm5HGmVuxowXmtVxPrgiGW9OeTnx8G9m4Na/LpNb2bUuapCp8EnPN8UmJiaANci3W5qwYAMGv8R+0r6Ey0hjEylCt3TULe5fV09v3RKkTQnlHg7PCGWRjgTIF3rYmqru17vj1uGiJSjJ/2Y8cWvQx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZmUFXiU8; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1775136028; c=relaxed/simple;
+	bh=kxfvKNpnPUSSNDsRLFTl96/5/ILvsbADfQ2wGRvooMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sr8OPlVWaIwJGeud8T4ToF8VxtyWLFEhys7slAPGyqWIEYFTvQCE6BcnICZpmxUmUfi+ihz3yn41wwyRhQvBni+URkYoNapw/yVqMECHlaOfnFLr+QUbg6sLrLgM2EmxL9oO67Na1+a4bOtEQbOR1digUkjaP+yDa7/BbS5IQ74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1nEGBxJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZmUFXiU8"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43d02a71526so554369f8f.3
-        for <linux-spi@vger.kernel.org>; Thu, 02 Apr 2026 06:10:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775135426; x=1775740226; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QlmD1kbg6mKeZNYx7OKw0AzuVS9sA1logO6t/+1LGUE=;
-        b=ZmUFXiU8kwhfSGUyqisuuCQ2bVsLrPTw2yc9TR5k9u11zYPfk5beikptV4Ad9XrFGX
-         RhOyUIORtvBjG5RRk2Bv3QL3JcADrXKGDcVtn1/yc4j/hPQo5q3e5MYfTuQ/EbTny+n3
-         I5FOs/xpYcHTKdw/5gayHub9BWdvXKgRXLoHhmvdDYudjU8LGkEYDRcZYogGgjV0Kxdw
-         /bg/KF1lF7V7aSw1SkGt3/U2xZwL3h4i2IHDPiR9sZpa09LHoPd1yoQfsZwI5NdkbA1I
-         uPVQI1KIm6F/FRwx9g4O1wwZvyzfViiy5M+Ulroag7GxFiHEifIYzpEP6qEgKAET4ngM
-         R5Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775135426; x=1775740226;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QlmD1kbg6mKeZNYx7OKw0AzuVS9sA1logO6t/+1LGUE=;
-        b=GDRdoeFM3VkN7FwHxQ1eSHPJQLL6cpUcIpcKhcq+46Kc4/jEDKGpR1UkWufWSjo16j
-         zBMDu6gBQqj3xkd1PEjzTlY2fnbaPC0AvFUu6G2qxKkQOsA2MwUtoMgcc9nUcSGRdJvE
-         26w++CT0VEXrH73mXvjnJOvsxSYRwEZfxhO/gKntCz7gtULhbcm5TZ1dW4u9JCopBbh5
-         8MJ/YJvCpLJSgk9SCI5I6iDgRz8Tk/8WpiQdLX4z2/HVjQ6nF9+FQrSmJ6zkVXRcflYh
-         Tr6CBmOWWtS+MJR74+2/VmMQyX/YNjjoq0+fPfS2qw+NrgwkYYneJ9OFyXoxjiRytrKL
-         T7Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVYeFby1L7gXdhCEuJH788we1XNpRG36t+Zm/FLk3BkyJ6BefvenFrExCdHixD6T5ogRCqT6+AeG1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHRVc7k19ahM+nsf7rdtuGXJFHeFgVoVPnkRqBTOljMfrcsppG
-	ZAc2vqOCf7mnbPtSrX9AbGIbG8RWQIWrABq3DSwFzHZfcR0h5OO8A98G
-X-Gm-Gg: AeBDievN/0OA238sHkRtCFmAL2fpIMJQexHE1niwqkqhppl7qMHB7txssBY9qqKzsU8
-	m24BmU4uZzHtOWR4KCvPmEhs0KHjLibWmWymje77rN5QAvrkJ9V5zwJBZdtVQpYJIaGA1xuV0+r
-	ElTGE6YB4tRz+XlxobnSEOtCBoTZ3dJgjN30Hmu6LfIdLTW3JkAy5utEyLhuro4QJKvCQiIvmlj
-	7Jz+lkoI2V4x78jzPlz6p38MBIQV8qQZiFzqW9yPo8xaaIiFg5Ot2s3zxYBsgVr/L9JxQ8rJG4l
-	g4Eo3nhGxTc/5ogdgilUwg7N9VikBBhSJwlifEMTheFti355Elfpw4Nqk4lyib6ORdEOyHZCKHi
-	/a2NBONXOpv7t0DcOugWXI0dDh8tQ5pT+eDX/DRmtsUwzHiODTA/PqpUpwdwDOrC+zPXLMVhknL
-	CezCMPR2ik0uGdCzwgJXV3X9E6YgWBfmdcFpj0miSqP98OWTRviZtAVJ6XAy0=
-X-Received: by 2002:a5d:61cb:0:b0:43d:1c21:ead3 with SMTP id ffacd0b85a97d-43d1c21eb20mr6902373f8f.16.1775135425685;
-        Thu, 02 Apr 2026 06:10:25 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:23c4:a758:8a01:1526:47aa:5ab6:5a85])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43d1e2a720dsm8040753f8f.4.2026.04.02.06.10.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Apr 2026 06:10:25 -0700 (PDT)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1nEGBxJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D92C116C6;
+	Thu,  2 Apr 2026 13:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775136028;
+	bh=kxfvKNpnPUSSNDsRLFTl96/5/ILvsbADfQ2wGRvooMM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t1nEGBxJ9Kfliv4fWM09v8L1FScradPi6PiRsS/6ogQ3RwdA1Gjp6lfjzBzdddWRg
+	 6dUpBO7GsS3cApLkha8kV3wYuqRQK6RYvNsy4Twgjbj5GY4jUFkZH9V+5oxDusaCYt
+	 3ihCHmFu6VTxoeKR9EwWLpB2hsK+uYmtH5siRKH2l//4G7HuE0QThOKHmxrxtMAvlb
+	 Y71RWM70hG2iYuk9gwIGoLnfQ+yvE1AV7hPQpPajhVdPLvhlLG2n3j4gpv1jWwudnR
+	 m6jJwpSCrtVlNFoDArNlKIO4PVA6jcASWne/TLofayzEfmcoY5WiTk4KKeMsXwCwB7
+	 amiabYDqEOBkA==
+Date: Thu, 2 Apr 2026 14:20:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Biju Das <biju.das.jz@bp.renesas.com>
+Cc: "biju.das.au" <biju.das.au@gmail.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	linux-spi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH v2 2/2] spi: rzv2h-rspi: Add support for RZ/G3L (R9A08G046)
-Date: Thu,  2 Apr 2026 14:10:17 +0100
-Message-ID: <20260402131020.143123-3-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260402131020.143123-1-biju.das.jz@bp.renesas.com>
-References: <20260402131020.143123-1-biju.das.jz@bp.renesas.com>
+	"magnus.damm" <magnus.damm@gmail.com>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: [PATCH 0/2] Add Renesas RZ/G3L RSPI support
+Message-ID: <f6fd2e18-d5f8-40fe-a4d2-7894bd232da7@sirena.org.uk>
+References: <20260304074907.9697-1-biju.das.jz@bp.renesas.com>
+ <TY3PR01MB1134614237922A87C70AA685C8651A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ZMZYnA4LzdkTRpE/"
+Content-Disposition: inline
+In-Reply-To: <TY3PR01MB1134614237922A87C70AA685C8651A@TY3PR01MB11346.jpnprd01.prod.outlook.com>
+X-Cookie: <doogie> dpkg has bugs?  no way!
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
 
-Add support for RZ/G3L RSPI. The RZ/G3L variant requires only
-2 clocks (pclk + tclk), unlike the RZ/V2H which needs 3.
+--ZMZYnA4LzdkTRpE/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
-v1->v2:
- * Collected tag.
----
- drivers/spi/spi-rzv2h-rspi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On Thu, Apr 02, 2026 at 01:00:28PM +0000, Biju Das wrote:
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 23f0e92ae208..38ee09e389c9 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -811,6 +811,13 @@ static const struct rzv2h_rspi_info rzv2h_info = {
- 	.num_clks = 3,
- };
- 
-+static const struct rzv2h_rspi_info rzg3l_info = {
-+	.find_tclk_rate = rzv2h_rspi_find_rate_fixed,
-+	.tclk_name = "tclk",
-+	.fifo_size = 16,
-+	.num_clks = 2,
-+};
-+
- static const struct rzv2h_rspi_info rzt2h_info = {
- 	.find_tclk_rate = rzv2h_rspi_find_rate_variable,
- 	.find_pclk_rate = rzv2h_rspi_find_rate_fixed,
-@@ -820,6 +827,7 @@ static const struct rzv2h_rspi_info rzt2h_info = {
- };
- 
- static const struct of_device_id rzv2h_rspi_match[] = {
-+	{ .compatible = "renesas,r9a08g046-rspi", &rzg3l_info },
- 	{ .compatible = "renesas,r9a09g057-rspi", &rzv2h_info },
- 	{ .compatible = "renesas,r9a09g077-rspi", &rzt2h_info },
- 	{ /* sentinel */ }
--- 
-2.43.0
+> Gentle ping.
 
+There's strongly negative feedback from Krzysztof...
+
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
+
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, so sending again is generally a better approach though there are
+some other maintainers who like them - if in doubt look at how patches
+for the subsystem are normally handled.
+
+--ZMZYnA4LzdkTRpE/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnObRUACgkQJNaLcl1U
+h9AIlAf+NGIq1DfBznaGP8gy3kdvIvyTbdfendU94b4R9X/2C0az+sqVo5OWIeu1
+yNl+4sURxpch24eD1Iub1KIrchQhMVYQb2PtmPi0xAAhx5A/Ro5TZ9E+kUC+0ecb
+4DHxRh1A1vTia1GRfulmFl4FkkcTo/rTpVCEMeCf4XBlUPRyb0BURaM2i3vISydn
+UyetbA2E8hw5cEh+NQvBqymwSKUnqLW+4C03COpHzfmYf0jepr9c3hgutyDiCDiz
+hV2fkR5OXi7FO/rOy07Psnwogcc9CxRjUlC/XbnvhFPWLPbCVcDgDL0DuRTgW0LV
+42LGxWjN2q9eEpbILnU0OWW2J3G5Xw==
+=ZThu
+-----END PGP SIGNATURE-----
+
+--ZMZYnA4LzdkTRpE/--

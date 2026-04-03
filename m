@@ -1,107 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC8931B803;
-	Thu,  2 Apr 2026 21:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19393AE191;
+	Fri,  3 Apr 2026 14:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775167107; cv=none; b=k0KTnsXAl0U1zEWJXPFqqxg/0Ps3JXPapOn3I1EGDoeKTvF9US/PyIfdG+xpLI7tvChHd36X2Tl7BxvkXQId6eqjJ0CvRUFjBPnNvmh0R8aT2gMib5ftcekYMyYcmiA1YqUefTFMScCkjx1iMYXus6GRMr0nosElGxpPdOE0UK0=
+	t=1775226809; cv=none; b=mY8x1wsP0SO7e+jtM//MkEcCDAGPI2cQFcoND5Dm9dn7klIHTK9o9g+fex6nmNJfD73OMNTTbt2sBECtQfCqww6Fzuaj5q9LIKv8fo6LpLDQh++mV5bjqxkwyz1tJeCv3xUXCmuCKtnpqNcenftduZc7jDW2qhkdZJVA+Aa+T6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775167107; c=relaxed/simple;
-	bh=QvUc9vANqYsb1luDp8UYk1f8BqkeVaTMVXLV75eutnQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=DVJp2RZb27ELpuSXbKU4Hp/Y6oxtY4GVZi+hvh0cGpfFqwLi3iiECU8FkXW3LsP2E4BFa3lHd7gKiNOQi5H6gIaKO0hKHraIz2ZSgvjaY8pL8Nj3ueFJ33XzKXy8KKHzyLjplHoEp/PCfYJu8MKrJG/teYDsTZ/J1SYs3fWx0zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBJzCsq7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775226809; c=relaxed/simple;
+	bh=YIzVDVnuBTBHN8WdMnaynMOTCN0IRPUzGSPzwqfc6+k=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=oyz6yjiN/jBqJHS7WNnBJEinhRZLOR1PJvZIZal/fGpdVRWGKof20i7KKAd1ut66jY/0DIx6S5L4VgC2hOvkZyGehwkOqBugc8z3WFWF2eF4+2dv6cdEJsqiRvO6YbEgvecXBhpOfqQpU8O5FUIS2HcF8SOpP2WQlJF3Q5juF3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qyXHwjX0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBJzCsq7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D96C116C6;
-	Thu,  2 Apr 2026 21:58:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qyXHwjX0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11733C4CEF7;
+	Fri,  3 Apr 2026 14:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775167106;
-	bh=QvUc9vANqYsb1luDp8UYk1f8BqkeVaTMVXLV75eutnQ=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=KBJzCsq7TNcgHpU+TWPAd3W8YuuJXdgpviR9Ow38UzYp/E+eDMYCQdUq5+04/Mnru
-	 vF8yruBgH9Kqoxj3RdUA00tDQnEgnr1qE7AXbmqG7qka9IVu/f1eZKTg86JWT+ETrn
-	 TjxI1jdECoYVYFvAydaPvhTr0DLyOkSNS0rHhfEWArmmkmeciwTpFwX+5aQHpstoUl
-	 foXfbAlUvknuR2UINHvJ3kK1f5ozCCWUSVy6PFFL3eEN4gpoDz+keSHvFP6Ep2zvPe
-	 Ej2doeiB7lotVTyVy6ov80wS5IsFWdnGSH4WR6z1XJ7lBV9TObDwXGWdYhpggyK3MT
-	 1b1VbHt8uneOw==
-Date: Thu, 2 Apr 2026 15:58:18 -0600 (MDT)
-From: Paul Walmsley <pjw@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    "Michael S. Tsirkin" <mst@redhat.com>, Theodore Ts'o <tytso@mit.edu>, 
-    Albert Ou <aou@eecs.berkeley.edu>, Alexander Duyck <alexanderduyck@fb.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Alexandra Winter <wintera@linux.ibm.com>, 
-    Andreas Dilger <adilger.kernel@dilger.ca>, 
-    Andrew Lunn <andrew+netdev@lunn.ch>, Anna Schumaker <anna@kernel.org>, 
-    Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
-    Arnaldo Carvalho de Melo <acme@kernel.org>, 
-    Aswin Karuvally <aswin@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, 
-    Carlos Maiolino <cem@kernel.org>, 
-    Catalin Marinas <catalin.marinas@arm.com>, Chao Yu <chao@kernel.org>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, 
-    David Airlie <airlied@gmail.com>, 
-    Dominique Martinet <asmadeus@codewreck.org>, 
-    Dongsheng Yang <dongsheng.yang@linux.dev>, 
-    Eric Dumazet <edumazet@google.com>, 
-    Eric Van Hensbergen <ericvh@kernel.org>, 
-    Heiko Carstens <hca@linux.ibm.com>, 
-    Herbert Xu <herbert@gondor.apana.org.au>, Ingo Molnar <mingo@redhat.com>, 
-    Jaegeuk Kim <jaegeuk@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-    Jani Nikula <jani.nikula@linux.intel.com>, 
-    Janosch Frank <frankja@linux.ibm.com>, Jaroslav Kysela <perex@perex.cz>, 
-    Jens Axboe <axboe@kernel.dk>, 
-    Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-    Latchesar Ionkov <lucho@ionkov.net>, Linus Walleij <linusw@kernel.org>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, Mark Brown <broonie@kernel.org>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Miklos Szeredi <miklos@szeredi.hu>, 
-    Namhyung Kim <namhyung@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
-    Paolo Abeni <pabeni@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-    Paul Walmsley <pjw@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-    Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-    Sean Christopherson <seanjc@google.com>, Simona Vetter <simona@ffwll.ch>, 
-    Takashi Iwai <tiwai@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
-    Trond Myklebust <trondmy@kernel.org>, 
-    Tvrtko Ursulin <tursulin@ursulin.net>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Will Deacon <will@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
-    Zheng Gu <cengku@gmail.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-    linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-    linux-s390@vger.kernel.org, linux-block@vger.kernel.org, 
-    intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-    dm-devel@lists.linux.dev, netdev@vger.kernel.org, 
-    linux-spi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-    linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
-    linux-xfs@vger.kernel.org, linux-nfs@vger.kernel.org, 
-    linux-crypto@vger.kernel.org, linux-mm@kvack.org, 
-    linux-perf-users@vger.kernel.org, v9fs@lists.linux.dev, 
-    virtualization@lists.linux.dev, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 8/8] arch: use rest_of_page() macro where appropriate
-In-Reply-To: <20260304012717.201797-9-ynorov@nvidia.com>
-Message-ID: <ee15482d-22a8-9686-ba64-d216b25d8e68@kernel.org>
-References: <20260304012717.201797-1-ynorov@nvidia.com> <20260304012717.201797-9-ynorov@nvidia.com>
+	s=k20201202; t=1775226809;
+	bh=YIzVDVnuBTBHN8WdMnaynMOTCN0IRPUzGSPzwqfc6+k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qyXHwjX062rfgFpcMrwyR11Kp4zH2ldYUdDqHnT6bnKsbqcKEJuXnwtQhEfzDfVzO
+	 IrMBcbdxGnt6u1znHHSsaoRqOBB+SqQfWMQr/9Ay7SR1pRKG0gtRxYmLkbdkZQLA3h
+	 bZ1yYDOscrrtRRNCeZD7AStAoJ2XgvWerSViMeUrrpwhVZdxbVae+m0zzjdwEjkI5p
+	 laP4N+S36EihSk8TMZXmvBs5pX+G4qPF8l5PtLb60Kum5R/zKDPc/4wKV3BXO1OFlo
+	 ZGK3sv/CX4AWLqG3so7F7lXYFz/rd5qA1McVHL/vfBcfGLLAzUmywUofSJAKpHVK9C
+	 dXQ8p3ew6Ql5A==
+Message-ID: <155f5413c87935ce30a4a00cce806386@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.0-rc6
+Date: Fri, 03 Apr 2026 15:33:18 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 
-On Tue, 3 Mar 2026, Yury Norov wrote:
+The following changes since commit 7aaa8047eafd0bd628065b15757d9b48c5f9c07d:
 
-> Switch arch code to using the macro. No functional changes intended.
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+  Linux 7.0-rc6 (2026-03-29 15:40:00 -0700)
 
-Acked-by: Paul Walmsley <pjw@kernel.org> # arch/riscv
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.0-rc6
 
-- Paul
+for you to fetch changes up to 59e1be1278f064d7172b00473b7e0c453cb1ec52:
+
+  spi: cadence-qspi: Fix exec_mem_op error handling (2026-03-30 21:34:53 +0100)
+
+----------------------------------------------------------------
+spi: Fixes for v7.0
+
+A small collection of fixes, mostly probe/remove issues that are the
+result of Felix Gu going and auditing those areas, plus one error
+handling fix for the Cadence QSPI driver.
+
+----------------------------------------------------------------
+Emanuele Ghidoli (1):
+      spi: cadence-qspi: Fix exec_mem_op error handling
+
+Felix Gu (4):
+      spi: stm32-ospi: Fix resource leak in remove() callback
+      spi: stm32-ospi: Fix reset control leak on probe error
+      spi: stm32-ospi: Fix DMA channel leak on stm32_ospi_dma_setup() failure
+      spi: amlogic: spifc-a4: unregister ECC engine on probe failure and remove() callback
+
+ drivers/spi/spi-amlogic-spifc-a4.c | 12 ++++++++++++
+ drivers/spi/spi-cadence-quadspi.c  | 17 +++++++++--------
+ drivers/spi/spi-stm32-ospi.c       | 12 ++++++------
+ 3 files changed, 27 insertions(+), 14 deletions(-)

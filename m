@@ -1,50 +1,89 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAECE3368B0
-	for <linux-spi@vger.kernel.org>; Sat,  4 Apr 2026 03:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238BA3B7A8;
+	Sat,  4 Apr 2026 15:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775274317; cv=none; b=fL/+pI9LNSqifPQUCG3djgTZubDjUARE4Hh6+ETFJyYbPzabLdw1/9P1Njas6TeHU3oAgbyYHsQjA//IFZQCqrlXH5ppv4kFC50b7YTW35GJ+LUR14tS9fu/1OdYxLZktnth+5//vaG4BoLb4hQAgtI1qCMlRvW5solWbUts00g=
+	t=1775314936; cv=none; b=hXy9wh6iRLHCgPLpwTcrMVazPACLWQ7Nh9iBsM8SymD9oawhjS87W3ieISdwGRqkxuPaO3agP6XPnj0eW8+V/n0gD+GqZAYcfzwKcbbTlbBR2BmRauKV9eOfq3mOPwl+K2JzC3zN0KUzvHiElzZrf0ypqZEr9Pfxj98ZpcnmBqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775274317; c=relaxed/simple;
-	bh=AA5x6JwA2opi1vXKCakUkc9F3VeKLsoO5cl71XDGl9U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YjGTNLNOzj5hmAg9JHy5bU2I07O3xs0Uo5hPYko95eUb16tGy6CIpKq0S6foDuNysdmcuaPPlRnfI4YMhWgN7HMLBXbklmtGsh/6+ZsujphIBwHeeOqrDBQ0yiM1UvdTBD3ZEBKrnRzSgzIyODT9odaqO2d9EP/kGewvS2eWN8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: ab797e842fd811f1aa26b74ffac11d73-20260404
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:78b799ad-32a9-4808-9d7c-46d4bad02e3c,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:e7bac3a,CLOUDID:41f9ecd829b3757b01f2fc4674a1a5f6,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850|898,TC:nil,Content:0|15|50
-	,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: ab797e842fd811f1aa26b74ffac11d73-20260404
-X-User: xiaopei01@kylinos.cn
-Received: from localhost.localdomain [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <xiaopei01@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1752595493; Sat, 04 Apr 2026 11:45:06 +0800
-From: Pei Xiao <xiaopei01@kylinos.cn>
-To: broonie@kernel.org,
-	gch981213@gmail.com,
+	s=arc-20240116; t=1775314936; c=relaxed/simple;
+	bh=yS1a8GmMxhd+gaXjsrUMOyEcZUcN2vLf71oRyrhAVkk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U7whb4p0v2gfusZtNmzpc2g52jEEGYJwWhUfkdYnueaq0aVlNCTCg7MAvWKVqc6K91kFLa9il1ZJMXRQaqmhCo8VXCUU2Zh9MSNm5PXOjGXQ57XJ+RRvOcZVNMk8DUx3DQ7OfD6Ei/IAH07RXc/ud58vcvc9rrLW1G5sjTxG6o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcd1WH1u; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcd1WH1u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BB2C19421;
+	Sat,  4 Apr 2026 15:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1775314935;
+	bh=yS1a8GmMxhd+gaXjsrUMOyEcZUcN2vLf71oRyrhAVkk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fcd1WH1uMPDFcW95A5bP6twrmSlGywxDbhV9K4GUdxmnw9OhLho72J9OlIZREDDfv
+	 Evf5eg+FhGKnEBZMEi0xrGzL0W0wBBPFC5ZbOalQpNWyhGwDm3HuLGvy/jgjYAq60X
+	 Jsa257f9xIzRC/LnmHpxdh9mv/JRHNm7utYMn96WoZP6ZRATrlwe1+3BmjlR9bxRPR
+	 tiA87cPHB5ojtZQJ2zSKPbtecnXGON24oyWbrZcP9XuN+XivvmLrVCQGu5orrMZe/a
+	 +xDtWMIwREbTcGNYdTKbgyxE7aDCuXqmHaashK055GEOETa+XQlaspyrGVn7GrwOhI
+	 UHZOaAkc+kiUA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: Russell King <linux@armlinux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-s390@vger.kernel.org,
 	linux-spi@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>
-Subject: [PATCH 3/4] spi: zynq-qspi: Simplify clock handling with devm_clk_get_enabled()
-Date: Sat,  4 Apr 2026 11:45:00 +0800
-Message-Id: <358f3d25bfbba9f552f287711e0fba746ca13246.1775273351.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1775273351.git.xiaopei01@kylinos.cn>
-References: <cover.1775273351.git.xiaopei01@kylinos.cn>
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	linux-arm-kernel@lists.infradead.org,
+	Danilo Krummrich <dakr@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH v2] Drivers: hv: vmbus: use generic driver_override infrastructure
+Date: Sat,  4 Apr 2026 17:01:49 +0200
+Message-ID: <20260404150155.3473682-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <BN7PR02MB414825D0532A1DFE16F3B671D449A@BN7PR02MB4148.namprd02.prod.outlook.com>
+References: <BN7PR02MB414825D0532A1DFE16F3B671D449A@BN7PR02MB4148.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -53,110 +92,130 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace devm_clk_get() followed by clk_prepare_enable() with
-devm_clk_get_enabled() for both "pclk" and "ref_clk". This removes
-the need for explicit clock enable and disable calls, as the managed
-API automatically disables the clocks on device removal or probe
-failure.
+When a driver is probed through __driver_attach(), the bus' match()
+callback is called without the device lock held, thus accessing the
+driver_override field without a lock, which can cause a UAF.
 
-Remove the now-unnecessary clk_disable_unprepare() calls from the
-probe error paths and the remove callback. Simplify error handling
-by jumping directly to the remove_ctlr label.
+Fix this by using the driver-core driver_override infrastructure taking
+care of proper locking internally.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Note that calling match() from __driver_attach() without the device lock
+held is intentional. [1]
+
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/driver-core/DGRGTIRHA62X.3RY09D9SOK77P@kernel.org/ [1]
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220789
+Fixes: d765edbb301c ("vmbus: add driver_override support")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 31 ++++++-------------------------
- 1 file changed, 6 insertions(+), 25 deletions(-)
+Changes in v2:
+  - Change patch subject and comments according to Michael's suggestion.
+---
+ drivers/hv/vmbus_drv.c | 43 ++++++++++--------------------------------
+ include/linux/hyperv.h |  5 -----
+ 2 files changed, 10 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 5232483c4a3a..8c3975030d0a 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -661,7 +661,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 		goto remove_ctlr;
- 	}
- 
--	xqspi->pclk = devm_clk_get(&pdev->dev, "pclk");
-+	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(xqspi->pclk)) {
- 		dev_err(&pdev->dev, "pclk clock not found.\n");
- 		ret = PTR_ERR(xqspi->pclk);
-@@ -670,36 +670,24 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 
- 	init_completion(&xqspi->data_completion);
- 
--	xqspi->refclk = devm_clk_get(&pdev->dev, "ref_clk");
-+	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
- 	if (IS_ERR(xqspi->refclk)) {
- 		dev_err(&pdev->dev, "ref_clk clock not found.\n");
- 		ret = PTR_ERR(xqspi->refclk);
- 		goto remove_ctlr;
- 	}
- 
--	ret = clk_prepare_enable(xqspi->pclk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable APB clock.\n");
--		goto remove_ctlr;
--	}
--
--	ret = clk_prepare_enable(xqspi->refclk);
--	if (ret) {
--		dev_err(&pdev->dev, "Unable to enable device clock.\n");
--		goto clk_dis_pclk;
--	}
--
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq < 0) {
- 		ret = xqspi->irq;
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
- 			       0, pdev->name, xqspi);
- 	if (ret != 0) {
- 		ret = -ENXIO;
- 		dev_err(&pdev->dev, "request_irq failed\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 
- 	ret = of_property_read_u32(np, "num-cs",
-@@ -709,7 +697,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
- 		ret = -EINVAL;
- 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	} else {
- 		ctlr->num_chipselect = num_cs;
- 	}
-@@ -728,15 +716,11 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
--		goto clk_dis_all;
-+		goto remove_ctlr;
- 	}
- 
- 	return ret;
- 
--clk_dis_all:
--	clk_disable_unprepare(xqspi->refclk);
--clk_dis_pclk:
--	clk_disable_unprepare(xqspi->pclk);
- remove_ctlr:
- 	spi_controller_put(ctlr);
- 
-@@ -758,9 +742,6 @@ static void zynq_qspi_remove(struct platform_device *pdev)
- 	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
- 
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
--
--	clk_disable_unprepare(xqspi->refclk);
--	clk_disable_unprepare(xqspi->pclk);
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index bc4fc1951ae1..ba7326ec6add 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -541,34 +541,6 @@ static ssize_t device_show(struct device *dev,
  }
+ static DEVICE_ATTR_RO(device);
  
- static const struct of_device_id zynq_qspi_of_match[] = {
+-static ssize_t driver_override_store(struct device *dev,
+-				     struct device_attribute *attr,
+-				     const char *buf, size_t count)
+-{
+-	struct hv_device *hv_dev = device_to_hv_device(dev);
+-	int ret;
+-
+-	ret = driver_set_override(dev, &hv_dev->driver_override, buf, count);
+-	if (ret)
+-		return ret;
+-
+-	return count;
+-}
+-
+-static ssize_t driver_override_show(struct device *dev,
+-				    struct device_attribute *attr, char *buf)
+-{
+-	struct hv_device *hv_dev = device_to_hv_device(dev);
+-	ssize_t len;
+-
+-	device_lock(dev);
+-	len = sysfs_emit(buf, "%s\n", hv_dev->driver_override);
+-	device_unlock(dev);
+-
+-	return len;
+-}
+-static DEVICE_ATTR_RW(driver_override);
+-
+ /* Set up per device attributes in /sys/bus/vmbus/devices/<bus device> */
+ static struct attribute *vmbus_dev_attrs[] = {
+ 	&dev_attr_id.attr,
+@@ -599,7 +571,6 @@ static struct attribute *vmbus_dev_attrs[] = {
+ 	&dev_attr_channel_vp_mapping.attr,
+ 	&dev_attr_vendor.attr,
+ 	&dev_attr_device.attr,
+-	&dev_attr_driver_override.attr,
+ 	NULL,
+ };
+ 
+@@ -711,9 +682,11 @@ static const struct hv_vmbus_device_id *hv_vmbus_get_id(const struct hv_driver *
+ {
+ 	const guid_t *guid = &dev->dev_type;
+ 	const struct hv_vmbus_device_id *id;
++	int ret;
+ 
+-	/* When driver_override is set, only bind to the matching driver */
+-	if (dev->driver_override && strcmp(dev->driver_override, drv->name))
++	/* If a driver override is set, only bind to the matching driver */
++	ret = device_match_driver_override(&dev->device, &drv->driver);
++	if (ret == 0)
+ 		return NULL;
+ 
+ 	/* Look at the dynamic ids first, before the static ones */
+@@ -721,8 +694,11 @@ static const struct hv_vmbus_device_id *hv_vmbus_get_id(const struct hv_driver *
+ 	if (!id)
+ 		id = hv_vmbus_dev_match(drv->id_table, guid);
+ 
+-	/* driver_override will always match, send a dummy id */
+-	if (!id && dev->driver_override)
++	/*
++	 * If there's a matching driver override, this function should succeed,
++	 * thus return a dummy device ID if no matching ID is found.
++	 */
++	if (!id && ret > 0)
+ 		id = &vmbus_device_null;
+ 
+ 	return id;
+@@ -1024,6 +1000,7 @@ static const struct dev_pm_ops vmbus_pm = {
+ /* The one and only one */
+ static const struct bus_type  hv_bus = {
+ 	.name =		"vmbus",
++	.driver_override =	true,
+ 	.match =		vmbus_match,
+ 	.shutdown =		vmbus_shutdown,
+ 	.remove =		vmbus_remove,
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index dfc516c1c719..bf689d07d750 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1272,11 +1272,6 @@ struct hv_device {
+ 	u16 device_id;
+ 
+ 	struct device device;
+-	/*
+-	 * Driver name to force a match.  Do not set directly, because core
+-	 * frees it.  Use driver_set_override() to set or clear it.
+-	 */
+-	const char *driver_override;
+ 
+ 	struct vmbus_channel *channel;
+ 	struct kset	     *channels_kset;
 -- 
-2.25.1
+2.53.0
 

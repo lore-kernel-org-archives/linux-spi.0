@@ -1,165 +1,149 @@
-Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11011008.outbound.protection.outlook.com [40.107.74.8])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E8C33D4E1;
-	Wed,  8 Apr 2026 13:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775655227; cv=fail; b=E8gSp81U8MN83IO13LytxLwnuJPBRRAWL4OPXxInle6K6AvlNpIIKH6rqpCC054PMIksZjelqNGqecNRPn/yO+r6/AZ4eNpiXcsZqh5OK9GeUEW/7hRljpY+6BXwr/6GX9GdV/yC6jHmMjLaep6+p7aQLNAEQ3crC/MwKfm+g+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775655227; c=relaxed/simple;
-	bh=aQ1mzM30xbYtMcRiCP2Wr4V78i3g8M98HSVnyJYKzLw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mjaZ9gusroSI4ri22snhA4PAVtXpG9Dl7uP979FCgHqN0W9CqcHOhcsSmiMv1EEDXhcb0MUhMGZo1IPdKpsHY3WLtq7Vq1m+nD91o7GwcIJOxyg4CaeezFW6WixNIwI6lp5PywCIVaGUMTmrA5F3S8ftfiGa/ux3vHDQSLjDFyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=OiUIqmgF; arc=fail smtp.client-ip=40.107.74.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1FA3D0919;
+	Wed,  8 Apr 2026 13:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1775655973; cv=none; b=D0h+NKg1KLtmFy0q68yF83cw5GEPNSfitT1ZJ6Gn9vae28U1DvG8A6+v/YbRpB42sZnBQ/2J5Wm+gvGcbBMA7c4uP/UsJQ52h+pqOtrpqCdi4khFxnOmpn7ZN7BooTBQtQKwh+CyXxKAD7AEzM1z/hSAhgTvcq2WJeQR41wdcTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1775655973; c=relaxed/simple;
+	bh=L2VDqHhN7Ia7l+wKWCkvcm5lCLsUz8HKsNWtCrpGFt0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Fj442XIPQVrXm8E6EGNldZQ1sv5a7MPGXAfHJzEYPaTDEAofiOWPu0PxBw3xqVEdAk1if1OlgP5lqP0JLn2eCGD/x8GUgJ4ORu8tvqjRM7yMYnAw/J/VDvfWKT/gXhByDmPM6Xf5p8xMlyumuQlKDbzGq+8eqWtpuSxQ587e1PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=icQTJTsS; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="OiUIqmgF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w+DPO/wMOrOZ+J+LbzvtAbFPFtQRATZT5VKwKvRZvwHjhaCLvXgCAHWNTQbw7PqzjKoFIEKTlwczgq7KhDcE8lIH0TL4Foym7VXObtfNU2dX6JCFOCKbrRfkuySNxbR3l0w9ztgBa2GNARbwQcC7BaLsUm/cdgwFne2WtuJq49+sGZKShWyZQJDmNClQ3BDJtij0/FU5rcdHQlbTSmQDlDR/W5ofa3gZSzl+FdJmm0yhe9UHbMs9+PUOfeGwUbFv3ixk/wWi26cYedUob0pJ4bXe5iXmWo66eqou6nojq8qVN8R1iKHdTpSLwdU3jUpM1V4FOPnoOeZJEEKkfcxhXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aQ1mzM30xbYtMcRiCP2Wr4V78i3g8M98HSVnyJYKzLw=;
- b=VZIezvra08ssn4KEPUYvKK0Y+MaZXGtgJ3bRYOmNyCNWR1Wt5bonax3JLUgcvdbmeQU5eB2TDpJ/5JHn8uT4bnHk269IcjCVwMBALaS5POJwqZxAfd+cAwlaIu/H+YxOzL45vkbzrKJ4h05oEOadUXDI1OWiRSxhd5HehJ50VdRVecOF31F0PrsQXPi2MgAyNKFkc/RACFH/Hmu9FRoQ3Bmi85MPZxChIBINTDUwOdznS2H0FgFSywAx1F9yU1EhJ630FnlyIpccHmbbIBL8kGPWk+GzScJcdgepYx+wcJHOZZBqhWkx5gK6dHOXHvWvoYwSo4O/rwerrKvMOT3OCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aQ1mzM30xbYtMcRiCP2Wr4V78i3g8M98HSVnyJYKzLw=;
- b=OiUIqmgF0dc70x1v0Qv2mk3gzmdIvMhfgUkyuMCUjs7CC8Zg5YUZYdrmuNU24neN9t19yrq2jn+FNkXrxx86kz6LMmNcSsnUhvtn03m4FYUgZ5oJkyO8RVpFcFnGodpY8y96jMHHWLHcpEz4EfVLgmx4Jm9sQNakNWNwiqv0Ym4=
-Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com (2603:1096:400:3c0::7)
- by OS7PR01MB17386.jpnprd01.prod.outlook.com (2603:1096:604:43d::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.17; Wed, 8 Apr
- 2026 13:33:42 +0000
-Received: from TYCPR01MB11332.jpnprd01.prod.outlook.com
- ([fe80::2511:10cd:e497:4d97]) by TYCPR01MB11332.jpnprd01.prod.outlook.com
- ([fe80::2511:10cd:e497:4d97%5]) with mapi id 15.20.9769.020; Wed, 8 Apr 2026
- 13:33:41 +0000
-From: Biju Das <biju.das.jz@bp.renesas.com>
-To: Mark Brown <broonie@kernel.org>, biju.das.au <biju.das.au@gmail.com>
-CC: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
-	magnus.damm <magnus.damm@gmail.com>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
-	<linux-renesas-soc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Prabhakar Mahadev Lad
-	<prabhakar.mahadev-lad.rj@bp.renesas.com>, Krzysztof Kozlowski
-	<krzysztof.kozlowski@oss.qualcomm.com>
-Subject: RE: [PATCH v4 1/2] dt-bindings: spi: renesas,rzv2h-rspi: Document
- RZ/G3L SoC
-Thread-Topic: [PATCH v4 1/2] dt-bindings: spi: renesas,rzv2h-rspi: Document
- RZ/G3L SoC
-Thread-Index: AQHcxzVPCqSge39jhkO/xrBr1DQBDrXVEfgAgAAXbwA=
-Date: Wed, 8 Apr 2026 13:33:41 +0000
-Message-ID:
- <TYCPR01MB11332EFF243FE27F91A7088C2865BA@TYCPR01MB11332.jpnprd01.prod.outlook.com>
-References: <20260408085418.18770-1-biju.das.jz@bp.renesas.com>
- <20260408085418.18770-2-biju.das.jz@bp.renesas.com>
- <b36fa28f-4885-433b-bc5b-c0069636663c@sirena.org.uk>
-In-Reply-To: <b36fa28f-4885-433b-bc5b-c0069636663c@sirena.org.uk>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYCPR01MB11332:EE_|OS7PR01MB17386:EE_
-x-ms-office365-filtering-correlation-id: 71bb052b-c3e4-4758-0a13-08de957372be
-x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021|18002099003|56012099003|22082099003;
-x-microsoft-antispam-message-info:
- aDFW4ao16HOtPqm7PXpdoiZMGayaIz9EEB4r8mEQ8Jd1WsSi4FXsyGa5vXeTIqCNGUde4UF8Afc0HNV70StKj6mlpEPHhzPxsuQceNFhVUT8R3+D1Wq3AJJ/HKRU/xI/GSdC7qrTrYKud2oyC51Y9oIUIjAu1yLz1qPipzQNm2tV7rD2EaUyakcodZTJp8nLLwLmYZRCMzESpaY2FlaQvjqxAX47VtcfDi0PSDQa0uspi/D8VH04fmMC5wg6x70WYsR4B5hWGzY45tHXLnDttl5nkTekJJ7YDx+dBbdSgLyDFekipdkJkv1SVon3xMqBlVxGZlBCN2rrPU0J3sUE7KibPhjXJJ+u/Yms3N3fW0yjvupWJBLlg2JpdDK2YsXXipcnlFO7FrM+EIuMgjx3P8Xx3NYON/uSw5V2ZmnM98wDgU1mSKiEfmmyiJLSNXDi0hYMYN6pjS3Q+Vm4HZ9PY7NJ+Nm86097eO3QYGdGbrPcDoXFIeraSV5wR5by4dM8/9P9aK7LFH2bp40Us67kqkZFwydStp9lRvl9CJJ2GCNyLzEMKREi/AVsfPKyfU2q9bvyfJqaD9sp/nDunS9UYCFuGur0xCDH3gMJ+Ky3Q/l68Bgyc07k89XsfKjDFNFvCVr8G001zfQvtCYdkL04qLwUA76oH2WyMksDeN3CPh8nhBW9cj03sxQngSKyN+rc1CAb6/h0NtF8uIV0JkvhzPWjHV/ltYF1da3+ehEZD3b9oFTtweg6bOftD2QozdkP0o2pn8uT2r8N6MhY/ed5SrkdLjZIKL/U+S89MaxhyKQ=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11332.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?8Ne9rlmwnqZt/vfEOMfrhCYVYI2jP1OXxtbAWPPLUAhYDBhGS/EjosjHOWgM?=
- =?us-ascii?Q?k0FgiBJNtEpxb5/5CBxFBz1dkmivmfvn0mEVZPRvsCoir6dZ4l7EbYWNRJkD?=
- =?us-ascii?Q?NtoIrk9XZ1FwnZPkvXUJkZzQS7OEnjiX9DyvhDicNS6lr2WTajV4JDxnfyME?=
- =?us-ascii?Q?beU2YjyICky7pcBvO/CbPMOrIYFx/dDF+Gf007+avHV8+crdlIb8PesRXguU?=
- =?us-ascii?Q?gusOZTPrepOUDjqN3QPNrQuxtqgOpukeHr64c65AzzIHT/A241UJjVMbCGFZ?=
- =?us-ascii?Q?PzWL4+Y3D96EIZ/PApqitrtXiLulZ4WUHLGJ05T1JHeBVD/KMYCLFvYZhNP0?=
- =?us-ascii?Q?veBoclPA+US5cVxYJ3P0XxqYQ5eCz2NeVn7JWza0D+piZ1Ks3EEKjFaTi2Gq?=
- =?us-ascii?Q?LjeVAHMPHPYS/P7w6suZhZmrGNAmZpAX1W1yAghKRuQf7NWEG8sGLw5bfiVs?=
- =?us-ascii?Q?u6/QySIHiNQI52cEaNRi/sm2DANucXGQVerLJtwkjbovIABiDokTQPpbwzp0?=
- =?us-ascii?Q?Ta+uoRGKugHegfFuuVdGR3RhXGzwA3lj1a6HCBkx9DS3ZTdfySVBFux9u4Td?=
- =?us-ascii?Q?FFobc2Qh8O9Z2SWaWbvFQwnUI0neZ2j3SE2E2XkDoxDdkVzMVRK5+aJmOWWj?=
- =?us-ascii?Q?C7GCrDDk+0He78HP/DLH2Blkb75upJEqvWylfUjX8/ftPN+i+IYmylAbev0d?=
- =?us-ascii?Q?8UNwjm+6mXdbiMRb46BPSUhUvcq6xYib+RGwyUc43gRMZAWxemA4NTQU7uo3?=
- =?us-ascii?Q?o+FgSd7YudbQsjeb/ZvsaVtY5wBjYE8tv9hFSvXeDf5Z4RWsG8Erbbpr9OZr?=
- =?us-ascii?Q?vAPXsb8UUYVZuJuHcnGA1/96LSymW01h+JAKJ+9aSaigeyRGQhBaCQEtPc8N?=
- =?us-ascii?Q?acdr2lov0ocUbvLySzrQEvE5DQtvaDu16NAdXTPh/YSp9UE0AyBt/avugrOM?=
- =?us-ascii?Q?HNQmoBKzClHH2EdvuNLxVHFx2aY55iPd0w/sz05bhgyzWMMEJ6f4AlloOC4E?=
- =?us-ascii?Q?XsmaB1lCBafkZQYfRb9bMeWaVvkpl+qA7d0DFq1CHNKwsZcslDPEt9BtjZzj?=
- =?us-ascii?Q?73klA2a9onRPd5FswljYvsrUH3FsxXUfyzOVN9XYDBLBzrjRSvOUhb50uiEV?=
- =?us-ascii?Q?h0tCqr2TAx/HAyhQewdDCtf+8r2tK0zRAprY9vhpaQHdMqKDRHNbCdEvtWzA?=
- =?us-ascii?Q?O2kUeX+MGy6XLoqSjJbg+v5C2+ryYt1ZCulMuX6J56zv8nNkRdpZvOc5AJ8x?=
- =?us-ascii?Q?MFybNh4Ax2yPM72Jul5oMJR2hULWppNyKMfvCqYcfNerHvnMYTBm2Lm3oCEb?=
- =?us-ascii?Q?qRdy9eYf5fyxvwUl3LU2Gti4aVT8WsG/qsgCRzLgJIr8L0dndvTRMG5H20cR?=
- =?us-ascii?Q?dH4VmkrrwYl0I5WFTnUNTc6PRQ7MGZQyGcEaOMAD+Tn+2Wo6ZKQymb8CDHVE?=
- =?us-ascii?Q?CLzaiWX4QU6/Vj2udSpIibmpMznYLexSNyDRN/VFLGkIhP5V8OgwQTwgeep4?=
- =?us-ascii?Q?dxOMEkIn3IYqsV0hPuMmKQJW1UdMyehqgrZ3zkdipE8QEKlidlt+twAM+3tw?=
- =?us-ascii?Q?YUyE5sndXh9aawKiMF3l1LY+4lw6jxdgROsSWhUHdqn5yzEuXZY3IBOMsknE?=
- =?us-ascii?Q?7AyDiUZScwwz80hKVFCOeKUqbJYqzg6ENA4g2KC2xtCSnQoN1RxvI2T0gzyR?=
- =?us-ascii?Q?IJkA6SIavBfrKIDfT7fCQ9AbtpIsge3VgxXz/RKXonW1Qg0WUjo6PtEoMrPc?=
- =?us-ascii?Q?xri0ZHPI3g=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="icQTJTsS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=HcvFXUIAV4OQbqlH4vRJ5Y5Q1or2wmgdX0N00cKRyx0=; b=icQTJTsSdSmhWVsrOw6iMDEkcx
+	6dkFhyNoWBHaMJ0VLi4G6UlFOPn4sK5QKrI2Ix1ij1JhsJs8wAqvMMoaRuGbyTNyEi/PlpD6SbYnx
+	m6UmfFzG4L/YvdfpH6HjpSJ6gHoeWWGt98ZgAMSVw8HKlSLaN1zacWR/vXJMZdEcG0O1uGEI1Y399
+	1RggYcDakrgrFQrTY9pMoIrnm6ynwYrFSsgwFT4x7d9Vpz6ODkT15GIkfay1SU1i54Os2mrzY2qnG
+	I/FDKlYlmmvvV/ivcWTQjmBsXGw2MZ26TrNtqCtg7PdwXAKCv/EiA9whMVtQQwfs/tkTjhvInwtfP
+	1VGfMkIA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wATEN-008Snk-04;
+	Wed, 08 Apr 2026 13:46:07 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Wed, 08 Apr 2026 06:45:43 -0700
+Subject: [PATCH] spi: tegra210-quad: Fix false positive WARN on interrupt
+ timeout with transfer complete
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11332.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71bb052b-c3e4-4758-0a13-08de957372be
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2026 13:33:41.1823
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hvgGAvA6FtkmsZtSKipIztZff7obMYYIbA5Bfim5hStJe7j3jglw0sk8ON2RvZfhYK4kDfwOiZdqTaeLYMgbnJFrFUgx4PRTk0v1fnYkF+Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB17386
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260408-tegra_warn-v1-1-669a3bc74d77@debian.org>
+X-B4-Tracking: v=1; b=H4sIAAZc1mkC/yXMQQrCQAwF0KuEv+7AdCxF5ioikqaxxsUomVaF0
+ ruLdvk2b0VVN63ItML1ZdUeBZnahiA3LpMGG5EJKaY+dvEYZp2cL2/2EkRlTMIH7tsBDeHperX
+ PPzudd9dluKvMvwHb9gUGTwG0bgAAAA==
+X-Change-ID: 20260408-tegra_warn-cecd2ca3a61b
+To: Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Sowjanya Komatineni <skomatineni@nvidia.com>, 
+ Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, song@kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2822; i=leitao@debian.org;
+ h=from:subject:message-id; bh=L2VDqHhN7Ia7l+wKWCkvcm5lCLsUz8HKsNWtCrpGFt0=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp1lwa0fRGYKAfqmnbOnbUQt23sPW2yEc53EGC1
+ 1SJdRgmzL6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCadZcGgAKCRA1o5Of/Hh3
+ bTk4D/9Zpiz9mjkCbo1M5qP26gFrQH6VOr4VwUL0PxpKTWaF5SJiMTM/uCT1s2RV26mwI5L279o
+ 5bP3/WfRuDU70jdy721FgOexf3RpqghxM+6x0zN9O71IdHZsGpdqKcRV6mV18rMVz0mM6gnwuaV
+ XyZNdsqHPam2ocM3YS2Dc/e2OmLd0R8CVqhKHJAgENK+myawra+B6+aBP2qsYriKZ6wV9PnuZCn
+ zeKFRVzi/C/thsR5Ils44MtMXxQsrv+QJFloY9m8dwQ794G6w9a9zfHN3KRXC56oiSFTBqddw+h
+ P4bP9fbdPID3JIG5MAmyeimBFfPQH1tJEnyK2RHzbV8961gf+QVrS4oUCgUYAuj0xWI26PScTsb
+ Sl+vIBcNmtBO/KV5gDGXFrud9Zhf2/z52qGSd7gz0OfpV3vlkc9D/+PvV5MCwpYIDWim9xNcp1y
+ ep4yfYJT1kSTestgmIbuh3sCzd2Dnl//XFGmbqALhg16+3X1pkEoDNuxhfpkzHKfWijGT52wG3t
+ XDKjXLW2THn+qVCqtL2Qcnke2BOFAE1+N7wsYL4BJxBmB/Ba+X3t5CeEnnw65lTESZNZvjxrWcX
+ SCK7hjuRFM/rxWfPminPsAl80RfrHZEBTVwfx2nQNwjM3PEb6XL0InSuq/aOsVssbD6Ifh4l4FD
+ k6KJuFXhF1bU8Sw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-Hi Mark,
+The WARN_ON_ONCE/WARN_ON fired unconditionally on any completion
+timeout, including the recoverable case where the interrupt was lost but
+the hardware actually finished the transfer. This produced a noisy splat
+with a full call trace even though the driver successfully recovered via
+tegra_qspi_handle_timeout().
 
-Thanks for the feedback.
+Since tegra210 uses threaded interrupts, the transfer completion can be
+signaled before the interrupt fires, making this false positive case
+common in practice.
 
-> -----Original Message-----
-> From: Mark Brown <broonie@kernel.org>
-> Sent: 08 April 2026 13:07
-> Subject: Re: [PATCH v4 1/2] dt-bindings: spi: renesas,rzv2h-rspi: Documen=
-t RZ/G3L SoC
->=20
-> On Wed, Apr 08, 2026 at 09:54:14AM +0100, Biju wrote:
-> > From: Biju Das <biju.das.jz@bp.renesas.com>
-> >
-> > Document RSPI IP found on the RZ/G3L SoC. The RSPI IP is compatible
-> > with the RZ/V2H RSPI IP, but has 2 clocks compared to 3 on RZ/V2H.
->=20
-> Please submit patches using subject lines reflecting the style for the su=
-bsystem, this makes it easier
-> for people to identify relevant patches.
-> Look at what existing commits in the area you're changing are doing and m=
-ake sure your subject lines
-> visually resemble what they're doing.
-> There's no need to resubmit to fix this alone.
+Almost all the hosts I sysadmin in my fleet produce the following splat:
 
-Oops, I missed it, it supposed to be "spi: dt-bindings: renesas,rzv2h-rspi"
-I will take care next time.
+	WARNING: CPU: 47 PID: 844 at drivers/spi/spi-tegra210-quad.c:1226 tegra_qspi_transfer_one_message+0x8a4/0xba8
+	....
+	tegra-qspi NVDA1513:00: QSPI interrupt timeout, but transfer complete
 
-Cheers,
-Biju
+Move WARN_ON_ONCE/WARN_ON to fire only on real unrecoverable timeouts,
+i.e., when tegra_qspi_handle_timeout() confirms the hardware did NOT
+complete. This makes the warning actionable instead of just polluting
+the metrics.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/spi/spi-tegra210-quad.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 7cca5578eba31..db28dd556484b 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1223,7 +1223,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 					(&tqspi->xfer_completion,
+ 					QSPI_DMA_TIMEOUT);
+ 
+-			if (WARN_ON_ONCE(ret == 0)) {
++			if (ret == 0) {
+ 				/*
+ 				 * Check if hardware completed the transfer
+ 				 * even though interrupt was lost or delayed.
+@@ -1232,6 +1232,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 				ret = tegra_qspi_handle_timeout(tqspi);
+ 				if (ret < 0) {
+ 					/* Real timeout - clean up and fail */
++					WARN_ON_ONCE(1);
+ 					dev_err(tqspi->dev, "transfer timeout\n");
+ 
+ 					/* Abort transfer by resetting pio/dma bit */
+@@ -1340,7 +1341,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 
+ 		ret = wait_for_completion_timeout(&tqspi->xfer_completion,
+ 						  QSPI_DMA_TIMEOUT);
+-		if (WARN_ON(ret == 0)) {
++		if (ret == 0) {
+ 			/*
+ 			 * Check if hardware completed the transfer even though
+ 			 * interrupt was lost or delayed. If so, process the
+@@ -1349,6 +1350,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 			ret = tegra_qspi_handle_timeout(tqspi);
+ 			if (ret < 0) {
+ 				/* Real timeout - clean up and fail */
++				WARN_ON(1);
+ 				dev_err(tqspi->dev, "transfer timeout\n");
+ 
+ 				if (tqspi->is_curr_dma_xfer)
+
+---
+base-commit: f3e6330d7fe42b204af05a2dbc68b379e0ad179e
+change-id: 20260408-tegra_warn-cecd2ca3a61b
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+

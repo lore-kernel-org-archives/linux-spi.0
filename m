@@ -1,94 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDAE38A72E;
-	Thu,  9 Apr 2026 13:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A933B6E3;
+	Thu,  9 Apr 2026 14:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775740290; cv=none; b=a4+bztqbDhsu8dY79lJz6yzyOWWLTeGZ8PLLNXuDNZf1cc8GQjv3qkAuENOrTIW6YFjVeCKshAS8F62drlnGAahNQluMTI8A+rMzaWIBVkN6w6VscZ2Aj89PUWO6+ZrXKQQTx3oBCwRvpzfhRIGQ6I1dWvDA3EtWjynlFHT2RM8=
+	t=1775746605; cv=none; b=HLWdmAQrkL23VIyINjhZLLuPjZPhMsNZKFRfVQRkUUQy9Pha7o+UZHyqzJaEnctAtCUmGMYHThBL8ehj9WjoNSoEiRziFL7agdjZLL7JzbhXOyAO+OPs7/5hFint3CY3GfYjXIC/pQGoaEfbWxrP94PM0blZ5GdE73N5BrqM2xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775740290; c=relaxed/simple;
-	bh=HP2xkBscO14zBS6BrtAtDceA8baIkk8pmdfWeP95kSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UM/apyUQf9cHRKfTDwN3oS89N1AHj6TL3Nqghvtw03Z3KHrDzblvbFsF3fSVU8TNyeULAAjlUfr0FxaiIGJ+2SXn+OcoOUXhkUbuZldjDJUBh6PWEseMyTdjHRbPvTd0sjuFZStfCexPHyfS49DpAmTsD1cMWrmssj4k2FduFrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPfEAVd5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775746605; c=relaxed/simple;
+	bh=HIwZqnfpJMZ4NaOPFRxIJn0HfdFu+HsW4kt2nF1Vblg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SET/R5MNymlCVqX6nGHePdF8HlOqSy8BnByNXzOr4vLXIrLKwAxtQQT+RGv0vP1KOCGTCMp2dGD9H7XKlJYCXwAw/+0KkaDfQkSH4djE59lzTQPREm0GUQcoHaBlhjrhsZ71QOOcncajuGtRk06LMyq89OkCXVKMGIHjzSaSt2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpmxH+fp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPfEAVd5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF896C4CEF7;
-	Thu,  9 Apr 2026 13:11:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpmxH+fp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40162C116C6;
+	Thu,  9 Apr 2026 14:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775740289;
-	bh=HP2xkBscO14zBS6BrtAtDceA8baIkk8pmdfWeP95kSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IPfEAVd5vG4hK8tkqoGG8WVE7OfoXDDZnsv3XotpYJGTz8wqZbbZ833oxB4KNLKQn
-	 Q288IuhndR9eaxit8+ZbFO4oTUOdO3t6OgvB0o7knnY4vR8A5QlCfYbjV8lM3LeAi0
-	 FyEoJ5yKdIhwgiP0tfuduytnFf8TZaWVFFFGRqvPMEqO9BZq5Oy2kKkZJ+S43zJ2rq
-	 stCmaPwFzvknctyegw76e/HfrG3+Op0MBrxeAVa9IDGkX6roxBghzxk1MvULTuWC0b
-	 CplHrYguG5StDcRpI7D6FQB3YSin7nV3mCGQwq9YBA5PljwnH0J6dQhUJY4SRK6tbV
-	 G8xKNvG6DrLpA==
+	s=k20201202; t=1775746605;
+	bh=HIwZqnfpJMZ4NaOPFRxIJn0HfdFu+HsW4kt2nF1Vblg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VpmxH+fpMsMW4TCvcHKp70z6VkIx75STo2eMI7cLeAaZROWkpO0xSlPxmwFLdni5f
+	 l2LuS+KVucZer+rZd9u0EZuzAXdwbSE8hl8TungVYnCIJqOna2afWNaIxy2+RTN76J
+	 Z/N68yjJUfov0HY6LmSi0Bf05Oxz/5HRZl7G53ww/NZPCdl+L01HMJL0C4Wf/mXLPh
+	 TbQmwDptj1ul8xSl46SMRW8slm9yLdKxH9p2lU9uFPmu69n5HM/tXJs/izTOxdhrsR
+	 vpqI2DEKDmtyiHo3Z4cyGfK9ZDz+wvHiiRoNWoe+GhC5cDoefwezsjJzH6Y6IUzj6z
+	 UcmdCxlbaPsHQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wApAN-00000001ggX-1mI2;
-	Thu, 09 Apr 2026 15:11:27 +0200
-Date: Thu, 9 Apr 2026 15:11:27 +0200
+	id 1wAqoF-00000001xPw-0MZn;
+	Thu, 09 Apr 2026 16:56:43 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
-Cc: Sunny Luo <sunny.luo@amlogic.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Re: [PATCH 14/20] spi: fsl: fix controller deregistration
-Message-ID: <adelf3U4Tqp0-2Jz@hovoldconsulting.com>
-References: <20260409120419.388546-1-johan@kernel.org>
- <20260409120419.388546-15-johan@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH] spi: atcspi200: enable compile testing
+Date: Thu,  9 Apr 2026 16:56:18 +0200
+Message-ID: <20260409145618.466701-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260409120419.388546-15-johan@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 09, 2026 at 02:04:13PM +0200, Johan Hovold wrote:
-> Make sure to deregister the controller before releasing underlying
-> resources like DMA during driver unbind.
-> 
-> Fixes: 4178b6b1b595 ("spi: fsl-(e)spi: migrate to using devm_ functions to simplify cleanup")
-> Cc: stable@vger.kernel.org	# 4.3
-> Cc: Heiner Kallweit <hkallweit1@gmail.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+There seems to be nothing preventing this driver from being compile
+tested so enable that for wider build coverage.
 
-> @@ -614,7 +614,7 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
->  
->  	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
->  
-> -	ret = devm_spi_register_controller(dev, host);
-> +	ret = spi_register_controller(host);
->  	if (ret < 0)
->  		goto err_probe;
->  
-> @@ -751,7 +751,13 @@ static void plat_mpc8xxx_spi_remove(struct platform_device *pdev)
->  	struct spi_controller *host = platform_get_drvdata(pdev);
->  	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
->  
-> +	spi_controller_get(host);
-> +
-> +	spi_unregister_controller(host);
-> +
->  	fsl_spi_cpm_free(mpc8xxx_spi);
-> +
-> +	spi_controller_put(host);
->  }
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I missed that this module registers two platform drivers so this patch
-will need another spin (reported by Sashiko).
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index ddd53cb48567..b563f49e2197 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -138,7 +138,7 @@ config SPI_AR934X
+ 
+ config SPI_ATCSPI200
+ 	tristate "Andes ATCSPI200 SPI controller"
+-	depends on ARCH_ANDES
++	depends on ARCH_ANDES || COMPILE_TEST
+ 	help
+ 	  SPI driver for Andes ATCSPI200 SPI controller.
+ 	  ATCSPI200 controller supports DMA and PIO modes. When DMA
+-- 
+2.52.0
 
-Johan

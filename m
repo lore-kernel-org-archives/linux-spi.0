@@ -1,110 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D253F3254A5;
-	Thu,  9 Apr 2026 12:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDAE38A72E;
+	Thu,  9 Apr 2026 13:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736503; cv=none; b=TgCdbbfhcFkYc69QX6UO2/sZExHQsL25lRC9x+wcJygPvLlhvivXO8CdQef5cHKqqCx7kuWVwlysALiDVUOoUokIjgZkyjSoh1hQoqW7oVqClPK319ViluSdATnOC2uW0mN+WQM4O9ZLT/KXrtZFJJAdEDLUfdTWYIRlaIXUZbs=
+	t=1775740290; cv=none; b=a4+bztqbDhsu8dY79lJz6yzyOWWLTeGZ8PLLNXuDNZf1cc8GQjv3qkAuENOrTIW6YFjVeCKshAS8F62drlnGAahNQluMTI8A+rMzaWIBVkN6w6VscZ2Aj89PUWO6+ZrXKQQTx3oBCwRvpzfhRIGQ6I1dWvDA3EtWjynlFHT2RM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775736503; c=relaxed/simple;
-	bh=+HFbq/McqKsBlEzOXrGqru6axxh8Ao4WdsBJ0a6HujI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BBun9uXK2A/zI0NAsDnrR3x2h8UMXSA16eY17vLe+pn5tqu09i2o1e6vj1c0WKRIcjR+ZLxSVRof0h9FTN/Iejn72YKx333PKCYzmhENVYlEUmhXftG+urJhxAHTqY3bn3S7uJPVpn/h3BCGvTqgyUagIsu8CowCKTycOigqG8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcfQRfVF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775740290; c=relaxed/simple;
+	bh=HP2xkBscO14zBS6BrtAtDceA8baIkk8pmdfWeP95kSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UM/apyUQf9cHRKfTDwN3oS89N1AHj6TL3Nqghvtw03Z3KHrDzblvbFsF3fSVU8TNyeULAAjlUfr0FxaiIGJ+2SXn+OcoOUXhkUbuZldjDJUBh6PWEseMyTdjHRbPvTd0sjuFZStfCexPHyfS49DpAmTsD1cMWrmssj4k2FduFrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPfEAVd5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcfQRfVF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8E6C4CEF7;
-	Thu,  9 Apr 2026 12:08:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPfEAVd5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF896C4CEF7;
+	Thu,  9 Apr 2026 13:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775736503;
-	bh=+HFbq/McqKsBlEzOXrGqru6axxh8Ao4WdsBJ0a6HujI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=gcfQRfVF0SE8cFHLjbyOU4MhJHMVxiq3wi0gsApJQ1w59DG8Jkp16goMIDTZZqANQ
-	 y/GgxVwEMHb55J89UYNqBHNsZA7GJ+l+Ucz6qjD+2bFcrULyRaB7KXlqcnBWvAK4M/
-	 k/1WNELbIeH1kML7fX8J9Az5Zzu/5OyL26u96WrQ/BMYSf+/BWVFJEWOQE5AToFoPQ
-	 qVDcDtpPlVCok20S5aUfgRsMIU/W5YlJIakPJVs7yQ3cT5WSkTe9XgrEjyh0EQTr6a
-	 rE38JbLba4N1jrro/vWrAYG5pyx6tvdfiuBIAM7vPcPQn7GkEYWj0HwEwevewQwdXq
-	 JCAqPiRoh2Dcw==
+	s=k20201202; t=1775740289;
+	bh=HP2xkBscO14zBS6BrtAtDceA8baIkk8pmdfWeP95kSc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IPfEAVd5vG4hK8tkqoGG8WVE7OfoXDDZnsv3XotpYJGTz8wqZbbZ833oxB4KNLKQn
+	 Q288IuhndR9eaxit8+ZbFO4oTUOdO3t6OgvB0o7knnY4vR8A5QlCfYbjV8lM3LeAi0
+	 FyEoJ5yKdIhwgiP0tfuduytnFf8TZaWVFFFGRqvPMEqO9BZq5Oy2kKkZJ+S43zJ2rq
+	 stCmaPwFzvknctyegw76e/HfrG3+Op0MBrxeAVa9IDGkX6roxBghzxk1MvULTuWC0b
+	 CplHrYguG5StDcRpI7D6FQB3YSin7nV3mCGQwq9YBA5PljwnH0J6dQhUJY4SRK6tbV
+	 G8xKNvG6DrLpA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAoBI-00000001dB1-3mEs;
-	Thu, 09 Apr 2026 14:08:20 +0200
+	id 1wApAN-00000001ggX-1mI2;
+	Thu, 09 Apr 2026 15:11:27 +0200
+Date: Thu, 9 Apr 2026 15:11:27 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
-Cc: Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Avi Fishman <avifishman70@gmail.com>,
-	Tomer Maimon <tmaimon77@gmail.com>,
-	Tali Perry <tali.perry1@gmail.com>,
-	Patrick Venture <venture@google.com>,
-	Nancy Yuen <yuenn@google.com>,
-	Benjamin Fair <benjaminfair@google.com>,
-	openbmc@lists.ozlabs.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH] spi: npcm-fiu: drop unused remove callback
-Date: Thu,  9 Apr 2026 14:08:10 +0200
-Message-ID: <20260409120810.388909-1-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
+Cc: Sunny Luo <sunny.luo@amlogic.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	William Zhang <william.zhang@broadcom.com>,
+	Kursad Oney <kursad.oney@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: Re: [PATCH 14/20] spi: fsl: fix controller deregistration
+Message-ID: <adelf3U4Tqp0-2Jz@hovoldconsulting.com>
+References: <20260409120419.388546-1-johan@kernel.org>
+ <20260409120419.388546-15-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260409120419.388546-15-johan@kernel.org>
 
-Drop the remove callback which is unused since commit 82c4fadb0b95
-("spi: npcm-fiu: Use helper function devm_clk_get_enabled()").
+On Thu, Apr 09, 2026 at 02:04:13PM +0200, Johan Hovold wrote:
+> Make sure to deregister the controller before releasing underlying
+> resources like DMA during driver unbind.
+> 
+> Fixes: 4178b6b1b595 ("spi: fsl-(e)spi: migrate to using devm_ functions to simplify cleanup")
+> Cc: stable@vger.kernel.org	# 4.3
+> Cc: Heiner Kallweit <hkallweit1@gmail.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-The above mentioned commit also removed the last user of the platform
-driver data which no longer needs to be set (twice).
+> @@ -614,7 +614,7 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
+>  
+>  	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+>  
+> -	ret = devm_spi_register_controller(dev, host);
+> +	ret = spi_register_controller(host);
+>  	if (ret < 0)
+>  		goto err_probe;
+>  
+> @@ -751,7 +751,13 @@ static void plat_mpc8xxx_spi_remove(struct platform_device *pdev)
+>  	struct spi_controller *host = platform_get_drvdata(pdev);
+>  	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
+>  
+> +	spi_controller_get(host);
+> +
+> +	spi_unregister_controller(host);
+> +
+>  	fsl_spi_cpm_free(mpc8xxx_spi);
+> +
+> +	spi_controller_put(host);
+>  }
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-npcm-fiu.c | 8 --------
- 1 file changed, 8 deletions(-)
+I missed that this module registers two platform drivers so this patch
+will need another spin (reported by Sashiko).
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index 3961b0ccdb4b..6617751009c3 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -715,7 +715,6 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 
- 	fiu->info = &fiu_data_match->npcm_fiu_data_info[id];
- 
--	platform_set_drvdata(pdev, fiu);
- 	fiu->dev = dev;
- 
- 	regbase = devm_platform_ioremap_resource_byname(pdev, "control");
-@@ -738,8 +737,6 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 	fiu->spix_mode = of_property_read_bool(dev->of_node,
- 					       "nuvoton,spix-mode");
- 
--	platform_set_drvdata(pdev, fiu);
--
- 	ctrl->mode_bits = SPI_RX_DUAL | SPI_RX_QUAD
- 		| SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctrl->setup = npcm_fiu_setup;
-@@ -750,10 +747,6 @@ static int npcm_fiu_probe(struct platform_device *pdev)
- 	return devm_spi_register_controller(dev, ctrl);
- }
- 
--static void npcm_fiu_remove(struct platform_device *pdev)
--{
--}
--
- MODULE_DEVICE_TABLE(of, npcm_fiu_dt_ids);
- 
- static struct platform_driver npcm_fiu_driver = {
-@@ -763,7 +756,6 @@ static struct platform_driver npcm_fiu_driver = {
- 		.of_match_table = npcm_fiu_dt_ids,
- 	},
- 	.probe = npcm_fiu_probe,
--	.remove = npcm_fiu_remove,
- };
- module_platform_driver(npcm_fiu_driver);
- 
--- 
-2.52.0
-
+Johan

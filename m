@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD703939DD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826773921C9;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736326; cv=none; b=T0n69OJ/BaBdwcnsmH1RsgYQ3LsEisF4vomfJrHmVEKgWiGht8pQmDjpQLJ4EhpregeVHITy8irUtfVp1acYvSmqeKUt0UQXtZ/0jA6ZN3WpEUhHoO5OJjROBHjbHGaXrz73ej9+eX/RWK+y5YVex1GUITKYoFQ38GXlnMJqbqs=
+	t=1775736326; cv=none; b=ZaebFLJ72bUxAVAk71U31AeGxMl9raIzxm24Aba5jdoJA6ThETRAav11kIii2sUsZ7w8OQCx5uOvh1WaSSsS2L/OtxNsw6B+Lb+z9Ikyak3+kXwIjfBYXnFG1HdY/FogLGaX45+YRidUNdbS5kISrXCHvzlIvT+PrqrKpqcAJGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775736326; c=relaxed/simple;
-	bh=3DbsYkN4pf5ND1z8L30fphcMVgrd1sOFsBKrJWKj7TY=;
+	bh=FWI3aj2nBi83Z6I2499LKZlL2TKzZRfUYxr46TX+xA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXbMa7GuAT2jsod0TWGLqTVvhvkacu8Ml5CI8CEVGZwp3UnuaA7t2ACfEISqDmv+giSzsSbdk8W80Gzr5VPvhQaaaoKy9viiGd5FAdl0H7XxUv+77XZ5/1rr7qsMRBj1ThqkVoygLfWfP3RYqmhrBsR4iNpX2/i22wBlOSi/38M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYXLZuoQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ZrL+NoLAuSBcsXkp0pxmK8N8M1DIsNFhpJErqr84jjrBE1lAvBMwPifFq7Qvy7JmQcQ21S0/iaaviE+Q8hLeGHJjNyI6SOGFN3PzkyB2mBDDiGMikPn35atJSRT14rIMG4dAv0Mq/Es9Wx2HSuiEvZzNyZh5W/WBUL4uoRqo7eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pt8ZJ95q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYXLZuoQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9B9C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pt8ZJ95q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48876C2BC87;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=3DbsYkN4pf5ND1z8L30fphcMVgrd1sOFsBKrJWKj7TY=;
+	bh=FWI3aj2nBi83Z6I2499LKZlL2TKzZRfUYxr46TX+xA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYXLZuoQ8oFwwg7QCVCsTgjZ+oF7k4znxYvh4mcT3ituf4jUt6lOBmrtFIwxBMVHV
-	 +S4d4bkYsE8nK9KkaN7KV2Bzunj3zsgDkyRK50RkaNG9EAGdrVF1X6Vea02xxPaMmq
-	 ZWbI1aE3JWof1OmZAGy0BX0RB1PzIxNSUGx2O0TLuTobOAftUxE0S4pBQqGXlhli0u
-	 ddF9jdySAeKu8i749/x8Y88QzAuzfWGjn8vMeRX+e4YnrYDHr0/KjDsHbCEbKkyWLc
-	 Lp4ZMGXDzbpvH77kts6wta6cmJTcrjQL4HD77J8ugRZ0+p/vlCqVqBL4wSyiRr6k4X
-	 TDib8HQ5kS1RQ==
+	b=pt8ZJ95qvaGK1LGIs8QpqZ3rnUkxXI9cFR4ob3ttam0zlLk/WmY1eIaqqataEerXt
+	 TJLKzgKHi9giEuYcFtaU+6bR2Tn6S7gEO5zYT2aQvT37kVYQWabRJlwR3eS3KslmJN
+	 DVz2sKDVMpsUTCYMtzqxdKyp6+f9nrZIfI7qw2pnMYGuaQbULb2NJRZiTEBHvN0Bgh
+	 dfb+PzUhRxaZuKnzuYynkCm9I29t5Y8pEDen/RXRcPz6HHROfm5tEa0cI8Se8ftC/1
+	 hSTjnjNu8lD4rFuqoOt2rg6a6Kfg3SCUsG16OnbXXJiUbB5rLWkmG0Y2wXTHVdIyDA
+	 1tldECda1saeA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8R-00000001d6h-43PZ;
-	Thu, 09 Apr 2026 14:05:23 +0200
+	id 1wAo8S-00000001d6p-00zQ;
+	Thu, 09 Apr 2026 14:05:24 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Sunny Luo <sunny.luo@amlogic.com>,
@@ -43,10 +43,11 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 01/20] spi: amlogic-spisg: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:00 +0200
-Message-ID: <20260409120419.388546-2-johan@kernel.org>
+	stable@vger.kernel.org,
+	Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH 05/20] spi: bcm63xx: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:04 +0200
+Message-ID: <20260409120419.388546-6-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -61,37 +62,45 @@ Content-Transfer-Encoding: 8bit
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Cc: stable@vger.kernel.org	# 6.17: b8db95529979
-Cc: stable@vger.kernel.org	# 6.17
-Cc: Sunny Luo <sunny.luo@amlogic.com>
+Fixes: b42dfed83d95 ("spi: add Broadcom BCM63xx SPI controller driver")
+Cc: stable@vger.kernel.org	# 3.4
+Cc: Florian Fainelli <florian@openwrt.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-amlogic-spisg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index da8ec35115da..19c5eba412ef 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -800,7 +800,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 		goto out_clk;
- 	}
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 47266bb23a33..40cd7efc4b54 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -602,7 +602,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		goto out_clk_disable;
  
--	ret = devm_spi_register_controller(dev, ctlr);
-+	ret = spi_register_controller(ctlr);
+ 	/* register and we are done */
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
  	if (ret) {
- 		dev_err(&pdev->dev, "spi controller registration failed\n");
- 		goto out_clk;
-@@ -823,6 +823,8 @@ static void aml_spisg_remove(struct platform_device *pdev)
- {
- 	struct spisg_device *spisg = platform_get_drvdata(pdev);
+ 		dev_err(dev, "spi register failed\n");
+ 		goto out_clk_disable;
+@@ -625,11 +625,17 @@ static void bcm63xx_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct bcm63xx_spi *bs = spi_controller_get_devdata(host);
  
-+	spi_unregister_controller(spisg->controller);
++	spi_controller_get(host);
 +
- 	if (!pm_runtime_suspended(&pdev->dev)) {
- 		pinctrl_pm_select_sleep_state(&spisg->pdev->dev);
- 		clk_disable_unprepare(spisg->core);
++	spi_unregister_controller(host);
++
+ 	/* reset spi block */
+ 	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
+ 
+ 	/* HW shutdown */
+ 	clk_disable_unprepare(bs->clk);
++
++	spi_controller_put(host);
+ }
+ 
+ static int bcm63xx_spi_suspend(struct device *dev)
 -- 
 2.52.0
 

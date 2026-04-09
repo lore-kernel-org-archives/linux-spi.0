@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84D3BF66E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB393BED76;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736326; cv=none; b=hKKWsnVSAq1n2et1PGPgh05tv7PIlbhswfvdjDPLKvGNUyQ9hByrn8yQpLTq9N9Y64N80uBPYL0SLo0Tvcr/7AfKlVqoZ0YxlhvGE5jrCA8/njD8fujsQ7UPrbvN9STe8nMOVKfpmxWciz8lIGm1nW+3lh/k7FV3Ha01NBfZKQU=
+	t=1775736326; cv=none; b=SPNUumnMGLJD4aR6MEsl0I6LDu/AqGhrEyv0f3RNvUoXq81cT+m/ixgRMB9pFfrMQCOwtgqdR3bgstXtfqp26B8SadLvoYYyLgZ3ghSr8fJ32Pc5NiPGAdPNKGuwB+U63znlSCAedbofsYa27zdlYSNP7KDS5r7BrHgMvyRattc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775736326; c=relaxed/simple;
-	bh=Hkdce0DcCrLswuUsM5hL/RXlE+ofhVC6Uf3ve7+eq20=;
+	bh=lsKEDnYtZlc757jy27w5VFfQRr0Ca5F25Ct5iUvklLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BL52/IaeGm7+y7RYdAqd8pohkhVgU2MLJs3U/t1t3ZhIIKwhyMHWsQopRSIbAPhLFTm00d3tDyJG3o+ZQvl+bXEZRErs7PSmH3y5k7deCZ0HWmM2sOAmkNptwmJ/rheC/cgf7DP3vB+ZWcKABMKOdaOiw+uEye3orMw3utuFoOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KDu1mYfK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OF88Rff8hcxmvl1qcthe0k+UDJaiKQyBme4trDzRlSp8dSpeV/r/M8UuGBXk+1jTuDOQxNL6nMHYO3nL1Cjs5bILjni/SWVER/+B8c93W1DNENx4VjP3HSQBtpdc4KfiNgU1ssfuxet/kybszkCxmanQnGdolg7It1/BJFjd4/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yv+LcjwF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KDu1mYfK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6258CC2BCC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yv+LcjwF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2B2C2BCB5;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=Hkdce0DcCrLswuUsM5hL/RXlE+ofhVC6Uf3ve7+eq20=;
+	bh=lsKEDnYtZlc757jy27w5VFfQRr0Ca5F25Ct5iUvklLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDu1mYfKniiWmV6WS6LON4avPhVeWD0OWmFjph406MkcpO555IIP5aaxs/NufPZrN
-	 7bipAI0YHmHQjvhpF5W7ixD9cwgTWMFpupXE3zrGS9WeryKwY5EDw5TemTtx7A6/Vd
-	 tHuPelyJpgYLOsEQImflwe7T6b2wgV7Oz2dWMXTb8/fxqnt9KKGWynN3f4yhjBu4/U
-	 9bmu8VlooXEs8q29Tr/tnh9G3GIo9gwALUKeqWMI2vsFhbU/GsijmZJOmgaA2tJmsD
-	 F1g3ggi2kYVtu72GmjWXTmfaXSSSihtLS4lAjQkNCmsNo+SRngrVpJyPzbsxQuopRh
-	 VMW9D6bXuLX6Q==
+	b=Yv+LcjwFUxxbDNQq0MXoUG1Bw4lRo4aGT8KiZZXWwYuqm9ZxiGKIxX4Tus1W78bdx
+	 8JhqnuONz8h+JzmLTIS5CID/CSul1kh2Swao6LBh0HendsY5Gon9xdwU0iKLDBUPrF
+	 sXvWyRXvqBvjA2+h71uIhUK1G9nqHbm8Xr+FvmP7nATkSNqZnHvxeItE1DIt0Vh7Nk
+	 3eh055ASbdyay9k223mZGDurMN/oRCQU9H29fir0kxlZIrxoFZWWBveFC36FfamZ9u
+	 rcWttVy2JLveAYUDHH5AW/SERkfm1HVed60aQoARyvKPjSHmfuJxCfUnH3b+1iEUFU
+	 lmG2NVdAoi+kg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8S-00000001d6z-0Cpb;
+	id 1wAo8S-00000001d71-0FGn;
 	Thu, 09 Apr 2026 14:05:24 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -44,10 +44,10 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Steven King <sfking@fdwdc.com>
-Subject: [PATCH 10/20] spi: coldfire-qspi: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:09 +0200
-Message-ID: <20260409120419.388546-11-johan@kernel.org>
+	Laurentiu Palcu <laurentiu.palcu@intel.com>
+Subject: [PATCH 11/20] spi: dln2: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:10 +0200
+Message-ID: <20260409120419.388546-12-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -59,46 +59,42 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks (via runtime pm) during driver unbind.
+Make sure to deregister the controller before disabling it to allow
+SPI device drivers to do I/O during deregistration.
 
-Fixes: 34b8c6617366 ("spi: Add Freescale/Motorola Coldfire QSPI driver")
-Cc: stable@vger.kernel.org	# 2.6.34
-Cc: Steven King <sfking@fdwdc.com>
+Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
+Cc: stable@vger.kernel.org	# 4.0
+Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-coldfire-qspi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dln2.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index fdf37636cb9f..b45f44de85dc 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -410,9 +410,9 @@ static int mcfqspi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, host);
+diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
+index d90282960ab6..392f0d05f508 100644
+--- a/drivers/spi/spi-dln2.c
++++ b/drivers/spi/spi-dln2.c
+@@ -758,7 +758,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(&pdev->dev);
  	pm_runtime_enable(&pdev->dev);
  
--	status = devm_spi_register_controller(&pdev->dev, host);
-+	status = spi_register_controller(host);
- 	if (status) {
--		dev_dbg(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_dbg(&pdev->dev, "failed to register controller\n");
- 		goto fail1;
- 	}
- 
-@@ -436,11 +436,17 @@ static void mcfqspi_remove(struct platform_device *pdev)
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto exit_register;
+@@ -783,10 +783,16 @@ static void dln2_spi_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
+ 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
 +	spi_unregister_controller(host);
 +
  	pm_runtime_disable(&pdev->dev);
- 	/* disable the hardware (set the baud rate to 0) */
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
  
- 	mcfqspi_cs_teardown(mcfqspi);
+ 	if (dln2_spi_enable(dln2, false) < 0)
+ 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
 +
 +	spi_controller_put(host);
  }

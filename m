@@ -1,34 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321BB347517
-	for <linux-spi@vger.kernel.org>; Wed,  8 Apr 2026 18:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82499385513;
+	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775671832; cv=none; b=ug00UPWDYbwVDKdQjmRt005R2BvsEXYdoeQjvzOUyIqYEBSpllxyZwEXYfo6OQp7gFCec7ISCLF+D4yBOM2u8LeMtF5f/xk2jM1snVk4cW5Aq1f6nc//PRPmxEKeB+3hdv4BvOXVdi0TEAgt0WR7FLIF1isCAgMArv2pHFJPkK4=
+	t=1775736326; cv=none; b=OdYL1w3DFf1wRu5pU01z4suZkSIF6nHqCW3y8MgITz5XdT0OWU/pWzPNge1hQGerdzxS0/sg+r9FNA0o+uUjbHfCbmdVjW9XK9mRn9dtZIuQy6ngv1LTX4UeJUa3XjZghutmz/JgER9KzBKeYKZ/w6j9cDOmOL2UjyYMi+Y9z68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775671832; c=relaxed/simple;
-	bh=5uSsLb1fokpdPi3Ce6UDZ/nf7iT0rPqWp0dcCHXD/fo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=KZCmpVsXrGu+fEhxiNdWscFCVcFDmMNJvoCb4MxDl9qfoY1IF/pcP7Y1jGHB56CpSGJuHmF4nzM4ZBhIKZM8yxOSln0N3IoK550to+MNOzjG02tLEkOO4nIXF9B9lVYUsb8grESrZoYm8luXlTMSFDN5WU5aWV4rXaZ2bJuBTaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InVvr1mw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775736326; c=relaxed/simple;
+	bh=2UUcfPS4wrWwczKLD7aDbhUfuDJpVjl6srN25LJyhX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=c+uAELKHiMghJFiaYNY1m1q0QTQeMn5gOhdgoN+KsVKrh1qDjNfXfEjBpjjZIduu54+9TyqoP5SoZQJ4er90LPs3kh3WH+ghVOwdMvoc4W6AeiQwG3lYjFkpOwSTXxvZcEHs75GoC2mhw+gmY5k6e8eKIOZ934lnWcq+i7PNUIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOa9ingH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InVvr1mw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059D8C19421;
-	Wed,  8 Apr 2026 18:10:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOa9ingH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B17EC2BC9E;
+	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775671832;
-	bh=5uSsLb1fokpdPi3Ce6UDZ/nf7iT0rPqWp0dcCHXD/fo=;
-	h=Subject:From:Date:To:From;
-	b=InVvr1mwqoBrDra9jjSDxfsFylMS6oGVil9ZPM9djBAP3XirtmVwXFGlp5OHBzpe8
-	 OZEKPWcPOC20+wK++TlqUbAMgdj2CSI/fUV7PlmgfCwT4w1dD5yo7n6thlqBALEag4
-	 mLuXntEDCRn4ZhL3K8cYpF5ooBNhgKs4zd7R3ZMsZykoKqw5enH/n+I+3+An5+Fw/I
-	 6EFStfBEeedlTheJb/Bzm4mPFWqbTFN+HEAckRaFceeWlzAxMqXlYlMwTBrWmREHR9
-	 crJvxaJdVOw5U85rzGFW2NpE5izpEFPAQ6Bw2BqgOaMcu5ikVN7vnYw38OhJnrUDHe
-	 fMV38cqp/lnRg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BC82539302FF;
-	Wed,  8 Apr 2026 18:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1775736326;
+	bh=2UUcfPS4wrWwczKLD7aDbhUfuDJpVjl6srN25LJyhX4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hOa9ingH4y4gRiKiOLn2zm66hM+NbGYRQiRjpPURT5zXW46ljnxV9CSLdOUVNAjaY
+	 MP5t39gsMiNjcoJkHocXLr7ltMC5Mp4Xe1EyXaYeLQlkd9Ogjl4n+5i8u/KDKZiXdx
+	 YHBoTAwGOZMwrCxbf+MOOvOZbgwK/f1xBp/MjIOyJqIKiDmJM0zGSFATK7hgiSm/4q
+	 3Fu6GNuc0z0SQOvOlK8PvtW7+CdiEKQWFRDl/8ZCEc+DRVUaPqSpixKujRaeG6wYOU
+	 aXlc6DmHDrk/Jmh2rqNEJMYcuX294MLtVatoVb7LQ+4MYDXy2eujVBlLnVWQiJeeqS
+	 jk9byTTR5XS5Q==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wAo8S-00000001d6t-05hf;
+	Thu, 09 Apr 2026 14:05:24 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Sunny Luo <sunny.luo@amlogic.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
+	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	William Zhang <william.zhang@broadcom.com>,
+	Kursad Oney <kursad.oney@broadcom.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 07/20] spi: bcmbca-hsspi: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:06 +0200
+Message-ID: <20260409120419.388546-8-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
+References: <20260409120419.388546-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,37 +57,46 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177567180837.789497.5343317140810314323.git-patchwork-summary@kernel.org>
-Date: Wed, 08 Apr 2026 18:10:08 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind to allow SPI drivers to
+do I/O during deregistration.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Note that clocks were also disabled before the recent commit
+e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
+devm_clk_get_enabled()").
 
-Series: Add Renesas RZ/G3L RSPI support
-  Submitter: Biju <biju.das.au@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1078544
-  Lore link: https://lore.kernel.org/r/20260408085418.18770-1-biju.das.jz@bp.renesas.com
-    Patches: [v4,1/2] dt-bindings: spi: renesas,rzv2h-rspi: Document RZ/G3L SoC
-             [v4,2/2] spi: rzv2h-rspi: Add support for RZ/G3L (R9A08G046)
+Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
+Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
+Cc: stable@vger.kernel.org	# 6.3
+Cc: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-bcmbca-hsspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Patch: spi: pl022: enable compile testing
-  Submitter: Johan Hovold <johan@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1078537
-  Lore link: https://lore.kernel.org/r/20260408084407.107416-1-johan@kernel.org
-
-
-Total patches: 3
-
+diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
+index 2e22345115fd..09c1472ae4fa 100644
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -538,7 +538,7 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, ret, "couldn't register sysfs group\n");
+ 
+ 	/* register and we are done */
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto out_sysgroup_disable;
+ 
+@@ -556,6 +556,8 @@ static void bcmbca_hsspi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
+ 
++	spi_unregister_controller(host);
++
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 

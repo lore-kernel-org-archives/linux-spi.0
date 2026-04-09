@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82499385513;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8252638F92D;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736326; cv=none; b=OdYL1w3DFf1wRu5pU01z4suZkSIF6nHqCW3y8MgITz5XdT0OWU/pWzPNge1hQGerdzxS0/sg+r9FNA0o+uUjbHfCbmdVjW9XK9mRn9dtZIuQy6ngv1LTX4UeJUa3XjZghutmz/JgER9KzBKeYKZ/w6j9cDOmOL2UjyYMi+Y9z68=
+	t=1775736326; cv=none; b=eq9CHXjgZ17+/gq7K0q1xFHHX0Nzwzq8PygXATdkHA8H8aZVdPYUalisRmQr8PiI5g8+fnjvENRhlhGewFPhZiIpm2fE78bjaWFYZMO4jN6ZOmg5J55+T9ntKjAAk4LV0HPPOGkkfYecpmfgNa3ykNaYmrH+f806GlkI07UWKZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775736326; c=relaxed/simple;
-	bh=2UUcfPS4wrWwczKLD7aDbhUfuDJpVjl6srN25LJyhX4=;
+	bh=RVFqjnP/PU0LHgzX4H58KUj2k9kDpc/ipVr52enEE+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+uAELKHiMghJFiaYNY1m1q0QTQeMn5gOhdgoN+KsVKrh1qDjNfXfEjBpjjZIduu54+9TyqoP5SoZQJ4er90LPs3kh3WH+ghVOwdMvoc4W6AeiQwG3lYjFkpOwSTXxvZcEHs75GoC2mhw+gmY5k6e8eKIOZ934lnWcq+i7PNUIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOa9ingH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=FlS4fefpWaPzG9y881LQ5aVLNlN2Safk/ykVjZRJ1pA0JGYQyPbq54a0HpCNU7oaFPYIZbScRYcZW2ZkhZEaPuZdskStQgZ9QPMCAtAXrvwizavilQDUn4nP3In95IAgGG+8+NnkFu62B3yLhtNngCWr45raRI05vlZRViksJHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LA7QbDAR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOa9ingH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B17EC2BC9E;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LA7QbDAR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B90C19424;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=2UUcfPS4wrWwczKLD7aDbhUfuDJpVjl6srN25LJyhX4=;
+	bh=RVFqjnP/PU0LHgzX4H58KUj2k9kDpc/ipVr52enEE+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOa9ingH4y4gRiKiOLn2zm66hM+NbGYRQiRjpPURT5zXW46ljnxV9CSLdOUVNAjaY
-	 MP5t39gsMiNjcoJkHocXLr7ltMC5Mp4Xe1EyXaYeLQlkd9Ogjl4n+5i8u/KDKZiXdx
-	 YHBoTAwGOZMwrCxbf+MOOvOZbgwK/f1xBp/MjIOyJqIKiDmJM0zGSFATK7hgiSm/4q
-	 3Fu6GNuc0z0SQOvOlK8PvtW7+CdiEKQWFRDl/8ZCEc+DRVUaPqSpixKujRaeG6wYOU
-	 aXlc6DmHDrk/Jmh2rqNEJMYcuX294MLtVatoVb7LQ+4MYDXy2eujVBlLnVWQiJeeqS
-	 jk9byTTR5XS5Q==
+	b=LA7QbDAR/56z1i/SkU+X13ZaGZk60IoWSweEDVF4ax/8KQBGP38gNHU9MUuM52niS
+	 yc8VvMfUphjcUWiPYsMHKJ0gDC3X1JcEJCVhfVR2sHyJHOQRz+kQYheZLaUPH+qzm3
+	 uEefPRdrpbX56arsK9JYtkyZlvBmg5V4n5hGaCbQdtuCdAP1zFK1hcWBAEO97tk3Qe
+	 lI0mfE0FMBGfBUVFFeFaB5HjPwLKboiYNu5/iPvMHPBLsPyr06nFTDTE6SqxxxBQzQ
+	 waxAbu8TZdCsywQreOZvuYf6Rm0+TCqcGl8mfSuQx88wuno8dV97THydYWzACfsrZO
+	 6iVKiY5kayS4w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8S-00000001d6t-05hf;
-	Thu, 09 Apr 2026 14:05:24 +0200
+	id 1wAo8R-00000001d6l-48B0;
+	Thu, 09 Apr 2026 14:05:23 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Sunny Luo <sunny.luo@amlogic.com>,
@@ -43,10 +43,11 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 07/20] spi: bcmbca-hsspi: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:06 +0200
-Message-ID: <20260409120419.388546-8-johan@kernel.org>
+	stable@vger.kernel.org,
+	Radu Pirea <radu.pirea@microchip.com>
+Subject: [PATCH 03/20] spi: at91-usart: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:02 +0200
+Message-ID: <20260409120419.388546-4-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -58,45 +59,45 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind to allow SPI drivers to
-do I/O during deregistration.
+Make sure to deregister the controller before disabling and releasing
+underlying resources like clocks and DMA during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-e532e21a246d ("spi: bcm63xx-hsspi: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI controller")
-Cc: stable@vger.kernel.org	# 6.3: deb269e0394f
-Cc: stable@vger.kernel.org	# 6.3
-Cc: William Zhang <william.zhang@broadcom.com>
+Fixes: e1892546ff66 ("spi: at91-usart: Add driver for at91-usart as SPI")
+Cc: stable@vger.kernel.org	# 4.20
+Cc: Radu Pirea <radu.pirea@microchip.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-bcmbca-hsspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-at91-usart.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index 2e22345115fd..09c1472ae4fa 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -538,7 +538,7 @@ static int bcmbca_hsspi_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, ret, "couldn't register sysfs group\n");
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 76eb3ba75ab1..79edc1cd13c0 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -556,7 +556,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
+ 	spin_lock_init(&aus->lock);
+ 	init_completion(&aus->xfer_completion);
  
- 	/* register and we are done */
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
+-	ret = devm_spi_register_controller(&pdev->dev, controller);
++	ret = spi_register_controller(controller);
  	if (ret)
- 		goto out_sysgroup_disable;
+ 		goto at91_usart_fail_register_controller;
  
-@@ -556,6 +556,8 @@ static void bcmbca_hsspi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
+@@ -634,8 +634,14 @@ static void at91_usart_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctlr);
  
-+	spi_unregister_controller(host);
++	spi_controller_get(ctlr);
 +
- 	/* reset the hardware and block queue progress */
- 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
- 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
++	spi_unregister_controller(ctlr);
++
+ 	at91_usart_spi_release_dma(ctlr);
+ 	clk_disable_unprepare(aus->clk);
++
++	spi_controller_put(ctlr);
+ }
+ 
+ static const struct dev_pm_ops at91_usart_spi_pm_ops = {
 -- 
 2.52.0
 

@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C132FA3C;
-	Thu,  9 Apr 2026 16:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044333BFE3C;
+	Thu,  9 Apr 2026 16:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775751029; cv=none; b=Uv0ox4IBfXqJ30ASzpYgvkmkKwlYoo2OcPdpOz7jd8zmkZKD/CSvp2GVczuS3+BdIMK0ebaxmVuHBOPLQ18jWfC2Vp7Sg0qV+Pgg/8S9nkJ/cmMuCMs4VGG1OaW+0uKnAbomDLr34yZBzTqAkz+7R77X5ieHs76jQmgy1lb4kMk=
+	t=1775751192; cv=none; b=SaLx81XDz6fS62LLX4+4O70yzrbua17giS+xKUn+21Mk6337AidiiUt6P+ChK1cLEuUqvIeTaruAXhHDXe3nZqkp0GGefTlye+IwdWpKfj1akR06d+p0x+tuK7+KO/qShart8R2y+T+6Jgb6k9L9acWhi/pCh+Gots05+cESzxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775751029; c=relaxed/simple;
-	bh=Yc6OpYdGPLY+gHVUVeLoCkvBy0sDE3aiVPq0iTkw80A=;
+	s=arc-20240116; t=1775751192; c=relaxed/simple;
+	bh=FLJyHNJP7R51PEKD4gqB+LHcMo0mqxnbMmq8Eu3DxB4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fhqZ756EX5v9o/SBhgRfFBacNqc0DniLjRMF36Q5yfUhCQMI4fSwgut/KZyipDu24FVvAfihUsj37aDl+XEhed6m1LPIbmktRhgijS3MZWjw6MrXaliBJgKIqpzRL6sb9gPd1f7UG8bWBLkdr8lY3gcnz37s+gnTjeczg+TB4Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4gN9/0K; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=sQr9ITk5w7utCJr9VRu8BeScwT5+MldV1U5o7J7QGf2dm/e8VCAxDFBxtNlNerDoJjI4N3hFK1D74Ldo3AutF4qonknCU48MRXID0LyqlSK5TjeL7KnRDFlmOXq7Qa57zxeXJ6Ti6a4ceQuuFoBUI8l8Nih4tsj7E+k17VXqV9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ri60OXii; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4gN9/0K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28429C4CEF7;
-	Thu,  9 Apr 2026 16:10:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ri60OXii"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FD3C4CEF7;
+	Thu,  9 Apr 2026 16:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775751028;
-	bh=Yc6OpYdGPLY+gHVUVeLoCkvBy0sDE3aiVPq0iTkw80A=;
+	s=k20201202; t=1775751191;
+	bh=FLJyHNJP7R51PEKD4gqB+LHcMo0mqxnbMmq8Eu3DxB4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T4gN9/0Kye8v+JAWs+ZuDjlBSB5XPY0GiGCFCd4Q4Kt14ngfjkWpFQnSZHICWsGay
-	 N84W/Vu7H4fQmjBOyjrx9qFtlqnEyelyduP/y04SaSRrLV0KwWgNKm++4mJu4sUxBJ
-	 vpD/5LMU+T6W4veDNrgDtra8/9AdNSi8CBxV0TIdpuBkuLR83PsgsyfvOaGAUcosl/
-	 lW3HZOejhZFj5klXy7GtmgaIoIe5F+BTY28zlZIkgSz4aUm/0ZFpu7pfClp7wxKaXy
-	 Hb8JB5lpbekeNFbM1i9K9QSvbE42d7SWF0Zas6qMslaEj3vA35rzqADDZwGXi3aX0c
-	 XNpZOUys8FCBg==
-Date: Thu, 9 Apr 2026 17:10:23 +0100
+	b=Ri60OXiiB6rVtTVRAwHJMgrVXQIuD/XeFEoGLRZO/VLTlJDfRGjixU6zqARun5M1A
+	 QhcVLdHjvv11YwHy8s6C6mNimr+gKu4tPhilHaSk7TyYBEiW4I1pnIcCjGnGP6/pKY
+	 VUORBAo0ieOl0Ydd0MNyD/CPZcByLT8HsZVecd6I+CAQza64JOmXSkTSRceqtj7vz8
+	 5kOq8MnlnRpFiY9Cvh7R5HFNXKDCmKConVFHaBqly+Ak+vW0Q8N7VUEOvskRuT77tt
+	 +9EIclkYJ7/LX0Yu9VOzGGMKvH5jN+iigewn0bB6p8w98ipUUt+/gdH05VlUe3oYLm
+	 ieo3P5KYmfcvg==
+Date: Thu, 9 Apr 2026 17:13:07 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Johan Hovold <johan@kernel.org>
 Cc: Mark Brown <broonie@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
@@ -38,12 +38,12 @@ Cc: Mark Brown <broonie@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
 	Kursad Oney <kursad.oney@broadcom.com>,
 	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
-Subject: Re: [PATCH 19/20] spi: microchip-core-spi: fix controller
+	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Subject: Re: [PATCH 18/20] spi: microchip-core-qspi: fix controller
  deregistration
-Message-ID: <20260409-untouched-anteater-d1af2a00ffcc@spud>
+Message-ID: <20260409-unease-salaried-8bcb673e9a5a@spud>
 References: <20260409120419.388546-1-johan@kernel.org>
- <20260409120419.388546-20-johan@kernel.org>
+ <20260409120419.388546-19-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,37 +51,42 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="SRNgSkvbSM479uIG"
+	protocol="application/pgp-signature"; boundary="+54c3JQ+Sk1k7w4z"
 Content-Disposition: inline
-In-Reply-To: <20260409120419.388546-20-johan@kernel.org>
+In-Reply-To: <20260409120419.388546-19-johan@kernel.org>
 
 
---SRNgSkvbSM479uIG
+--+54c3JQ+Sk1k7w4z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 09, 2026 at 02:04:18PM +0200, Johan Hovold wrote:
+On Thu, Apr 09, 2026 at 02:04:17PM +0200, Johan Hovold wrote:
 > Make sure to deregister the controller before disabling underlying
 > resources like interrupts during driver unbind.
 >=20
-> Fixes: 059f545832be ("spi: add support for microchip "soft" spi controlle=
-r")
-> Cc: stable@vger.kernel.org	# 6.19
-> Cc: Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>
+> Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip=
+ fpga qspi controllers")
+> Cc: stable@vger.kernel.org	# 6.1
+> Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+
+Where are you getting these CCs from? I am listed as maintainer for this
+driver but didn't get CCed, only seeing this because I am CCed on
+another patch in the set. Please use get_maintainer.pl.
+
 > Signed-off-by: Johan Hovold <johan@kernel.org>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
---SRNgSkvbSM479uIG
+--+54c3JQ+Sk1k7w4z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadfPbwAKCRB4tDGHoIJi
-0rJ+AP9mcauj+ZMQFGy0ezVBJfNEYe0htbxSgQ7n1YzbhSoFkQEApNi2PI/Qunk0
-lCP4hNEmprG/eeQtWGggjX1IP82fQgI=
-=qlP9
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCadfQEwAKCRB4tDGHoIJi
+0rqQAP4w2nQLA5KANNj55Jyxgim0ziwXaZrES8uu9RzKWskNqwD/QfLxBMvB2mWA
+EjpLwd22q5E7Qms1zujQZoRucpykwwE=
+=f2Yu
 -----END PGP SIGNATURE-----
 
---SRNgSkvbSM479uIG--
+--+54c3JQ+Sk1k7w4z--

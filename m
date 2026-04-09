@@ -1,33 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825D439183D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD703939DD;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736326; cv=none; b=LQH0o95r/yg+kHdfI+vkAmFo2e8kk7xi1x9SKW+4MLvfHc6wjCI51LEYrbpx52Mtw1NSlk55JjACZKnqC8vqFweHU6HvSklO7XMJ+bZ9mXLWPR55pr/N6aVzxP7swRhUI0EBXqHQ6gRc4QMfaeXhg4t9BdHXKG82p3xMfLQc3H0=
+	t=1775736326; cv=none; b=T0n69OJ/BaBdwcnsmH1RsgYQ3LsEisF4vomfJrHmVEKgWiGht8pQmDjpQLJ4EhpregeVHITy8irUtfVp1acYvSmqeKUt0UQXtZ/0jA6ZN3WpEUhHoO5OJjROBHjbHGaXrz73ej9+eX/RWK+y5YVex1GUITKYoFQ38GXlnMJqbqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775736326; c=relaxed/simple;
-	bh=8AvM83QcGzh6gz1SeexDYbo6Y1rTvPVej51nPwjN6UA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iSdCy+NjO7G0MqikDLpMWQCxhyxRRIrBwStkUbAxYyWQtqZWPQZ+Rby7Btj6vLzrvBrXn4CMxr8ypHLQeMef/R8iZ4tOaGrgzhu5rKdFoNEjRL76HzkC6KGvWFJrm1qQDWLxIovqH4RJS5y33XkQoERgoyGf5uh6NcSLOnIztts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJetzo/k; arc=none smtp.client-ip=10.30.226.201
+	bh=3DbsYkN4pf5ND1z8L30fphcMVgrd1sOFsBKrJWKj7TY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aXbMa7GuAT2jsod0TWGLqTVvhvkacu8Ml5CI8CEVGZwp3UnuaA7t2ACfEISqDmv+giSzsSbdk8W80Gzr5VPvhQaaaoKy9viiGd5FAdl0H7XxUv+77XZ5/1rr7qsMRBj1ThqkVoygLfWfP3RYqmhrBsR4iNpX2/i22wBlOSi/38M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYXLZuoQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJetzo/k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408E6C4CEF7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYXLZuoQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D9B9C2BCB0;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=8AvM83QcGzh6gz1SeexDYbo6Y1rTvPVej51nPwjN6UA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pJetzo/kFQ+4A6S0Gqbdo2kSbLjCXhD30ylP/ZdDp0K3RU3kDB+BMTAn1HMGfmeAL
-	 9IYCyNcqGntAX4fqCleqXb6MNBELODNPntVuuucVRIv/W96WnbTPBE0WgMaHkyBE3K
-	 2LJW1NpcEZNyKRIa/OOkwl7uhX+q+qnZ86fsDOK41XbrHi/hrRA20DxmYaIUV9pdM3
-	 qlC7/WohOX4ol1q868pODJbOpHpCq46segE7QXcyCVo0eDVcWxWQAAhBq/RepMKiMm
-	 OloRcMspOjHwu7KyEMLzu/QdYFeyzZysBVsfir9I6gKf3g7DHWdE7TXDmPdddWdVPV
-	 6Yz6I3MlHYVwA==
+	bh=3DbsYkN4pf5ND1z8L30fphcMVgrd1sOFsBKrJWKj7TY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WYXLZuoQ8oFwwg7QCVCsTgjZ+oF7k4znxYvh4mcT3ituf4jUt6lOBmrtFIwxBMVHV
+	 +S4d4bkYsE8nK9KkaN7KV2Bzunj3zsgDkyRK50RkaNG9EAGdrVF1X6Vea02xxPaMmq
+	 ZWbI1aE3JWof1OmZAGy0BX0RB1PzIxNSUGx2O0TLuTobOAftUxE0S4pBQqGXlhli0u
+	 ddF9jdySAeKu8i749/x8Y88QzAuzfWGjn8vMeRX+e4YnrYDHr0/KjDsHbCEbKkyWLc
+	 Lp4ZMGXDzbpvH77kts6wta6cmJTcrjQL4HD77J8ugRZ0+p/vlCqVqBL4wSyiRr6k4X
+	 TDib8HQ5kS1RQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8R-00000001d6f-3xuJ;
+	id 1wAo8R-00000001d6h-43PZ;
 	Thu, 09 Apr 2026 14:05:23 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -41,94 +42,56 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	Jonas Gorski <jonas.gorski@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 00/20] spi: fix controller deregistration (part 1/2)
-Date: Thu,  9 Apr 2026 14:03:59 +0200
-Message-ID: <20260409120419.388546-1-johan@kernel.org>
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 01/20] spi: amlogic-spisg: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:00 +0200
+Message-ID: <20260409120419.388546-2-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
+References: <20260409120419.388546-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Device managed registration generally only works if all involved
-resources are managed as otherwise resources may be disabled or freed
-while they are still in use.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-This series fixes the SPI controller drivers that get this wrong by
-disabling resources such as clocks, DMA and interrupts while the
-controller (and its devices) are still registered, which can lead to
-issues like system errors due to unclocked accesses, NULL-pointer
-dereferences, hangs or just prevent SPI device drivers from doing I/O
-during during deregistration (e.g. to power down devices).
+Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
+Cc: stable@vger.kernel.org	# 6.17: b8db95529979
+Cc: stable@vger.kernel.org	# 6.17
+Cc: Sunny Luo <sunny.luo@amlogic.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-amlogic-spisg.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-I decided to split these fixes in two parts consisting of 20 and 26
-patches respectively in order not to spam the lists too much.
-
-I've also prepared a follow-on series to convert the drivers here that
-do not yet use device managed controller allocation (which avoids taking
-extra references during deregistration).
-
-After that it should be possible to change the SPI API so that it no
-longer drops a reference during deregistration without too much effort
-(cf. [1]).
-
-Note that this series is based on spi/for-next.
-
-Johan
-
-
-[1] https://lore.kernel.org/lkml/20260325145319.1132072-1-johan@kernel.org/
-
-
-Johan Hovold (20):
-  spi: amlogic-spisg: fix controller deregistration
-  spi: aspeed-smc: fix controller deregistration
-  spi: at91-usart: fix controller deregistration
-  spi: atmel: fix controller deregistration
-  spi: bcm63xx: fix controller deregistration
-  spi: bcm63xx-hsspi: fix controller deregistration
-  spi: bcmbca-hsspi: fix controller deregistration
-  spi: octeon: fix controller deregistration
-  spi: cavium-thunderx: fix controller deregistration
-  spi: coldfire-qspi: fix controller deregistration
-  spi: dln2: fix controller deregistration
-  spi: ep93xx: fix controller deregistration
-  spi: fsl-espi: fix controller deregistration
-  spi: fsl: fix controller deregistration
-  spi: img-spfi: fix controller deregistration
-  spi: lantiq-ssc: fix controller deregistration
-  spi: meson-spicc: fix controller deregistration
-  spi: microchip-core-qspi: fix controller deregistration
-  spi: microchip-core-spi: fix controller deregistration
-  spi: mpfs: fix controller deregistration
-
- drivers/spi/spi-amlogic-spisg.c       |  4 +++-
- drivers/spi/spi-aspeed-smc.c          |  9 ++++++---
- drivers/spi/spi-at91-usart.c          |  8 +++++++-
- drivers/spi/spi-atmel.c               |  8 +++++++-
- drivers/spi/spi-bcm63xx-hsspi.c       |  8 +++++++-
- drivers/spi/spi-bcm63xx.c             |  8 +++++++-
- drivers/spi/spi-bcmbca-hsspi.c        |  4 +++-
- drivers/spi/spi-cavium-octeon.c       |  8 +++++++-
- drivers/spi/spi-cavium-thunderx.c     |  8 +++++++-
- drivers/spi/spi-coldfire-qspi.c       | 10 ++++++++--
- drivers/spi/spi-dln2.c                |  8 +++++++-
- drivers/spi/spi-ep93xx.c              |  8 +++++++-
- drivers/spi/spi-fsl-espi.c            | 10 +++++++++-
- drivers/spi/spi-fsl-spi.c             |  8 +++++++-
- drivers/spi/spi-img-spfi.c            |  8 +++++++-
- drivers/spi/spi-lantiq-ssc.c          |  8 +++++++-
- drivers/spi/spi-meson-spicc.c         |  8 +++++++-
- drivers/spi/spi-microchip-core-qspi.c | 12 ++++++++----
- drivers/spi/spi-microchip-core-spi.c  |  4 +++-
- drivers/spi/spi-mpfs.c                |  4 +++-
- 20 files changed, 127 insertions(+), 26 deletions(-)
-
+diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
+index da8ec35115da..19c5eba412ef 100644
+--- a/drivers/spi/spi-amlogic-spisg.c
++++ b/drivers/spi/spi-amlogic-spisg.c
+@@ -800,7 +800,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 		goto out_clk;
+ 	}
+ 
+-	ret = devm_spi_register_controller(dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "spi controller registration failed\n");
+ 		goto out_clk;
+@@ -823,6 +823,8 @@ static void aml_spisg_remove(struct platform_device *pdev)
+ {
+ 	struct spisg_device *spisg = platform_get_drvdata(pdev);
+ 
++	spi_unregister_controller(spisg->controller);
++
+ 	if (!pm_runtime_suspended(&pdev->dev)) {
+ 		pinctrl_pm_select_sleep_state(&spisg->pdev->dev);
+ 		clk_disable_unprepare(spisg->core);
 -- 
 2.52.0
 

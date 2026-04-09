@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB393BED76;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B5E3C062D;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736326; cv=none; b=SPNUumnMGLJD4aR6MEsl0I6LDu/AqGhrEyv0f3RNvUoXq81cT+m/ixgRMB9pFfrMQCOwtgqdR3bgstXtfqp26B8SadLvoYYyLgZ3ghSr8fJ32Pc5NiPGAdPNKGuwB+U63znlSCAedbofsYa27zdlYSNP7KDS5r7BrHgMvyRattc=
+	t=1775736326; cv=none; b=gP55dV53Q3l0NwG/zQPw4JLR9TDWFYXm4a8mhKRlmSWLQPqPCdKZb2te6A3uBr78VLHrv/bwBS8PEgsFPiuCg9p3rj2cVeMP5E/rbWBT4QSvFPsdSVjkJjZf7hfujryj0Vw/ve5Jcz3ntFhOq07g4CEsnQyxGI4Qf0TVIBwiNlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775736326; c=relaxed/simple;
-	bh=lsKEDnYtZlc757jy27w5VFfQRr0Ca5F25Ct5iUvklLE=;
+	bh=tuNfjIQoyz+Ks6HZ8O/w3x28GoFwiQOi8TzTHCOHUPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OF88Rff8hcxmvl1qcthe0k+UDJaiKQyBme4trDzRlSp8dSpeV/r/M8UuGBXk+1jTuDOQxNL6nMHYO3nL1Cjs5bILjni/SWVER/+B8c93W1DNENx4VjP3HSQBtpdc4KfiNgU1ssfuxet/kybszkCxmanQnGdolg7It1/BJFjd4/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yv+LcjwF; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Av+zLbTYLnlVeRBNg9jBGORTB75EodwGCVJjWJMdGldXP3O7Kcc/FqYntYyV7YnFcX5hw1j53zjFOfAbxakcVGExH5QW9N9RftUfHNez/SYxImxmc1NW2oOVZsaW023pnELih65nLk/YAUIlK+nZ21bpY2u+j/yL5luZfFmTtG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbA7+h86; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yv+LcjwF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2B2C2BCB5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbA7+h86"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E511C4AF0F;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=lsKEDnYtZlc757jy27w5VFfQRr0Ca5F25Ct5iUvklLE=;
+	bh=tuNfjIQoyz+Ks6HZ8O/w3x28GoFwiQOi8TzTHCOHUPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yv+LcjwFUxxbDNQq0MXoUG1Bw4lRo4aGT8KiZZXWwYuqm9ZxiGKIxX4Tus1W78bdx
-	 8JhqnuONz8h+JzmLTIS5CID/CSul1kh2Swao6LBh0HendsY5Gon9xdwU0iKLDBUPrF
-	 sXvWyRXvqBvjA2+h71uIhUK1G9nqHbm8Xr+FvmP7nATkSNqZnHvxeItE1DIt0Vh7Nk
-	 3eh055ASbdyay9k223mZGDurMN/oRCQU9H29fir0kxlZIrxoFZWWBveFC36FfamZ9u
-	 rcWttVy2JLveAYUDHH5AW/SERkfm1HVed60aQoARyvKPjSHmfuJxCfUnH3b+1iEUFU
-	 lmG2NVdAoi+kg==
+	b=EbA7+h86tzlRsMowMUd7a6p2un35IUTKJNtVL+xixsaAPbqf/dFOWUelCsC3GpBhr
+	 LUSG5hd1mG9MmjVUChaXZJFqRv2O/thI7wn9QQDKQ0REkr5+vwYKxprvckcMgXCZAS
+	 iX/9PBsaoSQaLU1BPGsifs6uhy2L7rAVv9vjE61cKC0k/HNzPDwTC6omxEAjD51WLK
+	 NIpz80WpDHcNSBmkIHn/5OAt+t40USwNIWfTv3fLY59Bi0wLHWNVnDY3LhJ2wrfy+7
+	 HrM+oNi9e6pd/1qfVSaBKuLN6EfM+lYJv48KZofvlA1yjjSOa1iLTsDoGaMf8aoXHL
+	 wsM8hQ91Qe1mw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8S-00000001d71-0FGn;
+	id 1wAo8S-00000001d79-0OyI;
 	Thu, 09 Apr 2026 14:05:24 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -44,10 +44,10 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>
-Subject: [PATCH 11/20] spi: dln2: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:10 +0200
-Message-ID: <20260409120419.388546-12-johan@kernel.org>
+	Andrew Bresticker <abrestic@chromium.org>
+Subject: [PATCH 15/20] spi: img-spfi: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:14 +0200
+Message-ID: <20260409120419.388546-16-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -59,47 +59,50 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling it to allow
-SPI device drivers to do I/O during deregistration.
+Make sure to deregister the controller before disabling and releasing
+underlying resources like clocks and DMA during driver unbind.
 
-Fixes: 3d8c0d749da3 ("spi: add support for DLN-2 USB-SPI adapter")
-Cc: stable@vger.kernel.org	# 4.0
-Cc: Laurentiu Palcu <laurentiu.palcu@intel.com>
+Fixes: deba25800a12 ("spi: Add driver for IMG SPFI controller")
+Cc: stable@vger.kernel.org	# 3.19
+Cc: Andrew Bresticker <abrestic@chromium.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-dln2.c | 8 +++++++-
+ drivers/spi/spi-img-spfi.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index d90282960ab6..392f0d05f508 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -758,7 +758,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 902fb64815c9..57625a3ce2f2 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -643,7 +643,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(spfi->dev);
+ 	pm_runtime_enable(spfi->dev);
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
+-	ret = devm_spi_register_controller(spfi->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register host\n");
- 		goto exit_register;
-@@ -783,10 +783,16 @@ static void dln2_spi_remove(struct platform_device *pdev)
+ 	if (ret)
+ 		goto disable_pm;
+ 
+@@ -669,6 +669,10 @@ static void img_spfi_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
+ 	struct img_spfi *spfi = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
 +	spi_unregister_controller(host);
 +
- 	pm_runtime_disable(&pdev->dev);
- 
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
+ 	if (spfi->tx_ch)
+ 		dma_release_channel(spfi->tx_ch);
+ 	if (spfi->rx_ch)
+@@ -679,6 +683,8 @@ static void img_spfi_remove(struct platform_device *pdev)
+ 		clk_disable_unprepare(spfi->spfi_clk);
+ 		clk_disable_unprepare(spfi->sys_clk);
+ 	}
 +
 +	spi_controller_put(host);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ #ifdef CONFIG_PM
 -- 
 2.52.0
 

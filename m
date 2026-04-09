@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80913C2765;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEE63C1970;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775736327; cv=none; b=mhfTNfArzgrzQIQs/iuKFJX1YedTYJFX6sj+tLzBgwrMSEJ5451VDgfY2sfrwiE9WznYW31hIv0lyEMenZy3s/2Vjf9UWmy3N8VlVC5jpUPMh8x+49dYUbtB3i7vG0GD65ThxdtzwfHikaR8j/Nbe6L/yZM0qm9NOkysF8muSCA=
+	t=1775736326; cv=none; b=BA6vPIf3WL8kB79pzG5p1D4VxbPb6KyfQ45WLcVyXux7vFdICPNyAVa6sDnlLr1k47QAexCViUdEMQROjb61SAtBlAkdW3WCLi1t/5zDT6TSsCX8zt4Deysz8LRen+SeE65Dk/pdte54b5F09SMQM35RmvfHm7Ghs/J2QVdR7/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775736327; c=relaxed/simple;
-	bh=2KNfJnA46W3qlgDrPGdTrCw4e1Cl0KMREmMjES5TO4c=;
+	s=arc-20240116; t=1775736326; c=relaxed/simple;
+	bh=tMFCgvOy4LcT3UQdLxzcCVWCGk2e5r9f9re3+JZhWVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvvQ7ue9LIjfEYqROw/yArkGcYVsAlH1NWuS6ngRo0gJMwXOWVInNclk0vf7LDSccZb9NElJwEdbkASonMnsBH/62vuITzm7O5eEDjoFJgKSf+ENpyX4LwDlbkX4mEDVt9Qwr5ru6g6CexdcxJgw4RMnZlpC7avYl385c9MejBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4IvigfN; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=vAxl1O0F+nGPmB6td6phsmIVggdyFYfG05XAC/GTfOJarAiXrhfUZvp9xyStCzroE/L4DT2FGJ4NHXyehJcIBDr6FG2DTa81vrMuchkHCgwAdRBEwAr3KXSsQosB78nBtstDS/O6DESo4cRUnu3pdrddpslTb+c7/LWHdRpBQSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAjG3276; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4IvigfN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74129C2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAjG3276"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7C5C4AF10;
 	Thu,  9 Apr 2026 12:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775736326;
-	bh=2KNfJnA46W3qlgDrPGdTrCw4e1Cl0KMREmMjES5TO4c=;
+	bh=tMFCgvOy4LcT3UQdLxzcCVWCGk2e5r9f9re3+JZhWVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4IvigfNOt3Srbkzd2lP5K8sLhNBkpeW+Jtch1NtBW4kmw6bU1Lyrsji5xg+maVfB
-	 PhAgA3mbLr62V97E3Yi1E5SdWc0RKztwZhIWenppAp9qbHtSNco7hPXNOnE9g8Aqef
-	 mV1iDPBhvpy5eDUgPWZtZ/EeYdL+I/p5YFUXisautGihB122D1WRwbOCczWuMY50Wa
-	 Vl0VZfgknOJexQEyFu5EbSJI4efH0mYWZhQzJCzIEyEEH4keKL1SydLYyNxkN90Zxb
-	 yHvnVKhRA0PdBUMNhZ9vhUYN7DcnuIdnhtRxCQeDtaT8RKNmu+apHvgIsPjGBUHIrH
-	 eJOY7Tew5m5DQ==
+	b=bAjG3276gO6Px2fz2ch4CMWK2FjzMNZdpVTAfIIGqXBH0yenAbsvH+7/E864mCwBO
+	 skLjtGOyXqfDfUtdIRyWI8T8uRsYl2695ALn7lo8nab5NIkkg2yLLAI3N2Zd+Dxbow
+	 aXPEfNNLPEI8DW9N+lQWqrh1aFXs6QbLOC19A0DdOfqoMoSwOWVesAAIPuL4JquYfQ
+	 Gmre0ROmQ2iVcQ+/WM3vmfTNm8JBvuV5ZkraO9H1OaIBpyVuKFljUn8WiWbPVc/hVJ
+	 ZOYYxXan035W5v3gf8Et0+tilesxwrhIlYlY3wFg+m0Udz0WqHLIbEt6jFUr7rasdO
+	 LYwLahsiiKPeg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wAo8S-00000001d7F-0W6T;
+	id 1wAo8S-00000001d6x-0ATP;
 	Thu, 09 Apr 2026 14:05:24 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -44,10 +44,10 @@ Cc: Sunny Luo <sunny.luo@amlogic.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Subject: [PATCH 18/20] spi: microchip-core-qspi: fix controller deregistration
-Date: Thu,  9 Apr 2026 14:04:17 +0200
-Message-ID: <20260409120419.388546-19-johan@kernel.org>
+	Jan Glauber <jan.glauber@gmail.com>
+Subject: [PATCH 09/20] spi: cavium-thunderx: fix controller deregistration
+Date: Thu,  9 Apr 2026 14:04:08 +0200
+Message-ID: <20260409120419.388546-10-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260409120419.388546-1-johan@kernel.org>
 References: <20260409120419.388546-1-johan@kernel.org>
@@ -59,55 +59,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
-resources like interrupts during driver unbind.
+Make sure to deregister the controller before disabling it to avoid
+hanging or leaking resources associated with the queue when the queue
+non-empty.
 
-Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
-Cc: stable@vger.kernel.org	# 6.1
-Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
+Fixes: 7347a6c7af8d ("spi: octeon: Add ThunderX driver")
+Cc: stable@vger.kernel.org	# 4.9
+Cc: Jan Glauber <jan.glauber@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-microchip-core-qspi.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-cavium-thunderx.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index aafe6cbf2aea..eab059fb0bc2 100644
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -692,7 +692,7 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index 99aac40a1bba..f1a9aa696c87 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -70,7 +70,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
  
- 	qspi = spi_controller_get_devdata(ctlr);
--	platform_set_drvdata(pdev, qspi);
-+	platform_set_drvdata(pdev, ctlr);
+ 	pci_set_drvdata(pdev, host);
  
- 	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(qspi->regs))
-@@ -732,7 +732,7 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
- 	ctlr->num_chipselect = 2;
- 	ctlr->use_gpio_descriptors = true;
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
  	if (ret)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "spi_register_controller failed\n");
-@@ -742,9 +742,13 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
+ 		goto error;
  
- static void mchp_coreqspi_remove(struct platform_device *pdev)
- {
--	struct mchp_coreqspi *qspi = platform_get_drvdata(pdev);
--	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	u32 control;
+@@ -90,8 +90,14 @@ static void thunderx_spi_remove(struct pci_dev *pdev)
+ 	if (!p)
+ 		return;
  
-+	spi_unregister_controller(ctlr);
++	spi_controller_get(host);
 +
-+	control = readl_relaxed(qspi->regs + REG_CONTROL);
- 	mchp_coreqspi_disable_ints(qspi);
- 	control &= ~CONTROL_ENABLE;
- 	writel_relaxed(control, qspi->regs + REG_CONTROL);
++	spi_unregister_controller(host);
++
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
++
++	spi_controller_put(host);
+ }
+ 
+ static const struct pci_device_id thunderx_spi_pci_id_table[] = {
 -- 
 2.52.0
 

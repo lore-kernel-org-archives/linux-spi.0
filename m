@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AD13ACF13;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D623ACF07;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=qw/RGA1WbfGqZv+nmBGkXw6wbAFDgKAm9EABrnjmSFGzorQZIDojOmxXGq75oCPyV7mqYk1CdLJs1q7AaehOH3CW1R/nW6b2D/KMfUBNHd78jPVuvf7Ljqby/iDgCs59+jtadP8TN8GoQRcA4AGrlfYM+WnKbnhYeiZE67c0fns=
+	t=1775809137; cv=none; b=G5a+Un89geonew/O4be8uskFJGE0beEVkbxtBqXo2kEeDJKhGXZM5F8BSj3ey2n7QD5xy1Op4vYd67eY9s03t8BS8dmxgTwdgQKdg1ZAt96ZvdbqIErj+SYoH9g7qLRKuGdLepDcgsxm/pZgUNRaNC+4CX3gL3hTsXPAgd7c7Jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=Bx3P5pYklrEMI671aCg7axzrAexelH1e0IFNqcMv9eQ=;
+	bh=UYGlDi1cPoopc+/rV7EGEP17fwrJo+7fHh3T+dg3/bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gil33g7BxIYoN0pkNxJJSlAib/kFTROf6XSEZDDuYdTXADmInG9TvOTzRr3tGTs2O/DoNTCPwjZWndQ2rDD+B0cOuKPyxgy2MhQ+vtc4nsZZCbg+5gtRp6AtgL6EATVdKQ458/+Sv9iPluW/ItP3vQvn4ccbyalzivRnHANW2GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6XigBO5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=VlD20Sh7rs0Y+MKC+Zb1sfZkUCE9ucJzl1y3+E0p4DPzkNjCoB1pRpTv3lU6hGI0T2e3OJprRteW0/tQOwj9OgUEYrJE0qdEfZFGxWPI29c7eD9Td+Z+LBmqcA7/Ptw2c1y4nOFhJVeP5SoCVcDWxh753HbovMng9M2wN3kipew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=az6fv2rf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6XigBO5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6592C4AF11;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="az6fv2rf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9863DC2BCC9;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=Bx3P5pYklrEMI671aCg7axzrAexelH1e0IFNqcMv9eQ=;
+	bh=UYGlDi1cPoopc+/rV7EGEP17fwrJo+7fHh3T+dg3/bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6XigBO5npE9h/Wi7xxJZV671oFeFPiYFdbZCDN6s5i4FZnRfc1jMvERruke/XmWu
-	 s+m51mh6MP3+y/8eX964O9U3hq+858qel1VGK9dffWJT2rTZ/eC43DwkdURZZyLvjR
-	 ajMuDhQ01WSVh37MZI/RgBIui25WDSTgGD0vGceYEV5U8bwRBL1Ma1GofNXgGXWs8d
-	 Pgj3s8Ten8vviFOt4EKCLqoLOGAJvZZ6YWEF1/R3dQCiCiddBIQ4Av/Z4C+T+1KaEZ
-	 mIWKv7UjeNkJQF49EcgNMBxmNMd1vAKUbUU4P2d0HkU1EV2MBDDFIEdlJ7/oROw+4+
-	 6r+lgT7xaiY4g==
+	b=az6fv2rf1uNhu+Zx/knqA2/WkMsBVre7Q510MlAegOtuelUJeMFz6cyFnZdcohtAr
+	 wlQ8S/KW0XoYXe84FZ9TYHw9LRWAPvQ5hi25ucO0EQGucy3s5BfEucF05Ti54UTZoK
+	 dCj/wH0wwhqlBAzuEiwdyPePs+XWOdeWuvNrNqS7p7o1yp6aNBEvmsO0TCSCj19ale
+	 zXsfHdzVnVaWAzshrwS2w1pmD6UGBCnIpyAo9XBemTZJ4LP7p4CqauP0zNinJRWDCX
+	 2WE3Xnq/8O+famIU9M0sAUJXDktTf2rtXnUhuynzOQWjeVcwjatmpg8I/PFkhKJpPP
+	 1Yim7V2On3/0w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026um-46Je;
+	id 1wB74n-000000026uk-43fo;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Lanqing Liu <lanqing.liu@spreadtrum.com>
-Subject: [PATCH 16/26] spi: sprd: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:46 +0200
-Message-ID: <20260410081757.503099-17-johan@kernel.org>
+	Leilk Liu <leilk.liu@mediatek.com>
+Subject: [PATCH 15/26] spi: slave-mt27xx: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:45 +0200
+Message-ID: <20260410081757.503099-16-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -74,55 +74,45 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+resources like clocks (by disabling runtime PM) during driver unbind.
 
-Note that the controller is suspended before disabling and releasing
-resources since commit de082d866cce ("spi: sprd: Add the SPI irq
-function for the SPI DMA mode") which avoids issues like unclocked
-accesses but prevents SPI device drivers from doing I/O during
-deregistration.
-
-Fixes: e7d973a31c24 ("spi: sprd: Add SPI driver for Spreadtrum SC9860")
+Fixes: 805be7ddf367 ("spi: mediatek: add spi slave for Mediatek MT2712")
 Cc: stable@vger.kernel.org	# 4.20
-Cc: Lanqing Liu <lanqing.liu@spreadtrum.com>
+Cc: Leilk Liu <leilk.liu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sprd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-slave-mt27xx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index 0f9fc320363c..fd3fd0ce122c 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -977,7 +977,7 @@ static int sprd_spi_probe(struct platform_device *pdev)
- 		goto err_rpm_put;
- 	}
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
+index ce889cb33228..7aedeaa5889d 100644
+--- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -453,7 +453,7 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
  
--	ret = devm_spi_register_controller(&pdev->dev, sctlr);
-+	ret = spi_register_controller(sctlr);
- 	if (ret)
- 		goto err_rpm_put;
+ 	pm_runtime_enable(&pdev->dev);
  
-@@ -1008,7 +1008,9 @@ static void sprd_spi_remove(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_err(ss->dev, "failed to resume SPI controller\n");
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	clk_disable_unprepare(mdata->spi_clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev,
+@@ -473,7 +473,15 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
  
--	spi_controller_suspend(sctlr);
-+	spi_controller_get(sctlr);
+ static void mtk_spi_slave_remove(struct platform_device *pdev)
+ {
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
 +
-+	spi_unregister_controller(sctlr);
- 
- 	if (ret >= 0) {
- 		if (ss->dma.enable)
-@@ -1017,6 +1019,8 @@ static void sprd_spi_remove(struct platform_device *pdev)
- 	}
- 	pm_runtime_put_noidle(&pdev->dev);
++	spi_controller_get(ctlr);
++
++	spi_unregister_controller(ctlr);
++
  	pm_runtime_disable(&pdev->dev);
 +
-+	spi_controller_put(sctlr);
++	spi_controller_put(ctlr);
  }
  
- static int __maybe_unused sprd_spi_runtime_suspend(struct device *dev)
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.52.0
 

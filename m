@@ -1,42 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2E03E3C63
-	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 17:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDE83E3C51
+	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775842882; cv=none; b=ZkF3srIlp0BTiBl9mfcm4uuxVV52y1EXjHu2xAYsISCVwEtWi86UfNucT6VrSseTB4cYJnujQG2hX0EQ74RS2blsmsr3CSedvR4cTtPMbIyqXa5QmyXSwvyNVkdiuKFQixDDpqFM20NJl78brPOjKjnl/omMKeXc1QyCPVV6+08=
+	t=1775842883; cv=none; b=F+m+ZKR+KSdTRJHl4k6rScWmOrTf/Q1QVz09z5s6McY5Ep8LqVzELKZE3WWtIo8xvfHByZ0goNrB5n5x7yVbVVO4Fceh35JK3jtl9aZXwXVvU4Zkw5DB6mN+BSU/rU3KR1i3hFOQXG08LnWENZSVkoK8aBZ6KQYK/saNSvMvB98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775842882; c=relaxed/simple;
-	bh=oRg4xD7giSktolVfRvNHB4EUWqhqb/UUkZKmOAf3l9k=;
+	s=arc-20240116; t=1775842883; c=relaxed/simple;
+	bh=w5j83Yxg1BUvrGYayXPEbnuDSb8c7L/2/ix+FqlhFYk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HtiKqbvFMs3VgZA9iYZd+002kun67o9Ze7tvoDeaxZWjbxi4A2ZIpevvCv8miEjDfxZ9rWyMDUjr8kQ3iynyn4i7UPUKCUqDQGSXNxohVrnis7WNEfGXHjhwW6wYdaNIr3/ZcNwQhFv7w6X2d90M6Sby8bREiIugSLEB8tIYu6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bLI7mquF; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=C+0V+Vf5Y4s3AT/Eb3EHbVK227Oq9k19z9jB/aK9+9/1evZUKw63EvxzUaGHTZfC4yDQM7ys6OABgYQdqfe7yDPxV/5ubOFEDXJqxkBRUbrLYkoPJ3aUtWPXvFTGkJud0ytTNydX+T5ndeF3P+y5UViNXgihEQI3aiWOu4fQM9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RfbMYEke; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bLI7mquF"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RfbMYEke"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B8F3E4E429B5;
-	Fri, 10 Apr 2026 17:41:19 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D69D4E429B6;
+	Fri, 10 Apr 2026 17:41:21 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8FD18603F0;
-	Fri, 10 Apr 2026 17:41:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D786D10450085;
-	Fri, 10 Apr 2026 19:41:17 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E8A51603F0;
+	Fri, 10 Apr 2026 17:41:20 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 226AD10450081;
+	Fri, 10 Apr 2026 19:41:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1775842878; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1775842880; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=5i86694lMeG7kylMxcMPx4GdJDrXhoBS7Gx4ntdJ5OQ=;
-	b=bLI7mquFFWnVp00o0oHH9cqiMpthDSACGYJeebI0hLpcQCvNo7uVlnTPmUmFHK7l+sVuuP
-	tQgBdTH7L3PiJ0lfkgyvZEhuSwS8bfW+cJNQdE7z9EJXSP9mmxtfoZHoQlHli44dxzZK4N
-	UM+E7obF/bgroHUjwk4CXeHzovUTAEY/lg2KRivohSdJBCwtehx6czR6GhbVElqR3ZsFQL
-	4JUrdsWiugGhSZsoudEmLJYpS+bZO3p+xacV9NwFiIonpNOU/uTJC9h1XotpNw7PQf4kgL
-	ptdS3bJl4C6Xfi1sKFzg3gvtwQRCb/oV4+Hq34id0DGzve7r3LdkGEmypYLMow==
+	bh=bAVqa4MQXm7GdlPrbv7BpQQFj39D/pUUubDLu72NyMI=;
+	b=RfbMYEke9rGFR7c6cTZKWElMdomfmM05zlbY+k17DJCJH7/CHnvw4PBCpRfKwCjg923VFT
+	7FmYoYGOKFpc9xwdIhQbJjA3Rn4FqyZ/n5JCp8fwB4nDc+4qtKkNNL/NAhb7+WXmXWxzvu
+	Wr4hcn1mUK+xklrhfwEBHdRpwA9uVMqo9RaW8kIL+Mv42JiKef4fCnn7YUCed/gALp+hPX
+	wSpXuoPvjGIl8VOkYcdXbNvRnjJb3IgUlNDWf28HiPfqDnvyuXOVm/KddBhMFC2EO3OVTR
+	rtiXEC2anYAt9mQkaXRZws/AjqFNJ5SsxdGzf9lNcj7oynpsgVQ6/z8d6LVXfg==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 10 Apr 2026 19:41:03 +0200
-Subject: [PATCH 3/5] mtd: spinand: Add support for packed read data ODTR
- commands
+Date: Fri, 10 Apr 2026 19:41:04 +0200
+Subject: [PATCH 4/5] mtd: spinand: winbond: Set the packed page read flag
+ to W35N02/04JW
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260410-winbond-6-19-rc1-oddr-v1-3-2ac4827a3868@bootlin.com>
+Message-Id: <20260410-winbond-6-19-rc1-oddr-v1-4-2ac4827a3868@bootlin.com>
 References: <20260410-winbond-6-19-rc1-oddr-v1-0-2ac4827a3868@bootlin.com>
 In-Reply-To: <20260410-winbond-6-19-rc1-oddr-v1-0-2ac4827a3868@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -57,94 +57,39 @@ Cc: Steam Lin <STLin2@winbond.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Some devices stuff address bits in the double byte opcode (in place of
-the repeated byte) in order to be able to increase the size of the
-devices, without adding extra address bytes.
+Both W35N02JW and W35N04JW diverge from W35N01JW when it comes to the
+"data read" operation in ODTR mode. In order to stuff more address
+bits (up to 18), the second command byte is replaced by the most
+significant address bits, keeping the number of address bytes to 2.
 
-Create a flag to identify those devices. When the flag is set, use the
-"packed" variant for the read data operation.
-
+Fixes: 44a2f49b9bdc ("mtd: spinand: winbond: W35N octal DTR support")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/spi/core.c | 24 +++++++++++++++++++++---
- include/linux/mtd/spinand.h |  7 +++++++
- 2 files changed, 28 insertions(+), 3 deletions(-)
+ drivers/mtd/nand/spi/winbond.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
-index 66c90419f6d5..96154f359e1a 100644
---- a/drivers/mtd/nand/spi/core.c
-+++ b/drivers/mtd/nand/spi/core.c
-@@ -100,6 +100,17 @@ spinand_fill_page_read_op(struct spinand_device *spinand, u64 addr)
- 	return op;
- }
- 
-+static struct spi_mem_op
-+spinand_fill_page_read_packed_op(struct spinand_device *spinand, u64 addr)
-+{
-+	struct spi_mem_op op = spinand->op_templates->page_read;
-+
-+	op.cmd.opcode |= addr >> 16;
-+	op.addr.val = addr & 0xFFFF;
-+
-+	return op;
-+}
-+
- struct spi_mem_op
- spinand_fill_prog_exec_op(struct spinand_device *spinand, u64 addr)
- {
-@@ -453,7 +464,10 @@ static int spinand_load_page_op(struct spinand_device *spinand,
- {
- 	struct nand_device *nand = spinand_to_nand(spinand);
- 	unsigned int row = nanddev_pos_to_row(nand, &req->pos);
--	struct spi_mem_op op = SPINAND_OP(spinand, page_read, row);
-+	bool packed = spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ;
-+	struct spi_mem_op op = packed ?
-+		SPINAND_OP(spinand, page_read_packed, row) :
-+		SPINAND_OP(spinand, page_read, row);
- 
- 	return spi_mem_exec_op(spinand->spimem, &op);
- }
-@@ -1489,9 +1503,13 @@ static int spinand_init_odtr_instruction_set(struct spinand_device *spinand)
- 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->blk_erase))
- 		return -EOPNOTSUPP;
- 
--	tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
--	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read))
-+	if (spinand->flags & SPINAND_ODTR_PACKED_PAGE_READ)
-+		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(0);
-+	else
-+		tmpl->page_read = (struct spi_mem_op)SPINAND_PAGE_READ_8D_8D_0_OP(0);
-+	if (!spi_mem_supports_op(spinand->spimem, &tmpl->page_read)) {
- 		return -EOPNOTSUPP;
-+	}
- 
- 	tmpl->prog_exec = (struct spi_mem_op)SPINAND_PROG_EXEC_8D_8D_0_OP(0);
- 	if (!spi_mem_supports_op(spinand->spimem, &tmpl->prog_exec))
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 6a024cf1c53a..f2f80103649d 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -290,6 +290,12 @@
- 		   SPI_MEM_OP_NO_DUMMY,					\
- 		   SPI_MEM_OP_NO_DATA)
- 
-+#define SPINAND_PAGE_READ_PACKED_8D_8D_0_OP(addr)			\
-+	SPI_MEM_OP(SPI_MEM_DTR_OP_PACKED_CMD(0x13, addr >> 16, 8),	\
-+		   SPI_MEM_DTR_OP_ADDR(2, addr & 0xffff, 8),		\
-+		   SPI_MEM_OP_NO_DUMMY,					\
-+		   SPI_MEM_OP_NO_DATA)
-+
- #define SPINAND_PAGE_READ_FROM_CACHE_8D_8D_8D_OP(addr, ndummy, buf, len, freq) \
- 	SPI_MEM_OP(SPI_MEM_DTR_OP_RPT_CMD(0x9d, 8),			\
- 		   SPI_MEM_DTR_OP_ADDR(2, addr, 8),			\
-@@ -482,6 +488,7 @@ struct spinand_ecc_info {
- #define SPINAND_HAS_PROG_PLANE_SELECT_BIT		BIT(2)
- #define SPINAND_HAS_READ_PLANE_SELECT_BIT		BIT(3)
- #define SPINAND_NO_RAW_ACCESS				BIT(4)
-+#define SPINAND_ODTR_PACKED_PAGE_READ			BIT(5)
- 
- /**
-  * struct spinand_ondie_ecc_conf - private SPI-NAND on-die ECC engine structure
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 6dfd0dcc8ee7..a3fca8a1cff1 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -515,7 +515,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
+ 					      &write_cache_octal_variants,
+ 					      &update_cache_octal_variants),
+-		     0,
++		     SPINAND_ODTR_PACKED_PAGE_READ,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
+ 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
+ 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
+@@ -526,7 +526,7 @@ static const struct spinand_info winbond_spinand_table[] = {
+ 		     SPINAND_INFO_OP_VARIANTS(&read_cache_octal_variants,
+ 					      &write_cache_octal_variants,
+ 					      &update_cache_octal_variants),
+-		     0,
++		     SPINAND_ODTR_PACKED_PAGE_READ,
+ 		     SPINAND_INFO_VENDOR_OPS(&winbond_w35_ops),
+ 		     SPINAND_ECCINFO(&w35n01jw_ooblayout, NULL),
+ 		     SPINAND_CONFIGURE_CHIP(w35n0xjw_vcr_cfg)),
 
 -- 
 2.53.0

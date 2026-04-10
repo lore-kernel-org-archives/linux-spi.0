@@ -1,105 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8E236F413;
-	Fri, 10 Apr 2026 06:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045DE33E368;
+	Fri, 10 Apr 2026 06:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775802608; cv=none; b=lB3q2c27KPFf36k55jZie3bLrMe/lIq7Libi3Bj0CMARNJlK0JZWlFj0E8FkUUNcBIz9FmKiI/xZ+RmuhFmx5A1yZc5rlqD+oc09116wKLAyn0xesjuGjH0vww0/HX22a7FTak87TXyGMzhfFpRbluB+2LN4JxaAlHzSSJEaz2w=
+	t=1775803709; cv=none; b=QGBFtbMr/rwKTEuoNfIeItFLlNQDzlVbYzRn8aHOkHrcFp1FfH4lsi4xo1iuiuFMQIDzmenes03UWSFSc45Td/nJXa526E2l/OelJGwFIFPg5x2aXzjmfKb+Y+7pb3SSYuHhFZhCrT/cHCOsVy80AE8lP/1I708WjENFpyF+G0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775802608; c=relaxed/simple;
-	bh=feD4mgNlEQzQNzjgmjGsuDRJ4e+Z3p2okjdlFisAEks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iOk8JvY250z6lEsd69uxhmpA1iq8r25+DmYy3UyHDnh1TBF5WGFdv+kV/AeXZw331NUsruALJG1xMZ1U4qDQ2H2L+GKAZxQuQuGCF5OC0Q3NEXXtVyNFsCs0pWrC14bN8DcWSFJkJm3jIgqbLI0Yr35Sdu5ftX2J78v6KvnG7/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EglVSSo0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775803709; c=relaxed/simple;
+	bh=zI27ErMD3HrjmKrsQfoiTPAfZGa7KsVSFhAwDBbp+hU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Iy9ULsUSZlqvBW4SNbrmDxe741HZp9ajym7qa84jSYBpbe6sCDuY/syDdub5JkidqSXicvh0+p0D0rtVcXksTgyVmhavKr414AJZadPvHbeMP9ozk0Di1XG6QDnp0+yE+fRd7LFoQcSOBf5edbxxkOWAdt43BXqcPspakvkEADg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzX2bA8k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EglVSSo0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2608C19421;
-	Fri, 10 Apr 2026 06:30:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzX2bA8k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EBAC19421;
+	Fri, 10 Apr 2026 06:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775802607;
-	bh=feD4mgNlEQzQNzjgmjGsuDRJ4e+Z3p2okjdlFisAEks=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EglVSSo03/wiH+YGuVoIWBBG81QGPb30n/6FkyGCL/5YzyVAGg7YylNzaqi3JBV5n
-	 r+ukp8b6lGWI+2tl5JbnXvwnVBuDN5YFlq/jV27CCMdZN3y6whbWku3EvKaoLbBEx5
-	 sooSYf8BTnmDwy49z2H99L14w8Zc1xl0jnbKxGQ2xFBzJeBoLuG3H+/s2hq6svaMSe
-	 EvqqYvSYTSh37Vww4WNjfMrFpJMOyppqFVitR8qA4MiwY3o/M5XKkrKvatrRl0XQUR
-	 IpUfCc1nEWInJHvYsk8hmkSX8B8q283ETuy67fLkG5Q72QkuPCZAmrGmPvj0kVKgDk
-	 6nl1opHe+eStg==
+	s=k20201202; t=1775803708;
+	bh=zI27ErMD3HrjmKrsQfoiTPAfZGa7KsVSFhAwDBbp+hU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XzX2bA8kkRol+sHKs0ptATewHGtj6GonWKzHHvbzRxFpRhBEksKSzKiGatP4pTiWQ
+	 aWE2y4D5DTYkEJclSjb6xeAepbtkdoxfn6JKI0UR/+sV420r9i8us8GXkG0SavCgYL
+	 4NwD1YFMTY/7Y7h8iT6Md1qh+l8+OYsBiVUGDPKkwZE6SKmo5O5MYSR/k8OX1Ljxny
+	 EBejjvJ76kLg1jYgCQTTfKesGHtx5QqAsPprwqQFxSwKfQXHmzQjRzKUewGwNxShBK
+	 4HTKf7JSotJbJQJWtuiUrC/67x/u7APca1DugLtA8oHbsZQG064FgNspDhTgw6rZJJ
+	 9nNKe+RA2lA3Q==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB5NV-000000022Sq-0HEj;
-	Fri, 10 Apr 2026 08:30:05 +0200
-Date: Fri, 10 Apr 2026 08:30:05 +0200
+	id 1wB5fG-000000025H9-0Z5o;
+	Fri, 10 Apr 2026 08:48:26 +0200
 From: Johan Hovold <johan@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Sunny Luo <sunny.luo@amlogic.com>,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
-Subject: Re: [PATCH 18/20] spi: microchip-core-qspi: fix controller
- deregistration
-Message-ID: <adiY7f1YAn1TivU8@hovoldconsulting.com>
-References: <20260409120419.388546-1-johan@kernel.org>
- <20260409120419.388546-19-johan@kernel.org>
- <20260409-unease-salaried-8bcb673e9a5a@spud>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH v2] spi: fsl: fix controller deregistration
+Date: Fri, 10 Apr 2026 08:47:49 +0200
+Message-ID: <20260410064749.496888-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="q0GuYTiPUYeAA82O"
-Content-Disposition: inline
-In-Reply-To: <20260409-unease-salaried-8bcb673e9a5a@spud>
+Content-Transfer-Encoding: 8bit
+
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
+
+Fixes: 4178b6b1b595 ("spi: fsl-(e)spi: migrate to using devm_ functions to simplify cleanup")
+Cc: stable@vger.kernel.org	# 4.3
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+
+Changes in v2:
+ - add missing deregistration in of_fsl_spi_remove()
 
 
---q0GuYTiPUYeAA82O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ drivers/spi/spi-fsl-spi.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-On Thu, Apr 09, 2026 at 05:13:07PM +0100, Conor Dooley wrote:
-> On Thu, Apr 09, 2026 at 02:04:17PM +0200, Johan Hovold wrote:
-> > Make sure to deregister the controller before disabling underlying
-> > resources like interrupts during driver unbind.
-> >=20
-> > Fixes: 8596124c4c1b ("spi: microchip-core-qspi: Add support for microch=
-ip fpga qspi controllers")
-> > Cc: stable@vger.kernel.org	# 6.1
-> > Cc: Naga Sureshkumar Relli <nagasuresh.relli@microchip.com>
->=20
-> Where are you getting these CCs from? I am listed as maintainer for this
-> driver but didn't get CCed, only seeing this because I am CCed on
-> another patch in the set. Please use get_maintainer.pl.
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index bf3fc3ce0cc2..1252c41c206f 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -614,7 +614,7 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
+ 
+ 	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
+ 
+-	ret = devm_spi_register_controller(dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0)
+ 		goto err_probe;
+ 
+@@ -705,7 +705,13 @@ static void of_fsl_spi_remove(struct platform_device *ofdev)
+ 	struct spi_controller *host = platform_get_drvdata(ofdev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	fsl_spi_cpm_free(mpc8xxx_spi);
++
++	spi_controller_put(host);
+ }
+ 
+ static struct platform_driver of_fsl_spi_driver = {
+@@ -751,7 +757,13 @@ static void plat_mpc8xxx_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
++
++	spi_unregister_controller(host);
++
+ 	fsl_spi_cpm_free(mpc8xxx_spi);
++
++	spi_controller_put(host);
+ }
+ 
+ MODULE_ALIAS("platform:mpc8xxx_spi");
+-- 
+2.52.0
 
-As Mark pointed out, the explicit CC above is for the author of the
-commit in the Fixes tag.
-
-I do use get_maintainer.pl, but it seems I trimmed the result a bit too
-much this time. I sometimes drop what appears to be fall-back entries
-(e.g. using pattern matching), but here the driver is indeed explicitly
-listed in the platform support entry.
-
-Johan
-
---q0GuYTiPUYeAA82O
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCadiY6RsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQC8XNwux9ZQh58QEAuYmydwwdcpQts912HoSs
-SIvBnjs96yFueQH76rnH0Y4BAKd5FPuURw76G15iQgyiIbp41xktdx846jxjEXwQ
-QSMG
-=WNtJ
------END PGP SIGNATURE-----
-
---q0GuYTiPUYeAA82O--

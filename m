@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3FC3AE1A3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AAD3AE6F8;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=AiX6Xldgm11jSHxq4H4sj6bfLSUcZtkI1kgjwVbYLV25PIsYAHdIYnh5e9maQTYw1e00ZpLvLvGxO6IO+zAPoDFGGyPu0HHGe5HsH5JP9W873AIFl0CQkM2QZ1Z+gp0TZ7N1oNBTzoa4truDN23onQ3ZomzwmGPuy8H7msMMy9g=
+	t=1775809137; cv=none; b=X1dAoaf+TibSJzglhSJGgILUm0JeLOUsI+Q5T4+89s6GNcDVA1RoxwpZG41hrhX6Id3kWf9cleSY+ltztuZ8LOOdB0xUYjztmKvDMGicpWqu6rqeNNJLP59L3WBvTBDzspFu3zEyOg8ZJ1J4rNejOpEfQLBfrWRte62SzxzwWh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
+	bh=C8UBH5bPbrlP3dh1Dls2keMpeyV18D6q87El/jPrm+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gdsN9+W1L0HOaI1ouXsDG6U1P3nHk8mCbBZRVHVe9Peyc3JU9VurcscIdNxQ2ugu5VVYPdongwwWUFMrwZ+Z4mv7KpyMh3H0psaFzqNWo0NQIvabVLhdGdMCNw4WxjKN4Fokc/XzWut+s4VL/LHREAac4YtMM0vMVcqJ2Q+Gsag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrukzgyA; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=frK38lTK8/nTDNx1BsQ+ArnFw0fTLsUbXkjWO928VsnNwFMZ/TryU+XUvBb6+UQHIA2kfEREYvcoLR07dLmf9JBwbithpp3hkZ2qHwIoz1TjqxyL/9lrRvB90iwtHFJThySqaX3v6QGwheQKMF2s3UtKO9tJCezKnZcUt8ouvT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXdSHc3n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrukzgyA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF33C4AF0E;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXdSHc3n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C4AF54;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
+	bh=C8UBH5bPbrlP3dh1Dls2keMpeyV18D6q87El/jPrm+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrukzgyAG0McZs9Q9eguGVr33ZLSuVZzD/J9PyVfw840gjRdf8Pll0o8d3Kp1M5Fa
-	 LSi8zQp/pEWRDx56Yz0A2uolGWs4hmtLDoCgZzisms67KPNuJ7R5n1UK8Xv88+t42b
-	 xdeBrYovNNNc98qE6m8paGpQHeURAxVenuE31cALjIbVdqZBWhu3gXTgJT58UlJheN
-	 VAAteDFLWbI4UDj/A6q3OOmlR1M9csJ4wlh2pK5NAHJaSudcHtq7GQFFdWs3CuUfg5
-	 /0T+vZDzy3CqxzTO0p0cHJHOudwr46C/bPnRGJEa1Ib+KD2rxvTefIoUaA9S1+AbRx
-	 w94IkhqtwXOKQ==
+	b=RXdSHc3nXMFmKJz5w5pIFPMzOLzJ9YGRnbY/KcyUGXCNEJsi+J0oSzDmmfb+AhE3n
+	 0YsuFHlTKVezIh7ZAmDhHkDVxkf0GSSEA6hp2Elgh+LDXVLNhuQBPFh50GKGtb7fDf
+	 2YjqzmeG5rlMhi2YI7FQTn6Bfb0JMjAAq9wOjbCxlCZGDBCgwBPAIm6HQL6ggXs7N4
+	 6n8H8Ol9FlEjAk9yh3eLkTvoMUt4+c1H4zIeB6D1LTwaMU/T7NJ6soukejd2pr49NG
+	 cDUxZye7f9CRPlOrvvKuakuk6JsVp048hsCySvelHMhSZdD893qiIVCkAqEVErJQ7m
+	 boVC53rSNOTZA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026v6-0KYC;
+	id 1wB74o-000000026uu-04rK;
 	Fri, 10 Apr 2026 10:18:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
-Subject: [PATCH 26/26] spi: zynq-qspi: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:56 +0200
-Message-ID: <20260410081757.503099-27-johan@kernel.org>
+	Masahisa Kojima <masahisa.kojima@linaro.org>
+Subject: [PATCH 20/26] spi: syncuacer: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:50 +0200
+Message-ID: <20260410081757.503099-21-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -73,65 +73,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling it during driver
-unbind.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
-Cc: stable@vger.kernel.org	# 5.2
-Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
+Cc: stable@vger.kernel.org	# 5.3
+Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/spi/spi-synquacer.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index af252500195c..406fd9d5337e 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
+index d0a875249910..290c439897c4 100644
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -716,7 +716,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_active(sspi->dev);
+ 	pm_runtime_enable(sspi->dev);
  
- 	xqspi = spi_controller_get_devdata(ctlr);
- 	xqspi->dev = dev;
--	platform_set_drvdata(pdev, xqspi);
-+	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xqspi->regs)) {
- 		ret = PTR_ERR(xqspi->regs);
-@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	/* QSPI controller initializations */
- 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+-	ret = devm_spi_register_controller(sspi->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret)
+ 		goto disable_pm;
  
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret) {
--		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto remove_ctlr;
- 	}
+@@ -737,9 +737,15 @@ static void synquacer_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
  
-@@ -728,9 +728,16 @@ static int zynq_qspi_probe(struct platform_device *pdev)
-  */
- static void zynq_qspi_remove(struct platform_device *pdev)
- {
--	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
-+	struct spi_controller *ctlr = platform_get_drvdata(pdev);
-+	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
++	spi_controller_get(host);
 +
-+	spi_controller_get(ctlr);
++	spi_unregister_controller(host);
 +
-+	spi_unregister_controller(ctlr);
+ 	pm_runtime_disable(sspi->dev);
  
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+ 	clk_disable_unprepare(sspi->clk);
 +
-+	spi_controller_put(ctlr);
++	spi_controller_put(host);
  }
  
- static const struct of_device_id zynq_qspi_of_match[] = {
+ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
 -- 
 2.52.0
 

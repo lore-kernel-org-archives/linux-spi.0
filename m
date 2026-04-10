@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221883ACA7F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DEB3ACF0B;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=T4pHJghA5iAg67xCByq/gKg8ZHqkPGteisnmJlRqJy6VihTmqWH9rV2aa/IkhxVVfgPSQIcfduOHDDp1fMft7O9y2e73NL9qpIDjL0c8sNCUTpvv+md1hNLli9aHDwqmwBOe+fPu4kITM/1GpX0dOuqFxYbOD0R+sRbV5EJk4w8=
+	t=1775809137; cv=none; b=BjtwqcdlfLrUxpL2uqhgyfhgt6y4nr6DWB45VbViFjArTHJuXrcZjmQ/jQFKmxznME25/HaBufVbgMlz5mpRUEwDoS7kgMpovLT51OQO0i7+Jb35u+oRFYEKgR5xC7ASzP2Sh6C4fueGTmaIBXfpzkzOwr1dDwHEWJ+cyf2IaYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=zEWrXvP7ojC8HI7QPE2Vd2hjnJtAEVTOBrxqPApknOw=;
+	bh=SHAf3I+yXF6tFQdQ6E9G7b2TWAaGV8lr5L4tBHqtFGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1bV3Gs4D5Mc1MmmD1kBbPS4QviDZL2liNg26U0T99ApjJaP2IGuojlN+6wgPsIzYIf33xlIXKPsNMuOk+BInVQ21Gs8w24ZHXX6FfnvNhl7dL3hKQTIZ+D2dMJSI+xH55YE+uzO0///MVQJkV/A5qU7Q1PQwU/OBArvjESVZ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M42eVrFR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=mV0SnXH3iiZjGXw0AaGeSOwIzlALXw3C/MpggQIGKGAi6ffwz5pgXHVV80fe6VB3lT2/iY0diFgqZ8eXQ9s9g5UqU/Bwaj3vpwqTgP2cu7hzwSdYs+6cOKy3JTrkmCMg/5yTEIJHQ7fmDODPANQ/YksU++NdG7nR4WUAxLyuCQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzJ+aOVJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M42eVrFR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860DCC2BCB5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzJ+aOVJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E53C2BCC6;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=zEWrXvP7ojC8HI7QPE2Vd2hjnJtAEVTOBrxqPApknOw=;
+	bh=SHAf3I+yXF6tFQdQ6E9G7b2TWAaGV8lr5L4tBHqtFGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M42eVrFRP/Hsk8tbtwDOipcIue4CE/YS3whO6Ack/d9rFITG/rn00fKtWh6U0HVCU
-	 qCWlsdRQxSbxcuka0MElh8q4gC2K2OAJxqxxbDTm6puaKcGANZED8MCQswYsbir0O/
-	 QNb05drbueGrEjTIpKL++qgzcqz1LFqByXLfGS1wFNzf8NO3hMzA3aic2awmi/k6I2
-	 sovYPZJinzewQbRC2SpoDBfBc9m9U1xNKM9scuEFtUqBkPTFEVT1j1QFU7fpoth5w/
-	 DqkVLmf1sDLA463dox5NysC9351zpqlFuHbDAybCPGBalJZffPuIySf4shFRFQ/8XN
-	 SFyqFUiWboKUg==
+	b=hzJ+aOVJBjwWhkmSrUOop98ozUK83FJJdEV5izdavhefnuzW/xjNw8E28I6xEg491
+	 TGmhx+WSJI166QJvzBIDpIp39ngKL4jiitoWRmCmNzJo5Zz3QoyGEF6vBe3PDRu1Ks
+	 YG/yjU9NWjIZW0OWKkWmfFxobFiwGUeIBaneyUGLa6FClAGV4eskOd0HRSEsq9/ZjC
+	 pSYiJAm1JdcYoLrMWTRfBG3v2eYD2dr05I1pm2nCm7nKcOWCegWkAvuUgNMLaK/5yR
+	 CIgm+2RSrQTRZ/BIKSvJe8LszO8RbJ8WQFfs+gxsE8PuQNV5mB6EqfdnJwK1AgvtoX
+	 +YA5uhFYvQuMQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026uI-3SJT;
+	id 1wB74n-000000026ue-3vCw;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -57,11 +57,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Leilk Liu <leilk.liu@mediatek.com>
-Subject: [PATCH 01/26] spi: mt65xx: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:31 +0200
-Message-ID: <20260410081757.503099-2-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 12/26] spi: sh-hspi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:42 +0200
+Message-ID: <20260410081757.503099-13-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -73,40 +72,48 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
+Make sure to deregister the controller before releasing underlying
 resources like clocks during driver unbind.
 
-Fixes: a568231f4632 ("spi: mediatek: Add spi bus for Mediatek MT8173")
-Cc: stable@vger.kernel.org	# 4.3: ace145802350
-Cc: stable@vger.kernel.org	# 4.3
-Cc: Leilk Liu <leilk.liu@mediatek.com>
+Fixes: 49e599b8595f ("spi: sh-hspi: control spi clock more correctly")
+Cc: stable@vger.kernel.org	# 3.4
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-mt65xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sh-hspi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 0368a26bca9a..96f8555be983 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -1325,7 +1325,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index e03eaca1b1a7..1e3ca718ca73 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -257,9 +257,9 @@ static int hspi_probe(struct platform_device *pdev)
+ 	ctlr->transfer_one_message = hspi_transfer_one_message;
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
  
- 	pm_runtime_enable(dev);
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto error2;
+ 	}
  
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret) {
- 		pm_runtime_disable(dev);
- 		return dev_err_probe(dev, ret, "failed to register host\n");
-@@ -1340,6 +1340,8 @@ static void mtk_spi_remove(struct platform_device *pdev)
- 	struct mtk_spi *mdata = spi_controller_get_devdata(host);
- 	int ret;
+@@ -279,9 +279,15 @@ static void hspi_remove(struct platform_device *pdev)
+ {
+ 	struct hspi_priv *hspi = platform_get_drvdata(pdev);
  
-+	spi_unregister_controller(host);
++	spi_controller_get(hspi->ctlr);
 +
- 	cpu_latency_qos_remove_request(&mdata->qos_request);
- 	if (mdata->use_spimem && !completion_done(&mdata->spimem_done))
- 		complete(&mdata->spimem_done);
++	spi_unregister_controller(hspi->ctlr);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	clk_put(hspi->clk);
++
++	spi_controller_put(hspi->ctlr);
+ }
+ 
+ static const struct of_device_id hspi_of_match[] = {
 -- 
 2.52.0
 

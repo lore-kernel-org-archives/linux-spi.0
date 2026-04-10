@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4283B3AD507;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6384E3AE196;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=ePbJ3VfV17imVY6Gi0PZxIeXs4/tjhuUSUwg0DsoCtsYmK+Q/3C22vAYy9EqVueVEuhmzgNYcZNfj9pv/pRlDI0RMQEKCWs0DcfCZOGvMQsv3zzzGi341WU3GzK/GfTIYHp0wPgSU8ft2zhnyX5r7ZQq/k8t9Ag/XCx62E4GEZU=
+	t=1775809137; cv=none; b=IQXvF5adsyKLVplX0qBKD3UZJK6C+mDnhUH2Yj4pp6dRJK7udYw7ZaKvJrZx71I4VVgwIJjigajIak1M8ihgnYNVhqz40duclnuO7FhIuhJfhBzzxtoVOa+xzR+EIMb8M3JeTrQalGvGDP+eUtaLt1rjPdc7K09VxwUSMpOXbhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=Fn5B119nUyTCP5N8nKKW4q40wJHmjGjR/V6mYnoy5hI=;
+	bh=uOexjg/vLArFedhRI5E2v6SLQj6aJ4WVqhjN4mRf364=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8blPst736HrMoPjbTL0vOPoRrhOmWXaOD1iSfqGa9m3GYRMWdRNDxCaJ+cKIf42RB6xFk3gx+UkgO6WV8QPahe+ao87FhTPU5Oyaxkyu/OmHXzgFwMTLD4rbrgoyQCjD881Vq3QE1OPfUK7V4CY8m0stEiL6U3lhH3FjAj3IeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8hSSorq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=u6npjbP6ursUFGnjTT4lWErtL9zaVacYotgGnV4KhpB0unuA7lCR4n7MUiGziXwIoIK5Oe47lj33zUOYu5q8DnB5RgAj4UccJDG5+dVAMhEnzTGhoiYsnysBk0hywXUaN0fEzQKNHFO3EFMeS4OEF6QIx5W1GtkWLMraajfGJpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFMyzlvz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8hSSorq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20ACC4AF18;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFMyzlvz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7966C4AF0B;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=Fn5B119nUyTCP5N8nKKW4q40wJHmjGjR/V6mYnoy5hI=;
+	bh=uOexjg/vLArFedhRI5E2v6SLQj6aJ4WVqhjN4mRf364=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8hSSorqTVlmQPN8+xobHECuBw5MxRqJInC7ZrrQIQvYkAa88zAQmsTjgwr78JE17
-	 CWBsytjo9gQW2RMG24oLzKZuVNPLVJdnxxKR1qZboV6pfmUd+e9lnm1xt83vO/kVXK
-	 2d1RMeKMqQ0dzOhs3Thw7OpT/YRHddtwr4++amcK11ZGH9dlSY4UBTipaizrwEaQb4
-	 lhYuc/Z1gywVVseoJYN0sOceEeIcsHbMbwsx5GlrJApcLe+KNPun09Sx6ABaflEFH0
-	 eqGaLRdj79U+lbF/6UWB6mATd9EiXFwNdNN13pgdpSSb+5ZkEnzKKeMnuVWZrxEgP2
-	 OIaZjnFn5AP4A==
+	b=OFMyzlvzmFzFzw5JcponkWGLgFBSta98hNyqHfZtPmwzqRjsn15tiyP8v6pVQQDoE
+	 Xeji4SxwmOmuFPcxqbi5NuO7JU4de5dy640cY3/e9It118biFfn7eLOjIxyytks+/c
+	 xvFdEEDe3zVbPE3FOWuUobSwJul5k8dDvfBGK3gKOHoTiWLYUgHO0K9mXVysQYHIAu
+	 wBKdY96fEIv4BbAOT8KQEYKG9cOjG5Of5TSg2zD8eUlhHCRHn0WT4v56FNy3yTX0Px
+	 WfyizLv9rSKrIZ2PUceobeSKb1vQw9GW7on/tKUbbmtQQ7ttYu/NrUab2Tuqc7ieUQ
+	 RdpcBk3q40iCA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026us-02R6;
-	Fri, 10 Apr 2026 10:18:54 +0200
+	id 1wB74n-000000026uo-48wV;
+	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Matthias Brugger <matthias.bgg@gmail.com>,
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 19/26] spi: sun6i: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:49 +0200
-Message-ID: <20260410081757.503099-20-johan@kernel.org>
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 17/26] spi: st-ssc4: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:47 +0200
+Message-ID: <20260410081757.503099-18-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -76,46 +76,44 @@ Content-Transfer-Encoding: 8bit
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: 3558fe900e8a ("spi: sunxi: Add Allwinner A31 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
+Fixes: 9e862375c542 ("spi: Add new driver for STMicroelectronics' SPI Controller")
+Cc: stable@vger.kernel.org	# 4.0
+Cc: Lee Jones <lee@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sun6i.c | 8 +++++++-
+ drivers/spi/spi-st-ssc4.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index 240e46f84f7b..5ac73d324d06 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -742,7 +742,7 @@ static int sun6i_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
+index b173ef70d77e..9c8099fe6e19 100644
+--- a/drivers/spi/spi-st-ssc4.c
++++ b/drivers/spi/spi-st-ssc4.c
+@@ -349,7 +349,7 @@ static int spi_st_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, host);
  
 -	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
  	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
-@@ -768,12 +768,18 @@ static void sun6i_spi_remove(struct platform_device *pdev)
- {
+ 		dev_err(&pdev->dev, "Failed to register host\n");
+ 		goto rpm_disable;
+@@ -371,10 +371,16 @@ static void spi_st_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct spi_st *spi_st = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
 +	spi_unregister_controller(host);
 +
- 	pm_runtime_force_suspend(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
  
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
-+
+ 	clk_disable_unprepare(spi_st->clk);
+ 
 +	spi_controller_put(host);
++
+ 	pinctrl_pm_select_sleep_state(&pdev->dev);
  }
  
- static const struct sun6i_spi_cfg sun6i_a31_spi_cfg = {
 -- 
 2.52.0
 

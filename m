@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3153AE1A1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674DB3AE19B;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=h6QxLlnGeR4Jr+ei80iLbYfMRQGAl4G5pMQ/cNHwC6N/14//zz7/N+XMoN2LnRb6fiwhDukj/NO31JUi8JSJR2QlBBLifcEnurxXhQyyZzw0MmDnpGcx35LJi8bmxWEpWTcOMsG0U3ov69aFu/bvzilU69d5a45116sBNxOO8Ag=
+	t=1775809137; cv=none; b=to9sUd9j9I2rtoH0mmFb4O+acXXSiUI+1ygD34IQ8gTsGHITvINTMRwoPITfbP40RfeV9y6xRXcVyNBITNbwDB3WqW/l+5zd+9shauBLM2y3nw4TslVSOFueiRlKAcxFtdl1RDOa5LZR6lNugBMD3SeUMwmCu3gxD/DqF+yKEUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=J++olfZKGvgRaUorhcT7TaxDLMHnJoZ0qwnNHRnbmKg=;
+	bh=+1G0p8bXWSQOcdEhs/Gm8CKcKsG3wwwQO4VMpksKxdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfCGON/lXGZ5e1dAdIAstkZoNHBoorKBdTFzecSyFH0mtmjLKQ1joxUd5lUEoJWCC6T/T8RqFXCdqUiA06BthjIeXgMXgPuKjT0VdUsYpjyXvlnaT4YZtBlAs2X9h3mKPBcAnQIMAVA5FZ4o252Gr8gVJG1db3mXPyick7/OLww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNQYAB5P; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=sPikjLAAB4l3ljmJ1Liid2wePO0Zopy0poSr55x8g4sPxy6CLFavIPcr7qZAU9QcL7L/lrc/HwoMO23mCMpfPcu8vmU90SRa2bUXIAwSEoSoSNe5Lm1xIfKJwyXyetl1yRaufkVrBqnYe9apJqQmRfyjMLM/YK+mGsCXROy4smw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dfFlyhYn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNQYAB5P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE99C4AF52;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dfFlyhYn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB6FC4AF4D;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=J++olfZKGvgRaUorhcT7TaxDLMHnJoZ0qwnNHRnbmKg=;
+	bh=+1G0p8bXWSQOcdEhs/Gm8CKcKsG3wwwQO4VMpksKxdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNQYAB5PFzsBIhYZKreSpvV8tMnRLSedjbTxkwmTSe/AUs+1FOEqzpTtOcmgQDntR
-	 c90jfv8Xw5bmogpofvJaqUjsyt3N1RfcaOYHmjgril0HQ2dZsXvnY+a4Q+MTEOIVry
-	 qslO7G2dAGU/3M0nnisKgmca+f7OQDgQGuDFnACJPW1vQbq9JXtgLfbbf45tsZNC1V
-	 XfO3s92/5j1bAJ5NF+L7ABOyolNDB6YjweNTghy24On/v/0p1JFSzd1bT5Zs5wB+9A
-	 6InswJyVao7nfofJhe4sxp3Fuj02KNi9g80rlkotDiZA3O2qUJWCSBXx4R22jjZT3f
-	 AaHueMXuVfB2w==
+	b=dfFlyhYn42zP2bZRr+j5hhAdh/ug9aRJl/uTgz2uDJyKV16CyHAYgxKW7yCI3iZEW
+	 wu9lYUa+TCYjB+wufngLAa3eHSpBUFCAj5TU31LoDelN0fNRZx7P0yqevmTnAW/ImX
+	 trP1LjbI6DkQq8PGqMx5V+i7QnFpuhvhoho5xUlSkYtQd/GX5uarhDfBVT9LV3wfs/
+	 p0SfOFhdBOeVcdetcMiBoQ5HVl7Q6mNLTXMDNgK2uSR3mNu67rqYJjZQMvmikWoJ2c
+	 TxGhJpgBvXv9nE5QM6jIArdd7+Z3kFaBZy1CEsMCp+TNR6GhnSLPk+DC2vCY78epl9
+	 GCxzXTV25C+sA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026v2-0FKT;
+	id 1wB74o-000000026uy-0A2Q;
 	Fri, 10 Apr 2026 10:18:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Keiji Hayashibara <hayashibara.keiji@socionext.com>
-Subject: [PATCH 24/26] spi: uniphier: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:54 +0200
-Message-ID: <20260410081757.503099-25-johan@kernel.org>
+	Jingoo Han <jg1.han@samsung.com>
+Subject: [PATCH 22/26] spi: tegra20-sflash: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:52 +0200
+Message-ID: <20260410081757.503099-23-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -73,51 +73,48 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Make sure to deregister the controller before disabling underlying
+resources like clocks during driver unbind.
 
-Note that clocks were also disabled before the recent commit
-fdca270f8f87 ("spi: uniphier: Simplify clock handling with
-devm_clk_get_enabled()").
-
-Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
-Cc: stable@vger.kernel.org	# 4.19
-Cc: Keiji Hayashibara <hayashibara.keiji@socionext.com>
+Fixes: f12f7318c44a ("spi: tegra20-sflash: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-uniphier.c | 8 +++++++-
+ drivers/spi/spi-tegra20-sflash.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index 1b815ee2ed1b..eac6c3e8908b 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -746,7 +746,7 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 
- 	host->max_dma_len = min(dma_tx_burst, dma_rx_burst);
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index d9d536d7f7b6..9256729f2d49 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -505,7 +505,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 	tegra_sflash_writel(tsd, tsd->def_command_reg, SPI_COMMAND);
+ 	pm_runtime_put(&pdev->dev);
  
 -	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret)
- 		goto out_release_dma;
- 
-@@ -771,10 +771,16 @@ static void uniphier_spi_remove(struct platform_device *pdev)
- {
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
+ 		goto exit_pm_disable;
+@@ -528,11 +528,17 @@ static void tegra_sflash_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct tegra_sflash_data	*tsd = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
 +	spi_unregister_controller(host);
 +
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
+ 	free_irq(tsd->irq, tsd);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_sflash_runtime_suspend(&pdev->dev);
 +
 +	spi_controller_put(host);
  }
  
- static const struct of_device_id uniphier_spi_match[] = {
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.52.0
 

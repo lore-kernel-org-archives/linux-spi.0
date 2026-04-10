@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633A33AE195;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3FC3AE1A3;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=a69PEoL6PA65Z7cEpgewCozPgEPp2NSEN2Uw/ll2MrAAoBeAEdksWA2R4D52WAXYK5WYf/TkN8Y4+zN2paHx57CAy1/TeAEMimIsO8w5wPja3IRma7/Y2t4z6OCMY2T6HKXRA1UtJn+bLHIqs0nFpTqSTLRpdBdzaqKwJqgAzNE=
+	t=1775809137; cv=none; b=AiX6Xldgm11jSHxq4H4sj6bfLSUcZtkI1kgjwVbYLV25PIsYAHdIYnh5e9maQTYw1e00ZpLvLvGxO6IO+zAPoDFGGyPu0HHGe5HsH5JP9W873AIFl0CQkM2QZ1Z+gp0TZ7N1oNBTzoa4truDN23onQ3ZomzwmGPuy8H7msMMy9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=E6LBLCR9Dx3gSdjYmZz7WjDYYx7rCmY0rROSyfTrtP4=;
+	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rASePTcjt5k7jNer39dX/MFeOBSKTdPa6C3NXsEBEn7E+dlJsIOIz56xqfnpSYkNcbnMkFbB1YbYkgqYw+TkKZvTKduqWptVwMFCJWBiIp4SX9GqQmdPfZOxpBfhPQxO15Pyzh8aet3BANrdah2nc8nrCAUBIpBxoHYaXDziwzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwc4QKB1; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=gdsN9+W1L0HOaI1ouXsDG6U1P3nHk8mCbBZRVHVe9Peyc3JU9VurcscIdNxQ2ugu5VVYPdongwwWUFMrwZ+Z4mv7KpyMh3H0psaFzqNWo0NQIvabVLhdGdMCNw4WxjKN4Fokc/XzWut+s4VL/LHREAac4YtMM0vMVcqJ2Q+Gsag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrukzgyA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwc4QKB1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D5EC4AF17;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrukzgyA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF33C4AF0E;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=E6LBLCR9Dx3gSdjYmZz7WjDYYx7rCmY0rROSyfTrtP4=;
+	bh=6qpvDK+D39vYskh1A0D06Ay6d+QTGZD5ES00ceu6HvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwc4QKB1kX1ut7Zz8ytYLXknCbJB8YGFYvDHyyyCVv4H5XK61yctFPDF8E9oeCjPL
-	 xfxPuWMqltLIVXAC30fIWD4eZqEzNOsfjfbMIB0sBG+gA5dSrytjFdaprRLoTz9UvE
-	 5BIXEoHnQSSY68wG2CfutrNKM+OTEfkfapl1JrLV5cZXQ8InWC0Jqy203AbOD2Blvc
-	 mvYW8qkia4fz29JCfW+BaCg8Sbd1UObIpUgenwpCiQylwNziuvxsFhLLtaq6dSbKwg
-	 Rwa6QkzepTpCijFODcsnAmTMrFAz0JzT++tA9hyrEzclCOCgXfCTXKqGW9zSDumgOS
-	 x79ICshpekAHw==
+	b=LrukzgyAG0McZs9Q9eguGVr33ZLSuVZzD/J9PyVfw840gjRdf8Pll0o8d3Kp1M5Fa
+	 LSi8zQp/pEWRDx56Yz0A2uolGWs4hmtLDoCgZzisms67KPNuJ7R5n1UK8Xv88+t42b
+	 xdeBrYovNNNc98qE6m8paGpQHeURAxVenuE31cALjIbVdqZBWhu3gXTgJT58UlJheN
+	 VAAteDFLWbI4UDj/A6q3OOmlR1M9csJ4wlh2pK5NAHJaSudcHtq7GQFFdWs3CuUfg5
+	 /0T+vZDzy3CqxzTO0p0cHJHOudwr46C/bPnRGJEa1Ib+KD2rxvTefIoUaA9S1+AbRx
+	 w94IkhqtwXOKQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026uq-4Bbt;
+	id 1wB74o-000000026v6-0KYC;
 	Fri, 10 Apr 2026 10:18:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH 18/26] spi: sun4i: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:48 +0200
-Message-ID: <20260410081757.503099-19-johan@kernel.org>
+	Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Subject: [PATCH 26/26] spi: zynq-qspi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:56 +0200
+Message-ID: <20260410081757.503099-27-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -73,46 +73,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Make sure to deregister the controller before disabling it during driver
+unbind.
 
-Fixes: b5f6517948cc ("spi: sunxi: Add Allwinner A10 SPI controller driver")
-Cc: stable@vger.kernel.org	# 3.15
-Cc: Maxime Ripard <mripard@kernel.org>
+Note that clocks were also disabled before the recent commit
+1f8fd9490e31 ("spi: zynq-qspi: Simplify clock handling with
+devm_clk_get_enabled()").
+
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+Cc: stable@vger.kernel.org	# 5.2: 8eb2fd00f65a
+Cc: stable@vger.kernel.org	# 5.2
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sun4i.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/spi/spi-zynq-qspi.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index bfdf419a583c..b7fbb5270edb 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -504,7 +504,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_idle(&pdev->dev);
+diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
+index af252500195c..406fd9d5337e 100644
+--- a/drivers/spi/spi-zynq-qspi.c
++++ b/drivers/spi/spi-zynq-qspi.c
+@@ -643,7 +643,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
+ 	xqspi = spi_controller_get_devdata(ctlr);
+ 	xqspi->dev = dev;
+-	platform_set_drvdata(pdev, xqspi);
++	platform_set_drvdata(pdev, ctlr);
+ 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(xqspi->regs)) {
+ 		ret = PTR_ERR(xqspi->regs);
+@@ -702,9 +702,9 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+ 	/* QSPI controller initializations */
+ 	zynq_qspi_init_hw(xqspi, ctlr->num_chipselect);
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
  	if (ret) {
- 		dev_err(&pdev->dev, "cannot register SPI host\n");
- 		goto err_pm_disable;
-@@ -522,7 +522,15 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+-		dev_err(&pdev->dev, "devm_spi_register_controller failed\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto remove_ctlr;
+ 	}
  
- static void sun4i_spi_remove(struct platform_device *pdev)
+@@ -728,9 +728,16 @@ static int zynq_qspi_probe(struct platform_device *pdev)
+  */
+ static void zynq_qspi_remove(struct platform_device *pdev)
  {
-+	struct spi_controller *host = platform_get_drvdata(pdev);
+-	struct zynq_qspi *xqspi = platform_get_drvdata(pdev);
++	struct spi_controller *ctlr = platform_get_drvdata(pdev);
++	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
 +
-+	spi_controller_get(host);
++	spi_controller_get(ctlr);
 +
-+	spi_unregister_controller(host);
++	spi_unregister_controller(ctlr);
+ 
+ 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
 +
- 	pm_runtime_force_suspend(&pdev->dev);
-+
-+	spi_controller_put(host);
++	spi_controller_put(ctlr);
  }
  
- static const struct of_device_id sun4i_spi_match[] = {
+ static const struct of_device_id zynq_qspi_of_match[] = {
 -- 
 2.52.0
 

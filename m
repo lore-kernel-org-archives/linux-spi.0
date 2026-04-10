@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D33ACA7C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CD33ACEF8;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=fq6fwTpsBnk1MR5zdncgp8gFXek1bbpzt/gM8BeGSgXwrpqLKxaA9BiGqUBfrAKjhtnGhaiiXlZjXw6F/HitzxYx3MXD8LPeBwdkelg0DcFyuf5hbimEc8jA5a/tYEmkC5oPYdKe8v2BvN1vTqe0gtgTpVY4Z+NYHzVhhhxtmIk=
+	t=1775809137; cv=none; b=XruaS7QaPjz1LZ5wgxyhoF3es5Ubxneqb04gsH7bz2nwHzZtGAzg+EaQyHtX86sxSEI88njkET8zaxwYLdIw6Fg/whgbtLBpk3cHfj+qHkjRec8bffJ+mFyCjF+Vrw9oF3Ebeir2lCccRTX2f7eGpD/coWpSZ8iSQqmrURylAog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=TLi4qGfgMZZZlhmiRkUzE5zMj3I0oiDgiz+990HwJYk=;
+	bh=im61OindJCWFbeDsc/7HU2dJM5dG83E5ASeXW+NDShI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQQ8QjIA3/AayNDeretKiBeY5agW/UA8dX8Sz86esh65i4LSKiA+WldVeF5Q088AlRkYoIWnHHluILkjOLfvvo5FD8Eu8z2Q0FoGViiLER9cd2kVCpLzJ6bVVzoe5UrAgFcLxe+ndrg95gXhB2C4mPG8Ba7FkKTwNdgoqU9ppqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAsk765v; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=eCj8URdfsEa22hm0vkEjn/gV2Z1hkP0HVeiCNZinQwd4VXLoRyNahwyelHKNXriuz28FWKOFGEqCe7xo9l37JmryMwhybI5sMBP5zrcNgCQgTJ1ZZm0KPhaRD2Q3T1txNye/kziGDSmxX81Nv1tZYGIFkwpRXdfd8ePFvc4iyF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a16U7Nb+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAsk765v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8944FC2BCB6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a16U7Nb+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B044C2BCF4;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=TLi4qGfgMZZZlhmiRkUzE5zMj3I0oiDgiz+990HwJYk=;
+	bh=im61OindJCWFbeDsc/7HU2dJM5dG83E5ASeXW+NDShI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAsk765vzVHY8UDHN1nUmD/kOHfpwzLWfEaXKtWIHXnckN9YzfzM3BRJ8FTY5/3Q4
-	 aQ9eger7yB0HxceXvHVkCjflbHxnhTnsSnRIeMbmGZOnHYrRml7ObjgRwKUINuIIph
-	 Lc+qT/5xcffgF8u1AyAzi2KW/Ed3MFS8vXAawTPkSRJAD8w+7yORjLovuS83CrEJ0w
-	 uzVvPk+V1zvINc0hTrcK8i9cvA6+oSkuJWzCWGJvta7vtAmSarhBXjA4jw3kVMqUy6
-	 +CMEQrvOqAa7X2MWjoiOFM2U9A9GPaCfJ+F6RdPEeyg1HpeLULSAG1dBEYfWAv36RE
-	 8ITc7tNwusHmg==
+	b=a16U7Nb+ZmuO1h56nHU2Us6lb+bcGCEjrnOfD/7EFFwlxbFueh+ZItslO2okTVZqz
+	 qqtT58+xUTmi8VtamED2NqoBiRVuCACwRYQQV1GGPHcIZeyUdUqO+Jk6yYomMYCWR4
+	 S47gNLJemSvH8guEWcewnTjgnPx0TUmtnlRdr87v32W10YRok0ciUK10QVe8AgmOJ5
+	 dwQB4NgtGIdTbpGvWRj0FS0gEQAiDRYSYrMuCpURgczvumHsTBCPUOsBX1CzAnf/30
+	 pRp6rAPCSANU/6ajmAWiNuzeYqt13ogad1bNRyNfkCdI7gNslLC6xJOs2z4sQkkwF9
+	 ZUOgBy7itL+EA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026uc-3slJ;
+	id 1wB74n-000000026ua-3qH6;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -57,10 +57,11 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 11/26] spi: s3c64xx: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:41 +0200
-Message-ID: <20260410081757.503099-12-johan@kernel.org>
+	stable@vger.kernel.org,
+	Jingoo Han <jg1.han@samsung.com>
+Subject: [PATCH 10/26] spi: rspi: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:40 +0200
+Message-ID: <20260410081757.503099-11-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -75,36 +76,45 @@ Content-Transfer-Encoding: 8bit
 Make sure to deregister the controller before releasing underlying
 resources like DMA during driver unbind.
 
-Fixes: 91800f0e9005 ("spi/s3c64xx: Use managed registration")
-Cc: stable@vger.kernel.org	# 3.13: 76fbad410c0f
-Cc: stable@vger.kernel.org	# 3.13
+Fixes: 9e03d05eee4c ("spi: rcar: Use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.14
+Cc: Jingoo Han <jg1.han@samsung.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-s3c64xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rspi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index ba85243d6d89..95b61264b679 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1369,7 +1369,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
- 	       sdd->regs + S3C64XX_SPI_INT_EN);
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index c739c1998b4c..a8180dece716 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1171,8 +1171,14 @@ static void rspi_remove(struct platform_device *pdev)
+ {
+ 	struct rspi_data *rspi = platform_get_drvdata(pdev);
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "cannot register SPI host: %d\n", ret);
- 		goto err_pm_put;
-@@ -1399,6 +1399,8 @@ static void s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	pm_runtime_get_sync(&pdev->dev);
- 
-+	spi_unregister_controller(host);
++	spi_controller_get(rspi->ctlr);
 +
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
++	spi_unregister_controller(rspi->ctlr);
++
+ 	rspi_release_dma(rspi->ctlr);
+ 	pm_runtime_disable(&pdev->dev);
++
++	spi_controller_put(rspi->ctlr);
+ }
  
- 	if (!is_polling(sdd)) {
+ static const struct spi_ops rspi_ops = {
+@@ -1376,9 +1382,9 @@ static int rspi_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
+ 
+-	ret = devm_spi_register_controller(&pdev->dev, ctlr);
++	ret = spi_register_controller(ctlr);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
++		dev_err(&pdev->dev, "failed to register controller\n");
+ 		goto error3;
+ 	}
+ 
 -- 
 2.52.0
 

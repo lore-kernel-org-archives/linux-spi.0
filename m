@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CD33ACEF8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321F43ACEFD;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=XruaS7QaPjz1LZ5wgxyhoF3es5Ubxneqb04gsH7bz2nwHzZtGAzg+EaQyHtX86sxSEI88njkET8zaxwYLdIw6Fg/whgbtLBpk3cHfj+qHkjRec8bffJ+mFyCjF+Vrw9oF3Ebeir2lCccRTX2f7eGpD/coWpSZ8iSQqmrURylAog=
+	t=1775809137; cv=none; b=atgHW5p7I1I1Xr2DGoRTt7F37k8/teSJulieeW9srnl+OSl4LvfT1tFbBDxet3p7wb/SB3ZQOZSl9lb1VhRgmrifHeBSlaTBH7Q/NIHLP82ydZPMEZAFHpJARqu2QaHyV4VW6FExsZLzWluXp8cbHO9jDXTT5oH+cFIMqTH2MF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=im61OindJCWFbeDsc/7HU2dJM5dG83E5ASeXW+NDShI=;
+	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCj8URdfsEa22hm0vkEjn/gV2Z1hkP0HVeiCNZinQwd4VXLoRyNahwyelHKNXriuz28FWKOFGEqCe7xo9l37JmryMwhybI5sMBP5zrcNgCQgTJ1ZZm0KPhaRD2Q3T1txNye/kziGDSmxX81Nv1tZYGIFkwpRXdfd8ePFvc4iyF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a16U7Nb+; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=aX26541B9hf7faWdZXnfkonbn8eCEMVc6v4JRYhzQXsS2wnrXgCY2Bj34oMLz1Z4/xpaS5yDYaiAm7B59F7Sd8h8RO5xoPI16aN6RQtViX3B4FHzkPZ4MzPhV0bwaIfy/09LULRpSS1Zyz5ucpYvUqnGR1uRUkyXTN+Ni9KwpF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZg4og6i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a16U7Nb+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B044C2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZg4og6i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED3FC2BCF6;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=im61OindJCWFbeDsc/7HU2dJM5dG83E5ASeXW+NDShI=;
+	bh=wWTTYuWiW92SRM4Rfco7ThNu3zooqDKXAYr/i/dV+78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a16U7Nb+ZmuO1h56nHU2Us6lb+bcGCEjrnOfD/7EFFwlxbFueh+ZItslO2okTVZqz
-	 qqtT58+xUTmi8VtamED2NqoBiRVuCACwRYQQV1GGPHcIZeyUdUqO+Jk6yYomMYCWR4
-	 S47gNLJemSvH8guEWcewnTjgnPx0TUmtnlRdr87v32W10YRok0ciUK10QVe8AgmOJ5
-	 dwQB4NgtGIdTbpGvWRj0FS0gEQAiDRYSYrMuCpURgczvumHsTBCPUOsBX1CzAnf/30
-	 pRp6rAPCSANU/6ajmAWiNuzeYqt13ogad1bNRyNfkCdI7gNslLC6xJOs2z4sQkkwF9
-	 ZUOgBy7itL+EA==
+	b=VZg4og6iMbQcxAgaZuzyoe++nr+DOXPstoQmGLb6LA8FVKXqqbISGN0IwEt/edTi0
+	 v9O3kskB5j03/bPJud4EozS7VgZPfg9ju20Q7E7zh4o89RsASFFq3Jh5ibYXzYzhhU
+	 sq7DTRqtyCV/LR2ChamFVxb8M2lbIhoNUrl5DeArZr/Enaw7b7n3EpmMHaNxPgoQlN
+	 /aka5iwoE2uX09wwCm8Zbcrx/375OjNm++2zk7P97PhpynyIWf/ZLe6nKoCoUaOQoV
+	 lQuNkiSJDG8as38dVlclyWxtp2dX9GbDn7gTUyY8IT5vapFbf8P2Zhw6aZzrLeu+bO
+	 3QFOCiwzjX97w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026ua-3qH6;
+	id 1wB74n-000000026ui-40iJ;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Jingoo Han <jg1.han@samsung.com>
-Subject: [PATCH 10/26] spi: rspi: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:40 +0200
-Message-ID: <20260410081757.503099-11-johan@kernel.org>
+	Yash Shah <yash.shah@sifive.com>
+Subject: [PATCH 14/26] spi: sifive: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:44 +0200
+Message-ID: <20260410081757.503099-15-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -73,48 +73,49 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before releasing underlying
-resources like DMA during driver unbind.
+Make sure to deregister the controller before disabling underlying
+resources like interrupts during driver unbind.
 
-Fixes: 9e03d05eee4c ("spi: rcar: Use devm_spi_register_master()")
-Cc: stable@vger.kernel.org	# 3.14
-Cc: Jingoo Han <jg1.han@samsung.com>
+Note that clocks were also disabled before the recent commit
+140039c23aca ("spi: sifive: Simplify clock handling with
+devm_clk_get_enabled()").
+
+Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
+Cc: stable@vger.kernel.org	# 5.1
+Cc: Yash Shah <yash.shah@sifive.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-rspi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sifive.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index c739c1998b4c..a8180dece716 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1171,8 +1171,14 @@ static void rspi_remove(struct platform_device *pdev)
- {
- 	struct rspi_data *rspi = platform_get_drvdata(pdev);
+diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
+index 54adbc057af6..74a3e32fd2b5 100644
+--- a/drivers/spi/spi-sifive.c
++++ b/drivers/spi/spi-sifive.c
+@@ -392,7 +392,7 @@ static int sifive_spi_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "mapped; irq=%d, cs=%d\n",
+ 		 irq, host->num_chipselect);
  
-+	spi_controller_get(rspi->ctlr);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
++	ret = spi_register_controller(host);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "spi_register_host failed\n");
+ 		goto put_host;
+@@ -411,8 +411,14 @@ static void sifive_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct sifive_spi *spi = spi_controller_get_devdata(host);
+ 
++	spi_controller_get(host);
 +
-+	spi_unregister_controller(rspi->ctlr);
++	spi_unregister_controller(host);
 +
- 	rspi_release_dma(rspi->ctlr);
- 	pm_runtime_disable(&pdev->dev);
+ 	/* Disable all the interrupts just in case */
+ 	sifive_spi_write(spi, SIFIVE_SPI_REG_IE, 0);
 +
-+	spi_controller_put(rspi->ctlr);
++	spi_controller_put(host);
  }
  
- static const struct spi_ops rspi_ops = {
-@@ -1376,9 +1382,9 @@ static int rspi_probe(struct platform_device *pdev)
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
- 
--	ret = devm_spi_register_controller(&pdev->dev, ctlr);
-+	ret = spi_register_controller(ctlr);
- 	if (ret < 0) {
--		dev_err(&pdev->dev, "devm_spi_register_controller error.\n");
-+		dev_err(&pdev->dev, "failed to register controller\n");
- 		goto error3;
- 	}
- 
+ static int sifive_spi_suspend(struct device *dev)
 -- 
 2.52.0
 

@@ -1,45 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B9E23EA92;
-	Fri, 10 Apr 2026 16:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66F223EA92;
+	Fri, 10 Apr 2026 16:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775838565; cv=none; b=UZI7VW8+3GP2rbabonyaDWRGAwBe45nL6Jxdu51S0g3Fhg6eVLlYan5bsrkiAlbCTXNgU/Lnx6aPtUh6/VlOi8y/nWTWd1OYj9lhLsrGnu5hVoSoHEC1GpDjHUEsfo1HdUhfPYtCOjpKOaUkZBgAR1EqyRNQ7BX3PZqdZeZYDPI=
+	t=1775838571; cv=none; b=QzzSdbO5FrcpnX62OS8PluWeOBzTSKgypdxDhhFNCIIGZDvvn+PCNjKGCoWJy6hO1dAOSe9cCo5czczxnM7mNsz3BlsrK3I6r8blFsXv5mStMmL05P7A3Etgv1lWnNw1XrWG7KICyiGHXl1JV4RFYth3TEC593W6gYQQQKvsdNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775838565; c=relaxed/simple;
-	bh=Yjk/98TJLyq9/SO5ax/zuYcqbnEKqgEWfUM/H/5nOFY=;
+	s=arc-20240116; t=1775838571; c=relaxed/simple;
+	bh=T0RLv7FrgArBb+6V4fHTcq1bWYMiINMiGnQEs3W6zy0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=P/niHmnC7MmamKpOAJwo/f99816FmjUvFSQ7mxxpE2GedCK+K7Ryxt/3EyxrWOc4CZQ3IC30fqPRPeVBhm4/bRhBVZHB9dD3EqZM2LFojtMMOBtsqIVf2VWDQlDuNIwY2PwMgTyISuYeU68q46Mtlu6rS41XMORLbwquoIDAYxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDMz/eBL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=q1svFxxMwapMj7lD0dC+S/XzLiVpG5zPcc5bEevjY+mVuKlp816w20Vl/E1CoSWiA55rHUzZkYoWahBNbwgRVVoKxZg+tfdYEHztnQVs97+SLstfV1b2+NOjGUFhToHADmB0Co13R5Jm8KsZQFBDnTTQwZ3rLbb1YSHrV2G42R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qizN/l+L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDMz/eBL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E89C19424;
-	Fri, 10 Apr 2026 16:29:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qizN/l+L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C76C19421;
+	Fri, 10 Apr 2026 16:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775838565;
-	bh=Yjk/98TJLyq9/SO5ax/zuYcqbnEKqgEWfUM/H/5nOFY=;
+	s=k20201202; t=1775838570;
+	bh=T0RLv7FrgArBb+6V4fHTcq1bWYMiINMiGnQEs3W6zy0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=XDMz/eBLMNQD/aoBj4eR2IRHsB9kbk/X2mFw9ZTN836e49Oed3Rs7uzeNhBB0Hf6R
-	 fDSZ80ZbHWemyc+lLt55If40qT1j4EsndOJfEGBgb1tR8GtqScY6eM+sy6ztNdVClP
-	 bic7Yi9Hf/jEqo7mLKv+DiPHugiTATLoz8HrdUDqjXIiuRG1haBW5+DXIvShodHOOw
-	 DTiA09HOreogd5RIczTgCBIHB1M0GkFq9r91faY1eM1aRx4iColZQivRCnReOaPRp3
-	 1Yr5BafkbgzaBA8aWSze2D/D02pOSnikqOUbIdCb82uBbdbyB2ZwvCQ/6LEP5/lo7g
-	 chloTTQu5mzsA==
+	b=qizN/l+L5xyF7mPFjzh+ICvYzVkpYorxbtRMC4aDe3RvZED8Cbex5fI7eOJsRETE9
+	 EJ/QDQ9Twbw2qkniQsGMywB18xbMxtlaXtpaCJVKUUVWbvqDVRRtYiQuyn3r2iD54p
+	 aDJqbRC4Ay7HirtkPBKxvI6yFeX/qEJlm1de+yq1r0aWFvdGKfrxRGbzmF32Hra8xz
+	 pJdVC0UwgiGBwwbnuMtr41OzWNdUp84TKooK6VieodAKdS2oFIlPd147bcW0YdxAFy
+	 e2AkwNUjk4LKitWZvzW8oyeh/5W0TwqtTJaOk29D3TAJmQicbciDItoSjZgpLOi7Fu
+	 KhcVHlF5kYrYA==
 From: Mark Brown <broonie@kernel.org>
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
- Prabhakar <prabhakar.csengg@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20260410080517.2405700-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <20260410080517.2405700-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [PATCH 0/3] spi: rzv2h-rspi: Fix max_speed_hz and clock
- configuration issues
-Message-Id: <177582360550.1175120.15096708255588882361.b4-ty@b4>
-Date: Fri, 10 Apr 2026 13:20:05 +0100
+To: Johan Hovold <johan@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Adithya K V <adithya.kv@samsung.com>
+In-Reply-To: <20260410094925.518343-1-johan@kernel.org>
+References: <20260410094925.518343-1-johan@kernel.org>
+Subject: Re: [PATCH] spi: s3c64xx: fix NULL-deref on driver unbind
+Message-Id: <177582514788.1175120.7593576580255112081.b4-ty@b4>
+Date: Fri, 10 Apr 2026 13:45:47 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,35 +46,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1985; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Yjk/98TJLyq9/SO5ax/zuYcqbnEKqgEWfUM/H/5nOFY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp2SVi98uv4C18ECGZw51oNttJcT0+YbzCgJ7eL
- zoqfCXdkuqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCadklYgAKCRAk1otyXVSH
- 0BJyB/4z8/7oyUzP12RlejYlVqD8U/omzYrS74b+XGy9upM7MEagK2CMoKk3mRErjYgeflrDVNa
- mN6SYVyV+aG9u1G58Ne+laco997hVHyayFckkbFuJKieawQkqoL40j90n0EKSeuP1DRQgf1rciq
- D87qnJZNHrLbDdEAw8bI6wFiTiA8eAwQXU6XzoDhbM2ogI1sGSXjvWCCwKOHiiNMOLhG22CKDLd
- hNMmdjLDCf4QBDbMO9rr3GwcGQWUYg2KkkAKl8oTp79ymUFQ2ica2bviz8xzmy39Cp8i+HP9y6V
- IjPaQdd5GkB/lNXyhY9AtKPRZA/egPKCS4OnIhunbMTWaEnZ
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1104; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=T0RLv7FrgArBb+6V4fHTcq1bWYMiINMiGnQEs3W6zy0=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp2SVofo7RUmXxzPpbxO1v/3dDxHoC6BCd+3I+v
+ MDWSUQ3c9aJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCadklaAAKCRAk1otyXVSH
+ 0APJB/4sKoo5Pm/H+Hu4kREm3oK/o0cjF8Wv3hB2rZ+A5751KVRw69g1Gj3p8GB/YNwW4mM+6Wz
+ sO3TaFlkR5NCi4HfK5hQGLKHGo6dvYR20xrGPurFPInOn+Zal+B6HqYfrfah8qvfu9ZZ2i09tHh
+ imaztKZDrfd8f51CQtPJWRZJSYCP9G14omoBcLHciA/AiVb7NaQ+4NjnBaErbRXE1XgHJHSbPq0
+ /zR4LuKORmY0SLJoAvZMDrsdVCstQT7plTAfqCuqcGArw4l2kpGW/1iXrwYAtGHOnz3dt0vn0AB
+ VnucSuFVb12ealEHJ0hroJqcD1poiqiSA2CsFu84dgGUL5/+
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, 10 Apr 2026 09:05:14 +0100, Prabhakar wrote:
-> spi: rzv2h-rspi: Fix max_speed_hz and clock configuration issues
-> 
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> 
-> Hi all,
-> 
-> This patch series addresses three issues in the RZV2H RSPI driver:
-> 1. The max_speed_hz field was advertising a prohibited bit rate, which
->    could lead to incorrect behavior when userspace applications attempt
->    to set the SPI clock speed.
-> 2. The clock configuration logic allowed for an invalid combination of
->    SPR=0 and BRDV=0, which is not supported by the hardware.
-> 3. Simplified  the clock rate search function as min/max speed parameters
->    are not needed.
-> 
-> [...]
+On Fri, 10 Apr 2026 11:49:25 +0200, Johan Hovold wrote:
+> spi: s3c64xx: fix NULL-deref on driver unbind
 
 Applied to
 
@@ -85,12 +67,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: rzv2h-rspi: Fix max_speed_hz advertising prohibited bit rate
-      https://git.kernel.org/broonie/spi/c/4e292cbf3890
-[2/3] spi: rzv2h-rspi: Fix invalid SPR=0/BRDV=0 clock configuration
-      https://git.kernel.org/broonie/spi/c/0335767dd8e7
-[3/3] spi: rzv2h-rspi: Simplify clock rate search function signatures
-      https://git.kernel.org/broonie/spi/c/c958bb67b2df
+[1/1] spi: s3c64xx: fix NULL-deref on driver unbind
+      https://git.kernel.org/broonie/spi/c/45daacbead8a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

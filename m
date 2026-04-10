@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AAD3AE6F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885553AEF4C;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=X1dAoaf+TibSJzglhSJGgILUm0JeLOUsI+Q5T4+89s6GNcDVA1RoxwpZG41hrhX6Id3kWf9cleSY+ltztuZ8LOOdB0xUYjztmKvDMGicpWqu6rqeNNJLP59L3WBvTBDzspFu3zEyOg8ZJ1J4rNejOpEfQLBfrWRte62SzxzwWh8=
+	t=1775809137; cv=none; b=f9wvqRz9eKVgWjBe30bGuDWxU9yw+RzCYR4NgOU4jGdmJ7PyTsT22mhqa5jUQPbtaGLowgz2HK9geuD00ijVlWjHeVgof36bOIJhUDkyyYUjtmAjLWQThDmw/7BxXzrgvF0wWf5g5Y9gwqyioDoojS82814Q0Wx0mR7nXEnlVm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=C8UBH5bPbrlP3dh1Dls2keMpeyV18D6q87El/jPrm+g=;
+	bh=MDcZdJIHnKnZfXL/qi9xpoigJT6qJGjKFoI7URmLNkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frK38lTK8/nTDNx1BsQ+ArnFw0fTLsUbXkjWO928VsnNwFMZ/TryU+XUvBb6+UQHIA2kfEREYvcoLR07dLmf9JBwbithpp3hkZ2qHwIoz1TjqxyL/9lrRvB90iwtHFJThySqaX3v6QGwheQKMF2s3UtKO9tJCezKnZcUt8ouvT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXdSHc3n; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=GRuuXZtdRgNIpE2VmT0O5rzyW0ZVCOM2hXxJz2nbL0gX5WpKCqN+5ZtCuM6KXubgARB3lGw47YlUtEId7jTCAo+vPuYAjx8Bog8+wp4cq4d3urBO3xRutUFosVWXEmeoezGSvQAfIPr31mafrWeNcsPdwOGmjHWKXfClCrmEfZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGLfdc3D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXdSHc3n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C4AF54;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGLfdc3D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE40C4AF51;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=C8UBH5bPbrlP3dh1Dls2keMpeyV18D6q87El/jPrm+g=;
+	bh=MDcZdJIHnKnZfXL/qi9xpoigJT6qJGjKFoI7URmLNkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXdSHc3nXMFmKJz5w5pIFPMzOLzJ9YGRnbY/KcyUGXCNEJsi+J0oSzDmmfb+AhE3n
-	 0YsuFHlTKVezIh7ZAmDhHkDVxkf0GSSEA6hp2Elgh+LDXVLNhuQBPFh50GKGtb7fDf
-	 2YjqzmeG5rlMhi2YI7FQTn6Bfb0JMjAAq9wOjbCxlCZGDBCgwBPAIm6HQL6ggXs7N4
-	 6n8H8Ol9FlEjAk9yh3eLkTvoMUt4+c1H4zIeB6D1LTwaMU/T7NJ6soukejd2pr49NG
-	 cDUxZye7f9CRPlOrvvKuakuk6JsVp048hsCySvelHMhSZdD893qiIVCkAqEVErJQ7m
-	 boVC53rSNOTZA==
+	b=QGLfdc3D6TFfPuNAvSuXqd8U4UsdKCY+k4w5Jwi7WdfCMNgTE80PQxNh8m8duKNT4
+	 d2Ra6hg/vKaspDBLdIPKHO9QwTqaF3vm+JXEwUJ1J14nbGZpufyuE/Asrrap/c3ydi
+	 8+ZC7jyzSUmSVO7lxnwPwjYk8i7NWiHAFRzcuVLmy0Cxtufg7UpjWPMfJolKytaHBs
+	 jkvDWRxLzn2IpP/0a8Pr+kF0JiiFh2nmh6fgqsojShuvmN6AawCfHGG90f69riPfxI
+	 09rNTGA39jhDyM7SDj9KxHP2UqJ9dgNGHvNX92Jrath6bBiYWGkU6pRU+DSCQOuoSv
+	 MBjUIKocOE8HQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74o-000000026uu-04rK;
+	id 1wB74o-000000026uw-07Eq;
 	Fri, 10 Apr 2026 10:18:54 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,10 +58,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org,
-	Masahisa Kojima <masahisa.kojima@linaro.org>
-Subject: [PATCH 20/26] spi: syncuacer: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:50 +0200
-Message-ID: <20260410081757.503099-21-johan@kernel.org>
+	Jingoo Han <jg1.han@samsung.com>
+Subject: [PATCH 21/26] spi: tegra114: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:51 +0200
+Message-ID: <20260410081757.503099-22-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -76,43 +76,47 @@ Content-Transfer-Encoding: 8bit
 Make sure to deregister the controller before disabling underlying
 resources like clocks during driver unbind.
 
-Fixes: b0823ee35cf9 ("spi: Add spi driver for Socionext SynQuacer platform")
-Cc: stable@vger.kernel.org	# 5.3
-Cc: Masahisa Kojima <masahisa.kojima@linaro.org>
+Fixes: 5c8096439600 ("spi: tegra114: use devm_spi_register_master()")
+Cc: stable@vger.kernel.org	# 3.13
+Cc: Jingoo Han <jg1.han@samsung.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-synquacer.c | 8 +++++++-
+ drivers/spi/spi-tegra114.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
-index d0a875249910..290c439897c4 100644
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -716,7 +716,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(sspi->dev);
- 	pm_runtime_enable(sspi->dev);
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 848cb6836bd5..b8b0ebe0fe93 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1415,7 +1415,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 		goto exit_pm_disable;
+ 	}
  
--	ret = devm_spi_register_controller(sspi->dev, host);
+-	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret)
- 		goto disable_pm;
- 
-@@ -737,9 +737,15 @@ static void synquacer_spi_remove(struct platform_device *pdev)
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "can not register to host err %d\n", ret);
+ 		goto exit_free_irq;
+@@ -1441,6 +1441,10 @@ static void tegra_spi_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
+ 	struct tegra_spi_data	*tspi = spi_controller_get_devdata(host);
  
 +	spi_controller_get(host);
 +
 +	spi_unregister_controller(host);
 +
- 	pm_runtime_disable(sspi->dev);
+ 	free_irq(tspi->irq, tspi);
  
- 	clk_disable_unprepare(sspi->clk);
+ 	if (tspi->tx_dma_chan)
+@@ -1452,6 +1456,8 @@ static void tegra_spi_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_spi_runtime_suspend(&pdev->dev);
 +
 +	spi_controller_put(host);
  }
  
- static int __maybe_unused synquacer_spi_suspend(struct device *dev)
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.52.0
 

@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9F433C53D;
-	Fri, 10 Apr 2026 08:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55CA347BDB;
+	Fri, 10 Apr 2026 09:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775810077; cv=none; b=oLSZr1INtowE0zY7BSinf0vcykZvT4d5/mJqu1cyuhIy8Y/yeIIsB3CjRMHRZN21fTd9fv94svVdL2VaayMT+Oxx5wg4rLd73tfzpZ60OdPd7gA0yawSWiY+2uKPlmHTMWyMAhcddviocM3tCFojUlD8MZRf0weXIO1fF5yeH5U=
+	t=1775814580; cv=none; b=bxqOmiI9RmspG7x8oALy9KIx780lHDSVIRfrLuDjYiOCOoCdTWqHDs5x/Ix7Z/fnXgNhtxo8rhF9TzTtHZRJG7E608ChJAA0iogpUYV2ApHpya++P7bwX+oYWJaRLKogmUWgSU6jTzSkC9D7y+Q+BwOgzqsWQW/i3P20ejlvTBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775810077; c=relaxed/simple;
-	bh=/UZ0+UsnuMsfjcKhAQq/cLSD0ISjV5nElPJvqtFMmzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ny0MeKzysYqeVfPzDgahZtzuhF3HstP61vypnzEyJ6Fn8WuF04h+B1t6N6a/vj0/oVc2w0q2/8km95rrD13olX+8ZOprAJgulwmzQpa7AW5bTYItnuAItYYaUGKKpx8qB06CjVdUmshIA95AZyzBN+89t+0/vwqn5Pt85zMRaTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dms4JVVr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1775814580; c=relaxed/simple;
+	bh=CytAY+vUrvcJliMfskIBZQZ1+nqbDtxvrkk8RxKdCwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EkKRWg59pIfFPNpor05f67oAnztGcK2VwZKFdoKmla6BRa2xXmh7SEfVvLXuOCexYJD5lE0FhZ6Tj1XNadL94TGMAutSrp82OcwFuk6A5pY1sCcfh8ccLlSsfKWIJ//v6nkHdSgiNwwzMxezaYUia++WCpLTDtMXjcKajVCmga8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8DcPnUy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dms4JVVr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6FFC2BC87;
-	Fri, 10 Apr 2026 08:34:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8DcPnUy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F6DC19421;
+	Fri, 10 Apr 2026 09:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1775810077;
-	bh=/UZ0+UsnuMsfjcKhAQq/cLSD0ISjV5nElPJvqtFMmzI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dms4JVVrfR4OFke69aAGLbkQdnariHhPcn2SglSfl/iJHhGnKMmgEI/4xAMnTO814
-	 wOZ9zVQOk2/a9uPml/xkipC5wQoT7h0/tsuZHxv7WZWrGs4KObTyoBmRcx5odq7qQ4
-	 NGCEZJBj2xdXKVoazN6jb/h4kkm+Do18e6t6JbaFW8e6bWtFXXBUXJCvyc2h6OGmJ3
-	 345EtVECgXSt9bCa9DJZE0C3QlPQ3yknob1gfvTkZjKhPky/3R8SB0krrc3Zrbav/g
-	 gl3jPV4Q/JkxZM5TifGOt337spFLQNO9vR1j/X6CaiJJr+zj+WJ90kn7kbSovw8D8A
-	 8lWfflmWXep+g==
+	s=k20201202; t=1775814580;
+	bh=CytAY+vUrvcJliMfskIBZQZ1+nqbDtxvrkk8RxKdCwo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=V8DcPnUyq55QjOFQSsrfH6XDrIwDODcW0eLK2vZ0UeoNOpdhEahSqRyFuFSt00iM4
+	 qWflQJuBqu1FD0cWNvyoSK9YeSTL858A4dFmEmW1zAoI6g1SQGQH/xGlLGX0PPRAdk
+	 PGuCRJjl4NmQjKB/xIftbAYSZS10UrWafxaL756qX/RaZR4MFt5qwrSEVCuegsbNma
+	 FJBXWTWdk/OjW4Qe/24s50+Wg9kVFq2Ep3pxScpV6liHkY3pKa6t7eOVtIf+iCdjJe
+	 QNAFbwU9SwH+cGXkN4wyEW/GaAZ95F7JnCou1GEgkYzFf+O3RrmTC0b0Z3udyLftDr
+	 BQlqEZ1Zxqmjg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB7Jz-000000027Ie-0BLB;
-	Fri, 10 Apr 2026 10:34:35 +0200
+	id 1wB8Uc-00000002Aqk-0eKl;
+	Fri, 10 Apr 2026 11:49:38 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
-Cc: Masahisa Kojima <kojima.masahisa@socionext.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 1/2] MAINTAINERS: update Socionext SPI maintainer address
-Date: Fri, 10 Apr 2026 10:34:22 +0200
-Message-ID: <20260410083423.504695-2-johan@kernel.org>
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Adithya K V <adithya.kv@samsung.com>
+Subject: [PATCH] spi: s3c64xx: fix NULL-deref on driver unbind
+Date: Fri, 10 Apr 2026 11:49:25 +0200
+Message-ID: <20260410094925.518343-1-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260410083423.504695-1-johan@kernel.org>
-References: <20260410083423.504695-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,28 +50,51 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Linaro address is bouncing so switch to Masahisa's Socionext address
-also found in MAINTAINERS.
+A change moving DMA channel allocation from probe() back to
+s3c64xx_spi_prepare_transfer() failed to remove the corresponding
+deallocation from remove().
 
-Cc: Masahisa Kojima <kojima.masahisa@socionext.com>
+Drop the bogus DMA channel release from remove() to avoid triggering a
+NULL-pointer dereference on driver unbind.
+
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
+
+Fixes: f52b03c70744 ("spi: s3c64xx: requests spi-dma channel only during data transfer")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Adithya K V <adithya.kv@samsung.com>
+Link: https://sashiko.dev/#/patchset/20260410081757.503099-1-johan%40kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 213f6a294a9f..e22dcbeb7132 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24465,7 +24465,7 @@ F:	Documentation/devicetree/bindings/net/socionext,synquacer-netsec.yaml
- F:	drivers/net/ethernet/socionext/netsec.c
+Note that this one should be applied on top of the deregistration fixes:
+
+	https://lore.kernel.org/lkml/20260410081757.503099-1-johan@kernel.org/
+
+to avoid a (trivial) conflict if applied in reverse order.
+
+Johan
+
+
+ drivers/spi/spi-s3c64xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 95b61264b679..37176e557099 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1403,11 +1403,6 @@ static void s3c64xx_spi_remove(struct platform_device *pdev)
  
- SOCIONEXT (SNI) Synquacer SPI DRIVER
--M:	Masahisa Kojima <masahisa.kojima@linaro.org>
-+M:	Masahisa Kojima <kojima.masahisa@socionext.com>
- M:	Jassi Brar <jaswinder.singh@linaro.org>
- L:	linux-spi@vger.kernel.org
- S:	Maintained
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
+ 
+-	if (!is_polling(sdd)) {
+-		dma_release_channel(sdd->rx_dma.ch);
+-		dma_release_channel(sdd->tx_dma.ch);
+-	}
+-
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
 -- 
 2.52.0
 

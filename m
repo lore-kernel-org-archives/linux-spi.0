@@ -1,63 +1,63 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC493A3813
-	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 08:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363313AA1B5
+	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 08:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775808336; cv=none; b=Kljw0Kohgu+zNxKCmVaPgT5/y+ETKXZWQr9GerNBiOEBy2kJFv5SgWZTA5cjkJDQWTdWnr7WR5sDiM7FBFPs4e4XuXwEz/GYRPCjadB4S8hXIlnIJ2ChGr+NerBVqGHB7h+HH/06DiToYMMOvOuPg1Wkqz/Jwm2MRBkskMgBBbc=
+	t=1775808338; cv=none; b=NKs3uHslpWT+qi9l2ECT6HSmQkz0tZ/C9fwjQdM3NJ6NMN3Q80BtWPM/Ez8wJ8i6lt2KWDIE2HOcMYo4CG/ii+eI7vbFARWaSc/1dk8XsBaP/oxt24HAh6vcDeIs2rDLbwKvXJvUWk2l6BWfr2Lxw4R1BmrHlNauJ5uscJQbm4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775808336; c=relaxed/simple;
-	bh=YiC0zOs6O90q4/FPkzw3mGwg8ejhtR+Z6tBOWwhcw+s=;
+	s=arc-20240116; t=1775808338; c=relaxed/simple;
+	bh=xorpueJxTNukt5ZFVGNxy2LzwUY45JT81ldlU6c6GAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0UPdCY5c090TtduIXRsG0/YGDNpV5SXIQ+t6KIGX0BQF4g0UEXrx0I7kGkRBw/hIIDZU1OGxj2SV4JTJWqU9ADF/AjGCyKK6iYkKhhYfvf26ePwjkQkH8PZwq8Gi9WqFmNL0WeQq7g+xOGsHgGRrpVoM5TEd6IXiLsVJPsXf0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VgdHilzX; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=hSqJxWGHK72niIpUX5oepGee7KfjKrJVLUy7G1yvNMwocRy0NBs5NAYJd/3mv11pJTzDLcGX0rRlx+JAIq5RALHN4e6dnrZ6AspPyAoyABGNXSsSDweU/IoUgWqFTFZIQnh1d3/8dtQkeRiy9fXnqFnHA0k4VqZqwtWER9ogABs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DKI81Qvn; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VgdHilzX"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488a041eae5so12173475e9.1
-        for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 01:05:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DKI81Qvn"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-482f454be5bso18271505e9.0
+        for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 01:05:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775808333; x=1776413133; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775808334; x=1776413134; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hHpfsnzzu+UOFyztPgbXvpWNz6C6DyMlHqqcUHYsTVA=;
-        b=VgdHilzX+w/falVX31tlZ7avYi9MwaTraLeJbtDTO9wGm3/HZm9E0rdnw5FYamd20S
-         zz5TIQiUMyTiFjR168XWd/tmHxSo2x7/SZITfENrUd33L9/zFq2SfiONPCPbN2dkctgy
-         0wLKeBiZkBI3XT43cJ3fPQZLlLWuIBZsny2zcZ9mrlxfqU5bv/qxoIKfSsZ4q3y/z9nv
-         VwOaC/h8mSxbD1kSC9DACFLiEsS/6zB038WuKq8sG0cgHtTof+vukSQ8ih4H/W8j6RHJ
-         AZEi5kQQrrdBcIre9xr4RVXYPyuDNTlLOtze6x6XNqg1uu43WcIY9cPEsdfbpyqhoTLH
-         Ul/w==
+        bh=YrKnQwSJErgHcrBoBos/Qb5MY50qHFM3OyauosBsnB8=;
+        b=DKI81QvnrTm6FfNeeo72sGgRRHkjOZy9gn5f+/0/5mbiPgN1zh4tBHQEri7TLmMw5L
+         hbIrN/pgpge/AfDm5rCB/fP2NWRR7mZOUYaGlg9/eQPT0z8cg3hq10Zn83XR0Ze5P1z3
+         4+is2K4w/3fT5m4vDuOoJGiAe4rarsDKZI6FEKdLg8aH+M4EonI1XWkT5d8SxLBQbxfm
+         AtyUU840IcHVsByq4GSn9JXQjT9pMwzcuethwjNw0crLC+dvg7IhlxFDafSZvAakQ9dO
+         54noBL6I/WkfqxoXPfiJzqhJvwIJBAhDKc7J5R9DrEogvEBR0b08/AkbKRxxCpeOkxQT
+         RTRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775808333; x=1776413133;
+        d=1e100.net; s=20251104; t=1775808334; x=1776413134;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hHpfsnzzu+UOFyztPgbXvpWNz6C6DyMlHqqcUHYsTVA=;
-        b=hh3uO0vgqpEYt5KgZbjU4pE0NePwDqDj/i7wheXPkApzNRHO1Nu0PLofDr0/paBG/7
-         Jdd8+n1hT7UaQ3vJU0xvSw0a6FA7ZccYdrjSE6eYT36OT78WfWe4QUsKgxi7tNfG72Sb
-         SXVhN+AJ30wSAwuVLbEuBjkaOCoUO88Ih9sD0QpSqAxGfh5OrkFiP7w7XQM55DS47pkG
-         u5AABJCeYBpco64exVHEvd5ITNho3yK5Wk9PV7ZuglDATg3XteiLTmjf6gi7cLYv4a/e
-         DnJVM4lEipsLrdK6FFQKY7/FWDKx/FqPvzkat2ezEOuBwMBZDWXceoHlXGUYoTR3v6vE
-         grzw==
-X-Gm-Message-State: AOJu0Yw22BwvM0RR8Pml2ggkOO1RAhpz20hvbjyFugVdU+DFLpbk9TeH
-	ZIWciyA5q3rSyixPAyCNL/3Q+HHkxQSHuCaFsRvew5ejZNe8Ybejb2aM
-X-Gm-Gg: AeBDiesw6oPSF6Ue1ySaQXmVUWDRuhKi3L1T9PXYcHhGK1gmW8vBLA2TjLV9C62XWPq
-	jVtmQmDPjqst5BAphR3xsy76eP1DWYC7y6mBzg0e+lPksyUIWDZ8GxdaoQM5THUq7xR8Vg00UBc
-	DrMtHLM4ZJsIh02CDamfNvF5c2cS3Y2buTlbRZDoCmZ40rIBDaxoiAhgBs+lXK0kQ4OAOquS0+A
-	zNDMfh1ol42CYqXI+TS1FepktLsEYyioirRYkRVkn7jA1rYqD9MvhmDtQFyu82JDHxxmpdYVREK
-	05u4+IQ83IRFOdBoAlDa+JOYDshvxfHViX+vU51ZoOAsIPKZdzRwbGsfAfIt1/SSQhIi2cSgspH
-	oXfadK9rUPKa/cSJl6XRoZXzlUtOH0lOb5Sc7CG+8iu2v3ocKSg6Il0IuNoyqruKxqfEkuM2chf
-	8ztJpn3ySF99bSIE9X+GOzZmw9soI5xvZ3xJidzsZMbFOqpSG7kISuOrYsnGBB3XjoyLy6MujB8
-	4UOH/Dq0tS3I/TuNQoO3QJ3WW2HIdFX1E9sVgwYi8dBEIDJ
-X-Received: by 2002:a05:600c:3047:b0:488:d6eb:e635 with SMTP id 5b1f17b1804b1-488d6ebe7ebmr13526205e9.12.1775808332681;
-        Fri, 10 Apr 2026 01:05:32 -0700 (PDT)
+        bh=YrKnQwSJErgHcrBoBos/Qb5MY50qHFM3OyauosBsnB8=;
+        b=Ijb+QjRdpmU7mZxB1CqcEh9BAGATIdqBMZ2rvFLDdzEa27lmGMBTgSgiIAI7KvwF5m
+         Q1VuU1pq9jpHEUTeds8kZZ3jtHchTnNpPbtK713jF8yL5a97i9XPy1cw2MgIOLqtc5Cx
+         O/UaUMHP4wVChfR79PaDlnT2PjR+THGW90eIwwOANQaqInvvTfUFFjaN14AwECi3FPu+
+         vjTQdOVoC5djg4fQ9TmD7hqwZm+YhDMYASwDdCAeAK9azyG6Uoq/cW7YPr0Ub4D8JuyZ
+         GI1TOsb5Hx6JaVbllC5C246Jb7SvqAbdI8r/ptitnae0ZRA5+er5plt4GVPuwC41mpEj
+         839g==
+X-Gm-Message-State: AOJu0YwH0cmcCZctD/cZMXm6rT/WqDYdETLM7DiV6nPibC2brXDOuIfg
+	RGYdt+fl5Y+O77EBJUxf1kixR0niSeD7wdYeBlzbUJGgGgTVHOtfRS2G
+X-Gm-Gg: AeBDieuUenevrvlXcjcd6RKw7qw6H5TvYoJw7NfncAPuhJgULhwJTIu/zIdtn2ceBvE
+	t8usZNz51JfikWYgVJaVF++CoL9Hxlza4kOzVBk/VHO1JeiCHWoABm7brNArKI/3nQ8pVkvq4U2
+	b9z92tSuYhUAGzDoIGeBkIqpPngb5XONOaevPaKWyGyzWvZgJml1pVi/SOY+NkI9bLWVSjWIbHZ
+	VSVjtDUZHi4pZy7xXB3GR1ibq4JPw7KJLOII+PSaDvqy+0UjXpdlaskrf7f721wh1bfibHygGRR
+	Ql8g3uYyGc43PSxBMtS/ADkmq8OL6XxcgukD+MVwZvyEJ4m/nf3dVBwaLLq11xgc2VmGyD1kjy4
+	B8Hr+IQ1sj5j7Chic1rlxrT1+XvSGvxQqBJY2KjjyjoPlxXnNAKLZWAxBYPIOe1VPe2dpalDZJy
+	zJXSS2t+R0lT/eenDT6Hh8JBWjxTm4GV61YWMSz8IS+lb9hvSbMBi2opzk4ZmDKAFZBfcRFXob0
+	yjBq+0JvxpJtFX/VpHAJNiNQmCAaaQgKyjYOA==
+X-Received: by 2002:a05:600c:444b:b0:488:9c3b:ff40 with SMTP id 5b1f17b1804b1-488d6acd9fbmr20477575e9.15.1775808333390;
+        Fri, 10 Apr 2026 01:05:33 -0700 (PDT)
 Received: from iku.Home ([2a06:5906:61b:2d00:a73b:688a:4297:c5fd])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488d67ce3e4sm29950375e9.5.2026.04.10.01.05.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 01:05:32 -0700 (PDT)
+        Fri, 10 Apr 2026 01:05:33 -0700 (PDT)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
@@ -70,9 +70,9 @@ Cc: linux-spi@vger.kernel.org,
 	Prabhakar <prabhakar.csengg@gmail.com>,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 2/3] spi: rzv2h-rspi: Fix invalid SPR=0/BRDV=0 clock configuration
-Date: Fri, 10 Apr 2026 09:05:16 +0100
-Message-ID: <20260410080517.2405700-3-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 3/3] spi: rzv2h-rspi: Simplify clock rate search function signatures
+Date: Fri, 10 Apr 2026 09:05:17 +0100
+Message-ID: <20260410080517.2405700-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260410080517.2405700-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20260410080517.2405700-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -86,80 +86,102 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-The combination of SPR=0 and BRDV=0 results in the minimum division
-ratio of 2, producing the maximum possible bit rate for a given clock
-source. This combination is not supported in two cases:
+The spr_min and spr_max parameters passed to
+rzv2h_rspi_find_rate_variable() and rzv2h_rspi_find_rate_fixed() were
+always called with RSPI_SPBR_SPR_MIN and RSPI_SPBR_SPR_MAX respectively.
+There is no need to pass these as parameters since the valid SPR range
+is fixed by the hardware.
 
-- On RZ/G3E, RZ/G3L, RZ/V2H(P) and RZ/V2N, RSPI_n_TCLK is fixed at
-  200MHz, which would yield 100Mbps. The next hardware manual update
-  will explicitly state that since the maximum frequency of the
-  RSPICKn clock signal is 50MHz, settings with N=0 and n=0 resulting
-  in 100Mbps are prohibited.
-
-- On RZ/T2H and RZ/N2H, when PCLK (125MHz) is used as the clock
-  source, SPR=0 and BRDV=0 is explicitly listed as unsupported in
-  the hardware manual (Table 36.7).
-
-Skip the SPR=0/BRDV=0 combination in rzv2h_rspi_find_rate_fixed() to
-prevent the driver from selecting an invalid clock configuration on the
-affected SoCs.
-
-Additionally, remove the now redundant RSPI_SPBR_SPR_PCLK_MIN define
-which was previously set to 1 to work around the PCLK restriction, but
-was overly broad as it incorrectly blocked valid combinations such as
-SPR=0/BRDV=1 (31.25Mbps on PCLK=125MHz).
-
-Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
-Fixes: 1ce3e8adc7d0 ("spi: rzv2h-rspi: add support for using PCLK for transfer clock")
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
- drivers/spi/spi-rzv2h-rspi.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/spi/spi-rzv2h-rspi.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index ad59944c773e..602d4a36b44c 100644
+index 602d4a36b44c..f45af5884638 100644
 --- a/drivers/spi/spi-rzv2h-rspi.c
 +++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -50,7 +50,6 @@
+@@ -88,9 +88,9 @@ struct rzv2h_rspi_best_clock {
+ };
  
- /* Register SPBR */
- #define RSPI_SPBR_SPR_MIN	0
--#define RSPI_SPBR_SPR_PCLK_MIN	1
- #define RSPI_SPBR_SPR_MAX	255
+ struct rzv2h_rspi_info {
+-	void (*find_tclk_rate)(struct clk *clk, u32 hz, u8 spr_min, u8 spr_max,
++	void (*find_tclk_rate)(struct clk *clk, u32 hz,
+ 			       struct rzv2h_rspi_best_clock *best_clk);
+-	void (*find_pclk_rate)(struct clk *clk, u32 hz, u8 spr_low, u8 spr_high,
++	void (*find_pclk_rate)(struct clk *clk, u32 hz,
+ 			       struct rzv2h_rspi_best_clock *best_clk);
+ 	const char *tclk_name;
+ 	unsigned int fifo_size;
+@@ -413,7 +413,6 @@ static inline u32 rzv2h_rspi_calc_bitrate(unsigned long tclk_rate, u8 spr,
+ }
  
- /* Register SPCMD */
-@@ -535,6 +534,17 @@ static void rzv2h_rspi_find_rate_fixed(struct clk *clk, u32 hz,
- 	for (brdv = RSPI_SPCMD_BRDV_MIN; brdv <= RSPI_SPCMD_BRDV_MAX; brdv++) {
- 		spr = DIV_ROUND_UP(clk_rate, hz * (1 << (brdv + 1)));
- 		spr--;
-+		/*
-+		 * Skip SPR=0 and BRDV=0 as it is not a valid combination:
-+		 * - On RZ/G3E, RZ/G3L, RZ/V2H(P) and RZ/V2N, RSPI_n_TCLK is
-+		 *   fixed at 200MHz and SPR=0 and BRDV=0 results in the maximum
-+		 *   bit rate of 100Mbps which is prohibited.
-+		 * - On RZ/T2H and RZ/N2H, when PCLK (125MHz) is used as
-+		 *   the clock source, SPR=0 and BRDV=0 is explicitly listed
-+		 *   as unsupported in the hardware manual (Table 36.7).
-+		 */
-+		if (!spr && !brdv)
-+			continue;
- 		if (spr >= spr_min && spr <= spr_max)
+ static void rzv2h_rspi_find_rate_variable(struct clk *clk, u32 hz,
+-					  u8 spr_min, u8 spr_max,
+ 					  struct rzv2h_rspi_best_clock *best)
+ {
+ 	long clk_rate, clk_min_rate, clk_max_rate;
+@@ -464,7 +463,7 @@ static void rzv2h_rspi_find_rate_variable(struct clk *clk, u32 hz,
+ 		 * minimum SPR that is in the valid range.
+ 		 */
+ 		min_rate_spr = DIV_ROUND_CLOSEST(clk_min_rate, rate_div) - 1;
+-		if (min_rate_spr > spr_max)
++		if (min_rate_spr > RSPI_SPBR_SPR_MAX)
+ 			continue;
+ 
+ 		/*
+@@ -474,14 +473,14 @@ static void rzv2h_rspi_find_rate_variable(struct clk *clk, u32 hz,
+ 		 * maximum SPR that is in the valid range.
+ 		 */
+ 		max_rate_spr = DIV_ROUND_CLOSEST(clk_max_rate, rate_div) - 1;
+-		if (max_rate_spr < spr_min)
++		if (max_rate_spr < RSPI_SPBR_SPR_MIN)
+ 			break;
+ 
+-		if (min_rate_spr < spr_min)
+-			min_rate_spr = spr_min;
++		if (min_rate_spr < RSPI_SPBR_SPR_MIN)
++			min_rate_spr = RSPI_SPBR_SPR_MIN;
+ 
+-		if (max_rate_spr > spr_max)
+-			max_rate_spr = spr_max;
++		if (max_rate_spr > RSPI_SPBR_SPR_MAX)
++			max_rate_spr = RSPI_SPBR_SPR_MAX;
+ 
+ 		for (spr = min_rate_spr; spr <= max_rate_spr; spr++) {
+ 			clk_rate = (spr + 1) * rate_div;
+@@ -512,7 +511,6 @@ static void rzv2h_rspi_find_rate_variable(struct clk *clk, u32 hz,
+ }
+ 
+ static void rzv2h_rspi_find_rate_fixed(struct clk *clk, u32 hz,
+-				       u8 spr_min, u8 spr_max,
+ 				       struct rzv2h_rspi_best_clock *best)
+ {
+ 	unsigned long clk_rate;
+@@ -545,7 +543,7 @@ static void rzv2h_rspi_find_rate_fixed(struct clk *clk, u32 hz,
+ 		 */
+ 		if (!spr && !brdv)
+ 			continue;
+-		if (spr >= spr_min && spr <= spr_max)
++		if (spr >= RSPI_SPBR_SPR_MIN && spr <= RSPI_SPBR_SPR_MAX)
  			goto clock_found;
  	}
-@@ -568,12 +578,8 @@ static u32 rzv2h_rspi_setup_clock(struct rzv2h_rspi_priv *rspi, u32 hz)
- 	rspi->info->find_tclk_rate(rspi->tclk, hz, RSPI_SPBR_SPR_MIN,
- 				   RSPI_SPBR_SPR_MAX, &best_clock);
  
--	/*
--	 * T2H and N2H can also use PCLK as a source, which is 125MHz, but not
--	 * when both SPR and BRDV are 0.
--	 */
+@@ -575,12 +573,10 @@ static u32 rzv2h_rspi_setup_clock(struct rzv2h_rspi_priv *rspi, u32 hz)
+ 	};
+ 	int ret;
+ 
+-	rspi->info->find_tclk_rate(rspi->tclk, hz, RSPI_SPBR_SPR_MIN,
+-				   RSPI_SPBR_SPR_MAX, &best_clock);
++	rspi->info->find_tclk_rate(rspi->tclk, hz, &best_clock);
+ 
  	if (best_clock.error && rspi->info->find_pclk_rate)
--		rspi->info->find_pclk_rate(rspi->pclk, hz, RSPI_SPBR_SPR_PCLK_MIN,
-+		rspi->info->find_pclk_rate(rspi->pclk, hz, RSPI_SPBR_SPR_MIN,
- 					   RSPI_SPBR_SPR_MAX, &best_clock);
+-		rspi->info->find_pclk_rate(rspi->pclk, hz, RSPI_SPBR_SPR_MIN,
+-					   RSPI_SPBR_SPR_MAX, &best_clock);
++		rspi->info->find_pclk_rate(rspi->pclk, hz, &best_clock);
  
  	if (!best_clock.clk_rate)
+ 		return -EINVAL;
 -- 
 2.53.0
 

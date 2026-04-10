@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E9C3AC0EA;
-	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4133ACA60;
+	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=X2qPG76uUv899tJ4AC0firL8t3v2alcsciq549rvG0hBkpIAz8lLdkBuqc0m7N8Ex6BCv9Nu84o9jmy+8vpmTXVta0Or6/wEA23+zrds2QSwKStYb7M11JFJ4Kj6h5jfFnuVxu+BZJr10ojshDEEiZYdArYOAG0d95iXzrUQslA=
+	t=1775809137; cv=none; b=Wm4YyQsbfDmxut4XlCXtiyJitrEmsCNr7w8zkdbcawzuS1i+enrdTcs7c5ELanupoFGXGn1JG3xS2T6bU0YeAXKGGUMMqiMFRUcIXwqevN1p8u1KdZ63zAKpXs1ATmpj8//Wjw/XVxFWAac5inCKdKs98pUTvTKgUjv6/4VsxjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=PgNF6KIfTsr8geLhQ83j+NHXlo6CNE5QENaScwNL7Kc=;
+	bh=XJv4swEKIt/F7Gdb4lG5twzMESuy6m63g0aob4Tlodk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGXGppuT6hTAJ8ArC1UtoKQewM30Yykn6/c1L2k8WxZ0M6LbZGEMF+TyMSI2vmk5omcy3CRA9J91h/HD9bk5l5tIWy5XB9RGXStXj4B6NvSeMXjErVFlCM+hj69xzpqGdiNo0QS+OpBcQatGE5S7oMPzopvHq1kEIUBr+C2g71U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uMjWx2tj; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=qmS5/a/xGphwuKgXIQD702KquKIHBGPP/xeINzQetxNlDzxKl4KfU3VuB6QoEzxWdjJcvbECsiW88XwF35Fi82/Dn5/brA1tMjltkPat79ZPELkS+f2peQ23y1PAOLvyS+ELJjgf34vjpLp7tsmugCVCGw1WF8a5s9A0dxk6ZnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SvOolfGe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uMjWx2tj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A15C2BCB2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SvOolfGe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8A4C2BCC4;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=PgNF6KIfTsr8geLhQ83j+NHXlo6CNE5QENaScwNL7Kc=;
+	bh=XJv4swEKIt/F7Gdb4lG5twzMESuy6m63g0aob4Tlodk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMjWx2tjaQHLrgrCDEqoF3ZdepgTOlqmcY0bfBQLr24HI/VvcthqIG/VdjqBxSegF
-	 cxsVMQK/tqmkLl22IexLVcXZDq9t49KGjSuGhmQtO0PwCenhLdnBfG8+MfYGtOikz7
-	 F/6M+JqBUnJDbm9FP2VABu4mjk+xGgZ/Nw5zIW3rOPtC8gnVJn5Z/U4Iq1QkM5SIiN
-	 YCfiJfClbKXRrtv+opcmKh4K1K992C09yjvXLj3y9UX1+yxsyccWIBlB0/h/uUhzBE
-	 EKUoGQWNmri8h5cI364U/Hh6Yc/eSaGffwQgmtGZdZXwjBCkAvBCJVsLv8/wrKrXi1
-	 37r4axlIeYBNw==
+	b=SvOolfGeDCcbnWf5mFS87ZfpebcTS3qDzfBoXjFjCIv7rjfy7ZEzfoyyA9UCpZnDh
+	 uEyPlizGPFN2l4iPdl8XqHpwGyST3RxOhkPxt9EeHPpi/mfq7Cf9cKRPW4NK7QVzXY
+	 Sd7mOTYkpU4xAs6w7bi40kgiehpuEUf2SiRBMLedJk4uCGTayeH9P5LhAbibVWcvyu
+	 dPrbDpj23AfTZ2cB4XyJSJq0CT9ter8QpPE8Bw9WZfV8M19ABroWfse4n1IToWZjnA
+	 PWOtPLOQC4pH1UFzfEnwuo+KGVCCPY9scJ7Vd13I8x4Ob0OQyga4GyNGObY6XGDu43
+	 LSIVVnKTX/esw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026uY-3nLF;
+	id 1wB74n-000000026uW-3kxW;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -58,9 +58,9 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 09/26] spi: qup: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:39 +0200
-Message-ID: <20260410081757.503099-10-johan@kernel.org>
+Subject: [PATCH 08/26] spi: pl022: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:38 +0200
+Message-ID: <20260410081757.503099-9-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -72,49 +72,50 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+Make sure to deregister the controller before releasing underlying
+resources like DMA during driver unbind.
 
-Fixes: 64ff247a978f ("spi: Add Qualcomm QUP SPI controller support")
-Cc: stable@vger.kernel.org	# 3.15
+Fixes: b43d65f7e818 ("[ARM] 5546/1: ARM PL022 SSP/SPI driver v3")
+Cc: stable@vger.kernel.org	# 2.6.31
+Cc: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-qup.c | 8 +++++++-
+ drivers/spi/spi-pl022.c | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 6cbdcd060e8c..45d9b4cb75e4 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -1193,7 +1193,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index bd1d28caa51e..9c0211f94fd0 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1956,7 +1956,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
  
--	ret = devm_spi_register_controller(dev, host);
-+	ret = spi_register_controller(host);
- 	if (ret)
- 		goto disable_pm;
+ 	/* Register with the SPI framework */
+ 	amba_set_drvdata(adev, pl022);
+-	status = devm_spi_register_controller(&adev->dev, host);
++	status = spi_register_controller(host);
+ 	if (status != 0) {
+ 		dev_err_probe(&adev->dev, status,
+ 			      "problem registering spi host\n");
+@@ -1997,6 +1997,10 @@ pl022_remove(struct amba_device *adev)
+ 	if (!pl022)
+ 		return;
  
-@@ -1320,6 +1320,10 @@ static void spi_qup_remove(struct platform_device *pdev)
- 	struct spi_qup *controller = spi_controller_get_devdata(host);
- 	int ret;
- 
-+	spi_controller_get(host);
++	spi_controller_get(pl022->host);
 +
-+	spi_unregister_controller(host);
++	spi_unregister_controller(pl022->host);
 +
- 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	/*
+ 	 * undo pm_runtime_put() in probe.  I assume that we're not
+ 	 * accessing the primecell here.
+@@ -2008,6 +2012,8 @@ pl022_remove(struct amba_device *adev)
+ 		pl022_dma_remove(pl022);
  
- 	if (ret >= 0) {
-@@ -1339,6 +1343,8 @@ static void spi_qup_remove(struct platform_device *pdev)
- 
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	amba_release_regions(adev);
 +
-+	spi_controller_put(host);
++	spi_controller_put(pl022->host);
  }
  
- static const struct of_device_id spi_qup_dt_match[] = {
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.52.0
 

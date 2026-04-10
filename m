@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1382D3ACA62;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D33ACA7C;
 	Fri, 10 Apr 2026 08:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775809137; cv=none; b=IrHPjpnRspLXykCgN/VqtDYoiibhqRuf5Slli9xwqA+qKNMCjbUol1fVDzYK3qCOys/WUZ6Xyswcgk3ssaYOgolEtWqkKEEk8kVSuUa/55PS84mpS0bf6mhVwJgWPGXjfGXxdszz54ChFjCW0Njak6re7EVEyQ9f024zARk0XNY=
+	t=1775809137; cv=none; b=fq6fwTpsBnk1MR5zdncgp8gFXek1bbpzt/gM8BeGSgXwrpqLKxaA9BiGqUBfrAKjhtnGhaiiXlZjXw6F/HitzxYx3MXD8LPeBwdkelg0DcFyuf5hbimEc8jA5a/tYEmkC5oPYdKe8v2BvN1vTqe0gtgTpVY4Z+NYHzVhhhxtmIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1775809137; c=relaxed/simple;
-	bh=XAJF9Dgd3KEivhPnAw48nGC8xHdyG9h1Y+3SmIViMdM=;
+	bh=TLi4qGfgMZZZlhmiRkUzE5zMj3I0oiDgiz+990HwJYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLoTXdrm2wIiMk2TXljpHFPCIhETVec0CXI5ABVI/CrW5qBdd5Os84RS1iNqYbmndr2bQCXEuS+X+DHGlnium3WLIqVRd4Ew/lsDYzaKM6FQ/OGNaH2byeIwzwaFYyRq1CJM5/MqYMRpWEgJ62RI4giiphIpvoi+EJQKFuKcDw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQotE9dV; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=XQQ8QjIA3/AayNDeretKiBeY5agW/UA8dX8Sz86esh65i4LSKiA+WldVeF5Q088AlRkYoIWnHHluILkjOLfvvo5FD8Eu8z2Q0FoGViiLER9cd2kVCpLzJ6bVVzoe5UrAgFcLxe+ndrg95gXhB2C4mPG8Ba7FkKTwNdgoqU9ppqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cAsk765v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQotE9dV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC3AC2BC9E;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cAsk765v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8944FC2BCB6;
 	Fri, 10 Apr 2026 08:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1775809136;
-	bh=XAJF9Dgd3KEivhPnAw48nGC8xHdyG9h1Y+3SmIViMdM=;
+	bh=TLi4qGfgMZZZlhmiRkUzE5zMj3I0oiDgiz+990HwJYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQotE9dVhzgpJLRHqDWAFXWaR21yRt7U0zxc6K6r1tKvxZFn6abnH3CPj3SOMwOdw
-	 nKNXa/UaOZnTpE6y8HL7PoCWFU+HCYOciHbov3LLF7W8OG++IeRvWn2t0BXCcc63qf
-	 sM0M3GCHtQUEadMp3WPDzDBZUpbC6tzA7Cr+bHV2SEHjpkl1+pHwJVQv0UrYSQP8G4
-	 AirA+8alDEUP0f71WqoDRQfna7/+dCJDPC46QpHfE6KvFrdTCNMb/uC96CXCOiO55h
-	 6TzBs6emJB8UVq/NL/PfNKoq8ROa4XFttlbLCmil5EE04HBk65zNbaASgpOR0gM6I1
-	 gApf0fifZDfsw==
+	b=cAsk765vzVHY8UDHN1nUmD/kOHfpwzLWfEaXKtWIHXnckN9YzfzM3BRJ8FTY5/3Q4
+	 aQ9eger7yB0HxceXvHVkCjflbHxnhTnsSnRIeMbmGZOnHYrRml7ObjgRwKUINuIIph
+	 Lc+qT/5xcffgF8u1AyAzi2KW/Ed3MFS8vXAawTPkSRJAD8w+7yORjLovuS83CrEJ0w
+	 uzVvPk+V1zvINc0hTrcK8i9cvA6+oSkuJWzCWGJvta7vtAmSarhBXjA4jw3kVMqUy6
+	 +CMEQrvOqAa7X2MWjoiOFM2U9A9GPaCfJ+F6RdPEeyg1HpeLULSAG1dBEYfWAv36RE
+	 8ITc7tNwusHmg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wB74n-000000026uS-3fj8;
+	id 1wB74n-000000026uc-3slJ;
 	Fri, 10 Apr 2026 10:18:53 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -57,11 +57,10 @@ Cc: Matthias Brugger <matthias.bgg@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Purna Chandra Mandal <purna.mandal@microchip.com>
-Subject: [PATCH 06/26] spi: pic32: fix controller deregistration
-Date: Fri, 10 Apr 2026 10:17:36 +0200
-Message-ID: <20260410081757.503099-7-johan@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 11/26] spi: s3c64xx: fix controller deregistration
+Date: Fri, 10 Apr 2026 10:17:41 +0200
+Message-ID: <20260410081757.503099-12-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260410081757.503099-1-johan@kernel.org>
 References: <20260410081757.503099-1-johan@kernel.org>
@@ -76,46 +75,36 @@ Content-Transfer-Encoding: 8bit
 Make sure to deregister the controller before releasing underlying
 resources like DMA during driver unbind.
 
-Fixes: 1bcb9f8ceb67 ("spi: spi-pic32: Add PIC32 SPI master driver")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Purna Chandra Mandal <purna.mandal@microchip.com>
+Fixes: 91800f0e9005 ("spi/s3c64xx: Use managed registration")
+Cc: stable@vger.kernel.org	# 3.13: 76fbad410c0f
+Cc: stable@vger.kernel.org	# 3.13
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-pic32.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi-s3c64xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-index 369850d14313..70427e529945 100644
---- a/drivers/spi/spi-pic32.c
-+++ b/drivers/spi/spi-pic32.c
-@@ -821,7 +821,7 @@ static int pic32_spi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index ba85243d6d89..95b61264b679 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1369,7 +1369,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
+ 	       sdd->regs + S3C64XX_SPI_INT_EN);
  
- 	/* register host */
 -	ret = devm_spi_register_controller(&pdev->dev, host);
 +	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&host->dev, "failed registering spi host\n");
- 		goto err_bailout;
-@@ -840,11 +840,16 @@ static int pic32_spi_probe(struct platform_device *pdev)
+ 	if (ret != 0) {
+ 		dev_err(&pdev->dev, "cannot register SPI host: %d\n", ret);
+ 		goto err_pm_put;
+@@ -1399,6 +1399,8 @@ static void s3c64xx_spi_remove(struct platform_device *pdev)
  
- static void pic32_spi_remove(struct platform_device *pdev)
- {
--	struct pic32_spi *pic32s;
-+	struct pic32_spi *pic32s = platform_get_drvdata(pdev);
-+
-+	spi_controller_get(pic32s->host);
-+
-+	spi_unregister_controller(pic32s->host);
+ 	pm_runtime_get_sync(&pdev->dev);
  
--	pic32s = platform_get_drvdata(pdev);
- 	pic32_spi_disable(pic32s);
- 	pic32_spi_dma_unprep(pic32s);
++	spi_unregister_controller(host);
 +
-+	spi_controller_put(pic32s->host);
- }
+ 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
  
- static const struct of_device_id pic32_spi_of_match[] = {
+ 	if (!is_polling(sdd)) {
 -- 
 2.52.0
 

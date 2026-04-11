@@ -1,65 +1,68 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F7E37E2FC
-	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 15:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4093CCFA0
+	for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 15:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775833504; cv=none; b=tvTEDqW/uWZruZQntznpGiMEPmvfHkKn141XM346loXy00U75GuAmRuraQRTHeAhSWW9vCKxv+bfTVw4ItdkVMBYvbbl4CoWjAofZfISGMN9ve5rgB+88llUaKUnDzDZt4zTCAm1zj9DD1vIJ1tyJkSziWpNR4ocTLqIo7+QxCs=
+	t=1775833515; cv=none; b=hY2VXTHBC1juY3cUrOh/XGr0MnXcc4142PxJaj9IaXxBieczf4ah7V/5Jod/ZzktmxM607OhjC3rRMiBiIHoYzKKa/JnXMOqPaplxoy8MR203F7WRnOpaIZiQvEcu2H4NEZWoYESR1lHpuQsns3B3HIKDzGVoASWG4yR0vnHxX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775833504; c=relaxed/simple;
-	bh=eheJmdgPgeqGeik3qq47b8UOd+nLsPopHTkXCW3k7Og=;
+	s=arc-20240116; t=1775833515; c=relaxed/simple;
+	bh=WihQo63zpBsokLBjls6ItPwMzscMAyPMpl1pOun5PDw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=F37o8+PkNx6/1zC/kfuCvfDmilFxj9/7HGDoWVM3pK07iwyxiAmw4VBZBubCgsO9zSJml2rjEkXe1IdgPv7DZ5/HFJ3oscag4+jNBHWQFNtpldkIOc4aKzctyIhu5nl0dv88XbtzwFdC+t/fpxrE9f0WJJDplKxVnMfapVC+veo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=hOdpwkyv; arc=none smtp.client-ip=209.85.210.174
+	 In-Reply-To:To:Cc; b=tRqD/HAtn+vM7XZ5rfMwgelO5KNpQb7oFVA7LQpZbF/70c6KBvO7CrltC2IYIAYjXR5I2j//T4c5I52q+c49ELTzPx6je4ljyoUoZ4WkFDSJc1Z+7N+k8IQWCwI/lxea21mATxAG+X6VKee00LGfQ2/zJirUEk9CRN58r3jqnR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=xDxlOIt0; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="hOdpwkyv"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82f1bfc9b8fso84006b3a.1
-        for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 08:05:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="xDxlOIt0"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-82cf636dac8so1131202b3a.3
+        for <linux-spi@vger.kernel.org>; Fri, 10 Apr 2026 08:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1775833502; x=1776438302; darn=vger.kernel.org;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1775833512; x=1776438312; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OGwxGNzPNhl8p1KQjYaA0p0dmTpV8/UPLRrlCuE9w44=;
-        b=hOdpwkyvcmleKgCmxEJkkymEoytEuMuUwIt+HTxyvWLgbX5QhYBC9IS9Tm4VbAzV66
-         ONqfT+umnghPWaB3yDs1GwLIUux5ctg/7qi/hWeQezxBJ86IsdQbcdCcMTe9ltSBnQQg
-         mPXtTL4UgUaH5L0jkVh/XUygex2GhxOp5c3pVDTlsYZrUqPgy3FY1plapG6G08E0unZA
-         OSh8Gqo0HRRPwuhoGC1PKWToTHoFiC4BLhEEnrLJGiic47R9eg0iMGka35IdVcv4/UyJ
-         l/Fwpdp5xLu8tXTRhkMHyU2QUmNdrtqC9se3i/FdPKtdBRlNxPkUQQeKpQj+d6MHvRuP
-         Uvbw==
+        bh=QUgQxnA32hZgJleNQEMD+FEy3TYUIXs1W0BHwR0D0Zg=;
+        b=xDxlOIt0GuSPapN68iMxwS5jjucqescu5Rz5mM0MR/FLIjSGLbl56+K7LyfTZiBcx7
+         18FaAWFHl6bIANvKBgS84X/sZyR/FWIAsxFSQ4obhQyx5KAJ379TwD4pkbsAgag8TCi+
+         gMLvVyaRl69SRbkotXl6zMpIvEmQhTVywB/9Yr9SngwwfdQ83vMq1FxNdGsU96IL7FRq
+         BlwuZh4MfM3DHXEdmcgrMhHNEH3Jhb3wkoQhtUrrWb4F0jrmOiTVLxkiYm/D7y5wntgc
+         Qv/evk6/32SfTd2mg1bBToulIUnJT2wXcNnOY6XHFRZetnruriIVYX0DEf8IX9rSk2lM
+         p12Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775833502; x=1776438302;
+        d=1e100.net; s=20251104; t=1775833512; x=1776438312;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OGwxGNzPNhl8p1KQjYaA0p0dmTpV8/UPLRrlCuE9w44=;
-        b=lTxJbiJjhGn/ZErCB2rgKPuA3CW9nrNNCFbPcg4sj+5jeJtpmpIOWU1rtFi8ATKbcN
-         6LmHvxJ7yxs1Yj7d8p17YtMkNkzBbUeHd+PsZBESXUzvf5EiCadteqW7mFTUQS2pBFTL
-         UqINdgEY3AclpTprUPAYaQF8njZjxt0K07pxEZDq7D3AAOE/7xGO4sYBh7afZ2pfBD/7
-         D0a/zrwuXzMH8sMmQWWKE6mivjeKzH3eW8ibKWBSHcgxSluB45iQ0hn4BjeZVA8boRI1
-         m4OZEAozRAw0kcGEcO6yd/iEnXYTsl0qHyg2JsK1CJPCVhOx2LCTJyy4QIyyGyE0+/0T
-         r83A==
-X-Gm-Message-State: AOJu0YwkVZzI6fJP/nIHiy0twIDgN5zvt6rYvLk3N/7LLBxnGBpygSow
-	mXrFhCgpMg5AK1dxDp+cy8suFaOSAdbrHhZglLZ3Nax/WesW6e7efuKnslJHdFB2eB0=
-X-Gm-Gg: AeBDievsTY09a0lYbiXKF+vni50Qw5PLbZyCO+VCmzbMwS9cSLopv3TDrYM5IPKESxA
-	nhbhZA0eaUb3jr09Vn/7VtmwcmzKXrRqicqkLJEWCGX5Ou4YBxShNFaVteO87C0p/d9QAnUHeIl
-	1UFWEzl8p1no3crzn5r13UJkGRsIa8br1KZ6B5hL+5t7citngnFqhvfAdQx56FGEU6caNiRkBZG
-	k6y4mcPbi0bF5+CnjsnQHZ1wHAjAbs53q2w6ljmx9rMYiDLK1R7WcYyV4osApXV4ozcgm4i+DPE
-	pkvzV700/2uVjytseaVd4/tYgklfJv3/RYqOBkd9nDQdsLLHXaKbpcwPLR5KOHNhQAjlhKH90U/
-	VX1ngKn5s7nVYhvvY8S5aRG5nYrDACAVXdnc05Qg4WmiQjC0dLMiJ0rnqO0nKXP7kTxj+1gHt/s
-	Wuwo37XamPYtgwhop10npfxycFuoukxj7yN4JDgS14A4ZbywJNkU+xnydi+oElo7Qv
-X-Received: by 2002:a05:6a00:808c:b0:829:8942:2ca4 with SMTP id d2e1a72fcca58-82f0c281379mr3779253b3a.19.1775833501946;
-        Fri, 10 Apr 2026 08:05:01 -0700 (PDT)
+        bh=QUgQxnA32hZgJleNQEMD+FEy3TYUIXs1W0BHwR0D0Zg=;
+        b=d/crd6ta31eX6tF2/G0Z7wusZkxe+xLvYXgNTFLYwCWgQ0GNb3Rwq7HQdZ6BoLtTIM
+         FZfNe4mZvodxSmMxKNkn0jvvyXqtm1YMjMHFhwU6/GUGG50uF9pVWUsWmYjoMgaJ5MVK
+         bIyrgcBsuJ5h6anDiUadHalckox8QARfMt8yt09PO9AhnKatO0HPvqrfzXgvhDqxT3Si
+         2LdHAv6Joi4CF7DNEJKEgbY+AfF5FukXGlCg8AAZkMv/eclpMwjZO1qLwG6ZufivUdtO
+         Szjx0Zj3q14g2X6Qk1WZ/WgWgqXjdshD6K98Ud78IZtLN1edZVptB67koRTRHeGZQkes
+         GsPQ==
+X-Gm-Message-State: AOJu0YzCMd91mDR7z7We1TwFd1VBuS0IBrvdsO+0IAdBAIAvaWs25TDK
+	w+5C7R47wDP36taIi6XPin1WseVZ+Kw5uBMHMods6mr6mCwLBZ5ynCmj9LWZtcrkM+g/emy/5Wt
+	kB+jnMCwKEw==
+X-Gm-Gg: AeBDieu41gFGFWRP3ODGy2eTSrx1VSokcVYN4xBNk4+J/X1V5qNk6NRZijLHnUJjTM0
+	GooOszUgRzIf/yzlMLfu4a2F5ztQW94Xi8E4mUQHghX42vfpazXuqp9YNkFnRJ1XK4Aw8hYnw85
+	8PCoEYbSvZGF05lSZN8aMtSo799hrcZ9cmqj81NAKY/twbodJXmrCbaHE87nR8d7f+xI4bsWRAa
+	Akx0/UIcYigeu6/Y4FYfnaRVfxx9IApXNeY/LGEjpSXARrKaNpxGC2H2xkTYDdYkK7axxoShoE5
+	D7Y1YBoVh2vV/cYfFOLjyT2HVKsQxN7QvLoJTpYpOXW7MtNapmOdf08zwyqUTmyMKuy5muNPTRl
+	FDKmvYy8X1qcdnQajejFYroCc68ZB4CX9PFJCqWNZYTukFGA6KzDQt+uHHi432bVQcRPrPwk9UP
+	L2/k2yDRmjrNJxs7ta86h1+NIHp2C8wfHxhrlDdxy8QEPUERKFU3vRwSrf9zHufaPl3Ja0UAftb
+	RY=
+X-Received: by 2002:a05:6a00:2918:b0:82a:17b8:1474 with SMTP id d2e1a72fcca58-82f0c26b5d2mr4097270b3a.1.1775833512325;
+        Fri, 10 Apr 2026 08:05:12 -0700 (PDT)
 Received: from [127.0.1.1] ([45.8.220.15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4d5413sm2970532b3a.40.2026.04.10.08.04.51
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f0c4d5413sm2970532b3a.40.2026.04.10.08.05.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Apr 2026 08:05:01 -0700 (PDT)
+        Fri, 10 Apr 2026 08:05:11 -0700 (PDT)
 From: Guodong Xu <guodong@riscstar.com>
-Date: Fri, 10 Apr 2026 23:04:20 -0400
-Subject: [PATCH v8 1/3] dt-bindings: spi: add SpacemiT K1 SPI support
+Date: Fri, 10 Apr 2026 23:04:21 -0400
+Subject: [PATCH v8 2/3] spi: spacemit: introduce SpacemiT K1 SPI controller
+ driver
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,7 +71,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260410-spi-spacemit-k1-v8-1-53ebb48a4146@riscstar.com>
+Message-Id: <20260410-spi-spacemit-k1-v8-2-53ebb48a4146@riscstar.com>
 References: <20260410-spi-spacemit-k1-v8-0-53ebb48a4146@riscstar.com>
 In-Reply-To: <20260410-spi-spacemit-k1-v8-0-53ebb48a4146@riscstar.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -80,113 +83,861 @@ To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
 Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
  linux-kernel@vger.kernel.org, Guodong Xu <guodong@riscstar.com>, 
- Alex Elder <elder@riscstar.com>, Conor Dooley <conor.dooley@microchip.com>, 
- Troy Mitchell <troy.mitchell@linux.spacemit.com>
+ Alex Elder <elder@riscstar.com>
 X-Mailer: b4 0.15.1
 
 From: Alex Elder <elder@riscstar.com>
 
-Add support for the SPI controller implemented by the SpacemiT K1 SoC.
+This patch introduces the driver for the SPI controller found in the
+SpacemiT K1 SoC.  Currently the driver supports master mode only.
+The SPI hardware implements RX and TX FIFOs, 32 entries each, and
+supports both PIO and DMA mode transfers.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Alex Elder <elder@riscstar.com>
 Signed-off-by: Guodong Xu <guodong@riscstar.com>
 ---
- .../devicetree/bindings/spi/spacemit,k1-spi.yaml   | 84 ++++++++++++++++++++++
- 1 file changed, 84 insertions(+)
+v8: Addressing Mark Brown's v7 review:
+  - Use C++ style (//) comments for the entire file header
+  - Remove all open-coded DMA mapping; rely on the SPI core to
+    handle DMA mapping via transfer->tx_sg/rx_sg
+  - Implement can_dma() callback, replacing open-coded transfer
+    length checks
+  - Implement set_cs() callback for chip select control via the
+    TOP_HOLD_FRAME_LOW register bit
+  - Switch from transfer_one_message() to transfer_one(), letting
+    the SPI core handle message-level flow control
+  - DMA completion now calls spi_finalize_current_transfer()
+    directly instead of using a completion
+  - Add SSP_STATUS_BCE (bit count error) to error detection
+  - Interrupt handler returns IRQ_NONE early if no transfer is
+    active, before acknowledging interrupts
+  - Update copyright year to 2026
+---
+ drivers/spi/Kconfig           |   9 +
+ drivers/spi/Makefile          |   1 +
+ drivers/spi/spi-spacemit-k1.c | 782 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 792 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spacemit,k1-spi.yaml b/Documentation/devicetree/bindings/spi/spacemit,k1-spi.yaml
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index c3b2f02f5912e..b50d9ae1a498b 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1085,6 +1085,15 @@ config SPI_SG2044_NOR
+ 	  also supporting 3Byte address devices and 4Byte address
+ 	  devices.
+ 
++config SPI_SPACEMIT_K1
++	tristate "K1 SPI Controller"
++	depends on ARCH_SPACEMIT || COMPILE_TEST
++	depends on OF
++	imply MMP_PDMA if ARCH_SPACEMIT
++	default m if ARCH_SPACEMIT
++	help
++	  Enable support for the SpacemiT K1 SPI controller.
++
+ config SPI_SPRD
+ 	tristate "Spreadtrum SPI controller"
+ 	depends on ARCH_SPRD || COMPILE_TEST
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9d36190a98848..9fa12498ce8c0 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -143,6 +143,7 @@ obj-$(CONFIG_SPI_SIFIVE)		+= spi-sifive.o
+ obj-$(CONFIG_SPI_SLAVE_MT27XX)          += spi-slave-mt27xx.o
+ obj-$(CONFIG_SPI_SN_F_OSPI)		+= spi-sn-f-ospi.o
+ obj-$(CONFIG_SPI_SG2044_NOR)	+= spi-sg2044-nor.o
++obj-$(CONFIG_SPI_SPACEMIT_K1)		+= spi-spacemit-k1.o
+ obj-$(CONFIG_SPI_SPRD)			+= spi-sprd.o
+ obj-$(CONFIG_SPI_SPRD_ADI)		+= spi-sprd-adi.o
+ obj-$(CONFIG_SPI_STM32) 		+= spi-stm32.o
+diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
 new file mode 100644
-index 0000000000000..e82c7f8d0b981
+index 0000000000000..8cef633144954
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spacemit,k1-spi.yaml
-@@ -0,0 +1,84 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spacemit,k1-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/spi/spi-spacemit-k1.c
+@@ -0,0 +1,782 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// SpacemiT K1 SPI controller driver
++//
++// Copyright (C) 2026, RISCstar Solutions Corporation
++// Copyright (C) 2023, SpacemiT Corporation
 +
-+title: SpacemiT K1 SoC Serial Peripheral Interface (SPI)
++#include <linux/bitfield.h>
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/dma-mapping.h>
++#include <linux/dmaengine.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/of.h>
++#include <linux/platform_device.h>
++#include <linux/reset.h>
++#include <linux/scatterlist.h>
++#include <linux/sizes.h>
++#include <linux/spi/spi.h>
++#include <linux/units.h>
 +
-+maintainers:
-+  - Alex Elder <elder@kernel.org>
++#include "internals.h"
 +
-+description:
-+  The SpacemiT K1 SoC implements a SPI controller that has two 32-entry
-+  FIFOs, for transmit and receive.  Details are currently available in
-+  section 18.2.1 of the K1 User Manual, found in the SpacemiT Keystone
-+  K1 Documentation[1].  The controller transfers words using PIO.  DMA
-+  transfers are supported as well, if both TX and RX DMA channels are
-+  specified,
++/* This is the range of transfer rates supported by the K1 SoC */
++#define K1_SPI_MIN_SPEED_HZ		6250
++#define K1_SPI_MAX_SPEED_HZ		51200000
 +
-+  [1] https://developer.spacemit.com/documentation
++/* DMA constraints */
++#define K1_SPI_DMA_ALIGNMENT		64
++#define K1_SPI_MAX_DMA_LEN		SZ_512K
 +
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
++/* SSP Top Control Register */
++#define SSP_TOP_CTRL		0x00
++#define TOP_SSE				BIT(0)		/* Enable port */
++#define TOP_FRF_MASK			GENMASK(2, 1)	/* Frame format */
++#define TOP_FRF_MOTOROLA			0	/* Motorola SPI */
++#define TOP_DSS_MASK			GENMASK(9, 5)	/* Data size (1-32) */
++#define TOP_SPO				BIT(10)		/* Polarity: 0=low */
++#define TOP_SPH				BIT(11)		/* Half-cycle phase */
++#define TOP_LBM				BIT(12)		/* Loopback mode */
++#define TOP_TRAIL			BIT(13)		/* Trailing bytes */
++#define TOP_HOLD_FRAME_LOW		BIT(14)		/* Chip select */
 +
-+properties:
-+  compatible:
-+    const: spacemit,k1-spi
++/* SSP FIFO Control Register */
++#define SSP_FIFO_CTRL		0x04
++#define FIFO_TFT_MASK			GENMASK(4, 0)	/* TX FIFO threshold */
++#define FIFO_RFT_MASK			GENMASK(9, 5)	/* RX FIFO threshold */
++#define FIFO_TSRE			BIT(10)		/* TX service request */
++#define FIFO_RSRE			BIT(11)		/* RX service request */
 +
-+  reg:
-+    maxItems: 1
++/* SSP Interrupt Enable Register */
++#define SSP_INT_EN		0x08
++#define SSP_INT_EN_TINTE		BIT(1)		/* RX timeout */
++#define SSP_INT_EN_RIE			BIT(2)		/* RX FIFO */
++#define SSP_INT_EN_TIE			BIT(3)		/* TX FIFO */
++#define SSP_INT_EN_RIM			BIT(4)		/* RX FIFO overrun */
++#define SSP_INT_EN_TIM			BIT(5)		/* TX FIFO underrun */
++#define SSP_INT_EN_EBCEI		BIT(6)		/* Bit count error */
 +
-+  clocks:
-+    items:
-+      - description: Core clock
-+      - description: Bus clock
++/* TX interrupts, RX interrupts, and error interrupts */
++#define SSP_INT_EN_TX		SSP_INT_EN_TIE
++#define SSP_INT_EN_RX \
++		(SSP_INT_EN_TINTE | SSP_INT_EN_RIE)
++#define SSP_INT_EN_ERROR \
++		(SSP_INT_EN_RIM | SSP_INT_EN_TIM | SSP_INT_EN_EBCEI)
 +
-+  clock-names:
-+    items:
-+      - const: core
-+      - const: bus
++/* SSP Time Out Register */
++#define SSP_TIMEOUT		0x0c
++#define SSP_TIMEOUT_MASK		GENMASK(23, 0)
 +
-+  resets:
-+    maxItems: 1
++/* SSP Data Register */
++#define SSP_DATAR		0x10
 +
-+  interrupts:
-+    maxItems: 1
++/* SSP Status Register */
++#define SSP_STATUS		0x14
++#define SSP_STATUS_BSY			BIT(0)		/* SPI/I2S busy */
++#define SSP_STATUS_TNF			BIT(6)		/* TX FIFO not full */
++#define SSP_STATUS_TFL			GENMASK(11, 7)	/* TX FIFO level */
++#define SSP_STATUS_TUR			BIT(12)		/* TX FIFO underrun */
++#define SSP_STATUS_RNE			BIT(14)		/* RX FIFO not empty */
++#define SSP_STATUS_RFL			GENMASK(19, 15)	/* RX FIFO level */
++#define SSP_STATUS_ROR			BIT(20)		/* RX FIFO overrun */
++#define SSP_STATUS_BCE			BIT(21)		/* Bit count error */
 +
-+  dmas:
-+    items:
-+      - description: RX DMA channel
-+      - description: TX DMA channel
++/* Error status mask */
++#define SSP_STATUS_ERROR \
++		(SSP_STATUS_TUR | SSP_STATUS_ROR | SSP_STATUS_BCE)
 +
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
++/* The FIFO sizes and thresholds are the same for RX and TX */
++#define K1_SPI_FIFO_SIZE	32
++#define K1_SPI_THRESH		(K1_SPI_FIFO_SIZE / 2)
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - resets
-+  - interrupts
++struct k1_spi_driver_data {
++	struct spi_controller *host;
++	void __iomem *base;
++	phys_addr_t base_addr;
++	unsigned long bus_rate;
++	struct clk *clk;
++	unsigned long rate;
++	int irq;
 +
-+unevaluatedProperties: false
++	/* Current transfer information; not valid if message is null */
++	u32 bytes;			/* Bytes used for bits_per_word */
++	unsigned int rx_resid;		/* RX bytes left in transfer */
++	unsigned int tx_resid;		/* TX bytes left in transfer */
++	struct spi_transfer *transfer;	/* Current transfer */
 +
-+examples:
-+  - |
++	bool dma_enabled;
++};
 +
-+    #include <dt-bindings/clock/spacemit,k1-syscon.h>
-+    spi@d401c000 {
-+        compatible = "spacemit,k1-spi";
-+        reg = <0xd401c000 0x30>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        clocks = <&syscon_apbc CLK_SSP3>,
-+                 <&syscon_apbc CLK_SSP3_BUS>;
-+        clock-names = "core", "bus";
-+        resets = <&syscon_apbc RESET_SSP3>;
-+        interrupts = <55>;
-+        dmas = <&pdma 20>, <&pdma 19>;
-+        dma-names = "rx", "tx";
-+    };
++/* Set our registers to a known initial state */
++static void
++k1_spi_register_reset(struct k1_spi_driver_data *drv_data, bool initial)
++{
++	u32 val = 0;
++
++	writel(0, drv_data->base + SSP_TOP_CTRL);
++
++	if (initial) {
++		/*
++		 * The TX and RX FIFO thresholds are the same no matter
++		 * what the speed or bits per word, so we can just set
++		 * them once.  The thresholds are one more than the values
++		 * in the register.
++		 */
++		val = FIELD_PREP(FIFO_RFT_MASK, K1_SPI_THRESH - 1);
++		val |= FIELD_PREP(FIFO_TFT_MASK, K1_SPI_THRESH - 1);
++	}
++	writel(val, drv_data->base + SSP_FIFO_CTRL);
++
++	writel(0, drv_data->base + SSP_INT_EN);
++	writel(0, drv_data->base + SSP_TIMEOUT);
++
++	/* Clear any pending interrupt conditions */
++	writel(~0, drv_data->base + SSP_STATUS);
++}
++
++/*
++ * The client can call the setup function multiple times, and each call
++ * can specify a different SPI mode (and transfer speed).  Each transfer
++ * can specify its own speed though, and the core code ensures each
++ * transfer's speed is set to something nonzero and supported by both
++ * the controller and the device.  We just set the speed for each transfer.
++ */
++static int k1_spi_setup(struct spi_device *spi)
++{
++	struct k1_spi_driver_data *drv_data;
++	u32 val;
++
++	drv_data = spi_controller_get_devdata(spi->controller);
++
++	/*
++	 * Configure the message format for this device.  We only
++	 * support Motorola SPI format in master mode.
++	 */
++	val = FIELD_PREP(TOP_FRF_MASK, TOP_FRF_MOTOROLA);
++
++	/* Translate the mode into the value used to program the hardware. */
++	if (spi->mode & SPI_CPHA)
++		val |= TOP_SPH;		/* 1/2 cycle */
++	if (spi->mode & SPI_CPOL)
++		val |= TOP_SPO;		/* active low */
++	if (spi->mode & SPI_LOOP)
++		val |= TOP_LBM;		/* enable loopback */
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++
++	return 0;
++}
++
++static void k1_spi_cleanup(struct spi_device *spi)
++{
++	struct k1_spi_driver_data *drv_data;
++
++	drv_data = spi_controller_get_devdata(spi->controller);
++	k1_spi_register_reset(drv_data, false);
++}
++
++static bool k1_spi_can_dma(struct spi_controller *host, struct spi_device *spi,
++			   struct spi_transfer *transfer)
++{
++	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
++	u32 burst_size;
++
++	if (!drv_data->dma_enabled)
++		return false;
++
++	if (transfer->len > SZ_2K)
++		return false;
++
++	/* Don't bother with DMA if we can't do even a single burst */
++	burst_size = K1_SPI_THRESH * spi_bpw_to_bytes(transfer->bits_per_word);
++
++	return transfer->len >= burst_size;
++}
++
++static void k1_spi_dma_callback(void *param)
++{
++	struct k1_spi_driver_data *drv_data = param;
++	u32 val;
++
++	val = readl(drv_data->base + SSP_FIFO_CTRL);
++	val &= ~(FIFO_TSRE | FIFO_RSRE);
++	writel(val, drv_data->base + SSP_FIFO_CTRL);
++
++	val = readl(drv_data->base + SSP_TOP_CTRL);
++	val &= ~TOP_TRAIL;
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++
++	/* Check for any error conditions */
++	val = readl(drv_data->base + SSP_STATUS);
++	if (val & SSP_STATUS_ERROR)
++		drv_data->transfer->error |= SPI_TRANS_FAIL_IO;
++
++	/* Disable the port */
++	val = readl(drv_data->base + SSP_TOP_CTRL);
++	val &= ~TOP_SSE;
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++
++	drv_data->transfer = NULL;
++
++	spi_finalize_current_transfer(drv_data->host);
++}
++
++/* Prepare a descriptor for TX or RX DMA */
++static struct dma_async_tx_descriptor *
++k1_spi_dma_prep(struct k1_spi_driver_data *drv_data,
++		struct spi_transfer *transfer, bool tx)
++{
++	phys_addr_t addr = drv_data->base_addr + SSP_DATAR;
++	u32 burst_size = K1_SPI_THRESH * drv_data->bytes;
++	struct dma_slave_config cfg = { };
++	enum dma_transfer_direction dir;
++	enum dma_slave_buswidth width;
++	struct dma_chan *chan;
++	struct sg_table *sgt;
++
++	width = drv_data->bytes == 1 ? DMA_SLAVE_BUSWIDTH_1_BYTE :
++		drv_data->bytes == 2 ? DMA_SLAVE_BUSWIDTH_2_BYTES :
++		/* bytes == 4 */       DMA_SLAVE_BUSWIDTH_4_BYTES;
++
++	if (tx) {
++		chan = drv_data->host->dma_tx;
++		sgt = &transfer->tx_sg;
++		dir = DMA_MEM_TO_DEV;
++
++		cfg.dst_addr = addr;
++		cfg.dst_addr_width = width;
++		cfg.dst_maxburst = burst_size;
++	} else {
++		chan = drv_data->host->dma_rx;
++		sgt = &transfer->rx_sg;
++		dir = DMA_DEV_TO_MEM;
++
++		cfg.src_addr = addr;
++		cfg.src_addr_width = width;
++		cfg.src_maxburst = burst_size;
++	}
++	cfg.direction = dir;
++
++	if (dmaengine_slave_config(chan, &cfg))
++		return NULL;
++
++	return dmaengine_prep_slave_sg(chan, sgt->sgl, sgt->nents, dir,
++				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++
++}
++
++static int k1_spi_dma_one(struct spi_controller *host, struct spi_device *spi,
++			  struct spi_transfer *transfer)
++{
++	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
++	struct dma_async_tx_descriptor *desc;
++	u32 val;
++
++	/* Prepare the TX descriptor and submit it */
++	desc = k1_spi_dma_prep(drv_data, transfer, true);
++	if (!desc)
++		goto fallback;
++	dmaengine_submit(desc);
++
++	/* Prepare the RX descriptor and submit it */
++	desc = k1_spi_dma_prep(drv_data, transfer, false);
++	if (!desc)
++		goto fallback;
++
++	/* When RX is complete we also know TX has completed */
++	desc->callback = k1_spi_dma_callback;
++	desc->callback_param = drv_data;
++
++	dmaengine_submit(desc);
++
++	val = readl(drv_data->base + SSP_TOP_CTRL);
++	val |= TOP_TRAIL;		/* Trailing bytes handled by DMA */
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++
++	val = readl(drv_data->base + SSP_FIFO_CTRL);
++	val |= FIFO_TSRE | FIFO_RSRE;
++	writel(val, drv_data->base + SSP_FIFO_CTRL);
++
++	/* Start RX first so we're ready the instant we start transmitting */
++	dma_async_issue_pending(host->dma_rx);
++	dma_async_issue_pending(host->dma_tx);
++
++	return 1;
++fallback:
++	transfer->error |= SPI_TRANS_FAIL_NO_START;
++
++	return -EAGAIN;
++}
++
++/* Flush the RX FIFO of any leftover data before processing a message */
++static int k1_spi_prepare_message(struct spi_controller *host,
++				  struct spi_message *message)
++{
++	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
++	u32 val = readl(drv_data->base + SSP_STATUS);
++	u32 count;
++
++	/* If there's nothing in the FIFO, we're done */
++	if (!(val & SSP_STATUS_RNE))
++		return 0;
++
++	/* Read and discard what's there (one more than what the field says) */
++	count = FIELD_GET(SSP_STATUS_RFL, val) + 1;
++	do
++		(void)readl(drv_data->base + SSP_DATAR);
++	while (--count);
++
++	return 0;
++}
++
++/* Set logic level of chip select line (high=true means CS deasserted) */
++static void k1_spi_set_cs(struct spi_device *spi, bool high)
++{
++	struct k1_spi_driver_data *drv_data;
++	u32 val;
++
++	drv_data = spi_controller_get_devdata(spi->controller);
++
++	val = readl(drv_data->base + SSP_TOP_CTRL);
++	if (high)
++		val &= ~TOP_HOLD_FRAME_LOW;
++	else
++		val |= TOP_HOLD_FRAME_LOW;
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++}
++
++/* Set the transfer speed; the SPI core code ensures it is supported */
++static int k1_spi_set_speed(struct k1_spi_driver_data *drv_data,
++			    struct spi_transfer *transfer)
++{
++	struct clk *clk = drv_data->clk;
++	u64 nsec_per_word;
++	u64 bus_ticks;
++	u32 timeout;
++	u32 val;
++	int ret;
++
++	ret = clk_set_rate(clk, transfer->speed_hz);
++	if (ret)
++		return ret;
++
++	drv_data->rate = clk_get_rate(clk);
++
++	/* No need for RX FIFO timeout if we're not receiving anything */
++	if (!transfer->rx_buf)
++		return 0;
++
++	/*
++	 * Compute the RX FIFO inactivity timeout value that should be used.
++	 * The inactivity timer restarts with each word that lands in the
++	 * FIFO.  If several "word transfer times" pass without any new data
++	 * in the RX FIFO, we might as well read what's there.
++	 *
++	 * The rate at which words land in the FIFO is determined by the
++	 * word size and the transfer rate.  One bit is transferred per
++	 * clock tick, and 8 (or 16 or 32) bits are transferred per word.
++	 *
++	 * So we can get word transfer time (in nanoseconds) from:
++	 *   nsec_per_tick = NSEC_PER_SEC / drv_data->rate;
++	 *   ticks_per_word = BITS_PER_BYTE * drv_data->bytes;
++	 * We do the divide last for better accuracy.
++	 */
++	nsec_per_word = NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
++	nsec_per_word = DIV_ROUND_UP_ULL(nsec_per_word, drv_data->rate);
++
++	/*
++	 * The timeout (which we'll set to three word transfer times) is
++	 * expressed as a number of APB clock ticks.
++	 *   bus_ticks = 3 * nsec * (drv_data->bus_rate / NSEC_PER_SEC)
++	 */
++	bus_ticks = 3 * nsec_per_word * drv_data->bus_rate;
++	timeout = DIV_ROUND_UP_ULL(bus_ticks, NSEC_PER_SEC);
++
++	/* Set the RX timeout period (required for both DMA and PIO) */
++	val = FIELD_PREP(SSP_TIMEOUT_MASK, timeout);
++	writel(val, drv_data->base + SSP_TIMEOUT);
++
++	return 0;
++}
++
++static int k1_spi_transfer_one(struct spi_controller *host,
++			       struct spi_device *spi,
++			       struct spi_transfer *transfer)
++{
++	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
++	u32 count;
++	u32 ctrl;
++	u32 val;
++	int ret;
++
++	/* Bits per word can change on a per-transfer basis */
++	drv_data->bytes = spi_bpw_to_bytes(transfer->bits_per_word);
++
++	/* Each transfer can also specify a different rate */
++	ret = k1_spi_set_speed(drv_data, transfer);
++	if (ret) {
++		dev_err(&host->dev,
++			"failed to set transfer speed: %d\n", ret);
++		return ret;
++	}
++
++	/* Record how many words the len bytes represent */
++	count = transfer->len / drv_data->bytes;
++	drv_data->rx_resid = count;
++	drv_data->tx_resid = count;
++
++	drv_data->transfer = transfer;
++
++	/* Clear any existing interrupt conditions */
++	writel(~0, drv_data->base + SSP_STATUS);
++
++	/* Set the data (word) size, and enable the port */
++	ctrl = readl(drv_data->base + SSP_TOP_CTRL);
++	ctrl &= ~TOP_DSS_MASK;
++	ctrl |= FIELD_PREP(TOP_DSS_MASK, transfer->bits_per_word - 1);
++	ctrl |= TOP_SSE;
++	writel(ctrl, drv_data->base + SSP_TOP_CTRL);
++
++	if (spi_xfer_is_dma_mapped(host, spi, transfer))
++		return k1_spi_dma_one(host, spi, transfer);
++
++	/* An interrupt will initiate the transfer */
++	val = SSP_INT_EN_TX | SSP_INT_EN_RX | SSP_INT_EN_ERROR;
++	writel(val, drv_data->base + SSP_INT_EN);
++
++	return 1;	/* We will call spi_finalize_current_transfer() */
++}
++
++static void
++k1_spi_handle_err(struct spi_controller *host, struct spi_message *message)
++{
++	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
++
++	if (drv_data->dma_enabled) {
++		dmaengine_terminate_sync(host->dma_rx);
++		dmaengine_terminate_sync(host->dma_tx);
++	}
++}
++
++static void k1_spi_write_word(struct k1_spi_driver_data *drv_data)
++{
++	struct spi_transfer *transfer = drv_data->transfer;
++	u32 bytes = drv_data->bytes;
++	u32 val;
++
++	if (transfer->tx_buf) {
++		const void *buf;
++
++		buf = transfer->tx_buf + (transfer->len - drv_data->tx_resid);
++		if (bytes == 1)
++			val = *(u8 *)buf;
++		else if (bytes == 2)
++			val = *(u16 *)buf;
++		else	/* bytes == 4 */
++			val = *(u32 *)buf;
++	} else {
++		val = 0;	/* Null writer; write 1, 2, or 4 zero bytes */
++	}
++	/* Fill the next TX FIFO entry */
++	writel(val, drv_data->base + SSP_DATAR);
++
++	drv_data->tx_resid -= bytes;
++}
++
++/* The last-read status value is provided; we know SSP_STATUS_TNF is set */
++static bool k1_spi_write(struct k1_spi_driver_data *drv_data, u32 val)
++{
++	unsigned int count;
++
++	/* Get the number of open slots in the FIFO; zero means all */
++	count = FIELD_GET(SSP_STATUS_TFL, val) ? : K1_SPI_FIFO_SIZE;
++
++	/*
++	 * Limit how much we try to send at a time, to reduce the
++	 * chance the other side can overrun our RX FIFO.
++	 */
++	count = min3(count, K1_SPI_THRESH, drv_data->tx_resid);
++	do
++		k1_spi_write_word(drv_data);
++	while (--count);
++
++	return !drv_data->tx_resid;
++}
++
++static void k1_spi_read_word(struct k1_spi_driver_data *drv_data)
++{
++	struct spi_transfer *transfer = drv_data->transfer;
++	u32 bytes = drv_data->bytes;
++	u32 val;
++
++	/* Consume the next RX FIFO entry */
++	val = readl(drv_data->base + SSP_DATAR);
++	if (transfer->rx_buf) {
++		void *buf;
++
++		buf = transfer->rx_buf + (transfer->len - drv_data->rx_resid);
++
++		if (bytes == 1)
++			*(u8 *)buf = val;
++		else if (bytes == 2)
++			*(u16 *)buf = val;
++		else	/* bytes == 4 */
++			*(u32 *)buf = val;
++	}	/* Otherwise null reader: discard the data */
++
++	drv_data->rx_resid -= bytes;
++}
++
++/* The last-read status value is provided; we know SSP_STATUS_RNE is set */
++static bool k1_spi_read(struct k1_spi_driver_data *drv_data, u32 val)
++{
++	do {
++		unsigned int count = FIELD_GET(SSP_STATUS_RFL, val) + 1;
++
++		/* Only read what we need */
++		count = min(count, drv_data->rx_resid);
++		do
++			k1_spi_read_word(drv_data);
++		while (--count);
++
++		/* If there's no more to read, we're done */
++		if (!drv_data->rx_resid)
++			return true;
++
++		/* Check again in case more became available to read */
++		val = readl(drv_data->base + SSP_STATUS);
++		if (val & SSP_STATUS_RNE)
++			writel(SSP_STATUS_RNE, drv_data->base + SSP_STATUS);
++		else
++			return false;
++	} while (true);
++}
++
++static irqreturn_t k1_spi_ssp_isr(int irq, void *dev_id)
++{
++	struct k1_spi_driver_data *drv_data = dev_id;
++	u32 val;
++
++	/* Return immediately if we're not expecting any interrupts */
++	if (!drv_data->transfer)
++		return IRQ_NONE;
++
++	/* Get status and clear pending interrupts; all are handled below */
++	val = readl(drv_data->base + SSP_STATUS);
++	writel(val, drv_data->base + SSP_STATUS);
++
++	/* Check for any error conditions first */
++	if (val & SSP_STATUS_ERROR) {
++		drv_data->transfer->error |= SPI_TRANS_FAIL_IO;
++		goto done;
++	}
++
++	/*
++	 * For SPI, bytes are transferred in both directions equally, and
++	 * RX always follows TX.  Start by writing if there is anything to
++	 * write, then read.  Once there's no more to read, we're done.
++	 */
++	if (drv_data->tx_resid && (val & SSP_STATUS_TNF)) {
++		/* If we finish writing, disable TX interrupts */
++		if (k1_spi_write(drv_data, val)) {
++			val = SSP_INT_EN_RX | SSP_INT_EN_ERROR;
++			writel(val, drv_data->base + SSP_INT_EN);
++		}
++	}
++
++	/* We're not done unless we've read all that was requested */
++	if (drv_data->rx_resid) {
++		/* Read more if there FIFO is not empty */
++		if (val & SSP_STATUS_RNE)
++			if (k1_spi_read(drv_data, val))
++				goto done;
++
++		return IRQ_HANDLED;
++	}
++done:
++	/* Disable the port */
++	val = readl(drv_data->base + SSP_TOP_CTRL);
++	val &= ~TOP_SSE;
++	writel(val, drv_data->base + SSP_TOP_CTRL);
++
++	/* Disable all interrupts */
++	writel(0, drv_data->base + SSP_INT_EN);
++
++	drv_data->transfer = NULL;
++
++	spi_finalize_current_transfer(drv_data->host);
++
++	return IRQ_HANDLED;
++}
++
++static int
++k1_spi_dma_setup(struct k1_spi_driver_data *drv_data, struct device *dev)
++{
++	struct spi_controller *host = drv_data->host;
++	struct dma_chan *chan;
++
++	chan = dma_request_chan(dev, "tx");
++	if (IS_ERR(chan))
++		return PTR_ERR(chan);
++	host->dma_tx = chan;
++
++	chan = dma_request_chan(dev, "rx");
++	if (IS_ERR(chan)) {
++		dma_release_channel(host->dma_tx);
++		host->dma_tx = NULL;
++		return PTR_ERR(chan);
++	}
++	host->dma_rx = chan;
++
++	drv_data->dma_enabled = true;
++
++	return 0;
++}
++
++static void k1_spi_dma_cleanup(struct device *dev, void *res)
++{
++	struct k1_spi_driver_data **ptr = res;
++	struct k1_spi_driver_data *drv_data = *ptr;
++	struct spi_controller *host = drv_data->host;
++
++	if (!drv_data->dma_enabled)
++		return;
++
++	drv_data->dma_enabled = false;
++
++	dma_release_channel(host->dma_rx);
++	host->dma_rx = NULL;
++	dma_release_channel(host->dma_tx);
++	host->dma_tx = NULL;
++}
++
++static int
++devm_k1_spi_dma_setup(struct k1_spi_driver_data *drv_data, struct device *dev)
++{
++	struct k1_spi_driver_data **ptr;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_MMP_PDMA)) {
++		dev_info(dev, "DMA not available; using PIO\n");
++		return 0;
++	}
++
++	ptr = devres_alloc(k1_spi_dma_cleanup, sizeof(*ptr), GFP_KERNEL);
++	if (!ptr)
++		return -ENOMEM;
++
++	ret = k1_spi_dma_setup(drv_data, dev);
++	if (ret) {
++		devres_free(ptr);
++		return ret;
++	}
++
++	*ptr = drv_data;
++	devres_add(dev, ptr);
++
++	return 0;
++}
++
++static int k1_spi_probe(struct platform_device *pdev)
++{
++	struct k1_spi_driver_data *drv_data;
++	struct device *dev = &pdev->dev;
++	struct reset_control *reset;
++	struct spi_controller *host;
++	struct resource *iores;
++	struct clk *clk_bus;
++	int ret;
++
++	host = devm_spi_alloc_host(dev, sizeof(*drv_data));
++	if (!host)
++		return -ENOMEM;
++	drv_data = spi_controller_get_devdata(host);
++	drv_data->host = host;
++	platform_set_drvdata(pdev, drv_data);
++
++	ret = devm_k1_spi_dma_setup(drv_data, dev);
++	if (ret == -EPROBE_DEFER)
++		return ret;
++	if (ret)
++		dev_warn(dev, "DMA setup failed (%d), falling back to PIO\n", ret);
++
++	drv_data->base = devm_platform_get_and_ioremap_resource(pdev, 0,
++								&iores);
++	if (IS_ERR(drv_data->base))
++		return dev_err_probe(dev, PTR_ERR(drv_data->base),
++				     "error mapping memory\n");
++	drv_data->base_addr = iores->start;
++
++	clk_bus = devm_clk_get_enabled(dev, "bus");
++	if (IS_ERR(clk_bus))
++		return dev_err_probe(dev, PTR_ERR(clk_bus),
++				     "error getting/enabling bus clock\n");
++	drv_data->bus_rate = clk_get_rate(clk_bus);
++
++	drv_data->clk = devm_clk_get_enabled(dev, "core");
++	if (IS_ERR(drv_data->clk))
++		return dev_err_probe(dev, PTR_ERR(drv_data->clk),
++				     "error getting/enabling core clock\n");
++
++	reset = devm_reset_control_get_exclusive_deasserted(dev, NULL);
++	if (IS_ERR(reset))
++		return dev_err_probe(dev, PTR_ERR(reset),
++				     "error getting/deasserting reset\n");
++
++	k1_spi_register_reset(drv_data, true);
++
++	drv_data->irq = platform_get_irq(pdev, 0);
++	if (drv_data->irq < 0)
++		return dev_err_probe(dev, drv_data->irq, "error getting IRQ\n");
++
++	ret = devm_request_irq(dev, drv_data->irq, k1_spi_ssp_isr,
++			       IRQF_SHARED, dev_name(dev), drv_data);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "error requesting IRQ\n");
++
++	/* Initialize the host structure, then register it */
++	host->dev.of_node = dev_of_node(dev);
++	host->dev.parent = dev;
++	host->num_chipselect = 1;
++	if (drv_data->dma_enabled)
++		host->dma_alignment = K1_SPI_DMA_ALIGNMENT;
++	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
++	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
++	host->min_speed_hz = K1_SPI_MIN_SPEED_HZ;
++	host->max_speed_hz = K1_SPI_MAX_SPEED_HZ;
++	host->flags = SPI_CONTROLLER_MUST_RX | SPI_CONTROLLER_MUST_TX;
++	host->max_dma_len = K1_SPI_MAX_DMA_LEN;
++
++	host->setup = k1_spi_setup;
++	host->cleanup = k1_spi_cleanup;
++	host->can_dma = k1_spi_can_dma;
++	host->prepare_message = k1_spi_prepare_message;
++	host->set_cs = k1_spi_set_cs;
++	host->transfer_one = k1_spi_transfer_one;
++	host->handle_err = k1_spi_handle_err;
++
++	ret = devm_spi_register_controller(dev, host);
++	if (ret)
++		dev_err(dev, "error registering controller\n");
++
++	return ret;
++}
++
++static const struct of_device_id k1_spi_dt_ids[] = {
++	{ .compatible = "spacemit,k1-spi", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, k1_spi_dt_ids);
++
++static struct platform_driver k1_spi_driver = {
++	.probe = k1_spi_probe,
++	.driver = {
++		.name		= "k1-spi",
++		.of_match_table	= k1_spi_dt_ids,
++	},
++};
++module_platform_driver(k1_spi_driver);
++
++MODULE_DESCRIPTION("SpacemiT K1 SPI controller driver");
++MODULE_LICENSE("GPL");
 
 -- 
 2.43.0

@@ -1,63 +1,63 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E74524BBFD
-	for <linux-spi@vger.kernel.org>; Sat, 11 Apr 2026 18:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E6A2FD1B3
+	for <linux-spi@vger.kernel.org>; Sat, 11 Apr 2026 18:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1775930663; cv=none; b=LL9EqoN1mxskA1VJtcgQXnnDI56PoVw5qHuJMnXmNvVybczdkJsBSR3eZ+3/YHW2L/m+2+AMSqiAoKVPri1tfYfl5VEmVemCIMjcZgmtj9GmmEQSfmsAuzUpbPUUdLyoavzRj1/v9Yy0l2ZJ2aRxe1411KdDp1qUGv6c34HsqEo=
+	t=1775930665; cv=none; b=BKHfhh6ly/YLHCHwJN/s/7SmfubG6oWwdJKlXwM8y5dqhfKKDPIZKHzxeU3F75ojSGSLXed1GdehN7O7cs7OOfmQKcb/5NNLqK2YtVMjAZibullT0W1yJQsuN9TPVZjpKaF6Qdi1aBBrFjUlFASUUiYV8F3Es93YlUPMCSsJc6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1775930663; c=relaxed/simple;
-	bh=hw+SP67MUczjNWm2PgIVoT1LydkC/JLPEi4afGQ7WQQ=;
+	s=arc-20240116; t=1775930665; c=relaxed/simple;
+	bh=F+3unnwfG8mEtF1vJsp3nr2TnWCw5/D1ao7o6rizU7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqieBuxm6+4ibxoT22S9Jasassv+LNnA7dS2yV37xjSg4/dQQlFivw0XTGtvSTKsy+Qif8cNvv1SSOGd1oxkjKVu5Vh2phcojxM5VWKcjPevtZyT9tLIsl084IOhVljTCyVh4LmoDHdlaC7+xWokiIfR2KUbQqcTSKl9Ao9wUGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mMjfzGsV; arc=none smtp.client-ip=209.85.218.48
+	 MIME-Version; b=s1+ES8mxmbYhrjYZx9LYngFe7JXJYjuKCXqjoVPcOr6+lHLzkus+gBjkXFFbM2JNva8/zDea0i0j8meOaJhgav0c5gpYip9zyYjJz3TrzzTUIGMxTdEv1xPbqxCvsMYVISWUGGp1pqoki5aQyTD9DB45Xk3o/tcdv8dmOAejmGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aWL/ACfg; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mMjfzGsV"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b9c3a9fe80fso406200366b.3
-        for <linux-spi@vger.kernel.org>; Sat, 11 Apr 2026 11:04:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWL/ACfg"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6710b4f63dcso632675a12.2
+        for <linux-spi@vger.kernel.org>; Sat, 11 Apr 2026 11:04:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1775930660; x=1776535460; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1775930662; x=1776535462; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y7P0p0kVaJzs6hmjX5/J5a5R/qOsuqr4kJlAR2Hczlg=;
-        b=mMjfzGsVLseLjpoXSlHDsEL7ho4VOPc7hLpAFM3ebMQUMT0eMh96BGIBZVhLbJOZdz
-         WUAugmoBXV5h9p9Tx5j10m4y6FdPtRVMmbYTXQPetkP5mMr5llAMcVMdFKPiyo7Cagvm
-         1Dp663k4mANfXF+/F3rcIRJwdoCCt3MxPSg0yf9M1hdTkNvrRDfaZtE+h60CppH4lfVa
-         Ld/U3DhuLC6R5/cbsKqJRiwQ1wPLipYehlEexAz87kiJRUPzo/Ivj3/Nqbx8Mz8z/fki
-         CO/HShY+2lWheIjcaJ/psR82Iw1JQUo4P9RVd1B2djQUfb0sE9wLvfPLmTNsppiaBiQm
-         5s/Q==
+        bh=sc495D3OguMO7EA5HHUBGx+k9Q7iag37WzE7hUJCoNI=;
+        b=aWL/ACfgEXbM3Z4qVSeRsWua8XmGf8TS6/Y6wl0dvNb48Yni0eu/yzRojixbtOa4GL
+         ERffOal3veCllDf7bj0OA3pwEQtYfw1zjnhJQe9iCRWO3QYPspek2mA9vosxL3ZdgHyM
+         elqohwVSs+QiJ/zHpjZhkVzBjGvgpbf2DGLCgYkSfpc6cqRo+Py4kOoBTBK0RiNYOHCh
+         cY9BA0mEENaeiDlO+AdT3ckU6+LJdWq1BAmPj3OLQ+VP7aOuVR+UhNBpiRg/RGoAjKkq
+         5aLfYe52YZN1E4Pkh2fGG0TW2DWQY4rQ0t5nlWJjNn7mKya2CyYoafxiT/r7saGnX12N
+         T2Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1775930660; x=1776535460;
+        d=1e100.net; s=20251104; t=1775930662; x=1776535462;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Y7P0p0kVaJzs6hmjX5/J5a5R/qOsuqr4kJlAR2Hczlg=;
-        b=b6nahVR+hLanknozgOcP85ou6Kv7C4vaUjq46xso0Ep2dOuccoafCVpODUP5v/tJB3
-         x6qbk+IPyyYVe2y3Reghrz/Bp1KySRmvVetocR/kATVq4mriZclsymOJt2d5wwoFSVNM
-         1+1sre2aUlQNQn2yAuVlTPp9EQqBysSIZH696ewB4I7teNfiu5WAn3xtgGPXg7K+huXC
-         U0GqG7fxMq8xu2Hk1MBukLc37fbR8mgmpHpeFx7LtVoE/GHoVdnK866iwNdGveum3Mdn
-         kCnfRDoUCdLTfDWFn0ik7QdJWSzgp6Q18KRZGRufL4dbNNij4eblianlJ/dK97syShZP
-         5kcg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHFvhil/vTS1uAURV5kjxAOUT6J8MjIxmZYjgnjaTIBMNUdFcBz7ufnSSBqIANmxwb/f9tydOiH44=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw41j8CzIK4rJqna+f0crurjf7eq4W6GWtdRcHL6aL3FMTP7GfJ
-	NHg1mebvWs2+eey8KBPCn98QhO28O/CmkH+1rq9oSkn217NasFiHNdiY
-X-Gm-Gg: AeBDieusCdE/UFjWOTic5I87P1cmS9IyqaC2BmCI0XDjqkIMC2ZL2sdHFgxv6D0V58i
-	bfeP0InU2SM0IerFVIYIYM/o/j0ZfbpuxXa7uvRDe/3ydq1DBZb7xB1KMznhHMPapbo6wDE0bjc
-	7boXJPeWIh1IDStx+JiH0tApWU3pvaveyfI38n/ppFsFkKqzAXc1G4bARBOGQ/msUh/GFcFa8KC
-	rawXtXkO5F3artYu0INdMkL2/zi/MRl4PTX/ElI5BTeIiLzVF9xAQzaT7nUE82brME3llde7V/f
-	i29peHdfGhctGIw/yjkes0qEEfAGrbx9zYUJkHkNJsynp6fafiLby42FBD9Y96GYSXqaY44bh5k
-	Dkk2QIIx2NpkKYpR6csXU2xALlBm5AE7hMAW2RIqCJ2uSPz4BURlkBlf42SJN0xFmEVwbxe0IVO
-	CzbGQyuWGzGuuvY8zEJ4QudA==
-X-Received: by 2002:a17:906:7943:b0:b9d:6e82:10f7 with SMTP id a640c23a62f3a-b9d72483ff2mr445226566b.13.1775930659367;
-        Sat, 11 Apr 2026 11:04:19 -0700 (PDT)
+        bh=sc495D3OguMO7EA5HHUBGx+k9Q7iag37WzE7hUJCoNI=;
+        b=lP5UAtEryEGBD1sJvpqLio69e3W5WKDgJD1fTsIS+Er310U31nzemEgl+3iiFx6Z+Q
+         XlFM6I5QPCs6ej0dy12lblyxgvt/9NZCHzLpbsv6+ZFHYREG6wB/gEf+AezTTXa08eDh
+         l8IcFEOYFRKukV/5ONJCLhXRE2XZ0Hls9o4ZKvnlUOGNUGicevxzybg48aFn2ljnQtSi
+         iG8n/dJzCDtH1UDjOID9F/AEjpVIBRyULug01eUYaQVCbueZGhjy/rHgrI6hMpmnLFWm
+         lP+/pQVeRppxAxCBcWFIrU+/ccGy2KJ8wTl/TlsHic8vT7CtBeLglmZGOwvV85mJQN4O
+         Dyxw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhQd8tk0+6CSs3zerFe5yRqzU6ZlqmP0WWkOLO62rLh6YrV2tVysDADQZSrX53jdY5lEqZYG0MI28=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3uHKPRGCrLe4r3aopTp0h3yoeR+DE7tdHAQNJQvcA/zoQ9XLe
+	yz+7zHo1ZfU6F3kZq08ox6mwIKiAG8ZhPGFpCQ7yTLihMxmzm68pGhuAzniblTif
+X-Gm-Gg: AeBDieuARVNOCP6OZkf7TpeWnWH7gcVYGhOKTBg+cuaPMPXF9Z5LILTAL2KkUQuCAHr
+	V3yLlWJNYjRZbMNp0qgw/YOY8Bxb+n3lttbvZSRJTCo3CweUIGsX6eOXHm2kRgr+g+hcgweYE4z
+	xUYYRqyQtXILK55BytoeBdV+axhDzUz8GFbEvKTPO9XEFVheY7pEkD/omevWXjWpwPjCmwcYmdU
+	y9pYUh1CYzIwEmBt6KaV16LDq5W696/wgoeaizjbR/5TwBbpzsRXd67IEbYhZV8EasbmDVTMmpr
+	pBRMN75VafAdeupChuYi6RLqihOjU2BMjYiBLxezE0NiWV+xWmyubRxeGmySZiKuVBvc7nLqU9r
+	R2rUg2Tktl7wTgQYPS4OSw5cXFULA2ntNcBi7MIJH8iM4dFoi2xidf+IJ4jt005cGgFw3xNmBtd
+	1bceyKtBaDVKQqQxn8LYoXLQ==
+X-Received: by 2002:a17:907:a1a0:b0:b9c:69df:4d8e with SMTP id a640c23a62f3a-b9d7298091fmr310218866b.25.1775930661559;
+        Sat, 11 Apr 2026 11:04:21 -0700 (PDT)
 Received: from khalil-hp.home ([62.250.67.33])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e5c56d3sm186160666b.32.2026.04.11.11.04.18
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e5c56d3sm186160666b.32.2026.04.11.11.04.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Apr 2026 11:04:18 -0700 (PDT)
+        Sat, 11 Apr 2026 11:04:21 -0700 (PDT)
 From: Khalil <khalilst@gmail.com>
 X-Google-Original-From: Khalil <khalil@rentman.nl>
 To: broonie@kernel.org,
@@ -66,13 +66,15 @@ To: broonie@kernel.org,
 Cc: rf@opensource.cirrus.com,
 	linux-spi@vger.kernel.org,
 	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/3] Fix CS35L56 amplifier on Intel LPSS SPI with broken ACPI cs-gpios
-Date: Sat, 11 Apr 2026 20:04:11 +0200
-Message-ID: <20260411180414.481427-1-khalil@rentman.nl>
+	linux-kernel@vger.kernel.org,
+	Khalil <khalilst@gmail.com>
+Subject: [PATCH 3/3] spi: pxa2xx: Handle clock gating for GPIO chip select devices
+Date: Sat, 11 Apr 2026 20:04:14 +0200
+Message-ID: <20260411180414.481427-4-khalil@rentman.nl>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260215135524.1171065-2-khalil@rentman.nl>
+In-Reply-To: <20260411180414.481427-1-khalil@rentman.nl>
 References: <20260215135524.1171065-2-khalil@rentman.nl>
+ <20260411180414.481427-1-khalil@rentman.nl>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -81,74 +83,143 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To: broonie@kernel.org, hdegoede@kernel.org, ilpo.jarvinen@linux.intel.com
-Cc: rf@opensource.cirrus.com, linux-spi@vger.kernel.org,
-    platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260215135524.1171065-2-khalil@rentman.nl>
+From: Khalil <khalilst@gmail.com>
 
-Hi,
+On Intel LPSS SPI controllers (Cannon Lake and later) with dynamic
+clock gating (cs_clk_stays_gated=true), the SPI clock is gated when
+no native chip select is asserted. When using a GPIO chip select
+(via SPI_CONTROLLER_GPIO_SS), the SPI framework toggles the GPIO
+and also calls the controller's set_cs callback.
 
-This is v2 of the patch series fixing dual CS35L56 amplifiers on HP
-laptops with Intel Lunar Lake and broken ACPI cs-gpios.
+Handle this in the pxa2xx cs_assert/cs_deassert functions: when the
+device uses a GPIO chip select on an LPSS controller, assert native
+CS in the control register to enable the clock, and force the clock
+gate on. On deassert, restore both.
 
-Changes since RFC v1 (addressing feedback from Richard Fitzgerald):
+This is needed on platforms where serial-multi-instantiate installs
+a GPIO chip select from the peripheral's ACPI GpioIo resource to
+work around an incomplete cs-gpios property on the SPI controller.
 
-- Added DMI quirk table: GPIO CS fixup is now only applied on known
-  affected platforms (HP EliteBook 8 G1i, board 8D8A), not generically
-  for all devices with CS > 0.
+Also remove the unconditional num_chipselect bump to 2 that was
+added as a temporary workaround - the proper fix is now in
+serial-multi-instantiate.
 
-- Fixed chip select range check: only chip selects outside the
-  controller's num_chipselect range are fixed up. A NULL cs_gpiods[cs]
-  within range means "native chip select", not broken. This avoids
-  incorrectly replacing native CS0 with the GPIO descriptor.
+Signed-off-by: Khalil <khalilst@gmail.com>
+---
+ drivers/spi/spi-pxa2xx.c | 78 ++++++++++++++++++++-------------------
+ 1 file changed, 41 insertions(+), 37 deletions(-)
 
-- Removed ASUS reference (GU605C was fixed by BIOS update).
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index XXXXXXX..XXXXXXX 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -419,33 +419,43 @@ static void cs_assert(struct spi_device *spi)
+ {
+ 	struct driver_data *drv_data =
+ 		spi_controller_get_devdata(spi->controller);
+-	struct gpio_desc *cs_gpio;
++	const struct lpss_config *config;
 
-- Added Patch 1/3 (spi core): __spi_add_device() now preserves preset
-  cs_gpiod on the device instead of unconditionally overwriting from
-  ctlr->cs_gpiods. This was suggested by Richard as the preferred
-  approach to avoid modifying controller state post-probe.
+ 	if (drv_data->ssp_type == CE4100_SSP) {
+ 		pxa2xx_spi_write(drv_data, SSSR, spi_get_chipselect(spi, 0));
+ 		return;
+ 	}
 
-- Patch 2/3 (serial-multi-instantiate): Extracted GPIO fixup into a
-  dedicated helper function. Currently still installs the GPIO on the
-  controller's cs_gpiods array because __spi_add_device() overwrites
-  device-level cs_gpiod. With Patch 1/3 applied, a future cleanup
-  could set the GPIO directly on the device instead.
+-	/*
+-	 * For devices with GPIO chip select, toggle the GPIO directly.
+-	 * This ensures GPIO CS works on Intel LPSS which only has native CS0.
+-	 */
+-	cs_gpio = spi_get_csgpiod(spi, 0);
+-	if (cs_gpio) {
+-		/* For ACPI: LOW = selected (gpiod_set_value uses logical value) */
+-		gpiod_set_value_cansleep(cs_gpio, 0);
+-		return;
+-	}
+-
+-	if (is_lpss_ssp(drv_data))
+-		lpss_ssp_cs_control(spi, true);
++	if (is_lpss_ssp(drv_data)) {
++		config = lpss_get_config(drv_data);
++
++		if (spi_is_csgpiod(spi)) {
++			/*
++			 * GPIO handles the actual chip select to the device.
++			 * On LPSS controllers with dynamic clock gating, the
++			 * SPI clock won't run unless the native CS state says
++			 * "asserted" in the CS control register. Assert native
++			 * CS in the register to enable the clock, and force
++			 * the clock gate on.
++			 */
++			lpss_ssp_cs_control(spi, true);
++			if (config->cs_clk_stays_gated) {
++				__lpss_ssp_update_priv(drv_data,
++					LPSS_PRIV_CLOCK_GATE,
++					LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK,
++					LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_ON);
++			}
++		} else {
++			lpss_ssp_cs_control(spi, true);
++		}
++	}
+ }
 
-- Patch 3/3 (spi-pxa2xx): Unchanged from v1. Handles clock gating
-  on Intel LPSS controllers when GPIO chip select is active.
+ static void cs_deassert(struct spi_device *spi)
+ {
+ 	struct driver_data *drv_data =
+ 		spi_controller_get_devdata(spi->controller);
+-	struct gpio_desc *cs_gpio;
++	const struct lpss_config *config;
+ 	unsigned long timeout;
 
-Note: While Richard also suggested the cs35l41_hda self-fixup approach
-(setting cs_gpiod on the device post-probe via spi_setup), this doesn't
-work here because the device can't even be added to the bus - SPI core
-rejects it with -EINVAL when cs >= num_chipselect. The serial-multi-
-instantiate approach is necessary to extend num_chipselect first.
+ 	if (drv_data->ssp_type == CE4100_SSP)
+@@ -457,19 +467,22 @@ static void cs_deassert(struct spi_device *spi)
+ 	       !time_after(jiffies, timeout))
+ 		cpu_relax();
 
-Regarding modifying the probed controller: I acknowledge this is not
-ideal. Patch 1/3 is a step toward the cleaner approach (preset on
-device). However, num_chipselect still needs to be extended, and
-cs_gpiods needs to be expanded to prevent out-of-bounds access in
-__spi_add_device(). I'm open to suggestions for a cleaner way to
-handle this.
+-	/*
+-	 * For devices with GPIO chip select, toggle the GPIO directly.
+-	 * This ensures GPIO CS works on Intel LPSS which only has native CS0.
+-	 */
+-	cs_gpio = spi_get_csgpiod(spi, 0);
+-	if (cs_gpio) {
+-		/* For ACPI: HIGH = deselected (gpiod_set_value uses logical value) */
+-		gpiod_set_value_cansleep(cs_gpio, 1);
+-		return;
+-	}
+-
+-	if (is_lpss_ssp(drv_data))
+-		lpss_ssp_cs_control(spi, false);
++	if (is_lpss_ssp(drv_data)) {
++		config = lpss_get_config(drv_data);
++
++		if (spi_is_csgpiod(spi)) {
++			/* Deassert native CS and restore clock gating */
++			lpss_ssp_cs_control(spi, false);
++			if (config->cs_clk_stays_gated) {
++				__lpss_ssp_update_priv(drv_data,
++					LPSS_PRIV_CLOCK_GATE,
++					LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK,
++					LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_OFF);
++			}
++		} else {
++			lpss_ssp_cs_control(spi, false);
++		}
++	}
+ }
 
-Tested on HP EliteBook 8 G1i 16 inch (Intel Core Ultra 7 258V,
-Lunar Lake-M) with 2x CS35L56 Rev B0. Both amplifiers probe
-successfully, load calibration and tuning, and produce audio.
-
-Related bug reports:
-- https://bugs.launchpad.net/ubuntu/+source/alsa-driver/+bug/2131138
-- https://bugzilla.kernel.org/show_bug.cgi?id=221064
-- https://github.com/thesofproject/linux/issues/5621
-
-Khalil (3):
-  spi: Preserve preset cs_gpiod in __spi_add_device()
-  platform/x86: serial-multi-instantiate: Fix SPI chip select on
-    platforms with incomplete ACPI cs-gpios
-  spi: pxa2xx: Handle clock gating for GPIO chip select devices
-
- drivers/spi/spi.c                                |   3 +-
- drivers/platform/x86/serial-multi-instantiate.c  | 156 +++++++++++++++-
- drivers/spi/spi-pxa2xx.c                         |  78 ++++-----
- 3 files changed, 196 insertions(+), 41 deletions(-)
+ static void pxa2xx_spi_set_cs(struct spi_device *spi, bool level)
+@@ -1454,13 +1467,6 @@ static int pxa2xx_spi_probe(struct device *dev, ...)
+ 		}
+ 	}
+ 	controller->num_chipselect = platform_info->num_chipselect;
+-
+-	/* Fix for HP EliteBook CS35L56 speakers - need at least 2 chip selects */
+-	if (is_lpss_ssp(drv_data) && controller->num_chipselect < 2) {
+-		dev_info(dev, "Increasing num_chipselect from %d to 2 for LPSS audio\n",
+-			 controller->num_chipselect);
+-		controller->num_chipselect = 2;
+-	}
+ 	controller->use_gpio_descriptors = true;
 
 --
+2.43.0

@@ -1,188 +1,152 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7304137B015
-	for <linux-spi@vger.kernel.org>; Sun, 12 Apr 2026 14:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1842405E7
+	for <linux-spi@vger.kernel.org>; Sun, 12 Apr 2026 16:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776003790; cv=none; b=onCMVZ+rVou0FA0BqTuG/s/2E8UahxmwkaHcPDLVClanwPXNmWIM/tUTjQqVWcBPU0pI2HAn2yAJo1JPUubXxxufFNqLk4k34AJIZj6Tnp/kQjscNJLb15aSfCDfI3foHPWA6gF2WHepjyHZ+ni2EoJf3xzBw1Kp/RLOdViLe+M=
+	t=1776011539; cv=none; b=GjYH5Unl+IUjC+nUuvb+UltQVB3wPBGJI3n+INcHxYnMub9GQhvddQ0cNAEv1ubTvlX954o58mGPGB0FvCf5WeWIi8QD7w4cfBZtKiIu7VI5UnGB12Cj2NcYvSeipJGdz7EpPGHJmnIrOD7vokMUQAy6xCCUyoxWB5mYNqsWD0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776003790; c=relaxed/simple;
-	bh=S9ikXTvQyxclzbgG4oXF+aw5e1JLHj7cOX8GY1x4mx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Trb+Ds4fpp7g+5TZ6CvJpFKQw5U8hteRw76scLQW7Kfu5BDc5T25MZU21UBRa+q7NvC38j4YiswVEdcpTDRbdB4HJrYr2PnM3kEI1s6saEUpi73wJdfx9LQUL0DaDWn9qKvR2vFVh0/drAtTOLCCzxyvCHSFX6IaecEeNBVu7Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=VRkBSdlb; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1776011539; c=relaxed/simple;
+	bh=fGMrJdVHO3BNg782zgRhFj4456fWdretKPYfi/QjIgY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GvgKxkO3aJRY+yCMK1102HLYv0OY0xwmJwo8Y0vk+N8e6iB/I7InhVWR8razXV6vhJYhgltEo9tz+vaeVBuOgA9+niV+31KRUH5OSKvHVNWOSmMInxy0+fhbxNTPw40ygFORgiceENtLe4kUPEKXDtqmvzd8mPv+K37lohNpXas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eknjw8Ht; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="VRkBSdlb"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8d7e7f48499so351242185a.1
-        for <linux-spi@vger.kernel.org>; Sun, 12 Apr 2026 07:23:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eknjw8Ht"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b9c6f1d1282so482765266b.3
+        for <linux-spi@vger.kernel.org>; Sun, 12 Apr 2026 09:32:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1776003784; x=1776608584; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fCwYE0TqPeRH6qXObZKYZ/Hps0Zq2xbI26bnfS8VYZ4=;
-        b=VRkBSdlbL55y7Edx/pq0amhbFSwZ5ZTr/wsnwUiCZE8DsjjbDGibA8/phOuKZvDouS
-         WqCbucnRYFshRHqh5IQ/vIiazc68dqWqSKzD5wO31WAo3XrELdOHv7HM3Y0iDlr/uqSr
-         19hvYnDWH1XVZnrX3F5yW5e0l6+TJa5QCiXXY1Iy7CQO3SX4yNqGmnjyfyGsQCh/atgg
-         5tXFdE+fNuDNiQjz4lDn6zHAJftfcgypQn391V8gUWfZjtvGvbb5tWllAWNdefQ5U5xC
-         GfX2hh+6yQd1esnLsj8BNs0/7uriiBpOzVCkCTjFf0B/YUUoOrMwEOPfASkYWrJ9Rs2/
-         xNzA==
+        d=gmail.com; s=20251104; t=1776011536; x=1776616336; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HugtwxIexB7rRcOd2FqtNpLxabVB7H+4U5esmVbZeJ4=;
+        b=eknjw8HtInTbRpuiEvy4pVfvXNJw4KnC+Dl4HPHMHBtQQBdeIMPiBmb/D477xI6n12
+         hUXCNVNSKz+R28UpI3LynqsEinVBvLvJEqSKcvwcsKOxqPqmS0YTS1rq5UPLhTvt42fu
+         qcTc7MDL+fpbLXovymshFad/5eQvcdzY3WnwlEjlnlxJOAxDhA+mQOOaGh9vgQlRixXO
+         3q8frR2BC9ShLBQ0OKtXGP1vAhvBjM1Fir/iJwqInWK5JNVWd8KOWRITnHCHcPCrmsHF
+         mTixKNF7ukiLe35/nnxH6Qu1Gengjnc+XbipfxG/pjHoT+1rbJB4qXqo/sDkHfwzKtwJ
+         eKwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776003784; x=1776608584;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fCwYE0TqPeRH6qXObZKYZ/Hps0Zq2xbI26bnfS8VYZ4=;
-        b=BZvEtaaeeoYJPrunqEeilmXp4uuThECXM3l0/MeVuh5rEKe3kjLj44/hb/qg/QUAMq
-         5w11GoSdr+CEJaDSit6brhatRC4UvlHZgVEjIr8zDAxMu22BFf91nQV2tYiShnyC+z/u
-         uJTwK2aPLkMKt7YrpR8sxuhrrSHt2TgufCZeOQO0KaxcE1EkQo7e8IKJUUCZBiHABPvY
-         Vac87urEWkz4RKA+9juB8HsAtSTNYQ5Lr0OAwZ+vqHJKesX2LkUHx4m41WzjI60O2lf2
-         YoXljt9PXwXoL/O9hgx28HjqCi/TUxitwZ9GSn1tQDVYjEXK4BxDiblUa/K5GrqVkIEG
-         bVtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWGHz6ka2062oi2MZ9NrjaXbwD8wat66R3Y7UK8twdkwvtjQnG9NMqIrTM+bpir2ab5uJOuw4mXCg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yycz/cay+Mc/KTI7HqBM+JffB+qZPXCjmozSpPWIkmllSAHOcR7
-	Y6QLZJMaJt6cvTmqEod7VBnBNFYITDekbfJeeZI5c+F55zCi3mvtydOdjHexPC5PSIb7Rwxl8Te
-	97Zhn
-X-Gm-Gg: AeBDieukxoc/ZA/hEONuMmaL+MWiWLfOrZDzoPGxgBYhOIU3j3BDinHIikRya9IYQo8
-	5iE2bUqtgA+InuPNCd7tlr9dPQNMuMZ//oEisMjbvduithJa0gfmEfkwTPsoVXznJrhHkMpDRWz
-	12UPUG9fJHtxLhGZbE0y19qEkYkMo8+0U70bizUfEOUKOPO2QawpqXsV4+UvJIuBVvfysnCH+18
-	nnGI9P511ImZuc5HR20YYyiqU2uxfu7HgFeh+b+whxt97bgni46oZe43fwFbbq5V28U5/l6SwFO
-	EsZqnHH0R/qKBd6uHoka9IhPJ+4D7goZnTbC18PbfPUakUp8bacXLPlAiKAxZ+6uSUGEbv/sZuw
-	ufUErqx5T327WYem621myEiOM7dYV+pVffc/V93y448YQXR2Uu2epzI7HYKCPmbeXZLyNaAJI7C
-	YRmAHNn7N8kVPUzXTigC2MKdbDczyaN9VPCdG/PiMCgT3zqHje3aN+FYz8fv8zaQkTiuWWC9kLI
-	rpt
-X-Received: by 2002:a05:620a:4721:b0:8cf:c30c:ced5 with SMTP id af79cd13be357-8ddcd8ea3cbmr1458489585a.14.1776003784339;
-        Sun, 12 Apr 2026 07:23:04 -0700 (PDT)
-Received: from [10.211.55.5] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ddb9830344sm785313885a.41.2026.04.12.07.23.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Apr 2026 07:23:03 -0700 (PDT)
-Message-ID: <517ed025-40d7-4c3f-9ca3-6c3367c97815@riscstar.com>
-Date: Sun, 12 Apr 2026 09:23:01 -0500
+        d=1e100.net; s=20251104; t=1776011536; x=1776616336;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HugtwxIexB7rRcOd2FqtNpLxabVB7H+4U5esmVbZeJ4=;
+        b=YMBTJLECWgFOG3QJDg00lH36s/76pjc/wPVN+yzw1sj2qKbE7Z8cyaD4AeRqDJuVpj
+         YBDxGP5Uj9lhlsA+3H6Ghx7mlk5GjhXz+OoKBoZ0Rn6kgeuVpXTWJ15JtX7giP2E3ewI
+         EBEcEIpoRdEjk1VU4qzCG7lKlMvNGPitp+06Py4v1tDIVibPw1boHIp/8j9oJVRiCO2C
+         H3AX9IqMFue9czXpXwFUpnF7JIFVguRO3VrDLZeB+wi9o/L2RjeY/HUnH0WZoNhTux27
+         LE3l92nNrDOn9N7MaL8e4jyk7NndVwjhZBCxzsLvoNVOzRSNiBR5oEjy+qWzwOVZWKGg
+         CoHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDuf6JGALnWclDt0xQ/w/1d/wl8qG9IJE54bWWiNiCxlAeg+LxW1KZEXWfdLPPCe9cb5254SoWOWc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6SDGTg3my3drWT67s3CDCwvv7h9oM5+VJzyey9LAp/1I/mNM3
+	9IenLWTjp81+C0620Q+MZG4t3/jPqykTUpDvRNlRjLnetwycCleZMdMu
+X-Gm-Gg: AeBDieskYnybKp1/jAkOjQbEOmTGpXDCCze25WcfyjbhCSXBW5+u/23OVmITy0cuRvI
+	Rc8JwAX2l+QjRh2NR/xX+YzeBs24Jj0fM+TIFkNNI1RuPrJ6T2DpU5CBcodZuiOUYrO4A0CDNZ6
+	d+5dTKyFKipJLbJM0/0ZmvFN0Fd+JeNlpYb+WPZ0Rs2XPmQkG7xDlYNhTQxOv26eU+kGD11kXg7
+	zAfrdEIsxf35M8qqxmG7f7PFltSG8Rhv0zLFk7m87+5CB+X0EV9AXMsYX8Z31E2exMVovG4/7+i
+	GeLI/yuaD198kw5Xwv7el1zNnwSCSb+ZaXZ3t/AqoNLA9eeStmGhxSOge6OZ20c1Ef9JH8N0JH9
+	r76Y/mYYxMyopBwrD4KS2mJxHqAHoN+ExiRcSwGzFM1p08JYiN5Z4M8GA9ER5r3DvoCkoRIBfXm
+	KcIq6nnlXB6H0AAIF+NG7mGg==
+X-Received: by 2002:a17:906:bf45:b0:b98:36cd:7e0e with SMTP id a640c23a62f3a-b9d729bfe44mr587550466b.45.1776011535850;
+        Sun, 12 Apr 2026 09:32:15 -0700 (PDT)
+Received: from khalil-hp.home ([62.250.67.33])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9d6e7f1a3bsm236468666b.62.2026.04.12.09.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Apr 2026 09:32:15 -0700 (PDT)
+From: Khalil <khalilst@gmail.com>
+X-Google-Original-From: Khalil <khalil@rentman.nl>
+To: broonie@kernel.org,
+	hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: rf@opensource.cirrus.com,
+	linux-spi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Khalil <khalil@rentman.nl>
+Subject: [PATCH v2 0/3] Fix CS35L56 amplifier on Intel LPSS SPI with broken ACPI cs-gpios
+Date: Sun, 12 Apr 2026 18:31:48 +0200
+Message-ID: <20260412163151.506282-1-khalil@rentman.nl>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260215135524.1171065-2-khalil@rentman.nl>
+References: <20260215135524.1171065-2-khalil@rentman.nl>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/3] spi: spacemit: introduce SpacemiT K1 SPI
- controller driver
-To: Mark Brown <broonie@kernel.org>, Guodong Xu <guodong@riscstar.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
- Alex Elder <elder@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260410-spi-spacemit-k1-v8-0-53ebb48a4146@riscstar.com>
- <20260410-spi-spacemit-k1-v8-2-53ebb48a4146@riscstar.com>
- <adkhJhEQIZHgIQpH@sirena.co.uk>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <adkhJhEQIZHgIQpH@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 4/10/26 11:11 AM, Mark Brown wrote:
-> On Fri, Apr 10, 2026 at 11:04:21PM -0400, Guodong Xu wrote:
->>
->> This patch introduces the driver for the SPI controller found in the
->> SpacemiT K1 SoC.  Currently the driver supports master mode only.
->> The SPI hardware implements RX and TX FIFOs, 32 entries each, and
->> supports both PIO and DMA mode transfers.
+Hi,
 
-Caveat:  I haven't really looked closely at this code for
-a few months, but I thought all issues had been addressed.
-I was wrong...  Guodong will be addressing your comments but
-I wanted to weigh in.
+This is v2 of the patch series fixing dual CS35L56 amplifiers on HP
+laptops with Intel Lunar Lake and broken ACPI cs-gpios.
 
->> +static struct dma_async_tx_descriptor *
->> +k1_spi_dma_prep(struct k1_spi_driver_data *drv_data,
->> +		struct spi_transfer *transfer, bool tx)
->> +{
->> +	phys_addr_t addr = drv_data->base_addr + SSP_DATAR;
->> +	u32 burst_size = K1_SPI_THRESH * drv_data->bytes;
->> +	struct dma_slave_config cfg = { };
->> +	enum dma_transfer_direction dir;
->> +	enum dma_slave_buswidth width;
->> +	struct dma_chan *chan;
->> +	struct sg_table *sgt;
->> +
->> +	width = drv_data->bytes == 1 ? DMA_SLAVE_BUSWIDTH_1_BYTE :
->> +		drv_data->bytes == 2 ? DMA_SLAVE_BUSWIDTH_2_BYTES :
->> +		/* bytes == 4 */       DMA_SLAVE_BUSWIDTH_4_BYTES;
-> 
-> Please use normal conditional statements (in this case a case statement)
-> to keep the code legible.
-> 
->> +static irqreturn_t k1_spi_ssp_isr(int irq, void *dev_id)
->> +{
->> +	struct k1_spi_driver_data *drv_data = dev_id;
->> +	u32 val;
-> 
->> +	/* Return immediately if we're not expecting any interrupts */
->> +	if (!drv_data->transfer)
->> +		return IRQ_NONE;
-> 
-> That does't mean the hardware agrees!
+Changes since RFC v1 (addressing feedback from Richard Fitzgerald):
 
-You're right.  We need to clear whatever caused the
-interrupt it or we'll keep getting interrupted.  This
-obviously didn't happen during testing but thanks for
-mentioning this.
+- Added DMI quirk table: GPIO CS fixup is now only applied on known
+  affected platforms (HP EliteBook 8 G1i, board 8D8A), not generically
+  for all devices with CS > 0.
 
->> +	/* Get status and clear pending interrupts; all are handled below */
->> +	val = readl(drv_data->base + SSP_STATUS);
->> +	writel(val, drv_data->base + SSP_STATUS);
-> 
-> Nothing after here can report IRQ_NONE, even if SSP_STATUS didn't flag
-> anything.  I'd just move the checks for transfer to when we're handling
-> FIFOs and have the IRQ_NONE report be based on there being something set
-> in the ISR.
+- Fixed chip select range check: only chip selects outside the
+  controller's num_chipselect range are fixed up. A NULL cs_gpiods[cs]
+  within range means "native chip select", not broken. This avoids
+  incorrectly replacing native CS0 with the GPIO descriptor.
 
-Sounds good.
+- Removed ASUS reference (GU605C was fixed by BIOS update).
 
->> +	/*
->> +	 * For SPI, bytes are transferred in both directions equally, and
->> +	 * RX always follows TX.  Start by writing if there is anything to
->> +	 * write, then read.  Once there's no more to read, we're done.
->> +	 */
->> +	if (drv_data->tx_resid && (val & SSP_STATUS_TNF)) {
->> +		/* If we finish writing, disable TX interrupts */
->> +		if (k1_spi_write(drv_data, val)) {
->> +			val = SSP_INT_EN_RX | SSP_INT_EN_ERROR;
->> +			writel(val, drv_data->base + SSP_INT_EN);
->> +		}
->> +	}
-> 
-> This overwrites val...
+- Added Patch 1/3 (spi core): __spi_add_device() now preserves preset
+  cs_gpiod on the device instead of unconditionally overwriting from
+  ctlr->cs_gpiods. This was suggested by Richard as the preferred
+  approach to avoid modifying controller state post-probe.
 
-That's no good.  We need to assign the interrupt status to a
-different variable if things are going to be handled this way.
+- Patch 2/3 (serial-multi-instantiate): Extracted GPIO fixup into a
+  dedicated helper function. Currently still installs the GPIO on the
+  controller's cs_gpiods array because __spi_add_device() overwrites
+  device-level cs_gpiod. With Patch 1/3 applied, a future cleanup
+  could set the GPIO directly on the device instead.
 
-> 
->> +
->> +	/* We're not done unless we've read all that was requested */
->> +	if (drv_data->rx_resid) {
->> +		/* Read more if there FIFO is not empty */
->> +		if (val & SSP_STATUS_RNE)
->> +			if (k1_spi_read(drv_data, val))
->> +				goto done;
-> 
-> ...so the read won't see that there's data to read and we'll need
-> another interrupt.  I would suggest using a more meaingful name for the
-> actual interrupt status.
+- Patch 3/3 (spi-pxa2xx): Unchanged from v1. Handles clock gating
+  on Intel LPSS controllers when GPIO chip select is active.
 
-Yes.  I actually think you commented on this before, and I thought
-I had addressed it but it's clear I did not.
+Note: While Richard also suggested the cs35l41_hda self-fixup approach
+(setting cs_gpiod on the device post-probe via spi_setup), this doesn't
+work here because the device can't even be added to the bus - SPI core
+rejects it with -EINVAL when cs >= num_chipselect. The serial-multi-
+instantiate approach is necessary to extend num_chipselect first.
 
-Thanks for your review.  Sorry for not fixing everything.
+Regarding modifying the probed controller: I acknowledge this is not
+ideal. Patch 1/3 is a step toward the cleaner approach (preset on
+device). However, num_chipselect still needs to be extended, and
+cs_gpiods needs to be expanded to prevent out-of-bounds access in
+__spi_add_device(). I'm open to suggestions for a cleaner way to
+handle this.
 
-					-Alex
+Tested on HP EliteBook 8 G1i 16 inch (Intel Core Ultra 7 258V,
+Lunar Lake-M) with 2x CS35L56 Rev B0. Both amplifiers probe
+successfully, load calibration and tuning, and produce audio.
+
+Related bug reports:
+- https://bugs.launchpad.net/ubuntu/+source/alsa-driver/+bug/2131138
+- https://bugzilla.kernel.org/show_bug.cgi?id=221064
+- https://github.com/thesofproject/linux/issues/5621
+
+Khalil (3):
+  spi: Preserve preset cs_gpiod in __spi_add_device()
+  platform/x86: serial-multi-instantiate: Fix SPI chip select on
+    platforms with incomplete ACPI cs-gpios
+  spi: pxa2xx: Handle clock gating for GPIO chip select devices
+
+ .../platform/x86/serial-multi-instantiate.c   | 168 ++++++++++++++++++
+ drivers/spi/spi-pxa2xx.c                      |  45 ++++-
+ drivers/spi/spi.c                             |   3 +-
+ 3 files changed, 211 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
+

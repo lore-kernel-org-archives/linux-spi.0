@@ -1,86 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805843E6DD0;
-	Tue, 14 Apr 2026 13:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F7A385519;
+	Tue, 14 Apr 2026 16:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776174341; cv=none; b=TZbZzPCh+RKUFdOnPujCYNvIlxbuXZow+yGkbpxSqiHdGega5kUP6QBJnK407KCStqnQnWLm7XFbQQ3jW9KXCX40gXaTUKRLS2988KsfWpORjPX8Cy4KGzxR6xopCC9FEQsMwO6UFtixaY1VHH9YtQc4NyBrWfyJgWrBZmls4bQ=
+	t=1776184107; cv=none; b=VQ/4nXqVi4gOdB9EhOyufOeiar88bUrUPIaUo/4OsihVhnSI2YbUDfEA/SWO0A3ikCH6cqsN5C3Z42MKTosg6CdPo54pd33+KBGdCuV9JVjGQI3C1GJPAIVyBV96wGWnqUinPDXI101e6dt0B7zNUhnuGGTdTeO2VbW8Cvz4Brk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776174341; c=relaxed/simple;
-	bh=CD9c1yWD3HCd4mW1xhHDZHS+XcvTESm7Ozt3zqDLBlo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gK+xDc5N1HN5YVWo2YnycLdQs816QGH4nygRPdOSUF0C5bAKYMh7MVHcct2RPctdfA1RUSx83y2vcQxCvfON8ZUftxHTC0N+OilxPuUXC4lCcDDRAPw4z69iNZvfSjh8HYgD0x4OFfzK6xPQFfXAJmnJz2oBLEfGGIx1Xi/A6O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fItK5kUJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776184107; c=relaxed/simple;
+	bh=DX1/pSqo/yX5G/8cjvQRYzSQwDptJNa8nCMs2hjkgyQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OJgL087w3ndMU+v+FaxvK6f9oallM3F+fnwwUkvws4hV7U+ANUPqlPvUOEPh2Jfc+pvbbK/v5alDusDcgcpnFRsGaY4lU+otSZLm8qA6g0WQ2yATNltxA6OZGGIdUjbRO3b2WJQsC7OWCYjlaMXogAlqyKn+kaKlDKMzZCxE208=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pruGLsjl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fItK5kUJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105B9C2BCC6;
-	Tue, 14 Apr 2026 13:45:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pruGLsjl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B47C19425;
+	Tue, 14 Apr 2026 16:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776174341;
-	bh=CD9c1yWD3HCd4mW1xhHDZHS+XcvTESm7Ozt3zqDLBlo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fItK5kUJW2UySYt+TOpsFUrHH2L82bGLvpgb6LxS5MpqFWIrs4rRyhMlEk0zgCWdJ
-	 R/btMsJ1gL5i7R8riB2yq3yis0RolBm3ERH5FP85kuUfIFwS91nvaF1yrirM35DGCr
-	 gUwmTT9JY+Mpq600KQU5JBiM5Yxv690TJvDmet+xnZm6Zq/P1XYxd5SZkCk/QqATb0
-	 idAsFrZNvpwSH8n16oSCNnQnTlttguR/G6GigV1BdFs7/iP6pjfSJXrsXaU9hcrrGn
-	 mDOmAb10j/zoTkT05c1LJqlT/quM2yuO1mpsFX/SnRAiQYlLbzYBfWubaM+rg0kUJx
-	 8H7SoW+beV8/g==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wCe5C-000000046W2-37Fo;
-	Tue, 14 Apr 2026 15:45:38 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 6/8] spi: orion: fix controller deregistration
-Date: Tue, 14 Apr 2026 15:43:17 +0200
-Message-ID: <20260414134319.978196-7-johan@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260414134319.978196-1-johan@kernel.org>
-References: <20260414134319.978196-1-johan@kernel.org>
+	s=k20201202; t=1776184107;
+	bh=DX1/pSqo/yX5G/8cjvQRYzSQwDptJNa8nCMs2hjkgyQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=pruGLsjl2PEdxqkOLFMak1ZbmMm8qFPGFybTURsluWzTh9pU6mmQaLhfeTs4OR+/e
+	 PokyGPL6lbQp0JIk37rzS65RzBkScMLrjFrfCGBOSn3i288nlv95f+AtriQkR2HLy7
+	 yyBtZ20ZcXdxvryaKAxgSek31UwMZFS2o6UYSEitXuFR3CXYiJbnBgU4VQlfkPInVV
+	 umBSafDvidf3N5AauVpLOoG6LkkFXPxvytIFTMCbjItU8PcLJ5SrS5fYeDLZLEsnqu
+	 785HLK3zslIOKRjsf13flz/+4OK9fS/vNUk50PWXIwhP5PjLDz/ZlJ8g3Q8JjxvW3Y
+	 HbknwQ5+4fQyQ==
+From: Mark Brown <broonie@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Masahisa Kojima <kojima.masahisa@socionext.com>, 
+ Jassi Brar <jassisinghbrar@gmail.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260410083423.504695-1-johan@kernel.org>
+References: <20260410083423.504695-1-johan@kernel.org>
+Subject: Re: [PATCH 0/2] MAINTAINERS: update Socionext SPI maintainer
+ addresses
+Message-Id: <177616937799.64958.3543181179695464622.b4-ty@b4>
+Date: Tue, 14 Apr 2026 13:22:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=DX1/pSqo/yX5G/8cjvQRYzSQwDptJNa8nCMs2hjkgyQ=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp3mspsU2ADLHVKPfyySWkFakjrNFrhBE1lWxCx
+ IvrkYpNMVSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCad5rKQAKCRAk1otyXVSH
+ 0PxkB/9rHWV8tAx5LxsZGNxrbB2BJO+UJ4ndRN4VD2dhRfCIksdXZaoFYicsKfv+qqFbNJZHFZd
+ f3lvT701EZnZ3ZCdGnVmwweTua7mQbj9FoKG7zVeytwrI/Gr38C2ej61cF4FmEUAu3Ijh3B3O3N
+ v+C4f0HaoZDB3KLwDzTW1/r0OWEljVicHeqSJRcEzYA9PUNnfEbSqR2ov2TCHyv9juao/y+OZj0
+ QEVrzlNLsjLC3FpoJQgz4zeAnK7E7TuulsygawTVUaKLV3dK/j6s0jTsgw4LoBjtMsLO1NG8z96
+ iiCAieND1MFE/tahXwtArh42PMejW25yjcNrM1n+y6+dY++j
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Make sure to deregister the controller before disabling underlying
-resources like clocks during driver unbind.
+On Fri, 10 Apr 2026 10:34:21 +0200, Johan Hovold wrote:
+> MAINTAINERS: update Socionext SPI maintainer addresses
+> 
+> The Linaro addresses of the Socionext SPI maintainers are bouncing.
+> Update the entries using addresses also found in MAINTAINERS.
+> 
+> Johan
+> 
+> [...]
 
-Fixes: 60cadec9da7b ("spi: new orion_spi driver")
-Cc: stable@vger.kernel.org	# 2.6.27
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-orion.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Applied to
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 7a2186b51b4c..c54cd4ef09bd 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -801,10 +801,15 @@ static void orion_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct orion_spi *spi = spi_controller_get_devdata(host);
- 
-+	spi_controller_get(host);
-+
-+	spi_unregister_controller(host);
-+
- 	pm_runtime_get_sync(&pdev->dev);
- 	clk_disable_unprepare(spi->axi_clk);
- 
--	spi_unregister_controller(host);
-+	spi_controller_put(host);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
- 
--- 
-2.52.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+
+Thanks!
+
+[1/2] MAINTAINERS: update Socionext SPI maintainer address
+      https://git.kernel.org/broonie/spi/c/9c53a0379e29
+[2/2] MAINTAINERS: update second Socionext SPI maintainer address
+      https://git.kernel.org/broonie/spi/c/978df761538e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

@@ -1,59 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C391030EF68
-	for <linux-spi@vger.kernel.org>; Tue, 14 Apr 2026 17:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391BE364EB0;
+	Wed, 15 Apr 2026 07:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776189508; cv=none; b=Fg0cYALIuaF5lqtV0M7xgGCCO5Fs17uEUUskChurXpdcFq35XzoeL5YFI4YNULxSJ7+xDUceneI7xC/fVbAZ8QxkNmqT8U4ycE6Ddck4ViuC8rw9SdQkBSc2RLwRALcLcBqKzql9VshQfb/X99bQGI+E5niR/WipADozFHaG/28=
+	t=1776239816; cv=none; b=BcWTGrcBiWUYcDvDh0DQ5/Uusi2MISbzRFGgKnv2D1FNbDIhc2rybh3DiDZhMc/4h0NjB1kcuXLIV4jZjsjXt9A5LnrR0SdFXA2UShMmjoL2QYj9Exl66EXeaTEck6YS1n5MdZoNI+FVPkhAcDU6P1lZh41tFxVMrasHt8NfoAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776189508; c=relaxed/simple;
-	bh=3NVIOJJi31HRvZkemX6U2SheO45WyDU8+bARJRpnOdY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=l61uhbiYepfCpp3PzuTV0kLTn/F+9pi/+6t4Go8g4EqMkxfiTsDDZ7KcpoZiXI7Xg3/Byf8lh0cnFKkfnbhcpV6Q9GlqQXRYH5lUX8PcKK6nTMvrq67rf0j22mocfbbzd0kdqNJmp/UCvlH/iwofr/OAUcyjA+p7cuMO2S5pZ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKdiXK7g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776239816; c=relaxed/simple;
+	bh=JAqaeyCw5PU2u6iz1ihetntVR021RrJpXIaTnl1S7Bo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uvwvmCu9USaXi8Xx/tymhWPsLHxV7s1/4LhmzolB4YTMuvi28Xk47XERBJWioqU7oKrffWu6pwgn6AvZYmkbcxpczPQLFy68ZtiTwEzEcAQbiDBK5uKuBXZQ9yYWcT2QX+pcp0XzinFwc00SGTNvuLTtdyQoKJOGb9zz1b8crDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQ6Q3abZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKdiXK7g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659F5C19425;
-	Tue, 14 Apr 2026 17:58:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQ6Q3abZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C94DC19424;
+	Wed, 15 Apr 2026 07:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776189508;
-	bh=3NVIOJJi31HRvZkemX6U2SheO45WyDU8+bARJRpnOdY=;
-	h=Subject:From:Date:To:From;
-	b=mKdiXK7gTo+gV/B95YQ5qWKXlhWeLCX6VVxck01Q+Mp6iYNxVebfa+ojucCnstHjc
-	 dOUqRvgkdiFqbXvpfMoHfmsLHV1CjRRCjh3Rp1MtYZbnrJLm7JFhTGa8tNkYqmot6p
-	 hwbdzEULvBdvAHOsTr8u5b2gYEPQx2HSod+xpyGF86Fu+PGFU5lLjBBigvDQb3nbfi
-	 AO/4DPcXe3tBZQ88DdtqiGNlm6RuorxKKWUE/kMC2rG+MwuSV4Hc4CEmAa6i7/kBLx
-	 ja5vP9x23JpxY/lCJgaFePrvT6CWnEz61vjjsJ/5nicKuJVeKj6MyshJFl4QOvvbVt
-	 fZsvrXTEM08Fg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 043553809A0A;
-	Tue, 14 Apr 2026 17:58:00 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1776239815;
+	bh=JAqaeyCw5PU2u6iz1ihetntVR021RrJpXIaTnl1S7Bo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aQ6Q3abZhY0zbDo01xx6lVG0+zvjxfFz4fvXiQXIuGt8gPMh0Z/QhfDnRDMeobYIA
+	 4bPhxMrNyoN/Ja9F/dzu7iajfVp8qp2qVUUfyrZ78mFHDSQ3josQdFTvfomZZqNIEI
+	 O1sTG+VDQ9gTU7SjLAUx12IrGzDZdgJFwyMxsNyxyhptAYIiGMAQ/xDXZR6ofatqhL
+	 PegVb5tawG+KYJQBddZShXQ2WCrogATfDwSdvGV6qwHKMMC9q4crqk9cqhdf/+RESQ
+	 OCjxL1foCtgf8kRSmG5cS9EKYKxUIo4jSQp+bkt68mUDk8sAWIAyggfdJQV8Zx55Ln
+	 odbhHQVfMPUkg==
+Date: Wed, 15 Apr 2026 09:56:53 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] dt-bindings: spi: qcom,spi-qcom-qspi: Add
+ qcom,qcs615-qspi compatible
+Message-ID: <20260415-sticky-cornflower-jellyfish-291d9f@quoll>
+References: <20260414-spi-nor-v2-0-bcca40de4b5f@oss.qualcomm.com>
+ <20260414-spi-nor-v2-1-bcca40de4b5f@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177618947856.1401994.2799118589933760254.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 14 Apr 2026 17:57:58 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260414-spi-nor-v2-1-bcca40de4b5f@oss.qualcomm.com>
 
-Latest series: [v2] Add QSPI support for QCS615 and improve interconnect handling (2026-04-14T17:08:18)
-  Superseding: [v1] Add QSPI support for QCS615 and improve interconnect handling (2026-03-24T13:13:17):
-    [v1,1/6] spi: dt-bindings: qcom-qspi: Add QCS615 compatible
-    [v1,2/6] spi: spi-qcom-qspi: Add interconnect support for memory path
-    [v1,3/6] arm64: dts: qcom: talos: Add QSPI support
-    [v1,4/6] arm64: dts: qcom: qcs615-ride: enable QSPI and NOR flash
-    [v1,5/6] arm64: dts: qcom: kodiak: Add QSPI memory interconnect path
-    [v1,6/6] arm64: dts: qcom: sc7180: Add QSPI memory interconnect path
+On Tue, Apr 14, 2026 at 10:38:19PM +0530, Viken Dadhaniya wrote:
+> +allOf:
+> +  - $ref: /schemas/spi/spi-controller.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: qcom,qcs615-qspi
+> +    then:
+> +      properties:
+> +        interconnects:
+> +          minItems: 2
+
+Missing constraint for interconnect-names
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Best regards,
+Krzysztof
 

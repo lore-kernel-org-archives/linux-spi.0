@@ -1,252 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D987838B146;
-	Wed, 15 Apr 2026 08:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CCC33C536
+	for <linux-spi@vger.kernel.org>; Wed, 15 Apr 2026 09:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776242494; cv=none; b=uiUgNR+J0PPSlY4dbGl36VIVpvMsKEFzn0WLI6DPk7XX7KoblguJjJ2HFei/MgNGua8+QEVMf+wdT9kQnD/zs1s7H2kY97q8T8rj7KhXYSF1MTWnyf+kgqji/CnuX11KWD9NrcXU8AJUrBfqsgt2ELX/Wq6I/wNmQGkM2vIm0Dg=
+	t=1776246381; cv=none; b=pOUlTi/0kxp0Dm70QCHgP4vDzd7lHxO/6rfeybqMy3Ny8IlT17bunlWwViUK9HR8ZUBwo5KUhA8cL5BNfhIA/SjSSk362AwZcJqOT01myfOAVC3Wds+fDNqymvQospfwUxhqEVNWGiCcB39ExHlEh4rel1SKFdrru0+NJTV182E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776242494; c=relaxed/simple;
-	bh=eNe90dnGEwFYmwMJ23lPtYLzIduu9ItXjVHRdlA/aWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oe7BINMxO7xkauVaq9rfBeDRjPPeCqWS/pFVFh/vnG/lcMe9DHQkYf/6Ucu8gRpD9GiigxKLsXvczkzrxIg0T7me68ipuyVyWz7F6Kq+eQ/4JhqcLIrKYmoo1jzCLIXElEoXHwZ4cd+qjIFI+uOK1ubOP3cbR6aVwv7o9La7nHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ec21mLYw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776246381; c=relaxed/simple;
+	bh=c1MflrFeD5+n6mMO7gCo+moEzz1iszLgws2k7cI6kzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FIVr/8JrTH+JqVcsKC6s8SXPLLfJnjkU0uuz7iFAe9xPZ5bXyqbXO/uASmci5pgjzCJoFP7feDRS7AKb0mQZr4cSiuKUKvJ9ZRtmopRORO2A3eCCiIdBM2pCM7HLSuz7mp4gChLGoF/k2pRg6dJ1IsFXvtpq916MG/9HMgoU6fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HtScilSw; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Q5nhE36O; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ec21mLYw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFF1C19424;
-	Wed, 15 Apr 2026 08:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776242494;
-	bh=eNe90dnGEwFYmwMJ23lPtYLzIduu9ItXjVHRdlA/aWw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ec21mLYwBJtwXg4pvb0psVyizRk3Rxx8Q6ZlZwMtJd88qQ1zvgiwRtRJdGW6niMr5
-	 ReVMO3HrLyBPRwDT1vhdoEt94SQeIVq5xZYMgCYOpPMvacbjJgKM2zXSkT3Hri5m4v
-	 2BqqYLEuGWGNu9KUeU4ElXuBYNwLGHvCdWFLHxL2CWsRIOmGsgik+MapokezdgBzao
-	 X7t/Obv3uQvm4VGQ9DliPuBqAYHDW4eXCyrWgMVGIy8txaH4fyxtbYpFr8irnadfh8
-	 YT1sRaN/v0bCLXS8HQDxpSVLWQYjeTsOOB7YQMQabPQWeESit7ZHQUmIzVd4vytT9i
-	 3E/CyLxdIxqhQ==
-Date: Wed, 15 Apr 2026 10:41:27 +0200
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Rob Herring <robh@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Conor Dooley <conor@kernel.org>, 
-	Jingyuan Liang <jingyliang@chromium.org>, Jiri Kosina <jikos@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Mark Brown <broonie@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org, hbarnor@chromium.org, 
-	tfiga@chromium.org, Dmitry Antipov <dmanti@microsoft.com>, 
-	Jarrett Schultz <jaschultz@microsoft.com>
-Subject: Re: [PATCH v3 09/11] dt-bindings: input: Document hid-over-spi DT
- schema
-Message-ID: <ad9MbUYT12b61Ymo@beelink>
-References: <20260402-send-upstream-v3-0-6091c458d357@chromium.org>
- <20260402-send-upstream-v3-9-6091c458d357@chromium.org>
- <20260409-defuse-thank-4b038128fac5@spud>
- <adfdkwq_bF9dirAq@google.com>
- <20260410-sake-dollop-9f253ddb0749@spud>
- <20260413223439.GA3647847-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HtScilSw";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Q5nhE36O"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63F96rO41778950
+	for <linux-spi@vger.kernel.org>; Wed, 15 Apr 2026 09:46:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	v78e2uOfVUD/HRkOWd5/vidxUP+SE5hsufWwy8VQQAY=; b=HtScilSwhJX676xc
+	/n/A5kt9foi60TuCnYLh4Wg8ER5+i5Meftx8IwufrgCZ4fi1hoSISZtLd5kpPLQD
+	6GRwznk1q6Gys96RFBo80hbbtLx5qYTIFFR5pAFpdvL2BgAZcngJ3z5OYkPJguHQ
+	K7rWYZ+264TTmSO2MDWdOKDhAZYefcCzjSZKGbVInCQcnl71UzfMvVCc1qJByVPf
+	O8zhFmNAIOwykWgU+bc7sDOxzPLM14GGNyGhF3UBvpL4OIpVMqULrYDl7Fqu+voS
+	PW+QpcB67sYxTLZ1lecu9yPBa6yOF5GPEzkmqHeneIplF1rAE5shTDpzZIpV6Z+9
+	VAFDsQ==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dhrw031xg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Wed, 15 Apr 2026 09:46:18 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8acb4b340f4so8724676d6.1
+        for <linux-spi@vger.kernel.org>; Wed, 15 Apr 2026 02:46:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776246377; x=1776851177; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v78e2uOfVUD/HRkOWd5/vidxUP+SE5hsufWwy8VQQAY=;
+        b=Q5nhE36OdM0AGN8rn8/LNRIZqzC0BrnB4Lcqm4D80maFUqsyLYzjief5cDBx00N/zH
+         mODXbSpuIjkArvma09mAYFbQc2OEW4NUdWSq+qXsPT5M9pSvAg+aDvYNUkDVRnWcGAkV
+         sSqIlPI8Sa6OODiwbCIE7kNbr++px2MzxtyffsnIR2vfjKXQg13Q2rf7ps3Vzz3ni6E/
+         t4pcLGij9WpwNnw9uWWMvU40sRof4djGmefpGSUPjqzAyJIIbtvspNQP9O8HLk2JRWjG
+         I+sWIk0LxGgiBgm++NEsWRj1zKTdMU7fllSDwihAlp184QvhTfcwmkuQcu0j0rlNBlPk
+         4RrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776246377; x=1776851177;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v78e2uOfVUD/HRkOWd5/vidxUP+SE5hsufWwy8VQQAY=;
+        b=mw+xYpe7JKsmF7FDIcWL2NbzOGGZ6YoqfOlziIz2grheLOWnu5jdmmfSdidabAXa+F
+         QknscUSlGJ/doucayO4OIwkCc6zwQ04vkBAccbCvoR0TELXDyQuZoCsHlNDAP828air9
+         LDHhFCoqan+CEg+4DwZqdxNlZXok41rfxtG3Y+V79nhk4lLlGGHj5w4a+KBJDc5jCMDC
+         SwtFP3yZYHqlQ9CRU5ExD2ojXixZhfPL8Zi7O+0nfOLOt0QXJHqcg0jdH8AdQ9BeftRy
+         4s8mMMJJjPzF6G73MVnq/j6ul0gE0USKHCJYGyxI8Q7jjSjf7eh8KCfp4XkQy/Msphzp
+         Q6UQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8fcjP692ZyTNsCuqmYdUVfcBV42XT9mao2k2zeUkCaj1fA3MHpdnfAxA7dDmBnCwngn3hmacbwflE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx12t/YPNsNokjAVyhQygs0TdwHRicfLeHZTYjf/2BSicLBCrgJ
+	Xehbshr1BJVOWgQKpUtlrAeppUDyL4jB3CnGb8FhaCy7SuLPanC6aMjHY8NwaBGZ4wrp4N88Uws
+	lhXpUoMXdKra7joFY3km3wFEtu7olS8Ef5gpRsm9j7LvJgcToFeStVRtvAnuiRoo=
+X-Gm-Gg: AeBDievvJLEOOFFfa6Y+Q4A0mFRmZ8foKCDpZ3X29fBBy2lMw2Yzo+4O5bjsX37jZ3X
+	3kdnpUl6oWmp7bs1qQrDw8zos9if86kSfP+D+efF8soPr7uMUNguWvIIKW9iZPl1haDjP3zjLSf
+	S2tbQim+VWk4HmpNgZ953kRxM947qRECdb24KOM3h9GBdfBNra+a+OcYYs+IqzLmjnEzj2KY1w1
+	y1SIedkvSijEh6ctqLuWyG/0AYDqYSz0CreJL6T1GIAVzjcgqRGkrPrBx9nn6PPw5mdU5xxIgnI
+	1jdGcvYiZyLEaogDN89FHrrV+vgKvRDC8MGLVS5/jZdqXri828+Sg6ZTh4bkaHFSPFwiMGQNM+R
+	Ihum5qsiyiVVCHmOauEWxpHu8ejzju5dqKz672WXDiMd74mHwRITVY+4zff0D8PttcfHBsKmQ0F
+	ojeqoSSEjS4OmIjg==
+X-Received: by 2002:a05:6214:27ce:b0:89c:d639:e7be with SMTP id 6a1803df08f44-8ae6a92307dmr17279736d6.5.1776246377571;
+        Wed, 15 Apr 2026 02:46:17 -0700 (PDT)
+X-Received: by 2002:a05:6214:27ce:b0:89c:d639:e7be with SMTP id 6a1803df08f44-8ae6a92307dmr17279476d6.5.1776246377082;
+        Wed, 15 Apr 2026 02:46:17 -0700 (PDT)
+Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba17392e952sm39513466b.15.2026.04.15.02.46.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Apr 2026 02:46:16 -0700 (PDT)
+Message-ID: <fe30cca9-c348-4ab2-b190-33016242aa64@oss.qualcomm.com>
+Date: Wed, 15 Apr 2026 11:46:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260413223439.GA3647847-robh@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] spi: qcom-qspi: Fix incomplete error handling in
+ runtime PM
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260414-spi-nor-v2-0-bcca40de4b5f@oss.qualcomm.com>
+ <20260414-spi-nor-v2-2-bcca40de4b5f@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260414-spi-nor-v2-2-bcca40de4b5f@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: -hOt0e5GNLWj72z7Q2thTGPf2sU3qY0L
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE1MDA4OSBTYWx0ZWRfX8sfckzDZtQ7V
+ oJtHOyBLDGq1psQ66qM42RTTSvTh0DU962RSqA+Dni/A9zt7VXlfJc0Q9q4SRcjTH3+T0qw7Fg5
+ LLmYDTERXz7FA/sr6/PcZrysPDv9YwgpnsJOUkWXdETECZ5veYbVnHny4wxPBsUcaJZoqHIv6wP
+ Gnc3VD25uOfKdmy+Db3AxO1KWW/EeUP9+iDi1QYR6IS0EtCH4VmtnOo2ySQLHqQ1S8M4la9XIlP
+ Eznv5oEJzk56lgWbLo/3uN8ekop+hW1nwu2fpFME5KSRQdJ0HaBazLVILf1UPTkUDND8P59G7/x
+ vxr6gtjTF2grvFz28lIMDDh7/3+D0cpruZMKWgJTX0kaZD8CpOyqH53sKyZeqs6b6M58/P0n8lR
+ UlqunW7b72eG9qT6aHPBgp9DZg8yO55TktruzSRdqBAzqTQeafxTg4fVJ9DJWRU31Xgv6sUcY6N
+ yy5YT2Qdy24kWzDqQYw==
+X-Proofpoint-ORIG-GUID: -hOt0e5GNLWj72z7Q2thTGPf2sU3qY0L
+X-Authority-Analysis: v=2.4 cv=YMGvDxGx c=1 sm=1 tr=0 ts=69df5e6a cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=EUspDBNiAAAA:8 a=3Z6IiVtUJ8LA7v5DzrMA:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-14_04,2026-04-13_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 priorityscore=1501 phishscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 malwarescore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604150089
 
-On Apr 13 2026, Rob Herring wrote:
-> On Fri, Apr 10, 2026 at 06:35:00PM +0100, Conor Dooley wrote:
-> > On Thu, Apr 09, 2026 at 10:16:46AM -0700, Dmitry Torokhov wrote:
-> > > On Thu, Apr 09, 2026 at 05:02:11PM +0100, Conor Dooley wrote:
-> > > > On Thu, Apr 02, 2026 at 01:59:46AM +0000, Jingyuan Liang wrote:
-> > > > > Documentation describes the required and optional properties for
-> > > > > implementing Device Tree for a Microsoft G6 Touch Digitizer that
-> > > > > supports HID over SPI Protocol 1.0 specification.
-> > > > > 
-> > > > > The properties are common to HID over SPI.
-> > > > > 
-> > > > > Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
-> > > > > Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
-> > > > > Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
-> > > > > ---
-> > > > >  .../devicetree/bindings/input/hid-over-spi.yaml    | 126 +++++++++++++++++++++
-> > > > >  1 file changed, 126 insertions(+)
-> > > > > 
-> > > > > diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yaml b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
-> > > > > new file mode 100644
-> > > > > index 000000000000..d1b0a2e26c32
-> > > > > --- /dev/null
-> > > > > +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
-> > > > > @@ -0,0 +1,126 @@
-> > > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > > +%YAML 1.2
-> > > > > +---
-> > > > > +$id: http://devicetree.org/schemas/input/hid-over-spi.yaml#
-> > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > > +
-> > > > > +title: HID over SPI Devices
-> > > > > +
-> > > > > +maintainers:
-> > > > > +  - Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > > > > +  - Jiri Kosina <jkosina@suse.cz>
-> > > > 
-> > > > Why them and not you, the developers of the series?
-> > > > 
-> > > > > +
-> > > > > +description: |+
-> > > > > +  HID over SPI provides support for various Human Interface Devices over the
-> > > > > +  SPI bus. These devices can be for example touchpads, keyboards, touch screens
-> > > > > +  or sensors.
-> > > > > +
-> > > > > +  The specification has been written by Microsoft and is currently available
-> > > > > +  here: https://www.microsoft.com/en-us/download/details.aspx?id=103325
-> > > > > +
-> > > > > +  If this binding is used, the kernel module spi-hid will handle the
-> > > > > +  communication with the device and the generic hid core layer will handle the
-> > > > > +  protocol.
-> > > > 
-> > > > This is not relevant to the binding, please remove it.
-> > > > 
-> > > > > +
-> > > > > +allOf:
-> > > > > +  - $ref: /schemas/input/touchscreen/touchscreen.yaml#
-> > > > > +
-> > > > > +properties:
-> > > > > +  compatible:
-> > > > > +    oneOf:
-> > > > > +      - items:
-> > > > > +          - enum:
-> > > > > +              - microsoft,g6-touch-digitizer
-> > > > > +          - const: hid-over-spi
-> > > > > +      - description: Just "hid-over-spi" alone is allowed, but not recommended.
-> > > > > +        const: hid-over-spi
-> > > > 
-> > > > Why is it allowed but not recommended? Seems to me like we should
-> > > > require device-specific compatibles.
-> > > 
-> > > Why would we want to change the driver code to add a new compatible each
-> > > time a vendor decides to create a chip that is fully hid-spi-protocol
-> > > compliant? Or is the plan to still allow "hid-over-spi" fallback but
-> > > require device-specific compatible that will be ignored unless there is
-> > > device-specific quirk needed?
+On 4/14/26 7:08 PM, Viken Dadhaniya wrote:
+> The runtime PM functions had incomplete error handling that could leave the
+> system in an inconsistent state. If any operation failed midway through
+> suspend or resume, some resources would be left in the wrong state while
+> others were already changed, leading to potential clock/power imbalances.
 > 
-> The plan is the latter case (the 1st entry up above). The comment is 
-> remove the 2nd entry (with 'Just "hid-over-spi" alone is allowed, but 
-> not recommended.').
+> Fix by adding proper error checking for all operations and using goto-based
+> cleanup to ensure all successfully acquired resources are properly released
+> on any error.
 > 
-> > This has nothing to do with the driver, just the oddity of having a
-> > comment saying that not having a device specific compatible was
-> > permitted by not recommended in a binding. Requiring device-specific
-> > compatibles is the norm after all and a comment like this makes draws
-> > more attention to the fact that this is abnormal. Regardless of what the
-> > driver does, device-specific compatibles should be required.
-> > 
-> > > > > +
-> > > > > +  reg:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  interrupts:
-> > > > > +    maxItems: 1
-> > > > > +
-> > > > > +  reset-gpios:
-> > > > > +    maxItems: 1
-> > > > > +    description:
-> > > > > +      GPIO specifier for the digitizer's reset pin (active low). The line must
-> > > > > +      be flagged with GPIO_ACTIVE_LOW.
-> > > > > +
-> > > > > +  vdd-supply:
-> > > > > +    description:
-> > > > > +      Regulator for the VDD supply voltage.
-> > > > > +
-> > > > > +  input-report-header-address:
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > +    minimum: 0
-> > > > > +    maximum: 0xffffff
-> > > > > +    description:
-> > > > > +      A value to be included in the Read Approval packet, listing an address of
-> > > > > +      the input report header to be put on the SPI bus. This address has 24
-> > > > > +      bits.
-> > > > > +
-> > > > > +  input-report-body-address:
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > +    minimum: 0
-> > > > > +    maximum: 0xffffff
-> > > > > +    description:
-> > > > > +      A value to be included in the Read Approval packet, listing an address of
-> > > > > +      the input report body to be put on the SPI bus. This address has 24 bits.
-> > > > > +
-> > > > > +  output-report-address:
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > +    minimum: 0
-> > > > > +    maximum: 0xffffff
-> > > > > +    description:
-> > > > > +      A value to be included in the Output Report sent by the host, listing an
-> > > > > +      address where the output report on the SPI bus is to be written to. This
-> > > > > +      address has 24 bits.
-> > > > > +
-> > > > > +  read-opcode:
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint8
-> > > > > +    description:
-> > > > > +      Value to be used in Read Approval packets. 1 byte.
-> > > > > +
-> > > > > +  write-opcode:
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint8
-> > > > > +    description:
-> > > > > +      Value to be used in Write Approval packets. 1 byte.
-> > > > 
-> > > > Why can none of these things be determined from the device's compatible?
-> > > > On the surface, they like the kinds of things that could/should be.
-> > > 
-> > > Why would we want to keep tables of these values in the kernel and again
-> > > have to update the driver for each new chip?
-> > 
-> > That's pretty normal though innit? It's what match data does.
-> > If someone wants to have properties that communicate data that
-> > can be determined from the compatible, they need to provide
-> > justification why it is being done.
+> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+> ---
+>  drivers/spi/spi-qcom-qspi.c | 40 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 33 insertions(+), 7 deletions(-)
 > 
-> IIRC, it was explained in prior versions the spec itself says these 
-> values vary by device. If we expect variation, then I think these 
-> properties are fine. But please capture the reasoning for them in this 
-> patch or we will just keep asking the same questions over and over. 
-> 
+> diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+> index 7e39038160e0..38af859713a7 100644
+> --- a/drivers/spi/spi-qcom-qspi.c
+> +++ b/drivers/spi/spi-qcom-qspi.c
+> @@ -819,19 +819,31 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+>  	int ret;
+>  
+>  	/* Drop the performance state vote */
+> -	dev_pm_opp_set_rate(dev, 0);
+> +	ret = dev_pm_opp_set_rate(dev, 0);
+> +	if (ret)
+> +		return ret;
+> +
+>  	clk_bulk_disable_unprepare(QSPI_NUM_CLKS, ctrl->clks);
 
-Dmitry, FWIW, we roughly had the exact same of argument with Rob with
-i2c-hid :)
+You first need to disable the clocks and only then potentially reduce the
+performance state, otherwise there's a brief period of brownout risk
 
-It took me a while, but I finally understood the rationale and agreed to
-it (using the i2c-hid examples):
+[...]
 
-Most i2c-hid devices are following the spec and rely purely on ACPI and
-the DT declaration of i2c-hid -> they are working fine and we don't need
-anything else for them. They declare their compatible and the i2c-hid
-compatible, and they work great.
+>  static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+> @@ -840,20 +852,34 @@ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+>  	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+>  	int ret;
+>  
+> -	pinctrl_pm_select_default_state(dev);
+> +	ret = pinctrl_pm_select_default_state(dev);
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = icc_enable(ctrl->icc_path_cpu_to_qspi);
+>  	if (ret) {
+>  		dev_err_ratelimited(ctrl->dev, "%s: ICC enable failed for cpu: %d\n",
+>  			__func__, ret);
+> -		return ret;
+> +		goto err_select_sleep_state;
+>  	}
+>  
+>  	ret = clk_bulk_prepare_enable(QSPI_NUM_CLKS, ctrl->clks);
+>  	if (ret)
+> -		return ret;
+> +		goto err_disable_icc;
+>  
+> -	return dev_pm_opp_set_rate(dev, ctrl->last_speed * 4);
+> +	ret = dev_pm_opp_set_rate(dev, ctrl->last_speed * 4);
+> +	if (ret)
+> +		goto err_disable_clk;
 
-But some devices need a reset line. But the i2c-hid spec doesn't mention
-a reset line at all. And some other devices need a reset line with a
-different timing. etc... Relying purely on the i2c-hid driver means that
-the driver needs to now the platform the device is on and the exact
-device we have in front of us. i2c-hid provide a VID/PID through the
-protocol, but we are still lacking information: in some cases, the
-timing of the reset line for the same device differs depending on the
-platform they run.
+similarly here, the OPP state is only altered after the clocks are
+running (potentially at a high speed because the rate is cached)
 
-Having a device specific compatible means that we can make use of it
-before we load i2c-hid. This is why we have i2c-hid-core and module
-specifics on the side. Those extra module can do all the oddities they
-want, like having 2 or 3 reset lines, but in the end they are using the
-core i2c-hid once they are set up.
-
-Think of it as a way to quirk the device upfront without polluting the
-i2c-hid processing.
-
-That allowed us to clean up the i2c-hid code by removing the non
-standard regulators, reset lines, quirks that are device specific and
-keep it closer to the spec.
-
-Cheers,
-Benjamin
+Konrad

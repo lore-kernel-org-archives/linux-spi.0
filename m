@@ -1,66 +1,66 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8C423E358
-	for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2026 16:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738253A3826
+	for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2026 16:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776356883; cv=none; b=t3YFcW8GGbMHJVw4Bgf4oboOQw8kgD5ddpEKNy6MBVk16+obsh1Lirhk2Ogspj1oDPT9tfck0T2hRSVtYLiSCb6BCHWaatLxNhOhMAXsMcPjADfq0vT4sxK1OoYmZO+farEOHp4SMd/I7OOmZgRPci2EecyMZVlcxwBrOcHTACs=
+	t=1776356885; cv=none; b=FOJAgaNsRB4uoT1iXEk7AoB0S1ftlkSHd8zMNNV53AQ2Zdkc28Fy0QUlV2GGDKqdbinI0qNJgtk3lN8dUD7osCCzNi6Ep9CQhEFKeJcX1gs9Dv8oWGfe0Vy0KsUCe4Ew8iDt/Z98hw2UYDf35H+xn6BuSsiLRi45oSoYS8bsAtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776356883; c=relaxed/simple;
-	bh=an05gz3snFqSWIlqPugud+8QDXGo85nlpAZJRtcNXQM=;
+	s=arc-20240116; t=1776356885; c=relaxed/simple;
+	bh=FZ6qkpMKVIcbowELRYRBQvoC35yyjFuA/kOKYyZ/2F8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QK+UlXaYfNLJg7AJGjJDr82WRQWm3nAFAujPRrg5o1+DBWdquYEIvc9qxi4aVbUfBK+eNBaSTJ23/Vd7Qu3cogJ0eurnnXINlpDtr6YFbh7bhfTAxnjnTaYxf3P8tMnHElg1ZPSbC8a9j/6K+Ko9YhleWn9NqQkNXz3QGzY/E/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBmUitbY; arc=none smtp.client-ip=209.85.215.170
+	 In-Reply-To:To:Cc; b=UEu0kYIaF8SzmtBeHcdgn3kx+v16CZH7TyLCV1dhsWeT0AG5sz3PlYvihNqf4Nkeu4r+gH0PJEY8q2Js42XIPsfvSZQ6z1WdDA7PU5xUIfvy1zvpFAeGBqsXquEWRzE9qi1mtURhEoy84jZjBv9EepIjNL4poY3gCH/b5BG+e2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LqoTSq/v; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBmUitbY"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c76b6abdb73so5705372a12.1
-        for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2026 09:28:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LqoTSq/v"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c79662668bbso391611a12.1
+        for <linux-spi@vger.kernel.org>; Thu, 16 Apr 2026 09:28:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776356882; x=1776961682; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776356884; x=1776961684; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5saRJRACUrKVG09khw6yNyktdUzYLnpf0xS5TC2JSYI=;
-        b=UBmUitbYRoY49LVN4gtXElvt9c74Wb1ChQuPaQ/4zbQuFHWsEc3kgiG7RjG1sMtCDc
-         b6A88FauHJSM7FXINgSxaTtEfcSss/dpFlA0kWYspMS56Nfyg9/FiGnjFOCF3UO1kHRz
-         Z9XijqGCmQEv1ICOnvOag0pmfhgc8NkTzJhYk6Wfzld6E8gZsKZzeVUpgMgeQBLvfYIn
-         OBOkjElK3FxQtcpLsrbpIrs2b0Pq4RWY6VDmSxlhAVLjQKWc0rx5SNLhfHSm6bJ1Sxo0
-         PlbCxuqTzr7vniDAUSn/ZTi06ZzrETfsBSdOpJcWiBH/6M7I8xhi16pljzpy2x/VYX3f
-         RZJg==
+        bh=cSry/j/bHDuu9fpNbbaBULIlYY0NQBFJddY/G6VITfM=;
+        b=LqoTSq/vSHHaTVf9NZnEKPJAp8PmWI4Wjrsca6oHTL9LxVJFYzCao/TZ9RLY0JUu/F
+         TAP3dvGQrHyRH1hu0Ss7ZX46vNDnUp+zJVmr+WKGDK9CefPPWnshvrTIB4IxcOmVP0WE
+         gsmUs4urBBOt/4ThiqRYZqmaRbA+V1333bCndsktE2Lvsdo2Xq9uVCv9GXIYLnqK5ZSY
+         0FLBeO1z9/j/8ePcMiCVPTbnRuvZLTzw+Newwe7U2j6wxQVyBcYncIcaB5KOKvE50duu
+         ddswq1yio4Gpv3tS1+CUEv2wuIluX7F9DHD8RKzPpri5tw4vRHjbMv8vaZtAWPBuhEnZ
+         PWRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776356882; x=1776961682;
+        d=1e100.net; s=20251104; t=1776356884; x=1776961684;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=5saRJRACUrKVG09khw6yNyktdUzYLnpf0xS5TC2JSYI=;
-        b=Gs4+nVl5kZCUkh5nJujikr/KcOe+32gj6d7VsnUMjEL+dRDmEy0x7sfC1oO4G23PaA
-         HU5d5YjEnw52RexNAN4wqh5+pFNs9VIwhY8R7+gmg0HFMrE3qtEAXVyPj0Af0bkNeW5T
-         RyW8sNX90WBPXPI5mdpCu9EKWzMG2W/25sbudqif4Vhgbd47giEiDzNpajXQSZnt2xjy
-         3lqVqC7TIrpmnCH59hw4PncwGUv2+TgYnjbOOFUzhZdOn08TADX4YltRnhpOCfwTdQVJ
-         yW97YjJeuzIlbPca9pQpaux9xg7e45WrJbqF5PKo6NmMis1mk2RyoXfEf6iXOHW06SLc
-         /frQ==
-X-Gm-Message-State: AOJu0YyjtJ41TmeMQw/sy1c17H8hyAhm+g4oYErReiVffPo3Y2famKRH
-	ntMur/OT3L9OhhooZxUX6PaJ3xlXlpaGr3o3b6iHH0coyf1tdSeOViEm
-X-Gm-Gg: AeBDiesFJpUdg+Fy4namCOf3ctdOAgT6jYAMk3cr1tAi0e6UaMTKIQqwZKc7bx/rkWO
-	8kSU8vEsi/5jNK6LzNzfeW/OdzCa4Jy5uKMSnWekVXjtqqMJG/WwaSJWjEJcx031OZuywkZEG87
-	R7mmBaiQYwaKYZY6lCMKe5GI1Je/ckFCocR7TSLx2TSV4pEWpNOsdKh3g8sPm9bi4C+VNUahXYH
-	z6YKhjvB6fDPKLyxhriO/gFPV74Tr9AM/iNsscJZct7KM5wNUtR6r5k9OderZ11KC+anfbC0Kcv
-	ussVcosWeSjq6re1gb4bynhonuRoOSG7M6JvdIZVfGxMCBlRSsQ9xFSKg6txbtBdm7DBsW2UInO
-	hCxUH+nMJQnNXcl+1GJ4FGSS/LpY0mIB9kRdUJCIxCqlJj0/CyQAnpbXP/X0WP/KRqY4PVrcX8C
-	BDDgU8Y1bVWDcs6B7XY8ogyxzkavRH4rz7SygLD9bIKFJS699P4IKmtZ6VRUeWdtlgCNRtuug5/
-	UxpWVYKEvm5hZj23WFmb+/4Ge3d888=
-X-Received: by 2002:a05:6a21:3389:b0:398:bbd6:80b9 with SMTP id adf61e73a8af0-39fe3d824f2mr29670119637.23.1776356881767;
-        Thu, 16 Apr 2026 09:28:01 -0700 (PDT)
+        bh=cSry/j/bHDuu9fpNbbaBULIlYY0NQBFJddY/G6VITfM=;
+        b=JHH2fVBHsmNJjQbTpQY4S3JLE10U4BZjBbMSKaUWhuu2fUQBOHT2Sx76+EUQpOn7no
+         w/VVX++8z5fzUAtegV/ELRnw89TJyu07Jti5xhxlUq+a39iGJYajw7ww79AptNQTeapr
+         gWd0RlBeTUw9WdmZMy3MmIp7WCt3skZwOiHm+OYdv+06JXvxI0HxbaxFIwj6sfGpm3Bd
+         nn7IUHqerBgtMZgi47aoZSsEu3X3u9oq8cwaDfwUs4zrY98MKBxFtb7vf49C1tzVn24c
+         KRdaTbbKtQMzwFpAQ4GoTgvdwCRKEGyHhUPKIQmm2FO+9hN1YqLm7BtCBYa8b4+tX5t+
+         FBww==
+X-Gm-Message-State: AOJu0YzacEz5irYECVl1Pk4F7gaKpbEQQVOadPsHfPb6G+KplinBRjtv
+	lO/EVZJKUM0XMxknqVkAEa4cMFLgTHmndrfgpr2FySAXYFJtCJWFSwI7x7Dl7wUh/tk=
+X-Gm-Gg: AeBDieu1FBkx1ILeyc01F87/XpWRbOPjec7ySO5bT9FanLkOAXBDCjhCdY0m7unZ/1h
+	3KwfxHuImdBlKQLmY+pMD3jntdyVyUCNIAkdd285sKwKLM1s1FApRBVBm+AFL8AM6hMCPCMuOwX
+	S1WhnYJkp/kTD/ywid8Y1MYsDBnuemK4mpQ0wvItY++8nqyH2WRUXBVUAplzRzZiEJ0BbTO92j5
+	6aq1PiePlnL5B4wgmmuXTo+lNI4AcZeZc9OkNASYxVFk6HQQEt78M9I13Fppgpiapp7mwP52zjO
+	nRgRPOmRlla1djtuebnk8I67oiPaGAA+x7lVORmRjtT0NifPP10Jdgsl6DR9BzlamRDCl5d0cW+
+	jhVplgnReFOIMUJ8c0UuSnxSRyT64loA8Om1eL/HxCuX243VxixRmDB1/uuEYIp9I73ae3WecGq
+	43de0du0nU2ZKIbI1ld4yH0a4ifbjEf5HhyfMBIS77bKJseB3D5aFp4deDpSXAfbnTAqR/cgdW0
+	1y936cAeYG4qdqALyNxyaDH7iSgpFI=
+X-Received: by 2002:a05:6a20:3d1c:b0:398:8dbb:d1f with SMTP id adf61e73a8af0-39fe4108830mr29897868637.55.1776356883559;
+        Thu, 16 Apr 2026 09:28:03 -0700 (PDT)
 Received: from junjungu-PC.localdomain ([223.167.147.125])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957ed03f1sm4899852a12.3.2026.04.16.09.28.00
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7957ed03f1sm4899852a12.3.2026.04.16.09.28.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 09:28:01 -0700 (PDT)
+        Thu, 16 Apr 2026 09:28:03 -0700 (PDT)
 From: Felix Gu <ustc.gu@gmail.com>
-Date: Fri, 17 Apr 2026 00:27:54 +0800
-Subject: [PATCH 1/2] spi: atcspi200: fix use-after-free when driver unbind
+Date: Fri, 17 Apr 2026 00:27:55 +0800
+Subject: [PATCH 2/2] spi: atcspi200: switch to devm functions
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,62 +69,91 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260417-atcspi-v1-1-854831667d63@gmail.com>
+Message-Id: <20260417-atcspi-v1-2-854831667d63@gmail.com>
 References: <20260417-atcspi-v1-0-854831667d63@gmail.com>
 In-Reply-To: <20260417-atcspi-v1-0-854831667d63@gmail.com>
 To: CL Wang <cl634@andestech.com>, Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Felix Gu <ustc.gu@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776356879; l=1365;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776356879; l=1911;
  i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=an05gz3snFqSWIlqPugud+8QDXGo85nlpAZJRtcNXQM=;
- b=cjG8jOqLKAqc0lTGEmS/vsVLhr4Xxmy3lD1F7AbH8ZfaDKWDgkpKdiOfBAv2+CznMGceUGzLN
- iAyqSjcOKkDAfm3kZ0rdLGTRLzbVmsVTbFe7OMlylmgvnzSZ3riLxAM
+ bh=FZ6qkpMKVIcbowELRYRBQvoC35yyjFuA/kOKYyZ/2F8=;
+ b=QLuqZT+7GA4+3UyeKUqZC05mgpQ14rMiwnyfexefXYc7G3zRe5ajp9NIjxkWa5x8KYyRy4cDS
+ B6U0ax8sMynBKEi2q4SRMmMIeDnArOeb4JR2JM47Q4Ybwv3zwEeiLu2
 X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
  pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-DMA resource is initialized after SPI controller registration. So
-when driver unbind, this can trigger a use-after-free when DMA is
-torn down while the controller is still alive and triggers DMA transfers.
+Switch to use devm_spi_alloc_host and devm_mutex_init to make code clean.
 
-Fixes: 34e3815ea459 ("spi: atcspi200: Add ATCSPI200 SPI controller driver")
 Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 ---
- drivers/spi/spi-atcspi200.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/spi/spi-atcspi200.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/spi/spi-atcspi200.c b/drivers/spi/spi-atcspi200.c
-index 3832d9db3cbf..c5cf1aa2d674 100644
+index c5cf1aa2d674..6d4b6aeb3f5b 100644
 --- a/drivers/spi/spi-atcspi200.c
 +++ b/drivers/spi/spi-atcspi200.c
-@@ -575,12 +575,6 @@ static int atcspi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto free_controller;
+@@ -550,7 +550,7 @@ static int atcspi_probe(struct platform_device *pdev)
+ 	struct resource *mem_res;
+ 	int ret;
  
--	ret = devm_spi_register_controller(&pdev->dev, host);
+-	host = spi_alloc_host(&pdev->dev, sizeof(*spi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi));
+ 	if (!host)
+ 		return -ENOMEM;
+ 
+@@ -559,21 +559,23 @@ static int atcspi_probe(struct platform_device *pdev)
+ 	spi->dev = &pdev->dev;
+ 	dev_set_drvdata(&pdev->dev, host);
+ 
+-	mutex_init(&spi->mutex_lock);
++	ret = devm_mutex_init(&pdev->dev, &spi->mutex_lock);
++	if (ret)
++		return ret;
+ 
+ 	ret = atcspi_init_resources(pdev, spi, &mem_res);
+ 	if (ret)
+-		goto free_controller;
++		return ret;
+ 
+ 	ret = atcspi_enable_clk(spi);
+ 	if (ret)
+-		goto free_controller;
++		return ret;
+ 
+ 	atcspi_init_controller(pdev, spi, host, mem_res);
+ 
+ 	ret = atcspi_setup(spi);
+ 	if (ret)
+-		goto free_controller;
++		return ret;
+ 
+ 	spi->use_dma = false;
+ 	if (ATCSPI_DMA_SUPPORT) {
+@@ -586,18 +588,11 @@ static int atcspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, host);
 -	if (ret) {
 -		dev_err_probe(spi->dev, ret,
 -			      "Failed to register SPI controller\n");
 -		goto free_controller;
 -	}
- 	spi->use_dma = false;
- 	if (ATCSPI_DMA_SUPPORT) {
- 		ret = atcspi_configure_dma(spi);
-@@ -591,6 +585,13 @@ static int atcspi_probe(struct platform_device *pdev)
- 			spi->use_dma = true;
- 	}
++	if (ret)
++		return dev_err_probe(spi->dev, ret,
++				     "Failed to register SPI controller\n");
  
-+	ret = devm_spi_register_controller(&pdev->dev, host);
-+	if (ret) {
-+		dev_err_probe(spi->dev, ret,
-+			      "Failed to register SPI controller\n");
-+		goto free_controller;
-+	}
-+
  	return 0;
+-
+-free_controller:
+-	mutex_destroy(&spi->mutex_lock);
+-	spi_controller_put(host);
+-	return ret;
+ }
  
- free_controller:
+ static int atcspi_suspend(struct device *dev)
 
 -- 
 2.43.0

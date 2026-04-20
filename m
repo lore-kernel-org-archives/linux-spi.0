@@ -1,158 +1,148 @@
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011058.outbound.protection.outlook.com [40.93.194.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F6E37BE73
-	for <linux-spi@vger.kernel.org>; Sun, 19 Apr 2026 13:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5090437F01C;
+	Mon, 20 Apr 2026 03:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.58
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776604459; cv=pass; b=FsXV2SZhylTobt4S33pnatsXF8jaHkxTPNGd9SQ/fXEdDOg5gYT5ji2UQ1mdvJXFjcRBs78vPFpnHOQYX3I8Q43azlMy4mz2jk39apVW6cftAMFvIe42SjudiIi8+B9HLbEvjCnkdLN0l0CiIqiBnhM/eg1abl9Jd899cqAQI8g=
+	t=1776654872; cv=fail; b=IPzumDv1DFq11qgr8Z4Xeq8v2s9Q+/3yQUrvwkyrMJzvHp+jVyINowPU5A2boyho/E+zKeQc827U7UB96xAHU7hNxf1tWOZFJs40T8w8ur2oRmrHQYKubX8PfGag4OrWHcdz3YQAwMkfhp0YcmS5Lp+kad2DQhiaD0Ui4YLO8RE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776604459; c=relaxed/simple;
-	bh=qe/8/rd6eZq24hJL9eY4fBiSEHVVKDLumzkH60jo5p0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uAwrhNqySPXUL1IZZqtqjlmkjHScxXEN3Y75YEmKai/QHP3APZ1GIqf65FMayetcWmkBAnj4pCXCzUAoorUSl4L/vKRzNDrb8ZMn7GcJIrGUL0C9ynNcFICZ3OREAqNgabPPnFr/qg5lU+EqKg1eS6TVBMTxpPDwJL56CUtw/3U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org; spf=pass smtp.mailfrom=bitbyteword.org; dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b=RF+j7+hH; arc=pass smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bitbyteword.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bitbyteword.org
+	s=arc-20240116; t=1776654872; c=relaxed/simple;
+	bh=M15Iu+BLfuH3i5NOCpvtzNtfYAUh8OOSjaY3iNm7hGI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YSu9X6Hb38KbqBRJ5VDc1qF3oU4AH3Q9/PYv9VqUCOkbrIpFrgDNQGB0aiQMQzgpW+R57eyKItFczhEWVpSVcVwsN99+2id+Bafg7AkEixFe8NsZUiuXlPCwzdD4QTmncza2qgTtSR20w/tcjEqU2gJ+hd5Hgn0/MQZgCPVG8kw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GiupbSyE; arc=fail smtp.client-ip=40.93.194.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bitbyteword.org header.i=@bitbyteword.org header.b="RF+j7+hH"
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-65318dafbcbso1804312d50.2
-        for <linux-spi@vger.kernel.org>; Sun, 19 Apr 2026 06:14:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776604455; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f6hvofa4fuhF3NVntKnqLkHTxodw0nw3o0dOe5ugOA24yZzO8dWRvx5VmRXXwH7c4S
-         D0N5hMwUpvGgqGD4Yri7hIiJ4D40U6W4NxUl1pCb070zi5XjdIZIsUGmAbotsxOQqDPj
-         5j5i/pTxwNyDvwYh/YpAJMQzh5tO68gVRmT8v8Kzb9T356Smu//TWnzwz7R/MMUjfLO9
-         phlNq04xk0gGZ5clOZ1W2QFHulrAqjRoyBg/fuWyl7PvzM7AtsUpKbVbXp40ADlHmn82
-         dVUOITazcjVJFAhv8EmXSCiHXxgJQ8YKj+C0mdoJFBqmyHYX33vTNfG3j6e2d5qdenM8
-         Ed0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        fh=S8Kpm4xUQAgMIlsujzLBDEYeEcf6YU1APb7xG+tDUtk=;
-        b=XEVEi+3D9ZMes+qIsHorrx1wV4IWipkSssW2bl3VvDxjsMF6xByy59xbDcmRONOazh
-         A33tAmJDOVTdTXA4WfByPhV1oguea17UQ2N9Ykk/1J5qtirUqr8WWTZhxDz29bX9+qUM
-         IHgvR76+9mDToTwUFOQ+MEyT6nkL33eMauFYyx8WcxQuyHxRr1BQN57Gq4uuQuik31XV
-         N3OJ+zAj03YcR2z/pbOOIiq1y7CWk65UR5NGkAUiErgJsnut2KScTkzUHVYhwuQcI6Ff
-         u8lJrDntf9BAFtOeM6nApjkfuEjpAaFLYb1JFh59MnHpsB74yRT8M1DaJhcyhAN9kgWm
-         ZnoA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bitbyteword.org; s=google; t=1776604455; x=1777209255; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        b=RF+j7+hHVxK6KZm7vPd2VqoOm/wjdXQLWhOzfortaWaPcUVwcAQrCs3L0CFMuiRg7q
-         QnfAqyyLg1KJ+FRhOaVPXbDj/1oQAlKqMc8aZVWWLmxNSIvN0DqnMlIAoJn6kuX0b/7J
-         7sPHT3tJByJtn837fhiWKur8kP67w4ITGeKuH61ShAM9KSbiPZhuqcwRf0AI+YYvfUzE
-         nm7TFbEi+qyg5VUzXDZfGrK2suVGd+PyZxZUbRBAHRptfz+N0eKCGeaG7itaOxMnDo4a
-         9pQYTEUA6X1M/ONh/tBNfIzrR7/o898AAKuwOGzc6VJY9VVEJ/2rd2ZdsoDfuP51zO2Z
-         aU3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776604455; x=1777209255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X+WVMuAIY6fuTgPsvbyDiChtmsWhcTJteNRfYOEl4tw=;
-        b=PG5MmoSaCw1GbvNRkbQG0YZ+QjV0T+ypvTCALWWCNdexg0xdbtBg3+dDp6ayqnllZ9
-         5to8sDYwirXCoOz0PbszUyaC8DREgT/dfPS6g8vJ89zryspGMlxlcq1UBaPs2+yj+Kvu
-         Rt3nf/LouN/SP+LlzlYgZ1WWnCc8CpdC3ij3CZjXxCaok11ChEaGVE2OQ7M1A2OX4XDU
-         JriKAnjAEfaSHQ6Jjgcp+vqpaK7MSGmd4B+01sAExy9i7zYd6d0Jc62ilZ58lAFgZc9d
-         ufVbMcQApq8Cq6gvPKZNK/6lL0CU7e7nxzbbIyfB1doRdCEnVJb/5FMhzGJsLFPzAWE4
-         /a9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9UxlXW8eSftfBkssz5z2+JXdOPbgaPnxgzGt1orbpSt+s2EQ3EvKPEiJP5wUdAOpQDg5OxWynG034=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw/NdCCbqA4MjSpfbZ4M5Mjh11lDKUYcA3uxUBbhN9D8dajwdj
-	YLVgq0xihvDtyvoiWH88fjXw9lmb/+OIq4yQGpxa9ToNVZm4+6jB5iyE1LQEPTTGOZ9rOla3hyI
-	ZczfGdaMLQ8l5YclLYh2+ULmRveuTaMws7kzDMQjdJQ==
-X-Gm-Gg: AeBDieujMSkqcNnVNO6lovQ3NRnubMw+KbrcDNrFw72kG6LAv5s9TKgriV6eMl77lR5
-	6lrCJYwKY2Dhi/v9i4w5KdmyoH2O2BPCE4wUjmvn0r5lw4uTnIjja5G9k+OepGOFaEvY2TRzMsj
-	hTzQPkUiZz7wp2CS//kcivMe2FJZ8+LwS0LCnV1IuzJE8r4Ssk2OJuNnE1FNJ8cbGUUVjCLkYBN
-	/9+fYxAwfCkhI09lHGvBmvLYddhPrvOftUUUKv3hzID7RJnrC5219KyzNF9B13V/FR7od9PnIBi
-	EdQ7WCNN0vHSBN71aP5gAbdJGnpF
-X-Received: by 2002:a05:690e:4811:b0:651:bcc9:50cd with SMTP id
- 956f58d0204a3-653107ccddamr6102177d50.5.1776604455299; Sun, 19 Apr 2026
- 06:14:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GiupbSyE"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sgxnw9b7ptJtkp0Pbd8nV4ZKN8ptRJ2r/26uvw5MfOaOxtD55P1fsCXxjSZhP0946APCTkAtUspPrRth6ERKul8b25S1rFByvxQOQGjb78iMDJk6/sXx44YEqwjEIs/hpHpVQWopoYSSTHuAmFrdx6GmLbRqeHMuDMkmJs2JMv6VTLaSu5yWtVi5Sh0+phFlafQURkvzAEu1cajI4unhURXLPvs/JIjn0MfXzjeN+J/vaVc8dx6lT8eTS/faNpnnDTu/ypwdOjKvRi7ckQSxI33SKRVqgp/YXbYFwLBdhfkbd/GJJqcmygaHl46Tx+QypazXerD8lCCKxZuwzv63og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dcrPNSjNAUTVmkZSc2wGGuND+BStwz2gNQfG/qdgup8=;
+ b=s2Ya0M0HR7PSa/CEZpv61SKSJZ0HGcgdrBxNwAxO4cAWkKqkFy62GavqHAm+yngiyQHsRvvXWZW1+szE7vTtoGZzTv+q9sGGgXY0VP6Xj8EZdu2625mzOrzNNgHskWOLyKpBK4YIMnxB5u54qADuVlgUFNQw1sFkPtb6AKuP//oob3YbcrzYFUPy4aM5BAHaph+r5wEtFxk3eQGciU9gepx+zalRy6+FRIXJP/93ep2K9jtHOnMRSPbMjB5iDWBpix+WB5xjsP0VqFbg5Y7f/RaUbyk+lswPQgf4N/iABUUjuWddRRbVLdggXJbLZteO5J01yTrGDRUNaCYg4jtXWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dcrPNSjNAUTVmkZSc2wGGuND+BStwz2gNQfG/qdgup8=;
+ b=GiupbSyE91ZjNErbBdRjbAxRAIsovT54G2OqjU7V3ECCqa5odwPF2EDx1onRdqBuOeIkemddGb57qj7jdCt0s/VOEQLl/H4XRLx0CoyLFAU7ceV6SUPyOGAubdhUGApAKTZxq/9lgt3Wef/Btkx1n9j5qkjNVylmI8yDLMsD+IvCFbziSUFHvblC48p9gmgcdiRQZlL9U1gGWps0alevMiMYUurynHrkt/An2GkvYf7owXXgfTnbF5vneUCmL87cHDuFjrVnBFb2qeXQ2yzEzTNuUDazboyG3N7+OOlfIFXMw8tJ1mHqDQ+egD1FkRVNqcEOu+0dEHr3KBa6BerbuA==
+Received: from CH0PR03CA0388.namprd03.prod.outlook.com (2603:10b6:610:119::30)
+ by MW6PR12MB9000.namprd12.prod.outlook.com (2603:10b6:303:24b::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Mon, 20 Apr
+ 2026 03:14:27 +0000
+Received: from CH1PEPF0000AD77.namprd04.prod.outlook.com
+ (2603:10b6:610:119:cafe::fb) by CH0PR03CA0388.outlook.office365.com
+ (2603:10b6:610:119::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Mon,
+ 20 Apr 2026 03:14:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH1PEPF0000AD77.mail.protection.outlook.com (10.167.244.55) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9791.48 via Frontend Transport; Mon, 20 Apr 2026 03:14:27 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 19 Apr
+ 2026 20:14:18 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Sun, 19 Apr 2026 20:14:18 -0700
+Received: from build-va-bionic-20251031.nvidia.com (10.127.8.14) by
+ mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20
+ via Frontend Transport; Sun, 19 Apr 2026 20:14:17 -0700
+From: Vishwaroop A <va@nvidia.com>
+To: Mark Brown <broonie@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Thierry
+ Reding" <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
+	<smangipudi@nvidia.com>, <va@nvidia.com>
+Subject: [PATCH 0/2] spi: add sysfs interface for userspace device instantiation
+Date: Mon, 20 Apr 2026 03:14:15 +0000
+Message-ID: <20260420031417.291442-1-va@nvidia.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260323160052.17528-1-vineeth@bitbyteword.org> <20260418190456.631df6f3@fedora>
-In-Reply-To: <20260418190456.631df6f3@fedora>
-From: Vineeth Remanan Pillai <vineeth@bitbyteword.org>
-Date: Sun, 19 Apr 2026 09:14:04 -0400
-X-Gm-Features: AQROBzCejbUFLEO14GEr24qqxXnlBQ97NPzS668jjkdcYvI-3kvv1xuemSCQk44
-Message-ID: <CAO7JXPh+__EWsW8fsKi4T+w0jdPxZEfCLQno_ukJk2=d2s0WKA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/19] tracepoint: Avoid double static_branch
- evaluation at guarded call sites
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Xin Long <lucien.xin@gmail.com>, Jon Maloy <jmaloy@redhat.com>, 
-	Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>, 
-	Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, tipc-discussion@lists.sourceforge.net, 
-	dev@openvswitch.org, Jiri Pirko <jiri@resnulli.us>, Oded Gabbay <ogabbay@kernel.org>, 
-	Koby Elbaz <koby.elbaz@intel.com>, dri-devel@lists.freedesktop.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>, Huang Rui <ray.huang@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Len Brown <lenb@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, linux-pm@vger.kernel.org, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org, 
-	Eddie James <eajames@linux.ibm.com>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
-	Joel Stanley <joel@jms.id.au>, linux-fsi@lists.ozlabs.org, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Alex Deucher <alexander.deucher@amd.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Philipp Stanner <phasta@kernel.org>, 
-	Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
-	amd-gfx@lists.freedesktop.org, Jiri Kosina <jikos@kernel.org>, 
-	Benjamin Tissoires <bentiss@kernel.org>, linux-input@vger.kernel.org, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, linux-i2c@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-spi@vger.kernel.org, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vger.kernel.org, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	SeongJae Park <sj@kernel.org>, linux-mm@kvack.org, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD77:EE_|MW6PR12MB9000:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8b108d02-ba75-4869-c45d-08de9e8aee28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|30052699003|36860700016|1800799024|376014|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	81t5sOsyDvJOst4iC3WGtxfMu5bKXNSc6BwxJfMuyUyulcCaMBMKIJ6SQWNA4TM61H+WfTm3nQYqEvLaoCUofGcnD+Y+f+bw1s+P52QtlWoj7YuuMAh1kvfNhgP8xAuOb3OAw/YEhCn8/tWiPeBClUYp8Ipi4K61naAyFx5tb9oG4iZBQxm+y7JKv0PdbGaODk44juww6dlRT/cbmW4n3BvvDQ8xEdsIa03RYPN2mI0Fd5vP4PsLv4VnuI8FXSgWywszIalDk2mfGQvDIyboTGuJrNG5ZLKS6g9yYXhfVK3PP4JNmeBsgdpNI/Qlo2b3ZLzZvZHfK9BJXtHTr70stA86nIyCa6ngdXAuRTFx83McYLBoZxqWGXqzUpuszTvDLycSCF8QpXA1h3snkUineAKxmVIBhGQ4eNhRChFjxG4y2AktiyHC7E0LALHjgmjEeqcnYBPXw4qBXJiYO1jgv92/zHzvsobRMcZD8ouM1a0gN8FJCqu17u5faGqmK3wbZCgc9J4oLy6wI+08St/IRUYDqDLLnEWWglTEaELM/PbusAn6wweSLRYiCMmFy9mDFSpRtUelChLkFh34B47tco98iI0KdUHYESpEbSOarONR0O1qywHVkihkzjTkrcaIyfuJ4bSqo/2lV3Nk5owk5Dlafev73v1ReRKWSW5PWwOMCRUuBh0GlVnY+tROXoWsLEoQlqBMqD0tGR2ruG3oPvMphOKT/kid5zdfKJR6tQyLH9q38dl6zwERZC1w0nkSDhseppKI08d/VMi1OsUgDw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(30052699003)(36860700016)(1800799024)(376014)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YlSyarMN5CyR2WwP7sX/bGTyI8jNHGlDr6HhbYtZC6q6wvPOjWL5hsGexvHpLawv0Gq9e0mZT1UHban3y2JiutEijhmHKHc77CkrljbdGcHk1P16U46RRqIw1gkOvYd4K2OGOv5Ba4s2Y9kJeEWriDA+JZHgBjD/qCnk1beCcDdc2XTMTYK06aRgBlhOI9Eb2N2Vy7API2GE9XElz7QKYpLmUC7cilmtywR6PNrSScDGofr5kCYC9nwYnPMgJPI3GluG7qv3NCbTG+JZCZh1ztA4ALfvAaKGQhjVEk8gy4hckOyflZ/aKVscBvdafcyE5D2kqyDqGUxKzl9fCrTofEQQ56l8hw8BoXVB7RIvutmGXFOBoq9BUx3WN3hPDoaW0lpxXjZ/MEHjbYo8zuGQFvKn0gSP5ioJGyzGJDOxS7UUs38KDE2zpK1hAkZNC3cj
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 03:14:27.0115
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b108d02-ba75-4869-c45d-08de9e8aee28
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD77.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB9000
 
-On Sat, Apr 18, 2026 at 7:05=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
-> wrote:
->
-> On Mon, 23 Mar 2026 12:00:19 -0400
-> "Vineeth Pillai (Google)" <vineeth@bitbyteword.org> wrote:
->
-> >   if (trace_foo_enabled() && cond)
-> >       trace_call__foo(args);   /* calls __do_trace_foo() directly */
->
-> Hi Vineeth,
->
-> Could you rebase this series on top of 7.1-rc1 when it comes out?
-> Several of these patches were accepted already. Obviously drop those.
-> They were the patches that added the feature, and any where the
-> maintainer acked the patch.
->
-> Now that the feature has been accepted, if you post the patch series
-> again after 7.1-rc1 with all the patches that haven't been accepted
-> yet, then the maintainers can simply take them directly. As the feature
-> is now accepted, there's no dependency on it, and they don't need to go
-> through the tracing tree.
->
-Sure, will do. Thanks for merging this feature.
+Development boards such as the Jetson AGX Orin expose SPI buses on
+expansion headers so that users can connect and interact with SPI
+peripherals from userspace via /dev/spidevB.C character devices.
 
-Thanks,
-Vineeth
+Today there is no viable upstream mechanism to create these device nodes:
+
+  - The spidev driver rejects the bare "spidev" compatible string in DT,
+    since spidev is a Linux software interface, not a hardware description.
+  - Vendor-specific compatible strings (e.g. "nvidia,tegra-spidev") have
+    been rejected by DT maintainers for the same reason.
+
+The I2C subsystem solved an analogous problem years ago by exposing
+new_device/delete_device sysfs attributes on each i2c adapter. This
+series adds the same interface to SPI host controllers.
+
+Patch 1 adds the core implementation: new_device and delete_device sysfs
+attributes under /sys/class/spi_master/spiB/, allowing userspace to
+dynamically instantiate and remove SPI devices at runtime.
+
+Patch 2 adds documentation: an RST guide describing usage, parameters,
+examples, and limitations, plus a formal ABI entry.
+
+Link: https://lore.kernel.org/linux-tegra/909f0c92-d110-4253-903e-5c81e21e12c9@nvidia.com/
+
+Vishwaroop A (2):
+  spi: add new_device/delete_device sysfs interface
+  docs: spi: add documentation for userspace device instantiation
+
+ .../ABI/testing/sysfs-class-spi-master        |  34 ++++
+ Documentation/spi/index.rst                   |   1 +
+ Documentation/spi/instantiating-devices.rst   |  88 +++++++++
+ drivers/spi/spi.c                             | 172 ++++++++++++++++++
+ include/linux/spi/spi.h                       |  10 +
+ 5 files changed, 305 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-spi-master
+ create mode 100644 Documentation/spi/instantiating-devices.rst
+
+-- 
+2.17.1
+

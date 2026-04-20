@@ -1,404 +1,216 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012049.outbound.protection.outlook.com [52.101.48.49])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0AF37F740;
-	Mon, 20 Apr 2026 03:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776654879; cv=fail; b=dV0khbnYZRNrJ93kmuTx+HzZDrpumkvOu7H7mlKE7FDDa7hgHkp7XGgBqF1tCMz3lHZpbJdzUSUq+9fmt9aMrC8RcCMPBDUeOxQ/ccNO+9UxXqProiD/sv8ikh4RSsAmmDRLdPvHFlXC+G+P62U+dkeAriIBy2F8uLDFPBTK30U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776654879; c=relaxed/simple;
-	bh=atioRZmip21ooRhxEPBbxKeM4VQ+uXtZnIuZ0D6Vj50=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kJSMuZP4WH4digjvcSIwV9SOx03bkf4sAHXUrkCO4qCeGLnN89c30oBnhel6jH4X0KNLs1gedvuoYZ2kN7kl0lYusXMZMEasHNJWDDL2RbEv/2a6aej1gnCoCPNS2UHE3A2fSAhopgY8//pB05oQlH+4ugjTkxXWpQ2JfsC6Xno=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=exakH3cv; arc=fail smtp.client-ip=52.101.48.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EEE378823
+	for <linux-spi@vger.kernel.org>; Mon, 20 Apr 2026 06:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776665590; cv=none; b=nWvBCuJ31lunuRK77OzDyFXD8SpH8ZBAvDOfuSSh4vdAhdU/O275cI7rVe5qZLT1tDEPRwh/y+5IBu4enRBLbdGMUa/+2IPEV1mgcK8+XFOgBhmpFiW8xcmRE1Gn22ZEIzo1YXf+wQ94Qex+XY6dmmvJSg4Avwo0tx71A/oP5Y4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776665590; c=relaxed/simple;
+	bh=RM2c4wnHu2llAa0LGukFWmGGdf2Sq6KTH6ykg7vqkuI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KZOwhE1rAWwhfMBgb87glrxGexQ6Amwk0xJKsj+zHRueIKx/1FJOXTjaBgpbryW4cHcp5StMPY+ZRk8Sb2AfmBi3/d96qNHAQw/5BH8j35hoVQACc4aznxDjFgEcVVt2KvygcYVsZgfPXKnzlZfX1TrjuXEEr26RmAnbJLxsJbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aLyU1kAn; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bnz+CqcV; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="exakH3cv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MqB7n91i+4L3x5ELLTDVmr643ABaTwdD5AJBYKl4aecykBXWB6BgZ0VT33+evi0eV1+d9kKUXiARhvI+xELvMKEiS04/b2disWD/ewFDPu1UyKq9Jll707JzhSxiRX8ptNqX063Sl8McTZO5C7f4X2hFagiYP/sxw7yDMA/gxU04v5+AlPf44+2Vtnk1ftkwz0S/3s93KxQ3u5wY5cHNIbDi3rQc2PLdml+JEIKirVSgDHI22yC5VMpPGOKRu4hHbbxBj0K0sbek2ya2Ic176NqxFucQZG1n3rdTQxgZb/dQ+N7biVXOnI10uBEl5uhix6wmKT9Gczr6ML5GeNGyJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HJLTr5ECTxCfqxbXS0vy8299lh5H1c9FSfjFcBqo4oM=;
- b=ULO39RzNYxmVqWMUf3grSHnpInHO2RJ6P2tVfXZdzzd8MWLMdNcYiGZXAbySw3hljAzQG9Tb9SmuP9AVK/R9N81/b5Kvh13ENmNrkqJJVwNaRN3HfWAGmbktKBmGUeC+QDlcEkP/melZk9+NycscjFT4Egp1TRYXhJDh/da7nHQdgsXgzXz5ZRoG6OyAjCuBCo+DweN+jj2hb4RovkphjoS0Fwou4ZzR3xUrU25dPwXco8uQVZ0QH1fJlXhewTS2vBFE9gWg43TONg6JvlG22uaaMKzzcifS3Ruhcuboj1Op7VhAJEWXkaCQ6i6BKap16Ls98aBTmwBV9UEMMcbL+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HJLTr5ECTxCfqxbXS0vy8299lh5H1c9FSfjFcBqo4oM=;
- b=exakH3cv7jxsCnb6Ni54RfZ6oUXEBCylvDn3ihoCYQyZIQUDc7sZDuHS67orwlmJvQgr2GOIVRFdbUKDbi0tj2hxxatMVAcYVD+ULCu++jCNvwkZ31yDJXDpBLjFodDbEu3NoUGkiUp6FsG2yoymnK2p1xWuDkATKGJdClFPv17jN/oNV5x0ut/MEbD6tfakwzPE5xXjIyMOXc0iHPHcBEvIL5FPtWftt7d3nJh89jkwSpqrYAOdE2Sog4fXHfeXQycH50IuMhlX6Ell2wzRFt9dmlSmKugY8aP1NkiJnPLG3LwQmubTuxfz/2b9aUW0Kf7FIbyll55CHvqcHP9gEw==
-Received: from PH7P220CA0119.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32d::6)
- by IA1PR12MB7664.namprd12.prod.outlook.com (2603:10b6:208:423::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Mon, 20 Apr
- 2026 03:14:30 +0000
-Received: from SN1PEPF00036F41.namprd05.prod.outlook.com
- (2603:10b6:510:32d:cafe::14) by PH7P220CA0119.outlook.office365.com
- (2603:10b6:510:32d::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9791.48 via Frontend Transport; Mon,
- 20 Apr 2026 03:14:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SN1PEPF00036F41.mail.protection.outlook.com (10.167.248.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9791.48 via Frontend Transport; Mon, 20 Apr 2026 03:14:29 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 19 Apr
- 2026 20:14:19 -0700
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.20; Sun, 19 Apr 2026 20:14:19 -0700
-Received: from build-va-bionic-20251031.nvidia.com (10.127.8.14) by
- mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20
- via Frontend Transport; Sun, 19 Apr 2026 20:14:18 -0700
-From: Vishwaroop A <va@nvidia.com>
-To: Mark Brown <broonie@kernel.org>
-CC: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Thierry
- Reding" <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
-	<smangipudi@nvidia.com>, <va@nvidia.com>
-Subject: [PATCH 1/2] spi: add new_device/delete_device sysfs interface
-Date: Mon, 20 Apr 2026 03:14:16 +0000
-Message-ID: <20260420031417.291442-2-va@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260420031417.291442-1-va@nvidia.com>
-References: <20260420031417.291442-1-va@nvidia.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aLyU1kAn";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bnz+CqcV"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63JKwtuN300691
+	for <linux-spi@vger.kernel.org>; Mon, 20 Apr 2026 06:13:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Iy+zbMbgWDve7zvxrXJ5iX
+	qDOoDx1v+HHEDvyPa5CIY=; b=aLyU1kAncQHx2guNckOV/zjKDEGZi1+AyJpet1
+	PflGzm1onD9aWnWbUUEjrYfiizMv80ZKFQbbLMeeQM7etWt0U3GWCsPCXJjkMWmJ
+	dzxrlhXWtOLpJOGJuyGGyFLXRFQ2vobvuDe9n8+7Yy3HyHSwN+Bp+L1UZK918Arb
+	hGezyC5yNBFCBz+cc/rgsUQuYHcIdVY81j8lqxCb2HKY0Sip0LSPpy3Zd6IDggZM
+	4KvI52nICVHUj2Lj4FoGKZUHIWNKUPOzZq6472CbaH0J/0OJtCNLEZfuF2tlQo9U
+	uLeasL5E2DcJZ7bGvoxil3eA8pyOfZZd9eAdX3TT2IsYvNAA==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dm261vauu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Mon, 20 Apr 2026 06:13:08 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c7976ded5c5so2359267a12.0
+        for <linux-spi@vger.kernel.org>; Sun, 19 Apr 2026 23:13:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776665587; x=1777270387; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Iy+zbMbgWDve7zvxrXJ5iXqDOoDx1v+HHEDvyPa5CIY=;
+        b=bnz+CqcVjwl3QbZnCNMOklCfcogKNawqIvnZbSk/oqRPNbrXdP945Bj/kGXx4Su+cQ
+         88mmRD8MeWf9xmSmTVkUsThwHWwAhFXiFnMsumedSRs0mf9piIIRKBY1IXG10eVgow7U
+         sM4dF/kZgk5pbRIodqHejA+YUTDv9Dr4ErBQC/N0QNJgEjC58Jc9jlr+OFB1YqzaQ0L/
+         p900Gcm5RM82foGkAxClY/C2n/ZVs1ybOunxYRkjTEWDHlK03rp0wjmQMfUhANuDB1h1
+         lZ6WMkYvhKy3/5Lot1T76ZSZXCf5xNFJpgTjJ1fDyZ9YztxFCq+MT8V7wi0czLEMt1sa
+         5d9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776665587; x=1777270387;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Iy+zbMbgWDve7zvxrXJ5iXqDOoDx1v+HHEDvyPa5CIY=;
+        b=GzoiI9n8wmqT0hBt4XsNmjEBf+l0qT6X9Pk4uiucV9eS/LNYXnCIshNSC6aCnvY9lN
+         6Egk+A/uRwk8P1MtVjLiUiUF0oeZ80cEXnQgyvwlN2h4Jho1Gl8fETbmDijy3j05640B
+         8sIe5P2DtcMAsi814/12oO1ZTN9ChR+ICNBHIIyC88iArptM7kDScNta8q9oDjuaG5oA
+         1jjZo98fWi+2Eu0LExqMkRATRMaBFl/s2PoeUzWz42oe0Q+bv8R6+SyoHiW1Degs81l4
+         9aHAGSVbdoHr6L65DPyoVB9EwK08zqzuKKGbkO8Oa3smHhiA7oqBI04PIjoiMk8u3hKP
+         9lMg==
+X-Forwarded-Encrypted: i=1; AFNElJ9e6uXpCzYjiYRjwhj7PJLjyvhgKdMN3MR10d8PQiVbLJ1SglKb/ch10gHXd4TfObyOHOZzMyw97O8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytDi9hsTkQF3Hnnd6e72Rqg3tBF6iVBKxE2TnvniEsrsylcIUF
+	eoerNuCSFHgT3OkLlxjPHyWQk+2AzyPFRl/wQuZtdub/MLy1lz3WhSlorJfXErzz+RIi1o0Mr6R
+	c5aXt0pkvVZ0bWaF7uO3tF5USxjlTTte2BKoTzzkXfglqnUr9htu+ed6Vz5dQuWM=
+X-Gm-Gg: AeBDieu8W9b/AvCM+DMcpd11PYnQoB1LrAObHrD3+mqeKYrPiWxgopl37RrSJl7UI3H
+	2uj/ev7Eo+ESyjxgXnV5CNsmmVhW8G2zTpFR5YGMJmF8+IUfLsqfxE6pqRI5onXvEAsKOhI7tnl
+	3K4rEuZq/kspMDgsJbD4+zVT7vPVlHWDxCtsRT/nf4mkHdVMQuNnvkWOrK2BuYxGprEWKuXJegf
+	4ONF3yljb7lNlfsgy3xaII+vc6tWasDesJQIQVNug9v1ciLzhr8CWwy4n9hlHIHD22P4FzhFBEZ
+	HSFw/V03ducwhzPZeqoVQL8mZ576M860IgJ/D9UhZp7K9wuZJPqXDPFIR27B1zf8nuhn7wd006h
+	VKgSPKL9tl15QMoCZFumjffIXJXYCklmY4YzMc0vDq/ynLg3+YFZ7Gs3nNSzx8PB+y2Mj
+X-Received: by 2002:a05:6a00:17a1:b0:82c:e83d:a9b0 with SMTP id d2e1a72fcca58-82f8c850e93mr12591558b3a.21.1776665587284;
+        Sun, 19 Apr 2026 23:13:07 -0700 (PDT)
+X-Received: by 2002:a05:6a00:17a1:b0:82c:e83d:a9b0 with SMTP id d2e1a72fcca58-82f8c850e93mr12591532b3a.21.1776665586745;
+        Sun, 19 Apr 2026 23:13:06 -0700 (PDT)
+Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9cbb28sm9018034b3a.13.2026.04.19.23.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Apr 2026 23:13:06 -0700 (PDT)
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Subject: [PATCH v3 0/7] Add QSPI support for QCS615 and improve
+ interconnect handling
+Date: Mon, 20 Apr 2026 11:42:47 +0530
+Message-Id: <20260420-spi-nor-v3-0-7de325a29010@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F41:EE_|IA1PR12MB7664:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb43fc9c-72cc-427c-fdcd-08de9e8aef84
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|376014|1800799024|82310400026|30052699003|56012099003|13003099007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	GQBXUzXGRGaTVkHnSy49zCivdEix6E7F1cNDB9VAxu0VbZ3H16VLetRsa2QpXoApu6TuxjE6daMc/lz7q341+2DYCOfkeIh2X6f/MFibLzl+yNtyV1uJyXHFfBxKi2FTE0MescRk2lFxF4mV2dzeJanphxT3CcMGBnHc3YbIEfni8B/vFZd1ELK6KxZZAp0MRYBG7ERFuVMujai3rJKvuTHtGBgkxogybRJM8vyL6IYxb73I6p0Z3/8fgRCej68gpa2HdGcpWhhK6j704eYkmHw/MLwv/eny5b8oMPACFadQCWgLlVZUZrw/wvu67pBmY8iVgNd38esmrCWko1ColGM/fsa/0r7Jvddmh98V7b/7Y06BxWi6NAhv9XhJuLRWAhAmL4LTyQyLNt7HoxDiznuUwjt/inO3TjB3SGXOcP4HfINvEE4LpCuRraafryJcRpL7DjAYbH1vXOivbvvKBJCphHr88eOp4pXog3EdXmfnZ2qwSAx4KsmSIYBpcZX8m6v+ih+Sv8Te4dHnOmPIkpCPgzhJvncXgW+/9Uy94cehuhz6CVaTdS0Ks3alcUVaIfVl5tPRIQHRg9vnI/wxiXr411Nep5EK22hJOoyfKlBa8G+Be/KQyqRYajpcwaC8Oh/T7nOYwSgBZ/KH3dCIa3sc3kIxW6Uc37VebkvAGN98mpqb0pw7zX4CTVWGmj4/drMf8BzHblJX4+wEwtwUue/KTB0/yuzqr2p2lhtR8ysiNku0gGR2E4AAvpFiVVjj6BuEG9Y4iR6mCL+Mc7Jkbg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(376014)(1800799024)(82310400026)(30052699003)(56012099003)(13003099007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	8N/EZe1DuIr6MqkoD83S2wCdNpvHJckUGc9KoAYv578aHiG/iv9XW7WvNxNsA7LPlnTXTGwrhtiXgG+dvIArzcnDxblbLqfbrK/xpkSst3sJSCRAMo37/TDlbrRylopaU6pBxWwJtU+9MPp+KCsDAK0trOWwyEnTkh+I3q978BDzDUZgznSqPxQpxbRNDKaq3zJlpQzKNtmyCJ9UP1lqrdd+KOnrsB9YYkRT7lcQc0bcT5iTr9SsuHRtZ7C9Imuu0bV/RINSQ1Yh0uMYN3+moKIz+gYrO6v245PwU4CRGRkVIcOnrMX0KXxn1Bj86ZX+FyIQnujeMiDfxqoAYWMcsp79njQADi52Jjd0hDy4MMZ9V4kSZAVzkdwbfmHC4Ls9VkqtiOGXQ7PdmDgjlxeZexpFPwpyaY4ohnvR/jCTIU18DgPBDXKyTTM8aBRK/j3S
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 03:14:29.3087
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb43fc9c-72cc-427c-fdcd-08de9e8aef84
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F41.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7664
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAN/D5WkC/22OQQ6CMBBFr0K6tqQthaSuvIdxAcOgNUKxA42Gc
+ HdbXGiim0le8t//szBCb5HYPluYx2DJuiFCscsYXOrhjNy2kZkSqhKF0pxGywfnuTBQtQZFi6J
+ kMT167Oxjazqe3kxzc0WYkp4SF0uT889tKsiU+20NkgteYIelAQlSmoMjyu9zfQPX93k8LJUH9
+ dG1/NJV1BuAWse/dFN2f/R1XV9lgUYN9gAAAA==
+X-Change-ID: 20260324-spi-nor-09c6d9e0de05
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776665581; l=3533;
+ i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
+ bh=RM2c4wnHu2llAa0LGukFWmGGdf2Sq6KTH6ykg7vqkuI=;
+ b=vW+pzUitkyOrIgjBmqcKuy6TK8VhOpd1zpsC8Yc0uW0NkS7EuBVm4CJQExsA20QSSYQWJ0YB4
+ 2liA9z4c34fCU0WrgXMCFvm5FA0/wazNdWrB0h4CU1pLyy7vS2Nv0vn
+X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
+ pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIwMDA1OCBTYWx0ZWRfXzz0+sWvEFY28
+ eVXFsAOwyrkXGo7QzqMyf0rDkfSiDFNvcPFy/CmJdrCLU4g6+7OX4pOlduNsKLQXNjqJjGTzmJq
+ 5V486ioh2I/33Rv4+5gnQcZ/tE/Ud6Nvwm5ZBJ8a2zaqs3cRisv9ci288AQHqRqKeJdrx4GLZuO
+ /7bR8PQ2EszUR1WDCM3R7ct3T+Lxl/izJA+/KIxyjBeVQ/6iAhVQwDbUMNRrzwjckSBfu4wwfHI
+ QsD7+RSN+gKygalGJ82LeVjwGNM51b6OvHzGaUfnY3+kGexFv8arHgv4degcuxc/LUkPwkuoR5F
+ 3a4oLExEfnpuT7gyp+dHq6mNUucCAwaIUVJ7o/YAwCPlM5bTMNVFbm1IuB+6aebAa96AOtfafYd
+ GBQTwsn42H4CQkjbDDR6VME/pdlQkKuSMGx+rLaDj0VUC/x3blEXNqKtFJFKnGuof6m1MWAaoCl
+ +8yabKjCxwNYZCF4Whg==
+X-Authority-Analysis: v=2.4 cv=dcywG3Xe c=1 sm=1 tr=0 ts=69e5c3f4 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=i1EFcCpGWxuPUXEeyfQA:9 a=QEXdDO2ut3YA:10
+ a=x9snwWr2DeNwDh03kgHS:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-ORIG-GUID: sY0w42nK5WPkzmMOh8XFR4GRW_71euYI
+X-Proofpoint-GUID: sY0w42nK5WPkzmMOh8XFR4GRW_71euYI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-20_01,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604200058
 
-Development boards such as the Jetson AGX Orin expose SPI buses
-on expansion headers (e.g. the 40-pin header) so that users can
-connect and interact with SPI peripherals from userspace. The
-standard way to get /dev/spidevB.C character device nodes for
-this purpose is to register spi_device instances backed by the
-spidev driver.
+Add QSPI controller support for the QCS615 (Talos) platform and improve
+interconnect bandwidth management for QSPI controllers across multiple
+Qualcomm SoCs.
 
-Today there is no viable way to do this on upstream kernels:
+The series consists of:
 
-  - The spidev driver rejects the bare "spidev" compatible
-    string in DT, since spidev is a Linux software interface
-    and not a description of real hardware.
-  - Vendor-specific compatible strings (e.g. "nvidia,tegra-spidev")
-    have been rejected by DT maintainers for the same reason.
+1. Add QCS615 compatible string to device tree bindings.
+2. Add qspi-memory interconnect path support to the driver for proper DMA
+   bandwidth allocation.
+3. Add QSPI support to QCS615 platform including OPP table, pinmux, and
+   controller node.
+4. Enable QSPI controller and SPI-NOR flash on QCS615-RIDE board.
+5. Add QSPI memory interconnect paths to existing SC7180 and Kodiak
+   platforms.
 
-The I2C subsystem solved an analogous problem by exposing
-new_device/delete_device sysfs attributes on each adapter. Add
-the same interface to SPI host controllers, so that userspace
-(e.g. a systemd unit at boot) can instantiate SPI devices at
-runtime without needing anything in device-tree.
+The key improvement in this series is adding the qspi-memory interconnect
+path. Previously, the QSPI driver only managed the CPU-to-QSPI
+configuration path. Add support for the QSPI-to-memory path, which is
+essential for proper bandwidth allocation during DMA operations when the
+QSPI controller transfers data to/from system memory.
 
-The new_device file accepts:
+Set the memory path bandwidth equal to the transfer speed, matching the
+existing pattern used for the CPU path. Enable and disable both paths
+properly during runtime PM transitions to ensure efficient power
+management.
 
-  <modalias> <chip_select> [<max_speed_hz> [<mode>]]
+Apply this change to existing platforms (SC7180/Kodiak) as well as the
+newly added QCS615 platform to ensure consistent interconnect handling
+across all QSPI-enabled SoCs.
 
-where chip_select is required, while max_speed_hz and mode are
-optional and default to 0 if omitted. max_speed_hz == 0 is
-clamped to the controller's maximum by spi_setup(); mode == 0
-selects SPI mode 0 (CPOL=0, CPHA=0).
+Testing:
+- Verified QSPI functionality on QCS615-RIDE with SPI-NOR flash
+- Confirmed proper interconnect bandwidth voting during transfers
+- Validated runtime PM transitions with both interconnect paths 
 
-The modalias is used both as the device identifier and as a
-driver_override, so that the device binds to the named driver
-directly. This is necessary because some drivers like spidev
-deliberately exclude generic names from their id_table.
-
-Devices created this way are limited compared to those declared
-via DT or board files:
-
-  - No IRQ is assigned (the device gets IRQ 0 / no interrupt).
-  - No platform_data or device properties are attached.
-  - No OF node is associated with the device.
-
-These limitations are acceptable for spidev, which only needs a
-registered spi_device to expose a character device to userspace.
-
-Only devices created via new_device can be removed through
-delete_device; DT and platform devices are unaffected.
-
-Link: https://lore.kernel.org/linux-tegra/909f0c92-d110-4253-903e-5c81e21e12c9@nvidia.com/
-
-Signed-off-by: Vishwaroop A <va@nvidia.com>
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 ---
- drivers/spi/spi.c       | 172 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |  10 +++
- 2 files changed, 182 insertions(+)
+Changes in v3:
+- Added missing interconnect-names constraint for qcom,qcs615-qspi.
+- Changed interconnect tags for qspi-memory path to QCOM_ICC_TAG_ALWAYS
+- Fixed suspend sequence: now disables clocks before dropping performance
+  state to avoid brownout risk
+- Link to v2: https://patch.msgid.link/20260414-spi-nor-v2-0-bcca40de4b5f@oss.qualcomm.com
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 7001f5dce8bd..b0c66f7b3ea0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -296,8 +296,160 @@ static const struct attribute_group spi_controller_statistics_group = {
- 	.attrs  = spi_controller_statistics_attrs,
- };
- 
-+/*
-+ * new_device_store - instantiate a new SPI device from userspace
-+ *
-+ * Takes parameters: <modalias> <chip_select> [<max_speed_hz> [<mode>]]
-+ *
-+ * Examples:
-+ *   echo spidev 0 > new_device
-+ *   echo spidev 0 10000000 > new_device
-+ *   echo spidev 0 10000000 3 > new_device
-+ */
-+static ssize_t
-+new_device_store(struct device *dev, struct device_attribute *attr,
-+		 const char *buf, size_t count)
-+{
-+	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
-+						   dev);
-+	struct spi_device *spi;
-+	char modalias[SPI_NAME_SIZE];
-+	u16 chip_select;
-+	u32 max_speed_hz = 0;
-+	u32 mode = 0;
-+	char *blank;
-+	int n, res, status;
-+
-+	blank = strchr(buf, ' ');
-+	if (!blank) {
-+		dev_err(dev, "%s: Missing parameters\n", "new_device");
-+		return -EINVAL;
-+	}
-+
-+	if (blank - buf > SPI_NAME_SIZE - 1) {
-+		dev_err(dev, "%s: Invalid device name\n", "new_device");
-+		return -EINVAL;
-+	}
-+
-+	memset(modalias, 0, sizeof(modalias));
-+	memcpy(modalias, buf, blank - buf);
-+
-+	/*
-+	 * sscanf fills only the fields it matches; unmatched optional
-+	 * fields (max_speed_hz, mode) stay zero from initialisation above.
-+	 * max_speed_hz == 0 is clamped to the controller max by spi_setup().
-+	 * mode == 0 selects SPI mode 0 (CPOL=0, CPHA=0).
-+	 */
-+	res = sscanf(++blank, "%hu %u %u%n",
-+		     &chip_select, &max_speed_hz, &mode, &n);
-+	if (res < 1) {
-+		dev_err(dev, "%s: Can't parse chip select\n", "new_device");
-+		return -EINVAL;
-+	}
-+
-+	if (chip_select >= ctlr->num_chipselect) {
-+		dev_err(dev, "%s: Chip select %u >= max %u\n", "new_device",
-+			chip_select, ctlr->num_chipselect);
-+		return -EINVAL;
-+	}
-+
-+	spi = spi_alloc_device(ctlr);
-+	if (!spi)
-+		return -ENOMEM;
-+
-+	spi_set_chipselect(spi, 0, chip_select);
-+	spi->max_speed_hz = max_speed_hz;
-+	spi->mode = mode;
-+	spi->cs_index_mask = BIT(0);
-+	strscpy(spi->modalias, modalias, sizeof(spi->modalias));
-+
-+	/*
-+	 * Set driver_override so that the device binds to the driver
-+	 * named by modalias regardless of whether that driver's
-+	 * id_table contains a matching entry.  This is needed because
-+	 * some drivers (e.g. spidev) deliberately omit generic names
-+	 * from their id_table.
-+	 */
-+	status = device_set_driver_override(&spi->dev, modalias);
-+	if (status) {
-+		spi_dev_put(spi);
-+		return status;
-+	}
-+
-+	status = spi_add_device(spi);
-+	if (status) {
-+		spi_dev_put(spi);
-+		return status;
-+	}
-+
-+	mutex_lock(&ctlr->userspace_clients_lock);
-+	list_add_tail(&spi->userspace_node, &ctlr->userspace_clients);
-+	mutex_unlock(&ctlr->userspace_clients_lock);
-+	dev_info(dev, "%s: Instantiated device %s at CS%u\n", "new_device",
-+		 modalias, chip_select);
-+
-+	return count;
-+}
-+static DEVICE_ATTR_WO(new_device);
-+
-+static ssize_t
-+delete_device_store(struct device *dev, struct device_attribute *attr,
-+		    const char *buf, size_t count)
-+{
-+	struct spi_controller *ctlr = container_of(dev, struct spi_controller,
-+						   dev);
-+	struct spi_device *spi, *next;
-+	unsigned short cs;
-+	char end;
-+	int res;
-+
-+	res = sscanf(buf, "%hu%c", &cs, &end);
-+	if (res < 1) {
-+		dev_err(dev, "%s: Can't parse chip select\n", "delete_device");
-+		return -EINVAL;
-+	}
-+	if (res > 1 && end != '\n') {
-+		dev_err(dev, "%s: Extra parameters\n", "delete_device");
-+		return -EINVAL;
-+	}
-+
-+	res = -ENOENT;
-+	mutex_lock(&ctlr->userspace_clients_lock);
-+	list_for_each_entry_safe(spi, next, &ctlr->userspace_clients,
-+				 userspace_node) {
-+		if (spi_get_chipselect(spi, 0) == cs) {
-+			dev_info(dev, "%s: Deleting device %s at CS%u\n",
-+				 "delete_device", spi->modalias, cs);
-+
-+			list_del(&spi->userspace_node);
-+			spi_unregister_device(spi);
-+			res = count;
-+			break;
-+		}
-+	}
-+	mutex_unlock(&ctlr->userspace_clients_lock);
-+
-+	if (res < 0)
-+		dev_err(dev, "%s: Can't find device in list\n",
-+			"delete_device");
-+	return res;
-+}
-+static DEVICE_ATTR_IGNORE_LOCKDEP(delete_device, 0200, NULL,
-+				   delete_device_store);
-+
-+static struct attribute *spi_controller_userspace_attrs[] = {
-+	&dev_attr_new_device.attr,
-+	&dev_attr_delete_device.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group spi_controller_userspace_group = {
-+	.attrs = spi_controller_userspace_attrs,
-+};
-+
- static const struct attribute_group *spi_controller_groups[] = {
- 	&spi_controller_statistics_group,
-+	&spi_controller_userspace_group,
- 	NULL,
- };
- 
-@@ -3256,6 +3408,8 @@ struct spi_controller *__spi_alloc_controller(struct device *dev,
- 	mutex_init(&ctlr->bus_lock_mutex);
- 	mutex_init(&ctlr->io_mutex);
- 	mutex_init(&ctlr->add_lock);
-+	mutex_init(&ctlr->userspace_clients_lock);
-+	INIT_LIST_HEAD(&ctlr->userspace_clients);
- 	ctlr->bus_num = -1;
- 	ctlr->num_chipselect = 1;
- 	ctlr->num_data_lanes = 1;
-@@ -3633,6 +3787,24 @@ void spi_unregister_controller(struct spi_controller *ctlr)
- 	if (IS_ENABLED(CONFIG_SPI_DYNAMIC))
- 		mutex_lock(&ctlr->add_lock);
- 
-+	/*
-+	 * Remove devices created via the sysfs new_device interface.
-+	 * These must be explicitly removed before device_for_each_child()
-+	 * below because spi_unregister_device() does not remove devices
-+	 * from the userspace_clients list; freeing them without list_del()
-+	 * first would leave dangling pointers in that list.
-+	 */
-+	mutex_lock(&ctlr->userspace_clients_lock);
-+	while (!list_empty(&ctlr->userspace_clients)) {
-+		struct spi_device *spi;
-+
-+		spi = list_first_entry(&ctlr->userspace_clients,
-+				       struct spi_device, userspace_node);
-+		list_del(&spi->userspace_node);
-+		spi_unregister_device(spi);
-+	}
-+	mutex_unlock(&ctlr->userspace_clients_lock);
-+
- 	device_for_each_child(&ctlr->dev, NULL, __unregister);
- 
- 	/* First make sure that this controller was ever added */
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 7587b1c5d7ec..63c267ca9730 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -250,6 +250,9 @@ struct spi_device {
- 	u8			rx_lane_map[SPI_DEVICE_DATA_LANE_CNT_MAX];
- 	u8			num_rx_lanes;
- 
-+	/* Entry on controller's userspace_clients list */
-+	struct list_head	userspace_node;
-+
- 	/*
- 	 * Likely need more hooks for more protocol options affecting how
- 	 * the controller talks to each chip, like:
-@@ -554,6 +557,9 @@ extern struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi,
-  * @defer_optimize_message: set to true if controller cannot pre-optimize messages
-  *	and needs to defer the optimization step until the message is actually
-  *	being transferred
-+ * @userspace_clients: list of SPI devices instantiated from userspace via
-+ *	the sysfs new_device interface
-+ * @userspace_clients_lock: mutex protecting @userspace_clients
-  *
-  * Each SPI controller can communicate with one or more @spi_device
-  * children.  These make a small bus, sharing MOSI, MISO and SCK signals
-@@ -809,6 +815,10 @@ struct spi_controller {
- 	bool			queue_empty;
- 	bool			must_async;
- 	bool			defer_optimize_message;
-+
-+	/* List of SPI devices created via sysfs new_device interface */
-+	struct list_head	userspace_clients;
-+	struct mutex		userspace_clients_lock;
- };
- 
- static inline void *spi_controller_get_devdata(struct spi_controller *ctlr)
--- 
-2.17.1
+Changes in v2:
+- Moved allOf section to bottom of binding schema
+- Added if:then constraint requiring minimum 2 interconnects for qcs615
+- Fixed runtime PM error handling with complete goto-based cleanup
+- Added proper error paths in suspend/resume functions
+- Changed interconnect tags from raw 0 to QCOM_ICC_TAG_ACTIVE_ONLY
+- Link to v1: https://patch.msgid.link/20260324-spi-nor-v1-0-3efe59c1c119@oss.qualcomm.com
+
+---
+Viken Dadhaniya (7):
+      dt-bindings: spi: qcom,spi-qcom-qspi: Add qcom,qcs615-qspi compatible
+      spi: qcom-qspi: Fix incomplete error handling in runtime PM
+      spi: qcom-qspi: Add interconnect support for memory path
+      arm64: dts: qcom: talos: Add QSPI support
+      arm64: dts: qcom: qcs615-ride: enable QSPI and NOR flash
+      arm64: dts: qcom: kodiak: Add QSPI memory interconnect path
+      arm64: dts: qcom: sc7180: Add QSPI memory interconnect path
+
+ .../bindings/spi/qcom,spi-qcom-qspi.yaml           | 21 +++++-
+ arch/arm64/boot/dts/qcom/kodiak.dtsi               |  9 ++-
+ arch/arm64/boot/dts/qcom/qcs615-ride.dts           | 12 ++++
+ arch/arm64/boot/dts/qcom/sc7180.dtsi               |  9 ++-
+ arch/arm64/boot/dts/qcom/talos.dtsi                | 80 ++++++++++++++++++++++
+ drivers/spi/spi-qcom-qspi.c                        | 76 +++++++++++++++++---
+ 6 files changed, 188 insertions(+), 19 deletions(-)
+---
+base-commit: c369299895a591d96745d6492d4888259b004a9e
+change-id: 20260324-spi-nor-09c6d9e0de05
+
+Best regards,
+--  
+Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 

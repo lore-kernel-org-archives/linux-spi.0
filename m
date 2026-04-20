@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991493A1E6A;
-	Mon, 20 Apr 2026 14:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F8833EAF9;
+	Mon, 20 Apr 2026 16:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776694997; cv=none; b=L+gD6LO1nhgBguh9vj2B5CHQM5l2D8AdM6XFTkjVAz6W4AzoTE+UpLwffVMnfIuPAANtplYeVF4rI5hW+VAusuK+3vj5T+yTRdeRXL83p1M4dtyuImbY29jyCAyuoEEdCZFLC0Emv5y8Nk65+VaciV+XYR0wdB19PfJie5d9UeE=
+	t=1776700943; cv=none; b=dgVJr6/Mez+5kEHB2fiziD8/SZVWmjGN2A7e+XuURjP4OQHmLJYdyxg5dOMpjqKWnH53LaGpSgkvcgRLYIri/jjFxpbXHBTN5+oV6/JCnX4VybfUzL4Fb8rSOYPU+6hPYrM85Xy3sQmKtQe+TXnpWE6SwdkdnTIOclaDsdnqqt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776694997; c=relaxed/simple;
-	bh=laq8Cmx1Sii26P+XD4G+uU1EMsWSp4l59wWDf0Dw9jw=;
+	s=arc-20240116; t=1776700943; c=relaxed/simple;
+	bh=UpSmWLqRnsoJMgs165ruDnPDd2GndLJSvK84cVk/bDA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xm47qsQf3LWOUjc5Bhn00yiL27JiW+cQPJYKf+JUnI2XcMPD8In2LsiEuaTK243IKICvv+LkW08xLihTdcnboX2Oak4I++J4v0crTz1wyCqbSHsWcrnaK9buLbfwg/R9Gjht6zzJhSJbHEXk6LHeSMOA2DylsqzlaoyQ2mSJdK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amsgAkQZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=jx/xoWa+QBuhHLw6ZxYSN7JSy4e+pscjHe1I9b2ANnat0BwdicL2cqEE1R56wVOjuu706EVY7BYKpX+aPWIhXZIm3JDuh2dfT6m6MMdl736PB8GsJkEjk5r2nIUS/1gc3pPvQqnNv0O1GhgutH3qWce3n1HclpAcHuxhg+lgmZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVYBZ7my; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amsgAkQZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E537C19425;
-	Mon, 20 Apr 2026 14:23:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVYBZ7my"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C136C2BCB4;
+	Mon, 20 Apr 2026 16:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776694997;
-	bh=laq8Cmx1Sii26P+XD4G+uU1EMsWSp4l59wWDf0Dw9jw=;
+	s=k20201202; t=1776700943;
+	bh=UpSmWLqRnsoJMgs165ruDnPDd2GndLJSvK84cVk/bDA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=amsgAkQZH2iGEbEQJuGa9fIjKtZAnWq8hbXlcnlwPr7kuRk49UxkgVaOQYpPBRwnG
-	 75YWmL8nn4vK+5mK1FKQLdHWPNQ765DqZD/gd+pShCyZRgS+kW0xlq05Sh5hwLgqo4
-	 e1isevZH+nqzqYzkuzXG0jwt0UnH2/wtmEzKU02jwifWTt13/sHpvalwcG0bDIRHZF
-	 vdJIGKJsVp+wQVqzkHydO7/Y6Nuw5aaEe01YhZQRK3u2qmllw/ZfMzvdSqu3w/Xg+i
-	 Q21sN4fNZeb+6uQyIov2s6SCkITZ1+VbQSS7UhvPGlN96UXcJJhQ0RALykVTCubZMF
-	 eDEtMY3nxwcIQ==
-Date: Mon, 20 Apr 2026 15:23:12 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+	b=ZVYBZ7my7SB9IoozcOOWEjmpH72SauY7ZKa1bvj922TVToVmJ9nbJb8fcgpCmMSZP
+	 gL+en4k5s3lE5Xzw6AZWN5ku5CorrSSUC4iiP6SEvbRDjrVRcl0Ew8/lOzjGOPPtLC
+	 GbFhtm1sQJnoaZ9O3MM/vV9tMg+7i67dEkHSPeKO25DKaCpa7H1O4yi4PjErRPKTrf
+	 GFbdtTIOSxmqyu1JXg9aSAe9QnoHzeK5C6NKPx//p75gpoZKMLhJANoGhHDPs8waTT
+	 KqhBGDa5//9hnpePs9ozHdzlYKgiG3kVN2vEHchLxJb+5s5oxFIFArBNF5kkDnuuXS
+	 Cv5KO92Wv1ZOA==
+Date: Mon, 20 Apr 2026 17:02:19 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/7] dt-bindings: spi: qcom,spi-qcom-qspi: Add
- qcom,qcs615-qspi compatible
-Message-ID: <c385ada5-f7cb-45d7-b7d7-43fd0cb389c4@sirena.org.uk>
-References: <20260420-spi-nor-v3-0-7de325a29010@oss.qualcomm.com>
- <20260420-spi-nor-v3-1-7de325a29010@oss.qualcomm.com>
+	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
+ toradex,lava-hat-spi
+Message-ID: <20260420-task-navy-370ea247fe1d@spud>
+References: <20260420114537.78160-1-francesco@dolcini.it>
+ <20260420114537.78160-2-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,42 +46,51 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="aqQrFbeBzNreMCoJ"
+	protocol="application/pgp-signature"; boundary="Vy4O/af26KsjQbIU"
 Content-Disposition: inline
-In-Reply-To: <20260420-spi-nor-v3-1-7de325a29010@oss.qualcomm.com>
-X-Cookie: Sales tax applies.
+In-Reply-To: <20260420114537.78160-2-francesco@dolcini.it>
 
 
---aqQrFbeBzNreMCoJ
+--Vy4O/af26KsjQbIU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 20, 2026 at 11:42:48AM +0530, Viken Dadhaniya wrote:
-> Add support for the QSPI controller on QCS615 SoC.
+On Mon, Apr 20, 2026 at 01:45:35PM +0200, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
 >=20
-> Move allOf section after required properties and add if:then constraint
-> to require minimum 2 interconnects for qcs615 variant.
+> Add a compatible string for the SPI loopback device present on the
+> Toradex LAVA HAT test fixture.
+>=20
+> The Toradex LAVA HAT is a board used for automated hardware-in-the-loop
+> (HIL) testing, it provides several test-related functionalities, and
+> exists in multiple variants depending on the board it is mated with. The
+> SPI function is implemented with a loopback on the MISO/MOSI signals.
+>=20
+> As the device can be fully described using only "compatible" and "reg",
+> it is appropriate to list it under trivial-devices.yaml rather than
+> introducing a dedicated binding.
+>=20
+> The SPI implementation is identical across all Toradex LAVA HAT
+> variants, so a single compatible string is sufficient.
+>=20
+> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
+> Link: https://lore.kernel.org/all/20260316073547.11437-3-francesco@dolcin=
+i.it/
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
---aqQrFbeBzNreMCoJ
+--Vy4O/af26KsjQbIU
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnmNs8ACgkQJNaLcl1U
-h9CNSwf9GtiYu2P+6Qdp8Fi/pH4pqkbqsaeuesXEZy6XQYvHK7OqTfyRSU0f3eRv
-MoLadxKpG0jQMVjIN/bDkKCtKXzbY885gVDw0ZhX5Vds8Wyow7kRpmiqFfdHVG3F
-4dHhk8fhmqQVed7IU2FWnnS3Rk3Myg938e/cqfuCBSs/ZKqEhFV+jjbzBmCbSFeT
-44rd/LWlIkCe0Boqrntmx0EBUk3yJi7hr/ka0qkE5e65I8/mtHee8fLVo2CuciVo
-4MXxuaB9X2/UWhvOvVwwMaFDhXRSa0bIsT2qHc67v1JHS6nyDjeRnC4KJVX6dHrE
-5SSe2ZEduonK7Z58L0X4YEAum5l6Bw==
-=0k4M
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaeZOCwAKCRB4tDGHoIJi
+0rGyAPwPzY+ZERLhF1pxT6HZ+ZFC2rOxT0kUGAradNhbBfN90AD/RBar/xVxXpGj
+x2KCAc0EOulXA4PQG7ZG9ojaGdtk4Qc=
+=lewO
 -----END PGP SIGNATURE-----
 
---aqQrFbeBzNreMCoJ--
+--Vy4O/af26KsjQbIU--

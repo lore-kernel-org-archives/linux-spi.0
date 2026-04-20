@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913B934C989;
-	Mon, 20 Apr 2026 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3068334C39;
+	Mon, 20 Apr 2026 16:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776702389; cv=none; b=GI6qWYA69z4HVrIDhVX1pCksP+EXHHsFOa20nKLKxY/ib9MVo4kJ9QbmBGVolz/z0o46smW8d4WDM4SQsCGjtlG5Ut0TM8Fv+SIUWUNDMgd+XW8/qSgeLABWt4buN94ZcmXztuWANSAVTlVNEfMaPHMMel8iDsW93jGOLcQrLqM=
+	t=1776702576; cv=none; b=TRYe/p7sf6YF6FeiXSX1DzH2WwjzWMJ4LOlLof4RM97Slmo0u1omP0ihEOJD3ew3fHQNUzc1wyZmyX3y6J9iuMln+ergvZirEO3mw4TxxgZiIi5x04za16/wS8RAD3atc3f93lBeKS5J5PAy5Qz76x+9B+1oQfEIllfB/dQB7gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776702389; c=relaxed/simple;
-	bh=AcH5doJWo9c2yg11/2RY1ie0nU73+ZHvMfqsAFJrFYw=;
+	s=arc-20240116; t=1776702576; c=relaxed/simple;
+	bh=YQdW17/AA+lxKC8kcF6WCd+KieSYnqe1M+yeYbAJevQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b5bJZUdorLpUAIuEtDZ29cYxEXk1p0lbVJrp0HOI+7sJZFjZoGpl2KaalQZqjsLpEwzs/zl5mXgMAdCgm+Nyu9gWVwshyZj/hgQzfpmWkIROg2/Nf5VrfPPCqZTYq3JwRORevmZIR4JLptlUxY2/YS4KdqVyLv48lhADSvGjcJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sENPp4Tx; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=bNxbTITjXGQuPo1GqTo+EQD1W/+PV35K69sTyDoNJPWk56KjKWRvca1AMpBzeUHS+XKaQ69k1m/E0i41aO3V2S+vU2HTRuC5eATKkvZcJeppWJsEsNHWNtelzdm/L55ziatZ+5Ozh/W+w46PpzhXlAnGIY/9UoaNYaaM+iMIP28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FvXVoNzk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sENPp4Tx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAF3C2BCB7;
-	Mon, 20 Apr 2026 16:26:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FvXVoNzk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4E6C19425;
+	Mon, 20 Apr 2026 16:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776702389;
-	bh=AcH5doJWo9c2yg11/2RY1ie0nU73+ZHvMfqsAFJrFYw=;
+	s=k20201202; t=1776702576;
+	bh=YQdW17/AA+lxKC8kcF6WCd+KieSYnqe1M+yeYbAJevQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sENPp4TxUxxSpB9i/rrLsdf8MhVX1/+ab/I6esO0GG/bnbUhuH/njH558PdTBZihB
-	 0Kwc+OBsnb5mRacirQu8kWtSgUr5mdIf6pC04B5e8QweSDdWawSkvndsSPpR7HT0aD
-	 C217vOsOtsxEBmCNpayenrG371afERM8bqdMN6i30Elz1WqpiLrxk9swjELqlmRRYa
-	 xTayV2VI9tYEOyuc9ScXZ8b7X3Q+S6lET1E96aunW4iyxqX30KEXGJZRKE4ak0724t
-	 Mr2OhQuWphFAvGm/URYm3mw9pmBOSoMIt2x9bCjHDkKBzdMjbsjoJIgvRbnscRcSo0
-	 rSrfh9cjoPLrQ==
-Date: Mon, 20 Apr 2026 17:26:25 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
- toradex,lava-hat-spi
-Message-ID: <20260420-conjoined-goggles-256f9a4e7b4b@spud>
-References: <20260420114537.78160-1-francesco@dolcini.it>
- <20260420114537.78160-2-francesco@dolcini.it>
- <20260420-task-navy-370ea247fe1d@spud>
- <005d96ea-b250-4af8-9c5b-d145bae892e5@kernel.org>
+	b=FvXVoNzk69Ys7W/EUulIQI0838gefgkQ9GwC+3lPvOOSCaVoN94T+1EBB0fwM7i50
+	 18LGyJW37bJl/QhOSwrqNWp3qHfNtn5NqbeiueuXuYoGF+FkzZlKrxLbl6CdroPKEj
+	 sQ/HpdDkhD8kE6FAKt7gcBKtjlW+Q97sKY6+BUZBIJMcwUmVGuBEHluVlHDjl0Ts0Q
+	 A26Cabm/xPwX6alUmvAyNMd5CTPa70AUA5TmgaFOAYXmcvZgNjwnpR/K9cVH/8iuD9
+	 /FgD9x86LQgUWAxYleONY1p6sqvQEj6JHvy/L19NRIdCfKK51hNb0pzOjHThaE6u8a
+	 m0m34d/o+tKzw==
+Date: Mon, 20 Apr 2026 17:29:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/7] spi: qcom-qspi: Fix incomplete error handling in
+ runtime PM
+Message-ID: <c38284d9-f7a9-4a0f-a4c7-cafdb1a1f720@sirena.org.uk>
+References: <20260420-spi-nor-v3-0-7de325a29010@oss.qualcomm.com>
+ <20260420-spi-nor-v3-2-7de325a29010@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,63 +48,44 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RrwXRoh/jrukY6ST"
+	protocol="application/pgp-signature"; boundary="YEPl/+bK0ZzKjQuR"
 Content-Disposition: inline
-In-Reply-To: <005d96ea-b250-4af8-9c5b-d145bae892e5@kernel.org>
+In-Reply-To: <20260420-spi-nor-v3-2-7de325a29010@oss.qualcomm.com>
+X-Cookie: Sales tax applies.
 
 
---RrwXRoh/jrukY6ST
+--YEPl/+bK0ZzKjQuR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 20, 2026 at 06:10:08PM +0200, Krzysztof Kozlowski wrote:
-> On 20/04/2026 18:02, Conor Dooley wrote:
-> > On Mon, Apr 20, 2026 at 01:45:35PM +0200, Francesco Dolcini wrote:
-> >> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >>
-> >> Add a compatible string for the SPI loopback device present on the
-> >> Toradex LAVA HAT test fixture.
-> >>
-> >> The Toradex LAVA HAT is a board used for automated hardware-in-the-loop
-> >> (HIL) testing, it provides several test-related functionalities, and
-> >> exists in multiple variants depending on the board it is mated with. T=
-he
-> >> SPI function is implemented with a loopback on the MISO/MOSI signals.
-> >>
-> >> As the device can be fully described using only "compatible" and "reg",
-> >> it is appropriate to list it under trivial-devices.yaml rather than
-> >> introducing a dedicated binding.
-> >>
-> >> The SPI implementation is identical across all Toradex LAVA HAT
-> >> variants, so a single compatible string is sufficient.
-> >>
-> >> Link: https://lore.kernel.org/all/20260310133254.GA51497@francesco-nb/
-> >> Link: https://lore.kernel.org/all/20260316073547.11437-3-francesco@dol=
-cini.it/
-> >> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> >=20
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > pw-bot: not-applicable
->=20
->=20
-> Heh, let's wait. That's a test device, so it won't be ever used in any
-> final product, right? So not in final DTS?
->=20
-> Then why it's here? I think I directed previously to document it with
-> the rest of test devices - in incomplete-devices schema?
+On Mon, Apr 20, 2026 at 11:42:49AM +0530, Viken Dadhaniya wrote:
+> The runtime PM functions had incomplete error handling that could leave the
+> system in an inconsistent state. If any operation failed midway through
+> suspend or resume, some resources would be left in the wrong state while
+> others were already changed, leading to potential clock/power imbalances.
 
-Oh it's that, I forgot about this discussion, sorry!
+> +err_select_default_state:
+> +	pinctrl_pm_select_default_state(dev);
+> +err_enable_icc:
+> +	icc_enable(ctrl->icc_path_cpu_to_qspi);
+> +err_enable_clk:
+> +	clk_bulk_prepare_enable(QSPI_NUM_CLKS, ctrl->clks);
 
---RrwXRoh/jrukY6ST
+clk_bulk_prepare_enable() is marked __must_check.
+
+--YEPl/+bK0ZzKjQuR
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaeZTsQAKCRB4tDGHoIJi
-0txGAQDkGfOu6pK5RxHeWKJOyKzxaaM6vc9v9Orhy50JRInwaAD/TcYSBviZpdd9
-XuI0t0rBEIRN30N4ngGJvg/XkF+HlwI=
-=kyQc
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnmVGoACgkQJNaLcl1U
+h9Ba5gf+OY3mSJsyMuuK/3icHqIuZZc7jH+z0LwxA2Ylmkj87+5SXH0OjYYC7yKU
+auSZV8+2y6dBPMt5ilAGf3KOrLo+Lshc8dz1aCXTgJv6KoTLrcGQIO430yLmC7to
+B9NgPMmiwUjAxahjPC4LhvHWYFFMFAkBF+ieNWkhNTOgMuW7hpGPPK0McxkaMMqh
+vavTM4IqAN1B/Pr/PhKah/YbEV4QiLj7sM8g6gfCiDOFj9qXHD42nanwNIkXKUY3
+S5Lsa/5vdPa5gqI9xuA8pLAjs1amw7tZWc/hW72XsSGoV55RdM3ltHaNr7k6kZy+
+HJ605If84trsQZjMGjxeRdkfo5E56Q==
+=AKIL
 -----END PGP SIGNATURE-----
 
---RrwXRoh/jrukY6ST--
+--YEPl/+bK0ZzKjQuR--

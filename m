@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C883CA499;
-	Mon, 20 Apr 2026 13:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74BD47D95B;
+	Mon, 20 Apr 2026 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691676; cv=none; b=knkxFcUh5zXXWozJ2qSE8IBodGBmYjLSgjS2W48zXPndEmsChq+1nRa4kDgtNEevXa6BJjrAY9T4HvdgFqLatu6SW8VzJW9rSsil8W3qTYrLPR1t5HQ6FJIOgYGsvRfEFq/UEXCBXxguHCHQNoWFN5ExpLBgahiWjvl1Qg+iMF4=
+	t=1776691864; cv=none; b=MNjgamWXKDnXTyryLi3acjG6z1QB+s7lB5kFwCY6CdBusp86I7OvUshm4TLK21SiZM8mmB/fb+qYmxGiPuBNJg0aDluZqNLGM6UQRps7mOqdCAjRKN295wx8xhkOp2j7xwbXhOQ2EbEuAJZuAUkhDcBCGeYIg11x+pLUWp4nAk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691676; c=relaxed/simple;
-	bh=Y2+vmQoyjxm5ovESpNBVj1d6pMbBAzz3Mb5H0POfML0=;
+	s=arc-20240116; t=1776691864; c=relaxed/simple;
+	bh=p+miuKebyEkDvBVixwjD7RhAs0poaZqjuya0RUreiyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SG0a8rDbPOuPMW29bt3txtTEXy5dVGhO0V8WTeP1GruP8zhnlGMzsE3hlTPfd1NPwlgTtLLUa4hJ2UUYmYAF3CtwpjDPKY0I6eTvw/miKRsYG4P7Xv+J59crO1YMOHP0f6ZjmvEluCQkIuiI1FbdtRGnomm/9qbtufG6RmB0uI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYlyfSzV; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=H9fN9hUNGiRV9xu354pSVGRnfB00G004VMTuCFDThwS8P+NsKqDCLg569uM8P+GbrQrAIBxioft/7R5vtPfDP6PLcSx/MQzPor870+eon6MHtpYWGhEUdMyUvyL7Ja/M/C38eSRcQe/FyvKoAC7LfYYq4csgl0Y8O1Ri/h86/To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4sj9cUB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYlyfSzV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B058C2BCB4;
-	Mon, 20 Apr 2026 13:27:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4sj9cUB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962B3C19425;
+	Mon, 20 Apr 2026 13:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691676;
-	bh=Y2+vmQoyjxm5ovESpNBVj1d6pMbBAzz3Mb5H0POfML0=;
+	s=k20201202; t=1776691864;
+	bh=p+miuKebyEkDvBVixwjD7RhAs0poaZqjuya0RUreiyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYlyfSzVM/WLeoIF3l7vMzK8IdmljMDT+2PFZZr1TF0VKVNfPKl8Vl5afWAFfmk3w
-	 Hziuve6s1mqXOfk3+PdYsBNuhZ3rL0pa+THGQmRrgoNX0V2S5ZVAj7a5aTKTU590h1
-	 GNpk5KLCuswuDNfUDIu44O417vIH/fPMoIDwXURyfzwbSm4zyZa025pgCYTnf6J9hJ
-	 1XXd4pa+7njyRcO4R5xzx+xXv1DNigfJJshJAHcSyMb6NWCQT2tBJkVT3zp2mi8aog
-	 VDAUbIXIa6EUM4MYgAxFfLTtkIH7MBzH9Zr4ybp9Q59CQPSPY08T2L8AKipQPI4IWv
-	 76lT3cmmAXUPw==
+	b=H4sj9cUBIYGIpO0Tp+e4swjKrgoQDJ9Q4nssnz5tFcZnWXaqLIQhewLgE0tWiE7NV
+	 s4oV36qpFraAA8nObpi76D6laKxxUdTftqQJRNUig0DD9JW/VPXpT9O8Bc4AdkRFVM
+	 XhA4QYe2W62i/zEOfha5UcPGIIXl9PIc+6XJOizqFrA2y8Fx+JHX2blwfYdTr2LPMw
+	 Err2oFKRSCf9p5939vp81xds/BBHbRWHET/2vH8m95SO5Xdd2DeIDAdb1Kno9UvBc6
+	 ADqnGBeAsv4os+U6cOgF05NBH0jHBF1HINcn5gS5Skg6OhHaR0nxN/OJWHdLwf/3KY
+	 OJ9VP0iBclnyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
+Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ldewangan@nvidia.com,
-	thierry.reding@kernel.org,
-	jonathanh@nvidia.com,
-	skomatineni@nvidia.com,
-	linux-tegra@vger.kernel.org,
+	fabrizio.castro.jz@renesas.com,
 	linux-spi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-6.19] spi: tegra210-quad: Fix false positive WARN on interrupt timeout with transfer complete
-Date: Mon, 20 Apr 2026 09:19:21 -0400
-Message-ID: <20260420132314.1023554-167-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0] spi: rzv2h-rspi: Fix max_speed_hz advertising prohibited bit rate
+Date: Mon, 20 Apr 2026 09:20:33 -0400
+Message-ID: <20260420132314.1023554-239-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -54,466 +51,300 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 5b94c94caafcad3c77cc6b1d213a93bf5dc0a98e ]
+[ Upstream commit 4e292cbf3890657db2f2692942cb0f168c80167e ]
 
-The WARN_ON_ONCE/WARN_ON fired unconditionally on any completion
-timeout, including the recoverable case where the interrupt was lost but
-the hardware actually finished the transfer. This produced a noisy splat
-with a full call trace even though the driver successfully recovered via
-tegra_qspi_handle_timeout().
+On RZ/V2H(P), RZ/G3E and RZ/G3L, RSPI_n_TCLK is fixed at 200MHz.
+The max_speed_hz was computed using clk_round_rate(tclk, ULONG_MAX)
+with SPR=0 and BRDV=0, resulting in 100Mbps - the exact combination
+prohibited on these SoCs. This could cause the SPI framework to request
+a speed that rzv2h_rspi_find_rate_fixed() would skip, potentially
+leading to a clock selection failure.
 
-Since tegra210 uses threaded interrupts, the transfer completion can be
-signaled before the interrupt fires, making this false positive case
-common in practice.
+On RZ/T2H and RZ/N2H the max_speed_hz was correctly calculated as
+50Mbps for both the variable PCLKSPIn and fixed PCLK clock sources.
 
-Almost all the hosts I sysadmin in my fleet produce the following splat:
+Since the maximum supported bit rate is 50Mbps across all supported SoC
+variants, replace the clk_round_rate() based calculation with a define
+RSPI_MAX_SPEED_HZ set to 50MHz and use it directly for max_speed_hz.
 
-	WARNING: CPU: 47 PID: 844 at drivers/spi/spi-tegra210-quad.c:1226 tegra_qspi_transfer_one_message+0x8a4/0xba8
-	....
-	tegra-qspi NVDA1513:00: QSPI interrupt timeout, but transfer complete
-
-Move WARN_ON_ONCE/WARN_ON to fire only on real unrecoverable timeouts,
-i.e., when tegra_qspi_handle_timeout() confirms the hardware did NOT
-complete. This makes the warning actionable instead of just polluting
-the metrics.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20260408-tegra_warn-v1-1-669a3bc74d77@debian.org
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://patch.msgid.link/20260410080517.2405700-2-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have all the data needed for a comprehensive analysis. Here is the
-full walkthrough:
+Now I have a complete picture. Let me compile the full analysis.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: PARSE THE SUBJECT LINE
-Record: [spi: tegra210-quad] [Fix] [false positive WARN on interrupt
-timeout with transfer complete]
+**Step 1.1: Subject Line**
+- Subsystem: `spi: rzv2h-rspi:`
+- Action verb: "Fix" - explicit bug fix
+- Summary: Fixes max_speed_hz advertising a prohibited bit rate (SPR=0,
+  BRDV=0 = 100MHz on fixed-clock SoCs)
 
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-- **Signed-off-by:** Breno Leitao <leitao@debian.org> (author)
-- **Link:** https://patch.msgid.link/20260408-tegra_warn-v1-1-
-  669a3bc74d77@debian.org
-- **Signed-off-by:** Mark Brown <broonie@kernel.org> (SPI subsystem
-  maintainer)
-- No Fixes: tag (expected for autosel candidates)
-- No Reported-by: (author is the reporter, via commit message text)
-- No Cc: stable tag (expected)
+**Step 1.2: Tags**
+- `Signed-off-by: Lad Prabhakar <prabhakar.mahadev-
+  lad.rj@bp.renesas.com>` - Renesas engineer, author
+- `Link:
+  https://patch.msgid.link/20260410080517.2405700-2-prabhakar.mahadev-
+  lad.rj@bp.renesas.com` - patch series (patch 2)
+- `Signed-off-by: Mark Brown <broonie@kernel.org>` - SPI subsystem
+  maintainer
+- No Fixes: tag, no Reported-by:, no Cc: stable (all expected for
+  autosel review)
 
-Record: Author is a regular tegra210-quad contributor (9 commits in this
-driver). Patch was accepted by the SPI subsystem maintainer Mark Brown.
+**Step 1.3: Commit Body**
+- Bug: On RZ/V2H(P), RZ/G3E and RZ/G3L, RSPI_n_TCLK is fixed at 200MHz.
+  With SPR=0, BRDV=0, calc gives 100MHz - a prohibited hardware
+  combination. The max_speed_hz was set to 100MHz, so the SPI framework
+  could request it.
+- Symptom: Clock selection failure when SPI framework requests speed at
+  the advertised maximum (100MHz)
+- Root cause: `rzv2h_rspi_calc_bitrate(tclk_rate, RSPI_SPBR_SPR_MIN,
+  RSPI_SPCMD_BRDV_MIN)` returns 100MHz for 200MHz fixed clock, but
+  SPR=0/BRDV=0 is prohibited.
+- The fix hardcodes max_speed_hz = 50MHz, matching the actual hardware
+  limit across all SoC variants.
 
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-The bug: `WARN_ON_ONCE`/`WARN_ON` fires unconditionally on any
-completion timeout, including the recoverable case where the interrupt
-was lost but hardware finished the transfer. The driver already has
-`tegra_qspi_handle_timeout()` that recovers from this situation.
+**Step 1.4: Hidden Bug Fix**
+- This is explicitly labeled as a fix, not disguised.
 
-Symptom: Full kernel warning stack trace on every recoverable timeout:
-```
-WARNING: CPU: 47 PID: 844 at drivers/spi/spi-tegra210-quad.c:1226
-tegra_qspi_transfer_one_message+0x8a4/0xba8
-```
+## PHASE 2: DIFF ANALYSIS
 
-Scale: Author states "Almost all the hosts I sysadmin in my fleet
-produce the following splat." This is common because tegra210 uses
-threaded interrupts where transfer completion can be signaled before the
-IRQ fires.
+**Step 2.1: Inventory**
+- 1 file changed: `drivers/spi/spi-rzv2h-rspi.c`
+- +2 lines (define + assignment), -7 lines (removed computation block)
+- Net: -5 lines
+- Functions modified: `rzv2h_rspi_probe()` (and one #define added)
 
-Root cause: The WARN fires before `tegra_qspi_handle_timeout()` has a
-chance to determine if the hardware actually completed.
+**Step 2.2: Code Flow Change**
+- Before: `max_speed_hz` computed via `clk_round_rate(tclk, ULONG_MAX)`
+  → `rzv2h_rspi_calc_bitrate(tclk_rate, SPR_MIN=0, BRDV_MIN=0)` =
+  200MHz/2 = 100MHz
+- After: `max_speed_hz = RSPI_MAX_SPEED_HZ` = 50MHz
+- The removed code also eliminated error handling for `clk_round_rate`
+  return (3 lines) which is no longer needed
 
-Record: [False positive WARN on recoverable timeout] [WARNING splat with
-full call trace on every occurrence] [Common in practice across fleet of
-Tegra machines] [Root cause: WARN placed before recovery check]
+**Step 2.3: Bug Mechanism**
+- Logic/correctness fix: The advertised maximum speed was 100MHz, but
+  SPR=0/BRDV=0 is hardware-prohibited. The
+  `rzv2h_rspi_find_rate_fixed()` function at line 536 doesn't reject
+  SPR=0/BRDV=0, so requesting 100MHz leads to a prohibited register
+  configuration.
+- Category: Hardware-specific correctness bug
 
-### Step 1.4: DETECT HIDDEN BUG FIXES
-This IS a bug fix - the WARN fires when there's no actual problem. With
-`panic_on_warn=1` (verified exists in `kernel/panic.c`), this causes
-kernel panics on recoverable situations.
+**Step 2.4: Fix Quality**
+- Obviously correct: 50MHz is documented as the max supported speed
+  across all variants
+- Minimal/surgical: replaces computation with known-correct constant
+- Regression risk: Very low - lowering max_speed_hz is always safe
+  (slower, not broken)
 
-Record: [Yes, this is a real bug fix. WARN fires on non-error
-conditions, which causes panics with panic_on_warn=1 and pollutes
-logs/monitoring on all other systems.]
+## PHASE 3: GIT HISTORY
 
----
+**Step 3.1: Blame**
+- The buggy `max_speed_hz = rzv2h_rspi_calc_bitrate(tclk_rate, SPR_MIN,
+  BRDV_MIN)` originates from commit `8b61c8919dff08` (original driver,
+  v6.17-rc1, 2025-07-04), with `clk_round_rate()` refactor from
+  `9c9bf4fdc5e5d0` (v6.19).
+- Bug has existed since the driver was added.
 
-## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+**Step 3.2: No Fixes: tag** (expected)
 
-### Step 2.1: INVENTORY THE CHANGES
-- **File:** `drivers/spi/spi-tegra210-quad.c`
-- **Two hunks:** Both doing the same logical change
-  - Hunk 1 (`tegra_qspi_combined_seq_xfer`): -1 line, +2 lines (net +1)
-  - Hunk 2 (`tegra_qspi_non_combined_seq_xfer`): -1 line, +2 lines (net
-    +1)
-- **Functions modified:** `tegra_qspi_combined_seq_xfer`,
-  `tegra_qspi_non_combined_seq_xfer`
-- **Scope:** Single-file surgical fix, two identical pattern changes
+**Step 3.3: File History**
+- 21 changes since v6.17. Heavy refactoring occurred in v6.19 cycle
+  (variable clock support, DMA, device-managed APIs).
 
-Record: [1 file, 2 functions, +2/-2 logical changes, scope: surgical
-fix]
+**Step 3.4: Author**
+- Lad Prabhakar is a Renesas engineer who regularly contributes to SPI
+  and other Renesas drivers. Not the original driver author (Fabrizio
+  Castro) but from the same company.
 
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-**Hunk 1 (combined_seq_xfer):**
-- BEFORE: `if (WARN_ON_ONCE(ret == 0))` fires WARN then calls
-  `tegra_qspi_handle_timeout()` inside the `if` body
-- AFTER: `if (ret == 0)` (no WARN), then calls
-  `tegra_qspi_handle_timeout()`, and only `WARN_ON_ONCE(1)` if
-  handle_timeout returns < 0 (real unrecoverable timeout)
+**Step 3.5: Dependencies**
+- The link shows this is "patch 2" in a series. However, the fix is
+  self-contained: it adds one define and simplifies the probe function.
+  No dependency on patch 1 or 3.
 
-**Hunk 2 (non_combined_seq_xfer):**
-- BEFORE: `if (WARN_ON(ret == 0))` fires WARN then calls
-  `tegra_qspi_handle_timeout()`
-- AFTER: `if (ret == 0)` (no WARN), then calls
-  `tegra_qspi_handle_timeout()`, and only `WARN_ON(1)` if handle_timeout
-  returns < 0
+## PHASE 4: MAILING LIST
 
-Record: [Both hunks: WARN moved from unconditional timeout to only real-
-timeout branch after recovery check]
-
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-Category: **Logic/correctness fix** - The WARN was placed at the wrong
-scope level. It fires for all timeouts (including recoverable ones where
-hardware completed but interrupt was delayed), when it should only fire
-for genuine failures.
-
-Record: [Logic bug: WARN fires at wrong scope. Fix moves WARN to only
-trigger after confirming hardware did NOT complete.]
-
-### Step 2.4: ASSESS THE FIX QUALITY
-- Obviously correct: YES - the WARN should only fire for real errors,
-  not recoverable conditions
-- Minimal/surgical: YES - just 2 identical changes moving WARN placement
-- Regression risk: VERY LOW - the same WARN still fires on real
-  timeouts, and the recovery path is untouched
-- No red flags: single file, same subsystem, no API changes
-
-Record: [Fix is obviously correct, minimal, zero regression risk]
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: BLAME THE CHANGED LINES
-- Line 1226 (`WARN_ON_ONCE`): introduced by `41c721fc09393` (Breno
-  Leitao, 2025-04-01) in v6.15
-- Line 1343 (`WARN_ON`): original from `921fc1838fb036` (Sowjanya
-  Komatineni, 2020-12-21) in v5.11
-- Lines 1227-1248 (timeout handling): introduced by `380fd29d57abe`
-  (Vishwaroop A, 2025-10-28) in v6.19
-
-Record: [WARN_ON from v5.11, WARN_ON_ONCE since v6.15, recovery logic
-since v6.19. The false positive only became apparent after 380fd29d57abe
-added recovery, revealing the WARN fires even when recovery succeeds.]
-
-### Step 3.2: FOLLOW THE FIXES: TAG
-No Fixes: tag present. However, logically this fixes the combination of
-`41c721fc09393` (which introduced WARN_ON_ONCE in combined path) and
-`380fd29d57abe` (which added the recovery but didn't move the WARN).
-
-Record: [No Fixes: tag. Logically fixes the interaction between WARN
-placement and the recovery path added in 380fd29d57abe.]
-
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-Recent commits show heavy work on this driver by the same author:
-- Spinlock protection for curr_xfer (6 patches, v6.19)
-- IRQ_HANDLED fix (v6.19)
-- Rate limiting (v6.15)
-- WARN_ON_ONCE (v6.15)
-
-Record: [Standalone fix. No prerequisites beyond the already-merged
-recovery handler. Author is the most active recent contributor to this
-driver.]
-
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-Breno Leitao has 9 commits to this driver, including the prior
-WARN_ON_ONCE change and the spinlock protection series. He is clearly
-intimately familiar with this driver and has been fixing real production
-issues.
-
-Record: [Active contributor to this driver, fixing real production
-issues across a fleet.]
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-This patch depends on `380fd29d57abe` ("Check hardware status on
-timeout") which introduced `tegra_qspi_handle_timeout()`. That commit is
-in v6.19+.
-
-Record: [Requires tegra_qspi_handle_timeout() from 380fd29d57abe
-(v6.19). Patch cannot apply to older stable trees.]
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-Lore.kernel.org is behind Anubis anti-bot protection. B4 dig could not
-be used directly on the new commit hash (not yet in tree).
-
-The patch was submitted as v1 on 2026-04-08 (based on msgid). It was a
-single patch (not part of a series). Mark Brown applied it directly,
-suggesting straightforward acceptance.
-
-Record: [Patch accepted directly by SPI maintainer. No concerns or NAKs
-visible. v1 was applied directly (no revisions needed).]
-
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-Mark Brown (SPI subsystem maintainer) signed off, indicating direct
-review and acceptance.
-
-Record: [Mark Brown (subsystem maintainer) reviewed and applied.]
-
-### Step 4.3-4.5: BUG REPORT / RELATED PATCHES / STABLE DISCUSSION
-The commit message itself serves as the bug report - the author
-describes fleet-wide impact. No separate bug report.
-
-Record: [Author is the reporter. Fleet-wide impact documented in commit
-message.]
-
----
+- b4 dig could not find the commit (it hasn't been committed to the tree
+  yet as a separate commit).
+- The Link: tag points to the patch submission. lore.kernel.org was
+  inaccessible due to bot protection.
+- The patch was applied by Mark Brown (SPI subsystem maintainer),
+  indicating maintainer review.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-- `tegra_qspi_combined_seq_xfer()` - Combined sequence transfer path
-- `tegra_qspi_non_combined_seq_xfer()` - Non-combined sequence transfer
-  path
+**Step 5.1: Modified function: `rzv2h_rspi_probe()`**
+- Called during platform device registration for matching Renesas SoCs
 
-### Step 5.2: TRACE CALLERS
-Both functions are called from `tegra_qspi_transfer_one_message()`,
-which is the SPI core transfer callback. This is the main transfer path
-for ALL QSPI operations on Tegra.
+**Step 5.2: Callers**
+- Called via platform driver `.probe` callback during device boot or
+  module load
 
-Record: [Called from core SPI transfer path - every QSPI transaction
-goes through this code.]
+**Step 5.3: Impact of max_speed_hz**
+- `max_speed_hz` is used by the SPI framework to clamp requested speeds.
+  If set too high, devices may request unsupported speeds.
+- When `rzv2h_rspi_setup_clock()` is called with a speed > 50MHz,
+  `find_rate_fixed()` computes SPR=0/BRDV=0 (prohibited) or finds no
+  valid combination depending on the exact speed.
 
-### Step 5.3-5.4: TRACE CALLEES / CALL CHAIN
-The affected code calls `tegra_qspi_handle_timeout()` which checks
-hardware status (QSPI_RDY bit) and manually processes completion if
-hardware finished. This is a standard SPI data path.
+**Step 5.5: The calc verification**
+- `rzv2h_rspi_calc_bitrate(200000000, 0, 0)` = `DIV_ROUND_UP(200000000,
+  (2 * 1 * 1))` = 100000000 = 100MHz
+- The 50MHz maximum = `rzv2h_rspi_calc_bitrate(200000000, 1, 0)` =
+  `DIV_ROUND_UP(200000000, (2 * 2 * 1))` = 50000000 = 50MHz
 
-Record: [Standard SPI data transfer path, reachable from any QSPI
-operation on Tegra platforms.]
+## PHASE 6: STABLE TREE ANALYSIS
 
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-The exact same pattern exists in both functions (combined and non-
-combined), and the fix addresses both identically.
+**Step 6.1: Driver existence**
+- Driver first appeared in v6.17-rc1. Applicable to: 6.17.y, 6.18.y (if
+  exists), 6.19.y, 7.0.y
+- NOT applicable to: 6.12.y, 6.6.y, 6.1.y, 5.15.y, or older
 
-Record: [Two instances of the same pattern, both fixed.]
+**Step 6.2: Backport complications**
+- For 7.0.y: should apply cleanly (current HEAD is v7.0)
+- For 6.19.y: should apply cleanly (same `clk_round_rate` code)
+- For 6.17.y/6.18.y: code used `clk_get_rate()` instead of
+  `clk_round_rate()`, would need minor adaptation
 
----
+## PHASE 7: SUBSYSTEM CONTEXT
 
-## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+- Subsystem: `drivers/spi/` - SPI bus driver for specific Renesas
+  hardware
+- Criticality: PERIPHERAL - affects Renesas RZ/V2H(P), RZ/G3E, RZ/G3L,
+  RZ/T2H, RZ/N2H SoC users
+- Active subsystem with regular development
 
-### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
-- **v6.19.y:** YES - has `tegra_qspi_handle_timeout()` and both
-  WARN_ON/WARN_ON_ONCE. Patch applies cleanly (verified code is
-  identical to v7.0).
-- **v6.18.y and earlier:** NO - `tegra_qspi_handle_timeout()` does not
-  exist. The timeout handling is completely different. This patch is
-  INAPPLICABLE.
-- **v6.6.y, v6.1.y, v5.15.y:** NO - completely different timeout code.
+## PHASE 8: IMPACT AND RISK
 
-Record: [Applicable ONLY to v6.19.y and v7.0. No applicability to older
-stable trees.]
+**Step 8.1: Affected population**
+- Users of Renesas RZ/V2H(P), RZ/G3E, RZ/G3L SoCs (embedded/IoT
+  systems). The RZ/T2H and RZ/N2H already correctly computed 50MHz as
+  noted in the commit message.
 
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-For v6.19.y: The code is identical - clean apply expected.
+**Step 8.2: Trigger conditions**
+- Triggered when an SPI device requests exactly 100MHz speed (the
+  advertised maximum), or more precisely when the framework attempts to
+  configure SPR=0/BRDV=0.
 
-Record: [Clean apply to v6.19.y. Not applicable to older trees.]
+**Step 8.3: Failure mode**
+- Hardware clock selection failure → SPI transfer fails → device
+  communication failure
+- Severity: MEDIUM (functionality broken for affected transfers, but
+  only at specific high speeds)
 
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY IN STABLE
-No related fix is in stable for this specific false positive WARN issue.
-
-Record: [No existing fix in stable for this issue.]
-
----
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-- Subsystem: `drivers/spi` - SPI bus driver for Tegra QSPI controller
-- Criticality: IMPORTANT for Tegra (NVIDIA) platforms (widely used in
-  embedded/automotive/Jetson)
-
-Record: [SPI driver subsystem, IMPORTANT for Tegra/Jetson platforms]
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-Very active - 20 recent commits to this file, ongoing improvements and
-bug fixes.
-
-Record: [Very active subsystem with ongoing fixes]
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: DETERMINE WHO IS AFFECTED
-All users of Tegra210+ QSPI hardware. This includes NVIDIA Jetson
-platforms widely used in robotics, automotive, and embedded
-applications.
-
-Record: [All Tegra QSPI users - Jetson/embedded platforms]
-
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-- Trigger: Any QSPI transfer where interrupt is delayed (common with
-  threaded IRQs)
-- Frequency: Very common - author reports "almost all hosts in my fleet"
-- No privilege required - happens during normal SPI operations
-
-Record: [Very common, happens during normal QSPI operations, no special
-trigger needed]
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-- Without `panic_on_warn`: MEDIUM - log pollution, monitoring noise,
-  full stack trace on recoverable events
-- With `panic_on_warn=1`: CRITICAL - kernel panic on a non-error
-  condition
-- The warning count can be extremely high (94,451 in commit
-  41c721fc09393's message)
-
-Record: [MEDIUM severity (CRITICAL with panic_on_warn=1). False positive
-warnings pollute logs and can cause panics.]
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-- **BENEFIT:** HIGH - eliminates false positive warnings that are common
-  across Tegra fleet. Prevents panics on `panic_on_warn=1` systems.
-  Makes the warning actionable (only fires on real errors).
-- **RISK:** VERY LOW - 2-line change per function, obviously correct, no
-  behavioral change except WARN placement.
-
-Record: [HIGH benefit, VERY LOW risk. Excellent ratio.]
-
----
+**Step 8.4: Risk-benefit ratio**
+- BENEFIT: Medium - prevents SPI clock misconfiguration on specific SoCs
+- RISK: Very low - replaces dynamic computation with safe constant, -5
+  lines net, no behavior change for normal speeds
+- Ratio: Favorable
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: COMPILE THE EVIDENCE
+**Evidence FOR backporting:**
+- Explicit bug fix ("Fix" in subject)
+- Prevents hardware-prohibited register configuration (SPR=0/BRDV=0)
+- Small, surgical change (+2/-7 lines)
+- Obviously correct (50MHz documented as hardware max)
+- Applied by subsystem maintainer Mark Brown
+- No regression risk (lowering max_speed is always safe)
+- Self-contained, no dependencies
 
-**FOR backporting:**
-- Fixes a real, common false positive WARN that fires during normal
-  recoverable operation
-- Can cause kernel panics on `panic_on_warn=1` systems
-- Author documents fleet-wide impact ("almost all hosts in my fleet")
-- Fix is tiny (2 identical 1-line changes), obviously correct, zero
-  regression risk
-- Accepted directly by SPI maintainer Mark Brown without revisions
-- Author is an experienced contributor to this driver with 9 commits
-- Applies cleanly to v6.19.y stable tree
+**Evidence AGAINST backporting:**
+- Affects only specific Renesas SoCs (narrow user base)
+- Bug only triggered at exact 100MHz speed request (not easily triggered
+  in practice)
+- Driver is very new (v6.17+, late 2025), limited to recent stable trees
+- No Reported-by (no evidence of users hitting this in practice)
 
-**AGAINST backporting:**
-- Only applicable to v6.19.y (depends on v6.19's
-  `tegra_qspi_handle_timeout()`)
-- Without `panic_on_warn`, this is "just" log noise (though significant
-  noise)
-- Limited to Tegra QSPI hardware users
-
-### Step 9.2: APPLY THE STABLE RULES CHECKLIST
-1. Obviously correct and tested? **YES** - trivially verifiable, tested
-   in author's fleet
-2. Fixes a real bug that affects users? **YES** - false positive WARN,
-   panic with panic_on_warn
-3. Important issue? **YES** - WARN with full call trace on every
-   recoverable timeout; panic on panic_on_warn
-4. Small and contained? **YES** - 2 identical single-line changes in one
-   file
-5. No new features or APIs? **YES** - just moves WARN placement
-6. Can apply to stable trees? **YES** - cleanly to v6.19.y
-
-### Step 9.3: CHECK FOR EXCEPTION CATEGORIES
-Not an exception category - this is a straightforward bug fix.
-
-### Step 9.4: MAKE YOUR DECISION
-The fix is small, surgical, obviously correct, and fixes a real problem
-that affects real Tegra users in production. It eliminates false
-positive warnings that can cause panics on `panic_on_warn=1` systems and
-significantly reduces log noise. The fix meets all stable kernel
-criteria.
+**Stable Rules Checklist:**
+1. Obviously correct and tested? YES - hardcoded constant matching
+   documented max
+2. Fixes a real bug? YES - advertising prohibited speed
+3. Important issue? MEDIUM - clock selection failure, but narrow trigger
+4. Small and contained? YES - 2 lines added, 7 removed, single file
+5. No new features? Correct - no new features
+6. Can apply to stable? YES for 7.0.y and 6.19.y
 
 ---
 
-## Verification
+**Verification:**
+- [Phase 1] Parsed tags: Signed-off-by from Renesas engineer and Mark
+  Brown (SPI maintainer), Link to patch submission
+- [Phase 2] Diff analysis: +2/-7 lines in `rzv2h_rspi_probe()`, replaces
+  dynamic max_speed_hz calc with RSPI_MAX_SPEED_HZ=50MHz
+- [Phase 2] Verified calc: `rzv2h_rspi_calc_bitrate(200000000, 0, 0)` =
+  100MHz (prohibited)
+- [Phase 2] Verified fix: `rzv2h_rspi_find_rate_fixed()` line 536 does
+  NOT reject SPR=0/BRDV=0, confirming the bug
+- [Phase 3] git blame: buggy code from `8b61c8919dff08` (v6.17-rc1,
+  2025-07-04), refactored in `9c9bf4fdc5e5d0` (v6.19)
+- [Phase 3] git tag --contains: driver first in v6.17-rc1, variable
+  clock in v6.19
+- [Phase 3] git log: 21 changes since v6.17, active development
+- [Phase 3] Author check: Prabhakar is a Renesas engineer with multiple
+  SPI contributions
+- [Phase 4] b4 dig: Could not find mainline commit (not yet committed).
+  Lore inaccessible.
+- [Phase 5] Verified call chain: `rzv2h_rspi_probe` → sets
+  `max_speed_hz` → SPI framework uses for speed clamping
+- [Phase 6] Driver exists in v6.17+ only. Not applicable to older stable
+  trees.
+- [Phase 8] Failure mode: SPI clock selection failure for prohibited
+  speed, severity MEDIUM
+- UNVERIFIED: Could not access lore.kernel.org to check review
+  discussion or whether other patches in the series are needed
 
-- [Phase 1] Parsed tags: Signed-off-by author (Breno Leitao), Signed-
-  off-by maintainer (Mark Brown), Link to patch
-- [Phase 2] Diff analysis: 2 identical changes in 2 functions, moving
-  WARN from outer scope to real-timeout-only branch
-- [Phase 3] git blame: WARN_ON_ONCE at line 1226 from commit
-  41c721fc09393 (v6.15); recovery handler from 380fd29d57abe (v6.19)
-- [Phase 3] git show 380fd29d57abe: confirmed this introduced
-  tegra_qspi_handle_timeout(), the function that makes the false
-  positive detectable
-- [Phase 3] git show 41c721fc09393: confirmed 94,451 warnings reported
-  per host
-- [Phase 3] git log --author: author has 9 commits to this driver
-- [Phase 4] b4 dig found prior series by same author; current patch is
-  standalone v1 accepted directly
-- [Phase 5] Functions modified are in the core SPI transfer path, called
-  from tegra_qspi_transfer_one_message
-- [Phase 6] v6.19 code verified identical to v7.0 for affected areas
-  (tegra_qspi_handle_timeout exists, WARN_ON locations match)
-- [Phase 6] v6.12, v6.6 confirmed: NO tegra_qspi_handle_timeout
-  function, completely different timeout code - patch inapplicable
-- [Phase 6] v6.15, v6.18 confirmed: WARN_ON_ONCE exists but NO
-  tegra_qspi_handle_timeout - patch inapplicable
-- [Phase 8] panic_on_warn confirmed in kernel/panic.c: WARN triggers
-  check_panic_on_warn() which calls panic()
-- UNVERIFIED: Could not access lore.kernel.org due to Anubis bot
-  protection; unable to verify full review discussion
+This is a small, correct bug fix for a driver-level issue that prevents
+advertising a hardware-prohibited bit rate. The fix is safe (just caps
+max speed at the documented limit) and self-contained. It meets stable
+kernel criteria for trees containing this driver (v6.17+).
 
 **YES**
 
- drivers/spi/spi-tegra210-quad.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rzv2h-rspi.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 7ea5aa993596f..05f1753e2bbb1 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1223,7 +1223,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					(&tqspi->xfer_completion,
- 					QSPI_DMA_TIMEOUT);
+diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
+index 23f0e92ae208e..15270f19c69c1 100644
+--- a/drivers/spi/spi-rzv2h-rspi.c
++++ b/drivers/spi/spi-rzv2h-rspi.c
+@@ -77,6 +77,8 @@
  
--			if (WARN_ON_ONCE(ret == 0)) {
-+			if (ret == 0) {
- 				/*
- 				 * Check if hardware completed the transfer
- 				 * even though interrupt was lost or delayed.
-@@ -1232,6 +1232,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 				ret = tegra_qspi_handle_timeout(tqspi);
- 				if (ret < 0) {
- 					/* Real timeout - clean up and fail */
-+					WARN_ON_ONCE(1);
- 					dev_err(tqspi->dev, "transfer timeout\n");
+ #define RSPI_RESET_NUM		2
  
- 					/* Abort transfer by resetting pio/dma bit */
-@@ -1340,7 +1341,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
++#define RSPI_MAX_SPEED_HZ	50000000
++
+ struct rzv2h_rspi_best_clock {
+ 	struct clk *clk;
+ 	unsigned long clk_rate;
+@@ -771,13 +773,7 @@ static int rzv2h_rspi_probe(struct platform_device *pdev)
+ 							   RSPI_SPBR_SPR_MAX,
+ 							   RSPI_SPCMD_BRDV_MAX);
  
- 		ret = wait_for_completion_timeout(&tqspi->xfer_completion,
- 						  QSPI_DMA_TIMEOUT);
--		if (WARN_ON(ret == 0)) {
-+		if (ret == 0) {
- 			/*
- 			 * Check if hardware completed the transfer even though
- 			 * interrupt was lost or delayed. If so, process the
-@@ -1349,6 +1350,7 @@ static int tegra_qspi_non_combined_seq_xfer(struct tegra_qspi *tqspi,
- 			ret = tegra_qspi_handle_timeout(tqspi);
- 			if (ret < 0) {
- 				/* Real timeout - clean up and fail */
-+				WARN_ON(1);
- 				dev_err(tqspi->dev, "transfer timeout\n");
+-	tclk_rate = clk_round_rate(rspi->tclk, ULONG_MAX);
+-	if (tclk_rate < 0)
+-		return tclk_rate;
+-
+-	controller->max_speed_hz = rzv2h_rspi_calc_bitrate(tclk_rate,
+-							   RSPI_SPBR_SPR_MIN,
+-							   RSPI_SPCMD_BRDV_MIN);
++	controller->max_speed_hz = RSPI_MAX_SPEED_HZ;
  
- 				if (tqspi->is_curr_dma_xfer)
+ 	controller->dma_tx = devm_dma_request_chan(dev, "tx");
+ 	if (IS_ERR(controller->dma_tx)) {
 -- 
 2.53.0
 

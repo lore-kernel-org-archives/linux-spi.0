@@ -1,44 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74BD47D95B;
-	Mon, 20 Apr 2026 13:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3498481A9C;
+	Mon, 20 Apr 2026 13:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691864; cv=none; b=MNjgamWXKDnXTyryLi3acjG6z1QB+s7lB5kFwCY6CdBusp86I7OvUshm4TLK21SiZM8mmB/fb+qYmxGiPuBNJg0aDluZqNLGM6UQRps7mOqdCAjRKN295wx8xhkOp2j7xwbXhOQ2EbEuAJZuAUkhDcBCGeYIg11x+pLUWp4nAk8=
+	t=1776691904; cv=none; b=n0ezSYTLeG3Dv/ciNpKQWO+6OEPO0uh8shORRzm7zy9AbJsoa65MXwamvEK8d3jGUFo098TBIKe6IbkugK97t2oDditv2cZXt2nEeHN1ujO7vIET2ZUUNePF2dgtkFYw6J7UY0TCUsHz/tcflccqaHuJEOnNcuhh+ObJGoApAak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691864; c=relaxed/simple;
-	bh=p+miuKebyEkDvBVixwjD7RhAs0poaZqjuya0RUreiyg=;
+	s=arc-20240116; t=1776691904; c=relaxed/simple;
+	bh=qp/1FPnW/xz76pRAwuxarVuaWIR6D3YOYIRucDmPU8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H9fN9hUNGiRV9xu354pSVGRnfB00G004VMTuCFDThwS8P+NsKqDCLg569uM8P+GbrQrAIBxioft/7R5vtPfDP6PLcSx/MQzPor870+eon6MHtpYWGhEUdMyUvyL7Ja/M/C38eSRcQe/FyvKoAC7LfYYq4csgl0Y8O1Ri/h86/To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H4sj9cUB; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=CYFTwaWJ5FpnhqZSbcTjIhvAOBUTtP2jV+UZQfysfMUDtqC7tVaA89SZgskEUbxwOAnWlaL6eySOkiqez1/A73s5H9bU9r/avrRqf9moQojivu584lcVXWGsYueDIT4L79Iw8t87LmPy/dwwgBeBayBYDJg+3anIFSE2WbsNT14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3HTAiQg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H4sj9cUB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962B3C19425;
-	Mon, 20 Apr 2026 13:31:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3HTAiQg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B99C2BCB7;
+	Mon, 20 Apr 2026 13:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691864;
-	bh=p+miuKebyEkDvBVixwjD7RhAs0poaZqjuya0RUreiyg=;
+	s=k20201202; t=1776691904;
+	bh=qp/1FPnW/xz76pRAwuxarVuaWIR6D3YOYIRucDmPU8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4sj9cUBIYGIpO0Tp+e4swjKrgoQDJ9Q4nssnz5tFcZnWXaqLIQhewLgE0tWiE7NV
-	 s4oV36qpFraAA8nObpi76D6laKxxUdTftqQJRNUig0DD9JW/VPXpT9O8Bc4AdkRFVM
-	 XhA4QYe2W62i/zEOfha5UcPGIIXl9PIc+6XJOizqFrA2y8Fx+JHX2blwfYdTr2LPMw
-	 Err2oFKRSCf9p5939vp81xds/BBHbRWHET/2vH8m95SO5Xdd2DeIDAdb1Kno9UvBc6
-	 ADqnGBeAsv4os+U6cOgF05NBH0jHBF1HINcn5gS5Skg6OhHaR0nxN/OJWHdLwf/3KY
-	 OJ9VP0iBclnyQ==
+	b=X3HTAiQgIw2rsvpprbi1OiSpor6RVJmQn4EcBw6hfd24SEClCYaACOwbToP58z540
+	 J3Ci/gbMAWFUUbL56aZNZ5lz2pMzoBomqMPeT3Y2Ja1jll3hZhxCl8dBJsT9c7P0Vg
+	 4eLMRZif/s+21wFPfefzbbi8Zm8lt1QS5o8EfkA+jvEjtze7RRoxVko7NeUSlgR3Ng
+	 QPN/w1O2MwRDlySeJ5uUT6446rqT7zHI5zkrtrVGxzAlTXIWi4g/SwU4KTKWQDLj2B
+	 aA7nt2XJbECsWZcU6VCLg5I+sTtLff3lBFCUlpdFDwb0KdLywRo9BtUHDg/oJPBTXQ
+	 JZlSZNQ14KT5w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+Cc: Alain Volmat <alain.volmat@foss.st.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	fabrizio.castro.jz@renesas.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
 	linux-spi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0] spi: rzv2h-rspi: Fix max_speed_hz advertising prohibited bit rate
-Date: Mon, 20 Apr 2026 09:20:33 -0400
-Message-ID: <20260420132314.1023554-239-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 7.0] spi: stm32: fix rx DMA request error handling
+Date: Mon, 20 Apr 2026 09:20:55 -0400
+Message-ID: <20260420132314.1023554-261-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -54,297 +57,318 @@ X-stable-base: Linux 7.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 4e292cbf3890657db2f2692942cb0f168c80167e ]
+[ Upstream commit 837f6691d5f39ea6453e4489dded40fb17755c60 ]
 
-On RZ/V2H(P), RZ/G3E and RZ/G3L, RSPI_n_TCLK is fixed at 200MHz.
-The max_speed_hz was computed using clk_round_rate(tclk, ULONG_MAX)
-with SPR=0 and BRDV=0, resulting in 100Mbps - the exact combination
-prohibited on these SoCs. This could cause the SPI framework to request
-a speed that rzv2h_rspi_find_rate_fixed() would skip, potentially
-leading to a clock selection failure.
+Avoid trying to release the RX DMA channel when an error occurs
+during RX dma_request_chan() call. Instead, jump directly to
+release the TX channel, if applicable.
 
-On RZ/T2H and RZ/N2H the max_speed_hz was correctly calculated as
-50Mbps for both the variable PCLKSPIn and fixed PCLK clock sources.
-
-Since the maximum supported bit rate is 50Mbps across all supported SoC
-variants, replace the clk_round_rate() based calculation with a define
-RSPI_MAX_SPEED_HZ set to 50MHz and use it directly for max_speed_hz.
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://patch.msgid.link/20260410080517.2405700-2-prabhakar.mahadev-lad.rj@bp.renesas.com
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-spi/aYXvY6NH7OlZ-OAF@stanley.mountain/T/#u
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://patch.msgid.link/20260212-spi-stm32-fix-dma-rx-release-v1-1-53a37c31626b@foss.st.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Now I have a complete picture. Let me compile the full analysis.
+Now I have all the information needed to complete the analysis. Let me
+compile the full assessment.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-**Step 1.1: Subject Line**
-- Subsystem: `spi: rzv2h-rspi:`
-- Action verb: "Fix" - explicit bug fix
-- Summary: Fixes max_speed_hz advertising a prohibited bit rate (SPR=0,
-  BRDV=0 = 100MHz on fixed-clock SoCs)
+### Step 1.1: Subject Line
+- **Subsystem:** `spi: stm32`
+- **Action verb:** "fix"
+- **Summary:** Fix incorrect error handling when RX DMA channel request
+  fails during probe.
+- Record: [spi: stm32] [fix] [rx DMA request error handling in probe
+  path]
 
-**Step 1.2: Tags**
-- `Signed-off-by: Lad Prabhakar <prabhakar.mahadev-
-  lad.rj@bp.renesas.com>` - Renesas engineer, author
-- `Link:
-  https://patch.msgid.link/20260410080517.2405700-2-prabhakar.mahadev-
-  lad.rj@bp.renesas.com` - patch series (patch 2)
-- `Signed-off-by: Mark Brown <broonie@kernel.org>` - SPI subsystem
-  maintainer
-- No Fixes: tag, no Reported-by:, no Cc: stable (all expected for
-  autosel review)
+### Step 1.2: Tags
+- **Reported-by:** Dan Carpenter `<dan.carpenter@linaro.org>` — well-
+  known static analysis expert (Smatch maintainer)
+- **Closes:** `https://lore.kernel.org/linux-spi/aYXvY6NH7OlZ-
+  OAF@stanley.mountain/T/#u` — Dan's bug report
+- **Signed-off-by:** Alain Volmat (author, STM32 SPI subsystem
+  maintainer)
+- **Link:** patch.msgid.link URL for the fix patch
+- **Signed-off-by:** Mark Brown (SPI subsystem maintainer)
+- Record: Reported by Dan Carpenter (Smatch static analysis). Author is
+  the STM32 SPI maintainer. Merged by SPI subsystem maintainer Mark
+  Brown.
 
-**Step 1.3: Commit Body**
-- Bug: On RZ/V2H(P), RZ/G3E and RZ/G3L, RSPI_n_TCLK is fixed at 200MHz.
-  With SPR=0, BRDV=0, calc gives 100MHz - a prohibited hardware
-  combination. The max_speed_hz was set to 100MHz, so the SPI framework
-  could request it.
-- Symptom: Clock selection failure when SPI framework requests speed at
-  the advertised maximum (100MHz)
-- Root cause: `rzv2h_rspi_calc_bitrate(tclk_rate, RSPI_SPBR_SPR_MIN,
-  RSPI_SPCMD_BRDV_MIN)` returns 100MHz for 200MHz fixed clock, but
-  SPR=0/BRDV=0 is prohibited.
-- The fix hardcodes max_speed_hz = 50MHz, matching the actual hardware
-  limit across all SoC variants.
+### Step 1.3: Commit Body
+The commit message states: avoid trying to release the RX DMA channel
+when an error occurs during `dma_request_chan()` for RX. Instead, jump
+directly to release the TX channel. This is clearly describing a bug
+where on RX DMA request failure, the cleanup code incorrectly tries to
+release a never-acquired RX DMA channel.
 
-**Step 1.4: Hidden Bug Fix**
-- This is explicitly labeled as a fix, not disguised.
+Record: Bug is calling `dma_release_channel()` on an ERR_PTR pointer
+when RX DMA request fails. Symptom: crash/undefined behavior during
+driver probe failure path.
+
+### Step 1.4: Hidden Bug Fix Detection
+Not hidden — clearly labeled as "fix" in subject line.
 
 ## PHASE 2: DIFF ANALYSIS
 
-**Step 2.1: Inventory**
-- 1 file changed: `drivers/spi/spi-rzv2h-rspi.c`
-- +2 lines (define + assignment), -7 lines (removed computation block)
-- Net: -5 lines
-- Functions modified: `rzv2h_rspi_probe()` (and one #define added)
+### Step 2.1: Inventory
+- **Files changed:** `drivers/spi/spi-stm32.c` only
+- **Lines changed:** ~6 added, ~6 removed (label and goto target
+  changes)
+- **Functions modified:** `stm32_spi_probe()` — the probe error-handling
+  section
+- **Scope:** Single-file, surgical fix in error path cleanup labels
 
-**Step 2.2: Code Flow Change**
-- Before: `max_speed_hz` computed via `clk_round_rate(tclk, ULONG_MAX)`
-  → `rzv2h_rspi_calc_bitrate(tclk_rate, SPR_MIN=0, BRDV_MIN=0)` =
-  200MHz/2 = 100MHz
-- After: `max_speed_hz = RSPI_MAX_SPEED_HZ` = 50MHz
-- The removed code also eliminated error handling for `clk_round_rate`
-  return (3 lines) which is no longer needed
+### Step 2.2: Code Flow Change
 
-**Step 2.3: Bug Mechanism**
-- Logic/correctness fix: The advertised maximum speed was 100MHz, but
-  SPR=0/BRDV=0 is hardware-prohibited. The
-  `rzv2h_rspi_find_rate_fixed()` function at line 536 doesn't reject
-  SPR=0/BRDV=0, so requesting 100MHz leads to a prohibited register
-  configuration.
-- Category: Hardware-specific correctness bug
+**Before the fix:** When `dma_request_chan(spi->dev, "rx")` fails with
+an error other than `-ENODEV`, the code does `goto err_dma_release`. At
+that label, `spi->dma_rx` still holds an `ERR_PTR` value (non-NULL), so
+`if (spi->dma_rx)` evaluates to true and
+`dma_release_channel(spi->dma_rx)` is called with an invalid pointer.
 
-**Step 2.4: Fix Quality**
-- Obviously correct: 50MHz is documented as the max supported speed
-  across all variants
-- Minimal/surgical: replaces computation with known-correct constant
-- Regression risk: Very low - lowering max_speed_hz is always safe
-  (slower, not broken)
+**After the fix:** The goto target is changed to `err_dma_tx_release`
+(new label), which skips the RX DMA release and only releases the TX
+channel. The cleanup labels are split: RX release first (only reached
+when RX was successfully acquired), then `err_dma_tx_release` for TX-
+only cleanup.
 
-## PHASE 3: GIT HISTORY
+### Step 2.3: Bug Mechanism
+**Category:** Error path / resource handling bug leading to invalid
+pointer dereference.
 
-**Step 3.1: Blame**
-- The buggy `max_speed_hz = rzv2h_rspi_calc_bitrate(tclk_rate, SPR_MIN,
-  BRDV_MIN)` originates from commit `8b61c8919dff08` (original driver,
-  v6.17-rc1, 2025-07-04), with `clk_round_rate()` refactor from
-  `9c9bf4fdc5e5d0` (v6.19).
-- Bug has existed since the driver was added.
+The root cause: commit `c266d19b7d4e5` ("spi: stm32: properly fail on
+dma_request_chan error") moved the `spi->dma_rx = NULL` assignment
+inside the `-ENODEV` branch but kept the `goto err_dma_release` in the
+else branch. Before that commit, `spi->dma_rx` was always set to NULL
+before any goto, making the cleanup safe.
 
-**Step 3.2: No Fixes: tag** (expected)
+### Step 2.4: Fix Quality
+- Obviously correct: the fix ensures we skip releasing a channel that
+  was never acquired.
+- Minimal/surgical: only changes a goto label and reorganizes 6 lines of
+  cleanup.
+- Regression risk: extremely low — only affects error paths, and the
+  reordering correctly reverses the acquisition order (TX before RX, so
+  cleanup is RX then TX).
 
-**Step 3.3: File History**
-- 21 changes since v6.17. Heavy refactoring occurred in v6.19 cycle
-  (variable clock support, DMA, device-managed APIs).
+## PHASE 3: GIT HISTORY INVESTIGATION
 
-**Step 3.4: Author**
-- Lad Prabhakar is a Renesas engineer who regularly contributes to SPI
-  and other Renesas drivers. Not the original driver author (Fabrizio
-  Castro) but from the same company.
+### Step 3.1: Blame
+The buggy `goto err_dma_release` at line 2508 is attributed to the
+original Peter Ujfalusi commit `0a454258febb73` (2019), but the actual
+bug was introduced by `c266d19b7d4e5` (Alain Volmat, 2025-12-18) which
+restructured the error handling and removed the safety `spi->dma_rx =
+NULL` before the goto.
 
-**Step 3.5: Dependencies**
-- The link shows this is "patch 2" in a series. However, the fix is
-  self-contained: it adds one define and simplifies the probe function.
-  No dependency on patch 1 or 3.
+Record: Bug introduced by c266d19b7d4e5 merged in v7.0-rc1 (v7.0 merge
+window, after v6.14).
 
-## PHASE 4: MAILING LIST
+### Step 3.2: Fixes Tag
+No explicit Fixes: tag in the fix commit, but from analysis, the bug was
+introduced by c266d19b7d4e5. This commit exists only in v7.0-rc1+
+(confirmed via `git tag --contains`).
 
-- b4 dig could not find the commit (it hasn't been committed to the tree
-  yet as a separate commit).
-- The Link: tag points to the patch submission. lore.kernel.org was
-  inaccessible due to bot protection.
-- The patch was applied by Mark Brown (SPI subsystem maintainer),
-  indicating maintainer review.
+### Step 3.3: File History
+Dan Carpenter previously reported another probe error path bug in the
+same file (`f4d8438e6a402` — sram pool free). This pattern of error path
+bugs in probe is consistent.
+
+### Step 3.4: Author
+Alain Volmat is the STM32 SPI subsystem maintainer — 15+ commits to this
+file. He both introduced the bug (c266d19b7d4e5) and wrote the fix. High
+confidence in fix quality.
+
+### Step 3.5: Dependencies
+The fix depends on commit c266d19b7d4e5 being present. Since that commit
+is the one that introduced the bug, the fix is only relevant to trees
+containing c266d19b7d4e5, which is v7.0-rc1+.
+
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+
+### Step 4.1: Patch Discussion
+The fix patch message ID `20260212-spi-stm32-fix-dma-rx-
+release-v1-1-53a37c31626b@foss.st.com` indicates a v1 patch (single
+revision). It was merged by Mark Brown (SPI maintainer). The "Closes:"
+link references Dan Carpenter's original report.
+
+### Step 4.2: Reviewers
+Merged by Mark Brown (SPI subsystem maintainer). Author is Alain Volmat
+(STM32 SPI maintainer). Dan Carpenter (reporter) is the Smatch static
+analysis maintainer.
+
+### Step 4.3: Bug Report
+The report from Dan Carpenter at Linaro is a static analysis finding
+(Smatch/Smatch-based). Dan is extremely reputable — his static analysis
+findings are almost always real bugs.
+
+### Step 4.5: Stable Discussion
+No explicit stable nomination found, which is expected for the commits
+under review.
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-**Step 5.1: Modified function: `rzv2h_rspi_probe()`**
-- Called during platform device registration for matching Renesas SoCs
+### Step 5.1: Functions Modified
+Only `stm32_spi_probe()` — the driver probe function, specifically its
+cleanup/error path labels.
 
-**Step 5.2: Callers**
-- Called via platform driver `.probe` callback during device boot or
-  module load
+### Step 5.2: Callers
+`stm32_spi_probe` is called by the platform driver framework during
+device enumeration. It is the `.probe` callback for the
+`stm32_spi_driver`. This is a standard driver entry point called when
+device-tree matching finds an STM32 SPI controller.
 
-**Step 5.3: Impact of max_speed_hz**
-- `max_speed_hz` is used by the SPI framework to clamp requested speeds.
-  If set too high, devices may request unsupported speeds.
-- When `rzv2h_rspi_setup_clock()` is called with a speed > 50MHz,
-  `find_rate_fixed()` computes SPR=0/BRDV=0 (prohibited) or finds no
-  valid combination depending on the exact speed.
-
-**Step 5.5: The calc verification**
-- `rzv2h_rspi_calc_bitrate(200000000, 0, 0)` = `DIV_ROUND_UP(200000000,
-  (2 * 1 * 1))` = 100000000 = 100MHz
-- The 50MHz maximum = `rzv2h_rspi_calc_bitrate(200000000, 1, 0)` =
-  `DIV_ROUND_UP(200000000, (2 * 2 * 1))` = 50000000 = 50MHz
+### Step 5.4: Reachability
+The bug is reachable during normal device probe when the RX DMA channel
+request fails for reasons other than `-ENODEV` (e.g., `-EBUSY`,
+`-ENOMEM`, `-EPROBE_DEFER` deferred probe). This is a realistic scenario
+on STM32 embedded platforms.
 
 ## PHASE 6: STABLE TREE ANALYSIS
 
-**Step 6.1: Driver existence**
-- Driver first appeared in v6.17-rc1. Applicable to: 6.17.y, 6.18.y (if
-  exists), 6.19.y, 7.0.y
-- NOT applicable to: 6.12.y, 6.6.y, 6.1.y, 5.15.y, or older
+### Step 6.1: Buggy Code in Stable Trees
+The buggy commit `c266d19b7d4e5` was merged in v7.0-rc1. It is NOT in
+v6.14 or any earlier release. Therefore, this fix is only relevant to
+the **7.0.y stable tree**.
 
-**Step 6.2: Backport complications**
-- For 7.0.y: should apply cleanly (current HEAD is v7.0)
-- For 6.19.y: should apply cleanly (same `clk_round_rate` code)
-- For 6.17.y/6.18.y: code used `clk_get_rate()` instead of
-  `clk_round_rate()`, would need minor adaptation
+### Step 6.2: Backport Complications
+The fix should apply cleanly to 7.0.y since the buggy code c266d19b7d4e5
+exists there unchanged.
 
-## PHASE 7: SUBSYSTEM CONTEXT
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-- Subsystem: `drivers/spi/` - SPI bus driver for specific Renesas
-  hardware
-- Criticality: PERIPHERAL - affects Renesas RZ/V2H(P), RZ/G3E, RZ/G3L,
-  RZ/T2H, RZ/N2H SoC users
-- Active subsystem with regular development
+### Step 7.1: Subsystem
+- **Path:** `drivers/spi/spi-stm32.c`
+- **Subsystem:** SPI driver for STM32 (ARM embedded platform)
+- **Criticality:** PERIPHERAL — affects STM32 embedded/IoT users
+  specifically, but STM32 is a very widely used embedded platform.
 
-## PHASE 8: IMPACT AND RISK
+## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1: Affected population**
-- Users of Renesas RZ/V2H(P), RZ/G3E, RZ/G3L SoCs (embedded/IoT
-  systems). The RZ/T2H and RZ/N2H already correctly computed 50MHz as
-  noted in the commit message.
+### Step 8.1: Who Is Affected
+STM32 SPI users on v7.0.y where the RX DMA channel request fails during
+probe.
 
-**Step 8.2: Trigger conditions**
-- Triggered when an SPI device requests exactly 100MHz speed (the
-  advertised maximum), or more precisely when the framework attempts to
-  configure SPR=0/BRDV=0.
+### Step 8.2: Trigger Conditions
+Triggered when `dma_request_chan()` for the RX channel returns an error
+other than `-ENODEV` during `stm32_spi_probe()`. This can happen with
+DMA controller misconfiguration, resource contention, or deferred probe
+scenarios.
 
-**Step 8.3: Failure mode**
-- Hardware clock selection failure → SPI transfer fails → device
-  communication failure
-- Severity: MEDIUM (functionality broken for affected transfers, but
-  only at specific high speeds)
+### Step 8.3: Failure Mode
+Calling `dma_release_channel()` with an ERR_PTR value causes a **kernel
+crash** (invalid pointer dereference inside `dma_release_channel()`).
+Severity: **HIGH** (kernel crash during probe).
 
-**Step 8.4: Risk-benefit ratio**
-- BENEFIT: Medium - prevents SPI clock misconfiguration on specific SoCs
-- RISK: Very low - replaces dynamic computation with safe constant, -5
-  lines net, no behavior change for normal speeds
-- Ratio: Favorable
+### Step 8.4: Risk-Benefit Ratio
+- **BENEFIT:** Prevents kernel crash on probe failure path — HIGH
+- **RISK:** Very low — 6 lines changed, only in error cleanup labels,
+  obviously correct
+- **Ratio:** Strongly favorable for backporting
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Evidence FOR backporting:**
-- Explicit bug fix ("Fix" in subject)
-- Prevents hardware-prohibited register configuration (SPR=0/BRDV=0)
-- Small, surgical change (+2/-7 lines)
-- Obviously correct (50MHz documented as hardware max)
-- Applied by subsystem maintainer Mark Brown
-- No regression risk (lowering max_speed is always safe)
-- Self-contained, no dependencies
+### Step 9.1: Evidence
+**FOR backporting:**
+- Fixes a real crash: `dma_release_channel()` called with ERR_PTR value
+- Found by Dan Carpenter (highly reputable static analysis expert)
+- Author is the STM32 SPI maintainer; merged by SPI subsystem maintainer
+- Tiny, surgical fix (6 lines, single file, only error path labels)
+- Obviously correct — only skips releasing a never-acquired channel
+- Bug is in v7.0.y stable tree (introduced by c266d19b7d4e5)
 
-**Evidence AGAINST backporting:**
-- Affects only specific Renesas SoCs (narrow user base)
-- Bug only triggered at exact 100MHz speed request (not easily triggered
-  in practice)
-- Driver is very new (v6.17+, late 2025), limited to recent stable trees
-- No Reported-by (no evidence of users hitting this in practice)
+**AGAINST backporting:**
+- Only affects STM32 platforms (not universal)
+- Only affects v7.0.y (bug was introduced in v7.0 merge window)
+- Only triggers on probe failure path (not normal operation)
 
-**Stable Rules Checklist:**
-1. Obviously correct and tested? YES - hardcoded constant matching
-   documented max
-2. Fixes a real bug? YES - advertising prohibited speed
-3. Important issue? MEDIUM - clock selection failure, but narrow trigger
-4. Small and contained? YES - 2 lines added, 7 removed, single file
-5. No new features? Correct - no new features
-6. Can apply to stable? YES for 7.0.y and 6.19.y
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **YES** — trivially verifiable goto
+   label change
+2. Fixes a real bug? **YES** — crash from invalid pointer in cleanup
+   path
+3. Important issue? **YES** — kernel crash on probe failure
+4. Small and contained? **YES** — 6 lines in one file
+5. No new features/APIs? **YES** — pure bugfix
+6. Can apply to stable? **YES** — should apply cleanly to 7.0.y
 
----
+### Step 9.3: Exception Categories
+Not applicable — this is a straightforward bugfix.
 
-**Verification:**
-- [Phase 1] Parsed tags: Signed-off-by from Renesas engineer and Mark
-  Brown (SPI maintainer), Link to patch submission
-- [Phase 2] Diff analysis: +2/-7 lines in `rzv2h_rspi_probe()`, replaces
-  dynamic max_speed_hz calc with RSPI_MAX_SPEED_HZ=50MHz
-- [Phase 2] Verified calc: `rzv2h_rspi_calc_bitrate(200000000, 0, 0)` =
-  100MHz (prohibited)
-- [Phase 2] Verified fix: `rzv2h_rspi_find_rate_fixed()` line 536 does
-  NOT reject SPR=0/BRDV=0, confirming the bug
-- [Phase 3] git blame: buggy code from `8b61c8919dff08` (v6.17-rc1,
-  2025-07-04), refactored in `9c9bf4fdc5e5d0` (v6.19)
-- [Phase 3] git tag --contains: driver first in v6.17-rc1, variable
-  clock in v6.19
-- [Phase 3] git log: 21 changes since v6.17, active development
-- [Phase 3] Author check: Prabhakar is a Renesas engineer with multiple
-  SPI contributions
-- [Phase 4] b4 dig: Could not find mainline commit (not yet committed).
-  Lore inaccessible.
-- [Phase 5] Verified call chain: `rzv2h_rspi_probe` → sets
-  `max_speed_hz` → SPI framework uses for speed clamping
-- [Phase 6] Driver exists in v6.17+ only. Not applicable to older stable
-  trees.
-- [Phase 8] Failure mode: SPI clock selection failure for prohibited
-  speed, severity MEDIUM
-- UNVERIFIED: Could not access lore.kernel.org to check review
-  discussion or whether other patches in the series are needed
+### Step 9.4: Decision
+This is a clear, small, correct bugfix for a crash in a driver probe
+error path. It meets all stable kernel criteria.
 
-This is a small, correct bug fix for a driver-level issue that prevents
-advertising a hardware-prohibited bit rate. The fix is safe (just caps
-max speed at the documented limit) and self-contained. It meets stable
-kernel criteria for trees containing this driver (v6.17+).
+## Verification
+
+- [Phase 1] Parsed tags: Reported-by Dan Carpenter (Smatch/Linaro),
+  Closes link to lore report, Signed-off-by Mark Brown (SPI maintainer)
+- [Phase 2] Diff analysis: ~6 lines changed in `stm32_spi_probe()`
+  cleanup labels — goto target changed from `err_dma_release` to
+  `err_dma_tx_release`, cleanup split into separate RX/TX labels
+- [Phase 2] Verified bug mechanism: `spi->dma_rx` holds ERR_PTR when
+  goto fires; `if (spi->dma_rx)` is true for ERR_PTR;
+  `dma_release_channel(ERR_PTR)` causes crash
+- [Phase 3] git blame: buggy `goto err_dma_release` at line 2508 traces
+  back through c266d19b7d4e5 (2025-12-18)
+- [Phase 3] git show c266d19b7d4e5: confirmed this commit removed the
+  safety `spi->dma_rx = NULL` before the goto, introducing the bug
+- [Phase 3] `git tag --contains c266d19b7d4e5`: first in v7.0-rc1, not
+  in v6.14 or earlier
+- [Phase 3] Author Alain Volmat has 15+ commits to spi-stm32.c, is the
+  STM32 SPI maintainer
+- [Phase 3] b4 dig -a c266d19b7d4e5: part of "spi: stm32: stability &
+  performance enhancements" series (v2)
+- [Phase 5] `stm32_spi_probe` is the platform driver .probe callback
+  (line 2689), called during device enumeration
+- [Phase 6] Buggy code only exists in v7.0-rc1+ (confirmed via git log
+  v6.14..v7.0-rc1)
+- [Phase 6] Fix should apply cleanly — file unchanged between fix commit
+  and current 7.0 tree (bug still present in current tree at line 2508)
+- [Phase 8] Failure mode: kernel crash from dma_release_channel() on
+  ERR_PTR — severity HIGH
 
 **YES**
 
- drivers/spi/spi-rzv2h-rspi.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/spi/spi-stm32.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 23f0e92ae208e..15270f19c69c1 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -77,6 +77,8 @@
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 33f211e159ef1..6d5eefa41f717 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -2505,7 +2505,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 			spi->dma_rx = NULL;
+ 		} else {
+ 			dev_err_probe(&pdev->dev, ret, "failed to request rx dma channel\n");
+-			goto err_dma_release;
++			goto err_dma_tx_release;
+ 		}
+ 	} else {
+ 		ctrl->dma_rx = spi->dma_rx;
+@@ -2574,11 +2574,11 @@ static int stm32_spi_probe(struct platform_device *pdev)
+ 	if (spi->sram_pool)
+ 		gen_pool_free(spi->sram_pool, (unsigned long)spi->sram_rx_buf,
+ 			      spi->sram_rx_buf_size);
+-err_dma_release:
+-	if (spi->dma_tx)
+-		dma_release_channel(spi->dma_tx);
+ 	if (spi->dma_rx)
+ 		dma_release_channel(spi->dma_rx);
++err_dma_tx_release:
++	if (spi->dma_tx)
++		dma_release_channel(spi->dma_tx);
+ err_clk_disable:
+ 	clk_disable_unprepare(spi->clk);
  
- #define RSPI_RESET_NUM		2
- 
-+#define RSPI_MAX_SPEED_HZ	50000000
-+
- struct rzv2h_rspi_best_clock {
- 	struct clk *clk;
- 	unsigned long clk_rate;
-@@ -771,13 +773,7 @@ static int rzv2h_rspi_probe(struct platform_device *pdev)
- 							   RSPI_SPBR_SPR_MAX,
- 							   RSPI_SPCMD_BRDV_MAX);
- 
--	tclk_rate = clk_round_rate(rspi->tclk, ULONG_MAX);
--	if (tclk_rate < 0)
--		return tclk_rate;
--
--	controller->max_speed_hz = rzv2h_rspi_calc_bitrate(tclk_rate,
--							   RSPI_SPBR_SPR_MIN,
--							   RSPI_SPCMD_BRDV_MIN);
-+	controller->max_speed_hz = RSPI_MAX_SPEED_HZ;
- 
- 	controller->dma_tx = devm_dma_request_chan(dev, "tx");
- 	if (IS_ERR(controller->dma_tx)) {
 -- 
 2.53.0
 

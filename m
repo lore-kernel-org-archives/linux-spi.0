@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28ECE3D16EA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2900F3D16F9;
 	Tue, 21 Apr 2026 12:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776774994; cv=none; b=r8PaMVyQnzvQaCkCZZMtVNVjVmkQ09XH2NHgM7f87atdIREIdWYh398o25Du6vD4/ZQUljaEhuqtLOcjaojDLiM1R1rJFbzzLP/b1Ue+L+L/JQN10uUMYcsleB+zEXBeVcNYhg2wNadTsdxq2mGmC5vha7inhvHsS9aKG61sqns=
+	t=1776774994; cv=none; b=LuTtrioO91mRQlsMcsNaHAdyXGIXjwIrXEemxoZf8czE0zPlnVmRHxoFJYIuNHqb7Pw8H38MKdlg55zjwNl4gJtHVNMjJyOz8V2ZJp0+8QZBil8PjuKZabpWECl/hImk8R4Gbn18QYxEYH4wxyZ3d+7lWb85P3QsXxjm3ysD/To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776774994; c=relaxed/simple;
-	bh=KxiawPPhW975UovztG38WmdbOcmtGvwrgRAh0YqH+ng=;
+	bh=5hLWyRBX5d6zZi74k8bRsxo55wmQFDVEYsYNZen8B0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9LC0t4Lk5WASO9oFFseizezL63HG0Jjhylrs8ADiVMGt+2Ls7KuY55KYjSdc+6zVnR98sApSADRRAMpmeMGLQXdW/F+ymNhGuPUWDN6Z+xDUbcTsIKeDDOQJi7bD7j4mDVj9LKX8re9UUiRGmKyh+kUCI7Eb83oRXH9xmzImaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMDPq5KK; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=uvFO0ZTUTDNPQshEtyQEZLaA/lnWfZg1O35hKe81tVsdIjbITMoE0edNA3HrjqcHky8ZDNwRbdF8qEWABw/Ko/2gCfzAJqjuMIlbBYOxfSc+06uYETSztKZRb8oa7lLt4qr3YY/F41eC/7OlOycG0xd/XAuXHuEaLLLRleTKiJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SWMeScRq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMDPq5KK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01D9C2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SWMeScRq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F12C2BCB3;
 	Tue, 21 Apr 2026 12:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776774993;
-	bh=KxiawPPhW975UovztG38WmdbOcmtGvwrgRAh0YqH+ng=;
+	bh=5hLWyRBX5d6zZi74k8bRsxo55wmQFDVEYsYNZen8B0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMDPq5KK4DbP0H4ntVeEr4o1ITOzm7zATIT0tjyKscH0VnmEOQEl0NRvYdaEOzymc
-	 ibnYMxNAg1UpqIE7RMbDMznjevY2YuYH6AKJjvCXv15aI9xq5ZjnRnVtoPZXih799/
-	 RNRS0es+fw2C/efuZ6cSINvI8rEHRQF5sRYnQwsH+K+p8W9zeSIrGwf/cfCiOuKdof
-	 U8C5hrDFEth8YO0H4zOsHAaIz/KWJ73hjVH2zhAm4LxpA1thHtXVYxaSM/ukZ14d3S
-	 AYZFUewYGUF6jYhMk5V5foAghfaaCYn+2Z+/mogTx1eMcLoWo+KpJ1kvNxLB6Uk1Cp
-	 cMPYB3NBrrxEw==
+	b=SWMeScRqvPoDqiMlG7yM8kSpzKHlGqpywFzgjhL6xvN0WB247rKw80En7VhVa/Pbd
+	 7lFmX05RAc6L+V7OaHOTUjHXptbnnlLv3sPUawyl5MXlroSedmJQG2RYyvrcPvYGav
+	 IRLHJ95Q39rtOIPj8U626NwfvRFNvG+dFjjVg86453yXQUJxzKKX9m0Lb0E9NBPp1C
+	 DF4t63QcKgffMQQqjCk7y+97HI8pxkt4SGjGmhmR0B/7yXvZrGicVQYLvRZyjkUArw
+	 aOdNZepMEQrGoOmwf+e14EZIDpABU6Pk97aVnO6dyL1XlgKQx02igTrfZCfJGZzFYT
+	 SSUzFV5rxCgjQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wFAL9-00000006QyF-2Nc2;
+	id 1wFAL9-00000006QyJ-2S9n;
 	Tue, 21 Apr 2026 14:36:31 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org,
-	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Subject: [PATCH 2/4] spi: cadence: fix clock imbalance on probe failure
-Date: Tue, 21 Apr 2026 14:36:13 +0200
-Message-ID: <20260421123615.1533617-3-johan@kernel.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4/4] spi: cadence: clean up probe return value
+Date: Tue, 21 Apr 2026 14:36:15 +0200
+Message-ID: <20260421123615.1533617-5-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260421123615.1533617-1-johan@kernel.org>
 References: <20260421123615.1533617-1-johan@kernel.org>
@@ -51,51 +49,36 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Make sure that the controller is active before disabling clocks on probe
-failure to avoid unbalanced clock disable.
+Drop the redundant initialisation and return explicit zero on successful
+probe to make the code more readable.
 
-Also drop the usage count before returning (so that the controller can
-be suspended after a probe deferral) and restore the autosuspend
-setting.
-
-Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
-Cc: stable@vger.kernel.org	# 4.7
-Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index bf4a7cf6b142..891e2ba36958 100644
+index f27586151ca9..d108e89fda22 100644
 --- a/drivers/spi/spi-cadence.c
 +++ b/drivers/spi/spi-cadence.c
-@@ -741,7 +741,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 		/* Set to default valid value */
- 		ctlr->max_speed_hz = xspi->clk_rate / 4;
- 		xspi->speed_hz = ctlr->max_speed_hz;
--		pm_runtime_put_autosuspend(&pdev->dev);
- 	} else {
- 		ctlr->mode_bits |= SPI_NO_CS;
- 		ctlr->target_abort = cdns_target_abort;
-@@ -752,12 +751,17 @@ static int cdns_spi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
+@@ -635,7 +635,7 @@ static int cdns_target_abort(struct spi_controller *ctlr)
+  */
+ static int cdns_spi_probe(struct platform_device *pdev)
+ {
+-	int ret = 0, irq;
++	int ret, irq;
+ 	struct spi_controller *ctlr;
+ 	struct cdns_spi *xspi;
+ 	u32 num_cs;
+@@ -754,7 +754,7 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 	if (!spi_controller_is_target(ctlr))
+ 		pm_runtime_put_autosuspend(&pdev->dev);
  
-+	if (!spi_controller_is_target(ctlr))
-+		pm_runtime_put_autosuspend(&pdev->dev);
-+
- 	return ret;
+-	return ret;
++	return 0;
  
- clk_dis_all:
+ err_disable_rpm:
  	if (!spi_controller_is_target(ctlr)) {
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_set_suspended(&pdev->dev);
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	}
- remove_ctlr:
- 	spi_controller_put(ctlr);
 -- 
 2.52.0
 

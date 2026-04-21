@@ -1,141 +1,103 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460702BD59C;
-	Tue, 21 Apr 2026 10:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A1E3D090F;
+	Tue, 21 Apr 2026 12:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776766572; cv=none; b=iioMsDvlb4IqwPRV32Xwql7OvYwqb/+Yrnuf2/SXWzQyG/Z8ITm+6GOeSMFvYl375paNYzYKg5WmDm5KR30kZ5gUmrWMyLvlF5PTCpHMBsG6K/faLyJKc8jhD4sLCFJb35uJ6F8jDu+G/soKwfYxUFaD0uZYnONMHaEXYNwxon4=
+	t=1776774994; cv=none; b=deUrl9L+L3Ucog4gNkznDjOzpIHBXoxZGa38GlLsa7y0az+i/JyhnzzVcfgeY3kMWMhJVd4pGOLF0Y62dQ9P1RIiZlYf6mY9jp7kajufwxl9cdTAQfiY954QG1o9bsdz2XHL4JZ1vRGX44QtdVFeiQVkB0tWUYhCtfw7/1KesJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776766572; c=relaxed/simple;
-	bh=bxxTuMlQOcQt9+SutU5wYexe4SpnFx38EDAqmrj2KxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJ5/lXDGyKJOACnW528BF9JIg1mwX6U1+FXLM1jfGlJrTWhCHAHHvMAXDE6uCFvlaXPwxgmtRyCmT93z0mCjvBk9dECKaLQhJPEKQI14x7XcW4p4AINpcQQlpua6jO/vrhU5kGEtEaQ9oe/ZolX/nuE3ek9bzENRlfMEux/pxu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=P9J8Ecxn; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1776774994; c=relaxed/simple;
+	bh=wBk+O+ghtBtCmOFC6LjLHlTBkNea+9jcEd2jANWY4E0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fycvcb97xFxCGxDnhiORim10Sgd2an+/I+9Qzj732qmZelge8eNhldsphg2GcBDP9EEDhS8mNgbAdxr/fMLpg8v5Qiwqm0iXfQoqQ00VWMeCms5lsWDiVLS32V9icVbJ42cNsdEwWzCWPQFnRea9eJ8rG208drr7vR2BI0XJtw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nR5oTOCc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="P9J8Ecxn"
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id B5DD01F95F;
-	Tue, 21 Apr 2026 12:16:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1776766568;
-	bh=ui7NLbdFMSE3lMZwZtDMX7zed4AiVYTm9v+0mYYPfQU=; h=From:To:Subject;
-	b=P9J8Ecxn7r34vw3O/E5WLMFUxAdCUuO7e7dYl6fG+/kh0y1CPTiPUhKr3c3Kw5JFh
-	 hj4fSbE1SU4lVPjnDiA9E6fYCws79JGv5SWLbtlG3cSWpY6ClYI+NVlORE/fhSH/Ph
-	 nlpccaYRhnZwUETDOHydRoTpGEHHPUztO7mCQoc1WLCpNzfEJcaMxI3X4yGVvSF6Zj
-	 A2oZONfi78MRLiVvSrbfKo9AbUYcs1OU0NHJmHkSbFqs+4VNOFWT8h1M3C3LV5jM6x
-	 CHuZNr1yHeqc//eKkM5lRbEGPw15RRozq7cCEiJFwn/6HrX0z2C7+Va/aBvYYjpHL5
-	 7/9Cq4/O4ccNg==
-Date: Tue, 21 Apr 2026 12:16:06 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: trivial-devices: add
- toradex,lava-hat-spi
-Message-ID: <20260421101606.GC23508@francesco-nb>
-References: <20260420114537.78160-1-francesco@dolcini.it>
- <20260420114537.78160-2-francesco@dolcini.it>
- <20260420-task-navy-370ea247fe1d@spud>
- <005d96ea-b250-4af8-9c5b-d145bae892e5@kernel.org>
- <20260421083843.GA23508@francesco-nb>
- <eb1ae818-eb9c-4225-9969-ebbb05304697@kernel.org>
- <20260421095928.GB23508@francesco-nb>
- <9c9795b0-a8ba-453d-9a92-f07b3ca59070@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nR5oTOCc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB7CC2BCB9;
+	Tue, 21 Apr 2026 12:36:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776774993;
+	bh=wBk+O+ghtBtCmOFC6LjLHlTBkNea+9jcEd2jANWY4E0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nR5oTOCcqIxh1HJxhQ+I/GX/GtHAudnucA+Dt83/ppuva38fI6xh+Mgc2miaYVHrd
+	 8VursFV/0SQRdwe5iacMfwv278l6heh6FlgCZseWmXN9FdaCQtcdpZHz2ZWyrN/2W3
+	 t9X0V/8VCOL/Kk6+YV82zPE+XWcBgHX87wU4LYDm+X7zHTZ7PLoBvURmoDJ5WYRnm0
+	 pJTaDpQ/g2DnsMPXJU+65MsOL8D2WqQj4IxeSM3JmeiB4RQ6FKNo1vSrbzAsXaYA3Q
+	 IUs1Hi27V12aHyO3eBHRJ7HW/+1e262LdQeD9EGjhebYj690J+No5jkdNuhTemY8jH
+	 rfDPbxbkA1hUA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wFAL9-00000006QyD-2LE7;
+	Tue, 21 Apr 2026 14:36:31 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+Subject: [PATCH 1/4] spi: cadence: fix unclocked access on unbind
+Date: Tue, 21 Apr 2026 14:36:12 +0200
+Message-ID: <20260421123615.1533617-2-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260421123615.1533617-1-johan@kernel.org>
+References: <20260421123615.1533617-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c9795b0-a8ba-453d-9a92-f07b3ca59070@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 21, 2026 at 12:05:45PM +0200, Krzysztof Kozlowski wrote:
-> On 21/04/2026 11:59, Francesco Dolcini wrote:
-> > 
-> >> Toradex LAVA hat is way too generic. No, single compatible string is not
-> >> sufficient, please read writing bindings.
-> >>
-> >> Please define exact model and variants.
-> >>
-> >>>
-> >>> The need is to be able to test SPI with a mainline Linux kernel, so I am
-> >>> looking for a solution that works in mainline Linux.
-> >>
-> >> incomplete devices do not stop you from that.
-> > 
-> > Do this sentence means that I can send a DT file for inclusion in the
-> > Linux kernel using a compatible documented in incomplete-devices?
-> 
-> No. You will be testing a mainline DTS + load non-mainline overlay. So
-> your requirements of "mainline Linux" are fully solved. Overlay is
-> loaded by bootloader for example and thus your kernel is fully mainline.
+Make sure that the controller is runtime resumed before disabling it
+during driver unbind to avoid unclocked register access and unbalanced
+clock disable.
 
-Ok, I was not clear enough, I am looking to have a solution that is 100% in
-mainline.
+Also restore the autosuspend setting.
 
-> >> But you don't get exceptions because you want to mainline your DTS. Your
-> >> need detailed hardware description and precise compatible per each exact
-> >> hat ("exists in multiple variants").
-> > 
-> > Let me get into more details here, before sending a new patch version.
-> > 
-> > We have various LAVA HAT devices, the difference is that they provide
-> > different features and a different layout, based on the actual carrier
-> > board they are mated with.
-> > 
-> > We have an "Aquila LAVA HAT", that can be mated with the "Aquila
-> > Development Board", and a "Verdin LAVA HAT", that can be mated with a
-> > "Verdin Dahlia Board".
-> 
-> Of course, because each device is specific so even the hat must be
-> specific, unless you have a standard connector like Arduino or RPi.
-> 
-> > 
-> > As an example, you can find the Verdin Dahlia DTS here,
-> > ti/k3-am625-verdin-wifi-dahlia.dts, that can be mated with the "Verdin
-> > LAVA HAT".
-> > 
-> > The SPI device on both "Aquila LAVA HAT" and "Verdin LAVA HAT", is the
-> > same, no differences. On the Aquila variant we
-> > have two instances of it, while on the Verdin we have only one instance
-> > of it.
-> > 
-> > So, would we need a compatible like this? 
-> > 
-> > compatible = "toradex,aquila-lava-hat-spi", "toradex,lava-hat-spi";
-> > 
-> > or
-> > 
-> > compatible = "toradex,verdin-lava-hat-spi", "toradex,lava-hat-spi";
-> 
-> Yes, assuming that verdin/aquila hat works for EVERY verdin/aquila
-> board, regardless what SoM or SoC you have there.
+This issue was flagged by Sashiko when reviewing a controller
+deregistration fix.
 
-This is correct, it's exactly like that.
+Fixes: d36ccd9f7ea4 ("spi: cadence: Runtime pm adaptation")
+Cc: stable@vger.kernel.org	# 4.7
+Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=1
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-cadence.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-> Verdin is a SoM family according to:
-> https://www.toradex.com/computer-on-modules/verdin-arm-family
-> 
-> and I doubt you can attach hat to a SoM. There is no connector on SoM
-> for the hat... so probably you have a board, like Dahlia.
-
-Correct, the HAT is for the carrier, and the carrier is for the family.
-
-With that clarified I plan to send a v2, with something like
-"toradex,verdin-dahlia-lava-hat-spi", "toradex,lava-hat-spi" (for each
-carrier board we have) and DTS files where this is used, and properly
-documenting the compatibility between the various HW devices.
-
-Thanks,
-Francesco
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 08d7dabe818d..bf4a7cf6b142 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -776,16 +776,23 @@ static void cdns_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
++	int ret = 0;
++
++	if (!spi_controller_is_target(ctlr))
++		ret = pm_runtime_get_sync(&pdev->dev);
+ 
+ 	spi_controller_get(ctlr);
+ 
+ 	spi_unregister_controller(ctlr);
+ 
+-	cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
++	if (ret >= 0)
++		cdns_spi_write(xspi, CDNS_SPI_ER, CDNS_SPI_ER_DISABLE);
+ 
+ 	if (!spi_controller_is_target(ctlr)) {
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_set_suspended(&pdev->dev);
++		pm_runtime_put_noidle(&pdev->dev);
++		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	}
+ 
+ 	spi_controller_put(ctlr);
+-- 
+2.52.0
 

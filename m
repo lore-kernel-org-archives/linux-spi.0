@@ -1,69 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9566E63CB;
-	Wed, 22 Apr 2026 05:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE1F33A9F5;
+	Wed, 22 Apr 2026 06:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776836803; cv=none; b=RCaC/YOd9pJf/GUqgpNUA3KnTZ/ecycjiRVidDsfuBy2FcuUlaBAJCX1mPEU16bzHvZ7Cw7CV3usRg0EG6s0yOMKyKbJUZWiCZve9KJqAmpO3i4DMZR/Qqd79QfIW+eDeLvTggAyZF8/3RpQcMW6dYwJ2T1fgiiUH2aSqz3IY94=
+	t=1776840480; cv=none; b=OLqCZp4uc6/X67ULTfQ+try07b4mFcAvtHAo/qkKFN5H2DNrL9LXjqmVd93xrpNipVx9dn/uFfX19bZ/qSbviLh9QhmtzJuUEXhVbFMdvrC3MWNh8R70OUu5IfRLezPhzzmTkyy8D9V06oyOOdFvqZT5aY28XJkWD4EKWtq/mJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776836803; c=relaxed/simple;
-	bh=iHTuLIFezrha1k24YoDSo0U0QgoHN5U9b98UCvK+v+A=;
+	s=arc-20240116; t=1776840480; c=relaxed/simple;
+	bh=eafGCTKjIPYyjzVPLcBhsv3fs5JULzlGRXa2ggj2ADc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ek3rf2rx73h3O8b/u+YMibJWcGSkXc+UYTjN33JHKKTj5PIdfNsU4BvvTcvX4qNDNGkL/4VbxpD41TtzxI51ylwNeUfgWgTsil5ELpoRc+WenV9zVa0SyPktD9FYT0Yn4ECK5+lhBn6nmGmBtE6Ax77IoL8anOjPG0ceR2prI2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeguupGc; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ovcpu7Si8BLu3wmf2xY/bPW0k1A/hsGIi1zQEpfxlysKb7ae4U4rX4bibpHmCoZz/ss2qDrurDF1dAIhrhl3vuZn6tyUHHNFT/GsgiBR6RWNlR4Eqo7E8LCNpAb7H08UqXqlJa/f6MPnHXO3jcXpgpeKjZ0BJvwHj3zcHc00+d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFFmWLEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeguupGc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5EF7C19425;
-	Wed, 22 Apr 2026 05:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776836803;
-	bh=iHTuLIFezrha1k24YoDSo0U0QgoHN5U9b98UCvK+v+A=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFFmWLEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8896C19425;
+	Wed, 22 Apr 2026 06:47:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776840479;
+	bh=eafGCTKjIPYyjzVPLcBhsv3fs5JULzlGRXa2ggj2ADc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CeguupGckqDP65N6NF+5nNirF0NNyfRUq2q5YVLXoZ+NJ8CHpzN1MtrNDFeiOXOMI
-	 3IAP92r5zyTS/ZiNdu71HsVN4guqNuX5OnjQtKC82hXq6MmRAFVPTbyifXRNIzuJAR
-	 ckL2rE5jWjyh1XNHoBUwdn5WTA5UFCdSUZP4TGLM=
-Date: Wed, 22 Apr 2026 07:46:40 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Mark Brown <broonie@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Yang Xiwen <forbidden405@outlook.com>,
-	Alex Elder <elder@kernel.org>,
-	Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>,
-	Rao Mandadapu <quic_srivasam@quicinc.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Xu Yang <xu.yang_2@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
-	ath11k@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-sound@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Fix phandle-array constraints, again
-Message-ID: <2026042233-barometer-backroom-d544@gregkh>
-References: <20260421195836.1547469-1-robh@kernel.org>
+	b=tFFmWLEPo3JBEQA9nL2BIMeF8phH2+YvY/dfIQZX+fwscHeztzRQNTRBaA8H7wqyQ
+	 W/AGcAGqUg5PS5efpyKwzdQCv9Y5RKFtO+GYnymMSlB281Lu1r6nAsYX4AEz/kEpyp
+	 wdx1GUjlwa83p2SGeqvMaQyRG3889fjjA+ZKsJ10XyFUThtIHyehROR3fbcDpB4oFB
+	 cfKBNkPKC8982qsrRFwNJ+abUUBnfhvkSJWfn4pGmSCePzDN4KHi/yCpStrVXunvlx
+	 WKWhoKammaKmnRHP6LalIrpw2+4cTwsFWepYkjmsO9tY3oPg8RbUTl1Wnha2o0zVfs
+	 b9ELcISU0YDLw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wFRNN-00000006aGN-1txm;
+	Wed, 22 Apr 2026 08:47:57 +0200
+Date: Wed, 22 Apr 2026 08:47:57 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Mark Brown <broonie@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: imx: fix runtime pm leak on probe deferral
+Message-ID: <aehvHZMjwMNmru0x@hovoldconsulting.com>
+References: <20260421125632.1537235-1-johan@kernel.org>
+ <aehBYJ-R3bXB0RDo@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -72,40 +50,38 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260421195836.1547469-1-robh@kernel.org>
+In-Reply-To: <aehBYJ-R3bXB0RDo@lizhi-Precision-Tower-5810>
 
-On Tue, Apr 21, 2026 at 02:55:25PM -0500, Rob Herring (Arm) wrote:
-> The unfortunately named 'phandle-array' property type is really a matrix
-> with phandle and fixed arg cells entries. A matrix property should have 2
-> levels of items constraints.
+On Tue, Apr 21, 2026 at 11:32:48PM -0400, Frank Li wrote:
+> On Tue, Apr 21, 2026 at 02:56:32PM +0200, Johan Hovold wrote:
+> > Make sure to balance the runtime PM usage count before returning on
+> > probe failure (e.g. probe deferral) so that the controller can be
+> > suspended when a driver is later bound.
+> >
+> > Fixes: 43b6bf406cd0 ("spi: imx: fix runtime pm support for !CONFIG_PM")
+> > Cc: stable@vger.kernel.org	# 5.10
+> > Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > ---
+> >  drivers/spi/spi-imx.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> > index 4747899e0646..e5c907c45b87 100644
+> > --- a/drivers/spi/spi-imx.c
+> > +++ b/drivers/spi/spi-imx.c
+> > @@ -2373,6 +2373,7 @@ static int spi_imx_probe(struct platform_device *pdev)
+> >  out_runtime_pm_put:
+> >  	pm_runtime_dont_use_autosuspend(spi_imx->dev);
+> >  	pm_runtime_disable(spi_imx->dev);
+> > +	pm_runtime_put_noidle(spi_imx->dev);
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> Can someone from QCom provide some descriptions for 'qcom,smem-states'
-> properties.
-> ---
->  .../display/rockchip/rockchip,rk3399-cdn-dp.yaml         | 2 ++
->  .../bindings/mmc/hisilicon,hi3798cv200-dw-mshc.yaml      | 7 ++++---
->  Documentation/devicetree/bindings/net/qcom,bam-dmux.yaml | 6 ++++++
->  Documentation/devicetree/bindings/net/qcom,ipa.yaml      | 6 ++++++
->  .../devicetree/bindings/net/wireless/qcom,ath10k.yaml    | 5 ++++-
->  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml    | 5 ++++-
->  .../bindings/net/wireless/qcom,ipq5332-wifi.yaml         | 9 +++++++++
->  .../devicetree/bindings/pci/toshiba,tc9563.yaml          | 5 +++--
->  .../bindings/remoteproc/qcom,msm8916-mss-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,msm8996-mss-pil.yaml        | 3 +++
->  .../devicetree/bindings/remoteproc/qcom,pas-common.yaml  | 4 ++++
->  .../bindings/remoteproc/qcom,qcs404-cdsp-pil.yaml        | 4 ++++
->  .../bindings/remoteproc/qcom,sc7180-mss-pil.yaml         | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-adsp-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-mss-pil.yaml         | 3 +++
->  .../bindings/remoteproc/qcom,sc7280-wpss-pil.yaml        | 3 +++
->  .../bindings/remoteproc/qcom,sdm845-adsp-pil.yaml        | 3 +++
->  .../devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml   | 3 +++
->  Documentation/devicetree/bindings/sound/samsung,tm2.yaml | 2 ++
->  .../devicetree/bindings/spi/st,stm32mp25-ospi.yaml       | 5 +++--
->  .../devicetree/bindings/usb/chipidea,usb2-common.yaml    | 2 ++
->  Documentation/devicetree/bindings/usb/ci-hdrc-usb2.yaml  | 7 ++++---
->  22 files changed, 81 insertions(+), 12 deletions(-)
+> use devm_pm_runtime_get_noresume() and  devm_pm_runtime_enable() to
+> fix this problem
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+No. The first helper you mentioned was only added a year ago and does
+not even solve the issue without rewriting larger parts of the driver.
+
+So that would need to be a separate change in any case.
+
+Johan

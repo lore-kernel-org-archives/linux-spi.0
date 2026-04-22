@@ -1,46 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A460C347FCD;
-	Wed, 22 Apr 2026 15:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D25F34BA5A;
+	Wed, 22 Apr 2026 15:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776871019; cv=none; b=Lei3PHVSk86TelOVSJv5KV+gl5Rvyv+d90tsw59pCk5vwTh9dyMzMBI2xZx7JLZRDSWjagUa3KPZrT1y65w+MIV92fWlbRd64+NNufSTZPXboQdxH0xDcbvjilQ9I49adIzyOrcB9amK3lGvmU4/uBDe0NBYJM4QjAU+8JePQRE=
+	t=1776871549; cv=none; b=qeiW7j+7AdDCfGPXxtW6DoYKxKgRH1BBPA6JZG/WbfK377cIlacEa9+RGN+WFdKJ6RGWT9NXpuJD9A3CLkwg+RTNVkdD1oEq6vGOG8p97wOdyCHkrrfdn0LiJNS1wmewK+85bGQGe0xcLegbtPfoOJrdeHkjDDKZPQD78jjTPwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776871019; c=relaxed/simple;
-	bh=6ET/frCteaTcrEw4caKHP3nJei7aVUDYuECfByOQKZA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuCBfdwXy8r2k78zRLV0Nf5hrAAuh4gScqRFi+JWKRpVLAivgl93EHvESMtPTk8pxupTYznJ9KY6Nru4b8/B1Az11rIMPhjRtkXlVAUA6jTrQUMBBt61ITI5p7tO4MNm84isroUEKPSfya7e8UBysFrHUgv2zcEie/CVSsydIy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pxHwzwf6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776871549; c=relaxed/simple;
+	bh=aMlrrUyOX0cvuGWjVkklmW7RDBv8g+60XkATJKTZ6Ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HAL0m8cbvorzz4oOqU9yMR2MKYPrjWrxMb4vJItrY03We6R/9mpmrvH8QNwi+HPGlZzWZFFo3WHCQfhzejcKoEOJhJS3G04uJjS2M+ktJnh6nQNSn4f/YmUfbnAR2aLTkgYScV6ZgbC7me6FuKyU4VdtISARpanj0wl5NFfJwR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNfmcNy/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pxHwzwf6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF38C2BCAF;
-	Wed, 22 Apr 2026 15:16:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNfmcNy/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC580C19425;
+	Wed, 22 Apr 2026 15:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776871019;
-	bh=6ET/frCteaTcrEw4caKHP3nJei7aVUDYuECfByOQKZA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxHwzwf6JqgqyvJ1OZhj+VC34Cd0D6vupBQKWuZWOX8A05KspypYTPIhtKgsaxcr4
-	 MxI+6c92kOvrVnb0eQvDn4ktGhaLL+1u5oKzj4Pgupi6NsqgOWGTTnmxIVwdNwu3AD
-	 1XwXpXHRV1gcse9qesHmcQXcoT+4R7/hucBCcaoDI0glxQnauNBMf4qEDklnTvvE7o
-	 Jz2phloDCSutGlSEEgTpO7pbMDz97FRKUHRW/SIAoWfwiLjbrVO9byQ3dPLgNVMvfJ
-	 VBhgZcrw0lA+IBAyrbLk4D6SCziemmknGSV8c29FB3RGa3PMbJafgFfXiisUVg/7Zj
-	 AXQJ8b/hkYYcA==
-From: Conor Dooley <conor@kernel.org>
-To: broonie@kernel.org
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
+	s=k20201202; t=1776871547;
+	bh=aMlrrUyOX0cvuGWjVkklmW7RDBv8g+60XkATJKTZ6Ow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NNfmcNy/FDFpxfymrcrND0xXYR9gtNJ/9j9fb50DzWC5/6WuqjSeu9z6WX4ZsLPrS
+	 9lCXsBSXowSNXq9GEY0mPVh7tT3Di+OJ1r9ZZz/rCJpMbmqVgCCLqCCWazAb1hJLG+
+	 YurNPTy7KyxkD+kSahAe8FcXwVjystMTEpnUDWGASt5Xb4Fk8a971zWOCOjC8/bVwL
+	 pGcTJJIsX28xKHDFyelqNzvU12WtmhrpKdGPixb/nfAvEYAFIAk9+ostx06Cy0v4N3
+	 0HMP7QTYd7WjlNtWFy1iBzjRTdjXYmfN5oULVPh0FbVkw3yLDf3zc0vQzBbEbOa/ZF
+	 Fkem21I3OL7MQ==
+Date: Wed, 22 Apr 2026 16:25:43 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
 	Daire McNamara <daire.mcnamara@microchip.com>,
 	Cyril Jean <cyril.jean@microchip.com>,
 	Valentina.FernandezAlanis@microchip.com,
-	linux-riscv@lists.infradead.org,
-	linux-spi@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 5/5] spi: microchip-core-qspi: remove some inline markings
-Date: Wed, 22 Apr 2026 16:15:46 +0100
-Message-ID: <20260422-cackle-guacamole-d51cc736a4b6@spud>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260422-foe-strength-a5d8ad650ef4@spud>
+Subject: Re: [PATCH v1 0/5] microchip core-qspi gpio-cs fixes + cleanup
+Message-ID: <8cb49ccb-5a12-4770-9c91-982d78b5f962@sirena.org.uk>
 References: <20260422-foe-strength-a5d8ad650ef4@spud>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -48,62 +44,48 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1848; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=LZMEd4rd4apGWbweXgMgaeSQ0Rz6fCOGsgSVYyBq+ps=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkvnjkEWxX4Narxpf043SUqWr9A/tMz1z+x09nOK78v/ rh3U8bFjlIWBjEuBlkxRZbE230tUuv/uOxw7nkLM4eVCWQIAxenAEzk0TmG//6VNy9+m2b/dmHu 5KTGlv2/3DZff/skZqZtYV3znC21dWWMDFetQwvKIuZrRq6sucBSWMr3/NX1dzJ5vCwH32WeWq2 4lhEA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="awxln/TzuFuxsLHe"
+Content-Disposition: inline
+In-Reply-To: <20260422-foe-strength-a5d8ad650ef4@spud>
+X-Cookie: I'm definitely not in Omaha!
 
-From: Conor Dooley <conor.dooley@microchip.com>
 
-Remove inline markings from a number of functions that are called as
-part of mem ops callbacks. None of them are either particularly trivial
-or sensitive to overhead of a function call. Just let the compiler
-decide what to do with them.
+--awxln/TzuFuxsLHe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
----
- drivers/spi/spi-microchip-core-qspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Apr 22, 2026 at 04:15:41PM +0100, Conor Dooley wrote:
 
-diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index ae1c7ce09b2ed..383d5eef7a2a2 100644
---- a/drivers/spi/spi-microchip-core-qspi.c
-+++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -199,7 +199,7 @@ static int mchp_coreqspi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
-+static void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
- {
- 	u32 control, data;
- 
-@@ -235,7 +235,7 @@ static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
- 	}
- }
- 
--static inline void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
-+static void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
- {
- 	u32 control, data;
- 
-@@ -263,7 +263,7 @@ static inline void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
- 	}
- }
- 
--static inline void mchp_coreqspi_write_read_op(struct mchp_coreqspi *qspi)
-+static void mchp_coreqspi_write_read_op(struct mchp_coreqspi *qspi)
- {
- 	u32 control, data;
- 
-@@ -421,7 +421,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
- 	return 0;
- }
- 
--static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
-+static void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
- {
- 	u32 idle_cycles = 0;
- 	int total_bytes, cmd_bytes, frames, ctrl;
--- 
-2.53.0
+> Got a couple of patches here, the first two deal with an issue that a
+> customer reported where using a mixed configuration of the built-in chip
+> select and a gpio lead to data corruption. Turned out, the built-in chip
+> select always gets activated at the moment even if a gpio-cs is being
+> used. With that fixed, I noticed that any read with multiple data lines
+> was not working properly, so patch two changes how the driver deals with
+> emulating mem-ops. The remaining patches are things I consider fixes but
+> not meaningful enough to get a Fixes tag. LMK if you want em split out
+> to be put on for-next rather than for-current.
 
+I don't know what for-current is but they certainly don't apply against
+for-7.1 which is the only active branch given that v7.0 released (and he
+same content as for-linus and for-next as a result).  It would be
+convenient to split the fixes and cleanups, unless there's actul
+dependencies.
+
+--awxln/TzuFuxsLHe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmno6HYACgkQJNaLcl1U
+h9B86Qf/V9GcW6oanTDK17DKwmwH+tLOxf0nGVwAAVGO9jCTJmYyo6m8c7/S+btu
+WXdafAl6ZQ1UOJ8MzDxH1t9JRlLX4RnvTOmQrO2FaIGLPbiRx7Kdw5zX7B4ryTbg
+4181Bk0uQhb9KzqLM3SbVNfEtfxzsRNon9bDGjE61oD6cD9AZMsXwrXMIUitom8s
+PiYM/CDRBzNQtC04X/aZAopDFXVTrDZypMfKKP7S1egHc+kh882XRr3q7iqVoc7Z
+y2OpxW2qsztgQA3IT0++6RXZFeESx8GsetUWYZhjNGna8JiY6wYsx0ZskMRlhpxn
+w2de4FtpDWoJW0OMyG9Fc3OsM+CdYQ==
+=7M4C
+-----END PGP SIGNATURE-----
+
+--awxln/TzuFuxsLHe--

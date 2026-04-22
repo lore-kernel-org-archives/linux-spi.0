@@ -1,101 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D243F20FE;
-	Wed, 22 Apr 2026 19:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78D8280CE5
+	for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 20:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776887891; cv=none; b=BPBwVEMBXfZZn/kuO6AH8uAy4JdfhngwYVnG1gFVn2TNBmxVKKNB56QscjoIj1Bfw8nwf5MCq4176RWwf5F9FkrLYBBzXsI+DjE2QTDa6SmDPfGtHoizlQSmo5g7yJIYx5c1wDVMwuakUqaIJsVfrQlJTvbyXxN+Q2du+cCTX28=
+	t=1776890446; cv=none; b=p2uE3TpGH3OQZdYNeOeM1fWT3IThZEbGQ6OHcfI1R85BtRe1IwOBNx6FsER2PCS52wOo9bv+MBrzfnqut0ZGAEsvhbVEc9JbuXQRBUxeWJ5z7xbdgkaJsFRq9XmVjFgGvqA7MZeMfTyVFTkrF3uu2Q+aPYgcfwq411A2E+39ajE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776887891; c=relaxed/simple;
-	bh=hYDMsvfMRVOzp14/oHaO8FiD62bdRzlPYwoHUWB8x9Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Y5JAVwASEwZXiMoYdbU7zXvLBeCwK3QaqUm8UOMS1HII6Hi4AbTh9BQxTQOn6MCvtAJe4bObax1oQtyWkMmSvO/pFVdvz9h7mlzsKvlX5sxsJ6gTIIfvtXlE56GiKUI7owGJ7glnUnpNrTMscM/27V/rLiPVgyKPjAWEq0V1YC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfAjheHQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776890446; c=relaxed/simple;
+	bh=/VDWB2vBv+tUeRu8sv92z5D6Q2B5KWY0Zw5f88i6Fu0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=UQORCWS3a91z5YAoAtP/t1PSMVSnkfQYbcmC8EaURyhguHtw7rBhkJP4VIKlGdGZvM3MQTaVJaTTaYN93kWU/OnbwDqVHSbKEBZLtwr4uL6Hcks5CVh1kDDPeki06N/QHTzYjUtkIdH2t7rQlm0fHQFX3k5r5b0zzJ0VKFb6Sk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y5H9i5nR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfAjheHQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47B4C2BCB4;
-	Wed, 22 Apr 2026 19:58:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y5H9i5nR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BD7C19425;
+	Wed, 22 Apr 2026 20:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776887890;
-	bh=hYDMsvfMRVOzp14/oHaO8FiD62bdRzlPYwoHUWB8x9Q=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=rfAjheHQsbD1P1dpfIaxusieqaz4N0MP4DOW053sWiA2Q0HPCMh545AXKxtL6jrKc
-	 VNI9PSjYzuniojmk3PdSBYGmpLp8fQSupVRiQ0RlNQFk+cTGIEnVUArwQFYVIToQ8k
-	 3uyvZoTAX4hRaRQfr4YY99bHDqZoAygqNY8M1YWo53EbIudIWqj9x4pfqX17fQOPf0
-	 vMjsVSvmFsQF6cgLhI2kzptdG4sKo+hzHI2JsaBFWrEHM3Ih0MPG35JfFo4biLkaqg
-	 99JTvodD9X8wJRzXakS3ohp3vzUKHY7unN0jDuasZGyXxwBEuAPF/A/U8CZNhuUT74
-	 QdqnvbkAJ1qqQ==
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Russell King <rmk+kernel@arm.linux.org.uk>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260421130211.1537628-1-johan@kernel.org>
-References: <20260421130211.1537628-1-johan@kernel.org>
-Subject: Re: [PATCH 0/3] spi: orion: runtime PM fixes
-Message-Id: <177686241527.36226.11132811354534812868.b4-ty@b4>
-Date: Wed, 22 Apr 2026 13:53:35 +0100
+	s=k20201202; t=1776890445;
+	bh=/VDWB2vBv+tUeRu8sv92z5D6Q2B5KWY0Zw5f88i6Fu0=;
+	h=Subject:From:Date:To:From;
+	b=Y5H9i5nRX3FLDTediOX8wKhstswMBrt45FExnpwEmZJcLfmoNL1MB3KwOh3HugCzP
+	 XyA9XbZTKTq517/Tvz7QF8ICKSg3U6c/zKn0dH6ZVjswUhRn0LeGLa0vbcuarvwka1
+	 oN/6G6hB8naIVU2BRzzZmRlei9GeBnbqAMVkfevDpMvCJevFrq6il8tRbKj8ezIyVY
+	 CaNdIyTWadXoF37E9IkE/BQ2MSVQPvrcQ378iFL6R94M6bYjZJ3jjX3weQvMaRFfPy
+	 VPBHn43oDXsB+r5eVCGqBXoCpMxoPamn/VE491aiW4G+a/CjTQ9tsZI4tpu/r1xG32
+	 2+QZjpmTjK14g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 423F33809A84;
+	Wed, 22 Apr 2026 20:40:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1454; i=broonie@kernel.org;
- h=from:subject:message-id; bh=hYDMsvfMRVOzp14/oHaO8FiD62bdRzlPYwoHUWB8x9Q=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp6ShQT27J644t9heWxrbnGfouPURj7Gtg86wff
- Xc8grsiP0CJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaekoUAAKCRAk1otyXVSH
- 0GseB/91Qd28K/zUxIe5qufEK26EnjJRH5bsymKeP7NhkYL+Y5KfqZ7bboQA77M77rYoAeWhNYx
- 5RYtdT5zQxIwzZLK76Ddfiv844Bp1GoCkk3s0Rv7wxplHl9OtOCrfwoiybiZo6npuf7KMVU1sR8
- lffLm//Q8NM95ykf0lwejCO0ul5cnxMufjDGeOHqaNVwMl1YeZNPjnnw5hg2PPaUeTWwVAmYCTI
- fdpCWkTdq0GN22dpoOCCAWNxRwbnnucWRskI3jrWvywg+jNMTCLwXbxVxtGQGlJKqWHxcTBHmy3
- f307eL3c/Rh9rW6c25G0IXsjk2W4RwGWbEqawBrfWyeH6c1X
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177689040778.4029096.5612996310942331324.git-patchwork-summary@kernel.org>
+Date: Wed, 22 Apr 2026 20:40:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 21 Apr 2026 15:02:08 +0200, Johan Hovold wrote:
-> spi: orion: runtime PM fixes
-> 
-> This series fixes some runtime PM related issues in the orion driver.
-> 
-> Included is also a related clean up.
-> 
-> Johan
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+Series: spi: orion: runtime PM fixes
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1083851
+  Lore link: https://lore.kernel.org/r/20260421130211.1537628-1-johan@kernel.org
+    Patches: [1/3] spi: orion: fix runtime pm leak on unbind
+             [2/3] spi: orion: fix clock imbalance on registration failure
+             [3/3] spi: orion: clean up probe return value
 
-Thanks!
+Series: spi: fix resource leaks on device setup failure
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1079835
+  Lore link: https://lore.kernel.org/r/20260410154907.129248-1-johan@kernel.org
+    Patches: [1/2] spi: fix resource leaks on device setup failure
+             [2/2] spi: fix controller cleanup() documentation
 
-[1/3] spi: orion: fix runtime pm leak on unbind
-      https://git.kernel.org/broonie/spi/c/97b17dd8266d
-[2/3] spi: orion: fix clock imbalance on registration failure
-      https://git.kernel.org/broonie/spi/c/443cde0dc59c
-[3/3] spi: orion: clean up probe return value
-      https://git.kernel.org/broonie/spi/c/fa5061daffe8
+Patch: spi: imx: fix runtime pm leak on probe deferral
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1083846
+  Lore link: https://lore.kernel.org/r/20260421125632.1537235-1-johan@kernel.org
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Patch: spi: mpc52xx: fix use-after-free on registration failure
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1083847
+  Lore link: https://lore.kernel.org/r/20260421125800.1537361-1-johan@kernel.org
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Series: spi: axiado: spi: axiado: fix runtime pm imbalance on probe failure
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1083900
+  Lore link: https://lore.kernel.org/r/20260421143925.1551781-1-johan@kernel.org
+    Patches: [1/3] spi: axiado: fix runtime pm imbalance on probe failure
+             [2/3] spi: axiado: rename probe error labels
+             [3/3] spi: axiado: clean up probe return value
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Total patches: 10
 
-Thanks,
-Mark
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

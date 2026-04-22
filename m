@@ -1,101 +1,99 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F122A3F1668;
-	Wed, 22 Apr 2026 19:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E2330B14;
+	Wed, 22 Apr 2026 19:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776887461; cv=none; b=Wln4sEosUtZhg8Kv0Y7nMAz43Aj1LVOuSiKYdGvce2VNGOUCe5z8E5wPtRJ6M1KQYaWCSQp49SvVCka67o6EP788ni3Eq526X9rzBrwmmoMIN6amJlgL7J2RQMGNW2n21EUSpkmC7WUQHNo0HJIo/TRBmBNfvH4hKS6+GoFIAkQ=
+	t=1776887869; cv=none; b=igOP94rVAEL0WuQ/Ny914FCoxOtlKLm2JCdVYuZN+fBwedTZQ1X7PZHV1mHxk8AhScqESJbUfLz64dlyu8VWv4d7o82QEtWg3FnVzOtNwEzre4FAHXsoiXLOX0sUW2P8fZ+jVduHJhxrA8s0Xw3NsfDj3Y4ao1GTQc16Aj0UBOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776887461; c=relaxed/simple;
-	bh=SF/t0lCLp8rxNBH3TmZkjwnIEQydKnrWCwsEMGKwoxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VWoqQDLoMRDpJ4ngXWZ3ix4Z3uQxRMtJVka++7sul8qrPh6XTZ+kMjVsJCwyTQQiC7MiKHwor8Vde2if8vi/jhn2ZXNPaoE69Up1TghjVepA4/8t3o6XKDmMXFXbhMNkXft6Eey7qCpK0atNdn936wWxe1uULlvE9mJexZzbX54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTjr74xA; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1776887869; c=relaxed/simple;
+	bh=FWzsRLAFUafT6WTV6RCbtrl5CpsMSJUWMwum3hoMqB4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TcwG8vb34z2ym41OIdekQoFsGuVbaWQRjFB6loW4tB8LYAgJD8ZOUubJx/UpPdLfrKtEww7khA3oIR3IQ3cX6HTfyXvkvz7oq3Op/VUoN2gKRPDcgG1+q2eYYBtgOONWtWtpSPG/3UkkH8yobysmdLmfcT2tsPgOG3OwpyNWH/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etLWJAoR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTjr74xA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8DAC19425;
-	Wed, 22 Apr 2026 19:50:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etLWJAoR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B71C19425;
+	Wed, 22 Apr 2026 19:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776887460;
-	bh=SF/t0lCLp8rxNBH3TmZkjwnIEQydKnrWCwsEMGKwoxc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eTjr74xA9zZuIHwpJXXpBFq+9my4ZktwT02TsS5McMxW6Ypgx1F2Xo5Pv4V9zg+Ot
-	 92PAn3F+YoRTf44EQUZ02QIspqgdE0ZkOkf/HqpFfzEifU8AbTnGt5n8MNzK/xV2fg
-	 LTcAz0oZxxEIYA+dNhnOwNlBV+gpvF55CmTgMSMHL1FmyBhUkZ2x6hicECAKphThGp
-	 8rClcN41GWMzD5TUf/Uts9RmGRmqT0mw5FeQfzPoi1T0lx1gYvbm26HGhWaQvtTQX9
-	 YpZ2uQ7d296PGSN972xZSxzA8sCbeCofC0Bkd6ZqOX4EpJT/kehexIZ8J6dWW9QF42
-	 soZZqlJ0GWpyA==
-Date: Wed, 22 Apr 2026 20:50:55 +0100
+	s=k20201202; t=1776887869;
+	bh=FWzsRLAFUafT6WTV6RCbtrl5CpsMSJUWMwum3hoMqB4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=etLWJAoREoUxEG1RQYw460YGXghyCnFkwpEBQsNZ9JXVVdjJcblpyawwghFHhU4xW
+	 En1p6aaHrMCqtvRjiwvJVWLPL5EvhkHTHg2dSyx4K/FbQqU6omct5d66Hf1/5Vn5xB
+	 0O5iQ0hky9xpCUutv+Z59nAUtsXa3xYBoPhqjM0ts8TUkxWM6bGUp7xvqwgRPEYBO9
+	 EPzct6RgLpLwK9OjLe+RiGsfpRZQXujE8jdPSnWnlhJo6lKBg5IM0KKTUrJRsiZK69
+	 uoz5IniCLZ3s1yeKiMG1zr40L4EMVb1drCN6+qrm+OUBjCQ+ER8l1T6YbL/1VAp+gG
+	 k24BuZ4GfrL8Q==
 From: Mark Brown <broonie@kernel.org>
-To: Kevin Mehall <km@kevinmehall.net>
-Cc: Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Mirko Vogt <mirko-dev|linux@nanl.de>,
-	Ralf Schlatterbeck <rsc@runtux.com>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: sun6i: Set SPI mode in prepare_message
-Message-ID: <f93e1bc6-608b-4c75-8b1a-80f701ff37ce@sirena.org.uk>
-References: <20260420164755.1131645-1-km@kevinmehall.net>
- <66909301-ed23-4b36-8955-a69b64eed9a1@sirena.org.uk>
- <d199f72a-093b-41bb-b33e-b6685563f704@app.fastmail.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Saravana Kannan <saravanak@kernel.org>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260410154907.129248-1-johan@kernel.org>
+References: <20260410154907.129248-1-johan@kernel.org>
+Subject: Re: [PATCH 0/2] spi: fix resource leaks on device setup failure
+Message-Id: <177686703462.36226.8329335259517142171.b4-ty@b4>
+Date: Wed, 22 Apr 2026 15:10:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZqhXwlf3qPSsVysm"
-Content-Disposition: inline
-In-Reply-To: <d199f72a-093b-41bb-b33e-b6685563f704@app.fastmail.com>
-X-Cookie: I'm definitely not in Omaha!
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=FWzsRLAFUafT6WTV6RCbtrl5CpsMSJUWMwum3hoMqB4=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp6Sg78cm7UGFX5UtlH/izIuEP01FNWB8qMxeyp
+ G/7S+IJaL6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaekoOwAKCRAk1otyXVSH
+ 0JZzB/49SDxupljIS7SW9/DKPbYqL35I/dfp9QwxsB60BV863wZzjs13SDjvKsUQph390b4xGd/
+ A8rs38t25Mo9l2yrSDpjxAY6kzEJuzbH3etGJryayTPFaC8hM/O9i+8mHcwcjZThQctl9ZjB/FR
+ NmFTtqwO161PuphY5MW1Cg55mtWupIsr9l14qzCl1Gey1XUBI8ddAadrEUr6yooFRiUDip7L3Cd
+ FRP3/EU4v2kKCySOqYR6RlgXi3SbclbRpBuj5gg6C4J7Nj3MWWrLjzlbrzDRyq2UrIHNgG/t4z+
+ lCCopUEoOdi+b6Iep9WSgUTB5iD4FGFsosl3T+zaG3ZrksdV
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Fri, 10 Apr 2026 17:49:05 +0200, Johan Hovold wrote:
+> spi: fix resource leaks on device setup failure
+> 
+> Make sure to call controller cleanup() if spi_setup() fails while
+> registering a device to avoid leaking any resources allocated by
+> setup().
+> 
+> Johan
+> 
+> [...]
 
---ZqhXwlf3qPSsVysm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Wed, Apr 22, 2026 at 01:01:11PM -0600, Kevin Mehall wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-> SS_LEVEL (aka SUN6I_TFR_CTL_CS_LEVEL) resets to 0x1 (CS high = inactive)
-> and is also written in sun6i_spi_set_cs(), which is called in spi_setup() via
-> spi_set_cs(). Thus it should be initialized before we get here the first time.
-> Once SUN6I_TFR_CTL_CS_MANUAL is set, it is never cleared elsewhere in the
-> driver, so in any case, this can only affect the first transfer.
+Thanks!
 
-I do see that the driver uses a reset controller over suspend, are you
-sure that setup() will be called again on resume?
+[1/2] spi: fix resource leaks on device setup failure
+      https://git.kernel.org/broonie/spi/c/db357034f7e0
+[2/2] spi: fix controller cleanup() documentation
+      https://git.kernel.org/broonie/spi/c/a6e23843e949
 
-> However, what's not clear to me is why SUN6I_TFR_CTL_CS_MANUAL was in
-> sun6i_spi_transfer_one() in the first place. sun6i_spi_set_cs() is writing to
-> the same register, and it seems to me that setting that bit there would be a
-> more logical place to do it, though I don't think there is any functional change
-> vs what I have here. Let me know if you'd like me to move it to
-> sun6i_spi_set_cs() instead and how that should be submitted (same patch?
-> separate patch before the rest of this in a series? standalone patch to be
-> applied after this one?).
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Smaller patches are generally better so splitting is good.  It does seem
-sensible to group the chip select operations together, so long as we
-ensure that everything else is stable before the chip select gets
-asserted we should be good.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---ZqhXwlf3qPSsVysm
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnpJp8ACgkQJNaLcl1U
-h9Cz3gf/anL0RtrtBcUd5FxbCQvlrKb2rthUb6lYkUNPFC0FqttIX750LC7XBZRb
-42Wk4+KyFH81Qu1T86/6XmW0ytr4xrhTFOsZvjBOcsx9UzQwnJYBzjzynMQFnh5e
-IQYqydwe3uZeZhhjLSFcdJVoPoY195mKPbt9wvvBqepUTxIFdOHciPcItW3FkXbQ
-AOwDGtnxmhFDqid8R0SIG0ZImvaAw2wk3EcV32L/lQDR0Y3CsUCmkvO/wfKPRtfY
-Y23hwtftxFaTZdE3rh1KtEH5mB999Rj1CvPK970HGQvXBEJc2jw+HiQ8eSHAh8vy
-excQbedSoX74O2VnQWYOZSn8/qbkmA==
-=TBgN
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---ZqhXwlf3qPSsVysm--

@@ -1,166 +1,117 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5CD3D668E
-	for <linux-spi@vger.kernel.org>; Thu, 23 Apr 2026 06:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA6F2E62B7;
+	Thu, 23 Apr 2026 07:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776927598; cv=none; b=luG5UEQNnpaWWHAJnLzQQfn9nZy4bPDPGahPXfCuV2/ULCg+GNdRUVSwYh/9yy9aFmAVib4jVgCq/3itaycAi0bNzsYs/KHZg2HljKtT2zx+xodEYg6Uwn2TbO58iRoI+kDZdeT+8pi5PCvL9jrY+A3PMyk3ksOrkxBkP3VSsgY=
+	t=1776931157; cv=none; b=dxaSNwxo6ePWD0Czpgr2epwE5D6onkEnGoYoj78TAqIzFH2WWiocmTVsEYuOawfIojL3tiWwFJnzkaOPmiugYlxF3UsQLWX3oaHaO7d0GXHdZ2lFiXkqwvLJLsrmOq/zkMjDojrElQm3ZHKRHCBtOMOXv4tYyF2dcri8Urjyjpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776927598; c=relaxed/simple;
-	bh=hexwbOGW/6m/Df6+GU12KM4IKYYaGu617h9GqYfIhNY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q8N96H5e2aEzngPJxnTHOBGs8WO7twfIPAzSbmMW0cheqtrbocq1/bL8fJzAeVXysPJz7rsw7pIFPBI9up2nle/Z5nqge2iOeyFFoaG3VFnWCe9SILDkCKY9EHnzA7R4POZ7syREgMz0Dvtln95FG425d9ysnBLSwrTkMp0RIcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8aca6bd57cfso60517146d6.0
-        for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 23:59:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776927595; x=1777532395;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FB5PTwtw54UUlBS193h15pAhGHmMjXQQ1mJTpaYMvb8=;
-        b=imSewZX4AW7i9y4da17XYYd6I90g+a2Pom3CF5luOk3Bi10U8339HE6FC9IuMt/xwl
-         LV/py7sNrpqIKQb1oj6nu0kQqNSiRCSooAy8+xSXrGaW9cAn9FrN35vVgshjwGwHEHG3
-         kNEyXeHflQL8HhZepbx+xHIXvjc/JPiJ8rnL49rHG0KwA7h7S55D3MyuHu1jlL/uXw76
-         5QNUli9qR47EEaXMR5TBHONS7hZBFaGscv8yj7Gh0llkTqcjhZ6y63mAycFHCrPuW0W+
-         4Q/rzO5YJysIDC4UN7yrsQ0Il0Xi2mWPKMqxr3z59SupcmuYrKZlk84vJKzHIRDIWf6a
-         DxCw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Vydiv435LEFlM78fCaP7xjGTXgZNHmkDFHhmAiMH5ObyiernU1fuVT8xdeqrjlnPbKisQ/z38lGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxL4UuIZRPLhDQnzMoFzKGRH32aTcxdaZXKjTlumC2GWod340Bb
-	ko7eevioG3iCQpz4Q3EeH7ubVNMos5q8jHbhM1Fq7dsT/V4gkg+YelrdiKnJOjsa+xU=
-X-Gm-Gg: AeBDiet24FEzQhyjnKSrbaoH7vLdPrtol5MgW8nSqiaRXxR7LZdjhJMw0diyFDZX61L
-	VPe6ZvlUNlolpWHVYX9tbrK7tSg0EY4YW7Psu9W6BqfFdlAxLfd872HHjitzHWIbJ72dkz8PlY5
-	qTutdXMlwLol4K55zWu2il4IczxjBPVIjk/3UB1nebQKpkd+hrSxdB3nUKavxASv4hnJtRFjeQH
-	i6XmzTB5ZLRt/jaJc2KWK7X+ZiWzFojo5iLRyNlbyD81zxPC4DeQZC7Yhl278xa0iUwuReomvI2
-	9CyciyjcAoI/2ri85mZPYGna5h8xB3/enHEXWWFMm2ffjMvWUYX2vaBTUgGo9xSfQqi/4eKElqu
-	+tgai6vDSPUCTGZcbOV2uzzMSpT7YDBDc9/O5spbkOG5OHiV2pSQoB+IZYGvne6U3Gy/wNPY73b
-	iIubYQqLOOfzy7qRSEvBw8vYp5WkbLbqafMbCVlKsbMrfkCkvChpgA3mGfHZc1hTKuKqyFI7U=
-X-Received: by 2002:a05:6214:4e03:b0:89c:5289:4be6 with SMTP id 6a1803df08f44-8b02805a894mr365571896d6.13.1776927594925;
-        Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com. [209.85.219.46])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b031f65a27sm141879456d6.16.2026.04.22.23.59.54
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a093c784b0so74790676d6.3
-        for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ//41w5ugwXk8UICgq0xIN1eQXV74thBIouMiLFd5JrLbR4S1a5hFtLWEGFrqFQ83e3ankPsGuFkNI=@vger.kernel.org
-X-Received: by 2002:a05:6102:441d:b0:611:6fef:905 with SMTP id
- ada2fe7eead31-616f750858emr13450072137.20.1776927225241; Wed, 22 Apr 2026
- 23:53:45 -0700 (PDT)
+	s=arc-20240116; t=1776931157; c=relaxed/simple;
+	bh=pU+9oiq4rMSeVi2EEG5CqIqdVDnOzieeiXQGjdvom8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WlkfcCoTWbOXaMAVSoyk3S+WS603z3DXBjNI5mvtAOV7KHrk3I6VrM7aiPzJqMezrbhgK0esQqFmkHv9lG1/GE/cOWvZNd9I5iV/j8isYna/HmJYLegmuC3/7rNDIpk3vR4oT3kb+zY1sg4GnennK1kliqqT2agH2HV6x14398M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gY6JEJqC; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gY6JEJqC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76686C2BCAF;
+	Thu, 23 Apr 2026 07:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776931157;
+	bh=pU+9oiq4rMSeVi2EEG5CqIqdVDnOzieeiXQGjdvom8Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gY6JEJqCe0DIHjHReLQTEdibmgnl8zL9hP2y92Qow8K5cobgpu7rMnUafFFMJweaX
+	 3WAR6v5aMQHKYMFWhMjyZXXmaFnk4nPvP7v7F5mYYwUM3j+LtAQg5pOZhIviAo+LOz
+	 eNiAyGKH596dG2pfDrvZDh8OwlJYxrDYaR95/nqV/1USbA52D1Wc1ynG9A9jZKtTKp
+	 TWPSjkjpzaLVMthlWZiN1Cq6Wg4tA8UZhmwoFaTRz7D2S+EUKJCArAavG+IWA7lh2n
+	 m9jH2r0E8oN0uXJ1SORJpZ434UpkcGM47bcSqHIA7dRz8KyeQOKaqlbp2V0qsR0RBO
+	 I0pdIbY6qeKnw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wFoxu-00000009Rwz-3wAc;
+	Thu, 23 Apr 2026 09:59:14 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH] spi: mpc52xx: clean up interrupt handling
+Date: Thu, 23 Apr 2026 09:58:01 +0200
+Message-ID: <20260423075801.2252318-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260325143555.451852-1-herve.codina@bootlin.com>
- <20260325143555.451852-3-herve.codina@bootlin.com> <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
- <CAD=FV=UK3NQKQN7FXyG4nGdDKO=LQYhnL4ZweomQ_4R9-EAYag@mail.gmail.com>
- <aekg_IELc65BFrWp@ashevche-desk.local> <CAD=FV=XTvvq11y7kxmrfBe3dZsKro7N9=i-Hj9aqsLBay2Q9Rw@mail.gmail.com>
-In-Reply-To: <CAD=FV=XTvvq11y7kxmrfBe3dZsKro7N9=i-Hj9aqsLBay2Q9Rw@mail.gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 23 Apr 2026 08:53:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUDCQrQ2Z9D7-ZOKiuDznDJVf2R_b_8P9+Xhk4RiJ3vdw@mail.gmail.com>
-X-Gm-Features: AQROBzAvgx3axNivzcvHu1RjLcwZ8ZssrkMMWMoOA6QWZi8LwGEf_PBN_biPlMM
-Message-ID: <CAMuHMdUDCQrQ2Z9D7-ZOKiuDznDJVf2R_b_8P9+Xhk4RiJ3vdw@mail.gmail.com>
-Subject: Re: [PATCH v6 02/27] of: dynamic: Fix overlayed devices not probing
- because of fw_devlink
-To: Doug Anderson <dianders@chromium.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
-	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Doug,
+The driver is relying on the assumption that the invalid interrupt 0 can
+be freed without any side effects, but that is not the case on
+architectures like x86 where it would trigger a warning about freeing an
+already free interrupt.
 
-On Wed, 22 Apr 2026 at 21:40, Doug Anderson <dianders@chromium.org> wrote:
-> On Wed, Apr 22, 2026 at 12:27=E2=80=AFPM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Wed, Apr 22, 2026 at 11:51:36AM -0700, Doug Anderson wrote:
-> > > On Wed, Apr 22, 2026 at 10:44=E2=80=AFAM Geert Uytterhoeven
-> > > <geert@linux-m68k.org> wrote:
-> > > > On Wed, 25 Mar 2026 at 15:36, Herve Codina <herve.codina@bootlin.co=
-m> wrote:
-> >
-> > ...
-> >
-> > > > > +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
-> > > >
-> > > > After commit f72e77c33e4b5657 ("device property: Make modifications
-> > > > of fwnode "flags" thread safe"), this must be changed to:
-> > > >
-> > > >     if (fwnode_test_flag(fwnode, FWNODE_FLAG_NOT_DEVICE))
-> > > >
-> > > > With this change my DT overlays are working again.
-> > > >
-> > > > I guess keeping the FWNODE_FLAG_* names, but changing their values
-> > > > from bit masks to bit numbers was probably not such a good idea,
-> > > > as it fails to catch missing conversions...
-> > >
-> > > Crud, I should have thought about that. :( Do you think it's worth it
-> > > to do a rename at this point to catch future problems?
+This should not cause any trouble on powerpc where this driver is used,
+but make the code more portable (and obviously correct) by making sure
+that the interrupts have been requested before freeing them.
 
-I am afraid it is too late (it is already in Linus' tree), and would
-add only more to the confusion.  We just have to take care when this
-patch (and 01/27) is backported to stable.  Fortunately the reverse
-is caught, as the fwnode_*_flag() helpers did not exist before.
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-mpc52xx.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-> > You can try locally with allyesconfig / allmodconfig and see the outcom=
-e.
-> > If there are missed cases, and their amount reasonably low, I won't bot=
-her
-> > in this case.
->
-> I believe I caught all of them at the time of my CL, but the problem
-> is in-flight stuff, right? I think the problem Geert is pointing out
-> isn't something I missed in my original patch but rather an
-> interaction between my patch and this in-flight patch.
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index 924d820448fb..04c2270cd2cf 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -472,13 +472,15 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 	if (ms->irq0 && ms->irq1) {
+ 		rc = request_irq(ms->irq0, mpc52xx_spi_irq, 0,
+ 				  "mpc5200-spi-modf", ms);
+-		rc |= request_irq(ms->irq1, mpc52xx_spi_irq, 0,
+-				  "mpc5200-spi-spif", ms);
+-		if (rc) {
+-			free_irq(ms->irq0, ms);
+-			free_irq(ms->irq1, ms);
+-			ms->irq0 = ms->irq1 = 0;
++		if (rc == 0) {
++			rc = request_irq(ms->irq1, mpc52xx_spi_irq, 0,
++					 "mpc5200-spi-spif", ms);
++			if (rc)
++				free_irq(ms->irq0, ms);
+ 		}
++
++		if (rc)
++			ms->irq0 = ms->irq1 = 0;
+ 	} else {
+ 		/* operate in polled mode */
+ 		ms->irq0 = ms->irq1 = 0;
+@@ -498,8 +500,10 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 
+  err_register:
+ 	dev_err(&ms->host->dev, "initialization failed\n");
+-	free_irq(ms->irq0, ms);
+-	free_irq(ms->irq1, ms);
++	if (ms->irq0) {
++		free_irq(ms->irq0, ms);
++		free_irq(ms->irq1, ms);
++	}
+ 	cancel_work_sync(&ms->work);
+  err_gpio:
+ 	while (i-- > 0)
+@@ -522,8 +526,10 @@ static void mpc52xx_spi_remove(struct platform_device *op)
+ 
+ 	spi_unregister_controller(host);
+ 
+-	free_irq(ms->irq0, ms);
+-	free_irq(ms->irq1, ms);
++	if (ms->irq0) {
++		free_irq(ms->irq0, ms);
++		free_irq(ms->irq1, ms);
++	}
+ 
+ 	cancel_work_sync(&ms->work);
+ 
+-- 
+2.53.0
 
-There are no unconverted cases in upstream or linux-next
-(I checked yesterday, and rechecked this morning).
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds

@@ -1,156 +1,166 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4B424E4A1
-	for <linux-spi@vger.kernel.org>; Thu, 23 Apr 2026 04:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5CD3D668E
+	for <linux-spi@vger.kernel.org>; Thu, 23 Apr 2026 06:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776919279; cv=none; b=Iv7BZKsC0kHseRPXWmaXzE5iwST9BuAjJvVWLHtb0+ZEiYVc1R4cV0O4vK0QhzZO5Sq2WK4mZxd8O6bYtD1pXEX0hnDB6LsCvN6uUmvrUBjEK73wMtWiFPR7iVSIR+A//MbreBCBBQC8t+Q0z6W3b84Pl25M6aUjOYPwEIpJ0eA=
+	t=1776927598; cv=none; b=luG5UEQNnpaWWHAJnLzQQfn9nZy4bPDPGahPXfCuV2/ULCg+GNdRUVSwYh/9yy9aFmAVib4jVgCq/3itaycAi0bNzsYs/KHZg2HljKtT2zx+xodEYg6Uwn2TbO58iRoI+kDZdeT+8pi5PCvL9jrY+A3PMyk3ksOrkxBkP3VSsgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776919279; c=relaxed/simple;
-	bh=9J4BxM7gtyEKauNKqbRS21TUg8P0EpQ40xplG6+3a/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oZfzy7drrWFbYttmvGMtvMgrUfQzGk7zH1652TCXGbgztf6wYyWrAndIzpq3gdruj9KDLGDR250stUhy/N/oXhDIz9rRFQGITnPGW8vLLwlIL6dXraUOJdPNpC6X7CYyVy95pR/8O64/aGPGEQ2EnmHMJL539iyYyAKwxz+Clz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bIThHOPj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ks05OSAI; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bIThHOPj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ks05OSAI"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63N35PBs2185960
-	for <linux-spi@vger.kernel.org>; Thu, 23 Apr 2026 04:41:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	PXcarQ3/SORvCcBXZAV2XtrZqcRRpX62RDXzsLa4WYw=; b=bIThHOPj8YOdhejd
-	7i9zM1dNoAy4uU2h3aT58PQU8GGeJ1Uv8c32GfIJ98HfX9m9mGeWYOS9hgFeOvid
-	pYI7PW8a+Pqnedab+41b4os6XlqvubiHjFSL0gT7y5YsMJ+lm6dSjTfewvgcrnZ7
-	yG67bRtb7nfJYei7VXaiQNtYS5Zso9XIpjpEBt++0m9aHi9PLcZma6PXLDaMP4ZT
-	X52mVEPcu1ZnJoBUuRBJFmyt0IyxIzlrkRlapqAUF+QZNHuq/B/6fooSpVsyFr4P
-	8g7SFKlRQJY55U6lHaaV02eiAFpmrmEGVa4dHnYNMqVlijFTHt1TJh3kb+o32zI9
-	jwzm9w==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dq1hvj6re-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 23 Apr 2026 04:41:17 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-354c44bf176so7457128a91.0
-        for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 21:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776919276; x=1777524076; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PXcarQ3/SORvCcBXZAV2XtrZqcRRpX62RDXzsLa4WYw=;
-        b=ks05OSAIWzSYL8SjGV8ej7Kw2wU7O19mp+EjOTSVDZENF57AB07qmxAM0/VpeeYiXt
-         NuyUoGxQ7cXwJRbPGCEf+EjqgZA1t3tq8yUx2EGLiRsb2ewj4TLd7YWOgBEwbkVLtS4A
-         CmDBQTGsf6bD0QOx32rP7tqtBNAB8zOLwzEdTUu0bThdb7o1nff1IPU2Nbk71huYjQrZ
-         Gqz5IG/iSVbvJyM+3onSCETsQafWd6xXrtXcHdELJjlLJ0oI7tUEZ/1YqG2bmsEiBNqg
-         iAWEsG8w7iPSAejdvwy2Vrm/Io8xYy2/psAvPVHT/jY5YZ2WYgYbAbwIMQF2Qz5YrGMX
-         qRyA==
+	s=arc-20240116; t=1776927598; c=relaxed/simple;
+	bh=hexwbOGW/6m/Df6+GU12KM4IKYYaGu617h9GqYfIhNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q8N96H5e2aEzngPJxnTHOBGs8WO7twfIPAzSbmMW0cheqtrbocq1/bL8fJzAeVXysPJz7rsw7pIFPBI9up2nle/Z5nqge2iOeyFFoaG3VFnWCe9SILDkCKY9EHnzA7R4POZ7syREgMz0Dvtln95FG425d9ysnBLSwrTkMp0RIcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8aca6bd57cfso60517146d6.0
+        for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 23:59:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776919276; x=1777524076;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PXcarQ3/SORvCcBXZAV2XtrZqcRRpX62RDXzsLa4WYw=;
-        b=hl+5BzYTlY/a8/eqnT0G1DQZ3+dm/xOXnmEmiZ7jVMIYvvfZRG0uMh7AYXMXnmX/CJ
-         nc+KhI4195l1OmWwI6KizicTqenrojF0M/lW+0SGxgdwOt7SUD9Jg/XY65EUBBaPO8zx
-         O5M/d41WhJgmgERg+56NpKqmsnB+HGPiX+Jq09IZt5Q+iKoUg2E8bAjRJvzd11eiVHpE
-         0aEmE2tGPBpozYB4ttPgGhHmLZUiKP5wIVCQM+g+irXDa565rAAUGcbKvNeVT828+ruw
-         6X0a06U8u7Fzg8FKdM0/eoO0Gc0xjd3Hekj+kzNKEL7Y2Fppamyg6GORFqhJ/GAXOHiA
-         VrVg==
-X-Forwarded-Encrypted: i=1; AFNElJ9qkHGMuiq2LTJPfnVUthJPAmUppUzuBDeTlVXN/rRMs+8btFkzt0qWLLL+VUkDqs3IKKnV92vr2qc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLe1KLWPQXGnfHu92Nmv9P44/D369tIAQxB+AtAjTYn/yIecSD
-	Y0vqFkoV0w9CuNvGmpa/7O8bEr2EhD6OwS8vd8kZ0ZSoP0MIhSOG2CLXMjPRLKY67tHipCmUw3Q
-	x2QsymKjADZd6S1CaR7Wxpnr9Dx9rk3YFO+nF8JCzjQ0umlr8hmgdNIs5hROAxHM=
-X-Gm-Gg: AeBDiesowRVozg7HvvrOup/UuJXZC8tJOHQj0FGqsLGK9Z0W4aaBWnBjs5SGATdAfRG
-	gklnr/4YoXE5oBSOjhBlT6CP7UL2gGTIsWc8G+R0Wx8XzmypXiKTzeCNciFSG9UdIP8xc7sDWzH
-	G0RHCbzvsVw+/Qfr7T/a4TV+OsgQB0okyuKxNROqSTFVOmFNBzd64XDYw/0vI1kEYEklt/yfdGP
-	tCKqpJBS6o+Lkdp3WjqC6SB9bsj9lEbUhyeYwzltfT3cSOlfnHQ0vjM3Il7Q8KBqQPOz7PiSeDX
-	N+96JsEEnNl7MqAzejViwBhZM8+AVOR9F/r7Clo9CCioz/GEargOI8AwKa2Y41R29qJ9awZ22yq
-	pY4m8ozVQsYvHx3BvpYIkOo82hCdlez+Rby7xDGTWtwssghnSra0nQk5GjIBZNhrh
-X-Received: by 2002:a17:90b:1d50:b0:35e:599f:aef0 with SMTP id 98e67ed59e1d1-361404254c0mr23419616a91.11.1776919276423;
-        Wed, 22 Apr 2026 21:41:16 -0700 (PDT)
-X-Received: by 2002:a17:90b:1d50:b0:35e:599f:aef0 with SMTP id 98e67ed59e1d1-361404254c0mr23419574a91.11.1776919275975;
-        Wed, 22 Apr 2026 21:41:15 -0700 (PDT)
-Received: from [10.218.4.221] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a9fbsm24124355a91.11.2026.04.22.21.41.12
+        d=1e100.net; s=20251104; t=1776927595; x=1777532395;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FB5PTwtw54UUlBS193h15pAhGHmMjXQQ1mJTpaYMvb8=;
+        b=imSewZX4AW7i9y4da17XYYd6I90g+a2Pom3CF5luOk3Bi10U8339HE6FC9IuMt/xwl
+         LV/py7sNrpqIKQb1oj6nu0kQqNSiRCSooAy8+xSXrGaW9cAn9FrN35vVgshjwGwHEHG3
+         kNEyXeHflQL8HhZepbx+xHIXvjc/JPiJ8rnL49rHG0KwA7h7S55D3MyuHu1jlL/uXw76
+         5QNUli9qR47EEaXMR5TBHONS7hZBFaGscv8yj7Gh0llkTqcjhZ6y63mAycFHCrPuW0W+
+         4Q/rzO5YJysIDC4UN7yrsQ0Il0Xi2mWPKMqxr3z59SupcmuYrKZlk84vJKzHIRDIWf6a
+         DxCw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Vydiv435LEFlM78fCaP7xjGTXgZNHmkDFHhmAiMH5ObyiernU1fuVT8xdeqrjlnPbKisQ/z38lGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL4UuIZRPLhDQnzMoFzKGRH32aTcxdaZXKjTlumC2GWod340Bb
+	ko7eevioG3iCQpz4Q3EeH7ubVNMos5q8jHbhM1Fq7dsT/V4gkg+YelrdiKnJOjsa+xU=
+X-Gm-Gg: AeBDiet24FEzQhyjnKSrbaoH7vLdPrtol5MgW8nSqiaRXxR7LZdjhJMw0diyFDZX61L
+	VPe6ZvlUNlolpWHVYX9tbrK7tSg0EY4YW7Psu9W6BqfFdlAxLfd872HHjitzHWIbJ72dkz8PlY5
+	qTutdXMlwLol4K55zWu2il4IczxjBPVIjk/3UB1nebQKpkd+hrSxdB3nUKavxASv4hnJtRFjeQH
+	i6XmzTB5ZLRt/jaJc2KWK7X+ZiWzFojo5iLRyNlbyD81zxPC4DeQZC7Yhl278xa0iUwuReomvI2
+	9CyciyjcAoI/2ri85mZPYGna5h8xB3/enHEXWWFMm2ffjMvWUYX2vaBTUgGo9xSfQqi/4eKElqu
+	+tgai6vDSPUCTGZcbOV2uzzMSpT7YDBDc9/O5spbkOG5OHiV2pSQoB+IZYGvne6U3Gy/wNPY73b
+	iIubYQqLOOfzy7qRSEvBw8vYp5WkbLbqafMbCVlKsbMrfkCkvChpgA3mGfHZc1hTKuKqyFI7U=
+X-Received: by 2002:a05:6214:4e03:b0:89c:5289:4be6 with SMTP id 6a1803df08f44-8b02805a894mr365571896d6.13.1776927594925;
+        Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com. [209.85.219.46])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b031f65a27sm141879456d6.16.2026.04.22.23.59.54
+        for <linux-spi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 21:41:15 -0700 (PDT)
-Message-ID: <84bab102-9b40-434a-9882-f6cbcb00c038@oss.qualcomm.com>
-Date: Thu, 23 Apr 2026 10:11:10 +0530
+        Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a093c784b0so74790676d6.3
+        for <linux-spi@vger.kernel.org>; Wed, 22 Apr 2026 23:59:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ//41w5ugwXk8UICgq0xIN1eQXV74thBIouMiLFd5JrLbR4S1a5hFtLWEGFrqFQ83e3ankPsGuFkNI=@vger.kernel.org
+X-Received: by 2002:a05:6102:441d:b0:611:6fef:905 with SMTP id
+ ada2fe7eead31-616f750858emr13450072137.20.1776927225241; Wed, 22 Apr 2026
+ 23:53:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] spi: qcom-qspi: Add interconnect support for
- memory path
-To: Mark Brown <broonie@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260420-spi-nor-v3-0-7de325a29010@oss.qualcomm.com>
- <20260420-spi-nor-v3-3-7de325a29010@oss.qualcomm.com>
- <e7873eb0-bfcc-4ad2-8016-17b0db80feea@sirena.org.uk>
-Content-Language: en-US
-From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-In-Reply-To: <e7873eb0-bfcc-4ad2-8016-17b0db80feea@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIzMDA0MSBTYWx0ZWRfX4u4bSw1SMJs0
- 6P6J+0gx9hmcbv27PFCCpBasZnlrqqZMB+PTCAu3zQCcoGTvgxcgZBiy0oVzBHQ3B6EdJY7S1/g
- ZPditoMuxZaFIUALuZy00fZ6gGLRdDiSZAhsk+wJDlutwORR3V9nEbifAhpk4etcdVW85YpRGHa
- lHlw04WbS7QWD9hf03GYZjv2VinED4VlvAIW8XsilJn+aUG8/VGI2RXhdFR9VU5T88xR8Q6g2eN
- krMvESS6GDogVw44msru0w7ACrLcAiOqoPCrJ1G1P7S+4MNEcoxLxDA++t4ZjLpl9+HbrPFBWx4
- QMSrS3tN9mfK/zFSkN19j3x81TmmK/a40mlhqAmvpj8lbD3lpopvw0WPfJ27SjaG9+n3PZXzdqi
- AFilbkENkGJ6nT8hlpRBWVGjsEeNJlyMSil63VNUIhP6P3fr6pGst/+YnVS4de4h0pP/gwHsxNL
- BrZWr7F/YlfzwIWNetA==
-X-Proofpoint-GUID: Tkn2Lp0LG6p9dLkTVhJkiobH1mEGl8UU
-X-Proofpoint-ORIG-GUID: Tkn2Lp0LG6p9dLkTVhJkiobH1mEGl8UU
-X-Authority-Analysis: v=2.4 cv=HJvz0Itv c=1 sm=1 tr=0 ts=69e9a2ed cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=Ktr-gnuM6ESvd8fC0OUA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
- a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-23_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0 impostorscore=0 suspectscore=0 adultscore=0
- spamscore=0 priorityscore=1501 bulkscore=0 clxscore=1015 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604230041
+References: <20260325143555.451852-1-herve.codina@bootlin.com>
+ <20260325143555.451852-3-herve.codina@bootlin.com> <CAMuHMdU7x7LWFkD9xiq+wyOqnn0bdzr+JLfvbBexoiWyv8kftA@mail.gmail.com>
+ <CAD=FV=UK3NQKQN7FXyG4nGdDKO=LQYhnL4ZweomQ_4R9-EAYag@mail.gmail.com>
+ <aekg_IELc65BFrWp@ashevche-desk.local> <CAD=FV=XTvvq11y7kxmrfBe3dZsKro7N9=i-Hj9aqsLBay2Q9Rw@mail.gmail.com>
+In-Reply-To: <CAD=FV=XTvvq11y7kxmrfBe3dZsKro7N9=i-Hj9aqsLBay2Q9Rw@mail.gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 23 Apr 2026 08:53:33 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUDCQrQ2Z9D7-ZOKiuDznDJVf2R_b_8P9+Xhk4RiJ3vdw@mail.gmail.com>
+X-Gm-Features: AQROBzAvgx3axNivzcvHu1RjLcwZ8ZssrkMMWMoOA6QWZi8LwGEf_PBN_biPlMM
+Message-ID: <CAMuHMdUDCQrQ2Z9D7-ZOKiuDznDJVf2R_b_8P9+Xhk4RiJ3vdw@mail.gmail.com>
+Subject: Re: [PATCH v6 02/27] of: dynamic: Fix overlayed devices not probing
+ because of fw_devlink
+To: Doug Anderson <dianders@chromium.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Niemi <kaleposti@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linusw@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	driver-core@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Doug,
 
+On Wed, 22 Apr 2026 at 21:40, Doug Anderson <dianders@chromium.org> wrote:
+> On Wed, Apr 22, 2026 at 12:27=E2=80=AFPM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Wed, Apr 22, 2026 at 11:51:36AM -0700, Doug Anderson wrote:
+> > > On Wed, Apr 22, 2026 at 10:44=E2=80=AFAM Geert Uytterhoeven
+> > > <geert@linux-m68k.org> wrote:
+> > > > On Wed, 25 Mar 2026 at 15:36, Herve Codina <herve.codina@bootlin.co=
+m> wrote:
+> >
+> > ...
+> >
+> > > > > +               if (fwnode->flags & FWNODE_FLAG_NOT_DEVICE)
+> > > >
+> > > > After commit f72e77c33e4b5657 ("device property: Make modifications
+> > > > of fwnode "flags" thread safe"), this must be changed to:
+> > > >
+> > > >     if (fwnode_test_flag(fwnode, FWNODE_FLAG_NOT_DEVICE))
+> > > >
+> > > > With this change my DT overlays are working again.
+> > > >
+> > > > I guess keeping the FWNODE_FLAG_* names, but changing their values
+> > > > from bit masks to bit numbers was probably not such a good idea,
+> > > > as it fails to catch missing conversions...
+> > >
+> > > Crud, I should have thought about that. :( Do you think it's worth it
+> > > to do a rename at this point to catch future problems?
 
-On 4/20/2026 10:14 PM, Mark Brown wrote:
-> On Mon, Apr 20, 2026 at 11:42:50AM +0530, Viken Dadhaniya wrote:
->> The QSPI controller has two interconnect paths:
->> 1. qspi-config: CPU to QSPI controller for register access
->> 2. qspi-memory: QSPI controller to memory for DMA operations
-> 
->> @@ -729,6 +737,11 @@ static int qcom_qspi_probe(struct platform_device *pdev)
->>  		return dev_err_probe(dev, PTR_ERR(ctrl->icc_path_cpu_to_qspi),
->>  				     "Failed to get cpu path\n");
->>  
->> +	ctrl->icc_path_mem = devm_of_icc_get(dev, "qspi-memory");
->> +	if (IS_ERR(ctrl->icc_path_mem))
->> +		return dev_err_probe(dev, PTR_ERR(ctrl->icc_path_mem),
->> +				     "Failed to get memory path\n");
->> +
-> 
-> Does this handle missing qspi-memory properly?  It's not conditional on
-> the compatible so it'll run even for existing devices.
+I am afraid it is too late (it is already in Linus' tree), and would
+add only more to the confusion.  We just have to take care when this
+patch (and 01/27) is backported to stable.  Fortunately the reverse
+is caught, as the fwnode_*_flag() helpers did not exist before.
 
-All existing device trees have been updated to include this path,
-so there won't be any probe failures for existing devices.
+> > You can try locally with allyesconfig / allmodconfig and see the outcom=
+e.
+> > If there are missed cases, and their amount reasonably low, I won't bot=
+her
+> > in this case.
+>
+> I believe I caught all of them at the time of my CL, but the problem
+> is in-flight stuff, right? I think the problem Geert is pointing out
+> isn't something I missed in my original patch but rather an
+> interaction between my patch and this in-flight patch.
+
+There are no unconverted cases in upstream or linux-next
+(I checked yesterday, and rechecked this morning).
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds

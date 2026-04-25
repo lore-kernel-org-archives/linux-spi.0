@@ -1,118 +1,184 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011071.outbound.protection.outlook.com [52.101.125.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837543148CF
-	for <linux-spi@vger.kernel.org>; Sat, 25 Apr 2026 09:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777109435; cv=none; b=DCX/AQ89HC1tn8wzBb8kEc9sDW2R/1PViM5H045fkXCVcVq7L18URg4uAoTIGM8Iu72tINSmjPwERou6mXlaflVZIaZZdvOj9rMcVTICtNhT0lECL1orwehvBDu1FaaAL5szj6FL8HOotlTUy6EvTxGYDgenIMxsfWZYrN8Vnko=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777109435; c=relaxed/simple;
-	bh=N9ijW3AsBy/p+PwIdQE2e41ehaiY4fwBhwF0z5uyDWk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ADz/mnnMbA0t+/bAuNSI9T+QXYeojo7Eyn+oCT94wAokLmt7q69uqfOtSFlvOoXFkd4CDhChsg+lRswCpCjLrKQ1GzFV7lHvOHk8j0X4VQrmfQ78FhvCI+CpkUDKmvcYBDVta8SPtUXkqz/X9wFRP8+s2azgggAxWjG0VLLdvps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fuWsAWxP; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49FB313E01;
+	Sat, 25 Apr 2026 14:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777128877; cv=fail; b=KRPHvDjiNsa2okl1IcGRWFo07NxhBgZaC24ZPlNXCITPmSGxXIIAOkkjeuwzgi9t0yzk9QzhwSodGeABmdyBBj0F3hqaU7Z80o8zH2H4WNpG51wuDvNN0U4DTKcmoMxFYh7wuwdPVa7Ahi/+Hs2O5rQZn3+blnQvKDmCncHt+Oc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777128877; c=relaxed/simple;
+	bh=ounevYkUJB2recSlmtPzoTGPtMSNJvesm2MOZw+X6jE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RUHvkoid5NxfJ2CvsDMTNhJ/RJbPTTNXA/hoCxa2gKXXeQ1ukjrHf+NQzY4X7aTS2KD4ggl58Wib/UpNerrZRQ0PZtbO7HaGxDXpRdPndcpH0Xrsq56Nm1Wn3A+/AaZ5Swbgc2+jEM5R2g8/LfvZWCTz+7y0HzzN6pI+Q0B4Wyk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=IxRjSA45; arc=fail smtp.client-ip=52.101.125.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fuWsAWxP"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43d03db7f87so5876331f8f.3
-        for <linux-spi@vger.kernel.org>; Sat, 25 Apr 2026 02:30:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777109428; x=1777714228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xyL6eQDTOa83HsK8N08HXtdZVDzA0HoYcQ2NsR08O3Q=;
-        b=fuWsAWxPkUdjkzeiJ+pBcluWKajhMmK/d4loORNHDQ9r6NHUCuzOfVthwCYYErxWgK
-         S6cSYUUFSFBulw9BnswZ5A1IG3LlkKGUuEqqKdmJevs3f+VtspJ1izJ1tZ3ZTaJCE4nl
-         DT5zL7+v1W4KcksmIiXEVvFti2VdkuTm5mkVp0NsvHqATNio1wiPFBG2InkrUKeoivS+
-         DJSr2vvMtKYdWBjYoXLdG9sxGstPXq8M9wC9sRlg1fDGMd5yXkQRSJGxMUljD1+Jg1fY
-         ANyqEABVleHZdYybIfgL2h6fUNScop51w7yme/3c07oKtt7NQtXxE589bs+QW4NGlU0M
-         R4qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777109428; x=1777714228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xyL6eQDTOa83HsK8N08HXtdZVDzA0HoYcQ2NsR08O3Q=;
-        b=TRqSgtLW/3cjh+1Ry7yhMEnWz/2An0MK/b5upeZWDdakQoFDgD5IMQ9eSs++zhyuv9
-         r0jOHmYtBmcYPpMm750+2mh4KXgnB7lDfJCCXftfqMLXpSHd7XeUhyWOGw5nxqhcfHEi
-         b/xJXR+ENR4irsy9EGsWD/WH1zYdwc51NhYYtUkVtNGJOp/mgcQYAHuPOYaY26LJ/Hy0
-         8+N+/ED09Rh1RYfubNQN4uW1hHXJJWTpu6uSqby1rDusu+adEMxi0LunslEOSAqUmoWo
-         GdLDfpJf7cAUb4Z8JEvxlEkAhjvEiN+UeYf8d1w2XhHr/dj48eMooGdqaPzxGD0fabnW
-         8EZg==
-X-Forwarded-Encrypted: i=1; AFNElJ8c2ZwoNcZ0ZqpqGJZWQ/BpmWnAWdw1vgAqwwHvoNum3TXHhyGzuvLklU3qRUEPlhlqk1Dh+F8c+YU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3/t3sz6F89fuyQU0mgrRVJPnbgyQ2/Jg0TdiQ3Wkm/VwVHlqJ
-	SDoQDm1HdEB0McwWd6yZuY6DGqUx35hJyDe6kRIw5FVIeBXV2R6QBHmG
-X-Gm-Gg: AeBDiesmvH8s4wNRlWZ4LPgVMet9ZVUeC/ufNfBAGjRp3lj1VeNrrrN9PW+UTGyMFW2
-	H7i9cif4edjpZMzixANYmN8dzCs3xCwSs8i1isRcEWm5rHJJ3GjAVaH1pVWHrXi/v0FDNU6ocIq
-	w2Vl/3yvx5TNnzfHI1T8pAhM+3K6fMdMnzdTnxPb2STvsXQh98MpEGdgdXE9I/yCwvXeIUzPvFq
-	2RKxKwg8cjA7IYGadK07chBxFJDa22yhVLbfpc2myFLjqYWao+R4igBSSvdnOf0hSui1SR4aoNp
-	CXA+PjITABtzIdiHHR1oVzTvWct7Fwa9CZh4BsoF/lD1r5d9vXt47vHYAWGoWySpBR4o7q/+vVa
-	AWYOAiBt8kJKvuHPdXaN/3kh92TxOVX5VPMSaE7CSM9rnKLW1PI+pyz8sWll01oAAO8hrrxuaEL
-	uWR+SBV75aJ71tc172qR0kf4z5+Yq1t4ohZLVyBA/RwzLAEmWnmiPDMUttaoK8fGjyRhEgb9d35
-	u59
-X-Received: by 2002:a05:600c:468f:b0:489:1cd2:610a with SMTP id 5b1f17b1804b1-4891cd2624fmr339312755e9.9.1777109427813;
-        Sat, 25 Apr 2026 02:30:27 -0700 (PDT)
-Received: from localhost.localdomain (ns31537009.ip-141-94-163.eu. [141.94.163.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb7b2716sm204422615e9.30.2026.04.25.02.30.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 02:30:26 -0700 (PDT)
-From: John Madieu <john.madieu@gmail.com>
-To: broonie@kernel.org,
-	heiko@sntech.de
-Cc: jon.lin@rock-chips.com,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	John Madieu <john.madieu@gmail.com>
-Subject: [PATCH 3/3] spi: rockchip: Drop dead zero-check on fifo_len
-Date: Sat, 25 Apr 2026 09:29:36 +0000
-Message-Id: <20260425092936.2590132-4-john.madieu@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260425092936.2590132-1-john.madieu@gmail.com>
-References: <20260425092936.2590132-1-john.madieu@gmail.com>
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="IxRjSA45"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SEcMBkyps3b7zBwZM6osPDFib34g5GzEtCOc+BPG/FM/ghY5wPcWdj+dBYUNPXTJIFL78aeHMtvsgMwHbM6dtWnCooxZjHWVn0ORH+QVW7yh+NNyTR7rSTVZPWn1OzsSvegXLvCavMlYxn2skqNQai8UWAoheRJIoL+/QfoNVL5tedW5sldFLCLJ2MIVtTMIOOXaJ2C8GtO9IiPhi/XDq5EONt0E9Qpy4PhI/G1OnUHEn5VdpTjl5SfsaGSXsEHV77f8eeDG9+EpqyGx0MScqN/rIFq79Few9ZFQc7sM4+mHZh6JtWJMCOMnreT6G9ueOuHL95Awf2V88ECunQIqiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1TUrEaluxHMmn5MmUH98gOTjmxmkSwv8msStVhbBEXU=;
+ b=C4j8Tpf82rFVBagsLAMcwiJ2FGUfgv7eYSN/bD5ojhHqy63OprWWg9t9Eg+ZwuoZpSuVY9mdVDH9qWX2te0H7onPxzoeOXcuSNsdQrYoJaouUcHAM0VethnmzL7zlXDFFkKfd1mUcMoZCNSWX1wUkBJrLoH+/Lb2XXKw+RILiZUqtqcIjPj5Vn5wSsoMyJQGDTvJ/N/UejUTcJ5Vpl6E5KCfltlH1RjWXyVrVHXvZxMduV4UgOti2lNWmXrPxAtg200PvBs34ku/gghwQ5p1nOZ0P3rlB5jD1zfZSnZbUD4ndsfbmyw/wGw9ek+RSni90/BKsR/yRSkNGdQI7CCZRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1TUrEaluxHMmn5MmUH98gOTjmxmkSwv8msStVhbBEXU=;
+ b=IxRjSA45MgFFQke0F/jx/twGcxUlopj++D6SyZPfpPN9otHFQelo6nXcR+bCvCqJMazGCjNCdbDhune80rqm7LqJqSV/X3e0iHPBHk1+VpfQsLoeyZVBLk1MByK6SX9OkTQPs43F44riPJyuDSHPPDd1uHgVohtJIlzRbympu8I=
+Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
+ (2603:1096:405:29b::10) by TYTPR01MB10921.jpnprd01.prod.outlook.com
+ (2603:1096:400:39b::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.24; Sat, 25 Apr
+ 2026 14:54:31 +0000
+Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
+ ([fe80::a68f:5c9:9de8:4fa4]) by TYRPR01MB15619.jpnprd01.prod.outlook.com
+ ([fe80::a68f:5c9:9de8:4fa4%5]) with mapi id 15.20.9846.022; Sat, 25 Apr 2026
+ 14:54:25 +0000
+From: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+To: John Madieu <john.madieu.xa@bp.renesas.com>, Fabrizio Castro
+	<fabrizio.castro.jz@renesas.com>, "broonie@kernel.org" <broonie@kernel.org>
+CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"john.madieu@gmail.com" <john.madieu@gmail.com>, Biju Das
+	<biju.das.jz@bp.renesas.com>
+Subject: RE: [PATCH] spi: rzv2h-rspi: Fix silent failure in clock setup error
+ path
+Thread-Topic: [PATCH] spi: rzv2h-rspi: Fix silent failure in clock setup error
+ path
+Thread-Index: AQHc1F3qCbw5ObNhlEWAwgwX4QXPPrXv3eaA
+Date: Sat, 25 Apr 2026 14:54:25 +0000
+Message-ID:
+ <TYRPR01MB15619368E6DC3FFDC7E20410E85282@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+References: <20260425024725.2393632-1-john.madieu.xa@bp.renesas.com>
+In-Reply-To: <20260425024725.2393632-1-john.madieu.xa@bp.renesas.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYRPR01MB15619:EE_|TYTPR01MB10921:EE_
+x-ms-office365-filtering-correlation-id: e07ee439-088b-4fba-b49d-08dea2da8b4a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|22082099003|38070700021|56012099003;
+x-microsoft-antispam-message-info:
+ YmmYXtd8bbnGrk3vPYpwwzt1zwZdBx6LBRgug2P1n7K1qBc41oOAC2d4n4n/zuew+QgyfJp60toQ5IbzKSZ6gIjiVl3NQYsmu6gtEdmOo/ASOi35mxjL6X3d+jv1oaAZ4hrbBhLf4eveDXgukwvNsWHGDkNJPx4/LS6U3HGrmHXVvWLlMkSy/FqWJPK4BE9jONKIQd33IT024wde7uTNMPhRK+bhLwqdnzYRX8rRXIZqP0+45ltMFIT4Kn7Rr5vcGeRvi47yEIAjuEZAm0lLjhDBC/cmaemgPFLoUDW+dT0KLos1TaS1fP/iaIdKkPJUG7Rxga0ja9rl5vNP55GGsnI7woe06nZYCLQGJEKhuY9Nvuh3XwSJPSyf9/6tKt6hUSSou3DsVBUCAQMuR4ncpa1InVxP4lEWiE+t+RvxC2zplGS2Uq0nlG9pXo1/onKaI9YkFUaRzApAjlDJKjrDkVz36wFM1LwFgEBfTWfVxoH0xNl5HhmIQuSaa6wtM3LMWfAu/LzWqB5AQSrq3N+05DGPuYTtl8wRGlqBEHkw3ewi/d4boct9OAkL3C7GXNZ7VKxsjI+MpRTx3kyLZN/M2TJrjuqTfiJsrxlX76wjoe0WpSHM4GOi4ZzzeBcxhl11/JDJya12dmUaY4zbmJSoERb5222/SyLsK/BDrTHkAvsltmZnqgDRpFfPb/J3PlrB6eAtWuzqH7MSyC6io+AdwR0FxE8hoQtFeVziHj1GG4f+DT/gNWBDEpt7CO9Vw+29IvQPGTrNcs+3O+7E8Oo+V0pvR5pprNJVN5DuYqbu7oo=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYRPR01MB15619.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(22082099003)(38070700021)(56012099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?gRP0qTdtjHZcXeCnJXUJM0jk+JE1RZOm6SQgSupA09qYgFlKa+9Yvh5hw4hY?=
+ =?us-ascii?Q?fD/eAmRHinBDHRPWLM9ncGW3oGD1Qk6n9cOqCRMuIZ8JuzrTMO8qxB+WlDtY?=
+ =?us-ascii?Q?l1O4xTwB2oGLOUwxClHGA8p2nyHMYU7/ji6zr3DTw13bSnWkLqryIJZZMPac?=
+ =?us-ascii?Q?m8xsGzCnl39i/bpBthuPnhxHv2SOaWec3ODs2gQd6dwqY/g9iubtKAyuh3X+?=
+ =?us-ascii?Q?E3falcl7Z/yg/yDNnryiuRQT3KVGmT4hLbqKI0hFFRwGCeL+B/lDq3ZG2mjA?=
+ =?us-ascii?Q?t4QMSr5UooTpF7Lbh9HNxXY6+iJirNCHC9nBzIEMToSbEl9qlXLtmigE0BpD?=
+ =?us-ascii?Q?aQJsTiErzqn1/QPiTH1XU2K8QnbSe3J+zhp5NJ+w3ZwfIgHCxOOSx8WqbLJG?=
+ =?us-ascii?Q?wQkWzk/tqVPoxb0NckxWf5xMOIJg0mi4N8e8rgYmM8RpBCoZ27v7xTD/OwQc?=
+ =?us-ascii?Q?cJm2PJNEalnRrzH4SpzrB/cxftZL/T/IM1MecccJSAGCgoHiryWcG9JpmaFX?=
+ =?us-ascii?Q?+09H3jsQN5WSacknrGRtM3BcSHuxt1wiTTx4nFnaZ9VkA9DIoEBUNN2ufwVH?=
+ =?us-ascii?Q?aTNrS4Qkb66ei2fGc9R6bLTsTUuRT94JPkS95eFfoVgOSCVnyLzRbo6NlZBf?=
+ =?us-ascii?Q?iO+TmcABB7ioNUusAcEoaUQi2SU7ybEzZqCVr+AvuHVOR4YipK0IRKQOMr4L?=
+ =?us-ascii?Q?USLfzJqO30nO6K58x+8A8mZD7kS2jtHKEHhs6YYxQUoy1zGNbe/DuSFfGQ1z?=
+ =?us-ascii?Q?U9X9+Dnmj2G/wX7Cx6EHYBRwGoAl0hAHGw8ozZsKKjhSNiCGpSbYaD36quvT?=
+ =?us-ascii?Q?dB3ig+i0cMMRBzBfckd22FpwtjS9rvk9Bp2g5+E3MRPyonSgJ7NgGIlsE40U?=
+ =?us-ascii?Q?zPdx5XzzdUAgAvTHTcegsIuZA2HdATKTn61ReKYYQgFK+s3wqnqK+ITApSG/?=
+ =?us-ascii?Q?UuSQgwJ6cOKQEg4zMjajmHr5iojU5oz8xjERzq649um17tipePRXZot6iLuh?=
+ =?us-ascii?Q?pBtc9j2U9cSH9dNB/7ghWNAG4Q0kCP8r0lkpYyal92FsBCY9PCRuoKzgmfi6?=
+ =?us-ascii?Q?KrY7Lg1Qo+qvJXN5I3yHx6siW0kSOwWvnDfDCjpiXW9vjqioIGjMpj16ecwY?=
+ =?us-ascii?Q?QCu+BTnr/bVepRsASHZKfB48WQgxvJoZSe/h6bdMmpaQvVYA1AEs1hV3OkFb?=
+ =?us-ascii?Q?y+D9MF3Z4zi2qQ49BPF8TdTpI3dTMFjKIsE6mWaz3sHvUHxlinnmSGGnj/hx?=
+ =?us-ascii?Q?XHO9ozRcKtSrmfA+opL+Fqp9PrJ3A3Z7pc+vbh65lmrRZ4JOT//NM+AS8w6N?=
+ =?us-ascii?Q?w5jMly7R0+Mda0st72qrSQwi2PtLoaBq1kltH2oZSH/6XJdW6QkBgx8KLMK1?=
+ =?us-ascii?Q?gHdBZmUaZAkc3FWbc/KkYWXYM8A8My0iCoWXyOG76VdBqCOMGqDa4xjSVn/m?=
+ =?us-ascii?Q?fZUBCijLWkWzMZtfNW9DKbSNyeZz6JspUR5ocXfwTPNvC+YgCyKZTl0+8zDQ?=
+ =?us-ascii?Q?0wDn/daPGs7v1GU1pTbYPhFNOM8e+Bpkh69KIvp+WGL4CPJSfFJ4jFJNDI37?=
+ =?us-ascii?Q?dTzKKD5+op2+K8Qr3eW6eemXLKqk3f9It/i/RbNeZVruK8SCKEbChxU/zu8N?=
+ =?us-ascii?Q?0C6Fwi4e2NNxpXvcsOg+AHWcCMo30Ca0bqdRsrC/rwAREpfJ8r88iCoK+uGk?=
+ =?us-ascii?Q?VlhY9PcxW6THjKVRuum87Pnc+jY5yQyLOze/jSL4s9rykk5o5aHbaC9y6W5C?=
+ =?us-ascii?Q?DCP3gt3jC1y76l3MpZWyQUtjzRA8VinU7pHW36Itx9PnZlAvSaxo?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYRPR01MB15619.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e07ee439-088b-4fba-b49d-08dea2da8b4a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Apr 2026 14:54:25.6360
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: FhVkK9I0u94obm9GE8zrvrLQD70BKR1jx0Kd9Lp2yCQ9VcTSmOVIaJwFniaEALQU/GNBr0Zwj5rgF7cUOlUyO3aJNTuX08E++HmhRV0Ei4DFvEbWo2GQdWYVxYs/an/j
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTPR01MB10921
 
-rs->fifo_len is assigned from get_fifo_len(), which returns 64 for the
-two known SPI controller versions and 32 for everything else - never 0.
-The subsequent
+> -----Original Message-----
+> From: John Madieu <john.madieu.xa@bp.renesas.com>
+> Sent: Saturday, April 25, 2026 5:47 AM
+> To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>; broonie@kernel.org
+> Cc: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>; lin=
+ux-spi@vger.kernel.org;
+> linux-renesas-soc@vger.kernel.org; linux-kernel@vger.kernel.org; john.mad=
+ieu@gmail.com; Biju Das
+> <biju.das.jz@bp.renesas.com>; John Madieu <john.madieu.xa@bp.renesas.com>
+> Subject: [PATCH] spi: rzv2h-rspi: Fix silent failure in clock setup error=
+ path
+>=20
+> rzv2h_rspi_setup_clock() is declared to return u32 but returns -EINVAL
+> when no valid clock parameters are found. Cast to u32, -EINVAL becomes
+> 0xffffffea, which is a non-zero value. The caller in
+> rzv2h_rspi_prepare_message() guards against failure with:
+>=20
+> 	rspi->freq =3D rzv2h_rspi_setup_clock(rspi, speed_hz);
+> 	if (!rspi->freq)
+> 		return -EINVAL;
+>=20
+> Because 0xffffffea is non-zero, the check is bypassed and the controller
+> proceeds to program SPBR/SPCMD with stale values, leading to an unknown
+> bit rate.
+>=20
+> Return 0 on the failed-search path, consistent with the existing
+> clk_set_rate() failure path which already returns 0.
+>=20
+> Fixes: 77d931584dd3 ("spi: rzv2h-rspi: make transfer clock rate finding c=
+hip-specific")
+> Signed-off-by: John Madieu <john.madieu.xa@bp.renesas.com>
 
-	if (!rs->fifo_len)
-		return dev_err_probe(...);
+Reviewed-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
 
-is therefore unreachable.
-
-Drop the check. If unknown controller versions ever need to fail probe
-explicitly, that should be expressed in get_fifo_len() itself, not
-through an impossible post-condition.
-
-Signed-off-by: John Madieu <john.madieu@gmail.com>
----
- drivers/spi/spi-rockchip.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 231fbcf0e7aa..1bd48376498a 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -824,8 +824,6 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	}
- 
- 	rs->fifo_len = get_fifo_len(rs);
--	if (!rs->fifo_len)
--		return dev_err_probe(&pdev->dev, -EINVAL, "Failed to get fifo length\n");
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, ROCKCHIP_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_use_autosuspend(&pdev->dev);
--- 
-2.25.1
+> ---
+>  drivers/spi/spi-rzv2h-rspi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
+> index f45af5884638..1655efda7d20 100644
+> --- a/drivers/spi/spi-rzv2h-rspi.c
+> +++ b/drivers/spi/spi-rzv2h-rspi.c
+> @@ -579,7 +579,7 @@ static u32 rzv2h_rspi_setup_clock(struct rzv2h_rspi_p=
+riv *rspi, u32 hz)
+>  		rspi->info->find_pclk_rate(rspi->pclk, hz, &best_clock);
+>=20
+>  	if (!best_clock.clk_rate)
+> -		return -EINVAL;
+> +		return 0;
+>=20
+>  	ret =3D clk_set_rate(best_clock.clk, best_clock.clk_rate);
+>  	if (ret)
+> --
+> 2.25.1
 

@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E32A155C82;
-	Sun, 26 Apr 2026 23:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936B331354C;
+	Sun, 26 Apr 2026 23:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777245765; cv=none; b=H4ajiQ8s75waxLf3+xKkBrwKtMSuZ+0IYArhfKiJGdsH9AwIHLEIvULkEZYyEaxS5ntnu83b+edJywXp2+dcXtXzJzywwnlFzCuMWsPbAQnuKEaukwzNwu1o4A/OzO1QlVDm8A2qdHDLqYljNgpsGir2zfsNcWCvV2swd2YYbXg=
+	t=1777245769; cv=none; b=Qr3OEuiY5xZI26WZziNmyvBm7vzbmq0Hd8uZw8LCM0jBtI1rZDGy6Ad7ZZ7grPoz8fqJPZHY3aAK0Upda0yr1Fs/uRermGNcrZYnUgy4OjdA6UA29JzN+vj+a41kWJLJF66yKzXkn60EikLBpuRdHYC5GNDxUrXdxgHK6Tz8crs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777245765; c=relaxed/simple;
-	bh=SmIp8IO/MdHTxdBpkYMqcIoU2ScMnSFAPgfF1YMBViM=;
+	s=arc-20240116; t=1777245769; c=relaxed/simple;
+	bh=vsE+qGgh80QPiXBguRKauJtPXyHdh1L5XMvQYWaxFw4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bNUdu5mdn08pw6YV7axvGFQbV2JQ18s76MVpwhj48C2ZP6KQth6kzCjqT1lpb7Jkhmr/JYypJ1lfH+BqYsGEKDyizfLwpGRDg9zvq1KBhxXpqjfRBnw7uXOV8L+GphCo10zuV//A1bH0Y+B0DehvqhSJ0zrzuISYQLaXfJXj+qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1xV0sUL; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=EjRqfKwTNzJ4yVcgBa9Cq5Ym9TI2Rws0DkV6ZjQbDqciQ1UQZWpzXp78k64QNDGNqzaL1fqtakj7brYdjfYt//XjxFmCMNU9ikvzsVuk2rFa74fZ8CL/VcGtAUKe7Q7yndS9pNTqrlSvtX4ncrh0ZTmmAA+StdZOqAOjC6IGvME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A20w0M/M; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1xV0sUL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51F6C2BCB4;
-	Sun, 26 Apr 2026 23:22:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A20w0M/M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D540C2BCB4;
+	Sun, 26 Apr 2026 23:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777245765;
-	bh=SmIp8IO/MdHTxdBpkYMqcIoU2ScMnSFAPgfF1YMBViM=;
+	s=k20201202; t=1777245769;
+	bh=vsE+qGgh80QPiXBguRKauJtPXyHdh1L5XMvQYWaxFw4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=a1xV0sULfbhgv7lcb+vY0wyfH8ZOWus2jbjZZlSxQ+P8ZgQIK2K9NKWb7MAtvDZ7U
-	 xHemB4kG6r28mWO2YtIdNJBI2GrrETWxp1hVwOv3MhEEcs54oWVB+/MmiYqwDGeVR4
-	 /xefwMHjzCrp2K+sOMSfqWCZqqDHU42YQ6vc3tKh04miNypV9rGsxHw9M7/lQfPFuO
-	 66OuyJiDEHzM37xgLpflV26Lg+/XUuBUj2iKPP6yMD7b3Eyb7wXmkdtKfFjKJzvg/y
-	 bO9Y4t2DcVwKYfjnE46rZc6Lrg7CW0JDPkKucxkGtJ2t6RV2z9BvnTa+Ol2wPzdsIK
-	 h295rgmL8YCSQ==
+	b=A20w0M/MF7I+C3++RQZv7ep6L3zI0jKcxQls7UAKndSlINMvtyRn+p1hl9gpWpcd8
+	 bOIypMW8pQUVsUB2RJs2xQ3tzDYz+IxpJpJWFw5qB5+p9Rt84COrwT5F5KNzsbZeRC
+	 B2qOLc2n9GBkyFXIK0wVcmpz8YdhYDzrm/5myn1AwYl9jr1sk6iVgo0ZZHnKRlrLfh
+	 dfUoe1gNe4edP0l8//SoPqOFh8QIhC2k996JUZKghi87b/XKDm4xs5xCQrs1terXst
+	 ey9E/bllNhyShl2dOFZF/4IXKo+73nLrlHzs94fotow0SbgMAzPx9Y3brzOqUWwlxt
+	 YMY9QmetLIzFQ==
 From: Mark Brown <broonie@kernel.org>
-To: heiko@sntech.de, John Madieu <john.madieu@gmail.com>
-Cc: jon.lin@rock-chips.com, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260425092936.2590132-1-john.madieu@gmail.com>
-References: <20260425092936.2590132-1-john.madieu@gmail.com>
-Subject: Re: (subset) [PATCH 0/3] spi: rockchip: ISR fix and minor cleanups
-Message-Id: <177724064669.266775.12560276533670856955.b4-ty@b4>
-Date: Mon, 27 Apr 2026 06:57:26 +0900
+To: fabrizio.castro.jz@renesas.com, 
+ John Madieu <john.madieu.xa@bp.renesas.com>
+Cc: cosmin-gabriel.tanislav.xa@renesas.com, linux-spi@vger.kernel.org, 
+ linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ john.madieu@gmail.com, biju.das.jz@bp.renesas.com
+In-Reply-To: <20260425024725.2393632-1-john.madieu.xa@bp.renesas.com>
+References: <20260425024725.2393632-1-john.madieu.xa@bp.renesas.com>
+Subject: Re: [PATCH] spi: rzv2h-rspi: Fix silent failure in clock setup
+ error path
+Message-Id: <177723991132.266775.12421850325652488655.b4-ty@b4>
+Date: Mon, 27 Apr 2026 06:45:11 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,29 +47,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1521; i=broonie@kernel.org;
- h=from:subject:message-id; bh=SmIp8IO/MdHTxdBpkYMqcIoU2ScMnSFAPgfF1YMBViM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp7p5CWz1j9sFp9KrJIpcMW164Et7JC5XZDwrTs
- WT+w2ulsc2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCae6eQgAKCRAk1otyXVSH
- 0FjkB/wIMXsUIBOTKU4d38uqNrqkSbKfQAosDvnKwSjle7gXrMfcR8D1ZYy5zmtHT7n2ovtDxR1
- AmSf05TShUO/PEXaEoxxvhv/Y42Euhle8RHQ6k25qQQna52cuhPpZLztgfgL4Usnnx7GCJA9sxV
- CaDQXq06WhUm69R3EplDijMrCJ9e4gVaJavsgYBeoX6fHi9HesglVSR3OUaQb0zgM6jKNj8km4F
- 5ggtni1+LuPBshh1rzjQ3w5CQpVazb+F88al4O4NPJ7Jke0DrFGZpH5MSCXcWv3LyMzTkomGYQr
- 3mjCGwiOgBUioDe6WtHfiKCY6C0UwqVGJZa23y21TxbEa/1i
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=vsE+qGgh80QPiXBguRKauJtPXyHdh1L5XMvQYWaxFw4=;
+ b=kA0DAAoBJNaLcl1Uh9AByyZiAGnunkegcseI/qrazox6E4eVsdhr0Ku2Bz7dfpIJCGOUyE5OU
+ YkBMwQAAQoAHRYhBK3maKpnVxi1n+Kf6iTWi3JdVIfQBQJp7p5HAAoJECTWi3JdVIfQQuIH/Air
+ TiXj0pn11TxFw5hoPbgwLl3+QUz/zTD9UwR6atqPZnhbVgg2CcLchCHPgJ2hVsJT2qnOFj9x9zE
+ PE7vdXKwrggW+fzDvncpVwnFgsGvnfb8KpmDZasULktRuHrZ8j/N7KsQ9p4AKGis53hK42MhDkl
+ TMRZMnw9aZBQsyMSxbWLmK2KoBnvQyNV9Xmc4ayY88dM6zJsvayzS3ymoFJ8uQtqS0Kl5hshE5f
+ A69c/XH14mWb03AVXHm/sFtNGxG1sZBhtqtV/1s11XBCUWfQLY57yk8dA+aGrpKFnO1SvCPbpvg
+ reamSg1LRWWaZvUHrYm0EEGngZkTazZPD9FAsgQ=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sat, 25 Apr 2026 09:29:33 +0000, John Madieu wrote:
-> spi: rockchip: ISR fix and minor cleanups
-> 
-> Hi all,
-> 
-> This series fixes one real bug in the Rockchip SPI driver and tidies up
-> two unrelated cosmetic issues spotted while looking at the same area.
-> The patches are independent and could be applied in any order; they are
-> ordered here by decreasing severity.
-> 
-> [...]
+On Sat, 25 Apr 2026 02:47:25 +0000, John Madieu wrote:
+> spi: rzv2h-rspi: Fix silent failure in clock setup error path
 
 Applied to
 
@@ -75,10 +68,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
-      https://git.kernel.org/broonie/spi/c/b4683a239a40
-[2/3] spi: rockchip: Drop unused and broken CR0 macros
-      https://git.kernel.org/broonie/spi/c/7643978722aa
+[1/1] spi: rzv2h-rspi: Fix silent failure in clock setup error path
+      https://git.kernel.org/broonie/spi/c/54900126ae0a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

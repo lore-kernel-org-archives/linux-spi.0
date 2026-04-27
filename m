@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076E2EB10;
-	Mon, 27 Apr 2026 23:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7722EB10;
+	Mon, 27 Apr 2026 23:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777333530; cv=none; b=SUH1QcsHA/qoN+Sgg9AMeZtY5iad1U7R8VoZlW+XwEdQBERAPkuwT2h3ErOmDKYqsZ49FPUEz/s9FUfyOMo7Mu7Dm5yX0EInb6WFdufvO/DPdC32sFJE8zSLwEwCtptIocWRPdmz6nW+nIx2C83XbmzRTru3tRPxjxe7NhZFKms=
+	t=1777333577; cv=none; b=hzgIRnlF2UI6UxpOjDrsE9rFBLBC+/f8XzAFuMBa+D5W88E1H4TLVwImQzldqr0+yxuytWI09zHO0utUuzktAkk90Nk6E6GlYYhmbJkLK+gsNkwdV3R0RU7f1LGuJJSRDt/Ws4UMwY+gJ9QjgMm6LsX7qGB1WVwiF9WqAzJsjmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777333530; c=relaxed/simple;
-	bh=iNUVz32+ZmRXhhmJskRiUJf6GS14RqQQlQPBx1DWsKc=;
+	s=arc-20240116; t=1777333577; c=relaxed/simple;
+	bh=BgEV4tScGyGHrq38KvfpxGCI/GQPCZMnKeGZFjpJUd0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEqmeHQF1YMWxFeSYqDrFR+G4EeBzKsSllAQxF8uJwPz1cdmYGLdGw3oubmuKokySKiCgA9sew/d1eHmxdJxRdt3j4t7rkV2qztyJ71cYLrJaEHVcQQJa6+DX0E2Ve/oftZxxSPjj09EA2RwyZChCS5ZMFK1l6LiA5csEi62YpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+IJFxAf; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=r2Kx2WTb7x1tx5mQrOgWKNXmyOKQHAkR+NQnOpZN+Fj8lAsIsNsT8fcnThQky7GAZ9hJuT+h1ufdUCxNm01purfDe8L/66Gdu7/4p6UyCKaCS7GVlpHE3QK16h7qmfVbiPA22HPO5twDg0JHn4PXsXnh2+PVpTYaL4SGYCa00DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgHifR4R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+IJFxAf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAEAC19425;
-	Mon, 27 Apr 2026 23:45:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgHifR4R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19068C19425;
+	Mon, 27 Apr 2026 23:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777333530;
-	bh=iNUVz32+ZmRXhhmJskRiUJf6GS14RqQQlQPBx1DWsKc=;
+	s=k20201202; t=1777333577;
+	bh=BgEV4tScGyGHrq38KvfpxGCI/GQPCZMnKeGZFjpJUd0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J+IJFxAfLuZ846RGVISa3U7kuN5V1+FpjxU3GkRmXZSD3H3MGrbV6Tm7MfNxtK0Dn
-	 wALy27ziHiAfInsEO+ReGT65yrLEoSHPgUDE2r/z6PLQaCwV51tFuQxIEyB95U+VlH
-	 asp6crTuydstvTk69W3ZvcsmII/KGOlsicfCJSiCpNCC76DpgdmoFXeo5K1kjV2npP
-	 n8D1etefFPz0CtEp0DvLEhnT3MksTBHrUowzwwjNjAXqg+qwUpDH0UWqHRhP/wWXBJ
-	 fEGcvCE3vl5TxXlrt9YY6qHjBClLtV6ymGDxPPTcVe/mUWN+AWOEg594UkuCIDDPFB
-	 epCC/Z1B37I6g==
+	b=KgHifR4Rvnjqb9z7IthLInTB89y0CZToWtLA+msb2q5aVkuHPeTOXnSFMYRvMi/EH
+	 t9ifFWo5zqWv/uI5PbkdFFR4Pg8ncKlclB//6j4sjcLOU0aCZym6aapU4EWmT9Vbon
+	 Pq0Y7v5vUFpA4Hzneu96riKjms9HFOcha4GerbLH4pJUulK2vO25lFFL0f5eNHWN8X
+	 utr6DqD4b714STNxJGPVmiXKCzlr0PEDwaO5ZBbX8z0EEYEF31iegkVGILNHUvuJ7l
+	 koOyIwHFXWbP1li7lPwjghaxpKhxWOwkM228/dVEK7xQw40sZIkMWMHteQ2HipUl4h
+	 YZ2bXdJy6eJZg==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id CBA451AC583E; Tue, 28 Apr 2026 00:45:27 +0100 (BST)
-Date: Tue, 28 Apr 2026 08:45:27 +0900
+	id 123371AC583E; Tue, 28 Apr 2026 00:46:15 +0100 (BST)
+Date: Tue, 28 Apr 2026 08:46:15 +0900
 From: Mark Brown <broonie@kernel.org>
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 Cc: Richard Weinberger <richard@nod.at>,
@@ -39,11 +39,10 @@ Cc: Richard Weinberger <richard@nod.at>,
 	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
 	Pratyush Yadav <pratyush@kernel.org>,
 	Steam Lin <STLin2@winbond.com>, Santhosh Kumar K <s-k6@ti.com>
-Subject: Re: [PATCH 0/4] spi: spi-mem/mtd: spinand: Prevent SPI NAND
- continuous reads on am65/am62
-Message-ID: <ae_1FyLxEwWqNFzX@sirena.co.uk>
+Subject: Re: [PATCH 1/4] spi: spi-mem: Add a no_cs_assertion capability
+Message-ID: <ae_1R6LlSnhgGzYl@sirena.co.uk>
 References: <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-0-0d626e1dfb2b@bootlin.com>
- <87mryoh6s9.fsf@bootlin.com>
+ <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-1-0d626e1dfb2b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,37 +50,39 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8Joz10+QGWXmFyC4"
+	protocol="application/pgp-signature"; boundary="gapjDoiyjve5Jhwd"
 Content-Disposition: inline
-In-Reply-To: <87mryoh6s9.fsf@bootlin.com>
+In-Reply-To: <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-1-0d626e1dfb2b@bootlin.com>
 X-Cookie: Victory uber allies!
 
 
---8Joz10+QGWXmFyC4
+--gapjDoiyjve5Jhwd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 27, 2026 at 03:28:06PM +0200, Miquel Raynal wrote:
+On Thu, Mar 26, 2026 at 05:47:15PM +0100, Miquel Raynal wrote:
+> Some controllers are 'smart', and that's a problem.
+>=20
+> For instance, the Cadence quadspi controller is capable of deasserting
+> the CS automatically whenever a too long period of time without any data
+> to transfer elapses.
 
-> This series is related but I wanted to double check with you: can I take
-> the spi-mem patch and include it in that immutable branch which I will
-> share with you for inclusion in the spi tree?
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
-Yes.
-
---8Joz10+QGWXmFyC4
+--gapjDoiyjve5Jhwd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnv9RcACgkQJNaLcl1U
-h9BFagf/YjtP5kDc3k98IW+Rkwo9nxiTLI8aFESXl57np0JJhmJkJVyzpgO7oK0N
-plECehs4WQSfZYZ6wtwQwZKadh0+L7ZEn3xv6pg4MT5MumZDKhO2979Hpowpev0T
-pwgm+jLz8IQQhFd8MMfe9c5mpquctPZu/8D6Y3FC3+6f/5utfV5yhY/sEwVXY6G6
-0/fQM2h/zCKrPLFdbFIYWKAzIrCOK/0BAniwl3D3OZt+RBGYSM1DRi8zP8ILVb7w
-hW+B+lBUEp2KkbVUBLmgbsdnHNrgSLEyBzYdbvQfO2ZDB1xDkpkJG0hfq6O2pph2
-2BetnLGK+TzAuBpeFktpFLmqDPTbOg==
-=Lrto
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnv9UYACgkQJNaLcl1U
+h9CxEQf+JTupzIZPpOC3vt2CLtwH52cHBtR+Q5PL1C2kVVBeAUK0PmcZm2BHp7xo
+c44XrRhx384EXICy7h6poW/3D+NvFqoSreJKnVe+yyXs6U90L7KrjqpA69Oql1dm
+6E+XDXd+iix4uE3jV30tYrtF74lDw8is37UxB7t2Vw5jrl4zbE6YYEPSXnikvFlz
+B/IhxR4Z/yLBIoup3bDE2Ddr7zvqtpsTxHU56i5huQEiTy2QWq2sZ6HSdRSkkrAV
+mNY0l5Gx91m+o3eDaNafPdNZ1UNBvYxVd7v7SbYbDzIpN/AAKHhzuepn3S0QJCc4
+axs/msqQpRCbLkrRNOZowGPL0FZxjQ==
+=PPcc
 -----END PGP SIGNATURE-----
 
---8Joz10+QGWXmFyC4--
+--gapjDoiyjve5Jhwd--

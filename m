@@ -1,201 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC59339714;
-	Mon, 27 Apr 2026 17:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8389A296BD2
+	for <linux-spi@vger.kernel.org>; Mon, 27 Apr 2026 17:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777310365; cv=none; b=FMMCJWBZRrjjYSiA3eaR054EBybd+MBN+lSN3BN5CocSCcm8tIENJh1D+pCEesMt/NXdLvmDrgdKbTCry0Ws+gXSliqYGgAikUbOn+Q+F0KGjeL6CPBJrSP/6A4kIKVX2k8i7JaCo/d+VNC51IcRSJYDEqTpxQo1Wefcb3LD8UI=
+	t=1777311725; cv=none; b=a/qyJe/PxuPH1jIBrYJkL5ogULPtVC2+rVeuM1MsrMzxsROmMfQonYCVpoN7cIabzDD6XCdcljEscg0QSKJcM5HxzTZ35rA+jfHecCumUqkUCEU/ttR2+c30y87jDX3qYTwyuio1eGshXeDdRmaZ76Cp5RzPVHUL8hCDIbihOlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777310365; c=relaxed/simple;
-	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhQrdf7UOghUHj346nNBuNK4t8QKwv42weWTHzLB9J9H1Pg4KEcSn0eVYUQ5ec4lrY6ahBwiH6ofUxBY24/Bicz662twTEYvS8xMs3PQ8bMO23fNazIbxyRHabz7++ADrmyPHUUZtHt6Ieg+neofEfeiXp9GpsZ8FZ+KHzEUFP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8kV5Zhk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777311725; c=relaxed/simple;
+	bh=XeSwgOZMpfYnktBLdo2F/0kVCQFFtK/6gXhRKpyoyf8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KAGegNtMG4Qh7o5DWauqRUQcriueadWPoHXpoL1kbvzW3XUjsCS2rsM4nVBgQuRUCwhf9eWez83b2INLzLDmrHS3gD3helL7N0CgLMvfsFGr8US0Ho2FLm9Vttzjyynh/xdnP73aVJImvjLa/0aqvUWZjnz+DzZW/7PMiXbYZ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZR6skv13; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8kV5Zhk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25EEC2BCB7;
-	Mon, 27 Apr 2026 17:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777310364;
-	bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8kV5Zhk7HZbxy8X7mxqUL5UgTTJPPuuLtSKHKOe5PwbIiNodL9/7ESxRbcOMv4dB
-	 NN/pd897F5mMQZv6MW+RM/3mikWvqmJGQCtupbd6YHiobStaCQu79RRkwt3Bs1rL/A
-	 WmXtcy3vIzgejB2MGSu6MrKJ33itreKKdFlemNypyCUExoUHGXA1bHbqFqaNX4ujdd
-	 iXZiXWTV/w69yfgs2V8e+zdWAilhhtsvDDxzPIT8CbbievjXPmrPwVloE5aoqLKmYP
-	 ca2+sf92YJQm2mLHcpyNlGd6mMQP6QhUed6Hx8vk/CloBjO7tSgz4fayv+CeXka+Fz
-	 NwGM6tvALNVmQ==
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-fsi@lists.ozlabs.org,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-fsdevel@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	bpf@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-x25@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	sound-open-firmware@alsa-project.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-arch@vger.kernel.org
-Subject: [RFC PATCH v1 9/9] uaccess: Convert small fixed size copy_{to/from}_user() to scoped user access
-Date: Mon, 27 Apr 2026 19:13:50 +0200
-Message-ID: <8780eb2ef80575931a339e5225bc80eb13e9be6c.1777306795.git.chleroy@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <cover.1777306795.git.chleroy@kernel.org>
-References: <cover.1777306795.git.chleroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZR6skv13"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ab46931cf1so78483565ad.0
+        for <linux-spi@vger.kernel.org>; Mon, 27 Apr 2026 10:42:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777311724; x=1777916524; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QXUKL96HHtXT8Swed26n3AhG8V6vfxtBOdftEg8YXiY=;
+        b=ZR6skv13/iwHogej3ghDieb56/dUYCR6Q9b44kGcZthkjfalH/heI5N3pBFb/1ympw
+         TmtC9AJmEIMvgKzCTEJmG1VqD2LA7Uwmk2Lf+Oo0dcPawoFlPaXSZ9xg+7r/CNLPxwLe
+         VOCvBZ2aO4P8l4x5d/rj2GEtCek/tErpW3KV7Sx0GvTAOUYULS57EZi9X1ujbKhPm639
+         U+Xt3GHKHsiKLaXlGkWZ6yaevbCygx33Hflnoi4etV7sKxrY6FGpkCwduMCKG8tNANvg
+         fOv0lwJvr7z0UjTZzeFc6shJ6667tZJVNhDjsY45+LqBx+C75ATjSqQsNbTJs3wv4syx
+         7HrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777311724; x=1777916524;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QXUKL96HHtXT8Swed26n3AhG8V6vfxtBOdftEg8YXiY=;
+        b=Hg++3MSWFu8FpKjK5FopxvRcQL52m1ZI96OBJQA653uGJ/ngyUsIXBGXqoCmRjKbG/
+         AsWzIVuF6UVB81e6LDndOp52nxV4sd7i5yvciRwH6lvofuzJ9PNDGWaDmH5mQIG1RT+K
+         Jwuu+5Zc/6hAcmYSZBeTAlRevgHsSs7BoEOnCnUGxlgZjnTXSrerao5HwUEaUFg7LuWk
+         kjXUDQwZ/wYTXIuIoqC0AF6WhR5BKrbtViZD8bEMAPTgrm9vxCNerxbTqs+cXxFqFfQY
+         4bPdRurL6FZuzzBL4B97AloB2UacpFewcUEcVLuNN0830XrsXYyruPW8QACBRcMiOLIK
+         eSkA==
+X-Forwarded-Encrypted: i=1; AFNElJ+U5rudAN36jYkCegMRnq1SA+en4uExG2QGphoRqRI7ynwdArEA8RhzGzVMP+EOeAW4NIueihPHKOc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6crKzBG4DZs/+V5BwnNpG0p0k2Dw+qSshKdxu7kHR5soldzUu
+	RNzG2g4FopWF+SHodoA2fL/6X2WUBGJxEDqT0dTsHRJjCwSmM5MLPoAl5hh1p9RUq0A=
+X-Gm-Gg: AeBDieu5GJjfnhGIB+3RRNuUa2rNgX0FvKfRPqg20+NzO+eZMQcJARO83Lycaf7h8Dn
+	XoTNuOsNM62IRp7OrldgpwBTPnfVMpMvwAsS+WFBi7l7aAhacA1Xp174KCIFnCOhllX+ngDUrXq
+	rL/T0+aQwbk/Q1fTmVKnlRtezjHuLlMz+0w5YRnigivMOnMcwk9qBV3tga7sgyHWabodK1I7Qg6
+	oHg7aAXfLc3VVeQs3mAfw/w/MFn0dyfIc4NRIyL6bzSz4sbQKCLhOJtmrLH81/E22g29yoSY+oS
+	RYHN646tGvS00Wb7VQdGR/0Twoc1xEOjA0nJJGG/zYdY7BmVVWC5DZvAVfuZuduu7EkPZi00du6
+	zua6NeXkrdf++nFKF/+0B4cDpIZLnale5PBtqnUdZLQKxhw9Da034j2FnzJ2fhr3WG+vu94avIC
+	J9m+lHQ/ClKY2bsOCBT4fmkMn3lwk/+iiXGpH8CPrluoB4sqOVDfRR9QtgSew+sztAzkikQbbwO
+	5ELRyoT4lRAb727D+A/z/k3KAkmbho=
+X-Received: by 2002:a17:903:2f4c:b0:2b2:5070:8b with SMTP id d9443c01a7336-2b97ae1a058mr216655ad.1.1777311723609;
+        Mon, 27 Apr 2026 10:42:03 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.167.147.125])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b97aaaf65fsm755695ad.31.2026.04.27.10.42.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 10:42:03 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 28 Apr 2026 01:42:00 +0800
+Subject: [PATCH] spi: amlogic-spisg: initialize completion before
+ requesting IRQ
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3638; i=chleroy@kernel.org; h=from:subject:message-id; bh=xblTv37x9V4gU3cvmA9ILfz6xXNOv0sNe2zU9C6a5nw=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWS+nxlr/n9yu2DE7uwkCZGbl0uCp6Y1JLvZTPpz+P/PY xNqPMoaOkpZGMS4GGTFFFmO/+feNaPrS2r+1F36MHNYmUCGMHBxCsBE9HwZ/ns82Ho9PV2Q+7Pp 5fqvs6O/v3YN+3EgL+Wk4b/co1rlkZ8YGVZxmDl7XFiUcmPSTPW14WGSHT6/1u4pcTY2cjD0U7P bzAkA
-X-Developer-Key: i=chleroy@kernel.org; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAOef72kC/x3MQQqAIBBA0avIrBPMLKyrRAuryQZKw4EIpLsnL
+ d/i/wyMiZBhEBkS3sQUQ0FdCVh2FzxKWotBK90po6105xE9LZIvYi+xbXuDrsHZWCjNlXCj5/+
+ N0/t+3maipl8AAAA=
+X-Change-ID: 20260428-amlogic-spisg-e5594ea3eb48
+To: Sunny Luo <sunny.luo@amlogic.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777311722; l=1265;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=XeSwgOZMpfYnktBLdo2F/0kVCQFFtK/6gXhRKpyoyf8=;
+ b=OFIGxJd0HqHGcsDa69LDE+5exY7+qUnmI0oSnRQ2d+dvnySkgXxPzVkBoHZYuoB3sTJOnzLs3
+ d6XGyssMtjIAQj+SEwMTKdL3bmfjaiVsFkiO/jv3yAvePG5yodt/Lbg
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-copy_{to/from}_user() is a heavy function optimised for copy of large
-blocs of memory between user and kernel space.
+Move init_completion(&spisg->completion) to before devm_request_irq()
+to avoid a potential race condition where an interrupt could fire
+before the completion structure is initialized.
 
-When the number of bytes to be copied is known at build time and small,
-using scoped user access removes the burden of that optimisation.
-
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 ---
- include/linux/uaccess.h | 47 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ drivers/spi/spi-amlogic-spisg.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 33b7d0f5f808..3ac544527af2 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -50,6 +50,8 @@
-  #define mask_user_address(src) (src)
- #endif
+diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
+index 19c5eba412ef..f9de2d2c9213 100644
+--- a/drivers/spi/spi-amlogic-spisg.c
++++ b/drivers/spi/spi-amlogic-spisg.c
+@@ -794,6 +794,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
  
-+#define SMALL_COPY_USER		64
-+
- /*
-  * Architectures should provide two primitives (raw_copy_{to,from}_user())
-  * and get rid of their private instances of copy_{to,from}_user() and
-@@ -191,6 +193,9 @@ _inline_copy_from_user(void *to, const void __user *from, unsigned long n)
- 	return res;
- }
+ 	dma_set_max_seg_size(&pdev->dev, SPISG_BLOCK_MAX);
  
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_from_user(void *, const void __user *, unsigned long);
++	init_completion(&spisg->completion);
+ 	ret = devm_request_irq(&pdev->dev, irq, aml_spisg_irq, 0, NULL, spisg);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "irq request failed\n");
+@@ -806,8 +807,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 		goto out_clk;
+ 	}
  
-@@ -207,6 +212,9 @@ _inline_copy_to_user(void __user *to, const void *from, unsigned long n)
- 	return n;
- }
+-	init_completion(&spisg->completion);
+-
+ 	pm_runtime_put(&spisg->pdev->dev);
  
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n);
-+
- extern __must_check unsigned long
- _copy_to_user(void __user *, const void *, unsigned long);
- 
-@@ -215,6 +223,8 @@ copy_from_user_common(void *to, const void __user *from, unsigned long n, bool p
- {
- 	if (!check_copy_size(to, n, false))
- 		return n;
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_from_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_from_user(to, from, n);
- 	else
-@@ -239,6 +249,8 @@ copy_to_user_common(void __user *to, const void *from, unsigned long n, bool par
- 	if (!check_copy_size(from, n, true))
- 		return n;
- 
-+	if (!partial && __builtin_constant_p(n) && n <= SMALL_COPY_USER)
-+		return _small_copy_to_user(to, from, n);
- 	if (IS_ENABLED(ARCH_WANTS_NOINLINE_COPY_USER))
- 		return _copy_to_user(to, from, n);
- 	else
-@@ -838,6 +850,41 @@ for (bool done = false; !done; done = true)					\
- #define scoped_user_rw_access(uptr, elbl)				\
- 	scoped_user_rw_access_size(uptr, sizeof(*(uptr)), elbl)
- 
-+static __always_inline __must_check unsigned long
-+_small_copy_from_user(void *to, const void __user *from, unsigned long n)
-+{
-+	might_fault();
-+	instrument_copy_from_user_before(to, from, n);
-+	scoped_user_read_access_size(from, n, failed) {
-+		/*
-+		 * Ensure that bad access_ok() speculation will not lead
-+		 * to nasty side effects *after* the copy is finished:
-+		 */
-+		if (!can_do_masked_user_access())
-+			barrier_nospec();
-+		unsafe_copy_from_user(to, from, n, failed);
-+	}
-+	instrument_copy_from_user_after(to, from, n, 0);
-+	return 0;
-+failed:
-+	instrument_copy_from_user_after(to, from, n, n);
-+	return n;
-+}
-+
-+static __always_inline __must_check unsigned long
-+_small_copy_to_user(void __user *to, const void *from, unsigned long n)
-+{
-+	might_fault();
-+	if (should_fail_usercopy())
-+		return n;
-+	instrument_copy_to_user(to, from, n);
-+	scoped_user_write_access_size(to, n, failed)
-+		unsafe_copy_to_user(to, from, n, failed);
-+	return 0;
-+failed:
-+	return n;
-+}
-+
- /**
-  * get_user_inline - Read user data inlined
-  * @val:	The variable to store the value read from user memory
+ 	return 0;
+
+---
+base-commit: 7080e32d3f09d8688c4a87d81bdcc71f7f606b16
+change-id: 20260428-amlogic-spisg-e5594ea3eb48
+
+Best regards,
 -- 
-2.49.0
+Felix Gu <ustc.gu@gmail.com>
 

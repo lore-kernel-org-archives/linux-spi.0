@@ -1,108 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F191E9B35;
-	Tue, 28 Apr 2026 00:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39E427587D;
+	Tue, 28 Apr 2026 03:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777335458; cv=none; b=n3ywUgAEC2CjRzQrxpNg6pYRPSzUvQxCzSn4EyPvvIHTdUQQbSfFOr0Q04waPeQhnhXeG8Ab8MfavKy5EYPMTz/g1x67wnwArKRJt4wj+Ll46+DPXZUFHy909R7R7g0o6tRldJKkNz3r1cryPP4oIyMexT/W9MqXJnLwme9je9k=
+	t=1777347454; cv=none; b=qc1PaNei+7wKVPaGfBolJXVDubV4zvjYBTIZBmVKVJcCiHYn8A+fEBqmIs2zrADM+JwDN0sFakyLdDey1swW3xpzYGrjjrK82zYUL2fWB4QfVTGaR+w6pl1go293HqKzLptK3Qyvau5+6I6dlPnVAqnw1QRG/V9rgvmm6g2B05s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777335458; c=relaxed/simple;
-	bh=6RCzVcVHnWB7Xitp60ejz8BoMUtumigfr5ZwTpbOtJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S4DsFcLzyuh+itm5J8CSzCUzOhA4K8aI+QTPGBhCzfZGpRbZjNAZ3Ihl3JldSSAwmYqoYjOmme809qq7in34h1cPvH3E4VBYYHHu4WE6kBdVAQGXOzgEL9k+NN/ZnA0X81ddIyUg9oTOoSB7HljkRjesl2keNUAZvU0uXJ0IKic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ78DAZp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777347454; c=relaxed/simple;
+	bh=5T1Y+3ixBP4MWH0kDoYr/M9lHLniulXzZSW89qNFyCc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Z0fNyfk4DrEeT19YVSBlSd2l7gcr7bIQUFqUgsKk07yPipFMeLl8WbAu0bSWEW2chVlfDSVEydQA0vhoxVS3YF/YcOYSyrV5oZhWIQiv0OOy3ZfowN6RwN4bDL9V9U4jv/U5UTO/vq6wLyOBKYE37wsEI7fE6AC079Q7BMHZDVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c44JFtfr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ78DAZp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E13E9C19425;
-	Tue, 28 Apr 2026 00:17:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c44JFtfr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF11C2BCAF;
+	Tue, 28 Apr 2026 03:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777335458;
-	bh=6RCzVcVHnWB7Xitp60ejz8BoMUtumigfr5ZwTpbOtJc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cJ78DAZprfEadaOsdbT59/5Ch0WQGduepbtv8F020hgjU0ql+lhvRnGHz+VTrwjdD
-	 5EehzHaQkK4rgZw4wM0UqMP8ETaTDZ5Ty7c8ziuHuG1jCyEJwPH0J73BFEm6rBQt5a
-	 2vnTUPGVi01plwJSvt8F3c41VgmDMblGOalFxUzPx8tP/M1X2C+lbKUewl/KpFHy+y
-	 4uSL4AejTYdfJGJ13o6kdZnGmIhMQ5rZY4rs/o+kOmRIXoMPCbB7clr2ulMJ0kkE9S
-	 Ui08MzklpYlwOG35XfZzRRDEkmC0qg5VUlKHcASl8ufgrTMib9ww8R+rO3z3BYWcx9
-	 owOWzMyrBOOgQ==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 31EB71AC583E; Tue, 28 Apr 2026 01:17:35 +0100 (BST)
-Date: Tue, 28 Apr 2026 09:17:35 +0900
+	s=k20201202; t=1777347453;
+	bh=5T1Y+3ixBP4MWH0kDoYr/M9lHLniulXzZSW89qNFyCc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=c44JFtfr6aWnbrcsCiw4Nr7FwtC65zZXIYAQ4STp89PfMQIId9RwdJuvdQ1gHyhib
+	 poVBA4imyZeunKXNnuKcw9XWSWUiEm5H5KFKXR+FzdgCcwCEELzzlBl8dckkmbKrcI
+	 rnUGmuUukw+cKEyy6kfJnAyQpyA+GzjOnbg81Hmc0zDm6d3mPPBINcdRIGjCRkp75G
+	 xUWZtZO2v9QAdRtw7zRT0YMD5FkLpKPN/sp6qgxusTiTXVfzNi7C5to5fOLoDPtblt
+	 2nWQdFf1noH7NNG9FHLq7Odj4waR05mMsFEy8mut2ToqiM7G9HK8RGYEmM4n6+W56e
+	 tycw0NRTe7HMw==
 From: Mark Brown <broonie@kernel.org>
-To: Guodong Xu <guodong@riscstar.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Alex Elder <elder@riscstar.com>
-Subject: Re: [PATCH v9 2/3] spi: spacemit: introduce SpacemiT K1 SPI
- controller driver
-Message-ID: <ae_8n0I_ORDLib1y@sirena.co.uk>
-References: <20260427-spi-spacemit-k1-v9-0-ff753b551302@riscstar.com>
- <20260427-spi-spacemit-k1-v9-2-ff753b551302@riscstar.com>
+To: Sunny Luo <sunny.luo@amlogic.com>, 
+ Xianwei Zhao <xianwei.zhao@amlogic.com>, Felix Gu <ustc.gu@gmail.com>
+Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com>
+References: <20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com>
+Subject: Re: [PATCH] spi: amlogic-spisg: initialize completion before
+ requesting IRQ
+Message-Id: <177733784146.324244.3020070967543229096.b4-ty@b4>
+Date: Tue, 28 Apr 2026 09:57:21 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uloWIL4Vd8FJnYvz"
-Content-Disposition: inline
-In-Reply-To: <20260427-spi-spacemit-k1-v9-2-ff753b551302@riscstar.com>
-X-Cookie: Victory uber allies!
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1136; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=5T1Y+3ixBP4MWH0kDoYr/M9lHLniulXzZSW89qNFyCc=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp8Ct7Y00fBSSxGtMIo2f6hSBpox9AkbyHBmpEf
+ lNMp+TJH4qJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafArewAKCRAk1otyXVSH
+ 0OPBB/97cab0SZgYSGSRAZqFAqPrBZG/DX0QTLPjd4shAFlkHIVdJyCGCrSgQwe62NJQgTUPzkH
+ nziaEWkix8gTQna+f9gmoBOxDgs2WU5kQjdkyatlitcJcw59nsa3lfmqY+bEC0iekgYodBIYpQc
+ KxXS8cuprYo1AiPE0OKfnQI/VGhaYBHH/KtkMYTmiXts2BZOWTvEsv48cOnHFjoy7SI2xjSNCXH
+ wZnXqhjGqDtLdkHdROXTrt3AwI1XDRsjXD2oQ/AnIw7TcZUbALNgav2p64I8+0rQ4qeSQ9I86G4
+ kpMQx0N7RWnnpWI/scbMthpBlBYDAGHmJe9kzGIMl4PWc81D
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Tue, 28 Apr 2026 01:42:00 +0800, Felix Gu wrote:
+> spi: amlogic-spisg: initialize completion before requesting IRQ
 
---uloWIL4Vd8FJnYvz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Apr 27, 2026 at 10:01:28PM -0400, Guodong Xu wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-> +static int k1_spi_transfer_one(struct spi_controller *host,
-> +			       struct spi_device *spi,
-> +			       struct spi_transfer *transfer)
-> +{
+Thanks!
 
-> +	/* Record how many words the len bytes represent */
-> +	count = transfer->len / drv_data->bytes;
-> +	drv_data->rx_resid = count;
-> +	drv_data->tx_resid = count;
+[1/1] spi: amlogic-spisg: initialize completion before requesting IRQ
+      https://git.kernel.org/broonie/spi/c/8d0189c1ea98
 
-This is setting up _resid with a number of words.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> +static void k1_spi_write_word(struct k1_spi_driver_data *drv_data)
-> +{
-> +	struct spi_transfer *transfer = drv_data->transfer;
-> +	u32 bytes = drv_data->bytes;
-> +	u32 val;
-> +
-> +	if (transfer->tx_buf) {
-> +		const void *buf;
-> +
-> +		buf = transfer->tx_buf + (transfer->len - drv_data->tx_resid);
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This is using _resid as a byte count.  It'll be fine for 8 bits per word
-(which is by far the most common thing).
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---uloWIL4Vd8FJnYvz
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnv/J4ACgkQJNaLcl1U
-h9BKxgf9HFwNyeCFgiJ1m6lF9UKtdez+pweMTHvDt7wqUtMyufYwnBTIxOIB3Kv7
-mh5QcTbeorohLLIvkOV2893vxCNwlLyZdUU+dFQak6B6RQGSYLJoIjDJtSuyjYhM
-T+2YKiSllt6ejJCezhmo56WDtVCSJR820A3qYN+T5B/52xwFkNa7SoiBG7PB9Wya
-57r8VQLQ4ZeG5MBmwHe23njUPZj2WYYwMUo0Uz0j+9H1gdPugU1nv7B2q9hKCRPe
-Xo1mIWG3NiZ28wHyCT73ICpkRSOj62o8nw9EUauWSu9hwI6z4wT508HxWY+tkSAy
-qBlmsjEqZ/rJtgIQyFZsnKgAi341Vw==
-=TBfs
------END PGP SIGNATURE-----
-
---uloWIL4Vd8FJnYvz--

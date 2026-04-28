@@ -1,93 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEBF27587D;
-	Tue, 28 Apr 2026 03:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5668F18EFD1
+	for <linux-spi@vger.kernel.org>; Tue, 28 Apr 2026 03:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777347458; cv=none; b=U7EVz1MIoPToc5ohmlZgvrQOg355+n2wL7A5q2/jvLBEJfVqplS8lb6BpOWM1E8wVCSke6JI3V0JhDIj9VcWip2KzPlMCZOJCoOBwfGr511d6Km9nQ01eqE8/Qr7D++ZV9nQ6IV8xv+m/y3anjyO0J7wY3uGFs/KmBiSLV1FT+Y=
+	t=1777347651; cv=none; b=LuJm9k+AtL9oiEpgNyEiVcCnlRhXGp9WiqBkMsxhNztY5qJFQuARbEFZy+3HC59ZxK5HZMSnDDGE/IoEnxBjruoOV5/+T3C15XicpBeqKCQLEy4H1P6liAMCekRPXh2dUw2HuwvM7D4hAdp6pOktT8BozG2B3rBmWMCBQXQMuzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777347458; c=relaxed/simple;
-	bh=NEf/nz49Jg5cePXiflaKdHCDvgtTYKtPL33NG+khY4c=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AhIooXZFOUhM9bh90VISTiowMrT+kn7O53BzPzwTDlNAomGrTudeJQYJm9x4LuTABNaxG2CyHnTotdRqCiM5mvHrMlFLWTnL9+GMIRgxlXCRDc0RJr7WNHvU88qB9YbMYAtTQXSGEkobMt8nF4J8io4h+WKypT9Uw/7JtdERoE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S603NHWz; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777347651; c=relaxed/simple;
+	bh=RBKBIYvC7pwxWYfLAGtZD2k7P61BIbnTAel/4ZEDQLA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=cU8k6qrZKxxdJZzHq/RkDPLinOcjN0W1gx8SklnDE8hoz95s86T0GA9R8OoK+MWqnc5cMlTvFnbWu2r6R6tZRI5bF1bOgDXbrofKVScAcCwDL5gWu/7brNE2Mg9nxNAGkXaz+jA/xwFEAH9zkugDigVbUtXiSCn3BBB6I3RTtKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=emV2wqxR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S603NHWz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B77C2BCB3;
-	Tue, 28 Apr 2026 03:37:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="emV2wqxR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81A2C2BCAF;
+	Tue, 28 Apr 2026 03:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777347457;
-	bh=NEf/nz49Jg5cePXiflaKdHCDvgtTYKtPL33NG+khY4c=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=S603NHWzzyuuW6NGjbe45U+3g2zbeeyN+6WY7hmeqEFU49pCh/qP4icOtTAtOItMZ
-	 1HfjdtUWUgiUcVJoRkSXBAK+8CtIwLuHm9aDOYVB8Jg88sVryiwHRVPUDHJRwuKyeg
-	 DEShaIYqiLN5hnBAj/2fZVugNWLt4XIivYqfN+aiK9hl7099ErQ6hMrGhgOzFnh62M
-	 hBKdxSyk5wcTZ91qT1/QCBBi0Be3VDvhi5L+2lGhQ8cwXmhmI/si2CCeb/jvrX43Gj
-	 UTq/yWw8XSk7dCqMU/bjl577g5VSBXXcK+YDIvaX2VU9mnPNIlTUBAwemnI40H4Xj6
-	 bhH7iUA41xLsQ==
-From: Mark Brown <broonie@kernel.org>
-To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
- Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
- Prasad Bolisetty <pbolisetty@axiado.com>, Harshit Shah <hshah@axiado.com>, 
- Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260428-axiado-v1-1-cd767500af72@gmail.com>
-References: <20260428-axiado-v1-1-cd767500af72@gmail.com>
-Subject: Re: [PATCH] spi: axiado: replace usleep_range() with udelay() in
- IRQ path
-Message-Id: <177733296453.324244.7720403151697677139.b4-ty@b4>
-Date: Tue, 28 Apr 2026 08:36:04 +0900
+	s=k20201202; t=1777347650;
+	bh=RBKBIYvC7pwxWYfLAGtZD2k7P61BIbnTAel/4ZEDQLA=;
+	h=Subject:From:Date:To:From;
+	b=emV2wqxR4nlAtLg5ErrG9ytrMsSDD0+fD0OzHy8abKn5dWJrdp1LGCrczT8+W0UwM
+	 1h8lyn8VGsT+GUlhVDpuXTe+X1/FpzFoocQnhaSQZWBQyKsAY5GEUJTcO2uDt3MyMQ
+	 XKrK/pVz5SI8YeS8YcpCjvaE0KwTmqb7h45KjiBZc3qoEYu+iOCghtH5ApBdEmFDxz
+	 m4RvzGza2sTguJU/urjTQK330IulvozYeQpNH3mn5yrYZW6GeQCogLYe0ZRzCyRoDU
+	 9FhtHg03iuy1IG5OpiBtxZdnegGzUGH4sbQdVEH8RVSJbMaMncv0FDF7fqO3LkGe6R
+	 tTBfjQrx4PVBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42677392FFDD;
+	Tue, 28 Apr 2026 03:40:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=broonie@kernel.org;
- h=from:subject:message-id; bh=NEf/nz49Jg5cePXiflaKdHCDvgtTYKtPL33NG+khY4c=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp8Ct/MjDAxn8mdGp6ObrdIsYa9KFm0Svgqfo4R
- hLW2izo2B6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafArfwAKCRAk1otyXVSH
- 0Hj7B/9yqUS9eo3ZW3/ugPvk+J9hVbs7T5ZfOhPCDnVLIwZgrsUNXbz5B98NkQ56+wqLz0YheZl
- SeGKo5ILY+W/5CLwYcM2jsmkeHxcijMXZvQ5kOPozbi/YC0CkHGpGHnORxyxbbEzFugDnfVNtVC
- +GXTRVcAh2ZRLsiNsEuXCljwRSCU2lXIn6jCkAyUcIbnKpl+k0zGQjj2fHg+qEGNsK969I6t/Q8
- 8RNz0u/rgM8QaPbcvwdmGw1wdayIUuINpuhiePyv+qMU7ZmsLqYxSXWxMuLt9y23dbdoLuXcXLU
- fpcrYfijy2bTh0m6llpKpz4ccjoI/XY7PvlDiCLlRHlDlnqC
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177734760767.229273.6544188501592103136.git-patchwork-summary@kernel.org>
+Date: Tue, 28 Apr 2026 03:40:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 28 Apr 2026 00:33:04 +0800, Felix Gu wrote:
-> spi: axiado: replace usleep_range() with udelay() in IRQ path
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+Patch: spi: amlogic-spisg: initialize completion before requesting IRQ
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1086330
+  Lore link: https://lore.kernel.org/r/20260428-amlogic-spisg-v1-1-8eecc3b446d6@gmail.com
 
-Thanks!
+Patch: spi: axiado: replace usleep_range() with udelay() in IRQ path
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1086265
+  Lore link: https://lore.kernel.org/r/20260428-axiado-v1-1-cd767500af72@gmail.com
 
-[1/1] spi: axiado: replace usleep_range() with udelay() in IRQ path
-      https://git.kernel.org/broonie/spi/c/f5c6a272b699
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

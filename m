@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F2C3C1406;
-	Tue, 28 Apr 2026 16:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6263546AF35;
+	Tue, 28 Apr 2026 16:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777392760; cv=none; b=EZrr+E7odIBGkp5A+sKsvEgpYnchsGtD0QFS1D4zIBnCK/eRzaVQ2fLQvoTq0VFdHWckNMEQvtbuPHq3Y6bRCB8pYvdA09F6F+ZTqsGBkz9stePwBvPh/hW/eAnlTQtdhAgYrITK6pIuAwrF9GOF6EIS9ZXGB64ePhPo70l4nB8=
+	t=1777392762; cv=none; b=n9lILJ44ULuC+3x3H1VIUsWR6F0uwW9DTtmuKc7BIVC6qBzGzBYM4aRRzMxlFDcRnhFMD0DpL8WfcpCA+mEfg7KH1yqT+CMgsOfkkPyNQEFLJ11O3pIs4YJi8W99lT34bZNQUuwkqki3CKO4Znl1GOcJn2zWq4WEd/d++A8XoMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777392760; c=relaxed/simple;
-	bh=kxxeRh+fiRBAkPPQ6Ege8TcSd/UDjWuIziK+9tp8mck=;
+	s=arc-20240116; t=1777392762; c=relaxed/simple;
+	bh=dhffF3ZrJYq66Fq83zPDuRzj54IhmH5nUsYS1m4ih+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tLamg0aOnJcp1g/UNDIJnP7Vl0xejyPoc7lakC2VsbL/Y1fPXd2+ISinjOR3ThADNE6JGF1ln8JbB7xo5cXlSbCO0x39JMwOI/MOM5eMV3LdLH/ud+RXxIrAOnwvSAQALdddXh8fUzoa3NKM/PWnTF273v4uIy0+O006m6Y/GaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zr5uUgjA; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Kr/IU8eprXsdjLV3hrYbyqHqFIO+byD6vH3ETpR1+kDs/zK/THatWFNUr4gY8J1Z9h0XphnstvWbb7uWlnGjP8HTG9feijJVHv5TTP+cCo7Ttv8Ou09q0z/QxyAPQqoJvc+35nHDEtNqgbT1PAuRGUxCKBkJhTmGYJWGZbSxtKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=osTcUcN2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zr5uUgjA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC618C2BCB5;
-	Tue, 28 Apr 2026 16:12:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="osTcUcN2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B8EC2BCAF;
+	Tue, 28 Apr 2026 16:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777392759;
-	bh=kxxeRh+fiRBAkPPQ6Ege8TcSd/UDjWuIziK+9tp8mck=;
+	s=k20201202; t=1777392762;
+	bh=dhffF3ZrJYq66Fq83zPDuRzj54IhmH5nUsYS1m4ih+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zr5uUgjAiwDDNiO5RdBkwMQqczxPCPHO8vmjveAqjkFhvjgL1qKFOsnf5BCTmdp40
-	 NDbbhIkbfGDlnpZdrhDwfo/y8Zx/jyTsaFJyLQDoFQ3/uCPKbzZGzo/enWsgT30JrB
-	 ct6s6Wrvolvm9BIPAj46bK72BjJjSwMPSdlh8rvlOTzC8w8D+fZuDWvccC72Oq7BTN
-	 IYWnqc+F/b+Yo9UvHvbAfvoMD19uheFZRamYFKg9fqCw5oSyriK1rIR09NCRY9IFmX
-	 ccphEexyQpOF5vv945jVUOBmm5he616hUzVKUsIPzJgHlM3HYKy5ItwlOje2JDSNLR
-	 yks4T5YWJ2UEw==
+	b=osTcUcN2LylikR7wp+pHUM0f5BPypaqsCxDAv4lNwPeg6bvKUnv8V3vjCNQSPAxer
+	 t2X7bg9YKhl+dF9Z5lgmYdc3iZEy8qeNItQa2kwaDguXMX0vSBCsxLfuDU0qSRTSWv
+	 Vn+1qvWWMHzdP7Ty2EROcCHTH2OV5Oh9QcW5h14Dx3iCekOWCLq/iOyG3ZzOJPYuvx
+	 VtDMrKGhkCJw4ZqKRITnHarI1y9Uz/HV5uzwzZrzpruCZe/sMtux5ViTN9t8iDiT08
+	 ljCmQcVsSLVNiTXkM/8DgqKpA+9uY2wDnoqALkpmmDGwwK/jugci+OCg70wGnPFInW
+	 nE6AAh6nxoMfQ==
 From: Conor Dooley <conor@kernel.org>
 To: broonie@kernel.org
 Cc: conor@kernel.org,
@@ -35,11 +35,10 @@ Cc: conor@kernel.org,
 	Valentina.FernandezAlanis@microchip.com,
 	linux-riscv@lists.infradead.org,
 	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/3] spi: microchip-core-qspi: don't attempt to transmit during emulated read-only dual/quad operations
-Date: Tue, 28 Apr 2026 17:12:06 +0100
-Message-ID: <20260428-directly-stroller-f6551c3dca16@spud>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 3/3] spi: microchip-core-qspi: remove some inline markings
+Date: Tue, 28 Apr 2026 17:12:07 +0100
+Message-ID: <20260428-acting-yearning-24bfa6d66c7e@spud>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260428-plexiglas-smith-6ae4e9ba8abd@spud>
 References: <20260428-plexiglas-smith-6ae4e9ba8abd@spud>
@@ -49,61 +48,62 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1832; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=659GQtxfjWiZygrLJrj8jZ6QG6PovzBK+5ouTwOvfAE=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkf7iQ6T/rAp1WhaGNTK3tC7EQiG0NR0nqvOU+V+S23R R9VsdnQUcrCIMbFICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgInUtzMytEzQPZtxoU/LazHD MsWEjsMT2xd26bJ6++71mrWifdcvA4Y/fAlv9jUe6PYNeRd4/F7svnWOna5ru96m3KsxnO//hms iHwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1848; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=/xpbTb3+/lPBLIXkcANfDJ1Gn4CZegvxDmd2/FsdDZk=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkf7iTWWf5Zw69usvn0twVldVf4/848NO+Z6Q+9mqYbd 56ukxH/1VHKwiDGxSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJzJBjZNh5gS1BmvHYgVVJ +Yk3ltxgFexL0blwu2bxe41iR4YrEhsYGd5feq1stOfEtpPFN0NXahVpmm79HCj5ok9M1brER4G 5hgkA
 X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-The core will deal with reads by creating clock cycles itself, there's
-no need to generate clock cycles by transmitting garbage data at the
-driver level. Further, transmitting garbage data just bricks the transfer
-since QSPI doesn't have a dedicated master-out line like MOSI in regular
-SPI. I'm not entirely sure if the transfer is bricked because of the
-garbage data being transmitted on the bus or because the core loses
-track of whether it is supposed to be sending or receiving data.
+Remove inline markings from a number of functions that are called as
+part of mem ops callbacks. None of them are either particularly trivial
+or sensitive to overhead of a function call. Just let the compiler
+decide what to do with them.
 
-Fixes: 8f9cf02c88528 ("spi: microchip-core-qspi: Add regular transfers")
-CC: stable@vger.kernel.org
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/spi/spi-microchip-core-qspi.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi-microchip-core-qspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
-index 7bd2c9dcd4771..dd3644ee80c6f 100644
+index dd3644ee80c6f..d15cf5664da5e 100644
 --- a/drivers/spi/spi-microchip-core-qspi.c
 +++ b/drivers/spi/spi-microchip-core-qspi.c
-@@ -693,18 +693,28 @@ static int mchp_coreqspi_transfer_one(struct spi_controller *ctlr, struct spi_de
- 				      struct spi_transfer *t)
- {
- 	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
-+	bool dual_quad = false;
- 
- 	qspi->tx_len = t->len;
- 
-+	if (t->tx_nbits == SPI_NBITS_QUAD || t->rx_nbits == SPI_NBITS_QUAD ||
-+			t->tx_nbits == SPI_NBITS_DUAL ||
-+			t->rx_nbits == SPI_NBITS_DUAL)
-+		dual_quad = true;
-+
- 	if (t->tx_buf)
- 		qspi->txbuf = (u8 *)t->tx_buf;
- 
- 	if (!t->rx_buf) {
- 		mchp_coreqspi_write_op(qspi);
--	} else {
-+	} else if (!dual_quad) {
- 		qspi->rxbuf = (u8 *)t->rx_buf;
- 		qspi->rx_len = t->len;
- 		mchp_coreqspi_write_read_op(qspi);
-+	} else {
-+		qspi->rxbuf = (u8 *)t->rx_buf;
-+		qspi->rx_len = t->len;
-+		mchp_coreqspi_read_op(qspi);
- 	}
- 
+@@ -200,7 +200,7 @@ static int mchp_coreqspi_setup(struct spi_device *spi)
  	return 0;
+ }
+ 
+-static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
++static void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
+ {
+ 	u32 control, data;
+ 
+@@ -236,7 +236,7 @@ static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
+ 	}
+ }
+ 
+-static inline void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
++static void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
+ {
+ 	u32 control, data;
+ 
+@@ -264,7 +264,7 @@ static inline void mchp_coreqspi_write_op(struct mchp_coreqspi *qspi)
+ 	}
+ }
+ 
+-static inline void mchp_coreqspi_write_read_op(struct mchp_coreqspi *qspi)
++static void mchp_coreqspi_write_read_op(struct mchp_coreqspi *qspi)
+ {
+ 	u32 control, data;
+ 
+@@ -422,7 +422,7 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
+ 	return 0;
+ }
+ 
+-static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
++static void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
+ {
+ 	u32 idle_cycles = 0;
+ 	int total_bytes, cmd_bytes, frames, ctrl;
 -- 
 2.53.0
 

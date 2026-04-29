@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A03BE144;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437DA3BE155;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=Zb4TpEpQlXqnZBFDvC9ZTP6ntmhHdoYO5nDzny6VfoYS+FzfNlu/Kp5NdKBejdcwiauz3C7N1HlRLIbg4uAvCe338PqHkyOtxvoYuX9skZtizUe0MOaJKeCmi8pSf0aqAggaVcYCZTLx1hWogdNS+BFQu6MvnZVMwyV8rqOjqgE=
+	t=1777454043; cv=none; b=FNHP3mVHNFS4NmGi7GRq55MCPsHwyHhuZ54PZbFzRhw5ciQsUx+h/U/aKVFpT0fHfmv5kZmEEYfdXp6ZonztDap+5hpkvTkJofQZQo/NFfLO6CyO6280E6T4eVJ5R/KLHYzSev1ZJLq1g4ksRhQj7QnkxnRcjv3/qekrufXfGAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=LDwQkSwf8ouoar1VNvhck2E/6Fj5n+vx7fYiXrs8Dyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEcjMDAFn46X3uYsnQRvTqQ34ppcPPjSV2ZT/wFZJPt+8whvL1ZXH+JHdlXSdnAOIWAqtH15iBjJdzGmc7oiwBd6gKp1u8HJxFZnAHJad1LnM1eHLyhsuDNAMgMd6q7qe4y6qRWK18hLTj6lljWudv9Wpg9Lpx1eEvb265MwCJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9K23y1G; arc=none smtp.client-ip=10.30.226.201
+	bh=fXqyZZq9vchFKkYkGar2+vyFwOZ83OfUUFquw+SBt8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WHgpiV6/A//YmpU0X4legoCR1tzh5CWzAyLAgkA6Yfq/n6Lwokqv82g21DPSM7A6O8jmosOryq62HsAMb6Pt/iGiR5ZBT5HW5zF5zyceThJMEsyfymYmcHhddLy+dYQVpt2k9Ku+JtkHHp9GPJugkLJY5ViFvxV8whbBCnN3mys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZVH5Rti; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9K23y1G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A36C2BCC9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZVH5Rti"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE07AC4AF09;
 	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=LDwQkSwf8ouoar1VNvhck2E/6Fj5n+vx7fYiXrs8Dyw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9K23y1GvSMGdrO5f83e1Ay6cqy6aSz8XLcJi4yIJX3RmKdNO4ZIPznxcU9iGa+6D
-	 TetAEYNeewImEG+azsVY4llE9ZFrP5Ia6W9Wa9hylNw0NFzt3/fktx6sYqQ5NpGIL5
-	 eyofg3ffuOoS+3fBrA1SIxWkmyAXse/sADNZiVU1SWvnXbY7x7M6+hIceNwPHnYDnx
-	 H2WFx83pYEA1BFmnPYtAVBSeLLfYeksG8UvNyL7yMPzbjhi//6LWDhsSytq9yOIKgO
-	 VXSkngUrr91ofASq2LYobCYlQmHoWtEGAVdwNsGFowpAYomkPNzYkV9sygxyuovgGs
-	 d9EitWdZ3DKbg==
+	bh=fXqyZZq9vchFKkYkGar2+vyFwOZ83OfUUFquw+SBt8k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PZVH5RtiEaF/ilGgmTb+4p7HThO+Ft2w6Ss8XFAqbTl4JkdLdGoBUY0Ok1VFm64C/
+	 uJh+mFXBSGr4nDTvtHpHY688C3X5a+RfGaLxduXq+u71yPPEx85XMeHvTCAbFk9xZz
+	 4VjKwy/F83fnbtp8Ftn+46dmuX62v5B+z2vUH4xRq178tGAD8RACs/AFyil8T6FyKc
+	 0S0FKyFYQfNuadivy+6LByGymCMLqkQDGMBNpQzloxOie7knlaRKDEE5qmYw1Wo6ht
+	 k9ZPgo/hURqTIDzfJs3HdstTfLF6SQoSY3Fjd6NQ510+DhLuiVD1RxcevRZ7GJrf20
+	 k52uJ2eCPcNWA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2Z-2FW3;
+	id 1wI0zY-00000000h2H-1pgH;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,12 +39,10 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 09/19] spi: dln2: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:23 +0200
-Message-ID: <20260429091333.165363-10-johan@kernel.org>
+Subject: [PATCH 00/19] spi: switch to managed controller allocation (part 1/3)
+Date: Wed, 29 Apr 2026 11:13:14 +0200
+Message-ID: <20260429091333.165363-1-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
-References: <20260429091333.165363-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,116 +51,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to device managed controller allocation to simplify error
-handling and to avoid having to take another reference during
-deregistration.
+In preparation for fixing the SPI controller API so that it no longer
+drops a reference when deregistering (non-managed) controllers (cf.
+[1]), this series converts drivers using non-managed registration to use
+managed allocation.
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-dln2.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+This will be followed by a second set of 20 patches, and then a third
+set of 12 patches for drivers using managed registration.
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index 392f0d05f508..8333dda7d1e8 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -684,7 +684,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	struct dln2_platform_data *pdata = dev_get_platdata(&pdev->dev);
- 	int ret;
- 
--	host = spi_alloc_host(&pdev->dev, sizeof(*dln2));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*dln2));
- 	if (!host)
- 		return -ENOMEM;
- 
-@@ -693,10 +693,8 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	dln2 = spi_controller_get_devdata(host);
- 
- 	dln2->buf = devm_kmalloc(&pdev->dev, DLN2_SPI_BUF_SIZE, GFP_KERNEL);
--	if (!dln2->buf) {
--		ret = -ENOMEM;
--		goto exit_free_host;
--	}
-+	if (!dln2->buf)
-+		return -ENOMEM;
- 
- 	dln2->host = host;
- 	dln2->pdev = pdev;
-@@ -709,13 +707,13 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	ret = dln2_spi_enable(dln2, false);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	ret = dln2_spi_get_cs_num(dln2, &host->num_chipselect);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to get number of CS pins\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	ret = dln2_spi_get_speed_range(dln2,
-@@ -723,20 +721,20 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 				       &host->max_speed_hz);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to read bus min/max freqs\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	ret = dln2_spi_get_supported_frame_sizes(dln2,
- 						 &host->bits_per_word_mask);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to read supported frame sizes\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	ret = dln2_spi_cs_enable_all(dln2, true);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to enable CS pins\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	host->bus_num = -1;
-@@ -749,7 +747,7 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 	ret = dln2_spi_enable(dln2, true);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to enable SPI module\n");
--		goto exit_free_host;
-+		return ret;
- 	}
- 
- 	pm_runtime_set_autosuspend_delay(&pdev->dev,
-@@ -772,8 +770,6 @@ static int dln2_spi_probe(struct platform_device *pdev)
- 
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
--exit_free_host:
--	spi_controller_put(host);
- 
- 	return ret;
- }
-@@ -783,16 +779,12 @@ static void dln2_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct dln2_spi *dln2 = spi_controller_get_devdata(host);
- 
--	spi_controller_get(host);
--
- 	spi_unregister_controller(host);
- 
- 	pm_runtime_disable(&pdev->dev);
- 
- 	if (dln2_spi_enable(dln2, false) < 0)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
--
--	spi_controller_put(host);
- }
- 
- #ifdef CONFIG_PM_SLEEP
+That leaves us with 18 drivers using non-managed allocation, which is
+few enough to be able to fix the API in tree-wide change.
+
+Johan
+
+
+[1] https://lore.kernel.org/lkml/20260325145319.1132072-1-johan@kernel.org/
+
+
+Johan Hovold (19):
+  spi: at91-usart: switch to managed controller allocation
+  spi: atmel: switch to managed controller allocation
+  spi: bcm63xx: switch to managed controller allocation
+  spi: bcm63xx-hsspi: switch to managed controller allocation
+  spi: cadence: switch to managed controller allocation
+  spi: octeon: switch to managed controller allocation
+  spi: cavium-thunderx: switch to managed controller allocation
+  spi: coldfire-qspi: switch to managed controller allocation
+  spi: dln2: switch to managed controller allocation
+  spi: ep93xx: switch to managed controller allocation
+  spi: fsl: switch to managed controller allocation
+  spi: fsl-espi: switch to managed controller allocation
+  spi: img-spfi: switch to managed controller allocation
+  spi: lantiq-ssc: switch to managed controller allocation
+  spi: meson-spicc: switch to managed controller allocation
+  spi: mxs: switch to managed controller allocation
+  spi: npcm-pspi: switch to managed controller allocation
+  spi: omap2-mcspi: switch to managed controller allocation
+  spi: orion: switch to managed controller allocation
+
+ drivers/spi/spi-at91-usart.c      | 24 ++++++-----------
+ drivers/spi/spi-atmel.c           | 34 +++++++++---------------
+ drivers/spi/spi-bcm63xx-hsspi.c   | 17 ++++--------
+ drivers/spi/spi-bcm63xx.c         | 23 +++++------------
+ drivers/spi/spi-cadence.c         | 28 +++++++-------------
+ drivers/spi/spi-cavium-octeon.c   | 17 +++---------
+ drivers/spi/spi-cavium-thunderx.c | 32 ++++++-----------------
+ drivers/spi/spi-coldfire-qspi.c   | 28 ++++++--------------
+ drivers/spi/spi-dln2.c            | 26 +++++++------------
+ drivers/spi/spi-ep93xx.c          | 22 +++++-----------
+ drivers/spi/spi-fsl-espi.c        | 20 +++++---------
+ drivers/spi/spi-fsl-spi.c         | 14 ++--------
+ drivers/spi/spi-img-spfi.c        | 40 +++++++++++-----------------
+ drivers/spi/spi-lantiq-ssc.c      | 28 ++++++--------------
+ drivers/spi/spi-meson-spicc.c     | 43 ++++++++++---------------------
+ drivers/spi/spi-mxs.c             | 14 +++-------
+ drivers/spi/spi-npcm-pspi.c       | 19 ++++----------
+ drivers/spi/spi-omap2-mcspi.c     | 25 +++++++-----------
+ drivers/spi/spi-orion.c           | 26 ++++++-------------
+ 19 files changed, 147 insertions(+), 333 deletions(-)
+
 -- 
 2.53.0
 

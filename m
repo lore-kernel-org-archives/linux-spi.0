@@ -1,87 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A466E14884C;
-	Wed, 29 Apr 2026 04:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5676D2248A3
+	for <linux-spi@vger.kernel.org>; Wed, 29 Apr 2026 04:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777438073; cv=none; b=UMg/345fWUxX5GKZwxScQKeHgKBCY0khrqRb6FxnQ4aUfvbL1gQ9dEZSSDREuwBrSNHjQJNjSthAhrjqnN2G+crm/JfUqw2bUOS/Q9Ug7ugU4ZoUhDyKUcr3cCxcsDjFQTaoNO9h5xDZ7wGN+ZVnL9ISm/DF/00Ce9Lqn1DKvxM=
+	t=1777438716; cv=none; b=onZw7V4l0T+kBuqJdcn6yyxCLKZlUgXqIDPVmdKo3x16Yc+xYatck9foWNkNTdr/qppjeIquHQlpLkW6cbdvu6lp3K9aLfCzL2pXSR2ncVr8pBvecEyek3QsmdrIhNBOvrBZy3/7h6EIaY9DiBpN2kGSPfQdDiszkQtloDVrGKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777438073; c=relaxed/simple;
-	bh=1QPeg2HMqn0cuMiNijKQLOYSHin1rxESbDR9vpY7cOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sEKmqo2/r1l75DsT1clzeBWKYAX52dRedfJ1dyd78VlDyqT+79Ck9VWq5adgwL2xuLPqMGJKD3yorwF/Wxzi234xVCcr1NIZyH9twdtyFhZa+4SgSCzqqZZD2c2k1T3TIfMQTKrnJoI1FwpUvQyfz2y27vxMmZJEILdcNkGpdXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nAnFuNsE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777438716; c=relaxed/simple;
+	bh=uU88h8NXZXcc4zBDIgSUnPTsZs+0w36Oepjfllp4siQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=BweTCWLl5MTICxGCOE7byU8UM88EQKy92kfZYGhEI0HZieuhYJYvsTWnVysAGruidJZgM6BTqCb7mlZffeFjKgKDRlSwN08BTPBAcehayeclPkZ+ybBNtNfqkGtYPn5u5vW8KVQsvCPujLyZBUD/vlQJF/E5XlelbBOiz9tcQtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcitA76k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nAnFuNsE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1762BC19425;
-	Wed, 29 Apr 2026 04:47:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcitA76k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3421C19425;
+	Wed, 29 Apr 2026 04:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777438073;
-	bh=1QPeg2HMqn0cuMiNijKQLOYSHin1rxESbDR9vpY7cOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nAnFuNsETIVqNJJ4CmZ3HYmdW0hVxi5XTZVPsVvjfuxJxSEe8iu1pGX1uDJ+jFvUI
-	 FtcGlE+dmjXRtqFbmLrNMkZf+gT3ynJG26vDPaXCTbqHEinoZ66gwVknbgtT8B8wH8
-	 2WMLnNMn4Q2lhvZ9nFbv/M2pYBN9jJ5rFKJC3oIDAd/eiFqeOjU+eE4CAQJl+DdPto
-	 p0VAz52gG7zB3u543F0VJbjd58eUDE1FLQRNgYOXtVQ1dEnjdbtUO5AvbtVCFH+5qs
-	 1AIWiYBQdcHuphv9oRIgDfg4uJVPskOR2/jnwQkqLTroYjqe7oNocj+/q592xwJlIm
-	 Murdz6Xgc80Mg==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id B19081AC5855; Wed, 29 Apr 2026 05:47:49 +0100 (BST)
-Date: Wed, 29 Apr 2026 13:47:49 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/7] Add QSPI support for QCS615 and improve
- interconnect handling
-Message-ID: <afGNdfKrJCzGPy6y@sirena.co.uk>
-References: <20260429-spi-nor-v4-0-73fb1bab03ba@oss.qualcomm.com>
+	s=k20201202; t=1777438716;
+	bh=uU88h8NXZXcc4zBDIgSUnPTsZs+0w36Oepjfllp4siQ=;
+	h=Subject:From:Date:To:From;
+	b=YcitA76k/LZehlbkUvucdMwDw1LZCmfyfo5F7iyGnklvYtF9mH+TWL+LTQ3zkyWUU
+	 MjjJ/YrIUg32j8i7+Yb6eXk5hDqW91DbGOvrAGvNRX9uXYOLcsVnW4b+BWLdrbRrWK
+	 C+aUpulMgjMEzT+6QuoGrCi2YcyzH+PJYwqDlVZ5QwgF5cICp0bOrBp+Ro/WeYxTwp
+	 NjA9GRosImDmPW7LysaO3cLk6XxBkFYjjCOlTUkcY4UAfEWFscJ+yIDEZzC4KFWkCk
+	 VxAVY5cWg1D9ZzuxrjWQUd5EjWBMnxswbc3UUFNDEmS+j0fl510wB6KHwfVlOl/Oyp
+	 aXepacw3cHiRg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE4939302DB;
+	Wed, 29 Apr 2026 04:57:53 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="I5J05lFo0LBJntig"
-Content-Disposition: inline
-In-Reply-To: <20260429-spi-nor-v4-0-73fb1bab03ba@oss.qualcomm.com>
-X-Cookie: 667:
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177743867212.1349817.350601171712585095.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 29 Apr 2026 04:57:52 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Latest series: [v4] Add QSPI support for QCS615 and improve interconnect handling (2026-04-29T04:22:39)
+  Superseding: [v3] Add QSPI support for QCS615 and improve interconnect handling (2026-04-20T06:12:47):
+    [v3,1/7] dt-bindings: spi: qcom,spi-qcom-qspi: Add qcom,qcs615-qspi compatible
+    [v3,2/7] spi: qcom-qspi: Fix incomplete error handling in runtime PM
+    [v3,3/7] spi: qcom-qspi: Add interconnect support for memory path
+    [v3,4/7] arm64: dts: qcom: talos: Add QSPI support
+    [v3,5/7] arm64: dts: qcom: qcs615-ride: enable QSPI and NOR flash
+    [v3,6/7] arm64: dts: qcom: kodiak: Add QSPI memory interconnect path
+    [v3,7/7] arm64: dts: qcom: sc7180: Add QSPI memory interconnect path
 
 
---I5J05lFo0LBJntig
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-On Wed, Apr 29, 2026 at 09:52:39AM +0530, Viken Dadhaniya wrote:
-> Add QSPI controller support for the QCS615 (Talos) platform and improve
-> interconnect bandwidth management for QSPI controllers across multiple
-> Qualcomm SoCs.
-
-This doesn't apply against current code, please check and resend.
-
---I5J05lFo0LBJntig
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnxjXQACgkQJNaLcl1U
-h9Am+gf9EW2MCf14LSb91y6FrGdcGqCo0qv3U55Vvz4VxKMfeDBfTcpbEeSfiVsX
-XTTk6iTrgQyEWy37B4Zd5D0fK7uhIcPcwT9OhKnrWodOwjEYSiTJ97cc534r5Fj8
-jKDFTEeBduZy8RKuHdUFIaKqPvbzPmRZJcBRMAjXeC5NhWHgL3bg6nrGyvW0yJR9
-Y3v7vWcb4vLtXJi9VtZVYwrgJv80U6mCEMi8E9GErvcqg7gATGvC+qj1o6TZSry/
-LFq6xQ/XOoIdN932VKohYy+qSihb3DT3VfZZL53wqkCvEYymcnoZ87QEEksjQLPe
-DvLTWePfuQb3J70fHNRhb9w5vAeHQg==
-=8dU8
------END PGP SIGNATURE-----
-
---I5J05lFo0LBJntig--

@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941043BFE21;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEF43BED31;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=J06NXBS678ZdsVtszm0KKCLWpftenZFoOHraz46vKiWNVpw/uLB4XsEQp/Jr3O0vBfwbw/QOj1+0hqF2PEx9VvuYC710QTw2y6hEubG0L+sY5HWAoq3AfH79XJKLjzezOBOyu76N6itHbulD7+/1yxQam3y/GVs+CDnIqqrlgjY=
+	t=1777454043; cv=none; b=J675f01inqpu9tpkGDC1eVUHyV/4sJ4bQlh61XLkoMgyhJPehue+GZ46V0NgPFQdIPwJrDWdRJxn/PAZzKDSAqzzPO/SeBOafnrtXCKr5Z4uLe3NSVrX6amLRq0G3T5UvAVNvf0fhTfuwxyEfdFQOz+l2UNTokzYpPe1Dx4nn8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=5kVNhoS1rCBF1MFLTvrHz0vKfdGlRU+p21hVgX4gDEU=;
+	bh=AHjTvIlA2he9Wp9tlUsmw8EJ04LHkkbvc2YRqbAEmmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dufFrabvpsgEZtlNoSjo6WmWQ9Ta7hgOFWujOZqx+TE9Y0F0GNzxuXXtFUd2Y/irrPO4ryQ21zKtPxcHAwe+O0CUAvITqdSTKbmcCctSBCs+hRSgzTCaG7jzNAv1zvZ99bHWbdiFTZ7cYcEY/Ukpk27uGTZpULPPyWdxbBSRJPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eY8GGD8H; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=mqPzO6dBGqUuCXCmPxeODFYVCBDnftUJb3ph9l5KBgyzisAKonmpoywOTz53G0iL4lzIQM2r+SECMQhxBxMss6MEwXvaPONoyvrcY4WOg6tCnU/cLyH/WMS2K+WfbkoxZi5lWWNVA3XyAehvNyHMeG7O46ogbL3SEf0VICGe/5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Itpf5ky6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eY8GGD8H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE3DC2BD00;
-	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Itpf5ky6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116A8C4AF0F;
+	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=5kVNhoS1rCBF1MFLTvrHz0vKfdGlRU+p21hVgX4gDEU=;
+	bh=AHjTvIlA2he9Wp9tlUsmw8EJ04LHkkbvc2YRqbAEmmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eY8GGD8HIk4u1X/uBBmxa8w85OtdVf5Y/nIoazbHag7iPTt3D+mFYyXeZJdTZMinu
-	 ErpVNBq7q9/IOCqgb/foo+OfIlCKE8j80oDDxtAa1uR5srcO4netPnAOsf289qHVyT
-	 nSTsbVVxf47vfOVny+kNQxywDBv5SIGOebm35A8PvQVxmgs8Wq27b/UdX5SqeaLrmM
-	 ypU6HDjFNI/khX+KjHfXrPVlN+H6XESeeRKCfN414TeWPEctT5WUfN5QQQzYql+TlT
-	 xJU1eSOo9RFwqy/popOlsmovCBeGNfVR58pAvyh/1F/LR8jsl/znjNbjBGhtwVZqro
-	 4AutZGvJw80TA==
+	b=Itpf5ky6NCQgfRhYBmjMrS9ZjXJhC+zSAMxnkahA4R3MmxQ7RXkSc9VrvM9pMf22J
+	 C6HduG98riEUs4+kQEGvyn1W/5EbpSxFCsQLX1/vEZdto5+UFPkZE3mwwUyhLtP5g+
+	 g8rUJ3e/hLCRZHvBVP4RkTCKwyztVE8tav9acQoavwlw9ImEAroOPPHVGTLVtd/BE8
+	 ipySdCTFcQR1biOspzgrg3RlXcSeslIHXz6XrM3QI9AruSgFCeBqAMb4dRT9/04pWG
+	 wWLWn4mUYYIFOmrPoeqGa7szRMNg5rDlpdhr9XPGzB5EXpjU9tuWYZbWuXrS0B8GTS
+	 VFXE/gDxwOGwA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2p-2ZEj;
+	id 1wI0zY-00000000h2V-2AMD;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,9 +40,9 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 17/19] spi: npcm-pspi: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:31 +0200
-Message-ID: <20260429091333.165363-18-johan@kernel.org>
+Subject: [PATCH 07/19] spi: cavium-thunderx: switch to managed controller allocation
+Date: Wed, 29 Apr 2026 11:13:21 +0200
+Message-ID: <20260429091333.165363-8-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
 References: <20260429091333.165363-1-johan@kernel.org>
@@ -60,72 +60,89 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-npcm-pspi.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/spi/spi-cavium-thunderx.c | 32 ++++++++-----------------------
+ 1 file changed, 8 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
-index cffef0a5977d..a437a30d636c 100644
---- a/drivers/spi/spi-npcm-pspi.c
-+++ b/drivers/spi/spi-npcm-pspi.c
-@@ -345,7 +345,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- 	int irq;
+diff --git a/drivers/spi/spi-cavium-thunderx.c b/drivers/spi/spi-cavium-thunderx.c
+index f1a9aa696c87..529b4066c922 100644
+--- a/drivers/spi/spi-cavium-thunderx.c
++++ b/drivers/spi/spi-cavium-thunderx.c
+@@ -24,7 +24,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
+ 	struct octeon_spi *p;
  	int ret;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*priv));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*priv));
+-	host = spi_alloc_host(dev, sizeof(struct octeon_spi));
++	host = devm_spi_alloc_host(dev, sizeof(struct octeon_spi));
  	if (!host)
  		return -ENOMEM;
  
-@@ -356,21 +356,18 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- 	priv->is_save_param = false;
+@@ -32,17 +32,15 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
  
- 	priv->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(priv->base)) {
--		ret = PTR_ERR(priv->base);
--		goto out_host_put;
--	}
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
- 
- 	priv->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(&pdev->dev, "failed to get clock\n");
--		ret = PTR_ERR(priv->clk);
--		goto out_host_put;
-+		return PTR_ERR(priv->clk);
- 	}
- 
- 	ret = clk_prepare_enable(priv->clk);
+ 	ret = pcim_enable_device(pdev);
  	if (ret)
--		goto out_host_put;
+-		goto error;
 +		return ret;
  
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -424,8 +421,6 @@ static int npcm_pspi_probe(struct platform_device *pdev)
- out_disable_clk:
- 	clk_disable_unprepare(priv->clk);
+ 	ret = pcim_request_all_regions(pdev, DRV_NAME);
+ 	if (ret)
+-		goto error;
++		return ret;
  
--out_host_put:
+ 	p->register_base = pcim_iomap(pdev, 0, pci_resource_len(pdev, 0));
+-	if (!p->register_base) {
+-		ret = -EINVAL;
+-		goto error;
+-	}
++	if (!p->register_base)
++		return -EINVAL;
+ 
+ 	p->regs.config = 0x1000;
+ 	p->regs.status = 0x1008;
+@@ -50,10 +48,8 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
+ 	p->regs.data = 0x1080;
+ 
+ 	p->clk = devm_clk_get_enabled(dev, NULL);
+-	if (IS_ERR(p->clk)) {
+-		ret = PTR_ERR(p->clk);
+-		goto error;
+-	}
++	if (IS_ERR(p->clk))
++		return PTR_ERR(p->clk);
+ 
+ 	p->sys_freq = clk_get_rate(p->clk);
+ 	if (!p->sys_freq)
+@@ -70,15 +66,7 @@ static int thunderx_spi_probe(struct pci_dev *pdev,
+ 
+ 	pci_set_drvdata(pdev, host);
+ 
+-	ret = spi_register_controller(host);
+-	if (ret)
+-		goto error;
+-
+-	return 0;
+-
+-error:
 -	spi_controller_put(host);
- 	return ret;
+-	return ret;
++	return spi_register_controller(host);
  }
  
-@@ -434,14 +429,10 @@ static void npcm_pspi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct npcm_pspi *priv = spi_controller_get_devdata(host);
+ static void thunderx_spi_remove(struct pci_dev *pdev)
+@@ -90,14 +78,10 @@ static void thunderx_spi_remove(struct pci_dev *pdev)
+ 	if (!p)
+ 		return;
  
 -	spi_controller_get(host);
 -
  	spi_unregister_controller(host);
  
- 	npcm_pspi_reset_hw(priv);
- 	clk_disable_unprepare(priv->clk);
+ 	/* Put everything in a known state. */
+ 	writeq(0, p->register_base + OCTEON_SPI_CFG(p));
 -
 -	spi_controller_put(host);
  }
  
- static const struct of_device_id npcm_pspi_match[] = {
+ static const struct pci_device_id thunderx_spi_pci_id_table[] = {
 -- 
 2.53.0
 

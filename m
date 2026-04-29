@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD803BE64B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB333BED01;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=OeMX5vyVwtg/hcqG1N0u/hq7jidDXJSM9aMav+HAJJ8cD8GYiIeKzeTgx2iZlZoyRiaJPEOgg7Je/qHrZJqC69zJMwPxIc+q9fXoezF4QCokcPGCuz0Hwf9o452YM+3T0DxKLLSR1kqj3uAZPnnVPDd9bnaTEYIV5/vpCBN8oho=
+	t=1777454043; cv=none; b=Lj6E+TQyeUCRsZo6+e0kM7GtR2AO5wlXfRJ4NBrxt3tMrLkWA8IqLdV0VSzpCbu7xtC9ZcvNo9uaOVOMlK7+mO2009Y2+E0hPIMLuU0g459ZzNPKCi8afdEsry26UsGVE0Zfs5/G/pEf8tmBQQ6zSX1kActBPCeSJ+2gVOtHL8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=ga+FOMp9qVwI8l87FgM0Iz0sGRIiFaESZzWnM4Wja4I=;
+	bh=gfjTEguMoiutCVH4/SZdDjr6O5nH9rTa9Fh1KfDNv7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxZ7umbjz1LnFPr1g2qGhF4LZkrX2yaBqxHldS1m+1y0B8VKm9AT4yo+hX4SNgc/Wpx6efQtp8cVm7dbQzxCyDOt4AaohyNhlibMLt3YIx8iVmbFmc3bEMth009Zv3F2ECS7mIf0TucCthr0s3IMbLna6s0dwXwkadlLj3qz0ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gDkQchGM; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=IazokO/heLPuxOpSbkDqKO2T1Vlwad4HZtRttgM5i8pIxg8bb1ZCI4Jf68zO/vXwJTjyfUdn/YXR7HfdJqiWWQjWKhvq4Ve1X8oGDXfqf4DB5xI6//RkSr/D/FiUewNl8YodcNqvyAPMbUIhLSICltYNWZ6HerRcD1f957UfGco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLAQ+HmK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gDkQchGM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096E6C2BCFA;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLAQ+HmK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040E7C2BCF6;
 	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=ga+FOMp9qVwI8l87FgM0Iz0sGRIiFaESZzWnM4Wja4I=;
+	bh=gfjTEguMoiutCVH4/SZdDjr6O5nH9rTa9Fh1KfDNv7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDkQchGMD21nFV/Ka4Edcv9xzqL6QEEGLlIsdBC2YenGrzrV0xZA1sKYAB0/z7DX+
-	 Jrnlaf4d/dhtzMVaN+ThSuhmYVfPWgNGS+ND3droylnEbo9Md1b48iIr3lcjhIcdOE
-	 rRuOIpEGGA233NvXuwlFraI4cVEaVGjbWT45zQHsrjAwHyg0FhbD/rp3Rp8iySSV8S
-	 j7NNeRL4z1rgyLRnFDBqZfAceBdffDgDPS1cSrnHxfR3ir0FX7kIrVP/pLoM971I36
-	 TISV7AxAgM+RoyxAxwluHsrzFUVkm0rddJI7G8jUevC25YGYhwubbZZPgN/WdA7nx0
-	 mtUecZOK+4eig==
+	b=KLAQ+HmKN46lpDLr/qfJWlnGZzc/608gqctjdBfJnImOkMkmFf1vpANAhnDrteiI3
+	 x6VxUAIaSlhmRyuNzUpTy0S4/7ATe4F/kwLAAE/ojkq6rQ8TlMN5op9LwaEceAQvIc
+	 hyZf2PEzvlwvpASsKhG6Hp/1vmHisigmRYe0AQYCzOaTNM5Qgb0i7rZg/tnfd8goWb
+	 I3RHoFDojQyfAXy9rLrtxieRQ8ZM4l0JWgDbKUGcjsJUmxdKOzxbIDmZ/9T7jAKsde
+	 R6h7O71j72BN+9QJKRzUS33I2w8xfvOyA45zVsIzEvE7rJKfBDNFOsqtX14eXVO2S6
+	 o7booSRQkRLFQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2X-2CiX;
+	id 1wI0zY-00000000h2h-2P6g;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,9 +40,9 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 08/19] spi: coldfire-qspi: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:22 +0200
-Message-ID: <20260429091333.165363-9-johan@kernel.org>
+Subject: [PATCH 13/19] spi: img-spfi: switch to managed controller allocation
+Date: Wed, 29 Apr 2026 11:13:27 +0200
+Message-ID: <20260429091333.165363-14-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
 References: <20260429091333.165363-1-johan@kernel.org>
@@ -60,96 +60,100 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-coldfire-qspi.c | 28 ++++++++--------------------
- 1 file changed, 8 insertions(+), 20 deletions(-)
+ drivers/spi/spi-img-spfi.c | 40 ++++++++++++++------------------------
+ 1 file changed, 15 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index b45f44de85dc..3b175c1da36b 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -353,39 +353,33 @@ static int mcfqspi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index 57625a3ce2f2..aec724e3f824 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -530,7 +530,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	int ret;
+ 	u32 max_speed_hz;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*mcfqspi));
--	if (host == NULL) {
--		dev_dbg(&pdev->dev, "spi_alloc_host failed\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*mcfqspi));
-+	if (host == NULL)
+-	host = spi_alloc_host(&pdev->dev, sizeof(*spfi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spfi));
+ 	if (!host)
  		return -ENOMEM;
+ 	platform_set_drvdata(pdev, host);
+@@ -541,36 +541,32 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	spin_lock_init(&spfi->lock);
+ 
+ 	spfi->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(spfi->regs)) {
+-		ret = PTR_ERR(spfi->regs);
+-		goto put_spi;
 -	}
++	if (IS_ERR(spfi->regs))
++		return PTR_ERR(spfi->regs);
++
+ 	spfi->phys = res->start;
  
- 	mcfqspi = spi_controller_get_devdata(host);
- 
- 	mcfqspi->iobase = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mcfqspi->iobase)) {
--		status = PTR_ERR(mcfqspi->iobase);
--		goto fail0;
+ 	spfi->irq = platform_get_irq(pdev, 0);
+-	if (spfi->irq < 0) {
+-		ret = spfi->irq;
+-		goto put_spi;
 -	}
-+	if (IS_ERR(mcfqspi->iobase))
-+		return PTR_ERR(mcfqspi->iobase);
++	if (spfi->irq < 0)
++		return spfi->irq;
++
+ 	ret = devm_request_irq(spfi->dev, spfi->irq, img_spfi_irq,
+ 			       IRQ_TYPE_LEVEL_HIGH, dev_name(spfi->dev), spfi);
+ 	if (ret)
+-		goto put_spi;
++		return ret;
  
- 	mcfqspi->irq = platform_get_irq(pdev, 0);
- 	if (mcfqspi->irq < 0) {
- 		dev_dbg(&pdev->dev, "platform_get_irq failed\n");
--		status = -ENXIO;
--		goto fail0;
-+		return -ENXIO;
- 	}
+ 	spfi->sys_clk = devm_clk_get(spfi->dev, "sys");
+-	if (IS_ERR(spfi->sys_clk)) {
+-		ret = PTR_ERR(spfi->sys_clk);
+-		goto put_spi;
+-	}
++	if (IS_ERR(spfi->sys_clk))
++		return PTR_ERR(spfi->sys_clk);
++
+ 	spfi->spfi_clk = devm_clk_get(spfi->dev, "spfi");
+-	if (IS_ERR(spfi->spfi_clk)) {
+-		ret = PTR_ERR(spfi->spfi_clk);
+-		goto put_spi;
+-	}
++	if (IS_ERR(spfi->spfi_clk))
++		return PTR_ERR(spfi->spfi_clk);
  
- 	status = devm_request_irq(&pdev->dev, mcfqspi->irq, mcfqspi_irq_handler,
- 				0, pdev->name, mcfqspi);
- 	if (status) {
- 		dev_dbg(&pdev->dev, "request_irq failed\n");
--		goto fail0;
-+		return status;
- 	}
- 
- 	mcfqspi->clk = devm_clk_get_enabled(&pdev->dev, "qspi_clk");
- 	if (IS_ERR(mcfqspi->clk)) {
- 		dev_dbg(&pdev->dev, "clk_get failed\n");
--		status = PTR_ERR(mcfqspi->clk);
--		goto fail0;
-+		return PTR_ERR(mcfqspi->clk);
- 	}
- 
- 	host->bus_num = pdata->bus_num;
-@@ -395,7 +389,7 @@ static int mcfqspi_probe(struct platform_device *pdev)
- 	status = mcfqspi_cs_setup(mcfqspi);
- 	if (status) {
- 		dev_dbg(&pdev->dev, "error initializing cs_control\n");
--		goto fail0;
-+		return status;
- 	}
- 
- 	init_waitqueue_head(&mcfqspi->waitq);
-@@ -423,8 +417,6 @@ static int mcfqspi_probe(struct platform_device *pdev)
- fail1:
- 	pm_runtime_disable(&pdev->dev);
- 	mcfqspi_cs_teardown(mcfqspi);
--fail0:
+ 	ret = clk_prepare_enable(spfi->sys_clk);
+ 	if (ret)
+-		goto put_spi;
++		return ret;
++
+ 	ret = clk_prepare_enable(spfi->spfi_clk);
+ 	if (ret)
+ 		goto disable_pclk;
+@@ -658,8 +654,6 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(spfi->spfi_clk);
+ disable_pclk:
+ 	clk_disable_unprepare(spfi->sys_clk);
+-put_spi:
 -	spi_controller_put(host);
  
- 	dev_dbg(&pdev->dev, "Coldfire QSPI probe failed\n");
- 
-@@ -436,8 +428,6 @@ static void mcfqspi_remove(struct platform_device *pdev)
+ 	return ret;
+ }
+@@ -669,8 +663,6 @@ static void img_spfi_remove(struct platform_device *pdev)
  	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct mcfqspi *mcfqspi = spi_controller_get_devdata(host);
+ 	struct img_spfi *spfi = spi_controller_get_devdata(host);
  
 -	spi_controller_get(host);
 -
  	spi_unregister_controller(host);
  
- 	pm_runtime_disable(&pdev->dev);
-@@ -445,8 +435,6 @@ static void mcfqspi_remove(struct platform_device *pdev)
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
- 
- 	mcfqspi_cs_teardown(mcfqspi);
+ 	if (spfi->tx_ch)
+@@ -683,8 +675,6 @@ static void img_spfi_remove(struct platform_device *pdev)
+ 		clk_disable_unprepare(spfi->spfi_clk);
+ 		clk_disable_unprepare(spfi->sys_clk);
+ 	}
 -
 -	spi_controller_put(host);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ #ifdef CONFIG_PM
 -- 
 2.53.0
 

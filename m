@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473123BE162;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6903BE65C;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=DTcwar4fyug43y7M5Kk10Tp7GF+N2Na/+siDz7CinjszCHGeseZS22zDFBR8RZqtjRP92ffegxODSNJ21DjNxmJVEOHGoc89lZ4vciYLmqBN1CRlHNRImSYu6/Vy+Nla8UHuaQEMiF2KDiGmLV9dSxBKmQZtfvQIsppalKjw9do=
+	t=1777454043; cv=none; b=i4HpVsu4QeK15J5opBa6tCD5PIM2cG+VxhNX+bsehs9NCgv+NEmc1zCwsUboC1udd1L/sdjuzvCtNsKokjN73XleY6cIuUiGgrRAQML+mMr5SpX3+YJwxnKbwAKB3ByDm5wdmml4Zmq1W6T9MuLoQykT9UnN3ey0OfWfUVKVwuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=dgIC/M2uDGgZ6C94zEb11iAxtgokUzUiRJjjHpLAgmQ=;
+	bh=GBOkNya7C3m93sUpoy4neluaSRzF08Eexlb6b3hJqQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrREm0AdHlzDZ0Z6zy7np4qSmz+MRG6HXRbgqFOf+VMiwyfdV7uuMwygw8F0FpNHdcl5976sCdDDr3rkELjBhX/ajmV1XNa1rQMaCxpOpdBln2w/AEr0Lf0Y0Sb40dT+G7kSH1Ba+UqrU5IzRzWC4pjF8ZI/nEBAy7FkGm+Cb9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MFwMEYjz; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=bX6tpFyhvMLkHb2bLrBM1Dr3hl3M95i13WFVytWRFkfJAuIdM8HXQEnRISxLPTL5g6qj2jls3B3FPZT8JhJLoKQpFIvXgEpBsdzLRAymYfnOtXO7j4PXaSb6d6WLB0IGX7h0md4zCgBMu9D0DO/PyE41ki3Ksmvl9gKecxzQffw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDNCV+8A; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MFwMEYjz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4DC6C4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDNCV+8A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09580C2BCF5;
 	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=dgIC/M2uDGgZ6C94zEb11iAxtgokUzUiRJjjHpLAgmQ=;
+	bh=GBOkNya7C3m93sUpoy4neluaSRzF08Eexlb6b3hJqQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFwMEYjz2N0E8ROL1g3r9XA46gKoNXnb6ak2t2+XDX4YI7WRwY8OhZho6f2H+QMsX
-	 ZRNFj/3routSFa8xitANEX347fkRZhTUK9CFl274MX3dimA6e8Bb055S+pwMYEjLGd
-	 3UDr3nWbeYh5Zn7AUHksrvRlzZLnC+Il3BmaJp/KUphBfs1cq71qsXi5MKmYur00Iu
-	 118cTU0g1MoeMYrO1EvEXAyeTkPKDn09GmGGiHaAi/p76d0xtQyaOqVfEzs1NfkomE
-	 R8xLUBBmAoPpLpLqDYTXGMR1xuYaLKif47vQ6NbNOKbpbxI6jdOcJb0w8gHDzQAoda
-	 TYa5Tl04TGhgQ==
+	b=iDNCV+8Adb7/UciiHTrl5Q7PuObBC4sH30C0h87Hkxt3+nvmsG96cPJ0EOMMfC0hi
+	 +3Dk0osODl4yveBCHu3YsFCf3h02xQ8PO3hf9suTPzm0945zUPwTjzMlVlACk7JDU7
+	 LS8BiRbAkvdMWBrLKYvTh9Jn45XenGey7UO1IJX7BnwSQk0f1/8GMKEGHLqaOhOrem
+	 i4lcJgAyUNr+7qAl4F0OgztcEnfb5lBhpl2e6hT8tLGBjx7GkUu++gjHOT+yeMpDOY
+	 arzw4v+n3Xc1yLjQAKNN3kDVcEIi+qs+F0wI+rTNdLAORQDbIDrjyM/L9pLZKDAT0B
+	 i0QtDz+aF1lbA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2J-1vY3;
+	id 1wI0zY-00000000h2d-2KOf;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,9 +40,9 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 01/19] spi: at91-usart: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:15 +0200
-Message-ID: <20260429091333.165363-2-johan@kernel.org>
+Subject: [PATCH 11/19] spi: fsl: switch to managed controller allocation
+Date: Wed, 29 Apr 2026 11:13:25 +0200
+Message-ID: <20260429091333.165363-12-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
 References: <20260429091333.165363-1-johan@kernel.org>
@@ -60,83 +60,68 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-at91-usart.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/spi/spi-fsl-spi.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index 79edc1cd13c0..32fee5a7ffdf 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -496,14 +496,13 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 1252c41c206f..e45816ef7b65 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -535,7 +535,7 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
+ 	u32 regval;
+ 	int ret = 0;
  
--	ret = -ENOMEM;
--	controller = spi_alloc_host(&pdev->dev, sizeof(*aus));
-+	controller = devm_spi_alloc_host(&pdev->dev, sizeof(*aus));
- 	if (!controller)
--		goto at91_usart_spi_probe_fail;
-+		return -ENOMEM;
+-	host = spi_alloc_host(dev, sizeof(struct mpc8xxx_spi));
++	host = devm_spi_alloc_host(dev, sizeof(struct mpc8xxx_spi));
+ 	if (host == NULL) {
+ 		ret = -ENOMEM;
+ 		goto err;
+@@ -559,7 +559,7 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
  
- 	ret = at91_usart_gpio_setup(pdev);
+ 	ret = fsl_spi_cpm_init(mpc8xxx_spi);
  	if (ret)
--		goto at91_usart_spi_probe_fail;
-+		return ret;
+-		goto err_cpm_init;
++		goto err;
  
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_CS_HIGH;
- 	controller->dev.of_node = pdev->dev.parent->of_node;
-@@ -525,10 +524,8 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
+ 	mpc8xxx_spi->reg_base = devm_ioremap_resource(dev, mem);
+ 	if (IS_ERR(mpc8xxx_spi->reg_base)) {
+@@ -625,8 +625,6 @@ static struct spi_controller *fsl_spi_probe(struct device *dev,
  
- 	aus->dev = &pdev->dev;
- 	aus->regs = devm_ioremap_resource(&pdev->dev, regs);
--	if (IS_ERR(aus->regs)) {
--		ret = PTR_ERR(aus->regs);
--		goto at91_usart_spi_probe_fail;
--	}
-+	if (IS_ERR(aus->regs))
-+		return PTR_ERR(aus->regs);
+ err_probe:
+ 	fsl_spi_cpm_free(mpc8xxx_spi);
+-err_cpm_init:
+-	spi_controller_put(host);
+ err:
+ 	return ERR_PTR(ret);
+ }
+@@ -705,13 +703,9 @@ static void of_fsl_spi_remove(struct platform_device *ofdev)
+ 	struct spi_controller *host = platform_get_drvdata(ofdev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
  
- 	aus->irq = irq;
- 	aus->clk = clk;
-@@ -536,11 +533,11 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	ret = devm_request_irq(&pdev->dev, irq, at91_usart_spi_interrupt, 0,
- 			       dev_name(&pdev->dev), controller);
- 	if (ret)
--		goto at91_usart_spi_probe_fail;
-+		return ret;
+-	spi_controller_get(host);
+-
+ 	spi_unregister_controller(host);
  
- 	ret = clk_prepare_enable(clk);
- 	if (ret)
--		goto at91_usart_spi_probe_fail;
-+		return ret;
- 
- 	aus->spi_clk = clk_get_rate(clk);
- 	at91_usart_spi_init(aus);
-@@ -571,8 +568,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	at91_usart_spi_release_dma(controller);
- at91_usart_fail_dma:
- 	clk_disable_unprepare(clk);
--at91_usart_spi_probe_fail:
--	spi_controller_put(controller);
-+
- 	return ret;
+ 	fsl_spi_cpm_free(mpc8xxx_spi);
+-
+-	spi_controller_put(host);
  }
  
-@@ -634,14 +630,10 @@ static void at91_usart_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctlr);
+ static struct platform_driver of_fsl_spi_driver = {
+@@ -757,13 +751,9 @@ static void plat_mpc8xxx_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct mpc8xxx_spi *mpc8xxx_spi = spi_controller_get_devdata(host);
  
--	spi_controller_get(ctlr);
+-	spi_controller_get(host);
 -
- 	spi_unregister_controller(ctlr);
+ 	spi_unregister_controller(host);
  
- 	at91_usart_spi_release_dma(ctlr);
- 	clk_disable_unprepare(aus->clk);
+ 	fsl_spi_cpm_free(mpc8xxx_spi);
 -
--	spi_controller_put(ctlr);
+-	spi_controller_put(host);
  }
  
- static const struct dev_pm_ops at91_usart_spi_pm_ops = {
+ MODULE_ALIAS("platform:mpc8xxx_spi");
 -- 
 2.53.0
 

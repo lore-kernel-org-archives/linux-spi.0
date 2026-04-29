@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4374D3BE153;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436043BD63B;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=nwHuyFRWFo8JkuLBRxRmoVBjEW0+MgYU/1CzuMeTSmNNlnvR5RR5R68Fk8gWCBHva9XXRt7ViW2bswIrfZzaheD9RClqVPO0LthtHGZ5Eft6lNtY3M3ngukF4SL06yDKz8XM+uGaRSSEEdxvXHjD7oh05r4UJBvU3eW7lVUSRzY=
+	t=1777454043; cv=none; b=VGloZQ7G7tKt53jbzboYHM0Cya0rBcHToqXtLMRHI5TpnRDygK7eEeNhiIm06aduQ+qc0W2MWEdz4EFC041Q93zYgMMdaNPNUkVlD+u7KNwX4q468ACGiNU/8E4zUgUyiTANeFKuzhVfRUpA3Gz1sk0WWQTj6oFoGIL/jfteeW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=LUIxmud4ItkcIhMTJTOGUqRbRfROfvHNlWkcWBcsAnY=;
+	bh=dkoaKrtU8MEPD/3hoa7/0tQPNgxVvbjWmBlSh3CG308=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hkv6syLG0vjCqt5U8tbIuEmvUp/MtX46hvqj2ByF5AC7DA2yyXJF4niJ4RFxPhQzqMUhwye0mtCC4poMEybB6hPmuodlPo5SMm8Ts0ThsNBPoGZzrIa/tVfmtvYErQcAxvjyF0ZA/ZKetZP+Y4PpkPJ8ZFrytIt832TAb2oGWQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QS7lO1Hr; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=WYNr1LggXGdwgIRCnRqag1ZRUJLmi8AlpQ8K/dNegWhrBeMO7W80sxU0q1ghQjTPdUdNQFt95go/plbeQgmCXU+wgY3st60xaT6xDb3s+yMaNaprCoGA1DlmvHaYAluamAb8iHyOaTOCv6StXhmdhj0RkOPm3MxigPYzq7WYafc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwkDUWES; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QS7lO1Hr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E052AC2BCB3;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwkDUWES"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D860BC2BCC4;
 	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=LUIxmud4ItkcIhMTJTOGUqRbRfROfvHNlWkcWBcsAnY=;
+	bh=dkoaKrtU8MEPD/3hoa7/0tQPNgxVvbjWmBlSh3CG308=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QS7lO1HrWI2ESWx9VL+jkZObruH4Ods/N1j+AWmM8t/xrhKeJrUO+WhV++HiVpQwU
-	 TaocIF78A57MS4dyeFDbPPBH8VRXfhCQSOXcLjhCWa97cVOE4FnZdtEOUGb1K42ZaW
-	 3KA5hlThuWaUj/qE4gNUkYWD+DLfmdXFoEYb8NFUz7DJeR3BMZ+tM9yBvYRwr3nTpq
-	 f3tLdhhbGgIecNix367kmzyYkCCuDB1Jdzcy5A4LGOHfPj45AUz+SwcO+nrWmjQmuo
-	 oKLLbztTEVNYoqCyNsdbcdxzqIvWtMN2rwXMYoDy1V/lM06Q8mj1bDVGRuSfEqQbrg
-	 u/Gy2VqfRhpUA==
+	b=rwkDUWESVm7pC4VG5qm5ezT+U0yWa1NoOg0BfNRLsqyLTK6EMlNqx0FR97/8Khwsf
+	 T1kZkMRP32aT2OGYTnp0UwPliJjNorSJdznyq99IXuNZ20X55D5POFw3fjJeZ9nrcI
+	 RbJqd0TiQktdyWEmIYxJHbtUg2ngOAxfVQIz3lKM8AlDzFrb0O05nmjJSHnl+0vt7P
+	 Bz7FCr63iOqdyGpC2SwcJoDdyOY2LWer97vW7xvsHw39bfveq6gdD6I2uMmy9QyMft
+	 yMXaZ/QKQKsOjEphzdbScNoXby9pqbgRIlFA2mDxAArFjQWVSvzTU4IbkHKroY5gWU
+	 agGsc2Upjv+iQ==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2b-2I0V;
+	id 1wI0zY-00000000h2L-1xzC;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,9 +40,9 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 10/19] spi: ep93xx: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:24 +0200
-Message-ID: <20260429091333.165363-11-johan@kernel.org>
+Subject: [PATCH 02/19] spi: atmel: switch to managed controller allocation
+Date: Wed, 29 Apr 2026 11:13:16 +0200
+Message-ID: <20260429091333.165363-3-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
 References: <20260429091333.165363-1-johan@kernel.org>
@@ -60,83 +60,105 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-ep93xx.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ drivers/spi/spi-atmel.c | 34 ++++++++++++----------------------
+ 1 file changed, 12 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index db50018050e5..d7e82d80c35a 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -629,7 +629,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return irq;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 42db85d7ff8e..25aa294631c8 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1528,7 +1528,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*espi));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*espi));
+ 	/* setup spi core then atmel-specific driver state */
+-	host = spi_alloc_host(&pdev->dev, sizeof(*as));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*as));
  	if (!host)
  		return -ENOMEM;
  
-@@ -654,8 +654,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	espi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(espi->clk)) {
- 		dev_err(&pdev->dev, "unable to get spi clock\n");
--		error = PTR_ERR(espi->clk);
--		goto fail_release_host;
-+		return PTR_ERR(espi->clk);
+@@ -1555,18 +1555,15 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 
+ 	as->pdev = pdev;
+ 	as->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &regs);
+-	if (IS_ERR(as->regs)) {
+-		ret = PTR_ERR(as->regs);
+-		goto out_unmap_regs;
+-	}
++	if (IS_ERR(as->regs))
++		return PTR_ERR(as->regs);
++
+ 	as->phybase = regs->start;
+ 	as->irq = irq;
+ 	as->clk = clk;
+ 	as->gclk = devm_clk_get_optional(&pdev->dev, "spi_gclk");
+-	if (IS_ERR(as->gclk)) {
+-		ret = PTR_ERR(as->gclk);
+-		goto out_unmap_regs;
+-	}
++	if (IS_ERR(as->gclk))
++		return PTR_ERR(as->gclk);
+ 
+ 	init_completion(&as->xfer_completion);
+ 
+@@ -1576,11 +1573,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	as->use_pdc = false;
+ 	if (as->caps.has_dma_support) {
+ 		ret = atmel_spi_configure_dma(host, as);
+-		if (ret == 0) {
++		if (ret == 0)
+ 			as->use_dma = true;
+-		} else if (ret == -EPROBE_DEFER) {
+-			goto out_unmap_regs;
+-		}
++		else if (ret == -EPROBE_DEFER)
++			return ret;
+ 	} else if (as->caps.has_pdc_support) {
+ 		as->use_pdc = true;
  	}
+@@ -1620,12 +1616,12 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 					0, dev_name(&pdev->dev), host);
+ 	}
+ 	if (ret)
+-		goto out_unmap_regs;
++		return ret;
+ 
+ 	/* Initialize the hardware */
+ 	ret = clk_prepare_enable(clk);
+ 	if (ret)
+-		goto out_free_irq;
++		return ret;
  
  	/*
-@@ -666,22 +665,21 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	host->min_speed_hz = clk_get_rate(espi->clk) / (254 * 256);
- 
- 	espi->mmio = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
--	if (IS_ERR(espi->mmio)) {
--		error = PTR_ERR(espi->mmio);
--		goto fail_release_host;
--	}
-+	if (IS_ERR(espi->mmio))
-+		return PTR_ERR(espi->mmio);
-+
- 	espi->sspdr_phys = res->start + SSPDR;
- 
- 	error = devm_request_irq(&pdev->dev, irq, ep93xx_spi_interrupt,
- 				0, "ep93xx-spi", host);
- 	if (error) {
- 		dev_err(&pdev->dev, "failed to request irq\n");
--		goto fail_release_host;
-+		return error;
- 	}
- 
- 	error = ep93xx_spi_setup_dma(&pdev->dev, espi);
- 	if (error == -EPROBE_DEFER)
--		goto fail_release_host;
-+		return error;
- 
- 	if (error)
- 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
-@@ -702,8 +700,6 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 
- fail_free_dma:
- 	ep93xx_spi_release_dma(espi);
--fail_release_host:
+ 	 * In cases where the peripheral clock is higher,the FLEX_SPI_CSRx.SCBR
+@@ -1677,9 +1673,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(as->gclk);
+ out_disable_clk:
+ 	clk_disable_unprepare(clk);
+-out_free_irq:
+-out_unmap_regs:
 -	spi_controller_put(host);
- 
- 	return error;
++
+ 	return ret;
  }
-@@ -713,13 +709,9 @@ static void ep93xx_spi_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct ep93xx_spi *espi = spi_controller_get_devdata(host);
+ 
+@@ -1688,8 +1682,6 @@ static void atmel_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller	*host = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_controller_get_devdata(host);
  
 -	spi_controller_get(host);
 -
- 	spi_unregister_controller(host);
+ 	pm_runtime_get_sync(&pdev->dev);
  
- 	ep93xx_spi_release_dma(espi);
+ 	spi_unregister_controller(host);
+@@ -1720,8 +1712,6 @@ static void atmel_spi_remove(struct platform_device *pdev)
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
 -
 -	spi_controller_put(host);
  }
  
- static const struct of_device_id ep93xx_spi_of_ids[] = {
+ static int atmel_spi_runtime_suspend(struct device *dev)
 -- 
 2.53.0
 

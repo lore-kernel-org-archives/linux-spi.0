@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B73BED37;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941043BFE21;
 	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=pZ/v1DR4e2Zr640cn9c/9LH0WDxFDC5JfcyIdKrxKhcPlZlVK28rLEaC4OvRlVT9ufCvZXPl7qxMOUfVbnEccIXXXwX+6U3+ScFlUSZVSlWmS5HvtrCeeJFzEhSorgbgIjCVBvkO6oZd3mfY9cmr5BS+ie2PvEQ3GldgzuWacas=
+	t=1777454043; cv=none; b=J06NXBS678ZdsVtszm0KKCLWpftenZFoOHraz46vKiWNVpw/uLB4XsEQp/Jr3O0vBfwbw/QOj1+0hqF2PEx9VvuYC710QTw2y6hEubG0L+sY5HWAoq3AfH79XJKLjzezOBOyu76N6itHbulD7+/1yxQam3y/GVs+CDnIqqrlgjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=Eyb1Nu+90yTZ5mu01NjCfMd+AV0IXHjBMn+fGTS2nsk=;
+	bh=5kVNhoS1rCBF1MFLTvrHz0vKfdGlRU+p21hVgX4gDEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cu+sYwxs1IuSxr2PV4P8HJumVh2pkY78gnJQuqj2xcF87lR/DSC4vbd6IXjon4EMbQO2AqYewk27M9Wo3b/LpE0zIFO/pdOyFuOkE3Cwm15ZBTKhcaOzPBVZVSMqVbbwB5lWtVU/iWX13iTswW6nt7ljT5+/95O1M+tSEnhZSrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1B7McZq; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=dufFrabvpsgEZtlNoSjo6WmWQ9Ta7hgOFWujOZqx+TE9Y0F0GNzxuXXtFUd2Y/irrPO4ryQ21zKtPxcHAwe+O0CUAvITqdSTKbmcCctSBCs+hRSgzTCaG7jzNAv1zvZ99bHWbdiFTZ7cYcEY/Ukpk27uGTZpULPPyWdxbBSRJPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eY8GGD8H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1B7McZq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDE0C2BCFD;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eY8GGD8H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE3DC2BD00;
 	Wed, 29 Apr 2026 09:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777454043;
-	bh=Eyb1Nu+90yTZ5mu01NjCfMd+AV0IXHjBMn+fGTS2nsk=;
+	bh=5kVNhoS1rCBF1MFLTvrHz0vKfdGlRU+p21hVgX4gDEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1B7McZqqC7egMVkVokuWlq16nDirBechwCenP4MC8PPsqj5xC5hTYRzva6defBN1
-	 6OqB2PE/oGmdU0lDKGjYKl1jwZgAEMM5pVR5vy4qfEDDqeHCrKsYzWlTqwMT3/qoqy
-	 GEnFALjMvOTo8nxgJP6cNlIkKhg/a42HD78GBOetm6L9o4oT8Za6f0PUcXpt9y2uE1
-	 p/rQ3FKKzi7Tml9vppAfVKtK4nQfNQvSwNCyhhv4KY3J+9ywzQJdwSIKslberVvFFL
-	 RAkYHDCvO884emllUnJQlhfDQI8FxrxtLGpE0zZvg6CpB9ALGOiMlX91OLVy5XaULx
-	 FCYbKYqiGDmkA==
+	b=eY8GGD8HIk4u1X/uBBmxa8w85OtdVf5Y/nIoazbHag7iPTt3D+mFYyXeZJdTZMinu
+	 ErpVNBq7q9/IOCqgb/foo+OfIlCKE8j80oDDxtAa1uR5srcO4netPnAOsf289qHVyT
+	 nSTsbVVxf47vfOVny+kNQxywDBv5SIGOebm35A8PvQVxmgs8Wq27b/UdX5SqeaLrmM
+	 ypU6HDjFNI/khX+KjHfXrPVlN+H6XESeeRKCfN414TeWPEctT5WUfN5QQQzYql+TlT
+	 xJU1eSOo9RFwqy/popOlsmovCBeGNfVR58pAvyh/1F/LR8jsl/znjNbjBGhtwVZqro
+	 4AutZGvJw80TA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2f-2MlT;
+	id 1wI0zY-00000000h2p-2ZEj;
 	Wed, 29 Apr 2026 11:14:00 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -40,9 +40,9 @@ Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 12/19] spi: fsl-espi: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:26 +0200
-Message-ID: <20260429091333.165363-13-johan@kernel.org>
+Subject: [PATCH 17/19] spi: npcm-pspi: switch to managed controller allocation
+Date: Wed, 29 Apr 2026 11:13:31 +0200
+Message-ID: <20260429091333.165363-18-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
 References: <20260429091333.165363-1-johan@kernel.org>
@@ -60,75 +60,72 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-fsl-espi.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/spi/spi-npcm-pspi.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 45b9974ae911..f560bd537f7d 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -667,7 +667,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	struct fsl_espi *espi;
+diff --git a/drivers/spi/spi-npcm-pspi.c b/drivers/spi/spi-npcm-pspi.c
+index cffef0a5977d..a437a30d636c 100644
+--- a/drivers/spi/spi-npcm-pspi.c
++++ b/drivers/spi/spi-npcm-pspi.c
+@@ -345,7 +345,7 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	int irq;
  	int ret;
  
--	host = spi_alloc_host(dev, sizeof(struct fsl_espi));
-+	host = devm_spi_alloc_host(dev, sizeof(struct fsl_espi));
+-	host = spi_alloc_host(&pdev->dev, sizeof(*priv));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*priv));
  	if (!host)
  		return -ENOMEM;
  
-@@ -690,8 +690,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	espi->spibrg = fsl_get_sys_freq();
- 	if (espi->spibrg == -1) {
- 		dev_err(dev, "Can't get sys frequency!\n");
--		ret = -EINVAL;
--		goto err_probe;
-+		return -EINVAL;
- 	}
- 	/* determined by clock divider fields DIV16/PM in register SPMODEx */
- 	host->min_speed_hz = DIV_ROUND_UP(espi->spibrg, 4 * 16 * 16);
-@@ -700,15 +699,13 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	init_completion(&espi->done);
+@@ -356,21 +356,18 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ 	priv->is_save_param = false;
  
- 	espi->reg_base = devm_ioremap_resource(dev, mem);
--	if (IS_ERR(espi->reg_base)) {
--		ret = PTR_ERR(espi->reg_base);
--		goto err_probe;
+ 	priv->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(priv->base)) {
+-		ret = PTR_ERR(priv->base);
+-		goto out_host_put;
 -	}
-+	if (IS_ERR(espi->reg_base))
-+		return PTR_ERR(espi->reg_base);
++	if (IS_ERR(priv->base))
++		return PTR_ERR(priv->base);
  
- 	/* Register for SPI Interrupt */
- 	ret = devm_request_irq(dev, irq, fsl_espi_irq, 0, "fsl_espi", espi);
+ 	priv->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(priv->clk)) {
+ 		dev_err(&pdev->dev, "failed to get clock\n");
+-		ret = PTR_ERR(priv->clk);
+-		goto out_host_put;
++		return PTR_ERR(priv->clk);
+ 	}
+ 
+ 	ret = clk_prepare_enable(priv->clk);
  	if (ret)
--		goto err_probe;
+-		goto out_host_put;
 +		return ret;
  
- 	fsl_espi_init_regs(dev, true);
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+@@ -424,8 +421,6 @@ static int npcm_pspi_probe(struct platform_device *pdev)
+ out_disable_clk:
+ 	clk_disable_unprepare(priv->clk);
  
-@@ -732,8 +729,7 @@ static int fsl_espi_probe(struct device *dev, struct resource *mem,
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_suspended(dev);
--err_probe:
+-out_host_put:
 -	spi_controller_put(host);
-+
  	return ret;
  }
  
-@@ -784,13 +780,9 @@ static void of_fsl_espi_remove(struct platform_device *dev)
- {
- 	struct spi_controller *host = platform_get_drvdata(dev);
+@@ -434,14 +429,10 @@ static void npcm_pspi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct npcm_pspi *priv = spi_controller_get_devdata(host);
  
 -	spi_controller_get(host);
 -
  	spi_unregister_controller(host);
  
- 	pm_runtime_disable(&dev->dev);
+ 	npcm_pspi_reset_hw(priv);
+ 	clk_disable_unprepare(priv->clk);
 -
 -	spi_controller_put(host);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ static const struct of_device_id npcm_pspi_match[] = {
 -- 
 2.53.0
 

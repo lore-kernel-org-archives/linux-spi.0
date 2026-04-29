@@ -1,42 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E39C3FE640;
-	Wed, 29 Apr 2026 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BBD3FE640;
+	Wed, 29 Apr 2026 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777485496; cv=none; b=i5c/erFIMKvR43MUjZjL1wG9YqQ6ODMuCrFOT6UJOmwIuqjRcfSQT033Fa+4SNs6bqmZ0XASu+yvnvSKE3M1OoIJFJBjdRZYfiGCas/xGOBUp8mLD9OLQYVAVt87Jy5bAJZm+GNTwP0lFe0PbmiOqat7B2tdb+Kg8AmqfJeJbls=
+	t=1777485500; cv=none; b=XtwOrhhL8OrbG7o78FT7cDZapuMbXRr/09epb+PVc/BQGbrVgobRi4TUKrQR3lKXcqUg0kdhFKKSmzql+xDqUn34JnJsiBV5lSywVcERSqnBgtyJ9t/a5FAzPUavbnJzJK2iU2H8gJfz2QWUHbpKMXblO9sBJofPB6r7eLwCKI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777485496; c=relaxed/simple;
-	bh=6/F36LKn/NGibzDI14OIAiRrlVxPejW0eb2Oqu7W7Xg=;
+	s=arc-20240116; t=1777485500; c=relaxed/simple;
+	bh=SVk1CaFNho+vedmpEbxVPP6KCLDt4+qYheoCLm1aG/I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SXI/8HcndOPWRgWeUP2X3raqH/s96rhGdu5Yul4ECJnLrWDQN6cuYvJj+MO//DdlCwkz5v3oVq4t1nskHNGIqYMslZxuTmMMlQKNk7lve5MKJrYL6TZLZSIwVgd97d7HOnFUhhSKu8ReuV8SJfeYEra8ddu7YbTDC3So8ghSydQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Vmb/o8DH; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=FlqKx7XC8/9CxsYoo1+Kt1AWXkOK5z79zuSQV0VZaLMsxHG6sMp7TRQUyqtk2NOtPR2Ga5t6/rlosIjByWR0LptpkbRK+BmCAOB1f8D6wT5x6rYa4QLXYzt3SknkpEpDifyjbSj7yw469FCBM5NXULsZtemfbW3GiVzjEEC2eb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NmSZF+iW; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Vmb/o8DH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NmSZF+iW"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 35F694E42B73;
-	Wed, 29 Apr 2026 17:58:14 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 38FA24E42B71;
+	Wed, 29 Apr 2026 17:58:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 09E735FD43;
-	Wed, 29 Apr 2026 17:58:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1A14B1072B175;
-	Wed, 29 Apr 2026 19:58:07 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CCFF5FD43;
+	Wed, 29 Apr 2026 17:58:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C0971072B171;
+	Wed, 29 Apr 2026 19:58:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777485491; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1777485495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=5tIkRnE1ORjoj4u0h1eWmFg73tjo03bMRc5hBjhSYqM=;
-	b=Vmb/o8DHri8qfjlDxdgxVCmz1cOiWo5fai2OHnEYLHyIsyVdpDTgWD44JJKYBik+Bop6+W
-	qO/mPLDC2HvVPtzzFzJzmO0zmj8Ud0q8Cl6mkOzfLIV5t4BqhYfAOS/P4cCduBkSpSOfmM
-	5M8eLmzfXkqP4D5NBRKhvhmcWtsq9c1mg0MVwung6UnlsGwZeb4fsNZ/pNVgjm2S/Vrlqz
-	cQsoBDbxgbA6MAC7jdwUUgJJZj7f2xsTfwFvpawEIDwOwqd6ZhkIt1k16aESiXmhdrWfdA
-	Wg5O+8KVvlIUYgrSqKw5HE7tXplaioeNXtYi4yXBgQzvAFVe4lpxohvMt0C13A==
+	bh=djNQC+WiehgbSjZPUHPGAOR2nkZcZmEr0KjHIcYf3t4=;
+	b=NmSZF+iWjEyn2SmSbXR4+EkHCCLdjDtILUG9X51p5SCiphlxZnjKNNGhMMDdv6+IE8Z0pT
+	ASIHf/oK5ins8abEGkf3OT/DpAh4+l/rTkVjcESvNc56zjX3c6MzBilErApZ2Bhx8qWhnA
+	q4skr5wiZcq3mmwHq2jiVNGW1mYCJN/tNbDh2F3BzrrvyfD4fdGmhsSID0jKhhjNOiGAz6
+	jJJPYq8QKvuUtagfzMs9+zJqCAJairETws7j+Woa85G71iDosgPBr85dnsTyIGKlD82Shb
+	llYfvCKlpMGTCJF/Xyt0qdAzxC71iYXH4L/FxQpv9jVgln0FJY4chh9edS6YQw==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Wed, 29 Apr 2026 19:56:46 +0200
-Subject: [PATCH v3 09/11] mtd: spinand: winbond: Create a helper to write
- the HS bit
+Date: Wed, 29 Apr 2026 19:56:47 +0200
+Subject: [PATCH v3 10/11] mtd: spinand: winbond: Create a helper to detect
+ the need for the HS bit
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-winbond-v6-18-rc1-cont-read-v3-9-0f38b3c229ad@bootlin.com>
+Message-Id: <20260429-winbond-v6-18-rc1-cont-read-v3-10-0f38b3c229ad@bootlin.com>
 References: <20260429-winbond-v6-18-rc1-cont-read-v3-0-0f38b3c229ad@bootlin.com>
 In-Reply-To: <20260429-winbond-v6-18-rc1-cont-read-v3-0-0f38b3c229ad@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
@@ -72,69 +72,63 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Updating the HS bit is not complex but implies reading, setting/clearing
-a bit and writing. Clean a bit this section by moving this logic in its
-own helper.
+The logic is not complex but might be reused to cleanup a bit the
+section by moving it to a dedicated helper.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/mtd/nand/spi/winbond.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/mtd/nand/spi/winbond.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index 6c11f59a9f8d..b30a343a6672 100644
+index b30a343a6672..ffbcd25b0366 100644
 --- a/drivers/mtd/nand/spi/winbond.c
 +++ b/drivers/mtd/nand/spi/winbond.c
-@@ -404,13 +404,28 @@ static int w25w35nxxjw_ecc_get_status(struct spinand_device *spinand, u8 status)
- 	return -EINVAL;
+@@ -421,30 +421,33 @@ static int w25n0xjw_set_sr4_hs(struct spinand_device *spinand, bool enable)
+ 	return spinand_write_reg_op(spinand, W25N0XJW_SR4, sr4);
  }
  
-+static int w25n0xjw_set_sr4_hs(struct spinand_device *spinand, bool enable)
++/*
++ * SDR dual and quad I/O operations over 104MHz require the HS bit to
++ * enable a few more dummy cycles.
++ */
++static bool w25n0xjw_op_needs_hs(const struct spi_mem_op *op)
 +{
-+	int ret;
-+	u8 sr4;
++	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
++		return false;
++	else if (op->cmd.buswidth != 1 || op->addr.buswidth == 1)
++		return false;
++	else if (op->max_freq && op->max_freq <= 104 * HZ_PER_MHZ)
++		return false;
 +
-+	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
-+	if (ret)
-+		return ret;
-+
-+	if (enable)
-+		sr4 |= W25N0XJW_SR4_HS;
-+	else
-+		sr4 &= ~W25N0XJW_SR4_HS;
-+
-+	return spinand_write_reg_op(spinand, W25N0XJW_SR4, sr4);
++	return true;
 +}
 +
  static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
  			   enum spinand_bus_interface iface)
  {
  	const struct spi_mem_op *op;
- 	bool hs;
--	u8 sr4;
--	int ret;
+-	bool hs;
  
  	if (iface != SSDR)
  		return -EOPNOTSUPP;
-@@ -429,20 +444,7 @@ static int w25n0xjw_hs_cfg(struct spinand_device *spinand,
- 	else
- 		hs = true;
  
--	ret = spinand_read_reg_op(spinand, W25N0XJW_SR4, &sr4);
--	if (ret)
--		return ret;
--
--	if (hs)
--		sr4 |= W25N0XJW_SR4_HS;
+-	/*
+-	 * SDR dual and quad I/O operations over 104MHz require the HS bit to
+-	 * enable a few more dummy cycles.
+-	 */
+ 	op = spinand->op_templates->read_cache;
+-	if (op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr)
+-		hs = false;
+-	else if (op->cmd.buswidth != 1 || op->addr.buswidth == 1)
+-		hs = false;
+-	else if (op->max_freq && op->max_freq <= 104 * HZ_PER_MHZ)
+-		hs = false;
 -	else
--		sr4 &= ~W25N0XJW_SR4_HS;
--
--	ret = spinand_write_reg_op(spinand, W25N0XJW_SR4, sr4);
--	if (ret)
--		return ret;
--
--	return 0;
-+	return w25n0xjw_set_sr4_hs(spinand, hs);
+-		hs = true;
+ 
+-	return w25n0xjw_set_sr4_hs(spinand, hs);
++	return w25n0xjw_set_sr4_hs(spinand, w25n0xjw_op_needs_hs(op));
  }
  
  static int w35n0xjw_write_vcr(struct spinand_device *spinand, u8 reg, u8 val)

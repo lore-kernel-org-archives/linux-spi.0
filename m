@@ -1,51 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942043BFE38;
-	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB9D3BED18;
+	Wed, 29 Apr 2026 09:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777454043; cv=none; b=GkIkk8S7Sn+tAhH+z4uuvhI6pVDY5tcycVoAZzCnTiKqYtciL3quv2FDPc3+jTZJPCC+zqs1/bjtmsHCtUN8eF8EUfzJg4lL4Yi8jnxBd/aLzkBw9MqNawQp/Ay23cEaBgA/uEh13YF9pqtJoLp6XTzo1v2PkOw0h1svswdM+Jw=
+	t=1777454471; cv=none; b=iCm8mkPjpwfNFJxnSftJXHAFMEBR2xFtCVHojWJi505df8q2IwZ+j02KxXe+RDkHhpIv4M893GTHmlL6JJHELnYT/5kA5mnzm2dV70D7DGO5soiRkjthIACC+H7Q7KIRg5SMbK/9RLe6lPCQc2jEZYVGlkCvzhOd7LIKIJbgop0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777454043; c=relaxed/simple;
-	bh=cm6m0GuyLRlBqhGRew3SkABtZJDptksWZw3TSTlu/E4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LzxqYZFA8L/k3egTZEV0O+oP4BbXOaLK2obLU1jWfHGDVsygS1Ow8VQJoiVFWs4uIyhSKvp87N7Agyqpe1dN8p6LTJZc6y5oTTnuSO9lrBROk7SZsvbVnFswKqwEz1vVW+A73hL55TTpOuhG/K1aGXdAEVZKwX8ZIdxtFPB60gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tAorugjS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777454471; c=relaxed/simple;
+	bh=UZoIuQtiP7uojx35wmjj8kbuysnIWA5mMNqxjvryBHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vx/iNwcBVpNgmYgC+N97mmdYEWUvmvQ2rwUyrjCpQPAPzEBZJU4TVhX8jTpowshlHBEwIZVQyVYQpfIumN/FI9MYpsAxmpaU6vhULJb9OQDk0vZf6AQHa7wLD4Kgl39zXde6yQul1QS4M8mkgbe2I9xLc5++bh1iK9INhYG85Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sXRi8fdE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tAorugjS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FC3C2BD01;
-	Wed, 29 Apr 2026 09:14:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sXRi8fdE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6333C19425;
+	Wed, 29 Apr 2026 09:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777454043;
-	bh=cm6m0GuyLRlBqhGRew3SkABtZJDptksWZw3TSTlu/E4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tAorugjSFoo6DDA05FhE9IDDf3uRCBUXa3rtr5IpvXog/6Qps109uYSfkW713bcD6
-	 ihtIKU51r8Y8iVfS0n4xU75zN5IEJGLps9XZFclohWIjjGAjcEE0EdRjQfy8F1+49x
-	 +9jEWjy4hKP5uReMJQsNYrn0OeG5M3Yz2veQrwt66h8tYY3p5qPYEwWClWpQDOv4K8
-	 x8/Xk5so08IZOvP4HPtstdOf3tCswLGPOSWwiLhX+EWreyX32cTD1Mfk0SVBxFzqvz
-	 TIMLh+Vs7IdotfxuKJpzqLH1GOVhdmq5u5uTrtV3MJm5nrLHJ0h4pwFwLVHv8InJ8y
-	 Juz1efcfbZLgg==
+	s=k20201202; t=1777454470;
+	bh=UZoIuQtiP7uojx35wmjj8kbuysnIWA5mMNqxjvryBHw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sXRi8fdEqHKtrbSwAIc7GSNUJFUQLaMYLIHs09bR35dxwAmOmCwUxN7tV8ORa/ZUo
+	 wXIkxUyJRObY38QuVvyaJx+K/EUQGKuAIGt3Ewvtb5X1OhO0X2a6PASwSc7ZN4S4wm
+	 X0OA1DVLVH9hPMrbhLd2sE666dpvKUTnAQD36yE88FPAZJUNkxdPK05yG0vWlGOfXn
+	 0jJan9je52OmOq3f5hQfLbuvsYpSY2jTzXxusqg/fQAsltrdwRPYHTiWfC4dvOmiQv
+	 FnrUc4G0nNi7RZLcgZLF/t8Rf/9NHKwfFL9uIkEubV/MwQfNYydgp4aS65VDxUhNwZ
+	 X4/pR7fM1NfOg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wI0zY-00000000h2l-2UKO;
-	Wed, 29 Apr 2026 11:14:00 +0200
+	id 1wI16S-00000000hEW-25sx;
+	Wed, 29 Apr 2026 11:21:08 +0200
 From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	Mark Brown <broonie@kernel.org>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 15/19] spi: meson-spicc: switch to managed controller allocation
-Date: Wed, 29 Apr 2026 11:13:29 +0200
-Message-ID: <20260429091333.165363-16-johan@kernel.org>
+Subject: [PATCH] spi: at91-usart: drop dead runtime pm support
+Date: Wed, 29 Apr 2026 11:20:05 +0200
+Message-ID: <20260429092005.166128-1-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260429091333.165363-1-johan@kernel.org>
-References: <20260429091333.165363-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,142 +50,95 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch to device managed controller allocation to simplify error
-handling and to avoid having to take another reference during
-deregistration.
+Drop the dead runtime PM support which has never been enabled.
 
+Fixes: 96ed3ecde2c0 ("spi: at91-usart: add power management support")
+Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-meson-spicc.c | 43 +++++++++++------------------------
- 1 file changed, 13 insertions(+), 30 deletions(-)
+ drivers/spi/spi-at91-usart.c | 39 ++++++++----------------------------
+ 1 file changed, 8 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spicc.c b/drivers/spi/spi-meson-spicc.c
-index b80f9f457b66..8ad2ad0c97e2 100644
---- a/drivers/spi/spi-meson-spicc.c
-+++ b/drivers/spi/spi-meson-spicc.c
-@@ -982,7 +982,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	struct meson_spicc_device *spicc;
- 	int ret, irq;
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 32fee5a7ffdf..77cad4118202 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -16,7 +16,6 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/platform_device.h>
+-#include <linux/pm_runtime.h>
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*spicc));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spicc));
- 	if (!host) {
- 		dev_err(&pdev->dev, "host allocation failed\n");
- 		return -ENOMEM;
-@@ -993,8 +993,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	spicc->data = of_device_get_match_data(&pdev->dev);
- 	if (!spicc->data) {
- 		dev_err(&pdev->dev, "failed to get match data\n");
--		ret = -EINVAL;
--		goto out_host;
-+		return -EINVAL;
- 	}
+ #include <linux/spi/spi.h>
  
- 	spicc->pdev = pdev;
-@@ -1005,8 +1004,7 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	spicc->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(spicc->base)) {
- 		dev_err(&pdev->dev, "io resource mapping failed\n");
--		ret = PTR_ERR(spicc->base);
--		goto out_host;
-+		return PTR_ERR(spicc->base);
- 	}
+@@ -572,38 +571,18 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	/* Set master mode and enable controller */
-@@ -1017,39 +1015,33 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	writel_relaxed(0, spicc->base + SPICC_INTREG);
+-__maybe_unused static int at91_usart_spi_runtime_suspend(struct device *dev)
+-{
+-	struct spi_controller *ctlr = dev_get_drvdata(dev);
+-	struct at91_usart_spi *aus = spi_controller_get_devdata(ctlr);
+-
+-	clk_disable_unprepare(aus->clk);
+-	pinctrl_pm_select_sleep_state(dev);
+-
+-	return 0;
+-}
+-
+-__maybe_unused static int at91_usart_spi_runtime_resume(struct device *dev)
+-{
+-	struct spi_controller *ctrl = dev_get_drvdata(dev);
+-	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
+-
+-	pinctrl_pm_select_default_state(dev);
+-
+-	return clk_prepare_enable(aus->clk);
+-}
+-
+ __maybe_unused static int at91_usart_spi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
++	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
+ 	int ret;
  
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto out_host;
--	}
-+	if (irq < 0)
-+		return irq;
+ 	ret = spi_controller_suspend(ctrl);
+ 	if (ret)
+ 		return ret;
  
- 	ret = devm_request_irq(&pdev->dev, irq, meson_spicc_irq,
- 			       0, NULL, spicc);
- 	if (ret) {
- 		dev_err(&pdev->dev, "irq request failed\n");
--		goto out_host;
-+		return ret;
- 	}
- 
- 	spicc->core = devm_clk_get_enabled(&pdev->dev, "core");
- 	if (IS_ERR(spicc->core)) {
- 		dev_err(&pdev->dev, "core clock request failed\n");
--		ret = PTR_ERR(spicc->core);
--		goto out_host;
-+		return PTR_ERR(spicc->core);
- 	}
- 
- 	if (spicc->data->has_pclk) {
- 		spicc->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
- 		if (IS_ERR(spicc->pclk)) {
- 			dev_err(&pdev->dev, "pclk clock request failed\n");
--			ret = PTR_ERR(spicc->pclk);
--			goto out_host;
-+			return PTR_ERR(spicc->pclk);
- 		}
- 	}
- 
- 	spicc->pinctrl = devm_pinctrl_get(&pdev->dev);
--	if (IS_ERR(spicc->pinctrl)) {
--		ret = PTR_ERR(spicc->pinctrl);
--		goto out_host;
--	}
-+	if (IS_ERR(spicc->pinctrl))
-+		return PTR_ERR(spicc->pinctrl);
- 
- 	device_reset_optional(&pdev->dev);
- 
-@@ -1070,43 +1062,34 @@ static int meson_spicc_probe(struct platform_device *pdev)
- 	ret = meson_spicc_pow2_clk_init(spicc);
- 	if (ret) {
- 		dev_err(&pdev->dev, "pow2 clock registration failed\n");
--		goto out_host;
-+		return ret;
- 	}
- 
- 	if (spicc->data->has_enhance_clk_div) {
- 		ret = meson_spicc_enh_clk_init(spicc);
- 		if (ret) {
- 			dev_err(&pdev->dev, "clock registration failed\n");
--			goto out_host;
-+			return ret;
- 		}
- 	}
- 
- 	ret = spi_register_controller(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi registration failed\n");
--		goto out_host;
-+		return ret;
- 	}
+-	if (!pm_runtime_suspended(dev))
+-		at91_usart_spi_runtime_suspend(dev);
++	clk_disable_unprepare(aus->clk);
++	pinctrl_pm_select_sleep_state(dev);
  
  	return 0;
--
--out_host:
--	spi_controller_put(host);
--
--	return ret;
  }
+@@ -614,11 +593,11 @@ __maybe_unused static int at91_usart_spi_resume(struct device *dev)
+ 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
+ 	int ret;
  
- static void meson_spicc_remove(struct platform_device *pdev)
- {
- 	struct meson_spicc_device *spicc = platform_get_drvdata(pdev);
+-	if (!pm_runtime_suspended(dev)) {
+-		ret = at91_usart_spi_runtime_resume(dev);
+-		if (ret)
+-			return ret;
+-	}
++	pinctrl_pm_select_default_state(dev);
++
++	ret = clk_prepare_enable(aus->clk);
++	if (ret)
++		return ret;
  
--	spi_controller_get(spicc->host);
--
- 	spi_unregister_controller(spicc->host);
+ 	at91_usart_spi_init(aus);
  
- 	/* Disable SPI */
- 	writel(0, spicc->base + SPICC_CONREG);
--
--	spi_controller_put(spicc->host);
- }
+@@ -638,8 +617,6 @@ static void at91_usart_spi_remove(struct platform_device *pdev)
  
- static const struct meson_spicc_data meson_spicc_gx_data = {
+ static const struct dev_pm_ops at91_usart_spi_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(at91_usart_spi_suspend, at91_usart_spi_resume)
+-	SET_RUNTIME_PM_OPS(at91_usart_spi_runtime_suspend,
+-			   at91_usart_spi_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver at91_usart_spi_driver = {
 -- 
 2.53.0
 

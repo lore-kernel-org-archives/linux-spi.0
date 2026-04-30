@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43B4347FD1;
-	Thu, 30 Apr 2026 10:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004B03D8138;
+	Thu, 30 Apr 2026 10:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543836; cv=none; b=I91Sr2tOPUzfNU4bhbITo6okHtho1RHJE1VOELb6y2tYBci3GhOkmPXYvqDHUuo0oqNw4x7Xqsk/cqMfiQlUD/3IYt/VUAHTb2JGq8NnpiSCww3yVi/+AQ0qHm8Bk306QHHD3p3aPE/R64bAwvmrgk3a4esXeokttP2U0BOsfD0=
+	t=1777543840; cv=none; b=I6W8NIHrMkjTOsJbAuHqonN/yEIsHAJtJGqFsHNlDIbuiMdX6A6vMS1C6s1SAoEsiXpA6OFnWVHuVv6Y0TOYaH1rxV7SdImPiv2MM/030eNQb1C+mjgvFCOXC7R0iTuQH3/MaRsr9TjzohZwVqLz75YlfTj8EUADAYRYvW/olmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543836; c=relaxed/simple;
-	bh=EqvFN38G79HDAnXBhVWjYz3r2hRoIRTEoiMkhnAtoN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=koXx0Tj0ArTN5RoOF7npPd2l5iXts5GYJvoQQCUxkHl/UeCJnv1Re3Vb5RbKl8cqlMLXcW8UYIgPgvlHATJhxYMRR3Cb1nU2Ea6S0Z4h95j23aK/+njg7wh1KdcbWbJywjFvUsQrF+c0l10yGIhd2CGnrE7W5EF0Z6Ank1dvUjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHvxstCP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777543840; c=relaxed/simple;
+	bh=/J1nUBci+E8Pw/IKzTnHKNwPygs5jxzuwzYeRCMks7Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DWjNzgAAVyhQz/wr30U4UsTxrXfi4tiYihszlv6oaDsQ2FP813dIvUpYkTQUESYIj/CTlbAZvTyjnhw+S0kz6nPSoTMXwIc8sU8JjMT5HP38jAiSoRB1aSwSB8AGKXlLeaTzdOsPx8J8W8C/jqucz4PTCBCM4fCepLYcWb4G7T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAjAQH7w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHvxstCP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9BCC2BCB3;
-	Thu, 30 Apr 2026 10:10:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAjAQH7w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81950C2BCC4;
+	Thu, 30 Apr 2026 10:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777543836;
-	bh=EqvFN38G79HDAnXBhVWjYz3r2hRoIRTEoiMkhnAtoN0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tHvxstCPI/ZD9WUtvG7SafdI1LnJJjAm0B0tCOGOJpg8z+N5OGTSJPPiWxuNT8g8Z
-	 e84RsLAZcA0YxDKDNTwmko7XZfRTY7iE2+EH39zBE9ETup8+jAJQxoB74EfI1MnCKC
-	 3le0jLllF9innE7JrKx5buCYkA0BWAMb3ybQb2RCiTUCZZIs6dQC3Dog9wrCY+xP+e
-	 CW0jA9/wrlfw5JNmzU64yqvnhLJKMh0qNHatnwvH0/126ovE6WKVmVdtwwPXcfGex6
-	 eDdK+m+FJMrvzrJuwc4pZ/yi7bGPSkHq3ZdCMAbmaOFxe8RKcBBgRjCdLrYovH2Pq4
-	 F8C4hwCDCtEZw==
+	s=k20201202; t=1777543839;
+	bh=/J1nUBci+E8Pw/IKzTnHKNwPygs5jxzuwzYeRCMks7Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JAjAQH7w2Jth1SkpLLheSRV035Yf2WM9booYaohKvDHPwnVg1kjuRGJqFxJSSNhBw
+	 j6urlmsZQOHlHjX/NJpSEZ0JDGYgYzHzrQQyXZlprVhh5lKSVZXQuZ8ZAFsgpoGtOF
+	 7tfA1+3RQymyU0C28clO6dJIv6+7+abHKq4x0mPZSwQqivQECHiJaWp1p/3qFuKcpn
+	 HK6ctu1b0GlhhnC80SsrdX/wltNrbXjav25sF7lNIzmJOBuU1Z5eIVsABs7FHsD7NO
+	 Ijnu0yjtV2uULWw6KOUSDlU+YmrO0AxKMjT5qzYg+VLawnyRUy/7q8fEseC4thoCK5
+	 0OMWJhKISXskA==
 From: Conor Dooley <conor@kernel.org>
 To: broonie@kernel.org
 Cc: conor@kernel.org,
@@ -34,51 +35,209 @@ Cc: conor@kernel.org,
 	Valentina.FernandezAlanis@microchip.com,
 	linux-riscv@lists.infradead.org,
 	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/3] microchip core-qspi gpio-cs fixes + cleanup
-Date: Thu, 30 Apr 2026 11:10:17 +0100
-Message-ID: <20260430-levers-defiling-00406e391c5a@spud>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] spi: microchip-core-qspi: control built-in cs manually
+Date: Thu, 30 Apr 2026 11:10:18 +0100
+Message-ID: <20260430-hamstring-busload-f941d0347b5e@spud>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260430-levers-defiling-00406e391c5a@spud>
+References: <20260430-levers-defiling-00406e391c5a@spud>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=977; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=iJzKH5JoBUPIXWclDGc7MiyoS0OlrYwr9MtEDV1CR7s=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJmftTp+FPXW7OY5ayU2Ufqn4upI04XtH0Vspmn7OAkHB nxVUv3QUcrCIMbFICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgInM2MnIsF0gPio952py5QZh 6+dl7u/iVp1p2LxV26U6Q1ltR5tDEsNfYc+rjx/ab/aWEon5XnU3d98x+5bjLHlW7K99X6Q967N hBwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6779; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=5HdeUiVuRH6ATNnnzTOweOk/nyMJ666L2b1WoXdR8YI=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJmftToERCMvzYu6y1MyI6fh8KJ7Zuc/m7t1qOXtqjtet pV70+ftHaUsDGJcDLJiiiyJt/tapNb/cdnh3PMWZg4rE8gQBi5OAZiIwnxGhrPvMxyeWgfZbs9w e1OQXdXxIfFhganiBfEjYuk/T6zJbmD4K/05ofVeIteHF0s2fhHbt551Y/WcSwc4Nk/savK+d06 /lQ8A
 X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-Hey Mark,
+The coreQSPI IP supports only a single chip select, which is
+automagically operated by the hardware - set low when the transmit
+buffer first gets written to and set high when the number of bytes
+written to the TOTALBYTES field of the FRAMES register have been sent on
+the bus. Additional devices must use GPIOs for their chip selects.
+It was reported to me that if there are two devices attached to this
+QSPI controller that the in-built chip select is set low while linux
+tries to access the device attached to the GPIO.
 
-v3 with the review comment about the core handing CS_HIGH dealt with.
-I noticed that in the same function there was a "raw" BIT(1), which I
-replaced with a macro that the patch was already adding for use in the
-setup function...
+This went undetected as the boards that connected multiple devices to
+the SPI controller all exclusively used GPIOs for chip selects, not
+relying on the built-in chip select at all. It turns out that this was
+because the built-in chip select, when controlled automagically, is set
+low when active and high when inactive, thereby ruling out its use for
+active-high devices or devices that need to transmit with the chip
+select disabled.
 
-Cheers,
-Conor.
+Modify the driver so that it controls chip select directly, retaining
+the behaviour for mem_ops of setting the chip select active for the
+entire duration of the transfer in the exec_op callback. For regular
+transfers, implement the set_cs callback for the core to use.
 
-CC: Conor Dooley <conor.dooley@microchip.com>
-CC: Daire McNamara <daire.mcnamara@microchip.com>
-CC: Mark Brown <broonie@kernel.org>
-CC: Cyril Jean <cyril.jean@microchip.com>
-CC: Valentina.FernandezAlanis@microchip.com
-CC: linux-riscv@lists.infradead.org
-CC: linux-spi@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
+As part of this, the existing setup callback, mchp_coreqspi_setup_op(),
+is removed. Modifying the CLKIDLE field is not safe to do during
+operation when there are multiple devices, so this code is removed
+entirely. Setting the MASTER and ENABLE fields is something that can be
+done once at probe, it doesn't need to be re-run for each device.
+Instead the new setup callback sets the built-in chip select to its
+inactive state for active-low devices, as the reset value of the chip
+select in software controlled mode is low.
 
-Conor Dooley (3):
-  spi: microchip-core-qspi: control built-in cs manually
-  spi: microchip-core-qspi: don't attempt to transmit during emulated
-    read-only dual/quad operations
-  spi: microchip-core-qspi: remove some inline markings
+Fixes: 8f9cf02c88528 ("spi: microchip-core-qspi: Add regular transfers")
+Fixes: 8596124c4c1bc ("spi: microchip-core-qspi: Add support for microchip fpga qspi controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+ drivers/spi/spi-microchip-core-qspi.c | 79 ++++++++++++++++++++++-----
+ 1 file changed, 64 insertions(+), 15 deletions(-)
 
- drivers/spi/spi-microchip-core-qspi.c | 99 +++++++++++++++++++++------
- 1 file changed, 79 insertions(+), 20 deletions(-)
-
+diff --git a/drivers/spi/spi-microchip-core-qspi.c b/drivers/spi/spi-microchip-core-qspi.c
+index eab059fb0bc2c..ffa0f33a0ae09 100644
+--- a/drivers/spi/spi-microchip-core-qspi.c
++++ b/drivers/spi/spi-microchip-core-qspi.c
+@@ -74,6 +74,13 @@
+ #define STATUS_FLAGSX4		BIT(8)
+ #define STATUS_MASK		GENMASK(8, 0)
+ 
++/*
++ * QSPI Direct Access register defines
++ */
++#define DIRECT_ACCESS_EN_SSEL		BIT(0)
++#define DIRECT_ACCESS_OP_SSEL		BIT(1)
++#define DIRECT_ACCESS_OP_SSEL_SHIFT	1
++
+ #define BYTESUPPER_MASK		GENMASK(31, 16)
+ #define BYTESLOWER_MASK		GENMASK(15, 0)
+ 
+@@ -158,6 +165,38 @@ static int mchp_coreqspi_set_mode(struct mchp_coreqspi *qspi, const struct spi_m
+ 	return 0;
+ }
+ 
++static void mchp_coreqspi_set_cs(struct spi_device *spi, bool enable)
++{
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
++	u32 val;
++
++	val = readl(qspi->regs + REG_DIRECT_ACCESS);
++
++	val &= ~DIRECT_ACCESS_OP_SSEL;
++	val |= !enable << DIRECT_ACCESS_OP_SSEL_SHIFT;
++
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++}
++
++static int mchp_coreqspi_setup(struct spi_device *spi)
++{
++	struct mchp_coreqspi *qspi = spi_controller_get_devdata(spi->controller);
++	u32 val;
++
++	/*
++	 * Active low devices need to be specifically set to their inactive
++	 * states during probe.
++	 */
++	if (spi->mode & SPI_CS_HIGH)
++		return 0;
++
++	val = readl(qspi->regs + REG_DIRECT_ACCESS);
++	val |= DIRECT_ACCESS_OP_SSEL;
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++
++	return 0;
++}
++
+ static inline void mchp_coreqspi_read_op(struct mchp_coreqspi *qspi)
+ {
+ 	u32 control, data;
+@@ -380,19 +419,6 @@ static int mchp_coreqspi_setup_clock(struct mchp_coreqspi *qspi, struct spi_devi
+ 	return 0;
+ }
+ 
+-static int mchp_coreqspi_setup_op(struct spi_device *spi_dev)
+-{
+-	struct spi_controller *ctlr = spi_dev->controller;
+-	struct mchp_coreqspi *qspi = spi_controller_get_devdata(ctlr);
+-	u32 control = readl_relaxed(qspi->regs + REG_CONTROL);
+-
+-	control |= (CONTROL_MASTER | CONTROL_ENABLE);
+-	control &= ~CONTROL_CLKIDLE;
+-	writel_relaxed(control, qspi->regs + REG_CONTROL);
+-
+-	return 0;
+-}
+-
+ static inline void mchp_coreqspi_config_op(struct mchp_coreqspi *qspi, const struct spi_mem_op *op)
+ {
+ 	u32 idle_cycles = 0;
+@@ -483,6 +509,7 @@ static int mchp_coreqspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *o
+ 
+ 	reinit_completion(&qspi->data_completion);
+ 	mchp_coreqspi_config_op(qspi, op);
++	mchp_coreqspi_set_cs(mem->spi, true);
+ 	if (op->cmd.opcode) {
+ 		qspi->txbuf = &opcode;
+ 		qspi->rxbuf = NULL;
+@@ -523,6 +550,7 @@ static int mchp_coreqspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *o
+ 		err = -ETIMEDOUT;
+ 
+ error:
++	mchp_coreqspi_set_cs(mem->spi, false);
+ 	mutex_unlock(&qspi->op_lock);
+ 	mchp_coreqspi_disable_ints(qspi);
+ 
+@@ -686,6 +714,7 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	int ret;
++	u32 num_cs, val;
+ 
+ 	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
+ 	if (!ctlr)
+@@ -718,10 +747,18 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	/*
++	 * The IP core only has a single CS, any more have to be provided via
++	 * gpios
++	 */
++	if (of_property_read_u32(pdev->dev.of_node, "num-cs", &num_cs))
++		num_cs = 1;
++
++	ctlr->num_chipselect = num_cs;
++
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	ctlr->mem_ops = &mchp_coreqspi_mem_ops;
+ 	ctlr->mem_caps = &mchp_coreqspi_mem_caps;
+-	ctlr->setup = mchp_coreqspi_setup_op;
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+ 			  SPI_TX_DUAL | SPI_TX_QUAD;
+ 	ctlr->dev.of_node = np;
+@@ -729,9 +766,21 @@ static int mchp_coreqspi_probe(struct platform_device *pdev)
+ 	ctlr->prepare_message = mchp_coreqspi_prepare_message;
+ 	ctlr->unprepare_message = mchp_coreqspi_unprepare_message;
+ 	ctlr->transfer_one = mchp_coreqspi_transfer_one;
+-	ctlr->num_chipselect = 2;
++	ctlr->setup = mchp_coreqspi_setup;
++	ctlr->set_cs = mchp_coreqspi_set_cs;
+ 	ctlr->use_gpio_descriptors = true;
+ 
++	val = readl_relaxed(qspi->regs + REG_CONTROL);
++	val |= (CONTROL_MASTER | CONTROL_ENABLE);
++	writel_relaxed(val, qspi->regs + REG_CONTROL);
++
++	/*
++	 * Put cs into software controlled mode
++	 */
++	val = readl_relaxed(qspi->regs + REG_DIRECT_ACCESS);
++	val |= DIRECT_ACCESS_EN_SSEL;
++	writel(val, qspi->regs + REG_DIRECT_ACCESS);
++
+ 	ret = spi_register_controller(ctlr);
+ 	if (ret)
+ 		return dev_err_probe(&pdev->dev, ret,
 -- 
 2.53.0
 

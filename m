@@ -1,102 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F072139A07B;
-	Thu, 30 Apr 2026 10:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43B4347FD1;
+	Thu, 30 Apr 2026 10:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543515; cv=none; b=oesbYl3AI0eG7GXxHqODC40tGaQ7j3ODgiLQsQVQtdmAi+hpQyGKrZXMNj49JmDvwt5hLAsX3Ha3AqSYYr1VTVCEu6M9FddSecr9J455sld3iDOldMoo3Kp0gZvym4tbZQqSI71+rCrWIUQvLj0NJOZ+rdY6QTHC3XCA2I+MHzw=
+	t=1777543836; cv=none; b=I91Sr2tOPUzfNU4bhbITo6okHtho1RHJE1VOELb6y2tYBci3GhOkmPXYvqDHUuo0oqNw4x7Xqsk/cqMfiQlUD/3IYt/VUAHTb2JGq8NnpiSCww3yVi/+AQ0qHm8Bk306QHHD3p3aPE/R64bAwvmrgk3a4esXeokttP2U0BOsfD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543515; c=relaxed/simple;
-	bh=FDWShGGmHLzo3U/oyhN+S2y7XC474Jp6Sf1UdWptFMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3EtQWdh7bwpN5O9Nuy15bsndEU60mPs7DrlioYEQ97FV9o9jZNY2woMvMyg9ZQwopU/to+bi2/ihSB5+M2ZkBRnTLzFfXUDZvlJYFgm0gMUoUvsw0RlbdCbHSTlh47B/+u0BtTv/WBlfdLGfEHZN+KVh9e1+Bllsf6py+bZP4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5VpDNGr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777543836; c=relaxed/simple;
+	bh=EqvFN38G79HDAnXBhVWjYz3r2hRoIRTEoiMkhnAtoN0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=koXx0Tj0ArTN5RoOF7npPd2l5iXts5GYJvoQQCUxkHl/UeCJnv1Re3Vb5RbKl8cqlMLXcW8UYIgPgvlHATJhxYMRR3Cb1nU2Ea6S0Z4h95j23aK/+njg7wh1KdcbWbJywjFvUsQrF+c0l10yGIhd2CGnrE7W5EF0Z6Ank1dvUjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHvxstCP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5VpDNGr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79505C2BCB3;
-	Thu, 30 Apr 2026 10:05:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHvxstCP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9BCC2BCB3;
+	Thu, 30 Apr 2026 10:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777543514;
-	bh=FDWShGGmHLzo3U/oyhN+S2y7XC474Jp6Sf1UdWptFMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c5VpDNGrm9x1+5EO7gDJba2hj4XrV25Av9VrgfuAV9IwMig/OH+DyNatgh87kf2kg
-	 DqeLCcAAO0FN4cwiYJfc/n09kdmFf8SfRK3ZTBpSiJ4rbSZ2FQa0+UlwBU8ADE/Nk4
-	 6jYYsIvDqwqdU8lPoG5ZxzCtKy7P54hQAfh4+yQKsPpKhvVXyxbdcR34zUboyuWc/D
-	 JNRdFDhJBq6Lbes6MYFR9uSNjk2ObvmOxB4Ll6evBUeXUi4wb/CScZra6xgOUA1li/
-	 h0SfE2EZgvvycTn+yznZYKo8IRrhr0hsQ0Y+YRNKYRFqK6sRMsGnMPE+Jnx1myjSZ0
-	 +koEH5JmhBGsA==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 5D7BD1AC585E; Thu, 30 Apr 2026 11:05:11 +0100 (BST)
-Date: Thu, 30 Apr 2026 19:05:11 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Kursad Oney <kursad.oney@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>, linux-spi@vger.kernel.org,
+	s=k20201202; t=1777543836;
+	bh=EqvFN38G79HDAnXBhVWjYz3r2hRoIRTEoiMkhnAtoN0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tHvxstCPI/ZD9WUtvG7SafdI1LnJJjAm0B0tCOGOJpg8z+N5OGTSJPPiWxuNT8g8Z
+	 e84RsLAZcA0YxDKDNTwmko7XZfRTY7iE2+EH39zBE9ETup8+jAJQxoB74EfI1MnCKC
+	 3le0jLllF9innE7JrKx5buCYkA0BWAMb3ybQb2RCiTUCZZIs6dQC3Dog9wrCY+xP+e
+	 CW0jA9/wrlfw5JNmzU64yqvnhLJKMh0qNHatnwvH0/126ovE6WKVmVdtwwPXcfGex6
+	 eDdK+m+FJMrvzrJuwc4pZ/yi7bGPSkHq3ZdCMAbmaOFxe8RKcBBgRjCdLrYovH2Pq4
+	 F8C4hwCDCtEZw==
+From: Conor Dooley <conor@kernel.org>
+To: broonie@kernel.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daire McNamara <daire.mcnamara@microchip.com>,
+	Cyril Jean <cyril.jean@microchip.com>,
+	Valentina.FernandezAlanis@microchip.com,
+	linux-riscv@lists.infradead.org,
+	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 18/19] spi: omap2-mcspi: switch to managed controller
- allocation
-Message-ID: <afMpV6V79oCzIZSh@sirena.co.uk>
-References: <20260429091333.165363-1-johan@kernel.org>
- <20260429091333.165363-19-johan@kernel.org>
- <afKisC-NX9YZhaEv@sirena.co.uk>
- <afMA8buX6EP3pKhs@hovoldconsulting.com>
+Subject: [PATCH v3 0/3] microchip core-qspi gpio-cs fixes + cleanup
+Date: Thu, 30 Apr 2026 11:10:17 +0100
+Message-ID: <20260430-levers-defiling-00406e391c5a@spud>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HPkd+/tNgE6OmyMu"
-Content-Disposition: inline
-In-Reply-To: <afMA8buX6EP3pKhs@hovoldconsulting.com>
-X-Cookie: 667:
+X-Developer-Signature: v=1; a=openpgp-sha256; l=977; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=iJzKH5JoBUPIXWclDGc7MiyoS0OlrYwr9MtEDV1CR7s=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJmftTp+FPXW7OY5ayU2Ufqn4upI04XtH0Vspmn7OAkHB nxVUv3QUcrCIMbFICumyJJ4u69Fav0flx3OPW9h5rAygQxh4OIUgInM2MnIsF0gPio952py5QZh 6+dl7u/iVp1p2LxV26U6Q1ltR5tDEsNfYc+rjx/ab/aWEon5XnU3d98x+5bjLHlW7K99X6Q967N hBwA=
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
+From: Conor Dooley <conor.dooley@microchip.com>
 
---HPkd+/tNgE6OmyMu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hey Mark,
 
-On Thu, Apr 30, 2026 at 09:12:49AM +0200, Johan Hovold wrote:
-> On Thu, Apr 30, 2026 at 09:30:40AM +0900, Mark Brown wrote:
-> > On Wed, Apr 29, 2026 at 11:13:32AM +0200, Johan Hovold wrote:
-> > > @@ -1556,7 +1553,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
-> > >  		status = omap2_mcspi_request_dma(mcspi,
-> > >  						 &mcspi->dma_channels[i]);
-> > >  		if (status == -EPROBE_DEFER)
-> > > -			goto free_ctlr;
-> > > +			return status;
-> > >  	}
+v3 with the review comment about the core handing CS_HIGH dealt with.
+I noticed that in the same function there was a "raw" BIT(1), which I
+replaced with a macro that the patch was already adding for use in the
+setup function...
 
-> > Here we return directly...
+Cheers,
+Conor.
 
-> > ...which skips the _release_dma() as well as the put - I think the label
-> > needs a rename and the goto keeping (or some more refactoring to also
-> > use devm for the DMA, but that's more work).
+CC: Conor Dooley <conor.dooley@microchip.com>
+CC: Daire McNamara <daire.mcnamara@microchip.com>
+CC: Mark Brown <broonie@kernel.org>
+CC: Cyril Jean <cyril.jean@microchip.com>
+CC: Valentina.FernandezAlanis@microchip.com
+CC: linux-riscv@lists.infradead.org
+CC: linux-spi@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
 
-> This works as intended since omap2_mcspi_request_dma() cleans up after
-> itself on failure.
+Conor Dooley (3):
+  spi: microchip-core-qspi: control built-in cs manually
+  spi: microchip-core-qspi: don't attempt to transmit during emulated
+    read-only dual/quad operations
+  spi: microchip-core-qspi: remove some inline markings
 
-This is in a loop so there might be previous calls that succeeded and
-need unwinding.
+ drivers/spi/spi-microchip-core-qspi.c | 99 +++++++++++++++++++++------
+ 1 file changed, 79 insertions(+), 20 deletions(-)
 
---HPkd+/tNgE6OmyMu
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.53.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnzKVMACgkQJNaLcl1U
-h9Atygf/eIBrXL+VQQPCFHf3LUjLWu9yiOsuJ1oVqilH7L+gSj8NDq15420xOQer
-6RNw1rua1UaTfp280sjI+1oPCmygY8q4c0sOsl6d/KIpvi1KWma4iOzseSU3gP3E
-yWZOZEczYsWlSk33blGu0zAz9s/hdiOeSl5yOvlNu8afowZyJi94t+K5oYXpVWzJ
-vKZ2yu6E1RXc3ksHRR8U082zeJVT3WI1xKU4/dI2niVYvgZIe/cBJ8Rjwrz1M2vP
-+o8hCfa8mnah9PY4ti9HiqIV1BkBmesn9umfa7NmtVjyQn5csRci8sSyz3L0mu2+
-JLOrDxFwCqw/oscrl5BjPcU5xRHJ0A==
-=8PjS
------END PGP SIGNATURE-----
-
---HPkd+/tNgE6OmyMu--

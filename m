@@ -1,135 +1,118 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50EA13777E
-	for <linux-spi@vger.kernel.org>; Fri,  1 May 2026 08:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555D73B6363
+	for <linux-spi@vger.kernel.org>; Fri,  1 May 2026 14:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777624257; cv=none; b=j2P3GiCtetki9FT2JIQuh6ecmNBRFvkfr2OdrHBKliBMKrOWWtTjFY0liY5Sat+Epcupv6CiZVoUFu7fDd9SjH+sh+eQzfkLKL1/dS2/QIfn8Y+hKXZIiEMcgg9W49LifDWd2++n9qGvi0IimixfbYlaiX0Vto+gOH+uqtZR8gM=
+	t=1777644003; cv=none; b=RlkvQBvRmQGTgaNY2PoBgGKHjYIP0fVdxT4mqTHwMtI27DS+fEO9Kc/+VLvEk5ykIqd9UeZIKl5CkXdMq902CZHA6tG0DU5yRvpeV3CQqKHLL9in/1ULHeJRzfg2zhffoWIPGeeqvgp2mgIwA/LMAv6YvqOXPPLMPHac9TJQMZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777624257; c=relaxed/simple;
-	bh=vi4Y4FrM2u7/NGWEpyOvXjv9CtvV21IppSt/L2UJ634=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dWKytl275yGmKURl8As9hntjLJtBctDTEHxzBiOVhqgpbQj93nk0ECYhFSTq8xibtcF4/phgScnfSBOWefp3WSFebyDuZE6rdGPzBGZurwNqnUEKgvzexsjZRguPD1MnN2aO03hoYT+73JwfwJF3Aw1PhEQ5fORJGh3VoBVrxy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DOVcZ3hE; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1777644003; c=relaxed/simple;
+	bh=KyuZZJR4P+3viFsaf+3v9ITJ1YxHUVlIISu9qYGcGWI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pHlR8owoJRQ/dKYvByO93ropg+21Kjt/VxOFH2bSpeLU8z7VZYBG5s6J2QiSwZ64zMdHpfJYUQk8hLstMm2ko47PV3YV5Jn4GJbFfdbsRyvlkRP3R2KaM0PoJnV7/yFoO8qetYPh+mLxujF6bGNzkjLZGoiUe5TvhnkDwQoU670=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Si14YlYE; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DOVcZ3hE"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43eb012ac4fso990516f8f.0
-        for <linux-spi@vger.kernel.org>; Fri, 01 May 2026 01:30:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Si14YlYE"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4852a9c6309so16088065e9.0
+        for <linux-spi@vger.kernel.org>; Fri, 01 May 2026 07:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777624254; x=1778229054; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xvsqEGiRr2aMUPxm2PwD7DIcDzBPYJDFXn2qMdcwOC0=;
-        b=DOVcZ3hEYm6Gtwl+SGtINr5b0rCungfOrPr/G1hxKsjuk2XTXWJTmuDCWqt0RHr7Uz
-         T723fsKz20raPfwgfNOwIzd3Fix1xV/9YYLRzZcI27x/Hq3jEYorNdtauk+dvLqLhvo8
-         4O7Qor2iyVuSLv2aVqnO6W2Qp9dSg/fvunDEHppmx/j/DC/zVs0lteQ6KpUH8JUo8N1J
-         BvMJVfBlsGZ1hSz2Ad0qKdailaRrz/TL8gXKXsW+jT8gdLzYlqSnjqa7AEu59f+X7iiU
-         QM6759SxxOkcWcZXxh/7v/Kjg6EI1Nd69AQz2uJdkZxwK/orjPmTchwq/SKGZOMwAGEk
-         Ibow==
+        d=gmail.com; s=20251104; t=1777644001; x=1778248801; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zNOGLSnwE1t6HIl67zIcI4mTCSe3nqPHRh9GxNxgyWw=;
+        b=Si14YlYEcT1V3uIaer3RkAlFnrcAL3fDOAaE4pLJ+OQ0YnIMlGfOQcB+n6f9ak+O0h
+         KpeVmVAsYAsYVrBnM/nhq6T/UXK/9QX7MoDRHd+MlH4hJPpPp/8cRNG+yFgXgm6L8dMk
+         EziPiX3QlKtFJ5cJNPqY9UNmWPQ3n9cB6+PDxSOGiKIG4xmPrmnsqY6qRm+KSPc1nnlz
+         te47MRXve2z4T2BqwlfKEr/wgyZkXBg31hNNon6refupWZnArz93x4UEXJMYMpAwEYJG
+         pk5R1j8/a+wKbopM6R3iSdUbsXD4EsVw/5gLB96sDzMHgH0wGTfTwh1vlDx2g3KlENCU
+         ZWbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777624254; x=1778229054;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xvsqEGiRr2aMUPxm2PwD7DIcDzBPYJDFXn2qMdcwOC0=;
-        b=Pb4m9FV7cpWgHIjJjfDXW31zYFo/nv+Y+Ozik+Szd6QMyyOpdULzb4XF6yWesaGCf6
-         Q3iPJTHlsDbp5VE+uFJbPXeW5aXkfSNJNfBlAvwXbmncFJDu9UYYwLsPA7Nh84erNt0S
-         8BqU9Rc3D9rY526iwQGMNiPJIkr/PjUkjdzEDXRjqXjbo1JzwhyLRDbyNAqxhUW5lOa1
-         6rhISId8cZt8gdcJu04mcs4PB6B1Y++Q/ZSVGBWTEKwpd1/rLw4342C7Fm2Uh8UXIKED
-         g4hWh1dxCpCI6jQ3Qv7lFSZOu9goC+MCe2fRQY/+XO0qKLUc0Fj0dY0lXTf7GOzW4WxJ
-         OMdA==
-X-Forwarded-Encrypted: i=1; AFNElJ9SdbgzG2j1xNse6/pckO1oywrrRHWnF8fsokZbUjtS3V1fi4T3BvEp/RENdjib4HrR3LZwpuTO/eA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsucfXHl5yGePmnRm070F5jSRuKk3HTuXJHy8zI2YgqFLCFAG0
-	sST2xxcNDKGcE1G8dwuQtB/pgrHh67BTh4+N9o5gMN+wYbPDrLKZk4Dv
-X-Gm-Gg: AeBDietWnAZ+718R7aYIbkp5wBx73ikWpM5WOzrpLeQTIpA9brPhyMY9wFdMPa8q2sK
-	KCydGDVblXHM/jjPEbWMVT0KuMxLs7BXFk7uxDv5Cmkx17R+gWLHvg0yHyfkMTnjrYHTFCcl+B+
-	4zr2AGsy6p6BZFUOrg/py82bpsWIUyN8pSs3A8Kjx1TWrnpTqESv4xlEslxBewSMpfdczmi2bUo
-	KaT1CM/tRxH1cGb8Fy8pQFZFb6wY6oHYaN0m9IBiqSz4M6Ey23OPi2Z8YvWV8NLVzQAXKub4iI+
-	MizInazQ51/mF0gICTEsXm/oO+pRT1xkmw2aBlEjOSUowhV3RXZQpzG6VTUVTLoOc/ppRhAEbvq
-	K1mjj0fXsH70FbAWk3KkYIYeiDTw7ZQQeFzB/Hfw00eqQbJESpwUpNPre74fdHBRq3qBOdIWSOn
-	9LzAgBXfYGEKMastNBN4moQm3e6zKmiG5HdhDF70u1UGXg9FaWtVVnwzlV5DtL8F/L/98v34zlx
-	6DjQbtVeRYwhQ==
-X-Received: by 2002:a05:6000:2582:b0:44a:2cb3:b633 with SMTP id ffacd0b85a97d-44a2cb3b668mr6019597f8f.12.1777624252671;
-        Fri, 01 May 2026 01:30:52 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a981defbfsm3336950f8f.17.2026.05.01.01.30.52
+        d=1e100.net; s=20251104; t=1777644001; x=1778248801;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zNOGLSnwE1t6HIl67zIcI4mTCSe3nqPHRh9GxNxgyWw=;
+        b=OYRfivJE/NlaKUIwIE8udWO2o+y5xP4NCIQ1AQJmP4gk7fEqKRrUqKFqV2oBp9xxmw
+         N/js4eL+pbh0IQ0gXQBQgth/7O3+U1CGVDdN8hj+1k6ECQvCxr32HjieE3AJ5Uzp2LC8
+         eZ8Z7ovcXM9LBBRfx2HDBD53QmdUXtG4Lqc076EOSxQgiLt6SNuZk6cUxl59MD6aCqpf
+         XATIUkvOuVH0gJV5X85OwdOx9+eoN16z7glc+7cGaI0nAgfH81digsWWZPuEZy4dZCE2
+         LEkThWarAJLqsvICKRKVqjN5t7Q/rskX1Bv0JcQzHf7+R3S/JtwOW/ZZhSdOpYNIk+ln
+         6EUA==
+X-Forwarded-Encrypted: i=1; AFNElJ90Qic0rB4pnKZHkovM5QjzFZ7/rIlEvUuubkE7AIfQjVTqkMorcilN4uQlI/g+P4yVHAAakV1FTRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAW/naHC20dx/j9cogxsRRMIE2mcfaCUe2utkoowLPjd9ltuJL
+	z+fic0tMKPkcvJMaBeQ7XsqMzqdstiGlJdAprEWhPZrMYpVfRHn/WznR
+X-Gm-Gg: AeBDiesdmb3Btu8O5scu5nuhUkHNzBdB0NxyW/hA+vmc9oDNYqpPr6d7BTgenpfUlnL
+	CYcQLXDKRREvbUnWJD7Ok9ngCD+8jJrgybXb0tB5YknhyWtYDFU6aKsGWVm5K14UNKtY8tFKSt4
+	gNP3rQTY90WhLqT8wtSI8zFAyyr7LzAQqxjvlFb8k+d9yQlWBVMyrclaOG+CtMaCh/msZSTERGu
+	pL3U+0ODu5tLtVWv/P8afUP/bDFaJmznfofmP7XY/lo4KOs6U09JlMLd15qisd5ETgkOKk7h5se
+	OHZkAH1yMA7J00IB/ooKyw7E5SNZ2uzpYetit5VDUvDusy9IEyCmEO9jfXmRf7tdG7pOaYI+bG3
+	GxtLfLG9wkqnoJostkHlgqrjAQodvrQCXnELDssNQB0ZR3TEAIKYj2l9aCJXIZx9cyaPZmK8Ndi
+	ehsG6e3M+TAUDqnFu98DKTGK8ctHCR6Y4afwhxlnXxPNR/bV18Zl1IHo0BV2sM0GKaSxCGfdkmr
+	dIg
+X-Received: by 2002:a05:600c:4ed0:b0:48a:54a6:b29f with SMTP id 5b1f17b1804b1-48a84451fc2mr106947765e9.17.1777644000526;
+        Fri, 01 May 2026 07:00:00 -0700 (PDT)
+Received: from localhost.localdomain (ns31537009.ip-141-94-163.eu. [141.94.163.193])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.06.59.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 01:30:52 -0700 (PDT)
-Date: Fri, 1 May 2026 09:30:50 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Hans Zhang <18255117159@163.com>
-Cc: broonie@kernel.org, sunny.luo@amlogic.com, xianwei.zhao@amlogic.com,
- neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com,
- haibo.chen@nxp.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, lhjeff911@gmail.com,
- hayashi.kunihiko@socionext.com, mhiramat@kernel.org, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
-Message-ID: <20260501093050.3f97cd3e@pumpkin>
-In-Reply-To: <20260430155456.36998-1-18255117159@163.com>
-References: <20260430155456.36998-1-18255117159@163.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Fri, 01 May 2026 06:59:59 -0700 (PDT)
+From: John Madieu <john.madieu@gmail.com>
+To: broonie@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	carlos.song@nxp.com,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	John Madieu <john.madieu@gmail.com>
+Subject: [PATCH 0/3] spi: imx: Three fixes for the i.MX SPI driver
+Date: Fri,  1 May 2026 13:59:48 +0000
+Message-Id: <20260501135951.2416527-1-john.madieu@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 30 Apr 2026 23:54:46 +0800
-Hans Zhang <18255117159@163.com> wrote:
+Hi All,
 
-> Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
-> macro across multiple SPI controller drivers. This improves readability and
-> adds compile-time checking without functional changes.
+This series independent fixes found in the i.MX SPI driver.
 
-I don't think these changes are worth the effort.
-The readability doesn't change much - you need to know what a slightly
-more obscure 'helper' does.
-The extra compile-time checks are pretty unlikely to ever find a problem
-and mostly just slow down the compile.
-The generated code is likely be slightly worse.
-And, with the best will in the world, it is easy to make silly mistakes.
+These are:
 
-	David
+1/3 fixes a precedence bug in spi_imx_dma_max_wml_find() that makes
+    the watermark-finding logic effectively dead code. The function
+    currently always returns wml = 1 because of how the !-operator
+    binds to the modulo expression.
 
-> 
-> Each patch modifies a single driver, allowing independent review and
-> application.
-> 
-> Hans Zhang (10):
->   spi: amlogic-spifc-a1: Use FIELD_MODIFY()
->   spi: amlogic-spisg: Use FIELD_MODIFY()
->   spi: cadence-xspi: Use FIELD_MODIFY()
->   spi: meson-spicc: Use FIELD_MODIFY()
->   spi: nxp-xspi: Use FIELD_MODIFY()
->   spi: sn-f-ospi: Use FIELD_MODIFY()
->   spi: stm32-ospi: Use FIELD_MODIFY()
->   spi: stm32-qspi: Use FIELD_MODIFY()
->   spi: sunplus-sp7021: Use FIELD_MODIFY()
->   spi: uniphier: Use FIELD_MODIFY()
-> 
->  drivers/spi/spi-amlogic-spifc-a1.c |  5 ++---
->  drivers/spi/spi-amlogic-spisg.c    | 13 +++++--------
->  drivers/spi/spi-cadence-xspi.c     |  3 +--
->  drivers/spi/spi-meson-spicc.c      |  5 ++---
->  drivers/spi/spi-nxp-xspi.c         | 12 ++++--------
->  drivers/spi/spi-sn-f-ospi.c        |  5 ++---
->  drivers/spi/spi-stm32-ospi.c       |  7 +++----
->  drivers/spi/spi-stm32-qspi.c       |  5 ++---
->  drivers/spi/spi-sunplus-sp7021.c   |  3 +--
->  drivers/spi/spi-uniphier.c         | 13 +++++--------
->  10 files changed, 27 insertions(+), 44 deletions(-)
-> 
-> 
-> base-commit: 3b3bea6d4b9c162f9e555905d96b8c1da67ecd5b
+2/3 fixes a missing return on the package-1 failure path in
+    spi_imx_dma_data_prepare(). The error path frees the
+    dma_data array and the package-0 buffers, then falls through
+    to "return 0" - the caller proceeds with a freed pointer.
+
+3/3 makes spi_imx_setupxfer() propagate the prepare_transfer()
+    return value. Currently a -EINVAL from mx51_ecspi_prepare_transfer
+    (e.g. on a word_delay overflow) is silently swallowed and the
+    transfer proceeds with a partially-configured controller.
+
+Regards,
+
+John Madieu (3):
+  spi: imx: Fix precedence bug in spi_imx_dma_max_wml_find()
+  spi: imx: Fix UAF on package-1 prepare failure in
+    spi_imx_dma_data_prepare()
+  spi: imx: Propagate prepare_transfer() error from spi_imx_setupxfer()
+
+ drivers/spi/spi-imx.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+-- 
+2.25.1
 

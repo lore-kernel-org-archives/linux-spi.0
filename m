@@ -1,64 +1,64 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F309F3C060C
-	for <linux-spi@vger.kernel.org>; Fri,  1 May 2026 14:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393F13C13E6
+	for <linux-spi@vger.kernel.org>; Fri,  1 May 2026 14:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777644004; cv=none; b=NFwshyugZM30jymGxnVhoqBB1sjwbFxgri9H+d2PHjeswfW6U/vRwq9TAsRn5fhd8eq06JtqZQ9g0ko+0wa1BkEVVkObq+Q1ceDc8vmHBpKH7MLC1Xev+iHBW0hfy+8BZPPwdGapnOlcuWMRW7+TjeLOBS3kNSAHjgAvHc5PWMc=
+	t=1777644006; cv=none; b=hY4odbjcE2PWQGRzNxASHoBml8P0TDKXbia9I2PbTjLYrwBiR52UmOB+vILFLd/zNE7myket14n29BXzELQf7ZJ9qHd57oW6EOMpXOgUySFcu9HcpgqRsr4e8xJ/n131y8RFwn+KT/2P1wdvItI8LOdMZdGMxaR00tRyZ6x306U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777644004; c=relaxed/simple;
-	bh=FPDrMq+XXIYVnA2vxX/dXx8+DI8MvzMK7n/I8l8+h0g=;
+	s=arc-20240116; t=1777644006; c=relaxed/simple;
+	bh=jJjc9mSsrPx/NmfZcqGL2yYaLbyjJmbr1/4K0E8A+5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fnf4MlseDlyqom7ahgLJDdQ11hVbmoVuR1S0D6IyN4P/MymCzHvHjmTP7gJ6hsVIsad6pv0gneYMqXYGvQNS5wC8jZa5IBwa/0log7BDlwTWw7ykHkV7tsUTn71snj+QqHufLlVUeiTYahuljFrBQHHN79OkIS3qn2hKpV27Uys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpEV4CgH; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version; b=LVJjqGxRwycnUKAEUSwnBy/uA0yiRD0Hh92fzctPrZ5LPiUML/a9Mijg8H+lA/4A6xzBcqI15CQ+57a6lkQLd5tJjQ4p9ZRgBCKzKY9dp6G3usIXRqxbJFX9SLZNK4rR+VohNc1wBdbAaY+nVSe/H9bCCH1gIdznQY2c8+7PL7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=La/EMFcm; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpEV4CgH"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so31387025e9.2
-        for <linux-spi@vger.kernel.org>; Fri, 01 May 2026 07:00:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="La/EMFcm"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-44a5174670eso452137f8f.1
+        for <linux-spi@vger.kernel.org>; Fri, 01 May 2026 07:00:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777644001; x=1778248801; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777644002; x=1778248802; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wV29etHKmeXpNOvM6Yg7tazjewCc3IV5UL8KyxdRZok=;
-        b=NpEV4CgH9bLaAomUyEEbnAYQcSvLD4yPF0q/pNbuSBNO41D636WTeVb2JlCiZpmcpi
-         wmhhBUHEGZEuIrJ9c3tK2ONSs7zR6G6zW0JLfTf7LAco+itrdxzkdFPQgfs2GmEdWVA1
-         C4rEGSzhNTMJYrgVvu+3NPIUqYLwhLscS0qwlZp1oZtg8ZuTlQD+Ru50BISWEthUnn+l
-         hOFyvysnsKXm6+4RV7PR9hwzFfxg/YbYqr6WAGTt5AKF7giw4R8pZn3JdCZU2hZYlGAX
-         E89S6vaFV+vp6iQp/U5++60dSsLtVuHqHZA2y0LhEs1StjgFMLU8UZZE0LrQUo1NVV0I
-         AQmA==
+        bh=wgCd/8OCqeyYKCVUvRrf/jlOcP1suVHYVb2aR3GPrKU=;
+        b=La/EMFcmOAN/SOrahPkXF3e1bgWrauLOYTjjPaNvo53yWotmYUpRhz2J1BHysHu9Zf
+         wN5ueQo6wf3TZES+KAD/f9kNkX6eQJ68SOspnw+/+CFBErDvplCowp0RhCh2i4OlzjdM
+         XRZyKHVrLZLVi+a2NKPpzn/v3B58sihIguGX6sJatJjS008UBWECEoxqa941fVObTlET
+         vRZduJxbHIwDAfWWfMcAFnJW2kersJE7xwbtPEvSz4PIwycAb+3mEDBxpyxS6u05o6wf
+         UjpUWWLXdRk/b6vwEKL3I7mrZc1MyDmXzfi8KCtJER+pXAhNfH6Hrs8CdHZ4Nf6WG4tB
+         bHDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777644001; x=1778248801;
+        d=1e100.net; s=20251104; t=1777644002; x=1778248802;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wV29etHKmeXpNOvM6Yg7tazjewCc3IV5UL8KyxdRZok=;
-        b=GR8W3HWxEhXFviA87dbX1OnYkcbnCmIonTcAUPENI/TPlMVq68CzYRuGbVvH3xkfV7
-         DcNYZZ6x4000dfqpfe1/4kKm/gtq78rf/X0XRlcqFaRpZ7gwLL/DbBRlThsctKd52qPq
-         8IsyVr7aZYh124GhxyB8zAepYhLVnGekKszO3cQ2KvVNvInnT/Ti2W28QqYD/eLlbH+E
-         O4eETgY4ABpkg+0Q1+/4gSNF5QywFSjCmUo/LubeX1RYF/vqwoSURslBSGxVmsKQez8o
-         ILxVcq1dLvCvUNQqwfztxU8gjYdkVjqfdQbxLFsYMKfd73CwRVqG+aHWcBGNTQdy9HPp
-         YSZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ85KBCNCSxDQhATWL7ukym5d6egEFfCLJ24obYZ9iyM/grL3TS3EQf+5yE1jS+Cz1um9m+/BVeHIC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweidkkYcqThLL3PSjhNDQXqLuk/7lyfT9DY+uCh0dQQPVdEkVG
-	PYMZzHmml5GgxuRa1o77cNZLz+jpNmxcSJA5EewY4rZYvmr/dKsK4AqH
-X-Gm-Gg: AeBDievBDlYIPyscJIr5PbdWba5V+RnrbfMLOpIcBNsIInqXHZHyScg8Gav06jC4I6F
-	UFcBuiGlMhjNgiwKtFulKUoktbsHdPnI1iuwq0lZF9qjB/nbB/WrVF/mTLBHyObLOHygmZpiAVh
-	dEg2jngzuKwy7cWEM82Il6dhfnNJL1NbwaKZT+dhFJel4J6dKWEXQEJSig5QPnmKAvoDbzgER/s
-	2BnYpoU9j94k4V6QFacOXxp0d3zgQz1ayS9wYYpefYle+CiwE8H47uHIeqHws0AXtmn8xRQ9Dyk
-	Feh0aw1MeTn2gUlENn+I31kTv0QdZr4iJO2TYSAEpOf9s8sQOEvY+sC/fg4Rcp494O73FtV+ekF
-	NmFXPtOhSSSVvLzPGAmnvxo52wEvl/BDy1Z4BGRsNuHQd8VXIcfIMm79Iofz3QzzD7TR+ta+gAy
-	vijyfNUN9t59geqUlmvwqgUihypA7S2dLHNGgkNtCYwrOtHY2UVLcNjiF7/MV/Rta7eA/96HKHD
-	+3c
-X-Received: by 2002:a05:600c:a401:b0:489:1c1f:35df with SMTP id 5b1f17b1804b1-48a84452161mr92478485e9.10.1777644001371;
-        Fri, 01 May 2026 07:00:01 -0700 (PDT)
+        bh=wgCd/8OCqeyYKCVUvRrf/jlOcP1suVHYVb2aR3GPrKU=;
+        b=dAVTsn+iNPEco9U0y8yYJuczr1SBkchskwzT4Hn56d2wrIqk/z5wK+gztRBMzUHqD2
+         BltX7HRnSCjfbqKDzddIo19NsaQFvW8eNrc77rIJ6fJmH+1gjWTmdQeDYO4yObmwBjHE
+         9ZMHIHHAhB0QCOkUuNw12OY6WV9TwgtNAUzshBdH0mbZosohF+tLn7oVnyl70yYfOT/t
+         yp3e88loD+FvprLVamrzJc5ZU9Kg575WL667GCWajflWfjv2AnDuEwN4fBqawMIdcr+g
+         f+AgFKsjVpRVx4QDyHYazjGSjkUXCD7vj2vae/cig6RRuaQkJM5SZFcV8xsIRoKv0416
+         MVVw==
+X-Forwarded-Encrypted: i=1; AFNElJ9ApvWqvIgf760xbUy0AxbhOLO1adI1sj7pO2j6biGGuwqxFaLEAFGIn4dH5vKUGCo0WDOBkmG89e0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfNkvFfC9psZH2c3jYFlK3M1vHZQ08l/wxxAqNWmmaXumnIfp1
+	uy1TqfY2yZ7wO5ckwmE/0XAL4Z31FZB85Po9ZOJaOZk/hlKrrcBjFw4Q
+X-Gm-Gg: AeBDiesMAM760HNTefqZTP4x43J2H+SDLpdU0FUQQ9T6LqpGTY5z8K4P+WmAN0A/fuF
+	5tG/ULwv7+/TMYFcb4CuHly1Pbd79oydlwhw4S/CgMONxw7AiLapEhDbodyuUuxh9gxkNamSSIo
+	GT51ybxKVH0gVZi7OzZ9HC8X1Fe7hgyrJ7jwSAPuEhPIv2bMLM9eSPqzFr9ii4Y/1I1+TGN92DY
+	po7oBoyg61CXNN4wgxByIqpXI99M8MWc3RiTusKicFE89WTw3g1cN8i3asIx+9WC9auNEll3uOF
+	xUVlUwBQY+3TILsksjCrv/MoxN+0EnCi8Fmprcs5jZiOO4QAFsGVrSTlcZududs4SnK4/RqQ3Ul
+	x3yDTMbKcTCGaeFkp/K9ABVWG6qUxQvxY8pBM8jowk2EU4lfEI8Kp/uH+78tckh85Z47c6o9b+7
+	CWcAyayCIjsG4uRVOY7gfARKhbnEbqkW+EFRc2wuYYklYHggqRnNI3rLu5MakKsKiZhVzH9UdgM
+	jll
+X-Received: by 2002:a05:6000:2b01:b0:43f:e2b7:7160 with SMTP id ffacd0b85a97d-4493cf2d5e0mr7464637f8f.4.1777644002422;
+        Fri, 01 May 2026 07:00:02 -0700 (PDT)
 Received: from localhost.localdomain (ns31537009.ip-141-94-163.eu. [141.94.163.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.07.00.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-44a98b768fdsm4823539f8f.33.2026.05.01.07.00.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 07:00:00 -0700 (PDT)
+        Fri, 01 May 2026 07:00:01 -0700 (PDT)
 From: John Madieu <john.madieu@gmail.com>
 To: broonie@kernel.org,
 	Frank.Li@nxp.com,
@@ -71,9 +71,9 @@ Cc: kernel@pengutronix.de,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	John Madieu <john.madieu@gmail.com>
-Subject: [PATCH 1/3] spi: imx: Fix precedence bug in spi_imx_dma_max_wml_find()
-Date: Fri,  1 May 2026 13:59:49 +0000
-Message-Id: <20260501135951.2416527-2-john.madieu@gmail.com>
+Subject: [PATCH 2/3] spi: imx: Fix UAF on package-1 prepare failure in spi_imx_dma_data_prepare()
+Date: Fri,  1 May 2026 13:59:50 +0000
+Message-Id: <20260501135951.2416527-3-john.madieu@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260501135951.2416527-1-john.madieu@gmail.com>
 References: <20260501135951.2416527-1-john.madieu@gmail.com>
@@ -85,57 +85,48 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The watermark search in spi_imx_dma_max_wml_find() reads:
+When transfer->len exceeds MX51_ECSPI_CTRL_MAX_BURST and is not a
+multiple of it, spi_imx_dma_data_prepare() splits the transfer into
+two DMA packages. If preparing the second package fails:
 
-	if (!dma_data->dma_len % (i * bytes_per_word))
-		break;
+	ret = spi_imx_dma_tx_data_handle(spi_imx, &spi_imx->dma_data[1],
+					 transfer->tx_buf + spi_imx->dma_data[0].data_len,
+					 false);
+	if (ret) {
+		kfree(spi_imx->dma_data[0].dma_tx_buf);
+		kfree(spi_imx->dma_data[0].dma_rx_buf);
+		kfree(spi_imx->dma_data);
+	}
+	}
 
-The unary ! binds tighter than %, so this parses as:
+	return 0;
 
-	if ((!dma_data->dma_len) % (i * bytes_per_word))
-		break;
+the function frees the package-0 buffers and the dma_data array,
+then falls through to `return 0`, telling the caller the prepare
+succeeded. The caller then dereferences the freed dma_data array,
+producing a use-after-free.
 
-!dma_data->dma_len is 0 or 1, and `0 % x == 0` for any x; `1 % x` is
-0 unless x == 1. The condition is therefore false in every case
-except dma_len != 0 with i * bytes_per_word == 1, i.e. i == 1 and
-bytes_per_word == 1.
-
-The loop almost always falls through to its end, leaving i == 0,
-which the post-loop fallback rewrites to 1:
-
-	if (i == 0)
-		i = 1;
-
-So spi_imx->wml ends up at 1 for essentially every DMA transfer,
-defeating the entire purpose of the function. The DMA engine then
-requests service after every single FIFO word instead of using
-multi-word bursts, hurting throughput on every DMA-capable variant.
-
-Add the missing parentheses so the modulo is computed first, then
-negated:
-
-	if (!(dma_data->dma_len % (i * bytes_per_word)))
-		break;
+Return the error from the failure path so the caller takes its
+existing failure branch.
 
 Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA mode")
 Signed-off-by: John Madieu <john.madieu@gmail.com>
 ---
- drivers/spi/spi-imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index e5c907c45b87..7ae8078c10ef 100644
+index 7ae8078c10ef..4e3dbd01d619 100644
 --- a/drivers/spi/spi-imx.c
 +++ b/drivers/spi/spi-imx.c
-@@ -1836,7 +1836,7 @@ static void spi_imx_dma_max_wml_find(struct spi_imx_data *spi_imx,
- 	unsigned int i;
- 
- 	for (i = spi_imx->devtype_data->fifo_size / 2; i > 0; i--) {
--		if (!dma_data->dma_len % (i * bytes_per_word))
-+		if (!(dma_data->dma_len % (i * bytes_per_word)))
- 			break;
+@@ -1709,6 +1709,7 @@ static int spi_imx_dma_data_prepare(struct spi_imx_data *spi_imx,
+ 			kfree(spi_imx->dma_data[0].dma_tx_buf);
+ 			kfree(spi_imx->dma_data[0].dma_rx_buf);
+ 			kfree(spi_imx->dma_data);
++			return ret;
+ 		}
  	}
- 	/* Use 1 as wml in case no available burst length got */
+ 
 -- 
 2.25.1
 

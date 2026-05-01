@@ -1,90 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7499296BCC;
-	Fri,  1 May 2026 01:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDAD54768;
+	Fri,  1 May 2026 02:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777599567; cv=none; b=nz/xALr1Aqs9uwUox40ZQI1z4QSgerPHw4WCmGFRCvNPwaKOYY5GMcVoMfO9LmqAXKvL23InXWcta/BKyaGJYkRndSKpzoEVjSRzXPBCmGDalFJ9c0iHPHel75OcDoHHCWOiu3JEqrKfCjKqg6SVyu+XOUbu4tUcUfHGF11aJpY=
+	t=1777601562; cv=none; b=rYKaTQ1wehh9sly/Du9U7bTrkUzkoN7FX+M958Ylgmby2tidMB7vESyMa6fZqcytgfO9KuPy7PaV27Kzvjv+lcyRoriD83M5RK+ceeuWufnZedxVHdiuNr/8WhiYoIHmueK6wYWgKciFtyuTT9F1S6/7s7Iww5KSNWMcdJy6R78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777599567; c=relaxed/simple;
-	bh=7gzihJjIpTCty3zQu6HL4JTJ5ssER+CZq/c56F2eCHs=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=ktUdU8aje1tjZLg3gmEZZ9KetJWkX6dAMcIbzq5o7/NXstQid47knvG1aIj5x//h6Vem4ZOfSDlMXEiGfsT1TF9len3ESafb0MiKe3io1syc9YuPDbCPlDlST3YqzHuO/qmGE4qMpu1TizYGiVLGagzNDqrCrITPgH2FSaSGdJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJZgTV9v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777601562; c=relaxed/simple;
+	bh=MDPNTuF/vrUrWPFsSD67VIl7SRNTHWI31fM7YEOkPZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rezxHB1fBDIvVRV+k/8ktDDP+J902Xay6MdXc/IRM4F+5Im3m8Utq21E+8x/kc6FtUAH5d4Tyr1dWpjT7NpA4Twv1elM9WkZS/uLgWn3OsZVVIfREBsbEZnS4uaQl8hVIWvYIRgvPXdIhvSkj+kzmb1iq4cXynlSIXWZm+YuC6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7aGnKUU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJZgTV9v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E7CC2BCB3;
-	Fri,  1 May 2026 01:39:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7aGnKUU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4ADAC2BCB8;
+	Fri,  1 May 2026 02:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777599567;
-	bh=7gzihJjIpTCty3zQu6HL4JTJ5ssER+CZq/c56F2eCHs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JJZgTV9vMBVzaDMfrfRhIEo1eRg2rYi/ry5rKY9CFMCZrcdlpKacuHof6vGsP7S0Q
-	 REud0SA7CNoOYYtKEOWMOuRdOcZVs8e+8t1rHyT/0is5Ov9uMpZkgEts2wi6tvuaZz
-	 IOsyPfp5LzQ8tyMN2NRyLXSLHWL2x9IvSz/YHU2ULVgyKd6dJdPFBXz/KJ9HEJ2Dn9
-	 Uz+liSqYjCkOvHmt4xnyTVYef+Be4xl8E9/wB9PVlQx6e5Z7Ryen+PzCpixEzlMM7H
-	 WkvVZuN+sYV7RJkLP028ZwWgGmcEULkza+svInUx9e08nKGcofR2UPH5OBsAzxKLNT
-	 sFTHfZjIRex4Q==
+	s=k20201202; t=1777601561;
+	bh=MDPNTuF/vrUrWPFsSD67VIl7SRNTHWI31fM7YEOkPZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n7aGnKUUEzO4flpeCCq3sHXvTgtq5QkaW7ZY++KVeM2vF1UP9zJ3cxek+1ahPOELZ
+	 6229f+aZi0pmz8OdN0bxLehzmOuPDgMue/JpySmbdNefQrzEGFM6NBp3SG6EeBTzkO
+	 dnyjRgJO+BvMEiSFrtX7MdbRHMDdZBPGXUizjLaoL2taZw3OPQevCsiSkRaJ1wWPOl
+	 +QIlMjfYVi+z0JJX433C6ot899cR9xVxCYVZL2iy3+RI5RcSllk609vA7iqp2G3dIj
+	 DnmDRMo/HwSQxXV6d+GTsqhq5SmWnEvdE5ikP7hQm2/TrhDbumWue030zjWf9QgXmd
+	 NbHFFPl2y2tXA==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id B14F81AC5863; Fri, 01 May 2026 02:39:24 +0100 (BST)
+	id 3E1011AC5863; Fri, 01 May 2026 03:12:39 +0100 (BST)
+Date: Fri, 1 May 2026 11:12:39 +0900
 From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.1-rc1
-Date: Fri, 01 May 2026 10:39:16 +0900
-Message-Id: <20260501013924.B14F81AC5863@finisterre.sirena.org.uk>
+To: Vishwaroop A <va@nvidia.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	smangipudi@nvidia.com
+Subject: Re: [PATCH v2 0/2] spi: add sysfs interface for userspace device
+ instantiation
+Message-ID: <afQMF96WKJMZKU-E@sirena.co.uk>
+References: <20260420031417.291442-1-va@nvidia.com>
+ <20260425173425.622042-1-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="o77jnx3IzAJYxn6J"
+Content-Disposition: inline
+In-Reply-To: <20260425173425.622042-1-va@nvidia.com>
+X-Cookie: Garbage In, Gospel Out
 
-The following changes since commit 254f49634ee16a731174d2ae34bc50bd5f45e731:
 
-  Linux 7.1-rc1 (2026-04-26 14:19:00 -0700)
+--o77jnx3IzAJYxn6J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-are available in the Git repository at:
+On Sat, Apr 25, 2026 at 05:34:23PM +0000, Vishwaroop A wrote:
+> Development boards such as the Jetson AGX Orin expose SPI buses on
+> expansion headers so that users can connect and interact with SPI
+> peripherals from userspace via /dev/spidevB.C character devices.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.1-rc1
+Please don't send new patches in reply to old patches or serieses, this
+makes it harder for both people and tools to understand what is going
+on - it can bury things in mailboxes and make it difficult to keep track
+of what current patches are, both for the new patches and the old ones.
 
-for you to fetch changes up to 8c0f9cd1df41ee029711baca839b99d9592c5dd4:
+--o77jnx3IzAJYxn6J
+Content-Type: application/pgp-signature; name="signature.asc"
 
-  spi: cadence: Probe and unbind fixes (2026-05-01 10:14:39 +0900)
+-----BEGIN PGP SIGNATURE-----
 
-----------------------------------------------------------------
-spi: Fixes for v7.1
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn0DBYACgkQJNaLcl1U
+h9CLnQf+LEjISXgyWJRNdRiK4RXDub1Z474m+BcvFR8imtfG4eyCMAu6iaWntFWD
+tDLvfW4uhNjpkjZusGnVx2ygo3BK/cp21jMXn5hkfgIUmaQwfkY6TGthdyLmmedl
+wcAWo3stzVursWAX0TAfa9HMbCNVAIjKCH5Ot49639dBbUjJjKdUkd4s5kKcNlyb
+OcvTdzwnKGs0DwJQB7GbyNUWyxW1JXDmFoHwDE1/YMVa/cvGFARQdhcRY5AKx9gp
+DoRE9caUMIk26yb/F1CZOH+5WEwx8Q450//MTYiuWEFvdcIxmBFM6OLCTajZ79e7
+FMV8J0+P7296hH1m4LHxPBwtRNPrfA==
+=dwuy
+-----END PGP SIGNATURE-----
 
-There are a couple of nasty issues fixed here in the axiado and rockchip
-drivers.  We've also got more of the fixes from Johan here, this time
-for the two Cadence drivers, plus a couple of other similar fixes from
-John and Felix.
-
-----------------------------------------------------------------
-Felix Gu (2):
-      spi: axiado: replace usleep_range() with udelay() in IRQ path
-      spi: amlogic-spisg: initialize completion before requesting IRQ
-
-Johan Hovold (6):
-      spi: cadence: fix unclocked access on unbind
-      spi: cadence: fix clock imbalance on probe failure
-      spi: cadence-quadspi: fix runtime pm disable imbalance on probe failure
-      spi: cadence-quadspi: fix clock imbalance on probe failure
-      spi: cadence-quadspi: fix unclocked access on unbind
-      spi: cadence-quadspi: fix runtime pm and clock imbalance on unbind
-
-John Madieu (3):
-      spi: rzv2h-rspi: Fix silent failure in clock setup error path
-      spi: rockchip: Read ISR, not IMR, to detect cs-inactive IRQ
-      spi: rockchip: Drop unused and broken CR0 macros
-
-Mark Brown (2):
-      spi: cadence-quadspi: Probe and unbind fixes
-      spi: cadence: Probe and unbind fixes
-
- drivers/spi/spi-amlogic-spisg.c   |  3 +--
- drivers/spi/spi-axiado.c          |  2 +-
- drivers/spi/spi-cadence-quadspi.c | 36 ++++++++++++++++++------------------
- drivers/spi/spi-cadence.c         | 15 +++++++++++++--
- drivers/spi/spi-rockchip.c        |  6 ++----
- drivers/spi/spi-rzv2h-rspi.c      |  2 +-
- 6 files changed, 36 insertions(+), 28 deletions(-)
+--o77jnx3IzAJYxn6J--

@@ -1,158 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909B33DFC68;
-	Tue,  5 May 2026 07:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCDF30E0E5
+	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 09:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=lQD1JLJ4aoN/Te/p8YxJMkf4pJRjlEoYXzJBy+mw5Lw+6ZcolX5i9kDfrOi6bNpyXg3vAxzO9d2OGCJ8xflWxNpNrWrQrJRgfgyLcyJpfAmFSOnESeTCQRK3PGa1tgRgbFAzSA5xg08ts9kNjTqMb6cDSb+phSHeFacBqydhML4=
+	t=1777972362; cv=none; b=hpR7TF3jyCvE1CmWFn2MXDJ+l0SHvddp3C5pPsbA8MJd6/ZumxDmdrxc7LHifn4r2A5Zhxo3iC26SqODHDRXqw2YSK+V3wGseIazN4UA944jC2lblhrOBft49HWLY9QGtDx8gNNJu2fARRsZig3Zk5H/2KnmceUJulaM1ukgP6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=UXBCHywms5b7E6t4ihwwEXOZ9EJx2Yu/9U7Ij9QSn4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjoZfAQx7jwGTUN3zImi6ljW31DQQ1zTDTqJOy9CYS0ERjTylNGL2pyDUMQdp3hNgreUH+EsQsJuYbzV5pRi9wFHz2cNb2OkA0/ObmPaB6KJI/MSVpr7f6sOY3qaG74i3XLqSPRH3LckYW4KM0XDfeiAfPzxgGqlLFGQR/Yj7gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaUgypJH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777972362; c=relaxed/simple;
+	bh=6utuRugFuQW1QzxEpH4tYse1O0Bv/QojIYP6k9RXbaw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bzum9fCISfkD8j5qUSrb/hDRAZip8alAQ1NXCd5SiI6C3CzHiNcsYPmcYypEaM5Xub8Q+BGeysXHm25KciucFgwmwLiDxGhVs6/ZGnDKCDOpf5IcmZ7MbEfTlUX3bAfDXoMOcyzi9PNOnmbhnvcQA27YbiSRtFORnIzCWsPBqBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiOJ5WFu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaUgypJH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2124CC4AF15;
-	Tue,  5 May 2026 07:29:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiOJ5WFu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B27BC2BCB4
+	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 09:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777966182;
-	bh=UXBCHywms5b7E6t4ihwwEXOZ9EJx2Yu/9U7Ij9QSn4w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaUgypJHI3hyPkE7K40HvVB2GnJPE4QRb56Y1180j1vDuS+RypJ9ORgUXpY2RCQNf
-	 oo1RM7HhHRPdV/U1+GxnfcQ10fcEF3TqrOtVpPSEj0aRkk6sIQV42ksUje/I5Y/itU
-	 NRZCC8YhLGGGUpMl8KaJ1W//aw1RkXLrw0+yuc1vrOOLZN5iNMF7sfSVROfgnhWB03
-	 qgY5eemWVUeAqNfL9GJeHxtQ3xdUONsAaIv0Eb9o1FFjt3um0Y34UYoC4rpDOEkHmF
-	 n/K5LxzAmlWAfOn7cTvFmjyxKGChthHtc0bIpPYiqYUQ8HA7tGZjpJDLEqzJjTCLH6
-	 MyJzUKDJUUfGA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002atQ-3Iwt;
-	Tue, 05 May 2026 09:29:39 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Masahisa Kojima <kojima.masahisa@socionext.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 19/20] spi: uniphier: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:29:08 +0200
-Message-ID: <20260505072909.618363-20-johan@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
-References: <20260505072909.618363-1-johan@kernel.org>
+	s=k20201202; t=1777972362;
+	bh=6utuRugFuQW1QzxEpH4tYse1O0Bv/QojIYP6k9RXbaw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FiOJ5WFuYxzoZOtAPJtZYLVYv3d/0r0djeBDWEV9tTOMNM0OWqyqcMxQBMfgIZvsM
+	 LunS88fz4cG/iDukAdBJXK42uWduAcVcz/wDj0Zj3MTnHQIGVyDS6KuSyk7YGRisgZ
+	 fENVPipTmeg+9Zjxf2j+PTOu4i+/llQi5x+4uaDBs8sq2JOb5Eh5+7IaX6z4H51hCz
+	 SJj9/VSmQHk7Zz29uYfNWlIoyZJJdkYIbTrTJvvGNQQUHmWcfl2bGvFpOcnV+k/0T0
+	 ENuhO5S7Fy5ljDjBdJWImMxy9GxwhGLslJHGI+/DrHJW5aqDrXiqmuypepcZllCrsp
+	 XWz49rj/FoBSw==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38def541b0bso47668511fa.1
+        for <linux-spi@vger.kernel.org>; Tue, 05 May 2026 02:12:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9Wmd8jg0jVNCr+mW+1OHNykIfcGLTeFraoRSTbA8d7Up6zYr40OW/Huf7SEqBuNBFlJqaIvxGWc5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0za8gej7nuUMxQRGnm+5hVDBbNgbtTeP3wmO62n51rTa8TAkr
+	PPB7fu2yYXK7IolkrkBobwVd00EGX4J+XviPpTxYAFn5bT610Kz4fIhiM+KgmlAXvcl3H5L8eRh
+	VazrsKvDK2XV1e+MVfKZRnEipMDjX+Nk=
+X-Received: by 2002:a2e:b88f:0:b0:38e:2822:a264 with SMTP id
+ 38308e7fff4ca-393b4aab764mr10128231fa.12.1777972360829; Tue, 05 May 2026
+ 02:12:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260505072909.618363-1-johan@kernel.org> <20260505072909.618363-4-johan@kernel.org>
+In-Reply-To: <20260505072909.618363-4-johan@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 5 May 2026 11:12:28 +0200
+X-Gmail-Original-Message-ID: <CAD++jLkFNw6eO4ex1h9-G8LE6YCwCdnZu3df6zb0DnyzCfS9bw@mail.gmail.com>
+X-Gm-Features: AVHnY4K6utr00A_9H0oWh3u0b7g-amWyCLCP2_uZfn-dnvX6aO9ueGg_xOKC2EQ
+Message-ID: <CAD++jLkFNw6eO4ex1h9-G8LE6YCwCdnZu3df6zb0DnyzCfS9bw@mail.gmail.com>
+Subject: Re: [PATCH 03/20] spi: pl022: switch to managed controller allocation
+To: Johan Hovold <johan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
+	Jassi Brar <jassisinghbrar@gmail.com>, Laxman Dewangan <ldewangan@nvidia.com>, 
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Switch to device managed controller allocation to simplify error
-handling and to avoid having to take another reference during
-deregistration.
+On Tue, May 5, 2026 at 9:29=E2=80=AFAM Johan Hovold <johan@kernel.org> wrot=
+e:
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-uniphier.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+> Switch to device managed controller allocation to simplify error
+> handling and to avoid having to take another reference during
+> deregistration.
+>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
 
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index eac6c3e8908b..5f0abc59b716 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -649,7 +649,7 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 	int irq;
- 	int ret;
- 
--	host = spi_alloc_host(&pdev->dev, sizeof(*priv));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*priv));
- 	if (!host)
- 		return -ENOMEM;
- 
-@@ -660,30 +660,26 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 	priv->is_save_param = false;
- 
- 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
--	if (IS_ERR(priv->base)) {
--		ret = PTR_ERR(priv->base);
--		goto out_host_put;
--	}
-+	if (IS_ERR(priv->base))
-+		return PTR_ERR(priv->base);
-+
- 	priv->base_dma_addr = res->start;
- 
- 	priv->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(&pdev->dev, "failed to get clock\n");
--		ret = PTR_ERR(priv->clk);
--		goto out_host_put;
-+		return PTR_ERR(priv->clk);
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto out_host_put;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
- 			       0, "uniphier-spi", priv);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to request IRQ\n");
--		goto out_host_put;
-+		return ret;
- 	}
- 
- 	init_completion(&priv->xfer_done);
-@@ -710,10 +706,9 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 
- 	host->dma_tx = dma_request_chan(&pdev->dev, "tx");
- 	if (IS_ERR_OR_NULL(host->dma_tx)) {
--		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER) {
--			ret = -EPROBE_DEFER;
--			goto out_host_put;
--		}
-+		if (PTR_ERR(host->dma_tx) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+
- 		host->dma_tx = NULL;
- 		dma_tx_burst = INT_MAX;
- 	} else {
-@@ -762,8 +757,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 		host->dma_tx = NULL;
- 	}
- 
--out_host_put:
--	spi_controller_put(host);
- 	return ret;
- }
- 
-@@ -771,16 +764,12 @@ static void uniphier_spi_remove(struct platform_device *pdev)
- {
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 
--	spi_controller_get(host);
--
- 	spi_unregister_controller(host);
- 
- 	if (host->dma_tx)
- 		dma_release_channel(host->dma_tx);
- 	if (host->dma_rx)
- 		dma_release_channel(host->dma_rx);
--
--	spi_controller_put(host);
- }
- 
- static const struct of_device_id uniphier_spi_match[] = {
--- 
-2.53.0
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
+Yours,
+Linus Walleij

@@ -1,147 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6B52773D3
-	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 01:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D2935BDCA
+	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 01:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777944300; cv=none; b=iDWp/h2cQwT0qyMh5SLyRIC2kdMCigER1TNYuz9505SWpJau9BEe90eraEqgZMQZaeEjItkaR09RiwC79+wtXPs6bkF7aSbh5ZoPUQLAzLmZvxSai3iJumhAQm2wFKnu7nZRr4Lnqek5nQIDHTYkPrMJsPhYmSsCxJwnT0iVTGY=
+	t=1777946045; cv=none; b=kPspVqtGMO1muKfK2ssFkKy+qJExN1nJvnAq9j9XTvrL+1Yz/EJoxfyxmD0bMncANxNOfhWzXufMWug5Suag/WLvPaBpWu7khGPhszD4srMoudHFoZSthJQGqBb5dwXT1mHnbWflLX2ViEZKz8SpNv1hJtBgJhqtV92ZMEBw1Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777944300; c=relaxed/simple;
-	bh=EjWK5hyMTEnw/Dc5suy7YvEsOAzy6+oCC79Tg4orlI4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Q+jfVV5L7VjwInqv1f/yDNMYTDcDIUr3VixeHZtg3V0oof9yE5xzrppfyRC846JYW3I9R6oVNsq3YBmaT7OgJoPZibJ9GkuHR6ktsadz6Ex9+LlScfTz15LaUyWjhUL7zOZ+1yEuj6lOmUwLqIHkxKnJ2rIJy47X7n9NRKNEJG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e4yB9pK/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777946045; c=relaxed/simple;
+	bh=bCXcH22VETc/1TUN/+hBoB9VD44HhAx4Bt4mZr0aROE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RrN/QLJyoShI5Cz2GytPxMJWdRDNHIV+mOdfz+/6aqzFCBVQSPpcUOi8mg0Vd1JjSFfXXKe2V3vduDEuytmBpuzMYZEfG+Vo8D1B5oQFlxpfoUduBSz+Af+KVb7qo363QtDjRJvbnk5q4SoU7YwU9B45lO3DHzKC4qvndw7wa+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=kNnmpI0h; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e4yB9pK/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586E7C2BCB8;
-	Tue,  5 May 2026 01:25:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777944300;
-	bh=EjWK5hyMTEnw/Dc5suy7YvEsOAzy6+oCC79Tg4orlI4=;
-	h=Subject:From:Date:To:From;
-	b=e4yB9pK/K/rcYUzCZaCDQ9fEsbPTn4+Ehu/dJ0F9+YRVEdbbg8qNq0D/AXFc7ptZ0
-	 2xxm2nBJwA134ibcnWCukRFLxrkI7onVyxxW5xKx6v5dlYWY/hvwNmwN5BLx8PJZEG
-	 Nf8isCSHK5KhQRInVpHu1xDlIHxuO8oZgG+l4pipPb9sc6spom67bJCIljgxqBzS8j
-	 Ofk9a7UtUPQIEK2r52Grx9I4BqFc29ot4QTr5dUCn1Jvmy4NydiJ2vl3AAaiBUjLFs
-	 9V/aPJKk1QvQkmYS7VqRyM1sXjaPa1eICvY89srNCXtVUE8DZc7nQLPz5I3isoQA7i
-	 ZbpW/nI0Cf0+Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 428C33930193;
-	Tue,  5 May 2026 01:24:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="kNnmpI0h"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-835c98b659eso1129337b3a.0
+        for <linux-spi@vger.kernel.org>; Mon, 04 May 2026 18:54:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777946042; x=1778550842; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A4fW5IFCF+h7MNSs7mItaLMetGKpr2bIN5LAG6vg93E=;
+        b=kNnmpI0h6rpwWjBKY25r1IVoarDSkqdUlE5K/MQXRhi2k2RYEhyVoz4xNt+XKpNi+F
+         3DNuSXWQb9kothmMQgDebFa38WHz3iNkbk0QERRBzoRgqP4FbF4yL4v94+7nFkAvdxPr
+         +r01UtV4AQZksKL71zfeU0Mb4BjosNRB53vmz0BhcC2jfWk3oOKC3bp63alhB9ZPv57o
+         Erflo4To2NHaukhFBn9q9e5//hjtiXfn1h06tV5gyfYKw58PsbCVhKwxiROSCIMCEhJE
+         RCSf10u89aGAX7OX0xYpyMNyn2NONNvLypNa8Sd6rF/M1jBw16mX1DcaA/ALlctNTYLA
+         vtpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777946042; x=1778550842;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A4fW5IFCF+h7MNSs7mItaLMetGKpr2bIN5LAG6vg93E=;
+        b=EpoN/yTD5MRu9FA8r4JvtOcx2J68XoQong6syqBtdHzAaugG706UyxOVOK2bq6NwSb
+         zNeTnN5a/Kn6tHQpS1nzyQzyHCKs9r2kPPf0hv/MhYpuzdJmgg3/CXFYAwVXlgdYkmKi
+         mxpT0j3oqCiitvZNHF2vkhH7FrmtpJkssEtQ4bF08kA1/n0FuSZeKXMkyWtAQVPtV7LF
+         DnO/eplPl/rQU8VgE5lo4KfkiZIZ03KpfOdffCPfPckm0xH/JyZOn2Da+N4fUpYLgMmM
+         qf/CqBEvmdD2P/rIntBg8MlmLgZImK8xv9DE5WujE+EGAtSFYdcwdHHcVmChnU/oDbSI
+         Sf9A==
+X-Gm-Message-State: AOJu0YwE5MTxvO56SRUbRZpARKTiGDxPL9GyKGZAhhUTSl7ztLOswxne
+	numyJCgTudE0oX4dBX1jUbR4e8EAZbqtBM5hGlT9DgcSR53mYtQ3mysfOBvjckcUC6g=
+X-Gm-Gg: AeBDietRI32tfYkENez+/3dgDtMKh4GlPSJaowHORpKJEUePPNTruxHMOT+0ay5xi0N
+	C8/gm9nBJYfkq7sOpCZt1xjj8R87Ik/JoZBByVZTqv117Om9NiMCEcn3hX5YFJeKRTGgHsHIUzX
+	feyE2edn0J4+BQNaRy/i5BJ7WW6oH4W0Oj4xePzaKGkqc3cJ7SE3M5DEmJZ+8ZMnhqTPhcz0uvC
+	CJTrFBrx7udnZKgC+pI+91b/8slTD64PoFoF+R7gWl2Xxf13r/Kh+3+E/AkmZByhwnnx87qX3m4
+	/93n+nOkcH9oJfktY2V6bUUi1JP/1mBlOdZZ9FRkZ2ZUqEKJswRGBVDLxXuyYsQ2fDa9R9wfyEP
+	cADQzcxz8cSMV0xmnwtZ+bOuOzWNIqdJRXa4qGSYDRhOi5DwsOxeMpteSRV2mi63C/6lhzD285q
+	oX8n+8ayyIoPWaJKwUImvqiBsN4N6WlZlDcTZ33wFl+23fE5mWBqDlrchWNAarj1P/
+X-Received: by 2002:a05:6a00:1250:b0:837:a211:4edd with SMTP id d2e1a72fcca58-837a21153a9mr6252120b3a.3.1777946042159;
+        Mon, 04 May 2026 18:54:02 -0700 (PDT)
+Received: from [127.0.1.1] ([2a12:a305:4::3016])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839682a4bffsm211375b3a.56.2026.05.04.18.53.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 18:54:01 -0700 (PDT)
+From: Guodong Xu <guodong@riscstar.com>
+Date: Tue, 05 May 2026 09:53:34 -0400
+Subject: [PATCH] spi: spacemit: add u64 cast to NSEC_PER_SEC to avoid
+ 32-bit overflow
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177794425086.1376492.13207160356228156582.git-patchwork-summary@kernel.org>
-Date: Tue, 05 May 2026 01:24:10 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260505-spi-spacemit-k1-fix-overflow-v1-1-77564c2e4e86@riscstar.com>
+X-B4-Tracking: v=1; b=H4sIAF32+WkC/yXMywqDMBCF4VeRWXcgBqymr1K6iHHUsa2RjDcQ3
+ 73TdnEWHwf+A4QSk8AtOyDRysJxVOSXDELvx46QGzVYY6+mMAXKxDof6M0zPnNsece4UmpfccO
+ qdK6pg/XkStDElEj/X/7++FuWeqAwf5twnh9PJHf6gAAAAA==
+X-Change-ID: 20260505-spi-spacemit-k1-fix-overflow-8799dbc2ae97
+To: Mark Brown <broonie@kernel.org>, Yixun Lan <dlan@kernel.org>, 
+ Alex Elder <elder@riscstar.com>
+Cc: linux-spi@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>, Guodong Xu <guodong@riscstar.com>
+X-Mailer: b4 0.15.1
 
-Hello:
+NSEC_PER_SEC expands to the long constant 1000000000L, so NSEC_PER_SEC *
+BITS_PER_BYTE (8 * 10^9) overflows on 32-bit-long architectures
+before the result reaches the u64 nsec_per_word.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Promote the multiplication to u64 by casting the first operand, which is
+NSEC_PER_SEC.
 
-Series: Add QSPI support for QCS615 and improve interconnect handling
-  Submitter: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1087622
-  Lore link: https://lore.kernel.org/r/20260429-spi-nor-v5-0-993016c9711e@oss.qualcomm.com
-    Patches: [v5,1/7] spi: dt-bindings: qcom,spi-qcom-qspi: Add qcom,qcs615-qspi compatible
-             [v5,2/7] spi: spi-qcom-qspi: Fix incomplete error handling in runtime PM
-             [v5,3/7] spi: spi-qcom-qspi: Add interconnect support for memory path
+Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
+Suggested-by: Alex Elder <elder@riscstar.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202605050437.RS6mmV2b-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202605050317.Tf9j487w-lkp@intel.com/
+Signed-off-by: Guodong Xu <guodong@riscstar.com>
+---
+Hi, Mark
 
-Series: spi: switch to managed controller allocation (part 1/3)
-  Submitter: Johan Hovold <johan@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1087350
-  Lore link: https://lore.kernel.org/r/20260429091333.165363-1-johan@kernel.org
-    Patches: [01/19] spi: at91-usart: switch to managed controller allocation
-             [02/19] spi: atmel: switch to managed controller allocation
-             [03/19] spi: bcm63xx: switch to managed controller allocation
-             [04/19] spi: bcm63xx-hsspi: switch to managed controller allocation
-             [05/19] spi: cadence: switch to managed controller allocation
-             [06/19] spi: octeon: switch to managed controller allocation
-             [07/19] spi: cavium-thunderx: switch to managed controller allocation
-             [08/19] spi: coldfire-qspi: switch to managed controller allocation
-             [09/19] spi: dln2: switch to managed controller allocation
-             [10/19] spi: ep93xx: switch to managed controller allocation
-             [11/19] spi: fsl: switch to managed controller allocation
-             [12/19] spi: fsl-espi: switch to managed controller allocation
-             [13/19] spi: img-spfi: switch to managed controller allocation
-             [14/19] spi: lantiq-ssc: switch to managed controller allocation
-             [15/19] spi: meson-spicc: switch to managed controller allocation
-             [16/19] spi: mxs: switch to managed controller allocation
-             [17/19] spi: npcm-pspi: switch to managed controller allocation
-             [19/19] spi: orion: switch to managed controller allocation
+This is an incremental fix on top of your for-7.2, addressing the
+overflow warning.
 
-Series: spi: imx: Three fixes for the i.MX SPI driver
-  Submitter: John Madieu <john.madieu@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1088539
-  Lore link: https://lore.kernel.org/r/20260501135951.2416527-1-john.madieu@gmail.com
-    Patches: [1/3] spi: imx: Fix precedence bug in spi_imx_dma_max_wml_find()
-             [2/3] spi: imx: Fix UAF on package-1 prepare failure in spi_imx_dma_data_prepare()
-             [3/3] spi: imx: Propagate prepare_transfer() error from spi_imx_setupxfer()
+Verified on BPI-F3 with a GD25Q64E SPI NOR, read/write/erase still work.
 
-Series: microchip core-qspi gpio-cs fixes + cleanup
-  Submitter: Conor Dooley <conor@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1088034
-  Lore link: https://lore.kernel.org/r/20260430-levers-defiling-00406e391c5a@spud
-    Patches: [v3,1/3] spi: microchip-core-qspi: control built-in cs manually
-             [v3,2/3] spi: microchip-core-qspi: don't attempt to transmit during emulated read-only dual/quad operations
-             [v3,3/3] spi: microchip-core-qspi: remove some inline markings
+Thank you.
+Guodong
+---
+ drivers/spi/spi-spacemit-k1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch: spi: at91-usart: drop dead runtime pm support
-  Submitter: Johan Hovold <johan@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1087351
-  Lore link: https://lore.kernel.org/r/20260429092005.166128-1-johan@kernel.org
+diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
+index 99db429db0b26..215fe66d27b4d 100644
+--- a/drivers/spi/spi-spacemit-k1.c
++++ b/drivers/spi/spi-spacemit-k1.c
+@@ -390,7 +390,7 @@ static int k1_spi_set_speed(struct k1_spi_driver_data *drv_data,
+ 	 *   ticks_per_word = BITS_PER_BYTE * drv_data->bytes;
+ 	 * We do the divide last for better accuracy.
+ 	 */
+-	nsec_per_word = NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
++	nsec_per_word = (u64)NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
+ 	nsec_per_word = DIV_ROUND_UP_ULL(nsec_per_word, drv_data->rate);
+ 
+ 	/*
 
-Series: mtd/spi: Fix Winbond W35N02JW / W35N04JW support
-  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1079878
-  Lore link: https://lore.kernel.org/r/20260410-winbond-6-19-rc1-oddr-v1-0-2ac4827a3868@bootlin.com
-    Patches: [1/5] spi: cadence-qspi: Revert the filtering of certain opcodes in ODTR
-             [3/5] mtd: spinand: Add support for packed read data ODTR commands
-             [4/5] mtd: spinand: winbond: Set the packed page read flag to W35N02/04JW
-             [5/5] mtd: spinand: winbond: Fix ODTR write VCR on W35NxxJW
+---
+base-commit: efcd8b9d111177d48c841d09beca43b15d5b9e5f
+change-id: 20260505-spi-spacemit-k1-fix-overflow-8799dbc2ae97
 
-Series: spi: omap2-mcspi: switch to managed controller allocation
-  Submitter: Johan Hovold <johan@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1088109
-  Lore link: https://lore.kernel.org/r/20260430120200.249323-1-johan@kernel.org
-    Patches: [v2,1/3] spi: omap2-mcspi: switch to managed controller allocation
-             [v2,2/3] spi: omap2-mcspi: clean up error labels
-             [v2,3/3] spi: omap2-mcspi: clean up probe return value
-
-Series: spi: support the SpacemiT K1 SPI controller
-  Submitter: Guodong Xu <guodong@riscstar.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1088800
-  Lore link: https://lore.kernel.org/r/20260502-spi-spacemit-k1-v10-0-f412e1ae8a34@riscstar.com
-    Patches: [v10,1/3] spi: dt-bindings: add SpacemiT K1 SPI support
-             [v10,2/3] spi: spacemit: introduce SpacemiT K1 SPI controller driver
-
-Patch: [GIT,PULL] SPI fixes for v7.1-rc1
-  Submitter: Mark Brown <broonie@kernel.org>
-  Committer: Linus Torvalds <torvalds@linux-foundation.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1088401
-  Lore link: https://lore.kernel.org/r/20260501013924.B14F81AC5863@finisterre.sirena.org.uk
-
-
-Total patches: 38
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Best regards,
+--  
+Guodong Xu <guodong@riscstar.com>
 

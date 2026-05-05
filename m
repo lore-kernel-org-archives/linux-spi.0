@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F73DF000;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E943DFC78;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=kNCq7VCMZ517t4p8D560KbVGXmK2la9YZabQF2dYJg6KlxiJ5E4Q+8Kx5f3zYPz+pvomIZlKRUjWf0yJXDRbgFCidRjiQt6/9nisITIZC64pYnYrl5cnV4A3KaEb37kQQ2rS4Gyf1Ude4aU9HdOPuHoCNvAZfbJ1okYqGD8Xvmg=
+	t=1777966182; cv=none; b=FBgcRP2HeTAwS7tYw+tlVErioBux36G0uVunEwscHLjdxSwiuhHuot/4lp+vfOVdo2erqDTUSJoKa+vC3G7ckuJlKa19PR3ixTIH1JmU5zmCXIgyjais91nTZ9Nlqvz+jwscliumCQwF1CjBqO6FMDj+xt3Y+GgpnGyU3KS9pRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=OP+6E2NzBeEAp/Lal2Cswhu32tlbi5G5YANee/6XVsc=;
+	bh=0bbDG1c0Aq1LvZc1s4pTDzx4Vzjg7RxP8T0U41gLx7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtWxXEoN0Z+qurLg4CocjtEC6xZr5IXBfJ6EHZgQVfTUMNoZVxsJT320LvZTA1uAsJQ2zDvAgxj148XZxYfqAs4jI4/5TY6c+/XoPcjyLTcDtaOvkDCV7SPjQT/UI6E0kRTy8f1uRjYqITv/Ch03wT/GexVSIRNXnbdqczqMg1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLMUqdg4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=F597wP4kwIdKyOH/RTvv7X1DUuzTZinUbnxQu4RsTzSiggPqniCzaLI6B9wtgjPdnvgUKxrV5VUhaz6ES6eKN8MXvtMmL+oUpbi2WZNKcc+bzSrOnBJbOlpYqGzDTWQbovpHNBdw2BDcCSk2f+F/2bYUnKuyyC335gZGjeMwEZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCqAzMem; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLMUqdg4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF2AC32786;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCqAzMem"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F91C4AF17;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777966182;
-	bh=OP+6E2NzBeEAp/Lal2Cswhu32tlbi5G5YANee/6XVsc=;
+	bh=0bbDG1c0Aq1LvZc1s4pTDzx4Vzjg7RxP8T0U41gLx7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLMUqdg45oP0bGKDUXXbhYYXmYnup0cVqRaHB0+lORZPEdnYLlKVzILyViodQo+w2
-	 Hbkf1C6zCbZEXWST6c0xruFfHtoxcxGsLAqOtAVg9OuC9fWgbxZBMXTFPpVQHKT2nB
-	 pg2XRXsfZhyLex5lTLz80G9hQXjJrhifLTvPOGlKh0p0+Ay/OosTGirc5hhsp/dJVv
-	 edJTt81bTYaEQ13oTFcTlefc7xQTbn+JI+Bhk2vfA84FBZitAH+EYa0Q2OivcnxqCz
-	 tR+bIhPDNzJa3k52xL+zT1Q4WvVixOYO7yw70xq5KhJhHyfahK1wekE6YLADV/1aFO
-	 cd0R0SK7kKh5A==
+	b=UCqAzMemLf4kT9/RtAg9Rpj2zV+z5sKLVft5FwwPF2geIqStHiqnG/5musGIepnoX
+	 iXBRvc1EGXxRKmDDu/W1wuscnoGSD3thyz6U9uJq7ip71I46iLNY2Yi7DoVBbBvDUy
+	 Xwm2U9I045XiS9FK6QJvo/y4ddho190pTa3ZGZCeOQZfPy2vvQwGTwkSNvfKbgpfl3
+	 SU7JdqUhyFOu/A19DqcDnkBBYBi4GWE0C0zI9BMa4NjZG9sF/SwsFHuAvXPaMW4lEx
+	 I856rSRKcsT5xQCNP+cJxBZ2Po5N3uU2fFtkkmi294xr3RbtNQ2ew5lLVmZfEz26CF
+	 fuNIffpAU4+NA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002atK-3Bcu;
+	id 1wKADr-00000002atC-32a6;
 	Tue, 05 May 2026 09:29:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Linus Walleij <linusw@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 16/20] spi: tegra20-sflash: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:29:05 +0200
-Message-ID: <20260505072909.618363-17-johan@kernel.org>
+Subject: [PATCH 12/20] spi: sun4i: switch to managed controller allocation
+Date: Tue,  5 May 2026 09:29:01 +0200
+Message-ID: <20260505072909.618363-13-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
 References: <20260505072909.618363-1-johan@kernel.org>
@@ -59,83 +59,104 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/spi/spi-sun4i.c | 35 +++++++++++------------------------
+ 1 file changed, 11 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 9256729f2d49..2caa33f0a52c 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -427,11 +427,9 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
+index b7fbb5270edb..d5c16392cd4d 100644
+--- a/drivers/spi/spi-sun4i.c
++++ b/drivers/spi/spi-sun4i.c
+@@ -434,32 +434,26 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	struct sun4i_spi *sspi;
+ 	int ret = 0, irq;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*tsd));
+-	host = spi_alloc_host(&pdev->dev, sizeof(struct sun4i_spi));
 -	if (!host) {
--		dev_err(&pdev->dev, "host allocation failed\n");
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*tsd));
+-		dev_err(&pdev->dev, "Unable to allocate SPI Host\n");
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct sun4i_spi));
 +	if (!host)
  		return -ENOMEM;
 -	}
  
- 	/* the spi->mode bits understood by this driver: */
- 	host->mode_bits = SPI_CPOL | SPI_CPHA;
-@@ -450,14 +448,13 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		host->max_speed_hz = 25000000; /* 25MHz */
+ 	platform_set_drvdata(pdev, host);
+ 	sspi = spi_controller_get_devdata(host);
  
- 	tsd->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(tsd->base)) {
--		ret = PTR_ERR(tsd->base);
--		goto exit_free_host;
+ 	sspi->base_addr = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(sspi->base_addr)) {
+-		ret = PTR_ERR(sspi->base_addr);
+-		goto err_free_host;
 -	}
-+	if (IS_ERR(tsd->base))
-+		return PTR_ERR(tsd->base);
++	if (IS_ERR(sspi->base_addr))
++		return PTR_ERR(sspi->base_addr);
  
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto exit_free_host;
-+		return ret;
-+
- 	tsd->irq = ret;
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = -ENXIO;
+-		goto err_free_host;
+-	}
++	if (irq < 0)
++		return -ENXIO;
  
- 	ret = request_irq(tsd->irq, tegra_sflash_isr, 0,
-@@ -465,7 +462,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
- 					tsd->irq);
--		goto exit_free_host;
+ 	ret = devm_request_irq(&pdev->dev, irq, sun4i_spi_handler,
+ 			       0, "sun4i-spi", sspi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot request IRQ\n");
+-		goto err_free_host;
 +		return ret;
  	}
  
- 	tsd->clk = devm_clk_get(&pdev->dev, NULL);
-@@ -518,8 +515,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		tegra_sflash_runtime_suspend(&pdev->dev);
- exit_free_irq:
- 	free_irq(tsd->irq, tsd);
--exit_free_host:
+ 	sspi->host = host;
+@@ -477,15 +471,13 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	sspi->hclk = devm_clk_get(&pdev->dev, "ahb");
+ 	if (IS_ERR(sspi->hclk)) {
+ 		dev_err(&pdev->dev, "Unable to acquire AHB clock\n");
+-		ret = PTR_ERR(sspi->hclk);
+-		goto err_free_host;
++		return PTR_ERR(sspi->hclk);
+ 	}
+ 
+ 	sspi->mclk = devm_clk_get(&pdev->dev, "mod");
+ 	if (IS_ERR(sspi->mclk)) {
+ 		dev_err(&pdev->dev, "Unable to acquire module clock\n");
+-		ret = PTR_ERR(sspi->mclk);
+-		goto err_free_host;
++		return PTR_ERR(sspi->mclk);
+ 	}
+ 
+ 	init_completion(&sspi->done);
+@@ -497,7 +489,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ 	ret = sun4i_spi_runtime_resume(&pdev->dev);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Couldn't resume the device\n");
+-		goto err_free_host;
++		return ret;
+ 	}
+ 
+ 	pm_runtime_set_active(&pdev->dev);
+@@ -515,8 +507,7 @@ static int sun4i_spi_probe(struct platform_device *pdev)
+ err_pm_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	sun4i_spi_runtime_suspend(&pdev->dev);
+-err_free_host:
 -	spi_controller_put(host);
 +
  	return ret;
  }
  
-@@ -528,8 +524,6 @@ static void tegra_sflash_remove(struct platform_device *pdev)
+@@ -524,13 +515,9 @@ static void sun4i_spi_remove(struct platform_device *pdev)
+ {
  	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct tegra_sflash_data	*tsd = spi_controller_get_devdata(host);
  
 -	spi_controller_get(host);
 -
  	spi_unregister_controller(host);
  
- 	free_irq(tsd->irq, tsd);
-@@ -537,8 +531,6 @@ static void tegra_sflash_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		tegra_sflash_runtime_suspend(&pdev->dev);
+ 	pm_runtime_force_suspend(&pdev->dev);
 -
 -	spi_controller_put(host);
  }
  
- #ifdef CONFIG_PM_SLEEP
+ static const struct of_device_id sun4i_spi_match[] = {
 -- 
 2.53.0
 

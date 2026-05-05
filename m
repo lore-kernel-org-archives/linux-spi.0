@@ -1,71 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCDF30E0E5
-	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 09:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C21F41325F;
+	Tue,  5 May 2026 12:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777972362; cv=none; b=hpR7TF3jyCvE1CmWFn2MXDJ+l0SHvddp3C5pPsbA8MJd6/ZumxDmdrxc7LHifn4r2A5Zhxo3iC26SqODHDRXqw2YSK+V3wGseIazN4UA944jC2lblhrOBft49HWLY9QGtDx8gNNJu2fARRsZig3Zk5H/2KnmceUJulaM1ukgP6s=
+	t=1777982826; cv=none; b=kT8GcRM3Jlo137gD5FznP5PKQgYkr9JjCFkPCZXbJA7ovT4mbzkv7lbL0UiHCFGgQqoTAj+Wq8Lob5iRMAnsILcRPNtZ0Uz9OuGyoOFxJjA8JCsRg6BCoobz/bh+YobUo/0Mh57iZLx4QSSRIEODsngDjfb90mP1pwriiyu4e8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777972362; c=relaxed/simple;
-	bh=6utuRugFuQW1QzxEpH4tYse1O0Bv/QojIYP6k9RXbaw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzum9fCISfkD8j5qUSrb/hDRAZip8alAQ1NXCd5SiI6C3CzHiNcsYPmcYypEaM5Xub8Q+BGeysXHm25KciucFgwmwLiDxGhVs6/ZGnDKCDOpf5IcmZ7MbEfTlUX3bAfDXoMOcyzi9PNOnmbhnvcQA27YbiSRtFORnIzCWsPBqBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiOJ5WFu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777982826; c=relaxed/simple;
+	bh=LBeJdDOIeVcNo9/1gFMW+zo6furMlQMsqazpANONYxw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=D3l4gSQC+HwGplNln4IBIXpEDakfwCi30vBf4d5BCCNtINkRVTLNnwMYoQWo/8uyuqZyPCJcrkvEGdiNv6c+Qt/ccF1P/xq6VXidWD0QCHD2U/IcYem1VH9J29DKEgkb2gBOnWcJYsfGFTeQ5zaq5QkeIVs3m4C3nVTnJVsUBwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IU57skwK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiOJ5WFu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B27BC2BCB4
-	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 09:12:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IU57skwK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6B6C2BCC9;
+	Tue,  5 May 2026 12:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777972362;
-	bh=6utuRugFuQW1QzxEpH4tYse1O0Bv/QojIYP6k9RXbaw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FiOJ5WFuYxzoZOtAPJtZYLVYv3d/0r0djeBDWEV9tTOMNM0OWqyqcMxQBMfgIZvsM
-	 LunS88fz4cG/iDukAdBJXK42uWduAcVcz/wDj0Zj3MTnHQIGVyDS6KuSyk7YGRisgZ
-	 fENVPipTmeg+9Zjxf2j+PTOu4i+/llQi5x+4uaDBs8sq2JOb5Eh5+7IaX6z4H51hCz
-	 SJj9/VSmQHk7Zz29uYfNWlIoyZJJdkYIbTrTJvvGNQQUHmWcfl2bGvFpOcnV+k/0T0
-	 ENuhO5S7Fy5ljDjBdJWImMxy9GxwhGLslJHGI+/DrHJW5aqDrXiqmuypepcZllCrsp
-	 XWz49rj/FoBSw==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-38def541b0bso47668511fa.1
-        for <linux-spi@vger.kernel.org>; Tue, 05 May 2026 02:12:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9Wmd8jg0jVNCr+mW+1OHNykIfcGLTeFraoRSTbA8d7Up6zYr40OW/Huf7SEqBuNBFlJqaIvxGWc5Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0za8gej7nuUMxQRGnm+5hVDBbNgbtTeP3wmO62n51rTa8TAkr
-	PPB7fu2yYXK7IolkrkBobwVd00EGX4J+XviPpTxYAFn5bT610Kz4fIhiM+KgmlAXvcl3H5L8eRh
-	VazrsKvDK2XV1e+MVfKZRnEipMDjX+Nk=
-X-Received: by 2002:a2e:b88f:0:b0:38e:2822:a264 with SMTP id
- 38308e7fff4ca-393b4aab764mr10128231fa.12.1777972360829; Tue, 05 May 2026
- 02:12:40 -0700 (PDT)
+	s=k20201202; t=1777982826;
+	bh=LBeJdDOIeVcNo9/1gFMW+zo6furMlQMsqazpANONYxw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=IU57skwKmg7nl3b1v4w/Dor2TLdDUcK8eiTpy+uk67GvhPFCGF1UVUUfnapB6OQ/A
+	 uqJ/Dt1wwaNBv6C2bIbG0MyzHwFJP/N1PF7JtHZ+9xbgvcrmdZzX58q7BD3+hP6/q6
+	 s4GYe7nOubenY+Nv55CP1fE7wvHIQaypVjrnoujJyNEzyZpzpef1xCPDNoRI20uigf
+	 QMbs6LwqYGBT9086VWWyE47jkE6UNM+ebbAQBO9UrUE1sGlDxs8Iyv2ZBSv6CFlhMw
+	 50BblpejeoFk5YkAYwxwgr2APpJ135JtlqyEfWP+zAuCy8+fFbQzKta/td2OZ0tQ7w
+	 7r63IcIzZNwjg==
+From: Mark Brown <broonie@kernel.org>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: Markus Schneider-Pargmann <msp@baylibre.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260504142117.2116978-2-u.kleine-koenig@baylibre.com>
+References: <20260504142117.2116978-2-u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH] spi: Consistently define pci_device_ids using named
+ initializers
+Message-Id: <177794357553.568329.537517574530201355.b4-ty@b4>
+Date: Tue, 05 May 2026 10:12:55 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260505072909.618363-1-johan@kernel.org> <20260505072909.618363-4-johan@kernel.org>
-In-Reply-To: <20260505072909.618363-4-johan@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 5 May 2026 11:12:28 +0200
-X-Gmail-Original-Message-ID: <CAD++jLkFNw6eO4ex1h9-G8LE6YCwCdnZu3df6zb0DnyzCfS9bw@mail.gmail.com>
-X-Gm-Features: AVHnY4K6utr00A_9H0oWh3u0b7g-amWyCLCP2_uZfn-dnvX6aO9ueGg_xOKC2EQ
-Message-ID: <CAD++jLkFNw6eO4ex1h9-G8LE6YCwCdnZu3df6zb0DnyzCfS9bw@mail.gmail.com>
-Subject: Re: [PATCH 03/20] spi: pl022: switch to managed controller allocation
-To: Johan Hovold <johan@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
-	Jassi Brar <jassisinghbrar@gmail.com>, Laxman Dewangan <ldewangan@nvidia.com>, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1165; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=LBeJdDOIeVcNo9/1gFMW+zo6furMlQMsqazpANONYxw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp+d1oatPzd7U5KqbiAAtVkIqoGhF5ewkkClXb9
+ NVroWmXVCuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafndaAAKCRAk1otyXVSH
+ 0LeFB/4k4JLvq44sw9b5ehiqklOLT762YZrjV+fnNQoMzz8wkN5Qjm8Czon2R4gyQsijijmIsTf
+ ufJYs5DR6DCWcrM3k399jL4Wa5bEqNc1hr0wR5rF1lNj3LW2niPV/SxSvunVt1Gk+5xEIwXLUL0
+ jaiVsn7DE2CkO/KnGR/xWIMgf2cTCAvzO/vmIJ3TPTFM+Z2JmLqkVvB8l0vwtsYB3XtWwwJNdq7
+ E+CSSssJXuvGB++iIIwa8uTDNK95o9LMsu66IWVvf3SgUkFoFWttkk2HbYvvhi9LWkrV4Ms7s5A
+ Vhv+p0KodIqz2yYrzUuoiUu+2vrT9RAr9LUuw3I8n6Dy2hUR
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, May 5, 2026 at 9:29=E2=80=AFAM Johan Hovold <johan@kernel.org> wrot=
-e:
+On Mon, 04 May 2026 16:21:17 +0200, Uwe Kleine-König (The Capable Hub) wrote:
+> spi: Consistently define pci_device_ids using named initializers
 
-> Switch to device managed controller allocation to simplify error
-> handling and to avoid having to take another reference during
-> deregistration.
->
-> Signed-off-by: Johan Hovold <johan@kernel.org>
+Applied to
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-Yours,
-Linus Walleij
+Thanks!
+
+[1/1] spi: Consistently define pci_device_ids using named initializers
+      https://git.kernel.org/broonie/spi/c/e4358093816d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

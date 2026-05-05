@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A728F3E0232;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB4F3DF00C;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=UFHCd5TEedoib53NxT5+bjjoXGBtfsiVSMHfWUxR++/1rUFhWGqiBGk0P4CjWnNWzng+4CMoG3bd4ZOTAw0fpeE2XmVY2e2Eo5qQpRNTy5lKr2LtgfNqBSIXH4jgWgazTFF7Ms7gFyL478EDHqJwQ3v5LWpA9GXmfdAcL8T/Lm0=
+	t=1777966182; cv=none; b=udtiNqp46hwWGj26SqJOM4S8m7sjgTN1OGhy+jpDySipV9/cUQj+Hpk9stnS9RIpEt2ljcGI+dvOM5ycYw+ZDA4679mg3Kzv50WEiqTuZ8ZbB5JtiCWfJuMtGiLp92pLrNFdZZH/KbAHoH4Bqm3rDzUY2Iqvb1gXNmOlt/w6N8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=cDNMrN0Yez8wSnrA6UN4k35e7qwR6fL9/Y8Ac9Y69Kc=;
+	bh=L60LRplpjDk2zRJEBey+SBkvYzdLM0uRKSpgaCU8PQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+j7kJITl/0DebHEJ0p5RhUT7Sr7XFPYxf7WUGJGXQzSiBmPyV/k4tbo9vh8QQ/Q+LfzBJ+CbcJkkOuWaabXwDgDLnm2fxnVKe/zGd1Rid9cxIvWvFDWsp4ofDCqmm/blA+MsRFTpwd0aCuxQBbfgJKvwn/EyFlbCgkaJDAyrKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=beXySKk5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=U2LxfZoRtWOoOpwDnNh++rGdX4wMNlfOZFks7r6fK9hyFejtxh97Hdj02ozxR5WmV92ko9FCp22meDfQ2j76Q1A5HE4A0JHVma7yI3cuU5bFl05OIvbLNO7eUpCgf8shQUiyGQKaWe+0N+SRtajWkjxIIVBqLNTqff21ZxeqH54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdJ5CikN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="beXySKk5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD94C4DDE5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdJ5CikN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218DFC4AF14;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777966182;
-	bh=cDNMrN0Yez8wSnrA6UN4k35e7qwR6fL9/Y8Ac9Y69Kc=;
+	bh=L60LRplpjDk2zRJEBey+SBkvYzdLM0uRKSpgaCU8PQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=beXySKk5ZPF71TKZD3egu+0ZOFwpy/kbAMlNCSc5iDx4hK+KQmvHGxH/mpxLHjxu/
-	 DeyGpfGt3Wduto3hUgrYHd5YyqsZgvrCFrVyajTjZhQlvNRVCKgqxjFyz7Uz8SYcSG
-	 ELMofTmQXPFX45v0XQGPU16wjVIeJmj8hoxlu7GTG7Kjx8ayRTqIAyjP/bRGBPm02g
-	 QAT7bOz8dDx1k5f5zYrFKI6IdXDa8jwM19XsI/oqS11x0bsopC3hOEpZZIQcgSxQqE
-	 SBGbYUb/fQZLNbee733BR5UH6HxWQJlzghKTXSwq89mM2GcJ2D+pQQIJJeZG7SSTmy
-	 x6Z4eEfMXGOPw==
+	b=XdJ5CikNgPwYi8RI309Nbe8S5gNfUlNk69L0Lr0wqHHc/NMisknXG8kSonQ2hV9N8
+	 ceiQKZR1r+LKaAEc1NBe3TitoKLNUC2C77UPdnennQt4pYHl1ZUrRVD5Fpe3pmkSox
+	 9o+9N4XkOglXaMpquP8BzydoaPGFcHfUJiD9uxVv6hfDT2wXkjVk+rtBxxgaQq7yfo
+	 fsJBJywkh80M5XJ0bycCZBY+ra6eifGTC1W+1WCyLS0D7sXwDbBXcsK2Dn2DvMueYw
+	 VbHhavAbzPWGZHl+i0L+omC1MxhSJfT+oWxgzhCz+TIyw894iXTtlu5Sh8dqD5AkBw
+	 5RuTOCt0YsHog==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002atV-3LAY;
+	id 1wKADr-00000002atI-39Ou;
 	Tue, 05 May 2026 09:29:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Linus Walleij <linusw@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 20/20] spi: zync-qspi: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:29:09 +0200
-Message-ID: <20260505072909.618363-21-johan@kernel.org>
+Subject: [PATCH 15/20] spi: tegra114: switch to managed controller allocation
+Date: Tue,  5 May 2026 09:29:04 +0200
+Message-ID: <20260505072909.618363-16-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
 References: <20260505072909.618363-1-johan@kernel.org>
@@ -59,112 +59,105 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 40 +++++++++++--------------------------
- 1 file changed, 12 insertions(+), 28 deletions(-)
+ drivers/spi/spi-tegra114.c | 34 ++++++++++++----------------------
+ 1 file changed, 12 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index 406fd9d5337e..d762aaf452af 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -637,7 +637,7 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	struct zynq_qspi *xqspi;
- 	u32 num_cs;
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index b8b0ebe0fe93..aa44ffd09e61 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1302,7 +1302,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	int ret, spi_irq;
+ 	int bus_num;
  
--	ctlr = spi_alloc_host(&pdev->dev, sizeof(*xqspi));
-+	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*xqspi));
- 	if (!ctlr)
+-	host = spi_alloc_host(&pdev->dev, sizeof(*tspi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*tspi));
+ 	if (!host) {
+ 		dev_err(&pdev->dev, "host allocation failed\n");
  		return -ENOMEM;
- 
-@@ -645,16 +645,13 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	xqspi->dev = dev;
- 	platform_set_drvdata(pdev, ctlr);
- 	xqspi->regs = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(xqspi->regs)) {
--		ret = PTR_ERR(xqspi->regs);
--		goto remove_ctlr;
--	}
-+	if (IS_ERR(xqspi->regs))
-+		return PTR_ERR(xqspi->regs);
- 
- 	xqspi->pclk = devm_clk_get_enabled(&pdev->dev, "pclk");
- 	if (IS_ERR(xqspi->pclk)) {
- 		dev_err(&pdev->dev, "pclk clock not found.\n");
--		ret = PTR_ERR(xqspi->pclk);
--		goto remove_ctlr;
-+		return PTR_ERR(xqspi->pclk);
+@@ -1336,36 +1336,31 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	tspi->soc_data = of_device_get_match_data(&pdev->dev);
+ 	if (!tspi->soc_data) {
+ 		dev_err(&pdev->dev, "unsupported tegra\n");
+-		ret = -ENODEV;
+-		goto exit_free_host;
++		return -ENODEV;
  	}
  
- 	init_completion(&xqspi->data_completion);
-@@ -662,21 +659,18 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	xqspi->refclk = devm_clk_get_enabled(&pdev->dev, "ref_clk");
- 	if (IS_ERR(xqspi->refclk)) {
- 		dev_err(&pdev->dev, "ref_clk clock not found.\n");
--		ret = PTR_ERR(xqspi->refclk);
--		goto remove_ctlr;
-+		return PTR_ERR(xqspi->refclk);
- 	}
- 
- 	xqspi->irq = platform_get_irq(pdev, 0);
--	if (xqspi->irq < 0) {
--		ret = xqspi->irq;
--		goto remove_ctlr;
+ 	tspi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+-	if (IS_ERR(tspi->base)) {
+-		ret = PTR_ERR(tspi->base);
+-		goto exit_free_host;
 -	}
-+	if (xqspi->irq < 0)
-+		return xqspi->irq;
++	if (IS_ERR(tspi->base))
++		return PTR_ERR(tspi->base);
 +
- 	ret = devm_request_irq(&pdev->dev, xqspi->irq, zynq_qspi_irq,
- 			       0, pdev->name, xqspi);
- 	if (ret != 0) {
--		ret = -ENXIO;
- 		dev_err(&pdev->dev, "request_irq failed\n");
--		goto remove_ctlr;
-+		return -ENXIO;
+ 	tspi->phys = r->start;
+ 
+ 	spi_irq = platform_get_irq(pdev, 0);
+-	if (spi_irq < 0) {
+-		ret = spi_irq;
+-		goto exit_free_host;
+-	}
++	if (spi_irq < 0)
++		return spi_irq;
++
+ 	tspi->irq = spi_irq;
+ 
+ 	tspi->clk = devm_clk_get(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->clk)) {
+ 		dev_err(&pdev->dev, "can not get clock\n");
+-		ret = PTR_ERR(tspi->clk);
+-		goto exit_free_host;
++		return PTR_ERR(tspi->clk);
  	}
  
- 	ret = of_property_read_u32(np, "num-cs",
-@@ -684,9 +678,8 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	if (ret < 0) {
- 		ctlr->num_chipselect = 1;
- 	} else if (num_cs > ZYNQ_QSPI_MAX_NUM_CS) {
--		ret = -EINVAL;
- 		dev_err(&pdev->dev, "only 2 chip selects are available\n");
--		goto remove_ctlr;
-+		return -EINVAL;
- 	} else {
- 		ctlr->num_chipselect = num_cs;
+ 	tspi->rst = devm_reset_control_get_exclusive(&pdev->dev, "spi");
+ 	if (IS_ERR(tspi->rst)) {
+ 		dev_err(&pdev->dev, "can not get reset\n");
+-		ret = PTR_ERR(tspi->rst);
+-		goto exit_free_host;
++		return PTR_ERR(tspi->rst);
  	}
-@@ -705,15 +698,10 @@ static int zynq_qspi_probe(struct platform_device *pdev)
- 	ret = spi_register_controller(ctlr);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register controller\n");
--		goto remove_ctlr;
+ 
+ 	tspi->max_buf_size = SPI_FIFO_DEPTH << 2;
+@@ -1373,7 +1368,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = tegra_spi_init_dma_param(tspi, true);
+ 	if (ret < 0)
+-		goto exit_free_host;
 +		return ret;
- 	}
- 
--	return ret;
--
--remove_ctlr:
--	spi_controller_put(ctlr);
--
--	return ret;
-+	return 0;
+ 	ret = tegra_spi_init_dma_param(tspi, false);
+ 	if (ret < 0)
+ 		goto exit_rx_dma_free;
+@@ -1431,8 +1426,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	tegra_spi_deinit_dma_param(tspi, false);
+ exit_rx_dma_free:
+ 	tegra_spi_deinit_dma_param(tspi, true);
+-exit_free_host:
+-	spi_controller_put(host);
++
+ 	return ret;
  }
  
- /**
-@@ -731,13 +719,9 @@ static void zynq_qspi_remove(struct platform_device *pdev)
- 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(ctlr);
+@@ -1441,8 +1435,6 @@ static void tegra_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct tegra_spi_data	*tspi = spi_controller_get_devdata(host);
  
--	spi_controller_get(ctlr);
+-	spi_controller_get(host);
 -
- 	spi_unregister_controller(ctlr);
+ 	spi_unregister_controller(host);
  
- 	zynq_qspi_write(xqspi, ZYNQ_QSPI_ENABLE_OFFSET, 0);
+ 	free_irq(tspi->irq, tspi);
+@@ -1456,8 +1448,6 @@ static void tegra_spi_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		tegra_spi_runtime_suspend(&pdev->dev);
 -
--	spi_controller_put(ctlr);
+-	spi_controller_put(host);
  }
  
- static const struct of_device_id zynq_qspi_of_match[] = {
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.53.0
 

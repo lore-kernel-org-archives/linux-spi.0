@@ -1,130 +1,133 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D2935BDCA
-	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 01:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D5F3AF677;
+	Tue,  5 May 2026 04:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777946045; cv=none; b=kPspVqtGMO1muKfK2ssFkKy+qJExN1nJvnAq9j9XTvrL+1Yz/EJoxfyxmD0bMncANxNOfhWzXufMWug5Suag/WLvPaBpWu7khGPhszD4srMoudHFoZSthJQGqBb5dwXT1mHnbWflLX2ViEZKz8SpNv1hJtBgJhqtV92ZMEBw1Rs=
+	t=1777955115; cv=none; b=oIVbIi9az7ttZfiasesMxIbcm92RyVXiNNGONJbwaxKklsk1BSyLeSS7zDjvhUfCyajnk7vkzm1R3ij4xvHkqs/VJcWaZj5FIL8Z7/8DaTwRR0ZcGkRFbPE9lbr2XgmHQnqAt22pHr3yefrhKQEhqYilWPF2TpaA5PECrNwuAU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777946045; c=relaxed/simple;
-	bh=bCXcH22VETc/1TUN/+hBoB9VD44HhAx4Bt4mZr0aROE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RrN/QLJyoShI5Cz2GytPxMJWdRDNHIV+mOdfz+/6aqzFCBVQSPpcUOi8mg0Vd1JjSFfXXKe2V3vduDEuytmBpuzMYZEfG+Vo8D1B5oQFlxpfoUduBSz+Af+KVb7qo363QtDjRJvbnk5q4SoU7YwU9B45lO3DHzKC4qvndw7wa+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=kNnmpI0h; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1777955115; c=relaxed/simple;
+	bh=EdwBtqCIydZvcak3zK2OAOCGhj9iefiTe4utPgG5uUs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hkzH0hfVBL4mXbPHkV3fwWoOB4vyW69MWDZJtrT9Wp/uX1pAhuJII13tXB0xIePUtg3g6Ex2YwGfiw2ldYnl4yd2CmmbeZgkjsoCBj2uEhdYXyV/kg/iI9nkpKX/mGarGaOwA5X7GW/ZyNv3GSWQ12FQH1LnSWlcCBQsOpHisgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VBoDHIY4; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="kNnmpI0h"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-835c98b659eso1129337b3a.0
-        for <linux-spi@vger.kernel.org>; Mon, 04 May 2026 18:54:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1777946042; x=1778550842; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A4fW5IFCF+h7MNSs7mItaLMetGKpr2bIN5LAG6vg93E=;
-        b=kNnmpI0h6rpwWjBKY25r1IVoarDSkqdUlE5K/MQXRhi2k2RYEhyVoz4xNt+XKpNi+F
-         3DNuSXWQb9kothmMQgDebFa38WHz3iNkbk0QERRBzoRgqP4FbF4yL4v94+7nFkAvdxPr
-         +r01UtV4AQZksKL71zfeU0Mb4BjosNRB53vmz0BhcC2jfWk3oOKC3bp63alhB9ZPv57o
-         Erflo4To2NHaukhFBn9q9e5//hjtiXfn1h06tV5gyfYKw58PsbCVhKwxiROSCIMCEhJE
-         RCSf10u89aGAX7OX0xYpyMNyn2NONNvLypNa8Sd6rF/M1jBw16mX1DcaA/ALlctNTYLA
-         vtpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777946042; x=1778550842;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A4fW5IFCF+h7MNSs7mItaLMetGKpr2bIN5LAG6vg93E=;
-        b=EpoN/yTD5MRu9FA8r4JvtOcx2J68XoQong6syqBtdHzAaugG706UyxOVOK2bq6NwSb
-         zNeTnN5a/Kn6tHQpS1nzyQzyHCKs9r2kPPf0hv/MhYpuzdJmgg3/CXFYAwVXlgdYkmKi
-         mxpT0j3oqCiitvZNHF2vkhH7FrmtpJkssEtQ4bF08kA1/n0FuSZeKXMkyWtAQVPtV7LF
-         DnO/eplPl/rQU8VgE5lo4KfkiZIZ03KpfOdffCPfPckm0xH/JyZOn2Da+N4fUpYLgMmM
-         qf/CqBEvmdD2P/rIntBg8MlmLgZImK8xv9DE5WujE+EGAtSFYdcwdHHcVmChnU/oDbSI
-         Sf9A==
-X-Gm-Message-State: AOJu0YwE5MTxvO56SRUbRZpARKTiGDxPL9GyKGZAhhUTSl7ztLOswxne
-	numyJCgTudE0oX4dBX1jUbR4e8EAZbqtBM5hGlT9DgcSR53mYtQ3mysfOBvjckcUC6g=
-X-Gm-Gg: AeBDietRI32tfYkENez+/3dgDtMKh4GlPSJaowHORpKJEUePPNTruxHMOT+0ay5xi0N
-	C8/gm9nBJYfkq7sOpCZt1xjj8R87Ik/JoZBByVZTqv117Om9NiMCEcn3hX5YFJeKRTGgHsHIUzX
-	feyE2edn0J4+BQNaRy/i5BJ7WW6oH4W0Oj4xePzaKGkqc3cJ7SE3M5DEmJZ+8ZMnhqTPhcz0uvC
-	CJTrFBrx7udnZKgC+pI+91b/8slTD64PoFoF+R7gWl2Xxf13r/Kh+3+E/AkmZByhwnnx87qX3m4
-	/93n+nOkcH9oJfktY2V6bUUi1JP/1mBlOdZZ9FRkZ2ZUqEKJswRGBVDLxXuyYsQ2fDa9R9wfyEP
-	cADQzcxz8cSMV0xmnwtZ+bOuOzWNIqdJRXa4qGSYDRhOi5DwsOxeMpteSRV2mi63C/6lhzD285q
-	oX8n+8ayyIoPWaJKwUImvqiBsN4N6WlZlDcTZ33wFl+23fE5mWBqDlrchWNAarj1P/
-X-Received: by 2002:a05:6a00:1250:b0:837:a211:4edd with SMTP id d2e1a72fcca58-837a21153a9mr6252120b3a.3.1777946042159;
-        Mon, 04 May 2026 18:54:02 -0700 (PDT)
-Received: from [127.0.1.1] ([2a12:a305:4::3016])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839682a4bffsm211375b3a.56.2026.05.04.18.53.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 18:54:01 -0700 (PDT)
-From: Guodong Xu <guodong@riscstar.com>
-Date: Tue, 05 May 2026 09:53:34 -0400
-Subject: [PATCH] spi: spacemit: add u64 cast to NSEC_PER_SEC to avoid
- 32-bit overflow
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VBoDHIY4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=3B2CunHCGpiMjcTDIPvkA5wnx3g/cxDEDO4exp2ZkTA=;
+	b=VBoDHIY4WJJi70YRfo0kb2nK/+cju4NajjJmVjFHGt7bThYMY/JDla9gJih2UX
+	KZEWKBLXh/MbVlXiXid8BOx2ovYOfsu7WpBfnOLNrzg2JJJjL5dc2c5mpWgtzOZx
+	WMWtVyyYMzkssQTjuVe2VJeOtqZUuZud/YB6NXldV8GlY=
+Received: from [192.168.50.71] (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wC3T+7RcPlpXxPvDQ--.4818S2;
+	Tue, 05 May 2026 12:23:46 +0800 (CST)
+Message-ID: <9be240fa-ab46-4b58-9240-5e96cab8a097@163.com>
+Date: Tue, 5 May 2026 12:23:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260505-spi-spacemit-k1-fix-overflow-v1-1-77564c2e4e86@riscstar.com>
-X-B4-Tracking: v=1; b=H4sIAF32+WkC/yXMywqDMBCF4VeRWXcgBqymr1K6iHHUsa2RjDcQ3
- 73TdnEWHwf+A4QSk8AtOyDRysJxVOSXDELvx46QGzVYY6+mMAXKxDof6M0zPnNsece4UmpfccO
- qdK6pg/XkStDElEj/X/7++FuWeqAwf5twnh9PJHf6gAAAAA==
-X-Change-ID: 20260505-spi-spacemit-k1-fix-overflow-8799dbc2ae97
-To: Mark Brown <broonie@kernel.org>, Yixun Lan <dlan@kernel.org>, 
- Alex Elder <elder@riscstar.com>
-Cc: linux-spi@vger.kernel.org, linux-riscv@lists.infradead.org, 
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel test robot <lkp@intel.com>, Guodong Xu <guodong@riscstar.com>
-X-Mailer: b4 0.15.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] spi: Use FIELD_MODIFY() for bitfield operations
+To: David Laight <david.laight.linux@gmail.com>
+Cc: broonie@kernel.org, sunny.luo@amlogic.com, xianwei.zhao@amlogic.com,
+ neil.armstrong@linaro.org, khilman@baylibre.com, han.xu@nxp.com,
+ haibo.chen@nxp.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ lhjeff911@gmail.com, hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+ jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com
+References: <20260430155456.36998-1-18255117159@163.com>
+ <20260501093050.3f97cd3e@pumpkin>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <20260501093050.3f97cd3e@pumpkin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC3T+7RcPlpXxPvDQ--.4818S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXw48Cr43ArW3JFykuFWfKrg_yoW5GrW3pF
+	48GF42vFs7JrWFkF4xCrW5CF1Yya4fKrWjga4Ut3s3ZwnYvr17ZrWkt3WrWa9rAFykGFWx
+	KF4jy3s0k3ZxZwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4OJOUUUUU=
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbCwxUqzWn5cNXchAAA3c
 
-NSEC_PER_SEC expands to the long constant 1000000000L, so NSEC_PER_SEC *
-BITS_PER_BYTE (8 * 10^9) overflows on 32-bit-long architectures
-before the result reaches the u64 nsec_per_word.
 
-Promote the multiplication to u64 by casting the first operand, which is
-NSEC_PER_SEC.
 
-Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
-Suggested-by: Alex Elder <elder@riscstar.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605050437.RS6mmV2b-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202605050317.Tf9j487w-lkp@intel.com/
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
----
-Hi, Mark
+On 5/1/26 16:30, David Laight wrote:
+> On Thu, 30 Apr 2026 23:54:46 +0800
+> Hans Zhang <18255117159@163.com> wrote:
+> 
+>> Replace open-coded bitfield modifications with the standard FIELD_MODIFY()
+>> macro across multiple SPI controller drivers. This improves readability and
+>> adds compile-time checking without functional changes.
+> 
+> I don't think these changes are worth the effort.
+> The readability doesn't change much - you need to know what a slightly
+> more obscure 'helper' does.
+> The extra compile-time checks are pretty unlikely to ever find a problem
+> and mostly just slow down the compile.
+> The generated code is likely be slightly worse.
+> And, with the best will in the world, it is easy to make silly mistakes.
+> 
+> 	David
 
-This is an incremental fix on top of your for-7.2, addressing the
-overflow warning.
+Hi David,
 
-Verified on BPI-F3 with a GD25Q64E SPI NOR, read/write/erase still work.
+FIELD_MODIFY() is a standard kernel helper (bitfield.h), not an obscure
+one. My recent power domain series using similar patterns was accepted:
 
-Thank you.
-Guodong
----
- drivers/spi/spi-spacemit-k1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://patchwork.kernel.org/project/linux-pm/cover/20260430163213.44695-1-18255117159@163.com/
 
-diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
-index 99db429db0b26..215fe66d27b4d 100644
---- a/drivers/spi/spi-spacemit-k1.c
-+++ b/drivers/spi/spi-spacemit-k1.c
-@@ -390,7 +390,7 @@ static int k1_spi_set_speed(struct k1_spi_driver_data *drv_data,
- 	 *   ticks_per_word = BITS_PER_BYTE * drv_data->bytes;
- 	 * We do the divide last for better accuracy.
- 	 */
--	nsec_per_word = NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
-+	nsec_per_word = (u64)NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
- 	nsec_per_word = DIV_ROUND_UP_ULL(nsec_per_word, drv_data->rate);
- 
- 	/*
+The PCIe maintainer also values this kind of code simplification, which
+encouraged me to send these SPI patches.
 
----
-base-commit: efcd8b9d111177d48c841d09beca43b15d5b9e5f
-change-id: 20260505-spi-spacemit-k1-fix-overflow-8799dbc2ae97
+The macro offers compile-time overflow checks, and I've verified the
+generated assembly is identical (GCC/Clang). I believe the trade‑off
+favours readability and safety.
+
+If you still prefer to keep the open‑coded versions, I'll drop the
+series. Please let me know.
+
 
 Best regards,
---  
-Guodong Xu <guodong@riscstar.com>
+Hans
+
+> 
+>>
+>> Each patch modifies a single driver, allowing independent review and
+>> application.
+>>
+>> Hans Zhang (10):
+>>    spi: amlogic-spifc-a1: Use FIELD_MODIFY()
+>>    spi: amlogic-spisg: Use FIELD_MODIFY()
+>>    spi: cadence-xspi: Use FIELD_MODIFY()
+>>    spi: meson-spicc: Use FIELD_MODIFY()
+>>    spi: nxp-xspi: Use FIELD_MODIFY()
+>>    spi: sn-f-ospi: Use FIELD_MODIFY()
+>>    spi: stm32-ospi: Use FIELD_MODIFY()
+>>    spi: stm32-qspi: Use FIELD_MODIFY()
+>>    spi: sunplus-sp7021: Use FIELD_MODIFY()
+>>    spi: uniphier: Use FIELD_MODIFY()
+>>
+>>   drivers/spi/spi-amlogic-spifc-a1.c |  5 ++---
+>>   drivers/spi/spi-amlogic-spisg.c    | 13 +++++--------
+>>   drivers/spi/spi-cadence-xspi.c     |  3 +--
+>>   drivers/spi/spi-meson-spicc.c      |  5 ++---
+>>   drivers/spi/spi-nxp-xspi.c         | 12 ++++--------
+>>   drivers/spi/spi-sn-f-ospi.c        |  5 ++---
+>>   drivers/spi/spi-stm32-ospi.c       |  7 +++----
+>>   drivers/spi/spi-stm32-qspi.c       |  5 ++---
+>>   drivers/spi/spi-sunplus-sp7021.c   |  3 +--
+>>   drivers/spi/spi-uniphier.c         | 13 +++++--------
+>>   10 files changed, 27 insertions(+), 44 deletions(-)
+>>
+>>
+>> base-commit: 3b3bea6d4b9c162f9e555905d96b8c1da67ecd5b
 

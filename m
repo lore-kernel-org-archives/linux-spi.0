@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D96C3DE441;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5433DEFFF;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=b4qh6J2NJlW6KELFC1yIgL8kfwiM08KaSUWjT2liGr21Jd30GkmKT8WKZjLS5jBEdqGxUzs3b9ZorTjXVIEcRlioItMpKLzEl973qINnEu/1oeX1a72jb8lsX1mbqXiXumAVvnjTRe8lai74MRJMyWQ3ZFuXr9rQqTPTiNij7wM=
+	t=1777966182; cv=none; b=PrftdFSvys4ZTCGnSLuamaanzhagY2uS3pCHV+AA6pvLxvc+rKU+YvGASJ69fGb89BnTt7AtJLTC4HSb9MMkoTrLpNm9LSkjlZNJjwYIkwBnedSekF8TjTT7pKR4CCXQVdIG3xaBprLtPQtB/C1cGmhn5En/WPkTB07t4WaSFyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=p4LpLN5fZdjv0gvKwYitgL50AzdFKWheQIp442BhXpE=;
+	bh=bYowpJJsuudC4ZaFKGlmSTOhxJ8xTSty1Qz53kn2mxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C5zWMBxS4fyCaBzbQL/nc8Tiw6XqPlWqFlYLjl5POEid6fLMSPoDyfN4R6YoOL4vTNx1WkYRgZamGD18Lsrs2uAbvrK6UWCJ4iihQGbpTcVJqx9Ktxo2csdo9Q9FSTHIS8eQleDA2oEwzOZk9N1PKvDo8X6DhrnBvJAqmAEWCRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3cJlxEg; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=qNILWYpOJrXi1Hwq9FV90XUUA1ldnhMTs3TW4aqaloZP2RhX7MHBrD/AAjJwWh/ueqrQIWEK6XdLBHFTzVAnwB15ibIV4s1ayRTW0q1sKNyqd8YUaLqrfH+v/0Q0UzkG4Y/dLvJ08Of7Y2MnD+LMMj1MQSVR5PsE+DdYAhP04Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFcdTnxR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3cJlxEg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA6EC2BD05;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFcdTnxR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1686EC4AF09;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777966182;
-	bh=p4LpLN5fZdjv0gvKwYitgL50AzdFKWheQIp442BhXpE=;
+	bh=bYowpJJsuudC4ZaFKGlmSTOhxJ8xTSty1Qz53kn2mxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3cJlxEgiom+IKwODkhKVsxPb61JgEGqIxSQhKIXGbGdiP/mwUCw5yDKtB0bk4+Lp
-	 8tY2+/DA3ytbxJeLgRX6ZHen/rcIEgGnU4RGJKSdNbOwghFiMlXX87Nx0BWT8rr+mQ
-	 LUU6FL7AZh5o938s3SGe9yM1A3hCw145jYDMvKYSW7iDcj1O5JW9TZZSFx8uavhrU3
-	 ngVYKM1VWroLtRi2M3gY67nzcxNnq6a4oPjLrmCBu7CdE3kGshAJ12gMhvdwTo2/Fv
-	 V/z9tsF+0qJjB2YfI9+CdR+E1X2mtAv907dsGTdTHTX/jswoh9mlZYPwIYC9oSPrCx
-	 tGy78BDExEY4w==
+	b=RFcdTnxRUjE0xcqN5dZ0eTb+fwhxHV/S/XWIThqEeU4CpwBLtVtk7Osaq0W5p5c5Q
+	 hg23MmPOks2UU50OfJUH/EJiaUw4DpX05MCUdaiD6015UteDTLAsB9VfqB3e26DNfw
+	 QrZh8obQFzJwE7MW3k3Qpc8V6vnxf547y5wFvCsWoN4OFwuxlhBaeV5sz0EzCrme4F
+	 D9XYkcDq3hv1mwLBeNpOPoWmZw3l148O9VLOK9BRtb/tex53edor+8wTR+rO6DvgoW
+	 lwg8QRoFMGBl89KdBv3fyMN2gp8FEehJYu4cMbxoXMFyz1IC9GADp2pr2OQPIcQjT4
+	 4po6D4ca9ybYg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002atM-3DzD;
+	id 1wKADr-00000002atG-375x;
 	Tue, 05 May 2026 09:29:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Linus Walleij <linusw@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 17/20] spi: ti-qspi: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:29:06 +0200
-Message-ID: <20260505072909.618363-18-johan@kernel.org>
+Subject: [PATCH 14/20] spi: syncuacer: switch to managed controller allocation
+Date: Tue,  5 May 2026 09:29:03 +0200
+Message-ID: <20260505072909.618363-15-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
 References: <20260505072909.618363-1-johan@kernel.org>
@@ -59,94 +59,86 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-ti-qspi.c | 30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
+ drivers/spi/spi-synquacer.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 1fbd710d616f..2a8548810f84 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -765,7 +765,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	int ret = 0, num_cs, irq;
- 	dma_cap_mask_t mask;
+diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
+index 290c439897c4..c14225e39fd1 100644
+--- a/drivers/spi/spi-synquacer.c
++++ b/drivers/spi/spi-synquacer.c
+@@ -605,7 +605,7 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 	int ret;
+ 	int rx_irq, tx_irq;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*qspi));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
+-	host = spi_alloc_host(&pdev->dev, sizeof(*sspi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*sspi));
  	if (!host)
  		return -ENOMEM;
  
-@@ -793,8 +793,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 		r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 		if (r == NULL) {
- 			dev_err(&pdev->dev, "missing platform data\n");
--			ret = -ENODEV;
--			goto free_host;
-+			return -ENODEV;
+@@ -617,10 +617,8 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 	init_completion(&sspi->transfer_done);
+ 
+ 	sspi->regs = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(sspi->regs)) {
+-		ret = PTR_ERR(sspi->regs);
+-		goto put_spi;
+-	}
++	if (IS_ERR(sspi->regs))
++		return PTR_ERR(sspi->regs);
+ 
+ 	sspi->clk_src_type = SYNQUACER_HSSPI_CLOCK_SRC_IHCLK; /* Default */
+ 	device_property_read_u32(&pdev->dev, "socionext,ihclk-rate",
+@@ -637,21 +635,19 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 			sspi->clk = devm_clk_get(sspi->dev, "iPCLK");
+ 		} else {
+ 			dev_err(&pdev->dev, "specified wrong clock source\n");
+-			ret = -EINVAL;
+-			goto put_spi;
++			return -EINVAL;
  		}
- 	}
  
-@@ -812,28 +811,22 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 		qspi->mmap_size = resource_size(res_mmap);
+ 		if (IS_ERR(sspi->clk)) {
+-			ret = dev_err_probe(&pdev->dev, PTR_ERR(sspi->clk),
+-					    "clock not found\n");
+-			goto put_spi;
++			return dev_err_probe(&pdev->dev, PTR_ERR(sspi->clk),
++					     "clock not found\n");
+ 		}
  
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto free_host;
--	}
-+	if (irq < 0)
-+		return irq;
+ 		ret = clk_prepare_enable(sspi->clk);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to enable clock (%d)\n",
+ 				ret);
+-			goto put_spi;
++			return ret;
+ 		}
  
- 	mutex_init(&qspi->list_lock);
- 
- 	qspi->base = devm_ioremap_resource(&pdev->dev, r);
--	if (IS_ERR(qspi->base)) {
--		ret = PTR_ERR(qspi->base);
--		goto free_host;
--	}
-+	if (IS_ERR(qspi->base))
-+		return PTR_ERR(qspi->base);
- 
- 
- 	if (of_property_present(np, "syscon-chipselects")) {
- 		qspi->ctrl_base =
- 			syscon_regmap_lookup_by_phandle_args(np, "syscon-chipselects",
- 							     1, &qspi->ctrl_reg);
--		if (IS_ERR(qspi->ctrl_base)) {
--			ret = PTR_ERR(qspi->ctrl_base);
--			goto free_host;
--		}
-+		if (IS_ERR(qspi->ctrl_base))
-+			return PTR_ERR(qspi->ctrl_base);
- 	}
- 
- 	qspi->fclk = devm_clk_get(&pdev->dev, "fck");
-@@ -895,8 +888,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	ti_qspi_dma_cleanup(qspi);
- 
- 	pm_runtime_disable(&pdev->dev);
--free_host:
+ 		host->max_speed_hz = clk_get_rate(sspi->clk);
+@@ -726,8 +722,6 @@ static int synquacer_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_disable(sspi->dev);
+ disable_clk:
+ 	clk_disable_unprepare(sspi->clk);
+-put_spi:
 -	spi_controller_put(host);
-+
+ 
  	return ret;
  }
+@@ -737,15 +731,11 @@ static void synquacer_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *host = platform_get_drvdata(pdev);
+ 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
  
-@@ -904,16 +896,12 @@ static void ti_qspi_remove(struct platform_device *pdev)
- {
- 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
- 
--	spi_controller_get(qspi->host);
+-	spi_controller_get(host);
 -
- 	spi_unregister_controller(qspi->host);
+ 	spi_unregister_controller(host);
  
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_disable(sspi->dev);
  
- 	ti_qspi_dma_cleanup(qspi);
+ 	clk_disable_unprepare(sspi->clk);
 -
--	spi_controller_put(qspi->host);
+-	spi_controller_put(host);
  }
  
- static const struct dev_pm_ops ti_qspi_pm_ops = {
+ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
 -- 
 2.53.0
 

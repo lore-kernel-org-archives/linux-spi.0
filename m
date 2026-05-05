@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7513E3DE429;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D96C3DE441;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=IgdAbLERhJNhLnykLApdGbBI9VgFolatRNxnLL60N/p3JYnoqoBImi84XplA3EkRQ1gAuAXBwJ+q1oCkF+sj8JA3rHh6HraAIwE1YRALjHSNp+dLuczfkGnIRJE8mg870uY7SClXgY3vGjeHihjiLzDDNHIxDHeykFpbnpnXi+0=
+	t=1777966182; cv=none; b=b4qh6J2NJlW6KELFC1yIgL8kfwiM08KaSUWjT2liGr21Jd30GkmKT8WKZjLS5jBEdqGxUzs3b9ZorTjXVIEcRlioItMpKLzEl973qINnEu/1oeX1a72jb8lsX1mbqXiXumAVvnjTRe8lai74MRJMyWQ3ZFuXr9rQqTPTiNij7wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=pEXQoRuunLgaMXmXLufauACKIHZkbDmN+d6y6Ut3KmM=;
+	bh=p4LpLN5fZdjv0gvKwYitgL50AzdFKWheQIp442BhXpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaqvbX1mjC+5f5nzGIaQBsfZ1YqnwTvLjgRucsS28kt8IgwzlmHAUQBWJ89cUBFNCtomn6OsidwD2KxR6t2meJuhM/q0AxL11PUv+VfS0SDhomoUi2pR7MYG1hCMWDkNrwpdWfRXj8GGvY/RaB5F9AXjO6yLl1QUOfFfKvw3zgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjnYYtQ2; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=C5zWMBxS4fyCaBzbQL/nc8Tiw6XqPlWqFlYLjl5POEid6fLMSPoDyfN4R6YoOL4vTNx1WkYRgZamGD18Lsrs2uAbvrK6UWCJ4iihQGbpTcVJqx9Ktxo2csdo9Q9FSTHIS8eQleDA2oEwzOZk9N1PKvDo8X6DhrnBvJAqmAEWCRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z3cJlxEg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjnYYtQ2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17485C2BCFF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z3cJlxEg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA6EC2BD05;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777966182;
-	bh=pEXQoRuunLgaMXmXLufauACKIHZkbDmN+d6y6Ut3KmM=;
+	bh=p4LpLN5fZdjv0gvKwYitgL50AzdFKWheQIp442BhXpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjnYYtQ2c76SvGuiQ2V2v0rurX68zUFXCLXGijdVhXT3bZ2GxloJrfddN3+3Eu5Jm
-	 d5UpQOkDuvUbNuSOAN8ON/PpJlRFOxymVOcF9DeyIwPkEhOwfb8brBGhI7CkIQIFnu
-	 k7UYwzju/Ed0sDWo/QHFIMVI0IWGzVFsmt+2ggG+l5poc8B8sjl2urU2ZKuUJ3pPbk
-	 KrZ32BZKkLWvVkgahs29ucvWCnKoHMYqj+KiC3qpbBB07x5JcWF6pLF5Uu1AuRbYqP
-	 9roqOFbdcnfaH8frKy/rcZsEfabqi8LXJg5FyLOFJYoSwe7rl7rvTM8FHs8LNowfFA
-	 WUEd7Upr1Jzcg==
+	b=Z3cJlxEgiom+IKwODkhKVsxPb61JgEGqIxSQhKIXGbGdiP/mwUCw5yDKtB0bk4+Lp
+	 8tY2+/DA3ytbxJeLgRX6ZHen/rcIEgGnU4RGJKSdNbOwghFiMlXX87Nx0BWT8rr+mQ
+	 LUU6FL7AZh5o938s3SGe9yM1A3hCw145jYDMvKYSW7iDcj1O5JW9TZZSFx8uavhrU3
+	 ngVYKM1VWroLtRi2M3gY67nzcxNnq6a4oPjLrmCBu7CdE3kGshAJ12gMhvdwTo2/Fv
+	 V/z9tsF+0qJjB2YfI9+CdR+E1X2mtAv907dsGTdTHTX/jswoh9mlZYPwIYC9oSPrCx
+	 tGy78BDExEY4w==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002atA-30Kp;
+	id 1wKADr-00000002atM-3DzD;
 	Tue, 05 May 2026 09:29:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Linus Walleij <linusw@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 11/20] spi: st-ssc4: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:29:00 +0200
-Message-ID: <20260505072909.618363-12-johan@kernel.org>
+Subject: [PATCH 17/20] spi: ti-qspi: switch to managed controller allocation
+Date: Tue,  5 May 2026 09:29:06 +0200
+Message-ID: <20260505072909.618363-18-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
 References: <20260505072909.618363-1-johan@kernel.org>
@@ -59,65 +59,94 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-st-ssc4.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/spi/spi-ti-qspi.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi-st-ssc4.c b/drivers/spi/spi-st-ssc4.c
-index 9c8099fe6e19..df61094fc444 100644
---- a/drivers/spi/spi-st-ssc4.c
-+++ b/drivers/spi/spi-st-ssc4.c
-@@ -279,7 +279,7 @@ static int spi_st_probe(struct platform_device *pdev)
- 	int irq, ret = 0;
- 	u32 var;
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 1fbd710d616f..2a8548810f84 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -765,7 +765,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	int ret = 0, num_cs, irq;
+ 	dma_cap_mask_t mask;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(*spi_st));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(*spi_st));
+-	host = spi_alloc_host(&pdev->dev, sizeof(*qspi));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*qspi));
  	if (!host)
  		return -ENOMEM;
  
-@@ -296,13 +296,12 @@ static int spi_st_probe(struct platform_device *pdev)
- 	spi_st->clk = devm_clk_get(&pdev->dev, "ssc");
- 	if (IS_ERR(spi_st->clk)) {
- 		dev_err(&pdev->dev, "Unable to request clock\n");
--		ret = PTR_ERR(spi_st->clk);
--		goto put_host;
-+		return PTR_ERR(spi_st->clk);
+@@ -793,8 +793,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 		if (r == NULL) {
+ 			dev_err(&pdev->dev, "missing platform data\n");
+-			ret = -ENODEV;
+-			goto free_host;
++			return -ENODEV;
+ 		}
  	}
  
- 	ret = clk_prepare_enable(spi_st->clk);
- 	if (ret)
--		goto put_host;
-+		return ret;
+@@ -812,28 +811,22 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 		qspi->mmap_size = resource_size(res_mmap);
  
- 	init_completion(&spi_st->done);
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		ret = irq;
+-		goto free_host;
+-	}
++	if (irq < 0)
++		return irq;
  
-@@ -361,8 +360,7 @@ static int spi_st_probe(struct platform_device *pdev)
+ 	mutex_init(&qspi->list_lock);
+ 
+ 	qspi->base = devm_ioremap_resource(&pdev->dev, r);
+-	if (IS_ERR(qspi->base)) {
+-		ret = PTR_ERR(qspi->base);
+-		goto free_host;
+-	}
++	if (IS_ERR(qspi->base))
++		return PTR_ERR(qspi->base);
+ 
+ 
+ 	if (of_property_present(np, "syscon-chipselects")) {
+ 		qspi->ctrl_base =
+ 			syscon_regmap_lookup_by_phandle_args(np, "syscon-chipselects",
+ 							     1, &qspi->ctrl_reg);
+-		if (IS_ERR(qspi->ctrl_base)) {
+-			ret = PTR_ERR(qspi->ctrl_base);
+-			goto free_host;
+-		}
++		if (IS_ERR(qspi->ctrl_base))
++			return PTR_ERR(qspi->ctrl_base);
+ 	}
+ 
+ 	qspi->fclk = devm_clk_get(&pdev->dev, "fck");
+@@ -895,8 +888,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	ti_qspi_dma_cleanup(qspi);
+ 
  	pm_runtime_disable(&pdev->dev);
- clk_disable:
- 	clk_disable_unprepare(spi_st->clk);
--put_host:
+-free_host:
 -	spi_controller_put(host);
 +
  	return ret;
  }
  
-@@ -371,16 +369,12 @@ static void spi_st_remove(struct platform_device *pdev)
- 	struct spi_controller *host = platform_get_drvdata(pdev);
- 	struct spi_st *spi_st = spi_controller_get_devdata(host);
+@@ -904,16 +896,12 @@ static void ti_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct ti_qspi *qspi = platform_get_drvdata(pdev);
  
--	spi_controller_get(host);
+-	spi_controller_get(qspi->host);
 -
- 	spi_unregister_controller(host);
+ 	spi_unregister_controller(qspi->host);
  
+ 	pm_runtime_put_sync(&pdev->dev);
  	pm_runtime_disable(&pdev->dev);
  
- 	clk_disable_unprepare(spi_st->clk);
- 
--	spi_controller_put(host);
+ 	ti_qspi_dma_cleanup(qspi);
 -
- 	pinctrl_pm_select_sleep_state(&pdev->dev);
+-	spi_controller_put(qspi->host);
  }
  
+ static const struct dev_pm_ops ti_qspi_pm_ops = {
 -- 
 2.53.0
 

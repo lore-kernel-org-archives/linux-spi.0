@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3B73DDDBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF333DDDD1;
 	Tue,  5 May 2026 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777966182; cv=none; b=dXF/5d6HEwUaHiyFW47P9YKgRnqM08y8ugsqkrvq31gdUdzMIum8gOfF+ExBuXAI7UAlEhYrxnTwHpr/jWGEW9ybbEVRaf4zLKfo1kPxADTzVdIjf9aaU2jw922WOxPcK1Ah74AGgYxtvO3ZpFQILKC5YxAMbYZsmM1vqg9sIvw=
+	t=1777966182; cv=none; b=VqQveuiLtyXyYbA7Ov6hWTKJQijLZJHUVh8DHEDXp8znohLXK6gD47t2PKI6pPTs59WBELGuWKNhWsz8a0Xg4b9uydhZtv7CRnBA8XF48qft7xY3njkjSzrmRDkpMInHDcWXHSqAPmNEuQmud7Q0xP98pSzXp9ME1ScuMxJxjDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777966182; c=relaxed/simple;
-	bh=8Zq3sbnN/60Pokd899geEsRfwmJHRBlxN3C6i2/zPqA=;
+	bh=c+R6CFjXbtXJOAEf9CQeUXizCxetpWosBkHOEcwoOCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7FAfNm93gfXcOF0RzM11IS3Gf/mgbLGs4MPwJnFA3ZP9nZxjA7YkySXte4I/uB14OLnvNbcs20yOC+Lw/2rzeuwFAKI09vxXmdQqKGAlbnUszxqTyMd0jJsYg469yslJR8qHjvgTPkWtSBuSPADrsLGKyDzaLJou3RrbHpc+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0Sd9VUG; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=X0gZtKCUUOcjIxxifyzk51Lu9l9GjhuW674EmP+tTI5I9Yc/64KaNXqwsOE3BUhP0l9prXV9o5aD6m21W3mII/dVjUM0aCmnq7tttAnxlom81c+ZlPg2J9iw2ynJdZ4ZOvjI/I7AO8I7IJ03EoaXgpRJtepMnVEh/uDQ/Ph0zhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=scjoFFcr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0Sd9VUG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FD1C2BCFC;
-	Tue,  5 May 2026 07:29:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="scjoFFcr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E203C2BCF7;
+	Tue,  5 May 2026 07:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777966182;
-	bh=8Zq3sbnN/60Pokd899geEsRfwmJHRBlxN3C6i2/zPqA=;
+	bh=c+R6CFjXbtXJOAEf9CQeUXizCxetpWosBkHOEcwoOCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0Sd9VUGXFRGq7nZeg0/vT2z+sD+o0QkNM9+5y7ftSTLSkvSat1UPpAwjpBVKF0rj
-	 ORsrTKv3vvET1HXfmAwVLeqZPPgNdvKqtoi/f6GWGufdS5kIEMNvDkEw8cXBF2gIPG
-	 vut3KntGiOFGtG05V9gwEnOYq6Ra7NvSBlOvlsHwN7+JZAULP40YVhQmihV07/ezY7
-	 SS9kcRpFRNgZ6kbLdMPZAD1ONHZEMl6ZIDBx/1R2SknVcT6W+40U7QvKXMn9jS6iq9
-	 JPRcgT+Eth9X86NNSElaZrfE4SakDsWjDNC0pIUWkxCKeBJEJ7vzkBcwwGypqOx32l
-	 XqxSsLP55pl7w==
+	b=scjoFFcr/mxbVZoKnaSuXw9mm+NdrM8MMz828bKtoYNluJ5S16LBtR7UCeLj4GUA3
+	 pRAet5MoTF4wvVIfqO0UtE1WfsSYxK6HHeh8V+7mzytLx9R0e9aFKHChifYsOFLF6g
+	 5Xn9WirxOj20piAkreoVAukqoTcwDn2JyswNSrGJ9MrSXD4MLX3ojPH27Y7DLyPIcB
+	 72ktmTO0gzkHfgplpmjjomuRtnzRrCoDEiIELgD4G6aU+A7VS364NOcYDtsqAr0kiv
+	 HyFcnoiCWN/By01iXh2MznBPiC2iUTJrVRV7XfpEWgLPoal9bPhsBh5nfHlVpd4sy2
+	 yrVIsb2lPSlVg==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wKADr-00000002at1-2rBs;
+	id 1wKADr-00000002ast-2hgS;
 	Tue, 05 May 2026 09:29:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Linus Walleij <linusw@kernel.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 07/20] spi: sh-msiof: switch to managed controller allocation
-Date: Tue,  5 May 2026 09:28:56 +0200
-Message-ID: <20260505072909.618363-8-johan@kernel.org>
+Subject: [PATCH 03/20] spi: pl022: switch to managed controller allocation
+Date: Tue,  5 May 2026 09:28:52 +0200
+Message-ID: <20260505072909.618363-4-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260505072909.618363-1-johan@kernel.org>
 References: <20260505072909.618363-1-johan@kernel.org>
@@ -59,83 +59,59 @@ deregistration.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/spi/spi-pl022.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index f114b6313f4f..070e16bc764f 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1215,9 +1215,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 		info->dtdl = 200;
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 9c0211f94fd0..95652df5fd09 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1868,7 +1868,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	}
  
- 	if (info->mode == MSIOF_SPI_TARGET)
--		ctlr = spi_alloc_target(dev, sizeof(struct sh_msiof_spi_priv));
-+		ctlr = devm_spi_alloc_target(dev, sizeof(struct sh_msiof_spi_priv));
- 	else
--		ctlr = spi_alloc_host(dev, sizeof(struct sh_msiof_spi_priv));
-+		ctlr = devm_spi_alloc_host(dev, sizeof(struct sh_msiof_spi_priv));
- 	if (ctlr == NULL)
+ 	/* Allocate host with space for data */
+-	host = spi_alloc_host(dev, sizeof(struct pl022));
++	host = devm_spi_alloc_host(dev, sizeof(struct pl022));
+ 	if (host == NULL) {
+ 		dev_err(&adev->dev, "probe - cannot alloc SPI host\n");
  		return -ENOMEM;
+@@ -1907,7 +1907,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
  
-@@ -1234,26 +1234,21 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	p->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(p->clk)) {
- 		dev_err(dev, "cannot get clock\n");
--		ret = PTR_ERR(p->clk);
--		goto err1;
-+		return PTR_ERR(p->clk);
- 	}
+ 	status = amba_request_regions(adev, NULL);
+ 	if (status)
+-		goto err_no_ioregion;
++		return status;
  
- 	i = platform_get_irq(pdev, 0);
--	if (i < 0) {
--		ret = i;
--		goto err1;
--	}
-+	if (i < 0)
-+		return i;
- 
- 	p->mapbase = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(p->mapbase)) {
--		ret = PTR_ERR(p->mapbase);
--		goto err1;
--	}
-+	if (IS_ERR(p->mapbase))
-+		return PTR_ERR(p->mapbase);
- 
- 	ret = devm_request_irq(dev, i, sh_msiof_spi_irq, 0, dev_name(dev), p);
- 	if (ret) {
- 		dev_err(dev, "unable to request irq\n");
--		goto err1;
-+		return ret;
- 	}
- 
- 	p->pdev = pdev;
-@@ -1300,8 +1295,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
-  err2:
- 	sh_msiof_release_dma(p);
- 	pm_runtime_disable(dev);
-- err1:
--	spi_controller_put(ctlr);
+ 	pl022->phybase = adev->res.start;
+ 	pl022->virtbase = devm_ioremap(dev, adev->res.start,
+@@ -1984,8 +1984,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+  err_no_clk:
+  err_no_ioremap:
+ 	amba_release_regions(adev);
+- err_no_ioregion:
+-	spi_controller_put(host);
 +
- 	return ret;
+ 	return status;
  }
  
-@@ -1309,14 +1303,10 @@ static void sh_msiof_spi_remove(struct platform_device *pdev)
- {
- 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
+@@ -1997,8 +1996,6 @@ pl022_remove(struct amba_device *adev)
+ 	if (!pl022)
+ 		return;
  
--	spi_controller_get(p->ctlr);
+-	spi_controller_get(pl022->host);
 -
- 	spi_unregister_controller(p->ctlr);
+ 	spi_unregister_controller(pl022->host);
  
- 	sh_msiof_release_dma(p);
- 	pm_runtime_disable(&pdev->dev);
+ 	/*
+@@ -2012,8 +2009,6 @@ pl022_remove(struct amba_device *adev)
+ 		pl022_dma_remove(pl022);
+ 
+ 	amba_release_regions(adev);
 -
--	spi_controller_put(p->ctlr);
+-	spi_controller_put(pl022->host);
  }
  
- static const struct platform_device_id spi_driver_ids[] = {
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.53.0
 

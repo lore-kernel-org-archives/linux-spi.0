@@ -1,252 +1,98 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59954ADD9C
-	for <linux-spi@vger.kernel.org>; Wed,  6 May 2026 17:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE644B8DCF;
+	Wed,  6 May 2026 17:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778088602; cv=none; b=IwVjffbGbn9oETzb1MCyrn0DanzN2ai+T2NbjqqR3cNEZb7G352q6ZXowpmWGzgd9KHDT+QFlN6vLypK5wAV4QWpFdYJ3V59/ivh3WeCGWG2SRm2cNORIjIjqrIqOniOH7Cf5lGgyr4PAxMx2lmyiN9UtQJ0CEctGVHLHToa7M8=
+	t=1778089919; cv=none; b=YFSH2J6WSCuMWk6Q81e4B5QJd2/13S5B2OG2C7ZYHe9arcfsUdLDHyMjtIvRT//OYj7FIkvxO0JPJq3OKg8xLCknVTqV5hNiUmj768r6+8hcU2lcXftYHABOH9J4qUQ2/6yl8B4sZJu8Y/d2AjfXdIZ0ib+C9mLcpvYRyHMYp+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778088602; c=relaxed/simple;
-	bh=koNBStVdcC5+4m4qVXikoLETuVjLx01Mbb0BXniq3oE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=odAigjlNSZAVwC2tmY8keAXhE+FPpr66q76oLYIqIKMdBH25/Lh8xCIpgKHgxd318OvNlWJ5y6v66dCu7YxiUuqXn+vv8nbm+4dabgOzpy9dCfEBKud/ZRslQAVmvKMZ76Y14wn2uUXv2R0LgHJrQjvz/ZvTeeYawzKWm3ijoaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DPueg81i; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ATm08dYu; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1778089919; c=relaxed/simple;
+	bh=j+vj0b2qvC7RkbEimqlw8Ccn8JEhZeot+8jORHjR8xE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DBFfec6gpwpZdlJ9M974ORd1RqRiaMmrxAmQ0FblwkY9DxC3elWbgtj81vxrLI4YhBxTsJuPDVVTcIeOIZ1p0wpH9efArCISbFgyT7uQWsyg/FbBjpHu+dkHsebnkVHMgCDXz/1TUSSLeMGsxcD+ue+PxmQCFtmY/isjCK/Cv7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OCXYVQiP; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DPueg81i";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ATm08dYu"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646DK6WU529408
-	for <linux-spi@vger.kernel.org>; Wed, 6 May 2026 17:30:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	n7Bu5I4Phk3bl5hOaeKMU154m5IfQGip+W4DHvInroQ=; b=DPueg81iv9D64n0l
-	ZnY2CukN9YYlkOrFnAa/ITV1SlSgOBpceWbXPTTe105wiRZRdSjymCeGi8GQg1SM
-	tQ90kW4Ze6xrNTHJwOYYok+TYi+EC0dQ+dKFS4DkSUo7zkBRbnwqF1ilHmPrLMtB
-	o3ruVI8i938sQWwtZqF2YD9oDxra5Vjh1JRYjDRgRIC/dGsxkDUWX+SVVSFtqtA+
-	jd2FZemBdmi6UBwzd4lODZMzip9OmeuQv7DstwOzApx85cT9W25b5LPJf+dJ3N8h
-	cDqYJc77thd1O9Aoi0Gc4VaiYJA7jUWBiHnDsE0q34A9Pc3rDoMLXg6Jfh+cJ0/M
-	Nni9rg==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e015xae66-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 17:30:00 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-365fc4636bbso119604a91.2
-        for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 10:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778088599; x=1778693399; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n7Bu5I4Phk3bl5hOaeKMU154m5IfQGip+W4DHvInroQ=;
-        b=ATm08dYu2Y/q8ONs3KjP1mb6swlECGBw4lO+Xzj46C7mguWrO7qbTTir26+V38a2CK
-         DSvIwqlKJyONjCj08KZqwvUBEK3thUfU1sO63WSmPcP2De72Y4eDSyvD6b9VdLknf5oK
-         pGeeNWcMDaacpD9S/S/bwTNQezKe8P6qa3RhoIxtwbQqQtwHzA3SaAJO1daJqT+OPbyY
-         5xkqG6Wz8EzPvxesA2MpsNdDjyTd/zLGzVhuhJ5MT1agygTOfqRGfdhKKjqCmw9EbWJz
-         146cYgmSO/AtOQ1744ntpbzMFbcF3s6cA7DjDk9GQforvzXhYo0MbqPQmFESwH6XeKIN
-         eX2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778088599; x=1778693399;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=n7Bu5I4Phk3bl5hOaeKMU154m5IfQGip+W4DHvInroQ=;
-        b=bL60lQ7EAd01uKFeARaOB9CRbtAS1eE/+nWLyDn2XQlKJrlc3KtL/4yeu7Vj1qrtrf
-         YxTsZmaMRh1uCR27gcB3FvQXpQxVvVVTYPRi3Lax/rXQlH5XZuPEWj6l6YCJ5Hi2j0v9
-         oXYpv2dLA5zaINYKh/KWVkmI2C6laiqQIU5XKr5TvCC7gasKmiVztbRj6GnJLrCrfSgl
-         zCdp/BXLuTy5sXRRHUFxq4SOh/lfb969izl02YMS3mZ4GD/cP3yyFoSzGgdSZv/ZIMmh
-         PilYAAzNIpSeH0kdbTATQdPHfH3saDObvX6UxPFpnHVKWqBghFBS79RbccfP8DZR1s/l
-         X9oA==
-X-Forwarded-Encrypted: i=1; AFNElJ83m+W1j1UddRLwp4Agr7M76cKAdmqpqqMZzGg6oswsXFwloA+cI14bRFqhJffGKjDzeJMXkfk6hI4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxai+926EtORDg7d7011KUDMBaM1eFD+ePhbpMqh0govY8CAnpJ
-	pqlUtmGz62wjQZaxsqcL7NQHH8x1k3rkCtmgNLQ/fA7tip3Lekb3xYSGZ7OzjQNfBv+qQTn1KRn
-	pAceK5qFhAYQ0XE++EQba2drypznJUVNu3RKjUkPZi2+sQ4s2Lr4y4AaDXgIi1Es=
-X-Gm-Gg: AeBDievTSJuSAI+x8CjgFbo+L2eC8vzBkfjKzowDFOfAYdn2LUsXsLqP4xufiw3QYLu
-	2OTS1e8zTUAH96Zzlm37oWS5TsXqwJYiRIQ14ira4kYwono027tVR6dMLq8bG/JN2mlkPEj5DTd
-	/7vzmdUCCfzx3oNkAVrG70FU0kOJokyokk066aiQi8FnA0WUH5COXFnybK/CVQD3Ff1cEkbm+sc
-	X4KPRxHM1jYV0F1KNkg6qufqJAfDoUD3zwRaDgDym9aldZGJep4euRDXiJ42hxJJm7bRwMijgQR
-	ZXMc114kHJ2W/AyTFJmC8E82qkUELI93WCIsXdf/WQFuTxcwZdsqDSv3TDm6Z6uGSUJHonxfYtp
-	+k3li/myyEGCGvMaw76Tlpl7yE4CtqiGSDxqeSB9KDVcagjAq0Jia3YTuOQxzPxhNlw==
-X-Received: by 2002:a17:90a:d886:b0:35b:8d89:719b with SMTP id 98e67ed59e1d1-365ab3e592amr4675128a91.1.1778088599505;
-        Wed, 06 May 2026 10:29:59 -0700 (PDT)
-X-Received: by 2002:a17:90a:d886:b0:35b:8d89:719b with SMTP id 98e67ed59e1d1-365ab3e592amr4675085a91.1.1778088598917;
-        Wed, 06 May 2026 10:29:58 -0700 (PDT)
-Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-365c25f8cf9sm3370143a91.4.2026.05.06.10.29.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 10:29:58 -0700 (PDT)
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Date: Wed, 06 May 2026 22:59:43 +0530
-Subject: [PATCH v1 2/2] spi: qcom-geni: Add trace events for Qualcomm GENI
- SPI driver
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OCXYVQiP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=ZhIhrzrQk3cuIdZiSPIRnT5icdPEWXf6gRX+saxJE/4=; b=OCXYVQiPZAWj9eduP5dmCHdb/O
+	aAR4/Oh0/fHdHOZwJpOLOcRy4G8pgdbuBbijr5LKHnQ/E4rXuRBYco7xoCjQuPrOrtjmQjcM3WyYQ
+	xuVIVGeVEQwbIXjsjU31nN7rjT3+sjYadgpc0fdZrdkNp21/Ld3x7bJSHOafVfsGRaabEQYI1B6TT
+	QNLf1TdnBr0ExXfWRsZJsl/lqy623zTOjrtQhsIVDwLsF7+PODhErHbsa1PDzLKO3zFxzWO1H5IRM
+	WClFb1ITmBMcCk7F3Yni4puwteYFuvgqo2wVHufCXOn4AJYuZvkpwcosxYkaVJVUUuX5NBg0xtPLD
+	kZ6Cenyg==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wKgPR-00000001hLU-19mO;
+	Wed, 06 May 2026 17:51:45 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3] spi: s3c64xx: fix all kernel-doc warnings
+Date: Wed,  6 May 2026 10:51:44 -0700
+Message-ID: <20260506175144.449364-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-add-tracepoints-for-qcom-geni-spi-v1-2-c957cfe712d1@oss.qualcomm.com>
-References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
-In-Reply-To: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
-To: Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        "Mukesh Kumar Savaliya mukesh.savaliya"@oss.qualcomm.com,
-        "Aniket Randive aniket.randive"@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
-        Praveen Talari <praveen.talari@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778088585; l=4307;
- i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
- bh=koNBStVdcC5+4m4qVXikoLETuVjLx01Mbb0BXniq3oE=;
- b=HN2AHHhrUfmFpmtaj+zY4KZuBKKeyAYcKBVexa6xYvmnaDePfMzl7tTUvARJk0ibqY1YoAq8U
- +4IlZ5Qp4C2AJHTIpRU41t4GqgyC0VeNvyBB8+j7gjM5bdCkPltx1Z1
-X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
- pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
-X-Authority-Analysis: v=2.4 cv=Os1/DS/t c=1 sm=1 tr=0 ts=69fb7a98 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=YigI2Qbdxp8Yt7aqB9kA:9 a=QEXdDO2ut3YA:10
- a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-GUID: ByqxDpRHZEW5MQQ54SRpnzqglw5LttWl
-X-Proofpoint-ORIG-GUID: ByqxDpRHZEW5MQQ54SRpnzqglw5LttWl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDE3MCBTYWx0ZWRfXyNQvd9XHPl6W
- bcMf4cGezNAoZ1tk2PaCyU6gdTUu2AR/vrLpN84kpHKya6sbAUvxEdJ7YLA7t+/hPpDR8R9a4HI
- iNRJ9xXg6L6AXq5RjWy6GZzhcnYc1OszIGqImR1FnzQPIa629C1NNY6A0u5hxz+MUmOiuV6kKgq
- NCCZAzpCLnn7AFew5dlvbDacpzHMuFGmA9uzX/1C06bx4VxEW0aQJzqUTAX9lwSx1pybm5OIsEr
- WNByIKIeRutvTnPriB2Ijjk7neN4uA3teytLpXK0GcTSKC/ljiO7cuknAT74H3MrOiYhT+8UYbf
- 5crZJW63623KhX7xAOpf6g7CG2zFzeCgyBaT9gZolJacqvpFy/1GBfWKx4nSiLfT+K20A78lzmG
- rZ682oGIZbRFylsfozMDYUo7GZyK27Q/BbxbJemXRQmKhpFb0uZjTmCOw7bbsN0nU4bR/YBzdeX
- /yKonYo/jRxLeyxjGzQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_01,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 priorityscore=1501 spamscore=0 clxscore=1015
- malwarescore=0 lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060170
+Content-Transfer-Encoding: 8bit
 
-Add tracepoints to the Qualcomm GENI (Generic Interface) SPI driver.
-These trace events enable runtime debugging and performance analysis
-of SPI operations.
+Add kernel-doc for one struct member and use the correct function name
+to eliminate kernel-doc warnings:
 
-The trace events capture SPI clock configuration, FIFO parameters,
-transfer details, interrupt status, and actual transmitted/received
-data in hexadecimal format.
+Warning: include/linux/platform_data/spi-s3c64xx.h:40 struct member
+ 'polling' not described in 's3c64xx_spi_info'
+Warning: include/linux/platform_data/spi-s3c64xx.h:51 expecting prototype
+ for s3c64xx_spi_set_platdata(). Prototype was for
+ s3c64xx_spi0_set_platdata() instead
 
-Usage examples:
-
-Enable all SPI traces:
-  echo 1 > /sys/kernel/debug/tracing/events/qcom_geni_spi/enable
-  cat /sys/kernel/debug/tracing/trace_pipe
-
-Example trace output:
-
-71.364028: geni_spi_fifo_params: 888000.spi: cs=0 mode=0x00000020
-   mode_changed=0x00000020 cs_changed=0
-71.364054: geni_spi_clk_cfg: 888000.spi: req_hz=10000000
-   sclk_hz=100000000 clk_idx=5 clk_div=10 bpw=8
-71.364095: geni_spi_transfer: 888000.spi: len=16 m_cmd=0x00000003
-71.364096: geni_spi_tx_data: 888000.spi: tx_len=16 tx_rem=0 data=56 f1
-   0d 95 c1 09 33 d2 27 e7 ec 9d 9c e2 11 ff
-71.364121: geni_spi_irq: 888000.spi: m_irq=0x08000081 dma_tx=0x00000000
-   dma_rx=0x00000000
-71.364126: geni_spi_rx_data: 888000.spi: rx_len=16 rx_rem=0 data=56 f1
-   0d 95 c1 09 33 d2 27 e7 ec 9d 9c e2 11 ff
-
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 ---
- drivers/spi/spi-geni-qcom.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+v2: add tag; rebase & resend
+v3: add Tudor's Rev-by: tag; rebase; add Mark to recipients
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index d5fb0edc8e0c..4da888359cfc 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1,6 +1,9 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
- 
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/qcom_geni_spi.h>
-+
- #include <linux/clk.h>
- #include <linux/dmaengine.h>
- #include <linux/dma-mapping.h>
-@@ -332,6 +335,9 @@ static int geni_spi_set_clock_and_bw(struct spi_geni_master *mas,
- 	writel(clk_sel, se->base + SE_GENI_CLK_SEL);
- 	writel(m_clk_cfg, se->base + GENI_SER_M_CLK_CFG);
- 
-+	trace_geni_spi_clk_cfg(mas->dev, clk_hz, mas->cur_sclk_hz, idx, div,
-+			       mas->cur_bits_per_word);
-+
- 	/* Set BW quota for CPU as driver supports FIFO mode only. */
- 	se->icc_paths[CPU_TO_GENI].avg_bw = Bps_to_icc(mas->cur_speed_hz);
- 	ret = geni_icc_set_bw(se);
-@@ -366,6 +372,9 @@ static int setup_fifo_params(struct spi_device *spi_slv,
- 	if ((mode_changed & SPI_CS_HIGH) || (cs_changed && (spi_slv->mode & SPI_CS_HIGH)))
- 		writel((spi_slv->mode & SPI_CS_HIGH) ? BIT(chipselect) : 0, se->base + SE_SPI_DEMUX_OUTPUT_INV);
- 
-+	trace_geni_spi_fifo_params(mas->dev, chipselect, spi_slv->mode,
-+				   mode_changed, cs_changed);
-+
- 	return 0;
- }
- 
-@@ -717,6 +726,7 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
- 		max_bytes = mas->tx_rem_bytes;
- 
- 	tx_buf = mas->cur_xfer->tx_buf + mas->cur_xfer->len - mas->tx_rem_bytes;
-+
- 	while (i < max_bytes) {
- 		unsigned int j;
- 		unsigned int bytes_to_write;
-@@ -729,6 +739,7 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
- 		iowrite32_rep(se->base + SE_GENI_TX_FIFOn, &fifo_word, 1);
- 	}
- 	mas->tx_rem_bytes -= max_bytes;
-+	trace_geni_spi_tx_data(mas->dev, tx_buf, max_bytes, mas->tx_rem_bytes);
- 	if (!mas->tx_rem_bytes) {
- 		writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
- 		return false;
-@@ -778,6 +789,8 @@ static void geni_spi_handle_rx(struct spi_geni_master *mas)
- 			rx_buf[i++] = fifo_byte[j];
- 	}
- 	mas->rx_rem_bytes -= rx_bytes;
-+
-+	trace_geni_spi_rx_data(mas->dev, rx_buf, rx_bytes, mas->rx_rem_bytes);
- }
- 
- static int setup_se_xfer(struct spi_transfer *xfer,
-@@ -861,6 +874,8 @@ static int setup_se_xfer(struct spi_transfer *xfer,
- 	spin_lock_irq(&mas->lock);
- 	geni_se_setup_m_cmd(se, m_cmd, m_params);
- 
-+	trace_geni_spi_transfer(mas->dev, len, m_cmd);
-+
- 	if (mas->cur_xfer_mode == GENI_SE_DMA) {
- 		if (m_cmd & SPI_RX_ONLY)
- 			geni_se_rx_init_dma(se, sg_dma_address(xfer->rx_sg.sgl),
-@@ -915,6 +930,8 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 	if (!m_irq && !dma_tx_status && !dma_rx_status)
- 		return IRQ_NONE;
- 
-+	trace_geni_spi_irq(mas->dev, m_irq, dma_tx_status, dma_rx_status);
-+
- 	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
- 		     M_RX_FIFO_RD_ERR_EN | M_RX_FIFO_WR_ERR_EN |
- 		     M_TX_FIFO_RD_ERR_EN | M_TX_FIFO_WR_ERR_EN))
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
 
--- 
-2.34.1
+ include/linux/platform_data/spi-s3c64xx.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+--- linux-next-20260506.orig/include/linux/platform_data/spi-s3c64xx.h
++++ linux-next-20260506/include/linux/platform_data/spi-s3c64xx.h
+@@ -30,6 +30,7 @@ struct s3c64xx_spi_csinfo {
+  * @src_clk_nr: Clock source index for the CLK_CFG[SPI_CLKSEL] field.
+  * @num_cs: Number of CS this controller emulates.
+  * @no_cs: Used when CS line is not connected.
++ * @polling: Using polling mode when %true (no 'dmas' property in devicetree)
+  * @cfg_gpio: Configure pins for this SPI controller.
+  */
+ struct s3c64xx_spi_info {
+@@ -41,7 +42,7 @@ struct s3c64xx_spi_info {
+ };
+ 
+ /**
+- * s3c64xx_spi_set_platdata - SPI Controller configure callback by the board
++ * s3c64xx_spi0_set_platdata - SPI Controller configure callback by the board
+  *				initialization code.
+  * @src_clk_nr: Clock the SPI controller is to use to generate SPI clocks.
+  * @num_cs: Number of elements in the 'cs' array.

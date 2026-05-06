@@ -1,129 +1,93 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EAF39B952
-	for <linux-spi@vger.kernel.org>; Tue,  5 May 2026 18:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C711DF73C;
+	Wed,  6 May 2026 06:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778005276; cv=none; b=oSg4iMAy6LKyJnaVvdJwLsosiNMIJozixYsg+3qx6CwD2jDy6P4KPFJTZ01L5x9yMaexJl68EkW7gqk4GeFLUXCnPAkAQwi8sVxr/qMGX+nLEqoSAJa3ijN4sr4FliHvDaenqW0E6lTg/5qKYPbvVr9fCyyJE7tSzvBa+t+gTgo=
+	t=1778048707; cv=none; b=PLUTHPNvlTiBzrl7hmbGNE2Vf2J5Zq5z1QguLyZPu4Z7uLQDrqQB7DCSsi8keUEhrOog19c+kRxYKdR2pohxaSIUyoclmAQOqoxmn1ma3dN0Vonf52Zm5DAOtAA0ao0FjmLNruLD7PaiBKicUbgX1Sk2ZQA/m4EAczGlhevWh1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778005276; c=relaxed/simple;
-	bh=w+Ioz1tjQWfX92hV7FphRnIAnvcQ0m2pdhQNSWwnwV0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WIAML2Iya0VrEkagsOqrOS9DivNkGKTFJw0+xkXKaZsLkrP/q3XBq0jTqFDQHIQBeOWyNAF84DutSx2xw/Dy42uSajHemBf/81EHIRfRawNNafvEuX9sHRpi8K9h8/6ufyDbyPDj9OsNBxPXOHqA1i1JRsaiaCTdNf6IjkrASz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=bU5WybME; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1778048707; c=relaxed/simple;
+	bh=toQdRYAFTlPv/S5zODj9c4Qj/WjyNVx6xfzWloQKAvo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N6AZ7+CtoQHlIRaQi8EN7d3ActHbYRsO4U1CisW0EqCHhAu7kX+30xcu/iQ44LcFJrKZ3lP9RPcmdcSbdlvnkPio2PPpAA7IazSueqrfthC1HI0hfuO2bsbYdz9vMYdrBcrmp+nCGZ0w9TlgLjf9W29RE60/nafb4HzxEPnopxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wch.cn; spf=pass smtp.mailfrom=wch.cn; dkim=pass (1024-bit key) header.d=wch.cn header.i=@wch.cn header.b=QbgJdTQQ; arc=none smtp.client-ip=52.59.177.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wch.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wch.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="bU5WybME"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-56f75445470so3338397e0c.2
-        for <linux-spi@vger.kernel.org>; Tue, 05 May 2026 11:21:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1778005273; x=1778610073; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4PAwVM1Z+cNq31xz020hTCHt7IsL4VWpTOpbAV7HgmM=;
-        b=bU5WybME6KzgnmW4VasTCdV6LOWACloimDSnrSmsFU1i4ReJgTE5e6hChWOpyyfPq/
-         C7KQJReEDXQwB7Dk6jSfa3vrpCQTy3KIiZ3DDue+uNrjnX223XMfUhPMp+fwUDGNwu+P
-         8y6i0lms2GM5oadY8lvgZ2aQ6iy7cG/nf/rG9eP8o/p14hu82AW20OnvQwetMOjpeR1F
-         elWWO6YXgwSxdsmx6x7m1CAT4ONh7nUB/fhlNsiTO5rFtUnw8RMNRHIhPSGKJrdhmLzn
-         okn7j2xS7wsuSpGHOsnFW4eL260XfVDDgOY4ySkdlCYlQCfKrDNvuUIvSTJBFdc9M40b
-         Urdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778005273; x=1778610073;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4PAwVM1Z+cNq31xz020hTCHt7IsL4VWpTOpbAV7HgmM=;
-        b=A6L0lZFneYFnCFBGgtp37iSJn5g3zh5N5bfuUREo3B+S+XS/UcbWSF6O2Wy1E8kEDB
-         TVM3p98xJ3o/YmJvgPqH3D4p3/3V9aypJD5DGqWm3E78Sq1l2rvAoGlBEHjo67IMNfdd
-         Do0tfdLxMT1mGRC7nigpuLeoAZKYdpHVU3WD3etubaQAVCSTGMSPqUw/RMv9gnt1lvhg
-         laVXxxaGcnyJbKghtBGIWTWOC0RQDOgzvthnrAreji9Cko6vD5t8hq7ia5ce86YCtvee
-         iVBNpYgKT8c5zxirm+jlwc8nTopSEJVtnnEH4qUTivhUpQStdKL5miROiA/SVSpkSp+d
-         I53A==
-X-Forwarded-Encrypted: i=1; AFNElJ+gi/R6nfs+ibK5NTzGgBhcQgZpMZ7e5L/hgZ+QZ841Gfau7x8x5WJZ1mrfOYDuyctJdZR0Q8qeROE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOxbbgxvl+DawnbY/4sT9XSsu6QWpmbWZ6BOHzX23Bd7QXTvoD
-	+W4OiuPNT+ZH5Tl8t8q8PL87L/5LUpTPlFgwSLQTrVP2HNjDGaOawn6usHZiZ5qmNDbD3bEOQkN
-	hBaxl2d0=
-X-Gm-Gg: AeBDiesN/oVTT+7xgp7dbqXyotwCOstwHgm1wb7TGWmgPo2obm3BNQM8PAwY7iUhd8S
-	cSoW9PhOKKq2FnaFF9fk82XZXpVYmxoJ5SyeLqtzTxIqivYWvhekxZSapEaIPu54GCg50puq6wf
-	eYKrg8MFvl71PphnR2CNWxga3YN0qzfKoeAiSl/YtZfoJOeY6KAdAus5kz9FR/8zhc+xzUuKcyq
-	bSqlxbqw6NQk4ZdwQYhWmVPlNUerdvINcKMNtYAzWmfmDDVBP33FPzBITC6eauHjLU1mGdJ2+oy
-	wbAeb+SRGd0mSCwVmT9dSRlqBaebIBlNSjg/B6rRsXAINHdFCThmXr4v3My897eYHMs2jWy2dkg
-	sN5eyLJ5QwcjfNAswA34OJvfK+Ws8C3l82KFtaK+6wGsP5gixRV7vw8VYOnW3txBLvWMw9MKdyS
-	mBYDLLLOjWBkQpomJDgXC0ZkHuk+W2M/RFbth/YE96ZAHhqVLeVWDzyCst7cxqhIxYlf2+LJv70
-	F3D7p/uXUMi
-X-Received: by 2002:a05:6102:5a96:b0:611:3bcb:aee5 with SMTP id ada2fe7eead31-630f4e3dab7mr792844137.0.1778005273387;
-        Tue, 05 May 2026 11:21:13 -0700 (PDT)
-Received: from [172.22.22.28] (c-75-72-117-212.hsd1.mn.comcast.net. [75.72.117.212])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b53c0e7f27sm185778316d6.32.2026.05.05.11.21.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 11:21:12 -0700 (PDT)
-Message-ID: <9f655145-2c97-4de0-b964-1e23ab95de1c@riscstar.com>
-Date: Tue, 5 May 2026 13:21:11 -0500
+	dkim=pass (1024-bit key) header.d=wch.cn header.i=@wch.cn header.b="QbgJdTQQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wch.cn; s=ssbr2306;
+	t=1778048674; bh=Sy7RriaJxfzUZ+1nDzjAU+KRpFOAyhU7CaQJWg/pXso=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=QbgJdTQQ53zVntdA7AXZ+kJi2zHkBkcbJ4qS/4K7Uex6Dmpn/BjpVFA3RdwVKzA9I
+	 pD6KlQyCx+e0vjxkK+BzwSS+JAShWIEZQ9M0cL3Cl32IoPW6chJLN8EDwd/NQm+anM
+	 AEKBSqjGGJOMrxOr9wZ7P8XiZDLjW6y1XAcqyxvA=
+X-QQ-mid: zesmtpsz4t1778048673t57407af0
+X-QQ-Originating-IP: NW+t3StAE/KZHUvn15jrrJoZRk+FdRIpoumram3nTio=
+Received: from wei.localdomain ( [117.60.69.176])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 06 May 2026 14:24:14 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1270364702676656804
+EX-QQ-RecipientCnt: 4
+From: Jiawei Liu <ljw@wch.cn>
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiawei Liu <ljw@wch.cn>
+Subject: [PATCH] spi: ch341: correct company name in MODULE_DESCRIPTION
+Date: Wed,  6 May 2026 14:24:12 +0800
+Message-Id: <20260506062412.371034-1-ljw@wch.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: spacemit: avoid 32-bit integer overflow warning
-To: Arnd Bergmann <arnd@kernel.org>, Mark Brown <broonie@kernel.org>,
- Yixun Lan <dlan@kernel.org>, Guodong Xu <guodong@riscstar.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-spi@vger.kernel.org,
- linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260505175744.900750-1-arnd@kernel.org>
-Content-Language: en-US
-From: Alex Elder <elder@riscstar.com>
-In-Reply-To: <20260505175744.900750-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:wch.cn:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: N7zE+17nr98T1Lt9jYGl88/7YyhKzPhvbCZHeYpSxNUL0OyEL1TUqpj1
+	TcD0Zs2+Sr7NCuWst8tfJQwihAzyByh+rX7unmv03YVPeuXMfavFDKKCstCT6BQ/DGmGGHl
+	2ERmTn736I3S87sggXq49RQpx+yZqu+qIjTxbV2BmuiaFMuynw3KiATscZzk0rNg/DoRo2J
+	Oozp3D47k9WRS80e10GdREWjb8NyjKymhvbXK2vbBDAknL/mr6VopLeHA0540Q1wSOmiQMy
+	o58KtqfZl0W6sYXPOSQ93SDueSoXRhHfLQtJbIYq0uAIYZ/X/laDMzOJPXXEGrSPoObM+gW
+	btyICsp2EqmrVKuTh8YJF5DotESuqSrTgoYye5QHBi0jItjsP2gYwKm/caxcG0kbIHIm9SG
+	KbEIR9PjW4r/lrCwOk4Jj5Gs12EdJMLnfyQaxpS/8m3bu5309tTRK+WRTZ7bxCXbholak9j
+	jGQ5RM8EpxcTsXXzPIRzFKPa1W5tmPIqVLfhOqvt2rdqOK7/hD95oQBXhlRnXNFY4ZZy32K
+	LHgMXaKZ/YP7ZI8eEbiJ26SyfLkeqkLMC8KPdX3zM06QlsRcEdjayVTyS/bun3VMOrznJo4
+	ZRgGQode1c8qR5ZSayko8xzysBwz3S+0MoT0OXCc5cisJLTyWJHxk/B8vDIbJgyQJ6vGUc6
+	d+mZia1KdL+WvX4/j5/o9ZHcJ3FmlEgrxQEScL3tmf8OCaQgMd0uKF7IqzaDUzdaopuJhWJ
+	ERiIZ4d2GquvSJ87wSljJvL/gbKVmF3cXuuM2Txld5twuMxWB+5evR1O+wVCrT4qO+NP7hd
+	cTapcEzheCB0CsuRX5LpxeAE/w6eRdWyjf09ILZMnl+PsEEZ1CtmeXuFWzwvMEMXBPU5t4G
+	9i80aAfFaCXqO/nW7vif3Tk8P1QOdiRvNcl7JOFI+0AubexqtlOnlxztE96rD8aFH36DPE4
+	hoe2q81fdSc7fnlwpK+kT+AJ6dfhp2FsfWqQzGph0KKRq9jHwGd5yw6l8oUzlpVpevGqkob
+	lSObzJnBBwDgWl8WT4qObT9OxDlk4F9QfvOUleeaafEWcEEoMt
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-On 5/5/26 12:57 PM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Calculating the bit rate in nanoseconds does not fit into a 32-bit 'int'
-> type, as gcc-16 points out:
-> 
-> drivers/spi/spi-spacemit-k1.c: In function 'k1_spi_set_speed':
-> drivers/spi/spi-spacemit-k1.c:393:38: error: integer overflow in expression of type 'long int' results in '-589934592' [-Werror=overflow]
->    393 |         nsec_per_word = NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
-> 
-> Cast the value to a 64-bit constant to force the longer type for the
-> calculation.
-> 
-> Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+The company name "QiHeng Electronics" is incorrect.
+The correct legal name is "Nanjing Qinheng Microelectronics Co., Ltd.".
 
-Thanks Arnd.  I diagnosed that when I first saw the warning and my
-fix was identical to yours.  I believe Mark already merged the
-fix.
+Update the module description accordingly.
 
-					-Alex
+Signed-off-by: Jiawei Liu <ljw@wch.cn>
+---
+ drivers/spi/spi-ch341.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> ----
-> There is probably a way to rework the algorithm to avoid both the 64-bit
-> multiplication and the following division, but I kept this as a minimal
-> change.
-> ---
->   drivers/spi/spi-spacemit-k1.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
-> index 99db429db0b2..215fe66d27b4 100644
-> --- a/drivers/spi/spi-spacemit-k1.c
-> +++ b/drivers/spi/spi-spacemit-k1.c
-> @@ -390,7 +390,7 @@ static int k1_spi_set_speed(struct k1_spi_driver_data *drv_data,
->   	 *   ticks_per_word = BITS_PER_BYTE * drv_data->bytes;
->   	 * We do the divide last for better accuracy.
->   	 */
-> -	nsec_per_word = NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
-> +	nsec_per_word = (u64)NSEC_PER_SEC * BITS_PER_BYTE * drv_data->bytes;
->   	nsec_per_word = DIV_ROUND_UP_ULL(nsec_per_word, drv_data->rate);
->   
->   	/*
+diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
+index 3eaa8f176f63a..6448a44a8b67e 100644
+--- a/drivers/spi/spi-ch341.c
++++ b/drivers/spi/spi-ch341.c
+@@ -250,5 +250,5 @@ static struct usb_driver ch341a_usb_driver = {
+ module_usb_driver(ch341a_usb_driver);
+ 
+ MODULE_AUTHOR("Johannes Thumshirn <jth@kernel.org>");
+-MODULE_DESCRIPTION("QiHeng Electronics ch341 USB2SPI");
++MODULE_DESCRIPTION("Nanjing Qinheng Microelectronics CH341 USB2SPI driver");
+ MODULE_LICENSE("GPL v2");
+-- 
+2.34.1
 

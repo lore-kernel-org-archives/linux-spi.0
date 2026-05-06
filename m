@@ -1,120 +1,114 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F16481A8B
-	for <linux-spi@vger.kernel.org>; Wed,  6 May 2026 18:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AA930C34A;
+	Wed,  6 May 2026 19:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778092523; cv=none; b=YYyzhupmDI3DKYzHWfvXlV3aTG7ajxlRtbWwWItYSOfZD2I7l5QiufNKjXL2hfUssdhYJDFky/o/PR4qIxM3KtYC5RIZq3m+1yG3MUxajco0VesyMN8JjJzyEy+DHi2n/yWSykzbXjEsqbruyAsSuOxyZIC3S7c5gEvm3E6lblQ=
+	t=1778094804; cv=none; b=YwUeHP5soQhU98cA+cxtRZn/00DfS+5KmH1aVKQm4wIe1tQCny0SEXmfZRfbQ0GOrQhjM+xDzLavqOBXmVlBFp4mtGgqX0vuuzs9zwC3VB9nWVm/MUK4umb5dWHMKUK8tt02+lChWUqN8Uwilxzr4IQrWkHReGcnQGjRNCHKKeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778092523; c=relaxed/simple;
-	bh=+WMqCy21w3Lz7NVM3I657Lea12MlKzLhBcyc8rycgYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D1vlKEqPQ9gUK6lCCMgmh/PubSUSpJLZCBdY7SWZVOUTt3kuzNFmmxjc7DTehY1Pz4Qmg3fz0X18ejqzQB1oyEU28/cNBrxC6oyzv+PgWKwkhMQTE1ebB0/g5IH8xIuAW+JXZngXjPQmiz2Y61EiqagzPTFyonJly+esn2XKUvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kUjRk2m+; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778094804; c=relaxed/simple;
+	bh=MwzrSQ4fiAmN5nCFQCemXjP5zzuycMBMfVig9YY1FLY=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=NKVa0RJpYeYuKUrfhFl2fbGrF8NAniwbpSb+648nwyGlWKlcnivHVI6+7ggyLKvCKm9ujfyjJuLRfan6MBb489erLG0MbVSd6xzUsfNjCHpr52nSSQbfM7kXHJ8qjxBKkv2dPh6i2CsBdr0bPtcmh0gKsStFVX7EDFFI+3qqAFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZ02v9Yx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kUjRk2m+"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48d10c981e4so39085e9.0
-        for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 11:35:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778092521; x=1778697321; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9aiXsZhpAfPQ3ReCQcd6NEJTNdjNAL2vg0ii0mpvxDg=;
-        b=kUjRk2m+OcCTNMc3PYRVG7Pkxt/btwHZxBMzmMbOJBDpi3AnknmXMKwehQtNmbLrW8
-         1p8ZlNPbZOqvFYyU61egrRYv28F0hs16kqJdjzWFJtFVh9vSqQ/sWCvs04ADzWwELqid
-         RndDWe6RgxxdSLIiFEqL5TQlpzojPdQS2g750VDBubqIMm5LyFX8LafAooj2sYZAbmhP
-         DAwEUyg8fJZ3FdgZ/CbH8fEuZ0YCGeeRAL2QLDgAgWR4XxUr1VF21MQCX9AL7W6QL+YX
-         HrVStAa2RdSw4pg6blqgKtCM5KqaSTtyU1GmJ/4d3TXIBXLLbkK23Q9NIMM2dZU/zoWr
-         SCcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778092521; x=1778697321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9aiXsZhpAfPQ3ReCQcd6NEJTNdjNAL2vg0ii0mpvxDg=;
-        b=SWFOh2rLMDJaoZAHxa7VmDiwa37jrMhgmmQNaLaNCdh+sIu6PV08Cii79seNPp1UUS
-         4+QGJbhKt3jG6AlCkX7kS6A2hxKbD8K6VrBgc+bqzRHzW8iGNfTvDjCxwBYPbCTY4nI3
-         Wcah8NZu+lLyjuZXWxwyluQA9NL4RnHn1wRKrubJ0+z1s1Ku9Dv/DpFOOZIgd0vDQeJ4
-         tFiAHGZA/7gz6owvCFTnh3wWB5OWpj5fWUz7UThzm7o1lwf++kIj+iV5Wv2gfEbMG1tY
-         x6oROnPpbBBzCJP+CT7rYg3KMq29+tElTOuTEPxnFSnKnVaSU4wVFoxORyj3GLji6ekp
-         FxPA==
-X-Forwarded-Encrypted: i=1; AFNElJ/1pSTkf0rBW/agutEnxOhYBVQ4psk6uiFw3x6AtMXWsBJ8puk3gCkwrWG0vUE83NMTEqEPBAQAfms=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU1I7oEf7TOdVuIWvfxNikZed3KccvVIW1+mSeqd3tff5WVk2/
-	zI2F0uiIiK8DbTRVZoPeg6reGQmpiA2XIequm14tQJEulmW0+7XGt0ip
-X-Gm-Gg: AeBDiesz8oJCuXDmLdphdTW4YPJYAZwJv0MGrEGUfRJ+9H6ksOXKc+4Hg26A967GFEu
-	DNVS+Aokh3rngKJRO7Envv8RmteIkYCWB9XNkQA9/0/t16/UDwFQzsEYbhhvL5PLVocqhJug97V
-	/NkkFcVGdb0b5ff1sb0Fjdp+ariFNo+ighrMHNk7jz6y6jxJm6bUUK/pDoOD7TzT1zqsfL2HdOW
-	3BHG3CWM6K8J/ToWocsvFFpLvDAATzobfiUudkmxBtu9DAHhasaUsk184TK2AyEKB3SGkvwDQES
-	UE2Lw73tDUfEdf3vCWziPsFFiVPdj6zrGOTB6qEqtpt6Xi8nOfD+IwNMg2t+TR4iYLsTgy8gC48
-	GjjBkYxZiIPzeSQqke5Xnmwo4zf3yXWi4LSCt7cxJl4ccSv+O0Og64yYfbqY8uGI3x8b0ebhQHZ
-	BwcN1/ihOFUhB2E9B+OYn2PZmW37wZjxx1qT4oCyNwrNTjJhwHWRxU
-X-Received: by 2002:a05:600c:1908:b0:489:1ca4:c999 with SMTP id 5b1f17b1804b1-48e530d8a88mr35424575e9.8.1778092520483;
-        Wed, 06 May 2026 11:35:20 -0700 (PDT)
-Received: from LAPTOP-9UC0RPH4.localdomain ([82.215.118.79])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052a48911sm14398468f8f.11.2026.05.06.11.35.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 11:35:19 -0700 (PDT)
-From: Stepan Ionichev <sozdayvek@gmail.com>
-To: sunny.luo@amlogic.com
-Cc: xianwei.zhao@amlogic.com,
-	broonie@kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Stepan Ionichev <sozdayvek@gmail.com>
-Subject: [PATCH] spi: amlogic-spisg: drop misleading NULL check on exdesc
-Date: Wed,  6 May 2026 23:35:12 +0500
-Message-ID: <20260506183513.482-1-sozdayvek@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZ02v9Yx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E329C2BCB0;
+	Wed,  6 May 2026 19:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778094804;
+	bh=MwzrSQ4fiAmN5nCFQCemXjP5zzuycMBMfVig9YY1FLY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=FZ02v9YxnFq6tkTW2U2IYKgfy1R5OeW2RxUXfrE5CORSM44w3lmwYWSRbc9zTmtbC
+	 9w+9FABbQMs73fZuz9PGA1PF4kB6Z0EnlVZUIUGOd+wYQORgSrNRN4wKPCsj3ZCTSY
+	 Vletv8j66HKNScuONplbkmag4upfxN0+t5fXn2B1Ku78puhMiZrEiXT/DQ+EGGVfC5
+	 LoTV13pjwzQhUj4BMip0tH2tIXS8MQr/licueoPuX9lSHSiA6KQv5JCwr8b1oVQ7yi
+	 DdmUPsX7vuSaK7W9+XlwZ3BpaaTjScr8jwy5rkxUBL0JQ9QcI873tghURnekyhl4WT
+	 JmKDL+EzGpkVg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B2865F4006B;
+	Wed,  6 May 2026 15:13:22 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-04.internal (MEProxy); Wed, 06 May 2026 15:13:22 -0400
+X-ME-Sender: <xms:0pL7aSXPA8QHNQbds6W5BUsHcdxhIHmw-NHMJYY2GkR68z0qE5G7Sw>
+    <xme:0pL7aZZEZckVx0og8towP9gINkoFRvIccL_qhqB0hOatU8r3FLZkK34eY0hKE1ouM
+    fwZ0Jw-gy0uGTuOaugXnJ7PhKuygRq4w68ZIRVuFLNrKEtWWpsR8k8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdehgedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
+    htvghrnhepjeejffetteefteekieejudeguedvgfeffeeitdduieekgeegfeekhfduhfel
+    hfevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdekhedujedtvdeg
+    qddvkeejtddtvdeigedqrghrnhgupeepkhgvrhhnvghlrdhorhhgsegrrhhnuggsrdguvg
+    dpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprggu
+    uhhrvghghhgvlhhlohessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtohepohhlthgvrg
+    hnvhesghhmrghilhdrtghomhdprhgtphhtthhopehgvghrgheskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtohepghgvrhhgsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhmieekkheslhhishhtshdrlhhinhhugidqmheikehkrdhorhhgpdhrtghp
+    thhtohepughmrggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehlihhnuhigqdgtrghnsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eplhhinhhugidqshhpihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:0pL7aYgU40u_E267iFRC27ZHEl0roArdH9mPSMUcT3gkwqS8N7dJMw>
+    <xmx:0pL7aXBlhAotVrZFHrdE6GWeSDVXfgQGR3DslpyIThc1JnlGgenU1Q>
+    <xmx:0pL7aa45gqQbrCje9y2vZPHLRAXayJ7R0JUFs-8aM0231oG8RsT-aw>
+    <xmx:0pL7acHzHt7XSIMXTOeqamF765eGiHjToQWiZ5zqkI4f1k4RM9AK5A>
+    <xmx:0pL7aVDxk__UOgD53mk0418hw-fLbXikrmm-QP75gByQBb2p_AhysOC_>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8FABC1060065; Wed,  6 May 2026 15:13:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: Am-_gogYW4uZ
+Date: Wed, 06 May 2026 21:12:42 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: "Greg Ungerer" <gerg@kernel.org>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, "Greg Ungerer" <gerg@linux-m68k.org>,
+ dmaengine@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, "Vladimir Oltean" <olteanv@gmail.com>,
+ "Angelo Dureghello" <adureghello@baylibre.com>
+Message-Id: <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com>
+In-Reply-To: <20260506142644.3234270-8-gerg@kernel.org>
+References: <20260506142644.3234270-2-gerg@kernel.org>
+ <20260506142644.3234270-8-gerg@kernel.org>
+Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-aml_spisg_setup_transfer() takes a non-NULL exdesc pointer; the
-function dereferences exdesc unconditionally later in the body to
-populate the SPI scatter-gather descriptors (tx_ccsg / rx_ccsg).
-The sole caller, aml_spisg_transfer_one_message(), always passes a
-valid pointer derived from kcalloc().
+On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
 
-The "if (exdesc)" guard around the memset() at the start of the
-function is therefore dead and misleading -- it suggests callers
-may pass NULL when in fact they may not. smatch flags the
-inconsistency:
+> drivers/dma/mcf-edma-main.c
+>   Supports big-endian access by setting the big-endian flag of
+>   the drivers struct fsl_edma_engine. But locally should be using
+>   ioread32be() and iowrite32be() instead of ioread32() and iowrite32().
 
-  drivers/spi/spi-amlogic-spisg.c:314 aml_spisg_setup_transfer()
-    error: we previously assumed 'exdesc' could be null (see line 261)
+I'm still a bit confused about how this works at the moment,
+since the drivers/dma/fsl-edma-common.h file already contains
+checks for the edma->big_endian flag, which is set in
+mcf_edma_probe(). The version after your patch makes sense
+to me, but it looks like the existing code cannot work.
 
-Drop the check; the unconditional memset matches the unconditional
-dereferences elsewhere in the function and removes the inconsistency
-that smatch reports.
+> drivers/spi/spi-fsl-dspi.c
+>   Setting the regmap format_endian flags to use native endian will
+>   force driver to use appropriate big or little endian access on
+>   whatever platform it is built for.
+>
+> These drivers have only been compile tested.
 
-No functional change.
+I would suggest marking these as explicit BIG_ENDIAN rather than
+NATIVE_ENDIAN. The effect should be the same since coldfire CPUs
+cannot run little-endian code, but the way that hardware usually
+works is that the endianess is fixed at the bus level to one way
+or the other. NATIVE_ENDIAN to me implies that the registers
+have configurable endianess that is switched along with the CPU
+mode.
 
-Signed-off-by: Stepan Ionichev <sozdayvek@gmail.com>
----
- drivers/spi/spi-amlogic-spisg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index 19c5eba41..b2a916496 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -258,8 +258,7 @@ static int aml_spisg_setup_transfer(struct spisg_device *spisg,
- 	int ret;
- 
- 	memset(desc, 0, sizeof(*desc));
--	if (exdesc)
--		memset(exdesc, 0, sizeof(*exdesc));
-+	memset(exdesc, 0, sizeof(*exdesc));
- 	aml_spisg_set_speed(spisg, xfer->speed_hz);
- 	xfer->effective_speed_hz = spisg->effective_speed_hz;
- 
--- 
-2.43.0
-
+       Arnd

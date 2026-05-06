@@ -1,84 +1,67 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A9D329E6C
-	for <linux-spi@vger.kernel.org>; Wed,  6 May 2026 06:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A633736AB7C
+	for <linux-spi@vger.kernel.org>; Wed,  6 May 2026 12:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778050267; cv=none; b=JoJn5uJoe/VjfJtR9ZE/xOKa2/0LIziLfICpeQQV+PcNPK9igyKg32Ya7hyJySkrBziZZ+maQlGPMrW1MAd/PYQwrmZoUc0MVol29k0F58wF9w9HFGCAHqIGGTzN/9KAxk+322RK8miIXHDJk97six8vqC6a7LRlAudfctUOZ+8=
+	t=1778070492; cv=none; b=qb4/ZP8L54UyXDBF7lmbATBSWe/CK8eafY/onvFM99DFrMAcoOlJ04mN914ejbeZWKowo9RkfH4iAk8vS1388OgrREqORAualqJDJN/PnSDHyd7AHdqxR+P1z3g9DZ/nAS9rNsUmUpw/3S6PHOPkyHmgBA/5C0pMasqi4nUOT28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778050267; c=relaxed/simple;
-	bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
-	h=Message-ID:Date:MIME-Version:To:From:Content-Type; b=r0IJ+Qsbc+1BCIAshdETglqx7IvJuEg+hZgK/l0TZjDv1ZfKbnJLWLtWWNXyTgoW9Pt4iNhjJYex3jeT5Km6c4ZndtQuz+HOnJzrhimD0+EW3gZiZceTWN5WeOp0Z40wHCi+Sgtxa1W+AiWSjlX4GFhq3nwhhQNinn5+4nWShs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=UZVBXcjg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=agAhrd0P; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1778070492; c=relaxed/simple;
+	bh=vclG0yxAvF+A/2roV7osqFbBYgf+u0vUuYzd2t5GLzg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hPYYJRdHuQyJcj2naI09sW5T1AHzGlK5YeAfHEDfGbbb4sNXywjI0IWgCXQWUkNAqo0GDD3RrY3cb8ErpE9Hk0vmSPt0aHn5jv1VHO71DaUZDvxTXYtI9QUm8UnZbZ57/1GejjI2zaRk0R1eYc8VSfKChvOO2N13QFpoYW2BPsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xskv7F1R; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="UZVBXcjg";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="agAhrd0P"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6466mcPJ912107
-	for <linux-spi@vger.kernel.org>; Wed, 6 May 2026 06:51:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:to; s=qcppdkim1; bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++L
-	fAOrCAj6OvBfk=; b=UZVBXcjg+tVq1orlkTqtJGLsznuL2DmzlcNTQYe5OJQRQp
-	kmk517KLnu1R8tx8YXrwEY4Cm5FEDqnrKna28F2eqrbNMg0RjcZ5aSBRtwwoocqp
-	4LKN3x8Ql02LLGzokaM7q8MYfQ9vdcq3xsQ09xpi6TF0BboYgvgqIZYnpN9CknAG
-	bRl04TdROC3hVzGPlsZKUZa3yq6J5rZLFPHMNGUsoFhexwd2HhIVKmLEVhKxjH+t
-	kyaDpc6Ke0k3QdyBkl5ER/OgTHDTA3TV4ErRAKFzKhS9V6L8DdVOIkCDsvH0Bp97
-	leZpnFkrPi5sp5rnLJxN0/p/cgjH/u1n5Uo+NpWQ==
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dyj7jka28-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 06:51:05 +0000 (GMT)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8353df9bc7eso3360154b3a.2
-        for <linux-spi@vger.kernel.org>; Tue, 05 May 2026 23:51:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xskv7F1R"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-488b150559bso44037095e9.1
+        for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 05:28:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778050265; x=1778655065; darn=vger.kernel.org;
-        h=content-transfer-encoding:from:to:content-language:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
-        b=agAhrd0P0XsqmcKAiZ6v9uhXTRZsePv1OEyLuhtEakDRObj9kBfU8OFvegH2HHPrwR
-         VJL8+wKuPcqSGHxUeIOxC4W/2us0C/VcXXWi1vUklJn/q3lWUqeSzRCES5BiJQNGTdF4
-         VEq60OsgpxZadJXsFLPq/STxx08EWENQu/OYBGY/g3huU3eXQOWLxkKry7N30v+uvYjs
-         LZA2Br6y8RnfyXD5my1jXxoBZTAkFq4zYBrHYEnHnNGEcwPw5EETvisu8vaXiZjvD7FJ
-         6d6bjjagpu8Bvqivy8lpVGJi5GzaOJ4kBOuD7SacAdLDqk2lUG/HNlCAwyCi4Jj1ltDW
-         bMGA==
+        d=linaro.org; s=google; t=1778070489; x=1778675289; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fgsWJ43+sPMyFM6YZi9dneb609gv57UFa/hUFdFYocw=;
+        b=xskv7F1RGtGi8zD/UnbdcgR1YZziglp0fHeiJ2Z4aWoTi73VyKgyRHiq1KaZehrBjK
+         Lg+KIP6pWBH2Ugy8gIsXOHD5XTWYoBF3aXgatwTV8dHrxyBs0VtXfr8xmVJXFT7UksP5
+         waZq9xtMoKoT1YaJ4SnsmReRHGNWLsT4giytb2h/OsPHObT629UyIGx+h3u1oQq2kbTu
+         txHKxzhvC9iM+p/jasZTkQqRW18yHtujShomKocfvTySM3etJAafb3NoZJ/TrFm+/gIQ
+         wsS6ygZ/izRtWQYGJikLnGQFti8MTr0R49lTPYLKJE1PNHNrHmMQCtyXzYOfTHEYissc
+         guxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778050265; x=1778655065;
-        h=content-transfer-encoding:from:to:content-language:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
-        b=AIwFrdWpIVbSJgtbM36j4CnCnNzRpvqlvFScHfvsD/As5eIagYb0Rqgj8fCZJFlEMH
-         DN7ZI/xfdc+HmiKBrjO9SpfGc8nQZgr8bh897eKoI+bwuzG4E3wDjTFJUbpUsW1KuphI
-         Y6yGwtKmOZMBC7IecMU05Avr6SOHFzOJmU67w1+oalw+AqqB33SQy0tRsj6m4E/DkQ6s
-         KxvQWLewRCoErCh+8wHDnw5hY+srYqketrIJqXHTnoURIHBtB2rOshzAs4cuvCVR14oH
-         a0j7suA6tuSoDPkTxb0LEmsB46BbaJ6gA1NfApHR0jWIUwn/p7jcseqq0cZEyswY5xnG
-         kkLQ==
-X-Gm-Message-State: AOJu0YzVSsJChTK1doGx6JjbRRdJzwjMGqyOsNunmX6ZaIt21g9oRfY0
-	iTw4eJMydSpbCycFHylLinESi3ath2pPGC06QST4saK3EhBJTHACIyuP94w/npVW59n5OREOHmz
-	AIoJXL3QWSSQlJTCc5YWMQb6U3TF+WG/KGshbz4j6Mgk599KkxDXJinA3ZUa+RzC+q0zEaxXH/P
-	11
-X-Gm-Gg: AeBDievSu0tjlKh0/1aqpobpgXuiqAvsE9P/cTI+kAqtoekEWLE3OP4pLeESMdF9rZ1
-	Z5NskKEDSjswHfPd08pP34nOTQv0QMWLTes/VVX+h1mqPe7nu/XV4tGB4yK3VLecW5DZfSoVXGP
-	V4SVLwbfn/KEM5z40ltsdEOviSohFA3OYpR6ds8kuN3ruWg9M/BZQ4MFUffhFM22o2xaNtBpzih
-	lhpgASy+eGija/h1mRkxtZHQevJKxpyPxNeUeQHBA5fk3Juzlhhw02VSqUPqrFQ/HYyzC3Qxjaq
-	OZMa3GZHfd87cw/p/CbmYdqMA+gfASH0uhnJ0jWNFdqMZ227IagK9PfZ/5Go+Wh6K691PApcZ40
-	MFr/Ot9hAosYOnYb/2AkvNn6nNpn6pD8uvnvt0/g=
-X-Received: by 2002:a05:6a00:27a1:b0:835:6173:dd2 with SMTP id d2e1a72fcca58-83a5e352301mr2000913b3a.44.1778050264633;
-        Tue, 05 May 2026 23:51:04 -0700 (PDT)
-X-Received: by 2002:a05:6a00:27a1:b0:835:6173:dd2 with SMTP id d2e1a72fcca58-83a5e352301mr2000888b3a.44.1778050264137;
-        Tue, 05 May 2026 23:51:04 -0700 (PDT)
-Received: from [10.151.36.91] ([202.46.23.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83965d35b3bsm4113020b3a.24.2026.05.05.23.51.02
-        for <linux-spi@vger.kernel.org>
+        d=1e100.net; s=20251104; t=1778070489; x=1778675289;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fgsWJ43+sPMyFM6YZi9dneb609gv57UFa/hUFdFYocw=;
+        b=GI8NQ2+4Ej2UVRVRCXGhuCgLSAEuKeeWLsJJxaFIufTItivNf9WbZ1bXKMsl8XMXxp
+         MbqsklVs6EV3pxM6ZdgB8NYCh9FKYSVnn7Umid8YXhHbI8ujf2YDLX8xjX5jGgZh8KvQ
+         QGXn5dsh1wFsDMkhZWpRC9pwRltfJc5CcXyRZqtPVeO1e45B3RJl18wWdQjXqBQt8uxg
+         YyLdZuxO7qYmzm+hbZrJttdkc1fZAGPXM6X2rfzMLie5Bh/hIYpwTiiUpXa/gJllXS97
+         BCzZzX0LXhlt/fnBaA/76INkNONbVKKtYdcCAQMiZo6+LJSyL8Zru3c7ruSSXdewMRMg
+         16XQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ZpeFSMk6X9bT1C7WrW8LVCJHuJoiN7bgyongL7PZISy6CWBm6SNUKeNFwg9wSy2vsfJrAme+vY74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAWdsZVFw3R5vD4Ll+A+szL5Cjgo4/dpBnZFxPVXfj9/vs1W5i
+	kJTj/dgdGJA547fcoxHUjV+ZdVdGXoaqz56sPjuxV3gDP+4vAWt31zjWup6J3a0kzz5YGfTBSv3
+	SudQUq0x8JA==
+X-Gm-Gg: AeBDietCtCAAixhzp674KOZWa9J5ku1wjwPJo6JqXGkNy/NAysnZCtiDV8btvDm6mUc
+	5hMVfvAReQGnBY4zFufIQKRjZtL5pYIhOULovuOfrcW1uLZiLNM45xFGxLz4yfHibmy8u5n8lS7
+	xkH0QC2QVAgjTHykDcH6UbR8kkU7+TiVI+ByE7QdCi+4UooWhUQ1FcfA/DBqbHOP6FofB+cxh8n
+	fYBwhV8Q7VtgRm/b7Pg5vaHtYiYr5G0a3A1VKrzTQCvhPsZLsWsOQ6wjLd5X6HrV1RhFP9Qi2Xp
+	McS2mRb3Ksbez0eo1fzTXsIjIu/A4lHZCKYtNV6ffdXU13k9PgeBrQWt2Z+RMuib+qtmR1J38Kf
+	HhaWKsZnKs1qGq3SXf3cb3Pe4kQUhWsED3nEQLjQ/MUaqXi3QkMX5U6+cFTkovyphodLGdIG3VH
+	W59Js3o6WNAJQn5XHJ0klRzwZnmYWaRMu8B5gexINXmF0=
+X-Received: by 2002:a05:600c:811a:b0:489:1c32:210d with SMTP id 5b1f17b1804b1-48e51f369c3mr57793395e9.15.1778070489168;
+        Wed, 06 May 2026 05:28:09 -0700 (PDT)
+Received: from [10.11.12.108] ([79.115.63.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e539109b7sm41077585e9.15.2026.05.06.05.28.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 23:51:03 -0700 (PDT)
-Message-ID: <a97e9061-ad5f-4ab9-867d-c022ae79fe1a@oss.qualcomm.com>
-Date: Wed, 6 May 2026 12:21:01 +0530
+        Wed, 06 May 2026 05:28:08 -0700 (PDT)
+Message-ID: <06406c7b-c141-4997-9921-9358cdea7641@linaro.org>
+Date: Wed, 6 May 2026 15:28:05 +0300
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -86,33 +69,75 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] spi: s3c64xx: fix all kernel-doc warnings
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Andi Shyti <andi.shyti@kernel.org>, linux-spi@vger.kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Juan Yescas <jyescas@google.com>, Peter Griffin <peter.griffin@linaro.org>,
+ =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+References: <20260416224056.985233-1-rdunlap@infradead.org>
 Content-Language: en-US
-To: linux-spi@vger.kernel.org
-From: Md Sadre Alam <md.alam@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20260416224056.985233-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDA2NCBTYWx0ZWRfX4ONavOpCJcgK
- XDNsKhN1DKBijohnqcMPmFRJo+UfNO/xkHQ7VLITRw7A48mr7XZCieYH0PyNWYDKnVA8uGM3A9Z
- zfS1FZQbf0LJer8lp3yLFkeHJ2ZwWtdeEqRVO/K4Ld7NqNOgP5ZdwiSjIh4yJa4Z4xHfg+PpKe7
- uk+7Ig1FCDiCd79Zbsmpl9lrQAbsUjTUqRWys3/RfG8H1LEMnX4hPwhOFIKCan44nWcoyFn0SWk
- KnTIlWmhuyNzWl6eZ9xbLqizmjdvplKeWe+OjVWmC+V2mabY0qw916OoaHafZNPkwZF5FpTceUv
- ls1nq9tuEtHo/Vrxw0P7Z3RdpP+wM8SHofS7Czjgx48B7Ph2LAIyUbWr9BKjKAv0efpwgZaCdgt
- c0rlfFwv7WsIe+kJ2NHObUR5gFL1SZfqUz8q9jgkaBq/Yy+vEQDdGApUzHm4wfGZjmbtb4wHQvj
- 6XdCNep0T+VPTHRA6WQ==
-X-Proofpoint-GUID: uMzbVTrkoYdN6OLecCIq6SaOsAnW7RQo
-X-Authority-Analysis: v=2.4 cv=FpA1OWrq c=1 sm=1 tr=0 ts=69fae4d9 cx=c_pps
- a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
- a=s5jvgZ67dGcA:10 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=JV2eVSZHMSyV4Tj97bsA:9 a=QEXdDO2ut3YA:10 a=2VI0MkxyNR6bbpdq8BZq:22
-X-Proofpoint-ORIG-GUID: uMzbVTrkoYdN6OLecCIq6SaOsAnW7RQo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
- impostorscore=0 malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060064
 
-subscribe
+Hi!
+
+You missed adding the SPI maintainer. +Mark.
+
+Also, there's another kdoc warning in that file. Do you care to fix it?
+
+scripts/kernel-doc -none include/linux/platform_data/spi-s3c64xx.h
+Warning: include/linux/platform_data/spi-s3c64xx.h:40 struct member 'polling' not described in 's3c64xx_spi_info'
+Warning: include/linux/platform_data/spi-s3c64xx.h:51 expecting prototype for s3c64xx_spi_set_platdata(). Prototype was for s3c64xx_spi0_set_platdata() instead
+
+Cheers,
+ta
+
+On 4/17/26 1:40 AM, Randy Dunlap wrote:
+> Add kernel-doc for one struct member and use the correct function name
+> to eliminate kernel-doc warnings:
+> 
+> Warning: include/linux/platform_data/spi-s3c64xx.h:40 struct member
+>  'polling' not described in 's3c64xx_spi_info'
+> Warning: include/linux/platform_data/spi-s3c64xx.h:51 expecting prototype
+>  for s3c64xx_spi_set_platdata(). Prototype was for
+>  s3c64xx_spi0_set_platdata() instead
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> ---
+> v2: add tag; rebase & resend
+> 
+> Cc: Andi Shyti <andi.shyti@kernel.org>
+> Cc: Tudor Ambarus <tudor.ambarus@linaro.org>
+> Cc: linux-spi@vger.kernel.org
+> Cc: linux-samsung-soc@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> 
+>  include/linux/platform_data/spi-s3c64xx.h |    3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> --- linux-next-20260415.orig/include/linux/platform_data/spi-s3c64xx.h
+> +++ linux-next-20260415/include/linux/platform_data/spi-s3c64xx.h
+> @@ -30,6 +30,7 @@ struct s3c64xx_spi_csinfo {
+>   * @src_clk_nr: Clock source index for the CLK_CFG[SPI_CLKSEL] field.
+>   * @num_cs: Number of CS this controller emulates.
+>   * @no_cs: Used when CS line is not connected.
+> + * @polling: Using polling mode when %true (no 'dmas' property in devicetree)
+>   * @cfg_gpio: Configure pins for this SPI controller.
+>   */
+>  struct s3c64xx_spi_info {
+> @@ -41,7 +42,7 @@ struct s3c64xx_spi_info {
+>  };
+>  
+>  /**
+> - * s3c64xx_spi_set_platdata - SPI Controller configure callback by the board
+> + * s3c64xx_spi0_set_platdata - SPI Controller configure callback by the board
+>   *				initialization code.
+>   * @src_clk_nr: Clock the SPI controller is to use to generate SPI clocks.
+>   * @num_cs: Number of elements in the 'cs' array.
+

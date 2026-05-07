@@ -1,39 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2EB239E7F;
-	Thu,  7 May 2026 01:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6481FECCD;
+	Thu,  7 May 2026 01:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778118435; cv=none; b=YLI1EZP2+goLT7+CMGOCPEw81O1ZE9uF1XlVcfIIb0MoJxVNi8dm5FUSa5o+bBMZXhI2tHURSLA9EaFhIMc2MgYeF32S70IrJBzIN3F7NQfYJcMyhRYllCqVPBf+vXwPMUVuH3lcVywIKMwf6exVldhyvcSfEY7Jwf0gHDk/h0E=
+	t=1778118440; cv=none; b=m82PXX8q/cE2Nc2vcnM1Qj0QPFHgLYwbJmNrkCWpqBqgyS+JbN8tQz9zfTbOp4Ql1itO7PlWI/0DOZercpIw/462qQh8+9iySgmI4bMwFfRzWvzVe+IfBj0aLo1VraClqRkdPDNqWe9BIxWyQZB+E6YtSZTvn/MH1RD8MohMkf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778118435; c=relaxed/simple;
-	bh=BJKpc+GyMBOXMlVcy8ychYrnsXF3uPompomYqrj7eA8=;
+	s=arc-20240116; t=1778118440; c=relaxed/simple;
+	bh=6oPqUQeDpsE8w0JZIJK2Mlj2sXrItkxuCsWEs0mWd1c=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Q76L7AjR6SMXY6ig7tlJ8Os8V/zWBN/PPegCzB1F6XD1A6tZF51CkQvmqgn84P/g3onssJx0xyjCzYnT/N7ELIrpWNSsBer8kZXWHbPAavOb/w9QnfR/z8NFUCdajKrBcVu1IfnB9fzhAKS5PVRfhLjTAvDCp6TxchecmefQt7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGQMQboC; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=iGwgYR3Hx2ySohxKqy+7Wdm7n8zYCW7gPBHoHu5CFHPTFWawaPDr4E+xBWI6o6a0tY4Wmzeth0g4hEPbEoTQ0x4lT2TuYXTk7TZWb9UZwhsxlwT+//iWAvL8scumVnpCQo3X2YgoDo7e/qa9IqzCT6SPyiYXFnU+xbNmD5lkp8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPeFV52b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGQMQboC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EDEC2BCB0;
-	Thu,  7 May 2026 01:47:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPeFV52b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112AFC2BCB2;
+	Thu,  7 May 2026 01:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778118435;
-	bh=BJKpc+GyMBOXMlVcy8ychYrnsXF3uPompomYqrj7eA8=;
+	s=k20201202; t=1778118439;
+	bh=6oPqUQeDpsE8w0JZIJK2Mlj2sXrItkxuCsWEs0mWd1c=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=vGQMQboCpWhaxha++sz8MzOllWy9Vp5la9YlkKC78NIM+5jm7q4fBD2TaPpvB3MHp
-	 WjkeJqnn3L8GExQovd6p6zFTKMP7dJEpcG/GuthxBpwVGE0eF8P2ra21Fz4H+7N/W3
-	 nl9tvHpApY1+cOpfhEqVyTRK6RveLPd4it6QrgsL08S0m1fTHsyHT/1Oqs3tVNrK9+
-	 Gdb3nflFq/f1ewwPd+6lstdDGYQWjHJsPy+qxBushOPX2nSbRHQZy4VmaeypvVMVlJ
-	 LB0rf3WDsi5Ux/Mq2tMQlzXvcSnrbH7RRRVcaDRVVXA0WrqNkY4OczNee+rRrDFQSi
-	 fkDCaJ7I7nwbQ==
+	b=rPeFV52baWiWpN63e2cLNZ10CQskn6kxlWKTb9NHF9qpTHzI6lzIKjsv7b5LTZUIo
+	 INdkNV5tu+qymTPW885yXsyQMI6EeCHNo5ug4jgnvTBrTSSZGpu0OOJBpWCMhNP6XW
+	 +ukh199ecuoMjmzx3MqmzFH34KM1R8ZkRZ8xFnqWQYe6ZSDlxrevvVl3eso7B0+tWa
+	 o1NGRAbjo3ekqz9b/HkthbCsyst6ihuaTSazFgE3kZUGMIuH3P7aZxrZW1qqcAClGz
+	 t0Tol5HYs4rLgUkYH+X3omXMqJgCfn79rbco9IKRw5TsbkRc+wWSc0m9KdfKAMGWXq
+	 6fCBV4fLKKRsA==
 From: Mark Brown <broonie@kernel.org>
-To: Jiawei Liu <ljw@wch.cn>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260506062412.371034-1-ljw@wch.cn>
-References: <20260506062412.371034-1-ljw@wch.cn>
-Subject: Re: [PATCH] spi: ch341: correct company name in MODULE_DESCRIPTION
-Message-Id: <177807657797.624351.4004439512384924660.b4-ty@b4>
-Date: Wed, 06 May 2026 23:09:37 +0900
+To: linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, linux-spi@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+In-Reply-To: <20260506175144.449364-1-rdunlap@infradead.org>
+References: <20260506175144.449364-1-rdunlap@infradead.org>
+Subject: Re: [PATCH v3] spi: s3c64xx: fix all kernel-doc warnings
+Message-Id: <177811673301.749715.1643862335362913694.b4-ty@b4>
+Date: Thu, 07 May 2026 10:18:53 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,29 +46,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=broonie@kernel.org;
- h=from:subject:message-id; bh=BJKpc+GyMBOXMlVcy8ychYrnsXF3uPompomYqrj7eA8=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp++8h2XenqEp18Nwdkvs43WQSPZI4VtRzyNCc6
- 3vXCMAiVHyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafvvIQAKCRAk1otyXVSH
- 0OH/B/0eCanI06hgZJ9DmJ+nT4ePBFWwtjJGu6HYpAfJTmOUP6DTgdJvlCjCVr02Ne7gFVOdSMC
- Sz+XPhI9Pb4Vm0N5F8MVDdfKOd5Zfbkc8HN2908CPvGN6rt4LworVVLxdRBE4IBUN5o0ujmZtQg
- CxjcKbrtX6j9z5JayBEq4zmmcGEJEWvt2r09KlM46UaBd6DKAfjF6snpcbUZ9tj/TCyvxopKUhx
- En312k17gfbqjIypTQ6v3MrtoaZIlIgZpocGqUP4UY7/d6/8viD48K+S69JJU2LT78DvEqw+biH
- z6oaaozBvxQCtSJlVAZlD9qvmgWj1R53oKuRP28OsM5snHH1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1096; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=6oPqUQeDpsE8w0JZIJK2Mlj2sXrItkxuCsWEs0mWd1c=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp++8l1LUVHXJo2w9BV3WOQuAI2XVKIGYbdB3tO
+ zbrcdh3DNaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafvvJQAKCRAk1otyXVSH
+ 0LTjB/9yTFNLkx8jEZ0VZ4qokDcNmeA5KRProQ3mNEjqpaks05CrEoBcza5CxtIkTqSAhnIfGTr
+ nGP9cGdWtr/WtBBd5iIQYWg1sNhy08xtQgDYQX1GTlfbOK9stdmU86g/9EncYVQRLSj0co0I2AF
+ cQyGZhGEJvWABz+tdRWXRN+82hRzYeZksJoazo+2W/2zV/cx9MLBcyKsLDO8qHHv3FhVd6pVM9y
+ b4Xdviyl2SUy1Fvb0APUYLfemvBVkhiHAWns9IAnvVCI0Lo98z+szZABh6dAKxbT+WKodrZZdqd
+ 8N4hlB9JJ46j0v0bG6FY1faA6ky420vKZ2DvSq2E6YGGju+q
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 06 May 2026 14:24:12 +0800, Jiawei Liu wrote:
-> spi: ch341: correct company name in MODULE_DESCRIPTION
+On Wed, 06 May 2026 10:51:44 -0700, Randy Dunlap wrote:
+> spi: s3c64xx: fix all kernel-doc warnings
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
 Thanks!
 
-[1/1] spi: ch341: correct company name in MODULE_DESCRIPTION
-      https://git.kernel.org/broonie/spi/c/4bacec231752
+[1/1] spi: s3c64xx: fix all kernel-doc warnings
+      https://git.kernel.org/broonie/spi/c/88f731e79629
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -1,95 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9ECC30CD89;
-	Thu,  7 May 2026 08:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938EA3B584A
+	for <linux-spi@vger.kernel.org>; Thu,  7 May 2026 09:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778141596; cv=none; b=PqOZBCCJz9axiZjH4yR4/oZMzfRdY15L997KLNZeriBVr9oyPFFuce2nmTyOl8py/ATwuZEWObLQvEO4AbVOSXpcCuIWVJk+k2Op/QH3G/EDNuN3cHijtvGxjekRx1Dnq9YEOKo2vlxz/5IMYeoXn3fEjK4QOHpD3rhxR49JbJs=
+	t=1778144455; cv=none; b=QaFoKExD5F5y2m2G2KJhTEno6avzpyr11+ab9L5YCWP8PxXc/Z2C1EDFJKzrx/DHdJ7OJLTw75LnjenFokVimv4iO13bv2y8gu+ixdzk+PsbR+i7H/d2k2AYjhvxuV8Fe2+26yAJ3MUp6O7+LmjdD8AP/JnegnO6TuTsRLXD3Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778141596; c=relaxed/simple;
-	bh=94EURvBpaB/qpYv6arM6rRi/1tApSfXs4S6MvcECnhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ggwf0yfUtko99icPLy379AlbmrU/sUHVep0l2AiFmP90XCbFKXkmUIwJuN/hJOaUSJx7f+KI3p+gQRKnOtNhAzaGRSPpm6qeqtta1kJx/TllmQxbMde8fG9YJxq65z/WJclQzNS09e0tEPD03F3AOUBbAf51MSqRyZBzAxKBf9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMVEIOcn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778144455; c=relaxed/simple;
+	bh=mN+NSuDJz8WTPeDHBMciQnWPvOWAjrrvQPlb5mz1j9o=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=ET/8NTqqoXbS63oBc9GPxrJ28pRa5F//YxvNk9TYFsphHfNrcXecT/qDixbFfw2WZOgyIpfOYXy6hRK24+8BWZsH/XYowNn7OBLFDsxcp8opOqW8/IJt/Ag4jkevoS0MARtTBjx8MMqAsWgo4yEP1XeaOIBxcJ96RknP68Vl+pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mF3TjCiS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMVEIOcn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A84C2BCB8;
-	Thu,  7 May 2026 08:13:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mF3TjCiS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEB7C2BCB8;
+	Thu,  7 May 2026 09:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778141596;
-	bh=94EURvBpaB/qpYv6arM6rRi/1tApSfXs4S6MvcECnhQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jMVEIOcnAq5xHdT9rmQAFkmVgwQEJYmsfBjuY4/9QetcrIBztdU8besi1tRZWOD1J
-	 LYBg2SdFguiU+qIAfWw0N6ss8p3MAiveP+ByjvHjgWbvbnWBlDdcdG0ogCSM89K7G2
-	 xFnaBzeBwTiMP46eQyzpEKo6VzIz/5Bl516UeYsRythG0b3Htu4OWxocWAEKu5QIih
-	 YXDiKYwjPil2tKvrvnVaulbLaGBfSvGhj5VNfzgS2sTbPjbsh4Zh5ELS7gYe8Xrvn+
-	 fddeswvFHTiDH4RKb0fQfIPFJ3uJvMts9Txp6vPIoXf2+udbIo4PQ6qa/0Gwfj6Son
-	 2stLEYb2jGBcA==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 60B971AC5891; Thu, 07 May 2026 09:13:13 +0100 (BST)
-Date: Thu, 7 May 2026 17:13:13 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-	MukeshKumarSavaliyamukesh.savaliya@oss.qualcomm.com,
-	AniketRandiveaniket.randive@oss.qualcomm.com,
-	chandana.chiluveru@oss.qualcomm.com,
-	jyothi.seerapu@oss.qualcomm.com
-Subject: Re: [PATCH v1 1/2] spi: qcom-geni: trace: Add trace events for
- Qualcomm GENI SPI
-Message-ID: <afxJmZ9MkP5eJkQC@sirena.co.uk>
-References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
- <20260506-add-tracepoints-for-qcom-geni-spi-v1-1-c957cfe712d1@oss.qualcomm.com>
- <afvkiT50ZUEXZ-YO@sirena.co.uk>
- <e4651363-7c1c-4ae0-a97b-b64841424c83@oss.qualcomm.com>
+	s=k20201202; t=1778144454;
+	bh=mN+NSuDJz8WTPeDHBMciQnWPvOWAjrrvQPlb5mz1j9o=;
+	h=Subject:From:Date:To:From;
+	b=mF3TjCiSaFvLlooHK8LaNO4ZFuKkVFMtYH/Ll7vx17TU7NSQeu7XypzC0F28zO1Sw
+	 1l/YuezADFDky3wU9a4AMwQlg5aqDfZ4e2uxKqyoP5ACBOL0kcLoPRB5jPvBR3DqSW
+	 muvnufftVoO3qWmlYP0IIjoqW2fe8R5JrpghA/4ZqJluxSrkeb6BndCdksFHYgAJ/7
+	 Q0aPyKOmr01OdFk0wrL6b+fSmpdSdMb23+9IZDipv41+xWqJY+vzoRU6etzJGR4/wC
+	 /1RSq5GyK5T8Qei54l0/cSSE1PoX43o63Ipw98rSHouC3DJfgGPo6VO8Y3uJOXcitg
+	 vLcpuj8GWAA4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FFA939308CC;
+	Thu,  7 May 2026 09:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CXGHJEGZJRzdqvcU"
-Content-Disposition: inline
-In-Reply-To: <e4651363-7c1c-4ae0-a97b-b64841424c83@oss.qualcomm.com>
-X-Cookie: Truckers welcome.
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177814440379.3420432.1092617515292892216.git-patchwork-summary@kernel.org>
+Date: Thu, 07 May 2026 09:00:03 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Patch: spi: amlogic-spisg: drop misleading NULL check on exdesc
+  Submitter: Stepan Ionichev <sozdayvek@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1090637
+  Lore link: https://lore.kernel.org/r/20260506183513.482-1-sozdayvek@gmail.com
 
 
---CXGHJEGZJRzdqvcU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Total patches: 1
 
-On Thu, May 07, 2026 at 08:58:02AM +0530, Praveen Talari wrote:
-> On 07-05-2026 06:32, Mark Brown wrote:
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-> > At least these feel like they really should be generic events, there
-> > hopefully isn't anything driver specific about them.
 
-> Initially implemented as a generic event; however, splitting into separate
-> TX and RX events may be more appropriate.
-
-> Which approach would you prefer?
-
-By generic I mean this should not be driver specific at all.
-
---CXGHJEGZJRzdqvcU
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn8SZUACgkQJNaLcl1U
-h9CJOwf9GQwE4WHnloSJ6SGx5h8PlOn3Me2DgSuTUn+tkIXBMhWopzwxzrdLcs0j
-y/geHWa9Wuw+Zr2KXhS2t8mkpODHldshlbPjusaZ0y4cvy5va0gP0cUhYKoizJH/
-7E30AQ7HqBonTW8Mpt9UCiDcw0JPDmqBySmf/tg0s/hnJJbJq6gF3R2xSrGQvo1c
-v5yx/lV+kAJQlvcPhpOrAB+Xv2qUT/SrP8uQ69/Nyw7GGBDZixV1Y0hUcvHaT9xM
-WDw4vnDSizjiqGrfjJ4LcdazIZ9WgEz0MV6aNcSAMbuzGTxuKyj7MDSbPE49iNCF
-OGmQSKWAk+bSk5ZmS4Cg62RyvxGfRw==
-=rJdk
------END PGP SIGNATURE-----
-
---CXGHJEGZJRzdqvcU--

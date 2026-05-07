@@ -1,155 +1,155 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0AC4317D
-	for <linux-spi@vger.kernel.org>; Thu,  7 May 2026 03:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D973537F1;
+	Thu,  7 May 2026 07:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778124538; cv=none; b=LNfr8nk3+5edyoq8vfHtH1E4XvIfdH/dCX2ixt0qqRm//jDpgMthj17xjb5BLOJ/n9BlD12dZg0CQBBdu9mqnr8UZMzN3cXf3CoaBfguh8buSmYtQI0+MLm1xFVMeqD2NXyq55ogSbU+6fjgJPcjL3Io06A/LHVQw8MX9yIlGtY=
+	t=1778138638; cv=none; b=d42dtdxyfajBuKMlL4kpG7YWqjFgvHhqeK1JH5oYf6MOr8O3xcWV3/odBcWGDigDkU9VVOOkoT1YSDj9xJjAT+1PaffH84n0ASGPkYG0CU5RYsbbThrxh6wGGEMJSW1lfAMcrtck2oSalHJUtFJEEJWGroWNRD3Vgk559azAP+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778124538; c=relaxed/simple;
-	bh=gi2ObkCraQrs04SQ8ny/M/6gQkScLLeAkIE525W0jVc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lB8feH7gIqGgrn+N63X7cvzzo3QJy/DPChtaDNOek65zays6UiwHSfIleAaZnTkavGILg/1bPxYiNZsxH/LUl4Su4g+ToLS/TszuMJgr/ACXvZSUHvOAjqWGBBXrCUPLDZsBIO3l4Wx0EEUer6vTWKuCL11aDvbmNxVNLqQ5o+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FBga6zSa; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=fWqAuJrx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1778138638; c=relaxed/simple;
+	bh=ag2e4rubDHljcUbsB2BC/MHj9ZFXFOBLhTjLy6JSlhk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Kjzk/66yqjtWd3q+3Oy03Ub3KoFO1lt39ivhrMzshUXwRIUHb+sGyoz3OIpqfhD5MVY6j2udwhY3xZB1Xyv086MfNaZm63QwVEjvNETFa9sAayuk+Oeml9zNDhjF54SjaKdLCqjMrhSI4gYWi26wuKDrD+jGwgU3nn6cKLFqwe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZLJf7HFo; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FBga6zSa";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="fWqAuJrx"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6472ZSXL1953101
-	for <linux-spi@vger.kernel.org>; Thu, 7 May 2026 03:28:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3gqWZYqm+m8nGCsJyj2+TkIzkgEHJKGfXdeU5g5E6Bw=; b=FBga6zSadj7d/WdR
-	2qYBsk60KzIOx9MCi7xA/m62yLD1w+T+Uw1UxbwYj7MS0q90ie+/sJs9xO+83SLi
-	iIEY+Xo8b7eT2Jx0yltelgMBa5ni+zSaVD1sQvel+i7oXvV/GqbgY2l4bZ9krtgO
-	2lDrl+uOZbI7FppHdnhEi3dO7FkdqYsJHF95GOF1zvVyhrydPSXK0z0H1WUNOilD
-	Zl5i1+NvF4CAlnoOwmdvaWb3QTmzjAU8hCB6wesRoPvnG1foIVr8x4RnV5yIl7Oo
-	CoAqDsaQcfqYxPL/dkngQRV0DaeJSpizvLYgErMS6ZZUlLQlBqI9++FUym9VXSin
-	DjYonw==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e03jc3dwe-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 07 May 2026 03:28:56 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2f5943ca81aso1535897eec.0
-        for <linux-spi@vger.kernel.org>; Wed, 06 May 2026 20:28:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778124536; x=1778729336; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3gqWZYqm+m8nGCsJyj2+TkIzkgEHJKGfXdeU5g5E6Bw=;
-        b=fWqAuJrxaIff0+TfXSgGXkYmkX4IqCwFY5/jIp/bCsx6vAdfsYI2dqLysBaRfhVEVI
-         +tc/hooq4HoBdiVKO5tU0Z+l7oPvx6WgkHyyrR2SGxLw/7u0dAeEjL1LkmzYo7QfzMcp
-         pQhr2QPPnCbbI6Toz2/ZMYLSQxK7TSNGq5SrUFAV2gU7GSkT7lr/54GSPzJuRtKI4E2H
-         Ua+C1vHtbYKWWWiuKvJeLX+KiorShj7iOryMK53xibnz5pJznjsMnMMvtQ+//ADq3S8W
-         HqgltY3922jQVNfqbbISHF1NoqlJ/zHpHfpufF+3OydA+cBBA0wOeAuj0fhfietjrHFM
-         z5dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778124536; x=1778729336;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3gqWZYqm+m8nGCsJyj2+TkIzkgEHJKGfXdeU5g5E6Bw=;
-        b=NXAK9yB2NfTm1fg8WGoSUrUTRZ3nWaM6yjO/rJCRtXiOkDDQNCfMUvzy9NQpdETvzA
-         X3NA91d6VD3cztIIFmCCYcinYjobCD+2cPNmiQplmn/F1Gh6niw9aeITNyIImVAdpHVA
-         +dIx4gveSlinkb//kEnViFK8km0YF1ETT3LazfqhJkevZso9wyf1wrp0jGgJ7I1CNh99
-         fHNzBrfI2XRpkJn0pwVsmljw0gZZIC2LZvlBLLy97gOEDGoYMrErNTACYA0270tnw7fX
-         niZ1mAecWDMbtFhReGvubH59N2UF0UX/rgo7uHixIWmQ0oAy6a5njWAh8QBDWjf46hmB
-         x5bw==
-X-Forwarded-Encrypted: i=1; AFNElJ+ov3IyAipHrY1gnpefuqHPW5KlE6SS2za9P5vpxqbokjgplz6M+yNR7r/k+lfJfvm6swi8KSzJlDU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2oCEMxST2CKgdMTjx6849xWRr+5Ly5R6byNq5z2zWIdzkKeac
-	jh051QmaU6Cdppzu9emnwzsR/GBxgMAnxHrsJO4IfvmBr57fbJ9RVcTuf6nQHArXrAW7o4j6CJD
-	Vx8Pk6uMAVhuRAei/7ywsoeaKQ5my5n0Go+JgScuznaorSAnC8Ils3yf4Z64N8IU=
-X-Gm-Gg: AeBDietCf9hiRwxdS5bDDs+mUq4h55+kWohUMCw4rU+XL7dKu1/I4TOLiA1/mVS/jK5
-	1+gbNU+t5uE8fK1cJUzbxc2GE+BQrQNIFyfgfd4Xhs8rcK8rsQPU78hjqArbce0a+arCjED48B7
-	qppUrKrDzKWfCQxj2K4xJaIdWBJOPXN/6Xnb/BaUnItkisHotbxl8Kf+j9u5UOdvMgHuJzvnoDd
-	41GMv0Gqi8E9uYRWR1o8Xg0rb15nxJ32DBLY7Cgvgin7jmYhttQ2Pe6ImBtJ2FgGeNjwUUMXeab
-	vpFJXF8KKhexrnf5jqYJD8VnGEgbR99sQ1YkcPNfUdIJZPmjtKFix85i2IUaFgRtuRz3Jsb1Rqe
-	/CS6uzKrgaWK607vzvgswwxOXH5968EgcrMoD+dDRHGKNryPjpjAV6r/WHPWC70Y=
-X-Received: by 2002:a05:7300:cc90:b0:2ed:6f94:9d94 with SMTP id 5a478bee46e88-2f549f5f684mr1839112eec.19.1778124536028;
-        Wed, 06 May 2026 20:28:56 -0700 (PDT)
-X-Received: by 2002:a05:7300:cc90:b0:2ed:6f94:9d94 with SMTP id 5a478bee46e88-2f549f5f684mr1839097eec.19.1778124535413;
-        Wed, 06 May 2026 20:28:55 -0700 (PDT)
-Received: from [10.218.14.97] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f56fd8fa8csm5660643eec.21.2026.05.06.20.28.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2026 20:28:54 -0700 (PDT)
-Message-ID: <3ab480af-247f-498f-95f4-ab17526876a5@oss.qualcomm.com>
-Date: Thu, 7 May 2026 08:58:49 +0530
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZLJf7HFo"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 48A98C5DC58;
+	Thu,  7 May 2026 07:24:41 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 90CF6605D0;
+	Thu,  7 May 2026 07:23:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4F651107F1B9F;
+	Thu,  7 May 2026 09:23:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1778138630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=KuHg3bpGpRy0j8zZGsR4xMbCeq+40KQNwSqwL73wrxg=;
+	b=ZLJf7HFoaWrA+QvjHT5Gh6TZeRPeQK7D9TRFNzAxGhp0EWNliZg4AwN/3MS8qxZ+WzAXXq
+	T6wrHBfmoxlIOCE0LR6qB6nNclEBnM62oa0qHR1b3eIxeSfrgMTMIlcTQI7nqZge15D0l+
+	sLj9R0qfJuv9VoGTvaYtmVXHcV/7jHrAKRNpo7q2YNgBW2BMI67agx51RlZqky+pM/DE/w
+	2FWDjIij6E4LO6ldmdu10VRhQ1jdNnY1LWBRw2nfeTqWN3+DsPlyj7HsjlEMWCYQvoebbU
+	LgYPnGZiAHv/HKhw9qbr3lFn7WqvriiVxW4qqE4OwbN85ifqMP1iikrTMszpLg==
+Date: Thu, 7 May 2026 09:23:26 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Kalle Niemi <kaleposti@gmail.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Frank Li <Frank.Li@nxp.com>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Ulf
+ Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>, Len
+ Brown <lenb@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Dave Jiang
+ <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>, Shawn Guo <shawnguo@kernel.org>,
+ Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org,
+ driver-core@lists.linux.dev, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v6 20/27] misc: lan966x_pci: Fix dtso nodes ordering
+Message-ID: <20260507092326.2f8e3b47@bootlin.com>
+In-Reply-To: <CAD++jLkFu+Z22QBFiaa9S+Epeh=RJZOYX8BOLVDFw4bhEoYF1Q@mail.gmail.com>
+References: <20260325143555.451852-1-herve.codina@bootlin.com>
+	<20260325143555.451852-21-herve.codina@bootlin.com>
+	<CAD++jLkFu+Z22QBFiaa9S+Epeh=RJZOYX8BOLVDFw4bhEoYF1Q@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] spi: qcom-geni: Add trace events for Qualcomm GENI
- SPI driver
-To: Mark Brown <broonie@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        MukeshKumarSavaliyamukesh.savaliya@oss.qualcomm.com,
-        AniketRandiveaniket.randive@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
-References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
- <20260506-add-tracepoints-for-qcom-geni-spi-v1-2-c957cfe712d1@oss.qualcomm.com>
- <afvltFJzKLaO9weP@sirena.co.uk>
-Content-Language: en-US
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-In-Reply-To: <afvltFJzKLaO9weP@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDAzMCBTYWx0ZWRfX2DSlaDRKVMFK
- CTzH8nXnHfJLG0sBNuv7wP90BUkuI36PHTxZhseStJqNOurNx5eAWKGuElcI86DLTN89Z5ivryh
- WkFdggXvOmKvVhtxaoilnSlEXD4KXus9yzLI/zZwmaXx4gNUCKuG0zyuxa5DoMYob2S5PRiA3IN
- 6o3zitQJA4OisBFzlN37lTAAvu3uO9WAkrhny5ntg9uJvFQXDILKHxrjdYH3XjjisZs1WzTE4Kj
- tPZJDK0b8kmrTdRXz90mhZAkI11y/MwCSlyaGGgc9XxYmyEu/zNSXTbuii97bdfDY/O3L/t1rug
- pLCSivdU8rfjj1jxbwtz15WZhLsDYQTLDTPmtlVL/oSAmoGYPZMrLcy/k//xwVyPUXCSzLU9GTd
- ZXtz4kkXZYNEkXtQBdJMrfv533fOharr9xPI8+nhTR3WK/3TMujgZtSIBmURInU6MRtgtURb55M
- xHwh3gB7CbVKtDBylLQ==
-X-Proofpoint-ORIG-GUID: 7Y7HGeE_ZrIOlEl1wLe1TsAN2AvjEKpr
-X-Proofpoint-GUID: 7Y7HGeE_ZrIOlEl1wLe1TsAN2AvjEKpr
-X-Authority-Analysis: v=2.4 cv=EpHiaycA c=1 sm=1 tr=0 ts=69fc06f8 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=1VmPbvypwqz_8yqDh7oA:9 a=QEXdDO2ut3YA:10 a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070030
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Mark,
+Hi Linus,
 
-On 07-05-2026 06:37, Mark Brown wrote:
-> On Wed, May 06, 2026 at 10:59:43PM +0530, Praveen Talari wrote:
->
->> @@ -717,6 +726,7 @@ static bool geni_spi_handle_tx(struct spi_geni_master *mas)
->>   		max_bytes = mas->tx_rem_bytes;
->>   
->>   	tx_buf = mas->cur_xfer->tx_buf + mas->cur_xfer->len - mas->tx_rem_bytes;
->> +
->>   	while (i < max_bytes) {
->>   		unsigned int j;
->>   		unsigned int bytes_to_write;
-> Unrelated whitespace change.
+On Thu, 26 Mar 2026 11:33:19 +0100
+Linus Walleij <linusw@kernel.org> wrote:
 
-oh its my bad. will fix in next patch set.
+> Hi Herve,
+> 
+> this is nitpicking, but if you respin the series consider the following:
+> 
+> On Wed, Mar 25, 2026 at 3:42 PM Herve Codina <herve.codina@bootlin.com> wrote:
+> >
+> > Nodes available in the dtso are not ordered by their unit address.
+> >
+> > Fix that re-ordering them according to their unit address.
+> >
+> > Signed-off-by: Herve Codina <herve.codina@bootlin.com>  
+> (...)
+> > +                               switch: switch@e0000000 {  
+> 
+> Recommended practice is:
+> 
+> ethernet-switch@...
+> 
+> > +                                       compatible = "microchip,lan966x-switch";
+> > +                                       reg = <0xe0000000 0x0100000>,
+> > +                                             <0xe2000000 0x0800000>;
+> > +                                       reg-names = "cpu", "gcb";
+> > +
+> > +                                       interrupt-parent = <&oic>;
+> > +                                       interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
+> > +                                                    <9 IRQ_TYPE_LEVEL_HIGH>;
+> > +                                       interrupt-names = "xtr", "ana";
+> > +
+> > +                                       resets = <&reset 0>;
+> > +                                       reset-names = "switch";
+> > +
+> > +                                       pinctrl-names = "default";
+> > +                                       pinctrl-0 = <&tod_pins>;
+> > +
+> > +                                       ethernet-ports {
+> > +                                               #address-cells = <1>;
+> > +                                               #size-cells = <0>;
+> > +
+> > +                                               port0: port@0 {  
+> 
+> Recommended practice is:
+> ethernet-port@...
+> 
 
+Yes, it should be but the DT binding [0] says "switch" and "port".
 
-Thanks,
+Those node names have to follow the DT binding even if this binding doesn't
+follow recommended practice.
 
-Praveen Talari
+[0] https://elixir.bootlin.com/linux/v7.0/source/Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml
 
+Best regards,
+Hervé
+
+-- 
+Hervé Codina, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

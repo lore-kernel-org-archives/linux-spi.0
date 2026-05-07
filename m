@@ -1,268 +1,133 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010068.outbound.protection.outlook.com [52.101.201.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66D6328B75
-	for <linux-spi@vger.kernel.org>; Thu,  7 May 2026 17:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778175231; cv=none; b=OroQ0txprz4Ricpx4mZkdseQybDlDBacbdsv2D0Krf3T7wp8TrFGxFC7npxHruLDAeGNYdTq1mHa2/+V5GC9NojPcgEaSiZBErjNDfRMuw9CcpRzkWXax2OI80aw1yDj7XmfQmSF8dF5ps9voWfBsnd36SNunpY7h4ULF0jneII=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778175231; c=relaxed/simple;
-	bh=cLQZJH2kGtnDZyrn1tg3E2cgngZlOy76lIc1/a36KWo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nlNlx5+quzdbvk87X5KW6qbtxveG+a1+lzSG0ZGEg4AmrIZSMVbTRWG9HX0FEqNZ0hewKmQdh3jQOATIRJefGW84VvS7D5UlZJnojBBdlLJIQ7Zp4QpRC7TGaVdGrms20C7lvTOXhFZraJjN0VzgM8cPXRyMHW/TReeJCqKbNkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NiiHzniW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=j8+Z/Dpm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D473264D2;
+	Thu,  7 May 2026 18:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778176941; cv=fail; b=XtpcYXwdOQJn8h4poQphbjSjkA/o/hVMzdR0PJWQjjHhRp08QcmT2+jcsdxIQf4bsu3Om22Wi3ROhxp+mz75x+lHwOJ8OHmEN+o6R9JwlMuuWDxuAcYyqF+F9rbs81xSJ7YSdrUn0Gv7VQNhQYlsJM3rKkryfRiV+nzLFr8rp28=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778176941; c=relaxed/simple;
+	bh=cD4cCUmoFjbEZtGcs3WRgtK/dzo8kKJkIRkUAnTNduA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oWR8Zx0jst6eYfT3vgxztBaNjIEiZTeeNu89BeofbijDzyIKGyd/xmsmXtUlTqForYtz3gLw2zeeihnmvEzQZXqYUExD3rLpwj/mDRWO78aCUC7HaHkEmRAQ2qxMlk5C6gCIogV7y6lc2zK5wYD5tiPYT7n4I3wPisaV2Y6uG18=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=js1tFMjV; arc=fail smtp.client-ip=52.101.201.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NiiHzniW";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="j8+Z/Dpm"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647EITrX1424448
-	for <linux-spi@vger.kernel.org>; Thu, 7 May 2026 17:33:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fsf86z252hMHtoLYavCefPTQKf7GBUSrOYzr87mZoo0=; b=NiiHzniWe8XPtoO+
-	k2zosy55anP+pxjUMCfpPcPKPlkMuirP6ETTll6iRH+mMryJneYpZVd3MO/OKwsS
-	Ze9Xfhvnin3VULp3DJmXwu2WWksdCCF6OrNX4VmExftuNO2mpypXr8CnsqDXOarh
-	JVDIdegiIo4HoXGnfy/Lol1PW6BAN+bBIuvGvHStxfZYsA9tpZPQF13pGe5Ni4Af
-	0kSJr3RBilAYHC0SDRX/+JfebjooCvFMBY/3jzg5TA7YOqRzOwKuomDtxFwylLF8
-	ye1bD8ZytO0kaFhSe9Lnsfe/aU2omjl6Codk3ft0z36wmhX+CfXWza/IQpj37Jqa
-	zF8qNg==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e0pqftcf8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 07 May 2026 17:33:48 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2ef62078ee7so1368498eec.0
-        for <linux-spi@vger.kernel.org>; Thu, 07 May 2026 10:33:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1778175226; x=1778780026; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fsf86z252hMHtoLYavCefPTQKf7GBUSrOYzr87mZoo0=;
-        b=j8+Z/Dpmz+mgxNfSMolwuFMqjWrfbWijLqfKT4YHB0Cdq/Bydcz4xDt2NUU5aHYM6h
-         3l1RtSMwTTd5xD0hXsFyH0WVnuV0x4r0R0ObBH4gLH8FXiY4Dy2htLtaE48P5rka27au
-         jzk212RRZpwBG8/x+veeyNlkN27g6ij0fCf5wy+R2spZIeVhll5dPy+dgG7dVWxJdKZ5
-         zCFcfD4W2fkCX7TiUCOV1h5Gk2yIhP6S9CwRZiUMILJodqVhVueNDd8y5XvbKnRBHIu7
-         MAfR0bp+8x7yyt85Q0anksyrh66zb5KDVLELrfNJYigl7qiTwMOUO82O+9WDemg5VL29
-         al5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778175226; x=1778780026;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fsf86z252hMHtoLYavCefPTQKf7GBUSrOYzr87mZoo0=;
-        b=nnjNE/vVVDdskuCnDC6gJAkjLwuvFFnZyQBfPa2NMGD0i5kKlkAAyliC5hpUmZAJq5
-         N4ywLUiMDN0ry+ktdqAM5EoQ8c1XS9o/WcNOVaI8hvZCD7jB6ji6NIsWgWuHyLOr3w3t
-         gvl+iah+naInY7iCPFvfbRG5/Ish81rUDkmHTu9AnHfxb1NVbwMc7aTTVU6Q4X/dB8wB
-         1SCopDEpfnsMGKSUZgyA7aBxkcAnqCY8M0XBrwJpEhgRaE9m32l3aU341xhYEHvccPMc
-         TnJx3KwNyGokxJZ3m3Ylq0KihmwOtob3emuPiUnaUc/tKB8wLKSI38IgJwKU9HUcAzy8
-         q0gg==
-X-Forwarded-Encrypted: i=1; AFNElJ8daxiD4I909Jm5z5tcKdTzWoJ39OvuDneAMaFUy7cT/ATDeUxf9HLtKiM/ZABAxseVhlEO6XzsFeQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkREp72aWQxeUIYNYw0siYrY5tsENlxn10RAWFIWfBeE88PRCT
-	EJ3eakEzw38OqzqxzAHdoxx/I0h8yiR4Rj6Ec/9zr8O7iZgMOcbNk2l3YxAfiQlv4zKDx5JrZ80
-	8nML20BJejjeZqnQzu/ggb7GD+IG01HBMjkD+DUhJ2xdQWuL28kmgV1yD7lPbwLA=
-X-Gm-Gg: AeBDiesD2lq43pv+0JZTrQz8Sm8JyCuK01FhXvaUcn0JH47nJn569N9BMPXvl/dwQ5C
-	TeI1i6qye3oaoQgk+h6tWydWLVt0iENE4n/P0h3jlSmW4ZDVmJZWzgFn9uG05BhXEsUIVO/tqK9
-	p0+bKjTNjUYe887GV3ps6PQYonFC46TevywBTAY/oobra9ddoR5SYttrWjS9Vb4AkHgx+9P2xGT
-	Lc/EZUAXbDrE5sgvpOBM0fQH6YnNJO0JtQuKVebKF07WbPu0YNZuVR/BjCPLBw031Q4USw7Gfcn
-	5LdELd135uJs86Uf4TXuqYpS5IvwJDA0d2joByJ8VWDuh0JZA9PFAwoOpFgCMAXMA0sUVPDjcLV
-	cLI7Os8juE9wbFZ4Q17+1gw1l0TkYFidVW6SETmQ5p6IGsuqD+vsVDQ==
-X-Received: by 2002:a05:7301:3f16:b0:2ea:e93a:ff9b with SMTP id 5a478bee46e88-2f54919160dmr3866044eec.13.1778175226283;
-        Thu, 07 May 2026 10:33:46 -0700 (PDT)
-X-Received: by 2002:a05:7301:3f16:b0:2ea:e93a:ff9b with SMTP id 5a478bee46e88-2f54919160dmr3866033eec.13.1778175225596;
-        Thu, 07 May 2026 10:33:45 -0700 (PDT)
-Received: from [192.168.1.6] ([49.204.109.195])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f56f7967cfsm9440324eec.19.2026.05.07.10.33.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 10:33:45 -0700 (PDT)
-Message-ID: <59e36f20-891d-4a58-8cc4-6822d03daa23@oss.qualcomm.com>
-Date: Thu, 7 May 2026 23:03:39 +0530
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="js1tFMjV"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ElnMCvO1jMoPYOJS7kx4Wkqc6n9bvhyJ/bICxYx3MuOe0Iq+vvKIW5EL+nfYCfn4VRLxDEY6fgOKF9n2xMA4ayG9CDyk1b104IKiOKxd7kqBsO1fj202aFkP1m8eiOFP/4ar/ankj47VJ3JWMR4MKQstUq4fy0qxGQ+W+yh0MX4FP2UZYtzdUsrdIy/LI8j/N1sBow+ShdC5cAGhccH66lwTP9F1RjYvBpAWGTQOvgoxCF7MYIUdMOZ5WFQg2ht1fhB7kSiEYoT1OkLwbKKlU+DK+/xTo57150Tn/uvRzJSnaev6ov9Fw+h9yhXhpHoTU/felnrixtkfjeQ6/J6Lvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rI75TcU5g+KOOCM2uFyeuWmbXNlzNKLxgi1ak808JDM=;
+ b=XWmAwvzqSqu92zPiYv26uieMrgf7pYIqtdSZmdqAoAMKBUuP3Q3wAB5g4WjCLvmD2gqYtsvt+WEphWydRF40MujQAxmXFq1JpIVGyx/TI2aFvMb6vNiBj8JNb+LBj6Z4ziojIPmPTw8qPO3IKmn9gWYLR3gwuWYXw55p3YWgVMN38P1cPA2UZ/BbU1etT/wYmYT0a1+1vCoyUGX49FJVZI/fblJB5jXtj2taCZ4/7CAbBBfmq+MZvPLkJBfqcqazfXz5r2QZ1aoZmOBEQEUrRs5UlPG3HyBg1FgMWQQmNkxwD4reE8wVk95yHnGA/tdNREEkMiKg65IrwP1YEJ3vuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rI75TcU5g+KOOCM2uFyeuWmbXNlzNKLxgi1ak808JDM=;
+ b=js1tFMjVfZgNZQ5LWnSbQiC3mOMl1pckAdWIR8Wu7NNQXXClWvcuwgiBc51CKJzyLO0nE028qN4ttcppEDZ9AA7pu1mzudXFYd1XghX0MXBvqX6PtC+j9040j5i357aR0+ZEkCP05HXQ2Dfzme33p6ZB6BRp8h7ue8TuGvYmrs8=
+Received: from PH8PR07CA0044.namprd07.prod.outlook.com (2603:10b6:510:2cf::12)
+ by DS0PR12MB8220.namprd12.prod.outlook.com (2603:10b6:8:f5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.16; Thu, 7 May
+ 2026 18:02:14 +0000
+Received: from SN1PEPF000397B4.namprd05.prod.outlook.com
+ (2603:10b6:510:2cf:cafe::79) by PH8PR07CA0044.outlook.office365.com
+ (2603:10b6:510:2cf::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.18 via Frontend Transport; Thu,
+ 7 May 2026 18:02:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF000397B4.mail.protection.outlook.com (10.167.248.58) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Thu, 7 May 2026 18:02:12 +0000
+Received: from airavat.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 7 May
+ 2026 13:02:10 -0500
+From: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+To: Mark Brown <broonie@kernel.org>
+CC: Akshata MukundShetty <akshata.mukundshetty@amd.com>,
+	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] spi: amd: Set correct bus number in ACPI probe path
+Date: Thu, 7 May 2026 23:30:51 +0530
+Message-ID: <20260507180051.4158674-1-krishnamoorthi.m@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] spi: qcom-geni: trace: Add trace events for
- Qualcomm GENI SPI
-To: Mark Brown <broonie@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        MukeshKumarSavaliyamukesh.savaliya@oss.qualcomm.com,
-        AniketRandiveaniket.randive@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
-References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
- <20260506-add-tracepoints-for-qcom-geni-spi-v1-1-c957cfe712d1@oss.qualcomm.com>
- <afvkiT50ZUEXZ-YO@sirena.co.uk>
- <e4651363-7c1c-4ae0-a97b-b64841424c83@oss.qualcomm.com>
- <afxJmZ9MkP5eJkQC@sirena.co.uk>
-Content-Language: en-US
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-In-Reply-To: <afxJmZ9MkP5eJkQC@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=TJB1jVla c=1 sm=1 tr=0 ts=69fcccfc cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=TOgzk8GLwxQW6KRttr6vHg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=1cC0H0qRpQ7oy3NfP0gA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE3NyBTYWx0ZWRfXz3RXeCOVTriw
- dP/gICuEwWQN3feu4xaWkSY9XkRaayUv4JrMX3dpBfe8aE5cl03X75hkadx4QTM2vGBFBZxMiwZ
- VUW1Zqo4/Su0Rqji7slcBxO97EAd3zXQrIQmROR6SST15zQf17cW3xXhPP7hw78KEXetfBEWJfG
- dIDI9RY1OZdj6VEJknVrA4TN1OQBWOmp15B4HAD2JbCYIX3E1r/gVy+5c0D/jbSIQCHz9PY6n+J
- UqxPQlee5Wurk49JNArOy7a5RV9VuVTvc6dXX1Q6fiULNJqLIgGAfX2lmDhCnSxQet7cxDCwMmq
- poY7aWhgsZZInrWh/NPINWOdW7OPFrXsZBMeGy7WNNB6Ksk2yWNqmP0Lo5dZ2X17cxPUEC0jb9n
- MkF3iJNa0GR7xby0U1zbyiNsM67tQG/ZAtVgB/IV4e9SOrB/irPEJ+SF05cnmgtvTKKtUb9dXbg
- nAjo4kiXGLcx7XAy05A==
-X-Proofpoint-GUID: WR6NR9lKJ5EbDl6eOj14jded_hUw-uQU
-X-Proofpoint-ORIG-GUID: WR6NR9lKJ5EbDl6eOj14jded_hUw-uQU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 adultscore=0 spamscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070177
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B4:EE_|DS0PR12MB8220:EE_
+X-MS-Office365-Filtering-Correlation-Id: f7c60c61-975d-4103-9378-08deac62c396
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700016|376014|56012099003|18002099003|3023799003;
+X-Microsoft-Antispam-Message-Info:
+	WAIe19HD8M6LRNwRBeCyhpIvDmAgwHXT4RVixCfBp67lWM4kbyzibuyq2tocaPKTfSTNdBgBsCxkq0AnA0qBJd28tdOofx5eoryOf9PUM6ffFAuQ6yMudxBI0w1s7/FjwW0NGPqxGbGlr4Prk5wqRsQNYtuN5e+udMISIk7SxN59r1Ye3kFQsx/Dq0Izqf0bvFr8huRUoNQmu7HKyqD8p14NiwyE/XvkMLnP3DjyAubZRcAOO1VjWBTsgLADY8t+O/XcoeIbf381YfCZQXvdOQY8eRataOX6tpNAmkl7kLHrKOKFxILKMea0NkckMPAiQLgYBhfKpYNJtHKbPxPwpdMICNOAvYaHZhfI5RnGwool/dt+hyNbM7wCtixOWPHck5zorMZRm0N/q5vZyrA3d11bpeg8s55T3fVpZWMIl2z/sQ9yWw9Qt3Bs6XoTOKfgb3nAE5WtlTEUBlZklO5ZoxAmnYrEIz99kR4cR3NqfGPBchQYgCBGKlenZYuWPZtUAglLpedZnHAjitk/cBBevu2DNUTieu40j8lE1mvQqgbScMNDfH7jzBsaVsLtqVEU6RPNru9FIp3BcrDZ78lGXkE85ssmZHatlLTB50Gy0hMb9Rs9bzfcwl6Fcx99RCWTKA1+ES8dn1G51C1UhRnE6sWtBYqswqlE4bvyq2omOund2xiVbAOPW0HuyCzbyJHoItEwfFcNNOjM51eTcMzo4TAFhc+Wvn3F7Pg0q2jKNlo=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(56012099003)(18002099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	6W3G9Ak+CpIYNO5eILVsOC9Y19mDN16hdkk7u1lb0Luv1JZu2wLFl0ZOFhQGdynXdCjAcZu7tOo+U7ZVd6xtMn5d0mnQNG+DOovdQJ+VNFObZCUPBsrW/ul7ratlM3p4U+8Xej+wxjjCTo/fQ2+q7cFVrvevEmSuwmStXT2uFqLly3WM5u+VGdo6tLZgon4Tzfh0YQXDtAABfzpQqcf85oKe6AowojWGdfX027IFn8qSd1fx+EaHazjPSzbc5Bok21y/fgM+rbecilhd0kV0+TTkEYdNrTaktgZBNRjLnRIva25WmFKsew02WiFt8hEXFLwB6haobHxdNzP50Gpl+CcuGvap8pEPSPMcESeN8gBRrmxxlfQvKIOOaLcv2dsduwYub3B9keL1hdofhq4uU9kDnBpQptwnqLHBrMMuPzZGxRJYdh5bes/V9uN6d3xj
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 18:02:12.0716
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7c60c61-975d-4103-9378-08deac62c396
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397B4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8220
 
-Hi Mark,
+On platforms where the HID2 SPI controller (AMDI0063) is enumerated via
+ACPI instead of PCI, amd_spi_probe() unconditionally sets bus_num to 0,
+while the PCI probe path assigns bus_num 2 for HID2 controller.
 
-On 07-05-2026 13:43, Mark Brown wrote:
-> On Thu, May 07, 2026 at 08:58:02AM +0530, Praveen Talari wrote:
->> On 07-05-2026 06:32, Mark Brown wrote:
->>> At least these feel like they really should be generic events, there
->>> hopefully isn't anything driver specific about them.
->> Initially implemented as a generic event; however, splitting into separate
->> TX and RX events may be more appropriate.
->> Which approach would you prefer?
-> By generic I mean this should not be driver specific at all.
-I hope these changes are fine. Please let me know if you have any 
-concerns or feedback.
+Align the ACPI probe path to use the same bus number so that userspace
+and SPI client drivers see a consistent bus assignment regardless of the
+enumeration method.
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 4da888359cfc..9abb5f4f719b 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1,6 +1,8 @@
-  // SPDX-License-Identifier: GPL-2.0
-  // Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
+Fixes: b644c2776652 ("spi: spi_amd: Add PCI-based driver for AMD HID2 SPI controller")
+Cc: stable@vger.kernel.org # v6.16+
+Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+---
+ drivers/spi/spi-amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-+#include <trace/events/spi.h>
-+
-  #define CREATE_TRACE_POINTS
-  #include <trace/events/qcom_geni_spi.h>
-
-@@ -709,6 +711,7 @@ static unsigned int geni_byte_per_fifo_word(struct 
-spi_geni_master *mas)
-
-  static bool geni_spi_handle_tx(struct spi_geni_master *mas)
-  {
-+       struct spi_controller *spi = dev_get_drvdata(mas->dev);
-         struct geni_se *se = &mas->se;
-         unsigned int max_bytes;
-         const u8 *tx_buf;
-@@ -739,7 +742,7 @@ static bool geni_spi_handle_tx(struct 
-spi_geni_master *mas)
-                 iowrite32_rep(se->base + SE_GENI_TX_FIFOn, &fifo_word, 1);
-         }
-         mas->tx_rem_bytes -= max_bytes;
--       trace_geni_spi_tx_data(mas->dev, tx_buf, max_bytes, 
-mas->tx_rem_bytes);
-+       trace_spi_tx_data(spi->cur_msg->spi, tx_buf, max_bytes, 
-mas->tx_rem_bytes);
-         if (!mas->tx_rem_bytes) {
-                 writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-                 return false;
-@@ -749,6 +752,7 @@ static bool geni_spi_handle_tx(struct 
-spi_geni_master *mas)
-
-  static void geni_spi_handle_rx(struct spi_geni_master *mas)
-  {
-+       struct spi_controller *spi = dev_get_drvdata(mas->dev);
-         struct geni_se *se = &mas->se;
-         u32 rx_fifo_status;
-         unsigned int rx_bytes;
-@@ -790,7 +794,7 @@ static void geni_spi_handle_rx(struct 
-spi_geni_master *mas)
-         }
-         mas->rx_rem_bytes -= rx_bytes;
-
--       trace_geni_spi_rx_data(mas->dev, rx_buf, rx_bytes, 
-mas->rx_rem_bytes);
-+       trace_spi_rx_data(spi->cur_msg->spi, rx_buf, rx_bytes, 
-mas->rx_rem_bytes);
-  }
-
-  static int setup_se_xfer(struct spi_transfer *xfer,
-diff --git a/include/trace/events/spi.h b/include/trace/events/spi.h
-index e63d4a24d879..4907625e019d 100644
---- a/include/trace/events/spi.h
-+++ b/include/trace/events/spi.h
-@@ -233,6 +233,53 @@ DEFINE_EVENT(spi_transfer, spi_transfer_stop,
-
-  );
-
-+DECLARE_EVENT_CLASS(spi_data,
-+
-+       TP_PROTO(struct spi_device *spi, const u8 *buf, unsigned int len,
-+                unsigned int rem),
-+
-+       TP_ARGS(spi, buf, len, rem),
-+
-+       TP_STRUCT__entry(
-+               __field(        int,            bus_num         )
-+               __field(        int,            chip_select     )
-+               __field(        unsigned int,   len             )
-+               __field(        unsigned int,   rem             )
-+               __dynamic_array(u8,     data,           len     )
-+       ),
-+
-+       TP_fast_assign(
-+               __entry->bus_num = spi->controller->bus_num;
-+               __entry->chip_select = spi_get_chipselect(spi, 0);
-+               __entry->len = len;
-+               __entry->rem = rem;
-+               memcpy(__get_dynamic_array(data), buf, len);
-+       ),
-+
-+       TP_printk("spi%d.%d len=%u rem=%u data=%s",
-+                 __entry->bus_num, __entry->chip_select,
-+                 __entry->len, __entry->rem,
-+                 __print_hex(__get_dynamic_array(data), __entry->len))
-+);
-+
-+DEFINE_EVENT(spi_data, spi_tx_data,
-+
-+       TP_PROTO(struct spi_device *spi, const u8 *buf, unsigned int len,
-+                unsigned int rem),
-+
-+       TP_ARGS(spi, buf, len, rem)
-+
-+);
-+
-+DEFINE_EVENT(spi_data, spi_rx_data,
-+
-+       TP_PROTO(struct spi_device *spi, const u8 *buf, unsigned int len,
-+                unsigned int rem),
-+
-+       TP_ARGS(spi, buf, len, rem)
-+
-+);
-+
-  #endif /* _TRACE_POWER_H */
-
-
-
-Thanks,
-
-Praveen Talari
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index 4d1dce4f4974..71a6e5c475b0 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -868,7 +868,7 @@ static int amd_spi_probe(struct platform_device *pdev)
+ 	dev_dbg(dev, "io_remap_address: %p\n", amd_spi->io_remap_addr);
+ 
+ 	amd_spi->version = (uintptr_t)device_get_match_data(dev);
+-	host->bus_num = 0;
++	host->bus_num = (amd_spi->version == AMD_HID2_SPI) ? 2 : 0;
+ 
+ 	return amd_spi_probe_common(dev, host);
+ }
+-- 
+2.34.1
 

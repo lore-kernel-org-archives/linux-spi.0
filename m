@@ -1,86 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D705D3F9F39;
-	Thu,  7 May 2026 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1496E3F166D;
+	Thu,  7 May 2026 14:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778164425; cv=none; b=brYe4LiWd/U2F1ItpqCZPB/Z7CfgkhZwDMUcEeHI7a3d4yPMLZ5KS63B/28fcQVgFwaa60lufE6tjBBOrArlz0f8OvJwktttnKF3eG37Z1c52x1PReUScV6y3h/+GYlf8m4Ocw9i0phXM5iBaIbvFR7bOgPR0MtGn5Jx9qtbmxM=
+	t=1778164956; cv=none; b=Uw5oshF9zYnRgAqiVryX7H9vvcIN438SVnOTiFsPzcyd91Lz2uvLSMoV9Tb6r0/rlcmW6joMQ4/ffIfd00Pb0GXFCeX8372ro9I6PQ0a4X1FIQ9WwBL+DGu02u2yGyFdiLnqiCzSDv7DnxS/Xd3OT0l76FVPcz1soZpZKbmavoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778164425; c=relaxed/simple;
-	bh=4h47Z6ML2wUmiSm067qKXqglBqLvg1eK31qkZ+Ft+/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GLraz6HGOtkUgUaTZi8trw/E0xoKRAKk9TDyk+Sw+ZL6UyFJ/Z6Q6VCkSWcddDLZgcl2S55EA66D/NBAF1dvdHIak8UZl7V/iddvdUjgB1OW2QnxWZoqPCcBuGFbmfO9Ve48Ahbjd26gcoZEFiTdn8vX4+4FmshehzK7pfMRrTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeFNGBs/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778164956; c=relaxed/simple;
+	bh=KCX3N2x1ol+I49/DTQ1+oZRTrXDmnXU69S4wRqEshBY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=TSVCDijlZqouwffKGtVbc126aFWET4NM1yRGYDGYrCSSQSz5LhX/ADYcKutgqExb7dQX9WXbx1ljjCAk+1F+UAmnoU2QIwU7+qaX8yhBrYsPXAKBR8k3anzdS4zJOvk8Z0s2AJsbvNW72NwgKWwPdd9I/EbYzCSst5sb7hPeSC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lgex9zLP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeFNGBs/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D63C2BCB2;
-	Thu,  7 May 2026 14:33:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lgex9zLP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9B7C2BCB2;
+	Thu,  7 May 2026 14:42:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778164425;
-	bh=4h47Z6ML2wUmiSm067qKXqglBqLvg1eK31qkZ+Ft+/M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oeFNGBs/orp6cCxb0HHNCkON/3uF18AuQK/w23afJiRNnQJzTEE17mH6NRRk85PRX
-	 oHoNL3bBGEfL+N5fYKeYhLAwFBaQAHPCFXQKKu31lWD2wDNrw7ERx/aDzERBNWMWHB
-	 fhQKUZMB7yVgM/TnM3Rt5aXhpkHV0IKy2UkGwrjxO8UzFR69gPbSXz8QTDpfvMJdbz
-	 oJpk1/7htDYqWB5AaftvhKtVeqUu/q1GkdelKIhRb35Wi1o3nFGB2HDaTTwQJ7br6S
-	 bRl5+TzDt83ChPkxn/6Wsmw3enejW/i0+IAKZLYKBjIIWZXbUKmVXy+CD6E+zcD8vc
-	 z547l1n/896iQ==
-Message-ID: <7bc9e2c2-3646-43bc-8405-c4367d99d8bc@kernel.org>
-Date: Fri, 8 May 2026 00:33:40 +1000
+	s=k20201202; t=1778164955;
+	bh=KCX3N2x1ol+I49/DTQ1+oZRTrXDmnXU69S4wRqEshBY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Lgex9zLPFUXvGoh3Fd8qSnVoRYLjxpJmChkOW8Do9qhjrmdqCsIUSq7uFM6E/K0bF
+	 UO1kyz/4EJS/Gar4wnYK5y0czE3T/hP1bj0zqIzLWYzKQ/ZNBkYme7ySdcXeYkOgu+
+	 SrAskf1jAZ9vhNW4X7WdNoR9oHaTq74RJDw2jsyWhk6KVC4+flC+ZhOdSrCC98M7Em
+	 6Nicsp7Z+mNM8cPig7puQptrJtSK4WoW6tmDCHvV9GylGCCj6DefWDDMwLHmMgGW6J
+	 wijoKbSFe1X1FJenol0a1VnVx2ZNbE+JfpIs6DHaPnwfVNqmEEqeZZhjltlFqPVRLY
+	 q7Crk+K48S8NA==
+From: Mark Brown <broonie@kernel.org>
+To: sunny.luo@amlogic.com, Stepan Ionichev <sozdayvek@gmail.com>
+Cc: xianwei.zhao@amlogic.com, linux-amlogic@lists.infradead.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260506183513.482-1-sozdayvek@gmail.com>
+References: <20260506183513.482-1-sozdayvek@gmail.com>
+Subject: Re: [PATCH] spi: amlogic-spisg: drop misleading NULL check on
+ exdesc
+Message-Id: <177814235817.749715.9876596107513114221.b4-ty@b4>
+Date: Thu, 07 May 2026 17:25:58 +0900
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX()
- functions
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, Greg Ungerer <gerg@linux-m68k.org>,
- dmaengine@vger.kernel.org, linux-can@vger.kernel.org,
- linux-spi@vger.kernel.org, olteanv@gmail.com, adureghello@baylibre.com
-References: <20260506142644.3234270-2-gerg@kernel.org>
- <20260506142644.3234270-8-gerg@kernel.org>
- <20260507-masterful-pegasus-of-science-c408e0-mkl@pengutronix.de>
-Content-Language: en-US
-From: Greg Ungerer <gerg@kernel.org>
-In-Reply-To: <20260507-masterful-pegasus-of-science-c408e0-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1129; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=KCX3N2x1ol+I49/DTQ1+oZRTrXDmnXU69S4wRqEshBY=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp/KTZvdxWwUlXuiOEDiIKk8B9yMKA4zhQvM3ak
+ W4npfMS+oSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCafyk2QAKCRAk1otyXVSH
+ 0FVfB/40AuY8Cg0XYUtbrUCfRo3oYFbHVIA6foa6QyeMJEKVRDSHgUOKBYHTjYvl0H5kzvLHqgJ
+ AC3TVs7hQ0zTWSo3jOd0iLeGd2izDXyc7GgSUsZOb3G2m69YECBK5QIVPo7cgMmj9peq9cQR8nT
+ psRPH/A1PH8oFIrf0+6eluvqIOKxQBWUwYGlbJMQVwmOUdka0OGKwpEveGwlOdobVS3G7SgIane
+ wtqwQCmJdGySNpkxtNDFiaIKlhzWOWrMfGAXCgHn5s3TTf2lu3b4cD1DM4MMToskfOB5iCEAqdF
+ lGN5KRuQ74qduuUbnjZn6Q5p8r3JPdHsKTq+QV0tMN9y2V/M
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Wed, 06 May 2026 23:35:12 +0500, Stepan Ionichev wrote:
+> spi: amlogic-spisg: drop misleading NULL check on exdesc
 
-On 7/5/26 23:30, Marc Kleine-Budde wrote:
-> On 07.05.2026 00:26:48, Greg Ungerer wrote:
->> diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
->> index f5d22c61503f..a682f02d2c43 100644
->> --- a/drivers/net/can/flexcan/flexcan-core.c
->> +++ b/drivers/net/can/flexcan/flexcan-core.c
->> @@ -296,6 +296,7 @@ static_assert(sizeof(struct flexcan_regs) ==  0x4 * 18 + 0xfb8);
->>   static const struct flexcan_devtype_data fsl_mcf5441x_devtype_data = {
->>   	.quirks = FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-> 
-> Nitpick:
-> Can you move it here, so that the quirks stay sorted?
+Applied to
 
-Yep, sure thing.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
+Thanks!
 
-> 		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
-> 
->>   		FLEXCAN_QUIRK_NR_IRQ_3 | FLEXCAN_QUIRK_NR_MB_16 |
->> +		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
->>   		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
->>   		FLEXCAN_QUIRK_SUPPORT_RX_FIFO,
->>   };
-> 
-> With that change:
-> 
-> Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can/flexcan
+[1/1] spi: amlogic-spisg: drop misleading NULL check on exdesc
+      https://git.kernel.org/broonie/spi/c/54725e3049e1
 
-Thanks
-Greg
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

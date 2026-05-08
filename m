@@ -1,96 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4594A3D6473;
-	Fri,  8 May 2026 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0336737996C;
+	Fri,  8 May 2026 15:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778248874; cv=none; b=u0wwsqitn8181PVavn9uTrU/U5H/oinSCNmvqXQxcnvZlCZlTnkzeqgnKV1aWrs8QShV7ixeaoJMPcDOQIb2l4oSqgblZPLeux1fG1FLofhMaMrmpd4O4frXYq3BYOXNUh1dWLlkX/rlUA+8ZHOHvde66bf2ikR/5kHfQDvmjGM=
+	t=1778253498; cv=none; b=HyDQ1gtJfUzd1Or5ht5hrLbw+71BXXRqUtVE6T0O8CkTzP7u28VP8DUd79EWQBoUG+DLf3tkvvUky0Jx1FpCKBuP/Ovl4hv8cOd3dj/NrZpOpukzH/OrdlAidijRE/FLfBtA6gNC2EA/Rek3FACVk5nATeA5jSNOjRXYdD4oHTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778248874; c=relaxed/simple;
-	bh=NlWpkJl28fCMdI7yre7mRiciRoVvpyRad/yUQyxDQHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SHP+dvFw08XdGybp7zkKeT4he195COgFiQh2LqwBVZsL/jK1yebWIbDAB1FN7wcs+kbeMvBeS0mIs7mxc/rij46aRRD8O9vGLzKUsdf9LUFAm108s8LFIqgA/uTU/jM5mP/S9ihPEBzTNZFJ+PM1Z2cuX5XyW+ifuB5utVyA26U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnEdtCIM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778253498; c=relaxed/simple;
+	bh=g+PO1ZPQfetzfEdgW0kuymwlhk3d4gVtRR530/mTBOY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=LM6mc5WLK9ZdV6p8RfXFxtzcQdljjWUyvedqZDmp0CfAeaYb8GTRavLcDW8DUjqIseTtoBfSxncDvNFa8PHzj8e2Y7/66Qa++iF6W2ZpFkS8LdsHiN2E5ybGKAwHM+8lZqHD5oiV7BaqjFerH1Y/l2dkvoElZ1Biqy5QvQGWGQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAg6Wgdv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnEdtCIM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE194C2BCB8;
-	Fri,  8 May 2026 14:01:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAg6Wgdv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B489C2BCB0;
+	Fri,  8 May 2026 15:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778248873;
-	bh=NlWpkJl28fCMdI7yre7mRiciRoVvpyRad/yUQyxDQHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hnEdtCIM/Wytg98NgoA1sM5eNln7Q+t6BMqaAdG0/RjgAD312/4ligBGkS14B6aze
-	 TKS71bi3GUSqSMir4TypCxp2Q9tjOyRqF0fXbd0068xGrhC3xZ3SjlmGrArlKhY/fr
-	 DijWlQ3PQ+b1D1i2d+pmD3erTefVKs3YWLKdLSAnHumCe5i8i7Lr4YaBgsgYsWV80w
-	 xVTDim3ZYbuk/TYiDCORqqZgP5bv5z/OAPknMC/bUbOcjjwyP+iBdSbGZO87ZRrOa3
-	 hPyzmlQXZc1ND/3cngfqAvguog4ptHoe7MEKgas1ed2DcWtyGHyFzuBPj7exz2WEQ6
-	 uAWAB/hBCsU6w==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 092D51AC5896; Fri, 08 May 2026 15:01:11 +0100 (BST)
-Date: Fri, 8 May 2026 23:01:10 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-	MukeshKumarSavaliyamukesh.savaliya@oss.qualcomm.com,
-	AniketRandiveaniket.randive@oss.qualcomm.com,
-	chandana.chiluveru@oss.qualcomm.com,
-	jyothi.seerapu@oss.qualcomm.com
-Subject: Re: [PATCH v1 1/2] spi: qcom-geni: trace: Add trace events for
- Qualcomm GENI SPI
-Message-ID: <af3spostNgoRU0Vv@sirena.co.uk>
-References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
- <20260506-add-tracepoints-for-qcom-geni-spi-v1-1-c957cfe712d1@oss.qualcomm.com>
- <afvkiT50ZUEXZ-YO@sirena.co.uk>
- <e4651363-7c1c-4ae0-a97b-b64841424c83@oss.qualcomm.com>
- <afxJmZ9MkP5eJkQC@sirena.co.uk>
- <59e36f20-891d-4a58-8cc4-6822d03daa23@oss.qualcomm.com>
+	s=k20201202; t=1778253497;
+	bh=g+PO1ZPQfetzfEdgW0kuymwlhk3d4gVtRR530/mTBOY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=bAg6Wgdv78UdFPk81HDSrncWn9b/sF3sgH+9fU3yBX7JS+uKUWq+jIBqHb6SkuN+h
+	 YUMAjMGtB85qsvlqm6BdEeg4f0jbD+QlxOlXkQy+h/V2Tns2w0FSiPzH5kU5EEBkt+
+	 noNMxdpzXxFnZSu3An5OGiU9YZYu9C0Uu+AGDK8iJq8JAK16H1YWXeamdZbkMak24f
+	 mCPMmN2/2FvN+SuLGVyvzoj4/kzXZyv3Nxdq0OU23/alB5MAXIj8rUys7w1OXJcsJw
+	 Tu9mvei1EjKAywXqNv8vEm+RH9kkkvI/8AyCTRQjVpgxNA8+JFhM+iXZaTRzNr0yys
+	 8unj87PvDBHrw==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Xo3uM2EQ4qGE2K/q"
-Content-Disposition: inline
-In-Reply-To: <59e36f20-891d-4a58-8cc4-6822d03daa23@oss.qualcomm.com>
-X-Cookie: Truckers welcome.
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 08 May 2026 17:18:12 +0200
+Message-Id: <DIDE94YBOOP3.KM9I6J4JIJIY@kernel.org>
+Subject: Re: [PATCH v1 1/4] driver core: allow certain drivers prohibit
+ override via sysfs
+Cc: "Mark Brown" <broonie@kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-iio@vger.kernel.org>, <linux-spi@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Shuah Khan"
+ <skhan@linuxfoundation.org>, "Jean-Baptiste Maneyrol"
+ <jean-baptiste.maneyrol@tdk.com>, "Jonathan Cameron" <jic23@kernel.org>,
+ "David Lechner" <dlechner@baylibre.com>, =?utf-8?q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, "Andy Shevchenko" <andy@kernel.org>
+To: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260508095224.1275645-1-andriy.shevchenko@linux.intel.com>
+ <20260508095224.1275645-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20260508095224.1275645-2-andriy.shevchenko@linux.intel.com>
 
+On Fri May 8, 2026 at 11:42 AM CEST, Andy Shevchenko wrote:
+> diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+> index d17bd91490ee..16a530b91a00 100644
+> --- a/drivers/base/bus.c
+> +++ b/drivers/base/bus.c
+> @@ -594,7 +594,7 @@ int bus_add_device(struct device *dev)
+>  out_subsys:
+>  	sysfs_remove_link(&sp->devices_kset->kobj, dev_name(dev));
+>  out_override:
+> -	if (dev->bus->driver_override)
+> +	if (dev->bus->driver_override && !dev->driver->suppress_override_attrs)
 
---Xo3uM2EQ4qGE2K/q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I think that doesn't work, when bus_add_device() is called no driver is bou=
+nd to
+the device yet, so dev->driver should be NULL.
 
-On Thu, May 07, 2026 at 11:03:39PM +0530, Praveen Talari wrote:
-> On 07-05-2026 13:43, Mark Brown wrote:
+But more in general, I think this isn't an implementation issue, but a
+conceptual issue.
 
-> > By generic I mean this should not be driver specific at all.
+The driver_override attribute is on the device, and indicates whether this
+device should be forcefully matched against some specific driver.
 
-> I hope these changes are fine. Please let me know if you have any concerns
-> or feedback.
+Now, if we want to suppress this attribute, we can't really let some driver
+define whether is should be suppressed for this device.
 
-The data tracepoints look plausible but I would expect them to be
-generated by the core, they'll be there for everything so I'd expect
-them to work for everything.
+Which driver would that be? The one that's already bound?
 
---Xo3uM2EQ4qGE2K/q
-Content-Type: application/pgp-signature; name="signature.asc"
+That said, I think the problem you actually want to resolve is not "suppres=
+s the
+driver_override attribute", but rather "don't bind this driver through
+driver_override".
 
------BEGIN PGP SIGNATURE-----
+IOW, this is a match() problem not a sysfs attribute problem.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn97KYACgkQJNaLcl1U
-h9Drrwf/W6faToQE+TVwkiIzx7VRppTKLmiTz7jQ+oeqkwOe9pMmiO5H+GmaD/63
-fJ7pxuw3Aeq8VfYivHDFRoBWM2LJ78wKHTfQaGCkz7Q8DXjZ66ciDpt1L22fc4DJ
-a5broXuZjWQT7zIkFWN4jnQ+aNGqk6rPAfMMgJtcnCLVI/oqiqAECeyUVE+rHj+F
-PZYKk34P1VoEIgh1ThYh8aedlNdVlIn5d8wep3B6agqxgxCVeYhp2ceIUgmfVlqi
-BAy8RJqIhSWr+BIjnMBfLSghprXgyqRLcJXjiMamZuVL+/068ARJ4jpWOXsmJA5R
-XVxoQCkHOLccStjGbJzHeACxptnYyw==
-=98Fc
------END PGP SIGNATURE-----
+So, I think the change that we actually want, is this one:
 
---Xo3uM2EQ4qGE2K/q--
+diff --git a/include/linux/device.h b/include/linux/device.h
+index d54c86d77764..64bcb46edb97 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -839,9 +839,11 @@ static inline int device_match_driver_override(struct =
+device *dev,
+                                               const struct device_driver *=
+drv)
+ {
+        guard(spinlock)(&dev->driver_override.lock);
+-       if (dev->driver_override.name)
+-               return !strcmp(dev->driver_override.name, drv->name);
+-       return -1;
++       if (!dev->driver_override.name)
++               return -1;
++       if (drv->no_driver_override)
++               return 0;
++       return !strcmp(dev->driver_override.name, drv->name);
+ }
+
+ /**
+diff --git a/include/linux/device/driver.h b/include/linux/device/driver.h
+index bbc67ec513ed..d48cd9822634 100644
+--- a/include/linux/device/driver.h
++++ b/include/linux/device/driver.h
+@@ -55,6 +55,7 @@ enum probe_type {
+  * @owner:     The module owner.
+  * @mod_name:  Used for built-in modules.
+  * @suppress_bind_attrs: Disables bind/unbind via sysfs.
++ * @no_driver_override: The driver will not be matched via driver_override=
+.
+  * @probe_type:        Type of the probe (synchronous or asynchronous) to =
+use.
+  * @of_match_table: The open firmware table.
+  * @acpi_match_table: The ACPI match table.
+@@ -103,6 +104,7 @@ struct device_driver {
+        const char              *mod_name;      /* used for built-in module=
+s */
+
+        bool suppress_bind_attrs;       /* disables bind/unbind via sysfs *=
+/
++       bool no_driver_override;        /* not matchable via driver_overrid=
+e */
+        enum probe_type probe_type;
+
+        const struct of_device_id       *of_match_table;
+
+This should also get us rid of the SPI patch, since SPI already uses
+device_match_driver_override() in spi_match_device().

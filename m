@@ -1,52 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3353806D5;
-	Fri,  8 May 2026 13:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4594A3D6473;
+	Fri,  8 May 2026 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778248436; cv=none; b=cizGYHuknHrfjY7BDDZhhCZ7F7v86Crd48w4ARFSg9nmOImyPJ2UdRZFDBM0XElRFkrF8OMJObNbAMla8s0eURbDL0NVm1ZBkVcuM5sq7d+xc1XknYSBxPY9jjG1noGRK7pryPRciOISn64lZcEDhwOiNQePdW0voUpE1n7NwDs=
+	t=1778248874; cv=none; b=u0wwsqitn8181PVavn9uTrU/U5H/oinSCNmvqXQxcnvZlCZlTnkzeqgnKV1aWrs8QShV7ixeaoJMPcDOQIb2l4oSqgblZPLeux1fG1FLofhMaMrmpd4O4frXYq3BYOXNUh1dWLlkX/rlUA+8ZHOHvde66bf2ikR/5kHfQDvmjGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778248436; c=relaxed/simple;
-	bh=ImULPTll6/DKw9MUjoqJ04IJ5i3jazrS0ThlE7j1Kv4=;
+	s=arc-20240116; t=1778248874; c=relaxed/simple;
+	bh=NlWpkJl28fCMdI7yre7mRiciRoVvpyRad/yUQyxDQHc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LdV2OBt5RiGn+l6WnEB6rsDc1vehJQrq91Gt/Lpojshm6E+Xdy2zjeGy1LE65+c3MOnYA4KBVRNbYLcGNWhZ6/qaezacYy65O3///GrsiKPpbgj9r89cxzhaVqjoMsYiay2JD4hRhnj2droocC5h1W32ToH6sIPnU9P/rmvb+2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CVjuE67T; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=SHP+dvFw08XdGybp7zkKeT4he195COgFiQh2LqwBVZsL/jK1yebWIbDAB1FN7wcs+kbeMvBeS0mIs7mxc/rij46aRRD8O9vGLzKUsdf9LUFAm108s8LFIqgA/uTU/jM5mP/S9ihPEBzTNZFJ+PM1Z2cuX5XyW+ifuB5utVyA26U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnEdtCIM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CVjuE67T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06129C2BCB0;
-	Fri,  8 May 2026 13:53:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnEdtCIM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE194C2BCB8;
+	Fri,  8 May 2026 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778248436;
-	bh=ImULPTll6/DKw9MUjoqJ04IJ5i3jazrS0ThlE7j1Kv4=;
+	s=k20201202; t=1778248873;
+	bh=NlWpkJl28fCMdI7yre7mRiciRoVvpyRad/yUQyxDQHc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CVjuE67TEM7hshiU486fmDOitypmjxAFnEgskHtV+EGQtxmJcjFZ4VpFt+CGp7Mf7
-	 52LGJ/MMdLdofHq+hC6PMsx0S64vXu24CcwIg8/OH/wC6SlTWGeoidSsgEK208T5El
-	 jRqVqAAdTa9oUpvzUXlFXjpnSZZJ5iD5goJdeKB5P2ARMSkG+WWnrTOrlMiTN8bNa0
-	 K2vzzIXkQMnVVDOX7xtMZL8387LwgJqNCflbk0CxgsiRHKe+4o7MmdcauKpS7H15Ch
-	 7n63VUxhbpHGdkN37o6/A8FEv1Pb2WIMbO2qssxmUpg0XoUyorxuk8i62Dghjy4yd7
-	 cdL1Csh8L1dSA==
+	b=hnEdtCIM/Wytg98NgoA1sM5eNln7Q+t6BMqaAdG0/RjgAD312/4ligBGkS14B6aze
+	 TKS71bi3GUSqSMir4TypCxp2Q9tjOyRqF0fXbd0068xGrhC3xZ3SjlmGrArlKhY/fr
+	 DijWlQ3PQ+b1D1i2d+pmD3erTefVKs3YWLKdLSAnHumCe5i8i7Lr4YaBgsgYsWV80w
+	 xVTDim3ZYbuk/TYiDCORqqZgP5bv5z/OAPknMC/bUbOcjjwyP+iBdSbGZO87ZRrOa3
+	 hPyzmlQXZc1ND/3cngfqAvguog4ptHoe7MEKgas1ed2DcWtyGHyFzuBPj7exz2WEQ6
+	 uAWAB/hBCsU6w==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id A43C31AC5896; Fri, 08 May 2026 14:53:51 +0100 (BST)
-Date: Fri, 8 May 2026 22:53:51 +0900
+	id 092D51AC5896; Fri, 08 May 2026 15:01:11 +0100 (BST)
+Date: Fri, 8 May 2026 23:01:10 +0900
 From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, driver-core@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>
-Subject: Re: [PATCH v1 2/4] spi: Support suppress_override_attrs flag
-Message-ID: <af3q7yfFnVP1AcZG@sirena.co.uk>
-References: <20260508095224.1275645-1-andriy.shevchenko@linux.intel.com>
- <20260508095224.1275645-3-andriy.shevchenko@linux.intel.com>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+	MukeshKumarSavaliyamukesh.savaliya@oss.qualcomm.com,
+	AniketRandiveaniket.randive@oss.qualcomm.com,
+	chandana.chiluveru@oss.qualcomm.com,
+	jyothi.seerapu@oss.qualcomm.com
+Subject: Re: [PATCH v1 1/2] spi: qcom-geni: trace: Add trace events for
+ Qualcomm GENI SPI
+Message-ID: <af3spostNgoRU0Vv@sirena.co.uk>
+References: <20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com>
+ <20260506-add-tracepoints-for-qcom-geni-spi-v1-1-c957cfe712d1@oss.qualcomm.com>
+ <afvkiT50ZUEXZ-YO@sirena.co.uk>
+ <e4651363-7c1c-4ae0-a97b-b64841424c83@oss.qualcomm.com>
+ <afxJmZ9MkP5eJkQC@sirena.co.uk>
+ <59e36f20-891d-4a58-8cc4-6822d03daa23@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,36 +56,41 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Jv3ljE2IBBPcqet+"
+	protocol="application/pgp-signature"; boundary="Xo3uM2EQ4qGE2K/q"
 Content-Disposition: inline
-In-Reply-To: <20260508095224.1275645-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <59e36f20-891d-4a58-8cc4-6822d03daa23@oss.qualcomm.com>
 X-Cookie: Truckers welcome.
 
 
---Jv3ljE2IBBPcqet+
+--Xo3uM2EQ4qGE2K/q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, May 08, 2026 at 11:42:40AM +0200, Andy Shevchenko wrote:
-> Some device driver may want to suppress the driver_override sysfs attribute
-> by specifying a certain flag in their struct device_driver. Since SPI uses
-> explicit attribute instantiation, add that support here.
+On Thu, May 07, 2026 at 11:03:39PM +0530, Praveen Talari wrote:
+> On 07-05-2026 13:43, Mark Brown wrote:
 
-Acked-by: Mark Brown <broonie@kernel.org>
+> > By generic I mean this should not be driver specific at all.
 
---Jv3ljE2IBBPcqet+
+> I hope these changes are fine. Please let me know if you have any concerns
+> or feedback.
+
+The data tracepoints look plausible but I would expect them to be
+generated by the core, they'll be there for everything so I'd expect
+them to work for everything.
+
+--Xo3uM2EQ4qGE2K/q
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn96u4ACgkQJNaLcl1U
-h9BdGwf+OrXFUp18zrinWYIHAzkGcPws8ctEnTduqr1dE4uXXaSwaOTQccdK5Lco
-lBteLIUSpiiu7T+OqTpoZCQ6W/1SYH7Mk0cHtkPmFCP/zu9PxYspSd/EQtgCHWyd
-XB9NuM5PrHVGGmG2cEhe5Ls9M3KrKyFQvU3yVjuL8pLjxLwJF0gR56sCRqmCGfMN
-sc3TExtDQmUyzfvKeqYPXqv64+XWSjRjLRVeHyT7spT1meAb7ibfqy2cDmw/fGht
-SV1KRvFpNRf6pCuiv1Fe7NCaWMBEOpA1B2nJCilikUPaIxasnFFd2pltvz9h+gmA
-bHPTnOZDZVoj8iA27aknR80+XkbgVg==
-=TUzV
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn97KYACgkQJNaLcl1U
+h9Drrwf/W6faToQE+TVwkiIzx7VRppTKLmiTz7jQ+oeqkwOe9pMmiO5H+GmaD/63
+fJ7pxuw3Aeq8VfYivHDFRoBWM2LJ78wKHTfQaGCkz7Q8DXjZ66ciDpt1L22fc4DJ
+a5broXuZjWQT7zIkFWN4jnQ+aNGqk6rPAfMMgJtcnCLVI/oqiqAECeyUVE+rHj+F
+PZYKk34P1VoEIgh1ThYh8aedlNdVlIn5d8wep3B6agqxgxCVeYhp2ceIUgmfVlqi
+BAy8RJqIhSWr+BIjnMBfLSghprXgyqRLcJXjiMamZuVL+/068ARJ4jpWOXsmJA5R
+XVxoQCkHOLccStjGbJzHeACxptnYyw==
+=98Fc
 -----END PGP SIGNATURE-----
 
---Jv3ljE2IBBPcqet+--
+--Xo3uM2EQ4qGE2K/q--

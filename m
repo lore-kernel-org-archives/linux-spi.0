@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5B2D7DD7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EADC2D9EF4;
 	Mon, 11 May 2026 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511874; cv=none; b=sK3V6/hzgo6gc1Fw4WleOSYTr1QRYiQlAdZmUQ8IewF2XzC5gkz3zPqA1up0Obxu6v0H4JkbWPC6gorVtM8Kdicn6FceRyLznRB0Uqh0SYYNS5HHcsRFTBpdJCrS7rmFEoNCmbxGUxEIMHiQ0/avHkDIZPa4KHgR4QNCEBs2v/w=
+	t=1778511874; cv=none; b=LOXYmRqRX6rNQ/lLunBuF7ncfAYQQAGLBt2wB2Kr/PphPLyKqcSacvQaAyI5OMiVIKRFJdr3fJ5vl5kKOhia6Jj5HNSWSXp9mL5SlgFpAyfzV6slOZFFdV4RLQEqXCAeJHzvgylbMrSXpNiY6ul9zFc3wBxI5pJDnmTMaw525Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778511874; c=relaxed/simple;
-	bh=8zaaMmjQrzHH7jv09/7EndR2/KWRdkHmMxODj41cFf4=;
+	bh=71xmPS/mYDfanmj/F+g/504hnZEO3DjMAI7d6O8rprc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPdrOIfVxXJPkEossH3ViTCgRxdfozNUI3CyqKcoKuL1goDA2Od1KmuStYFwxLVXthRSuXBQLp0KQcdFZ0w4cgBM9R4S4RMp7fSkxcNHLqanCS84k0SPWIrymtS21PrLtxUerI2WYNUlmVX30JS2ADYFOFJwj7xXEilZ2fF4uAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NB+klaiz; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=WzicqCt9bf3dgO+qDtPJ6nfF7Dc4Pd5afJaFn9qqtWT9CT0T/BBtSLqyFfLyYg9k+OHb5eUx0S//vZfOUFN6EZFHhMCq+tVauMBrjdRFi36X6k/eUyrGoaz5Tkta0JX3utzyN6V6+FrkGWilS+dk5/d6A8GLFnm9iJ5CWAn7YkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DegN/cn4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NB+klaiz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E1C4AF12;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DegN/cn4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA833C2BD00;
 	Mon, 11 May 2026 15:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778511873;
-	bh=8zaaMmjQrzHH7jv09/7EndR2/KWRdkHmMxODj41cFf4=;
+	bh=71xmPS/mYDfanmj/F+g/504hnZEO3DjMAI7d6O8rprc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NB+klaizLAFBwpL9zdURq4Qvdv8sklLJGOzMbvwFa1xplIMK3RwXC8iDe/M9UAJgL
-	 BVkJB2sArYglR/fE6UGMSj3Oed9JJKebp7Nr2B7+ToAXFPbXF75BGPiMKy+8F8dZpB
-	 KqfH/rzHOYxNkBmCZh8cIKYh45XvfBbeBiHnoXq3BtDf21VgSdHBHBvR+SnN3dJHfT
-	 mfSGAETo78wq5WhJsWjm6Wrx+cMmwlhpKyrLZTZKDUs3YbL5Fx1zGszro8SscOKeQZ
-	 Gj9qiNhR+uhiHOXSMyOqTzkugcpAwOwxl6o1uB8hmToBYYkPyvm71ShNa/GAzsG2i3
-	 xQzi6m/xDATfA==
+	b=DegN/cn43tuoutf5yJgKVPxjGs/7vilgYfukOxL0JNsWGHU/Z/3PllBzNNoh/7gtv
+	 C6NxVd1y+OMYCIhDd1J1L2URs8olruwaggy0L48FNzqb75SvSm9ZPVHxtJi1N8XzPO
+	 MlOeO83v8Nb9n4HdUnMVIcb/aEWUzV8pOikChk6w7zQDniUrSzR4WZffk9RhGla6iB
+	 qJ39PWkOp8HYiA9AtRARsPPFMpnpq1x1FLPYoyulj7t8EVsnx1rSoUQefyKyVJqNjy
+	 HofPjF0isyFWQ2t1Qk71wVbFiAJSk14JKulH1VoIhY5wTx9Nsmop3W3F1rakMRux0q
+	 8yY9Ku6k2xD7g==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wMSBL-00000003L8E-27v3;
+	id 1wMSBL-00000003L88-20re;
 	Mon, 11 May 2026 17:04:31 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Eddie James <eajames@linux.ibm.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 06/12] spi: hisi-sfc-v3xx: switch to managed controller allocation
-Date: Mon, 11 May 2026 17:04:02 +0200
-Message-ID: <20260511150408.796155-7-johan@kernel.org>
+Subject: [PATCH 03/12] spi: clps711x: switch to managed controller allocation
+Date: Mon, 11 May 2026 17:03:59 +0200
+Message-ID: <20260511150408.796155-4-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511150408.796155-1-johan@kernel.org>
 References: <20260511150408.796155-1-johan@kernel.org>
@@ -58,61 +58,70 @@ simplify error handling.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/spi/spi-clps711x.c | 31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index b2af2eed197f..eeeb86381862 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -436,7 +436,7 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 	u32 version, glb_config;
- 	int ret;
+diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
+index d6458e59d41b..382c3c81c4b9 100644
+--- a/drivers/spi/spi-clps711x.c
++++ b/drivers/spi/spi-clps711x.c
+@@ -99,7 +99,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	if (irq < 0)
+ 		return irq;
  
--	ctlr = spi_alloc_host(&pdev->dev, sizeof(*host));
-+	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*host));
- 	if (!ctlr)
+-	host = spi_alloc_host(&pdev->dev, sizeof(*hw));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*hw));
+ 	if (!host)
  		return -ENOMEM;
  
-@@ -451,16 +451,12 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, host);
+@@ -113,22 +113,16 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	hw = spi_controller_get_devdata(host);
  
- 	host->regbase = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(host->regbase)) {
--		ret = PTR_ERR(host->regbase);
--		goto err_put_host;
+ 	hw->spi_clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(hw->spi_clk)) {
+-		ret = PTR_ERR(hw->spi_clk);
+-		goto err_out;
 -	}
-+	if (IS_ERR(host->regbase))
-+		return PTR_ERR(host->regbase);
++	if (IS_ERR(hw->spi_clk))
++		return PTR_ERR(hw->spi_clk);
  
- 	host->irq = platform_get_irq_optional(pdev, 0);
--	if (host->irq == -EPROBE_DEFER) {
--		ret = -EPROBE_DEFER;
--		goto err_put_host;
+ 	hw->syscon = syscon_regmap_lookup_by_phandle(np, "syscon");
+-	if (IS_ERR(hw->syscon)) {
+-		ret = PTR_ERR(hw->syscon);
+-		goto err_out;
 -	}
-+	if (host->irq == -EPROBE_DEFER)
-+		return -EPROBE_DEFER;
++	if (IS_ERR(hw->syscon))
++		return PTR_ERR(hw->syscon);
  
- 	hisi_sfc_v3xx_disable_int(host);
+ 	hw->syncio = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(hw->syncio)) {
+-		ret = PTR_ERR(hw->syncio);
+-		goto err_out;
+-	}
++	if (IS_ERR(hw->syncio))
++		return PTR_ERR(hw->syncio);
  
-@@ -501,16 +497,12 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 
- 	ret = devm_spi_register_controller(dev, ctlr);
+ 	/* Disable extended mode due hardware problems */
+ 	regmap_update_bits(hw->syscon, SYSCON_OFFSET, SYSCON3_ADCCON, 0);
+@@ -139,16 +133,9 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(&pdev->dev, irq, spi_clps711x_isr, 0,
+ 			       dev_name(&pdev->dev), host);
  	if (ret)
--		goto err_put_host;
+-		goto err_out;
 +		return ret;
  
- 	dev_info(&pdev->dev, "hw version 0x%x, %s mode.\n",
- 		 version, host->irq ? "irq" : "polling");
- 
- 	return 0;
+-	ret = devm_spi_register_controller(&pdev->dev, host);
+-	if (!ret)
+-		return 0;
 -
--err_put_host:
--	spi_controller_put(ctlr);
+-err_out:
+-	spi_controller_put(host);
+-
 -	return ret;
++	return devm_spi_register_controller(&pdev->dev, host);
  }
  
- static const struct acpi_device_id hisi_sfc_v3xx_acpi_ids[] = {
+ static const struct of_device_id clps711x_spi_dt_ids[] = {
 -- 
 2.53.0
 

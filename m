@@ -1,79 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BC62690F9;
-	Mon, 11 May 2026 15:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF5B29B8D0;
+	Mon, 11 May 2026 15:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511874; cv=none; b=AqcYJHAUZP9dvsiCJOMG2jQiXisH6EYh2C/S3DZA1qHYSeX9FmbNv01EsBxlX5N0RuOdne6iOa3GnaKGtDBpzR6KT/e6UniL5v7u5RIKjRoAllhs1id+ShSY2mEeyghYpO3EXdnrl2iKuDoE3Depgs+4wnIBZ7ocmYm3Grmx8kY=
+	t=1778513630; cv=none; b=aBfVATQc8r+IuExgadxAApUFWx6k1rU/sww7+2J3T6Kms7d1MsMA3uVum8YXWffllXzHxr4FR5Cxm9l4slwZPSQX/8d2duQaliqM9W66NfVOLoQpZ8xPBq01X62olq9v7ekUaZy9vVLS/Sp0/Ge4QkBkaFKeSB2JNN/O0qqBoas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778511874; c=relaxed/simple;
-	bh=plEjJLIpJ7Gg/iQsNUFNDB6cAQEr6Q+aVFvWhC0ddkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiaDhujU2GrRgJqYoob/RlnFOry/P8Un/ATbS6pnUO1FtD5JtQDXMwcvenWhL2TxtyoBmTfHPE8S7AL3HPjOETr0NyXEHFAxE6TYGgFqV1Vy5Iy3wAOgnORgaIkDa1Y239IZzquIlw9B5iXTQcDh8aihGLc/w6TatDc6apVHi3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMaCaZcm; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMaCaZcm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568D2C2BCC9;
-	Mon, 11 May 2026 15:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778511874;
-	bh=plEjJLIpJ7Gg/iQsNUFNDB6cAQEr6Q+aVFvWhC0ddkc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cMaCaZcmy7SZnIvENxR0TplHY8Bd6sELa2/2QWycnI0uT47aTGNftWNKLh+wMEndw
-	 LUM9gcEWEf46HCun+cZYJuxlsU/Xx8Mz5lV/AkHfzOCl5IMHcIb/UF/lPs6aMgA41x
-	 S9DX2bvKndLjq+vHAsLYCc0Ud4tWMT9JN7wo3TyZFEls4Ao3B8n/Yrxs4GiXe+2TCn
-	 fRGHmZlVidptm6eQH749PiISaNohb5O6mlSzC7B3rcjAxjo1HQz5EZ/mMFHsan/ayT
-	 cktoWsg9C7JCqkJi20VYaztN1adD+v6prkmCQyB0jSld9hsK1nQOPMHBmJvLlNnL0t
-	 8Xy8uGNJhk7VQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wMSBL-00000003L8K-2F8L;
-	Mon, 11 May 2026 17:04:31 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Eddie James <eajames@linux.ibm.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 09/12] spi: lp8841-rtc: drop unused ifdef
-Date: Mon, 11 May 2026 17:04:05 +0200
-Message-ID: <20260511150408.796155-10-johan@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260511150408.796155-1-johan@kernel.org>
-References: <20260511150408.796155-1-johan@kernel.org>
+	s=arc-20240116; t=1778513630; c=relaxed/simple;
+	bh=Cb2uoTixGhpbTSaJtBxYWrPbK0ZaCkAAK9XeDGgZuNU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R2yGsPrALToUKviNtL098Cki2M3Bu6zjBVziEjo5ol+0WLYn1eeTce1qKD1QUrj5vOGhkpnceL7TVKqq2LXKHo7zVdGHICEWk6HFaxjuQZCLqAu7ikwfZ8cp3mz7rzMxe9r0Uy9wJppAleeYKnwNyCYW2xhCtn73VLUfbPm+JIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id D6C6DC3EEAC9;
+	Mon, 11 May 2026 17:28:15 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl D6C6DC3EEAC9
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Daniel Schwierzeck
+ <daniel.schwierzeck@gmail.com>, Hauke Mehrtens <hauke@hauke-m.de>
+Subject: MIPS Lantiq VRX268 general Linux SPI timeout
+Sender: khalasa@piap.pl
+Date: Mon, 11 May 2026 17:28:15 +0200
+Message-ID: <m3bjemm0ds.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Drop the probe CONFIG_OF ifdef which is unused since commit 3974a585be78
-("spi: Drop duplicate of_node assignment").
+Hi,
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/spi/spi-lp8841-rtc.c | 2 --
- 1 file changed, 2 deletions(-)
+I finally found some time to investigate SPI issues on my old ADSL
+router. This is 500 MHz Lantiq VRX268 MIPS 34Kc (32-bit) with 2 VPEs
+(a la hyperthreading). The problem is (happens every few days or so):
 
-diff --git a/drivers/spi/spi-lp8841-rtc.c b/drivers/spi/spi-lp8841-rtc.c
-index 355d9df4d1be..b2546a3a9eaa 100644
---- a/drivers/spi/spi-lp8841-rtc.c
-+++ b/drivers/spi/spi-lp8841-rtc.c
-@@ -199,8 +199,6 @@ spi_lp8841_rtc_probe(struct platform_device *pdev)
- 	host->set_cs = spi_lp8841_rtc_set_cs;
- 	host->transfer_one = spi_lp8841_rtc_transfer_one;
- 	host->bits_per_word_mask = SPI_BPW_MASK(8);
--#ifdef CONFIG_OF
--#endif
- 
- 	data = spi_controller_get_devdata(host);
- 
--- 
-2.53.0
+spi-nor spi0.4: SPI transfer timed out
+spi_master spi0: failed to transfer one message from queue
+spi_master spi0: noqueue transfer failed
+I/O error, dev mtdblock2, sector 1588 op 0x0:(READ) flags 0x800 phys_seg 14=
+ prio class 2
 
+VRX268 (aka VR9) uses the spi-lantiq-ssc.c driver (the router uses
+OpenWrt with Linux v6.12, but the current code doesn't seem to have
+significant changes).
+
+Using a Saleae analyzer, I captured a general characteristics of the SPI
+on this router - the hardware transfers up to 32 bytes in a continuous
+burst taking ca. 6.2 us, followed shortly by an IRQ. This seems to work
+correctly.
+
+The SPI timeout (in the core drivers/spi/spi.c) is calculated as
+2 * (8 * MSEC_PER_SEC * xfer_len / speed_hz) + 200 which simply amounts
+to 200 ms with 512-byte transfers (8000 * xfer_len < speed_hz).
+
+A typical sector read operation takes ca. 1 ms (from CS falling edge to
+rising edge) and the 200 ms timeout may seem fair. However, this isn't
+a very fast CPU, and (probably due to other load, including IRQ-heavy)
+the read can take much more time. In a single 20-second dump, I can see
+several reads which take more than 100 ms (the timeout didn't fire for
+them, though, except for the one). The delay can happen anytime: right
+after the 4FAST_READ opcode, after the 4-byte address phase, after the
+dummy byte, and after the 512-byte block (just before the ending CS
+edge). The IRQ handler is never delayed (much), though.
+
+We have a work queue here:
+(probe) spi->wq =3D alloc_ordered_workqueue(dev_name(dev), WQ_MEM_RECLAIM);
+        INIT_WORK(&spi->work, lantiq_ssc_bussy_work);
+
+The example failing sector read takes ca 210 ms:
+- CS goes down (activation),
+- within 55 us the 4READ_FAST opcode is sent and its IRQ is handled,
+- lantiq driver signals queue_work(spi->wq, &spi->work);
+- I assume the logical CPUs are now busy with other non-SPI tasks so
+  lantiq_ssc_bussy_work()->spi_finalize_current_transfer() isn't called yet
+- for over 208 ms nothing happens, then the core SPI code aborts the "trans=
+fer".
+- lantiq_ssc_unprepare_message() calls flush_workqueue(spi->wq)
+
+Example (timeout set to 150 ms, system clock is 100 Hz):
+[  234.350000] lantiq_ssc_prepare_message ENTRY
+[  234.350000] lantiq_ssc_prepare_message EXIT
+[  234.350000] lantiq_ssc_set_cs ENTRY
+[  234.350000] lantiq_ssc_set_cs EXIT
+[  234.350000] lantiq_ssc_transfer_one ENTRY
+[  234.350000] IRQ completed
+[  234.350000] lantiq_ssc_transfer_one EXIT
+#      190 ms passes here
+[  234.540000] spi-nor spi0.4: SPI transfer timed out
+[  234.540000] lantiq_ssc_set_cs ENTRY
+[  234.540000] lantiq_ssc_set_cs EXIT
+
+It seems everything here works as designed, it's just the slow CPU under
+load.
+
+BTW this is not related to any timeout, or error, in the actual hardware dr=
+iver.
+
+Now what should we do with this?
+a) should we increase the 200 ms timeout? Would it still fail eventually?
+b) should the timeout be configurable, maybe by the platform code?
+c) some other way?
+--=20
+Krzysztof "Chris" Ha=C5=82asa
+
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa

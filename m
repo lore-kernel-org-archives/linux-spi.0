@@ -1,90 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E777E2F549C;
-	Mon, 11 May 2026 12:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689B437A485
+	for <linux-spi@vger.kernel.org>; Mon, 11 May 2026 12:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778500949; cv=none; b=Ith2HcosDILMwEPXwJY5k8s/rRwnWw8wjWqrutxEGB/wwOqWRcKrxzNHl2YwyzokcPpNmrs+hCkqz2fIOyJZMDd2aFcfbZucvNjnGv8t/ztitz69cJvIn1sz6ok94BNoMmJa76iibToCnApATW4LR3oqppXwCDg0MaFvMRHqLow=
+	t=1778501101; cv=none; b=almxijGrtMokAbOAe0vYk8RzXbNL5WLjO+5PIkWD6+cJBwE/8NQSlN31C+hdEvs75W4NXaHgZudtNFdcMUD4yPheWnODC2XSDz5BmxrQLGJSTrhPGaGlcMSvFH1fbDRbQrX0yJCnXrMhGnIZIdxvUpAI0d6IPcwoOFXHZvFz+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778500949; c=relaxed/simple;
-	bh=C79tqVaid3bMp0IWCqGmXs+I/52gXN7k9dQKzJGMPw4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Klczd74g9uCWq85mqwE9C2M+fTLD8krKahbkMJgM9C2BRqg03IV6xds7Bj2B8ZZZSaDSe+ligASH+CpeA2+ac0RNDc3FGJgNNXHEvNJCIzdkiivTwawqnZhXS2fcQntuJnKPfx7nyDO6sQSWobgFGGbRzEtaXKKneflPGZypp/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFhqCAEF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778501101; c=relaxed/simple;
+	bh=IG2munX/zeRxVh0/96K6DeeW7yVdMNzI3TgDvQkgjSo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=EK5+29SFy03KzhENo6bkRfmQH47qOEbBYNHVo0+rWODwd+zpwaexFY4Ge5MoY+51VEMYYZVVECv9SCymFoWmZu7/5HyRNHvJ3hzDU3EOtFLjuD1CS8FKCd/jrYbPgqh9MoffqBpz6+wLG2ocAkxouMoFLr43+mLWX9PCLoSJ5VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZrOvuCj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFhqCAEF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64207C2BCB0;
-	Mon, 11 May 2026 12:02:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZrOvuCj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F651C2BCB0;
+	Mon, 11 May 2026 12:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778500948;
-	bh=C79tqVaid3bMp0IWCqGmXs+I/52gXN7k9dQKzJGMPw4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=OFhqCAEFO+Q/+kRJp0wbEzbRv7AkQyQ3HV0rsJyZMlBKJSoRofFTi29gPDhj9W0C8
-	 BRvWN7NjhkYWT0cDbV5YpKIzc49o6kdJNpzjMpO5tg0TlnBqw2nvo5txTz2vyaAOWc
-	 v75SEkgDOYsVe7Wf65P6oMr9Icginod3WX6lJ2JzgUqKXkbktod+y3/jvagLVcUion
-	 RpzbjG2+NZJ3TIQhRZvTESN3FmNsh8ClHTP1AKPGDQyEwDvFsbpgXQDx7dbZB4ZFsf
-	 FkD1Do+qwmCB3kapVjofwg7/WygFdcVOpf/4eUeDMfOBp6rX5i2Ky9uFGeo6DcMmYd
-	 VAep2R3yykadA==
-From: Mark Brown <broonie@kernel.org>
-To: Krishnamoorthi M <krishnamoorthi.m@amd.com>
-Cc: Akshata MukundShetty <akshata.mukundshetty@amd.com>, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260507180051.4158674-1-krishnamoorthi.m@amd.com>
-References: <20260507180051.4158674-1-krishnamoorthi.m@amd.com>
-Subject: Re: [PATCH] spi: amd: Set correct bus number in ACPI probe path
-Message-Id: <177845935499.986162.15900576730103665475.b4-ty@b4>
-Date: Mon, 11 May 2026 09:29:14 +0900
+	s=k20201202; t=1778501101;
+	bh=IG2munX/zeRxVh0/96K6DeeW7yVdMNzI3TgDvQkgjSo=;
+	h=Subject:From:Date:To:From;
+	b=nZrOvuCjQSs3C8r/cYqPJnExlUFS68buLMZCKWEYDRuYlA4/7wmTpfClt2DeVA2cd
+	 IU7i2OuIfjYS5+53HSbY1tr0tuUXCblmF6mBt8TpT7M7+NdF5cME9DkRo/9Iy57xc2
+	 6wEGZ5KAqLha55S444oerWFrECMqCPaRLlu7MTVHmV0CoAwiQdi1RaHIg0XzqBCdQg
+	 +fnllObUHjivQYwpiu/XAV9HTk6dMk0nX+KNsmdJxqs9lphnKxoCeTx7gjrg8h6sCI
+	 uCFm+fzicpVXI98+tm4+J1qyoOCmwMVP/crY+EIdQdQptKmrWMvmxBT5loN+lt6eQg
+	 SaHTwxvKfEerw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 05952393022E;
+	Mon, 11 May 2026 12:04:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1124; i=broonie@kernel.org;
- h=from:subject:message-id; bh=C79tqVaid3bMp0IWCqGmXs+I/52gXN7k9dQKzJGMPw4=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqAcVSrDIbevqWPp7Nt2DT7T6vXFJSIA35JsAL8
- 4JiShYrL5GJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagHFUgAKCRAk1otyXVSH
- 0JwkB/0QN4ETM2qxT1g+QiiBhrGOUTCupg/38/ni7QYOrwO2XJ4nUXYJ24hDWcOPMQaDJvXKs3d
- RgFDR3qFL4lwCKqvZ7sS2aKykG64a+SY/rDNahKMVambzSOjJsQTJyYoZVjZgphBze1GBbwJjWo
- Ad1QfbK6CNOqDjdHL7On+JSri6FXjGpRQFBCB+5UPFvq9L5zaIcoTop3fza8W9CkeL85KEFw+br
- LxboE+yO0LysU6TgnAO/jeZ3Q5dnDleLuvsAIn41u9zwjLbVf/h4eYdPL2gprGalCwcMBra785s
- n6QpbIIchBGjgNWYeDH3FTkMZULUzKvqTs3+cbBs4WNl5TX8
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177850104742.2192705.8379271177905532013.git-patchwork-summary@kernel.org>
+Date: Mon, 11 May 2026 12:04:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Thu, 07 May 2026 23:30:51 +0530, Krishnamoorthi M wrote:
-> spi: amd: Set correct bus number in ACPI probe path
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.1
+Series: spi: switch to managed controller allocation (part 2/3)
+  Submitter: Johan Hovold <johan@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1089683
+  Lore link: https://lore.kernel.org/r/20260505072909.618363-1-johan@kernel.org
+    Patches: [01/20] spi: pic32: switch to managed controller allocation
+             [02/20] spi: pic32-sqi: switch to managed controller allocation
+             [03/20] spi: pl022: switch to managed controller allocation
+             [04/20] spi: qup: switch to managed controller allocation
+             [05/20] spi: rspi: switch to managed controller allocation
+             [06/20] spi: sh-hspi: switch to managed controller allocation
+             [07/20] spi: sh-msiof: switch to managed controller allocation
+             [08/20] spi: sifive: switch to managed controller allocation
+             [09/20] spi: slave-mt27xx: switch to managed controller allocation
+             [10/20] spi: sprd: switch to managed controller allocation
+             [11/20] spi: st-ssc4: switch to managed controller allocation
+             [12/20] spi: sun4i: switch to managed controller allocation
+             [13/20] spi: sun6i: switch to managed controller allocation
+             [14/20] spi: syncuacer: switch to managed controller allocation
+             [15/20] spi: tegra114: switch to managed controller allocation
+             [16/20] spi: tegra20-sflash: switch to managed controller allocation
+             [17/20] spi: ti-qspi: switch to managed controller allocation
+             [18/20] spi: ti-qspi: cleanup registration error path
+             [19/20] spi: uniphier: switch to managed controller allocation
+             [20/20] spi: zync-qspi: switch to managed controller allocation
 
-Thanks!
+Patch: [GIT,PULL] SPI fixes for v7.1-rc2
+  Submitter: Mark Brown <broonie@kernel.org>
+  Committer: Linus Torvalds <torvalds@linux-foundation.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1091652
+  Lore link: https://lore.kernel.org/r/20260508135042.1A2791AC5896@finisterre.sirena.org.uk
 
-[1/1] spi: amd: Set correct bus number in ACPI probe path
-      https://git.kernel.org/broonie/sound/c/422bd00b71ab
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 21
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

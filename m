@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E750C2BE034;
-	Mon, 11 May 2026 15:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDF22D7DC4;
+	Mon, 11 May 2026 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511874; cv=none; b=E+3MhyWjKhxC9fKHaLK3/YbV+YetH8XlDDJ6OWqWZo+UcI7P6vRIK2MmXy6mNb6DqyURXE8DVvoRwBvk/s59swLU1ytEYb91m4Or9vCL8YZdbyHcaHOYSqu+D4po+qME7tYJKGWxzF+65sVWWAX77juoPXB7QAwH3kWxPp+Bpwc=
+	t=1778511874; cv=none; b=HukyJZK7XK++ZT7ftCFsgL6aLxCGIIhaHkuVdzTgRcAxZrCwGRbxIFBQ6Xb1bIJ/VAVIKCpLz2Hjds7pAZOps17ayVvzq3n3lueD6QOcWqoQ62QWTv1IFYLYKC815pK60fVyNwAYuUWOw3YDEF0QYFylLTvJqWE7pw5EW4ZVvzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778511874; c=relaxed/simple;
-	bh=6xhTPY7jlW/618vCQblUb8mivxbPw/JihIrlcs6Bv50=;
+	bh=H2FeHAOdv+gnBoc3XnT/OSM2l7x0Wuk4i5L2lZ5BJvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU7MVY1Xs5e3hkSHJ3B08dJXNwcUKjrCPD/oE6Q/5UKndYM/q1MTGH6YqaZy1iiMcmJV66700mzeQojQuhGm+zjQFUC4kIWXy3rQBJ/m9qHAa5AEVQKxLzxvy0Xeyf8EZpHogqyU1luE57eXGEKGEvuQUEFDexoJwW6m/kbqsAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jnyjk9VO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=S4pbG9TciHemU4wKYl/fr5oW1gP++S3uY/mP0YpO+KM4W4kYXj4QF3Wu4R3TxMTaLV4cyuUKWgH51yXWfy11gEHwiJi8kuL+FIy6PIc265Rh+hB8//Ly/RWlUJNinxp5huuy0OgY4YlFc5+NCCaQJ/kjM4XahW3xyZkox4kpNPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RrGwWo84; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jnyjk9VO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9679C2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RrGwWo84"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A19C4AF0C;
 	Mon, 11 May 2026 15:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778511873;
-	bh=6xhTPY7jlW/618vCQblUb8mivxbPw/JihIrlcs6Bv50=;
+	bh=H2FeHAOdv+gnBoc3XnT/OSM2l7x0Wuk4i5L2lZ5BJvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jnyjk9VO4L9tMU+Fc/b5PldTQ8yfabORWb/QyDKjbQBAX0UYqS0IOJjnii0wKG1Cr
-	 FXmFu+sfgLd3Xyf7lJPw28B7587dZh0J7Byh/1x+RDXH0fwNhS7zmorTQSy5gXMb4J
-	 Qj75npDDpecNTjbdY6bXgUkg8SH+fX3cd3OztBaWNbN/20s+M+Gy99y6kl5X1ZwGNk
-	 PRjGhrKlCSHYkJnVUsYcpQeREZbuVh4pHPrXcZ/QAneuznO+IFx7LvtI7bT7edtiAE
-	 wlpwL95oCOuwwSLgFYMP+BGi089Fas9y1y5CspCGGwHEdb2iKIrrfQz1rJ+Cy7IqLd
-	 omQq9A+Gz5lLw==
+	b=RrGwWo84teE1gyWYySNgzJmlmEQRvuEyc54Puue18+YQgldxoivIRR9IW9qKD6zeZ
+	 PbK/q393E7NjZCa5ZhTqdOWGrvx7zgS1zgVoq95dbOJd8o3GA5TToPZFFIRnbq30DC
+	 oco4+35BCYHASyIETidjB33gDe6UO8WwSh7VXIPSsstpE5D5SxqnCnYlFcOWdN9oxq
+	 H6f8OOd4GtXy3J4JNwbE/RIaqpMn4zbwsU53OyWbsW+eFCSnSICu0IEq7u4oa9F/by
+	 pFz0MZD+bqUttFVa0ca4c7tc/iyKfD6YhvKbXnbVL8C7VZs+EHqe6BxdeoCldQ+cfr
+	 tJeo69VRPt+Zw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wMSBL-00000003L84-1w6o;
+	id 1wMSBL-00000003L8Q-2Lvt;
 	Mon, 11 May 2026 17:04:31 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Eddie James <eajames@linux.ibm.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 01/12] spi: altera-platform: switch to managed controller allocation
-Date: Mon, 11 May 2026 17:03:57 +0200
-Message-ID: <20260511150408.796155-2-johan@kernel.org>
+Subject: [PATCH 12/12] spi: xlp: switch to managed controller allocation
+Date: Mon, 11 May 2026 17:04:08 +0200
+Message-ID: <20260511150408.796155-13-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511150408.796155-1-johan@kernel.org>
 References: <20260511150408.796155-1-johan@kernel.org>
@@ -58,94 +58,30 @@ simplify error handling.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-altera-platform.c | 27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+ drivers/spi/spi-xlp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-altera-platform.c b/drivers/spi/spi-altera-platform.c
-index fc81de2610ef..3ee5d3480bb4 100644
---- a/drivers/spi/spi-altera-platform.c
-+++ b/drivers/spi/spi-altera-platform.c
-@@ -39,12 +39,12 @@ static int altera_spi_probe(struct platform_device *pdev)
- 	enum altera_spi_type type = ALTERA_SPI_TYPE_UNKNOWN;
- 	struct altera_spi *hw;
- 	struct spi_controller *host;
--	int err = -ENODEV;
-+	int err;
- 	u16 i;
+diff --git a/drivers/spi/spi-xlp.c b/drivers/spi/spi-xlp.c
+index be8bbe1cbba3..d014955e6d4b 100644
+--- a/drivers/spi/spi-xlp.c
++++ b/drivers/spi/spi-xlp.c
+@@ -398,7 +398,7 @@ static int xlp_spi_probe(struct platform_device *pdev)
  
--	host = spi_alloc_host(&pdev->dev, sizeof(struct altera_spi));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct altera_spi));
- 	if (!host)
--		return err;
-+		return -ENOMEM;
+ 	xspi->spi_clk = clk_get_rate(clk);
  
- 	/* setup the host state. */
- 	host->bus_num = -1;
-@@ -54,8 +54,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 			dev_err(&pdev->dev,
- 				"Invalid number of chipselect: %u\n",
- 				pdata->num_chipselect);
--			err = -EINVAL;
--			goto exit;
-+			return -EINVAL;
- 		}
- 
- 		host->num_chipselect = pdata->num_chipselect;
-@@ -80,7 +79,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 		hw->regmap = dev_get_regmap(pdev->dev.parent, NULL);
- 		if (!hw->regmap) {
- 			dev_err(&pdev->dev, "get regmap failed\n");
--			goto exit;
-+			return -ENODEV;
- 		}
- 
- 		regoff = platform_get_resource(pdev, IORESOURCE_REG, 0);
-@@ -90,17 +89,14 @@ static int altera_spi_probe(struct platform_device *pdev)
- 		void __iomem *res;
- 
- 		res = devm_platform_ioremap_resource(pdev, 0);
--		if (IS_ERR(res)) {
--			err = PTR_ERR(res);
--			goto exit;
--		}
-+		if (IS_ERR(res))
-+			return PTR_ERR(res);
- 
- 		hw->regmap = devm_regmap_init_mmio(&pdev->dev, res,
- 						   &spi_altera_config);
- 		if (IS_ERR(hw->regmap)) {
- 			dev_err(&pdev->dev, "regmap mmio init failed\n");
--			err = PTR_ERR(hw->regmap);
--			goto exit;
-+			return PTR_ERR(hw->regmap);
- 		}
- 	}
- 
-@@ -112,12 +108,12 @@ static int altera_spi_probe(struct platform_device *pdev)
- 		err = devm_request_irq(&pdev->dev, hw->irq, altera_spi_irq, 0,
- 				       pdev->name, host);
- 		if (err)
--			goto exit;
-+			return err;
- 	}
- 
+-	host = spi_alloc_host(&pdev->dev, 0);
++	host = devm_spi_alloc_host(&pdev->dev, 0);
+ 	if (!host) {
+ 		dev_err(&pdev->dev, "could not alloc host\n");
+ 		return -ENOMEM;
+@@ -418,7 +418,6 @@ static int xlp_spi_probe(struct platform_device *pdev)
  	err = devm_spi_register_controller(&pdev->dev, host);
- 	if (err)
--		goto exit;
-+		return err;
+ 	if (err) {
+ 		dev_err(&pdev->dev, "spi register host failed!\n");
+-		spi_controller_put(host);
+ 		return err;
+ 	}
  
- 	if (pdata) {
- 		for (i = 0; i < pdata->num_devices; i++) {
-@@ -131,9 +127,6 @@ static int altera_spi_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "regoff %u, irq %d\n", hw->regoff, hw->irq);
- 
- 	return 0;
--exit:
--	spi_controller_put(host);
--	return err;
- }
- 
- #ifdef CONFIG_OF
 -- 
 2.53.0
 

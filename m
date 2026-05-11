@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8102D94BA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5B2D7DD7;
 	Mon, 11 May 2026 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511874; cv=none; b=XBEd1HX0GuUC7j85+f9fgZjBJr+8Y/YOEbvPdD5zFI7hQMWiW2I9XxQjBGs9W4CxR7VHznQv00h0EsoiU4DNYU4MWjmIMXjErlVU3cNxgftMdyGX/f53flhFDWr+vufv9exw8Bqbiue1CXTYGMfQdoUK0l0/qcseuqy0HqtRs3M=
+	t=1778511874; cv=none; b=sK3V6/hzgo6gc1Fw4WleOSYTr1QRYiQlAdZmUQ8IewF2XzC5gkz3zPqA1up0Obxu6v0H4JkbWPC6gorVtM8Kdicn6FceRyLznRB0Uqh0SYYNS5HHcsRFTBpdJCrS7rmFEoNCmbxGUxEIMHiQ0/avHkDIZPa4KHgR4QNCEBs2v/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778511874; c=relaxed/simple;
-	bh=u4BX8owGs/FlxIt9J8XNjTjKc3B7/YxCjfSf/JynjM8=;
+	bh=8zaaMmjQrzHH7jv09/7EndR2/KWRdkHmMxODj41cFf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3jJq1Ts8+RnfKy9ADw8o8AJ5jYWUTFQCMM9zE+0k81foj3i4SV0wMBfJPFMxAGFoXP4HB1IbiON6eq092TrZsxP9Tqq+cEtPX6IAQz8EvLWxnRrWRHhTIPwd8t4SMGM5oou+oZwmqZ7oLZ1Eeq279mbpQ9pttvsnYMorCKvbQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=maEbirDQ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ZPdrOIfVxXJPkEossH3ViTCgRxdfozNUI3CyqKcoKuL1goDA2Od1KmuStYFwxLVXthRSuXBQLp0KQcdFZ0w4cgBM9R4S4RMp7fSkxcNHLqanCS84k0SPWIrymtS21PrLtxUerI2WYNUlmVX30JS2ADYFOFJwj7xXEilZ2fF4uAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NB+klaiz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="maEbirDQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6EFC2BD04;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NB+klaiz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E1C4AF12;
 	Mon, 11 May 2026 15:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778511873;
-	bh=u4BX8owGs/FlxIt9J8XNjTjKc3B7/YxCjfSf/JynjM8=;
+	bh=8zaaMmjQrzHH7jv09/7EndR2/KWRdkHmMxODj41cFf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maEbirDQR07dNrieSauEB4J78f5fsPCeRAUgvPiWtEhtYXFcNUCVKPN0JK7gtZBB4
-	 trfou195TYVuINRYWHkVoF/cqpt/yI9gFWwr1JYTBqFPMyEe2KcCN29B2elXZ6re0G
-	 4P/zfzi7izCURzcHe1e4tvn0/TYKdsj7Gg9+/YqLt0HHQxfW58YW3zYgGRZm+FRQPU
-	 im6jrsg5KIgmceupmctT1bybtisbXGGr7xlxCJT+AjlxyQGvsOcVrlJxMsFclDQLcl
-	 F8diJGCyvVEFimJhOqYyM1KnP+Tst9AUo/zS4nN6ShW53G8/DrZJG4/7QJe8/yL2b0
-	 XG9oz6vqeUhpQ==
+	b=NB+klaizLAFBwpL9zdURq4Qvdv8sklLJGOzMbvwFa1xplIMK3RwXC8iDe/M9UAJgL
+	 BVkJB2sArYglR/fE6UGMSj3Oed9JJKebp7Nr2B7+ToAXFPbXF75BGPiMKy+8F8dZpB
+	 KqfH/rzHOYxNkBmCZh8cIKYh45XvfBbeBiHnoXq3BtDf21VgSdHBHBvR+SnN3dJHfT
+	 mfSGAETo78wq5WhJsWjm6Wrx+cMmwlhpKyrLZTZKDUs3YbL5Fx1zGszro8SscOKeQZ
+	 Gj9qiNhR+uhiHOXSMyOqTzkugcpAwOwxl6o1uB8hmToBYYkPyvm71ShNa/GAzsG2i3
+	 xQzi6m/xDATfA==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1wMSBL-00000003L8M-2HMG;
+	id 1wMSBL-00000003L8E-27v3;
 	Mon, 11 May 2026 17:04:31 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Mark Brown <broonie@kernel.org>
@@ -39,9 +39,9 @@ Cc: Eddie James <eajames@linux.ibm.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 10/12] spi: meson-spifc: switch to managed controller allocation
-Date: Mon, 11 May 2026 17:04:06 +0200
-Message-ID: <20260511150408.796155-11-johan@kernel.org>
+Subject: [PATCH 06/12] spi: hisi-sfc-v3xx: switch to managed controller allocation
+Date: Mon, 11 May 2026 17:04:02 +0200
+Message-ID: <20260511150408.796155-7-johan@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260511150408.796155-1-johan@kernel.org>
 References: <20260511150408.796155-1-johan@kernel.org>
@@ -58,64 +58,61 @@ simplify error handling.
 
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/spi/spi-meson-spifc.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ drivers/spi/spi-hisi-sfc-v3xx.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index b818950a8cb7..d700fa315223 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -288,9 +288,9 @@ static int meson_spifc_probe(struct platform_device *pdev)
- 	struct meson_spifc *spifc;
- 	void __iomem *base;
- 	unsigned int rate;
--	int ret = 0;
-+	int ret;
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index b2af2eed197f..eeeb86381862 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -436,7 +436,7 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 	u32 version, glb_config;
+ 	int ret;
  
--	host = spi_alloc_host(&pdev->dev, sizeof(struct meson_spifc));
-+	host = devm_spi_alloc_host(&pdev->dev, sizeof(struct meson_spifc));
- 	if (!host)
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(*host));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*host));
+ 	if (!ctlr)
  		return -ENOMEM;
  
-@@ -300,23 +300,18 @@ static int meson_spifc_probe(struct platform_device *pdev)
- 	spifc->dev = &pdev->dev;
+@@ -451,16 +451,12 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, host);
  
- 	base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(base)) {
--		ret = PTR_ERR(base);
--		goto out_err;
+ 	host->regbase = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(host->regbase)) {
+-		ret = PTR_ERR(host->regbase);
+-		goto err_put_host;
 -	}
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
++	if (IS_ERR(host->regbase))
++		return PTR_ERR(host->regbase);
  
- 	spifc->regmap = devm_regmap_init_mmio(spifc->dev, base,
- 					      &spifc_regmap_config);
--	if (IS_ERR(spifc->regmap)) {
--		ret = PTR_ERR(spifc->regmap);
--		goto out_err;
+ 	host->irq = platform_get_irq_optional(pdev, 0);
+-	if (host->irq == -EPROBE_DEFER) {
+-		ret = -EPROBE_DEFER;
+-		goto err_put_host;
 -	}
-+	if (IS_ERR(spifc->regmap))
-+		return PTR_ERR(spifc->regmap);
++	if (host->irq == -EPROBE_DEFER)
++		return -EPROBE_DEFER;
  
- 	spifc->clk = devm_clk_get_enabled(spifc->dev, NULL);
- 	if (IS_ERR(spifc->clk)) {
- 		dev_err(spifc->dev, "missing clock\n");
--		ret = PTR_ERR(spifc->clk);
--		goto out_err;
-+		return PTR_ERR(spifc->clk);
- 	}
+ 	hisi_sfc_v3xx_disable_int(host);
  
- 	rate = clk_get_rate(spifc->clk);
-@@ -342,8 +337,7 @@ static int meson_spifc_probe(struct platform_device *pdev)
+@@ -501,16 +497,12 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_spi_register_controller(dev, ctlr);
+ 	if (ret)
+-		goto err_put_host;
++		return ret;
+ 
+ 	dev_info(&pdev->dev, "hw version 0x%x, %s mode.\n",
+ 		 version, host->irq ? "irq" : "polling");
+ 
  	return 0;
- out_pm:
- 	pm_runtime_disable(spifc->dev);
--out_err:
--	spi_controller_put(host);
-+
- 	return ret;
+-
+-err_put_host:
+-	spi_controller_put(ctlr);
+-	return ret;
  }
  
+ static const struct acpi_device_id hisi_sfc_v3xx_acpi_ids[] = {
 -- 
 2.53.0
 

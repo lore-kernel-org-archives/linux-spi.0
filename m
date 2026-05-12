@@ -1,102 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45DA1A9B24;
-	Tue, 12 May 2026 00:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF371FC101;
+	Tue, 12 May 2026 01:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778546820; cv=none; b=XQcDod4XDqe39k4L8dukYxYQYLsxRtVP90A3U7IY2ziEv8NlYV80Sc2bSMOnc4w3a0f3a1NzPaDXtJQlKdlTd7HJ9Cb1f25OJPQDCuUPlAhoNEZ94NuTiYFmshLSuU9kRnVK12r2CEncdNDjbGI87TNNCI2PGizoXQePWLa/fZA=
+	t=1778549238; cv=none; b=GJQg4ZGR7n8zXnC5xHTpM804GTMcUGr5KqJ8TUZI7aGk0f4oYckxKPLAbXkscrVd29HMU76WWgrhUTHbX28ufsVuMmRrDU2nmW+3PJwLHiWAcIfhE8C7mPhr7WXkGIZdYtRemhFP/qn/+UjOT33U82j35HLzRGDvX8Qx8b927QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778546820; c=relaxed/simple;
-	bh=nAStgxDrILHcHBeKraq8IhW1NnoPOLY/Yn9N0sOuGOg=;
+	s=arc-20240116; t=1778549238; c=relaxed/simple;
+	bh=oUJ2ENxBJr/aEbr6dAxLopR+EW9fYBCZYTg0zi3ROzU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2SnKnj1C0DN/pRE7Hei0A+v9bHzzpGmOY3/qk2IFciZtE9DNtXvsY3cOUXN7s/5fAE2U1lKvi2PrwK4Ba5QqQ4Nb3sL+esmF8spknOrm+yhVbHJk0O1s+bJkd9hCLDcCnHEBMFhoUmiMvBH3AEhC5DpAtYtvjCARjmToY6VJt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tt9OVl51; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fi9YcpqgLU1CFsbqvaeIv7Id/LFaNAsKMzFKtseg0SLMfsh3QG5Dx9QfiiQs6CgxT5YwBqQPMKYDc844slgEjubqOmaMTchwU96O4rFJ+Pfd7MRrqifZOCVwCym0WTHRRtxEZdfk1nmV9xUR+bvQVr/v5MMkwUTSNhj2y0yHgl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Et5E7njp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tt9OVl51"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FC7C2BCB0;
-	Tue, 12 May 2026 00:47:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Et5E7njp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7266FC2BCB0;
+	Tue, 12 May 2026 01:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778546820;
-	bh=nAStgxDrILHcHBeKraq8IhW1NnoPOLY/Yn9N0sOuGOg=;
+	s=k20201202; t=1778549237;
+	bh=oUJ2ENxBJr/aEbr6dAxLopR+EW9fYBCZYTg0zi3ROzU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tt9OVl510AUmHO0p1IfBYvhOgGKzbIKfpqfHYBsKz13+FMYMBmLpLpVBOmYAcwyQI
-	 Vy+EKK4zr/+vGU07Js65Hyo4aDbG+6QaHrEFOUB1TXFH+naRL1H1Uhw1KD6+aHWT23
-	 /LdGTZO90nGqF6+J9xhNmNUVGqv7ns5XsLMZq8M5Ax399+7RKgCmTtMHJ7AWL8Gt6I
-	 2mqWct4eRPEY0bxDP6ePKqAHat1g6xoJl7HHI8It4lQOgChMCaIzm7+PnR5enBxcj0
-	 ms6krrI/cN7bLEWOKOrdAlrlFSYkd5I84c3JRoZZ4fJYR7TDmR8mYyHrQN2TfkYcXs
-	 rO51hs5zz4rjQ==
+	b=Et5E7njpFt1hBoVQUAa5GjoxpaFgvXaEwveaXxY9WmreGQN673MtFgX1YJLp9kkkm
+	 JsWjkH80bM7G83L6Ba1+AHPI7Z2i08iGB1eBdtMk8lcJCSyHNZ0N9FDJ9izCk8Snt4
+	 e69Tnzq1nP9eBBoKR4VxnQehMW+g4KroR0TrBaouS/3LCfHA9zSzE6PDNFsic3bHNP
+	 fmx5VoKZxDTa77DwNCv+RNi1ekSTYN1BxVDALBn17Hjoh1YCCrRfQzjHpN5EENwI/+
+	 fbCg/FmCRsOG9ERB5qYIyx2zxCzLWI0Dc9lHddL+TiykMkrtXRjCeGm6JYdwngen/y
+	 6jUQtVe1l+tcA==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 75C0B1AC58C2; Tue, 12 May 2026 01:46:57 +0100 (BST)
-Date: Tue, 12 May 2026 09:46:57 +0900
+	id 6D0E61AC58C2; Tue, 12 May 2026 02:27:15 +0100 (BST)
+Date: Tue, 12 May 2026 10:27:15 +0900
 From: Mark Brown <broonie@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Liu Ying <victor.liu@nxp.com>, Philipp Zabel <p.zabel@pengutronix.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Jackson Lee <jackson.lee@chipsnmedia.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Hugues Fruchet <hugues.fruchet@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Parvathi Pudi <parvathi@couthit.com>,
-	Mohan Reddy Putluru <pmohan@couthit.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	"Andrew F. Davis" <afd@ti.com>,
-	Hussain Khaja <basharath@couthit.com>, Suman Anna <s-anna@ti.com>,
-	Ben Levinsky <ben.levinsky@amd.com>,
-	Tanmay Shah <tanmay.shah@amd.com>,
-	Erwan Leray <erwan.leray@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Roger Quadros <rogerq@ti.com>, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-	dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org, linux-amlogic@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
-Message-ID: <agJ4gfH0HgmbOr5X@sirena.co.uk>
-References: <20260511165942.2774868-1-robh@kernel.org>
+To: Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+	Hauke Mehrtens <hauke@hauke-m.de>
+Subject: Re: MIPS Lantiq VRX268 general Linux SPI timeout
+Message-ID: <agKB85O1LM5kF_J6@sirena.co.uk>
+References: <m3bjemm0ds.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -104,35 +44,41 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3xlBjuC8zHYeQx3+"
+	protocol="application/pgp-signature"; boundary="Ol9mjDSSaJOBAxyd"
 Content-Disposition: inline
-In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
+In-Reply-To: <m3bjemm0ds.fsf@t19.piap.pl>
 X-Cookie: Truckers welcome.
 
 
---3xlBjuC8zHYeQx3+
-Content-Type: text/plain; charset=us-ascii
+--Ol9mjDSSaJOBAxyd
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 11, 2026 at 11:59:36AM -0500, Rob Herring (Arm) wrote:
-> The "sram" property has become a de facto standard property, so create a
-> common schema for it and drop all the duplicated definitions.
+On Mon, May 11, 2026 at 05:28:15PM +0200, Krzysztof Ha=C5=82asa wrote:
 
-Acked-by: Mark Brown <broonie@kernel.org>
+> Now what should we do with this?
+> a) should we increase the 200 ms timeout? Would it still fail eventually?
+> b) should the timeout be configurable, maybe by the platform code?
+> c) some other way?
 
---3xlBjuC8zHYeQx3+
+If raising the timeout resolves the issue just raise the timeout, this
+is not something that should ever happen in production and is just there
+to ensure we don't completely deadlock on catastrophic errors.
+
+--Ol9mjDSSaJOBAxyd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoCeIAACgkQJNaLcl1U
-h9CAeQf/d29Uvfn8GPawCZ+l4UnMHO/18slnjGlircCx5bFlOKWLyqPq14JkP32t
-feVK/h8PnpOWbJCebOgL+As1iNYcMRPjw2C4eq+HfdBppx/1NZ7FK7CmBQjRgccv
-yKyirduSqH7pUKJ3lNom3Q0qkCjzezWH9fFxqic/P9T3aEsx6rjZ+y9zAl3pskdi
-LaMYflOJv7ca2tEWSY+RNNjsmfq2JIsZAwkMRlWtFK4maNWi0dw84s6d5egY76oJ
-6ZI//3nGXP8Xy3i48UmCoJDpNhMA3+1PW9i1ylSGK9F0KOttz/cmIG3cUleEVd9f
-WXPmJksEzyt97BKPha3/6IKICQtmdw==
-=XKlR
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoCgfIACgkQJNaLcl1U
+h9BwZgf+PinRTIDJRHuncyCylEpXjckGZz39hA2jyj0fSst6SbujQtnoqkkq9B5L
+JJgHZZ3b1Tq1EgIhiEI1crEehjgC42Lgn59zEwn+lxCoh1MadT8j+PaGarTlnmNk
+Xz8TsY6mbUMRBj0DJFeYvIxg+0kItXhPNT+7JIUz2NEhSnsyNM3/SJRrOAC+GD/z
+iR5MU10UHacmluuvG8rR5LhuYwTIJZcFwZG7aN6A7Luda4m4E6z7jRYEgujx1e/m
+xVE29dq8ubcT8tWbzf8OYrVHLv8nc1Kd9LZAKdRRl5sILKH9fStmHfu5c6ejYYGg
+VQYMWw/PNqUQeOH6w3HWkktdtSvtFQ==
+=DWsv
 -----END PGP SIGNATURE-----
 
---3xlBjuC8zHYeQx3+--
+--Ol9mjDSSaJOBAxyd--

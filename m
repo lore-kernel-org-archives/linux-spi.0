@@ -1,153 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2129.outbound.protection.partner.outlook.cn [139.219.17.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D78848B38F;
-	Wed, 13 May 2026 17:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778695192; cv=none; b=vAQkxPOxqD6Lb1NKOaQP2P5JW2kPdbt5KdTjz115xTREwYlCz2uqlqacVO+tX43ONPWPISSgn+xywZ3guKE/8WedJBjFTdz90rFJMZ7XT1NqWfvv2Bi+60StMX32v8/o6++O4umgoUG455hmCofo18YBD3I1rhk63RCeYGFACBo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778695192; c=relaxed/simple;
-	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pp1DK4OKoMgzxBigLzRmiG2gXpNRMMz8O8qXRVHaXiXx/xQPjc2hVTKEypq3bMShEYa5mYLSAUBk3ox751tlj6RzoWnQfygFvkDoNTTe/t1IpvTAhQEufaHFfqv92j1EyOO59AaaTQywR/jSU01pvNiC98LS8aYcopiA6M/FoVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9BOyPMw; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9BOyPMw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B184C19425;
-	Wed, 13 May 2026 17:59:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778695191;
-	bh=dmsAP9VeVH8ZarAqxYjVIHNXsgqomDY2LxrLOfBtREs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=K9BOyPMwzZtZ1o8TWVOTN1hX2Xu3tgzhJqLl//vPECR5ncJg6vT+X2ORxne0vrhno
-	 6LCPwrqbJ4UvLYBBpBKG0ht49nClZjpcu3cXU9ihJQtqITKu5/IHX7+HVg6LkoMbrr
-	 UcbH0CHuxtzo4+Xs1suhSAfPnTwdtLdIgAyJNDNPFZTDwESH/Hyn10gwCWuFtkGj7/
-	 gfsIm8/UdP9ly5bu93ZPeW6BfGtTGnTJ/EW10QAJmMlVUFYeOY9cpX0VZdLj39B+fi
-	 sAjvx1fDXB0APZBkkf5O1C6Ybk6yXtpAhC43Kj0yQKs5RVh1ZQsUyikf5tUiZZUbYq
-	 UmEqxTJSKhh9Q==
-Message-ID: <de3ae096-5edc-451e-8e93-74012797ce48@kernel.org>
-Date: Wed, 13 May 2026 19:59:33 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A590C2EAB82;
+	Thu, 14 May 2026 02:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.129
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778727324; cv=fail; b=jklGTjxJlxn69CiTyMG+UgCkrxPEjaT01yTqJwEzKJckJijpCK2fHdS+QUEsqgTjjIdXONVLalFOFEs+CDnIhkgof5BKgNsKQZCwqDuaoJwdebjnc6OYyHiFeVCRDcIcGY85Tr3q/6sixUh7HLzLUSfriyKf+OtaxExyC68Gsi4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778727324; c=relaxed/simple;
+	bh=1Rjh2rH14R85QshcGFl2iguTptmSPG0ON7+NDbWYZ8s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rY622dNYRPMsq80FY5YDZC7/HJ2ckllNtk7hPELkkUoYfKYjiKbzJJeG830G7vLTJniBvwr/epPIryejjKMUEnuvgGMq7VEj0t8Yw4CzmzbJyttPyLjK7DuDaHqDL4nv+/VpBM622elTzgPLafdHkpg9tgjbM9SdNnHXte4DEYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kQ+8cVOHAdIH2/QIw19LC0Bvg0lwk9gIwni6eSKWTSz5Op3MM+sMm+aJZBSlMXc6L85hMhwhaTcPKfwHczz1NAu+YAyDXJJVpLDjZAsdCwdOVP2Pth8cuxSdd/X32QePWiJ7XVBch+KaGByYcZ41gmQt0h4SgWhA2/YMhWfndP3j0YddgOw6+fLWo1NBWi2u1dk+EedfdVyrv6ofT272oPQuUeOKpJ/EkqiIHc8ioEJF0ceowjRfb0Z/SIcyArEKDBxWdzJcPxzw+J5zpXAPLm/Pn8XSn/FFqP3NGCec8qrNtPbbpDuoJuPupKYHzC8m6KDjmiEf168SEewS3YmceQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dmshs2SLWvVFDOVZHg4FurLYDwNKlWmtZT8z6bQQR4I=;
+ b=Ute2fmFfWsQE9pk7xNhYtelz+YSdrAMyWzIY3bIbtmaXVivI8Uq/zBf/ORFfvuQ4Z+r3awxHTm0rrDEQKIqQda+QlrRABzHDaRntaabBsnann3eiT/U7j2f4BmDlfKVHfeEVEWd4O4IrW5hN97lOchYlQhzk4jRgH4yEMNE5hShXN98F0Xg1P9JjadyEU0kwgfSUy3XlaoeaJFHgIcdRF/2Bz8zVsgZdVi+LN6302D0KXhvMP4Nz2ca02iUXRWKnHFtc74O9Lmx0r/SiB5y6201qF2zDzIxFn/97xJo5tQA4jgX1SAGHLhwoMsf11QqDdZ01ZtPRtuzmmnkLSKL+hQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=lecomputing.com; dmarc=pass action=none
+ header.from=lecomputing.com; dkim=pass header.d=lecomputing.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=lecomputing.com;
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn (10.43.37.209) by
+ BJSPR01MB0754.CHNPR01.prod.partner.outlook.cn (10.43.37.78) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.25; Thu, 14 May 2026 02:40:33 +0000
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ ([fe80::1c61:86e3:3a75:155d]) by
+ BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn ([fe80::1c61:86e3:3a75:155d%4])
+ with mapi id 15.20.9818.023; Thu, 14 May 2026 02:40:33 +0000
+From: thomas <thomas_lin@lecomputing.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	hoan@os.amperecomputing.com,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	jsd@semihalf.com,
+	andi.shyti@kernel.org,
+	broonie@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	lucas_hao@lecomputing.com,
+	puntar_liu@lecomputing.com,
+	jihua_tao@lecomputing.com,
+	stan_xu@lecomputing.com,
+	lumin_liu@lecomputing.com,
+	notics_zhang@lecomputing.com,
+	braden_zhang@lecomputing.com,
+	harold_wu@lecomputing.com,
+	will_zhang@lecomputing.com,
+	aurora_jiang@lecomputing.com,
+	ryen_lin@lecomputing.com,
+	andy_jiang@lecomputing.com,
+	thomas <thomas_lin@lecomputing.com>
+Subject: [PATCH 1/3] gpio: dwapb: Add LECARC ACPI ID
+Date: Thu, 14 May 2026 10:40:10 +0800
+Message-ID: <20260514024014.3376511-2-thomas_lin@lecomputing.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
+References: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZQ0PR01CA0018.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:5::15) To BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1f::17)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: Consolidate "sram" property definition
-To: "Rob Herring (Arm)" <robh@kernel.org>, Liu Ying <victor.liu@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Akhil P Oommen <akhilpo@oss.qualcomm.com>,
- Dmitry Baryshkov <lumag@kernel.org>, Abhinav Kumar
- <abhinav.kumar@linux.dev>, Jessica Zhang <jesszhan0024@gmail.com>,
- Marijn Suijten <marijn.suijten@somainline.org>, Vinod Koul
- <vkoul@kernel.org>, Nas Chung <nas.chung@chipsnmedia.com>,
- Jackson Lee <jackson.lee@chipsnmedia.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Mirela Rabulea <mirela.rabulea@nxp.com>,
- Detlev Casanova <detlev.casanova@collabora.com>,
- Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
- Heiko Stuebner <heiko@sntech.de>, Hugues Fruchet
- <hugues.fruchet@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- MD Danish Anwar <danishanwar@ti.com>, Roger Quadros <rogerq@kernel.org>,
- Parvathi Pudi <parvathi@couthit.com>,
- Mohan Reddy Putluru <pmohan@couthit.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Michal Simek <michal.simek@amd.com>, Mark Brown <broonie@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Linus Walleij <linusw@kernel.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Felix Fietkau <nbd@nbd.name>, "Andrew F. Davis" <afd@ti.com>,
- Hussain Khaja <basharath@couthit.com>, Suman Anna <s-anna@ti.com>,
- Ben Levinsky <ben.levinsky@amd.com>, Tanmay Shah <tanmay.shah@amd.com>,
- Erwan Leray <erwan.leray@foss.st.com>,
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc: Roger Quadros <rogerq@ti.com>, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
- linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-spi@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20260511165942.2774868-1-robh@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260511165942.2774868-1-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJSPR01MB0707:EE_|BJSPR01MB0754:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ec22a95-de9c-4429-5dfb-08deb1622b7e
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|52116014|7416014|376014|38350700014|921020|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	b1sOnQzz4avjWQ3mrJWjXbRjT9kRUhC+yKw5e1wzAqSwFiEq5WWUsvjZsCeliUbIfj57TWmjs8cZpkiHeT4h1Y/ByYvLwIm6dcKhOqUF9P18VG6dJpbVIp9G6YF4oCgNFD9Dc5Uc+KVgNzi2oXSqLMO1OtiD2W4q9JTP02xiihLtgr6/xTl4/P5WzcIUeoLyQcDIAcGdryG7zsO7lafWMhjxsDp5ssyzseFa/PO+mBJXU2k+w8Deift9Lf6MHGu5gYZXadNNT+ev73HASs8iM2sUMZtyWnV2qIx0dE3mGuXAljjwA/qQAbbvGvSdNB9mAS6sqR0xrJv/JLpiJ6KqZXbEvzGzjXkBlw0jQxBySfygwi8pp4jc8xLojhHmSNQfhQaYywSl9LIBGbzgQmCdhlYA6Y9HXPWH6cZvcNJOqqxTLPQvBgbNrUIs01Q2mtxf0iOPz7xon2mny4uS92NhRO03aoOs1kAHbE2R9YaHmP0m7xkYuS7kQhvBfXH2gE7SzPkb3mfLl5nBrZhwNfNe3wiZF5x2QUByH4X/AUBbBGcANKmeCPZbb5bR65LQcSKNTqymBnQjsg/ypQXv1LxMUA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(7416014)(376014)(38350700014)(921020)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?6vl0qT7LlHxaK8FAqVhMAhWcGl4mTdZt7jfzhW1d3tmItdsRxeIbWRFVy//j?=
+ =?us-ascii?Q?/9Ols7aMoratbsVt+KiAOzZ3RWihymyIoJ3jrNasejL118SuKYhvzYNSlLqm?=
+ =?us-ascii?Q?mHFxCROxvd2qepujoZuRr8tKEjSYaynIfU3Mqk0g5EkrR9kCxTA/+J5JXeob?=
+ =?us-ascii?Q?CO7N32fme8mC9lcIc02bX6eKRkryI5clYXO+kVUnZlfpyGlj7Hn0OH/QBl4y?=
+ =?us-ascii?Q?ZLXJLf9rnNMgzNhlfTC960tuWz9XwZ93BR/gBd3S6lXUdUGaG1Nj/2mRUsHK?=
+ =?us-ascii?Q?KLPJaeIoWT2fE6HBZFxWhehIqPb4YExhTaALIAFIwfFxtKb/4AHXL4hypQyd?=
+ =?us-ascii?Q?JOh9xco2fRQ4UZwe0VzQiWpggcAa8ZrA1Y2DOSJDy9UCZB0cqZiwL0dCUtSF?=
+ =?us-ascii?Q?hDRQXk2qCm2JpRK8H0Z5P9iG3UIaiWqxdXMPuAAPrgMuAITf70iuQPWh17zF?=
+ =?us-ascii?Q?I7Evv4RBMGBTW4mjYTehXZXuahXN0oBjRbZiyODsKgfj9ijtxabpr6/UEoEo?=
+ =?us-ascii?Q?vG/hBaUxy+0A0qzFO6L8di1S5W31BBu3fq0rZ7GMMwxwh8HU7gXZEIOb/O7m?=
+ =?us-ascii?Q?DRwOmk5JvGHcI6B0y1Ua9g7Z9DGNnnXeT/G/Y3kNpVPpLvijckMeOw4Gxfx/?=
+ =?us-ascii?Q?KWH7Uq5+PQv0AvvU+qoU4YCw02OwNyagt0Akvr9F/7+sbAFsnOn3FNLeVZ9Q?=
+ =?us-ascii?Q?sgKLmGcYjXZVjRJhsZBTyHLU08++x2p2zKJVhyslu/JbFgeaeaO0LYBcjch2?=
+ =?us-ascii?Q?7JvjdJTrKMLUyUiWLaMbiVAdw5BIwFwWITDlWQPf1PY041ITMwdCDKKG3JE/?=
+ =?us-ascii?Q?4MWqBsDaA7ZfuqyxD0G0tet4YP/lutg9NeVpH5kPtIKNwuIho+tdilpXRzei?=
+ =?us-ascii?Q?Gu9dIEHP7GeSqbF0m6m9BDDpzdtnnd0rnabUs9slya8ElOrpgLFx5CwVzl6G?=
+ =?us-ascii?Q?v3O0UdDsIiri96G9QQS0v5zEthKKd524opnnz54Ts35R+fW/OYlXpoD8GGRb?=
+ =?us-ascii?Q?jkblgfbDrIyyUXChQHaCWp8zm7oAozutSKBKY1l+vzGguYwlud3BZmBgeHJF?=
+ =?us-ascii?Q?qrPkXLWdrMInyqV+gmSM0eNjMWVy33IJ7ijmxSIEFaTwbLAGCJR11+e7pFyA?=
+ =?us-ascii?Q?+RkU49pGRisN6dtqxFYmgEEfhqC/MYOobB7m2XvRheeNDxPLXqN2HSPabzQt?=
+ =?us-ascii?Q?w3OKrE6MDjTrBEzg5DScBVmPZBA4slKMIvcI4Yb6BfhxI5AHe3YcJCVDnE/+?=
+ =?us-ascii?Q?h8fdJTauQaP0wUquPGFAr49lY00Yk1dbtNRZwsW/MJIFEh622iUk5fFcPkJY?=
+ =?us-ascii?Q?L4o2Pt/l835nTJ2f+76oUK9fZJLCNU+PefP5658kYWR0yYgH3yW9/HSG1n5g?=
+ =?us-ascii?Q?TqScxTRnB9klWpiLJ3BSWizoUfmreNnXcJnMSYvVKZq/mMmfXhKhY+SSUSnx?=
+ =?us-ascii?Q?facEJ6Sq7WeLuEDTlHlPlHVa9pVI/hB38fh6AEbZoFrBtFXSyA7CkaU/I0C4?=
+ =?us-ascii?Q?VFEbRkVfc1jRoF+AicSW4yX03u6JJMShFAMMH8AJCq1XpiZ7RLQqCxs8WHak?=
+ =?us-ascii?Q?musTdw+3Q5POKlHeEgm2InAfcjv0Ua2nGOsM/hBm/bj3gUoLj0TVSFP4WqOE?=
+ =?us-ascii?Q?puWTv8h7RGYcxLlHLW86LEeHZgtFZiRE5WW2dwAyWKUp9itEyVTS9h7JwB6X?=
+ =?us-ascii?Q?hwUhaimfWj2OC/p9CP5vrvHAa3/YPaEH7xmKtq5XC36gYNSWcuC01DMsq5U6?=
+ =?us-ascii?Q?rNIc0ldE/fPnRIkObES0ZJwadakRpEA=3D?=
+X-OriginatorOrg: lecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ec22a95-de9c-4429-5dfb-08deb1622b7e
+X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 May 2026 02:40:33.1844
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3591a018-3909-4ea2-aee8-843d5abaed8d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XcMNeOUKAP0IyZnomHpYq8bzPNjNSt9knFdCmivmC6W7IPu9RAY4lrTvvERvGAuJDmkhCes9cMIhl2Dql20dMInxTsCQ2J9i+QdLKjFkq+Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0754
 
-On 11/05/2026 18:59, Rob Herring (Arm) wrote:
-> The "sram" property has become a de facto standard property, so create a
-> common schema for it and drop all the duplicated definitions.
-> 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Add ACPI ID "LECA0001" for LECARC SoCs that use the DesignWare GPIO
+controller with V1 register offsets.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: thomas <thomas_lin@lecomputing.com>
+---
+ drivers/gpio/gpio-dwapb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
-Krzysztof
+diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
+index 15cebc8b5d66..c1f3d83a67c1 100644
+--- a/drivers/gpio/gpio-dwapb.c
++++ b/drivers/gpio/gpio-dwapb.c
+@@ -694,6 +694,7 @@ static const struct acpi_device_id dwapb_acpi_match[] = {
+ 	{"APMC0D07", GPIO_REG_OFFSET_V1},
+ 	{"APMC0D81", GPIO_REG_OFFSET_V2},
+ 	{"FUJI200A", GPIO_REG_OFFSET_V1},
++	{"LECA0001", GPIO_REG_OFFSET_V1},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(acpi, dwapb_acpi_match);
+-- 
+2.43.0
+

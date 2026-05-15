@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F0C23A9BD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FBD389DF0;
 	Fri, 15 May 2026 20:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778877339; cv=none; b=PHgBG+CHpr2CBxFuuzfDB/nI3DlfIAscT+qTXSB/mEgPSf7ZmttwrptDkU6sHyr50XaasiREHRQA7FMiwrtvGjD3DslGvlyI5Bhs/TjWPDxLcEHbZQhDlkqtCNWabBUyXPXZ+0FrOvsL6OiRIipGw+0HL7BYCzoeq/OfcNpxOmo=
+	t=1778877339; cv=none; b=eYShz8MfwTqwneQo9qHT4uoq9B38u8LFigYotDAlgwRhWoXOyjq/y7pmjYXUVSg3Gob+4nQNuD4fGDKL/zHB4e/moiA/e0MHOWPf3IzJJOhTVcHfTefNQDqT2D76kKZer3gr0OqdQPVwTUSr1h9msWLBlD7vzUTqgcoDOMKdKuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778877339; c=relaxed/simple;
-	bh=H2euLxjrfczkBblxLchszB8NvqvYOl3jHXk+BNY5O+0=;
+	bh=xu8k2Tny0UUoXY7gTFrIaGYWdgApJVPoczjyUYNo0Xs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ts1Vec0EOcVGq+pjXieaqA/T1Q3OUe3Q9QCXBCczsRNlO/9dFwmtULcqJgdY3XomKQr/0dn2q9wF5g30dCvRJsAsCsLo1SOAgr/6CY7mkiRcIl+khLj/j4ZoTpPVhvmNd7TtTETBud8fHpwQGPXv9IvJl+IYKpGZkhFrH7u6Y14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PndDtqoS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=OFMfqqccpNVkQm/jUOnZM4OiLCkCIEMUt06bEvQz5el1H0G1hn0lgMW7gEH7bKlyGEw0WW/RO4Qk7KDcvHPqVUgDrnPUsQ8KCDLjmiMZK3zVJIJfXM0U8zVT6amx9Xb+4z8qkXtq6tw4a51MJE73nJiApScZclrNGq3rPvWDsyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OnwTTb8Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PndDtqoS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 43470C2BCF5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OnwTTb8Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 32A0BC2BCB3;
 	Fri, 15 May 2026 20:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778877339;
-	bh=H2euLxjrfczkBblxLchszB8NvqvYOl3jHXk+BNY5O+0=;
+	bh=xu8k2Tny0UUoXY7gTFrIaGYWdgApJVPoczjyUYNo0Xs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=PndDtqoSXfxQjdS1kcLeVBQ1in+2OnsTn7lvgDBA/O3/ZTo2dzixMeqNVMua1/yKq
-	 Hoarm7lzEzvl/7MX0W/mQCwmgBaT7qGm3rAh7zxd8RAbyPWj3HlNhdan3dUCGnTgh9
-	 tTsr91aAjhTZu+5dJlp9GBHBe5o4XhLLlb4+P+cGJfDkxHB7b5/x2gL6JX7NT8bB22
-	 uZ9G3ufegWPIPzups+7NfARuYthEukB4F8pNrPsdh+Ekj11TS+Gkqg/ZAWdUXhcWbg
-	 Xda8DRx2mlvXfvF0xyCRWKMvD7HzA+K36e27pZ5xrADinQt9RaSPJn6zNXobIe0F8v
-	 vbtbZoygEyKZg==
+	b=OnwTTb8ZgJYExEWVeUh8fKu5PEZcKMT0FRMb20A3PrfowlC1DbkdHqfOCYUtMBSOk
+	 qPfcavPuh3yQBal2LpxX7pAIcus1J8KBI5ODB29yKQmV0VwG/Niva8+mqHSzYoLuhr
+	 2yN+XJNPNGRF58A7qBf+9om9uaatcXfyjSmJ1AQdxTprgREAFRumJfyx6cY+5iyDvd
+	 gImXMfMvcfPFN4Rnj+nh39JgF+YPXJsig6+AtUV2yQDxlVE5LqIXkfFTv2fIGKIq8h
+	 WRzeAzVKDV5U2NI8VKnfux/8tAzHLy4dPJtPqK9gvWZwK4rV3Fe8k0Wck+9/XUMu1Z
+	 Z7ehrRgaU/vfg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3892FCD343F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22449CD4F46;
 	Fri, 15 May 2026 20:35:39 +0000 (UTC)
 From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
-Date: Fri, 15 May 2026 15:35:29 -0500
-Subject: [PATCH 3/3] arm64: tegra: Add iommu and dma properties for
- Tegra194 QSPI
+Date: Fri, 15 May 2026 15:35:28 -0500
+Subject: [PATCH 2/3] spi: dt-bindings: tegra: Support dma-coherent property
+ for QSPI
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260515-tegra194-qspi-iommu-v1-3-57dfb63cd3d6@gmail.com>
+Message-Id: <20260515-tegra194-qspi-iommu-v1-2-57dfb63cd3d6@gmail.com>
 References: <20260515-tegra194-qspi-iommu-v1-0-57dfb63cd3d6@gmail.com>
 In-Reply-To: <20260515-tegra194-qspi-iommu-v1-0-57dfb63cd3d6@gmail.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -53,11 +53,11 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Aaron Kling <webgeek1234@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778877338; l=1187;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778877338; l=743;
  i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
- bh=Np/pDfMhrl4vh3eC9VslgUn4DVBcUQmUCasGPdu9S6s=;
- b=XNElFQVNTMTXCC1rsHQEhqgqighB+BXthtnfT1GQGvp9+UcgAvg2MufyoHJKVYT7dCA8LSXGx
- ImTaWbQKrbrBQPjCga4kRxY7DIcgD6WmFx8mv8dZq6NsB2fS3mxUkZ9
+ bh=m/PPegEGAyaU6wZWkIdDWHDa9uH5hiVYhCovCoKJA0Y=;
+ b=/RnOs3EhWYLrIOMwj4LQr3tSmjiZ8qHJBwbDhpw4ZOm+ZZBuMm7/JVKaQ5NNnJ1gAnf7JJwEC
+ 5FVOPNVa/pzDEF726SKKer/rlKGsQDi3FM1+AtVICt8VxycNlLYfNYx
 X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
  pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
 X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
@@ -67,40 +67,27 @@ Reply-To: webgeek1234@gmail.com
 
 From: Aaron Kling <webgeek1234@gmail.com>
 
-Without iommu and dma enabled, flash storage such as the spi-nor on the
-p3668 module times out and cannot complete any transfers.
+DMA coherency is supported by at least the Tegra194 and Tegra234
+controllers.
 
 Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
 ---
- arch/arm64/boot/dts/nvidia/tegra194.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-index 1d659454a6f9fe..0e0a20befe9e68 100644
---- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-@@ -923,6 +923,10 @@ spi@3270000 {
- 				 <&bpmp TEGRA194_CLK_QSPI0_PM>;
- 			clock-names = "qspi", "qspi_out";
- 			resets = <&bpmp TEGRA194_RESET_QSPI0>;
-+			iommus = <&smmu TEGRA194_SID_GPCDMA_0>;
-+			dma-coherent;
-+			dmas = <&gpcdma 5>, <&gpcdma 5>;
-+			dma-names = "rx", "tx";
- 			status = "disabled";
- 		};
+diff --git a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+index 62233eb3101aeb..433bca02f86b13 100644
+--- a/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
++++ b/Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml
+@@ -47,6 +47,8 @@ properties:
+   iommus:
+     maxItems: 1
  
-@@ -1013,6 +1017,10 @@ spi@3300000 {
- 				 <&bpmp TEGRA194_CLK_QSPI1_PM>;
- 			clock-names = "qspi", "qspi_out";
- 			resets = <&bpmp TEGRA194_RESET_QSPI1>;
-+			iommus = <&smmu TEGRA194_SID_GPCDMA_0>;
-+			dma-coherent;
-+			dmas = <&gpcdma 6>, <&gpcdma 6>;
-+			dma-names = "rx", "tx";
- 			status = "disabled";
- 		};
- 
++  dma-coherent: true
++
+ patternProperties:
+   "@[0-9a-f]+$":
+     type: object
 
 -- 
 2.53.0

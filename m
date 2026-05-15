@@ -1,89 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186403CEB8D;
-	Fri, 15 May 2026 16:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECED74C0401
+	for <linux-spi@vger.kernel.org>; Fri, 15 May 2026 16:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778863212; cv=none; b=D/YY2bOzNtaFHeWFIAn5IlIDKPLrR98MskL6TvYfj9Kjj9IrZiIaeP0T+4FxuYHaQyej0kJh9gwSrKIE1G5mGNgnnbMGr0G9zIO45Vwqgmr98tKlL9y9HmvMvqRt8lgPGy8m8igicKgzNhiWmcI/fSsHiwe1jaYaiD3qQDWi5sU=
+	t=1778863791; cv=none; b=cAJF9D4zrVCUKwqW7G42DM5L6eumx3CO+3yTgIBLDHsD09MWkv5p5yUzPJF17anGecn34oHnMDMkHJ1N1K4dwwM9I4RcFq26b/QUDw/PE/OnoqEWZ/pldZ+fm66v2nGSTMkd8zD+E55qwcuOnljDxwFablFq6pRpCMeC5vn2cbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778863212; c=relaxed/simple;
-	bh=3wyAIoGMLD/Y4d5+cvprmdAb0H1VSwEUvKUpPDKdQKg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=iupzw2HO63zl0yesZqUZr0URMsmxKJeVFT4D6PTfDvSm8E3VlUo2GcRwqiSy4mHegVEvr2ES9mXhCSzHuUNmJCRxDfsSaPlSyfqbpq9wWmf0d8db9LNmx+x7w+GFdNAypuRGZBBUIySNKQtiebHpb1CD7k2iMXfUCH4bHSQXbjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrWheXcy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778863791; c=relaxed/simple;
+	bh=gdqjBA+A6rFxACREz1WyC3LWCuqgc5Qu3HeA2tEoAGU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=fA/aQ05U5uRnMGT2lcGm6OOipWUWgFlCjf4AYS2QF+vilfXDQL9x401pFD+Qu+YEg8gsKs2n0M83db0KJtdX2P2MTYjUSv8eFewtnvnerVgUAE05tNTgqyIHQCGYP2/WQiitfUW8qF0zlLxi3c+Z823B+Ije9pRpnLhAoVh842U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVH4uWqU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrWheXcy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF49C2BCB0;
-	Fri, 15 May 2026 16:40:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVH4uWqU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1A6C2BCB3;
+	Fri, 15 May 2026 16:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778863211;
-	bh=3wyAIoGMLD/Y4d5+cvprmdAb0H1VSwEUvKUpPDKdQKg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=WrWheXcyUyvCSBMPrVoyYvCzttQOIS6X/gf9ZP9tCroSBbz5cRPABDG9z5obxriIm
-	 0sVwK0GOb7RxYoLmZCDxESgXheOvPVmaYDmC9KmBg/LrxAli+05odpZtK3X6hbKnHQ
-	 RYi/C9Tf4S4ZMyNBg5Zr5HHHl0Rqy8uO7cA6GZiUg9xzd1CLzcU4Fqn7WWQoPDVSHm
-	 zi8EW9QBWVJzOffjYIjFwmYndtZ+FCR6d1N50HiDuC3abdsmr1VykvqF1fLXr6r9BC
-	 tMY648lAnpgYKoRVOVReCE7A7k8CDAj/Y1Ua+uUQCr8Z7uIq4xoUUBbu7zW0RAMgTY
-	 Uet9ffBD+eUdw==
-From: Mark Brown <broonie@kernel.org>
-To: shenyang39@huawei.com, Qiang Ma <maqianga@uniontech.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260515102620.1926930-1-maqianga@uniontech.com>
-References: <20260515102620.1926930-1-maqianga@uniontech.com>
-Subject: Re: [PATCH] spi: hisi-kunpeng: Use dev_err_probe() for host
- registration failure
-Message-Id: <177885258562.1136679.11962791857499960517.b4-ty@b4>
-Date: Fri, 15 May 2026 22:43:05 +0900
+	s=k20201202; t=1778863790;
+	bh=gdqjBA+A6rFxACREz1WyC3LWCuqgc5Qu3HeA2tEoAGU=;
+	h=Subject:From:Date:To:From;
+	b=cVH4uWqUr6haHpUogc9ntapofjPKf9Tq8yCGrnntkHh4Uikp2jJSQ6v3aFgXf3HOG
+	 aADQbmyz2nuP554FmFbr97DVIRdPWwubDa/uAHvDpgrnkAuOUr+mc9OLTYmfFtuvvv
+	 b0offtH2zYPkZVdL3SCcOfhftAtqytsZfQFlxE/bcVo1Qq03TwPqRh6vbMOVcu2D3e
+	 5jZS7QQdLEJt9hL3KABcvvCXCsj4ag3GHLlF9BCXqSr2Yfu2Sb+C5qufYLdr3GSYcc
+	 d1v1N6xw+jeRck6e6Q4tl5YN+y+xWT+BIC/eohfPFPBZTUq4L44UbxQilmbtnHPOAU
+	 /f86Q1oJaxgGQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1BF3239309AC;
+	Fri, 15 May 2026 16:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1146; i=broonie@kernel.org;
- h=from:subject:message-id; bh=3wyAIoGMLD/Y4d5+cvprmdAb0H1VSwEUvKUpPDKdQKg=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqB0xpVUjP2Qb5gCiNPAvypBp5Mq77xXlB3xXWf
- bakZhOXbZOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagdMaQAKCRAk1otyXVSH
- 0OAxB/wIPFHNu1Z7L146UNTZ8rKDS8FZZdAd33nAW0tm3LEVZfyI8NtPcxEBAtyrN2f2Wnd0j+l
- JIgML4K0TAc/xFEJsqoXGJGIpl4ixhiOddoAjZDUjIx1350SdpGSzp+hSSNDmeDXRVTB/NHZlUh
- M8CyAVmheUXxKS5nwGeG+BeIihaPgEbbMy0FNEyURkJ/e8HUPP0iBBMXt96uz7/x+S/Y3kSBJwh
- g0kGLmlPVgF8TzPX3g9KdKzSdQeZ7oh+V+Yo87tpPsnZFMUpjikSymAvJKNlKi4c6b1y9TUfXTi
- NaxOPL69I/8DW3qgj/3iBKt5Kj+Ze6XTj7/6t35U96I8bP89
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177886380354.76649.176622563300484958.git-patchwork-summary@kernel.org>
+Date: Fri, 15 May 2026 16:50:03 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Fri, 15 May 2026 18:26:20 +0800, Qiang Ma wrote:
-> spi: hisi-kunpeng: Use dev_err_probe() for host registration failure
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+Patch: spi: hisi-kunpeng: Use dev_err_probe() for host registration failure
+  Submitter: Qiang Ma <maqianga@uniontech.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1095309
+  Lore link: https://lore.kernel.org/r/20260515102620.1926930-1-maqianga@uniontech.com
 
-Thanks!
 
-[1/1] spi: hisi-kunpeng: Use dev_err_probe() for host registration failure
-      https://git.kernel.org/broonie/spi/c/59b991990a04
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

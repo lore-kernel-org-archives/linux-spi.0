@@ -1,49 +1,49 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41908401489;
-	Fri, 15 May 2026 09:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9D843CEFD;
+	Fri, 15 May 2026 09:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778837668; cv=none; b=tmWt0jffzNJSuEAp9Omk3ht4QOazaxdBt5hjT4H/nLvwKwiIlOjYsHwMQgviR0CvJfE+bhYMkLATxQ4oqyNnObCqZc6WhSVM12/zYGfhDEoveDjA/96SUBlqlZADa4jJCHohMTvc0agAw3ZWjI5TmSBmP1d1CHce77rltahTC84=
+	t=1778837846; cv=none; b=kUFah3bOyBvAOmYVUdPpPlkdDgqQsrZPCoN39ZYPZKYIDOPBf5oByoQDPdaJNc3jGggXc7LBcxMujherl22jaNJNu98ddc7nUMLCenJIHxBFU8cmoqU42pn1ztxgp2mJJvhtYnojYiZM6QQTmtQ0M5uZu4S9cDq054eiwEQzpk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778837668; c=relaxed/simple;
-	bh=HnWWIdvb1tx14H5OxFyttFQM8slsQGnOefYn/wt07h0=;
+	s=arc-20240116; t=1778837846; c=relaxed/simple;
+	bh=gG1ywkBAjUlB4a2tbjQaAGvh8uGthSIzxehw/CPcnmI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lkzIOLqfByuNWhZM+oIZavOKreCrjrqHn0MkaEiRJ5vjK2xnp0qQCdINb3mDOsdMf/ABGghhKCQmwo6dGGHJoiEc3d6TZ2C40nyGU5RpcgYwprxCWG2jO/iDRJr8fhfCU9ytqGBli+JFNmuy2V8FrWhM6+q3YlE/G1+AHP9ItTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c+e93sCw; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=iW8Lgtqhba8PfyiXlLD8uDxXk0FkUa5dZJpyA3sv4HaRAMni+9j2DBkaBC6MVx+Q8vXDEtRH+bUMwjaxpe9QNEMrauTT3/PFSjPHTM3WwHQ0Zws01xi7B8EBIKfWBrjHDknDiCtCiF3JdTOMl9SFRjuW+bVSTg8EujpjIdE6Mkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRwvrri6; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c+e93sCw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRwvrri6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778837667; x=1810373667;
+  t=1778837845; x=1810373845;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HnWWIdvb1tx14H5OxFyttFQM8slsQGnOefYn/wt07h0=;
-  b=c+e93sCwZqPdfHZsRWRCVp3QzFeRK/bKAXHZnQITj4wu20eUQLdLD41y
-   lK+/FJaeKdVXTTzKuuO/fNolMVg4XVNNExaoe5uDzWmTc25h4doZbRWPJ
-   dQ+L1izLrPvm2iu3BMToEYY8c0oP5YI9ZIHU7DOu/FNf+/o+z0Di48wxo
-   I6E9LO17JmSec7rfwb6sbxksmVRSXzIBU+7CcETOJhd5QbCFKuaImr8UE
-   frnIt65DcgnwlsaPkKMHvG3Qdm50QLKqj10anfe8KdPL/6GZndINLwfcd
-   WYzGiJASPn0CZjLQb/Zyxm6f0dR0bJGJFl+GUhJQSnIEI60wBnqSAodQ0
-   Q==;
-X-CSE-ConnectionGUID: 5MwWrlgQT+uYnGU18toGxA==
-X-CSE-MsgGUID: cSy3WDYvRyKDyT5NTmP4tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83646722"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=gG1ywkBAjUlB4a2tbjQaAGvh8uGthSIzxehw/CPcnmI=;
+  b=fRwvrri6WErvcNwtcH3sEBqmF98Gp6rl2PMAWEShd+pyVeqylUxPc7Gb
+   Qgy5Y8T+Ibl+0T9542ItYJ5a1utOrpbhBsv2V+ZKgpGxSCthzycwvnivt
+   GZtcOvU7zw2t0PvyBTJef0shlLCam1HXr2xOcuHYOmGEEVJGSVgmtTAcw
+   5cdZLZ3Yezqn/47ngFDk9tfCohD1EU6Q3TpJDn5/hEiHNKsweaDSIh+i4
+   N126s0Kj14z/uOWs1OHT2rbw10rEJEv5E0/h55oqrh4C1hevot+p9hwBh
+   7XxBoAN5KDGP0Woa+/DJpBV9MZGOzhu3r045N7ba2nQEV+DyGKBKHNSuX
+   g==;
+X-CSE-ConnectionGUID: miQJ9NzTT7e6Lh5yPHwQwg==
+X-CSE-MsgGUID: /J4YWQ3rQbCGvFv9oQhcbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83646981"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83646722"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:34:26 -0700
-X-CSE-ConnectionGUID: S9W6yTTYRiO5QoHLzCyFTg==
-X-CSE-MsgGUID: 4A/IikBIQEWuafcqoW/syQ==
+   d="scan'208";a="83646981"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:37:22 -0700
+X-CSE-ConnectionGUID: TF1+n6K5RLa015PSiiEdqQ==
+X-CSE-MsgGUID: lUkwBfkNQEmqV7zNXB4i4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="237661813"
+   d="scan'208";a="238759700"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.33])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:32:34 -0700
-Date: Fri, 15 May 2026 12:32:32 +0300
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:37:13 -0700
+Date: Fri, 15 May 2026 12:37:11 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: thomas <thomas_lin@lecomputing.com>
 Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
@@ -58,53 +58,56 @@ Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
 	harold_wu@lecomputing.com, will_zhang@lecomputing.com,
 	aurora_jiang@lecomputing.com, ryen_lin@lecomputing.com,
 	andy_jiang@lecomputing.com
-Subject: Re: [PATCH 2/3] spi: dw-mmio: Add LECARC ACPI ID and init hook
-Message-ID: <agboMC07Xojt5x2c@ashevche-desk.local>
+Subject: Re: [PATCH 0/3] Add LECARC ACPI IDs for DesignWare GPIO, SPI, I2C
+Message-ID: <agbpR8z9kNIUInla@ashevche-desk.local>
 References: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
- <20260514024014.3376511-3-thomas_lin@lecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260514024014.3376511-3-thomas_lin@lecomputing.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, May 14, 2026 at 10:40:11AM +0800, thomas wrote:
-> Add ACPI ID "LECA0002" for LECARC SoCs. This ID requires a custom
-> initialization function dw_spi_lecarc_init() that sets dws->dws.ip
-> to DW_HSSI_ID.
+On Thu, May 14, 2026 at 10:40:09AM +0800, thomas wrote:
+
+This is a v2 of the series (Mark commented on the wrong one AFAICS), please
+make sure you do proper versioning and changelog is provided.
+
+> This patch series adds ACPI identification for LECARC SoCs that
+> integrate Synopsys DesignWare peripherals.
 > 
-> Also add corresponding ACPI description in acpi_apd.c.
+> LECARC platforms use the following ACPI HIDs:
+> - GPIO: LECA0001 (V1 register offsets)
+> - SPI:  LECA0002 (requires custom init function)
+> - I2C:  LECA0003
+> 
+> The patches are independent but share a common dependency on the
+> ACPI description file (drivers/acpi/acpi_apd.c) for SPI and I2C.
+> To avoid merge conflicts, they are submitted as a single series
+> with the following order:
 
-...
+> Patch 1: gpio: dwapb – add LECA0001 to dwapb_acpi_match[].
+> Patch 2: spi: dw-mmio – add LECA0002 and dw_spi_lecarc_init(),
+>          plus corresponding entry in acpi_apd.c.
+> Patch 3: i2c: designware – add LECA0003 to dw_i2c_acpi_match[],
+>          plus corresponding entry in acpi_apd.c.
 
->  	{ "HISI02A3", APD_ADDR(hip08_lite_i2c_desc) },
->  	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
->  	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
-> +	{ "LECA0002", APD_ADDR(leca_spi_desc) },
+You have to fix your SoB. There should be your real name and not an alias.
 
-Keep them ordered or close enough to be ordered. Id est in this case
-locate it before NXP.
+> All changes have been tested on LECARC evaluation board with
+> kernel v7.0.0-rc6. No regressions observed on existing hardware.
 
-...
+Otherwise I can confirm that LECA is officially registered ACPI vendor ID and
+the IDs look legit (it's up to the company to map the device ID parts to
+whatever devices they have properly).
 
-> +static int dw_spi_lecarc_init(struct platform_device *pdev,
-> +			     struct dw_spi_mmio *dwsmmio)
-> +{
-> +	dwsmmio->dws.ip = DW_HSSI_ID;
-> +
-> +	return 0;
-> +}
-
-dw_spi_intel_init() is the same, why not reusing it?
-
-Note, if uncomfortable with the name, make a patch to rename it to something like
-dw_spi_hssi_no_dma_init().
+When you address the SoB and other comments, I ack them.
 
 -- 
 With Best Regards,

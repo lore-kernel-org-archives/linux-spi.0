@@ -1,112 +1,206 @@
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2136.outbound.protection.partner.outlook.cn [139.219.17.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A843D090F;
-	Fri, 15 May 2026 10:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778840847; cv=none; b=LCg9SN8yb02NninT2dmdPZYQDYTHvZBmrsc/nluVXcDflKctVr0yN45H2+hO+4IK9Wa0ZoFCfCgif1/TVczOBr9Suom5useIgNmaxX+pX+iXBLNYJwRbb7FGaYzg805qGgvUokD6728fTEtq2hebC1b/Kx6O4DNbAIlpRaJXwRo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778840847; c=relaxed/simple;
-	bh=N0MpeXVggpdSvGIZo7r4q3lzs5oPRKsPc5NjRMq3JAs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r4yE3NwB7LnA3/Y56vr+kSHDbWwnFBfQuFpPYYD5QBrf/9uigMnS6eM5dL8PB7EWu/6/k2vMJEXRaGO0JTZqOmvo2m5/clyqbGbbiJofAmjFP3/Sz8rT6hIYQ7qiINBoIULfGtchiLv4drCF29R5pN7NhBdK35L0XzSWs14lMJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=c/ChKAF0; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="c/ChKAF0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778840809;
-	bh=w2XlvVVUSZJ7S5C2n+QUlhcKejKS7GxjQp94ZlQZVls=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=c/ChKAF0yz3pmnPV2sxj9VoqRIPzKuJepLbo7bYVbJPp9GTE8Xa62PCfgVsMi68BG
-	 EvODDb4OAWHGrZ3D715bq+7mU1iag7Hd8UCEyVQ7GNlXBfYa/b95SQMdNdhPxxb6jn
-	 9JXy9Q5pGPkP4XSpyOdQK1k9TqzEymrsvOQbBAUA=
-X-QQ-mid: zesmtpsz6t1778840803t0500f61a
-X-QQ-Originating-IP: fkm09Qhq7R7R6uGUGV2qXXuy+5tR1/wAvwSyAcJqi0I=
-Received: from localhost.localdomain ( [123.114.60.34])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 15 May 2026 18:26:41 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 1817803177890170576
-EX-QQ-RecipientCnt: 5
-From: Qiang Ma <maqianga@uniontech.com>
-To: shenyang39@huawei.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16783B8948;
+	Fri, 15 May 2026 11:04:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.136
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778843101; cv=fail; b=XnFoUAVrIs2ACgWTsSB43gGMikcreYhInrbKMq65qLHoIEauWvZoYStwnCN1r4C9f8tJZHAbuQKk315vY8VKyFgMvZWLJuxJdbrSoHhNjAwp24ZafeZ0lK4+bR3OZhOorCpkEczXePQgXEKIhqomE6tJiIX86vpgW8jDsezvXLo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778843101; c=relaxed/simple;
+	bh=kiLvO8wNUWMGxGEWZNHPrDSidr8QMOrEqGyWCRy8+XU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gshGni5FH1BPE+m2npcmPrSBTzcj2LSwt7xhAYUG3r5vVuj9/8DwfVyhvhcJq0yD65vpe1B2TG3h28Q3jLGmP+2r91+TM6sP/F8wQ33Nomajr8w7moDPDppap4gUSDYI3kzxM3hL5Yabcw53a9o4/MWo+7NQQuAPWseNa6aVliM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BFoYt+e+5s1qRQE3uzxBjv0ik27Kn27CDLg0KmFXU8QCGWm0+WyDESr4OSybKFGZUrPM9ilQ5YtkzZOLvadqgEFrNVUgNTjjTiQekaaxUrIWoJfj2RIj+gALxMpucJoeIMMG18ZyY+ZDscKiuW4HB1v9lAEkc5A/aQ+eGY1vJijWnqFfNxyMmXh6jwWDI+DDtP5+7K/RN2iLR6OJ2RqoW7CigBVQr3AWJvQa25HZgLSMncnI9vj/7yp1TqOyE6pL4UpLhoBjb86oydzagwDP4NXvbs2IySkgHfNajUI2ACAFiFgv0AtoIUzdlgJo6q/PO0Nf25QyHbIAMqrrBbTqaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uXX0j9ZAgh9bokFmQw4QSpSoQ7S5H0jwuM/ezdVlGEY=;
+ b=Mz1FYUCFrdA9hQub5L2D5ksTzXa4ACjJJuH1+duSdlc7PZD4QDkk08fvGHDxbAWk41YBNN/x0kSqFRwUFIM60pA33S6g15NeB6p37XuCvECD8XP+8QTCzNDavUpQay+QEEZfO7qDtFjgZwlqNk/kIXqD/0Wkm10h7XvXE3C1W2jF1wOLlDHaSAwo8Vn4IYqyzlalbXioG8UlMy3jiQ8vj1IEi6Wjin5CN2GVxxMLhFLk2a30NOn6Zv1cj7lepMgK/Bke7tGaCk7YGIgNPvDjanAV3Oax8SGYSiKkFUtMI7a9/gDy25FgEyIr5J2WqKXLAjNNyce1MiK/V39xqF9gLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=lecomputing.com; dmarc=pass action=none
+ header.from=lecomputing.com; dkim=pass header.d=lecomputing.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=lecomputing.com;
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1f::17) by BJSPR01MB0547.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:e::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.30; Fri, 15 May
+ 2026 11:03:41 +0000
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ ([fe80::1c61:86e3:3a75:155d]) by
+ BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn ([fe80::1c61:86e3:3a75:155d%4])
+ with mapi id 15.20.9818.023; Fri, 15 May 2026 11:03:40 +0000
+From: Thomas Lin <thomas_lin@lecomputing.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	hoan@os.amperecomputing.com,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	jsd@semihalf.com,
+	andi.shyti@kernel.org,
 	broonie@kernel.org
-Cc: linux-spi@vger.kernel.org,
+Cc: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Qiang Ma <maqianga@uniontech.com>
-Subject: [PATCH] spi: hisi-kunpeng: Use dev_err_probe() for host registration failure
-Date: Fri, 15 May 2026 18:26:20 +0800
-Message-Id: <20260515102620.1926930-1-maqianga@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	lucas_hao@lecomputing.com,
+	puntar_liu@lecomputing.com,
+	jihua_tao@lecomputing.com,
+	stan_xu@lecomputing.com,
+	lumin_liu@lecomputing.com,
+	notics_zhang@lecomputing.com,
+	braden_zhang@lecomputing.com,
+	harold_wu@lecomputing.com,
+	will_zhang@lecomputing.com,
+	aurora_jiang@lecomputing.com,
+	ryen_lin@lecomputing.com,
+	andy_jiang@lecomputing.com,
+	Thomas Lin <thomas_lin@lecomputing.com>
+Subject: [PATCH v2 2/3] spi: dw-mmio: Add ACPI ID LECA0002 for LECARC SoCs
+Date: Fri, 15 May 2026 19:03:19 +0800
+Message-ID: <20260515110322.2883310-3-thomas_lin@lecomputing.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260515110322.2883310-1-thomas_lin@lecomputing.com>
+References: <20260514034319.3507315-1-thomas_lin@lecomputing.com>
+ <20260515110322.2883310-1-thomas_lin@lecomputing.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: NT0PR01CA0033.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c510:c::10) To BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1f::17)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: Ndw/mc8X39ObLYczeDAmBLaaaMEP4/1C59+YOyXokc04v8iUKH86snJo
-	NNL6Z8vwssLAH+8JisF3SfaJe2tG0b2VpXpbwLqbAwTKCsnj0J1ZaoYfkLRwJv3PuNSrDoQ
-	9LYJMOUK9spiS6yaXYrhYZqz+pxt5l1U9Bqj+6lIwjV+cZvntqByyJiGaRYOZhCINC2vbuc
-	J9T3R3AYlgt/z9Svr6aUVslgZNaTMwmvIz8SakZt+5ZbNxIoZ/o3D992KCV6N3CR0IKV7Fm
-	PQg1x0/d7PoNc7TaQPrKvhJD60OTsyg4J6KmzHQ8cP9QQoUSEFD2CzSN928spt8ouWM3vg1
-	3YC3CfYMtFFQ6TLuus7uMancZo2MSOpPzp1/XEEmIA3tec/jmDhv9gPeG/ZQORegh0FZtas
-	HKDBc6E/eMRZmP71UibF8fcYmByEzzL13pkXytcbTZGPbMhRRq02tqqSy93SozEswBRUEBk
-	f631AigFeMjNmRWyIirzbkposWmvwJkWbmxqqB4tKGX5z65rH3A179dFCcufjeKmJV/bZeA
-	oRGGbMlEKSLzrOKuZnB3yXVupoGWxwXliEnYRvvRxrNNnKOvLiGptW1rEMM2aDX/BtUoeOm
-	H7zuYC0ZwTPxU4D/L4TvO2j1t6wfqVCi1hyd4Bv+Q6n/WTRUSsePgxbD/p8+7RZmYUfEJEs
-	LXz6JigHN9uqRsjOH17xyK6AObh8MreAvUuD/wK9KlUBHG+gk07yz5HuTC3foHzT/1yATLd
-	q3CHO8lT3OF6ppSkjYdxLUblJHwY0oyS1TjBgPBMw4N0Y39wtmaLw9xt5AbKezDkfd8gM/r
-	ECIrcU4cSfTZ8Zu2dhpZkrJFL1PEEBCq4UiXqO9kpQCE+G/8rXhr5AEmimnRf3ChNvRE9wB
-	b/eEoXslA5NNqqoM/IqFZFkO5AaI6nFHb+kmqFVfBN2zGdNVLH1r+2+HBT7TdpCZMIzblM5
-	0ZoB7o8EDFBj0JqPwlQOeUjBEcMxHvdQScD+Z0rK4vV1zqqH4PGMHvCRQE+NX7ib69Nj8Wz
-	04EOi8bVGBXo24X8A7qrGfAdNXHZs=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJSPR01MB0707:EE_|BJSPR01MB0547:EE_
+X-MS-Office365-Filtering-Correlation-Id: 594c7b42-ecbb-489e-45c5-08deb2719ec3
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|376014|52116014|1800799024|366016|18002099003|22082099003|921020|56012099003|38350700014|4143699003;
+X-Microsoft-Antispam-Message-Info:
+ lP+EEbp6ZZbVbfLly4U/u8SAevp6rqpX2I4WjiAnmYkgt5muRos3gvcaRqcfVWUIyvuIcDoKt/0Hu26lEOZNkKt01xG7Rh5o1NaKWW27buErQIuV11lvIUf+9B085qpVAzCMfzAgbjFanlfHxXwobKeQX3ecZxEwVe21WucAC4LWE6An5CegCPmWXKqFMmO+KRhTyL9kUHMMuer5QzIYCw6eNFa5+33op+3+Y6CPKZBCQ91zWAop56LFVSWOoYjoJiipj5d5WloVg+V2L2DECrMaXIa3JEECYRqNK4mnSayZt6T+JOII71K9XQR2nlUzkchsTR0IH7GADDcMRj2ZjcHU+gc1yhF9v84RtyrGs4PhR/YvwfCUU8D/1HbsTL2FvP3Hy+/dHegrU4JmR7nzFHT1MvDyFOyNIwtZ/ZmvTxJF1hIm3OCQLjAMQVIPckc0JXAtsPNJMfaI5XVx9n/zJGz9m6cwu1E6TSNdRv3Nn98PL6dHQyimAelY18ycCw4HtkdKUUKFQGcLWQnKspifLW7A9KcmqhfqV/V0FsZXhh2xwyqaMHgplnNa3vo6lxaKC8Ru5f4Yg0ALPPiJ0aHvlA==
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(1800799024)(366016)(18002099003)(22082099003)(921020)(56012099003)(38350700014)(4143699003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?irFoC44HA1PPlos/ixsdoHAncgDulvhrUv8mpWPsap04QdrS3cAST1AMDceR?=
+ =?us-ascii?Q?sRTiYDf5JvSuTe2k25xdr2OQm/rLd9uTCggTja0IxnjBX/fk0xX+B25bI7ez?=
+ =?us-ascii?Q?As2h6kCTNKJlqmcU6men5AJLc36j5ShBYwNgJwgln5cleOjLdQgsJZafJjNo?=
+ =?us-ascii?Q?xILRR5q2obUDi23hkZw4TUsJe4m07YPLO5Crum6GvfB1U0tMWg3+wkEXuSfO?=
+ =?us-ascii?Q?Jhoetr+ADWpQDPom4jIh6L14Xni9PnGzxUflftl53VSqwCNbPniIQSvA2NcR?=
+ =?us-ascii?Q?b7xzCJ8MRWjGu0d3SqfqGgmQalFCH+ttek/etVwpPQhfBZhmohN/K8A9g3sg?=
+ =?us-ascii?Q?ZU0Y7TJ3Y6Syh8eRINcMFlZvs/EYpz5/w4FSIFORN222UXgTU9tBd9oqW1I1?=
+ =?us-ascii?Q?QgcC24x6ByiuRf5BqbxwxU7KVDpa0O1DihqWS/DqQs1YB3riaDzhcKbhTBc5?=
+ =?us-ascii?Q?54jYMliM8ucfHNab2Ed8tB3YbnhRvMs1ONMU4LQNAPCE/8HoWNDYhq8x0jo4?=
+ =?us-ascii?Q?jVOC2GSO2TVgCB+4i6bXMkALnJvxs8tIggng6/J//SyAsc5w1IueWZ7gHLQ8?=
+ =?us-ascii?Q?gxtS5sN8p9jNarfWd4S9ZTd11TDBQVkZNKGraJQ9rcvgKxdW2xtol1koeV9i?=
+ =?us-ascii?Q?Oti9Iq9pODiPX8AlyaygE70w/lBBsfXsb1T5WOBtHvWiToRl6c6xLl0+puL0?=
+ =?us-ascii?Q?wkq8SRquyPZcOGT1AnQ1/ez+eVA7H4O44HAaO0Mx0QmBGUcBtrCMyW293twi?=
+ =?us-ascii?Q?3edXu7kscBNS7UnDC1E+I7oRIatKyqBnXWNnHX2AjhcpfZvKqPUBQOP6oAz0?=
+ =?us-ascii?Q?xm46m+07LlVDusjbXrQGEYq3uYWqOJWxgeawo6M9LdK4hrq286uboxhyshep?=
+ =?us-ascii?Q?0SCXH9+Rm6naDaZtr/nK5CAm0dQfiJBYAh5941CuswHpMusPja/zahMl3OAx?=
+ =?us-ascii?Q?4nZRMR/3v+jagQn5HRnOgEqhUoPb2L7n/p/375e2wUR8bBn9nOoF0j4kQ4ai?=
+ =?us-ascii?Q?DiMDc5Y55Xre2kFXcF47WAe3kvCZAdBEdX9lCPU7pGmGibU7crfxoMJsor9E?=
+ =?us-ascii?Q?wUX6tP4/gqbv/46rFbnCO/J6nwKtuQj5qKDtw/46sMOPOnL8L5FhmLNMTbsD?=
+ =?us-ascii?Q?CsL2UkbyGigyT599M11xFtlhkv4Q/FBOOEdL8Ad+SjGiRkFU8kbp2PviXm3I?=
+ =?us-ascii?Q?A1g+7x3zSveQiIDTRt8JscWfmfs2EPTPW9oPe0QqsEPWXkYFSxAEFoNTUXgD?=
+ =?us-ascii?Q?yssqAvAO4lW9IdxAxlWBBqn7Jn/YMttiGtQlDyfObynf4kZ/GgyxmiNahkpy?=
+ =?us-ascii?Q?bNfck0V/Bp4wOscW2gdb1M+pIx/71wJucm8gVextuya7OT+SqttZElcE8y+s?=
+ =?us-ascii?Q?gQkrCVafbu6XB8eoeoiqF07t32Yss8gm88fbfENyUxAU4k60QrScEk5Kwxny?=
+ =?us-ascii?Q?3bpqc0AK+beYbzHgQVow0AFXGVrji72Asf4wBnmqVna/bECrUNlw9RESEWiH?=
+ =?us-ascii?Q?gc5c/9v/STnIuanBFRWGC2PL3DkBsT4L81OhJBj+TDMaWXEixoZ7xIKyVLRM?=
+ =?us-ascii?Q?OpfsQuHCbzDh4OhbLQIG7H7S4kBrJF6PUL0CS7HfIpZrO0EeCw0+W5YnBkI2?=
+ =?us-ascii?Q?HTfkCbb7IFQ/VYpePJU9VzH4wQdctDiCL/GBqXpdbSGmm8vLD7FIFAoUNDe5?=
+ =?us-ascii?Q?ICYCc39peWT0tXhR/I2xavnej4Y80E09hHuAkKvSTHP0rISXTV6jxrx78ddu?=
+ =?us-ascii?Q?W4achrvR32AsnHt3W3QyH5BBbLsLZig=3D?=
+X-OriginatorOrg: lecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 594c7b42-ecbb-489e-45c5-08deb2719ec3
+X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 11:03:40.1985
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3591a018-3909-4ea2-aee8-843d5abaed8d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BclCWhlIZg38eQLn+xUY4A27Q+Ev0xL1yuw24P683UxUzEecGH5O3FeOv8tU2ChLiV9rZcWdoDs+VCae9iC82IONn3KLGg+iWduWvu9CJo8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0547
 
-When the SPI core registers the Kunpeng controller it may need to acquire
-chip-select GPIO descriptors. If the GPIO provider has not probed yet,
-spi_register_controller() returns -EPROBE_DEFER.
+Add ACPI ID "LECA0002" for LECARC SoCs. This ID requires a custom initialization function dw_spi_hssi_no_dma_init() that sets dws->dws.ip to DW_HSSI_ID.
 
-On a Kunpeng system this currently prints an alarming error even though the
-next deferred-probe retry succeeds:
-
-  hisi-kunpeng-spi HISI03E1:00: failed to register spi host, ret=-517
-  hisi-kunpeng-spi HISI03E1:00: hw version:0x30 max-freq:12500 kHz
-
-Use dev_err_probe() so that -EPROBE_DEFER is reported through the deferred
-probe mechanism instead of as a hard error, while preserving normal error
-reporting for real registration failures.
-
-Fixes: c770d8631e18 ("spi: Add HiSilicon SPI Controller Driver for Kunpeng SoCs")
-
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
 ---
- drivers/spi/spi-hisi-kunpeng.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/acpi/acpi_apd.c   | 7 +++++++
+ drivers/spi/spi-dw-mmio.c | 7 ++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-kunpeng.c b/drivers/spi/spi-hisi-kunpeng.c
-index 046bd894040b..395214b81179 100644
---- a/drivers/spi/spi-hisi-kunpeng.c
-+++ b/drivers/spi/spi-hisi-kunpeng.c
-@@ -520,10 +520,8 @@ static int hisi_spi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index bed0791c17fc..4d5a51d30adc 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -181,6 +181,12 @@ static const struct apd_device_desc hip08_spi_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 250000000,
+ };
++
++static const struct apd_device_desc leca_spi_desc = {
++	.setup = acpi_apd_setup,
++	.fixed_clk_rate = 400000000,
++};
++
+ #endif /* CONFIG_ARM64 */
  
- 	ret = spi_register_controller(host);
--	if (ret) {
--		dev_err(dev, "failed to register spi host, ret=%d\n", ret);
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to register spi host\n");
+ #endif
+@@ -251,6 +257,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ 	{ "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+ 	{ "HISI02A3", APD_ADDR(hip08_lite_i2c_desc) },
+ 	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
++	{ "LECA0002", APD_ADDR(leca_spi_desc) },
+ 	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
+ #endif
+ 	{ }
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 1bfdf24c3227..e131520fe887 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -226,8 +226,8 @@ static int dw_spi_hssi_init(struct platform_device *pdev,
+ 	return 0;
+ }
  
- 	if (hisi_spi_debugfs_init(hs))
- 		dev_info(dev, "failed to create debugfs dir\n");
+-static int dw_spi_intel_init(struct platform_device *pdev,
+-			     struct dw_spi_mmio *dwsmmio)
++static int dw_spi_hssi_no_dma_init(struct platform_device *pdev,
++			           struct dw_spi_mmio *dwsmmio)
+ {
+ 	dwsmmio->dws.ip = DW_HSSI_ID;
+ 
+@@ -438,7 +438,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "amazon,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
+ 	{ .compatible = "renesas,rzn1-spi", .data = dw_spi_pssi_init},
+ 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_hssi_init},
+-	{ .compatible = "intel,keembay-ssi", .data = dw_spi_intel_init},
++	{ .compatible = "intel,keembay-ssi", .data = dw_spi_hssi_no_dma_init},
+ 	{
+ 		.compatible = "intel,mountevans-imc-ssi",
+ 		.data = dw_spi_mountevans_imc_init,
+@@ -453,6 +453,7 @@ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id dw_spi_mmio_acpi_match[] = {
+ 	{"HISI0173", (kernel_ulong_t)dw_spi_pssi_init},
++	{"LECA0002", (kernel_ulong_t)dw_spi_hssi_no_dma_init},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(acpi, dw_spi_mmio_acpi_match);
 -- 
-2.20.1
+2.43.0
 

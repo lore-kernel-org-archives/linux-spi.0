@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9D843CEFD;
-	Fri, 15 May 2026 09:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE10D43E4B5;
+	Fri, 15 May 2026 09:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778837846; cv=none; b=kUFah3bOyBvAOmYVUdPpPlkdDgqQsrZPCoN39ZYPZKYIDOPBf5oByoQDPdaJNc3jGggXc7LBcxMujherl22jaNJNu98ddc7nUMLCenJIHxBFU8cmoqU42pn1ztxgp2mJJvhtYnojYiZM6QQTmtQ0M5uZu4S9cDq054eiwEQzpk8=
+	t=1778837946; cv=none; b=nQJ5VcFq230KdCU5V77dWwooAx0LIwLZuVZkC2NzuogpThCd7pQcQX2xPHFjnBrCt/k8/gCiPbrh0GcG9CAmm1JIZmh86R5/Ngl/H/OFndkcxnSmGQRaMqJX5Ey3OlxzBhHZ0ygy0FIs5c1Z1jQQJxkNusTlWN1b81WXvLp5FPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778837846; c=relaxed/simple;
-	bh=gG1ywkBAjUlB4a2tbjQaAGvh8uGthSIzxehw/CPcnmI=;
+	s=arc-20240116; t=1778837946; c=relaxed/simple;
+	bh=dnum33wmUd6ppTliQB7OlmxdDU3p0uwt0qvpAuIvGws=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iW8Lgtqhba8PfyiXlLD8uDxXk0FkUa5dZJpyA3sv4HaRAMni+9j2DBkaBC6MVx+Q8vXDEtRH+bUMwjaxpe9QNEMrauTT3/PFSjPHTM3WwHQ0Zws01xi7B8EBIKfWBrjHDknDiCtCiF3JdTOMl9SFRjuW+bVSTg8EujpjIdE6Mkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fRwvrri6; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixFkiHw7xTQeMftjctBp7hjKioSLjLQ0HvUQ07jopNpl4Jz8ubOsiiXM4aNWDylLaAwOVQ5aSweSxYjBUeFhZKqdS6pR4HGIPGmOHgoiAbP9cXngveIzXW/apSofS2hyDpsidJlCiYX/73LgUk5OssF49bvIDw7xwjR9IBm+mqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PbfN4hxC; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fRwvrri6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PbfN4hxC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778837845; x=1810373845;
+  t=1778837945; x=1810373945;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=gG1ywkBAjUlB4a2tbjQaAGvh8uGthSIzxehw/CPcnmI=;
-  b=fRwvrri6WErvcNwtcH3sEBqmF98Gp6rl2PMAWEShd+pyVeqylUxPc7Gb
-   Qgy5Y8T+Ibl+0T9542ItYJ5a1utOrpbhBsv2V+ZKgpGxSCthzycwvnivt
-   GZtcOvU7zw2t0PvyBTJef0shlLCam1HXr2xOcuHYOmGEEVJGSVgmtTAcw
-   5cdZLZ3Yezqn/47ngFDk9tfCohD1EU6Q3TpJDn5/hEiHNKsweaDSIh+i4
-   N126s0Kj14z/uOWs1OHT2rbw10rEJEv5E0/h55oqrh4C1hevot+p9hwBh
-   7XxBoAN5KDGP0Woa+/DJpBV9MZGOzhu3r045N7ba2nQEV+DyGKBKHNSuX
-   g==;
-X-CSE-ConnectionGUID: miQJ9NzTT7e6Lh5yPHwQwg==
-X-CSE-MsgGUID: /J4YWQ3rQbCGvFv9oQhcbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="83646981"
+   mime-version:in-reply-to;
+  bh=dnum33wmUd6ppTliQB7OlmxdDU3p0uwt0qvpAuIvGws=;
+  b=PbfN4hxCrPWFb/ckzugsVPDduofpdUvFUTgvEMUUS2vIKiGfHt/AvpPd
+   +cGDB9SrVjjyI5LiTzHxOMaFB2TsajkiYB8ZC3QJXACHCmNzvhfsoWeWD
+   Xuo1qJx2KhtBdQVWkHI6TgG7sudqL2/tTHdXWV6Nu3rXCJg+FMbhy4q1g
+   1rAvYs+Zk7fT8/D9CwIXUEJImpXcUWw+VsTFAzwtahMdBzLiGklB//B5J
+   RaZ1Nlx38mxIGGg7xs9pjq2AvEwlvQYrKWZuwsHD58PVmtB3LllykGL2q
+   c0zxbgCR8pxONTfxVJ7uQHQcnGa/CJPRjtKwAkFcnQVkGX2fH295K09aY
+   Q==;
+X-CSE-ConnectionGUID: s5ZS0nWJQCyoTPL0cj4SgQ==
+X-CSE-MsgGUID: sjtrXM0ZT1CtSYn1/J9u1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="67321594"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="83646981"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:37:22 -0700
-X-CSE-ConnectionGUID: TF1+n6K5RLa015PSiiEdqQ==
-X-CSE-MsgGUID: lUkwBfkNQEmqV7zNXB4i4A==
+   d="scan'208";a="67321594"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:39:04 -0700
+X-CSE-ConnectionGUID: zPRAQyr8QAmwvMckgHLoDg==
+X-CSE-MsgGUID: Eb++I66bRJO7MXRpyOMp3g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238759700"
+   d="scan'208";a="242641004"
 Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.245.33])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:37:13 -0700
-Date: Fri, 15 May 2026 12:37:11 +0300
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:38:58 -0700
+Date: Fri, 15 May 2026 12:38:54 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: thomas <thomas_lin@lecomputing.com>
 Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
@@ -58,56 +58,34 @@ Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
 	harold_wu@lecomputing.com, will_zhang@lecomputing.com,
 	aurora_jiang@lecomputing.com, ryen_lin@lecomputing.com,
 	andy_jiang@lecomputing.com
-Subject: Re: [PATCH 0/3] Add LECARC ACPI IDs for DesignWare GPIO, SPI, I2C
-Message-ID: <agbpR8z9kNIUInla@ashevche-desk.local>
+Subject: Re: [PATCH 3/3] i2c: designware: Add LECARC ACPI ID
+Message-ID: <agbprjw1ra-YvsKC@ashevche-desk.local>
 References: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
+ <20260514024014.3376511-4-thomas_lin@lecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260514024014.3376511-1-thomas_lin@lecomputing.com>
+In-Reply-To: <20260514024014.3376511-4-thomas_lin@lecomputing.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, May 14, 2026 at 10:40:09AM +0800, thomas wrote:
-
-This is a v2 of the series (Mark commented on the wrong one AFAICS), please
-make sure you do proper versioning and changelog is provided.
-
-> This patch series adds ACPI identification for LECARC SoCs that
-> integrate Synopsys DesignWare peripherals.
+On Thu, May 14, 2026 at 10:40:12AM +0800, thomas wrote:
+> Add ACPI ID "LECA0003" for LECARC SoCs that integrate the DesignWare
+> I2C controller.
 > 
-> LECARC platforms use the following ACPI HIDs:
-> - GPIO: LECA0001 (V1 register offsets)
-> - SPI:  LECA0002 (requires custom init function)
-> - I2C:  LECA0003
-> 
-> The patches are independent but share a common dependency on the
-> ACPI description file (drivers/acpi/acpi_apd.c) for SPI and I2C.
-> To avoid merge conflicts, they are submitted as a single series
-> with the following order:
+> Also add corresponding ACPI description in acpi_apd.c.
 
-> Patch 1: gpio: dwapb – add LECA0001 to dwapb_acpi_match[].
-> Patch 2: spi: dw-mmio – add LECA0002 and dw_spi_lecarc_init(),
->          plus corresponding entry in acpi_apd.c.
-> Patch 3: i2c: designware – add LECA0003 to dw_i2c_acpi_match[],
->          plus corresponding entry in acpi_apd.c.
+> Signed-off-by: thomas <thomas_lin@lecomputing.com>
 
-You have to fix your SoB. There should be your real name and not an alias.
+Fix the name field in SoB, has to be your real name and not an alias.
 
-> All changes have been tested on LECARC evaluation board with
-> kernel v7.0.0-rc6. No regressions observed on existing hardware.
-
-Otherwise I can confirm that LECA is officially registered ACPI vendor ID and
-the IDs look legit (it's up to the company to map the device ID parts to
-whatever devices they have properly).
-
-When you address the SoB and other comments, I ack them.
+Code wise, after rebasing on a new version of SPI patch (see comments there),
+will be perfect.
 
 -- 
 With Best Regards,

@@ -1,65 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10163CFF57;
-	Sat, 16 May 2026 10:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECDC230BD5;
+	Sat, 16 May 2026 16:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778926401; cv=none; b=F7mZ9qygU6uHAK9C3AwF/UkkDZXHuYMaCd7UluDIXmkqf3iaT2FabgqhN4eNudei+t11VV6Ep8gziO2VpS9cFtZxAj6v0Z3F08+ln46TFaBvFYhLEIucOmJnVUzdSf0FN7fRHb4UjPO4w9byVMCR/N9XKfpW6kI+aHa7DCrr0x0=
+	t=1778947530; cv=none; b=fH3ZhzlDyRpzbBNRWD11UteKF1fEcYeYy+MQyggBRTrClqB8YjTVm5t6VBDDpMToKzTS9SJYxc4CBrnzYpCvFh13tdexdH7lqgrHWIofcdl9U4aYwfTVzCIGBAcBMzgdf+703KPIf9vd4/VKj6b1Tg/watI8WPz16GtGVSIQY4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778926401; c=relaxed/simple;
-	bh=0z9y0efjB/u6lremUZZm22NCqH/uWoAMARIiO9P5lAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cTOw5u3xiONZbQKIuanSyMkdAk6psA3RclW4fofcx/ZcS/tyfd1t8QiRfq/HsZaNaD3Plgvjq8bvrV7i8LXcFsT3j4+X2LBY97bTZ89Zy53sSi5+5nR0FVEpkZ3jvLX+MYuZSIodDwCFbjyEXLksQcoimu0TciIY1B1SbtnVGWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLeD3MRC; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLeD3MRC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2021C19425;
-	Sat, 16 May 2026 10:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778926401;
-	bh=0z9y0efjB/u6lremUZZm22NCqH/uWoAMARIiO9P5lAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KLeD3MRCAk5bA6hszIk0YjX/da0tgtuImIwfhbCR7Fay334594RRF8KMrVXtbYxpN
-	 +XBAqlEuxyK9Kr/hSAEPtA1cxyd0HjRVw8ciNbGuh9OelSWOCnS5+xW54NwIFoMnmt
-	 dIr+5p/yHrGo2c0wG69LgYXorXigY+Tvx8sJ9oISVtTPwUJSixxJ51DYs057FtuVBn
-	 VAI5ddWonVPZkpiWyn86UlabWqgaE390a5bBD5+ZzHPNtiokBAiNWhzkjl/BgU6Y1I
-	 88auXfyizQZB9y5cjK9cFhhT3AJTxZCbTCPSkq3ECC4azdKRzJXoBYBvfleXOOv02O
-	 l5j5sB72NSI7Q==
-Date: Sat, 16 May 2026 12:13:19 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Aaron Kling <webgeek1234@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] spi: dt-bindings: tegra: Support dma-coherent
- property for QSPI
-Message-ID: <20260516-heretic-chinchilla-of-memory-0a5fcf@quoll>
-References: <20260515-tegra194-qspi-iommu-v1-0-57dfb63cd3d6@gmail.com>
- <20260515-tegra194-qspi-iommu-v1-2-57dfb63cd3d6@gmail.com>
+	s=arc-20240116; t=1778947530; c=relaxed/simple;
+	bh=lbd5B9oodZPfOUeAo28ajLBuYsbpGHy3HfUdL93AmT4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K+JQmLJ6v1wSVnHDK+RF0YEDZn/66gZGgRZCDgctcZ+Rk0VVvJorQLx6d4UuFq4bqLuEXE+53ArR0FgVQ4gHXw9Q4NJQR/vR8D6tGnKZGtJ8/YCMZhoqotKmihV6BREFOE4IK19rq8eY9zQMLLN3mtvjx5yhpF+mqm+Fl0no4JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D80DC19425;
+	Sat, 16 May 2026 16:05:27 +0000 (UTC)
+Message-ID: <b272b786-75d5-42f2-9622-ae4659722c44@tuxon.dev>
+Date: Sat, 16 May 2026 19:05:25 +0300
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260515-tegra194-qspi-iommu-v1-2-57dfb63cd3d6@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] spi: atmel: fix resource leak on DMA buffer
+ allocation failure
+To: Felix Gu <ustc.gu@gmail.com>, Ryan Wanner <ryan.wanner@microchip.com>,
+ Mark Brown <broonie@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Radu Pirea <radu.pirea@microchip.com>,
+ Richard Genoud <richard.genoud@bootlin.com>,
+ Wenyou Yang <wenyou.yang@atmel.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ Mark Brown <broonie@opensource.wolfsonmicro.com>
+References: <20260516-atmel-v1-0-674fb4707af6@gmail.com>
+ <20260516-atmel-v1-1-674fb4707af6@gmail.com>
+Content-Language: en-US
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <20260516-atmel-v1-1-674fb4707af6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 15, 2026 at 03:35:28PM -0500, Aaron Kling wrote:
-> DMA coherency is supported by at least the Tegra194 and Tegra234
-> controllers.
+Hi, Felix,
+
+On 5/15/26 20:20, Felix Gu wrote:
+> The original code set use_dma to false when dma_alloc_coherent() fails,
+> so DMA channels allocated earlier were never freed, causing a resource
+> leak.
 > 
-> Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+> Fix by moving the bounce buffer allocation into
+> atmel_spi_configure_dma() and extending atmel_spi_release_dma() to
+> also free the bounce buffers. Any allocation failure in the DMA
+> configuration path now rolls back both channels and buffers through
+> the same release function.
+> 
+> Fixes: a9889ed62d06 ("spi: atmel: Implements transfers with bounce buffer")
+> Signed-off-by: Felix Gu<ustc.gu@gmail.com>
 > ---
->  Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+>   drivers/spi/spi-atmel.c | 113 ++++++++++++++++++++++++------------------------
+>   1 file changed, 57 insertions(+), 56 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 25aa294631c8..e519a86a2b45 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -559,6 +559,34 @@ static int atmel_spi_dma_slave_config(struct atmel_spi *as, u8 bits_per_word)
+>   	return err;
+>   }
+>   
+> +static void atmel_spi_release_dma(struct spi_controller *host,
+> +				  struct atmel_spi *as)
+> +{
+> +	if (host->dma_rx) {
+> +		dma_release_channel(host->dma_rx);
+> +		host->dma_rx = NULL;
+> +	}
+> +	if (host->dma_tx) {
+> +		dma_release_channel(host->dma_tx);
+> +		host->dma_tx = NULL;
+> +	}
+> +
+> +	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
+> +		if (as->addr_tx_bbuf) {
+> +			dma_free_coherent(&as->pdev->dev, SPI_MAX_DMA_XFER,
+> +					  as->addr_tx_bbuf,
+> +					  as->dma_addr_tx_bbuf);
+> +			as->addr_tx_bbuf = NULL;
+> +		}
+> +		if (as->addr_rx_bbuf) {
+> +			dma_free_coherent(&as->pdev->dev, SPI_MAX_DMA_XFER,
+> +					  as->addr_rx_bbuf,
+> +					  as->dma_addr_rx_bbuf);
+> +			as->addr_rx_bbuf = NULL;
+> +		}
+> +	}
+> +}
+> +
+>   static int atmel_spi_configure_dma(struct spi_controller *host,
+>   				   struct atmel_spi *as)
+>   {
+> @@ -569,7 +597,8 @@ static int atmel_spi_configure_dma(struct spi_controller *host,
+>   	if (IS_ERR(host->dma_tx)) {
+>   		err = PTR_ERR(host->dma_tx);
+>   		dev_dbg(dev, "No TX DMA channel, DMA is disabled\n");
+> -		goto error_clear;
+> +		host->dma_tx = NULL;
+> +		return err;
+>   	}
+>   
+>   	host->dma_rx = dma_request_chan(dev, "rx");
+> @@ -580,12 +609,31 @@ static int atmel_spi_configure_dma(struct spi_controller *host,
+>   		 * requested tx channel.
+>   		 */
+>   		dev_dbg(dev, "No RX DMA channel, DMA is disabled\n");
+> -		goto error;
+> +		host->dma_rx = NULL;
+> +		goto err_release_dma;
+>   	}
+>   
+>   	err = atmel_spi_dma_slave_config(as, 8);
+>   	if (err)
+> -		goto error;
+> +		goto err_release_dma;
+> +
+> +	if (IS_ENABLED(CONFIG_SOC_SAM_V4_V5)) {
+> +		as->addr_tx_bbuf = dma_alloc_coherent(dev, SPI_MAX_DMA_XFER,
+> +						      &as->dma_addr_tx_bbuf,
+> +						      GFP_KERNEL | GFP_DMA);
+You could use dmam_alloc_coherent() and avoid bulking the failure path.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-
-Best regards,
-Krzysztof
-
+Thank you,
+Claudiu

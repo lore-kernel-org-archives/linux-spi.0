@@ -1,49 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0511224B05;
-	Sat, 16 May 2026 06:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB712556E;
+	Sat, 16 May 2026 06:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778913399; cv=none; b=Pn6F1PdiyX1eUzM7clyvQPx0mPOpNUJmcsYIKTx5Lpth+l9vcN5K924zc2L86yGXtz3gjSr/r8t9QNe+oAWDaEqWfr0cihVioRmTidR3hDL5xbspxkrHFl5dVHq+LrOjXN8X/4++HmBBl98EO9sXLVZMRJymScv6uakwZbyypfs=
+	t=1778914094; cv=none; b=YItrsySJDfQmPk0cNpT+XqL2Yinp0f61jYMaDw6l9Iew1YiphpakBHa7yoYyGEJVB+KXXRrM5OSghT6CMjzeIVsvGyT8fxMLdD8mqOQ8+Q9JJk9vYDhofHgpTmsA+1aak8efinp57UC/5WqFpUcS4rfnoVM3nG9/CCmjjTmtURE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778913399; c=relaxed/simple;
-	bh=wj3pvJUXnApN9duS4ENA6UUuY+zxbbcfEjF+pPbJNq8=;
+	s=arc-20240116; t=1778914094; c=relaxed/simple;
+	bh=GedgFNpZxDjyfxm7p+3SPnpivi01eNWKEeMW2Z+cvjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gu2hmE6wwPXrCZr+MSDb4vObC2qtOHKMP3PURYp83BQMTuwomn1X/9cL0UR0q8ncVaKfjzZNzdmaOK+76IAHYPyErKcPXa7F7x1zAI6KotGKJvhC83NJO27TLJmiPLJJ/JmZzTU7w1AYVGALGOt/TvtwkkNkfiatcqpew6HO0UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PR6K8Jo7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eKeeGLCx6voshlHwkXwao5WIA930zhhkvi5YyI3Jt1bZFzGNYQ6LrBQy6zAspbZI6HEv9/unJ5jDhpZ9kjjs3DTLcjkl4ApAZK++zxNJLpk9lPFbv700biaZCUYm3Hf/9llvt8VHkdf1VujuVO0lzvj4t3Y9LO55y+UmHH9YUQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kxlHmS2z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PR6K8Jo7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5023BC19425;
-	Sat, 16 May 2026 06:36:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kxlHmS2z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4688C19425;
+	Sat, 16 May 2026 06:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778913398;
-	bh=wj3pvJUXnApN9duS4ENA6UUuY+zxbbcfEjF+pPbJNq8=;
+	s=k20201202; t=1778914094;
+	bh=GedgFNpZxDjyfxm7p+3SPnpivi01eNWKEeMW2Z+cvjQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PR6K8Jo7kQyk4nm/tJBIcb+sod/FCvmuK/WpuaxIJN6Pna+qZ8sTNkxBOuYgcp+jz
-	 j8vv0D0T8fG9SznD3FVM7msFz9n4Nq64CTmzLIv0aI83qTm0du5opM8ifkMsKG31ge
-	 X8cRBFtSWEp2wk21xLed0CeRTXz2OkAwNfM0XIWIQyggOUKj8+/REoE1khynnM6wxf
-	 TMgLZ0Bp3m/Y7yndl+ifFr+/PMxxXlXuXLDbp7iqjmN+GpdI+3vZ8ACMm6ueaYsefv
-	 BY5K6cwbK3s4QuZFCJuu0GRcut/P5srokXf4HrYXF9JugcIYe/MXqVCBSqEEt0iFLw
-	 GWrt1Hg/KlO7g==
+	b=kxlHmS2zZS1foJ2s/EjCdsoWOtbeJmUTIL1yjz+ciVOXXaZvoKINPTA1eQ8ue4J62
+	 0nsp8LoRoxj1E2FyMMR0opDtx7QAip1dm1acWbczl37xiylAeo1E3vlKrYUewWcBk+
+	 rvzNpKrQmSN6faib/l7LRYJ/2uL0Yg7Xuw7FT5336pUuBb7WFFdgFReZj5mfxq0aTS
+	 obgnaU7PhtfyKpgmIJ1Px+bUU5VmCqk6R2WrOsyQjS9imfLOMXf3IVZmVPRCVv671S
+	 jwl417N+fsrQvuYxlXdTsQ+sFp5ccKlSLyhGk5FNYhCFHdmcRSsIMc+zYUGqP5B1Z7
+	 kO1nUJL2WY6lg==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 01C031AC5A48; Sat, 16 May 2026 07:36:34 +0100 (BST)
-Date: Sat, 16 May 2026 15:36:34 +0900
+	id 5F1591AC5A48; Sat, 16 May 2026 07:48:10 +0100 (BST)
+Date: Sat, 16 May 2026 07:48:10 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Ryan Wanner <ryan.wanner@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu.pirea@microchip.com>,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	Wenyou Yang <wenyou.yang@atmel.com>, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] spi: atmel: two fixes
-Message-ID: <aggQctV06BI6Sobw@sirena.co.uk>
-References: <20260516-atmel-v1-0-674fb4707af6@gmail.com>
- <agfXl-FiZ-PN_cGT@sirena.co.uk>
- <CAN4SLj3H3Sc_N42KnYMzgpe8LcFE-6EHeNxnBY2o35jP74_BkQ@mail.gmail.com>
+To: ChaoHuang <958028483@qq.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Chao Huang <huangchao@kylinos.cn>
+Subject: Re: [PATCH] spi: Add spi_for_each_controller() helper
+Message-ID: <aggTKly_pVAYLVRt@sirena.co.uk>
+References: <tencent_4C5A0FCF387BDB37C5512E5D709FD557F106@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,43 +43,94 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fZzu6U2uZ2p9oVsc"
+	protocol="application/pgp-signature"; boundary="MVFD/jB+uulWrAl6"
 Content-Disposition: inline
-In-Reply-To: <CAN4SLj3H3Sc_N42KnYMzgpe8LcFE-6EHeNxnBY2o35jP74_BkQ@mail.gmail.com>
+In-Reply-To: <tencent_4C5A0FCF387BDB37C5512E5D709FD557F106@qq.com>
 X-Cookie: Truckers welcome.
 
 
---fZzu6U2uZ2p9oVsc
-Content-Type: text/plain; charset=utf-8
+--MVFD/jB+uulWrAl6
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 16, 2026 at 12:41:56PM +0800, Felix Gu wrote:
-
-> The two commits are already based on Johan=E2=80=99s fixes:
-> commit ebf99aebc458391893c598f1caddd42bfcc97fc5
-> Author: Johan Hovold johan@kernel.org
-> Date: Wed Apr 29 11:13:16 2026 +0200
-> spi: atmel: switch to managed controller allocation
+On Thu, May 14, 2026 at 04:45:44PM +0800, ChaoHuang wrote:
+> From: Chao Huang <huangchao@kylinos.cn>
 >=20
-> There should not be any conflicts.
+> Add a new helper function to iterate over all SPI controllers.
+> This provides a convenient way for SPI core code and drivers
+> to perform operations on all registered controllers.
 
-Those are on my for-7.2 branch, we're currently in v7.1-rcN...  I guess
-it's probably not urgent either way.
+> This helper is useful for scenarios like statistics gathering,
+> configuration updates, or debugging operations that need to
+> process all SPI controllers in the system.
 
---fZzu6U2uZ2p9oVsc
+Do you have an actual user for this or is this just purely theoretical
+at this point?  It'd make a lot more sense to add this along with a
+user.
+
+> +int spi_for_each_controller(int (*fn)(struct spi_controller *, void *), =
+void *data)
+> +{
+> +	struct spi_controller *ctlr;
+> +	int ret =3D 0;
+> +
+> +	mutex_lock(&board_lock);
+> +	list_for_each_entry(ctlr, &spi_controller_list, list) {
+> +		ret =3D fn(ctlr, data);
+
+When unregistering controllers we do start the teardown process before
+we pull the device off the controller list, and drop the lock while
+doing so.  That's probably fine for a lot of uses.
+
+There's also some obvious potential for things to go wrong here with
+something in the callback deadlocking, though that's a bit of a "don't
+do that kind of thing".
+
+> +		if (ret)
+> +			break;
+> +	}
+> +	mutex_unlock(&board_lock);
+> +
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_for_each_controller);
+> +
+>  static int __init spi_init(void)
+>  {
+>  	int	status;
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 79513f5941cc..8fcf3faf9739 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -934,6 +934,8 @@ static inline int acpi_spi_count_resources(struct acp=
+i_device *adev)
+>  }
+>  #endif
+> =20
+> +int spi_for_each_controller(int (*fn)(struct spi_controller *, void *), =
+void *data);
+> +
+>  /*
+>   * SPI resource management while processing a SPI message
+>   */
+> --=20
+> 2.25.1
+>=20
+
+--MVFD/jB+uulWrAl6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoIEHIACgkQJNaLcl1U
-h9C60gf+NE7mLfYR56Bap6PoYwJj4+q/vXyZotuV8Ir17kP//GySWSh4yCqoJMWf
-XgovPBxdODLmX6xWZBqyMhmLwrLvKNfu+Mipw9FtdRlwP7abOlJcKn4dslJs033x
-noLnCFz+sAPm8/B43xcgg+ahqhvS7rELeqbEGSD0FXqaGWdkZkVqBOaZFn0rXqnn
-vq9tex4y4UzdCAvrtg/7GTJzgcgYO8alyO1NDRI6TWRJ31gydfCsOdegmFwsgSVx
-8ny+NhM+EDimsOjEIzIEF0X3/cgxJ8NpNp1wzy1QDbo6hm4ukxow6283a/O+wjHM
-vpkf0B/AjDnHHLzUJWEEF0G+WVOHGQ==
-=kr9H
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoIEykACgkQJNaLcl1U
+h9DBswf+NXtwwHmUqp285/+Ad7jl8WhZETQsAiY97UCMHOLv6kr74gULoyEi4C+l
+mWLfZseGV5JpGYT9MwPrypprn46Bcht+97+pEmxPzUavQ3DhTTt5FLhjdvB/RUyE
+IuHs+2nXXTw3CSAKuErGVfK5XXdYLBhj34sdUoJYLoFLhVusbU8NI/KANKVvCAC1
+/OGuLMXAcMf+cixXbZWj9lDOXOflydC7DDNgb/QXmvCHN6BaqwlyLHCD8d/os6dE
+xnOuDUykfqIv6p+HUH17TXeIkcnDQei8F7CwRwvUY+3MJLaX129lbKApAAa12BQ7
+NVAaZ1Q7x9KuD96ReDoy5d37qUWITg==
+=IM8R
 -----END PGP SIGNATURE-----
 
---fZzu6U2uZ2p9oVsc--
+--MVFD/jB+uulWrAl6--

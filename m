@@ -1,49 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF6C26FA7A;
-	Sun, 17 May 2026 08:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B57305698;
+	Sun, 17 May 2026 08:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779005519; cv=none; b=pXOFRnkBgXzU6DaGVfi4Vead66AB07K/2Q1eP+GeuPFzvzllxLNLr5lPO0iJil8M6aaFP86VcFno9PXgnikisyN5R3voX4J5eqTx64EoEHo4aZtEyj75gcWv/2mVSQTM1rfk/kNQGe4UiL4woaXL5XQjd7JgCBr+zQPSg6iWPRE=
+	t=1779005600; cv=none; b=TBOe5JxA1/WWmhyzvNDBeWV3ioXeXF/LXmYePJe7IQz/09aT7SYpKBnqT++w2DRwDoAfzhqdl1+h6Q0uSE15h/skuZSOKt5Zjr+Pwp5I60y4Oe3gCSkJ4EYTsT9yUXp7RhPiMP6OZEBChahN4Q0w/OlbTkbZQn5h0Fz1NgCutCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779005519; c=relaxed/simple;
-	bh=R8QSWBUhn8ehatazqRlzsq+Lwyp9VIk9GLj2mLVG5UY=;
+	s=arc-20240116; t=1779005600; c=relaxed/simple;
+	bh=woV7LRuuwib4HiCRjc8rygbY/oFkZTFF4Smq9LQtz8c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Twx8fh1JW1ml85I1tSufGvDULIz6kIOT8e1hHQwJjf7YuWnbXFCOqroMZ1QY6RFmOX14xaQaWQYnPBgkGjoXe3FDPRFEoOBn8Ffa3X2Z0jVKOnY3Re48Lch3JqgySkPZ/CKGq1FyTOeZnBEv5165jl3tMJpsk+EjAx5w3lbJyfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EqwPZzU5; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=PzcC7yGw+jcbuSWaj45eP9LNxG90iqTv/3VlzeaDUiXj0solGmXGe3efjOMZJeMNL/r3Jcu6vK9E518UognY1GXKYZuWy6bu+pFAuD0vNFWaw7+nrFrlHOASJMaLJP8SgSDCtaTUE6mcI7KxQLTcx/ogjLJSnJzgk3DihaRupjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LBHG8bHV; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EqwPZzU5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LBHG8bHV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779005518; x=1810541518;
+  t=1779005599; x=1810541599;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=R8QSWBUhn8ehatazqRlzsq+Lwyp9VIk9GLj2mLVG5UY=;
-  b=EqwPZzU5U3752ZtRzKVajETbBG+rL0Ja3AaXFFBl6dAdJZFpGfJzipAY
-   v7MCQEqXVzpo0AmRb5fCo2mevA3LdVeDjDj90Jt/tKCkywiqFWVWysU7Y
-   leGKpHaJpuR1u4GULR8WTjSS0gyZ1u29bZhETxaO1DWUYFYewYfEpp7JT
-   QQvF8M+J2ngEdyTqQiGxyBdQUtQL4SOOEparAz1wx5kVZLeYmnmfQr0mR
-   szM8UgdSrtefTmJXg1pbUXJ49hjKRB9loP0vB5spfGHLI2JTIiBgxdpMG
-   1Uw7yrkuhTvqNh99lbFiLuImcnaBVMlYCBiq5QmPU12zDpu8wUxhVD+ko
-   w==;
-X-CSE-ConnectionGUID: fv9arcRqTKSe9JCbO/qpkQ==
-X-CSE-MsgGUID: b+wmwB/rTW6KAa4LqXxo5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11788"; a="91351142"
+  bh=woV7LRuuwib4HiCRjc8rygbY/oFkZTFF4Smq9LQtz8c=;
+  b=LBHG8bHVFLxl+zceHtieFH69UOchepkxyy8xcGLTQLUXLEwHGEBMratg
+   YTvBemgrLcpFYbpaSnqE0kDVRm+2NkrEPbUjDiGrvrhRSObgbpjFq5Vhc
+   ErEf00SEXkFckESnWtoJod/+bQt1Dw2dZqgfumxHUX0tVLMI/uRUn1IJa
+   Fca2MFvThr59W2hP/BPwETcHs7XVKkTiPsljr5O+6ZARsNv5LNLjKhZbE
+   il7RLBA1TufnUnNhYaRmYxuRm1RyFFs6NO1SNYHYhZl61rVL99CYD0BpK
+   6InjTHxen8E+UjaBKgH7p3XXFOsulVVchYHOuTEP2Kze7tCoGDmsmPlwJ
+   g==;
+X-CSE-ConnectionGUID: HeMcygmzQUi8TGU3elQb+g==
+X-CSE-MsgGUID: TcMynJhKT1eyJg45aTTiyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11788"; a="79790406"
 X-IronPort-AV: E=Sophos;i="6.23,239,1770624000"; 
-   d="scan'208";a="91351142"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:11:57 -0700
-X-CSE-ConnectionGUID: Hb/dy0HBQ06MAf186pp1MA==
-X-CSE-MsgGUID: I98qXi/8QlaThW1H3+YVgg==
+   d="scan'208";a="79790406"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:13:19 -0700
+X-CSE-ConnectionGUID: kTyLDAcTQ/CFO3YgO12mKg==
+X-CSE-MsgGUID: iORp0OTZSb6GHyWjPc4zeQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,239,1770624000"; 
-   d="scan'208";a="244091510"
+   d="scan'208";a="238996941"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost) ([10.245.245.182])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:11:51 -0700
-Date: Sun, 17 May 2026 11:11:49 +0300
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 01:13:13 -0700
+Date: Sun, 17 May 2026 11:13:10 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Thomas Lin <thomas_lin@lecomputing.com>
 Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
@@ -58,11 +58,11 @@ Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
 	harold_wu@lecomputing.com, will_zhang@lecomputing.com,
 	aurora_jiang@lecomputing.com, ryen_lin@lecomputing.com,
 	andy_jiang@lecomputing.com
-Subject: Re: [PATCH v2 1/3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs
-Message-ID: <agl4RXIp0f8yZfzL@ashevche-desk.local>
+Subject: Re: [PATCH v2 2/3] spi: dw-mmio: Add ACPI ID LECA0002 for LECARC SoCs
+Message-ID: <agl4lrPIRNuKDzP4@ashevche-desk.local>
 References: <20260514034319.3507315-1-thomas_lin@lecomputing.com>
  <20260515110322.2883310-1-thomas_lin@lecomputing.com>
- <20260515110322.2883310-2-thomas_lin@lecomputing.com>
+ <20260515110322.2883310-3-thomas_lin@lecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -71,12 +71,12 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260515110322.2883310-2-thomas_lin@lecomputing.com>
+In-Reply-To: <20260515110322.2883310-3-thomas_lin@lecomputing.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, May 15, 2026 at 07:03:18PM +0800, Thomas Lin wrote:
-> Add ACPI ID "LECA0001" for LECARC SoCs that use the DesignWare GPIO controller with V1 register offsets.
+On Fri, May 15, 2026 at 07:03:19PM +0800, Thomas Lin wrote:
+> Add ACPI ID "LECA0002" for LECARC SoCs. This ID requires a custom initialization function dw_spi_hssi_no_dma_init() that sets dws->dws.ip to DW_HSSI_ID.
 
 It's way too long line, please wrap around 72 characters.
 With that done, you may add

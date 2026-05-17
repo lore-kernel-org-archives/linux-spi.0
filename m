@@ -1,117 +1,195 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514B33128A3
-	for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 21:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779051898; cv=none; b=VBVp9xM65gkKGB4IO6dk/Qyh9ri1puiiv8697ITIOgy26BtLKpFGkXCzXsGyluvgP43rX0J44ctpUD5N7cvdKNdAEs0LDlw/DJ/v07AFJTcX1nfKisk0kaf3PzyrGlYTIvQsiAkekRRn6NudRDUQD+r8DoH4AEm0i1NNI7+eIEQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779051898; c=relaxed/simple;
-	bh=7J/Q8z0p6z/ZaMeFT9hzqiMVl4XH6nAoe47w5IyX6FE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ZoMbbz2S5hvyOtwMZFqPjBuXqTrD6LUr/TEts9Im0sDU6uVeDo695TS5J4a0qX9Q0nfD7mJNv//SuOWMsqEEfrfHf0GRuhJLc0fRm5oz9vKJUEXX2W5lIg40W1jTUFZri8Rxy1KBwW4g5AtE/j8Sfb5zYWFR1i7C6Ww/Ho9iiTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OQyt9j/7; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E108330330
+	for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 22:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779055473; cv=pass; b=OuXq9SD0gma9H3tqviSq5EaHNsf2O8wsMvURUwk3najUqrL+ymVPqG3TQ2k6e3Waj9k7OFfBFdZBbebHFjMYOVQHHa6G3kOce6llNrYF0s+CUe95WSmZO5C836nMtGy6d8j1O0Y06MYIoySGSB+32B1pmCgPQqKr/UHsZHpYDJk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779055473; c=relaxed/simple;
+	bh=gZHJrfIdPYrab0HpvH9DcCEOEOFnzCPNy8/jE8lgWog=;
+	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fgGly2NkzdH8HuHs5KX9dLOhLhDsJAaDSmDskT1Tq15ZP+bPoOH0lqprg6SmumvvAi/4DgWO1848XSitRQAOYv1qN2FjIY90zGUGDcFSZcR27Avx72r+P1tP/7RNJfqrS6xPM1QbjUW4b4TgMHdPujW07CUSCS+ci4Yo3NSm8tA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=LXAwF2Pr; arc=pass smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OQyt9j/7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779051896; x=1810587896;
-  h=date:from:to:cc:subject:message-id;
-  bh=7J/Q8z0p6z/ZaMeFT9hzqiMVl4XH6nAoe47w5IyX6FE=;
-  b=OQyt9j/7QZpe/Ct1dQaONBXKQYEXVwJHQcxvj3HLEXd6fC1wyHM+ts4d
-   7hT9Gb6vwAaHat7pWacP39R2Uw7U/oCNIdPkhfkL6zhUFtX/qkgQOlP83
-   Ta6BbgM2JW7dmTVrOYmbWPjO4MiEhqAExiorLd4t9xNqITPtBDx+ZKO+Y
-   2xC1jjps0yv64auPspKpuSzA6v7GgcbgF6uhe7nAI8jr7j9LQ/zgCMgHt
-   Hf+Kt6MFPpK3eqlwdZvnCCeQqA6NZeII7SizGyHDK4EEagnEFAGVxghX9
-   M4KB63rI4dJZ4ueBATDVTkknnovcjEGVtjkcuq0cSh/xrhKUhku9AyOy6
-   A==;
-X-CSE-ConnectionGUID: oQfIWwEyTfi9f2Qvfthk3g==
-X-CSE-MsgGUID: n9yRNkkFSK6X1HMY6MP+ow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="97341848"
-X-IronPort-AV: E=Sophos;i="6.23,240,1770624000"; 
-   d="scan'208";a="97341848"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 14:04:56 -0700
-X-CSE-ConnectionGUID: HLGeySCuTKeGSqdZtvJsaQ==
-X-CSE-MsgGUID: wLNt4rwPQVeCu850RGFgRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,240,1770624000"; 
-   d="scan'208";a="238365836"
-Received: from lkp-server01.sh.intel.com (HELO d94e5e629b2d) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 17 May 2026 14:04:52 -0700
-Received: from kbuild by d94e5e629b2d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wOifJ-000000001wo-2dns;
-	Sun, 17 May 2026 21:04:49 +0000
-Date: Mon, 18 May 2026 05:04:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Chin-Ting Kuo" <chin-ting_kuo@aspeedtech.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>
-Subject: [broonie-spi:for-6.20 2/42]
- drivers/spi/spi-aspeed-smc.c:909:17: sparse: sparse: incorrect type in
- argument 1 (different address spaces)
-Message-ID: <202605180441.uD3toFRJ-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="LXAwF2Pr"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bd22b2abaa4so290415666b.0
+        for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 15:04:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779055465; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Lho+laeTuWfm0gO5VBWuSnyyqwY2Y3E5ZpbbQP9+yr4gwR9zXE3mEgZ9Oc5JwO3Rob
+         kINT+w/udeI5/YKhPGJHezIZwfYZC0YiMB9r4xbyl9ZG+kxIIAS6jw03APFaS2z4OSon
+         WTSr/B3tRuipv4LZNoOwC+6XTo679x41E08SZElI6T4Ji1RojfRqm99QOKHfT/y9CplO
+         FEJ9OoJR6WFYhIz9l0MmMC64QufUVCSPoSElLvH57h8FUEqz6b4pzlSxgE/o19Kq9gtd
+         Dg64Rtj7XZVtFrExMGOACjQoaSHiSX2tx2URntqRx5RfimsHw0RFcnmpVYquJae6fGc8
+         pacg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:dkim-signature;
+        bh=+glZ8x8Rm3dZ3GzM3y1RWyyv+YJrSKIn1wrNvuWwxYc=;
+        fh=Pgw28IrmE7oI1w3xOKIATMcG7aVDqDpGkmOwzQRfLyo=;
+        b=GQaiquIl8TgkJNbIfDiRpJefyvIXZRM5P13V3t6h+WOtu/Hz7ck6RD5TZDJNRgJ6Kv
+         0V5l2U9kJI8TrsU63lR2CxTSnit4JIE0bGChovIZcfxWUtQCdAHs178IhbPhTPg/qClv
+         A4F17N2ei7p7fIT800gEHOfjpKxUGHHV1nTBZCmqdBsyFEULDH9N1e8/elx++F9JJ/hI
+         GytjOYRJE0PQGggcucKibYdt64u0lXEwe9PLQh7KnberEBA1Mld0wk9YfL9QyXNNrSXb
+         ab9ZfkSNQ40ujidhm7sr/VD3wpJx+MAqZqg0OYZxVnqBKQbAD3eyrAhho+ckdzqeu1T7
+         Qr0Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1779055465; x=1779660265; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+glZ8x8Rm3dZ3GzM3y1RWyyv+YJrSKIn1wrNvuWwxYc=;
+        b=LXAwF2PrT5A9q9fuByASsT3Wn/hhfhryTp/ed5JOL1JhYOtxs9V+nCy97YzXUfp4kz
+         VT6nlWpF8Sd90IQWMWpP8IVAu/vhMQ26OSOjaC0Ugc8TnDq0/SBbJNiABkL26hw3DB8N
+         OHMkEEQupPKPoeZmdRjOa/a0mvtC3FwpJCyhKo9ADBIqdbpQQfjwNKLqt9kdxima/dRd
+         HZFqr+5fAgH/K2Z678tylyWv3L74Q2/vWpc63Bf+vgdjaeruHqNsz7J6z2TIauN9AVQ+
+         hfDrcihuGzHPLRwa3YYfY9utzd3YOCXFlAo3qCShBVqPyYvX+sS6sRzni7ejQ1BcRYuO
+         fktQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779055465; x=1779660265;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+glZ8x8Rm3dZ3GzM3y1RWyyv+YJrSKIn1wrNvuWwxYc=;
+        b=geTJk8eEMGC1LTv5DI8mAz3q1zvANEIYs0crhwtD2Z/HfiluCMShRivRRSw7IJMcRK
+         TXgYXQmxKhnFSsH1K0l7yWO3Wugb3YfYLUPfwW4qtPDc9DLfsqKCmQEk6qMg9H6+6RUR
+         z9DHkRZtazIkGBLWw8MmJ/WjXgl/hokF8kISM3lN2R7EouiA9J2F6+eLy9vDaKYXLdmJ
+         nhslM0vpmCz/TtpgzgeDd4dDC4o9et1OaFHfm4gEQEZEPPJLD9qmgV7Q4SGwWmCpDtU8
+         uoYXYi5FZMiy9TWarJn7Hy4wBfii8TGWuOEM9wDHxzL1HLikHGRHsI/QXpUAHc8IVq9v
+         1WTg==
+X-Forwarded-Encrypted: i=1; AFNElJ/xyfVkbkr23TY0D3OZb/4/bYnhT5lzfBMgPhsC6jrjINmznQeoK8Q6pXGOW9Jwb0kxtRFKeVCj4zg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgYr2xU1sNuzRiJbM7FR7Zus0HAq6PKITqwddYc3PZ+ayaM+gH
+	llt0Drad9UkXOnI3cmAlp03IzAC+rtqn+ydDpqdeInXJJ9+MocJRQXo2EwnAzoZ46Rud++RTDQ0
+	EF7PLPj1pgRqTPWgTbBJZy0m/ueYvlhNrM7bUu0g3TpdGinyV7iU2BoM=
+X-Gm-Gg: Acq92OEF51pgGETwixRw4awDe8hTV6gVJPW6sXwLI4ArQAJCc6SWXDansQ1kWgsen8w
+	v+52qbuImgxK4JOa9D1c7PDBiF7kj5bReFuCtXyt2X7/Se2ZDswGJtEVKpnGtHjW9b61Y+83UZN
+	Pr4Y24FcBO3KyYSDc67iRZqPt6gMo1jztRUWiKZ4b9VeaOj1a5gyv1jC7PeWA9BedXH3VFcNdW6
+	NUALfnAnAQ9HF8L6CEq2tkZMLMwMFhjkdEramTWZkupL7B5jmaR7YDnB7ugIxB3AXzF1VgVIQAF
+	MS0yfx5OmhmqQPwW0EK7NcaNENKvsXBhQqUl
+X-Received: by 2002:a17:907:3cc7:b0:bd5:18e8:1ad8 with SMTP id
+ a640c23a62f3a-bd518e82334mr600884066b.4.1779055464251; Sun, 17 May 2026
+ 15:04:24 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 17 May 2026 15:04:23 -0700
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Sun, 17 May 2026 15:04:23 -0700
+From: Angelo Dureghello <adureghello@baylibre.com>
+References: <20260506142644.3234270-2-gerg@kernel.org> <20260506142644.3234270-8-gerg@kernel.org>
+ <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com> <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org>
+ <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com> <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com>
+Date: Sun, 17 May 2026 15:04:23 -0700
+X-Gm-Features: AVHnY4IqhiV2sSnDG3bDc8vtXUEslTxnP4xgh859XRbJ5eiok2HZwd1skAiBlBc
+Message-ID: <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
+Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Angelo Dureghello <adureghello@baylibre.com>, Greg Ungerer <gerg@kernel.org>, 
+	linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org, 
+	dmaengine@vger.kernel.org, linux-can@vger.kernel.org, 
+	linux-spi@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-6.20
-head:   40534d19ed2afb880ecf202dab26a8e7a5808d16
-commit: 04f7516ab70f7b82aae1d2830af2ee6f17f3fe98 [2/42] spi: aspeed: Add support for non-spi-mem devices
-config: sh-randconfig-r132-20260518 (https://download.01.org/0day-ci/archive/20260518/202605180441.uD3toFRJ-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 10.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260518/202605180441.uD3toFRJ-lkp@intel.com/reproduce)
+Hi Arnd,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605180441.uD3toFRJ-lkp@intel.com/
+On Sun, May 17, 2026 at 10:08:22PM +0200, Arnd Bergmann wrote:
+> On Sun, May 17, 2026, at 21:43, Angelo Dureghello wrote:
+> > On Thu, May 07, 2026 at 10:43:01PM +1000, Greg Ungerer wrote:
+> >> On 7/5/26 05:12, Arnd Bergmann wrote:
+> >> > On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
+> >
+> > [    2.270000] fsl-dspi fsl-dspi.0: Not able to get desc for DMA xfer
+> > [    2.280000] fsl-dspi fsl-dspi.0: DMA transfer failed
+> > [    2.280000] spi_master spi0: failed to transfer one message from queue
+> > [    2.290000] spi_master spi0: noqueue transfer failed
+> > [    2.290000] spi-nor spi0.1: probe with driver spi-nor failed with error -5
+> >
+> > DSPI is using edma, i will try to understand where the issue is asap.
+> >
+> > About how it works:
+> > - for accesses to edma module (IP) mmio registers, must be native
+> > big_endian, so using the "be" suffix in "mcf"_edma looks ok for me.
+>
+> The twist here is that with the way that readl() is defined on
+> coldfire as a non-swapping operation, and the generic
+> definition assuming the opposite in
+>
+> static inline u32 ioread32be(const void __iomem *addr)
+> {
+>         return swab32(readl(addr));
+> }
+>
+> the function called ioread32be() actually tries to access
+> the registers as little-endian. I can see two possible ways
+> we got here, but don't know which one is currect:
+>
+> a) the device actually has little-endian registers (like it
+>    does on i.MX, but unlike all other coldfire devices), and
+>    you just never noticed because using ioread32be() worked
+>    as you expected.
+>
+> b) you tested the driver using an ioread32be() definition that
+>    did not have a byteswap and it correctly accessed big-endian
+>    registers at the time, but the version in mainline today does
+>    not.
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/spi/spi-aspeed-smc.c:909:17: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void const volatile [noderef] __iomem *ptr @@     got void *dst @@
-   drivers/spi/spi-aspeed-smc.c:909:17: sparse:     expected void const volatile [noderef] __iomem *ptr
-   drivers/spi/spi-aspeed-smc.c:909:17: sparse:     got void *dst
-   drivers/spi/spi-aspeed-smc.c:939:46: sparse: sparse: cast removes address space '__iomem' of expression
-   drivers/spi/spi-aspeed-smc.c:1469:61: sparse: sparse: undefined identifier 'cols'
-   drivers/spi/spi-aspeed-smc.c:1469:61: sparse: sparse: bad constant expression type
-   drivers/spi/spi-aspeed-smc.c:1469:55: sparse: sparse: undefined identifier 'rows'
-   drivers/spi/spi-aspeed-smc.c:1469:55: sparse: sparse: bad constant expression type
+Ok. The ioread32be now works properly since i had applied Greg patches.
+I generated an error in _probe on edma channel 2, reading status reg.
+looks consistent:
 
-vim +909 drivers/spi/spi-aspeed-smc.c
+	iowrite16(2121, regs->erqh);
+	iowrite8(0x77, regs->serq);
+	iowrite8(0x12, regs->ssrt);
+	
+	u32 status = ioread32be(regs->es);
+	printk("%s() status: %04x\n", __func__, status);
 
-   890	
-   891	static void aspeed_spi_user_transfer_tx(struct aspeed_spi *aspi,
-   892						struct spi_device *spi,
-   893						const u8 *tx_buf, u8 *rx_buf,
-   894						void *dst, u32 len)
-   895	{
-   896		const struct aspeed_spi_data *data = aspi->data;
-   897		bool full_duplex_transfer = data->full_duplex && tx_buf == rx_buf;
-   898		u32 i;
-   899	
-   900		if (full_duplex_transfer &&
-   901		    !!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD |
-   902				    SPI_RX_DUAL | SPI_RX_QUAD))) {
-   903			dev_err(aspi->dev,
-   904				"full duplex is only supported for single IO mode\n");
-   905			return;
-   906		}
-   907	
-   908		for (i = 0; i < len; i++) {
- > 909			writeb(tx_buf[i], dst);
-   910			if (full_duplex_transfer)
-   911				rx_buf[i] = readb(aspi->regs + FULL_DUPLEX_RX_DATA);
-   912		}
-   913	}
-   914	
+[    0.140000] mcf_edma_probe() entering
+[    0.140000] mcf_edma_probe(): allocating data
+[    0.140000] mcf_edma_probe() status: 800012f8
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If i am not loosing myself in this r/w labyrinth, the path should be:
+
+1) Greg removed coldfire readl/writel, leaving now the standard LE r/w,
+2) So the ioread32be swaps the standard LE read giving BE.
+
+Am i correct ?
+
+
+>
+> > - for accessing the "tcd" memory structure, that must be, from what i
+> > remember, anyway in little endian, independently from the cpu core
+> > endiannes, this is the reason that big_endian flag is needed, it is
+> > used for tcd area accesses, so the IP module was built.
+> > The tcd area may be similar to pci accesses (see mcf54415 RM 19.4.16).
+>
+> edma_read_tcdreg() calls into edma_readl(), which is the same function
+> that is used for normal register access, so from what I can tell,
+> they always use the same endianess here.
+>
+
+If edma_readl was using
+
+        if (edma->big_endian)
+                val = ioread32be(addr);
+
+and never changed, without Greg patch, it was likely returning little
+endian for coldfire and correct LE for other arch ? :)
+
+I remember something about tcd area was coded LE, but will investigate
+better, now i am over midnight.
+
+Regards,
+angelo
+
+>       Arnd

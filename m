@@ -1,207 +1,195 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7702E30DEA3
-	for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 22:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD209341050
+	for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 23:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779057697; cv=pass; b=A6Y2pylmuRFhZxqjJSk66qu8GVS7p/Fvcvb2h577Ztvddp2eNchUmaoyHadOiLKmzMx/LTq8AdWngOulwzN8Q86/+4iNwc9oa8PKuXgrwJHbeKrcbWki05vqCi3BFCNmN+T1gZHukHeb7mShmD03SDen72FrNgYSDdf/PEk40F4=
+	t=1779059717; cv=pass; b=CUDCelP38C5DjGJRgB7VV2kSniNh1IrV9JBLJjhuB+wBcS9FG6foUH27hi0QunQ59MPdWnUC4PRiCTettgKPF7iI18T35ciNtJx6y+AbFmIeqGhvDih1D5OWJ2Ey4Mv1paSxX4BJT/ZNi2cJ6pXCdzT/4Sn3SkpNAguGkIG4/sI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779057697; c=relaxed/simple;
-	bh=UDRqVbPZNo1rDKG47pl3Cfg1y+NpJU3+9tCj4VzpKzA=;
-	h=References:MIME-Version:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nL4t9ChhcmEQvW1uxeZgivDULrlwoT0UF0qsCrcQmtd0Oqlr8xX6VamswNJ5e2m+qaepfs6xqSwoq7MHc18/zXVOPmXM80qy0hEAjTq+8kBcLM4aSpEPvzk58nwEXCv8DTqxEHi+0ssZxv6VAzlNV7ueuWuP2eb2EVhcTMyPsSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b=Vz0cyi63; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1779059717; c=relaxed/simple;
+	bh=19XbO6lAHOzzfGM0tSsjsYRfi0h83riXZM2zaPYU0tQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OfjfEdn1ptGbAX9oXi2bn/Lmhso8CBOOsyqGKAuglV2GC4ORJSl6+Rrx6BBppAFciR9AMsRRfiB4lFrPM8WbcqTeZz92tM9DRaiPvMxM1vpOz4E4bi8D5tTdNiqv6sxjweVMn314Lu0WF1qHYZRi4lebhEDHhJ/v3f3GkRySozc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=ojtHZhQf; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pcc.me.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20251104.gappssmtp.com header.i=@baylibre-com.20251104.gappssmtp.com header.b="Vz0cyi63"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bd2087858c4so423263266b.0
-        for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 15:41:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779057691; cv=none;
+	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="ojtHZhQf"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-67c4aaf76ecso2921232a12.3
+        for <linux-spi@vger.kernel.org>; Sun, 17 May 2026 16:15:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779059713; cv=none;
         d=google.com; s=arc-20240605;
-        b=QRIbx9vekX4yFEauZoao7QptSJ63jTV2CftymxxDAgvC26GZdn9RDY1zJnDCs+36Jp
-         GQ86aSiYQx7PN4VKjetGsv6GYg4GE14hrK+paPFkn0foDHy5Yb/8kyUlnwP6Yk7EXOjh
-         +XkLQ9GquydD0usnXhUpP0U4nTUnOVFgpVmjiEmzOnVJVg4/S8YXGD+iLxVeg9k+qiXw
-         /X+sjsi+pO4EX0Bc8KOwkDOSN8ITyQMvZTGay7RCqpgU24HFoAmkyRMDHyYEgp38T1b9
-         jRK3NQaWodQHnYfa/jkxntqNi+Z01qzGKW8AU8d9UwprWsXesx6e4UShyRX8vpVgvUbs
-         s9DQ==
+        b=Wi7SkvNdX+OVWvYHKHanKFN1bhKTege97feU6Z+y7XILnh+dh7dhoXZ5MbP4Fgdlll
+         ZF/3+9OFDBEyGUSpvUj5f4CbQYNX58RWI09NcEQ6LIVk/mP8t8xJ4BQ/qZj5n71BTE5x
+         M6uIPDLAhBqdMIOTx9Sy7RIG60LCPMzGsIU8saiM/dIXM+ui5rS67VfZV4tS+agR+MwL
+         TMlVbibJdBkvdK0lVU4L9TW6OTa4mLNuG2Jp2yeD5//Zmw4W/sWHyvRdCGtqT+EqNzi1
+         mPJGCdcZwDdcxLS74DVfUONFwcJfmJYadOvpCdDamGuBP1nH2sEWdwShRe5j6lbRMSp8
+         bgow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:mime-version
-         :references:esfrom:dkim-signature;
-        bh=6WvnwIRGvHEPeQ8ZKX+R0d/VCeeAw5//At/YqjZNVr0=;
-        fh=cIVZuX/LOatVYKefvu/nRJY46osAwsnZl/uu3bpKmIc=;
-        b=bjdpoN6mzU3HzEhYG3D5mcziwQjpR860eR0sDJQeoRCuZgOl4gcUupamEoSP978xcC
-         l/G2WjwuY/xA+GOnB4iOHbMX2eJewevGwgsyo6skO1e0j/RZ9eS3PRQ/pGAuZc4+9gfa
-         nrf/n0qBVgHWLCO4W1Gjm5JXMF9zGpt1OKhVb3eg6kvOv0TrGjar7aPBCZk+79/I4Dbj
-         Scw64O/M69ItCZ5vFqVzzpuAdwsyb6jUTjq1OvuJoU/gia3kXcY0Njzve52HNTTwSHtW
-         PppJQB7p/ubcttZN/qDOlKggaIK69Tinc5jLVqg2keKZLjq3ubCQ50o9IC4q8+GsG6jr
-         TsTg==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S/zI79IEXrQXECU9rQWS+uCMyWD8MlLbFgtSm3gtaLc=;
+        fh=O9cA3EHMbpoVXzY614ShNz+PgPePAmbXCvcC5iaodX4=;
+        b=kFehOVg+NjZ8m/FbiOEcMDHxCyiRmzgXMHtqe5/ApmaKlW1vTKFqvU+slx3aS5j70a
+         ndIJAFu9LjolX2+Kf6y3DFUS7rbqKpfAV+eCrl6fpRI/ECh77W26Fhm9hi98K84DTLo3
+         8w9End0teCzBG2yZ5ZTVeIDaNCapJlM4v96HAytiyrFcnOWoUQFtkE/2sZQRMA5+BIIg
+         EVw++3JGYeFH8JGFr5epDQ9ucwczCkrZGxEc2wJ5EXDRBZDVs3RTF78zgphiBAYaCiWh
+         DgB+uBnya16KyFVAJvifLoxnFIi6+qCFJP6WPMgrSDHLVee8wladXVP//Dltr8pynyzq
+         kSEQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20251104.gappssmtp.com; s=20251104; t=1779057691; x=1779662491; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:mime-version
-         :references:esfrom:from:to:cc:subject:date:message-id:reply-to;
-        bh=6WvnwIRGvHEPeQ8ZKX+R0d/VCeeAw5//At/YqjZNVr0=;
-        b=Vz0cyi63XRcz5HkecXRJyJuvbJRI6/ENx4q+IVG4l5ac2OHd1JGxXp0BATV9GI5BbV
-         z+Bu2JxIK5Ox3sSUfU2m4EufvHpc8M2/LAuHAtiolAo8y2uIJo9V+Gq90FMIvy2DoSGT
-         poKtai34kv/eu1d1WWR3GpVuOWWKHgDxhyiOVNGNYjV59ARjXtx6N6HLm25I9VLyG7uc
-         7SQeVmgSZ6aqx2Z5bxDZI5iJNpez3wSGQS/uOkf1F3husBOw+Fmp/4RG86wJGuW5pyWR
-         chOYROLYFRd1cOxU5VphNTar5qkNshgjQAjOXVzYrwFO1LATDYWeW+l09mgM4tcugFoT
-         OdCQ==
+        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779059713; x=1779664513; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S/zI79IEXrQXECU9rQWS+uCMyWD8MlLbFgtSm3gtaLc=;
+        b=ojtHZhQfYRDeKw/iGryR5/Pw10awQW7BoCqNGPc4T5v40a67kx4IJj2ejSIdJEj6zW
+         MDX+91HspEjf1n+MM3G8qViW1HWiqUovOQgYYa29HeJSLVIDDJ8zq/jDRNyZ5C14iB7c
+         3ctCrTPB6eGAS/nZjSMPpzXpcFyVooInRO4yeuM5i6QjjKwH21DXD8Fg0DKsvFp2BISF
+         B+8pcJ8TuPBY3XGvVdvBe3pNqtlWIgr8MylYey+mU3jXTFpi7kdaaBLCztYBYGzmwxYD
+         YDZaFqBhkKpEhABP7tdN0QK34f9BGJzcV4kR5HH5h7y5uUggfVlI9iWvSqhdNfm+fnFM
+         dAzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779057691; x=1779662491;
-        h=cc:to:subject:message-id:date:from:in-reply-to:mime-version
-         :references:esfrom:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6WvnwIRGvHEPeQ8ZKX+R0d/VCeeAw5//At/YqjZNVr0=;
-        b=DvPChSZwSofSQk+a1eA+yN93RzxPdABP4bQHyaIvMD5O0kxO3+5BlahuYv4i1MMxGm
-         ZJdc3211OQU4wAJbxpfCVOCnDCtGNONPPpNA1XBNoeTVvmYx+m62rNr6DAdHZf+WRXfF
-         JMypFjRfU/jfqrZxngkgHISw+0PYpa2MH8/2gY5LYfUJADo3RhM0pizMeXjwpYTnWNuY
-         SJGC5GcYwRM4odFQpIYk8FuTIiBu5aYJEI9oQTKah7psh7eDgYzI6jwCV/1UmdG9Blew
-         FuArBzlYZsHN3HafqzngnWAtD39t+VX90rmNq2W9hxLxthk3YO+kGuM7z8l60wOA0esk
-         6OlQ==
-X-Forwarded-Encrypted: i=1; AFNElJ997NjcT+Jl2COsBT6WGu0pWy/1JonJLGUfiOxRFqO6HydES5iUzgI1KkF0cRtUI8UKOIkx5mmaoIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJXrViTHUBcMFNBnT4bv5u2JDLWcxvK2wlLOs+w5WRJUjLQcyd
-	nVEeFmWXlkPMZi16nEHhbyJL0ve6ycfLh5+XlLEuyGBtGnIwkYFEc+3uTEKJSIKzCVoYMzwjGM0
-	hbd6NjzpMOOxUuR9FFB8QrHC1tSmjSsGuKoCBtTf7wQ==
-X-Gm-Gg: Acq92OHhKdPD+cgr9gMu9rODOWmEbyRpXmc6scPy5TTUIcKyEQvUxtzFkpa8NspSdRP
-	7H18XEKJZrpD96bgHvtqm7eSVYRKoT+1NOnUTCHDUHcrOtFulYFXSyygVZjlNMjgSDrv8h05Nir
-	pJF0dmDugENS4HJHCx6ACdeOXH7roDnB8Nwe9nUGCzHyiBDvItBrluHbQGQCxQ+oDRVCtDT4Fda
-	esshwd6SLdU2RJXrhMUf5JxnIJaiAhbC1f7QGDP+G1Ln3q4ToKfcnhg1SEl9Gk8SZihWb8SVv/x
-	Nf5aTPfzjYJp7FyhrMJK8SEQgvY0uBC4zt1A
-X-Received: by 2002:a17:907:1c8d:b0:bd2:bd2:6ca0 with SMTP id
- a640c23a62f3a-bd5177bd03fmr585833066b.11.1779057691600; Sun, 17 May 2026
- 15:41:31 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 17 May 2026 15:41:31 -0700
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 17 May 2026 15:41:31 -0700
-esFrom: angelo@archlinux
-References: <20260506142644.3234270-2-gerg@kernel.org> <20260506142644.3234270-8-gerg@kernel.org>
- <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com> <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org>
- <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com>
- <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com> <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1779059713; x=1779664513;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=S/zI79IEXrQXECU9rQWS+uCMyWD8MlLbFgtSm3gtaLc=;
+        b=Y6gBj8572g8B7UoWtORZ0nACYuukHhEE8XdwyDBHxjp5z/0JI4hqG8czj0BxZeJ90m
+         PdllJmuWLWq7DYSlXbqkgW5GCWJtYlatXqqlPzMXrVuA8pH0atMGcz8keipYgbUIVdoY
+         FLngGpDjLR8B3qi9ssgd+qlJ8PYBigKhw49XshxT2a+SrwxSGjECg0irsrx748bH+uVc
+         eMMSSr4nX6cqrBnN9PimnfUjXu5tY7Ly/2mVOY6ObEAK9kzxDQ4tcgWGYOjVjh7L5+MW
+         ymg2R+lIPCg0batT83F46/zAdRh6d1LEkCfkHV0XJwnpHPUwHtZzosDs1tL8UYUoUl0w
+         tz7w==
+X-Forwarded-Encrypted: i=1; AFNElJ/S2H/tppmYGsM2NCjUDrfiG5XAC+YZZnEDZDnbU7xrZgja9/xXbLhcjvsxM4C6xWbVRLcT0AHlfbk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZhZDo050/jnqXSG23axTSNnu5vEd8Nw6UpQG79A1mIFCkNbRE
+	DeUNbdPqzURMoKM8tBYr9kVLwfM9IZ+ByGPGlMduuKFkyVDqJx27+F2oloJPI6dX54V4WoiAYJo
+	exZXjj05t6SuV4vm0F82CUOdRE5zHo2STTaCAWnQTzA==
+X-Gm-Gg: Acq92OHREerW6kHwsYbLMgl+yQYr7xociubCadql2k+RVDCNmoKCynMtbObjP0/XIJ7
+	i+nkfuEl67rDtVmJt0yAqwztOTNtkoO54AvqclN/S2M9y+G3trxH0DpKMU02VkV8QhTykfQmwWp
+	W5zoKdABs5MndPHLpnngOidF/t50CYCRWMPTMO6F3Q4mSViO51auqkrcJ1HmIcY/dxaPJnwc2jD
+	48QUAxfu/VKnVNjIuRzPLTE/MGkQ2CxrQjzwzjKyHgPudu6JAI92ysxrJdBV7kcRDWzW1lu1mc6
+	Vyeowkcp
+X-Received: by 2002:a05:6402:1f45:b0:67b:7d77:14da with SMTP id
+ 4fb4d7f45d1cf-683bc8a94b8mr5633816a12.8.1779059712987; Sun, 17 May 2026
+ 16:15:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
-From: Angelo Dureghello <adureghello@baylibre.com>
-Date: Sun, 17 May 2026 15:41:31 -0700
-X-Gm-Features: AVHnY4L86sFPwvstwRi47J91deZeB_tEn5rDsykk8GHRpiEzaTYsrGzZ-WixK9I
-Message-ID: <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com>
-Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Arnd Bergmann <arnd@kernel.org>, Greg Ungerer <gerg@kernel.org>, linux-m68k@lists.linux-m68k.org, 
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-can@vger.kernel.org, linux-spi@vger.kernel.org, 
-	Vladimir Oltean <olteanv@gmail.com>
+References: <20260517062554.117448-1-peter@pcc.me.uk> <20260517150253.031dec09@pumpkin>
+In-Reply-To: <20260517150253.031dec09@pumpkin>
+From: Peter Collingbourne <peter@pcc.me.uk>
+Date: Sun, 17 May 2026 16:15:01 -0700
+X-Gm-Features: AVHnY4JRzfsftcM6T0MwaNQvY8ESCP1kizITldQonTVmfdvjPL3dAzjFzefglF4
+Message-ID: <CAPQLkRiw1LW6oW2SspQtRZt7O44e+y-WA1+2SNQ2t-1BFHJb=w@mail.gmail.com>
+Subject: Re: [PATCH] spi: use udelay() for short polling delays
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, 
+	Christophe Kerello <christophe.kerello@foss.st.com>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sun, May 17, 2026 at 7:02=E2=80=AFAM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Sat, 16 May 2026 23:25:54 -0700
+> Peter Collingbourne <peter@pcc.me.uk> wrote:
+>
+> > A short polling delay, such as the delay of 5us
+> > (SPINAND_READ_POLL_DELAY_US) provided by the SPI NAND driver,
+> > can become a 1/HZ (order of ms) delay caused by the usleep_range()
+> > call in read_poll_timeout(), significantly reducing SPI NAND access
+> > performance. Fix it by implementing the polling delay with udelay()
+> > (via read_poll_timeout_atomic()) if it is short enough, matching how
+> > the initial delay is handled.
+> >
+> > Fixes: c955a0cc8a28 ("spi: spi-mem: add automatic poll status functions=
+")
+> > Signed-off-by: Peter Collingbourne <peter@pcc.me.uk>
+> > ---
+> >  drivers/spi/spi-mem.c | 17 +++++++++++++----
+> >  1 file changed, 13 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+> > index a09371a075d2..914e35e51cea 100644
+> > --- a/drivers/spi/spi-mem.c
+> > +++ b/drivers/spi/spi-mem.c
+> > @@ -1005,10 +1005,19 @@ int spi_mem_poll_status(struct spi_mem *mem,
+> >                       usleep_range((initial_delay_us >> 2) + 1,
+> >                                    initial_delay_us);
+> >
+> > -             ret =3D read_poll_timeout(spi_mem_read_status, read_statu=
+s_ret,
+> > -                                     (read_status_ret || ((status) & m=
+ask) =3D=3D match),
+> > -                                     polling_delay_us, timeout_ms * 10=
+00, false, mem,
+> > -                                     op, &status);
+> > +             if (polling_delay_us < 10)
+> > +                     ret =3D read_poll_timeout_atomic(
+> > +                             spi_mem_read_status, read_status_ret,
+> > +                             (read_status_ret || ((status)&mask) =3D=
+=3D match),
+> > +                             polling_delay_us, timeout_ms * 1000, fals=
+e, mem,
+> > +                             op, &status);
+> > +             else
+> > +                     ret =3D read_poll_timeout(
+> > +                             spi_mem_read_status, read_status_ret,
+> > +                             (read_status_ret || ((status)&mask) =3D=
+=3D match),
+> > +                             polling_delay_us, timeout_ms * 1000, fals=
+e, mem,
+> > +                             op, &status);
+> > +
+>
+> That looks rather sub-optional.
+> Even if the interval is short you want to drop to sleeps if the device is=
+n't
+> responding.
+> (Or this code is used for erases and you are doing a full device erase.)
+>
+> I doubt you want to spin for more than 1ms.
+>
+> -David
 
-On Sun, May 17, 2026 at 03:04:23PM -0700, Angelo Dureghello wrote:
-> Hi Arnd,
->
-> On Sun, May 17, 2026 at 10:08:22PM +0200, Arnd Bergmann wrote:
-> > On Sun, May 17, 2026, at 21:43, Angelo Dureghello wrote:
-> > > On Thu, May 07, 2026 at 10:43:01PM +1000, Greg Ungerer wrote:
-> > >> On 7/5/26 05:12, Arnd Bergmann wrote:
-> > >> > On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
-> > >
-> > > [    2.270000] fsl-dspi fsl-dspi.0: Not able to get desc for DMA xfer
-> > > [    2.280000] fsl-dspi fsl-dspi.0: DMA transfer failed
-> > > [    2.280000] spi_master spi0: failed to transfer one message from queue
-> > > [    2.290000] spi_master spi0: noqueue transfer failed
-> > > [    2.290000] spi-nor spi0.1: probe with driver spi-nor failed with error -5
-> > >
+In include/linux/mtd/spinand.h we have:
 
-About this issue, it fails on dma_pool_alloc(), so tomorrow will check,
-i probably lost some dma config option.
+#define SPINAND_READ_POLL_DELAY_US 5
+#define SPINAND_RESET_POLL_DELAY_US 5
+#define SPINAND_WRITE_POLL_DELAY_US 15
+#define SPINAND_ERASE_POLL_DELAY_US 50
 
-> > > DSPI is using edma, i will try to understand where the issue is asap.
-> > >
-> > > About how it works:
-> > > - for accesses to edma module (IP) mmio registers, must be native
-> > > big_endian, so using the "be" suffix in "mcf"_edma looks ok for me.
-> >
-> > The twist here is that with the way that readl() is defined on
-> > coldfire as a non-swapping operation, and the generic
-> > definition assuming the opposite in
-> >
-> > static inline u32 ioread32be(const void __iomem *addr)
-> > {
-> >         return swab32(readl(addr));
-> > }
-> >
-> > the function called ioread32be() actually tries to access
-> > the registers as little-endian. I can see two possible ways
-> > we got here, but don't know which one is currect:
-> >
-> > a) the device actually has little-endian registers (like it
-> >    does on i.MX, but unlike all other coldfire devices), and
-> >    you just never noticed because using ioread32be() worked
-> >    as you expected.
-> >
-> > b) you tested the driver using an ioread32be() definition that
-> >    did not have a byteswap and it correctly accessed big-endian
-> >    registers at the time, but the version in mainline today does
-> >    not.
->
-> Ok. The ioread32be now works properly since i had applied Greg patches.
-> I generated an error in _probe on edma channel 2, reading status reg.
-> looks consistent:
->
-> 	iowrite16(2121, regs->erqh);
-> 	iowrite8(0x77, regs->serq);
-> 	iowrite8(0x12, regs->ssrt);
-> 	
-> 	u32 status = ioread32be(regs->es);
-> 	printk("%s() status: %04x\n", __func__, status);
->
-> [    0.140000] mcf_edma_probe() entering
-> [    0.140000] mcf_edma_probe(): allocating data
-> [    0.140000] mcf_edma_probe() status: 800012f8
->
-> If i am not loosing myself in this r/w labyrinth, the path should be:
->
-> 1) Greg removed coldfire readl/writel, leaving now the standard LE r/w,
-> 2) So the ioread32be swaps the standard LE read giving BE.
->
-> Am i correct ?
->
->
-> >
-> > > - for accessing the "tcd" memory structure, that must be, from what i
-> > > remember, anyway in little endian, independently from the cpu core
-> > > endiannes, this is the reason that big_endian flag is needed, it is
-> > > used for tcd area accesses, so the IP module was built.
-> > > The tcd area may be similar to pci accesses (see mcf54415 RM 19.4.16).
-> >
-> > edma_read_tcdreg() calls into edma_readl(), which is the same function
-> > that is used for normal register access, so from what I can tell,
-> > they always use the same endianess here.
-> >
->
-> If edma_readl was using
->
->         if (edma->big_endian)
->                 val = ioread32be(addr);
->
-> and never changed, without Greg patch, it was likely returning little
-> endian for coldfire and correct LE for other arch ? :)
->
-> I remember something about tcd area was coded LE, but will investigate
-> better, now i am over midnight.
->
-> Regards,
-> angelo
->
-> >       Arnd
+So we will only delay here for reads and resets.
 
-Regards,
-angelo
+I would generally expect drivers to arrange for spi_mem_read_status()
+to sleep using wait_for_completion*() where possible, so we shouldn't
+normally be actually spinning here.
+
+For example, the generic driver:
+
+spi_mem_read_status()
+-> spi_mem_exec_op()
+  -> spi_sync()
+    -> __spi_sync()
+      -> __spi_transfer_message_noqueue()
+        -> __spi_pump_transfer_message()
+          -> spi_transfer_one_message() [via ctlr->transfer_one_message]
+            -> spi_transfer_wait()
+              -> wait_for_completion_timeout()
+
+For spi-mt65xx:
+
+spi_mem_read_status()
+-> spi_mem_exec_op()
+  -> mtk_spi_mem_exec_op() [via ctlr->mem_ops->exec_op]
+    -> wait_for_completion_timeout()
+
+Peter

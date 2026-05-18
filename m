@@ -1,111 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9634E3E2AB0;
-	Mon, 18 May 2026 08:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DAD3E51D2
+	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 09:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092563; cv=none; b=GhMUuzVvJKJZcfb0YkX0bOBCO98nSfvwJTNwKJYhH50liJzHKm1AX2J3aTXKxUGh631yvkH542o1F+Fh3UG060inq+Kkb300+pmePCx2Kcxq5loRJwqlUgl3h9lr8ozqi3RgxipluAMrbw0qIKXg/UOssPMFANQHGxqTZTwfVCw=
+	t=1779095047; cv=none; b=tx+egDgD9xENwjJDXy90VAVMdbdBMgWsyuK50pbV+cj5hA+1uzkHWR6EgJL2/6ACyUC1UdAH+wFvJ7qDI8SOEq+WQ68ZiiTssWQ0344u252A5oyd1tjNvyYsXVx0vk80utowF6m1TLQf7fQI1suhyA2SxlFw0UkLnGAgrYegHZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092563; c=relaxed/simple;
-	bh=M+QBwO82Hvson/4pd6sI+Rs0C7M/c4u6RJ8kDXLqlkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pMSCWQMF72BJHMnwsmkq0qHbj76F63xf2GkJuf1AFADqlbV0OCJzHM3skHIJhWQR1svfKNkbCnrxyDPU2C+J7QwIdVCKo77x7cQghZ7SGn41CNffrwx2EqkE3d4yuqddDlkeXTIfBMphnjRBruCnFHo4YTq+fb8jO7vDkkvjFSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eMadNqLM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779095047; c=relaxed/simple;
+	bh=oA1Lu5bvhUDP97/5bGpjX/QJjh/8fGgII/+u1ebhvAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sAlyJubF+qIKJOXDtJQUmPGenbI28EZbYvepOYuuGf7xmkUPM765caattvVl1nsQBBq7Ru/nYqlUJlONDC47iFdJI6MBU24HnEP6hzx8jo/B/GC2rkzbxgCTKyDnhqNGTcFis8/ouXFaybqpfoD6mQoSTg5LTEx+D18QRODilFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ry0Cqm9b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eMadNqLM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5188EC2BCC6;
-	Mon, 18 May 2026 08:22:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ry0Cqm9b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCCDC32786
+	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 09:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779092563;
-	bh=M+QBwO82Hvson/4pd6sI+Rs0C7M/c4u6RJ8kDXLqlkU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eMadNqLMuhwAhD51uZSOBFu3k9tueyd1Q4Y42mFDJA+IkB/Pl6jDE5Py5tr8KXb84
-	 WjhPD69MHMWqnwIsjUSUYMXm6bF7E4sfCujuWMJBR/SsTpaBvM3LxpE1BvzHsp/zIW
-	 nZyz99Svc/2Gw398Hhtqk91DmbxH5V8pQVje+ZoMgXr5QzExXOydj0z4J61CDxIFsk
-	 jYZ5vX+bv/7dKxK/eBwWDfjx+OZ7U7pZi/QnvTz1FICr37EuLe3Z2tw4uZBTqMxZqO
-	 kE/Z5CDyWubYdUmr0X5fxUZfTHbfRY32uocTElcqkBpzgL7TeMZsMRfu55vMo6ftOY
-	 ILFo7hFfiEJ4w==
-Date: Mon, 18 May 2026 09:22:39 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Chao Huang <958028483@qq.com>
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Chao Huang <huangchao@kylinos.cn>
-Subject: Re: [PATCH] spi: Add spi_for_each_controller() helper
-Message-ID: <01917d8a-4b0f-4047-a065-cfebaec9b211@sirena.org.uk>
-References: <tencent_4C5A0FCF387BDB37C5512E5D709FD557F106@qq.com>
- <aggTKly_pVAYLVRt@sirena.co.uk>
- <tencent_74D72238CFEAA838A967727CA08D92C23005@qq.com>
+	s=k20201202; t=1779095047;
+	bh=oA1Lu5bvhUDP97/5bGpjX/QJjh/8fGgII/+u1ebhvAU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ry0Cqm9br+ntG6gURjff6grfILaTOLv+FICW2Y8UPkmwBj9Hodus3Cq3Bw1OyZZoS
+	 OzY4pgx7+rsrNCBJkWzt8JIxrIJHnM/E2+JgIaS+jr1W/674YYExoQYcFwS6ODx9XF
+	 SH5WzSRKTOehf7e2K1dO9aFqiaf/giuvvfCXr9BiU3u6gM9WHIGA7n36XeKE4IlxFl
+	 Q4XNFyxfHUdYeEnZ8JpYgZTZOnp71tq3obxpu1WFUJ8H15m+EZ1OXUDVy4665Xbjzl
+	 v/QKbPxNAK7lSx2XsgiHEGUt3Jt3sBFOgZC5DyAdz8i6gsaTdZpCXNWLAdjjS0z2CZ
+	 RuKXv57NK1X7g==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5a8e33556c0so2638916e87.0
+        for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 02:04:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ82KXRhPMBvaeo3TTHLr3QJp01FW0D3+d2KKNQg9DK1y9rL794Zf2bqQzucgFIX/xyC3T9ztVFkQw4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3uT5IDoUyx0DK0bocTgP+uuUCLmJJaBtDsosPxeq4fNYYd7Ik
+	WjWvgZtUkySiCqwJNjA1zuiz20xcZB/u2wdChBVFpi78z06XRIGbK/EU0AYMTzxL7RCcWq6oJkT
+	5/Tvp5SZlAMc9eYL6TzUUef3aQneZaM3NTQNK2Vi7TQ==
+X-Received: by 2002:a05:6512:138a:b0:5a8:73c2:c90b with SMTP id
+ 2adb3069b0e04-5aa0e09fb0dmr3501664e87.20.1779095045745; Mon, 18 May 2026
+ 02:04:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7neIoY3niUjHohrz"
-Content-Disposition: inline
-In-Reply-To: <tencent_74D72238CFEAA838A967727CA08D92C23005@qq.com>
-X-Cookie: She sells cshs by the cshore.
-
-
---7neIoY3niUjHohrz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20260514034319.3507315-1-thomas_lin@lecomputing.com>
+ <20260518024937.453714-1-thomas_lin@lecomputing.com> <20260518024937.453714-2-thomas_lin@lecomputing.com>
+In-Reply-To: <20260518024937.453714-2-thomas_lin@lecomputing.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 18 May 2026 11:03:52 +0200
+X-Gmail-Original-Message-ID: <CAMRc=Mf9YZJS4HyT=CfgXqoAZM=6CZLXc_M6xBHVGEUFbeey-g@mail.gmail.com>
+X-Gm-Features: AVHnY4L99cuF1ZGuHXCO-ALnBTKrGIXkrITVhG5W_BkFB71OFXk93IVOayE1Inc
+Message-ID: <CAMRc=Mf9YZJS4HyT=CfgXqoAZM=6CZLXc_M6xBHVGEUFbeey-g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs
+To: Thomas Lin <thomas_lin@lecomputing.com>
+Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com, 
+	linusw@kernel.org, mika.westerberg@linux.intel.com, 
+	andriy.shevchenko@linux.intel.com, jsd@semihalf.com, andi.shyti@kernel.org, 
+	broonie@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-spi@vger.kernel.org, lucas_hao@lecomputing.com, 
+	puntar_liu@lecomputing.com, jihua_tao@lecomputing.com, 
+	stan_xu@lecomputing.com, lumin_liu@lecomputing.com, 
+	notics_zhang@lecomputing.com, braden_zhang@lecomputing.com, 
+	harold_wu@lecomputing.com, will_zhang@lecomputing.com, 
+	aurora_jiang@lecomputing.com, ryen_lin@lecomputing.com, 
+	andy_jiang@lecomputing.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 18, 2026 at 03:10:26PM +0800, Chao Huang wrote:
-> &gt; Do you have an actual user for this or is this just purely theoretic=
-al
-> &gt; at this point? It'd make a lot more sense to add this along with a
-> &gt; user.
+On Mon, May 18, 2026 at 4:50=E2=80=AFAM Thomas Lin <thomas_lin@lecomputing.=
+com> wrote:
+>
+> Add ACPI ID "LECA0001" for LECARC SoCs that use the DesignWare
+> GPIO controller with V1 register offsets.
+>
+> Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/gpio/gpio-dwapb.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
+> index 15cebc8b5d66..c1f3d83a67c1 100644
+> --- a/drivers/gpio/gpio-dwapb.c
+> +++ b/drivers/gpio/gpio-dwapb.c
+> @@ -694,6 +694,7 @@ static const struct acpi_device_id dwapb_acpi_match[]=
+ =3D {
+>         {"APMC0D07", GPIO_REG_OFFSET_V1},
+>         {"APMC0D81", GPIO_REG_OFFSET_V2},
+>         {"FUJI200A", GPIO_REG_OFFSET_V1},
+> +       {"LECA0001", GPIO_REG_OFFSET_V1},
+>         { }
+>  };
+>  MODULE_DEVICE_TABLE(acpi, dwapb_acpi_match);
+> --
+> 2.43.0
+>
 
-> Yes, I do have an actual user for this helper in my project.
+Don't send patches in response to other patches or sub-messages in a
+patch thread, b4 can't deal with this. Please start a new thread for
+each revision.
 
-> The goal is to provide a new SPI controller API that allows users to
-> access SPI controllers by bus number and chip select (CS). The
-> `spi_for_each_controller()` helper is used to iterate over all registered
-> controllers, find the target controller by bus number, and then operate
-> on it.
+Preferably use b4[1] for managing series and it'll avoid you all these prob=
+lems.
 
-OK, I would hold off on this patch and sumbit it along with the user -
-it's not really something that's clearly useful without that user.
+Bart
 
-> &gt; When unregistering controllers we do start the teardown process befo=
-re
-> &gt; we pull the device off the controller list, and drop the lock while
-> &gt; doing so. That's probably fine for a lot of uses.
-> &gt;
-
-> Regarding the controller unregistration case you mentioned =E2=80=94 do y=
-ou mean
-> the `spi_unregister_controller()` function?
-
-Yes.
-
-> In my `fn` callback, I call `spi_controller_get()` to safely grab a
-> reference to the controller, and later call `spi_controller_put()` at an
-> appropriate time (e.g., after the operation is done). This should
-> prevent the controller from being freed while it is still in use, even
-> if unregistration happens concurrently.
-
-The controller itself will be there but we do things like stopping the
-queue before we destroy the controller.
-
---7neIoY3niUjHohrz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoKzE4ACgkQJNaLcl1U
-h9BVKgf6AxPM9stkRX7TS3Nj5x2yx7ohMEKOyEXoXx8lHVChbii5KM7R+clYJdu6
-HRHNihOPlSOJprzyCziDmFuGHazdKvI0c6lWirxZ+gOFviUkQxkVD/ecUnrzZTdG
-tDD/QMB8paVPkHK0bi8uN9XOoiEJdvRARNmMHb5HdJ+ddZPZFq6EH5wO7X5qk5Qn
-qR4niTHFBuncsTwu7gPIv5oqWfXPaS5kwv+YsOeBKFk69qGDduu/5Bv14EFgy1dg
-IrMlKi4oBx0WBHcMTjk9yX9F0/5J1tulg7uCpkaKDuSFPpo+uFexfcukqMDMWm0f
-eJhgyoucxJ15wK4X8sCdcFofBYlKKw==
-=6LRK
------END PGP SIGNATURE-----
-
---7neIoY3niUjHohrz--
+[1] https://b4.docs.kernel.org/en/latest/

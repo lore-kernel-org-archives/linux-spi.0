@@ -1,201 +1,203 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B8535BDA4
-	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 17:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B783265621
+	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 17:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779123685; cv=none; b=QQYrgFVwtd4mBi5qfLCHpKgUQ0XtSiVR6tEr6F2fEe8SC3A9f0IWxN6G0ls+746iPAc2htyR12uunmjblcY/DfIQ8atn143Zlc5m6TZcsgY3ihHHIIH0XImNGo1pbua7LP1FTK2pR+IEhvxBATb55SSreOMu/E01FUl2v/E2r3U=
+	t=1779123954; cv=none; b=KmE0T2NAky+9TW/quI39fQbE/l8xYC3xk6CTLmpZDuinya7FFIJ7r0vmcNCzcPWLapw8bwgZ3xPgkCafKPrSVe9/bsJCsgXV9DYBxQC8ejqASkVp5+bA1oElOWBPC5FWbxk8BZ9Ifn9mTYVxYNU09jyDs0wPHehZ68ntXoWucoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779123685; c=relaxed/simple;
-	bh=6masZgFWLsY1wGZmtQvxBGszzHLlTwVJbZ6sdXDkOsM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=QVeTDa6wLoojZg56b2L9CxujWJNGF4HOHBtzTkzOW8S8I3SdiGdWXHXWLk+97ZHHRi3/xs6v5aiOD/Nz2TAgC1rmKcwm6sf8JnDxN9b7BtBNVLBk+ysjPB4AlXVtWQZSP+63UJYgrc8Av6jKikjsPS0FOf4efvH1DNrrkeKTljo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LuyMlTW+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FgPaWM9k; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779123954; c=relaxed/simple;
+	bh=v5OIJNsk67U76wJjPC7hqs+G51U6k0pEBy58uPTbPjc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XI+P/MfGNt0qL1pKJLcHtU6o6y/YdzjVpbAWfkk8cEeHhPSWsKyJ0uTCtj0DCF8QjEccq1fw0VTKMQdQEOCDVZd16Xc3dV/M6RPoSRbc6ietVRBBpTPqrXUMVlrFbuzhkXQCaqfTTEEohYe4R1bdXnf3jMZBUGI3+he6/DSSmX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=I5vgKXhe; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LuyMlTW+";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FgPaWM9k"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IE6Ump353070
-	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 17:01:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=GgyL6RTmFW5Y2UChe6AMki
-	GlndhNLcMHYwQDILdaz5c=; b=LuyMlTW+lbGX/22M05x3nUf6g9ExcU4Hrgzpk+
-	rPZYWxwgTJt7Bgn2qBhK/Vub5pIi8yTorAiTvoVCMyCaG2sgqFNpbW9xG7iESe7P
-	eXIvlwLSp+O05pu21SsOKlxRjvVevzy7gdtAOAmgxzQvxFE+KmuT0Yv+WFXoHdK9
-	e2ClmNEac9hWKDP5qOygGqF7rd+ddWBBgFfAtlhBojXXkY/FNkCHoxZurO5WOMct
-	oRPDzFGGMpBlsM8v7IFar6rraKkBfrDGrekFrigOhQHPbntLirZRqG1oOZIROrtw
-	EKkMkuQ8sWn4mqV/xMtDQDhNDjQ/b5BqoZTnXQRlShfFiGRw==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7xjaj8gs-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 17:01:22 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c827bda3052so3942013a12.1
-        for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 10:01:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="I5vgKXhe"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-48ff4f8ef0dso29224415e9.3
+        for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 10:05:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779123682; x=1779728482; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GgyL6RTmFW5Y2UChe6AMkiGlndhNLcMHYwQDILdaz5c=;
-        b=FgPaWM9k7/NFO7j2uquU0yia3GiiMp5yACPoLCryQKb1ciqoedl5IkXjlh/NE9WqNe
-         3xvYz4Y0Lf4NrEGQEbN4lulkwwdb21uX+azNogd7gWPjf5Xr3YYEaz1FjKBDZiQ+WPGn
-         2C1KCWf5mA4gsVI7aEJUEISwV0RxSGDUBzQlE1OsGjlXEySu/fyHcYspBPuPiCdIiScd
-         vcXzzL4sZQvSRivlZmCa9oqnyjo5c1i1LU94NHDqWtQ5K5uUnLmFW7CfiMgNzcIgEwq6
-         OWODfglkzfmyfAhRAFVwxeSPq948rVMzV1IipcyEWKFjkx7FppidVao4YeSodAWKEO1g
-         5nrQ==
+        d=baylibre.com; s=google; t=1779123950; x=1779728750; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WTijTnfbP2QXvo6ZSkaGvHIK1QTeCa7hz6oIw9U70KQ=;
+        b=I5vgKXhe8+X2Ncsh1TF2iZU/fuAU3iHy4ovIDVgYmxjN2MHQNGZGkGkxAmjIpURQCe
+         2+EfxOx4VcSfOBEVOgjbn+jGhQjSmRR+HvqkcVUvYjr1vxeKB6O7zfv1YAWuJjfZt9s3
+         YcixrKJ8E3ZyIZnMysl7LVEJuH9ucocPR9IPPgNn7e4/Zm2a3taxxxJdZjJ9/3n0q6fc
+         j7/ZPuLG3D3Blv2E+eMEAfNgxI3Z8O/7ObonaFRNb+nOflAA55Uv2hyEgymhsGoEqlSe
+         dALgGczSY1WgCkZHcFY7+1cTzYA41VOwfe1oH9oCg45yHopOYzHiPwpFR9D0QMHPErNO
+         sJpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779123682; x=1779728482;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1779123950; x=1779728750;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GgyL6RTmFW5Y2UChe6AMkiGlndhNLcMHYwQDILdaz5c=;
-        b=SJghwyioh+iohyuRj1xnIVuXhKtolzsNqLVMVHsRu1hOiJgDspIPrfaxiOeYz85xeH
-         ZDz2wCqtUrnPaG1XHppAXwEHFbA3qK4u4G37OlNi7rAGzwGL7gV4NWaVLFmlVI+LYl1O
-         9GLC9v3Jjar5tcmWuMKkgTFUiE+pNHSQLv2V8ofPNxEru9kuWQlppc0jpirOYcYutE7o
-         eR9/H4lqdLmRFe4Ho0qZ+Qy22GwX4EXKW6QBET685hhbCXaOVXhLcesRYxCL71YB2VhP
-         h6IEOmpFYIwKMf80ntYBSNZrv3CNIklGIddK3h5RfHCnhO37Lqbzfyau+E8qeAT+PaXd
-         UvPw==
-X-Forwarded-Encrypted: i=1; AFNElJ+fcGkZF/DcqiqJdYNUdWUcMwtR2x8ptRIOnghZD4tVQm7SQtOoT65GUPHCeJI8HmUwiGID2lSUa9w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxqwnbm7x3Tvmn6sIVZ3p7I2D1NS5gjogn98mtsPbhlt4a2FNx4
-	PX6q7+WxvpTDDv8nFLdCTdBOogwtHottCouZh2yHrzjNJD251I2FFj9x9AGBb39LuBdC+HT7S2K
-	u+Q9hjBkV5y5OKYM7kLlYbS733rY4+LuV8ninK1btts/PTSBdf65qUBFXfaauLkw=
-X-Gm-Gg: Acq92OG0g23Lv3lgh1GoAxv0fHQjhCjEEqnd5lFBIC9ZGIxHCoU4T6eT1M6bEM2eP9Q
-	F89+7AwW1Jipq+mO4YQxpIK5+sEU3JDq+dIn0Q2ChjQTcMikDYMYIeWdRsQO2o1fpP3sEdenrdT
-	7s+6aJ6fDNRdsP26C6tIWLLidCcwGlFuN076wu5jRaCk/YS9+ubsS6F+MEVNZu+WvVjZjxtvJr4
-	LjMbC7WBlQdjheRLmsLuMQpBLZ4LjsghLhBIUo6+kyKodawmQFxhjANz5Dne57Gl0FANo1v4s6z
-	+C9WZLYx1V+t2y/x/R75j8fWxUhCENnawoYTmc2zoL+ONCn2dnh4faqWIGXKx+F26GY5G5vGmbH
-	vlNTkLm30aTQYWWBuKArirraQz9Yf/4w7wadVydPEC/Qm8GwqowqjGJI=
-X-Received: by 2002:a17:90b:2248:b0:368:341a:a925 with SMTP id 98e67ed59e1d1-36951c97685mr16139263a91.23.1779123672769;
-        Mon, 18 May 2026 10:01:12 -0700 (PDT)
-X-Received: by 2002:a17:90b:2248:b0:368:341a:a925 with SMTP id 98e67ed59e1d1-36951c97685mr16137814a91.23.1779123662967;
-        Mon, 18 May 2026 10:01:02 -0700 (PDT)
-Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3695652466dsm5783808a91.0.2026.05.18.10.00.58
+        bh=WTijTnfbP2QXvo6ZSkaGvHIK1QTeCa7hz6oIw9U70KQ=;
+        b=WE8bQ7iJ+3xPbRGbV5hCp7qG7/qtdAYsVUJ/DKmmVYWiarjrPYwVs6v/3NKrQmg6Ry
+         qaLWYn0k16NKfhoqe36pgUxWX91NoZR1HAD64znIM4vqFGlKq/MXQvwpUIEx6ETaLccu
+         6OdFFN4xdYf03EI6E8Rq7rZvft2iASbzaq+8FYg/LisNzD4JhZiKgMGvfacYzjCmu0L9
+         G4JtUGtb/PAwj9Qvc7ROoEpQrql4neC0lSzkAcYVg5JJoZOXIouswl4BNRPr9nXP/JyW
+         5lehC66T3m55WXzNK8LKhokFPCE9S63GJz69pypLb28oGJ+pSW0KuE8L/Th+M5v3/03u
+         GNhA==
+X-Gm-Message-State: AOJu0YzszbakTy1BhOvj4d30K7ok/AHMeU8JFyZBH1YIXsvPKG13UWgc
+	OJlR+idkuCCxcWMAYu+uEoBcUBO9pq5L2Yaif+I7Vj+J7MCRqLpQk5wihCsWI81TwPY=
+X-Gm-Gg: Acq92OFQxGvScGC8NkZE3adCm3xuET8pWi3M451UQ8/tnB3vqdvOmMQBUDt2JxInjkJ
+	TbaAGWyu5vY/tDlOGwwwNOpSlAz0GG/URnX31KmsDDIdHeQfBfAQTzHCuV+q5TRIy94TltnJvls
+	tUnElt1fY47xUnY5EoXiggmZ4ZQvpZHm7wDvsB637x1k2novdVqkbSF/JtR0HBAvki93axc7dlZ
+	PkDm/QbFJXGQK7MgtGEiz9EEMcabicnlKRDoONU63lmEuJyhImrepSMwBgtibuBKQVKDWoFdLr+
+	NyOTGVuIY+Mch+8aM1Wed9unHiJNXULAL7yPft3LlqrAG/jiSN5FPzL3l9ncW0zuL1UdM4C/1Zo
+	Kf5BPO7qrVdwwKMohBE4jEmROCR+W6qgIFuM/bYBQSpjgnHKKVoNMVYeCPxDMARmO1O3eIQ3vxW
+	7xD1ORde/Zlu7upYJPMz7Zd58k6kEUXpsbom9i/zudBM5SLUmWMdkiOjeiBbuP3AA8V4jT7927C
+	NIKGLlNHqY22Q==
+X-Received: by 2002:a05:600c:8210:b0:48a:5c23:cab with SMTP id 5b1f17b1804b1-48fe6322447mr231303205e9.19.1779123949856;
+        Mon, 18 May 2026 10:05:49 -0700 (PDT)
+Received: from localhost (p200300f65f47db041bee4d0e08e9609b.dip0.t-ipconnect.de. [2003:f6:5f47:db04:1bee:4d0e:8e9:609b])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-48fe5694fbfsm465987925e9.6.2026.05.18.10.05.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 10:01:02 -0700 (PDT)
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Subject: [PATCH v3 0/2] Add trace events for Qualcomm GENI SPI drivers
-Date: Mon, 18 May 2026 22:30:50 +0530
-Message-Id: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
+        Mon, 18 May 2026 10:05:49 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] spi: Use named initializers for arrays of i2c_device_data
+Date: Mon, 18 May 2026 19:05:41 +0200
+Message-ID: <20260518170542.807843-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMJFC2oC/5WNQQ6CMBBFr2K6dkhboIAr72Fc1DLAJEKhxUZDu
- LuFlQsXupnkTX7eW5hHR+jZ6bAwh4E82SFCejww0+mhRaA6MpNcKp5zBbquYXba4GhpmD001sF
- kbA8tDgR+JMBUZHlhpFSFYdEzOmzouTcu18gd+dm6154MYvv+Yw8COJgqBhoshKzF2XqfTA99j
- 7M+iYdtkSA/xEL+IpZRnN5EmXFVommqL+J1Xd/iYFGIMgEAAA==
-X-Change-ID: 20260506-add-tracepoints-for-qcom-geni-spi-e31457c2267c
-To: Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
-        Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779123658; l=2659;
- i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
- bh=6masZgFWLsY1wGZmtQvxBGszzHLlTwVJbZ6sdXDkOsM=;
- b=ofnL7qBGmEtascjrH5VLMbmyqsyIludaIGF85epr6GyAE/f1f2Se5CUX+xK14cKZQBkSMbwx7
- aUKHwQO3ROQDj/7/WO3TYUkklPydqQxVytX4ETTjDYaKHYTEH0AXlyk
-X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
- pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE2NiBTYWx0ZWRfX7X/R58dGbphH
- LCUvl0G2MpwupP46D7iaUtRyOa6v0F3u+mjGC0n3ykd75+c1xnIJhCiiX9iUrnle9KZzxMkXTdU
- xWDwm4K/1ToN1w4afzFfIWZeuQxTc+scBxR0x2q9J9W+iEeIMrTyvS+XO0ilCPQRdrrEFWlwMdb
- o4Va5pu5UxjAiVrAZbPywnde4R86VtgFitbE/OUpTW1fcGfAyIGaxl6ftIEav5FoNQwuVgqltyi
- UfP4QZUAeAFZEK4O6ZYK1eBsAnVsct3D+Tgk0THy+MDtxrieu0ZbFp/x50w6SvExfInIvcKsLGa
- Ltfe+PC00rtF+3KHbQfKBPRRdUszZoGSI5nEVdCsjv6T/YM0LC8+R+OqOYkx9NS+/0A0eZJoF7X
- V3tpSXVeZ2jCR5Y0c5680d2MX5BUyfzq3vkFbAB3BSX+Z9pxPJHEgHky6PysYc/+ZUiZw4T2Vwt
- NLO+6wUEiyR+YwiPS5A==
-X-Authority-Analysis: v=2.4 cv=BYHoFLt2 c=1 sm=1 tr=0 ts=6a0b45e2 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=vdy0y8WXZQco5u0MrGUA:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-ORIG-GUID: UDwOB6k3X1TCm0mVxxWa-yPNT4pYkw04
-X-Proofpoint-GUID: UDwOB6k3X1TCm0mVxxWa-yPNT4pYkw04
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 priorityscore=1501 bulkscore=0 spamscore=0
- phishscore=0 clxscore=1015 impostorscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180166
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4615; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=v5OIJNsk67U76wJjPC7hqs+G51U6k0pEBy58uPTbPjc=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBqC0bmXvyH81515D+CX/H+6I//tUMvr92ExiOop G2sRnSQisyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCagtG5gAKCRCPgPtYfRL+ TvK8B/9IRB81AvStNb7w8AuHuvgqfkw59qFh/d5a99r1/iDEtPdXzfDHsyHb9XN0452A+XK0Z+5 Ii6ZKhmjAbV7R1q07j+FOGIG1Z7WHa6adlu8ptqjFetQKbUAkvttBEadHS/BaqKhfk5cXDaIH7C 1mrCC/zDcNvtlAMxKRBGJkv/2bl+Hm4Z80qZry9onxsCMRtyd8bUK6NrZ1NvLHF4QDTgyr3Kppi ks3Em2yGDaN1wdU791CRHeeNU9ubQR4hAb0hSYwoe9N3hU1rWx0abqpUKWzFUMkV5K5AfKYoO9z dma+OsINGmJC1if5as7hQnE0W+bW2ZDDqRBYAflTi2gCJ8gU
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Add tracepoints to the Qualcomm GENI (Generic Interface) SPI driver.
-These trace events enable runtime debugging and performance analysis
-of SPI operations.
+While being less compact, using named initializers allows to more easily
+see which members of the structs are assigned which value without having
+to lookup the declaration of the struct. And it's also more robust
+against changes to the struct definition.
 
-The trace events capture SPI clock configuration, setup parameters,
-transfer details, interrupt status.
+The mentioned robustness is relevant for a planned change to struct
+i2c_device_id that replaces .driver_data by an anonymous union.
 
-Usage examples:
+While touching these arrays, drop a comma after the list terminator.
 
-Enable all SPI traces:
-  echo 1 > /sys/kernel/tracing/events/spi/enable  
-  echo 1 > /sys/kernel/debug/tracing/events/qcom_geni_spi/enable
-  cat /sys/kernel/debug/tracing/trace_pipe
+This patch doesn't modify the compiled arrays, only their representation
+in source form benefits. The former was confirmed with x86 and arm64
+builds.
 
-Example trace output:
-
-1003.956560: spi_message_submit: spi16.0 000000001b20b93c
-1003.956642: spi_controller_busy: spi16
-1003.956643: spi_message_start: spi16.0 000000001b20b93c
-1003.956646: geni_spi_setup_params: 888000.spi: cs=0 mode=0x00000020
-     mode_changed=0x00000007 cs_changed=0
-1003.956647: spi_set_cs: spi16.0 activate
-1003.956648: spi_transfer_start: spi16.0 00000000ea1cf8b6 len=16
-     tx=[4c-80-e4-ca-68-4d-95-aa-ee-99-ae-d7-69-e9-5f-39]
-rx=[00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00]
-1003.956653: geni_spi_clk_cfg: 888000.spi: req_hz=20000000
-     sclk_hz=100000000 clk_idx=5 clk_div=5 bpw=8
-1003.956691: geni_spi_transfer: 888000.spi: len=16 m_cmd=0x00000003
-1003.956708: geni_spi_irq: 888000.spi: m_irq=0x08000081
-     dma_tx=0x00000000 dma_rx=0x00000000
-1003.956717: spi_transfer_stop: spi16.0 00000000ea1cf8b6 len=16
-     tx=[4c-80-e4-ca-68-4d-95-aa-ee-99-ae-d7-69-e9-5f-39]
-rx=[4c-80-e4-ca-68-4d-95-aa-ee-99-ae-d7-69-e9-5f-39]
-1003.956717: spi_set_cs: spi16.0 deactivate
-1003.956718: spi_message_done: spi16.0 000000001b20b93c len=16/16
-
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Signed-off-by: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
 ---
-Changes in v3:
-- Replaced geni_spi_fifo_params with geni_spi_setup_params trace event.
-- Updated commit text.
-- Link to v2: https://lore.kernel.org/r/20260512-add-tracepoints-for-qcom-geni-spi-v2-0-3b184068ecf9@oss.qualcomm.com
+Hello,
 
-Changes in v2:
-- Removed tx/rx data capture since spi core had already support.
-- Updated commit text in patches and cover letter.
-- Link to v1: https://lore.kernel.org/r/20260506-add-tracepoints-for-qcom-geni-spi-v1-0-c957cfe712d1@oss.qualcomm.com
+the mentioned change to i2c_device_id is the following:
 
----
-Praveen Talari (2):
-      spi: qcom-geni: trace: Add trace events for Qualcomm GENI SPI
-      spi: qcom-geni: Add trace events for Qualcomm GENI SPI driver
+	diff --git a/include/linux/mod_devicetable.h b/include/linux/mod_devicetable.h
+	index 23ff24080dfd..aebd3a5e90af 100644
+	--- a/include/linux/mod_devicetable.h
+	+++ b/include/linux/mod_devicetable.h
+	@@ -477,7 +477,11 @@ struct rpmsg_device_id {
 
- drivers/spi/spi-geni-qcom.c          |  13 +++++
- include/trace/events/qcom_geni_spi.h | 103 +++++++++++++++++++++++++++++++++++
- 2 files changed, 116 insertions(+)
----
-base-commit: 1f5ffc672165ff851063a5fd044b727ab2517ae3
-change-id: 20260506-add-tracepoints-for-qcom-geni-spi-e31457c2267c
+	 struct i2c_device_id {
+		char name[I2C_NAME_SIZE];
+	-	kernel_ulong_t driver_data;	/* Data private to the driver */
+	+	union {
+	+		/* Data private to the driver */
+	+		kernel_ulong_t driver_data;
+	+		const void *driver_data_ptr;
+	+	};
+	 };
 
-Best regards,
+	 /* pci_epf */
+
+and this requires that .driver_data is assigned via a named initializer
+for static data. This requirement isn't a bad one because named
+initializers are also much better readable than list initializers.
+
+The union added to struct i2c_device_id enables further cleanups like:
+
+	diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
+	index 0123ca8157a8..dfb0b07500a7 100644
+	--- a/drivers/regulator/ad5398.c
+	+++ b/drivers/regulator/ad5398.c
+	@@ -207,8 +207,8 @@ struct ad5398_current_data_format {
+	 static const struct ad5398_current_data_format df_10_4_120 = {10, 4, 0, 120000};
+
+	 static const struct i2c_device_id ad5398_id[] = {
+	-	{ .name = "ad5398", .driver_data = (kernel_ulong_t)&df_10_4_120 },
+	-	{ .name = "ad5821", .driver_data = (kernel_ulong_t)&df_10_4_120 },
+	+	{ .name = "ad5398", .driver_data_ptr = &df_10_4_120 },
+	+	{ .name = "ad5821", .driver_data_ptr = &df_10_4_120 },
+	 	{ }
+	 };
+	 MODULE_DEVICE_TABLE(i2c, ad5398_id);
+	@@ -219,8 +219,7 @@ static int ad5398_probe(struct i2c_client *client)
+	 	struct regulator_init_data *init_data = dev_get_platdata(&client->dev);
+	 	struct regulator_config config = { };
+	 	struct ad5398_chip_info *chip;
+	-	const struct ad5398_current_data_format *df =
+	-	                (struct ad5398_current_data_format *)id->driver_data;
+	+	const struct ad5398_current_data_format *df = id->driver_data;
+
+	 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+	 	if (!chip)
+
+that are an improvement for readability (again!) and it keeps some
+properties of the pointers (here: being const) without having to pay
+attention for that. (I didn't find a spi driver that benefits, so this
+is "only" a regulator driver example.)
+
+My additional motivation for this effort is CHERI[1]. This is a hardware
+extension that uses 128 bit pointers but unsigned long is still 64 bit.
+So with CHERI you cannot store pointers in unsigned long variables.
+
+Best regards
+Uwe
+
+[1] https://cheri-alliance.org/discover-cheri/
+    https://lwn.net/Articles/1037974/
+
+ drivers/spi/spi-sc18is602.c | 6 +++---
+ drivers/spi/spi-xcomm.c     | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index 78c558e7228e..ae534ebd5e87 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -295,9 +295,9 @@ static int sc18is602_probe(struct i2c_client *client)
+ }
+ 
+ static const struct i2c_device_id sc18is602_id[] = {
+-	{ "sc18is602", sc18is602 },
+-	{ "sc18is602b", sc18is602b },
+-	{ "sc18is603", sc18is603 },
++	{ .name = "sc18is602", .driver_data = sc18is602 },
++	{ .name = "sc18is602b", .driver_data = sc18is602b },
++	{ .name = "sc18is603", .driver_data = sc18is603 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, sc18is602_id);
+diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+index 130a3d716dd4..e40ec6ebe4e5 100644
+--- a/drivers/spi/spi-xcomm.c
++++ b/drivers/spi/spi-xcomm.c
+@@ -269,8 +269,8 @@ static int spi_xcomm_probe(struct i2c_client *i2c)
+ }
+ 
+ static const struct i2c_device_id spi_xcomm_ids[] = {
+-	{ "spi-xcomm" },
+-	{ },
++	{ .name = "spi-xcomm" },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, spi_xcomm_ids);
+ 
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
 -- 
-Praveen Talari <praveen.talari@oss.qualcomm.com>
+2.47.3
 

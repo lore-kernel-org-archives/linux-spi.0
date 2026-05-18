@@ -1,41 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EC83F5BFA;
-	Tue, 19 May 2026 09:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313913F7AAC;
+	Tue, 19 May 2026 09:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779182726; cv=none; b=T7a0NqY69ydtlRvKal1setpaBeRjB1tIA/DU1XcU1PN4DA1sTV1zJwVz8dcji0/ZBsbZYEUZtYBs8dQwx8M7exZSfZGKeGafBIZBGJCKUyc6JfclX+ORSIAMQEMZ4S67JPbIGa2GyBV8DPHMjGJM64jehM3Jy7gT9QOaTJGxiJI=
+	t=1779182731; cv=none; b=Uc4nEgvGadNX7vHOM7LDqtSf83jj5dJuXr7X1/NrDE9P9GtdlaxpTVqFvQQ1QSQD8f2VBqt3MGQRv8T2RbKxpKtV/P2QtmaFMgXKZrf8OTu9xYDId/3jCOWejvT30oRhG22WVNIMM03y5YFPrMuggnodJ6XL2o4U6E7uLZvQ9CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779182726; c=relaxed/simple;
-	bh=ig0DgqQs4rtVlrNqLiSo/BOrzHGvaqkO04T/wjTiiYE=;
+	s=arc-20240116; t=1779182731; c=relaxed/simple;
+	bh=mDPAZ/XV3MEkn1kMDb6rqG+yEFK3oh6hRvKs2rVaWI0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Zyk0iPoB3hfqVmJPSyXJl3YfJHxs9NWy3T4g+Vrw36so+A0pIXjOjQ/0UPiOjTtQ9XMllQQekQvz+Y1+ocZrzHuTH5g8zRjNOjcntafTVkzWks+z/n4EPGOIZ9FHm1VTTDRO21xHu5TBCgZBfiLoSOQOumEhhRu0AgnGGMDMuOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bylgjxsY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=e6nk/Vb0KYrn8X2mNS5RERRFDbynvYBhiQBgteE/giEUwwghOwthPwhj2xhCru7K4moO/aDhTcIPrW+14rBc+t7yd4P9KywNAwJigWWxBVLX5pOsSSQmmClvgwoogJHLp+j+cWC8Fp+76/uiu5YkvDh1HubMjR/11fRhPMlBCBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ia7EpTfx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bylgjxsY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C34C2BCC9;
-	Tue, 19 May 2026 09:25:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ia7EpTfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B9BC2BCC6;
+	Tue, 19 May 2026 09:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779182726;
-	bh=ig0DgqQs4rtVlrNqLiSo/BOrzHGvaqkO04T/wjTiiYE=;
+	s=k20201202; t=1779182731;
+	bh=mDPAZ/XV3MEkn1kMDb6rqG+yEFK3oh6hRvKs2rVaWI0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=bylgjxsYnrwQIdwSQeQQW1SLBmr2xRFAo2WIwtVIqwHQUUYx1ST8IIrvehJtQC1b1
-	 M3ZG7n4gjXEddbjFQd2LhxM1aXMNKSgLmpSS4lW9OIvN9FOvlIrrmVNpBAJqTYD6ed
-	 xEpmt02BLuQ/GI+rHA+kPcEbK9Wh51M+cNo11DIZY6VAbFDGn+19MOC4ZsI1Kviuoo
-	 uFtupjXv6KRI71JEvkvX8ETBV1pW9Ob2GbDkQI0QYyAxmIFO+G+b738fGSO8vc6m3s
-	 ibdulc0JhyvdGqk1jbkrCalxu5kAKT/Bw6x7CuxAx0vJ2DEB2PaRXUf/VTlP4w3Cya
-	 jJsTmlc4GXjpA==
+	b=ia7EpTfxVMBQIWXxZsLndTj4UvnDXRYBzO+DvzOKScirKTi297xVw7LHmEjt8O7tI
+	 PiYdS3ypDc97hKUpsMVVnu+DPXYiDHk/83wpZn9/AKENhcfc0dxbyFlAyN3d12ej7Q
+	 al225sMS9OP0+MAKQ8kN/KYyMTrjSxWNaJ7IOJGu2LpxjaGCNBPxjTv//lPhxoNL9K
+	 0pktlf6o8beYbVK3303mut4+n0G/LByaMlidO8/35leTa4LQEL1ZbewW3i8IilW5MY
+	 fAM3zQSxlP/jJmDVPU9kZWu2cxjJtn2RjLArEbt7DUmhCRu2X74VG4j0GYavHW2G15
+	 6nB7gElZS9fmw==
 From: Mark Brown <broonie@kernel.org>
 To: Johan Hovold <johan@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: Orson Zhai <orsonzhai@gmail.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Chunyan Zhang <zhang.lyra@gmail.com>, Lanqing Liu <lanqing.liu@unisoc.com>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  stable@vger.kernel.org
-In-Reply-To: <20260512074334.914735-1-johan@kernel.org>
-References: <20260512074334.914735-1-johan@kernel.org>
-Subject: Re: [PATCH] spi: qup: fix error pointer deref after DMA setup
+In-Reply-To: <20260512074733.915029-1-johan@kernel.org>
+References: <20260512074733.915029-1-johan@kernel.org>
+Subject: Re: [PATCH] spi: sprd: fix error pointer deref after DMA setup
  failure
-Message-Id: <177912221068.352391.12309236153164739170.b4-ty@b4>
-Date: Mon, 18 May 2026 17:36:50 +0100
+Message-Id: <177912243529.352391.18042117560657453374.b4-ty@b4>
+Date: Mon, 18 May 2026 17:40:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,20 +48,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1128; i=broonie@kernel.org;
- h=from:subject:message-id; bh=ig0DgqQs4rtVlrNqLiSo/BOrzHGvaqkO04T/wjTiiYE=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqDCyESyvQBdUriIQhZoi/eO3A0TglHeqD/dWvp
- 51CAT+NDK+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCagwshAAKCRAk1otyXVSH
- 0AUMB/9qIPE4c2cYDqLaJ0NrHMFKAKFaP3EDMJiB1oJEHrYXOB5xLTKMchDCgb+Nd/OY+ntCDft
- 7L6UQzwNlvezNBuzkZEoAuO9N5CM4AOncuCW6TRxlVijxjjeWeF6vsBOiUmG3QCnX5h1z6vKQNx
- TctNJrWzHfn4x3gWjl0U73JGHa2GifpNc/xP8dTbbtCUM2b/FbrVzikq6/bcIvBVktCgNiCuGY6
- vE24Q30C4eL08lf08au9TbiRUwlmH3IszX6ezqkIGFBOJCGMMWAd2j0b+r2YS3Rk5bcSTDJpT1X
- xjnjeDV36A5uBpbJsv/Fn5zErlVFKlULN0z60ced7wM+6AXx
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1130; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=mDPAZ/XV3MEkn1kMDb6rqG+yEFK3oh6hRvKs2rVaWI0=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhiwenY6qElEXAYt754zvhl+7rRkaz1XI8o2joTGvatc2x
+ WcJL0U7GY1ZGBi5GGTFFFnWPstYlR4usXX+o/mvYAaxMoFMYeDiFICJtOSx/7NYwv1r+tL4Lt6I
+ p7+ZF8w4J8I/w7z0skbzaimzjMcht5cssRBsLdNQ0NBf8cnphC93UbB2qoWi8uYLMv2xDy79vTf
+ 7+rStmrb5ilYXVv7Jkf4Rv/dAVcdm55+sTkefumekH9Zn/eCUHBzQaRem37Tthd2L0vb3iYwmKX
+ c/ngsIDr92ZsuyLK+DdT839/C77NHJqPBk8M4SDJv/tcBh0fUEj72tixy0WubvP5Wdu6uvrnKbW
+ YzLnX6OtJj/ew7+Ove300Et9WuP+hP/PVk50/MN1q75+YKh9pmwsOQD+eicx3w2Fuve8Jjvu/O4
+ 83XlAps5aVr2ArujfeOnPbZWPi1X9kfklenrJxmpUzQMAA==
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 12 May 2026 09:43:34 +0200, Johan Hovold wrote:
-> spi: qup: fix error pointer deref after DMA setup failure
+On Tue, 12 May 2026 09:47:33 +0200, Johan Hovold wrote:
+> spi: sprd: fix error pointer deref after DMA setup failure
 
 Applied to
 
@@ -66,8 +69,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: qup: fix error pointer deref after DMA setup failure
-      https://git.kernel.org/broonie/spi/c/a7e8f3efd50a
+[1/1] spi: sprd: fix error pointer deref after DMA setup failure
+      https://git.kernel.org/broonie/spi/c/3d67fffb7426
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

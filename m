@@ -1,92 +1,90 @@
-Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDDD3E025E;
-	Mon, 18 May 2026 09:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082C23D3326;
+	Mon, 18 May 2026 10:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779098242; cv=none; b=WsY3GH5DVd8ds5eRJWW0xIERzpRufT0zcF7sjCjfWV12EMsVuxxzcyj4anf6ecQ/DsrKfyv3KfTs/g9+/7ikASY1NPtxRauxBkQKUMNjW+CI2lEYtYSyuM30OzKY/nhxz3//xOywYkZgeTt6rl40a2CY7FxJqo8BC6fmS/fJ4d8=
+	t=1779101170; cv=none; b=IBztW13sjmD7hxa1gyaJkDb6HHM5DqTLG2u0AEzOaFYlRmXHT8IzQcMKMoVWas0X/X3m+dnc93rsTd/TgCjgINta9lucYFyKUEnxXaFuhdYksebOPIGHWuCpJqwwZb/qz06xux9z3h6JZwAwalrRMj45vvtorhIWKWJfWBV+hTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779098242; c=relaxed/simple;
-	bh=MG6KAj9reqh4g4OyGiTsnGGGOXckdRR6LAzpMlLJY90=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c9h5ci8kveWrctVna7/MMiOybz6+qBWh57oUieLeW12Tk9wUXUBQVvHdqF5hh5YMcOZBXKxpwkI9oZZ1L7yWUy2uXIXE1JiDdhgZQCn+3+uYrnoYrB6KimKDSe433ydUWP5gyRc4wiN0icqro8u3yFiuJf2sqHFKlxtRNqpmzNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 18 May
- 2026 17:57:08 +0800
-Received: from aspeedtech.com (192.168.10.13) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 18 May 2026 17:57:08 +0800
-From: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-To: <clg@kaod.org>, <broonie@kernel.org>, <joel@jms.id.au>,
-	<andrew@codeconstruct.com.au>, <linux-aspeed@lists.ozlabs.org>,
-	<openbmc@lists.ozlabs.org>, <linux-spi@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<BMC-SW@aspeedtech.com>
-CC: kernel test robot <lkp@intel.com>
-Subject: [PATCH] spi: aspeed: Replace VLA parameter with flat pointer in calibration helper
-Date: Mon, 18 May 2026 17:57:08 +0800
-Message-ID: <20260518095708.2502537-3-chin-ting_kuo@aspeedtech.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260518095708.2502537-1-chin-ting_kuo@aspeedtech.com>
-References: <20260518095708.2502537-1-chin-ting_kuo@aspeedtech.com>
+	s=arc-20240116; t=1779101170; c=relaxed/simple;
+	bh=FNklAmDdgJRWCvrWZPn9zrklUDe+m4/gEjhhUFPqDEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jw61JMrevqvOTye7j4eBCSDf00nrmY/Ii8F81KmGJTxqsOIGBXOyjb7G68dpccy0x3YGjkYEdw2AslCID2tNZhflcWXVymApobSnzLta2VBpI23oJHRooa5HMEwEFvWmSV7iccOrBezE0PNrdB3RaYVmbT2pGc9kqWFVmlE0gwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUz5heHE; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUz5heHE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEE8C2BCB7;
+	Mon, 18 May 2026 10:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779101168;
+	bh=FNklAmDdgJRWCvrWZPn9zrklUDe+m4/gEjhhUFPqDEI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qUz5heHEwthqbGhDHHLPapztBzxrIvJpTdAkwv508Sl5zAwcD2mSrPi+3/I0q0bJt
+	 eU0g+aNrDtz5MWfu63vCTc1UBj4zs18mWeO5K8wDVzQQ1bQPBOijfz+UinV3ChEKVZ
+	 qrI8DUr03hmH0TlDIX/t9DiQzuOm8URZZKvskiMLjS+T3cKHWCTOB/YQGjOmvSekYZ
+	 6kGtPonpE1LZWz3inUE4NibFw9MLrh0qprCUbtg/zQAqyBLbAKRNa7oMUuCvQivxyH
+	 W+6qy/N8UaZHPr7MbI3FeK7V4VHhJffLiaeW6RDWByr4hdmbRuSom9/zjF8/pnwhA1
+	 MoYz+r0c6Ptlg==
+Date: Mon, 18 May 2026 11:46:04 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Peter Collingbourne <peter@pcc.me.uk>
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: use udelay() for short polling delays
+Message-ID: <8e7c7d5f-376e-4ab5-9ea9-a19a32d4ff67@sirena.org.uk>
+References: <20260517062554.117448-1-peter@pcc.me.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LTqIc1W9Ts6Ezw8g"
+Content-Disposition: inline
+In-Reply-To: <20260517062554.117448-1-peter@pcc.me.uk>
+X-Cookie: She sells cshs by the cshore.
 
-aspeed_spi_ast2600_optimized_timing() declared its buffer argument as a
-variable-length array parameter (u8 buf[rows][cols]), which causes a
-sparse warning. Replace the VLA parameter with a plain u8 * and compute
-the 2-D index manually. The corresponding call site is also updated.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605180441.uD3toFRJ-lkp@intel.com/
-Signed-off-by: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
----
- drivers/spi/spi-aspeed-smc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+--LTqIc1W9Ts6Ezw8g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
-index 808659a1f460..c5275700de3d 100644
---- a/drivers/spi/spi-aspeed-smc.c
-+++ b/drivers/spi/spi-aspeed-smc.c
-@@ -1467,8 +1467,7 @@ static int aspeed_spi_do_calibration(struct aspeed_spi_chip *chip)
-  * must contains the highest number of consecutive "pass"
-  * results and not span across multiple rows.
-  */
--static u32 aspeed_spi_ast2600_optimized_timing(u32 rows, u32 cols,
--					       u8 buf[rows][cols])
-+static u32 aspeed_spi_ast2600_optimized_timing(u32 rows, u32 cols, u8 *buf)
- {
- 	int r = 0, c = 0;
- 	int max = 0;
-@@ -1478,7 +1477,7 @@ static u32 aspeed_spi_ast2600_optimized_timing(u32 rows, u32 cols,
- 		for (j = 0; j < cols;) {
- 			int k = j;
- 
--			while (k < cols && buf[i][k])
-+			while (k < cols && buf[i * cols + k])
- 				k++;
- 
- 			if (k - j > max) {
-@@ -1541,7 +1540,7 @@ static int aspeed_spi_ast2600_calibrate(struct aspeed_spi_chip *chip, u32 hdiv,
- 		}
- 	}
- 
--	calib_point = aspeed_spi_ast2600_optimized_timing(6, 17, calib_res);
-+	calib_point = aspeed_spi_ast2600_optimized_timing(6, 17, &calib_res[0][0]);
- 	/* No good setting for this frequency */
- 	if (calib_point == 0)
- 		return -1;
--- 
-2.34.1
+On Sat, May 16, 2026 at 11:25:54PM -0700, Peter Collingbourne wrote:
 
+> +		if (polling_delay_us < 10)
+> +			ret = read_poll_timeout_atomic(
+> +				spi_mem_read_status, read_status_ret,
+> +				(read_status_ret || ((status)&mask) == match),
+> +				polling_delay_us, timeout_ms * 1000, false, mem,
+> +				op, &status);
+> +		else
+> +			ret = read_poll_timeout(
+> +				spi_mem_read_status, read_status_ret,
+> +				(read_status_ret || ((status)&mask) == match),
+> +				polling_delay_us, timeout_ms * 1000, false, mem,
+> +				op, &status);
+
+This seems like something that should be fixed in read_poll_timeout()
+rather than open coded in a user, similarly to how fsleep() is there for
+sleep functions.
+
+--LTqIc1W9Ts6Ezw8g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoK7esACgkQJNaLcl1U
+h9D9lgf+MdHLc/I6SNRm5Po6+ewBEZpsWdtDZx1Q3pLMN0STv0pwUa6Ga8khHap2
+QNwLIqcmD8neJx/3j8bfO5LFQTEf5U1854nxOjR2pgvNnmQzLZCw4cUkP/K7KXY3
+YVnvg9SO0KswTS5CZZivL3upBkXhqe+QQHvWUtJ92v1FxO6MRMJsMrzhmjTccZ5u
+BReI7h/oAwzzrpRM/bRRhQRi0RE3DVYUNSjycY73IQZy58Cxm46S/h9Nq2iM1Ldu
+i62wmC5GfLWU4thGDxuj8gPd4jmyI/cEMdEkh/1yC7dO+TXl4ahxxGwyVcmaT4fn
+2a8uQYbuqWvRrA9kPM8Lsmw/tRnpiw==
+=BIGm
+-----END PGP SIGNATURE-----
+
+--LTqIc1W9Ts6Ezw8g--

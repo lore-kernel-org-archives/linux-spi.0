@@ -1,164 +1,106 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728FE35F16C
-	for <linux-spi@vger.kernel.org>; Fri, 22 May 2026 09:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3093A3D410A;
+	Fri, 22 May 2026 10:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779443886; cv=none; b=ViHzEnlhYBanv3a+CW2yEi6HsbPVBXMEe06QIgWUMlxd6e316hGJed0JmR1TUu6R9K6Hw27jee7QuKI+rsFi0Uhap+zAxOT+eVznKg0ltv+udVzATjQZ+BYDWwH3Z5/+tJqLH7HWwmOCF25nVEWvPXwtmeMxSFWTGr7RmvcGQiM=
+	t=1779445297; cv=none; b=okp/BwNteSJXDzZ7cHWo85nJV/Dw3ggLbGjxmt7iyOLHvYs7zmex4k/eMsDS27uZfZCDjZWt6WWXKR21vdbLa/3HS3ZKYv6LzqU15h+RVhA3Alng9xWtod6G7wAEBOpQz8E1KHaUsQ0XMkZYFHLy4AV2FuK6D2Thq+Ilz7w7Clk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779443886; c=relaxed/simple;
-	bh=ngAw18xIScEFM+It58VxjuaUlQbcZgx/Z/Iy/8x4uic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Regcfg9QzPBI42Dm2yNWV2YM7aGwp0OBMVxspZaXH+JrXxOQ9Q5tl5hueSZE/7DVKTqIou6NSMjInw7q/enX6UqUJlWId4Gn3mBoEoLcf1l90vpMEq+uaL+XPbkIUfEZfV/s5b/9w1mkEtsWPod+dvJqTJYwBhj6s+ayWFCnEYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9poCuFr; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779445297; c=relaxed/simple;
+	bh=9GtPfAC/7X0StcDinTriwrJOIHC98Sl4258lsNRLwmk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=C4F363TbNAgQP+Z9cAha3AozTPwHNpMEjITUa/U69/7uVVJEb8gkynwm5kMMYsdrVUNh/eE2cf1KiNMayq6I5Hfezl4BlXCtHnFkoANGJdPbozoSKfD+Iqhv2/oJi4y9mQg+VY0sjymZ3GG/FlG/l1DPbDcq9X937c8I8Fi2Gug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbaBGZvC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9poCuFr"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-36643b96b99so6624901a91.0
-        for <linux-spi@vger.kernel.org>; Fri, 22 May 2026 02:58:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779443885; x=1780048685; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gzT000h1QTlmVrCMvUhZU+5EGxiL+DAZp9rDjkpmglg=;
-        b=M9poCuFrQMlxxE5pa3moLCWj5I2B6eB8W4ruO6179EcU4az+fqiQS+G1adA8gbxGLg
-         CAR+dg11p32Iwikp9R3zCbTH0OUn1Tq41u84FfRuOwiEeMNm5cArO0/xyyNWDY0n7Xax
-         hk9TElKKZBdmQ8hv8KRgmMUThczYghB76xliz/QTgkqfzZPXH8mtjBp1piLjx7F4QMHQ
-         dNJ0gUl9J0pKCHdcOeOnezwNkWop0GePhFQU6+mW8mGfBDODy82Z+tJ4rqdVd1c5kUms
-         K8kQ+7LkBr6z1GpT94WaQ3J60D78V8NC1vknvNxzQykO16RUovaZjIRvLPc01vJFYQw0
-         2HZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779443885; x=1780048685;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gzT000h1QTlmVrCMvUhZU+5EGxiL+DAZp9rDjkpmglg=;
-        b=QfoGqW+BmeWhK8SJyoV2aRVuipGF2iUKULkkLixjxfN2WaKhouHslVwrxjs0uEcjWX
-         3rKaVe8Jx+TUPXx8EnkLYIFW/okPKbJKxTz1y8E/McmmgzsjRq08uxRoTwtcyo5w2ey4
-         JW5tBRcOCLrb0Xo+levpqkJSJk0nYR3z+1R5I2EvZffDs0AlcKqfc77OHGXpQtchGUFO
-         SJ2xC3LT1aH9ogL6Ivd9ibLbaB+11ME0sW4B1Mz0MXft3VAL/H+gw5X4tv9zhrGDSZHI
-         OmQ+kF0x3nzu50jojRvl4m3lI5m0Hx5GW5iBjVyk5hZ4vBgNpRFJzuk/dwVvRv4+fiCI
-         PGQA==
-X-Forwarded-Encrypted: i=1; AFNElJ+khbspcUUI+85durnhfiJY0cJoHgi0IYzqbWxjy7PsKEiW9lQXqNe0TqwAkSgfHFnex/ObxayDuFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVkNe4RimSrmeqpTVbYtjj/LshWD7X6TI1eVnHmcERoUdClmX4
-	evo52kchyyYsioBJY1QSSkVkqPrVwEd6NKYTWKXQdzucW/86PMOyi0hc
-X-Gm-Gg: Acq92OFEp/C5GoDvVwZtWKVX88x4bIL2ZFqmW4uDnCmqS23F2NLhw6onmx1GKaSLav7
-	Nqzd//0Dl9Gv7PQ94EH8YTp4tQXCcAQkEhsI0e09d3KdV8gD2vSpGoTnVCEi9NxkVtv/IJDVS/5
-	avVKu2NNpF2ZI6PPd0jCbeh6GZVRYNVKLBrYYGQUFuHsMFPEVd4eGQNfrfHAFsN6bpuo4p5o5Fa
-	MxUZkkYWMuXcy70MD4OxbpkU0dPxkP7zrsOQEUF+6wNgM9QUeAJOAIAzLhSN41aCigzw3IJuFkM
-	rQbA0cKOlcvu5UUDQyeS4MjXR9kvppbXQx50Jbm0j1HCjv01iwOn5ILpqXu6brWJ5wQ+ovjITKH
-	cQGfn/qpsyHwAx7KAUXj5EZVGxV2vP7J5NoAgrszCZexLL3VdvXC8c5+o2X8TkJR6vjk45mhAnz
-	Kn4+063JP7nuawqm/+cA==
-X-Received: by 2002:a17:90b:2586:b0:368:f0d0:1ce8 with SMTP id 98e67ed59e1d1-36a6770aa6bmr2941275a91.9.1779443884700;
-        Fri, 22 May 2026 02:58:04 -0700 (PDT)
-Received: from Dell-5540.. ([2001:926:3:e0:6695:664d:99d8:94e1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a674b5f19sm1218777a91.0.2026.05.22.02.58.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 02:58:04 -0700 (PDT)
-From: Peng Yang <pyangyyd@gmail.com>
-X-Google-Original-From: Peng Yang <pyangyyd@amazon.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Serge Semin <fancer.lansen@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	pyangyyd@gmail.com,
-	Peng Yang <pyangyyd@amazon.com>
-Subject: [PATCH] spi: dw: fix race between transfer IRQ handler and timeout handler
-Date: Fri, 22 May 2026 17:57:27 +0800
-Message-ID: <20260522095727.18307-1-pyangyyd@amazon.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbaBGZvC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A4B1F000E9;
+	Fri, 22 May 2026 10:21:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779445294;
+	bh=RCKk3G/fG9xNHQtopQgosGS3JYiX2OLPFhfHBrbqUdc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=LbaBGZvCeaADuRERmjoD9QTmzzOLrZsfhniBoeeEut0XLLXoA15muHYKFbqma4txb
+	 JH4qTMZbgIk36XHb82fvL0I5s7MAHqYEfnBbikUr1NwmFtGTHMJhx8xEv7owt+UvAH
+	 ItquTogvlO/dzeZN0/DrmT4owf8tCCiHcBUCFuYSkBVaqQnyn1gjRjIPDVaF5nzqKH
+	 eSU1mvViloUzt9YGFTx/pjSIRji24gP4K1Hdh5V+CsqhIqQSrcqmjZqpzDdGCPJG4D
+	 ZgvSxEx7nj/G1RD0gRFnfzGNQRyskaESIgtfcrV1lXYYBmOz3z7uI6NEueoQ58FmzN
+	 4HOQhgeXIkavA==
+From: Mark Brown <broonie@kernel.org>
+To: Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com, 
+ chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
+References: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
+Subject: Re: [PATCH v3 0/2] Add trace events for Qualcomm GENI SPI drivers
+Message-Id: <177919638255.6167.12994176787031885000.b4-ty@b4>
+Date: Tue, 19 May 2026 14:13:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1546; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=9GtPfAC/7X0StcDinTriwrJOIHC98Sl4258lsNRLwmk=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEC4qFF7/ZgXzkEqdBZ2lH9wYy8JTYhh4d6Igc
+ xgr9PVds4mJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahAuKgAKCRAk1otyXVSH
+ 0BQ5B/9EdM+6O9YI0UCKxggIRj44WraRmiJtCjfQo6oAOVPeWbkbrpAV4XH+ngWlu4BvxVYWVdf
+ 0rQzEjwQoqrRII5XKAb1E+NNBCpPTcV4zGGGHRlxUsuSLtCuW62kcPxRZ6XGcGjZFqOB3ehWP7k
+ OmWS8e15M0D8Yb3vghx3qbQ5Jg03kzAjCAhag/F1lmEKsjb/UyV9x0wMeIZkxJZ4UuVpd/ZwzS5
+ VOwD6pPB6TzEQkthl+s8ZaSC4rTzoFLMSC42b/xvYTGwkIxMhQsmxTrBfqXRbU7jbcJmrshAo3G
+ DIVGxh9PjCGXfcOxDe6s58wXrkuGgUfePhf9abSFzTrnCpJA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-dw_spi_transfer_handler() can race with dw_spi_handle_err() on SMP.
-When an IRQ-based transfer times out, the error path resets the chip
-while the IRQ handler is still accessing the FIFO on another CPU.
-This causes bus errors on platforms where empty FIFO access is illegal.
+On Mon, 18 May 2026 22:30:50 +0530, Praveen Talari wrote:
+> Add trace events for Qualcomm GENI SPI drivers
+> 
+> Add tracepoints to the Qualcomm GENI (Generic Interface) SPI driver.
+> These trace events enable runtime debugging and performance analysis
+> of SPI operations.
+> 
+> The trace events capture SPI clock configuration, setup parameters,
+> transfer details, interrupt status.
+> 
+> [...]
 
-Fix by adding a spinlock around FIFO access and chip reset to make them
-in serial.
+Applied to
 
-Fixes: 0b6bfad4cee4 ("spi: spi-dw: Remove extraneous locking")
-Signed-off-by: Peng Yang <pyangyyd@amazon.com>
----
- drivers/spi/spi-dw-core.c | 10 ++++++++++
- drivers/spi/spi-dw.h      |  1 +
- 2 files changed, 11 insertions(+)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index b47637888..e2ae04410 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -213,6 +213,7 @@ EXPORT_SYMBOL_NS_GPL(dw_spi_check_status, "SPI_DW_CORE");
- static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
- {
- 	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
-+	unsigned long flags;
- 
- 	if (dw_spi_check_status(dws, false)) {
- 		spi_finalize_current_transfer(dws->ctlr);
-@@ -226,7 +227,9 @@ static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
- 	 * final stage of the transfer. By doing so we'll get the next IRQ
- 	 * right when the leftover incoming data is received.
- 	 */
-+	spin_lock_irqsave(&dws->buf_lock, flags);
- 	dw_reader(dws);
-+	spin_unlock_irqrestore(&dws->buf_lock, flags);
- 	if (!dws->rx_len) {
- 		dw_spi_mask_intr(dws, 0xff);
- 		spi_finalize_current_transfer(dws->ctlr);
-@@ -240,7 +243,9 @@ static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
- 	 * have the TXE IRQ flood at the final stage of the transfer.
- 	 */
- 	if (irq_status & DW_SPI_INT_TXEI) {
-+		spin_lock_irqsave(&dws->buf_lock, flags);
- 		dw_writer(dws);
-+		spin_unlock_irqrestore(&dws->buf_lock, flags);
- 		if (!dws->tx_len)
- 			dw_spi_mask_intr(dws, DW_SPI_INT_TXEI);
- 	}
-@@ -468,11 +473,14 @@ static int dw_spi_transfer_one(struct spi_controller *ctlr,
- static inline void dw_spi_abort(struct spi_controller *ctlr)
- {
- 	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
-+	unsigned long flags;
- 
- 	if (dws->dma_mapped)
- 		dws->dma_ops->dma_stop(dws);
- 
-+	spin_lock_irqsave(&dws->buf_lock, flags);
- 	dw_spi_reset_chip(dws);
-+	spin_unlock_irqrestore(&dws->buf_lock, flags);
- }
- 
- static void dw_spi_handle_err(struct spi_controller *ctlr,
-@@ -939,6 +947,8 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
- 	dws->ctlr = ctlr;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + DW_SPI_DR);
- 
-+	spin_lock_init(&dws->buf_lock);
-+
- 	spi_controller_set_devdata(ctlr, dws);
- 
- 	/* Basic HW init */
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 9cc79c566..4c0843e96 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -196,6 +196,7 @@ struct dw_spi {
- 	const struct dw_spi_dma_ops *dma_ops;
- 	struct completion	dma_completion;
- 
-+	spinlock_t		buf_lock; /* Serialize FIFO access vs chip reset */
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *debugfs;
- 	struct debugfs_regset32 regset;
--- 
-2.50.1
+Thanks!
+
+[1/2] spi: qcom-geni: trace: Add trace events for Qualcomm GENI SPI
+      https://git.kernel.org/broonie/spi/c/bf62d130b1f2
+[2/2] spi: qcom-geni: Add trace events for Qualcomm GENI SPI driver
+      https://git.kernel.org/broonie/spi/c/b5687af4af89
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

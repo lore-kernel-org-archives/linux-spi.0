@@ -1,160 +1,127 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C043BCD00
-	for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 10:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779186364; cv=none; b=dEKfbKNX3hnR/r/1p2vNCaBDVODHopLjkksVyYd6LzC2EP3rMKJjwKdYApMiduWratn5g9i372fRrxZuYWHhJlSI9HABl6cJTDG73G4PjlRs0HD3vKNU0oXDf13XHFCLm/MYCd3cJ9I1DGnfivPue1e3Fpxl7qjX4dOi1xUEafg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779186364; c=relaxed/simple;
-	bh=0iubgivcayq+lyY69Sg+JRyvXsx29eB74VGe++/UMCY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q2N+kR3cyIDQyDLmJSA3sdj8ebQCcwmphK/DcMpaE+KZeaQxdI+ZTnrc6jWJNFvM8kgSAs2tFyTtpKNjF8rbKwywxnFn1AnkiDQ9/4En0B3Sxs8Yt+1H6yIWDtdScKw+Fv8JC2O7DBa3AhbI3vSa0tkC0jn0Pcr4m8NbEH97Djk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=ianILBu0; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A213BCD34
+	for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 10:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779186378; cv=pass; b=DRdZFwFc0xAE10v0WVhhm/SYWEcBKm1aOtqMtujKsi0m9/ECzmzuHl6oFhDmGJRfWJGWcsxcTENflw1yym8EY9B9S48MG9EW9RaK3KhiR0oy5wHZUX+QT72o6zoSmfqQRXbhzGhUObkdq3PhP7Y88oCyC+SMQeNMQNwCdSMt2p8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779186378; c=relaxed/simple;
+	bh=Or7yG2HZWEiwlYiH/nOcJaoOGUYtAU1mLP4JGPvb4Ec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=md/vnBXlK6C8VGkZBFnfS3Cpgs0QapnL9PcBeKKnsfIq479VnkHZbfS+dTtDGtsmoSJQaENHyol7L/6fqJ+w11upjkz6L6lXmCZtWKa4GD5E/N8bI0nHTBHZdeyJIK08ohxmAIJUvUXwcfn2yUd9Zf9Ikun8pqcZoqKHr2sRiJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=Dl1b2MU9; arc=pass smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pcc.me.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="ianILBu0"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1329fc4bf77so9348705c88.1
-        for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 03:26:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="Dl1b2MU9"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-67bc6098640so6681149a12.0
+        for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 03:26:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779186376; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LYzy0479fk8E3WZKqsX2kMC/Dt2XBR1C/0taZhTN7QElRPVoWBirqmWlWN2MbJ7yra
+         9Uk/2owcQ0CEK3EG959eMZqts7/EV2QLlGSZIYhGQvOEDdXtf5TR3/i2/aB+U8SGtnhK
+         XgEqBJXEAdgEUKGpLFKbiyrGWFAIu5umVf1o0XGrIzFjP7BrEMqkzTYEs6OGHY672hJU
+         Ho+R+Vw6hK+XkUu/dlvs7JyMrYgjgtdqowfQFzqQHQUDchV0cXzgAjOgq7QfQ0ukFjZM
+         PruQFRlGl/RjyeqwkPX3xB7yIdeekSMQaQu9QgK48Ti8NQEpdyjHAzyYppR8B5YGobxN
+         gTlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5xuoacZ/gwTRBSog7v9RF9gHmEwj7oFhrNhlfJ7d4Rs=;
+        fh=YURvhV4V3wXwr9bJMYuTcasEKNRrWaVhRwbGjptSFpM=;
+        b=a3tO+bo6wfUOhCOvSDCi4UgoAMRUZyA3ixNIs5vnNL8oQGmOJKbe5pUk9zPHL7/TVI
+         cVzdrwLNVQwHuzgluZrY3HPbVNJkdy3IngqIc1Z6oscK1i6yEbltDeIsag1pGYToeO5O
+         h4iLbWdWe5XZ7FlVsG8e+Mcn04V56Pd3YK1R0euD+uah58IjeN6iCcla1BUBn9HbY+yC
+         o4wyUpXGvG5B0F8hjUa40oC2LybBYVMNvPZVJ8BTnZ4NxkAtj2mLLw++XyWiEaWaRcNt
+         Gb/4FdTEajiC12EOeIFfbPvpEv+VeRQv2SEWbwLQHYcZT6eAx+AeAaf268Uq0Jjab7tq
+         XghQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779186362; x=1779791162; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zi8nkxTzh0Eo1ehnp7/9INpraaPZX523L/CWo/OlHz4=;
-        b=ianILBu0MR6ck3JNfky/2eXt7oHM07/J2j3y3FGvhLEdYuKyvfR97in8sa7in8fHG/
-         ENTQfJZ7+XYHRaWVcGn93TkyOWa6kGMrg8vvZdbhwDjAee83pY2UY8aaN6BjlKOlEsnL
-         x6j0PcvVWRf0ZLLwFPT3Q3ZFozTv+e16iSb128wfWeA8JHWVRTfMj5F+vLJywJk8GsIn
-         ewnzSmANHtCKg2CZaNf6k9EInrFmAsIo17zGVGrK6dk18U0Z22kx4tTMugpYo39Hh2+k
-         qRBEBR31MzJI0jp8Z9wtRl0pn1BLqTE7SnODpaAot9cMIKEa2to4QmsExNTgJfJjIl91
-         FT9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779186362; x=1779791162;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779186376; x=1779791176; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zi8nkxTzh0Eo1ehnp7/9INpraaPZX523L/CWo/OlHz4=;
-        b=DUdWKvRYtpZZa6u4e8DGihn14IYQ1KsULBX6oAgKrxBxslZmRl5/YgVxemF0SA4dy/
-         bW3NbJ2prS45LuhcnORGgJ+R3NgOSesTXNLP36nL47x04KgBLczzOgSl2o23TJGdcByy
-         2SjpmuqmXUqEJiW+IiOIQSBvrKqgXVvVj9+wOH6yLJpO/mWn+GgbL08Af2yZ41876eR0
-         YxDn8cQG/YIt7Enae9oIMDhhtFL0rHeQ4XEz0v8OLO4vfyM930wuaz2yaVg+5lyS4uAB
-         LYTPgQm3zgfoXUwwZhfu8TWdXBOqlED6ZDLPDGyZ6Alw0T/T+t1z1IHFvr0tA68Fgvrt
-         duZw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Fa9W67ofo//IJblsKhQEru4ojh5uTxEVt9LhBeK59hzVffUaZyFCABt33naxqzzl7fMcYaejhgpQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3Ujyb7Or8i55wnGcmUj6Q71fsgJ1e6grw08Z3kQXDHRvz6mFi
-	zmQxEE/A3slHh3fN8IUyVLvHoGht1Xr1hbq/FurDYWt/6lXN1mfuSTBEGwIl1IT7uE8=
-X-Gm-Gg: Acq92OFOe1sKzLXVK4LCLnXMd9HFvAAhARNahLq8WBHvtBRpf1Bzwb7f8DiQxG9u3YB
-	TdGzfx3nrN2IctmCvkfJJjp/o9NGQV8ypGmP3lma+TDvcC8/58nSsF77/MJUt4A0zULgBYRjJLS
-	H8Am3K1d3a9VucZLBV9YZlAhDXCcHumcU458oiWjmvryVuemec1mFQaY8AbeJa8JkRAsiW6V8cp
-	Hr9oD9QtL+x5MbJaLvHQAGP4wbSX8giBO8QFtZAsKeA4iqZ0YCUM9o6RunWsLKfgsqUBCO2CCL1
-	slBydVW/KV6Nb4923u300KUXS1r84RjY6CeD7mgQIoOIRD+vPROQWK+XxIgOeRLjfPzd7h8Gw58
-	cxZ1pNK/utBnBuaM4o452eGnUf+bE2VInHxP1LA9x8BRM7BVgl22jj/bUgKZZQbOF6IcBSGUQH5
-	RP0znM3HwdD4iv2CZT/NJzZarlSiRRz+mRCBvvY293eU2g4KcO5PcDOBo=
-X-Received: by 2002:a05:7022:6890:b0:12d:de3e:cc01 with SMTP id a92af1059eb24-13504a4e7c1mr9034464c88.40.1779186362132;
-        Tue, 19 May 2026 03:26:02 -0700 (PDT)
-Received: from localhost (c-67-180-161-137.hsd1.ca.comcast.net. [67.180.161.137])
-        by smtp.gmail.com with UTF8SMTPSA id a92af1059eb24-134cc3490bcsm19415549c88.15.2026.05.19.03.26.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 May 2026 03:26:01 -0700 (PDT)
-From: Peter Collingbourne <peter@pcc.me.uk>
-To: Mark Brown <broonie@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Peter Collingbourne <peter@pcc.me.uk>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2] iopoll: use udelay() for initial polling
-Date: Tue, 19 May 2026 03:24:46 -0700
-Message-ID: <20260519102446.209723-1-peter@pcc.me.uk>
-X-Mailer: git-send-email 2.54.0
+        bh=5xuoacZ/gwTRBSog7v9RF9gHmEwj7oFhrNhlfJ7d4Rs=;
+        b=Dl1b2MU9vk3my7fZ9yh00tgVpLbSlYbwfC0GRd6w2W3+Jt2UisbwAdcAbyHO2Uskob
+         KUgEsEULcck6wQEEPq69Gt5HVNZdnzpgCbZB7xqKNdTXdGUMTXnkSb2ppckGi6olFpNS
+         kW4f+pnagCHLgyOWW/CyVm3D1nlnrrSYly89PJ2MJQ4TCf+EliNb5mYByv+EKmxOposP
+         OrKRFX62G/57HWvcFbbTx08jtZcmssBfv4LH56qd9SIvbsNe3vkchgUDsg4v/dj2nlzq
+         joPWV1VEe3qTny1MSH2VPhW0QYHoKKj9k2LTQvxBYW61H9YpQMh6ymYYJ4ts3RvGrZwm
+         gSvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779186376; x=1779791176;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=5xuoacZ/gwTRBSog7v9RF9gHmEwj7oFhrNhlfJ7d4Rs=;
+        b=NWXiWB7qFqafmw9S12e1jhLRJlXV+s7H5ADjHfAXxPfDZMcfKkHRJSu6X/w+o0W/1X
+         39aCxUO+0z2V4ZlMzWA/3eQu6St8o9sM18u00/dvvwrZQGKs4Z9WTW4wZTDUWrlHNKJU
+         jNgsq+5JyLzqpKkO+swdPk8jrjHCv0RoLTjdLXDizMDtAZDldJIUhf6B4424ci+pPCf8
+         XMRaZEAXWMZqkxKcPNQ1Lx0jXx7DDg91WBCK0jOiKUH++eDuMCcgexWhJ6Mr3DX96N2+
+         buHqSGdsXw2GqH1bwV5w3j2rUnfGPyQGbDyoS3/axRxkyyNuSIQjDYtaeWYTm47MPvZt
+         RSNQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Hv9aTW14bFpCXapitdCLo0uQPR4OwDdOup05VI9/cz3SW2yHrCaIfGah773IPBYDa0lmXcnFu8AI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0neFFtBpmgD/nCtJc2zlaTRxJhWmvnCIAIYsArRApURO2ZUym
+	Jawo1EMr4SRfEVpaDEc0TpNKSMZGRaaxhEMjm8FwTz+03AWledQmkCj83KzikHeXhrsJC/5Dz9P
+	wvXh65pGcRYq+L6Q6mYhG/TcHQE79mOZ8q8o3dgGMTg==
+X-Gm-Gg: Acq92OGglNOSceWZS2Af3Da9U+RsbLb81mIEL7OhWaxH3gwHaUxQyGcCuiFUMYJ4XZ5
+	QPGiE2Nnra4uvGIfJ1zP8KrnuMkLMZp7clvn0GJN8m13o5cX/i+LaDwWzUtWBNzA/3Tu9dcGIM/
+	o38YuxNudqAQkTJydBw/tHPRJIGv38Kq0krKi2qNVmy2u8qrf35xbviLhTN3elVuhXL/cGCuFUH
+	dF13+CaHdBZJkMxrqbJAb19GzFm0CZ1TirlTQlJhBxtssT49xQwRXfSWPisawVrtvxEsTgEGDHT
+	0kJ94Qv+8ZYMCqgJjZY=
+X-Received: by 2002:a05:6402:a58a:20b0:670:8add:2b8d with SMTP id
+ 4fb4d7f45d1cf-683bda948demr7337590a12.24.1779186375700; Tue, 19 May 2026
+ 03:26:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260517062554.117448-1-peter@pcc.me.uk> <8e7c7d5f-376e-4ab5-9ea9-a19a32d4ff67@sirena.org.uk>
+In-Reply-To: <8e7c7d5f-376e-4ab5-9ea9-a19a32d4ff67@sirena.org.uk>
+From: Peter Collingbourne <peter@pcc.me.uk>
+Date: Tue, 19 May 2026 03:26:04 -0700
+X-Gm-Features: AVHnY4I0YwvzFfBXTMVn5yNzK0m82DM8ReeNm_apVnVHplWZAIJ0RHQfs9vKq60
+Message-ID: <CAPQLkRii7J0-7Ai3QeTNZ_9kYkAB_=rsLVh04mhDGzn+YvHDQg@mail.gmail.com>
+Subject: Re: [PATCH] spi: use udelay() for short polling delays
+To: Mark Brown <broonie@kernel.org>
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, 
+	Christophe Kerello <christophe.kerello@foss.st.com>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, David Laight <david.laight.linux@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A short polling delay, such as the delay of 5us
-(SPINAND_READ_POLL_DELAY_US) provided by the SPI NAND driver,
-can become a 1/HZ (order of ms) delay caused by the usleep_range()
-call in read_poll_timeout(), significantly reducing SPI NAND access
-performance. Fix it by adjusting the read_poll_timeout() macro to use
-udelay() to delay until 1/10 of a timer tick after it is called, and
-only then sleep.
+On Mon, May 18, 2026 at 3:46=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Sat, May 16, 2026 at 11:25:54PM -0700, Peter Collingbourne wrote:
+>
+> > +             if (polling_delay_us < 10)
+> > +                     ret =3D read_poll_timeout_atomic(
+> > +                             spi_mem_read_status, read_status_ret,
+> > +                             (read_status_ret || ((status)&mask) =3D=
+=3D match),
+> > +                             polling_delay_us, timeout_ms * 1000, fals=
+e, mem,
+> > +                             op, &status);
+> > +             else
+> > +                     ret =3D read_poll_timeout(
+> > +                             spi_mem_read_status, read_status_ret,
+> > +                             (read_status_ret || ((status)&mask) =3D=
+=3D match),
+> > +                             polling_delay_us, timeout_ms * 1000, fals=
+e, mem,
+> > +                             op, &status);
+>
+> This seems like something that should be fixed in read_poll_timeout()
+> rather than open coded in a user, similarly to how fsleep() is there for
+> sleep functions.
 
-Fixes: c955a0cc8a28 ("spi: spi-mem: add automatic poll status functions")
-Signed-off-by: Peter Collingbourne <peter@pcc.me.uk>
----
- include/linux/iopoll.h | 30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+Sounds reasonable, sent v2 with the fix moved to read_poll_timeout().
 
-v2:
-* Fix it in read_poll_timeout() instead
-
-diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-index 53edd69acb9b..2ee89b76f072 100644
---- a/include/linux/iopoll.h
-+++ b/include/linux/iopoll.h
-@@ -19,9 +19,11 @@
-  *
-  * @op: Operation
-  * @cond: Break condition
-- * @sleep_us: Maximum time to sleep between operations in us (0 tight-loops).
-- *            Please read usleep_range() function description for details and
-- *            limitations.
-+ * @sleep_us: Maximum time to sleep or delay between operations in us
-+ *            (0 tight-loops). Please read usleep_range() and udelay()
-+ *            function descriptions for details and limitations.
-+ *            This macro will delay until 1/10 of a timer tick after
-+ *            it is called, and will then start sleeping.
-  * @timeout_us: Timeout in us, 0 means never timeout
-  * @sleep_before_op: if it is true, sleep @sleep_us before operation.
-  *
-@@ -35,11 +37,18 @@
- ({ \
- 	u64 __timeout_us = (timeout_us); \
- 	unsigned long __sleep_us = (sleep_us); \
--	ktime_t __timeout = ktime_add_us(ktime_get(), __timeout_us); \
-+	ktime_t __start_time = ktime_get(); \
-+	u64 __delay_timeout_us = 100000/HZ; \
-+	ktime_t __delay_timeout = ktime_add_us(__start_time, __delay_timeout_us); \
-+	ktime_t __timeout = ktime_add_us(__start_time, __timeout_us); \
- 	int ___ret; \
- 	might_sleep_if((__sleep_us) != 0); \
--	if ((sleep_before_op) && __sleep_us) \
--		usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-+	if ((sleep_before_op) && __sleep_us) { \
-+		if (__sleep_us <= __delay_timeout_us) \
-+			udelay(__sleep_us); \
-+		else \
-+			usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-+	} \
- 	for (;;) { \
- 		bool __expired = __timeout_us && \
- 			ktime_compare(ktime_get(), __timeout) > 0; \
-@@ -54,8 +63,13 @@
- 			___ret = -ETIMEDOUT; \
- 			break; \
- 		} \
--		if (__sleep_us) \
--			usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-+		if (__sleep_us) { \
-+			if (__sleep_us <= __delay_timeout_us && \
-+			    ktime_compare(ktime_get(), __delay_timeout) < 0) \
-+				udelay(__sleep_us); \
-+			else \
-+				usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-+		} \
- 		cpu_relax(); \
- 	} \
- 	___ret; \
--- 
-2.54.0
-
+Peter

@@ -1,121 +1,156 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout7.mo534.mail-out.ovh.net (smtpout7.mo534.mail-out.ovh.net [54.36.140.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC3B28641E
-	for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 00:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F86223DC6
+	for <linux-spi@vger.kernel.org>; Tue, 19 May 2026 05:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.36.140.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779152196; cv=none; b=Dap3XotMi++2d7LhNlJVuOIQ1EzHorGIKcj5T7Ow3DzgMY1A7lMNayTxZSyIlk6E1ewY1+ddGJF72UHQrdaKjPHymnZjxLpN+/elWlNepKK4AEohqzz5TxSzH2QPXluFiplFstXDruhNAo16txII5XTITXI6+e57sRG1r2K0lD8=
+	t=1779168275; cv=none; b=I1edQxrF6eCEzP8oV5aUQsx9UAVicJwn6xhVTtFT06F5RJJAdQ0kgKWyFoZK/o4WuSYkgk35de9F4OW3bzeqCA36mcs6lmzWYYxE/UAYgPdRX3w1EJT86wFsoxZtK9gR6o+7hUZU4AsSUE1Ecjf995DW6GMV+4p5NPibiIfTGYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779152196; c=relaxed/simple;
-	bh=BTpfEAjwmZh4mPdi0IGtoS6z3WhGRpuvOrLDLsDtz3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uG8FeAcr7iAJ5X5zjSIo4DGYfFCSfCjuizD9EAbdiwJYil9YdvCw+8zlXtAOB6JlIsEUnQ0ZukIyvNQFUQbqu4egXQSo0M8rTwNqrhTjPeeMpVKFbRGJSzbDV3InsxGXU/SikDMMbIBzmNmMDwDIVK0IpynWKEgiplSrnDrmhpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JypuPf14; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779168275; c=relaxed/simple;
+	bh=bNZwWR9Ss2hhRC2v3drqLRBhMt8fKRMZWJUoR6d54Dw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DXIKSQ/rhndKeDPOlHDQCGxGXzn30s2YY0HD1iJi7OqviHOq0aStKrcNDESDdfPSHhJFUVBVCjVEgm2HFa1Ovzpr9IdXeyFoPS/pJAz4qYYIWX0fHZSjKk401x8izzklCh6hp+iMam5jyI3ONnb7hY07yvU6JrcJYuNlPYQaGWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaod.org; spf=pass smtp.mailfrom=kaod.org; dkim=pass (2048-bit key) header.d=kaod.org header.i=@kaod.org header.b=NTAl8pTO; arc=none smtp.client-ip=54.36.140.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaod.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaod.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JypuPf14"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ba0fc8b1f0so18464385ad.3
-        for <linux-spi@vger.kernel.org>; Mon, 18 May 2026 17:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779152193; x=1779756993; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rNUfqjlkG3eaKiIRq2CYNoqUPH+rtaUsFg5I/QT17Qs=;
-        b=JypuPf14Ovk2n/s0FaJi03/3yyAMdgC57Cmb18d1DB+KzS97K/IYpZt3Ny53hyXYvG
-         ebD2vlUyYEotnkdQtTT/WhyCibCvw1qWVY3BKIwWQcofYKdP1DmyktA115wDGz84ZxSN
-         WVxK3cR1c2I35OFujljcadREyZR1oPhc9YmHCMD/NaWuIPJ4Yzu7bWoZEe7ecth0NhNp
-         FAAwF3w7PDKSXGgO3nyxNw4sP6FK3yfk1HiENbwt8EzVKTnhHpxpJasxWZZ3RufQUUbx
-         5BESxVznwGzhD3CAlYV7KmjUxXJ3wxcssPhvkfhckQrZ+rNlgDE9supmiQiQOR145Fvs
-         qVAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779152193; x=1779756993;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rNUfqjlkG3eaKiIRq2CYNoqUPH+rtaUsFg5I/QT17Qs=;
-        b=S8SHI1S+Np45uivIFqJSjEr0RIAKsmsh2QIsJ29gW5923a9B/E+yXPIleoSEeGwEsX
-         qX9/G81y5g5IOhHy/PxVdLsFaFXx1nBexenNV+yfnJJvpAX5wpo2SfPDllKX8S/Bgel4
-         GHuKFZne000OGoyD+Z9uqSNmE+MGnzI7tRU5gRiYo+arUpFTpSR664CJSygf/GPD/A7C
-         Fmc2+XKFs0OC32NysCs/SaRmuVXugTfly2jO+tA6csgoIxNmH/1rYy2jdmeEjeEf4SGf
-         +xwPmparTJ297FSAe6gKJLDBnlvDMQquNRokqGQXIKXEfvjzr6MUYEKczqwWjXlX46m/
-         DAbw==
-X-Gm-Message-State: AOJu0YwBs6aFu4rzb7TqoDsqu+qHfIFvoFlWCwVttDps9gewZ/TU2idw
-	spwZ2cPjGepuOA/VpCW6pL3JdjkvZmszWKwrkwSCKo39jC7OL5ombfaUP50xrGjY
-X-Gm-Gg: Acq92OFgGh28WFMdDSAp7J2EWNgz36bwNMzp9iNmVYNOGw/ahJp8h5xR5+duM8EKVcy
-	2T9+laQTlbhi+PaA9nKNoR4Jcscw68eyRPPY+uIRZWR/+UivvIbCWKuD1HPd+7g36AifKGw4zzb
-	5hOhFxImycB4Ic+O0yO2DCFfMgcxsqeIbF/vU8K2QHkbN4bHLP3SDdtkZe1z98GnrVOiuYs1Z0e
-	kq0FV1TmaIeAW1fYnkCHLMCEVfeCgsFX2V91hN7uMeV5khpAp5HqpnAEwSQhThTYRj18Chfyr9J
-	5ZbEDwzmMRHhY7W7O4Oh7rapot8/yh8vcaG7Apd0rgieomLZxNnuofljLMAABiCpTSc/Q28kp0H
-	1ZjiBjvVspc4xKQG3KP+2EhQzv7BZap8qby2t0JawSBAxYhwmifHiVA8EApgyp6XKAevjmODJk2
-	2lvz79okaxCRbW+cyXxZ3n78mY8YGB4JnAivPP1xr4Y+y0x7orhcBDLqLkqVvKI/UmAHJLmhDin
-	VIVjL6b+1Apd1svHdK/xac846onEmaGr8WungbJEg6oiw==
-X-Received: by 2002:a17:903:3d47:b0:2b0:5795:9ead with SMTP id d9443c01a7336-2bd7e410cd1mr127913015ad.0.1779152192596;
-        Mon, 18 May 2026 17:56:32 -0700 (PDT)
-Received: from ryzen ([2601:644:8000:5b5d:7285:c2ff:fe45:8a32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11d6easm178330205ad.72.2026.05.18.17.56.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 17:56:31 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-spi@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] spi: cadence-xspi: Add COMPILE_TEST support
-Date: Mon, 18 May 2026 17:56:14 -0700
-Message-ID: <20260519005614.628437-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kaod.org header.i=@kaod.org header.b="NTAl8pTO"
+Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net [51.68.94.138])
+	by mo534.mail-out.ovh.net (Postfix) with ESMTPS id 4gKNDc3GXgz6LD6;
+	Tue, 19 May 2026 05:16:00 +0000 (UTC)
+Received: from director5.derp.mail-out.ovh.net (director5.derp.mail-out.ovh.net. [127.0.0.1])
+        by director5.derp.mail-out.ovh.net (inspect_sender_mail_agent) with SMTP
+        for <BMC-SW@aspeedtech.com>; Tue, 19 May 2026 05:16:00 +0000 (UTC)
+Received: from mta3.priv.ovhmail-u2.ea.mail.ovh.net (unknown [10.110.37.103])
+	by director5.derp.mail-out.ovh.net (Postfix) with ESMTPS id 4gKNDc13kDz7tlG;
+	Tue, 19 May 2026 05:16:00 +0000 (UTC)
+Received: from kaod.org (unknown [10.1.6.1])
+	(Authenticated sender: clg@kaod.org)
+	by mta3.priv.ovhmail-u2.ea.mail.ovh.net (Postfix) with ESMTPSA id C2A1212E3B4C;
+	Tue, 19 May 2026 05:15:58 +0000 (UTC)
+Authentication-Results:garm.ovh; auth=pass (GARM-99G0039684dcb8-cd63-49a4-92c8-9921fee0f866,
+                    A1C5BDF50025601E7F63D663DE463AD2E6007479) smtp.auth=clg@kaod.org
+X-OVh-ClientIp:82.64.250.170
+Message-ID: <f35f2b40-2fa1-4436-923f-218de21f6320@kaod.org>
+Date: Tue, 19 May 2026 07:15:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] spi: aspeed: Fix missing __iomem annotation in output
+ transfer path
+To: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, broonie@kernel.org,
+ joel@jms.id.au, andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
+ openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ BMC-SW@aspeedtech.com
+Cc: kernel test robot <lkp@intel.com>
+References: <20260518095708.2502537-1-chin-ting_kuo@aspeedtech.com>
+ <20260518095708.2502537-2-chin-ting_kuo@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Autocrypt: addr=clg@kaod.org; keydata=
+ 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
+In-Reply-To: <20260518095708.2502537-2-chin-ting_kuo@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+x-ovh-tracer-id: 17442441358158310602
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: dmFkZTEoerUWSzNGZsjx9uoa6SmO8zT4p/z6+hEkbPVZhZ2bJRf5AqxAZW0Bgc1XJ39p7LXNVhXaj1s7wWqfUv7KnO8OBJ8j/XLCfXpLHAClORp/zYHonr6Vh44S8Th1hbq12FUEhiQB7Hg17bvbBfJDgtMp+AgFaLdGfooUraH3d9VOHKQN1tzBLaPsNPakAPlbrgqLZL0QwDUhG0MUyFPgb2rixXGkRs7anp7Q1k7/VL7qdmvJmaRFq6mcx6IfLyZ88H3D88QUBtKKmBU5DWLYnjdiCs4pPsv26+CPu1LDOq+GmRmCXxB7YZlgaMLha9zLisE6oXQdKKin9A2UdTcDQ3VDh4C+sQQlEUrjlp6JIQSLLCdOVotNQqFKXhRyF7vyKMbH9EDw0esY1oLfCG5cHycRKoDNZ6qbs/J/Ju1vXg1GY1f+hEOcrxcAneFZh7nHNGjvyyOW8EmuVMjkPmLmvG3GoBNICB2oDbG+Hdl0nZO7Nf1DNq3ECmHAOw/i6mi+hhO4r82xb0ft+ULMqHhybjJeuMHmPean1e8pVKo0Q6Fe2H7+fCg4+jEGSISaeT04zRMIfpaNn7dyyewg1ug7W9R7nFAW+4phNgmoHEyaAHLZWiZq4pzniv9GyGn63bCF7lBWcoSpYC1uF4lyEsiIP8xyZ9eSHyF6FPqL4CFWMzx0/g
+DKIM-Signature: a=rsa-sha256; bh=7/eczqgb5pHTFq3/P6vC9IlXxV8mPvvQMR8RQBbx5Us=;
+ c=relaxed/relaxed; d=kaod.org; h=From; s=ovhmo393970-selector1;
+ t=1779167761; v=1;
+ b=NTAl8pTOFP4+gFRE4i/CND2oNcXxbhLDUhUcuf1G4tTs4X9/dqPQ8KTOuAjuMgpXxf6SMSfc
+ /2/0wAT4I7GRQYPuowIsr27rmeBCKlTOPgVTwT8IqIBz03/S6DWb7Kcvni9YuBesXaCP5JpUOMB
+ 3Z56yyIBalrVcwg3ThCwSbfBm4CEZDMM8KvppfNUNPN0119ulwtsHYaoyPC+y1F1mkcKWU5g6rK
+ 2X2WAcMI5Sik5S740Sp0Or7YDCGQAgtsN00FbyyQv6REitHHh4y18te7qZgzGc4h5QddYKK7URw
+ jvh4k27GEh5/IxERfhmVBULYtbX51qRuoqRPVpEEwFMkQ==
 
-The Cadence XSPI driver uses readq() and writeq(), which are not provided
-directly by all 32-bit architectures. Include the generic non-atomic 64-bit
-I/O accessor fallback for non-64-bit builds so the driver can build there.
+On 5/18/26 11:57, Chin-Ting Kuo wrote:
+> The dst parameter of aspeed_spi_user_transfer_tx() is an MMIO address
+> obtained from chip->ahb_base, but it was typed as void * instead of
+> void __iomem *.  This caused a sparse warning report. Fix the
+> parameter type to void __iomem * and drop the now-unnecessary
+> cast at the call site.
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202605180441.uD3toFRJ-lkp@intel.com/
+> Signed-off-by: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+> ---
+>   drivers/spi/spi-aspeed-smc.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-aspeed-smc.c b/drivers/spi/spi-aspeed-smc.c
+> index c21323e07d3c..808659a1f460 100644
+> --- a/drivers/spi/spi-aspeed-smc.c
+> +++ b/drivers/spi/spi-aspeed-smc.c
+> @@ -891,7 +891,7 @@ static int aspeed_spi_user_unprepare_msg(struct spi_controller *ctlr,
+>   static void aspeed_spi_user_transfer_tx(struct aspeed_spi *aspi,
+>   					struct spi_device *spi,
+>   					const u8 *tx_buf, u8 *rx_buf,
+> -					void *dst, u32 len)
+> +					void __iomem *dst, u32 len)
+>   {
+>   	const struct aspeed_spi_data *data = aspi->data;
+>   	bool full_duplex_transfer = data->full_duplex && tx_buf == rx_buf;
+> @@ -936,7 +936,7 @@ static int aspeed_spi_user_transfer(struct spi_controller *ctlr,
+>   			aspeed_spi_set_io_mode(chip, CTRL_IO_QUAD_DATA);
+>   
+>   		aspeed_spi_user_transfer_tx(aspi, spi, tx_buf, rx_buf,
+> -					    (void *)ahb_base, xfer->len);
+> +					    ahb_base, xfer->len);
+>   	}
+>   
+>   	if (rx_buf && rx_buf != tx_buf) {
 
-Drop the 64BIT dependency at the same time. The driver only needs MMIO
-and the SPI memory interface at build time, and the fallback accessors
-cover the 32-bit compile-test case.
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
 
-Assisted-by: Codex:GPT-5.5
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/spi/Kconfig            | 3 ++-
- drivers/spi/spi-cadence-xspi.c | 4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Thanks,
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 8782514bb89b..957c3e065b83 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -321,7 +321,8 @@ config SPI_CADENCE_QUADSPI
- 
- config SPI_CADENCE_XSPI
- 	tristate "Cadence XSPI controller"
--	depends on OF && HAS_IOMEM && 64BIT
-+	depends on HAS_IOMEM || COMPILE_TEST
-+	depends on OF
- 	depends on SPI_MEM
- 	help
- 	  Enable support for the Cadence XSPI Flash controller.
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 32fa19ebf7a9..c45b29c043bf 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -22,6 +22,10 @@
- #include <linux/bitrev.h>
- #include <linux/util_macros.h>
- 
-+#ifndef CONFIG_64BIT
-+#include <linux/io-64-nonatomic-lo-hi.h>
-+#endif
-+
- #define CDNS_XSPI_MAGIC_NUM_VALUE	0x6522
- #define CDNS_XSPI_MAX_BANKS		8
- #define CDNS_XSPI_NAME			"cadence-xspi"
--- 
-2.54.0
+C.
 

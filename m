@@ -1,64 +1,64 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D1D3CBE66
-	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 11:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8CF3C276D
+	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 11:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779276850; cv=none; b=lpWvg9AjLkxCPPAghIjJupC3RcRscOk9G8+0LhEYQg17t/oxQlErr7brXpTZczKljg3fL9GeqA0iAHEAriTVLutuGdM2Z8QErqrju2WynDaCqpNt5xtCnG4fZ4KR47tWbrgIDpFNQLPnwJW8vmvIxJTYKzR0/jwk5a7h1+ge0RY=
+	t=1779277569; cv=none; b=CVx1nRhloF5t4TSs1b35OALs0D/u28HTwi185+AWav9KqzRGss8ts7WxX+OZ143bZo+Ec7pcU9oPrVK5YuVzdTkktVMbws26oFLVRnZtJKnY8L9zHbl6QAls2bd/TrUalpCLtv81eGSJ9d6/UsOuBhuKWmx5mmxorC/Un+i2BV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779276850; c=relaxed/simple;
-	bh=mZf398tO0M7pGAFleQA1/zDCux+F0MFC2QT8L3t3rwk=;
+	s=arc-20240116; t=1779277569; c=relaxed/simple;
+	bh=HAE4AMZu+Ss4rgWHRp2AaAfs0faAFaKNXX1OR54SzC4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gsmizns4BWf5RSv5LCUnXCs7TnzfncPTFDZuK0DijhzzFbmL2Fi6t+8Yxm7EQ5ckj+7/19DctzMkFk0NtwuWq7JNK46UlMM8d5hpx1MQSGg7nq0DFHIbzJvz060xow2Ok0YrJNNsiSqlivp0nB95uOsSdoXNx7MjU2Ye8B3ZZ6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mGelq+eF; arc=none smtp.client-ip=209.85.221.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+8FPwYl8EoaxtFrTcfNXquKtF+SYepcnemP3Kk9urWPe6yGleyjtDKJf+bCFcIk6dRNrtos1pChviR7Vl2kf3A7pkplXkDUY8fDdJiK8uzAPxxRW2TSGwgYfokWOQ8/lwnQg1TVL+Z5OFdVPgGucdkWVwhcnKzOv7UY4EKbL3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=POb+qDAC; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mGelq+eF"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-441209fb77eso2943716f8f.1
-        for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 04:34:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="POb+qDAC"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-453903ee4adso1825117f8f.3
+        for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 04:46:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779276847; x=1779881647; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779277565; x=1779882365; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mZf398tO0M7pGAFleQA1/zDCux+F0MFC2QT8L3t3rwk=;
-        b=mGelq+eF10VeFQ4swjLpv6f1AzLthYvfWv8m53VQxEOgbkeNSsvQX5dqM5MHSS03X9
-         dLK/z728gk02Dbmw8cXWf29NSbiXw4zsiZzPydWAc4gj1LtJFwSX2NnDRhbNATntUky6
-         ETqhWkq7evR+BvT3PcXVDfDkCygD4qmuUF9MEMqZxxZ2Q0LGNhdhfRUQeRSZR6G2jE1r
-         u0Qikq0UKNGemgFOh8FKlGOs9Q9npIHWtXCVVwXNLcb00VL1a4mFu3j05Hotik8yxZrW
-         nRw038+Ct7YhGqOAigrfEL/IscyZOpdizaJ7+Ttnx+NJF+brSBZJbiNdATC8i50Kix+g
-         k/2A==
+        bh=Z07VRMZi5fEjKXUJL6C9y8TRN1VH0M6Hd6W0kvKYQD8=;
+        b=POb+qDACyQt5rJMZKtfxxxaof1honWrvTPwmHxt7Fw26D1ooC6JhyrEeJajCRaXMd6
+         hcImVuCSq3krs4jroQHrOxQO0NfnKmhnOdeL7N+IF2vww0XoGhW8VvZ661lsEmNvqJkD
+         VsYyWXF8T9kEo4SAVrj+DDqR3Qk5vZCyaCLXV54Ozh3hDGZkENYg8n74yqIKo9ZqwIB4
+         ElEExP1ZoqF+EYmHodP1pMzEobFM783VAHHTYJJNVqBCrGhKMi+oDjQTiQ192PAvZx9f
+         +5jXMPf2nKf9vcFQCvLNEbXKjdFeLVELv4RQr/y+xzOM0ETKnjZh7N1MKakfQg9mXl+b
+         zQ5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779276847; x=1779881647;
+        d=1e100.net; s=20251104; t=1779277565; x=1779882365;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mZf398tO0M7pGAFleQA1/zDCux+F0MFC2QT8L3t3rwk=;
-        b=hXp/UNK7OGuUjdJOprc/qGShzSW8sAVSKyv/vllf6uHyH4+E/FgL/RqqPOGsylNooO
-         dMQirGPo6d3+582SN3jaRLiOLNC13nlQ/1TUAFzbI1F1Sz+OIzaKZ7fTA61VbR0Lg/Kw
-         eZEtjYvtYkkVk7HIIzxTy851w0MJclDumRzvRuV05CmYKz9L0jQA4C3493V11oZYpCsh
-         PDBTT9szU17UYxAiwCqNGzUag4REVetf8tlySWT1WYSt9XvkuN6JqLMy7n/K51w8gcPH
-         8mBnivohoRmaVesDDphvt641QSvD7egIfQ6w2i421Y29JfL9PJOyykkCsaBJx9P2dUy7
-         RH9Q==
-X-Forwarded-Encrypted: i=1; AFNElJ97ZPSRnymtrggM2Ax4S19IUbV7eIWK9mYS3H9m0FJwPRDrZy+zSmPdr9F2zoJ7ln2SZHT5643nNnI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm8yn2aeSOTuXhyLX/lfJgdlW+4bly9Ps3/SqhAJVgDEa8bmkx
-	5iKb5Cz1JJDmR1yLT8JJmTZgTGlW3br9h7QD/WNoTSKJnjB8qOOohlMZ
-X-Gm-Gg: Acq92OGL8QS3geqlKpHYVQ7O/VDOI650ziIh1YzmUZ+cUdPwvgyvRTnWbWlW9JRmHBs
-	qk1Hspm1ECT8oK6A8mmgNXRuOdIG6d1sfxv5mHlUZptw+89ugCrHTNRm+StzCuhDLtxB0LimBhg
-	pc5nSNcYJhU+aYGFWVT6skJF+JVGgUIVj6n1HwSRv/K40ME6gXz2b//mnNX3oNAO3a7/tC2vpyU
-	DFvIZiQjmVTXn5Fbyc19EAoZyqIwSKq8aKd5AcZA/MpfS6VUnNnxAU8aBq9atTR9a+UBYnORjAB
-	iXmZ7jIgYb7fxldewLYMfPbg/GhxtZgkk9JWWI04z9uSHLMLRisDm96al9WEJi3ELS9UvNOYpdk
-	WJtgwCV46rjOCcqC3pWe+03MKIfGt7eYa659QJP8PrXx3E6VndNBRRWixcofhvbyoHk5lLU0aeb
-	6FwVbdmrfiZuJGEO0HeEvBLdbnBwu3blYMc630ATxP03tN7BCBDYwvf9jssONHYBYarAfNraWV4
-	ijLtfAVkzBEbMs8TcsFqSKZ
-X-Received: by 2002:a05:6000:1949:b0:45e:7792:6e6d with SMTP id ffacd0b85a97d-45e7792716cmr16972746f8f.13.1779276846874;
-        Wed, 20 May 2026 04:34:06 -0700 (PDT)
+        bh=Z07VRMZi5fEjKXUJL6C9y8TRN1VH0M6Hd6W0kvKYQD8=;
+        b=C2T/LF79cD50o8Izf9pzR7vItSyiXJ4Eg/bh2zFs5RnfLzGCJK20JTwD67u2S66ANV
+         TcLuVoQZmsoRMHNFA/BL7DDlmLRiu+ZlbAZbqauDN4b51yxL8CSTNCh5opayvbsrEN/j
+         dh70PD47u1NX7QUN4UhgnDHC7QY8iUVVmWE1B3zgbbYSMqyLWj1cGOqLU13D3ApUOD9a
+         QEJRkxq7xy6/Nk7tvD/5KsrqFE01kK/bBJeBZPmZQBdErd/POjzgd46WAoAwNyR5ClJg
+         dmA9ppLKdI+uJwRVz3TYWQYutqYUvtApotOvNZF5Rrc0ZWr1VSTPATmjF6KIgXnTF6D8
+         TnHA==
+X-Forwarded-Encrypted: i=1; AFNElJ8W823vgR5HoYkEC1+iHx08EGd/17aHjwUjEzBl2iDl6veG2vXQXDUuvrS1kdTVxLH0qxnPJl13uTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy28ZhQ02t8D9vToyutjo2zkcbNdMqZrByw5tqHLAXbHM9g02CR
+	1HB+lsT9NWceAt9CmOHquREdHJW5X+1eISa6iAyaxzHE0aMn89OKx1Bx
+X-Gm-Gg: Acq92OGKKu77ErO7pzCo7ZgypoxRgaBEED3nef+Otd7TSabC4iAfV835dyEf2iEwovF
+	X5kMRfrSSafaDW5JuiC+bPxqlwxjSo6nfnEE1g3UXC54aeA39MPkQLSKK1IznTwul/m/cbzIbd2
+	qLf0btM9lgaaG4Ly2w07nL31PPE9iKY9evtal0QK94fmNnLW2wP6FupnEAK2nmgTxhB6JR0WyXw
+	x0df3ozpV8TiX/1hFd3oiMxsHOFHQpO2zP4C0ucKd36ljp+yr9IDD6704DZ5UdcdFEK+xs3Yl6B
+	9Mzu4BV38kByX2Tpai/FxB1E/+lwcwNa9vQNGaFYzwrmTCEWKM+iiBPTTz7tx7oyN+h/0gZwDo8
+	D9PMg5SLdylkF0WJHfHViwyXNIVwY1Q+E16IjhfRgn/ZZA630U1tcacz4ZNXnT2cbgrQaKwMHup
+	xUhmsNwT0juBlmYs0yq/HnO5p8LbclVXhtkrmrmrVh0BEBHBw5dICYqp95KmpM8/+0GQm4Q554E
+	m1UOxsh/3u1Yw==
+X-Received: by 2002:a05:6000:22c1:b0:44f:f2d5:a401 with SMTP id ffacd0b85a97d-45e5c5a37e8mr39518728f8f.37.1779277565276;
+        Wed, 20 May 2026 04:46:05 -0700 (PDT)
 Received: from orome (p200300e41f291e00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f29:1e00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe0f72sm56958318f8f.25.2026.05.20.04.34.03
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9e767cb9sm51264332f8f.2.2026.05.20.04.46.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 04:34:04 -0700 (PDT)
-Date: Wed, 20 May 2026 13:34:02 +0200
+        Wed, 20 May 2026 04:46:03 -0700 (PDT)
+Date: Wed, 20 May 2026 13:46:01 +0200
 From: Thierry Reding <thierry.reding@gmail.com>
 To: webgeek1234@gmail.com
 Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -66,11 +66,11 @@ Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
 	Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>, 
 	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] spi: dt-bindings: tegra: Support IOMMU property for
- Tegra194 QSPI
-Message-ID: <ag2bxqDmZsCuOfOJ@orome>
+Subject: Re: [PATCH 2/3] spi: dt-bindings: tegra: Support dma-coherent
+ property for QSPI
+Message-ID: <ag2cgvlmEoTZSh0a@orome>
 References: <20260515-tegra194-qspi-iommu-v1-0-57dfb63cd3d6@gmail.com>
- <20260515-tegra194-qspi-iommu-v1-1-57dfb63cd3d6@gmail.com>
+ <20260515-tegra194-qspi-iommu-v1-2-57dfb63cd3d6@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -78,52 +78,54 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lkhs67mbj3gk5ko5"
+	protocol="application/pgp-signature"; boundary="keamvcfaghevywl2"
 Content-Disposition: inline
-In-Reply-To: <20260515-tegra194-qspi-iommu-v1-1-57dfb63cd3d6@gmail.com>
+In-Reply-To: <20260515-tegra194-qspi-iommu-v1-2-57dfb63cd3d6@gmail.com>
 
 
---lkhs67mbj3gk5ko5
+--keamvcfaghevywl2
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 1/3] spi: dt-bindings: tegra: Support IOMMU property for
- Tegra194 QSPI
+Subject: Re: [PATCH 2/3] spi: dt-bindings: tegra: Support dma-coherent
+ property for QSPI
 MIME-Version: 1.0
 
-On Fri, May 15, 2026 at 03:35:27PM -0500, Aaron Kling via B4 Relay wrote:
+On Fri, May 15, 2026 at 03:35:28PM -0500, Aaron Kling via B4 Relay wrote:
 > From: Aaron Kling <webgeek1234@gmail.com>
 >=20
-> This is supported via an external dma controller
+> DMA coherency is supported by at least the Tegra194 and Tegra234
+> controllers.
+>=20
+> Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/nvidia,tegra210-quad.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 
-You say this yourself: it's supported via an external controller,
-therefore the QSPI controller on Tegra194 (and earlier) does not need
-the iommus property because it does not itself perform the DMA.
-
-The GPC DMA has the iommus property, QSPI doesn't need it. This is
-different on Tegra234 and later where the QSPI has a built-in DMA
-controller and does not rely on GPC DMA any longer.
+Similarly, DMA coherency does not apply on Tegra194 because the device
+itself does not perform DMA. dma-coherent should go on the DMA
+controller's DT node, which it already is.
 
 Thierry
 
---lkhs67mbj3gk5ko5
+--keamvcfaghevywl2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmoNnCcACgkQ3SOs138+
-s6Ee+A//TcqYANcnvRvUOXYnvdCKnAT1aTtAka+rNPvueTfMKdR+PtQxYe8Fx4/n
-Yq0iOO4mkYCsMPRpemuE31RDDsUh3MRByyQcpBVa2MgCt0iqTRxV3N7E5hD3OnOv
-yFUrnH+lmW7HhOL8m4dDkIr+frii+LMfQpFrIa4jrCJBLkg99gFKSESHlYWQQVt+
-/dRje9aazDTmvbzOOSwP4l9RwbNeCLnfHD7ygqCO4nT2rlbWZBo6cURB54Kx/hIS
-bS9CrCrYQMpe4HmkPtPGUmhY3enm+RjkNjCswejk2QA8v+gzPlsJwSSfQf6VmfXQ
-rr+ZMgTH/agjidFQnWMOZPdyT4PnmHK2BmYkF6kNCWqv2SKNLl1yenGlWrJekzqa
-+Ru8z4O2JJ1E6eX4/4tTzBcGVi5gTtHM78nAdGb864vUwAqxh5bFxv2PIb8BmBzo
-qzDsJ/dwIQWCdRulC0eD3ZnY3ugVghNPlkufaAM4ix9DvfSpr+ZijpEgU2C5nL2p
-oyQ4BaRxAbYi6XL4CwQWPJtuNRQEmN8M86y5t45Dj5i7GskDqrIQmVuI/n/ky4ip
-rqC88oHfZ/jC5uOchcXYomZWZvt1GNhU+zDHwZoe0WScrz463Znfx4BLK845QM+H
-35MHF4oR8Vpd5s48VinW5a93mbGtLMwWG7lKhsY5vh/W/nfY5kk=
-=7UYw
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmoNnvYACgkQ3SOs138+
+s6HkCQ//ZU4Novi/hVsF+UKJmabbv0LZlIUubNucwSd8K163a7ws6/dgNsvwKFYs
+QkyCDwSuuqR6LLbIgQ+Qct1E6QQgjkVBOzt2mr+A3aijw4fKcLbRn+Az5Xo2SG1r
+95J9N0e6BLguhFQCfwLnzXjLeq0DMk4V05oNAYukH+fqb/kHwwKUNJzoITV6uxIs
+Evwzg/VLTyY5IdooYA/Ww/3ElzLMX5il4dFG0tsO/YpZi+d3/zxdis7meN+kMjwT
+/LItAGXFGZAMScSripoV82leJnnxj/CUGxrsgYAsIbg3MKWDJAOoHIe6qDjKfgpg
+rjtZz6C0DHVVB8R2Lzx/H29utqrkija0lOwfRLrxOwOKKdd0fmVYIb2igcW5IrgB
+xTujgZcib/aJiL0Dp22upcNuM3EyFnufj+dQq5GHij++R9DUoosvyXKUbCoMKVs+
+I+P/w76cFCY/SukEupqIewppDJAx8UMDugpxrUCR1xNjpq3Jl2yHMDZ3KB5Ws/kH
+Jtij6UyVfxuB8L44/Qy+fVUEI7sWbdJizPZ4gsCB+KGlMYPDSaQvMcUJg6RajWEz
+5RwCRTXo2ziLcuacISKyt+pLeNyn4nA4e+3KTsjHMTUHs9gGpeQPjFRVbfaAmnAd
+Mxay1o8uSrHerhdMnklCTYe9ZfZIG6pvLk7at2MjL4r64MtRS3o=
+=BP4N
 -----END PGP SIGNATURE-----
 
---lkhs67mbj3gk5ko5--
+--keamvcfaghevywl2--

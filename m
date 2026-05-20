@@ -1,276 +1,207 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2125.outbound.protection.partner.outlook.cn [139.219.17.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D335C188
-	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 07:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658493A8FEA;
+	Wed, 20 May 2026 08:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.125
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779262725; cv=pass; b=GNdc49AFGDMuh2YwWdsA3hvvzYi5pOwlSbNI+T9SIxSEDEWNORauKWimGzpLK4J+2VSGhW/ItQvhKz265Od9YkvYe/ccR6LSDTmRbI+9bia8VZVCDMfSe+NJGBOelufRbMGbM+39x3qMarRTMBa6kHJ9sAFjHaohbF42tjupwpw=
+	t=1779264804; cv=fail; b=YtQiZv+9Zr7xlfklCJzJR3S7B8CXNK3UDYji1pIGd19rqljto5EaSp/XNgrDtvUuY4N3C6pH7G6qRAIHSHQoNe6YmIuH+12xm0JW4T7Ap+NXqkGu4S+ptyLO/YJYLJZsCyQJpHDx7AtUv7GNZIX1ywUqQ4v1NZTCjGCVml2GPMI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779262725; c=relaxed/simple;
-	bh=OKY7T+5LTeaeyopk0O60ZK8VP2UbO+XNmLdJ6p+Uopc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m4ws0tYImabnQYX95Bb4WL2ZFCd4CLGu6Zz/mjn8uUHpIcZov0XBIqi12a9YXA+TmDP1zgrj+wi+BXSs5nbXRTqkuJwvT+WnoC7EbH6grXyushEjCbWt9xrh/EvknUxKSOIllYkFOstt/CjAdnRT97N8O3hA8DkIZ0H08RNTKBE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=YHGi4rhg; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pcc.me.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="YHGi4rhg"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-67fd8befac7so10845169a12.2
-        for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 00:38:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779262722; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lHaD2LWmSQF3/IRdJUsIZwqnVOV06BY/tDfTLNJjWFt/roUaploqniwbDsNCU2KPFF
-         gggi0spmPag8+50EoqlvY5UTAuIJf4rnGGj+zgLGc0Ub5BsNpxfPqhjxACdzVZJHOQbA
-         53f9NGCVS+BS1SYYF8NgsW0RCJtwYBOqKD5lMeMj2ZMKpefwo5mEhrx9HTHti2XiRsDI
-         KCRG/qF3Z5Dcx/FipO2ujjnKJxE4PamrzNaZeYehEvS9V4jQ+caWi+cNnBBIzFkjYCgH
-         iBVNCiLGXE+kzRqD2tCSn9LOeTvW/1I9/z3BDSoxNZylTARhBDNgGqkaFffdjVbM/+Ol
-         HgoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
-        fh=t7uGFOPUnOefWF2eIuC6oGFH4Yidlav8sVXWHxon0+E=;
-        b=PzurbQwlX5sBzSdvvk8lDOTdHH1sitnTe0lfz03GQBRA6PsWALM28mLf6qMS4Z8gU1
-         JBP5hbylRXk1U0CUaiG9BAV+DRZhan0Gf9+GoPZ08hMd45rLpO6enzLOsfjKgdCC8pqp
-         ywWluLTPJfFALPynguT1UUQv3BmsvAbQ4pW56Y4pbXfY+Xf9p4xelGaJw6Kg6LLQkbq8
-         sWcAKcEZjkl5RUvGoskyVK2EipdlbcxRCfLL6VxzL7ZpMN9eeyyP/FnXtK+vTjkTKwc5
-         Mz4r1zKpzXabD9kxbHtrQeOANixAl3yPCa2UWPrWgzztQdDVx7cy/ZSumuWOTTmgXfJ6
-         Ye5w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779262722; x=1779867522; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
-        b=YHGi4rhgodh1vWNHKMVBfIvHtayJ5YNmn2VvE0KbG7qaCHt70bLm5ec1TDkvK5dhKU
-         +R7CAkLic4otHnu9MhHNwAZpSo6uIYBYFqP+A7myqdwdYSS+sLgp5kcDmw2ybAq2MFAi
-         Z5jeL/a+63DLbCbAPmhXdQAFvZfyJYqWg9XTSyMvVnBceNpLCiaVsLDKRis8iUysQPsE
-         Cjd1pFOngtUW8iWLvwR5YQQeBM9S6QSv86xLTvum0GQT/kuLw2M8jcySsg721Mf7fDAu
-         iyCwa9FO1j/E8Rh3i0x/5WCmP/jh4sAzkH1u0ATm2mAUQ09JzgDsp1+znPsbGL9IwBO/
-         ZRrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779262722; x=1779867522;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
-        b=ZqlvuQYFwlAC9DHmhTxWMzDlldN09NbC0KErqfojx++0tu0vGunJzyxQNvDu8AfHpm
-         mtseAKvCNmFhd9rIofcFJh7eY3/hdT7BaKe6eteiXRnmtfwE4ozKblVABDRyvSuoIMo5
-         VJtligUGZ+f9Fk/mLp9klnOUvW00XaVsniZPPFjhPeDQVsdzX/+1eVe2J1mwP7OfHG+y
-         5gL7/E6CbbU8ihnbf2PFiMBaWvk44gT6u8gQ2sJp0CDFuIdWTIJ90E4kgu0MoX7FVtTQ
-         b2O9FDB47m3dMGwOQy1FqEqFAmlYr+Rt4PYOcDn1TKIWppKfM6nybep16fvMceU/xey4
-         dmwA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Fn5ubVbm8T/lwJnz4x9yIkGcy5nZmAX/lO5/yL8ol5YT1/4u7344UEmAmbKkzyOZ1hXTPyl76qC8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBJ7dAKSH32q3jkCnpbfqJA+z+hKrF6A9Gxo19ZVAPEs1V0zTL
-	M+Fb3MEWm54YIWyY5SoYVAN4FLLeeF0wio6PvyaaeGMF3nZ3c/GCq4kbMKTEYNLmylK/y7PW5Mb
-	7nyotFwYs1aFJrkYqgfRVX7GFM01x1f8PQRrWMJrl2g==
-X-Gm-Gg: Acq92OGws9P3l2gKPobgRWHBAzpl5nwasFTQQ0ubwk37JQFhTH8xFk1s7v/9pFV6jTe
-	M7p7U8saJ6GxByztGsoq1LTWCO+18OXTgKqoLqmFs0fLn3z1ctE01pLIoudv6UbJF5ub9wuJfO9
-	+sop2byUx0qTWYlm3GVIeNChEzTAnLDafv4StJJs69Kc6TLmkut3rcXLLSq0iXoCaDm5UtRD4KB
-	pw9o/x9nTUvXoh8JQ7DECd6Q4ZSx3yma5FoC5rPv2abpG47Dn5kv7DsSb7WJ2rZUkaedjJFkMgc
-	/NDHJuO1
-X-Received: by 2002:a05:6402:21ce:b0:670:8b30:a8a7 with SMTP id
- 4fb4d7f45d1cf-683bad2a9famr9776226a12.0.1779262722002; Wed, 20 May 2026
- 00:38:42 -0700 (PDT)
+	s=arc-20240116; t=1779264804; c=relaxed/simple;
+	bh=+Er87ChW9xID6/aRhQemZFnnt60MWTwvfwiF8dYDo2A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Z3gjJVbKyzL9iVX8IH7/IXnaottU8aNQg3XwJlh6aDm5yaAClKhCegFedEQPGXDAni5tTzLbZYotFO3j633ucwnhYbGkW/7JPWp8PQtG7tm+S64tdWZn55RopgUPPyqtPanwPXpukrkVXCDImWWdmyWl5XjAppoNp2m3f8o3NU4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lecomputing.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Y181cZH5TLc9NET8iQstQ7+XBy/Jyh18qH5OeZ7QCWCOXCJ4vyUa4Jaymf7pJOvvi7vLIutUVYjGGB4CX6GRRJUNmYkvf7PsR01aTNBnVLhuF+WwdxXxFUGGp1mGW77M4okAG5dDqWcOH8tOxwMJF1P5WJ43/Jz+IHD7lDx/AR4A+iUu1rwmK2+GmOKkGOlXJMfVSotY4rq2vl5uIgoUl3f7Ydg3r82N5ZdGAafX0NGQW+lWD+H1v9f10z7oe7aYg+x1PmFgbGRo5z0wIomBPxB+FbsWZGosb2E36+pZ7H8IYo6J3p7x19VLqGRnnBCD6f7U20RL4GhGG3kBpWnIZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LeGdcwPCWebxeV0ZyocXxAswF9IcvsUt1jqTrBza+ZE=;
+ b=gm4wSZWZtCUdlc86H96PcMqMZJYupqEJX+MrYNc8EsmjNIJUizsoGKZYTCn17H725O8jyC5MRA5eR+dyn8Xj/whyyaETwfKF2KV+WIztIdTQNxoMyKfU/C02x5D1gQ78UmntBuN+scmJiQB90rsc71/td4a1fY+o/Ne00Y0CFUAgWsaHMWzpsyyNx08GaZUrYYHlrrZzBrc/PLhkge+9JMlA+4Sc6VAyrgLxsaLttKoaQ5WeIF9njTFWsqA6ATea40iawvGZCtTmQEZNgWQJ7W9ZAeP/l8VIOre08odjEPTKUmhsUZJq6TxanUkY7e7jSwOcGYoX8TdStzihGGeJcA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=lecomputing.com; dmarc=pass action=none
+ header.from=lecomputing.com; dkim=pass header.d=lecomputing.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=lecomputing.com;
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1f::17) by BJSPR01MB0755.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1c::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.15; Wed, 20 May
+ 2026 08:11:55 +0000
+Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ ([fe80::1c61:86e3:3a75:155d]) by
+ BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn ([fe80::1c61:86e3:3a75:155d%4])
+ with mapi id 15.21.0025.023; Wed, 20 May 2026 08:11:55 +0000
+From: Thomas Lin <thomas_lin@lecomputing.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	hoan@os.amperecomputing.com,
+	linusw@kernel.org,
+	brgl@kernel.org,
+	mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	jsd@semihalf.com,
+	andi.shyti@kernel.org,
+	broonie@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	lucas_hao@lecomputing.com,
+	puntar_liu@lecomputing.com,
+	jihua_tao@lecomputing.com,
+	stan_xu@lecomputing.com,
+	lumin_liu@lecomputing.com,
+	notics_zhang@lecomputing.com,
+	braden_zhang@lecomputing.com,
+	harold_wu@lecomputing.com,
+	will_zhang@lecomputing.com,
+	aurora_jiang@lecomputing.com,
+	ryen_lin@lecomputing.com,
+	andy_jiang@lecomputing.com,
+	Thomas Lin <thomas_lin@lecomputing.com>
+Subject: [PATCH v4 2/3] spi: dw-mmio: Add ACPI ID LECA0002 for LECARC SoCs
+Date: Wed, 20 May 2026 16:11:35 +0800
+Message-ID: <20260520081140.637637-3-thomas_lin@lecomputing.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260520081140.637637-1-thomas_lin@lecomputing.com>
+References: <20260520081140.637637-1-thomas_lin@lecomputing.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZQ0PR01CA0024.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:2::19) To BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c211:1f::17)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519102446.209723-1-peter@pcc.me.uk> <20260519193543.18f45af2@pumpkin>
-In-Reply-To: <20260519193543.18f45af2@pumpkin>
-From: Peter Collingbourne <peter@pcc.me.uk>
-Date: Wed, 20 May 2026 00:38:29 -0700
-X-Gm-Features: AVHnY4JRX6sDcfHDi2h4ue5zqHRFzubsqC5j0MBn2SayLmDmlskHFNehZd3Tx8U
-Message-ID: <CAPQLkRit9bRH2gnSpvt60evu31T=1YNFdTFH2emS6RSsY=eDJQ@mail.gmail.com>
-Subject: Re: [PATCH v2] iopoll: use udelay() for initial polling
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Christophe Kerello <christophe.kerello@foss.st.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, linux-spi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>, 
-	=?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BJSPR01MB0707:EE_|BJSPR01MB0755:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c620fe7-972d-4d09-834c-08deb6477493
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|56012099003|22082099003|18002099003|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	+iCM91oJtienKgJ+IJhpEnOUex0rKQIoXxKsLYIlEwwFUl2kbWC02YlpG0frOAsGpVG408/P0Nj+OIb7YgLya7bxUKNSl3l7oJQQBQXPVN7Bshu8yIQfBAkBCT773W3DgCz1Pr/nS6QXUis59uOK32mDJF+0Kbu4jkxt+Qr0VEnVS494CYAZbkMczp8dG0IjpwOj05ZdjlX9tiEAjKCeqOFlEGWa5I51/xLEHZSuSmYhgzDOFxQA9mckrQqPzio5JJDlbESUZ+qBC9F0GSLaircdk2prVHbaTgUVH6r3hIBAXqiEgzPy3fW3e9KIybG5R9fxSsEY0wpp3RrWHbkRJr1YVqirHCsqtOxE72a70EjPn5xItLkOM+/VJORVa65UHc+FZmiDtDUH8u/UkaB5k5vsUIgmhAHVGLOGy4lTh0ufWPCsTQsfsJxpQ2aLOi7C0R8WE8sDiETjMtTU0evNpjPRlkavw+ekK7XuUVywBChfcZko2VcwxbIkEaBsWxNYiZD63ioIIi1xGMipbAGsdFflgj7YzffxoEi6GMxPSUPZHdd4XEouO/caQCJftBi5Q/A0IGIFCkDn9GdaVrWcRw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(56012099003)(22082099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ABypnI1csWQfDzxLleFklzQVYQVNJTf2RCU281W2dH7jY2a8QpH0X6cEC+0Z?=
+ =?us-ascii?Q?oSy/G6KFPYPGN/jYldyXSRiTApQt/C6SxqSnbE1LrR5/BHgfog9iaL51OvA3?=
+ =?us-ascii?Q?AEo8b0n2tlPHuHC23bQpR0eM07JGQanE/Yxg96AL07dBofK7qOG69IN8Ntiz?=
+ =?us-ascii?Q?Y6eCPQpHrbghEmYbxpCNLN9Of4TuFntzvMfQunC5hmWCZVEsn1B9XlOLek+b?=
+ =?us-ascii?Q?UlkIGm5yT5pZt6PoHOMcuLuaxKQuKo/5pM7IDPBU/5bicWrXp/h6VKmSgwji?=
+ =?us-ascii?Q?Aomu1xzsIChvZyekZayv8qIc+3YZSzdgYMUrIB8bf8rybfIpVzTuciNtSVDi?=
+ =?us-ascii?Q?51DczQQRmWm1WJyZeiAHR/67BLV1RiR3UGnSnNKsFc2s/DprS+gpzAXKaZTp?=
+ =?us-ascii?Q?zO2ezoRy5c7K7KafJCB/+YfkBb/+kKmzfOBMocWumWrWFWXn+9+FvjSuGZjA?=
+ =?us-ascii?Q?b3w6f7wX/Zw1cwLi6Vg8fIvry1OunY5Wb2JGrsQrpwg75udNOvSiC4PFEKmr?=
+ =?us-ascii?Q?MVS4ed5DGyD9vU7bO77A8/Q2mU+KvPQKYRrqlLTT+b6g6/uo1cBRNP8ObweG?=
+ =?us-ascii?Q?c+coTm34/Yp8MQlQIQmgPA91rSA2AcJ0HNY35a/oivbngGO2Ny0Olm2BEG0L?=
+ =?us-ascii?Q?iLC7cR84VDB72K8BDdkPvWjDe7raaePG1YajgrRTme3UBV8MWdYTLq/wLwZY?=
+ =?us-ascii?Q?ekJuwAEuuTTlR5e6C19pF1DLVzluezw8C0kfoz1cJxiF19ZsFTcuJirKwTFa?=
+ =?us-ascii?Q?8IwtjGW/D4PHxvJLyQzXmAeVyv5q83LnexjENbXrh76NVky8SYpkBczoDk27?=
+ =?us-ascii?Q?TSkQvrcLaWOLbskfo84I3T0YSOmyWp1LN8EdifkCPymJqnMGzIBNw8tIQ09w?=
+ =?us-ascii?Q?wKc2ursHkm9R9XW2fULBUS5BCg2f+uOEWOIUKxpNHRQLDYlfIU+rXvOh3p3i?=
+ =?us-ascii?Q?1NyVJxG//KQ05WmPYri18b9nHcEgR+g3sHKTRoEl7++wJsh7WgJxinb9DSBh?=
+ =?us-ascii?Q?SMxTvRkY8V5C/LshwDAuCcrRtHBPqIXj8kkmpq31o5CLBQtFp500hPQ8FEKP?=
+ =?us-ascii?Q?l/CxKLIJ262qFBXvF3KYZ3aP/0fSaEXp2GySeIDDNRwPioikO8gWkZzfAZ64?=
+ =?us-ascii?Q?AgXcBbvbbVlQTc72Ebi40b5AVekQv8clds0xY7LyIZvWQcVpESF+Ni3Sj2eE?=
+ =?us-ascii?Q?4UmeIx2lbplriovEikH1OjV0FkaQ1xUI8zny7jks/4WZMQjnvCrEhvx3g0Ha?=
+ =?us-ascii?Q?f7sj4rdmVLpFdjypI20vXZOUtZwFY2fu+Id4pgazo5izsMfQp7UsTHlY+cte?=
+ =?us-ascii?Q?zc6zmmi0Q4bB4rrAMz+0Tn2ra+8lyopE7utBXC9ZEwYvuBD6A1CdEVkbtv/G?=
+ =?us-ascii?Q?DgUJtckuwb7DRlJCVFZFjiX3svYMcezWjsK+DlIosqt4f7xlGIsXzA+C0V0h?=
+ =?us-ascii?Q?7ZPy7pSNQws+OQvJrh4huWmwTqEBZTCofHjRF2uHYVcO2Ola3QsbPcXHlWrf?=
+ =?us-ascii?Q?KbE3Oh2vuiuYEJkM41NhSy5QnEdqL8x3tJaWONT5j3pzo0cKHo0UFIlPoA/3?=
+ =?us-ascii?Q?GDAEQ95vNE3lfNWdEJn6g5uTNVLGS5t3stq6rLC7dNr9Y20PeN8R+ayNfZXr?=
+ =?us-ascii?Q?qmUPFxp+MtKc526kGtTfTgwuYNt9Wbn6+gIjCG+Rj+EUe04km3euV/vse9rq?=
+ =?us-ascii?Q?dlF8ZhoABa+FSW5qDPCo4HfqZHXCXoe8FrjXeTHVmz6vYV1H9FQp+siTg0ca?=
+ =?us-ascii?Q?qXY/cuvF3edDjXQyoYGZt29muBVTy2k=3D?=
+X-OriginatorOrg: lecomputing.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c620fe7-972d-4d09-834c-08deb6477493
+X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 08:11:54.8750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3591a018-3909-4ea2-aee8-843d5abaed8d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: txdgaytWlSw3di6nkkDlLDf5gb79LjksK1iL+biIvCjsWYA8iqx6kgJdasfY2H7Jp1pqc0mwNfknxBbiUDswtS+PlA+I2MyYG39Y+iJZ1Z0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0755
 
-On Tue, May 19, 2026 at 11:35=E2=80=AFAM David Laight
-<david.laight.linux@gmail.com> wrote:
->
-> On Tue, 19 May 2026 03:24:46 -0700
-> Peter Collingbourne <peter@pcc.me.uk> wrote:
->
-> > A short polling delay, such as the delay of 5us
-> > (SPINAND_READ_POLL_DELAY_US) provided by the SPI NAND driver,
-> > can become a 1/HZ (order of ms) delay caused by the usleep_range()
-> > call in read_poll_timeout(), significantly reducing SPI NAND access
-> > performance. Fix it by adjusting the read_poll_timeout() macro to use
-> > udelay() to delay until 1/10 of a timer tick after it is called, and
-> > only then sleep.
-> >
-> > Fixes: c955a0cc8a28 ("spi: spi-mem: add automatic poll status functions=
-")
-> > Signed-off-by: Peter Collingbourne <peter@pcc.me.uk>
-> > ---
-> >  include/linux/iopoll.h | 30 ++++++++++++++++++++++--------
-> >  1 file changed, 22 insertions(+), 8 deletions(-)
-> >
-> > v2:
-> > * Fix it in read_poll_timeout() instead
-> >
-> > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> > index 53edd69acb9b..2ee89b76f072 100644
-> > --- a/include/linux/iopoll.h
-> > +++ b/include/linux/iopoll.h
-> > @@ -19,9 +19,11 @@
-> >   *
-> >   * @op: Operation
-> >   * @cond: Break condition
-> > - * @sleep_us: Maximum time to sleep between operations in us (0 tight-=
-loops).
-> > - *            Please read usleep_range() function description for deta=
-ils and
-> > - *            limitations.
-> > + * @sleep_us: Maximum time to sleep or delay between operations in us
-> > + *            (0 tight-loops). Please read usleep_range() and udelay()
-> > + *            function descriptions for details and limitations.
-> > + *            This macro will delay until 1/10 of a timer tick after
-> > + *            it is called, and will then start sleeping.
-> >   * @timeout_us: Timeout in us, 0 means never timeout
-> >   * @sleep_before_op: if it is true, sleep @sleep_us before operation.
-> >   *
-> > @@ -35,11 +37,18 @@
-> >  ({ \
-> >       u64 __timeout_us =3D (timeout_us); \
-> >       unsigned long __sleep_us =3D (sleep_us); \
-> > -     ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
-> > +     ktime_t __start_time =3D ktime_get(); \
-> > +     u64 __delay_timeout_us =3D 100000/HZ; \
-> > +     ktime_t __delay_timeout =3D ktime_add_us(__start_time, __delay_ti=
-meout_us); \
-> > +     ktime_t __timeout =3D ktime_add_us(__start_time, __timeout_us); \
-> >       int ___ret; \
-> >       might_sleep_if((__sleep_us) !=3D 0); \
-> > -     if ((sleep_before_op) && __sleep_us) \
-> > -             usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-> > +     if ((sleep_before_op) && __sleep_us) { \
-> > +             if (__sleep_us <=3D __delay_timeout_us) \
-> > +                     udelay(__sleep_us); \
-> > +             else \
-> > +                     usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
-\
-> > +     } \
-> >       for (;;) { \
-> >               bool __expired =3D __timeout_us && \
-> >                       ktime_compare(ktime_get(), __timeout) > 0; \
-> > @@ -54,8 +63,13 @@
-> >                       ___ret =3D -ETIMEDOUT; \
-> >                       break; \
-> >               } \
-> > -             if (__sleep_us) \
-> > -                     usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
-\
-> > +             if (__sleep_us) { \
-> > +                     if (__sleep_us <=3D __delay_timeout_us && \
-> > +                         ktime_compare(ktime_get(), __delay_timeout) <=
- 0) \
-> > +                             udelay(__sleep_us); \
-> > +                     else \
-> > +                             usleep_range((__sleep_us >> 2) + 1, __sle=
-ep_us); \
-> > +             } \
-> >               cpu_relax(); \
-> >       } \
-> >       ___ret; \
->
-> How about:
-> #define poll_timeout_us(op, cond, sleep_us, timeout_us, sleep_before_op) =
-\
-> ({ \
->         u64 __timeout_us =3D (timeout_us); \
->         unsigned long __sleep_us =3D (sleep_us); \
->         ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
->         u64 __delay_timeout_us =3D 100000/HZ; \
->         int ___ret; \
->         bool __expired; \
->         might_sleep_if((__sleep_us) !=3D 0); \
-> \
->         for (;; sleep_before_op =3D false) { \
->                 if (!sleep_before_op) { \
->                         __expired =3D __timeout_us && \
->                                 ktime_compare(ktime_get(), __timeout) > 0=
-; \
->                         /* guarantee 'op' and 'cond' are evaluated after =
-timeout expired */ \
->                         barrier(); \
->                         op; \
->                         if (cond) { \
->                                 ___ret =3D 0; \
->                                 break; \
->                         } \
->                         if (__expired) { \
->                                 ___ret =3D -ETIMEDOUT; \
->                                 break; \
->                         } \
->                 } \
->                 if (__sleep_us > __delay_timeout_us) { \
->                         usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
-\
->                         continue;
->                 } \
->                 if (__sleep_us) { \
->                         __delay_timeout_us -=3D __sleep_us; \
->                         udelay(__sleep_us); \
->                 } \
->                 cpu_relax(); \
->         } \
->         ___ret; \
-> })
-> Which I think is approximately equivalent.
-> But I'm not at all sure the usleep/udelay test it right.
-> 100000/HZ is a strange number of usecs; for HZ=3D100 it is 1ms, but for H=
-Z=3D1000 0.1ms.
+This ID requires a custom initialization function
+dw_spi_hssi_no_dma_init() that sets dws->dws.ip to DW_HSSI_ID.
 
-The idea here was that since the sleep time for usleep_range() is tied
-to HZ (or so I thought, see below), the delay timeout should also be
-tied to HZ.
+Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/acpi/acpi_apd.c   | 7 +++++++
+ drivers/spi/spi-dw-mmio.c | 7 ++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-> Maybe it should be more like:
->         u32 __delay_timeout_us =3D __sleep_us > 20 ? 0 : 100;
-> so that you delay for (approx) max 100us if the interval is less than 20u=
-s.
+diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
+index bed0791c17fc..4d5a51d30adc 100644
+--- a/drivers/acpi/acpi_apd.c
++++ b/drivers/acpi/acpi_apd.c
+@@ -181,6 +181,12 @@ static const struct apd_device_desc hip08_spi_desc = {
+ 	.setup = acpi_apd_setup,
+ 	.fixed_clk_rate = 250000000,
+ };
++
++static const struct apd_device_desc leca_spi_desc = {
++	.setup = acpi_apd_setup,
++	.fixed_clk_rate = 400000000,
++};
++
+ #endif /* CONFIG_ARM64 */
+ 
+ #endif
+@@ -251,6 +257,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
+ 	{ "HISI02A2", APD_ADDR(hip08_i2c_desc) },
+ 	{ "HISI02A3", APD_ADDR(hip08_lite_i2c_desc) },
+ 	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
++	{ "LECA0002", APD_ADDR(leca_spi_desc) },
+ 	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
+ #endif
+ 	{ }
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 1bfdf24c3227..4fc864d38cff 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -226,8 +226,8 @@ static int dw_spi_hssi_init(struct platform_device *pdev,
+ 	return 0;
+ }
+ 
+-static int dw_spi_intel_init(struct platform_device *pdev,
+-			     struct dw_spi_mmio *dwsmmio)
++static int dw_spi_hssi_no_dma_init(struct platform_device *pdev,
++				   struct dw_spi_mmio *dwsmmio)
+ {
+ 	dwsmmio->dws.ip = DW_HSSI_ID;
+ 
+@@ -438,7 +438,7 @@ static const struct of_device_id dw_spi_mmio_of_match[] = {
+ 	{ .compatible = "amazon,alpine-dw-apb-ssi", .data = dw_spi_alpine_init},
+ 	{ .compatible = "renesas,rzn1-spi", .data = dw_spi_pssi_init},
+ 	{ .compatible = "snps,dwc-ssi-1.01a", .data = dw_spi_hssi_init},
+-	{ .compatible = "intel,keembay-ssi", .data = dw_spi_intel_init},
++	{ .compatible = "intel,keembay-ssi", .data = dw_spi_hssi_no_dma_init},
+ 	{
+ 		.compatible = "intel,mountevans-imc-ssi",
+ 		.data = dw_spi_mountevans_imc_init,
+@@ -453,6 +453,7 @@ MODULE_DEVICE_TABLE(of, dw_spi_mmio_of_match);
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id dw_spi_mmio_acpi_match[] = {
+ 	{"HISI0173", (kernel_ulong_t)dw_spi_pssi_init},
++	{"LECA0002", (kernel_ulong_t)dw_spi_hssi_no_dma_init},
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(acpi, dw_spi_mmio_acpi_match);
+-- 
+2.43.0
 
-I think that makes sense.
-
-> The is also a mismatch of long and u64.
-> I don't think anything (except the time_t) needs to be 64bit (esp. on 32b=
-it).
-
-Ack.
-
-> I'm not sure about all architectures, but I'm pretty sure than on x86
-> usleep_range() is independent of HZ.
-
-Right, after looking into it more I learned that the hrtimer should
-usually allow usleep_range() to return before the next timer tick.
-
-Which, as it turns out, was not happening on my target device because
-the kernel was configured without CONFIG_HIGH_RES_TIMERS. After
-turning it on, the performance issue is fixed, even without this
-patch.
-
-For me this raises the question of whether CONFIG_HIGH_RES_TIMERS=3Dn is
-always a good default. On x86 (except for ancient microarchitectures)
-and arm64, the architecture provides a guaranteed hrtimer, so to me it
-makes sense for it to default to y on those architectures at least, so
-that users who write their own config (not defconfig based) will avoid
-issues like this difficult to debug performance issue by default.
-
-If we do decide to turn it on everywhere by default, it may be worth
-reconsidering whether we need to delay in poll_timeout_us() after all.
-
-Peter

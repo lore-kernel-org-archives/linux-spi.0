@@ -1,148 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D3B25742F;
-	Wed, 20 May 2026 07:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779261000; cv=none; b=kXKN1CQNTG6OzBUxMMNkxfhX42VdlWOsUpyv+5WmX3RitGkySYUlOfcT5AtFxv5RTfwhRuT+75HkPlD7vgHzHYWZXHylwUP7IZdfekAiTZfM/FBw5OdyJfGjVIzS2NeZBQm1pGGy/3fouDfKwa7Om9DWfBOv5GE5t1RlzWIg5M0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779261000; c=relaxed/simple;
-	bh=9IViVaf+Wszx8ZhNtH9hghH9H9OH40GFse+I8qT/1M4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pgj8TlWVG7MzAhagCsTcKju38h6xCC3IWV52UqT6aOgciSHr2DUk1ws0XIIxEq0BThs/EBhelb7Ybgt/HQE1C6WsyS7fQWpci+oEU3l5ooXvbeAi5lPP3rMA6k9bGBEELNixFCduTM8kh4W9JFNG+XozW+9LB/TfFmEngPk4+ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxM6tUI3; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D335C188
+	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 07:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779262725; cv=pass; b=GNdc49AFGDMuh2YwWdsA3hvvzYi5pOwlSbNI+T9SIxSEDEWNORauKWimGzpLK4J+2VSGhW/ItQvhKz265Od9YkvYe/ccR6LSDTmRbI+9bia8VZVCDMfSe+NJGBOelufRbMGbM+39x3qMarRTMBa6kHJ9sAFjHaohbF42tjupwpw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779262725; c=relaxed/simple;
+	bh=OKY7T+5LTeaeyopk0O60ZK8VP2UbO+XNmLdJ6p+Uopc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m4ws0tYImabnQYX95Bb4WL2ZFCd4CLGu6Zz/mjn8uUHpIcZov0XBIqi12a9YXA+TmDP1zgrj+wi+BXSs5nbXRTqkuJwvT+WnoC7EbH6grXyushEjCbWt9xrh/EvknUxKSOIllYkFOstt/CjAdnRT97N8O3hA8DkIZ0H08RNTKBE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=YHGi4rhg; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pcc.me.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxM6tUI3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C92E1F000E9;
-	Wed, 20 May 2026 07:09:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779260999;
-	bh=yCEx1ZgD7hquCJpA2zMjQAl8AHM2PWKyoyzhPNTgAHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lxM6tUI3fPPhuJL503kwN3wymSlUNBBp5VUdvmUfbJgD1EfZBKNcsWDx+f/sxenPF
-	 GAcEi//fkRN/z9vSVfD0bLajEk6UcICb61Do/Jo1WOOB+m9Hl59Z//c43/qAiTL7ZB
-	 c4PGZtF9g4+u/6eNBSxkEiiHIVNZhS7wEvJK4pN1a5IJhcvEzpMejHomlldBSbDPGj
-	 ph2vYyAb10bmPuwvopL4YtShZvcE6ksLi+MkRPP9G0KkHFea6s1DjO8uBIMt3y5+4K
-	 d1aDrhDZQq2nhuGN+QVK/dK8ZppS6cQ5lgHfX3sv2M2hilDrzKNMKWAgMCQ5IeiHsM
-	 5lnE/svX97DaQ==
-Message-ID: <21d30826-bfe6-44cd-8c89-c1986f539e48@kernel.org>
-Date: Wed, 20 May 2026 09:09:55 +0200
+	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="YHGi4rhg"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-67fd8befac7so10845169a12.2
+        for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 00:38:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779262722; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lHaD2LWmSQF3/IRdJUsIZwqnVOV06BY/tDfTLNJjWFt/roUaploqniwbDsNCU2KPFF
+         gggi0spmPag8+50EoqlvY5UTAuIJf4rnGGj+zgLGc0Ub5BsNpxfPqhjxACdzVZJHOQbA
+         53f9NGCVS+BS1SYYF8NgsW0RCJtwYBOqKD5lMeMj2ZMKpefwo5mEhrx9HTHti2XiRsDI
+         KCRG/qF3Z5Dcx/FipO2ujjnKJxE4PamrzNaZeYehEvS9V4jQ+caWi+cNnBBIzFkjYCgH
+         iBVNCiLGXE+kzRqD2tCSn9LOeTvW/1I9/z3BDSoxNZylTARhBDNgGqkaFffdjVbM/+Ol
+         HgoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
+        fh=t7uGFOPUnOefWF2eIuC6oGFH4Yidlav8sVXWHxon0+E=;
+        b=PzurbQwlX5sBzSdvvk8lDOTdHH1sitnTe0lfz03GQBRA6PsWALM28mLf6qMS4Z8gU1
+         JBP5hbylRXk1U0CUaiG9BAV+DRZhan0Gf9+GoPZ08hMd45rLpO6enzLOsfjKgdCC8pqp
+         ywWluLTPJfFALPynguT1UUQv3BmsvAbQ4pW56Y4pbXfY+Xf9p4xelGaJw6Kg6LLQkbq8
+         sWcAKcEZjkl5RUvGoskyVK2EipdlbcxRCfLL6VxzL7ZpMN9eeyyP/FnXtK+vTjkTKwc5
+         Mz4r1zKpzXabD9kxbHtrQeOANixAl3yPCa2UWPrWgzztQdDVx7cy/ZSumuWOTTmgXfJ6
+         Ye5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779262722; x=1779867522; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
+        b=YHGi4rhgodh1vWNHKMVBfIvHtayJ5YNmn2VvE0KbG7qaCHt70bLm5ec1TDkvK5dhKU
+         +R7CAkLic4otHnu9MhHNwAZpSo6uIYBYFqP+A7myqdwdYSS+sLgp5kcDmw2ybAq2MFAi
+         Z5jeL/a+63DLbCbAPmhXdQAFvZfyJYqWg9XTSyMvVnBceNpLCiaVsLDKRis8iUysQPsE
+         Cjd1pFOngtUW8iWLvwR5YQQeBM9S6QSv86xLTvum0GQT/kuLw2M8jcySsg721Mf7fDAu
+         iyCwa9FO1j/E8Rh3i0x/5WCmP/jh4sAzkH1u0ATm2mAUQ09JzgDsp1+znPsbGL9IwBO/
+         ZRrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779262722; x=1779867522;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4I6Fd8+pRen8W82hB7C4CZsxS6Jwx5SGpDo+U4Vgxzk=;
+        b=ZqlvuQYFwlAC9DHmhTxWMzDlldN09NbC0KErqfojx++0tu0vGunJzyxQNvDu8AfHpm
+         mtseAKvCNmFhd9rIofcFJh7eY3/hdT7BaKe6eteiXRnmtfwE4ozKblVABDRyvSuoIMo5
+         VJtligUGZ+f9Fk/mLp9klnOUvW00XaVsniZPPFjhPeDQVsdzX/+1eVe2J1mwP7OfHG+y
+         5gL7/E6CbbU8ihnbf2PFiMBaWvk44gT6u8gQ2sJp0CDFuIdWTIJ90E4kgu0MoX7FVtTQ
+         b2O9FDB47m3dMGwOQy1FqEqFAmlYr+Rt4PYOcDn1TKIWppKfM6nybep16fvMceU/xey4
+         dmwA==
+X-Forwarded-Encrypted: i=1; AFNElJ8Fn5ubVbm8T/lwJnz4x9yIkGcy5nZmAX/lO5/yL8ol5YT1/4u7344UEmAmbKkzyOZ1hXTPyl76qC8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBJ7dAKSH32q3jkCnpbfqJA+z+hKrF6A9Gxo19ZVAPEs1V0zTL
+	M+Fb3MEWm54YIWyY5SoYVAN4FLLeeF0wio6PvyaaeGMF3nZ3c/GCq4kbMKTEYNLmylK/y7PW5Mb
+	7nyotFwYs1aFJrkYqgfRVX7GFM01x1f8PQRrWMJrl2g==
+X-Gm-Gg: Acq92OGws9P3l2gKPobgRWHBAzpl5nwasFTQQ0ubwk37JQFhTH8xFk1s7v/9pFV6jTe
+	M7p7U8saJ6GxByztGsoq1LTWCO+18OXTgKqoLqmFs0fLn3z1ctE01pLIoudv6UbJF5ub9wuJfO9
+	+sop2byUx0qTWYlm3GVIeNChEzTAnLDafv4StJJs69Kc6TLmkut3rcXLLSq0iXoCaDm5UtRD4KB
+	pw9o/x9nTUvXoh8JQ7DECd6Q4ZSx3yma5FoC5rPv2abpG47Dn5kv7DsSb7WJ2rZUkaedjJFkMgc
+	/NDHJuO1
+X-Received: by 2002:a05:6402:21ce:b0:670:8b30:a8a7 with SMTP id
+ 4fb4d7f45d1cf-683bad2a9famr9776226a12.0.1779262722002; Wed, 20 May 2026
+ 00:38:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] spi: dt-bindings: cdns,xspi: add sdma-io-width
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260511031732.3199-1-jszhang@kernel.org>
- <20260511031732.3199-2-jszhang@kernel.org>
- <20260515-expert-devious-cricket-faff56@quoll> <agz0kDsQBaeQPPQ4@xhacker>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <agz0kDsQBaeQPPQ4@xhacker>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260519102446.209723-1-peter@pcc.me.uk> <20260519193543.18f45af2@pumpkin>
+In-Reply-To: <20260519193543.18f45af2@pumpkin>
+From: Peter Collingbourne <peter@pcc.me.uk>
+Date: Wed, 20 May 2026 00:38:29 -0700
+X-Gm-Features: AVHnY4JRX6sDcfHDi2h4ue5zqHRFzubsqC5j0MBn2SayLmDmlskHFNehZd3Tx8U
+Message-ID: <CAPQLkRit9bRH2gnSpvt60evu31T=1YNFdTFH2emS6RSsY=eDJQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iopoll: use udelay() for initial polling
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Christophe Kerello <christophe.kerello@foss.st.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, 
+	Boris Brezillon <boris.brezillon@collabora.com>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>, 
+	=?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Simona Vetter <simona.vetter@ffwll.ch>, Randy Dunlap <rdunlap@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 20/05/2026 01:38, Jisheng Zhang wrote:
-> On Fri, May 15, 2026 at 10:00:50AM +0200, Krzysztof Kozlowski wrote:
->> On Mon, May 11, 2026 at 11:17:31AM +0800, Jisheng Zhang wrote:
->>> The cdns xspi controller SDMA data port may support wider I/O width.
->>> Wider I/O width can benefit performance. A simple test with QSPI nor
->>> flash on one arm64 platform:
->>>
->>> 1 byte io width (default):
->>>  # dd if=/dev/mtdblock0 of=/dev/null bs=8192 count=1000
->>>  1000+0 records in
->>>  1000+0 records out
->>>  8192000 bytes (7.8MB) copied, 1.368735 seconds, 5.7MB/s
->>>
->>> 4 bytes io width:
->>>  # dd if=/dev/mtdblock0 of=/dev/null bs=8192 count=1000
->>>  1000+0 records in
->>>  1000+0 records out
->>>  8192000 bytes (7.8MB) copied, 1.088787 seconds, 7.2MB/s
->>>
->>> Improved by 26.3%!
->>>
->>> Add dt binding for sdma-io-width.
->>>
->>> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
->>> ---
->>>  Documentation/devicetree/bindings/spi/cdns,xspi.yaml | 6 ++++++
->>>  1 file changed, 6 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
->>> index 38a5795589de..1fd4b6dfd417 100644
->>> --- a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
->>> +++ b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
->>> @@ -40,6 +40,12 @@ properties:
->>>    interrupts:
->>>      maxItems: 1
->>>  
->>> +  sdma-io-width:
->>> +    description: Slave DMA data port I/O width (in bytes)
->>
->> Waht is SDMA? What is Slave DMA? The same?
->>
->> Why this cannot be deduced from the compatible? DMA is fixed per
->> platform and SDMA do not sound like SPI device (so slave in older
->> terminology) property.
-> 
-> in cdns xspi, sdma == slave dma. It can be read by any master, such
-> as DMA engine or CPU. Its purpose and usage is similar as the data
-> reg in other spi controllers, e.g the DW_SPI_DR in dw spi. 
+On Tue, May 19, 2026 at 11:35=E2=80=AFAM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Tue, 19 May 2026 03:24:46 -0700
+> Peter Collingbourne <peter@pcc.me.uk> wrote:
+>
+> > A short polling delay, such as the delay of 5us
+> > (SPINAND_READ_POLL_DELAY_US) provided by the SPI NAND driver,
+> > can become a 1/HZ (order of ms) delay caused by the usleep_range()
+> > call in read_poll_timeout(), significantly reducing SPI NAND access
+> > performance. Fix it by adjusting the read_poll_timeout() macro to use
+> > udelay() to delay until 1/10 of a timer tick after it is called, and
+> > only then sleep.
+> >
+> > Fixes: c955a0cc8a28 ("spi: spi-mem: add automatic poll status functions=
+")
+> > Signed-off-by: Peter Collingbourne <peter@pcc.me.uk>
+> > ---
+> >  include/linux/iopoll.h | 30 ++++++++++++++++++++++--------
+> >  1 file changed, 22 insertions(+), 8 deletions(-)
+> >
+> > v2:
+> > * Fix it in read_poll_timeout() instead
+> >
+> > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+> > index 53edd69acb9b..2ee89b76f072 100644
+> > --- a/include/linux/iopoll.h
+> > +++ b/include/linux/iopoll.h
+> > @@ -19,9 +19,11 @@
+> >   *
+> >   * @op: Operation
+> >   * @cond: Break condition
+> > - * @sleep_us: Maximum time to sleep between operations in us (0 tight-=
+loops).
+> > - *            Please read usleep_range() function description for deta=
+ils and
+> > - *            limitations.
+> > + * @sleep_us: Maximum time to sleep or delay between operations in us
+> > + *            (0 tight-loops). Please read usleep_range() and udelay()
+> > + *            function descriptions for details and limitations.
+> > + *            This macro will delay until 1/10 of a timer tick after
+> > + *            it is called, and will then start sleeping.
+> >   * @timeout_us: Timeout in us, 0 means never timeout
+> >   * @sleep_before_op: if it is true, sleep @sleep_us before operation.
+> >   *
+> > @@ -35,11 +37,18 @@
+> >  ({ \
+> >       u64 __timeout_us =3D (timeout_us); \
+> >       unsigned long __sleep_us =3D (sleep_us); \
+> > -     ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
+> > +     ktime_t __start_time =3D ktime_get(); \
+> > +     u64 __delay_timeout_us =3D 100000/HZ; \
+> > +     ktime_t __delay_timeout =3D ktime_add_us(__start_time, __delay_ti=
+meout_us); \
+> > +     ktime_t __timeout =3D ktime_add_us(__start_time, __timeout_us); \
+> >       int ___ret; \
+> >       might_sleep_if((__sleep_us) !=3D 0); \
+> > -     if ((sleep_before_op) && __sleep_us) \
+> > -             usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
+> > +     if ((sleep_before_op) && __sleep_us) { \
+> > +             if (__sleep_us <=3D __delay_timeout_us) \
+> > +                     udelay(__sleep_us); \
+> > +             else \
+> > +                     usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
+\
+> > +     } \
+> >       for (;;) { \
+> >               bool __expired =3D __timeout_us && \
+> >                       ktime_compare(ktime_get(), __timeout) > 0; \
+> > @@ -54,8 +63,13 @@
+> >                       ___ret =3D -ETIMEDOUT; \
+> >                       break; \
+> >               } \
+> > -             if (__sleep_us) \
+> > -                     usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
+\
+> > +             if (__sleep_us) { \
+> > +                     if (__sleep_us <=3D __delay_timeout_us && \
+> > +                         ktime_compare(ktime_get(), __delay_timeout) <=
+ 0) \
+> > +                             udelay(__sleep_us); \
+> > +                     else \
+> > +                             usleep_range((__sleep_us >> 2) + 1, __sle=
+ep_us); \
+> > +             } \
+> >               cpu_relax(); \
+> >       } \
+> >       ___ret; \
+>
+> How about:
+> #define poll_timeout_us(op, cond, sleep_us, timeout_us, sleep_before_op) =
+\
+> ({ \
+>         u64 __timeout_us =3D (timeout_us); \
+>         unsigned long __sleep_us =3D (sleep_us); \
+>         ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
+>         u64 __delay_timeout_us =3D 100000/HZ; \
+>         int ___ret; \
+>         bool __expired; \
+>         might_sleep_if((__sleep_us) !=3D 0); \
+> \
+>         for (;; sleep_before_op =3D false) { \
+>                 if (!sleep_before_op) { \
+>                         __expired =3D __timeout_us && \
+>                                 ktime_compare(ktime_get(), __timeout) > 0=
+; \
+>                         /* guarantee 'op' and 'cond' are evaluated after =
+timeout expired */ \
+>                         barrier(); \
+>                         op; \
+>                         if (cond) { \
+>                                 ___ret =3D 0; \
+>                                 break; \
+>                         } \
+>                         if (__expired) { \
+>                                 ___ret =3D -ETIMEDOUT; \
+>                                 break; \
+>                         } \
+>                 } \
+>                 if (__sleep_us > __delay_timeout_us) { \
+>                         usleep_range((__sleep_us >> 2) + 1, __sleep_us); =
+\
+>                         continue;
+>                 } \
+>                 if (__sleep_us) { \
+>                         __delay_timeout_us -=3D __sleep_us; \
+>                         udelay(__sleep_us); \
+>                 } \
+>                 cpu_relax(); \
+>         } \
+>         ___ret; \
+> })
+> Which I think is approximately equivalent.
+> But I'm not at all sure the usleep/udelay test it right.
+> 100000/HZ is a strange number of usecs; for HZ=3D100 it is 1ms, but for H=
+Z=3D1000 0.1ms.
 
-You did not really answer the questions.
+The idea here was that since the sleep time for usleep_range() is tied
+to HZ (or so I thought, see below), the delay timeout should also be
+tied to HZ.
 
-Best regards,
-Krzysztof
+> Maybe it should be more like:
+>         u32 __delay_timeout_us =3D __sleep_us > 20 ? 0 : 100;
+> so that you delay for (approx) max 100us if the interval is less than 20u=
+s.
+
+I think that makes sense.
+
+> The is also a mismatch of long and u64.
+> I don't think anything (except the time_t) needs to be 64bit (esp. on 32b=
+it).
+
+Ack.
+
+> I'm not sure about all architectures, but I'm pretty sure than on x86
+> usleep_range() is independent of HZ.
+
+Right, after looking into it more I learned that the hrtimer should
+usually allow usleep_range() to return before the next timer tick.
+
+Which, as it turns out, was not happening on my target device because
+the kernel was configured without CONFIG_HIGH_RES_TIMERS. After
+turning it on, the performance issue is fixed, even without this
+patch.
+
+For me this raises the question of whether CONFIG_HIGH_RES_TIMERS=3Dn is
+always a good default. On x86 (except for ancient microarchitectures)
+and arm64, the architecture provides a guaranteed hrtimer, so to me it
+makes sense for it to default to y on those architectures at least, so
+that users who write their own config (not defconfig based) will avoid
+issues like this difficult to debug performance issue by default.
+
+If we do decide to turn it on everywhere by default, it may be worth
+reconsidering whether we need to delay in poll_timeout_us() after all.
+
+Peter

@@ -1,105 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C5D2D6E72;
-	Wed, 20 May 2026 13:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703B2D97BB;
+	Wed, 20 May 2026 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284263; cv=none; b=m0hUnZFnekd0mp9uVvKWdrvco6/R4m5OCFu9INvhp4SYgfCKi9GOI8fMofAQkZ7XnGkNsMwDF1AIHXEYkF9dtIwV0Mxoic32542O3UnGO3l4+AfzTtiIWDRxY6KWVZJZMyK9XmcWmrGyPL+sG2LohHVyopwCC/k06x/tKtvKVas=
+	t=1779284337; cv=none; b=a2Q51ftmX0QKOJhNSVQtQqhwmm3OijZU2ybNodI/dvKX7LBWX9asYo3JjtUuGEeL30VZHblytBBOGXrjurlYIshj4fokumbdHVa4AOLK486XS3tAH4xGeGJ8Fy9AebGECzOUABA6ImEgOQ2+KM0nOxaH5e199tJy8a1QH8D2Nk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284263; c=relaxed/simple;
-	bh=PeR8Il5PxKRvIYuRfOdbGF1+vCEu4kSYkw0AEI25qWY=;
+	s=arc-20240116; t=1779284337; c=relaxed/simple;
+	bh=BBW9MkvpXkEKYlC0T9jL+xjuWtM4N4UIVsx7tlL26MI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fjTRC+zVIgM16azYltvgKJH7pQ8Mwy3mpqx+2dO1KOxwppE7Q2Tj6AZRGUBvq+h22HekBGWpELsU9b4tAU9Oaa/tuwxm50Zv3dn0zJ9qJ1oIQzInBBa8mr7PkAh8LTygRT6OEnSdSjaO7mWlkxFzFa5y1K6TFrBklWm1gHJaaOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ogq7rU78; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=NAwKxEDq1wdY3nIjn17or/5+vrGuQrLkXwg3Ha90GZiffqFnbbU7kTfwGWhxjUmXKlXkIrjGPMYYco2lfCiNs9crYDKTlygzPN/mgGwjlWL9iEozlAj7sj+TRHWFt6WwOjU5lwzDOrOv2j6NY0vw4gv/ZgjvSMkNBWr+Eofmyls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFZlCZC1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ogq7rU78"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45751F000E9;
-	Wed, 20 May 2026 13:37:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFZlCZC1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6760C1F000E9;
+	Wed, 20 May 2026 13:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779284262;
-	bh=SzfdZlB8TxUrqiukwfq5Djv/xODrOaSicE7WBGa2brA=;
+	s=k20260515; t=1779284336;
+	bh=jK6lLNJVscZr4F/ruDQZQSIqU/TbDpAb9hmsx95/LbY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ogq7rU7851egImmViI9erNCqTDDaR7u3kE2urX7lYUWUSqOgZ9N8utC+LIrNzz9ef
-	 ipPoEeDEKfMRqlQpFAOK2/A9aqmPp5m00lk5sopI3hP5WqXw/XU0crcxbHaLSKBkIG
-	 9pCJ20Eyk00k0tB9hCIvcxLtV1PLnrqFbe4bcNESWzmAeaZ5UYHpV/YlruIv5hCZFn
-	 NnTHI1dzWs988NmCCPW0v/FPTGgeYyTVGO5+bQh3z0gGctl6CVUYKPAFyQxeRwU50q
-	 wX7D5OtfkVeukQq0kDK2kcFOQirl+jwPQrqzqqDtChuEJG07NXufftuTLbVxy6Ho4l
-	 6agHNaewlDnSw==
-Date: Wed, 20 May 2026 21:18:35 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] spi: dt-bindings: cdns,xspi: add sdma-io-width
-Message-ID: <ag20q5CuB2XsqKS_@xhacker>
-References: <20260511031732.3199-1-jszhang@kernel.org>
- <20260511031732.3199-2-jszhang@kernel.org>
- <20260515-expert-devious-cricket-faff56@quoll>
- <agz0kDsQBaeQPPQ4@xhacker>
- <21d30826-bfe6-44cd-8c89-c1986f539e48@kernel.org>
- <ag2fjCX0DuSVxubv@xhacker>
- <14719378-7bf5-4688-81e9-bccedf618d18@kernel.org>
- <de325dba-0b82-4808-910b-68f0f6426c5f@sirena.org.uk>
- <37a3e9dd-88c2-4d8d-8ae4-6037a1eeedcc@kernel.org>
+	b=UFZlCZC15579EYba4dC/ohImqfmQdDMbKXkeQfXh810aMVmlzDtS97Lt2GK7MRN7r
+	 Z0MB7FR0cI7btNwLP1SS/MWW+bSjznhfrftqDAtHK/G9JGDl0rRKDhlaCOP9BPQvFu
+	 y2vGlCjGZOxUekQCg94V/JvQbj0yV6hRZadUawfVKq+NWDijecA5p+HxMLn+V9zNFb
+	 /ccVI2h0D5taI36FDdZ/2JIP9XiVouko5nu/H09P1Ojqp34b9hBhsAzWnAblFC3S4D
+	 UwX33Zu3Z8O74FwDJJ60vlnAnj7vgxQbqkI4mpkOq3DwA1M97wEBJJlLzL7trYs8YK
+	 6iSdh0CTO97NA==
+Date: Wed, 20 May 2026 14:38:51 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Viresh Kumar <vireshk@kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>, Alex Elder <elder@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lukas Wunner <lukas@wunner.de>, linux-media@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: fix controller registration API inconsistency
+Message-ID: <3016d236-ed02-4998-b1d7-c50a6fa2a7a4@sirena.org.uk>
+References: <20260512140131.998680-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4N4t6RWf6G4QiBv1"
 Content-Disposition: inline
-In-Reply-To: <37a3e9dd-88c2-4d8d-8ae4-6037a1eeedcc@kernel.org>
+In-Reply-To: <20260512140131.998680-1-johan@kernel.org>
+X-Cookie: Natural laws have no pity.
 
-On Wed, May 20, 2026 at 03:22:07PM +0200, Krzysztof Kozlowski wrote:
-> On 20/05/2026 14:30, Mark Brown wrote:
-> > On Wed, May 20, 2026 at 02:16:21PM +0200, Krzysztof Kozlowski wrote:
-> >> On 20/05/2026 13:48, Jisheng Zhang wrote:
-> > 
-> >>> If you mean "Why this cannot be deduced from the compatible?", I think
-> >>> the slave dma port is part of the cdns xspi, so its io width belongs
-> >>> to xSPI device property.
-> >>> From another side, we have seen such property in other drivers such as
-> >>> the reg-io-width for the dw spi DW_SPI_DR port io width.
-> > 
-> >> So you mean it depends on SPI device? Then why spi-peripheral-props is
-> >> not applicable here?
-> > 
-> > That will be controller side, not device side.
-> > 
-> >> If this is not bus width, but DMA-something, is not really then SPI
-> >> device dependent, but rather DMA controller limitation, so either
-> >> deducible from compatible or something else is missing here.
-> > 
-> > My understanding is that this is a connection between the SPI and DMA
-> > controllers so it's not as obvious as it could be which side of that
-> > link should have the property, eg:
-> > 
-> >   https://www.cadence.com/content/dam/cadence-www/global/en_US/documents/tools/silicon-solutions/design-ip/controller-ip-qspi.pdf
-> > 
-> > shows a separate direct connection between the DMA controller and the
-> > xSPI controller, the DMA controller isn't interacting with registers on
-> > the CPU visible buses.  The width is probably a design time configurable
-> > option on both sides of the link.
-> 
-> Yes and that sounds a lot specific to particular controller, thus should
-> be implied by / deducible from the compatible.
 
-This is IP feature, so if we couple the IP's feature with platform
-compatible, I would see some unnecessary LoCs. For example,
-Let's assume the IP has 10 users, they all support 4 bytes io width,
-other features are the same. 
+--4N4t6RWf6G4QiBv1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-If implied by the compatible string, we need to add 10 compatible
-string support both in code and dt-bindings.
+On Tue, May 12, 2026 at 04:01:31PM +0200, Johan Hovold wrote:
 
-vs
+> With most drivers converted to use managed allocation in preparation for
+> fixing the API, the remaining 16 drivers can be converted in one
+> tree-wide change. Ten of those drivers use the bitbang interface and can
+> be converted by simply removing the extra reference already taken by
+> spi_bitbang_start(). [4]
 
-If supported by "sdma-io-width", nothing is needed after this patch
+> Fix the API inconsistency by no longer dropping a reference when
+> deregistering non-devres allocated controllers.
 
-IMHO, the 2nd sounds better, what do you think?
+> - *
+> - * On success, this routine will take a reference to the controller. The caller
+> - * is responsible for calling spi_bitbang_stop() to decrement the reference and
+> - * spi_controller_put() as counterpart of spi_alloc_host() to prevent a memory
+> - * leak.
+>   */
 
-Thanks
+The xilinx and xtensa-xtfpga drivers use devm_spi_alloc_host() and
+spi_bitbang_start() but still call spi_controller_put() in their remove
+paths.
+
+--4N4t6RWf6G4QiBv1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoNuWoACgkQJNaLcl1U
+h9Cuwgf/W79A6W0ytZ4frCJx5fQJqAdg6GlPgss8sm0qh+uFUuyEllWvZzKZxDWG
+jQYILvY8xfoTcOB2zyi0a3a+8zmc0wWlDvQJgMEUG+PGUhXSdtl3NMVQEuIHffCW
+E4Ioz8BzquHx/vK2Z5a2ftpX/xAdw0WbOL/PyJ47b7jjZlTrK1kSYcS++5To7Z08
+Q/P5M+CTJUkMNGzkkl5CJpS9j+OxK1VhUECMEd9ruYch1hbUM4F+fdidvQI3MM9U
+t+ibWnr2lym8eNj1QKqnmn2hZbPTkbEQchPy4S9yvSoGMukVaU+P4IfqxOM4Al7t
+HQJstbs4969NFZkuk84yDxBe490fjg==
+=GZ3G
+-----END PGP SIGNATURE-----
+
+--4N4t6RWf6G4QiBv1--

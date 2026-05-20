@@ -1,162 +1,56 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2109.outbound.protection.partner.outlook.cn [139.219.17.109])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7A36AB49;
-	Wed, 20 May 2026 08:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.109
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779266723; cv=fail; b=jOb35hevNRBXPUXhaOpJShCA3nkJcYmrf5Cwx/9ZhG5jlNr3Tpltbll2XLNU9lJ9GTd9obPOIXEpKD5byXXqBuVtbV1dDRyMznFRqtVH+pRzy6BHtUfZisRO3vVCUn1FAJWuT+VIWN0Ev7fcSLCxsCMEIgAxjLDN0ZIu8iwrn5Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779266723; c=relaxed/simple;
-	bh=7G1rzda794mJ6nOPSBbreEn6FwFW8IKBQv6/EplPHDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j7fxpvuoBzskFqZEjxdnPwto4mJ6oISowPT7ZzdvnhTtmT3awOUSMQFKnmHSIOivXMKI1Tx35qBe+4247KP7nTZvwMBLLhC89mwpDA+sDdepIg7/Vpql0lchP6AYRtPP4U2iFxeCV2izPuA2wreO0dLlvG2sibHSBo71Xjd/sqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QCQ8y1aLUXGHKdjn1ccKytMwjKL3TcZNP9fF1jHO6gihYhnUEgomO2DK91wCUMl9wFof8At17d9CDGEW6La4ADJ90V+gBt+BQP7fPFgJAKY2QJ2liwwPYWzUckdjcj4YP+ovbzmEYXWSEZaq4SNzDRRfqhKA9eJb60j+uG1vmPPRvcECfAjgAVogwuU+0yCoE85jznaneFNn+A88WnGD4MfX77yBv3buyFJKkyLFt4Rnv5JIflT0NEGzd3YQMyKysxAFMioUdwqJxo4PiF/O/6lDcyRjim4DstmhK9totUWWeFzgWFqqaRcPLH9LCp0yOFr85/TwfuNtCX1VP32OMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YQjQ2G9e5OQyuaJVeMpWCYgkY1ZibpbOZC9b7XLeN6I=;
- b=jX7f6tfQYSADyriHNiHR4ai9LmbQewjg+hhVq4mb9f5mJZ7caikMKPlEyztSFWhKYHqlJzLq7pLYP4BLO+EQ7qnwD9FW7jI3RZgZHfdm2PsDtGWj2jKQnQT1GIBpX9F145J2xqpfhJqY/VW5zxi9XcWa/nneXad3r0eYFipUeQ0SUyg9/QM/grTyMSCzCz4NMgIMNEl3qry7TDSZwPWNbZWxq+cHcI2IYBK8oW2pnvV8hxxoFSjK4avt2qnbnQ+zZlI72s8nflpcIKqGVksgPoHikobnTRl9n4ortKniLKCLopG/G4YB4PiVbXXBITcQoL6olzkE5f/U1Q//7Vw/Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=lecomputing.com; dmarc=pass action=none
- header.from=lecomputing.com; dkim=pass header.d=lecomputing.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=lecomputing.com;
-Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:1f::17) by BJSPR01MB0755.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:1c::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.15; Wed, 20 May
- 2026 08:11:54 +0000
-Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
- ([fe80::1c61:86e3:3a75:155d]) by
- BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn ([fe80::1c61:86e3:3a75:155d%4])
- with mapi id 15.21.0025.023; Wed, 20 May 2026 08:11:54 +0000
-From: Thomas Lin <thomas_lin@lecomputing.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	hoan@os.amperecomputing.com,
-	linusw@kernel.org,
-	brgl@kernel.org,
-	mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	jsd@semihalf.com,
-	andi.shyti@kernel.org,
-	broonie@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	lucas_hao@lecomputing.com,
-	puntar_liu@lecomputing.com,
-	jihua_tao@lecomputing.com,
-	stan_xu@lecomputing.com,
-	lumin_liu@lecomputing.com,
-	notics_zhang@lecomputing.com,
-	braden_zhang@lecomputing.com,
-	harold_wu@lecomputing.com,
-	will_zhang@lecomputing.com,
-	aurora_jiang@lecomputing.com,
-	ryen_lin@lecomputing.com,
-	andy_jiang@lecomputing.com,
-	Thomas Lin <thomas_lin@lecomputing.com>
-Subject: [PATCH v4 1/3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs
-Date: Wed, 20 May 2026 16:11:34 +0800
-Message-ID: <20260520081140.637637-2-thomas_lin@lecomputing.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260520081140.637637-1-thomas_lin@lecomputing.com>
-References: <20260520081140.637637-1-thomas_lin@lecomputing.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0024.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:2::19) To BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:1f::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B4E3B27DE
+	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 08:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779267486; cv=none; b=qUu4u4szI8GxX0sMZ5ra6s1RMlICETCyV3lm2nrwH0AQo+6Jtarq2SVdIQB/m+64xUqY/dB91Aj05ZBTc9rD88GNLtOirjtSMnilhsXUG+4quLZ/bX3D0Tjvc42YlQoj5huvu7qs+gacbgwQQFvd6LRBpFfsNqu1eUWaz9A+wC0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779267486; c=relaxed/simple;
+	bh=Iu5qm/FlMrbFqHuq9e6tqLY2udjZxTpXYMKIeizdl1Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=VoRkqdEYNkewcoautqaISSXpqaA4AOvqKFl1xiCEjuBS37+ky6KnEPJkWt0kdzTlCGY5uigCd/iujLRB287uKj4GsFj/n7cXesH9zPRrcm0ich+IRuumitvWvPN4PtETgTefryi8BNdwqIPMyKueH2f8Nxjc7urXekyT20Pga3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EYrByAaw; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EYrByAaw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D03E1F000E9;
+	Wed, 20 May 2026 08:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779267481;
+	bh=3r9RCZ1ZNmSYxbiMckE4TIxjUaCbk65BpwIc5jaEgj8=;
+	h=Subject:From:Date:To;
+	b=EYrByAawYwYCU5jPM11Dvn/lCB1G4mA66sn3ooDQZGhy5EIA5yQySEuLg/1I1jP64
+	 mguzYklaYlf3cim16zfeBhPgU++tBSC30AYQUudHIdCHkkpvUio8xtttJhY0O/vS3I
+	 CmgQ6dwOsV0MuRo4qq1wgS7Ko84MwuvOr/+zjZFo0pg0s5TWSTDp5zLFU5Muc8A3zO
+	 uxjRai2v26Pno195ixWsoEhadxZiVy26sq/1ak5YwLFpkgrj1akINFv6TGqr3eJA/L
+	 z+6+d/pQJUgJLDNAG/APkMYOVEtvnX1pRl4jULWvMcXqfGMe1N958R7muUpXwnuUGZ
+	 F+PGaQuJeCsdA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569C939309A7;
+	Wed, 20 May 2026 08:58:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BJSPR01MB0707:EE_|BJSPR01MB0755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bdd58f4-b2a4-41e3-6f31-08deb6477375
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|56012099003|22082099003|18002099003|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	a4yKFHHiD7ia0p1QwBGI+hqNQZ3w5MDwZLhXYTQyj82etu4CzEvOh92DIs8hsz/aq6S0CxbTN5+26KLhdK7JXjJ38CcN2ZmDFMHNb0Q2v0Zb8lD4H43mzg08tPJyHqWhvLTk8dP78Pj+O2TSluXxs5QU9WcHp2TkPAE/ydn3wFRCHdHaGWxWjruhxXKm5txZN4SdziliH1WSHVoIhJI2u0S4oSXLkgnb8VkXTd6jPAoS9SXIgLEFVojMY01Fw3gl1Jfq/XcLWlulH7Hvrp27nFtJN8jmqH67MdpeJGvw9YPR3ivNCttK10/NNWv8uDvhNFP7svM4hIprv+WOP1n7d2y3er4BGSKk1T/f03W0KTu5n8h1AMQIRuEaAIUq0Ya9lfmWXqpgfUHzgIY08ZJvrZath/DnFq4/FagCm5PeHrUoPfiG8ogrRwd+ben4z/jYQreogU4pOuIuK37HlppO7FJ2p2JCNZUzFB3peLwBX+OoN5FsB2qgsr6JuSA7D/HGMvwQiTYcGSePMRr0kNr2/VrOZBemDaf+/T5sQ3at1z8blg4dwcC8Sk6IOnqZEoUFU1wCRXZ5QN/xtaM4KKfAqw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(56012099003)(22082099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1KpOfIlOsCw9aw4iJqw6Fi68BWxdtj48juNuShJW1boRpbdNiASkAqWqYgOy?=
- =?us-ascii?Q?5CjHaGEuznQNcVnpyD7Yj3r0RKdTKwfwlpWFwozbWp5zwYd2We0lGOcMdGrV?=
- =?us-ascii?Q?H/mpiFd8t46miN7aMHaOtQgHey2W3HDINTV2TAGYbGF+Q3lh5uJlcJln30v2?=
- =?us-ascii?Q?k9RHk6mhRvOowJZnStS0kzkgA8M5HMhhDyY88+2Q+5boX3ZVOmQGPSHLKruJ?=
- =?us-ascii?Q?/0LW3FrwC2fW4fmnGr9xkuKqeO8mqjBEaHteSzYEHyyU4OR1yQS3HKzalmKh?=
- =?us-ascii?Q?Exjtmltr5HMPEQoKo+TS2po+Z9FhidL/mH7cp9Lvytwjrzi+wGERoo0QjRRU?=
- =?us-ascii?Q?Nlh8jbkDqUlDbzKm6hb4GNmmYgVTuQuv2v67bXoz7WrEI4Jr9Uk3fq6isTRN?=
- =?us-ascii?Q?VTY/GyZ0uh7pTA/7jXWAflGyBQL7aTLjF1xOlrvAywoXj9MP05zmjnEhhlyq?=
- =?us-ascii?Q?EuQ2Vr5Le/ZNn8u7YZ3AcHqPR4BZJTJp39XbAHS15A6r99yks0w551SUPJ8p?=
- =?us-ascii?Q?VlFRTYq0JkDAqlZ8pXPup4zAi5DpBF7H8RsagHP8p23wwCNyoDGYAVCZ/+gr?=
- =?us-ascii?Q?6hvSRzhfOXolpmIVB+ac9emcSGAoIuD2p0HcyBZBXvoKEKxcPsB3oHuqQW2L?=
- =?us-ascii?Q?AkIyKTJrqlXd9SgVd0V893YSTfbV+iMicyJc0cSqd5E4QRIhoIdoE23ucSnF?=
- =?us-ascii?Q?M0saGaqLTwOg4WxQ698chjM16qm9ACMuAjAtwTvLOTVw5OQsAyvU4RItKn8Y?=
- =?us-ascii?Q?sosT+cBn5LBytIEEniNPUSEuiMpdl7A91ws4gMvt1ES4dIGNsLJg8IXHKUDK?=
- =?us-ascii?Q?2pkrls+fPaK7MoUAJl5JSg71/AoXlATNV4kmr8Hd0bABddbGHYBxWlA6+TMX?=
- =?us-ascii?Q?gUdMkX/VRNDF+hXoXZzBYjBOZixvDLQhoILP2KjyOLuvbAalvVgmq+eIUDdN?=
- =?us-ascii?Q?nX6XnNEE1jo9rVcwQUxC/q4ZOrzknqvw7nahXFatNT70iR79dXtizdz65jir?=
- =?us-ascii?Q?LhQt4IcsdiqSircg8JT1wTVTOxQbimUMmLl5soCgv+bZI4sncl2Ym8uUC9ns?=
- =?us-ascii?Q?Ow3cWX+g600/ntOQ8ctPqeYKjCurHDXgnL/jS5r2RA9y5KYE/yImVDe5P7Qm?=
- =?us-ascii?Q?Mz6jP/siatUN09gdYAYFPwmnJsa6EZ5w1Uyi+AfQ0zRH93SOA8dwdc8/Alkz?=
- =?us-ascii?Q?+66sOslgaIPFMCU1Cdg3bc5mqSqV37gji9zC5VSGC7d+kLqQv6lujOthGCsR?=
- =?us-ascii?Q?qEWa2jy2uQxd+z6d+2/7Qd3Ciw3+qo16aBCOj/TyZppwp3J8g6+uG0qiZsZo?=
- =?us-ascii?Q?jRPz1FTH+QxybnAxD2pbXdmJRPm36CM0TDkerRI7VYKjW+FJ5jAkdE5WAO7S?=
- =?us-ascii?Q?pSqZL4lEDpzlxMAEDx18sUPXJvegrDgh1tqJOQmbktY4lRbJEdmVttCyqiQi?=
- =?us-ascii?Q?xK7EM0VIr9V1i9rXEkhQoe3Lk8GM/2hNgoj6+iWa6wXovw+ZRwzO3jjPIcif?=
- =?us-ascii?Q?0DWYEXtBUvBrpRQr6ZMO+wcn4AvYTePeFew3uwmTa0uv2fUpdCWBAw6b3pHX?=
- =?us-ascii?Q?0ede0HvWNCtJDueIN+UsD6FJLnjYq9jgqb8v9mmZvA9DnUG2zc4p/e4LNByg?=
- =?us-ascii?Q?ZHIKb1Ns75FLCJiWoVcDtqilyXwiARLLdRMdBrpDAPQk3s0HIG7uzW5E6dNk?=
- =?us-ascii?Q?HVhoEkhbXXm0mvu0IliUhe0CqYXbGseUbhOQd5Z+mXlbOsJmxH4L5GVUBzPa?=
- =?us-ascii?Q?gDQ3bvY681SYQBfG37TKj9rHkctZ8K8=3D?=
-X-OriginatorOrg: lecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bdd58f4-b2a4-41e3-6f31-08deb6477375
-X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 08:11:53.0961
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3591a018-3909-4ea2-aee8-843d5abaed8d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3YYxlItRGg1gCxttnqQn8fHrGbCzxY6H6N95C5mTtv6qTr6zGGMSMiv436TXpjK6kjTwI+KifQWFeSQlS6w6kKNzMx8nBz5mEidZfNclDLY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0755
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177926749198.3064745.10593129269633132491.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 20 May 2026 08:58:11 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Add ACPI ID "LECA0001" for LECARC SoCs that use the DesignWare
-GPIO controller with V1 register offsets.
+Latest series: [v4] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs (2026-05-20T08:11:35)
+  Superseding: [v3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs (2026-05-18T02:49:35):
+    [v3,1/3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs
+    [v3,2/3] spi: dw-mmio: Add ACPI ID LECA0002 for LECARC SoCs
+    [v3,3/3] i2c: designware: Add ACPI ID LECA0003 for LECARC SoCs
 
-Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Bartosz Golaszewski <brgl@kernel.org>
----
- drivers/gpio/gpio-dwapb.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
-index 15cebc8b5d66..c1f3d83a67c1 100644
---- a/drivers/gpio/gpio-dwapb.c
-+++ b/drivers/gpio/gpio-dwapb.c
-@@ -694,6 +694,7 @@ static const struct acpi_device_id dwapb_acpi_match[] = {
- 	{"APMC0D07", GPIO_REG_OFFSET_V1},
- 	{"APMC0D81", GPIO_REG_OFFSET_V2},
- 	{"FUJI200A", GPIO_REG_OFFSET_V1},
-+	{"LECA0001", GPIO_REG_OFFSET_V1},
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, dwapb_acpi_match);
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

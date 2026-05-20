@@ -1,44 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703B2D97BB;
-	Wed, 20 May 2026 13:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A63C3E8337
+	for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 14:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284337; cv=none; b=a2Q51ftmX0QKOJhNSVQtQqhwmm3OijZU2ybNodI/dvKX7LBWX9asYo3JjtUuGEeL30VZHblytBBOGXrjurlYIshj4fokumbdHVa4AOLK486XS3tAH4xGeGJ8Fy9AebGECzOUABA6ImEgOQ2+KM0nOxaH5e199tJy8a1QH8D2Nk0=
+	t=1779286670; cv=none; b=Rzu/KtAYymVD0G8yrfSmFr2kFOYqDt0D21hbwUZrOKDfvTczu+HF00GAR/VupNITCiCGLLAKWFrU7dVHiBHVtqGafgjNiL8e6UvHGgWmYHdtlzLyVD01VWOgfa64YF+Sr4trvncvmmLui1gwhAsU9xoKxE2BzVaD7oHL3Le8sXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284337; c=relaxed/simple;
-	bh=BBW9MkvpXkEKYlC0T9jL+xjuWtM4N4UIVsx7tlL26MI=;
+	s=arc-20240116; t=1779286670; c=relaxed/simple;
+	bh=Hfw/AFjC3kG8kqhs6xkmMZZyxsxOrl5KKNoqXah7gzk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NAwKxEDq1wdY3nIjn17or/5+vrGuQrLkXwg3Ha90GZiffqFnbbU7kTfwGWhxjUmXKlXkIrjGPMYYco2lfCiNs9crYDKTlygzPN/mgGwjlWL9iEozlAj7sj+TRHWFt6WwOjU5lwzDOrOv2j6NY0vw4gv/ZgjvSMkNBWr+Eofmyls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFZlCZC1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=kIWFzcSMDglqo3KhlJQZh4rsWPH4hun6WbNX79+PplgC2jpfHdhEEQYbC8yJEHl2AWzpfjn3vlkPRlijSNHgaz7X2jfVSBb2Mkowv/gymfd5nJm8Bbawo1YRrbQDZ339r1Mc4pibSsRTv0vvItBibnvH49ooTsHRubNXZeCFU+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=LAFd1jj7; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFZlCZC1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6760C1F000E9;
-	Wed, 20 May 2026 13:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779284336;
-	bh=jK6lLNJVscZr4F/ruDQZQSIqU/TbDpAb9hmsx95/LbY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UFZlCZC15579EYba4dC/ohImqfmQdDMbKXkeQfXh810aMVmlzDtS97Lt2GK7MRN7r
-	 Z0MB7FR0cI7btNwLP1SS/MWW+bSjznhfrftqDAtHK/G9JGDl0rRKDhlaCOP9BPQvFu
-	 y2vGlCjGZOxUekQCg94V/JvQbj0yV6hRZadUawfVKq+NWDijecA5p+HxMLn+V9zNFb
-	 /ccVI2h0D5taI36FDdZ/2JIP9XiVouko5nu/H09P1Ojqp34b9hBhsAzWnAblFC3S4D
-	 UwX33Zu3Z8O74FwDJJ60vlnAnj7vgxQbqkI4mpkOq3DwA1M97wEBJJlLzL7trYs8YK
-	 6iSdh0CTO97NA==
-Date: Wed, 20 May 2026 14:38:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Viresh Kumar <vireshk@kernel.org>,
-	Rui Miguel Silva <rmfrfs@gmail.com>, Alex Elder <elder@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lukas Wunner <lukas@wunner.de>, linux-media@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: fix controller registration API inconsistency
-Message-ID: <3016d236-ed02-4998-b1d7-c50a6fa2a7a4@sirena.org.uk>
-References: <20260512140131.998680-1-johan@kernel.org>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="LAFd1jj7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=Hfw/
+	AFjC3kG8kqhs6xkmMZZyxsxOrl5KKNoqXah7gzk=; b=LAFd1jj7NTZ6/3DQrf7Y
+	wXIjs07DZyjAun5Op8D9KTZ5O5zCnHiiiSC5GnN1B1e6CetYO7Ruw0l0RlCGKrmN
+	Cpvy6AuOXETQ1PPIFtQN71zYIkRJHkeztqGp6Vv1haHmcobPfWI5K7dOBaNKMht3
+	x7+p1Q25Nxf5n33Kh1ylW59goTG9KwrkCc1tu369djs1syja88cimvMSHEx9rdZh
+	bDkSJc+olNgmb3g+G+YO3/IQdLXAz9ZiBTmPsy3h02FiSSZJbX2rKKGBUSX4Nyrk
+	wcAF65cBBmpZ3SU0yNKZ9kUKeWXD7seKy3mmNcXv1zFVXA6FKFZVf7c+8It2TS2S
+	7w==
+Received: (qmail 695898 invoked from network); 20 May 2026 16:17:36 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 May 2026 16:17:36 +0200
+X-UD-Smtp-Session: l3s3148p1@lbMadUBS+1BtKXOp
+Date: Wed, 20 May 2026 16:17:34 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Thomas Lin <thomas_lin@lecomputing.com>
+Cc: rafael@kernel.org, lenb@kernel.org, hoan@os.amperecomputing.com,
+	linusw@kernel.org, brgl@kernel.org, mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com, jsd@semihalf.com,
+	andi.shyti@kernel.org, broonie@kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, lucas_hao@lecomputing.com,
+	puntar_liu@lecomputing.com, jihua_tao@lecomputing.com,
+	stan_xu@lecomputing.com, lumin_liu@lecomputing.com,
+	notics_zhang@lecomputing.com, braden_zhang@lecomputing.com,
+	harold_wu@lecomputing.com, will_zhang@lecomputing.com,
+	aurora_jiang@lecomputing.com, ryen_lin@lecomputing.com,
+	andy_jiang@lecomputing.com
+Subject: Re: [PATCH v4 3/3] i2c: designware: Add ACPI ID LECA0003 for LECARC
+ SoCs
+Message-ID: <ag3CfjgXzwFSCsdg@shikoro>
+References: <20260520081140.637637-1-thomas_lin@lecomputing.com>
+ <20260520081140.637637-4-thomas_lin@lecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,51 +57,49 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4N4t6RWf6G4QiBv1"
+	protocol="application/pgp-signature"; boundary="qplaqrBUnUFBPBuF"
 Content-Disposition: inline
-In-Reply-To: <20260512140131.998680-1-johan@kernel.org>
-X-Cookie: Natural laws have no pity.
+In-Reply-To: <20260520081140.637637-4-thomas_lin@lecomputing.com>
 
 
---4N4t6RWf6G4QiBv1
+--qplaqrBUnUFBPBuF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 12, 2026 at 04:01:31PM +0200, Johan Hovold wrote:
+On Wed, May 20, 2026 at 04:11:36PM +0800, Thomas Lin wrote:
+> Add ACPI ID "LECA0003" for LECARC SoCs that integrate
+> the DesignWare I2C controller.
+> Also add corresponding ACPI description in acpi_apd.c.
+>=20
+> Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-> With most drivers converted to use managed allocation in preparation for
-> fixing the API, the remaining 16 drivers can be converted in one
-> tree-wide change. Ten of those drivers use the bitbang interface and can
-> be converted by simply removing the extra reference already taken by
-> spi_bitbang_start(). [4]
+Because of the dependency, it should probably go in via GPIO or SPI,
+right? So:
 
-> Fix the API inconsistency by no longer dropping a reference when
-> deregistering non-devres allocated controllers.
+Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-> - *
-> - * On success, this routine will take a reference to the controller. The caller
-> - * is responsible for calling spi_bitbang_stop() to decrement the reference and
-> - * spi_controller_put() as counterpart of spi_alloc_host() to prevent a memory
-> - * leak.
->   */
 
-The xilinx and xtensa-xtfpga drivers use devm_spi_alloc_host() and
-spi_bitbang_start() but still call spi_controller_put() in their remove
-paths.
-
---4N4t6RWf6G4QiBv1
+--qplaqrBUnUFBPBuF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoNuWoACgkQJNaLcl1U
-h9Cuwgf/W79A6W0ytZ4frCJx5fQJqAdg6GlPgss8sm0qh+uFUuyEllWvZzKZxDWG
-jQYILvY8xfoTcOB2zyi0a3a+8zmc0wWlDvQJgMEUG+PGUhXSdtl3NMVQEuIHffCW
-E4Ioz8BzquHx/vK2Z5a2ftpX/xAdw0WbOL/PyJ47b7jjZlTrK1kSYcS++5To7Z08
-Q/P5M+CTJUkMNGzkkl5CJpS9j+OxK1VhUECMEd9ruYch1hbUM4F+fdidvQI3MM9U
-t+ibWnr2lym8eNj1QKqnmn2hZbPTkbEQchPy4S9yvSoGMukVaU+P4IfqxOM4Al7t
-HQJstbs4969NFZkuk84yDxBe490fjg==
-=GZ3G
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmoNwnoACgkQFA3kzBSg
+KbbIchAAiq7AwlvxqMOYgteUmqjMnZ2oNxEXRW2bDk3Cj0NVy8QrgQ+MD8CJJRxF
+fq6NPSOoTCoRA+3D46v7KnjV/23KwwkZRbMJP05e5rq4JrMqFFDqF++SFR2kgEs7
+ykWMNAaERSdis0iFrhSJTZuEhfME3yuE7xu4yRFWGGrl4VuxdnTVknHUVJH+liin
+eCvqdx1TMrXfzDapSVshLt2VnKQJxn7X6UpzmAbbNDLblGQ2nYelwMCdQyDkHaPr
+Pp0HtoJAvTa1815T1t06npUw5LQBiSUIE17bTxilRi9krJKRestMec3E3h3W4L1j
+hT6SRROTFsMEOc613g+OKaH9C1N91oEtZjGppUZcO44cwiaLEhtIrXEajJhDZGQ2
+sMB9wisdnE9Ciujel3u81MQDIkUgt8y+SZuKkCkxA6jWqf3YKCT4yh20+9za+hV2
+cvaETvn/XfqY7YNlkv2fkf/FpbTb5xPCOlWcwRWNspd2LIesH4c9SZEfr/eE30/j
+wtBqDgmEcWpNBy1EHTx7pm4q/0alMVnbvpoBnWNTpQWON6kVE5DRteHaFaiK+77M
+VPTPqxRwCo565eVtdF2JRPDVSHnYghhVJDtQEs5lnaoU/jrQRJVD9SDiOoSMWboi
+DCLfXY67fIG99g3tWtMHdNlQoyiHUfDy5mdRclyLtfvsnnLRbDk=
+=dNF9
 -----END PGP SIGNATURE-----
 
---4N4t6RWf6G4QiBv1--
+--qplaqrBUnUFBPBuF--

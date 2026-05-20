@@ -1,26 +1,26 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2125.outbound.protection.partner.outlook.cn [139.219.17.125])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2109.outbound.protection.partner.outlook.cn [139.219.17.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36003A9612;
-	Wed, 20 May 2026 08:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7A36AB49;
+	Wed, 20 May 2026 08:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779264806; cv=fail; b=mcJ5rHpVu5/whvNQJxlo8RRlQ2EJm/s1N+iTnMOUzEVIXyPf25ed4xrRvhSauFaafJwfMyAusQBwpFkhzE0WPDJBrIR/vwdMyeWKydBrv/8cweHRc9XYmcZhy4yqmeWkOPYZQmicKW6J88H/Kii7/tuzKFqK4v7yey6lgKrBWlc=
+	t=1779266723; cv=fail; b=jOb35hevNRBXPUXhaOpJShCA3nkJcYmrf5Cwx/9ZhG5jlNr3Tpltbll2XLNU9lJ9GTd9obPOIXEpKD5byXXqBuVtbV1dDRyMznFRqtVH+pRzy6BHtUfZisRO3vVCUn1FAJWuT+VIWN0Ev7fcSLCxsCMEIgAxjLDN0ZIu8iwrn5Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779264806; c=relaxed/simple;
-	bh=2oovYQUKGiofz7Go7C36dtuj74u8wB2gV72vMpqUJyo=;
+	s=arc-20240116; t=1779266723; c=relaxed/simple;
+	bh=7G1rzda794mJ6nOPSBbreEn6FwFW8IKBQv6/EplPHDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BZkkzB1E4qlTzBf1sv5w/SrpuzhjhcJL0AuayRmsJmf/DWnyHBrfDgh9O0Fv7MGf8lM0NQ5jlqYJLhPLDvq7hLcpELmAjtFIvoIRdnnU8CVngUmFyH2Hn7+YD77yMhoEfkg78ZUhl+5kd0sGtFveToD27ZqXTuIK4OhCouBiXqY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.125
+	 Content-Type:MIME-Version; b=j7fxpvuoBzskFqZEjxdnPwto4mJ6oISowPT7ZzdvnhTtmT3awOUSMQFKnmHSIOivXMKI1Tx35qBe+4247KP7nTZvwMBLLhC89mwpDA+sDdepIg7/Vpql0lchP6AYRtPP4U2iFxeCV2izPuA2wreO0dLlvG2sibHSBo71Xjd/sqQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com; spf=pass smtp.mailfrom=lecomputing.com; arc=fail smtp.client-ip=139.219.17.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=H9KETAFvqGimEnlxi+Ke7GjiAqq/iVmDmPofDI2+t/LaHnmIO33Xa99wBXmb5uNFKDQ+H0MFzASJ8VKaFWVGWLvK1PvOruRwQxNlUMSEnG2Oa+kTHuwYZZMlGB3f7bibLxDBsw1p67M2+ad585yTiKJrkM2HyY6LxwK+/H7NCEbOPwn7Q0q+rqhwngIMsrl4uLacVAmy6n4a3lHaVz1a8JewsjD/FTJ+ML191b5COem9+AHvydIN6NER2w9tTdcaU2icS2ElSGKYhqpJp3xEXLxHX0v2aiuzwBp0vZyN/PGM9JxqBzfbTZDJDHzzlE9ub6EF/hhCcAeg8CU2KCu/rw==
+ b=QCQ8y1aLUXGHKdjn1ccKytMwjKL3TcZNP9fF1jHO6gihYhnUEgomO2DK91wCUMl9wFof8At17d9CDGEW6La4ADJ90V+gBt+BQP7fPFgJAKY2QJ2liwwPYWzUckdjcj4YP+ovbzmEYXWSEZaq4SNzDRRfqhKA9eJb60j+uG1vmPPRvcECfAjgAVogwuU+0yCoE85jznaneFNn+A88WnGD4MfX77yBv3buyFJKkyLFt4Rnv5JIflT0NEGzd3YQMyKysxAFMioUdwqJxo4PiF/O/6lDcyRjim4DstmhK9totUWWeFzgWFqqaRcPLH9LCp0yOFr85/TwfuNtCX1VP32OMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sjd3OSYGtHwVNS9U33PtcM86MKhtwyMqIQuD636SJVE=;
- b=nwf6PxfDR49xccn17pc+fQLj+9XEZOy0HmJ68SeNmo34G6S6NdNxjVs3yJE8W7/R1tzNAM0KIMiifUdx3UVmcm2LvOf9qCpFSWH946tIr9O1Cet8azr8Q6S180GlURXzMdnuIBtgDcMd34/4BwB9MIk97IxvOeUYcAmykUkWMSZMPn+3po0eUaNWFrDO6SZH37HAaKrEscmRuKkBJOc33g8H8YlA5atvI7ssH+KCnV2z3nd0RdDcGWbgcKxccWA/hhCm2gBBtcEvgjzWP0w6OmTFnUsxvi1FCnkglhkgN7xE3BoEichd3sZpQFPn5bU5i2UGCORJ1RZRRTOyptegwA==
+ bh=YQjQ2G9e5OQyuaJVeMpWCYgkY1ZibpbOZC9b7XLeN6I=;
+ b=jX7f6tfQYSADyriHNiHR4ai9LmbQewjg+hhVq4mb9f5mJZ7caikMKPlEyztSFWhKYHqlJzLq7pLYP4BLO+EQ7qnwD9FW7jI3RZgZHfdm2PsDtGWj2jKQnQT1GIBpX9F145J2xqpfhJqY/VW5zxi9XcWa/nneXad3r0eYFipUeQ0SUyg9/QM/grTyMSCzCz4NMgIMNEl3qry7TDSZwPWNbZWxq+cHcI2IYBK8oW2pnvV8hxxoFSjK4avt2qnbnQ+zZlI72s8nflpcIKqGVksgPoHikobnTRl9n4ortKniLKCLopG/G4YB4PiVbXXBITcQoL6olzkE5f/U1Q//7Vw/Dw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=lecomputing.com; dmarc=pass action=none
  header.from=lecomputing.com; dkim=pass header.d=lecomputing.com; arc=none
@@ -30,11 +30,11 @@ Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:1f::17) by BJSPR01MB0755.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c211:1c::18) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.15; Wed, 20 May
- 2026 08:11:56 +0000
+ 2026 08:11:54 +0000
 Received: from BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
  ([fe80::1c61:86e3:3a75:155d]) by
  BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn ([fe80::1c61:86e3:3a75:155d%4])
- with mapi id 15.21.0025.023; Wed, 20 May 2026 08:11:56 +0000
+ with mapi id 15.21.0025.023; Wed, 20 May 2026 08:11:54 +0000
 From: Thomas Lin <thomas_lin@lecomputing.com>
 To: rafael@kernel.org,
 	lenb@kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-acpi@vger.kernel.org,
 	ryen_lin@lecomputing.com,
 	andy_jiang@lecomputing.com,
 	Thomas Lin <thomas_lin@lecomputing.com>
-Subject: [PATCH v4 3/3] i2c: designware: Add ACPI ID LECA0003 for LECARC SoCs
-Date: Wed, 20 May 2026 16:11:36 +0800
-Message-ID: <20260520081140.637637-4-thomas_lin@lecomputing.com>
+Subject: [PATCH v4 1/3] gpio: dwapb: Add ACPI ID LECA0001 for LECARC SoCs
+Date: Wed, 20 May 2026 16:11:34 +0800
+Message-ID: <20260520081140.637637-2-thomas_lin@lecomputing.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260520081140.637637-1-thomas_lin@lecomputing.com>
 References: <20260520081140.637637-1-thomas_lin@lecomputing.com>
@@ -83,106 +83,80 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BJSPR01MB0707:EE_|BJSPR01MB0755:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e48f1be-1c24-47e7-7da8-08deb6477598
+X-MS-Office365-Filtering-Correlation-Id: 5bdd58f4-b2a4-41e3-6f31-08deb6477375
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|52116014|56012099003|22082099003|18002099003|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	OccCZbXwzWny/HJ2z2+4eljSSy3jPp0LOWXir6jIPluaNVqSBwvCKVJL3z5x20BGutEwsEv7ar4WC/eFvut1xxo42B1L/1t9IHcnT1CVu4/5n2lR+ZrR2DMV4cPDojgVS9yZkhTgRwpuiB0hoiqBpEP/6OWbHoRk91z6+RBx/lGIm6oanblLSdLIi0/CNvuvuwUu7lVnW/uamF+LV2Q78uaqSsFcic+PYJn1RoDsmOwVmN2ZYXSikfVTjaMqYsWOxJQTPg9ZDIUxThS6zQE+KzAYIXp/hR7+uY+7Ac9A1hhf7bP2mqVz9bErSrvIInLSjk2sz7ZPCdLB7h9xKBZRXbBHH1MiVybpJ4DIR6jdqSIOfqxjb8FbRKMIL5frULaFqp/7uPwciD4cAGJjzClNoUV8on8coi7R8kOITgWgWVoDj5WFyKeRWcMYXx1FLJvauQThITx8rRIbAXj2CHz6yBeSv5pMI28NFiib3DZmPDFHTLDzhZupx3vpvPTew7fOWH2WNLUWDCGH+GthwyJda/V8vlXE2Pc1oU+lGJiPkN3PEPU6G5CcoTTPWiV631akbmLVjRkmMmkzxwqJewfUng==
+	a4yKFHHiD7ia0p1QwBGI+hqNQZ3w5MDwZLhXYTQyj82etu4CzEvOh92DIs8hsz/aq6S0CxbTN5+26KLhdK7JXjJ38CcN2ZmDFMHNb0Q2v0Zb8lD4H43mzg08tPJyHqWhvLTk8dP78Pj+O2TSluXxs5QU9WcHp2TkPAE/ydn3wFRCHdHaGWxWjruhxXKm5txZN4SdziliH1WSHVoIhJI2u0S4oSXLkgnb8VkXTd6jPAoS9SXIgLEFVojMY01Fw3gl1Jfq/XcLWlulH7Hvrp27nFtJN8jmqH67MdpeJGvw9YPR3ivNCttK10/NNWv8uDvhNFP7svM4hIprv+WOP1n7d2y3er4BGSKk1T/f03W0KTu5n8h1AMQIRuEaAIUq0Ya9lfmWXqpgfUHzgIY08ZJvrZath/DnFq4/FagCm5PeHrUoPfiG8ogrRwd+ben4z/jYQreogU4pOuIuK37HlppO7FJ2p2JCNZUzFB3peLwBX+OoN5FsB2qgsr6JuSA7D/HGMvwQiTYcGSePMRr0kNr2/VrOZBemDaf+/T5sQ3at1z8blg4dwcC8Sk6IOnqZEoUFU1wCRXZ5QN/xtaM4KKfAqw==
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(52116014)(56012099003)(22082099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WqIzrvReRj1vnaI/XSeu+5rYy+ZW3HYDh5gH6AT0IJv2Fa+f9t3OHn5VseNu?=
- =?us-ascii?Q?N2HigP1J+62uMaxC/oXJi8ZDExDtYh+FAhiTaVe+OMKqfhQIXL3bJ5YTVfKf?=
- =?us-ascii?Q?GMQlSEskvN3/bTeKzEuWxV3UYol3X9ofFvUCDxSr/DlAWFGPUmkjlEvxGkRh?=
- =?us-ascii?Q?y+9dzTXiwqsgMPdnsiP6Rr1bt0p2Ish8dXp+w2Kgr74+bJRpGHZdvTdiMKez?=
- =?us-ascii?Q?ZHh8u5JAVeen3YPqGDqtDxvCIoom/CYmVVQoviJZDNh7q2w+W+737nsDkZWj?=
- =?us-ascii?Q?LbV7K3qVgWhKERSy0WMWqGooo1erONue/G6HKX3pci0/Q8VDWd1ePnztGPFM?=
- =?us-ascii?Q?K2M5RHCBwzgHA+CG6O2PUTgpqjFVPtHhf5+vv16SK+43bI5bdS+/ixohm+TC?=
- =?us-ascii?Q?tSBSaMqAA8lMaGdan64hS3Fl8O8pvHtQHdUVBhaCzTGp93LzibJKskgapETJ?=
- =?us-ascii?Q?QZkgIyjHDwf5RbrjK06SqMxsyZnWOZci5AdylVm7NV4EN1wqRtlpAQ2abZ2Q?=
- =?us-ascii?Q?D58WxFUjzrC20CRITxHVY8pIozW763ApkOxtozvDAPJsSpat6SH6/PX5MjXq?=
- =?us-ascii?Q?/1NJxjMXznuU8KgEGa5u/F3H8bQmhFOqTYt/8u2VXxFN6VNWhzsNE+wtRhBR?=
- =?us-ascii?Q?AZpmSaR2ESxoJMNJpAgBci0qRjLfedvSeltY/necp8WlSc9x5AB+GUIazsJn?=
- =?us-ascii?Q?zDC59RvqRtQjwPKWl6ksJHguAUiO4G8jhmcYcs62Nob4aUcqd4AF5xHABxTg?=
- =?us-ascii?Q?OFWgRECN3A58YnI6FIH2dYnFMe7pdCP7XwgS8eu7hlITfFl6n9xy7V9TksF3?=
- =?us-ascii?Q?MjvrOcsuyYbf8Pi0Uib2+X84FR9gm+wQKf2jzVLf78pbNf9WtvW6N0gO8Ksu?=
- =?us-ascii?Q?35kkYuRzYSsaIo0Humwz1ZITLHbmCru4+fLbpbkrIhm06zy+pj2lAvGpEhUJ?=
- =?us-ascii?Q?WIOv+MXjMXrWEs1mOzZ5bMNZ35xY9vX6awwKK5q2JZOD/BT6GEcwDiNLqpLJ?=
- =?us-ascii?Q?IeuQM+Xy3WaHyZjavY4gyXwL1PctC0dIYLYvOCLp8aVULJEZT2ejdJusvNfy?=
- =?us-ascii?Q?Od4WAkSA4LzgQtUwihRY6g9FXQlCO8H6WWyiUC9XA3h1YRHyIJFgPMOuB9+z?=
- =?us-ascii?Q?lfhsYJykqcIRvSdPsevfD4ssTP4cvP/niE7dmVx5j8tmJUMHpZB5P+s7g7bq?=
- =?us-ascii?Q?o95WdVREswbEMrWJWWm12icgvH6eIKNf0M0PlZY/drFspny/C4VH8ctSjohg?=
- =?us-ascii?Q?Vuq13OUqB3oaNY6AL4rdk5OPyY2bjpnF2jmHCoZQmFtepWZKv/NmLuP0Emnk?=
- =?us-ascii?Q?pb/TC7nH1qfB45TD5f11GzfWIhAqPI83pxZrfeRErkj4yv4kf00Dlticez0C?=
- =?us-ascii?Q?j5ONaUjBvr2k7ky5qzVw2Nh/956scEJHHWlj0Dtr3mefjAENylsIYdFphNQQ?=
- =?us-ascii?Q?c8koi47qlPoqF0Uojfg7Asun01wyWUqTkCwd+Ih0s/XtLx46/a92bK9urQSv?=
- =?us-ascii?Q?F9jCY6o8F9SBRLNhNwgPFS7+1OykKamSfa0WL5zW8xegAtl0l+zoshNpa6ZT?=
- =?us-ascii?Q?s3pz010ozUVnJTnfGbA0ZhEsz7Rqn0keX2+aO+ehhODC4uiQKa7yPxrL0zUx?=
- =?us-ascii?Q?I/o/xs9cY/YgOUxSeuDVzFcIDb9+YghSi0d4ulnz62qk0mqbudTaMGGqCXOQ?=
- =?us-ascii?Q?WbU/mEcZYG9grCfZI2wDK1uZrsswi74KlrIPSKbfdVY13eGZMWkWLslv3kOl?=
- =?us-ascii?Q?529fJji9n8yr61uK3ipDcbPi5Kf201g=3D?=
+	=?us-ascii?Q?1KpOfIlOsCw9aw4iJqw6Fi68BWxdtj48juNuShJW1boRpbdNiASkAqWqYgOy?=
+ =?us-ascii?Q?5CjHaGEuznQNcVnpyD7Yj3r0RKdTKwfwlpWFwozbWp5zwYd2We0lGOcMdGrV?=
+ =?us-ascii?Q?H/mpiFd8t46miN7aMHaOtQgHey2W3HDINTV2TAGYbGF+Q3lh5uJlcJln30v2?=
+ =?us-ascii?Q?k9RHk6mhRvOowJZnStS0kzkgA8M5HMhhDyY88+2Q+5boX3ZVOmQGPSHLKruJ?=
+ =?us-ascii?Q?/0LW3FrwC2fW4fmnGr9xkuKqeO8mqjBEaHteSzYEHyyU4OR1yQS3HKzalmKh?=
+ =?us-ascii?Q?Exjtmltr5HMPEQoKo+TS2po+Z9FhidL/mH7cp9Lvytwjrzi+wGERoo0QjRRU?=
+ =?us-ascii?Q?Nlh8jbkDqUlDbzKm6hb4GNmmYgVTuQuv2v67bXoz7WrEI4Jr9Uk3fq6isTRN?=
+ =?us-ascii?Q?VTY/GyZ0uh7pTA/7jXWAflGyBQL7aTLjF1xOlrvAywoXj9MP05zmjnEhhlyq?=
+ =?us-ascii?Q?EuQ2Vr5Le/ZNn8u7YZ3AcHqPR4BZJTJp39XbAHS15A6r99yks0w551SUPJ8p?=
+ =?us-ascii?Q?VlFRTYq0JkDAqlZ8pXPup4zAi5DpBF7H8RsagHP8p23wwCNyoDGYAVCZ/+gr?=
+ =?us-ascii?Q?6hvSRzhfOXolpmIVB+ac9emcSGAoIuD2p0HcyBZBXvoKEKxcPsB3oHuqQW2L?=
+ =?us-ascii?Q?AkIyKTJrqlXd9SgVd0V893YSTfbV+iMicyJc0cSqd5E4QRIhoIdoE23ucSnF?=
+ =?us-ascii?Q?M0saGaqLTwOg4WxQ698chjM16qm9ACMuAjAtwTvLOTVw5OQsAyvU4RItKn8Y?=
+ =?us-ascii?Q?sosT+cBn5LBytIEEniNPUSEuiMpdl7A91ws4gMvt1ES4dIGNsLJg8IXHKUDK?=
+ =?us-ascii?Q?2pkrls+fPaK7MoUAJl5JSg71/AoXlATNV4kmr8Hd0bABddbGHYBxWlA6+TMX?=
+ =?us-ascii?Q?gUdMkX/VRNDF+hXoXZzBYjBOZixvDLQhoILP2KjyOLuvbAalvVgmq+eIUDdN?=
+ =?us-ascii?Q?nX6XnNEE1jo9rVcwQUxC/q4ZOrzknqvw7nahXFatNT70iR79dXtizdz65jir?=
+ =?us-ascii?Q?LhQt4IcsdiqSircg8JT1wTVTOxQbimUMmLl5soCgv+bZI4sncl2Ym8uUC9ns?=
+ =?us-ascii?Q?Ow3cWX+g600/ntOQ8ctPqeYKjCurHDXgnL/jS5r2RA9y5KYE/yImVDe5P7Qm?=
+ =?us-ascii?Q?Mz6jP/siatUN09gdYAYFPwmnJsa6EZ5w1Uyi+AfQ0zRH93SOA8dwdc8/Alkz?=
+ =?us-ascii?Q?+66sOslgaIPFMCU1Cdg3bc5mqSqV37gji9zC5VSGC7d+kLqQv6lujOthGCsR?=
+ =?us-ascii?Q?qEWa2jy2uQxd+z6d+2/7Qd3Ciw3+qo16aBCOj/TyZppwp3J8g6+uG0qiZsZo?=
+ =?us-ascii?Q?jRPz1FTH+QxybnAxD2pbXdmJRPm36CM0TDkerRI7VYKjW+FJ5jAkdE5WAO7S?=
+ =?us-ascii?Q?pSqZL4lEDpzlxMAEDx18sUPXJvegrDgh1tqJOQmbktY4lRbJEdmVttCyqiQi?=
+ =?us-ascii?Q?xK7EM0VIr9V1i9rXEkhQoe3Lk8GM/2hNgoj6+iWa6wXovw+ZRwzO3jjPIcif?=
+ =?us-ascii?Q?0DWYEXtBUvBrpRQr6ZMO+wcn4AvYTePeFew3uwmTa0uv2fUpdCWBAw6b3pHX?=
+ =?us-ascii?Q?0ede0HvWNCtJDueIN+UsD6FJLnjYq9jgqb8v9mmZvA9DnUG2zc4p/e4LNByg?=
+ =?us-ascii?Q?ZHIKb1Ns75FLCJiWoVcDtqilyXwiARLLdRMdBrpDAPQk3s0HIG7uzW5E6dNk?=
+ =?us-ascii?Q?HVhoEkhbXXm0mvu0IliUhe0CqYXbGseUbhOQd5Z+mXlbOsJmxH4L5GVUBzPa?=
+ =?us-ascii?Q?gDQ3bvY681SYQBfG37TKj9rHkctZ8K8=3D?=
 X-OriginatorOrg: lecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e48f1be-1c24-47e7-7da8-08deb6477598
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5bdd58f4-b2a4-41e3-6f31-08deb6477375
 X-MS-Exchange-CrossTenant-AuthSource: BJSPR01MB0707.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 08:11:56.6206
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 08:11:53.0961
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3591a018-3909-4ea2-aee8-843d5abaed8d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qavwynSL4xM8Dz5Sa6JKh3KoV+NohxKjiVAZdMR7hutX9Otz0WT7L9unVS5ikhmpnWpKLPyulOq31Jp6Od8GZ59WoSNu5TLaidF2ZTUJe88=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3YYxlItRGg1gCxttnqQn8fHrGbCzxY6H6N95C5mTtv6qTr6zGGMSMiv436TXpjK6kjTwI+KifQWFeSQlS6w6kKNzMx8nBz5mEidZfNclDLY=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJSPR01MB0755
 
-Add ACPI ID "LECA0003" for LECARC SoCs that integrate
-the DesignWare I2C controller.
-Also add corresponding ACPI description in acpi_apd.c.
+Add ACPI ID "LECA0001" for LECARC SoCs that use the DesignWare
+GPIO controller with V1 register offsets.
 
 Signed-off-by: Thomas Lin <thomas_lin@lecomputing.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Bartosz Golaszewski <brgl@kernel.org>
 ---
- drivers/acpi/acpi_apd.c                     | 6 ++++++
- drivers/i2c/busses/i2c-designware-platdrv.c | 1 +
- 2 files changed, 7 insertions(+)
+ drivers/gpio/gpio-dwapb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index 4d5a51d30adc..008bd0552cb7 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -187,6 +187,11 @@ static const struct apd_device_desc leca_spi_desc = {
- 	.fixed_clk_rate = 400000000,
- };
- 
-+static const struct apd_device_desc leca_i2c_desc = {
-+	.setup = acpi_apd_setup,
-+	.fixed_clk_rate = 250000000,
-+};
-+
- #endif /* CONFIG_ARM64 */
- 
- #endif
-@@ -258,6 +263,7 @@ static const struct acpi_device_id acpi_apd_device_ids[] = {
- 	{ "HISI02A3", APD_ADDR(hip08_lite_i2c_desc) },
- 	{ "HISI0173", APD_ADDR(hip08_spi_desc) },
- 	{ "LECA0002", APD_ADDR(leca_spi_desc) },
-+	{ "LECA0003", APD_ADDR(leca_i2c_desc) },
- 	{ "NXP0001", APD_ADDR(nxp_i2c_desc) },
- #endif
+diff --git a/drivers/gpio/gpio-dwapb.c b/drivers/gpio/gpio-dwapb.c
+index 15cebc8b5d66..c1f3d83a67c1 100644
+--- a/drivers/gpio/gpio-dwapb.c
++++ b/drivers/gpio/gpio-dwapb.c
+@@ -694,6 +694,7 @@ static const struct acpi_device_id dwapb_acpi_match[] = {
+ 	{"APMC0D07", GPIO_REG_OFFSET_V1},
+ 	{"APMC0D81", GPIO_REG_OFFSET_V2},
+ 	{"FUJI200A", GPIO_REG_OFFSET_V1},
++	{"LECA0001", GPIO_REG_OFFSET_V1},
  	{ }
-diff --git a/drivers/i2c/busses/i2c-designware-platdrv.c b/drivers/i2c/busses/i2c-designware-platdrv.c
-index 3351c4a9ef11..b435b4015f02 100644
---- a/drivers/i2c/busses/i2c-designware-platdrv.c
-+++ b/drivers/i2c/busses/i2c-designware-platdrv.c
-@@ -279,6 +279,7 @@ static const struct acpi_device_id dw_i2c_acpi_match[] = {
- 	{ "INT3432", 0 },
- 	{ "INT3433", 0 },
- 	{ "INTC10EF", 0 },
-+	{ "LECA0003", 0 },
- 	{}
  };
- MODULE_DEVICE_TABLE(acpi, dw_i2c_acpi_match);
+ MODULE_DEVICE_TABLE(acpi, dwapb_acpi_match);
 -- 
 2.43.0
 

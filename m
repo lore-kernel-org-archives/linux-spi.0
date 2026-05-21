@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3093A3D410A;
-	Fri, 22 May 2026 10:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801E93CE489;
+	Fri, 22 May 2026 10:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779445297; cv=none; b=okp/BwNteSJXDzZ7cHWo85nJV/Dw3ggLbGjxmt7iyOLHvYs7zmex4k/eMsDS27uZfZCDjZWt6WWXKR21vdbLa/3HS3ZKYv6LzqU15h+RVhA3Alng9xWtod6G7wAEBOpQz8E1KHaUsQ0XMkZYFHLy4AV2FuK6D2Thq+Ilz7w7Clk=
+	t=1779445312; cv=none; b=IPkvjlKjhPI5gpmUGbgePXzlOPTOtPKDi6QlJXGSYVM+69BjQBpaMhvGNP2+0/r5OjQPwCwL8hZBrWFYu/1pvqqKbPZ7bXO8WwCG+WyCrHtbXGZTaf4K6Rk7jlsA6pUJ4h+tiq2xLEUjgGXzvTDuJiTS7fe1+r7N5OPCmW5tJ6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779445297; c=relaxed/simple;
-	bh=9GtPfAC/7X0StcDinTriwrJOIHC98Sl4258lsNRLwmk=;
+	s=arc-20240116; t=1779445312; c=relaxed/simple;
+	bh=XGvRWFnHxBl/4vDYNIzRFjTrHmqdZDLJkRM7tpyOMxc=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=C4F363TbNAgQP+Z9cAha3AozTPwHNpMEjITUa/U69/7uVVJEb8gkynwm5kMMYsdrVUNh/eE2cf1KiNMayq6I5Hfezl4BlXCtHnFkoANGJdPbozoSKfD+Iqhv2/oJi4y9mQg+VY0sjymZ3GG/FlG/l1DPbDcq9X937c8I8Fi2Gug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbaBGZvC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ItpGd6MTaRpLTSZpOGiYcmtmFWudcKp9chThaMSbd/Jtp0mRRMf/LB6rP75Qk95YeRJqSfk+K/Lpgr3jBMLdJWMfDu60EqU5eEhL8xJu58Xzz0TeaU+TFLbFArj9R9roStTVb1araCRbqY5ty/3as5zN1j+5Y3hP0r7RIwLcz4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YeG7QDaE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbaBGZvC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A4B1F000E9;
-	Fri, 22 May 2026 10:21:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YeG7QDaE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCFB1F00A3D;
+	Fri, 22 May 2026 10:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779445294;
-	bh=RCKk3G/fG9xNHQtopQgosGS3JYiX2OLPFhfHBrbqUdc=;
+	s=k20260515; t=1779445308;
+	bh=alAHQ6fqvt3+i41azObwMF7fJWB0ovwWc5B+rB7ORY8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=LbaBGZvCeaADuRERmjoD9QTmzzOLrZsfhniBoeeEut0XLLXoA15muHYKFbqma4txb
-	 JH4qTMZbgIk36XHb82fvL0I5s7MAHqYEfnBbikUr1NwmFtGTHMJhx8xEv7owt+UvAH
-	 ItquTogvlO/dzeZN0/DrmT4owf8tCCiHcBUCFuYSkBVaqQnyn1gjRjIPDVaF5nzqKH
-	 eSU1mvViloUzt9YGFTx/pjSIRji24gP4K1Hdh5V+CsqhIqQSrcqmjZqpzDdGCPJG4D
-	 ZgvSxEx7nj/G1RD0gRFnfzGNQRyskaESIgtfcrV1lXYYBmOz3z7uI6NEueoQ58FmzN
-	 4HOQhgeXIkavA==
+	b=YeG7QDaEac6cNXHgTtk0EFoBIpVWWa/nX/LkZ/HmW0VgQy//YejsCGHkoheWsIDl3
+	 qXgZsSJvHvIV44fgpxEeebH+AtxmNkcupj6nHG7Hf/ndi7ifEm92dBmZ2zWY9kEYU2
+	 P3vog+eOv95h6m22hdfWVsOt2I7QnUxLNfRLoBiXSu8RYWKObqCd3JNFiCk6pXJXnk
+	 6lj5bYJ8mlUxa+QRwfh1x2cE2kF7AKEN6HptNylz/j/0w++iVieO24PJqgcf2kWQpZ
+	 ioBY0GCATSkySNVm6A7GxzchcGv50UeePCANvhp3Uku0feefCy9lA73SIgJL+wBTad
+	 nmyY4S5WBzskQ==
 From: Mark Brown <broonie@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
- mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com, 
- chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
-References: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
-Subject: Re: [PATCH v3 0/2] Add trace events for Qualcomm GENI SPI drivers
-Message-Id: <177919638255.6167.12994176787031885000.b4-ty@b4>
-Date: Tue, 19 May 2026 14:13:02 +0100
+To: Johan Hovold <johan@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Vladimir Oltean <olteanv@gmail.com>, Viresh Kumar <vireshk@kernel.org>, 
+ Rui Miguel Silva <rmfrfs@gmail.com>, Alex Elder <elder@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Lukas Wunner <lukas@wunner.de>, linux-media@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260521073816.766596-1-johan@kernel.org>
+References: <20260521073816.766596-1-johan@kernel.org>
+Subject: Re: [PATCH v2] spi: fix controller registration API inconsistency
+Message-Id: <177936276667.58022.4468059770892456065.b4-ty@b4>
+Date: Thu, 21 May 2026 12:26:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -50,29 +48,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1546; i=broonie@kernel.org;
- h=from:subject:message-id; bh=9GtPfAC/7X0StcDinTriwrJOIHC98Sl4258lsNRLwmk=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEC4qFF7/ZgXzkEqdBZ2lH9wYy8JTYhh4d6Igc
- xgr9PVds4mJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahAuKgAKCRAk1otyXVSH
- 0BQ5B/9EdM+6O9YI0UCKxggIRj44WraRmiJtCjfQo6oAOVPeWbkbrpAV4XH+ngWlu4BvxVYWVdf
- 0rQzEjwQoqrRII5XKAb1E+NNBCpPTcV4zGGGHRlxUsuSLtCuW62kcPxRZ6XGcGjZFqOB3ehWP7k
- OmWS8e15M0D8Yb3vghx3qbQ5Jg03kzAjCAhag/F1lmEKsjb/UyV9x0wMeIZkxJZ4UuVpd/ZwzS5
- VOwD6pPB6TzEQkthl+s8ZaSC4rTzoFLMSC42b/xvYTGwkIxMhQsmxTrBfqXRbU7jbcJmrshAo3G
- DIVGxh9PjCGXfcOxDe6s58wXrkuGgUfePhf9abSFzTrnCpJA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1114; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=XGvRWFnHxBl/4vDYNIzRFjTrHmqdZDLJkRM7tpyOMxc=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEC453nfah20aKIr5D3H75HTWHifNTf2Tr+jzS
+ qbSFZqv1xqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahAuOQAKCRAk1otyXVSH
+ 0NboB/4wZyHo+B5rVtB6lPbLxX5AbHLgukxAXUiROlmcBBd9TYbJ68oTs7B5mJC6eaKfHgLi+7Q
+ ZHuTCy7h2VrFfJ3bkXcVXN9DJqlghExwemDsHhKkC+/sgbp1/rZR2tqqeRodkwFF5Pp8FBHeF6P
+ cJWXoAMSmKtfyFPQjro0Uldg87bRHZrDoPFZCV8NUYtIjDGa2vKiitfPhB3QWvbrdz3nG74ay3G
+ RYuwaNHWDcpZzH5O/fW75hKtLkAx/jHvsl3W+KOsU4T6jJ9qJIaA1KVEHCHKmOUhQoqeYaZwWgX
+ 3Gpb0P2+c8X2cQTuTT/65tVeb6jD6XN0w5SJDme1Y9Jq1lta
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 18 May 2026 22:30:50 +0530, Praveen Talari wrote:
-> Add trace events for Qualcomm GENI SPI drivers
-> 
-> Add tracepoints to the Qualcomm GENI (Generic Interface) SPI driver.
-> These trace events enable runtime debugging and performance analysis
-> of SPI operations.
-> 
-> The trace events capture SPI clock configuration, setup parameters,
-> transfer details, interrupt status.
-> 
-> [...]
+On Thu, 21 May 2026 09:38:16 +0200, Johan Hovold wrote:
+> spi: fix controller registration API inconsistency
 
 Applied to
 
@@ -80,10 +69,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: qcom-geni: trace: Add trace events for Qualcomm GENI SPI
-      https://git.kernel.org/broonie/spi/c/bf62d130b1f2
-[2/2] spi: qcom-geni: Add trace events for Qualcomm GENI SPI driver
-      https://git.kernel.org/broonie/spi/c/b5687af4af89
+[1/1] spi: fix controller registration API inconsistency
+      https://git.kernel.org/broonie/spi/c/16ba3b0c66ef
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

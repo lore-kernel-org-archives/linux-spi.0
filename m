@@ -1,168 +1,274 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282E73612ED
-	for <linux-spi@vger.kernel.org>; Thu, 21 May 2026 05:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779343180; cv=pass; b=p6i0V9pU7D9FtxdX27R2Eyfmy733oXwTJbF6/srg3dfnP33If+i6lU1/2VRJB1lzv4YmE9Xvba7r7rvy69q0EJ3u88OcAAi6OnbsN9zXS4OHlQwmNSFsjFOBiOUKhqqb4GqLxXstokeeAjSyeNmkfjP/SV/ccxvfoLggLzwxmSA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779343180; c=relaxed/simple;
-	bh=iDeyeAnCkrhHLsxohTPEN3fbu4WEwrpJuYTnU5OauYk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NSLr2uXOlM/9i0m0a3gRkGxWZJLVCt1NUwtFmcHPR9o9yHHmbxEdSPC5+8WMf7fZEXL9CmuVMvJKL9NJwotKDtoOPLzXaCgawCrjFwrSqBpgA0eUhOQTRzp4jnab0BL42kIMnUi4Fm7lTd1I8oqbyd0Uy2TNE2ITN3udelAG9mg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk; spf=pass smtp.mailfrom=pcc.me.uk; dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b=jQOKqHms; arc=pass smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pcc.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pcc.me.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB0367B82;
+	Thu, 21 May 2026 06:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779343934; cv=none; b=kkjlbLqDY/ZKQm4qvatMOxn+jKerBALGzLAlE40li6cxoGrSZxKozev1LuYXFW+65XWvjs1iVBT6cJUEv/WIyIUpgIdoSYF+kKoFf8Mdegt1Kgkv1ph6FWJnYMiMNgZNuDitm4ZtkCok1q/7j5TxqqoyKkxydlDVG7kozfGQXhU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779343934; c=relaxed/simple;
+	bh=no8/ksF6iocgkvhCbfu2koPeZ6w4U5V6/KsTBkWB+Ss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xvcmn0jUieFhtUvM7ux6Ad6wx1NjST8ROgCP5l8+uiZeWXCRRkLagX4jpE9qtR8Bpc+nFZrYCijQ0DVBQQ6SwE60oFI3NBDGGbLarhiPmXswd+9XbUlBdTgruvEqK+CpeQ1fzoVQKlJQTmOgcxA8fQJWY7G/aU9tRmIWj8xIlJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nG7yS2Ih; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pcc-me-uk.20251104.gappssmtp.com header.i=@pcc-me-uk.20251104.gappssmtp.com header.b="jQOKqHms"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-672645dbfeaso7390238a12.0
-        for <linux-spi@vger.kernel.org>; Wed, 20 May 2026 22:59:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779343177; cv=none;
-        d=google.com; s=arc-20240605;
-        b=DnhcJH+jpvggQOXMzGw4I0EAcQ3rVFgqWXBAz/iSO7NQ2mtoT3yv4it3UVKy7Ae6TC
-         TLOj6gXqCFy+jFNHTnLGQUpkl+rD1xaGWLKl3/uajpU7uPHO5Vbi0JP2ZW61kda3wf54
-         ZShvD2YK/jDqSXBmB2Ri++2vfyyJwvKJDA7OQ3QCcJk7PwFHHKDM4XepdNqgDtWy8ZQ9
-         1i8EkVpHoKM2SVwVEqiygUvcJIFYSPjUXWLqeB9FHb28xP5bRzbEqmEmZyO9/nTNqkRs
-         GMdxy3BB9twIHmUKU2AQrCk1AXtNx6OUeTRbvPzkRYremT8WBGDVL9XApG7YfF2O5eFf
-         QXBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gee1Cl4743J9F/Xz6Axq+3xld3PGF4H/7dC9K2uF3Lc=;
-        fh=yKGqCgMsgCEHAAZvYMwojbt7XRits8BLbzHkIS7+G7k=;
-        b=VE7eYSyaB53+CoMhd/QDZxCGuErloP6menHAvyZTOf5xqDiuyk9Xj7bSE35AH0moG/
-         0kAxu4URf4mT/EN++PymroEkl4ijG00piHtLJoi6wjmRF8H2yhb6yAG+rwuyDFGIyCr1
-         ne+XR4fn1jkJk6ChP8UGFypp/QA3xEtCTOW48e6jc1/TMEW+4L93p1yksVcB7gpeT3KD
-         /X0GuYNcMlfMyG5d4H73+zND+Hk7D3VIqhD4BfsPSBC6qn0mexhg3x5Ti3ZP2NiMfGK0
-         esPZa9BVBc6R/P0tGdONksqM57qh1OPKkLoWrTgwI6u59vDkv3XK/0MFg5SoudroBUir
-         U31w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pcc-me-uk.20251104.gappssmtp.com; s=20251104; t=1779343177; x=1779947977; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gee1Cl4743J9F/Xz6Axq+3xld3PGF4H/7dC9K2uF3Lc=;
-        b=jQOKqHmsFrXfKV+aGs7Ckheay7QBiQAhZKnoJyxFett881eQ4bvhRgkfZNTYEdmhp4
-         dqjJXgTKvRQtqm+zc77G4Gr0j75+WIMJScYIggsk1o6dh3Sg7siZ7P9s84F5F0ZSsqY/
-         jYM1/QBi1A61fd59WkAP8z6LtDkd7XpzoXCW+GzUnecp6/jJc72MKHb6bJP5y153c90I
-         zL2I4vzlY2zbgyqZA3wEAF/8LYT4VoYQ/b089ENfaMbEpUIXO7vYZHu+9unrOA83WWxN
-         kN6/lr7NUwb+Y2u8bdmRSfNjVu5/zT9KXfSoftnSul4+/+1xgDwqt1TlQNSuSq7Pii3R
-         TGSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779343177; x=1779947977;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gee1Cl4743J9F/Xz6Axq+3xld3PGF4H/7dC9K2uF3Lc=;
-        b=aDjKFCFHlG3+18dL7OMAxfdffwCWoeT7a0mK/iBVubq7imn6cBwI1B/TJMsv0/GOPE
-         4VgaXLU48k0J/Ws5o8NZfOL8Fs9a9fTO0WCRukuHBA7yyM4zGY9XKUxOyqxifNuft3RD
-         9oo5B81MjSLSaglvny7fUIlVJo+jwfYb7Dh5ieA96ggFu95Dz+CuNNy1iS5frfN+Bedm
-         F0Pbvxl/0mixJ3IFlU0x31aF9pbsJ0bCO93iTiNYRmjeq8h9nYyF+XJQ/88Mrh2uqaTC
-         mtlsePmIBA4uy4hv+yrVMRabY/400p6ZgvCTzG76lwnB4d11Fx4fzVXY/n5oDRRlCjE5
-         xlxA==
-X-Forwarded-Encrypted: i=1; AFNElJ+Dnb6LmOpPK220ZbnvoUMOjFoG844gDL33fDEeaW82S8LAJuV/mxN5BVYEuHXsh/V2F4/SC338J5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFHhp5dk1RrUuGJAB5u2+YSeRvJ72HDeHweCk1+zmHxIG3M/pF
-	188OT/Yii10B218tGlIEVEf5w25wzBJoRU6CIoUglRtJOi+nJXOwwPjmL15EYVNmHETVupVoV9L
-	AQyFSbEEVDsZeg/kKTB/zs8fxVvS/ON2KkhTcyktK+w==
-X-Gm-Gg: Acq92OGoDjLKcDs8FHuvdcUsgUIie/EZ1kflOycXaOtdA0J3KfM4HT4EPNj4r54uITG
-	d+lAET4ocYKQAqzEzc7cydIxR+9Io5UzMPqdXY7HG2oX3JUAu4uaC0NOJPGIYRHH4c6F94+cmMq
-	AqkjGto+fUMAoRKKeSvHgiSVLyZ9D85/QKRQ1gJ5mZn22YNTVZ3Wx75Fj61VBTgEPzqYL8JWZTt
-	g5S6/foxk+1D+allwYajQlZ9UeXPJ1+Ekl4gCpbzMy7g7IOwACcHuKj52Bo8dulgJmgNRovNLUD
-	gS7eqh1R
-X-Received: by 2002:a17:906:ba84:b0:bba:3cf3:2ba6 with SMTP id
- a640c23a62f3a-bdc14a6a240mr66996066b.29.1779343177192; Wed, 20 May 2026
- 22:59:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nG7yS2Ih"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Mz
+	HLUAcW99NN4f3Mos8xquCTzlyXA8yMa7BFIECulg0=; b=nG7yS2IhSL4OVKAJPF
+	QJQupulxK3hgAMojjCpIbum84RMgGSgjDqnzzSkFk5ShEbLXxVXzxEy/mhogFTpQ
+	00uVax8R/xG5v/qGFqxnwu7KReZ2Ry0EFcOwh2MWf0ol9nqRLh3OibER+SMJADyE
+	rdcTrUewxBeQfrPADtjBNfNZ4=
+Received: from China-163-team (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wCXlHcFog5qqHUACg--.53269S2;
+	Thu, 21 May 2026 14:11:19 +0800 (CST)
+From: Wenshan Lan <jetlan9@163.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Fabian Godehardt <fg@emlix.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.6.y] spi: spidev: fix lock inversion between spi_lock and buf_lock
+Date: Thu, 21 May 2026 14:10:51 +0800
+Message-ID: <20260521061051.31928-1-jetlan9@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519102446.209723-1-peter@pcc.me.uk> <ag23HbvCqhmK0Ph1@intel.com>
-In-Reply-To: <ag23HbvCqhmK0Ph1@intel.com>
-From: Peter Collingbourne <peter@pcc.me.uk>
-Date: Wed, 20 May 2026 22:59:25 -0700
-X-Gm-Features: AVHnY4JFvlhTAWLx9MZGuHJIpRn7ff7w_eNj6N0T5Cn18EksfFjfgF_770QvJ8U
-Message-ID: <CAPQLkRhtdV5Whv3ZNtZ8Xwq5V0chaQ8_tUbh7VnTexezid6EfQ@mail.gmail.com>
-Subject: Re: [PATCH v2] iopoll: use udelay() for initial polling
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>, David Laight <david.laight.linux@gmail.com>, 
-	Christophe Kerello <christophe.kerello@foss.st.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, linux-spi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, Randy Dunlap <rdunlap@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXlHcFog5qqHUACg--.53269S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF48Ar47tF45Xr4ftr1kKrg_yoWxAF4rpF
+	W3KayxArsYyr4kXrn7Cw43uw15Xw18KFWUX347AFyfCF15urnIqFyUJFy8ZFWrJFyxurs8
+	AF1vqry5Ar4Yvw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEWE_ZUUUUU=
+X-CM-SenderInfo: xmhwztjqz6il2tof0z/xtbC7AnIkWoOoglM8QAA3O
 
-On Wed, May 20, 2026 at 6:29=E2=80=AFAM Ville Syrj=C3=A4l=C3=A4
-<ville.syrjala@linux.intel.com> wrote:
->
-> On Tue, May 19, 2026 at 03:24:46AM -0700, Peter Collingbourne wrote:
-> > A short polling delay, such as the delay of 5us
-> > (SPINAND_READ_POLL_DELAY_US) provided by the SPI NAND driver,
-> > can become a 1/HZ (order of ms) delay caused by the usleep_range()
-> > call in read_poll_timeout(), significantly reducing SPI NAND access
-> > performance. Fix it by adjusting the read_poll_timeout() macro to use
-> > udelay() to delay until 1/10 of a timer tick after it is called, and
-> > only then sleep.
-> >
-> > Fixes: c955a0cc8a28 ("spi: spi-mem: add automatic poll status functions=
-")
-> > Signed-off-by: Peter Collingbourne <peter@pcc.me.uk>
-> > ---
-> >  include/linux/iopoll.h | 30 ++++++++++++++++++++++--------
-> >  1 file changed, 22 insertions(+), 8 deletions(-)
-> >
-> > v2:
-> > * Fix it in read_poll_timeout() instead
-> >
-> > diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
-> > index 53edd69acb9b..2ee89b76f072 100644
-> > --- a/include/linux/iopoll.h
-> > +++ b/include/linux/iopoll.h
-> > @@ -19,9 +19,11 @@
-> >   *
-> >   * @op: Operation
-> >   * @cond: Break condition
-> > - * @sleep_us: Maximum time to sleep between operations in us (0 tight-=
-loops).
-> > - *            Please read usleep_range() function description for deta=
-ils and
-> > - *            limitations.
-> > + * @sleep_us: Maximum time to sleep or delay between operations in us
-> > + *            (0 tight-loops). Please read usleep_range() and udelay()
-> > + *            function descriptions for details and limitations.
-> > + *            This macro will delay until 1/10 of a timer tick after
-> > + *            it is called, and will then start sleeping.
-> >   * @timeout_us: Timeout in us, 0 means never timeout
-> >   * @sleep_before_op: if it is true, sleep @sleep_us before operation.
-> >   *
-> > @@ -35,11 +37,18 @@
-> >  ({ \
-> >       u64 __timeout_us =3D (timeout_us); \
-> >       unsigned long __sleep_us =3D (sleep_us); \
-> > -     ktime_t __timeout =3D ktime_add_us(ktime_get(), __timeout_us); \
-> > +     ktime_t __start_time =3D ktime_get(); \
-> > +     u64 __delay_timeout_us =3D 100000/HZ; \
-> > +     ktime_t __delay_timeout =3D ktime_add_us(__start_time, __delay_ti=
-meout_us); \
-> > +     ktime_t __timeout =3D ktime_add_us(__start_time, __timeout_us); \
-> >       int ___ret; \
-> >       might_sleep_if((__sleep_us) !=3D 0); \
-> > -     if ((sleep_before_op) && __sleep_us) \
-> > -             usleep_range((__sleep_us >> 2) + 1, __sleep_us); \
-> > +     if ((sleep_before_op) && __sleep_us) { \
-> > +             if (__sleep_us <=3D __delay_timeout_us) \
-> > +                     udelay(__sleep_us); \
->
-> If you want udelay() why not just use the atomic variant of the macro?
+From: Fabian Godehardt <fg@emlix.com>
 
-That's what I had in v1; we decided this approach would better handle
-misbehaving devices.
-https://lore.kernel.org/all/20260517150253.031dec09@pumpkin/
+[ Upstream commit 40534d19ed2afb880ecf202dab26a8e7a5808d16 ]
 
-Peter
+The spidev driver previously used two mutexes, spi_lock and buf_lock,
+but acquired them in different orders depending on the code path:
+
+  write()/read(): buf_lock -> spi_lock
+  ioctl():       spi_lock -> buf_lock
+
+This AB-BA locking pattern triggers lockdep warnings and can
+cause real deadlocks:
+
+  WARNING: possible circular locking dependency detected
+  spidev_ioctl() -> mutex_lock(&spidev->buf_lock)
+  spidev_sync_write() -> mutex_lock(&spidev->spi_lock)
+  *** DEADLOCK ***
+
+The issue is reproducible with a simple userspace program that
+performs write() and SPI_IOC_WR_MAX_SPEED_HZ ioctl() calls from
+separate threads on the same spidev file descriptor.
+
+Fix this by simplifying the locking model and removing the lock
+inversion entirely. spidev_sync() no longer performs any locking,
+and all callers serialize access using spi_lock.
+
+buf_lock is removed since its functionality is fully covered by
+spi_lock, eliminating the possibility of lock ordering issues.
+
+This removes the lock inversion and prevents deadlocks without
+changing userspace ABI or behaviour.
+
+Signed-off-by: Fabian Godehardt <fg@emlix.com>
+Link: https://patch.msgid.link/20260211072616.489522-1-fg@emlix.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
+---
+Testing:
+  - Verified on Intel Alder Lake-N (x86_64) target running 6.6.137-yocto-standard
+  - Kernel built with CONFIG_PROVE_LOCKING=y
+  - Before patch: lockdep reports circular locking dependency (*** DEADLOCK ***)
+  - After patch: reproducer runs cleanly with no lockdep warnings
+
+---
+ drivers/spi/spidev.c | 63 ++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 41 deletions(-)
+
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 16bb4fc3a4ba..2024532dfc44 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -74,7 +74,6 @@ struct spidev_data {
+ 	struct list_head	device_entry;
+ 
+ 	/* TX/RX buffers are NULL unless this device is open (users > 0) */
+-	struct mutex		buf_lock;
+ 	unsigned		users;
+ 	u8			*tx_buffer;
+ 	u8			*rx_buffer;
+@@ -102,24 +101,6 @@ spidev_sync_unlocked(struct spi_device *spi, struct spi_message *message)
+ 	return status;
+ }
+ 
+-static ssize_t
+-spidev_sync(struct spidev_data *spidev, struct spi_message *message)
+-{
+-	ssize_t status;
+-	struct spi_device *spi;
+-
+-	mutex_lock(&spidev->spi_lock);
+-	spi = spidev->spi;
+-
+-	if (spi == NULL)
+-		status = -ESHUTDOWN;
+-	else
+-		status = spidev_sync_unlocked(spi, message);
+-
+-	mutex_unlock(&spidev->spi_lock);
+-	return status;
+-}
+-
+ static inline ssize_t
+ spidev_sync_write(struct spidev_data *spidev, size_t len)
+ {
+@@ -132,7 +113,8 @@ spidev_sync_write(struct spidev_data *spidev, size_t len)
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
++
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
+ 
+ static inline ssize_t
+@@ -147,7 +129,8 @@ spidev_sync_read(struct spidev_data *spidev, size_t len)
+ 
+ 	spi_message_init(&m);
+ 	spi_message_add_tail(&t, &m);
+-	return spidev_sync(spidev, &m);
++
++	return spidev_sync_unlocked(spidev->spi, &m);
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+@@ -157,7 +140,7 @@ static ssize_t
+ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
+ 
+ 	/* chipselect only toggles at start or end of operation */
+ 	if (count > bufsiz)
+@@ -165,7 +148,11 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ 
+ 	spidev = filp->private_data;
+ 
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
++
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
++
+ 	status = spidev_sync_read(spidev, count);
+ 	if (status > 0) {
+ 		unsigned long	missing;
+@@ -176,7 +163,9 @@ spidev_read(struct file *filp, char __user *buf, size_t count, loff_t *f_pos)
+ 		else
+ 			status = status - missing;
+ 	}
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
+ 
+ 	return status;
+ }
+@@ -187,7 +176,7 @@ spidev_write(struct file *filp, const char __user *buf,
+ 		size_t count, loff_t *f_pos)
+ {
+ 	struct spidev_data	*spidev;
+-	ssize_t			status;
++	ssize_t			status = -ESHUTDOWN;
+ 	unsigned long		missing;
+ 
+ 	/* chipselect only toggles at start or end of operation */
+@@ -196,13 +185,19 @@ spidev_write(struct file *filp, const char __user *buf,
+ 
+ 	spidev = filp->private_data;
+ 
+-	mutex_lock(&spidev->buf_lock);
++	mutex_lock(&spidev->spi_lock);
++
++	if (spidev->spi == NULL)
++		goto err_spi_removed;
++
+ 	missing = copy_from_user(spidev->tx_buffer, buf, count);
+ 	if (missing == 0)
+ 		status = spidev_sync_write(spidev, count);
+ 	else
+ 		status = -EFAULT;
+-	mutex_unlock(&spidev->buf_lock);
++
++err_spi_removed:
++	mutex_unlock(&spidev->spi_lock);
+ 
+ 	return status;
+ }
+@@ -376,14 +371,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return -ESHUTDOWN;
+ 	}
+ 
+-	/* use the buffer lock here for triple duty:
+-	 *  - prevent I/O (from us) so calling spi_setup() is safe;
+-	 *  - prevent concurrent SPI_IOC_WR_* from morphing
+-	 *    data fields while SPI_IOC_RD_* reads them;
+-	 *  - SPI_IOC_MESSAGE needs the buffer locked "normally".
+-	 */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	switch (cmd) {
+ 	/* read requests */
+ 	case SPI_IOC_RD_MODE:
+@@ -516,7 +503,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		break;
+ 	}
+ 
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -547,9 +533,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 		return -ESHUTDOWN;
+ 	}
+ 
+-	/* SPI_IOC_MESSAGE needs the buffer locked "normally" */
+-	mutex_lock(&spidev->buf_lock);
+-
+ 	/* Check message and copy into scratch area */
+ 	ioc = spidev_get_ioc_message(cmd, u_ioc, &n_ioc);
+ 	if (IS_ERR(ioc)) {
+@@ -570,7 +553,6 @@ spidev_compat_ioc_message(struct file *filp, unsigned int cmd,
+ 	kfree(ioc);
+ 
+ done:
+-	mutex_unlock(&spidev->buf_lock);
+ 	spi_dev_put(spi);
+ 	mutex_unlock(&spidev->spi_lock);
+ 	return retval;
+@@ -795,7 +777,6 @@ static int spidev_probe(struct spi_device *spi)
+ 	/* Initialize the driver data */
+ 	spidev->spi = spi;
+ 	mutex_init(&spidev->spi_lock);
+-	mutex_init(&spidev->buf_lock);
+ 
+ 	INIT_LIST_HEAD(&spidev->device_entry);
+ 
+-- 
+2.43.0
+

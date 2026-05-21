@@ -1,92 +1,76 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C7304BCB;
-	Thu, 21 May 2026 15:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D453395D87;
+	Thu, 21 May 2026 19:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779375859; cv=none; b=jiY4CFvpYS6XmspO35NMKrIDfhE9EsDdDf+q1Hnj1b33sCYmbMlM7hCgpnX+WhSK+dt1kTBIb/JagWFvX5HvtIlnaEksgYoxq16fve6nAceTUaBdogGAZV5Vtd9ESRTczS4h5juhtBSPadOqZcqK89kX9L+m5ichvkzxSkMgFuA=
+	t=1779392771; cv=none; b=mzKv5WBTR9UR3lqNbfHOIx2V96vfSrvHA3okw4VR8LcozZ+vEuuA4AtEnxZqafs0E00JkaVvZuk9mPKlgVICjSuYObo54jfl4HOXISKm7X2IgEAJ97Q0v2HdCI8PO11M8YsG8Lh23kCY2vFf6dwabFQOicrO5T0Yx1CwZX8bd1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779375859; c=relaxed/simple;
-	bh=4G1veOWylYb2tPFtyS0w9QISqTZ4cEDAwcsR0Mt6xUQ=;
+	s=arc-20240116; t=1779392771; c=relaxed/simple;
+	bh=Fl5Rt2JQDBkzN2IYCYCNYaDmr7KbbjfvidjX3o3GvT4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DpMbP8U3WInov4IH/o9U7dsVfF7U2vDdchvdCozHg5HoWbaZLvNdm+FoVF/qzgwmN0PfxTsrepbzJEs5aXAeqFfHqjCg6uCIWQ+hSsZcKqH0LYRYMrmc+z1CmZa7xr669idDuNiHR6GADDGPpkTUtPxjncORS3hcH0+R6ENs+HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Re7ewl5q; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=kco9CYjRcEjC51+BDEmcA8jjybCP2EhZ8GLnYx0DEexTbgtSePuSHQdEP1uGbh+oEFy6XHtK9u7h2a7GyAC2ve7ixhBJpLqkn5YyQtWFbAVMNMJpJzidQIUl4rmknkmYMUZKsNbS1iolPOKSUFzwdL0ldrbgxJR1p3vmgPkTT+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmDSF4Yx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Re7ewl5q"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=UO7LCQlcsGRaCfbYucrA5z24naMLBUSht2C+awTxmlU=; b=Re7ewl5q1VylGMHgOtGfm7zDJd
-	Zqc51JriJaLu/IUgeLZaWzWriR8b8dvx6ZZlJMT03QpT7s9tzwCEldRseTP59czQqUbEdvCRg5K1C
-	aBKdLDVZSkJQRTMLhNCjkzQ0MH+9tdJ1Fh6ngiQSjOXl3VHz8oUp2zvt97FvBwBYNKg0zf9loHah9
-	K6KGpwc5XLc0JufexWr0qVX8fiSt2W0dHv8zEFoHBRnni1QOpsM+jNmmOCuS/i6bMAOu9Zj1luLkH
-	nurzwwsHh70hfIDokmxZTjiHlvS2uYN80vgO/+YfGaQFs3ssC+2ISv4CwDU1Qgmy2TZsylwmvgS24
-	ZVe/RJuw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wQ4wX-003y1X-0D;
-	Thu, 21 May 2026 15:04:13 +0000
-Date: Thu, 21 May 2026 08:04:08 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Vishwaroop A <va@nvidia.com>
-Cc: Thierry Reding <thierry.reding@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Mark Brown <broonie@kernel.org>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
-	Suresh Mangipudi <smangipudi@nvidia.com>, Krishna Yarlagadda <kyarlagadda@nvidia.com>, 
-	linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] spi: tegra210-quad: Convert to hard IRQ with
- high-priority workqueue
-Message-ID: <ag8dgimI3SfTo1Uy@gmail.com>
-References: <20260519155108.4092518-1-va@nvidia.com>
- <20260519155108.4092518-2-va@nvidia.com>
- <ag3ReYsoyCh-niZH@gmail.com>
- <20260520192210.70216-1-va@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmDSF4Yx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E29D1F000E9;
+	Thu, 21 May 2026 19:46:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779392770;
+	bh=Fl5Rt2JQDBkzN2IYCYCNYaDmr7KbbjfvidjX3o3GvT4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KmDSF4YxGK5lwh/3XI1QId7FTwnvYtyg5GcUHSUYLjdVDqUTh+tz9sXyQZRnVa36W
+	 FLZgDGbkeXI5aKbhlWW0rdho0Z+rUjF6Si7m2ePcBUSRKf3sUYHlsTPho0wvE/7Acq
+	 efzddQ1TtpyTLtcNg6KO5bIDIJM21Z0ffOGgF1wmWUSWCIhUH4C+hGwWxmaJReYQh8
+	 FoN0z0TqL3bpiURNqKHOiMo9W4wLXZi/MKKzX80wFo9nqNrQds0ajaPN6KfzvwMlp6
+	 a6+yIEDdcsYwJdeTZ7QIQdjw+4oioynjwxqZZB4VL2ZIbn+IGU+OEyxRPjsT3nY0bl
+	 f6/jbTabO8O5Q==
+Date: Thu, 21 May 2026 20:46:04 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Zhengyu He <hezhy472013@gmail.com>
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@kernel.org>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
+Subject: Re: [PATCH v2 1/2] spi: dt-bindings: fsl-qspi: support SpacemiT K3
+Message-ID: <20260521-justly-power-2cc7ebc7b71e@spud>
+References: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
+ <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-1-52bce26e5fd8@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Q1v/qv2VOGr4z9Xj"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260520192210.70216-1-va@nvidia.com>
-X-Debian-User: leitao
+In-Reply-To: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-1-52bce26e5fd8@gmail.com>
 
-Hello Vishwaroop,
 
-On Wed, May 20, 2026 at 07:22:10PM +0000, Vishwaroop A wrote:
-> On Wed, May 20, 2026 at 08:25:23AM -0700, Breno Leitao wrote:
-> > > +     status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
-> > > +     if (!(status & QSPI_RDY))
-> > > +             return IRQ_NONE;
-> > > +
-> > > +     spin_lock(&tqspi->lock);
-> >
-> > Can you help me to understand what the tqspi->lock protects? I am still
-> > a bit confused by this lock, but at the first glance, I am wondering if
-> > you don't need to have the lock while reading the status.
-> 
-> The lock itself protects the software state that is shared between
-> the ISR, the workqueue bottom-half, and the timeout handler running
-> in the transfer thread.
+--Q1v/qv2VOGr4z9Xj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks for the reply!
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-I got the impression that tqspi->lock is also serializing hardware
-accesses — the hard IRQ holds it across the readl(QSPI_FIFO_STATUS) and
-across tegra_qspi_mask_clear_irq(), which does an RMW on QSPI_INTR_MASK
-and a W1C on QSPI_TRANS_STATUS; the setup, start, error and bottom-half
-paths similarly hold it across MMIO.
+--Q1v/qv2VOGr4z9Xj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If the lock is really only guarding curr_xfer / status_reg / tx_status
-/ rx_status, why hold it across those register accesses at all?
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
---breno
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCag9g/AAKCRB4tDGHoIJi
+0vF6AP9gFrzDNEgWZsaPmwdKK3f9biN7qcrDFQj/muohigql/gD+Ka6ru1AwIEwJ
+P070LTEI8edHNAQk8SECkFyTMhMHlgM=
+=VhWP
+-----END PGP SIGNATURE-----
+
+--Q1v/qv2VOGr4z9Xj--

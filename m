@@ -1,72 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0962535028D
-	for <linux-spi@vger.kernel.org>; Fri, 22 May 2026 17:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496373176FD;
+	Fri, 22 May 2026 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779472202; cv=none; b=rp5aLHN7B0PkEqZX6oDPIMx001ai00bxgDgooSh/oq4ycXimwL6g1Jc8LcKedzka84vKY2CnXy8o6My77dbZGkUQQnQafRSz7ox4gDdy4CjO6pwnaK1OC00/oAxSfHy7vhj7MH435J84E/mvM//zn2JBNGBlKxneavfs3jJSTJE=
+	t=1779472432; cv=none; b=nrjAasm3WcZVAFR2hwF9dsOuuoUEbSP3fZCKiOupJjlxXChEWav6M0v7LV7Dh/8jfOUATa352+wVFtb4fFG3FzLmvLqdGmUsANN333abMg5PC0pRnqMqIEzuOWMoLBkjb888VbR9voM7ltZznIFJiQkzSMmhilA6yD8t7+GTS6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779472202; c=relaxed/simple;
-	bh=fAadQpNaGWWKeC91VgY/8ze+5Kn1mphtvV1QNXYPSbs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Vj4xjytV3wtL9cPVprqyScu/B7Z8TnjKj+/f+cZgAi+kesiyqeXMwjs5Gh9W+0U8zVpRcfSeqGxdWGp0oTtAiY9pTuv0p7BUakft+0y+Wiu3Cz14jgdUctFLFBv9gtU6B/K1DZqPXUkgA+mQuu2yjWgbrkso0QDud4p1AIehyU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3rFQ3uP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779472432; c=relaxed/simple;
+	bh=ziTrp8d1qwNLipcwh7yQNFeRV033ecP98qLs1+qN8Cc=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=VGu5RpElo6pAmiAoQKWlmMUueki3glWh4fvotNcPJKEAHy4zYZN5RYwgfCqtKHZ2c6xJzZ88ax+qF6BNNhvQYPGhOzL16DE+PGKJ3hLfOqOI6LPJO+HnQkYqNBStyKMuyFVHTJ5W002iGLe6aBZAbdFiwMwMg/bo8nLgFtLQUro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGdetoeP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3rFQ3uP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25A11F000E9;
-	Fri, 22 May 2026 17:50:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGdetoeP"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 6E2601F000E9;
+	Fri, 22 May 2026 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779472200;
-	bh=baO2GmwwyCQVQxV8eOIz5NvCa3UjEQVlSn5lbXfCyvA=;
-	h=Subject:From:Date:To;
-	b=M3rFQ3uP+87i2SJGqE+3rj8GfZVOyJNe1y+2QN0o35xbMeIrtweSNRb+8uZ1asPcJ
-	 /zOZWUEk4jsqATnYRxaDLjr36Dqr1Ff5he7XT4HqX7TXCnYZW/eKsSh4QzHYSoqt1+
-	 qgdnDmpLiCmrdd+cU14bx3ZPKDt0aUV/ukSAxmwly/0wnzLu3Jbh37c8WKUSI3EumY
-	 XV6/zCLCDd2NMP7mxlTGjZBuBX/QLH52sl8cmqLl8on0shcE6cvuZe6b2z4k6NhLC4
-	 I80gDnkjIUdrAs9G5uo59tp/iSO7JwOJ7AGqNWl/WrUILZN1Qgk9ay0v7I6Ee9wuEx
-	 JjuU6HOKvEu3g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1C3043930FB1;
-	Fri, 22 May 2026 17:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1779472431;
+	bh=jjhaN0yere3/wYnm2y1VglsyledBkxVGwjVDIkb3tfQ=;
+	h=From:To:Cc:Subject:Date;
+	b=aGdetoePAO4TonGPyV9/AVnKMwk++cKxKZiMXOpJlcOBT0VlOXLhpJnfyG1h2/RpR
+	 AHeO+kZH8Cgejjw9CdkxvwN5EpEPEIt0t/mQlndHnL/yj54kUCkMtuy1ekxExWhqaL
+	 l6WafB9C0+ok++5A//w4jXtsGDNOBWhzmIpMMkcghzpkxTgvxha5fgTS5ij00fJwqm
+	 lMscONe+Ay1BVntanAYSUo90wJ9M5kKfjAG+G9jZltIUOmS4UznRGigCNpeXWxV5Id
+	 olY7bt2+5NmIfPMp2c2glJYfqlnt0J8SFm6MvatJB1Uv9Tf7gMB8ZRNWp1JHFRcIOL
+	 QLScbUmgxiyEg==
+Message-ID: <c3dfa0ed3041398d4443c1331c7334b7@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.1-rc4
+Date: Fri, 22 May 2026 18:53:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <177947220969.1310362.4573917224474397554.git-patchwork-summary@kernel.org>
-Date: Fri, 22 May 2026 17:50:09 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
 
-Series: spi: aspeed: Fix __iomem annotation and VLA parameter
-  Submitter: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1099183
-  Lore link: https://lore.kernel.org/r/20260522071621.102507-1-chin-ting_kuo@aspeedtech.com
-    Patches: [v2,1/2] spi: aspeed: Fix missing __iomem annotation in output transfer path
-             [v2,2/2] spi: aspeed: Replace VLA parameter with flat pointer in calibration helper
+are available in the Git repository at:
 
-Patch: [v1] spi: Use named initializers for arrays of i2c_device_data
-  Submitter: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1096760
-  Lore link: https://lore.kernel.org/r/20260518170542.807843-2-u.kleine-koenig@baylibre.com
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.1-rc4
 
+for you to fetch changes up to 27cd2dde35b2c3b8659fa18f6a935c61fedee5c1:
 
-Total patches: 3
+  spi: dt-bindings: fsl-qspi: support SpacemiT K3 (2026-05-21 21:56:07 +0100)
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+----------------------------------------------------------------
+spi: Fixes for v7.1
 
+Another batch of driver fixes from Johan fixing error handling paths,
+plus another from Felix.  We also have a new device ID added in the DT
+bindings for SpacemiT K3.
 
+----------------------------------------------------------------
+Felix Gu (1):
+      spi: mtk-snfi: Fix resource leak in mtk_snand_read_page_cache()
+
+Johan Hovold (4):
+      spi: ep93xx: fix error pointer deref after DMA setup failure
+      spi: qup: fix error pointer deref after DMA setup failure
+      spi: sprd: fix error pointer deref after DMA setup failure
+      spi: ti-qspi: fix use-after-free after DMA setup failure
+
+Zhengyu He (1):
+      spi: dt-bindings: fsl-qspi: support SpacemiT K3
+
+ Documentation/devicetree/bindings/spi/fsl,spi-fsl-qspi.yaml | 3 +++
+ drivers/spi/spi-ep93xx.c                                    | 2 ++
+ drivers/spi/spi-mtk-snfi.c                                  | 2 +-
+ drivers/spi/spi-qup.c                                       | 3 +++
+ drivers/spi/spi-sprd.c                                      | 3 ++-
+ drivers/spi/spi-ti-qspi.c                                   | 1 +
+ 6 files changed, 12 insertions(+), 2 deletions(-)

@@ -1,89 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7C0368D4E;
-	Fri, 22 May 2026 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0962535028D
+	for <linux-spi@vger.kernel.org>; Fri, 22 May 2026 17:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779471852; cv=none; b=jnrDFLcwOCH7bWK2wh/Ulwk0538laXgOAsu1efZWa4K00vFYBh1PfnIl/T8WiIQo8guF8qNIsUS3XXk0A0r8cf2/684gHJy7irvPy/Z5Qr8ZtlBjQ6kh5IgbIgUwGf3sRxBmUArJK4Y3jbW++WqMPhJikgXhtpxhKMaAUwrGWZA=
+	t=1779472202; cv=none; b=rp5aLHN7B0PkEqZX6oDPIMx001ai00bxgDgooSh/oq4ycXimwL6g1Jc8LcKedzka84vKY2CnXy8o6My77dbZGkUQQnQafRSz7ox4gDdy4CjO6pwnaK1OC00/oAxSfHy7vhj7MH435J84E/mvM//zn2JBNGBlKxneavfs3jJSTJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779471852; c=relaxed/simple;
-	bh=V07QmYmfsyWHzSefum+3adPA/S+2RNjNUSCGhQS9PSM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Hrxx98k2aeIRxPAscjC0UvUlRaSGEruzhBJmbbmB93XyGIcV2DzRFN+48ToHFzxHHwgMruUrvNbR0Np7SKtpvLlC+OS1os4tSGSW28hN/Km1mX4a6RcEWgCc5/iS5OLTHJN7yARkFA94zy0XGmZteAAQ6cpJECGJxAFiZbfx/7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kN6fB6bu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779472202; c=relaxed/simple;
+	bh=fAadQpNaGWWKeC91VgY/8ze+5Kn1mphtvV1QNXYPSbs=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Vj4xjytV3wtL9cPVprqyScu/B7Z8TnjKj+/f+cZgAi+kesiyqeXMwjs5Gh9W+0U8zVpRcfSeqGxdWGp0oTtAiY9pTuv0p7BUakft+0y+Wiu3Cz14jgdUctFLFBv9gtU6B/K1DZqPXUkgA+mQuu2yjWgbrkso0QDud4p1AIehyU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3rFQ3uP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kN6fB6bu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B431F000E9;
-	Fri, 22 May 2026 17:44:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3rFQ3uP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25A11F000E9;
+	Fri, 22 May 2026 17:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779471850;
-	bh=hlGejMl2U59p2dKLsEwcDxI0EdG8nLITOHDQYQ51LPM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=kN6fB6buAgiSdNJQt7lU8RPifABkdh04jCWza+0DinnG3cqN/pfk7A8YiCZ+TzDTU
-	 QEOKnzH+2GwO91hSiBzZYza4yTYsmSPert2tJLyKGlOAVWmOwTPTRw+dWo5dUchKzf
-	 TqGAzYWZp8388X1SvUbAsTrt4xWwZnexR/hpNXoqNnR+LUlFuZx/+9m8h1Ytp/a/vi
-	 gpaIFmLE/4plw4nHr6Crx4haxYpRRUl68KuWVgORHmI68cCFDpOE5EdbOOKPbtDXO4
-	 wGHoTN76XpfXhqjxiIGUv9a/N4Q2qnneU45KyBQaX4Hn7A5V1hxomxBvh0PIvUfPC/
-	 AJ4oYfYois4Fw==
-From: Mark Brown <broonie@kernel.org>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260518170542.807843-2-u.kleine-koenig@baylibre.com>
-References: <20260518170542.807843-2-u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH v1] spi: Use named initializers for arrays of
- i2c_device_data
-Message-Id: <177944833730.6494.595179515258195951.b4-ty@b4>
-Date: Fri, 22 May 2026 12:12:17 +0100
+	s=k20260515; t=1779472200;
+	bh=baO2GmwwyCQVQxV8eOIz5NvCa3UjEQVlSn5lbXfCyvA=;
+	h=Subject:From:Date:To;
+	b=M3rFQ3uP+87i2SJGqE+3rj8GfZVOyJNe1y+2QN0o35xbMeIrtweSNRb+8uZ1asPcJ
+	 /zOZWUEk4jsqATnYRxaDLjr36Dqr1Ff5he7XT4HqX7TXCnYZW/eKsSh4QzHYSoqt1+
+	 qgdnDmpLiCmrdd+cU14bx3ZPKDt0aUV/ukSAxmwly/0wnzLu3Jbh37c8WKUSI3EumY
+	 XV6/zCLCDd2NMP7mxlTGjZBuBX/QLH52sl8cmqLl8on0shcE6cvuZe6b2z4k6NhLC4
+	 I80gDnkjIUdrAs9G5uo59tp/iSO7JwOJ7AGqNWl/WrUILZN1Qgk9ay0v7I6Ee9wuEx
+	 JjuU6HOKvEu3g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1C3043930FB1;
+	Fri, 22 May 2026 17:50:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1151; i=broonie@kernel.org;
- h=from:subject:message-id; bh=V07QmYmfsyWHzSefum+3adPA/S+2RNjNUSCGhQS9PSM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEJXpHbAZF6ZYDkRoIa6EtEC/NE3VNc3ZcNHAi
- UKLWUDW7AGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahCV6QAKCRAk1otyXVSH
- 0KHjB/4i9iRZWM1gX4Tw5Q1ISRsJmlCgLYZN83ydcXK8UE2I01KJcg4OqgLCO4EI6aHIJYsSCZZ
- KkUuqzx7Fk/uC45cxhuT0UVWTndskr8ZKZvqJfEhr2u+cT73YKxVdeHGfz3LBCTIm9tGyyF7mEZ
- 3QsVhe1jrI0T6uwll1LYQJrNOffi8ec1WA0Czd7hk9o6RP/CYfm5yAywDtbRYg5fUkVUuu0bQFF
- W//PB2T835OvOSeyC8YBzeBBEC1hbYpYmUZpwMvx9Xa7Lg151rZJbT7iN7Yc7+3v9p6ORSrxwCs
- BusiS8nxhhROnoGNChTW8DxtNMv1ChvPHEmvGUMA2xLlxhsR
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177947220969.1310362.4573917224474397554.git-patchwork-summary@kernel.org>
+Date: Fri, 22 May 2026 17:50:09 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, 18 May 2026 19:05:41 +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> spi: Use named initializers for arrays of i2c_device_data
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+Series: spi: aspeed: Fix __iomem annotation and VLA parameter
+  Submitter: Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1099183
+  Lore link: https://lore.kernel.org/r/20260522071621.102507-1-chin-ting_kuo@aspeedtech.com
+    Patches: [v2,1/2] spi: aspeed: Fix missing __iomem annotation in output transfer path
+             [v2,2/2] spi: aspeed: Replace VLA parameter with flat pointer in calibration helper
 
-Thanks!
+Patch: [v1] spi: Use named initializers for arrays of i2c_device_data
+  Submitter: Uwe Kleine-König (The Capable Hub) <u.kleine-koenig@baylibre.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1096760
+  Lore link: https://lore.kernel.org/r/20260518170542.807843-2-u.kleine-koenig@baylibre.com
 
-[1/1] spi: Use named initializers for arrays of i2c_device_data
-      https://git.kernel.org/broonie/spi/c/84bfaa6ceed6
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 3
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

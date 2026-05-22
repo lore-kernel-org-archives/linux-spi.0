@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EF8366542;
-	Fri, 22 May 2026 17:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7C0368D4E;
+	Fri, 22 May 2026 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779471848; cv=none; b=ZrMl93EOXBxNz+mITn1ILG2btA1HNZkwwe3CN2YMZtCA0Is2dNGfQDVuWP3Y8DwHKpRxm1m5xbHc7UOSsubMHMmSP59d9CKmt5n9Bd0/SvfFZGkTqVQgdoecZf0HyFpFN7zSNdxrlgTiSFIAdCmVHzczK+taGj2zxIAtaBQfqMY=
+	t=1779471852; cv=none; b=jnrDFLcwOCH7bWK2wh/Ulwk0538laXgOAsu1efZWa4K00vFYBh1PfnIl/T8WiIQo8guF8qNIsUS3XXk0A0r8cf2/684gHJy7irvPy/Z5Qr8ZtlBjQ6kh5IgbIgUwGf3sRxBmUArJK4Y3jbW++WqMPhJikgXhtpxhKMaAUwrGWZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779471848; c=relaxed/simple;
-	bh=Tv9yC/HPHD5MYTDVZZjm6BiKOT9UVVCDNhlVmgG3Lic=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JMyr0EDceIpVxNmAi910no4QyOnLPKDoSQ44kSJIgWltIfCSCCXNCG66qyljaF4sFPTNE8ur2KWGE38zdTuSthyI/QulhWJ9iXp+4rsytgeOckiEf5kGO8YBHOVrEmHLTHCxuSjwwAj81ehqZbDmn3HyTDWp0xGhI22LRD6sQW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDaTfJ7X; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779471852; c=relaxed/simple;
+	bh=V07QmYmfsyWHzSefum+3adPA/S+2RNjNUSCGhQS9PSM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Hrxx98k2aeIRxPAscjC0UvUlRaSGEruzhBJmbbmB93XyGIcV2DzRFN+48ToHFzxHHwgMruUrvNbR0Np7SKtpvLlC+OS1os4tSGSW28hN/Km1mX4a6RcEWgCc5/iS5OLTHJN7yARkFA94zy0XGmZteAAQ6cpJECGJxAFiZbfx/7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kN6fB6bu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDaTfJ7X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFFC1F000E9;
-	Fri, 22 May 2026 17:44:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kN6fB6bu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B431F000E9;
+	Fri, 22 May 2026 17:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779471847;
-	bh=dPSy7gqM18tB/riDkEZyZMz/5Nf/xICtVmHbdFXpqic=;
-	h=From:To:In-Reply-To:References:Subject:Date;
-	b=EDaTfJ7X17s+5b2rhHQNVFr4NtSQBZYy0GGlC9Lss5cvXCZRRNDUgWoSMZHh0gCrf
-	 m+zcWfmdFkDgeKoyfvh80h79EEP+SNRsNeon2geS3sXTP47IZj1cs/BFDCFaUF9Qsx
-	 vQatlyTlr8YbPnmbwh8MrS9zt6Jf82TQu11mv8VCYsdasNeC0lAFXynrJZgnUA7lPd
-	 THfCNH7j6Mq8SIhd626f2kIu70q/AOLCC0C+atNfWtBVGDavevc0QqvTU/nIa26h1Z
-	 f0HVAi71gu0OFLmUoUzk5akvmHhiyKm536u8sZ55NcthZGy7Vo3cptcHBstbCtjFaT
-	 XDbaAKIyGgoCg==
+	s=k20260515; t=1779471850;
+	bh=hlGejMl2U59p2dKLsEwcDxI0EdG8nLITOHDQYQ51LPM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=kN6fB6buAgiSdNJQt7lU8RPifABkdh04jCWza+0DinnG3cqN/pfk7A8YiCZ+TzDTU
+	 QEOKnzH+2GwO91hSiBzZYza4yTYsmSPert2tJLyKGlOAVWmOwTPTRw+dWo5dUchKzf
+	 TqGAzYWZp8388X1SvUbAsTrt4xWwZnexR/hpNXoqNnR+LUlFuZx/+9m8h1Ytp/a/vi
+	 gpaIFmLE/4plw4nHr6Crx4haxYpRRUl68KuWVgORHmI68cCFDpOE5EdbOOKPbtDXO4
+	 wGHoTN76XpfXhqjxiIGUv9a/N4Q2qnneU45KyBQaX4Hn7A5V1hxomxBvh0PIvUfPC/
+	 AJ4oYfYois4Fw==
 From: Mark Brown <broonie@kernel.org>
-To: clg@kaod.org, joel@jms.id.au, andrew@codeconstruct.com.au, 
- linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
- linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, david.laight.linux@gmail.com, 
- BMC-SW@aspeedtech.com, Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>
-In-Reply-To: <20260522071621.102507-1-chin-ting_kuo@aspeedtech.com>
-References: <20260522071621.102507-1-chin-ting_kuo@aspeedtech.com>
-Subject: Re: [PATCH v2 0/2] spi: aspeed: Fix __iomem annotation and VLA
- parameter
-Message-Id: <177944768300.6494.4828834856275675415.b4-ty@b4>
-Date: Fri, 22 May 2026 12:01:23 +0100
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260518170542.807843-2-u.kleine-koenig@baylibre.com>
+References: <20260518170542.807843-2-u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH v1] spi: Use named initializers for arrays of
+ i2c_device_data
+Message-Id: <177944833730.6494.595179515258195951.b4-ty@b4>
+Date: Fri, 22 May 2026 12:12:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,29 +42,22 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1577; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Tv9yC/HPHD5MYTDVZZjm6BiKOT9UVVCDNhlVmgG3Lic=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEJXkT2orRoPdoYnnzdEspQaf3e2CYyRio3QVd
- FZwd/M80uGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahCV5AAKCRAk1otyXVSH
- 0Ng1B/9At3GEzpYWjnScrGWwjwyY5BSXn4qiWVk8pSrER3UFOq7Q9nblg/f2QpceDCw0n4CAJND
- SgoOGI+Bpjt9+PMLaR3lqv5yTW4Tlp2nvUbQyluqSWEWasUSOEXNRNBg4p3IQqp3WaNKSiCN/gJ
- wi7+LtWEgLuutwhJwtyETdaS0REBi+4ECFq+2y845igEKu20G6MMbhrc72Pi41nyx9qIZf/fxlc
- jG+bQCtiCJU+jSyaPJeOXyH23BWB65ycUUBNya1OnWTuokWiAlxv9GFhmSYZRJc+MVhEhPwN48x
- NTxehS8KOf9UUBfxigVx7XBOFeFo7lH2Nsw1sBdEE9dT3Qsx
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1151; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=V07QmYmfsyWHzSefum+3adPA/S+2RNjNUSCGhQS9PSM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqEJXpHbAZF6ZYDkRoIa6EtEC/NE3VNc3ZcNHAi
+ UKLWUDW7AGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahCV6QAKCRAk1otyXVSH
+ 0KHjB/4i9iRZWM1gX4Tw5Q1ISRsJmlCgLYZN83ydcXK8UE2I01KJcg4OqgLCO4EI6aHIJYsSCZZ
+ KkUuqzx7Fk/uC45cxhuT0UVWTndskr8ZKZvqJfEhr2u+cT73YKxVdeHGfz3LBCTIm9tGyyF7mEZ
+ 3QsVhe1jrI0T6uwll1LYQJrNOffi8ec1WA0Czd7hk9o6RP/CYfm5yAywDtbRYg5fUkVUuu0bQFF
+ W//PB2T835OvOSeyC8YBzeBBEC1hbYpYmUZpwMvx9Xa7Lg151rZJbT7iN7Yc7+3v9p6ORSrxwCs
+ BusiS8nxhhROnoGNChTW8DxtNMv1ChvPHEmvGUMA2xLlxhsR
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, 22 May 2026 15:16:19 +0800, Chin-Ting Kuo wrote:
-> spi: aspeed: Fix __iomem annotation and VLA parameter
-> 
-> This series fixes two sparse warnings reported by the kernel test robot.
-> The first patch fixes missing __iomem annotation on an MMIO pointer
-> parameter, which also caused a redundant cast at the call site.
-> A VLA function parameter warning is also fixed in this patch series.
-> 
-> [...]
+On Mon, 18 May 2026 19:05:41 +0200, Uwe Kleine-König (The Capable Hub) wrote:
+> spi: Use named initializers for arrays of i2c_device_data
 
 Applied to
 
@@ -75,10 +65,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: aspeed: Fix missing __iomem annotation in output transfer path
-      https://git.kernel.org/broonie/spi/c/5c3091e23f8f
-[2/2] spi: aspeed: Replace VLA parameter with flat pointer in calibration helper
-      https://git.kernel.org/broonie/spi/c/94f5efbaa751
+[1/1] spi: Use named initializers for arrays of i2c_device_data
+      https://git.kernel.org/broonie/spi/c/84bfaa6ceed6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

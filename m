@@ -1,263 +1,157 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503D233B6EA
-	for <linux-spi@vger.kernel.org>; Sun, 24 May 2026 21:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779658449; cv=pass; b=hNxlOrPomGTgmHx5MTT1U3RRM7/S2mhI3xmIWajiNtp6mf69JtK6pLGhgDViutF+q8kyNaX4v87obTkC6ht+qiAftuDV6MWyau7do0Buruek4u6wDokurLu7slAFnwnW0q0AEl/Hj+6sCvTs3T56tvjDo6Ze+7I8ccNPJnjpVjE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779658449; c=relaxed/simple;
-	bh=scbTGzWKrkbb2tr2ByuUctuCpzVcmORNYkqkGCRtn9g=;
-	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G2RmVWFfKLCq/wqRf6l+UAwA32AHBnutXmFqnsXtLTCfCGKRK/hWecEdiqTHBuJilKa6PQvIBckVKf213Z6uB9g6LeaHKfEVJPOrix+Hx5WT1iMZ0R2yL62HuyYzrVh99WfGwQChT7QknaknvzjIjw9ItioZJrRnD55JfnSOfDc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=dI9Wx9Il; arc=pass smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECE530C618
+	for <linux-spi@vger.kernel.org>; Mon, 25 May 2026 05:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779686237; cv=none; b=SYwz63he0Wv8bbQnl06gXNZ+0c4kn8+Rzi2DyZasZzxZkerWA8HkyHF4VrgNpdqusOqh4x2r7wbJXEdwiJqW6YeUh4L6I+s934KLiyuleGkzjucKvPnAOOmVctxh3PaatZblU6lB32Dah7t2xSR05ifKo/22LIZXFLwj+nQD+yM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779686237; c=relaxed/simple;
+	bh=TT6fb9wRcDaVAgi9x7/XP+aN+zqiMMogNcrum5LKYb4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EkhT6YKnmovYq4BeFV/2w1GLvWq885D4GUNjUMx/6xjyLg+LFbZUM+6wX+vZjnL/4RMEmkIROeQqOdAfvwRv2dm7X8ENuaNdb7tHufsKcCuJ5t3BCuFOAsw8pyAbZQD8E5n3Z06aZ6JGpxwBF2Wl45qhB4jif9DNOozRYmwKuJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=hsB0i+7n; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dKhdZiZJ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="dI9Wx9Il"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bd6460b0d11so1596203866b.1
-        for <linux-spi@vger.kernel.org>; Sun, 24 May 2026 14:34:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779658444; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aZ8KBaMvMNgN/HqDi2ROoJ4m7DZy4JMbbpxq05cvk/9wxBtAyew857XSs4H+0eEVrv
-         RGab0LrBhWPi7idaK3J9AS02ZdNb7D3r/Jk+PycHLz0ZGlRYU8Fsabiax2tJunuoGnBX
-         2LSYnV/+bt5tS2SEv7K3K8+bihnErctsAxYx0hh7gE40TTNEQXIfOfHMmk/gPylo3vvD
-         9Z9mlBg0ClRuOPsEtA6al8jNM/272OBgK5CiVwe9N75g7QooGKZWOItYBOC8cp8iZEZo
-         TG/as1drczv6K44kMqA+FSO4CxdQkiMfZJbJqN+O/f9lmathFgD6E50QTyBOYn2aUWBV
-         t/7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:dkim-signature;
-        bh=4v82pm3nplUGvi0gYlaKk5FJ7bsCM62ozlNkSbZa6Zs=;
-        fh=rx3fy5EAHzc3JEVm4ptZ63RnRGZni0EuUOt0rZ2G+M4=;
-        b=BNfeIdn20z0MUhYO1t8fR0thF+2w4a5AIympO7sNqstM7Zto1Y15H30IlHsVmG2oqW
-         M6OX3qPY6ld7YK+Hsd+8ROMFQOKEpsh9AuhGYzjpQNisGtseV4nElbyNGqLzgM33XwZo
-         /ngXmOqvJoFyDdavmPC5IbMtVP+TBlEzI96kkXanFD+ETiQdW7uey9av5KeHq8sMxXay
-         CyoRUBjMcLD6zJs8VaylSJtMHgt0J0pz5Ymxk/O7MW35IWrltksLHf5+kFcKJn16SYg0
-         mLXdeYClElyzAQqQOg53ZyxPuwo93/zpzSYtWnIjsG3tOiPxQRjPE5WJdiK0iZbyGrml
-         J+KA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="hsB0i+7n";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dKhdZiZJ"
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64OLIsO21772926
+	for <linux-spi@vger.kernel.org>; Mon, 25 May 2026 05:17:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	GTcW/jqS+R1fyGppCmwLUjOiRqL28+oajKP5jUq4DXs=; b=hsB0i+7ncjNC8A9z
+	LEh2SHbdGGWAJAdPz3eLH0iKrQVFvqfnwU4EG0phGfFvZQnjLV1CeylJ1k1L0wyk
+	HlR2ZWonSkI9ROc5fweo/RcX7qNMG5lKZY5hszBcstTklbFQMWE5dQCS4uQ2Up+k
+	lZkKt98Qy20iUQyLVFL6gzFYdmSWy4ornVUd91Bz/hWyDpFYUBfnO3eYyTUO/6Ys
+	6cvw7rKTPK2t66D+6QdL5CoxTkKC/blrvLY1p0JY6ru4HRgVL5Ur4bbpYZ2stmhB
+	Yc8DGG3Z2MHqMIqC8RBxVSCZ+H36F8KBR14eEShzOGhcfnsz733FOiefuryd9b09
+	kf7pBA==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eb3jgw4ah-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Mon, 25 May 2026 05:17:14 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-368b15eeb3bso17971989a91.2
+        for <linux-spi@vger.kernel.org>; Sun, 24 May 2026 22:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1779658444; x=1780263244; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4v82pm3nplUGvi0gYlaKk5FJ7bsCM62ozlNkSbZa6Zs=;
-        b=dI9Wx9IlulTxnU50+ZCYg+ivBJ1CYKYps37HKVNJlAPnF/3s0QcWVS6qRlYQLRZztF
-         Qfaqqlhn81vKV7JwfXqgyFaq3v5TGk3AtpGsk0zfVRWmEWagwV8v7wxK6auGypZ4zCYo
-         HsrCYFAiImlqmDryLWoGq86hmmiPPAo54Ow1TrdjHoH6QNQDd6puhS9wKwPAdsEs1Hqo
-         0V/hfUr+fBBWFr9bIcQ6SDoye43O1UXvzbjlSc94ZrfLmYZi/RM+fymy//YKn3AG/EZ0
-         vCiBWKL/XTBaXL05OTbFMEs1z6su13MD3epDofxSLJZCmurdfhdDxhNwy9rL5QidxmZ3
-         0AxQ==
+        d=oss.qualcomm.com; s=google; t=1779686234; x=1780291034; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GTcW/jqS+R1fyGppCmwLUjOiRqL28+oajKP5jUq4DXs=;
+        b=dKhdZiZJB7v6y1Mv+jXSa0RCILUx6iNylOWB1JBC50c55WSBt1kHI/sxBPA4n7+h+V
+         az0n1xQX33g7f3PoA1mUq3RJuGTgJDX3mqdEsk6D3K+fbRPBx69/cLfbAT52d7oMxtW4
+         5iIp4GpX03IQvRxH0oxBZsHyVw1NJZCLHXFXq4aMGXEbq0U/ulQcMEy0qZESi+mdHjQD
+         +1ny9sW5d9VUS2q4PsPieztUCD9wdNbDhwVO5CrY0dTP9KJk0irnu+ybdF7efIDWneUx
+         WFk+Pi5Q7EzYV8c9CHD0XOZcWQ5zpMDcjqSXsKUq3V956niCwcmvlWlqo12BqN80N9WB
+         XTpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779658444; x=1780263244;
-        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20251104; t=1779686234; x=1780291034;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4v82pm3nplUGvi0gYlaKk5FJ7bsCM62ozlNkSbZa6Zs=;
-        b=AwBQEFzVk80xa0ophu1SfyEvJW2m9K8xbyRE99VILqP1MXZDK4ifSZID9NxiE6L81d
-         AsSulrQnMSt7KbMRMq5OklP8zLAtzO5CuJcCS819YojwVoQOMZ5Joo0EIMWxCSMmep05
-         4ctNAoqQxhQmJ+JV2yC8t6h73XfkY+Siy2XhKlZSH1RC8L7AzhWDIaMOGJZA/SEtBZDz
-         Vb8rnI+aQ5dHYpPiplPJPEc+y0XLbJKhuaWEpvrTCTneljby8r71KSuc2yP7oX21q827
-         H+T0/CB0w7gsVEHhp9v+ICoWX+vYW+HDQyxcZsPET1ir+Aj0ToNBr9Z3Sa4DrZpu0ZgM
-         4ZCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+tqzgeKK37gU7Zoc+krKZLZouj39vEwPvB8K8aPgMEDF3zdersAXHGoR3uWiz3gJWYIEWNLx8F5+M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyApizEOtO7gtbVqKCZzh8D3u4b1TxPUGCM3MR1mM4cMNUiyJJ
-	NZc/zhCl12y9YcaMaVKT9/b2YziIiaHqqwUID0iYRAEUpJjvEPWuNgQ+smhtvAth6gV3E2yLRyj
-	gF1zMJUf6e1mCfoX7xiqjWRnuMinqBwM7VCPD4SHUSrm2xCiNyEDwydo=
-X-Gm-Gg: Acq92OG/moSynEkgAep6FJSZLdgCMUGCvuji341WW8TxVhR4lwMA+OV6BbKVojPq6AQ
-	F5S7EYdAUSjNM7ZusDt0S+1yj/+ikB8c1stR+Zgs6IbnxK3tOe4ywQesVLxxftQJypJzU343pzH
-	2/g21ApXEzFlXvFqN9QrstH0EE7eMyXiwmQbxAxMGVa0wbJWk0MFapRoY10kIgexINZAolxRXJp
-	kRomsP8RPl2eTJFupVb/vMBsO1QumISZbXnr85ZwGovj5Gk08aPEE6ryOm8OrLysCQjny/RReYn
-	HBm4u8qOiuSMWlzY1m3CqD6gpOr7muKrdSODiJ+d4jllbEg=
-X-Received: by 2002:a17:907:75f8:b0:bc6:1c2:ee46 with SMTP id
- a640c23a62f3a-bdd22e30ca3mr532419766b.11.1779658443593; Sun, 24 May 2026
- 14:34:03 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 24 May 2026 16:34:03 -0500
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 24 May 2026 16:34:03 -0500
-From: Angelo Dureghello <adureghello@baylibre.com>
-References: <20260506142644.3234270-2-gerg@kernel.org> <20260506142644.3234270-8-gerg@kernel.org>
- <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com> <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org>
- <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com>
- <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com> <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
- <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com> <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com>
+        bh=GTcW/jqS+R1fyGppCmwLUjOiRqL28+oajKP5jUq4DXs=;
+        b=s+Ne1stxpKHI15czVT2PCWKn7GHnBOS+QAAKyePaLSPjsp3JJrA9yZVKugyzMwjAOE
+         xMA0AeQ1C4h9csaUvnTpyzEXp4gvUSrUtWYLtOFOvFyydXP2Slhehw8KJOXprbcTrBdZ
+         uY0bO2z4h8uurscVlss+f2e9sGFExBlMJYbVj/k7WAxAfd6+S2vVKkLH9EJRJ6saXch0
+         X3QGpImNon6uoVDM2khPleXffJtJcUHcFk/4TqpTJ3//5JSnTHpkysR71Z3ndUNP5tOa
+         t4qs8btuY21F65FYMWDUmXgyjqw7GRgxzXcTzaxJZlz+1xIKbZyOJqQrn2c6qo50zTbD
+         53rA==
+X-Forwarded-Encrypted: i=1; AFNElJ8HUmMN8L21+0aoHiwUnuGgGkUipXd1cLjybQaLK41RgWo+UA24FWNwi64mn+PYzkOQNmvYnDjHvNE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxyRKv4xjBWTg0ktoKZwOVO9C5WMQC9kZistCmYtmMV8kQjY8u
+	SlS0j1lSoIv5YLpxBfE9iutjvVKrSNcP7+PkI6w0Hq5qY6Woa6Ab9cwOM0D346Lx2VF+8hPO1N7
+	7OxQoqIZtWFCnC0Ba06E2isTsho/NQfMgk8wRCT4dtnzlPyiotvrxCR3NPKkJn/Q=
+X-Gm-Gg: Acq92OFmrgFHBO8m2RnLjZt8rv7NptZp4vZblVl5CkvTf7WvnP8wKxUB3batJJcqP3r
+	RdBJC6tdE1hCGx4gcSfvKzgLfuUj2x7TdvWwkMCYP8qayJ0Xv7j7Ybqdzds7gmggC5ueHQ6pdBm
+	WBkl5kUuDexZKMqkxUI/WIz15b4cJdU6yMib5AXduyIQ76IcS8Knxc4mpNfRfi1wyEfLz5ooiiT
+	Qb4fA4CMenZDLISPBi/oXVzZ/PmXjCkorjyRebyvT04OXLYQ0PxEyXwFKbMFmmpTaFZ0DFhqkAk
+	8uglJMbZQT5ajL89f2A4lfDCZ4ecFUEjoY4UPHIMwZ5/K7dxabNQsN6N15q5JbNBupPWZHcwtPG
+	bGFog5hv9e6QAhDHVFZEg1ZSi1xWp6pAPJHwmTzVtUEOAz156rH6iqg==
+X-Received: by 2002:a17:90b:1d8c:b0:366:33a6:9921 with SMTP id 98e67ed59e1d1-36a67422decmr12178437a91.4.1779686233695;
+        Sun, 24 May 2026 22:17:13 -0700 (PDT)
+X-Received: by 2002:a17:90b:1d8c:b0:366:33a6:9921 with SMTP id 98e67ed59e1d1-36a67422decmr12178413a91.4.1779686233253;
+        Sun, 24 May 2026 22:17:13 -0700 (PDT)
+Received: from [10.92.183.29] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c852057f9cdsm6963798a12.32.2026.05.24.22.17.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 May 2026 22:17:12 -0700 (PDT)
+Message-ID: <22a52e0b-849e-485b-ac6c-ae55c2b75be7@oss.qualcomm.com>
+Date: Mon, 25 May 2026 10:47:07 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com>
-Date: Sun, 24 May 2026 16:34:03 -0500
-X-Gm-Features: AVHnY4KPts6giB7v-VLhDVFgaj3UBt2D1rd6Lp0dLsbZHZD9ROK0A3o-BziA5dQ
-Message-ID: <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
-Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Arnd Bergmann <arnd@kernel.org>, Greg Ungerer <gerg@kernel.org>, linux-m68k@lists.linux-m68k.org, 
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-can@vger.kernel.org, linux-spi@vger.kernel.org, 
-	Vladimir Oltean <olteanv@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] spi: qcom-geni: Add trace events for Qualcomm GENI
+ SPI driver
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu
+ <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Mark Brown <broonie@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        aniket.randive@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com,
+        jyothi.seerapu@oss.qualcomm.com
+References: <20260518-add-tracepoints-for-qcom-geni-spi-v3-0-7928f6810a79@oss.qualcomm.com>
+ <20260518-add-tracepoints-for-qcom-geni-spi-v3-2-7928f6810a79@oss.qualcomm.com>
+ <12d8da90-f092-449f-af6b-14b9dd851f1e@oss.qualcomm.com>
+ <5c59952f-72c5-4aee-a1a6-4b11b0a542c3@oss.qualcomm.com>
+Content-Language: en-US
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <5c59952f-72c5-4aee-a1a6-4b11b0a542c3@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: Y8Gu0f5RMA1eLS21DtHOuAeBJEjgO-GF
+X-Proofpoint-ORIG-GUID: Y8Gu0f5RMA1eLS21DtHOuAeBJEjgO-GF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI1MDA1MCBTYWx0ZWRfX1X2RqX3SWHXN
+ qiYUK1eG8BWnPBH/NVFN6a76OcUK41LMeG6a/yVLSzXYxdjl2emYyy5gFrvHemtHEZiOJQTReGr
+ SrZWQm01BfFe2QUvNMyJuSMtqpmKTUZnsZ45mTDoY+qEFg5tKLbcmADUngzYfEoeaj/prZJ1sIW
+ CcKjql7pE1YuxyLBf5VwnCKGOgBJK8240KrLCoo20qFcbOs+bmTxwLY5XFqmbMd3qcr8zUl3eGj
+ ++JfcJE7EEJ1Xcp2uapIqdSGO/TxCRcO91dILagH6k6LEPJJeok+oXXW3lMvZF/LnTHQOsEiXe7
+ M6UA6en3VgIpZsx/z1sDU/Y7g9rlDFZVqanb4NnFfaM32IMqqJZKx/9Z0t2YiRH14jOWObe12qC
+ 7AT42bvWbz05RLMKBSai1rA0bBC/ycloDdxYmMRaUbdVJn+mMZYdjGV+95buCv8IpacQiFS17aN
+ ALY4GMaYNOHzG2Xmbiw==
+X-Authority-Analysis: v=2.4 cv=Do9mPm/+ c=1 sm=1 tr=0 ts=6a13db5a cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=v0BZMRiMjL-9nwr9ESwA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-25_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 priorityscore=1501 phishscore=0 lowpriorityscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605250050
 
-On Sun, May 24, 2026 at 02:17:07PM -0700, Angelo Dureghello wrote:
-> Hi All,
->
-> On Sun, May 17, 2026 at 03:41:31PM -0700, Angelo Dureghello wrote:
-> > Hi,
-> >
-> > On Sun, May 17, 2026 at 03:04:23PM -0700, Angelo Dureghello wrote:
-> > > Hi Arnd,
-> > >
-> > > On Sun, May 17, 2026 at 10:08:22PM +0200, Arnd Bergmann wrote:
-> > > > On Sun, May 17, 2026, at 21:43, Angelo Dureghello wrote:
-> > > > > On Thu, May 07, 2026 at 10:43:01PM +1000, Greg Ungerer wrote:
-> > > > >> On 7/5/26 05:12, Arnd Bergmann wrote:
-> > > > >> > On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
-> > > > >
-> > > > > [    2.270000] fsl-dspi fsl-dspi.0: Not able to get desc for DMA xfer
-> > > > > [    2.280000] fsl-dspi fsl-dspi.0: DMA transfer failed
-> > > > > [    2.280000] spi_master spi0: failed to transfer one message from queue
-> > > > > [    2.290000] spi_master spi0: noqueue transfer failed
-> > > > > [    2.290000] spi-nor spi0.1: probe with driver spi-nor failed with error -5
-> > > > >
-> >
-> > About this issue, it fails on dma_pool_alloc(), so tomorrow will check,
-> > i probably lost some dma config option.
-> >
->
-> so i worked on this open issue above:
->
-> - moved to master and rebased,
-> - crated a wip/edma branch,
-> - bisected and found the offending commit, before this, mcf-edma driver
->   and connected spi-fsl-dspi (using edma) was both working correctly.
->
-> 7a360df941a4bd60847208de59f1ac8b166265a2 is the first bad commit
-> commit 7a360df941a4bd60847208de59f1ac8b166265a2 (HEAD)
-> Author: Christoph Hellwig <hch@lst.de>
-> Date:   Thu Oct 12 09:52:27 2023 +0200
->
->     m68k: don't provide arch_dma_alloc for nommu/coldfire
->
->     Coldfire cores configured with a data cache can't provide coherent
->     DMA allocations at all.
->
->     Instead of returning non-coherent kernel memory in this case,
->     return NULL and fail the allocation.
->
->     The only driver that used to rely on the previous behavior (fec) has
->     been switched to use non-coherent allocations for this case recently.
->
->     Signed-off-by: Christoph Hellwig <hch@lst.de>
->     Reviewed-by: Greg Ungerer <gerg@linux-m68k.org>
->     Tested-by: Greg Ungerer <gerg@linux-m68k.org>
->
->  arch/m68k/Kconfig      |  1 -
->  arch/m68k/kernel/dma.c | 23 -----------------------
->  2 files changed, 24 deletions(-)
->
-> So i can try next week a patch for edma looking what has been done
-> in fec, and since i am probably the only with mcf54415, will test it
-> here.
->
 
-Looking into this better, looks like the above commit was meant for the
-majority on non-mmu ColdFire. I think mcf5441x and some other with mmu
-enabled can flag pages as "page cache disabled".
 
-So i would re-enabled that code only for such mmu families.
+On 5/19/2026 5:04 PM, Konrad Dybcio wrote:
+> On 5/19/26 12:59 PM, Mukesh Savaliya wrote:
+>> Hi Praveen, one question below.
+>>
+>> On 5/18/2026 10:30 PM, Praveen Talari wrote:
+>>> Add tracepoints to the Qualcomm GENI (Generic Interface) SPI driver.
+>>> These trace events enable runtime debugging and performance analysis
+>>> of SPI operations.
+>>>
+>>> The trace events capture SPI clock configuration, setup parameters,
+>>> transfer details, interrupt status.
+>> Don't you need trace logs around PM operations ? ie. runtime and system PM ?
+> 
+> The PM core provides a couple, are those enough?
+> 
+Understood, should be enough. Thanks !
+> Konrad
 
-Please let me know if i am correct.
-Thanks.
-
-> > > > > DSPI is using edma, i will try to understand where the issue is asap.
-> > > > >
-> > > > > About how it works:
-> > > > > - for accesses to edma module (IP) mmio registers, must be native
-> > > > > big_endian, so using the "be" suffix in "mcf"_edma looks ok for me.
-> > > >
-> > > > The twist here is that with the way that readl() is defined on
-> > > > coldfire as a non-swapping operation, and the generic
-> > > > definition assuming the opposite in
-> > > >
-> > > > static inline u32 ioread32be(const void __iomem *addr)
-> > > > {
-> > > >         return swab32(readl(addr));
-> > > > }
-> > > >
-> > > > the function called ioread32be() actually tries to access
-> > > > the registers as little-endian. I can see two possible ways
-> > > > we got here, but don't know which one is currect:
-> > > >
-> > > > a) the device actually has little-endian registers (like it
-> > > >    does on i.MX, but unlike all other coldfire devices), and
-> > > >    you just never noticed because using ioread32be() worked
-> > > >    as you expected.
-> > > >
-> > > > b) you tested the driver using an ioread32be() definition that
-> > > >    did not have a byteswap and it correctly accessed big-endian
-> > > >    registers at the time, but the version in mainline today does
-> > > >    not.
-> > >
-> > > Ok. The ioread32be now works properly since i had applied Greg patches.
-> > > I generated an error in _probe on edma channel 2, reading status reg.
-> > > looks consistent:
-> > >
-> > > 	iowrite16(2121, regs->erqh);
-> > > 	iowrite8(0x77, regs->serq);
-> > > 	iowrite8(0x12, regs->ssrt);
-> > > 	
-> > > 	u32 status = ioread32be(regs->es);
-> > > 	printk("%s() status: %04x\n", __func__, status);
-> > >
-> > > [    0.140000] mcf_edma_probe() entering
-> > > [    0.140000] mcf_edma_probe(): allocating data
-> > > [    0.140000] mcf_edma_probe() status: 800012f8
-> > >
-> > > If i am not loosing myself in this r/w labyrinth, the path should be:
-> > >
-> > > 1) Greg removed coldfire readl/writel, leaving now the standard LE r/w,
-> > > 2) So the ioread32be swaps the standard LE read giving BE.
-> > >
-> > > Am i correct ?
-> > >
-> > >
-> > > >
-> > > > > - for accessing the "tcd" memory structure, that must be, from what i
-> > > > > remember, anyway in little endian, independently from the cpu core
-> > > > > endiannes, this is the reason that big_endian flag is needed, it is
-> > > > > used for tcd area accesses, so the IP module was built.
-> > > > > The tcd area may be similar to pci accesses (see mcf54415 RM 19.4.16).
-> > > >
-> > > > edma_read_tcdreg() calls into edma_readl(), which is the same function
-> > > > that is used for normal register access, so from what I can tell,
-> > > > they always use the same endianess here.
-> > > >
-> > >
-> > > If edma_readl was using
-> > >
-> > >         if (edma->big_endian)
-> > >                 val = ioread32be(addr);
-> > >
-> > > and never changed, without Greg patch, it was likely returning little
-> > > endian for coldfire and correct LE for other arch ? :)
-> > >
-> > > I remember something about tcd area was coded LE, but will investigate
-> > > better, now i am over midnight.
-> > >
-> > > Regards,
-> > > angelo
-> > >
-> > > >       Arnd
-> >
-> > Regards,
-> > angelo
->
-> Regards,
-> angelo
-
-Regards,
-angelo

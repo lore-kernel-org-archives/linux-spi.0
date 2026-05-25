@@ -1,108 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9503AA1BA;
-	Mon, 25 May 2026 06:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DCD3A784A
+	for <linux-spi@vger.kernel.org>; Mon, 25 May 2026 06:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779691677; cv=none; b=btSzLAIi3BiwUL4XeOGRw2Z62iX7s+oOTpyxCkz1PL22IzP1hlKC/RvahxWV6/g5iOJe6GAfQhhuLawmOE/nu9FWWiYuoNjL9+KC4M+1I1C6WtomBhLcQC27sCx1iawPGEvxx8vO42tgQJ5mX2n+e908uWQegUTVh0lhjKBFs5g=
+	t=1779692279; cv=none; b=sYjShv36PSbfBXLOgi7oRghbcEipRB1QQ57p1bR7P0lNo2uGo7i0GyMlqPN1WjIL2BetbgW2t7wvZQ0mphcAsYdLgS/8crFli0nuRvMjvxiUWCjnKWylGA1YlIxSP7MFhRRJp2DVxO/g69YZvKigZ3XdSlgrGL7OCR5irjqLUDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779691677; c=relaxed/simple;
-	bh=rQtWtz9PaBC5kO/YmeSFs1AL2c5xXsa62gy6hOf0BC4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mEGXa49M1KGZskqD9cymDOEFUl7vRhJAtWhZQebgMvoc3oPUbNWwcg5buhBVYyVHGKRZUN6vC6oyD45wBuhOWQq2kpMaVgNwlTKVaA13hEOSRgnUgPRi3HDMRafyMlTP0R798/aMPt4cvi7TTkSNp+bzaL6jwKSHNt5FliihGx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRBlGGd9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779692279; c=relaxed/simple;
+	bh=geztMqZOCyGiY6jZgLlQ8OiXoepRM7rKuOOONppmF5g=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=PCOCyiYO1/xnn6FkBh3Cit5NP4GxRP3DkQC+lQgY9E1Ea79jWilYidVdPjxcvpY+i2Ryw6UdiuEb9zVQFjorFMRwpuKC7+Q2Sx6NQWTR+Fd+bu1UC/9wDp+0VD08y21XsCV+cI+jwXKt2KHnGaDPzPxFdJ6f7t4COcI2PM1Rffg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOXjK42E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRBlGGd9"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 57C58C2BCC7;
-	Mon, 25 May 2026 06:47:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779691676;
-	bh=rQtWtz9PaBC5kO/YmeSFs1AL2c5xXsa62gy6hOf0BC4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RRBlGGd926Pbz+gVLIdJH4aGYLYZwwKI7u8T3BTGNle1QfFTLqka6n4G2dsp7L8mx
-	 hpZsA4p28dw687ygsK42fuR/qdNpFMO44tD9Uiyp4+hk0JDUcK7tToDVkEYlXo1H1Z
-	 RXrruj6o07PvEGWpLeCuJsK4MDUubpcIXQttrQsjcl6+nUSq+YHtM/U4lcXv2sfBax
-	 GLhYtvvvhMTdPL2PuB2fpVDgnohZ1FXbVuP12iuHwSbhLyWXJDSKprrxH7yYfY7RVr
-	 VMRNo9ZtBAdFejzhKSoSUPKTe4GZ1HUM4aO5aD3PSnKS+G9/LTAbgXt1A3ZFerT5LV
-	 nOJ6iNGfTNQ9w==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44221CD5BCE;
-	Mon, 25 May 2026 06:47:56 +0000 (UTC)
-From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
-Date: Mon, 25 May 2026 01:47:45 -0500
-Subject: [PATCH v2 2/2] arm64: tegra: Enable DMA Support on Tegra194 QSPI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOXjK42E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91E741F00A3A;
+	Mon, 25 May 2026 06:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779692275;
+	bh=jkO5gjxx0Xdz5bqIwHfhpSvJKTVnSI8CJUyOALsadw8=;
+	h=Subject:From:Date:To;
+	b=iOXjK42EULQ8OkyXG+8i+FmbROpL1KciRkws9u9+fl5C61/Z9nDLivbmhF71gXW5k
+	 SCzn2Z6BREaGG3BXRD732uNYTKXc2H9ouadzlR5htTQPSYZDyLZ0lSiJAuwIRqjI2A
+	 8OjPuCbmZhxhN4KpUTK3U8oP2bSesls9NUZ5hFHEJry+A1RV/y5/yn/3+uGfQWABSo
+	 9d+L14i8tHuywN59gEAY+7UZ8K40b+xGwYquWp9BsIdpX/gDVEviZWeZR6CZN4g1J8
+	 23UHZYsVPT9UnDQPxbTw0zVo6XdGj/l23gOxgS5llUBvQc74Cbbz3H8arBJ7CpnLdh
+	 R5xTBqnkkOw5A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C9A380A94F;
+	Mon, 25 May 2026 06:58:03 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260525-tegra194-qspi-iommu-v2-2-a11c53f804b2@gmail.com>
-References: <20260525-tegra194-qspi-iommu-v2-0-a11c53f804b2@gmail.com>
-In-Reply-To: <20260525-tegra194-qspi-iommu-v2-0-a11c53f804b2@gmail.com>
-To: Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- devicetree@vger.kernel.org, Aaron Kling <webgeek1234@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779691675; l=1118;
- i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
- bh=KjSbPkVlCYH0lmqUb9TdWBRiwbc5n5A4wUaKdi0Q4ak=;
- b=PBjXCsxlPIs64wXAC3rv9Jl/iDRaXY0pG7TZaawi+0P9HpR2fOtGfRnlvlgqjKFs1D5MLuduh
- dV+Gq/kPkXYA63Uajrq8p3bL7jiD7BePTNcpBzrltxNxMjBOVFAbTfp
-X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
- pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
-X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
- auth_id=342
-X-Original-From: Aaron Kling <webgeek1234@gmail.com>
-Reply-To: webgeek1234@gmail.com
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177969228239.2444448.13780866716900664360.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 25 May 2026 06:58:02 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-From: Aaron Kling <webgeek1234@gmail.com>
+Latest series: [v3] spi: fsl-lpspi: fix DMA termination issues (2026-05-25T06:23:55)
+  Superseding: [v2] spi: fsl-lpspi: fix DMA termination issues (2026-05-20T09:43:06):
+    [v2,1/2] spi: fsl-lpspi: replace dmaengine_terminate_all with dmaengine_terminate_sync
+    [v2,2/2] spi: fsl-lpspi: fix missing RX DMA termination on TX prepare failure
 
-Without dma enabled pio mode is used and flash storage such as the one
-on the p3668 module times out and cannot complete any transfers. In some
-cases, these timeouts cause hangs and cbb faults.
-
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
----
- arch/arm64/boot/dts/nvidia/tegra194.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/nvidia/tegra194.dtsi b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-index 1d659454a6f9fe..e2ddbc6715d5e8 100644
---- a/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra194.dtsi
-@@ -923,6 +923,8 @@ spi@3270000 {
- 				 <&bpmp TEGRA194_CLK_QSPI0_PM>;
- 			clock-names = "qspi", "qspi_out";
- 			resets = <&bpmp TEGRA194_RESET_QSPI0>;
-+			dmas = <&gpcdma 5>, <&gpcdma 5>;
-+			dma-names = "rx", "tx";
- 			status = "disabled";
- 		};
- 
-@@ -1013,6 +1015,8 @@ spi@3300000 {
- 				 <&bpmp TEGRA194_CLK_QSPI1_PM>;
- 			clock-names = "qspi", "qspi_out";
- 			resets = <&bpmp TEGRA194_RESET_QSPI1>;
-+			dmas = <&gpcdma 6>, <&gpcdma 6>;
-+			dma-names = "rx", "tx";
- 			status = "disabled";
- 		};
- 
 
 -- 
-2.53.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -1,101 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8092264D6;
-	Tue, 26 May 2026 21:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873B132AAA8
+	for <linux-spi@vger.kernel.org>; Tue, 26 May 2026 21:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779829437; cv=none; b=CZjivNn9FIovnELP4n+iEvdG1747kvUgwIKy05y1OU1eELMw6lj5Xf60FwCiY8sZEh2gIssyRr8Z6DQzbQrjnVLROGUUanumJnlITj7IEvmNmK8gR+KcsRqX+efCzr4+QDjhnp7oFcq2lZBFrmDnieG1ZXATxJtJhj27X8FfXzI=
+	t=1779829884; cv=none; b=Sn7djFD6WBffIC0KlPpBL4ukVdJ5FwZJrqbAKWSJPWRHsvzQJ1FigIF98ZJIItvJm5ATr8ah86RVExYlvuYrGkaSyjKv65m5a/numdpSvpsezSd1gWb2u+gHdCbbdThJT3bpMqV2lFe2MYt4WFZtExPjw+tlw5GvSxUcIgT/jhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779829437; c=relaxed/simple;
-	bh=CaidAtYNQcEH1CXuDGvEduKnKl3V3spNZfnRwJa5y9s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=QqxdmCGERI+Fi+6/eOdj2L/E7QH9imX04uLdlvq3ZsRC9Ki4cAFMHpM/MVCtTTetN70/wDjfc8AzUWAow4RwjTtjmq3Fc7U6874cXAwmi/lgCYR2NIEfCkvb0cVFof7EEXf2hM3KWMtzWTPpTaa7rsAXNHSo0rlAGxq8jGvDNUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khW8M70m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779829884; c=relaxed/simple;
+	bh=QrpkJY3b47FNejLoGeW8po2+n/nNjoJvB+QAfsPv79c=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=kw4oAUIJ2UTBRWFACMaayaWImZ2ySVf2toPMXfHNbAB7fSVjiIWHcqYHYAawkaqbzyN6qc9YQzVjnwI3EW/7oh4lpadpexFtRbzHBUP7nfKYeMhYDWYK/R84RMud/8vNmxxoEsOjKLoUFXSPyzgEVrIBBxIfyhLEtlFc2O9c60g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhMWHHkT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khW8M70m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E6E1F000E9;
-	Tue, 26 May 2026 21:03:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhMWHHkT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254E51F000E9;
+	Tue, 26 May 2026 21:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779829436;
-	bh=UGJ2Q9JB0wXH8lsSmU4R701MU/I7n0vwE4S/DLdljlA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=khW8M70mzbCKVstjEn6QvJ7mB4lSo13MmbyJg3UYQ1lIjSTpbYppUIu/Zmyuk0xMo
-	 ZsT1qiidOmJK0/hlPy8H74EK63CNjwcNPMTQl5FfgOhZXwA8BUso7L0sE/k7AFhIC1
-	 zn3mHqruQ8JWVqqbu7DLPX3VKfTaenHmozdhkyw8NgblyYo1mkpPWt34CGq9C6jyGs
-	 WxzZ+ESfthrDmabvknVoh/3p5EFpIytdkjWyNK1/y4P5JFBfrhEXjX+tEeI4liOJMt
-	 9+Dz1xBy6lcONzFYzKQg0QRISpkQQ2LzvzM3dM19YM7pKnnfP38lQXKQM3iuTLxN3z
-	 kzKlHZoOMp7OQ==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, sadre Alam <quic_mdalam@quicinc.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260514-ipq5210-nand-v1-0-cbdd7492e826@oss.qualcomm.com>
-References: <20260514-ipq5210-nand-v1-0-cbdd7492e826@oss.qualcomm.com>
-Subject: Re: (subset) [PATCH 0/2] Enable QPIC-SPI-NAND controller for
- ipq5210
-Message-Id: <177982073388.88748.17750336143894340854.b4-ty@b4>
-Date: Tue, 26 May 2026 19:38:53 +0100
+	s=k20260515; t=1779829883;
+	bh=s5nImzJ6M7Wz0GArXLfTolUAKMSXpzPhOlGBtlUeTKY=;
+	h=Subject:From:Date:To;
+	b=lhMWHHkTDfSkJpHwoZCWQ8tUKkC8ynUzmWn5eKki1k31JqsEXwddhlI1loxT8ihbt
+	 U0qF1nGoivAoghZFdP/H2ma/fIp6xuT0O3fFLcdKAONopkBI2aUX9c9xEVDm6J5+3U
+	 14F9ESrmvORURBAgI30uKfV9MLpQwr6JgOgSIPz1Nry5wknHWuiIY8UNpKzyUGokdH
+	 BS5d8VfWFcw8PI+F2m+77GxjBZnjM3Z4hl/jZnG7fItMb1B7UDXH4SG/Hgcg5k9hca
+	 t0dr0ap6ZI2LJwb5qoL7iRCR/4uSEsFDs/8q7gAyCuid3twwqseoL5TSTpIgA2Qjha
+	 xsXT0IwKZpfpQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1C6CC380CEEC;
+	Tue, 26 May 2026 21:11:30 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1289; i=broonie@kernel.org;
- h=from:subject:message-id; bh=CaidAtYNQcEH1CXuDGvEduKnKl3V3spNZfnRwJa5y9s=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqFgq5s/18gNuvVj+i73QPnM/XyBcFbIWP+RfvO
- /Igs1FfqlSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahYKuQAKCRAk1otyXVSH
- 0O+nB/9d1fAkz8S0ej8IJKx8AnFtN6fqBzRQJRhdorDUmBLQGzxv2PlVDHTq6gP6VH5Q3XqVHqa
- WzgSrQs9J7d4v+ZGxaYHerVUj8Fj+iXYZx44hpkalQbLl9M3Pzi/qvP3fV7xVwdOr5PM0hc4yGY
- MguCkHdpU+ljOwb3xdnNcU6VxwW9yJbQneL+FkUFVAp6dIETh/uFcCcPYnHVYHQ5WOFjTyWsYoj
- srijKmAxvDIA/bc2nwYmCtH7gxPh/Qq1yXpTX3J3HVK15sdAAh/CxwQfgAPReuOkPTXarYThXBf
- +mTfkPjR0ogVpSEkM4GOm/Q23De/iXz8UYN7ooYqhUdRO1Fk
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <177982988869.3974649.8523556212038117953.git-patchwork-summary@kernel.org>
+Date: Tue, 26 May 2026 21:11:28 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Thu, 14 May 2026 12:15:30 +0530, Varadarajan Narayanan wrote:
-> Enable QPIC-SPI-NAND controller for ipq5210
-> 
-> Document the NAND controller binding and add the DT nodes to
-> enable the QPIC-SPI-NAND controller in ipq5210.
-> 
-> Functionally depends on [1]
-> 
-> [...]
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+Patch: [GIT,PULL] SPI fixes for v7.1-rc4
+  Submitter: Mark Brown <broonie@kernel.org>
+  Committer: Linus Torvalds <torvalds@linux-foundation.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1099547
+  Lore link: https://lore.kernel.org/r/c3dfa0ed3041398d4443c1331c7334b7@kernel.org
 
-Thanks!
+Patch: spi: amd: Set correct bus number in ACPI probe path
+  Submitter: M, Krishnamoorthi <krishnamoorthi.m@amd.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1091216
+  Lore link: https://lore.kernel.org/r/20260507180051.4158674-1-krishnamoorthi.m@amd.com
 
-[1/2] spi: dt-bindings: spi-qpic-snand: Add ipq5210 compatible
-      https://git.kernel.org/broonie/spi/c/60474437af5f
+Series: Enable QPIC-SPI-NAND controller for ipq5210
+  Submitter: Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1094613
+  Lore link: https://lore.kernel.org/r/20260514-ipq5210-nand-v1-0-cbdd7492e826@oss.qualcomm.com
+    Patches: [1/2] spi: dt-bindings: spi-qpic-snand: Add ipq5210 compatible
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Total patches: 3
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

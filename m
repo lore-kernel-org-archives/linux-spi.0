@@ -1,78 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258B93B995F;
-	Tue, 26 May 2026 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8092264D6;
+	Tue, 26 May 2026 21:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779813027; cv=none; b=Hx+bJ7gjG8zAZt+GdASYBm8OkFoKTSGmpOvX3c5aO2g46xfcTpgqcFSS5M9Ax5fAeOpYT77pBSE3gz2UfbIQ2R2+HoGSEKXlJm25+EFvbHA8kcSjF+w9vYv5Gb1mjxnG9o4pCfEieDVYS1oxuMrijBBkkoOaSHUV/7sCXGqSRq0=
+	t=1779829437; cv=none; b=CZjivNn9FIovnELP4n+iEvdG1747kvUgwIKy05y1OU1eELMw6lj5Xf60FwCiY8sZEh2gIssyRr8Z6DQzbQrjnVLROGUUanumJnlITj7IEvmNmK8gR+KcsRqX+efCzr4+QDjhnp7oFcq2lZBFrmDnieG1ZXATxJtJhj27X8FfXzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779813027; c=relaxed/simple;
-	bh=N1zQ/GnLIMTNMTyliK2PK2FgHD+TxRA5OeforZE4vNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sHDjGXm8WaEKbTgeBX5aWg0Peb7ZQYayi/nXJtBvwtzRx3h7ZnQrDVwYStv6GU0CuiP1WL78ZuetXfMqeYbAQz8cuWVXjOGsCEqf1jed37g1efQOvSaZWqVBL6LOuA/a6fqwJP4NZ2jxlZ8OBMyHkmlwiUAERxjHlAU2o38+NnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E98wwYHq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779829437; c=relaxed/simple;
+	bh=CaidAtYNQcEH1CXuDGvEduKnKl3V3spNZfnRwJa5y9s=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QqxdmCGERI+Fi+6/eOdj2L/E7QH9imX04uLdlvq3ZsRC9Ki4cAFMHpM/MVCtTTetN70/wDjfc8AzUWAow4RwjTtjmq3Fc7U6874cXAwmi/lgCYR2NIEfCkvb0cVFof7EEXf2hM3KWMtzWTPpTaa7rsAXNHSo0rlAGxq8jGvDNUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khW8M70m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E98wwYHq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EB41F000E9;
-	Tue, 26 May 2026 16:30:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khW8M70m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E6E1F000E9;
+	Tue, 26 May 2026 21:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779813025;
-	bh=N1zQ/GnLIMTNMTyliK2PK2FgHD+TxRA5OeforZE4vNA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E98wwYHqUSZ1ZFu4yZW2IYMhiymKdhxy4pI0qNyTU7tiRSe2AQfOW2dinU4YRaoiF
-	 WoMmTOIQjL/C01NOEwoW7SthRE8x72M2xEnAVqm1n9BXzr+3bbYeijvvX5aMX0agBS
-	 qdoGBuldJpkeetMlVqHFw4YEssWpm1WMf+A5x74inLkn737/tJSY4SWP6yhR36cSp0
-	 9J/Y+i2i4Yk/i+Skgsm4pmYE9s4XS+rlNzAxbjAyu+wrWUydg5ZL2+s1r81JW0fZRB
-	 PZEu09LoaVDO8EPw0qzEafgZ93w2kUpbatAI63ySd6pxsJ+AyJqfpyd56BPeSYAdVX
-	 KEjva8ejbhgbw==
-Date: Tue, 26 May 2026 17:30:21 +0100
+	s=k20260515; t=1779829436;
+	bh=UGJ2Q9JB0wXH8lsSmU4R701MU/I7n0vwE4S/DLdljlA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=khW8M70mzbCKVstjEn6QvJ7mB4lSo13MmbyJg3UYQ1lIjSTpbYppUIu/Zmyuk0xMo
+	 ZsT1qiidOmJK0/hlPy8H74EK63CNjwcNPMTQl5FfgOhZXwA8BUso7L0sE/k7AFhIC1
+	 zn3mHqruQ8JWVqqbu7DLPX3VKfTaenHmozdhkyw8NgblyYo1mkpPWt34CGq9C6jyGs
+	 WxzZ+ESfthrDmabvknVoh/3p5EFpIytdkjWyNK1/y4P5JFBfrhEXjX+tEeI4liOJMt
+	 9+Dz1xBy6lcONzFYzKQg0QRISpkQQ2LzvzM3dM19YM7pKnnfP38lQXKQM3iuTLxN3z
+	 kzKlHZoOMp7OQ==
 From: Mark Brown <broonie@kernel.org>
-To: Gaetan Florio <gaetansjo@gmail.com>
-Cc: michal.simek@amd.com, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: zynq-qspi: Remove redundant clock enables in setup
-Message-ID: <8b3f5645-5589-4ad4-b4af-ff5d37b35717@sirena.org.uk>
-References: <20260525174614.1052191-1-gaetansjo@gmail.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, sadre Alam <quic_mdalam@quicinc.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260514-ipq5210-nand-v1-0-cbdd7492e826@oss.qualcomm.com>
+References: <20260514-ipq5210-nand-v1-0-cbdd7492e826@oss.qualcomm.com>
+Subject: Re: (subset) [PATCH 0/2] Enable QPIC-SPI-NAND controller for
+ ipq5210
+Message-Id: <177982073388.88748.17750336143894340854.b4-ty@b4>
+Date: Tue, 26 May 2026 19:38:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W3rUfarjGCZc3sU7"
-Content-Disposition: inline
-In-Reply-To: <20260525174614.1052191-1-gaetansjo@gmail.com>
-X-Cookie: You are fairminded, just and loving.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1289; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=CaidAtYNQcEH1CXuDGvEduKnKl3V3spNZfnRwJa5y9s=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqFgq5s/18gNuvVj+i73QPnM/XyBcFbIWP+RfvO
+ /Igs1FfqlSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCahYKuQAKCRAk1otyXVSH
+ 0O+nB/9d1fAkz8S0ej8IJKx8AnFtN6fqBzRQJRhdorDUmBLQGzxv2PlVDHTq6gP6VH5Q3XqVHqa
+ WzgSrQs9J7d4v+ZGxaYHerVUj8Fj+iXYZx44hpkalQbLl9M3Pzi/qvP3fV7xVwdOr5PM0hc4yGY
+ MguCkHdpU+ljOwb3xdnNcU6VxwW9yJbQneL+FkUFVAp6dIETh/uFcCcPYnHVYHQ5WOFjTyWsYoj
+ srijKmAxvDIA/bc2nwYmCtH7gxPh/Qq1yXpTX3J3HVK15sdAAh/CxwQfgAPReuOkPTXarYThXBf
+ +mTfkPjR0ogVpSEkM4GOm/Q23De/iXz8UYN7ooYqhUdRO1Fk
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 14 May 2026 12:15:30 +0530, Varadarajan Narayanan wrote:
+> Enable QPIC-SPI-NAND controller for ipq5210
+> 
+> Document the NAND controller binding and add the DT nodes to
+> enable the QPIC-SPI-NAND controller in ipq5210.
+> 
+> Functionally depends on [1]
+> 
+> [...]
 
---W3rUfarjGCZc3sU7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, May 25, 2026 at 01:46:14PM -0400, Gaetan Florio wrote:
-> The QSPI clocks are already enabled in probe() with clk_prepare_enable().
-> zynq_qspi_setup_op() enables them again with clk_enable(), but the extra
-> enable is never balanced. This leaves the clock enable count elevated and
-> can trigger warnings when unbinding the driver.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-This doesn't apply against current code, please check and resend - there
-was a recent fix here so I think the issue is already fixed.
+Thanks!
 
---W3rUfarjGCZc3sU7
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/2] spi: dt-bindings: spi-qpic-snand: Add ipq5210 compatible
+      https://git.kernel.org/broonie/spi/c/60474437af5f
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoVypwACgkQJNaLcl1U
-h9Cg2gf/ZuG4skohiVfl20CqyWYWH6iC2PcX0TOn8HhH4ZN6TCrrOhumy/+yjsCg
-RwNIeegsZZKd8Nh4QD9/TUSeNgFW2LBfxs7orFh7f7q+R1jIJivR0qtG8L7N+nBS
-rGvFAwLKo06wP99qX5yFuYS+HF2gY8fShMysJA3tkdvBL5Agmmm+I5x7r+n/4VSK
-14vYazehz9CiMpN8LIXcqipJj+pC0Ygc5PxtP8Ki9S43Z6GuO5tzJG+7A+ZZMhC/
-Wni2ohi+idn0EPXizVP/R2pl91mzj/LxdFR2hQ67JFjRk1LK6bDCDDCMdB6X5Zv4
-rLF2365W0U2Vw5g6jdh3i+UBCIGfxQ==
-=KHGn
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---W3rUfarjGCZc3sU7--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,71 +1,71 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012000.outbound.protection.outlook.com [52.101.48.0])
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012009.outbound.protection.outlook.com [52.101.43.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1993D3812EF;
-	Wed, 27 May 2026 17:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F2C4534A2;
+	Wed, 27 May 2026 17:56:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.9
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779904610; cv=fail; b=jZ/Zg/qo1RC6LhY8+ULSbbBOZjMyq0Yes/NOVHwCANi6+xca/6gdaXfLzSU15OoHHx6WvOjMAgwQpF4RR/bE3RMSG3sVCwoJ+gW25JihYZcxomvkXL0YvYXcU9z3DEiUbqXmBr9r2+WwDN35N1BStRYLXzYBLPA+Jdu7cgHV9D0=
+	t=1779904616; cv=fail; b=uwQOlapdWYKa06BJVY6ZWIxkuc37wmED+xqLElQUq8q0c/L+tBP+fFfGkpco61tbCRH7I24JVH3mkvYzrnSIEkjUS796KPBdt+P7QaJDmysgalcO7zyMgrWAOP8edhGeY+VsmDLp7StoWc9lgAthsQswM9sIAohlUj0IGOwhzI0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779904610; c=relaxed/simple;
-	bh=5/V5ukoiwSHKB8So05WQQ46hsjXpQ7uElOLSGrLE9RM=;
+	s=arc-20240116; t=1779904616; c=relaxed/simple;
+	bh=j7x4fhL5qBiEOu1RN81ffi2c/xYv1rD1g3jRS7KyS6w=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oAQ7Sv0B6X7u7CcVswLuw9nayjWq6NIj6Pzf41Nl44AjTen8GBvnu/HVpgRNzmGCr6pFjWIF8YCtA+g/vvHr37rgvj0NNSuSFqkinnoal7OzCsFbhBQXlCSi8gPiZwoNCtvmdyCmnPHFd3DFdSrquKNuCCycsjxywdXUA4E/u/g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=bMjDHtA+; arc=fail smtp.client-ip=52.101.48.0
+	 MIME-Version:Content-Type; b=Go01VDoxhQlHP7O5he8jQAkCZHm5BBvCWhs+PQHXS4symG/LfzjH9QvNmYXgEWCVcP47dZX8XkIi0T3VvquCZ1kGobsl3Sd6j6IG9Aqn3mEOlRnfKRArqeG6NTQlxnOF6iogw3YO4vL3mAHo6HWwu7mES0t4pMpfkB77dHuyChU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fiIm3uI0; arc=fail smtp.client-ip=52.101.43.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="bMjDHtA+"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fiIm3uI0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jd7Wq8aOUhazoeUJUT8BnUxgBwhu1M8QcQoC/yAku6Syh5LMq0cBJyRn6kFqwIPu9TTHB5Ejga46lJTa9IWSVayBvmeY0oaJ5r/g1TJjMNMf7BkYGjFoLYSsqqh5UAdTVmwDb3tcW8NFSOYgCcdO2y3AoOAogmd0FPi3fKUz0sbZdU5J8KjW7h/0dp5wL4zyQapVv8Vr61oJH10/teFI9QEYsDmm+BVQnLp41DADz0W67kNtk04HMVITHRORbw5WOMSABovTsU/JYRqgsf07cHzED0xv3W+WZps56IvF2KLfbuc09YL6fDF2cMGXbYxZknrdBIEAyaF38+CskrDewQ==
+ b=TUupaBTKKm5M/D6aRIigzpmJFNtbQCm+EgknL/dFQyf+WDOtXOMLM5gxaqu17+Lu0m8hTPIAAk6UMIL6x3/PM3rNs6BBcGMEDUsnyrdbNt2iDr3WIkfN45Ncf8sa0iBxWRViXL5/yBSLeD2qjYiBYQWzer1kmNG1ircwY/tUyV4z/cX3loBedOJ84xH2cEVW1Tq0WgluVAnSspRWfcjYWyUwdeHCkcHuFK8pr0cC0HCOW/BzP7WX9J4nBwc8khh4BWrUE8NuT6MjnXEHxqzlYAQXsdaPCngUjhIfp/LG0pPk+JOa/sJmLQrn/43ceHSI8lsAbFVd4fXMK7wXkfe9aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ppe0qTwspSHUu7S5lBvqAOYj2cYyzZrEkwbB0LCOMqw=;
- b=F8kHADHxKACezTePBZ3V/Lqd19Ci8N1vaxIOg8gqZtRKxAqeRlE/lNcbj5hrVICzYK9YtOKPTRpOZtIhQ4Z1vEEo7ED/kbu2f5ODBy5swxdMjzmk7uwKlKHdcLHLg4ylvCPxbKnej/4BEOQ851Rm/8V4yoe8NLt7PhciwelEN8dEchdQ7i0lSHNWzncFClI6XHIrQUQsPHfwgKkxU0+r2I+amgsrS6tPVD7qecPtfrSsl63KlB+xsXTyDAkEpZCkhy3Hi/GvmhQ1m5s4e8Y/ZW/gdEPFgFpzVKIWFF6jJmYhNEHiSKCHDwTGDkHhSpDP9hckqvCbWU8h9/Z5zhugfg==
+ bh=LcSrydGSONihnxK+52dlm7a6KcXFBq+/rJkl7Fv7mWs=;
+ b=uGRRlVgqtUlAsW7JASWtQUdt7A04vMW5YujGgDOFCkDpUIaYhd/gRvYzVmOqZAJk90+62ozR6FapIfvYVw6CfGajSC9AgZCesTM9lCZaP8ZjV+qlKuOId3+GBMR3nonxIp/d+bT6ReKcMb7dmWnk5Ds0CPIoF52Sw8cP9097MRmHS0M8BflcoTLXir1au7QyyN2qTXcBFn7Ipx7jIzmarQcC4DPCxjjtODOYS9JP6uLQdIPScsWXGR2Dq3mocB1VW0lXB5LC3f+WuqWxcm+PDkUhGjMPfGL2jl5j+M4hfK3UU5hbEFwwdXk7YHDXZpkyZu3DVNa+zN+dd/slT7cmiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.21.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ppe0qTwspSHUu7S5lBvqAOYj2cYyzZrEkwbB0LCOMqw=;
- b=bMjDHtA+gjKXW70zfac1KlpeIf3GdX+pwcuKPJzcR+S+qcUwNpPAqaBWDO6ZSFj/Czw7UZgluGDA+FdEBhGdZoDPY/SIFaJezvNoTz7Y5JcJoYyI9HHOoE9s0/8X/rOvZWUBPkIBqHckYmByPZoaE/ic6iRazzHPC3JNNFAtPR8=
-Received: from CYZPR14CA0044.namprd14.prod.outlook.com (2603:10b6:930:a0::28)
- by PH0PR10MB5731.namprd10.prod.outlook.com (2603:10b6:510:149::16) with
+ bh=LcSrydGSONihnxK+52dlm7a6KcXFBq+/rJkl7Fv7mWs=;
+ b=fiIm3uI08mquooIZm/rSfEBzfyulnohw4Qqf5At+3h1HyhIuzyt2Wgya/F3CYcUkQtd+llA4ctjPQJyaMC9/HPmfZ27sd7VxiFjjXVMrLSEmmr7y9HamG1DbDvDHaclJaF/Bp4Pm82vRQw9uo7jfK88C9c+kSSA2M2sdDnt6u8U=
+Received: from MW4PR03CA0181.namprd03.prod.outlook.com (2603:10b6:303:b8::6)
+ by SJ0PR10MB4573.namprd10.prod.outlook.com (2603:10b6:a03:2ac::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 17:56:44 +0000
-Received: from DM2PEPF00003FC6.namprd04.prod.outlook.com
- (2603:10b6:930:a0:cafe::20) by CYZPR14CA0044.outlook.office365.com
- (2603:10b6:930:a0::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.13; Wed, 27 May
+ 2026 17:56:52 +0000
+Received: from CO1PEPF00012E61.namprd05.prod.outlook.com
+ (2603:10b6:303:b8:cafe::43) by MW4PR03CA0181.outlook.office365.com
+ (2603:10b6:303:b8::6) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Wed, 27
- May 2026 17:56:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
+ May 2026 17:56:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
-Received: from lewvzet200.ext.ti.com (198.47.23.194) by
- DM2PEPF00003FC6.mail.protection.outlook.com (10.167.23.25) with Microsoft
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ CO1PEPF00012E61.mail.protection.outlook.com (10.167.249.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.7 via Frontend Transport; Wed, 27 May 2026 17:56:43 +0000
-Received: from DLEE213.ent.ti.com (157.170.170.116) by lewvzet200.ext.ti.com
- (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.71.7 via Frontend Transport; Wed, 27 May 2026 17:56:50 +0000
+Received: from DFLE202.ent.ti.com (10.64.6.60) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 12:56:41 -0500
-Received: from DLEE212.ent.ti.com (157.170.170.114) by DLEE213.ent.ti.com
- (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 12:56:46 -0500
+Received: from DFLE206.ent.ti.com (10.64.6.64) by DFLE202.ent.ti.com
+ (10.64.6.60) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 12:56:40 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE212.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 12:56:45 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE206.ent.ti.com
+ (10.64.6.64) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Wed, 27 May 2026 12:56:40 -0500
+ Transport; Wed, 27 May 2026 12:56:45 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64RHtYpo4052476;
-	Wed, 27 May 2026 12:56:36 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64RHtYpp4052476;
+	Wed, 27 May 2026 12:56:41 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 	<conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -74,9 +74,9 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
 	<praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
-Subject: [PATCH v3 12/13] mtd: spi-nor: extract read op template construction into helper
-Date: Wed, 27 May 2026 23:25:26 +0530
-Message-ID: <20260527175527.2247679-13-s-k6@ti.com>
+Subject: [PATCH v3 13/13] mtd: spi-nor: run PHY tuning after init and update dirmap frequency
+Date: Wed, 27 May 2026 23:25:27 +0530
+Message-ID: <20260527175527.2247679-14-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260527175527.2247679-1-s-k6@ti.com>
 References: <20260527175527.2247679-1-s-k6@ti.com>
@@ -86,155 +86,112 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC6:EE_|PH0PR10MB5731:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8973108-1f87-4f53-500d-08debc195030
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E61:EE_|SJ0PR10MB4573:EE_
+X-MS-Office365-Filtering-Correlation-Id: 396d73b4-b233-4502-2a33-08debc195464
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|376014|82310400026|7416014|18002099003|22082099003|921020|3023799007|56012099006;
+	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|7416014|921020|6133799003|56012099006|3023799007|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	5sXJy9vLXdzNrdpDu9bCLC5izva2pr3im0Vvm5JsS2FBrLY8wZYAo6UfloMzBaI36gva4wiUkkbKQlpQKjQOnNcpWmzqXOIZeyzyX4/46rA3DnDjBsxRbS/FAfva2JWwMP7C50cOvCRdfaNgst7auMwP9SKjeo23LMrHottMmU0QKRlIUI4SFLq1rz2wGqPvanNN6wFcYIBaHxFE/vFbkleKHIGFIOGyPdkvNt6z/uMR7MvATVGIa5nvYSyKh72LPoWO2ioUZu8Tj2vBmhp+7INe4Ta5+mh+/qsWgBVhw5tt7Yxq3mOkiJS8b8JRF1pfcKADy80PhyshLk9Biwd1mj0m2LIeKK8IjVlQD1hIqd9+PQWPEV/bju2RrchdQDx+7MhjTE4CuQtzYZRnvml8tB7UJMX2m/naKfwaXh6wGyUSrrr6y3WVGITwEVMsd66NX76LF0uVYc9hddrHiYK335smAPLJ6JgsTYwmohxegcMUFIRBMgBpjUm+6UqtCOKhrAM/XjSFA2DKGB5PGY6d4doam40s/Tm6oqhV0u9+btZh5iZQzd8TZuojyS38k+SXrDlZ3uRPi/m2TOE68sFI1VDqmo4GsqpTeAILeZwt2F2xfucgIy2ArAW5nh/mZ+CseEacDiIwBZZ7A+TGT6rd7mNHebcXPqAfED6t/ZjuZ8s/+CM6TjnFE8WptDal9lt8F8RBAMtx/dKUyA4KtGb1iUY8t/n897/R6ofYJii4/e1Y/wI2bV6GujBzdhWD75V2kXFnc7Ppv6HMBjUnS4DRyw==
+	G4ETrd+YcPvD7xvQJDSeJHpY+6Dn5rhLqgTHB2d3djaZNrKBVcJ3nIYv5vHfCWdTtFao+CEkwle65qQygxaHZUPbP9+DlHCkYHkeqhLX7IQNt3sTlcWd/VE7hkOEwnm8nA1YwLmNLGuSCq1bX1CGmPMCzQpHcQm1Kgbr680kF14Ml2OtFmi9v/96RFWmA1cPORnO877k4NQP4HcZ9a4m3e8sL5VZ1iHJkb7btrXsa26WZv4yq0UZ4SIJ3f+Hq8oLPkbx6WmBV+YlJqnxZAtsG4002RddCGjWjQn3MB9htGQ2hERG8iEH+z3IuSPnq+bz/xAT9ek7a6AJzWjuKnWG7J5WYUkYyrErgp7CYFqAtf6Tho5rF/y6JgpXT39GH22Ff+56xROLNBvdH6rYJ8xHSkMFj8IaMDn93DW5LxbVQ/GqwuXR4I8EZdJQFotda7vW7DsaioRWQ6J4ayx55AGWfn/Q5LurPIEbgqCUSpjODiWp8AqD2evycKbFPsXHBL3edVMuLpGotwPh2vYVSq6vbb8MULTnRtojGJUXmVENxAQzG+TM1km/E1A+41zIvDSAXsSrSFX8Zd+U69ahTzlzsssbohHWkfw5dJNDZ8+VXnPLHtVFU71jb0znzTBNVw3SZqITAm2wN+ZIKLmFElXcNKPVYDQCa51frEgBmIpaC8lGhbEW02/Na+yO79saAIzOlza8dk2yaTcwXmiwsvjhHLTvLoWt2jWVTAF+r9xTH34b+o5QNArgo8puIpo8ktfEUwWPPcLBrqwmPVIr0IxxpQ==
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(82310400026)(7416014)(18002099003)(22082099003)(921020)(3023799007)(56012099006);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(7416014)(921020)(6133799003)(56012099006)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	W0gwlrsKAckqg5XVtRzFnSaW7p5R5zPqZo9+En1TyB6Ru/1hE76oYvKtlLqh5txPVpcZPuHEvw3sbqdrWe6JWsGy16+NHicN4GJrhY+L7OSoPoOCGJNHBHx8oJdCiwCyWg284dexsOcGnH7C/59qka9JvNBIAo2WMMUUcSaUUwUTUkAUB1gMA7oZpVzOAQD54iWtU3LFpcQ2oyAgtTZhNNQE5ihsM8f5+gJhFDjqfXUcb3NCLwRJ6E0G5J+4fu1ZrJEX9HeCmvB5CW6oG6yR0NTEh5BCb8jN6Du+hMlKqKsBNSDWEU4pMx/0+APsextH8/8IFg7gzjQf6heTMqch8f/ePEYtmzLkg3gK/6m+lvGcSr8vNPUnMfucQEeTa+jorPm9zw1Danec1gJArHkuyuw2BflsXM0+OqOhVmk/nDxjrr7JLAhMkADW4HYTwMde
+	BFPJHT0hc2SjcMdLPQ2XdMDduW+VjwxrIlvnvJW/PHpL4tS6kw0EJuuzOLngiD7pzEnZRy7aEwu1EvnnSlpvBWyTpIqZ4bfRGoe5A7+se+lyeIp2tHjYL30+SC7z7nagVZbpdm8CbCk5rSGemCz/N/8pzNEfg7bDrn8G3okSEbKxAKznCWkMPmGRqbIN4CKYjiDrn45o4E0cL3KxSIzsDIdcmfmldUX9Ldthck0VftBeMlI2dOzSj+PYkwkxzbTh8rKeWR/EObTCaMdLPGhFy2TCHm58txWIIcA4ELOwu3ENRcv5/egNX/yRaQCoeX02paFAkIiPTvhD8rc6NteQ5NM/E6DkrD2Wgm9amV+29xp1e3r87vHkd5AV0jIDdc70i0D4sAvnYkFCl5uG5b2gxLdYywzbiHtM3QhECmoyl+9rg/fabr/yP8yi2PBMerbT
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:56:43.7686
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:56:50.7991
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8973108-1f87-4f53-500d-08debc195030
+X-MS-Exchange-CrossTenant-Network-Message-Id: 396d73b4-b233-4502-2a33-08debc195464
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DM2PEPF00003FC6.namprd04.prod.outlook.com
+	CO1PEPF00012E61.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB5731
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4573
 
-From: Pratyush Yadav <pratyush@kernel.org>
+Introduce a persistent max_read_op field in struct spi_nor. Populate it
+with the correct op layout before creating the read dirmap so
+execute_tuning() receives a fully configured op. After both dirmaps are
+set up, run spi_mem_execute_tuning() to let the controller validate the
+read frequency and write it back into max_read_op.max_freq. Patch the
+dirmap's op template with this value so subsequent dirmap reads use
+the validated speed.
 
-spi_nor_spimem_read_data() and spi_nor_create_read_dirmap() both
-open-coded the same sequence: build the read spi_mem_op, call
-spi_nor_spimem_setup_op(), convert dummy cycles to bytes, and—in the
-dirmap case—explicitly patch data.buswidth because setup_op skips it
-when data.nbytes is zero.
+spi_nor_spimem_get_read_op() is updated to propagate max_read_op.max_freq
+into every returned op, so non-dirmap reads via spi_nor_spimem_read_data()
+also benefit from the validated frequency automatically.
 
-Introduce spi_nor_spimem_get_read_op() to centralise this logic.
-Initialising the op with data.nbytes set to a non-zero value ensures
-spi_nor_spimem_setup_op() populates data.buswidth, removing the need
-for the manual override in the dirmap path. The dirmap template is
-initialised directly from the helper; direct-read callers overwrite
-addr.val, data.nbytes, and data.buf.in before submitting.
-
-Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/mtd/spi-nor/core.c | 66 +++++++++++++++++++++-----------------
- 1 file changed, 36 insertions(+), 30 deletions(-)
+ drivers/mtd/spi-nor/core.c  | 19 +++++++++++++++++++
+ include/linux/mtd/spi-nor.h |  3 +++
+ 2 files changed, 22 insertions(+)
 
 diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index a7bc458edc5c..2c9859fb0794 100644
+index 2c9859fb0794..207e0679549e 100644
 --- a/drivers/mtd/spi-nor/core.c
 +++ b/drivers/mtd/spi-nor/core.c
-@@ -188,6 +188,37 @@ static int spi_nor_controller_ops_erase(struct spi_nor *nor, loff_t offs)
- 	return nor->controller_ops->erase(nor, offs);
+@@ -216,6 +216,9 @@ static struct spi_mem_op spi_nor_spimem_get_read_op(struct spi_nor *nor)
+ 	if (spi_nor_protocol_is_dtr(nor->read_proto))
+ 		op.dummy.nbytes *= 2;
+ 
++	/* Propagate the validated frequency; zero before tuning. */
++	op.max_freq = nor->max_read_op.max_freq;
++
+ 	return op;
  }
  
-+/**
-+ * spi_nor_spimem_get_read_op() - build a configured read op template
-+ * @nor:	the spi-nor device
-+ *
-+ * Returns a spi_mem_op with the command, address format, dummy cycles,
-+ * and data buswidth configured for @nor. For direct reads, the caller
-+ * must fill in addr.val, data.nbytes, and data.buf.in before use.
-+ */
-+static struct spi_mem_op spi_nor_spimem_get_read_op(struct spi_nor *nor)
-+{
+@@ -3773,6 +3776,9 @@ static int spi_nor_probe(struct spi_mem *spimem)
+ 			return -ENOMEM;
+ 	}
+ 
++	/* Populate the persistent template with the correct op layout for tuning. */
++	nor->max_read_op = spi_nor_spimem_get_read_op(nor);
++
+ 	ret = spi_nor_create_read_dirmap(nor);
+ 	if (ret)
+ 		return ret;
+@@ -3781,6 +3787,19 @@ static int spi_nor_probe(struct spi_mem *spimem)
+ 	if (ret)
+ 		return ret;
+ 
++	/* Tuning failure is non-fatal; the device operates at base speed. */
++	ret = spi_mem_execute_tuning(spimem, &nor->max_read_op, NULL);
++	if (ret && ret != -EOPNOTSUPP)
++		dev_warn(dev, "Failed to execute PHY tuning: %d\n", ret);
++
 +	/*
-+	 * data.nbytes must be non-zero so spi_nor_spimem_setup_op()
-+	 * configures the data buswidth; callers replace it with the
-+	 * actual transfer length.
++	 * The dirmap was created before tuning ran; update its op template
++	 * to use the validated frequency.
 +	 */
-+	struct spi_mem_op op =
-+		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
-+			   SPI_MEM_OP_ADDR(nor->addr_nbytes, 0, 0),
-+			   SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
-+			   SPI_MEM_OP_DATA_IN(2, NULL, 0));
++	if (!ret && nor->dirmap.rdesc)
++		nor->dirmap.rdesc->info.primary_op_tmpl.max_freq =
++			nor->max_read_op.max_freq;
 +
-+	spi_nor_spimem_setup_op(nor, &op, nor->read_proto);
+ 	return mtd_device_register(&nor->mtd, data ? data->parts : NULL,
+ 				   data ? data->nr_parts : 0);
+ }
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index cdcfe0fd2e7d..6a11625f7b2d 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -419,6 +419,9 @@ struct spi_nor {
+ 		struct spi_mem_dirmap_desc *wdesc;
+ 	} dirmap;
+ 
++	/* Persistent op template updated by execute_tuning with validated speed. */
++	struct spi_mem_op max_read_op;
 +
-+	/* convert the dummy cycles to the number of bytes */
-+	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
-+	if (spi_nor_protocol_is_dtr(nor->read_proto))
-+		op.dummy.nbytes *= 2;
-+
-+	return op;
-+}
-+
- /**
-  * spi_nor_spimem_read_data() - read data from flash's memory region via
-  *                              spi-mem
-@@ -201,21 +232,14 @@ static int spi_nor_controller_ops_erase(struct spi_nor *nor, loff_t offs)
- static ssize_t spi_nor_spimem_read_data(struct spi_nor *nor, loff_t from,
- 					size_t len, u8 *buf)
- {
--	struct spi_mem_op op =
--		SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
--			   SPI_MEM_OP_ADDR(nor->addr_nbytes, from, 0),
--			   SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
--			   SPI_MEM_OP_DATA_IN(len, buf, 0));
-+	struct spi_mem_op op = spi_nor_spimem_get_read_op(nor);
- 	bool usebouncebuf;
- 	ssize_t nbytes;
- 	int error;
+ 	void *priv;
+ };
  
--	spi_nor_spimem_setup_op(nor, &op, nor->read_proto);
--
--	/* convert the dummy cycles to the number of bytes */
--	op.dummy.nbytes = (nor->read_dummy * op.dummy.buswidth) / 8;
--	if (spi_nor_protocol_is_dtr(nor->read_proto))
--		op.dummy.nbytes *= 2;
-+	op.addr.val = from;
-+	op.data.nbytes = len;
-+	op.data.buf.in = buf;
- 
- 	usebouncebuf = spi_nor_spimem_bounce(nor, &op);
- 
-@@ -3642,28 +3666,10 @@ static int spi_nor_create_read_dirmap(struct spi_nor *nor)
- {
- 	struct spi_mem_dirmap_info info = {
- 		.op_tmpl = &info.primary_op_tmpl,
--		.primary_op_tmpl = SPI_MEM_OP(SPI_MEM_OP_CMD(nor->read_opcode, 0),
--					      SPI_MEM_OP_ADDR(nor->addr_nbytes, 0, 0),
--					      SPI_MEM_OP_DUMMY(nor->read_dummy, 0),
--					      SPI_MEM_OP_DATA_IN(0, NULL, 0)),
-+		.primary_op_tmpl = spi_nor_spimem_get_read_op(nor),
- 		.offset = 0,
- 		.length = nor->params->size,
- 	};
--	struct spi_mem_op *op = info.op_tmpl;
--
--	spi_nor_spimem_setup_op(nor, op, nor->read_proto);
--
--	/* convert the dummy cycles to the number of bytes */
--	op->dummy.nbytes = (nor->read_dummy * op->dummy.buswidth) / 8;
--	if (spi_nor_protocol_is_dtr(nor->read_proto))
--		op->dummy.nbytes *= 2;
--
--	/*
--	 * Since spi_nor_spimem_setup_op() only sets buswidth when the number
--	 * of data bytes is non-zero, the data buswidth won't be set here. So,
--	 * do it explicitly.
--	 */
--	op->data.buswidth = spi_nor_get_protocol_data_nbits(nor->read_proto);
- 
- 	nor->dirmap.rdesc = devm_spi_mem_dirmap_create(nor->dev, nor->spimem,
- 						       &info);
 -- 
 2.34.1
 

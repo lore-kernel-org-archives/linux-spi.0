@@ -1,70 +1,71 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011016.outbound.protection.outlook.com [52.101.57.16])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010011.outbound.protection.outlook.com [52.101.61.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9912D4266BA;
-	Wed, 27 May 2026 17:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BB34266BA;
+	Wed, 27 May 2026 17:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779904548; cv=fail; b=NyYV5gkfZHQ2b1WSq9feKeeO0pwSiGtT0ZQbsZnbP/DjqeKGy4jarSXOTp5c0GgxEkb4C3kYQEvn751jY/cPJDFNRFeo0y9ud34eHlZWZpP1blJxtoeKjAX7D1sww6mwxrkn+G90z0NTm/WPk0bHJSVGILYX2y7yl9dx3ptYmn4=
+	t=1779904555; cv=fail; b=S/8/pKuk3VRRH6tMClla51koDQPFc/9JDOmBR1GCH/LMHot+VHXmiQO5guDI04bIQf8d7UWkol0C7ndu7tEsvKOYFjZWyS5Futwtv+/J6NCsJFSgyNh2wulrbe/HwiYgd+NTRp+c33X8TAOnPUqYuxdCyS1f3NdloABNkc3Drgo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779904548; c=relaxed/simple;
-	bh=7+EVOTUN/5Oijk6IIdFuQyPUmlkSRFCIZeUhLteivLo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NzgO+6gV7e8PdnSO5o6ADctKpWowsvpdYDclBZ0jwfh5vzTq5nzLYmJKiS4IWfxXIYs5H1TRBsiqO0GuQKfD6NbFIY/RZyGnj1HdByGb21TKj+/Qx0HMfZ9RGDLudif1PGNB+qSkzrrSrcvBoklzqQ9w2hmbzx/kIuR/31gFg24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cZGnLIqL; arc=fail smtp.client-ip=52.101.57.16
+	s=arc-20240116; t=1779904555; c=relaxed/simple;
+	bh=DPx2geiC+e6vKCIASN3DloUYdzJWZ1kgBrBghQxSqT0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sxv+Qw5XA9OH2atMWZue2IqIXnnOArx5Sxir3k8oK4SiudhLTSpWVD8OOOCbCsI2KFGV7YjDFL9MfdiZeU+92LyfdVoHITWzrqWZ5oTbU/NmMuMx754msrWTQ66YGT62S8cGMOOEucIFdn1h4kILz1mewbTmcFc+GXsWghdsjbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=KLb4yZbM; arc=fail smtp.client-ip=52.101.61.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cZGnLIqL"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="KLb4yZbM"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oCqu9N0C1+7YQUt/Gyu2T5+4yoXn67Qlv0ZqolrFKD1flihmgLOZ5oqkSryZcRKCv31CFqxL3O1TFzvdRWcg/BYv0JcZWcphB2JG0QYuDFgoMyWMtmosYNIxvBNds5VGsH4GQ7VwrovsfWLNdXeUsFXfxhFXHZwZMtYnXAmDdC4l0JhPFifZUQOx4DrxO0aURFjN++rYiy1gN1ZWAR7YxsLMyX+fOWRApFqNIFQ2HafNPdtUKTOKTBKmu5T4JdluYWQ2Fatb7IhQfe08qkDcSJtFlcEkgc71r5zRCcEx02BunJBMR1omtpZRIS0P+qkB+KBmJ12rJ11F8+yLkYYiUw==
+ b=uAExmHRN+vB469Yra93xe2ryHXR0+V2na422NS7DVThi0Iwf0AmFnSwuF3BFbVo9JymLdHV0a7Y+jGmCyyp36/hZQVFzaFU42tCmH7fvdQePu33P9f6M5Guotpn6cIQ9Qz9CxkrZ/VyHtPpd8LeAIAZMQ0z0qGqMEma2MNFYpPwkApGKgzyataIkZMhRj9di6UTYiRdyIxQ43UdQehnPpj1om36Zk0WaLs5X+WCp71lNV0qx0Dl3IAP3MGlAM/dVP94XpbEQ6An5IffFHcDi5435vjX47Wp097DgZU3d83RL1LmX+vw6NwxM0OH9rm08WkregLF/gs0SrDtwN6xtVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Ty9hVFxWecAL6NGZT+1PlS5sRvlEoMxg+zodtodw+4=;
- b=CvJUvjXKo8kkHvbLXm56QYY0zKoYzt7bWDGDyzhOFq3S/c+Vlcnd2FGBbhwcQsLhYhfQHJqQnEqmjZDnF54BCW8b7qreRuiOOGuj2MpTqFjA/AuF2V9nbxq1QuoAM1XhLjDuk+14fMOHCcrPXVMe4fKmujba4UqS850523kGB14rIxPS0wzflH1nKNo4d0YeYt9ldTGN3bBKLPDl3zB81dLg9PiKYBvkS5Sghh7E3XM23MV4lj1MILoQB4xz8BbgU+OUTCrD3Ibit2A4RhTjac7S0W+/dFAeZfrCWCeoB76jz3S3k4JLVzbIx0A54ivI58ydvNg7xN2i/aj/d1lAug==
+ bh=Lufe1WLqLVvDMCaLJGFT6z969LKNNBZnGosNUej+SZg=;
+ b=R2wtQIP2igbf6yKtkm8CHY0QFitOQzktsSO93chuRiux4Mi1oQ8+9n6ZQqHNesmZJ2fT80fMD3WJ41mugJCdDe4i6NaUytYN8DtwSYpFis7rBvuXsyEs9vUJSM0/vDHoF6nahMtWUbWIYElckBJr3Ab6EW6Ol6xZPJmSZfz7PAvNDsWdqluoqQKKjhw3YEuvsfkoa94Qf+kBOO2MSf7Zlr6cX1Quj68J48eiudczwQ8RdjM2sx3aTmCUlfkaBDeybxAdmSeQfuPV93m7a1r9RmRUBiC6nDtTN71r3G7ni33Svmrv1FMtLL5DOC6ZjIRFFJ71rGd2U1IWfkD6+YKZPQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.21.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Ty9hVFxWecAL6NGZT+1PlS5sRvlEoMxg+zodtodw+4=;
- b=cZGnLIqLDsy0AHI7miiXSR7WHLvHT5+eMhwBtwmaByOyRLIcLLq88SP6nGBXHFzOGuEmNedS+rU3GgahZSfa9XcCoVkHzxU8hgGCGrmNtkC357YTd7gh9LeOdRb/Y5vcEiOFNueBYOIM8C6L6YKRUdGWEfy5lsS3OvMboGTuZFc=
-Received: from CH3P220CA0002.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1e8::13)
- by SA1PR10MB997580.namprd10.prod.outlook.com (2603:10b6:806:4b9::16) with
+ bh=Lufe1WLqLVvDMCaLJGFT6z969LKNNBZnGosNUej+SZg=;
+ b=KLb4yZbMJ3FUZ8jOSNDkC0YVvFy9O1cP+VdVFmSmFXtJEoUAJQH/DF5tIel6Li4clapM9kW9mtlaUaTHxta/aZUEKiToo89KNaFpuPKpk7eeG0Jg8ZdJpz0xWH6wlQQz8/0v3oQtOMYbi/ONzzuOEWNba//0ZBsznGAhXasZlV8=
+Received: from MW4PR03CA0202.namprd03.prod.outlook.com (2603:10b6:303:b8::27)
+ by CH3PR10MB7234.namprd10.prod.outlook.com (2603:10b6:610:128::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
- 2026 17:55:44 +0000
-Received: from DM2PEPF00003FC2.namprd04.prod.outlook.com
- (2603:10b6:610:1e8:cafe::92) by CH3P220CA0002.outlook.office365.com
- (2603:10b6:610:1e8::13) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 17:55:50 +0000
+Received: from CO1PEPF00012E61.namprd05.prod.outlook.com
+ (2603:10b6:303:b8:cafe::44) by MW4PR03CA0202.outlook.office365.com
+ (2603:10b6:303:b8::27) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.13 via Frontend Transport; Wed, 27
- May 2026 17:55:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ May 2026 17:55:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- DM2PEPF00003FC2.mail.protection.outlook.com (10.167.23.20) with Microsoft
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ CO1PEPF00012E61.mail.protection.outlook.com (10.167.249.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.71.7 via Frontend Transport; Wed, 27 May 2026 17:55:42 +0000
-Received: from DFLE207.ent.ti.com (10.64.6.65) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.71.7 via Frontend Transport; Wed, 27 May 2026 17:55:48 +0000
+Received: from DFLE211.ent.ti.com (10.64.6.69) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 12:55:39 -0500
-Received: from DFLE215.ent.ti.com (10.64.6.73) by DFLE207.ent.ti.com
- (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 12:55:44 -0500
+Received: from DFLE215.ent.ti.com (10.64.6.73) by DFLE211.ent.ti.com
+ (10.64.6.69) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 27 May
- 2026 12:55:39 -0500
+ 2026 12:55:44 -0500
 Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE215.ent.ti.com
  (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Wed, 27 May 2026 12:55:39 -0500
+ Transport; Wed, 27 May 2026 12:55:44 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64RHtYpc4052476;
-	Wed, 27 May 2026 12:55:34 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 64RHtYpd4052476;
+	Wed, 27 May 2026 12:55:39 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 	<conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -73,217 +74,88 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
 	<praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
-Subject: [PATCH v3 00/13] spi: cadence-quadspi: add PHY tuning support
-Date: Wed, 27 May 2026 23:25:14 +0530
-Message-ID: <20260527175527.2247679-1-s-k6@ti.com>
+Subject: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to specify a frequency pair
+Date: Wed, 27 May 2026 23:25:15 +0530
+Message-ID: <20260527175527.2247679-2-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260527175527.2247679-1-s-k6@ti.com>
+References: <20260527175527.2247679-1-s-k6@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC2:EE_|SA1PR10MB997580:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3eabe6a-25af-459e-b610-08debc192b73
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E61:EE_|CH3PR10MB7234:EE_
+X-MS-Office365-Filtering-Correlation-Id: 430e7a21-134b-4f83-2caf-08debc192f38
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|7416014|376014|1800799024|56012099006|6133799003|18002099003|3023799007|921020;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700016|82310400026|18002099003|22082099003|921020|3023799007|5023799004|56012099006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	bQy6JPEjmMmyHxqKwrzU/yeD455c5MbNH7pMZy2m0x/vU0USlwFA7YvwTdpmi799C644huPYdwWIuZyLE0F2/EfbCWUaulrv3aktsvaYw33Y585FzvxjOg7owUgzzfjNSRbYSjPMdcP4Yr9VpNBOefm6e50b9+FAWpuCxlyO62J0o9kWuvr7u5HTWA8J6LohsgbIaJcyo0YgUzPRigjpQ8H5OmUKEkMz5dOMsDY1ZwS9KrhrTktV61KShRxeETwmtR6cDuazUjFfBWRAfhcvXn+KffvDIGU21UjkrdBt0qh4GsyIqLBTFHMprk+26yD/DIpxNcAj2KV9vqVWe5P8Bt+f8k49O79Au6RkyMiTVAX2rP7ibFIe7X/0RUKOQKgR1KSUn8iY3EG2ROXcY8+1FtdrjDwi4V4g0OMdSh0KtHe+AX1AidmkpqVtfrqMZDD7ngdE9U7G4Qh//CCFtgLSyjPnWhIXM1AEDpTWfSNMGVMfrDjD8+C0VI+Kk9a46/ueGgnX1frQBfo97r8tWrn2tsjoApHiTRvzXmjlN/Y1NZd7DhIYVdqmscGjS55KCrnKhPM4Crno0WWqvdNqsj6T6eQEKTIAdJ53X0uke/1l8K7XKCjK24jvNQzkbpOrp2z+WmbBv45EsOj3YO4Cier+13yyUMjFKCmeJqzw7cfLvZUYeMhkonnuViCzICIdRnIjrQSj4x2SeDzui1l1vzibzV6YelZeEWcNoMBJcMxEyBo=
+	GyqfRfr0YGb5D4QsCEVjsQVoRRrqvJqY9xw/utFRn5PQMtJW2iE+Gd8sEEpk9JX3H5AjayRdWEuVDqm6KO4Sqiisv0RRkSxLypfl4r6llGh/l8xlzYwgXMRGJ+/Gl2W3CaTSFkVpLmEEmrXJhhclwbK5PgXWtT1S3VerBwDh4+EP3+/JUKYpRy+ahzI5bPetElhtn2DD9IPSaJ6g83nZtclV1NYXB754X/bME9rRlTGaLcBtZAbU6GKVtCjoNxB/+auuutAVk0BAL22xhwh0FzOTcytMH6uICjivqAAeycfp5y3p0VF0hQyMo9/r9sDUtxfngbLNACWn7NteRt4QR1IldCYorqQXj/uPN6lVVflWzXnSnXZW+v9ahlcGzs8jSxppsA768bgojE0TrTLcLRh4i1HpHVK4h0wz1DuKYl1Zb1wJI96QCXaxu0i6FcNb3GINJksm65/FH0dHLXW9VDy1YSOHYD5D3QtEV/42fXBwhVeIEHdZA72tmPffSAvSfVKMi0kexfeneCBtoQQ31mJMtSoTmHe8VL1uueds3WKdfdsEEMsRftCwN+NtQTXR2hoQvu8OwgkWuJR602bWMuWWLxt1RQaVGoIxgyQvTfENpww/xiJ7DrvT4PgFsNC9osK2AY2RGUoHFMeeXBDjEPlmZFaYoBGielwahHMDi3pPYBstGQL4wA44EqY7Uqg/OiYW9PO8R8EvhZR7AKClDT/a7gyO6t7POIne5HzYgIQJjy+ZIijFeyZPxi2Rczt3+3KMAGRve/nfuJ5Ya9v61Q==
 X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(7416014)(376014)(1800799024)(56012099006)(6133799003)(18002099003)(3023799007)(921020);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700016)(82310400026)(18002099003)(22082099003)(921020)(3023799007)(5023799004)(56012099006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	TSPGekrwuwrj3fBlGqgADuiA0OlsofRSE3Dgjo9ZzXTYAqRRIznN0jWjy3x4CNB9W+Zmov5ZbUfy6am78y8ci4+zVP+KWYfsx2zU4OS+R+sJpgKjMjqL1qR6qBeiP/mUEZJpOYefylXNtEFO5/S2OTZETO5FMaD4LtGjFXJ5Euu7Pmc7AYwAdEzZCgCrO5b1ULyczlSwcc8OMaDo45NdMM7hixkM95MVxr0csTyjvHDeUikGIUokHIQymA8UDbNLm+qVlV9qO4SlwBJOBxVM7sD4LvzFn8xGTWUHd5UayyasJc532R9ReTrPj33M+021PLtzGefYoJ5f7l36I8B6MOl24uJSDPNg+OW2cz/jiMDzBa7uvyvnMebgRQRQHbUh8H5HDqmBdwbYx88viMipkvcWD7Aln3MCbXI2BQecS76s2et0qw3uWeVzyfeUAoG2
+	S/wKHs1CPWJdo2TIDizPqL36hdyVENCUwH6gfcESY4eOOxG7Q9EYo52VBpOPJS8Qn400Hdu27OCRh52RX5F+96vykvSaXYk6IGiZtmJl0zMc3ewXRalh7mpv/qPEM1KUsRax9Yfzl1pv8/iPA2C+IqNfGJhXOqzJCiw95Ktg+EHLbhh/rbSk8Aa5X/NcLaJx8IUuChCeNrcTNZMNMo65JL2ZcUHK/TLFc7iYT6G2QA87qTNTTZDzFBj4HaaSTmEJBQU62mYJHi5DBfBvxtv6pHm2Gz+BdeWa6Akierj1oC2W+kvpJr3P2g5rRpYe2uXe78tcqtS7jKY36RMmCADBFH4r4B/MyFEqlnplcwGZfSngI7mY9OL/Q9kKSL5D7WX/GLqnBMHZ9EYiZNH0tLQxwjtg+rwzCEoc/poqFiFXUOcpLPYkCn+rgnzR5jH4Io4Q
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:55:42.1448
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 17:55:48.4338
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3eabe6a-25af-459e-b610-08debc192b73
+X-MS-Exchange-CrossTenant-Network-Message-Id: 430e7a21-134b-4f83-2caf-08debc192f38
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DM2PEPF00003FC2.namprd04.prod.outlook.com
+	CO1PEPF00012E61.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB997580
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7234
 
-This series implements PHY tuning support for the Cadence QSPI controller
-to enable reliable high-speed operations. Without PHY tuning, controllers
-use conservative timing that limits performance. PHY tuning calibrates
-RX/TX delay lines to find optimal data capture timing windows, enabling
-operation up to the controller's maximum frequency.
+Some SPI controllers support high-speed operating modes that require
+controller-side configuration before the device can be driven at its
+rated maximum frequency. In these cases two frequencies are relevant:
+a conservative speed usable without any such configuration, and the
+maximum speed achievable once the controller is set up accordingly.
 
-Background:
-High-speed SPI memory controllers require precise timing calibration for
-reliable operation. At higher frequencies, board-to-board variations make
-fixed timing parameters inadequate. The Cadence QSPI controller includes
-a PHY interface with programmable delay lines (0-127 taps) for RX and TX
-paths, but these require runtime calibration to find the valid timing
-window.
-
-Approach:
-Add SDR/DDR PHY tuning algorithms for the Cadence controller:
-
-SDR Mode Tuning (1D search):
- - Searches for two consecutive valid RX delay windows
- - Selects the larger window and uses its midpoint for maximum margin
- - TX delay fixed at maximum (127) as it's less critical in SDR
-
-DDR Mode Tuning (2D search):
- - Finds RX boundaries (rxlow/rxhigh) using TX window sweeps
- - Finds TX boundaries (txlow/txhigh) at fixed RX positions
- - Defines valid region corners and detects gaps via binary search
- - Applies temperature compensation for optimal point selection
- - Handles single or dual passing regions with different strategies
-
-Patch description:
-Infrastructure (1-5):
- - Patch 1:   Extend spi-max-frequency DT binding to accept an optional
-              second value forming a [base-freq, max-freq] pair
- - Patch 2:   Add cadence-specific cdns,phy-pattern-partition phandle for
-              NOR flash PHY tuning pattern location
- - Patch 3:   Parse two-element spi-max-frequency in spi.c; adds
-              spi_device.base_speed_hz (0 when a single value is used,
-              keeping all existing DT fully compatible)
- - Patch 4:   Add spi_mem_apply_base_freq_cap(), called from
-              spi_mem_exec_op() to cap non-PHY ops to base_speed_hz;
-              tuned ops bypass the cap because execute_tuning() marks
-              them with op->max_freq = max_speed_hz
- - Patch 5:   Add execute_tuning callback to spi_controller_mem_ops and
-              spi_mem_execute_tuning() wrapper in SPI-MEM core
-
-Cadence QSPI Implementation (6-10):
- - Patch 6:   Move cqspi_readdata_capture() earlier (preparatory)
- - Patch 7:   Add DQS bit to cqspi_readdata_capture() (preparatory)
- - Patch 8:   Add complete PHY tuning support: DLL management, pattern
-              verification (NOR via cdns,phy-pattern-partition phandle,
-              NAND via write-to-cache), SDR 1D and DDR 2D search
-              algorithms with temperature compensation, AM654-specific
-              execute_tuning entry point; base_speed_hz is cleared during
-              the tuning loop and restored unconditionally on return
- - Patch 9:   Reject 2-byte-address DDR operations via a new
-              CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk flag to work around
-              AM654 OSPI erratum i2383
- - Patch 10:  Enable PHY for direct memory-mapped reads (aligned body
-              region only; unaligned head and tail run without PHY) and
-              for indirect writes >= 1 KB
-
-MTD core (11-13):
- - Patch 11:  Integrate tuning in SPI-NAND probe; propagate the validated
-              frequency to all plane dirmaps (primary and secondary op
-              templates) and to the persistent write dirmap template
- - Patch 12:  Extract spi_nor_spimem_get_read_op() helper (preparatory)
- - Patch 13:  Integrate tuning in SPI-NOR probe; patch the dirmap op
-              template with the validated frequency; store the result in
-              nor->max_read_op so all subsequent reads (dirmap and direct)
-              pick up the tuned speed automatically
-
-Series dependency:
-Merge after: https://lore.kernel.org/linux-spi/20260527173736.2243004-1-s-k6@ti.com/T/#u
-
-Testing:
-This series was tested on TI's
-AM62Ax SK with OSPI NAND flash and
-AM62Px SK with OSPI NOR flash:
-
-Read throughput:
-|-------------------------------------|
-|           | without PHY | with PHY  |
-|-------------------------------------|
-| OSPI NOR  | 37.5 MB/s   | 216 MB/s  |
-|-------------------------------------|
-| OSPI NAND | 9.2 MB/s    | 35.1 MB/s |
-|-------------------------------------|
-
-Write throughput:
-|-------------------------------------|
-|           | without PHY | with PHY  |
-|-------------------------------------|
-| OSPI NAND | 6 MB/s      | 9.2 MB/s  |
-|-------------------------------------|
-
-Test log: https://gist.github.com/santhosh21/3434d062f31622c5877a375218cd49c7
-Repo: https://github.com/santhosh21/linux/commits/phy_tuning_v3/
-
-Changes in v3:
- - Drop spi-has-dqs DT property; DQS is now enabled automatically when
-   the selected read operation uses DDR signalling (dtr flags in the op)
- - Extend spi-max-frequency to accept an optional second value forming a
-   [base-freq, max-freq] pair; the presence of two values signals PHY
-   tuning intent and encodes both the conservative base speed and the
-   calibration target in one property
- - Add base_speed_hz to struct spi_device (spi.c/spi.h) and parse the
-   two-element array there; single-value DT is fully backward-compatible
- - Move frequency enforcement from the cadence driver to core: new
-   spi_mem_apply_base_freq_cap() called from spi_mem_exec_op() replaces
-   the per-driver cqspi_op_matches_tuned() and non_phy_clk_rate field
- - Propagate the tuned max_freq to dirmap op templates after
-   execute_tuning() succeeds; store persistent op templates in
-   spi_nor.max_read_op and spinand.{max_read,max_write}_op so the
-   frequency writeback survives across the probe call
- - Replace NOR pattern partition lookup by name with a
-   cdns,phy-pattern-partition DT phandle pointing directly to the
-   partition node
- - Add CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk and reject 2-byte-address DDR
-   ops in cqspi_supports_mem_op() to work around AM654 erratum i2383
- - Remove RFC tag
- - Rebase on v7.1-rc5
- - Collect tags from Miquel
- - Link to v2: https://lore.kernel.org/linux-spi/20260113141617.1905039-1-s-k6@ti.com/
-
-Changes in v2:
- - Restructure the .execute_tuning() call from spi-mem clients instead
-   of mtdcore with best read_op and write_op (optional) passed
- - Add compatible-specific .execute_tuning() call which can be called by
-   spi_mem_execute_tuning() if exists
- - Handle tuning requirement check by controller instead of spi-mem
-   clients
- - Add support to write the phy_pattern to cache if relevant write_op
-   is passed or get the partition offset which contains the phy_pattern
- - Add tuning algorithm for DDR mode
- - Add support for DQS
- - Restrict PHY frequency to tuned operations
- - Link to v1: https://lore.kernel.org/linux-spi/20250811193219.731851-1-s-k6@ti.com/
+The existing spi-max-frequency property accepts only a single u32,
+which cannot express this distinction. Extend it to accept either a
+single value (retaining full backward compatibility) or a two-element
+array [base-frequency, max-frequency], where base-frequency is the
+conservative operating speed and max-frequency is the highest speed
+the device supports after controller-side configuration.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+---
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml  | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Pratyush Yadav (1):
-  mtd: spi-nor: extract read op template construction into helper
-
-Santhosh Kumar K (12):
-  spi: dt-bindings: allow spi-max-frequency to specify a frequency pair
-  spi: dt-bindings: cdns,qspi-nor: add PHY tuning pattern partition
-    property
-  spi: parse two-element spi-max-frequency property
-  spi: spi-mem: add spi_mem_apply_base_freq_cap()
-  spi: spi-mem: add execute_tuning callback and spi_mem_execute_tuning()
-  spi: cadence-quadspi: move cqspi_readdata_capture earlier
-  spi: cadence-quadspi: add DQS support to read data capture
-  spi: cadence-quadspi: add PHY tuning support
-  spi: cadence-quadspi: reject 2-byte-address DDR ops on PHY-tunable
-    hardware
-  spi: cadence-quadspi: enable PHY for direct reads and indirect writes
-  mtd: spinand: run PHY tuning after init and update dirmap frequencies
-  mtd: spi-nor: run PHY tuning after init and update dirmap frequency
-
- .../spi/cdns,qspi-nor-peripheral-props.yaml   |    8 +
- .../bindings/spi/spi-peripheral-props.yaml    |   10 +-
- drivers/mtd/nand/spi/core.c                   |   35 +
- drivers/mtd/spi-nor/core.c                    |   85 +-
- drivers/spi/spi-cadence-quadspi.c             | 2267 +++++++++++++++--
- drivers/spi/spi-mem.c                         |   57 +-
- drivers/spi/spi.c                             |   17 +-
- include/linux/mtd/spi-nor.h                   |    3 +
- include/linux/mtd/spinand.h                   |    4 +
- include/linux/spi/spi-mem.h                   |   10 +
- include/linux/spi/spi.h                       |    2 +
- 11 files changed, 2308 insertions(+), 190 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 880a9f624566..c88f6f3a1801 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -41,9 +41,15 @@ properties:
+       The device requires the LSB first mode.
+ 
+   spi-max-frequency:
+-    $ref: /schemas/types.yaml#/definitions/uint32
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    minItems: 1
++    maxItems: 2
+     description:
+-      Maximum SPI clocking speed of the device in Hz.
++      SPI clocking speed of the device in Hz. Either a single maximum
++      frequency, or two values [base-frequency, max-frequency] where
++      base-frequency is the conservative speed and max-frequency is the
++      highest speed the device supports after controller-side configurations
++      such as data training.
+ 
+   spi-cs-setup-delay-ns:
+     description:
 -- 
 2.34.1
+

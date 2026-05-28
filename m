@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B794379EEA;
-	Thu, 28 May 2026 08:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E23822AB
+	for <linux-spi@vger.kernel.org>; Thu, 28 May 2026 08:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779957827; cv=none; b=nQAQ42PkGdanj2p3givKmZxcE4VQBmyuTYYmAVnJay1PC0cnI4IqWnNBfqFBjjX3siDZ4VRQNrAUnrBLyi92eBQbhTcn3Gfpps7RPhZ6HcwiufXMT2mU1UN4uAcOt9MYlHobbBRAWqZRZWnJZddJWkPzmc+a8ajeK7X4BjttrBY=
+	t=1779957884; cv=none; b=dTsMJL6eXbP9ueYuKaQcYpUyQoIceIT8DtLEP4ZxLtvwnc8kPVT/T0XAz5fTnh2Dto3bo80+BhMA4xY4/sPwBLMUeVaqGVKTXMzleGTX9MDdLtcjwZIMQ4sNQo6dnypZQfgtFm3ByW+O7VH2OmH2ZA5ePOSg/R0U3ijz9RIjmVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779957827; c=relaxed/simple;
-	bh=a1ysJLaD2QN0qgYSp6PqreaAJnIDCyBjCSaovNNCeWU=;
+	s=arc-20240116; t=1779957884; c=relaxed/simple;
+	bh=gB60yIvdllqSTxzVmv+2Jkcre5pBJLowX9gbXUxQDJU=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=f2txvbwsTPDiq34oQAUVMagSb4AsnqO7rNjLzR7NiEY3GRwwtmK5r7651KiZFX7hJb2mRE1aNo7PmmJ3Qtj17IpTAHlGDJsq6g5Mnr8rzaIlxSkn/Bnj1X8l9TKzf8illCArvenyZndNL2u7OhkWIPu7IsszUZwmnEMCC9gn+zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q1vg9MXi; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version:Content-Type; b=ElieUCjrCNrhvThyyBjRWO+/+CAIjXdh+mu1xVgxTWH6566udPuzVIvm1oRLyIJQezXpUkDkI2FqG77t5iM+CvWq+3Q4dNVe1tYZKbfTPy4GfFZTJ4uO2a3hP/S6JJlI2kFSzKl6/9K/zBNxzp3R3aMQK13jZLN0jQh25Z0BiwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kdm6bCSH; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q1vg9MXi"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kdm6bCSH"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id A7CC34E42D77;
-	Thu, 28 May 2026 08:43:43 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DA66EC62447;
+	Thu, 28 May 2026 08:44:41 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7649760495;
-	Thu, 28 May 2026 08:43:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AE091088877F;
-	Thu, 28 May 2026 10:43:39 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B4BAD60495;
+	Thu, 28 May 2026 08:44:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5B7CF1088877F;
+	Thu, 28 May 2026 10:44:37 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1779957822; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1779957880; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=h2kVHQEqX8g0aaw1EzvwKkX3jQo/8qRPm2UDvNjcGhQ=;
-	b=Q1vg9MXiwaqWlUytakMIDHNo0oEZfTUlBWYXTEB5TftXYDK9PWsLRHNycUUastAkwdKagw
-	OVp7GTGOkprytXhS9bp5nhq4IHs7nGO2qVm6UopaIfS5OOA7S47e1CNyEtkeksU/s7ew3b
-	PbYmNdcg9PaZxHHQmWhSHAJigkwE0/hmvAcFcj9WpiXhb13/aGX59dMTvMYewOaq0bM+x3
-	4iSESBCJSpVWRXd4r0epMahnry335EwmEH6kv4veg6/Thb3GJneED+ppd5QG1jMB87MK1G
-	k6NQWTqIvKIwMjzefeiAOBrPuKWKXt++0GLW9qdRmoQ9YlkTapmEKCd6XFmwpA==
+	bh=gB60yIvdllqSTxzVmv+2Jkcre5pBJLowX9gbXUxQDJU=;
+	b=kdm6bCSHoHGgTlHbCd1B3Ar9CfUWv7ncS+50PMakeybZFMBuWQJ0RU3rcfPuQbEJKoUAq4
+	bznED1MDr2LJ3l8x0zFlI0jG3wtsoSN5BesVH6za7YI3ZJDoWszE+d39mw/StJx/jWn8ox
+	Py9LwHqcdPUpVsz22rfsqrC3A4f2jEJRpZxzsNq/+Tzn2Y2ZSPhPlPyMLrg+d1r6DxDGRF
+	J8CDLq7p+sHq4x+oH78TG2UJj3KITgXdXcN4In7qYxlcCUJV2CVywlPwef6Rwssih3nVOU
+	SB7QqqpobhdEDsmBxe6ApRQTchQV1k8SCLN98DW+65p+FUmlCmoM9jX0RYAvIQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Santhosh Kumar K <s-k6@ti.com>
 Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
@@ -42,14 +42,15 @@ Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
   <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
   <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,  <u-kumar1@ti.com>,
   <a-dutta@ti.com>
-Subject: Re: [PATCH v3 04/13] spi: spi-mem: add spi_mem_apply_base_freq_cap()
-In-Reply-To: <20260527175527.2247679-5-s-k6@ti.com> (Santhosh Kumar K.'s
-	message of "Wed, 27 May 2026 23:25:18 +0530")
+Subject: Re: [PATCH v3 05/13] spi: spi-mem: add execute_tuning callback and
+ spi_mem_execute_tuning()
+In-Reply-To: <20260527175527.2247679-6-s-k6@ti.com> (Santhosh Kumar K.'s
+	message of "Wed, 27 May 2026 23:25:19 +0530")
 References: <20260527175527.2247679-1-s-k6@ti.com>
-	<20260527175527.2247679-5-s-k6@ti.com>
+	<20260527175527.2247679-6-s-k6@ti.com>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 28 May 2026 10:43:39 +0200
-Message-ID: <87fr3bhqkk.fsf@bootlin.com>
+Date: Thu, 28 May 2026 10:44:37 +0200
+Message-ID: <87a4tjhqiy.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -60,28 +61,28 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Santhosh,
+On 27/05/2026 at 23:25:19 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -398,7 +398,11 @@ int spi_mem_exec_op(struct spi_mem *mem, const struc=
-t spi_mem_op *op)
->  	u8 *tmpbuf;
->  	int ret;
->=20=20
-> -	/* Make sure the operation frequency is correct before going futher */
-> +	/*
-> +	 * Ops not configured for maximum speed are limited to the conservative
-> +	 * base speed; spi_mem_adjust_op_freq() then caps to the device maximum.
-> +	 */
-> +	spi_mem_apply_base_freq_cap(mem, (struct spi_mem_op *)op);
->  	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
+> SPI memory controllers that support high-speed operating modes often
+> require a tuning procedure to calibrate internal timing before operating
+> at maximum frequency. There is currently no standard spi-mem interface
+> for drivers to trigger this procedure.
+>
+> Add an execute_tuning callback to struct spi_controller_mem_ops. The
+> callback receives a mandatory read op template and an optional write op
+> template. On success the controller sets op->max_freq in each provided
+> template to the validated clock rate.
+>
+> Add the corresponding spi_mem_execute_tuning() wrapper that validates
+> inputs and returns -EOPNOTSUPP when the controller has not implemented
+> the callback, allowing callers to handle controllers that do not support
+> tuning gracefully.
+>
+> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 
-There are many more spi_mem_adjust_op_freq() calls in the core where we wou=
-ld
-not apply the base frequency. Aren't we missing these places? Wouldn't it
-be more appropriate to call spi_mem_apply_base_freq_cap() at the beginning
-of spi_mem_adjust_op_freq() ?
+This approach looks so much better.
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
 Thanks,
 Miqu=C3=A8l

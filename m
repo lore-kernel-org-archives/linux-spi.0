@@ -1,152 +1,129 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C28347514
-	for <linux-spi@vger.kernel.org>; Sat, 30 May 2026 10:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA48C39B960;
+	Sat, 30 May 2026 12:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780136430; cv=none; b=uDjXty4ZZd0MtQsJZQtW4yXc9p64g4eojNIknnJmDJc0la8sIXtK2rm46XUtqiwpT66DcGmUkzqM1hvPjUgwOqWRh+DgqMZjP2jynuENjetNlZsV6cHn9YM2TvB3dEq8TrixTh8FObbKOhykcAToeaGXq3/gyC9aVgKY8Soy/gA=
+	t=1780145718; cv=none; b=XBFdPqyuNIl5YPgem0l0kBCwM4CLxFn4LfnrcfYdbSdLvzsq0tan/PX54Bp0suxpeYq57toVAfor2BtgP0E+y5zU0LbIK5ZoyKRLjYC98+C1iOT4eKHaAf4uhFY54WJ7m4sT+18BfD0Wuvz3aDlNwvZJDOWw97Nq3qW0+jyWn9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780136430; c=relaxed/simple;
-	bh=35VdMsjmS0v8dh1CHRiPhqq+k7uITgm7avOyoT5qusA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m5j7BtxWigOdJGLWDAyRxXYqiikZFtrUspAHoJBlA54tPtLsecIkojoFH42g3/Ms1xy2Zv3raGhTwZIQbg8cF/aT5spoT0KsUBL+NKSbmaenPCFZAMc95mQdgTnOW+0v49E47rDbDba0qTKx1QQk+2nZnF5j4Ze3I35XenX+y5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAItoU4o; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780145718; c=relaxed/simple;
+	bh=A0bOMn9XB26TRha8UtUaEiGCVtsTRl1l1r7jw3ysqhw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TqiIRuKCL5tva6/YvTQ+WSG5ls+CTkRib0YgL52p5mOk7EwhjrzMY58VzAhMlZKkRUbaWyV0R0DqZn3e1orUpdhWJIA5vIPZhUSu7xpA1pHJ+zo9I+a/kJZKsdV5IKIgV4D9zHUxCLnedi7/145TCylAYXZPN2Lob2SY/IdkJ2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YdQ/0S4b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAItoU4o"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490686877a1so46252035e9.0
-        for <linux-spi@vger.kernel.org>; Sat, 30 May 2026 03:20:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780136427; x=1780741227; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iUCw4AYxN77fr8cBRoZeZFoHBmuyuGZ+QkqYbRydK8M=;
-        b=ZAItoU4oou5vEoHAtmJijjFpXtVUrUX7XW92SJOJ3FgBfhnGo4/50sh8cySx1/TQNF
-         eYerKBS8DcXIyCiazVP1tL9M04rfFfAwgBkpYE/MGDHZsFAws4aLkhJCQR1+hjhXeP1M
-         ilXm9AL6BDWBvvEJjXLclEXtJiXNDKPJgjDcGRCjEDFO9XBmudhSpz6Ncu0FXOp0ABaI
-         qKkRe/udZSJZ/PZF7nmEOGXMXYtwsb/dDebP9/NALd1zmetmVYSWMh6rJFOunEM6lq1/
-         eO7xd484pB86lubdWTdfjEwog9ecdSzvrJyv4lZ/i6BS9b2aNtBU1+kXmOybQ/nAmn/y
-         66OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780136427; x=1780741227;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iUCw4AYxN77fr8cBRoZeZFoHBmuyuGZ+QkqYbRydK8M=;
-        b=qMORazaw08LZfvGMo+vnZACAX6gHjXvhxx2w2OmhfUzfiRZOwzB6eAFXz/L4M2iKRm
-         uk9f+6fLSaUZIKQV199RwMosteyfRkIRYSRMc4uBet61jmqj6IPq4reIB10+F3RY0lSr
-         rz8xArl9oxzFtlRIwjC6fK72xnnsxEV/aHXHJjqKiH1tWQ4RAXTRYGe/EBE7XPtKJzHA
-         4jZh76vC6Qb7Tb7C+LgzBBEWJOV4kT+6FAuwFArSZDg4o/alpNFGWHHHGVF8L0t/hxWo
-         wDqmPETXQXdXqW+lTN0qR/NtVgfUz3bWuQFfZCQaoqFwPgyUrVqoGOBKn56Wmo0iGHOX
-         G+Bw==
-X-Forwarded-Encrypted: i=1; AFNElJ/X4GzrHSNBCD5qUoU0TAtpp8uG3SC+Wp66tcP1kj3ieDn5frG6fs4Uqkj34jXxm0aJjmuAjeDxNtM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ8xpWrr3Rkt1bFwFUmRB4IMkih4egGTxss+IxjGTrUQWZRqIc
-	HgHuEjqauEVb0k8k5RvmQeEZjnU1i+PYXec3hKF/maZsSFf4vhrWIJrJ
-X-Gm-Gg: Acq92OEW8fmUXWmrIkCYDcp85lKSxakxWB1YNDMoovjVyOUX6GH8jTRWe9RpDu8pC4a
-	TOBm8hKtVJJBfE3fc4tZMTqm3vJFervwHykunSBfMJygSGhmy9qEHfza7pKNTzzUbJsdiGTAMTE
-	29LfA8M8GrDXPnDVYx+8tYIgSNShnS20Xc4q+pHkspr2xSph+7GNv7wCHt1VzxzLZRbLu0SdWoL
-	biVgvZ9dlsroHEPFmH6npkBRW86dE4pwU7xmb0+MBXcQDSURQgB5PMssY2SjAnmvbIGRIv2P5f6
-	18lXLTvQraMwKnlg4c850GUyjNJVYLsLqkfBExZvQVLY4XG38iGCvMzAg9y+Gz2JQ8G7wJkXSOn
-	joqASvuShbY74wJT9ra/5mHsxBZLYjfiI8LcTe+27mWOuEjzgJq9jeWkG3AZ1ajxt6s22DgC+bo
-	YhX/PQDxzG0eM+Lc0yyqP2TFyi3EbR+cXmdAdv8eFroj//LH+6RaTlHXVsprC9Twr+fmkIJa4=
-X-Received: by 2002:a05:600c:19cb:b0:48a:5339:a46 with SMTP id 5b1f17b1804b1-490a2a43c41mr42348235e9.9.1780136426957;
-        Sat, 30 May 2026 03:20:26 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4909c128dacsm31436165e9.32.2026.05.30.03.20.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2026 03:20:26 -0700 (PDT)
-Date: Sat, 30 May 2026 11:20:25 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Peter Collingbourne <peter@pcc.me.uk>, Jani Nikula
- <jani.nikula@intel.com>, Ville =?UTF-8?B?U3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, Christophe Kerello
- <christophe.kerello@foss.st.com>, Patrice Chotard
- <patrice.chotard@foss.st.com>, Boris Brezillon
- <boris.brezillon@collabora.com>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Simona Vetter <simona.vetter@ffwll.ch>, Randy
- Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v2] iopoll: use udelay() for initial polling
-Message-ID: <20260530112025.66897837@pumpkin>
-In-Reply-To: <19509a36-cf7b-4f2b-a25c-2c1293c19b6c@sirena.org.uk>
-References: <20260519102446.209723-1-peter@pcc.me.uk>
-	<ag23HbvCqhmK0Ph1@intel.com>
-	<CAPQLkRhtdV5Whv3ZNtZ8Xwq5V0chaQ8_tUbh7VnTexezid6EfQ@mail.gmail.com>
-	<d602e4ec24533aa239f04901574b4f4826640455@intel.com>
-	<4e8d842d-790a-44ad-8b80-a0a8df1fde2b@sirena.org.uk>
-	<CAPQLkRi1aP3N2d7GzrRfXF0xDyamt_n9AKzFvV1WdpNk0ZymJg@mail.gmail.com>
-	<20260529122016.0059f55d@pumpkin>
-	<19509a36-cf7b-4f2b-a25c-2c1293c19b6c@sirena.org.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YdQ/0S4b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25C11F00893;
+	Sat, 30 May 2026 12:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780145717;
+	bh=h0HrL+x9wbOX7ew2UHxPYItHL8ESuqXXvHECcppFC1Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YdQ/0S4bN6X76XVQKdyOOvx56+rEcuRBhTmGrl1+iJlfFsfTvBxv41dwVEbHojGpD
+	 FKgf0+4Jp27+iEHbHadlvhX9fzLS71GHSU3lLuKD9TekHFt1uZQ0fGcrmCcSsH60DX
+	 6KdS7eyuDziBWrxtM3CNLNTz25c0zGJqmpDBSNNTSekRCO6xxoI9ROUMThVwR1FZWz
+	 Tsk8OHye6K+Q7zIkJibwv3f3y6njiY40loLSfoq54lUvIdVxMt4vfh5eqn3A78sO2L
+	 Bg26NM18fTmXhKgrqgzQGYl0gqAJJvrmaGp1texT6/teNIeR73QqvoDkqKruA4izh0
+	 00xC9zcAreJCA==
+Date: Sat, 30 May 2026 20:36:07 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] spi: dt-bindings: cdns,xspi: add sdma-io-width
+Message-ID: <ahrZt5BI46oFXCBO@xhacker>
+References: <20260511031732.3199-2-jszhang@kernel.org>
+ <20260515-expert-devious-cricket-faff56@quoll>
+ <agz0kDsQBaeQPPQ4@xhacker>
+ <21d30826-bfe6-44cd-8c89-c1986f539e48@kernel.org>
+ <ag2fjCX0DuSVxubv@xhacker>
+ <14719378-7bf5-4688-81e9-bccedf618d18@kernel.org>
+ <de325dba-0b82-4808-910b-68f0f6426c5f@sirena.org.uk>
+ <37a3e9dd-88c2-4d8d-8ae4-6037a1eeedcc@kernel.org>
+ <ag20q5CuB2XsqKS_@xhacker>
+ <3eaa70e0-4284-4c35-a5d5-42afa3087eea@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3eaa70e0-4284-4c35-a5d5-42afa3087eea@kernel.org>
 
-On Fri, 29 May 2026 22:56:23 +0100
-Mark Brown <broonie@kernel.org> wrote:
-
-> On Fri, May 29, 2026 at 12:20:16PM +0100, David Laight wrote:
+On Wed, May 20, 2026 at 04:21:05PM +0200, Krzysztof Kozlowski wrote:
+> On 20/05/2026 15:18, Jisheng Zhang wrote:
+> > On Wed, May 20, 2026 at 03:22:07PM +0200, Krzysztof Kozlowski wrote:
+> >> On 20/05/2026 14:30, Mark Brown wrote:
+> >>> On Wed, May 20, 2026 at 02:16:21PM +0200, Krzysztof Kozlowski wrote:
+> >>>> On 20/05/2026 13:48, Jisheng Zhang wrote:
+> >>>
+> >>>>> If you mean "Why this cannot be deduced from the compatible?", I think
+> >>>>> the slave dma port is part of the cdns xspi, so its io width belongs
+> >>>>> to xSPI device property.
+> >>>>> From another side, we have seen such property in other drivers such as
+> >>>>> the reg-io-width for the dw spi DW_SPI_DR port io width.
+> >>>
+> >>>> So you mean it depends on SPI device? Then why spi-peripheral-props is
+> >>>> not applicable here?
+> >>>
+> >>> That will be controller side, not device side.
+> >>>
+> >>>> If this is not bus width, but DMA-something, is not really then SPI
+> >>>> device dependent, but rather DMA controller limitation, so either
+> >>>> deducible from compatible or something else is missing here.
+> >>>
+> >>> My understanding is that this is a connection between the SPI and DMA
+> >>> controllers so it's not as obvious as it could be which side of that
+> >>> link should have the property, eg:
+> >>>
+> >>>   https://www.cadence.com/content/dam/cadence-www/global/en_US/documents/tools/silicon-solutions/design-ip/controller-ip-qspi.pdf
+> >>>
+> >>> shows a separate direct connection between the DMA controller and the
+> >>> xSPI controller, the DMA controller isn't interacting with registers on
+> >>> the CPU visible buses.  The width is probably a design time configurable
+> >>> option on both sides of the link.
+> >>
+> >> Yes and that sounds a lot specific to particular controller, thus should
+> >> be implied by / deducible from the compatible.
+> > 
+> > This is IP feature, so if we couple the IP's feature with platform
+> > compatible, I would see some unnecessary LoCs. For example,
+> > Let's assume the IP has 10 users, they all support 4 bytes io width,
+> > other features are the same. 
+> > 
+> > If implied by the compatible string, we need to add 10 compatible
+> > string support both in code and dt-bindings.
 > 
-> > I think I remember someone saying that the spi hardware interface normally
-> > generates an interrupt when the request completes?
-> > So for spi this is only fall-back code for a few systems.  
+> You always need 10 compatible strings in bindings.
 > 
-> For something like spi-mem I'd expect to have interrupt support, we go
-> all the way down to fully bitbanged though.  You also often have
-> copybreak cutoffs for smaller transfers (and quicker operations) where
-> it's more efficient to poll for completion than use an interrupt, or
-> PIO rather than DMA.
+> But driver would need only one, since devices are compatible as you
+> described.
 
-I do wonder about copybreak cutoffs especially for systems with iommu
-(which has started including x86 systems).
-Many years ago a colleague got a figure of ~1200 bytes for a sparc sbus card.
-I suspect that the iommu setup code has got more complex (and slower)
-since then and the memory copies faster (especially if you can do overlong
-aligned copies that include the required data).
+Hi all,
 
-For spi-mem writes (max size is probably 256 bytes) that take 100s of us
-it is best the sleep (for timer or isr).
+Update: after carefully reading the registers' document, I found the
+slave dma data width can be known by checking CTRL_FEATURES_REG's
+DMA_DATA_WIDTH bit, we can don't need the DT property any more. I'm
+cooking v2.
 
-spi-mem reads are another matter since the only delays are those needed
-to bit-bang the physical device - which might be at over 100MHz and 4
-(or even 8) data bits at a time.
-Possibly worth using DMA for the data (to avoid leisurely PCIe reads)
-but polling (ideally host memory) for completion to avoid the cost
-of the ISR as well as avoiding context switches.
-
-For the much slower smbus and i2c you pretty much always want to
-offload the 'bit bang' to hardware and wait for an interrupts.
-(I've seen ethernet drivers 'bugger' the system by repeatedly reading
-the phy status - that could be done 1 bit every timer interrupt.)
+Thanks for all the review comments
 
 > 
-> > The code has this comment:
-> >     /* Wait for the write - typically 0.6ms (max 5ms).
-> >      * In spite of the datasheet values, I'm seeing 200us writes. */
-> > It waits 200us and then polls every 50us for 2 seconds.  
-
-FWIW I wrote the comment, the code below it, and the logic on the fpga
-that converts the PCIe slave cycles into signals to the memory chip.
-
-What I/we never resolved was why some chips/boards failed to act on
-the 'read status' command issued after the first delay.
-
-> You can also get fun with things like contention on shared buses.
-
-Indeed - and in places you don't realise.
-In some cases repeated reads of a slow device can restrict bus throughput
-enough to make DMA requests underrun (eg trying to use an LCD panel on
-a SA1100/SA1101 strongarm system).
-
--- David
-
-
-
+> > 
+> > vs
+> > 
+> > If supported by "sdma-io-width", nothing is needed after this patch
+> > 
+> > IMHO, the 2nd sounds better, what do you think?
+> 
+> We answered this in writing bindings. Properties are not replacement for
+> specific compatible. I don't know how to write that sentence in bindings
+> clearer - it's exactly this case.
+> 
+> Best regards,
+> Krzysztof

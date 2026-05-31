@@ -1,154 +1,239 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DFA1F1932;
-	Sun, 31 May 2026 00:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F5629ACDD;
+	Sun, 31 May 2026 13:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780188377; cv=none; b=Cn7a+Aat9er1MhByqAeRFVfBLVNji/yQymMzchUEbOCTFuZuwhNdT6fyW41Q0xBsKIBrasR+W/mLGvwyqrMLwMTy3FyT1266jPELmmDnf4kfjb+OqNEFFI+fr1CzbrsccIgeqMaPUtxBmJdmVuAVm/gQ/YlNvsFVUPl8Ecb9Llw=
+	t=1780234952; cv=none; b=sw70o3c+/JpwWSSiAwaz5FIxNr7s5QA6LosJny5DkJnbozp6mV0B6x7fRIuyQAgPZ2SorbVIajigHgCnBPMwHNRBVTwvB660hHzKS+L2ZFv5VBV0tArtGt5qNNvF7qQsCh6VY2LCtCeLo7k1Too1mfOEuDnYxjAyJyof7/gDKk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780188377; c=relaxed/simple;
-	bh=jpTfjX9mNM8h3K7oR8BVKXhyNjueunIRRNInpWrKVgc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Arf8Jz+ArpryuCBdVvP58PsIKJWHsaxThjqqViIb4nGExAiTe5dYGJ2YoIUDNyTcQwXG5G60zsEEQSJ4wwLbdMwGENUjelRdKbvyDA7V68KwHmndQycJxy8rxE35bnqRGOlBzTGjgAmykToGCLPyhfcTWFODuQSYljRWPWQiAvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SG5xz+QT; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1780234952; c=relaxed/simple;
+	bh=zR05hWiH8Rlw66oNAUtRAX4ISbevpkF+05gVF+o8TOI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pgBCByvc0ilfWLdJO+o8Ygi5J6KtJ4f59ta5WgfetYhhemA/qzMDenQTpyLzSsmspEavEZE8kyfnvVk57GPom+EPQuVmmKxIE3F/YJJgVuCAwkz+kfEGWEEPXln63YEhzBoUvF9c6BoH2moYTTERen1PC7nUpa6NyXG203zchrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXsRDvi/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SG5xz+QT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1780188375; x=1811724375;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jpTfjX9mNM8h3K7oR8BVKXhyNjueunIRRNInpWrKVgc=;
-  b=SG5xz+QTBQKTKwKZj5nxENNSY9CYRbTjZ9DGBeBnXHP8cA2iYIlScfgh
-   fSrmKWeuqmm/MKHD52VV9zEQQuUlD5fguTa5Xk1tQNv0nBejALjLSlp+s
-   cKdoXLD1/jyiLe9gOEjpm8S/Z1MyVzVadvtzZ49FAbzsY1z8I4dNZuIsg
-   qZFpDP+/v451wL+GfIZ0rJ5QTQ0sQnZ8UyjU7+EMLJUPd6XouGXSHLwmS
-   rpz5NcnBwMfVxEFpUMfQoIdaLQVAgpxT1KHXwZWHgVAmf8CcvZfSjIiKe
-   F1sTYCffMSPsTqjpBFtwWnsWSD1VHpUUw0VHNnEF4kgA75OoLebw/bJbA
-   A==;
-X-CSE-ConnectionGUID: rTXQQrY7Txqz9SLeDDq8Mg==
-X-CSE-MsgGUID: NTTPV3jxQ5ihh/p1XcPxhQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11802"; a="103663891"
-X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; 
-   d="scan'208";a="103663891"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2026 17:46:15 -0700
-X-CSE-ConnectionGUID: a0Gzb8LGSMGqaNkQ+/F6Eg==
-X-CSE-MsgGUID: q9/Br8YXSLKQR/ImCPK0QQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,178,1774335600"; 
-   d="scan'208";a="240193517"
-Received: from lkp-server01.sh.intel.com (HELO f0d55cb201f0) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 30 May 2026 17:46:13 -0700
-Received: from kbuild by f0d55cb201f0 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wTUJe-0000000093K-3kW3;
-	Sun, 31 May 2026 00:46:10 +0000
-Date: Sun, 31 May 2026 08:45:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jisheng Zhang <jszhang@kernel.org>, Mark Brown <broonie@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] spi: cadence-xspi: Support 32bit and 64bit slave dma
- interface
-Message-ID: <202605310818.A7laSi0h-lkp@intel.com>
-References: <20260530123715.25899-1-jszhang@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXsRDvi/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292F41F00893;
+	Sun, 31 May 2026 13:42:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780234951;
+	bh=dSjHAroP5+L4GQyBa+FNhJO3ihTn8ULsRc3iTGS7mDA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cXsRDvi/iiCxcm/KxbaJf9zvaok8JsIXFHPo0E7kunRCe3kAoGRmggGMBZhV3+J1M
+	 aBtew1idHllMUPngx2cKEvhiUqvyMeJvHto5gwOoIy/NM/J6qCviVP+j8mT9/+esaI
+	 I19uZ/k1Qk8zp/neDywXwiSTtYAHgdjDrteA2ukGXtYtf1sGIPhgtOx5onzx0vbRGu
+	 uRtxcrgygRELyKumKRmwQIZP03gzFGUarcsHAB8nVrjXyp8Eb1DizwAdhr3mtefN8L
+	 /g/YB8P4e8WgBkLOzO5H4SsGU9/4mlGAA0uXE+ts7cKNJeMh2//ZoZD5qsNEF4pUL0
+	 fdr2Fo8BEoOzA==
+Message-ID: <2b532d56-dce4-4f6d-84e0-2fd87d5494f8@kernel.org>
+Date: Sun, 31 May 2026 23:42:26 +1000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260530123715.25899-1-jszhang@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX()
+ functions
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, linux-m68k@lists.linux-m68k.org,
+ linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
+ Vladimir Oltean <olteanv@gmail.com>, Christoph Hellwig <hch@lst.de>
+References: <20260506142644.3234270-2-gerg@kernel.org>
+ <20260506142644.3234270-8-gerg@kernel.org>
+ <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com>
+ <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org>
+ <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com>
+ <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com>
+ <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
+ <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com>
+ <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com>
+ <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
+Content-Language: en-US
+From: Greg Ungerer <gerg@kernel.org>
+In-Reply-To: <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Jisheng,
+Hi Angelo,
 
-kernel test robot noticed the following build errors:
+(Adding Christoph to CC list)
 
-[auto build test ERROR on broonie-spi/for-next]
-[also build test ERROR on linus/master v7.1-rc5 next-20260529]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 25/5/26 07:34, Angelo Dureghello wrote:
+> On Sun, May 24, 2026 at 02:17:07PM -0700, Angelo Dureghello wrote:
+>> Hi All,
+>>
+>> On Sun, May 17, 2026 at 03:41:31PM -0700, Angelo Dureghello wrote:
+>>> Hi,
+>>>
+>>> On Sun, May 17, 2026 at 03:04:23PM -0700, Angelo Dureghello wrote:
+>>>> Hi Arnd,
+>>>>
+>>>> On Sun, May 17, 2026 at 10:08:22PM +0200, Arnd Bergmann wrote:
+>>>>> On Sun, May 17, 2026, at 21:43, Angelo Dureghello wrote:
+>>>>>> On Thu, May 07, 2026 at 10:43:01PM +1000, Greg Ungerer wrote:
+>>>>>>> On 7/5/26 05:12, Arnd Bergmann wrote:
+>>>>>>>> On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
+>>>>>>
+>>>>>> [    2.270000] fsl-dspi fsl-dspi.0: Not able to get desc for DMA xfer
+>>>>>> [    2.280000] fsl-dspi fsl-dspi.0: DMA transfer failed
+>>>>>> [    2.280000] spi_master spi0: failed to transfer one message from queue
+>>>>>> [    2.290000] spi_master spi0: noqueue transfer failed
+>>>>>> [    2.290000] spi-nor spi0.1: probe with driver spi-nor failed with error -5
+>>>>>>
+>>>
+>>> About this issue, it fails on dma_pool_alloc(), so tomorrow will check,
+>>> i probably lost some dma config option.
+>>>
+>>
+>> so i worked on this open issue above:
+>>
+>> - moved to master and rebased,
+>> - crated a wip/edma branch,
+>> - bisected and found the offending commit, before this, mcf-edma driver
+>>    and connected spi-fsl-dspi (using edma) was both working correctly.
+>>
+>> 7a360df941a4bd60847208de59f1ac8b166265a2 is the first bad commit
+>> commit 7a360df941a4bd60847208de59f1ac8b166265a2 (HEAD)
+>> Author: Christoph Hellwig <hch@lst.de>
+>> Date:   Thu Oct 12 09:52:27 2023 +0200
+>>
+>>      m68k: don't provide arch_dma_alloc for nommu/coldfire
+>>
+>>      Coldfire cores configured with a data cache can't provide coherent
+>>      DMA allocations at all.
+>>
+>>      Instead of returning non-coherent kernel memory in this case,
+>>      return NULL and fail the allocation.
+>>
+>>      The only driver that used to rely on the previous behavior (fec) has
+>>      been switched to use non-coherent allocations for this case recently.
+>>
+>>      Signed-off-by: Christoph Hellwig <hch@lst.de>
+>>      Reviewed-by: Greg Ungerer <gerg@linux-m68k.org>
+>>      Tested-by: Greg Ungerer <gerg@linux-m68k.org>
+>>
+>>   arch/m68k/Kconfig      |  1 -
+>>   arch/m68k/kernel/dma.c | 23 -----------------------
+>>   2 files changed, 24 deletions(-)
+>>
+>> So i can try next week a patch for edma looking what has been done
+>> in fec, and since i am probably the only with mcf54415, will test it
+>> here.
+>>
+> 
+> Looking into this better, looks like the above commit was meant for the
+> majority on non-mmu ColdFire. I think mcf5441x and some other with mmu
+> enabled can flag pages as "page cache disabled".
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jisheng-Zhang/spi-cadence-xspi-Support-32bit-and-64bit-slave-dma-interface/20260530-205805
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-patch link:    https://lore.kernel.org/r/20260530123715.25899-1-jszhang%40kernel.org
-patch subject: [PATCH v2] spi: cadence-xspi: Support 32bit and 64bit slave dma interface
-config: x86_64-randconfig-005-20260531 (https://download.01.org/0day-ci/archive/20260531/202605310818.A7laSi0h-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260531/202605310818.A7laSi0h-lkp@intel.com/reproduce)
+I don't think that is right. The way the underlying data cache is setup for
+MMU ColdFire (via the ACR/CACR registers) means that individual pages cannot
+be marked as non-cached. So coherent memory allocations are not possible -
+at least the way things are today.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605310818.A7laSi0h-lkp@intel.com/
+It would be possible to set aside a chunk of RAM at kernel startup time
+to use as a pool for coherent allocations (since it could be marked as
+non-cached via the ACR/CACR registers), but there is no code to support doing
+that today.
 
-All errors (new ones prefixed by >>):
-
->> drivers/spi/spi-cadence-xspi.c:601:4: error: call to undeclared function 'ioread64_rep'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     601 |                         ioread64_rep(src, buf, len >> 3);
-         |                         ^
->> drivers/spi/spi-cadence-xspi.c:623:4: error: call to undeclared function 'iowrite64_rep'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     623 |                         iowrite64_rep(dst, buf, len >> 3);
-         |                         ^
-   2 errors generated.
+Regards
+Greg
 
 
-vim +/ioread64_rep +601 drivers/spi/spi-cadence-xspi.c
+> So i would re-enabled that code only for such mmu families.
+> 
+> Please let me know if i am correct.
+> Thanks.
+> 
+>>>>>> DSPI is using edma, i will try to understand where the issue is asap.
+>>>>>>
+>>>>>> About how it works:
+>>>>>> - for accesses to edma module (IP) mmio registers, must be native
+>>>>>> big_endian, so using the "be" suffix in "mcf"_edma looks ok for me.
+>>>>>
+>>>>> The twist here is that with the way that readl() is defined on
+>>>>> coldfire as a non-swapping operation, and the generic
+>>>>> definition assuming the opposite in
+>>>>>
+>>>>> static inline u32 ioread32be(const void __iomem *addr)
+>>>>> {
+>>>>>          return swab32(readl(addr));
+>>>>> }
+>>>>>
+>>>>> the function called ioread32be() actually tries to access
+>>>>> the registers as little-endian. I can see two possible ways
+>>>>> we got here, but don't know which one is currect:
+>>>>>
+>>>>> a) the device actually has little-endian registers (like it
+>>>>>     does on i.MX, but unlike all other coldfire devices), and
+>>>>>     you just never noticed because using ioread32be() worked
+>>>>>     as you expected.
+>>>>>
+>>>>> b) you tested the driver using an ioread32be() definition that
+>>>>>     did not have a byteswap and it correctly accessed big-endian
+>>>>>     registers at the time, but the version in mainline today does
+>>>>>     not.
+>>>>
+>>>> Ok. The ioread32be now works properly since i had applied Greg patches.
+>>>> I generated an error in _probe on edma channel 2, reading status reg.
+>>>> looks consistent:
+>>>>
+>>>> 	iowrite16(2121, regs->erqh);
+>>>> 	iowrite8(0x77, regs->serq);
+>>>> 	iowrite8(0x12, regs->ssrt);
+>>>> 	
+>>>> 	u32 status = ioread32be(regs->es);
+>>>> 	printk("%s() status: %04x\n", __func__, status);
+>>>>
+>>>> [    0.140000] mcf_edma_probe() entering
+>>>> [    0.140000] mcf_edma_probe(): allocating data
+>>>> [    0.140000] mcf_edma_probe() status: 800012f8
+>>>>
+>>>> If i am not loosing myself in this r/w labyrinth, the path should be:
+>>>>
+>>>> 1) Greg removed coldfire readl/writel, leaving now the standard LE r/w,
+>>>> 2) So the ioread32be swaps the standard LE read giving BE.
+>>>>
+>>>> Am i correct ?
+>>>>
+>>>>
+>>>>>
+>>>>>> - for accessing the "tcd" memory structure, that must be, from what i
+>>>>>> remember, anyway in little endian, independently from the cpu core
+>>>>>> endiannes, this is the reason that big_endian flag is needed, it is
+>>>>>> used for tcd area accesses, so the IP module was built.
+>>>>>> The tcd area may be similar to pci accesses (see mcf54415 RM 19.4.16).
+>>>>>
+>>>>> edma_read_tcdreg() calls into edma_readl(), which is the same function
+>>>>> that is used for normal register access, so from what I can tell,
+>>>>> they always use the same endianess here.
+>>>>>
+>>>>
+>>>> If edma_readl was using
+>>>>
+>>>>          if (edma->big_endian)
+>>>>                  val = ioread32be(addr);
+>>>>
+>>>> and never changed, without Greg patch, it was likely returning little
+>>>> endian for coldfire and correct LE for other arch ? :)
+>>>>
+>>>> I remember something about tcd area was coded LE, but will investigate
+>>>> better, now i am over midnight.
+>>>>
+>>>> Regards,
+>>>> angelo
+>>>>
+>>>>>        Arnd
+>>>
+>>> Regards,
+>>> angelo
+>>
+>> Regards,
+>> angelo
+> 
+> Regards,
+> angelo
 
-   586	
-   587	static inline void cdns_xspi_sdma_read(struct cdns_xspi_dev *cdns_xspi, size_t len)
-   588	{
-   589		void __iomem *src = cdns_xspi->sdmabase;
-   590		void *buf = cdns_xspi->in_buffer;
-   591		size_t offset = 0;
-   592	
-   593		if (cdns_xspi->dma_data_width == 4) {
-   594			if (IS_ALIGNED((uintptr_t)src, 4) && IS_ALIGNED((uintptr_t)buf, 4)) {
-   595				ioread32_rep(src, buf, len >> 2);
-   596				offset = len & ~0x3;
-   597				len -= offset;
-   598			}
-   599		} else {
-   600			if (IS_ALIGNED((uintptr_t)src, 8) && IS_ALIGNED((uintptr_t)buf, 8)) {
- > 601				ioread64_rep(src, buf, len >> 3);
-   602				offset = len & ~0x7;
-   603				len -= offset;
-   604			}
-   605		}
-   606		ioread8_rep(src, (u8 *)buf + offset, len);
-   607	}
-   608	
-   609	static inline void cdns_xspi_sdma_write(struct cdns_xspi_dev *cdns_xspi, size_t len)
-   610	{
-   611		void __iomem *dst = cdns_xspi->sdmabase;
-   612		const void *buf = cdns_xspi->out_buffer;
-   613		size_t offset = 0;
-   614	
-   615		if (cdns_xspi->dma_data_width == 4) {
-   616			if (IS_ALIGNED((uintptr_t)dst, 4) && IS_ALIGNED((uintptr_t)buf, 4)) {
-   617				iowrite32_rep(dst, buf, len >> 2);
-   618				offset = len & ~0x3;
-   619				len -= offset;
-   620			}
-   621		} else {
-   622			if (IS_ALIGNED((uintptr_t)dst, 8) && IS_ALIGNED((uintptr_t)buf, 8)) {
- > 623				iowrite64_rep(dst, buf, len >> 3);
-   624				offset = len & ~0x7;
-   625				len -= offset;
-   626			}
-   627		}
-   628		iowrite8_rep(dst, (const u8 *)buf + offset, len);
-   629	}
-   630	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki

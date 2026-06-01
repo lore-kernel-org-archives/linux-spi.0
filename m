@@ -1,50 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514713D301B;
-	Tue,  2 Jun 2026 12:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495343DB97A;
+	Tue,  2 Jun 2026 12:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780402053; cv=none; b=E6UWE5Y01QCE+ouje0IGeLRc0eN60kva0tKoYN3vCNBFc+GaPHBfF7RRrl8E/LObKwsioo1X74IX09MPgODllzbTgJqU3foz30lgiQJLAcmV3fj9ucCai06HZtRqH502Zvl8sNdH3vVtodwP8Dp3I2fFr3ZQvzXCBzX4OrBH4jQ=
+	t=1780402058; cv=none; b=fL/YUMHAyiVfXPI2suvpKklyKDzMXaaEXmb9b//dfEua1IxmYq3gebUl+luO4ClsL4aZ5C8G/MGkf+x97mrZeRbuWDpF/nUfpHhaPhmenYCB6IC76Lvy/httAnqLaSYbXZ/1XCMHk8SDVtKXoFBhWSfzblb0gXe9ws5SMc9aoO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780402053; c=relaxed/simple;
-	bh=CXeJ9bvnJoexsr0ZqogM4Dl8ae1EzlAlaa7aCsJn7q8=;
+	s=arc-20240116; t=1780402058; c=relaxed/simple;
+	bh=fq4MRlSQGyPImcnKwFOCdZ/18ZUwH/RbQ6nxgpZJb80=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ThUjn+MYNvAb8xFxb26p60nguLUXk95j5HbUJhzBNhu3CG0JJrmg1cYUDe+bO0gVH53RXzlstPEqBE574gixPFt4uXOGZPt9Wqbl+NNHa8LiY/zdYooQueiaVc81xgqB6ZhZr4PZOAnD+DvKxtLplDmrUCX8myVoZmJPQ7+Y8Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACGTTxa8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=N8OUWgXoGLjR2Zu1jMvgRxNhWglsPvsbC5ocMhyPdVTY2M1MEcCZtZ5P5dZxKqpcmHlqWUx8/k19tEUXI8vOBVCUQV3ut6vaCPgwPg+ylvB8DyEf/xknay6AalESD6FchrRqgRu/IRNfPXwAvaqU29DpnAgyOqB2nhWYSAxFNTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U7SJ1Esv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACGTTxa8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2DF1F00893;
-	Tue,  2 Jun 2026 12:07:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U7SJ1Esv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C5C1F00893;
+	Tue,  2 Jun 2026 12:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780402051;
-	bh=yf9fztpSi4K+ljlndUdAbTgpH8FO9UBENIcySmefiuo=;
+	s=k20260515; t=1780402056;
+	bh=VJA7w3xzgecjwWHwnAUFF6LzuAM1+ne0JePMO4csh+k=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ACGTTxa8FbXBbbfTxT10geybgu/iGCQ5gAPvgGW65pwToitHKMb7oXIvmJwag/Gl9
-	 7+Tz6MWHzmRjkbVhxq7H7CY1ekgHUKDFDvqts6yhC4KPN9pbt4W0DDnvGn2BeJEgE/
-	 NQ6TYrDN1EndBuecSRzsbbGV8VvQqGaRoDi/PLx1GzGNzPEZq8D7kWHmo5/Lan8Rcy
-	 6mGAQmbNWcZbrkR2CmvqVo2j+F2q79QB1IF38Pf6DeY2xyMYugYYxB7ILjPzTw0dGw
-	 4GY2pVtyDg41+ZprebAb0wvC1wAPMg23p0L3JL3wIZ2hjKhPe5o8c4PF9bQK3ZmZSq
-	 +PRLqakkNBakw==
+	b=U7SJ1EsvihMTmUIbqwqlMV2UyhPajkrwaHJaLCKCrWbFhjE0BMxN+ULrqi2etCj+W
+	 Y4SuumhdIV9c4MtbmVd/N79E097hMTGO+vqjftranNPbenazA6ZXlgP3LAPZ+LlfXN
+	 STy821OavAU7++4XuAYKuZmbA2pyCC22iakkAb93RimZoREF+0i7fwpiWdflHukSYL
+	 rkLjRB/G/M3XkiuKBbS0QlmUC6QSnW+zpSk/H2J5zD0WnNLpWC7/zTBm3RruqBZr0T
+	 mmTO0C9jyBEEMD8MTcDliSeKN0LleUwNiDVOH8Itl9XD2sHcGzhF3vfaG/LksTLDFo
+	 V7wiVuWmBW07w==
 From: Mark Brown <broonie@kernel.org>
-To: Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Laxman Dewangan <ldewangan@nvidia.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Aaron Kling <webgeek1234@gmail.com>
-Cc: linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, 
- devicetree@vger.kernel.org, Thierry Reding <treding@nvidia.com>
-In-Reply-To: <20260525-tegra194-qspi-iommu-v2-0-a11c53f804b2@gmail.com>
-References: <20260525-tegra194-qspi-iommu-v2-0-a11c53f804b2@gmail.com>
-Subject: Re: (subset) [PATCH v2 0/2] arm64: tegra: Enable DMA Support on
- Tegra194 QSPI
-Message-Id: <178032313909.44654.17999841515127150550.b4-ty@b4>
-Date: Mon, 01 Jun 2026 15:12:19 +0100
+To: Ryan Wanner <ryan.wanner@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Radu Pirea <radu.pirea@microchip.com>, 
+ Richard Genoud <richard.genoud@bootlin.com>, Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260522-atmel-v3-1-23f8c6e6aa43@gmail.com>
+References: <20260522-atmel-v3-1-23f8c6e6aa43@gmail.com>
+Subject: Re: [PATCH v3] spi: atmel: fix DMA channel and bounce buffer leaks
+Message-Id: <178032262266.44654.1407463849398099682.b4-ty@b4>
+Date: Mon, 01 Jun 2026 15:03:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,28 +49,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1428; i=broonie@kernel.org;
- h=from:subject:message-id; bh=CXeJ9bvnJoexsr0ZqogM4Dl8ae1EzlAlaa7aCsJn7q8=;
- b=owGbwMvMwMWocq27KDak/QLjabUkhiy54/XyPcEnBT53/v2Y89Ssy7P91+LkqBPJnziq4yQyu
- iZ4yRp2MhqzMDByMciKKbKsfZaxKj1cYuv8R/NfwQxiZQKZwsDFKQATSWpg/ytzi/0SS/F8eY6S
- 3m9uifbs2fVZW8VOv5hQMd9/DnuY1L/MNR71RQK+z3+nXEiPKnc+L1pikeIVnFhT4eOz8F/TksV
- 87Admvej7Y/ch/mZrUChvkZaTUOe9tDs8zlKdhTt19YqZOcrkq9o8/6TL8Avu/HHn6/oTwS3KK6
- 2+PqhP57GbesA2+bzLmnthiy/liPeqmp3/E3OCh++/85nFD7eeDNo/galh569m8z0LRFPvPXr/Q
- yOOR8np1tNvWyMtzWbbvlda2BZ12EHlYaVAwKFEvlV3+B89rF9/p9bpbMn1dRcNHD1kMtg0ypYu
- O71tRtGTxFJX1YiVSfvVH3qteJJuH8D8xUb46NN96v+LAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=fq4MRlSQGyPImcnKwFOCdZ/18ZUwH/RbQ6nxgpZJb80=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqHseF2SiZ1uFar3jksgA++98v0V+QfmRiB2btJ
+ s3JChwQoyiJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCah7HhQAKCRAk1otyXVSH
+ 0AobB/9FqVimQOidUwQHwlUB99dAoIyNU7QrJDIl9SHeNCTttEs9uhAEvfRPvrOTOlkao14FpiM
+ HHw6nBMd9fbq2BLIX5kV7vuhz8LQO/r2pnOlZ8BPKwWTZxoFhfQazRr9udEjTpA0Ggod727Q7e1
+ 0C3qL+HGo854C4ILPXleB9u8NlTY4rEIK6SLqooSc5Tm2v4NuWAgostEJaPWD+Z3lotgsl1FxWY
+ mQQ+KoO4tXjEf9y3bF1+aNG5YzGsXZUr/uSfNj0D2W3zc8zD+Kah0iIjZtoQ6Bpl+a+tUy4O2er
+ yaTomfLg19m6qx4dcv8yjPBwWTckm9JVP9XrsPu77Yp/tOFJ
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 25 May 2026 01:47:43 -0500, Aaron Kling wrote:
-> arm64: tegra: Enable DMA Support on Tegra194 QSPI
-> 
-> The reason for this is to properly support the spi nor chip on the
-> Jetson Xavier NX module. Prior to this, it would time out on all
-> transfers and sometimes even trigger a cbb fault, locking up the entire
-> unit. With this, reading and writing to the flash memory works as
-> expected.
-> 
-> [...]
+On Fri, 22 May 2026 20:40:48 +0800, Felix Gu wrote:
+> spi: atmel: fix DMA channel and bounce buffer leaks
 
 Applied to
 
@@ -83,8 +70,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: tegra210-quad: Allocate DMA memory for DMA engine
-      https://git.kernel.org/broonie/spi/c/f469138a77ac
+[1/1] spi: atmel: fix DMA channel and bounce buffer leaks
+      https://git.kernel.org/broonie/spi/c/bd7e9843ec95
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

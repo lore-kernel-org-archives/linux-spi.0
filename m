@@ -1,33 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010013.outbound.protection.outlook.com [40.93.198.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F5629ACDD;
-	Sun, 31 May 2026 13:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780234952; cv=none; b=sw70o3c+/JpwWSSiAwaz5FIxNr7s5QA6LosJny5DkJnbozp6mV0B6x7fRIuyQAgPZ2SorbVIajigHgCnBPMwHNRBVTwvB660hHzKS+L2ZFv5VBV0tArtGt5qNNvF7qQsCh6VY2LCtCeLo7k1Too1mfOEuDnYxjAyJyof7/gDKk8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780234952; c=relaxed/simple;
-	bh=zR05hWiH8Rlw66oNAUtRAX4ISbevpkF+05gVF+o8TOI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pgBCByvc0ilfWLdJO+o8Ygi5J6KtJ4f59ta5WgfetYhhemA/qzMDenQTpyLzSsmspEavEZE8kyfnvVk57GPom+EPQuVmmKxIE3F/YJJgVuCAwkz+kfEGWEEPXln63YEhzBoUvF9c6BoH2moYTTERen1PC7nUpa6NyXG203zchrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cXsRDvi/; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0C82F691D;
+	Mon,  1 Jun 2026 07:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780300005; cv=fail; b=jUMu7THlzKqRq0S6DFoWxYuBwdMNDHKBfUkk7OpUx5wqW5UGtIOKvvmTeKS51afUyreOMoBjHoChuCMzli9lvaUw7ltAUc3TfFAkxcdsdXi6zXYAuTxmOH8LALAiL8zh+8KxTKcw2Gn3IjqiSEHyAfv2hHsnc3/F6yyut6jot5k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780300005; c=relaxed/simple;
+	bh=CIcmKJ4nNynvjzfTqNNRAvxQbgJrvhuPZ+KbEK7Ciwk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JtiSRZiba+p17aIF4P9RlwmxWsQ2Xf/IULhGuJr6fJb2p2sxTymxra2wkOJWvUlsTjyjCKpEfw04ksRyn7ADf0QxxAh24HGCRHyO59yf0RB/OeBzow5sCukdB6/XC4sVgZiljFLLAki2q733h4ttT5+FOZL5OeG1JaXxdyHrFhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=vf8YJMzY; arc=fail smtp.client-ip=40.93.198.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cXsRDvi/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292F41F00893;
-	Sun, 31 May 2026 13:42:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780234951;
-	bh=dSjHAroP5+L4GQyBa+FNhJO3ihTn8ULsRc3iTGS7mDA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cXsRDvi/iiCxcm/KxbaJf9zvaok8JsIXFHPo0E7kunRCe3kAoGRmggGMBZhV3+J1M
-	 aBtew1idHllMUPngx2cKEvhiUqvyMeJvHto5gwOoIy/NM/J6qCviVP+j8mT9/+esaI
-	 I19uZ/k1Qk8zp/neDywXwiSTtYAHgdjDrteA2ukGXtYtf1sGIPhgtOx5onzx0vbRGu
-	 uRtxcrgygRELyKumKRmwQIZP03gzFGUarcsHAB8nVrjXyp8Eb1DizwAdhr3mtefN8L
-	 /g/YB8P4e8WgBkLOzO5H4SsGU9/4mlGAA0uXE+ts7cKNJeMh2//ZoZD5qsNEF4pUL0
-	 fdr2Fo8BEoOzA==
-Message-ID: <2b532d56-dce4-4f6d-84e0-2fd87d5494f8@kernel.org>
-Date: Sun, 31 May 2026 23:42:26 +1000
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="vf8YJMzY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xlH6SamW5ehTXqxTGfc0nW2lQJYFnRA6AQZ4QeCO/JljhNBJ+cc6zgl9/EwU1yoXaqehQxkWfE0G+Di6XTjRIiBmd8WZa3EYRW2tMj9zddBpx9MtUh0TJhqjOZ5vEn0VtoR8mlN6dDwHIjtk7vnDAFlu6lvFs8mSCj/+2H5g+jADaK0mmvku13Jg+tnyJfnxx7RV/HD73/whRCEuOMlsfFhMG4W199b7HY9bEuMhtkMrJ55KTZ1rMpmtsFjSz0PJADCjiiA08q6RkZl8pLDgAhusmaXj/QkjpXF2PXP1w8FU/TqYzMKdp2b+axkYlkvhy6x/J/87rxCwrWOrw/egIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CK7GFxdeRTJjDOd07KC0oBhbTytIdQbsHUgR8YYeNZA=;
+ b=RlOq4pOKokl+oqBfrgZrFB4ulOGHHHaUWuRJ8OmCNqt+x/4VJm6UDNYhv2wRCEvplRzgg7X2vlCt2VcU1oFHFJ3gx/OV+tLr6K5EmZe7k/i+v2ah0uk09wiyS0K3tL2tNlZY8uYTgg4H306mZxBsHE6p4SbaKaS1CCOk/cZ1sGoHl4wUGk/i/i9S1z0WGd7oXMGNhL/fir5LVJOj1bkBHXjgvdOm8GSMqq4arGrM197Vik8GaMsSGYfphUpqUNmCRCjFisVYiba2NAx1JFXaqaHZb4w56DrK2OnVX7D6d9jceBIsH3pwpi5VG13XUWUfCksrzanpxxYK5rv7+9yQkg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CK7GFxdeRTJjDOd07KC0oBhbTytIdQbsHUgR8YYeNZA=;
+ b=vf8YJMzYp6YM8Hkwyln8o2JAvTz+HmaYWlxvp/Rd2CbSi1N3ZNEefyomx1L+baM3VkbP2mTAqesEgl1JN6Bb372vwRidz98hrRDpyA3rwroinYaabsiSWaQg5zHyrjWPDnT2/CEDykMSEpT02ib+vhLjoetAs24WSJDtdHweMOI=
+Received: from SJ0PR13CA0103.namprd13.prod.outlook.com (2603:10b6:a03:2c5::18)
+ by MW4PR10MB6370.namprd10.prod.outlook.com (2603:10b6:303:1eb::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 07:46:38 +0000
+Received: from SJ1PEPF00001CDC.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::14) by SJ0PR13CA0103.outlook.office365.com
+ (2603:10b6:a03:2c5::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.5 via Frontend Transport; Mon, 1
+ Jun 2026 07:46:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ SJ1PEPF00001CDC.mail.protection.outlook.com (10.167.242.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.92.5 via Frontend Transport; Mon, 1 Jun 2026 07:46:36 +0000
+Received: from DFLE211.ent.ti.com (10.64.6.69) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 1 Jun
+ 2026 02:46:05 -0500
+Received: from DFLE200.ent.ti.com (10.64.6.58) by DFLE211.ent.ti.com
+ (10.64.6.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 1 Jun
+ 2026 02:46:04 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE200.ent.ti.com
+ (10.64.6.58) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
+ Transport; Mon, 1 Jun 2026 02:46:04 -0500
+Received: from [172.24.233.254] (santhoshkumark.dhcp.ti.com [172.24.233.254])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6517jxbR551539;
+	Mon, 1 Jun 2026 02:46:00 -0500
+Message-ID: <eaa75113-2b89-468d-aca8-932bc7e33a7d@ti.com>
+Date: Mon, 1 Jun 2026 13:15:59 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,205 +75,140 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX()
- functions
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Arnd Bergmann <arnd@kernel.org>, linux-m68k@lists.linux-m68k.org,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
- Vladimir Oltean <olteanv@gmail.com>, Christoph Hellwig <hch@lst.de>
-References: <20260506142644.3234270-2-gerg@kernel.org>
- <20260506142644.3234270-8-gerg@kernel.org>
- <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com>
- <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org>
- <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com>
- <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com>
- <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
- <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com>
- <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com>
- <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
+Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
+ specify a frequency pair
+To: Conor Dooley <conor@kernel.org>
+CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
+	<vigneshr@ti.com>, <pratyush@kernel.org>, <mwalle@kernel.org>,
+	<takahiro.kuwano@infineon.com>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mtd@lists.infradead.org>, <praneeth@ti.com>, <u-kumar1@ti.com>,
+	<a-dutta@ti.com>, <s-k6@ti.com>
+References: <20260527175527.2247679-1-s-k6@ti.com>
+ <20260527175527.2247679-2-s-k6@ti.com>
+ <20260528-clergyman-kindling-20971775ba78@spud>
 Content-Language: en-US
-From: Greg Ungerer <gerg@kernel.org>
-In-Reply-To: <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Santhosh Kumar K <s-k6@ti.com>
+In-Reply-To: <20260528-clergyman-kindling-20971775ba78@spud>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDC:EE_|MW4PR10MB6370:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4d10dfd2-fef1-40c1-4815-08debfb1e8c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|376014|36860700016|1800799024|56012099006|3023799007|5023799004|6133799003|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	iP6k9iRMh0pmjfAnC/s5uRBAY0a0wcEa2Su1lIOOREnltYGn5i7jJAwjN6WCSOBxgs8gYGAv2T8Rrm1DjklGSAIfZSW/VVogaPJAAZfyREMg+uQ115MWmi1DbCSgGk6TFj+VjDhLKqHCdUwMLz1QtWSotK75uEX7STUI+hn4t18VHkRfhq3P9B6RnPNNcJSj06qCH7irujlQxZNhJ2fZjRyAgHk12fSNJILG8xytjgle8spcuVZTzvg2TlpBt4Vxxp71tBEzQ6IBQuR4jt8EBBgEowxUx5SEv8lEPASDHu1Aa1X0rIjgFFIsCxgQ3tDKRIXrPBTUoh8XECpVnijFlTvUFb+A/xfSIUwAV43X0d3zC19mzeP8zVtxEjc1xdzKgJNYvTAxtejD2XozqxyH9NzHp3MIvaUoSBzkwSZj96Xfb1z4iZxtq7JqQQPA8T50TDQbF7k7uImQyG60TgNXbpm54h9DDD/15nj39OhbfKR67KE7G5ASLz3Z1ShhN0bqmRHs9yL8vIa1gujaouraWzATid99NWjhnE71fbnzhlPsoHlk9mZlO62APkE1Yg/DxrPdBKfpRNTVuQBvond5jQkZ5SO3+IDfDuvtnuubbM+wnsgqyYZRc0Ako2TOH/2tvQu9G0y5PP0O1xSAgRLYnd1XbRc+285kqhB2DbdgONv+cgW2CZzRVNo7Fpg9Xk4fBcoFSg5FsUau4XDXdESZnPdn3EVmfiYa8z8nOyTf9UA=
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(376014)(36860700016)(1800799024)(56012099006)(3023799007)(5023799004)(6133799003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	9v3Mi3gpbBIiTR9x4JrIZ38omjeR/mh8u03ibPGX23W/wENzK8hM/cQ9/eo0VHn359Iadsyi9qCGHyT7efEmd4mgNrUnj6aBJOAG+5+DCEDBHRV8HfP9I5Fk3q2+ex+A7E1DnBFzDyj1JIJPCZuzRVKCW7cHx6VQ9Y5mp5tXUdCtT2je2KCErIKn6EdG/WWkLzn+r1DVVJrRI0EOW/FEVokL8an0OFukLef0afXfwBbc5qhXFe8h6ZfJlK31S/tzrBGOX70s4QpeTvsvhGefsX7Urn4Vkv2O0+PLMXMdvGoOzI4pttlRO3BXzYh9QV6+tAV7aEUDUPGgQlxmlPVqp0rQneOysDwu76mpwHZCMbL68xFVm1SA5AqgkU6RzGWipO7ITtFbRY83vOnVTYDksqSmEZ5a7due9EM8/2r1/VHgCJQmNq4mHsMjigAMi60q
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 07:46:36.7214
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d10dfd2-fef1-40c1-4815-08debfb1e8c5
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CDC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6370
 
-Hi Angelo,
+Hello Conor,
 
-(Adding Christoph to CC list)
-
-On 25/5/26 07:34, Angelo Dureghello wrote:
-> On Sun, May 24, 2026 at 02:17:07PM -0700, Angelo Dureghello wrote:
->> Hi All,
+On 28/05/26 23:06, Conor Dooley wrote:
+> On Wed, May 27, 2026 at 11:25:15PM +0530, Santhosh Kumar K wrote:
+>> Some SPI controllers support high-speed operating modes that require
+>> controller-side configuration before the device can be driven at its
+>> rated maximum frequency. In these cases two frequencies are relevant:
+>> a conservative speed usable without any such configuration, and the
+>> maximum speed achievable once the controller is set up accordingly.
 >>
->> On Sun, May 17, 2026 at 03:41:31PM -0700, Angelo Dureghello wrote:
->>> Hi,
->>>
->>> On Sun, May 17, 2026 at 03:04:23PM -0700, Angelo Dureghello wrote:
->>>> Hi Arnd,
->>>>
->>>> On Sun, May 17, 2026 at 10:08:22PM +0200, Arnd Bergmann wrote:
->>>>> On Sun, May 17, 2026, at 21:43, Angelo Dureghello wrote:
->>>>>> On Thu, May 07, 2026 at 10:43:01PM +1000, Greg Ungerer wrote:
->>>>>>> On 7/5/26 05:12, Arnd Bergmann wrote:
->>>>>>>> On Wed, May 6, 2026, at 16:26, Greg Ungerer wrote:
->>>>>>
->>>>>> [    2.270000] fsl-dspi fsl-dspi.0: Not able to get desc for DMA xfer
->>>>>> [    2.280000] fsl-dspi fsl-dspi.0: DMA transfer failed
->>>>>> [    2.280000] spi_master spi0: failed to transfer one message from queue
->>>>>> [    2.290000] spi_master spi0: noqueue transfer failed
->>>>>> [    2.290000] spi-nor spi0.1: probe with driver spi-nor failed with error -5
->>>>>>
->>>
->>> About this issue, it fails on dma_pool_alloc(), so tomorrow will check,
->>> i probably lost some dma config option.
->>>
+>> The existing spi-max-frequency property accepts only a single u32,
+>> which cannot express this distinction. Extend it to accept either a
+>> single value (retaining full backward compatibility) or a two-element
+>> array [base-frequency, max-frequency], where base-frequency is the
+>> conservative operating speed and max-frequency is the highest speed
+>> the device supports after controller-side configuration.
 >>
->> so i worked on this open issue above:
->>
->> - moved to master and rebased,
->> - crated a wip/edma branch,
->> - bisected and found the offending commit, before this, mcf-edma driver
->>    and connected spi-fsl-dspi (using edma) was both working correctly.
->>
->> 7a360df941a4bd60847208de59f1ac8b166265a2 is the first bad commit
->> commit 7a360df941a4bd60847208de59f1ac8b166265a2 (HEAD)
->> Author: Christoph Hellwig <hch@lst.de>
->> Date:   Thu Oct 12 09:52:27 2023 +0200
->>
->>      m68k: don't provide arch_dma_alloc for nommu/coldfire
->>
->>      Coldfire cores configured with a data cache can't provide coherent
->>      DMA allocations at all.
->>
->>      Instead of returning non-coherent kernel memory in this case,
->>      return NULL and fail the allocation.
->>
->>      The only driver that used to rely on the previous behavior (fec) has
->>      been switched to use non-coherent allocations for this case recently.
->>
->>      Signed-off-by: Christoph Hellwig <hch@lst.de>
->>      Reviewed-by: Greg Ungerer <gerg@linux-m68k.org>
->>      Tested-by: Greg Ungerer <gerg@linux-m68k.org>
->>
->>   arch/m68k/Kconfig      |  1 -
->>   arch/m68k/kernel/dma.c | 23 -----------------------
->>   2 files changed, 24 deletions(-)
->>
->> So i can try next week a patch for edma looking what has been done
->> in fec, and since i am probably the only with mcf54415, will test it
->> here.
->>
+>> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+>> ---
+>>   .../devicetree/bindings/spi/spi-peripheral-props.yaml  | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
 > 
-> Looking into this better, looks like the above commit was meant for the
-> majority on non-mmu ColdFire. I think mcf5441x and some other with mmu
-> enabled can flag pages as "page cache disabled".
-
-I don't think that is right. The way the underlying data cache is setup for
-MMU ColdFire (via the ACR/CACR registers) means that individual pages cannot
-be marked as non-cached. So coherent memory allocations are not possible -
-at least the way things are today.
-
-It would be possible to set aside a chunk of RAM at kernel startup time
-to use as a pool for coherent allocations (since it could be marked as
-non-cached via the ACR/CACR registers), but there is no code to support doing
-that today.
-
-Regards
-Greg
-
-
-> So i would re-enabled that code only for such mmu families.
+> Pretty sure this hasn't been tested, dt_binding_check cannot even build
+> processed-schema.json with this applied because there are multiple
+> definitions of spi-max-frequency with it applied.
 > 
-> Please let me know if i am correct.
-> Thanks.
+> The sashiko makes the point that this breaks every binding that uses
+> minimum/maximum to set constraints too, because these properties do not
+> apply to arrays unless applied per item.
+
+Thanks for catching this. I missed dtbs_check before posting, my bad!
+
+I understand the issue here, once the property type is changed to an
+array, the minimum and maximum constraints are meaningless as they're
+item-level constraints.
+
 > 
->>>>>> DSPI is using edma, i will try to understand where the issue is asap.
->>>>>>
->>>>>> About how it works:
->>>>>> - for accesses to edma module (IP) mmio registers, must be native
->>>>>> big_endian, so using the "be" suffix in "mcf"_edma looks ok for me.
->>>>>
->>>>> The twist here is that with the way that readl() is defined on
->>>>> coldfire as a non-swapping operation, and the generic
->>>>> definition assuming the opposite in
->>>>>
->>>>> static inline u32 ioread32be(const void __iomem *addr)
->>>>> {
->>>>>          return swab32(readl(addr));
->>>>> }
->>>>>
->>>>> the function called ioread32be() actually tries to access
->>>>> the registers as little-endian. I can see two possible ways
->>>>> we got here, but don't know which one is currect:
->>>>>
->>>>> a) the device actually has little-endian registers (like it
->>>>>     does on i.MX, but unlike all other coldfire devices), and
->>>>>     you just never noticed because using ioread32be() worked
->>>>>     as you expected.
->>>>>
->>>>> b) you tested the driver using an ioread32be() definition that
->>>>>     did not have a byteswap and it correctly accessed big-endian
->>>>>     registers at the time, but the version in mainline today does
->>>>>     not.
->>>>
->>>> Ok. The ioread32be now works properly since i had applied Greg patches.
->>>> I generated an error in _probe on edma channel 2, reading status reg.
->>>> looks consistent:
->>>>
->>>> 	iowrite16(2121, regs->erqh);
->>>> 	iowrite8(0x77, regs->serq);
->>>> 	iowrite8(0x12, regs->ssrt);
->>>> 	
->>>> 	u32 status = ioread32be(regs->es);
->>>> 	printk("%s() status: %04x\n", __func__, status);
->>>>
->>>> [    0.140000] mcf_edma_probe() entering
->>>> [    0.140000] mcf_edma_probe(): allocating data
->>>> [    0.140000] mcf_edma_probe() status: 800012f8
->>>>
->>>> If i am not loosing myself in this r/w labyrinth, the path should be:
->>>>
->>>> 1) Greg removed coldfire readl/writel, leaving now the standard LE r/w,
->>>> 2) So the ioread32be swaps the standard LE read giving BE.
->>>>
->>>> Am i correct ?
->>>>
->>>>
->>>>>
->>>>>> - for accessing the "tcd" memory structure, that must be, from what i
->>>>>> remember, anyway in little endian, independently from the cpu core
->>>>>> endiannes, this is the reason that big_endian flag is needed, it is
->>>>>> used for tcd area accesses, so the IP module was built.
->>>>>> The tcd area may be similar to pci accesses (see mcf54415 RM 19.4.16).
->>>>>
->>>>> edma_read_tcdreg() calls into edma_readl(), which is the same function
->>>>> that is used for normal register access, so from what I can tell,
->>>>> they always use the same endianess here.
->>>>>
->>>>
->>>> If edma_readl was using
->>>>
->>>>          if (edma->big_endian)
->>>>                  val = ioread32be(addr);
->>>>
->>>> and never changed, without Greg patch, it was likely returning little
->>>> endian for coldfire and correct LE for other arch ? :)
->>>>
->>>> I remember something about tcd area was coded LE, but will investigate
->>>> better, now i am over midnight.
->>>>
->>>> Regards,
->>>> angelo
->>>>
->>>>>        Arnd
->>>
->>> Regards,
->>> angelo
+> I also don't get the point of this property, why can't you just set the
+> max that the device can do and if the controller can configure itself to
+> be fast enough it will do so, and if it can't then it'll pick whatever
+> the fastest it can actually do instead?
+> Seems like you're abusing a peripheral property to encode information
+> about the controller.
+
+The controller-side approach you mentioned is similar to what I had in
+v2, where a compatible-specific base_freq is used for non-PHY ops.
+
+Miquel,
+
+I think we should revert to the v2 approach.
+
+The non-PHY frequency is a controller limitation/capability rather than
+a flash characteristic, so it seems more appropriate to keep it in the
+controller driver as Conor suggested.
+
+Regards,
+Santhosh.
+
+> 
+> pw-bot: changes-requested
+> 
+> Thanks,
+> Conor.
+> 
 >>
->> Regards,
->> angelo
-> 
-> Regards,
-> angelo
+>> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+>> index 880a9f624566..c88f6f3a1801 100644
+>> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+>> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+>> @@ -41,9 +41,15 @@ properties:
+>>         The device requires the LSB first mode.
+>>   
+>>     spi-max-frequency:
+>> -    $ref: /schemas/types.yaml#/definitions/uint32
+>> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+>> +    minItems: 1
+>> +    maxItems: 2
+>>       description:
+>> -      Maximum SPI clocking speed of the device in Hz.
+>> +      SPI clocking speed of the device in Hz. Either a single maximum
+>> +      frequency, or two values [base-frequency, max-frequency] where
+>> +      base-frequency is the conservative speed and max-frequency is the
+>> +      highest speed the device supports after controller-side configurations
+>> +      such as data training.
+>>   
+>>     spi-cs-setup-delay-ns:
+>>       description:
+>> -- 
+>> 2.34.1
+>>
 

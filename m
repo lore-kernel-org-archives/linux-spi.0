@@ -1,83 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36150282F38;
-	Mon,  1 Jun 2026 11:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841C2361675;
+	Mon,  1 Jun 2026 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780314460; cv=none; b=m+J3mRCILQA6Myz0hFnhn3H6TvMhFI2iCpkMSpraybNRUJcJ+fg0wZjvKaltgBpw/4b2Ugazxmm/nqhEub4FoT64ARE/GdlrEo3DblU6vpAyCXPdulgcI7UF4fk9TzdNykHl216icxRzBk6niQeUeA5md9QtGzaYNfvIA8PbQ5A=
+	t=1780322069; cv=none; b=Z1K+499GzTsJHcNF8ZJ+tpthzT0jjFl5lJC+1r21nBDMuTtC4618Hxipi1NuPRMHhTpNqFDJZZVsi2tYIYX1TU0S82ShaWwEv3JPlMDRFbxrp+ZFVFFw8OcKkeaxj7OaowIgHy0T4rq/R1B6ctsnAMOXeuSUKHONMThAYff9/QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780314460; c=relaxed/simple;
-	bh=pn2bchjT26ccbec0CsO17/q5ATOvyJcKpCj6Q8IWhl0=;
+	s=arc-20240116; t=1780322069; c=relaxed/simple;
+	bh=gwB2SLM8rJ8pdfKWNa7GpQSRIrfwVx5fLRaioIzEosI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6sgwfDV0r6KBrXB4pWkOOkrzj336vV5KNjPmSrB0bqdfFpNrT6ABXEK+AvvkccD9A/ncRslsqg+fCpEudmwVfzpacHlKt6CPmFSO4HTW87b3W8BRaA4YRVoiMrzSA+QADwDAbutnTlpqPl/it5pMF7MN6ai1QtS+YojM6MT8zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLBPIPfr; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLBPIPfr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AE61F00893;
-	Mon,  1 Jun 2026 11:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780314458;
-	bh=t1bK4cZQhsY0Yrq3fi8QJnWtjpMyyN2oQtBqaMvH3f0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iLBPIPfrUmMFBfBo/9hPnVur6xSB/U4GS1TQHQ5ioN1AMCU9Agmv2FBfJ4ubCsO7o
-	 Km3tCnbDZfZ0660St9fhIfUCrcH1M1LKZc5T3M/+7tLXGSVAVfRcWpEIXb7AmWHXId
-	 QKZSxPZjxbiHUkPcg2nVCHi72JwdBIXHGaWmMuQd9uP7cM8rYVrGedF3vmZu+7E7n3
-	 fQw5BPVREIWrXBIdBJrSsK7QIuEGS9JRZwz5QHWM/9o2XRGLoTo7t065OUREXoopA1
-	 VO060BmGvzANgBbVEs9ez0OKuY4AvlhnbM2CyAhk2tBzzuFo69Z7I2vCMDpfuAfoE/
-	 /w5oSfrm0KiZQ==
-Date: Mon, 1 Jun 2026 13:47:35 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, 
-	pratyush@kernel.org, mwalle@kernel.org, takahiro.kuwano@infineon.com, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com, a-dutta@ti.com
-Subject: Re: [PATCH v3 02/13] spi: dt-bindings: cdns,qspi-nor: add PHY tuning
- pattern partition property
-Message-ID: <20260601-stirring-tested-mayfly-e97c14@quoll>
-References: <20260527175527.2247679-1-s-k6@ti.com>
- <20260527175527.2247679-3-s-k6@ti.com>
- <20260530-original-peccary-of-cubism-af68ed@quoll>
- <2f091813-fa28-407f-892d-bbbbe3cac4e4@ti.com>
- <063fe976-9a28-4670-90df-921fbc1c3a8c@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JOZK8IIYye7j6LQIzzBhlFTsJJyKgeQ8ksIvxqviJHDPWsM/Xl1wSHLVEgxgcO6BLYwolslk/ZioqI0kl7Hr3fMRUN/fmTiBONx062nih3/IboYYrmzxogZlVjhDRGzSwcnZAXybO6KsjA6XALcq/RWzjBNfYDdv+lzum5dsE88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CB91F00893;
+	Mon,  1 Jun 2026 13:54:26 +0000 (UTC)
+Date: Mon, 1 Jun 2026 14:54:23 +0100
+From: Mark Brown <broonie@debian.org>
+To: Vishwaroop A <va@nvidia.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Suresh Mangipudi <smangipudi@nvidia.com>,
+	Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+	linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] spi: tegra210-quad: Convert to hard IRQ with
+ high-priority workqueue
+Message-ID: <b4f2951c-8579-456b-8861-85efc21f2807@sirena.org.uk>
+References: <20260520192405.70469-1-va@nvidia.com>
+ <20260520192405.70469-2-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="3CsbvVl06yWyy70s"
 Content-Disposition: inline
-In-Reply-To: <063fe976-9a28-4670-90df-921fbc1c3a8c@kernel.org>
+In-Reply-To: <20260520192405.70469-2-va@nvidia.com>
+X-Cookie: Have a nice day!
 
-On Mon, Jun 01, 2026 at 01:26:27PM +0200, Krzysztof Kozlowski wrote:
- >>
-> >> This should be used in any of applicable examples.
-> > 
-> > Please refer to the DT changes included in the repository linked in the
-> > cover letter, which should provide a clearer picture of how this
-> > property is intended to be used. [0]
-> > 
-> > I'll also add a DT binding example in the next version to make the usage
-> > more explicit.
-> 
-> Why do you new a new example? Why existing examples are not applicable?
 
-typo: "Why do you need a new example?"
+--3CsbvVl06yWyy70s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> > 
-> >>
-> >> I also have doubts that this is per-device property. Your commit msg
-> >> suggests it is per controller.
-> > 
-> > This is a per-device property. It is consumed by the controller driver
-> > only to locate and retrieve the offset of the PHY pattern partition
-> 
-> So with two devices on a bus, you need two separate partitions for tuning?
+On Wed, May 20, 2026 at 07:24:03PM +0000, Vishwaroop A wrote:
+> Threaded IRQ handlers suffer from scheduler latency on heavily loaded
+> systems, causing false transfer timeouts. Convert to hard IRQ handler
+> that schedules work on a high-priority unbound workqueue.
 
-Best regards,
-Krzysztof
+> +static void tegra_qspi_work_handler(struct work_struct *work)
+>  {
+> -	struct tegra_qspi *tqspi = context_data;
+> +	struct tegra_qspi *tqspi = container_of(work, struct tegra_qspi, irq_work);
+>  	unsigned long flags;
+> -	u32 status;
 
+> -	spin_lock_irqsave(&tqspi->lock, flags);
+>  	if (!tqspi->curr_xfer) {
+>  		spin_unlock_irqrestore(&tqspi->lock, flags);
+> -		/* Spurious interrupt - transfer not ready */
+> -		if (!(status & QSPI_RDY))
+> -			return IRQ_NONE;
+> -		/* Real interrupt, already handled by timeout path */
+> -		return IRQ_HANDLED;
+> +		tegra_qspi_unmask_irq(tqspi);
+> +		return;
+>  	}
+
+What ensures that we have a runtime PM reference when this work runs?
+It's also a bit odd that we unmask after dropping the lock, that feels
+like it opens up races.
+
+> +static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
+> +{
+> +	struct tegra_qspi *tqspi = context_data;
+> +	u32 status;
+> +
+> +	status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
+> +	if (!(status & QSPI_RDY))
+> +		return IRQ_NONE;
+
+Since we now have IRQF_SHARED we need to take a runtime PM reference
+here, the interrupt handler could be called due to something else
+sharing the interrupt lin.e
+
+> +	ret = devm_request_irq(&pdev->dev, tqspi->irq, tegra_qspi_isr,
+> +			       IRQF_SHARED, dev_name(&pdev->dev), tqspi);
+
+> -exit_free_irq:
+> -	free_irq(qspi_irq, tqspi);
+>  exit_pm_disable:
+>  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+>  	pm_runtime_force_suspend(&pdev->dev);
+
+The use of devm for the interrupt with non-devm for other things seems
+likely to be racy....
+
+>  	spi_unregister_controller(host);
+> -	free_irq(tqspi->irq, tqspi);
+> +	cancel_work_sync(&tqspi->irq_work);
+
+...especially here.
+
+--3CsbvVl06yWyy70s
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmodjw4ACgkQJNaLcl1U
+h9BfFgf+P9Sg8OKmc7iKUZOoj6Lt3oAcSp5297yyJixnFCyrg8iBW/iAzRXYDztC
+4otnyN3qUoDAGc+0RdXa4oV2XYC96i+yImD0CnzCjCCCnt3c1NaML/mpRhC+ACft
+c5eX3/HZu41QseGZ6zxxVp1WWBgb1uOYxwccv0Y3+Wn1MA+cR13ND5bi03Sv69kH
+FMX/tC2FHCd71PBHlIKvYDgSdI9XwgdKb4qj8OemEaikDqMic+aG0pmmwi6nnwn0
+Gdneoqsts3ANUZYgu+IxDOdU4tTOHZhV/IyJSSVCYX9ccxrTZsYACQ0cbymBnUwE
+r+3ho9suuds7detX0WJGNUurNSC0Pw==
+=02pU
+-----END PGP SIGNATURE-----
+
+--3CsbvVl06yWyy70s--

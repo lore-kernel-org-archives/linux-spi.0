@@ -1,46 +1,46 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011011.outbound.protection.outlook.com [52.101.57.11])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010007.outbound.protection.outlook.com [52.101.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A3D390219;
-	Mon,  1 Jun 2026 09:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDACB306B1B;
+	Mon,  1 Jun 2026 09:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780305419; cv=fail; b=OQddUs6JeX64xZ5jgs2zgZ4thIz55gH68NeakUPo0U8KGFbVkn88o8BwneFnsfWgm+vwyWWWDPIgN2r7kNZFRk33zZo9fnWS4NQFjza1Vsa4YnUYn8MQZ79BvVthApQbai/3UORlOoPWp0I+V21hSkIR0DTRdyOAwFcqYcterKo=
+	t=1780306052; cv=fail; b=IXt8c6OclCpAojnYgUoyd8VpOvdfs9BPE6tHA5pabCWNvJu8dLV56RSRyRK1RtYmI5XnpP7Z3NsTfNPG3/fCDwZ2B3Lj+guVt7EpsQO8vGHrHstHRI/zTWS2249829tdrA5gC7TVnwLFTe8kM700saR1l7/U3f3cIIv6TwPLSCc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780305419; c=relaxed/simple;
-	bh=zoEHDaKimPqfJ/XNQNMYFKp9hHwD1uPTi4xziKWtUB4=;
+	s=arc-20240116; t=1780306052; c=relaxed/simple;
+	bh=Kcn2rg+vdYNsGoU4nC+zSrzRSQTjGi4msT1Sv/vdzrE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dv4d7fsA8ZoLLUtRJdxmmDTtjmVtu41+hDJz/dAA9Kce47cGUWq3ggLskmDWyhvF3z+KC8vNuI6QyttYpklkjyJ3zdFwMJnQMxMZT6Qc+WTvikwSNN13yldyJi84tQhE1JfdkQk1is+i4+oP3To8lwXcVFVgrjN1x7BWbSkszmc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IXqfuSCs; arc=fail smtp.client-ip=52.101.57.11
+	 In-Reply-To:Content-Type; b=iWLYaRZGItMU7C2H/L+ntuicdMDBBkl17+C+QizHqZSFawnaYJHx4QVXHzDiSy3RKNYg1kGuE+8Y9nJj7LJAT6H5h8Sr6UPuh04jrWlUPzFfnv6NJRA53LYpS6iNyQ6L0jGgc4ugOa52c/puCF+CE4iDzjJF44t5LXApxqjZeDU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=JWvxUuEO; arc=fail smtp.client-ip=52.101.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IXqfuSCs"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="JWvxUuEO"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ADpyZpGPuKgb58MuPJC7KeZgzNTaS4EK6tGOdAHeyczpf4CSk1B54tEErksCHcLJ97PFJNNiv0zjigaykRFPsBoG0+PFN2UbRh97HI5UzCipqnF2ROu7XEDNbvB/JFym0IvOgRgJRKrcCfelVAWmT1AD9cHf6uEadU2EWNNiBcWl2bcj/avUdErad1pRI3TmHMwsH/eB45uWtALnVxA7pqdIHOnIAJL4QvAlzbxSK0OAJb7mPz2vJ/od6xns0BXHR2lwGIa4RAem3Fodp8Cbs39kTDSggJCGsek7UNOnDkD1GletVy3jJ2fdyknkKJXkQQZ1r0zfsE95mzR1akUuFg==
+ b=MAIEM30v1yyGmVbNVgW39L2/Oh8QtxKyB2Ye6g4EH1EtEqnMQaqSz0qIfPTRvWFgfqChLsWO8safD/CYIkE04xBY5BWLjDpdonxZ7w5DAIWSNP6f52F90hMRJh6WmttzFuRPG9AWZT2uEahODr3uvkWro1tskYHVJ9s8XpKNsaR68HNWW19NLnSRCF01fUZ+hyRfGolhpSRJYiXWnkgrwR6ad6EMMJXGOangJAb5vsuNJf8iTF8+LDfXxaH9bAJZ5Z8sXQvwk9eB0s776rq7e9eeRHHnGLbeqQwyX6ASGTOGtuKzybvrm1AIFLHvOi6sNJb/mvid0jKOk7bi47Qn6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zxTNlQFdzmXh2tYzBfynmc96b0ewkuI55Lqzeef3yKQ=;
- b=g9gkjZIQS9maSTPHXi4j27HEZ9HGHk3Vyy/ggy1kxezkuJxLwVmA6QXNF26dSG3nWkj1TX/MgO2G3rAI636zxST7S4OJSQ6Emo47DZPAh3cF0DjgUOwS74JJpilLcA7IuLFCoNy53H0MvHeaYqq03I+9GI7hXBzLam3qyjmL0Kb9adH9YienASHzsccYGC3mfKrONDHkdJ3lmgH+vfw1EguQ66onJssT1Zj5sV9yO78Z1QL+9+lj3VHJOLEfS7x7N5CQnH/0QcwzPM1PCqi9tbJr3mu5ls1i3RKEQPBalTWwO+qkC5/bxg/3RocB/8Nm9EJn4jOqiEu8lWk4/DpvlQ==
+ bh=qpiTrhU4b8XaxM7+quIPhOK2GqZLyNikYCoZcor7zjw=;
+ b=qw/zJkkZDGmnBKy9es7MNZ0CGFcGIUTtldHthSkNj2H8M5UqIzn8WtXnIQ+FTehpUAtEhVy50MlTNbML3M8MctuLRDM77fYlP2cSaeymrBnWTBvmeFhC/XBpKd/bmDZ3vw1z2XDF0Fh5B8DWQa6YgOBt80Jw9lGSSeiUeeSTrtiqUIvpZgIc5aac5Ckquvm3wRZS0jx/aiUdvJs0hDgdjZ+mk6GJI0GFlqZOE++bOZvfGfxmoGYDHkf35PPGhsS9vlS9nqnz5cfPBIU1M0o+8UAjG7EwBB+cIRTcFk1fKCTYq5bRaREybb5QXgvuuTj2bEWk3bWxvM9M+UWCzFPODQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zxTNlQFdzmXh2tYzBfynmc96b0ewkuI55Lqzeef3yKQ=;
- b=IXqfuSCscNCLS1tOg6Arg7blZnU3ls/Ue8LvTrm7sAvZG2Hc9N6G+9IPo92QUOUIJfbeHhYM6Xbu6NkmcUGJyDwl653EA1fO+eg+Vu1O1louGL4lotoxAmKKcJHolxVD/KdhgP72FCdo+l+XJ/uv+uQaFJrjbeHafANUs3OMmLA=
-Received: from BLAPR03CA0177.namprd03.prod.outlook.com (2603:10b6:208:32f::30)
- by IA3PR10MB8300.namprd10.prod.outlook.com (2603:10b6:208:582::5) with
+ bh=qpiTrhU4b8XaxM7+quIPhOK2GqZLyNikYCoZcor7zjw=;
+ b=JWvxUuEOoLOyAgzINjlM5nkuzNjVGZ6Q2TV4sRcB0XeqbmRNbSlBskm0+iRqlgbM6gKLoNuA1uxtHHPIPpzWv7xSe4v2XDRAnGOahoMg0LnONlkwXnBjtks5hbX+DF1xbLDqo607VUE67TUWkC/5UFdZV9nvMKyCOeWBBWmajVw=
+Received: from SJ0PR05CA0144.namprd05.prod.outlook.com (2603:10b6:a03:33d::29)
+ by SA2PR10MB4570.namprd10.prod.outlook.com (2603:10b6:806:11e::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.17; Mon, 1 Jun 2026
- 09:16:53 +0000
-Received: from BL02EPF0001A106.namprd05.prod.outlook.com
- (2603:10b6:208:32f:cafe::16) by BLAPR03CA0177.outlook.office365.com
- (2603:10b6:208:32f::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.71.16 via Frontend Transport; Mon, 1
- Jun 2026 09:16:53 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.16; Mon, 1 Jun 2026
+ 09:27:27 +0000
+Received: from SJ5PEPF00000209.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::7e) by SJ0PR05CA0144.outlook.office365.com
+ (2603:10b6:a03:33d::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.6 via Frontend Transport; Mon, 1
+ Jun 2026 09:27:27 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
@@ -48,26 +48,26 @@ Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
  198.47.23.195 as permitted sender) receiver=protection.outlook.com;
  client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
 Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- BL02EPF0001A106.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ SJ5PEPF00000209.mail.protection.outlook.com (10.167.244.42) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Mon, 1 Jun 2026 09:16:53 +0000
-Received: from DLEE201.ent.ti.com (157.170.170.76) by lewvzet201.ext.ti.com
+ 15.21.92.5 via Frontend Transport; Mon, 1 Jun 2026 09:27:27 +0000
+Received: from DLEE204.ent.ti.com (157.170.170.84) by lewvzet201.ext.ti.com
  (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 1 Jun
- 2026 04:16:50 -0500
-Received: from DLEE201.ent.ti.com (157.170.170.76) by DLEE201.ent.ti.com
- (157.170.170.76) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 04:27:26 -0500
+Received: from DLEE206.ent.ti.com (157.170.170.90) by DLEE204.ent.ti.com
+ (157.170.170.84) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 1 Jun
- 2026 04:16:50 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE201.ent.ti.com
- (157.170.170.76) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 04:27:26 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE206.ent.ti.com
+ (157.170.170.90) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Mon, 1 Jun 2026 04:16:50 -0500
+ Transport; Mon, 1 Jun 2026 04:27:26 -0500
 Received: from [172.24.233.254] (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6519GjC1700738;
-	Mon, 1 Jun 2026 04:16:45 -0500
-Message-ID: <2f509130-491c-4a66-9156-39b01b40e65f@ti.com>
-Date: Mon, 1 Jun 2026 14:46:44 +0530
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6519RLwH716951;
+	Mon, 1 Jun 2026 04:27:21 -0500
+Message-ID: <0ee42621-f970-451c-82cd-9a1a63ce197e@ti.com>
+Date: Mon, 1 Jun 2026 14:57:20 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -75,8 +75,8 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/13] mtd: spinand: run PHY tuning after init and
- update dirmap frequencies
+Subject: Re: [PATCH v3 09/13] spi: cadence-quadspi: reject 2-byte-address DDR
+ ops on PHY-tunable hardware
 To: Miquel Raynal <miquel.raynal@bootlin.com>
 CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 	<conor+dt@kernel.org>, <richard@nod.at>, <vigneshr@ti.com>,
@@ -85,134 +85,122 @@ CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
 	<praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
 References: <20260527175527.2247679-1-s-k6@ti.com>
- <20260527175527.2247679-12-s-k6@ti.com> <87mrxjg9zi.fsf@bootlin.com>
+ <20260527175527.2247679-10-s-k6@ti.com> <87y0h3gb6o.fsf@bootlin.com>
 Content-Language: en-US
 From: Santhosh Kumar K <s-k6@ti.com>
-In-Reply-To: <87mrxjg9zi.fsf@bootlin.com>
+In-Reply-To: <87y0h3gb6o.fsf@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A106:EE_|IA3PR10MB8300:EE_
-X-MS-Office365-Filtering-Correlation-Id: 500aa677-998f-4ffe-ca69-08debfbe8599
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000209:EE_|SA2PR10MB4570:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0145e690-5cf2-461f-e245-08debfbfff0a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700016|3023799007|6133799003|18002099003|22082099003|56012099006|4143699003;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700016|3023799007|6133799003|56012099006|4143699003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	NsiaIjixbLSwzDw5hOApCsIjOSoRuM5b//0cdHNVr9zgMOS7WPiP9l3xyzcI+V4mG7HrjycpNkKFz8UYRxkaUaloexLjV4ZgaGWf1enD2P+wFwSJ8o6C4BH2lcpHgGVWplXc+bQ7L8w95OgcZXwlGdIK3hMoXuN2Oxg1CWKB+wJ2Ky6JU9w8kDdHGi38pnMkbapLCnS1/GguAYgi93h2FhJDk5uPEH7KWHcK2tkg90bnDcwY9h2oTGzGpA1krIcVvHI7wHoB6VvLS+tRxIDf6kCzOEYPQxuY2PLcNw0erqoILcxO3bo4/QO0fjgbmXCnlnwY234tIPlpVkUC1QWAEc1egFQk/CUp4sNCrBvbenxDwKMq0M6hJ/f/OcrRq6jxQiC4dEYn3pud97OPCjAavNVJyeBOkremLAtVdtD/W2mET6nY+k3R4sGa/1xEXvtSbZ3Rr4kLS70rInCCz38uLG1rkOj9ZlQPuFn5uJO3Li/22lq1w+/HM4djTz2bacN8+0zk2J7sxFOr9//EX1t8LSNmII4QU5RTxI1uVCpXgXY51xkGJG0QxcuAm96d+diY8uMl+JDI7mO+nAhfPi44YI75Ed0y7vmHJpSVtmQvrPrxOfW5xddv7C4Nb2T1lBBPdYohNCcK/3chRo7e/dWoAD5zvH8G+GAGm+RUI8V73oihXZ9tclezVKgxKHHSFIm80DeEOs+sQeRDDLv17TE1UeeNi8obXqZSu35M5+sa1nQ=
+	ouBA9Pe3BFAkC4cnXDRJtJSrTKndN2XGjquJI4lpGMMSN8yJap6e2MxT7a/9KrbExqOdkfYCFy89J8ChZtrSzkgenAd3yahv7EQ/Jtebb8g0JLGgJ5dfyhDjyJrdbnc9JrlZr2uFz+vCkLUKt2lJmyBkd2EZFvqybBAzZzeF6FbjE5AscKKa0bWMc/Z+vhxcLIj/UhRYLwsHggXdktsV2umIyDOwxK1QhFxmtsWUd2HrELrbuZO+25Ve16HQeanfCWqbRjb5P8IcHIYMlOdXdZD8BcqcIxIgklas0bRjtfwxXVoOZe9TkyskcE+hENVPf/1sbMLXnN5ixOj9uoi3YRh38UnuUhcFxJTH5q4G/9dEqJB/8c+pNWTKNAU0vJUNNrhCMpilM4WWsZo4cLCmq0CmSeamdkiX+Dis33QisJ1PPKYwuheHtJ17pojSeJXMr9S1zxxNAh9qdwoNVik1BXxbJd/GR42b+NUBKMAwvuGj/Yvw/flcvywZtJ+enEPni3VSCC9gqEqVlGDjb6os/v3HP9BxLOb/viagk8AfaeFot20wPQY5QX658Z4tTw6pINWzQEhf3mQPyxECgvozooz0e+t9rH40svw/kJ5qqVnwVOv6XMVoSklYJEpB+jzCk6nj5qAuvGsT/T3huitvJOzxOo6qCcEIxAtC46hrrpKKVZ996Nijm3/aBzPc+6epXkme0Ko9HE8abCahtyNarYnsoB8xkrRQJQsVRJ7CBF7GVRP8ixD/U2KVL99SwKZR
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700016)(3023799007)(6133799003)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700016)(3023799007)(6133799003)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	WrdhD7JRKd2YkNlp+qaKG+4ITsFVx4qKAFx3oO8E6BFLaRjR3/Fp/kaytU9RtiHVsBIbGKYm/tAEBlKjELZkELucxeTjYutgnJ2FTSD2PZxOB44MPwH/JwJvGTM7/ciJQ1rSRPHnjRAslc4nPZQVLP/mVgtMGHELI8wrniRFiHPqle/K5fBSXNhSj5c2kbkQepJSrZ2FNt3U/qyE9S8naYu774LAHRwaYiq52seGnXoy/5ZpBlf2adECLThuD3YxVMcfls7GVHRro/UJVc9J+5H0lqS6IZNp52/vBjewZKY1nSvlwi1tX0CV4CncgEGT/M3x9PDN4F9JKi9CdBNa5fmeA5opMuVAZQ1SxFdb48Xg9rEs3CvR8Rg4/LeIWSPqPtqQ1ixsGXcFTVOFFpdtWFyNeZnePnWDlYvMF7Glxvv1oJls4dKjMvtdNilXexdV
+	jpP4M49lk0aFQ9u6I3r+BGQi5vBiJDftD44eu2vTyVq2rnRlRrHL7rvGYkFElOOapUxdcoNBoVTwIZXCmkERsm3DeOVHD+dXijeEEpHkikbVlT1Dbl25qZyoNDMb4ehYo7RYyt7kOjR9yCFJ+ltLgBelMcoDSZfhAbQrTfQYlsLFcGhW/IHGx9z3HQmgV/6lnSJ6EocwHkO0MebKg5OmprvyJ505n7p0hIPNFJaRw432O/iu/VssW7EK84Sx1zyG5LMi8ycAxzyQ3wo1SzYzzfbUGqbPMdbJkChp7qYxchrGfjY9Jm4iI49pBNIfWASnU6jVP1nUlKDwPEM2KX5G77cWA2JERD9mXbPVnaBCT2eYWa8MxU8T4fVxTV47ia0tNM5n+4h2EhoEJw7oOo7SBnY+M68hC0/Fsm1drqFOGkkgy1fzN6vI3BSn7X3kaIow
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 09:16:53.8018
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2026 09:27:27.0353
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 500aa677-998f-4ffe-ca69-08debfbe8599
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0145e690-5cf2-461f-e245-08debfbfff0a
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A106.namprd05.prod.outlook.com
+	SJ5PEPF00000209.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8300
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4570
 
 Hello Miquel,
 
-On 28/05/26 14:57, Miquel Raynal wrote:
-> Hi Santhosh,
+On 28/05/26 14:31, Miquel Raynal wrote:
+> On 27/05/2026 at 23:25:23 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 > 
-> On 27/05/2026 at 23:25:25 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
-> 
->> Run spi_mem_execute_tuning() in spinand_probe() after spinand_init()
->> completes. The read and write op templates are copied into persistent
->> fields in spinand_device so the controller can write the validated
->> frequency directly back into them. On success, propagate that frequency
->> to every dirmap's primary and secondary op templates. Updating the
->> secondary template ensures continuous-read dirmaps also benefit from
->> the validated speed, not just the primary read path.
+>> Erratum i2383 affects the AM654 OSPI controller: in PHY DDR mode,
+>> operations with a 2-byte address cause an internal state machine to
+>> mis-compare the transmitted address byte count against 1 instead of 2,
+>> locking up the address phase. [0]
+>>
+>> Add a CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk flag and set it on the am654_ospi
+>> platform data. In cqspi_supports_mem_op(), when a controller carries this
+>> quirk and has PHY tuning support, reject DDR operations that use 2-byte
+>> addressing.
+>>
+>> [0] https://www.ti.com/lit/er/sprz544c/sprz544c.pdf
 >>
 >> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 >> ---
->>   drivers/mtd/nand/spi/core.c | 35 +++++++++++++++++++++++++++++++++++
->>   include/linux/mtd/spinand.h |  4 ++++
->>   2 files changed, 39 insertions(+)
+>>   drivers/spi/spi-cadence-quadspi.c | 15 ++++++++++++++-
+>>   1 file changed, 14 insertions(+), 1 deletion(-)
 >>
->> diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
->> index f1084d5e04b9..9b54e4607cfe 100644
->> --- a/drivers/mtd/nand/spi/core.c
->> +++ b/drivers/mtd/nand/spi/core.c
->> @@ -2030,6 +2030,41 @@ static int spinand_probe(struct spi_mem *mem)
->>   	if (ret)
->>   		return ret;
+>> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+>> index 508bc5bc4ab5..72208d376305 100644
+>> --- a/drivers/spi/spi-cadence-quadspi.c
+>> +++ b/drivers/spi/spi-cadence-quadspi.c
+>> @@ -49,6 +49,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <= SPI_DEVICE_CS_CNT_MAX);
+>>   #define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
+>>   #define CQSPI_NO_INDIRECT_MODE		BIT(11)
+>>   #define CQSPI_HAS_WR_PROTECT		BIT(12)
+>> +#define CQSPI_NO_2BYTE_ADDR_PHY_DDR	BIT(13)
 >>   
->> +	/*
->> +	 * Copy the read and write op templates into persistent fields so
->> +	 * execute_tuning can write the validated frequency back into them.
->> +	 * Tuning failure is non-fatal; the device operates at base speed.
->> +	 */
->> +	spinand->max_read_op = *spinand->op_templates->read_cache;
->> +	spinand->max_write_op = *spinand->op_templates->write_cache;
->> +
->> +	ret = spi_mem_execute_tuning(mem, &spinand->max_read_op,
->> +				     &spinand->max_write_op);
->> +	if (ret && ret != -EOPNOTSUPP)
->> +		dev_warn(&mem->spi->dev, "Failed to execute PHY tuning: %d\n",
->> +			 ret);
->> +
->> +	/*
->> +	 * Dirmaps were set up in spinand_init() before tuning ran; update
->> +	 * their op templates to use the validated frequency.
->> +	 */
->> +	if (!ret) {
->> +		struct nand_device *nand = spinand_to_nand(spinand);
->> +		int i;
->> +
->> +		for (i = 0; i < nand->memorg.planes_per_lun; i++) {
->> +			if (spinand->dirmaps[i].rdesc) {
->> +				spinand->dirmaps[i].rdesc->info.primary_op_tmpl.max_freq =
->> +					spinand->max_read_op.max_freq;
->> +				spinand->dirmaps[i].rdesc->info.secondary_op_tmpl.max_freq =
->> +					spinand->max_read_op.max_freq;
->> +			}
->> +			if (spinand->dirmaps[i].wdesc)
->> +				spinand->dirmaps[i].wdesc->info.primary_op_tmpl.max_freq =
->> +					spinand->max_write_op.max_freq;
+>>   /* Capabilities */
+>>   #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+>> @@ -1627,6 +1628,18 @@ static bool cqspi_supports_mem_op(struct spi_mem *mem,
+>>   		if (op->data.nbytes && op->data.buswidth != 8)
+>>   			return false;
+>>   
+>> +		/*
+>> +		 * Erratum i2383: In PHY DDR mode, 2-byte addressing causes an
+>> +		 * internal state machine to mis-compare the transmitted
+>> +		 * address byte count against 1 instead of 2, locking up the
+>> +		 * address phase. Reject such ops on controllers that need it.
+>> +		 */
+>> +		if (cqspi->ddata &&
+>> +		    (cqspi->ddata->quirks & CQSPI_NO_2BYTE_ADDR_PHY_DDR)) {
+>> +			if (op->addr.nbytes == 2 && cqspi->ddata->execute_tuning)
+>> +				return false;
 >> +		}
->> +	}
 > 
-> Unfortunately, hot fixing the dirmaps is invalid. When we take the best
-> variant, we select a maximum speed that may be lower than the tuned PHY
-> speed. We cannot just overwrite that value without consequence, because
-> depending on the boundaries we cross, extra dummy cycles may be
-> required.
+> I don't think this is a valid approach. What we want is to prevent
+> tuning in octal DTR mode with 2 bytes addressing, instead of preventing
+> reads/writes in octal DTR modes after tuning. Have you tried on an AM62A LP
+> SK? I bet probe fails..
 > 
-> I believe spinand_select_op_variant() shall be aware of the different
-> possible speeds. It should look for the max_speed_hz capability and not
-> for the base_speed_hz, and fallback to base_speed_hz in case of
-> issue.
-> 
-> Or otherwise, maybe we could go through the whole I/O variant
-> selection again after tuning, with the actual maximum speed set.
+> The quirk should be handled at the beginning of the tuning procedure, so
+> we skip tuning entirely in this case.
 
-Good catch. Updating the dirmap templates after they have already been
-created is indeed not correct, as the operation selection may depend on
-the final frequency and associated parameters such as dummy cycles.
+I see your point. However, in my testing on AM62Ax LP SK, the controller
+and the flash probes and operates correctly in 8S PHY mode.
 
-Instead of patching the dirmaps after tuning, I'll move the
-_execute_tuning() call before dirmap creation. This way, the validated
-frequency can be written back into the selected read/write variant, and
-the dirmaps will then be created using the final ops.
+The reason I handled this in supports_op() is that, for these devices,
+simply skipping tuning when a 2-byte DDR operation is selected may not
+lead to the best achievable operating point. The performance ordering I
+measured is:
 
-I'll rework the flow accordingly and let you know the results once I've
-tested it.
+8S non-PHY < 8D non-PHY < 8S PHY
+
+So falling back from 8D PHY to 8D non-PHY would leave performance on the
+table compared to selecting and tuning an 8S operation.
+
+That said, I agree that encoding this as an operation support
+restriction is probably not the right place to handle it. I'll rework
+the initialization flow so that operation selection can take
+PHY-achievable frequencies and controller-specific restrictions such as
+i2383 into account when choosing the final operations.
+
+Let me prototype this approach and will report back with the results.
 
 Thanks,
 Santhosh.
 
-> 
 > 
 > Thanks,
 > Miquèl

@@ -1,84 +1,57 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744FC3B635E;
-	Mon,  1 Jun 2026 13:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEB33B4EA3;
+	Mon,  1 Jun 2026 14:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780322368; cv=none; b=ZIFOavO9lZivJl9A7XZQBOejEtvxWCE2QatA+SJ1Gxz2JfTRj2x/NuPuUa7OaJplkNCRv4o7N/3woMM6xoGDqTo8w+HL6mi5WaWAXYd1ugyqygjvSV6DDnr7+EAEQwlntT9MzR0BmfZQLbubmM0I+RXRYNJFf5wwIlz1ddlPJoA=
+	t=1780325017; cv=none; b=gNoP+6AuYZ1qiaCdHf3h3plWjGTrHVxs5fyuHZ9hLLiLYWSbl75fPpUsCT/jme7H+DMS4fo01ok6VaZ+LasqWio1ygiST+ZC++dMw7tUQX2iXdvDuiaTDccNxFFFHmNKes8+jiaBqGorRjC74vjWK6i/PWNBDHydmOdC8bMK25w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780322368; c=relaxed/simple;
-	bh=1xHIWqh7F+h6OYvKF4j9HkQQBvPOuRQJV+piBQzzFKE=;
+	s=arc-20240116; t=1780325017; c=relaxed/simple;
+	bh=m5ZUc4gAQRze2UVAcz5pyvxHsM4wU7vTSIol0yQAQwc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F2SMxYk/K0agqYB6VPO2F+kfs95ApuQ44TcK/dhyuZZ1wR+jdCKO4h2J24W2fjKajmvwPsmIWD5CwNpzRIcBxAx4+4wz6ozjXcvEAeR4iBWe8qXBtvJRpS8OrSS6aVKp+kcUojMYEy3g3ZnGH3GqIQmUSr3rpTC4EXTgmB0bOYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283DF1F00893;
-	Mon,  1 Jun 2026 13:59:23 +0000 (UTC)
-Date: Mon, 1 Jun 2026 14:59:21 +0100
-From: Mark Brown <broonie@debian.org>
-To: Vishwaroop A <va@nvidia.com>
-Cc: Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Suresh Mangipudi <smangipudi@nvidia.com>,
-	Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-	linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] spi: tegra210-quad: Process small PIO transfers
- in hard IRQ context
-Message-ID: <3fb380c3-6a49-487a-9793-a1f08d272ac2@sirena.org.uk>
-References: <20260520192405.70469-1-va@nvidia.com>
- <20260520192405.70469-4-va@nvidia.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hiMox9BHMJLlwKxA+j6iRpU193t/oMSWmWiTgcBYYehupGFBbcUyriYA5hafNk7HinP31/m+aUOHQXOkJ5Xiw6tkbsxyAJZXyQX554lMd+xS35fs1b4an6DRyMxQ/rHObjKhivCPdF2IZ2xhmqe0pLExxN86KnoIPv0lEwCp4T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id DB2CC68B05; Mon,  1 Jun 2026 16:43:32 +0200 (CEST)
+Date: Mon, 1 Jun 2026 16:43:32 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Greg Ungerer <gerg@kernel.org>
+Cc: Angelo Dureghello <adureghello@baylibre.com>,
+	Arnd Bergmann <arnd@kernel.org>, linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
+	Vladimir Oltean <olteanv@gmail.com>, Christoph Hellwig <hch@lst.de>
+Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX()
+ functions
+Message-ID: <20260601144332.GC4918@lst.de>
+References: <20260506142644.3234270-8-gerg@kernel.org> <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com> <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org> <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com> <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com> <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com> <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com> <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com> <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com> <2b532d56-dce4-4f6d-84e0-2fd87d5494f8@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Kya4tfdkHUux56J+"
-Content-Disposition: inline
-In-Reply-To: <20260520192405.70469-4-va@nvidia.com>
-X-Cookie: Have a nice day!
-
-
---Kya4tfdkHUux56J+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <2b532d56-dce4-4f6d-84e0-2fd87d5494f8@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Wed, May 20, 2026 at 07:24:05PM +0000, Vishwaroop A wrote:
+On Sun, May 31, 2026 at 11:42:26PM +1000, Greg Ungerer wrote:
+> I don't think that is right. The way the underlying data cache is setup for
+> MMU ColdFire (via the ACR/CACR registers) means that individual pages cannot
+> be marked as non-cached. So coherent memory allocations are not possible -
+> at least the way things are today.
+>
+> It would be possible to set aside a chunk of RAM at kernel startup time
+> to use as a pool for coherent allocations (since it could be marked as
+> non-cached via the ACR/CACR registers), but there is no code to support doing
+> that today.
 
-> The 256-byte threshold (FIFO depth) ensures small transfers for devices
-> like TPMs use the fast path, while larger transfers continue using
-> workqueue.
+With CONFIG_DMA_GLOBAL_POOL there is some generic code dealing with
+most of this.  But if this driver worked on coldfire in the past,
+it must have been fine with non-coherent memory and could use the
+non-coherent allocator.
 
-> +	/*
-> +	 * For small PIO transfers (e.g., TPM), process directly in hard IRQ
-> +	 * context unless there was a FIFO error. Error recovery calls
-> +	 * device_reset() which can sleep, so must be deferred to workqueue.
-> +	 */
-> +	if (!tqspi->is_curr_dma_xfer && tqspi->curr_dma_words <= QSPI_FIFO_DEPTH &&
-> +	    !tqspi->tx_status && !tqspi->rx_status)
-> +		return handle_cpu_based_xfer(tqspi);
-
-Is cur_dma_words always in the same units as QSPI_FIFO_DEPTH - I see
-there's packed transfer support in the driver?
-
---Kya4tfdkHUux56J+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmodkDgACgkQJNaLcl1U
-h9C92wf+JbgvZaM0+OCJY29Io4j2DNQhX/7L+iDedPehQGbDnJDPR6RTroPzRzkX
-JMs8hDcNQtB9jAdEOz6XCAdKzSnw85PQcgL4NwM9F4t2bmxtfHkkC0e8Ty9fN8Hj
-0pP9N9YOT7knGvpvAKC9aIYZtKTRFHcULcBvA9TJidpP9bMGGUQSbNpHzd0dluXi
-MLKaYQFxg4XcUiE29MnhlMft5hoUEcbltb0xYtgMOfDz7j1Gs59dtg2wzI53tuHN
-4zBL7gv9zDb7mm3UTHjn3kRAYOa9llW6DOjorKRQ8ln5GPVXjzD9kEs6c0xj/nFf
-IBpvEjxsPrifyUhM1l05/gjTactelg==
-=W+ey
------END PGP SIGNATURE-----
-
---Kya4tfdkHUux56J+--

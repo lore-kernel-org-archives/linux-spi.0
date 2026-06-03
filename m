@@ -1,101 +1,142 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7D03D171F
-	for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2026 09:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763143C04B;
+	Wed,  3 Jun 2026 09:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780478953; cv=none; b=kxqkfZfvFpU53lq+mNgWETczMqnl7SQ1XWuo0wwf0HzC3DOaBIMBCymPwxDzJA/Acp1xGlJWU4jcZ4E6lN3Aq+guFTrQV7A10WCdDlF/ca0ogFb3MGW8wg4tGjw/x7HK2lEfnJ5fXHMwVMdxv3hS10FDx8h02zN9N97P/iA56hw=
+	t=1780479064; cv=none; b=cwJYz5K2Ejx79PT7ejUNNoEMt/3OqjBgobl1l88C/+UaruYixBeh4VYkawxw08NqRxBF3lG3pPDAVfaAZa3DdusWOJ54LnmmIxyQQynKoNsTO/uxnxdJVbid/+vE8FvFZFKgeBgdvYAT2ermXoLxl2W5/0EUfBMAvE1LQH+AxTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780478953; c=relaxed/simple;
-	bh=b0FwIuZ5pDLAhzbYxcTxm/lAPKiEu/hDBMREzsHSOvE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ft1njq82C5kTU9iflqxjCSGGCRczkjaWnRxoi1X2DIa6TfUhQCqHUdJHCdEKyLK33aohGn0+JByOH0+P/42kuaYEFdqrCCdKUcXAlyy6eFLmpG+oL78Wy7PQpK+2uqHRoPkNfMAsFbl27TuFBCzFQW/8P4WO0xzk14FU8EgUNLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dkz9MkDz; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780479064; c=relaxed/simple;
+	bh=emg/Jr2AK/rp3uG3OGfjNJgCPPs0dyU3KM+4DpGshSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ou4mzYIR+acDU0xibdIf/qtud7oSXIML0beJNZuJTEDN4GdE98qnv3aJ59LoUQJQqU7yMOVMvcn7ofQTeCrWlLE3HbEw/jUJWOZ9gvhBe/KvUKEQfKNaX6xVtoh01eP+YXxerBFf0iVFXSbrKBTUK/knYLwlgQvWtrLinkSYg7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKLZwikI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dkz9MkDz"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84229481d44so1580311b3a.0
-        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2026 02:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780478950; x=1781083750; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b0FwIuZ5pDLAhzbYxcTxm/lAPKiEu/hDBMREzsHSOvE=;
-        b=Dkz9MkDzV8gIFNHcIMILa1pFiIoo+peVWML210SizsPzQTAyUERBvIM2xd1Wpg3wP3
-         MKWe0ckiaiHD11pBDoG8PprfXkwePzJo83LqTG8dY4ewLgOv5Jqb+OprOVajNH784lim
-         743YtLvWL9QCxx3zuYgO40BnByOROoMxQHlJVB8Kr94AqmzFqWxvju0W8TiX1lUEdfJe
-         +3W7JM8T90xB/p5eM1UxiNSTL3+8rl+02Mhef1/wasDmfalC+aAf4SYZXXB17cr/rFVW
-         06usqO/v0nbhBB2kia83S8f6y3h/6eNir8iYErEFqDI66cxxoAjYS45i1QWeo3wo7yZi
-         hWdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780478950; x=1781083750;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b0FwIuZ5pDLAhzbYxcTxm/lAPKiEu/hDBMREzsHSOvE=;
-        b=DO66Wb/zGtA/Q+pSwyqYkG4J1FqKvfQEtqNb7nTX8egzwxB6f6CAy7pKiNbblp1BTk
-         +AhJmHHHKb39Isid3dqQBObrSDH/0tA+RxZ0ezceJmEWB06oIHBs/vQps1UOyRcWdglL
-         V+/r3ar7EGLpzOBjCD9hnriGrjobkJe1JtPowbqx2O4CROrYFyC6deSwX+JQSvrz6aQT
-         QH1khQwmFu60LLfrUYy4QU8pwPqqYvGTQUEwgUHn1J+SdmCOjECgZyWbtbaCLnt6duRB
-         FNTPERa89NqzezHxDyoUEYF/fqNf6QrsBFNYyhOdKR2GqOjzMw27E6nQiTD/YNkTJQAc
-         Rprw==
-X-Forwarded-Encrypted: i=1; AFNElJ8wo27AAUdhpuILfnnPOZON7dhD5PUApIhEue+Xvm0r3n7EYUc4qZtVElizvdJ872p97xdGaRuufKo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsYu92Hn0HUvALxcVXamMhpdFCyJ/SLfY1Vc/nN1le8PVX/EIz
-	uMbbvoZ50CQR0ZtFAoccbwwvIrzdE5YddThbPmUFHfSBMPWf8qh19Qoi
-X-Gm-Gg: Acq92OFzx2CxRBtCAtwh1LlowAx3P9Sg5IAkNYRw3HZqlvAmYbQUJQZ3WQYFSBMvluo
-	anlFfRJlI25Oc3WBeAkDrjWP/LNM13yUwO2goQMCdT9lqpaZlY0va2N0ubE4hVmPKthZmFWY7rr
-	7jBUA0AF8pv39TpzzwZJa4E8xYShzeSd5zrHGkiWsGV7X5VcpSF2lQpPC7kbgnmYYjmgtX620Qc
-	wORQo3zG62fmsz+7yKjfNALK62a5hPApuKyjRZbKL1nddm/IfBk1qbk85GcQcyqkE0K+EB2LEiz
-	9bsi6NYQb5lc1RYhz9GkvP6J5Xp1KeMFkfNKZxNSxZrFATlANYW+hSqZOESMH1t2WtuUm+aiGwA
-	/xPJMxSDsEN0PV3DfP1angmzB2J0I43Ta2cOiMuvdfubnXtEovfCxCsjw4HG0ttyxXGCLiFh+ju
-	bvReWEWdlyCZBoRQUTzeli66F4p9jbhw/ZZ/MfhYlC4JBNO9p0O86KmnvbIS6phjpecjG3w+0tR
-	G0ewOpP2n5IAA==
-X-Received: by 2002:a05:6a00:27a1:b0:82f:38df:681c with SMTP id d2e1a72fcca58-84284e3636fmr2479696b3a.6.1780478950133;
-        Wed, 03 Jun 2026 02:29:10 -0700 (PDT)
-Received: from [172.19.1.42] (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8428288002asm2370530b3a.31.2026.06.03.02.29.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jun 2026 02:29:09 -0700 (PDT)
-Message-ID: <a9417d76-eb10-4e33-98b6-4cce7bc3e190@gmail.com>
-Date: Wed, 3 Jun 2026 17:29:06 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKLZwikI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BFD1F00893;
+	Wed,  3 Jun 2026 09:31:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780479063;
+	bh=9AerHmbjV83y9A55r5tKc0QfFhPXJXRVsUh6a0eEv+0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gKLZwikIl6VoRszNhPOK/+zp4BVbh6zVW6r8nz2fnlagc02qK642z4MrYzSbbssSw
+	 e7JRRtsWorSrBHsqNO4xQhZX12YvUZbRJbVTQ2g2v0dWqWlV7FcMsFv/gwZ1YbvAz0
+	 +vUddHj3B1Vt+6On03NYjYrOLTNGii7X2GDulHv8wWBGP1eMar/AVYvKii2fLfKfrm
+	 0lkbEmJx1jNscxT8WjJBtidHIfJBhvcIAVXKh6fs6J0R4qn80HyhT5CqDeW90HtbMU
+	 qGIcCmuNydBim+RvY5zxFR24oGjQ8AdFIwPqZNwo0cswOM4hMbD0viAWZ5Pj1Y6t2d
+	 hnbSm0QXnB0Yg==
+Date: Wed, 3 Jun 2026 10:30:58 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Chi-Wen Weng <cwweng.linux@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cwweng@nuvoton.com
+Subject: Re: [PATCH 2/2] spi: Add Nuvoton MA35D1 QSPI controller support
+Message-ID: <d32634eb-4eed-46e6-b378-d42df0b1c75e@sirena.org.uk>
+References: <20260603043551.1062112-1-cwweng.linux@gmail.com>
+ <20260603043551.1062112-3-cwweng.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: spi: Add for Nuvoton MA35D1 SoC QSPI
- Controller
-To: Mark Brown <broonie@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, cwweng@nuvoton.com
-References: <20260603043551.1062112-1-cwweng.linux@gmail.com>
- <20260603043551.1062112-2-cwweng.linux@gmail.com>
- <bc0f42c0-b85c-4239-93a4-429193338f99@sirena.org.uk>
-Content-Language: en-US
-From: Chi-Wen Weng <cwweng.linux@gmail.com>
-In-Reply-To: <bc0f42c0-b85c-4239-93a4-429193338f99@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Hi Mark,
-
-Thanks, I will fix the subject lines in the next version.
-
-Chi-Wen Weng
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UGarUI9v4pCN0SBM"
+Content-Disposition: inline
+In-Reply-To: <20260603043551.1062112-3-cwweng.linux@gmail.com>
+X-Cookie: micro:
 
 
-Mark Brown 於 2026/6/3 下午 05:04 寫道:
-> On Wed, Jun 03, 2026 at 12:35:50PM +0800, Chi-Wen Weng wrote:
->> Signed-off-by: Chi-Wen Weng <cwweng.linux@gmail.com>
-> Please submit patches using subject lines reflecting the style for the
-> subsystem, this makes it easier for people to identify relevant patches.
-> Look at what existing commits in the area you're changing are doing and
-> make sure your subject lines visually resemble what they're doing.
-> There's no need to resubmit to fix this alone.
+--UGarUI9v4pCN0SBM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jun 03, 2026 at 12:35:51PM +0800, Chi-Wen Weng wrote:
+
+> +config SPI_MA35D1_QSPI
+> +	tristate "Nuvoton MA35D1 QSPI Controller"
+> +	help
+> +	  This driver provides support for Nuvoton MA35D1
+> +	  QSPI controller in master mode.
+> +
+
+Other drivers for this SoC seem to have ARCH_MA35 || COMPILE_TEST?
+
+> @@ -0,0 +1,579 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Nuvoton MA35D1 QSPI controller driver
+> + *
+> + * Copyright (c) 2026 Nuvoton Technology Corp.
+> + * Author: Chi-Wen Weng <cwweng@nuvoton.com>
+> + */
+
+Please make the entire comment a C++ one so things look more
+intentional.
+
+> +static void nuvoton_qspi_set_cs(struct spi_device *spi, bool enable)
+> +{
+> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+> +	unsigned int cs = spi_get_chipselect(spi, 0);
+> +	u32 mask;
+> +	u32 val;
+> +
+> +	if (cs == 0)
+> +		mask = NUVOTON_QSPI_SSCTL_SS0_MASK;
+> +	else
+> +		mask = NUVOTON_QSPI_SSCTL_SS1_MASK;
+> +
+> +	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_SSCTL_OFFSET);
+> +
+> +	/* SPI core passes enable=true when CS is asserted (typically active-low) */
+> +	if (enable)
+> +		val |= mask;
+> +	else
+> +		val &= ~mask;
+> +
+> +	nuvoton_qspi_write(qspi, val, NUVOTON_QSPI_SSCTL_OFFSET);
+> +}
+
+Note that the core deals with SPI_CS_HIGH, the driver doesn't need to...
+
+> +static int nuvoton_qspi_mem_exec_op(struct spi_mem *mem,
+> +				    const struct spi_mem_op *op)
+> +{
+> +	struct spi_device *spi = mem->spi;
+> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+> +	u8 addr[4];
+> +	int ret;
+> +	int i;
+> +
+> +	ret = nuvoton_qspi_setup_transfer(spi, NULL);
+> +	if (ret)
+> +		return ret;
+
+This uses spi->max_speed_hz but spi_mem configures p->max_freq which you
+should use (it might be lower).
+
+> +
+> +	nuvoton_qspi_set_cs(spi, true);
+
+...except where you're calling in directly at which point the driver
+needs to figure this out.
+
+--UGarUI9v4pCN0SBM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmof9FEACgkQJNaLcl1U
+h9AGigf+PXAtexduRP/S5ai2U1yA1oOZHH5GxgE1+Oyoyq8Z+QkGmkVCjl4ru80E
+7R1XMoIB0CB46+Pkd4+3bvwxfWTqLtrdknVUatHO/QcvWOezFdEk3sPF3XOyEfdH
+S/u1vxPWFi+L6ywy2OdG0gFt7aYJIZAc7l1SZNe5C7Ck0HLpY1O5sajk+Gu08tY5
+UeskE7hA23JmD14+jzbM8yMVyVHVYNwpIq9Y2cfA7I8Hxe+wkLVGnN46FIgzXrsI
+ZwHk1Y48hGsKqqHjLdkiYvv5kHAKI+3uoJNicUuhycLo9980PDh999clA/7+RPUL
+Uzf+IFtyZ0vuj1TsWQ90yUArWSfLLw==
+=PW/z
+-----END PGP SIGNATURE-----
+
+--UGarUI9v4pCN0SBM--

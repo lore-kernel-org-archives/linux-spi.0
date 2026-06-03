@@ -1,142 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763143C04B;
-	Wed,  3 Jun 2026 09:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1739449EDD
+	for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2026 11:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780479064; cv=none; b=cwJYz5K2Ejx79PT7ejUNNoEMt/3OqjBgobl1l88C/+UaruYixBeh4VYkawxw08NqRxBF3lG3pPDAVfaAZa3DdusWOJ54LnmmIxyQQynKoNsTO/uxnxdJVbid/+vE8FvFZFKgeBgdvYAT2ermXoLxl2W5/0EUfBMAvE1LQH+AxTc=
+	t=1780484602; cv=none; b=U8u3HjmWldmw6XHbmC4UYrnw4N5j1xHM9oJIRFae6FeSPUzNZSvQsKxZmkT6yoGaM5seGRONw6FPIAN3uVlrNS9wAV4RMvfgzx01GrV63nd4rwTvHqRtAoNWySdcuZW7p3l0At3DJ5AC2+nX/V//wnJ5c4zYM/wicc/ncHeOX/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780479064; c=relaxed/simple;
-	bh=emg/Jr2AK/rp3uG3OGfjNJgCPPs0dyU3KM+4DpGshSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ou4mzYIR+acDU0xibdIf/qtud7oSXIML0beJNZuJTEDN4GdE98qnv3aJ59LoUQJQqU7yMOVMvcn7ofQTeCrWlLE3HbEw/jUJWOZ9gvhBe/KvUKEQfKNaX6xVtoh01eP+YXxerBFf0iVFXSbrKBTUK/knYLwlgQvWtrLinkSYg7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKLZwikI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780484602; c=relaxed/simple;
+	bh=H74Lq0TSr0QOVoOeuu9C+dc+cedTm6HEOLOz6/S1OMk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Qc1ImSbsipJLpRMlUJWFVohzJqL7jt0mXBOpuL7Q7T1X998RnZIIJF+eOUzFDZhFQ858bWDsjcFHmivM2TgpyC5gCiDW/vkr0zQB1fFsm16KK0MhRPbQSGvX9fRr1tktfnKkZf4rthCHH7aSX5F1psoOvLXGGX2kJRTjYJIg8b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pV+sCvAP; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKLZwikI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BFD1F00893;
-	Wed,  3 Jun 2026 09:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780479063;
-	bh=9AerHmbjV83y9A55r5tKc0QfFhPXJXRVsUh6a0eEv+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gKLZwikIl6VoRszNhPOK/+zp4BVbh6zVW6r8nz2fnlagc02qK642z4MrYzSbbssSw
-	 e7JRRtsWorSrBHsqNO4xQhZX12YvUZbRJbVTQ2g2v0dWqWlV7FcMsFv/gwZ1YbvAz0
-	 +vUddHj3B1Vt+6On03NYjYrOLTNGii7X2GDulHv8wWBGP1eMar/AVYvKii2fLfKfrm
-	 0lkbEmJx1jNscxT8WjJBtidHIfJBhvcIAVXKh6fs6J0R4qn80HyhT5CqDeW90HtbMU
-	 qGIcCmuNydBim+RvY5zxFR24oGjQ8AdFIwPqZNwo0cswOM4hMbD0viAWZ5Pj1Y6t2d
-	 hnbSm0QXnB0Yg==
-Date: Wed, 3 Jun 2026 10:30:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Chi-Wen Weng <cwweng.linux@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	cwweng@nuvoton.com
-Subject: Re: [PATCH 2/2] spi: Add Nuvoton MA35D1 QSPI controller support
-Message-ID: <d32634eb-4eed-46e6-b378-d42df0b1c75e@sirena.org.uk>
-References: <20260603043551.1062112-1-cwweng.linux@gmail.com>
- <20260603043551.1062112-3-cwweng.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pV+sCvAP"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c0bd02d97eso42190135ad.2
+        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2026 04:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780484600; x=1781089400; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RASJEjVAR9afFVw3X7mPRvBm05E0D//IY850D9FxOG0=;
+        b=pV+sCvAPNd+F2pOBCQDATO019HfByIj0hFlrY05FdCo0SJaKv5vqzH5opLD9/6xXWH
+         W/pPqzZoOlmQhf7QpKXqXUHXfoZHKNHGK0ZSoLLGy2KXFq1hMsDJOlGMf9fhhTKmvrfl
+         sBeKPoohO7ekqqR8N3777CusurQkznM3qV3MIinGKGgoYF/PbYqx+lsmz1LVVMypm94y
+         LMCvHteAVLGiVsd0gJGYKW6GjMMFYP9ahrTGhcpQrJjQ9LLSiVSc8xI6KESze23ZKL3G
+         LRoCIV3RPCT3FvnW1xbQsk3KxAGMALRQfXP8P58XKA8w0ZV7L1Iu31d5bXcjUJDvp7l8
+         THFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780484600; x=1781089400;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RASJEjVAR9afFVw3X7mPRvBm05E0D//IY850D9FxOG0=;
+        b=OTAYMZn2inLhp3Gt9Ofd0zFzViYjjdJVNPka9bJIFQd+eI9116OToawM3ohy5lWWzH
+         h1AymemPjqbPdGehDgYPX8jM89frvGD8fbBLCB3EwoNSTTJokHAAosquyk+eoaZCODdL
+         aM/ZGQenGoQt8AdomufYfTBoBXgNFuFpk3yKbmO0K7NkHs/d9rG3Vw9OTkTIUV+M8WGe
+         TFbNnbZk9G3+MDlo9nvITX3VQ9rvyfZ5qHm7iQcuXy6aJhKlJOlqsX1xghHoS1pxU4N+
+         lKNEb8bSJI9hQYQpr4JbM3LFQGY8gK2y69UUd9XeBQ2wqzv4Fn3weN/1PgfV5jJTqvOP
+         fMfw==
+X-Forwarded-Encrypted: i=1; AFNElJ9g3nu40wKDMvBr/f3+4jHnjdKS+sbrzKW3OckLTBobYkGISHa1aGyiuZ7nLjVkhTDgMhjSosOiNmY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzueFR2/ZAlRiSvRi8J4SCwSdLpbfQlQPH0lCvsCUHh5A08pTQn
+	ra/QTOgdkQaG4oA9qAkFM0otPL0I0yHsXQTUgjsSdPv1pQ5nfXMbj88E
+X-Gm-Gg: Acq92OFqFVhwi5FBcKu0LI4c+wy9bOd4VoND9fkt8ej3YUuJKcgJY1A3zemimKVitwN
+	MLLf2p3CWZ1BY1ha27UOwmMPpULFMilkBSVRGy/lXD6w6INA96NZ4YbvLcgHv45FhM09vr80yjz
+	gv3Za20nvWxKTUAnjkKFqiUKzTDM+5MUqhxhiSFqhY6JeV97W2Jmh0Xb81nUgOFRb9X46dyouuG
+	MGPQxCiCw/dfDiDrMLobedlutVfV1zOwpITWMVIaL+JpZCFcR4/Mej2MUMUs/vgQym/NB6N1CYG
+	8zZUNuJYaW87D6mIAwsZGKYe7HzIwvwENCFB8gxCUhNdStlensg/QkJF1OTGL8GcSZ4S7FxygqL
+	pTjosCRhbNWcOzmuGe1n0qqNgEoQT64LW1LtD8kc6hy9TkGBD7Ms9DjVpFn70xJt5QbQCIfMEeN
+	UARIg8NWoF/Q0ZRwex6WybYe2vBDP8zP7d+jsDou35AYNpd+3wn7goOvEyQZql/oCQHCc7VxXP5
+	xzT4twF88K+zg==
+X-Received: by 2002:a17:903:1252:b0:2c0:e5ee:f554 with SMTP id d9443c01a7336-2c163a24976mr28261115ad.8.1780484600180;
+        Wed, 03 Jun 2026 04:03:20 -0700 (PDT)
+Received: from [172.19.1.42] (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c16609e1b6sm21738805ad.38.2026.06.03.04.03.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jun 2026 04:03:19 -0700 (PDT)
+Message-ID: <5d6ecdf7-1987-4ecf-ad59-06595742cc8f@gmail.com>
+Date: Wed, 3 Jun 2026 19:03:16 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UGarUI9v4pCN0SBM"
-Content-Disposition: inline
-In-Reply-To: <20260603043551.1062112-3-cwweng.linux@gmail.com>
-X-Cookie: micro:
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] spi: Add Nuvoton MA35D1 QSPI controller support
+To: Mark Brown <broonie@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, cwweng@nuvoton.com
+References: <20260603043551.1062112-1-cwweng.linux@gmail.com>
+ <20260603043551.1062112-3-cwweng.linux@gmail.com>
+ <d32634eb-4eed-46e6-b378-d42df0b1c75e@sirena.org.uk>
+Content-Language: en-US
+From: Chi-Wen Weng <cwweng.linux@gmail.com>
+In-Reply-To: <d32634eb-4eed-46e6-b378-d42df0b1c75e@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+Hi Mark,
 
---UGarUI9v4pCN0SBM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for the review.
 
-On Wed, Jun 03, 2026 at 12:35:51PM +0800, Chi-Wen Weng wrote:
+I will address these in v2:
+- add "depends on ARCH_MA35 || COMPILE_TEST" to the Kconfig entry;
+- convert the file header to // comments;
+- split the low-level CS register update from the SPI core .set_cs()
+   callback, and make the spi-mem direct CS path handle SPI_CS_HIGH
+   explicitly;
+- use op->max_freq for spi-mem operations instead of spi->max_speed_hz.
 
-> +config SPI_MA35D1_QSPI
-> +	tristate "Nuvoton MA35D1 QSPI Controller"
-> +	help
-> +	  This driver provides support for Nuvoton MA35D1
-> +	  QSPI controller in master mode.
-> +
+I will also fix the subject lines in the next version.
 
-Other drivers for this SoC seem to have ARCH_MA35 || COMPILE_TEST?
+Best regards,
+Chi-Wen Weng
 
-> @@ -0,0 +1,579 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Nuvoton MA35D1 QSPI controller driver
-> + *
-> + * Copyright (c) 2026 Nuvoton Technology Corp.
-> + * Author: Chi-Wen Weng <cwweng@nuvoton.com>
-> + */
-
-Please make the entire comment a C++ one so things look more
-intentional.
-
-> +static void nuvoton_qspi_set_cs(struct spi_device *spi, bool enable)
-> +{
-> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
-> +	unsigned int cs = spi_get_chipselect(spi, 0);
-> +	u32 mask;
-> +	u32 val;
-> +
-> +	if (cs == 0)
-> +		mask = NUVOTON_QSPI_SSCTL_SS0_MASK;
-> +	else
-> +		mask = NUVOTON_QSPI_SSCTL_SS1_MASK;
-> +
-> +	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_SSCTL_OFFSET);
-> +
-> +	/* SPI core passes enable=true when CS is asserted (typically active-low) */
-> +	if (enable)
-> +		val |= mask;
-> +	else
-> +		val &= ~mask;
-> +
-> +	nuvoton_qspi_write(qspi, val, NUVOTON_QSPI_SSCTL_OFFSET);
-> +}
-
-Note that the core deals with SPI_CS_HIGH, the driver doesn't need to...
-
-> +static int nuvoton_qspi_mem_exec_op(struct spi_mem *mem,
-> +				    const struct spi_mem_op *op)
-> +{
-> +	struct spi_device *spi = mem->spi;
-> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
-> +	u8 addr[4];
-> +	int ret;
-> +	int i;
-> +
-> +	ret = nuvoton_qspi_setup_transfer(spi, NULL);
-> +	if (ret)
-> +		return ret;
-
-This uses spi->max_speed_hz but spi_mem configures p->max_freq which you
-should use (it might be lower).
-
-> +
-> +	nuvoton_qspi_set_cs(spi, true);
-
-...except where you're calling in directly at which point the driver
-needs to figure this out.
-
---UGarUI9v4pCN0SBM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmof9FEACgkQJNaLcl1U
-h9AGigf+PXAtexduRP/S5ai2U1yA1oOZHH5GxgE1+Oyoyq8Z+QkGmkVCjl4ru80E
-7R1XMoIB0CB46+Pkd4+3bvwxfWTqLtrdknVUatHO/QcvWOezFdEk3sPF3XOyEfdH
-S/u1vxPWFi+L6ywy2OdG0gFt7aYJIZAc7l1SZNe5C7Ck0HLpY1O5sajk+Gu08tY5
-UeskE7hA23JmD14+jzbM8yMVyVHVYNwpIq9Y2cfA7I8Hxe+wkLVGnN46FIgzXrsI
-ZwHk1Y48hGsKqqHjLdkiYvv5kHAKI+3uoJNicUuhycLo9980PDh999clA/7+RPUL
-Uzf+IFtyZ0vuj1TsWQ90yUArWSfLLw==
-=PW/z
------END PGP SIGNATURE-----
-
---UGarUI9v4pCN0SBM--
+Mark Brown 於 2026/6/3 下午 05:30 寫道:
+> On Wed, Jun 03, 2026 at 12:35:51PM +0800, Chi-Wen Weng wrote:
+>
+>> +config SPI_MA35D1_QSPI
+>> +	tristate "Nuvoton MA35D1 QSPI Controller"
+>> +	help
+>> +	  This driver provides support for Nuvoton MA35D1
+>> +	  QSPI controller in master mode.
+>> +
+> Other drivers for this SoC seem to have ARCH_MA35 || COMPILE_TEST?
+>
+>> @@ -0,0 +1,579 @@
+>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>> +/*
+>> + * Nuvoton MA35D1 QSPI controller driver
+>> + *
+>> + * Copyright (c) 2026 Nuvoton Technology Corp.
+>> + * Author: Chi-Wen Weng <cwweng@nuvoton.com>
+>> + */
+> Please make the entire comment a C++ one so things look more
+> intentional.
+>
+>> +static void nuvoton_qspi_set_cs(struct spi_device *spi, bool enable)
+>> +{
+>> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+>> +	unsigned int cs = spi_get_chipselect(spi, 0);
+>> +	u32 mask;
+>> +	u32 val;
+>> +
+>> +	if (cs == 0)
+>> +		mask = NUVOTON_QSPI_SSCTL_SS0_MASK;
+>> +	else
+>> +		mask = NUVOTON_QSPI_SSCTL_SS1_MASK;
+>> +
+>> +	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_SSCTL_OFFSET);
+>> +
+>> +	/* SPI core passes enable=true when CS is asserted (typically active-low) */
+>> +	if (enable)
+>> +		val |= mask;
+>> +	else
+>> +		val &= ~mask;
+>> +
+>> +	nuvoton_qspi_write(qspi, val, NUVOTON_QSPI_SSCTL_OFFSET);
+>> +}
+> Note that the core deals with SPI_CS_HIGH, the driver doesn't need to...
+>
+>> +static int nuvoton_qspi_mem_exec_op(struct spi_mem *mem,
+>> +				    const struct spi_mem_op *op)
+>> +{
+>> +	struct spi_device *spi = mem->spi;
+>> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+>> +	u8 addr[4];
+>> +	int ret;
+>> +	int i;
+>> +
+>> +	ret = nuvoton_qspi_setup_transfer(spi, NULL);
+>> +	if (ret)
+>> +		return ret;
+> This uses spi->max_speed_hz but spi_mem configures p->max_freq which you
+> should use (it might be lower).
+>
+>> +
+>> +	nuvoton_qspi_set_cs(spi, true);
+> ...except where you're calling in directly at which point the driver
+> needs to figure this out.

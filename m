@@ -1,127 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1EF3DA5B4;
-	Wed,  3 Jun 2026 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902153CF058
+	for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2026 17:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780504822; cv=none; b=gArXqTU7Hh4HF6aqWLSlMexQvkMMZMOXyLtSv7gExgeG5cd8u9wJJuBiEoaUgq3lpEJX61JTD0zg/vu73/DUihqyj/e6eA5UeduXJmWzW5HVJi2V5gV6jn0TcbXUPKIgVa9DH9oht4JPuGEOvo0S18IkYqk4miH8LXdgF1cXIM4=
+	t=1780508350; cv=none; b=EuuFxgDSCQ9uFJVuGkQrBoI8TBKZKMCgf898FUX/EI2284vZ3KJ/EUnc1XJSSxh/UeSGSx0tyXnCbgGCYQMt47rg2hy01Kht/6ZGi7Urcpe39nj0l2ndcAv0cdlxUdOsSbXPIblL27760YT/jg0IbhuqcBgw9/rG4m37GCFEnts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780504822; c=relaxed/simple;
-	bh=luc4L6XhnT5LeMOhHEbjH+HurAt5HycuPtqvc7Gzf1g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tz1XbOixbPkYLRIq/wa+cJLrFsowiiFsVzxMRo0H/5LbsfOI7zUdRG7acPRYhFVdHaXDuG1xc10LJplhRK+lATbGkl0LNlrp7/UgichAx6plsciGApLQR2w4IIBKTt8li5AsTYbjfWwni20qT39vcyHYnrW/rKhaW41znHxtu6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MF/0kdZd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780508350; c=relaxed/simple;
+	bh=0r9RU/RX9+0fMVub0FLUJ/c2kPAlu3ZbUrrVbFmEVtM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H7tmJK+taswiTM6GmzKcxIbrTSK8MNXcrW9q+40LwKh7LixKiVlJfSOMEREuEraaZ2HGKy2ZJaWYVSnaf2Y6KHnJnAe3Pa+zup5UIDNOiF74eZauPUcfS4oksrR/U8ivJJ3u1PSzA13ouzvop3IqUzL3779ZN5WgJ5XMRScenUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7PPd22u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MF/0kdZd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35DE1F00893;
-	Wed,  3 Jun 2026 16:40:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7PPd22u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368101F0089C
+	for <linux-spi@vger.kernel.org>; Wed,  3 Jun 2026 17:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780504821;
-	bh=luc4L6XhnT5LeMOhHEbjH+HurAt5HycuPtqvc7Gzf1g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MF/0kdZdsTn0ndmOwHBtYvNd9WB3YZ/gujPrpBgp8Cc3chrki7SHBBuctzf3/wq55
-	 tzub1mNw9M2c6YNkjtqJHxdTU3d66x+gwYX6YimJNJtPfBPX8gGDFX0jLdpEw+G7jz
-	 ppBjus1OthH9JzY+nFRolUHeXgyG73FlALmTvWwS/RrdVSRk2q28MO4TWwP8c/8U2j
-	 dZS6X7BCovo64YOazj/wBcx7p4sYa/YPCuQUkcH14aKlVl3LErL8b6hjTK8xiW94FP
-	 JasSEsKJ9TgxdEFgN1RHQahxdf/KX6/X2RXW4bcUBzDNuaywhNXMWjrOwtUhN1K5aP
-	 3jZKJ92hLF0Wg==
-Date: Wed, 3 Jun 2026 17:40:15 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, richard@nod.at,
-	vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
-	takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com,
-	a-dutta@ti.com
-Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
- specify a frequency pair
-Message-ID: <20260603-balance-encounter-94f69e1577f3@spud>
-References: <20260527175527.2247679-1-s-k6@ti.com>
- <20260527175527.2247679-2-s-k6@ti.com>
- <20260528-clergyman-kindling-20971775ba78@spud>
- <eaa75113-2b89-468d-aca8-932bc7e33a7d@ti.com>
- <87cxy92llq.fsf@bootlin.com>
- <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
- <875x3zzkji.fsf@bootlin.com>
- <20260603-neatly-twine-e89b923f5cb6@spud>
- <87o6hry4d4.fsf@bootlin.com>
+	s=k20260515; t=1780508348;
+	bh=0r9RU/RX9+0fMVub0FLUJ/c2kPAlu3ZbUrrVbFmEVtM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=S7PPd22usbLXBVl9jDTQ059NO0oHQofIn+K1aPjBCyT9LpfNGMp/gblzj/99kb5ds
+	 RyNtsNxtIgMwXQdh6bR97DKg8Q+1HC8AYAr/dsv7nmn+suJ55hkk65ZWtpjTNSQMuO
+	 rayazDKDkrtCL6PHfdoVlyyENmBEbbXtiEJvMfhZNCYuS5oczkvvN9xKXGuQ4/kjjA
+	 VlDnlQVuFqbRc8gp2L8xY9LJgUxbeZOAXDpT8XJE7as1D698ZXR17VLlLdCanbKOHu
+	 kzBaricDEcOesqgL4wD2wQysLVaeY3GvemtLOGdldguYSM5wAld/v5ukbvE2l/3fWX
+	 uOOAMVK4/1SrQ==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-68d23396ed3so7825588a12.1
+        for <linux-spi@vger.kernel.org>; Wed, 03 Jun 2026 10:39:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9ww8iumkzLwwUub3g/B4hPTE5Wn57sC3wTLr9AcJT0++DyL5MW8T6gRoL2T0bBbUe8H6u0n/L0gag=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyQx6Uo0FqHfmTTRK1I3Jzs4gar5oMpFKprUoRSvG7XPcPMBIc
+	yUAtr1Wc2avS/CEXaTjsULgBzP8RonG6qRaD8hm2NiCNLeDtkQkbs/bvvzxXtRrn/Pe2J/qjF+6
+	HfetE2H2+O5VUQadf85Wh/FKlWOUU1A==
+X-Received: by 2002:a05:6402:2711:b0:68a:c8c8:bf70 with SMTP id
+ 4fb4d7f45d1cf-68e72e11b8fmr2505455a12.26.1780508346916; Wed, 03 Jun 2026
+ 10:39:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jfR/k67CoFQAEo41"
-Content-Disposition: inline
-In-Reply-To: <87o6hry4d4.fsf@bootlin.com>
-
-
---jfR/k67CoFQAEo41
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260527175527.2247679-1-s-k6@ti.com> <20260527175527.2247679-3-s-k6@ti.com>
+ <20260602164945.GA475455-robh@kernel.org> <87zf1by5oc.fsf@bootlin.com>
+In-Reply-To: <87zf1by5oc.fsf@bootlin.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 3 Jun 2026 12:38:46 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJwxgcFOB=kE7bVQYDn740-w4RppMF5W-3Ne9=9qV9OrQ@mail.gmail.com>
+X-Gm-Features: AVHnY4Kf2I230VuAd1puqsHwde0Bn2izk7qL8QsSDkUDH3frwdNb_AgO2H9KCZw
+Message-ID: <CAL_JsqJwxgcFOB=kE7bVQYDn740-w4RppMF5W-3Ne9=9qV9OrQ@mail.gmail.com>
+Subject: Re: [PATCH v3 02/13] spi: dt-bindings: cdns,qspi-nor: add PHY tuning
+ pattern partition property
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, richard@nod.at, vigneshr@ti.com, pratyush@kernel.org, 
+	mwalle@kernel.org, takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com, 
+	a-dutta@ti.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 03, 2026 at 06:29:27PM +0200, Miquel Raynal wrote:
->=20
-> >> >> > The non-PHY frequency is a controller limitation/capability rathe=
-r than
-> >> >> > a flash characteristic, so it seems more appropriate to keep it i=
-n the
-> >> >> > controller driver as Conor suggested.
-> >> >>=20
-> >> >> The non tuned frequency is the maximum frequency one could use
-> >> >> reliably. It is not controller specific. It is mostly board specifi=
-c,
-> >> >> and to some extend may also be chip specific.
-> >> >>=20
-> >> >> The tuned frequency is the maximum frequency one could use reliably
-> >> >> after line a controller or chip specific training procedure. It is
-> >> >> also the result of an aggregated set of non discoverable hardware
-> >> >> limitations:
-> >> >> - board routing
-> >> >> - chip capability
-> >> >> - controller capability
-> >> >
-> >> > Right, and this I guess is what scuppers letting the controller driv=
-er
-> >> > sort the configuration out itself and leaving the property as-is.
-> >> > It could be that the speed in spi-max-frequency is lower than the "b=
-ase
-> >> > speed" of the controller but because of board routing or device
-> >> > capability that the tuned mode is still required, right?
-> >>=20
-> >> I do not actually expect any tuned mode/frequency to be mandatory.
+On Wed, Jun 3, 2026 at 11:01=E2=80=AFAM Miquel Raynal <miquel.raynal@bootli=
+n.com> wrote:
+>
+> Hello,
+>
+> On 02/06/2026 at 11:49:45 -05, Rob Herring <robh@kernel.org> wrote:
+>
+> > On Wed, May 27, 2026 at 11:25:16PM +0530, Santhosh Kumar K wrote:
+> >> PHY tuning requires a known data pattern to be readable from flash.
+> >> When no partition is explicitly identified, the controller must search
+> >> all available partitions to locate the pattern by label, which adds
+> >> overhead and relies on label naming conventions outside the
+> >> controller's control.
 > >
-> > I think you misunderstood my use of "required", I meant that the new
-> > property/information was needed in the scenario I described, not that it
-> > should be a required property in a binding.
->=20
-> Yes I misunderstood the term indeed. However I still fail to catch what
-> you meant here, I'm sorry. Would you mind rephrasing?
+> > I agree 'label' is not the best choice. Software should not care what
+> > 'label' contains. It should really be 'compatible' instead.
+>
+> But compatible does not seem relevant in this case, right? We are just
+> flagging the location of "some useful data for the controller".
 
-I was talking about a scenario where you want to use the tuned mode to
-achieve the maximum rate because of the device and/or board configuration,
-but the rate is below the point where the controller would need tuning.
-Say the controller needs tuning above 8 Hz but the conditions require
-tuning to achieve more than 5 Hz. In this example, if the device can do
-6 Hz, spi-max-frequency (in the current form) would be set to 6 Hz, and
-the controller would not enable the tuned mode, leading to problems
-because the inflection point determined from the controller compatible
-of 8 Hz would not have been reached.
+compatible is what tells us what a region contains and how to use it.
+That seems exactly what we need to define here.
 
---jfR/k67CoFQAEo41
-Content-Type: application/pgp-signature; name="signature.asc"
+> >> Add cdns,phy-pattern-partition, a phandle property that allows the DT
+> >> author to directly reference the flash partition holding the PHY tunin=
+g
+> >> pattern. The controller uses this partition during calibration, avoidi=
+ng
+> >> the partition search entirely.
+> >
+> > Do you have any data that this approach being "direct" is faster? In
+> > fact, it might be worse. Instead of searching just the limited number o=
+f
+> > partition subnodes, you now search the entire tree for a matching
+> > phandle value. We do have phandle caching, so that might save you
+> > here.
+>
+> True, but besides performance considerations, I personally do not find
+> elegant using a partition name/label, but maybe that's just personal
+> taste :-)
 
------BEGIN PGP SIGNATURE-----
+I agree. That's true for all the partition nodes with only node name
+or label to go on. We should fix that at the source. However, you
+already have to support using label, so anything else is supporting a
+2nd way whether it is compatible or a phandle property. Is it really
+worth it here?
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiBY7wAKCRB4tDGHoIJi
-0gfaAP0RkM4eZhjmrtl+tS3WyfzVSDCbOdy5h+wDJtvyjB/fyAEA5L95wFVM8cTS
-9cLHUtafen8uIvPf2HFXeFNdH9wCjwM=
-=/26Q
------END PGP SIGNATURE-----
-
---jfR/k67CoFQAEo41--
+Rob

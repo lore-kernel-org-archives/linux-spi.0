@@ -1,73 +1,73 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010070.outbound.protection.outlook.com [52.101.56.70])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012008.outbound.protection.outlook.com [40.107.209.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B42386C10;
-	Thu,  4 Jun 2026 12:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9C342E000;
+	Thu,  4 Jun 2026 12:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780574852; cv=fail; b=HHHP/0DlMEtBOuWf9hfrFKwBeoMXIfHP/EEc0R4RLrtfDBmf2sstb4yZUIp9lkn4Xbtuf5OOiyY+Yc0Lv+MbjLhlnP7aMVToMCqbcNmutgQB450cIYZV5fBrT6bY5HIjpeP6tzUGwNqlAvGlmy8EeeH+sRXYsJ2dS+O5EtGsEu0=
+	t=1780575039; cv=fail; b=iA/BU4D1gsuP+6MODII0PmXCs4CN9eRmrCcVBU2dk1Y8t2nhSeHKkkzRVBe/qAQzAkMpDVl58u3twu4kwjDsuocIfpe3NO78uRhTduiqnVMj0y1lftYrlQd5L1I0nT/ty9H2IYSZp5TO2JA1cyG5FwNv+tcC9l3cnp2RsWLCqsc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780574852; c=relaxed/simple;
-	bh=B6dtPAl15du7qHoJLaKepGwC4/qGTZkEu7lpT4Z5J0M=;
+	s=arc-20240116; t=1780575039; c=relaxed/simple;
+	bh=xAAuc/ryLrWgtzOwjD3irYRg0CqrcP95LpLH1pu5gXc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WOHo4Qei7AvT09e3v87OFmzlQzU09MxXupuqRda9msjnWD6p7MunslDP2PjD9kAz1bCyuPtGE8RGmpnllOoo+FE6AX07ZWvLz1FG1hFavQ7Gl2LF+KPGfr/3GIIQoF50LeJdshzourjNS0XrfzVz2I9mBaNrbKvdYGfsK+loEKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oPtbSbhF; arc=fail smtp.client-ip=52.101.56.70
+	 In-Reply-To:Content-Type; b=sF2DywNAO5wsbGMT4A/ufAwqEHdWdXmhqB0mJDTkmV3zvuhvSP5oMWAqgLv0Wt2f60q7nl243/xIpo75/DzjnF8gqKGFaWBGnDU/dwhmB1oIggty02rPbp0P2KteT56UBPO3NG6KPNxYPCSnul6wH4lDbYVMv6wqxEjfrk2cTMA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DbbtuoiD; arc=fail smtp.client-ip=40.107.209.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oPtbSbhF"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DbbtuoiD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KKGihtrjODIfycndxBhncHQ6Dga7dTz9/2s6cZD173hhrjvfjxjsmNCW0HirhYjUWOtTrAqNCxkc4D9JUxslXZhhivTlGpmEgSiip4A3BWFv1ZmTMsD1FmmuYvHkFv2IjiuRqkNLQ4r63skAC/77RKsLB4G63sX2SybLr0bp42QwIA7GDcE+Ejw2eUDssdXiOCgwHitxrb4P/6geTjqjzVhY/kxYHeOFBaT+pALbpRqHhVE8aWIIq+2GDgkx2/4umuKVzbuJwrJVvArep+a/LQ1VcH0h7LuYcW+SUsP0UbE1y92QVXcyFOI/WiuWUBmMNQRaNADB9MFTXRaq6jEepg==
+ b=n/MANT1qliroruP1lGE8mRgrNCJUOTmmhHC9zroIpG1itQ2oSU7DIcIZyweBbcxnMC8kFXDVQNawuIYYSyi30rIuehfHV80FQk4Ppou/w7iCzRLKF9zRlSNN8PuXB5aAc3lLImLsmN8elcHvobLoWsXjGOx6YuQYq/nAVAxRrSmedbjx4nCvDivHBj9Jrgq1PoBx3tZz/9t/AYe24offdOz4fJFjeQaoKMdL45nXvjhEwdGeohKvUWZ854n8GDrJKyDRq5ab0TuHulHib+1D3+nbd2l46PBUMi4N6KVNO2m3KsOiEruIcKuBQLRDq5TpR3sYwBNMx/vw748gs2OqoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Ym/Lmb5cj6OnhD24Ihvmdn9GKZdeLhXb689jIuXqNc=;
- b=lZfBJR+5uvHQm7YoAdcwNnNZXUvtr3WW4nR0T4SHTQg4zRVIvCG6rFqF/UICSd1yaSWwIX2dBGnmFnYGSj3Ku6GRgIJHNJuc+nfSPrvBqOqJrmPLac5fRrUkir/0B1PfC9+61lFYbVIgpF9bbqSCDCENW7oDzFO7bOeeUa/lvU6dLAmXBN1TTv0/WyhkjKZOSwh5h4MnSgo137CnUINiqihFmDjrUdPyxm3XmENDqK8kXgqu5V56Ui+tIax7vhsc8oRC5zB8xCD1JCMZTXjezjMRg+G3OaLmGkXDQj7BLoSWYWFBRKm+YR5MLM9DPWbiXhs5utDNJ6HGqOOiLVgAuQ==
+ bh=EhwwG0O90c7WQanZpT4mOZebDfSvyLZ5d6JTDNy1MnY=;
+ b=YO7+5UmHVplfBntLghVRKgdzIJGnmkVX8mg51oRIC3wYMxiWivNn95y+0E3FlC5mYASJ3WVIKoJeQ3wWkkZ0nd1CZdHK+OhOF2VRPy/e9gdqdQHx6B44YNJVPrIL1CTF3eRyzJMgZOw0enGiUf2gKcM5auIKCOmilRY01Lw4FxEjfqGtPTZY9QQBMuwREscWJh1IkylwN9MO+DsA9wCt3PPiOZfCLc8wLCmj3dXry2bpjjXtehPgm0V9+3td9N3pv02/uIf93DvBYabCjPE78dJgw3M8xETVY6wViMe4mXv+iFpWTnkGH4M/HEMe8rwS4yUwrhure5BEDzJG+4lDVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.21.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Ym/Lmb5cj6OnhD24Ihvmdn9GKZdeLhXb689jIuXqNc=;
- b=oPtbSbhFA8N6GzDVHtojBnEetN2ElFfJTNNyHaIobCoCejysqYSnZxF0ulndewykGE1/aFfWQvHaQQQ3WI9ETCDf0mT1yVnDT66Os9bdqJ6ahuqgeBgp2eFe2whYAzF7UcRHsAACtbLaAwRpXJsQI+1veRydyoAer0L6l69jDHY=
-Received: from DS0PR17CA0016.namprd17.prod.outlook.com (2603:10b6:8:191::7) by
- SN4PR10MB997921.namprd10.prod.outlook.com (2603:10b6:806:4fe::15) with
+ bh=EhwwG0O90c7WQanZpT4mOZebDfSvyLZ5d6JTDNy1MnY=;
+ b=DbbtuoiDXc7HBWwt20riRkSnh4obKagDW4DFwe8S+SloOZXP3tYWpLPrdqbMbuF6SFm1OQBDdsZA7Q8E6Z4wCzD0/IFlMUeN1qJmD9XGuWWj7uJzK3g2QwQnHbCBh39r4CYz0t6oCWkuio8mICGWP3RtS1saAUI+t2mcHtnl5ys=
+Received: from CH2PR19CA0027.namprd19.prod.outlook.com (2603:10b6:610:4d::37)
+ by PH8PR10MB6412.namprd10.prod.outlook.com (2603:10b6:510:1c7::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.8; Thu, 4 Jun 2026
- 12:07:28 +0000
-Received: from CY4PEPF0000EE3F.namprd03.prod.outlook.com
- (2603:10b6:8:191:cafe::6e) by DS0PR17CA0016.outlook.office365.com
- (2603:10b6:8:191::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
+ 12:10:35 +0000
+Received: from CH1PEPF0000AD80.namprd04.prod.outlook.com
+ (2603:10b6:610:4d:cafe::8c) by CH2PR19CA0027.outlook.office365.com
+ (2603:10b6:610:4d::37) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
- Jun 2026 12:07:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ Jun 2026 12:10:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- CY4PEPF0000EE3F.mail.protection.outlook.com (10.167.242.17) with Microsoft
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ CH1PEPF0000AD80.mail.protection.outlook.com (10.167.244.90) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 12:07:27 +0000
-Received: from DLEE209.ent.ti.com (157.170.170.98) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 12:10:34 +0000
+Received: from DFLE201.ent.ti.com (10.64.6.59) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 4 Jun
- 2026 07:07:26 -0500
-Received: from DLEE212.ent.ti.com (157.170.170.114) by DLEE209.ent.ti.com
- (157.170.170.98) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 07:10:32 -0500
+Received: from DFLE210.ent.ti.com (10.64.6.68) by DFLE201.ent.ti.com
+ (10.64.6.59) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 4 Jun
- 2026 07:07:25 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE212.ent.ti.com
- (157.170.170.114) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 07:10:32 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE210.ent.ti.com
+ (10.64.6.68) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Thu, 4 Jun 2026 07:07:25 -0500
+ Transport; Thu, 4 Jun 2026 07:10:32 -0500
 Received: from [172.24.233.254] (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 654C7KQR3330008;
-	Thu, 4 Jun 2026 07:07:21 -0500
-Message-ID: <ab32fe1b-850e-4dda-b87b-188f0b7edc85@ti.com>
-Date: Thu, 4 Jun 2026 17:37:20 +0530
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 654CARCp3334378;
+	Thu, 4 Jun 2026 07:10:27 -0500
+Message-ID: <354e81b1-3070-439b-b404-20a2c30bd774@ti.com>
+Date: Thu, 4 Jun 2026 17:40:26 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -75,79 +75,91 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/13] spi: dt-bindings: cdns,qspi-nor: add PHY tuning
- pattern partition property
-To: Michael Walle <mwalle@kernel.org>, Rob Herring <robh@kernel.org>, "Miquel
- Raynal" <miquel.raynal@bootlin.com>
-CC: <broonie@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<richard@nod.at>, <vigneshr@ti.com>, <pratyush@kernel.org>,
-	<takahiro.kuwano@infineon.com>, <linux-spi@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mtd@lists.infradead.org>, <praneeth@ti.com>, <u-kumar1@ti.com>,
-	<a-dutta@ti.com>, <s-k6@ti.com>
+Subject: Re: [PATCH v3 04/13] spi: spi-mem: add spi_mem_apply_base_freq_cap()
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <richard@nod.at>, <vigneshr@ti.com>,
+	<pratyush@kernel.org>, <mwalle@kernel.org>, <takahiro.kuwano@infineon.com>,
+	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+	<praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
 References: <20260527175527.2247679-1-s-k6@ti.com>
- <20260527175527.2247679-3-s-k6@ti.com>
- <20260602164945.GA475455-robh@kernel.org> <87zf1by5oc.fsf@bootlin.com>
- <CAL_JsqJwxgcFOB=kE7bVQYDn740-w4RppMF5W-3Ne9=9qV9OrQ@mail.gmail.com>
- <DIZN96NYLDUJ.DS1LFFAS2JH9@kernel.org>
+ <20260527175527.2247679-5-s-k6@ti.com> <87fr3bhqkk.fsf@bootlin.com>
 Content-Language: en-US
 From: Santhosh Kumar K <s-k6@ti.com>
-In-Reply-To: <DIZN96NYLDUJ.DS1LFFAS2JH9@kernel.org>
+In-Reply-To: <87fr3bhqkk.fsf@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3F:EE_|SN4PR10MB997921:EE_
-X-MS-Office365-Filtering-Correlation-Id: 28a94cdf-fd6a-4c54-e74b-08dec231d8c7
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD80:EE_|PH8PR10MB6412:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd936aff-9a05-49be-5f6c-08dec23247ea
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|82310400026|376014|36860700016|56012099006|4143699003|22082099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|7416014|376014|56012099006|18002099003|22082099003|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	T7pYyw6E4XzJCPccTwxsmSqtoPSgOqf6SX5NAHFIhhF5exUJ0r4lG8jw17c61SBHPobdmSMROKfqbYgQFbFNlxAXJ6SAFzebV8DYo1bgKkIie88WZgFnnfFrCdHBAV4q7WS1pewAM+2GyaAfCbb4ar4cwGRJ4rVSr7kZ+8C3jWWvYxZRGPfCatiSZ2K4Xbz1Tvfr7y/KRdskVjM0s43ptjKDsH6dpVPx9GtjEINeUrCq61u9pYI6MTOy2ipLuvX3Lqswy4LvzbEaQplR7ieBFAYWyqyAQ0m7H6OFPIdcHL7NnQeqxYoVIwQl/g4VNX/tcKBMtbagrDbI2awdSyf0lHG8Juz+0Mby6JJGhbcn0t3XR+bsp/RZTuHt7aY+pANMYjI39PzvYp7xnTdakM5D0/Pvnwo9vGFatM9dHX2LYq35ffqEmrLI8JNapgEAjJBQeqbqyaZfwj1Lnihr61ewE5fMIRKnoFkP8507e/gVYEq9yfBR4aOPJ/L9/qWVzT6+JbUS/eFzICu1umDNa7DV/6elAWIqtPpS35BlZGnQyA8nUFlBg/6hJ6Jry/xAxKm94u722k/ywxl5Ruvs4IY8JxkKccAGaPgZaewlVIXZ8PGq/zuNnmMYX2b0lyC/iUl2t4ZYmY44DkWZuZS7h3K4FFVNB/YWJ8QXIgpEZQszFDc5/TA7MI9gP1b4xz87GE97Hvm/5t+wTZMtgk8RuUYWkiZishP4MRGvaPwZu+kkQY0=
+	vrMAdnEenYIVVN7PiPDKNIgCN5Q0bGPHI3gBtfz4vz+/rg5KJ0NsLYfQOngujhx6P6Wtwi8xIxngl/ZiRagzrwJO//czZIB1AoZOJlpVpgwP/ercdp+Gp3RmH7JvQVWV4CC/yRtRr5c4OyBkTU+WnYZcnsEXzb7Euvejd9i3lpEGnMs4mqvx3rRpfVCa1qKkFtL+hQua7NlJ5TVWicmH+c/9Fyi+tBVe52dx7TXqG3ltTYbCrLeFM6jRdYO2egmxLSFWMNSP9c3kmCb8ebRvwQ73OQsbWwjCoSjzPPRcDDLEjqAu/Rc6YjpGyqI8DTM1cq5X3muKN6EGbmSLi3dOO08SzDSRMgCKZZD2cFYW+1LK9u2HSPDdIjZkhi3/S7fxEdPydBUzXirFgyNmJrKS1yJkDsHN6CSbMMUdKuapyrVKVgMxgBRUGYuSmmp0brdRCqDWEmB4ttftnxi2nSjLc0X1Dt5PM9Qo70Fl/Tyk0jYGQx6XF2y0btsBftajsrmy8JcMuUwV8efFiuefSiTUHsN+0a/yS35hfNyhPGYSBUZjdMNROy+UNFpnM97TmWGa+ieOh7HOGEyopYXVLKVJTZU9LnIuv5nJFqOxxgRnwTffxWxZy29Gy2FJWFQq3MBN5Nlz4oM3vGOr5xJQ+hOHVDXgs7MmcuKWaf9RUm6fEVXU+YWTSSVa4VCgmdpcK04AYH/R9UIkvONbBTMkrEvf04SsMcmL8fSqff+fIWcsy9E=
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(82310400026)(376014)(36860700016)(56012099006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(7416014)(376014)(56012099006)(18002099003)(22082099003)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	JrlMrq8vUu85A1k4Dan/mENMqiMKi0O3++VwX5XogNnek1bEyM/wS2L5WdSklTJbvyClklVYE/jPD3sRhE1mGKqS+aKYe9hBGYBpVYpVyJR1hxD79YIwqXDlIuNMReINeTKmynRIbjeHr85lmcSD08XWj6q1W8slSjcJxMSXuhidTNDx1rErQA3b0NLiZC0r2FmhmUEyIWtemnFqNeMQImkby5sYbrwIptS0jgiFSoO+rgtzjR5jff9FuauXNjzxAyXmErYV3oZmvV1uaDGLqatQk8Vx/HtBmfJUDb2cfba2bB3F28OhikkUvg9KCgZt8FVvBig78cawADFgnAT76GDcSuL2pgf+MgcuP8ekpvVP+R/4QbTWSZ3u6mDpUQg+Tfn2fNoQ6H3RsIy1kV13/5gNIwHUQoIXGxdOKEGC/zfy+iI8RU2AAMPJ1FGxYvDH
+	J5DOqjoS2lwCYlOWFgH9Re5BAkVNdVXKHakYNtm4yzJjgylpOT9H1ilZDB9rNasrzBZne3RkLggalBtq+yEeJ2vPb8imISi7/9A8emzccJdbyVkgYfCmKLW8SJ/DjuucjmtnXN/ACy/US4pePoo+yrV8NoEPe/jNRwV8o4XANZRI3mbCZrVMNHXMUAukiypSWb7SQsfUeA6Tn1KD9Sg3AExptq0j0GBIpNWhQZKgeiRrVHIBC0QKBStUHWXlbnlOxJQCqpPWKoSTuE8J7p8LCd8IGLCt5zv2jpMC1ZuBbxGz+eRMfmjnLHzufBk5ovUyPykfBR5eIcElkPeNZfhyFd5lTX8sopSw9x52F9Apz71hkkUFEU8H20gbpPiqlJ/pwLH219xYj5o60Q9gjsdgsWm8Arlbw+RgUEU6HdPgwByXHOkChR8ZGp48o5KqVyWt
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 12:07:27.8454
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 12:10:34.2948
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28a94cdf-fd6a-4c54-e74b-08dec231d8c7
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd936aff-9a05-49be-5f6c-08dec23247ea
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE3F.namprd03.prod.outlook.com
+	CH1PEPF0000AD80.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN4PR10MB997921
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6412
 
-Hello Michael,
+Hello Miquel,
 
-On 04/06/26 00:30, Michael Walle wrote:
-> On Wed Jun 3, 2026 at 7:38 PM CEST, Rob Herring wrote:
->> However, you already have to support using label, so anything else
->> is supporting a 2nd way whether it is compatible or a phandle
->> property. Is it really worth it here?
+On 28/05/26 14:13, Miquel Raynal wrote:
+> Hi Santhosh,
 > 
-> Do we? I don't think we have. That was among my very first feedback
-> on this series. Don't use hardcoded partition names for this, but a
-> phandle. A compatible sounds even better though.
+>> --- a/drivers/spi/spi-mem.c
+>> +++ b/drivers/spi/spi-mem.c
+>> @@ -398,7 +398,11 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+>>   	u8 *tmpbuf;
+>>   	int ret;
+>>   
+>> -	/* Make sure the operation frequency is correct before going futher */
+>> +	/*
+>> +	 * Ops not configured for maximum speed are limited to the conservative
+>> +	 * base speed; spi_mem_adjust_op_freq() then caps to the device maximum.
+>> +	 */
+>> +	spi_mem_apply_base_freq_cap(mem, (struct spi_mem_op *)op);
+>>   	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
 > 
-> Also, I don't undestand why this property has a cdns prefix. This
-> can also be relevant for any other SPI controller.
+> There are many more spi_mem_adjust_op_freq() calls in the core where we would
+> not apply the base frequency. Aren't we missing these places? Wouldn't it
+> be more appropriate to call spi_mem_apply_base_freq_cap() at the beginning
+> of spi_mem_adjust_op_freq() ?
 
-Good point. The cdns, prefix is a mistake.
+Moving spi_mem_apply_base_freq() into spi_mem_adjust_op_freq() would
+affect operation selection.
 
-I agree that this is not Cadence-specific and should be described as a
-generic SPI peripheral property. I'll rename it to
-spi-phy-pattern-partition and move it under spi-peripheral-props in v4.
+spi_mem_adjust_op_freq() is used during variant evaluation through
+spinand_select_op_variant() and spi_mem_calc_op_duration(). Applying the
+cap there would cause all candidates to be evaluated at base_speed_hz
+rather than the actual max_speed_hz. As a result, variant selection
+could converge on a different operation than the one that would be
+optimal.
 
-Thanks,
+Keeping the cap in spi_mem_exec_op() restricts it to the execution path,
+while allowing operation selection and duration calculations to continue
+using the maximum achievable frequency.
+
+Regards,
 Santhosh.
 
 > 
-> -michael
-> 
+> Thanks,
+> Miquèl
 

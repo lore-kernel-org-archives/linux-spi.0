@@ -1,54 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499793D7D98;
-	Thu,  4 Jun 2026 08:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A463F0A83;
+	Thu,  4 Jun 2026 08:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780562216; cv=none; b=ZiUOMUbbfk9aRhb474uWBm7OPOT0DeZAHl+jgFmonlETeTSnatn8VVG9bYIJSoi/q+U1ARicpabb/ZqnP2vVTuzVb2p40SKodzlPhqZk4rDoWNcO2G3OtE1mIqBN1Qkdkpm73+62W/R5vpcd9NGiLXaXEd19tMUyf86HZbWEydk=
+	t=1780563363; cv=none; b=W72iIohfn3ptsiZmVMpZ6tmXPvJGnKVctmNxwAlz252DBpbpbA/CngkQKqUbRYrs6b2n0Zxg4DCXuJwta2bO+M/M1Cihsd/M/OJK/k/dbj9pMMLtGvbSGumxGAyf1h9SJevlTyZpHcKOdge+Srcw094IPCUJaPUn5Oz/0FfimxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780562216; c=relaxed/simple;
-	bh=+KBwoOcDHJ/gKB5QNN8WBfHE175dP+I++e/xL05rNAk=;
+	s=arc-20240116; t=1780563363; c=relaxed/simple;
+	bh=g0ZRTPlwT/xyxpdHcA09ypJlccbn5Vup1lZsGchbYCc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OY9//KnAQYiZP1URgvyJGsGgJ9cx+Cgcc2HQkRy1b2b29bD5zPAcH11/BYsfpfs/QVN0fjEqtPncVQaAk+u7ybGuL9FMsWl/xeUVDvvfaFxef3OAyJTPmFDuhuWyjpYvh9s58JmJYQL1xSm/pkokJ+di8Z2mkPXFH8Kb4tnuMOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JFP86ilL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=uP8Bf+B+ceh4xeWoqLY3IQsESVNZWCcxtTMqUz3sqaXSBBc/LZZf+3nH8xwakvPmYq2l+UINv3NXAYSNHAo6+cOyzf9DsWtevprasP+FBtOCZqSZIiwyjNyJh7VNuQd2ZLQEVV1dH0Wqc1U3uI8ZSVuqBSQuK5uvxtJ6rz+XM0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQ0J+Cbb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JFP86ilL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7AB1F00893;
-	Thu,  4 Jun 2026 08:36:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQ0J+Cbb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9DD1F00898;
+	Thu,  4 Jun 2026 08:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780562215;
-	bh=+KBwoOcDHJ/gKB5QNN8WBfHE175dP+I++e/xL05rNAk=;
+	s=k20260515; t=1780563362;
+	bh=g0ZRTPlwT/xyxpdHcA09ypJlccbn5Vup1lZsGchbYCc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JFP86ilLCCHzhJlqAKq/rUnRl1SFMEP5JZc+9kfbd0g5Yyrj19XwaIgaXEo4lNSon
-	 KEC0GHXJ66zJqXcab7/+19KIRifpwdxz/H/PLecO5y8ITPQBOJNf9F0lpc/TJ0xBrE
-	 2cQ9czqdmbN22/cC0Gtgt4ESBNsKcwak6Bp+huArDvhLcA76DrGPY82vjZy6ppj0qk
-	 MsKrXRNoMt7NYYudcD+4oV7ZtgZJF6JhPcUXduUHfIY6YtyDkIrp/Ezwgl86Uh0cgo
-	 R8ok/WBhqGzgaN6TcCvGv1Q+gc3IcyZCxPTmM5EUGKi8133ww+tf0JOvR3J39CUzY6
-	 5ylbvc9KAvvYw==
-Date: Thu, 4 Jun 2026 09:36:49 +0100
+	b=VQ0J+CbbA8z53ymXbXli2ktLm3hj2dpSm8vYx6EOzsIKD04T5HKXpSIq7rQ/Rl6xg
+	 u6Ed2IgM7TNaL7b8OZ0rglBpOuIfA6F9gPm6yXsIFjqGYqiWqUMBaCjMXvUWhjlpTM
+	 L9oIoX7KNYDGHvj/H1Tf220DR8/2HEXoS8z2hSqZhpQuUdXtyERbR/wD6JVK3fVFUf
+	 CNz+c+8aejAmVcMYgM7nujR0135LyQJjNV7GtOr7S7zzpUHZRb1S5gQEg4/HLZjiye
+	 +o3yrZ4sdPPAthl0/wzun3PunauL63PeFwdiAGAT0ooIajFer6gpyTbLf8UvmFAMf5
+	 Byte3zz3XJXIQ==
+Date: Thu, 4 Jun 2026 09:55:58 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, richard@nod.at,
-	vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
-	takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com,
-	a-dutta@ti.com
-Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
- specify a frequency pair
-Message-ID: <20260604-shrunk-acclaim-25368d7ad63e@spud>
-References: <20260527175527.2247679-2-s-k6@ti.com>
- <20260528-clergyman-kindling-20971775ba78@spud>
- <eaa75113-2b89-468d-aca8-932bc7e33a7d@ti.com>
- <87cxy92llq.fsf@bootlin.com>
- <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
- <875x3zzkji.fsf@bootlin.com>
- <20260603-neatly-twine-e89b923f5cb6@spud>
- <87o6hry4d4.fsf@bootlin.com>
- <20260603-balance-encounter-94f69e1577f3@spud>
- <87ik7yydyv.fsf@bootlin.com>
+To: Chi-Wen Weng <cwweng.linux@gmail.com>
+Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cwweng@nuvoton.com
+Subject: Re: [PATCH 1/2] dt-bindings: spi: Add for Nuvoton MA35D1 SoC QSPI
+ Controller
+Message-ID: <20260604-anthem-jokingly-8d8312ff0c3f@spud>
+References: <20260603043551.1062112-1-cwweng.linux@gmail.com>
+ <20260603043551.1062112-2-cwweng.linux@gmail.com>
+ <20260603-daybed-absentee-1b64f5caabe0@spud>
+ <41914879-5fd0-41dd-b097-2be80096e464@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -56,73 +47,49 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="I/LOsxQxq90rgY8F"
+	protocol="application/pgp-signature"; boundary="DXfNWS54udZtd82S"
 Content-Disposition: inline
-In-Reply-To: <87ik7yydyv.fsf@bootlin.com>
+In-Reply-To: <41914879-5fd0-41dd-b097-2be80096e464@gmail.com>
 
 
---I/LOsxQxq90rgY8F
-Content-Type: text/plain; charset=iso-8859-1
+--DXfNWS54udZtd82S
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2026 at 09:14:16AM +0200, Miquel Raynal wrote:
+On Thu, Jun 04, 2026 at 03:07:31PM +0800, Chi-Wen Weng wrote:
 > Hi Conor,
 >=20
-> >> >> > Right, and this I guess is what scuppers letting the controller d=
-river
-> >> >> > sort the configuration out itself and leaving the property as-is.
-> >> >> > It could be that the speed in spi-max-frequency is lower than the=
- "base
-> >> >> > speed" of the controller but because of board routing or device
-> >> >> > capability that the tuned mode is still required, right?
-> >> >>=20
-> >> >> I do not actually expect any tuned mode/frequency to be mandatory.
-> >> >
-> >> > I think you misunderstood my use of "required", I meant that the new
-> >> > property/information was needed in the scenario I described, not tha=
-t it
-> >> > should be a required property in a binding.
-> >>=20
-> >> Yes I misunderstood the term indeed. However I still fail to catch what
-> >> you meant here, I'm sorry. Would you mind rephrasing?
-> >
-> > I was talking about a scenario where you want to use the tuned mode to
-> > achieve the maximum rate because of the device and/or board configurati=
-on,
-> > but the rate is below the point where the controller would need tuning.
-> > Say the controller needs tuning above 8 Hz but the conditions require
-> > tuning to achieve more than 5 Hz. In this example, if the device can do
-> > 6 Hz, spi-max-frequency (in the current form) would be set to 6 Hz, and
-> > the controller would not enable the tuned mode, leading to problems
-> > because the inflection point determined from the controller compatible
-> > of 8 Hz would not have been reached.
+> Thanks for the review.
 >=20
-> I don't think this is a real situation. If the "conditions", as you say
-> (ie. PCB routing, mostly) require tuning above 5, then spi-max-frequency
-> should be 5.
-
-Then tuning mode would never be used. Remember, this is a theoretical world
-where spi-max-frequency would contain the tuned frequency and the
-controller was using compatible-specific speed thresholds to determine
-if tuning was required.
-
-> It is the frequency that is reachable without any
-> tuning. Tuning is just a plus. If tuning fails, we fallback to the
-> regular "base" speed, which just works.
+> > Missing commit message for one, but why can't your Nuvoton mail be used
+> > here?
 >=20
-> Thanks,
-> Miqu=E8l
+> I apologize for the missing commit message; I will add a proper descripti=
+on
+> in v2.
+>=20
+> Regarding the email address, my Nuvoton mail adds a corporate
+> confidentiality disclaimer to outgoing
+> external mail, so I use my personal address for sending kernel patches.
 
---I/LOsxQxq90rgY8F
+This prevents you sending with your work email account, but you can still
+set your commit author to your Nuvoton address FWIW.
+
+> Conor Dooley =E6=96=BC 2026/6/3 =E4=B8=8B=E5=8D=88 11:24 =E5=AF=AB=E9=81=
+=93:
+> > On Wed, Jun 03, 2026 at 12:35:50PM +0800, Chi-Wen Weng wrote:
+> > > Signed-off-by: Chi-Wen Weng <cwweng.linux@gmail.com>
+
+--DXfNWS54udZtd82S
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiE5IQAKCRB4tDGHoIJi
-0vh1AP4hwOVyHbur7c1ahOyaxI1idZEZt+yStGb1CnSi+78HSAEA5OgLzntrwzuS
-46xL3MdoZvkkFkrRs+kEEXgrTZygVQU=
-=RuuS
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiE9ngAKCRB4tDGHoIJi
+0ns5AQDkCCpaoPInNNPpkFtOd/vTQh2GyJEX+MDZdhtwHCHGVgD9G5JmWreurTno
+vUf1oScgNMeUb2uh4YdzD0lMOOWV0Qw=
+=pGiX
 -----END PGP SIGNATURE-----
 
---I/LOsxQxq90rgY8F--
+--DXfNWS54udZtd82S--

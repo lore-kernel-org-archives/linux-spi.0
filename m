@@ -1,63 +1,58 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BFE1DDC1B
-	for <linux-spi@vger.kernel.org>; Thu,  4 Jun 2026 07:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DE4397E8D
+	for <linux-spi@vger.kernel.org>; Thu,  4 Jun 2026 07:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780557266; cv=none; b=SK/aEwrFc8mDurL1JAlRfC1aCgO/HkOG85UEeuc9rSeaMlFj1WgtxRA8/MIj77YT6WrR9486f7PJz0ORKXef1v5aNenkjfKkHnyKBVOMy7tqCj5gvL3ila10hlOlrvVyFLoc9no04vX24J0MOIhFJvlRCPJXUdjZJlo2aAlHYdc=
+	t=1780558117; cv=none; b=TvFC36cvAgI52vKd/A5BOn6IZ62tP3h4izUCLherst3b/CC9ZdU7fLmFSQpp8hXDT6rg89iZA02EqxCBAFO2lFz7pL92m8hatERe5yquzinJM0kpSnJ/qJxTihuTtfSP8TRvPUPBuTzad9ur4LEVZSINBynxm4Mrlj7mc3lUE6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780557266; c=relaxed/simple;
-	bh=Mch2Bg7cryJTjKT8MYD1B/J4muhxyP20EtAZ3/VXcdA=;
+	s=arc-20240116; t=1780558117; c=relaxed/simple;
+	bh=N3FYJH0Na6n0IvoTQRLh82Jz6KolB+LqBxz9CxTQz94=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cNKJIFrF0TuYWgIEC55fMxHFTErW59Mb1pft9wagmqSNjCB9+tVxG5YjmrLKNyLbM4JHKPaGAtDWKYxgjKCYoujdf1HkiKLrnK0nhyHhfvMTz8iNgmarrlus5yyFJ1FsRHUiDQoZBiYA0CydrH/cc671T9YhR+ip6towlrtScmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g4CCWlRq; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version:Content-Type; b=hVn1U90s0bLKaQMaihAWuIfF5TfGBl+ghYsM9HVoSkrGc12JSWHGjmAbPZREG/G8cUFBaxrQkKlBWaohl8GlSmSfE91LEfRjRow8Cw4lgZAbAFLha+friT3ipKGjFXk6sgx00PbwdZPeIWZQqIy2T86f9T6FdaMyheNs/XW9SDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dMdEvho4; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g4CCWlRq"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dMdEvho4"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id BF4FA4E40503;
-	Thu,  4 Jun 2026 07:14:22 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0CA894E40505;
+	Thu,  4 Jun 2026 07:28:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 910585FEF7;
-	Thu,  4 Jun 2026 07:14:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3CD8106A173C;
-	Thu,  4 Jun 2026 09:14:17 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D1AD45FEF7;
+	Thu,  4 Jun 2026 07:28:34 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 456D4106A1395;
+	Thu,  4 Jun 2026 09:28:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780557261; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1780558113; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=Mch2Bg7cryJTjKT8MYD1B/J4muhxyP20EtAZ3/VXcdA=;
-	b=g4CCWlRqCPHFmctTPJZrGv/lHwBZoYZJfY82Uov46VdGISP3Ol0WtQjBizs0npkiHcVgiR
-	fmaD1FHs3F3fgInEirfZ9SwbUKPH2NlYQf2qbp23yLfBCWNKkwAJKtGQ+YDKXG43ieaxXi
-	vQ75VE/PCZJEOabzNNUNORO/TmFcjLyM65wDaiut99qScvAGyQtvTb/bY7dJKqFiNVG/EC
-	0MRiTAeKvoRTFfnDVUvWfRkOf1T4lxAcGWsIHAYiUKT72LhjeLbJf3O6S3WWBXBJ6kGsP8
-	JpdpqnK0JGcpG1S0TKz7GB3a24RK+eiWPkEqe7HJkbRoa2jkqleMe1rbD4xwPg==
+	bh=N3FYJH0Na6n0IvoTQRLh82Jz6KolB+LqBxz9CxTQz94=;
+	b=dMdEvho48GdK6q0uOpDC6L/F42yGqD6zMP7d3/DWu1YG2xKyP41yvy8Ls25V2u26R+R6mw
+	Ll8krPj+hKwrsNoDpMuj6gqO1kVC+8FcKaFegFHR63i2FrG67i9r6U8z8dRxVmTqI13OQA
+	NX2h+kXu06x/b60IjPtlrP5XOA2ctB2D1VbJrrCyv+UqChU71mwngXqLITHqc0KydvPqmL
+	cbnLanbbpXYvPYaGr97h/TB2WNJjKlhWQgdfl1rKPz0RdVX3ZtPAm+UGv36GIz2XtI32oW
+	GfA4m28YL1V5ltQLEpS1UbcvdoPPjQ7phMVD5k/7mEnV5IG5CEJjfLEZJXDryg==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Santhosh Kumar K <s-k6@ti.com>,  broonie@kernel.org,  robh@kernel.org,
+To: Rob Herring <robh@kernel.org>
+Cc: Santhosh Kumar K <s-k6@ti.com>,  broonie@kernel.org,
   krzk+dt@kernel.org,  conor+dt@kernel.org,  richard@nod.at,
   vigneshr@ti.com,  pratyush@kernel.org,  mwalle@kernel.org,
   takahiro.kuwano@infineon.com,  linux-spi@vger.kernel.org,
   devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
   linux-mtd@lists.infradead.org,  praneeth@ti.com,  u-kumar1@ti.com,
   a-dutta@ti.com
-Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
- specify a frequency pair
-In-Reply-To: <20260603-balance-encounter-94f69e1577f3@spud> (Conor Dooley's
-	message of "Wed, 3 Jun 2026 17:40:15 +0100")
+Subject: Re: [PATCH v3 02/13] spi: dt-bindings: cdns,qspi-nor: add PHY
+ tuning pattern partition property
+In-Reply-To: <CAL_JsqJwxgcFOB=kE7bVQYDn740-w4RppMF5W-3Ne9=9qV9OrQ@mail.gmail.com>
+	(Rob Herring's message of "Wed, 3 Jun 2026 12:38:46 -0500")
 References: <20260527175527.2247679-1-s-k6@ti.com>
-	<20260527175527.2247679-2-s-k6@ti.com>
-	<20260528-clergyman-kindling-20971775ba78@spud>
-	<eaa75113-2b89-468d-aca8-932bc7e33a7d@ti.com>
-	<87cxy92llq.fsf@bootlin.com>
-	<20260602-aptly-bunkbed-1bd3a8d63d54@spud>
-	<875x3zzkji.fsf@bootlin.com> <20260603-neatly-twine-e89b923f5cb6@spud>
-	<87o6hry4d4.fsf@bootlin.com>
-	<20260603-balance-encounter-94f69e1577f3@spud>
+	<20260527175527.2247679-3-s-k6@ti.com>
+	<20260602164945.GA475455-robh@kernel.org> <87zf1by5oc.fsf@bootlin.com>
+	<CAL_JsqJwxgcFOB=kE7bVQYDn740-w4RppMF5W-3Ne9=9qV9OrQ@mail.gmail.com>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 04 Jun 2026 09:14:16 +0200
-Message-ID: <87ik7yydyv.fsf@bootlin.com>
+Date: Thu, 04 Jun 2026 09:28:29 +0200
+Message-ID: <87cxy6ydb6.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,41 +63,71 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Conor,
+On 03/06/2026 at 12:38:46 -05, Rob Herring <robh@kernel.org> wrote:
 
->> >> > Right, and this I guess is what scuppers letting the controller dri=
-ver
->> >> > sort the configuration out itself and leaving the property as-is.
->> >> > It could be that the speed in spi-max-frequency is lower than the "=
-base
->> >> > speed" of the controller but because of board routing or device
->> >> > capability that the tuned mode is still required, right?
->> >>=20
->> >> I do not actually expect any tuned mode/frequency to be mandatory.
+> On Wed, Jun 3, 2026 at 11:01=E2=80=AFAM Miquel Raynal <miquel.raynal@boot=
+lin.com> wrote:
+>>
+>> Hello,
+>>
+>> On 02/06/2026 at 11:49:45 -05, Rob Herring <robh@kernel.org> wrote:
+>>
+>> > On Wed, May 27, 2026 at 11:25:16PM +0530, Santhosh Kumar K wrote:
+>> >> PHY tuning requires a known data pattern to be readable from flash.
+>> >> When no partition is explicitly identified, the controller must search
+>> >> all available partitions to locate the pattern by label, which adds
+>> >> overhead and relies on label naming conventions outside the
+>> >> controller's control.
 >> >
->> > I think you misunderstood my use of "required", I meant that the new
->> > property/information was needed in the scenario I described, not that =
-it
->> > should be a required property in a binding.
->>=20
->> Yes I misunderstood the term indeed. However I still fail to catch what
->> you meant here, I'm sorry. Would you mind rephrasing?
+>> > I agree 'label' is not the best choice. Software should not care what
+>> > 'label' contains. It should really be 'compatible' instead.
+>>
+>> But compatible does not seem relevant in this case, right? We are just
+>> flagging the location of "some useful data for the controller".
 >
-> I was talking about a scenario where you want to use the tuned mode to
-> achieve the maximum rate because of the device and/or board configuration,
-> but the rate is below the point where the controller would need tuning.
-> Say the controller needs tuning above 8 Hz but the conditions require
-> tuning to achieve more than 5 Hz. In this example, if the device can do
-> 6 Hz, spi-max-frequency (in the current form) would be set to 6 Hz, and
-> the controller would not enable the tuned mode, leading to problems
-> because the inflection point determined from the controller compatible
-> of 8 Hz would not have been reached.
+> compatible is what tells us what a region contains and how to use it.
+> That seems exactly what we need to define here.
 
-I don't think this is a real situation. If the "conditions", as you say
-(ie. PCB routing, mostly) require tuning above 5, then spi-max-frequency
-should be 5. It is the frequency that is reachable without any
-tuning. Tuning is just a plus. If tuning fails, we fallback to the
-regular "base" speed, which just works.
+We usually talk about "programming model" when it comes to compatible,
+here we just need to point at an offset which is in no way different
+(from a hardware standpoint) than the other offsets. I honestly feel
+like a phandle property would be simpler, also because compatibles in
+MTD are already quite complex to manage and I would prefer not to add
+more complexity into the parsing logic.
+
+>> >> Add cdns,phy-pattern-partition, a phandle property that allows the DT
+>> >> author to directly reference the flash partition holding the PHY tuni=
+ng
+>> >> pattern. The controller uses this partition during calibration, avoid=
+ing
+>> >> the partition search entirely.
+>> >
+>> > Do you have any data that this approach being "direct" is faster? In
+>> > fact, it might be worse. Instead of searching just the limited number =
+of
+>> > partition subnodes, you now search the entire tree for a matching
+>> > phandle value. We do have phandle caching, so that might save you
+>> > here.
+>>
+>> True, but besides performance considerations, I personally do not find
+>> elegant using a partition name/label, but maybe that's just personal
+>> taste :-)
+>
+> I agree. That's true for all the partition nodes with only node name
+> or label to go on. We should fix that at the source. However, you
+> already have to support using label,
+
+Hum, no? There is downstream support for labels in TI kernels, but we
+explicitly asked Santhosh to drop it for mainline inclusion. His commit
+message may be a bit misleading on this regard because he is mentioning
+labels like if we were already using them, despite the fact that we are
+not.
+
+> so anything else is supporting a
+> 2nd way whether it is compatible or a phandle property. Is it really
+> worth it here?
+>
+> Rob
 
 Thanks,
 Miqu=C3=A8l

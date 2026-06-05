@@ -1,167 +1,129 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA272EEE6E;
-	Fri,  5 Jun 2026 07:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D6C4779A3;
+	Fri,  5 Jun 2026 07:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780643894; cv=none; b=cyxF6p74sUfe243AWtBPfVqtQKOFnLW+W8k+zriUAKkzfitnEiaGdKPsIH7l3ppFwClgFky8SFrhf+VsGTwTOSiufx+Q0Idj/glqCcEMx5AwVoCHkEUnr0/LAYstvFdmLk761bT8UyMCOGFClAJw7NKMA1boHyHcr8HUqzCZUVI=
+	t=1780644386; cv=none; b=qXRa6nksUZgd1nGXF5g/es0qc6IzGbL1GxAygPRAtn+MiCGQhcQK86pInQnp/67cH9Zbd/XQ4lCSJOe9AJ0JqnWA+O7S0Ak3qQq4jbshM42lGro1Ii39c8oyqNgx8R5lDuNv/+zOsyUv2ZOF7ZQBH237NaNNjhFIUAamfF0NVjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780643894; c=relaxed/simple;
-	bh=jcrToytibwcBAYhSAoNEEpY1rO4Mmvre/yeNqvlg5Fw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BuSip+yPtnQUs5Sbi6cwbKkZd0jQsmEvFMNydOeWrhGSC0Dk0Vi8j+i4UbggLQBfhJXeK7xh2Ty+j5RuBhAcBJ4j3PDSD+X1tkeguqZRr0jh4cHVFTUW/tQhudzcrXDtfMemUlK4y0B4qo//n3NasFkTczfOg4OCEjNTK8uXD3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=b7+3e0Cu; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1780644386; c=relaxed/simple;
+	bh=Blfq6eemSgWS0AMSuwnG+29kqyOXvU+JSSagUSUo0YA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Gwshvkqo2Zh515K6fOrDAKMMSTGOd4TXGHYhoTK5yFQVr/O/XnGtKuz9Xu9/Z0WZ5UcLsW7k3VVzg9kEntKUq3VJNLQlct4PgPYXSLE3mx+goXjrfKYCZAmCu8Y7+piFQoPD5rHxFunHsBgB26uDe3xHzosys7YqVmARZgK701M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1HExFZQ7; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="b7+3e0Cu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1780643894; x=1812179894;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jcrToytibwcBAYhSAoNEEpY1rO4Mmvre/yeNqvlg5Fw=;
-  b=b7+3e0Cu12maMeGmtkn2FIkQrGXzzBl5l0X//7dAub2oRHPG6n0oXHZT
-   5Cox8KnyZi4u+q03plJ5I86ZvjNFlKqtnehUPQlVFy7lVs+YXffio1kkV
-   8LlUs/hP6T3xxzQvnoB/JXVgcF46lGua5z393XkeYq+5lWs2eF4u7TGRe
-   s+/uCKPqv9/G0WNow8L+6IT3R5OzAquszt2/e5Rp9cQLmiOps3DAwEqV+
-   z31Glm0irGonLruUf+3Y2sHGPg2kpOa3tOUXirIm4yZNlg8+vJgL4WmAL
-   2ZXPsUFnwiSQwByhOXRtskeuj1r3ON0UKL6RQeK0oZ1AeSaom0NcMpfkZ
-   A==;
-X-CSE-ConnectionGUID: GTxp86iZTpGaNRQZ6+6kdA==
-X-CSE-MsgGUID: QRxBKdmdRiqD2ogDiIat/g==
-X-IronPort-AV: E=Sophos;i="6.24,188,1774335600"; 
-   d="asc'?scan'208";a="58640353"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2026 00:18:07 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.41; Fri, 5 Jun 2026 00:18:06 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.58 via Frontend
- Transport; Fri, 5 Jun 2026 00:18:02 -0700
-Date: Fri, 5 Jun 2026 08:17:18 +0100
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-CC: Conor Dooley <conor@kernel.org>, Santhosh Kumar K <s-k6@ti.com>,
-	<broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <richard@nod.at>, <vigneshr@ti.com>,
-	<pratyush@kernel.org>, <mwalle@kernel.org>, <takahiro.kuwano@infineon.com>,
-	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-	<praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1HExFZQ7"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EC69DC5846E;
+	Fri,  5 Jun 2026 07:26:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 575225FED1;
+	Fri,  5 Jun 2026 07:26:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9A214106A1E65;
+	Fri,  5 Jun 2026 09:26:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1780644381; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=dJs1UXUNkLhBR/S0VALc0PkMzbs22zwOjldoT+MQiOE=;
+	b=1HExFZQ71mYhu9loC8vT9RuOdU20EdrN8UjyVoOTSvyDNV0zdifjoy/HtaTQyrefq/5Arf
+	34MwRdSYY4s2W9yEviPjziQyYRjT3DqYpyQgoNPSF28Hd7EXzr17OCWdNlXWXqdrwpy8Kp
+	XJv40cpGmgtEmbfe3xkZPsklXTAZHo6BmR/sJHisgg/WaL8IjT2v5i0eJA2jpLHE9xAmHq
+	JujoPbzRynWgqH61lZ7FStVew0vxVV7a4om6JdkI+DLjMOfAR6aHFSNeJ/J2sFuKllFsyW
+	b/JYDCDCCP2vpn9BBQnu3thwMxcC0PwCniHNtSu2YPt5Cl92fEbWvkw+iDPf4A==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Conor Dooley <conor.dooley@microchip.com>
+Cc: Conor Dooley <conor@kernel.org>,  Santhosh Kumar K <s-k6@ti.com>,
+  <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
+  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
+  <pratyush@kernel.org>,  <mwalle@kernel.org>,
+  <takahiro.kuwano@infineon.com>,  <linux-spi@vger.kernel.org>,
+  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,  <u-kumar1@ti.com>,
+  <a-dutta@ti.com>
 Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
  specify a frequency pair
-Message-ID: <20260605-regulate-crawling-253c6d6bd971@wendy>
+In-Reply-To: <20260605-regulate-crawling-253c6d6bd971@wendy> (Conor Dooley's
+	message of "Fri, 5 Jun 2026 08:17:18 +0100")
 References: <eaa75113-2b89-468d-aca8-932bc7e33a7d@ti.com>
- <87cxy92llq.fsf@bootlin.com>
- <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
- <875x3zzkji.fsf@bootlin.com>
- <20260603-neatly-twine-e89b923f5cb6@spud>
- <87o6hry4d4.fsf@bootlin.com>
- <20260603-balance-encounter-94f69e1577f3@spud>
- <87ik7yydyv.fsf@bootlin.com>
- <20260604-shrunk-acclaim-25368d7ad63e@spud>
- <87a4t9wl7r.fsf@bootlin.com>
+	<87cxy92llq.fsf@bootlin.com>
+	<20260602-aptly-bunkbed-1bd3a8d63d54@spud>
+	<875x3zzkji.fsf@bootlin.com> <20260603-neatly-twine-e89b923f5cb6@spud>
+	<87o6hry4d4.fsf@bootlin.com>
+	<20260603-balance-encounter-94f69e1577f3@spud>
+	<87ik7yydyv.fsf@bootlin.com>
+	<20260604-shrunk-acclaim-25368d7ad63e@spud>
+	<87a4t9wl7r.fsf@bootlin.com>
+	<20260605-regulate-crawling-253c6d6bd971@wendy>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Fri, 05 Jun 2026 09:26:13 +0200
+Message-ID: <87tsrh4fe2.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zUWntl/XEoxjT7CW"
-Content-Disposition: inline
-In-Reply-To: <87a4t9wl7r.fsf@bootlin.com>
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
---zUWntl/XEoxjT7CW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 05/06/2026 at 08:17:18 +01, Conor Dooley <conor.dooley@microchip.com> wrote:
 
-On Fri, Jun 05, 2026 at 08:32:56AM +0200, Miquel Raynal wrote:
-> On 04/06/2026 at 09:36:49 +01, Conor Dooley <conor@kernel.org> wrote:
->=20
-> > On Thu, Jun 04, 2026 at 09:14:16AM +0200, Miquel Raynal wrote:
-> >> Hi Conor,
-> >>=20
-> >> >> >> > Right, and this I guess is what scuppers letting the controlle=
-r driver
-> >> >> >> > sort the configuration out itself and leaving the property as-=
-is.
-> >> >> >> > It could be that the speed in spi-max-frequency is lower than =
-the "base
-> >> >> >> > speed" of the controller but because of board routing or device
-> >> >> >> > capability that the tuned mode is still required, right?
-> >> >> >>=20
-> >> >> >> I do not actually expect any tuned mode/frequency to be mandator=
-y.
-> >> >> >
-> >> >> > I think you misunderstood my use of "required", I meant that the =
-new
-> >> >> > property/information was needed in the scenario I described, not =
-that it
-> >> >> > should be a required property in a binding.
-> >> >>=20
-> >> >> Yes I misunderstood the term indeed. However I still fail to catch =
-what
-> >> >> you meant here, I'm sorry. Would you mind rephrasing?
-> >> >
-> >> > I was talking about a scenario where you want to use the tuned mode =
-to
-> >> > achieve the maximum rate because of the device and/or board configur=
-ation,
-> >> > but the rate is below the point where the controller would need tuni=
-ng.
-> >> > Say the controller needs tuning above 8 Hz but the conditions require
-> >> > tuning to achieve more than 5 Hz. In this example, if the device can=
- do
-> >> > 6 Hz, spi-max-frequency (in the current form) would be set to 6 Hz, =
-and
-> >> > the controller would not enable the tuned mode, leading to problems
-> >> > because the inflection point determined from the controller compatib=
-le
-> >> > of 8 Hz would not have been reached.
-> >>=20
-> >> I don't think this is a real situation. If the "conditions", as you say
-> >> (ie. PCB routing, mostly) require tuning above 5, then spi-max-frequen=
-cy
-> >> should be 5.
-> >
-> > Then tuning mode would never be used.
->=20
-> Well, this is exactly what we propose in this series, a way to indicate
-> two maximum frequencies, one that just works (like before) and a higher
-> frequency that is only reachable after an extra tuning procedure.
->=20
-> > Remember, this is a theoretical world
-> > where spi-max-frequency would contain the tuned frequency and the
-> > controller was using compatible-specific speed thresholds to determine
-> > if tuning was required.
->=20
-> That is not what we are proposing. I don't think indicating the "after
-> tuning" frequency in a property that has long been used for an always
-> reachable frequency is wise. Hence either the use of an array (the
-> second entry could contain a higher frequency) or a secondary
-> spi-max-frequency-whatever property.
+> On Fri, Jun 05, 2026 at 08:32:56AM +0200, Miquel Raynal wrote:
+>> On 04/06/2026 at 09:36:49 +01, Conor Dooley <conor@kernel.org> wrote:
+>> 
+>> > On Thu, Jun 04, 2026 at 09:14:16AM +0200, Miquel Raynal wrote:
+>> >> Hi Conor,
+>> >> 
+>> >> >> >> > Right, and this I guess is what scuppers letting the controller driver
+>> >> >> >> > sort the configuration out itself and leaving the property as-is.
+>> >> >> >> > It could be that the speed in spi-max-frequency is lower than the "base
+>> >> >> >> > speed" of the controller but because of board routing or device
+>> >> >> >> > capability that the tuned mode is still required, right?
+>> >> >> >> 
+>> >> >> >> I do not actually expect any tuned mode/frequency to be mandatory.
+>> >> >> >
+>> >> >> > I think you misunderstood my use of "required", I meant that the new
+>> >> >> > property/information was needed in the scenario I described, not that it
+>> >> >> > should be a required property in a binding.
+>> >> >> 
+>> >> >> Yes I misunderstood the term indeed. However I still fail to catch what
+>> >> >> you meant here, I'm sorry. Would you mind rephrasing?
+>> >> >
+>> >> > I was talking about a scenario where you want to use the tuned mode to
+>> >> > achieve the maximum rate because of the device and/or board configuration,
+>> >> > but the rate is below the point where the controller would need tuning.
+>> >> > Say the controller needs tuning above 8 Hz but the conditions require
+>> >> > tuning to achieve more than 5 Hz. In this example, if the device can do
+>> >> > 6 Hz, spi-max-frequency (in the current form) would be set to 6 Hz, and
+>> >> > the controller would not enable the tuned mode, leading to problems
+>> >> > because the inflection point determined from the controller compatible
+>> >> > of 8 Hz would not have been reached.
+>> >> 
+>> >> I don't think this is a real situation. If the "conditions", as you say
+>> >> (ie. PCB routing, mostly) require tuning above 5, then spi-max-frequency
+>> >> should be 5.
+>> >
+>> > Then tuning mode would never be used.
+>> 
+>> Well, this is exactly what we propose in this series, a way to indicate
+>> two maximum frequencies, one that just works (like before) and a higher
+>> frequency that is only reachable after an extra tuning procedure.
+>> 
+>> > Remember, this is a theoretical world
+>> > where spi-max-frequency would contain the tuned frequency and the
+>> > controller was using compatible-specific speed thresholds to determine
+>> > if tuning was required.
+>> 
+>> That is not what we are proposing. I don't think indicating the "after
+>> tuning" frequency in a property that has long been used for an always
+>> reachable frequency is wise. Hence either the use of an array (the
+>> second entry could contain a higher frequency) or a secondary
+>> spi-max-frequency-whatever property.
+>
+> I am/was trying to come up with a scenario that would justify the patch
+> man, stop trying to interpret it as what I want done.
 
-I am/was trying to come up with a scenario that would justify the patch
-man, stop trying to interpret it as what I want done.
-
---zUWntl/XEoxjT7CW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiJ3+wAKCRB4tDGHoIJi
-0tz4AP97UBfrz9S9QPKf/ELSWSCSJG0AKrTL2Ilbca63w1hqBwEAmh8dIG97WI0/
-6CTKNcnF/fGzd+mNaOA+H2isiryDNgs=
-=GMVI
------END PGP SIGNATURE-----
-
---zUWntl/XEoxjT7CW--
+Ah :-) Sorry the intention was unclear to me. So what is your preferred
+take in the end?

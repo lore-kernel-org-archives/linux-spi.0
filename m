@@ -1,97 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D93F8228;
-	Fri,  5 Jun 2026 11:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1454192EE
+	for <linux-spi@vger.kernel.org>; Fri,  5 Jun 2026 15:19:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780659886; cv=none; b=Sdd0hfkIRa5t/pOZ7VFJiE9EtPvVvoIKIGCgH/Ks1szF+AcViXU6YLkPiDIzBx5sIFGGLStpFCad4VuGs894ch2zxQzTHTdFu9Voi3s/g0l7BdVv1zSWMapEZ5pittceqhjebK8w6pfq+D2f76bQx+QPwzGb+i0W/HlfNQW9L9Q=
+	t=1780672798; cv=none; b=D76URKSSTzdHRe0WXhyoH96Z2w3r6igPLLVYGnjNtbCJGsduq6bWy/l1JuFqRKX63D8lL5F4bERscEQkWcdm8ybQgI/oBhPOH0E/fq8sDsN6fpwHY10qs76gOOLl/wT2dnFKMJRmrI1miRJNa7JCavwMz/fYzaDfBHfxCPHRWz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780659886; c=relaxed/simple;
-	bh=lYNZ7Ow04WpOY/PM8SG2wXYg84A9g+fxEpMlpXaOp/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dMjlsru/DlfdNw8MH1uyxVVRSxtRE3bMOxcZ0He14nTHW+YgoD4cvKqLhm+si5kZsbFLnmyVn840s8Q207vrUp+LGmSkv+qa0b+K4nHuJlfYWtIkvwenO0YGRV1YF0Skeri4waCNuRivBxFVpzDaRf/xzO6/84fC4JKoswkXD+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SovsI4ym; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780672798; c=relaxed/simple;
+	bh=F/91aYGOp0TA4Df0ndhGc9g7+0e11u48hDY7fSepMX0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CfQUQSIdax1zh8j/rWCIt8owFyCHnCa3tC1GDjJEylRYINgDpYABU5nELlk/u3t0Pu9DWf2AYVlzvmoIhbWJ7iBzgaVDsvYRqhCWOJYhv/oYdxCL1zAZfenwNUWZHHSfLymX1oKasItcDSbr3OFf4it8pEPg41YPL48/1/v5jkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8CJwce4; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SovsI4ym"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B4B1F00893;
-	Fri,  5 Jun 2026 11:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780659885;
-	bh=RhPl1xcsvy4s3kBqUiJdyhDa0kRnDkJCTM8WL4mk19M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SovsI4ymUus/MClDf3Ib+DzgZCFkndhAZPeI3Cj36RrhpyC4AfSSvG0wG7nAOObGr
-	 qV2IgMdPbeAh9bcUvUQxVN0FEhMd0IE8rc87wDnL3e4LGUw2RDtlowYPQepjfSaWsk
-	 UZCOkAyXdozEKQ/27+Cn3j9czCBJ9LlAoJWJhqSRIOOcBBE4mFKF1KLU8gFG6XTW6R
-	 A04hGuQThLzXXTSeLFxMhttFqhcS8wyV1Jihr3tsPQsXJVmGbzTyWPsxk2siCkjcW+
-	 fff2e5THziN9s0I/zz+rtGKTQ3d405syXHqkqDiNxvnGMzmOOEJx7rwlVH6szGS5/P
-	 ajf7Lnb5j+mJA==
-Date: Fri, 5 Jun 2026 12:44:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Jisheng Zhang <jszhang@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] spi: cadence-xspi: Support 32bit and 64bit slave dma
- interface
-Message-ID: <08471583-05e1-48f1-9de8-9297fa2c601f@sirena.org.uk>
-References: <20260602235825.28614-1-jszhang@kernel.org>
- <e9259b2d-38f4-47bd-8816-3940c2314e9d@sirena.org.uk>
- <aiC98CaOgjs-q39m@xhacker>
- <f1cacc64-1f27-480a-8f03-4f4b0dad599a@sirena.org.uk>
- <20260605020634.GA1820810@ax162>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8CJwce4"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c859a374903so766083a12.3
+        for <linux-spi@vger.kernel.org>; Fri, 05 Jun 2026 08:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780672792; x=1781277592; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aGW6DwMXILcfqbxRFQDtqjBCL5eF+tfSt+H3qYqWsKA=;
+        b=Z8CJwce4Y6p7prb45arq2c2BcGQyHxs4FIoSeJrofc5Btr0+RireAz4EE3S/6ggfWP
+         hb8xS5RbJb+lc45fOBFi+kTjjknAAjRLFLTcdKwiuicAAWDjrIq9PqfGk4MtxMBMazjw
+         n316GssjYYhk8aISl/FEW/ZlMn8VWDqSh66NRBK5zqb23tnbVg9nsgZ32AAH0JaEGJQF
+         rXLO35nK9ZD+ZzuOnHBO6L/1Fd/n+DRvp2REq6ATSRHxkAdtrLcVzkAcAuwd/HEAHpg5
+         zJ1uV7KVJnI5SlZLjxhChhcC4N/7P2YIL+jIJ7nmHXhQcr/jO3iCc4Q7qRDzFpH39nH3
+         r87A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780672792; x=1781277592;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aGW6DwMXILcfqbxRFQDtqjBCL5eF+tfSt+H3qYqWsKA=;
+        b=Ow8XcsuR02mRXf2UiZwqDKfAxgmFayEWLn7MTpiJ0RVBVYiASKsZD6rr5gEVw2PN9m
+         wm++Hqp/hih/i4tWLlMKusqAR5leEAdAKvAdWeuLxzLLfZforGRdtfPfj+DDXllNtDrR
+         yItQTZWeCMgeIP3nMlx0CDnMRYWfGuwfgoBZT6dei6639fFWJ+e/kWc1WFxPlhszdTiW
+         bbndEkG3ik3VvTu7NOWR/VHcWKAY+PZ5itAzvwswp2hhiuAoWtVMJFhClngLJAcg1HG1
+         k/q5+T7YTuhOMuwIc6QGx6tfDjaXjYw/sxjSgXeAuM07eN87gzmtleNX+XTvkhP+Bkql
+         fCCQ==
+X-Gm-Message-State: AOJu0YxP4Yf2E7D/EYNSHFY0vVUImioitHxK+ScBv1Dd8Nca1H9cTtUS
+	AnpbswgX66j9+Yb+57bP291Sxpv8iMvotpQp54UIlev+qiNLvfbYlxgcy1LceRZPb1M=
+X-Gm-Gg: Acq92OFNp1kgfd/zh/5vWD3fbwFWN44j3D2khG4BOCANP/VwGvAALPuiFri+eMNJ5EA
+	NiwH3It7Wm2A8kDgJ0d1nLOaaIGheIxu+ajfaZinUQ7LbjKFXpDLadYEmDOJrODe9GJUZlAUcSw
+	dxv1/idm8FOP6k4tCgCdVTuLxxv0RQeCgSmkICkfMWxhqYa4nev06rU/UknCwrmimeNlZF1/m94
+	Y2iNfgWiHOLYINmMiT9ufzdh5Q0WFkL2aXYzsVqvRLol/TeAiZQWfRCSvlAeERkrs/eQxzuntCp
+	HPR6mdvDKuQkuzVfxYBktZK7pv4Dlvgt/YNi3Fv8pyB/6Iom43Lw+39YKgDgdAJe6IMoDmvjMgT
+	laumQ0RENwLvaeERBGPlHY/9uJHJQxkrlxbEnW2lx1OTAXVMMFWbYjMmvnxrwa/N4/tFUvQD5ko
+	U0aEvAzzdNLshfYNCg7rqWMbWN1U6OogHaFkPAF+BwUU5bPjFT2mopPck0T1AL0MVQ58Wf9yvE/
+	IghoIM1sfVHVSRNUuF4nwtJTJ58
+X-Received: by 2002:a05:6a20:7289:b0:3a2:f7bd:a9a5 with SMTP id adf61e73a8af0-3b4cd040147mr4994963637.38.1780672792015;
+        Fri, 05 Jun 2026 08:19:52 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.74])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0be0f0sm7954308a12.30.2026.06.05.08.19.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jun 2026 08:19:51 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Fri, 05 Jun 2026 23:19:47 +0800
+Subject: [PATCH] spi: rzv2h-rspi: fix incorrect readl() accessor for 8-bit
+ RX path
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="05Hntv/qWgNXdU+7"
-Content-Disposition: inline
-In-Reply-To: <20260605020634.GA1820810@ax162>
-X-Cookie: Error in operator: add beer
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABLpImoC/yXMQQ5AMBBA0avIrDWpihJXEQvawVggM4gQd1cs3
+ +L/CwSZUKCMLmDcSWieApI4Ajc0U4+KfDAYbay2OlN87mZQLAup1BXeJ7bo2txACBbGjo5vVtW
+ /ZWtHdOt7gPt+ACaDeUhuAAAA
+X-Change-ID: 20260605-rzv2h-rspi-3c8dd168fb72
+To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780672790; l=1014;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=F/91aYGOp0TA4Df0ndhGc9g7+0e11u48hDY7fSepMX0=;
+ b=HepSfuexrpj6g8kfJG5KY1eSs6Sp3+IaYBt5zzn/iDBlV1091dTONl7FFS8zbuFSKE1k4oDhJ
+ 7FcKOIxWMh0C7yLiZT0SnEVc55ARLok0i7Q8jWA1uz4tJpU2aKHT9iF
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
+The RZV2H_RSPI_RX macro instantiation for u8 data incorrectly uses
+readl(). It performs a 32-bit read which can consume excess data and
+cause corruption.
 
---05Hntv/qWgNXdU+7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-rzv2h-rspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Thu, Jun 04, 2026 at 07:06:34PM -0700, Nathan Chancellor wrote:
-> On Thu, Jun 04, 2026 at 11:30:27AM +0100, Mark Brown wrote:
+diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
+index 1655efda7d20..1406885ccede 100644
+--- a/drivers/spi/spi-rzv2h-rspi.c
++++ b/drivers/spi/spi-rzv2h-rspi.c
+@@ -137,7 +137,7 @@ RZV2H_RSPI_TX(writew, u16)
+ RZV2H_RSPI_TX(writeb, u8)
+ RZV2H_RSPI_RX(readl, u32)
+ RZV2H_RSPI_RX(readw, u16)
+-RZV2H_RSPI_RX(readl, u8)
++RZV2H_RSPI_RX(readb, u8)
+ 
+ static void rzv2h_rspi_reg_rmw(const struct rzv2h_rspi_priv *rspi,
+ 				int reg_offs, u32 bit_mask, u32 value)
 
-> > Ah, the patch is fine then - I must have been looking at a fixes tree
-> > without the dependency when I reviewed it, I'd forgotten that Marvell
-> > update had gone in.
+---
+base-commit: a225caacc36546a09586e3ece36c0313146e7da9
+change-id: 20260605-rzv2h-rspi-3c8dd168fb72
 
-> Your 7.2 tree has commit 0c5b5c40dc31 ("spi: cadence-xspi: Add
-> COMPILE_TEST support") in it, so this driver does build on 32-bit
-> platforms now. -next is broken with
+Best regards,
+--  
+Felix Gu <ustc.gu@gmail.com>
 
-...
-
-> which would not happen if the 64BIT dependency was there. If
-> 0c5b5c40dc31 is to remain around, it seems like option A upthread is
-> needed.
-
-TBH I'm fine with dropping that given that it was purely for coverage
-and at this point the overwhelming majority of new development is done
-on 64 bit architectures so the coverage benefit is a bit limited.  I'm
-not aware of there being any 32 bit hardware using the controller, the
-commit log doesn't suggest any.
-
---05Hntv/qWgNXdU+7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoitqkACgkQJNaLcl1U
-h9D4hQf/ctYa6n/JVt/0p2qhCGTOIWlgLaPHXOUwn63MXAFKyZCQXQ3tJFq5rLHA
-PLzDPvumCCuuMH/kxoe9scsIgrp3L8VSEt4YFjzPCRM3qPQ36o/zx3IOnKxC8gr1
-5Eef2Gj/pOYup+fVXv+bSzRJtONGX1y1/cqGoVai3ztF/zHFtdlO7tetTUbQk0mg
-kSSag6dQX8zbspltjLwOXvG0xv0HpgNfol5WEWXH3y8J/IvzEecR8aheKAJhHOqe
-3l/CSRoDgjMde0rydm8Vaw9i5sj/U1iV51oZa2VXY5rlrKQGPYNNQUbnBU1OxHa1
-CxVCoSqTkJj0YvqxkU9HsFLIOFjp5Q==
-=XPMv
------END PGP SIGNATURE-----
-
---05Hntv/qWgNXdU+7--

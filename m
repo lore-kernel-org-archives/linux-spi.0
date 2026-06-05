@@ -1,164 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF839A7F4;
-	Fri,  5 Jun 2026 15:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344C7416D1F
+	for <linux-spi@vger.kernel.org>; Fri,  5 Jun 2026 16:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780672866; cv=none; b=Vr1VNCvjUJgXMsoxRpqoEJ/amlWaFcF5FHev++98Muf0xl9JuYp5ObvO7FRI2YTytVqDXL01qwq9e6VaiaKHaAEftJ8hykSuFA80zFN5W9NFY70BygLeMACe9gQW3AewYxCi/JrtkFRj8+MnIik4WKE9e/7CdfJB3voJ7IxoAgk=
+	t=1780676939; cv=none; b=FSu5uzMZtBgGmjZduBqnckaaOVTjOm3taYU52iSHh48kre/pE+/c4XlS8etqUYj4Sh4pGssGkFYxpqm5ZuYCQg5/eQGuYRaOkpsDdvX77TJ214cUJ5ydvotgb6T7z7wgHzNWj5jOUqAX+HmBZceTOoXXE6rY0V6rVq0OsHU88c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780672866; c=relaxed/simple;
-	bh=vw91GZNtqBFohd/dG1WeoM+tMXZptKE7kVHQJDsCpOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XnQ8OXrh3rNeaTehFpdKdkhSJbNWu1op9GYTjwjwB/XyMc+XTISYP1OIoUEgeqUgJnk9xQ7PULoXKVN08fENaABeJH2Gq4LxQRm/zkj2XFaLcQHD0svOmxOxMQIDim16aHzpbuKXoQk5FOYTkaYRHfHmXki8wsjcvq8JfMQGBwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrD1vjtK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780676939; c=relaxed/simple;
+	bh=G2UoaTUBsy8YP1XAK8MC20PbrieDy7yS/loF19hogbg=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=E6L9MHp4QOgm454Rg93UjTOytVGSyLpKz9ujC8G39AQuMERI0whYAIZ7L8z+v+j1jbUoOeamu9JYvvY84cfRl2YnHzggzo4ueNb5SWiNvsHtZ3SrbRzuytXCQ1O+BRBbUibzyeSKvRz/FI005YtZe67XmnTuJE55IeB3pFFgDvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca; spf=pass smtp.mailfrom=marek.ca; dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b=U31cEtL8; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marek.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marek.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrD1vjtK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A43C1F00893;
-	Fri,  5 Jun 2026 15:21:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780672865;
-	bh=vw91GZNtqBFohd/dG1WeoM+tMXZptKE7kVHQJDsCpOs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QrD1vjtK+SkysmU4faIqnr8ZN6m9IEZx4MtrX9q2kfLLNKJzB3Dy3rRqj6etwUTX3
-	 H5+h1QlUbbXgkXEdyMhmOsLNj+Zo+RKomonT2jiUT9Xxj4q43D2Mhn+qrKnzubTxw+
-	 eIiQ/F4T1QScIFYEYDxbn8PZ9vGvGVJi1M6t/TKjqfVOW9FH2WWqO/Zt/DqdoDco9r
-	 1OhvnXMmT0/QSlObCncM+8K0HqAG62kbceKT4okzLYR7ZjPZHtcz4xmfzZgV6fCNW5
-	 HaFVmQEK66fCAmwFHeVMeu1bZy6Zb8O4g0ty7qsZw2xsRZIwbU7SAhMNt7LDogjxFR
-	 zgnuXdGDgRS6g==
-Date: Fri, 5 Jun 2026 16:20:59 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, richard@nod.at,
-	vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
-	takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com,
-	a-dutta@ti.com
-Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
- specify a frequency pair
-Message-ID: <20260605-cane-duct-a5c740fae417@spud>
-References: <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
- <875x3zzkji.fsf@bootlin.com>
- <20260603-neatly-twine-e89b923f5cb6@spud>
- <87o6hry4d4.fsf@bootlin.com>
- <20260603-balance-encounter-94f69e1577f3@spud>
- <87ik7yydyv.fsf@bootlin.com>
- <20260604-shrunk-acclaim-25368d7ad63e@spud>
- <87a4t9wl7r.fsf@bootlin.com>
- <20260605-regulate-crawling-253c6d6bd971@wendy>
- <87tsrh4fe2.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=marek.ca header.i=@marek.ca header.b="U31cEtL8"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-915ab38ac14so152214285a.0
+        for <linux-spi@vger.kernel.org>; Fri, 05 Jun 2026 09:28:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=marek.ca; s=google; t=1780676931; x=1781281731; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=keYw8EcQ4PK+W0SNMoTM+wvQ1RmTHYvCycVi3RIxEGs=;
+        b=U31cEtL8hb102unwA4N19zq3dZs6hHu2KoOQb2fPXFc4EzSKfLLxyp0NHMfHBo5vaN
+         6uUnP0i8qymujvCSA/fj1Hf7xxTCr6nHhwW8ZIP1qgmFpYS+QO3mvhobckR+5cC1gvT4
+         OfZIEf9uSHXjdWPHhAc6A2EpeAAuToMnN9nBpIdAbRXRT/+zMa66m64jRfDQCXQe9+Nx
+         stdKGDKCm4KKR0a0XWNYEnqccp4t14zP7mzingQqjTMemzIkyaIRapQdbN2oRsk8QF1L
+         m1lGBKJoWCaPnWGySGxnSAO2ugJDDCkA1MSaEl6y+jre866A320dm/XqJ6+uzJZdnPkg
+         07uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780676931; x=1781281731;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=keYw8EcQ4PK+W0SNMoTM+wvQ1RmTHYvCycVi3RIxEGs=;
+        b=KcFI2VsCtteWaIm+tdkcTWoHj+jfTXLTkohGJ3SHODW9P4RQzmLgc2LA8g2mviTaco
+         mDkhNtKGWvh93zRmHi9TV+XzmsgQb7d+ucMr0SpUknb9D0Ruy+e8FJ9nZHYKV8dTGzIi
+         7Kf8fzG60qdp+V/VAeCZHrYoTmJChl+3IiOY/Lkli0gXTBKaRloFlsZAXXE2AxPcjZ/L
+         MXCv0Hd2p5ZavO32AktplqcCxT07/PMYVQ6qBOSzaxa5NH2npx+IdVy0aCyP0MoASiC1
+         joVcyRompndlsec5ldM0d/GWBLV+T/SjCljklg0FUavoU7AkSoUua4atrkO2LOenrV3t
+         CaDw==
+X-Forwarded-Encrypted: i=1; AFNElJ+Wa5Lebv8K5jLAgwondqrxf9MyGXdvy7hLwL/Rez5vAtLzaviIiYN/pUZYNTL7FKLggQC9ogsKmmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0/n4THm6ssbVBaUpibU8zohtkeg/VF9t+kme+sfwNYdtcEDAv
+	VGYpGY3YXF1IweJvRKqnFFEGIrVndFMsEtw2s+u3WwaeAjM/iISapf3VSqR09wU8nWFOT3HMaB6
+	j7GDH
+X-Gm-Gg: Acq92OERv1saXjQWVQQvB109zFLNC7vAlZ2JBUrHHiPAOwo/HF7BIT6GwOpvzKGaWCz
+	lFN82tXow9V7fEs18SwrDa2pXl4x124lw+GGCRIDuRr837yxySZmNu2UDQKuWpQIEo6LwZiZy3k
+	xpIP/Fz/ZJkXVa2gQ3PYSV7oemXsIA/IXDTGCrfgyeg3Nq6+4RBQzbiksP8m3/qaXVsRLx7HKXa
+	8Ogpdq4GHwkeFcnmqAFQU2b6y1KWjRdWv51SFwIYD9WJlEEPXnLDwSQQp8WjSOY48Dcuc4RE25w
+	FCCKkdZ6v2Mlp+uDySKsaRI7oYwCn3QnHw0mQrDolwyBqKV2VJJOuZe729sz7lVfFzuZYRLeAIS
+	CBWrNE8iB0dmFcmyweoJy0QbtJK8aKPEPoK2vgaeb7F3pdC3ILXFNjB9Gck9D23ayypRweA5Ehm
+	SmmypRpwud1zxGfYTelBSEYmLojbiNxnAKZUbGFdjlWAuR1nJE3txwSzaOkjM95PLxby2qKqXCe
+	545/9GzfP1mqNvu7XM=
+X-Received: by 2002:a05:620a:480b:b0:911:449d:98c0 with SMTP id af79cd13be357-915a9c4bd5emr831113485a.7.1780676930899;
+        Fri, 05 Jun 2026 09:28:50 -0700 (PDT)
+Received: from [192.168.0.189] (modemcable125.110-19-135.mc.videotron.ca. [135.19.110.125])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9158a411333sm989320385a.46.2026.06.05.09.28.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 05 Jun 2026 09:28:50 -0700 (PDT)
+Subject: Re: [PATCH v1] spi: qcom-geni: Fix cs_change handling on the last
+ transfer
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+ Mark Brown <broonie@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260529-fix-spi-fragmentation-bit-logic-v1-1-3b30f1a3dd7d@oss.qualcomm.com>
+From: Jonathan Marek <jonathan@marek.ca>
+Message-ID: <dd247b87-71a2-78d6-fb6f-663906c8ec59@marek.ca>
+Date: Fri, 5 Jun 2026 12:24:34 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n7CCSV6H7UyMc2Oa"
-Content-Disposition: inline
-In-Reply-To: <87tsrh4fe2.fsf@bootlin.com>
+In-Reply-To: <20260529-fix-spi-fragmentation-bit-logic-v1-1-3b30f1a3dd7d@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
+should have another Fixes tag for the GSI xfer fix, otherwise LTGM
 
---n7CCSV6H7UyMc2Oa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Jonathan Marek <jonathan@marek.ca>
 
-On Fri, Jun 05, 2026 at 09:26:13AM +0200, Miquel Raynal wrote:
-> On 05/06/2026 at 08:17:18 +01, Conor Dooley <conor.dooley@microchip.com> =
-wrote:
->=20
-> > On Fri, Jun 05, 2026 at 08:32:56AM +0200, Miquel Raynal wrote:
-> >> On 04/06/2026 at 09:36:49 +01, Conor Dooley <conor@kernel.org> wrote:
-> >>=20
-> >> > On Thu, Jun 04, 2026 at 09:14:16AM +0200, Miquel Raynal wrote:
-> >> >> Hi Conor,
-> >> >>=20
-> >> >> >> >> > Right, and this I guess is what scuppers letting the contro=
-ller driver
-> >> >> >> >> > sort the configuration out itself and leaving the property =
-as-is.
-> >> >> >> >> > It could be that the speed in spi-max-frequency is lower th=
-an the "base
-> >> >> >> >> > speed" of the controller but because of board routing or de=
-vice
-> >> >> >> >> > capability that the tuned mode is still required, right?
-> >> >> >> >>=20
-> >> >> >> >> I do not actually expect any tuned mode/frequency to be manda=
-tory.
-> >> >> >> >
-> >> >> >> > I think you misunderstood my use of "required", I meant that t=
-he new
-> >> >> >> > property/information was needed in the scenario I described, n=
-ot that it
-> >> >> >> > should be a required property in a binding.
-> >> >> >>=20
-> >> >> >> Yes I misunderstood the term indeed. However I still fail to cat=
-ch what
-> >> >> >> you meant here, I'm sorry. Would you mind rephrasing?
-> >> >> >
-> >> >> > I was talking about a scenario where you want to use the tuned mo=
-de to
-> >> >> > achieve the maximum rate because of the device and/or board confi=
-guration,
-> >> >> > but the rate is below the point where the controller would need t=
-uning.
-> >> >> > Say the controller needs tuning above 8 Hz but the conditions req=
-uire
-> >> >> > tuning to achieve more than 5 Hz. In this example, if the device =
-can do
-> >> >> > 6 Hz, spi-max-frequency (in the current form) would be set to 6 H=
-z, and
-> >> >> > the controller would not enable the tuned mode, leading to proble=
-ms
-> >> >> > because the inflection point determined from the controller compa=
-tible
-> >> >> > of 8 Hz would not have been reached.
-> >> >>=20
-> >> >> I don't think this is a real situation. If the "conditions", as you=
- say
-> >> >> (ie. PCB routing, mostly) require tuning above 5, then spi-max-freq=
-uency
-> >> >> should be 5.
-> >> >
-> >> > Then tuning mode would never be used.
-> >>=20
-> >> Well, this is exactly what we propose in this series, a way to indicate
-> >> two maximum frequencies, one that just works (like before) and a higher
-> >> frequency that is only reachable after an extra tuning procedure.
-> >>=20
-> >> > Remember, this is a theoretical world
-> >> > where spi-max-frequency would contain the tuned frequency and the
-> >> > controller was using compatible-specific speed thresholds to determi=
-ne
-> >> > if tuning was required.
-> >>=20
-> >> That is not what we are proposing. I don't think indicating the "after
-> >> tuning" frequency in a property that has long been used for an always
-> >> reachable frequency is wise. Hence either the use of an array (the
-> >> second entry could contain a higher frequency) or a secondary
-> >> spi-max-frequency-whatever property.
-> >
-> > I am/was trying to come up with a scenario that would justify the patch
-> > man, stop trying to interpret it as what I want done.
->=20
-> Ah :-) Sorry the intention was unclear to me. So what is your preferred
-> take in the end?
-
-I think the generic dedicated property makes the most sense to me.
-
---n7CCSV6H7UyMc2Oa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiLpWAAKCRB4tDGHoIJi
-0if4AP9/WM+AK0u5JheOzThGNxZOzx0f/LbnrVw+eUcxqqq1zAEAhHeg2ZUM0hWt
-Wobi1Twk/64oObefh9HxMBtDl6GhxwY=
-=/wCv
------END PGP SIGNATURE-----
-
---n7CCSV6H7UyMc2Oa--
+On 5/28/26 3:03 PM, Viken Dadhaniya wrote:
+> Commit b99181cdf9fa ("spi-geni-qcom: remove manual CS control") introduced
+> automatic CS control via the FRAGMENTATION bit, but missed the case where
+> cs_change is set on the last transfer in a message.
+> 
+> For the last transfer, cs_change means that CS should remain asserted after
+> the message completes. Since GENI SPI controls CS through FRAGMENTATION,
+> set FRAGMENTATION for this case as well as for non-last transfers where
+> cs_change is not set.
+> 
+> Additionally, setup_gsi_xfer() was storing FRAGMENTATION (BIT(2) = 4) in
+> peripheral.fragmentation, which is a boolean field consumed by
+> gpi_create_spi_tre() via u32_encode_bits(..., TRE_SPI_GO_FRAG). Storing 4
+> causes u32_encode_bits to mask it to 0, silently disabling the FRAG bit in
+> the GPI TRE regardless of the cs_change logic. Store 1 instead.
+> 
+> Without these fixes, TPM TIS SPI transfers deassert CS between
+> single-transfer messages that use cs_change to keep CS asserted across the
+> header, wait-state, and data phases, breaking TCG SPI flow control:
+> 
+>    tpm_tis_spi: probe of spi11.0 failed with error -110
+> 
+> Update both setup_se_xfer() and setup_gsi_xfer() to handle this condition.
+> 
+> Fixes: b99181cdf9fa ("spi-geni-qcom: remove manual CS control")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+> ---
+>   drivers/spi/spi-geni-qcom.c | 27 +++++++++++++++++++--------
+>   1 file changed, 19 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+> index a04cdc1e5ad4..0618f6bd7878 100644
+> --- a/drivers/spi/spi-geni-qcom.c
+> +++ b/drivers/spi/spi-geni-qcom.c
+> @@ -449,10 +449,15 @@ static int setup_gsi_xfer(struct spi_transfer *xfer, struct spi_geni_master *mas
+>   		return ret;
+>   	}
+>   
+> -	if (!xfer->cs_change) {
+> -		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
+> -			peripheral.fragmentation = FRAGMENTATION;
+> -	}
+> +	/*
+> +	 * Set fragmentation to keep CS asserted after this transfer when:
+> +	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
+> +	 *  - last transfer with cs_change=1: keep CS asserted after the message
+> +	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
+> +	 *     keep CS asserted across header, wait-state and data phases)
+> +	 */
+> +	peripheral.fragmentation = list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
+> +				   xfer->cs_change : !xfer->cs_change;
+>   
+>   	if (peripheral.cmd & SPI_RX) {
+>   		dmaengine_slave_config(mas->rx, &config);
+> @@ -858,10 +863,16 @@ static int setup_se_xfer(struct spi_transfer *xfer,
+>   		mas->cur_xfer_mode = GENI_SE_DMA;
+>   	geni_se_select_mode(se, mas->cur_xfer_mode);
+>   
+> -	if (!xfer->cs_change) {
+> -		if (!list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers))
+> -			m_params = FRAGMENTATION;
+> -	}
+> +	/*
+> +	 * Set FRAGMENTATION to keep CS asserted after this transfer when:
+> +	 *  - non-last transfer with cs_change=0: keep CS between chained transfers
+> +	 *  - last transfer with cs_change=1: keep CS asserted after the message
+> +	 *    (e.g. TPM TIS SPI uses cs_change=1 on single-transfer messages to
+> +	 *     keep CS asserted across header, wait-state and data phases)
+> +	 */
+> +	if (list_is_last(&xfer->transfer_list, &spi->cur_msg->transfers) ?
+> +	    xfer->cs_change : !xfer->cs_change)
+> +		m_params = FRAGMENTATION;
+>   
+>   	/*
+>   	 * Lock around right before we start the transfer since our
+> 
+> ---
+> base-commit: e7d700e14934e68f86338c5610cf2ae76798b663
+> change-id: 20260528-fix-spi-fragmentation-bit-logic-880394337ff9
+> 
+> Best regards,
+> --
+> Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+> 

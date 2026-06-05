@@ -1,120 +1,164 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1454192EE
-	for <linux-spi@vger.kernel.org>; Fri,  5 Jun 2026 15:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF839A7F4;
+	Fri,  5 Jun 2026 15:21:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780672798; cv=none; b=D76URKSSTzdHRe0WXhyoH96Z2w3r6igPLLVYGnjNtbCJGsduq6bWy/l1JuFqRKX63D8lL5F4bERscEQkWcdm8ybQgI/oBhPOH0E/fq8sDsN6fpwHY10qs76gOOLl/wT2dnFKMJRmrI1miRJNa7JCavwMz/fYzaDfBHfxCPHRWz0=
+	t=1780672866; cv=none; b=Vr1VNCvjUJgXMsoxRpqoEJ/amlWaFcF5FHev++98Muf0xl9JuYp5ObvO7FRI2YTytVqDXL01qwq9e6VaiaKHaAEftJ8hykSuFA80zFN5W9NFY70BygLeMACe9gQW3AewYxCi/JrtkFRj8+MnIik4WKE9e/7CdfJB3voJ7IxoAgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780672798; c=relaxed/simple;
-	bh=F/91aYGOp0TA4Df0ndhGc9g7+0e11u48hDY7fSepMX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CfQUQSIdax1zh8j/rWCIt8owFyCHnCa3tC1GDjJEylRYINgDpYABU5nELlk/u3t0Pu9DWf2AYVlzvmoIhbWJ7iBzgaVDsvYRqhCWOJYhv/oYdxCL1zAZfenwNUWZHHSfLymX1oKasItcDSbr3OFf4it8pEPg41YPL48/1/v5jkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z8CJwce4; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780672866; c=relaxed/simple;
+	bh=vw91GZNtqBFohd/dG1WeoM+tMXZptKE7kVHQJDsCpOs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XnQ8OXrh3rNeaTehFpdKdkhSJbNWu1op9GYTjwjwB/XyMc+XTISYP1OIoUEgeqUgJnk9xQ7PULoXKVN08fENaABeJH2Gq4LxQRm/zkj2XFaLcQHD0svOmxOxMQIDim16aHzpbuKXoQk5FOYTkaYRHfHmXki8wsjcvq8JfMQGBwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrD1vjtK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z8CJwce4"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c859a374903so766083a12.3
-        for <linux-spi@vger.kernel.org>; Fri, 05 Jun 2026 08:19:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780672792; x=1781277592; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aGW6DwMXILcfqbxRFQDtqjBCL5eF+tfSt+H3qYqWsKA=;
-        b=Z8CJwce4Y6p7prb45arq2c2BcGQyHxs4FIoSeJrofc5Btr0+RireAz4EE3S/6ggfWP
-         hb8xS5RbJb+lc45fOBFi+kTjjknAAjRLFLTcdKwiuicAAWDjrIq9PqfGk4MtxMBMazjw
-         n316GssjYYhk8aISl/FEW/ZlMn8VWDqSh66NRBK5zqb23tnbVg9nsgZ32AAH0JaEGJQF
-         rXLO35nK9ZD+ZzuOnHBO6L/1Fd/n+DRvp2REq6ATSRHxkAdtrLcVzkAcAuwd/HEAHpg5
-         zJ1uV7KVJnI5SlZLjxhChhcC4N/7P2YIL+jIJ7nmHXhQcr/jO3iCc4Q7qRDzFpH39nH3
-         r87A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780672792; x=1781277592;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aGW6DwMXILcfqbxRFQDtqjBCL5eF+tfSt+H3qYqWsKA=;
-        b=Ow8XcsuR02mRXf2UiZwqDKfAxgmFayEWLn7MTpiJ0RVBVYiASKsZD6rr5gEVw2PN9m
-         wm++Hqp/hih/i4tWLlMKusqAR5leEAdAKvAdWeuLxzLLfZforGRdtfPfj+DDXllNtDrR
-         yItQTZWeCMgeIP3nMlx0CDnMRYWfGuwfgoBZT6dei6639fFWJ+e/kWc1WFxPlhszdTiW
-         bbndEkG3ik3VvTu7NOWR/VHcWKAY+PZ5itAzvwswp2hhiuAoWtVMJFhClngLJAcg1HG1
-         k/q5+T7YTuhOMuwIc6QGx6tfDjaXjYw/sxjSgXeAuM07eN87gzmtleNX+XTvkhP+Bkql
-         fCCQ==
-X-Gm-Message-State: AOJu0YxP4Yf2E7D/EYNSHFY0vVUImioitHxK+ScBv1Dd8Nca1H9cTtUS
-	AnpbswgX66j9+Yb+57bP291Sxpv8iMvotpQp54UIlev+qiNLvfbYlxgcy1LceRZPb1M=
-X-Gm-Gg: Acq92OFNp1kgfd/zh/5vWD3fbwFWN44j3D2khG4BOCANP/VwGvAALPuiFri+eMNJ5EA
-	NiwH3It7Wm2A8kDgJ0d1nLOaaIGheIxu+ajfaZinUQ7LbjKFXpDLadYEmDOJrODe9GJUZlAUcSw
-	dxv1/idm8FOP6k4tCgCdVTuLxxv0RQeCgSmkICkfMWxhqYa4nev06rU/UknCwrmimeNlZF1/m94
-	Y2iNfgWiHOLYINmMiT9ufzdh5Q0WFkL2aXYzsVqvRLol/TeAiZQWfRCSvlAeERkrs/eQxzuntCp
-	HPR6mdvDKuQkuzVfxYBktZK7pv4Dlvgt/YNi3Fv8pyB/6Iom43Lw+39YKgDgdAJe6IMoDmvjMgT
-	laumQ0RENwLvaeERBGPlHY/9uJHJQxkrlxbEnW2lx1OTAXVMMFWbYjMmvnxrwa/N4/tFUvQD5ko
-	U0aEvAzzdNLshfYNCg7rqWMbWN1U6OogHaFkPAF+BwUU5bPjFT2mopPck0T1AL0MVQ58Wf9yvE/
-	IghoIM1sfVHVSRNUuF4nwtJTJ58
-X-Received: by 2002:a05:6a20:7289:b0:3a2:f7bd:a9a5 with SMTP id adf61e73a8af0-3b4cd040147mr4994963637.38.1780672792015;
-        Fri, 05 Jun 2026 08:19:52 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.166.246.74])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c85df0be0f0sm7954308a12.30.2026.06.05.08.19.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jun 2026 08:19:51 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Fri, 05 Jun 2026 23:19:47 +0800
-Subject: [PATCH] spi: rzv2h-rspi: fix incorrect readl() accessor for 8-bit
- RX path
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrD1vjtK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A43C1F00893;
+	Fri,  5 Jun 2026 15:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780672865;
+	bh=vw91GZNtqBFohd/dG1WeoM+tMXZptKE7kVHQJDsCpOs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QrD1vjtK+SkysmU4faIqnr8ZN6m9IEZx4MtrX9q2kfLLNKJzB3Dy3rRqj6etwUTX3
+	 H5+h1QlUbbXgkXEdyMhmOsLNj+Zo+RKomonT2jiUT9Xxj4q43D2Mhn+qrKnzubTxw+
+	 eIiQ/F4T1QScIFYEYDxbn8PZ9vGvGVJi1M6t/TKjqfVOW9FH2WWqO/Zt/DqdoDco9r
+	 1OhvnXMmT0/QSlObCncM+8K0HqAG62kbceKT4okzLYR7ZjPZHtcz4xmfzZgV6fCNW5
+	 HaFVmQEK66fCAmwFHeVMeu1bZy6Zb8O4g0ty7qsZw2xsRZIwbU7SAhMNt7LDogjxFR
+	 zgnuXdGDgRS6g==
+Date: Fri, 5 Jun 2026 16:20:59 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>,
+	Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, richard@nod.at,
+	vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
+	takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org, praneeth@ti.com, u-kumar1@ti.com,
+	a-dutta@ti.com
+Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
+ specify a frequency pair
+Message-ID: <20260605-cane-duct-a5c740fae417@spud>
+References: <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
+ <875x3zzkji.fsf@bootlin.com>
+ <20260603-neatly-twine-e89b923f5cb6@spud>
+ <87o6hry4d4.fsf@bootlin.com>
+ <20260603-balance-encounter-94f69e1577f3@spud>
+ <87ik7yydyv.fsf@bootlin.com>
+ <20260604-shrunk-acclaim-25368d7ad63e@spud>
+ <87a4t9wl7r.fsf@bootlin.com>
+ <20260605-regulate-crawling-253c6d6bd971@wendy>
+ <87tsrh4fe2.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABLpImoC/yXMQQ5AMBBA0avIrDWpihJXEQvawVggM4gQd1cs3
- +L/CwSZUKCMLmDcSWieApI4Ajc0U4+KfDAYbay2OlN87mZQLAup1BXeJ7bo2txACBbGjo5vVtW
- /ZWtHdOt7gPt+ACaDeUhuAAAA
-X-Change-ID: 20260605-rzv2h-rspi-3c8dd168fb72
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780672790; l=1014;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=F/91aYGOp0TA4Df0ndhGc9g7+0e11u48hDY7fSepMX0=;
- b=HepSfuexrpj6g8kfJG5KY1eSs6Sp3+IaYBt5zzn/iDBlV1091dTONl7FFS8zbuFSKE1k4oDhJ
- 7FcKOIxWMh0C7yLiZT0SnEVc55ARLok0i7Q8jWA1uz4tJpU2aKHT9iF
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="n7CCSV6H7UyMc2Oa"
+Content-Disposition: inline
+In-Reply-To: <87tsrh4fe2.fsf@bootlin.com>
 
-The RZV2H_RSPI_RX macro instantiation for u8 data incorrectly uses
-readl(). It performs a 32-bit read which can consume excess data and
-cause corruption.
 
-Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-rzv2h-rspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--n7CCSV6H7UyMc2Oa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 1655efda7d20..1406885ccede 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -137,7 +137,7 @@ RZV2H_RSPI_TX(writew, u16)
- RZV2H_RSPI_TX(writeb, u8)
- RZV2H_RSPI_RX(readl, u32)
- RZV2H_RSPI_RX(readw, u16)
--RZV2H_RSPI_RX(readl, u8)
-+RZV2H_RSPI_RX(readb, u8)
- 
- static void rzv2h_rspi_reg_rmw(const struct rzv2h_rspi_priv *rspi,
- 				int reg_offs, u32 bit_mask, u32 value)
+On Fri, Jun 05, 2026 at 09:26:13AM +0200, Miquel Raynal wrote:
+> On 05/06/2026 at 08:17:18 +01, Conor Dooley <conor.dooley@microchip.com> =
+wrote:
+>=20
+> > On Fri, Jun 05, 2026 at 08:32:56AM +0200, Miquel Raynal wrote:
+> >> On 04/06/2026 at 09:36:49 +01, Conor Dooley <conor@kernel.org> wrote:
+> >>=20
+> >> > On Thu, Jun 04, 2026 at 09:14:16AM +0200, Miquel Raynal wrote:
+> >> >> Hi Conor,
+> >> >>=20
+> >> >> >> >> > Right, and this I guess is what scuppers letting the contro=
+ller driver
+> >> >> >> >> > sort the configuration out itself and leaving the property =
+as-is.
+> >> >> >> >> > It could be that the speed in spi-max-frequency is lower th=
+an the "base
+> >> >> >> >> > speed" of the controller but because of board routing or de=
+vice
+> >> >> >> >> > capability that the tuned mode is still required, right?
+> >> >> >> >>=20
+> >> >> >> >> I do not actually expect any tuned mode/frequency to be manda=
+tory.
+> >> >> >> >
+> >> >> >> > I think you misunderstood my use of "required", I meant that t=
+he new
+> >> >> >> > property/information was needed in the scenario I described, n=
+ot that it
+> >> >> >> > should be a required property in a binding.
+> >> >> >>=20
+> >> >> >> Yes I misunderstood the term indeed. However I still fail to cat=
+ch what
+> >> >> >> you meant here, I'm sorry. Would you mind rephrasing?
+> >> >> >
+> >> >> > I was talking about a scenario where you want to use the tuned mo=
+de to
+> >> >> > achieve the maximum rate because of the device and/or board confi=
+guration,
+> >> >> > but the rate is below the point where the controller would need t=
+uning.
+> >> >> > Say the controller needs tuning above 8 Hz but the conditions req=
+uire
+> >> >> > tuning to achieve more than 5 Hz. In this example, if the device =
+can do
+> >> >> > 6 Hz, spi-max-frequency (in the current form) would be set to 6 H=
+z, and
+> >> >> > the controller would not enable the tuned mode, leading to proble=
+ms
+> >> >> > because the inflection point determined from the controller compa=
+tible
+> >> >> > of 8 Hz would not have been reached.
+> >> >>=20
+> >> >> I don't think this is a real situation. If the "conditions", as you=
+ say
+> >> >> (ie. PCB routing, mostly) require tuning above 5, then spi-max-freq=
+uency
+> >> >> should be 5.
+> >> >
+> >> > Then tuning mode would never be used.
+> >>=20
+> >> Well, this is exactly what we propose in this series, a way to indicate
+> >> two maximum frequencies, one that just works (like before) and a higher
+> >> frequency that is only reachable after an extra tuning procedure.
+> >>=20
+> >> > Remember, this is a theoretical world
+> >> > where spi-max-frequency would contain the tuned frequency and the
+> >> > controller was using compatible-specific speed thresholds to determi=
+ne
+> >> > if tuning was required.
+> >>=20
+> >> That is not what we are proposing. I don't think indicating the "after
+> >> tuning" frequency in a property that has long been used for an always
+> >> reachable frequency is wise. Hence either the use of an array (the
+> >> second entry could contain a higher frequency) or a secondary
+> >> spi-max-frequency-whatever property.
+> >
+> > I am/was trying to come up with a scenario that would justify the patch
+> > man, stop trying to interpret it as what I want done.
+>=20
+> Ah :-) Sorry the intention was unclear to me. So what is your preferred
+> take in the end?
 
----
-base-commit: a225caacc36546a09586e3ece36c0313146e7da9
-change-id: 20260605-rzv2h-rspi-3c8dd168fb72
+I think the generic dedicated property makes the most sense to me.
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+--n7CCSV6H7UyMc2Oa
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiLpWAAKCRB4tDGHoIJi
+0if4AP9/WM+AK0u5JheOzThGNxZOzx0f/LbnrVw+eUcxqqq1zAEAhHeg2ZUM0hWt
+Wobi1Twk/64oObefh9HxMBtDl6GhxwY=
+=/wCv
+-----END PGP SIGNATURE-----
+
+--n7CCSV6H7UyMc2Oa--

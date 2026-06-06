@@ -1,82 +1,123 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBFD17BEBF
-	for <linux-spi@vger.kernel.org>; Fri,  5 Jun 2026 16:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2D419E819;
+	Sat,  6 Jun 2026 22:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780678514; cv=none; b=uTxr68rBzkV3u1DvKyPZpS3aHmDoS/2+8SHqvM5j8EHFlym6U5oXkBA+/C7H/1yusKqKJMb0bmyPEabZiDxbmzh6LtE5XzfXI6nCecuAL/1/OFDfx205TRcpvQ7kLuyL8+cpirs1TdS/1hlaNWyZAeHVTp5siNqCH+9+pM+U34A=
+	t=1780784773; cv=none; b=HSEcu3b8pVvZO12DHNYdIVgCE8w6PntCXt9yhlQTaGVyk0ZXn1quyTUriSBCD/cwPG9b/fhWdh95Jd9BGufHVcujESEkWmoSE8HfeaQt+WhFsl4rZTjWlBMVMK5YAqf4eTdtVbWzXg31bouHY7D0JB00ochHs6RnwQEbU8ykpsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780678514; c=relaxed/simple;
-	bh=VQDg/ysUOsAcr851JW4UFD0Y9MDkfUj1C77vlusmwlk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LtGS1/cMdorbLqynOm2RANFUip7sZyxARqIux3CvECekZbJyKgXwTipSJ/Fcr+6NY5gEtejJGUH0250TYr7W8gAf9sD1lrst/EX7FP+fwwCziKWDBz8Hhz52sfJ0zHFFxgp/CkbMcWVi24sUePOjAvYgOGFBMhIWFVX78ePaRAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yrLBi1mi; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1780784773; c=relaxed/simple;
+	bh=5wSrWN4gV49I5m0+JrbeMXcWq3VP0nPyx3T/hAdB0XA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fS/V3tbuZz8AfNiwuAj2JeornNNPviryh+ThUXOI2XcgKS3+UEKVkv+KafyynIISYenfZN5XStgpFHwpdYMAGSailf5KD+Fj48IMK6i/s0in3l5XB4TRIHCPmO4K9MvqafyiFEYqpYLzo0RsXEuZmbGuDF+q80OEKZdfMOYMTK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrx2kv28; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yrLBi1mi"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 76EF34E4080E;
-	Fri,  5 Jun 2026 16:55:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 395A95FED1;
-	Fri,  5 Jun 2026 16:55:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3DDD106A24CC;
-	Fri,  5 Jun 2026 18:55:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1780678510; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VQDg/ysUOsAcr851JW4UFD0Y9MDkfUj1C77vlusmwlk=;
-	b=yrLBi1mi2rwe8UgnCWTg14FCs8780F9FMaLXfP1zYXCjMQ1NBsVuti5VsF9mon/aK7Bd/g
-	GmhlElgErRw82XIOuuXDgIbVgIZav5GeLscixodanfzGxczQnvdQhdo68Tfwd1ckascxyP
-	J0i2aZH0XqeFV4lWm8d8KUX2LxJAFHDLOMO+6RemMeTL8NUw23tSbq6OrmJdtPmZFlo3+Y
-	Uvs3jkatYJNBCG2IULrVCTlHgYiSxMJqolyeA/pJfmJFBmYOLhRvAC+n+b9yJSivwSpqKY
-	S2EpGjrH6VkdJVl7GpBlCLrYAVFCRxs41fndMK6MOTznIelYrcUDz50SztR4OQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>,  Santhosh Kumar K
- <s-k6@ti.com>,  broonie@kernel.org,  robh@kernel.org,  krzk+dt@kernel.org,
-  conor+dt@kernel.org,  richard@nod.at,  vigneshr@ti.com,
-  pratyush@kernel.org,  mwalle@kernel.org,  takahiro.kuwano@infineon.com,
-  linux-spi@vger.kernel.org,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org,
-  praneeth@ti.com,  u-kumar1@ti.com,  a-dutta@ti.com
-Subject: Re: [PATCH v3 01/13] spi: dt-bindings: allow spi-max-frequency to
- specify a frequency pair
-In-Reply-To: <20260605-cane-duct-a5c740fae417@spud> (Conor Dooley's message of
-	"Fri, 5 Jun 2026 16:20:59 +0100")
-References: <20260602-aptly-bunkbed-1bd3a8d63d54@spud>
-	<875x3zzkji.fsf@bootlin.com> <20260603-neatly-twine-e89b923f5cb6@spud>
-	<87o6hry4d4.fsf@bootlin.com>
-	<20260603-balance-encounter-94f69e1577f3@spud>
-	<87ik7yydyv.fsf@bootlin.com>
-	<20260604-shrunk-acclaim-25368d7ad63e@spud>
-	<87a4t9wl7r.fsf@bootlin.com>
-	<20260605-regulate-crawling-253c6d6bd971@wendy>
-	<87tsrh4fe2.fsf@bootlin.com> <20260605-cane-duct-a5c740fae417@spud>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Fri, 05 Jun 2026 18:55:04 +0200
-Message-ID: <87o6hp3p1z.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrx2kv28"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B39A1F00893;
+	Sat,  6 Jun 2026 22:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780784771;
+	bh=TjVepQJ9m+BiQJN/HKXGmGrEuAQFwmWEnMg4yllArPg=;
+	h=From:Date:Subject:To:Cc;
+	b=jrx2kv28cWFJykHtDswQj1F95XY55kUa3ovTrUEaT4Go07wzaqar+MqBZQpa6lwFk
+	 BVpS8Oyfps3NYJqwVTOK/M7JA/rbHsDYElmRp/TEiDl8ESwCYKkp4pxjkQ64ndJ/yt
+	 AsYDO2GxOZFQuuByL8Nzw4jz7oMm2o1IbLNHQN1g8/gCUmLPdCUfWivvMGVmLdjUFQ
+	 /JYhZ6FX8HDXxkpp6EACcWtaNAY8eP4SzZrF3euqKk8di6bX0KmRFvN10VAOp97zJp
+	 VGVZxNi5EmO7mqbp9H5IyvGsqHlw8iIoIiI/dlCmqUQS2hAq/z34it7dsTCOlna6YN
+	 Tp3fdeZzV9Pcw==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Sat, 06 Jun 2026 15:26:04 -0700
+Subject: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNzQrCMBAE4Fcpe3ahDf7VV5EeYjKpK5qGbJRC6
+ bubKnP6DjOzkCILlC7NQhkfUZliRbdryN1tHMHiq8m05tjWsCZhZz2iA88bagu5sJteSZ7gAi0
+ SRz71XW/Oe2/DIVBdSxlB5t/Tdfhb37cHXNnmaV2/H7obf4sAAAA=
+X-Change-ID: 20260606-spi-cadence-xspi-revert-compile-testing-7919284daf5f
+To: Mark Brown <broonie@kernel.org>
+Cc: Rosen Penev <rosenp@gmail.com>, Jisheng Zhang <jszhang@kernel.org>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2560; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=5wSrWN4gV49I5m0+JrbeMXcWq3VP0nPyx3T/hAdB0XA=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDFkq8xrXrHF3uro4W2Jy49Tj+8v/daTI3F75wcOPIdn7v
+ 1FButOnjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCR/wkM/4uk9pZa/X/a/ZrL
+ 5+OkwKV7pZLVmfTlPFuzA+4d//Yz6xYjQ8NB5TuG/69uy9wa/W7j1ilV4SkB1cvbKy8d15wt1q/
+ ByQIA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
+Commit 0c5b5c40dc31 ("spi: cadence-xspi: Add COMPILE_TEST support")
+allows this driver to be built for 32-bit platforms, which causes a
+semantic conflict with commit 4954d4eca469 ("spi: cadence-xspi: Support
+32bit and 64bit slave dma interface"), as readsq() and writesq() are
+only available when targeting 64-bit platforms:
 
->> > I am/was trying to come up with a scenario that would justify the patch
->> > man, stop trying to interpret it as what I want done.
->>=20
->> Ah :-) Sorry the intention was unclear to me. So what is your preferred
->> take in the end?
->
-> I think the generic dedicated property makes the most sense to me.
+  drivers/spi/spi-cadence-xspi.c: In function 'cdns_xspi_sdma_read':
+  drivers/spi/spi-cadence-xspi.c:601:25: error: implicit declaration of function 'readsq'; did you mean 'readsl'? [-Wimplicit-function-declaration]
+    601 |                         readsq(src, buf, len >> 3);
+        |                         ^~~~~~
+        |                         readsl
+  drivers/spi/spi-cadence-xspi.c: In function 'cdns_xspi_sdma_write':
+  drivers/spi/spi-cadence-xspi.c:623:25: error: implicit declaration of function 'writesq'; did you mean 'writesl'? [-Wimplicit-function-declaration]
+    623 |                         writesq(dst, buf, len >> 3);
+        |                         ^~~~~~~
+        |                         writesl
 
-Ok, let's go for it then. Thanks for the feedback!
+As there are no known 32-bit platforms that use this controller, revert
+compile testing support to restrict the driver to 64-bit platforms to
+avoid burdening the driver with workarounds.
 
-Miqu=C3=A8l
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/spi/Kconfig            | 3 +--
+ drivers/spi/spi-cadence-xspi.c | 4 ----
+ 2 files changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 957c3e065b83..8782514bb89b 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -321,8 +321,7 @@ config SPI_CADENCE_QUADSPI
+ 
+ config SPI_CADENCE_XSPI
+ 	tristate "Cadence XSPI controller"
+-	depends on HAS_IOMEM || COMPILE_TEST
+-	depends on OF
++	depends on OF && HAS_IOMEM && 64BIT
+ 	depends on SPI_MEM
+ 	help
+ 	  Enable support for the Cadence XSPI Flash controller.
+diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+index e2bfb0c78b82..e1b337789fce 100644
+--- a/drivers/spi/spi-cadence-xspi.c
++++ b/drivers/spi/spi-cadence-xspi.c
+@@ -22,10 +22,6 @@
+ #include <linux/bitrev.h>
+ #include <linux/util_macros.h>
+ 
+-#ifndef CONFIG_64BIT
+-#include <linux/io-64-nonatomic-lo-hi.h>
+-#endif
+-
+ #define CDNS_XSPI_MAGIC_NUM_VALUE	0x6522
+ #define CDNS_XSPI_MAX_BANKS		8
+ #define CDNS_XSPI_NAME			"cadence-xspi"
+
+---
+base-commit: 4954d4eca469419339452cb5fea26dd0fc678c54
+change-id: 20260606-spi-cadence-xspi-revert-compile-testing-7919284daf5f
+
+Best regards,
+--  
+Cheers,
+Nathan
+

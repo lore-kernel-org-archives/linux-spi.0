@@ -1,83 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5329633DED9;
-	Mon,  8 Jun 2026 13:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF613BBA04;
+	Mon,  8 Jun 2026 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780924251; cv=none; b=gMdCS4uWoE3ZmplUvuBisrxDCvUlmKIE4tUKi/MF2j9d5k9BllbBHqsJPUVYUddOo6P3JoBuxPF5Ct8iFBJ+Og1Wnx0jZnJ0LEd9KPRrl7nzAleDagCiW+SwLMSIGdKlrueDK23t0v7PsgulezBMi6NnBS8Pstn7Md4AuKn1kgU=
+	t=1780926892; cv=none; b=hAQnlmqUGsUoFlvwSQwz02b/+ZYrLFO6YnFwtqrAy8cj43XeLSgNnUhrNBoRR1E5my8MVfItRex4VPjbqq9trScyZpRtCZEusXPLoVSKfpIW1/VZYNamm4KCshgElqOcedfAuO1wzO5t3v4F8hB78cEgqSWBXIiYgB2s2yrZCxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780924251; c=relaxed/simple;
-	bh=VogCyLdvDW5H8sltNmAsH+uauN1WjwiuuQJATMB0N0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UGodkz2KAxh3teK6e7ffW+rhN5bOD34yixFIg5/cyn2UR5gAKDmkq+t02I2RmSCHg4q20fvFsji8uNOYgOf6TtOy0crTo2AvDxNxbv6KB5/h6RKcD23+WWhfb63Y3ta0SGuZA8tYDT8uFaA197b6nnHVQnQ9OaoJSwvM9FSO/J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7dnG+dP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780926892; c=relaxed/simple;
+	bh=XZwUk4gYd7bvOj1M2BG8Xl7bFSA7c/lvIF9Ur15c8b0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=kAeLghMQtjsNFCBDvc9XtTCySTQfbW0wNqsfbpQ/puUMTCz3rLIHzQZsI3PryqOQOAsPjVQ9sv0v1ebrHUvLZZkZfc4UEK5ERR6IF4U/+PueVll+GaK2EGa0m+ATb4dhL90LRECiPoimcWHt1MmPtOVvVXAslTtVByB9N9J+ufY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNEuqhri; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7dnG+dP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45F51F00893;
-	Mon,  8 Jun 2026 13:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNEuqhri"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387441F00893;
+	Mon,  8 Jun 2026 13:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780924250;
-	bh=VogCyLdvDW5H8sltNmAsH+uauN1WjwiuuQJATMB0N0k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W7dnG+dPIKxos3JbC37N+Y2SgC+z8B8lrrNzNXFBljVXxAi+6EnKiCyCa2RqlqdfW
-	 LekFyuyB1pT8GjTJpmHT/YFfVCLAMSXWMFH3bCsn9oESeHwbTUqQtu+ERzxdoC82QP
-	 PNVIpU/FAe5bh0OHQK2IxOgCK6HEQmXBmselcON0eaVnh6VFb+eJdfbw8P5Hl2Hyz1
-	 zgVoqVkGxsY17g9ARrQSIzOxfaxfS8yb1gi8A4BUtcdGdQms7nTuDw/8pog2gczuAH
-	 6UKrzh5tJZsehuyBncJC9WfA3l9vvutZ23m7S4+84899jphNuFWz5dDhzK+xr3cRpf
-	 nyfogbc6Sj3XA==
-Date: Mon, 8 Jun 2026 14:10:46 +0100
+	s=k20260515; t=1780926891;
+	bh=C6WSfCC75CTFwHR+CEqQ4BCpZcFP8W3YS2kUq7cTC7o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=UNEuqhriHO0ui9+SjQYgYno7MMLi3lurPi0TLcAaTa+0D4tSlbadMSNiEiqrr/S1C
+	 b68qLGp2lYxvItFldPF8nTTYdN1MSj/Z7/CaZLduIXDy2CZDmpqbwXpdG4wCqt4Uhf
+	 j0snImovACDwtfA/oBhoL+GISM94SH2E9g66XUYyC/i7TC4qoguOvvtdt2ofLNxwza
+	 VY6kYJnVDzLQxUfWKuoq3lRmATcMCRjZbXPOUq0C0JBmXBIRGbd4uwSq5mcLzUKfFm
+	 tINmPBwlpiQVs889gmxjR1yyRuKM37afuKeoPPJfD7RlHah4VZujVvW82dGCv7x8uJ
+	 H2TrbdpDmkB6w==
 From: Mark Brown <broonie@kernel.org>
-To: Peng Yang <pyangyyd@gmail.com>
-Cc: Serge Semin <fancer.lancer@gmail.com>,
-	Jonathan Chocron <jonnyc@amazon.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, pyangyyd@amazon.com
-Subject: Re: [PATCH v2] spi: dw: fix race between IRQ handler and error
- handler on SMP
-Message-ID: <7f21d199-bddd-45ae-9617-6a56f05d8b6d@sirena.org.uk>
-References: <20260522095727.18307-1-pyangyyd@amazon.com>
- <20260608095849.3446-1-pyangyyd@amazon.com>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Rosen Penev <rosenp@gmail.com>, Jisheng Zhang <jszhang@kernel.org>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+References: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+Subject: Re: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
+Message-Id: <178092110904.121051.4683679381605487799.b4-ty@b4>
+Date: Mon, 08 Jun 2026 13:18:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="c4+VOCXcdD029A0d"
-Content-Disposition: inline
-In-Reply-To: <20260608095849.3446-1-pyangyyd@amazon.com>
-X-Cookie: We've upped our standards, so up yours!
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1111; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=XZwUk4gYd7bvOj1M2BG8Xl7bFSA7c/lvIF9Ur15c8b0=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqJsmprn2m9JBLVXzihguvOntTNr/3T+fpr+EpE
+ dwIBzilvR+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaibJqQAKCRAk1otyXVSH
+ 0NOYB/0Q22nBtq70ZoAoUu11vu9P7ajA6PEqL2fEvHmu1urDlhfAQ67RPmw+mRLOMcWorLDR0h5
+ k4rIESJE198JWxY0JBjynJYCHuju9TAqV2Z+vuy8J4j/1kiR+1gGykDJSmn5+NfmTju8rVX2VjF
+ WT6kJEs9BeThDIzfqaRaQl6ktJOcHyBhun+iAhY9b42frb/FVTUpinXgt91/MtI45NzB84CuEsd
+ fOUmBkhJ0NKmaGoGTIOv44GxqwDz6EIx4nhJREmaP1SG+ZY2t7M2wjxEEGxmw724nQecbx1ASdy
+ HleXq0vULqRaRzBgAntYmLhXuaSACLYGzRLMUqSVDAKXs60X
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Sat, 06 Jun 2026 15:26:04 -0700, Nathan Chancellor wrote:
+> spi: cadence-xspi: Revert COMPILE_TEST support
 
---c4+VOCXcdD029A0d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Jun 08, 2026 at 05:58:49PM +0800, Peng Yang wrote:
-> On SMP systems, dw_spi_handle_err() can be called from the SPI core
-> kthread while the IRQ handler is still accessing the FIFO on another
-> CPU. Resetting the chip via dw_spi_reset_chip() during an active FIFO
-> read/write causes a bus error.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-Please don't send new patches in reply to old patches or serieses, this
-makes it harder for both people and tools to understand what is going
-on - it can bury things in mailboxes and make it difficult to keep track
-of what current patches are, both for the new patches and the old ones.
+Thanks!
 
---c4+VOCXcdD029A0d
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: cadence-xspi: Revert COMPILE_TEST support
+      https://git.kernel.org/broonie/spi/c/2fb242e4f375
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmomv1UACgkQJNaLcl1U
-h9CjGQf/eYs/L3ywRdpV1VXYqmshtwhAy6P1OdIM9LCdcY9pOTWBvXK1sHk2aBY8
-rRejTP2eDt8uhwCmKqIpXDxTCNmc+dzXis9jjYMQXhabsMPjSRcGyV4s830IajHO
-jHzQp6L+DwnaAADx6J28gzcXHEwqUCM0tkbuS0dNXMSy/TBjP1kf5efutFmXt7+5
-JKP2xEbddU481RFx4FlN829GmnGAGmC+urM/LblQ09qDgCyXy9vF08d/4WTjtT8z
-/ADduQAH8qYy5x3ld7RZ9OF+giwfkUaDY4CQ4bLasgVoaTbfoRZSxs2clAGE85wa
-Ju7oi5U25mP7IL5vyv/8J5mSgGbMgg==
-=ALDP
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---c4+VOCXcdD029A0d--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,93 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D4E286417;
-	Mon,  8 Jun 2026 15:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6517C36D9EE
+	for <linux-spi@vger.kernel.org>; Mon,  8 Jun 2026 17:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780930850; cv=none; b=SI7y2n93bYqoo64ApWxvq6U7PjYTU6XpxP1FnKx6qRkr71o1Q8LQKR6pSPtLK2oZPTBK8H1/RidB7PIQhnmmzdvCaP+XJ5/UsovXK8cLTfbSYzMhX2bt38zKRk/qpgFCKUdy/vk0ZYqgZHwEqxWLUYMq9HU+LDQohomW8OS1Ruw=
+	t=1780941278; cv=none; b=jsvEjUNmRT9nJlwE42BmpigKzz+HnYsDKmq6uHhR5KVr3D1CVNapJTj5LKpCNdFjGDKdcWmNotP4olagw79rUtTc1Jio+4nwBzrRbkXFOcBxHcT1QoQHP7aA38C0YNt9S+oVq8m9ZouGDMoELH0LC8Xi9hfBLGZmfxyjswaBaog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780930850; c=relaxed/simple;
-	bh=/xTngY1e5T3eCXThGLvVYNJGUTCOiwYZCZyPREmZoUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuUNsNixIZsujgPaObUOoDHT1lcZFrNiOp4xGyd7q6tEVDj4w6k5lQs+DhIoX9Ok1Qe0Ycmn13GydelGf0VhuING4D7nL/leRn2itpyplWxMuJWK57oPh3BUFEnahYXMEJ8uxhm64ZmkZ9KqWyiVgbVT29XsbCqEpGpq5YDbr00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GI47GZ7t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780941278; c=relaxed/simple;
+	bh=ked5OFQixMHOHNQU87e3oVNysEwBLn+3N65tqp0ANF4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=u1Cd7y68ucZ5VYglZrchhcezc4Gv2kTgIigO6HPizLum+sGJvKRT8rVBS6+dWSTPB9gpp2DiMAAwAKqoxe35Vxeeywj+2X0mSAVX3qCjmR/JWW+DgGyrOSWQMXGnzoql2SUVrIS3S2mDr+JcKPOtdSERTnDgy76QY6sZkq/wHV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9Ajl/G+; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GI47GZ7t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2BB1F00893;
-	Mon,  8 Jun 2026 15:00:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780930841;
-	bh=egby52K8xtGcrLXY6RAt9nVSWQECKng6yoZW1LfMLq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GI47GZ7tVZtzEpB5LRuwh9v5wSxOwyPJ7N58X3cS8j1QaV3chZzoY0kEAr7Qfb64U
-	 kRqQw6jUR/UiGdcyUi5XU/55tBtZODE1Vrn3Umd/3lj6NqI1SHoeeQU7Fe8yP7orfA
-	 EQsM1vflBaQjvDGFwUgDJyNMtUXsQtHk5UXcJASIrbfft3DMCHYRsGcupc5E6NBrPl
-	 2TkGz4wsN/FOUTIbfTTRUPa9XAmMb+v7pELhG3nrKcWAIslJYsgJ/+dSMfKQ4ol51v
-	 c+nNyACdEFol4wW3/xKXnRH+UzTffC+vPI8+YGQorHgviL07ZwBugLY2xJ0deyO2L2
-	 /Lae5gPVzL1Cw==
-Date: Mon, 8 Jun 2026 10:00:40 -0500
-From: Rob Herring <robh@kernel.org>
-To: Ninad Naik <ninadnaik07@gmail.com>
-Cc: broonie@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, me@brighamcampbell.com,
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org
-Subject: Re: [PATCH] spi: dt-bindings: octeon: Convert to DT schema
-Message-ID: <20260608150040.GA2675433-robh@kernel.org>
-References: <20260607142356.2844008-1-ninadnaik07@gmail.com>
- <20260608143259.GA2569066-robh@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9Ajl/G+"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-490b7866869so53487575e9.2
+        for <linux-spi@vger.kernel.org>; Mon, 08 Jun 2026 10:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780941274; x=1781546074; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cGF7+QWpJakGRZT4D0HON+vY+LPOCmvLkPwggXClSNo=;
+        b=Z9Ajl/G+7Y8g+uWqtvrjDCLjSu4ebwNVhHEvkQ0N1FjYMGsHjKpTLYK9zrtQWuq9S5
+         lMW7+uBt4luRz4o15tQ5FyGntnVCzJeEJ1VF3t8OQGSfXt83IP5VC5K9NiMIrDDctBHw
+         UYxM7Bcj4m4YgGlQoeFasuHS/50Neyv6EVrqpNnveKylzCBSy+4fKPSw/gjca4uMg/9/
+         T7jsdRjocGrAQ5qEv8EhA4CIXF5NSkBx1WjFimOthCZWbpyUpPzHf8gD2ZHDyOF62MtY
+         EkWDJa1pHp5h6FU6hN4MD8zPhy7bd//GrNIyz8LBc986S2IHOddDDq2airShaEOQCLUu
+         QVdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780941274; x=1781546074;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cGF7+QWpJakGRZT4D0HON+vY+LPOCmvLkPwggXClSNo=;
+        b=bWIOFrD+/botpxu/P4zvDfV5sjiQHR/NEFTZJuDyaQKMGo8WcD0oPurQVZiBDxQktO
+         A5oe1FzYO9wlkFsX2WivBAK595so4ikJsJkn9pzn1zPoNJVF9tfDvLg+TJpP1aCOOiJG
+         sTFvs6Pes8hCdb9pVEIy+Aty5P6CipyAQDQO26cV4+kSspC5Q43Z3EcOtIy+vg5yTKCX
+         vvcLW8CMz0UMZD4+ISyTVnSn8h0ORCEBiUlytoXxm6nTvCvtxruqj3iNW11vS58pb7uo
+         OLKzKpfbXuH8dQzj5htAGPhrcMz9C0dKyjhCmjL9RzaNRYNVBIr3U/bRKf5cI+v4WDyZ
+         kioA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jod/JvbtS+57H0wS50oVS2nna+cMDKM0HP+z+UEoVGaorSPqsG0Z5CPBzmiqDcWTGJ8ZxgqYvC8k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOo1f7mZHfkrwvQTjAG4OFJbI0aywb1kW4GbkfLsx0gxy9pp7p
+	p+YjKnbMIz9mj+BMwKsMQI+33QpkGE9fb/lxhPefd175wcpMHrRPPT9V
+X-Gm-Gg: Acq92OE3uaQAnYQgpGM2S17GfmKo2wtdbPjgi1UzsZtG0sJX01Sp+f9uieXS7lPQ90n
+	VDXwVFhz4z9BbWHzJV6ybh35HgFXaPhq/dP/IT0rTo0PJSdAsOy3592y8lDye0BamoCoNiX6xns
+	ORfEONw5g2KQlsYmYbeaQT7vWLOGai1NFDJGJ93to4rD5adASG+qBLrIePCFVs0ioyOMmEab/3o
+	Sw9W1ocvJrFWOm1pyRxCs28X8tOQoBrMrou8QcB8pxVPR3bv1McsYs2j5v1MYoPM5mM+6Ts8uK6
+	/Ij1p30HgY9WYLhIoLC74Y3N5m16FhsWWTgKNRo/Nqd0+svdmLKnhP2RJWNZXAaaNQA4HCF17tm
+	SjVXNPbZiWcgh3aRXmbjR2nknKuaEmTGylEOU+hWG1LwyNjrhQeZwoi95UgSgOz4X3ScSPOayGR
+	2B0OYv2orGNH2laSDuo9RzRvGvCFsXF5r0SokOQFO+G+v0
+X-Received: by 2002:a05:600c:818c:b0:490:b0e1:2161 with SMTP id 5b1f17b1804b1-490c25b39fdmr304459345e9.2.1780941273354;
+        Mon, 08 Jun 2026 10:54:33 -0700 (PDT)
+Received: from taln60.nuvoton.co.il ([212.199.177.18])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f3529e0sm56269275f8f.28.2026.06.08.10.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 10:54:32 -0700 (PDT)
+From: Tomer Maimon <tmaimon77@gmail.com>
+To: andrew@codeconstruct.com.au,
+	broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: openbmc@lists.ozlabs.org,
+	linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	avifishman70@gmail.com,
+	tmaimon77@gmail.com,
+	tali.perry1@gmail.com,
+	venture@google.com,
+	yuenn@google.com,
+	benjaminfair@google.com
+Subject: [PATCH v2 0/2] Nuvoton NPCM FIU DTS fixes and binding conversion
+Date: Mon,  8 Jun 2026 20:54:16 +0300
+Message-Id: <20260608175418.1936892-1-tmaimon77@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260608143259.GA2569066-robh@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 08, 2026 at 09:32:59AM -0500, Rob Herring wrote:
-> On Sun, Jun 07, 2026 at 07:53:56PM +0530, Ninad Naik wrote:
-> > Convert octeon-3010 to DT schema
-> > 
-> > Signed-off-by: Ninad Naik <ninadnaik07@gmail.com>
-> > ---
-> >  .../bindings/spi/cavium,octeon-3010-spi.yaml  | 67 +++++++++++++++++++
-> >  .../devicetree/bindings/spi/spi-octeon.txt    | 33 ---------
-> >  2 files changed, 67 insertions(+), 33 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
-> >  delete mode 100644 Documentation/devicetree/bindings/spi/spi-octeon.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
-> > new file mode 100644
-> > index 000000000000..3dbbb4f3c104
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
-> > @@ -0,0 +1,67 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/spi/cavium,octeon-3010-spi.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Cavium, Inc. OCTEON SoC SPI master controller
-> > +
-> > +description:
-> > +  The Cavium OCTEON SPI controller is an SPI master controller found in
-> > +  OCTEON SoCs.
-> > +
-> > +maintainers:
-> > +  - Mark Brown <broonie@kernel.org>
-> 
-> This should be someone with this h/w. But there doesn't appear to be any 
-> OCTEON maintainer. There isn't any .dts using the compatible either. 
-> Perhaps this driver and binding can just be removed?
+This series fixes the in-tree NPCM7xx FIU controller nodes so their
+resources match what the DTS actually describes, and converts the legacy
+Nuvoton NPCM FIU binding to YAML DT schema.
 
-Maybe not. Seems this is used on newer Octeon platforms like cn7130 
-which aren't that old. Some Ubiquiti devices use it and run 5.4 kernel 
-with OpenWRT:
+Patch 1 drops the bogus "memory" entry from reg-names on the NPCM7xx FIU
+nodes, which only describe the control register window today.
 
-https://openwrt.org/toh/ubiquiti/edgerouter_4
+Patch 2 replaces the TXT binding with a YAML schema, documents the optional
+memory-mapped flash window explicitly, and accepts the existing FIU
+clock-names used by the in-tree DTS users.
 
-Rob
+Addressed comments from:
+ - Krzysztof Kozlowski : https://lkml.org/lkml/2025/11/13/473
+
+Changes since version 1:
+ - Drop interrupts property.
+ - Drop unused label.
+ - Keep reg as the second property, followed by reg-names.
+
+Tomer Maimon (2):
+  arm: dts: nuvoton: npcm7xx: Drop bogus FIU memory reg-names
+  spi: dt-bindings: nuvoton,npcm-fiu: Convert to DT schema
+
+ .../bindings/spi/nuvoton,npcm-fiu.txt         | 58 ------------
+ .../bindings/spi/nuvoton,npcm-fiu.yaml        | 91 +++++++++++++++++++
+ .../dts/nuvoton/nuvoton-common-npcm7xx.dtsi   |  6 +-
+ 3 files changed, 94 insertions(+), 61 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml
+
+-- 
+2.34.1
+

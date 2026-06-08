@@ -1,39 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E892E335BA7;
-	Mon,  8 Jun 2026 10:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B592E7368;
+	Mon,  8 Jun 2026 10:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780914698; cv=none; b=IBTDDp50rkYwJoPtesrPxvWKQK+Io/sS22GLT9UKBbIozEgekyqiyT1NVvsfa+HvBEoNwThNnWY9Ijkn99pnr96LAHHFJEksbvj1lRFfQZYQv4SPCH5L270F/WcdAs4uuUf/3b1e+2qoof6bWnHHIrml6GmB2//PyluJGNibsg0=
+	t=1780915993; cv=none; b=bHxd1YIwoTqeWZw8R6wsMOpg7M/qX1op+2GfMp56aMLs+kI6oXuTC2NpWgEbE8bHbxElu373wHaHy0jIdddnHeEFmI1mI+2hb5aarVJ3CwymfxaDa7aauvXj6vQ5CMOfIBQPpUL2UzpKd98eT76+oLDpNXg7TP128a9VGWS4Za8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780914698; c=relaxed/simple;
-	bh=k+dEObENb2yKf5zcDdJwxmqYYsK7PyCb7samBUUVHb8=;
+	s=arc-20240116; t=1780915993; c=relaxed/simple;
+	bh=n1AMChr6t5jfdanK6es/oTpN7NAI1DsuXSz0aZq2IIg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tJjYBjEW04/XQa6Saia6npkmywNSPV5lO/kRXP6gOm8kx5u1aExB9ELjrfOG+83KcAK1fhUL/vzHwLSXL7L/0RhlWk5qFSZgguZPKwu4fR9Udi/q+OhRYTmTI8FjaC9km2lX08gCyhpVy4qa89d9wLWbXufJ3HhExiOg/8tsf1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGikl9AQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=dzJfWJP8w2HqzmQthMoh+SudQOpgdw4WrzyuzFTuq0C/tyKyprJaTBLKHbLLvD9DndANdXQPr+eNLj3MrbeT5fr0bBT4+0kWTw/tM2J43rOFH77f+w0D3zN/dQ0pqXM6heml33HaBdxVZB2NT4hjv8s6QzCd8vCj2JwdSbVi8RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rrn4QeB6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGikl9AQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C18B1F00893;
-	Mon,  8 Jun 2026 10:31:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rrn4QeB6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497731F00893;
+	Mon,  8 Jun 2026 10:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780914697;
-	bh=gyJ1MxgMf/YV2lGjR0+TQwlqFXjFL6hZpHmvCzkcqpI=;
+	s=k20260515; t=1780915992;
+	bh=pTGSQgErg/Arp5VRvofr5JzJET68SF76bEcAEEeqMyA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TGikl9AQ8LBe892twjqstBGqB2fQfSS7hlknHLHY3hhjS8KkDv2U+Zr+P2dzCfNLO
-	 DLPh1XMWA9f3ASDMjPjzahdCvnX3tvWt4eI9VeTooraPKQcbSl24olI6ZhUhGdmcSZ
-	 ZE1jo2N8qmPFEtawjztiPQHJ+rQ5jUej+RFoosematWRlc6oClPtpjXa8L4BYEh7Kc
-	 m+ytqIh/wE5nAtU39JnJAGGVit60TELAxOxj68MRleTsLQnWBboWRtlhqOUuDa5D+l
-	 3J7P5EPf+EnOL1xDvS9nXFf7M9daac1+suTt5HxfgD0M/+dNEYUdWX3e41QeqspdX7
-	 Sm+eRrLlircCw==
-Date: Mon, 8 Jun 2026 11:31:33 +0100
+	b=Rrn4QeB6IQCz0lWezlbna7qQFATILo8R3qo3AohPUrZXEgwUCTbOZIoi8TB4J1B0K
+	 QXuLQVoyzSL69TccroGsPlnwmQePaGvnomxhqyA71LUmVDI3hVA89MxZEmSw3mzTbm
+	 yVu8yeCjwtsMd8pfNnE2hRb+PwzewiFKf1vU4bIdHlbr2kNqqVyKquhVRIkjehGqCL
+	 gq6XSYxAlFPOXkR0XGatAzTC0R+WB1YpYlxxX1Yj3/acun2mCEC8DmRHE67q6OR2Zx
+	 HeXZoo0JMG5V0UDg3mXh5kzSB6/2xYxjMuaNPZc0HgT831nXZFBtho437ACJFWWQ5m
+	 veEnPLRrlF1lA==
+Date: Mon, 8 Jun 2026 11:53:05 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Rosen Penev <rosenp@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
-Message-ID: <a723320d-20e1-4e5d-8a11-d63f84bc8f69@sirena.org.uk>
-References: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+To: Chi-Wen Weng <cwweng.linux@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cwweng@nuvoton.com
+Subject: Re: [PATCH v2 2/2] spi: ma35d1-qspi: Add Nuvoton MA35D1 QSPI
+ controller support
+Message-ID: <8e751df3-6237-4c8e-9c87-34bb67e435f7@sirena.org.uk>
+References: <20260608025009.1504971-1-cwweng@nuvoton.com>
+ <20260608025009.1504971-3-cwweng@nuvoton.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,76 +45,49 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5DwTduOXkpVpT7Qh"
+	protocol="application/pgp-signature"; boundary="Xd1MFY+nK8dwfKSr"
 Content-Disposition: inline
-In-Reply-To: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+In-Reply-To: <20260608025009.1504971-3-cwweng@nuvoton.com>
 X-Cookie: We've upped our standards, so up yours!
 
 
---5DwTduOXkpVpT7Qh
+--Xd1MFY+nK8dwfKSr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 06, 2026 at 03:26:04PM -0700, Nathan Chancellor wrote:
-> Commit 0c5b5c40dc31 ("spi: cadence-xspi: Add COMPILE_TEST support")
-> allows this driver to be built for 32-bit platforms, which causes a
-> semantic conflict with commit 4954d4eca469 ("spi: cadence-xspi: Support
-> 32bit and 64bit slave dma interface"), as readsq() and writesq() are
-> only available when targeting 64-bit platforms:
+On Mon, Jun 08, 2026 at 10:50:09AM +0800, Chi-Wen Weng wrote:
+> Add SPI controller driver support for the Nuvoton MA35D1 Quad SPI
+> controller.
 
->  config SPI_CADENCE_XSPI
->  	tristate "Cadence XSPI controller"
-> -	depends on HAS_IOMEM || COMPILE_TEST
-> -	depends on OF
-> +	depends on OF && HAS_IOMEM && 64BIT
->  	depends on SPI_MEM
+> +static void nuvoton_qspi_mem_set_cs(struct spi_device *spi, bool enable)
+> +{
+> +	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+> +	bool assert = enable;
+> +
+> +	if (spi->mode & SPI_CS_HIGH)
+> +		assert = !assert;
 
-Why combine all these, they're not obviously related and HAS_IOMEM can
-be turned off.
+Hrm, we should have the core deal with this.  Separate issue though.
 
->  	help
->  	  Enable support for the Cadence XSPI Flash controller.
-> diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xsp=
-i.c
-> index e2bfb0c78b82..e1b337789fce 100644
-> --- a/drivers/spi/spi-cadence-xspi.c
-> +++ b/drivers/spi/spi-cadence-xspi.c
-> @@ -22,10 +22,6 @@
->  #include <linux/bitrev.h>
->  #include <linux/util_macros.h>
-> =20
-> -#ifndef CONFIG_64BIT
-> -#include <linux/io-64-nonatomic-lo-hi.h>
-> -#endif
-> -
->  #define CDNS_XSPI_MAGIC_NUM_VALUE	0x6522
->  #define CDNS_XSPI_MAX_BANKS		8
->  #define CDNS_XSPI_NAME			"cadence-xspi"
->=20
-> ---
-> base-commit: 4954d4eca469419339452cb5fea26dd0fc678c54
-> change-id: 20260606-spi-cadence-xspi-revert-compile-testing-7919284daf5f
->=20
-> Best regards,
-> -- =20
-> Cheers,
-> Nathan
->=20
+> +	ctlr->num_chipselect = NUVOTON_QSPI_DEFAULT_NUM_CS;
+> +	ctlr->mem_ops = &nuvoton_qspi_mem_ops;
 
---5DwTduOXkpVpT7Qh
+We don't specify mem_caps, I'm vaugely surprised nothing trips over that
+when testing.
+
+--Xd1MFY+nK8dwfKSr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmommgQACgkQJNaLcl1U
-h9CKfAf9EeUSPYESZGFgl+yH9QjfIBs6/hL29jqCnjA0S0Xvf9VTGr2i2rLjy2Al
-HnNCbKzA9XWWdMlaXpRo1hlcrOW2FVtwCR3lN3+UYRl5MdNMUn2qe1JHpyDuYM84
-H2rZmH/8S/ztvLDndEKh+4d9bUIxYepuc2by17UCpdKqu4DarkA9M8t+CwJAxvYu
-RE5Nki4iDSWoY7s0KatdJXoPmabWWTo16JnvfcIK/bE4VaG4NV9IgFX08HGvYHPc
-+3kIp5BlF3bSOJQ7IdVnsVkMDPcGTLWvaU9Gd13Gzp2JrOpXovFPcCfDiAEmG1uo
-u6Gae3RLRQ1QleWLrjKx/1hxCtoU4w==
-=4+/5
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmomnxAACgkQJNaLcl1U
+h9CmEAf+MpO2k2NNGcoMDAdpYpmFVLXNz+7NM8gxd84SFap2YCj7QWwpERJVAemF
+kY6pBKnK0Sjzx+b5sk1GNhbhG7SXYfqRv5NV/GZ6XC0g7f/TmBNn999DTJIkqpV2
+Ke8NtxlpN47GU1n3B4OxYhsZ43FA2Q5cRtySFtoyRmK8quCSxS5EQpe2Q2hTfkdp
+drPirHEvVXl1zynEwPmxaNUkqSy30Ic3Ibih2sXGDqtfrCH1liNDxzR1mZTnNjJ7
+x/zhElVxcJhLxsqvRiEkAM92j3I4IkO7oKiEHWSpE5U5+oO0AyBtfVU/EAkbqX05
+eRnQzWH1wTSKTa6lFWL+6e3piFV60Q==
+=CCql
 -----END PGP SIGNATURE-----
 
---5DwTduOXkpVpT7Qh--
+--Xd1MFY+nK8dwfKSr--

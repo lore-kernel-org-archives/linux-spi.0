@@ -1,123 +1,123 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE0838F922
-	for <linux-spi@vger.kernel.org>; Mon,  8 Jun 2026 07:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E613B777D
+	for <linux-spi@vger.kernel.org>; Mon,  8 Jun 2026 09:59:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780905358; cv=none; b=ung+CdOPKlEJ6398j2ZO5WnbahoFnHoTC6qZTrL5P7Z6novXt9YhlmM/Q/CI9/HezPcYCc8+Obpm8CzDpIRHzj/fkoYRMVl0zIfUigct4eGCTOVGO+c9Xt8YWGGDLnqJBYhaVHJdmUQ5q0aBQ5oII9Y+QWkNMdKMdG2zeyAuuUs=
+	t=1780912797; cv=none; b=jWtWCQSf6U84jENGHAAzETZGb7OBuOQO2o4eUZV7wBNDJzUpZiZhnFWTu8xOBDTEoaHLO5EtYk2sVWQEzfHaQ20wXKK8G84jaaAQA8JaW6sN1n6qx78xPIbm5vaHks/aCtiqukGHaXjg3PspvWloOKwyUC6fFgspMG6h9czqOY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780905358; c=relaxed/simple;
-	bh=EZ6O3f1jsPsrFY5TdW32+0NSqE5O+fh0ngad37h91dc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TqJHO7z2pNIpZ1NLflgIyzqwum69k4nOh8PbbJDA3VbfO6kVf/5NUIAWAVAMkas9A2Uza93FyBpv2bfwFxbNUwgnW2e5sFv9/M82As7cQDFAZkXMHBkTzWJGw7AZLmUOB2cXkRY/1gV5DYzLBCp/Skoo2lvz+8ZlZgmaKzdyr7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1780912797; c=relaxed/simple;
+	bh=3DMHlif6D4DfLvCePQxsIN4IqNVqfqYm9sKyNXeKoEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WbxyIRBoRQdS1UbHlznkbDiTKo+RoPzCnvOP8OzF8e3m0i+eCf1f61uZa7054XOxwxmvZA6HmTg/AkWe3Endp4MUWmbIM+9e77mSOXW2HtZrLQ5aI2aN3NCMTpeZUq/j/OnI5ck+wTPFQQc+0SeJiTXL7LFKydKEgCMPtortUQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jxiERF3V; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-59cfbfe64baso1227763e0c.2
-        for <linux-spi@vger.kernel.org>; Mon, 08 Jun 2026 00:55:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780905356; x=1781510156;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jxiERF3V"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2bf18c30bb2so27528575ad.0
+        for <linux-spi@vger.kernel.org>; Mon, 08 Jun 2026 02:59:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780912795; x=1781517595; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2Cmn669Tthf2NAdP9bTtgq4iWIUzugLFW7aAuo6G0Ww=;
-        b=fUiGlTm8+pNgTfxEZ8P4a/6EzCU6PEq6jMc8YFyjjrraA++JeZis7j4JspbOBw5Ok+
-         NR9fKDac8OifYSOzQpFuIixc6NGA7S5kgdLZF9sf12bybxhrjU2ck/EApvHkYSWpXjLN
-         73CDOq08BsPoRiNNIG8OoXY2W5lB9e8tAQwQeA1zWqxYH3oIJ2DKBEU02bYrivWETmdk
-         XRoNWELnbpSRVWExKEBDyfHheM/gqzF2jo7P94NlpaA3/V+m+B1HHRefy9j2zeZHuW0C
-         E+nd7brFRQS8tSqfns8BkhJxk6U/80LeA9cC+gcijMxp81HpPxJjf3BPrXbHiXlW5EKi
-         V1WA==
-X-Forwarded-Encrypted: i=1; AFNElJ/HByqi+Zq6UNPLxSrKCwW23Ql4qBrB6iYwqgtZv8j+Durfv4Mcx9KtJGTFNuFwoZ6Rb3qOP0VqvQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyzn6WzKhNCm13JG/C4ku6rxMvqgLLq80/bJNtl/qyiboQYJgGf
-	YNvYtkkZfJRHTDg2EM+k4IDfRshnYiaPRK/mgCtvfqGrOETfqvm6kXGbKZjiXwXr
-X-Gm-Gg: Acq92OF4CXJ1hJPZqWVTypZUi0VisnpKveQxPDop7b+ma9OGXs8rm3RDNWOqQoOZj6n
-	oGC9NYxOffdPJX6j5QNQ6DnzIeQGF7VscwagixwHk/ViyjqySE738MlPmuDNY4cvVUrIH7zM2pa
-	YT+QaUvUaEeWFttxciMj+k3aPAXNa6P1FGs1GJsVlzGEXKAPjnfhJhUhVYd5mwwUXfKM5IidX1D
-	gHWzNZeVvWFV/MtC2D+nzl29x6yGFMU64VGry5NxshI2Y9DsSNDYIkrOk/4RpaIKjR2pB7aZA1U
-	v4ATCxBvy0B89vfVZskIPUKKLIKDBrx9tgdAZ5h9wiELYtCQiWbq4k6OhnR/sR85E20nB7dLWU5
-	h2fK/yT42++BZem5NLOCauhMOcCiLNc7I72Np1m6v3/QyHhp392AkhXs+9dx6pFenDJBzIV9m+W
-	JJPtvnwVe3i5QgPWkCVyRtG4HLXCajB2SzrYxEOXcKYkq5UgWOL5w2R/eiOwOiq0Q5H69Kau1T9
-	GQ=
-X-Received: by 2002:a05:6122:7c6:b0:5a4:c20a:ba4d with SMTP id 71dfb90a1353d-5ac4ee91209mr6435740e0c.4.1780905355637;
-        Mon, 08 Jun 2026 00:55:55 -0700 (PDT)
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com. [209.85.221.171])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5a6d777996csm13452706e0c.7.2026.06.08.00.55.55
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jun 2026 00:55:55 -0700 (PDT)
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-59ebf30a91dso1223958e0c.1
-        for <linux-spi@vger.kernel.org>; Mon, 08 Jun 2026 00:55:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8XGeKHvYw6uMf+V8WmHcwO65pMTfNqLFXZRr8Cd3UzxHpb1gDplKuuEANSA1r4x2wFDmUbdP5Cc0g=@vger.kernel.org
-X-Received: by 2002:a05:6122:4692:b0:5a6:7838:d679 with SMTP id
- 71dfb90a1353d-5ac52c09f1amr6196587e0c.13.1780905355135; Mon, 08 Jun 2026
- 00:55:55 -0700 (PDT)
+        bh=mVd2AaoJGqTRVKwD7P0aNxJISugeECwM8N4yUGguhWk=;
+        b=jxiERF3VCseTQhwv5zMgTqQwTtLamXTc7GbXqXyKTMdV4PvNfZ7Teisr5K/T7m20YM
+         y08ZTqeR+NxRUKcswU3njsfE7EdaU/snaqkOtlUe4sKQ5Kg4x04iJWqUEbOY1wk0KZGq
+         ft5pXewM1svErYonsT+ogW3M05AWDKE8hM/xv7LoWyg78Wnx4jHdnaIKcc/Q0rolBdvH
+         KdVDxp1LuNAHN/SD3SDQxzp87PwCFDWP33Q8ztslbtMrYxK4cvXwRThKY47kleln4ICG
+         3rzV4UbYbgi1lEf0mOVtRgQzkTVCzF1I9UKsiPCLq4oIQYwHWdfFT7KzykF+KUewTDXB
+         Ymbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780912795; x=1781517595;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mVd2AaoJGqTRVKwD7P0aNxJISugeECwM8N4yUGguhWk=;
+        b=FeyYES90ygt+rWsxxKB5Kbp/AbJd0o73TkppYrghTRwag4QVGVz9C+w6+iGLqu3MNk
+         PvVd1b9/3Q0aECUBP8xY4Wjq4UXAJ5gNkGBett6sB/4fmGuRYEV+xfytHnDBopia2Ec8
+         KZrHaWx0MGzj6c7QUCIgAQRq38CAoKil/p2fI657IrUndB7bInkAMkw9rUdl+Rp07Eas
+         +3XSEhrogSWjgL4U46dLgofG/mLsxOzBThj1CXHdC4RD8IziP/GYwCPVFMAdQqpzflTr
+         j+0ufDE/MxATK9Z3uFjjsKhMCthEypAgj4svMGst7ln/q+NZVoEvqlF5piWThtG7xXNQ
+         4miw==
+X-Forwarded-Encrypted: i=1; AFNElJ//iCPfMqEYp8yA18cDVPnEGoMAAuTsI33Sjd/COUZRvmcTbOV0ljh43LmWuJr5PS/+VC8T4vCSGBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA+45d63sW1XCkw+WhAJOK2ew5N/XYKydWwlQY7sBEPEP9Oxqw
+	/wXtW+EeRWihz21cdeUOSPmRUBW72luTBKj5ia3EGuHa2T/fxrfvSiRU
+X-Gm-Gg: Acq92OEIPDvbDx74Oypz7weSDHJWpRi17lPGfuKgO/h29aHxCrQD0wo9hF72EbXgfvV
+	A7UpMAbFnIOPkGlY3/sVYCKC+q2ABtMNb9dhdDmJi4yXp8ppIdN5hbd8zE9e+K7r+EIMtb7p1pH
+	91Q8bk0y/5JjLDBm6j0HVkukIgDw54wVnMLgJRxLHg/Jw73YlsvH3PsxDTy1pccQnmYZ7raGszs
+	mpeECS3c/hgKB/jkfiytd99YgU2x2VSpjSK9XWkavKUUNMjqnIFsWyV4EUL4BCqb42RgvugKScC
+	YEC3Zwb8zg+u/dqLws80/jUGQ2J/dl4xUw63Cjzf/s2QwZQUgRydPZ4YUxfNl/HODRp7vh9QBpP
+	/BPtIzCvJlAt4jV//5yyXf6v9m3MSSyN5WfhVxsbIn8aH64VEzXvCOwKivD7wQeZCCNn8M6DCdh
+	oPXxSPHP/LbzP1AJQdvAZIKqsMDj8=
+X-Received: by 2002:a17:903:4b50:b0:2bc:b80f:6782 with SMTP id d9443c01a7336-2c1e821dd0bmr148842095ad.11.1780912795021;
+        Mon, 08 Jun 2026 02:59:55 -0700 (PDT)
+Received: from Dell-5540.. ([2001:926:3:e0:fcd:c60a:85be:2fba])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c164f87920sm178573055ad.24.2026.06.08.02.59.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 02:59:54 -0700 (PDT)
+From: Peng Yang <pyangyyd@gmail.com>
+X-Google-Original-From: Peng Yang <pyangyyd@amazon.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Serge Semin <fancer.lancer@gmail.com>,
+	Jonathan Chocron <jonnyc@amazon.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pyangyyd@amazon.com,
+	pyangyyd@gmail.com
+Subject: [PATCH v2] spi: dw: fix race between IRQ handler and error handler on SMP
+Date: Mon,  8 Jun 2026 17:58:49 +0800
+Message-ID: <20260608095849.3446-1-pyangyyd@amazon.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260522095727.18307-1-pyangyyd@amazon.com>
+References: <20260522095727.18307-1-pyangyyd@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com>
-In-Reply-To: <20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 8 Jun 2026 09:55:44 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVEYciUYq6savTuOqDUQp6AqHGkeP30s6Z7PoZ3q-Pqvg@mail.gmail.com>
-X-Gm-Features: AVVi8CcmuQ7XmWIeu3kjbwGuTATRPoxdKm42xnuPXVpABMXaapDScD6SCIjYH5M
-Message-ID: <CAMuHMdVEYciUYq6savTuOqDUQp6AqHGkeP30s6Z7PoZ3q-Pqvg@mail.gmail.com>
-Subject: Re: [PATCH] spi: rzv2h-rspi: fix incorrect readl() accessor for 8-bit
- RX path
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Mark Brown <broonie@kernel.org>, 
-	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Felix,
+On SMP systems, dw_spi_handle_err() can be called from the SPI core
+kthread while the IRQ handler is still accessing the FIFO on another
+CPU. Resetting the chip via dw_spi_reset_chip() during an active FIFO
+read/write causes a bus error.
 
-On Fri, 5 Jun 2026 at 17:26, Felix Gu <ustc.gu@gmail.com> wrote:
-> The RZV2H_RSPI_RX macro instantiation for u8 data incorrectly uses
-> readl(). It performs a 32-bit read which can consume excess data and
-> cause corruption.
->
-> Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Fix this by calling disable_irq() before the chip reset, which masks
+the IRQ and waits for any in-flight handler to complete via
+synchronize_irq(). This ensures no handler is accessing the FIFO when
+the reset occurs.
 
-Thanks for your patch!
+Signed-off-by: Peng Yang <pyangyyd@amazon.com>
+Suggested-by: Jonathan Chocron <jonnyc@amazon.com>
+---
+v1 -> v2:
+- Replace spinlock with disable_irq()/enable_irq() as suggested by
+  Jonathan Chocron. This avoids touching the IRQ handler hot path
+  entirely.
 
-> --- a/drivers/spi/spi-rzv2h-rspi.c
-> +++ b/drivers/spi/spi-rzv2h-rspi.c
-> @@ -137,7 +137,7 @@ RZV2H_RSPI_TX(writew, u16)
->  RZV2H_RSPI_TX(writeb, u8)
->  RZV2H_RSPI_RX(readl, u32)
->  RZV2H_RSPI_RX(readw, u16)
-> -RZV2H_RSPI_RX(readl, u8)
-> +RZV2H_RSPI_RX(readb, u8)
->
->  static void rzv2h_rspi_reg_rmw(const struct rzv2h_rspi_priv *rspi,
->                                 int reg_offs, u32 bit_mask, u32 value)
->
+ drivers/spi/spi-dw-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-According to Chapter 7.5 Serial Peripheral Interface (RSPI) Subsection
-7.5.2.1 List of Registers, the SPI Data Register supports access sizes
-of 8, 16, and 32 bits.
-
-However, the "Access Size [bits]*1" column header has a foot note:
-
-    "Note 1.  The read access size is fixed at 32 bits."
-
-Hence that means the rzv2h_rspi_rx_u8() function as generated by the
-RZV2H_RSPI_RX() macro is correct, but rzv2h_rspi_rx_u16() is not?
-
-Also, readw() in rzv2h_rx_irq_handler() is wrong, too?
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -486,10 +486,12 @@ static inline void dw_spi_abort(struct spi_controller *ctlr)
+ {
+ 	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
+ 
+ 	if (dws->dma_mapped)
+ 		dws->dma_ops->dma_stop(dws);
+ 
++	disable_irq(dws->irq);
+ 	dw_spi_reset_chip(dws);
++	enable_irq(dws->irq);
+ }
+ 
+ static void dw_spi_handle_err(struct spi_controller *ctlr,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.40.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

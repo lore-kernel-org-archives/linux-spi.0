@@ -1,71 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011049.outbound.protection.outlook.com [52.101.125.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D0384CCD;
-	Mon,  8 Jun 2026 18:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780942172; cv=none; b=lO6MJC1WK3pCdpDSTJlUeKDPMjBlUziZJXgxC3CWpxXTnhHDDrINije4ou+5GlutdTZmJTDjyUqwnTlHpgcBMEFwjw3yUCVtBNagOmmQKo54Tg3XfaNCodvMByv0IRXpZ0cPhRmFx3DYD6e/Ss2ObSNma/LinSSkxI3jByUNGkg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780942172; c=relaxed/simple;
-	bh=GQD84jiJ53f0VvVZzKkCViIPd6j8oZOLz3cqprwn3vQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F+8lpeqTLx0HQUb9+ADm8+r0nnoOXnihYQEsmBs8eFhBH0Gv55JU44nrH23J8KmIx0slXPlDev9uJADOWpXS8OV8P0DG8qa0cbsCay585170IkgPnzyMZi6JkQGGFR6yiTyfpXL8ZJvwxg2Qk/0OVKDEPI2ZtCuWI3O8fTFN5IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfKGE0Sl; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9500D39AD55;
+	Mon,  8 Jun 2026 20:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780950362; cv=fail; b=TPanWEc+zhVdKEz5QeoOKEqbHnTRv4PnRUzZFwprDpj3pETa9s/SFykt4qxmJoSIR0is7T4I59j7ZrFiWkHphB0HAVwG75He8FCMKebToilA7w10h+jOugJBWWS12N18qIATfSD4Wwl5nhe1NtiimtN2O650J20ymVfMcHRtBJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780950362; c=relaxed/simple;
+	bh=llpmJ2DUdlmoL+Yo+dqWQR9j//d+3nMxadix6HMNngQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TtiCrY7u3gq9eW09UVZZDpkxuC+ACErlv+pm5Co70mxcxYbArTLs8aLqfuKL2AT45H9qRA4FfyqD2n5A8akBFuinkYvyvpStyF2w4T7JxNVigeJR7uLe554hVn3Y7uvgKY1pPpJtx4CokG4ZD6eBlNl4+3sexJD9p3EOzbOyf2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=naxSkwD1; arc=fail smtp.client-ip=52.101.125.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfKGE0Sl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECD91F00893;
-	Mon,  8 Jun 2026 18:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780942171;
-	bh=Oh53wHcvsgHIUjUod/3WqZ3CDxkPDjLqN6NEj/vXsXQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lfKGE0SlvnGkF3VDq5e1jksszi4+NwMf+jAzqj6pT+yFX6peA7hWnKP/HsNrj6Ddi
-	 E6dn94nRDvr0WDuEcFpfSTC7JT0B5crekv27UBH3av83iGIH2kkuhkchKQVyGWINBr
-	 u+PXu2aZePQKXRAGI+WvHskxhso/LXY0OC23VhaVdIchXID4RUMdAh7+bQWxqrMYii
-	 jzXYVLl+cWl1FIWNikGgh69ZL4DCro+hq9E5oKXTgAoynQWzwQYBFGE8pkMzWJ+uSE
-	 5QNd/a3xncSWL5G2EQCVbgSNQJ1fhoEwZDnWaVBv5SbrkR2l7snIWkDK6sggWOZI8s
-	 vzeuQ2MdFtiZQ==
-Date: Mon, 8 Jun 2026 11:09:27 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Rosen Penev <rosenp@gmail.com>, Jisheng Zhang <jszhang@kernel.org>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
-Message-ID: <20260608180927.GA2211222@ax162>
-References: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
- <a723320d-20e1-4e5d-8a11-d63f84bc8f69@sirena.org.uk>
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="naxSkwD1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OkBxcsWhge5rM4LKNSVsGK0HwqNWaeLQZLBX93VKmfnfcaXmqSuLT7ii2wE+pMwIyaeP8JZB+bgDBXaYFLlCsbsZhodnSCmPxaYoSNEv7m+2kUVkyG5nwrI0Y/LRmSP2mMV0TjRNtcgZT0PYL/oC/NddDbKZFSgPouvuxzNetf2XZVJs24DmUUwGgb6XVNQVmOvY5ZUVIyvH94ZJvf5ResUPbxwbD+xQhn4OiflS5v/I0npvhmFmNesSHM2jsYnLaQ59LbjZzVlVK08UE6vXxrP46q7ycOtVVbm8FOGxjSBmiyGxnad8RyIbBqQNT9LX/B2LOVJBbv7t+0y2f7osAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FTV8u17S7m8awg8550YmVIqD7DE4dGuegPbDj67q7NQ=;
+ b=lbA9Zn6hatLjS26mvtK/U66VO2HMJb28APeAZqPNKraQFd8KpVKriM9jE1vZMZMf942Fu1OCNw7pbFYJwWwJpkcB3uDk44fd4NW9SNupJCWN/hzOj2uAahS83EVgCAObBFy8FvF34Ubjnm6Sg6Yi1tGiKU+HVGhyoBcMnyAZUh4LT8bowvoUcls/JyXRknkInQzRHbWZzu2hD/DUckF+qT11vIQW2H0lS9z8v45E+y8d1i05bgZf3Ju7ZX0+kkPDzmlfvD7OlPoRvMNKbkWrjaVuP2ttOhWa/4W0h8KGgmjCpOjJ+NDdj+Qga258nBPuHhWNUXIvK3r6Qc95CoreLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FTV8u17S7m8awg8550YmVIqD7DE4dGuegPbDj67q7NQ=;
+ b=naxSkwD1/EMqxyqvE4ms0DDtpqWeGHjUoEwayg2m4t8MMuTj5Zz3S/HzR6Ea9+SwBU9qM36k6kUWZUmf/sAjnZcDUn/6JUn3XP13Iy0r19x0F0FwDHz62DrX5+NPnnrJ+LNkqemZR+gejhXp6+epWuWF2M0OXimmU9ifOopk/F0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+Received: from TY3PR01MB11948.jpnprd01.prod.outlook.com (2603:1096:400:409::5)
+ by OS7PR01MB12113.jpnprd01.prod.outlook.com (2603:1096:604:265::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Mon, 8 Jun 2026
+ 20:25:57 +0000
+Received: from TY3PR01MB11948.jpnprd01.prod.outlook.com
+ ([fe80::b718:17d0:6c0f:1495]) by TY3PR01MB11948.jpnprd01.prod.outlook.com
+ ([fe80::b718:17d0:6c0f:1495%4]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
+ 20:25:56 +0000
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+To: tomm.merciai@gmail.com
+Cc: linux-renesas-soc@vger.kernel.org,
+	biju.das.jz@bp.renesas.com,
+	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: rzv2h-rspi: Add suspend/resume support
+Date: Mon,  8 Jun 2026 22:25:08 +0200
+Message-ID: <20260608202509.3651345-1-tommaso.merciai.xr@bp.renesas.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0103.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::19) To TYCPR01MB11947.jpnprd01.prod.outlook.com
+ (2603:1096:400:3e1::6)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a723320d-20e1-4e5d-8a11-d63f84bc8f69@sirena.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY3PR01MB11948:EE_|OS7PR01MB12113:EE_
+X-MS-Office365-Filtering-Correlation-Id: 993420f7-7820-4744-eeef-08dec59c230f
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|38350700014|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	CJ+7pN9z2/F2L/AeOUV74Ob1mXYdCzcL0xGO5Ie5Zgv0eWNeC9xvYHbl7ItQf/zQjihGhtB28Bz5dD4g9kVp9hCGDUO/3N3rj3QQK6VPROwE2pzvzEsw0VeFIvO3tZaEgTRKxa5LuwDXWkVR2JcWzu0KV0yY31RNtwzuDlWlKQ96U57A6mJM7y7waemm+/xDnKWDn8zlDNrizCfHefhyZBMY090LH0+5P5LYCmxzqquk48BZE+NWrG4t4xwd4FuzWCYuYOjVWXg0vWe4yZ7r0gEDONUYxFTPfjS4/ScoctXmXGr+UMRnZGXftIwOy8qwPsRkJdRfc5a4HQv3BWkxS45mc/RBQyaZGZ9Oh4pFWz0q8TUMTS7Sekhmvw2BKNG5XVSuKw0UJiJd2CX846tePwNh352D8JRulxL4EguffitlgaH7Rw1CkhkFYp8HnHYi1OUip3p0navZGP6bUdF0tkdx6QBAApPGNYJmLCnb6GgmlcVDi/w6G7h99pBYV7V2KNlM1DDDTKlti5BWwVFwY2/7afOi3wyojdiEhPCMoCpqau4R+aNdX/JOrVoQ6R9l7R9rcYnq4NnRlQGCu99atHfzuoRhtR+obxs94oDM118KXzegBtDeez03SWLcBkMbES1hImuF5NjLQickh1/q3Ko7XxOAeFNTEZVnGCbmPejzsUKZVGQOx6NuKBWgxLOtqOttPMOS+XLMMo51agHGGcJGDLYhx0DAnF/yBlvqb/ldZNXjnfARIA/OKc0IO62W
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11948.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(38350700014)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PjBmlyKtRRhqxfeC3WKx4mcaFZn2qBdAN/J+jfBxzKqqpzJ1b2mEMxeLgM25?=
+ =?us-ascii?Q?hSj0oGnMRZ0abeZNXpSL3rLeQZUdC92JyIoUxWEbMu06w2w/HUNaUneUZbb0?=
+ =?us-ascii?Q?gLSwmYuViBFXHs0TSGvbET+c0B5br+Hc4zVOjRliKJsb3kHF1HmxsekChPvp?=
+ =?us-ascii?Q?c/kKz67Dt5EuT1PkYo7Qpk+DtZDcevbIRySOO9kQvF1ie2EU6z/oNcaAy/Hn?=
+ =?us-ascii?Q?JrU8Tcd99bSJ8M7bazOv7jFBivxpYIFoVQZ9VuKl3RuiSS8sPkazaXi/dxdv?=
+ =?us-ascii?Q?nk/gaiZp6K4EQ40J4exWlr3VowAs/QA+u/vIQvqkJXhFqTj/FIcBEpzYHfJQ?=
+ =?us-ascii?Q?gfh/CBkw7SEItDTEp0TXItYp+icCTXEjFfAGIxbUXe28A2hVCg0kihIN67BI?=
+ =?us-ascii?Q?q4/cQRbkIvJ/FXTMPitiRkAZ+BVO+633q7nV9s1ZLt8KgHHw3/uS5c+TqKqk?=
+ =?us-ascii?Q?/C3MTI4tO1GYmD06vKxoRoJG63oYxgay5J7KqPvzhj4JVk/dQEyzkkxDGfcd?=
+ =?us-ascii?Q?IZHa3CC26k0WKo7pUwp9++2sQMydcFMGkFFW8hDdF3dpzg6+TWQxli917+00?=
+ =?us-ascii?Q?S7nAQEL4VNqQRRtH2nr3tx8om8w2mOKK5vMLTEfn0L70arty/gHHAO6egzrB?=
+ =?us-ascii?Q?UnX+hjqKmXBZE79ZD1zgueBqR1y1g9wNyjdUNgaVrzz3L+hsK/WK4WVshDjj?=
+ =?us-ascii?Q?2U/7EwaVCpB1f0jq1kM4b+daLixnstdpHE7GFR3HuklLZWdEOXXc+Hf0sCaa?=
+ =?us-ascii?Q?6unVOT4lucMnCxjVxGONpv1dNO6/Ly0UrXX49uHNUNYWwtKvYNG55MpfSN9E?=
+ =?us-ascii?Q?Dq0clBYZj5flNgg59K8W2orEl0QI2ufQyMiUOw43py9Ze9AIeHV0ke2bJbXn?=
+ =?us-ascii?Q?QwzirkbIByz9dIoyUVuJhGAQNEvHk8/NqW/hVoj4ck8oZ39LBWp8aC5Tj065?=
+ =?us-ascii?Q?2JcfsOcOOvYLnNlYqAR7+M72QokEYdqYtRDwM5wO6aZg78xRAplwHFXWV5Pn?=
+ =?us-ascii?Q?fz3avjF0t4FnGlzwTMdFRRA5IxfjfhmWn3l4hpM4jsiKsy6ZIWkCCq+25+jD?=
+ =?us-ascii?Q?bHyJ9lAwXwjnFephhA5v0fBTaYTdQYacScd9VjG6TYEPZiFcG5KebZAhCYce?=
+ =?us-ascii?Q?uZejrtgfPZEVuV5Z9OEApGIgVv7dDjF/baFyGJSpVHoO4Hubzr05VfgKcqlu?=
+ =?us-ascii?Q?QgJUTSww1Xlgu9RK9bEAgpgcVbaInlzT8jnYqq/BwixupxUhyXtnNcUVeeoS?=
+ =?us-ascii?Q?91pCGJ14fpmehbUlGMYZCluorytYar92KCwDb/W/2ISzi/hIq0oWxfn8AH2P?=
+ =?us-ascii?Q?2CljdRN9pU18lOI66z7WIQ07x+Qt9Bs5HaNVzOI/MoMlWzsWusLfSMNALN0I?=
+ =?us-ascii?Q?BHCliPC/v+VDVtVhB/lappCtADGVxGM+2iUk4rUxQ9rzWyicjtTjuc/oeYhs?=
+ =?us-ascii?Q?UFAhoO5irPdNzb1txoEMX2SzOf7RCopokF/YuDIqv7bFV8WlzQO/t4QjcuMl?=
+ =?us-ascii?Q?458p0yR2H8h87tK6YD/HXf9A2H4IONNk86PGtrObEP6HT/d+F62VCoJGf8hl?=
+ =?us-ascii?Q?BgreSV4LB9FM6QFzeJb1PzndpTSKph6y0ImoFf86njaK/cbu2aftvfW9mLoY?=
+ =?us-ascii?Q?5e1shtSAFGANP80kjSn9iL7cvZOaUC24a5gBoBzkNmA/nI2fNsN59cKOqLJ3?=
+ =?us-ascii?Q?2PLEGrBXRfPz8WvdP6n4oj4P6n6gC5DRwgxRqtwUKllW+oaSDcyFMTTQblso?=
+ =?us-ascii?Q?g+jrNNK7suW5SB+e8n5AhqaPMFE6moeW/fJ2IJxoICzoFnD84P/3?=
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 993420f7-7820-4744-eeef-08dec59c230f
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:25:56.8281
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rnMEKZ8JxDe3DhOMI2nLadUAQRE5hlfgjyMjbXsuhNhBEd4v9v7WFKqej73mhAaKh9BnO8aHD1kqJ8IO2DwMbcMItMlTK9BUWyfISE5T7/Ey+H1ydSjTis8KhKiJPilP
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB12113
 
-On Mon, Jun 08, 2026 at 11:31:33AM +0100, Mark Brown wrote:
-> On Sat, Jun 06, 2026 at 03:26:04PM -0700, Nathan Chancellor wrote:
-> > Commit 0c5b5c40dc31 ("spi: cadence-xspi: Add COMPILE_TEST support")
-> > allows this driver to be built for 32-bit platforms, which causes a
-> > semantic conflict with commit 4954d4eca469 ("spi: cadence-xspi: Support
-> > 32bit and 64bit slave dma interface"), as readsq() and writesq() are
-> > only available when targeting 64-bit platforms:
-> 
-> >  config SPI_CADENCE_XSPI
-> >  	tristate "Cadence XSPI controller"
-> > -	depends on HAS_IOMEM || COMPILE_TEST
-> > -	depends on OF
-> > +	depends on OF && HAS_IOMEM && 64BIT
-> >  	depends on SPI_MEM
-> 
-> Why combine all these, they're not obviously related and HAS_IOMEM can
-> be turned off.
+Add suspend/resume support to the rzv2h-rspi driver by implementing
+suspend and resume callbacks that delegate to spi_controller_suspend()
+and spi_controller_resume() respectively.
 
-This is just a straight revert of 0c5b5c40dc31, so it is just restoring
-how it was before that change.
+Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+---
+ drivers/spi/spi-rzv2h-rspi.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
+diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
+index 1655efda7d20..694e5305c638 100644
+--- a/drivers/spi/spi-rzv2h-rspi.c
++++ b/drivers/spi/spi-rzv2h-rspi.c
+@@ -802,6 +802,23 @@ static int rzv2h_rspi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
++static int rzv2h_rspi_suspend(struct device *dev)
++{
++	struct rzv2h_rspi_priv *rspi = dev_get_drvdata(dev);
++
++	return spi_controller_suspend(rspi->controller);
++}
++
++static int rzv2h_rspi_resume(struct device *dev)
++{
++	struct rzv2h_rspi_priv *rspi = dev_get_drvdata(dev);
++
++	return spi_controller_resume(rspi->controller);
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(rzv2h_rspi_pm_ops, rzv2h_rspi_suspend,
++				rzv2h_rspi_resume);
++
+ static const struct rzv2h_rspi_info rzv2h_info = {
+ 	.find_tclk_rate = rzv2h_rspi_find_rate_fixed,
+ 	.tclk_name = "tclk",
+@@ -837,6 +854,7 @@ static struct platform_driver rzv2h_rspi_drv = {
+ 	.driver = {
+ 		.name = "rzv2h_rspi",
+ 		.of_match_table = rzv2h_rspi_match,
++		.pm = pm_sleep_ptr(&rzv2h_rspi_pm_ops),
+ 	},
+ };
+ module_platform_driver(rzv2h_rspi_drv);
 -- 
-Cheers,
-Nathan
+2.54.0
+

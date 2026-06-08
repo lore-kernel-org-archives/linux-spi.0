@@ -1,160 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1145F2F1FC9;
-	Tue,  9 Jun 2026 07:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE33A3F0749;
+	Tue,  9 Jun 2026 08:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780989409; cv=none; b=teMma4b2dnM2mIexWGbBxFLjQ31gsz66lIigGDUujPL2HNxTZbFVKVSf8e5KsX6ib5z3ShX0tU5nJQcrQPRlXN344wpxiYloltAei14AIz62RyTWEQ56cfSeQOIbHgvYYVGb+/eOI1o/PeaU5sid26XUIaIVdN6Ea1Pi+z3rbTY=
+	t=1780994471; cv=none; b=k3hOTBLdGn0eSkPaXho2kbqcWDrtsKXbth+ndzaPDDI9NuPzOxxRgV0mEkkwJ9cH3Cwh2wMzYC3ZN8Nr22epGNeWMvAQEFcDveKIySV8RWSjvXagSUqZczYLzdh4tXItLRJaQXz6StUiz3hcmhyQGpd5F8XxarzUWWX3YOXGImE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780989409; c=relaxed/simple;
-	bh=N04XSFfusuTaHsNFuqoRh/L/mSiQOzUOqoOnUZS5LG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pqckUJU0qMtKepT3d1Vp/sIDU4WuuYSQQyYVbLUMniT85dtDnzWX9bPyDC7njRTMxGdQrQ0Et8BMkbD07exxzaJOC8phR+pikpRp09o/tQPT5QK5Ic9JShSjyLLXNSXntWRiVPdgNa/3NsYHVLbghwS9T/A9vFFueJVyzIUydPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7QO27FR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780994471; c=relaxed/simple;
+	bh=4bkcYxtn5EKh19OGIfPPH7CvDuki8qpiINJix59ynmg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sXKDvsD89soPYxrikLc0vC2pX8exEr8ZqDV1rN7ZwTpGybDy/XJ3CPsi2J1Ux+92wNPY/oFt3vrjkH7IFE9H5kcunSdDEeS8q3rScOooqIiVgAuXE4yWBnJtc0sFQ7JIp+zbRuUqHE+PyejgWyeSUV4ic6w8nzPHchcWqhNm37Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odWC+9rJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7QO27FR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEF21F00893;
-	Tue,  9 Jun 2026 07:16:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odWC+9rJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16501F00893;
+	Tue,  9 Jun 2026 08:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780989407;
-	bh=m+KYGZ93ysAEFhs7M5BXdkdm6DTM61sC1UfDRdKiois=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z7QO27FRIpcJ24ft+sWDzgKUTcoa1pgWP/jk9ZHVAy8Gvy8mC4uJClcJTRrnH982n
-	 8AcJQ2RiqPDWSDLyZ435L8T5HSFZKd72aXCFrs7Vk3CJ6Jc5u8IzbRNNW/XzrxXAzi
-	 GFRMlhMlZa55bivA5ht3O1j7KCqDjTVc67ce6rrRC1NoM/eecxpv8NeyVjnZbvHEbu
-	 Oo7pKUIah5EePRFtOgCdTc+HsuyVngIKxhUZfL3zpfeHX3V1IGwoDU5WbcJxZCMCgD
-	 lTH3t1Jl7Bp7uiJxZm3rRe5OBXnsypvOXzsl3my/xRkv9w0GQ031aHngVF0epaInoh
-	 bIZiopGYuNz/Q==
-Date: Tue, 9 Jun 2026 09:16:43 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Tomer Maimon <tmaimon77@gmail.com>
-Cc: andrew@codeconstruct.com.au, broonie@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, openbmc@lists.ozlabs.org, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	avifishman70@gmail.com, tali.perry1@gmail.com, venture@google.com, yuenn@google.com, 
-	benjaminfair@google.com
-Subject: Re: [PATCH v2 2/2] spi: dt-bindings: nuvoton,npcm-fiu: Convert to DT
- schema
-Message-ID: <20260609-rebel-advanced-dragonfly-efdafe@quoll>
-References: <20260608175418.1936892-1-tmaimon77@gmail.com>
- <20260608175418.1936892-3-tmaimon77@gmail.com>
+	s=k20260515; t=1780994468;
+	bh=U/jMoOACJ2lZXjL3ah2VY5kCPgLVSlZIr5yP1Om6eSQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=odWC+9rJl5FiLiXn6TbsaEpXYuzkV5X9z1EVEz1JqXUJhuk0NSRRqYDJV1nh4TjtP
+	 yjSE0nN5lLqzuaZRPZrfUhQ9ZbIWb8dPvc9k56FagUDdMarWsRJNLsgK11bD90t5VQ
+	 g6cEzmdTcMK/qP5a1b4kD3A1+fxkTw5LyYSyiCx9/4mXnNT6aHnkqUduklXLT6bIu2
+	 rNsoe5qfkQkAmbm9qB2jaaO7gx+AIlE7vTERs7aiQWM6p9qdrmj5EKQ3CulaKZlIHC
+	 KsvUwDfIRO1lilwgJBPcmbajbNs6RB7sNZjjgSJPV928R14ztBAwT8ri5yK9gnFk3S
+	 XbICs+C0qYNmQ==
+From: Mark Brown <broonie@kernel.org>
+To: H Hartley Sweeten <hsweeten@visionengravers.com>, 
+ Grant Likely <grant.likely@secretlab.ca>, Vinod Koul <vkoul@kernel.org>, 
+ Mika Westerberg <mika.westerberg@iki.fi>, Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260529-ep93xx-v1-1-9185070ca1fc@gmail.com>
+References: <20260529-ep93xx-v1-1-9185070ca1fc@gmail.com>
+Subject: Re: [PATCH] spi: ep93xx: fix double-free of zeropage on DMA setup
+ failure
+Message-Id: <178094183343.20828.16263348776829440165.b4-ty@b4>
+Date: Mon, 08 Jun 2026 19:03:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260608175418.1936892-3-tmaimon77@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4bkcYxtn5EKh19OGIfPPH7CvDuki8qpiINJix59ynmg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqJ9Gh/RdJWSSVlXhThOdbJ4zEVt3goV94BMsMz
+ EsmLddQHq6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaifRoQAKCRAk1otyXVSH
+ 0DLHB/0bCyEE4MZauomFqtP5WF3wqcsEbfCHeOhXIfAgdcAL/shuP4JnvRyYzwLsGW+Jtuk6DK5
+ vU7zisERH+2lPWz1+dCzZv5+/97r0zRO0tPhD3XUHOmwpUzmznxj1zNnAfl9m94eTI9fcWfRUcK
+ +/YtAwamW6NcC7OkkxTsM8LvMBg+ny8wAZNqTkXr1S1bsd7z8vpHBAkEV4wiTGohlHyLZtmb17N
+ ugW+C/PsYgngiRviklUSEWTd3MlHwZUo24FkU2gutGaEzr+6KresyXEAK5/hBOYh50ywhUqIfTc
+ 4oKwFNFrES0aSLdDGP/0VAx9dBOqQD1kONjwkfVha6SYQDdH
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, Jun 08, 2026 at 08:54:18PM +0300, Tomer Maimon wrote:
-> Convert the Nuvoton NPCM FIU binding to DT schema format.
+On Fri, 29 May 2026 23:31:06 +0800, Felix Gu wrote:
+> spi: ep93xx: fix double-free of zeropage on DMA setup failure
 
-You should explain here why second 'reg' is optional. It wasn't in
-original binding, so you made a change to the binding during conversion.
+Applied to
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
-...
+Thanks!
 
-> -
-> diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml
-> new file mode 100644
-> index 000000000000..0f95def01910
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml
+[1/1] spi: ep93xx: fix double-free of zeropage on DMA setup failure
+      https://git.kernel.org/broonie/spi/c/7886054b06f7
 
-Filename: nuvoton,npcm750-fiu.yaml
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> @@ -0,0 +1,91 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/nuvoton,npcm-fiu.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nuvoton NPCM Flash Interface Unit (FIU) SPI Controller
-> +
-> +maintainers:
-> +  - Tomer Maimon <tmaimon77@gmail.com>
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +description: |
-> +  NPCM FIU supports single, dual and quad communication interface.
-> +
-> +  The NPCM7XX supports three FIU modules:
-> +    FIU0 and FIUx support two chip selects
-> +    FIU3 supports four chip selects.
-> +
-> +  The NPCM8XX supports four FIU modules:
-> +    FIU0 and FIUx support two chip selects
-> +    FIU1 and FIU3 support four chip selects.
-> +
-> +  Alias convention:
-> +    The '/aliases' node should define:
-> +      For NPCM7xx:  fiu0=&fiu0; fiu1=&fiu3; fiu2=&fiux;
-> +      For NPCM8xx:  fiu0=&fiu0; fiu1=&fiu3; fiu2=&fiux; fiu3=&fiu1;
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nuvoton,npcm750-fiu # Poleg NPCM7XX
-> +      - nuvoton,npcm845-fiu # Arbel NPCM8XX
-> +
-> +  reg:
-> +    minItems: 1
-> +    items:
-> +      - description: FIU registers
-> +      - description: Memory-mapped flash contents (optional)
-> +
-> +  reg-names:
-> +    minItems: 1
-> +    items:
-> +      - const: control
-> +      - const: memory
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - enum:
-> +          - clk_spi0
-> +          - clk_spi1
-> +          - clk_spi3
-> +          - clk_spix
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-This wasn't in the original binding. Nothing explains why it was added.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> +
-> +  nuvoton,spix-mode:
-> +    type: boolean
-> +    description: Enable SPIX mode for an expansion bus to an ASIC or CPLD.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reg-names
-> +  - clocks
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/nuvoton,npcm7xx-clock.h>
-> +    spi@fb000000 {
-> +        compatible = "nuvoton,npcm750-fiu";
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
-> +        reg-names = "control", "memory";
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-reg and reg-names follow compatible.
-
-
-Best regards,
-Krzysztof
+Thanks,
+Mark
 

@@ -1,63 +1,63 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8FD42B75F
-	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 16:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B77A42EEBF
+	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 16:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781023173; cv=none; b=ptjzjlaHyAC8NiGLzUsxqaQskvz8MI/yVPl8muXVVtttfDysfpKKLR+2R/dBm3W5MLE04t3PoqkkJk+dNorVHwwPpCzkRBD+CjkmPHWzLbLDB8Q89/nIdBATwLbz6o19ZRxwhtJ8BUifw6BOyS42pHuojEALLFbqK3xUj0mpdUs=
+	t=1781023174; cv=none; b=UGRbrklcrEuivmxRctpe1Eelyf9bfVYLKjjArlG2NuEGHefxwedOPsC3PA35y36iDPxIkrfDM+NvcDb+TiCNH4MTjO8Kxb9BcfPPsP52svLYfW8yFo2DiYfasXNAHDDT+hJ8qxCBns0gB2hX3zCKqn4QKIK3TSxioRMJD9KCUBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781023173; c=relaxed/simple;
-	bh=ems2LpTiwpTPgbOwaVQx5TOJZKGRhpPlPNAONUo8hZE=;
+	s=arc-20240116; t=1781023174; c=relaxed/simple;
+	bh=OpliSXEf6ClkOWJWl4do4W3JZ06bMKfHQs73OZhh8FY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B2R2gDxhIdNjnr/w/N6TrS1AIZdGk/qEcefpwko8CMYG9cqXjDWkzG6sO63e/dOPCUVmzwJWqNXJvnqcbdfgm2SkJOL5RGFl/mbZspmRUtVFfHh5yqsTeSWGnj8AkND3uRHFqHAOhLaK6GEmIdbG6l9LAcPhjwXO1mmvG5ZGMFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c03LkUFQ; arc=none smtp.client-ip=209.85.128.52
+	 MIME-Version; b=ug0vJpDSQOM1EnJXmSz8tdY5844k6GZeiYWwQgCu/ZH4ztCEzilRipkKWyZ4OwMRQUvR5KcpOVoY4W0VlwtMGzQEv+nqYoFTlNRCkB295LgUPvQ6wOA/qrh/NYIDMnx822+kspJ8dIuKO2Ka/1ogkjARYh14rVHlsvnMtzBfeVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgytfFbC; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c03LkUFQ"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b3e03939so48302315e9.1
-        for <linux-spi@vger.kernel.org>; Tue, 09 Jun 2026 09:39:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgytfFbC"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490ae94a89eso49421085e9.1
+        for <linux-spi@vger.kernel.org>; Tue, 09 Jun 2026 09:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781023169; x=1781627969; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1781023172; x=1781627972; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NPfdSQj9vTm35G3KAdx9EH2tKkR1Y8xAGyUsxKN7pqw=;
-        b=c03LkUFQyhrcrPPClwpUlac6+lmB8l0CQh6z8Xb8O6ZXbPJl3d1CzrP7iRTIroME7m
-         4pNXt3StKwwg/LR6iEIN2qH7524DXy3i1s8ThNLfTLVcMh0jK7D1Nf0tHrQFxx3rIao7
-         jD8hjW2F7NTkm1YuydTJ2OjxN4VpUgxFTIQRCMFFvbRZyA/BJbTt7N3o2QBuh1zBL/Zs
-         aMC8UMcrxXRJhaSF3EPN2Yp5rHeD0PEqZvrGKlgToGl2oFXpkCvZ6hwe/bjYb7OuJtOa
-         Qupjq0CUT+0zxxMjvHFNuTZZHfJlRcWlHWM6i3mR1BCBUEBoCpJVBDlJsHH6B0fpfRnl
-         A1eQ==
+        bh=IhKTkY+fAoMNRjsm960hiVmd8n0Q73fNbvw+JMhEZdQ=;
+        b=EgytfFbCnEv9XryQVJSDIOIjIk6oqPM008xNWv+nFie+pqwDIVyuc80qUIL8epHqMb
+         ygjTZ724cZ1loJTemyjM9AH0mpkkFJxU2eFHuXmxWdG4b6IUUpNXAoGgFgbZchFk3FGy
+         8hzuJync20O2rhIKOh6vEcxxfhzGkl63u2s6mgthatUrSpgXPT7T1cXilZfI4M0hneoX
+         nqwHxdkSZKo4QPpBGzHamOWYa7ipmJDyC+TZlaSJ11BZ5iordKG5WuMORAdTfN1bwUAu
+         kszrfKufDBS0KU6Qb1xXtwsZ6l/SnAfzguYuQwYXhm9yNewZhon10q89J9NOtBGsyXYW
+         q/Dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781023169; x=1781627969;
+        d=1e100.net; s=20251104; t=1781023172; x=1781627972;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NPfdSQj9vTm35G3KAdx9EH2tKkR1Y8xAGyUsxKN7pqw=;
-        b=pJms8rT6aioGkKt7Ni8w7NEXUxeyegEZSG8Ds3J+x0mpDRaUj5h46nu9fr5KAQTAVW
-         Qc6ZXpPSxGNXfXP/k/OOeO6Ys1eN3NgOEXWNafSEOVyMdctTo4tzXFVYEL8P+j9dGrMW
-         0ysaPp/X+yUD1yxxs2zZFI3tbuC0LCcgfIJ9Q1s/+dVquCmpJcVkGgK1dxVyLNUTAU+W
-         AQ0HNnQx/7Sp1iTTJA1ICzzZedqiB+AFinX0WgjPMqcUi4jlK8O8dcBnfVr9kwOzmUDn
-         MrkoieT7NwCdXuwnVDD7WfABU9cgzrNJHpvKCPGF7czSOrI+tRxJbJRwRdUDvbhVUCiS
-         TMOw==
-X-Forwarded-Encrypted: i=1; AFNElJ+y+iryfJgvJmXOuLN2lk4K9jRgEs7HvSTR/aWy15YvfKbIqR6Q2r/Ue59R5NAw2lMyYFJ8sA25toQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzvclRsVLFpQy2WrVYDYw4LrSXvvOve3O7Ln/686yDrjBtsfFu
-	fNKQWUGqnI0FLrqTPI2ZB67SKTPg1ZCd245bLDdQ7fSzrkBzNerkcoIA
-X-Gm-Gg: Acq92OHLyb6eLiRUNKwwCLXNd3UaBIwkwXqyZe0zg6SmCUUFhvsoizU9AYWmE9S8nEj
-	6Xg8zliQpEApfCo/l+lvz4P+bEILQKOcea+mEeb7mlztx7tY5XI0JT8pgIBVZ3xwZ4DrMkcZ8ZK
-	vUy9mr/FvOLUOpsFcnHiopJT5Bz/RwrRfcDqvKhdk7tiE3YmGMba9xMACJTjHfWomFMEvNF3k4X
-	e3090547a/glN8eEAQ1z5X7WYWKXc00ksnuXPjolNOO1Ux/vZZvpI8IC7p9aQ6uNuOR89LnLXIS
-	retjLbEHSPPJ0tU7APmXYoDRsNQS3pe+Oiahws9tHBTlmLxWKPJt33PrNKZpMK7CGv48oNhXzuL
-	O3K4UwJVP1ODTHJXC7MEONa9d/l1TPXKUsLHV15oKBK482LZGR84h1fyFh4gXAKRHD7W6l5Axju
-	d8NhZMRpZHzakVq0g2Jh7EDPFFU28CzIsIQ+t8736DQcGjyilRFfke8KQ=
-X-Received: by 2002:a05:600c:3b04:b0:490:af63:2cb1 with SMTP id 5b1f17b1804b1-490c2cdd2bemr288823845e9.7.1781023168694;
-        Tue, 09 Jun 2026 09:39:28 -0700 (PDT)
+        bh=IhKTkY+fAoMNRjsm960hiVmd8n0Q73fNbvw+JMhEZdQ=;
+        b=oWHwQ8DeIYfhZF+jhesSNa9XsPS/s9HbYFd68FpcQtzAsDyMGTxNp4uaWWYTxH/Npl
+         Yr6aaEv7xH0qM2ycPwqy27XyYbRQqXU8DFm8jT8EHce2XDOP2oDqLdh7Gx+XmZTW5ff4
+         e3zkQ4VmNnu/s439rpCJ5aiwZJkBlyHFLRrlnGZpWsk+tAn+Oi+rJ+T6hTW7ave3I24L
+         Zp7MXA1JzzB6kksRUrzbU7Z9VfIc654T3tIDCFmWptws6qbwGxcnzbqTfoy50cOKiLZn
+         R/TFUUKCOzbumWk0ZJNl3wfa2kFajZ2PV53vfgX+uNdV17kle8mFlPxXOXshQrZjLt2B
+         Y00Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/FQByREfz5s3Qdc89wB3JC/n55yeHOOHmiMPHlTUhJm7hmNgu7FWugLWlfO5SCSd0GJvs9HeezP1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy61n1i+GASEEH8hcpxksjG39RSsvE49+59EjGsd5RmE8jPxYdE
+	Ozv0avu2ujFWxZxwRd7TCANLCb3qg/Tz7/zq+WiySdxgCkTxFLcHde5i
+X-Gm-Gg: Acq92OHag1IiGO2UW3hUKF5SCH9ztORjAWGkwSdcLH1h8ZlvQek50MwOXOY82rQH3Uy
+	WIzMhIlI2vzFcQ4hpMG/4sUEqIgU8GKxtY5AmPtcSvVIEW/9LvQxCysXpI1NxW539F0fYD2Gs1A
+	LOsPnXc/BNiR01nup9W6wO8kVPzEeVxwp6d63W1KCWF4JHUMJAW9UTZLumv8um9QMWr6KN+pdeq
+	Hr45Ux0yHlnIMaZ+796aYfmOto/GKzu6Vswi51dUrut+q4Vy1GLpXfpBY+CNF6lxQ37OU59YecZ
+	TDffDvlHncIpxrskeuVEFhUiSVMg9eok6vr5uHMi8FG14KEP/6V0/JQm2wy9hc+7SknWavL+ReJ
+	mlrGQ0+PBaAu7rqryU2XN2pyYOTpGu7rfrQkM/QWf9gLvlMPXjjml5GC4kmBcD0CuLDmcCGTS8j
+	ZruEqUmwRcagF/DJiNaOL8E0AYcnS1CTV0O5fw1+k5R4hm
+X-Received: by 2002:a05:600c:354a:b0:490:ba0a:1178 with SMTP id 5b1f17b1804b1-490c2616e16mr347140765e9.28.1781023171627;
+        Tue, 09 Jun 2026 09:39:31 -0700 (PDT)
 Received: from taln60.nuvoton.co.il ([212.199.177.18])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d2d11asm440860805e9.1.2026.06.09.09.39.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490c2d2d11asm440860805e9.1.2026.06.09.09.39.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 09:39:27 -0700 (PDT)
+        Tue, 09 Jun 2026 09:39:30 -0700 (PDT)
 From: Tomer Maimon <tmaimon77@gmail.com>
 To: andrew@codeconstruct.com.au,
 	broonie@kernel.org,
@@ -73,11 +73,10 @@ Cc: openbmc@lists.ozlabs.org,
 	tali.perry1@gmail.com,
 	venture@google.com,
 	yuenn@google.com,
-	benjaminfair@google.com,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v4 1/3] arm: dts: nuvoton: npcm7xx: Drop bogus FIU memory reg-names
-Date: Tue,  9 Jun 2026 19:39:17 +0300
-Message-Id: <20260609163919.3321228-2-tmaimon77@gmail.com>
+	benjaminfair@google.com
+Subject: [PATCH v4 2/3] arm: dts: nuvoton: npcm7xx: Drop redundant FIU clock-names
+Date: Tue,  9 Jun 2026 19:39:18 +0300
+Message-Id: <20260609163919.3321228-3-tmaimon77@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260609163919.3321228-1-tmaimon77@gmail.com>
 References: <20260609163919.3321228-1-tmaimon77@gmail.com>
@@ -87,50 +86,47 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-The NPCM7xx FIU controller nodes only describe the control register block,
-but they still advertise a second "memory" entry in reg-names. Drop the
-bogus name so the DTS matches the resources actually present in each node.
+The NPCM7xx FIU controller driver gets its single clock with
+devm_clk_get_enabled(dev, NULL) and does not perform a named
+clock lookup. Drop the redundant clock-names properties from the
+FIU controller nodes so the DTS describes only the resources the
+driver actually uses.
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>=0D
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
 ---
- arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi b/arch/a=
-rm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
-index ab3c3c5713ae..a16450abea0e 100644
+diff --git a/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi b/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
+index a16450abea0e..83cd10b47273 100644
 --- a/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
 +++ b/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
-@@ -191,7 +191,7 @@ fiu0: spi@fb000000 {
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
- 			reg =3D <0xfb000000 0x1000>;
--			reg-names =3D "control", "memory";
-+			reg-names =3D "control";
- 			clocks =3D <&clk NPCM7XX_CLK_SPI0>;
- 			clock-names =3D "clk_spi0";
- 			status =3D "disabled";
-@@ -202,7 +202,7 @@ fiu3: spi@c0000000 {
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
- 			reg =3D <0xc0000000 0x1000>;
--			reg-names =3D "control", "memory";
-+			reg-names =3D "control";
- 			clocks =3D <&clk NPCM7XX_CLK_SPI3>;
- 			clock-names =3D "clk_spi3";
- 			pinctrl-names =3D "default";
-@@ -215,7 +215,7 @@ fiux: spi@fb001000 {
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
- 			reg =3D <0xfb001000 0x1000>;
--			reg-names =3D "control", "memory";
-+			reg-names =3D "control";
- 			clocks =3D <&clk NPCM7XX_CLK_SPIX>;
- 			clock-names =3D "clk_spix";
- 			status =3D "disabled";
---=20
+@@ -193,7 +193,6 @@ fiu0: spi@fb000000 {
+ 			reg = <0xfb000000 0x1000>;
+ 			reg-names = "control";
+ 			clocks = <&clk NPCM7XX_CLK_SPI0>;
+-			clock-names = "clk_spi0";
+ 			status = "disabled";
+ 		};
+ 
+@@ -204,7 +203,6 @@ fiu3: spi@c0000000 {
+ 			reg = <0xc0000000 0x1000>;
+ 			reg-names = "control";
+ 			clocks = <&clk NPCM7XX_CLK_SPI3>;
+-			clock-names = "clk_spi3";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&spi3_pins>;
+ 			status = "disabled";
+@@ -217,7 +215,6 @@ fiux: spi@fb001000 {
+ 			reg = <0xfb001000 0x1000>;
+ 			reg-names = "control";
+ 			clocks = <&clk NPCM7XX_CLK_SPIX>;
+-			clock-names = "clk_spix";
+ 			status = "disabled";
+ 		};
+ 
+-- 
 2.34.1
 

@@ -1,145 +1,160 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7885C31E82A
-	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 07:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1145F2F1FC9;
+	Tue,  9 Jun 2026 07:16:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780989316; cv=none; b=SmBQ97CclAfVKISapyRyaKZxKVLtHqgC7G8C2BmToTDcVdSF60guhVuFOuT6awP1tEDvLmkwcp0T3swuMSqgYfW9+QcT9jgOMgObKdrgHeihocT2hKDPQH5bmz33dMJAGtN5cLSoVxkF3P44GrzCVNJk5BywblVehKCh0YQ4n28=
+	t=1780989409; cv=none; b=teMma4b2dnM2mIexWGbBxFLjQ31gsz66lIigGDUujPL2HNxTZbFVKVSf8e5KsX6ib5z3ShX0tU5nJQcrQPRlXN344wpxiYloltAei14AIz62RyTWEQ56cfSeQOIbHgvYYVGb+/eOI1o/PeaU5sid26XUIaIVdN6Ea1Pi+z3rbTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780989316; c=relaxed/simple;
-	bh=36iZnvTc923EPRXPcsIAXwyaRN49ElQsHpAHmsLxlBE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R2Z3YmJ4WhgAsxzgaBSOJryBbczkIjv6mmx1S9Ns9mTFxG+ebhWGMKXViRBC7FaUnz+HnYXbqUjiFk1MGy6A8EhU04vWwvcF+G4GfPcdSBzg4S/Gaxqq5oVutbOLomdfyAhA4qxWvvgxu1f2xOzen7eZJ/RsGekGFMaNl2RfbI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=husGj8Dy; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1780989409; c=relaxed/simple;
+	bh=N04XSFfusuTaHsNFuqoRh/L/mSiQOzUOqoOnUZS5LG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pqckUJU0qMtKepT3d1Vp/sIDU4WuuYSQQyYVbLUMniT85dtDnzWX9bPyDC7njRTMxGdQrQ0Et8BMkbD07exxzaJOC8phR+pikpRp09o/tQPT5QK5Ic9JShSjyLLXNSXntWRiVPdgNa/3NsYHVLbghwS9T/A9vFFueJVyzIUydPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7QO27FR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="husGj8Dy"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-490b4e1ade7so55766405e9.0
-        for <linux-spi@vger.kernel.org>; Tue, 09 Jun 2026 00:15:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1780989313; x=1781594113; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IQ9qZd54/Lmmr54V4cXUb7WR3Uefj23Po4HWaeBJsic=;
-        b=husGj8Dy5d3rtU/oK0DzSRz/cjjHvjDFxIVLU9IbY6+QNCel/XZJMnnCU+Owmg2upX
-         WmOCFyuwQfAQaChugLSa23DCsDEFHdH24vA/js0nSBg0mqmOz7qHpzEjX7uD972c3xV3
-         tBHQU7S84zmLuwQsrrGTZiCivCHAHhT1w1jxUXMCSzfJ/X2M7uaf+vrmMzQto8Ni1BEH
-         0un/AB/jSjnAAQprwt8wubEHwrGX2lSiSho+yhhBBGkbXfQB+vtITOyiqEU4dIoBNm7H
-         ZKQO6LonGrBwDCczurjgk9fQ3DsDUupoGPyS2t8NDLd6HEyVoaM25f+5EeRuWZKLPYtA
-         zkzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1780989313; x=1781594113;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IQ9qZd54/Lmmr54V4cXUb7WR3Uefj23Po4HWaeBJsic=;
-        b=LmRniVVn/PSFjA37ICx8rVdGl3JVRwsAd7hKubZ4mCtm94+ywBzEmHlrlWY5po6b32
-         HhXHXZBAQoZycryRfxihiLErL5c48l32DuiC9EfXRj+iHgAeTpxttnsAOVl6+rPMiFQe
-         4I9bh11PAacwgPIw0vDKiaXGem07s4CRppRbMOLeYaFvks6FAr3P2wacsKc8+j9bLwsM
-         crq/3xSEWAD7FQLQ4q7cRzZxXjrUoFg5p894HewFh+U7W8SkoyCIcUzXAkbr10yIGJAw
-         ayKnq7NCcXyNlwEY++QNLaqiPJN6l0GWvcqlSKLcZpAYxMQimDoYQ4hQKNEBm8V/IDXS
-         ZBrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+k592JIXrZmzJBxoSR+BDde2nUmOj5d7CgNffDdoaJfaEe18WXfT7RYFj19wybmBwuxrOnchqwFNI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzK1PP0AhZZsF2nVmW0RsEVxdNbQVfdKXtPmPrkW4lNHDclf3O
-	tO8nXhq6dNsNRCM8ZnElmvJawv2LrVhdGRbwMe2F2Vg5K8xdyvTJ5wDi
-X-Gm-Gg: Acq92OE9rfOBBd3rretRzPSUcqpFiIsM21GW4rC07Qwb5iwViYqUrPVeRJOPHW3ehTp
-	Hw+fyamcAd+5OcKu1ZP8Fm3APdMYhPubtTOE4XBPJdVmGaNYZ1LS71CjD19cNB0ditFDIHo9IYE
-	hL/+k6t0NiRAJ8Kfw+TRFCF8ok1H4zDYQrluUrFyh6w0w/toLaoPcCrSxZhR41miZTkYNPy/t9A
-	a6Niamqvv0CqhMW/Jgil22/ZPznHxfRapVTic53S92h/zJn8SrKYwzbjaM6s4DstG0DfiJMUHoA
-	MZFc++LS3thMI/CcZStspDYoZraGbYZlUKvtjQVv+nO0w6rPXy12/JFDn6MKgvO2Hu/v/Wc6PDH
-	YFc3ISIWIJbJ3GKjaKG3sJV6mJtnRbwRVjJVd4yKme7iIMOutsWiBUXRPwhz2DoTRhG6Z/v0r5W
-	3w9vOSn4u/v6kEu7vXyJU8Zm7SvPp5wAWknr/4Ep6/JKN7
-X-Received: by 2002:a05:600c:34cb:b0:490:4b89:5361 with SMTP id 5b1f17b1804b1-490c25afa03mr299042535e9.7.1780989312636;
-        Tue, 09 Jun 2026 00:15:12 -0700 (PDT)
-Received: from taln60.nuvoton.co.il ([212.199.177.18])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2ec711sm57909918f8f.12.2026.06.09.00.15.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jun 2026 00:15:10 -0700 (PDT)
-From: Tomer Maimon <tmaimon77@gmail.com>
-To: andrew@codeconstruct.com.au,
-	broonie@kernel.org
-Cc: openbmc@lists.ozlabs.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	avifishman70@gmail.com,
-	tmaimon77@gmail.com,
-	tali.perry1@gmail.com,
-	venture@google.com,
-	yuenn@google.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7QO27FR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEF21F00893;
+	Tue,  9 Jun 2026 07:16:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1780989407;
+	bh=m+KYGZ93ysAEFhs7M5BXdkdm6DTM61sC1UfDRdKiois=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Z7QO27FRIpcJ24ft+sWDzgKUTcoa1pgWP/jk9ZHVAy8Gvy8mC4uJClcJTRrnH982n
+	 8AcJQ2RiqPDWSDLyZ435L8T5HSFZKd72aXCFrs7Vk3CJ6Jc5u8IzbRNNW/XzrxXAzi
+	 GFRMlhMlZa55bivA5ht3O1j7KCqDjTVc67ce6rrRC1NoM/eecxpv8NeyVjnZbvHEbu
+	 Oo7pKUIah5EePRFtOgCdTc+HsuyVngIKxhUZfL3zpfeHX3V1IGwoDU5WbcJxZCMCgD
+	 lTH3t1Jl7Bp7uiJxZm3rRe5OBXnsypvOXzsl3my/xRkv9w0GQ031aHngVF0epaInoh
+	 bIZiopGYuNz/Q==
+Date: Tue, 9 Jun 2026 09:16:43 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Tomer Maimon <tmaimon77@gmail.com>
+Cc: andrew@codeconstruct.com.au, broonie@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, openbmc@lists.ozlabs.org, 
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	avifishman70@gmail.com, tali.perry1@gmail.com, venture@google.com, yuenn@google.com, 
 	benjaminfair@google.com
-Subject: [PATCH v1] spi: npcm-fiu: support dual and quad UMA writes
-Date: Tue,  9 Jun 2026 10:14:58 +0300
-Message-Id: <20260609071458.2692482-1-tmaimon77@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH v2 2/2] spi: dt-bindings: nuvoton,npcm-fiu: Convert to DT
+ schema
+Message-ID: <20260609-rebel-advanced-dragonfly-efdafe@quoll>
+References: <20260608175418.1936892-1-tmaimon77@gmail.com>
+ <20260608175418.1936892-3-tmaimon77@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260608175418.1936892-3-tmaimon77@gmail.com>
 
-The manual page-program path used the UMA command byte for the
-first byte of each continuation chunk. That forced command-lane
-semantics onto chunked writes and blocked dual/quad payload
-writes.
+On Mon, Jun 08, 2026 at 08:54:18PM +0300, Tomer Maimon wrote:
+> Convert the Nuvoton NPCM FIU binding to DT schema format.
 
-Switch continuation chunks to data-only UMA transactions so WDBPCK
-controls the payload bus width.
+You should explain here why second 'reg' is optional. It wasn't in
+original binding, so you made a change to the binding during conversion.
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
----
- drivers/spi/spi-npcm-fiu.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index 6617751009c3..ebe3387d11f5 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -393,7 +393,7 @@ static int npcm_fiu_uma_write(struct spi_mem *mem,
- {
- 	struct npcm_fiu_spi *fiu =
- 		spi_controller_get_devdata(mem->spi->controller);
--	u32 uma_cfg = BIT(10);
-+	u32 uma_cfg = cmd ? BIT(10) : 0;
- 	u32 data_reg[4] = {0};
- 	u32 val;
- 	u32 i;
-@@ -403,8 +403,11 @@ static int npcm_fiu_uma_write(struct spi_mem *mem,
- 			   (spi_get_chipselect(mem->spi, 0) <<
- 			    NPCM_FIU_UMA_CTS_DEV_NUM_SHIFT));
- 
--	regmap_update_bits(fiu->regmap, NPCM_FIU_UMA_CMD,
--			   NPCM_FIU_UMA_CMD_CMD, cmd);
-+	if (cmd)
-+		regmap_update_bits(fiu->regmap, NPCM_FIU_UMA_CMD,
-+				   NPCM_FIU_UMA_CMD_CMD, cmd);
-+	else
-+		uma_cfg |= ilog2(op->data.buswidth) << NPCM_FIU_UMA_CFG_WDBPCK_SHIFT;
- 
- 	if (data_size) {
- 		memcpy(data_reg, data, data_size);
-@@ -464,8 +467,7 @@ static int npcm_fiu_manualwrite(struct spi_mem *mem,
- 
- 	/* Starting the data writing loop in multiples of 8 */
- 	for (idx = 0; idx < num_data_chunks; ++idx) {
--		ret = npcm_fiu_uma_write(mem, op, data[0], false,
--					 &data[1], CHUNK_SIZE - 1);
-+		ret = npcm_fiu_uma_write(mem, op, 0, false, &data[0], CHUNK_SIZE);
- 		if (ret)
- 			return ret;
- 
-@@ -474,8 +476,7 @@ static int npcm_fiu_manualwrite(struct spi_mem *mem,
- 
- 	/* Handling chunk remains */
- 	if (remain_data > 0) {
--		ret = npcm_fiu_uma_write(mem, op, data[0], false,
--					 &data[1], remain_data - 1);
-+		ret = npcm_fiu_uma_write(mem, op, 0, false, &data[0], remain_data);
- 		if (ret)
- 			return ret;
- 	}
--- 
-2.34.1
+...
+
+> -
+> diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml
+> new file mode 100644
+> index 000000000000..0f95def01910
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.yaml
+
+Filename: nuvoton,npcm750-fiu.yaml
+
+> @@ -0,0 +1,91 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/spi/nuvoton,npcm-fiu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nuvoton NPCM Flash Interface Unit (FIU) SPI Controller
+> +
+> +maintainers:
+> +  - Tomer Maimon <tmaimon77@gmail.com>
+> +
+> +allOf:
+> +  - $ref: spi-controller.yaml#
+> +
+> +description: |
+> +  NPCM FIU supports single, dual and quad communication interface.
+> +
+> +  The NPCM7XX supports three FIU modules:
+> +    FIU0 and FIUx support two chip selects
+> +    FIU3 supports four chip selects.
+> +
+> +  The NPCM8XX supports four FIU modules:
+> +    FIU0 and FIUx support two chip selects
+> +    FIU1 and FIU3 support four chip selects.
+> +
+> +  Alias convention:
+> +    The '/aliases' node should define:
+> +      For NPCM7xx:  fiu0=&fiu0; fiu1=&fiu3; fiu2=&fiux;
+> +      For NPCM8xx:  fiu0=&fiu0; fiu1=&fiu3; fiu2=&fiux; fiu3=&fiu1;
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - nuvoton,npcm750-fiu # Poleg NPCM7XX
+> +      - nuvoton,npcm845-fiu # Arbel NPCM8XX
+> +
+> +  reg:
+> +    minItems: 1
+> +    items:
+> +      - description: FIU registers
+> +      - description: Memory-mapped flash contents (optional)
+> +
+> +  reg-names:
+> +    minItems: 1
+> +    items:
+> +      - const: control
+> +      - const: memory
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    items:
+> +      - enum:
+> +          - clk_spi0
+> +          - clk_spi1
+> +          - clk_spi3
+> +          - clk_spix
+
+This wasn't in the original binding. Nothing explains why it was added.
+
+> +
+> +  nuvoton,spix-mode:
+> +    type: boolean
+> +    description: Enable SPIX mode for an expansion bus to an ASIC or CPLD.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - clocks
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/nuvoton,npcm7xx-clock.h>
+> +    spi@fb000000 {
+> +        compatible = "nuvoton,npcm750-fiu";
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        reg = <0xfb000000 0x1000>, <0x80000000 0x10000000>;
+> +        reg-names = "control", "memory";
+
+reg and reg-names follow compatible.
+
+
+Best regards,
+Krzysztof
 

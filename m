@@ -1,171 +1,129 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011049.outbound.protection.outlook.com [52.101.125.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9500D39AD55;
-	Mon,  8 Jun 2026 20:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780950362; cv=fail; b=TPanWEc+zhVdKEz5QeoOKEqbHnTRv4PnRUzZFwprDpj3pETa9s/SFykt4qxmJoSIR0is7T4I59j7ZrFiWkHphB0HAVwG75He8FCMKebToilA7w10h+jOugJBWWS12N18qIATfSD4Wwl5nhe1NtiimtN2O650J20ymVfMcHRtBJw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780950362; c=relaxed/simple;
-	bh=llpmJ2DUdlmoL+Yo+dqWQR9j//d+3nMxadix6HMNngQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TtiCrY7u3gq9eW09UVZZDpkxuC+ACErlv+pm5Co70mxcxYbArTLs8aLqfuKL2AT45H9qRA4FfyqD2n5A8akBFuinkYvyvpStyF2w4T7JxNVigeJR7uLe554hVn3Y7uvgKY1pPpJtx4CokG4ZD6eBlNl4+3sexJD9p3EOzbOyf2Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=naxSkwD1; arc=fail smtp.client-ip=52.101.125.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631C7373C1E
+	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 04:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1780980087; cv=none; b=PNwFgdXUZN67DLz1pD88vkRMAG2w2HJqSdUnRo270a625/ksk7xEKHDVrmdEQUCUkLlRhhIZRDA+/Gbn5eNuRxsmp7PP+gKImdAkCQYKz+TFxBxpIGsmz8a3RLAq4yS+0a0zYYqh3S8f4ZzG0rn+4AVBaaJK89ouDXoB0FdG2dM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1780980087; c=relaxed/simple;
+	bh=JA2M7AiLUuSc6veCi/kbJrYplg8DlHt3oDIafgdkMi8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jz4JgOh4LD+qvd+1u4H0PkFBAhv27ZCt30jZQ62E3H7ejZjXa3mqzQQ/TOP4pJeGk8Esjv8x7X6Go1JJW7i5C+mxQgm3T6cGfRGD/65EZL8riCrRC6bryNV+s9kSut2yCpx082N6rW35Rv8DNsqGS6YQN3fnpFYyL7mLFxt0Nek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FtNIrr5b; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="naxSkwD1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OkBxcsWhge5rM4LKNSVsGK0HwqNWaeLQZLBX93VKmfnfcaXmqSuLT7ii2wE+pMwIyaeP8JZB+bgDBXaYFLlCsbsZhodnSCmPxaYoSNEv7m+2kUVkyG5nwrI0Y/LRmSP2mMV0TjRNtcgZT0PYL/oC/NddDbKZFSgPouvuxzNetf2XZVJs24DmUUwGgb6XVNQVmOvY5ZUVIyvH94ZJvf5ResUPbxwbD+xQhn4OiflS5v/I0npvhmFmNesSHM2jsYnLaQ59LbjZzVlVK08UE6vXxrP46q7ycOtVVbm8FOGxjSBmiyGxnad8RyIbBqQNT9LX/B2LOVJBbv7t+0y2f7osAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FTV8u17S7m8awg8550YmVIqD7DE4dGuegPbDj67q7NQ=;
- b=lbA9Zn6hatLjS26mvtK/U66VO2HMJb28APeAZqPNKraQFd8KpVKriM9jE1vZMZMf942Fu1OCNw7pbFYJwWwJpkcB3uDk44fd4NW9SNupJCWN/hzOj2uAahS83EVgCAObBFy8FvF34Ubjnm6Sg6Yi1tGiKU+HVGhyoBcMnyAZUh4LT8bowvoUcls/JyXRknkInQzRHbWZzu2hD/DUckF+qT11vIQW2H0lS9z8v45E+y8d1i05bgZf3Ju7ZX0+kkPDzmlfvD7OlPoRvMNKbkWrjaVuP2ttOhWa/4W0h8KGgmjCpOjJ+NDdj+Qga258nBPuHhWNUXIvK3r6Qc95CoreLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FTV8u17S7m8awg8550YmVIqD7DE4dGuegPbDj67q7NQ=;
- b=naxSkwD1/EMqxyqvE4ms0DDtpqWeGHjUoEwayg2m4t8MMuTj5Zz3S/HzR6Ea9+SwBU9qM36k6kUWZUmf/sAjnZcDUn/6JUn3XP13Iy0r19x0F0FwDHz62DrX5+NPnnrJ+LNkqemZR+gejhXp6+epWuWF2M0OXimmU9ifOopk/F0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-Received: from TY3PR01MB11948.jpnprd01.prod.outlook.com (2603:1096:400:409::5)
- by OS7PR01MB12113.jpnprd01.prod.outlook.com (2603:1096:604:265::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.14; Mon, 8 Jun 2026
- 20:25:57 +0000
-Received: from TY3PR01MB11948.jpnprd01.prod.outlook.com
- ([fe80::b718:17d0:6c0f:1495]) by TY3PR01MB11948.jpnprd01.prod.outlook.com
- ([fe80::b718:17d0:6c0f:1495%4]) with mapi id 15.21.0092.011; Mon, 8 Jun 2026
- 20:25:56 +0000
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-To: tomm.merciai@gmail.com
-Cc: linux-renesas-soc@vger.kernel.org,
-	biju.das.jz@bp.renesas.com,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] spi: rzv2h-rspi: Add suspend/resume support
-Date: Mon,  8 Jun 2026 22:25:08 +0200
-Message-ID: <20260608202509.3651345-1-tommaso.merciai.xr@bp.renesas.com>
-X-Mailer: git-send-email 2.54.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0103.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::19) To TYCPR01MB11947.jpnprd01.prod.outlook.com
- (2603:1096:400:3e1::6)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FtNIrr5b"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2c0c2c7d45eso45716365ad.1
+        for <linux-spi@vger.kernel.org>; Mon, 08 Jun 2026 21:41:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1780980086; x=1781584886; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eA0puiI12gkUUrChccEFoedZkqg321TG7vWV3+7W2Ns=;
+        b=FtNIrr5bpJw5cCz9yjGqXFQxfbfSh3Ro21BPtakPw+eYYgW1GCRW2n+jFCcGA9ohoR
+         7mjyGbCQrtBVq8BhEqKd9fqKyN5DBV7ka7zdhHI+gQ6j/3y+ZCrW85jrmjax2BCqvTXN
+         vmWpQll0TOTG36Wgs1criDWj9c8+lDH/r17S4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780980086; x=1781584886;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eA0puiI12gkUUrChccEFoedZkqg321TG7vWV3+7W2Ns=;
+        b=gsBOqddNM6a8UM4keFQvxxF2Id/mae0ceMhxv9CS0JKTKQwHVjxUfkSpJ498IrJXJt
+         FGdl4QTdcmWwAqwbmvEFJaXhlAdd4nysg55AMA7zlYJZ702S3UyVqjrPqXeTqzHn4uQH
+         W9Is/bIUo6gileZrByqdBRqFf86gto6ZpYWI+s0+26igR9twyKtryy4eMU6TDMpfsfRx
+         TuataFvXKhjPtyyWOQNqUUSxe6ThF5C6Y7DTL6vJB1pSMMBI+2oaDysRMYf6wojy6LP2
+         zcADmwoivh2OLqRoKsV/M1s8zg1yGBJ+Oygc6/Q7m1B5X5c1B3ZPY0Epwr9BCVZkBkBn
+         dGWA==
+X-Forwarded-Encrypted: i=1; AFNElJ8xuKpQkSxN7rQhgl3XoT5x2LDtByHcNULvr5L9sNVyWNRyOD1sEBFHwtRdzQZbnW6/ZiZnn7E2xP0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyM7pfHbmToUkJGrzDsnyGd0TxY6QSVfgY0u7lcHy1VIB+eU4SK
+	EXUDqJX/DI2e3GyWdAbUodqf/FjK2JFXuRLj5XJZlOL43MJ1G6uZWmOx66jTREoFUQ==
+X-Gm-Gg: Acq92OHV6QEB9wB5nbR5okSgFH+h0vmShuYU7D2o9ZTup1wfMl7dkya6SuPcYjoafSD
+	vOpi7f3+Ux7zQi3fgk6sjL8S2mCgUzI0KNM6WdJ0BJUoLVALRWOnUiuLcdnwa/StC+cPusiwOF8
+	6piBoXAnXLvh54cXHoDyxVaCi2MTpLsJ0JADVT9aGPymknZThNdQYhw4g48o28lY8AlJtCdy3bm
+	e2Jkz/dGUtZDWliDqKOb4tuZbaasdKXkpApFy9aANMpQgpffeeum+Pdfx3AeB70Ai3B/or0T9TD
+	Zy4HgKKYvI3VraKJfy96nEvrZPNqvbttmQnaDrP4yJm0nzeiHo0wd78lEj9oj5GOTEAAIcDLKq9
+	wYOsXYySt0eLVkepw3aI49D9Ua3BECtD79d1DpZDW5fa1gZTAO5ECAbNPDtBP8cCsHNr+TbbCzC
+	fju4X1owaEUVY8wzB/fDxNtaNaqr3hC3hFjqYeq7ORiGMPVFW/nW/cE8bWJs/ztvBY2cFrwucEu
+	OUkS+Sv9R4+sh8TYeisDLRRIgtdLBKMBWM3R/fYcszY
+X-Received: by 2002:a17:903:41d1:b0:2c0:af09:f3c7 with SMTP id d9443c01a7336-2c1e85c0cbamr219282855ad.30.1780980085929;
+        Mon, 08 Jun 2026 21:41:25 -0700 (PDT)
+Received: from jingyliang-input-linux.c.googlers.com (111.169.168.34.bc.googleusercontent.com. [34.168.169.111])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c1664a67b0sm200736065ad.80.2026.06.08.21.41.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jun 2026 21:41:25 -0700 (PDT)
+From: Jingyuan Liang <jingyliang@chromium.org>
+Date: Tue, 09 Jun 2026 04:40:52 +0000
+Subject: [PATCH v4 01/11] Documentation: Correction in HID output_report
+ callback description.
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY3PR01MB11948:EE_|OS7PR01MB12113:EE_
-X-MS-Office365-Filtering-Correlation-Id: 993420f7-7820-4744-eeef-08dec59c230f
-X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|38350700014|18002099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	CJ+7pN9z2/F2L/AeOUV74Ob1mXYdCzcL0xGO5Ie5Zgv0eWNeC9xvYHbl7ItQf/zQjihGhtB28Bz5dD4g9kVp9hCGDUO/3N3rj3QQK6VPROwE2pzvzEsw0VeFIvO3tZaEgTRKxa5LuwDXWkVR2JcWzu0KV0yY31RNtwzuDlWlKQ96U57A6mJM7y7waemm+/xDnKWDn8zlDNrizCfHefhyZBMY090LH0+5P5LYCmxzqquk48BZE+NWrG4t4xwd4FuzWCYuYOjVWXg0vWe4yZ7r0gEDONUYxFTPfjS4/ScoctXmXGr+UMRnZGXftIwOy8qwPsRkJdRfc5a4HQv3BWkxS45mc/RBQyaZGZ9Oh4pFWz0q8TUMTS7Sekhmvw2BKNG5XVSuKw0UJiJd2CX846tePwNh352D8JRulxL4EguffitlgaH7Rw1CkhkFYp8HnHYi1OUip3p0navZGP6bUdF0tkdx6QBAApPGNYJmLCnb6GgmlcVDi/w6G7h99pBYV7V2KNlM1DDDTKlti5BWwVFwY2/7afOi3wyojdiEhPCMoCpqau4R+aNdX/JOrVoQ6R9l7R9rcYnq4NnRlQGCu99atHfzuoRhtR+obxs94oDM118KXzegBtDeez03SWLcBkMbES1hImuF5NjLQickh1/q3Ko7XxOAeFNTEZVnGCbmPejzsUKZVGQOx6NuKBWgxLOtqOttPMOS+XLMMo51agHGGcJGDLYhx0DAnF/yBlvqb/ldZNXjnfARIA/OKc0IO62W
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY3PR01MB11948.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(38350700014)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PjBmlyKtRRhqxfeC3WKx4mcaFZn2qBdAN/J+jfBxzKqqpzJ1b2mEMxeLgM25?=
- =?us-ascii?Q?hSj0oGnMRZ0abeZNXpSL3rLeQZUdC92JyIoUxWEbMu06w2w/HUNaUneUZbb0?=
- =?us-ascii?Q?gLSwmYuViBFXHs0TSGvbET+c0B5br+Hc4zVOjRliKJsb3kHF1HmxsekChPvp?=
- =?us-ascii?Q?c/kKz67Dt5EuT1PkYo7Qpk+DtZDcevbIRySOO9kQvF1ie2EU6z/oNcaAy/Hn?=
- =?us-ascii?Q?JrU8Tcd99bSJ8M7bazOv7jFBivxpYIFoVQZ9VuKl3RuiSS8sPkazaXi/dxdv?=
- =?us-ascii?Q?nk/gaiZp6K4EQ40J4exWlr3VowAs/QA+u/vIQvqkJXhFqTj/FIcBEpzYHfJQ?=
- =?us-ascii?Q?gfh/CBkw7SEItDTEp0TXItYp+icCTXEjFfAGIxbUXe28A2hVCg0kihIN67BI?=
- =?us-ascii?Q?q4/cQRbkIvJ/FXTMPitiRkAZ+BVO+633q7nV9s1ZLt8KgHHw3/uS5c+TqKqk?=
- =?us-ascii?Q?/C3MTI4tO1GYmD06vKxoRoJG63oYxgay5J7KqPvzhj4JVk/dQEyzkkxDGfcd?=
- =?us-ascii?Q?IZHa3CC26k0WKo7pUwp9++2sQMydcFMGkFFW8hDdF3dpzg6+TWQxli917+00?=
- =?us-ascii?Q?S7nAQEL4VNqQRRtH2nr3tx8om8w2mOKK5vMLTEfn0L70arty/gHHAO6egzrB?=
- =?us-ascii?Q?UnX+hjqKmXBZE79ZD1zgueBqR1y1g9wNyjdUNgaVrzz3L+hsK/WK4WVshDjj?=
- =?us-ascii?Q?2U/7EwaVCpB1f0jq1kM4b+daLixnstdpHE7GFR3HuklLZWdEOXXc+Hf0sCaa?=
- =?us-ascii?Q?6unVOT4lucMnCxjVxGONpv1dNO6/Ly0UrXX49uHNUNYWwtKvYNG55MpfSN9E?=
- =?us-ascii?Q?Dq0clBYZj5flNgg59K8W2orEl0QI2ufQyMiUOw43py9Ze9AIeHV0ke2bJbXn?=
- =?us-ascii?Q?QwzirkbIByz9dIoyUVuJhGAQNEvHk8/NqW/hVoj4ck8oZ39LBWp8aC5Tj065?=
- =?us-ascii?Q?2JcfsOcOOvYLnNlYqAR7+M72QokEYdqYtRDwM5wO6aZg78xRAplwHFXWV5Pn?=
- =?us-ascii?Q?fz3avjF0t4FnGlzwTMdFRRA5IxfjfhmWn3l4hpM4jsiKsy6ZIWkCCq+25+jD?=
- =?us-ascii?Q?bHyJ9lAwXwjnFephhA5v0fBTaYTdQYacScd9VjG6TYEPZiFcG5KebZAhCYce?=
- =?us-ascii?Q?uZejrtgfPZEVuV5Z9OEApGIgVv7dDjF/baFyGJSpVHoO4Hubzr05VfgKcqlu?=
- =?us-ascii?Q?QgJUTSww1Xlgu9RK9bEAgpgcVbaInlzT8jnYqq/BwixupxUhyXtnNcUVeeoS?=
- =?us-ascii?Q?91pCGJ14fpmehbUlGMYZCluorytYar92KCwDb/W/2ISzi/hIq0oWxfn8AH2P?=
- =?us-ascii?Q?2CljdRN9pU18lOI66z7WIQ07x+Qt9Bs5HaNVzOI/MoMlWzsWusLfSMNALN0I?=
- =?us-ascii?Q?BHCliPC/v+VDVtVhB/lappCtADGVxGM+2iUk4rUxQ9rzWyicjtTjuc/oeYhs?=
- =?us-ascii?Q?UFAhoO5irPdNzb1txoEMX2SzOf7RCopokF/YuDIqv7bFV8WlzQO/t4QjcuMl?=
- =?us-ascii?Q?458p0yR2H8h87tK6YD/HXf9A2H4IONNk86PGtrObEP6HT/d+F62VCoJGf8hl?=
- =?us-ascii?Q?BgreSV4LB9FM6QFzeJb1PzndpTSKph6y0ImoFf86njaK/cbu2aftvfW9mLoY?=
- =?us-ascii?Q?5e1shtSAFGANP80kjSn9iL7cvZOaUC24a5gBoBzkNmA/nI2fNsN59cKOqLJ3?=
- =?us-ascii?Q?2PLEGrBXRfPz8WvdP6n4oj4P6n6gC5DRwgxRqtwUKllW+oaSDcyFMTTQblso?=
- =?us-ascii?Q?g+jrNNK7suW5SB+e8n5AhqaPMFE6moeW/fJ2IJxoICzoFnD84P/3?=
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 993420f7-7820-4744-eeef-08dec59c230f
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2026 20:25:56.8281
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rnMEKZ8JxDe3DhOMI2nLadUAQRE5hlfgjyMjbXsuhNhBEd4v9v7WFKqej73mhAaKh9BnO8aHD1kqJ8IO2DwMbcMItMlTK9BUWyfISE5T7/Ey+H1ydSjTis8KhKiJPilP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7PR01MB12113
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260609-send-upstream-v4-1-b843d5e6ced3@chromium.org>
+References: <20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org>
+In-Reply-To: <20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org>
+To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ hbarnor@chromium.org, tfiga@chromium.org, 
+ Jingyuan Liang <jingyliang@chromium.org>, 
+ Jarrett Schultz <jaschultz@microsoft.com>, 
+ Dmitry Antipov <dmanti@microsoft.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780980084; l=1213;
+ i=jingyliang@chromium.org; s=20260213; h=from:subject:message-id;
+ bh=WgXF5HKmPVI1MEtrLNcqmUizKiLvnC1/DeVVEsJVV4k=;
+ b=MRn8ThmipL8aQeFe4El0wwHcRed1esJP/XYC9aYnkuywJVUaIVxu3P8Moai80Jt3iW7OzC0El
+ WxYiULYHaqZCIsSH0OhJG6kcJ1FO8J7LYW+q6zH+Xa0pPw0DZ8OiK0e
+X-Developer-Key: i=jingyliang@chromium.org; a=ed25519;
+ pk=VTYSdqslTtYOjWWoIGgYoWupGWqNSidrggReKMgfPo4=
 
-Add suspend/resume support to the rzv2h-rspi driver by implementing
-suspend and resume callbacks that delegate to spi_controller_suspend()
-and spi_controller_resume() respectively.
+From: Jarrett Schultz <jaschultz@microsoft.com>
 
-Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Originally output_report callback was described as must-be asynchronous,
+but that is not the case in some implementations, namely i2c-hid.
+Correct the documentation to say that it may be asynchronous.
+
+Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
 ---
- drivers/spi/spi-rzv2h-rspi.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ Documentation/hid/hid-transport.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 1655efda7d20..694e5305c638 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -802,6 +802,23 @@ static int rzv2h_rspi_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/Documentation/hid/hid-transport.rst b/Documentation/hid/hid-transport.rst
+index 6f1692da296c..2008cf432af1 100644
+--- a/Documentation/hid/hid-transport.rst
++++ b/Documentation/hid/hid-transport.rst
+@@ -327,8 +327,8 @@ The available HID callbacks are:
  
-+static int rzv2h_rspi_suspend(struct device *dev)
-+{
-+	struct rzv2h_rspi_priv *rspi = dev_get_drvdata(dev);
-+
-+	return spi_controller_suspend(rspi->controller);
-+}
-+
-+static int rzv2h_rspi_resume(struct device *dev)
-+{
-+	struct rzv2h_rspi_priv *rspi = dev_get_drvdata(dev);
-+
-+	return spi_controller_resume(rspi->controller);
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(rzv2h_rspi_pm_ops, rzv2h_rspi_suspend,
-+				rzv2h_rspi_resume);
-+
- static const struct rzv2h_rspi_info rzv2h_info = {
- 	.find_tclk_rate = rzv2h_rspi_find_rate_fixed,
- 	.tclk_name = "tclk",
-@@ -837,6 +854,7 @@ static struct platform_driver rzv2h_rspi_drv = {
- 	.driver = {
- 		.name = "rzv2h_rspi",
- 		.of_match_table = rzv2h_rspi_match,
-+		.pm = pm_sleep_ptr(&rzv2h_rspi_pm_ops),
- 	},
- };
- module_platform_driver(rzv2h_rspi_drv);
+    Send raw output report via intr channel. Used by some HID device drivers
+    which require high throughput for outgoing requests on the intr channel. This
+-   must not cause SET_REPORT calls! This must be implemented as asynchronous
+-   output report on the intr channel!
++   must not cause SET_REPORT calls! This call might be asynchronous, so the
++   caller should not expect an immediate response!
+ 
+    ::
+ 
+
 -- 
-2.54.0
+2.54.0.1064.gd145956f57-goog
 

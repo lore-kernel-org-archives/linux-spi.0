@@ -1,83 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17B23DA7F3;
-	Tue,  9 Jun 2026 21:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781040532; cv=none; b=iTTq036WSbFuDrU64QxIAbAPUTuubEA119jKjB0w5XYk/5ZpBmK+J3rhMQInPqxaEnWqF1U78bVyN8KbJzuZY1NDQug2Vt/c21XtJ3obBDNsB/Vsqjn1yc1OH8hNOv6DgpljItXjtMDWRGyP92HPM90ElD3r8CFPB0z6OqrNm0I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781040532; c=relaxed/simple;
-	bh=yyPTVSS0azhWf5S1OAFcYT5EqgU1olAzHiPuzSokF2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xd1PlFxF0Gi+jK8h5mF7Jdi8QUOqJ2V/42UA9M8dxIj57LtVytri7uYpgn7D3b0TaHsBdhBaSvSaz81iTu3EjhXY1Ow6+dOw0OLyQ5kipHWN+pnwicheK+9PtoZRayBKWeljWd0KaHKEljOwKxy6i7e5xgr6FHGDEJiOLT9TBNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5BW5lMX; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CC3385506
+	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 21:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781040628; cv=pass; b=LPyed3dzLvxbdYClOROjeKEFu3KB1zBO6htVquICKhFNp1OgNoehF37is8734JnSKRdILvaeahLVfx6KDkQK0oieHhZD6JJYqQqUoTLbIDGnsniH+ejPrH9FWzX1J+UtWZUssu2R69bv+3/MRO+2mRF25Z67F98+Z9SsjIV5sQA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781040628; c=relaxed/simple;
+	bh=TbynbP/rbCQk2ywH5TiPVu9krPSvulMPQby7aN5rr0s=;
+	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZjsbOI4UReXhp2L01jjl8dB2jXxUw3GDj3sF93Q6Iu4n6Q5wj2ELNj5Z/6A5DUjw1BKaTihezcLoIOVZta2TwZSa5Z/MaDxR82RqVsRUOJZV8TIz9dMu5m72YjnWHhWmrhDGKxigPGstbXzaCHR1S/AYXciECsGH3ejzksnwQ0g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=TcmC/V6Q; arc=pass smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5BW5lMX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B171F00893;
-	Tue,  9 Jun 2026 21:28:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781040531;
-	bh=yyPTVSS0azhWf5S1OAFcYT5EqgU1olAzHiPuzSokF2Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e5BW5lMXTkch2uJhkwoG02f4clGsMeutkUOQYefebqigNmi+Pw76Z5Zo+0wvHa9RB
-	 jYE+j2PoiCb0BRDq1XtvwhW7DXJLiJPUM02w3c+yv2XOgc3usGenSPLqzHgndToodA
-	 XCq13uwqzdW6splmUzQElcP6XIGMK9UwRKtAYqjVtH6xo0w6XyfAw5BXKdnfGI9m9l
-	 6us81wpI72W/54/JOPT+1Zw5IT/fYXWFzpgLwUFT0/ORBq/NKYjr0BXfoVqzkr+2Fq
-	 doAeYkmVhV/BkrSoBCkdmSsCVhjizsQ+WK0mPA0gWeWpLtRjqpp7Z5TKM5JWg7pKa4
-	 HaTmTa1wmnZEw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id C72D51AC56B9; Tue, 09 Jun 2026 22:28:41 +0100 (BST)
-Date: Tue, 9 Jun 2026 22:28:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Peng Yang <pyangyyd@gmail.com>
-Cc: Serge Semin <fancer.lansen@gmail.com>,
-	Jonathan Chocron <jonnyc@amazon.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, pyangyyd@amazon.com
-Subject: Re: [PATCH v2] spi: dw: fix race between transfer IRQ handler and
- timeout handler
-Message-ID: <aiiFiRhec7a3B6Yx@sirena.co.uk>
-References: <20260609102956.2811-1-pyangyyd@amazon.com>
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="TcmC/V6Q"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-bec450b950dso877578066b.2
+        for <linux-spi@vger.kernel.org>; Tue, 09 Jun 2026 14:30:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781040625; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XzGbhDuImN3qN8LUK7qSxmHOxqeXwaO3u5IAvASiYBaA+UN1DElb1wCqO/rYGozhUZ
+         4yBETAh0AhwFkXLp98Fz2kBvu7dYRIVCfv6bVzUyrNaKLmzW70au/F6Im98BVPe6VBai
+         7Wy7CVbUYYp0WgA0dXbFyvN3QoYuPozUDwyFdJINZbSifmZQehnlZICDhk5+dsQphYSA
+         WJXOLMKPxJjFFZwlsLoFXWM/d/PfSx3GmNI4bGj30P83Gr+AGaHYUJ5Ue+buu/c2FvtX
+         ZjZoNYL0Wt4ytqDpVWixs06+oJifUYUKCCnB0dpEeuOCTvq7ScrD2UsyHo/PQ9B2LPmK
+         H76A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:dkim-signature;
+        bh=OyaoLWvSBSKiTIcOe7IFeaXY8jjEo9UJ9whgcmi/C6I=;
+        fh=o2dJwWdHkNHcBb5FJmRguZ4PAzSS5LeglMQhoa6LWXQ=;
+        b=af2q0xfGVlWnsGDrMkk23Dn+W6i9/RvTqQpH2LWU//8ZN49t9Rj2MvI2M1hmS74BOy
+         pmb0D3EN+BwK7lZF2N/J91gw9/Ftu5qW6J8ftxbBA0HKTUU/ZjglK4kXKM7YSafogqJx
+         pGMkfiFhkFD2AxgCMDPScITsBA+0aLgKMoigTkOPyumr5v+MPdherXw++EN0H/q1nJLw
+         ycOHcAaEROSvbL9o4i05L62gJgtqptyS0RZFBsM0TnTDkC+CS1bOuhzfwa8n2cc2+Rmj
+         RtDa+tCa3nk66mLua8sz4FzTr0y7d+I80oCAPxFtaBqMofyMK2oY9PxDeVP7RMqB2DWx
+         7ljg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1781040625; x=1781645425; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OyaoLWvSBSKiTIcOe7IFeaXY8jjEo9UJ9whgcmi/C6I=;
+        b=TcmC/V6QXQfxwZKSWjtKlkvjOwoGt3xSPNg+O3KPbq/fsdAH7hoPIx2dJMRtxmQTDN
+         c/FuN1pAa/+rFBM/8t6MyolmQjEbFoaajsLcwXG1asaHuZ0TYbMK9sODkclAppLdvDa8
+         XEqEr8UlaPYpVpXIivFBHpa92NURMdaJ+DmTgLEoFu0oHxzM+5JLV35D+p9VDIjXHUKN
+         Uvs5gA/R3tFy5Wc6kL+WSt84rmFgd588ff00SnkV/5TwmN+369ZaQj/8CpoOOQ7c8iCX
+         /ZKNIoloMz0ViWo2W+9uOwnZ2zRmN7jrXekx5SWZaz+Z37Prrq/QMjiQ2YTGWz5v5osl
+         CoNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781040625; x=1781645425;
+        h=cc:to:subject:message-id:date:in-reply-to:mime-version:references
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OyaoLWvSBSKiTIcOe7IFeaXY8jjEo9UJ9whgcmi/C6I=;
+        b=HdEgjPWrwShWavScTyKKZj6PQLA1bdecqEMuJaF9+HPd7kB0k7cxoeUjYGCvZYmQC+
+         p8v2/NN7wPoGXs3NmGYtop/hUxFYX2m5qZtPMolfTJ4IzuZHO+QCWL4wSwDyYm1W3UIS
+         vUVfbGRh/M1QCUJdc9sotTzJsEikXsV9ujxaV+5yUsOcN/9fsuUb+GUGCJk0FWXXVnrM
+         hodg8UCNGU/KwtVOAdG1mtJGbm2jaSOr1RRVZv7oXc34CwjcTwRCC5P7moHNvuRwBK12
+         VFNL06+1SXdysRYPeITWYawNGAFrZfi9tD2lbDynLf8L4glWjBpKv7KlR1bMn7id7/UT
+         cGvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8A17gUBNUd3L9tpdbf9W2bRREUSrPdqjz79jEcGZhGd9UbH7uxyqe2FYspkqZ+W+NJlWAyIt3KPAY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWYkX92wIMw/A8lyss/kDx0Y0ZBMteOK2W0pnaceZS+bhh6AEF
+	u98rrk1SV3IFaP3HDlu5lYu78YX3YdqdOgh8xNxqP7/RygH5T/9/+i7M+0Pu+mS/wn/QH1Fsmzy
+	wJonQX0mqFXx6RDuJoIAORI5ds306kypJUjmDZtbwjg==
+X-Gm-Gg: Acq92OH0yS0aM5ULDAAJ5FxSh3xqV8TViRQbyT3UL2EWFtO18pszEdwMX2/l4N+2QOB
+	lC5iE5tBbuWBNFOcchKo7eGUHNiqRn1KUvSPgYMKaGfdv20XxHAwT/di3n0XhoX3usVHDfAveB4
+	SNfve8GWehj6aaKZLSlHMUYJ/+RaKPQtKiBXCMqEnF8nH/OmyLDPLNN56oRzIcezZrhYPxWNRGq
+	bpfPmtNEE18J2wPrUb76O9CVlTDfarevuuXdGkoA5PuAQ0Uiy2egC4hq2RJ9jIvpX383rR6X0zv
+	24jWo+opVH7Q/Fn0jPPL9We2O8WL1dtoHBsrg0GpqVtm+Sk=
+X-Received: by 2002:a17:907:8693:b0:bea:3e9b:83b5 with SMTP id
+ a640c23a62f3a-bf370e63a84mr999800966b.22.1781040625083; Tue, 09 Jun 2026
+ 14:30:25 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 9 Jun 2026 16:30:23 -0500
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 9 Jun 2026 16:30:23 -0500
+From: Angelo Dureghello <adureghello@baylibre.com>
+References: <40aefc39-bd98-460d-8aa7-5dd79f562e0d@app.fastmail.com>
+ <fdd6fc14-f607-4186-8db4-25de973ac322@kernel.org> <CALSJ-wCrNDv3N2Kdo0uoXsKGtp0GthJRBeYTNQA1gGE2akUWFg@mail.gmail.com>
+ <9391b782-7727-47fa-ac37-05cd50821d35@app.fastmail.com> <CALSJ-wBRmUpjz-_ehZ0U0Gu+fPqRUeAn47E0_pwpXQa0tCNzVA@mail.gmail.com>
+ <CALSJ-wCuZs9cBJsuOOYMEYM6xOXZbdOm_pr=70d3HRYYSYJ0KA@mail.gmail.com>
+ <CALSJ-wDm8NoB8mF3KSx49XMSWz1vjwFhSmgJZWq8pN2pCf12mw@mail.gmail.com>
+ <CALSJ-wDY_8SMAvKT0L6wMbH1=w5pZNmV=xyeX1REb=BMRZWj-g@mail.gmail.com>
+ <2b532d56-dce4-4f6d-84e0-2fd87d5494f8@kernel.org> <20260601144332.GC4918@lst.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4ba+4Ppegdz71e9L"
-Content-Disposition: inline
-In-Reply-To: <20260609102956.2811-1-pyangyyd@amazon.com>
-X-Cookie: Leave no stone unturned.
+In-Reply-To: <20260601144332.GC4918@lst.de>
+Date: Tue, 9 Jun 2026 16:30:23 -0500
+X-Gm-Features: AVVi8CezOGOq-MNrhv5y2nA_4hBEGDCtfXzAaSWT86Uo7sqynIRfYGOJbVIBc1M
+Message-ID: <CALSJ-wAaOsizvHGiCdL_mSKS-LQGJKgbnUeBAnE8H+h-7xOGhg@mail.gmail.com>
+Subject: Re: [RFC 4/4] m68k: coldfire: fix non-standard readX()/writeX() functions
+To: Christoph Hellwig <hch@lst.de>
+Cc: Greg Ungerer <gerg@kernel.org>, Angelo Dureghello <adureghello@baylibre.com>, 
+	Arnd Bergmann <arnd@kernel.org>, linux-m68k@lists.linux-m68k.org, 
+	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, 
+	linux-can@vger.kernel.org, linux-spi@vger.kernel.org, 
+	Vladimir Oltean <olteanv@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Hi,
 
---4ba+4Ppegdz71e9L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, Jun 01, 2026 at 04:43:32PM +0200, Christoph Hellwig wrote:
+> On Sun, May 31, 2026 at 11:42:26PM +1000, Greg Ungerer wrote:
+> > I don't think that is right. The way the underlying data cache is setup for
+> > MMU ColdFire (via the ACR/CACR registers) means that individual pages cannot
+> > be marked as non-cached. So coherent memory allocations are not possible -
+> > at least the way things are today.
+> >
+> > It would be possible to set aside a chunk of RAM at kernel startup time
+> > to use as a pool for coherent allocations (since it could be marked as
+> > non-cached via the ACR/CACR registers), but there is no code to support doing
+> > that today.
+>
+> With CONFIG_DMA_GLOBAL_POOL there is some generic code dealing with
+> most of this.  But if this driver worked on coldfire in the past,
+> it must have been fine with non-coherent memory and could use the
+> non-coherent allocator.
+>
 
-On Tue, Jun 09, 2026 at 06:29:55PM +0800, Peng Yang wrote:
+Ok, thanks, so the driver is working fine with non coherent memory but may
+be just for a case. I will try to setup a better SD test. And will send
+another patch to have dma enabled with non coherent allocator.
 
-> Fixes: 0b6bfad4cee4 ("spi: spi-dw: Remove extraneous locking")
-> Signed-off-by: Peng Yang <pyangyyd@amazon.com>
-> Suggested-by: Jonathan Chocron <jonnyc@amazon.com>
-
-Your signoff doesn't match your email address here,
-please see Documentation/process/submitting-patches.rst for details
-on what this is and why it's important.
-
---4ba+4Ppegdz71e9L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoohYYACgkQJNaLcl1U
-h9C41Qf6Aw+TWGzKpQGe/peaOMLa3iqtO42BW+V4gI8FhS9JHsCbFTbRjxpzq69t
-HOmrD/cdHG8MHfG/wdbGxGFcOES9AGA7PQgke3igz0RBcZYJ4v6ccrWMfvbbO2+M
-Wwvb9IXdHcuVcIm46QApAiItP1c6hQX8k1hxWtmBazfjlu13l2WK3vgbNM8Dx7TY
-ZIR5RTWVqfF23DfYPc6L5uljYGVDOowvUBuvm35OgS4VJzdPWetPgRmazrLt4nTI
-pjeYyohKJyy1pI+XeXJm61A0en9/+BtwwJAtinly9tfAiE0AxvBnB6ul+/XbXXFc
-iiW8i6M1uMX/WnUVhAcMuRu0hz2/2g==
-=1Jur
------END PGP SIGNATURE-----
-
---4ba+4Ppegdz71e9L--
+Regards,
+angelo

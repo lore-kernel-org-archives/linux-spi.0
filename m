@@ -1,49 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1C2368287;
-	Tue,  9 Jun 2026 23:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BFA3AFD12;
+	Tue,  9 Jun 2026 23:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781046329; cv=none; b=tF85fgKH0Oq8wD7B/k8zBM5v0m+m7e+jeEJMirobLbdYdPfVDHvuy+BPy+xtS0M9Qa6pduY4uZvFmAmk3/nUCTob1y/tJbhBLhgJJxnhuIWCUGULDugC8yeWSBTdn9iqao5criLT0jR6Bcos06F+fQwpVbOLBADPeAP2gMNc7ps=
+	t=1781046341; cv=none; b=Cu3pcUgOrTJeXHY5pZyZyaRFuKFduk/XzyTtiZIMeX8n7CzlLstm7/KHJ0/6YXrTR6LdaneAZ6SN4l/AMcQO84peODZl3POY9vDicoDo4rXlrqD1Y8fBJSnCVw26B5I/1ZsJyCfY4WixFzFyWXOyEIBe081zP+LkFGruKYrVUIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781046329; c=relaxed/simple;
-	bh=dD1NfSsfFeqA+ue7kAvizM5ggS1y8qNVvwfe835lrO0=;
+	s=arc-20240116; t=1781046341; c=relaxed/simple;
+	bh=ra3Ot0dD21La+p6doqPoqTkhF/nL/hx+gpU6xyIOI2s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jkC6gEeJPRLd3YK7YxiBoBwpwjW9SlBIfmVv4mjj6N2fQN5S3T9DjNhWbn4eU370BYcvNNvzujztIf6eBaiagMfjCyQRMHS+K5FcgUoG+eWOrvleoR5WTuPxj60A8rSaxmA8NYaZhZpk8Qce/rILLj0y26Ty9giri8ryHbdtRfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L28OnAvk; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=HIj4kTCMW0e11wJCgCIHGCVfLBq2JJygtshmcx2srPsEBQbDrleOwcrdQnEaNYRfxm4e2DGC6pTxpm6nmZc8xS4y0z3AxBBAoqJVysWYQDep6BAGvOR1SC+oYVzu951l2Fu1/yHNMBr37Pad9Oa5k+Cx686xLswCRw2+rYXHo2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ihzAXgVj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L28OnAvk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA3D1F00899;
-	Tue,  9 Jun 2026 23:05:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ihzAXgVj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139AB1F00898;
+	Tue,  9 Jun 2026 23:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781046328;
-	bh=aD95TvwXzD1HaNltihw0RgGiAp/VWUjSzOzfVn/vpJ4=;
+	s=k20260515; t=1781046340;
+	bh=H1ypLjGdWaHg1Pbo3gmt09FjgL1ztMAJAs0Zww3l3ak=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=L28OnAvkY/r0m9bFU1xVoWTX2MnuT/q4O6fdW4fwfJ3lk79I2ImaueEtLj4iwJw6p
-	 nOcxnxB2Ag2oqttsiksQZJLmjwDlUbrtHLsndHLHrSzzgxN/VfO2Vtb0zedsbaADvt
-	 QFTH7m6Bjat73UujH1+4veGbeOYD0HMuugWodUJ/nQf/J20xxgCVRUi32hPvDLVZTO
-	 etkMTzj48eeqTkVcIO7PfMBnRaE8oS6l1bUEO6DtxCbhFOWKSpNdfTwHQKqDND0u4h
-	 n9ynxWs/qMEggAXqF7Gg/mTR8CZa7Nwp7Mat6RK5FPCiPjs1B2tcx8AYwEHRz8Ku+p
-	 gIeCPZgB62wrA==
+	b=ihzAXgVjK99GcVi5pPZVLY3Q4ifxxCuGadc+NF/VkCAR3024NAIGVZh8uqW0VUlS6
+	 UOq/f3kEX3qCyvjUNRGOkcI6CuUrpEcVopMnJaQrLFNcF2BTWxUxJaoTkpZ0lF+J5A
+	 R3lbMtzzv87pxlVrPAKOPSgKsyuMX1EnUqj365ItjqoWc49JfUnkDcTOtRcctmCB6F
+	 AdVX7+Jb9nKrEUiOJqBbVyiiQZOgTbcHFucj4OrK/MJu+S7yDpXcndn1WrlbLnMkyN
+	 tHtoMQ97inGvISWBiS7rp0WP8wKtEvRsl5PgWdfz5CIX5flBWH0w3gYRW1i9DhGILU
+	 6CFqWSE0Zh5GA==
 From: Mark Brown <broonie@kernel.org>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>
-Cc: Jonas Gorski <jonas.gorski@gmail.com>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Peter Griffin <peter.griffin@linaro.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, patches@opensource.cirrus.com, 
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <3fcd432a505bb1bb7f8ef0fba9162243200b3347.1780606153.git.u.kleine-koenig@baylibre.com>
-References: <3fcd432a505bb1bb7f8ef0fba9162243200b3347.1780606153.git.u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH v1] spi: Use named initializers for platform_device_id
- arrays
-Message-Id: <178104146688.34323.8035338642693154122.b4-ty@b4>
-Date: Tue, 09 Jun 2026 22:44:26 +0100
+To: tomm.merciai@gmail.com, 
+ Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Cc: linux-renesas-soc@vger.kernel.org, biju.das.jz@bp.renesas.com, 
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260608202509.3651345-1-tommaso.merciai.xr@bp.renesas.com>
+References: <20260608202509.3651345-1-tommaso.merciai.xr@bp.renesas.com>
+Subject: Re: [PATCH] spi: rzv2h-rspi: Add suspend/resume support
+Message-Id: <178104140109.34323.21151893515331912.b4-ty@b4>
+Date: Tue, 09 Jun 2026 22:43:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,22 +44,22 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1151; i=broonie@kernel.org;
- h=from:subject:message-id; bh=dD1NfSsfFeqA+ue7kAvizM5ggS1y8qNVvwfe835lrO0=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKJwyRgD+N++a2A9XgQFuhe7FstOHL8se6UVCS
- wsatsTVih+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaiicMgAKCRAk1otyXVSH
- 0DkkB/9pWRLnlIpMt6gUTHT5/ks1l2rsbAQWYtvhksDTQCtJzEPseYryqzpaqg32KCS2NucXJvE
- JI6uOk7uDNJ+xtsKKgD3AOoFx2unswqFaYUbadIOX0xhKwpjYN/RRJhw+5C2wSdEJZoDpcv7uFw
- bz5++GgO+W4K2NwXC0kbVGeWW57cRePRLF8mvxYyBgOOPCJ5UsTpx0kaANgT55VB1S+ej3MS3dq
- vP6l1mxvQjGHZUVa+ylqhSKaevGCMTCXk0x1Zp2p2q5vQLd3FWz5XFG8fvCkBudK9xQIKWBJPuQ
- xZBRCCi68SuZvTK9L07OF5krtksdlcCq7Riig3fI8ky9MTKh
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ra3Ot0dD21La+p6doqPoqTkhF/nL/hx+gpU6xyIOI2s=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKJxB2i4TVRFFfMtTNnvGvV8YhJQCzamsMvzIx
+ BUI3wh+MXWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaiicQQAKCRAk1otyXVSH
+ 0Fi6B/wIq7yO9CBdAf9FRBhiKCv28OoRZzncdVg3GpZV50rwBZRw5r6XYWCRJYvoC2e8rCNIab3
+ TCfn+6mWhzKuvMHXh3a/6g0zCKy25tjrejHKQZBPV3yOEHIAxWpXpxzSBWzxVSYQRNdvLv3LbBS
+ gJdWEG6PXMfWD5OQvDcjmIrIl97xYGbcgtLtJyx26k+voAqrYSLgSRvma7C7xqXO6LZB1HhN/wY
+ R23NyWBoyrcH5dhxhxzYI7ogzRZVi8ziPIFWuDc796v7P+glkjXFwvmTHbaySN08XYdbyNdsr4k
+ S5+5P4efje9NHNdh466s7kVIkQH24fwwe5peNBWSNhupUVrG
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Thu, 04 Jun 2026 22:55:26 +0200, Uwe Kleine-König (The Capable Hub) wrote:
-> spi: Use named initializers for platform_device_id arrays
+On Mon, 08 Jun 2026 22:25:08 +0200, Tommaso Merciai wrote:
+> spi: rzv2h-rspi: Add suspend/resume support
 
 Applied to
 
@@ -74,8 +67,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: Use named initializers for platform_device_id arrays
-      https://git.kernel.org/broonie/spi/c/fc82dda1dcc6
+[1/1] spi: rzv2h-rspi: Add suspend/resume support
+      https://git.kernel.org/broonie/spi/c/2cf4ad412f90
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

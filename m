@@ -1,89 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D183EFFB9;
-	Tue,  9 Jun 2026 08:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8618C3F39E0
+	for <linux-spi@vger.kernel.org>; Tue,  9 Jun 2026 08:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1780994475; cv=none; b=mFDy3syVf+gQa35uyDBtWkoyxz9p5vndYdvDZmJIf4PXqO7XVwNxdXe3Gun0JkwLTeGuR4JhhPaLrYOMW9/L3ZrC1/unvL0G5LLVRkjTu0pr2ehIks9z9GlGKM/FDauA3OI7RxYG54EUlLKxB77VhYbGeB/uQ8Z0JCW3vXoq8PA=
+	t=1780994502; cv=none; b=rMivgJMdVal+5qMCzx6H8wMyzX6qLhy4EhDDIkm0MgvYm8XM65jMsiOM+Jn6CH9+li8c3AF/E5Grgc050m0+RuU8puoPZNhBiiaqEg4fzLg+ZajyM/4wCCrDetEgvBjuBD+LUcOIdIqMPbBQyoTSm8XZN/vWdnE9KCeYb7Oyg90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1780994475; c=relaxed/simple;
-	bh=e89iKGdFpZlfQvtUBosD8v3ClPWa5jcZnJU+1Lzxw64=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nPa7rSKmiM3LuXGHKdD2nQVturCF0pUoXY/kiJ8RaC47pCLmTSzCJh/eW1lHJJ+HNly2xP/1GyFCfu4/3OlW9in9EbLg4p8p2FYhun2mIRjdnFSwCJl90gmyoYHDRYdSl6SmtLKeyhsjzEkCbPK0EUCU3yaHb435dIFAx1bP0rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=go0jcdLi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1780994502; c=relaxed/simple;
+	bh=q72WJudwcJOO1TdKu6KDGnI6ixvnQssHLDuT5yD0eJ8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Z0BPOnbQIgjAWpm1Ru56LtlCS4YhJ1kKTC437FgHZXqLN8fPl5v3+XPzPw+u+GNQ6ioNBT/rhjYJnF6P/ss2mZSjRWavgP4zyPTV7BfgpZvOFLDv9Sx5R3a70fzSq3O0nB8XeIlKNcxMFi+MLqr6dyiRxOKgF50KS2cy2VuXmSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qz/RIkJh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="go0jcdLi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D9C1F00893;
-	Tue,  9 Jun 2026 08:41:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qz/RIkJh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DCC1F00899;
+	Tue,  9 Jun 2026 08:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1780994472;
-	bh=MM/XVXUJrsZKSunfb9j4DwvrfYK4gdO3JlzxUNQoAPM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=go0jcdLiVUr7XyWWh0xlReHtThpOjfvzudv6rtSu8w07Dc9/renGjZjT9VfjwkA+S
-	 5USxESQzJVzcFgmfb9qEd9h79aK1Z3qYSh0uYdnyA2Teg6+OSwdy8r0g7ex+udLj/r
-	 tuo0DZznYQ+nwKaWx3FADdWpmpjHNjwR4Wg4Sqr62XwuFwfa+V1sZUcO/6lPP739qy
-	 7mHC4ezpMQu05kg03QZgNYTCjWtBV2lgO66UK/1Ep1VFwLPDwRTKbrQVrR6HjvoUxo
-	 WbVElDVi+OPGNlqraYEPoIpyVs4kqR4wkpixOSSuteRr68hk812+547OFapQY3ZpPh
-	 4glEi+w2Tehbg==
-From: Mark Brown <broonie@kernel.org>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260530-dw-pci-v1-1-5d2cf798b3c3@gmail.com>
-References: <20260530-dw-pci-v1-1-5d2cf798b3c3@gmail.com>
-Subject: Re: [PATCH] spi: dw-pci: remove redundant pci_free_irq_vectors()
- calls
-Message-Id: <178094188449.20828.17810901886783398263.b4-ty@b4>
-Date: Mon, 08 Jun 2026 19:04:44 +0100
+	s=k20260515; t=1780994496;
+	bh=UFCS6t47D5PfHt/v7sjr9S6UuFuA5ZCcqChtM3VNghs=;
+	h=Subject:From:Date:To;
+	b=Qz/RIkJh0eutM8/PQ4eGfh8bQLL3Rh3i7Fo9TSTCVTdmFTh+euYmpmC6SeEgIwblw
+	 iZM7VpvgB1TtonDUSdzFy1Ohg0WyuBfYnqG3bwgzRk0MOD4C2csifSSNJjWBxPMauW
+	 yXgoOA7niUWvsFSKzrYYtZTK+hrWH4klarzCKHhQMKLC3mlwUM6ny11VuDkqWnM3Fy
+	 qyABL8mXyG1+hoBpFZzgIWHPaMmkvvs+i/PSO8dSYuKu0Af3jyyupw3/oEkSZC8n9z
+	 1gwaU+AK+GdX4/n7uFGIZ+L+ENnyS5WzNdecFGxbc6c4aKPAI0wopbneWKlS8vikHr
+	 QLLZE2v7wrOaQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5954B39301B9;
+	Tue,  9 Jun 2026 08:41:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1126; i=broonie@kernel.org;
- h=from:subject:message-id; bh=e89iKGdFpZlfQvtUBosD8v3ClPWa5jcZnJU+1Lzxw64=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqJ9GmnbTQveszT5dQXmtX56STvML/5Eiyo2/J2
- Vw6T+ASBdmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaifRpgAKCRAk1otyXVSH
- 0PErB/9UXvc/CBRCeiO4m+vFVBrkNuAMGAvcaGA6As6dZmMnf5rNI6DrVbG7AR41i+RVDJOMWqG
- TaTNb43YWB1KLez1s++uaYyFCHfDXw774Bh+3XIglg/WutXYz0ffrn4ZXYU/DKWJ5ik65KnwLjk
- 0wRmwW00hplazbpSCWykUjCqWb3k54BacIwraSe9zS5j5dsWTGozBnA5vPOaY8HwydvUg9yvfUO
- SXQvhsldO6LjP6yryPIUBNfB9NNTAWMgV56zGJH1dUV3einYVoprQNCtRvdksRb58j46J7yrNkL
- wTsosJ0v/xYtjhHMmHbKXLtP3STZ2KLWrbhNrqcH2gU8ZTtA
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178099449496.1885909.16275772454904936761.git-patchwork-summary@kernel.org>
+Date: Tue, 09 Jun 2026 08:41:34 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Sat, 30 May 2026 02:54:31 +0800, Felix Gu wrote:
-> spi: dw-pci: remove redundant pci_free_irq_vectors() calls
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+Patch: spi: ep93xx: fix double-free of zeropage on DMA setup failure
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1102995
+  Lore link: https://lore.kernel.org/r/20260529-ep93xx-v1-1-9185070ca1fc@gmail.com
 
-Thanks!
+Patch: spi: dw-pci: remove redundant pci_free_irq_vectors() calls
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1103071
+  Lore link: https://lore.kernel.org/r/20260530-dw-pci-v1-1-5d2cf798b3c3@gmail.com
 
-[1/1] spi: dw-pci: remove redundant pci_free_irq_vectors() calls
-      https://git.kernel.org/broonie/spi/c/af4310929afc
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Total patches: 2
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

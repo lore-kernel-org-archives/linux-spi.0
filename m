@@ -1,70 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563A223EAB8
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 10:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C823F23A6;
+	Wed, 10 Jun 2026 10:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781086824; cv=none; b=qyK/67msRmUwXj0UYwWGQE9/OIvdoGALjVmq9s9HnZqSbgdQykhI87ekRj7FcxUO9M9ACb6jZh7nPX+noFNiybzDA/REHXE45/gwtAwDpWdC1BlLByBUNS9c4lOLpxCI+cqo40hEigArQ0cO6ay3Jt+EjXCDti1SoCiq06sDhbI=
+	t=1781087007; cv=none; b=UL50+wFLLSxzNxuUTW5yGIuYsLBc5eKA0iChdM3wPXGRK1RZfBSdyQ7hZp8YR0PCyM2+tTFepdAcy/ZjrPtDrcMgMPTCV41O6X3L8JE6g86EVb4/ISh2eqFdT+T/isROUxWiWm+3ugX2AjumhuwoDrj3la6lpaDZfi+hZUkQZhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781086824; c=relaxed/simple;
-	bh=7MN5D6Ama9onT+T/WKlC4la8cNe4yLpkyCkJeR1SP5M=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=L1o0U4Drp1NHBxP8jpawfqLUeyfX+KpgxXYvgh57nqbpFjsf5j7QhFM885raWC27VRRQEJZteyYCoQmgUuyLztVQaxtpKS2LkA5DmhxHKvkEft1aWwRlV1SZkO7MKgy2z6TYRoNd2j1mOn4seU2/LiToJL1pdW233QCtm3QCSwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axi7fmXQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781087007; c=relaxed/simple;
+	bh=n5WzW3XUt/cMfOz35Inio2fh732PCbPa2hCon7zabKY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RTg0yEsQMWs649z4EBZ67qfr6T/3+5EvZqz/fGp0dYFFlaXgqt8TM3S+ILpXX3oXLP6h7+qFY7vADYQyB3Vy6kjtA5fW0T201LIDbmQMHOhL88bTYBLYbTPBroaAprJ/MqGjHji5zr2uCQTw+n2YqLGsmEpqdrGj4l9jMc5HpbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ocket4/W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axi7fmXQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E8F1F00893;
-	Wed, 10 Jun 2026 10:20:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ocket4/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8EF1F00893;
+	Wed, 10 Jun 2026 10:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781086823;
-	bh=tnRZ9HkauCOdmnyBqSG+tr/ENaJhe3z7UjxZQUs7eMY=;
-	h=Subject:From:Date:To;
-	b=axi7fmXQMhWmoMLtyEXn0t2clpjNHZ2Go0D7mrlpjwXQj8K6Frew5Uy87CaEYb6p0
-	 1+xFrGgJGG4sCRXkMubt2vcD4SipPkSR9djJ7pRgIGFKxnY1eiFPNvRiHdwreMc7Zb
-	 qffIxS8a8o11h8esZCo8IlHKEfguMJdo3d9pqaIxXHhhfow2zl/HFM+1b5xVBW6gr4
-	 FmkLP1ygxKUuriKYU4F15LmKirNjAITVrYYwXToIP/WTW+3lYU2Gpas17JHPDqPZnC
-	 PzPR90r5urWpL6i0ptVIkGsN07TLtEaKDSSqOxH//iShX4iVyGfqHudV/Ai1L1ngrp
-	 LmT0xP/7u6Lwg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1C27B3930BB5;
-	Wed, 10 Jun 2026 10:20:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781087005;
+	bh=QZdlIrhAKv6s1FaOxwE7DnOAOnbIyuvawUpM/VzoamI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=ocket4/WRE0O5rw6vk7LUuT1b3Qq2HklfQGF3aPDJXp2gotSdiL1dCkPoZVUVFUEH
+	 LOfZQv4Y6W74PtxOftYNQkHgGq+J+9xV9B1/sjMxqcw4HKZqMen6J7ZvMKqRgIJ/Pl
+	 0ne2BW+u2mr/7i9hytq9/rwgTCwmQdJqam0B8mf5/9RsX/yA+Ktj000hd8c3lr/MPH
+	 qgwC8v4D0ADi6PDOoKbg0BtsdyWGwNyoCg6TN400ZJAiko8El/euXbC+6n1YG/RwbJ
+	 UIjMv9UA3csLVQjew5MSonsPqYv0q0j1/h26M4MzoTqnnTFKgFfws8O2A7rEqZHHuh
+	 HsQvOHenHOZJg==
+From: Mark Brown <broonie@kernel.org>
+To: Peng Yang <pyangyyd@gmail.com>
+Cc: Serge Semin <fancer.lancer@gmail.com>, 
+ Jonathan Chocron <jonnyc@amazon.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, pyangyyd@amazon.com
+In-Reply-To: <20260608095849.3446-1-pyangyyd@amazon.com>
+References: <20260608095849.3446-1-pyangyyd@amazon.com>
+Subject: Re: [PATCH v2] spi: dw: fix race between IRQ handler and error
+ handler on SMP
+Message-Id: <178104646333.212106.314927572121638369.b4-ty@b4>
+Date: Wed, 10 Jun 2026 00:07:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178108682059.2960614.11270223649204644502.git-patchwork-summary@kernel.org>
-Date: Wed, 10 Jun 2026 10:20:20 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=n5WzW3XUt/cMfOz35Inio2fh732PCbPa2hCon7zabKY=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKTsaxQYYUXHCYtLWxX9rbxO+Xulp5WOnRmeHh
+ VI5A92WlVuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaik7GgAKCRAk1otyXVSH
+ 0PwZB/wMYyGlduBi7x5HRXys7kTJg+CwOZqyc9W01d+yq0mGPXWQyfthya/GWGKx3/K3GyXKp/l
+ 1ZjhneHRhptKiFwwUo8AmfdRvyZ5MOkOcdOp5cvvI0M7VflBD3UEyUDfylVQZ4eJatDV7rl3zot
+ cY19cLwls7kiS2BMbwojSrwOZafYJleFSu+ST0T6lBhSrPhyKL7rAvaPE3cN8HkVvBzpAIOtiJ2
+ cfVcJC65iMLxePyCY5thx6ckwwCngZ1Hmn2bg/U/t8tNJNP++vtByu6rXWzVVS3wjJcL+K9Sg20
+ W1JwibyNkkejbpdNJHJL/PkJAWr6DhkC5Bmx06dX9xNUPEao
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+On Mon, 08 Jun 2026 17:58:49 +0800, Peng Yang wrote:
+> spi: dw: fix race between IRQ handler and error handler on SMP
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: spi: meson-spifc: fix runtime PM leak on remove
-  Submitter: Ruoyu Wang <ruoyuw560@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1108281
-  Lore link: https://lore.kernel.org/r/20260609052647.5-1-ruoyuw560@gmail.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
 
-Patch: [v2] spi: dw: fix race between IRQ handler and error handler on SMP
-  Submitter: Peng Yang <pyangyyd@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1107724
-  Lore link: https://lore.kernel.org/r/20260608095849.3446-1-pyangyyd@amazon.com
+Thanks!
 
+[1/1] spi: dw: fix race between IRQ handler and error handler on SMP
+      https://git.kernel.org/broonie/spi/c/3c60184e39b5
 
-Total patches: 2
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

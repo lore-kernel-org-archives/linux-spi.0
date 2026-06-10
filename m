@@ -1,93 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30FF3F23A6;
-	Wed, 10 Jun 2026 10:23:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2679E3EA97E;
+	Wed, 10 Jun 2026 10:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781087015; cv=none; b=iDsrllMaI5MQgb8YzDxhUm+MoFEafMCpQTGpcqmV5M0KBcI/5G5DZ/AFHypZV9tRYbCJ8AA9fM3/ughPQhH2FywnnY0jDnKE55qZkw9HfR50ScXgBnS2ZsESMDI0gPg9ikBPJeJARlk/Ody27O4B9RHT+A5kNnHhcY6rdNeq/pw=
+	t=1781088572; cv=none; b=AT/maqYzEO24YkqmJk/yQRHbgh9N+CuhC7tIFDXrtxPG6TcdVmHSCrqfw1SIZjFJymo0vP6ADMa5paZj5vSKXF5kO4q73nA5AwqKkmIQidtXtK4f5kUEyhNI3QKt2LtdPtG911zXyhdl2KO7qTZ/ecH+Plc+0t1NizqX1DjWPo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781087015; c=relaxed/simple;
-	bh=C/czuiP9grpMZXO7aleQvnc9q8khXKOwwS2Z1kdf4dM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HYa6xfE1trwT+/lMrZLri2SfW8faumO2Npxn46w40xsc42QWXCOc58nSSjTuvZ3HOpCCMh7whl3eASDKb8cK5MeNeUMiLQJQpZYmlgacI8CF/sWHJ5RZ8ApYTR1e11MUvjFYixe+CFp4BMLUZBjWj95gHZRGQ5nktFpr1oZzh4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnqPRjW8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781088572; c=relaxed/simple;
+	bh=MPeEvHMGfoWYTBvZ0/qNot4IE3D1fON95vQKTR1vGN4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R2Ftk2Vkbnvu8El4gvFHME2GvGa4ErI/c0rKRZbIv3NnFC5ua5xwYXWkpr5qL3XszNvqb7OzPv57nzTr5p4zTir4MSwtK+CF7r9ExP1YtvoBezYrGPK6ZYWrHKI3hj0LhUtMjRKJAPqTsjgNgZRWQTeDXgftfYMoojJGmqElHNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=i7RE3I/s; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnqPRjW8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA21F00893;
-	Wed, 10 Jun 2026 10:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781087014;
-	bh=b952kGpEMvRiit9FTFHTz6P7HfXCrJpbJbKuJYF3T8s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=SnqPRjW8N2AK3UIZlbRblqGrklySyh7TGWdMw+XrdGXogaIqJdMEBovqwtnfVK6rc
-	 xVlENf/nhxE7Z89+A0qBE8fkFV57IYZeRD9b44H3X66ILN5gAsHUK8pgWehRzrvNT5
-	 UhrnGLW0pajIpTigHI78JrPFQQ9M8AphGXo85xAGY6+NiYldlq+VCezAME1lX5POOZ
-	 nKHqU10FPtT9m4LQPphCANBYRFD1PlcLi1iHbqD0BqVgNiCl55ekmMj7nV/0qv+Jmf
-	 29gjF/cHrDnSkeCGLPfECNzjzmn+06f0dTPN7D0rAXfNgAiBFBvg2DUOPJgRuBRVoA
-	 5g1r6DB0U4RWw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Ruoyu Wang <ruoyuw560@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Beniamino Galvani <b.galvani@gmail.com>, 
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260609052647.5-1-ruoyuw560@gmail.com>
-References: <20260609052647.5-1-ruoyuw560@gmail.com>
-Subject: Re: [PATCH] spi: meson-spifc: fix runtime PM leak on remove
-Message-Id: <178104640986.212106.12502273738645325347.b4-ty@b4>
-Date: Wed, 10 Jun 2026 00:06:49 +0100
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="i7RE3I/s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1781088567;
+	bh=PqEFgoVcPTbXIJdGqrarSTorUnykUPeJIUIL/0osaWo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=i7RE3I/sTan/oSKn8Qc6B9mcLy8Wmu7Y/N//Gdf6xE0g0Or7mwR2cH4uPL0vl4FWz
+	 71DL/2wn+wzrb/bPYh3seH/KmK+MnJpjkr7TRdfORrPbYnbm8ZAZ4q/HNzKxW9z1A7
+	 225g0jFNg9ocENgzxXdrMy74VV6bFgoG5qCSzmrDpOi3Ld+zPVyfJkO6/vQlkJHXXf
+	 f4sRcOsBn3V9otOhioMLpQHgq40picwOARmyDWq3VQqzKwgVWhxi3/DlUeA4a1QS0m
+	 8upqiKFml/izYTH5j5u0DPRCdoQZbRgdIzvcH0379Jo3Bwp/7BJ2rgaA12TJRQg/bc
+	 PfQpNdcK+Lp6Q==
+Received: from [192.168.68.117] (unknown [180.150.112.11])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id E5EA460A19;
+	Wed, 10 Jun 2026 18:49:26 +0800 (AWST)
+Message-ID: <ff53862950a6075c43bb8f1e47c14389d6fc7575.camel@codeconstruct.com.au>
+Subject: Re: [PATCH v4 2/3] arm: dts: nuvoton: npcm7xx: Drop redundant FIU
+ clock-names
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Tomer Maimon <tmaimon77@gmail.com>, broonie@kernel.org, robh@kernel.org,
+ 	krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ avifishman70@gmail.com, 	tali.perry1@gmail.com, venture@google.com,
+ yuenn@google.com, 	benjaminfair@google.com
+Date: Wed, 10 Jun 2026 20:19:26 +0930
+In-Reply-To: <20260609163919.3321228-3-tmaimon77@gmail.com>
+References: <20260609163919.3321228-1-tmaimon77@gmail.com>
+	 <20260609163919.3321228-3-tmaimon77@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1106; i=broonie@kernel.org;
- h=from:subject:message-id; bh=C/czuiP9grpMZXO7aleQvnc9q8khXKOwwS2Z1kdf4dM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqKTsjUnvIDFUOx+gx/OS+/TdsHBQ/1dxwRtkt4
- eRn7TEiCPiJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaik7IwAKCRAk1otyXVSH
- 0A+iB/0WiyEFVlvDGYdaAGsoWZEnfDSyFifJuz2TPP9E6pBgh64emn3QWgwcBQPgGWvXqn0fbQ/
- v2oH4KY+wkat0DQTiFDDVC57bN+dder0Fo48vQKpkmloMIsUxEScrVtRQw6J9IHC8wygFeI5/+d
- zwaqmFNKIIPHLSe3BmtG8M0VCwvAgvSCqmEHFsVwjPLDEbTPMn9OX2JqPU3ivsW3Nwuat0lmK8V
- CF/GmHrxQnewc12i7OZAjq5Hhs156ip0RLXS7IFJC4QDn3c0/zLa7S+8nreSIm86Up3XXiUk6oP
- BAtOduaWpapGNvH3rEGh6scqCbX8O67Z6xYcIpJbt2pNLBCZ
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 09 Jun 2026 13:26:47 +0800, Ruoyu Wang wrote:
-> spi: meson-spifc: fix runtime PM leak on remove
+On Tue, 2026-06-09 at 19:39 +0300, Tomer Maimon wrote:
+> The NPCM7xx FIU controller driver gets its single clock with
+> devm_clk_get_enabled(dev, NULL) and does not perform a named
+> clock lookup. Drop the redundant clock-names properties from the
+> FIU controller nodes so the DTS describes only the resources the
+> driver actually uses.
 
-Applied to
+The devicetree is a description of the hardware in the form documented
+by the bindings. Generally it's not right to discuss Linux drivers
+here: they're only relevant in the context of Linux, but the devicetree
+binding governs devicetrees over multiple projects.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+From a quick look it seems that these names are not described in the
+corresponding binding, therefore no drivers should be using them and as
+such they can (and should) be dropped. A driver would only be worth
+mentioning if it did use the undocumented names (as that would be a
+complication).
 
-Thanks!
+Can you please rework the description?
 
-[1/1] spi: meson-spifc: fix runtime PM leak on remove
-      https://git.kernel.org/broonie/spi/c/606c0826bd90
+Andrew
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>=20
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+> ---
+> =C2=A0arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi | 3 ---
+> =C2=A01 file changed, 3 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi b/arch=
+/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
+> index a16450abea0e..83cd10b47273 100644
+> --- a/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
+> +++ b/arch/arm/boot/dts/nuvoton/nuvoton-common-npcm7xx.dtsi
+> @@ -193,7 +193,6 @@ fiu0: spi@fb000000 {
+> =C2=A0			reg =3D <0xfb000000 0x1000>;
+> =C2=A0			reg-names =3D "control";
+> =C2=A0			clocks =3D <&clk NPCM7XX_CLK_SPI0>;
+> -			clock-names =3D "clk_spi0";
+> =C2=A0			status =3D "disabled";
+> =C2=A0		};
+> =C2=A0
+> @@ -204,7 +203,6 @@ fiu3: spi@c0000000 {
+> =C2=A0			reg =3D <0xc0000000 0x1000>;
+> =C2=A0			reg-names =3D "control";
+> =C2=A0			clocks =3D <&clk NPCM7XX_CLK_SPI3>;
+> -			clock-names =3D "clk_spi3";
+> =C2=A0			pinctrl-names =3D "default";
+> =C2=A0			pinctrl-0 =3D <&spi3_pins>;
+> =C2=A0			status =3D "disabled";
+> @@ -217,7 +215,6 @@ fiux: spi@fb001000 {
+> =C2=A0			reg =3D <0xfb001000 0x1000>;
+> =C2=A0			reg-names =3D "control";
+> =C2=A0			clocks =3D <&clk NPCM7XX_CLK_SPIX>;
+> -			clock-names =3D "clk_spix";
+> =C2=A0			status =3D "disabled";
+> =C2=A0		};
+> =C2=A0

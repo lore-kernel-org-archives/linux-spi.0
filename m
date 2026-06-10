@@ -1,159 +1,85 @@
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B7E386C36
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 07:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA3430676E;
+	Wed, 10 Jun 2026 08:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781078023; cv=none; b=R3oSsYdfNFePKLbtdzYDev3OVdnzmAHd5H9RPIe7j8E42zVbJDj617O/eFI4KSiVBUbHLt2XbgG1uak2/YGw1b8aV/dbTR+VZiRmhNA+jmfpNw7o1nF2pg5ktCVli/FSeiuH4WvtjZbFzywnB0J0tM1a/lm0+mSwJ3Zy3/JIHEE=
+	t=1781078736; cv=none; b=GvQO6VVTsge6T4AvqvzGx/MAH2w5e+CJmzTG8YvifSPN0VvGmu6wTqreVezHsdzpCUA8jtCx79Jhy+pdxVYxv/k9vBo4xkZyRg9Lf/E20DZulOrh8j9Z0bHZjeCfwwT4iNneYQgKvkXClgu850DE0cDB5mkQUTMyhtJuB3GzJkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781078023; c=relaxed/simple;
-	bh=M2D7SBf4dRDUJ+Ur1iXcza/iv4YTCZEkWRE8cycidYY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AiP/PWY2mV22n8QQv8WcFpAZyyqTc0FuYrOZmAynq9N06en1xtZSn+y4D3dZkY2bEJi2WgTjNuJtvrGBLmZCAqBtO+kVI3TU94mnoPnqemnT7+8aKfBC0U0xWzalN2iNistmnGFgT1E34TL0pYcgDuOtntzBizdcjvhyCULzyYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-59d4aa96ef2so4609693e0c.1
-        for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 00:53:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781078021; x=1781682821;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Uhja3s+QnnKNsouvy5bcWC3fS0M3t/Mpg37n9Vd5ieA=;
-        b=EROrsK0YO1FBCzIeroppKs1/LEuA1AXAxZB8DuTNFamAlUPE2RBxbc3RWfBlp/1D/G
-         +BKNS8798MIpi5J09Cl+AdC1tq0hUhKsP9RMvDb2JUyotG9/yvOrjv+9AHmjcgvMJ0h5
-         czfVF2fpJsKBsSW1C5SNAx/TGTadk0ezIRwcvXCn+tzWwYiygP+0vvbgXScZUXnbfRAy
-         Ccw7e+aj6b1tiKtW80A0tJdTA2xaHGOlqe4GZmitJQD8LFQicy1d6+39pcN0E46FNuxH
-         6PcJBEnqfygv2YJQeGbyy2ZRWdzykp6v9StsS+REGIpquOau6TRDgdpDIvs7GrG+XEA0
-         sL4A==
-X-Forwarded-Encrypted: i=1; AFNElJ+v0TaF4VdXt1EYvSJhDnMv5lqD9cZzeAEdJ87pAoRpJGHc2twJXvjdWszRTi3+8eMy0rFsGSnhoj0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGfs4KbVbesI2Wm9Qbg5dWVk9+sMZGMMi9Wcz5U5PjSqanzarp
-	xp3aVrSoW4WmVuZzpvwG7Rwrkx9RJvz19qlPGghPiGi9LsW+Jl16rNY85GeppZQ0FKQ=
-X-Gm-Gg: Acq92OHiIWSzhGJ4ZszVDlHqltXtnauWNUeV/PpDYzD9FTjetqRXPGH23E3UCEBfFVG
-	95QSqV7vL3dKD8WnHVmXoMVDgmVgdwtMUpByQQMA/cri1M/fTn633D3yY8LebWMzmj4YlTm+kLo
-	chnDHI257QAFqMw8z//wGrNVSGir1oTHWJr2+iwMeIqr73lJET07xLBIKUNWiBGJaeANwq5JSFn
-	f0jqDYcW10ClkTLAWVpcPBzpiJ/JERojRWw0HWo9vZvcq3WBzwdiGFOdO2mUL4uDBQxrygmyK3n
-	6WMpHZb0bvCMpODLy1zqOQ2Ui/oF3WJZIzOIbTzpo31GMdXGEDb655TZM3l6c4M20mAWYuhduvF
-	/rzMEiFGVEsBrveRw4LcpJ86XpypbqPz8eLwk2neKMl4WFJAywctBHGkBkM11jENY03UOZDLALA
-	t6yW8Z/p5I+LNtpN8Q2YZtf+jxVfIh+/bkxIppK7pF8tl5RvodX0yKjuuLlYDVqupq23XlBVTBR
-	ZXzLwE2Ws8ZkQ==
-X-Received: by 2002:a05:6122:8282:b0:5ab:26f:49f5 with SMTP id 71dfb90a1353d-5ac50312b75mr13340705e0c.6.1781078021373;
-        Wed, 10 Jun 2026 00:53:41 -0700 (PDT)
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com. [209.85.221.178])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5a6d06a491esm19110098e0c.0.2026.06.10.00.53.40
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jun 2026 00:53:40 -0700 (PDT)
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-59d07df448bso4995754e0c.0
-        for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 00:53:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9WZFFaS++FoMzuF8ZOFM9zzNaqLkNA68dlqrjdofhzP2LKjkNiCgoDFAdo2BGBuIgxG3GSdyOaKXg=@vger.kernel.org
-X-Received: by 2002:a05:6122:421a:b0:5a0:2018:4dfa with SMTP id
- 71dfb90a1353d-5ac4ea99b32mr12268519e0c.3.1781078020496; Wed, 10 Jun 2026
- 00:53:40 -0700 (PDT)
+	s=arc-20240116; t=1781078736; c=relaxed/simple;
+	bh=Bku6vmbnfsIPF3upfNi33A0lpAy6UNfcQHI8Xaj7jk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cGXazB/ZmJHdl5moDoxSYi2yGQSicZfT4rFwIEu4eqxqJyb31Yswt37wHQ7WT6ynDSeihufiF6rETYjkAm+t4Mqzu2z3Ptla/Xsm52naLo8E8LrhDCWBMiW6r8c6aA1ZiQ/ane4uim2EudcUTY5VBn8haStT04eKn2V30CYZ80E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AVc9mwDe; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AVc9mwDe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=SUBiUHt/0iiIKa8WSEzuAV3b4OE0sNSco6iZTF/7BsU=; b=AVc9mwDezYfcqmBMiqIwUCYUoM
+	Q7WdYxiJugJww1//sevc6nVN3YNGEIb1ab91J5FltT9bMo6KZKb9chMrSpLN+21EaPtwzcdK5FJhH
+	+TdA+GLaIdZE928yP4zk/+QF20dc/7uoTpRzXl9spIgb/+zWebK53U5SHIK6LIvjui2E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wXDwI-006wZA-Ak; Wed, 10 Jun 2026 10:05:30 +0200
+Date: Wed, 10 Jun 2026 10:05:30 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+	shenwei.wang@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+	nico@fluxnic.net, adureghello@baylibre.com, ulfh@kernel.org,
+	linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org, olteanv@gmail.com
+Subject: Re: [PATCHv2 1/4] net: fec: do not use readl()/writel() for ColdFire
+Message-ID: <caa2a34c-5a73-4075-9f7f-77b30673a4e2@lunn.ch>
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+ <20260609142139.1563360-3-gerg@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com>
- <CAMuHMdVEYciUYq6savTuOqDUQp6AqHGkeP30s6Z7PoZ3q-Pqvg@mail.gmail.com>
- <CAN4SLj0o+3Bjq0aBJUYbKU-YkXUeM9aPgRxiwmOHX_Fz-_Hq+A@mail.gmail.com>
- <CAMuHMdVX4ZJkXe1if=iHu5dt=Xtka=C9y8hxKYKc_7=bysycog@mail.gmail.com> <TYCPR01MB12093C33B2C33D80117F79D96C21D2@TYCPR01MB12093.jpnprd01.prod.outlook.com>
-In-Reply-To: <TYCPR01MB12093C33B2C33D80117F79D96C21D2@TYCPR01MB12093.jpnprd01.prod.outlook.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 10 Jun 2026 09:53:27 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUvY2iVM=sRq5+qFm1N4ksWsEMW3kFy1pLFeUbM6zsqsg@mail.gmail.com>
-X-Gm-Features: AVVi8CfHcnn2EwKXXXh77rZddTm1dCYH0SlsSwxuoJCu4n_S71iEXmIEjnC1C8s
-Message-ID: <CAMuHMdUvY2iVM=sRq5+qFm1N4ksWsEMW3kFy1pLFeUbM6zsqsg@mail.gmail.com>
-Subject: Re: [PATCH] spi: rzv2h-rspi: fix incorrect readl() accessor for 8-bit
- RX path
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Cc: Felix Gu <ustc.gu@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, 
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609142139.1563360-3-gerg@linux-m68k.org>
 
-Hi Fabrizio,
+On Wed, Jun 10, 2026 at 12:12:58AM +1000, Greg Ungerer wrote:
+> Modify the FEC driver to not directly use readl() and writel() to access
+> hardware registers but instead local fec_readl() and fec_writel() methods.
+> This allows for different architecture users of this driver to have
+> different underlying access functions - to support both little and big
+> endian hardware.
+> 
+> The FEC hardware block in ColdFire SoC parts is accessed big-endian.
+> The usual kernel readl()/writel() IO memory access methods are defined to
+> access little endian data. Change access for ColdFire to use __raw_readl()
+> and __raw_writel() access methods - which do not modify or swap bytes
+> on access.
+> 
+> The FEC driver works today because the m68k architecture io.h has a
+> kludge in the definitions of the readl() and writel() functions for
+> ColdFire that allow big-endian access if the address of the register to
+> access is within the SoC's internal peripheral registers. This is being
+> fixed in the near future to define readl() and writel() correctly - with
+> no byte swapping. Thus the motivation for this fix here.
+> 
+> __raw_readl()/__raw_writel() access methods are used instead of the more
+> commonly used ioread32be()/iowrite32be() here because those are broken too,
+> because of the current readl()/writel() kludge. They are implemented in
+> asm-generic/io.h in terms of readl()/writel().
+> 
+> Note that even when readl() and writel() are fixed on ColdFire they will
+> not be the right thing to use within the FEC driver on ColdFire hardware.
+> 
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
 
-On Tue, 9 Jun 2026 at 23:04, Fabrizio Castro
-<fabrizio.castro.jz@renesas.com> wrote:
-> > From: Geert Uytterhoeven <geert@linux-m68k.org>
-> > On Tue, 9 Jun 2026 at 16:14, Felix Gu <ustc.gu@gmail.com> wrote:
-> >  On Mon, Jun 8, 2026 at 3:55=E2=80=AFPM Geert Uytterhoeven <geert@linux=
--m68k.org> wrote:
-> > > > On Fri, 5 Jun 2026 at 17:26, Felix Gu <ustc.gu@gmail.com> wrote:
-> > > > >
-> > > > > Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
-> > > > > Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> > > >
-> > > > According to Chapter 7.5 Serial Peripheral Interface (RSPI) Subsect=
-ion
-> > > > 7.5.2.1 List of Registers, the SPI Data Register supports access si=
-zes
-> > > > of 8, 16, and 32 bits.
-> > > >
-> > > > However, the "Access Size [bits]*1" column header has a foot note:
-> > > >
-> > > >     "Note 1.  The read access size is fixed at 32 bits."
-> > > >
-> > > > Hence that means the rzv2h_rspi_rx_u8() function as generated by th=
-e
-> > > > RZV2H_RSPI_RX() macro is correct, but rzv2h_rspi_rx_u16() is not?
->
-> True, it looks like rzv2h_rspi_rx_u8() is correct but rzv2h_rspi_rx_u16()
-> is not, and could use improving.
->
-> > > >
-> > > > Also, readw() in rzv2h_rx_irq_handler() is wrong, too?
->
-> That looks correct to me. The access size for SPSR is 8 or 16 bit
-> (as specified in the list of registers from section 7.5.2.1, and also
-> repeated in section 7.5.2.2.18), and we are reading it with readw?
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-The confusion part is that the footnote in the column header of section
-7.5.2.1 appears to apply to all registers, while apparently it does
-not apply to e.g. SPSR (and e.g. SPDCR?).
-
-BTW, e.g. SPDCR and SPDCR2 also support\ only access sizes of 8 and 16
-bits, but 7.5.2.2.16 still states that read access size of SPDCR2 is
-fixed at 32 bits. while 7.5.2.2.15 does not have such a note for SPDCR.
-Those registers are aligned to 4-byte boundaries, though, unlike SPSR.
-
-So there is room for improvement in the documentation.
-
-> > > Thanks for the detailed explanation.
-> > > I didn't check the reference, just thought it's a little weird here.
-> > >
-> > > Although the column header has a footnote to indicate the access
-> > > size is fixed at 32bits.
-> > > But in 7.5.2.2 register description, it specifies that for registers =
-like
-> > > SPDR, SPCR, SPSCR, SPCMD, SPDCR2, SPSSR, their access
-> > > size are fixed at 32bits, but for SPSR, there is no footnote to speci=
-fy
-> > > the access size.
-> >
-> > True.
-> >
-> > > And SPSR is 0x52, readl on the register cause alignment issue?
-> >
-> > Good point. Let's wait for Fabrizio's response...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+    Andrew

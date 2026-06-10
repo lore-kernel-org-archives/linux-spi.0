@@ -1,191 +1,205 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013027.outbound.protection.outlook.com [40.93.196.27])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2887C30F52A;
-	Wed, 10 Jun 2026 06:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781071457; cv=fail; b=HmNhdM5LCnd8kQv71Q42GROIZ51oEcodv3GlZUdKuFhTQzy76P35jTQ9noX1llZONMtRb9qDh6w9mR4kI6qK3S8cUaQ73W5nBpNU6SEe73jDCPDIwLQTN0ZFSSYyG+EWszDIGmDnsMCQ9BCj/11Qh+hHkPCBz1J9Jd548RRNpag=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781071457; c=relaxed/simple;
-	bh=CUnH5Y3GpS4D2t7v7QFBDZav4kM32xswk2Ih/9IvqOk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g5PWpZHSs+fIOnoTnYEmv4AQatMxHm7gBcqAAxFhx9aHsqASpL6VLurgl8D8nlCXHVmzGRUgamLsEAPahTJQ5eyk6zkb/dL6xuX9zCZGEzBaMj1o/0ryXNttmf78cfBYasfeQn6BvOjOHezVdIXx0plITOUNPM9ZY+hF5KbmfK4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CZN5DPwQ; arc=fail smtp.client-ip=40.93.196.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D2B346AE3
+	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 06:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781072118; cv=none; b=on3HU/eMhavacIJ+KUZ0Og4jmS4TBx+q5woNP1CaLDtNPl/d5cC9euUuK8nVzNRkmvD2b7BUdJEjjOVzz2SJCCPBG2ooZo1vXAQKxf23xrHXB0DmJwmIwSSceLb7q7tJKNz7+PPkcIITMUqCRveiobDupnYz5q5KpVl9/s7hcUM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781072118; c=relaxed/simple;
+	bh=Am80scJm7qZln289j193oDacMGxPd50Xb+X58U16Q+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KN+vlVscQR6s9Ei/t2TpVhgk7k8AScin3f8ByZ3DhE7rKMjoeeln2MvLwJMc+2G/VR0Lp+SWjPv2Eb2lQ40lzsoXNyKEbQJwi/apAqbCfXZzKCHynXzbrgFNJX+gO+JiMyVNlNa3JZpu4g0f4pBqcTYCnukEb9MmzET9RFCmb5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S/EuK96p; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CZN5DPwQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ji4J8s0kgBiNigsKsmO1DQCzY9Tdjah4I6Plv6H1n8o28WlTpUljMrfcz54b86C+0cLDVoSTZZcudBHzqP4VUqwuLjnUV7GgMCvn8fnpm928sVxtBgHimTfZmVvHICp0gfhSsIxOM9eorvBTTTw4D8bAXDbCz01nE6JytsmeQbcbiUjZsrvHcMUSLUCE1ikK8A2qAMM3QcUguigrFJ8gLTAPqQEiX4+4/3RjOp9GsEbvfPiIcfNXTVGGqOP1wO1/YCpJK8Ahiz0Ya2vH0oDHcD8UCQRCbYOydN3RnUQOpmdch9RKsTmD2Srl3C0oRGXPLS6ph9klc/Ip10NV6XoX9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r2wYctGhvHUYpx/e55D1f8fLtTx8UqFjX1vOWQogrEQ=;
- b=KDbk4hKgFsJiM0SI+F7wB1ZTHO2KxweRD+nMnXplHYiR2uBPRmYhtk7v4GPC2TIpa/5eK4wzOUmDDUOAA3WVaTUhOpYP2jHFKtChFY8fNy1UwBIGvQUyXienrzq6doJXdQUBLGd+C2adB2bCyGyKNxTW6ErVuwFJe1jMk/p1kG1PvjuXEe2GxLyfnDQGI5xLONTKJ7ZfTveX2YEO7ki1DZEM+ye1UNI9QfmTY332tWf1nQu2igiyfBm+k14ZL84yAnqmJWf7GHcRAYCkb7ST8vZ57MUer0McMgMZ3HozZjeORlX9iDrClP62C5gWG27ZIIK8lMm8Ytseh0olEsSN7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=winbond.com smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r2wYctGhvHUYpx/e55D1f8fLtTx8UqFjX1vOWQogrEQ=;
- b=CZN5DPwQ5bLg2Ms1QpunNIpzhJQecRCkqodtMryDCONOTKJeyKSHiK8bNyqNYhbyPEh7mfmzY0QLY1lFgfvTwdb+I9JtAb2cUuerqN+lMym3Suo8ooKimZBdyaSpN/OouFg4lKH1gKGGS4zofxO6/bHCU1vyCYfd/J4dV38rJvg=
-Received: from CY5PR17CA0049.namprd17.prod.outlook.com (2603:10b6:930:12::33)
- by MW5PR10MB5851.namprd10.prod.outlook.com (2603:10b6:303:19b::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.12; Wed, 10 Jun
- 2026 06:04:13 +0000
-Received: from DS3PEPF0000C37D.namprd04.prod.outlook.com
- (2603:10b6:930:12:cafe::69) by CY5PR17CA0049.outlook.office365.com
- (2603:10b6:930:12::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.11 via Frontend Transport; Wed,
- 10 Jun 2026 06:04:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- DS3PEPF0000C37D.mail.protection.outlook.com (10.167.23.7) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:04:10 +0000
-Received: from DFLE201.ent.ti.com (10.64.6.59) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 10 Jun
- 2026 01:03:47 -0500
-Received: from DFLE206.ent.ti.com (10.64.6.64) by DFLE201.ent.ti.com
- (10.64.6.59) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 10 Jun
- 2026 01:03:47 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE206.ent.ti.com
- (10.64.6.64) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Wed, 10 Jun 2026 01:03:47 -0500
-Received: from [172.24.233.254] (santhoshkumark.dhcp.ti.com [172.24.233.254])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 65A63hWs3229025;
-	Wed, 10 Jun 2026 01:03:44 -0500
-Message-ID: <d60a2a0b-a548-4cf2-8e0a-5f8be066a34c@ti.com>
-Date: Wed, 10 Jun 2026 11:33:43 +0530
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S/EuK96p"
+Message-ID: <5152089a-2808-4fe9-b633-b03018105dd2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781072103;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GCPO9v7e2NaYcPW5zVGvXXPxzu/fCfdM58tRqJXSo9A=;
+	b=S/EuK96pTXAWUBg+8TCiJYM+danZr1codL6zDdrR1CXWZbSAz8OZt88gSb3T73P2+Oj0bR
+	ye5UJbetTGxWmds/F2K/tlbDAkWts/YSgQ0PrY0mv2jpzcQt2r4zQh26U4ohdHNt5eRxKb
+	jqr9Nyh610YgX0sau/FOqrE+b1XuGGI=
+Date: Wed, 10 Jun 2026 14:14:06 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] spi: cadence-qspi: Prevent SPI NAND continuous reads
-To: Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown
-	<broonie@kernel.org>, Richard Weinberger <richard@nod.at>, "Vignesh
- Raghavendra" <vigneshr@ti.com>
-CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mtd@lists.infradead.org>, Michael Walle <mwalle@kernel.org>, "Takahiro
- Kuwano" <takahiro.kuwano@infineon.com>, Pratyush Yadav <pratyush@kernel.org>,
-	Steam Lin <STLin2@winbond.com>, <s-k6@ti.com>
-References: <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-0-0d626e1dfb2b@bootlin.com>
- <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-4-0d626e1dfb2b@bootlin.com>
-Content-Language: en-US
-From: Santhosh Kumar K <s-k6@ti.com>
-In-Reply-To: <20260326-winbond-v7-0-rc1-cadence-cont-read-v1-4-0d626e1dfb2b@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37D:EE_|MW5PR10MB5851:EE_
-X-MS-Office365-Filtering-Correlation-Id: cde0eae1-7848-4c22-dbc8-08dec6b61726
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|82310400026|1800799024|7416014|376014|6133799003|22082099003|18002099003|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	665be0CY5HXcG0JraWYr113MTDAqdpbd8pOotLaDCK0TuxPMu4ouJn+uG1D4N/MzrhGzlz0E6qJgjERTFFAuME5oBhvQXB9qTS/AX19YV0EOk6gD9S76TbCE/B+fe4q0fTHaZudigDcCg+aDqdSLtDxaabNBkY98mDlJYqz/ubExPUYlavbcuLhb/DPWdNDS9MSwE4jrloN+0ZmDuQY01F3A2RTkzOio00qaDzwY7lr+Atzx0NBavqT5brb930gPS3L+67SPrDzibabsY/Fna5uH4dlWloS4calWd7/ePM4p+ox6E+r9AxOJOxCfUfpGVdvuitfHtjn1DyegFJef0jhnOfm+Prs1lC+krJCXAav6omEnMA5yoGj0pqcCMvIt40i4tGa4LAwdZb19zU1YPa57yCRIkbUsYkSDCmvzH501UukXSAFMXpD3PDMv1IZf7Io/+iWxFpkg3iPlr7Z0qP0Cny+6pQ1hHlIYoyeKH/ohWxU8+1BvMwrea7IX7SVHd1j0tuTcY8tTzwuQsElEwN1S4QHF1Mn+nyf7IvQtUwGtaWfcbUEgo0oLzS/GGW1FZeFyGGypQlCYUyJKiop8Tl3MPqVP9I0mrtn7ralOijllI44iB+FDcDAz5NPG2WhSb3Xu2+diAlkEFt7stvQvTAu7sd/1k07l4OBACodDe6Qx6+1XTMRxHFkxFD4UIGyHJxcgXkz9IP/7XaPf5tiYD9tVQsAJ0TV1gl3IQk8xdEY=
-X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(82310400026)(1800799024)(7416014)(376014)(6133799003)(22082099003)(18002099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4i6Xp4YsmOUsGpK5UukG23CkR24DnZalo3G0KDmu76tmzpxrcz2C3wXxn4FyVFve/ogtKYSfpKDlbmQHm2e8QGHo47WfOqyY6/3XLRe0EIjz1ki8YKb2s4+3t7XHrCglxggXH118rxKJ7wqX5i6Dq6y9Y1CCqHkrE/udG1PCt8qxHemhDZ265rku0K6RygdIAzefPSx7W8t/ZQ9Y6dVZUw0BNHyhYoaEFuVtJgzkaiiM0ZuyzjzaOZBzh41jz3VcyTGGhNmVXVcjA359Uj74/3Gq2rhn64ANs9nraJuBbFQix/8XIPzR3NvrC4afMTy3d0yBNrisFifdn8Quuu22FAmcNs46IWT+dfZrNt8V2XoY0a5IQHCoRMcF1HVmsft+YZmhB4Ywq/6IsTQSbmRJb89a6AbLtR/DSW08dMkNFhf7izLSXyP6/MjY2Ay/nk+9
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:04:10.6915
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cde0eae1-7848-4c22-dbc8-08dec6b61726
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF0000C37D.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5851
+Subject: Re: [PATCH v2 00/14] list: Prepare entry iterators to cache cursor
+ state
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney"
+ <paulmck@kernel.org>, Josh Triplett <josh@joshtriplett.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Eddie James <eajames@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Laxman Dewangan <ldewangan@nvidia.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>, Waiman Long <longman@redhat.com>,
+ drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+ linux1394-devel@lists.sourceforge.net, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-spi@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Christian Brauner
+ <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Kaito Cheng <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>
+References: <20260609061347.93688-1-kaitao.cheng@linux.dev>
+ <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello Mark and Miquel,
-
-On 26/03/26 22:17, Miquel Raynal wrote:
-> TI AM62Ax errata i2351, entitled "OSPI: Direct Access Controller (DAC)
-> does not support Continuous Read mode with NAND Flash", explains that
-> the CS can be deasserted almost at any time during a transfer (basically
-> there is an interconnect arbitration every 1023 byte). This is an
-> expected internal behaviour of the controller, but this leads to
-> spurious CS deasserts. These are totally forbidden during SPI NAND
-> continuous read transfers, because they indicate an end of transfer and
-> the continuous read is then stopped on the flash side.
+在 2026/6/9 18:33, Christian König 写道:
+> On 6/9/26 08:13, Kaitao Cheng wrote:
+>> From: Kaito Cheng <chengkaitao@kylinos.cn>
+>>
+>> This series prepares for, and then updates, the list_for_each_entry()
+>> family so the common entry iterators cache their next or previous cursor
+>> before the loop body runs.
 > 
-> I initially tried to query the flash type and geometry to decide whether
-> to apply a spi message size limit (there is a spi helper for that) but
-> we cannot reliably get up to the MTD structure to discriminate if it is
-> a NOR or a NAND we are playing with (it is not relevant to limit SPI NOR
-> transfers, they are not affected). If we actually take this path, what
-> limitation shall we enforce? The errata mentions 1023B, this is super
-> low, less than a typical page size (about 2k or 4k, for most of them),
-> so this is not usable. On my side, I only observed this problem on a
-> 2-page read in octal DTR mode with more than 12 dummy cycles. The
-> writesize summed with the oobsize could be a relevant boundary, but it
-> is still quite arbitrary. Hence, I opted for implementing a controller
-> capability flag, which then is used to decide whether the SPI NAND
-> continuous read feature can be enabled.
+> Why in the world would we want to do that?
 > 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-Just to confirm, has this patch not been picked up yet?
-
-Regards,
-Santhosh.
-
-> ---
-> I do not know if all flavours of this controller have the same
-> limitation, or whether it is integration specific. As I only found
-> mention of this errata for the AM62 processor, I opted for limiting the
-> flag to a single compatible.
-> ---
->   drivers/spi/spi-cadence-quadspi.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
+> The safe and non-safe variants have very distinct use cases and that is completely intentional.
 > 
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-> index 649ff55333f0..9f9b3013aa5d 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -1740,6 +1740,12 @@ static const struct spi_controller_mem_caps cqspi_mem_caps = {
->   	.per_op_freq = true,
->   };
->   
-> +static const struct spi_controller_mem_caps cqspi_am654_mem_caps = {
-> +	.dtr = true,
-> +	.per_op_freq = true,
-> +	.no_cs_assertion = true,
-> +};
-> +
->   static int cqspi_setup_flash(struct cqspi_st *cqspi)
->   {
->   	struct platform_device *pdev = cqspi->pdev;
-> @@ -1797,6 +1803,8 @@ static int cqspi_probe(struct platform_device *pdev)
->   	host->mode_bits = SPI_RX_QUAD | SPI_RX_DUAL;
->   	host->mem_ops = &cqspi_mem_ops;
->   	host->mem_caps = &cqspi_mem_caps;
-> +	if (of_device_is_compatible(pdev->dev.of_node, "ti,am654-ospi"))
-> +		host->mem_caps = &cqspi_am654_mem_caps;
->   
->   	cqspi = spi_controller_get_devdata(host);
->   	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi"))
+> What we could improve maybe is the documentation, from my experience an astonishing large amount of people have misconceptions about the safe variants.
 > 
+>> The first 13 patches open-code loops that intentionally depend on the
+>> old "derive the next entry from the current cursor at the end of the
+>> iteration" behaviour.  These loops append work to the list being walked,
+>> restart traversal after dropping a lock, skip an entry consumed by the
+>> current iteration, or otherwise adjust the cursor in the loop body.
+> 
+> Well I have to clearly reject the changes for subsystems/components I'm maintaining, that just looks horrible to me and I clearly don't see a good reason for that.
+
+Hi Christian and Andy Shevchenko,
+
+Thanks for taking a look. I would like to clarify the point you raised.
+
+The reason I started looking at this is the original motivation behind
+the _safe() variants.  They exist because some users need to remove, move
+or otherwise consume the current entry while walking the list.  In that
+case the next cursor has to be preserved before the loop body can modify
+the current entry.
+
+The unfortunate part is that this could not be expressed with the
+existing list_for_each_entry() interface without changing its calling
+convention.  The _safe() variants had to grow an extra argument for the
+temporary cursor, and that is why we ended up with a separate family of
+macros.
+
+But conceptually, the distinction does not have to be exposed as two
+different iterator families forever.  The difference is an implementation
+detail: whether the iterator keeps the next/previous cursor before the
+body runs.  This series makes the common list_for_each_entry() iterators
+do that internally, so the safe and non-safe forms can effectively be
+folded together, or at least the need for a separate public _safe()
+interface becomes much weaker.
+
+There is also a usability issue with the current _safe() interface.  The
+caller is forced to define a temporary cursor outside the macro and pass
+it in, even though almost all users never use that cursor directly.  It is
+just boilerplate required by the macro implementation.  I find that
+redundant and awkward: the temporary cursor is an internal detail of the
+iteration, but every caller has to spell it out.
+
+With the updated list_for_each_entry() implementation, that extra cursor
+can be kept inside the iterator itself.  Callers that only want to walk
+the list, including callers that delete or consume the current entry, no
+longer need to carry an otherwise-unused temporary variable just to make
+the macro work.
+
+>>
+>> The final patch changes include/linux/list.h to keep a private cursor in
+>> the common entry iterators while preserving the public macro interface.
+>> The safe variants remain available when callers need the temporary
+>> cursor explicitly or have stronger mutation requirements.
+>>
+>> Changes in v2 (Muchun Song, Andy Shevchenko):
+>>  - Drop the list_for_each_entry_mutable*() helpers from v1 and make the
+>>    cursor change directly in the existing list_for_each_entry*() helpers.
+>>  - Open-code special list walks that rely on updating the loop cursor in
+>>    the body, preserving their existing traversal semantics.
+>>
+>> Link to v1:
+>> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
+>>
+>> Kaitao Cheng (14):
+>>   drbd: Open-code transfer log list walk
+>>   firewire: core: Open-code topology list walk
+>>   drm/bridge: Open-code bridge chain list walks
+>>   drm/i915/gt: Open-code active timeline walk
+>>   drm/i915: Open-code DFS dependency list walk
+>>   drm/ttm: Open-code reservation list walk
+>>   spi: fsi: Open-code message transfer walk
+>>   spi: stm32-ospi: Open-code message transfer walk
+>>   spi: stm32-qspi: Open-code message transfer walk
+>>   spi: tegra210-quad: Open-code message transfer walk
+>>   locking/locktorture: Open-code ww mutex list walk
+>>   locking/ww_mutex: Open-code stress reorder list walk
+>>   ASoC: dapm: Open-code widget invalidation walk
+>>   list: Cache cursors in entry iterators
+>>
+>>  drivers/block/drbd/drbd_debugfs.c      |  4 ++-
+>>  drivers/firewire/core-topology.c       |  4 ++-
+>>  drivers/gpu/drm/drm_bridge.c           |  7 ++--
+>>  drivers/gpu/drm/i915/gt/intel_reset.c  |  4 ++-
+>>  drivers/gpu/drm/i915/i915_scheduler.c  |  4 ++-
+>>  drivers/gpu/drm/ttm/ttm_execbuf_util.c |  4 ++-
+>>  drivers/spi/spi-fsi.c                  |  5 ++-
+>>  drivers/spi/spi-stm32-ospi.c           |  4 ++-
+>>  drivers/spi/spi-stm32-qspi.c           |  5 ++-
+>>  drivers/spi/spi-tegra210-quad.c        |  4 ++-
+>>  include/linux/list.h                   | 46 ++++++++++++++++++++------
+>>  kernel/locking/locktorture.c           |  4 ++-
+>>  kernel/locking/test-ww_mutex.c         |  4 ++-
+>>  sound/soc/soc-dapm.c                   |  4 ++-
+>>  14 files changed, 78 insertions(+), 25 deletions(-)
+>>
+>> --
+>> 2.43.0
+>>
+> 
+
+-- 
+Thanks
+Kaitao Cheng
 

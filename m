@@ -1,56 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B1175A68
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 12:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE2A40E8E2;
+	Wed, 10 Jun 2026 13:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781096271; cv=none; b=cY1y2c8KFK1jk6wl0Fma54x9fIYC1d2bFcklxkgrMNkRDrLGXI2toHUmnal2R6LqHvJJ+Q9QoMzo25la+ByKO1hHFq+GAd0hYvSC4vMqGXsSG77ihhda83lqd/lbVCcZVi/kmXzu9hMhkmGp/sgFijQ+soD+6msZGyAHwBO+1g4=
+	t=1781099832; cv=none; b=TRB2jeD6R26GYY5EcQVf9KgSWY8bW9ryUS0fuXQMqUJmsaRoGgMSwkVnnlOCsfQOKukTdwElIDjFxNORdbpNRN7rEMQWjaZIvYeYEpS4r3LomVVQ5Gv51T5OWWMhBSnn+ygc52LQi3UlOD8NU2jXpnDwOehuAT9Z9OeQeVrv51w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781096271; c=relaxed/simple;
-	bh=uUB17OxyNWc5DOzUJU110rWSvJnbHZtP425YxdWV/mg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=d2uBzvPegaOSC9NLxKGb9g4/JQqTXnXzmRsqWxdxs1hy/b45y2Whq7QdR0zQMGErp2lBxEA5LOjgJazSROV6faONfFKm6bowil17CkYDs+Q8Q8LvJxcS4u19Y8MH/L/BJEPwfAocraPHEt1sr7LEVvKlHXQOybY9V5MUzA5tEUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o2scKneq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781099832; c=relaxed/simple;
+	bh=s8oLbEHNwPN5WX0VrFfQdKOs4ykZfwvm9K04jQ7sIcQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=GsgZk1Zx2uf0NJakfKiX7GgSWbGYeYzwwYKf+B4RgGAFdahvwgvi7jkaULEU64HD8K2/vQ/HUko54MVSkyB6H/NdsvkAjDnJpi4n7fVkwZcsS6rpCMTFkahRdnExSnC4FzdEr+rk2sNbgn9tJfvFzem3V18IbreW+anlQPIWasQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmcQeluZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o2scKneq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367361F00893;
-	Wed, 10 Jun 2026 12:57:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmcQeluZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EEA1F00898;
+	Wed, 10 Jun 2026 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781096270;
-	bh=b+9f27GlTRtR3veZXpeaTX9/Vb0/qIpfftWj4I6dZxw=;
-	h=Subject:From:Date:To;
-	b=o2scKneqkxLogKKkCj2JScuBHj0POes4ogjj34kmFcI9qmhM3InB0yaySa9co/gOK
-	 QZpsbEDL/Qkci4InDlZGqhDBXuFfDD6DAViDBXNi2Ohr+aacTiOZ/pUx4YXW3sKct8
-	 Gikkc+BwDfkhJ4MsT3wdqh2T74Ez+lIQC6l/woOZbR8hGIKdFjUIRNA1WqhuFuM2S1
-	 aEWP5tXl4IvOlStwwpnJmb/Z2GLvBGEy4vr46qZBYJ6BUGqg+L458r12Zkfotwzsve
-	 DP1yPJ3pt2QZd4q0wnOuYRLgD2/8B+R332KE8Rt7+nnBIq2ujrZnIE19kMUvEdzgXo
-	 fi2nsiGpvl6Vg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B033930CA4;
-	Wed, 10 Jun 2026 12:57:49 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1781099830;
+	bh=4AXF4TiGWRD9gssnSZPpvDBAiuDASCdIK20Xtb8YYC4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fmcQeluZlsBtVz47/xZCWVIIkhZfpEfMjEEBzMF76HjuDdKXVrOTNK2T1Sy/mH/v5
+	 +I0DkJF/IXCa92wEUJ2N5CLYu343kBcAh2o6QrOZdYUDdgM7TMpj1li679igMb1AbM
+	 W41jHIw1ozr0CYgwiJWPJ6zyhwVjrlKok3rBsrXMzydjS7qJav2BTflUeJbTH/nGGp
+	 e5mHSf6XkdN9f9jFYiKOTUfqbZ7IU3dcFqJamfmcf3U7r0pqrEg/2Es+i44mLvhjl2
+	 DwSM34f/kkQs3RcgfQbI57SYKWmk2lel1vjj/2WAZ6JLDTS2q9/0UuaNztIR1H4Azn
+	 HwERQ5H1kr8vw==
+Date: Wed, 10 Jun 2026 22:57:05 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Cc: Mark Brown <broonie@kernel.org>, Kunihiko Hayashi
+ <hayashi.kunihiko@socionext.com>, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Sangyun
+ Kim <sangyun.kim@snu.ac.kr>, Kyungwook Boo <bookyungwook@gmail.com>
+Subject: Re: spi: uniphier: KASAN wild-memory-access in complete() on early
+ IRQ
+Message-Id: <20260610225705.37b09a7f876e5ba07757377a@kernel.org>
+In-Reply-To: <20260610115622.773149-1-jjy600901@snu.ac.kr>
+References: <20260610115622.773149-1-jjy600901@snu.ac.kr>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178109626791.3024685.15724689217670633708.git-patchwork-housekeeping@kernel.org>
-Date: Wed, 10 Jun 2026 12:57:47 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Latest series: [v5] Nuvoton NPCM FIU DTS fixes and binding conversion (2026-06-10T12:18:19)
-  Superseding: [v4] Nuvoton NPCM FIU DTS fixes and binding conversion (2026-06-09T16:39:16):
-    [v4,1/3] arm: dts: nuvoton: npcm7xx: Drop bogus FIU memory reg-names
-    [v4,2/3] arm: dts: nuvoton: npcm7xx: Drop redundant FIU clock-names
-    [v4,3/3] spi: dt-bindings: nuvoton,npcm750-fiu: Convert to DT schema
+On Wed, 10 Jun 2026 20:56:21 +0900
+Jaeyoung Chung <jjy600901@snu.ac.kr> wrote:
+
+> Hi,
+> 
+> uniphier_spi_probe() in drivers/spi/spi-uniphier.c registers the
+> interrupt handler uniphier_spi_handler() with devm_request_irq() before
+> it initializes priv->xfer_done with init_completion(). If an interrupt
+> arrives after devm_request_irq() and before init_completion(), the
+> handler calls complete() on an uninitialized completion, causing a
+> kernel panic.
+> 
+> The probe path, in uniphier_spi_probe():
+> 
+>     host = spi_alloc_host(&pdev->dev, sizeof(*priv)); /* priv kzalloc-zeroed */
+>     ...
+>     ret = devm_request_irq(&pdev->dev, irq, uniphier_spi_handler,
+>                            0, "uniphier-spi", priv);  /* register handler */
+>     ...
+>     init_completion(&priv->xfer_done);                /* initialize completion */
+> 
+> The interrupt handler uniphier_spi_handler() calls complete() on its
+> done path:
+> 
+>     done:
+>         complete(&priv->xfer_done);
+> 
+> If the device raises an interrupt before init_completion() runs,
+> complete() acquires the uninitialized wait.lock and walks the zeroed
+> task_list in swake_up_locked(). The zeroed task_list makes list_empty()
+> return false, so swake_up_locked() dereferences a NULL list entry,
+> triggering a KASAN wild-memory-access.
+> 
+> Suggested fix: move init_completion(&priv->xfer_done) above
+> devm_request_irq(), so the completion is valid before the handler can run.
+> 
+> Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+> Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
+> 
+
+Good catch! All resources used by a callback, should be initialized before
+registering it.
+Kinihiko, can you fix it by reordering the initialization?
+
+Thank you, 
+
+> Thanks,
+> Jaeyoung Chung
 
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>

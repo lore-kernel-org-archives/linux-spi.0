@@ -1,59 +1,59 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011001.outbound.protection.outlook.com [40.107.208.1])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011068.outbound.protection.outlook.com [52.101.62.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3011E2DF3DA;
-	Wed, 10 Jun 2026 06:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A95328B7F;
+	Wed, 10 Jun 2026 06:24:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781072657; cv=fail; b=j/ji7PDnI9q4RprshBAs2XOFaQkWtKN38NadXx/qJzYlzOqNvvEDkz5uwsQRMkqcrESySxBd8InF+Lhz3EUquYgG1WuiSqMGhhFMTjKgBPUe8po4EjplkTAXb+uFciVnSAf4DuE49xGT7VakHBd8ebYiKWePhIEzcgeF8X4VN3Y=
+	t=1781072660; cv=fail; b=GsGN+rrN7XZskp8AvkbxefadXy8vuK+LSdRGiJp/twHA/yp2Hro2hMYwyyync1cNPYPZGe7eQGxMgwSKpWkx8inG01k8f4T8Vh/I/6dgHWAvgdmZQjxnnyZmYGpK6pC2aeK/tdYBW77lzk5YbDCOjX45oyUORjPITLogQkSwtpI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781072657; c=relaxed/simple;
-	bh=naH3vsvFazyiRgaYQq5GDHmSEweqdb8W+fY69HS+I3M=;
+	s=arc-20240116; t=1781072660; c=relaxed/simple;
+	bh=SOPNXjthCX7HN5U/EgWF99k/ORmL0MrFi/ePcfCJq2U=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PHiH1tnQ5aq5JN5rSV62XzFSOT2HgFSHoeBjjpxpDTMk3vTP1cO+09f2lWQrTxzvvGWCE/YOJhZyi5v4DyoMR+iyG6wK/5mOyHtUrCxAneXPQH1PGHndTns0lPNy1oPYPdKGuhp7aelFhQQz5fRFlCRWhNwe4kJMF1CsiaDCu24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jcOZiUWb; arc=fail smtp.client-ip=40.107.208.1
+	 MIME-Version:Content-Type; b=Kx7qSlv65zqahOS8nvYmblN52X6MCCEmcWxsTxFVE8LY3cSldcheybZr/TU/k4WFqFF4C9oxWdbCQuynOJnyxEEFbZh6fk+cmQG9zn/7wg6T+bha5wZDX/zyNAjN/V91BuhWTu26vrHXqBwp8wULYKwqZhwOYmK1oDVbB5lPm9g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ROnexxV1; arc=fail smtp.client-ip=52.101.62.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jcOZiUWb"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ROnexxV1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=idHqmUA7GYp/XL4hIOW/oSyZXObo12b/69OKrcRxl+oYDmoatajjjxuzOeKUZxT+B27k21Dy6nEgKRlTLcZq7UuERLTzVMTReDYVmMytZ5GyUIXKHXoDaH8R0kJFMUxnqJM1hwGVUkd3nDdrnB8wYq1+YAPimiT5+XjrRhyMWbN1+QhffydrEX6mvqOc4D6utyhn9qnw+Zq5fVKXkBDuz5JUIPdBMqUIXt/IR7CsSfyJDa/ncPr2zBE8eMeZHo+ZWsSQxCDOcGvJKM8n9x6VF+TbfU2T2FYLz4z8DsVtc0Pv7IV52tqHJL9xOJacHn+EeO9vfTpJjqe0JiC9ns+FCg==
+ b=jkw3hU06zGtoWF2+179ao7EcrhaG1qqx/YMVJnUtlGOUzTc0eHsCis+yGYDKSg9xsijDkncRHMgem95M3irSPFlmjC0jpgv+oXAahLMIGmaV6xifB143/spsQAUFM+CHuXSgeEGRwGyU4NqATt20TyGGdroj8duYc8h1LkRa1u7k5ALaKVvNHPkf1rnwjF9rBTWBNfWFSCAMYeeCuQZPJE/HJ9GC4QdyC99u89bIhvpM0EJQ0z4sLpupge1GbwQgwaaFo70PbI3E4X/WLpVhdNzxRHI8L01SPFYi1gDdO9vtdwu2tup5WFu0Ck6MeVn46vEu6swJAorI9kc4/Bzb9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wkEedGCk2DFwFfMyHRPGbUp27xV9fNQ3B4M4LTNbSfI=;
- b=NCtCSJq7O3EdhOuzwGsTPWl8ux62P0+R0rCy8UUXl+W2PHqxQW6qmKJPUUzpfYp/fR7JCwD+lVavhAh77/4Q4mI9CnwYVYZ8+B5Ufi+3j27v7YEPzyPA/tU2taErFYBGE4OvUozlHooOq82jFszMlNAup4uVl674T7STNn6Pl55DJYqNQRmu34pT/ShfAKnfZ6kOTsUXSFknbYIJHIgNb66ZoYolWsYQc6DdIqqFhDFgLqVCxVldy0/CdTTbgbQZGGCD0vQU+iHrgOpBwQGuSLBuTikgTlvQNbs2sFCJT6PjXPJ5FJcoKuKSTbZo7kxU8F4dT+7ZmcuRm9/IVa4m+g==
+ bh=sQOatmHvDnwR5FrKWcsiW5hxWu9SR2dqatwspB6pwJE=;
+ b=X62fPvWo/Qp/qH/wjNkPiBUjLqhTzV1tg8ZCECurVh1YhClyntGtQ4BxxV0jwvvtd6o1xTerXsJgxzW+OcwpvtRqRYPUJq0HJMeAtCA13k441pS5gk8A+Y+ZkJTg3fVUq49hoQmy7KO6RFSxJYkVEYDjgNrEACrQ2Ax+Jv7Egohls+cKiGYhZXN65n8d1pPTu9sbitVn8tXpIWa/w1P55Dl5XpohAFSVJJ11PXJyT4OasAVNRexFVTyRX2P8dBAXhG/lqddk5EgFXUUJ2eLQ+cLASW4fZZcHdrBDvi2GrIgB6eaWMdHkhLuEm7Oz52twJY+oJQR3/ZZncSVuK6hZng==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wkEedGCk2DFwFfMyHRPGbUp27xV9fNQ3B4M4LTNbSfI=;
- b=jcOZiUWbbxQR5DbqYjUw5NRNe59+uBlnHEZerHbJT8KUrJjhASg6lmUEBAI8zUyLS8foCyWnTwl9l9yuJqJZoczYptFLEh/4Yr/Y7nXqMzr3ICMV0emm2QFkPEuTMRcPfQnFnhEY04RFgwuJdNpWqsn0d/TakcAfm15FeXKnYOMzFLs/9Z3GynVLrOwQ72DroZEY9i2nRm4NgbV2hdz9OVOJqYzmrVnl52cx2sC1/m9ywt8iYdvuw0tN6Wr9xRLoZstvJ6Lm9qNG8kjDHThWLNspemKMYA1Guhn/R7DNP6vUOEaFU7wuKeTLgLlmJQHgsE68v38oXJyq+OyXAIXV5A==
-Received: from DM6PR07CA0107.namprd07.prod.outlook.com (2603:10b6:5:330::21)
- by SN7PR12MB8604.namprd12.prod.outlook.com (2603:10b6:806:273::16) with
+ bh=sQOatmHvDnwR5FrKWcsiW5hxWu9SR2dqatwspB6pwJE=;
+ b=ROnexxV1hGLutMua7KpzqfmhmedbvFyMRtWtVoepai462dT90O4XU+AQzWTps98zMZKjt4LYvB0CDAeyk2L9MWz5RpQslJVENVcNI/Jocp2exxYrrskl8HlzbXqw8d84yRiVN7pPc87oQnI8a/vOgh7qwYvPUPxmw7GzO63j581fYu+MTHktpLSGSLh50C9x1AKDZFT26D7CALowy4SPsFVCjmjRnkqMzWN3z4NOI2JxqpoOq9EUyU8xcmvfAVLGT9f/XoO4RzUiA7oVcmJJG4/T/Jy3JqDEYlar6bplE72+b+81plKFVq/31uznb5HabnA0oSW9EVcu8jgSs9UBzw==
+Received: from MN0PR03CA0007.namprd03.prod.outlook.com (2603:10b6:208:52f::6)
+ by CH2PR12MB4118.namprd12.prod.outlook.com (2603:10b6:610:a4::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 06:24:10 +0000
-Received: from DS2PEPF00003443.namprd04.prod.outlook.com
- (2603:10b6:5:330:cafe::5e) by DM6PR07CA0107.outlook.office365.com
- (2603:10b6:5:330::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.10 via Frontend Transport; Wed,
- 10 Jun 2026 06:24:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Wed, 10 Jun
+ 2026 06:24:14 +0000
+Received: from BL6PEPF00022575.namprd02.prod.outlook.com
+ (2603:10b6:208:52f:cafe::19) by MN0PR03CA0007.outlook.office365.com
+ (2603:10b6:208:52f::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.11 via Frontend Transport; Wed,
+ 10 Jun 2026 06:24:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- DS2PEPF00003443.mail.protection.outlook.com (10.167.17.70) with Microsoft
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BL6PEPF00022575.mail.protection.outlook.com (10.167.249.43) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:24:10 +0000
+ 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 06:24:14 +0000
 Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 9 Jun
  2026 23:24:03 -0700
 Received: from drhqmail202.nvidia.com (10.126.190.181) by
@@ -71,9 +71,9 @@ CC: Vishwaroop A <va@nvidia.com>, Laxman Dewangan <ldewangan@nvidia.com>,
 	<leitao@debian.org>, Suresh Mangipudi <smangipudi@nvidia.com>, "Krishna
  Yarlagadda" <kyarlagadda@nvidia.com>, <linux-tegra@vger.kernel.org>,
 	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 3/3] spi: tegra210-quad: Process small PIO transfers in hard IRQ context
-Date: Wed, 10 Jun 2026 06:24:02 +0000
-Message-ID: <8b89310f9c3e6884910d533890e95d1039edc39a.1781037385.git.va@nvidia.com>
+Subject: [PATCH v4 2/3] spi: tegra210-quad: Cache TRANS_STATUS in ISR for timeout handler
+Date: Wed, 10 Jun 2026 06:24:01 +0000
+Message-ID: <2ed90a7d175f7967e621943b772115da655c477d.1781037385.git.va@nvidia.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1781037385.git.va@nvidia.com>
 References: <cover.1781037385.git.va@nvidia.com>
@@ -87,203 +87,189 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003443:EE_|SN7PR12MB8604:EE_
-X-MS-Office365-Filtering-Correlation-Id: c53686e9-79c8-4d17-e312-08dec6b8e248
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022575:EE_|CH2PR12MB4118:EE_
+X-MS-Office365-Filtering-Correlation-Id: 489df881-de8b-4c18-1b6d-08dec6b8e476
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|56012099006|11063799006|6133799003|22082099003|18002099003;
+	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|376014|18002099003|22082099003|56012099006|11063799006|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	KFiSjwdnE+xiVk0/8t2wQ24zyo/jVO+2sql9Ds+mDp8iGg0w4LTyH4pG0aNa0zNFNbSh/xX2SHuhVa8Qdoy6elc4/mJ10C4L7w36EXA60+tmNI17FTSI/z0/+pXO0nTsGtfLpsJD4PKlTVg83seWyZ6hEkafisiUkiI9/5UsP2D6NMigHR0etF2b7//ofabdfzYh1C8CaWaadcXbLd/DtjkH6ENsttyvgTX7uNKJ90FWAa9f4zMinftlXn0rdASr579tsOlBrjPt4XovFFzehrUGhbhPlTLws9IE3ZtNT94KnDGfsqF5gX1gc0rDnczgLNiDEw3pNfsEnRKpxtXhNtBlImSb9KxC6/+yzuXQS+EYWR0g2oQjZkSTX7t8ETt0zPgBQLbd3ZwehHRxuyWfIzYH0mWN6lvF9QH5iHQLIn+nVgoWPudvkmexy3hAF6F+X3Syb5ImqmRrRmsWw7w8hVPU1RLXvpa3wYD2r706JWjAJkWmFHFs67xOhXmrYJlfda+Cr417n5OPhLf7TWZ7LCFITc7lAvD5Kg3rQ1Zu7MwVNSHMnfQp1sysBmFw1GqxlIae+U0f2NFSlFePtOTH5XEw5xmo4l9g7VnOesFTpGxnwDPwubV1T05lJn21waw4xlHqO123nyjkUWg81IwskaDG9P3P8pJiCoRETJ5o1pimK+PXKY3j1N/n7+REi3igH5HoDrAEgJr5vKovZ+aJc950bylqFwkpPF6+HPWseJ4=
+	GNxaCUXLutTiPY7J+6dcMXTlDEWdK+DgsWuN/VMox5MtJ+VQP5ogSupAPfe0KolMYYAfMx19Tc+xEO7EjdwxMGojRUHyhIOS7pcq19G7+58CiyiypZaqp7WwVDRK51TkaSximquZMktrHmlQlHsKH6CljJZ8Utpy6zC/TC84YFTp2mLNIm1LxZmyvm9GCd9sylgDVjDvZs4o/7NeLJji5LsDAYDDBS7RvXEOLsTw5ka6rrOs6yaEZI8il3nNB2phIfdnVmtH3N53QvobI2+FUlTQTKPT/Au/GQtp+265XhScAKU8tdzRaU7VAqJCAXRqh7WTuXL8DNN6cZAfpb4tfttIHCcqPcM3Egxacjoe6IB61vgkM4tpdDwETUJmRkKxoG9jXOXC5bsK2q+ZZ+mVfPRWu9l8GtJR+6ynBUp5IMuUsiGJWkYCs5hKS5f+FVZx2I4HrW3TbhaFso456WaQp3BwX3mVZWHL3/0jjXCB7+oorhqHKFOsarrGLyNpSBmH0yrnlygZso7GquyFgHjflUI+Xl7aecO02SW9mOf0rceeZYML4cn0kaPsngSe7T5VNN/KMpqLeYEpszNOCzNp7iH4ehy4kChwg1VHxrozDvmi4DlW7ruDM5BEglp9HBySP9K4dXgBgB4XqhGj/TEPp6vGC7vbwtGjwGpGK7Gujyr+N4ZodnHi+c0LIDcJ45kg50UhD5kxu4ucJgBRPqAE7aS7areihU2vsHVCTmefIKk=
 X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(22082099003)(56012099006)(11063799006)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	mV9Tf5bD6aFevbdYj/IYY2iBD6bsLIc7ix7dl5AeeJp5VYmLQljydWg4FIbTT8nCvtoCSysBgCVQPXzXuIy1H09oxzL1jjmGWLfKvXie3WtWgyrqm5hA66w1HeovKvcBf0dm59RR6bZTMtR8acVPLfeGL30+HVOOxveM9kRA3b/n8ZmA93WIKpLKDlT/Hx3+WL1TxDxXbO47TcyBfGNgpKP765+9rNul3CaE0GdaNUWcPU7buC6EUW8EGbn8neEYGy2yyvit0N4EGfQxbR3D0GyqSchMjhXgahHFgY8IydXNzaGR71gwBDEq21ZL/MbJZpgO/8aqloP1i3Isd3VsxD6W8aKkLDTBB99HG9ui3cdw7kdavic6LMG0fAEuQ38MKqt0LEfjv/pZvLlup8UDy54I7A5ont773eN7FpKbnOhfNlQZWOwrgrWBM1Bu6vvF
+	WzkbJAU4C/2OKNK3tgUAtsjeLdL1VBSy4Uv4Stui/D/uoZUYuEqcq+SmFxzp1xFraZfiVyjGyzCwDQRZetZMzkmqEWepvYtT9kqbGob1lle+QBrP5c3G8MUDgOzy0AeX/jUi38cq0A1sjP68KVTkRihxlii0m2uFj0Y6AnoHlcwPFWalZ4BFwmbynfuRq4IG4HTWHNZk7aoK4w8ZP7eaJyPSIOyHoO8rPyMtU8wrPBR94+0Wt2cdb/0qtrBVBj5dBoiCtfnFVg0o/CM5etDxwRmb5IkDY7W6PlUsz0vKppux4UjPAKQY3bGpmcZnNtAfY4UVuv90KWnZuKXBxzao6LUldNNVB0a2kyQAu1hR9wSgtxrH2y1PrTdLZwdvphSMYO+2aToXQjF0uxS7S0HxaEAdGshctYFaYQ7HZo4teFjgJvSaoajrlz/h1OEvP2Fy
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:24:10.4436
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 06:24:14.0531
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c53686e9-79c8-4d17-e312-08dec6b8e248
+X-MS-Exchange-CrossTenant-Network-Message-Id: 489df881-de8b-4c18-1b6d-08dec6b8e476
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003443.namprd04.prod.outlook.com
+	BL6PEPF00022575.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8604
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4118
 
-On heavily loaded systems, workqueue scheduling delays can exceed
-transfer timeouts even for high-priority queues, causing false
-timeouts for latency-sensitive devices like TPM despite hardware
-completing in microseconds.
+On heavily loaded systems the workqueue bottom half can be delayed
+long enough for wait_for_completion_timeout() to expire before the
+ISR's queued work actually runs. Reading QSPI_TRANS_STATUS directly
+from the controller in the timeout handler races with both the
+workqueue handler and the controller itself, and can mis-classify a
+transfer that genuinely timed out as having "completed".
 
-Process small PIO transfers (those that complete the whole spi_transfer
-in a single chunk) directly in hard IRQ context instead of deferring to
-the workqueue. This reduces completion latency from 1000ms+ to
-microseconds and matches the pattern used by other SPI drivers.
+Cache the controller status captured by the hard IRQ before it is
+acked, and let the timeout handler consume that cache:
 
-To avoid touching the spi_transfer object from hard IRQ context (which
-would race with the synchronous teardown path that clears curr_xfer on
-timeout), tegra_qspi_start_cpu_based_transfer() caches the "this PIO
-chunk completes the whole transfer" decision into a scalar
-tqspi->is_last_pio_chunk *before* unmasking the IRQ. The hard-IRQ
-fastpath consumes that scalar with READ_ONCE() and never dereferences
-curr_xfer or any spi_transfer fields. Multi-chunk PIO transfers are
-intentionally kept on the workqueue (only the final chunk sets the
-flag) so the fastpath can never recurse into
-tegra_qspi_start_cpu_based_transfer() from hard IRQ context, and DMA
-transfers always go through the workqueue because their completion
-path sleeps on the DMA engine.
+  - tegra_qspi_isr() reads QSPI_FIFO_STATUS and QSPI_TRANS_STATUS,
+    derives tx_status / rx_status, then publishes them via WRITE_ONCE()
+    and the trans_status cache via smp_store_release() before masking
+    and acking the controller IRQ.
 
-The fastpath also gates on the per-IRQ tx_status / rx_status locals
-being zero, because handle_cpu_based_xfer()'s error path calls
-tegra_qspi_reset() -> device_reset(), which can sleep and must not run
-from hard IRQ context.
+  - tegra_qspi_handle_timeout() consumes trans_status with a paired
+    smp_load_acquire(). The release/acquire pair guarantees that a
+    timeout handler which observes a non-zero trans_status also
+    observes the matching status_reg / tx_status / rx_status updates.
 
-is_curr_dma_xfer and is_last_pio_chunk are written from process
-context (the transfer-start functions) and read lock-free from the
-hard IRQ handler and the workqueue handler, so the writes use
-WRITE_ONCE() and the reads use READ_ONCE() to prevent compiler tearing
-and silence KCSAN data-race warnings.
+  - tegra_qspi_setup_transfer_one() clears the cache with
+    smp_store_release() under the spinlock before unmasking the IRQ
+    for the new transfer, so a stale RDY bit from the previous
+    transfer cannot fool the timeout handler.
+
+  - If the cache is zero at timeout time the ISR genuinely never ran
+    (lost IRQ), so the handler falls back to a direct controller read
+    so we do not unconditionally surface a timeout when the hardware
+    has actually finished.
+
+curr_xfer is re-checked under the spinlock so that a workqueue handler
+which races with the timeout path cannot double-complete the transfer.
 
 Signed-off-by: Vishwaroop A <va@nvidia.com>
 ---
- drivers/spi/spi-tegra210-quad.c | 77 +++++++++++++++++++++++++++++----
- 1 file changed, 68 insertions(+), 9 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 65 ++++++++++++++++++++++++++-------
+ 1 file changed, 51 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index f0b15d13e433..e7611275734a 100644
+index dd5d40e0dcbc..f0b15d13e433 100644
 --- a/drivers/spi/spi-tegra210-quad.c
 +++ b/drivers/spi/spi-tegra210-quad.c
-@@ -207,6 +207,18 @@ struct tegra_qspi {
- 	unsigned int				dma_buf_size;
- 	unsigned int				max_buf_size;
- 	bool					is_curr_dma_xfer;
+@@ -214,6 +214,7 @@ struct tegra_qspi {
+ 	u32					tx_status;
+ 	u32					rx_status;
+ 	u32					status_reg;
++	u32					trans_status;
+ 	bool					is_packed;
+ 	bool					use_dma;
+ 
+@@ -861,6 +862,13 @@ static u32 tegra_qspi_setup_transfer_one(struct spi_device *spi, struct spi_tran
+ 	tqspi->cur_rx_pos = 0;
+ 	tqspi->cur_tx_pos = 0;
+ 	tqspi->curr_xfer = t;
 +	/*
-+	 * Cached "this PIO chunk completes the whole transfer" decision,
-+	 * computed by tegra_qspi_start_cpu_based_transfer() before it
-+	 * unmasks the IRQ. Used by the hard IRQ small-PIO fastpath in
-+	 * place of dereferencing curr_xfer->len, so the ISR cannot touch
-+	 * the spi_transfer object even on a late IRQ that races with the
-+	 * synchronous teardown path. Multi-chunk PIO transfers always go
-+	 * through the workqueue (this flag is only set on the final
-+	 * chunk), so the fastpath cannot recurse into
-+	 * tegra_qspi_start_cpu_based_transfer() from hard IRQ context.
++	 * Pairs with smp_load_acquire() in tegra_qspi_handle_timeout().
++	 * Clearing the cached trans_status before unmasking the IRQ for
++	 * the new transfer prevents a stale RDY bit from the previous
++	 * transfer fooling the timeout handler into a false recovery.
 +	 */
-+	bool					is_last_pio_chunk;
++	smp_store_release(&tqspi->trans_status, 0);
+ 	spin_unlock_irqrestore(&tqspi->lock, flags);
  
- 	struct completion			rx_dma_complete;
- 	struct completion			tx_dma_complete;
-@@ -716,7 +728,13 @@ static int tegra_qspi_start_dma_based_transfer(struct tegra_qspi *tqspi, struct
+ 	if (is_first_of_msg) {
+@@ -1075,26 +1083,43 @@ static irqreturn_t handle_dma_based_xfer(struct tegra_qspi *tqspi);
+  */
+ static int tegra_qspi_handle_timeout(struct tegra_qspi *tqspi)
+ {
++	unsigned long flags;
+ 	irqreturn_t ret;
+ 	u32 status;
  
- 	tegra_qspi_writel(tqspi, tqspi->command1_reg, QSPI_COMMAND1);
- 
--	tqspi->is_curr_dma_xfer = true;
+-	/* Check if hardware actually completed the transfer */
+-	status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
 +	/*
-+	 * WRITE_ONCE() pairs with READ_ONCE() in tegra_qspi_isr() and
-+	 * tegra_qspi_work_handler(); the flag is read lock-free across
-+	 * the hard-IRQ / process-context boundary so the annotation
-+	 * prevents compiler tearing and silences KCSAN.
++	 * Pairs with smp_store_release() in tegra_qspi_isr(). If the ISR
++	 * managed to run before wait_for_completion_timeout() expired, the
++	 * cached value lets us classify the timeout without racing with a
++	 * concurrent HW write to QSPI_TRANS_STATUS.
++	 *
++	 * A zero cache means the ISR never ran for this transfer (the IRQ
++	 * was lost entirely). In that case fall back to reading the
++	 * controller directly so we do not unconditionally surface a
++	 * timeout when the hardware has actually finished.
 +	 */
-+	WRITE_ONCE(tqspi->is_curr_dma_xfer, true);
- 	tqspi->dma_control_reg = val;
- 	val |= QSPI_DMA_EN;
- 	tegra_qspi_writel(tqspi, val, QSPI_DMA_CTL);
-@@ -737,9 +755,23 @@ static int tegra_qspi_start_cpu_based_transfer(struct tegra_qspi *qspi, struct s
- 	val = QSPI_DMA_BLK_SET(cur_words - 1);
- 	tegra_qspi_writel(qspi, val, QSPI_DMA_BLK);
- 
-+	/*
-+	 * Snapshot whether this PIO chunk completes the whole transfer
-+	 * before unmasking the IRQ, so the hard IRQ small-PIO fastpath
-+	 * can decide whether to drain inline without dereferencing the
-+	 * spi_transfer object. cur_pos / curr_dma_words / bytes_per_word
-+	 * are stable here: they are written by
-+	 * tegra_qspi_calculate_curr_xfer_param() earlier in this code
-+	 * path. The IRQ cannot fire until the QSPI_COMMAND1 write below
-+	 * kicks the transfer off, so this store happens-before any ISR
-+	 * that observes the unmask.
-+	 */
-+	WRITE_ONCE(qspi->is_last_pio_chunk,
-+		   qspi->cur_pos + qspi->curr_dma_words * qspi->bytes_per_word >= t->len);
++	status = smp_load_acquire(&tqspi->trans_status);
++	if (!status)
++		status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
 +
- 	tegra_qspi_unmask_irq(qspi);
+ 	if (!(status & QSPI_RDY))
+ 		return -ETIMEDOUT;
  
--	qspi->is_curr_dma_xfer = false;
-+	WRITE_ONCE(qspi->is_curr_dma_xfer, false);
- 	val = qspi->command1_reg;
- 	val |= QSPI_PIO;
- 	tegra_qspi_writel(qspi, val, QSPI_COMMAND1);
-@@ -1656,7 +1688,7 @@ static void tegra_qspi_work_handler(struct work_struct *work)
- 	 * DMA handler also needs to sleep in wait_for_completion_*(), which
- 	 * cannot be done while holding spinlock.
++	spin_lock_irqsave(&tqspi->lock, flags);
+ 	/*
+-	 * Hardware completed but interrupt was lost/delayed. Manually
+-	 * process the completion by calling the appropriate handler.
++	 * ISR or workqueue may have already completed the transfer
++	 * and cleared curr_xfer between the completion timeout and now.
  	 */
--	if (!tqspi->is_curr_dma_xfer)
-+	if (!READ_ONCE(tqspi->is_curr_dma_xfer))
- 		handle_cpu_based_xfer(tqspi);
++	if (!tqspi->curr_xfer) {
++		spin_unlock_irqrestore(&tqspi->lock, flags);
++		return 0;
++	}
++
++	spin_unlock_irqrestore(&tqspi->lock, flags);
++
+ 	dev_warn_ratelimited(tqspi->dev,
+ 			     "QSPI interrupt timeout, but transfer complete\n");
+ 
+-	/* Clear the transfer status */
+-	status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
+-	tegra_qspi_writel(tqspi, status, QSPI_TRANS_STATUS);
+-
+-	/* Manually trigger completion handler */
+ 	if (!tqspi->is_curr_dma_xfer)
+ 		ret = handle_cpu_based_xfer(tqspi);
  	else
- 		handle_dma_based_xfer(tqspi);
-@@ -1684,6 +1716,7 @@ static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
+@@ -1658,6 +1683,7 @@ static void tegra_qspi_work_handler(struct work_struct *work)
+ static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
  {
  	struct tegra_qspi *tqspi = context_data;
- 	u32 status_reg, trans_status;
-+	u32 tx_status = 0, rx_status = 0;
++	u32 status_reg, trans_status;
  
  	if (!READ_ONCE(tqspi->curr_xfer)) {
  		tegra_qspi_mask_clear_irq(tqspi);
-@@ -1695,13 +1728,15 @@ static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
- 	trans_status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
+@@ -1665,16 +1691,27 @@ static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
+ 	}
+ 
+ 	spin_lock(&tqspi->lock);
+-	tqspi->status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
++	status_reg = tegra_qspi_readl(tqspi, QSPI_FIFO_STATUS);
++	trans_status = tegra_qspi_readl(tqspi, QSPI_TRANS_STATUS);
  	tegra_qspi_mask_clear_irq(tqspi);
  
--	if (tqspi->cur_direction & DATA_DIR_TX)
--		WRITE_ONCE(tqspi->tx_status,
--			   status_reg & (QSPI_TX_FIFO_UNF | QSPI_TX_FIFO_OVF));
-+	if (tqspi->cur_direction & DATA_DIR_TX) {
-+		tx_status = status_reg & (QSPI_TX_FIFO_UNF | QSPI_TX_FIFO_OVF);
-+		WRITE_ONCE(tqspi->tx_status, tx_status);
-+	}
+ 	if (tqspi->cur_direction & DATA_DIR_TX)
+-		tqspi->tx_status = tqspi->status_reg &
+-				    (QSPI_TX_FIFO_UNF | QSPI_TX_FIFO_OVF);
++		WRITE_ONCE(tqspi->tx_status,
++			   status_reg & (QSPI_TX_FIFO_UNF | QSPI_TX_FIFO_OVF));
  
--	if (tqspi->cur_direction & DATA_DIR_RX)
--		WRITE_ONCE(tqspi->rx_status,
--			   status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF));
-+	if (tqspi->cur_direction & DATA_DIR_RX) {
-+		rx_status = status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
-+		WRITE_ONCE(tqspi->rx_status, rx_status);
-+	}
- 
- 	WRITE_ONCE(tqspi->status_reg, status_reg);
- 	/*
-@@ -1715,6 +1750,30 @@ static irqreturn_t tegra_qspi_isr(int irq, void *context_data)
+ 	if (tqspi->cur_direction & DATA_DIR_RX)
+-		tqspi->rx_status = tqspi->status_reg &
+-				    (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF);
++		WRITE_ONCE(tqspi->rx_status,
++			   status_reg & (QSPI_RX_FIFO_OVF | QSPI_RX_FIFO_UNF));
++
++	WRITE_ONCE(tqspi->status_reg, status_reg);
++	/*
++	 * smp_store_release() pairs with smp_load_acquire() in
++	 * tegra_qspi_handle_timeout(). Publishing trans_status last with
++	 * release semantics guarantees that a timeout handler which sees
++	 * a non-zero trans_status also observes the WRITE_ONCE() updates
++	 * to status_reg / tx_status / rx_status above.
++	 */
++	smp_store_release(&tqspi->trans_status, trans_status);
  
  	spin_unlock(&tqspi->lock);
  
-+	/*
-+	 * Small-PIO fastpath: drain the FIFO inline only when this chunk
-+	 * completes the entire outstanding transfer and no error bit was
-+	 * latched, to avoid workqueue scheduling latency for TPM-style
-+	 * short reads.
-+	 *
-+	 * The "last chunk" decision is computed and cached as a scalar by
-+	 * tegra_qspi_start_cpu_based_transfer() before it unmasks the IRQ,
-+	 * so the hard-IRQ fastpath never dereferences the spi_transfer
-+	 * pointer here. That keeps the ISR safe against any teardown race
-+	 * where the synchronous path could clear curr_xfer concurrently.
-+	 *
-+	 * Multi-chunk PIO continuation stays on the workqueue so that
-+	 * tegra_qspi_start_cpu_based_transfer() can re-arm the IRQ from
-+	 * process context. DMA transfers also stay on the workqueue
-+	 * because their completion path sleeps on the DMA engine.
-+	 * tegra_qspi_handle_error() -> device_reset() can sleep, so the
-+	 * fastpath only runs when both status words are clean.
-+	 */
-+	if (!READ_ONCE(tqspi->is_curr_dma_xfer) &&
-+	    READ_ONCE(tqspi->is_last_pio_chunk) &&
-+	    !tx_status && !rx_status)
-+		return handle_cpu_based_xfer(tqspi);
-+
- 	queue_work(tqspi->wq, &tqspi->irq_work);
- 
- 	return IRQ_HANDLED;
 -- 
 2.17.1
 

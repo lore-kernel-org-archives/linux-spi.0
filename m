@@ -1,279 +1,105 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469D5406833
-	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 12:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342913B14D9
+	for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 12:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781093924; cv=none; b=nRGX3QrCOt+tpO6E8e7tXyKUtjwOxw4CEBx4BsNg9wvLXTPKnXpZTurII7IJsPvB2ATcWOS3YJLoBSHr8XzpCq6iMglmdlg2hT6EFE+HvDLmQbAq+iygVeAU6k9ox0OMYkzxaBVdWvTIJin2afaWhyep3HoCURZO10uuRY79qZw=
+	t=1781094989; cv=none; b=QJDf0muhcKcmsYU/NUc7goZKmGrFU47DxopRUibabii43qTKJ6oPi+G05bmKzPofg1P/LNm54UxsbPbX0mB9zZGoWBIoFtaC1K2+ax+xjzKAVjW4CN6VN88bH1tRc5EXpVJEDvt3dbkJDeD/3WVDPh3qwpjCsTnogKCfi3cZjpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781093924; c=relaxed/simple;
-	bh=JsztznW3Xmh/xeI6ZlgYjv1v61PArbh6D8QyccieYy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n1K7KuQFIZzUesN1qKRhFoPYN+Y7paIOc+HJjAw0MQ/Phk1mg+1aFUoWwmxatBBuv05qHb7dZxLFi7aWRcqJhMRQe94KhzsCdnoqZcTa0Os2jHMwGEOFExnkii+SE7rzZcIOIcTM1CgNVWtAfTgEZEPbB4k6+KFTysFDNvrD9do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcmjuJ91; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1781094989; c=relaxed/simple;
+	bh=1jaQI/yXwfNl56dzYfed7eyhyT0Bb1rMZNDi1ewH0oE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iKtHNbxOkZNkViw6fJ6Rb2oSrnUtHKIFZu5P1HcSoz7auXFvcX1MYZpsCUtcoCaJw5KTlfp+NPAQjdH09ottviIsxHt7b8sZhkbSvXOl3OMH0pGKkbilD+T4Drl04CA2mTJs8SM1YWiGAnx2h4hTwkeZqry2/bPaOuJVpFmQw+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcmjuJ91"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-490abf12f0fso35262815e9.0
-        for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 05:18:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781093920; x=1781698720; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hVBJJGFYjcbuEOi6xjg9aXQreuuYV6xXp7Ov8MwZ6W0=;
-        b=AcmjuJ91/vEPVNZVsA9ynB/T1eoWWt1qJ8U29dNiGoltyEN3nZkSmQJJCzj3cFIOHH
-         5iVxg8+iNbN+Ho8pahfSXKr+MMOC78j7Jo1bH/idRxo0QpGMizDbpajiPyLpZ+qrtYnP
-         qO6I/x8jdJS6ZNL7bdgGPdp1OUORyfoAZNBaawQ1SclDkgMtG+78uiJxUbfa32dn8Qz5
-         WKwCtKciPQUwbJob5Tw0rqEjSu37l5CCWr+mNSOUXMZM/9nTK3WufkmtZ4K6Cle3j/SE
-         vj+Rqjt16booH6N0vjnhJKow61s2Pp9Eqf/J5GgJFh0umeA3b5aFQN8gxkM7Thw3fPz6
-         nsmw==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-687ed9aabb3so13224423a12.1
+        for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 05:36:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781093920; x=1781698720;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hVBJJGFYjcbuEOi6xjg9aXQreuuYV6xXp7Ov8MwZ6W0=;
-        b=s8wUHM3GxKguutjnWmxZ2XxkMObYTALmWzXrTQqMLiwyvtt7uzoeJdcdbApNEzZ8as
-         pYvoozxkckvOnUfFOaoKUdJt0gbaOl/AxCXW0bamMrAk8DFJ6c3IMdCvJHlJMtMOzSZy
-         i+q9TrTSqsNUIKVE53hVrL23GwSXxjP6TW1TdcF4elpYdOROiOkLH0145Pgr3srltre9
-         qsLLrSYoaTNK9Yf9fGZs8K6thzuGqIsFl3C8BaaZMZXmPcdgwOvw9LyrhesHQmCugH18
-         dIQejytlzu5vuXXPCkgEQ9NFvDmqbi6JH94rjmxvGq77lGVz/ltwqPQifDhlHFO6tQuo
-         ZTLg==
-X-Forwarded-Encrypted: i=1; AFNElJ9yeWRoyuOq3ZKWpDm/OtMw1LGYRXzV8qtgMV8gc6fl9bMCyJxcK//sfEesAO/kk/dsu8evr8+iPGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpzBr7rvALTiaoscMcnWMXVuuyyMMltZEqq0V4F0t7SMQ0hrJp
-	4CsUY/ttX2U1FZXgSIuF2tE/NO0Cg0+mwqtDBOiMP5P/yh8SWwrC6hFz
-X-Gm-Gg: Acq92OGFU3U8bh/Prsg8pupcXSIVRC9xPbPz4JmxkHcd1XhYMXa+cYrZlj8ApEmvJi4
-	InVOWSTfUuN2HXco7lCtxa3N5Q+1K9snm2LHSNAkmbsbsNsT+vPCic8nMItAjx7CF4zCR3jNx/f
-	BBMDegdrxnVbzHQLXDo8mI9FVdkAZxrLi2iZ00lWjH76RYO8H9xQTUbYGn/xeg+o/jEFcs49qYT
-	gD59PUBBaNVPZxaBz11EXLANqZOP9BqOleUjhOoSNLws89tlmBxeLBr8s65BdgqYEfLPhbPueIq
-	Mvw1CmcH/ctxROf9S+s4Gw4Z9EBwM1amBwGhnK6k0YkklRp4zi1GTtLP4s4UqHK6U3d3zrPsgoB
-	r/SYj1Q2nmUUuKqZxXKUHIHJnRPzhM/8/3+x8kBGXxUC2/wAs2WRTR2iXZQGZ7xdylyqn5462sp
-	tHJAFpys2lDqpt49X6QZo7S2gxnF8qf0kCxRor+obGoycp
-X-Received: by 2002:a05:600c:8519:b0:490:3cf0:8d81 with SMTP id 5b1f17b1804b1-490c2d0e9a2mr302554865e9.13.1781093920430;
-        Wed, 10 Jun 2026 05:18:40 -0700 (PDT)
-Received: from taln60.nuvoton.co.il ([212.199.177.18])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490bc413adbsm566553095e9.15.2026.06.10.05.18.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jun 2026 05:18:40 -0700 (PDT)
-From: Tomer Maimon <tmaimon77@gmail.com>
-To: andrew@codeconstruct.com.au,
-	broonie@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: openbmc@lists.ozlabs.org,
-	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	avifishman70@gmail.com,
-	tmaimon77@gmail.com,
-	tali.perry1@gmail.com,
-	venture@google.com,
-	yuenn@google.com,
-	benjaminfair@google.com,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v5 3/3] spi: dt-bindings: nuvoton,npcm750-fiu: Convert to DT schema
-Date: Wed, 10 Jun 2026 15:18:22 +0300
-Message-Id: <20260610121822.2524634-4-tmaimon77@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260610121822.2524634-1-tmaimon77@gmail.com>
-References: <20260610121822.2524634-1-tmaimon77@gmail.com>
+        d=1e100.net; s=20251104; t=1781094986; x=1781699786;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qnkRL9A9yLDp0586KseS3kXnfXEIgenVBxyMiwtAEuc=;
+        b=MjYlikkjYzIhpo0zDTg0/krljAZr/OSLPS6jQAYdfYoKGnFHjmcpp6HRQMCav1WDDn
+         bqpizzcen+1XBjJ29GWSWGjyBn0SgdsFsQLX51djJ9qffgbg4fG1EHQ5/Rm5iE22M4Qp
+         BOkoWIzXINrCbvaVt2r7xayq7CcsAIAwSMBbNDyH0TlZxpp3FPOQbQ0LhUeKwsOJye61
+         +8VeiiNhnv+zIp3Y1dNHruBKpmxjVeZykOmG3S0P4UNHPZp9utEs22RCpkUEHc0hDq6U
+         Xpcqil8IXndDFWzhi3g0P55D3KEcxCgPMtteaAMR89vIDz3fDYV1r3Ws/zi886WqQwhK
+         6h5g==
+X-Forwarded-Encrypted: i=1; AFNElJ+UgDuhvBkBBXqBKVmSSOcNBgIo1hfmQll7GC0wf1NDRVUaGXRJl5biv3Ey5NbmkLJH/19lhJu9X30=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTdw0SI4xEEqUKbzKGimcWD2rnFI7lzLnK7I06aGiUQWBCpsuu
+	7jdtn/wWh9ikch7L1QBxJKLVTBwnbinvQAw0/cVsbt+qeOsW1r0pJgIkl+Om9iri8/8=
+X-Gm-Gg: Acq92OHKwQ+w83Vz4AscUGFix7j7uX6tO764AMjfOV1hqTTrOk4UMsbvx/L7n9qci0w
+	oHnVrcK/IajcnbmtDwxgMZ23m7KXcg76PDWRC8K9izv96YIIUMXa2m9e4E+LRNEHW7AMepm3l5i
+	HQJVg9+j8Y1kD1rw2A8N2llJxCuF1rlM1dWklCCN5pQ/esVTCgI2H6mG69Q5wl4nig3ihdwgnlm
+	Rzmmip7jPW+/ZxNuOSJiiie8qOFWE3sCvfr2Y44JHaqOeRyRRIMivMMDCrTc4XcUAufrj50dWRC
+	smBq1I2n/50CTupx2XnLEUHFhVNL+RlhV8ad/jfSGPXt2a3kNjdJgYwMNkFfictsr0Sd5At0YsY
+	n87YrgK6HXXHKietYZ5aeF/9WDP6cyeDQV52BJ9dpcx/++as/GUu8qT49q6w+Yk4nOOF1FTjww9
+	mRkY+9cxxb8ihvgln1rdc5uglpzZRMvyoeyWPzl8O9Dg7DYZ91kFFVtx2tXxUtaOoaH/V+5rk=
+X-Received: by 2002:a05:6402:1cc8:b0:670:8acb:e822 with SMTP id 4fb4d7f45d1cf-68fa5038772mr11121533a12.12.1781094986468;
+        Wed, 10 Jun 2026 05:36:26 -0700 (PDT)
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com. [209.85.208.49])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-691afe82416sm4398481a12.13.2026.06.10.05.36.24
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jun 2026 05:36:24 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68cec9f4c6cso9409784a12.0
+        for <linux-spi@vger.kernel.org>; Wed, 10 Jun 2026 05:36:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ85YKCOw4Zm+wyELdVPfsTmHaUMskk4kTAAP/+TtQhDDOjlRvfrzJ7GT2ImDPOKRHRBGVbdoddNHsQ=@vger.kernel.org
+X-Received: by 2002:a17:907:6e9f:b0:beb:7979:47dd with SMTP id
+ a640c23a62f3a-bf3738f1f81mr1412187766b.27.1781094984425; Wed, 10 Jun 2026
+ 05:36:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20260610-rzv2h-rspi-v2-1-40c80b4a2c90@gmail.com>
+In-Reply-To: <20260610-rzv2h-rspi-v2-1-40c80b4a2c90@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 10 Jun 2026 14:36:09 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUyj-6zNhkZR4SRm_F-JK1QKnpPkSvzK0Z+TSE58yq3BA@mail.gmail.com>
+X-Gm-Features: AVVi8CfbEH3Hc3J2sCeattAV0AJLSnQxbhugQPZSnzmY28ff2IF_tFxiTy0lV70
+Message-ID: <CAMuHMdUyj-6zNhkZR4SRm_F-JK1QKnpPkSvzK0Z+TSE58yq3BA@mail.gmail.com>
+Subject: Re: [PATCH v2] spi: rzv2h-rspi: Fix SPDR read access width for 16-bit RX
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Mark Brown <broonie@kernel.org>, 
+	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Convert the Nuvoton NPCM FIU binding to DT schema format.
+On Wed, 10 Jun 2026 at 14:08, Felix Gu <ustc.gu@gmail.com> wrote:
+> The RZ/V2H hardware manual (section 7.5.2.2.1) specifies that read access
+> size for the SPI Data Register (SPDR) are fixed at 32 bits. The
 
-Document the required control registers and the optional direct-
-mapped flash window separately, matching the driver behavior
-when the direct mapping is not described.
+is fixed
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>=0D
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
- .../bindings/spi/nuvoton,npcm-fiu.txt         | 58 ------------
- .../bindings/spi/nuvoton,npcm750-fiu.yaml     | 93 +++++++++++++++++++
- 2 files changed, 93 insertions(+), 58 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.=
-txt
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm750-f=
-iu.yaml
+> RZV2H_RSPI_RX macro for the 16-bit data path used readw(), violating
+> this requirement.
+>
+> Switch to readl() for the 16-bit RX path to conform to the hardware
+> specification.
+>
+> Fixes: 8b61c8919dff ("spi: Add driver for the RZ/V2H(P) RSPI IP")
+> Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> ---
+> Changes in v2:
+> - Fix comments from Geert.
+> - Link to v1: https://patch.msgid.link/20260605-rzv2h-rspi-v1-1-c1d5ed562249@gmail.com
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt b/D=
-ocumentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-deleted file mode 100644
-index fb38e96d395f..000000000000
---- a/Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
-+++ /dev/null
-@@ -1,58 +0,0 @@
--* Nuvoton FLASH Interface Unit (FIU) SPI Controller
--
--NPCM FIU supports single, dual and quad communication interface.
--
--The NPCM7XX supports three FIU modules,
--FIU0 and FIUx supports two chip selects,
--FIU3 support four chip select.
--
--The NPCM8XX supports four FIU modules,
--FIU0 and FIUx supports two chip selects,
--FIU1 and FIU3 supports four chip selects.
--
--Required properties:
--  - compatible : "nuvoton,npcm750-fiu" for Poleg NPCM7XX BMC
--			     "nuvoton,npcm845-fiu" for Arbel NPCM8XX BMC
--  - #address-cells : should be 1.
--  - #size-cells : should be 0.
--  - reg : the first contains the register location and length,
--          the second contains the memory mapping address and length
--  - reg-names: Should contain the reg names "control" and "memory"
--  - clocks : phandle of FIU reference clock.
--
--Required properties in case the pins can be muxed:
--  - pinctrl-names : a pinctrl state named "default" must be defined.
--  - pinctrl-0 : phandle referencing pin configuration of the device.
--
--Optional property:
--  - nuvoton,spix-mode: enable spix-mode for an expansion bus to an ASIC or=
- CPLD.
--
--Aliases:
--- All the FIU controller nodes should be represented in the aliases node u=
-sing
--  the following format 'fiu{n}' where n is a unique number for the alias.
--  In the NPCM7XX BMC:
--  		fiu0 represent fiu 0 controller
--  		fiu1 represent fiu 3 controller
--  		fiu2 represent fiu x controller
--
--  In the NPCM8XX BMC:
--  		fiu0 represent fiu 0 controller
--  		fiu1 represent fiu 1 controller
--  		fiu2 represent fiu 3 controller
--  		fiu3 represent fiu x controller
--
--Example:
--fiu3: spi@c00000000 {
--	compatible =3D "nuvoton,npcm750-fiu";
--	#address-cells =3D <1>;
--	#size-cells =3D <0>;
--	reg =3D <0xfb000000 0x1000>, <0x80000000 0x10000000>;
--	reg-names =3D "control", "memory";
--	clocks =3D <&clk NPCM7XX_CLK_AHB>;
--	pinctrl-names =3D "default";
--	pinctrl-0 =3D <&spi3_pins>;
--	flash@0 {
--			...
--	};
--};
--
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,npcm750-fiu.yaml=
- b/Documentation/devicetree/bindings/spi/nuvoton,npcm750-fiu.yaml
-new file mode 100644
-index 000000000000..965904a98785
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,npcm750-fiu.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/nuvoton,npcm750-fiu.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Nuvoton NPCM Flash Interface Unit (FIU) SPI Controller
-+
-+maintainers:
-+  - Tomer Maimon <tmaimon77@gmail.com>
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+
-+description: |
-+  NPCM FIU supports single, dual and quad communication interface.
-+
-+  The NPCM7XX supports three FIU modules:
-+    FIU0 and FIUx support two chip selects
-+    FIU3 supports four chip selects.
-+
-+  The NPCM8XX supports four FIU modules:
-+    FIU0 and FIUx support two chip selects
-+    FIU1 and FIU3 support four chip selects.
-+
-+  The FIU control register block is always required. The direct-mapped
-+  flash window is optional because the controller can still access flash
-+  through the UMA path when that mapping is not described.
-+
-+  Alias convention:
-+    The '/aliases' node should define:
-+      For NPCM7xx:  fiu0=3D&fiu0; fiu1=3D&fiu3; fiu2=3D&fiux;
-+      For NPCM8xx:  fiu0=3D&fiu0; fiu1=3D&fiu3; fiu2=3D&fiux; fiu3=3D&fiu1;
-+
-+properties:
-+  compatible:
-+    enum:
-+      - nuvoton,npcm750-fiu # Poleg NPCM7XX
-+      - nuvoton,npcm845-fiu # Arbel NPCM8XX
-+
-+  reg:
-+    description:
-+      The first resource is the FIU control register block. An optional se=
-cond
-+      resource describes the direct-mapped flash window used for direct
-+      read/write accesses.
-+    minItems: 1
-+    items:
-+      - description: FIU control registers
-+      - description: Memory-mapped flash contents
-+
-+  reg-names:
-+    description:
-+      Resource names for the control registers and optional direct-mapped
-+      flash window.
-+    minItems: 1
-+    items:
-+      - const: control
-+      - const: memory
-+
-+  clocks:
-+    maxItems: 1
-+    description: FIU reference clock.
-+
-+  nuvoton,spix-mode:
-+    type: boolean
-+    description: Enable SPIX mode for an expansion bus to an ASIC or CPLD.
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/clock/nuvoton,npcm7xx-clock.h>
-+    spi@fb000000 {
-+        compatible =3D "nuvoton,npcm750-fiu";
-+        reg =3D <0xfb000000 0x1000>, <0x80000000 0x10000000>;
-+        reg-names =3D "control", "memory";
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+        clocks =3D <&clk NPCM7XX_CLK_SPI0>;
-+
-+        flash@0 {
-+            compatible =3D "jedec,spi-nor";
-+            reg =3D <0>;
-+            #address-cells =3D <1>;
-+            #size-cells =3D <1>;
-+        };
-+    };
---=20
-2.34.1
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

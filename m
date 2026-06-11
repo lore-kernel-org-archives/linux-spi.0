@@ -1,103 +1,205 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F24725B0B9;
-	Thu, 11 Jun 2026 06:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA5A38D3FF;
+	Thu, 11 Jun 2026 06:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781159861; cv=none; b=iuEysodcNBiH7zmhIFN7CIMVrk2+uPA8HDauFwD/LPem+VR1XuQFYO7Blf+No5Q6ypoT8h2jeWnE9DxxmEZoroFQEP1JeZ9cHQKMsba1DldI14/glCOk7JZI4dElVLqpEq2eJP7TUXBqkDOBHr8hriwRDnVlwxARwL1z68xS2HQ=
+	t=1781160886; cv=none; b=J6Jv+BUPDpSReDYBUBUzYrmDPG5LePq9+X/FAg3wUX9TwtuKYzlag5/pfYCFcUCuQETXpVNePm3zEGVasMUV5/K6URv1mQ4rqn4id0kp9U1xQY5u44RDeZ3romeyB2HHATVZ7POKyZbOTLrbMuAnWILpKBEM1/tcwtFshgEX79E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781159861; c=relaxed/simple;
-	bh=Eeq9S5dJSEaZkUN3/e9n9FlbRu/629zoxI90oAbQJGM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mGy66v6F7dV6lcBfTqPEA5yD03nz5Dv6z9gAffC4tM2bj50W2UJrCg2Hfz2yR0nDxKI8hR7L4M2BXPC9h9jzGEALqN1XNfhLAGXwZ9IB8vNFS17tECPptNN/kiJ6aBC0vZXwa1g/22QJ8ioOO78aL38ijmKCTkE7p54hw6cPwcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RwmxpiOE; arc=none smtp.client-ip=220.197.31.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1781160886; c=relaxed/simple;
+	bh=CFowTlceAGT8bJGLRrhVxOnbTokjR6+XQ9kWSeerCo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BNsPk/4d7Y/O5J/L0Qy0cwRhOcN9eK8e6PONaXRj9oPgkZM2NcFsJ63+TecWjsao43yK0EGE2T6AQCeRG/hndqQQEUAf7j5DUaoGpcwLeNpJuJOc3uxNQhKW1O2/0JY6oPRXF2OfA2oZSO0myTviNDrpt+Dns/CH9BKT13ZcKiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ILMnnbFY; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RwmxpiOE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=k4
-	PQhwFSLv+1p2nsZ97XbNmbrHAbiI1RCwE+ou8p1ac=; b=RwmxpiOEk2mCxYBGjT
-	vCMrMNdtW6GfzupGAxI7etU9O1E8E5PjsuL+yOaW5IB17ECy+5GGtQxQ5nD6SgLU
-	pvmd91GWvpgdXeTC6gNjwCbEhlY5bc81+S2eULCXilN9Hrt4RMcD5ps2Jd8/8hI9
-	mVO9tcX5lmYzfUd0xiZlpjo78=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD395ifVypqDRVvCw--.712S2;
-	Thu, 11 Jun 2026 14:37:20 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	Apurva Nandan <a-nandan@ti.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.18.y] spi: cadence-quadspi: fix unclocked access on unbind
-Date: Thu, 11 Jun 2026 14:37:19 +0800
-Message-Id: <20260611063719.3528053-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ILMnnbFY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781160884; x=1812696884;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=CFowTlceAGT8bJGLRrhVxOnbTokjR6+XQ9kWSeerCo0=;
+  b=ILMnnbFYf+2OYnR8Cf74CLpXuWVSGt68ZxvVetTc/Cc7Dpmr/5M+13zj
+   D1+xJpR13+q7570kCUGQn7b2V/lxbodfC0ydH+xXEUmfMt5mu0fY3L4jn
+   1lIl2pKV3u03KUOKqBa+rzykiAyq5gmU+KdmufyPe8sQDbXyAcfwoeE2J
+   KY3cfffAFNyiisxgzJMwXVicLIDM3hiEkFScUSICHi9qlHoQ87OuGuh/m
+   gUINWmYvJanbW0xgmiW5lHsVDfgXoaqtCRj8d9m7jP8rgAf2KlGbjQItw
+   X/02e69vPo7GRFL+ipw3T4seIowpzXtL4rqiAJmhCUhq7snnf6Brt6BUy
+   A==;
+X-CSE-ConnectionGUID: bS2G7H+6RzG6nlDYJ3Qu0g==
+X-CSE-MsgGUID: 7OTckyrWRXmDi475Io9nBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11813"; a="81101237"
+X-IronPort-AV: E=Sophos;i="6.24,198,1774335600"; 
+   d="scan'208";a="81101237"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 23:54:42 -0700
+X-CSE-ConnectionGUID: Iu2FGfWER0CTkX31t1P0qw==
+X-CSE-MsgGUID: yMX5BnmDSEy1/50OFUSSPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,198,1774335600"; 
+   d="scan'208";a="250674708"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.244.123])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2026 23:54:28 -0700
+Date: Thu, 11 Jun 2026 09:54:26 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Huang Rui <ray.huang@amd.com>, Eddie James <eajames@linux.ibm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Waiman Long <longman@redhat.com>, drbd-dev@lists.linbit.com,
+	linux-block@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Kaito Cheng <chengkaitao@kylinos.cn>,
+	Muchun Song <muchun.song@linux.dev>,
+	Philipp Reisner <philipp.reisner@linbit.com>,
+	Lars Ellenberg <lars.ellenberg@linbit.com>,
+	Christoph =?iso-8859-1?Q?B=F6hmwalder?= <christoph.boehmwalder@linbit.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Subject: Re: [PATCH v2 00/14] list: Prepare entry iterators to cache cursor
+ state
+Message-ID: <aipbojSeMH-usARY@ashevche-desk.local>
+References: <20260609061347.93688-1-kaitao.cheng@linux.dev>
+ <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
+ <5152089a-2808-4fe9-b633-b03018105dd2@linux.dev>
+ <ail4AvzqAOXNaU6N@ashevche-desk.local>
+ <9b98e860-11df-44bf-9a95-3046d2c274a6@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD395ifVypqDRVvCw--.712S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4xArW3Cr48JrWUXw1fWFg_yoW8Cr1kpF
-	47JF4UtFWjqr4Uta1kCw4j9Fy5t397Ja4jgwsrKw1fZryaqF95XF1Fva4YqFW5AFZrKF42
-	kFs7Jrs3tF15ZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zMZXO9UUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5QEjjmoqV6EGPAAA3F
+In-Reply-To: <9b98e860-11df-44bf-9a95-3046d2c274a6@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-From: Johan Hovold <johan@kernel.org>
+On Thu, Jun 11, 2026 at 12:42:02PM +0800, Kaitao Cheng wrote:
+> 在 2026/6/10 22:43, Andy Shevchenko 写道:
+> > On Wed, Jun 10, 2026 at 02:14:06PM +0800, Kaitao Cheng wrote:
+> >> 在 2026/6/9 18:33, Christian König 写道:
+> >>> On 6/9/26 08:13, Kaitao Cheng wrote:
 
-[ Upstream commit 233db2cb14db8b1935dda52a6affd97276462b82 ]
+> >>>> This series prepares for, and then updates, the list_for_each_entry()
+> >>>> family so the common entry iterators cache their next or previous cursor
+> >>>> before the loop body runs.
+> >>>
+> >>> Why in the world would we want to do that?
+> >>>
+> >>> The safe and non-safe variants have very distinct use cases and that is completely intentional.
+> >>>
+> >>> What we could improve maybe is the documentation, from my experience an astonishing large amount of people have misconceptions about the safe variants.
+> >>>
+> >>>> The first 13 patches open-code loops that intentionally depend on the
+> >>>> old "derive the next entry from the current cursor at the end of the
+> >>>> iteration" behaviour.  These loops append work to the list being walked,
+> >>>> restart traversal after dropping a lock, skip an entry consumed by the
+> >>>> current iteration, or otherwise adjust the cursor in the loop body.
+> >>>
+> >>> Well I have to clearly reject the changes for subsystems/components I'm maintaining, that just looks horrible to me and I clearly don't see a good reason for that.
+> >>
+> >> Hi Christian and Andy Shevchenko,
+> >>
+> >> Thanks for taking a look. I would like to clarify the point you raised.
+> >>
+> >> The reason I started looking at this is the original motivation behind
+> >> the _safe() variants.  They exist because some users need to remove, move
+> >> or otherwise consume the current entry while walking the list.  In that
+> >> case the next cursor has to be preserved before the loop body can modify
+> >> the current entry.
+> >>
+> >> The unfortunate part is that this could not be expressed with the
+> >> existing list_for_each_entry() interface without changing its calling
+> >> convention.  The _safe() variants had to grow an extra argument for the
+> >> temporary cursor, and that is why we ended up with a separate family of
+> >> macros.
+> >>
+> >> But conceptually, the distinction does not have to be exposed as two
+> >> different iterator families forever.  The difference is an implementation
+> >> detail: whether the iterator keeps the next/previous cursor before the
+> >> body runs.  This series makes the common list_for_each_entry() iterators
+> >> do that internally, so the safe and non-safe forms can effectively be
+> >> folded together, or at least the need for a separate public _safe()
+> >> interface becomes much weaker.
+> >>
+> >> There is also a usability issue with the current _safe() interface.  The
+> >> caller is forced to define a temporary cursor outside the macro and pass
+> >> it in, even though almost all users never use that cursor directly.  It is
+> >> just boilerplate required by the macro implementation.  I find that
+> >> redundant and awkward: the temporary cursor is an internal detail of the
+> >> iteration, but every caller has to spell it out.
+> > 
+> > Ah, I think the distinct macro families is that what we want.
+> > But the hiding of the parameter can be done inside list_for_each_*_safe().
+> > You can do a treewide change with coccinelle.
+> > 
+> > Sorry if I didn't get the whole idea from your previous contributions.
+> > 
+> > Note, even cases that would need a temporary cursor may be switched to
+> > new list_for_each_*_safe(), see how PCI macros for iterating over resources
+> > are implemented (include/linux/pci.h).
+> 
+> Thanks for your suggestions. I've written a demo based on your feedback.
+> Could you please review it and share your thoughts on this approach?
 
-Make sure that the controller is runtime resumed before disabling it
-during driver unbind to avoid an unclocked register access.
+Have you checked how many users actually need the temporary storage?
 
-This issue was flagged by Sashiko when reviewing a controller
-deregistration fix.
+> >> With the updated list_for_each_entry() implementation, that extra cursor
+> >> can be kept inside the iterator itself.  Callers that only want to walk
+> >> the list, including callers that delete or consume the current entry, no
+> >> longer need to carry an otherwise-unused temporary variable just to make
+> >> the macro work.
+> >>
+> >>>> The final patch changes include/linux/list.h to keep a private cursor in
+> >>>> the common entry iterators while preserving the public macro interface.
+> >>>> The safe variants remain available when callers need the temporary
+> >>>> cursor explicitly or have stronger mutation requirements.
 
-Fixes: 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
-Cc: stable@vger.kernel.org	# 6.7
-Cc: Dhruva Gole <d-gole@ti.com>
-Link: https://sashiko.dev/#/patchset/20260414134319.978196-1-johan%40kernel.org?part=2
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260421125354.1534871-4-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Context adaptation performed. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- drivers/spi/spi-cadence-quadspi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index d61bc678b6f8..0a32e28eefd5 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2055,7 +2055,6 @@ static void cqspi_remove(struct platform_device *pdev)
- 		cqspi_wait_idle(cqspi);
- 
- 	spi_unregister_controller(cqspi->host);
--	cqspi_controller_enable(cqspi, 0);
- 
- 	if (cqspi->rx_chan)
- 		dma_release_channel(cqspi->rx_chan);
-@@ -2063,8 +2062,10 @@ static void cqspi_remove(struct platform_device *pdev)
- 	if (!(ddata && (ddata->quirks & CQSPI_DISABLE_RUNTIME_PM)))
- 		ret = pm_runtime_get_sync(&pdev->dev);
- 
--	if (ret >= 0)
-+	if (ret >= 0) {
-+		cqspi_controller_enable(cqspi, 0);
- 		clk_disable(cqspi->clk);
-+	}
- 
- 	if (cqspi->is_jh7110)
- 		cqspi_jh7110_disable_clk(pdev, cqspi);
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 

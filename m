@@ -1,47 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E541519B4;
-	Thu, 11 Jun 2026 00:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046B435893
+	for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 00:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781138746; cv=none; b=cGal/bj4vR29Hbs2dmeydTgbhH0MaQUcuCcNdpCIZpqHCaFg0LthVULbUHUqWXgD++XD+CgMEKpnjncadknYq2ITDvqt8QQtYSZErcK21ltrEux57TVNTQBYPGTXFUvbccyKLR3ByhafCGyou/Wml97i1FvClH/pkf5CGdk4w2s=
+	t=1781139462; cv=none; b=o9/Rwc9OSQEEPoP6QDLEO/iUMrznX1ggGtE4DZI2TK2N9W9NQHaBDIc+7WVqctz+JIrsAYfCrgF6qQC2uWWGlBL3mUjHcVsh+iZtop5tNLePurMZBVzOqNB8VptY0nxU/erYPW9arYYL1Nfe9+z/ptoWCO4Z0vYgYVNkLyKN+Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781138746; c=relaxed/simple;
-	bh=lTAxjqD2ptN6Nytpf7j8GNCCjkya1kMoimCQC87flzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/E+M26Vr04U35a2SyZzho8rHvtWUScHZV3Y1diRc/kf+EN+pIXoe/ovINmaQ5M3w+ywwD3Z0yjcK4/Z5BgDN+u/jeVBsD+Aui2MbpnJflU3zeC2DEHsDAd2+sTB/oCOhbGOygnZ7rCX/s4rkvmLzh9eet7zzVJ+0A+mT98f10E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+/A4ZE5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781139462; c=relaxed/simple;
+	bh=9ARrAl0HJHHl3XWx7fysf3HNM0t4oPvm5UKAbtN2N2o=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=N0WG+C8WXmHU7ekUTKyaEtLI81KXS1KL1796rWWPAVz/LyUE6BnQ5HCYLPw/e/E1YOMb2f726MuowLboLP6wLzLq67uI0Ni8nm3eHlVmER2PicVpvCn4WL4P/mrKMIshRyTa/E12eyhk84BUxGiDJ3JWCYhFTKhIV0lMHshbfbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJ7bI0+D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+/A4ZE5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A851F0089A;
-	Thu, 11 Jun 2026 00:45:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJ7bI0+D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864641F00893;
+	Thu, 11 Jun 2026 00:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781138745;
-	bh=lTAxjqD2ptN6Nytpf7j8GNCCjkya1kMoimCQC87flzQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b+/A4ZE56l6Pfm7lGyz4H6+jKBFDShNu22o7NhZqMicwC4iFgSQ/a6vmf00nQLty9
-	 rPrSNk4FqbPzSsE38L3RHqA+MwgmEBzCPoZ54Oz6ULFeQDBHYo5oInUBAQHU1Pp+jD
-	 SdCqakzWEaPuy7QRIw5tpovn4oORxvXDf/wbq53wL9MDenyw3satNCEALLTAmVcGxe
-	 xLExiUEsadcLBEjdQXDZdB7k1nA5Z4jydP/T3gN/VDhMABxpa0oNVB7Ch/XLQuXk0q
-	 yJknVGOPFgjepPa4GXt0M4XL1O68bxHPSXyTYRhubEt9d6Sv6LWW4A2bhsf+WfGYB7
-	 VO1vyD1ZGDaHg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	Apurva Nandan <a-nandan@ti.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y] spi: cadence-quadspi: fix unclocked access on unbind
-Date: Wed, 10 Jun 2026 20:45:26 -0400
-Message-ID: <20260610-stable-reply-0013@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260610020809.2695490-1-rob_garcia@163.com>
-References: <20260610020809.2695490-1-rob_garcia@163.com>
+	s=k20260515; t=1781139461;
+	bh=vY/5l/KCI9DfiYs6kOiNnPzuhCVT9Jly56H1/S39ngs=;
+	h=Subject:From:Date:To;
+	b=hJ7bI0+D2kQxviIus2BmXjZlMI7bTQYVUrNi/pSc37UdVjxvtOM/u+rpOL7e6jG6b
+	 o2pdSWI/ljgt3z84BlZMkUNK1eLQ3wzs2JQXW1VHGodxPmeTfXdk17R9rO3YwBk+3T
+	 bHhkMMUHSDbWZ1tQ5/hT9JPeh3IGktO29FK3375TnDPS4oljW5JJO30zjyRapE6epf
+	 2I+ibUoe45VMJNSHcLRmPW2Qdqx9epYZaBp2pHrFzFnV/v0zq2iZxD19Vytm4EZmsz
+	 ko7bhdbde4RhQz42/CcCrBBjnBtrhaBUObiRXj/D/BO7sQ4N0bvyI1RBHaI0N1Ostn
+	 1EHrh7CUxDIXw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 593753930E00;
+	Thu, 11 Jun 2026 00:57:40 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,18 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178113945890.3694600.5665379830261761761.git-patchwork-housekeeping@kernel.org>
+Date: Thu, 11 Jun 2026 00:57:38 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, Jun 10, 2026 at 10:08:09AM +0800, Robert Garcia wrote:
-> [PATCH 6.12.y] spi: cadence-quadspi: fix unclocked access on unbind
+Latest series: [v1] Documentation: spi: add SPDX license identifier (2026-06-11T00:32:41)
+  Superseding: [v1] Documentation: spi: add SPDX license identifier (2026-06-11T00:15:02):
+    Documentation: spi: add SPDX license identifier
 
-I can't take this into 6.12 on its own. We don't backport a fix to an
-older tree while it's missing from a newer one, and 233db2cb14db isn't
-in 6.18.y yet.
 
-If you can send a 6.18.y backport as well (adapted to the older
-cqspi_remove() there), I'll queue both together; the 6.12 patch itself
-looks fine.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
---
-Thanks,
-Sasha

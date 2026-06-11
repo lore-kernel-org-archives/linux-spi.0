@@ -1,335 +1,224 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012063.outbound.protection.outlook.com [52.101.48.63])
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906B23A6B67;
-	Thu, 11 Jun 2026 11:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781178426; cv=fail; b=EyPjHmM4tyX63yBCOu21i4VddSXfJgr6+cMoFLDP13exbhwfmxFEK45jaSfuRL/kb7i7lpgDItArldMKQhP7InDkJk6Anu0cZgIg+X+/MGheU+YDgNUXFKEidjC8ASoGZbbaBdm8r6nczbTlwv51TsvBiFxUlwK+k779WYA6Ogs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781178426; c=relaxed/simple;
-	bh=fYd5fS1xjpFjCcVzECQ6l3AfWR6k3ieFvpv1qOkqzh0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=McXt+c8RI41YStr7YhYYMRcatym+98km5oPAarMvKXQWtxGa8cfNhO+6WeRQYcEO1Vaagnbhk8KTSWhLL3QyQzjEbm6wKF7tbIZrA2YJ+IieQaSfHF0KPBPHYbN+mdw5Z60sPqXYcG/OQNvwvHM6W5UZ3+GP5VlB0HKL6MIsLeE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zWT+y6pd; arc=fail smtp.client-ip=52.101.48.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390243EC2E1
+	for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 12:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781179540; cv=none; b=B9ydjQYcfQt4pKFmiDX+pHLBRkOkexEc/u/lLqwQcLyiIPYIdsWqcun7PvZg8Kd3/Rp/YCywj7cFedt5iq5WwCvSJ1DcoaiFsIsOK5zKpq871cR5Vk4mVimj2sFp4FORL7p1ymW63bPouS/jBJrDlhzirGZ92ZPZ2IK7OLrlLbk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781179540; c=relaxed/simple;
+	bh=AEq5YLCfHyJtBRyyaDK5dRTVIjcCHYl4w1xjVvim55U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BMHUk9IFIpVOQ3WcYOolA9kj29zftCUrj1C2p7OHfbeAPD2XQP7RVJm24+fw3XWZQlbwMPpLgwT7rkZEPdOuRzexeoFtfCpdqIZWYt/OniAmxqM6kG1yRwthqdnO9H7svmnOH7bUA/oRJleDs6gSsTXMuO8Vh/h/ZuN+45JSm+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WXdGfeEV; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zWT+y6pd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U1mQ+qSF2x//FWOSV1zWsTJ0FE5wZacS7kk9PCK+zXTsdm2zmi2muJJKwaCqklNFRPJkU8OBZsCm+u5Zwl4BvHwPtQOyTCaX9s4DBdNFKkAP8MSNejxzaSZfpkgDm3klY5n6+zraiE+SdlEXRci3FpfvCgJA1+1E3HgRmxsTQ1xQmS6qA7bnar0rs98U4yNVZlgYuJVKZ8xm8ttCcsjWmhjJrdjYawEX907W9HyNYRn2EcyJPfwUYMMSBWkNEtrqKBQjvCtp+sQB9BEosXojZWYNMPP8nIo7Nf57y7P1uU3GlW2r+D1vSXHqoPw7U27od9qC5F+/CGLis42NujcOsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+fH2R+4dSDAGVyz4bmZTK/dbnXpI0rHzIE8x5NUYMpc=;
- b=vGoA1pyEHuLfCj/DUecWoqmWwPVBZnC0husOUZ/77PFmMO5ut9YSL/lQKw/2qBKkUXJPzVM9MgGqseVr+oztnhdjbyetBJO/dtBg0XbMkAbVZjuYy/yy8WyacjndJqcRxB4ZpGfLMiFQyv78xrytHyxzYMyzecTXi/JKi/L5QIwlCiq11EvYg1npSGju60T4zCqannm8aBCFy42qWkXQ+MbAmwuLd/UN9FzUFVqc6dwH5Z5JlIIDyF1DKq9LWslcTdQ97IR1ABPh0DUIOM4OrbG6xc5+PbBOaCaZawKzTrFjw0mtqq/pK58BOyVXwzgQSEg/snvYxG51JK33w1ARlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+fH2R+4dSDAGVyz4bmZTK/dbnXpI0rHzIE8x5NUYMpc=;
- b=zWT+y6pdWFeaBawkLI0SBUyTGuaOL+sL7LRa+NLHc+jGEG1cTjPZ4/W//sfQqTjdiDUV6fKyLkQdQz3j4KFCjZ6EKDy3JXHvvSDRN3kUA8EC6ria2PhdQCfNywsf+DJtCSDQ1IHR6dz4huElB1Bii91e+PrDSR4Vet1UhvaYMWE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from LV5PR12MB9779.namprd12.prod.outlook.com (2603:10b6:408:301::14)
- by DM6PR12MB4314.namprd12.prod.outlook.com (2603:10b6:5:211::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.11; Thu, 11 Jun
- 2026 11:47:02 +0000
-Received: from LV5PR12MB9779.namprd12.prod.outlook.com
- ([fe80::8ac8:e862:8ae9:9287]) by LV5PR12MB9779.namprd12.prod.outlook.com
- ([fe80::8ac8:e862:8ae9:9287%3]) with mapi id 15.21.0092.016; Thu, 11 Jun 2026
- 11:47:01 +0000
-Message-ID: <f914773e-14db-439f-8992-87fef0835527@amd.com>
-Date: Thu, 11 Jun 2026 13:46:56 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: xilinx: use FIFO occupancy register to determine
- buffer size
-To: =?UTF-8?Q?Lars_P=C3=B6schel?= <lars.poeschel.linux@edag.com>,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>,
- lars.poeschel@edag.com
-References: <20260611071033.1937983-1-lars.poeschel.linux@edag.com>
- <f98775de-f2a5-48c1-8d30-c39d29d0c4dd@amd.com>
- <e6af23c7-1ba9-4acc-af16-394fde75b4da@edag.com>
-Content-Language: en-US
-From: Michal Simek <michal.simek@amd.com>
-Autocrypt: addr=michal.simek@amd.com; keydata=
- xsFNBFFuvDEBEAC9Amu3nk79+J+4xBOuM5XmDmljuukOc6mKB5bBYOa4SrWJZTjeGRf52VMc
- howHe8Y9nSbG92obZMqsdt+d/hmRu3fgwRYiiU97YJjUkCN5paHXyBb+3IdrLNGt8I7C9RMy
- svSoH4WcApYNqvB3rcMtJIna+HUhx8xOk+XCfyKJDnrSuKgx0Svj446qgM5fe7RyFOlGX/wF
- Ae63Hs0RkFo3I/+hLLJP6kwPnOEo3lkvzm3FMMy0D9VxT9e6Y3afe1UTQuhkg8PbABxhowzj
- SEnl0ICoqpBqqROV/w1fOlPrm4WSNlZJunYV4gTEustZf8j9FWncn3QzRhnQOSuzTPFbsbH5
- WVxwDvgHLRTmBuMw1sqvCc7CofjsD1XM9bP3HOBwCxKaTyOxbPJh3D4AdD1u+cF/lj9Fj255
- Es9aATHPvoDQmOzyyRNTQzupN8UtZ+/tB4mhgxWzorpbdItaSXWgdDPDtssJIC+d5+hskys8
- B3jbv86lyM+4jh2URpnL1gqOPwnaf1zm/7sqoN3r64cml94q68jfY4lNTwjA/SnaS1DE9XXa
- XQlkhHgjSLyRjjsMsz+2A4otRLrBbumEUtSMlPfhTi8xUsj9ZfPIUz3fji8vmxZG/Da6jx/c
- a0UQdFFCL4Ay/EMSoGbQouzhC69OQLWNH3rMQbBvrRbiMJbEZwARAQABzSlNaWNoYWwgU2lt
- ZWsgKEFNRCkgPG1pY2hhbC5zaW1la0BhbWQuY29tPsLBlAQTAQgAPgIbAwULCQgHAgYVCgkI
- CwIEFgIDAQIeAQIXgBYhBGc1DJv1zO6bU2Q1ajd8fyH+PR+RBQJn8lwDBQkaRgbLAAoJEDd8
- fyH+PR+RCNAP/iHkKbpP0XXfgfWqf8yyrFHjGPJSknERzxw0glxPztfC3UqeusQ0CPnbI85n
- uQdm5/zRgWr7wi8H2UMqFlfMW8/NH5Da7GOPc26NMTPA2ZG5S2SG2SGZj1Smq8mL4iueePiN
- x1qfWhVm7TfkDHUEmMAYq70sjFcvygyqHUCumpw36CMQSMyrxyEkbYm1NKORlnySAFHy2pOx
- nmXKSaL1yfof3JJLwNwtaBj76GKQILnlYx9QNnt6adCtrZLIhB3HGh4IRJyuiiM0aZi1G8ei
- 2ILx2n2LxUw7X6aAD0sYHtNKUCQMCBGQHzJLDYjEyy0kfYoLXV2P6K+7WYnRP+uV8g77Gl9a
- IuGvxgEUITjMakX3e8RjyZ5jmc5ZAsegfJ669oZJOzQouw/W9Qneb820rhA2CKK8BnmlkHP+
- WB5yDks3gSHE/GlOWqRkVZ05sUjVmq/tZ1JEdOapWQovRQsueDjxXcMjgNo5e8ttCyMo44u1
- pKXRJpR5l7/hBYWeMlcKvLwByep+FOGtKsv0xadMKr1M6wPZXkV83jMKxxRE9HlqWJLLUE1Q
- 0pDvn1EvlpDj9eED73iMBsrHu9cIk8aweTEbQ4bcKRGfGkXrCwle6xRiKSjXCdzWpOglNhjq
- 1g8Ak+G+ZR6r7QarL01BkdE2/WUOLHdGHB1hJxARbP2E3l46zsFNBFFuvDEBEACXqiX5h4IA
- 03fJOwh+82aQWeHVAEDpjDzK5hSSJZDE55KP8br1FZrgrjvQ9Ma7thSu1mbr+ydeIqoO1/iM
- fZA+DDPpvo6kscjep11bNhVa0JpHhwnMfHNTSHDMq9OXL9ZZpku/+OXtapISzIH336p4ZUUB
- 5asad8Ux70g4gmI92eLWBzFFdlyR4g1Vis511Nn481lsDO9LZhKyWelbif7FKKv4p3FRPSbB
- vEgh71V3NDCPlJJoiHiYaS8IN3uasV/S1+cxVbwz2WcUEZCpeHcY2qsQAEqp4GM7PF2G6gtz
- IOBUMk7fjku1mzlx4zP7uj87LGJTOAxQUJ1HHlx3Li+xu2oF9Vv101/fsCmptAAUMo7KiJgP
- Lu8TsP1migoOoSbGUMR0jQpUcKF2L2jaNVS6updvNjbRmFojK2y6A/Bc6WAKhtdv8/e0/Zby
- iVA7/EN5phZ1GugMJxOLHJ1eqw7DQ5CHcSQ5bOx0Yjmhg4PT6pbW3mB1w+ClAnxhAbyMsfBn
- XxvvcjWIPnBVlB2Z0YH/gizMDdM0Sa/HIz+q7JR7XkGL4MYeAM15m6O7hkCJcoFV7LMzkNKk
- OiCZ3E0JYDsMXvmh3S4EVWAG+buA+9beElCmXDcXPI4PinMPqpwmLNcEhPVMQfvAYRqQp2fg
- 1vTEyK58Ms+0a9L1k5MvvbFg9QARAQABwsF8BBgBCAAmAhsMFiEEZzUMm/XM7ptTZDVqN3x/
- If49H5EFAmfyXCkFCRpGBvgACgkQN3x/If49H5GY5xAAoKWHRO/OlI7eMA8VaUgFInmphBAj
- fAgQbW6Zxl9ULaCcNSoJc2D0zYWXftDOJeXyVk5Gb8cMbLA1tIMSM/BgSAnT7As2KfcZDTXQ
- DJSZYWgYKc/YywLgUlpv4slFv5tjmoUvHK9w2DuFLW254pnUuhrdyTEaknEM+qOmPscWOs0R
- dR6mMTN0vBjnLUeYdy0xbaoefjT+tWBybXkVwLDd3d/+mOa9ZiAB7ynuVWu2ow/uGJx0hnRI
- LGfLsiPu47YQrQXu79r7RtVeAYwRh3ul7wx5LABWI6n31oEHxDH+1czVjKsiozRstEaUxuDZ
- jWRHq+AEIq79BTTopj2dnW+sZAsnVpQmc+nod6xR907pzt/HZL0WoWwRVkbg7hqtzKOBoju3
- hftqVr0nx77oBZD6mSJsxM/QuJoaXaTX/a/QiB4Nwrja2jlM0lMUA/bGeM1tQwS7rJLaT3cT
- RBGSlJgyWtR8IQvX3rqHd6QrFi1poQ1/wpLummWO0adWes2U6I3GtD9vxO/cazWrWBDoQ8Da
- otYa9+7v0j0WOBTJaj16LFxdSRq/jZ1y/EIHs3Ysd85mUWXOB8xZ6h+WEMzqAvOt02oWJVbr
- ZLqxG/3ScDXZEUJ6EDJVoLAK50zMk87ece2+4GWGOKfFsiDfh7fnEMXQcykxuowBYUD0tMd2
- mpwx1d8=
-In-Reply-To: <e6af23c7-1ba9-4acc-af16-394fde75b4da@edag.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR13CA0031.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::6) To LV5PR12MB9779.namprd12.prod.outlook.com
- (2603:10b6:408:301::14)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WXdGfeEV"
+Message-ID: <0a333eb8-fc29-4b85-993e-6b726f4c7cf0@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781179534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5DWhVGO5QRW1VdI6faudwwsJfHG4kEahgJYviymqApU=;
+	b=WXdGfeEVGSAo++golesa9RqlwDWjUI0heMbmJ+0qysjw6M0vMDyoHOMF4BIo7IvkX4TAc/
+	st1Pw4GNLqtv7J36ZsIWUbhzXpD6Xr1bl3yfaJx2Itop5AMoYvIiJY7F17AB8z2GFhlVk4
+	dNxzkmi6tes/wrxDPVh7NfIty6mQlso=
+Date: Thu, 11 Jun 2026 20:04:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV5PR12MB9779:EE_|DM6PR12MB4314:EE_
-X-MS-Office365-Filtering-Correlation-Id: 427a0c5e-d764-4345-2440-08dec7af26d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|56012099006|6133799003|5023799004|11063799006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	CgAuRkhtAYepYI87gRmYq0z0KfqYZK9ktLKY9GpLGbpJYcZmvAYMLPPTrCW9vTHrN0i3+SBBILhm7YyYkjCDVwXbjA7KxoeGU7GM7NEX2Qq9wg8ADjfULa0qy2mqL/HLp9Xp8nGRPkkrCJO6ZfiBE8IGVMwj/m3rTNIW3HA+8Z8dqe74spiWvYOOpgfCs5z3q0iL5T3fvuRLJAKQfuEciAmSyqCifEL7WMSX9cg4ezZMw3O/Gn5UTE+J4y//77afqwuoiynsLHdFIzyphYqyD+vGiELRud8XPj+5R3pAPk3evHKAfh/mWJBt+qHR2vfRACDU/xqarqfsvqnaoIURX21PTD80d3So7/uUzcI538ukUKTsJnew0D77i1QBOP6Bn7KQmGNie7aLpOk8ww+Ig3C+lcYmHnhrbrYW+1f0tu49SsxRShnDNmF4W/Pnc32/CuUfgcYcd2pl85aBOCPqculV0DOf5bWwoMGaotFovoQjW+/o9hDZQIvLKJXT9xw7OxVAXdRjcXMw10sC4uShV2+b+/bLp7B/cfbL/4LVMWyssg+IaaH5c7+2WBHwPIdVUq9Ve/rKBcMcWOKeFmW7Fc+bcudCInPoICTl26m9QERJrjj+FSqXsGnBgv3ahKxy1jcMkOvlE8rVF8YOk30afAFKyUpi3pXyUOfpX7IIv59nXakkFPxMj1ob+HIA3mGH
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV5PR12MB9779.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(56012099006)(6133799003)(5023799004)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cGN1Y2RWRDRrUCtIT3JKNm1zQzNVWlZnVFNpdFVVUTZHcEdoUGF4TktTU2RJ?=
- =?utf-8?B?Wjk4Sit5VGVMb21IVk8rMWFaQ1AzdVhlK3MzTisybUZRNUNuOGxZVmNFYTB1?=
- =?utf-8?B?K2Vqd1dEbHgzYVJ4SkordSt4dkJEa0ZPdm5SZ1FtSGp5Qjg3aEFScENuU1Np?=
- =?utf-8?B?R1pOV2hQUWcwdEZ1MzltNHk0NG9WYVN6L2h2WTU3aitaZVZ6bUx2a1JuZDRh?=
- =?utf-8?B?T0NML0Nxb2gxNEpJUHZta2FnNk0ya3g5QXlEWUFvcUJxNW5ocUJtRWMrOWVQ?=
- =?utf-8?B?SXp3cWdlR1ZFL3RJRUJUaHlEdkV2MGtmTWZ1OGp4NnFzVXFPangwSTNPdk5h?=
- =?utf-8?B?VUhGWTZndUhNSGZlVXVPWEdRcSt6YlBwTFM2aDlMeDNOMkVkQ1VjcktwcStI?=
- =?utf-8?B?Q0ljZkx3VHpEWkFZWTRxVWVWQXIxVUozS3ZScjVSYUo5SmZnWUFrdURTVE9k?=
- =?utf-8?B?dExtdkFRQXB0RlliL1h1RHd2MDBkQWxsUkFrcXZNTGdqb2lKUzVibUxHUzFj?=
- =?utf-8?B?YVEvUGR0RXkvSWk5QUp1WWFSQXJyeCtFYndCSy95WWtYb2V0T3g4TjZjOGxa?=
- =?utf-8?B?aEZFRWJoZ3NhWHl2UHJBV3hQRDJFcmhsSWt3ODVMVlZiSWF0dHdOcXVKUTdU?=
- =?utf-8?B?Q1BQVFZMRUJaQ0sxeEdGL0ZhclhyczBNSHE5d3dRNVJFTVZNMFl5UGc1WDQ3?=
- =?utf-8?B?N3pJTWcrSVZkbm9vN0ZHMytlVTcrRWJObWQrZjJwYVJmRHA3dVllY3FBUzZh?=
- =?utf-8?B?MFpuZUg0RFhLQWhQakFSZDJUdjZOQ241WDBNbEFXM21OVCs5Y3pQblphZUFv?=
- =?utf-8?B?MEl0cUdJSlhLa1M2UGpud25hcWx1WndvUktnbGhqVkxndEM4VjJwclZESmNX?=
- =?utf-8?B?Qk0rNHlFVjJYVG1UZHpxUms0SDA2YlIrNTNacmx6Z3N2Qy9SenEvTDhPQXZX?=
- =?utf-8?B?cHpFTkFieUV5MlQ3ajV5WnZUT09QT1FBa1BWUTRJU1ZNakg2SUhnR3BCU1Ri?=
- =?utf-8?B?cEgwVlhMMzAxUmhJSnR6ekxlSlpBaFpwMnFmYmIrQWJ2RGpLMWwrTjN2RHVj?=
- =?utf-8?B?amd6N0xJRDlzNjRaWFhDaWlMaUhWRCtjS2VjcjZnVWIyN3YzZEF5NlV1eXpk?=
- =?utf-8?B?Z25ONzZQbnRpTmZreG1RbXpoV0g0d2l0UWNRZ1BJUThqRTdOa3RVVlNUcHdi?=
- =?utf-8?B?VjlUMkdrWXIrQXVXZ1hpREdra2VrWXJLOVEzeUI0N3BEdTVhSWxsR2hOclZ4?=
- =?utf-8?B?WUl1OHhPUmxkTXdlMUNCdUFTd2pkZk9GeFpROXJ4TS9ENXlqK3VkaS92cTlR?=
- =?utf-8?B?U21nVENlSHNuZUdMWTQ5RVR0U3BFbU9EM0dlaDkwQ3pvUmduMzJkOUVDN2hv?=
- =?utf-8?B?VG1pMytvZGRoZW9tUHdKeE1aeDR4YzAxSzhYZkJjWHNJcFJrQ2xvTzhEbU1x?=
- =?utf-8?B?U3BJc0NJVW5EdFM5OUIzZzkzWVh5eW91RnpKUE4wNTVZckp2VHNkQW1sKzh1?=
- =?utf-8?B?NU5pN3pWc3V3UG1YdDNUeWVHdHRBNDB0OUdDN3h1cW5YVWhST3dzalczeUEr?=
- =?utf-8?B?UTFkbFJENi9ZSXBnbXhZbk1LQlJYaCt1eWhsaTRURUxwTU9pZnRabEE2OHQz?=
- =?utf-8?B?ek5scW9UWXkyZzQ4MFNORWhMMU1xUjVSRWE3TlN3c3JrNmdqN0paZisvY1lr?=
- =?utf-8?B?M1M1eW9rU29WYzBoVncyekI4NytRWmRUYXdEdXRQdlEwUzVWSmdHSUE2YUFo?=
- =?utf-8?B?aVZuSWZzV1RMaEhHS1RJQVhMSVROVjcyUTNyQ21ZSTZuQU1taW9BK2k4R1JZ?=
- =?utf-8?B?SjlzNEpkSUpHQjFuVXpMS0FsQ0RIdXhPOHBqcUN3OVI1WXhMN0cyaGh0WGtk?=
- =?utf-8?B?V0dUUzQxdm9zMEFjOUhvWCtFSFZ3TGZOdGNLRFdUUkU5dFc2U0xiZEtQSFZ6?=
- =?utf-8?B?Q3hsKzZEVGphRlIwLzl4V1RLMDZ4Mm9nRXNTQVcyUHF6Y3hEempucjBpRDJN?=
- =?utf-8?B?SEpxazlGb0R0M3hlTVJjYjNEelhtcXRncSs0cmVnb3M2Qk4vVk9TS1RKMWlY?=
- =?utf-8?B?OWk5ZkxmclY2WWhpQXhFMWVoNzJKcml0R1RKYUEvWEs3a1dlR05xTnVNY2hm?=
- =?utf-8?B?QUZlNnRKcXhvUjRZMjduVVJKYjFuTXRTUDIzT2pNc21FMHFTYUNNZHg1VC9S?=
- =?utf-8?B?ZEtrZ3p1Zjl1R3dhY29vaUNWTmFneWhUNHZMVDZPTG5pcm9XMytRd1g0RVc4?=
- =?utf-8?B?M1BJT2JNSzA4YmcreXlacm51ZEV5OTE3TG9KNzJHOGJEL1dYY3JEdDNMdFJO?=
- =?utf-8?B?SW5XbVl3MGYvRDVuY0FUTkx3S29mbmdvV2lmeXFreHBiaEJRdVUvdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 427a0c5e-d764-4345-2440-08dec7af26d5
-X-MS-Exchange-CrossTenant-AuthSource: LV5PR12MB9779.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 11:47:01.9162
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CLhui0iUC2+WOZQcPDhXUH/DFPdmcJ7Ilk/jzu2lqQoLTMhEEgeS41/IXfqJ+Ttr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4314
+Subject: Re: [PATCH v2 00/14] list: Prepare entry iterators to cache cursor
+ state
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney"
+ <paulmck@kernel.org>, Josh Triplett <josh@joshtriplett.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Eddie James <eajames@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Laxman Dewangan <ldewangan@nvidia.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>, Waiman Long <longman@redhat.com>,
+ drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+ linux1394-devel@lists.sourceforge.net, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-spi@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Christian Brauner
+ <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Kaito Cheng <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>
+References: <20260609061347.93688-1-kaitao.cheng@linux.dev>
+ <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
+ <5152089a-2808-4fe9-b633-b03018105dd2@linux.dev>
+ <ail4AvzqAOXNaU6N@ashevche-desk.local>
+ <9b98e860-11df-44bf-9a95-3046d2c274a6@linux.dev>
+ <aipbojSeMH-usARY@ashevche-desk.local>
+ <83ba73d8-27d3-4ee9-a143-7dfe4cb827be@linux.dev>
+ <aippVAj83dCzscTN@ashevche-desk.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <aippVAj83dCzscTN@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
 
 
-On 6/11/26 13:36, Lars Pöschel wrote:
-> On 6/11/26 10:52 Michal Simek wrote:
->> +Amit,
->>
->> On 6/11/26 09:10, lars.poeschel.linux@edag.com wrote:
->>> From: Lars Pöschel <lars.poeschel@edag.com>
+在 2026/6/11 15:52, Andy Shevchenko 写道:
+> On Thu, Jun 11, 2026 at 03:36:01PM +0800, Kaitao Cheng wrote:
+>> 在 2026/6/11 14:54, Andy Shevchenko 写道:
+>>> On Thu, Jun 11, 2026 at 12:42:02PM +0800, Kaitao Cheng wrote:
+>>>> 在 2026/6/10 22:43, Andy Shevchenko 写道:
+>>>>> On Wed, Jun 10, 2026 at 02:14:06PM +0800, Kaitao Cheng wrote:
+>>>>>> 在 2026/6/9 18:33, Christian König 写道:
+>>>>>>> On 6/9/26 08:13, Kaitao Cheng wrote:
 >>>
->>> The method the driver uses to determine the size of the FIFO has a
->>> problem. What it currently does is this:
->>> It stops the SPI hardware and writes to the TX FIFO register until TX
->>> FIFO FULL asserts in the status register. But the hardware does not only
->>> have the FIFO, it also seems to have a shift register. This can be seen,
->>
->> I don't think you should guess here
-> 
-> Ok, I will change that.
-> 
->>> when writing a byte to the FIFO (while the SPI hardware is stopped,) the
->>> TX FIFO EMPTY is still empty. So, if we have a FIFO size of 16 for
->>> example, the current method returns a 17.
->>
->>
->>
->>
->>> This is a problem, at least when using the driver in irq mode. The same
->>> size determined for the TX FIFO is also assumed for the RX FIFO. When an
->>> SPI transaction wants to write the amount of the FIFO size or more
->>> bytes, the following happens, let's assume 16 bytes FIFO size:
->>
->> s/let's/for example/
-> 
-> Ok.
-> 
->>> The driver stops the SPI hardware and writes 17 bytes to the TX FIFO and
->>> starts the SPI hardware and goes sleep.
->>> The hardware then shifts out 17 bytes (FIFO + shift register) and
->>> simultaneously reads bytes into the RX FIFO, but it only has 16 places,
->>> so it looses one byte. Then TX FIFO empty asserts, wakes the driver
->>> again, which has a fast path and reads 16 bytes from the RX FIFO, but
->>> before reading the last 17th byte (which is lost) it does this:
+>>>>>>>> This series prepares for, and then updates, the list_for_each_entry()
+>>>>>>>> family so the common entry iterators cache their next or previous cursor
+>>>>>>>> before the loop body runs.
+>>>>>>>
+>>>>>>> Why in the world would we want to do that?
+>>>>>>>
+>>>>>>> The safe and non-safe variants have very distinct use cases and that is completely intentional.
+>>>>>>>
+>>>>>>> What we could improve maybe is the documentation, from my experience an astonishing large amount of people have misconceptions about the safe variants.
+>>>>>>>
+>>>>>>>> The first 13 patches open-code loops that intentionally depend on the
+>>>>>>>> old "derive the next entry from the current cursor at the end of the
+>>>>>>>> iteration" behaviour.  These loops append work to the list being walked,
+>>>>>>>> restart traversal after dropping a lock, skip an entry consumed by the
+>>>>>>>> current iteration, or otherwise adjust the cursor in the loop body.
+>>>>>>>
+>>>>>>> Well I have to clearly reject the changes for subsystems/components I'm maintaining, that just looks horrible to me and I clearly don't see a good reason for that.
+>>>>>>
+>>>>>> Hi Christian and Andy Shevchenko,
+>>>>>>
+>>>>>> Thanks for taking a look. I would like to clarify the point you raised.
+>>>>>>
+>>>>>> The reason I started looking at this is the original motivation behind
+>>>>>> the _safe() variants.  They exist because some users need to remove, move
+>>>>>> or otherwise consume the current entry while walking the list.  In that
+>>>>>> case the next cursor has to be preserved before the loop body can modify
+>>>>>> the current entry.
+>>>>>>
+>>>>>> The unfortunate part is that this could not be expressed with the
+>>>>>> existing list_for_each_entry() interface without changing its calling
+>>>>>> convention.  The _safe() variants had to grow an extra argument for the
+>>>>>> temporary cursor, and that is why we ended up with a separate family of
+>>>>>> macros.
+>>>>>>
+>>>>>> But conceptually, the distinction does not have to be exposed as two
+>>>>>> different iterator families forever.  The difference is an implementation
+>>>>>> detail: whether the iterator keeps the next/previous cursor before the
+>>>>>> body runs.  This series makes the common list_for_each_entry() iterators
+>>>>>> do that internally, so the safe and non-safe forms can effectively be
+>>>>>> folded together, or at least the need for a separate public _safe()
+>>>>>> interface becomes much weaker.
+>>>>>>
+>>>>>> There is also a usability issue with the current _safe() interface.  The
+>>>>>> caller is forced to define a temporary cursor outside the macro and pass
+>>>>>> it in, even though almost all users never use that cursor directly.  It is
+>>>>>> just boilerplate required by the macro implementation.  I find that
+>>>>>> redundant and awkward: the temporary cursor is an internal detail of the
+>>>>>> iteration, but every caller has to spell it out.
+>>>>>
+>>>>> Ah, I think the distinct macro families is that what we want.
+>>>>> But the hiding of the parameter can be done inside list_for_each_*_safe().
+>>>>> You can do a treewide change with coccinelle.
+>>>>>
+>>>>> Sorry if I didn't get the whole idea from your previous contributions.
+>>>>>
+>>>>> Note, even cases that would need a temporary cursor may be switched to
+>>>>> new list_for_each_*_safe(), see how PCI macros for iterating over resources
+>>>>> are implemented (include/linux/pci.h).
+>>>>
+>>>> Thanks for your suggestions. I've written a demo based on your feedback.
+>>>> Could you please review it and share your thoughts on this approach?
 >>>
->>>     sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
->>>     if (!(sr & XSPI_SR_RX_EMPTY_MASK)) {
->>>         xilinx_spi_rx(xspi);
->>>         rx_words--;
->>>     }
->>>
->>> It reads the status register and checks if the RX FIFO is not empty.
->>> But it is empty in our case. So this check spins in a while loop
->>> forever locking the driver.
->>>
->>> The new method for determining the FIFO size is to read the SPITFOR (TX
->>> FIFO occupancy register, value = occupancy - 1) after filling the TX
->>> FIFO to obtain the true FIFO storage depth, which also equals the RX
->>> FIFO depth. In non-FIFO configurations (n_words == 1) the register does
->>> not exist; return 1 directly in that case.
->>>
+>>> Have you checked how many users actually need the temporary storage?
 >>
->> missing fix tag.
+>> In Muchun's reply, he mentioned the following:
+>>
+>> There are 9,925 list_for_each_entry() call sites in total. Among them,
+>> 9,919 do not require any adaptation, and only 6 need to be refactored:
+>>
+>> As for list_for_each_entry_safe(), there are 4,572 callers. 4,550 of them
+>> can be directly replaced by the new list_for_each_entry(), while 22 cannot
+>> be replaced
+>>
+>> https://lore.kernel.org/all/2B3BFA1E-08B8-42AB-87D6-A28BF15E5C58@linux.dev/
+>>
+>> I only used Coccinelle to scan for list_for_each_entry() call sites, and
+>> found the 13 call sites shown in the current patch series, which cover
+>> the 6 cases mentioned in Muchun's email. I have not yet run the Coccinelle
+>> scan for list_for_each_entry_safe().
+>>
+>> If we need to handle all 9,925 list_for_each_entry() call sites or all 4,572
+>> list_for_each_entry_safe() call sites in one go, would such a change be too
+>> large? I expect it would affect almost every kernel subsystem.
 > 
-> Ok, I will add one.
+> If it's done by Linus himself during the day when he prepares -rc1, it's fine.
+> You would need to provide a good justification for the change, though.
 > 
->>> Signed-off-by: Lars Pöschel <lars.poeschel@edag.com>
->>> ---
->>>   drivers/spi/spi-xilinx.c | 5 ++++-
->>>   1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
->>> index 9f065d4e27d1..2d31e30fc4eb 100644
->>> --- a/drivers/spi/spi-xilinx.c
->>> +++ b/drivers/spi/spi-xilinx.c
->>> @@ -54,6 +54,7 @@
->>>   #define XSPI_RXD_OFFSET        0x6c    /* Data Receive Register */
->>>   #define XSPI_SSR_OFFSET        0x70    /* 32-bit Slave Select Register */
->>> +#define XSPI_TFOR_OFFSET    0x74    /* Transmit FIFO Occupancy Register */
->>>   /* Register definitions as per "OPB IPIF (v3.01c) Product Specification", 
->>> DS414
->>>    * IPIF registers are 32 bit
->>> @@ -377,7 +378,9 @@ static int xilinx_spi_find_buffer_size(struct xilinx_spi 
->>> *xspi)
->>>           n_words++;
->>>       } while (!(sr & XSPI_SR_TX_FULL_MASK));
->>> -    return n_words;
->>> +    if (n_words == 1)
->>> +        return 1;
->>> +    return xspi->read_fn(xspi->regs + XSPI_TFOR_OFFSET) + 1;
->>
->> Based on pg153
->> Exists only when FIFO Depth is set to 16 or 256
->>
->> Based on ds570
->> This register does not exist if C_FIFO_EXIST = 0
->>
->> It means this is not going to work with all HW configurations.
-> 
-> I think it will work with all HW configurations, even with no FIFO configured.
-> You are right, TFOR does not exist in non-FIFO configurations, but then you will 
-> take the
-> 
->      if (n_words ==1)
->          return 1;
-> 
-> path and exit before reading this register. And then according to PG153, Table 
-> 2-6, Tx_Full bit:
-> "Note: When FIFOs do not exist, this bit is set High when an AXI write to the 
-> transmit register has been made (this option is available only in standard SPI 
-> mode). This bit is cleared when the SPI transfer is completed."
-> So n_words should be 1 in this case and I think this should still work.
-> 
->> Pretty much you wanted to use this register to find out how big is the fifo
->> but I think in this case you should be just fixing logic around +-1 caused by 
->> n_words++ in a loop.
->>
->> What about to change logic to be like this? It is clear and it is without any 
->> +1 logic and no fifo is handled separately?
->>
->>          while (1) {
->>
->>                  xspi->write_fn(0, xspi->regs + XSPI_TXD_OFFSET);
->>
->>                  sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
->>
->>                  if (sr & XSPI_SR_TX_FULL_MASK)
->>
->>                          break;
->>
->>                  n_words++;
->>
->>          }
->>
->>
->>
->>
->>          /* Handle NO FIFO case separately */
->>
->>          if (!n_words)
->>
->>                  return 1;
->>
->>
->>
->>
->>          return n_words;
-> 
-> If you still think, this is more clear or better readable, then I can change it 
-> like this. Let me know!
+> But in the above statistics the 4572 vs 4550, so the first step is to investigate
+> why temporary cursor is used in those 22 cases and what we can do to avoid that.
 
-I understand that without FIFO you should never reach that code but I still 
-think it is better not to deal with it. Pretty much if you want to wire this 
-register I think dt binding should be extended to cover this optional feature.
-That's why I think it is better not to introduce it.
+Here is one example: in shmem_unuse() in mm/shmem.c, list_for_each_entry_safe()
+is used. In this case, the caller releases shmem_swaplist_lock inside the loop.
+During that window, the list may be modified, and the previously saved next may
+become stale. Therefore, next needs to be recomputed so that subsequent iteration
+is based on the latest list state.
 
-Thanks,
-Michal
+This leads to two possible approaches:
+
+1. Change list_for_each_entry_safe(pos, n, head, member) directly to
+list_for_each_entry_safe(pos, head, member). If we do this, the case
+above would need to be converted to an open-coded form.
+
+2. Support both forms, list_for_each_entry_safe(pos, n, head, member)
+and list_for_each_entry_safe(pos, head, member), as described in the
+link below.
+https://lore.kernel.org/all/9b98e860-11df-44bf-9a95-3046d2c274a6@linux.dev/
+
+Do you have any other thoughts on this?
+
+>> I wonder whether it would be better to first provide the necessary
+>> compatibility APIs, and then let each subsystem owner update their code as
+>> appropriate. That would make the impact more controlled, similar to how
+>> the current folio replacement of page is being handled.
+-- 
+Thanks
+Kaitao Cheng
 

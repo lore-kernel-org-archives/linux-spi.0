@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF963F8259;
-	Thu, 11 Jun 2026 12:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243643FF8A3;
+	Thu, 11 Jun 2026 14:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781181507; cv=none; b=K4AYnwopCG4s4ypzxYsG88Kpgm+7Ol3ecvypfDT8r3TCNPVjSBl4/ZbVmaEUg8iAprikFuT68u5+aCKZ/kkDD7wpv5UQKmZXbOQZBVn+FAZdGlfXVKaUr2EDO0Bh4eNj5UTBj8WF/XaifxPwl9P4YPSy341woBNBX+nYJgVBvRE=
+	t=1781186975; cv=none; b=iB++aJbo5d67l3GQ0Nyzm45NjbEBNJ9EXk69PCTJ0TbS9j8/vEA1akfI3AYvX/pmPvcIsReqUD5TA03TnoFuVVBXtnDyA18LMeNoBC/rISD4LUzhz3IQT3fBbcaMGwayq0HCwV9XuOntI4hevX2nKM7Np/gCv0I03+1Y3eTuNKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781181507; c=relaxed/simple;
-	bh=JUdOpN+Ja2gfpQItzo6Jr4RkfZ1mhWS1VBmUcFBiVTw=;
+	s=arc-20240116; t=1781186975; c=relaxed/simple;
+	bh=8kALzxCILqnsDSi7OPFFkSWPNmnSPH+VmVuXXrYuTw8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jUbAdxNCYHYkUCwv2f/LTzO+3pAnSu48VoebB8fkBHyhqL0LPeDfq2mMwoePnyd1uVjdjQ2udTZhU0QuCteq/vwzXWK6NBTZ2Glduz0eX7e2cNHhNbwtuW6RVMkA4DPINhAqSOiV1FiUjbqUWWnBXgYUZ9lcIpVvrTmKQCY3Ct0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyRtAqhr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=UAlVFVuchoDp73nUK2h43HVRQQuLHFuzxNT5fmf9qkeeeQX/H1cVqX4gdUYR3WzfjoIXLt/OMWOSHLXSM8TNfCF3o86IpEwVn/Eu6ECL6N1RgmjZ9e1QYecvGQDSt+1ROm12p3TV+6QFV0BjFkLFHggKsrfiXBXpgqGNXLPBL6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2QYmsO6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyRtAqhr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C7C1F0089A;
-	Thu, 11 Jun 2026 12:38:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2QYmsO6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A0E1F00893;
+	Thu, 11 Jun 2026 14:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781181505;
-	bh=JUdOpN+Ja2gfpQItzo6Jr4RkfZ1mhWS1VBmUcFBiVTw=;
+	s=k20260515; t=1781186974;
+	bh=8kALzxCILqnsDSi7OPFFkSWPNmnSPH+VmVuXXrYuTw8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SyRtAqhrsWQk0woUsGurZF9vMGK0XEJ1Hcn03RVyT+8THSH2k/JRPBYMy63G/gi4g
-	 wPAehDWrHwTVwt3KP6H+dhdgrReNp7J8oBU1QLf1D3/WDuAG2m3uttpTP+SlvB0vVN
-	 x5qcDZNcQ+WBjZybtFUEAr2GV1ckk1asuSvJNpmquYheiNNgAWMTRWXSloykaciQb/
-	 QKYmzTgzzbDfm3PAxDUNBhInxMLAxS61397gts08LOncI4AENO72g/qfcrkTCyYSZF
-	 5Z4DNMse93St2H0lhRrROhXfiUcM38x+WAqptztoHo5upxbvZIoYti/5S0tnoFwO+g
-	 gD0VvCmhS72Aw==
+	b=j2QYmsO6wI/9HS6mTERq8MJ2UEEhkhsafRuog9gDXd+PUHdPScMk7N5Afh3ALsi+i
+	 6An2Pb8fmu777x3aA+ynIOBEPfTwkp+thMtFlV+xOJ/Zn5lsKjPL2T+SxTssZpCvWp
+	 YGd4PSqgIsiROAiZRljc4qgXrqor6uDvNYd0d+bsng6tPKeuyxphkL70+4MyAJvTlU
+	 YruMzB5wh469SWXSN+PS0JqKnN/q8rBrOBVINFJXCNtjAbEu32OpVcc25gUOHU8t9B
+	 ZF2XiOBVtKE2KU+157Ck+jDAYlPycCKcX58Nf7IKkaNYMx21MjFny9ssBBVn8tZNsf
+	 ibeLKh97WvHZA==
 Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id A62671AC56C6; Thu, 11 Jun 2026 13:38:22 +0100 (BST)
-Date: Thu, 11 Jun 2026 13:38:22 +0100
+	id 352681AC56C6; Thu, 11 Jun 2026 15:09:31 +0100 (BST)
+Date: Thu, 11 Jun 2026 15:09:31 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Diogo Pimenta <diogo2003pimenta@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Diogo Pimenta <diogo2003.pimenta@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] Documentation: spi: fix SPDX directive formatting
-Message-ID: <aiqsPsypCKzVlIg_@sirena.co.uk>
-References: <20260611110603.2768-1-diogo2003.pimenta@gmail.com>
+To: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Sangyun Kim <sangyun.kim@snu.ac.kr>,
+	Kyungwook Boo <bookyungwook@gmail.com>, stable@vger.kernel.org,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Subject: Re: [PATCH] spi: uniphier: Fix completion initialization order
+ before devm_request_irq()
+Message-ID: <airBmzYhnxuK_xdh@sirena.co.uk>
+References: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,44 +46,36 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zn/BShtAQosTy4FI"
+	protocol="application/pgp-signature"; boundary="2KgV7ttlSOAuFoMN"
 Content-Disposition: inline
-In-Reply-To: <20260611110603.2768-1-diogo2003.pimenta@gmail.com>
+In-Reply-To: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
 X-Cookie: Leave no stone unturned.
 
 
---zn/BShtAQosTy4FI
+--2KgV7ttlSOAuFoMN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 11, 2026 at 11:06:03AM +0000, Diogo Pimenta wrote:
-> Add a blank line after the SPDX directive to satisfy
-> reStructuredText parsing requirements and avoid
-> documentation build warnings reported by the kernel
-> test robot.
+On Thu, Jun 11, 2026 at 08:31:37PM +0900, Kunihiko Hayashi wrote:
+> The driver calls devm_request_irq() before initializing the completion
+> used by the interrupt handler. Because the interrupt may occur immediately
+> after devm_request_irq(), the handler may execute before init_completion().
 
-You've sent three different similarly titled patches in the past 12
-hours or so, what's going on here?
+This doesn't apply against current code, please check and resend.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
-
---zn/BShtAQosTy4FI
+--2KgV7ttlSOAuFoMN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoqrD0ACgkQJNaLcl1U
-h9BLCwf/TSCypIcWd6J9Ey0dv0awgqngo0kqP37gtUoP9NCisNZQLie84H0M+X3S
-7x49fWLcEpJyGMZ2IY48HJUVeUYn80loTqCm4+2iNT2JLRCG+d8qavapgew/GGAN
-hlOB54ZDWwGVr2nWlJEJ+1YEZIonz74KpIcEP66PEEc60evDKR4rnOse5ifg551x
-HArmCk94bQVvrlQMnN8gqrc0rvvnK1hiwcvQa/Mo1+N068F+c/ZImDRphRi0X9BS
-+M1I65xoUSK/3fEe+ov+9vaIltYOGHi9kH3qp3m+B1LOre6tnkU/XAWvku0ISeE/
-7ZOqZyHO4zTpDyUr0YAK5bmOuK+BQw==
-=sBM5
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoqwZoACgkQJNaLcl1U
+h9D0Jgf/RBZfe+cdXTQ3yCoVQhnlmf/yAUsGSFW8vWNaHhOKevTLgHWYc/u8U4+o
+EH+h7ITKfQCJZ1dDNfjqjNVWDzAsp9DKTtr9GtY/PINxxB6F6vJuTNiAyEb7wKOM
+ORlcnU795uLloueMNaIF8LictF6DIWoM8czmMT41qh6GoTeWo0j3p9stf/Xu9Cqs
+ggKVnP/rmfQYqBoyifm0AHxFQOnSfZU8ILVwSWNzIxXH5Sxyg7j21Vnfmt2vUu+Z
+HHIbJXDhOnPXN2IgTFdrC6uGOh6kbHXfk3PKhUISEL+rPbp6Lzax/nxCjxXDR5Rc
+4QWkwS8ZVPf5eh3ci/YA1DnjaJu04g==
+=pTxp
 -----END PGP SIGNATURE-----
 
---zn/BShtAQosTy4FI--
+--2KgV7ttlSOAuFoMN--

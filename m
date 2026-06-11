@@ -1,72 +1,39 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACEC368D79
-	for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 11:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837C936EA8B;
+	Thu, 11 Jun 2026 11:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781175971; cv=none; b=rFXXqTkaotGvSsfNDCuohSpBdqxSMm6YTf4nOXRH7tk5NT13/bOrMe26QqBECfNJz8UDT9BygVBPm9Y7bFHLMBZUuFXjKpoxEgISVDcRYibYA24y8yIsBprB4yDfP7fDilT/f8b+7vcc1SahDlQAjUFBkgEdvKvI+Q2xyNAz+2Q=
+	t=1781177504; cv=none; b=YIMWoUSZgRmmhfqUBHeIb7gdKU6OuWrCWGuVdoYTfwUYgvyQXY0nqLr7Sl0b+qovvqVurwkS6GRybeVDW0oc5mzFdU0OsrfHMvu91LUINMx4Qe8hB/mUnljk/G+coU3+ZrLZASyY87aDlaoptFnYOFFyPKRDrlPHBKBWpd/U5yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781175971; c=relaxed/simple;
-	bh=//6zCP+8PiYss4+CbcuOVeL3bsOkfJT1WzeWTbr71fo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rx/r1FKdQHaynb9+cIQERempA+A1NlsPofWDNExQX4uzr5ZkkMUe7DJYiEZazx7jozrcCGRA1Nv1TW1YnESvjECZQbn1XZvCoH4VG7JIJZd5AxcT/i57q0zXeglMwyy68B4qb/v16Kn32WjS+nVrxaO0zicR7ug2S5KHYQuruBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=keK0XW2t; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="keK0XW2t"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-46066e640easo405937f8f.1
-        for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 04:06:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781175968; x=1781780768; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufXYSrZtvQlRFd8i2CT02XRwqa4toSjllvW/ZRboweg=;
-        b=keK0XW2tTuc/qlVkopfRVJAT0GQu4X0GYS+xWeDlfCojMXLw3tQ2NcEoyKUaguRaw3
-         bY7xQGLlwiQAqD5srxtHnOKthAu+vL8sJ16vcTNVlyuikY2KpxgsZL2YWBPvRFZV6o+c
-         x1GyVvwmA/EPsaVfiY+0C4kOscGJRy3qLMSTIEIAtEsNmlfmBULF+87NKG7OW0oYGG9b
-         n/PKz7UA7iH13jKl0B0avGkEK1qyPkgOqs3WsGGn21weKubG3gZUV0SJlitArpeshKaS
-         pJboV8Y9pgi/w0NlY9evdaULaPeUZeWqr2eEhq7HvhZfb1GgxUZqjtVnRFRrxnF8rMZY
-         gIQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781175968; x=1781780768;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ufXYSrZtvQlRFd8i2CT02XRwqa4toSjllvW/ZRboweg=;
-        b=qylRCS6wD92MSBJ4LKWAu2Pgmu54OPq6nZHUVbYsnfELzPh26IWSf8jHe6wy9uJdqW
-         K9Hnp2pseAtw8TBCLhKzf5NJfjZ4jY4byZ0ltMZGYRlI5cDAyr32/iqzdYWYdEI06fUk
-         f7yFPiTItlRjSe2ycn+HvlA8xTOW8drN5dNvnICFp//LvFaHe8HZWfjgI4Ltq4fLN45Z
-         uhpgw4Tgu/Fpx3zIz8sxSyO527VkAOrufzp/ATAuU/UviZWRMNig12+w0RQYnCBRclal
-         qPE+BKxf1MVPQj583h8rLLtbXG2VNWqpLJmQiIBc4DsizowLLm632oQHhSSLwYOQjeJd
-         AVZg==
-X-Gm-Message-State: AOJu0Yy3BKIo3SPtKxgzXqJtrBfSIiaWG75+Rm4+AUV3xGDtGW2Tbmus
-	Y427OMvlCGQ1eyS02OqWArxrqXfslG9k3YnlTdeTik7avWPfBwAqAxnw
-X-Gm-Gg: Acq92OFJCYCU8vw+hApDdsTM9+fLnXS8vvDZLQwcJdfhNpUY24eyXDqA47SwY5P13mt
-	QUmlOkPWIIbLFJz2EnzbvVAHhYCHMTBZHZ8Iq7hLDONK6JrWSmTS17X7gnmcHqZTRDvnIpFFWu+
-	UOdO2yF8C4EVdbH29lqVbfR3I3f7a5IHtWako45ic4feL7oDaHO4pzD2u0ZHAqZXuzkkbEtXrHq
-	fySZLklQlclgfxnIAmEFais4TpFhQNa0rGGGFWC7xAxCeJxMjnQwOTkX3c6y8ABA1H7Eb0ZZa6D
-	ZGtxLfYSdywqsPNMVhAaqQAjp67fS9mDXOm0sTT9xcPQfYKKiKVoM5wabq+jy3YJ+6ManGYLeEG
-	JimTmFWD5aI6IWk223pFjPZaqUyBFjAjtZjhHbtPNPcOV0/bYrNj3/8wJKUdnt4KR0DHrYNr9MI
-	9sUDadpr9Wt5l+RTZhZbu22zqxaly+miHEON0iVyBFkNdOIBab/iO4SMHuAwKkXBUsWBQ9nDjl2
-	+o3jZNXAHeTPSYCOgoFo/qWTVWI1zDtQQ==
-X-Received: by 2002:a5d:6f1e:0:b0:460:3234:4474 with SMTP id ffacd0b85a97d-460677ee84fmr3470976f8f.42.1781175967981;
-        Thu, 11 Jun 2026 04:06:07 -0700 (PDT)
-Received: from linux-kernel ([2a01:11:f30:3290:a00:27ff:fe92:9192])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4601f2dcae2sm85935203f8f.6.2026.06.11.04.06.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jun 2026 04:06:07 -0700 (PDT)
-From: Diogo Pimenta <diogo2003pimenta@gmail.com>
-X-Google-Original-From: Diogo Pimenta <diogo2003.pimenta@gmail.com>
-To: broonie@kernel.org
-Cc: linux-spi@vger.kernel.org,
+	s=arc-20240116; t=1781177504; c=relaxed/simple;
+	bh=vJ+2z3KiFFcyk3WXTDYMQmbKcwmaoNq+idUVtfNtL1Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sSbHISS6VE8htFAkYQqv1rISJ6a70+h94uxbsR/9dRhGv2ACA/V0/ZZ40G4D9vRPAETJgIJphdIE4cIEPVOhLIZLQ9msdCA31eg7QAGzaHg0wkCml9wBsyBAr4eiteckUl/3+yWeGwHRCnph2SRhFGr4ZlRA/fInkw+8lqsk9nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
+Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 11 Jun 2026 20:31:40 +0900
+Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
+	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 182E42068E61;
+	Thu, 11 Jun 2026 20:31:40 +0900 (JST)
+Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Thu, 11 Jun 2026 20:31:40 +0900
+Received: from plum.e01.socionext.com (unknown [10.212.245.39])
+	by kinkan3.css.socionext.com (Postfix) with ESMTP id 852A515FF;
+	Thu, 11 Jun 2026 20:31:39 +0900 (JST)
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Diogo Pimenta <diogo2003.pimenta@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] Documentation: spi: fix SPDX directive formatting
-Date: Thu, 11 Jun 2026 11:06:03 +0000
-Message-ID: <20260611110603.2768-1-diogo2003.pimenta@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Sangyun Kim <sangyun.kim@snu.ac.kr>,
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	stable@vger.kernel.org,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Subject: [PATCH] spi: uniphier: Fix completion initialization order before devm_request_irq()
+Date: Thu, 11 Jun 2026 20:31:37 +0900
+Message-Id: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -75,29 +42,47 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a blank line after the SPDX directive to satisfy
-reStructuredText parsing requirements and avoid
-documentation build warnings reported by the kernel
-test robot.
+The driver calls devm_request_irq() before initializing the completion
+used by the interrupt handler. Because the interrupt may occur immediately
+after devm_request_irq(), the handler may execute before init_completion().
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202606111027.TFnhhj2n-lkp@intel.com/
+This may result in calling complete() on an uninitialized completion,
+causing undefined behavior. This has been observed with KASAN.
 
-Signed-off-by: Diogo Pimenta <diogo2003.pimenta@gmail.com>
+Fix this by initializing the completion before registering the IRQ.
+
+Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
+Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 ---
- Documentation/spi/spi-summary.rst | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-uniphier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/spi/spi-summary.rst b/Documentation/spi/spi-summary.rst
-index 23e07ba4f8cc..c6bbbd9bce9f 100644
---- a/Documentation/spi/spi-summary.rst
-+++ b/Documentation/spi/spi-summary.rst
-@@ -1,4 +1,5 @@
- .. SPDX-License-Identifier: GPL-2.0-only
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index 9e1d364a6198..6d3463fe0e3c 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -659,6 +659,8 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	priv->host = host;
+ 	priv->is_save_param = false;
+ 
++	init_completion(&priv->xfer_done);
 +
- ====================================
- Overview of Linux kernel SPI support
- ====================================
+ 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(priv->base)) {
+ 		ret = PTR_ERR(priv->base);
+@@ -690,8 +692,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 		goto out_disable_clk;
+ 	}
+ 
+-	init_completion(&priv->xfer_done);
+-
+ 	clk_rate = clk_get_rate(priv->clk);
+ 
+ 	host->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
 -- 
-2.53.0
+2.34.1
 

@@ -1,161 +1,87 @@
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079322F12DA
-	for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 12:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF963F8259;
+	Thu, 11 Jun 2026 12:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781180894; cv=none; b=uPngK5br9nBQjWJQbin/D/0OHKh4QlLGXQB4voCBbu7fUfzhM5SimVXug22/OndqiWJY4DkkkTMTJbiBe7VG7zPqBOPc76RWNWZmTi0MSy8C/eAD0BtYOgcapPwIO4XcKM+DKETqwo7pay40eMazaeibvzDyxkt7IehIAvY3cfs=
+	t=1781181507; cv=none; b=K4AYnwopCG4s4ypzxYsG88Kpgm+7Ol3ecvypfDT8r3TCNPVjSBl4/ZbVmaEUg8iAprikFuT68u5+aCKZ/kkDD7wpv5UQKmZXbOQZBVn+FAZdGlfXVKaUr2EDO0Bh4eNj5UTBj8WF/XaifxPwl9P4YPSy341woBNBX+nYJgVBvRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781180894; c=relaxed/simple;
-	bh=RDiTQ/Lmd64nR5okqaIR9mwmKBXaymSA9H8Ldcbh2Jo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rh25CiIaFyR7iEsJHII9gVNLECcaCtWMuSDRw9Cj1oX38oIktrPjSyscRBqyJGCbatIBHzA0bksm0+UqjD9QoUpvwNJevdbFWgARBeT7e0xIX+P0vJqOsS7e3En/upjmN46eP7tzOh0mQB+bcoUH73IqiR043Y8QUtai96yicUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rFXXpM7I; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1781181507; c=relaxed/simple;
+	bh=JUdOpN+Ja2gfpQItzo6Jr4RkfZ1mhWS1VBmUcFBiVTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jUbAdxNCYHYkUCwv2f/LTzO+3pAnSu48VoebB8fkBHyhqL0LPeDfq2mMwoePnyd1uVjdjQ2udTZhU0QuCteq/vwzXWK6NBTZ2Glduz0eX7e2cNHhNbwtuW6RVMkA4DPINhAqSOiV1FiUjbqUWWnBXgYUZ9lcIpVvrTmKQCY3Ct0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SyRtAqhr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rFXXpM7I"
-Message-ID: <27b726c2-9b72-4b44-9d85-9b1aa12851a2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1781180888;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/UsUeGpou3lVapXWhjq32I6t+zBdHKuqjJl90iVDSiA=;
-	b=rFXXpM7IJOrHQFdgRhKujVf5VdxV6jkKNFlDsX25IoXEP9KJZ8Dv8l5c0nKTafwKXUsRZ9
-	3BPFb1LLg9n4GliYQt3h1fAcAsjSrL2AfeU8aUx/g3f9LERtMslSnnlcG3/NjMtCHL+fHf
-	5Y0xERqt55aedIITIkiJCvpkmeFBkwg=
-Date: Thu, 11 Jun 2026 20:27:05 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SyRtAqhr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C7C1F0089A;
+	Thu, 11 Jun 2026 12:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781181505;
+	bh=JUdOpN+Ja2gfpQItzo6Jr4RkfZ1mhWS1VBmUcFBiVTw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SyRtAqhrsWQk0woUsGurZF9vMGK0XEJ1Hcn03RVyT+8THSH2k/JRPBYMy63G/gi4g
+	 wPAehDWrHwTVwt3KP6H+dhdgrReNp7J8oBU1QLf1D3/WDuAG2m3uttpTP+SlvB0vVN
+	 x5qcDZNcQ+WBjZybtFUEAr2GV1ckk1asuSvJNpmquYheiNNgAWMTRWXSloykaciQb/
+	 QKYmzTgzzbDfm3PAxDUNBhInxMLAxS61397gts08LOncI4AENO72g/qfcrkTCyYSZF
+	 5Z4DNMse93St2H0lhRrROhXfiUcM38x+WAqptztoHo5upxbvZIoYti/5S0tnoFwO+g
+	 gD0VvCmhS72Aw==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id A62671AC56C6; Thu, 11 Jun 2026 13:38:22 +0100 (BST)
+Date: Thu, 11 Jun 2026 13:38:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Diogo Pimenta <diogo2003pimenta@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Diogo Pimenta <diogo2003.pimenta@gmail.com>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] Documentation: spi: fix SPDX directive formatting
+Message-ID: <aiqsPsypCKzVlIg_@sirena.co.uk>
+References: <20260611110603.2768-1-diogo2003.pimenta@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 00/14] list: Prepare entry iterators to cache cursor
- state
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney"
- <paulmck@kernel.org>, Josh Triplett <josh@joshtriplett.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
- Eddie James <eajames@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Laxman Dewangan <ldewangan@nvidia.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>, Waiman Long <longman@redhat.com>,
- drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
- linux1394-devel@lists.sourceforge.net, dri-devel@lists.freedesktop.org,
- intel-gfx@lists.freedesktop.org, linux-spi@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Christian Brauner
- <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Kaito Cheng <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>,
- Philipp Reisner <philipp.reisner@linbit.com>,
- Lars Ellenberg <lars.ellenberg@linbit.com>,
- =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
- Jens Axboe <axboe@kernel.dk>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-References: <20260609061347.93688-1-kaitao.cheng@linux.dev>
- <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
- <5152089a-2808-4fe9-b633-b03018105dd2@linux.dev>
- <6b2efdee-95b0-4306-a682-0d0466497ddb@amd.com>
- <2399841f-d834-4652-8285-4a15c7d9a9b9@linux.dev>
- <d974a2ea-6102-45ff-bf36-3b25a2404e40@amd.com>
- <ail8iNvPrJnE7p58@ashevche-desk.local>
- <92683537-8404-47fe-a4ba-160e54870f0b@amd.com>
- <aipx1goKIsk40vrF@ashevche-desk.local>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <aipx1goKIsk40vrF@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zn/BShtAQosTy4FI"
+Content-Disposition: inline
+In-Reply-To: <20260611110603.2768-1-diogo2003.pimenta@gmail.com>
+X-Cookie: Leave no stone unturned.
 
 
+--zn/BShtAQosTy4FI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-在 2026/6/11 16:29, Andy Shevchenko 写道:
-> On Thu, Jun 11, 2026 at 10:01:25AM +0200, Christian König wrote:
->> On 6/10/26 17:02, Andy Shevchenko wrote:
->>> On Wed, Jun 10, 2026 at 11:11:34AM +0200, Christian König wrote:
->>>> On 6/10/26 10:18, Kaitao Cheng wrote:
->>>>> 在 2026/6/10 16:07, Christian König 写道:
-> 
-> ...
-> 
->>>>> Should we revert to v1, or keep list_for_each_entry() and
->>>>> list_for_each_entry_safe() as they are, close this thread, and make no
->>>>> changes?
->>>>>
->>>>> Link to v1:
->>>>> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
->>>>>
->>>>> Or do you have any better suggestions?
->>>>
->>>> v1 looks perfectly reasonable to me.
->>>
->>> But why not just hiding that once for all (in case they don't use the temporary
->>> iterator)? Easy to automate, robust — everyone is happy?
->>
->> As far as I can see that is an extremely bad idea.
->>
->> The distinction between the use cases of 'iterating the list' and 'iterating
->> the list while you modify it' is completely intentional.
+On Thu, Jun 11, 2026 at 11:06:03AM +0000, Diogo Pimenta wrote:
+> Add a blank line after the SPDX directive to satisfy
+> reStructuredText parsing requirements and avoid
+> documentation build warnings reported by the kernel
+> test robot.
 
-I agree with this point. It is very reasonable for list_for_each_entry()
-to be used only for 'iterating the list'. In practice, however, we do not
-have an effective way to enforce that rule for users, whereas the distinction
-between bool and int can be enforced by the compiler. The 13 patches in the
-current series are all real examples where users modify the list while using
-list_for_each_entry(). Is a rule that cannot actually be enforced reasonable?
-This is just my humble opinion, and I am raising it here only for discussion.
+You've sent three different similarly titled patches in the past 12
+hours or so, what's going on here?
 
-> What I meant is to keep the name, just drop the parameter (make it hidden and
-> being defined inside list_for_each_*_safe() cases).
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-I agree with this approach, but the specific details still need to be settled,
-including the issue described in the link below.
+--zn/BShtAQosTy4FI
+Content-Type: application/pgp-signature; name="signature.asc"
 
-https://lore.kernel.org/all/0a333eb8-fc29-4b85-993e-6b726f4c7cf0@linux.dev/
+-----BEGIN PGP SIGNATURE-----
 
-Of course, there is also the suffix-renaming issue raised by Christian.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoqrD0ACgkQJNaLcl1U
+h9BLCwf/TSCypIcWd6J9Ey0dv0awgqngo0kqP37gtUoP9NCisNZQLie84H0M+X3S
+7x49fWLcEpJyGMZ2IY48HJUVeUYn80loTqCm4+2iNT2JLRCG+d8qavapgew/GGAN
+hlOB54ZDWwGVr2nWlJEJ+1YEZIonz74KpIcEP66PEEc60evDKR4rnOse5ifg551x
+HArmCk94bQVvrlQMnN8gqrc0rvvnK1hiwcvQa/Mo1+N068F+c/ZImDRphRi0X9BS
++M1I65xoUSK/3fEe+ov+9vaIltYOGHi9kH3qp3m+B1LOre6tnkU/XAWvku0ISeE/
+7ZOqZyHO4zTpDyUr0YAK5bmOuK+BQw==
+=sBM5
+-----END PGP SIGNATURE-----
 
->> See the bool type can be implemented by int as well, but it is just a
->> different use case.
-> 
->>>> You should just include some patches in the same patch set to actually use
->>>> the new macros.
->>>>
->>>> If you modify the files under drivers/dma-buf or drivers/gpu/drm/amd to use
->>>> the new macro I'm happy to review that.
->>>
->>
-> 
-
--- 
-Thanks
-Kaitao Cheng
-
+--zn/BShtAQosTy4FI--

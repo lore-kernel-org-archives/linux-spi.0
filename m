@@ -1,180 +1,207 @@
-Received: from BEUP281CU002.outbound.protection.outlook.com (mail-germanynorthazon11020130.outbound.protection.outlook.com [52.101.169.130])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E62E37CD2F;
-	Thu, 11 Jun 2026 07:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.169.130
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781161882; cv=fail; b=hG1I/cRpdBb9nu8l15QI8N+5WJ2bleSyYE9iYqHEqNaJX1ZgmSe1wfPKSDeGz6VDO5kEs8VPuXmM48PzZQfLdMFnMYK4arkrB8dzaez3zrVyTVBcgQ40WNgg/VENc5zPU0LUQEeVdxie/LdYCCelpze7DGWgQ9v6tSna5w/Jh5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781161882; c=relaxed/simple;
-	bh=6AwlHQYXRxegWopR7WFj5WnrYZlrdyMemXxFNEIb1LI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ly1R8ENyfZ5SYB/s1fjCgYBAYF85pd5FYXO4EOvXSAUj9EX+PakEO6194O6YOer5Pf3l2WkQxc1aGVH+Qg9uzZmbgvM22mZD7BHn+250YOrwc20BlVNOQYw7kQPgHwy3OyNcMR1GhYXK5vbnYd0X7aeKfNk6/Z4DKAUzgCVGYBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=edag.com; spf=pass smtp.mailfrom=edag.com; dkim=pass (2048-bit key) header.d=edag.com header.i=@edag.com header.b=Xpypjl+x; arc=fail smtp.client-ip=52.101.169.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=edag.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=edag.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60EB3C2799;
+	Thu, 11 Jun 2026 07:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781163438; cv=none; b=N9+135Zk5AlqAmIUjhSm1L7HA6BdQPRku++kiPLNZ+OT8E1WpIiHx2zgadVUhPCLECjyTZYyUqIsltggceptQJnviTEaa2YOMORKKJTD8Oy5ZgEnST/EjEhcUExafD+T+8so2OLP22c0WJbljQzR303OhXdn1I1xeUN63/KxL1E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781163438; c=relaxed/simple;
+	bh=ZwNEwqWqAH0rsH4PZBcwMWBYPkJpG1mgM+qtK5FzCsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OqEjSFlPyTDOSUP8nvqevjgfzE905hnNBofBSIcaMPcDid7SZ39RDF1oeke87XH4ddANoo/Ks0IQGV+rY5y8SypmF7V0L2pRyFt1Pc6vPB/Sr35C5RitE8sKBr5+0MaOSXBlhhH6bsbYF5uSCasOCj2NjQKZrBXnFbb1ZVMdbK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=b+1Jxg9v; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=edag.com header.i=@edag.com header.b="Xpypjl+x"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=shjPgbqywWCnbsuaWi1TeLQfy8BKmKgqEcmt0eG8KfmCfSAZ+mn15v1NT4oCEwNkSDC9Q3v6PMFCObknRJ5VWaoNYcLLjZ6719gHu895euExph6Ixx5bIE2wjG5oscDiDk4ByRN4p4+NhdhkeNM/8aB2xm2sxcBQCg5ntutiDjR3xayaIzroVz6RYgaDqeHnKQOMIaaG0a7zRPOQQeiMtEG+paa7VKjkvbYbOuwvcV1K4hpwCSq+DDdB5Uf3UBzPi/9/UNT7uvCTURvDcVM57u/o648QULeOsDU28EgDvkXC2j9pjCKl1RFCCKUcynQbA87L59oTZ4SLqtMs8QUqPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5fiOVMt2v4g9GrLIKlOli4aHoq8JKi9WnEm6yRPpkDA=;
- b=ZvgxzA6f3Y/3yla2iyJXQ/hL8eqQ83CwsVKtFm8GoOlErLnvc1w5vBSVH90ivj1kpymwfDozxBxfn10Q4BTBYKDLBbhKGC2IdJTEsM3I7JTpPwn4dPK2LPwMglKcP+pN1kMv8ZGSKN1Py+yv4EBwhcgKR2VMtIcWpF2bBdzXmcnzJYE7wHAATcVZDVHdfUNvo7xAHJcii2dTfmT5XdO15yeSa9YwWyexV/obL7G8hDbtbLsrxE7kO4L0+I792jrkYvV9REFEySVV5Of6/rHCulSMDknIW3mphb5XzWrGYtYatnPtoHydtuSR3MpT6JAeFqmtg24RfkryE8J3CqfF1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.141.91.64) smtp.rcpttodomain=amd.com smtp.mailfrom=edag.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=edag.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=edag.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5fiOVMt2v4g9GrLIKlOli4aHoq8JKi9WnEm6yRPpkDA=;
- b=Xpypjl+xIICeyAV0KBgR/zemk8IksdwwLEZojZKo9sfLwIpWXC9/cyYD4wtA0Ccpiv+eIBRx7ZH78uqny/S36zIGnUfniGW2nbhZCeZw+FrRwvw+iBPETjNm76MZ849u47Em9pDTpHoup2bcdeKZEeyOFBSXoIgfFxgLB51iZ4vpkFpQIfcPq4JMDMfa0CJjV618hGh4XAKWdQpSAq5XtTMpc+9rJC3Btu0vxLRMXmnElrCJ+tRElMX/oP0M8b3tSfR18a1Uw1LeUfvZkZgaOAvNpL+C2JkLEonwkXGJo2MwNZ0/TlVzObSEArp7NELJbvJ9Vmbgeb+KD5G5aP4N5w==
-Received: from BE1P281CA0238.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:8c::11)
- by FRYP281MB0127.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:3::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.18; Thu, 11 Jun 2026 07:11:13 +0000
-Received: from BE1PEPF0000056D.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:8c:cafe::6e) by BE1P281CA0238.outlook.office365.com
- (2603:10a6:b10:8c::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.14 via Frontend Transport; Thu,
- 11 Jun 2026 07:11:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.141.91.64)
- smtp.mailfrom=edag.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=edag.com;
-Received-SPF: Pass (protection.outlook.com: domain of edag.com designates
- 193.141.91.64 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.141.91.64; helo=mxexo01.edag.com; pr=C
-Received: from mxexo01.edag.com (193.141.91.64) by
- BE1PEPF0000056D.mail.protection.outlook.com (10.167.241.6) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.7
- via Frontend Transport; Thu, 11 Jun 2026 07:11:13 +0000
-Received: from lnx06-mail0602.edag.de (smtp.edag.de [10.82.17.140])
-	by mxexo01.edag.com (Postfix) with ESMTPS id 45FE4140061;
-	Thu, 11 Jun 2026 09:11:13 +0200 (CEST)
-Received: from x06-sysimap01.edag.de (x06-sysimap01.edag.de [10.82.18.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by lnx06-mail0602.edag.de (Postfix) with ESMTPS id 3726319F3C7;
-	Thu, 11 Jun 2026 09:11:13 +0200 (CEST)
-Received: from edag-wuerfel.fritz.box (dhcp-10-102-10-49.edag.de [10.102.10.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by x06-sysimap01.edag.de (Postfix) with ESMTPSA id 0066A1C004C;
-	Thu, 11 Jun 2026 09:11:12 +0200 (CEST)
-From: lars.poeschel.linux@edag.com
-To: Mark Brown <broonie@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Lars=20P=C3=B6schel?= <lars.poeschel@edag.com>
-Subject: [PATCH] spi: xilinx: use FIFO occupancy register to determine buffer size
-Date: Thu, 11 Jun 2026 09:10:33 +0200
-Message-Id: <20260611071033.1937983-1-lars.poeschel.linux@edag.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="b+1Jxg9v"
+Message-ID: <83ba73d8-27d3-4ee9-a143-7dfe4cb827be@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1781163433;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tji7AgabbUATaghWjiZhwDG13hGWICfhuUb1cXJUTp0=;
+	b=b+1Jxg9vc+lk8oLrl2ryGqge56LyQH0x4/uvTPLXuGWJDiCSo1AJ26eK71wWGJMLHgc5YA
+	D2g9Os8SKNpzlPOeVTmKlEyQlBDJ6RLe9mhavwKS7JCSSpe+hqtIo/4pQdus2a3B30mWlp
+	pk5eWE7R7j9MPWT1A6e1TVgUEm2OqoA=
+Date: Thu, 11 Jun 2026 15:36:01 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v2 00/14] list: Prepare entry iterators to cache cursor
+ state
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, "Paul E . McKenney"
+ <paulmck@kernel.org>, Josh Triplett <josh@joshtriplett.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Huang Rui <ray.huang@amd.com>,
+ Eddie James <eajames@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Laxman Dewangan <ldewangan@nvidia.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>, Waiman Long <longman@redhat.com>,
+ drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+ linux1394-devel@lists.sourceforge.net, dri-devel@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, linux-spi@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Christian Brauner
+ <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Kaito Cheng <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>,
+ Philipp Reisner <philipp.reisner@linbit.com>,
+ Lars Ellenberg <lars.ellenberg@linbit.com>,
+ =?UTF-8?Q?Christoph_B=C3=B6hmwalder?= <christoph.boehmwalder@linbit.com>,
+ Jens Axboe <axboe@kernel.dk>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>
+References: <20260609061347.93688-1-kaitao.cheng@linux.dev>
+ <bd0b7393-8ccb-4d67-8bfc-18c68347122c@amd.com>
+ <5152089a-2808-4fe9-b633-b03018105dd2@linux.dev>
+ <ail4AvzqAOXNaU6N@ashevche-desk.local>
+ <9b98e860-11df-44bf-9a95-3046d2c274a6@linux.dev>
+ <aipbojSeMH-usARY@ashevche-desk.local>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <aipbojSeMH-usARY@ashevche-desk.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BE1PEPF0000056D:EE_|FRYP281MB0127:EE_
-X-MS-Office365-Filtering-Correlation-Id: beebeeb7-b5dd-4e2f-8988-08dec7889f59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|61400799027|82310400026|23010399003|36860700016|376014|16102099003|18002099003|6133799003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	da2xO1avTpWmMKFks6pfgDq1yksXyNE32U3Ts4XmccIW7J4fsNiVVxwcutMuU+2TvSS8KOmS5kiH0ZrbOgxHcThYBB8OwNT9e3ULv58cO7VmPx/bPkyVqZH1EkTNZ5mudKb4XoGIu8f5UnzL2WjOPujQbM70Hp8JE7xTpgLU3r2BBBntt6Bf5F8jaGVjuRr8kVJ4qF2ZRWohDkngDW7nnEixiwQeEXw3rqa7QChrCi1m0xAD4MkKQ62ofI6FhpgvWau/Ip/XIeQuaLInuQ4V2CQ7FOcDOYwRttc20kZI1E/BGbMGV1pJr5fgmzgFk8piYSKx+v2mPmnBIumtjlCx7pcW+kkfYsLLPMIHXX3WDmtXTTarzeir+bU3eGj5fgXUy5Zr23yX3o7EHyUh+KPH0rv0wGgDeE4Uvu2sxJDttnmLxTkh/HIWx9nfSn4U7D3YAWi9TCKGQfgWJKOmhi+T+jJQMm4NOVAoXKXjp8vJLenmjP+oRjAp6QRRcim7gYaj1qUkFiQiLLSK4v7K9+wo9Fbuj496SQkV9Q9uTNtFDS+OueLmU1h9H9HfQp3G4SrQx7Ty++0hcnEw2NXccJHEhj06cTrkBcJZr0wxuxornuiRnhoiPuLFLzSA14isuf9ueiofcNO1Fn7kTAuB4g7qCsbMD738TzoR3u9bLY6sBlA+lXQu0XoMSug52ZjHZAqSsvYzGdp2KwcZrFrCZaBUSBk3FeNe/OTDC/hLzkySMbM=
-X-Forefront-Antispam-Report:
-	CIP:193.141.91.64;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mxexo01.edag.com;PTR:mxexo01.edag.com;CAT:NONE;SFS:(13230040)(61400799027)(82310400026)(23010399003)(36860700016)(376014)(16102099003)(18002099003)(6133799003)(56012099006)(11063799006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	rsfNZoUEIIGfJM6oHB0rJ58qCJ0ynZRknNBJoTenAKOe5XCYKXbWanZ1IoDB/U0gsMF63d8pb1YLr9RK0szKjcwp2E+DrAmaTo+6B6Q2EfC3SmQkqgC5AM41UFeS6/vuL9HyVEEPUpsOFURjyZHG2Di/ySKOLKzSFhs5go+8NMn/DJF52VmGX4jbu79JWjsg7M7ietGFcQus2ShfSf5/rij1AlHrdOZGQU2jbJdBI3uFe+Ln3sGa3quIXfAVgEV8sQNuoK7TalL2j0irUjEsSfVW4yT9ilRYZ+HaWNIweGJFfXO0hdMRT0VrZxLwH8mu5EEoMwAoMnMuFnFHLhJ6SfJeZeIu1Veu0p1f4agRpM/QdYLRJ2o3P+quW+6jyd7tYzem+YwKysiZo340JY8sn4XHmTDzzzIUdDAX0liHsiUOqlFEO93T/+PBrF9QgKRU
-X-OriginatorOrg: edag.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 07:11:13.5437
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: beebeeb7-b5dd-4e2f-8988-08dec7889f59
-X-MS-Exchange-CrossTenant-Id: 4812a7f3-cbc9-4f88-b59f-87b73b966886
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=4812a7f3-cbc9-4f88-b59f-87b73b966886;Ip=[193.141.91.64];Helo=[mxexo01.edag.com]
-X-MS-Exchange-CrossTenant-AuthSource: BE1PEPF0000056D.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRYP281MB0127
+X-Migadu-Flow: FLOW_OUT
 
-From: Lars Pöschel <lars.poeschel@edag.com>
+在 2026/6/11 14:54, Andy Shevchenko 写道:
+> On Thu, Jun 11, 2026 at 12:42:02PM +0800, Kaitao Cheng wrote:
+>> 在 2026/6/10 22:43, Andy Shevchenko 写道:
+>>> On Wed, Jun 10, 2026 at 02:14:06PM +0800, Kaitao Cheng wrote:
+>>>> 在 2026/6/9 18:33, Christian König 写道:
+>>>>> On 6/9/26 08:13, Kaitao Cheng wrote:
+> 
+>>>>>> This series prepares for, and then updates, the list_for_each_entry()
+>>>>>> family so the common entry iterators cache their next or previous cursor
+>>>>>> before the loop body runs.
+>>>>>
+>>>>> Why in the world would we want to do that?
+>>>>>
+>>>>> The safe and non-safe variants have very distinct use cases and that is completely intentional.
+>>>>>
+>>>>> What we could improve maybe is the documentation, from my experience an astonishing large amount of people have misconceptions about the safe variants.
+>>>>>
+>>>>>> The first 13 patches open-code loops that intentionally depend on the
+>>>>>> old "derive the next entry from the current cursor at the end of the
+>>>>>> iteration" behaviour.  These loops append work to the list being walked,
+>>>>>> restart traversal after dropping a lock, skip an entry consumed by the
+>>>>>> current iteration, or otherwise adjust the cursor in the loop body.
+>>>>>
+>>>>> Well I have to clearly reject the changes for subsystems/components I'm maintaining, that just looks horrible to me and I clearly don't see a good reason for that.
+>>>>
+>>>> Hi Christian and Andy Shevchenko,
+>>>>
+>>>> Thanks for taking a look. I would like to clarify the point you raised.
+>>>>
+>>>> The reason I started looking at this is the original motivation behind
+>>>> the _safe() variants.  They exist because some users need to remove, move
+>>>> or otherwise consume the current entry while walking the list.  In that
+>>>> case the next cursor has to be preserved before the loop body can modify
+>>>> the current entry.
+>>>>
+>>>> The unfortunate part is that this could not be expressed with the
+>>>> existing list_for_each_entry() interface without changing its calling
+>>>> convention.  The _safe() variants had to grow an extra argument for the
+>>>> temporary cursor, and that is why we ended up with a separate family of
+>>>> macros.
+>>>>
+>>>> But conceptually, the distinction does not have to be exposed as two
+>>>> different iterator families forever.  The difference is an implementation
+>>>> detail: whether the iterator keeps the next/previous cursor before the
+>>>> body runs.  This series makes the common list_for_each_entry() iterators
+>>>> do that internally, so the safe and non-safe forms can effectively be
+>>>> folded together, or at least the need for a separate public _safe()
+>>>> interface becomes much weaker.
+>>>>
+>>>> There is also a usability issue with the current _safe() interface.  The
+>>>> caller is forced to define a temporary cursor outside the macro and pass
+>>>> it in, even though almost all users never use that cursor directly.  It is
+>>>> just boilerplate required by the macro implementation.  I find that
+>>>> redundant and awkward: the temporary cursor is an internal detail of the
+>>>> iteration, but every caller has to spell it out.
+>>>
+>>> Ah, I think the distinct macro families is that what we want.
+>>> But the hiding of the parameter can be done inside list_for_each_*_safe().
+>>> You can do a treewide change with coccinelle.
+>>>
+>>> Sorry if I didn't get the whole idea from your previous contributions.
+>>>
+>>> Note, even cases that would need a temporary cursor may be switched to
+>>> new list_for_each_*_safe(), see how PCI macros for iterating over resources
+>>> are implemented (include/linux/pci.h).
+>>
+>> Thanks for your suggestions. I've written a demo based on your feedback.
+>> Could you please review it and share your thoughts on this approach?
+> 
+> Have you checked how many users actually need the temporary storage?
 
-The method the driver uses to determine the size of the FIFO has a
-problem. What it currently does is this:
-It stops the SPI hardware and writes to the TX FIFO register until TX
-FIFO FULL asserts in the status register. But the hardware does not only
-have the FIFO, it also seems to have a shift register. This can be seen,
-when writing a byte to the FIFO (while the SPI hardware is stopped,) the
-TX FIFO EMPTY is still empty. So, if we have a FIFO size of 16 for
-example, the current method returns a 17.
-This is a problem, at least when using the driver in irq mode. The same
-size determined for the TX FIFO is also assumed for the RX FIFO. When an
-SPI transaction wants to write the amount of the FIFO size or more
-bytes, the following happens, let's assume 16 bytes FIFO size:
-The driver stops the SPI hardware and writes 17 bytes to the TX FIFO and
-starts the SPI hardware and goes sleep.
-The hardware then shifts out 17 bytes (FIFO + shift register) and
-simultaneously reads bytes into the RX FIFO, but it only has 16 places,
-so it looses one byte. Then TX FIFO empty asserts, wakes the driver
-again, which has a fast path and reads 16 bytes from the RX FIFO, but
-before reading the last 17th byte (which is lost) it does this:
+In Muchun's reply, he mentioned the following:
 
-	sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
-	if (!(sr & XSPI_SR_RX_EMPTY_MASK)) {
-		xilinx_spi_rx(xspi);
-		rx_words--;
-	}
+There are 9,925 list_for_each_entry() call sites in total. Among them,
+9,919 do not require any adaptation, and only 6 need to be refactored:
 
-It reads the status register and checks if the RX FIFO is not empty.
-But it is empty in our case. So this check spins in a while loop
-forever locking the driver.
+As for list_for_each_entry_safe(), there are 4,572 callers. 4,550 of them
+can be directly replaced by the new list_for_each_entry(), while 22 cannot
+be replaced
 
-The new method for determining the FIFO size is to read the SPITFOR (TX
-FIFO occupancy register, value = occupancy - 1) after filling the TX
-FIFO to obtain the true FIFO storage depth, which also equals the RX
-FIFO depth. In non-FIFO configurations (n_words == 1) the register does
-not exist; return 1 directly in that case.
+https://lore.kernel.org/all/2B3BFA1E-08B8-42AB-87D6-A28BF15E5C58@linux.dev/
 
-Signed-off-by: Lars Pöschel <lars.poeschel@edag.com>
----
- drivers/spi/spi-xilinx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 9f065d4e27d1..2d31e30fc4eb 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -54,6 +54,7 @@
- #define XSPI_RXD_OFFSET		0x6c	/* Data Receive Register */
- 
- #define XSPI_SSR_OFFSET		0x70	/* 32-bit Slave Select Register */
-+#define XSPI_TFOR_OFFSET	0x74	/* Transmit FIFO Occupancy Register */
- 
- /* Register definitions as per "OPB IPIF (v3.01c) Product Specification", DS414
-  * IPIF registers are 32 bit
-@@ -377,7 +378,9 @@ static int xilinx_spi_find_buffer_size(struct xilinx_spi *xspi)
- 		n_words++;
- 	} while (!(sr & XSPI_SR_TX_FULL_MASK));
- 
--	return n_words;
-+	if (n_words == 1)
-+		return 1;
-+	return xspi->read_fn(xspi->regs + XSPI_TFOR_OFFSET) + 1;
- }
- 
- static const struct of_device_id xilinx_spi_of_match[] = {
+I only used Coccinelle to scan for list_for_each_entry() call sites, and
+found the 13 call sites shown in the current patch series, which cover
+the 6 cases mentioned in Muchun's email. I have not yet run the Coccinelle
+scan for list_for_each_entry_safe().
+
+If we need to handle all 9,925 list_for_each_entry() call sites or all 4,572
+list_for_each_entry_safe() call sites in one go, would such a change be too
+large? I expect it would affect almost every kernel subsystem.
+
+I wonder whether it would be better to first provide the necessary
+compatibility APIs, and then let each subsystem owner update their code as
+appropriate. That would make the impact more controlled, similar to how
+the current folio replacement of page is being handled.
+
+>>>> With the updated list_for_each_entry() implementation, that extra cursor
+>>>> can be kept inside the iterator itself.  Callers that only want to walk
+>>>> the list, including callers that delete or consume the current entry, no
+>>>> longer need to carry an otherwise-unused temporary variable just to make
+>>>> the macro work.
+>>>>
+>>>>>> The final patch changes include/linux/list.h to keep a private cursor in
+>>>>>> the common entry iterators while preserving the public macro interface.
+>>>>>> The safe variants remain available when callers need the temporary
+>>>>>> cursor explicitly or have stronger mutation requirements.
+> 
+
 -- 
-2.34.1
+Thanks
+Kaitao Cheng
 

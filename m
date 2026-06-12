@@ -1,45 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED52383C65;
-	Fri, 12 Jun 2026 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783D637DEA1;
+	Fri, 12 Jun 2026 16:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781279318; cv=none; b=tIILROZqerK1skYP+/JUFj5fqKucmUhjPFmYPWpaX8jTp0do8pjcGMGmFYXg7nmvZ4ODjGN22fom4495SbAlep1lAd8Ex04/zQgDaHzknTmGCO4PYF32oI63UP8/6/uXdBIX+QBrXTk+xs7huOgo0AXugmNWYjRB5PxwAcBsiSc=
+	t=1781280519; cv=none; b=aBXiVozVwRNu3+FT+LEVI3B526VVyvhtb3OuriqII1ZvW+soDOySHT17htWDZyL8NJCcZ/4Oo3/lF6/ieWyPdreRAzw1M4BuemIi+GQLFzjY/v9rYuw7HmRvv6Y8chvT+5/G+HBFO/Paq4GGzalbh227z7eMb6GrfSKyvBKixAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781279318; c=relaxed/simple;
-	bh=LsR7KpA+fDSHS8txtXxcEBfQLL6FA9LdOsE1OmuaCIM=;
+	s=arc-20240116; t=1781280519; c=relaxed/simple;
+	bh=hhUl3XwZZAj6/NFiqIzS9xsUsHsZqDPVOhzmupLJrjI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o5vGTDTh+VUCKdmnKVW4lMyQGjZKH4klIzHYBYtDDIUMpwKeFwS06NvJVT3h8zHPLrat4sU+guYkfnT/5WoKqgUixd0nNbmXQGyDZTkTN3/oRW4AqtSPAJ9/fgo2AV9B3gMJIbxQu23f8iQPXaiKPs7ZZCRZcp5dbL7cVGugi10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mCuIjJzu; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mCuIjJzu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731841F000E9;
-	Fri, 12 Jun 2026 15:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781279317;
-	bh=P24PzYh2dPfggH2phH0CSdSprDerroPHjb0HskOrFUM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mCuIjJzuVaQ73bpIXBCWHhNagTHww10+4/G86OLA8YHNzLyK0mxgnpCr209pm+xNi
-	 MnN2EVodolcF8B8zpseyDfXQNywmc+F0LxNdQw/7eHeFcz3XAAtRR939BaNnGumqd4
-	 vLXDQUaSpQzE3ZUvZHivRRc2J1wRJly+9mFFrS1waeNeVWopXgy4LhAsQg2cXgQOiJ
-	 1cSHuZUm9hlGZSo61pQOOeeSb0NUq0r3DBsTMi9ilK7Ip2g6e57lc0rATfWfmlGGGi
-	 SctNp+ClycrrpxJ5ROXC0fz8akcZJOBOgKyt1iRRyOddCf/C8iwyMyHGr5BzTQBYYE
-	 14qeOAtMZxdTA==
-Date: Fri, 12 Jun 2026 16:48:33 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Chi-Wen Weng <cwweng.linux@gmail.com>
-Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, cwweng@nuvoton.com
-Subject: Re: [PATCH v3 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Add
- Nuvoton MA35D1 QSPI
-Message-ID: <20260612-diagram-florist-01a0e8f923d8@spud>
-References: <20260611091246.2070485-1-cwweng.linux@gmail.com>
- <20260611091246.2070485-2-cwweng.linux@gmail.com>
- <20260611-decoy-glamorous-81903a5fd1f9@spud>
- <0031379c-0cc3-40c8-8145-5b1991b42f05@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ObakqtOszvu0S3PxaB3ISJRxgrLi3uPVx8XMJ+iQI4Y3ZFaowBHc+xaA5ARWmfp/PngqgbeR6FYLNGcA5hU5SaNbagrdY1IAKqZet4fms13GCVz0U92+ImK7RO9bGDDVIV4VneBA6qV/pUWh14IVwYUj5ZZD4aoQc5h7cwCxElo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7EA1F000E9;
+	Fri, 12 Jun 2026 16:08:37 +0000 (UTC)
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 60F911AC5AC2; Fri, 12 Jun 2026 17:08:35 +0100 (BST)
+Date: Fri, 12 Jun 2026 17:08:35 +0100
+From: Mark Brown <broonie@debian.org>
+To: Vishwaroop A <va@nvidia.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Suresh Mangipudi <smangipudi@nvidia.com>,
+	Krishna Yarlagadda <kyarlagadda@nvidia.com>,
+	linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] spi: tegra210-quad: Cache TRANS_STATUS in ISR for
+ timeout handler
+Message-ID: <aiwvA4z45FUqzgiB@sirena.co.uk>
+References: <cover.1781037385.git.va@nvidia.com>
+ <2ed90a7d175f7967e621943b772115da655c477d.1781037385.git.va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,152 +40,52 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="d5KanU3abWapAIHY"
+	protocol="application/pgp-signature"; boundary="LPxkVfs8jyUyi99U"
 Content-Disposition: inline
-In-Reply-To: <0031379c-0cc3-40c8-8145-5b1991b42f05@gmail.com>
+In-Reply-To: <2ed90a7d175f7967e621943b772115da655c477d.1781037385.git.va@nvidia.com>
+X-Cookie: Nice guys get sick.
 
 
---d5KanU3abWapAIHY
-Content-Type: text/plain; charset=utf-8
+--LPxkVfs8jyUyi99U
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 12, 2026 at 08:33:01AM +0800, Chi-Wen Weng wrote:
-> Hi Conor,
->=20
-> Thanks for the review.
->=20
-> I will add a default value for num-cs in v4:
->=20
-> =C2=A0 num-cs:
-> =C2=A0 =C2=A0 maximum: 2
-> =C2=A0 =C2=A0 default: 2
->=20
-> The controller has two native chip selects and the driver currently uses
-> that hardware default.
+On Wed, Jun 10, 2026 at 06:24:01AM +0000, Vishwaroop A wrote:
 
-The driver should handle the property and fall back to the default.
-It's not complex to support, so surely there's no reason not to?
+>   - tegra_qspi_isr() reads QSPI_FIFO_STATUS and QSPI_TRANS_STATUS,
+>     derives tx_status / rx_status, then publishes them via WRITE_ONCE()
+>     and the trans_status cache via smp_store_release() before masking
+>     and acking the controller IRQ.
 
-Cheers,
-Conor.
+>   - tegra_qspi_handle_timeout() consumes trans_status with a paired
+>     smp_load_acquire(). The release/acquire pair guarantees that a
+>     timeout handler which observes a non-zero trans_status also
+>     observes the matching status_reg / tx_status / rx_status updates.
 
->=20
-> Best regards,
-> Chi-Wen
->=20
-> Conor Dooley =E6=96=BC 2026/6/12 =E4=B8=8A=E5=8D=88 01:34 =E5=AF=AB=E9=81=
-=93:
-> > On Thu, Jun 11, 2026 at 05:12:45PM +0800, Chi-Wen Weng wrote:
-> > > From: Chi-Wen Weng <cwweng@nuvoton.com>
-> > >=20
-> > > Add a devicetree binding for the Quad SPI controller found in
-> > > Nuvoton MA35D1 SoCs.
-> > >=20
-> > > The controller supports SPI memory devices such as SPI NOR and SPI NA=
-ND
-> > > flashes. It has one register range, one clock input and one reset lin=
-e,
-> > > and supports up to two chip selects.
-> > >=20
-> > > Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
-> > > ---
-> > >   .../bindings/spi/nuvoton,ma35d1-qspi.yaml     | 62 ++++++++++++++++=
-+++
-> > >   1 file changed, 62 insertions(+)
-> > >   create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,ma=
-35d1-qspi.yaml
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qsp=
-i.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-> > > new file mode 100644
-> > > index 000000000000..d3b36e612eb0
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-> > > @@ -0,0 +1,62 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/spi/nuvoton,ma35d1-qspi.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Nuvoton MA35D1 Quad SPI Controller
-> > > +
-> > > +maintainers:
-> > > +  - Chi-Wen Weng <cwweng@nuvoton.com>
-> > > +
-> > > +allOf:
-> > > +  - $ref: /schemas/spi/spi-controller.yaml#
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    const: nuvoton,ma35d1-qspi
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 1
-> > > +
-> > > +  clocks:
-> > > +    maxItems: 1
-> > > +
-> > > +  resets:
-> > > +    maxItems: 1
-> > > +
-> > > +  num-cs:
-> > > +    maximum: 2
-> > Missing a default of 2, unless you make the property required.
-> > FWIW, your driver doesn't appear to read this value.
-> >=20
-> > pw-bot: changes-requested
-> >=20
-> > Cheers,
-> > Conor.
-> >=20
-> > > +
-> > > +required:
-> > > +  - compatible
-> > > +  - reg
-> > > +  - clocks
-> > > +  - resets
-> > > +
-> > > +unevaluatedProperties: false
-> > > +
-> > > +examples:
-> > > +  - |
-> > > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > > +    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
-> > > +    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
-> > > +
-> > > +    soc {
-> > > +        #address-cells =3D <2>;
-> > > +        #size-cells =3D <2>;
-> > > +
-> > > +        spi@40680000 {
-> > > +            compatible =3D "nuvoton,ma35d1-qspi";
-> > > +            reg =3D <0 0x40680000 0 0x100>;
-> > > +            interrupts =3D <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> > > +            clocks =3D <&clk QSPI0_GATE>;
-> > > +            resets =3D <&sys MA35D1_RESET_QSPI0>;
-> > > +            #address-cells =3D <1>;
-> > > +            #size-cells =3D <0>;
-> > > +        };
-> > > +    };
-> > > +
-> > > --=20
-> > > 2.25.1
-> > >=20
+>   - tegra_qspi_setup_transfer_one() clears the cache with
+>     smp_store_release() under the spinlock before unmasking the IRQ
+>     for the new transfer, so a stale RDY bit from the previous
+>     transfer cannot fool the timeout handler.
 
---d5KanU3abWapAIHY
+It looks like the CPU based transfer function supports multiple
+interrupts per transfer, though the copybreak for switching to DMA is
+FIFO sized so I'm not clear exactly when that might happen.  Can that
+happen, and if so don't we need to clear trans_status when we handle the
+interrupt as well?  It might be that this can't actually happen.
+
+--LPxkVfs8jyUyi99U
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaiwqUQAKCRB4tDGHoIJi
-0hSZAPsGXy7Ljn9Qs0indD+H/DnIcVGLUKT5vrJDctij1nWDoAD/S2RKklLM1fdd
-ssE+s+pAINHsBvdWwhPwG6YnBAEKiAA=
-=gDMh
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmosLwIACgkQJNaLcl1U
+h9Ab8wf+Mj/ot/6xv3SxptNFBXnqSih6mugC/UO8B/vfVIvlyGj15t+PVABKcOv6
+fTsk5bbhAku7RZ0tht1fs4KFxrBUXEYA+33KCYY+ouSzmYW5Z/JkEwhCz8jyqU81
+wuGXEdmwgsf9ClqOPbHv3woF3+M9stDdA22A/XP4OASJ+UUFAFxIHEY+S4GkWtSO
+SQ/wOAxskMMx4QcY1a+dhyfK6qyFv8I3Z0ot674gFdEji9SQBj0ghSJHtjAQ/Chq
+yuIb93evfgLaQMEEbNc1D/7HVzpqMBzeve86v0sIQaaLJHEX3L+H4ahNIq6q+njJ
+aQTWBT7H5GRz8k8YyowlGnfBYTh2ng==
+=hOor
 -----END PGP SIGNATURE-----
 
---d5KanU3abWapAIHY--
+--LPxkVfs8jyUyi99U--

@@ -1,199 +1,79 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521071A9F90
-	for <linux-spi@vger.kernel.org>; Fri, 12 Jun 2026 00:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955BE78F4A;
+	Fri, 12 Jun 2026 00:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781224388; cv=none; b=dgomBbq+57aeuRKC1n/7N+Bya7jhsvY/gQP9wbtTGE8ARrGvwGepmZ4yCy43XLicsR8KMrF1WNg7WVAJUtXM/4dcTJbmD/CnjYjYvbb0He3L+M4hCJG2i8zmBo6ojV47bjKcCCCiJjT6B69xTJWWu+X0XQtGEqnrBtIyP+DuDvc=
+	t=1781225269; cv=none; b=QjRDBbudEnGOI1fIy7Q+zLsZCHE7HFSutj2z1pB1ctzhs7+DlcYJc4oW/YIZsjYresjZB87NtOTKOKa8zqG/1e/OED2yBvDLmutPqb1MjpdUW/NTbPEeBcSx0+7dzDYVUHTF+oYL49kem5otUI+IO6pKJ6jL3gnNkyLO3bw6GKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781224388; c=relaxed/simple;
-	bh=4ZGkqYncW6FCKmTFfthiEaEQ0KaMfkbOjRiXFrR5ruI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T2P8bxsnbgxHKwdRrHvOR3XWk89WhyCAd7NSwZr0q9HooTiT5pDHtzEDZEC9tUMvTnMbfZltlJNwxA+pLNjF06lsibtC2pFmjMSRIccLDJkoCSkb8/hcXNH5Jxc2102Yjuvcx0F4U1qmKy5eJYlTMv4XlzBUXB+piZC7cxFpCVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cc2/iuHI; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781225269; c=relaxed/simple;
+	bh=2/FyFa/g9srdUHhZiIqoJUgXh8AxhgnJJZmjxbEbIwA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o5eWwsHOeLIAWqENxyOjMeOYR1gHd/Cd7oUiflDaFIcHblUCSmr/OT5edC/ZKhRFSJzdg2ZRrzkjG8fuP7v/6qBMFJ1anvO7R6c71frVwCBZXEgWjB8GGcu06N7GlSxXqvPlrq1HDm0iTSGvblJML2EGVGQ+77UdaYpPggBNgbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMAgkuyG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cc2/iuHI"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2bf3781ca51so3952275ad.0
-        for <linux-spi@vger.kernel.org>; Thu, 11 Jun 2026 17:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781224386; x=1781829186; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PDFF/uetcCRW1wRDCYb9fakGqH6rrdtEO+ThtsQms1Y=;
-        b=cc2/iuHIB4MaEIU+bcd1PEaW4isaJfQZATbw7YGI0hmK6EKyLTI7f2OOXTFk4fDLMq
-         1lXgeADAz898tU+iyVslF0tibY+SwnsZ6eqZzfCUwYFDpYdAyro49N35u9ZR1a+sDNb2
-         Q0nzPqe+yeY8pe2d+bwl05o7yybVYX4hfrMgTwBmpy6L8vrHn7Eer9rLkzCpe6Z7hEoS
-         O8mb0b+O0e2nSCnZ7+5uSm6Tw736oBQzDGpQee75E5pY/vqx3jfFcQA6PvlJsXBrVT4d
-         mIbxXGGk4+ddtzoBCPXfVbO45hlu6X1wCIqYbBrx/qDx1O2TbLdNJDQR1n5gjoK5SPij
-         7lwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781224386; x=1781829186;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PDFF/uetcCRW1wRDCYb9fakGqH6rrdtEO+ThtsQms1Y=;
-        b=hKFuHtPktSUvSd7g2U4k9Mik8r0lHqR0/jeU9VMQj0Yguc6YyaaFF05OaPyhJJh5K4
-         0p24/HNhXVZHFLsDo6IVeymdCq9huvDEmdXUlVzDDinDpRqkcEtTozPBMhKF33ajSGGR
-         w+OD9o4euXGGgRUpHf4wHHqrGyQwdzlvx1iNGz88i7FD4Q1w5NVlQHeTgdxGHwHJDdfF
-         bqiXXwyUrJdUXwL5IckJmPKqWlvKwvV9fi3txY7Fivct6aOh3MriQeaLGT0kUu2zSkTz
-         82fsfSXLqTuxQ7DWi9TmJYWx1HEolHbAOqxjI/Aa88Frc/dPk/FRfKm++3IRKNUetuLl
-         dFBA==
-X-Forwarded-Encrypted: i=1; AFNElJ/eyfu2d7KQDkOoY2ngkoStt2BOXEkg1xv2W/8/twRoGpViBvtvYplL1w4ZrIbvWXnx+XPSh/xCynw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIJBe4S3YXOxNnwjB6wj0U2lexUVak48LoGMZ1Lf1uaPje0H+F
-	rDkOm8DUuq7TCHhZeo8yl5QqWMW0V0hyJFab6Z3Ux6Ewtqdt27r1chfu
-X-Gm-Gg: Acq92OFtEYHVWdEgHRb5sP4MZER1XbVENhxIgxd0oJehP+rGxrfkQgIoUgJ1sQLHSUu
-	s0Nfe9QCqfD/+tAGyvRalJX5V/e+unf99FOzkEBUmgEWeCaJsqyHe7uAdGj85L9pVuBLxe42G5n
-	kXQmkFqLBvZJlv5O3U5DLdomIytqq2/oFAJa2GQ8wcfKSIfNWjKWL6VyIvmAuQXZHel4vp3omx0
-	PJBL0wS6wn078ylEVMcYF9VbMYYYBzLgMlT1M2cHIznd2ACg9XkM1qa9u+4CNU0FhNe5xPHO1z4
-	Da0vTZJXgrogmEOoaikmXFFqXn5FwZCoCiHwS+vGK27CZQ5klj0Z6Wb8g16W/W1jlrQCgpfJDnO
-	nYaVogZu9q0bes8t4xTvmLNisxP7utpNe4ka4WJxQSUNGnbWI+/mVgvI9tl5mri1dZE95Xhcdl/
-	eEWmRLeYPkUXKMI6oucgpzdaNAYTJJakTauW0u8+wAaPcaZnMoUM5RpnW3w7kZvcgS2wymo28BM
-	VE=
-X-Received: by 2002:a17:902:d58a:b0:2bf:21e6:baee with SMTP id d9443c01a7336-2c411f73c91mr7474725ad.28.1781224385550;
-        Thu, 11 Jun 2026 17:33:05 -0700 (PDT)
-Received: from [172.19.1.42] (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c42f7c6511sm1291275ad.24.2026.06.11.17.33.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jun 2026 17:33:05 -0700 (PDT)
-Message-ID: <0031379c-0cc3-40c8-8145-5b1991b42f05@gmail.com>
-Date: Fri, 12 Jun 2026 08:33:01 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMAgkuyG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B3C1F000E9;
+	Fri, 12 Jun 2026 00:47:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781225268;
+	bh=FDjd9wtG+K2l6YpRKfcwQxC8L5tlalg0y/RaEzkNZOY=;
+	h=From:To:Cc:Subject:Date;
+	b=UMAgkuyG+OimaEmklyVq8PO9FjYw/qW9r1v1sKGeLvt8BBw+g3jUrdXPfFoP4881l
+	 PdaQesMTUCtYdY23avBjiZR7byFn0X2t7v5I9/dPK8nuKPhbFQRoqOQ/egaW9fTX2G
+	 GA9eYaG2xuacvZ/btSmSdZZ/fFWvKM5miL3iB+GWDvw0khl1BwlAmmvxabe3VttcVK
+	 uGe5O4HCgEdVHy+vfJLKx3lTl7XpuHAmvStnf6u810s9HmJVEmj/7Gc2C1rBIh4yle
+	 TZB8mubOkAcSWMlvVmv/yRtDM9ez5sxmJ6+Eh8EJADWE0hcZ/NhRXVaE6j1jl0IcoR
+	 LjVHJ3PN+FUPg==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: dw: fix wrong BAUDR setting after resume
+Date: Fri, 12 Jun 2026 08:28:35 +0800
+Message-ID: <20260612002835.5240-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Add Nuvoton
- MA35D1 QSPI
-To: Conor Dooley <conor@kernel.org>
-Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, cwweng@nuvoton.com
-References: <20260611091246.2070485-1-cwweng.linux@gmail.com>
- <20260611091246.2070485-2-cwweng.linux@gmail.com>
- <20260611-decoy-glamorous-81903a5fd1f9@spud>
-Content-Language: en-US
-From: Chi-Wen Weng <cwweng.linux@gmail.com>
-In-Reply-To: <20260611-decoy-glamorous-81903a5fd1f9@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Conor,
+After resuming from suspend to ram, spi transfer stops working. Further
+debugging shows that the BAUDR register isn't correctly set, this is
+due to dws->current_freq doesn't match the HW BAUDR setting,
+specifically, the dws->current_freq equals to speed_hz, but BAUDR is 0.
+so the dw_spi_set_clk() in below code won't be called:
 
-Thanks for the review.
+        if (dws->current_freq != speed_hz) {
+                dw_spi_set_clk(dws, clk_div);
+                dws->current_freq = speed_hz;
+        }
 
-I will add a default value for num-cs in v4:
+The mismatch comes from dw_spi_shutdown_chip() when suspending.
+Fix this mismatch by setting dws->current_freq to 0 as well when
+clearing BAUDR reg in dw_spi_shutdown_chip().
 
-   num-cs:
-     maximum: 2
-     default: 2
+Fixes: e24c74527207 ("spi: controller driver for Designware SPI core")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+---
+ drivers/spi/spi-dw.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-The controller has two native chip selects and the driver currently uses
-that hardware default.
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 9cc79c566a70..2f2debc64e73 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -282,6 +282,7 @@ static inline void dw_spi_shutdown_chip(struct dw_spi *dws)
+ {
+ 	dw_spi_enable_chip(dws, 0);
+ 	dw_spi_set_clk(dws, 0);
++	dws->current_freq = 0;
+ }
+ 
+ extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+-- 
+2.51.0
 
-Best regards,
-Chi-Wen
-
-Conor Dooley 於 2026/6/12 上午 01:34 寫道:
-> On Thu, Jun 11, 2026 at 05:12:45PM +0800, Chi-Wen Weng wrote:
->> From: Chi-Wen Weng <cwweng@nuvoton.com>
->>
->> Add a devicetree binding for the Quad SPI controller found in
->> Nuvoton MA35D1 SoCs.
->>
->> The controller supports SPI memory devices such as SPI NOR and SPI NAND
->> flashes. It has one register range, one clock input and one reset line,
->> and supports up to two chip selects.
->>
->> Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
->> ---
->>   .../bindings/spi/nuvoton,ma35d1-qspi.yaml     | 62 +++++++++++++++++++
->>   1 file changed, 62 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
->> new file mode 100644
->> index 000000000000..d3b36e612eb0
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
->> @@ -0,0 +1,62 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/spi/nuvoton,ma35d1-qspi.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Nuvoton MA35D1 Quad SPI Controller
->> +
->> +maintainers:
->> +  - Chi-Wen Weng <cwweng@nuvoton.com>
->> +
->> +allOf:
->> +  - $ref: /schemas/spi/spi-controller.yaml#
->> +
->> +properties:
->> +  compatible:
->> +    const: nuvoton,ma35d1-qspi
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +
->> +  resets:
->> +    maxItems: 1
->> +
->> +  num-cs:
->> +    maximum: 2
-> Missing a default of 2, unless you make the property required.
-> FWIW, your driver doesn't appear to read this value.
->
-> pw-bot: changes-requested
->
-> Cheers,
-> Conor.
->
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - clocks
->> +  - resets
->> +
->> +unevaluatedProperties: false
->> +
->> +examples:
->> +  - |
->> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
->> +    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
->> +    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
->> +
->> +    soc {
->> +        #address-cells = <2>;
->> +        #size-cells = <2>;
->> +
->> +        spi@40680000 {
->> +            compatible = "nuvoton,ma35d1-qspi";
->> +            reg = <0 0x40680000 0 0x100>;
->> +            interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
->> +            clocks = <&clk QSPI0_GATE>;
->> +            resets = <&sys MA35D1_RESET_QSPI0>;
->> +            #address-cells = <1>;
->> +            #size-cells = <0>;
->> +        };
->> +    };
->> +
->> -- 
->> 2.25.1
->>

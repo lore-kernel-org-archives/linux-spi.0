@@ -1,168 +1,136 @@
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2101.outbound.protection.partner.outlook.cn [139.219.146.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC883911DC;
-	Sat, 13 Jun 2026 05:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.101
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781327599; cv=fail; b=h4UJMtTVas4DDVZQPSWkx7vBQ1gdNIouWIcD2DlMrUBESc3IjZENIzv1+EnNIy97i6o0cXfNjbApoV7lTlY6+dS00Fyd+lQE/ctb8NHblDrJW+ZhIhje6I/amnqL3Kjv4qqksUnbuhPLkfrFL53HymWVNdCSG08T47ciHHQKCSI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781327599; c=relaxed/simple;
-	bh=V0UaFol/Yyp/NwaeKeuBy6JGAhGSaTGmCh6SGkpY/gU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gXSBNwS7KDUY+RnnsLBqXlGUQOwThPDKjZFlx0VVokiB4dL+glKwObJaS0Zjl6ImDCAOmW02/74dNvm4gNQgfD7zoPoD1M0uMgiCJnVcjCTqcio+WkuhbXS+xzCJkn5sxlg56e/WFaYEuCzTgYOkQyenVA0nfiTnuUaoTX7ITNU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O4FvT92nej9y5Y1JvX3bJeR6ECZYmq2Jkx+TqGKgSMyKHrazFOjaUFA2z54i+c7/7jl077/o2YI5t97HI45uJ+sj1RHpHPzvpb/V0ldeNM/9H/e6GFevkR9HwwUjy9sx0uy4DDEqaiTeuJjgSGFwQz/GDKfCen5VpWh0NC2wwE1VT7mY5Hz5b8708HSaTZP2yIbfTVGycamMK1por4lpVOTWS9HFvBYVKwsZkovc8f+a/+8BBAicZFxgDfo0WbgDl3goRV7S2U3gC8Vmegz/6O1yYpPFFVxD8NMX4WHMTCJ/J7Apwql/9TkNqBXQGkIqHICBLjE9Dky+QTSAX6dCcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rnLnsVU5z4svocGt6KiN+r627Q6yGxOk2SmbiCb711k=;
- b=FfQUyHUqD1EWr0+u78zdifu+D0gyTZo7N+mneDMY8Ta4dtzqvjvNrMVCPmzoe7u2KPYhB6qIIb3wspTRbrr9COcG1hFpcbz/d+txY7yXEK9allEjyxQ37ALOGW1P1SZG+5vinWpPxy7uLNsO1qMEGr4nJ+c3rUG7jTfZ++3ZFiaNKlnBJdoNxTct6IY0/xl8k7orsgSx3iY+WeXhPfOGW6DoAtaS4dI2ZF9cDZsEBSbMzgNNJ8GqEHpgnHDlhfvF2N8L6/E8y3Y4ylpjgKe76CSQLZkW2O2mWLJ+gHX2bj/uLFxze6hBUIxTZBbjHEhcnYEfuMO2IR3pvXoPnUCeKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:17::6) by ZQ4PR01MB1235.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:15::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.15; Sat, 13 Jun
- 2026 03:38:46 +0000
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- ([fe80::e7d4:256c:b066:850d]) by
- ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%5])
- with mapi id 15.21.0113.014; Sat, 13 Jun 2026 03:38:46 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Conor Dooley <conor@kernel.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v1 1/2] dt-bindings: spi: snps,dw-apb-ssi: Add support for
- snps,dwc-ssi-2.00a
-Thread-Topic: [PATCH v1 1/2] dt-bindings: spi: snps,dw-apb-ssi: Add support
- for snps,dwc-ssi-2.00a
-Thread-Index: AQHc+mtCPJneHTK71kastHnYdP89lbY7ISyAgAC2QrA=
-Date: Sat, 13 Jun 2026 03:38:46 +0000
-Message-ID:
- <ZQ4PR01MB1202FA8F122134F7153D26F7F2192@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
-References: <20260612125856.8530-1-changhuang.liang@starfivetech.com>
- <20260612125856.8530-2-changhuang.liang@starfivetech.com>
- <20260612-mute-aqueduct-029ac227314e@spud>
-In-Reply-To: <20260612-mute-aqueduct-029ac227314e@spud>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1235:EE_
-x-ms-office365-filtering-correlation-id: dbabc442-a17d-489d-c4ca-08dec8fd4615
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|38070700021|18002099003|22082099003|4143699003|56012099006;
-x-microsoft-antispam-message-info:
- 6h5boq43kZgl2n9ijuLIUAaAn52mn3LFG50rDbn1rKbXhR06XSCNkb08wiUAABDG7NXrA9LRYSYSZFx8Ve9LfGtKTJmgKIj90zz1tg/jTVscuy8Pb7Iqvf/NwfmOSMXwyRFJOffROipRtrZjl296KblyQdRR2wdTHF90Yl5B4341BNd6XbncGYhoDENcJcYMp+56Ea26xozsNQj98ElPIcOyEQZ79OTO/nrE08DGr6cLcFTdDSdHXnNY95LZUytj+YYv/zDuNUTHFjW0m00P3dd2vhlMtyW7Yk3/8kvsE+KIdlFBvyx2lkqrRTMtZanAXCEWpmCrXSzsLwmEVmP58xme3FFEta+NAjh1anQ2OllCK7TuIZiFwzV3Av3OWP3gRLEi26nxOzQktKJZelGmAmCF1uatyXdZCLwb9asiBSHfBd0Z5u7p/BqO0DXDnE5FWR7y+z3K1NLK4o0RqKvnEFzU356GJnNCV1CFuQ+rFIWicS45CjlHcQgUtpSVEFqlLde2T443ym9gVwX2qdggFV+ioD9FEs0O383lEOGADAIdkGA40kwP4kUGs9CuFiK/
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(38070700021)(18002099003)(22082099003)(4143699003)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Deqe7LvV7naT/WAV2xDAjI66z8vPvAvdTKstdoovZwazQNKHA45U2no2//ce?=
- =?us-ascii?Q?FLbs/kTfKBlxxzg2CcAeI9FN80JIJNtmSw0fwOlrwEMU4f0YqP/M/D6yT3ak?=
- =?us-ascii?Q?/Ex+Yu5Eh9V30eZfrGV5UcdmZS+0Cm6oAH4IW1TJBaXyTH9Sxa+GX9POYnEq?=
- =?us-ascii?Q?lKgScho1tSLUllvajkEpYiNly0/VvrAiSt09GxdZEN+CwJM7dpXGGqB6gd4k?=
- =?us-ascii?Q?PC1WEJETsAixpEPW+skeNeAV17kTconYZmgKVJl5XyjqAPa+JQRomaNyGW8P?=
- =?us-ascii?Q?QgAZcProU+HROI1uLja6f65NaKaV2YdJ6p5BXr//EQ9WfjnCw/mIv05ff4Uk?=
- =?us-ascii?Q?kY0BjPIpMSsLutlgXkKnc6zRDM1lWtXj94FlKkfL0J60OT8DV+DuMDuz7hj2?=
- =?us-ascii?Q?Fh8l1h900klv4mgCiqy4KyyrsftsZ2SizuYxhig+SogKunb6mCp5ou34Me3U?=
- =?us-ascii?Q?rkp7zaegqdwrxxFBrL6V9PMlnKZyB6Z0dkpsPUIyuRx9iS93DAGZItlq0BTz?=
- =?us-ascii?Q?keIhfo7dBm1avGO+zxvwakK09U6Spk9ooJIzp251slJXKncZYLNrZ7/iLAiF?=
- =?us-ascii?Q?HtKGuKjS/LmdyiO6oum33DfOHyuzfysyDgHK2gk6szKEK4jzFIUkiPG3tIFu?=
- =?us-ascii?Q?l3jCit1uBdfILScbEPpLKrvoLLY7dPdPj1hc+WXE8SWz1QhHSciVVdvZjBHP?=
- =?us-ascii?Q?WsMO8wS5rNNRhRdh4w9KBgObYp5TE0tMCFHrnMQmhJrqaovNmh4h7zvHCjDQ?=
- =?us-ascii?Q?OdpFRv6d+rtSvbQRMb9b0K6sD6XMRIQ8m98W+2CmFqdVgONQ4Ttai/hUgaoY?=
- =?us-ascii?Q?INESkIjwmoa6v2rKiXFPCBA4qJ9i/bkpixMqOmuRXsLzUXyi3SQQkyjgp/gq?=
- =?us-ascii?Q?qm9Hehh+cwlK370Jd2REBMQrlW5suDHQvseVcAoRT5pAHc+XlmFJQU3W1eth?=
- =?us-ascii?Q?49GW/Agw1VpSufm0s8/kSmP7ykpvNweVDRdNrI3tDbqxFvVRATS9xuOgBuCK?=
- =?us-ascii?Q?YcLdHCQ36thQX2S63k/FEG9gPt7KUtPUJlhWUE3dsyUZXKuHTulUIxRlvgXd?=
- =?us-ascii?Q?VqJP/X2mhF02LqWJ4tNxhKyEmsLq/fJw1biwqBjGsg2LkiClTEV8sUZASB/B?=
- =?us-ascii?Q?yIzom6TVqNrUW9bxIVM8u2FuxtUTm9tkB7mDbje8Z2JDpPU/MFfrr7x1KSjl?=
- =?us-ascii?Q?FggT0C9jBrScmnWI6rfLG5KWoI0yz+nEyng+HY+VrKJt1XMEbwPbFNdoXy29?=
- =?us-ascii?Q?L9/94+xtXJIkZcQ9nKUzrF9x6l5Xxws2+W7/6Qb1B4Ai8Uqe6WDWOpnhPTjJ?=
- =?us-ascii?Q?vW8gu/PTdmq16naIJsJiy3cO06qLePegi1hgbRa0NBnvxbkU003ya3qGIQKa?=
- =?us-ascii?Q?7LRSAC0Bi0NVwUZgqUzuvJw6IveLxmYQcyD3B+G43h2ykfzxiHlRz825tRH5?=
- =?us-ascii?Q?y8UeSFJVfVrNjzXdM3swqvdgB4hEy9uEvE9+JXvzr0kcrWSRSPnzP1d92KHi?=
- =?us-ascii?Q?qYVYk8wMJN6AIl66uLajH1ZWo7kBD0svjizRn7KM9VD4stHjS9WXDTukOAuM?=
- =?us-ascii?Q?QjKU66u92aMPbclOodQiWoZfvjo6eKULahkC1fAzsle6R4AL5QemJuIdH9ew?=
- =?us-ascii?Q?QiRYgLtgbpw/W4uYJRjluU6KgaNulJlhzzLtroLMVwODzzCzzE3MXkB+V8GU?=
- =?us-ascii?Q?AVOK4lFhYIEv0l6rrT0ZR3MRA9KRvh41v87VyUKTR+nuemtoYXJVzn1crVsL?=
- =?us-ascii?Q?eqlIGS/HT73pIUp4CwAGM/INm+EnhW8=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7859939D6D6
+	for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 09:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781342553; cv=none; b=SLH64MyVebHzh4hY7oEti5RP/ddLihgca3wGGnZQQj+ZYLfiWcoWMBRCHhN+rJNfbT35O4CdwimpbmvtlfVTAtYytOKXlW0cCEtgnR757iUG/z7fotq2CALIHQgURweFbj+yB/Es5TQVlpotG+t8+p0SuisvDgXtNNIItDIPxFg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781342553; c=relaxed/simple;
+	bh=helDrwuxiWtrf/iPIy4Y9R/hkLMVrwdS0rRl6C7Dn4Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cr79Cj4/YEZ2EUuYO6gAYUi7yFocWWWTxplwCgDp09IZM7eT5feUvp+r3tJj+CzLXNyNc7255XbkxZCYnurIP9ewyoRQycpehxa1/CJZ5GgadqWFkibngWcBmTZgzAmwx9h4P/nrIrUC9Ct/C4L6NBLdMCsww1r1QP66bG8Y1JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SU2szgcH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SU2szgcH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1781342551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
+	b=SU2szgcHslCPncWD9tsy586twxeQlC764t/fb2mUd2aFwCNL28BcF244eSFlm3fUBX822o
+	dCBRLhNZe0JD6m3TUCQn4/0XjYV+gljQF7GRLDYoivB6OpsnzU+tCUQn0zzlfwujGA1Nq+
+	FnmY+2jhfA819gefcJR5ydlPhl+ULpA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-q4AqHvcIPIWOBsnrC7xkuA-1; Sat, 13 Jun 2026 05:22:30 -0400
+X-MC-Unique: q4AqHvcIPIWOBsnrC7xkuA-1
+X-Mimecast-MFC-AGG-ID: q4AqHvcIPIWOBsnrC7xkuA_1781342550
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-915c364ae3bso343321285a.0
+        for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 02:22:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781342549; x=1781947349;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
+        b=p2+BsyD7cKzs1Z3yHpaOYcelFpjzUY40aLgcyRkRfjq8PZYYVfI3J26k8V+uOnoR18
+         pLaiTd7pWuRK51dXgOSgiosxMJvz4ZeS337qeifWq6GceAWyGktRTymvrhQLEIG2hQMr
+         Tx1LpBuWX/eX/+8D1gY/ujQoexZmMEHVYXIGGM3BRUrgd2RWF+x8jk2bUDODOPwm4cyC
+         tszHSzFrr08TEN3RtDWAIcQtze3FgS1luY6tZnMuL0D39tswB9WSmATvsQM9qcK//Bue
+         4c07zkysvWxdLKpmlYBQV9mYBnppIxz9CtamdZP+p/czL4ZEFv/WCHKsPJgtuJHo6M6E
+         tkbA==
+X-Forwarded-Encrypted: i=1; AFNElJ8uISjwSeh0Lwlo70bNshBOq85xkxZ0f/UrGKPRbqUkFAtno20fnBiaWq+fbfPIaUwNI8RRP9myfFE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywm2LItwQ9oGk+QuDd0DJHV5IN9qrCueKg7akUJnI+3HX+xBvqE
+	pCsyTCQYfOFQD/iTc3sMnEZhSHaXFdkJJ+XyOibHa3iJjUQPQ2i9cT5lexnqT0cVkZQw7pCwHwJ
+	kBA4WK2RTUNK9FIPJk++L5vmD05rZYNQSNpaFs9DvnLxQ7zPQoPTB14c1dvkqYA==
+X-Gm-Gg: Acq92OHoMjP5eVwefENyUS46470t1UDuhp9WXu8abFfhZVdEoIsrgwRjcKANYgm+nuC
+	ACmZbsbSJd4//UE8B5YIqv+R+xKUrPqHsCHYl5oT5AXrfufiV72jqhgzAm3Cs1w2TnQrouIxohu
+	jJX1ZMh7PSNaEFOEHnR7Y1Ddn/TFG/e81XGDUkRJUCTRVhhKyCbwi5Lxvo5Aqn80I1lkChE+0Tl
+	7BOud3uuvweYC2u/tbgj4X9ZffIg0pefe0ElpFEguRbUPGIOELcWiUE4TP3owyDWfub+unRWxMe
+	yLJjecdIBmK4DpbfdyactBpJeJhw7WKvBgI6uFFWXByaGTtu+ghb2fvA/shHh+5lddR+lNAD6mb
+	tSrL6ltSmx9GOn0o9Q6Gf9+10j53hl0ZN29INL9nBk3+9aufs3dy36Ls=
+X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926952685a.45.1781342549617;
+        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
+X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926950585a.45.1781342549179;
+        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
+Received: from [192.168.88.32] ([150.228.25.72])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f3c324sm454992285a.21.2026.06.13.02.22.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 Jun 2026 02:22:28 -0700 (PDT)
+Message-ID: <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
+Date: Sat, 13 Jun 2026 11:22:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbabc442-a17d-489d-c4ca-08dec8fd4615
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2026 03:38:46.0949
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 5K6iZnqIiDkEWrnYF4LxJI5k0uRfLpRoA0kHS/iSOAzmVwW1r9G0tG6EZvC85ng5BchrMiF5KpbVzJgQwgra049pIzh6umypCRCpcqiCCGM1/ti9nRVG2uLcDcW5kvEC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1235
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 0/4] m68k: coldfire: fix non-standard readX()/writeX()
+ functions
+To: Greg Ungerer <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
+ frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, nico@fluxnic.net, adureghello@baylibre.com,
+ ulfh@kernel.org, linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, olteanv@gmail.com
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: z_bekBLY2etJEi8zp9Zm4W5xZkE9CW6LKD1XklMZBDM_1781342550
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi, Conor
+On 6/9/26 4:12 PM, Greg Ungerer wrote:
+> This odd collection of patches is aimed at fixing the non-standard ColdFire
+> set of readX()/writeX() IO access functions. Instead switching to using the
+> asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+> in trying not to break any drivers with this change.
+> 
+> The implementation of the readX()/writeX() family of IO access functions
+> is non-standard on ColdFire platforms. They either return big-endian (that
+> is native endian) data, or on platforms with PCI bus support check the
+> supplied address and return either big or little endian data based on that
+> check. This is non-standard, they are expected to always return
+> little-endian byte ordered data. Unfortunately this behavior also means
+> that ioreadX()/iowroteX() and their big-endian counter parts
+> ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+> using the readX()/writeX() functions.
+> 
+> Patches 1, 2 and 3 in this series are specific driver changes that can be
+> made independently of the final ColdFire readX()/writeX() change.
+> 
+> Patch 4 is the actual switch to ColdFire building using asm-generic
+> readX()/writeX(), but also contains three driver fixes that are not easily
+> handled independently.
+> 
+> Note that I don't have access to all supported hardware needed to fully
+> test all these changes. I have tested what I have, a bunch of the standard
+> Freescale ColdFire eval boards, and inspected generated code for differences.
+> 
+> Note also that patch 3 relies on changes that are currently only in
+> linux-next, and are scheduled to hit mainline during the next v7.2
+> merge window. Those changes are also available in an immutable git tree
+> at git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu.git
+> cf-internal-io branch.
 
-Thanks for the review.
+I understand that with this series you are targeting the m68K tree, am I
+correct?
 
-> On Fri, Jun 12, 2026 at 05:58:55AM -0700, Changhuang Liang wrote:
-> > Add a new compatible string "snps,dwc-ssi-2.00a" for the Synopsys
-> > DesignWare SSI controller version 2.00a.
->=20
-> Two things. Firstly, driver patch suggests a fallback to 1.01a is possibl=
-e. Why
-> haven't you added one?
+A possibly better option would be, after that the pre-req patches land
+into Linus's tree, to share an immutable branch for this series, so that
+both m68k and net-next could pull it.
 
-Will support fallback.
+/P
 
-> Secondly, I am going to expect that when your starfive user for this appe=
-ars in
-> my inbox that it has a device-specific compatible, so you may as well add=
- that
-> now.
-
-Our standard SPI control is completely based on the Synopsys DesignWare SSI=
- controller version 2.00a.=20
-However, for the controller that accesses the flash, a set of modifications=
- has been made based on the=20
-Synopsys DesignWare SSI controller version 2.00a, and the driver part also =
-requires specific adaptation.
-
-Therefore, on the JHB100 SoC, the initial device tree source I have planned=
- looks like this:
-
-spi0: spi@17f20000 {
-      compatible =3D "snps,dwc-ssi-2.00a";
-      reg =3D <0x0 0x17f20000 0x0 0x10000>;
-};
-
-sfc0: spi@18000000 {
-      compatible =3D "starfive,jhb100-spi";
-      reg =3D <0x0 0x18000000 0x0 0x10000>;
-};
-
-Thus, I plan to add a new "starfive,jhb100-spi" compatible string for the c=
-ontroller that accesses the flash.
-For now, I intend to keep these as two separate series.
-
-Best Regards
-Changhuang

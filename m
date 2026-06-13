@@ -1,136 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7859939D6D6
-	for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 09:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940A73911C3
+	for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 19:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781342553; cv=none; b=SLH64MyVebHzh4hY7oEti5RP/ddLihgca3wGGnZQQj+ZYLfiWcoWMBRCHhN+rJNfbT35O4CdwimpbmvtlfVTAtYytOKXlW0cCEtgnR757iUG/z7fotq2CALIHQgURweFbj+yB/Es5TQVlpotG+t8+p0SuisvDgXtNNIItDIPxFg=
+	t=1781378646; cv=none; b=S0883DEvck+e6ezr42V4I5kGQ6xEWiAnhMmQLXKNaRZ/KP4CBmtyT2r73/H+02wnOtmMwpVg9w0eOqqOK7O7BmgNPz1BzvNkA0GU+eP/etx+8BQOV2v8t8koUI5Fueaz3r2S7CODVHTQEQCASXKVCzCvFZmL7TYyXMmoITkJnAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781342553; c=relaxed/simple;
-	bh=helDrwuxiWtrf/iPIy4Y9R/hkLMVrwdS0rRl6C7Dn4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cr79Cj4/YEZ2EUuYO6gAYUi7yFocWWWTxplwCgDp09IZM7eT5feUvp+r3tJj+CzLXNyNc7255XbkxZCYnurIP9ewyoRQycpehxa1/CJZ5GgadqWFkibngWcBmTZgzAmwx9h4P/nrIrUC9Ct/C4L6NBLdMCsww1r1QP66bG8Y1JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SU2szgcH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1781378646; c=relaxed/simple;
+	bh=7rwSq0SrGdEQBmnV4uKLdu242Sdx64fS4O/VIHJ/K30=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r3tfRgcDRS725hNsKtjFHrLtOqwuzU7Rc5Ch8MEHLpqrG/zgObnTp4dG7dgEttiBbUL2lPddHsFjzrMFabGuZsAVq87j22fCENDOsg/Bql57kPfpcJh8J818ybVh7OpNytw1wYAsE8ZYfpBx5YhYLGD98w+RJx+/xStm89t5wPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kz5zFqut; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SU2szgcH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1781342551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
-	b=SU2szgcHslCPncWD9tsy586twxeQlC764t/fb2mUd2aFwCNL28BcF244eSFlm3fUBX822o
-	dCBRLhNZe0JD6m3TUCQn4/0XjYV+gljQF7GRLDYoivB6OpsnzU+tCUQn0zzlfwujGA1Nq+
-	FnmY+2jhfA819gefcJR5ydlPhl+ULpA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-q4AqHvcIPIWOBsnrC7xkuA-1; Sat, 13 Jun 2026 05:22:30 -0400
-X-MC-Unique: q4AqHvcIPIWOBsnrC7xkuA-1
-X-Mimecast-MFC-AGG-ID: q4AqHvcIPIWOBsnrC7xkuA_1781342550
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-915c364ae3bso343321285a.0
-        for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 02:22:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kz5zFqut"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84237c55ef9so1335193b3a.0
+        for <linux-spi@vger.kernel.org>; Sat, 13 Jun 2026 12:24:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781378641; x=1781983441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w8022n++FT6lM5F9jV25aEA6KvKK+0yJkAo/E3Gfkzw=;
+        b=Kz5zFqutp4Ec9Dxcb0vx1iqJFZ38Z0fRtTQBxTf+tfgrq6V9h7hVnmJ9aLcGnPOomL
+         KxdJMythu+MATQbFX3Aa0sfqWresLlEdjl/Zcmj4RZEo8jWdvyjHBQ6zfJZ7lPl6mmvt
+         8ZkQ0CrL2Ad2kPLZj6tqAT6rNL+IlpXy3m3nuK9unxV4rmRbWnUdv/+NZSLWx86cFYCp
+         9PIyab8TjPaMoYIOTS85IA60O/z8ZO0QHElihMCPfduYKnI+B7NmEGbPOI2pOqocGEDd
+         OKhFG9al1eXVNRWToOW5rBlggMUTQky2OnXaDY+TeuCjEMeBJHTT8I1W0Tds2+LbmKj2
+         SOtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781342549; x=1781947349;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dkSlrlMGjyQ/p88XPP6jRxfxndrJ9//6XRAvhwfy0VE=;
-        b=p2+BsyD7cKzs1Z3yHpaOYcelFpjzUY40aLgcyRkRfjq8PZYYVfI3J26k8V+uOnoR18
-         pLaiTd7pWuRK51dXgOSgiosxMJvz4ZeS337qeifWq6GceAWyGktRTymvrhQLEIG2hQMr
-         Tx1LpBuWX/eX/+8D1gY/ujQoexZmMEHVYXIGGM3BRUrgd2RWF+x8jk2bUDODOPwm4cyC
-         tszHSzFrr08TEN3RtDWAIcQtze3FgS1luY6tZnMuL0D39tswB9WSmATvsQM9qcK//Bue
-         4c07zkysvWxdLKpmlYBQV9mYBnppIxz9CtamdZP+p/czL4ZEFv/WCHKsPJgtuJHo6M6E
-         tkbA==
-X-Forwarded-Encrypted: i=1; AFNElJ8uISjwSeh0Lwlo70bNshBOq85xkxZ0f/UrGKPRbqUkFAtno20fnBiaWq+fbfPIaUwNI8RRP9myfFE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywm2LItwQ9oGk+QuDd0DJHV5IN9qrCueKg7akUJnI+3HX+xBvqE
-	pCsyTCQYfOFQD/iTc3sMnEZhSHaXFdkJJ+XyOibHa3iJjUQPQ2i9cT5lexnqT0cVkZQw7pCwHwJ
-	kBA4WK2RTUNK9FIPJk++L5vmD05rZYNQSNpaFs9DvnLxQ7zPQoPTB14c1dvkqYA==
-X-Gm-Gg: Acq92OHoMjP5eVwefENyUS46470t1UDuhp9WXu8abFfhZVdEoIsrgwRjcKANYgm+nuC
-	ACmZbsbSJd4//UE8B5YIqv+R+xKUrPqHsCHYl5oT5AXrfufiV72jqhgzAm3Cs1w2TnQrouIxohu
-	jJX1ZMh7PSNaEFOEHnR7Y1Ddn/TFG/e81XGDUkRJUCTRVhhKyCbwi5Lxvo5Aqn80I1lkChE+0Tl
-	7BOud3uuvweYC2u/tbgj4X9ZffIg0pefe0ElpFEguRbUPGIOELcWiUE4TP3owyDWfub+unRWxMe
-	yLJjecdIBmK4DpbfdyactBpJeJhw7WKvBgI6uFFWXByaGTtu+ghb2fvA/shHh+5lddR+lNAD6mb
-	tSrL6ltSmx9GOn0o9Q6Gf9+10j53hl0ZN29INL9nBk3+9aufs3dy36Ls=
-X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926952685a.45.1781342549617;
-        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
-X-Received: by 2002:a05:620a:4708:b0:915:cf88:1e41 with SMTP id af79cd13be357-9161bf6c4bfmr926950585a.45.1781342549179;
-        Sat, 13 Jun 2026 02:22:29 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.72])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-91619f3c324sm454992285a.21.2026.06.13.02.22.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jun 2026 02:22:28 -0700 (PDT)
-Message-ID: <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
-Date: Sat, 13 Jun 2026 11:22:24 +0200
+        d=1e100.net; s=20251104; t=1781378641; x=1781983441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w8022n++FT6lM5F9jV25aEA6KvKK+0yJkAo/E3Gfkzw=;
+        b=AhCtozK0GonDwWCm6/a7rbxlQgoKK7EmYkl+cwcSF7+sssmTVKEptxFtiRf+f0Yowh
+         khGKrJposNrv+LLeIzd8czK7Z8nG7A0i0PX1PdORZC18Ue9foSdaITfWNHvDD4oFQI5Q
+         oRrUx+e8Xg1/IKM6k+K3sncBgKULPvKAnPtWy0O6jT1DAD0ty42yNj6hXQMlgfRYPyGa
+         uiiq9S2xdG3OeKjBH3fk6GXw/4Km5W8kwJ0U0Ptu+Jg4KZ1CYta5jFtgFPWzw06RCS+F
+         2lOMGhdpOX/SnfvfIFWH3NcE2hipIsnuwHUEv6ptGnoGaaVWkzIvxXmPyHzaYHgSIchF
+         ltTw==
+X-Gm-Message-State: AOJu0YxCwKumgBdQJKe77SOHbg1rhMhfOA+NNefe6q9Ma3IX/D4Ps5Zc
+	cRVTZdHs9CgD/71MNLxuW8xam7s7RmGcH3r52IKrLjdT8DuURhkkwxvz
+X-Gm-Gg: Acq92OHTbpdLr+5zITtEm0OXzk3tHGaRcSxhqVpOk0qzGpP3jo6g0CMRndiTGBlQFWM
+	/+/M82Aj1eleAnaCMQFUH8YO6VfaumW+stxp36HpwChLG0T2SDr+5ySOGaj97bZtdKaXhaVXhNP
+	U11y6KrKPTp/VDrefOGEas+rCYfLJDX4wpqtlaogjR6G3Wg9djFSQqHMXiaKEnUTTnb/EZ15rir
+	m4SpONLjiz+POSRAnsg7/s/KdQB5w8eC4XY9UzSNhb43SfF6/w5zbzF0kpAfQUkSXMNe/S/gwPC
+	ocSGBxlZLOOYvnW8guqNzkj7Y7XgXeovcXckgyCzG8/WlGTI2pZgcusOpFAn0TkkdPm6OJWSd1u
+	27SHlIW6DVaS98PQ4NZBcv9f9iK2VccSgs5xBq7ePjLVCbBLeZyfWXPAuiGV13jPqNq1cHMRwUe
+	pmJDcOzGAy1D8l7R3ABTPvrNr6rQTLrMhLWhXMDxKWCDuF5hF3fLBhwSE9FA2WxmadkNEz7qo9a
+	VqFljyT
+X-Received: by 2002:a05:6a00:2451:b0:842:7f81:8079 with SMTP id d2e1a72fcca58-8434ceb199dmr8246337b3a.37.1781378640746;
+        Sat, 13 Jun 2026 12:24:00 -0700 (PDT)
+Received: from fedora ([103.181.54.100])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434acd96d8sm6725155b3a.19.2026.06.13.12.23.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jun 2026 12:24:00 -0700 (PDT)
+From: Ninad Naik <ninadnaik07@gmail.com>
+To: broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	david.daney@cavium.com
+Cc: linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	me@brighamcampbell.com,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	Ninad Naik <ninadnaik07@gmail.com>
+Subject: [PATCH v2] spi: dt-bindings: octeon: Convert to DT schema
+Date: Sun, 14 Jun 2026 00:52:33 +0530
+Message-ID: <20260613192233.2229933-1-ninadnaik07@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 0/4] m68k: coldfire: fix non-standard readX()/writeX()
- functions
-To: Greg Ungerer <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
- frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
- netdev@vger.kernel.org, nico@fluxnic.net, adureghello@baylibre.com,
- ulfh@kernel.org, linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
- linux-spi@vger.kernel.org, olteanv@gmail.com
-References: <20260609142139.1563360-1-gerg@linux-m68k.org>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260609142139.1563360-1-gerg@linux-m68k.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: z_bekBLY2etJEi8zp9Zm4W5xZkE9CW6LKD1XklMZBDM_1781342550
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/9/26 4:12 PM, Greg Ungerer wrote:
-> This odd collection of patches is aimed at fixing the non-standard ColdFire
-> set of readX()/writeX() IO access functions. Instead switching to using the
-> asm-generic definitions in include/asm-generic/io.h. The difficulty comes
-> in trying not to break any drivers with this change.
-> 
-> The implementation of the readX()/writeX() family of IO access functions
-> is non-standard on ColdFire platforms. They either return big-endian (that
-> is native endian) data, or on platforms with PCI bus support check the
-> supplied address and return either big or little endian data based on that
-> check. This is non-standard, they are expected to always return
-> little-endian byte ordered data. Unfortunately this behavior also means
-> that ioreadX()/iowroteX() and their big-endian counter parts
-> ioreadXbe()/iowriteXbe() are currently broken because they are implemented
-> using the readX()/writeX() functions.
-> 
-> Patches 1, 2 and 3 in this series are specific driver changes that can be
-> made independently of the final ColdFire readX()/writeX() change.
-> 
-> Patch 4 is the actual switch to ColdFire building using asm-generic
-> readX()/writeX(), but also contains three driver fixes that are not easily
-> handled independently.
-> 
-> Note that I don't have access to all supported hardware needed to fully
-> test all these changes. I have tested what I have, a bunch of the standard
-> Freescale ColdFire eval boards, and inspected generated code for differences.
-> 
-> Note also that patch 3 relies on changes that are currently only in
-> linux-next, and are scheduled to hit mainline during the next v7.2
-> merge window. Those changes are also available in an immutable git tree
-> at git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu.git
-> cf-internal-io branch.
+Convert octeon-3010 to DT schema
 
-I understand that with this series you are targeting the m68K tree, am I
-correct?
+Signed-off-by: Ninad Naik <ninadnaik07@gmail.com>
+---
+Changes in v2:
+- Change the maintainer from Mark Brown to David Daney.
+- Use soc node wrapper instead of root node in the example to handle
+address-cells and size-cells requirements.
+- Remove interrupt controller provider from the example.
 
-A possibly better option would be, after that the pre-req patches land
-into Linus's tree, to share an immutable branch for this series, so that
-both m68k and net-next could pull it.
+ .../bindings/spi/cavium,octeon-3010-spi.yaml  | 61 +++++++++++++++++++
+ .../devicetree/bindings/spi/spi-octeon.txt    | 33 ----------
+ 2 files changed, 61 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-octeon.txt
 
-/P
+diff --git a/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+new file mode 100644
+index 000000000000..e35e661d0a58
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/cavium,octeon-3010-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Cavium, Inc. OCTEON SoC SPI master controller
++
++description:
++  The Cavium OCTEON SPI controller is an SPI master controller found in
++  OCTEON SoCs.
++
++maintainers:
++  - David Daney <david.daney@cavium.com>
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++properties:
++  compatible:
++    const: cavium,octeon-3010-spi
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    soc {
++        #address-cells = <2>;
++        #size-cells = <2>;
++
++        spi@1070000001000 {
++            compatible = "cavium,octeon-3010-spi";
++            reg = <0x10700 0x00001000 0x0 0x100>;
++            interrupts = <0 58>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            eeprom@0 {
++                compatible = "st,m95256", "atmel,at25";
++                reg = <0>;
++                spi-max-frequency = <5000000>;
++                spi-cpha;
++                spi-cpol;
++                pagesize = <64>;
++                size = <32768>;
++                address-width = <16>;
++            };
++        };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/spi/spi-octeon.txt b/Documentation/devicetree/bindings/spi/spi-octeon.txt
+deleted file mode 100644
+index 431add192342..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-octeon.txt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-Cavium, Inc. OCTEON SOC SPI master controller.
+-
+-Required properties:
+-- compatible : "cavium,octeon-3010-spi"
+-- reg : The register base for the controller.
+-- interrupts : One interrupt, used by the controller.
+-- #address-cells : <1>, as required by generic SPI binding.
+-- #size-cells : <0>, also as required by generic SPI binding.
+-
+-Child nodes as per the generic SPI binding.
+-
+-Example:
+-
+-	spi@1070000001000 {
+-		compatible = "cavium,octeon-3010-spi";
+-		reg = <0x10700 0x00001000 0x0 0x100>;
+-		interrupts = <0 58>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		eeprom@0 {
+-			compatible = "st,m95256", "atmel,at25";
+-			reg = <0>;
+-			spi-max-frequency = <5000000>;
+-			spi-cpha;
+-			spi-cpol;
+-
+-			pagesize = <64>;
+-			size = <32768>;
+-			address-width = <16>;
+-		};
+-	};
+-
+-- 
+2.54.0
 

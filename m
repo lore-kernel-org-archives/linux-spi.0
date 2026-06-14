@@ -1,61 +1,63 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6F431A55B
-	for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 08:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42142777F3
+	for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 08:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781426158; cv=none; b=ByEXQfbymc3zjMS3SbsydejiV1JoPqGbzCO7FkiYs1JuJ/uHREKoS3A8MrKUPc3qnmceUQNIFuerGEhlZvtIJa8NuM2BiA1S85KW75EHzGehCRihBu6Ibk451vILs+0qBZIvPZM5/qsBmS+v9xxLOMlX5Ehvcdg1E1K7tAoLVo4=
+	t=1781426163; cv=none; b=DzMOUFheoTSVFOUWd2wVi39xQgnG/NagCsy9/1kGCrs6kF5+xrwPN9OQlom2kxkHz5MTDpEVVO9ZqnFRrBfCGtYJGCQmWeVi/CGDmBbQu63YYIlBxDuK9Hi1DeLdRZHvFr9AD4AHpqEY0JYTlgQerAMNaKFgWVShPmDKaHhuxBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781426158; c=relaxed/simple;
-	bh=QvqgdZHeqgEEqc9cqofJhBAJO9XcXQK5dg3RhzWhdyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VpEh16gW5D/HmFp5Z3o3UjggxgdS47hqt2EI82MRZvfHe3+FrmtlbRsSpJQPKH9ShftSV3W2C9ackLDqMevsuu+go4ah/5De3DQEpOHE2Tj2+pw0ow8RwJKM2/PpmSxguI4EFhR9VJ99TkZf5TfJgdIS+CY48Pmy2vveoW34O2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4DRH9SM; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1781426163; c=relaxed/simple;
+	bh=s4L4ukk0KyujJ0HblA0DbVk6Hm5VHHVGY6UKqtf8+Zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fg30+oy0CYPeW2qxEotI5Tb7Tyj5W4sxUNE2Cj9p6jOvnWAhHc2JhDbkwgef/yW9Bn31i6a3yKMGCPGD9bFxPvru19e4R3roDkvZY84V3eccxnD/yNmKA4EfH4al0tGZ2Fe39P0Tuv/Xlz+1um0OI/KTj/7Fw4CbyZoHhryC5JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S3PtJMUi; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4DRH9SM"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84234c83142so1052075b3a.1
-        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 01:35:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S3PtJMUi"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c8857a27041so368658a12.1
+        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 01:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781426155; x=1782030955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=REc377Cx8g8BwECwGCoYljt/5HARM3EnQdjrMGhJHwo=;
-        b=I4DRH9SM/IG2BWx27d95q7AB1e8qZtDnMz+O0+UJM18PK6GHT0Mt0jk7aNFCX600Y7
-         1B2THWFaBguXks37AJSnezEGfjrtOP9CA3HAqiojVDUMeQj4l5h41Nc7oimJFgQvarwQ
-         oRU8lrPUicVGst1NkOwZg+4d5xgvY0nMgVEKEeIgH70WkWDWCTyuPsxpFXULyv1hqS3f
-         tSLDcNZtsSgu/tpY44Jvzcq4at5OVFlk7RF29EMbMaMoiSt6PIw+ABYe65u0/gC3o41n
-         LaVKu67LEga+8ZbwLVYcYjojP3qCMzz1Q5dYTUJLdbA8vxHLqnWEoEaA/fRXG+O6nh/N
-         DmBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781426155; x=1782030955;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781426162; x=1782030962; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=REc377Cx8g8BwECwGCoYljt/5HARM3EnQdjrMGhJHwo=;
-        b=TK0G8TsaTYIM1Lp4edbQ5XFxTWs1z8o2qUZdrAxZz6Z3dmVm7KkveiLb1MmjN/0mpu
-         wnd07aEwUkBJkB3x49euRP56I21jXkGh5IOWvbw5jthOsJECCFDKUci5cHOXm3gYSrke
-         4dwxP5VodJBAeA/6ejjeytlfT8RpVT9NsGlZkMdJq8KStzHSuDv4MBfC8l+rfOmijixn
-         UFWDPXTpjQqqiL9gIFJIWExRZMdMB3hrO6nzxpr1dxqSeVo7J9L1MQOWZx1letB6R8pK
-         LNJFc3MU4UlSGwHaGP4XlnScqoVOET+cVKNpud7KDt4cyvLzxTnaZ6pqdYwZcV94oFUt
-         P9sw==
-X-Forwarded-Encrypted: i=1; AFNElJ/xUx1cgbKmJqdHVS5xBNT1GrDJBNRXTM0kU+C0vToRLmCL7jG3mO5lCfWw5DIRtuw4ekmakE7s5ag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrQw080+G87YQ9wX3TwtpiwSR7oMlgx2JzRJFWg5hA8RYml1Ci
-	oWgZj3/q7Dc3Ccvnf2tDXTruBND0IRRJheXDR9AyrqOmzdSsanbOtYLb
-X-Gm-Gg: Acq92OFs+r5JY7uyYf3UakK09sKKLjKmD8jaApR2IBGVgb275Nc/ZLt8Dzng2jIlHn0
-	JuKPsYBglTaZfwZDU6TJYEmoUvZnNj5oCFuTfVz0uBQPD98cL0Y0IvND6g9pJ3jMdniJoEJr39c
-	+LpgFm3Jb80Urr6ltJYUO/jG9L/td36ENQFxm7zBkb12uzkBtEn1rIkWTTHIeWwUwz+2xffomh7
-	ssfChZBrb/yGlSM0+vmjbWBKjplUrMgr7E1KDKvcyomY/8PN9yqR9xp8azXbcQ9SMrzkwDQ5Xy5
-	8F0q+2wrLCGiXvG1LLHM2ILm1gwCngtmLEiuBG811Ga4FG5RUBysqLb6qIbQgE7ISChH9NF63Um
-	DATg10siIWI0v3wMvOGf5A8sledH9Vl9pK5FhoPzA2/wzc1okHlXp+XySJ6kiI1+0qaG8akyaVN
-	SJo+0P9x6wIw0fUiaivjltow==
-X-Received: by 2002:a05:6a00:238c:b0:837:e9cc:d46e with SMTP id d2e1a72fcca58-844e1a2af43mr7234263b3a.21.1781426155058;
-        Sun, 14 Jun 2026 01:35:55 -0700 (PDT)
+        bh=tAITfEL9UqrO9L8OmSD1zMxFdEqiUvJMm9blfi4uSXM=;
+        b=S3PtJMUiS69D2k614mFzce4tH101RiTzfiLa6MNdtGYTKbLUH2MyZX4iRptmSwkRkq
+         Ynjs+HSRlIo3jYfkUFSAOgVCzJNIJ2PhTTaQGnNCCcWerqAvaQiWB6FhTgrySRzBqYhO
+         VuFuRecYUA2i94dScZopATd8ceW21jYU56EeOxmEFVwaFT0ML4cIZGzaMF6vclzr61w9
+         jf6PhVLQHayy5QxuNEnZzedbCnYzQQxwAtPTpttiBU2MzySW2sKbpENJG9lk8nO+JNZY
+         eTkLw/hpX2kn9fLcjaSV2BmL0rbmehs24xF3kIbpUnrA29IZ7WctWCpRD/N2uh+UT7p6
+         KleA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781426162; x=1782030962;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tAITfEL9UqrO9L8OmSD1zMxFdEqiUvJMm9blfi4uSXM=;
+        b=SIP8jfC7wPOTy4G2/GLrhpKrHv/RfBqr0u/8sBUDaU7yFZ9uakQLbsliejP6nA16L/
+         Dfpj9XiqDYV/n3V+FBP6wu9ld8+5yZuArU6htqliC7rSo0fdcIRnBLwghurlbftJ5V+n
+         yjoWhhJHUUFi6+HUd0pxs3ULUN5V/4Q0C+eQdq6T+9J9Lq9f6p8qsCda4I8UtVUBWpYt
+         oFeupaTTbr1Sds+cXDlgl00SbwabHtqhUeV3+uaLeyoknWjvOAqfkF5L6YyUkWYF/WYh
+         eQ5nT3QVRJ1byCxJQcHJzLLdReZflIQswIuSEPEg0WuwRtYAyw0LmhxxuOcjxogVYXGl
+         7zyg==
+X-Forwarded-Encrypted: i=1; AFNElJ+BfcFaC850LWMwu3ehwI51mXelExYpE0mk5apuJLx937dNdWqfO3hiu90Z+uALBfhcdESCYuWDhi8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSDGeQN14EyEkWQ4hj0H5Zx0grH2PaM49Z9lgygRmqVBEFie9/
+	k5XgO6Gi2jymPz6xTN2MYDbYr9CTjPUC94CT8jW4jKdsWahHz2Wvqfte
+X-Gm-Gg: Acq92OFTaMRDKg04S2QozjRoZY+8gtPhMXkqsp6RCKUCeKShDMIRxoWiCqEgbgQ4A5r
+	877gHCOOQM1VPG2ei3Fw485Z1jhAmHG8yJPbyGwcauVPHY7D1SF98xL7c971+Njvfa3wgte97Qt
+	+5Ol0ubngotGqD1SbEpkAFAJeXr4pH139/I9PHMCjkfxIUnCjXyvQVBftIXlYWm54NV78P/sQsU
+	d/fDj76omDMaIdJXonsAINPVqA4FyG66L3wXwJ8LnmWRBmd7d+b2BxqH8kBYL1tdROo2YW/Ifnk
+	jhU/KwjkS3BTzsRAfLCWQ4q8LbQyncPN6sTudKM7gE7TCCQ1o2mwj3ePtceKg6dejf36EGZugTw
+	Ap+Bh1Io5+7ll7y7ff3sQXMO8d2QU9bT3ACkUm//pUb45DIqyTfQuvjzzVhKeHwNbacsAkLkbgx
+	pdrQnxdzWGWg+9gvy0DGMMMA==
+X-Received: by 2002:a05:6a00:3390:b0:842:5634:3c1d with SMTP id d2e1a72fcca58-844e199926amr6606163b3a.19.1781426162161;
+        Sun, 14 Jun 2026 01:36:02 -0700 (PDT)
 Received: from nuvole ([2408:844f:2361:d7cd:deb7:4e0e:26d0:4076])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afc8fc7sm7263053b3a.37.2026.06.14.01.35.49
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434afc8fc7sm7263053b3a.37.2026.06.14.01.35.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 01:35:54 -0700 (PDT)
+        Sun, 14 Jun 2026 01:36:01 -0700 (PDT)
 From: Pengyu Luo <mitltlatltl@gmail.com>
 To: Mark Brown <broonie@kernel.org>,
 	Rob Herring <robh@kernel.org>,
@@ -68,10 +70,12 @@ Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pengyu Luo <mitltlatltl@gmail.com>
-Subject: [PATCH 1/2] spi: dt-bindings: qcom,spi-geni-qcom: Add property to force GSI mode
-Date: Sun, 14 Jun 2026 16:34:23 +0800
-Message-ID: <20260614083424.464132-1-mitltlatltl@gmail.com>
+Subject: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
+Date: Sun, 14 Jun 2026 16:34:24 +0800
+Message-ID: <20260614083424.464132-2-mitltlatltl@gmail.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260614083424.464132-1-mitltlatltl@gmail.com>
+References: <20260614083424.464132-1-mitltlatltl@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -90,25 +94,41 @@ the controller into GSI mode during initialization.
 
 Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
 ---
- .../devicetree/bindings/spi/qcom,spi-geni-qcom.yaml          | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-index edf399681d7a..80e394c1c715 100644
---- a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-@@ -45,6 +45,11 @@ properties:
-       - const: tx
-       - const: rx
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 26e723cfea61..eece7312f780 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -102,6 +102,7 @@ struct spi_geni_master {
+ 	int irq;
+ 	bool cs_flag;
+ 	bool abort_failed;
++	bool force_gsi_mode;
+ 	struct dma_chan *tx;
+ 	struct dma_chan *rx;
+ 	int cur_xfer_mode;
+@@ -655,6 +656,9 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ 		mas->oversampling = 1;
  
-+  qcom,force-gsi-mode:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Use DMA (GSI) mode, even if FIFO mode is not disabled.
+ 	fifo_disable = readl(se->base + GENI_IF_DISABLE_RO) & FIFO_IF_DISABLE;
++	if (mas->force_gsi_mode)
++		fifo_disable = 1;
 +
-   interconnects:
-     minItems: 2
-     maxItems: 3
+ 	switch (fifo_disable) {
+ 	case 1:
+ 		ret = spi_geni_grab_gpi_chan(mas);
+@@ -1133,6 +1137,9 @@ static int spi_geni_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
++	if (device_property_read_bool(&pdev->dev, "qcom,force-gsi-mode"))
++		mas->force_gsi_mode = true;
++
+ 	ret = spi_geni_init(mas);
+ 	if (ret)
+ 		return ret;
 -- 
 2.54.0
 

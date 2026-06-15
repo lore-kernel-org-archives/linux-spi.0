@@ -1,38 +1,34 @@
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749B5405F7;
-	Mon, 15 Jun 2026 02:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385B1128816
+	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 02:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781490865; cv=none; b=o/FfazcbEshckJooR3wKaIzwN5f+p/+hIHWMZdDQIuje1RUFCPxHrM7BJYoPUmK1uSESXRm4KQrcICE2hdR4KU02NcfScAmBBJO3IsFyR1dDZOMwk5HP+Xqvs6+fYb+bc69f+QrG9N2V1Lr0i2I+mU/9ljayQHsqi8g+gz2TTvA=
+	t=1781492260; cv=none; b=IDm0eaAF4Ta4wk1Xkojzmc6Rm5rg1RE+O6eoafgSNWIR/5lZN1CpGjKDfWK2fCZCnn/k43PGmBriovXKbOTJKwLQ/fSxriM/n0bkU2uGm3motAQVs6py2i6kQPa3Xo3+VqROsyc5o39bj7pXAxplvth+NAEaxEnmuw68QQszOKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781490865; c=relaxed/simple;
-	bh=+v8B5Ir/Fx4AHoAqbNBrPrLrKanjwd/fYNLCeTr2dXo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=loVVHEeb4av6NRgI0y5QHFTjctRxDW1Xt9X8H8CdA6vtPZs/qSWx5U5g96OIEJVeEyT27sIIbpb5UTWQ/mkZDIqhAyYSEBzyqH4+B9eZzS+7QrBgpqOh9LwLJVwFQVhSD0rdRhbggxhOOiTb+sC12I8b3ruuqxvF6N9bpeSCyng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 15 Jun 2026 11:34:22 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 00AD92068E61;
-	Mon, 15 Jun 2026 11:34:21 +0900 (JST)
-Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Mon, 15 Jun 2026 11:34:21 +0900
-Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan3.css.socionext.com (Postfix) with ESMTP id 7727C15FF;
-	Mon, 15 Jun 2026 11:34:21 +0900 (JST)
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Sangyun Kim <sangyun.kim@snu.ac.kr>,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [RESEND PATCH v1] spi: uniphier: Fix completion initialization order before devm_request_irq()
-Date: Mon, 15 Jun 2026 11:34:15 +0900
-Message-Id: <20260615023415.190655-1-hayashi.kunihiko@socionext.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1781492260; c=relaxed/simple;
+	bh=zAzfgPgw9rJrmAFkOMTMWiHCGv6dqjM3MdhvD8e0bUA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=I2LxZ1FrzTQlVFIvwM95F9gMEGm/YVup53CvQQCcbIFTqDUxH1LngKgwmvtS87Ru7m097I+AmHpWveltjV8eRbenfKcXtcno/NGL+3jr6OGo3UmZVAI9AysRL2mfw4taYpD1VjdiJbVrSXMPM1O7EThWArYKRotZQu5zCMUEu9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQQjqKCu; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQQjqKCu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96881F000E9;
+	Mon, 15 Jun 2026 02:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781492258;
+	bh=P8JbLL6fcmprzR0u/Oj/v/3W3UQzz7gYywYvVTK6PDU=;
+	h=Subject:From:Date:To;
+	b=CQQjqKCupIWby7eyVCEZ0XHBzEz20+bjVs3dm+5m83P8S64XZKqLHnNIucVa84CwO
+	 DO9n+7qJGqQlllX8+zwedV1Lm/9vHi6La7ao5VLBOLqxdc9mBZY7BfcWSK6drW1AR4
+	 UnyMFqQO21Nw3r/vxcGaFpfea0fXPXjWgj93qGzamgENLVe0llbGlbpZWL3V/PKgfs
+	 Nmpe63t4bJ4TGMTXZ21Xyu0m005I30ACqWjaWWB6Nq4Ob6JoDcksEA3BDl2izhLffy
+	 tXw0P82tA3a6qUBQts7LJClCuqVsRa3PRoLt9b8FzSQlLFgmKX2BiFtvWdjvcgI2JY
+	 EoGc7zAVOEN0w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9629D3A566D3;
+	Mon, 15 Jun 2026 02:57:35 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,47 +36,19 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178149225412.2397070.17304886678607824735.git-patchwork-housekeeping@kernel.org>
+Date: Mon, 15 Jun 2026 02:57:34 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-The driver calls devm_request_irq() before initializing the completion
-used by the interrupt handler. Because the interrupt may occur immediately
-after devm_request_irq(), the handler may execute before init_completion().
+Latest series: [v1] spi: uniphier: Fix completion initialization order before devm_request_irq() (2026-06-15T02:34:15)
+  Superseding: [v1] spi: uniphier: Fix completion initialization order before devm_request_irq() (2026-06-11T11:31:37):
+    spi: uniphier: Fix completion initialization order before devm_request_irq()
 
-This may result in calling complete() on an uninitialized completion,
-causing undefined behavior. This has been observed with KASAN.
 
-Fix this by initializing the completion before registering the IRQ.
-
-Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
-Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
-Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
----
- drivers/spi/spi-uniphier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
-index cc20fd11f03f..86fce9a571da 100644
---- a/drivers/spi/spi-uniphier.c
-+++ b/drivers/spi/spi-uniphier.c
-@@ -656,6 +656,8 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 	priv->host = host;
- 	priv->is_save_param = false;
- 
-+	init_completion(&priv->xfer_done);
-+
- 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
-@@ -679,8 +681,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	init_completion(&priv->xfer_done);
--
- 	clk_rate = clk_get_rate(priv->clk);
- 
- 	host->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

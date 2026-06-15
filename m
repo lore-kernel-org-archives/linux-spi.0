@@ -1,70 +1,86 @@
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9D0244687;
-	Mon, 15 Jun 2026 02:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749B5405F7;
+	Mon, 15 Jun 2026 02:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781490301; cv=none; b=N8pwEfrYK7oOsVcGq+dYcM4w7/M5UTc4j6svonSZbcsNJ6GyFYZkmAE0RJ9GvUpZ9/WKWWwbb79jMCnSrSdhH+dVa8rJ2YjHqszJwa9pJO2BVefaD+jcNg7qW17tllLaltJvbymnrRH0AHd7h1Xsyy02gmdXOzATK1U9xbN0yDk=
+	t=1781490865; cv=none; b=o/FfazcbEshckJooR3wKaIzwN5f+p/+hIHWMZdDQIuje1RUFCPxHrM7BJYoPUmK1uSESXRm4KQrcICE2hdR4KU02NcfScAmBBJO3IsFyR1dDZOMwk5HP+Xqvs6+fYb+bc69f+QrG9N2V1Lr0i2I+mU/9ljayQHsqi8g+gz2TTvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781490301; c=relaxed/simple;
-	bh=MR61lgIaKdV6p/YLuZYNVwMFQPzl3hdBc7xY85ZG7Dw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V0ETsyyBeyRHG4gHsUpBuQU1TUvot/9BcHUKbiFYUtPwNoXaAS1CEhZlRNDFBSQXq0P+J/0Dw0hPLLxawjN+1ohVyCcw2naX6aJ8yPtrtolMTOPisfuS2hT1aYbKD4yggnnEdyC85MJiYGTA8I0lqxW+1mzaiEP7MkzmD39/ggs=
+	s=arc-20240116; t=1781490865; c=relaxed/simple;
+	bh=+v8B5Ir/Fx4AHoAqbNBrPrLrKanjwd/fYNLCeTr2dXo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=loVVHEeb4av6NRgI0y5QHFTjctRxDW1Xt9X8H8CdA6vtPZs/qSWx5U5g96OIEJVeEyT27sIIbpb5UTWQ/mkZDIqhAyYSEBzyqH4+B9eZzS+7QrBgpqOh9LwLJVwFQVhSD0rdRhbggxhOOiTb+sC12I8b3ruuqxvF6N9bpeSCyng=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
 Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 15 Jun 2026 11:24:52 +0900
-Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 93A452068E61;
-	Mon, 15 Jun 2026 11:24:52 +0900 (JST)
-Received: from iyokan3.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Mon, 15 Jun 2026 11:24:52 +0900
-Received: from [10.213.138.178] (unknown [10.213.138.178])
-	by iyokan3.css.socionext.com (Postfix) with ESMTP id 091D8107185;
-	Mon, 15 Jun 2026 11:24:52 +0900 (JST)
-Message-ID: <c18914f2-3dba-48ad-abcd-04dc3251f4c9@socionext.com>
-Date: Mon, 15 Jun 2026 11:24:53 +0900
+  by mx.socionext.com with ESMTP; 15 Jun 2026 11:34:22 +0900
+Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
+	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 00AD92068E61;
+	Mon, 15 Jun 2026 11:34:21 +0900 (JST)
+Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Mon, 15 Jun 2026 11:34:21 +0900
+Received: from plum.e01.socionext.com (unknown [10.212.245.39])
+	by kinkan3.css.socionext.com (Postfix) with ESMTP id 7727C15FF;
+	Mon, 15 Jun 2026 11:34:21 +0900 (JST)
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Sangyun Kim <sangyun.kim@snu.ac.kr>,
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>
+Subject: [RESEND PATCH v1] spi: uniphier: Fix completion initialization order before devm_request_irq()
+Date: Mon, 15 Jun 2026 11:34:15 +0900
+Message-Id: <20260615023415.190655-1-hayashi.kunihiko@socionext.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: uniphier: Fix completion initialization order before
- devm_request_irq()
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Sangyun Kim <sangyun.kim@snu.ac.kr>,
- Kyungwook Boo <bookyungwook@gmail.com>, stable@vger.kernel.org,
- Masami Hiramatsu <mhiramat@kernel.org>
-References: <20260611113137.139673-1-hayashi.kunihiko@socionext.com>
- <airBmzYhnxuK_xdh@sirena.co.uk>
- <cd454dac-868d-43b9-9b50-9ba9f3f370a9@socionext.com>
- <aiv9j5CInFE3twZX@sirena.co.uk>
-Content-Language: en-US
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <aiv9j5CInFE3twZX@sirena.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Mark,
+The driver calls devm_request_irq() before initializing the completion
+used by the interrupt handler. Because the interrupt may occur immediately
+after devm_request_irq(), the handler may execute before init_completion().
 
-On 2026/06/12 21:37, Mark Brown wrote:
-> On Fri, Jun 12, 2026 at 05:17:49PM +0900, Kunihiko Hayashi wrote:
->> On 2026/06/11 23:09, Mark Brown wrote:
-> 
->>> This doesn't apply against current code, please check and resend.
-> 
->> That seems a bit strange. I applied this patch to v7.0 and linux-next successfully.
->> Which tree did you apply to and fail?
-> 
-> It applies to none of spi/for-7.1, spi/for-7.2 nor spi/for-next.
+This may result in calling complete() on an uninitialized completion,
+causing undefined behavior. This has been observed with KASAN.
 
-Sorry for my mistake.
-I've checked the differences, so I'll resent it.
+Fix this by initializing the completion before registering the IRQ.
 
-Thank you,
-
+Reported-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
+Reported-by: Kyungwook Boo <bookyungwook@gmail.com>
+Fixes: 5ba155a4d4cc ("spi: add SPI controller driver for UniPhier SoC")
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 ---
-Best Regards
-Kunihiko Hayashi
+ drivers/spi/spi-uniphier.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-uniphier.c b/drivers/spi/spi-uniphier.c
+index cc20fd11f03f..86fce9a571da 100644
+--- a/drivers/spi/spi-uniphier.c
++++ b/drivers/spi/spi-uniphier.c
+@@ -656,6 +656,8 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 	priv->host = host;
+ 	priv->is_save_param = false;
+ 
++	init_completion(&priv->xfer_done);
++
+ 	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(priv->base))
+ 		return PTR_ERR(priv->base);
+@@ -679,8 +681,6 @@ static int uniphier_spi_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	init_completion(&priv->xfer_done);
+-
+ 	clk_rate = clk_get_rate(priv->clk);
+ 
+ 	host->max_speed_hz = DIV_ROUND_UP(clk_rate, SSI_MIN_CLK_DIVIDER);
+-- 
+2.34.1
+

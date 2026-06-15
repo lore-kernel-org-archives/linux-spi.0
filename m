@@ -1,177 +1,374 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1BC33F377
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 12:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770E33090D5;
+	Mon, 15 Jun 2026 17:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781526205; cv=none; b=n35crQH74ia4YFQiMDoUptQebsK9e/Lo8LK9mO/eKI7/y+8/mXJnYve+NSDOy9wfbteC5+CGhfMawJvDvD/TWQkIYIZi/VF2ALfjlQZrKrzV+WozbE7wGAgI4asYmRA1rNB41U7doggdKpIeItgqVvcLs6FXZaaMvtZh+qJgRjg=
+	t=1781543107; cv=none; b=Gyty4V+yBXgQZh2gelQz339nt9+xrSBjvGRorgh/UIgmzgQtXraFSBiAWO89ZEWvjZFRZSZKBv/KJ8vaRkpp6qlQie7b6KRE2/XmpZjvjZYGhaoJXVkTYH60KIbR/rnRXs3u6ZGX5PM7f032bOkNiJgsiNM0WCK6ogKmYhrDJ5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781526205; c=relaxed/simple;
-	bh=8PeQBj34V5c0RfITfinu1f6KT50KbVyD4JOtxTy+Nho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DAlvHEIF5z2Dy5TF6s0ERag7I3XilrjsQE/u72pZrcSJz5wGMRz5hNL5CR63WPKLUF3TerU+DUlCZUuS1BG1hlfqC6lvFwQveYXTMNMbMunnANn+JxK+Puh3niohhLoZY4RDfcnWLI9X2v/jjzJmAR7HfCRdQaxkEOUjc+KldvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bp77X5vD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bbs7ONnv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1781543107; c=relaxed/simple;
+	bh=o19azkfjOGUDKOufJaVve0Yy136MXC77c83OH/O6aco=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=cmCIel70bcpIniHjFp0/47TXXXfNYMbwQZZjIFWmXe9d69WIyznMOlP/OWo8ifpwsIKjkdCTFZ+5gTTQjcru5ZKeaoR0IU6gmnKGlHtxiAVxZVQPMXXTuc4xRh1XAg83cDYM8xz/DbWVznjssx+LzsxYo2lOMmnw34cB/Fl98g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DeyjVX2y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bp77X5vD";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bbs7ONnv"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65FApQem359516
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 12:23:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	E7sv372Yo1BuVVOPLRYh56YSH/Q4RtdRYSnzm2ofdy4=; b=bp77X5vDkcJ9TRlO
-	306T0sfA9nlwh8v+9OgMwcah6LrWn5ena05Z1+Gbh18jWOaHLsnmbNJXJKOw3mG1
-	CZ2t0VZhQ3s+MnPK0zv1ZfxsI2DbZbaP0putJQ7rdDkdIRaiC1UPSv6eH9NxdwX/
-	qplscIVCNHWxXIY5EacmiFTruZG5g7mhF/p8nNxiX0Ok1yGCHVNynp+KLrw/4MuQ
-	Ha8n6zfKWfEOSyBBEGAUFfojV9GtGMSIxihBcVLda92LtsdWhZdaY0is6uMrtPRq
-	XWecAClUyFeteVMKEHWVmoFNWEJNi/UNngE4sNGPYJ1WfgGax4hQo+e7KIhaqzrF
-	k2xwFQ==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4etd2c946k-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 12:23:23 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-915c1997732so726514985a.3
-        for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 05:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781526203; x=1782131003; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=E7sv372Yo1BuVVOPLRYh56YSH/Q4RtdRYSnzm2ofdy4=;
-        b=Bbs7ONnvzZ41NO8AQ8PLtqE9J/c4RZ8RW3JMMg8EQ3vFLGqSddEhJ7MxF9DX24nomU
-         koKChcMB2kBRsY1zQdHiEe0FzxISADuTT7YQYHCUidgWG3SlfqHgvBJ8MZenOyW95V8/
-         dSmHV759misNO6wPib13DjfrLlrowCl7xMCMyCxqbnfKOhW7hhJ1SF0F9mc9vOecWJL3
-         tfgztMqfaRjaOH+4NFdH5/Qxt+5+hMHz/oBzRDpulM0EXNJCxAxIKYJbBzs/FyHFxrwd
-         CuO+8gyZ2bVouA7c511eqb07zQ8kOLlFN212O3JYO0tqYXoN2g7ZzwbFUwzewwrOcbeQ
-         SO2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781526203; x=1782131003;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E7sv372Yo1BuVVOPLRYh56YSH/Q4RtdRYSnzm2ofdy4=;
-        b=sDnyu5QJxKEvrDaiAesvYwm7cPgvMIWQjeJECs9RSj7o2xiF2WIoqxnAMYzhwkQ/gw
-         2Ya9yE1oyaf/E5K2tUpRI9scUVi/hQJ3RBEZKd3jzh+oUvx54gOW8MPQllOXAOtSqsx3
-         fBuJbApPvb5YcaDVBzi+iqF4jKRop2JSNWkU3aBczpDBFnc7+6uHNtDHsK/xlnWTfRse
-         3Zw7F9ROuyPUxmGSkk4haANcO4jYrYk91nu7EcMXdeBrbXiaHEgo33o8wnIYB2bEhS95
-         NY8rJ3hOPwTQ2E+bvNWQOl5R8g6uuFHFd4gbcKg+7PVo2NfgyYdxZ0X8UOZizdHQlCVo
-         TpDA==
-X-Forwarded-Encrypted: i=1; AFNElJ+t0gLmknzKLRNW1tb2k5JSxTh9KalIkTYruY8/yYSpHhzBqJZhs6t8Zvgfg5QKd6tpYbl/AG3vHv0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzEMv5x4Z1lfaRz5pyQ108Bmg54hiLHV54zx8Xt/UK+bxqhikQ
-	w41tm6BOSMUAWdL/KFhh46Qac1Lz1umtPmAc4hn0v6Wfwo2T4aKGXHjkU84FsBIsku143sXRAvb
-	4hxis5SAmvhsDZZvSA1uNu9BKC06yKbFyM8a2FFyy2ov0/jUDYeyJxGpKtDoJYTM=
-X-Gm-Gg: Acq92OEleHSxfDg8Qj6gQB4QLg0OLtCebAKmvBecIi6lr2Hlq+UdAKqJVbjGLVpdmJc
-	WtDfpKhFJ8xdIPRgZdTU0uGrVb4ANDcu7i5yoK8tWckxi5bPiLHLYFXee+aXAJWyZ9S2U6Pw43j
-	lwjb/d8+2AEiQh4wR7fulhUd16Q8idUkj+eA8sIv/Mu9uQVNTBjhrYfpkrFgkhwBZRAluMIEjuO
-	qhsIRvT7NgZyDDVeDJBil6FtYCkBzJ1zPKuB6GcaAZt4uAugFJ4RIDKeqkofj5nIHCwzTWe+7f7
-	iJrS6+ekiep2ZLNvLa0o3so7dfd4FIjQCE/cUA5qt5a/5eYuVSgJQoHA8W2Xn2cQMLDaijU6tAe
-	P4HIjf4X3uY3WjHU/UxFmXE6Hf5JHKdFtGH/WEBtM64syBie/gd8fu0eLcaNroABU0oPyFredCX
-	UWi2tl25rjY8DFCXRD6sXyTPje0c4DNGu9BHg=
-X-Received: by 2002:a05:620a:269e:b0:915:3d27:a816 with SMTP id af79cd13be357-9161bd388b8mr1960981885a.49.1781526202982;
-        Mon, 15 Jun 2026 05:23:22 -0700 (PDT)
-X-Received: by 2002:a05:620a:269e:b0:915:3d27:a816 with SMTP id af79cd13be357-9161bd388b8mr1960975485a.49.1781526202441;
-        Mon, 15 Jun 2026 05:23:22 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1b3253sm2757033e87.68.2026.06.15.05.23.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2026 05:23:21 -0700 (PDT)
-Date: Mon, 15 Jun 2026 15:23:19 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Pengyu Luo <mitltlatltl@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-Message-ID: <q4t5f4aiapowojbz2vh7qmcwvia56gc6ytzj3rys7ingisubid@ddlwb3qi5zdg>
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com>
- <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
- <CAH2e8h5Swn2mWoz+t_nrSw1=hQttwi1Hx=dg=cd9S3QRnHjpSQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DeyjVX2y"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id D6D5C1F000E9;
+	Mon, 15 Jun 2026 17:05:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781543106;
+	bh=+1xOEs1/EHvIJPWqNIwuryBSi8f0Cdszx+6pNydtPQw=;
+	h=From:To:Cc:Subject:Date;
+	b=DeyjVX2yGPantikYkcBqKMi67aQm4CbYRscDUvMNGk+houwCccbzKWO2sj2ZM5G6F
+	 EthYkWycKmYMqpDwVpraLRdN7X6xWivxTt/JgoiNfFWojYUPvKzCRs5E31egsD5GoB
+	 fKssqCfAEfzt1HdwtdC8gHsqcslu3fsiu0LExj+Wr/Ycj6FIVuh1tNe7DEvrWGQTDB
+	 w9A+GcvXwHS2yhwFiixsEFGhRHdGJZuFNUr5k+U/QppZ42GwAu2N+LGF0uSpl8a+59
+	 FzBwrfbeWtWgY5sSjDIjxo0l6gBeQr/S6etCQoj+Oy8VGvsJ4J7X6Mp4GhZriJObRz
+	 cfq7T+ng+12Lg==
+Message-ID: <eafbecb22793db47da30c2609eedb2ae@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI updates for v7.2
+Date: Mon, 15 Jun 2026 18:04:56 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH2e8h5Swn2mWoz+t_nrSw1=hQttwi1Hx=dg=cd9S3QRnHjpSQ@mail.gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE1MDEzMSBTYWx0ZWRfX0hc8Lfc5i5dg
- TKcBdKF8PlGSekoH4XpwG+lFRAg5hHRIPktZEzHNKm5Pk7Jq5/iy/CO9XrLNT9890cgnt/Chw6R
- BptbxoiK2q9df9C8y4RvcK0hzCSrs3qqhQOhedKw+Yzbi2mOFBmpmvQfna+oFjsRqZQa3Jpx9YE
- 4hzHnlM8DTxY4Kbs7z9LFKxljv5Hi5Spx9wBCVr8VoZ4KBbzbN53M+Ypp/91DwQYMKArJXYwtkH
- U7SOYuJ4NIKjsb8KHgWiJqyQu5QhpHE6oxX4BJbsxbln+cEU+5OoCsQQpPWgXLcK7pI77L9ptvE
- QI889aI9FDvA+A/mpTfD2FfteGgdcPabP1MlugQnSKJf4NWxPdU6S4z51Uhh9TmYZ95dKw/78TL
- nTKMd7R2Q+wTmg+qW9/QVPzOS1DWVYPeXUUMNU0LdLE5LRTlN1WSFaPfyffzrmyyBRzFiiSvDgQ
- Fyu96H+02BKerJD+0Lg==
-X-Proofpoint-ORIG-GUID: p4kiIK_0jMeHk2MCZts7b2swRDOyxOoj
-X-Proofpoint-GUID: p4kiIK_0jMeHk2MCZts7b2swRDOyxOoj
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE1MDEzMSBTYWx0ZWRfX8fBv7cG6zJva
- nvpLpx61FIdkPKhQ0cV2bBv/G4Y7geIRbHHhCaC2RNbToWSEGA6gH7kUiNPoqGjb3TnCt4algZ8
- P429qyYuZh/QLkc8ih/2QTzcEEgTnSo=
-X-Authority-Analysis: v=2.4 cv=MsRiLWae c=1 sm=1 tr=0 ts=6a2feebb cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8
- a=pGLkceISAAAA:8 a=Gh1C-VzVOIyvPQshHAMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-15_03,2026-06-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606040000 definitions=main-2606150131
 
-On Mon, Jun 15, 2026 at 12:25:32PM +0800, Pengyu Luo wrote:
-> On Mon, Jun 15, 2026 at 5:18 AM Dmitry Baryshkov
-> <dmitry.baryshkov@oss.qualcomm.com> wrote:
-> >
-> > On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
-> > > Some devices (such as gaokun3) do not disable FIFO mode, causing the
-> > > driver to fallback to FIFO mode by default. However, these platforms
-> > > also support GSI mode, which is highly preferred for certain
-> > > peripherals like SPI touchscreens to improve performance.
-> > >
-> > > Introduce the "qcom,force-gsi-mode" device property to hint and force
-> > > the controller into GSI mode during initialization.
-> >
-> > Ideally, this should be decided by the SPI controller based on the
-> > requirements. Another option would be to prefer GSI for all transfers if
-> > it is available, ignoring the FIFO even if it is not disabled.
-> >
-> 
-> I have read reviews. Can we check if the compatible
-> "qcom,sm6350-gpi-dma" is in DT? If the gpi dma controller is
-> presented, then we enable GSI mode.
+The following changes since commit e43ffb69e0438cddd72aaa30898b4dc446f664f8:
 
-Can we just check for the dmas property? If it is present and if we
-could get DMA channels, then GSI DMA is available.
+  Linux 7.1-rc6 (2026-05-31 15:14:24 -0700)
 
-> 
-> Best wishes,
-> Pengyu
-> 
-> > >
-> > > Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-> > > ---
-> > >  drivers/spi/spi-geni-qcom.c | 7 +++++++
-> > >  1 file changed, 7 insertions(+)
-> > >
-> >
-> > --
-> > With best wishes
-> > Dmitry
+are available in the Git repository at:
 
--- 
-With best wishes
-Dmitry
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v7.2
+
+for you to fetch changes up to f846d68992142034b1d34a83200a10cdc713eeda:
+
+  spi: Fix mismatched DT property access types (2026-06-14 01:18:29 +0100)
+
+----------------------------------------------------------------
+spi: Updates for v7.2
+
+This has been quite a busy release, mainly due to the subsystem wide
+work Johan Hovold has done to modernise resource allocation for the
+subsystem on probe, the subsystem did some very clever allocation
+management pre devm which didn't quite mesh comfortably with managed
+allocations and made it far too easy to introduce error handling and
+removal bugs.
+
+ - Cleanup and simplification of controller struct allocation, moving
+   everything over to devm and making the devm APIs more robust, from
+   Johan Hovold
+ - Support for spi-mem devices that don't assert chip select and support
+   for a secondary read command for memory mapped flashes, some commits
+   for this are shared with mtd.
+ - Support for SpacemiT K1.
+
+There will be a simple add/add conflict with the i2c-host tree in the
+x86 quirk data in drivers/acpi/acpi_apd.c.
+
+----------------------------------------------------------------
+Aaron Kling (1):
+      spi: tegra210-quad: Allocate DMA memory for DMA engine
+
+Alex Elder (2):
+      spi: dt-bindings: add SpacemiT K1 SPI support
+      spi: spacemit: introduce SpacemiT K1 SPI controller driver
+
+Carlos Song (3):
+      spi: fsl-lpspi: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
+      spi: fsl-lpspi: terminate the RX channel on TX prepare failure path
+      spi: imx: replace dmaengine_terminate_all() with dmaengine_terminate_sync()
+
+Chin-Ting Kuo (2):
+      spi: aspeed: Fix missing __iomem annotation in output transfer path
+      spi: aspeed: Replace VLA parameter with flat pointer in calibration helper
+
+Conor Dooley (2):
+      spi: microchip-core-qspi: report device on which timeout occured instead of which controller
+      spi: microchip-core-qspi: remove an unused define
+
+Felix Gu (6):
+      spi: atcspi200: fix use-after-free when driver unbind
+      spi: atcspi200: switch to devm functions
+      spi: rspi: Simplify reset control handling
+      spi: atmel: fix DMA channel and bounce buffer leaks
+      spi: ep93xx: fix double-free of zeropage on DMA setup failure
+      spi: dw-pci: remove redundant pci_free_irq_vectors() calls
+
+Guodong Xu (1):
+      spi: spacemit: add u64 cast to NSEC_PER_SEC to avoid 32-bit overflow
+
+Hans Zhang (10):
+      spi: amlogic-spifc-a1: Use FIELD_MODIFY()
+      spi: amlogic-spisg: Use FIELD_MODIFY()
+      spi: cadence-xspi: Use FIELD_MODIFY()
+      spi: meson-spicc: Use FIELD_MODIFY()
+      spi: nxp-xspi: Use FIELD_MODIFY()
+      spi: sn-f-ospi: Use FIELD_MODIFY()
+      spi: stm32-ospi: Use FIELD_MODIFY()
+      spi: stm32-qspi: Use FIELD_MODIFY()
+      spi: sunplus-sp7021: Use FIELD_MODIFY()
+      spi: uniphier: Use FIELD_MODIFY()
+
+Jisheng Zhang (1):
+      spi: cadence-xspi: Support 32bit and 64bit slave dma interface
+
+Johan Hovold (61):
+      spi: mpc52xx: clean up interrupt handling
+      spi: cadence: rename probe error labels
+      spi: cadence: clean up probe return value
+      spi: cadence-quadspi: clean up disable runtime pm quirk
+      spi: cadence-quadspi: drop redundant match data lookup
+      spi: clean up controller registration return value
+      spi: at91-usart: drop dead runtime pm support
+      spi: at91-usart: switch to managed controller allocation
+      spi: atmel: switch to managed controller allocation
+      spi: bcm63xx: switch to managed controller allocation
+      spi: bcm63xx-hsspi: switch to managed controller allocation
+      spi: cadence: switch to managed controller allocation
+      spi: octeon: switch to managed controller allocation
+      spi: cavium-thunderx: switch to managed controller allocation
+      spi: coldfire-qspi: switch to managed controller allocation
+      spi: dln2: switch to managed controller allocation
+      spi: ep93xx: switch to managed controller allocation
+      spi: fsl: switch to managed controller allocation
+      spi: fsl-espi: switch to managed controller allocation
+      spi: img-spfi: switch to managed controller allocation
+      spi: lantiq-ssc: switch to managed controller allocation
+      spi: meson-spicc: switch to managed controller allocation
+      spi: mxs: switch to managed controller allocation
+      spi: npcm-pspi: switch to managed controller allocation
+      spi: orion: switch to managed controller allocation
+      spi: omap2-mcspi: switch to managed controller allocation
+      spi: omap2-mcspi: clean up error labels
+      spi: omap2-mcspi: clean up probe return value
+      spi: pic32: switch to managed controller allocation
+      spi: pic32-sqi: switch to managed controller allocation
+      spi: pl022: switch to managed controller allocation
+      spi: qup: switch to managed controller allocation
+      spi: rspi: switch to managed controller allocation
+      spi: sh-hspi: switch to managed controller allocation
+      spi: sh-msiof: switch to managed controller allocation
+      spi: sifive: switch to managed controller allocation
+      spi: slave-mt27xx: switch to managed controller allocation
+      spi: sprd: switch to managed controller allocation
+      spi: st-ssc4: switch to managed controller allocation
+      spi: sun4i: switch to managed controller allocation
+      spi: sun6i: switch to managed controller allocation
+      spi: syncuacer: switch to managed controller allocation
+      spi: tegra114: switch to managed controller allocation
+      spi: tegra20-sflash: switch to managed controller allocation
+      spi: ti-qspi: switch to managed controller allocation
+      spi: ti-qspi: cleanup registration error path
+      spi: uniphier: switch to managed controller allocation
+      spi: zync-qspi: switch to managed controller allocation
+      spi: altera-platform: switch to managed controller allocation
+      spi: armada-3700: switch to managed controller allocation
+      spi: clps711x: switch to managed controller allocation
+      spi: falcon: switch to managed controller allocation
+      spi: fsi: switch to managed controller allocation
+      spi: hisi-sfc-v3xx: switch to managed controller allocation
+      spi: jcore: switch to managed controller allocation
+      spi: lp8841-rtc: switch to managed controller allocation
+      spi: lp8841-rtc: drop unused ifdef
+      spi: meson-spifc: switch to managed controller allocation
+      spi: mux: switch to managed controller allocation
+      spi: xlp: switch to managed controller allocation
+      spi: fix controller registration API inconsistency
+
+Lad Prabhakar (1):
+      spi: Drop redundant 'cs' variable declaration in __spi_add_device()
+
+Lars Pöschel (1):
+      spi: xilinx: use FIFO occupancy register to determine buffer size
+
+Mark Brown (13):
+      spi: cadence: runtime PM fixes
+      spi: cadence-quadspi: runtime PM fixes
+      spi: atcspi200: two cleanup
+      spi: microchip core-qspi cleanup
+      spi: omap2-mcspi: switch to managed controller allocation
+      spi: switch to managed controller allocation (part 2/3)
+      spi: Use FIELD_MODIFY() for bitfield operations
+      spi: switch to managed controller allocation (part 3/3)
+      spi: Merge up fixes
+      spi: Add trace events for Qualcomm GENI SPI drivers
+      spi: aspeed: Fix __iomem annotation and VLA parameter
+      spi: fsl-lpspi: fix DMA termination issues
+      spi: spi-mem: Add a no_cs_assertion capability
+
+Miquel Raynal (7):
+      mtd: spinand: Drop a too strong limitation
+      mtd: spinand: Expose spinand_op_is_odtr()
+      mtd: spinand: Drop ECC dirmaps
+      spi: spi-mem: Transform the read operation template
+      spi: spi-mem: Create a secondary read operation
+      spi: spi-mem: Add a no_cs_assertion capability
+      spi: spi-mem: Fix spi_controller_mem_ops kdoc
+
+Nathan Chancellor (1):
+      spi: cadence-xspi: Revert COMPILE_TEST support
+
+Praveen Talari (2):
+      spi: qcom-geni: trace: Add trace events for Qualcomm GENI SPI
+      spi: qcom-geni: Add trace events for Qualcomm GENI SPI driver
+
+Qiang Ma (1):
+      spi: hisi-kunpeng: Use dev_err_probe() for host registration failure
+
+Randy Dunlap (1):
+      spi: s3c64xx: fix all kernel-doc warnings
+
+Rob Herring (Arm) (1):
+      spi: Fix mismatched DT property access types
+
+Rosen Penev (2):
+      spi: cadence-xspi: Add COMPILE_TEST support
+      spi: omap2-mcspi: Use of_device_get_match_data()
+
+Ruoyu Wang (1):
+      spi: meson-spifc: fix runtime PM leak on remove
+
+Stepan Ionichev (1):
+      spi: amlogic-spisg: drop misleading NULL check on exdesc
+
+Thomas Lin (1):
+      spi: dw-mmio: Add ACPI ID LECA0002 for LECARC SoCs
+
+Tomer Maimon (1):
+      spi: dt-bindings: nuvoton,npcm750-fiu: Convert to DT schema
+
+Tommaso Merciai (1):
+      spi: rzv2h-rspi: Add suspend/resume support
+
+Uwe Kleine-König (The Capable Hub) (3):
+      spi: Consistently define pci_device_ids using named initializers
+      spi: Use named initializers for arrays of i2c_device_data
+      spi: Use named initializers for platform_device_id arrays
+
+Vadim Fedorenko (1):
+      spi: xilinx: let transfers timeout in case of no IRQ
+
+Viken Dadhaniya (3):
+      spi: dt-bindings: qcom,spi-qcom-qspi: Add qcom,qcs615-qspi compatible
+      spi: spi-qcom-qspi: Fix incomplete error handling in runtime PM
+      spi: spi-qcom-qspi: Add interconnect support for memory path
+
+ .../devicetree/bindings/spi/nuvoton,npcm-fiu.txt   |  58 --
+ .../bindings/spi/nuvoton,npcm750-fiu.yaml          |  93 +++
+ .../bindings/spi/qcom,spi-qcom-qspi.yaml           |  21 +-
+ .../devicetree/bindings/spi/spacemit,k1-spi.yaml   |  84 +++
+ drivers/acpi/acpi_apd.c                            |   7 +
+ drivers/media/usb/msi2500/msi2500.c                |   9 +-
+ drivers/mtd/nand/spi/core.c                        |  76 +-
+ drivers/mtd/spi-nor/core.c                         |  22 +-
+ drivers/spi/Kconfig                                |   9 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-airoha-snfi.c                      |   6 +-
+ drivers/spi/spi-altera-platform.c                  |  31 +-
+ drivers/spi/spi-amlogic-spifc-a1.c                 |   5 +-
+ drivers/spi/spi-amlogic-spisg.c                    |  16 +-
+ drivers/spi/spi-armada-3700.c                      |  44 +-
+ drivers/spi/spi-aspeed-smc.c                       |  15 +-
+ drivers/spi/spi-at91-usart.c                       |  63 +-
+ drivers/spi/spi-atcspi200.c                        |  28 +-
+ drivers/spi/spi-atmel.c                            | 167 +++--
+ drivers/spi/spi-bcm63xx-hsspi.c                    |  17 +-
+ drivers/spi/spi-bcm63xx.c                          |  26 +-
+ drivers/spi/spi-bitbang.c                          |  11 +-
+ drivers/spi/spi-cadence-quadspi.c                  |  52 +-
+ drivers/spi/spi-cadence-xspi.c                     |  56 +-
+ drivers/spi/spi-cadence.c                          |  40 +-
+ drivers/spi/spi-cavium-octeon.c                    |  17 +-
+ drivers/spi/spi-cavium-thunderx.c                  |  32 +-
+ drivers/spi/spi-clps711x.c                         |  31 +-
+ drivers/spi/spi-coldfire-qspi.c                    |  28 +-
+ drivers/spi/spi-cs42l43.c                          |   4 +-
+ drivers/spi/spi-dln2.c                             |  26 +-
+ drivers/spi/spi-dw-core.c                          |   2 +
+ drivers/spi/spi-dw-mmio.c                          |   7 +-
+ drivers/spi/spi-dw-pci.c                           |  26 +-
+ drivers/spi/spi-ep93xx.c                           |  23 +-
+ drivers/spi/spi-falcon.c                           |   8 +-
+ drivers/spi/spi-fsi.c                              |   8 +-
+ drivers/spi/spi-fsl-dspi.c                         |   2 +
+ drivers/spi/spi-fsl-espi.c                         |  22 +-
+ drivers/spi/spi-fsl-lpspi.c                        |  18 +-
+ drivers/spi/spi-fsl-spi.c                          |  14 +-
+ drivers/spi/spi-geni-qcom.c                        |  13 +
+ drivers/spi/spi-hisi-kunpeng.c                     |  12 +-
+ drivers/spi/spi-hisi-sfc-v3xx.c                    |  20 +-
+ drivers/spi/spi-img-spfi.c                         |  40 +-
+ drivers/spi/spi-imx.c                              |  16 +-
+ drivers/spi/spi-intel-pci.c                        |  66 +-
+ drivers/spi/spi-intel.c                            |   6 +-
+ drivers/spi/spi-jcore.c                            |  23 +-
+ drivers/spi/spi-lantiq-ssc.c                       |  28 +-
+ drivers/spi/spi-lp8841-rtc.c                       |  16 +-
+ drivers/spi/spi-mem.c                              |  32 +-
+ drivers/spi/spi-meson-spicc.c                      |  48 +-
+ drivers/spi/spi-meson-spifc.c                      |  23 +-
+ drivers/spi/spi-microchip-core-qspi.c              |   3 +-
+ drivers/spi/spi-mpc52xx.c                          |  28 +-
+ drivers/spi/spi-mux.c                              |  19 +-
+ drivers/spi/spi-mxic.c                             |  18 +-
+ drivers/spi/spi-mxs.c                              |  14 +-
+ drivers/spi/spi-npcm-fiu.c                         |  16 +-
+ drivers/spi/spi-npcm-pspi.c                        |  19 +-
+ drivers/spi/spi-nxp-xspi.c                         |  12 +-
+ drivers/spi/spi-omap2-mcspi.c                      |  49 +-
+ drivers/spi/spi-orion.c                            |  26 +-
+ drivers/spi/spi-pci1xxxx.c                         |  42 +-
+ drivers/spi/spi-pic32-sqi.c                        |  28 +-
+ drivers/spi/spi-pic32.c                            |  11 +-
+ drivers/spi/spi-pl022.c                            |  11 +-
+ drivers/spi/spi-qcom-qspi.c                        |  80 ++-
+ drivers/spi/spi-qup.c                              |  15 +-
+ drivers/spi/spi-rpc-if.c                           |   8 +-
+ drivers/spi/spi-rspi.c                             |  44 +-
+ drivers/spi/spi-rzv2h-rspi.c                       |  18 +
+ drivers/spi/spi-s3c64xx.c                          |   6 +-
+ drivers/spi/spi-sc18is602.c                        |   6 +-
+ drivers/spi/spi-sh-hspi.c                          |  11 +-
+ drivers/spi/spi-sh-msiof.c                         |  32 +-
+ drivers/spi/spi-sifive.c                           |  39 +-
+ drivers/spi/spi-slave-mt27xx.c                     |  33 +-
+ drivers/spi/spi-sn-f-ospi.c                        |   5 +-
+ drivers/spi/spi-spacemit-k1.c                      | 789 +++++++++++++++++++++
+ drivers/spi/spi-sprd.c                             |  20 +-
+ drivers/spi/spi-st-ssc4.c                          |  14 +-
+ drivers/spi/spi-stm32-ospi.c                       |  13 +-
+ drivers/spi/spi-stm32-qspi.c                       |  11 +-
+ drivers/spi/spi-sun4i.c                            |  35 +-
+ drivers/spi/spi-sun6i.c                            |  38 +-
+ drivers/spi/spi-sunplus-sp7021.c                   |   3 +-
+ drivers/spi/spi-synquacer.c                        |  24 +-
+ drivers/spi/spi-tegra114.c                         |  34 +-
+ drivers/spi/spi-tegra20-sflash.c                   |  24 +-
+ drivers/spi/spi-tegra210-quad.c                    |  29 +-
+ drivers/spi/spi-ti-qspi.c                          |  37 +-
+ drivers/spi/spi-topcliff-pch.c                     |  10 +-
+ drivers/spi/spi-uniphier.c                         |  46 +-
+ drivers/spi/spi-wpcm-fiu.c                         |   2 +-
+ drivers/spi/spi-xcomm.c                            |   4 +-
+ drivers/spi/spi-xilinx.c                           |  19 +-
+ drivers/spi/spi-xlp.c                              |   3 +-
+ drivers/spi/spi-xtensa-xtfpga.c                    |   1 -
+ drivers/spi/spi-zynq-qspi.c                        |  40 +-
+ drivers/spi/spi.c                                  |  41 +-
+ drivers/staging/greybus/spilib.c                   |   8 +-
+ include/linux/mtd/spinand.h                        |   4 +-
+ include/linux/platform_data/spi-s3c64xx.h          |   3 +-
+ include/linux/spi/spi-mem.h                        |  13 +-
+ include/linux/spi/spi.h                            |   4 -
+ include/trace/events/qcom_geni_spi.h               | 103 +++
+ 108 files changed, 2085 insertions(+), 1448 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm-fiu.txt
+ create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,npcm750-fiu.yaml
+ create mode 100644 Documentation/devicetree/bindings/spi/spacemit,k1-spi.yaml
+ create mode 100644 drivers/spi/spi-spacemit-k1.c
+ create mode 100644 include/trace/events/qcom_geni_spi.h

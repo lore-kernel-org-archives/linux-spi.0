@@ -1,152 +1,219 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5662DCF52
-	for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 21:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591F54C97
+	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 01:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781471937; cv=none; b=PVhUuPpYrdHEBrmx3aeeGMoB7bn3M9Y/Iz2bThMbVAST5fhpRFIf3nQhv3o/cia+DtL6SshLXzsX252YyQci1W+cs+PgxgCB+OrNyDrdxu98KvL9sUIUuHUX2TV48fFHeuqBGfeqXUSD56plQm1ENk/zULKquH250lWgntOkLBw=
+	t=1781486300; cv=none; b=eME/eVv11ULckmvnLHzLgW9R3vywYvPumnCgmGuvEY7YZSysD8NDLYJsirclmMdeczqrSxBZ62mUUWetkXoogJgxcnAi8Td+VSXFhGkDMTQ+IJJZ3MQcm2RmOB2MNEfoy84F7zqwBlZPm5ok9ZYY6Ect5lz4R4H+/y9wzCz0GQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781471937; c=relaxed/simple;
-	bh=0miKinNiBWvUoPN9BaGwPuXb4iIJkY74GJPYKVpbCws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K0R4AZyx+7zIEix2BAsChD4wSNBG/mZm+qaNXeaFYMSY1WU8i1uHbRbO8EN6XmFyg0pl/SICTjLPge7LEfL1E5uX8VmJ5Gi9Rj9MNy6Je8/gE6grI8Hp2yTJd7GoNyWTxtrUhmIiXEAxFFQ+417RM3u8RqdXzSOqnHKYNzoxSBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XRoyeQE2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WZLBdipS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1781486300; c=relaxed/simple;
+	bh=/pzSwr19+VdrcX+IqjZIPPA/r+0axARzOy4vWIKuvpw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aeG/M7zm2mWJT9QPimfSn7ZglTIKQkeduqsUfBtO1rIuDP15H3gOIf9sIZJ/5+Tpv2G4EyMo+pkdWR7PUM3F+81djiM0KpzHR4cqtVGGG7XHL8rv0RhfmQ97em74TwzLepJWiBFEAeScjySEdt26a8P/NDOW+O3oKf361D74vsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4M0ubql; arc=none smtp.client-ip=74.125.82.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XRoyeQE2";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WZLBdipS"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65ELFFeB2753884
-	for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 21:18:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=MCsu8KfWh71txzBAaRtP4I1n
-	CwGiB4nR9paTIiDThd8=; b=XRoyeQE2h9Aa67gjKufT3yr6h4UUkS6q72vh2qR+
-	6rRKrW+I0AY9RMoyFHoQBsg8q8qvyj2zBat1G5YjkcBB5z92a1x3nc3Y7aTUFO6N
-	MGduQ0zNpy3hQrHiiOqNGLcOEfM8SIWPNKOaD9HY7kOlEKe4geeRxbNRj2x5KqMN
-	A2aTklMiucdvUrBHkKwvKf62Oku+ntATzTeFhqgGuAeW4QbBL/fggHkKfv4w1l4m
-	qsMXKHSp+yqyJvdqOaIfoT/k3J0RH/LY7pNn18eUqj1nPe5a1q+2l+yDJLblXJt0
-	NBt4ld+90jJ02kui4DKnS8gmPJqU39HyWFCjcloJ9uZ09Q==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eryc6vkg6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 21:18:54 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-91598af506cso269450285a.0
-        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 14:18:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4M0ubql"
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-1397e093f90so1118650c88.1
+        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 18:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1781471934; x=1782076734; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MCsu8KfWh71txzBAaRtP4I1nCwGiB4nR9paTIiDThd8=;
-        b=WZLBdipS9bu+r5x8cVeeOmbpSsfNBoDDBVkUr/gGHi6TF7dqBe8h+mkead2Xn9vWv7
-         yMA5x0oX38M/dzUgIG0LJXGeVtEViJ4h0p0optc+D/vEYZqFEw2vpS5tHVpcieFvN5Hq
-         PFcBRKAXLnE3RTdunRca1pAYcSSwMYRF1K7TJ6HF0TWbNU6yywhioTH0zE8AYaAyjYbR
-         6DHEadGrioBr8aM2Xcgnkwl6H0LZpgel6nM6fo/+EPIvIg28ABh1t/ZeonzAUHSYfdF9
-         nZm0xLHw6fkb8IFtXFICFMcWghi44L7cHaCrobcpHPcLyMInpIspnTOzMsdNvsIYoqUg
-         +bMw==
+        d=gmail.com; s=20251104; t=1781486297; x=1782091097; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xD2K3MV/ImpTfNxgjLbCTNSQAYJN87stcDsw5szY+bI=;
+        b=c4M0ubqlNp/XFMMAgTtdVKxagQYgzROC8FdyWXPH8MhLz64WbjbhN3iKpk4HKfRd/v
+         VFrq1gexltBqMKCJijcLsq59rCLVRkT+yy2LA1B2N3lG6x6v0DdgM1Mh3WtCVJ1HPY94
+         jm/x82unjkyPUR8XPudaVn+8Qf5H/XVJ+Zvy6MaPv9J0Ue7Z3FmghfB5XfNCqDRkcmSq
+         MfVyATKeSKdfoLlUgb65chtYpNETkNcTe/yBc9r5BTqOi4Qlx09yjnm1blRbkT/RBh2a
+         xpLJf1SljzFyklbytsZpTBrohqOh/mguxQqWGjR2eDo/2U7I5oAXIytw0qBFhg+qNywo
+         ACTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781471934; x=1782076734;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MCsu8KfWh71txzBAaRtP4I1nCwGiB4nR9paTIiDThd8=;
-        b=VSAO89bYK4C/Xp0MZVS/oXpztdB9iOUmPB40L1OYyZZCZTqlQOzb7oQpj3l3WVqTB1
-         J53GaeqoYNkZwZ4n05aVt5gFt2rVeawWWMJylOx6SEqrRXYJ59edObv/L6G/GtiIYB0V
-         bb+5jS+CceFPN2WD5nYk3G9uajpHaUWoyVtYtC5Q5JOP8g006kamyUJGp+GiXKLVK35G
-         Rc+i4EYRZ9N4S7sPdEzP/J2sdK/jIAqepIbORzqPQj+vRl7eZNsSjxXXlm1+OhQhCyGt
-         R4Ph3Pc8rfQzIL1BvbDAzeYERgoAllL8TJVvZOtPGRgc0P1RR4MIjuRwQuWSadPxiJ6e
-         R3nw==
-X-Forwarded-Encrypted: i=1; AFNElJ/qsVUMhk6fEhB/ro8GRXI8fyxxKXmPFxhMn/ODiaVzl9YUpTQayeEq4crLh32VMF8NjFqNw0lwgD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3TYew1GWOeR3I4+DiKzF8Ets+3GxtM6yaz4k5ZCXh5I8XXX4e
-	ph1aLKnsfc9LMlLYslffafpcLZssDLGyo6tSYshAKVTmKKvPo7/pGj4jtZ7bsJh3GbpeH/lEbC7
-	stWuf3eylWVOTAhT5iMAFisRzA2rgYYP68WPhM62kuQ/Igq/YXBzwE8n1uEDLcnY=
-X-Gm-Gg: Acq92OFhSToNYrxs7IwBsmb9RNfN8ZMyDIC4h/HBPtPxg1jmJR7CLmO5nvUpUsN2ESP
-	O/bxd5G9EpSeqgyIUFeQuVTWG/jqIpkFMAhcxlYHrn59llpk6pL0B2LJX7DXBl+TuRzO9uEX1hI
-	/ZY0CYnR1Q700Gc3oXJ2wbeM4MokNAiF9rP0KR/3vuiNEXqW5DNiaVu1wUOrlOhaHMCXWeQWI4O
-	3K0jLWfQUo9YPjqmziKqZPoCaTvLpnHC+eL9ZmntPyXetE64Jcsg7s9oJRNPfFe65ftZBaY+TZu
-	UBO1Nb4d4mhG6fn6MD/Y3Uf8jjODv3AkpUgWKjoPy9apDZ/72ZByiQt5Zbo4o8jXSRpn0FGPJKF
-	8Dik6XDgf8rwtSB9hdGAvFt2YJYwWrQOIcus6IHq9oyET1uqdbj5R46X1MmRZd6LtkafQOBcIUA
-	EVx4+yrRimGYlIsL1YusR6tw+gKR/nl3j+nHI=
-X-Received: by 2002:a05:620a:6f0a:b0:914:bb8e:915c with SMTP id af79cd13be357-9161bc576e1mr1799151785a.22.1781471934098;
-        Sun, 14 Jun 2026 14:18:54 -0700 (PDT)
-X-Received: by 2002:a05:620a:6f0a:b0:914:bb8e:915c with SMTP id af79cd13be357-9161bc576e1mr1799148885a.22.1781471933635;
-        Sun, 14 Jun 2026 14:18:53 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad2e1aea92sm2187663e87.63.2026.06.14.14.18.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jun 2026 14:18:51 -0700 (PDT)
-Date: Mon, 15 Jun 2026 00:18:49 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Pengyu Luo <mitltlatltl@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-Message-ID: <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com>
+        d=1e100.net; s=20251104; t=1781486297; x=1782091097;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xD2K3MV/ImpTfNxgjLbCTNSQAYJN87stcDsw5szY+bI=;
+        b=cAr/XcwCH7EzU4+DsGZZvj0QT6kanMSKaKAguskS2dhW2xRdkF7CGYJ7w5+RiCgnpp
+         l7SgW40BUDAhQiaxBgH42Onb9+UD+zJQLEQKWbxVnF6k8TES7IGszxsUr5ub4qkMJsPa
+         lC3sKo5ttXaPnjAS3Ituwe5yGiSi8WTU33EQWAdjf038FG9xzvXM+ir2nwsbYooP9SMr
+         RWBQz8wthDZ2hsTLPtbG5KCOHQqG5RhHShw/MfCgTYCRv6ZoGpUA7qSpXmVDrt4dqCtl
+         dArwVlByMWVQpfVHFnnmP9R35CSHcSQYQ+/d93f1RdObJlk97AC+HLMJvCIjiPjWFBip
+         ojDQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+n7IRUNQm0NuwX2m+aYQ39SBCDtRSp5L/V8xWNjM+6LRW5NxebaWdf2X+D0ECqq/57eMnGZJkDyg4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4AvKltfZMBdY3xwWbIPjw1DIgaFzB2CdvBKF4/gnru3yFJDVK
+	Lqoz8HoJtcW4hNzEAUzTaCSeCMvZh+1qMXBtF4Xz+2/9Uisbop29kmGj
+X-Gm-Gg: Acq92OGfFrx82sP7wTLRZNHvRe8YPF1N0DHK8ncCHf1+XiZrjOGc25Xp7Kjd2oRFd/8
+	ZLunwtzOCImdUK8J9yrckIBWWWAeYHRodJmNc9j0ebXDhSzTlLlwKmd/VDM9D4sRQha2Ib+kA6E
+	MXxK7N8dPlo5jtFvVlHoUYWa50hAkGHT+cEfWItmHdNiOLrvGynGMP+4iA2Nq+DcsMENDgBkrUL
+	hAusoUuGhDJ/LPqyrfiv4TncPocE7Ht8Q99JCm+sus2Oe5su63gZrBRa81GxQxHx6cLIvD7TaSl
+	gZr+LKqzCxcZbX4q+3BQ7wRuESH3Vo6hhvpkOAQSEPysQQJFtHBgOZJs4Ik8gd2VtVowVJ5It17
+	qHhOXkw5PQwVUmmnP2FsGFC8Sx5bwVqA9s04qE8+9cuNoGwK8IoybNRtJ20l2QWBQbVIUruEwXg
+	xH8RB8I9YRgDBqaoGqe2ChPh2v6QFl8GYhORYHR3AbiXBUHmKlrQBjRKmyVH4BYDETek0Pq4R4f
+	4E=
+X-Received: by 2002:a05:7022:629f:b0:137:6bdb:5842 with SMTP id a92af1059eb24-1384b97f25bmr5877161c88.0.1781486297416;
+        Sun, 14 Jun 2026 18:18:17 -0700 (PDT)
+Received: from [172.19.1.42] (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1384b964862sm8982362c88.10.2026.06.14.18.18.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Jun 2026 18:18:16 -0700 (PDT)
+Message-ID: <59dbf955-56d5-4d72-85ca-0ed8407de295@gmail.com>
+Date: Mon, 15 Jun 2026 09:18:12 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260614083424.464132-2-mitltlatltl@gmail.com>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE0MDIyNiBTYWx0ZWRfX5y3U3AFxJg+O
- eqbvw5EQlQS5SLLVkPcNoi/cIFKZlLDOke7ugTvxwyGrU2eFYY0AQ7wLkiYp4yKxTniZ9un5G41
- ozZhwJDwT6SdX2zG10nBLiFuuVQNZN8=
-X-Authority-Analysis: v=2.4 cv=Oop/DS/t c=1 sm=1 tr=0 ts=6a2f1abe cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=pGLkceISAAAA:8
- a=cGGWfqFj7ohIeHota6cA:9 a=CjuIK1q_8ugA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-GUID: L-85n_cHlNbDWTD6CwRpH5DlWrfmZ1qR
-X-Proofpoint-ORIG-GUID: L-85n_cHlNbDWTD6CwRpH5DlWrfmZ1qR
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE0MDIyNiBTYWx0ZWRfXzvCXudA+QqZT
- jyzTs4kNO01pYocjPp5khA8fIqqY2SChnlCbvcJsan3yoeGt0P+qCjfDGZ7QSNslMcm+m+SefVK
- K83512lZqVfQgrNtKxaJ21S/B0qdm0NahlIjqBYAiRAXr+8s9C3m0QVufgIhy0vgJ79lGqrn1p8
- 8B8uinoYy246Op+A6JiMIXLZAp+k1e/Bipvjyzi7pPgAm3l5DzBCxVDMUlHZnHPEH4gQjZyJF7D
- llalAPF4ohLbmboW9MDxfuVI8zEa1d9u2p/RFkMRKwga36qHKD7YMrQHm2pxEdRu0Gf//5yzY5+
- 4pLalCmYdwb8h8PrYvCIA6F4AF1sNweSgoR4pOFu0Alw0NZYB6FnKmvCyU8S2KiXb3oKqtKzbvE
- Qh6JgBPk71e1wMq/5GJFpk5pGDfEQDVpwc+vLKTjZvj7yMzkhlUcBmyNbLPpwLaJq6CJUsixQN3
- 3EpPgVmem+imJP1Vebg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-14_05,2026-06-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606040000
- definitions=main-2606140226
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Add Nuvoton
+ MA35D1 QSPI
+To: Conor Dooley <conor@kernel.org>
+Cc: broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cwweng@nuvoton.com
+References: <20260611091246.2070485-1-cwweng.linux@gmail.com>
+ <20260611091246.2070485-2-cwweng.linux@gmail.com>
+ <20260611-decoy-glamorous-81903a5fd1f9@spud>
+ <0031379c-0cc3-40c8-8145-5b1991b42f05@gmail.com>
+ <20260612-diagram-florist-01a0e8f923d8@spud>
+Content-Language: en-US
+From: Chi-Wen Weng <cwweng.linux@gmail.com>
+In-Reply-To: <20260612-diagram-florist-01a0e8f923d8@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
-> Some devices (such as gaokun3) do not disable FIFO mode, causing the
-> driver to fallback to FIFO mode by default. However, these platforms
-> also support GSI mode, which is highly preferred for certain
-> peripherals like SPI touchscreens to improve performance.
-> 
-> Introduce the "qcom,force-gsi-mode" device property to hint and force
-> the controller into GSI mode during initialization.
+Hi Conor,
 
-Ideally, this should be decided by the SPI controller based on the
-requirements. Another option would be to prefer GSI for all transfers if
-it is available, ignoring the FIFO even if it is not disabled.
+Thanks for the clarification.
 
-> 
-> Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-> ---
->  drivers/spi/spi-geni-qcom.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
+I will make the driver read num-cs in v4 and fall back to the hardware
+default of 2 when the property is not present. I will also keep the
+binding default in sync with that behavior.
 
--- 
-With best wishes
-Dmitry
+Best regards,
+Chi-Wen
+
+Conor Dooley 於 2026/6/12 下午 11:48 寫道:
+> On Fri, Jun 12, 2026 at 08:33:01AM +0800, Chi-Wen Weng wrote:
+>> Hi Conor,
+>>
+>> Thanks for the review.
+>>
+>> I will add a default value for num-cs in v4:
+>>
+>>    num-cs:
+>>      maximum: 2
+>>      default: 2
+>>
+>> The controller has two native chip selects and the driver currently uses
+>> that hardware default.
+> The driver should handle the property and fall back to the default.
+> It's not complex to support, so surely there's no reason not to?
+>
+> Cheers,
+> Conor.
+>
+>> Best regards,
+>> Chi-Wen
+>>
+>> Conor Dooley 於 2026/6/12 上午 01:34 寫道:
+>>> On Thu, Jun 11, 2026 at 05:12:45PM +0800, Chi-Wen Weng wrote:
+>>>> From: Chi-Wen Weng <cwweng@nuvoton.com>
+>>>>
+>>>> Add a devicetree binding for the Quad SPI controller found in
+>>>> Nuvoton MA35D1 SoCs.
+>>>>
+>>>> The controller supports SPI memory devices such as SPI NOR and SPI NAND
+>>>> flashes. It has one register range, one clock input and one reset line,
+>>>> and supports up to two chip selects.
+>>>>
+>>>> Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
+>>>> ---
+>>>>    .../bindings/spi/nuvoton,ma35d1-qspi.yaml     | 62 +++++++++++++++++++
+>>>>    1 file changed, 62 insertions(+)
+>>>>    create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
+>>>> new file mode 100644
+>>>> index 000000000000..d3b36e612eb0
+>>>> --- /dev/null
+>>>> +++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
+>>>> @@ -0,0 +1,62 @@
+>>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>>> +%YAML 1.2
+>>>> +---
+>>>> +$id: http://devicetree.org/schemas/spi/nuvoton,ma35d1-qspi.yaml#
+>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>> +
+>>>> +title: Nuvoton MA35D1 Quad SPI Controller
+>>>> +
+>>>> +maintainers:
+>>>> +  - Chi-Wen Weng <cwweng@nuvoton.com>
+>>>> +
+>>>> +allOf:
+>>>> +  - $ref: /schemas/spi/spi-controller.yaml#
+>>>> +
+>>>> +properties:
+>>>> +  compatible:
+>>>> +    const: nuvoton,ma35d1-qspi
+>>>> +
+>>>> +  reg:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  interrupts:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  clocks:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  resets:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  num-cs:
+>>>> +    maximum: 2
+>>> Missing a default of 2, unless you make the property required.
+>>> FWIW, your driver doesn't appear to read this value.
+>>>
+>>> pw-bot: changes-requested
+>>>
+>>> Cheers,
+>>> Conor.
+>>>
+>>>> +
+>>>> +required:
+>>>> +  - compatible
+>>>> +  - reg
+>>>> +  - clocks
+>>>> +  - resets
+>>>> +
+>>>> +unevaluatedProperties: false
+>>>> +
+>>>> +examples:
+>>>> +  - |
+>>>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>>>> +    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
+>>>> +    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
+>>>> +
+>>>> +    soc {
+>>>> +        #address-cells = <2>;
+>>>> +        #size-cells = <2>;
+>>>> +
+>>>> +        spi@40680000 {
+>>>> +            compatible = "nuvoton,ma35d1-qspi";
+>>>> +            reg = <0 0x40680000 0 0x100>;
+>>>> +            interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+>>>> +            clocks = <&clk QSPI0_GATE>;
+>>>> +            resets = <&sys MA35D1_RESET_QSPI0>;
+>>>> +            #address-cells = <1>;
+>>>> +            #size-cells = <0>;
+>>>> +        };
+>>>> +    };
+>>>> +
+>>>> -- 
+>>>> 2.25.1
+>>>>

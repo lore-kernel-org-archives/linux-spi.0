@@ -1,134 +1,76 @@
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EB92F745E
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 04:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781497616; cv=pass; b=NFzuNJSqEXEsETTrvheSiHB7VnLzfYXw8sRMwWoBNKR/0rnz+X6BWf6ORpJiWwZOcgssgesknkOVDnhK+vtfVS1Q8TVVCujsmOj0gxIWaTjms09NP36SJ+9WkB539/cGNU2IPFvg7Drg5YcVZN/u53QwpEbbES3lUSQ5zL5H2Aw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781497616; c=relaxed/simple;
-	bh=Vl7IPQ+oCx/xUtiuiJtRzdKDCC/Kdl8GVNHYD3aF2bI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VDIdVVwCw4wp5Lw2LXMDLoHOwRUZTLZ4x53Kt/5e14f8b5ZnvHw8y8RFEEeNuq+AjF6IghiSyCptJBhOrPq0oJKZaoI1jvfnNlxpAwk9+UnGUDOox0RpZsS5xe9MHRpADp1mvRhi33oWFZXI6VGHyZBhXp4H7SXX0JkPUTNSlpQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qC3ybLm5; arc=pass smtp.client-ip=209.85.217.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAA22D0606;
+	Mon, 15 Jun 2026 04:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1781498969; cv=none; b=LY94XQUrygyUdrBFBhhnfTYstjiea172GYIm1P2CKo2sUUiRI6aQvU6wmPBSbDHs3Jx0h7NtS5PH0u2Uio/JxY3bD2lmEI/fHzkaeAn7o8lPEfHRLiOi8hpH3C5aXwa2RhciTXdEVVtsEk3k4WTrraGgGF4Q2581hEchslgMrD8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1781498969; c=relaxed/simple;
+	bh=I7l3fZRFt0uqQDaf5mNJeKkeplIm8W5RWG8/qJ/lRBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MSpt28NnEAXw9RMw+357PBKN+x4PbjFMFlnNn8fEHPDZp/XVkYnPyZx8Up82cDzN6k0fAAcjvak0HWREkMGUIS5+1dOBwYj1BLOlgySI5/Pk+UnCCXgv6gEIvLYHB4PQPUmh7aD6YYp5Sw8W8iK4AQtkuVX8C5vXFQkeAq5eljI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4sElz5M; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qC3ybLm5"
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-6cec1485789so803556137.0
-        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 21:26:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781497614; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ffO//Vrl2ewYbgLvl+r7frU/1eqaHENjZ0yTETZjvdP0KVGBX5TOrWD1lZG2VylZA1
-         vPtDhS4RN8jJQVRQ/1QDH1ramRkepqMiw65tCBeBkPVZrZEM0v/BA7/ThjynoInEXHKF
-         SfvRtX72+2oc7Hw4SUHSy75sau0ob1Nr0gckquSxCWjvjvynmhTdhGqMS6HoSDoQRv8E
-         z4q5VDLO/75O5jf47eoghD03A6nx5G9e0H2NpqUwsXDRaU3b3vgIEmZdEoejMwDtd6WH
-         y13XqdbCrgHfu9HSIBMu5oVvKymPnF0MsO2QGmX2HYUQIxLp8s6fNuPyHcTZlAQ5OULZ
-         173w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=R4Sf4+BSkjB0x/G1yuxp+2PybN4TRsjxfdrHzeKxLys=;
-        fh=VdN7jxSyQ9KCUE9TT8T/KdRU9ZEyeny2aUGx0k6/AMk=;
-        b=iWc3A1n6Za27DuGgPNm0Rq/wAXUbW2+aPxg0KpZ479WtX5rx51rddWkvLbiQxndQwW
-         HDiC7w0C/b1aU4kgAlEdNTsz2NH+ZHkRE7aZ+LYju1vn/DMcJJIFWUiaa5OLqZjQoK1y
-         JVxNA1+XRjUAS8HYbqmjaZ+iscxgVTb8MJRyUWMBUB51/kjXxJvlfUVT6FoIZHDWZPCd
-         Lz991lEDegX5jq5FOefODxODe4p0+cbTlaokjeEffBhup6/Qbdvt8pJbkbN4SIBP6vOV
-         JvwGOsQX+IsV5sxdqkjb75TH+ZZBDm30x7SQXhP1YQBq79QVST0zYb7yQtJhMhosgxZq
-         VjxQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781497614; x=1782102414; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R4Sf4+BSkjB0x/G1yuxp+2PybN4TRsjxfdrHzeKxLys=;
-        b=qC3ybLm5F9PrOi2nun2df7gsPh4hVQgUPEPCavKwEhWrlCeL7Fs8BscaqRwbT5EkU5
-         MWpX9zxgKKMlDqXSpCoOoMcfdtOlM2/5olkBy4/SY9ksxZK+pJFygMAlDH5rcjKZUzgu
-         js724BmjARXi3QayLC+4gqvwv7tFrsTcDQZFGqfyh0F3sb32TmE0abJJHa8/RGrPrY/h
-         ooGV/QwxiJahi8luqhWot/2aNIolx2IlWQ7iIr0IjRdd96OLnygAXF1TgzYAt7wmWYei
-         rxjKNcmsKzXLggXO5CxKFIy762v7VloyuOKmLZrnHZNcGNRM53OzLg8wQQ3/dkAwE/hU
-         BdGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781497614; x=1782102414;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=R4Sf4+BSkjB0x/G1yuxp+2PybN4TRsjxfdrHzeKxLys=;
-        b=AahesdcjMl5FErwq3pYmtBrmnzEcYtz6xLMgxNn03SQ+epgoZ/QoO41YYbFwh3sFCF
-         h7S3Xca0PqEfEXGcA4XY7l8UXlumLnq/iP0UOSRiNPAJRzHSUiChDFaGmK03ZSSx6ouQ
-         9eklbT/YNtngui2ANqvT/0ORGP24yFzO+9QHVMXfEDhy43fT5Jjj9+KvNn5qnIYaS6z1
-         Q99jvQh1jZyfgcL/j5a7khb95VBcGK0qQKFsNuOY0S5lGv+RAD2ZO6NuaV1mYzZiAI+I
-         yYXNG6sVQ4HxA+cMdnTHm3hjWwblWF8uUDZ18YBTRDbRqxRZlnh2LaP3LyKQfpf/lwf8
-         zwww==
-X-Forwarded-Encrypted: i=1; AFNElJ9y7vWE1+ZvSb2ikABYhjhYDmf5XMkypDHjGu7qC7QBnZ2tghuteewEVfINaOEic7U/o7SGxTPYtbA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+vJfQCy1pNqI3t4/+etKBeQcmUs7SwUay8L3LRGRtrHbSWiAe
-	01a599huy94c9xEJM+4zZLqcIrakEI5QIW2ImlTgkzuOba1B2bDhrvUvPlcDmjtBJkvYJHg5iEm
-	AD92Uid/rQWgdgae3LnrrwGxM64IGznc=
-X-Gm-Gg: Acq92OHdszXNF4Lj5sJ8lVkVlulB60ioy6VknW09kNpNj3207ZKMKbpZ+xD7wDjq16F
-	AkG4mAzRlusYqpwMDXvTkNOJph6SAI1KLYGI/siP3zD7chb+QGp6t2147PCS3TcSzRb53siPB7m
-	86WOwvPxKQgnNkBUUEqHYC45pIDJn/mWuFv35rQyRhZR8UL5GL4bVaae+PpUA/dQJRkCf7Dg9VC
-	aWIDh4aDK/fSvPhONowBewxxGETswOLHfMSBUiztxqFQsavQ8o8dUJXY9Y+Z0djIoXrgJBSOuHj
-	X8LRHOC0meBfSDxZAg5UkbsFpBHtS7jvj0ofNxg=
-X-Received: by 2002:a05:6102:3ec2:b0:650:9174:f3 with SMTP id
- ada2fe7eead31-71e88b5d470mr7178683137.12.1781497613922; Sun, 14 Jun 2026
- 21:26:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4sElz5M"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C694C1F000E9;
+	Mon, 15 Jun 2026 04:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781498967;
+	bh=GcYsPijVBsLoMGZ2Y/ySwoF1EWTNUOjSNwA20h948EY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=K4sElz5MN27ecSqjjUciSpsfhpawFi3zTFFBJaYmcph9UBxjrVchC9vZ369/8Hm/b
+	 LqzyeKNBBGzhWLMSVmofcWwp4pou+Pe+GbKAgw6LGWcJh2ieFkqpcQ4ZVyYRhK1Pee
+	 wcYkefacKVqpIY2XnEt4+zD62CH4oXatZHdluCri1r/yiuD0PZiUzXgZfyw61qldLH
+	 y3ys32yfADzXa3e4SYUH967/wKMPghaZTPe9dMXqDvTbHxM+Jl2IWTqJgy0vMQ6k8z
+	 9KvAXnqvja54RN0+V8n3jdpYD7RDbf/aYo4hNAxEl8js1QgMPymSIP+7A+R+NtmLxo
+	 r4966dSOyg6Xg==
+Date: Mon, 15 Jun 2026 12:30:13 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Rosen Penev <rosenp@gmail.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
+Message-ID: <ai9_1ZrxD28xE-U6@xhacker>
+References: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org>
+ <a723320d-20e1-4e5d-8a11-d63f84bc8f69@sirena.org.uk>
+ <20260608180927.GA2211222@ax162>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com> <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
-In-Reply-To: <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
-From: Pengyu Luo <mitltlatltl@gmail.com>
-Date: Mon, 15 Jun 2026 12:25:32 +0800
-X-Gm-Features: AVVi8CeDmjxY205ZovrS3y0Uc7ZTFkv5R1e4COHN-snpVF8Qqejv_b1FwKnYlgU
-Message-ID: <CAH2e8h5Swn2mWoz+t_nrSw1=hQttwi1Hx=dg=cd9S3QRnHjpSQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260608180927.GA2211222@ax162>
 
-On Mon, Jun 15, 2026 at 5:18=E2=80=AFAM Dmitry Baryshkov
-<dmitry.baryshkov@oss.qualcomm.com> wrote:
->
-> On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
-> > Some devices (such as gaokun3) do not disable FIFO mode, causing the
-> > driver to fallback to FIFO mode by default. However, these platforms
-> > also support GSI mode, which is highly preferred for certain
-> > peripherals like SPI touchscreens to improve performance.
-> >
-> > Introduce the "qcom,force-gsi-mode" device property to hint and force
-> > the controller into GSI mode during initialization.
->
-> Ideally, this should be decided by the SPI controller based on the
-> requirements. Another option would be to prefer GSI for all transfers if
-> it is available, ignoring the FIFO even if it is not disabled.
->
+On Mon, Jun 08, 2026 at 11:09:27AM -0700, Nathan Chancellor wrote:
+> On Mon, Jun 08, 2026 at 11:31:33AM +0100, Mark Brown wrote:
+> > On Sat, Jun 06, 2026 at 03:26:04PM -0700, Nathan Chancellor wrote:
+> > > Commit 0c5b5c40dc31 ("spi: cadence-xspi: Add COMPILE_TEST support")
+> > > allows this driver to be built for 32-bit platforms, which causes a
+> > > semantic conflict with commit 4954d4eca469 ("spi: cadence-xspi: Support
+> > > 32bit and 64bit slave dma interface"), as readsq() and writesq() are
+> > > only available when targeting 64-bit platforms:
+> > 
+> > >  config SPI_CADENCE_XSPI
+> > >  	tristate "Cadence XSPI controller"
+> > > -	depends on HAS_IOMEM || COMPILE_TEST
+> > > -	depends on OF
+> > > +	depends on OF && HAS_IOMEM && 64BIT
+> > >  	depends on SPI_MEM
+> > 
+> > Why combine all these, they're not obviously related and HAS_IOMEM can
+> > be turned off.
+> 
+> This is just a straight revert of 0c5b5c40dc31, so it is just restoring
+> how it was before that change.
 
-I have read reviews. Can we check if the compatible
-"qcom,sm6350-gpi-dma" is in DT? If the gpi dma controller is
-presented, then we enable GSI mode.
+For the long run, it seems we need to add guard for the marvell support
+code, then I will solve the readsq/writesq on 64BIT. But it's too late
+to add new patches now, let me do this in next development window.
 
-Best wishes,
-Pengyu
-
-> >
-> > Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-> > ---
-> >  drivers/spi/spi-geni-qcom.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
->
-> --
-> With best wishes
-> Dmitry
+BTW: d58ecc54bb09 ("spi: cadence: Add 64BIT Kconfig dependency")
+introduced the 64BIT dependency.

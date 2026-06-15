@@ -1,113 +1,114 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789052DFA3A
-	for <linux-spi@vger.kernel.org>; Mon, 15 Jun 2026 05:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1695305662;
+	Mon, 15 Jun 2026 05:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781500393; cv=none; b=RqYMSgrF2JaXXElJl/LxKuSS8KTYtprGS3HGMIWcpcVjrTk2QLMdCBxH4AldPnFIybHiESCZ1yl6LkW8Yt7k2DvtY1x8b0JihT2tQD6qp+8d+hk15wOZ5b692PvsqRUTN5REm4gIOl/fK4lc360BgtCvpLnOVedqXqLPCOqn8FA=
+	t=1781500980; cv=none; b=eZPhDDq//+C71A0fmyAwmXPSt8p6HlcbMnOfKgL2cdP8s0SBwsfoF0txFdzoKCcRjTSfhvtD4Ll9YeMni81aRK0NDdGmi1WWhycEtbtObf7ypbQ1HlUDXVIp0gOfKGyUgj6S8hyDKzDCCB1Wz3ub0KRstFyyfVgTbulXshef0T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781500393; c=relaxed/simple;
-	bh=emINAwhEdkfsCilu9nNqVofHlxVuxUp5a2dwzajD+DU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=PKs5//+DoD8oEx/5q3CUxAa8zj9PsEKfJxqWvxUiyILl6xq7RlIwvz0XTMjdRJfNdIPYbKyi8EvnBd9ugxv50XyUIlpq95W6Xy5D6pGOPE4aY4p2EHAOsjRWAM1PHUFMutgh3V/nZIsMcQSlotzSC0YAwBhaQu4Z/MBSDn3i25E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sdgVV/4k; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1781500980; c=relaxed/simple;
+	bh=kPX0CCkaS95O6QiDFH3BY+rq2IFqgBZWvOwq0+XbjNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jHkbNmjS1xSntsIT9FYIfOyFuxH94K6RiMuDG4FEI6TH/xMfIdaTDhT3M5Yc8/TJ++Yt0eCoujwXuO4a1xlphNMMYhGz04/kQ+XFzKfOHVffPp2SyiU9iHIICmhRYZCIk6v/zDgsOMBfRgypqaX5sDDe6Uao5PNgJo2XYcIMyaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hf1/Wukc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sdgVV/4k"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-842307473b5so2085467b3a.2
-        for <linux-spi@vger.kernel.org>; Sun, 14 Jun 2026 22:13:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781500392; x=1782105192; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vRhvIeiIyul2AJsnx4A30gTmufAraYOArEgk4zzsBJ8=;
-        b=sdgVV/4ka2LaW25BqDp8sBA1eiPwgAzwhLvA3ghmyIPd/O/qMlWHXR/ChUCbdGoyB8
-         Pjbb9ANO5IoMmkdDl1WtRe9bpCp/qZEo8TrBqnV8iTqnWSfzEDY16s1SUQ/5xCJPlWsd
-         pwgRCaW3wpnMeaO3BhofZc7o3xmOsdnP5XK+9EnhWqwKLCRtH8ZAzl1ARcfyJqmqOo8I
-         MfjPMG7IcGjDBo8UpX/q2XPq59CNFIH+SL92I5BpOuT0+uqtbEsSY7rU9m+e5gX/q7ur
-         Tn87xcVPRvEBt0uCy7wUhNzzSXJYg6i91WB46aQyNQEOrTsNZR16z8MDtItykekbHEkE
-         miBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781500392; x=1782105192;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vRhvIeiIyul2AJsnx4A30gTmufAraYOArEgk4zzsBJ8=;
-        b=jCTBqOMhACSmQ4k1Z7I1NdjWwCMa0R/I9bzFBRRW7RlnNTust0Oe8XrD8o4cGHRoUB
-         OhBP4EWA4MAKyYwqe48EsF+fcxPKQxVsGwLOUcCwNMdW261Os6+tlTQ+Ofds/94kZ8GF
-         Jk+3H+0N4uyf1/pS2SKHfpEuvZHgoxCpVH1lKm1nqWqME2DxF2uFUVbf2T30T3BgQStu
-         YcJOOJBk6dSXC+KbH6qKzflAAiDfGSFfg29EwfNPXwgMj0faiOQoy3TyO1kJnQW4HmWS
-         UGVWUcbpHXF24Y7dLnVwjQE+E+GzmdIo+rPhxmPJJJzqDq7BcxvdduNa/olSZPn2mVpE
-         SPDw==
-X-Forwarded-Encrypted: i=1; AFNElJ/v3S4A47YZo7R08DhYNPYJedM58KPBkb1/oqXOhVqI9ZvUNu2bdapIdKw+DVFLNevkEZYTi5hxdyo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yye2RdUkMJaSMVIk6x9soRGC+POvdxYUsOdUtGxYfEDn+RVwQz5
-	mR2sQhZ8VWPKLYVBfG/dO5mS5g2XUrRMFO9bcbcqL+ZsY6UdORvQNMIE
-X-Gm-Gg: Acq92OHthKbIrsPSb8QuhQFvcumU1IxQGLSOZqln4lKPC9GVWosNH5R73/UeeJHT2Tn
-	AC3iR1Pj5+n7jc6STTAGBpEVdDLa+bUvN0oGCQ+4+/13M4AqY30Ztn+T0mE+KNCIJcxZXOC0NCh
-	0lMwXayeZKi32vdprF2+5zsL+9TrdblqrxxJn1+0vdlxnugfBTNoJauSppAvcn1qWz5VoM1nyTD
-	e1LxhkxiJe7QqwdnEWKZGd+N+BBegxjqlcKfgn5Bzt6JyCAG7s8N8OQOPl9oYO7KZCOViOdr6yS
-	N5dIeLTRHUcbLKcfuT0rv7kA870gbrGIV2i21HaIjwtVq9aFCoo96CGVfuLKAoMNuvA9sls2eMf
-	XBkYGIJ5YHOWJ218z3t+8GgafBbZrOnYLOMcKJTaFqzIStAokt+tnDrhT0D7qsHgDDilWU7vFTB
-	Q4OgHXCOdWaHfJ7uWxye311/J2KPh30GHQ2QSUyrq0A0iLMmIQBaLiwmRjrBRFdkuyjMxZUutYM
-	l/mngJsyNAtQdNxqV+QRMU92+AEXLKkPpHRi+yx
-X-Received: by 2002:a05:6a00:bc8a:b0:842:3029:6b2f with SMTP id d2e1a72fcca58-8434ce8cfc5mr14414930b3a.33.1781500391703;
-        Sun, 14 Jun 2026 22:13:11 -0700 (PDT)
-Received: from localhost ([2601:644:8000:5b5d:f7d6:b126:ef49:527c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8434b02268bsm10092227b3a.46.2026.06.14.22.13.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Jun 2026 22:13:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hf1/Wukc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CC11F000E9;
+	Mon, 15 Jun 2026 05:22:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781500979;
+	bh=3kQqZZZ7qMqSw0hVV/Jifg8JGJb5VIL4BbDU26ZLBsQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hf1/WukcfQYiZcH9Rulajd/fItP6yGAq2pyA5Zm4/5c6Yim+iN/E4UFOoZqzUW91b
+	 DNIQQzOuq6ew7rQOJ1LgoYRbGqc6qNfPoSokKsL2FXxNTe5chcpIiTfrg7jAGLYWFP
+	 FBoZYsRqJnI66OvqibGgtftydgr0376S9FtW4cJsUZSjYhJd+SkMPWJwqpwZqktF+m
+	 iO6XNIHJ+orYQ8CygKz+fgYmFU+NClh5tML/IielRdQqTlh9/jDfE3Admqogb4Fxnc
+	 4iKuv57sgJl0v7RiSRG5W4Fv0RVbeOfu8RVmhzAe66PQHUenecs0DP6I8FIhHIb32/
+	 Tu9JeJCgyDM9A==
+Message-ID: <c7bcc64c-e7cb-475c-8d4b-4e8003a3772e@kernel.org>
+Date: Mon, 15 Jun 2026 07:22:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] spi: dt-bindings: qcom,spi-geni-qcom: Add property to
+ force GSI mode
+To: Pengyu Luo <mitltlatltl@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260614083424.464132-1-mitltlatltl@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260614083424.464132-1-mitltlatltl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 14 Jun 2026 22:13:10 -0700
-Message-Id: <DJ9D6KW9FPM0.1KCC9UK5L9YR@gmail.com>
-From: "Rosen Penev" <rosenp@gmail.com>
-To: "Jisheng Zhang" <jszhang@kernel.org>, "Nathan Chancellor"
- <nathan@kernel.org>
-Cc: "Mark Brown" <broonie@kernel.org>, "Rosen Penev" <rosenp@gmail.com>,
- <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] spi: cadence-xspi: Revert COMPILE_TEST support
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260606-spi-cadence-xspi-revert-compile-testing-v1-1-76219ea378bd@kernel.org> <a723320d-20e1-4e5d-8a11-d63f84bc8f69@sirena.org.uk> <20260608180927.GA2211222@ax162> <ai9_1ZrxD28xE-U6@xhacker>
-In-Reply-To: <ai9_1ZrxD28xE-U6@xhacker>
+Content-Transfer-Encoding: 7bit
 
-On Sun Jun 14, 2026 at 9:30 PM PDT, Jisheng Zhang wrote:
-> On Mon, Jun 08, 2026 at 11:09:27AM -0700, Nathan Chancellor wrote:
->> On Mon, Jun 08, 2026 at 11:31:33AM +0100, Mark Brown wrote:
->> > On Sat, Jun 06, 2026 at 03:26:04PM -0700, Nathan Chancellor wrote:
->> > > Commit 0c5b5c40dc31 ("spi: cadence-xspi: Add COMPILE_TEST support")
->> > > allows this driver to be built for 32-bit platforms, which causes a
->> > > semantic conflict with commit 4954d4eca469 ("spi: cadence-xspi: Supp=
-ort
->> > > 32bit and 64bit slave dma interface"), as readsq() and writesq() are
->> > > only available when targeting 64-bit platforms:
->> >
->> > >  config SPI_CADENCE_XSPI
->> > >  	tristate "Cadence XSPI controller"
->> > > -	depends on HAS_IOMEM || COMPILE_TEST
->> > > -	depends on OF
->> > > +	depends on OF && HAS_IOMEM && 64BIT
->> > >  	depends on SPI_MEM
->> >
->> > Why combine all these, they're not obviously related and HAS_IOMEM can
->> > be turned off.
->>
->> This is just a straight revert of 0c5b5c40dc31, so it is just restoring
->> how it was before that change.
->
-> For the long run, it seems we need to add guard for the marvell support
-> code, then I will solve the readsq/writesq on 64BIT. But it's too late
-> to add new patches now, let me do this in next development window.
-This sounds like a great solution.
->
-> BTW: d58ecc54bb09 ("spi: cadence: Add 64BIT Kconfig dependency")
-> introduced the 64BIT dependency.
+On 14/06/2026 10:34, Pengyu Luo wrote:
+> Some devices (such as gaokun3) do not disable FIFO mode, causing the
+> driver to fallback to FIFO mode by default. However, these platforms
+> also support GSI mode, which is highly preferred for certain
+> peripherals like SPI touchscreens to improve performance.
+> 
+> Introduce the "qcom,force-gsi-mode" device property to hint and force
+> the controller into GSI mode during initialization.
 
+You described the desired Linux feature or behavior, not the actual
+hardware. The bindings are about the latter, so instead you need to
+rephrase the property and its description to match actual hardware
+capabilities/features/configuration etc.
+
+And even differently named property does not feel correct here - just
+choose GSI in the driver...
+
+Best regards,
+Krzysztof

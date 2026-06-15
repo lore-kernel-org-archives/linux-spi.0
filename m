@@ -1,33 +1,41 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1695305662;
-	Mon, 15 Jun 2026 05:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346593939B1;
+	Mon, 15 Jun 2026 05:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781500980; cv=none; b=eZPhDDq//+C71A0fmyAwmXPSt8p6HlcbMnOfKgL2cdP8s0SBwsfoF0txFdzoKCcRjTSfhvtD4Ll9YeMni81aRK0NDdGmi1WWhycEtbtObf7ypbQ1HlUDXVIp0gOfKGyUgj6S8hyDKzDCCB1Wz3ub0KRstFyyfVgTbulXshef0T0=
+	t=1781501864; cv=none; b=BX9j8tkRkx3wfPCO97G7HZ0LI0AlTZRrlSUxO5sIaJt+vQRKTA3lizvNaZ6eJNehUX05sHZWkGyX9KnkGnhWJrXvZIiVkMOnvJPOg4777zB92UlriRDGQdtDBBAqLKdqz+onZqoCwN91A6Q6wHx78N0gQ+qUjQSfQZoYdRGgI9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781500980; c=relaxed/simple;
-	bh=kPX0CCkaS95O6QiDFH3BY+rq2IFqgBZWvOwq0+XbjNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jHkbNmjS1xSntsIT9FYIfOyFuxH94K6RiMuDG4FEI6TH/xMfIdaTDhT3M5Yc8/TJ++Yt0eCoujwXuO4a1xlphNMMYhGz04/kQ+XFzKfOHVffPp2SyiU9iHIICmhRYZCIk6v/zDgsOMBfRgypqaX5sDDe6Uao5PNgJo2XYcIMyaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hf1/Wukc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781501864; c=relaxed/simple;
+	bh=U4wr89G0y+eb/D9ZojMnHnHKBI8My7W3RylcKRMTlPM=;
+	h=Message-ID:Date:MIME-Version:Subject:Cc:References:From:To:
+	 In-Reply-To:Content-Type; b=H+xst1C3RIsBN0zNXHkaVYVHZcFOaIseKNSSXmAcE3szQckT9BErO7uLxBsdpJXhnHz0wmLZHcNTUiJNh/G+CWpyRVjFXRshs2XkHnGovvqbx67CY0ftn18kqjBY3LiQ8f/CHfiwUlR+9eWK9FgfjyOo/g4R1oJR7iETN2+IRFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=eqKr2rNh; arc=none smtp.client-ip=80.12.242.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hf1/Wukc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CC11F000E9;
-	Mon, 15 Jun 2026 05:22:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781500979;
-	bh=3kQqZZZ7qMqSw0hVV/Jifg8JGJb5VIL4BbDU26ZLBsQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hf1/WukcfQYiZcH9Rulajd/fItP6yGAq2pyA5Zm4/5c6Yim+iN/E4UFOoZqzUW91b
-	 DNIQQzOuq6ew7rQOJ1LgoYRbGqc6qNfPoSokKsL2FXxNTe5chcpIiTfrg7jAGLYWFP
-	 FBoZYsRqJnI66OvqibGgtftydgr0376S9FtW4cJsUZSjYhJd+SkMPWJwqpwZqktF+m
-	 iO6XNIHJ+orYQ8CygKz+fgYmFU+NClh5tML/IielRdQqTlh9/jDfE3Admqogb4Fxnc
-	 4iKuv57sgJl0v7RiSRG5W4Fv0RVbeOfu8RVmhzAe66PQHUenecs0DP6I8FIhHIb32/
-	 Tu9JeJCgyDM9A==
-Message-ID: <c7bcc64c-e7cb-475c-8d4b-4e8003a3772e@kernel.org>
-Date: Mon, 15 Jun 2026 07:22:52 +0200
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="eqKr2rNh"
+Received: from [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
+ ([IPv6:2a01:cb10:785:b00:8347:f260:7456:7662])
+	by smtp.orange.fr with ESMTPSA
+	id Z00owyUlSUNPnZ00pwigHQ; Mon, 15 Jun 2026 07:37:31 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1781501851;
+	bh=ZXY52u/Dgw0vha9d0r4RlJN6YAqOKZmlVFqYLCVvjnU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=eqKr2rNhPDYK72SwsA4Z7bwdCrOl7TH/9gx+rSnwYgJwjOiqPlVFQ1+BnOtqPB9Hc
+	 MNu9NTkBE9rKLZv7NB+MfacFEPGtVvy61KzON/CETf71lSkneNoL/ilymgEftLaYf/
+	 WQ/K70c99VCdwMteShaMN6jGlWOGfHvdeX2wd3NrG9r8W0j4lDlYxAKmEsYBKYCt56
+	 sWTevWYxXnBZ/dBqYAetABqfm6kWeF1TaH5agOUfHHBZHATXFP3QbXPF4tTspAX4ho
+	 dD414R3ffLYrwMddyUQdy6kbGgVORvR52fIExgYIzy6KLHp5lEFDzoVLIkrxp6+D2I
+	 gK6agx76mbeXg==
+X-ME-Helo: [IPV6:2a01:cb10:785:b00:8347:f260:7456:7662]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 15 Jun 2026 07:37:31 +0200
+X-ME-IP: 2a01:cb10:785:b00:8347:f260:7456:7662
+Message-ID: <71b00ff8-a872-4bb2-aa5b-6ca7677f6a57@wanadoo.fr>
+Date: Mon, 15 Jun 2026 07:37:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,80 +43,270 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] spi: dt-bindings: qcom,spi-geni-qcom: Add property to
- force GSI mode
-To: Pengyu Luo <mitltlatltl@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260614083424.464132-1-mitltlatltl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 5/5] spi: dw: use threaded interrupt and optimize the
+ threaded ISR
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org
+References: <20260615044039.9750-1-jszhang@kernel.org>
+ <20260615044039.9750-6-jszhang@kernel.org>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: jszhang@kernel.org
+In-Reply-To: <20260615044039.9750-6-jszhang@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 14/06/2026 10:34, Pengyu Luo wrote:
-> Some devices (such as gaokun3) do not disable FIFO mode, causing the
-> driver to fallback to FIFO mode by default. However, these platforms
-> also support GSI mode, which is highly preferred for certain
-> peripherals like SPI touchscreens to improve performance.
+Le 15/06/2026 à 06:40, Jisheng Zhang a écrit :
+> To avoid blocking for an excessive amount of time, eventually impacting
+> on system responsiveness, hard interrupt handlers should finish
+> executing in as little time as possible.
 > 
-> Introduce the "qcom,force-gsi-mode" device property to hint and force
-> the controller into GSI mode during initialization.
+> Use threaded interrupt and move the SPI transfer handling to an
+> interrupt thread.
+> 
+> After that, since the dw_reader() and dw_writer() are called in
+> threaded ISR now, so we can delay the unmasking interrupts until no
+> rx and tx action is taken, thus reduce the interrupt numbers further.
+> 
+> Tested with below two cmds
+> ./spidev_test -D /dev/spidev1.3 -s 30000000 -S 327680 -I 1
+> 
+> ./spidev_test -D /dev/spidev1.3 -s 30000000 -S 327680 -I 1000
+> ./rtla timerlat top -q -k -P f:95
+> 
+> The first cmd is to check the interrupt numbers optmizaion result, the
+> 2nd cmd group is to check the threaded interrupt improvement.
+> 
+> Before the patch:
+> each 32KB spi spidev_test transfer triggers 33118 interrupts
+> 
+> spidev_test reports ~22090kbps
+> and rtla reports:
+>                                       Timer Latency
+>    0 00:00:37   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+> CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+>    0 #9958      |        1         0        67    103394 |        6         4      2198    105031
+>    1 #36902     |        1         0         1        18 |        5         4         5        29
+> 
+> After the patch:
+> each 32KB spi spidev_test transfer only triggers 3 interrupts
+> 
+> spidev_test reports ~23520kbps
+> and now rtla reports:
+>                                      Timer Latency
+>    0 00:00:58   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+> CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+>    0 #58362     |        1         0         0        29 |        6         3         4        56
+>    1 #58363     |        1         0         1        23 |        6         4         5        68
+> 
+> In summary:
+> before the patch	after the patch
+> 33118 interrutps	3 interrupts	 	reduced by 11038 times!
+> 103394 us max latency	29 us max latency	reduced by 3564 times!
+> 22090 kbps		23520 kbps		improved by 6.5%	
+> 
+> Signed-off-by: Jisheng Zhang <jszhang-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> ---
+>   drivers/spi/spi-dw-core.c | 100 +++++++++++++++++++++++---------------
+>   1 file changed, 61 insertions(+), 39 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+> index feac17655847..cc4cc058ee72 100644
+> --- a/drivers/spi/spi-dw-core.c
+> +++ b/drivers/spi/spi-dw-core.c
+> @@ -132,10 +132,11 @@ static inline u32 dw_spi_rx_max(struct dw_spi *dws)
+>   	return min_t(u32, dws->rx_len, dw_readl(dws, DW_SPI_RXFLR));
+>   }
+>   
+> -static void dw_writer(struct dw_spi *dws)
+> +static u32 dw_writer(struct dw_spi *dws)
+>   {
+>   	u32 max = dw_spi_tx_max(dws);
+>   	u32 txw = 0;
+> +	u32 tx = 0;
+>   
+>   	while (max--) {
+>   		if (dws->tx) {
+> @@ -150,13 +151,16 @@ static void dw_writer(struct dw_spi *dws)
+>   		}
+>   		dw_write_io_reg(dws, DW_SPI_DR, txw);
+>   		--dws->tx_len;
+> +		++tx;
+>   	}
+> +	return tx;
+>   }
+>   
+> -static void dw_reader(struct dw_spi *dws)
+> +static u32 dw_reader(struct dw_spi *dws)
+>   {
+>   	u32 max = dw_spi_rx_max(dws);
+>   	u32 rxw;
+> +	u32 rx = 0;
+>   
+>   	while (max--) {
+>   		rxw = dw_read_io_reg(dws, DW_SPI_DR);
+> @@ -171,7 +175,9 @@ static void dw_reader(struct dw_spi *dws)
+>   			dws->rx += dws->n_bytes;
+>   		}
+>   		--dws->rx_len;
+> +		++rx;
+>   	}
+> +	return rx;
+>   }
+>   
+>   int dw_spi_check_status(struct dw_spi *dws, bool raw)
+> @@ -210,42 +216,59 @@ int dw_spi_check_status(struct dw_spi *dws, bool raw)
+>   }
+>   EXPORT_SYMBOL_NS_GPL(dw_spi_check_status, "SPI_DW_CORE");
+>   
+> -static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
+> +static irqreturn_t dw_spi_irq_thread_fn(int irq, void *dev_id)
+>   {
+> -	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
+> +	struct spi_controller *ctlr = dev_id;
+> +	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
+> +	u16 irq_status = dw_readl(dws, DW_SPI_RISR);
+> +	u32 rx, tx, imask, mask = 0;
+> +
+> +	do {
+> +		/*
+> +		 * Read data from the Rx FIFO every time we've got a chance executing
+> +		 * this method. If there is nothing left to receive, terminate the
+> +		 * procedure. Otherwise adjust the Rx FIFO Threshold level if it's a
+> +		 * final stage of the transfer. By doing so we'll get the next IRQ
+> +		 * right when the leftover incoming data is received.
+> +		 */
+> +		rx = dw_reader(dws);
+> +		if (!dws->rx_len) {
+> +			mask = DW_SPI_INT_MASK;
+> +			spi_finalize_current_transfer(dws->ctlr);
+> +		} else if (dws->rx_len <= dw_readl(dws, DW_SPI_RXFTLR)) {
+> +			dw_writel(dws, DW_SPI_RXFTLR, dws->rx_len - 1);
+> +		}
+> +
+> +		/*
+> +		 * Send data out if Tx FIFO Empty IRQ is received. The IRQ will be
+> +		 * disabled after the data transmission is finished so not to
+> +		 * have the TXE IRQ flood at the final stage of the transfer.
+> +		 */
+> +		if (irq_status & DW_SPI_INT_TXEI) {
+> +			tx = dw_writer(dws);
+> +			if (!dws->tx_len)
+> +				mask = DW_SPI_INT_TXEI;
+> +		}
+> +	} while (rx != 0 || tx != 0);
+> +
+> +	imask = DW_SPI_INT_TXEI | DW_SPI_INT_TXOI |
+> +		DW_SPI_INT_RXUI | DW_SPI_INT_RXOI | DW_SPI_INT_RXFI;
+> +	imask &= ~mask;
+> +	dw_spi_umask_intr(dws, imask);
+>   
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t dw_spi_transfer_handler(struct dw_spi *dws)
+> +{
+>   	if (dw_spi_check_status(dws, false)) {
+>   		spi_finalize_current_transfer(dws->ctlr);
+>   		return IRQ_HANDLED;
+>   	}
+>   
+> -	/*
+> -	 * Read data from the Rx FIFO every time we've got a chance executing
+> -	 * this method. If there is nothing left to receive, terminate the
+> -	 * procedure. Otherwise adjust the Rx FIFO Threshold level if it's a
+> -	 * final stage of the transfer. By doing so we'll get the next IRQ
+> -	 * right when the leftover incoming data is received.
+> -	 */
+> -	dw_reader(dws);
+> -	if (!dws->rx_len) {
+> -		dw_spi_mask_intr(dws, DW_SPI_INT_MASK);
+> -		spi_finalize_current_transfer(dws->ctlr);
+> -	} else if (dws->rx_len <= dw_readl(dws, DW_SPI_RXFTLR)) {
+> -		dw_writel(dws, DW_SPI_RXFTLR, dws->rx_len - 1);
+> -	}
+> -
+> -	/*
+> -	 * Send data out if Tx FIFO Empty IRQ is received. The IRQ will be
+> -	 * disabled after the data transmission is finished so not to
+> -	 * have the TXE IRQ flood at the final stage of the transfer.
+> -	 */
+> -	if (irq_status & DW_SPI_INT_TXEI) {
+> -		dw_writer(dws);
+> -		if (!dws->tx_len)
+> -			dw_spi_mask_intr(dws, DW_SPI_INT_TXEI);
+> -	}
+> +	dw_spi_mask_intr(dws, DW_SPI_INT_MASK);
+>   
+> -	return IRQ_HANDLED;
+> +	return IRQ_WAKE_THREAD;
+>   }
+>   
+>   static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+> @@ -944,13 +967,6 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
+>   	/* Basic HW init */
+>   	dw_spi_hw_init(dev, dws);
+>   
+> -	ret = request_irq(dws->irq, dw_spi_irq, IRQF_SHARED, dev_name(dev),
+> -			  ctlr);
+> -	if (ret < 0 && ret != -ENOTCONN) {
+> -		dev_err(dev, "can not request IRQ\n");
+> -		goto err_free_ctlr;
+> -	}
+> -
+>   	dw_spi_init_mem_ops(dws);
+>   
+>   	ctlr->mode_bits = SPI_CPOL | SPI_CPHA;
+> @@ -990,7 +1006,7 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
+>   	if (dws->dma_ops && dws->dma_ops->dma_init) {
+>   		ret = dws->dma_ops->dma_init(dev, dws);
+>   		if (ret == -EPROBE_DEFER) {
+> -			goto err_free_irq;
+> +			goto err_free_ctlr;
+>   		} else if (ret) {
+>   			dev_warn(dev, "DMA init failed\n");
+>   		} else {
+> @@ -999,6 +1015,13 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
+>   		}
+>   	}
+>   
+> +	ret = request_threaded_irq(dws->irq, dw_spi_irq, dw_spi_irq_thread_fn,
+> +				   IRQF_SHARED, dev_name(dev), ctlr);
+> +	if (ret < 0 && ret != -ENOTCONN) {
+> +		dev_err(dev, "can not request IRQ\n");
+> +		goto err_free_ctlr;
 
-You described the desired Linux feature or behavior, not the actual
-hardware. The bindings are about the latter, so instead you need to
-rephrase the property and its description to match actual hardware
-capabilities/features/configuration etc.
+Hi,
 
-And even differently named property does not feel correct here - just
-choose GSI in the driver...
+I guess that the error handling path should be updated to move 
+free_irq() a few lines above.
 
-Best regards,
-Krzysztof
+Here, IIUC, we should jump to err_dma_exit to undo the dma_init stuff, 
+but without calling free_irq().
+
+> +	}
+> +
+>   	ret = spi_register_controller(ctlr);
+>   	if (ret) {
+>   		dev_err_probe(dev, ret, "problem registering spi controller\n");
+> @@ -1012,7 +1035,6 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
+>   	if (dws->dma_ops && dws->dma_ops->dma_exit)
+>   		dws->dma_ops->dma_exit(dws);
+>   	dw_spi_enable_chip(dws, 0);
+> -err_free_irq:
+>   	free_irq(dws->irq, ctlr);
+>   err_free_ctlr:
+>   	spi_controller_put(ctlr);
+
+
+Also, but completly unrelated to this patch, dw_spi_enable_chip(0) and 
+dw_spi_enable_chip(1) seem to be paired.
+
+Is it in purpose that at [1], it is left disabled?
+
+[1]: 
+https://elixir.bootlin.com/linux/v7.1-rc7/source/drivers/spi/spi-dw-core.c#L453
+
+Just my 2c,
+
+CJ

@@ -1,54 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0F930C632
-	for <linux-spi@vger.kernel.org>; Tue, 16 Jun 2026 01:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779BA3C4167;
+	Tue, 16 Jun 2026 02:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781575069; cv=none; b=s2ZjiKcUFvIBs+y2MFmNXVk2LktQkfHj0WNXYB2UT8f0PCkh4MChEOxFq+NkJO/cGFoqsWGBUcG+7Gtc5XVzGHe+XHn95mvR1qfQT713//wNan26jYpPLzQLYLWsxqp5AM+4BQvAQSviN4+4OwPaS1I9W7HEJJsZd8R0+K9t3DE=
+	t=1781577032; cv=none; b=jXTksxf6Hx5xPCKps4C2q/+qSKU9bhV9lEfkBYq0JkH5uh6vSgkCV5FRoHwVSmWThXS66ZcCOdSesLknmDHS+fdTGrefCfaHGdGw+e6qawkzmb9NQcmiBbSNXc6sljShCiaC0fBJZKSDKaQJxDNobHaFf0y2aqPwHCHz5MWfGSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781575069; c=relaxed/simple;
-	bh=umWulZhYZvOv1xB7NMY46U26MLg6ADHOj2v1+1vB93k=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=OrYv9v1A6BQE8sti7PnF4i+673YSVVkPZZP5FVOkE8XvFbb4Z+yCjgIbOOXdhA1WAhCk7n80/JCwcnx0zZrBsP+tEiX2gt2B8kBRI+D/0QITekvS4IaUwBZ5M68Vj/kgq60PieI/K6rBBiEvCMkbDwc16ZkUvUVUN6vGE3EM+FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNSc1p3n; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781577032; c=relaxed/simple;
+	bh=jFZPZ41PD8mzGO9HLJWWOlc1xaBMmSuHSbyVkttORic=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=OdzmxOFfZ1xWzeWoAo6W7vRdJzsfzU/tWbhib89mp7PRu/c6AJ6lXHoWEitaiupFw6oeRbbYYTpvLuuFpfBFKlwQo/2riNRjDXOL+jG4ke47UFWwvDTdxZgBQO4P2cNtWKNea/o6fPRXikseAoLB1NwoUjuugxtGt70dgu6z0qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0WkhJkp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNSc1p3n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B05B1F000E9;
-	Tue, 16 Jun 2026 01:57:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0WkhJkp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE531F0155D;
+	Tue, 16 Jun 2026 02:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781575068;
-	bh=pqvaLSzL6/d4SZSiGcHiP3q1LTk25Y1vnfD5vqr6Fww=;
-	h=Subject:From:Date:To;
-	b=JNSc1p3naADS2zVIi/m7kyf449/Dy6HSCbNVT5UVJfs1ZQ2k3qUuukkmStwqTNfcm
-	 P/guX01Qur/wMZ0TJY8OT1ocZ+v+xc6rgBra1VBs3BLkTM2LovP5F6GkNAbcVL0cjC
-	 1cIqzlxBY3DPXjtctMTln/bct0BLQf14bciWAlk9KLCwfiLpdy6rTZkTjJzaWw4qXG
-	 Yh/NEIV3JEY8VeR36tEFjURpKJGqpEqYuSaX0SAgtvJRG+vRFzXI8HYwIcWHiBOXkG
-	 gvzdg+z6dZ2TvPG8jVyPhzKdzMKhT0vYkS7BVswz5gzUHdcyocPoTYQVHvmB1QbLHH
-	 MjAlpEQYcgZVA==
+	s=k20260515; t=1781577025;
+	bh=OzjxJ/KY2q/mrAv/v2ntpny2Vav+COk2vn1Usq/MJRM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=c0WkhJkpoEjT2YZuk9owsnADf0ZdQWty9mXUSkKWSr//FMR0OshMz98Hi/nSPuEUf
+	 fJ/ZDlRpO1KpM6uQyOCoy57++w4o+wfeRHhRaL3DfOk/Q0ROqXF+QfUy69cyNFo0ki
+	 RkrLqkb1luXEosnrd0errP+Cjn3e4IHKcOgKXx3nGoSrTscVOYj8ofOdInbcq0Qpus
+	 ZO+uQJdvgYC1mL7RS3HJgS4Z36frhkMZNA4XQKks5TAKbBmO4Qxj5sVifYuhgyGtKs
+	 ar5SME1j6fvXDhKPp5YU8XQOFwbxePc6kXd/xJS24XS/F3nnRcPUddg008MkJ8K1f9
+	 WMtorvemIAoGg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93ACC3839A26;
-	Tue, 16 Jun 2026 01:57:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7DCB2383BF4D;
+	Tue, 16 Jun 2026 02:30:21 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI updates for v7.2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <eafbecb22793db47da30c2609eedb2ae@kernel.org>
+References: <eafbecb22793db47da30c2609eedb2ae@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <eafbecb22793db47da30c2609eedb2ae@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v7.2
+X-PR-Tracked-Commit-Id: f846d68992142034b1d34a83200a10cdc713eeda
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c41cfae42c75a40783a6fc402f66c3c7852961e2
+Message-Id: <178157702031.396694.1049279337704344677.pr-tracker-bot@kernel.org>
+Date: Tue, 16 Jun 2026 02:30:20 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178157506320.384734.14269865626068290921.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 16 Jun 2026 01:57:43 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Latest series: [v2] spi: uniphier: Fix completion initialization order before devm_request_irq() (2026-06-16T01:12:23)
-  Superseding: [v1] spi: uniphier: Fix completion initialization order before devm_request_irq() (2026-06-15T02:34:15):
-    [RESEND,v1] spi: uniphier: Fix completion initialization order before devm_request_irq()
+The pull request you sent on Mon, 15 Jun 2026 18:04:56 +0100:
 
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v7.2
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c41cfae42c75a40783a6fc402f66c3c7852961e2
+
+Thank you!
 
 -- 
 Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+https://korg.docs.kernel.org/prtracker.html

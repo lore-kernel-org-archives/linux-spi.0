@@ -1,98 +1,88 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FCB38C437;
-	Tue, 16 Jun 2026 15:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9E32E728;
+	Tue, 16 Jun 2026 17:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781622700; cv=none; b=rz5CTz+v//06/htegQKq/B3KGkva6A4QJezeU0hlr5dHoSIcAf3qMd/BJXtbIAuXQd7sOlEqERZ6vGBpNXf2Nvpo94zb5CkqG0Uo7nibTAknXgKdGoGhEfXGEp1yr7WspmJ/36Cn9+5gREq9RhB4jzEb/EkT1cC9IatnLYvgWOI=
+	t=1781631113; cv=none; b=mVEg0psHb9pEmohsAwy9+FXbxZr6xowLOMqwYDYkN+kb7I6sz/f5mUdlz9Kgylm8C3EN9X/NmhTKMLuYg75YwCgn1f9ZN/I4dGnvQQURUMmDU47KFo3wzVQdNhs6xRmL73OvAa4i5HYY/mKxB2BBC4jSUTDQMMftYJ3BmYzCZu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781622700; c=relaxed/simple;
-	bh=HrYjQPl0DkkLatyyGTc5NZFfWWnojs9DG2dtRJ8dk+w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sBaYEx+awdsvf1QOvECk3opvvlwEFTlSJOv2OwQHzpdgcVrcJiyTDeGP2LlclBANW1EcddE2ndAaCrBva4sAoL+kOhDs9ZD8wgL/3ZFNBuRVe4ddSuTS3nIGeV19g545GAnBYFdQ72mUtSCB7wCqGI6e6dg4+y0AK1/yOWUY1/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.140])
-	by APP-03 (Coremail) with SMTP id rQCowABHZt2oZzFq_gPxFA--.13207S2;
-	Tue, 16 Jun 2026 23:11:36 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>
-Subject: [PATCH] spi: qpic-snand: free OOB buffer with ECC context
-Date: Tue, 16 Jun 2026 23:11:29 +0800
-Message-ID: <20260616151129.76060-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1781631113; c=relaxed/simple;
+	bh=lTbWSIN8WkU7qLILFckWZbByrkRB5V9iFbzpidvHsac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fhJlFt5I12YArdqY+ihcc2Yb4B93jU0slFV5Wq6VxWOOBIdt6SkAb8woC9RxzFWHcReXkHjCRtu84LeSbBiMl+wbj90JUfGTL5J4cZKbmMdCrESXLxZ02czumXzWbJA6H7/cxhXdVFTy1mvHuQUYVKLN+2KaNlXgraGdF9Bo0C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd9bV+vy; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd9bV+vy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3ED1F000E9;
+	Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1781631112;
+	bh=wYW4y+vTabolZuVjOd+phVDV2clwSeHN5n1YHr8LuoQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vd9bV+vyzmf6Xojfbl8SPwS6IPz5A7LGsCQVhkJ99+ZBD+R+WBoJ1iW21BYrXdEd7
+	 S0Wt7WbL/1okmnf09QetRSaactzKZL8QNtJs6X2SANGdevpDvuznm8pokidj8whK0+
+	 jw4CyAYOZyh3FJGhD2HHuLf/SHOqw3K+g0+94YTIQr082ZbZ0amIEDSauPc6MZqBJ6
+	 //MB8pFKwexrtLFj5Kqn50E+wlnI6JazpMQu6G3FS/JE5ICf7kVob4aGOvyZ6nrYFc
+	 gxqFT43AaCBTRwSf1oGibva8TzbxhEXMRJkbipTKqgzvoCgEPmvygpc1GHa+M9D25j
+	 S3oN0FbdlUhMA==
+Date: Tue, 16 Jun 2026 18:31:48 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: dw: fix wrong BAUDR setting after resume
+Message-ID: <f4599e01-8683-4323-a7b4-0beb563590f6@sirena.org.uk>
+References: <20260612002835.5240-1-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABHZt2oZzFq_gPxFA--.13207S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KrWkuFWDCrWftw1fKw45Wrg_yoW8Wr47pF
-	WUJa1DCFn3GF109asFvws5XF13t3s5XrZ293y5Z3yYvr1SqF18ua98JFySvrnxXF48CayS
-	vr1I9Fy7GF1YywUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUym14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxAIw28IcxkI7VAKI48J
-	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU-J5rUUUUU=
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="TExgUI5h//zfubiH"
+Content-Disposition: inline
+In-Reply-To: <20260612002835.5240-1-jszhang@kernel.org>
+X-Cookie: Happiness is the greatest good.
 
-qcom_spi_ecc_init_ctx_pipelined() allocates qspi->oob_buf as part of the
-pipelined ECC context setup. The buffer is then used by the raw and ECC
-page I/O paths through the NAND ECC context.
 
-The matching cleanup callback only frees the qpic_ecc structure, and the
-init error path also skips the OOB buffer after it has been allocated.
-Free qspi->oob_buf on both paths and clear the pointer so the ECC context
-teardown owns all resources allocated during init.
+--TExgUI5h//zfubiH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
----
- drivers/spi/spi-qpic-snand.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On Fri, Jun 12, 2026 at 08:28:35AM +0800, Jisheng Zhang wrote:
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index 66f2d1b78ade..6cc53586b8a8 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -394,14 +394,19 @@ static int qcom_spi_ecc_init_ctx_pipelined(struct nand_device *nand)
- 	return 0;
- 
- err_free_ecc_cfg:
-+	kfree(snandc->qspi->oob_buf);
-+	snandc->qspi->oob_buf = NULL;
- 	kfree(ecc_cfg);
- 	return ret;
- }
- 
- static void qcom_spi_ecc_cleanup_ctx_pipelined(struct nand_device *nand)
- {
-+	struct qcom_nand_controller *snandc = nand_to_qcom_snand(nand);
- 	struct qpic_ecc *ecc_cfg = nand_to_ecc_ctx(nand);
- 
-+	kfree(snandc->qspi->oob_buf);
-+	snandc->qspi->oob_buf = NULL;
- 	kfree(ecc_cfg);
- }
- 
-@@ -1645,4 +1650,3 @@ module_platform_driver(qcom_spi_driver);
- MODULE_DESCRIPTION("SPI driver for QPIC QSPI cores");
- MODULE_AUTHOR("Md Sadre Alam <quic_mdalam@quicinc.com>");
- MODULE_LICENSE("GPL");
--
--- 
-2.43.0
+> After resuming from suspend to ram, spi transfer stops working. Further
+> debugging shows that the BAUDR register isn't correctly set, this is
+> due to dws->current_freq doesn't match the HW BAUDR setting,
+> specifically, the dws->current_freq equals to speed_hz, but BAUDR is 0.
+> so the dw_spi_set_clk() in below code won't be called:
 
+>         if (dws->current_freq != speed_hz) {
+>                 dw_spi_set_clk(dws, clk_div);
+>                 dws->current_freq = speed_hz;
+>         }
+
+> The mismatch comes from dw_spi_shutdown_chip() when suspending.
+> Fix this mismatch by setting dws->current_freq to 0 as well when
+> clearing BAUDR reg in dw_spi_shutdown_chip().
+
+Looks like the same bug exists for rx_sample_dly, that's a separate
+issue though.
+
+--TExgUI5h//zfubiH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoxiIMACgkQJNaLcl1U
+h9BPiQf/aFTCv7O0SuCv4Ryl5GXUBQv/XXk6z5U1Tht8o0FXzJrjQnbOUyw+UCqO
+rgszOnTkavYd787TlqVHv/HVS+BZMX1QXXjzH00cWi8iKDwx4MIMkkr3UkdCw6Rf
+knNVJsVQkoNjS70cnqiRhSbcNyigMFzCUVFrRjAO8FY0DOKr4LlC9aPj3AsT9ayH
+PTDuWByr2AV8u49NeDaGAk+KfavBIFdinh8Dsb4sTOXS0atMhqllH2fyaF7AHkxo
+DKYMJlF36uX91kNhV7pp+wJW5GKILAYJ+9GJOIFxdPoQ703gx+Jap4/UehBT1sMH
+39BigkX1sL3h4DvvtR0o5gDFGC1QVg==
+=yu3O
+-----END PGP SIGNATURE-----
+
+--TExgUI5h//zfubiH--

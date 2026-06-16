@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B5C42B74A;
-	Tue, 16 Jun 2026 10:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA423A48DF;
+	Tue, 16 Jun 2026 10:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781606148; cv=none; b=uRYZmykZJ/zQPI94sSc9S3sZEQAGASmwG4g1UnU16HMn0Ct/en4IxUbvG2XxvQT/tjWyNlehB9aQXjkd+6h5x0l2T07NHKe1VP33h2V/qGbfrlAdSIxpyfPbTAUThvRjYGv09UHRUUh1MHrcD53HgyWeo9AopGaomraMTRFi+Xs=
+	t=1781607113; cv=none; b=bhpVPD6lvy18/jQEI945zEDJYaPqzXa6+8XtwMwR7OZ/Kujgac5Ac4kuQ5Ufw//5FILhUojaEWepDINj5jn+2AfYuoGKomrteygHjNef7e3OMZVw4SsdzE5NrgLzGaR46Iit2I7VoW8Pm6SZ1Uv55mRLG6/vYy1spqiL5Maq62c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781606148; c=relaxed/simple;
-	bh=q6GMZ8l6dmAW9qA/mMYBaPem5kkLiWzFwyAP7rClnxk=;
+	s=arc-20240116; t=1781607113; c=relaxed/simple;
+	bh=V1Kwt7TyLnU/7DbayuPez28inATbVxqUxI7CkjBfJDw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uQTfO9MhJg9ygkJTWW4ppg2KAGZ8NjDKcG3XlCEyuO7hm273L8529U0l0RRW4aDWHpM2vSxPnKixg2kaDWO4jSSH0d1/+xcC8iGhJYEUtyb7hmdJ/+Hbuqwe+vxGN5IWCxI4Of/66ZLy+KhC8shEtG7QYBwGAmdEcnsWvYtg7QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZKvuAqm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGAHkcKcJ1oECT/5gmyKqpMUBwJaSIhhMhNz43vaLlIan5hxLFHqSCqKGWUGl1Trvx8TmjY4hmCKInlUQXcblMXH0IEy8Eizg0ls+Q9svHsQMJVW17kRMAkXmWkHZQJOKjD1eEFoL99Clim9FyB+/VkVS2iZakUK0W0Sf30MmvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuthUyef; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZKvuAqm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295AB1F000E9;
-	Tue, 16 Jun 2026 10:35:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuthUyef"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECA21F000E9;
+	Tue, 16 Jun 2026 10:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781606146;
-	bh=XJRIemPytV1aguctNVZZ7Efd5w5Kogtqo/i30RRjt0Q=;
+	s=k20260515; t=1781607112;
+	bh=qb3hHTkGBvWX9ZKLJfrerMdfITuZ/qOqDoRCAH55njE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gZKvuAqmubQT8pWMQdfmuJz4HqNW46GbKO74ppRYG1KaAyHsYESgJkp+o7Lt81Dk5
-	 +0BIplzvolOB85QK49K9ssXVvKuw58FJdV4nVX+0bVj8zBeJwL6pNmvd1czu8SFTgc
-	 5mE9eu7fqqdcIBtA5qLVJ++3ywCKFnDkNikUSXIEcfIsYrSVoyWUNol18qik7xmIRQ
-	 m57AWP8eLozyWm5SSQ/CaNkLL+Qr+VtZZEh8tGPQIxCKnb+1+I2rEs/v/Zi4f9prOn
-	 6HOIpCcb730w/dH52JS6ZbP5qdDYp4iOJ7cWYIwVz9cb8W73F2uPn+X1h77fl5SXOk
-	 uXE/umqtZ96bA==
-Date: Tue, 16 Jun 2026 11:35:42 +0100
+	b=OuthUyefTY8T1XJzwWKyQ+gUgs+RoFe8OKnkZoCpOcUPLt1aE0fYeIKeX5YoDVsc7
+	 YrI3JART8Pzr0IkhNfFq5h3/m1wSxPOSnyzUhZA0Tv9x7fmtb5t1MH0bmIO1EfUCTS
+	 73QnO0QY1FqfeM+B4SvIg3dy9NocshKYlskfAVtZgS1PqoC3MTOKV2gkMEaI6QP/y7
+	 sxzy6CGYL6s4+IEZsDqrT5BDpXqeZRjOQEgyo4w9RnXQSCJKUf+/cLU2m19yL3xWbn
+	 SuYs4MKyIgFQWwLcChP5+GGXmqV4BJL2HMDqBnKzHs39BCK+/Vlmm4z2+PZrDHJ6LX
+	 83OE9X0z2/ZUw==
+Date: Tue, 16 Jun 2026 11:51:48 +0100
 From: Mark Brown <broonie@kernel.org>
-To: guoqi0226 <guoqi0226@163.com>
+To: =?utf-8?B?5bSU5Zu95peX?= <guoqi0226@163.com>
 Cc: sashiko-bot@kernel.org, mkl@pengutronix.de, linux-can@vger.kernel.org,
 	mailhol@kernel.org, o.rempel@pengutronix.de,
 	sashiko-reviews@lists.linux.dev, socketcan@hartkopp.net,
 	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] can: mcp251xfd: Add ACPI device ID table for
+Subject: Re: Re: [PATCH v4 0/2] can: mcp251xfd: Add ACPI device ID table for
  MCP251XFD
-Message-ID: <997991e6-0e09-47eb-a6ac-5f455ddc250a@sirena.org.uk>
+Message-ID: <eef5cf87-ef9e-49f6-adb8-0cff1658052c@sirena.org.uk>
 References: <20260616092614.00ED51F00A3D@smtp.kernel.org>
  <20260616103018.105612-1-guoqi0226@163.com>
+ <997991e6-0e09-47eb-a6ac-5f455ddc250a@sirena.org.uk>
+ <15819af8.9491.19ed00ac23e.Coremail.guoqi0226@163.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,39 +47,53 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yFb1XlutYJnaVOoW"
+	protocol="application/pgp-signature"; boundary="iw7yWma0LZoO+2IQ"
 Content-Disposition: inline
-In-Reply-To: <20260616103018.105612-1-guoqi0226@163.com>
+In-Reply-To: <15819af8.9491.19ed00ac23e.Coremail.guoqi0226@163.com>
 X-Cookie: Password:
 
 
---yFb1XlutYJnaVOoW
-Content-Type: text/plain; charset=us-ascii
+--iw7yWma0LZoO+2IQ
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 16, 2026 at 06:30:16PM +0800, guoqi0226 wrote:
-> hanges in v4:
-> - Split into two separate patches:
->   1. SPI core: add internal NULL guard for spi_get_device_match_data()
->   2. mcp251xfd driver: cache and validate match data pointer in probe
-> - Remove duplicate spi_get_device_match_data() invocation and unsafe dereference
+On Tue, Jun 16, 2026 at 06:47:06PM +0800, =E5=B4=94=E5=9B=BD=E6=97=97  wrot=
+e:
 
-Why is this a series, are there any dependencies between these two
-patches?
+> Hi Mark, While fixing the mcp251xfd driver, I found a latent flaw in spi_=
+get_device_match_data(), so I sent both fixes as one patch series for unifi=
+ed review. There is no hard build or runtime dependency between the two pat=
+ches. They can be merged separately into the SPI and CAN subsystem trees re=
+spectively. Thanks, guoqi
 
---yFb1XlutYJnaVOoW
+That's not a good idea since it creates a cross subsystem series which
+means the flow for getting things merged gets a lot less clear.  It is
+better to keep things for different subsystems separate since that's a
+lot easier to manage.
+
+Please don't top post, reply in line with needed context.  This allows
+readers to readily follow the flow of conversation and understand what
+you are talking about and also helps ensure that everything in the
+discussion is being addressed.
+
+Please fix your mail client to word wrap within paragraphs at something
+substantially less than 80 columns.  Doing this makes your messages much
+easier to read and reply to.
+
+--iw7yWma0LZoO+2IQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoxJv0ACgkQJNaLcl1U
-h9BVAQf+LlIoxb9QviU7zuSrpS6s2Qar3R7TbO12N2S/XcjwYnU7kEYRqBCgYaxh
-2SGHOFcfkUu7pmIVDHXFA0K2DX0BDHDoah3LPH5CtfCHU8XJfWoqu5YMlk5P5eni
-wSyc/IlDO02PzXAIwFXN2i3fcqtmtBLD1Gn1UHtyrmtT5fcN+VNXK+dczDuOxH6g
-fpT+WZfpz/Zq0E/FOmTgk2Ntf27kyzHuHWSd3/AdFYCPrZ01RQJVIOtuvJVCaoF8
-NTViKsVfgcm9KNAloZlXuM5ZiaDTEAkwjrj50w+VQOuwCxCIBcTDGnxSLN2Uk20m
-gR1vF+4R+QjFa7fmWiXoKub3WThYRQ==
-=nd1y
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoxKsMACgkQJNaLcl1U
+h9BQkQf/TdTY1AZB2W1FtVclSoiymPwh+izqvbMm+aq5xzXK9fHi/tqKMJBd05If
+4dm1gxBggbGZSOZ85stnRNLmVX0bZ0a8PLxPbSVdL3t5vL184PjDneV0VRx1qy3Z
+YGUYpu8WKpxeRQ3VDWAg4Fk1C4Mgzzpw3WB8gG/xYYsHVppLoHNXmdVA8hqihMw1
+Sebv/Z64zv6OhOwLwg1r0/4jhBNzo9bXd2whvRPIMsKZ0Ik7cQiXY+pjVSlCIauk
+NQ/A1WcGVRDP9T08irm0a2iGygmJE/U1ie5lWXQhGOD3NZSqW6n4GHG761w/I0nu
+SXBIwvf01t9DJuGV1R59rcH8f8km7A==
+=6Ioy
 -----END PGP SIGNATURE-----
 
---yFb1XlutYJnaVOoW--
+--iw7yWma0LZoO+2IQ--

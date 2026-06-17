@@ -1,88 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9E32E728;
-	Tue, 16 Jun 2026 17:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2273A5E7E;
+	Wed, 17 Jun 2026 09:24:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781631113; cv=none; b=mVEg0psHb9pEmohsAwy9+FXbxZr6xowLOMqwYDYkN+kb7I6sz/f5mUdlz9Kgylm8C3EN9X/NmhTKMLuYg75YwCgn1f9ZN/I4dGnvQQURUMmDU47KFo3wzVQdNhs6xRmL73OvAa4i5HYY/mKxB2BBC4jSUTDQMMftYJ3BmYzCZu8=
+	t=1781688253; cv=none; b=oa5BwNmevsnRorGRCt7q7BeTnHKBmCCqRxd07n0RhT9L99ONMbkTNacx7cQovyoZvPxZfXbI10KXZh2zFkMIN/0etlRljnCayR9bslXaoFQ74OlM5kK3o1xK5rC0BaEguIvPHGXyBTtvor11j2A6d5jGr61cS0CCOorUvWN4YvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781631113; c=relaxed/simple;
-	bh=lTbWSIN8WkU7qLILFckWZbByrkRB5V9iFbzpidvHsac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fhJlFt5I12YArdqY+ihcc2Yb4B93jU0slFV5Wq6VxWOOBIdt6SkAb8woC9RxzFWHcReXkHjCRtu84LeSbBiMl+wbj90JUfGTL5J4cZKbmMdCrESXLxZ02czumXzWbJA6H7/cxhXdVFTy1mvHuQUYVKLN+2KaNlXgraGdF9Bo0C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vd9bV+vy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1781688253; c=relaxed/simple;
+	bh=pJG4VEBaAFZFItD63ALFLBYRv/YpfATrtNc/60IRy5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jKUKkg7RAPd6DiJr5zJW3SSv/gOPuf3dxLrQqFU7oVG4KfOiYll2Y35yIFgLvVAOUcXpdUv+bCLAHZDP/ANIj5SIzxVTXvQSjfBrU0M6HkJXnH3T7sYTQ7m/2gkb77kTwXot5e5I5fR0uwRwk5NpzbWMUcMdHMqEb/AgNzk3FeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V0VK/F+S; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vd9bV+vy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3ED1F000E9;
-	Tue, 16 Jun 2026 17:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781631112;
-	bh=wYW4y+vTabolZuVjOd+phVDV2clwSeHN5n1YHr8LuoQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Vd9bV+vyzmf6Xojfbl8SPwS6IPz5A7LGsCQVhkJ99+ZBD+R+WBoJ1iW21BYrXdEd7
-	 S0Wt7WbL/1okmnf09QetRSaactzKZL8QNtJs6X2SANGdevpDvuznm8pokidj8whK0+
-	 jw4CyAYOZyh3FJGhD2HHuLf/SHOqw3K+g0+94YTIQr082ZbZ0amIEDSauPc6MZqBJ6
-	 //MB8pFKwexrtLFj5Kqn50E+wlnI6JazpMQu6G3FS/JE5ICf7kVob4aGOvyZ6nrYFc
-	 gxqFT43AaCBTRwSf1oGibva8TzbxhEXMRJkbipTKqgzvoCgEPmvygpc1GHa+M9D25j
-	 S3oN0FbdlUhMA==
-Date: Tue, 16 Jun 2026 18:31:48 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: dw: fix wrong BAUDR setting after resume
-Message-ID: <f4599e01-8683-4323-a7b4-0beb563590f6@sirena.org.uk>
-References: <20260612002835.5240-1-jszhang@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V0VK/F+S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1781688250; x=1813224250;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pJG4VEBaAFZFItD63ALFLBYRv/YpfATrtNc/60IRy5k=;
+  b=V0VK/F+SmzVX4Ys3D7axYPld5Mc03D3WAYEUJ8mmZMQ78EmWtuKEN/D7
+   xUn/7bP8eHZmsgk9ess5uQWG4XGo41YMgLdT6vB75XxWIaF+XRodu3a/A
+   InFljcZTVnJOYFHysOka5FfgDKe/0IUr+Es0fbeOYZOaoWfoegfQ8+yvF
+   K8mMEETySjfBgc4LZlIy7vSvcxlyObyE/LT6o6ElTFE+mhhkgtrjzHm1o
+   J8UnrP8Hh69mnPBf87tTCIKyb98n60X+c8p2dYWy70pejI09feUM8XLom
+   aO0DwXlobbrmKiKsQSWoyjnQzfybWr8DYDWoF/qFHHZ1HtpTGx2xJ/d5x
+   w==;
+X-CSE-ConnectionGUID: 2PN7HwibQB2QyTTBZENIiQ==
+X-CSE-MsgGUID: Eaa1yJLIQd2VMad6M0amtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11819"; a="93141267"
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="93141267"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2026 02:24:09 -0700
+X-CSE-ConnectionGUID: szj0vVYgR2aoBmOUQY44QQ==
+X-CSE-MsgGUID: SpM5cTX8SiaoF0CnncONEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,209,1774335600"; 
+   d="scan'208";a="252971729"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa005.jf.intel.com with ESMTP; 17 Jun 2026 02:24:07 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id C651395; Wed, 17 Jun 2026 11:24:06 +0200 (CEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] spi: acpi: Free resource list at appropriate time
+Date: Wed, 17 Jun 2026 11:24:06 +0200
+Message-ID: <20260617092406.2649384-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TExgUI5h//zfubiH"
-Content-Disposition: inline
-In-Reply-To: <20260612002835.5240-1-jszhang@kernel.org>
-X-Cookie: Happiness is the greatest good.
+Content-Transfer-Encoding: 8bit
 
+We do unneeded "double free" (emptying an empty list) in one case.
 
---TExgUI5h//zfubiH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is not a critical issue at all, the fix just makes code robust
+against any possible future changes in the flow.
 
-On Fri, Jun 12, 2026 at 08:28:35AM +0800, Jisheng Zhang wrote:
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/spi/spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> After resuming from suspend to ram, spi transfer stops working. Further
-> debugging shows that the BAUDR register isn't correctly set, this is
-> due to dws->current_freq doesn't match the HW BAUDR setting,
-> specifically, the dws->current_freq equals to speed_hz, but BAUDR is 0.
-> so the dw_spi_set_clk() in below code won't be called:
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 76e3563c523f..8b1ad1efddb2 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2975,12 +2975,12 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 	INIT_LIST_HEAD(&resource_list);
+ 	ret = acpi_dev_get_resources(adev, &resource_list,
+ 				     acpi_spi_add_resource, &lookup);
+-	acpi_dev_free_resource_list(&resource_list);
+-
+ 	if (ret < 0)
+ 		/* Found SPI in _CRS but it points to another controller */
+ 		return ERR_PTR(ret);
+ 
++	acpi_dev_free_resource_list(&resource_list);
++
+ 	if (!lookup.max_speed_hz &&
+ 	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+ 	    device_match_acpi_handle(lookup.ctlr->dev.parent, parent_handle)) {
+-- 
+2.50.1
 
->         if (dws->current_freq != speed_hz) {
->                 dw_spi_set_clk(dws, clk_div);
->                 dws->current_freq = speed_hz;
->         }
-
-> The mismatch comes from dw_spi_shutdown_chip() when suspending.
-> Fix this mismatch by setting dws->current_freq to 0 as well when
-> clearing BAUDR reg in dw_spi_shutdown_chip().
-
-Looks like the same bug exists for rx_sample_dly, that's a separate
-issue though.
-
---TExgUI5h//zfubiH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoxiIMACgkQJNaLcl1U
-h9BPiQf/aFTCv7O0SuCv4Ryl5GXUBQv/XXk6z5U1Tht8o0FXzJrjQnbOUyw+UCqO
-rgszOnTkavYd787TlqVHv/HVS+BZMX1QXXjzH00cWi8iKDwx4MIMkkr3UkdCw6Rf
-knNVJsVQkoNjS70cnqiRhSbcNyigMFzCUVFrRjAO8FY0DOKr4LlC9aPj3AsT9ayH
-PTDuWByr2AV8u49NeDaGAk+KfavBIFdinh8Dsb4sTOXS0atMhqllH2fyaF7AHkxo
-DKYMJlF36uX91kNhV7pp+wJW5GKILAYJ+9GJOIFxdPoQ703gx+Jap4/UehBT1sMH
-39BigkX1sL3h4DvvtR0o5gDFGC1QVg==
-=yu3O
------END PGP SIGNATURE-----
-
---TExgUI5h//zfubiH--

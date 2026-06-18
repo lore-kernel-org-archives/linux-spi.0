@@ -1,89 +1,89 @@
-Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEC23CF211;
-	Thu, 18 Jun 2026 07:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7D93D301D;
+	Thu, 18 Jun 2026 07:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781768294; cv=fail; b=Aa2uzsWHsG781WG32rLQ+stW2Rj4BR8L5CYMydiAlaD1gL6RK3+dm3fDBF0la0xWyOPhkbf4csx6OId436B2KMGDXel19wA7u8kpK6i2OH0KORRg1SKbo4UPvw+tmJmQqh7Gwd3LprxYp2bmM7JNb/LXzyr9mZgSLNJuP93dgzg=
+	t=1781768300; cv=fail; b=PJ0XOB5CfSHoB8z3WtZ59v0/M+8xx7PwO6N/NNARO93+jBpc3WTr/ZtOumCUQN503ZFNCvUvda/dzF0tYHUu3CTp5ODuFX41FCPOlshG2gdEz8bSZGIAfkdinvgR40P51V2xa7wdjGxPla/qex3ZuMOToNFX56RsIyXxD2oTQNk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781768294; c=relaxed/simple;
-	bh=LMtmo/WUC/A+I0HJKJTAB8R9eaHOE9iaISmxs8HTIpY=;
+	s=arc-20240116; t=1781768300; c=relaxed/simple;
+	bh=Vu1teNYjRv4sFo36XLDl4erWEbvPwLbZv3uwiHzCMqs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=msb0zHH1hCQzwhkid3oIsACuYvDcMwcq8AjNpI6lERaUeZ3Ld7B+8oYtaMGrCE6eR+FJ2VS2I00Z0eM8VndLodXP7QMPO0JVuIsfrN6tKfLIJBWzv/6Q704FoXmSDR0DZc+hi41hr0ry6bAZVdPpsRnjgcLSSCRdOnUo0n2jYbo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=aWQ+eU8z; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VfcQTaGX; arc=fail smtp.client-ip=148.163.150.75
+	 MIME-Version:Content-Type; b=pgeCaU9W8QbRnQ5cyJzB4qOMZLsg3kCprRR/sVU9k5dF12jMrNyR9ZlQi+1wOo4pI2rNXqPU0EtOehNwsZAIkGdxsBYy4vAj0BLXCaQHJ59QB+cZt+DU3r+pbfHot34ELxz/j3Cdd2QFd0COkY4kHf+vwi9zeEz6EKhnEyDWeLI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=GY/eLEbO; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=W2egxUxZ; arc=fail smtp.client-ip=148.163.154.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="aWQ+eU8z";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VfcQTaGX"
-Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
-	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 65I7UQ3k1333596;
-	Thu, 18 Jun 2026 02:38:03 -0500
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="GY/eLEbO";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="W2egxUxZ"
+Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65I6iBrS3435899;
+	Thu, 18 Jun 2026 02:38:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=Y15+UpW9VPN/huHKTZPkcM1Y2nWfTKcuRilnh9JM6
-	0g=; b=aWQ+eU8zUA6NrxzoRIq2db5yR55v1iRRpCcDzjIBMmrKWTA/kVt59utza
-	BtASNPA35TxEgEVzfT9uUdY6cWncgv1hcNFLyCb+WqSmIOJ962wvb8NDa8LzRXo0
-	g25sJJmDsy0XZp6xdRf8IMxvIeaoe0SMBLwk6Gn3p72kyQ4x9LsE8Oo5fF0icxqs
-	5d4ribbvwzklBJjRFXihEsBf8Syf7TEf89wJQloKgiHMMJfly/Yca82eQqU1Amwx
-	xlfMG9nwZCA4hH7SbAdnTFnPiRDkTZLJtAxNriItGQRRZ6kiZe8KSUxFinQOFa60
-	XyxQNkXX+wsYpwDCZTz0EKq5tOHhQ==
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
-	by m0384305.ppops.net (PPS) with ESMTPS id 4eutvept2h-1
+	proofpoint-05-2026; bh=mqbrIgldhLr+OttscChTubSiZsBqcUGXMqM4/HbER
+	OE=; b=GY/eLEbOgnt9kC74FvoDiyguzf72pdgPk4rM3/2G9D2V1SMLzmyj5yTIx
+	z9YE4AoLx320K4NQb3Mxn21E5mcdyiB1qa+A8p34BbKGLWxHeLTE1XyyBJ8uwOtI
+	aRMAR5RuXek2q3RkGRR9eTuF1o+tk6z45UcgJ3MHf8H2GYmM14CYbpZVB76Ao4Lf
+	z6Ns95LdDWfVew8gmkxTvo7GqED1Nw40Ol4u+ROZcurjZQnbF2GRg8vDt++0cD7L
+	JdK1VwUEWknX1LyrtU2o7ecvyHOzAMMF3JbIdkFmP+l+T8VdZ5z+sgDoKlkcudxR
+	Q841IQpnJiJNHBWXJZzAZlddyZ0bA==
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013037.outbound.protection.outlook.com [40.93.201.37])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4ev63rj0y5-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 18 Jun 2026 02:38:03 -0500 (CDT)
+	Thu, 18 Jun 2026 02:38:02 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T40PIVITm+iBxZUrLCXOHIhFMLqhieGDw+o5mJOi/yKwUGIn1ZlF4gJCKdZl0IoHozzlhd22AjFjc3LfDUC6S+ir1ti1QGUopgGyhDBSnFDlg850eb3IePvGpnF5mzjN8PMXDnmtrzUJ+V0EjEy3s3vR31uMADrxS16LsfHtG4ROBaK1Hnukqmvrpokg4Ykwjmv4TnhioVEpxwKr0m7pAilS0jJT/kWQ8hl9iyiVctBaPIgKLKI/vh+EkWh5PlZgB/mIukSrizulQQNVQtSVJKlZYMvCI0BhFQLMoofdN/681SZ1WrYeTID5M+CuhnTLIs6uMR0gAutbWp9u0vShqQ==
+ b=cjXV+qNV/FfQp1GZ7kV1T065ZUkTn4pCtDobjfF/DeLiA2AuZyqKIUXm7otHIA34E/+I3oHDE7WJF0rfBDvTfkOg+LcuIu+1sXwcdATi/wqo2aozSlbsrXtHoQhn8TsBkwaRf0Cc3z6/bLv1xHLuIfLXCTcxexNKbL1C/VHHklIXV+yhAvXpxDXrlRKCrJyZvewdll6VZnOM/Ow3T7aDgU2UZaxm8S3to1v419SAi1xbejPrgI7l3fcD2Fk8C2N0HdaqOld3MS0Y15yWNfMmsuJSgjv4yrDje/noE6KIQbNeooP5vN3Y25HCIZJB7rOARi7pr9HIoB+Xe4epprVAGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y15+UpW9VPN/huHKTZPkcM1Y2nWfTKcuRilnh9JM60g=;
- b=RTY9UFvpo4zttDgVAONg7X96JO+X8kb2A8Jv5sZYVP+cDOfjIhq+rDu8hrC/haDmVXE/7tdu2QdfQ91waOEV/MQtVy+e9ZSVJ/CDjrstkU2WrTkzFSeQhh3mxDY5QI+bIZ/075G2orY+NPPMoBTVMcxW2+Hu8uux7WqiO7EAovEdEt6t5BikVw86X63hwivfHjNEAQZWXUy2JakW8JstWstRMiCeES3Li+L4H4tDMrRKbJ3ieJd9pB3GJsBMivDCdLVSbPpvWnhWRhz+mjkfOI3RkQKKOv3KcR6yCo/7ZyozMc14tdZl2st7G/30b+Mkw30T4tlO63zsExkbFqBmgw==
+ bh=mqbrIgldhLr+OttscChTubSiZsBqcUGXMqM4/HbEROE=;
+ b=sVXRT7/9YgY3rJXPMYPK3x6SCCmIvSTdSnulISJUn9ugp42zZz6SL7ZzWAwOkZ0/qPSzvgc2jT6xGDxWgKPvyQxcGvVXOdRJT43GWbS8E7uNIqpdd4M4a+0y56QJkF51/IRQj2muiWhq/H+qORU4wQLQ306U5SK24wBUuRPKSQr9T3FzMBdknJDlgRfeOnOUmxAOPYs/ZVGb27zSmcFhqWk2e19gooblbO3edypJFh9OJrun/59bv4xAiCokvfU5vqDvVr3TsCjG/TKXzXLWkRCvzN5ZfzecxG2vhQjXHzAEKniAhk46PjL8Q+aLrzvX1j9vh1F+f/qDl++5e3fJ5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y15+UpW9VPN/huHKTZPkcM1Y2nWfTKcuRilnh9JM60g=;
- b=VfcQTaGXTbXLK8EeKfZmOY0Yn7Znya2JJMckb+NhbyGxH3tgKrMQnYoxbBbPTCQ8m7V8idjlni62Fa2DHeF9KM1daX/BV0EILoq+bQoR0job1gXTfj21PV50riwLRGEgu2+c8I+gsw4oElHSpFOmNZ64X7qymYvzx333mwwofbs=
-Received: from DM6PR21CA0004.namprd21.prod.outlook.com (2603:10b6:5:174::14)
- by IA1PR10MB6760.namprd10.prod.outlook.com (2603:10b6:208:42c::16) with
+ bh=mqbrIgldhLr+OttscChTubSiZsBqcUGXMqM4/HbEROE=;
+ b=W2egxUxZ6fLt2InPb4tI9bQcs4RlVEBIEG8U7jxEWRV2pi7hHeZ/DOqQwoa6fXEV7F5SK0PpmWy/exdDm/l4AToC8Fso/LAGe0KnS4tnyTVk3Alybi6QRJsY9I/pykaQQINKtue33wNpT3s1VLuag+sErH/DOw1oy+aIXqKVcD8=
+Received: from SJ0PR13CA0113.namprd13.prod.outlook.com (2603:10b6:a03:2c5::28)
+ by IA6PR10MB997584.namprd10.prod.outlook.com (2603:10b6:208:5e2::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.11; Thu, 18 Jun
  2026 07:37:59 +0000
-Received: from DS1PEPF0001709D.namprd05.prod.outlook.com
- (2603:10b6:5:174:cafe::a9) by DM6PR21CA0004.outlook.office365.com
- (2603:10b6:5:174::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.2 via Frontend Transport; Thu, 18
- Jun 2026 07:37:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+Received: from SJ1PEPF00001CE0.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::a) by SJ0PR13CA0113.outlook.office365.com
+ (2603:10b6:a03:2c5::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.13 via Frontend Transport; Thu,
+ 18 Jun 2026 07:37:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- DS1PEPF0001709D.mail.protection.outlook.com (10.167.18.107) with Microsoft
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ SJ1PEPF00001CE0.mail.protection.outlook.com (10.167.242.8) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.21.139.8 via Frontend Transport; Thu, 18 Jun 2026 07:37:59 +0000
-Received: from DLEE204.ent.ti.com (157.170.170.84) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DFLE215.ent.ti.com (10.64.6.73) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 18 Jun
- 2026 02:37:55 -0500
-Received: from DLEE203.ent.ti.com (157.170.170.78) by DLEE204.ent.ti.com
- (157.170.170.84) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 02:37:45 -0500
+Received: from DFLE215.ent.ti.com (10.64.6.73) by DFLE215.ent.ti.com
+ (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 18 Jun
- 2026 02:37:55 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE203.ent.ti.com
- (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 02:37:45 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE215.ent.ti.com
+ (10.64.6.73) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Thu, 18 Jun 2026 02:37:55 -0500
+ Transport; Thu, 18 Jun 2026 02:37:45 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [10.24.52.55])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 65I7bYve3521710;
-	Thu, 18 Jun 2026 02:37:50 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 65I7bYvc3521710;
+	Thu, 18 Jun 2026 02:37:40 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -92,9 +92,9 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
-Subject: [PATCH v4 03/16] spi: parse spi-max-post-config-frequency into post_config_max_speed_hz
-Date: Thu, 18 Jun 2026 13:07:12 +0530
-Message-ID: <20260618073725.84733-4-s-k6@ti.com>
+Subject: [PATCH v4 01/16] spi: dt-bindings: add spi-max-post-config-frequency property
+Date: Thu, 18 Jun 2026 13:07:10 +0530
+Message-ID: <20260618073725.84733-2-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260618073725.84733-1-s-k6@ti.com>
 References: <20260618073725.84733-1-s-k6@ti.com>
@@ -109,112 +109,90 @@ Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001709D:EE_|IA1PR10MB6760:EE_
-X-MS-Office365-Filtering-Correlation-Id: c27673c0-e7ce-4316-5b9a-08decd0c8578
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE0:EE_|IA6PR10MB997584:EE_
+X-MS-Office365-Filtering-Correlation-Id: 458b389e-275f-4eeb-cf6a-08decd0c8542
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|376014|7416014|36860700016|921020|6133799003|3023799007|18002099003|22082099003|56012099006;
+	BCL:0;ARA:13230040|82310400026|23010399003|376014|7416014|1800799024|36860700016|921020|56012099006|6133799003|18002099003|22082099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	VUtLE1Kc2dvvUcPbc56Smpe3yD40yiT7G486IEihSsDt8Uapda/01C9S8EZIMRIQMGRdZfrc7fyc3zxBxbf0amT31/EnYtwnpitVQgluRMbscq8Arjv5LKpTPgkhAwOdVXvy+g9Eu5aCb8PuC3kTK8Iu5nJdEMW89+3Y2LjVcNBkKLZdaQyYrrf9l32jWkgX0FoMpca7/JjE0I8oop5hgHdBiJF9bS+HL36HQ7JHX9SkKZSulQpPZAMhMnJ+vhXmW6TnGkwjveR33mG2BZL15K7x/X7DpY4bp5A9d9+Kroz4Iiv/730kk5ocZUmjjtwZHMBsyBoyvh/X1bCrWEXknHqR1MvxQWxa0g0g2UlIo2Nd/jOU2tX9aLTaDcRmzQCXn+FESfSWyQh14ACGyFbzoNgityHDUuC7bzrIzv7Y93CFuPq+Yru3voZKQSwVtQ0DGAMTlRAdscWOeFvSByAT8GOQ9rUwD3XYM+njutylfRDt6vmd5JHg74uSjy3SGirmel5gHAGjyCp62Ze2wbeZ3x3BB2fcb46drLc+PeMLAVnX6Yu6Eo924docTpts2uVVytHUbqNdCYCRPK6Q8EJOnqPuj3cirRrc9s63aO9LyLRaL9fKIqUdgHN1yDPJX0LWNWahbml1qjcnSh6BzIkzidVlXFQUm8DkXDNFfvd38gHtWXnSjwNZQ1gX+JgpEm+Dtw0nHT/1D05+UW5TwdfsuYw9pJ06gwQECIbW849VRFY0iFY2lsFqJ53I+j4NgRsBW2aBKG69xvAXI1qG4lko9g==
+	IFvy/XAbPZWnHVOvMvqtuYf+WM9zdgelb9mij4Rw2/F85+vDmitTmTQ11TIqm8ZD+g1CCdxyzO1BGz4ICjQwqd9FTjoI2habW1Nrd1uHlvcbK5YCTcVBIVcAV/jG0oAdqivSPewlev6RV8H1rFDSMzGSILIj0rjACo3DHvYvt7VgqbZTjsEAR38Xf5CInVAeyti3hwhDBLma68B2gFFOXheuiByJSdIS+BkJG4kP39izphNyva3plv7zCo8sC9Iec9G4+I1yPabWYtRvjHOMmpkYU0KwUTjl+n3DGtk8PHKYgbtvrvQZQYt3hB6HmLeE2E0ecFbLLYN4xEe6nBIZtVfg4sfk7GA4mbXjtHaZEw1xUmfS5HtdJtyxfv5i1yvqgwaqszncFoDO9R0/9vLtHJR9/azzO0Z4gXp/+i+xeiw456oLjVkdq6pX5wMbN0VQgRzkv6vqQMHDpcaVLOAMQUcDoEjKQ0zlD2xPPRQkzNzGXdopnfWt/EygqZ5rZ/r1cwj4/vxanyAYVccEIozbHaqqSM2MEgSfRuLb2y6GF9BsNs58Lm0KcxJKgweYrFOud4ra5hX2tFmM34HVMNmJBFIk7SbyxwthMss5orkYpJyL7ws6TaOcE1NqmC07VVi3PqDrURSmlnDzJfmVunJUYBIOsJKFbTvXnYTrlnIW/m8DpDDNE+LuhYM56zxuWyENGgFUFU0mPPWxkyL+EbWuwRiBBUPPJnQ1Pi2Md7r57tMY/yD1CDC9J14Jduz4FJNzWpO0r9Pn/772Hhv93RueNA==
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(376014)(7416014)(36860700016)(921020)(6133799003)(3023799007)(18002099003)(22082099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(376014)(7416014)(1800799024)(36860700016)(921020)(56012099006)(6133799003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ENQWRjYqa+68PIlmyRVwrwyN62227SviaSO6L4DwysdtKXVuW6J4KP9P2rB2KxesdikgxwHt3PREt2bZEQRBcVWi2Q7IwPcyG9d+FVQu9orcES9suKz7pdMpeC62gPF6AF8qErWAotz1REcNZRuKsvUerQgyPvBvPs10OLQxJGgFUCySSCYX/y16+VlEqsOh7aA8G4ofr0VZ5YvVfb2wXUXNMo7SEvwhvvZ9zHwpcNHhZH4bL6867Mf2P7nDZUWy3G5Fg/ev2d+Kt+heXPm4jCGF9oxLyC8vt+kxqXkBxcdESIKXnPQi2haYV7v69RyJCe8eTbEirYd6OU7hBbemS77Os1+TIzlzDq15njHHwHNKTRK82bA5izkKZSeF6jTuUhHPz1O2XoCUf9rCOakiyBl8v40C6W0eG/dC3fgs4IZwdcmGf+B5iv+O2DT4jq6e
+	bz5aeyxvhQn9GjG4qBv9ELUjhNWCwmGER7y6oErV+LlS/jrA9D2196jO299bhXgsAsMFFzniiTjNFqj19qDCP6wbAs2SzjoR42mGyCJzIvXnJr2kduWQTvvihjxpSe/+oxtVs7uJCjOJ5l/mtr0baZ3QN0TJ11V0VdyS0rn54Y/43pxSRWqVy6wO8IzwB3CQvU+oxO+Qj/Z+EvxM3BdJHzt424wEC9jq2gMe6LdWu/Hmrvzv8YiFxXsLiwqZQf7cEsEfnQGgZzPpFfjDYpfc3XzbuDFvwgbeBXqhAD/gHTutMXEh9T400v3gKa5Sx3V26Geb3WXCrcpXZTMq4J7cX4tIHBQkxTehkzCik+h0/k2xDX1+priXfQWBIr13zNp2b2MIznarSStlL7dz7tX1djTUcEUHkvtqH+L1h7QEg510THP3M3DZ1KeH68iTuzCN
 X-Exchange-RoutingPolicyChecked:
-	eAel2wQ6gSCzAJW+VEBJ31X2aH8UfxjF31DflndcDxtSTN4FeVOZ1RUucsu3J3OHF9/qrHvLYbu+jJqqe0MQtfyWTZcmQSmQp1bKhlriRqNXuOmdzhE3R8dWMEMyTSsYHcrgAhJvY5AUkkBQoLaSKHNagbVFAib7E2Gj1i0pnAdPftpQMPQmO91VKGB+djftzFfrM39VT9AkzHuo546akeyT8YFxMn9clsOV1vcD4RpBIXN4ZqF+x4J4807xfEbzD0FtKQI6DF0qkvH4fIfrOe7WPDPB2W5IrzXYt3W+2t24+DiNN9QMSEsVqGrD55+nu0crQwtdU3ycHWcYADQpQA==
+	XRMV4SKX5+5O7zVoNazkaCLyD9XPX0a3yzSBBVmCkDEfrX2i41xDeo3DRTexLzEVLK22t1oYR4D4EXp67RG/q7iZN12S35kq/+kux/a3GrRzC3oUnprx81tD3zFKG1wjyqwemAPqxqNX/+FvFr3Geok7pokQ12d2nlFeIkPZClPxCWDoT6iFu2+jaDiz0HFz+H34Sk0QyfPBcJYtaMRBub/kaqSoyYPAUs27u9OtlgeGGUF3x5JpbKF0R2REbH8DCA2Oj4nILm6gDtuuC7cEfCpdXNZneitrn3fyCpyeuTjsXMvpKABhPaIXVabfQGKr6BF3TfoA8p4f3nCxPQATfQ==
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 07:37:59.4773
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2026 07:37:59.1002
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c27673c0-e7ce-4316-5b9a-08decd0c8578
+X-MS-Exchange-CrossTenant-Network-Message-Id: 458b389e-275f-4eeb-cf6a-08decd0c8542
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001709D.namprd05.prod.outlook.com
+	SJ1PEPF00001CE0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6760
-X-Authority-Analysis: v=2.4 cv=PtOjqQM3 c=1 sm=1 tr=0 ts=6a33a05b cx=c_pps
- a=333l4QiDdYhx7c8CB7C9lg==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=FelO9ux0wxsA:10 a=s63m1ICgrNkA:10
- a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
- a=taLDd7a_hP9WKsMzeGRc:22 a=sozttTNsAAAA:8 a=2Gi1gDZmOG9PIfG5304A:9
- a=O8hF6Hzn-FEA:10
-X-Proofpoint-GUID: I7zLsRuj4AJv9-xeedLwf_2y4Pt_3TdG
-X-Proofpoint-ORIG-GUID: I7zLsRuj4AJv9-xeedLwf_2y4Pt_3TdG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDA2OCBTYWx0ZWRfX1eFNfg2ckMHx
- vTjJlR02YGQAr7SWV6U9Fc+p616juwwo8GeWVMx0JknUMArjWNACB9Sv5z2/PkJIiRVNXS/Vfbf
- vF3/si1S7PCeR0pSzpWlNnecR/ikTfA=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDA2OCBTYWx0ZWRfXw1pN/dHV0HhT
- 8px5eH37oi10EB4l7rDXXuoBF0Sy4eLK5cAphu8gpbo6bw5kYfiXKMuF3lMdDI9QVm82qJLRW8I
- rmED8FcoUGKqLhNji0m3nnZHvdOenwwHMBVsePuiXql63msYhL8dYVJQ4GuTumqV+FzFD090c5o
- umVGs1iUHYK+f3nR+CRpYyuXRFeGfAbh2XxHYd673CLaVOPfLfc3rW9TWrVL0W7Iij6lzE1OZ5g
- qPtrIp/bu0JQLybZ4+FgcQjwjkGmesUaUug/rJ4c8zBZEm9I8rBO/9yi3ujPAO195OpSOuqhysb
- /L5JVyNZtnvBFyaQGzX8unsCarJnzGaottLBkBAACdN1JxZDRmG8o6mul4o6fywkVxEGpBZyPhJ
- LNsKt7TnZxL5C2h+oM7mW3oFOprdv4kuOwdrFnYAwFwC1LjBAp4vSHoQ7IEgfnqm0MVHUDPXpGs
- P91c+tf4HT4+Ipkfd/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR10MB997584
+X-Authority-Analysis: v=2.4 cv=LpqiDHdc c=1 sm=1 tr=0 ts=6a33a05a cx=c_pps
+ a=a2CzU9h33xTdk3q/+L33yA==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=FelO9ux0wxsA:10 a=V5UXEbMT0ywA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=fPAWb5peG099m5CrUpKH:22
+ a=sozttTNsAAAA:8 a=skPbNTvFiSR7kuR3s9sA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjE4MDA2OCBTYWx0ZWRfXwEVlVTXonpFD
+ tMoQ7WMIEQ9mSvbBZ60zG/xeJT9dH/X5F1pFqppYxcwSecaptqpye+8NU+ewlDAPLPEylcjI9aN
+ 1R36iyzcLyAqtWGn3/4Yw2K8WTwETNSftmuMfp5nxAkMUW5l4e4VGf4ThxgpRi5eMw+n1UP8zaT
+ Fcvn2gdB4pXdTm0NgO584dIPi80AdW8bHsUi6rrL2++zJtlrEbhNua3kG2Gyc1QS4K4dhLGdDOH
+ B8AWXQgecQsdF1V+hcs6oJCUwgBOOJcWsR/0IcM4y+Ub54FaPCmJ40RcmtpPXzC3VhYscKtce+d
+ mzQ0b48tfaOVYbCQQgFbhRexudwsc03YvlZ3LuJ6AMbb0XewyKvy3qj53VV4kHOT+1O1fuAzsxy
+ GWewPK9X+4eD0Vb0k9e52407Lj0eJfa171b+KXchGFmt8SVtMQz2iOArvRCTfREF4b3HjB/CbwW
+ 99N0MZj+uvodYhrfMFw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjE4MDA2OCBTYWx0ZWRfX8iK1QittEkMW
+ vWXbmDhl9Ar2HQAs/Bow7swiE63dxZtBZFg6OS9YYmZJVrYaOUBMWi4KZ0paqmv28z139S1Gs9J
+ aCJq1c8lFc2gbONQQmfqLw0Ka3akT7M=
+X-Proofpoint-GUID: IhGQLUSPCDMcvcm1k21WT270NwOSsIj7
+X-Proofpoint-ORIG-GUID: IhGQLUSPCDMcvcm1k21WT270NwOSsIj7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-17_02,2026-06-17_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ clxscore=1011 suspectscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 adultscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606180068
 
-Add post_config_max_speed_hz to struct spi_device and parse it from
-the spi-max-post-config-frequency DT property in of_spi_parse_dt().
+Add spi-max-post-config-frequency, a generic uint32 property for SPI
+peripherals that support two distinct clock rates: a conservative rate
+always reachable without controller configuration, and a higher rate
+reachable only after controller-side configuration such as PHY tuning.
 
-This supports SPI devices that operate at two distinct clock rates: a
-conservative rate always reachable without controller configuration,
-and a higher rate achievable only after controller-side configuration
-such as PHY tuning. With both properties set, spi-max-frequency gives
-the conservative pre-configuration rate and post_config_max_speed_hz
-carries the post-configuration target for the SPI-MEM layer.
-
-Zero when not set, preserving existing behaviour.
+When both properties are present, spi-max-frequency gives the
+conservative pre-configuration rate and spi-max-post-config-frequency
+gives the higher post-configuration target.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/spi/spi.c       | 2 ++
- include/linux/spi/spi.h | 3 +++
- 2 files changed, 5 insertions(+)
+ .../devicetree/bindings/spi/spi-peripheral-props.yaml       | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 76e3563c523f..36951ab47a2f 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2599,6 +2599,8 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 	/* Device speed */
- 	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
- 		spi->max_speed_hz = value;
-+	if (!of_property_read_u32(nc, "spi-max-post-config-frequency", &value))
-+		spi->post_config_max_speed_hz = value;
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 880a9f624566..ece86f65930f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -45,6 +45,12 @@ properties:
+     description:
+       Maximum SPI clocking speed of the device in Hz.
  
- 	/* Device CS delays */
- 	of_spi_parse_dt_cs_delay(nc, &spi->cs_setup, "spi-cs-setup-delay-ns");
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index f6ed93eff00b..2d90ec91450a 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -139,6 +139,8 @@ extern void spi_transfer_cs_change_delay_exec(struct spi_message *msg,
-  * @max_speed_hz: Maximum clock rate to be used with this chip
-  *	(on this board); may be changed by the device's driver.
-  *	The spi_transfer.speed_hz can override this for each transfer.
-+ * @post_config_max_speed_hz: Maximum clock rate achievable after controller
-+ *	configuration (e.g. PHY tuning); zero when not assigned.
-  * @bits_per_word: Data transfers involve one or more words; word sizes
-  *	like eight or 12 bits are common.  In-memory wordsizes are
-  *	powers of two bytes (e.g. 20 bit samples use 32 bits).
-@@ -191,6 +193,7 @@ struct spi_device {
- 	struct device		dev;
- 	struct spi_controller	*controller;
- 	u32			max_speed_hz;
-+	u32			post_config_max_speed_hz;
- 	u8			bits_per_word;
- 	bool			rt;
- #define SPI_NO_TX		BIT(31)		/* No transmit wire */
++  spi-max-post-config-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description:
++      Maximum SPI clock frequency in Hz achievable post controller-side
++      configuration.
++
+   spi-cs-setup-delay-ns:
+     description:
+       Delay in nanoseconds to be introduced by the controller after CS is
 -- 
 2.34.1
 

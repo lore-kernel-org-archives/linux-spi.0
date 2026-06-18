@@ -1,86 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1022E1C4E;
-	Thu, 18 Jun 2026 20:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A8F14ABE;
+	Thu, 18 Jun 2026 23:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781813154; cv=none; b=up9Vtzt0IO8J9EKvkdhTCHW3pOvPRN4RU3R90+3M915YLk0iG7rm2pwp3tKDesFwtC+YnxDO811DIxSumSLoPz++k11wVtzUAqgwGbXhXYd4UV0r3NX/1SBY2uwj+v4wQIPp4t11Cj3CGAFdhRnp6KE/lHgd2Vu36e9G8bHx56A=
+	t=1781826608; cv=none; b=eYC6SQpD0eq1yUjVoUcsbna3mGIDnVZxte0MXW29i2ccrX9LA3queEoL5RAPDHVHzggMyc8+e6fG/Oh6P5J3hWqdP8oKSXiGky3pxPaFASZPzOxI7qf/HBjsjd+vFBaqX4FlQMwrLgsUGGIP3Ru3PgIOu90q4KGQrVonkpdZFYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781813154; c=relaxed/simple;
-	bh=iSIb+Xnhtkh4603gGlMIYyjgq7gUwu78nAHoewAyslE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MYPbMxIGHJe6PUPNMLu4t5wwsG4uQpw7/7x17fc5lQnqVycK7mCco+lnNa92YhK7SU4y1G33lgfmRswXIgbR7EqSPEvxvHi+oXsAGvKugBbgC77KYo1StAg5LgCQcdIx7x2zCSnZiSobIomqWdG773oJeaHyMBMtsLCoHUOS99o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2vhPadK; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2vhPadK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647281F000E9;
-	Thu, 18 Jun 2026 20:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781813152;
-	bh=iSIb+Xnhtkh4603gGlMIYyjgq7gUwu78nAHoewAyslE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J2vhPadKpAycrCWyQ4VoIP0RnhoBUVb5CokPhYoGcHyMRVnKVYzuzsff/lA5O6tiw
-	 JPEbNxYeAmQk3+hnfD7ClJ64gGyrmapE5Hkhf3H31Jo26QAQHMSK2mFbQfTNS4eKcb
-	 12E3Ph5ZP31mqde5wMDysHCn3LUTtgY3ZigiAhRSDTF/iL5QyAC/k/D8ndDLaWuiHT
-	 o4UyYQBBUA1rXAfbzjobbc0llbl1mgsb+tnn4IibEmVCwqVnIlR/Isg9Q/FrTCUBRz
-	 g85oMpqZOL3DRb8/wmA9V97Tjl7PdXUeryUIeNTDGsqJQXthf9tqYdtnnq0lwCddYB
-	 SMVrLhXreABVg==
-Date: Thu, 18 Jun 2026 21:05:47 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Patrice Chotard <patrice.chotard@foss.st.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: spi: st,stm32-qspi: Add power-domains
- property
-Message-ID: <2389579c-cde4-420e-8755-44cf4de10bd2@sirena.org.uk>
-References: <20260618-add_power_domain_for_qpsi-v1-1-4d7e57bcfb9a@foss.st.com>
+	s=arc-20240116; t=1781826608; c=relaxed/simple;
+	bh=ZegRt3K1oOZW2GSLAietrNvB0Ykahl3wFYsiGeB240o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i8Yda10XCURSU6LFVZfnyp+CJAAyVyUAfo8c56cl4RyBzl4oCOfi7XtUgPlwLitF1+fGTExNC3Je/EzPQkRSfWXTe9yJXg8ZUizLAalaAc2LG0LCWHWqbLnyaS4bFCOCxJ6/lZkvOCSka4rZLf17Y171I7bKZ/dqAUQKVmbA2z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7FC1F00A3D;
+	Thu, 18 Jun 2026 23:50:02 +0000 (UTC)
+Message-ID: <c26ae6bd-8901-4d40-8168-3a04a6e894b1@linux-m68k.org>
+Date: Fri, 19 Jun 2026 09:49:45 +1000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="hafQDUbp9k6UCBdI"
-Content-Disposition: inline
-In-Reply-To: <20260618-add_power_domain_for_qpsi-v1-1-4d7e57bcfb9a@foss.st.com>
-X-Cookie: This unit... must... survive.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv2 0/4] m68k: coldfire: fix non-standard readX()/writeX()
+ functions
+To: Paolo Abeni <pabeni@redhat.com>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
+ frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, nico@fluxnic.net, adureghello@baylibre.com,
+ ulfh@kernel.org, linux-mmc@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, olteanv@gmail.com
+References: <20260609142139.1563360-1-gerg@linux-m68k.org>
+ <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <fe40891c-3fd1-417c-835e-6f1046db7844@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi Paolo,
+
+On 13/6/26 19:22, Paolo Abeni wrote:
+> On 6/9/26 4:12 PM, Greg Ungerer wrote:
+>> This odd collection of patches is aimed at fixing the non-standard ColdFire
+>> set of readX()/writeX() IO access functions. Instead switching to using the
+>> asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+>> in trying not to break any drivers with this change.
+>>
+>> The implementation of the readX()/writeX() family of IO access functions
+>> is non-standard on ColdFire platforms. They either return big-endian (that
+>> is native endian) data, or on platforms with PCI bus support check the
+>> supplied address and return either big or little endian data based on that
+>> check. This is non-standard, they are expected to always return
+>> little-endian byte ordered data. Unfortunately this behavior also means
+>> that ioreadX()/iowroteX() and their big-endian counter parts
+>> ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+>> using the readX()/writeX() functions.
+>>
+>> Patches 1, 2 and 3 in this series are specific driver changes that can be
+>> made independently of the final ColdFire readX()/writeX() change.
+>>
+>> Patch 4 is the actual switch to ColdFire building using asm-generic
+>> readX()/writeX(), but also contains three driver fixes that are not easily
+>> handled independently.
+>>
+>> Note that I don't have access to all supported hardware needed to fully
+>> test all these changes. I have tested what I have, a bunch of the standard
+>> Freescale ColdFire eval boards, and inspected generated code for differences.
+>>
+>> Note also that patch 3 relies on changes that are currently only in
+>> linux-next, and are scheduled to hit mainline during the next v7.2
+>> merge window. Those changes are also available in an immutable git tree
+>> at git://git.kernel.org/pub/scm/linux/kernel/git/gerg/m68knommu.git
+>> cf-internal-io branch.
+> 
+> I understand that with this series you are targeting the m68K tree, am I
+> correct?
+
+All the changes are targeted at fixing an m68k issue, yes.
 
 
---hafQDUbp9k6UCBdI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> A possibly better option would be, after that the pre-req patches land
+> into Linus's tree, to share an immutable branch for this series, so that
+> both m68k and net-next could pull it.
 
-On Thu, Jun 18, 2026 at 08:46:35AM +0200, Patrice Chotard wrote:
-> STM32 QSPI may be in a power domain. Allow a single 'power-domains'
-> entry for STM32 QSPI.
+I can certainly do that. All pre-requisite changes are now in Linus' tree.
+My preference would be for subsystem maintainers to pick up their respective
+changes (so patches 1, 2 and 3). I expect I will push patch 4 via the m68knommu
+git tree, with appropriate sign offs from affected subsystems.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+Regards
+Greg
 
---hafQDUbp9k6UCBdI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmo0T5sACgkQJNaLcl1U
-h9A/pwf/SgEVdnoxmkZ3v4Lyil4/JLjj62RdAJuYela8TOThYKaczHP/cCRFLOa2
-VM6Ff64DIyUiv+VIdyPVSXlXKZ2GwkN9bUd4pIYMeiP9CP2Te6CpPweUwWqv4TKT
-vykhSMZ5f3B4vksMlzzsGxX7778ffQjhXUal/yAyPcPwFEaXv2ybKHRFKt+y3Cfg
-qd3MY51PLoIu2Chxrg3X1lQSGDlQ9zblJeKnrj00jxVsOO0kWqVNZBZEdr1jCZtf
-MFbY+41CDZtsKRZC3aHMseSePvIuSnBnBXm4c1AwYfbbDOcKNWj+4sy8p585PDX1
-O7HG+47vGWB5sXxWe2C42ESsdb3yfw==
-=8xSh
------END PGP SIGNATURE-----
-
---hafQDUbp9k6UCBdI--

@@ -1,65 +1,77 @@
-Received: from out203-205-221-173.mail.qq.com (out203-205-221-173.mail.qq.com [203.205.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DA3272E56;
-	Thu, 18 Jun 2026 16:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CDA30BF66
+	for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2026 18:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781801150; cv=none; b=tnUkO+8EhI3DXpfJcqj77lTfb5blqzFGCtuvxoLOKlgvWPpZ5HT4EzCxQcRZHhsmwaKDsP6edj3vGXtDwPb44YtETHWtqXHZVcC6oFFtBjEetwcz3ZTWckKDIKzmWCGl5mSwTX3wZ7xVFSZmmcNQNs+iiMZn+ddBGwqsSCjHq9M=
+	t=1781805810; cv=none; b=KOlNWitzETrt0n0ej/zEYcNe6clsgr8OQqs2+U3oV7UTzV1ucKgRA16NAMeZJ9wV492ubSN+PZN6nn9yr+hdaJCeuonLrVM63hkmj0Xj7PhRvYeorQBCtqdjAGtoIjgpMuSENPr0P/kjcx+/zjdRvuxLd0QKkNSlfNwga6tzdlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781801150; c=relaxed/simple;
-	bh=4KrGZCKUUvZmExN8Kosr1+HUhD09PB4DRGEo/99DfNE=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=Tgvy7cBx0+aDJKlQ6itiBAvbkl6W6IUC2isc77vHquaSMT+DK5S+t7xcmithg2jLGw2IGL83Lo8+DETHfz6t2121GhILDxPUlWrQjiHgebK6p0NJcyCmUGahQNkZmU02AF5eS/3Y+NNRqmItzPqb9463sObjERWiV/gB0SUVV94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=caUHW3GI; arc=none smtp.client-ip=203.205.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1781805810; c=relaxed/simple;
+	bh=oGC7L5TtVt/RanN5pjTzlERB2K6nlzG3KqEBZucZ1/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mkAbRR7I7+drXqKaMaRvRKDHpCSbrrdGcUKsMhFpnbqBARmZoJvX0N9fNXs5BaHKxeyx/FoHZYRP1teRLEYgkfToL+Q9EmmURDLJUTo4EsdGnL7QZuq68l11Tr85/VVQQ/3wzUW70++niqWbOxfcCfOKUA/z5ue0y0be8ZTTISA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AJfdFTfP; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="caUHW3GI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1781801139; bh=uWpE45w7kGs1DsWdczrVp1oinDErbzjvc6QngFx2vNg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=caUHW3GIfvMnDHEEsMnT9jF3B4woUECaYxOFwlbqiexIoX2chjnhowABWCSL8BfXm
-	 9EJJ0X8jaVp522xzcVy1gHp6J0ZmUM0hUw7D0miuKdyNkRNHlfMZZKFG+MUryWVbeM
-	 TfCveCKSSSb8ikX0blrrmDAcge0qLrN8My2Mo/VA=
-Received: from ws006419.mbzu.ae ([5.195.0.150])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id B558E2E3; Fri, 19 Jun 2026 00:45:21 +0800
-X-QQ-mid: xmsmtpt1781801134t5ilkoij1
-Message-ID: <tencent_B5A06807924A77C8690730EBF7A052AABE05@qq.com>
-X-QQ-XMAILINFO: MyzM/wvJS/65FX9PXBJCbcnjG8bK6D4EtLyN+PX/HQA+NWEPzbqdVNgUmpKny4
-	 UrACE5xxCe0Uhbb9cP3Xoz7QZrfEK7haBDuAZ6T0GZ8db5+vv6QflVt/CVUTSwg03M/C1pgVQqvt
-	 Q3aWzDy58glv6q2R7WGdkNEZWVyexO9AAF/5yuvP1FgynF70CiLipBxO1kxIH+3JXy5JVEHygZ7I
-	 XxUeNOrAMc4IfpGmcoOaS4jfnjKsS5QYbioFQK/0AaqOQZjEeB/8kTXU7SHcMJZHz9LOTeqlSgiP
-	 Ig0BA6u497n7XAw0TpUV9b6Pq/pvreeJJBSen6b5rE9FH650MmFyDnmu3t0sOv/fH7A9lRk1fAq1
-	 o4UWyt4eIbiJqkAIDMQIMHpMiQuAdXtrNrmZHFvnkbRscOBkVyngivSwt82sOCTfvir+9FcasC5i
-	 lxytG6ArV5lFLeKxWXVGCt9nVO3ZaKpy7UGYBHQKw9xK2cmyglwiltCrO5vLXPtuT3wq1/bX1wDP
-	 tZVmPZgfaJqYmOH5DB00LREhlWiVjcO2c+uxlJVAMvvnEZF/KYtBrIoDitAJa5Q8MUwmwNdsqdAk
-	 sjypT9zMYAaasvkkMN69vArkAfvyhyDHweLY723AeFCotYqeFr1/jWo57u1GDLIGfegeEkVu/ztr
-	 QK1qTiwn0iXwXEWcD1DXMyTGM6gAZW2iMncApnDsm74+vwwad+pxO2a9r8bfRXCyp+FkhO+RQsxr
-	 DpNbfy0jeeYBY8aTvAfBQzQbZQLA1CSLUtBE/QPP4IudXb2Ejv0mhPik6HlORKOtvwvZky19SrY5
-	 d/klND+J1N7dlctAWUM8LFXT5xQ6Lz5XpRswMq5K2cooeeKbibqERB+FUrTLwQaXnuurZuePkGzU
-	 eQztiAqCLWxUVswG8AjigdurwgqmEtABj4mGLLMd9C08Ir7zaEbdcISn6irm9FRP0depp+3FVDvq
-	 iIk9XMxjij7dbTd/BWVbetw/S+BbhNoIMjROEsSfBeS/LoQrzCQ0lYGcue63v7Uwzv1Ccqe4BnBk
-	 X12b9R78IIwc17Tp1wf2MEVBaCslhpHaGvXODupiSAtzbhWNV3MEtJDmIF9bzR9H73VRkPz7TzbZ
-	 E1Q5KQ
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: Jiawen Liu <1298662399@qq.com>
-To: broonie@kernel.org
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AJfdFTfP"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c89636920a3so458829a12.1
+        for <linux-spi@vger.kernel.org>; Thu, 18 Jun 2026 11:03:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1781805808; x=1782410608; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=grMDKhiWxgS01CbGWcoqJuDZbxUtQgSQcTHTndsyXt4=;
+        b=AJfdFTfPwWtd+G/9mPnqx91Dngwnte5ne1crVfz5tTeRPBek3jxgFIQvRlbbxIpvy3
+         NiBr8+XhstASGwA7iHGTVTjwjVb3NRy3/H4cXUTksEdSlZhZWMRvtlXDjm1cAtAUh2FO
+         kXUmdZNtxc2y44QbwwnKNhnLX4X1AI1NqfWro2P1YOz+6HAVPopDmdVinpgh20rjnecE
+         66rdAW7nqSzFF4nEJU7QjeDvvkVy4yeFnfHakq1M6gI1SGOWJyRjwWUwKT73yYD9AE1J
+         9kRJxfda5Woe893NdJg1msygIt4QyM3rgopwvEfUREQdUjKIg9DAUYOc/tnqRlY/2d0H
+         QIow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781805808; x=1782410608;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=grMDKhiWxgS01CbGWcoqJuDZbxUtQgSQcTHTndsyXt4=;
+        b=Ak2HZ1ojWoD4JuKgBbyUqYvSc7pqfm9idXv/cDiz1D4ml8KfNrwisQ+mkRCxLPelsl
+         2K3Znee5JAJuUN8qBGiLsWKSQSYcDpUgR8Je8uPUIxKmlLieOaItq/5qLExv9jBDOCrM
+         9fvzF1wOJx+HRBN6sdF1lVESaC8kIMtldXFmr9DXd/Zlq0qlDz18/Le6JWOo29Kgc/h7
+         76RpK9bvTGUCpBvpLoz73EyvC3VaRkrr5tC1I2Kjk5XJLOJvy1ag/0C0tb5PMDedq7Db
+         vktoAwEN/bFeb8k5rxY7EpPAWfzlpjvmO6C3ehTCsgujYqNi2JuPoeAwkNtseNcImUGk
+         cvdw==
+X-Gm-Message-State: AOJu0Yz7afrakbm34TZkcVuQz3fR/gWmqqE2Ab7QvIZBmoIncmlpD+f9
+	+Kkod+wZuVGQ3WMui1xGHjzAZqrx0FTx1H08MS4pjbVxhG2Kn+w3pq5c
+X-Gm-Gg: AfdE7cntU5KzBMiktPSEFtaPVNGh8GJWaFhizxbh5MI0WlJnKQdzcGEyyZovY3BmHnu
+	yYehEdi85bd/vTt5ioinxQpXN7mBje8EXyPrnL1zxlXHa2m75iINiY3P42o4cvQ95esk13+7hSb
+	FK6NxFo+YdTNOvDpnFMyNxQKnJzQIw73n7xS+3Qs2w7/LmTwPFxlD5TgushnIr74ZvAV1iDJrG5
+	tiCiCc7MhXSe4DbElqjCPsC4E/pBVbY16LXigetlMZ6y3O1Yl6NVII+RwqJllBAvG+Kgh6FG4dk
+	l64/k0B8k07WDWpYabzJdZWMr32IfFcJfTqvia8c+TErXuk3TaPMUnTWFnMm1o0e8mrtUkkkmpB
+	8PpVPTMRH2p4qpM6Qd5wqpD8eH7u5lpXjTnE706tmKoFwP2pFjjAyVEMhN8bWsC3oN9uFUaXnSV
+	QIflw3ed3UrKGwARRs0bjSu8XcP7tO0GzUBsrQMnT15Q0VH80XCsA5c3Qjgwp/y2YQRfnOXA==
+X-Received: by 2002:a17:902:ecc1:b0:2b0:608d:d8a8 with SMTP id d9443c01a7336-2c718cc4b81mr2759425ad.1.1781805808229;
+        Thu, 18 Jun 2026 11:03:28 -0700 (PDT)
+Received: from fedora ([103.181.54.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c6be262b93sm64348865ad.68.2026.06.18.11.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jun 2026 11:03:27 -0700 (PDT)
+From: Ninad Naik <ninadnaik07@gmail.com>
+To: broonie@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	david.daney@cavium.com
 Cc: linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kamal.dasu@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	jonas.gorski@gmail.com,
-	kursad.oney@broadcom.com,
-	william.zhang@broadcom.com,
-	Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH 2/3] spi: bcm63xx-hsspi: return error from failed controller suspend
-Date: Thu, 18 Jun 2026 20:45:17 +0400
-X-OQ-MSGID: <20260618164518.3885130-2-1298662399@qq.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260618164518.3885130-1-1298662399@qq.com>
-References: <20260618164518.3885130-1-1298662399@qq.com>
+	me@brighamcampbell.com,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org,
+	Ninad Naik <ninadnaik07@gmail.com>
+Subject: [PATCH v3] spi: dt-bindings: octeon: Convert to DT schema
+Date: Thu, 18 Jun 2026 23:31:49 +0530
+Message-ID: <20260618180149.475658-1-ninadnaik07@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,35 +80,131 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-spi_controller_suspend() can fail if the SPI core cannot stop the
-controller. bcm63xx_hsspi_suspend() ignored that error, disabled the
-PLL and core clocks, and returned success.
+Convert octeon-3010 to DT schema
 
-Return the suspend error before disabling the clocks.
-
-Signed-off-by: Jiawen Liu <1298662399@qq.com>
+Signed-off-by: Ninad Naik <ninadnaik07@gmail.com>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Changes in v3:
+- Change the maintainer from David Daney to Rob Herring
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 58012e1b5ae7..37b3534d0b0a 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -889,8 +889,12 @@ static int bcm63xx_hsspi_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct bcm63xx_hsspi *bs = spi_controller_get_devdata(host);
-+	int ret;
+Changes in v2:
+- Change the maintainer from Mark Brown to David Daney.
+- Use soc node wrapper instead of root node in the example to handle
+address-cells and size-cells requirements.
+- Remove interrupt controller provider from the example.
+
+ .../bindings/spi/cavium,octeon-3010-spi.yaml  | 61 +++++++++++++++++++
+ .../devicetree/bindings/spi/spi-octeon.txt    | 33 ----------
+ 2 files changed, 61 insertions(+), 33 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/spi-octeon.txt
+
+diff --git a/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+new file mode 100644
+index 000000000000..f0b708e1ccbb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/cavium,octeon-3010-spi.yaml
+@@ -0,0 +1,61 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/cavium,octeon-3010-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+	ret = spi_controller_suspend(host);
-+	if (ret)
-+		return ret;
- 
--	spi_controller_suspend(host);
- 	clk_disable_unprepare(bs->pll_clk);
- 	clk_disable_unprepare(bs->clk);
- 
++title: Cavium, Inc. OCTEON SoC SPI master controller
++
++description:
++  The Cavium OCTEON SPI controller is an SPI master controller found in
++  OCTEON SoCs.
++
++maintainers:
++  - Rob Herring <robh@kernel.org>
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++properties:
++  compatible:
++    const: cavium,octeon-3010-spi
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    soc {
++        #address-cells = <2>;
++        #size-cells = <2>;
++
++        spi@1070000001000 {
++            compatible = "cavium,octeon-3010-spi";
++            reg = <0x10700 0x00001000 0x0 0x100>;
++            interrupts = <0 58>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            eeprom@0 {
++                compatible = "st,m95256", "atmel,at25";
++                reg = <0>;
++                spi-max-frequency = <5000000>;
++                spi-cpha;
++                spi-cpol;
++                pagesize = <64>;
++                size = <32768>;
++                address-width = <16>;
++            };
++        };
++    };
++...
+diff --git a/Documentation/devicetree/bindings/spi/spi-octeon.txt b/Documentation/devicetree/bindings/spi/spi-octeon.txt
+deleted file mode 100644
+index 431add192342..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-octeon.txt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-Cavium, Inc. OCTEON SOC SPI master controller.
+-
+-Required properties:
+-- compatible : "cavium,octeon-3010-spi"
+-- reg : The register base for the controller.
+-- interrupts : One interrupt, used by the controller.
+-- #address-cells : <1>, as required by generic SPI binding.
+-- #size-cells : <0>, also as required by generic SPI binding.
+-
+-Child nodes as per the generic SPI binding.
+-
+-Example:
+-
+-	spi@1070000001000 {
+-		compatible = "cavium,octeon-3010-spi";
+-		reg = <0x10700 0x00001000 0x0 0x100>;
+-		interrupts = <0 58>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		eeprom@0 {
+-			compatible = "st,m95256", "atmel,at25";
+-			reg = <0>;
+-			spi-max-frequency = <5000000>;
+-			spi-cpha;
+-			spi-cpol;
+-
+-			pagesize = <64>;
+-			size = <32768>;
+-			address-width = <16>;
+-		};
+-	};
+-
 -- 
-2.34.1
+2.54.0
 

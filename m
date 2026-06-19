@@ -1,86 +1,104 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FEB340A7D
-	for <linux-spi@vger.kernel.org>; Mon, 22 Jun 2026 17:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80463446A7;
+	Mon, 22 Jun 2026 18:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782150507; cv=none; b=TOhyvAN1Tbj9/vk+5QtaYZ90T/XNdYNLbUlz2vGIzvVHHQwoN9fp192jTs9iMiq+x+TSwNL/MDbxxNXJ0HLu80Q5oL1eiw1L2oiyyk7cRce7ENw8WBaThwR1+uyukVM58nQydqDfEUwquyxSToeio874NTt79OAbu4km0kmV7nM=
+	t=1782153764; cv=none; b=cnQ9HhND5KtJW9Czmvrhhu0NgVA7XhrscHBUDZYlCRUttLvqp5XRNi8w3L1lBjy21JOmD+fvhzQEj8h43gWLnEmJkuqhUMCCRlA8pe+gokUjaUBc/gdqfeWvmIWoF/9JIaNf/JE/9R7aFaBGHqIGUWCZPIyGjrGnlfuAmeu65eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782150507; c=relaxed/simple;
-	bh=caV7deyxPHviTL0Ffz/Fz1pVlomFjHjr1ZkaJ5JplSU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQITvx9tiMoCgrO15xJSW/rKr42sxbBOnFeq/YZPPV4tAyjZ826271LL2YVKukBkb1KKQ1KyBTYmdUnryD678pVLYMeQK74xQw5AI2yCoJmR0TdS44hcm75xssQVpH9p9tq4SbXSm54aufbH5YlbJ24V+TeLNvNZr6+csdjDFGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Kjeyu75R; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1782153764; c=relaxed/simple;
+	bh=FrBpkOQL/dgRLybZov+R31Nro41bEC/qUWRU27+F9Aw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=R1H0+44IRiAo+Oer6dYfbfVr8M4Q1R8DfbVigoSrB05SOLr8YeBRm7/XeObDJAgkMYxDh9b6zxL9NrxmmPgMsMpoIrKs5d6DHDIu4gSXhdJT7YglKe2Qz05tzMKzCIW7tmoH8KA3tdYKFfvwIY6Pukh2DWFnvGwDLwa5TBNQ+TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qb9k+WsE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Kjeyu75R"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=q3GXbkpPLRYkVhY0RAHbo/X+MNy2pzHyQr7Nil8svLw=; b=Kjeyu7
-	5RESgy2A6B5Y9YUkNwkg83Mu8TljPmExAu692NggtdH6FSlj7jmXZVPQDjVXaBaw
-	Qri76uwGqtX0uJHdySMoOo0MwxCwGAtgcNNY7qAfZfDvMMvm8yEnCYWOP1Fjej6N
-	7VIaTsehwigZtKak/7gXWJWHZBdZI/W5bZb9QY4XjY6gtxnhOMKuNb8/8W6rlCXs
-	DiW+oNwotWrE05E8FuZo28fXatB6qn8QwxcO+PHfBxitZmYw6xgIcU8DHNTvA1bI
-	RixJAVWLNGxVT8eg+3bi37CXiZOXgJ7u4OwCWKZ5mXNDr8DGrvcbC/5dxCN0bVkD
-	J5HJsM9FS4/HR/uA==
-Received: (qmail 2061403 invoked from network); 22 Jun 2026 19:48:20 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 22 Jun 2026 19:48:20 +0200
-X-UD-Smtp-Session: l3s3148p1@aRuIP9tUhKQujnum
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v3 1/3] spi: dt-bindings: snps,dw-apb-ssi: add 'power-domains' property
-Date: Mon, 22 Jun 2026 19:48:07 +0200
-Message-ID: <20260622174806.74450-6-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260622174806.74450-5-wsa+renesas@sang-engineering.com>
-References: <20260622174806.74450-5-wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qb9k+WsE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FAD71F00A3A;
+	Mon, 22 Jun 2026 18:42:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782153763;
+	bh=YOGq7lEHrxGToRoPGSKPTagvDCXwpC5glbVNxk4CpXo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Qb9k+WsECnuEVeCQEJ9Iwr0KKNZ6AmZkaNAEiFJHj49gLOKc9el0S3rBh0fWRucuI
+	 0G+UypVPsRl4U17TuA/z0hssBarpeazAahdO6wMpNPpoBjKhgKlz42MZn76i28AvTr
+	 I82NP/1l70b58TFWFvEQg+EiPxj6tZRokwbB/YXmVx4/w9eRPHHI/qlzQyNq1Qrr3a
+	 RfM9YnCvP3B3xWiHj+uQnA/2rktp0rf9VbUXcPPuXyviLcspcE4ST0NDbS5RKWpvJm
+	 thxkw5RrF88ha3rb4dyue8msT1em7IEwqYBpeRAugdGaqdI3woRHwJVraBgXZfj2D1
+	 fs253rkaP7Wog==
+From: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Changhuang Liang <changhuang.liang@starfivetech.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org
+In-Reply-To: <20260619143443.22267-1-changhuang.liang@starfivetech.com>
+References: <20260619143443.22267-1-changhuang.liang@starfivetech.com>
+Subject: Re: [PATCH v2 0/2] Add support for StarFive JHB100 SPI
+Message-Id: <178188866474.108520.10248256723285421476.b4-ty@b4>
+Date: Fri, 19 Jun 2026 18:04:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=FrBpkOQL/dgRLybZov+R31Nro41bEC/qUWRU27+F9Aw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqOYIhxCgYtd5Wg0CnQZJp9+hvGK4leqReS21Bo
+ b4eofrEJMSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCajmCIQAKCRAk1otyXVSH
+ 0HDOB/0R6YPuKQI7aUkT6JdH6M1GJ+3vkQwg1s5IsZtZwIAH8h0XpVmoNeqwnJ9hkVYSNg2w5Hf
+ 4AtK0VBzjmXK4U+aYNK7xFwlrZJMFR2+Z3u8VggIIQO0Ba2SUbC9AsNYdTG4zn9CbgIGfzB7E1c
+ sfWXA5Zj7ZMCG3xRokvquTjCxQdG2Snd+w4jQplXHblXa61FbS/pMWhk4+OQnxnCPy30tE743NX
+ G5XnOtD2mDiVaXbm8q1LYU+NHNEi5t+RmeYzxzPq4uV/DRC3UGyn9MOn0SXNDTFbSB2jat00KNp
+ jiZHZZmvsBC7fbewWgsa5P7/SycGe+o7Yqeu3ARq4zj3y6Lq
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On the Renesas RZ/N1D SoC, this SPI controller belongs to a power
-domain. Enable the property to describe it in DTs.
+On Fri, 19 Jun 2026 07:34:41 -0700, Changhuang Liang wrote:
+> Add support for StarFive JHB100 SPI
+> 
+> The StarFive JHB100 SPI is based on the Synopsys DesignWare SSI version 2.00.
+> 
+> changes since v1:
+> PATCH 1:
+> - Add "starfive,jhb100-spi" and support falling back to
+>   "snps,dwc-ssi-2.00a" or "snps,dwc-ssi-1.01a".
+> - using subject lines reflecting the style for the
+>   spi subsystem.
+> 
+> [...]
 
-Reported-by: Herve Codina <herve.codina@bootlin.com>
-Closes: https://lore.kernel.org/r/20260622132842.7e0d772c@bootlin.com
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
+Applied to
 
-Change since v2:
-* new patch (Thanks, Herve!)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+Thanks!
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-index 8ebebcebca16..3896ee02d7b6 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-@@ -88,6 +88,9 @@ properties:
-       - const: ssi_clk
-       - const: pclk
- 
-+  power-domains:
-+    maxItems: 1
-+
-   resets:
-     maxItems: 1
- 
--- 
-2.47.3
+[1/2] spi: dt-bindings: snps,dw-apb-ssi: Add starfive,jhb100-spi
+      https://git.kernel.org/broonie/spi/c/07f251e0ed0b
+[2/2] spi: dw: Add support for snps,dwc-ssi-2.00a
+      https://git.kernel.org/broonie/spi/c/914e708e3049
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

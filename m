@@ -1,213 +1,388 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011048.outbound.protection.outlook.com [52.101.70.48])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011066.outbound.protection.outlook.com [40.107.208.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A80622579E;
-	Sat, 20 Jun 2026 14:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906AA1FC7;
+	Mon, 22 Jun 2026 04:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1781964600; cv=fail; b=a+ZVqCt+/2QD6Hxv3Fr3sVe5h6Ot9np2rlPU5wa37QcbZcbxB7SWvIU79rdrTwfid6VyPVicnNYgBoNDA/uC4XMNiHmtAs1XsB0jmYYVjprQoNr/aL1NXsw11HNU6wUoX40OpW0sWGv7carWeB5GE0xSAE8Y7rThgkuQmvAFmOY=
+	t=1782102655; cv=fail; b=GkDVq/CdedvcBYcUFL6ykBwfFq0z8AWe8E8E0crN14NvRvYa2QKYKMhpl3sc/2SeRIBAb2qPAqn3hnJARTtTHBsEY+XhTN+DBJeLLWsEZObrUGcAw4hd8U342lKu1KmAn8VtaFD0fhBHJaAQGevQ7veZmOBrjTZkPZpv8jP388A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1781964600; c=relaxed/simple;
-	bh=pkoJEm7FfwbB1sw0mcyjY85NHEJnXO4CV0JZKkTWiuM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mVDsmoQv4ebgiubSzDGSYhRYxlnRlyXmBSiZ5S+ptDzhHK/8NceSA+I00RhgpejaOOstAGkrXq15pZw0IO3bYgGJwde34DYyW2mrYwLL3zT0rvW89PmCLxcCdtbpaCmtgrPaW/NVZM1Xjw2VrnHw0b1ihtP5ITYpc7M3X0aM1tI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=j/FX9Zy6; arc=fail smtp.client-ip=52.101.70.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1782102655; c=relaxed/simple;
+	bh=I8QVNqqWWGLSixLryqMW8ZYtF4IHDxFr0Krzo5q6NX8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=j6BQdDGcA2Ic2JgvNpNGzJpBOsPpCqScQNQJl6d/bd3KdEJj8OQwuZqm04LzWbHVWXyDz6Drezshp4GE+9UFV/Ksgu47UJ5RnEou10GmRIR3FuQWNtJDgFhipf2gnRgjVfiLuD3rWSbCm7BGDf+hNs+BSx8VFkagQqThXsUgHP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Y7Szm1V5; arc=fail smtp.client-ip=40.107.208.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="j/FX9Zy6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Y7Szm1V5"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GqSokA5lflAHGR54iIWPgFiht/SoQJbz/AOPW3Hs4gr0snZy7UAICXLDI92vSPt8YfGNqJRcb9OZlBZWS+5qQ+nxYUl3+c7wYuq1vsxnPVL1H+b70Gx32lqIrH1epldHhZscy8eNNtjO5LQeZ3XXNEP5kaGMSW1aGXLWjIxXHYxyeK8lb5F2MoCUQ0ldt/5o4drlTMKXMoM4iWQ7aQRIuU5k9CNTfdAyzWTPVH0/MYlqvQWE554aEC6cHgeoIIuiEWH3gE/35OW8MIkWKaavuHHBUg/IyUw8W8jcYD5gdP1kzcSw+EY1WDwzZdH3fvLCsKIfIVaYYUqY+H+txIMpKw==
+ b=ALG1ganNhyJtzjQ9e2FJIGDrZW27jvaft3MOhg1UxJagA9nKA62Nofee4cfEmyh7rXP9fLrWSac3ePbmbpUuvL7MLpBIhCW1rJyB5SmWhnoyHTkj3J8gDUDbuy3BVbJ3m7cLMYPs3oymrkwlKdeD17AyCjwEPErRhdPvAND7x+qz68unjrwDdICya+OsRA8WwF0ImuV7YJUkzjvqIkUNVkKgp/1RMefHrH688nyparnvBKZBoGoeWuW+QODO6dsNVjQLRACeQWL4NWsHS0cbkf3mJM24qxSxLPZNI1UlPTEhMmF1CJmiIUScNmhs5Xq8mPvcSoelfAUAPrGLyIKUyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tLHhte5QUVyT08IVmnmDcOMU38Iu165K7b6l/LoQiX4=;
- b=ll/S27fpRtTj6q7l3fGMckEbP7ufr0dQ6wyhJvmXYjhtEfAWyuSSHkKhOs/ddR97nLAB1eEgrD13u6dQ7MsA6wKYUzUTJIC3W2d+bl6/uH0YqgOiQ6Lu/74qO0NtCIT8o0MZSPrbVc/vEY36c0nTjMorek2ehr7cKPI/2gckK2BWWvMI8ehTcUR8BMos2YdpU6+kBV+unrCkT4eJSi9O1HRAlvhyH/D7CgPz6DuTgMnhF4TAu6gNu8yWtXf+2CLZsB+wGEh7z5wDmxcEN6WPDKHTijJn4Gf2Bs7gWIQVhSNgU5CdSKq5CbmvEMHaJMaJfyMAUUQ0x8aGkf68caaC5Q==
+ bh=MtYqiwZe1/C/IHxSm09BK12syBfcdYfvg9ruLMk/0zU=;
+ b=AbEUl/e5Xmae+PSiQWCfZWasGoQ1IOMv8dTjql0F/z2Kydrau4evDgXSGlSzapP57QzwGrUnG9wj/yNoasWam2ND88t9bIqyfOx+eV7MbEG1N7q+tAbYmeqNsAXXJZk+Pxruq015UFaMCAB66GimVmdzFslFeBBGKLIoCKE5jKDq5BvPeQm8qNYL41pSxn2FD7lm5j0vaH49sAMSGs7oDbrScXs2qtQX21LChCIRjFPht0iazwmOlusMcUD04dnYhsAFO9zj13MrNitzQB0UsoOQ8INWr9L2pLA5z55fbo4cOunrBYqQrctnBV3zr23h74AAla+TES0JcvtUz7bo5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tLHhte5QUVyT08IVmnmDcOMU38Iu165K7b6l/LoQiX4=;
- b=j/FX9Zy6THoKBPDMC0VC/oY60rTnz9leEM82OjIeKIXngxFWQzG3NU1fvvRMM3fPvF98BQTBdEC89zIntnlQzZCd7+X4Wpcu5P/aOKVAhYY6ENQ2erTndfNBuJabIc6Zlia956nLyGW3qKUpaYfPSx41ocBsOSYv94BMkuDAgdvwbH4wsJpzHYnaYgSQXbh4+zRnDzkDsliNwxbwKuoahDyi06IpdNW1emCP+gfcz2bYeqtzm+WqA4dts/txuuZYpHH87GoRjorn/b1Rog0acpACCi1AAfjMj1OUqIX67jFORWttgZxyaw2JiXkYf7BSw/9lS9iYtl1MuQ8PtgtNtw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by AM9PR04MB8524.eurprd04.prod.outlook.com (2603:10a6:20b:433::13) with
+ bh=MtYqiwZe1/C/IHxSm09BK12syBfcdYfvg9ruLMk/0zU=;
+ b=Y7Szm1V5mfExcMipm93I1QP4IzeSQGqlhIZn9THJQR7fcwbR4mxaqIADizq0WRqwIPkQUCxIi1UOm/zG5fWL3d9nai4tWWWUFlzmUcyXvR/YA6sCYXfl7E2yQmmcGOceaLSy5fIW5dFJLjY1gvMm3EK6CNrZJtWNq+06XumUVXE=
+Received: from DS7PR12MB9503.namprd12.prod.outlook.com (2603:10b6:8:251::15)
+ by DS0PR12MB9397.namprd12.prod.outlook.com (2603:10b6:8:1bd::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Sat, 20 Jun
- 2026 14:09:54 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0139.018; Sat, 20 Jun 2026
- 14:09:54 +0000
-Date: Sat, 20 Jun 2026 09:09:40 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Jiawen Liu <1298662399@qq.com>
-Cc: broonie@kernel.org, cl634@andestech.com, william.zhang@broadcom.com,
-	kursad.oney@broadcom.com, jonas.gorski@gmail.com,
-	bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com,
-	f.fainelli@gmail.com, rafal@milecki.pl, olteanv@gmail.com,
-	han.xu@nxp.com, haibo.chen@nxp.com, yogeshgaur.83@gmail.com,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 4/4] spi: nxp-fspi: disable runtime PM on probe failures
-Message-ID: <ajafJIPNBOiaISgk@SMW015318>
-References: <20260620083931.1120616-1-1298662399@qq.com>
- <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
-X-ClientProxiedBy: PH7P220CA0147.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:327::21) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Mon, 22 Jun
+ 2026 04:30:48 +0000
+Received: from DS7PR12MB9503.namprd12.prod.outlook.com
+ ([fe80::62c0:6aa0:897c:44d9]) by DS7PR12MB9503.namprd12.prod.outlook.com
+ ([fe80::62c0:6aa0:897c:44d9%6]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 04:30:48 +0000
+From: "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>
+To: Santhosh Kumar K <s-k6@ti.com>, "broonie@kernel.org" <broonie@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>, "richard@nod.at"
+	<richard@nod.at>, "vigneshr@ti.com" <vigneshr@ti.com>, "pratyush@kernel.org"
+	<pratyush@kernel.org>, "mwalle@kernel.org" <mwalle@kernel.org>,
+	"takahiro.kuwano@infineon.com" <takahiro.kuwano@infineon.com>
+CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+	"praneeth@ti.com" <praneeth@ti.com>, "u-kumar1@ti.com" <u-kumar1@ti.com>,
+	"a-dutta@ti.com" <a-dutta@ti.com>, "git (AMD-Xilinx)" <git@amd.com>, Amit
+ Mohapatra <amitrkcian2002@gmail.com>
+Subject: RE: [PATCH v4 00/16]  spi: cadence-quadspi: add PHY tuning support
+Thread-Topic: [PATCH v4 00/16]  spi: cadence-quadspi: add PHY tuning support
+Thread-Index: AQHc/vVy4naZUONYPUiTCjVUkD9g5bZJ+wEw
+Date: Mon, 22 Jun 2026 04:30:48 +0000
+Message-ID:
+ <DS7PR12MB9503EA13A8FB71938556F1CDDCEF2@DS7PR12MB9503.namprd12.prod.outlook.com>
+References: <20260618073725.84733-1-s-k6@ti.com>
+In-Reply-To: <20260618073725.84733-1-s-k6@ti.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-06-22T04:06:11.0000000Z;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD
+ General
+ v26;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=3;MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DS7PR12MB9503:EE_|DS0PR12MB9397:EE_
+x-ms-office365-filtering-correlation-id: 8bb0cfd5-c3d1-4996-3df4-08ded01708d3
+x-ld-processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|921020|3023799007|11063799006|56012099006|6133799003|38070700021|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ ATLSSsTYI84+NDjsYcbkMN0OI5mAlv9ur3k4Ss1jBPRX9fmRlwNWz6EW2D31i6EJJw85jG0zVYJcnqIXHB3nkvJOLE44GTgx338h2OdBqxaLSPSgMz3DHKrW6AdrxJ3gzalIQCu6dREjwpddcP0GM/VbhpWgi6M9oUFO+7szpZ4JJeDPc0jCmN9UZ6SITaAENtUWx3sPIGWX78+gBAWVW+7XMHEu/Yt6qUqEMDBI8qcyxVxTiszYrXNspNgWKOKNl3GnnGYu8eeN6OUAD7yLK9xOdgc0QCFu9Uq23EoYurHwNa3PIif9SytAlvqwpWGBIZneSjcj7IqzMZJg86MNKh0R33QrQNjGYuWznlALZl2OB/OUHG7LpfTdswltncJR1N1e/aFNSKq6oLyGZ8F61FCjo/434SOLPzWf789XOaDMXT6edLJ00OlyScGHsMsloULwBmHWbsvJtgYpS5JNWGGjqcCmClqYCFwky3j0rXOtGWfJr2DH5HqMtyt8/+DzZI1vQejoy84rpxl6R2X25GpGI6IEpr3hgHp0Yu1YZblKqwRlp1GTcONkty69gCN3kpHugtYpqz2NtZqzKKc/KfL6lb12x3FfjnsdX6W1o9nZe/cEoqVJseZtn297XlcegSxB0qfZ0oCncowt9FnyDFn++wsHTe74GjBiU2oqPkVJ6ob4bP4zxOgfKMFjTWY/LvsVz5uCrwxxp8kMi5WRQqrA/kAXiFLEZFPY8pZmQEep2upLNW7f0SdpgcIDRn6s
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9503.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(921020)(3023799007)(11063799006)(56012099006)(6133799003)(38070700021)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?OoPaL4jMl16nXoVUGxatXG2LXvfz4T1MQGea84xslCN9I8xDGjW1PM+thfE+?=
+ =?us-ascii?Q?pUpcnFK2FtCjRSdgZQ5Uyznf38GpmYB2KcZR2tJtOokkKrYS7B7BOwsqwTVs?=
+ =?us-ascii?Q?Ebj99+80FyavQGLn+MFvCM7g8MssgUKj6/DLGiRsIYIgnfnSY953P20CM7h9?=
+ =?us-ascii?Q?6Xm5+66v9XhXJTMY2Rmkh6SD0fwbuKHOXOV+4PucRID0hm/FBArUCGcvc3Qx?=
+ =?us-ascii?Q?B8dXJJHP4HXdAGqLixK47O0jXISoovtfeJPuQQAamqoLcu/WRbfaRVQjv4qt?=
+ =?us-ascii?Q?jS5WKQI+6fsQnCJCgXSs9LHtOf+1cR+5F6llI34CSwOfhB7pG+DA+BlKO9fp?=
+ =?us-ascii?Q?/+BdWDRNk7puEl6d28LdFptM2rg8FrmnU9DkSBjomjk/neOVdS5naZt3balS?=
+ =?us-ascii?Q?pAXL/AEQn9yPu/jOXq34ueGCACKyhtppTQ2jZr6rjf4GM+5ELkvQbMOzWB5Y?=
+ =?us-ascii?Q?gkksqRB9MwRnUmM19RV4Od0PQY83gU8g9ETMBDYOAUlRsjVl/egmtn4v1iyR?=
+ =?us-ascii?Q?820y2ViMYZuSp3sgQ5If4jGKizcvlqTLVC0LbxNqSilmIIxiRd++2EqoFaTa?=
+ =?us-ascii?Q?yxot0NI+o5u2zLjXUqUZoIaKxp9cENwX1nQnk1FENeI/DX8gFQZ3uluBSIdZ?=
+ =?us-ascii?Q?D+h4qAcRMGOMLNIEjnBcGoNEt5N6kljNzSFtJCaEIAA4D2XoVSZNLWW2xRdv?=
+ =?us-ascii?Q?GuY+LZCoT4hrNnbnt1OHcCCoZXog/u3b6WZpSHlWUJC9TKStkRCutskCIDdP?=
+ =?us-ascii?Q?wClMAI1CsOt508eFzLYd3zPe1WPB/RfQ4r6cK6SNFfr0u+x/Lt3wdXorJ080?=
+ =?us-ascii?Q?sj7FwsoRiLEeY/wEbMYU6mJP+MugFbvee7T+MrRtSPinBmPCPAMYbUV6u3qq?=
+ =?us-ascii?Q?CllXE00P6wpheAphgta2tCtGLXW8OVbmhgF32rXYXBgGownBDXS2B0mmdHT9?=
+ =?us-ascii?Q?kegmDkXaqFx1JbktyGKGTNS6ba4DqhiwTCKWeqXhC+Aai0a3AGKnty2P63DP?=
+ =?us-ascii?Q?wxsbAz087reNkENsiBNAh6Yfzr3kcGGZbXI2rELT1bxkCDJeggPS0T5Dos4v?=
+ =?us-ascii?Q?YlIT2uynl0vdt5XohC7pRgG6tLCuG/CeqXHFQk4zm0VHbhQrIDegPsbzbUrv?=
+ =?us-ascii?Q?rWsHKdHza4xQW0aTPYs3YGgqBwBzRvqQSAMImNiTBaq3dHw8vG42uoMeM9jU?=
+ =?us-ascii?Q?MKytu9VXvihD0UiC53/yKIGAdbeSS48oNCBO09O6Kd8JpKkXlYVac8D6KQnK?=
+ =?us-ascii?Q?PzXYl/GdJy7VKy2gTCaW4gSoWX8BJTZFqf1rNXP8AkggEF8O41/NFm8W5rdq?=
+ =?us-ascii?Q?KO0v+2Jhi51QRtKOYfDNG091+tdIoUPMlqq5WjS7PthmZsERkvrQxmWlTAUG?=
+ =?us-ascii?Q?g3UjevJ7ORFc78Kp+OXWYVc9a+ad6aPCJcOFA95v+WK4WjSf0nQdCk2gZBUn?=
+ =?us-ascii?Q?RylvTp4hB97L/NJZPQDGG1JYWlBvu5tJlXssbDG5maXM04Fr9nZ7b+1/oQ62?=
+ =?us-ascii?Q?CGYkI34GF7Q/tSuiny4CeZOblHeh9nn6Ji+ZpvvaCAyAqaCaFlHwRw6pPoQn?=
+ =?us-ascii?Q?sxwOKJKTEeOUrPNSQ/KEtcVTp/CJ6FroAkeL2lEbCDnqcCQysPRXaKGCdxgU?=
+ =?us-ascii?Q?/Ebca73k3O73P2J80sm23O9Qne0I5TL/e4xE/K6ZFbcf5sckNvVyr8iBD6/3?=
+ =?us-ascii?Q?pDeUCZtd9fkNvBSaJw/FEF+4yt6ldiPepeHGqE5gzfo1gRyz?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM9PR04MB8524:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c6be700-1fce-47c6-12e6-08deced599c8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|19092799006|376014|366016|7416014|1800799024|18002099003|4143699003|11063799006|56012099006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	pGjGpLDLki03V+dxaRbswTNv34+vgLICVcSF7YWf67xJm+TVfMipRkHSgwTlvAQfz776rvB4/z3TsJkgytZZWra4BR/r0updKwEVtqHV9wFHml3+HTYWPIjc7eqytX+glh4tKE5sokwXA/aK4AsvvZGna0KBwYHnnt4PjVs70ER5OP9JXJsRbCwi158cPh7mMEDpqzJOXjBAUYj0JCw9PU1OmEAvEKCRQTaPxUCda8sJeaaXa+CgoXEEvBZOz2DRFs53F9VBLtX17PSYzqX8SmXKOLdZRjjZnPwu8E3Pw9PPgJ0Herz9yZ8pSmjqY5WhvyUs+dJGTFQlAPU5FUsst0BFw2qOgKicaM4oAFZ73hPb3xhoOHmKiW6hh+DbRPftYU7iIgHsl2v98gEB6FQzQRyVsikOZ0X2mXsKEd6mRTq+l/Bc5s0xhoBnE45b3ebt6PtQhVXJHOIvEXtohHXftU/zMtuk8702wJvLkRu4izzXKxon2KTZLUVHwcixRNr5bVhoArMnlkTwD4xxFvJLEWHaFR2kuD45kCHUiCxRT0DFWzoqfPQfWUI+D1tUy4107hWcmcbD/stjSydm5yie9IUfF/1K6VwHHSw+e67Hhxmyq97mr6SYZjH+2w0U4z05CTsr5uayQ8/sVwota4rnFZ7J7mR1nUMGVLob+sSFTpU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(19092799006)(376014)(366016)(7416014)(1800799024)(18002099003)(4143699003)(11063799006)(56012099006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ifq97yKp7/BdDZHkNeHB5Xma4drU01ZpZ4GaWLnLyL3kVBd36Wuh7eoPJ8tL?=
- =?us-ascii?Q?sHyou2XY8PRol8qxu0KX9u6p56n8nVH88PiMg8/868Uf9SAVNMy5rFk4L8IE?=
- =?us-ascii?Q?DNrixzNEMYJV9y/3cHi1HQz6J4Qh8mh+F+ix395zvEF1cu2nU3WsOF5K4+cZ?=
- =?us-ascii?Q?CucdxI3AfLLrAJ2QVdZ0wHokN4/MYEsP+0Bgw6eimFZFFyCKhtxzuxtWNvKR?=
- =?us-ascii?Q?GCoT4cG181svo8QRTsEU6QABeyoee/T5nXx3Zrn7+nz7j+qJBju1VpSBhypB?=
- =?us-ascii?Q?xq9+ehXm0ovso3fAGYXZtWNPq8H8W4MhkD0xwBFfDK9SrJLx9WCAE0ISjNzL?=
- =?us-ascii?Q?3K3pxqkwNzBnk8D7GNMW9lEITzuNXLo9KiNzlZnKPaeDrFQr0n1b4Pdb0WXi?=
- =?us-ascii?Q?38Itc0mQmuY9g+gOSNn0q5oXdUkl6GYnlhDEaBT2iQnlP4QySm9osz2tjaVM?=
- =?us-ascii?Q?C+HT389hN8AlYDmkxNZCaJYRGjPhWT21Ruq2J2ax+MPjIA2zXmHgXRjjuhY9?=
- =?us-ascii?Q?J/2ZuJHCnhgbnWzTcQ1I8gpamSJ/3BTfqUs5DGai/XOkCXX8op13X4amM2E2?=
- =?us-ascii?Q?ZzaDj+4evVj+fHSYfv2vTF0L6Cakzzp4x3GGtWK0TZSpKh9pxg0/2M2KREk7?=
- =?us-ascii?Q?go2hAh/AYrkLkc6QAdAtl22J84EPOU1dB1XuOXXD5PZMEra//rgkia5Vs8N3?=
- =?us-ascii?Q?RVKqH1t/1aX7hPHRJaDX44MA0dt8+A//5l+bsYMf0huH5Ua+k3EfhaCL43sc?=
- =?us-ascii?Q?Ve5DwGXRoGpvkINkeYOV/idnbFQAjX6Odbbaba8X8u7WiY/llWYeULM6tCaT?=
- =?us-ascii?Q?8fyTjDq++IcuyJi081JiFuvIlnlOsuWy4/X6NQWx4RmlkqdfrwfvvKtQXyeD?=
- =?us-ascii?Q?JUnptaMHHSymbfdng2bVgHszbUlPATz3Gl6jZ8k0O7K3TK3oGtcKHWr2gQrw?=
- =?us-ascii?Q?XxL+eTUzpXN8uaKq/fy88uskG9WaQD4m+p5nbBsMhTFgTAZIaje7M+tgaqfY?=
- =?us-ascii?Q?bcXoPEKoEq//PL7vzdgZtYiSk+qJFyDnwaqr2rnaDKnMI9yA1/L/2rpdYhtO?=
- =?us-ascii?Q?eW0VmKFAYEz5lrjyWfzCRamJPQlhpQeJ10b465+ed7skIMW3AByJzTDVKHvM?=
- =?us-ascii?Q?cIGsejS/aZjrI4ckRYU7zyLagOvkdJ2j+X6KuMMBnDFXBAH+VQAvPfy3Dh1y?=
- =?us-ascii?Q?AiHJKIMLYOkwq3soCV5hTNSxuTP2yKUzTVh33lve/pKAbLhYFc5k74CbmZji?=
- =?us-ascii?Q?D+3zL+BRVO+oGSRW5IJ+fuFdRRs3C1zbx3RcD116xVF8M7eSqA5fmHFQDMpw?=
- =?us-ascii?Q?5Fta7ztpD8Cp1OK6NuqfkKKiPbZv5ffO0xkNvJ5uQVp90A6tIE5wv57IZ9jK?=
- =?us-ascii?Q?VPEV+IFGsap5gPe75lA/X2T3Vb+EwlvEOE/fw4z2ym/JwvM9zeXa9jYqkGmi?=
- =?us-ascii?Q?QYy5fLw2h/KTDzb6XSLHSmWCuAN1NnXBZ/h6FZ2yUY0A7pYjqI75YlPYrFoC?=
- =?us-ascii?Q?sF9Fow/62d8BkO8cHq7p3o6gIwQ24xAjlMu4ox8GbxdKBaMrXqXz/cVrxgjD?=
- =?us-ascii?Q?Pg2qKCAyqJ1sqXzOzmzjFde0wTT7rUBKI6boI53M2aasBjbTMM2fvkQaLlFf?=
- =?us-ascii?Q?9+elqVHiET/GEhySVoT96boLoPF7OmrPcVSs0Y/1FG/0LJqiHw0eNoAjo+bP?=
- =?us-ascii?Q?G+Ay/m35RB1+jQkcqUok445YQA1lk2W2mo8bzIcrkL+6dQc8NAAJpMvSggYU?=
- =?us-ascii?Q?U8gq4SK714vuAeGrIgU7K5is9lAOqDQB+gEdfO2yyYGo2jFtAzxN?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c6be700-1fce-47c6-12e6-08deced599c8
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2026 14:09:54.0174
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9503.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bb0cfd5-c3d1-4996-3df4-08ded01708d3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Jun 2026 04:30:48.3859
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hSLAbrWy16vV0c/faOz1IUlp/OlqlQpUDEF+D0g6wMHwdpcKcBAklk/DHCH36zplvzWRaKVO5cmBKQ+V0in/0ySaIkCar55pjrrjUsOQkycL4aVHP46U8ZAU2ZGxSxIj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8524
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7H0gJyNfzD0omUrQa+axFmqGiupI4NsrrUVvs1ZXEfpxwXr1ZgP1BiQp0e/NwOo84gBzwjJVKwMMj4QKbMqUzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9397
 
-On Sat, Jun 20, 2026 at 12:39:31PM +0400, Jiawen Liu wrote:
-> [You don't often get email from 1298662399@qq.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->
-> nxp_fspi_probe() enables runtime PM and autosuspend before
-> several operations that can fail.
->
-> Some failure paths returned directly before the devm cleanup
-> action was installed, leaving runtime PM enabled.
->
-> Route those failures through a common runtime PM cleanup path.
-> Use pm_runtime_resume_and_get() for the initial clock enable.
->
-> Signed-off-by: Jiawen Liu <1298662399@qq.com>
-> ---
->  drivers/spi/spi-nxp-fspi.c | 31 ++++++++++++++++++++++---------
->  1 file changed, 22 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 1e36ae084dd8..d94a2a7b98d4 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -1350,9 +1350,11 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->         pm_runtime_use_autosuspend(dev);
->
->         /* enable clock */
-> -       ret = pm_runtime_get_sync(f->dev);
-> -       if (ret < 0)
-> -               return dev_err_probe(dev, ret, "Failed to enable clock");
-> +       ret = pm_runtime_resume_and_get(f->dev);
-> +       if (ret < 0) {
-> +               ret = dev_err_probe(dev, ret, "Failed to enable clock");
-> +               goto err_disable_pm;
-> +       }
+AMD General
 
-Use PM_RUNTIME_ACQUIRE help macro to avoid all goto
+Hello Santosh,
 
-Frank
+> -----Original Message-----
+> From: Santhosh Kumar K <s-k6@ti.com>
+> Sent: Thursday, June 18, 2026 1:07 PM
+> To: broonie@kernel.org; robh@kernel.org; krzk+dt@kernel.org;
+> conor+dt@kernel.org; miquel.raynal@bootlin.com; richard@nod.at;
+> vigneshr@ti.com; pratyush@kernel.org; mwalle@kernel.org;
+> takahiro.kuwano@infineon.com
+> Cc: linux-spi@vger.kernel.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org; linux-mtd@lists.infradead.org; praneeth@ti.com; u=
+-
+> kumar1@ti.com; a-dutta@ti.com; s-k6@ti.com
+> Subject: [PATCH v4 00/16] spi: cadence-quadspi: add PHY tuning support
+>
+> This series implements PHY tuning support for the Cadence QSPI controller=
+ to
+> enable reliable high-speed operations. Without PHY tuning, controllers us=
+e
+> conservative timing that limits performance. PHY tuning calibrates RX/TX =
+delay lines
+> to find optimal data capture timing windows, enabling operation up to the=
+ controller's
+> maximum frequency.
+>
+> Background:
+> High-speed SPI memory controllers require precise timing calibration for =
+reliable
+> operation. At higher frequencies, board-to-board variations make fixed ti=
+ming
+> parameters inadequate. The Cadence QSPI controller includes a PHY interfa=
+ce with
+> programmable delay lines (0-127 taps) for RX and TX paths, but these requ=
+ire
+> runtime calibration to find the valid timing window.
+>
+> Approach:
+> Add SDR/DDR PHY tuning algorithms for the Cadence controller:
+>
+> SDR Mode Tuning (1D search):
+>  - Searches for two consecutive valid RX delay windows
+>  - Selects the larger window and uses its midpoint for maximum margin
+>  - TX delay fixed at maximum (127) as it's less critical in SDR
+>
+> DDR Mode Tuning (2D search):
+>  - Finds RX boundaries (rxlow/rxhigh) using TX window sweeps
+>  - Finds TX boundaries (txlow/txhigh) at fixed RX positions
+>  - Defines valid region corners and detects gaps via binary search
+>  - Applies temperature compensation for optimal point selection
+>  - Handles single or dual passing regions with different strategies
+
+Thank you for this series. I had a question regarding the Virtual Concat
+driver patch series [1]. Now that it has been merged into the kernel and
+enables support for multiple flash devices connected in stacked mode-where
+each flash device is probed and configured independently-if both flash
+parts are required to operate in DDR mode, each device would need to
+perform tuning and store its tuning data separately.
+
+Given this, should we consider this use case and adapt the tuning
+architecture to support it?
+
+I'd appreciate your thoughts on this.
+
+[1] https://lore.kernel.org/all/20260204-mtd-virt-concat-v17-0-5e98239bb55b=
+@bootlin.com/
+
+
+Regards,
+Amit
 
 >
->         /* Clear potential interrupts */
->         reg = fspi_readl(f, f->iobase + FSPI_INTR);
-> @@ -1362,18 +1364,24 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->         nxp_fspi_default_setup(f);
+> Patch description:
+> Infrastructure (1-5):
+>  - Patch 1:   Add spi-max-post-config-frequency to describe maximum
+>               frequency achievable post controller configuration
+>  - Patch 2:   Add spi-phy-pattern-partition phandle for
+>               NOR flash PHY tuning pattern location
+>  - Patch 3:   Parse spi-max-post-config-frequency in spi.c; adds
+>               spi_device.post_config_max_speed_hz (0 when not set
+>               keeping all existing DT fully compatible)
+>  - Patch 4:   Extend spi_mem_adjust_op_freq() with a bypass: if
+>               op->max_freq equals post_config_max_speed_hz, return
+>               immediately leaving op->max_freq unchanged. All other
+>               ops are capped to max_speed_hz
+>  - Patch 5:   Add execute_tuning callback to spi_controller_mem_ops and
+>               spi_mem_execute_tuning() wrapper in SPI-MEM core
 >
->         ret = pm_runtime_put_sync(dev);
-> -       if (ret < 0)
-> -               return dev_err_probe(dev, ret, "Failed to disable clock");
-> +       if (ret < 0) {
-> +               ret = dev_err_probe(dev, ret, "Failed to disable clock");
-> +               goto err_disable_pm;
-> +       }
+> Cadence QSPI Implementation (6-12):
+>  - Patch 6:   Move cqspi_readdata_capture() earlier (preparatory)
+>  - Patch 7:   Add DQS bit to cqspi_readdata_capture() (preparatory)
+>  - Patch 8:   Add complete PHY tuning support: DLL management, pattern
+>               verification (NOR via spi-phy-pattern-partition phandle,
+>               NAND via write-to-cache), SDR 1D and DDR 2D search
+>               algorithms with temperature compensation, AM654-specific
+>               execute_tuning entry point;
+>  - Patch 9:   Reject 2-byte-address DDR operations via a new
+>               CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk flag to work around
+>               AM654 OSPI erratum i2383
+>  - Patch 10:  Refactor direct read path for PHY support (preparatory)
+>  - Patch 11:  Enable PHY for direct reads, split the transfer into an
+>               unaligned head, a 16-byte-aligned middle section with PHY
+>               active, and an unaligned tail
+>  - Patch 12:  Enable PHY for indirect writes of at least
+>               CQSPI_PHY_MIN_INDIRECT_WRITE_LEN bytes
 >
->         init_completion(&f->c);
->         ret = devm_request_irq(dev, irq,
->                         nxp_fspi_irq_handler, 0, pdev->name, f);
-> -       if (ret)
-> -               return dev_err_probe(dev, ret, "Failed to request irq\n");
-> +       if (ret) {
-> +               ret = dev_err_probe(dev, ret, "Failed to request irq\n");
-> +               goto err_disable_pm;
-> +       }
+> MTD core (13-16):
+>  - Patch 13:  Extract spinand_select_op_variant() into a shared helper
+>               spinand_op_find_best() with a skip_mask
+>  - Patch 14:  Negotiate optimal PHY operating point before dirmap
+>               creation
+>  - Patch 15:  Extract spi_nor_spimem_get_read_op() helper (preparatory)
+>  - Patch 16:  Execute PHY tuning in spi_nor_probe() before creating
+>               dirmaps
 >
->         ret = devm_mutex_init(dev, &f->lock);
-> -       if (ret)
-> -               return dev_err_probe(dev, ret, "Failed to initialize lock\n");
-> +       if (ret) {
-> +               ret = dev_err_probe(dev, ret, "Failed to initialize lock\n");
-> +               goto err_disable_pm;
-> +       }
+> Testing:
+> This series was tested on TI's
+> AM62Ax SK with OSPI NAND flash and
+> AM62Px SK with OSPI NOR flash:
 >
->         ctlr->bus_num = -1;
->         ctlr->num_chipselect = NXP_FSPI_MAX_CHIPSELECT;
-> @@ -1389,6 +1397,11 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->                 return ret;
+> Read throughput:
+> |----------------------------------------|
+> |                | non-PHY   | PHY       |
+> |----------------------------------------|
+> | OSPI NOR (8D)  | 37.5 MB/s | 216 MB/s  |
+> |----------------------------------------|
+> | OSPI NAND (8S) | 9.2 MB/s  | 35.1 MB/s |
+> |----------------------------------------|
 >
->         return devm_spi_register_controller(&pdev->dev, ctlr);
-> +
-> +err_disable_pm:
-> +       pm_runtime_dont_use_autosuspend(dev);
-> +       pm_runtime_disable(dev);
-> +       return ret;
->  }
+> Write throughput:
+> |----------------------------------------|
+> |                | non-PHY   | PHY       |
+> |----------------------------------------|
+> | OSPI NAND (8S) | 6 MB/s    | 9.2 MB/s  |
+> |----------------------------------------|
 >
->  static int nxp_fspi_runtime_suspend(struct device *dev)
+> Test log: https://gist.github.com/santhosh21/fe98754e52970287eb9011154100=
+b62d
+> Repo: https://github.com/santhosh21/linux/commits/phy_tuning_v4/
+>
+> Changes in v4:
+>  - Add spi-max-post-config-frequency instead of extending spi-max-frequen=
+cy
+>    to accept an optional second value
+>  - Replace spi_mem_apply_base_freq_cap() with spi_mem_adjust_op_freq()
+> extension
+>  - For SPI NOR/NAND, execute PHY tuning before the dirmap creation
+>  - For SPI NAND, execute PHY tuning across all operation variants availab=
+le,
+>    perform duration comparison, and select the best resulting variant
+>    by taking controller-specific restrictions into account
+>  - Move i2383 check from cqspi_supports_mem_op() to
+> cqspi_am654_ospi_execute_tuning()
+>  - Rename cdns,phy-pattern-partition to spi-phy-pattern-partition,
+>    cqspi_phy_enable to cqspi_tune_phy and f_pdata->use_phy to use_tuned_p=
+hy
+>  - Remove redundant spi-max-frequency parsing in driver cqspi_of_get_flas=
+h_pdata()
+>  - Extract DMA refactoring into a preparatory patch
+>  - Rebase on v7.1
+>  - Collect tags from Miquel
+>  - Link to v3: https://lore.kernel.org/linux-spi/20260527175527.2247679-1=
+-s-
+> k6@ti.com/
+>
+> Changes in v3:
+>  - Drop spi-has-dqs DT property; DQS is now enabled automatically when
+>    the selected read operation uses DDR signalling (dtr flags in the op)
+>  - Extend spi-max-frequency to accept an optional second value forming a
+>    [base-freq, max-freq] pair; the presence of two values signals PHY
+>    tuning intent and encodes both the conservative base speed and the
+>    calibration target in one property
+>  - Add base_speed_hz to struct spi_device (spi.c/spi.h) and parse the
+>    two-element array there; single-value DT is fully backward-compatible
+>  - Move frequency enforcement from the cadence driver to core: new
+>    spi_mem_apply_base_freq_cap() called from spi_mem_exec_op() replaces
+>    the per-driver cqspi_op_matches_tuned() and non_phy_clk_rate field
+>  - Propagate the tuned max_freq to dirmap op templates after
+>    execute_tuning() succeeds; store persistent op templates in
+>    spi_nor.max_read_op and spinand.{max_read,max_write}_op so the
+>    frequency writeback survives across the probe call
+>  - Replace NOR pattern partition lookup by name with a
+>    cdns,phy-pattern-partition DT phandle pointing directly to the
+>    partition node
+>  - Add CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk and reject 2-byte-address DDR
+>    ops in cqspi_supports_mem_op() to work around AM654 erratum i2383
+>  - Remove RFC tag
+>  - Rebase on v7.1-rc5
+>  - Collect tags from Miquel
+>  - Link to v2: https://lore.kernel.org/linux-spi/20260113141617.1905039-1=
+-s-
+> k6@ti.com/
+>
+> Changes in v2:
+>  - Restructure the .execute_tuning() call from spi-mem clients instead
+>    of mtdcore with best read_op and write_op (optional) passed
+>  - Add compatible-specific .execute_tuning() call which can be called by
+>    spi_mem_execute_tuning() if exists
+>  - Handle tuning requirement check by controller instead of spi-mem
+>    clients
+>  - Add support to write the phy_pattern to cache if relevant write_op
+>    is passed or get the partition offset which contains the phy_pattern
+>  - Add tuning algorithm for DDR mode
+>  - Add support for DQS
+>  - Restrict PHY frequency to tuned operations
+>  - Link to v1: https://lore.kernel.org/linux-spi/20250811193219.731851-1-=
+s-
+> k6@ti.com/
+>
+> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+>
+> Pratyush Yadav (1):
+>   mtd: spi-nor: extract read op template construction into helper
+>
+> Santhosh Kumar K (15):
+>   spi: dt-bindings: add spi-max-post-config-frequency property
+>   spi: dt-bindings: add spi-phy-pattern-partition property
+>   spi: parse spi-max-post-config-frequency into post_config_max_speed_hz
+>   spi: spi-mem: teach spi_mem_adjust_op_freq() about post-config ops
+>   spi: spi-mem: add execute_tuning callback and spi_mem_execute_tuning()
+>   spi: cadence-quadspi: move cqspi_readdata_capture earlier
+>   spi: cadence-quadspi: add DQS support to read data capture
+>   spi: cadence-quadspi: add PHY tuning support
+>   spi: cadence-quadspi: skip DDR PHY tuning for 2-byte-address ops
+>     (i2383)
+>   spi: cadence-quadspi: refactor direct read path for PHY support
+>   spi: cadence-quadspi: enable PHY for direct reads
+>   spi: cadence-quadspi: enable PHY for indirect writes
+>   mtd: spinand: extract variant ranking logic into
+>     spinand_op_find_best()
+>   mtd: spinand: negotiate optimal PHY operating point before dirmap
+>     creation
+>   mtd: spi-nor: run PHY tuning after init and update dirmap frequency
+>
+>  .../bindings/spi/cdns,qspi-nor.yaml           |   19 +
+>  .../bindings/spi/spi-peripheral-props.yaml    |   13 +
+>  drivers/mtd/nand/spi/core.c                   |  246 +-
+>  drivers/mtd/spi-nor/core.c                    |   80 +-
+>  drivers/spi/spi-cadence-quadspi.c             | 2265 +++++++++++++++--
+>  drivers/spi/spi-mem.c                         |   40 +
+>  drivers/spi/spi.c                             |    2 +
+>  include/linux/mtd/spi-nor.h                   |    3 +
+>  include/linux/mtd/spinand.h                   |   11 +
+>  include/linux/spi/spi-mem.h                   |   14 +
+>  include/linux/spi/spi.h                       |    3 +
+>  11 files changed, 2493 insertions(+), 203 deletions(-)
+>
 > --
 > 2.34.1
->
->
+

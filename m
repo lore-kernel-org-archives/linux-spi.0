@@ -1,73 +1,64 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4919931578E;
-	Tue, 23 Jun 2026 06:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5D225B0BD;
+	Tue, 23 Jun 2026 07:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782197448; cv=none; b=VLkxbvEQ39euFVcq7l1MVTyjoyo5Fptk0cqDcrDhgLG7BFCApKcT5RsAP/zm846ZtFGKouwKD+VJHfoINtsy0Yy4QvD/Vqap3EyYLjYaloZKQVrJM411MuLgWCIKsNH4wC/ss/Q3TNoB6c0XTY5tGeWBuj69CuZzhugo/mRlzEw=
+	t=1782199005; cv=none; b=j8EGx08RToJubdyizTizCvGwlx1EvI8lFRcwkhydSN+3rid/Jk9gDGe66Nei8m75TvzjFLDbJDLtCy/Zjt5jJAUrm/pwvPWUNQryVas2yGGc8Wwub7ov1hOLAXBvRxg8f5QClZff9J8JQ2PDm7FSMvxcl589+XcDWCxyLK1Ddi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782197448; c=relaxed/simple;
-	bh=bk1D7Hv2j5LlFxzJPfk4eEz1qtWqPt73+9vzRO6kQjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qchmK0EnVaFKKWzSWEZnLPk7Qh9zWak/WThPFqe64pUN/d60rhfIArB+OekLY+E5ilib3zVduQhBUPjLG+UvRUIRLS9vzq8AZ2pTCHjfoYur1PdzFOs1fcgqrpWygPiqIujW+MvDsB+ATxm1Smln6PZr7jQy9dhvNlDZuuWNUPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z/xELTxL; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782199005; c=relaxed/simple;
+	bh=gpnTGdcztncAjW8i8Gv7WMGY7xQWt1iK0mNs8BKETCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNnUibOHhEQ0GD9IA5i9iv12ppGUoG/Kv5XCThJe4izrclXtGJvlfmVKnMb3kA5dAZHt1VvKfLRdmbJEeiMZZveLpNqLU6agVPgx7L+JRXydGfKYO7BwS7GKvoTehInsV5tfoLgHKnT35y5Hhqb/Sl2DboZlPbQL1U7vutaU3yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5CfAzdI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z/xELTxL"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 628F41A0839;
-	Tue, 23 Jun 2026 06:50:43 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 22C46601C2;
-	Tue, 23 Jun 2026 06:50:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6E149106C89D0;
-	Tue, 23 Jun 2026 08:50:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782197442; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=L/lBbAF7XdZGIhYkOZjtkdbea2sZjVKjUy3nHeAK2II=;
-	b=Z/xELTxLErzhUdG9d/ub0GxDPQ4cFiRuCKHaqk5+km0hZJHurnA7K6NZdM1QtXjy+UdUB4
-	JF6l98q9YL0UdwZIpwp5Di0MsNTqxHBvNk+CBA7IJWbC9Ptj6CxOeyrUoHATmbDu6hBxKE
-	Xojb4GgI3KYL3tcnNoZ0ys8QTMWtmv+XHaue5E0st0P5RX/Tz97vrQBa6hWK2Iv9zsuJL5
-	bs3wPamDFZhdGS94b1EgTYAU/KCIkVhrK9q+MAt0EChjp8nC7UcMRYkJB9ogdPE4YlaZf1
-	i+LUuElHv0CdZ4T6Ijj+gY0aj99GFuJPzJqF1fGUiHSze9TLZZHTqEx6fjJACA==
-Date: Tue, 23 Jun 2026 08:50:39 +0200
-From: Herve Codina <herve.codina@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5CfAzdI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DAA1F00A3A;
+	Tue, 23 Jun 2026 07:16:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782199004;
+	bh=/yBQWoIX0me/kOlOjp6A2PM4P/0tQRM9KzZq2kfCXQA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=h5CfAzdIb6VramPthISKStfJdMzxXg+18AJ1qlXC2q7je2HpqpaF7AxMnSdXQAIzP
+	 Sj4JgJuAhM2B2/gKTSON9NbNyB5PcNuqQ41T6LqUjYmlc9kI/9kZ2N0ART/knO2nYn
+	 1QLh9dhgmWH+4KmUXZ7Zlna1jXG365gxIt9KgVzyOXJkBtNOBXJ8sVrjMPJh0G2OVV
+	 Ej0dBOMZ0wqMXgAdmP8LBva/Qp3iMD6khTIMuQHMV7/yus6q5Q11qvSseK7e6p9LjW
+	 S0XonmfjLvUzFZ/JmQ8gWO7vnEFxckye+hNZXmxkQohwCPWmJzbNGfG7AbNTGkmalL
+	 YzIesEIkM6SKw==
+Date: Tue, 23 Jun 2026 09:16:40 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org, 
+	Herve Codina <herve.codina@bootlin.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org
 Subject: Re: [PATCH v3 1/3] spi: dt-bindings: snps,dw-apb-ssi: add
  'power-domains' property
-Message-ID: <20260623085039.315235c3@bootlin.com>
-In-Reply-To: <20260622174806.74450-6-wsa+renesas@sang-engineering.com>
+Message-ID: <20260623-banana-bettong-from-saturn-417cce@quoll>
 References: <20260622174806.74450-5-wsa+renesas@sang-engineering.com>
-	<20260622174806.74450-6-wsa+renesas@sang-engineering.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+ <20260622174806.74450-6-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260622174806.74450-6-wsa+renesas@sang-engineering.com>
 
-Hi Wolfram,
-
-On Mon, 22 Jun 2026 19:48:07 +0200
-Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
-
+On Mon, Jun 22, 2026 at 07:48:07PM +0200, Wolfram Sang wrote:
 > On the Renesas RZ/N1D SoC, this SPI controller belongs to a power
 > domain. Enable the property to describe it in DTs.
 > 
 > Reported-by: Herve Codina <herve.codina@bootlin.com>
+
+No bug to be fixed here. Usually incomplete hardware description is not
+a reported bug.
+
 > Closes: https://lore.kernel.org/r/20260622132842.7e0d772c@bootlin.com
+
 > Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 > ---
 > 
@@ -87,12 +78,12 @@ Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
 >  
 > +  power-domains:
 > +    maxItems: 1
-> +
->    resets:
->      maxItems: 1
->  
 
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+You should explain in the commit msg that likely other devices belong to
+power domain as well or likely can belong. Otherwise based on the commit
+msg I would suggest restricting it per variant... except that indeed
+these other variants could have a power domain.
 
 Best regards,
-Hervé
+Krzysztof
+

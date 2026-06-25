@@ -1,62 +1,94 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2214035A393
-	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 10:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4263D337B87;
+	Mon, 29 Jun 2026 12:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782729175; cv=none; b=RpdIcYcpcUXqrxXGuwhjvfCnsZTsXQG81U3TQEPUhrTHazpvS8VfvVRN6AoqxewE94ZBqlYYDt7fUmCaUn95V+oA/Bz9RSoSJFffTalkiohVnyLP0zM5+lFPNoHpImIqKREBWHTk6Lhy+fOuMRAgOuxcwtYdHLiVbSc3LUTHiMM=
+	t=1782735242; cv=none; b=ZXOqX3duPEpmMW/c/RVB5WpfztGrc4ayn+r8G88LMc2OyoWDekNgGdRVCcx458TMHuZ0b8A54X7giYzhT7ycmSK8ZLrXxoXTQqbQI3GSkmneKw10HOqYzocERvh+AMv3z4P07yoXNgtaMSE1CK1uHr51gPsNHIXFwB+kb9xyiaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782729175; c=relaxed/simple;
-	bh=GAVPGmMNqMrJOmIH4YyvjVq5OzbZxpEO5nPWtCNJWMQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rTOZ1ygLDwO43z3fhTL/SpizEVfP+8K1a74vu3SMeZHQUSqSGdGSl0FXVN1lXg9Hb86diOUnp4XIzHQpwx4+mBcG9SbslxQc+ZaFgBMVLFjTUiR863sbg2rp0LyzzgnMutEfL13nuWjx5SzQh4n0xc6LruveCCNSE8/1EpBCiLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=iZBxETln; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1782735242; c=relaxed/simple;
+	bh=kvO0YGhuovxoCsZTEoBeQBrPgqAhDJ5XPx1WtxUQg58=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=mnWgdaR4NF38Cac2f7/abaq6qcVnQfvYqSPShg1/sO9rV2XZJoU8fwWudjfCBvTvHFelXx0HWtze4t/UWznPQFPKhGQw5FG7Y5ElLP55ICVwK5r0uoO2GrckOUCD9vcPB/4cwiQKSKKN2prwi/jNhvCqCsnd5Z4cte8a84LcBWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTQVNExY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="iZBxETln"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=GAVP
-	GmMNqMrJOmIH4YyvjVq5OzbZxpEO5nPWtCNJWMQ=; b=iZBxETln74865akYcKUM
-	uabt6k+6PCBb3v+VuIk307KJ4a4uPMYywdn/6637ik2h58L8lkMrTLSADy3O6oHc
-	cPGTozlgkdIaS/UQ6GmorywUhQhh7pk3GWNmFeEaTyWZ1MLFZiH+hOskx7UeWgqf
-	SvaIUPRG99mpoMqirXWAhvVb0NTn9W/MXa+/tNZz+qG8moWYOSPlL55Ymknid0Eg
-	CcFwHm9jHICT4/Kdf4b4EKdeX3zeeIggCUHrtZwZnmewewZjZGPPyjfmQnXL59se
-	jR4bm008PDa+GLtjYYqrzxp/cQra9TDChXpp/6KSDkGK/+B4gCv6EHetc90B/ku5
-	xA==
-Received: (qmail 339816 invoked from network); 29 Jun 2026 12:32:52 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Jun 2026 12:32:52 +0200
-X-UD-Smtp-Session: l3s3148p1@ovYF+2FVpqwujntC
-Date: Mon, 29 Jun 2026 12:32:51 +0200
-From: wsa+renesas <wsa+renesas@sang-engineering.com>
-To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Felix Gu <ustc.gu@gmail.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
- signal interruption
-Message-ID: <akJJ09zjt_dXp1jS@ninjato>
-References: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
- <aj6sEE5y62SOVsRb@ninjato>
- <TYRPR01MB156197735CBABA1699843B9B085E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTQVNExY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858371F000E9;
+	Mon, 29 Jun 2026 12:13:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782735241;
+	bh=+N1moqIwS0HzoLY9Pl3KOMaMW5N8pC3Oh4zwakoY5ZI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=jTQVNExYMWf1XFG8pnc1uYIH2BzoI8zshS2+FG7sjsGbIBY4vzSd9UUg/xwkeEBA4
+	 u8RvO6jmaE/ORJticIPR0Mv6MXagfKrhfqjPhxP2aarqdQpsHWGBFCyH06jisClmGl
+	 U7cRNNYwur9Pwfw3b6+3HeIka+fS5GoM/ClvAPwSZuoSogEBnhAULrCzskUzY97++h
+	 ss/IBRBlhBXe26Vmxl9nTBN1Gqd7+EhcQWV+7vi33D/SEjb/f1OXYdERy796Dg6Jp3
+	 fVyFvreS+TSsaMXCpzvnRgJjAP1KrPPwbSCcE8dCL7tF5yHylzokd9SkqEyXi7B1Lk
+	 8svN8YDftesJg==
+From: Mark Brown <broonie@kernel.org>
+To: bjorn.andersson@oss.qualcomm.com, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
+ aniket.randive@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com
+In-Reply-To: <20260625-abort_active_transfer_duirng_s2r-v2-1-1d6f724406b6@oss.qualcomm.com>
+References: <20260625-abort_active_transfer_duirng_s2r-v2-1-1d6f724406b6@oss.qualcomm.com>
+Subject: Re: [PATCH v2] spi: core: Abort active target transfer on
+ controller suspend
+Message-Id: <178240580247.51343.6228572083812055629.b4-ty@b4>
+Date: Thu, 25 Jun 2026 17:43:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYRPR01MB156197735CBABA1699843B9B085E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1138; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=kvO0YGhuovxoCsZTEoBeQBrPgqAhDJ5XPx1WtxUQg58=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQmGGXYErpGBj2ndt/LWOyD5/0W/ZIzt47Ofyo
+ EWDS53W51aJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakJhhgAKCRAk1otyXVSH
+ 0BpjB/9XA91ao0n0nXcVLUiztLBJxBr8BLNVs/sPAhJSX+VXzqdEbvl70cXFHGSU0NEmy0Am6Cb
+ Y4j15mb7ScZ7QIlTukEU/zeo1ty/6+Ao3fed2fM+JC0+lyiVwqzoJQC67L2xauq4S5LTrcDakpP
+ hOcpE/0ndiyhp7Plw30S+UxDIQ9QqK7kVa1mIzex1LiyPsKE5r8G1W9aDXj7/FJ23daJMrIkp7I
+ yK4MiLKInfoTEFgTgnfmImXv04SRXXVlG8wfn0/1xTO9lDLQ6SFHct/s3zSN+8/LopLTMOCpaz9
+ BJkmnrLkR7K/dzMB9B/O2ph9NZhQqFKwGQWFytGtKcMeZaCd
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 25 Jun 2026 21:26:02 +0530, Praveen Talari wrote:
+> spi: core: Abort active target transfer on controller suspend
 
-> I also think the patch is correct and should be accepted for now.
+Applied to
 
-To bring a broken state into a less but still broken state? I don't
-agree.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+
+Thanks!
+
+[1/1] spi: core: Abort active target transfer on controller suspend
+      https://git.kernel.org/broonie/spi/c/c1bab046d478
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

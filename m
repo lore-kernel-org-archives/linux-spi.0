@@ -1,70 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15DA379EDA
-	for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 11:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C16F3F58C4;
+	Fri, 26 Jun 2026 12:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782473438; cv=none; b=YXHR/hIvoHukoeJkefz1moysm7vPdSPQ9SynhDeGgJzAxJiuvVTFmjuO1x3awExJku+XbU7k/gfNZs1ZvRbLiiNpOWjAqul1zpX6V8UrkgY7USHOsMk4uR4QbOTpCmyPYcxvmBJlF8THEP3auwfU1+yH2i1F3kGCzCQnaG7vZG0=
+	t=1782478414; cv=none; b=ushTMxfhU1mHI/BfVRu4ktuBs7hJ1fWHKseQVfC5xvvvzwBIcaKaqZMQYwjBHtxXQ8CV6y3ol2CZc41WgWUPWDqmfURzGXilBqM2SQQc1vmQPamNSeCUrhqYate7PoP22nY0s1WukicoeeWik8n1kqUWhMZqz67EqKXaHjOMTvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782473438; c=relaxed/simple;
-	bh=YH4gZZPTqYBWri5yfgawrMD7hen/QMoBFdZM8J6LvXU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=tQDgf+jsR8GessizT6b/0ulwjXpL5v3S2G6pH96LwupU5NFsP/PzI+hPuut1RByUf5QvG7qUuwyiqxPfXl+DI58TnYoJMVF3+9C56U/Nz+p3Ir36+BJ0eVsp0RpaBo3ealgo7Y8X249hWdFAE2LE7lygNmjFggbs8I1KNmSgO+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CLtCvTYr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782478414; c=relaxed/simple;
+	bh=ylGkz0ljor3cC8CfKfI7ou8Mru2PLeKoLNChukkb/T0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=poJYYhtDlUsLVyRIhxOwDPDdGXn5ELD5GTHqYB0A0M9gY0lohxWMViWjNi0yelpeCC3Syc/kR3Uc1s6Iyn+0Rom/VWRu8vj1OvPxtozZQpxBNWIZYrPQE1SfWbUjpSeLCFozpZSasSn+BBOGtYXBxS/FSt9ekMiq4EIKCskU7do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hY44oIO9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CLtCvTYr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB39E1F000E9;
-	Fri, 26 Jun 2026 11:30:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hY44oIO9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD4E1F000E9;
+	Fri, 26 Jun 2026 12:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782473437;
-	bh=GpkSWAsMjzz1PCoaZYpzX9RmiwdSrL41H9qALxDzIPY=;
-	h=Subject:From:Date:To;
-	b=CLtCvTYrswjV6VfC81krfbT2/cEdQqXRZrZ/8TXksuIbYay8MZG5RyrLyN/5GOx4O
-	 Qs0/DjWD6sDbRuFfKVQvoN0kEH8jgqQ2aDoL5F0dOHjS6pcR0FmlzfEK+Zf/gV+/r/
-	 7hEiFczLRZOmLZvoi/bTRa77u7BVTLRN+Tgq4IsXYsxdOxDrqQGZioGtnt2f6Hh79c
-	 vwYR7FB30/FqLINpP9786ME6p4ofGWw/to+qKXw8Tb0yLBC5MiRH1/TBCln2yzzOhQ
-	 ch8/gmcI3A4Uj3yO89x2sGzJduMX1qS0aTJ+NdzI6JbHDlcFiMH/xHF4HLIgewxeBV
-	 UhPkD2fT7DNvA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AFC39389EE;
-	Fri, 26 Jun 2026 11:30:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1782478411;
+	bh=inqiLlFzC3EqKHKd6BLqFXojis+b17gbXMWe4FkxZmo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=hY44oIO94vh1PwMC1h0FesTuo705xZn5QvE/zYqD0tTFvNyL8xV900uDNhW8TSq4B
+	 dvtoRtQ7oo5c1gZY+SehF6qxMKQ15SYbYNoN3S7BHfQge8c3DfO44YWkG7ccbJ/W3O
+	 UnoJ5NjddoucUuaY7YNBPn2l3DAGbQ/t2PipCMCGYrx9v8pwdeg4hXB1ggb1qwa8ft
+	 8jJfEyu8Hlnk+Si2MPLYd8AXls78rtFtbArTYgtHByryPElT/iT1UgJf0tHyCxfrZ3
+	 PC3SyLpriS1ysoKcjSWLj6vNBzWwNebUFy+zjtjNeeIwtPf4fK/M5WohlsEWS/1K5i
+	 M7NAc6Yux4xFw==
+From: Mattijs Korpershoek <mkorpershoek@kernel.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>, Mark Brown
+ <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio
+ <konrad.dybcio@oss.qualcomm.com>, bjorn.andersson@oss.qualcomm.com,
+ Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com,
+ chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
+ chiluka.harish@oss.qualcomm.com, Nikunj Kela <quic_nkela@quicinc.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v4 0/4] Enable SPI on SA8255p Qualcomm platforms
+In-Reply-To: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
+References: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
+Date: Fri, 26 Jun 2026 14:53:28 +0200
+Message-ID: <87v7b5foon.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178247342432.457674.4420497010575556468.git-patchwork-summary@kernel.org>
-Date: Fri, 26 Jun 2026 11:30:24 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain
 
-Hello:
+Hi Praveen,
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Thank you for the series.
 
-Patch: spi: sh-msiof: abort transfers when reset times out
-  Submitter: Pengpeng Hou <pengpeng@iscas.ac.cn>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1115421
-  Lore link: https://lore.kernel.org/r/20260623135834.55442-1-pengpeng@iscas.ac.cn
+On Thu, Jun 18, 2026 at 14:36, Praveen Talari <praveen.talari@oss.qualcomm.com> wrote:
 
-Patch: [v2] spi: core: Abort active target transfer on controller suspend
-  Submitter: Praveen Talari <praveen.talari@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1116639
-  Lore link: https://lore.kernel.org/r/20260625-abort_active_transfer_duirng_s2r-v2-1-1d6f724406b6@oss.qualcomm.com
+> The Qualcomm automotive SA8255p SoC relies on firmware to configure
+> platform resources, including clocks, interconnects and TLMM.
+> The driver requests resources operations over SCMI using power
+> and performance protocols.
+>
+> The SCMI power protocol enables or disables resources like clocks,
+> interconnect paths, and TLMM (GPIOs) using runtime PM framework APIs,
+> such as resume/suspend, to control power states(on/off).
+>
+> The SCMI performance protocol manages SPI frequency, with each
+> frequency rate represented by a performance level. The driver uses
+> geni_se_set_perf_opp() API to request the desired frequency rate.
+>
+> As part of geni_se_set_perf_opp(), the OPP for the requested frequency
+> is obtained using dev_pm_opp_find_freq_floor() and the performance
+> level is set using dev_pm_opp_set_opp().
+>
+> Praveen Talari (4):
+>   spi: dt-bindings: describe SA8255p
+>   spi: qcom-geni: Use geni_se_resources_init() for resource
+>     initialization
+>   spi: qcom-geni: Use resources helper APIs in runtime PM functions
+>   spi: qcom-geni: Enable SPI on SA8255p Qualcomm platforms
+>
+> .../bindings/spi/qcom,sa8255p-geni-spi.yaml   | 63 ++++++++++++++
+>  drivers/spi/spi-geni-qcom.c                   | 83 ++++++++-----------
+>  2 files changed, 97 insertions(+), 49 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/qcom,sa8255p-geni-spi.yaml
 
+Tested on top of linux-next-20260625 with my Ride SX (SA8775P) board:
 
-Total patches: 2
+/ # uname -a
+Linux (none) 7.1.0-next-20260625+ #3 SMP PREEMPT_RT Fri Jun 26 11:53:34 CEST 2026 aarch64 aarch64 aarch64 GNU/Linux
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+With spidev_test, we ping the on-board mercury codec and get a valid
+response buffer from the codec (b6 49):
 
+/ # spidev_test -D /dev/spidev16.0 -v
+spi mode: 0x0
+bits per word: 8
+max speed: 500000 Hz (500 kHz)
+TX | FF FF FF FF FF FF 40 00 00 00 00 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF F0 0D  |......@.........................|
+RX | B6 49 00 13 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |.I..............................|
+
+Tested-by: Mattijs Korpershoek <mkorpershoek@kernel.org>
 

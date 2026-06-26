@@ -1,105 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C16F3F58C4;
-	Fri, 26 Jun 2026 12:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35F33F4DFB;
+	Fri, 26 Jun 2026 14:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782478414; cv=none; b=ushTMxfhU1mHI/BfVRu4ktuBs7hJ1fWHKseQVfC5xvvvzwBIcaKaqZMQYwjBHtxXQ8CV6y3ol2CZc41WgWUPWDqmfURzGXilBqM2SQQc1vmQPamNSeCUrhqYate7PoP22nY0s1WukicoeeWik8n1kqUWhMZqz67EqKXaHjOMTvw=
+	t=1782483170; cv=none; b=flRqFp2BcN+X8rTNb3Ze/5SJm5gzsuhjgc6EwiRA1Dr2W9TlN32eOJGXDbhSHW9YeQh7GAkTucpKMrLLP+RJpMnwOPsEFs1IkRNDI/GRIyFDUlzWUlByoWZxcUT5RxAcRGjgsdpETx1LXvzVz3f1K4ORUBR/0hDKmJP9d0CkSvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782478414; c=relaxed/simple;
-	bh=ylGkz0ljor3cC8CfKfI7ou8Mru2PLeKoLNChukkb/T0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=poJYYhtDlUsLVyRIhxOwDPDdGXn5ELD5GTHqYB0A0M9gY0lohxWMViWjNi0yelpeCC3Syc/kR3Uc1s6Iyn+0Rom/VWRu8vj1OvPxtozZQpxBNWIZYrPQE1SfWbUjpSeLCFozpZSasSn+BBOGtYXBxS/FSt9ekMiq4EIKCskU7do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hY44oIO9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782483170; c=relaxed/simple;
+	bh=AaIAmaIcAhzqcMZ+WiAYr6Zx8AV7UJF7vGpcL4tMgrQ=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=idjVlJFdMZ++cg/z7strwWydAIfSQh81j9lnEE/61lKT5kYGZBuHr7+eNsQEuIivtmkS8NBPMRbL+j2HhrntMy7zex/RaMAHkldy6AVsGiJoDPc8EzQw4GPvcpkaNW62zGYm0o3fsZhMxuK7hjphEVt2RjHDY8wKBNgrbybV8kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3N2q2GW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hY44oIO9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD4E1F000E9;
-	Fri, 26 Jun 2026 12:53:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3N2q2GW"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 230D21F000E9;
+	Fri, 26 Jun 2026 14:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782478411;
-	bh=inqiLlFzC3EqKHKd6BLqFXojis+b17gbXMWe4FkxZmo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=hY44oIO94vh1PwMC1h0FesTuo705xZn5QvE/zYqD0tTFvNyL8xV900uDNhW8TSq4B
-	 dvtoRtQ7oo5c1gZY+SehF6qxMKQ15SYbYNoN3S7BHfQge8c3DfO44YWkG7ccbJ/W3O
-	 UnoJ5NjddoucUuaY7YNBPn2l3DAGbQ/t2PipCMCGYrx9v8pwdeg4hXB1ggb1qwa8ft
-	 8jJfEyu8Hlnk+Si2MPLYd8AXls78rtFtbArTYgtHByryPElT/iT1UgJf0tHyCxfrZ3
-	 PC3SyLpriS1ysoKcjSWLj6vNBzWwNebUFy+zjtjNeeIwtPf4fK/M5WohlsEWS/1K5i
-	 M7NAc6Yux4xFw==
-From: Mattijs Korpershoek <mkorpershoek@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>, Mark Brown
- <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio
- <konrad.dybcio@oss.qualcomm.com>, bjorn.andersson@oss.qualcomm.com,
- Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com,
- chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com,
- chiluka.harish@oss.qualcomm.com, Nikunj Kela <quic_nkela@quicinc.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/4] Enable SPI on SA8255p Qualcomm platforms
-In-Reply-To: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
-References: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
-Date: Fri, 26 Jun 2026 14:53:28 +0200
-Message-ID: <87v7b5foon.fsf@kernel.org>
+	s=k20260515; t=1782483169;
+	bh=ZaDAOc3lpklYV3HcK23okZfDoOe56dxrIHa8mhIkA00=;
+	h=From:To:Cc:Subject:Date;
+	b=N3N2q2GWNXajUZMSuu1gOfsVakJPb69WzbVMCQag0Zhm4jrnu40gmmMdOz5aJNkb1
+	 a2fhYoSSu1DPPfmBu6aORr1fnYnwZxn8pkZ2pX6yw2iKOw5i2AktkuZhiIQk5Q9BO9
+	 l9AsOgf8K7yvqNRXudBzvf+aDArydQMhn8eBXcP44D/nxsULMkJS+4wxu8G8hwjWfm
+	 c6RG8x0VSnWMO5KGLFP56cMfAZJp5xkaUT/OVlyXgTxw00iNJu26pWqAXTKRcwpObk
+	 uiffc6VQlJyu+uGnhrEuU1Fi9BgeaXpUGRWnYkzxCJ23BIVaxz3ZkqfL2JlaiEA97/
+	 +ZOPHdsIVZWIQ==
+Message-ID: <482117f043cd16e559de7afa1674f5d3@kernel.org>
+From: Mark Brown <broonie@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.2-merge-window
+Date: Fri, 26 Jun 2026 15:12:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Hi Praveen,
+The following changes since commit f846d68992142034b1d34a83200a10cdc713eeda:
 
-Thank you for the series.
+  spi: Fix mismatched DT property access types (2026-06-14 01:18:29 +0100)
 
-On Thu, Jun 18, 2026 at 14:36, Praveen Talari <praveen.talari@oss.qualcomm.com> wrote:
+are available in the Git repository at:
 
-> The Qualcomm automotive SA8255p SoC relies on firmware to configure
-> platform resources, including clocks, interconnects and TLMM.
-> The driver requests resources operations over SCMI using power
-> and performance protocols.
->
-> The SCMI power protocol enables or disables resources like clocks,
-> interconnect paths, and TLMM (GPIOs) using runtime PM framework APIs,
-> such as resume/suspend, to control power states(on/off).
->
-> The SCMI performance protocol manages SPI frequency, with each
-> frequency rate represented by a performance level. The driver uses
-> geni_se_set_perf_opp() API to request the desired frequency rate.
->
-> As part of geni_se_set_perf_opp(), the OPP for the requested frequency
-> is obtained using dev_pm_opp_find_freq_floor() and the performance
-> level is set using dev_pm_opp_set_opp().
->
-> Praveen Talari (4):
->   spi: dt-bindings: describe SA8255p
->   spi: qcom-geni: Use geni_se_resources_init() for resource
->     initialization
->   spi: qcom-geni: Use resources helper APIs in runtime PM functions
->   spi: qcom-geni: Enable SPI on SA8255p Qualcomm platforms
->
-> .../bindings/spi/qcom,sa8255p-geni-spi.yaml   | 63 ++++++++++++++
->  drivers/spi/spi-geni-qcom.c                   | 83 ++++++++-----------
->  2 files changed, 97 insertions(+), 49 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/qcom,sa8255p-geni-spi.yaml
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-merge-window
 
-Tested on top of linux-next-20260625 with my Ride SX (SA8775P) board:
+for you to fetch changes up to 245404c26563aafb36aafb01298f148db1851be3:
 
-/ # uname -a
-Linux (none) 7.1.0-next-20260625+ #3 SMP PREEMPT_RT Fri Jun 26 11:53:34 CEST 2026 aarch64 aarch64 aarch64 GNU/Linux
+  spi: imx: reconfigure for PIO when DMA cannot be started (2026-06-24 17:52:44 +0100)
 
-With spidev_test, we ping the on-board mercury codec and get a valid
-response buffer from the codec (b6 49):
+----------------------------------------------------------------
+spi: Fixes for v7.2
 
-/ # spidev_test -D /dev/spidev16.0 -v
-spi mode: 0x0
-bits per word: 8
-max speed: 500000 Hz (500 kHz)
-TX | FF FF FF FF FF FF 40 00 00 00 00 95 FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF F0 0D  |......@.........................|
-RX | B6 49 00 13 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |.I..............................|
+A fairly unremarkable collection of fixes that came in over the merge
+window, plus a new device ID for the DesignWare controller in the
+StarFive JHB100 SoC.  There's a couple of core fixes included, one
+avoiding freeing an empty resource in error handling cases and another
+which fixes a NULL dereference which could be triggered by using an
+abnormal device registration flow like driver_override.
 
-Tested-by: Mattijs Korpershoek <mkorpershoek@kernel.org>
+----------------------------------------------------------------
+Andy Shevchenko (1):
+      spi: acpi: Free resource list at appropriate time
 
+Changhuang Liang (2):
+      spi: dt-bindings: snps,dw-apb-ssi: Add starfive,jhb100-spi
+      spi: dw: Add support for snps,dwc-ssi-2.00a
+
+Javier Fernandez Pastrana (1):
+      spi: imx: reconfigure for PIO when DMA cannot be started
+
+Jisheng Zhang (1):
+      spi: dw: fix wrong BAUDR setting after resume
+
+Kunihiko Hayashi (1):
+      spi: uniphier: Fix completion initialization order before devm_request_irq()
+
+Quang Nguyen (1):
+      spi: rpc-if: Use correct device for hardware reinitialization on resume
+
+guoqi0226 (1):
+      spi: Add NULL check for spi_get_device_id() in spi_get_device_match_data()
+
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml |  6 ++++++
+ drivers/spi/spi-dw-mmio.c                                  |  1 +
+ drivers/spi/spi-dw.h                                       |  1 +
+ drivers/spi/spi-imx.c                                      |  3 ++-
+ drivers/spi/spi-rpc-if.c                                   |  6 +++++-
+ drivers/spi/spi-uniphier.c                                 |  4 ++--
+ drivers/spi/spi.c                                          | 10 +++++++---
+ 7 files changed, 24 insertions(+), 7 deletions(-)

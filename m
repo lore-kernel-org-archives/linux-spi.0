@@ -1,130 +1,97 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9843F8ECA
-	for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 16:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29053839BD
+	for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 16:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782489761; cv=none; b=cpjuDha6bnWlx+9MNgDP1TiNYDwpuSg3UfQGfTZGnGdo6ejI7jTcc0vKk4blniiy84NKM/kbEF2pn9Xz/jgo6M9V32v23HRHuFi+y9w51CiysoCQnJZiG7YWchqgc/+GybeHlPYQxtGp2IesdlVqXGKg6YikUQlEZ80YQxb7xYY=
+	t=1782492184; cv=none; b=SVj6xMoQ+pRrEuXxCfasz34/0u5cb+fFVRO7qmKLgqt3V0VZrOVPdEoac5J0BWr4H/916zzq6WVGWmoABwCWRaytRRe08484H2tSRYIQN38p5XBlQ7wdHH9xF8ryByKImU5ktNmdoHbiZjZnKi8zbWsUbYq2PlAlIwxyO8V+A28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782489761; c=relaxed/simple;
-	bh=i7UN6NZmlk87N9g+MUwiSXXy8P7EDhqDhWuLVQnXrEg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=De3DkLmd+SjMgPVZ7sx6f5O0zOGynUJlGEEBJpP3WTZDaLYc+wjt4hN9z7Q7yiIwk6E49zo3Iv/m6/6dPZ3+u6rqttCU/02XlnB1+g103ybWD6/rWgznlyNQUhjNY8BgpGs+tMWhD8hbnhBTEknM+5XBC1375PY6C9GrhAuuwCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdRjeBD0; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1782492184; c=relaxed/simple;
+	bh=HZIutF/qbFch05C/zlWBWbGIy5yPyo1kQgpTuztNWmo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cm+BakBSiRAYSwdEaHpRJwAFBXFEANfr6HEtSabss7IQp1eElbNMp7UikQM8mDYAktPh6ny90+ExzdkcHNg5ncIstRoQu+TgMm14NMAKFYWcGA5WD1atrkgySQB4uRgzWQDQ2RFI0I7xWJB+v9Neoo1WeYC+lAcOPZd3hsdsycw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=eGu+h1Rp; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdRjeBD0"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-37e0035aad3so580157a91.3
-        for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 09:02:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782489758; x=1783094558; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nB0N03rGfVExnQtJc3B4o4XRNHfaU9SsB4IMAxp8xSE=;
-        b=fdRjeBD0YjvUKrEJ4BESbAsGDWS0wJjxvKFH22rDFQevIfjkTzFuE6Pcg4CgQk8eSL
-         9T/dZz3+Zcw1IB4rA726tASBs2svXd4HAlgBdHwN3yHCE7EMhljfgKnWGMcvVXkii53S
-         NV9aFddQxRENflXmYnQtlWpHJenu5I3niqOV+W/W3DWrK3KG5Y3h+DkDFma5mVs5jEXT
-         cZbbioEV4hBL/+8p472ufGQaUbfgL8R5hhzPi8XZ7vNooQI8i4a44WpKONOBfclgp4/2
-         3RixD+Kgc4byZ5/RqE2x7W14d3GtGOmdc8CFH67DIHc4+zfWRwfSijFgCtth5GLHQHhD
-         uu5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782489758; x=1783094558;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nB0N03rGfVExnQtJc3B4o4XRNHfaU9SsB4IMAxp8xSE=;
-        b=EXh+C9mX40E4aK4yHsrGKkyCTDOo4B8L0cNGWi4TVyaarNUlpBxL7bqfC576QvV2qa
-         UXgsRWkta3dypkZAepqcLMLckPCnFT7M1wUqvbo2uOBc3FqOpGWD4RxRXKqAtJFLfk4l
-         q+pJ/RnspZzjjpVcwY449DGM4LP1dmAMhyGuf4811RZARYi2KyiBYWPYbJPDOc+oraSF
-         PJKlAwxAv1VT0CDeDsYGQ7La26irV8Ud2pFtLXWG406fTwL8lnlhjHbgp3z5RJauucev
-         leatDhu66d2Kh4y7Cfq+DAnlTuN+AXfWi37+nkxV+hMWG4ojD64if+CZbc9lfHLUpQRT
-         +DwA==
-X-Gm-Message-State: AOJu0YzCqUVgnywKp9u3c2LCVNas/S8EZsicfRv7+ZkW4d3qp6s8FroM
-	RqR4mvg1ReTAk3l8Q9FDaK2yPVjPUJTqaXwXm+194ADuHb/+w4ECgXEtHYdMi+kC
-X-Gm-Gg: AfdE7clzRtVV553KSeBJq6eqAUkAJdUABWDm9VvaqBWOBWZ4rnS3ODIhA2jexvxHpja
-	cypv3rpaoy8P2IHfdy0sSb3ymNSycxITYoCyQllxEvwW5AFUX5YYmnkK/5GuXvUhS/gPwXUu8w0
-	rixvVhy5QLSp9Ew6p74Lx8YUwaoNLQhYIcIqJbItL4TVyLjTNOKIuVZX2fOL81Xe0pridp3m/2V
-	drzdK8MLvHL+8a8MoOWvM6F0hnuHPUdReRMtP5xD9FSH47VAaW2xYmyawWgi02Wl3bSXPuuqGh8
-	o70vQS3sLoZgh98+yfDbX/4WmCw0+g9BaYLr5IG3uKa7RJ6FPdY2S08MjK7lINfZTllRrz0QN8/
-	uDuXm0dcnCJW5IMPnPR4BlORm8lAxWlRHhFO/S5NtHxJ8Nv+FpfOpNtBcrKJUMwr8i+OD/eXd+K
-	BKyix6HoPC/98hi+1+syFeXfu/C6Ry5Dafv/A+uGw0CWg7kMjVN5xiYunqIZTUk6GjiS1vEYzOA
-	WQ4MZfDjWp+MOZbMA==
-X-Received: by 2002:a17:90b:5826:b0:36b:b4a1:2939 with SMTP id 98e67ed59e1d1-37dfa251534mr7269381a91.15.1782489757620;
-        Fri, 26 Jun 2026 09:02:37 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.166.246.74])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37df3b657b3sm4149363a91.15.2026.06.26.09.02.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 09:02:36 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Sat, 27 Jun 2026 00:02:29 +0800
-Subject: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="eGu+h1Rp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=HZIu
+	tF/qbFch05C/zlWBWbGIy5yPyo1kQgpTuztNWmo=; b=eGu+h1RpM5TsOADt4hy1
+	Cd8NfEM061DOXhUn4NJhW0obMeHecu/Erxtdkd/oqoyH0fwOQ9VUd5OXhVP1nclI
+	lxYRE0TpcGhJTvb4Rgrw1ezOjK2fuvVZNZP67m0Pbu8PvomvuqsMecuiTI1ih/06
+	YWNpd3BMwTg8oggwxj+dN5A6hOMOfIZFkPD0iAGWCla6VL9hzqIFnPXoN8bwcf09
+	BMOvLV5RenMWuoyRbo/tcUEafEcieOH8aBU/4/JJSbIn01Vv1fXGEDrsKUDzJTg+
+	0wVw9ptCsUB0amTOdE2At4ca9FhHujyiHyClYqZRlgqaqKQ0RNgPFPEVMIxJGHV8
+	BA==
+Received: (qmail 3631532 invoked from network); 26 Jun 2026 18:42:56 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 26 Jun 2026 18:42:56 +0200
+X-UD-Smtp-Session: l3s3148p1@DtT+zCpVPKsujnsl
+Date: Fri, 26 Jun 2026 18:42:56 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
  signal interruption
+Message-ID: <aj6sEE5y62SOVsRb@ninjato>
+References: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJSiPmoC/yXMQQqAIBCF4avErBNMaBZdJVqYjTUtTJyKILx7V
- ssP/vduEEpMAl11Q6KThbdQ0NQVuMWGmRRPxWC0QY0GVZLIymvbokNqyVkoaUzk+fpu+uG3HON
- Kbn+3kPMDCWDmUmgAAAA=
-X-Change-ID: 20260626-rspi-f0a56c6e5eca
-To: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Mark Brown <broonie@kernel.org>, 
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782489753; l=1399;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=i7UN6NZmlk87N9g+MUwiSXXy8P7EDhqDhWuLVQnXrEg=;
- b=ZO0A3r26F72IgnWv9fDl+OwU5EUI+bhNAfMK24m0PF6jGX+ZGxsDpS9yssQnG8VnanG6MC9RE
- FZE2QjPAY29AuBMSejrmJjxrpfWD6u0y5Db6QoWAH7r79JGIDv3kYFF
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="S6TrlP0SK4iUxrQS"
+Content-Disposition: inline
+In-Reply-To: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
 
-wait_event_interruptible_timeout() can return a negative error code when
-interrupted by a signal. The original code treated all non-zero return
-values as success, which would incorrectly synchronize DMA channels and
-return 0 instead of propagating the interruption error.
 
-Fixes: fa08b566860b ("spi: rzv2h-rspi: add support for DMA mode")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-rzv2h-rspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--S6TrlP0SK4iUxrQS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-rzv2h-rspi.c b/drivers/spi/spi-rzv2h-rspi.c
-index 0738d448160d..daa4239b0fe0 100644
---- a/drivers/spi/spi-rzv2h-rspi.c
-+++ b/drivers/spi/spi-rzv2h-rspi.c
-@@ -366,14 +366,14 @@ static int rzv2h_rspi_transfer_dma(struct rzv2h_rspi_priv *rspi,
- 	rzv2h_rspi_clear_all_irqs(rspi);
- 
- 	ret = wait_event_interruptible_timeout(rspi->wait, rspi->dma_callbacked, HZ);
--	if (ret) {
-+	if (ret > 0) {
- 		dmaengine_synchronize(rspi->controller->dma_tx);
- 		dmaengine_synchronize(rspi->controller->dma_rx);
- 		ret = 0;
- 	} else {
- 		dmaengine_terminate_sync(rspi->controller->dma_tx);
- 		dmaengine_terminate_sync(rspi->controller->dma_rx);
--		ret = -ETIMEDOUT;
-+		ret = ret ?: -ETIMEDOUT;
- 	}
- 
- 	enable_irq(rspi->irq_rx);
+On Sat, Jun 27, 2026 at 12:02:29AM +0800, Felix Gu wrote:
+> wait_event_interruptible_timeout() can return a negative error code when
+> interrupted by a signal. The original code treated all non-zero return
+> values as success, which would incorrectly synchronize DMA channels and
+> return 0 instead of propagating the interruption error.
+>=20
+> Fixes: fa08b566860b ("spi: rzv2h-rspi: add support for DMA mode")
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 
----
-base-commit: 30ffa8de54e5cc80d93fd211ca134d1764a7011f
-change-id: 20260626-rspi-f0a56c6e5eca
+Patch looks correct. But it makes me wonder if interrupting the transfer
+has actually been tested? Cosmin, can you recall such tests? From my I2C
+experience, I know it can be hard to get the state maching back to a
+consistent state. Sometimes, it was preferred to simply use
+wait_event_timeout() instead and drop interruptible support.
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
 
+--S6TrlP0SK4iUxrQS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmo+rAwACgkQFA3kzBSg
+KbY64g/9E9u3AY4oLsAt3b5d20q7KJBghFUSTZFyS5kzp/KTE3ayS+ogmnkapgOa
+gvAmy1twoo4AviO62TxmlZ2XUkfDdGrJOyPjrQYRrbuAoyRF+hPQ8Ck5N5yezyly
+uPIh0YUOfRP2i4uzs/z+gqNP1O6/wrKZ073fPrdICyufuG29CZNlc+PhHeiHR5+m
+xW3B0Yyf51duoO8twv9uBm4Ld8dvtFb7ZkBeu/8qkcmCouGtHfxQdg1rOg5OWPBC
+h4R04qbrg1tYbQCXI+QBgARZ0KRct7RCZa0xBfOnJHWRQoo68x/Yx12vD3YdvhWQ
+vLYxzBYrfjPo29D8VvPhV9KGluSjMqjKpZAApTixql2nuADWQLuueZHyGLh6Krpf
+lXSa3Y0cpD5DJUdQP4LuAMgWn816r3ymSTr5eaaV4fPfrMN2pXDLRjBGNhJCapbc
+o79wIDhuLudgUQKXO+NF1nD9NsaR+Qf7+NCc+kEgnfVj6WvcbEL7rRNtXXghWpEu
+E+H8fwJujev3bpF0pAPRvScr8qq+8CyHJsmHh7EcxKkFy2bdvIfftlhCZY/t6oBV
+FfFYRTmrl2NJO7KcvB/jj4zbZi8XpOzVMtgkn2Tjr+Fj2m73l+PC+DV/pvnpVsEL
+NChdHLw7WrMYeSuY/NvmyUDThxR3O41uKLGUu2pNkhHfqvK33Cw=
+=roNK
+-----END PGP SIGNATURE-----
+
+--S6TrlP0SK4iUxrQS--

@@ -1,90 +1,63 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7A83AF647
-	for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 18:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC682D8767;
+	Fri, 26 Jun 2026 20:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782497021; cv=none; b=u5/sXLPkCsfMgrO+OvLMNtGjFiqAGCXF3n/xuk8S8HY/UaroTBrFkel2hAa5zj6gt7HjhkDF9g/pK+tlrNwMuUTPoOBJr1Cbe0deVM991C7EnrcaVifp5M/PAc7Jr4Eq88LH6x3KFdQIekZSAfn8GjvZJDmqJP7jDjbrysrGkfs=
+	t=1782504063; cv=none; b=iCvNxkpyVtgq63sPFgqRqDU8XK849EUMhg+ORgMtaOxjLBiz+hYkJQLX89Tq4dSnV/J2SyvW2dAwgqW7rXRfBIj4y8WRJ7ii6rI4H4cRA+ghnEWc0Y9vlfFCXXkuGRSXdXo2ptgeBebdHpVv8eqkLSiUN/k8ScKaEiOaT1ckE1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782497021; c=relaxed/simple;
-	bh=T/GC3kvtu2kalmJS3SrHpgibUwg/csRFkFAuLDVt5Ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVFM9rEoU+BRrMwSLi4xk2lB3VyG+QgSoxz0cPg/lAMIMob/WD8uAdYNJtkPeDVk+g2QOr9dxeon2qa3cb3orSvfw2ZqIifIZicj6pZunSsLvd/TaEo68QfcD07AEMnNjl8q8xRXhp1QgCAhKUB8jGgrwwz1dmULMIn5ALjE7JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=TMaAK7tu; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1782504063; c=relaxed/simple;
+	bh=CDLd9Uy0RAw0JKYJKRqiT1XUGWVt24pA3P/k39QPyIE=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=g1DXJymGHtWplmc9ZWjzMmhmr8VKGBqhT5MQKiMBHMJyfsTJvbEwWKNEjN2p9gXzPY9YD6GOU3fkt98k6z9jJCzeh/Je0Fh79JrO733dq3iWG96sMt8qYE3HpSmDQ0kPAbbsqvwoNy5NCq+bjL4qMsgH7RyzokwPCbwoc+mON2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDgYgU2A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="TMaAK7tu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=3ys9d6VA0EqywJW4o5HfDv6y+4P3wwz2jlIsf4xTpOc=; b=TMaAK7
-	turuWxCIVhf/HZLoInHDRwBUTalhpz0t8/CZsggrdjC7I7/FetSIe+s9T9Q9Qj4w
-	E9T8+MJBo3OZ5RrS7pOKxNtOyJ0xEwdF7e9MzpB32EXcPCW96a8sSBmd4d22/PrQ
-	5p6yJon4FLtS97zIfUWJP6d+XPirHzB0uzrmUdXdrHCjS/fD0jDsEaW0A7W/R/iF
-	vBJKcA/qMGHe7TyDuZdfXVyEbpcdHkA9vuytmPSqIbFo7YSpV+qOWbzA48ZYw7uC
-	gA3v/isgDWnONRT1NF3zhEAAhUZaWhhjUqC/kFBG5x4KA2T3bDB/u2kZV3qLTmUl
-	s1hBImERPlH4tx8w==
-Received: (qmail 3649295 invoked from network); 26 Jun 2026 20:03:33 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 26 Jun 2026 20:03:33 +0200
-X-UD-Smtp-Session: l3s3148p1@8MNC7StVqMMujnsl
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-renesas-soc@vger.kernel.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v4 2/4] spi: dt-bindings: snps,dw-apb-ssi: add 'power-domains' property
-Date: Fri, 26 Jun 2026 20:03:23 +0200
-Message-ID: <20260626180326.9593-3-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626180326.9593-1-wsa+renesas@sang-engineering.com>
-References: <20260626180326.9593-1-wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDgYgU2A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2221F000E9;
+	Fri, 26 Jun 2026 20:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782504061;
+	bh=f+G8P3oCuNL7G15EV2Xd+1YeasS5s6seWdBJmu+v7Ng=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=lDgYgU2ArnwXIIB2TTnsFbt+tMcK/t4AMcDTT07qoIknTc1D3qm45DcW0G7WdxoHM
+	 yDnEf5J4GPM26ZdjGkBvcFwHvhrIONZm79bUS767/dti4m2RQ/4PCG/BNA6bI33+VS
+	 UdazrW4Y9MNz6iWollvHmscVKxVXgwdm79pBEBDTbNYOXmOKs3D+8I05cE+GaddbYI
+	 RpOGkk2KsGRsn2y4idspkqsbyiB2gqdWQxSNsiLHTlMc8CNKJx92AWHRyZL0dIDDNS
+	 6KMA/6nxQmnTdVKeU/HsuIRTR0cCHZm1DW57NeGaIjsoC8qw/o5WVIoj5SWYl67fWl
+	 zG5KucEauZYpg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A8A3938C5D;
+	Fri, 26 Jun 2026 20:00:49 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.2-merge-window
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <482117f043cd16e559de7afa1674f5d3@kernel.org>
+References: <482117f043cd16e559de7afa1674f5d3@kernel.org>
+X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <482117f043cd16e559de7afa1674f5d3@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-merge-window
+X-PR-Tracked-Commit-Id: 245404c26563aafb36aafb01298f148db1851be3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f0789fd342e015b20b4d2cb43b473268825ae077
+Message-Id: <178250404822.1075722.1837584600678912849.pr-tracker-bot@kernel.org>
+Date: Fri, 26 Jun 2026 20:00:48 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This SPI controller likely belongs to a power domain for all the SoCs
-listed. For sure, it belongs to one on the Renesas RZ/N1 SoC, so
-enable the property to be able to describe its power domain in DTs.
+The pull request you sent on Fri, 26 Jun 2026 15:12:39 +0100:
 
-Suggested-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
----
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-merge-window
 
-Change since v3:
-* reworded commit message to make clear other SoCs likely use a
-  power-domain, too (Krzysztof)
-* change Reported-by to Suggested-by (Krzysztof)
-* add Rev-by (Herve)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f0789fd342e015b20b4d2cb43b473268825ae077
 
- Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+Thank you!
 
-diff --git a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-index e0f249e82fa1..291cbd55862d 100644
---- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-+++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-@@ -87,6 +87,9 @@ properties:
-       - const: ssi_clk
-       - const: pclk
- 
-+  power-domains:
-+    maxItems: 1
-+
-   resets:
-     maxItems: 1
- 
 -- 
-2.47.3
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

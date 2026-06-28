@@ -1,166 +1,233 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91565258CE7
-	for <linux-spi@vger.kernel.org>; Sat, 27 Jun 2026 05:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782537820; cv=pass; b=T4frgZGRhhz0i3T7E9tYXuED4QQSj66T6b0sTDJcXuH7pWWL1yYsByiaPJa7aPy4vmzBVBDMuXhsHwP7wVx4qu0madS2HYxjvGhRcaxbTIqtZQb2ommMasBAmaTNiXNljHGywicHR1nVZOKEhX5LjKRpiPgrzdefV554S5+7BPk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782537820; c=relaxed/simple;
-	bh=jsTJV3XTeyptIuiFlh+MCtigFwZrx9dcmVg4Nn0eF9c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LmzzBPLBhGXn+ffNadLvBgxeCGH0FID+wbs10Jf73sE87G71c0j3eEDYfD+wRXZmq56herqrmhIby/tysmN2kbMs8R2GRRscHK3dn9+RwNp4xbHf4Rx+S6aCNKvnhqblNrkBKk9KkBKdl6zbsMTRUFtQPOJpwmGhk6j0F5B1LzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mi5qKHdF; arc=pass smtp.client-ip=209.85.221.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CA5351C3C
+	for <linux-spi@vger.kernel.org>; Sun, 28 Jun 2026 23:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782688587; cv=none; b=e9eso7tKnShEOKCZTNYg07HILBlBhpmUjWUHgXl7+lsabXQjlaUb1F7g3AnIgwV6L2Bk+d6i7THahY+ls+wpqekxPHwY7aGeMfEsnhm2KIV4UCMyt8rhNlu6tVJ8KV1XHamT/NQrwKZHpUf1vszJH6RdZcUDvO3KYOir3NgRG9A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782688587; c=relaxed/simple;
+	bh=jcq+RmnlUoHQi9v6Kz2MHeMq4r5if5JpMdKd73GLlss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XRD7qKdbJLKuSd3UlwlraiZNCobx1Jn4EpCDJsrrRmnjD1v7Eryw6dmnhcqNgE3j8bWIr2cbpxkiAEkaaVImH5Uowx2nuEJSxMavzujYhjM6rR3nt2du4apQigoBcFN3kVeuKg8qxda1EchBXfzkVZPbVyNWzTGS4i1C5zOOS70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kGeNp79v; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mi5qKHdF"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-59ebb89109aso1223625e0c.1
-        for <linux-spi@vger.kernel.org>; Fri, 26 Jun 2026 22:23:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782537818; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d8/6Clu+KewPJ4hKuUSsUsEkPEh2tPh3pa7vWB2re5jcAXbQDiDeXhZqp1bqcZNpgd
-         4v+kaKhW8tjx/2ILUmVUWHzDzOkKfBTST5VNlz6Nc4PRwPAzjUEOscxjL8GAAoOQ8h3x
-         EqJUZZF6w9+x8HEID1EWORh9wnbCVDWfubvzqX/wE/4RWhMN7PEX3ojXi/ATwdRbAM9Q
-         ln7A9gw8b473GUq6NScECRl9TzJwFA7Gr3Dc64frWf+nr4C8/6H92nCJVMOpVS0dVvIY
-         nL/1CskDfsNwRGyuBh2tXOAFHNowtBg9KxVSoeahXbLvAQUGtdx8aOgM23DyC/01L7Jh
-         LV1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FSvq9cc8NOpYsz4zrDlZ8UdKSCjZyhCkH7GixyxDUTw=;
-        fh=bnaUcJK8yA6ESHISnoyjIIk56QuCeJFTcU2tcd3EFes=;
-        b=OqHEW1HcqX82VPa1VFsa1JlRR034+E5b/8ntXT1sT9y1RM3f3jXRrZt38JEBtGTaFN
-         kuv/zdtYCSx+PMLYYrLrbXPOVfa2RXrfB38rq4+XUAU58hUFNl/h6lgcrHoN1rAx+t+b
-         8UoUYkHq+Z7zIjjSvV4WShUD7TF8r7IMVdbNcyPm0xk5Sz75US9MSW1KGOmSHA7TpPNG
-         NRW1IuB1DylIy/GEi9avyZrsjAGIUWSyeRLeVpizNsjC7I2vQWHHPLroPKUvYIJ9eI2Q
-         QXus1NK0kCowr9+jPxthsqeRvgzM6Vi5UrVREOJgTNk19OtVanDqVv8ICI6xkpP1L5Wd
-         o/bA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kGeNp79v"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-845b733e82cso1622075b3a.2
+        for <linux-spi@vger.kernel.org>; Sun, 28 Jun 2026 16:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782537818; x=1783142618; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FSvq9cc8NOpYsz4zrDlZ8UdKSCjZyhCkH7GixyxDUTw=;
-        b=mi5qKHdFbfDSLrN3dz260EsRobwuouOVmn13CfyyUbWJxw4axnJ3dFQhC0oW+gQLp4
-         ICINy18OFgBkd5WaoWLjoqaANWrJrZ9MbwingrA2OI15ZEkrm+6L3f3UJrG3BkBinRhe
-         vAb90FwC7xzl2bMWKnw6Yiyuj/g7seqrRMNTqG4yoPANOdj3oePXuAn/zcP0SyO+3sQI
-         OkyBxB3+TVOdS2E9kbGHq09LkD5zRXz7G1O84tAZvRFqLv7OCqCKj8k38Qe2XwAyCrFv
-         1OfEhXee52A4pU9Rz6+wTDisdTujZ5vbJUOVjnqSep4OJrAadWNoZcURQxqnpFv6qMxI
-         AP6g==
+        d=gmail.com; s=20251104; t=1782688584; x=1783293384; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=387efM+Hy7Mrl2ogW+DfnTyNvODV7uhBbTi6N852WdQ=;
+        b=kGeNp79vrQ0hkexAC6jACdUDsubLfP/skHrnXQghY/EWTdlGcJ0y1FhdXRJ32qUumu
+         Fipz94WZPPqsgifZnvN8x+RLlo7kWe9w/e9U6y3GZVKl9sGvKydsvy6sdZHhqfWWzbkT
+         a3C1gKTdH+949twJH4uMybb4ESWGvow/HDUC1sMVJiFvWag+bheSmMHOBlqWJpqcGRNI
+         40b6rUHK64YNvqV8Ifnalm48v1IkasyL0MC+r8ii0KPRFz5+Tbq87fLqRQWIDJPwMlal
+         NbLyKVPqFsCA5iKy9dG7liJE9ujZ6vh/cDxD72VShj8x9B7E6ww0RWIQl/YqPC81oOnb
+         Qxqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782537818; x=1783142618;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FSvq9cc8NOpYsz4zrDlZ8UdKSCjZyhCkH7GixyxDUTw=;
-        b=qJ/Ux7Yfh/8FTG2NCBUjrHHdaZ698j0kkZsVc6IMHcTFNT7tCulDAvK0hUguvmoQWW
-         xpypbCKbXjKuoJf01pfBFTa9dX6KrKmejawRpq5EGKoROetCCoMuDQ2KM9zC5Nth5j4P
-         jxTcdsZ6NtbcJbDVNmif1XyJqE03naPhhZbB7koUGXCnMz1wD4rM3lA8U9iQymwCqZX3
-         eFCyEfH3ucwo/Y8K4xAujkDFIFqGhtacPWoo0uq+iCPAkKBDoPnP+pEtrg/2RpcFRL/M
-         HrHvnEdk35gSEf21TEiULTP8G/oicK+sezpu5VASfv5gXJM6p6umhned0wI5EZ4MG4L+
-         ZkGw==
-X-Forwarded-Encrypted: i=1; AHgh+Rqqa3DziUYe9NrL+u83i2raeugC5CFGTS6mLFsyAX+GlWqQxJWnk9I6ZMERWo1uU0epRuwyJ1ZENqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNW3x2Fxss48Pk6J6WRafwrRA9islpIjjA74x1y19/8frSg8Il
-	troPSRjOyD3h6hkJqppWd7SvYNAE7JRWE6Eg6SQKedWRf8RY//yVu3To6L0zy9E2eIOaB2QJ7vx
-	JpfeEOT9T4j5tSAbHdNo7din6rVvIe/g=
-X-Gm-Gg: AfdE7ckr9c0NO33Ce4dZsTdKDqQR0C9eNPjp21Hqovok5DDK5pnPZ580jX8a313GiUb
-	77msoX6FvdhFYrmNGftPPKVxfQcjd+Q+v6WM80yVE/wufP3wpSIDfczuIxIMZg6imQQzKaKVpF3
-	2oUK0MRAh7Z/u8X+jq6OeQ8eq12qFegMAB1ndWgUg4b9blgzVEDyLviUyUvtnKLKpU65j9yFk8u
-	PynWcGqVGljxrPaXUa9J/9sywf2mzNShtA80M7F+msVExdshxremuCQSy2ExXd0M4ajWFtsDAM/
-	109clJtmQfzZtrpTwDzZSDIVx3DM
-X-Received: by 2002:a05:6122:1d0c:b0:59b:7fbd:39f8 with SMTP id
- 71dfb90a1353d-5bd69d7d046mr4605137e0c.10.1782537818557; Fri, 26 Jun 2026
- 22:23:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782688584; x=1783293384;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=387efM+Hy7Mrl2ogW+DfnTyNvODV7uhBbTi6N852WdQ=;
+        b=MD+1ovblL/tcXno95XPZnRPWtwnPDR0DovKOjU04D3Izn8NkrgOukMiA1pEYi4ZwZp
+         NAygjw3GGF2n9tOUb2L4Zn0j5gkudeDlV7WPjmWaKVlh73pL3JHHQEaNPn+QXnHzLGgZ
+         IaRQBK/aUiKyqIJQD5lMvKjyv5vjm5LcNLe99r6+DfBf9CardW0bTFzdKy+GSIsV7a3n
+         1ejdySY+9iX2LHf6dQUsW8anDQGyrV+r/yEXuOGIWALCgI6fS7847VFWChGMOEsbDktX
+         wOiu5mCo5gE/GUE6ZmfPMXOiUN+JWNjotJHGzmg2zVVie8K8NVMaGoUMgn2Q6uQ+753V
+         r9Sg==
+X-Gm-Message-State: AOJu0YyU84UNh8GSDtbX0uFDLSpbm1Uv2VIKRiDwuGNx6JyKm/noo2Hh
+	kY9wNNMf2Sk+VJVFNKjzQSSrhGWIdDP25LXwD+BYHkIVy5zfi8iUcwoyivf6/w==
+X-Gm-Gg: AfdE7clwuvNIo7bZj4IThNNA95dJtOEYvWikndnLka9qwu5vR2vb5OaHkp2k7XRyvA3
+	a0L6sCBqFHIXjBQYwgy4Jo1DHMh8qZ0ck4Xa2cbAEjCtnYMKn+g4rqv6Lz78r6/ko+kyLcqfHXh
+	YCPZ5uFwHFW70FuzG6vCNLh+lN1cZNwpSbH/UPPI6fRkR5YThndKyAoyLcnBVtdlNagDYj+nf1o
+	UhL1d5EhTORlkUBlMX/1gnp0nBnYDdF6lSxE/KaRp073Pvh5/cvapO42/TFJwcRLd2Xjk/An+t3
+	lvARYO24R8qaHra6KmVax9zEfJoBRnJFrViWms8AJTRBspXjOGcKrwCrSyOTkBaI3r4cTHsoaBG
+	dEjbL7e8BHi5gRyNr5FB3v2yodFNWnNxnufilTqRF3Kp/haypn6FQKoa/HPXWsJ60o0MeiTrBz4
+	MUtMDAVMifnwWqxxdnD9Y5HLUpUPAAnJix0u4kGR6ryWTCDlHeGc8tSJjOvcTmql3lj3gW8T1L5
+	gK/FBlnjQ==
+X-Received: by 2002:a05:6a00:94f2:b0:845:bcf0:118 with SMTP id d2e1a72fcca58-845bcf00accmr11968079b3a.41.1782688584343;
+        Sun, 28 Jun 2026 16:16:24 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8477d93c895sm1229143b3a.60.2026.06.28.16.16.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 16:16:23 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-spi@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] spi: ppc4xx: devm-ify probe and drop manual resource management
+Date: Sun, 28 Jun 2026 16:16:22 -0700
+Message-ID: <20260628231622.1272243-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com> <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
- <CAH2e8h5Swn2mWoz+t_nrSw1=hQttwi1Hx=dg=cd9S3QRnHjpSQ@mail.gmail.com>
- <3451facc-4a2e-43bf-ba13-944488bce437@oss.qualcomm.com> <14491fd8-f785-4404-878b-5764bb8fd593@oss.qualcomm.com>
- <c22f82e1-65a8-4472-924d-91908f4d6104@oss.qualcomm.com>
-In-Reply-To: <c22f82e1-65a8-4472-924d-91908f4d6104@oss.qualcomm.com>
-From: Pengyu Luo <mitltlatltl@gmail.com>
-Date: Sat, 27 Jun 2026 13:22:12 +0800
-X-Gm-Features: AVVi8CfrwkCaZZLoTfnJoyzeKn04AJD8vvCiej82z8jd-tcuH5ak3SMX7LH55bc
-Message-ID: <CAH2e8h52YaKNHvX11HheFAK9XJT9KREQrQ115AOEOJS22UWV9w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 26, 2026 at 11:34=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 6/25/26 11:06 AM, Mukesh Savaliya wrote:
-> > Hi Konrad, sorry for late response.
-> >
-> > On 6/15/2026 5:12 PM, Konrad Dybcio wrote:
-> >> On 6/15/26 6:25 AM, Pengyu Luo wrote:
-> >>> On Mon, Jun 15, 2026 at 5:18=E2=80=AFAM Dmitry Baryshkov
-> >>> <dmitry.baryshkov@oss.qualcomm.com> wrote:
-> >>>>
-> >>>> On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
-> >>>>> Some devices (such as gaokun3) do not disable FIFO mode, causing th=
-e
-> >>>>> driver to fallback to FIFO mode by default. However, these platform=
-s
-> >>>>> also support GSI mode, which is highly preferred for certain
-> >>>>> peripherals like SPI touchscreens to improve performance.
-> >>>>>
-> >>>>> Introduce the "qcom,force-gsi-mode" device property to hint and for=
-ce
-> >>>>> the controller into GSI mode during initialization.
-> >>>>
-> >>>> Ideally, this should be decided by the SPI controller based on the
-> >>>> requirements. Another option would be to prefer GSI for all transfer=
-s if
-> >>>> it is available, ignoring the FIFO even if it is not disabled.
-> >>>>
-> >>>
-> >>> I have read reviews. Can we check if the compatible
-> >>> "qcom,sm6350-gpi-dma" is in DT? If the gpi dma controller is
-> >>> presented, then we enable GSI mode.
-> >>
-> >>
-> >> This hunk is very odd:
-> >>
-> >> /*
-> >>   * in case of failure to get gpi dma channel, we can still do the
-> >>   * FIFO mode, so fallthrough
-> >>   */
-> >> dev_warn(mas->dev, "FIFO mode disabled, but couldn't get DMA, fall bac=
-k to FIFO mode\n");
-> >>
-> >> In my understanding, GSI DMA mode is always preferable. +Mukesh, do
-> >> you have any insights?
-> >>
-> > GSI mode is preferable but if for some reason it fails, we try to conti=
-nue with the FIFO mode. Just fallback mechanism.
->
-> So, would making GSI the default and FIFO the fallback option
-> sound good?
->
+Replace open-coded resource handling with devm helpers:
+  - spi_alloc_host -> devm_spi_alloc_host
+  - of_address_to_resource + ioremap + request_mem_region
+    -> devm_platform_ioremap_resource
+  - request_irq -> devm_request_irq
+  - remove now-unused mapbase/mapsize fields from struct ppc4xx_spi
+  - move of_node_put(opbnp) earlier to simplify error paths
+  - delete the entire error-unwinding goto chain
 
-Yes, I have sent v2, please check here
-https://lore.kernel.org/linux-arm-msm/20260616122605.668908-1-mitltlatltl@g=
-mail.com
+Assisted-by: opencode:big-pickle
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/spi/spi-ppc4xx.c | 83 +++++++---------------------------------
+ 1 file changed, 13 insertions(+), 70 deletions(-)
 
-Best wishes,
-Pengyu
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 46ac58dfb3fc..91d7d2071a8d 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -112,8 +112,6 @@ struct ppc4xx_spi {
+ 	struct spi_bitbang bitbang;
+ 	struct completion done;
+ 
+-	u64 mapbase;
+-	u64 mapsize;
+ 	int irqnum;
+ 	/* need this to set the SPI clock */
+ 	unsigned int opb_freq;
+@@ -337,14 +335,13 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	struct ppc4xx_spi *hw;
+ 	struct spi_controller *host;
+ 	struct spi_bitbang *bbp;
+-	struct resource resource;
+ 	struct device_node *np = op->dev.of_node;
+ 	struct device *dev = &op->dev;
+ 	struct device_node *opbnp;
+ 	int ret;
+ 	const unsigned int *clk;
+ 
+-	host = spi_alloc_host(dev, sizeof(*hw));
++	host = devm_spi_alloc_host(dev, sizeof(*hw));
+ 	if (host == NULL)
+ 		return -ENOMEM;
+ 	host->dev.of_node = np;
+@@ -379,88 +376,38 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	opbnp = of_find_compatible_node(NULL, NULL, "ibm,opb");
+ 	if (opbnp == NULL) {
+ 		dev_err(dev, "OPB: cannot find node\n");
+-		ret = -ENODEV;
+-		goto free_host;
++		return -ENODEV;
+ 	}
+ 	/* Get the clock (Hz) for the OPB */
+ 	clk = of_get_property(opbnp, "clock-frequency", NULL);
++	of_node_put(opbnp);
+ 	if (clk == NULL) {
+ 		dev_err(dev, "OPB: no clock-frequency property set\n");
+-		of_node_put(opbnp);
+-		ret = -ENODEV;
+-		goto free_host;
++		return -ENODEV;
+ 	}
+ 	hw->opb_freq = *clk;
+ 	hw->opb_freq >>= 2;
+-	of_node_put(opbnp);
+ 
+-	ret = of_address_to_resource(np, 0, &resource);
+-	if (ret) {
+-		dev_err(dev, "error while parsing device node resource\n");
+-		goto free_host;
+-	}
+-	hw->mapbase = resource.start;
+-	hw->mapsize = resource_size(&resource);
+-
+-	/* Sanity check */
+-	if (hw->mapsize < sizeof(struct spi_ppc4xx_regs)) {
+-		dev_err(dev, "too small to map registers\n");
+-		ret = -EINVAL;
+-		goto free_host;
+-	}
++	hw->regs = devm_platform_ioremap_resource(op, 0);
++	if (IS_ERR(hw->regs))
++		return PTR_ERR(hw->regs);
+ 
+ 	/* Request IRQ */
+ 	ret = platform_get_irq(op, 0);
+ 	if (ret < 0)
+-		goto free_host;
++		return ret;
+ 	hw->irqnum = ret;
+ 
+-	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+-			  0, "spi_ppc4xx_of", (void *)hw);
+-	if (ret) {
+-		dev_err(dev, "unable to allocate interrupt\n");
+-		goto free_host;
+-	}
+-
+-	if (!request_mem_region(hw->mapbase, hw->mapsize, DRIVER_NAME)) {
+-		dev_err(dev, "resource unavailable\n");
+-		ret = -EBUSY;
+-		goto request_mem_error;
+-	}
+-
+-	hw->regs = ioremap(hw->mapbase, sizeof(struct spi_ppc4xx_regs));
+-
+-	if (!hw->regs) {
+-		dev_err(dev, "unable to memory map registers\n");
+-		ret = -ENXIO;
+-		goto map_io_error;
+-	}
++	ret = devm_request_irq(&op->dev, hw->irqnum, spi_ppc4xx_int,
++			  0, "spi_ppc4xx_of", hw);
++	if (ret)
++		return dev_err_probe(dev, ret, "unable to allocate interrupt\n");
+ 
+ 	spi_ppc4xx_enable(hw);
+ 
+ 	/* Finally register our spi controller */
+ 	dev->dma_mask = 0;
+-	ret = spi_bitbang_start(bbp);
+-	if (ret) {
+-		dev_err(dev, "failed to register SPI host\n");
+-		goto unmap_regs;
+-	}
+-
+-	dev_info(dev, "driver initialized\n");
+-
+-	return 0;
+-
+-unmap_regs:
+-	iounmap(hw->regs);
+-map_io_error:
+-	release_mem_region(hw->mapbase, hw->mapsize);
+-request_mem_error:
+-	free_irq(hw->irqnum, hw);
+-free_host:
+-	spi_controller_put(host);
+-
+-	dev_err(dev, "initialization failed\n");
+-	return ret;
++	return spi_bitbang_start(bbp);
+ }
+ 
+ static void spi_ppc4xx_of_remove(struct platform_device *op)
+@@ -469,10 +416,6 @@ static void spi_ppc4xx_of_remove(struct platform_device *op)
+ 	struct ppc4xx_spi *hw = spi_controller_get_devdata(host);
+ 
+ 	spi_bitbang_stop(&hw->bitbang);
+-	release_mem_region(hw->mapbase, hw->mapsize);
+-	free_irq(hw->irqnum, hw);
+-	iounmap(hw->regs);
+-	spi_controller_put(host);
+ }
+ 
+ static const struct of_device_id spi_ppc4xx_of_match[] = {
+-- 
+2.54.0
 
-> Konrad
->

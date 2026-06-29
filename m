@@ -1,102 +1,161 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11011030.outbound.protection.outlook.com [52.101.125.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D2B3F9F44
-	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 09:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782725556; cv=none; b=PRfSxhZV7sFaDaZMXrr7NpBTimd5WZmEs1pvTvCW6ae9GMyhLTAfHzgz9kSE1xa4XFzMtOOqnJfU2DgbsUt0R7Wg4PND5cgJh/eUIHl2mKtimaRJm+LhJpGuL2tYFHBwKf9HC8GSBfEULdv/jhkHsibx8/gD9dmbSeMF8DFUEX8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782725556; c=relaxed/simple;
-	bh=av/M3ZtUQavT/hkBofKRoJGx6fD4OmsKWIzK5NQPTGQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oiURPbtE/DC1GJQxt5KrEMGx5cpQJk9S4Z4r3w9d3YB1fpNgM7UKIfULGftFXsgxd5eIjpCGHPp9z/ImMyU58r4vdRmH2vcemulcj9xAehoDDFaZLJR6pPpUHN1OMegf1/td55GHZ/A2TKINB403CgbNnHf/lPpa+jEOZk5vXyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-59d7db12342so1211110e0c.0
-        for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 02:32:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782725553; x=1783330353;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZPgpCbYo3dOS6VSWtqh+ogyk9l9INK3PsDaC/Z8QySY=;
-        b=qwqXeOfog8WaxpFW9wA9btrRSIoHiRkEG8+sOfaGajLEcat8BgRDCr00Ss5MiO3ASl
-         iD1Jupb9ABpNvIruM6YkSGlLdVJQr7OUeoKw8vC9dOkRfEk8tHgWPD9RcArykCaN4pcW
-         EeTT1V1gTALCyrYpZOw5uM2JUkYxipWgYFYvAhKFoxoDo+cb2/A9MUFRNbp5Z6ejTNv1
-         xphU3rcRmMsDxjiCaXIDCshIFUhnrFLmCTIAh5kd7pYAXMohcoNqi4cVbi4JWmSKaGMb
-         1sKsys+ZJEMYKXPXOUaafTG5dw/MEHBdC/WhlfVWqEC7lEfBAzm/tpRS7EkWXWt/OmsF
-         cxIw==
-X-Forwarded-Encrypted: i=1; AHgh+RoTjpa1INcqKJjWlHYKS1m1RncGHliJms23Ya6F+D4HRHAMcPLPOUKVif4pGp28k+B0bQqkdQ9f3aU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzW3HFVnqxp9iiXYC6Z5SdC9iG5FnnnLKib5sFzS1YKyHYzwlhq
-	jHgkZN+ICfDJCK6Q9gM0HM/cUnIcI9+FYy+cPjwsyrNHj4gnJuAcrrAasilq8NQt
-X-Gm-Gg: AfdE7cmWFn1gKCSlsEJiIVWttUNDqWRHUFtFzNq5MWe83VsiVkGPoZ8+P7BmRjF0/35
-	wN2FCIPaTCkneaH8WuqPZ/1QiPmy1BaadEfb7fA2cij044kzXociluInyPrG+xuSr64edd9bepV
-	lIET2KRWfR6GErXaWjXzb//rf8zeEQo1CKiG36YOB/INgk1K+xybd2UfbECmIBNmhUxPCkWGeIK
-	jen/Em30LVNRGIYu+WlNDxDMsXxnTHnUYN03z6+Fj97Gs6A4HME8u97HiPYK1FOWnE4U74VKsAI
-	dIC6G37OLS3Xf4P/NHIDw6amLKPzseVMDL8bGcF8csxbVypdfGEhf4Q38w4bbJ02hZJkjTG+qFY
-	pMViwS8y23T9zO51RwuGx2EsFf+XUV6RV8W2nAFVpxjvHhesXRs2mUrKgDFGwAohOvBtUMjE8mW
-	Uhs/ornHyA/w+7T2Y1oF14DSlRmlsF+tbqsgRxyeBbrvI2zv/KHnSl0nBXy727
-X-Received: by 2002:a05:6122:6c07:b0:5bd:9dbd:60bb with SMTP id 71dfb90a1353d-5bd9dbd623fmr1504845e0c.9.1782725553268;
-        Mon, 29 Jun 2026 02:32:33 -0700 (PDT)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bd79108c5fsm5312988e0c.17.2026.06.29.02.32.32
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 02:32:32 -0700 (PDT)
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-96944741eaeso152021241.1
-        for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 02:32:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpWHgQEtat9M2QlMbzQ2O3in83ihRdr2WLcUrISwMcadVGFaDd9WnDg2trsSBdFTzQ2ollYZah4Q5Q=@vger.kernel.org
-X-Received: by 2002:a67:cd95:0:b0:737:b586:6386 with SMTP id
- ada2fe7eead31-737b58665f3mr1404074137.16.1782725551832; Mon, 29 Jun 2026
- 02:32:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B9A3F9F5C;
+	Mon, 29 Jun 2026 10:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782728545; cv=fail; b=BBGaKAPGa2gkayDWRmFKNM+yMHl1tjw1x8uP7Eev0XYv6uHH54PgNlBKsbunKcastP7i7vlsPATQAUpY/XKf76c4wEmQG01gHOSITHWhkpaZnpte9F7FMjKCTt6bPxA2N8MvhRy4IQ9OpV+W03d/akKIBZuwB9mQskpHZT5v5uY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782728545; c=relaxed/simple;
+	bh=QB3tjpKoH7caFy00hLbtPa2sGbceX68fy8gyrw64qMM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=o6sXFYKxFDkAHpJl10t8fm7qffjnt8IvspbaHZR3Hb9MnbJAyFLrzf/1PgC2DUrYZ2R1jUmtIwHyzzJ2v811brgbfqv5p+BxRjhSALAaKHUWrZrgQXPOZibaYV5kSmVKvYaIKbJbz+essoYidzoty5VJuVXXN+VxMpPW4TWAsqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=MG4NZEQ9; arc=fail smtp.client-ip=52.101.125.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="MG4NZEQ9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u7n6dI7Tk4T3x3ZAuSLSKid92SVT7RsTKIZw+mHDbyrvBnAa2B30hvPuiksX+Mgk6PUvuKCMhV86YJ7tNfJ8oyJRukk9ymaumuC5XeX4ybFeasq8a3CSQYbsDnUcm9LpBgIisP175FmP7ol6SmvoB0E8+jj4Z5QlNrc3bZcLXrIeH2w7MOKledQ+jDibb4d0icNPedSNopLXw/qhtB5sy7SpCPK30ZCjUd2/xahps27S8YTyW90VNDWmeKoyePBypNcoo8Y8KafJmgX1+2hF4taBwcCEVcYAiVxFLa1DwXw51JwIuKlZAWFvBTQ5u/Qhhq0RMmEHa9FdeD0/soZUaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QB3tjpKoH7caFy00hLbtPa2sGbceX68fy8gyrw64qMM=;
+ b=Plu7z9+egCwLB6g9fQ/eqT4j4uKfgJSIhWSYl66ChBmSKU0OzNA8JKS320h5hfyPKFPsHWwlcBOuldbKHgpTEOAsj12ObtnYearATS+utBvhVXJsXd9pSbgD4gLpRLfhV+YCLltxMEiRai/4jLgWixTZ+BVbPUHbfqDe5c/RKnY+iAQ180PW3/hHsDZr6NyC2h40fuIAtyrMV+A9tHDGFJ5DvxigpyDq3AQKyeLpPA2piqaK6jC4ONWrGx6Jaum59usyEtuvIAbCGdg0mjL+PFr4aqKQbcUZEIG9UhgQfl25peJ/YNad9sDgHxOpHTEy8rBYXI+VyVMGC6iYdgz3+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QB3tjpKoH7caFy00hLbtPa2sGbceX68fy8gyrw64qMM=;
+ b=MG4NZEQ9jEGDePyYyarykS0frf1hgGHK70Gylred7BBw0S2fT6xoOeMgCyCYJSUxv8GnGJOGSY0Y5qtxdc8pkrYAzsSpiuHgwQWFUAn5TYpJGJbfc/2VL87HXoxFCa7lXF8SX9/B7g753km+GffnU6Qy64CkMN0O9G6dJRLkL80=
+Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
+ (2603:1096:405:29b::10) by TYCPR01MB8900.jpnprd01.prod.outlook.com
+ (2603:1096:400:18a::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 10:22:14 +0000
+Received: from TYRPR01MB15619.jpnprd01.prod.outlook.com
+ ([fe80::a68f:5c9:9de8:4fa4]) by TYRPR01MB15619.jpnprd01.prod.outlook.com
+ ([fe80::a68f:5c9:9de8:4fa4%3]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 10:22:06 +0000
+From: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+To: wsa+renesas <wsa+renesas@sang-engineering.com>, Felix Gu
+	<ustc.gu@gmail.com>
+CC: Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Mark Brown
+	<broonie@kernel.org>, "linux-spi@vger.kernel.org"
+	<linux-spi@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
+ signal interruption
+Thread-Topic: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
+ signal interruption
+Thread-Index: AQHdBYU3gG2A3yWcU0itbSVs/oBZOrZRCqMAgAALB0A=
+Date: Mon, 29 Jun 2026 10:22:06 +0000
+Message-ID:
+ <TYRPR01MB156197735CBABA1699843B9B085E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+References: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
+ <aj6sEE5y62SOVsRb@ninjato>
+In-Reply-To: <aj6sEE5y62SOVsRb@ninjato>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYRPR01MB15619:EE_|TYCPR01MB8900:EE_
+x-ms-office365-filtering-correlation-id: d567f79d-38db-47fd-1fb4-08ded5c84527
+x-ld-processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|38070700021|10063799003|22082099003|18002099003|11063799006|56012099006|4143699003;
+x-microsoft-antispam-message-info:
+ XdtULa9CLOOYfKkZ4BIflSrRjceN5I6oRY5RQGDinjQ+vBC+gjLFJEILV1I2PUbyu2IDgg1Q0O9ktoy8mjWg1YHPQU9RSby0QU2HVrvNtRfmGXCFM25+08p9gcBStjm29aHzjB9TT9XffY60mk54kkzYg1oqma6ZhvB96CshP5tTdZQPY5RS6V+1szZOIG9cntbjDaXJnjSJTFgW/w08xfVLKMI6cgtvY89OFwicyQCzcByMBJSU1i6SvuPmXjK3snS31J/9O8tNiUiuYAc0VnCVkErUuj5dqAVfdqjhUamVc7KsuN6EZolxZITp8kxxmILCOnmOgZfYxA1ev3HhMBqVHNza89OInLZmahK/C98GF8eMB1DNxtCfPh69MWYgaJb9wBLNvlxDt1qUSiXvNocHMxeq8ngPD7a+RpRvAWBLg6lf90FhphNNKTqYJqqG7B4sVHTWMJYUKOIKA/NMICt11pAfYh7LMalgd4ap4w/Fe6/QSpbvjnbJrcDipXOsEnfW/5InotZqVgM7M97kC7lXsf+HE5XoSzFFNbSUgxtSx0EyJq3+4m8uuSvZM8Ai5oRqC9VJnAH4njFzixDSR7Gi0mJGNqjHVLVtC98po2qGUjptqLfqdsXZoQqemd+SeXFEQHKeA+dbyXjIlbcsAjmNpj9oitlHI7xwscoBRgYleZO6LJ7+x6H7pX5M+yvZHZjOornfVG5qt8m+gdSq6siAVDI8BP1/EApzTFsppBc=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYRPR01MB15619.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(38070700021)(10063799003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?K/9JzW5oXrL/JWWHFcOi4VO3isOddaaEd6OVBwp/xfAyOQUpQTGi+dJQMfWQ?=
+ =?us-ascii?Q?558Dvhe/sy1VbiOkgjn7TTM7q3StC1HUuNff2Cfoe5U+ghfMLKi5oOXqY3Yr?=
+ =?us-ascii?Q?xMQg5OX6wSCrk+67s/LU02dIbmA8YCrHiUr0jkrQx3Lce4GrD7F4ZwGDsUE9?=
+ =?us-ascii?Q?xOVMMlVq+bV2foNykJ/hcxmxdIDY//xbjGEdYmNqpHQlOrrzOZElgjI7z+eU?=
+ =?us-ascii?Q?0OQJfPZCIQYUtx0cJEU1MhOmWBfjZRe+aKocs8hh4+1TUlgNyyxpaWGZcE/L?=
+ =?us-ascii?Q?7cJBwDsw0ng8RWUOxZFNWpobOE3VGgwy5HI56a5LU6cxrClMO81WqxqchwOj?=
+ =?us-ascii?Q?FLIVjzfdgiIWPOBn/NtNzarckMmplRdHYyeAs7RHbQ88F0Va5gaVwFothQTJ?=
+ =?us-ascii?Q?1QcCVDlDkwlTM5B0BO5UcMKdGiHyEVmUXtH2VGvGj8jGFaVUYknptVmf+za0?=
+ =?us-ascii?Q?W+D22LpYUX5O8vi9RGJVkQYEZY4nwlYZauG0q+wTfWIOQuWwthxNAQT1zh8G?=
+ =?us-ascii?Q?+zi4WNjLtikYO53CbdFtIzr1dLzSxe10pEbe17dJ/JrkOI1vbRiFgWf36kJP?=
+ =?us-ascii?Q?HhP9BE6aDTwJPVNblBA/qgTFtlI3L97HFwhyM7t5/jampCx718k9VMZy30zZ?=
+ =?us-ascii?Q?CxwlB5zyzDFRdSx8rRJDRNDl7+RXmFCIM+G7hEQyUjKo35/b93i9QT1RKeWh?=
+ =?us-ascii?Q?Xuo6Xhgsc2zJvOeU4TjoUPheo6TXTj4NKkKrZygsJMyzbDwqktideDEZPBtB?=
+ =?us-ascii?Q?SitfLJmZVEVy7ylXYZVOUFd/n9FxglQjw4T6/V6SEwfQ//s5y98kO9fpsAzk?=
+ =?us-ascii?Q?4qRs/pFluzjDQ4WuZCpSsSeXMD5Tp1oPkmJbIL7Rur/sO7rkrm9qCwlep74L?=
+ =?us-ascii?Q?pUXrORJeX/ErS3pffXUb1SYFHUHw9MIdlHpQgrVJrEeDCRc38ZlrK4CFB4Dc?=
+ =?us-ascii?Q?UlHRgXq4cTZ2etu3L3VZzGdSHb+MPqU+dOoCjvBw3QWDxMYh5Z4XbFSLhXQQ?=
+ =?us-ascii?Q?O1GoG1LLMy6Y7ZqpCqMybL15Z7QMi/mVKU3Zh6QQnQEiyKoy7BrRcqquB2B1?=
+ =?us-ascii?Q?aj9ox1WUofYR7Q99zdB5zAzPSdQekEwoDP+hnjIKAOa6poay/Y0Zcag1dYLc?=
+ =?us-ascii?Q?NeBVVyejhkcAuQzpKdJxfCdArM681IELAM4zkdSVDlgFOqGX6pDpuw5ogrpR?=
+ =?us-ascii?Q?qEPWkGmVMM/AsRj99LEydryXkyKm3l/2m5n14NV2aQtrdYHTJrsiQAWtyGpW?=
+ =?us-ascii?Q?AcnH7vUQMD+29+bDohDTcDBkNv0dbPrngKsUP56dnHvhSgQmBj62VmXuVLV2?=
+ =?us-ascii?Q?ZbnRFqqq63qV7KPFCnAtzouVyTmM3QOHEhMI8JZAcUByq0JgO0d5OhXOwacn?=
+ =?us-ascii?Q?dOiWzeXrwaas4GVOQVVMI2UOtaNV6Mx/fyhxvSWfDipw6v2t23OFxrZee2mY?=
+ =?us-ascii?Q?bTkhk2yyGEzRWqHz0XIiFCYsjklP1Q8p4suDSeP1t3FCPd/Bv4T+MC/nmSYY?=
+ =?us-ascii?Q?myZG6J0gZaRBvz7AkYA4vj6+GO60bLMi1OX3LZ/U3t6V9A/gkWOPuB1wPzKy?=
+ =?us-ascii?Q?ppqIuA5kjJqLpC8eTwzLK3m849tT+Ls2IGX2cKOgRv5DSpeTVN9VlU+Lsk1j?=
+ =?us-ascii?Q?XWY6e2DKqLlCZiP2W8lzC6ngQ2a1lm8CsKPg7kZ6/VaiE3Oet79Cwk2Pggd4?=
+ =?us-ascii?Q?6AjQ48zCIGLtH3+LFRO3Rttk8LUUHiZZUsm5m4YysilouNzQDjKLrA3lQl/9?=
+ =?us-ascii?Q?fVFJ/xlgh0T6YY1Hr0LL0cCdj+ywRBaFyaYbEB55g5cc3sg8mktd?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260626180326.9593-1-wsa+renesas@sang-engineering.com> <20260626180326.9593-2-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20260626180326.9593-2-wsa+renesas@sang-engineering.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 29 Jun 2026 11:32:19 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVu15fJ=bGcGCNBY+jYFrfqP6VOj4Lh1Xp0Vu39Zzj3kg@mail.gmail.com>
-X-Gm-Features: AVVi8Cd5PLW0VbQV3bpvy1FRMcV0RmFmKlx0lEhwlZ3tFnN8kqtg2CHL7DRXdtE
-Message-ID: <CAMuHMdVu15fJ=bGcGCNBY+jYFrfqP6VOj4Lh1Xp0Vu39Zzj3kg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/4] spi: dt-bindings: snps,dw-apb-ssi: drop
- superfluous RZ/N1 entry
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYRPR01MB15619.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d567f79d-38db-47fd-1fb4-08ded5c84527
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jun 2026 10:22:06.3404
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2pwCCatY3K9PWLhz51TDbZz6xcvc5R68A8mBGlBdWanLB5QwSRk6K8cy21m1zjbxQRSFgp/ElZzB8XWxORm0E1Zi00QnapboMkz1W+GgNMSnmrmsY1J7RU/qNXnVoIH5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB8900
 
-Hi Wolfram,
+> From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Sent: Friday, June 26, 2026 7:43 PM
+>=20
+> On Sat, Jun 27, 2026 at 12:02:29AM +0800, Felix Gu wrote:
+> > wait_event_interruptible_timeout() can return a negative error code whe=
+n
+> > interrupted by a signal. The original code treated all non-zero return
+> > values as success, which would incorrectly synchronize DMA channels and
+> > return 0 instead of propagating the interruption error.
+> >
+> > Fixes: fa08b566860b ("spi: rzv2h-rspi: add support for DMA mode")
+> > Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+>=20
+> Patch looks correct. But it makes me wonder if interrupting the transfer
+> has actually been tested? Cosmin, can you recall such tests? From my I2C
+> experience, I know it can be hard to get the state maching back to a
+> consistent state. Sometimes, it was preferred to simply use
+> wait_event_timeout() instead and drop interruptible support.
 
-On Fri, 26 Jun 2026 at 20:03, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> Commit 164c05f03ffa ("spi: Convert DW SPI binding to DT schema") added
-> an RZ/N1 entry which was not in the original txt-file. It doesn't follow
-> the usual "<soc entry>, <soc family entry>" style for Renesas SoCs which
-> was properly added later with commit 029d32a892a8 ("spi: dw-apb-ssi:
-> Integrate Renesas RZ/N1 SPI controller"). In that commit, removing the
-> bogus entry was overlooked and is finally done now.
+Hi Wolfram, Felix.
 
-Nice catch! I must have looked for renesas,r9a06g032-spi omly...
+I don't think we tested interrupting the transfer.
 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+I can run some tests locally this week and see how it behaves.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Looking at it now, the timeout / -ERESTARTSYS path might need some
+extra logic to put the controller in a good state.
 
-Gr{oetje,eeting}s,
+I also think the patch is correct and should be accepted for now.
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

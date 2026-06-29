@@ -1,39 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3A140912B;
-	Tue, 30 Jun 2026 11:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B393CC7CC;
+	Tue, 30 Jun 2026 11:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818238; cv=none; b=aSminP4FF7b8L0jS8/g6JQKd4rFaGbBnJ3HGuJbCb0l/spb6Xin/Ue9hpgl+crS3E6WrbSb4ju2C8oqB4KSTfRht+ojae46D3O6x431G9bFzibwxTKLZOuQYsgfRkHglz2fbOPwAd5lN7ML1qedEHkLlTS54hxXPGInQ4yQiYEI=
+	t=1782818244; cv=none; b=L0WLYhKMxRJWU01cV4thxMugSaVoIQxKOPW3fCdbvOYEHbsVoFMrXfJ0Obl/tTda37QgdmkJb4Fsh/+lnnLFgylx8BDM/3vurnUsd04UCssyvjWbiBVsOAiEXTxLYqOarJAYqdd2usjcNB9qDXgY3xGpQJZZSgIWFxS0lCZj2gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818238; c=relaxed/simple;
-	bh=q/sQgD+K38nkFWG0ehSN/uuO6WL81rK4d4MwLAYlg4A=;
+	s=arc-20240116; t=1782818244; c=relaxed/simple;
+	bh=aKfGsNB/rYGTPsm7SpBmxT4bJNWAAK7ysLKQHTgW/Mw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=PCI+gOBmEX/DOzprdyAc++x9iqg+GcJzMMoNN1+2B3sul2cpUfFDRCfZWQmbAgUXsLlcwhYI9kK+ZHcpuAMnq3uVmimwZPxk9prH6SYf4m3y3kfuUs5KR88nwRsmMyehQ7TB9EkNsUy5CsPH98YorG67pNOWtEoVY5saY6OKesc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzCg1kXW; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=tkd0UEH9m9fyBODk0UyZu7rwXBjTR4BgVXC/fqVneelVcr1seonLlzcOOo6largEcyxtYJa/EGH5MgbtmkkkG3Q0gzB/6nQacBltnGSYgv/gnEWs2EfE6AKeXFwuIjdlyS2QXlhfqHyM5vuAgifk8Gw/gaZS4AhNAJ+HTtE5mWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTbg79v7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzCg1kXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C4E1F00A3A;
-	Tue, 30 Jun 2026 11:17:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTbg79v7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EB71F000E9;
+	Tue, 30 Jun 2026 11:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782818237;
-	bh=RJ13SIhXaZrViW/YUc/yDDBwNLjDBsn7zj6wMkz0aEw=;
+	s=k20260515; t=1782818242;
+	bh=s9N54Uo+6f5J1Zku+s0K2g8NKpNqzGz70Q4dEIQnIo0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=IzCg1kXWQxD/ET+DmxF6mxX1axterFnga1hz8ZO6CkxF6+9lEDnsuxClsmYNhA7gu
-	 9p1i1pBvBFBCIqeU85QaD3uuaEpUuzfABhl+VRnogwXNNGW1cEPJsQe11AFz9yo6pA
-	 4QsW6kp6bUoyp9KjUT1GgmBjWaZdzQYKZiWG0+ljInvF/+PPotBbPwGiqhDmcwnhug
-	 DxwIZeuCIC5mVwrAdyY3KknewR7LBJsnOssBJyeAG3orIY+6WNDYq1KYaMkJINZYKp
-	 fTWOPHqcKwZkT7AVNNW0MZd6eLB35Si5vL/DDEO7vf2ZjeHhVpLnyHrYo0C9NkUTxs
-	 KgSThy6EpSYHw==
+	b=gTbg79v7L36dOzuM+U/Q7Z6940qK1tdXGz+2H/8P1NvuUDV/jYJ6DQkITZteGIFfo
+	 cAarfQxNTchQjbYA3opn7rt6PuK9a6pv4t9+J+gL0PmYzqigTEBIo4+ArloqKlTFJ0
+	 vRpiSyjV7XJAu6m6qexbUNX3w2rO/8HTNMRLpuVF6H/byJGpJyTqAqJjrdV8xQWVwQ
+	 9+B21NUniZaTikz4V0D0dDZuJT8hsgPl2+5IOqOzKbYmVJVZvFthgi7ZxgtdaWzNM3
+	 EN2pAZwFwh+VfLunVBFbY1MEnc+fq+fnwdi/ktroQ2DB+3X0R+/BWBqMxoIqGZLFG0
+	 rzttYjZIfIW2w==
 From: Mark Brown <broonie@kernel.org>
-To: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260616151129.76060-1-pengpeng@iscas.ac.cn>
-References: <20260616151129.76060-1-pengpeng@iscas.ac.cn>
-Subject: Re: [PATCH] spi: qpic-snand: free OOB buffer with ECC context
-Message-Id: <178275448092.47562.499800053415897751.b4-ty@b4>
-Date: Mon, 29 Jun 2026 18:34:40 +0100
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Christophe Kerello <christophe.kerello@foss.st.com>, 
+ Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260618-add_power_domain_for_qpsi-v1-1-4d7e57bcfb9a@foss.st.com>
+References: <20260618-add_power_domain_for_qpsi-v1-1-4d7e57bcfb9a@foss.st.com>
+Subject: Re: [PATCH] dt-bindings: spi: st,stm32-qspi: Add power-domains
+ property
+Message-Id: <178275509841.47562.5600063205070514868.b4-ty@b4>
+Date: Mon, 29 Jun 2026 18:44:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,20 +51,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=broonie@kernel.org;
- h=from:subject:message-id; bh=q/sQgD+K38nkFWG0ehSN/uuO6WL81rK4d4MwLAYlg4A=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6W8Xtd0XyAmmte5V1fNLQxYdpX0KwBI0xtLB
- jDZs7Ld1k+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOlvAAKCRAk1otyXVSH
- 0A3QB/9vXmk95NTEYPl9SxPHlJaDyzjH1GTzh7Qen4H/4Mx9Ujq/8moxEhe+8nAXZRh2Sen9r5c
- DOhQCuNWpUugMTlgFppdagcRG/GJoiKFSaqZlgNIGXs4SR/9cnLKe/Bcu41PkYQ/qahQg7kvqGq
- YwnnYbgiguxMb9BVZ3+0rKZi/ZL/DMVTyTTJmZV8+qpIq5VT+G+kE4j7YVyWiifyX3k9J0A67DB
- f+AYECGA+UaMjOwH+7yADgJ/s2VdTvZHx/xmGHgaXzMpRPb4WVNFwXCGcD19vNfhtSpEc6QTHVa
- yzSz421VjvhHZdvzcdPkxbXEWQjCCbEnNvlsPRd+8oUUYrxC
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=aKfGsNB/rYGTPsm7SpBmxT4bJNWAAK7ysLKQHTgW/Mw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6W/8GPDC1xFkVsF6UiqKD20ycumS+LocYOKD
+ 65/p8iixkGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOlvwAKCRAk1otyXVSH
+ 0E2oB/9bs442EaGu5J0NsN5932LvwU/hGEMRFI69vgX2nSqzxKDXiomxhhgttWGBwer1qQqgEqk
+ GdZXoxBHk6EqAnnLNT61lA82YrskrQnJiYlbTIG0yP2CTx5zVGpjE+ksViW8BwAHOCVIsioyxRQ
+ wRmIO1Zlt0uJfcvQ3qmpDq+rfiOZpWh9ykGqhfXOYvy03h99+Qy7j850TQAYzIfeYlqoSF7NfQN
+ 9kBoqJ4dPpKCHjPilVOMYN1Aart81IphDfx3UFRajWFZYPy29+JbERJF7NcyZCSEDQLRpXNC73V
+ XqgvXKAjNTIzVQmOrrJ4QK8y68T0LUqvfJ5l9fnDzL2YJLsR
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 16 Jun 2026 23:11:29 +0800, Pengpeng Hou wrote:
-> spi: qpic-snand: free OOB buffer with ECC context
+On Thu, 18 Jun 2026 08:46:35 +0200, Patrice Chotard wrote:
+> dt-bindings: spi: st,stm32-qspi: Add power-domains property
 
 Applied to
 
@@ -64,8 +72,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: qpic-snand: free OOB buffer with ECC context
-      https://git.kernel.org/broonie/spi/c/5504e50ffbcf
+[1/1] dt-bindings: spi: st,stm32-qspi: Add power-domains property
+      https://git.kernel.org/broonie/spi/c/7a0d22e632a6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

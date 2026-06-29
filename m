@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB44405C59;
-	Tue, 30 Jun 2026 11:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3A140912B;
+	Tue, 30 Jun 2026 11:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782818231; cv=none; b=jYjoYuFiG0F+04pjFu/iJhsikShjLg3/OoHOzYS9g7r7XMVx8gNw/CeePJSG4oNTkeY9lJz2BoJDoIkvOW3aT2SuaXi2h08lg3TEHo8R1JEyRTB2DsVXU1S97osgrRTp3lu6ls2eLDwG3B3MhqaoLsK+Hw5trMb0VIpKwjord9k=
+	t=1782818238; cv=none; b=aSminP4FF7b8L0jS8/g6JQKd4rFaGbBnJ3HGuJbCb0l/spb6Xin/Ue9hpgl+crS3E6WrbSb4ju2C8oqB4KSTfRht+ojae46D3O6x431G9bFzibwxTKLZOuQYsgfRkHglz2fbOPwAd5lN7ML1qedEHkLlTS54hxXPGInQ4yQiYEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782818231; c=relaxed/simple;
-	bh=KS2MzBpMOmjYLXMJIzVoKdVUNmc/xWgdS/ibnykyIqc=;
+	s=arc-20240116; t=1782818238; c=relaxed/simple;
+	bh=q/sQgD+K38nkFWG0ehSN/uuO6WL81rK4d4MwLAYlg4A=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jOjN9UMn7qehI4Idj/QpFayjvgrl8TDz42uis3rLs7bqY4IE9q+nIWKOIl2wwz1OXMWKe+fsNJIwuvIeo+1qfk9Ob3Lx7ks1BdFtBnZtRqv/88b9z7JyuxB6DNADlkCmpH02KvWRb0JIqav+2CGqi/vHeZo/JOFjiYjnFWt0VXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0OVEuBC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PCI+gOBmEX/DOzprdyAc++x9iqg+GcJzMMoNN1+2B3sul2cpUfFDRCfZWQmbAgUXsLlcwhYI9kK+ZHcpuAMnq3uVmimwZPxk9prH6SYf4m3y3kfuUs5KR88nwRsmMyehQ7TB9EkNsUy5CsPH98YorG67pNOWtEoVY5saY6OKesc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzCg1kXW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0OVEuBC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8381F000E9;
-	Tue, 30 Jun 2026 11:17:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzCg1kXW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C4E1F00A3A;
+	Tue, 30 Jun 2026 11:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782818230;
-	bh=7GApfP/I2SM32tM2wtm5rAvWSj6S9APBClvbNp2kq9w=;
+	s=k20260515; t=1782818237;
+	bh=RJ13SIhXaZrViW/YUc/yDDBwNLjDBsn7zj6wMkz0aEw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=V0OVEuBCBIO6lxVdxH0Pv7hIbbgu0n3R2UtoffH7jl/5IX+iEfxlBDmPIsfydaguE
-	 Vj7YNNk9bePhZCkywM5TiH8LthdfjvQQHjmOyMLzdAjIQ3gxaLS0FcyX08O9sP15NE
-	 a9jUmW/y1ZhNGpuQtow+vP4gkwrXcYGyLmbgv+05U8J1Nilz/Ee5QFhzF+Gs5s9ytM
-	 w1tm0nDof0JYLmssHTawbAWzB0AFBWDdXfVHMI3OTZzrorSTPlz1tfTxHejCTD5rkO
-	 VMtSjuKMV5Dirp3asCrwC5iOhPfrxKdpy2TZrVDC/CD1ZPbdaSFwPe0H0WHhFCrqVR
-	 dWK/s9un1PDZg==
+	b=IzCg1kXWQxD/ET+DmxF6mxX1axterFnga1hz8ZO6CkxF6+9lEDnsuxClsmYNhA7gu
+	 9p1i1pBvBFBCIqeU85QaD3uuaEpUuzfABhl+VRnogwXNNGW1cEPJsQe11AFz9yo6pA
+	 4QsW6kp6bUoyp9KjUT1GgmBjWaZdzQYKZiWG0+ljInvF/+PPotBbPwGiqhDmcwnhug
+	 DxwIZeuCIC5mVwrAdyY3KknewR7LBJsnOssBJyeAG3orIY+6WNDYq1KYaMkJINZYKp
+	 fTWOPHqcKwZkT7AVNNW0MZd6eLB35Si5vL/DDEO7vf2ZjeHhVpLnyHrYo0C9NkUTxs
+	 KgSThy6EpSYHw==
 From: Mark Brown <broonie@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260615044039.9750-1-jszhang@kernel.org>
-References: <20260615044039.9750-1-jszhang@kernel.org>
-Subject: Re: (subset) [PATCH 0/5] spi: dw: use threaded interrupt
-Message-Id: <178275408684.47562.1326273732439858611.b4-ty@b4>
-Date: Mon, 29 Jun 2026 18:28:06 +0100
+In-Reply-To: <20260616151129.76060-1-pengpeng@iscas.ac.cn>
+References: <20260616151129.76060-1-pengpeng@iscas.ac.cn>
+Subject: Re: [PATCH] spi: qpic-snand: free OOB buffer with ECC context
+Message-Id: <178275448092.47562.499800053415897751.b4-ty@b4>
+Date: Mon, 29 Jun 2026 18:34:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,40 +43,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1526; i=broonie@kernel.org;
- h=from:subject:message-id; bh=KS2MzBpMOmjYLXMJIzVoKdVUNmc/xWgdS/ibnykyIqc=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6W1DKh05DRcLy8MD4Kq20xsUEzcMLuDQQ10/
- pP1tkIh9/KJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOltQAKCRAk1otyXVSH
- 0N/lB/sGvsOuYrjXWaGDsPhBcXwxbuYZjWRkQequwci0THD0vIdLVRjDv3I6mykNxyP1MBwrjMb
- J/QbHxkA9GFrasACZjRJcNmDKjGLM8HQQWadSrJeyt7M0kXdrAYmLT9LmmTlUMDlRT00EhV3TFp
- A7iFfCQ0VSc69lR0DQI5tlQPJ7mRXqrCWwhv4tpu7fVzFil7/0lV7DTOo12f+hS2BUv1e+dfsBA
- aZyJHem/x8GerGve/eCSfVavMJuZf6C/KLK0nzTan8GAiN1ry3pK2dBnXXg/ULtKA2SzTWuiOuD
- ehlKUgmVDXwWiAftaYujvCGEE9uizgjjfy710bdBfvtGj1rU
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=q/sQgD+K38nkFWG0ehSN/uuO6WL81rK4d4MwLAYlg4A=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ6W8Xtd0XyAmmte5V1fNLQxYdpX0KwBI0xtLB
+ jDZs7Ld1k+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakOlvAAKCRAk1otyXVSH
+ 0A3QB/9vXmk95NTEYPl9SxPHlJaDyzjH1GTzh7Qen4H/4Mx9Ujq/8moxEhe+8nAXZRh2Sen9r5c
+ DOhQCuNWpUugMTlgFppdagcRG/GJoiKFSaqZlgNIGXs4SR/9cnLKe/Bcu41PkYQ/qahQg7kvqGq
+ YwnnYbgiguxMb9BVZ3+0rKZi/ZL/DMVTyTTJmZV8+qpIq5VT+G+kE4j7YVyWiifyX3k9J0A67DB
+ f+AYECGA+UaMjOwH+7yADgJ/s2VdTvZHx/xmGHgaXzMpRPb4WVNFwXCGcD19vNfhtSpEc6QTHVa
+ yzSz421VjvhHZdvzcdPkxbXEWQjCCbEnNvlsPRd+8oUUYrxC
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 15 Jun 2026 12:40:34 +0800, Jisheng Zhang wrote:
-> spi: dw: use threaded interrupt
-> 
-> To avoid blocking for an excessive amount of time, eventually impacting
-> on system responsiveness, hard interrupt handlers should finish
-> executing in as little time as possible.
-> 
-> Use threaded interrupt and move the SPI transfer handling to an
-> interrupt thread.
-> 
-> [...]
+On Tue, 16 Jun 2026 23:11:29 +0800, Pengpeng Hou wrote:
+> spi: qpic-snand: free OOB buffer with ECC context
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
 Thanks!
 
-[1/5] spi: dw: fix first spi transfer with dma always fallback to PIO
-      https://git.kernel.org/broonie/spi/c/d322d820e0b0
-[2/5] spi: dw: use the correct error msg if request_irq() fails
-      https://git.kernel.org/broonie/spi/c/991af5d809a1
+[1/1] spi: qpic-snand: free OOB buffer with ECC context
+      https://git.kernel.org/broonie/spi/c/5504e50ffbcf
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

@@ -1,51 +1,46 @@
 Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC0241B357
-	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 16:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA773E4C9F
+	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 16:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782750777; cv=none; b=IqrSYjfdkyQR8cLqyWPt4ha1mFBZjpjlvKnRJpeyusz7RvwpjZG/w6krf07bM/l/Yeq9eKJ3SwVXqG0E43CadcsNSJ5EbUcZ2WIzR3EUAky8tgCVMV90BfOrlmU1w7V5mTqTGlzfaXAlqVL393LV89/naoEQqf2QAH6KV/KNDuo=
+	t=1782750788; cv=none; b=CTmi+A9ODHlws9vJgHh0OfRDLIA20s1CwCFo0J4tWkdCOI5ZYH0Dr/AhlGg/Y3kNWdu4qzZt/1mZXbO4/0Rzd/J/KuZBT2+2RegGvtEFaFZI4BO7XdAGv8+fu+Yyg0t3kAMDfUde2QN0P6Y3Gxdhc8ZHRWEsMLFgG0E2yBlWWsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782750777; c=relaxed/simple;
-	bh=k/KauXLDb+4VD4NJZORmKp/3CbnFt+OiAQC1meEkQnc=;
+	s=arc-20240116; t=1782750788; c=relaxed/simple;
+	bh=8rP3x0htxY/A0MfSa61V9+zBK94rm82LmijUT5jUvSc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FnVCJ1J125NQTx7f1OhawjM4+QhVDASrTFI6ZhRwwqH13o2N+QlQGjhLWBaOYs9QlwaUU5JMeSTqPTBe5P4xWS75EBugfSuvjycypb8CO8SkFgYlzc5J/j49Z8o8GUvmSKl2vmPtAbgX7ov7C3Z0S3fNvwBCpCoQLJ2vSf9VrN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Ef95RGgS; arc=none smtp.client-ip=194.117.254.33
+	 Content-Type:Content-Disposition:In-Reply-To; b=VS2D3g+xM8Cv5bDhiEbXeIatn0UNGY8ZVUm4mAAse9/b/4bmZmMWHKa+tyTuTLKQ08YpgO9vn8E1QX0MJb73CKFIsiSLSL19dE6fjnupgGCTwJo/oKMBsOLBxZ+CFWkLQa1UvregvPgfZdO4vFDMziDpN3+WlIEHtjFr0wjKOOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=St7LK6yF; arc=none smtp.client-ip=194.117.254.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Ef95RGgS"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="St7LK6yF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=k/Ka
-	uXLDb+4VD4NJZORmKp/3CbnFt+OiAQC1meEkQnc=; b=Ef95RGgSCjr7A+1nVofa
-	edr1RhelLp+qLRs26oZrJe2tbQ5kK44EdOXEviBvnuf34xFDsH6ybm4pWtQ3COeL
-	tO+Q8oyHR2PEqdv37aUJk1VBpDIf9C3RjpH/esk7tazR7vTnQr0Y6/30jxaoO9Ev
-	tj6a/oebq4k+sJ8Vt8sPo9a7F8V+c+kJWQ0xaaXjuAp0QXxK+Luz04EdPSU6Q/VO
-	9oRDcmjoF+Ki34FWxKo4Sy7VGQRSNUOiHZmsLKXzMcgmq0Zgjpkv5sfFSUA3uttJ
-	ftSIncR+eCMH3EGXgYVBQmcRlFn7cqkUNZdQRjcxuaszJXARr6pVRtsk2SgjVOhG
-	og==
-Received: (qmail 454215 invoked from network); 29 Jun 2026 18:32:50 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Jun 2026 18:32:50 +0200
-X-UD-Smtp-Session: l3s3148p1@06lhAmdVkrMujntC
-Date: Mon, 29 Jun 2026 18:32:50 +0200
-From: wsa+renesas <wsa+renesas@sang-engineering.com>
-To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-Cc: Felix Gu <ustc.gu@gmail.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=8rP3
+	x0htxY/A0MfSa61V9+zBK94rm82LmijUT5jUvSc=; b=St7LK6yFLuXpJvomQZLm
+	38BoK400HaRsNhlZ97DMK/TtyiQu2L835cmDEt08Tsn/FSLa6z6CN4vvmGj8vznZ
+	mc8rjGXE5yUikZd6N/JVSfoTEN0sosoKe63/IINxfZCPdoJ7a0TF6Cm8V7cmymmg
+	0kDXIRC3a4d5IwI4k0giLoxOShv3jlrXLx8UvUYym8WA3siXiIf+0JSBJWQlBhDm
+	rNJW7jcKnqGIDlzJ4RJAnTo872ykxh450YQ+1DQEizfLssPd7m1tQPJMp9aX3Q93
+	3M9dUPV1GCXxPW1tSxEidIVhDKoqywAct+As9pDcygvzP3THCFNbCDOW93WQwC2i
+	Kg==
+Received: (qmail 454313 invoked from network); 29 Jun 2026 18:33:04 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Jun 2026 18:33:04 +0200
+X-UD-Smtp-Session: l3s3148p1@8IQyA2dVjpYujntC
+Date: Mon, 29 Jun 2026 18:33:03 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
+	linux-spi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
  signal interruption
-Message-ID: <akKeMo_VeUm9RB6o@shikoro>
+Message-ID: <akKeP6CL7vHDImQY@shikoro>
 References: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
- <aj6sEE5y62SOVsRb@ninjato>
- <TYRPR01MB156197735CBABA1699843B9B085E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
- <akJJ09zjt_dXp1jS@ninjato>
- <TYRPR01MB156195CB900B9054C94E4FB3785E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -53,40 +48,46 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fam5c3vWWx9TE0aF"
+	protocol="application/pgp-signature"; boundary="OxiOyS8ryrau5BCe"
 Content-Disposition: inline
-In-Reply-To: <TYRPR01MB156195CB900B9054C94E4FB3785E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+In-Reply-To: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
 
 
---fam5c3vWWx9TE0aF
+--OxiOyS8ryrau5BCe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Jun 27, 2026 at 12:02:29AM +0800, Felix Gu wrote:
+> wait_event_interruptible_timeout() can return a negative error code when
+> interrupted by a signal. The original code treated all non-zero return
+> values as success, which would incorrectly synchronize DMA channels and
+> return 0 instead of propagating the interruption error.
+>=20
+> Fixes: fa08b566860b ("spi: rzv2h-rspi: add support for DMA mode")
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
 
-> Reviewed-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-> Tested-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-
-Your explanations were very convincing, thank you for testing!
-
-
---fam5c3vWWx9TE0aF
+--OxiOyS8ryrau5BCe
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmpCni4ACgkQFA3kzBSg
-Kbbs2A//W8NYlkF+ERbUE2vrVSh77k0U49lnIJs0jfTNkJFdvAPliWJfoAh8oEfW
-URuQ+bIz5N3XlSglfOfUwp+jBCCrm/pDD14DMUPS6AYVG+pVe93zqDT6Zkhu95r8
-4MjVdKbmpxguGbMsLwhVEFOSggNiGajp3QnpPDSfbekxuQLGEI9VrHJ19hRavCSN
-g0GQIHI4URyRxHyZoF1uXm5CvLD10bNoAH4/lR4wd1dO/VJMH7as4k+HXPdDiNOJ
-S4t0LwTgX41Ane5TtP52EOz+pU1ghZA18CaN31ZCtzIaQI3iFle85Xtff60HTh4E
-05/SCgIfOInw4WAOIbpsviQQ+inibpT32jHbD+Yl98sDxZOIy4QICWdgHB0lrHFK
-HCCUjoM0ex9lVIgKlSrREjvkWQWadskfFk/M26Af955CqSjJd1cBkCuXwxDtzkDv
-5l89Lb1kpQZmE81AABejtZ4a3f5NRhZ8176axQbB87vrP8G1RYN7mo8zK+lhoOcW
-Ok8zUstte2e58WWrGeFMuwujTrMRkmJHMLhWaQd2nmQrT48IpQTM3UKFJrO2PmrL
-qCqbdRWtovMew+D/jd3qBJ1xG0NRpatVKTlA0FmtfqQpj03+5UD9J8V5HPXaXF+C
-YwZjT7erqF4OrL9MlXIV4U+NQZy4RWXHiFvAD/AIPnn/XYQ7Vu4=
-=ZkOV
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmpCnj8ACgkQFA3kzBSg
+KbYaMw//fASLo7A5pAiwRLSXSDlxJJTDQf5Pi3WbH1TW72LzOS4fxyz62MAQr9jl
+Ums21KAjzfAi3otkfOip0yb3hdsP4sIXp8ANR1DAro+eWC6c7LnHe2biETH9P/Df
+d3PzPjILpSQ2LuwrEkHR6OqKjhxC7SV/Xagb9Jy/uwSmvVrpN5e8BHLI/GlVSkcL
+RrLL/qTstErQcif7BCnkFpxArXrpU5CR4m1n93c0o4LsPtXk9dH+aQvuqQnFUeyk
+Z4mhz0VaLTww26Ll39z5EtWo/wZKNNGU9+XnMLgJW0RyDDDRKGKyvwKc8O2FqZj2
+nrKTqTFzvzDD9i9tp8/Hxgq/mT2YkFPwuDKfbwXfwO6mr7jBnIhMydxG+u1iCHZZ
+p/HorwyXEC5v7hAJBQUV0h7ipji2AHGTg26R+N8ejcWPO/Xq1KV0HUxKzCyIiNY/
+YfVKRaaiRwQhACy4wEQCNI2SYjMVB7cCWTIt6tzuDBdTtXpJAenJiJ+kaU6kb/E+
+d6NEvdW/noX+LjtrnfmPjhZvcE5s6/2142T6FoTVyAkhHzbeF87bjVVNxI1AJEAX
+dwb3zF4FDIaFJGfG84Z9XfrGhQes5g6eKZ63dCa/DzB+adLm3Hhqh+dIcOpmvl5t
+rff5b1waIospX8zwvfX2EllQbKCuHsPKaH1bxNzVDvyBCr/27qE=
+=4qyM
 -----END PGP SIGNATURE-----
 
---fam5c3vWWx9TE0aF--
+--OxiOyS8ryrau5BCe--

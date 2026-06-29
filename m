@@ -1,145 +1,102 @@
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3A3B6362
-	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 08:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782720295; cv=pass; b=q01E6sNGfmAqPln/BcMk7Q4bNcEHXzhhZ3u0R4UHyZU165eIRoU7NUfn8L/HlJmd1aupTHSNOVWTJqIjbtd3CjHlNVvW+OqMFJMjeiOaZyxEtgFEOViDaYkEUYI1sLB2VJdxAlDqAb6195LvWV6NJst4Bp11UdjESZ57fdFSrGo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782720295; c=relaxed/simple;
-	bh=qb/Jl8OBR7LsWp9RSeOT+le399If/gM44rjjvFuSEws=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D2B3F9F44
+	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 09:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1782725556; cv=none; b=PRfSxhZV7sFaDaZMXrr7NpBTimd5WZmEs1pvTvCW6ae9GMyhLTAfHzgz9kSE1xa4XFzMtOOqnJfU2DgbsUt0R7Wg4PND5cgJh/eUIHl2mKtimaRJm+LhJpGuL2tYFHBwKf9HC8GSBfEULdv/jhkHsibx8/gD9dmbSeMF8DFUEX8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1782725556; c=relaxed/simple;
+	bh=av/M3ZtUQavT/hkBofKRoJGx6fD4OmsKWIzK5NQPTGQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DD3WnIz2q6QpErnQqaYkSYGTkdG+GJS8NVktH4NR7sSBX7mehlUzDVq4iiiIq1IZpBxxvOwzIEvsHZZc4G8fWtZsVQXbze6ZLvvgpR0yBTcy2SO5UYhVSSmPCyX+riJ3IWAv9A6qr4imBf5S50f/EtzZvq/AjtayuvVf9WYgb7I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZXekYCG8; arc=pass smtp.client-ip=209.85.222.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=oiURPbtE/DC1GJQxt5KrEMGx5cpQJk9S4Z4r3w9d3YB1fpNgM7UKIfULGftFXsgxd5eIjpCGHPp9z/ImMyU58r4vdRmH2vcemulcj9xAehoDDFaZLJR6pPpUHN1OMegf1/td55GHZ/A2TKINB403CgbNnHf/lPpa+jEOZk5vXyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZXekYCG8"
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-9666739d3bcso521756241.0
-        for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 01:04:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782720293; cv=none;
-        d=google.com; s=arc-20260327;
-        b=j4W2PCUpim90NRHqo78v85QNxZT6XWF779pStbFPMlzwjMFWvhJYMrbvG4AZ7y9OiD
-         Zb76wixZ/BYcE8RslqRe8mPo3v2+Fl0UJo9l/jWxW7hMCMbRuh0qHAOtkQIxuOVXYqjq
-         Rl0+lXaPiV6he5SI8QGY5OQKB+K9FVhnnebJS81MEkVVRKmGqbWYXyOtA6n8FCIb5uIh
-         sXs5ZgUXVE/zlgZs7xKDdMqA5iNdqmBuEqXqGsUOYPtOOcIgtnhdU1mtL427gUmf9vwI
-         H593j4ia2ZNc2rT/zSyR7cKO9jVnDOObYA6mdDbzSx4jLU2Kvg9acPKEo5xuXB4HnaW6
-         0Mfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cLafhBxn/syeb/3P4J0V6pVOYzw0kjPfQXRFzRJWndY=;
-        fh=DoetVVmeYtUKDtH4m/ESzrmME77lGOvTyCsGFMZZbnE=;
-        b=aeNg6wr74ItIj0sFrntPMJgK7wOM0EhgFaYQW+leiaGLYCZoutZqZv/o8FuD0jE+sc
-         kfj+mSxQCt7Zwg9DIatHKLUlgzABQGifZASmUNcSeXqzQI0p010xdRdtW2mYlinerq3O
-         FVRHhxEJSZpTU64stE9IfdLwQ86ZuYFdZQiXcaHb9lkUMUUw9DJJ28spScsL9NRK7LgC
-         ruxZ1F4jQHQNOzIgaRfvUtu02NZh0sG11I0Qu42wvRgHzBGoeas4CY9leSe/4zgWqflr
-         GENQwIxkGUdLE/V/XvIxwMxbEHjB12rFKAIBL+N/JTGeCgk0/pxdL2DfMMIjvIrckIBC
-         rPug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782720293; x=1783325093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cLafhBxn/syeb/3P4J0V6pVOYzw0kjPfQXRFzRJWndY=;
-        b=ZXekYCG8O35/EsqE+32kkQ3P8Y2L6kwxoTExn/55zVTCrRDFOwmrL0rQPqu7j5fRU4
-         l29+s2VhVyqag8BMO+9hD1RD+O4n5R86eVl79afKBSKWO/pL7eDc5XfcDecfnNmLQjOK
-         WgM3S1ENYKonsCbA2sNlwLF6EU3BZOA3XsTaIGo7HjsZ7GPE/X1OJYpzbmpCJ2IC5mFE
-         MY52XrIEHmoQ/XMVpZdy+R7g1oZB4s27tpsxEL5xGBHx+uTG7snnBCgbrk12pFlCIpdG
-         KLcJ228E1PaInDiAlXPmqq52oqI0U/haa4KUxqRV9U9s80pz7nw/YQVOCKqSYgc6Tc+2
-         Du9g==
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-59d7db12342so1211110e0c.0
+        for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 02:32:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782720293; x=1783325093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cLafhBxn/syeb/3P4J0V6pVOYzw0kjPfQXRFzRJWndY=;
-        b=M22nGnLsz6rmno9cO/72K35RP131oASMmsFdv3D1vjaJ2Y0TTIkFODMEVGSirPZcx6
-         BEQVF5S+Y9B5466/nAiQYUCyiJTRK5VZ2OIvz9BwZKtxiXNYUaR0VOTwdOo3us30sDLf
-         nJuDUC5I8zvRuL3lzZZiY2/kJKrRlTS66dfro1y2WTI0lZ04e0todSGCZoirWdSF14ac
-         ny2jQdUklwxlbhpv/KL2Mo51NFtmOYxL4UVgv9+TdMmznY4hNLIfsINrD5+4soU8uWIv
-         057drsEi5PtFCDAa1R5A0ixFVqSgdRvFMecP6tBvuIyfaVZjIeWsA0SF4gKO7LUTF7js
-         AT4w==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4PUKMRWDM1khZKGxXusjyUSVhRgraZjzvOYEkoyUWVaeheaCynhEi4u2yErbApvMKVrThqc0DDk4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ5t1rJHTi5uTOIjtpFMk+9fQdzMaAgH2vVTbqgwVvSrc7cdnK
-	g/6rKcsC0ddXA0OwQwXGsOY016imxvj5SbImOaP6FwR/IbDhBoJP7Fe3ja60QJMijiT6mq8xj8S
-	RpU4e6M4VrcdXTCmfGEuZAm3xZ0eQVLE=
-X-Gm-Gg: AfdE7clo/QSfA2roS8DdbACPC/A0PJOmCI6lN1b2NiSf6UNXIwvh6qkcXA8gfOXhdnx
-	DiFPm4pU2Yp8fwHBb7CJ0jZlihin/svymrevxJnMVGZhGFni9/4eby9UnauWESANAqkLNVtFmyn
-	kQHck78bWN5hwbmp2aOO7CpALAYviirWqkuWiUVBkI6yshhOyb419+34sBqHJ5p0rfzBKfErpVT
-	cAV8TRAyDP5Zal/s+UuO+VF3Y0WZvjqDTG0hFmBup864cKOqXobNewaO96aBmntyTMfd/z7ddEQ
-	aSas5dshRUL+eYQMzdxoaBvahQc6PrACwAFQrqE=
-X-Received: by 2002:a05:6102:32ca:b0:631:28c1:154c with SMTP id
- ada2fe7eead31-73434452a9fmr6446524137.9.1782720293340; Mon, 29 Jun 2026
- 01:04:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782725553; x=1783330353;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZPgpCbYo3dOS6VSWtqh+ogyk9l9INK3PsDaC/Z8QySY=;
+        b=qwqXeOfog8WaxpFW9wA9btrRSIoHiRkEG8+sOfaGajLEcat8BgRDCr00Ss5MiO3ASl
+         iD1Jupb9ABpNvIruM6YkSGlLdVJQr7OUeoKw8vC9dOkRfEk8tHgWPD9RcArykCaN4pcW
+         EeTT1V1gTALCyrYpZOw5uM2JUkYxipWgYFYvAhKFoxoDo+cb2/A9MUFRNbp5Z6ejTNv1
+         xphU3rcRmMsDxjiCaXIDCshIFUhnrFLmCTIAh5kd7pYAXMohcoNqi4cVbi4JWmSKaGMb
+         1sKsys+ZJEMYKXPXOUaafTG5dw/MEHBdC/WhlfVWqEC7lEfBAzm/tpRS7EkWXWt/OmsF
+         cxIw==
+X-Forwarded-Encrypted: i=1; AHgh+RoTjpa1INcqKJjWlHYKS1m1RncGHliJms23Ya6F+D4HRHAMcPLPOUKVif4pGp28k+B0bQqkdQ9f3aU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW3HFVnqxp9iiXYC6Z5SdC9iG5FnnnLKib5sFzS1YKyHYzwlhq
+	jHgkZN+ICfDJCK6Q9gM0HM/cUnIcI9+FYy+cPjwsyrNHj4gnJuAcrrAasilq8NQt
+X-Gm-Gg: AfdE7cmWFn1gKCSlsEJiIVWttUNDqWRHUFtFzNq5MWe83VsiVkGPoZ8+P7BmRjF0/35
+	wN2FCIPaTCkneaH8WuqPZ/1QiPmy1BaadEfb7fA2cij044kzXociluInyPrG+xuSr64edd9bepV
+	lIET2KRWfR6GErXaWjXzb//rf8zeEQo1CKiG36YOB/INgk1K+xybd2UfbECmIBNmhUxPCkWGeIK
+	jen/Em30LVNRGIYu+WlNDxDMsXxnTHnUYN03z6+Fj97Gs6A4HME8u97HiPYK1FOWnE4U74VKsAI
+	dIC6G37OLS3Xf4P/NHIDw6amLKPzseVMDL8bGcF8csxbVypdfGEhf4Q38w4bbJ02hZJkjTG+qFY
+	pMViwS8y23T9zO51RwuGx2EsFf+XUV6RV8W2nAFVpxjvHhesXRs2mUrKgDFGwAohOvBtUMjE8mW
+	Uhs/ornHyA/w+7T2Y1oF14DSlRmlsF+tbqsgRxyeBbrvI2zv/KHnSl0nBXy727
+X-Received: by 2002:a05:6122:6c07:b0:5bd:9dbd:60bb with SMTP id 71dfb90a1353d-5bd9dbd623fmr1504845e0c.9.1782725553268;
+        Mon, 29 Jun 2026 02:32:33 -0700 (PDT)
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bd79108c5fsm5312988e0c.17.2026.06.29.02.32.32
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jun 2026 02:32:32 -0700 (PDT)
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-96944741eaeso152021241.1
+        for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 02:32:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpWHgQEtat9M2QlMbzQ2O3in83ihRdr2WLcUrISwMcadVGFaDd9WnDg2trsSBdFTzQ2ollYZah4Q5Q=@vger.kernel.org
+X-Received: by 2002:a67:cd95:0:b0:737:b586:6386 with SMTP id
+ ada2fe7eead31-737b58665f3mr1404074137.16.1782725551832; Mon, 29 Jun 2026
+ 02:32:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com> <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
- <c29776b4-04b8-4c59-8f1e-d766bf982a2f@oss.qualcomm.com>
-In-Reply-To: <c29776b4-04b8-4c59-8f1e-d766bf982a2f@oss.qualcomm.com>
-From: Pengyu Luo <mitltlatltl@gmail.com>
-Date: Mon, 29 Jun 2026 16:03:25 +0800
-X-Gm-Features: AVVi8CfV0vTEuw_OaCQ_mBABpEVc3al20mAjIqLbvt3oZ-TrUI_bjF0BO6hQB-0
-Message-ID: <CAH2e8h75xeRVvo+jOjRuFaBko5NNCnBX0dawFFsWBaiTwNd4Xw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-To: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Mark Brown <broonie@kernel.org>, 
+References: <20260626180326.9593-1-wsa+renesas@sang-engineering.com> <20260626180326.9593-2-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20260626180326.9593-2-wsa+renesas@sang-engineering.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 29 Jun 2026 11:32:19 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVu15fJ=bGcGCNBY+jYFrfqP6VOj4Lh1Xp0Vu39Zzj3kg@mail.gmail.com>
+X-Gm-Features: AVVi8Cd5PLW0VbQV3bpvy1FRMcV0RmFmKlx0lEhwlZ3tFnN8kqtg2CHL7DRXdtE
+Message-ID: <CAMuHMdVu15fJ=bGcGCNBY+jYFrfqP6VOj4Lh1Xp0Vu39Zzj3kg@mail.gmail.com>
+Subject: Re: [PATCH v4 1/4] spi: dt-bindings: snps,dw-apb-ssi: drop
+ superfluous RZ/N1 entry
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: linux-renesas-soc@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 29, 2026 at 1:36=E2=80=AFPM Mukesh Savaliya
-<mukesh.savaliya@oss.qualcomm.com> wrote:
->
-> Hi Pengyu,
->
-> On 6/15/2026 2:48 AM, Dmitry Baryshkov wrote:
-> > On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
-> >> Some devices (such as gaokun3) do not disable FIFO mode, causing the
-> >> driver to fallback to FIFO mode by default. However, these platforms
-> >> also support GSI mode, which is highly preferred for certain
-> >> peripherals like SPI touchscreens to improve performance.
-> >>
-> >> Introduce the "qcom,force-gsi-mode" device property to hint and force
-> >> the controller into GSI mode during initialization.
-> Why to force ? You can directly configure in GSI mode. Note there are
-> some configuration done prior to Linux bootup too.
+Hi Wolfram,
 
-Sorry, I don't get it. how? I know there may be a qupfw, but it is
-impossible for a normal user like me to generate one with GSI
-preferred.
+On Fri, 26 Jun 2026 at 20:03, Wolfram Sang
+<wsa+renesas@sang-engineering.com> wrote:
+> Commit 164c05f03ffa ("spi: Convert DW SPI binding to DT schema") added
+> an RZ/N1 entry which was not in the original txt-file. It doesn't follow
+> the usual "<soc entry>, <soc family entry>" style for Renesas SoCs which
+> was properly added later with commit 029d32a892a8 ("spi: dw-apb-ssi:
+> Integrate Renesas RZ/N1 SPI controller"). In that commit, removing the
+> bogus entry was overlooked and is finally done now.
 
-Best wishes,
-Pengyu
+Nice catch! I must have looked for renesas,r9a06g032-spi omly...
 
-> >
-> > Ideally, this should be decided by the SPI controller based on the
-> > requirements. Another option would be to prefer GSI for all transfers i=
-f
-> > it is available, ignoring the FIFO even if it is not disabled.
-> >
-> Yes, it should be decided in advance and configured accordingly for GSI
-> vs non GSI mode. Because there would be limited set of GSI pipes, which
-> will actually make must have GSI mode device run with FIFO mode.
->
-> Why don't you decide prior and configure for GSI mode ? We don't need to
-> change the current logic of deciding FIFO vs GSI.
-> >>
-> >> Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
-> >> ---
-> >>   drivers/spi/spi-geni-qcom.c | 7 +++++++
-> >>   1 file changed, 7 insertions(+)
-> >>
-> >
->
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

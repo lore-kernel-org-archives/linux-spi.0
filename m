@@ -1,78 +1,92 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7CA3F1AB5;
-	Mon, 29 Jun 2026 15:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC0241B357
+	for <linux-spi@vger.kernel.org>; Mon, 29 Jun 2026 16:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782747823; cv=none; b=pDLfueoEhlZR9MZWT7ltNiV2xdm9YSTtPa2dCnseSgBlR9PsVQpKJhLDZkHMcczCkHItF//vV9/7RTuT4LsnfJldb1i2+b5gBLHJgdNfiuhkDclXBjvKk429xxlx5ToCGEQcAAceyJTFMFA3jNI0kL8uj7z5qHtGFYS+k1AvDYI=
+	t=1782750777; cv=none; b=IqrSYjfdkyQR8cLqyWPt4ha1mFBZjpjlvKnRJpeyusz7RvwpjZG/w6krf07bM/l/Yeq9eKJ3SwVXqG0E43CadcsNSJ5EbUcZ2WIzR3EUAky8tgCVMV90BfOrlmU1w7V5mTqTGlzfaXAlqVL393LV89/naoEQqf2QAH6KV/KNDuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782747823; c=relaxed/simple;
-	bh=ufUECX5xmH2+iBPhNbY/6S75VKUiQXYWWuVZ5F61r00=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q/QwCKtlynQ4IG793gOVQ43rMN10k6xs/ra/mNGzfCrmf0IN+ZQiUjdBfVh8cO6uLWRUZJSgMfkc/qbYvdPP451FaxfxUPhTj+/lS1XN7wVYKh36C9kThSfuVHA0V+OeDSC+GKx+zIRClsyHgZT4RRlASrca5CGiT8G+XCP9g40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B7NblWrx; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1782750777; c=relaxed/simple;
+	bh=k/KauXLDb+4VD4NJZORmKp/3CbnFt+OiAQC1meEkQnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FnVCJ1J125NQTx7f1OhawjM4+QhVDASrTFI6ZhRwwqH13o2N+QlQGjhLWBaOYs9QlwaUU5JMeSTqPTBe5P4xWS75EBugfSuvjycypb8CO8SkFgYlzc5J/j49Z8o8GUvmSKl2vmPtAbgX7ov7C3Z0S3fNvwBCpCoQLJ2vSf9VrN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Ef95RGgS; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B7NblWrx"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 13A431A0C88;
-	Mon, 29 Jun 2026 15:43:41 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C9DF35FF96;
-	Mon, 29 Jun 2026 15:43:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90932106F190D;
-	Mon, 29 Jun 2026 17:43:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782747819; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=ufUECX5xmH2+iBPhNbY/6S75VKUiQXYWWuVZ5F61r00=;
-	b=B7NblWrxpwTHjtajkuPoFZfqR6FzekKleuqAVcNoqsHAIpJSYEoMWJFp6y7yw5vgcQUH0X
-	BCWWKwIlCtn2JNl/fBU2FR7xMNQt5H+1rjjnyBB3o0GOoZM5DNmCp6XeMiREKO/XJ6mXwf
-	+3yiBB+FnenAuyDSAzUJxqDr/lvHYum+4/zFdbwLK7NlvIIptqe93E3HiKGClm+iZrbRHR
-	1FQnqcybEpgrCT6J7UVkiFIuHFBM5T17Tvhk/K9K3wYp2nZi9H0rplS5s33DuA95zn478M
-	zd9GnDAVt9yFoqDpEyprw7XOJRP/LUPAgm4RvZiC80nRd0tijV6mg3POprzUNQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
-  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
-  <pratyush@kernel.org>,  <mwalle@kernel.org>,
-  <takahiro.kuwano@infineon.com>,  <linux-spi@vger.kernel.org>,
-  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,  <u-kumar1@ti.com>,
-  <a-dutta@ti.com>
-Subject: Re: [PATCH v4 03/16] spi: parse spi-max-post-config-frequency into
- post_config_max_speed_hz
-In-Reply-To: <20260618073725.84733-4-s-k6@ti.com> (Santhosh Kumar K.'s message
-	of "Thu, 18 Jun 2026 13:07:12 +0530")
-References: <20260618073725.84733-1-s-k6@ti.com>
-	<20260618073725.84733-4-s-k6@ti.com>
-User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Mon, 29 Jun 2026 17:43:36 +0200
-Message-ID: <875x31s66v.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Ef95RGgS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=k/Ka
+	uXLDb+4VD4NJZORmKp/3CbnFt+OiAQC1meEkQnc=; b=Ef95RGgSCjr7A+1nVofa
+	edr1RhelLp+qLRs26oZrJe2tbQ5kK44EdOXEviBvnuf34xFDsH6ybm4pWtQ3COeL
+	tO+Q8oyHR2PEqdv37aUJk1VBpDIf9C3RjpH/esk7tazR7vTnQr0Y6/30jxaoO9Ev
+	tj6a/oebq4k+sJ8Vt8sPo9a7F8V+c+kJWQ0xaaXjuAp0QXxK+Luz04EdPSU6Q/VO
+	9oRDcmjoF+Ki34FWxKo4Sy7VGQRSNUOiHZmsLKXzMcgmq0Zgjpkv5sfFSUA3uttJ
+	ftSIncR+eCMH3EGXgYVBQmcRlFn7cqkUNZdQRjcxuaszJXARr6pVRtsk2SgjVOhG
+	og==
+Received: (qmail 454215 invoked from network); 29 Jun 2026 18:32:50 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Jun 2026 18:32:50 +0200
+X-UD-Smtp-Session: l3s3148p1@06lhAmdVkrMujntC
+Date: Mon, 29 Jun 2026 18:32:50 +0200
+From: wsa+renesas <wsa+renesas@sang-engineering.com>
+To: Cosmin-Gabriel Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: Felix Gu <ustc.gu@gmail.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] spi: rzv2h-rspi: Fix DMA transfer error handling for
+ signal interruption
+Message-ID: <akKeMo_VeUm9RB6o@shikoro>
+References: <20260627-rspi-v1-1-170c93ee14da@gmail.com>
+ <aj6sEE5y62SOVsRb@ninjato>
+ <TYRPR01MB156197735CBABA1699843B9B085E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
+ <akJJ09zjt_dXp1jS@ninjato>
+ <TYRPR01MB156195CB900B9054C94E4FB3785E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fam5c3vWWx9TE0aF"
+Content-Disposition: inline
+In-Reply-To: <TYRPR01MB156195CB900B9054C94E4FB3785E82@TYRPR01MB15619.jpnprd01.prod.outlook.com>
 
-On 18/06/2026 at 13:07:12 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 
-> Add post_config_max_speed_hz to struct spi_device and parse it from
-> the spi-max-post-config-frequency DT property in of_spi_parse_dt().
->
-> This supports SPI devices that operate at two distinct clock rates: a
-> conservative rate always reachable without controller configuration,
-> and a higher rate achievable only after controller-side configuration
-> such as PHY tuning. With both properties set, spi-max-frequency gives
-> the conservative pre-configuration rate and post_config_max_speed_hz
-> carries the post-configuration target for the SPI-MEM layer.
->
-> Zero when not set, preserving existing behaviour.
->
-> Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
+--fam5c3vWWx9TE0aF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+> Reviewed-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+> Tested-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+
+Your explanations were very convincing, thank you for testing!
+
+
+--fam5c3vWWx9TE0aF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmpCni4ACgkQFA3kzBSg
+Kbbs2A//W8NYlkF+ERbUE2vrVSh77k0U49lnIJs0jfTNkJFdvAPliWJfoAh8oEfW
+URuQ+bIz5N3XlSglfOfUwp+jBCCrm/pDD14DMUPS6AYVG+pVe93zqDT6Zkhu95r8
+4MjVdKbmpxguGbMsLwhVEFOSggNiGajp3QnpPDSfbekxuQLGEI9VrHJ19hRavCSN
+g0GQIHI4URyRxHyZoF1uXm5CvLD10bNoAH4/lR4wd1dO/VJMH7as4k+HXPdDiNOJ
+S4t0LwTgX41Ane5TtP52EOz+pU1ghZA18CaN31ZCtzIaQI3iFle85Xtff60HTh4E
+05/SCgIfOInw4WAOIbpsviQQ+inibpT32jHbD+Yl98sDxZOIy4QICWdgHB0lrHFK
+HCCUjoM0ex9lVIgKlSrREjvkWQWadskfFk/M26Af955CqSjJd1cBkCuXwxDtzkDv
+5l89Lb1kpQZmE81AABejtZ4a3f5NRhZ8176axQbB87vrP8G1RYN7mo8zK+lhoOcW
+Ok8zUstte2e58WWrGeFMuwujTrMRkmJHMLhWaQd2nmQrT48IpQTM3UKFJrO2PmrL
+qCqbdRWtovMew+D/jd3qBJ1xG0NRpatVKTlA0FmtfqQpj03+5UD9J8V5HPXaXF+C
+YwZjT7erqF4OrL9MlXIV4U+NQZy4RWXHiFvAD/AIPnn/XYQ7Vu4=
+=ZkOV
+-----END PGP SIGNATURE-----
+
+--fam5c3vWWx9TE0aF--

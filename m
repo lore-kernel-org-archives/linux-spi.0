@@ -1,123 +1,90 @@
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8291E44DB6D
-	for <linux-spi@vger.kernel.org>; Tue, 30 Jun 2026 15:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B7E466B6E;
+	Tue, 30 Jun 2026 15:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782834074; cv=none; b=rpcARnbhl3mcO/KGGqKCv+T3Q5O+1alnLTH4R8t4ooZYOgn1SDzi9a/tdUzdLZinXxJKvpHmln1WFjaqrVbB4HqL1tqyrJ4IVozQcpEMjcpjz95AMaeImAnvqGIB0IuBZWzVPHJd+Hc31qpNWLdWv34pqcIe/SnQyXwN5miwzxo=
+	t=1782834517; cv=none; b=OqamwNHJk7WV/iIyQ3JOpCUPIxi8K8+twp4vaEp4SQNqfgO6H3Pa+ealwIqaxRQLSDqe4xY6RjLBqMW+DQWuPT4f8TurJ2mjq5aePsxuit3tMU9n74uRtPU5Q5k4OxSdLll6fqHoXqjdZbZDOqp7KtHOqdjYTD+VcwQl76eUtgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782834074; c=relaxed/simple;
-	bh=HECdCdoiVcKsHL9ieEZjduz0kz0EHHXfKnn7LggCP2M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aNoAD3becFnKNHaq/r3+tVMeyLidrNX8qBfVN7NM//WIzJJP1z6FrHKruiUbzHJAU3+/mgbnQes413Z2YBJ9mtHq2JebKciyjx3wgFXunSsfUJKET13b8ndhezLM3EjWasA1VKONp8AcajRh7A2GTMItNo8Nfeogv5OPapljgo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-969524c1a63so1177734241.0
-        for <linux-spi@vger.kernel.org>; Tue, 30 Jun 2026 08:41:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782834072; x=1783438872;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8FudzaGflml93J0qLROb0/HyeenVr7sqBJ6ASEnUvtg=;
-        b=ODu5ilaEduJrDZcWpO0p8yjEx2heiTHzSe9d2c93GLiZ9IrFlahUba4QGOmh3MBzCv
-         OHREpqjLEnPZqUuaWxfiPhjTcsvgy0Fm+90IZF+rh3aOTTH7Jd7j59KRlfAFJJvNnHd8
-         3Slq/uDNZx3fNTkJRPksSsXj7i/E1qHaTUCkoBmbC40xnqpOXOMKCJSGpzD2jCtJJDNl
-         M+XzyR3HzHVRaF+kMHZPIoUKLWUlUDxEXoHJK55phOZUfwXXBxcXf3gqhB5onDa6NAs9
-         PCz2iKq0dzb6c4paOvqcTb+fTt5kNB+b/CkazEgtHcq9lhGmdAuaYa3gg5IFadwBlHdy
-         xskQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrR7Gk9xcXytXZbR5aQs+iF0H6BAimIPnyKaaFLzWC5zKu+yCBwdWUDkryfnxmNG2LQ4LwhuCrHOEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1p3FlLRrMNncWlAXo2lWDTYH5VV+TM0Zri5cQuuExIP+tizP5
-	poifI2UYTXHYB9U7fNgIoJpjZDF43AmWfsqz7lwfgRhVAskVe8SWirDjHaiYfXeoB0k=
-X-Gm-Gg: AfdE7clVEprFZ9yO5up0ELo+Tj3D+Z/kAAwL4VLKiEdfJsYYEurpSY7UTVGC2vPsrwn
-	y6RTtgVgG98YczKooBVOT0N6BE/AkDWU1P/vRt9Z1df5AodLi/FALgMJfYSh0ThvMev91WE7utQ
-	ufNq56OQ2v9aEcs+DsSe8ZtD8dp6YNK7GToGYLlztcQP0+aQyYw955KGNj1NEE8lojnKmdsMeBG
-	CW4JYVb+Ca+ZMIygUefLgbTAG7ua8jVP1H5vJTfvM+9O6kiHh1rnjJh3Lb6sSKy9+8hQa+foQZv
-	WUcB9uBtu/YmtKrr2Dr4uMGPuGjgFZfJFX+y++goxmP+ehYeMOrL46UoGWtR3+H0m6YGjlgU2hO
-	aaUqAtuhPa3gLYx9YCxuaerG4qKZAlsMOF2JK1CUdpWzYbNyit8qNTZ2bjM2u3RlH8VtfMtVvlA
-	rsVunusaWgzKUR6nxx/wYyq835vMM0XP8NuWIC+GTS7RynBtMjZg==
-X-Received: by 2002:a05:6102:41a0:b0:6c1:85f8:29b3 with SMTP id ada2fe7eead31-73a365e0415mr2271741137.6.1782834072418;
-        Tue, 30 Jun 2026 08:41:12 -0700 (PDT)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-73a821a6b8csm1305728137.5.2026.06.30.08.41.12
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jun 2026 08:41:12 -0700 (PDT)
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-735f73287e2so2568950137.2
-        for <linux-spi@vger.kernel.org>; Tue, 30 Jun 2026 08:41:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rpr2wzkb0xFBOfsbaSQJ4k4W0FftjOcVLXGEEHNgcAQ32SAVyO33JW2vGeoJRmXfGfYixUl6OOA8Ak=@vger.kernel.org
-X-Received: by 2002:a05:6102:598c:b0:737:5c42:858b with SMTP id
- ada2fe7eead31-73a36aee835mr2136553137.11.1782834071816; Tue, 30 Jun 2026
- 08:41:11 -0700 (PDT)
+	s=arc-20240116; t=1782834517; c=relaxed/simple;
+	bh=3aT6CxRg123m2reAq5WHrVZnVtYMLxc+eKx+bwlOyv0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ayZOYofK74bX7nzBTn1c4zD8nWGYZHkKVlanFf0+wvWPPlJ3DZqm8ncxOMf/LdPDQeFmIMJ0XXc6IyPEna6jOjBlO2K3A+T3xw/Xnqt/GcguIoBlvrvL6p+PDdrR/iH1iD5QpdfQJQaqcbZ6kqSN9v/tfDOhqGAUUsgQ2tvS2I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I6S3xUgf; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I6S3xUgf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660E81F000E9;
+	Tue, 30 Jun 2026 15:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782834516;
+	bh=kBZEp1JFxrH/4OTzag8TPsknqgwJ7BFgp8gDsVB7jmU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=I6S3xUgfLWgtD/1WNCeojQbewX/lB8YneJcPSxuul6xb+FCzhDQ2o8t0l/Chl7tt8
+	 zc/tSkvtUI1DH0omkpWyNwxRffWGQTJzH2J5u8cOlX5jxc/EJVUxEtdEFGlfyaLnRA
+	 K+kgVo6l63dcQ1HZ8UmtHHJfLLbgxPOotG8SBoKN836QZpY2/PdKd17ME+hC5aERZy
+	 B3AUeOpW9V8BS9DCj169mLwhxs2xg4n/4WmpFcydwPX3hb+FKBC37+0ei6MBlfFIgs
+	 xPjnr35yP1muyBZrZRnf6UOXAvR8bZ1UFjIUw8uJs5j6QPTttYMaH4Fn36MPH714Z6
+	 vfLaxO9+xemGQ==
+From: Mark Brown <broonie@kernel.org>
+To: andrew@codeconstruct.com.au, Tomer Maimon <tmaimon77@gmail.com>
+Cc: openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, avifishman70@gmail.com, tali.perry1@gmail.com, 
+ venture@google.com, yuenn@google.com, benjaminfair@google.com
+In-Reply-To: <20260609071458.2692482-1-tmaimon77@gmail.com>
+References: <20260609071458.2692482-1-tmaimon77@gmail.com>
+Subject: Re: [PATCH v1] spi: npcm-fiu: support dual and quad UMA writes
+Message-Id: <178281884964.79320.1074539689471418305.b4-ty@b4>
+Date: Tue, 30 Jun 2026 12:27:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260626180326.9593-1-wsa+renesas@sang-engineering.com> <20260626180326.9593-3-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20260626180326.9593-3-wsa+renesas@sang-engineering.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 30 Jun 2026 17:41:00 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUi74DDa_xoJ8Lo=eV54w4q9Jhu-1N02vUkNGCKgEywow@mail.gmail.com>
-X-Gm-Features: AVVi8CcUvJP0aecjrianzUPa4AqYvcUMhpUwuDQPV--pueaST2jff09tZFzGmBc
-Message-ID: <CAMuHMdUi74DDa_xoJ8Lo=eV54w4q9Jhu-1N02vUkNGCKgEywow@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] spi: dt-bindings: snps,dw-apb-ssi: add
- 'power-domains' property
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-renesas-soc@vger.kernel.org, Herve Codina <herve.codina@bootlin.com>, 
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=3aT6CxRg123m2reAq5WHrVZnVtYMLxc+eKx+bwlOyv0=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqQ+VRWpZb2kjWue0V0lyE0OjAH3ImoIn1Sg0g8
+ LKQ+JtUNjSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakPlUQAKCRAk1otyXVSH
+ 0CBtB/9u8MLuDpmoFlcJ8j6sseelqY4nWeIAaQ8WaiJg0cfVCLlDp0kfqVta/cj5QrCWfEnfQyx
+ hgMOWzoFuGc9BeVQCRJfDkhZQwGTdG/9PiUdFCvb/M2J+RFeW3A+dJ3MmiPqJaqr93bCZtvLMml
+ wGwqFW7FUWioOOBCA8McimvnwBFc+GCm7hn9h0ykbZWs6Bw+g6ZD287l7KjYBcby2G14AOsSkrv
+ B732j1ik9658Fk6YmuoGEUHLJOSJ+Ikrjfks8NBAS6xDGn413r3zdPX3KjTy9XaVFNRBrf1AL0v
+ VOLrrXc4OwVFvcV8ABEkKQbne3Rp9RONcDDEcOgwxGTpNabR
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi Wolfram,
+On Tue, 09 Jun 2026 10:14:58 +0300, Tomer Maimon wrote:
+> spi: npcm-fiu: support dual and quad UMA writes
 
-On Sat, 27 Jun 2026 at 11:20, Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
-> This SPI controller likely belongs to a power domain for all the SoCs
-> listed. For sure, it belongs to one on the Renesas RZ/N1 SoC, so
-> enable the property to be able to describe its power domain in DTs.
->
-> Suggested-by: Herve Codina <herve.codina@bootlin.com>
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-> ---
->
-> Change since v3:
-> * reworded commit message to make clear other SoCs likely use a
->   power-domain, too (Krzysztof)
-> * change Reported-by to Suggested-by (Krzysztof)
-> * add Rev-by (Herve)
+Applied to
 
-Thanks for your patch!
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-> --- a/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml
-> @@ -87,6 +87,9 @@ properties:
->        - const: ssi_clk
->        - const: pclk
->
-> +  power-domains:
-> +    maxItems: 1
-> +
->    resets:
->      maxItems: 1
->
+Thanks!
 
-RZ/N1 definitely needs a power-domains property, so
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-I don't know about the others, they don't seem to have it in their DTS.
+[1/1] spi: npcm-fiu: support dual and quad UMA writes
+      https://git.kernel.org/broonie/spi/c/06f2005b9421
 
-Gr{oetje,eeting}s,
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-                        Geert
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

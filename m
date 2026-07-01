@@ -1,200 +1,205 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0B934AB00;
-	Wed,  1 Jul 2026 18:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7518366816;
+	Wed,  1 Jul 2026 20:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782932168; cv=none; b=kBHB0yadXEYQkDvojMoDCH9asnluCLuiQnXumvD9aYqJ3xdCZMDLK39rgxGuCFmLLkxVFF17jIZdiOefkeFr2MAV/gOzitl+O2p/w2/bBsvJ4A5Es+Xyn11EHesv2XtD/p8aQpKV01cZuibiGmVDN0unxYefOmRwPA1jB2uIRqg=
+	t=1782937913; cv=none; b=I6PTB3+rTtq8ixySSScNK2qum54NgomcSrG5oZAIDQ52mdwwhDUWuv73n+MRxzvgiZYoPIWefEP4RlhxR4JfkjMUbyUCPKoSfuLum0xqhBB2cNopIq3ZT4cG/UihVDO4veQcGMZYzWe2YILz7iJ53PpDDYh76R3/Y64V2c4+b90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782932168; c=relaxed/simple;
-	bh=+LPMl91hB17oNPptObbvHvkUvcU9wk/5F7tgcR+QDCs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IiyFvuagx3+MVfCEBbaFq3msJbDyWBC7KohjHoZRmxL5GPY2r3Cf3XvSaWbd3x1gYl9Nallkpk4bcRbHEwrmN0PieJOcytKsIBCnOfrROQD3mgHA8c3nEx4V6DhGa+FncXU05gOCvy8PbofY9mCkL/2laJvy5AF12cvDBQboNUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBdQj6qU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782937913; c=relaxed/simple;
+	bh=URgVHpcL9iQYQ8SxfKORweblHKZznsJiLp2eiL9vvBA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j4n+qQkzsm7nirndoCvxG26qJHLldw3fo5wNox4rjCd//AbPjQHi0P8iHyCBSY5uWth5e2h2IukKzd6TGTA8PVX/ZONCVymOJsXyD0ptxDrb/VLydnWpcG2GsMq0LT4dpDwWu/Ea5Gohwfb/A7XoeMEqMJ9jb4BAv0hbX5rfqGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YF8F+Yne; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBdQj6qU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3248E1F000E9;
-	Wed,  1 Jul 2026 18:56:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YF8F+Yne"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE0C1F000E9;
+	Wed,  1 Jul 2026 20:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782932164;
-	bh=UVsLUCoJK2OfphtdYWBXzYdg+FD1B0j4kSx8XHwgveU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dBdQj6qU/anVOvzew2FVrEeLzOqZqwyjI4pw5nmA3XjION12+HQhT43SjpLH3cjIS
-	 4ZSYB4vHbhfJsk+qejeWIQB20ezTKPeBr/vLJttZmT6AxthBXET6efPQyoq4PNuiis
-	 ENE6wgW32fDvxudm3bOFlmM5y6BxaJFoEBrlFFKI4O3n+5TYSQ0tPKc0q5oGZl9IFX
-	 5HI/hsVR5WXLIMru621VKXUTUF7UQSPgDU+brXEclYC28d8e2WwRhtonDC8CqsK0g1
-	 gGKTDE4MkNUleFhOjFC2sSYlDttQfXgCmeUEpUZQSTcAaoTj6uOFFBBqNe0tGYxFAy
-	 /JpWvBFgVDt4w==
-Date: Wed, 1 Jul 2026 19:55:58 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, Janani Sunil <jan.sun97@gmail.com>,
- <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH v5 3/3] iio: dac: Add AD5529R DAC driver support
-Message-ID: <20260701195558.18da4bfd@jic23-huawei>
-In-Reply-To: <20260701-ad5529r-driver-v5-3-ed087900e642@analog.com>
+	s=k20260515; t=1782937912;
+	bh=9HVsCqOTiNzOnHYIgHR3CzOqO25v3kJTgZItH+Woa7o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YF8F+YneR5nKJ1qP48FJvjrBLyifVzhtl0r0mKm9PNnulJ43Z6LPRKyytM7zfQ91m
+	 wayUSnZ+ZggoFhXBTYbudubCoTlbi54LSyepuWS+0Y10xidmQVFKF59MU5wbBUjDEt
+	 mGdHXdry9hT3SyeaCZWpUL+hFYc00u6AgBKyL5Xa2Gu6zQ/yjKCuky9JYqNb8AObYa
+	 b2hqbHnFyvIpjLdRH0OetjAZuAgZhvtThplzGJylUV4zeTj7VaSg4JeDJA7BK2d9yc
+	 uwdhjDZCNp60SGG7jb+XdjeBtNk0/a2E8HABCJ4aZT+OHF5kJ4uhsFf8kMXYkkV64X
+	 MT4W5EqOXrkiQ==
+Date: Wed, 1 Jul 2026 21:31:46 +0100
+From: Conor Dooley <conor@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Janani Sunil <janani.sunil@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
+	linux-spi@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] dt-bindings: spi: Add spi,device-addr peripheral
+ property
+Message-ID: <20260701-carpenter-romp-33a39756dfec@spud>
 References: <20260701-ad5529r-driver-v5-0-ed087900e642@analog.com>
-	<20260701-ad5529r-driver-v5-3-ed087900e642@analog.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+ <20260701-ad5529r-driver-v5-1-ed087900e642@analog.com>
+ <20260701-immodest-carrot-611d255656b5@spud>
+ <20260701192915.2fca6b06@jic23-huawei>
+ <0bb77749-4aef-47dc-9107-a93b961a0187@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2P9d6LXYZY7Fu/BO"
+Content-Disposition: inline
+In-Reply-To: <0bb77749-4aef-47dc-9107-a93b961a0187@baylibre.com>
 
-On Wed, 1 Jul 2026 08:40:41 +0200
-Janani Sunil <janani.sunil@analog.com> wrote:
+--2P9d6LXYZY7Fu/BO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Add support for AD5529R 16-channel, 12/16 bit Digital to Analog Converter
-> from Analog Devices.
-> 
-> The device communicates over SPI and supports per-channel output range
-> configuration. An optional external 4.096V reference can be used in
-> place of the internal reference.
+On Wed, Jul 01, 2026 at 01:48:24PM -0500, David Lechner wrote:
+> Note that a few subsystems, including spi want the subject
+> to be `spi: dt-bindings:` rather than the other way around.
+>=20
+> See https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting=
+-patches.html
+>=20
+>=20
+> On 7/1/26 1:29 PM, Jonathan Cameron wrote:
+> > On Wed, 1 Jul 2026 12:04:37 +0100
+> > Conor Dooley <conor@kernel.org> wrote:
+> >=20
+> >> On Wed, Jul 01, 2026 at 08:40:39AM +0200, Janani Sunil wrote:
+> >>> Some SPI devices support sharing a single chip select across multiple
+> >>> physical chips by encoding a device address in the SPI frame itself.
+> >>> Add a generic spi,device-addr property to document this per-peripheral
+> >>> address. This property belongs in channel or sub-device nodes of
+> >>> peripherals that use this addressing scheme.
+> >>>
+> >>> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> >>> ---
+> >>>  Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 5 =
++++++
+> >>>  1 file changed, 5 insertions(+)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-pro=
+ps.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> >>> index 880a9f624566..3774e8018355 100644
+> >>> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> >>> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> >>> @@ -142,6 +142,11 @@ properties:
+> >>>      minItems: 2
+> >>>      maxItems: 4
+> >>> =20
+> >>> +  spi,device-addr: =20
+> >>
+> >> To match other generic spi properties, s/,/-/.
+> >>
+> >> However, you don't actually use this as a spi peripheral's property in
+> >> your device binding, so you've got your wires crossed here somewhere.
+> >=20
+> > If we are going to make this generic (which I'm not against) I think
+> > it should also work for the case of multiple independent devices.
+> > So it can also be a top level device node spi property.
+> >=20
+> > That kind of makes me wonder if we are better off having it always
+> > in the top level node, but allowing multiple values to represent
+> > sub devices under this.  That would leave figuring out mappings of which
+> > channels are on which device to the driver. The driver must know the
+> > mapping afterall.  For the example something like
+> >=20
+> >=20
+> > #include <dt-bindings/gpio/gpio.h>
+> > spi {
+> >     #address-cells =3D <1>;
+> >     #size-cells =3D <0>;
+> >     dac@0 {
+> >         compatible =3D "adi,ad5529r-16";
+> >         reg =3D <0>;
+> >         spi-max-frequency =3D <25000000>;
+> >=20
+> >         spi-device-addreses =3D <0 3>
+> > ...
+> >=20
+> >         #address-cells =3D <1>;
+> >         #size-cells =3D <0>;
+> >=20
+> >         channel@0 {
+> >             reg =3D <0>;
+> >             adi,output-range-microvolt =3D <0 5000000>;
+> >         };
+> >=20
+> >         channel@16 { #on second device using dev addr 3
+> >             reg =3D <16>;
+> >             adi,output-range-microvolt =3D <(-10000000) 10000000>;
+> >         };
+> >         channel@18 { #3rd channel on device using dev addr 3
+> >             reg =3D <18>;
+> >             adi,output-range-microvolt =3D <0 40000000>;
+> >         };
+> >     };
+> > };
+> >=20
+> > Where devices are truely independent then you would have separate device
+> > nodes each with one entry in spi-device-addresses
+> >=20
+> > I'm a bit dubious about putting this in the spi namespace though given
+> > it is not part of any standard specification.  Do we have any precedence
+> > for that sort of thing?
+>=20
+> It seems like most SPI controllers/devices don't really follow any
+> standards, so I think there is plenty of precedence for a property
+> like this. It would be nice to see one or two more examples of SPI
+> peripherals with this feature though other than the one chip in
+> this series. Otherwise, I wouldn't try to make it a standard property.
 
-This needs to respect the device address stuff in the dt binding.
-It is fine to initially support just one device, but if it's address is 2 then
-the driver should work.
+There are two microchip devices with a property like "microchip,hw-addr"
+that I pointed out on ?v3? (whichever thread had the long discussion) that
+do the exact same thing as this device.
+I did ask that the submitter convert those to the new property as
+evidence that this is actually generic, but that request was not
+implemented. If done at the device level, this should be trivial, as the
+microchip devices don't actually have support for multiple devices on
+the same cs in the drivers, they just parse the property to correctly
+support a single device.
 
-> 
-> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
-> ---
->  MAINTAINERS               |   1 +
->  drivers/iio/dac/Kconfig   |  17 ++
->  drivers/iio/dac/Makefile  |   1 +
->  drivers/iio/dac/ad5529r.c | 531 ++++++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 550 insertions(+)
-A few other things inline.
+> I'm also in favor of making it an array and letting the device-specific
+> bindings decide what multiple devices with different addresses on the
+> same CS line means.
 
-Thanks,
+I kinda wanted it to be in the channels, but I think, on reflection,
+that putting it at the device level is probably fine. Pretending
+that two devices are one extended device is always going to have some
+ickyness about presentation, and putting it in the channels means
+defining it again and again and again for each type of device that wants
+it.
 
-> diff --git a/drivers/iio/dac/ad5529r.c b/drivers/iio/dac/ad5529r.c
-> new file mode 100644
-> index 000000000000..4841bd608482
-> --- /dev/null
-> +++ b/drivers/iio/dac/ad5529r.c
+> But... if we are leaving it up to devices to deal with the property rather
+> than the core SPI code, maybe it shouldn't be a standard SPI property.
+> Although, I suppose the core SPI code could parse the property and just
+> pass that information in the struct spi_device to let the device driver
+> do what it wants with it.
 
-> +#define AD5529R_DAC_CHANNEL(chan, bits) {			\
-> +	.type = IIO_VOLTAGE,					\
-> +	.indexed = 1,						\
-> +	.output = 1,						\
-> +	.channel = (chan),					\
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-> +			      BIT(IIO_CHAN_INFO_SCALE) |	\
-> +			      BIT(IIO_CHAN_INFO_OFFSET),	\
-> +	.scan_type = {						\
-> +		.format = 'u',					\
-> +		.realbits = (bits),				\
-> +		.storagebits = 16,				\
+--2P9d6LXYZY7Fu/BO
+Content-Type: application/pgp-signature; name=signature.asc
 
-None of .scan_type is yet used.  I'd suggest removing that for now.
-It can be brought back when it is needed for buffered output support.
+-----BEGIN PGP SIGNATURE-----
 
-> +	},							\
-> +}
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakV5MgAKCRB4tDGHoIJi
+0gPPAP4sS2U1r0LoGoUOX7hfkPoCqdUYGik8IJA8cZ0L2SgfZwD/bIUwnmgsFEmz
+oBrPyf4GNoeEWxDJBi9xNcqYfzpzwQs=
+=jJgT
+-----END PGP SIGNATURE-----
 
-> +static const struct ad5529r_model_data ad5529r_16bit_model_data = {
-> +	.model_name = "ad5529r-16",
-> +	.resolution = 16,
-> +	.channels = ad5529r_channels_16bit,
-> +	.num_channels = ARRAY_SIZE(ad5529r_channels_16bit),
-Sashiko picked up on this:
-https://sashiko.dev/#/patchset/20260701-ad5529r-driver-v5-0-ed087900e642%40analog.com
-
-When we have channel specific nodes in DT we have always taken the absence
-of a given node to mean that it is not wired up and so the driver should not provide it.
-
-I don't mind if for now we insist on all channels being present but we should
-then check they are all there in DT or that there are dt-binding specified defaults.
-
-The decision on whether to present all channels or just those in DT is a driver
-one but really hard to change in future so much better to just present the
-channels that have dt subnodes rather than all of them.
-
-
-> +};
-
-> +
-> +static int ad5529r_probe(struct spi_device *spi)
-> +{
-> +	ret = devm_regulator_get_enable_optional(dev, "hvss");
-> +	if (ret && ret != -ENODEV)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to get and enable hvss regulator\n");
-> +
-> +	/*
-> +	 * The datasheet mentions a 4.096V external reference for correct
-> +	 * operation.
-
-I don't see the comment as adding much value given the person who needs
-to see that is the board designer and they don't tend to read drivers :)
-So probably drop this comment as noise to us.
-
-> +	 */
-> +	ret = devm_regulator_get_enable_optional(dev, "vref");
-> +	if (ret == -ENODEV) {
-> +		external_vref = false;
-> +	} else if (ret) {
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to get and enable vref regulator\n");
-I'd just put that on one slightly long line.
-
-> +	} else {
-> +		external_vref = true;
-> +	}
-
-Those are all single statements so arguably don't need the {}  It is a bit
-fuzzy when you have a line break like in the second one here though.
-
-> +
-> +	st->regmap_8bit = devm_regmap_init_spi(spi, &ad5529r_regmap_8bit_config);
-> +	if (IS_ERR(st->regmap_8bit))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap_8bit),
-> +				     "Failed to initialize 8-bit regmap\n");
-> +
-> +	st->regmap_16bit = devm_regmap_init_spi(spi, &ad5529r_regmap_16bit_config);
-> +	if (IS_ERR(st->regmap_16bit))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap_16bit),
-> +				     "Failed to initialize 16-bit regmap\n");
-> +
-> +	ret = ad5529r_reset(st);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to reset device\n");
-> +
-> +	ret = regmap_assign_bits(st->regmap_16bit, AD5529R_REG_REF_SEL,
-> +				 AD5529R_REF_SEL_INTERNAL_REF,
-> +				 external_vref ? 0 : AD5529R_REF_SEL_INTERNAL_REF);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to configure reference\n");
-> +
-> +	ret = ad5529r_parse_channel_ranges(dev, st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->name = st->model_data->model_name;
-> +	indio_dev->info = &ad5529r_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = st->model_data->channels;
-> +	indio_dev->num_channels = st->model_data->num_channels;
-
-See above.  Sadly I think you need to generate these dynamically as we
-have per channel dt sub nodes.
-
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
-> 
-
+--2P9d6LXYZY7Fu/BO--

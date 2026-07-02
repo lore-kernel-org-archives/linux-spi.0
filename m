@@ -1,205 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7518366816;
-	Wed,  1 Jul 2026 20:31:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD5445039
+	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 06:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782937913; cv=none; b=I6PTB3+rTtq8ixySSScNK2qum54NgomcSrG5oZAIDQ52mdwwhDUWuv73n+MRxzvgiZYoPIWefEP4RlhxR4JfkjMUbyUCPKoSfuLum0xqhBB2cNopIq3ZT4cG/UihVDO4veQcGMZYzWe2YILz7iJ53PpDDYh76R3/Y64V2c4+b90=
+	t=1782972525; cv=none; b=N9yPyQeVAM9tk+r37LbROE5kci+4Kgv1lLrecMOwdiId1u6prnWC/LDsQs+EA6eoXDtuXukm89UpBOSGlNIOPm+ksXM3X96u/JBhRjvsiZFy1Nx4NtNcxRP1+XVcbsYtWhT/3tICsXVachJzkcydim6X7IYRPC/k8jR15GLjwy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782937913; c=relaxed/simple;
-	bh=URgVHpcL9iQYQ8SxfKORweblHKZznsJiLp2eiL9vvBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j4n+qQkzsm7nirndoCvxG26qJHLldw3fo5wNox4rjCd//AbPjQHi0P8iHyCBSY5uWth5e2h2IukKzd6TGTA8PVX/ZONCVymOJsXyD0ptxDrb/VLydnWpcG2GsMq0LT4dpDwWu/Ea5Gohwfb/A7XoeMEqMJ9jb4BAv0hbX5rfqGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YF8F+Yne; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1782972525; c=relaxed/simple;
+	bh=xIzMABhrBVOXS12KhXGxjbw3vGblyslZPLNQnrZtcYM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BHX5fesy/ZGYwVAVS71D9cBoULKRjAeajdkCKvMFp3KfVPSEow0KQoVYvgoxsDJrcQeL/cmYvYaWLJz6suVV7CuCS9SmARGDMyR4eDHEsBpROlPPAeX+0qDOXp5rDrgFtq6Q4WGgSIWafOiE7X17g8M+SpkYLUDd4J4XxLxDpqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ni/umDJi; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JCI9ZxfK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YF8F+Yne"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE0C1F000E9;
-	Wed,  1 Jul 2026 20:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782937912;
-	bh=9HVsCqOTiNzOnHYIgHR3CzOqO25v3kJTgZItH+Woa7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YF8F+YneR5nKJ1qP48FJvjrBLyifVzhtl0r0mKm9PNnulJ43Z6LPRKyytM7zfQ91m
-	 wayUSnZ+ZggoFhXBTYbudubCoTlbi54LSyepuWS+0Y10xidmQVFKF59MU5wbBUjDEt
-	 mGdHXdry9hT3SyeaCZWpUL+hFYc00u6AgBKyL5Xa2Gu6zQ/yjKCuky9JYqNb8AObYa
-	 b2hqbHnFyvIpjLdRH0OetjAZuAgZhvtThplzGJylUV4zeTj7VaSg4JeDJA7BK2d9yc
-	 uwdhjDZCNp60SGG7jb+XdjeBtNk0/a2E8HABCJ4aZT+OHF5kJ4uhsFf8kMXYkkV64X
-	 MT4W5EqOXrkiQ==
-Date: Wed, 1 Jul 2026 21:31:46 +0100
-From: Conor Dooley <conor@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Janani Sunil <janani.sunil@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
-	linux-spi@vger.kernel.org
-Subject: Re: [PATCH v5 1/3] dt-bindings: spi: Add spi,device-addr peripheral
- property
-Message-ID: <20260701-carpenter-romp-33a39756dfec@spud>
-References: <20260701-ad5529r-driver-v5-0-ed087900e642@analog.com>
- <20260701-ad5529r-driver-v5-1-ed087900e642@analog.com>
- <20260701-immodest-carrot-611d255656b5@spud>
- <20260701192915.2fca6b06@jic23-huawei>
- <0bb77749-4aef-47dc-9107-a93b961a0187@baylibre.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ni/umDJi";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JCI9ZxfK"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6624io0B3592740
+	for <linux-spi@vger.kernel.org>; Thu, 2 Jul 2026 06:08:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=7LHd9c1QICTgnfClv1h2ci
+	DcQzquFOL+HXfQ434Enz0=; b=ni/umDJikvsXP2fL5p5CK9HmBCOcnzezaLQ2Ix
+	7RF7AZ1yHiZXMy5MD+00KGaKX5jGodU5EqPGdv0jlGSagO6HQSwhSEozQxb8voUL
+	cw1i6A38iHrJjvFN+Z0Pao9eiOjbkupEl48tCUYKimuFJIStf8VWhpxNrhg4iUK+
+	608prt42LHzJR/RQQG/vQEIJ6fc1a+WPHoOM7E+K9qU01wKw6VuYeiKEKcq5P+Zx
+	ZWKTYpNNA7n53tFtUt4M2xzSUifGN3vwjB+/8nD0nt2PZ5wsM+kn3YwwBS97H0O5
+	nqMsGkeRtbh7z9QuvxvU+4W/DTSn8mkHKIQfN9TWkKGx72sQ==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f5h7n885f-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 06:08:43 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2c9ed5caa3bso2787965ad.1
+        for <linux-spi@vger.kernel.org>; Wed, 01 Jul 2026 23:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782972523; x=1783577323; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LHd9c1QICTgnfClv1h2ciDcQzquFOL+HXfQ434Enz0=;
+        b=JCI9ZxfKTVTmeXb2zST0+eqGa5lQ1Wrx//817IW7G7eUiJuroQfBxKFrrWrdW6gH0a
+         MW/w6+5B8EnOVq3mxgqkQGk+eUoiTzPzwkcWz3DR6QxIu/Jh9sNLmmku+RZyQSKp8Nbw
+         Nd3KZgKR4EBBI2VJPsQk9ksdrbWBE8LtJJZhHPnU4fRqhMtOHEzXxeS/Ok0wxNGVyAgy
+         9pytmyNItRSkxjqsCyMOEQU6BxybjuoPEbukTIy68S75n4VeoXGsIqFc4XocEKmRtl2M
+         YxCc6D520MRlRyHC85KuG7CRDGaxmj02cBMAQt1ZTEoonovjrcVsJ7sDPQhlxLUU8SPs
+         7r4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782972523; x=1783577323;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7LHd9c1QICTgnfClv1h2ciDcQzquFOL+HXfQ434Enz0=;
+        b=R3H4c+lYiEdzrgmDWgcPEL0ghPJQ1xeNnlh2Ew7hAM8bdZJWIS/dXLMIeegQBadi/Y
+         6y0lKdtDY5K2IbDHGhh/xpEd5C+kxJDNH7qOTeCmUzSx0p5XVE0R/I/+o4f0bzol2PxZ
+         3SNdHyrUgsmD/MXytIYl+xXyvNwwfs/SN0J3437xemRT3cG0RNBT8TrJpDsWFi9adaE7
+         Fet+Jz2OwPc9Ihh1LnELomyyQmJvPvvu6C6uit6/IhFboejKK7l/+6JaeD7EP4PtB5dD
+         vJVR8uH+wJvmtESgmmCEfMR+xcB0l3iSHEUh71GTpdZAJTB1xZ9xK2pdBR8qH/GJvtJr
+         f1PQ==
+X-Gm-Message-State: AOJu0YxsZGTeA6DmvMNbGa/Jun1/FTkEpOPZnEjFpPd0Gb0zvghkGYbr
+	ndHfPXIn9VucMO8x+RpMX8odf4GWVVE5fSqfDeUM8Y1hrxbSpwZyhIZCxJt4Qdj6M0+9xHikSI+
+	2cxP8Z4fSs5P0QpLs7Pi5vO4ihRlRolyWIcX/LqowJ8Twf2zjkVHNl7EUKIy62aQ=
+X-Gm-Gg: AfdE7cn5xw9XAk4VAqEi2IoMawrNSC9ORTkfDK+Y6eNagLPf0yTRs5DCvF/0u/i2Ufp
+	HK/+tfxDRYhNK+oYcQSvZttZdo0FQXvx86O+KfAdK5cGDq9bA1ePGoFScbqlRR3pJIvOJWQVJkO
+	Yo00F2lpq93twCwnaMu6C7r7QAsgJPBGRPdX0ATvZaZRVpkBkwdOcGwtXlpL+JQQA8h20Amk4S4
+	uuCusjF9ddQTKQ98mi4PBYeu0ioanfBqXe1V4vj8vLlVjDoJfwOSRooxbe+qFVpXFbu/pvzT2Zq
+	leH0TJZzxXN0bEdPIrtAohL5KOCTO1EwmHY0Y0ZkVmk0rvNsOk8kRB0pJ3/xIrpOKZwgufIoorA
+	+zSAofJ9cXtRCLctWl9GHaw66LB+tmEt3iXtAFd6aC1QQ
+X-Received: by 2002:a17:902:f651:b0:2c9:c913:e214 with SMTP id d9443c01a7336-2ca44a1cdabmr75889375ad.20.1782972522463;
+        Wed, 01 Jul 2026 23:08:42 -0700 (PDT)
+X-Received: by 2002:a17:902:f651:b0:2c9:c913:e214 with SMTP id d9443c01a7336-2ca44a1cdabmr75889005ad.20.1782972521787;
+        Wed, 01 Jul 2026 23:08:41 -0700 (PDT)
+Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca9aa00970sm8176325ad.71.2026.07.01.23.08.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 23:08:41 -0700 (PDT)
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Subject: [PATCH 0/4] spi: fix sticky -EINVAL after PM runtime resume
+ failure
+Date: Thu, 02 Jul 2026 11:38:19 +0530
+Message-Id: <20260702-fix_sticky_-einval_after_pm_runtime_api_failure-v1-0-6ddc317011c0@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2P9d6LXYZY7Fu/BO"
-Content-Disposition: inline
-In-Reply-To: <0bb77749-4aef-47dc-9107-a93b961a0187@baylibre.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFMARmoC/yXNTQrCMBBA4auUWRuIoU3Rq4gMMZnoaBtDfopSe
+ nejLr/NeytkSkwZjt0KiRbO/AwN+10H9mbClQS7ZlBSaanVIDy/MBe2jzcK4rCYCY0vlDDOmGo
+ oPBOayOgNTzWR0ONhdNIMtncSWjUmaonf8XT+O9fLnWz5bmDbPnyJc2STAAAA
+X-Change-ID: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
+To: Mark Brown <broonie@kernel.org>, Dilip Kota <dkota@codeaurora.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Alok Chauhan <alokc@codeaurora.org>, bjorn.andersson@oss.qualcomm.com,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        aniket.randive@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com,
+        jyothi.seerapu@oss.qualcomm.com, linux-pm@vger.kernel.org,
+        driver-core@lists.linux.dev,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782972515; l=1503;
+ i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
+ bh=xIzMABhrBVOXS12KhXGxjbw3vGblyslZPLNQnrZtcYM=;
+ b=ywxqrVcRff5Xmtckb5XEgw+rGsMHvNYpd6paW5OAHepe0UfyIbHv/NeHi74nUfLY3pdC9uWgU
+ 9Dw3548w0aSB/xbmjvjovTzWw1Dtz9XBcmHTBFK9X5x278+d8NxNuuO
+X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
+ pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDA2MCBTYWx0ZWRfX74h4r4ANzIRM
+ O2IRM2f7AyyZ5dX3Hd/VJ9ZY4RCVfXJEbkavJmz/4Jn99oVJKJ4oei43yQCIA/zN1ufXgdZiDD+
+ mApxzcky7gkEBTdVi11w1jjBaHjQxg4ZACvEaA1BnMgp0hAwkBFVk2BNaHqVNui5UsHq3JJWv97
+ 0J/xgxEuorHG1kCezdqIsjJLMzvcKPwGwyul1ADfavivoBB5NJRyfh01Pow/88EW7jD28/0lETM
+ HywGMzOd9+OA8eQFU6lWmlOtR4hsHvSOpMjv9Os7kgZV0TdnYFKTDuu+nFwNWrtveQw4l/tlCI1
+ Hc/Z0EyyoKg1J0QO0cCgcnkip7Cy8jahRy2OtJs5hwV/im+HXsyhHdwu7TiDUPAqGGAz1vJbNeC
+ lNHK50aZwpRgZ8pvEzpqHxJNIS3cnOBAzDxp2cudcyq2WlFCLNq3Wlu048fp56Ip8P+4h1rRaFo
+ lo4bKlmAFyZe9U6PZIQ==
+X-Proofpoint-ORIG-GUID: jlelnR24mcTGBwp7ot6NVYO5_9gsTTxE
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDA2MCBTYWx0ZWRfX/hMvltKqrh+d
+ OAWjStYXzz8ez503/Bc6FCt2Y03DOJnFNgb3kNf+eGBa0Lfo9XI1FE/zcUoQHXGgohR1BcQOxTr
+ PaqvTsPkNwDCk2+IaO82IqEVMz00wXI=
+X-Proofpoint-GUID: jlelnR24mcTGBwp7ot6NVYO5_9gsTTxE
+X-Authority-Analysis: v=2.4 cv=WMBPmHsR c=1 sm=1 tr=0 ts=6a46006b cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=E9aaBbxYo9AZKUvAECAA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-02_01,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 adultscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020060
 
---2P9d6LXYZY7Fu/BO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When pm_runtime_get_sync() fails, the RPM core sets power.runtime_error,
+causing every subsequent get call to return -EINVAL without attempting
+the resume. This makes the controller permanently unusable until rebound,
+requiring a driver rebind to recover.
 
-On Wed, Jul 01, 2026 at 01:48:24PM -0500, David Lechner wrote:
-> Note that a few subsystems, including spi want the subject
-> to be `spi: dt-bindings:` rather than the other way around.
->=20
-> See https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting=
--patches.html
->=20
->=20
-> On 7/1/26 1:29 PM, Jonathan Cameron wrote:
-> > On Wed, 1 Jul 2026 12:04:37 +0100
-> > Conor Dooley <conor@kernel.org> wrote:
-> >=20
-> >> On Wed, Jul 01, 2026 at 08:40:39AM +0200, Janani Sunil wrote:
-> >>> Some SPI devices support sharing a single chip select across multiple
-> >>> physical chips by encoding a device address in the SPI frame itself.
-> >>> Add a generic spi,device-addr property to document this per-peripheral
-> >>> address. This property belongs in channel or sub-device nodes of
-> >>> peripherals that use this addressing scheme.
-> >>>
-> >>> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
-> >>> ---
-> >>>  Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 5 =
-+++++
-> >>>  1 file changed, 5 insertions(+)
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-pro=
-ps.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> >>> index 880a9f624566..3774e8018355 100644
-> >>> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> >>> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> >>> @@ -142,6 +142,11 @@ properties:
-> >>>      minItems: 2
-> >>>      maxItems: 4
-> >>> =20
-> >>> +  spi,device-addr: =20
-> >>
-> >> To match other generic spi properties, s/,/-/.
-> >>
-> >> However, you don't actually use this as a spi peripheral's property in
-> >> your device binding, so you've got your wires crossed here somewhere.
-> >=20
-> > If we are going to make this generic (which I'm not against) I think
-> > it should also work for the case of multiple independent devices.
-> > So it can also be a top level device node spi property.
-> >=20
-> > That kind of makes me wonder if we are better off having it always
-> > in the top level node, but allowing multiple values to represent
-> > sub devices under this.  That would leave figuring out mappings of which
-> > channels are on which device to the driver. The driver must know the
-> > mapping afterall.  For the example something like
-> >=20
-> >=20
-> > #include <dt-bindings/gpio/gpio.h>
-> > spi {
-> >     #address-cells =3D <1>;
-> >     #size-cells =3D <0>;
-> >     dac@0 {
-> >         compatible =3D "adi,ad5529r-16";
-> >         reg =3D <0>;
-> >         spi-max-frequency =3D <25000000>;
-> >=20
-> >         spi-device-addreses =3D <0 3>
-> > ...
-> >=20
-> >         #address-cells =3D <1>;
-> >         #size-cells =3D <0>;
-> >=20
-> >         channel@0 {
-> >             reg =3D <0>;
-> >             adi,output-range-microvolt =3D <0 5000000>;
-> >         };
-> >=20
-> >         channel@16 { #on second device using dev addr 3
-> >             reg =3D <16>;
-> >             adi,output-range-microvolt =3D <(-10000000) 10000000>;
-> >         };
-> >         channel@18 { #3rd channel on device using dev addr 3
-> >             reg =3D <18>;
-> >             adi,output-range-microvolt =3D <0 40000000>;
-> >         };
-> >     };
-> > };
-> >=20
-> > Where devices are truely independent then you would have separate device
-> > nodes each with one entry in spi-device-addresses
-> >=20
-> > I'm a bit dubious about putting this in the spi namespace though given
-> > it is not part of any standard specification.  Do we have any precedence
-> > for that sort of thing?
->=20
-> It seems like most SPI controllers/devices don't really follow any
-> standards, so I think there is plenty of precedence for a property
-> like this. It would be nice to see one or two more examples of SPI
-> peripherals with this feature though other than the one chip in
-> this series. Otherwise, I wouldn't try to make it a standard property.
+Fixes the missing pm_runtime_set_suspended() calls in the SPI core and
+the qcom-geni driver to clear runtime_error on failure, allowing the next
+transfer to retry the resume.
 
-There are two microchip devices with a property like "microchip,hw-addr"
-that I pointed out on ?v3? (whichever thread had the long discussion) that
-do the exact same thing as this device.
-I did ask that the submitter convert those to the new property as
-evidence that this is actually generic, but that request was not
-implemented. If done at the device level, this should be trivial, as the
-microchip devices don't actually have support for multiple devices on
-the same cs in the drivers, they just parse the property to correctly
-support a single device.
+Symptoms observed:
+    spi_master spi2: Failed to power device: -110
+    spi_master spi2: noqueue transfer failed
+    geni_spi 988000.spi: Runtime PM usage count underflow!
+    spi_master spi2: Failed to power device: -22
+    spi_master spi2: noqueue transfer failed
 
-> I'm also in favor of making it an array and letting the device-specific
-> bindings decide what multiple devices with different addresses on the
-> same CS line means.
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+---
+Praveen Talari (4):
+      PM: runtime: Clear runtime_error on supplier after failed get_sync
+      spi: core: fix sticky -EINVAL after pm_runtime_get_sync() failure
+      spi: qcom-geni: Fix missing error check on pm_runtime_get_sync()
+      spi: qcom-geni: fix sticky -EINVAL after PM runtime resume failure
 
-I kinda wanted it to be in the channels, but I think, on reflection,
-that putting it at the device level is probably fine. Pretending
-that two devices are one extended device is always going to have some
-ickyness about presentation, and putting it in the channels means
-defining it again and again and again for each type of device that wants
-it.
+ drivers/base/power/runtime.c |  1 +
+ drivers/spi/spi-geni-qcom.c  | 18 +++++++++++-------
+ drivers/spi/spi.c            |  3 +++
+ 3 files changed, 15 insertions(+), 7 deletions(-)
+---
+base-commit: 4e5dfb7c84012007c3c7061126491bbc92d71bf1
+change-id: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
 
-> But... if we are leaving it up to devices to deal with the property rather
-> than the core SPI code, maybe it shouldn't be a standard SPI property.
-> Although, I suppose the core SPI code could parse the property and just
-> pass that information in the struct spi_device to let the device driver
-> do what it wants with it.
+Best regards,
+--  
+Praveen Talari <praveen.talari@oss.qualcomm.com>
 
---2P9d6LXYZY7Fu/BO
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCakV5MgAKCRB4tDGHoIJi
-0gPPAP4sS2U1r0LoGoUOX7hfkPoCqdUYGik8IJA8cZ0L2SgfZwD/bIUwnmgsFEmz
-oBrPyf4GNoeEWxDJBi9xNcqYfzpzwQs=
-=jJgT
------END PGP SIGNATURE-----
-
---2P9d6LXYZY7Fu/BO--

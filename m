@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FAA31326C
-	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 13:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6084A33F2;
+	Thu,  2 Jul 2026 13:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782999347; cv=none; b=QUV1nYZ9FEVSIdXxhb0hQ4oRC0SA8jKX8ZHODvl1odAaFhFqTkAq+aKBy6v73iCzSVy+gF6GPMGyUoCVRy/Q6rlmthZz22xIj3Qc+ez/RtgFgHWETIc8K6yVaRgAz6ozOK6lm8wUprqTYJ6k2VUlJ5e2scuq3S8Oip5F3/0dbFI=
+	t=1782999696; cv=none; b=kpp6j7N+3LuvJmFn76cHwexkPFenV4ZvXKk9on6qqu5KIV+fe8V3cu29HHFh26wOczogxeSPi1UXNRUuneBnAoHwginTH3xoNBvtP5FGe+JZGJ24oHst/vqfGVuTulRSh/Nl8zdY7ZToacMVq76IJmD9Ec9A1pKursZ9xGortI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782999347; c=relaxed/simple;
-	bh=eTs0mhGl/SeBIYNMIXqeKsF9rqOKc8GWF9ed4Q0P7SA=;
+	s=arc-20240116; t=1782999696; c=relaxed/simple;
+	bh=3NlBw7T5nabuhOxxhmeklPLxyEetO10ugW8lwBtpDek=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DkaXDOGybmJck0NorgHXEsjoAqOEwEJwDkVP4RJ0ocN9I6mDTGmpd0nswZxlzqsFegulIkyr2xKnDeFp20GZka+JeOdBuAp98FyupHtg4+OhzcambrYIJwQq9lyoYtVCX2JLfNlfFHa/z30ZiNqcvOOBvMoqvvAnvC7ZYhmhw4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zdN+vbMM; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version:Content-Type; b=cm4fX96qX/8yZ6tI9eNodi4ixV8dtJB7Z136mlC1uQ0ES+g/4fgGPq42CBog65VQlC+MrjxS7Vmf/yYmrP1PbM7lFYmIFD9b2vGUZHaBBqhvddGd0OocMFVJJwZ/rAZJ/GxgyKt/XatQqVwWURKK0/iNULiryG2lUNuvXmwdN9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tbkQTnk/; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zdN+vbMM"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tbkQTnk/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 6994C4E40C32;
-	Thu,  2 Jul 2026 13:35:44 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 44C8C1A0DE7;
+	Thu,  2 Jul 2026 13:41:32 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3610F5FF03;
-	Thu,  2 Jul 2026 13:35:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 191A5104C956E;
-	Thu,  2 Jul 2026 15:35:40 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 11DAB5FF03;
+	Thu,  2 Jul 2026 13:41:32 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 932EC104C9577;
+	Thu,  2 Jul 2026 15:41:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1782999343; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1782999691; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=CBdRz6iknUEQ47UfMkZ0PQpUwrts4qpKzRp1pEV7AME=;
-	b=zdN+vbMM5MPZgJ+2UNvTPZ0nQf0Y1tOm9dt6c/LG228i69OQuglY4DQzck9+oFL6LWGu2p
-	cmBD5tQnTR26dWpfmYVmBa5gXC+4Oy/jDqbn95jmWZNDOCwL3ipXX+zn+A1JB/KGp5qZJ9
-	+wW+Unv/8QTNtLMp8NuqbP8DEDB1k6NV+QHxUkjjW2N4tko0fbYBMMRrfLG2B+43ro6zMt
-	iSrRiWfbRfJzAbtZMYV20AgmCgm0IfIYsEQ/Q9oQ9ttlwgO0JHJRfv8DNIjvf/8lnIF6gh
-	iKXSD0B2Hj1kHz+M2Er7NWFg9N2aYXmt2J59oiY2o1JfPRzLjcSMv8yhog8mXA==
+	bh=3kbHnC3x3hEpbNdF+qEJ6jzcXt/7SmkG5FNSavJE8Ds=;
+	b=tbkQTnk/xbfoAM1MziLjXUidjKag65lxh3C+w2AFcWUZt8jrhqRqMPrg+jKMq44qEJjJ/3
+	S58xyi4QHP3dVJpYcHhRSTg5RB7KbihIDrQ5kmQtOldRZ1FoU2LtPDRUs+ga2ePuqILrpu
+	HXGE46szPIgoxkCSgPain7ryJrFwd0w0MVqwbdI6hw0VKdIw8gxKybMWbny+XRNdvKVnJq
+	wqSw7Fcd41VTUVWDrj2UsLksij0fbna6g8CZOSGP7/kam31vZTd3uKs2SYaI6mBZON3mON
+	C0/YkQEIrUlgE1+SjUoeisGO3DLktE99SA+6cmrFuolFSxK9mR/L/2k89ng8ZQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Santhosh Kumar K <s-k6@ti.com>
 Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
@@ -42,15 +42,15 @@ Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
   <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
   <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,  <u-kumar1@ti.com>,
   <a-dutta@ti.com>
-Subject: Re: [PATCH v4 09/16] spi: cadence-quadspi: skip DDR PHY tuning for
- 2-byte-address ops (i2383)
-In-Reply-To: <20260618073725.84733-10-s-k6@ti.com> (Santhosh Kumar K.'s
-	message of "Thu, 18 Jun 2026 13:07:18 +0530")
+Subject: Re: [PATCH v4 13/16] mtd: spinand: extract variant ranking logic
+ into spinand_op_find_best()
+In-Reply-To: <20260618073725.84733-14-s-k6@ti.com> (Santhosh Kumar K.'s
+	message of "Thu, 18 Jun 2026 13:07:22 +0530")
 References: <20260618073725.84733-1-s-k6@ti.com>
-	<20260618073725.84733-10-s-k6@ti.com>
+	<20260618073725.84733-14-s-k6@ti.com>
 User-Agent: mu4e 1.12.7; emacs 30.2
-Date: Thu, 02 Jul 2026 15:35:40 +0200
-Message-ID: <871pdlqztf.fsf@bootlin.com>
+Date: Thu, 02 Jul 2026 15:41:27 +0200
+Message-ID: <87v7axpkzc.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -61,40 +61,61 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 18/06/2026 at 13:07:18 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
+On 18/06/2026 at 13:07:22 +0530, Santhosh Kumar K <s-k6@ti.com> wrote:
 
-> Erratum i2383 on AM654 locks the address phase in PHY DDR mode when a
-> 2-byte column address is used. DDR PHY tuning must not be attempted for
-> such operations; non-PHY DDR usage is unaffected. [0]
+> spinand_select_op_variant() open-codes a loop that finds the fastest
+> eligible op variant by transfer duration. Extract this into a shared
+> helper spinand_op_find_best() that accepts a skip_mask bitmask of
+> already-tried variant indices, enabling callers to iterate variants in
+> ranked order while skipping previously attempted ones.
 >
-> Add CQSPI_NO_2BYTE_ADDR_PHY_DDR quirk and check it in
-> cqspi_am654_ospi_execute_tuning(). When the erratum applies, return 0
-> with read_op->max_freq cleared.
->
-> [0] https://www.ti.com/lit/er/sprz544c/sprz544c.pdf
+> spinand_select_op_variant() becomes a one-liner. No functional change.
 >
 > Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 > ---
->  drivers/spi/spi-cadence-quadspi.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
+>  drivers/mtd/nand/spi/core.c | 32 +++++++++++++++++++++++++++-----
+>  1 file changed, 27 insertions(+), 5 deletions(-)
 >
-> diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-=
-quadspi.c
-> index 72768292a32b..22df5f3bdb96 100644
-> --- a/drivers/spi/spi-cadence-quadspi.c
-> +++ b/drivers/spi/spi-cadence-quadspi.c
-> @@ -49,6 +49,7 @@ static_assert(CQSPI_MAX_CHIPSELECT <=3D SPI_DEVICE_CS_C=
-NT_MAX);
->  #define CQSPI_DISABLE_RUNTIME_PM	BIT(10)
->  #define CQSPI_NO_INDIRECT_MODE		BIT(11)
->  #define CQSPI_HAS_WR_PROTECT		BIT(12)
-> +#define CQSPI_NO_2BYTE_ADDR_PHY_DDR	BIT(13)
+> diff --git a/drivers/mtd/nand/spi/core.c b/drivers/mtd/nand/spi/core.c
+> index f86786344d52..b678d0534297 100644
+> --- a/drivers/mtd/nand/spi/core.c
+> +++ b/drivers/mtd/nand/spi/core.c
+> @@ -1541,9 +1541,22 @@ static int spinand_init_odtr_instruction_set(struc=
+t spinand_device *spinand)
+>  	return 0;
+>  }
+>=20=20
+> +/*
+> + * spinand_op_find_best() - Find the fastest eligible op variant.
 
-Can we rename the flag to make it more readable? I would propose:
+Should definitely be named spinand_op_find_best_variant(). find_best is
+way too wide.
 
-#define CQSPI_NO_PHY_TUNING_WITH_ODDR_2B_ADDR	BIT(13)
+> + * @spinand:    SPI NAND device
+> + * @variants:   full variant list to search
+> + * @odtr:       true to consider ODTR ops, false for SSDR ops
+> + * @skip_mask:  bitmask of variant indices to skip (already tried)
 
-Long, but more self explanatory.
+The flag seems to be quite overlapping with the odtr flag. Shouldn't we
+have a single way to filter operations?
+
+Also, why are you switching from an interface enumeration to a boolean?
+Some day we might need to support things like 4D-4D-4D. That is where an
+enumeration is better than a boolean. If you want to drop the
+enumeration, it shall be done everywhere else, but I don't think it is a
+good approach.
+
+> + * Iterates @variants, evaluates transfer duration for each eligible op,=
+ and
+> + * returns a pointer to the fastest one not in @skip_mask.  Returns NULL=
+ when
+> + * no eligible variant remains.  Used by both variant selection at init =
+time
+> + * (skip_mask =3D=3D 0) and ranked PHY tuning iteration.
+> + */
+
+I haven't seen what is the use case of this mask yet, let's see in the
+following patches.
 
 Thanks,
 Miqu=C3=A8l

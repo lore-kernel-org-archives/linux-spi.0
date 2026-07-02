@@ -1,203 +1,167 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13B447DFA7
-	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 12:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712DD47ECC3
+	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 12:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1782996290; cv=none; b=VwYL/T9YY5zJYJ3NStsZqsHzZxxqzBb8ZjLGmRqilR8/MzxH/6qYmm+Db1ETPGWloBQAPh8BsQmOXYNAfiJ7hk+hnYUOLP4T/fpRvL/c4b0TG/vDMd0D42yvfoi/HjYrCqgRfr+szBtlxvAlA8cKRTHAQdhqfjjdR/sXTWUIALY=
+	t=1782997169; cv=none; b=JLRyS0BZv+jeHN9Q4rE0DxaEk4WoMvI2gZTgb/0yyknuONyLqFH31NKG6dyBbDaTz/ebdoodSRLWfWEBh6mDYRwME0vOmfvBw7jUAkC+AK2cxXS94IEWGhn5tLqWrfy6uAxtUEfLn520Eg1A7SQSEKp64wfVEH1O/6CVs35hspg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1782996290; c=relaxed/simple;
-	bh=M3vT7WHrqcyejJBhB2rh+AJHUnKETdP4JrfL0b19uc8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UE+Zj0Ndzt+rOzUP6ZPjIXaAaeth2m+fMVPJDJ8Rp2baNjN+e27n+U1u3uBBzZGxpQg6LBdnOdqVAXwQT8WxAjdQNM854DyxNtD/YpwE77AWsuWQ/dUPqjzp8I2CeIDsqbfinRL9ouKPwisV9rZZZY1svsdo7g8EPRoDqnJU13Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ofOsqDiF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dzTUQ6kA; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1782997169; c=relaxed/simple;
+	bh=uUKDkqlNCglYPmuMqaEVfRyX46iCIZHXBkJAj3Zz+ao=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hOd1AEzbgvh7rIfHiogBjSvrFYINbdiUG/6gPExIS2jXwoXKjc8La9gbB9A/gk/iPsK/UFgTvJCrlGeyx/bVzheufgg93zwhPwnUgxqjwTKTQTmS9n5JchIkvkKfvajBILbBRVoEuFM39nbQyo/S6dZhGNhzdLRzMVsU8gGLxyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjDbmUPo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ofOsqDiF";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dzTUQ6kA"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662BoIUJ360401
-	for <linux-spi@vger.kernel.org>; Thu, 2 Jul 2026 12:44:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	f1ZbIlmrnZBF09IpMi+cBnqnyYuuLrnreaKCM9hEs4M=; b=ofOsqDiF5W5H4TXF
-	PKVn4pHc19o2vqLMRkQmtkUMhC8SrYqHjoehuBkMHQZNpSJMDYeMzOTpFZ37c1gK
-	33LcQhjatOM+TNUYG7pCnQzlJN1MApA8hjGRSog1gEuJVWMqfBg6PTXrcatth3Zi
-	9x42BtelPEXrT4B6bi4Yy7TDmwgUOewYkJS7cUg+CrXRDJR8wR3aUCmJ5OUPGcD2
-	nDiVhv+yfI/A3zntPheW0dQM0D0OJ+ltQJHiEG7C66tZexPu+kD7DUssgHnFuMAX
-	NFA/jJFo/X6rFvqsXH7Du3dukrTrRBbMOVodRIybwT8qmHVK7eEoscilcKu5HqA6
-	d6Iyog==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f5qfc06x1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 12:44:48 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c19a2da0eso1295221cf.0
-        for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 05:44:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782996287; x=1783601087; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f1ZbIlmrnZBF09IpMi+cBnqnyYuuLrnreaKCM9hEs4M=;
-        b=dzTUQ6kAGfYVLq9oXIcbTb60ynWvg62EXPBtth63LLTqoFd8i2GZMyg9EI1AT8x9HR
-         TzQz6JV1mvDHXI90e0d1zuJCoI6uhhBnJDjVVdcBoDkGTONRZBnbwBhkP6qE4gfAPD5h
-         dnplvLaziJQAJSROG5+U0oJ/9S7XANIFG728UZY5suC3cl/O/mA7lEGUttfWdCo/PC/C
-         3aeHgo9IMqaaFMG3VKSzYCJpsTU53jWc7yVs0kxWDeoNYgy/i2JUyraFjiIliGEZeHwR
-         70LKJNb7HXe8Qr2GqccfWPLq6fnvVSoqEb4UzNBucRrgCS1N8JZjmEyBfVCxmK6a09BZ
-         Hv+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782996287; x=1783601087;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=f1ZbIlmrnZBF09IpMi+cBnqnyYuuLrnreaKCM9hEs4M=;
-        b=F8RMk0oHBmUSwOVd8XMnqy2OX3jNX7cBlnmh2aUrRWk7k3LPridUpmxCzn/o4wFXqY
-         S3EC5aTu4fesfKDvEhuiXQLA3UPyiCZlC1hHi85isY1diBaDfEEEvRdIvdKzd8Z/Jw6z
-         kXLuvoIcD0VPeKzmQmB/9s+WMqMK5CLE/DtvOrrQKpbsTNJe7ISkR/pGppqnau95C3m8
-         dLi6gNp5lNznG2pKCDUpmaQTCYRuvjfY84Gu1CAwR7WbySibXwOWySJsEsT6QeFtHniz
-         b8UeOKLbvBR2KRiRa378jcT1Ve49Ct4VqcPZlItnYufS90wM7VFR4qQCbGE4UZCJv/Px
-         vtuA==
-X-Forwarded-Encrypted: i=1; AFNElJ+kXhiqNl+Re96/u7WmojeBfqLzQdCu72X3exw4lqzSeSRZXcJQarwKAkn7O+tGrQYKal0JLcuY56c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYO98TIv0+usAQhbGluuysORQrGS6UsZv7QkMUSwHfnI2Wo3Ke
-	8r/+uTQ/AnVR16upuL6IIL6KDD15e3K5wE7CtOHY+BXQabduPwXm2v5kdqIdvnpUZblZyqgGT/t
-	tflhhnzqOAW8dWHBm6j1Wzchpd/XLtQNbqZvCCDd6TY3xMCN2cl1vwqVFPkfcrXQ=
-X-Gm-Gg: AfdE7cluTqL33iWrhEllY6XchoPNR6Op4olhnRacgDjx64x0aSJIafC7+D2cYQDznY6
-	lWI8B5e4sQk6pl0ovS5AH4AxLBQrR2hhdCKKAhSJGYxkQBnvrkOg4FaV3GGx46WFTt+zW6HtJX/
-	w/uJaQQ8eXzduV6LrTPgUO7kSf/YH5YkxKJsQrtSdamiDDuF/yUpsV3FUe8eWsdwEuZwMYkNF20
-	tPkbFhLgijzX4YK5kBinNA+Q1AF53ldzhkwYZxUMuP15SORSGlWV9RsZgmNUE21Athd46fgn/Eu
-	iR5m5B76O2z/v1gQwR+6IewsH5C2Kl/STwkvDnHpU1R9CnGqNjP9MG5DAYLB1SW2rUqBWDU4v4A
-	kygIICAKjqdhdygj4XehtU6KlU03fjPQLUpI=
-X-Received: by 2002:a05:622a:14d1:b0:51a:8c9b:6494 with SMTP id d75a77b69052e-51c26b42202mr46905751cf.11.1782996287054;
-        Thu, 02 Jul 2026 05:44:47 -0700 (PDT)
-X-Received: by 2002:a05:622a:14d1:b0:51a:8c9b:6494 with SMTP id d75a77b69052e-51c26b42202mr46905361cf.11.1782996286440;
-        Thu, 02 Jul 2026 05:44:46 -0700 (PDT)
-Received: from [192.168.120.170] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-698ace16064sm936580a12.2.2026.07.02.05.44.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 05:44:45 -0700 (PDT)
-Message-ID: <6fbc4521-15d3-40c7-89b3-ee15ad673ff8@oss.qualcomm.com>
-Date: Thu, 2 Jul 2026 14:44:42 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjDbmUPo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B91F00ADB
+	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 12:59:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782997168;
+	bh=fjPgbB2H3M05UY5za1DjwijyWrPVl+qvmy/SwWaWVlQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CjDbmUPosDXkDQ0gaFgP9Td33t/PSi2SD3nxJftGeXxNW8RiJElNKqlcqDz46EVH6
+	 D91vh4elkYdGmayHmXno/bAWFv9D8kusroSMCzAPxpT1bAqPlAhdE0mrCSe3KGXx62
+	 SM5oB96oAD46KuID2u8ctCawRy3OF23yfsJU3++1+n5JkqbaV9QJMIqDrWiCZof3d8
+	 m391bmJ3NI0h0naSydbb7eJ30wOYunjB8B6+DMzJDV66gtUoISpDDg0dcsKGi4exZM
+	 bwWNmjyTWcyHhZLJbhj38P5yCNkbymKttYI8psEb+EKlVD2rajbcmNoS+donyYWaaM
+	 oPzrSk+nWJdmw==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5aebf162770so472894e87.1
+        for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 05:59:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rpai2bUrnc/sSJbyfzjZSlxQ/ZfzfG2UIddgz6PIZ4LNqeVwjuziyOGDywBwcNHM5JwyZ2XX59n2u4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywpDSpvznLTZIe+WCLUFmacm1U0MemzT7O0KRB/AhoqKNh1+3g
+	sdsgL0+TblEG2Z1x5N8HgyVVc0rx3U5CxPGbFEUWrhSUubClWW3vpf4p3ROhqMk35VrLb9bOC1D
+	25kBL/+6faLKht7oUDclgL+vbxZ4EFok=
+X-Received: by 2002:a05:6512:2310:b0:5ae:b686:d9d8 with SMTP id
+ 2adb3069b0e04-5aebf967210mr2544930e87.9.1782997166443; Thu, 02 Jul 2026
+ 05:59:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-To: Pengyu Luo <mitltlatltl@gmail.com>,
-        Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com>
- <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
- <c29776b4-04b8-4c59-8f1e-d766bf982a2f@oss.qualcomm.com>
- <CAH2e8h75xeRVvo+jOjRuFaBko5NNCnBX0dawFFsWBaiTwNd4Xw@mail.gmail.com>
- <99eaf1d1-fbf9-4336-a13c-ae8ab789cc99@oss.qualcomm.com>
- <CAH2e8h6aWW_=pD6JAuFB-VqEZDj9x8gZVh9TdvTCRQakKzm3pA@mail.gmail.com>
- <c3922558-dead-48b9-a49c-7d0d6a2dde7c@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <c3922558-dead-48b9-a49c-7d0d6a2dde7c@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: hnRrdLX3LE5SvIUOzhLTFfFVeAw5jqDw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDEzMyBTYWx0ZWRfX2cSbC/Y874CN
- LRrS7RiUkBMLgBznMZ3yMqyq5HcMYDJ2Fxpe8aOfuRnZf5PPBquuyggUY9vWRY6czX4Uuo8hVKO
- eSDxpJ1zALPMElgMBBjdhThc5D3jzvPAy4mvmQSM9/dy7qq+aQJQbJ7PM2MkCTzaPTQNQ1/jTua
- qKnZi9K4728E2nHf7iSeXT4cUyjXhKBpTUnbgVBGfwwLgU2nTZGZcika1GPhGJM0r7t4DjqDGnA
- eBMT3tZO9C07K+0Z2BdEvvNkfOCxOYSO8KGHddn0b1IEfD7BcrHOzFJRcnSMpnlosWIzMbyNnX3
- 5rwNqpQLb+fv4DqZkbLVIb7z6S8tqWeg/GWhK1BeSHVmSznX3srldTxLfEFxkD5NjpPNq0vkFva
- KSH4rSz9jhcE7JOv2x3Clsvn5t2H4zhoIdVcM1Fbl3+ptyN/bMu4yHZea4tPgqNiEkW6iwTxZ7r
- UaJ1NKuD7Ob2gt+9Apg==
-X-Authority-Analysis: v=2.4 cv=dvXrzVg4 c=1 sm=1 tr=0 ts=6a465d40 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=wzztfOLjYvU_j_VJg8EA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: hnRrdLX3LE5SvIUOzhLTFfFVeAw5jqDw
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDEzMyBTYWx0ZWRfX7nNRmGGI/jPR
- XTC4OonDaA9m3XqktYD8K0vpKKdKVxvCph5BqTyujfkLEFdxPevWFXT0hNanCsIRQIHDhRXHp10
- 3sBj4K+ciO2cBOnweVh0tPbZPTILUXE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_01,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 priorityscore=1501 adultscore=0 impostorscore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020133
+References: <20260702-fix_sticky_-einval_after_pm_runtime_api_failure-v1-0-6ddc317011c0@oss.qualcomm.com>
+ <20260702-fix_sticky_-einval_after_pm_runtime_api_failure-v1-1-6ddc317011c0@oss.qualcomm.com>
+ <CAJZ5v0g6iRNUAKtDNKWa-_pshmnSCdStenNBJ91Xt=PSrhx=aQ@mail.gmail.com> <04b67f29-2afe-4c72-8c9b-bbde56f27a83@oss.qualcomm.com>
+In-Reply-To: <04b67f29-2afe-4c72-8c9b-bbde56f27a83@oss.qualcomm.com>
+From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Date: Thu, 2 Jul 2026 14:59:14 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hc5yYphPjtF8kNBTPaTaVDxq4Fdb=DRuQ953EAo-CMqQ@mail.gmail.com>
+X-Gm-Features: AVVi8CcLlsfEYaX75GZe8RjqszCs33_BhtDCHTaBpZCGdeHCkGSnOhwt3W2pLYY
+Message-ID: <CAJZ5v0hc5yYphPjtF8kNBTPaTaVDxq4Fdb=DRuQ953EAo-CMqQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] PM: runtime: Clear runtime_error on supplier after
+ failed get_sync
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Mark Brown <broonie@kernel.org>, 
+	Dilip Kota <dkota@codeaurora.org>, Stephen Boyd <swboyd@chromium.org>, 
+	Girish Mahadevan <girishm@codeaurora.org>, Alok Chauhan <alokc@codeaurora.org>, 
+	bjorn.andersson@oss.qualcomm.com, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Len Brown <lenb@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, aniket.randive@oss.qualcomm.com, 
+	chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
+	linux-pm@vger.kernel.org, driver-core@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/2/26 2:39 PM, Konrad Dybcio wrote:
-> On 6/30/26 12:06 PM, Pengyu Luo wrote:
->> On Tue, Jun 30, 2026 at 5:52 PM Mukesh Savaliya
->> <mukesh.savaliya@oss.qualcomm.com> wrote:
->>>
->>>
->>>
->>> On 6/29/2026 1:33 PM, Pengyu Luo wrote:
->>>> On Mon, Jun 29, 2026 at 1:36 PM Mukesh Savaliya
->>>> <mukesh.savaliya@oss.qualcomm.com> wrote:
->>>>>
->>>>> Hi Pengyu,
->>>>>
->>>>> On 6/15/2026 2:48 AM, Dmitry Baryshkov wrote:
->>>>>> On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
->>>>>>> Some devices (such as gaokun3) do not disable FIFO mode, causing the
->>>>>>> driver to fallback to FIFO mode by default. However, these platforms
->>>>>>> also support GSI mode, which is highly preferred for certain
->>>>>>> peripherals like SPI touchscreens to improve performance.
->>>>>>>
->>>>>>> Introduce the "qcom,force-gsi-mode" device property to hint and force
->>>>>>> the controller into GSI mode during initialization.
->>>>> Why to force ? You can directly configure in GSI mode. Note there are
->>>>> some configuration done prior to Linux bootup too.
->>>>
->>>> Sorry, I don't get it. how? I know there may be a qupfw, but it is
->>>> impossible for a normal user like me to generate one with GSI
->>>> preferred.
->>>>
->>> If firmware doesn't program in GSI, you can't have this working in GSI
->>> mode, its going to fail (and work with fallback). if it's programmed in
->>> GSI, anyway this will run in GSI mode. So why to add extra things
->>> without any usage ?
->>>
->>
->> What I can confirm is that fifo is not disabled on my device, and gsi
->> is definitely enabled (under windows, check the register
->> SE_GENI_DMA_MODE_EN), forcing the device to enable GSI mode on linux
->> works well.
-> 
-> What's the value of se->base + SE_DMA_IF_EN (+0x2004) on this SE?
+On Thu, Jul 2, 2026 at 1:53=E2=80=AFPM Praveen Talari
+<praveen.talari@oss.qualcomm.com> wrote:
+>
+> Hi Rafael,
+>
+> Thank you for review.
+>
+> On 02-07-2026 17:07, Rafael J. Wysocki (Intel) wrote:
+> > On Thu, Jul 2, 2026 at 8:08=E2=80=AFAM Praveen Talari
+> > <praveen.talari@oss.qualcomm.com> wrote:
+> >> When pm_runtime_get_sync() fails for a supplier device in
+> >> rpm_get_suppliers(), the supplier's power.runtime_error field is left
+> >> set. This causes any subsequent rpm_resume() call on that supplier to
+> >> immediately return -EINVAL at the top of the function without
+> >> attempting an actual resume, making the failure permanent until
+> >> runtime PM is explicitly re-enabled.
+> >>
+> >> Fix this by calling pm_runtime_set_suspended() on the supplier after
+> >> pm_runtime_put_noidle() in the error path. This clears runtime_error
+> >> and resets the runtime PM status to RPM_SUSPENDED, allowing the next
+> >> consumer resume attempt to retry the supplier resume normally.
+> >>
+> >> Change-Id: Id5067d09caca464f663fc95fe745d037e9c56664
+> >> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+> >> ---
+> >>   drivers/base/power/runtime.c | 1 +
+> >>   1 file changed, 1 insertion(+)
+> >>
+> >> diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime=
+.c
+> >> index 335288e8b5b3..9811d024d140 100644
+> >> --- a/drivers/base/power/runtime.c
+> >> +++ b/drivers/base/power/runtime.c
+> >> @@ -309,6 +309,7 @@ static int rpm_get_suppliers(struct device *dev)
+> >>                  /* Ignore suppliers with disabled runtime PM. */
+> >>                  if (retval < 0 && retval !=3D -EACCES) {
+> >>                          pm_runtime_put_noidle(link->supplier);
+> >> +                       pm_runtime_set_suspended(link->supplier);
+> >>                          return retval;
+> >>                  }
+> >>                  refcount_inc(&link->rpm_active);
+> >>
+> >> --
+> > I don't think that this is the way to go here.
+> >
+> > Can you please say some more about the specific scenario in which this
+> > happens and explain why it is OK to effectively discard runtime PM
+> > errors occurring when suppliers are handled?
+>
+> This was observed with a consumer device whose supplier's
+> ->runtime_resume callback returns an error (e.g., a transient failure
+> such as a timeout or resource unavailability).
 
-I'm sorry, I read the first sentence only..
+In runtime PM, errors returned by the suspend and resume callbacks,
+except for -EAGAIN and -EBUSY are not regarded as transient, which is
+why they stick.
 
-I think the enabling of DMA and the disabling of FIFO are technically
-disjoint operations, but shouldn't be. The programming guide mentions that
-FIFO_DISABLE=1 is set to prevent malicious software from snooping the data
-from the RX FIFO while the SE is operated through the GSI.
+If the driver or bus type wants to signal a transient error, it should
+return one of the above error codes.
 
-Mukesh, would it make sense to make to rework the checks this way:
+That said, I can see that this is problematic on the resume side where
+it may be desirable to repeat resume attempts in the hope that one of
+them will succeed.
 
-if (dma_enabled)
-	prefer GSI, try SE DMA otherwise
-else if (fifo_disabled)
-	return error, misconfigured SE
-else
-	fifo mode
+I would then consider changing the runtime PM core code so that
+power.runtime_error is only set on failing attempts to suspend, but it
+will not be set on failing attempts to resume.
 
-?
+> When that happens,
+> rpm_resume() sets power.runtime_error on the supplier and returns an
+> error. pm_runtime_get_sync() propagates that error up to
+> rpm_get_suppliers(), which then calls pm_runtime_put_noidle() and
+> returns, aborting the consumer's resume.
 
-Konrad
+Right.
+
+> The problem is that power.runtime_error remains set on the supplier. On
+> the next attempt to resume the consumer, rpm_get_suppliers() calls
+> pm_runtime_get_sync() on the supplier again, but rpm_resume() now
+> returns -EINVAL immediately at the top-of-function runtime_error check =
+=E2=80=94
+> without even attempting the resume callback. The supplier is stuck
+> permanently in the error state until someone explicitly calls
+> pm_runtime_reinit() or re-enables runtime PM on it.
+>
+> when rpm_get_suppliers() fails and we're already propagating the error
+> to the consumer's resume path, we should not leave the supplier in a
+> state that prevents all future retry attempts.
+>
+> Would you suggest a different approach here? I want to understand what
+> the preferred recovery path should be when a supplier's resume fails
+> inside rpm_get_suppliers().
+
+Well, this isn't really different to any other cases when runtime
+resume fails.  If it fails for a given device, it will also fail for
+all devices depending on it.
+
+But fair enough, please see above.

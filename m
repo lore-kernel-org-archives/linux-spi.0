@@ -1,109 +1,89 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9A73B71A3
-	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 10:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865DE3D16F9
+	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 12:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783072905; cv=none; b=YQrLHab4X2g6W/suIVE0zpBC7Nf1eY+zL4Bz1Z9TkPFJmP3709zmZ3btYnwkZPoR5AITiHjVHbTxIQlMoA0raS8Lmvifv6/upq4uWz+KUH4NZq+O+rdzwMnLjt/IfBGSbjrLpd1P0GCqHw5oQ3lmnrm+kLVKzm8K+5snAWSLpiw=
+	t=1783081748; cv=none; b=IW6YtP2eQDXCu7gd/uFjsTx+aYpwux3sWP87PbzGcMtyUJjTfBsJ3cLw9l00ypyr4G/DUmWqkXWN9A5EulG9gEJw8LIhPzErUTWj8U50QJDmqNg5mV7sKe3D6wDTtLEUxT47dYjW393845/iqMbhpARgQh2dofQBUI/U/+2K6Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783072905; c=relaxed/simple;
-	bh=RYeeLX2JG8dp87oYPPrNDLM4wRbMmmAVowH6Gs/X6vw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dd+WZULQ0etCyG8i3Dii3fzM4IdsCNQvwQtylEHUWnmTEtz/57Y6RB2C28AktTP62pM8AJz7bS3P+5IXkJcUq9nOFICOk/JxYsyaerWAfwVXxlstsauHeO2IwaZc3wotepG161eW5i1v76YiwtnOS6+ddeYhWNUKs+Cvd4gO950=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7V9YHX/; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1783081748; c=relaxed/simple;
+	bh=3XErzmFomReex+cqqDTCDX7Zj24XI05YTKHxfHkfJgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iMrIw/QXHzZKVJXn9Z03h8jWA6f9nolNgmUFBywXNna8XzwyAWkxtfO3Srz656dlVH/W+BGM4ns84c5uQqqAzTXd3vF+K6d03krdoH/WfP3ZLdYtfGAH0gXhLvCTGNLqIZOXMtVKFisOsVdG/CwrrDQjuf9z9SUe1lxSVVbSnB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=AtJZgW0b; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7V9YHX/"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-698e5859a3cso766422a12.0
-        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 03:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783072899; x=1783677699; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iphKavMyEGyoKkZ7flBVPKctJFRcurdGeTwbxLH/hOs=;
-        b=A7V9YHX/6P5OlAht23tj0RMGPFoSinD9l1uXNrDG4TPTQp7WTHxT8tXxV+iZlehnoa
-         lPLc48BQEtflxSDW3TSmiC2M3IoGKKqoI8Wr1qollpaU81PrGqSz+Qr7AMC06BMOK+BL
-         R1rYxp0yzuGoHOnWQjQrMqJ+0MBwn/aMKS8iGmuVDhdxtDTVLz5JrH+QXfJmvwnudQAo
-         yLcriQBv8FQy7WbBR8+K7UH/35OSk3PAqDSdcBZ8qKgg1wumB/gX20RXu6xb9thFeZzM
-         d0RIaLgusB8tjNciytWwZmzyX8va4aT4orP2S7LqxVeTpWHBURkm4S5y6WrCopp1c308
-         GhZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783072899; x=1783677699;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iphKavMyEGyoKkZ7flBVPKctJFRcurdGeTwbxLH/hOs=;
-        b=LHEwAQlSF9jbIXar5ORlheDB5TOiyKbpgVsDdNxowjbawMwG34vQ8aA1KagxS8xiqp
-         CdUDoiIi2b0JC8yAC3KPBSVFJnXP1w2i2JVitwJQ89tc3D/eiKLMqD5g6SOjOB3wlAcU
-         aZ38MGjK54lTiaO+l0SNikKPffchiP89b1CD3ZFksmrDcj333AgU0c3/G40uC1/6CrUH
-         hUUUSO7stJLQ8QhHSddAkqABFUs596LGbkh3Q/vdSdZIzeo2LZFV+2eU975Ehb8VIun4
-         WplvurLMReKLlc/4U3FWk+MtwN+AcDqH7D0EN/0/Ag9PfKo7cSyjRyGf+YqLIHE1xYUw
-         IDYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoSCOEyezX8k+2DRNDpiHHNclrztOm1R+orrQSgCUs5x4zPByCeLdbY2+KcssF0vwoSrqFywdg9Ito=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBBMpVHcNE9PRnYkZQYC8/kNsYZfPWSH/91SvNuDDsbOKiScEW
-	2P9CSTRK579xGhaAtYsC4DjvxR7IiQVbx12grHWGT4fo7DDX+gPhxFqm
-X-Gm-Gg: AfdE7cni1csYwgkeOFa6gV/jDJHHJXOm7WHyJPE3LAaG1BULRRaoGzFz9UJV3H1uLrQ
-	nbzooyF+OTcpCXXC1cpJzqvKcZRdaF7JYyksaAz6oyhN5KXT94BPLNqqDJEuncQzIW4Da+j37mi
-	XNJ7NLCXLepfiWGCrVU3KRfVWNxxdmwfxkN+aF6GlHCNzCzLFRZ0Bc1OOv9CQp8Yw4zR1+Ouvy4
-	E70ZXalkBPZzPOGAwTfiMFUvlJS7U70qmEgue3LlYT6y4ocU4ag1jtMXZpPe4zAYYvHYRztPe87
-	avHtki6rNsSEnXiIvc5ur05IMPAjaWviDI0of5E1n9tmGntWNHFr4at3nxsySaxTSyIR7WW35Bg
-	mSL9UCrRjypMhW9wGut7F7DgSj1yCvpy7pXHWiC0WOyvV+0r30V8TpjseomRlYbAikbVT49Putd
-	IBH71PY7eyFIUFmsReCcSue/rkrvF867OuQiMX8P2ELOGNXTBSvFG7kQ==
-X-Received: by 2002:aa7:c68e:0:b0:698:ff3:85ea with SMTP id 4fb4d7f45d1cf-698c104c5f8mr1030271a12.5.1783072898947;
-        Fri, 03 Jul 2026 03:01:38 -0700 (PDT)
-Received: from ?IPV6:2a00:1e:db84:b301:ed61:1b51:c39f:49c? ([2a00:1e:db84:b301:ed61:1b51:c39f:49c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-698ad118f43sm2162762a12.25.2026.07.03.03.01.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 03:01:37 -0700 (PDT)
-Message-ID: <3e094744-8603-443e-8027-8fc2f2817879@gmail.com>
-Date: Fri, 3 Jul 2026 12:01:35 +0200
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="AtJZgW0b"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=3XEr
+	zmFomReex+cqqDTCDX7Zj24XI05YTKHxfHkfJgY=; b=AtJZgW0baIQRZm8YFpq7
+	/5RWSh/EEjvz+1o5meQq2eRT+M60xKQNrgjy6o3UlVfQnJ+BPFmmXKAphzDCNne/
+	+WSNfrtmvpz903avvZG62y8wFTLwWJ4/AfE9HZexIz4t86uosyimplL8eM/LjvrX
+	mvUiUXh9oNfww5aQsHJ/Bzsd97gk82h0kYSLcfSJcT+0jrocmu70oikqLx4AE9A8
+	YewEOL+OlTbK1urIW+wyvA+1p86SqLp6VdAX0RUy5+jYs9hKV9FteT38rb9U3bCv
+	ptR80+Gm2vrmbJ/qwU1SoY8yNJRF81OwG1IF8+TNlgDZTHLlKKGz9fc+gvUBBtCc
+	lw==
+Received: (qmail 1514229 invoked from network); 3 Jul 2026 14:22:21 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 3 Jul 2026 14:22:21 +0200
+X-UD-Smtp-Session: l3s3148p1@zkbo+bNVnUxtKjD6
+Date: Fri, 3 Jul 2026 14:22:19 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-renesas-soc@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-spi@vger.kernel.org,
+	Magnus Damm <magnus.damm@gmail.com>, Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH v5 0/2] spi: dt-bindings: snps,dw-apb-ssi: updates for
+ RZ/N1D
+Message-ID: <akepe9TXn07NrkE1@shikoro>
+References: <20260701131248.4545-4-wsa+renesas@sang-engineering.com>
+ <364d2f57-db58-4ba1-a12c-025233fe35c0@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] dt-bindings: iio: dac: Add AD5529R
-To: Jonathan Cameron <jic23@kernel.org>,
- Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-spi@vger.kernel.org
-References: <20260701-ad5529r-driver-v5-0-ed087900e642@analog.com>
- <20260701-ad5529r-driver-v5-2-ed087900e642@analog.com>
- <20260701194103.45541cbe@jic23-huawei>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <20260701194103.45541cbe@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hG9EEbx0Ob4UoHPd"
+Content-Disposition: inline
+In-Reply-To: <364d2f57-db58-4ba1-a12c-025233fe35c0@sirena.org.uk>
 
 
-On 7/1/26 20:41, Jonathan Cameron wrote:
-> On Wed, 1 Jul 2026 08:40:40 +0200
-> Janani Sunil <janani.sunil@analog.com> wrote:
->
->
->> +      adi,output-range-microvolt:
->> +        description: |
->> +          Output voltage range for this channel as [min, max] in microvolts.
->> +          If not specified, defaults to 0V to 5V range.
-> No way to specify the default as part of the binding rather than a comment?
-> I haven't checked but does
->         default: [0 5000000]
-> not work?
+--hG9EEbx0Ob4UoHPd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Tried that approach. But the dt binding check does not accept default for this DT cell-array property.
 
+> This doesn't apply against current code, please check and resend.
+
+Looks like you already applied the previous patch series one day before?
+Sorry, I can't find or recall being notified of this. Anyhow, patches
+are upstream now, so case closed. Thank you!
+
+
+--hG9EEbx0Ob4UoHPd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmpHqXcACgkQFA3kzBSg
+KbY+2g//a7vwyNZqUB8NIBpuGwN+dmP15atYIcp5VZvVOH/0/XMo2OBAhleo8qqD
+Hjq4KX0jpAB+EoA6ejShYRoDYQOHR7HGFm3eq2eJesyjnRxMAzq0whBboaDiw7Dg
+Tx8BA6sbf26pTLaC+rErSwCzkp9NRnwXl5IZyDoMRoAA4b2hs1afMrGQdle7wESR
+6sBrwmmGj1w7MSb7+4ll4qFixegrOfdItkQJFGBjfb75RBC4Ibvz9hwpiEK7Guf0
+A4fuC+m/Fls8ucl23WbOr3ijJKr97nxAOzYDdP1qbyNEASipgrTCm2ME9kZiLQ+H
+94nn75z3/ysx5JVBpzfv8kV7jE0QNFB7g8j3dWGn0krd0yL7XtuRfwmxyiWMGnfD
+Xe149I9FVHsJE2fwsm0Ipq1YdDCleMvEB6yjgx3dkRoPbCbX/509LISNojWyCK4K
+Swj36WKSiD4+Clkwbl3kx14+9aP8Wuc3mIUSoBZn1X6E+dp3UWKCwnINBqB7Abz0
+pVZDQxjGtrHT7kDbGsmICdBzWKKFxfDm2JZnZ76IBa/zl89zP5gMuZsZqB/4bgi/
+38I8iKAjnwxa1w5JyBuaY0E1c0fZomdggo5qiC0B1Br+9+wIcbQtWzM6zyi5Exsc
+chp/LAkPVbN8a4rnDs/4RVqegxJIIEG9/XA6GyQCYadHRJrF71w=
+=gWLp
+-----END PGP SIGNATURE-----
+
+--hG9EEbx0Ob4UoHPd--

@@ -1,121 +1,189 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48F6B41228F
-	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 15:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74D2242D97
+	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 15:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783090940; cv=none; b=pgvnz3wn4m+LIxBZI+WvYKTtI2wgxqzciNAOCtRUiCrQTiT89av4IdrYrj8JMMzZCC/d20LOW53Hw1qRr0c6K1KvGIDrzptEeOoQt6zUCeVQ5TriyXPdTCDTV9zVMpwnYkQ9PB209DHlvXJ5YmWSs60XomejJr2bdKPrUgcRMxQ=
+	t=1783091146; cv=none; b=pHVcOekwNQyK2pubycLyGmX15jIqs6lCFJynE2Q58DugL1O23Uqsc40KlQai9+sDkLvSp4vhElYyr+0wVaIAvshvXqX33PJ+66r2siQ7gOyaPfGChqk1sSAusNdFz+ArhxIiXGPCsI7LEDxk9u/XhNG95PKP0E0C1kaNBhUiJCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783090940; c=relaxed/simple;
-	bh=vU5G6kbkbMYUju8uEzt/NM53se+SV59vfYr8ggF++Lw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BUfA6h5juPbHG+sX+MzomaOv3FzyP50wbnMvMEE72PzyuoTMBBf4jVaFE+3jMqselsI3eElHqPbcGtxEwJ+pFBRzeF1YXBQuKSF317ybvPWggdtre6oJk+T1HoS/tOO5I8kG2YFf1y6Wr0+ZB+LgSDWdqOCbHbs0pIlzv93zYGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=Ow5ZN/Ap; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	s=arc-20240116; t=1783091146; c=relaxed/simple;
+	bh=2JNfmkrDXlzcvSizv/iAqx3lfl6qRnhrAE7oNNSShdw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dheeJ9hMQcrJ1awURa8rUFxMavQaoE6cVh29CVc07vvL8cJAU1I1JONDEIdDB5uqxbgszmh+lsgueqJ3vvF5dawTOOzf9c1u3JAE4pPO5XXBTtXk09rsJZo2ZjhO3SQMZCKzqzOUg4agZ3FPI0gWdtrl93Jz2CU4YJqH0hw+ehY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SsieaRLS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bJoQmGSc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="Ow5ZN/Ap"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-448b89f700fso304342fac.2
-        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 08:02:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SsieaRLS";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bJoQmGSc"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 663DNe1f3195389
+	for <linux-spi@vger.kernel.org>; Fri, 3 Jul 2026 15:05:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=ymd1YdLxXbtUH6VcGFjA1u
+	H5awiZ4CUoXHPYrby/Xn8=; b=SsieaRLSdLfL5RPxXFNoz3G7Fi5vTs89jcFp9X
+	SVxukLqjMdIjzIVFqLb4guYkqH+n8vLqw0AGn76wq+8aNl3dd2F7YslNLdmlLsYD
+	6UqO1J2QCwbvajiWhDg/MYd7QCbB4w5UQz5wv4YcgWtWxE69ZXyrMfuMFEeZSBW+
+	SuDBuDYBqecyQcAmBoCrZS4Kf4XDolaU4tyFj/NKtVff9vvthwUm8KPjpKI4aGUc
+	tweI4b/7DpPxNDTy3WOVxlx2AqnFAgDRSM3YBQXl6nV1WbZMlbgMIkxaQJt8Tg7S
+	zgT3Ctcq2Z476NgHGIjXiNDMRDCktTRxpsSPQSuZPZPcpT2A==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f68jyspex-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 15:05:37 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c9667280edeso970732a12.2
+        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 08:05:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1783090934; x=1783695734; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W0Grj9Qi0+dk5fVU5XSa7j0vuzMhx4RJGQKccjW2bkw=;
-        b=Ow5ZN/ApokUjAXmdOBLCTM1PpuiYh5jwlBkWNH9wc7pRsUHBUf45Fh8mHU5NhyB9oL
-         4JocQbyZd+xhhPn2lIgYR3aLCWBUKC2eoGsdvPRMqqhvI83gxORYOx8y+lv8juhd+r/R
-         OINJBeioalzBMVphz/EqSmIFlb0t3tl7o0OouWlf28G41PMnzF0Ocv3fglR/jfo+Z+j5
-         qi8I9q3UCokbaf2XcGgTSIuMtCzJZlyoLGRX+4X/5VeQ+kHPqBDgFD7O4MmjSwPUNwIF
-         fS2ntVtoIsWETN9qjoIs9qI0n5chsEqns0cHvkqtBKrO3Y7hg4bC1wzM3HcddZ86aY3n
-         LaKQ==
+        d=oss.qualcomm.com; s=google; t=1783091137; x=1783695937; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ymd1YdLxXbtUH6VcGFjA1uH5awiZ4CUoXHPYrby/Xn8=;
+        b=bJoQmGSc+z8BROsLUj/PwOcukwu+hUmtv/msTc4jenLId47YQELuxzyQ65QN+YtNAY
+         eqvGihzS9Hmx8zLx/SE4jONtSEJ0D/oA4Y+Z/ECxRVO9vSCjMisHCFMQ8eQXv82aKjy9
+         4/PVVTu6v5G8Qxdb/39BDF7VuHuXQdkplK7wtPYMNXSppZvkt/JuARXFvwN7zrxjs708
+         FX4t3PrJrt1rOrcyNVvwpzWWu2FWigSAa09tpEQ1fDB744LWeSFcvlT0AYyBOy7AxOPY
+         vUOcSuVwIAkRgDKeWp0CwTd4K59PnXaKJDJixCWtrwDdgsdkrS+4DjsMFsHjp2YuOqsa
+         RL0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783090934; x=1783695734;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W0Grj9Qi0+dk5fVU5XSa7j0vuzMhx4RJGQKccjW2bkw=;
-        b=okh8UUgFG0hNpu9WJ2tELNRQVpFaVUC1XlDZCSavIYCSQgrjg5WbeSPFD4cRrBxxCT
-         MbxkpXO5cM/YQnw++IIDjZt+EGsvxqh0GoayKnsU/kUUpP8hnNf4Tb5HEo1yvxDJ9Lbr
-         HD/+a5G2t+oBeXKnlhG7Hrb4A6LenZnF1V6c+cCIKWApEe+1YfxEWkpG9Y4C3LBNANW9
-         qtwxmMVJ91WDd43PDh/BM/dfjCnI9wkDLJk/OXdv+/3zFrv9XpktcXbN2sWW9ybgpLSi
-         +VysRGdmEVhoY2r1lkCGEYsmwKcTSoE8FLuTUC6Lp1RUqUwXXbaa3dDubSa+lLzwyZN/
-         AXtA==
-X-Forwarded-Encrypted: i=1; AHgh+RqJWnfo8yE9tJEFHTpTJ6+vi3xvTLCA4HQkyj6roQUnwBu6bWDMStlomRcm3Jq5gdnxb55FZz17kAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzly6jJN8v5zOjOZZwmNCUcvU1ixEtcja44OKoA4r4W1/XzSAU8
-	BiMOz9eKHHmq1QvfarrRjdhAay8s11H0TUEKjMhrvUpv/Qzr5WDZomKGnV6m18KAy1M=
-X-Gm-Gg: AfdE7clFf9hF4xB0ayFXhmFgwMxnVFiidnyPnvVcEfpeYmLTcRtyarJX2UMP4kVtUpu
-	NyDHGIpJyIs7GPZnWFxBScd+6H58k6hKB4/rc+9VkZcs7NV2p5IPf3X6ie8byi4M7u0f07m9uTy
-	QjK+upeMpszzgrzoX98FMqPPcqdnrdRz7Ylzbxvu5PIYrGSFlDIU1RfATm5wPL7FHjhZD5jbua8
-	tUYVVUGmoSDEth35YLiOC3B4cY6dGYZHW+pI6sbCwxjs/gq5BKQ9z0H8dH5PFOq4rn40pOK28lJ
-	TLzfdMj5CvYK0/w0G2A9fBrPVcdV8bSnfw56Ow4JPfqclf9kclQyKXnBIUE+YeWBpA7mIztMZJV
-	DlR3dkRLOwiLXsj30csSWRBovWOAN7mrX5jppgvoJs878T32YsKoFN9R8Sv9GRXroe+sJP+OG3l
-	p9PsJfXb2rPLX9zAR+WNlHqSVml+lSiYkHRAWC73lalgacm/Sl2GcXrtZuicnSORw=
-X-Received: by 2002:a05:6870:326f:b0:440:67b1:b59b with SMTP id 586e51a60fabf-44caac0e76bmr6806975fac.0.1783090933482;
-        Fri, 03 Jul 2026 08:02:13 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:6af9:a9d7:17b5:2644? ([2600:8803:e7e4:500:6af9:a9d7:17b5:2644])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cfb1bb17fsm2183286fac.5.2026.07.03.08.02.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 08:02:13 -0700 (PDT)
-Message-ID: <7a549442-f61e-42a1-86b6-aed6a8977290@baylibre.com>
-Date: Fri, 3 Jul 2026 10:02:12 -0500
+        d=1e100.net; s=20251104; t=1783091137; x=1783695937;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ymd1YdLxXbtUH6VcGFjA1uH5awiZ4CUoXHPYrby/Xn8=;
+        b=n95kNOswNYlftboclYKhh/teq4tThQeOVzv5ap3ExHFtO4iSJ+uUJ92YeF9dKxsHZU
+         IGyYRDkhyF6uTcKgmSKzWj/JWwDpSyu1OJIoHsKQHdIzxgQEscf0dXqBNjOd1ZK3eiE7
+         LXHRxRLsumTtAxum9YBZegxoKAJgi78lodS4dCo3IBmN/EBthIm/SHh6PhTmd/4s9cXc
+         aNj7FkdIXGEDbS6SBDyoU2VTaSWWdxphJQJVm9gNtnhxBDN5Vx2vFUaFDv5K8QtZmToV
+         0UYsp2Hq+DdNrsSUFqH7C2UxKConotw0Bbo7f+9oK1JI1VW3TwuI/XTH5SgZdgMrjmzW
+         DZ1w==
+X-Gm-Message-State: AOJu0YxNIXTRM4PPkmvLzqI21YDWLFD+uRgrgNqVOMgOGb1KQBGyuWRE
+	pT25wjIs4n7RJtOJLBwuDpHBz9B7dhZAjeos1lZ6xs7+JzX4I0zlibz5ZmmCnD7RP44iLh4T3lG
+	MDzu4aS6jWtUdNsEaqJbW96npnobEjZqm91mGh8zmr3CKsNnMZl0DEltwLTrKecQ=
+X-Gm-Gg: AfdE7cnhF3cy+lIpZfukHKMAFNHAFAVdyb3EQK4Y6OAnSueCYyfrNNhhj6mT/qAYbH7
+	ODRTgRMekuuwmYGuieUahXd7i7Otl1msqEXH2b4NPYgnRBlBIcA0v2QC8WsVbbNekYwCkwY7/9H
+	cwLvy+aXSsHNcqKBp0P7VQNhAFjHc0KAlQ2dcJyfGH9aCBxLtH48P71/ZdIY9twRlc2Gf8MCLb4
+	mZwzYMP5RbubgeRBQZnPrNDHKWysB7sfFzJDbQji9bZUmi4MdCyPbhSg458rFBUuJujaYJ63E8C
+	9Ugd21n6bYu0dZRVi84clpFAnXwPdWSaYpybw0n3mlehDFN8Z7DcOuvazXmI65HCLkBMsj27EIh
+	lmiQLSQGsv3rXxDqrUZfNeQ0gLwd0kLLKFBEwG3ftLqOF
+X-Received: by 2002:a05:6a21:48b:b0:3bf:d1f9:b1ca with SMTP id adf61e73a8af0-3c03c6320bbmr216518637.30.1783091136852;
+        Fri, 03 Jul 2026 08:05:36 -0700 (PDT)
+X-Received: by 2002:a05:6a21:48b:b0:3bf:d1f9:b1ca with SMTP id adf61e73a8af0-3c03c6320bbmr216464637.30.1783091136224;
+        Fri, 03 Jul 2026 08:05:36 -0700 (PDT)
+Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c85b345sm32904517c88.10.2026.07.03.08.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jul 2026 08:05:35 -0700 (PDT)
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Subject: [PATCH v2 0/2] Fix sticky -EINVAL after resume callback failure
+Date: Fri, 03 Jul 2026 20:35:19 +0530
+Message-Id: <20260703-fix_sticky_-einval_after_pm_runtime_api_failure-v2-0-578b78a0cf46@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] dt-bindings: iio: dac: Add AD5529R
-To: Janani Sunil <jan.sun97@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-spi@vger.kernel.org
-References: <20260701-ad5529r-driver-v5-0-ed087900e642@analog.com>
- <20260701-ad5529r-driver-v5-2-ed087900e642@analog.com>
- <20260701194103.45541cbe@jic23-huawei>
- <3e094744-8603-443e-8027-8fc2f2817879@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <3e094744-8603-443e-8027-8fc2f2817879@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAK/PR2oC/5WOWwrCMBREtyL5NiWJtkG/3IeUEJNbe7Uv8yiW0
+ r2btivwZ+DAMGdm4sEheHI9zMTBiB77LoE4HoipdfcEijYxEUwUrBA5rfCrfEDznhQF7EbdKF0
+ FcGpolYtdwBaUHlBVGpvogBbyIi3TuTlbRtLq4CBNbMZ7ubOPjxeYsGrWRo0+9G7aLo187e12y
+ cTf9pFTRgtrzYlLxrlht9777BN1Y/q2zVKQclmWH3hXCEsHAQAA
+X-Change-ID: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
+To: Mark Brown <broonie@kernel.org>, Dilip Kota <dkota@codeaurora.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Girish Mahadevan <girishm@codeaurora.org>,
+        Alok Chauhan <alokc@codeaurora.org>, bjorn.andersson@oss.qualcomm.com,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Pavel Machek <pavel@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Douglas Anderson <dianders@chromium.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        aniket.randive@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com,
+        jyothi.seerapu@oss.qualcomm.com, linux-pm@vger.kernel.org,
+        driver-core@lists.linux.dev,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783091129; l=1942;
+ i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
+ bh=2JNfmkrDXlzcvSizv/iAqx3lfl6qRnhrAE7oNNSShdw=;
+ b=wa/RbKyRfhqoKsEoOwy7Ku0Vy+5t4iXcub3dAWFoKrRUmmipC9chaycRNK38K1GiPTvt9gmHl
+ FwNxT9h3k/nBTbI2jgcva0bENGK4CpDSOex2Lx0VQA0gLGMfefVLhCd
+X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
+ pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfX6DcRK/LBif2j
+ MGQw3UUnDwJ/NMNg+Wj1DPMxyjAv1UdujWg2Dou3SRWKcRDCiSnl50E53DTet6W6ok9EIulTq5p
+ mnRXiV75sYdoSdv/fRh4/x7g5TDbpiRbptNg+7j+/EmVHbJtEQ0adGI3rHVPYcyzqGV3HMpv0HK
+ C96dgRcdkiqJxaPWM5VbHkyg92Pvvfd+HKwN6YWbpGeeg6MCgGhCcPRFtNDHeWgnoziNrTniy8v
+ p9+aSwixXrCRxNP+40Ve8exiNABrn7S+gwfoawilZgj41U0q0uN2b9EnDD2JX0kvmKeqL0W9qMe
+ zyFewwuhKGLxxo8Hu1TCoNtDhq85rmayR3MUNLUIxQIZQn6I3ctFZytXTbVwFJD7rO6+2FH75gT
+ 1WwCmLIk9U9iuCJFTluQCon1/aW2GWlJrAgQYSxe29631ztMccaNeWgUWweFYlBTuvGGNNBxd95
+ CwFrhD97VnYDdPquzIQ==
+X-Proofpoint-GUID: GIJaFw5zPBD2xKIUoYengTsCDwPxIdUi
+X-Authority-Analysis: v=2.4 cv=QbFWeMbv c=1 sm=1 tr=0 ts=6a47cfc1 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=4GhjkeDSICfBxK9jGEoA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-ORIG-GUID: GIJaFw5zPBD2xKIUoYengTsCDwPxIdUi
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfXxquYiBJFNfB/
+ WGiPlpX15jpgHGVQs6EqXgut09rdjYI5ucwjxu6BRQUJqGU7FWA+BDTYMvPTAH7+2tT7nTWVn6o
+ aLJ+dR1sTnIcnAc519cwN+6PTRy3088=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015
+ bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030149
 
-On 7/3/26 5:01 AM, Janani Sunil wrote:
-> 
-> On 7/1/26 20:41, Jonathan Cameron wrote:
->> On Wed, 1 Jul 2026 08:40:40 +0200
->> Janani Sunil <janani.sunil@analog.com> wrote:
->>
->>
->>> +      adi,output-range-microvolt:
->>> +        description: |
->>> +          Output voltage range for this channel as [min, max] in microvolts.
->>> +          If not specified, defaults to 0V to 5V range.
->> No way to specify the default as part of the binding rather than a comment?
->> I haven't checked but does
->>         default: [0 5000000]
->> not work?
-> 
-> Tried that approach. But the dt binding check does not accept default for this DT cell-array property.
-> 
+When a runtime PM resume callback returns an error, rpm_callback() sets
+power.runtime_error on the device.  All subsequent rpm_resume() calls
+then return -EINVAL immediately at the top of the function, permanently
+blocking any future resume attempt — including those triggered by
+consumers trying to power up their suppliers — until runtime PM is
+explicitly re-initialized.
 
-Wouldn't it have to be written like:
+Unlike suspend failures, resume failures should be retryable.  The first
+patch fixes this in the core by only setting power.runtime_error when a
+suspend callback fails, leaving resume failures transient by nature.
 
-  adi,output-range-microvolt:
-    ...
-    items:
-      - enum: [...]
-        default: 0
-      - enum: [...]
-        default: 5000000
+The second patch fixes a pre-existing issue in the spi-geni-qcom driver
+that this scenario exposed: pm_runtime_get_sync() was called in
+spi_geni_init() without checking the return value, so a resume failure
+would silently proceed to access hardware registers on a device that was
+not powered up.
+
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+---
+Changes in v2:
+- Reworked the fix per maintainer feedback: instead of calling
+  pm_runtime_set_suspended() in rpm_get_suppliers(), fix the root cause
+  in rpm_callback() by not setting power.runtime_error on resume
+  callback failures.
+- Removed other patches which are not needed now.
+- Link to v1: https://patch.msgid.link/20260702-fix_sticky_-einval_after_pm_runtime_api_failure-v1-0-6ddc317011c0@oss.qualcomm.com
+
+---
+Praveen Talari (2):
+      PM: runtime: Only set runtime_error on suspend callback failures
+      spi: qcom-geni: Fix missing error check on pm_runtime_get_sync()
+
+ drivers/base/power/runtime.c |  8 +++++++-
+ drivers/spi/spi-geni-qcom.c  | 17 ++++++++++-------
+ 2 files changed, 17 insertions(+), 8 deletions(-)
+---
+base-commit: 4e5dfb7c84012007c3c7061126491bbc92d71bf1
+change-id: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
+
+Best regards,
+--  
+Praveen Talari <praveen.talari@oss.qualcomm.com>
+

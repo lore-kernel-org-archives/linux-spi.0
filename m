@@ -1,83 +1,86 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74D2242D97
-	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 15:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11A7414DD8
+	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 15:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783091146; cv=none; b=pHVcOekwNQyK2pubycLyGmX15jIqs6lCFJynE2Q58DugL1O23Uqsc40KlQai9+sDkLvSp4vhElYyr+0wVaIAvshvXqX33PJ+66r2siQ7gOyaPfGChqk1sSAusNdFz+ArhxIiXGPCsI7LEDxk9u/XhNG95PKP0E0C1kaNBhUiJCk=
+	t=1783091153; cv=none; b=fVHmb9b3fHjF96XaOg8VkpAB5+5y6RMlNxmRJkxrccKume/deiWvTwVta4U7TDfGyRH5ZZlnxnfj2OBv1Mi8L0qnBAqbu6uXC/F6ceckAjoLHQV6C+ILkdJWwcGbASaaCSRIepGim5FJ0dodB/OJ//ttNLgAW6tWB+itXcXzYKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783091146; c=relaxed/simple;
-	bh=2JNfmkrDXlzcvSizv/iAqx3lfl6qRnhrAE7oNNSShdw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dheeJ9hMQcrJ1awURa8rUFxMavQaoE6cVh29CVc07vvL8cJAU1I1JONDEIdDB5uqxbgszmh+lsgueqJ3vvF5dawTOOzf9c1u3JAE4pPO5XXBTtXk09rsJZo2ZjhO3SQMZCKzqzOUg4agZ3FPI0gWdtrl93Jz2CU4YJqH0hw+ehY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SsieaRLS; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bJoQmGSc; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1783091153; c=relaxed/simple;
+	bh=+1AFISiUFHQ4vbjZNkqW9aWZMrSy4vCzMTnu4c7NCh0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mW4IfL2upM5yzFrkVilmLwjG0HkqICY5viTNn8OuNu/OILTKQJx9gPbLa/eA3J5I9KlCvi7CizXuJ6nqofvY/NFFLSQU4kX8nOBV/Cbrgj2bFZm4oUQcS+NoNJZIHHr1vbuh00h2fED838EITYH+XFu/0/0pyaHVghz9FOItAE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pSjNwadW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DpWP0a5Q; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SsieaRLS";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bJoQmGSc"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 663DNe1f3195389
-	for <linux-spi@vger.kernel.org>; Fri, 3 Jul 2026 15:05:37 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pSjNwadW";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DpWP0a5Q"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 663CRLJx3144217
+	for <linux-spi@vger.kernel.org>; Fri, 3 Jul 2026 15:05:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ymd1YdLxXbtUH6VcGFjA1u
-	H5awiZ4CUoXHPYrby/Xn8=; b=SsieaRLSdLfL5RPxXFNoz3G7Fi5vTs89jcFp9X
-	SVxukLqjMdIjzIVFqLb4guYkqH+n8vLqw0AGn76wq+8aNl3dd2F7YslNLdmlLsYD
-	6UqO1J2QCwbvajiWhDg/MYd7QCbB4w5UQz5wv4YcgWtWxE69ZXyrMfuMFEeZSBW+
-	SuDBuDYBqecyQcAmBoCrZS4Kf4XDolaU4tyFj/NKtVff9vvthwUm8KPjpKI4aGUc
-	tweI4b/7DpPxNDTy3WOVxlx2AqnFAgDRSM3YBQXl6nV1WbZMlbgMIkxaQJt8Tg7S
-	zgT3Ctcq2Z476NgHGIjXiNDMRDCktTRxpsSPQSuZPZPcpT2A==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f68jyspex-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6WeUVekFxFkuveS+M2x0ccM56quUUYg6HrGNJ97KLF8=; b=pSjNwadWc5o8+Bx6
+	hts1chv7RdRcidjgnMa0AL3V8enFnXFkutJhZFIcwXOLJN75Xivfyluyk3PxYnZt
+	SnuI5gcRqHzjhsMDDkRb1LywXMzjaM5fOWIVLOohfcL2BuBSwLDigj3XD2yoDfSP
+	DzIyp+ZISPoNNVF5ZZlDtJ8kSqRLmbqYgtzA8WG4S5Fjl2jKqKhla9UCqZT4fIwa
+	J/0PrkDNMsOV0Lpw4s/inRnW5e6gU2FUSv956Eu8RX9A/emQ3ROjLQRoCGIiCzLl
+	mn1ymqSvkVKe9hQLp8AaP21zbsyeF+yAf1b+KujIxdLjq1rzmsDPun8JjtoXbgwp
+	6xEgjQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f682bst52-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 15:05:37 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c9667280edeso970732a12.2
-        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 08:05:37 -0700 (PDT)
+	for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 15:05:44 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2c81db324caso14374365ad.0
+        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 08:05:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783091137; x=1783695937; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymd1YdLxXbtUH6VcGFjA1uH5awiZ4CUoXHPYrby/Xn8=;
-        b=bJoQmGSc+z8BROsLUj/PwOcukwu+hUmtv/msTc4jenLId47YQELuxzyQ65QN+YtNAY
-         eqvGihzS9Hmx8zLx/SE4jONtSEJ0D/oA4Y+Z/ECxRVO9vSCjMisHCFMQ8eQXv82aKjy9
-         4/PVVTu6v5G8Qxdb/39BDF7VuHuXQdkplK7wtPYMNXSppZvkt/JuARXFvwN7zrxjs708
-         FX4t3PrJrt1rOrcyNVvwpzWWu2FWigSAa09tpEQ1fDB744LWeSFcvlT0AYyBOy7AxOPY
-         vUOcSuVwIAkRgDKeWp0CwTd4K59PnXaKJDJixCWtrwDdgsdkrS+4DjsMFsHjp2YuOqsa
-         RL0w==
+        d=oss.qualcomm.com; s=google; t=1783091144; x=1783695944; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6WeUVekFxFkuveS+M2x0ccM56quUUYg6HrGNJ97KLF8=;
+        b=DpWP0a5QcsiQURy+sZmDvmM8zWNmKSLj2gAV5rxPcrCD8Gmg+kPer0eGGKMsxazCEf
+         2rcWypfHObDDhfIwXd31eqFCeejesFuGdexO2gMaXJDx04C3c8/GnC/OWhkls3vf2Iey
+         17j30teUPvSNxb5BvU20r8d+DYT6jcRvr1h6wz5gzCA1WlIEFR99JVzn4VdfU9UZ0ie3
+         NDGDSaIzYmXxPNCpXjNQiLN2hktKhBnD9njrod1pRN6b+5ea6jTNAhBJu1qEE079vGwg
+         mUuXY2aCEwyFdTP1nXLP+Y9+Vpo33it74T/RB8xw9o86fG//lGxTmpvuW+xw5RUCDA9D
+         6/fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783091137; x=1783695937;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ymd1YdLxXbtUH6VcGFjA1uH5awiZ4CUoXHPYrby/Xn8=;
-        b=n95kNOswNYlftboclYKhh/teq4tThQeOVzv5ap3ExHFtO4iSJ+uUJ92YeF9dKxsHZU
-         IGyYRDkhyF6uTcKgmSKzWj/JWwDpSyu1OJIoHsKQHdIzxgQEscf0dXqBNjOd1ZK3eiE7
-         LXHRxRLsumTtAxum9YBZegxoKAJgi78lodS4dCo3IBmN/EBthIm/SHh6PhTmd/4s9cXc
-         aNj7FkdIXGEDbS6SBDyoU2VTaSWWdxphJQJVm9gNtnhxBDN5Vx2vFUaFDv5K8QtZmToV
-         0UYsp2Hq+DdNrsSUFqH7C2UxKConotw0Bbo7f+9oK1JI1VW3TwuI/XTH5SgZdgMrjmzW
-         DZ1w==
-X-Gm-Message-State: AOJu0YxNIXTRM4PPkmvLzqI21YDWLFD+uRgrgNqVOMgOGb1KQBGyuWRE
-	pT25wjIs4n7RJtOJLBwuDpHBz9B7dhZAjeos1lZ6xs7+JzX4I0zlibz5ZmmCnD7RP44iLh4T3lG
-	MDzu4aS6jWtUdNsEaqJbW96npnobEjZqm91mGh8zmr3CKsNnMZl0DEltwLTrKecQ=
-X-Gm-Gg: AfdE7cnhF3cy+lIpZfukHKMAFNHAFAVdyb3EQK4Y6OAnSueCYyfrNNhhj6mT/qAYbH7
-	ODRTgRMekuuwmYGuieUahXd7i7Otl1msqEXH2b4NPYgnRBlBIcA0v2QC8WsVbbNekYwCkwY7/9H
-	cwLvy+aXSsHNcqKBp0P7VQNhAFjHc0KAlQ2dcJyfGH9aCBxLtH48P71/ZdIY9twRlc2Gf8MCLb4
-	mZwzYMP5RbubgeRBQZnPrNDHKWysB7sfFzJDbQji9bZUmi4MdCyPbhSg458rFBUuJujaYJ63E8C
-	9Ugd21n6bYu0dZRVi84clpFAnXwPdWSaYpybw0n3mlehDFN8Z7DcOuvazXmI65HCLkBMsj27EIh
-	lmiQLSQGsv3rXxDqrUZfNeQ0gLwd0kLLKFBEwG3ftLqOF
-X-Received: by 2002:a05:6a21:48b:b0:3bf:d1f9:b1ca with SMTP id adf61e73a8af0-3c03c6320bbmr216518637.30.1783091136852;
-        Fri, 03 Jul 2026 08:05:36 -0700 (PDT)
-X-Received: by 2002:a05:6a21:48b:b0:3bf:d1f9:b1ca with SMTP id adf61e73a8af0-3c03c6320bbmr216464637.30.1783091136224;
-        Fri, 03 Jul 2026 08:05:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783091144; x=1783695944;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6WeUVekFxFkuveS+M2x0ccM56quUUYg6HrGNJ97KLF8=;
+        b=DYEMwXsa0iQEyeVcQ7yIrLWA86cxlRwvmnwHmth37ZUL5/1RDowvuAw+MHbOyFpM01
+         11xgXBPPbnyaRh/5nZSRdY6iZI1Qb1TecUFVovn7G6IFfO5EBXP7xZYmSjBVCIf+ilaq
+         +BwySOsIGryemQGVT6WeQEPj9GXNBMQD9pU4Gqgj0NW+FA1yDqecSHVRG8kcfSHj8PnI
+         Iz0mKIRo2lDl27O1ZUAIsCNZPyY/mVumMtE+SwTaJunUxxQUMwzaleZgxyw+F5n1x3AW
+         zoeDajkVO3nU0xHBZXaVsOYobxznvR79e+NpaHAhkkBXK92IvrxaJkiH7LExvbB3Awon
+         Qf3A==
+X-Gm-Message-State: AOJu0YzirbnRFOPxkqm90jHjf0sP3V+iwcF6dlK0AzqTgDDQgbUXJ5PA
+	psyL9ml52+5yh7Qwa9/UPCkMNMAaRbfEKMc9FtjnUg28GdFiGosduBC59U7YoSoHowOi0RHxSiZ
+	KdXVj2PbE+CZ5DR89hbirRzApUDC7x6VY/V4nFVTuXrERiegLJdZ3r8dRbaIcS7M=
+X-Gm-Gg: AfdE7ckCSnbVBCwYWLLf6Z9BTlT7mUqc6gZumHwESV/QpmaP96YFuj0IAk6QttUw0cs
+	woXNq5/oTshDUuat7DIUkA+GIDaQ10b5kSDCkReRPeLm0sNqMHg4JuvatMnd7N+VPsIgJc+dyQP
+	zrM6uZHg7ZW7yD9hXJTwf68lZx+Ti32KAu7IWwi9YNpNp429/nOjfzC8wW9OWzBESbC71UTVYNZ
+	G0LbMYF85eIjzzQ2oEhnaQhfoItsNJ1ODyUqgwa6HuGooIEwi2Lu/Ht+N/Gt2jtpxmGNVKoi7qs
+	+eOdO7EjpmOBKRiX6OXSKc+bYEIyDRaK/6sWFwIXRHUI7DwXLhYWW92pXkOCV/4Uh+D6+6+Uhod
+	RMFLt6fukfRgP9rgAsdH0+IHaVLmiYGOUWUy6bE9NIo5Y
+X-Received: by 2002:a17:903:2f81:b0:2ca:d151:382d with SMTP id d9443c01a7336-2cad1513c0bmr45356565ad.14.1783091143873;
+        Fri, 03 Jul 2026 08:05:43 -0700 (PDT)
+X-Received: by 2002:a17:903:2f81:b0:2ca:d151:382d with SMTP id d9443c01a7336-2cad1513c0bmr45356165ad.14.1783091143295;
+        Fri, 03 Jul 2026 08:05:43 -0700 (PDT)
 Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c85b345sm32904517c88.10.2026.07.03.08.05.29
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b3c85b345sm32904517c88.10.2026.07.03.08.05.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 08:05:35 -0700 (PDT)
+        Fri, 03 Jul 2026 08:05:42 -0700 (PDT)
 From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Subject: [PATCH v2 0/2] Fix sticky -EINVAL after resume callback failure
-Date: Fri, 03 Jul 2026 20:35:19 +0530
-Message-Id: <20260703-fix_sticky_-einval_after_pm_runtime_api_failure-v2-0-578b78a0cf46@oss.qualcomm.com>
+Date: Fri, 03 Jul 2026 20:35:20 +0530
+Subject: [PATCH v2 1/2] PM: runtime: Only set runtime_error on suspend
+ callback failures
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -85,12 +88,10 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAK/PR2oC/5WOWwrCMBREtyL5NiWJtkG/3IeUEJNbe7Uv8yiW0
- r2btivwZ+DAMGdm4sEheHI9zMTBiB77LoE4HoipdfcEijYxEUwUrBA5rfCrfEDznhQF7EbdKF0
- FcGpolYtdwBaUHlBVGpvogBbyIi3TuTlbRtLq4CBNbMZ7ubOPjxeYsGrWRo0+9G7aLo187e12y
- cTf9pFTRgtrzYlLxrlht9777BN1Y/q2zVKQclmWH3hXCEsHAQAA
-X-Change-ID: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260703-fix_sticky_-einval_after_pm_runtime_api_failure-v2-1-578b78a0cf46@oss.qualcomm.com>
+References: <20260703-fix_sticky_-einval_after_pm_runtime_api_failure-v2-0-578b78a0cf46@oss.qualcomm.com>
+In-Reply-To: <20260703-fix_sticky_-einval_after_pm_runtime_api_failure-v2-0-578b78a0cf46@oss.qualcomm.com>
 To: Mark Brown <broonie@kernel.org>, Dilip Kota <dkota@codeaurora.org>,
         Stephen Boyd <swboyd@chromium.org>,
         Girish Mahadevan <girishm@codeaurora.org>,
@@ -109,81 +110,86 @@ Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
         driver-core@lists.linux.dev,
         Praveen Talari <praveen.talari@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783091129; l=1942;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783091129; l=2052;
  i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
- bh=2JNfmkrDXlzcvSizv/iAqx3lfl6qRnhrAE7oNNSShdw=;
- b=wa/RbKyRfhqoKsEoOwy7Ku0Vy+5t4iXcub3dAWFoKrRUmmipC9chaycRNK38K1GiPTvt9gmHl
- FwNxT9h3k/nBTbI2jgcva0bENGK4CpDSOex2Lx0VQA0gLGMfefVLhCd
+ bh=+1AFISiUFHQ4vbjZNkqW9aWZMrSy4vCzMTnu4c7NCh0=;
+ b=WhkaOSwYX/KACsdDCwK6cOceV9G9k6O41aw/xNJptN3pHVbX6NRj3bPwGg3tCIGB355tgCOhi
+ iXsJ4/uG66RDjut+TD+/pBhvFZr9wz2auoG+gT9Oy5f08xH8B+2oKG2
 X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
  pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfX6DcRK/LBif2j
- MGQw3UUnDwJ/NMNg+Wj1DPMxyjAv1UdujWg2Dou3SRWKcRDCiSnl50E53DTet6W6ok9EIulTq5p
- mnRXiV75sYdoSdv/fRh4/x7g5TDbpiRbptNg+7j+/EmVHbJtEQ0adGI3rHVPYcyzqGV3HMpv0HK
- C96dgRcdkiqJxaPWM5VbHkyg92Pvvfd+HKwN6YWbpGeeg6MCgGhCcPRFtNDHeWgnoziNrTniy8v
- p9+aSwixXrCRxNP+40Ve8exiNABrn7S+gwfoawilZgj41U0q0uN2b9EnDD2JX0kvmKeqL0W9qMe
- zyFewwuhKGLxxo8Hu1TCoNtDhq85rmayR3MUNLUIxQIZQn6I3ctFZytXTbVwFJD7rO6+2FH75gT
- 1WwCmLIk9U9iuCJFTluQCon1/aW2GWlJrAgQYSxe29631ztMccaNeWgUWweFYlBTuvGGNNBxd95
- CwFrhD97VnYDdPquzIQ==
-X-Proofpoint-GUID: GIJaFw5zPBD2xKIUoYengTsCDwPxIdUi
-X-Authority-Analysis: v=2.4 cv=QbFWeMbv c=1 sm=1 tr=0 ts=6a47cfc1 cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfX6Re20SL57DU2
+ MQnRr8vo3VVc7lAzTVIbMHCxozcKTjXV1Kspmtm5GTXEZ0yyFU+To/UiQStaXtAH2TBUxn9aJV0
+ fTEAlN8GZr6yir4EisWQ7i+p2XNmJbjOq9Ypr3XMG2iiqXFeaQPPs5IQ2JLpo3scn81br7RqCQi
+ jUnkDg5jgfi6UHYlaSIfCOZlfPGRCDscg8JqNpGgCSQJb+s7zujqdqA+EtijiZvFdELtFaJatiQ
+ S5zcA8lrLVPXu9r+UYRZOcAYx8dSf6z5CsO4yzNwtZBIE/UrYs7qGUOoqUKZBbRFTg/RkE6fSb2
+ Hg8rekVd3uJfgu+rmUmM2aul1E15rCq3W9ucfFbLjN9GTLOmltVtUMR6GErabUYecZYjDy6fKnM
+ 5JCZgHxP0ozC7ZBCO7MiMD9EdvysNd4Iuz68Pk9TiNUtuZVFeDfB0sRTdR9sOUVB6J3od2Odh3X
+ wLziAoJqmcyvbam9LRg==
+X-Proofpoint-ORIG-GUID: EN1WeTRAowM7CD3_c2vJ8FLChDdF54jm
+X-Authority-Analysis: v=2.4 cv=cc3iaHDM c=1 sm=1 tr=0 ts=6a47cfc8 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=4GhjkeDSICfBxK9jGEoA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-ORIG-GUID: GIJaFw5zPBD2xKIUoYengTsCDwPxIdUi
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfXxquYiBJFNfB/
- WGiPlpX15jpgHGVQs6EqXgut09rdjYI5ucwjxu6BRQUJqGU7FWA+BDTYMvPTAH7+2tT7nTWVn6o
- aLJ+dR1sTnIcnAc519cwN+6PTRy3088=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=4WVRsyPI6hImBWJIeNoA:9 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAzMDE0OSBTYWx0ZWRfX2nuk5HA7hvhf
+ l4gzAFDHWEyvoozg/3quas4zVWf1kvKctaBk9mTBW1DQr3rEdOVFFGNBzwI6km5cjUGDYrqsvwk
+ 912eYilnApvt56bvqAoY4l5gxIP6Lrk=
+X-Proofpoint-GUID: EN1WeTRAowM7CD3_c2vJ8FLChDdF54jm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-07-03_02,2026-06-26_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 suspectscore=0 adultscore=0 bulkscore=0 priorityscore=1501
+ phishscore=0 spamscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607030149
 
-When a runtime PM resume callback returns an error, rpm_callback() sets
-power.runtime_error on the device.  All subsequent rpm_resume() calls
-then return -EINVAL immediately at the top of the function, permanently
-blocking any future resume attempt — including those triggered by
-consumers trying to power up their suppliers — until runtime PM is
-explicitly re-initialized.
+When a runtime resume callback returns an error, rpm_callback() sets
+power.runtime_error on the device.  This causes all subsequent calls to
+rpm_resume() to return -EINVAL immediately at the top of the function
+without invoking the callback again, making the failure permanent until
+runtime PM is explicitly re-initialized.
 
-Unlike suspend failures, resume failures should be retryable.  The first
-patch fixes this in the core by only setting power.runtime_error when a
-suspend callback fails, leaving resume failures transient by nature.
+Unlike suspend failures, resume failures should be retryable.  If a
+device's resume callback fails transiently, there is no reason to
+permanently block future resume attempts on that device and all of its
+consumers.
 
-The second patch fixes a pre-existing issue in the spi-geni-qcom driver
-that this scenario exposed: pm_runtime_get_sync() was called in
-spi_geni_init() without checking the return value, so a resume failure
-would silently proceed to access hardware registers on a device that was
-not powered up.
+Fix this by conditioning the power.runtime_error assignment in
+rpm_callback() on the device being in the RPM_SUSPENDING state.  At the
+point rpm_callback() runs, __update_runtime_status() has already set the
+device status to either RPM_SUSPENDING or RPM_RESUMING, so the two paths
+are reliably distinguishable.  Suspend callback failures continue to set
+power.runtime_error as before.  Resume callback failures return the error
+to the caller but leave power.runtime_error clear, allowing the next
+resume attempt to invoke the callback normally.
 
 Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
 ---
-Changes in v2:
-- Reworked the fix per maintainer feedback: instead of calling
-  pm_runtime_set_suspended() in rpm_get_suppliers(), fix the root cause
-  in rpm_callback() by not setting power.runtime_error on resume
-  callback failures.
-- Removed other patches which are not needed now.
-- Link to v1: https://patch.msgid.link/20260702-fix_sticky_-einval_after_pm_runtime_api_failure-v1-0-6ddc317011c0@oss.qualcomm.com
+ drivers/base/power/runtime.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
----
-Praveen Talari (2):
-      PM: runtime: Only set runtime_error on suspend callback failures
-      spi: qcom-geni: Fix missing error check on pm_runtime_get_sync()
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 335288e8b5b3..70d933bcd295 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -469,7 +469,13 @@ static int rpm_callback(int (*cb)(struct device *), struct device *dev)
+ 	if (retval == -EACCES)
+ 		retval = -EAGAIN;
+ 
+-	if (retval != -EAGAIN && retval != -EBUSY)
++	/*
++	 * Only stick the error on suspend failures.  Resume failures are not
++	 * treated as permanent so that the next resume attempt will run the
++	 * callback again rather than short-circuiting on runtime_error.
++	 */
++	if (retval != -EAGAIN && retval != -EBUSY &&
++	    dev->power.runtime_status == RPM_SUSPENDING)
+ 		dev->power.runtime_error = retval;
+ 
+ 	return retval;
 
- drivers/base/power/runtime.c |  8 +++++++-
- drivers/spi/spi-geni-qcom.c  | 17 ++++++++++-------
- 2 files changed, 17 insertions(+), 8 deletions(-)
----
-base-commit: 4e5dfb7c84012007c3c7061126491bbc92d71bf1
-change-id: 20260625-fix_sticky_-einval_after_pm_runtime_api_failure-6797d0a5c4d0
-
-Best regards,
---  
-Praveen Talari <praveen.talari@oss.qualcomm.com>
+-- 
+2.34.1
 

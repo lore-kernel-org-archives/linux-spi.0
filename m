@@ -1,86 +1,66 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861CE3093DD
-	for <linux-spi@vger.kernel.org>; Thu,  2 Jul 2026 17:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9A73B71A3
+	for <linux-spi@vger.kernel.org>; Fri,  3 Jul 2026 10:01:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783011900; cv=none; b=oKgHkwpITwhqOnsoEa8brzIJnGZkmaks01shxStdZVuwOTgXbEK6uhmUfssxXC/jh5yC1AEN1+/vbFgDFfX+nlH2qpkey5z6aXgxQuLvkR+/8h1hZmxXbW8ROD543id0qo2rk49zyAkdIrVyjhbikbs7FRc0il6/ROGMduq08j0=
+	t=1783072905; cv=none; b=YQrLHab4X2g6W/suIVE0zpBC7Nf1eY+zL4Bz1Z9TkPFJmP3709zmZ3btYnwkZPoR5AITiHjVHbTxIQlMoA0raS8Lmvifv6/upq4uWz+KUH4NZq+O+rdzwMnLjt/IfBGSbjrLpd1P0GCqHw5oQ3lmnrm+kLVKzm8K+5snAWSLpiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783011900; c=relaxed/simple;
-	bh=9tuRvVLOkJDkdB2TUNh8MQAFyNvpa/qW/IXJzIeBcH0=;
+	s=arc-20240116; t=1783072905; c=relaxed/simple;
+	bh=RYeeLX2JG8dp87oYPPrNDLM4wRbMmmAVowH6Gs/X6vw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eKefeYb9/2EH1j44lDOOow/tr6oOI29dhJ75LnFclfJ2C4zW5XfnxCYRh/usq60aMDc9iwFAC3bOc/wC/uYYQvWTXfljB72GAlS+tC6zSqKihCovq/PlU+ryq/hQZ5dnsUaMSSi2LOhndMyUgw6RPH6KSZiLMU+yKK4ajXrEDsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IrK+m0Ax; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WS/0xfJR; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=Dd+WZULQ0etCyG8i3Dii3fzM4IdsCNQvwQtylEHUWnmTEtz/57Y6RB2C28AktTP62pM8AJz7bS3P+5IXkJcUq9nOFICOk/JxYsyaerWAfwVXxlstsauHeO2IwaZc3wotepG161eW5i1v76YiwtnOS6+ddeYhWNUKs+Cvd4gO950=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A7V9YHX/; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IrK+m0Ax";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WS/0xfJR"
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662E3AMg661197
-	for <linux-spi@vger.kernel.org>; Thu, 2 Jul 2026 17:04:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1aKxFR/CdIjnlCVHU4kiwY3NDA03NMLY1DVMh4+N76g=; b=IrK+m0Axi+P5tcqx
-	4GG5YONU96qyKpeLs0k9AqbX9rhrxn5z+drnF83+NmF67IpeQlIbry/nZOxm5xBn
-	oQ9W1RF8OkplTXRINFAlLrSdrkGXPgtArg4TaJZZdtg9Q2caUTVToWU2W5N1ragb
-	QQYFQIlAyEhZiO7TUWv7cDKvuNkrXVNfvTb5YzbGStXbUl3F4Q5wjNvhXMh6O13N
-	NaYJ0Vp1nhrZqypgN0s4SvvQNzF4Zle9RrHHZ7LjP1gHLpXZFPMoZL31SVwrHQRV
-	pUA0chwM2VaNjf2+65xDhZxsrP6tL5PcJUsh+rYtCWAZSdxQMgBw07JsFPcUE7E+
-	9swOYA==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f5qfc1fy3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 17:04:58 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-847a5f03ff9so2609559b3a.0
-        for <linux-spi@vger.kernel.org>; Thu, 02 Jul 2026 10:04:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A7V9YHX/"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-698e5859a3cso766422a12.0
+        for <linux-spi@vger.kernel.org>; Fri, 03 Jul 2026 03:01:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783011898; x=1783616698; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783072899; x=1783677699; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1aKxFR/CdIjnlCVHU4kiwY3NDA03NMLY1DVMh4+N76g=;
-        b=WS/0xfJR/3LVvK8mbNWrBHYVimpaOldoODMXnl3BcU8ZMxI7qpnfXKvswRsT9F2a12
-         D5IiQ7hPe74XCu3ZKvjrE+Zab5dCx1/RvFPQVXPjlCwW029pcJiWMrrejSR/OUQbAN7B
-         xB5nYaDKGfscNFtWtpC1aSuvMHEsSLbap7n8rB1xiYMF4eGwYCk8hA4x3XxFv1O6suNt
-         dSBrYgvy6op/0iiGSvTs9asploj8kP5vs93SzTiz1UZA5xIzACdmjOZYaiJEqJKaHWbe
-         AeZ7BEMQyhHZ92SymqpUxEH9y71Vd98eio8Ur8IjhL+l+zG9mRP3rm95qLhEsi8++S1R
-         GO3g==
+        bh=iphKavMyEGyoKkZ7flBVPKctJFRcurdGeTwbxLH/hOs=;
+        b=A7V9YHX/6P5OlAht23tj0RMGPFoSinD9l1uXNrDG4TPTQp7WTHxT8tXxV+iZlehnoa
+         lPLc48BQEtflxSDW3TSmiC2M3IoGKKqoI8Wr1qollpaU81PrGqSz+Qr7AMC06BMOK+BL
+         R1rYxp0yzuGoHOnWQjQrMqJ+0MBwn/aMKS8iGmuVDhdxtDTVLz5JrH+QXfJmvwnudQAo
+         yLcriQBv8FQy7WbBR8+K7UH/35OSk3PAqDSdcBZ8qKgg1wumB/gX20RXu6xb9thFeZzM
+         d0RIaLgusB8tjNciytWwZmzyX8va4aT4orP2S7LqxVeTpWHBURkm4S5y6WrCopp1c308
+         GhZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783011898; x=1783616698;
+        d=1e100.net; s=20251104; t=1783072899; x=1783677699;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1aKxFR/CdIjnlCVHU4kiwY3NDA03NMLY1DVMh4+N76g=;
-        b=PEHEJWe3phbGH1lG1/1JQ2eVU4gPX2fZ/hIpOepVB9xcLbFuIxYOX1FMFUS8j8py1K
-         7tTTEeXRAQBo7DYRKucM63kSU2GCIFXPfyMQmyT3D67SaE/BgQ0kqr4glDsNsFbp9bo2
-         8DpKE5BGKVaUis72UCxrM4sbRrfNzxFqZlyEhw66Y1Eu059YDl7SlBXS3n/ebd/y/7MO
-         9JoShCS3BZ5UrGqSNlebqAS7UBwR993bysJKb8Hy3FUWxLJOD3DwFEYsrrOIWUGUYhtm
-         wBxa9SdBA1iJGK5l/RI1beL9E825ng7mz+ZsI1hantMVm3nFEtkYUw7gBMG/sFAWc/EC
-         vLPw==
-X-Forwarded-Encrypted: i=1; AHgh+RqsqjRaHAW53JBDdPdqgIrzQL0vy/f4dX650YRMn1ytnNkjQN6i7M6CWCoGYCFqUrS/4HXbkbZ8Sjc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+E1UqWXnv9SG7TL8nLW2n3LrtURJ3WTQ1Vb/XtMyEhM8BTJiI
-	nQZBho2F5TxySgBfzDn3VFwUyWDMFN86TvWotZXz4NvASYiNSMikblvOU4f9Y/rZ1LwH60TKOPG
-	nu2W7W7TfTM7S0wxgY3D4qHhq9Plr747Cksut1as+qoMJZWwmxB2oNjI28iypzko=
-X-Gm-Gg: AfdE7cmU5/P5rQ5fES4aOutAUbBiVZSY6fx8Miym474iryuSfxf55EiQdTQQTQzosI7
-	a3GL0jOORJ0C1H9OLY6hTdrtF94O388w5t2qoySTVpci5NSOZBvOmb4f8UwC/lg6Q5HY8Qkwznd
-	RzuecrYLOqWnR+FtUj64of6S/6586Eo2D70d9bJPZnW6TLzXCAHtBrOkAg+YBNXX6K/fZtaaRiA
-	4J7kIYRJKvzkQuR7BZiSoF5oFuG33t0US4JGf348MIfWB/DuDEWZqS9aZbqA4wxi4r2DoB0qltK
-	gNPohXqqw0lBmtdhDOSnq6zhip+Xg3NICaefoeygJxmYIW3wSicC2vqep8czrCoYcRoit5fNuye
-	8p7o+CdP6QE9auwYO3LGhtU7lEtG+2FZ/IksklcbEVIDA7w==
-X-Received: by 2002:a05:6a00:4b12:b0:845:c5d5:3743 with SMTP id d2e1a72fcca58-847c0878290mr6759857b3a.28.1783011898010;
-        Thu, 02 Jul 2026 10:04:58 -0700 (PDT)
-X-Received: by 2002:a05:6a00:4b12:b0:845:c5d5:3743 with SMTP id d2e1a72fcca58-847c0878290mr6759816b3a.28.1783011897290;
-        Thu, 02 Jul 2026 10:04:57 -0700 (PDT)
-Received: from [192.168.1.8] ([106.222.232.144])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb79b9adsm1729818b3a.27.2026.07.02.10.04.52
+        bh=iphKavMyEGyoKkZ7flBVPKctJFRcurdGeTwbxLH/hOs=;
+        b=LHEwAQlSF9jbIXar5ORlheDB5TOiyKbpgVsDdNxowjbawMwG34vQ8aA1KagxS8xiqp
+         CdUDoiIi2b0JC8yAC3KPBSVFJnXP1w2i2JVitwJQ89tc3D/eiKLMqD5g6SOjOB3wlAcU
+         aZ38MGjK54lTiaO+l0SNikKPffchiP89b1CD3ZFksmrDcj333AgU0c3/G40uC1/6CrUH
+         hUUUSO7stJLQ8QhHSddAkqABFUs596LGbkh3Q/vdSdZIzeo2LZFV+2eU975Ehb8VIun4
+         WplvurLMReKLlc/4U3FWk+MtwN+AcDqH7D0EN/0/Ag9PfKo7cSyjRyGf+YqLIHE1xYUw
+         IDYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoSCOEyezX8k+2DRNDpiHHNclrztOm1R+orrQSgCUs5x4zPByCeLdbY2+KcssF0vwoSrqFywdg9Ito=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBBMpVHcNE9PRnYkZQYC8/kNsYZfPWSH/91SvNuDDsbOKiScEW
+	2P9CSTRK579xGhaAtYsC4DjvxR7IiQVbx12grHWGT4fo7DDX+gPhxFqm
+X-Gm-Gg: AfdE7cni1csYwgkeOFa6gV/jDJHHJXOm7WHyJPE3LAaG1BULRRaoGzFz9UJV3H1uLrQ
+	nbzooyF+OTcpCXXC1cpJzqvKcZRdaF7JYyksaAz6oyhN5KXT94BPLNqqDJEuncQzIW4Da+j37mi
+	XNJ7NLCXLepfiWGCrVU3KRfVWNxxdmwfxkN+aF6GlHCNzCzLFRZ0Bc1OOv9CQp8Yw4zR1+Ouvy4
+	E70ZXalkBPZzPOGAwTfiMFUvlJS7U70qmEgue3LlYT6y4ocU4ag1jtMXZpPe4zAYYvHYRztPe87
+	avHtki6rNsSEnXiIvc5ur05IMPAjaWviDI0of5E1n9tmGntWNHFr4at3nxsySaxTSyIR7WW35Bg
+	mSL9UCrRjypMhW9wGut7F7DgSj1yCvpy7pXHWiC0WOyvV+0r30V8TpjseomRlYbAikbVT49Putd
+	IBH71PY7eyFIUFmsReCcSue/rkrvF867OuQiMX8P2ELOGNXTBSvFG7kQ==
+X-Received: by 2002:aa7:c68e:0:b0:698:ff3:85ea with SMTP id 4fb4d7f45d1cf-698c104c5f8mr1030271a12.5.1783072898947;
+        Fri, 03 Jul 2026 03:01:38 -0700 (PDT)
+Received: from ?IPV6:2a00:1e:db84:b301:ed61:1b51:c39f:49c? ([2a00:1e:db84:b301:ed61:1b51:c39f:49c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-698ad118f43sm2162762a12.25.2026.07.03.03.01.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Jul 2026 10:04:56 -0700 (PDT)
-Message-ID: <94956a19-153f-4bce-a824-7608bbffc98a@oss.qualcomm.com>
-Date: Thu, 2 Jul 2026 22:34:49 +0530
+        Fri, 03 Jul 2026 03:01:37 -0700 (PDT)
+Message-ID: <3e094744-8603-443e-8027-8fc2f2817879@gmail.com>
+Date: Fri, 3 Jul 2026 12:01:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -88,137 +68,42 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] spi: qcom-geni: Add property to force GSI mode
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Pengyu Luo <mitltlatltl@gmail.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260614083424.464132-1-mitltlatltl@gmail.com>
- <20260614083424.464132-2-mitltlatltl@gmail.com>
- <qwbda435on6rhsbf5o4jqijakanjmnmswnc6g6qsubuqbyvbok@fuoclv6u7tq5>
- <c29776b4-04b8-4c59-8f1e-d766bf982a2f@oss.qualcomm.com>
- <CAH2e8h75xeRVvo+jOjRuFaBko5NNCnBX0dawFFsWBaiTwNd4Xw@mail.gmail.com>
- <99eaf1d1-fbf9-4336-a13c-ae8ab789cc99@oss.qualcomm.com>
- <CAH2e8h6aWW_=pD6JAuFB-VqEZDj9x8gZVh9TdvTCRQakKzm3pA@mail.gmail.com>
- <c3922558-dead-48b9-a49c-7d0d6a2dde7c@oss.qualcomm.com>
- <6fbc4521-15d3-40c7-89b3-ee15ad673ff8@oss.qualcomm.com>
+Subject: Re: [PATCH v5 2/3] dt-bindings: iio: dac: Add AD5529R
+To: Jonathan Cameron <jic23@kernel.org>,
+ Janani Sunil <janani.sunil@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-spi@vger.kernel.org
+References: <20260701-ad5529r-driver-v5-0-ed087900e642@analog.com>
+ <20260701-ad5529r-driver-v5-2-ed087900e642@analog.com>
+ <20260701194103.45541cbe@jic23-huawei>
 Content-Language: en-US
-From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-In-Reply-To: <6fbc4521-15d3-40c7-89b3-ee15ad673ff8@oss.qualcomm.com>
+From: Janani Sunil <jan.sun97@gmail.com>
+In-Reply-To: <20260701194103.45541cbe@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 6S3I5btUQ6InX4asnReSIpZoOSD4ituS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDE3OSBTYWx0ZWRfX4YrNK3XDoiAx
- C3nMn/8Qvpz+lKCUhd8UHNYcej01Y1NEvpGIlWccflUANKva3HlWNhiXg78YFuwrpy4Fl5chrzh
- WAn/gZuNq+y0C5IiABsKwdx4YzclC+t9fCzxw9AauL0KwL9qRhKFhLssDg6HGfOc2CH2xNnHJLV
- xybDj53C58i2coVgRdR50csiFBL/3lL53xGcaranUyMXmmtBBtfJIWTfNGeqQJzrVMT1naXCMK0
- jF7MxIAhoqncaNfxhjQnHNsgzoBjzjMRyL1j/alEKn076milcVVuT3TGPt8bgtDA5QTZ6WSsfz/
- d/mERm0lXn8LLQR10s9UfNdpz6cimO4q1QUXDm12uT2MMP64r65ojQl/7dWwfKExMUeDOPb/DG0
- Wr64Ou64CRShA8M7GS+MB/JIQnE0+rwP9CObVSTq7SrINQRL+IIjgfudAZtm2lUS4WdiPjPeXZ1
- lkXS3NQpWAfOuJ+U8eg==
-X-Authority-Analysis: v=2.4 cv=dvXrzVg4 c=1 sm=1 tr=0 ts=6a469a3a cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=1q2F+KrbvUZPNaeG7DbW0w==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=CDJIOK5pyNGdDAhtdj0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=IoOABgeZipijB_acs4fv:22
-X-Proofpoint-GUID: 6S3I5btUQ6InX4asnReSIpZoOSD4ituS
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDE3OSBTYWx0ZWRfXxVYRL344HWzO
- uqTB+rPMnPk/GOdPiMcv02LFCPIaHm/4Ccso7lozOdGgQ5W6Q8RjVe2Sbpyof0ULQlMRdj3AqxR
- 2li2HPYb1eKNm/hAWE9Z/dfeuRchkAc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 priorityscore=1501 adultscore=0 impostorscore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020179
-
-Hi Konrad,
-
-On 7/2/2026 6:14 PM, Konrad Dybcio wrote:
-> On 7/2/26 2:39 PM, Konrad Dybcio wrote:
->> On 6/30/26 12:06 PM, Pengyu Luo wrote:
->>> On Tue, Jun 30, 2026 at 5:52 PM Mukesh Savaliya
->>> <mukesh.savaliya@oss.qualcomm.com> wrote:
->>>>
->>>>
->>>>
->>>> On 6/29/2026 1:33 PM, Pengyu Luo wrote:
->>>>> On Mon, Jun 29, 2026 at 1:36 PM Mukesh Savaliya
->>>>> <mukesh.savaliya@oss.qualcomm.com> wrote:
->>>>>>
->>>>>> Hi Pengyu,
->>>>>>
->>>>>> On 6/15/2026 2:48 AM, Dmitry Baryshkov wrote:
->>>>>>> On Sun, Jun 14, 2026 at 04:34:24PM +0800, Pengyu Luo wrote:
->>>>>>>> Some devices (such as gaokun3) do not disable FIFO mode, causing the
->>>>>>>> driver to fallback to FIFO mode by default. However, these platforms
->>>>>>>> also support GSI mode, which is highly preferred for certain
->>>>>>>> peripherals like SPI touchscreens to improve performance.
->>>>>>>>
->>>>>>>> Introduce the "qcom,force-gsi-mode" device property to hint and force
->>>>>>>> the controller into GSI mode during initialization.
->>>>>> Why to force ? You can directly configure in GSI mode. Note there are
->>>>>> some configuration done prior to Linux bootup too.
->>>>>
->>>>> Sorry, I don't get it. how? I know there may be a qupfw, but it is
->>>>> impossible for a normal user like me to generate one with GSI
->>>>> preferred.
->>>>>
->>>> If firmware doesn't program in GSI, you can't have this working in GSI
->>>> mode, its going to fail (and work with fallback). if it's programmed in
->>>> GSI, anyway this will run in GSI mode. So why to add extra things
->>>> without any usage ?
->>>>
->>>
->>> What I can confirm is that fifo is not disabled on my device, and gsi
->>> is definitely enabled (under windows, check the register
->>> SE_GENI_DMA_MODE_EN), forcing the device to enable GSI mode on linux
->>> works well.
-It may work, but it may fail too. We rather want to decide FIFO/DMA vs 
-GSI based on fifo_disabled variable.
->>
->> What's the value of se->base + SE_DMA_IF_EN (+0x2004) on this SE?
-> 
-> I'm sorry, I read the first sentence only..
-> 
-> I think the enabling of DMA and the disabling of FIFO are technically
-> disjoint operations, but shouldn't be. The programming guide mentions that
-> FIFO_DISABLE=1 is set to prevent malicious software from snooping the data
-> from the RX FIFO while the SE is operated through the GSI.
-> 
-> Mukesh, would it make sense to make to rework the checks this way:
-> 
-No, below actually completely makes things wrong.
-Overall it's between GSI vs non GSI [i.e. FIFO/DMA]
+Content-Transfer-Encoding: 7bit
 
 
-fifo_disabled = 1 = GSI [Neither go for FIFO nor for DMA]
+On 7/1/26 20:41, Jonathan Cameron wrote:
+> On Wed, 1 Jul 2026 08:40:40 +0200
+> Janani Sunil <janani.sunil@analog.com> wrote:
+>
+>
+>> +      adi,output-range-microvolt:
+>> +        description: |
+>> +          Output voltage range for this channel as [min, max] in microvolts.
+>> +          If not specified, defaults to 0V to 5V range.
+> No way to specify the default as part of the binding rather than a comment?
+> I haven't checked but does
+>         default: [0 5000000]
+> not work?
 
-fifo_disabled = 0 = non GSI [Then Driver checks data transfer size, if 
-<64 prefer FIFO else go for CPU DMA mode]
-
-dma_enabled = 1 [fifo_disabled = 0] = FIFO OR DMA [Driver checks data 
-size, if <64 prefer FIFO else go for CPU DMA mode]
-
-let me know if there is still a confusion, we can discuss.
-
-> if (dma_enabled)
-> 	prefer GSI, try SE DMA otherwise
-> else if (fifo_disabled)
-> 	return error, misconfigured SE
-> else
-> 	fifo mode
-> 
-> ?
-> 
-> Konrad
+Tried that approach. But the dt binding check does not accept default for this DT cell-array property.
 

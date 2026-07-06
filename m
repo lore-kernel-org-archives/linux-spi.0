@@ -1,96 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F3E37883C
-	for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2026 14:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AD33822A5;
+	Mon,  6 Jul 2026 14:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783347049; cv=none; b=oC2Yy83eGtST37AEzCoJNmkuNehhYxWsYfvLIhkItQTMXX3VRRFzk6OM5KsGRi6gcZec8eGuW+RadaHATvn6RYKu2CEu+ZMumRKtb0+DuerRf2OJ7CWoT4512AeH2pRbcTnJeNQq7ba/zZZZYZvxAIauUVMGj4Hjl9/Al+f3cTU=
+	t=1783349991; cv=none; b=iqe6v2TdNGd8hxmY3q4cSQiEJcxzvtBDBKbPT0/fz2BHXzqEPmYSFh34UQ48Av+K14Q5nYq00YkP6CxV594DHKZKzeQPPsvbAG6QQssNTcwIG4M9DSHIFKWJMX4X5FaJ5Exnc8UkTC1NdkbSwt5PabxbYtN00YYCxoKOildWy0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783347049; c=relaxed/simple;
-	bh=aqBHqUvnHvgJQWnufPxhJ0APFMfJweT1QFdea3nbrUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LA0OSbAcgaU3mkan6S3pXPumn79h11ApIOAtRr6oQrfNzdaaWXi94zFJcfFnMYmrKl5IKXCljV+8wqJY4kCrd9PtQk/X4LJE/gD+W9rdlvSMPjFKb37oh2cbplUfrw6EnT/WGN9Z9cjyReJoxXKoXmqO1X3+6Lh34pzQBZQ//RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWpN37kn; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWpN37kn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9FE1F00A3D
-	for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2026 14:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783347048;
-	bh=R37pHFtaprCoupA5VOyUWUg06+Rz9GF0zUKsfOzMWy8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FWpN37knJaXpEutmCBNj5agZeHBF71nOVbfAoyEeCGLDEpQAD9UXYk7DNMjgPzw7g
-	 KNy92GPBBNCPSAW72sEC9epzXiUk9mP8EscnUy02p0EeoiIeGkUk6sPv+o6x9Qiyz7
-	 nGjmDdGy4MYUwAOkSajn8wFayfYi6WgsIHKcKzm92Vcx/0vip8nE7Tl6n9uL9yK3C6
-	 Omp+qfKE6fQ29+i6X7hWmeWpq+M1wrauAZ3UtPF7IZH4Nvvn278Ht6wx6etoRDVqBL
-	 nKnh66hDJ15wVMvu79TN4JmfKV+PRcnC0440jyhFmI8mJXs2roDofu36/1zMUZ+qCK
-	 COJcBH6Qze+rA==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aec6360133so2241821e87.1
-        for <linux-spi@vger.kernel.org>; Mon, 06 Jul 2026 07:10:48 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpbNd4Zabm58UaPTfrrPxp59FxUutDEx4xmgl5Mnb/PMA+GaDLWdvyeXIUewSoNPtpUCXjyF4+0d/M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXr4+MvhKLCbeBG65jD8P5y96Nm00I1yO8E6MLvYJ+3PpIZtd0
-	ohbuMPtmP6hts8cec9i0u5YuapGKwJNW5TgeCz+bMmchf1li8vdNBbjqCuG43fk2CjpH+KkPS7W
-	noZGqfeurD75fxefYTsakw0qno/W710g=
-X-Received: by 2002:a05:6512:66c1:10b0:5aa:6cd6:a7f0 with SMTP id
- 2adb3069b0e04-5b007baa097mr123245e87.44.1783347046402; Mon, 06 Jul 2026
- 07:10:46 -0700 (PDT)
+	s=arc-20240116; t=1783349991; c=relaxed/simple;
+	bh=JLV6tpr3rJ75ST9YS7WzytTvmi+8ph/kKJQ3HYtwU9Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qTD5NoDD6EQvTl1AmtELTGBEZA9dH8P03A3NeXTacznWFqxIDT1GdMoyoyBqFcFedEnjgdBrfaDP9YR7htV+cox1YMJqYueq+In18j0Dwp2/bioDdExCZSsiZsOZpZTyn8kAgGI5mIDpTn5l3tRsuPfBgylnVMR6XXYIW+Vrtz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0F20A00FF;
+	Mon,  6 Jul 2026 14:59:41 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf05.hostedemail.com (Postfix) with ESMTPA id 258C720011;
+	Mon,  6 Jul 2026 14:59:39 +0000 (UTC)
+Date: Mon, 6 Jul 2026 10:59:39 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
+ <konradybcio@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Mark Brown
+ <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mukesh Kumar Savaliya
+ <mukesh.savaliya@oss.qualcomm.com>, aniket.randive@oss.qualcomm.com,
+ chandana.chiluveru@oss.qualcomm.com
+Subject: Re: [PATCH 1/2] soc: qcom: geni-se: trace: Add trace event support
+ for GENI SE registers dump
+Message-ID: <20260706105939.7d545304@gandalf.local.home>
+In-Reply-To: <20260706-add-tracepoints-for-se-reg-dump-v1-1-48bd08e28cf2@oss.qualcomm.com>
+References: <20260706-add-tracepoints-for-se-reg-dump-v1-0-48bd08e28cf2@oss.qualcomm.com>
+	<20260706-add-tracepoints-for-se-reg-dump-v1-1-48bd08e28cf2@oss.qualcomm.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-0-92feb5a7b926@oss.qualcomm.com>
- <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-1-92feb5a7b926@oss.qualcomm.com>
- <CAJZ5v0i4Zc4HNUdgJ_2=4=wv7vRDTugo71qsWnZxVRRqV+W8mw@mail.gmail.com> <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
-In-Reply-To: <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Mon, 6 Jul 2026 16:10:34 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
-X-Gm-Features: AVVi8CcJAwLOXEDSeEikIg87rWOwRTBY8I54tEwtPnVuwTxyPfLiA_mSuDbP2Dw
-Message-ID: <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] PM: runtime: Only set runtime_error on suspend
- callback failures
-To: Mark Brown <broonie@kernel.org>
-Cc: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Praveen Talari <praveen.talari@oss.qualcomm.com>, 
-	Dilip Kota <dkota@codeaurora.org>, Stephen Boyd <swboyd@chromium.org>, 
-	Girish Mahadevan <girishm@codeaurora.org>, Alok Chauhan <alokc@codeaurora.org>, 
-	bjorn.andersson@oss.qualcomm.com, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Len Brown <lenb@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, aniket.randive@oss.qualcomm.com, 
-	chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
-	linux-pm@vger.kernel.org, driver-core@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: uu6yosxwkakubk1mywby7bgr6uxq4qga
+X-Rspamd-Server: rspamout02
+X-Rspamd-Queue-Id: 258C720011
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+WzFChi0OJkl1mFRGNIttsSoW1a5AExP0=
+X-HE-Tag: 1783349979-464698
+X-HE-Meta: U2FsdGVkX19hJLE9wlLmJYf7g3+Klj0cZFNFrWDZP43p/EAH9WFQNqKArJddvap7x9e3oHFcdXKpRszwGXYo/EqMBQA70dmLcCtUQZMWIw55jaAuHAiisJSf0XOu/9G81EBhjHIE7rkxbv+2UeH1quCVZHQqRXyYv7ccJ91G1pGAq6jCj+PTdtAfVQR9SGB7FpSynsIXmWNi7kuzM6v34ZHVR59Wu0mQ6jVeAYRly0+ASSRg9oPYrIY2qmU7L/FFlpF1kkSqdlqVnz9zWASymgPs7L0cIrBrG67Yi9LB+MQdYnDrjB31hIihMh66RXW9EUSIMOZPx4S/STI+PLOfQK4CSLMIH0qzt5T5AtiF0pJu/5GZ9QuYeUlLzj81Gtird6iLlZ5ICSpsaII5vo2KhA==
 
-On Mon, Jul 6, 2026 at 3:21=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> On Mon, Jul 06, 2026 at 01:49:07PM +0200, Rafael J. Wysocki (Intel) wrote=
-:
-> > On Mon, Jul 6, 2026 at 10:53=E2=80=AFAM Praveen Talari
->
-> > >         /*
-> > >          * On transient errors, if the callback routine failed an aut=
-osuspend,
-> > >          * and if the last_busy time has been updated so that there i=
-s a new
-> > >
-> > > --
->
-> > This is fine with me and I think that it's a quite significant change
-> > for runtime PM, so I'd prefer it to go in through my tree.
->
-> > I can take the other patch too if it gets ACKed for me.
->
-> I've got a bunch of other stuff in flight for that driver - I'll need to
-> check but just in case perhaps a tag I could pull in?
+On Mon, 06 Jul 2026 16:38:12 +0530
+Praveen Talari <praveen.talari@oss.qualcomm.com> wrote:
 
-I'm wondering though if the patches in the series really depend on each oth=
-er.
+> +TRACE_EVENT(geni_se_regs,
+> +	    TP_PROTO(struct geni_se *se),
+> +
+> +	    TP_ARGS(se),
+> +
+> +	    TP_STRUCT__entry(__string(geni_se_name,		dev_name(se->dev))
+> +		__field(u32,	geni_se_m_cmd0)
+> +		__field(u32,	geni_se_m_irq_status)
+> +		__field(u32,	geni_se_s_cmd0)
+> +		__field(u32,	geni_se_s_irq_status)
+> +		__field(u32,	geni_se_status)
+> +		__field(u32,	geni_se_ios)
+> +		__field(u32,	geni_se_m_cmd_ctrl)
+> +		__field(u32,	geni_se_m_cmd_err)
+> +		__field(u32,	geni_se_m_fw_err)
+> +		__field(u32,	geni_se_tx_fifo_status)
+> +		__field(u32,	geni_se_rx_fifo_status)
+> +		__field(u32,	geni_se_tx_watermark)
+> +		__field(u32,	geni_se_rx_watermark)
+> +		__field(u32,	geni_se_rx_watermark_rfr)
+> +		__field(u32,	geni_se_m_gp_length)
+> +		__field(u32,	geni_se_s_gp_length)
+> +		__field(u32,	geni_se_dma_tx_irq)
+> +		__field(u32,	geni_se_dma_rx_irq)
+> +		__field(u32,	geni_se_dma_tx_irq_en)
+> +		__field(u32,	geni_se_dma_rx_irq_en)
+> +		__field(u32,	geni_se_dma_rx_len)
+> +		__field(u32,	geni_se_dma_rx_len_in)
+> +		__field(u32,	geni_se_dma_tx_len)
+> +		__field(u32,	geni_se_dma_tx_len_in)
+> +		__field(u32,	geni_se_dma_tx_ptr_l)
+> +		__field(u32,	geni_se_dma_tx_ptr_h)
+> +		__field(u32,	geni_se_dma_rx_ptr_l)
+> +		__field(u32,	geni_se_dma_rx_ptr_h)
+> +		__field(u32,	geni_se_dma_tx_attr)
+> +		__field(u32,	geni_se_dma_tx_max_burst)
+> +		__field(u32,	geni_se_dma_rx_attr)
+> +		__field(u32,	geni_se_dma_rx_max_burst)
+> +		__field(u32,	geni_se_dma_if_en)
+> +		__field(u32,	geni_se_dma_if_en_ro)
+> +		__field(u32,	geni_se_dma_general_cfg)
+> +		__field(u32,	geni_se_dma_qsb_trans_cfg)
+> +		__field(u32,	geni_se_dma_dbg)
+> +		__field(u32,	geni_se_m_irq_en)
+> +		__field(u32,	geni_se_s_irq_en)
+> +		__field(u32,	geni_se_gsi_event_en)
+> +		__field(u32,	geni_se_irq_en)
+> +		__field(u32,	geni_se_ser_m_clk_cfg)
+> +		__field(u32,	geni_se_ser_s_clk_cfg)
+> +		__field(u32,	geni_se_general_cfg)
+> +		__field(u32,	geni_se_output_ctrl)
+> +		__field(u32,	geni_se_clk_ctrl_ro)
+> +		__field(u32,	geni_se_fifo_if_disable)
+> +		__field(u32,	geni_se_fw_multilock_msa)
+> +		__field(u32,	geni_se_clk_sel)
+> +	    ),
 
-There doesn't appear to be any code dependency between them.
+Wow, a pretty big trace event! But it still fits in the ring buffer.
+
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+
+-- Steve

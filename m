@@ -1,107 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAAB416109;
-	Mon,  6 Jul 2026 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F3E37883C
+	for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2026 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783344094; cv=none; b=dqlGTFYuDOmd1BT9AJk7kv34Q0Jo4X8PBcgyXLqLQShy1KKpPwyzyhQ1HpszTqroL2agJi1wzX2J0K1PpqrOEq+fCN531c6u7tX03lCu2NTwMGMTCJsTmD6KrjjfR5DvNn5MICSl1IEnIusf5GY4Gn71uOro2rqqvcAKhhlO+ss=
+	t=1783347049; cv=none; b=oC2Yy83eGtST37AEzCoJNmkuNehhYxWsYfvLIhkItQTMXX3VRRFzk6OM5KsGRi6gcZec8eGuW+RadaHATvn6RYKu2CEu+ZMumRKtb0+DuerRf2OJ7CWoT4512AeH2pRbcTnJeNQq7ba/zZZZYZvxAIauUVMGj4Hjl9/Al+f3cTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783344094; c=relaxed/simple;
-	bh=l2Ms9idRFunWWcR8o+FwBgnkVacUWkwsC6lm9/hH2FY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SKl2mzZlvhK079Cjea1JyGSVefGdGCp52cnh3Vh67osr7yhrVCLCmKcSAnFYlFEXq1gp9I/WYiPSHDqaer0hS+tFIMgBiq714fq3h5rMaclGk1M6lxs/Ljv6Xx0dCgibKRqsGtXWoDjp6boDg/mMblquUWiQK6T9wni6LVJ4KRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlgvWu6d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783347049; c=relaxed/simple;
+	bh=aqBHqUvnHvgJQWnufPxhJ0APFMfJweT1QFdea3nbrUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LA0OSbAcgaU3mkan6S3pXPumn79h11ApIOAtRr6oQrfNzdaaWXi94zFJcfFnMYmrKl5IKXCljV+8wqJY4kCrd9PtQk/X4LJE/gD+W9rdlvSMPjFKb37oh2cbplUfrw6EnT/WGN9Z9cjyReJoxXKoXmqO1X3+6Lh34pzQBZQ//RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWpN37kn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlgvWu6d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCB51F00A3A;
-	Mon,  6 Jul 2026 13:21:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWpN37kn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9FE1F00A3D
+	for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2026 14:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783344093;
-	bh=fJldbQStjOY9URihIgxJhtt0Q6WiLugt2TW9p49DC4U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dlgvWu6dX3bvYR/PzLzMrGcnLbLNzWpI0/c7viswlSFxP1uqN9AxFwJI+O/k+g7eC
-	 E2VZWgIpx5p+IJK/LxN0Q8BnTevM0IrhOqQUZZbZn4wxuPgMkEdjazZlq0nUPdIkTP
-	 hsBe6OrYMYRakwlrxsbAaZU1pNEsYLWizphE7rO/YsXOM6hwdnmiKc3nC8nOwW3XMz
-	 t0tjoUS3VXdTL9POWnLab1Bee/jDwlJW7E690iooC6Mu5XYjuZqjiJjZrM8iB0pLDj
-	 NvFn8dv5D+OBAL+BkX7GOsfSs4lGzhfnRqjrC/HLho6iOXBuSCWFUEnHd7Z+blXr5I
-	 /ChmOouv4pmEA==
-Date: Mon, 6 Jul 2026 14:21:26 +0100
-From: Mark Brown <broonie@kernel.org>
-To: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Cc: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Dilip Kota <dkota@codeaurora.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Girish Mahadevan <girishm@codeaurora.org>,
-	Alok Chauhan <alokc@codeaurora.org>,
-	bjorn.andersson@oss.qualcomm.com,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	aniket.randive@oss.qualcomm.com,
-	chandana.chiluveru@oss.qualcomm.com,
-	jyothi.seerapu@oss.qualcomm.com, linux-pm@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH v3 1/2] PM: runtime: Only set runtime_error on suspend
- callback failures
-Message-ID: <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
-References: <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-0-92feb5a7b926@oss.qualcomm.com>
- <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-1-92feb5a7b926@oss.qualcomm.com>
- <CAJZ5v0i4Zc4HNUdgJ_2=4=wv7vRDTugo71qsWnZxVRRqV+W8mw@mail.gmail.com>
+	s=k20260515; t=1783347048;
+	bh=R37pHFtaprCoupA5VOyUWUg06+Rz9GF0zUKsfOzMWy8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=FWpN37knJaXpEutmCBNj5agZeHBF71nOVbfAoyEeCGLDEpQAD9UXYk7DNMjgPzw7g
+	 KNy92GPBBNCPSAW72sEC9epzXiUk9mP8EscnUy02p0EeoiIeGkUk6sPv+o6x9Qiyz7
+	 nGjmDdGy4MYUwAOkSajn8wFayfYi6WgsIHKcKzm92Vcx/0vip8nE7Tl6n9uL9yK3C6
+	 Omp+qfKE6fQ29+i6X7hWmeWpq+M1wrauAZ3UtPF7IZH4Nvvn278Ht6wx6etoRDVqBL
+	 nKnh66hDJ15wVMvu79TN4JmfKV+PRcnC0440jyhFmI8mJXs2roDofu36/1zMUZ+qCK
+	 COJcBH6Qze+rA==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aec6360133so2241821e87.1
+        for <linux-spi@vger.kernel.org>; Mon, 06 Jul 2026 07:10:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpbNd4Zabm58UaPTfrrPxp59FxUutDEx4xmgl5Mnb/PMA+GaDLWdvyeXIUewSoNPtpUCXjyF4+0d/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzXr4+MvhKLCbeBG65jD8P5y96Nm00I1yO8E6MLvYJ+3PpIZtd0
+	ohbuMPtmP6hts8cec9i0u5YuapGKwJNW5TgeCz+bMmchf1li8vdNBbjqCuG43fk2CjpH+KkPS7W
+	noZGqfeurD75fxefYTsakw0qno/W710g=
+X-Received: by 2002:a05:6512:66c1:10b0:5aa:6cd6:a7f0 with SMTP id
+ 2adb3069b0e04-5b007baa097mr123245e87.44.1783347046402; Mon, 06 Jul 2026
+ 07:10:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="26PrE7s8gGWJKuvD"
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0i4Zc4HNUdgJ_2=4=wv7vRDTugo71qsWnZxVRRqV+W8mw@mail.gmail.com>
-X-Cookie: Did I do an INCORRECT THING??
-
-
---26PrE7s8gGWJKuvD
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-0-92feb5a7b926@oss.qualcomm.com>
+ <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-1-92feb5a7b926@oss.qualcomm.com>
+ <CAJZ5v0i4Zc4HNUdgJ_2=4=wv7vRDTugo71qsWnZxVRRqV+W8mw@mail.gmail.com> <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
+In-Reply-To: <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
+From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Date: Mon, 6 Jul 2026 16:10:34 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
+X-Gm-Features: AVVi8CcJAwLOXEDSeEikIg87rWOwRTBY8I54tEwtPnVuwTxyPfLiA_mSuDbP2Dw
+Message-ID: <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] PM: runtime: Only set runtime_error on suspend
+ callback failures
+To: Mark Brown <broonie@kernel.org>
+Cc: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>, Praveen Talari <praveen.talari@oss.qualcomm.com>, 
+	Dilip Kota <dkota@codeaurora.org>, Stephen Boyd <swboyd@chromium.org>, 
+	Girish Mahadevan <girishm@codeaurora.org>, Alok Chauhan <alokc@codeaurora.org>, 
+	bjorn.andersson@oss.qualcomm.com, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Len Brown <lenb@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, aniket.randive@oss.qualcomm.com, 
+	chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
+	linux-pm@vger.kernel.org, driver-core@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 06, 2026 at 01:49:07PM +0200, Rafael J. Wysocki (Intel) wrote:
-> On Mon, Jul 6, 2026 at 10:53=E2=80=AFAM Praveen Talari
+On Mon, Jul 6, 2026 at 3:21=E2=80=AFPM Mark Brown <broonie@kernel.org> wrot=
+e:
+>
+> On Mon, Jul 06, 2026 at 01:49:07PM +0200, Rafael J. Wysocki (Intel) wrote=
+:
+> > On Mon, Jul 6, 2026 at 10:53=E2=80=AFAM Praveen Talari
+>
+> > >         /*
+> > >          * On transient errors, if the callback routine failed an aut=
+osuspend,
+> > >          * and if the last_busy time has been updated so that there i=
+s a new
+> > >
+> > > --
+>
+> > This is fine with me and I think that it's a quite significant change
+> > for runtime PM, so I'd prefer it to go in through my tree.
+>
+> > I can take the other patch too if it gets ACKed for me.
+>
+> I've got a bunch of other stuff in flight for that driver - I'll need to
+> check but just in case perhaps a tag I could pull in?
 
-> >         /*
-> >          * On transient errors, if the callback routine failed an autos=
-uspend,
-> >          * and if the last_busy time has been updated so that there is =
-a new
-> >
-> > --
+I'm wondering though if the patches in the series really depend on each oth=
+er.
 
-> This is fine with me and I think that it's a quite significant change
-> for runtime PM, so I'd prefer it to go in through my tree.
-
-> I can take the other patch too if it gets ACKed for me.
-
-I've got a bunch of other stuff in flight for that driver - I'll need to
-check but just in case perhaps a tag I could pull in?
-
---26PrE7s8gGWJKuvD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpLq9UACgkQJNaLcl1U
-h9D4zgf9EYMicEtJ/deqUwzL8Y94faZjIRrNjzO1Pms6VFFvmNIrMtwtYwStR6k5
-IJAjbhfyNqoLy3KSk7DieQKJcOXbk/rThONhmTQ50GI1qX4eqg3W+44nB7+9tlFm
-YnmBPz3kOMZN9xJdlzkVCU456XiG7VGQlrlv1rgcFu9Tw47kqWjds0LYJTovkD7v
-Dm9mR4pHJhArtS0HppkG+S1Y4jkyauu+xqywkkwdD4yuhzUGZD7tc2SJAzZpqa+1
-4WCqO6O+eqx43nffuy76+54pOAvP6Dv3f8L6akTHYsQoTyGvpeldJSJYs9ncfxcJ
-xlEnUljuRFZflv++mmQ3JNUIJkMu7g==
-=8n3A
------END PGP SIGNATURE-----
-
---26PrE7s8gGWJKuvD--
+There doesn't appear to be any code dependency between them.

@@ -1,105 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E3A374A0C;
-	Mon,  6 Jul 2026 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C032F3B7B6E;
+	Mon,  6 Jul 2026 17:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783359053; cv=none; b=kZ28VtSy7ZNV7bYG1ofS+AWRzGwbW1yXMn663JpFjVAT0ixTebA2xY1/w0P8MzM57tlMqoMq2LTW8aJiN65RhSiS5MQS73QJeZy02ezqdZ5Rxt/+SAyVicKcLj86n6c9tPrz3OUOqMJXfO/mtijh3JUN6ts7TUdOoLuCf+OCctM=
+	t=1783360490; cv=none; b=UQ2Y3Ce3PE4SP5bkm0SgLmvjDUp9DPfDZOgpz4eXDvrUT7j09W4BD1NIJDn9xr0UAERnnH+wKgfsS90zwN/ExcG/lZRW5VfVFaRSFEr4msbh58L0lpLFddLCPG1ryCZqGla2oP75/2sveaCiqMIx3iRUEiGwhdi95BlL+/tK5Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783359053; c=relaxed/simple;
-	bh=0ve5TR7M6W6V+YUiCfXYERFO0p7DK0MnKLcyKIvC3qU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVUkeBozrhSm+1jndajUMVoHn0xlz/0EJ4yr5s5l93ws6c/dERDoQykuOSvVCbuQIMPy/Ja8DA8okwfkh6YgjRRtIQEkv2dYlZn1c6Wt2bUTFNBXKXI8Ryi+BVuUJ8DCziY8K+3ZlZKzJu9XAeap6Cozt0yWyRXmYQjqxAonjxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLUC+NnK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783360490; c=relaxed/simple;
+	bh=20+eIpYLQSEkasLN3R4K4LhCfAn3EElc1aXK34PGfeM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jidOBc9UoumF13PewRxL2eaiTdf5gt3mo9xE1fq+h0vFgfnfLyLQChx/QTNXRO5amvwALAUt26pls3CYCzpsgtvSlae67cFeKn0lqYgVqCJnIaPeGyYr3HmKtwvxraDRMwyoFUcXyLjXUmxV9oVd9h4oc2Vni15oP4JwOw3Oqu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+SowUpk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLUC+NnK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727631F000E9;
-	Mon,  6 Jul 2026 17:30:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+SowUpk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDD71F01569;
+	Mon,  6 Jul 2026 17:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783359052;
-	bh=0ve5TR7M6W6V+YUiCfXYERFO0p7DK0MnKLcyKIvC3qU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iLUC+NnKendS6Qw8Cmp6jBpJINcK2+VRZl8W8VbCrGWGeTxnZl6iEGLixtXq0f+e7
-	 RRzQotYJTG+E+PEOqTGwk6AkzJJgCEHywGzZ+3PrX5ucOOGCG7SVx4FbwwEmghRcN6
-	 co0oXV4tRK64xlELV9h8nN7HurrnvtTyl28qcmJEwyyERpaZO1YOJODGuPXc96iZKA
-	 iKfYo5yYev4E29KH6/d/RLFXp7Qf6dDf1TYSM71X6tsUY8tSXUBG+X4AdAAvfqt6FX
-	 8AWDf1n885wo8ja16APK1JjtRNJaLND30rlF5uTPYCHsEa362oOOmQ+OyckAfS0UUL
-	 0w28d0/hW4hig==
-Date: Mon, 6 Jul 2026 18:30:45 +0100
+	s=k20260515; t=1783360489;
+	bh=WQINCmnczmAlni3GXGy8eyJvLGXu82H8ol03Ze+9DPQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=d+SowUpkIckwSko0YKcO/7h8I7BEfWGtKBC5KjvFT5cRUp6OBPvdJdVab5lnvowKj
+	 DlqRhcjVKtx53YNaL8BpzVeePuaQ4ld5EuN5nnKmbefojpGcSNm4rfqAPfjX/wYqi2
+	 TLAP2Jqin67JGzA5VGNK0N0owyxeu+J0/ACty1YJ0TzBCOHWvKgmDgK7f91hwetlUd
+	 EpJ3xHd3e3tYaTfHubQe/jZcUh2scdrhBpyYSwfDfaQnRaNqufToDT3Z8Nsc8a79hw
+	 /g9ysRF6xWra+R72Ma/mtVH3gKWfFGBuHKMTIQWlupp3Lzw4CKgCUp0IUzescGxi6d
+	 KPrSQ8GiBCsHQ==
 From: Mark Brown <broonie@kernel.org>
-To: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Cc: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Dilip Kota <dkota@codeaurora.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Girish Mahadevan <girishm@codeaurora.org>,
-	Alok Chauhan <alokc@codeaurora.org>,
-	bjorn.andersson@oss.qualcomm.com,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	aniket.randive@oss.qualcomm.com,
-	chandana.chiluveru@oss.qualcomm.com,
-	jyothi.seerapu@oss.qualcomm.com, linux-pm@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH v3 1/2] PM: runtime: Only set runtime_error on suspend
- callback failures
-Message-ID: <f6532e0f-a0b3-490d-8313-d6f5b72e8236@sirena.org.uk>
-References: <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-0-92feb5a7b926@oss.qualcomm.com>
- <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-1-92feb5a7b926@oss.qualcomm.com>
- <CAJZ5v0i4Zc4HNUdgJ_2=4=wv7vRDTugo71qsWnZxVRRqV+W8mw@mail.gmail.com>
- <9d271393-c500-46a9-8795-f1371585445c@sirena.org.uk>
- <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ bjorn.andersson@oss.qualcomm.com, 
+ Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ mukesh.savaliya@oss.qualcomm.com, aniket.randive@oss.qualcomm.com, 
+ chandana.chiluveru@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com, 
+ chiluka.harish@oss.qualcomm.com, Nikunj Kela <quic_nkela@quicinc.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
+References: <20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com>
+Subject: Re: [PATCH v4 0/4] Enable SPI on SA8255p Qualcomm platforms
+Message-Id: <178334469140.57168.9206112685644722158.b4-ty@b4>
+Date: Mon, 06 Jul 2026 14:31:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="CrLHFYWN/IguOnfv"
-Content-Disposition: inline
-In-Reply-To: <CAJZ5v0g9AxpqUQUQ-vwG2LN3pfT3qXi3_S=So42=VdVtzg-=Dw@mail.gmail.com>
-X-Cookie: Did I do an INCORRECT THING??
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1727; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=20+eIpYLQSEkasLN3R4K4LhCfAn3EElc1aXK34PGfeM=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqS+vkp7Hwe2DcANos0VzJEAuUiq58voaX7Qrrz
+ 2Gwn2pl7dKJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCakvr5AAKCRAk1otyXVSH
+ 0H2vB/0XE/VDIGahCwreeQoAESuuFUyTXzXlkZK9p/cL3bdPKDPscjPNq1IFOGr/mIG6t9hBfyv
+ MfGnm5jKJOgYu2WLpxmo893eqVp59K1JAcHHUQQIGXuHeQDpiePFc3pWGOP1HxRrRTOSc7JTdNj
+ h/HUsMzXKz5I75qbEhx95ai02j6qbWGmGd1Rw0h8OvLPAtKFufrLqv2YZcuYx2lWq8iAr3uYip5
+ u2Gt4awEk16NW80fkvGCAr1Rv9Umgsqzl7bRDQpvwf6Fao3O/OYiS1ywOWS2rvBuqNy+lrOx7Ks
+ RuCsADX0AQ8fZIGQhXgJOpqWLzg4UT1INA7XofedaPfvVPSz
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 18 Jun 2026 14:36:38 +0530, Praveen Talari wrote:
+> Enable SPI on SA8255p Qualcomm platforms
+> 
+> The Qualcomm automotive SA8255p SoC relies on firmware to configure
+> platform resources, including clocks, interconnects and TLMM.
+> The driver requests resources operations over SCMI using power
+> and performance protocols.
+> 
+> [...]
 
---CrLHFYWN/IguOnfv
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Mon, Jul 06, 2026 at 04:10:34PM +0200, Rafael J. Wysocki (Intel) wrote:
-> On Mon, Jul 6, 2026 at 3:21=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-> > I've got a bunch of other stuff in flight for that driver - I'll need to
-> > check but just in case perhaps a tag I could pull in?
+Thanks!
 
-> I'm wondering though if the patches in the series really depend on each o=
-ther.
+[1/4] spi: dt-bindings: describe SA8255p
+      https://git.kernel.org/broonie/spi/c/59841dc5f6ae
+[2/4] spi: qcom-geni: Use geni_se_resources_init() for resource initialization
+      https://git.kernel.org/broonie/spi/c/647277240b36
+[3/4] spi: qcom-geni: Use resources helper APIs in runtime PM functions
+      https://git.kernel.org/broonie/spi/c/059e41aab4c8
+[4/4] spi: qcom-geni: Enable SPI on SA8255p Qualcomm platforms
+      https://git.kernel.org/broonie/spi/c/b3e1d0948ca9
 
-> There doesn't appear to be any code dependency between them.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-That would also work, a bit annoying for any bisects possibly but so
-long as we land both in the same release we should be good.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---CrLHFYWN/IguOnfv
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpL5kUACgkQJNaLcl1U
-h9CwTQf+LP+GUzoAhJWFTkWhqsyVxS/28om6taZlVclXtEqOfM+Rw5KT9yiQYjTp
-NTewsbIt0uMNJ4KilOxVAHom3SRoY6s9oT52RiwNP2LbS3kW2OO/StUYPNCtnj2B
-HAgYmEGjIbfoH9NSbrMoXw5nFS67UTWwhwkCY30cuO9NWQLIcRi4TRqL0gqXk9Gm
-IeGXzvGMPzOV6ArKixhEwTbNIlIY55PGleiMd6VbWgjgfKa0GQRneSL6fab7rLfm
-evkoVX0fRc59vvW67CiYxPam8oAtI61KfZ0Fjuc8ZM/fU2bWj/2I1gHHhCoR7ihC
-LfVnkEaJxlqy52b6mLztNJMzVPCmHQ==
-=B5g2
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---CrLHFYWN/IguOnfv--

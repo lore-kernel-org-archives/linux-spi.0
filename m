@@ -1,68 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14852D780C
-	for <linux-spi@vger.kernel.org>; Mon,  6 Jul 2026 19:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6670A3B6C0A;
+	Tue,  7 Jul 2026 10:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783366226; cv=none; b=VWywhmYVPNIXts+YibC3FHdt/QvqKoUgWOglSfN0pYpLqbjGLR/RpqXDU4MtEqHjBBpeZQ4oux1UoP401CvG2+kt+0+Mp76FXe6TWI5Ozt9m/wVwcHUG/bFTS9DyxtsAZW7nI3i3c2RjmKDfQSFcB70/Dng7hgPGrQqCW9U3BJ8=
+	t=1783421800; cv=none; b=fvGzOyPsMUrv/pfX4wYdOX9Fqyc/Ji/Tiu4DOxj3GXoNVH2vzmmedjpT5W/LfyoXfTNLqTA4sPHSW/mKEV2gjxsM0oVHWxiSaWKzmaiox4sCV9Os0OMRVfJJrPtEWNqEOqejlaPT51bgbCKMvj+PjtnqCM73sEUVFS1L2mArtqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783366226; c=relaxed/simple;
-	bh=UWgEpuJzxbauU9isOQb+xlW2735vpR9aasf9M7oGG08=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=kR4DtkkcnFXuNI6/UiZUCr6sq+bn0WDod6OUsVa3JQ8wDp6/DlAkQbvsatt3u/ZhCm+re7qL5m5hJYTh2iKvtPYCnJqaiTgxhbuDRcDuk7CGcD2wsLrsrEex0RTl3HMk9raasJwo4YFnwB7PMDT0Vr1texpdOLHV0we8SsX8IbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jaww2Zqn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1783421800; c=relaxed/simple;
+	bh=WwHQN6VM47AmJxyALgzvhcdaNYITjm41qFy4TxKV4Pg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gqbtqca2sAmdZgtLky+ERj1Ui/Tt6rAnNX3TOD+bpvgdip4ga2bQ17PzV9cv04QHKHAaJvDlml5pMcBdrXT5jtOz7otOfL6kRJpqbAEfcBUH+zu/fGPAuPcvdUuEenpjdvEc4UDmWb31wEINQAN/bM9nSUr9rbMpRok6RzqQYsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNYyDyjn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jaww2Zqn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4816B1F00A3F;
-	Mon,  6 Jul 2026 19:30:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNYyDyjn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC531F000E9;
+	Tue,  7 Jul 2026 10:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783366225;
-	bh=rYV8LACKEGYHrAH2NtFOThnrJ1jVd6lMuqHV9u1ijy0=;
-	h=Subject:From:Date:To;
-	b=Jaww2ZqnQIOK9f56x2K3TwWDeTDOo4jh2XlpphArsErllJmdEM6BHU/pjoKKv6Wjw
-	 wr2vyYYfj3vykD3XMayRjua4MAYvXYhREKXfV86BqJSZ753g+GaGZ4QReA1Mj/dlMt
-	 gqQCLR8cldAD5DORDu0KcX0r3Uh3JOmL3f47ono/XljKEUl6FQqnLuQ8g2kArQ8aeo
-	 cblJe7SxMst3+myKkd2bPrPjE09/gp6AQVs2LSHnytt5kNyDPBIDnG7Bna/S3leK+q
-	 cLRwi5vrQogVuEDYTZ+zB0TQd0O2lwajjfiewt9cGVe/b+QcN1OwWTKWNZcDaSuoWW
-	 mHpEcySB+1uPA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D33953925F51;
-	Mon,  6 Jul 2026 19:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1783421799;
+	bh=HlQHk4Tx7tHsYHXnfZWzQb7mDrScjAeO0+K90dIpLek=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UNYyDyjnm3qVRvq7KqL6v/ExtKS8+AXsBomw2Xit4eO97aY+OJq/g1zNuGj3I/nku
+	 Hy2krPzWLY7lcaI/xGZqslPu8jg9mjXtY3I3/WQJ/bX/ibf6jYfdGoaYt9mhO9jH72
+	 8BYFvapowIXApXj1Agw/v+GmSdu8kFV6i16waZJppsDXFw0KQ0OnY0a2NKirgRwYhn
+	 uzhkDm1jq7sqi+SvSI2ie5z0obarh9WxUxoYT78nLU8ZqRw/7nB/WvKhWL2vxXJZpX
+	 rwAkQrpoGN1FIo8vBKM5Qcc9yDOjnDeHWPiLuY8eKHIGeNGQTSZSZZyXcyEG1XpPzu
+	 +h23g4UlHd/Sw==
+Date: Tue, 7 Jul 2026 10:56:36 +0000
+From: Yixun Lan <dlan@kernel.org>
+To: Zhengyu He <hezhy472013@gmail.com>
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+	Wei Fu <wefu@redhat.com>, Cody Kang <cody.kang.hk@outlook.com>
+Subject: Re: [PATCH v2 2/2] riscv: dts: spacemit: add QSPI support for K3
+ Pico-ITX
+Message-ID: <20260707105636-GKH35811@kernel.org>
+References: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-0-52bce26e5fd8@gmail.com>
+ <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178336620525.1174442.16543427740300435701.git-patchwork-summary@kernel.org>
-Date: Mon, 06 Jul 2026 19:30:05 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260521-k3-pico-itx-qspi-v2-for-next-20260521-v2-2-52bce26e5fd8@gmail.com>
 
-Hello:
+Hi Zhengyu,
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+since I'm requesting some changes, so along with the title, suggest
+riscv: dts: spacemit: k3: Add QSPI support for Pico-ITX board
 
-Series: Enable SPI on SA8255p Qualcomm platforms
-  Submitter: Praveen Talari <praveen.talari@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1113322
-  Lore link: https://lore.kernel.org/r/20260618-enable-spi-on-sa8255p-v4-0-f5b5067e7e1e@oss.qualcomm.com
-    Patches: [v4,1/4] spi: dt-bindings: describe SA8255p
-             [v4,2/4] spi: qcom-geni: Use geni_se_resources_init() for resource initialization
-             [v4,3/4] spi: qcom-geni: Use resources helper APIs in runtime PM functions
-             [v4,4/4] spi: qcom-geni: Enable SPI on SA8255p Qualcomm platforms
+On 22:44 Thu 21 May     , Zhengyu He wrote:
+> Add K3 QSPI controller node into k3.dtsi, and add related pinmux
+> configuration.
+It's obvious..
+> 
+> Enable QSPI on Pico-ITX board, and describe the NOR flash which wires
+> to it.
+> 
+How about combine above and simplify
+Enable QSPI with proper pinmux on Pico-ITX board, and describe the NOR flash
+ which wires to it.
 
+> Signed-off-by: Cody Kang <cody.kang.hk@outlook.com>
+> Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
+> ---
+> Changes in v2:
+> - Add "spacemit,k1-qspi" fallback to the K3 QSPI compatible.
+> - Reordered Signed-off-by trailers.
+> ---
+>  arch/riscv/boot/dts/spacemit/k3-pico-itx.dts | 58 ++++++++++++++++++++++++++++
+>  arch/riscv/boot/dts/spacemit/k3-pinctrl.dtsi | 21 ++++++++++
+>  arch/riscv/boot/dts/spacemit/k3.dtsi         | 17 ++++++++
+>  3 files changed, 96 insertions(+)
+> 
+> diff --git a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> index b89c1521e664..e90e17895bb2 100644
+> --- a/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> +++ b/arch/riscv/boot/dts/spacemit/k3-pico-itx.dts
+> @@ -200,6 +200,64 @@ phy0: phy@1 {
+>  	};
+>  };
+>  
+> +&pinctrl {
+> +	qspi-cfg {
+as you've already defined te label, which make it possible to reduce one indention
 
-Total patches: 4
+&qspi_cfg {
+ ..
+}
+
+> +		qspi-pins {
+> +			power-source = <1800>;
+> +		};
+> +
+> +		qspi-cs0-pins {
+> +			power-source = <1800>;
+> +		};
+> +	};
+> +};
+> +
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yixun Lan (dlan)

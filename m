@@ -1,147 +1,123 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012030.outbound.protection.outlook.com [40.107.209.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB98328CF5D;
-	Thu,  9 Jul 2026 03:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783566065; cv=fail; b=DJTuurfp3StZAlAK7paYLyfgBxuUbaqcbeuv0gEHhFvesH6AdEAU/D8t+ooybbEN3CygW+ZAjhhs6KQU4XixWprudd9Nm0+bXLTp7rR+rbykhPQTVZeB4/I3jg4ViJabBBe9r1qad2R7jok3Uxo4mjBD59vg6wnnmhgALFdC9O4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783566065; c=relaxed/simple;
-	bh=2q/Ethja1FGE0m1mihhfto2bC0NY3ezU+ELOfBmFd4w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TIO+/EH71vr77rVLnn4pYSuUm4ygtUZNpv9FrMqb4M+s/cQQKt0BEf0RZlp5J29XmMkO0IZlWhDbw2rwhAPYWFb6fxzTncfSqMEutU8/sGj2Z8EbdFrvqGrra5E58RCjQirjCueUVOdx38Vti5hUsqA1MDmBzVtP0zhVHXuhoi8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=q9sylY5e; arc=fail smtp.client-ip=40.107.209.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C533A7858;
+	Thu,  9 Jul 2026 05:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1783575678; cv=none; b=USzP2bWOrV6Kedt+mLsJj8wG34JRjSjOIgYDANDZTheb5phvB2WaZAouVC5KPfSmejB4HEhx6hl9h414ryXUoK1tQuRR3iRelgxQe8Sv4W7NbhQ3tocqXuW1BWd3WdC8N8WvWbKQHOlAPIz3W5dGtNVwiEqkISKTUegRyC44cWY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1783575678; c=relaxed/simple;
+	bh=vd/pKHnN9hHEq/PC2ZKa5Ks5FAZG9ipiDZlCtIFKHWA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Sz+AMAyFvMaIp2ihH/XHgskQbhUvphToTAOUip8OSlcT4ZwgVSYZ5RLdHGSqaLSFcCyqY7FP5CNKrq2Aj+R26BW153pLHwRNBXYsN+kGhdIV3R2va4LrL5luOzrWzq8KJpv4vo2BDoV3P7SdYpn9LodkJ10feZ+KCBIncmmCP5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMF7MIfe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="q9sylY5e"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MLgq4FCJCBup5NEm4XVxLApIROiO2vn4+4WrzHvMmYSDESgEk0iruJGeUpsJzc59QE39t4UztLr2qTkrWJ+IQ2EggzdvhMEP7i9B1vrMr2LzWEFFOouuyR02oOxHChBhvyEuseX7mOEGZ/pBOl7Q8wIkgn7uW7CZ5TeBXwNXc13wwkKTC85sHXi8e9dtVlHhNwWjn+iYqzNyOHGKBw7CBeXzVbFwfCTMjfKQrqA9jsi3J5iu9ta5f7DWdIYD72Ik+2/UT15oPZMYxGgLRAVr1q9yRZkD3KMdt8Ldj2xGuSc4a4xeeKDPuwm58WT1qbTpQ725sS/XvIK7RvAfajsCLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2q/Ethja1FGE0m1mihhfto2bC0NY3ezU+ELOfBmFd4w=;
- b=wTEH/Da7p32PoT9tSd9t/PbWYYEp0NBDkX2zhJIvfgOJbobv7X2mI9kZ+mIYDC5wrUX2sHtPF0Gug01Rec4o9OtQt1K4oEIBesdkRH4vGvxtTMq5k12IaMBmnlfvMMDFZSrEwpQi1CBBUjmKxsWRUcCussFcBARugJpdqRQaoRt2GdnvbSM6iZHzr28On+CZjaR54naGPRNZoBHw920pOLIsyel9n7g1vgbrNxz462FVYQJMDgohd9p8QEArzX+i3X8M2k0/ervfGXH4tr6IF2kebtypVLYZLLZTVNvCIqhkmGJvYrvfbdz+Y6IxEzQxtgnk0aTpEkmeXgh/Pkpisw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=debian.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2q/Ethja1FGE0m1mihhfto2bC0NY3ezU+ELOfBmFd4w=;
- b=q9sylY5erche6Xet5Ph6tIVtiQIcXmxTQy2QEAI/88oCCvXDn9xI6DJ3t0z61uANyp7WjvSYPdyrdaOvGNhtsyBr6+xcts36cTa9CAYONiczPV7wDDLWizKHvrvysU1yrC8wd/TFGeKbR69PW8NPMsRDkBwtqf91XYwmKHsfA8yvxnPpac0sUY7pxCPOsy/dNrusWs9cXHtOvL8NJpSokkAgFZPgnC5MdFW/yB3RUbwG+43DPpXbn9fiswOCkNRM5OjJ2waKFENe0NAsh9qIKH3ykBvUGgaOJvZnHcyc1FG/K/PMun5T3UmAPta9ISLBXMVqmA2sXatnwv7cNVrH8A==
-Received: from DS7P221CA0017.NAMP221.PROD.OUTLOOK.COM (2603:10b6:8:25c::7) by
- DM3PR12MB9351.namprd12.prod.outlook.com (2603:10b6:8:1ac::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.10; Thu, 9 Jul 2026 03:00:55 +0000
-Received: from DM2PEPF00003FC4.namprd04.prod.outlook.com
- (2603:10b6:8:25c:cafe::47) by DS7P221CA0017.outlook.office365.com
- (2603:10b6:8:25c::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Thu, 9
- Jul 2026 03:00:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DM2PEPF00003FC4.mail.protection.outlook.com (10.167.23.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 03:00:54 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
- 2026 20:00:34 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 8 Jul
- 2026 20:00:34 -0700
-Received: from build-va-bionic-20260204.nvidia.com (10.127.8.12) by
- mail.nvidia.com (10.129.68.6) with Microsoft SMTP Server id 15.2.2562.20 via
- Frontend Transport; Wed, 8 Jul 2026 20:00:33 -0700
-From: Vishwaroop A <va@nvidia.com>
-To: Breno Leitao <leitao@debian.org>
-CC: Thierry Reding <thierry.reding@kernel.org>, Jon Hunter
-	<jonathanh@nvidia.com>, Mark Brown <broonie@kernel.org>, Laxman Dewangan
-	<ldewangan@nvidia.com>, Sowjanya Komatineni <skomatineni@nvidia.com>, "Suresh
- Mangipudi" <smangipudi@nvidia.com>, Krishna Yarlagadda
-	<kyarlagadda@nvidia.com>, <linux-tegra@vger.kernel.org>,
-	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/3] spi: tegra210-quad: Convert to hard IRQ with high-priority workqueue
-Date: Thu, 9 Jul 2026 03:00:33 +0000
-Message-ID: <20260709030033.1753627-1-va@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <ak4-h7tAemS9PmFk@gmail.com>
-References: <20260708011257.1712961-1-va@nvidia.com> <20260708011257.1712961-2-va@nvidia.com> <ak4-h7tAemS9PmFk@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMF7MIfe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAE21F000E9;
+	Thu,  9 Jul 2026 05:40:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783575677;
+	bh=GUR46VabSVZbPyehLw4syLT30MNmMe+mudnTx0VnTpA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=PMF7MIfeOb6sPplAJM3ptwtGVrsjDjcmNM8+KBGIZapvBcxEoEW05Z71w8wT7OiCo
+	 DpyTqd8LBQSOVV2LXf12bv3I6Pc0h9ojZxvVDoieC+rI/KlduqQsbmNYRbApokpMUS
+	 906x2f5dfccmHGNLaQwrgeNkFJeM+vrwSPjhiXoBgGmr7P/GzXUVoT8b+iN+kTpuYZ
+	 3miqhB4alxgUPujwFkL9mVwHxHABNpvGLd+MKygFosR17bCiXd9AFhTno3Tpzpr8G2
+	 W04sec2rt03zdANmLtdpyqOtx7Xh3Wl/PfkGMSLLD5Y/7X7CmPps6HOirGFsnoRUm/
+	 YRXFW3BE6RuOQ==
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>, 
+ "Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>, 
+ Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>, 
+ Even Xu <even.xu@intel.com>, Xinpeng Sun <xinpeng.sun@intel.com>, 
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+ Jiri Kosina <jikos@kernel.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Zhou Wang <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>, 
+ Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+ Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>, 
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>, 
+ Karol Wachowski <karol.wachowski@linux.intel.com>, 
+ Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, 
+ Andreas Noever <andreas.noever@gmail.com>, 
+ Mika Westerberg <westeri@kernel.org>, Will Deacon <will@kernel.org>, 
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>, 
+ Davidlohr Bueso <dave@stgolabs.net>, Srujana Challa <schalla@marvell.com>, 
+ Bharat Bhushan <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>, 
+ Hans de Goede <hansg@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, 
+ Nirmal Patel <nirmal.patel@linux.intel.com>, 
+ Kurt Schwemmer <kurt.schwemmer@microsemi.com>, 
+ Logan Gunthorpe <logang@deltatee.com>, Linus Walleij <linusw@kernel.org>, 
+ Bartosz Golaszewski <brgl@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Bingbu Cao <bingbu.cao@intel.com>, 
+ Tomasz Jeznach <tomasz.jeznach@linux.dev>, 
+ Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulfh@kernel.org>, 
+ Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>, 
+ linux-input@vger.kernel.org, linux-i3c@lists.infradead.org, 
+ dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>, 
+ netdev@vger.kernel.org, nic_swsd@realtek.com, linux-arm-msm@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, 
+ iommu@lists.linux.dev, linux-riscv@lists.infradead.org, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org, 
+ mhi@lists.linux.dev, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org, 
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>, 
+ linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, 
+ linux-mmc@vger.kernel.org
+In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+Subject: Re: (subset) [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector
+ management by removing devres auto-free
+Message-Id: <178357565325.731734.7291964273199898845.b4-ty@b4>
+Date: Thu, 09 Jul 2026 07:40:53 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC4:EE_|DM3PR12MB9351:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cca900c-c15a-49f2-1b2e-08dedd664b3a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|82310400026|36860700016|376014|18002099003|22082099003|4143699003|5023799004|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	xFESN4DbqvwlZpdpRv+adXwpQCivkxDT0Wv0w9i+70ku7KwF400vdS54EMK30Oc1ybOtKXah21aPNynriI5LEZzOgulgq+ymZPpcZiyx2OE2ztD8PnJwTMyJ8fYY4uz6itVhuaZQKyEqiq/cYJICN8l5SDUhT9HP6irzCpVpqYZly7zCC1uh3+qSXZsLpo8KdaTFI10ASSARrb20QIwyoB4YpvxUacBJN5sPFmQXzh0XbzQuEgCF6devw/GxNHjs+JftPiksalHKy0+H6SMps2MD19ybPJ97WpLM366SNMHTE6yxxbKME6rIn30xnLjf008SBxvGxOzuE8d8ObmeV3CRYFlzNhrjuuf/cLscgiSq5fTV5lnn88IS01iWf4aqrUrhm8sgx130frnGP5GAw5KWn8szldeWZD/iuAoayqYynn6pcG7BxZyNkHXLBNQ4exdEoYHuCrYWDOYpFx9MpF9hrhuH9CCCpVNZVuV9e1bCIv1Xin1x56LqNVJulGNHKnVi+IX2ST82hqJKd6f4Qt0Cc8ZfKa1jpkEX5joIE274J1nYKG5Ac050rXKmxwgiYuq+E/cLPWHewQajbhpDQCkUaukotk4tmNLYY++w7r5/g4qpnf/aHDKarg87R6jgVuxmlxl5oMrN4ZRGWJJvS6HbysuX0mDY3McLLnqQfDydR9QiRcoNIs1lLdeCvNfX/Y2D8gqJ7O6Asoyd1O6iQg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(22082099003)(4143699003)(5023799004)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tP+1yInDwtggrCj0aiEm2++IQwjppaL7Mabm5yGCciZMiVIk1/tP0X9bBKQuNzdjkCX7V3N7T0yAdZsMWbUR1iWSp0ZtMamTHnFED/lN72wIH6zhoB7ybMCtjJEtE1xgOdfYsO8hE1bjN5DvOb2rAsHarC9Zx72hLIyxXqObHfjl5Jw0/UnQ/Z/9PShZWkDgEF0pbL+fW/qjrTgc1bdFWcMxMhG2AjaGqEX+szC9wJVVkFONU6jUTHEPBbW7h56McClrxn0mFOMWA/5mvZzgOpP1QTLW9MOEMRdP2glP32OSd6Uu4YhhGSySB55+RE+SGr7MGGM9+SDHSIY2HJjGGBWGvEPUKiDixWlfqdBiO7XP0Q5m/qh6KSySFqn/COy3wJ/oSZSOaPE1cQhe/DAkxpkR+b7wnMsA2s/5LFg/rRIdkDOB8Zapoo/2YcBcuoPy
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 03:00:54.9189
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cca900c-c15a-49f2-1b2e-08dedd664b3a
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM2PEPF00003FC4.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9351
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15.2
 
-On Wed, Jul 08, 2026 at 05:15:25AM -0700, Breno Leitao wrote:
-> I am still quite confused what tqspi->lock protects. In the code above,
-> you get the lock, then you dereference tqspi->curr_xfer, and then it
-> releases the lock, and use t later without any lock.
 
-Just the pointer read against the writers - tegra_qspi_setup_transfer_one()
-which publishes curr_xfer, and the completion paths which clear it.
-After the snapshot, t refers to the transfer that was current at that
-moment; later writes to tqspi->curr_xfer don't change t.
+On Mon, 23 Feb 2026 23:29:39 +0800, Shawn Lin wrote:
+> This patch series addresses a long-standing design issue in the PCI/MSI
+> subsystem where the implicit, automatic management of IRQ vectors by
+> the devres framework conflicts with explicit driver cleanup, creating
+> ambiguity and potential resource management bugs.
+> 
+> ==== The Problem: Implicit vs. Explicit Management ====
+> Historically, `pcim_enable_device()` not only manages standard PCI resources
+> (BARs) via devres but also implicitly triggers automatic IRQ vector management
+> by setting a flag that registers `pcim_msi_release()` as a cleanup action.
+> 
+> [...]
 
-The spi_transfer object itself is kept alive by the SPI core, not by
-this lock: tegra_qspi_{combined,non_combined}_seq_xfer() is parked in
-wait_for_completion_timeout(&tqspi->xfer_completion) for this xfer,
-so spi_finalize_current_message() cannot run and the message (and
-its spi_transfers) cannot be handed back to the caller until we - or
-the timeout path - signal xfer_completion.
+Applied, thanks!
 
-> if tqspi->lock() is protecting curr_xfer, shouldn't you hold it for
-> longer?
+[13/37] bus: mhi: host: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
+        commit: 256995e80fcd39cab94eee8135dd90f6da6ac744
 
-Can't - wait_for_completion_interruptible_timeout() below sleeps, so
-holding spin_lock_irqsave() across it would trip
-scheduling-while-atomic and stall IRQs for the duration.
-handle_cpu_based_xfer() gets a single lock scope because it never
-sleeps; the DMA path has to split.
+Best regards,
+-- 
+மணிவண்ணன் சதாசிவம்
 
-Since v5, tegra_qspi_handle_timeout() also does
-cancel_work_sync(&tqspi->irq_work) before invoking
-handle_dma_based_xfer() itself (Mark's v4 concern), so the work
-handler and the timeout handler can't both be inside this function
-on the same transfer.
 
-Thanks,
-Vishwaroop

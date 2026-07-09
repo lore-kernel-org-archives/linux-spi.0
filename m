@@ -1,57 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843FF4DC534;
-	Thu,  9 Jul 2026 17:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD424195D2;
+	Thu,  9 Jul 2026 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783618736; cv=none; b=RjUdoKDhwLmSAMyjsJgDc3TG/WnjYnEMmM2Fa/AXwapRWzQoPuZP8HEKKoLqHNfqU87fLNfTItYm1yloK8nYy43MVVa6w8d9P+A9V958i+eBfqSY4R0u8/4XWKWOgLG6TJkjiUJCcSwRxOqEE9nrBg7nodvD1rRQBRAQ4G98Dpg=
+	t=1783619734; cv=none; b=clu94l9Pxx6XnVjE9yFwnIY7rSELS2cQ133mYkADPYpWgAWc05sHttHyiVyzZIzFtaTMFto9L9abItwS5Fh7Soag+ZoVWL5hulrhkqQJC3JeCPTeUUnq6mlROyCEM1A9t1bL2VrmnmuebC7ZYf9ZNJ4A4TzeiU6r8PVkU2E7LHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783618736; c=relaxed/simple;
-	bh=d/nBdYKTwprwwPJWcQhYAi+50uqZV7XmaVBvqS1J6Oc=;
+	s=arc-20240116; t=1783619734; c=relaxed/simple;
+	bh=5c0ePBG4qS0xsg294qaV/O58VNPvquRw3o2eBFNumMM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLxQpZNgSSUU7jq+aK79SlOnQlhamP7S/XwWQd/E/vne3nN2a4FTQcHANGsVovplgFCx12kmRxxKCOXChyVhWy7U7ci0YOovuUwYiTx5N8dpI80sJmS1ah1a9Mpw9vInJd7q5CZyg9EtbG0TJMwBNnUyHThnXtUawOdr7Ii0r3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jr0UF5V0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=um31qWxrv7HFWfM8GXAAVF82MYnFoAtSJ2OPdaJxirKvNbjBU7XGnaBQfTrzgGOyumO44uGgwXzCmvYTlF8AivLvN/Qvf7uChtDZBf0eiq6VLTqA+zk6fSWg0tlgDE9UwcVrgk6OukoImowKxZA3HmD9zNLhilbiekWQd6ONPf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WqZAyW8y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jr0UF5V0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80DB1F00A3E;
-	Thu,  9 Jul 2026 17:38:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WqZAyW8y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3891F000E9;
+	Thu,  9 Jul 2026 17:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783618734;
-	bh=z+xPqrbAsOxm0DoB+mXHkly4JM60YdduBZSXbhphp04=;
+	s=k20260515; t=1783619732;
+	bh=5c0ePBG4qS0xsg294qaV/O58VNPvquRw3o2eBFNumMM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jr0UF5V0p3i+9ZoqP0v0r2WyARA9522xwnGYD61df1lV1vCbW2OjbYUdWSaM+bUAd
-	 oWoi2JnH6QXswGH/TWXGVBUt+S7Dtih4h2f6oQnrIv+a+GdME1HCJLLEEQmeqQOKv7
-	 hVsIbj+o3cvsC7UmJvkHdaohkuU9ljjr7YINohew6ExMt/ZFmC/Sz+9Id3IL4ftMao
-	 r34QjORWG4vjo7UOzplInFPiSa0oWBzNteOD1SpDWDDa92xkOS8+xEvHRtzowTpq0Y
-	 PUx1rCK5Qnx1L8YCsWt2ULOe1XOXltJsamXa8GVj92V7aaCe+vG3BPVA3dJQDvqKmC
-	 ge2Iv5gC/uClw==
-Date: Thu, 9 Jul 2026 18:38:48 +0100
-From: Mark Brown <broonie@kernel.org>
-To: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Cc: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Girish Mahadevan <girishm@codeaurora.org>,
-	Alok Chauhan <alokc@codeaurora.org>,
-	bjorn.andersson@oss.qualcomm.com,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	aniket.randive@oss.qualcomm.com,
-	chandana.chiluveru@oss.qualcomm.com,
-	jyothi.seerapu@oss.qualcomm.com, linux-pm@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH v3 1/2] PM: runtime: Only set runtime_error on suspend
- callback failures
-Message-ID: <f199663d-cb74-4117-9dd8-f7384e74a87a@sirena.org.uk>
-References: <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-0-92feb5a7b926@oss.qualcomm.com>
- <20260706-fix_sticky_-einval_after_pm_runtime_api_failure-v3-1-92feb5a7b926@oss.qualcomm.com>
- <ae915278-2f21-4bd0-8651-d2e02ac04aae@sirena.org.uk>
- <CAJZ5v0ga8qqYg79+hQVtO8T=FOCj8XLmTz3HpEKoOykV_K-HSQ@mail.gmail.com>
+	b=WqZAyW8y5rRMIOtbQ9Cqf0p+p6dFviN8Ix1fCiJKj11E3n7wpKWS/kCOrwnBch27b
+	 msbGbaR2d3hTlYR0Em5s0x8BdJLtvQXMUV2ScwRxkNn26RZs7Y37aPXPaxhYO2VclC
+	 t/FicwmfDlfJT5zII7GyDDbjtwyy0lzRGKvcgFsnNd9ifqXcTgPAXkYvgx02YIEnuN
+	 hNXAjn36WQjKb8G8IXQi/hXuubZsWw2x1m6AFaIO2ZzA4+9jTE3xfNjF0SoswVkSig
+	 THN604z2ybIquMbEWb1mFdkOui79BpfjTqGiN6UmigoB68ExKTs2OjgL5ZqegnmWyK
+	 GIvDPYATclp+g==
+Date: Thu, 9 Jul 2026 18:55:28 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Changhuang Liang <changhuang.liang@starfivetech.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Sudip Mukherjee <sudip.mukherjee@sifive.com>,
+	Serge Semin <fancer.lancer@gmail.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 10/11] spi: dt-bindings: snps,dw-apb-ssi: Add
+ starfive,jhb100-sfc
+Message-ID: <20260709-unknotted-semicolon-e6ca03045dfb@spud>
+References: <20260709055204.138168-1-changhuang.liang@starfivetech.com>
+ <20260709055204.138168-11-changhuang.liang@starfivetech.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,55 +46,26 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/Llcw7u8OMnNrmMC"
+	protocol="application/pgp-signature"; boundary="75GMnnpgGICtpI4b"
 Content-Disposition: inline
-In-Reply-To: <CAJZ5v0ga8qqYg79+hQVtO8T=FOCj8XLmTz3HpEKoOykV_K-HSQ@mail.gmail.com>
-X-Cookie: MS-DOS must die!
+In-Reply-To: <20260709055204.138168-11-changhuang.liang@starfivetech.com>
 
-
---/Llcw7u8OMnNrmMC
-Content-Type: text/plain; charset=utf-8
+--75GMnnpgGICtpI4b
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 09, 2026 at 07:35:18PM +0200, Rafael J. Wysocki (Intel) wrote:
-> On Thu, Jul 9, 2026 at 6:35=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-> > runtime_pm.rst still says
-
-> >   * If the resume callback returns an error code, the PM core regards t=
-his as a
-> >     fatal error and will refuse to run the helper functions described i=
-n Section
-> >     4 for the device, until its status is directly set to either 'activ=
-e', or
-> >     'suspended' (by means of special helper functions provided by the P=
-M core
-> >     for this purpose).
-
-> > which needs an update now?
-
-> Yeah, it would be good to update this one.
-
-> That can be done in a separate patch though as far as I'm concerned.
-
-Oh, totally - didn't mean to suggest we should block the original
-change.
-
---/Llcw7u8OMnNrmMC
-Content-Type: application/pgp-signature; name="signature.asc"
+--75GMnnpgGICtpI4b
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpP3KcACgkQJNaLcl1U
-h9Cs0gf/flegjsijkwicZIndylDYxISil3P2eLNwMvbiukKiLEGBGfM9/nNk+Kjb
-wgvh9F1Ov3Dy/Z/UBn24b/1bGwS9R/PWTccpI6ZmYDvesGQnf12CSeiVLYha7ESS
-ybJ565nJHSJN5SXWiySj5dJQB5286epdYfx38homHKz1aoK7KnCeCwcGwLkouvOW
-Uk/KWYn0BUw4BAjfQov+UkkPmrs6wt421YAFnzzdIyTOchNgvzYguWyjaLPay3U9
-OhdvP71afhbeEmM93DNLuVEVxMZ99KZCu2cp7lyhreCBD3XuZuXmhOQy5l48MJsI
-WH8YEI0kPIk5pmi3uHDY4nh0l7+oMQ==
-=BP5F
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCak/gkAAKCRB4tDGHoIJi
+0i4dAQDaNsniwMrRz58aPNNJgIDQ2gGyhBF5ce672KyXoQ70DgD/S7Gdx+OPCZ/n
+rCxj+ota37SgrawTEEfZDw06Typm4Qw=
+=sMq5
 -----END PGP SIGNATURE-----
 
---/Llcw7u8OMnNrmMC--
+--75GMnnpgGICtpI4b--

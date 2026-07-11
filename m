@@ -1,50 +1,50 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D8430E853
-	for <linux-spi@vger.kernel.org>; Sat, 11 Jul 2026 11:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB543C2B8D
+	for <linux-spi@vger.kernel.org>; Sat, 11 Jul 2026 11:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783770600; cv=none; b=C5nBEVp0DkxPBnduO0Tl8QWI519Zzo9EKD7U7eCIE8Y6yrgdSvwCuAjH4rla4pvEG0Y0RxDzN67bu5fp8EkUOxDR3an88eRh9dsu9XZ6jqkFXrW6tTk4KyJoSXK69n3llI8SrGIdtToFql7LietXQgzyFVRvcbHwqY5Hb6mQsks=
+	t=1783770603; cv=none; b=LEXpm7BgjZA95GignvvC97LNf43+Nsebbob41NeO1Qx4NuUhgT/+G2deUo7mKBZxpf6hPsbprqBXAUYVT6sDgBJ6sT2eo9rOSqlPA4r9gKGuGnp/WjV8a0OSYWk8O9zHOvSpCwrOd0KFeLsykGHerqhBRMc1mHzYic/PulU57nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783770600; c=relaxed/simple;
-	bh=Ywx0xSaBfiyT+DYliXVShFmq1Z788TCNlfdv+ynHru4=;
+	s=arc-20240116; t=1783770603; c=relaxed/simple;
+	bh=o2Hiy84rnP/9UMKURCEIhcD7/nHJlcIAPilhOK3M2oU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FGYBvGWkL3I4DIvWjsnsE5EWXZN4FewuXnYxJhMvUTHHIqViERJBQJBsNmatfgjdYpA3EgpAORX/3rwENvQ49aVUzAwu7gsKZCQeGAsK2/mjROgINxKW4DqVAxNas1rG5Qv1evAzFdy8DmiW5aI3x3NYBU1rzDB+Inf7LGUwDX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.52
+	 MIME-Version; b=EI/hI5vWS/7swyOtS6ok/pqRI3eTuv0IUc7JTm4/a5JR2VQMNDA7FE/OpXpUXRTD5JL3sKHsutpg6LKVTii5EXJzOR98OUVCemfkhSgzmeeUDLrrSJfsZJyQRmIiaEu1uErAD3dBg6XMYnN5zn/XVIaUiZs8vEFvPLOXdTXrfvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1541482a91.2
-        for <linux-spi@vger.kernel.org>; Sat, 11 Jul 2026 04:49:58 -0700 (PDT)
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-382ef647e20so1810667a91.1
+        for <linux-spi@vger.kernel.org>; Sat, 11 Jul 2026 04:50:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783770598; x=1784375398;
+        d=1e100.net; s=20251104; t=1783770601; x=1784375401;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lKrCfY1VHLhMvkhcd76jeSHgip0JtyyrN3VT+vcLICs=;
-        b=gOgM1pqdCopbsqOcd717EXSGABIfIkj327B2AKZ68or4PxVUm9Faa98DTbMivB2xgM
-         2cEmsqBL2dL/JUtedadVk8WyW6O6dBJITdl5+Q0uXfzM0Mnl37zjCmH/D/8b4FYg8T50
-         6wHuH39IwfcHVV6TegZAPOHh7O+GictaziJI0QO7qX8PIwIuYDhDm+dNOfqmdACtUCcb
-         y9AiE+lskOr5B7F2OR8vn1xgMl5CYMp5Kjnvan8I2p+iJvYFtANy6Is7cldh54IgRsJQ
-         aJpCpbIJCiky5ri1g9vcOwof+sZmLZlJIc8ZhGzRh3ECBg4POALaSteqOzagZRM0WC4j
-         XvpA==
-X-Forwarded-Encrypted: i=1; AHgh+RqCYEnN0OcP0Z1JMbRSUFAqXMDbOkQy1fGV7oTeo3nyS7jOkwQTq86lccRCUqwi4yBUsVsG366Tla8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ/QUqKkWnp9KrCVbOHwcatGqLL5Eo8WmYQAUeh+8DFwm4GtvH
-	sS7/fPgaahTCitZ2v4fm4f1NxuULRdJU8PqGLawkQ1xVIcSGCcQekog=
-X-Gm-Gg: AfdE7cn7O+wJSz0qHQdGDj/bXrRmOO0J0ywE530PH7CrypbaVRxAgcjM+NqB0VacZzM
-	827dfUfMJNQcxmL+Pr/D7/oDvi6DpYfhAUU+ciTYiHKkM/1uJ4mNB9ddnUaWOC8qw4RVxPQ/Ql7
-	10z71HeOavfBeBqo0XSdu6fN+yLjgiDCv/qYdksttvLcZ5QcZcvbm2cdOlX57aqs40S8sbhnec3
-	2HIobP7a7D5k8CqgZw2ecqK7dzhnswlqXl8qCE6TtFeMV5DAhhOn0Opf6zu5hnF9wO0/cY693iO
-	GJWA0gddGMaEacXLXbg9mLORZWiIx9bNWzs562S3R1yK60CdjFxlIQm3E6khOw0XdNhsI7lurG7
-	EbPpB5KkDlyGgnPejQGgMiBRkxSQ4INgtS/tDYiOMvmE67dhFzSnttngd2esCkZmROVC3RjPb8a
-	nFKhBrpEJKcgXX3X3UZY3tIBjevBPP8A2mvPv7fvDrrF0Rz1TaqEKAFnuWVLECrrqq3Yk2XEb9V
-	d3Dl53EteL8v1RO+HCXD6cek1ZTVCvxWqUh
-X-Received: by 2002:a17:90b:1644:b0:387:e0db:bc2d with SMTP id 98e67ed59e1d1-38dc7ba5a7emr2604450a91.35.1783770598497;
-        Sat, 11 Jul 2026 04:49:58 -0700 (PDT)
+        bh=kJ53oWqRjCNjVlROCxKHTEOJ8pLHHBllpxRR0nGEHyI=;
+        b=hrAT3CPCs/zSoRhhyfxHs/oVsQiOkm+2i400MwkKKCBzg6GbODBCFIjNnL/GEafmcu
+         XhQePYOTjb+s6vU4V5WELYYVML5NZyeEbKE6NjtZo+gcGqc8ISiBD8xLZD9gtBVLiScG
+         sdCXJEjA6NYAkze1lxFVBwt1e8GY5O4BAjOzy/+AEQLV2U6ObNI1oVlwSbxk86benKaN
+         S4Spe+l5wihToOiH0zuSxpIRsLGKmDUbRHZp30hoflWX3z59MBw2eS5OIHhw55ko+waw
+         FnnntlqcawCfXTM7Yb2/ZM6u2CWXRskndTDvop/VJx+uYLG9pu2vZDR+isD249ELz/bF
+         n3Cw==
+X-Forwarded-Encrypted: i=1; AHgh+RrNeSx/jcwotycfoGU/1bi+8qfswQ8oCZpo7iO3hfIQEXic8Fv0wRLCfrOMxx9dNlSReR6qRhIyE58=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQh9ZnP3CQuuDibu3AxERaXh0xxZeA9ht33Dm58BUw9swL7Js0
+	F/XXJWzOtwIiOS2Jz0snhZg7EpwuuTdvz1g7UfKt5tWWPI5YPHZaYUM=
+X-Gm-Gg: AfdE7cm5x7sWjzlYR9+8VDE6ePrddcnq8USauGZuUDZNvmHF8e1T/HElV0bNduwSn12
+	hJ+wR8r37gEI3FqKbuVSl671z/Ay3P6esbzUMiGG++v73kvTrKXQuS3TUeFBvuQqPdTW3rqsr1F
+	nzKIR3QGZ4oF6R/E7dEG0U6334NNvD6QVXhmNTR81H/4ks9cmE9Z/mQuHD6nR6RrWCEInmuYp6T
+	kxoUr5R2q1lDTpt+X6Gt9uonT3vrSjMT7xWo0uC1QHpF5TkJuttzPD/VV71agwtknVEICMEBgy7
+	dor3cZFp046m+BWPMlkLQiXWfdMTMwbdncFRgD8xI3AzqApXuI2MPT8ginTHxDQtJ7JFddtpwIj
+	JxqcdTBirA9miwdDXv1yt7luHUxpU9aCNm0jGPqVxZioP6jySrVhlKexGADL3RkP4bxEIneF0K0
+	oB8CTgzsldiXdYKoVV5MbdRL1UeoP6iLPqi0fZ4ctUAFm79h6j/01n4f9JV4VEseMDo6LCzk86u
+	d0SdNt9aVFdm8YqDrJBLUOujw==
+X-Received: by 2002:a17:90b:5344:b0:381:1b66:4734 with SMTP id 98e67ed59e1d1-38dc75d0b31mr2658787a91.6.1783770601104;
+        Sat, 11 Jul 2026 04:50:01 -0700 (PDT)
 Received: from penguin.tail0a1999.ts.net (61-228-52-13.dynamic-ip.hinet.net. [61.228.52.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5506b48bsm3957570a91.1.2026.07.11.04.49.56
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5506b48bsm3957570a91.1.2026.07.11.04.49.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jul 2026 04:49:58 -0700 (PDT)
+        Sat, 11 Jul 2026 04:50:00 -0700 (PDT)
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Mark Brown <broonie@kernel.org>
@@ -56,12 +56,13 @@ Cc: Daniel Mack <daniel@zonque.org>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 0/3] Input/SPI: fixes for MacBook8,1 DMA timeout, UAF, and NULL pointer dereference
-Date: Sat, 11 Jul 2026 19:49:34 +0800
-Message-Id: <20260711114937.16670-1-fourdollars@debian.org>
+Subject: [PATCH v4 1/3] Input: applespi - cancel pending work on driver remove
+Date: Sat, 11 Jul 2026 19:49:35 +0800
+Message-Id: <20260711114937.16670-2-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260711055247.5412-1-fourdollars@debian.org>
+In-Reply-To: <20260711114937.16670-1-fourdollars@debian.org>
 References: <20260711055247.5412-1-fourdollars@debian.org>
+ <20260711114937.16670-1-fourdollars@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -70,65 +71,36 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Dmitry, Mark, and the linux-input/linux-spi community,
+During driver removal in applespi_remove(), the managed private data
+structure is freed by devres. However, the driver does not cancel the
+asynchronous work applespi->work, which registers the touchpad input
+device.
 
-This patch series addresses a long-standing DMA initialization timeout on the 
-early 2015 12" MacBook (MacBook8,1) on any boot (including cold boot), as well 
-as two pre-existing, high-severity UAF/NULL-pointer bugs in the applespi driver.
+This creates a use-after-free (UAF) vulnerability if a pending or
+running worker thread attempts to access the private data after the
+remove function returns.
 
-Changes in v4:
-  - Reverted the runtime `can_dma` callback override from `applespi.c` to avoid 
-    architectural layering violation, data races (TOCTOU) with concurrent SPI 
-    transfers, and execute-after-free vulnerability upon module unload.
-  - Moved the DMI quirk forcing PIO mode for MacBook8,1 to the host PCI glue 
-    driver (spi-pxa2xx-pci.c) where LPSS setup occurs.
-  - Formatted the DMI match using a structured `pxa2xx_spi_pci_dmi_table` and 
-    helper function `pxa2xx_spi_pci_can_dma()`.
-  - Added a `force_pio` module parameter in spi-pxa2xx-pci.c to allow other 
-    users to manually force PIO mode for debugging.
+Fix this by explicitly calling cancel_work_sync(&applespi->work) in
+applespi_remove() before cleanups.
 
-Changes in v3:
-  - Added a `force_pio` module parameter to applespi to allow users to manually 
-    disable DMA for SPI transfers.
-  - Resolved the execute-after-free vulnerability by unconditionally restoring 
-    the original can_dma callback (even if NULL) in the driver remove path.
-  - Fixed the probe timing issue by applying the can_dma override at the very 
-    beginning of applespi_probe() so that all early initialization transfers 
-    safely use PIO mode, and properly restoring it in all probe error paths.
-  - Documented the Bugzilla link in the commit message of Patch 1.
+Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
+---
+ drivers/input/keyboard/applespi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes in v2:
-  - Fixed an unbind/remove execute-after-free vulnerability by storing and 
-    restoring the host controller's original can_dma callback in applespi_probe() 
-    and applespi_remove().
-  - Split the fixes into a 3-patch logical series.
-
-Patch 1 fixes a pre-existing UAF vulnerability in the driver unbind path by 
-explicitly calling cancel_work_sync() on the asynchronous registration worker 
-work struct before devres frees the driver private data.
-
-Patch 2 fixes a pre-existing race condition in the debugfs interface where 
-userspace could open the tp_dim file before the asynchronous worker has 
-finished initializing applespi->touchpad_input_dev, leading to a NULL 
-pointer dereference. We resolve this using smp_load_acquire() and checking 
-for NULL.
-
-Patch 3 introduces a structured DMI quirk and a `force_pio` module parameter 
-in spi-pxa2xx-pci.c to disable DMA on MacBook8,1. This forces the controller 
-to use the rock-solid PIO mode from the very beginning.
-
-Best regards,
-Shih-Yuan Lee
-
-Shih-Yuan Lee (3):
-  Input: applespi - cancel pending work on driver remove
-  Input: applespi - fix NULL pointer dereference in tp_dim open
-  spi: pxa2xx: disable DMA for Apple MacBook8,1
-
- drivers/input/keyboard/applespi.c | 10 +++++++++-
- drivers/spi/spi-pxa2xx-pci.c      | 33 ++++++++++++++++++++++++++++++-
- 2 files changed, 41 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/input/keyboard/applespi.c b/drivers/input/keyboard/applespi.c
+index b5ff71cd5a70..3bdb9e7cfb8b 100644
+--- a/drivers/input/keyboard/applespi.c
++++ b/drivers/input/keyboard/applespi.c
+@@ -1822,6 +1822,8 @@ static void applespi_remove(struct spi_device *spi)
+ 
+ 	applespi_drain_reads(applespi);
+ 
++	cancel_work_sync(&applespi->work);
++
+ 	debugfs_remove_recursive(applespi->debugfs_root);
+ }
+ 
 -- 
 2.39.5
 

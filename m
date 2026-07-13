@@ -1,50 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DB137E2EC;
-	Mon, 13 Jul 2026 10:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9423E7BB6;
+	Mon, 13 Jul 2026 11:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783939605; cv=none; b=rHM9kEGAm4/fXWRL/FI1CTrkj3G+KUH0PAoCqLo9HXQBBShiFqT4fHso7EHVGj6kwdjB2ma42+q0eoe/Zwrr+u3QTBwEdLpJ0T5ad48Dzvz37OGGJuN3mMWxW41tOT+MWmpAS5/cXgNMkzDZZl3YLp6OxDLD2dEx9EL+KCMhkjg=
+	t=1783942580; cv=none; b=lFjeeh7Yuay3ew6u6X8n5sHC5HyH2dyqeC9mkSu6AhxN5espUx4yzUEFVFShqIS8qwfUeednfVMZaBiNzIqD0mLEg7cQD/x0a67SjOTtFYPeajKXw00iw7b5bKBux74k1//0D00MWUOj7zQW9Pv8+OkB/7CKXU0inZbtrHVIwWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783939605; c=relaxed/simple;
-	bh=cXxx9WHkC3p7jLTx5YHr98Gkiqqday09PJ2zl2CCGQI=;
+	s=arc-20240116; t=1783942580; c=relaxed/simple;
+	bh=4gsuP0hVnICCC2D2maZvzGNrct6hCtitUX+7fShaHE4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pCShg/CUJUk0ZzMzXFbVVQ7JuQAG0QjZG7REVudoHQZVP1enmSQy5I7xBOuJUVtHVRs7RMOcqQeKpsQt2zusIUnPm+C+En2cDbuR8Qqo6Q9czcEx3N/I1LiU7ZyhbpudhqNf4YGw+8IEXJ/HWKw2t1bsQ/HsgTNIbMXhDvKyoHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLOsNHtY; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLOsNHtY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AE51F000E9;
-	Mon, 13 Jul 2026 10:46:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783939602;
-	bh=EZRzhdUs3AXtcY6EK2eOQmkcfCSHRUOtCcuL3d1csdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LLOsNHtYWk5duzyuSLQMHnKDS8PuJQAO+FcPCh5vvRkgjTA+jw5LzjivCmebL4Pt+
-	 kyfSwyP4yJjQ/0C/wqyWfTjBXous0KrKUYF/wfsMzAYylFVfJewBBVt46dTGiNRRTD
-	 f4RtrzJSZTxeSE+Qo+OPchKo6Xmcxw2YRpwL+E09j4yFLJ4ghEf1p1hJdn92i3yT14
-	 mqu17sduUJIWHs/Cv69s0VwakMwXDTHGoONRlG7Go4M8iKabYyxaicMyUDUIOg/DJS
-	 oMohfj1EqBnxbo/lS5BzZhoQnq/AE6eBd/VRf59yNvQHTurFzZJj1th6CZJJSHKaAD
-	 QJGWjvsRFDs+g==
-Date: Mon, 13 Jul 2026 11:46:37 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v2 2/2] spi: qcom-geni: add GENI SE registers trace event
- on error paths
-Message-ID: <72cb70b0-d89d-405b-b2b9-807e028d6fd3@sirena.org.uk>
-References: <20260711-add-tracepoints-for-se-reg-dump-v2-0-ca1e9ba62359@oss.qualcomm.com>
- <20260711-add-tracepoints-for-se-reg-dump-v2-2-ca1e9ba62359@oss.qualcomm.com>
- <cc4797fa-6911-45a3-8775-69c2ef32a338@sirena.org.uk>
- <4bcaa245-2127-45aa-bf05-48e275c0129c@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kmdDHQoUncjsnti+DLPq0boDivQiR4tGHPXrZTS1ewYpnOsrCNhrp/kJkGmiobSpihOF9S3f85fYXzRprpr8X/dRutuLHYrZ0A74lxaorL2gwHDNecnjouDCXeNVV6s2AS4sZhA8meg9EDa21oCMTPWwbDqu5psU0ZcsFvcKUEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F291F00A3A;
+	Mon, 13 Jul 2026 11:36:18 +0000 (UTC)
+Date: Mon, 13 Jul 2026 12:36:15 +0100
+From: Mark Brown <broonie@debian.org>
+To: Shih-Yuan Lee <fourdollars@debian.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/3] Input/SPI: fixes for MacBook8,1 DMA timeout, UAF,
+ and NULL pointer dereference
+Message-ID: <790e9cea-5a4d-4199-9d50-f46adebd485a@sirena.org.uk>
+References: <20260711055247.5412-1-fourdollars@debian.org>
+ <20260711131140.18777-1-fourdollars@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,59 +32,43 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gFM2XcDEhmPrjI2W"
+	protocol="application/pgp-signature"; boundary="QGtCEai1V2o90k3X"
 Content-Disposition: inline
-In-Reply-To: <4bcaa245-2127-45aa-bf05-48e275c0129c@oss.qualcomm.com>
+In-Reply-To: <20260711131140.18777-1-fourdollars@debian.org>
 X-Cookie: Courage is grace under pressure.
 
 
---gFM2XcDEhmPrjI2W
+--QGtCEai1V2o90k3X
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 11, 2026 at 08:21:02AM +0530, Praveen Talari wrote:
-> On 11-07-2026 02:56, Mark Brown wrote:
-> > On Sat, Jul 11, 2026 at 12:18:42AM +0530, Praveen Talari wrote:
+On Sat, Jul 11, 2026 at 09:11:37PM +0800, Shih-Yuan Lee wrote:
+> Hi Dmitry, Mark, and the linux-input/linux-spi community,
+>=20
+> This patch series addresses a long-standing DMA initialization timeout on=
+ the=20
+> early 2015 12" MacBook (MacBook8,1) on any boot (including cold boot), as=
+ well=20
+> as two pre-existing, high-severity UAF/NULL-pointer bugs in the applespi =
+driver.
 
-> > > +#include <trace/events/qcom_geni_se.h>
+Are there any dependencies between the SPI and input parts of the
+series?  There's nothing visible...
 
-> > Should this be in rivers/soc/qcom/qcom-geni-se.c (and the first patch?)
-> > - that way if another driver starts using them we won't multiply define
-> > the tracepoints.
-
-> Yes, you are correct but
-
-> If this header in drivers/soc/qcom/qcom-geni-se.c, how it will be access
-> trace API in other drivers like i2c, spi and uart?
-
-The header needs to be in the users but the CREATE_ define that you cut
-needs to be in only one place to actually create the tracepoints.
-
-> > > @@ -986,10 +997,13 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
-> > >   					writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
-> > >   					dev_err(mas->dev, "Premature done. tx_rem = %d bpw%d\n",
-> > >   						mas->tx_rem_bytes, mas->cur_bits_per_word);
-> > > +					trace_geni_se_regs(se);
-> > SE_GENI_TX_WATERMARK_REG is one of the registers in the tracepoint,
-> > perhaps trace before we write to clear it?
-
-> it will be captured in m_irq register so it is not required to capture.
-
-Are you sure that won't lead to user confusion?
-
---gFM2XcDEhmPrjI2W
+--QGtCEai1V2o90k3X
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpUwgwACgkQJNaLcl1U
-h9CbZAf6AkZ/OX052T66MeVyQnv/A+5ltWB7OkFdN33KCaFvw4Hho1rOQsgmJ/RF
-3cwraWTP38eaFderrE7ta0LfIsKwJUgQ2+KFr9iFiquBEsDh0g5R89VAsXQZDB4v
-FziZgOvukWgexKkSuZ1eG3+s6ebRo+yDugyCcMJ+fUYwUG/5fvi6LkaINYB3ybY5
-1vy4RPcRJ1BuymZazaAWsk9pKGKLQdX52bwjCN1VbjwHcvADHfdn1YIHOxbpdMTH
-0OY7XfnyXXre/siEcKF97QITFgviumDfnA2JfX/L0uInBQCNWCbWonos7ZIhgZPa
-9UsGS4vvW9zNvKGmzRAbeXEQK3YaUw==
-=qlUD
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpUza4ACgkQJNaLcl1U
+h9Brfgf/asnNFesIIXl0F4zYLxdSDTfJq5dX9DwgbfMsMkbrgpAijHi3m2eUatPq
+9xLPiaKpu46LkGmMlLqATqIG57Xqj5HgecDvaGN+Pnt+yXAjsa/vA3M1hrOFa8XV
+wC+UEDj03VJ+1dlcLlL6w/464P7VcWwB9PqMtlWqMfCBCju/gFG8CnViCnCfAUzY
+DFiE4+R6ITVvccYI7vk95U3y4PXckerEelDi3j3ez3T9DsH0+ZI9VoJ5KxmDFkC5
+SjYpV2olSbnv1lYTyswMXncg/RnD7c6pcWu42mSbkrjy9hQTHz4xdsw0DQjwYA+/
+roo9PEQBqMauZiXF1T4/8ndqUEw2fQ==
+=Fbsv
 -----END PGP SIGNATURE-----
 
---gFM2XcDEhmPrjI2W--
+--QGtCEai1V2o90k3X--

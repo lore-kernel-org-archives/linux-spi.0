@@ -1,63 +1,63 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D91D3655CE
-	for <linux-spi@vger.kernel.org>; Mon, 13 Jul 2026 06:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647EB361DDC
+	for <linux-spi@vger.kernel.org>; Mon, 13 Jul 2026 06:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783922891; cv=none; b=qJbZ1IKT3fSkcSyKjME/jU9rMYoQQ3seCu09Uzbrz/NrMGdd7iyfEeAIuER42/JENyjqvHl8ijNJshAo3RTpzNapZd+1K9bXKn+YU5h6/Y57avmD+zPUiIOu1M4x3l2bxQ4oOPJ6gPXytLPFlAo7P4i+23oJ0NSvXTwW8cgHmag=
+	t=1783922892; cv=none; b=RbZEQvIT32trLvCQuNIgvmqvpkQafGY02Gm8waShpA4uuK+OeMSyIxpGQFvhnPd5Y4ARH7TgE/ZS2/jP3s5MdtBvNaTFGy6RveBdv1kfUvA98DbN6il6RIpW6/F2LL0Il0827bLnoDUzRYo1k5Sd+spss+6H5L8sLDt42oZVnns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783922891; c=relaxed/simple;
-	bh=HDD6MOY/a6TR3gaTIoCre0KRPfakn/CZHN1rFYXjIf0=;
+	s=arc-20240116; t=1783922892; c=relaxed/simple;
+	bh=kMBvknJjnSboIetXJQ4M4kRWIrlDoDcXEHe0zebfcsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IS3zHKNCx/NLDJ4N02pQu1OB6HcwPj3M2lus9JH5WgsPRazaQ94giLcG/hnWP4kPsi5n/OuhgHpbcvNjX+YLwS0cI3D7CwAhtn9yMKz0dw81XSEEgNLVlYviG7qlXLb8SQG+IZMfpIFRjXYH0HAhC3wxbRcfp9EYPJN1gsdCtmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0lPw2pJ; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version; b=sg8h6H7GA76v2fd40BU9MNOjeM+Z7vKSu0ekMwlrhMueSqcWyBLusbDjbH/i+wIRTnX723TOJe7pwlmN4mhVRbuVzm1YTiX+KPzWmlBv/FssJNd3M2QpHLW79EPaQOQBkCT/F6qc6dC3xm383rSThgQBPzrRvrSd90/ExjxVmuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U5dDVRNK; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0lPw2pJ"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84862b0d5f8so2006973b3a.3
-        for <linux-spi@vger.kernel.org>; Sun, 12 Jul 2026 23:08:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U5dDVRNK"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-8485b358552so2960841b3a.2
+        for <linux-spi@vger.kernel.org>; Sun, 12 Jul 2026 23:08:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783922890; x=1784527690; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1783922891; x=1784527691; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=S5DuBYLMmVuyNVqyuWFYcjB12jP9JwOPGMRdlqI4bM0=;
-        b=X0lPw2pJY3EAS+JM5rn0KTdIQ+LI2ueotJZhHF22YVfS1zsGbIwkOmJOZ5qnbNfKE8
-         RQYJbn4zkA8o1EzRc20kobrFwndubWbvwVdj6FvAL92DAJQh9s1y/cfTY+3GTORZ0LxP
-         BuZi2GiBiC6r8S593NIqszRos5FTC17wNFqpa3ooI4rwJB7w+Y+15sOC1oDgcBA8ubg5
-         CO6ltKF+4H1JfXzY0QmFSQqZjTEF3Zh9cv3gGnhBN7gAO2AH1Na7tmGTMM3EEJ6CP3Ox
-         Hyp2ic1KgcWOlZ2ndDpEe86OrhKzOvNJP8ctCPKpD0DcW/+93CAs3HOhJcAkPx7uQ5M2
-         ZEfQ==
+        bh=i/6Rgs0pEVXuCQ34qkmx8XbjWDlltbPvKllHS0/Tt4A=;
+        b=U5dDVRNKoc2FQdNOIKeRtd7y6cU4+tSZxIxgbiOMgzfD+YIdEgbAXlDloy5yglrg7Q
+         wWcFduCAD064s85lrTa8N43FzUcscnFP/LXEuPPFnPd+rH+TKjhIua03ypQUWneT/zRP
+         TE0G5NbYSVkkrwAB1JlvSWl0r/5FNpXHe1RWYY3eFkGBMNAQnnWVaUPKihapH5yNuR+w
+         5GTDKEFGXNz9wY+zVtMo5u6UdVWLYiQdqt75tGA42jg+vnapvd1Zyz93Y5+ljhXdUzT/
+         QIxbpGIFdsbyStUUcHziQfLzRfZyIcikLrQgZKsl3m01LVxKIcdg/JfYgd+itQ2XTnl+
+         KrwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783922890; x=1784527690;
+        d=1e100.net; s=20251104; t=1783922891; x=1784527691;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S5DuBYLMmVuyNVqyuWFYcjB12jP9JwOPGMRdlqI4bM0=;
-        b=G6pCNk18rczUtXvyH50UrWl1nrj0mt17YTbmvbIfboFDq1Tc0w0taG4QviDsNudC8Y
-         FJ9ReznwN/RYTUM2+Kezj4I2miG0Bsdp5LZn2lwX1cbABEwlfHP3IBe/DLeVMLIOoyNJ
-         Dl0k4HHbT1b8w7MNkRrpF8mt+VW1tSRvqJV+Qt5Re21Z3bbsda8I1DpSiwFExfhdLe1x
-         CMFmO1hgVoBuMOf76uGS/fnc8U1uK/Vk2YCZDN6WpPu2q97H+Tjd7K1P25Z3IxQx2yTO
-         ajXZnBRD8SthPCR23FiTQUbGpW9KeXikHEjNnHe0KFYOavOOij+pao6frX5OhluTj63V
-         hLsg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7pracNLg6N4+C9zCpTUbK4LymDvDQCEwTxa9kTngLhKA8YMnYny/lE58rPxyhMpiYClVe6efNhjg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeR3wPprt7M49A3uGxJBwYKvlEvEA7heTL3N945vvb7oGTleb2
-	oDbyYaHTo2FtkP9dspKY+r88qg4BGM0oe/f1S5nPuW1MM6jGH14LAfr6
-X-Gm-Gg: AfdE7clFWX45OkvyRz1W9yaE9hlDa5bMxEVisRb63HHYt5FneXuB21xPBJ8wNyp7FE2
-	1Bgwe6yGBUkpS/WpA3Xxs5PFuY36zcBb/1kO/WGz+AdUOExHudVZcacdWdB1UfY88aoJUgGiRXU
-	2pdwKDE0WTix7eo0tsZYI4u2T3FTKHq+RbX23SlQyTYt2/P6uVxPRHnet10Vk4oskLcM4hUar+7
-	Vm39/R4xJ9IRE7s+HeC0I/WmI4wUVY09lsQTZi2lZVs+x08P0UoF6HNtlExWeYYj3KlUmvYNhWM
-	Zql7H/9nwpg4mY2ESpLQKm7w7UnbAfSdRbv0EP3cAvovepmf+kjPQpdeJ48/SspL+y4AkF05CTk
-	HHyZkakMMwCxorjiywrS+WkGQvw9kmU0q4YmUlwz3AjMbt0ENJxdm7nJ1xG0YALQl10+OIN+/30
-	3uXbXsCVfzQXMA
-X-Received: by 2002:a05:6a00:3d4a:b0:848:2f74:1d5d with SMTP id d2e1a72fcca58-8488971cb6dmr7128041b3a.67.1783922889853;
-        Sun, 12 Jul 2026 23:08:09 -0700 (PDT)
+        bh=i/6Rgs0pEVXuCQ34qkmx8XbjWDlltbPvKllHS0/Tt4A=;
+        b=F8D5yJz3kaOE7WBjZegM6km/70nhQzMg3kRz63Bbycp4kF/6KkzhLEr9PSaUI+Urte
+         q7kqVrlwgp4zSHq45hXHhFXeICultnJ7lz/oHO1i1aTWOlz2dTED6y18mZkrkSNFyhxt
+         HLW75Rtux1PdhIkw04MWiVkfhioN6wY4m9xEmFVsbZ3XV46o5LSwxeqc4oRrHLfS0Rji
+         jjTDjh48Horqvshx7CfAdJkhoBkdbvwPdKPKTxaKYyxrP3lm6Wb6/HasMXCyIGWmQayo
+         75AJFCmIdMNxzBwPtY+cB/Qwt00jRTHSuTo1aWe34cGwYYTrKVrraZIpwVJumzOds9Cf
+         WduQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpbrWCP3PmHFSMg6GhFOTCMEfPMBxHelcKf+e9AhX+6kSZrPIh7BbA1/bBViMKmzboOmMFUU69dKs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC1xGStYBiKF263ZruvwsyrgL5oKGtSdhaqcMTHEjjqOZaGaSi
+	DxG2B5PdGGmhkjoF5bPUk53dsUT0TLlh5NW8eznPkX103oh3z0Vfer8T
+X-Gm-Gg: AfdE7clksCuHhNZRuLZ3qWyBYrSsnfeyJMNBMlsNg3gtuwpSTYGOimMSGnpINTEJNLx
+	rf806gFwVeIWGb+s/zBlFTijcZJAxtFHoHVwWtFzhbWRgmsGotsXGC4bYOX2CElI9Keh9w7DXqf
+	izRYstqRdKkU2Jw/9dXB78hvTU8M1J1SaJlGSPN2nEIUVOSDzu4LwtvFGrVzGZr73207amjjBMy
+	i/bMx9KRe3L9FRJ8QDrRDs063Y8hQsSnzM6Be76mPcKRDPOQTSsE37f9/mXJNhcMj9vCZO/ITZm
+	OIO8ci6OjZR1uqQjnA72sRCQ8gy8dZA0zjYnknk+Nxoi0uhAih/dhPIrHr+X00FlbxkqrcWewmm
+	8G1OM91TLWDFVZljcLuTq3cbiJgqgQ/OIPc+8iGzn4djHFh38viyHlWufUZtLz+kYnTh3L5er/4
+	f4cJnynH4MhD6Z
+X-Received: by 2002:a05:6a00:1d90:b0:848:6e2d:2709 with SMTP id d2e1a72fcca58-848898b7899mr6796412b3a.56.1783922890607;
+        Sun, 12 Jul 2026 23:08:10 -0700 (PDT)
 Received: from kdev.. ([108.180.130.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a3c16d1adsm771795b3a.38.2026.07.12.23.08.09
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a3c16d1adsm771795b3a.38.2026.07.12.23.08.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 23:08:09 -0700 (PDT)
+        Sun, 12 Jul 2026 23:08:10 -0700 (PDT)
 From: Babanpreet Singh <bbnpreetsingh@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
@@ -71,9 +71,9 @@ Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Babanpreet Singh <bbnpreetsingh@gmail.com>
-Subject: [PATCH 1/2] spi: axiado: merge identical if/else branches in ax_transfer_one()
-Date: Mon, 13 Jul 2026 06:08:06 +0000
-Message-ID: <20260713060807.7-2-bbnpreetsingh@gmail.com>
+Subject: [PATCH 2/2] spi: axiado: fix kernel-doc comments
+Date: Mon, 13 Jul 2026 06:08:07 +0000
+Message-ID: <20260713060807.7-3-bbnpreetsingh@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260713060807.7-1-bbnpreetsingh@gmail.com>
 References: <20260713060807.7-1-bbnpreetsingh@gmail.com>
@@ -85,57 +85,102 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The else-if arm taken for RX-only and full-duplex transfers and the
-trailing else arm in the RX bookkeeping setup of ax_transfer_one()
-have identical bodies, so the second condition has no effect:
+Running kernel-doc -Wall on the driver reports 7 warnings, all present
+since the driver was added in commit e75a6b00ad79 ("spi: axiado: Add
+driver for Axiado SPI DB controller"). Two are in spi-axiado.c and
+also show up in W=1 builds of drivers/spi:
 
-  drivers/spi/spi-axiado.c:433:8-10: WARNING: possible condition with
-  no effect (if == else)
+  Warning: drivers/spi/spi-axiado.c:226 expecting prototype for
+  ax_spi_get_rx_byte(). Prototype was for ax_spi_get_rx_byte_for_irq()
+  instead
+  Warning: drivers/spi/spi-axiado.c:248 This comment starts with
+  '/**', but isn't a kernel-doc comment. Refer to
+  Documentation/doc-guide/kernel-doc.rst
 
-The trailing else arm (neither TX nor RX buffer) is also unreachable:
-the SPI core only calls the ->transfer_one() callback for transfers
-that carry at least one buffer, see spi_transfer_one_message().
+The other five are for struct ax_spi in spi-axiado.h, seen when
+kernel-doc is invoked on the header directly (headers are not scanned
+by the build-time kernel-doc checks):
 
-Merge the two arms into a single else branch and fold their comments.
-No functional change. The redundant condition has been present since
-the driver was added in commit e75a6b00ad79 ("spi: axiado: Add driver
-for Axiado SPI DB controller").
+  Warning: drivers/spi/spi-axiado.h:130 Excess struct member 'rxbuf'
+  description in 'ax_spi'
+  Warning: drivers/spi/spi-axiado.h:130 Excess struct member 'txbuf'
+  description in 'ax_spi'
+  Warning: drivers/spi/spi-axiado.h:130 struct member 'clk_rate' not
+  described in 'ax_spi'
+  Warning: drivers/spi/spi-axiado.h:130 struct member 'rx_buf' not
+  described in 'ax_spi'
+  Warning: drivers/spi/spi-axiado.h:130 struct member 'tx_buf' not
+  described in 'ax_spi'
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Closes: https://lore.kernel.org/r/202607121827.djB0zLAj-lkp@intel.com/
-Assisted-by: Claude:claude-fable-5 [coccinelle]
+Fix the three underlying defects:
+
+ - The comment on ax_spi_get_rx_byte_for_irq() carries the name of
+   ax_spi_get_rx_byte(), from which it was evidently copied when the
+   IRQ variant was split out; fix the function name.
+
+ - The comment on ax_spi_process_rx_and_finalize() is opened with the
+   kernel-doc /** marker but has no identifier line; turn it into
+   proper kernel-doc (identifier line, @ctlr, Return:) since it
+   already describes the behavior and the return value.
+
+ - The struct ax_spi comment documents @txbuf and @rxbuf while the
+   members are named tx_buf and rx_buf, and does not document
+   clk_rate; fix the member names and describe clk_rate.
+
+No functional change.
+
+Assisted-by: Claude:claude-fable-5 [kernel-doc]
 Signed-off-by: Babanpreet Singh <bbnpreetsingh@gmail.com>
 ---
- drivers/spi/spi-axiado.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/spi/spi-axiado.c | 8 ++++++--
+ drivers/spi/spi-axiado.h | 5 +++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
-index 649f149617ce..c4bc7a50d6c9 100644
+index c4bc7a50d6c9..25561aa9f76f 100644
 --- a/drivers/spi/spi-axiado.c
 +++ b/drivers/spi/spi-axiado.c
-@@ -430,15 +430,11 @@ static int ax_transfer_one(struct spi_controller *ctlr,
- 		/* TX mode: discard all received data */
- 		xspi->rx_discard = transfer->len;
- 		xspi->rx_copy_remaining = 0;
--	} else if ((!transfer->tx_buf && transfer->rx_buf) ||
--		   (transfer->tx_buf && transfer->rx_buf)) {
--		/* RX mode: generate clock by filling TX FIFO with dummy bytes
--		 * Full-duplex mode: generate clock by filling TX FIFO
--		 */
--		xspi->rx_discard = 0;
--		xspi->rx_copy_remaining = transfer->len;
- 	} else {
--		/* No TX and RX */
-+		/* RX-only or full-duplex mode: copy received data, with the
-+		 * clock generated by filling the TX FIFO (with dummy bytes
-+		 * in RX-only mode)
-+		 */
- 		xspi->rx_discard = 0;
- 		xspi->rx_copy_remaining = transfer->len;
- 	}
-
-base-commit: 5f1b513690edf51727e6928b97705b6437f9a98e
+@@ -213,7 +213,7 @@ static void ax_spi_fill_tx_fifo(struct ax_spi *xspi)
+ }
+ 
+ /**
+- * ax_spi_get_rx_byte - Gets a byte from the RX FIFO buffer
++ * ax_spi_get_rx_byte_for_irq - Gets a byte from the RX FIFO buffer
+  * @xspi: Controller private data (struct ax_spi *)
+  *
+  * This function handles the logic of extracting bytes from the 32-bit RX FIFO.
+@@ -246,9 +246,13 @@ static u8 ax_spi_get_rx_byte_for_irq(struct ax_spi *xspi)
+ }
+ 
+ /**
++ * ax_spi_process_rx_and_finalize - Process RX bytes and check for completion
++ * @ctlr:	Pointer to spi_controller structure
++ *
+  * Helper function to process received bytes and check for transfer completion.
+  * This avoids code duplication and centralizes the completion logic.
+- * Returns true if the transfer was finalized.
++ *
++ * Return: true if the transfer was finalized.
+  */
+ static bool ax_spi_process_rx_and_finalize(struct spi_controller *ctlr)
+ {
+diff --git a/drivers/spi/spi-axiado.h b/drivers/spi/spi-axiado.h
+index 6cf0e5bf5879..d24d31c3a446 100644
+--- a/drivers/spi/spi-axiado.h
++++ b/drivers/spi/spi-axiado.h
+@@ -98,9 +98,10 @@
+  * @regs:					Virtual address of the SPI controller registers
+  * @ref_clk:					Pointer to the peripheral clock
+  * @pclk:					Pointer to the APB clock
++ * @clk_rate:					Reference clock rate in Hz
+  * @speed_hz:					Current SPI bus clock speed in Hz
+- * @txbuf:					Pointer	to the TX buffer
+- * @rxbuf:					Pointer to the RX buffer
++ * @tx_buf:					Pointer	to the TX buffer
++ * @rx_buf:					Pointer to the RX buffer
+  * @tx_bytes:					Number of bytes left to transfer
+  * @rx_bytes:					Number of bytes requested
+  * @tx_fifo_depth:				Depth of the TX FIFO
 -- 
 2.43.0
 

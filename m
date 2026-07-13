@@ -1,60 +1,78 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAD535677D
-	for <linux-spi@vger.kernel.org>; Sun, 12 Jul 2026 16:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD176361DDC
+	for <linux-spi@vger.kernel.org>; Mon, 13 Jul 2026 06:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1783873518; cv=none; b=UfC0WFBA+xFoKmC/S4RUDmhoCevunj6V0kwppr/KE9mrO9Xs9OE5K74VQyJ1ifJTDqpJyfbp9VIRku60H7y6djORGxdA5bj/f8m1IMQhfIrJNPDFS26gUvkmeOxtAbGxLMSBHsK9iBSPMX2+u5c5QLFzvB1M6PHE6kKaWJJBk6E=
+	t=1783922891; cv=none; b=WNt4sPQztb+Y4niqYtrLSNiOhmKfbIlU4kCnqFZmZ/UACR/eVyG6O2R4NWVCJI3OV8Sbybma01ZEboh+btgo0LJLnWwFo4vRSoti7DUWRI8i3FUJeW4vzPHMCc0eqzDsDpbZkDD0KxP6PhAr5TTqURck9m5pYg4GXCAGdGjauR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1783873518; c=relaxed/simple;
-	bh=6QMkztKg+4In+ZoyTx9Z3AjZ4U9YrzL0eHDHOYHqlGA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bA7dtT0wAJTYV4UUU7Tp5y1ZgMNOhenuPvyAOVWP0FL3s3oBmfXXgKppeuO2JDfFIlEAIybfKrun/ujHNl0GU2dFd+qz2fObFsnaRLvhMA7nJwXJe2v93fjsjtBPir2vW9cDh+3KQaun4PK2NQ34GomEd3I1bCyVLSG29PHuzUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1783922891; c=relaxed/simple;
+	bh=Io5GZS9m1lG5dPzvHr9eWo+cCXKzpua7RpJkm5bO/bQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aw3Ycj5HliqVCofZUyN8BoZCS5Mr4c4Qx8VgEiUSIGYIWAMOzViP1RgpqyChQk96SS6oohOkKJ5qTpM6tpHMEO5qDhpuHDtbt2JF/SZCY5e3Sv6+ouO/g5r8hlEL2nBb2r427FJ9spTYDeivwgPWAQ7srFEHiSWhdJ7a51f8Yh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C3dh0TFk; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-c96c92c0980so1243986a12.3
-        for <linux-spi@vger.kernel.org>; Sun, 12 Jul 2026 09:25:17 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C3dh0TFk"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8453427d3f4so2280652b3a.3
+        for <linux-spi@vger.kernel.org>; Sun, 12 Jul 2026 23:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783922889; x=1784527689; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wr+dAOEOkwMOdgGfXNclz6OtU7jD1eICBMUfO3Waku4=;
+        b=C3dh0TFkKmt6VfZOZBkxmTXo70LzHqhPBMzml8KtkVTjup0LQvJt52Uu0zxfhXWpJN
+         fvlYlxgOm1HmO0WhQMLNGx1Zoi4h6RG1ecRfFkhAE+Y6gvOnWubxYWjp92c21HIvq5Sq
+         DVdVC9bfcnKOqqgMP+ghB6UVeZhE5aeajm41hghoHQza6BEoUFYjSe1nepgByMpBqTbX
+         I5PRFMVrkVsLLiWJ7GRjApw8ev6LRhQAMYw6JyUKI/cewBLVQNCMfnvF23LlrXukEjTA
+         XwLulI5s9SFbTl5x6CURMU/XXiJnfn2V1VQ1M2HKxU+oBaf6kMT2zKHxlflRSLyR0TB8
+         GJWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783873517; x=1784478317;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=uf6ucJ+N+sR3tVW7KXXVAlwY/gD/+yR1WlVp6MFS6uA=;
-        b=FImFWWnhZK2g3qMjur1QyquVD0UOAzT9kC4GLNmMHzp3HGl+qxhhPTk6u3YJnwqtUy
-         D2D/CB/OCpzzHFW5RWkKnj4TwSgcN8BmnxrE/wbs2eJnCfVQy0bufeN0Lx3ZLuy48XqE
-         AnvTkDRJPUvK8peTHxLrNY9mS456m+LFkiOudjiRCAe8sDQK+fDehQoWSMvYdk+KwFUg
-         FSuvqgfXGZJLxV6G6a1lBkxVsNMtbdOAYewhOq5fnZc43a+2naR5JymAuARRVcFjXb3k
-         W6Vb6FXhDF7StiGuw556ffMuLidapRD14dfRwi2aG0yMEUd/g0+QZcUIYIRGh665nc0y
-         16nA==
-X-Gm-Message-State: AOJu0Yw2z1TMx/cy0+Mh4gii/ZadPaSXi8eR4dIkmktxvA/dL8EjTneK
-	eVqP0NQQqViOCB6XbJhTOPB0tFsbeDKQqZ0xpJZWsUk42/WKZ/hGeK4=
-X-Gm-Gg: AfdE7clN9QuBdu7eVcUxmITYYI+DHCVatHixxwBjyIsvEI+86O2wlme4Se+dWbfHaAU
-	byLrTqrXeXDVOkYQwJHnXMLoTQI6vnwWwQ5egiJ1Cu2nuwkeW3iD+gXN2Ijtl4FYKQdZe9qSJBk
-	dqBRvgwCirm9i/hVN0c0+vdGUEKC0kxUr0fcBr2zb9RM82FAS+uet190b3pbv09Y6dncEeyS+es
-	N9qwtQM9FsV18LITdCrrIzBv09pnt81glymZ8fNl+NT2y099icvApfgOegoiMzK9uUD2AuAJJJN
-	Lsi/ZZNHTEttWIyyHUK/k47bTuNb/Lv1bYgnJEGzbOFX8pnjp4cPdDVDM88JMHMZkLK5lxpybFL
-	McK4u3Dsfh7u/GWmt3hqR+c2TqZLw123Uq2FCKSWHitRKB/cJv6HnKkqlI1wiANl9/1vxdB7cX9
-	gDYnJ6mEir/1V0SD3WctbWdn0h4NWSSHk8cseikkdUBX6M8BZT0FMgHnUE4RYJBLJukCUIIP1mT
-	4fyST/xKas7RSCOWIwQ+JvNgkw9
-X-Received: by 2002:a05:6a20:c784:b0:3b3:216b:274c with SMTP id adf61e73a8af0-3c1108c0142mr6085705637.22.1783873516686;
-        Sun, 12 Jul 2026 09:25:16 -0700 (PDT)
-Received: from penguin.tail0a1999.ts.net (61-228-44-142.dynamic-ip.hinet.net. [61.228.44.142])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b93ae3b45sm12329887c88.15.2026.07.12.09.25.15
+        d=1e100.net; s=20251104; t=1783922889; x=1784527689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wr+dAOEOkwMOdgGfXNclz6OtU7jD1eICBMUfO3Waku4=;
+        b=B+4LS0/lfzIgNVMNnbpgeP21gG7648E4S33uXcO+o6boi+/XwsciH5sxnMTH4m5AmR
+         szSqRPufWUByzXggk2XWCdO+T0w+ukbclNPoOdv+b1ap3BxM+WjxNnMZuJIuov11/sXZ
+         yA/i3cF9ImZp1Q9yxOZ6yMc+K07dPxhP4sJQOs1OBUtmxT4VCO9t6Bse/RWblzANBf7y
+         V7hAo+73D0XZn0YmFYbkGXPrkDXE6P61Q5pC4FXObrjPDYdrXRX84Jx2w2XACuB9t1qo
+         IgwkU+6/sv+MP+nSmF5h2Qh/DAqRwRy11JxgR2l7H7FdPzNrzhfgoQHgF4+8xnWJwBmk
+         sX1w==
+X-Forwarded-Encrypted: i=1; AHgh+RoiRxKSGDNaOI9YHrWXZ5v/BAvfMg+i8XPRn24p1ksA5wNmriZhsJqk277rtnd7hnzgZuAtN6sup6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwV4EaZRQk072nV/Gwo116R3XspZQL/wejvFiDWGyYZHlEsmANc
+	WG8uEuMoXRcyd+q3//2+AjiHw+7B3fXjytuxUvoJMwvfVH2HQTBfvw5f
+X-Gm-Gg: AfdE7cntK3g0Cgsup2Q5ayj1PSk+pUFmUY02g6pi0y30PCM2heXWn2vJRBPjIR3HHVz
+	xEdh8pw3ppfGOW3KfilYKPSuTUSMK/zPhSWpCYcKWpSVPLLkKpTWrNUd5NzpZn9S3qLJqRKwE6h
+	7qJDnh0xq2s/8Jo1va+PG+f3Zs761FusPNYfoG+ueIE9hyoXMTSq3tP2A7MZexc6lkn0L1+WR/q
+	lI9RaTzqeVs5exBOe5CsgbKR7A3/Bh/YLxvfxHdAvsscH/PcnkU+FLpPedI0GEEKh8K4TpyyOuW
+	fYrPQ+AMTAmGCKmmugsVqdsLXlVBK2mHR31dMO8vVosHZR0/JWOhs9XngdKcKHi9JoYQLjtEB4v
+	23FGVBnR1fQPiZtbbwqtAjfHi3nZY7/dUOG+IMOiggez4KNwRQk15WUDD0njTF/q/MFUwb2pFgZ
+	FrOJ/yg+8iru3n
+X-Received: by 2002:a05:6a00:228f:b0:847:8250:2b2a with SMTP id d2e1a72fcca58-8488971d058mr6850755b3a.60.1783922889156;
+        Sun, 12 Jul 2026 23:08:09 -0700 (PDT)
+Received: from kdev.. ([108.180.130.139])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84a3c16d1adsm771795b3a.38.2026.07.12.23.08.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jul 2026 09:25:16 -0700 (PDT)
-From: Shih-Yuan Lee <fourdollars@debian.org>
+        Sun, 12 Jul 2026 23:08:08 -0700 (PDT)
+From: Babanpreet Singh <bbnpreetsingh@gmail.com>
 To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
+Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
+	Tzu-Hao Wei <twei@axiado.com>,
+	Swark Yang <syang@axiado.com>,
+	Prasad Bolisetty <pbolisetty@axiado.com>,
+	Karthikeyan Mitran <kmitran@axiado.com>,
+	kernel test robot <lkp@intel.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH 2/2] spi: pxa2xx: restore LPSS private and IDMA registers on S3 resume
-Date: Mon, 13 Jul 2026 00:24:20 +0800
-Message-Id: <20260712162420.7453-3-fourdollars@debian.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260712162420.7453-1-fourdollars@debian.org>
-References: <20260712162420.7453-1-fourdollars@debian.org>
+	Babanpreet Singh <bbnpreetsingh@gmail.com>
+Subject: [PATCH 0/2] spi: axiado: cond_no_effect and kernel-doc fixes
+Date: Mon, 13 Jul 2026 06:08:05 +0000
+Message-ID: <20260713060807.7-1-bbnpreetsingh@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -63,138 +81,40 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Intel LPSS SPI controllers lose all private register state across S3
-suspend because the LPSS power domain is fully removed.  On resume the
-driver only re-enables the SSP clock but leaves the LPSS private
-registers (BAR0 0x200-0x2ff) and the IDMA registers (0x800-0x814) in
-their power-on-reset state, which causes two separate problems:
+Two small cleanups for the Axiado SPI driver, both defects present
+since the driver was added in e75a6b00ad79 ("spi: axiado: Add driver
+for Axiado SPI DB controller").
 
-1. LPSS_PRIV_RESETS (0x204) stays zero, keeping the functional block
-   and IDMA in reset.  Writing 7 to de-assert both resets before any
-   register access is mandatory; accessing MMIO while in reset causes a
-   PCIe Completion Timeout and a watchdog-triggered system reset.
+Patch 1 addresses the coccinelle cond_no_effect warning reported by
+the kernel test robot on 2026-07-12 [1]: the RX-only/full-duplex
+else-if arm and the trailing else arm in ax_transfer_one() have
+identical bodies, so the second condition has no effect. The arms are
+merged; no functional change (on x86_64/gcc 14, only
+ax_transfer_one()'s object code changes, dropping the dead condition
+evaluation).
 
-2. The IDMA block shares the SPI interrupt line.  With its registers
-   zeroed the IDMA asserts a spurious interrupt that masks the real SPI
-   interrupt, causing every subsequent SPI transfer to time out (-110).
+Patch 2 fixes the kernel-doc comments in the driver: a copy-pasted
+function name on ax_spi_get_rx_byte_for_irq(), a /** block with no
+identifier line on ax_spi_process_rx_and_finalize(), and stale/missing
+member documentation on struct ax_spi. This silences the driver's two
+W=1 kernel-doc warnings plus five more visible when kernel-doc is run
+on the header directly.
 
-3. The LPSS software chip-select control register (0x224) must *not* be
-   blindly restored from its suspend-time snapshot: if CS was asserted
-   at the moment of suspend, restoring that state corrupts the first
-   post-resume SPI transaction.  Instead, call lpss_ssp_setup() which
-   unconditionally writes SW_MODE | CS_HIGH (idle/deasserted), matching
-   the state established at probe time.
+Both patches are against spi/for-next; they are independent of each
+other except for touching the same file.
 
-Fix all three issues by:
-  - Saving the four LPSS clock/LTR/SSP private registers and six IDMA
-    registers in pxa2xx_spi_suspend().
-  - In pxa2xx_spi_resume(), writing LPSS_PRIV_RESETS first, then
-    restoring the saved private registers (excluding 0x204 and 0x224),
-    then calling lpss_ssp_setup() to re-initialise CS to idle-high,
-    and finally restoring the IDMA registers.
+[1] https://lore.kernel.org/r/202607121827.djB0zLAj-lkp@intel.com/
 
-Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
----
- drivers/spi/spi-pxa2xx.c | 57 ++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-pxa2xx.h |  4 +++
- 2 files changed, 61 insertions(+)
+Babanpreet Singh (2):
+  spi: axiado: merge identical if/else branches in ax_transfer_one()
+  spi: axiado: fix kernel-doc comments
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6291d7c2e06f..e8a83c818328 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1479,12 +1479,35 @@ void pxa2xx_spi_remove(struct device *dev)
- }
- EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_remove, "SPI_PXA2xx");
- 
-+/*
-+ * LPSS private registers to save across S3 suspend.
-+ * NOTE: 0x224 (CS control) is intentionally excluded - it is re-initialised
-+ * by lpss_ssp_setup() on resume to ensure CS starts deasserted (idle-high).
-+ */
-+static const unsigned int lpss_saved_regs[] = {
-+	0x200,
-+	0x204,
-+	0x220,
-+	0x238,
-+};
-+
- static int pxa2xx_spi_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 	struct ssp_device *ssp = drv_data->ssp;
- 	int status;
- 
-+	if (is_lpss_ssp(drv_data) && !pm_runtime_suspended(dev)) {
-+		struct pxa2xx_spi_controller *pdata = drv_data->controller_info;
-+		int i;
-+
-+		for (i = 0; i < ARRAY_SIZE(lpss_saved_regs); i++)
-+			pdata->lpss_priv_ctx[i] = readl(ssp->mmio_base + lpss_saved_regs[i]);
-+
-+		for (i = 0; i < 6; i++)
-+			pdata->lpss_idma_ctx[i] = readl(ssp->mmio_base + 0x800 + i * 4);
-+	}
-+
- 	status = spi_controller_suspend(drv_data->controller);
- 	if (status)
- 		return status;
-@@ -1508,6 +1531,40 @@ static int pxa2xx_spi_resume(struct device *dev)
- 		status = clk_prepare_enable(ssp->clk);
- 		if (status)
- 			return status;
-+
-+		if (is_lpss_ssp(drv_data)) {
-+			struct pxa2xx_spi_controller *pdata = drv_data->controller_info;
-+			int i;
-+
-+			/* First de-assert resets by writing 7 to 0x204 (LPSS_PRIV_RESETS) */
-+			writel(7, ssp->mmio_base + 0x204);
-+
-+			/*
-+			 * Restore clock/LTR/SSP private registers.
-+			 * 0x204 (resets) is skipped - already written above.
-+			 * 0x224 (CS control) is skipped - re-initialised by
-+			 * lpss_ssp_setup() below to ensure CS starts idle-high.
-+			 */
-+			for (i = 0; i < ARRAY_SIZE(lpss_saved_regs); i++) {
-+				if (lpss_saved_regs[i] == 0x204)
-+					continue;
-+				writel(pdata->lpss_priv_ctx[i],
-+				       ssp->mmio_base + lpss_saved_regs[i]);
-+			}
-+
-+			/*
-+			 * Re-initialise SW chip-select control so CS starts
-+			 * deasserted (SW_MODE | CS_HIGH) regardless of the
-+			 * state it was in at suspend time.
-+			 */
-+			lpss_ssp_setup(drv_data);
-+
-+			/* Restore IDMA registers */
-+			for (i = 0; i < 6; i++) {
-+				writel(pdata->lpss_idma_ctx[i],
-+				       ssp->mmio_base + 0x800 + i * 4);
-+			}
-+		}
- 	}
- 
- 	/* Start the queue running */
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 447be0369384..423cef5118e7 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -34,6 +34,10 @@ struct pxa2xx_spi_controller {
- 
- 	/* For non-PXA arches */
- 	struct ssp_device ssp;
-+
-+	/* LPSS private registers context */
-+	u32 lpss_priv_ctx[4];
-+	u32 lpss_idma_ctx[6];
- };
- 
- struct spi_controller;
+ drivers/spi/spi-axiado.c | 20 ++++++++++----------
+ drivers/spi/spi-axiado.h |  5 +++--
+ 2 files changed, 13 insertions(+), 12 deletions(-)
+
+
+base-commit: 5f1b513690edf51727e6928b97705b6437f9a98e
 -- 
-2.39.5
+2.43.0
 

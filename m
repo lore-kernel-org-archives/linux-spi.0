@@ -1,107 +1,79 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCA24D8DB0
-	for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 16:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734541D5174
+	for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 21:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784047443; cv=none; b=QtoTXS6w1gSD9ifs6ioWwOGbAX5kC1bMHWabJ9lgiwD8rUZOLkqvVweO9zN7CVdzJ+DGPwcFcs6HvMLdFYBF81yCTGyUZUTB1raFI0muQ2cVaDzv47HEHfG3pTcEk1w2FRzEkYo3s45OQbu2wxFzyQXi15NzZ4lIyiuhL6JBwRc=
+	t=1784064054; cv=none; b=HttByFFSiolmwSfV2A/YhiU8kqGsvTHCy3HbyE5jJ7yc25KIuW+HoaBHbhe878nOrSV0TrPjJJpm2Nj5ROya/Mizmgt9JZiay4yL5N/hEJXVEdDno5dOdwSwW//dBdudQehI8/d/p1u9I6fVQqx5qRTmgIu+zt7iet3aL0p1qck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784047443; c=relaxed/simple;
-	bh=qW96X5+3pvTy2yUg8+tq8uiP36vU8UXZPD0RUS9kypg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VCLI7Se8IwaffjJb0xs4h+nvkR0BuKfykWKOayHZ/nEO2OhQL+lGXDPMVVo5wMtE3z1r+u3LzivULWaZlDIqzMvsTaheKge/St4X8j2C4taXyV9CVoHyq/URXyFdpUjUzHBUUXde0V+ZIVeqplzzUqkpNvj54wU+Q3M2oz38I68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EO1KOJ70; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784064054; c=relaxed/simple;
+	bh=9Q0/bd0MPa60BazelPns4nD9jxYnvGJjYOIMz7BFAF4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=fjB3oDwkJS7WRWmFvRO3XR2nRukKEXdCO5XnJsXraVrKPktAeWQetkTQtZ+m2TqJE5L2vDm0II7XKEWgAdCfkF6jkmo1CUanNVyYkZj6h8zgwHSbYkyJU024v6SWVTo3rOLy1k4RfsS6cqXwXDbL7ZB9eCU6z4ig9SxaFYKgLBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlsYekVD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EO1KOJ70"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493c733f15aso41173935e9.0
-        for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 09:44:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784047440; x=1784652240; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WS/LG8NLHrxUYbXTyAgZN6AxbMxAGqMIBf9Cy5n0BGk=;
-        b=EO1KOJ70agqjN3JkTxr1ou8fiYBH7SxiyORz6m1HwUKmjAkVNiMYvHfSeyLK/4425D
-         DJsMgvNhNArIzA52jhG/fTT+GPx2Vu5U0zmPkC67QN4N3PCqlfqHlNWd3/vUoHqWNUed
-         nqsedIniRWJW8UckO+U8xzUuXZ+NQxcXyrBABJZvIoQlboZWeESo4P9JhHNGIEqP5ggg
-         6a5DvngHLiGewPI3iDZgyzGtnoa+sr7Q9iZDwVw3xoVQhoF5p3MaZKI7LRvyTU4Wt+27
-         oj/zdDgopamtwt0o+KQSazmY+KDYWNB0fqsR5l7s1OHdEPkJ/xgMsxkmTQclXj/MU+Gl
-         nIXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784047440; x=1784652240;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WS/LG8NLHrxUYbXTyAgZN6AxbMxAGqMIBf9Cy5n0BGk=;
-        b=KU3i7XgqP0n7J0wcMCT47YH+drfpUxS4IP1d3WO3ExomAm8Z9MEGOFMqY72Kw0bC7+
-         pzpcpmyWg9Pwfs59vt3MPgtygcoZZZTI0W9ksBTmNgGtz8Y5kg5yTtAv+apymw7VTm+8
-         kQmKaic93Uva+0McQTDcMv+StwcSqjplhr6toLFvrHBPwmb+3AFhV8HTdP4B63w2ZrAS
-         Cm7yT9MJTBubZo46ayIfxxNpNXfAxIyepLrAGHUnMpmE97StbjJCJjTg6StHzWqSOHjE
-         fnnzqK79QD7JcstmQKFut4kq40LWVSBtN1m57+r7uGKDL7n2DeXeaMBu5E8eusS+eiTU
-         06Nw==
-X-Forwarded-Encrypted: i=1; AHgh+RoiNDKqAHsE9MucAuVzNo2Ih/Q04AQiepGn+5IN4JqHvb0P8NTjTJRrcM341mmELbEt7sfycGGc0e4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuULsP4SVbU8uC0XOzfRASx0VQqaJnEj/59283oZWT6TV/O667
-	9a+PxDzCs1UZJxWfuOTD+3NfXgY7vbmzaXqnB7ZYO25kk0eYQgQqhrbE
-X-Gm-Gg: AfdE7ckyUjo6Gf58bRMbCeU/edkRIZ+alE8Ondk4kOqqBiUJ9ZiGoYYiVwlh8yHg4k1
-	KsS06wI0GZsu48Xl3Vm/R2ohAaP0svOVXycyCiCRsNUt7iTZm3ZiuZzq/Gi2IlmpehS9SqqsmFa
-	AtdMDjxxvz3V2MSOtGfND83HTdl2NPdy+p6HHa2U1Ka0QxchitihOTEYjplxOpv1/mlxOo4jL0B
-	F7v3mArkKKoscvYCco5UHdeudGXmm1tzn+t7C07GDouwYl8bQz+JgBtB9VGHOvwdVwOtceqr1hg
-	F3aDYbDpkYAsCrbztOTXor/zwN/G93JQbRTzEyaP8jQ24GR6OD68K7b4MFzlskpZmxnVRl598LV
-	eLuZMkvDlf2qCLjY2y+OuWGHHl7WhzVM3sKnZ583atxwxrau8/2kbCN9P1WsFpeFo/whwlJNeM7
-	d72rvaQh6p6QU+iJXbdne/0A==
-X-Received: by 2002:a05:600c:4754:b0:494:ca0e:880a with SMTP id 5b1f17b1804b1-495389d2ba4mr34447785e9.12.1784047440059;
-        Tue, 14 Jul 2026 09:44:00 -0700 (PDT)
-Received: from localhost ([5.83.201.220])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4950a2f951asm92705685e9.14.2026.07.14.09.43.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 09:43:59 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>,
-	linux-spi@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] spi: bcm2835: make read-only const array pinctrl_compats static
-Date: Tue, 14 Jul 2026 17:42:15 +0100
-Message-ID: <20260714164215.183809-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlsYekVD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2B51F000E9;
+	Tue, 14 Jul 2026 21:20:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784064053;
+	bh=c32Lr29m6thqePAxKEP39CRoAT3zIPPol2c8Tfy/EA4=;
+	h=Subject:From:Date:To;
+	b=WlsYekVDbe1s1v0qMrRSqqp1YpTXq5fFSD+BmL3yJgTiN80D/MeF6x5OmXOxXcO8s
+	 H+oZ6rj6VhYwnAFvPGA6mVvdjqppUcyAIMxACHXU13D29sb8Iq5YDYjVA6C3pLTQ8p
+	 jPoRCusMIWaD/aZff/D0Nzel+7Rta3DufBGGk3k+5uNqFOOLKTZg1/mtMwFhY/MaM0
+	 OXNo9G8Shs+RukNVTmqcczSSUKuV/EHZ29nDTE6bpVbA6mIFvYn4tSSftUs64aFgaf
+	 AyCNvXbMsi7Xv0Io/ZMMt8DjdFbIzNWkSXSegeYhs0AOIiY2VCNlL/58NTWbTi+LQ/
+	 yeJgxk9lwFuAw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 964A03926277;
+	Tue, 14 Jul 2026 21:20:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178406402705.3783353.7498089905047874494.git-patchwork-summary@kernel.org>
+Date: Tue, 14 Jul 2026 21:20:27 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Don't populate the read-only const array pinctrl_compats on the stack
-at run time, instead make it static const char * const
+Hello:
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/spi/spi-bcm2835.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index ff94482fefcc..3d5255d75ff2 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1226,7 +1226,7 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
- 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
- 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
--	const char *pinctrl_compats[] = {
-+	static const char * const pinctrl_compats[] = {
- 		"brcm,bcm2835-gpio",
- 		"brcm,bcm2711-gpio",
- 		"brcm,bcm7211-gpio",
+Series: [1/3] spi: atmel-quadspi: Simplify probe() with local 'dev' variable
+  Submitter: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1121858
+  Lore link: https://lore.kernel.org/r/20260705172737.120095-4-krzysztof.kozlowski@oss.qualcomm.com
+    Patches: [1/3] spi: atmel-quadspi: Simplify probe() with local 'dev' variable
+             [2/3] spi: atmel-quadspi: Simplify with dev_err_probe()
+             [3/3] spi: altera: Simplify with dev_err_probe()
+
+Patch: spi: cadence-quadspi: Fix indirect write timeout when DMA read mode is enabled
+  Submitter: Srikanth Boyapally <srikanth.boyapally@amd.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1123540
+  Lore link: https://lore.kernel.org/r/20260708045148.2993313-1-srikanth.boyapally@amd.com
+
+Patch: spi: dw-dma: Wait for controller idle before completing Tx
+  Submitter: Wang YuWei <1973615295@qq.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1121991
+  Lore link: https://lore.kernel.org/r/tencent_4EA7B5C94669ED4C38A5F6C1C9126E5D9106@qq.com
+
+
+Total patches: 5
+
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

@@ -1,195 +1,132 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4DF2D47FF;
-	Tue, 14 Jul 2026 09:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145203FA5EF
+	for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 09:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784020676; cv=none; b=da9+IDhU0xgWz8qxDVyuFiiaHF6KB7f6/HbnNHm6DkZsiheopv6+bnJi3KnxyVSherCgInsMrkoGo+xx+Q9ollEZpjE+iL7KVYHyYPC28g7cK16H1q+mvqKa6dVsJk+wPzOZZviogH2n9F15m8GST9DXXL9YS+23VVGRbs44VRs=
+	t=1784020930; cv=none; b=jgDvqjVrV10Py+FVAUMJPZh25c6GcmErnRxva7M+RDog7lRLJv38lZc0RLQULQB6f8YIIHvfePSYHNOkQiQBd32lKFEzjfFerE+zbkF7G13eqx/Zrjpx5emJrp1UdKTM4pYyy6PhJIVogqNuSyeAD+cLCGeY+zmatmgbc3m91hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784020676; c=relaxed/simple;
-	bh=vjbRzLr7dPV4H5yqyoWjYSmyfFTBeP+ER6B0jxcsmT4=;
+	s=arc-20240116; t=1784020930; c=relaxed/simple;
+	bh=7PjaHS8Z7JC3iRkOgwQq3QmAz3flMbb/3aQx56GYFuc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lvu5E9BLfSDFaJ6C9ok+v/IclTYlyhmQ9T4oaS6IvtXBtnxrVBE8BXJ5wdOhYnXba+QRghErAieaFOY+g4Ae7/N/UD8SCRJeYinj1UBQQwm3dS5+n7UyZ6ZHuzZqgivdtTYPNtjRBEu0nRNGE8oJQoyNIWaVyYALZEc5PLhVpig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fF7Gn5VX; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=NfQLYmgpFh1cjBk84naNxSSSLly8QlLoLaE9ZIgytPQnuCAe+EzVaJydMoWvfGvyO6p4yUOhpE4QRB/R6/i8nnuSeEM0G1ShPk2G38+y+IJ5najHMhzYKuAhf4V9I1VhdbqasnyTqw8s+lTQbNJhOyUBkFBQrM1ibUArfwHkZ6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BAUBTMxD; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fF7Gn5VX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784020674; x=1815556674;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vjbRzLr7dPV4H5yqyoWjYSmyfFTBeP+ER6B0jxcsmT4=;
-  b=fF7Gn5VXCQug+w3yvqs/Ly+hRFMGFW4yuFBzCl0V/SB9U/WL6L+L0hls
-   RcD7nc/TPz22ctJ54sOdELlWHl6EnrOcQ+5grXMUouIDYqkCwlijv0wBb
-   1qhBAjuv9Q2Z8iI+/HbGrAbsNemv/DI7A05WXhfNcWKFa3Nly2uQBTFEk
-   LLyiYxkAuKeSLVorKTUeKG4PYAGGjUSc65ovavED1br3gL6MuFQSANj1i
-   8N7EeG7J+GNMVGwpu+Wcxv7X9I78PVOHX9CsVW+9C1PWu0IiOaqTRZZcr
-   bSAKg3A7Vr5FSJNIfmOylTfvz4j5ippMSv29WhlKQCnYaXrIp8XRrPGok
-   A==;
-X-CSE-ConnectionGUID: ecC9mw1oS/29jZUJMIuIkg==
-X-CSE-MsgGUID: E0CzaGs5RsGZaLSAYLU9QQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11846"; a="110185560"
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="110185560"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 02:17:53 -0700
-X-CSE-ConnectionGUID: x/GGvwDOQy2a64QIj+PLpg==
-X-CSE-MsgGUID: S74e9s1ST0aVtfKvcpShTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,163,1779174000"; 
-   d="scan'208";a="255306597"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.189])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 02:17:51 -0700
-Date: Tue, 14 Jul 2026 12:17:48 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BAUBTMxD"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c15d5468673so99303966b.0
+        for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 02:22:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784020926; x=1784625726; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Jw59UYT+EI1+5hvOZpv0yqhdg9ddADwhfr99twQ85vI=;
+        b=BAUBTMxD89Gf65I6WyHz26e3c99DY3vTTFXDR1akJFrWmAFDJOJ+41cTMll4vPPctr
+         qJQmcGKT23yxSZnSOxEuWemZwQtsARR5M9cU7GlhawdCMGYdJ0HCyoQ7nvRO/gH0rsmy
+         G6JpOFsLniigFugxrHhjQ0kVEaSOQbSn/FMNdBqQAcez6TiOt3Ak95plbX9edC2jTL35
+         HoJvFWPt7POOlXGwxR0c2OYO91zEiujy37wxRbjtw+QoqyXhRJ3MrHI1gJxHBmJ+OI6Z
+         b9/XX4AtwLMYj0/H4luoi/4Jck05Gmdx73b9IfEKk71D4wesfy8kAz/Eb/2dpXxMtksp
+         QobQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784020926; x=1784625726;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Jw59UYT+EI1+5hvOZpv0yqhdg9ddADwhfr99twQ85vI=;
+        b=bWg3GUN65oRZcs6hSIVaMqvCUc2wjnb7BYiXxoUpbe/RTzRY+F6i354Wvta1Ir6C5c
+         cAm6iZGd1d6WGR8Mye2L7csxywRq7C5tjbaeaLH+5oZiXKRIP6qLHn67z2OB/9qvnqdI
+         Y39rXpCW4AvwI+iLLDcy5v2f3NzDZpgstwHhmscGqrho8TBz1BNu7WcUfbC9Q7FE/cy1
+         iPbCThNRf6Hebk8OSI4/FcnXpFOtxV81glCf62cCR3tlU2zv+hxj59r8ang8g+NphUCw
+         lsiT+rBOtfWEQAdEEcklJzINIhouhJhiCqlPf53vCI7KOEbPjVE0hZufUIC0g7QWuB3e
+         /PLg==
+X-Gm-Message-State: AOJu0Yy8043ajYqLOWcagxpxKj/aKW06fC18Pi5zuPdh6KwMJFMxMV1I
+	CO7k15lmL5QuGk0ce7NUyjX4sr/eCKKL0toS1AchmCv+XI/rJd9+C577
+X-Gm-Gg: AfdE7clkpHKiZl35yi6k3oK5XhK57iVPrwDJ3qzTr2NbRg+O5A/03cOT27w+BJImJ+v
+	D721KFP9qCQFSA/KDZDq5pU+ZnQH9U0QfuPWkb1laAPmvslVBD8pdXet/TWL8XOfP6IT1L/mTmK
+	mja6Ks2ZBi/017qbvGQR9HPP+p+6l6MWFCBZJB4UEbn+dqFuW7O67VRQh3WJQE5SIL3elSa8CZk
+	trlqOZYpP+GV6E/6qomyAxrN08mqY3GBtxJfczUZ1BaLj61pIfPW8FaGbvfBsniwKka5TJl9LKn
+	JUNLBBYs+ylFFn6sMRnaQyU3F93N9GHMNVlpN94z4GMG2ejE321R/CyGx0eYAz7JznDu92iFuFF
+	mbIvmQM7+fITLSNNvlfnjjkjdzr3Ul2/3OJwNsVyT3Aou4vSf6V1dl3wj8tAckEvdhVGAP5FxlY
+	VGmEocZNhRaGhe74Q8epmLy8wAhE8=
+X-Received: by 2002:a17:907:25c3:b0:c12:864a:bd37 with SMTP id a640c23a62f3a-c161f354603mr564500666b.34.1784020926185;
+        Tue, 14 Jul 2026 02:22:06 -0700 (PDT)
+Received: from NSA-L02.ad.analog.com ([137.71.226.102])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ad84483csm1150626566b.17.2026.07.14.02.22.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jul 2026 02:22:05 -0700 (PDT)
+Date: Tue, 14 Jul 2026 11:22:03 +0200
+From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com,
-	michael.hennerich@analog.com, broonie@kernel.org,
-	jonath4nns@gmail.com, marcelo.schmitt1@gmail.com, andy@kernel.org
-Subject: Re: [PATCH 3/6] spi: spi-engine-ex: Add support for multi-CS devices
-Message-ID: <alX-vH_ICf-ocBSG@ashevche-desk.local>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dlechner@baylibre.com, nuno.sa@analog.com, michael.hennerich@analog.com, 
+	broonie@kernel.org, jonath4nns@gmail.com, marcelo.schmitt1@gmail.com, 
+	andy@kernel.org
+Subject: Re: [PATCH 5/6] spi: add rx and tx lane mask to spi_transfer struct
+Message-ID: <qjuqqvdzedijivcqej7uxkctsgwyoo7ne6vbgaw4fo6zb3l6m6@yf3ler2x4xhe>
 References: <cover.1783729282.git.Jonathan.Santos@analog.com>
- <844bb5dbe3a4f40f12575bc50b4e65875fa33d3c.1783729282.git.Jonathan.Santos@analog.com>
+ <a0b2db6f6e436dc0413e61335b2d1e2ec2f6f018.1783729282.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <844bb5dbe3a4f40f12575bc50b4e65875fa33d3c.1783729282.git.Jonathan.Santos@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a0b2db6f6e436dc0413e61335b2d1e2ec2f6f018.1783729282.git.Jonathan.Santos@analog.com>
 
-On Tue, Jul 14, 2026 at 02:56:16AM -0300, Jonathan Santos wrote:
-> The AXI SPI Engine controller hardcoded CS index 0 when generating
-> assert commands, so only the first chip select was being toggled even
-> when a device declared multiple CS lines in the device tree.
+On Tue, Jul 14, 2026 at 02:56:46AM -0300, Jonathan Santos wrote:
+> In SPI_MULTI_LANE_MODE_STRIPE mode, a transfer currently activates all
+> available lanes, but some use cases require operating over a subset of
+> lanes per transfer.
 > 
-> Modify spi_engine_gen_cs() to accept a cs_select_mask argument and
-> iterate all bits set in the effective mask (the intersection of
-> xfer->cs_select_mask with spi->cs_index_mask, falling back to
-> spi->cs_index_mask when the transfer mask is 0). Update
-> spi_engine_compile_message() to pass each transfer's cs_select_mask
-> at every CS transition, including cs_change and cs_select_mask
-> change boundaries between consecutive transfers.
+> Enable dynamic lane selection for tx and rx by adding new fields to the
+> spi_transfer struct. Controllers that support multi-lane selection must
+> parse the transfer struct to update the rx and tx mask lane-wise.
 > 
-> Likewise, modify spi_engine_setup() replacing the single-index CS
-> assert with a for_each_set_bit() loop over cs_index_mask.
+> Peripherals need to set values to the new fields only if multi_lane_mode
+> is set to SPI_MULTI_LANE_MODE_STRIPE and they need to enable at least one
+> lane, not necessary for enabling all lanes.
 > 
-> Set SPI_CONTROLLER_MULTI_CS flag in the probe path so the core
-> multi-CS path in spi_set_cs() is activated for this controller.
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
 
-...
+Acked-by: Nuno Sá <nuno.sa@analog.com>
 
->  static void spi_engine_gen_cs(struct spi_engine_program *p, bool dry,
-> -		struct spi_device *spi, bool assert)
-> +		struct spi_device *spi, bool assert, unsigned long xfer_cs_mask)
->  {
-> +	unsigned long cs_index_mask = !xfer_cs_mask
-> +		? spi->cs_index_mask
-> +		: spi->cs_index_mask & xfer_cs_mask;
-
-This is an interesting style. Also, why negative conditional? It's harder
-to parse. First, split the assignment and the definition...
-
-	unsigned long cs_index_mask;
-
->  	unsigned int mask = 0xff;
-> +	unsigned int cs_bit;
-
-...and then, for example,
-
-	cs_index_mask = xfer_cs_mask ? spi->cs_index_mask & xfer_cs_mask :
-				       spi->cs_index_mask;
-
->  	if (assert)
-> -		mask ^= BIT(spi_get_chipselect(spi, 0));
-> +		for_each_set_bit(cs_bit, &cs_index_mask, SPI_ENGINE_MAX_CS)
-> +			mask ^= BIT(spi_get_chipselect(spi, cs_bit));
-
-This requires {} now.
-
+>  include/linux/spi/spi.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index a9988db3fe2f..f4473d53b6b5 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -986,6 +986,12 @@ struct spi_res {
+>   *      (SPI_NBITS_SINGLE) is used.
+>   * @multi_lane_mode: How to serialize data on multiple lanes. One of the
+>   *      SPI_MULTI_LANE_MODE_* values.
+> + * @rx_lane_mask: Bitmask of lanes to use for receive in
+> + *      SPI_MULTI_LANE_MODE_STRIPE mode. Each set bit enables the corresponding
+> + *      lane. If 0 all available lanes are used.
+> + * @tx_lane_mask: Bitmask of lanes to use for transmit in
+> + *      SPI_MULTI_LANE_MODE_STRIPE mode. Each set bit enables the corresponding
+> + *      lane. If 0 all available lanes are used.
+>   * @len: size of rx and tx buffers (in bytes)
+>   * @speed_hz: Select a speed other than the device default for this
+>   *      transfer. If 0 the default (from @spi_device) is used.
+> @@ -1131,6 +1137,8 @@ struct spi_transfer {
+>  #define SPI_MULTI_LANE_MODE_STRIPE	1 /* one data word per lane */
+>  #define SPI_MULTI_LANE_MODE_MIRROR	2 /* same word sent on all lanes */
+>  	unsigned	multi_lane_mode: 2;
+> +	unsigned	rx_lane_mask: 8;
+> +	unsigned	tx_lane_mask: 8;
 >  
->  	spi_engine_program_add_cmd(p, dry, SPI_ENGINE_CMD_ASSERT(0, mask));
->  }
-
-...
-
-> static void spi_engine_compile_message(struct spi_message *msg, bool dry,
-
->  		spi_engine_gen_sleep(p, dry, spi_delay_to_ns(&xfer->delay, xfer),
->  				     inst_ns, xfer->effective_speed_hz);
->  
-> +		struct spi_transfer *next_xfer = list_next_entry(xfer, transfer_list);
-
-Define the variable at the top of the scope.
-
->  		if (xfer->cs_change) {
->  			if (list_is_last(&xfer->transfer_list, &msg->transfers)) {
->  				keep_cs = true;
->  			} else {
->  				if (!xfer->cs_off)
-> -					spi_engine_gen_cs(p, dry, spi, false);
-> +					spi_engine_gen_cs(p, dry, spi, false, xfer->cs_select_mask);
->  
->  				spi_engine_gen_sleep(p, dry, spi_delay_to_ns(
->  					&xfer->cs_change_delay, xfer), inst_ns,
->  					xfer->effective_speed_hz);
->  
-> -				if (!list_next_entry(xfer, transfer_list)->cs_off)
-> -					spi_engine_gen_cs(p, dry, spi, true);
-> +				if (!next_xfer->cs_off)
-> +					spi_engine_gen_cs(p, dry, spi, true,
-> +							  next_xfer->cs_select_mask);
->  			}
->  		} else if (!list_is_last(&xfer->transfer_list, &msg->transfers) &&
-> -			   xfer->cs_off != list_next_entry(xfer, transfer_list)->cs_off) {
-> -			spi_engine_gen_cs(p, dry, spi, xfer->cs_off);
-> +			   xfer->cs_off != next_xfer->cs_off) {
-> +			spi_engine_gen_cs(p, dry, spi, xfer->cs_off, xfer->cs_select_mask);
-> +		} else if (!list_is_last(&xfer->transfer_list, &msg->transfers) &&
-> +			   xfer->cs_select_mask != next_xfer->cs_select_mask) {
-> +			spi_engine_gen_cs(p, dry, spi, true, next_xfer->cs_select_mask);
->  		}
->  	}
-
-...
-
-> static int spi_engine_setup(struct spi_device *device)
->  {
->  	struct spi_controller *host = device->controller;
->  	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
-> +	unsigned long cs_index_mask = device->cs_index_mask;
->  	unsigned int reg;
-> +	u32 cs_bit;
->  
-> -	if (device->mode & SPI_CS_HIGH)
-> -		spi_engine->cs_inv |= BIT(spi_get_chipselect(device, 0));
-> -	else
-> -		spi_engine->cs_inv &= ~BIT(spi_get_chipselect(device, 0));
-> +	for_each_set_bit(cs_bit, &cs_index_mask, SPI_ENGINE_MAX_CS) {
-> +		if (device->mode & SPI_CS_HIGH)
-> +			spi_engine->cs_inv |= BIT(spi_get_chipselect(device,
-> +								     cs_bit));
-
-It will be easier to follow when a single line.
-
-> +		else
-> +			spi_engine->cs_inv &= ~BIT(spi_get_chipselect(device,
-> +								      cs_bit));
-
-Ditto.
-
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>  	unsigned	timestamped:1;
+>  	bool		dtr_mode;
+> -- 
+> 2.34.1
+> 

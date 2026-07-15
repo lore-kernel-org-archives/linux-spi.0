@@ -1,149 +1,98 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5B6420499
-	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 12:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8746A420488;
+	Wed, 15 Jul 2026 13:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784119954; cv=none; b=byaO+kwV2RD0lHcZMqEMAIdwF9vAESiYueksO2G9vF3aWTiw/JUVtdJTngAiIWsdkWtvHdLJSz8RQO0qAxUAKDozZ9fuAI7v9lvHALik9oAjDtKThq8qQV4uWY1LkjEKBlZzpr1boSoHPXqdseiW1C18wO5YQO5tUlYPSLeINgg=
+	t=1784120967; cv=none; b=L5c3Fyk9USNDqxzqdUCI4wsohIugdHU+hDQfpzCFXiP2lvPa4L6aXEAvsLY9LQBagrKtZ4Sg0E3xSReyMkxAda7XbphUNxekT6OEeg0F9hmJxWqlN2e1i+YUi7rhBKLlxGqsdoMrgphDpvScYx9E9yNttu03aH7Rt40v8KZqxps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784119954; c=relaxed/simple;
-	bh=jC5K1NA2Qi20lryJrip427XM3Y5XYrk3Gmi9jleDf2o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZNVHP8q4Cbt9cUOjqALSlAkwUtt8XTyGkcd0CJDaAoBPIazo8uenSvEhuwxmmtbR3ir2h3SQzA3nAKJ4i+ZByq0F2YYl/bXvgyTrUVe5dL/7ZLyo7jcfMffF37ohf9pJtN5Jlz4TE+HcdMKDdpen4fb8GZSs7UPJMYgW/RdXS7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=En+Y2EFt; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784120967; c=relaxed/simple;
+	bh=SUMb3zBausmevnB9x4UBudVXKBEKviMAQn5Mu6iQJHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IVudPTGIz9dALiKIumvlQnXezQ+Jagaa9Jv85DKEwWRPoFVZWVuRcMrvzXEaFHrRVQYRL7LEMZYlAEUlc54bby+9oCKD9NU53jZIVw1mL3Rf4lgYDlWGc4jTf6YfTPMGQB4Z46DYsQn9fH06M+0m+ECJ+VxrvetwQpCk3lVroJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtslR5ur; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="En+Y2EFt"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso2803095a91.3
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 05:52:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784119951; x=1784724751; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RWcdIs2ci+zPyHZ1UgU5XfiAjrJantGzHWpSqVd+iVQ=;
-        b=En+Y2EFtsEf4oRoe457udRunu//giD0BhNJ63jtqG8mtkEz0xSfJ+eBWu0MSnlb+FJ
-         56wS79Wg+PUiZa1yXmrkFpECOGnVCyeQYveOvn4HX22mWzF06xFjvsjPNYUXKJYyWR5r
-         P1hYGwAf75dQKsn5zJzLiTliSPSDqk+4llpx2iq9UVDATRt3QooqGY++PhXV4ScVr+YD
-         X+n+ghnY6VShKZ+4qPiSvjpLBpCNTj1oQnQjqexmZrsarfAc/pmXqStF0bBHixJmuuQg
-         DPqWyJNT5+H+s+Lt4JRQ8sd4V/YNJEjM3Rmf3QUCKetzfCsc8YRWu6UWvhXNab/Bx+d2
-         rvvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784119951; x=1784724751;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RWcdIs2ci+zPyHZ1UgU5XfiAjrJantGzHWpSqVd+iVQ=;
-        b=CDTUHK5DMU6NDfcyDFSQSafbdgWw/nxj6t++9Xa+MaZXQz+OMwRizc/idbJdLwfPWG
-         Cu0/+VDG1YFhAlaUf03HTdKd1FLepvpCIf1XHyjrSiK3EPPaBZ/yHkQkNuQLXvf/7ebo
-         zpvuYL/CnNaHLJBP9Lim00RurB60Mlf0zOoIzRUNo4dNxbRUFm6W5GFBhWkl+ioQtGST
-         7XstaXQSimr7IwlEZZCLYEiqKvDykuQh1itXY8nEwa3loc9e06Xzh1PX8x1k1yPqBJXj
-         xZKtpegG1+HuPoyWnzoi0XaRR1rS3byDlq0XoO1TBXyp5OyoEe18B178hfK+FJbzLt5m
-         1cGg==
-X-Forwarded-Encrypted: i=1; AHgh+RpBaZc3eBml60Lfu7m0Z9+u3yRgRKvdM3Lt2w0MW2SSZH7vO/cdfcTpC/03kAwCYcKZpmfS7Uzr8vo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw91YQO0ULB8jV/YdzJr6DEvAwGtp+/lpnnm8vy+dT9R33bZ1Oj
-	SEdh76a5Ot838u9FmtxdBLmS2RrNBjtSP/cKW7/q7AIxFxmHclcsi6qy
-X-Gm-Gg: AfdE7cluF1Hz0xUj2qqWwCIX5kMeLrLXe13b5SeFTrgaCHUG/o+A/L3mtOc6ZkAsJMg
-	FMbZe/CPfeHV38157nYAiPinPTARWcB5B7fqawp0PYrdH2Zuy5pIeMmo1ToKbcA/tdTa928uY3m
-	T8tyrUE41ZQP3OjlFRVzWnut2PuJzeMb1Vagv44w8WdcnH6vrsIJMRBH3+y0Xir1dB6RB/rJ1ok
-	hzgpowEX9oYSWGxDPvr7iS8br+enRCqTN+VJyLo4G/Per0uTnL8gnQcSbDxbLlGd7TUBK5QllkF
-	Yd3rIR5NRNZB4Z0EwcIjp/MXvRMbQ+wSSKJol26gNzqiEHhFKRInM9w2QhCaoKHeqfCwAmibHeY
-	ZwtAMmNvl82O4uSjhod74xvQlp00qUQ0auGMVv6+OoDkKYMH2D+P81eEGWrNEuKlN7gwGDOlW3b
-	daYw7ypZWrIAAXZumq16h+vvR8qPceW1ww67ibDOI=
-X-Received: by 2002:a17:90b:4e8f:b0:38d:e658:5959 with SMTP id 98e67ed59e1d1-38e17d96412mr7448999a91.5.1784119951167;
-        Wed, 15 Jul 2026 05:52:31 -0700 (PDT)
-Received: from MacBookPro.lan ([2408:8256:3310:8e00:f02b:c960:26d3:2b22])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172cba1fsm3036140a91.5.2026.07.15.05.52.27
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 15 Jul 2026 05:52:30 -0700 (PDT)
-From: Zhengyu He <hezhy472013@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Yixun Lan <dlan@kernel.org>
-Cc: wefu@redhat.com,
-	Zhengyu He <hezhy472013@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	spacemit@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Peixin Xie <peixin.xie@spacemit.com>
-Subject: [PATCH] spi: spacemit: Correct TX FIFO slot calculation
-Date: Wed, 15 Jul 2026 20:52:15 +0800
-Message-ID: <20260715-k1-spi-tx-fifo-fix-v1-for-next-v1-1-02024223b08a@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtslR5ur"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4571F000E9;
+	Wed, 15 Jul 2026 13:09:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784120966;
+	bh=wsxT5Nei/pXNtplqSgGgPoBP3RgXHfqBbo9yCD3QM0Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JtslR5urgE8vRtnO1BH1g02FkzXrLeKcugJNT7sTtuf8PzfknP/FcA4mHau0guwP+
+	 3nsEo8dd/9WCqSrq+f+jU5AyYtqh5jqm9ox0u2tnswWTN8xg9yO+x6Iv/VPTbG3fyX
+	 +qk53BgvB1EKmygznECPhz+JOK21NoWJH4blxU/y89Qwe5CSiWE11uBmM0ro/kSjSS
+	 X5ldXZrHuMfAXVpIXCF99+Tl3hoPqvSOeBQxowYbQqkmgPl7o1LkgxXcFuu7CUiArA
+	 7JD6W3GP2fxspXU1M7F9w6kbhd8m9/LoebxtxZzLnP3X9P1GY+tENpqLmcX9e09gYv
+	 W4g1x9Dvwqa4Q==
+Date: Wed, 15 Jul 2026 14:09:19 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Janani Sunil <janani.sunil@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
+	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
+Subject: Re: [PATCH v6 1/5] spi: dt-bindings: Add spi-device-addr peripheral
+ property
+Message-ID: <1c4af9b1-9937-4cbb-b57f-52ac575b8b89@sirena.org.uk>
+References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
+ <20260715-ad5529r-driver-v6-1-cfdf8b9f5ee3@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260715-k1-spi-tx-fifo-fix-v1-for-next-43cdd0d9213f
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1999; i=hezhy472013@gmail.com;
- h=from:subject:message-id; bh=jC5K1NA2Qi20lryJrip427XM3Y5XYrk3Gmi9jleDf2o=;
- b=owEBbQKS/ZANAwAKAc32nDaAuA3YAcsmYgBqV31qlRwpRvEkyvTUy4uncIOL9TlEAlgjz+Jsp
- RUGLads05eJAjMEAAEKAB0WIQS9XD2kxy1NmfC2u/XN9pw2gLgN2AUCald9agAKCRDN9pw2gLgN
- 2BgLEACEiMAXQf5d7wzj918XbzCyvgH3JojkX5J45Fs6Qk5AP0sNvlewOxIYinhm1gTStnxa9Ta
- LB+21b+WXPxgVfgGrCnDfxpK/rR7SLZkmgiJNmpXhebrKDHY/2DMvzafZu37EiihZLNqX/dRhTa
- EpZgLe0zfD3pn6czo561TLMaV9SQDzNLLitsnJIfpKtO5FrRq4ChBsUnYNp8CQpk5DMXEaYRbVY
- VNz6e05pjjA8Q0YDd3yhVMAV1KVSgclq81Q+qERowiEDzKDo4oQDxS53et25Fxtj4UkzXwx11t0
- TCAS9FPA30049y1aqfKDMs9d3czb0X8GOj3oLBVPkc9CEX1v7ae32kwjCshr27whNfjFmEGmbRb
- PqzWfjtJ4cWUDJ8oCaOtellab5Eo6PhQ9tlyG1R3W/V55IHTGu9uq7zMKcDMYA8kK8I2js/OR/1
- PaXRfvSdg5kBgkjJ4KRAn3bpyW5s1HlrWOVYzA/XOogRS54EU3UtygZ0ymdFIJ3U/soev51RthE
- cuErPy7pM9cbzy1lFw4/Qisy00azAyJn3mMqsK6knbU/X63chY3FChgNTo5jTa5ptFvSAMGt3Um
- yysNS34cLkUBmFq/IVKS320JKIEoANLVZ1c6n2VjDW19ineJEXurLCk5HY8pwRhMIH5lhE8CQJL bg0AgFEW2lf4GaA==
-X-Developer-Key: i=hezhy472013@gmail.com; a=openpgp; fpr=26CA97B1A229C229822278F254AF850165158959
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IzXuoKuv/ubtdJzE"
+Content-Disposition: inline
+In-Reply-To: <20260715-ad5529r-driver-v6-1-cfdf8b9f5ee3@analog.com>
+X-Cookie: "Speed is subsittute fo accurancy."
 
-In k1_spi_write, the count variable is intended to represent the number
-of slots available for writing into the TX FIFO.
 
-The current implementation uses FIELD_GET(SSP_STATUS_TFL, val) in an
-attempt to determine this count, but this register field returns the
-number of occupied slots, not the available space. The previous
-implementation attempted to handle this via a ternary operator (? :
-K1_SPI_FIFO_SIZE), which incorrectly assumed that the hardware returned
-0 when the FIFO was empty (meaning all slots were available), leading to
-incorrect accounting of the buffer space.
+--IzXuoKuv/ubtdJzE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fix this by calculating the free slots: count = K1_SPI_FIFO_SIZE -
-FIELD_GET(SSP_STATUS_TFL, val);
+On Wed, Jul 15, 2026 at 01:41:04PM +0200, Janani Sunil wrote:
+> Some SPI devices support sharing a single chip select across multiple
+> physical chips by encoding a device address in the SPI frame itself.
+> Add the generic spi-device-addr property for describing these hardware
+> addresses. The property is placed on the SPI peripheral node and may
+> contain multiple addresses.
 
-The associated comment has been updated to reflect the logic change: The
-old comment reflected an incorrect assumption about the hardware
-behavior, which was the root cause of the previous buggy logic.
+This really isn't a generic SPI thing, if nothing else you need *far*
+more information in there about how exactly this would be put onto the
+bus.  If it belongs anywhere outside of the specific device's binding it
+feels like it might be regmap.
 
-This patch accurately and concisely describes the purpose of the new
-calculation.
+--IzXuoKuv/ubtdJzE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Peixin Xie <peixin.xie@spacemit.com>
-Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
----
- drivers/spi/spi-spacemit-k1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
-index 215fe66d27b4..0faf7ffed676 100644
---- a/drivers/spi/spi-spacemit-k1.c
-+++ b/drivers/spi/spi-spacemit-k1.c
-@@ -494,8 +494,8 @@ static bool k1_spi_write(struct k1_spi_driver_data *drv_data, u32 val)
- {
- 	unsigned int count;
- 
--	/* Get the number of open slots in the FIFO; zero means all */
--	count = FIELD_GET(SSP_STATUS_TFL, val) ? : K1_SPI_FIFO_SIZE;
-+	/* Get the number of free slots in the FIFO */
-+	count = K1_SPI_FIFO_SIZE - FIELD_GET(SSP_STATUS_TFL, val);
- 
- 	/*
- 	 * Limit how much we try to send at a time, to reduce the
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpXhn4ACgkQJNaLcl1U
+h9BFywf9GLhvPMx/zAqARTHV92Ikz3iIvmqmLKbDbwynI8niYLhI1ulnhUTHaxfw
+Jvy+H+ofBMkjIBeveoiRHtBiDTEnAh9cHA9NNVnBi43qj+cbPRXc03veBrBftD9X
+vH/cSYWZ98Mj5dhlroXb6gXBYBrTifANkv9ivpOwE2j/EvL+bC51rGzhqc+T+8tt
+gesKevaEmBXvRr7OSivPlAbgQfbm3kcBZJo5CYu9cD/aUkoSlISgTXt5nQN2/RZB
+RftQ3HVKiji4b6iC7RSH1PhJh94fTMK7j+zlyNEBHhdjUlI+dRqZR2t1Zt5MbpLA
+qiYYA6j6lEuJK09nt1WazNul6jP95Q==
+=zhQI
+-----END PGP SIGNATURE-----
 
----
-base-commit: 51ed53630915c9cc290036fe4f430849e23bbf8e
-change-id: 20260715-k1-spi-tx-fifo-fix-v1-for-next-43cdd0d9213f
-
-Best regards,
--- 
-Zhengyu He <hezhy472013@gmail.com>
-
+--IzXuoKuv/ubtdJzE--

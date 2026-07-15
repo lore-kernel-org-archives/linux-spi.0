@@ -1,271 +1,55 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3841730674C
-	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 05:21:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B65B3B4E9F
+	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 05:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784092873; cv=none; b=rSknwHB98104gRe79NOsSdBHyO9qLYw6cUWml45mGKoGj1EuvyET4POFLxGwarS6c15wx/7M+UqI8/uPEgTSg1n3bw62pE9D6Dcif1kMjv1iue3E+02x0ogwsYPpne4btknw+G8NOtv5JYUoEyEhMQs/uGsgvoXKRRubBukJ32I=
+	t=1784095125; cv=none; b=GL1uuMnQ0i//EseJSD7bDTftDj7h1psc5vnLVWZfU9WjDBgOeG/p80wgejpv5MCTMp5FlJ5of/cU8aKQI6OCgTcz9anEkICG44zYiaMQLCm6zqIDA2Y7a6ZzsWQTSRl+mtQiTynOLjvz/es2ljmomNJnNq/R3Kka+y0TDQ7tCPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784092873; c=relaxed/simple;
-	bh=NW9OfWcn7zy6+5dpNWHitm6R6TnMYmxPjElKxMspfvA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hUqEDCl2gZLxPfOQRKFqFJT2r4rhi0XAQFfOeBKCcQr/5iZV5fr0KRuZXHGfcCsgDYgnTUuFi8fSWIMtX5d4hFb2Slqy9CiSehWfiZSXJJ9l6MOHcns/AAg1Y+2wu1+CuEuuk6hTtqWG75tOyIDqv/zFIfmP4tc+YRycJgAaiwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jJjjQ7yV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=dFgUPsjo; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1784095125; c=relaxed/simple;
+	bh=/4vsr2WBIYxnMetanAMMEQQ/2lAbX98FyI/rPGhur+o=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=cc6UjW7xGqApTlXLj/TzmlQiqBpwm88hBVbL7D/bYuc9ibbgqCdY48Qk1vn+Us4EzkTApg4LU1dDOiQy7CsWCBoI+CZGfrsJUjfcv9ib4Wrwt7OUTvB5u3hkRoHKyBdCX2QaoNULHBNOWsgbho483kv2ZiXQOaNzo8MSO7wSomQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LDEhAX/u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jJjjQ7yV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="dFgUPsjo"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66F3mMHj2273597
-	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 05:21:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	sITuVOmRTLgtM0SYU13wJSBTuqa5KGwf+255oDtx3hc=; b=jJjjQ7yVkooBgrGu
-	SIKD9gMjwaiYl3OqX4QE25Ok0y65w2GqSp5PM9wijClPfYFb6iXrOjDh2NQfkold
-	YOJhBvBraUDlT7MON0wXW6Vw9ktkOwZg8WZtcLyPHNCCgm7kX1BnK2g2XS9jAXMK
-	2dA2rSf6UBlt7XN/1HG75AFGeqe0dkYisyVT1+9V/bZV/+ZQT+WeBoLFjmWQA9K9
-	W0nwo7vxqd0EqoR+/WgsIsBWUn9OmDIxA/5s2nizI7ELTJ9E6Qrgko/1K5Sa1spY
-	PLLlo3hZzzcj5XRojjr3Oyg2uV6Ca7GEsns4ll1douuI+sxbipKr6E2pEgOQKV7N
-	/1Xbvw==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fds9mj0qa-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 05:21:11 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-381250979d5so2315982a91.0
-        for <linux-spi@vger.kernel.org>; Tue, 14 Jul 2026 22:21:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784092871; x=1784697671; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sITuVOmRTLgtM0SYU13wJSBTuqa5KGwf+255oDtx3hc=;
-        b=dFgUPsjo3Ie8zzV59c0d2OVXremZoXNoSua1uIqvPlNIkRkRACODxgN7YIiI6AyhDq
-         45MAVhWs7hxQWXCwwgLEdvj1/bbr4sV/d9qJEa3xX5Hdpf3fpE49efFQfiUHRGSuPo0W
-         Gyg5Q0q2GllXDKcBoALsT02uDyr5jmQPct/WOms+3xFfWtX1yqvU3S638VnVQ38BCeDN
-         h3rs5i/r0i6eE8pWbeBmoAEy2eWKmrDATOgiWHGrmNgfG07I9asd+tmHsYgMr9fHLhbx
-         8QKE6fFIytow121OZPCN1Eiy28fItsXqBRAdBpovk8KiOeHECsYdNvGjCc/s/LedlskI
-         CbEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784092871; x=1784697671;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sITuVOmRTLgtM0SYU13wJSBTuqa5KGwf+255oDtx3hc=;
-        b=aYS8LC9u/akHzuoKLXB0E0vrHDnuPR6YH6ZcvTeHxWEyhqMM7xURLszqEBFjSfuq8B
-         ubTxRYReDkK73nCyGZmFhJxGuzSZGI+NhO1u8hq35e3rTUbSrkPoWUGCG0pDjI70sP8o
-         dfizv+j9fYUgArsQ8tM9bSXyOCXIWVhhr7CMBAm1xDhzO380Wwjg4pKEucM9vnQj3ZRU
-         M+mbypgWLTHFTbvADwxOEoOBqw4W0nEFw5ybePFiTcCQGTozLSMFVAgVR4iizn0dMWTa
-         YcRvDa4O1Om0xC4cQaZQVe/izo7s59S3e65W9bmOg4ILu1b0leJAEofKXZoRlZtLcqZk
-         pbVg==
-X-Forwarded-Encrypted: i=1; AHgh+Rq8CRyrUuIKdupuh8ZLsC8KaOPcE+chZKOiYPEltc4iJKP/SILFT+7ui6KO6s0rhjf16r+IVVIHe3I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXr8FmnY632jlnw+7C1XLUnLJOxJqshUNkpT2Qo6fxE4HEqAqs
-	O4R6jlp8h6ekK1JuJkbbNhLymmGFtX6RjUYqgv3qlSJMLjn3HnEEoQ9SplD2rLmPmsoAOqE+Dp9
-	5oCWKhPr8D+B2Ogn+G0ECxzRmiKRioyAtLdSY5IJPvdwdvViPlvgWJoy7rqTtT5c=
-X-Gm-Gg: AfdE7cmR5ar6i3k3yaB6/UK2c7MqVarslVrrkXqZZi7JaK8qkvb2T22EuKuth8D6958
-	ifhcAzgyzzL1i9oaIZOK2c7aCc6tiUOF1Is2NkH+cfFY851niNV4LKsZoZimqV/EpvHpEoWopKA
-	87NeF5oYjHqcT6UI79tXbIt+Usfxkhye2/hFyrzag4+umie9XnUBGETa7270tQ/ENbakneTwo9q
-	JRywfG0uaMUSkDQY6mc46LirzyZc4vJpwBqIJ7+cFbjwIoHv9AtASDxvimKZnARHpiGoH9l9Z5I
-	caPIa22AMkg26X89DBb6D2zGVhVzYgiuqJ7qaLzDqEuU7+uiiy9+QHVo/zTEHdaCXGwmG2HsPMn
-	xmbLBbhUHQD9hf1FEfMIi9p917LRZwFEwJ37tS1gRFTyG
-X-Received: by 2002:a17:90b:1dcf:b0:38e:673:5d18 with SMTP id 98e67ed59e1d1-38e06735ef7mr8097325a91.36.1784092870686;
-        Tue, 14 Jul 2026 22:21:10 -0700 (PDT)
-X-Received: by 2002:a17:90b:1dcf:b0:38e:673:5d18 with SMTP id 98e67ed59e1d1-38e06735ef7mr8097285a91.36.1784092870078;
-        Tue, 14 Jul 2026 22:21:10 -0700 (PDT)
-Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e172e46basm2526092a91.9.2026.07.14.22.21.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jul 2026 22:21:09 -0700 (PDT)
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Date: Wed, 15 Jul 2026 10:50:48 +0530
-Subject: [PATCH v3 2/2] spi: qcom-geni: add GENI SE registers trace event
- on error paths
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LDEhAX/u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1171F000E9;
+	Wed, 15 Jul 2026 05:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784095124;
+	bh=AtzCH9YCJ1s/cT30T1f6CZfyYammRcZ7zL9U52b2ac8=;
+	h=Subject:From:Date:To;
+	b=LDEhAX/uyAk6ObcKXcxQp6du7Yq06Ab7nls2wk+963LLRCT6stn0tosxBCz9f792Q
+	 XjrYPktzj4x6CLVEtbzzPwYEJnjBx92MUeZyaobOUJvV84JWxGFXHT2K6UIjzIE8Q5
+	 A0vY9KVeHB5Xu8yiRIeAXNt0QhD5fi0WGj06p0JogVcB71gxv6e1vmE8d8zbDU43sH
+	 BGQd4rdgu//WS3LEH2zZnt3fI18HMxal3PEUf60Yu0YCcpGkndU9L2Axv3NW5wRODh
+	 KhYg37qpe6cy4AX1bw/ViTjjEAhH/PMCDsYHTk4MEu0rLbqy+hzo4lJ/TaCI1nl7h0
+	 iKdEvux9Uhqbg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A6B39263BB;
+	Wed, 15 Jul 2026 05:58:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260715-add-tracepoints-for-se-reg-dump-v3-2-0f787f93badd@oss.qualcomm.com>
-References: <20260715-add-tracepoints-for-se-reg-dump-v3-0-0f787f93badd@oss.qualcomm.com>
-In-Reply-To: <20260715-add-tracepoints-for-se-reg-dump-v3-0-0f787f93badd@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Mark Brown <broonie@kernel.org>
-Cc: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-        Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784092857; l=4641;
- i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
- bh=NW9OfWcn7zy6+5dpNWHitm6R6TnMYmxPjElKxMspfvA=;
- b=aCXYBaUg68cF17oSv8bFBL9qAZkATJSAom/UstP3l669diTKt9Ywq4QeK23VXjuGUwuVRlOsH
- SxshQmmdKPvAqNRgUg+eVEhWBbV86Z/HeF/xobIJETvEJYH0SEd0vLE
-X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
- pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE1MDA0NyBTYWx0ZWRfXyYc8t7vZrISC
- UsgVLf6060GcKsMzOx84YT/Vq0t6b9ordyCpy88tt91FXBjk+LTauzkQFqOY97Leuj8pyjIEAQM
- rjQGI3be3ckSAavt+cj8ybB7RrfpzqIY12mLqyt6Rzcu+MXTpIyIhzZuk9sMaslefLrUA6KcABE
- 1Jz6xuxPAf3ml7fZnAzmhv5vUCpEqtGxyijWBq4zX8Pi/duImlLXTC9fvvvn0ttbcORw/ATxhFv
- WCU8lQi6G0j75soY6qxpKDi1atP4QGe8bibiLtN9vSP+5028RIEoiLnx/7ZDTfGSankdox1Rh6O
- zb/5DuSg7AIiguvkzQw2MpYYYKluFOkallSxfPXwmdYqERNusasLOA5S9/wcg/VANcMyYMOjm8H
- 7/McgauCvqEKgIe/Gd2DF13dE1JEmY0VGf5m+/LnnoGQFia/Pt2Bb84ZeVmNn9M0RiLT8isxOj0
- NE3jvIr+pl79RvGGswg==
-X-Proofpoint-ORIG-GUID: pbcbTzOrF90Op5Lw6cQBIbHd53EKbImU
-X-Proofpoint-GUID: pbcbTzOrF90Op5Lw6cQBIbHd53EKbImU
-X-Authority-Analysis: v=2.4 cv=E+79Y6dl c=1 sm=1 tr=0 ts=6a5718c7 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=EUspDBNiAAAA:8 a=SuVZUjzzKY3ZPv7-dKMA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE1MDA0NyBTYWx0ZWRfX2Qgw2ozzpruU
- 9NESfXrN1SbznjY65W2rQMdzcIkmr42s44HMvEtC/tiuMOLkWmiVhOrJuEwpGy0FvE7wL1BfyYp
- nrAp2cAp8F27iPR8abO6Risr3PGA6Lo=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-15_02,2026-07-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607150047
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178409509803.3902365.10228881715336654072.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 15 Jul 2026 05:58:18 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-The GENI SPI driver reports various transfer failures such as command
-timeouts, DMA reset timeouts, DMA transaction errors, and unexpected
-interrupt conditions. However, diagnosing the root cause of these
-failures is difficult as the hardware state is not captured when the
-error occurs.
+Latest series: [v3] Add trace event support for GENI SE registers dump (2026-07-15T05:20:46)
+  Superseding: [v2] Add trace event support for GENI SE registers dump (2026-07-10T18:48:40):
+    [v2,1/2] soc: qcom: geni-se: trace: Add trace event support for GENI SE registers dump
+    [v2,2/2] spi: qcom-geni: add GENI SE registers trace event on error paths
 
-Add trace_geni_se_regs() calls at critical SPI error handling paths to
-automatically capture GENI serial engine debug registers when failures
-are detected. This includes:
-
-- M_CMD abort/cancel timeout
-- DMA TX/RX FSM reset timeout
-- DMA transaction failures and pending residue conditions
-- Unexpected interrupt error status
-- Premature transfer completion with pending TX/RX data
-
-Dumping the SE debug registers at the time of failure provides
-additional hardware context and significantly improves post-mortem
-analysis of SPI transfer issues without affecting normal operation.
-
-Acked-by: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
----
- drivers/spi/spi-geni-qcom.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 2914d781dbf5..8528f9b80f03 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2017-2018, The Linux foundation. All rights reserved.
- 
-+#include <trace/events/qcom_geni_se.h>
-+
- #define CREATE_TRACE_POINTS
- #include <trace/events/qcom_geni_spi.h>
- 
-@@ -192,6 +194,7 @@ static void handle_se_timeout(struct spi_controller *spi)
- 	time_left = wait_for_completion_timeout(&mas->abort_done, HZ);
- 	if (!time_left) {
- 		dev_err(mas->dev, "Failed to cancel/abort m_cmd\n");
-+		trace_geni_se_regs(se);
- 
- 		/*
- 		 * No need for a lock since SPI core has a lock and we never
-@@ -209,8 +212,10 @@ static void handle_se_timeout(struct spi_controller *spi)
- 				writel(1, se->base + SE_DMA_TX_FSM_RST);
- 				spin_unlock_irq(&mas->lock);
- 				time_left = wait_for_completion_timeout(&mas->tx_reset_done, HZ);
--				if (!time_left)
-+				if (!time_left) {
- 					dev_err(mas->dev, "DMA TX RESET failed\n");
-+					trace_geni_se_regs(se);
-+				}
- 			}
- 			if (xfer->rx_buf) {
- 				spin_lock_irq(&mas->lock);
-@@ -218,8 +223,10 @@ static void handle_se_timeout(struct spi_controller *spi)
- 				writel(1, se->base + SE_DMA_RX_FSM_RST);
- 				spin_unlock_irq(&mas->lock);
- 				time_left = wait_for_completion_timeout(&mas->rx_reset_done, HZ);
--				if (!time_left)
-+				if (!time_left) {
- 					dev_err(mas->dev, "DMA RX RESET failed\n");
-+					trace_geni_se_regs(se);
-+				}
- 			}
- 		} else {
- 			/*
-@@ -391,10 +398,12 @@ static void
- spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- {
- 	struct spi_controller *spi = cb;
-+	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
- 
- 	spi->cur_msg->status = -EIO;
- 	if (result->result != DMA_TRANS_NOERROR) {
- 		dev_err(&spi->dev, "DMA txn failed: %d\n", result->result);
-+		trace_geni_se_regs(&mas->se);
- 		spi_finalize_current_transfer(spi);
- 		return;
- 	}
-@@ -404,6 +413,7 @@ spi_gsi_callback_result(void *cb, const struct dmaengine_result *result)
- 		dev_dbg(&spi->dev, "DMA txn completed\n");
- 	} else {
- 		dev_err(&spi->dev, "DMA xfer has pending: %d\n", result->residue);
-+		trace_geni_se_regs(&mas->se);
- 	}
- 
- 	spi_finalize_current_transfer(spi);
-@@ -953,8 +963,10 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 
- 	if (m_irq & (M_CMD_OVERRUN_EN | M_ILLEGAL_CMD_EN | M_CMD_FAILURE_EN |
- 		     M_RX_FIFO_RD_ERR_EN | M_RX_FIFO_WR_ERR_EN |
--		     M_TX_FIFO_RD_ERR_EN | M_TX_FIFO_WR_ERR_EN))
-+		     M_TX_FIFO_RD_ERR_EN | M_TX_FIFO_WR_ERR_EN)) {
- 		dev_warn(mas->dev, "Unexpected IRQ err status %#010x\n", m_irq);
-+		trace_geni_se_regs(se);
-+	}
- 
- 	spin_lock(&mas->lock);
- 
-@@ -983,13 +995,16 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 				 * weren't written correctly.
- 				 */
- 				if (mas->tx_rem_bytes) {
-+					trace_geni_se_regs(se);
- 					writel(0, se->base + SE_GENI_TX_WATERMARK_REG);
- 					dev_err(mas->dev, "Premature done. tx_rem = %d bpw%d\n",
- 						mas->tx_rem_bytes, mas->cur_bits_per_word);
- 				}
--				if (mas->rx_rem_bytes)
-+				if (mas->rx_rem_bytes) {
- 					dev_err(mas->dev, "Premature done. rx_rem = %d bpw%d\n",
- 						mas->rx_rem_bytes, mas->cur_bits_per_word);
-+					trace_geni_se_regs(se);
-+				}
- 			} else {
- 				complete(&mas->cs_done);
- 			}
 
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

@@ -1,117 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C642E738B;
-	Wed, 15 Jul 2026 13:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC433CF203
+	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 22:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784122641; cv=none; b=Cg7N1ZTV3CQ/uRpLDiTNvijtMBg1HR14cFt2oMIsuwMu9lLHNZsVaaj5v9AGnYJW9wGugdxGEDXZKIjWDDwEwrEsUUTU4d4pvf7yHt4pSLpPfHVlAU8D17v9fcp/l8UtwCpdtmRf1gyTgttfv9KqibU0QW65wgwA1Oq7hKjKM9k=
+	t=1784153630; cv=none; b=W9RPg9kaZoyyz5/oZHoYKM0Z6f22zZTLBOF+ZQX8ZBTgKih/rkZS0i3RMbe3gEdfc06qWpFU6rTdvRzDOaINVX5XBprvSyJqFNtmF7GzSwZcshz8/wCTqwTtf+QqrW2zUaAscI49bc2of5XU8RPXvAXvxrQvsLVRZMuA5tByK2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784122641; c=relaxed/simple;
-	bh=mQ1Ppv43Nzvd2le0EqHNXpfZ2H1Jp1liw05iUUeGFFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RvvmJU6VTL4t5xcYCJlOJwxjTu5RcefA7RaEoX1GRLkeuLpbCHVGd/1NW8otys4xwzP1m7DMqJaMlOTyM+6U7ywqNibq0G7/EJ9CHk8dvCA2rMxyBUK+jQHehqyLoH3GUtSxmtVRGCXAHUbxsM60CwboXm6NHGn21E7Lm8+w0e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCNA61NH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784153630; c=relaxed/simple;
+	bh=xAI4aSvx8toD6uvFflQxRXfUUkOjhwKQLQvQohnKOUM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q6eltLYaoC38392WQzGyA/J8aAVgxkyXwf8Z+yk4GSTNTRLKvJ+Gdamad/8iJbEhtxiUkncVZDTsQ6qYgztHV6bZK5f3sRFim8vYkGwuBFZZM6/zNY4CL6YsVoycdZduVocxKEjldruI2c8Hb/03RCG7nZmSkF+2Ejr4qIXdBwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=INUyZ+2K; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCNA61NH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBD31F00A3A;
-	Wed, 15 Jul 2026 13:37:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784122640;
-	bh=1571AMYBa+aqh2HI10aYEFZYKtWO6cbTBh89pLpcSrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PCNA61NHD0tHFvoCIykV9CDzLHPkx4ObtaPsEWeSAdXhMjyx7weEXB3OQvk5tr157
-	 blIc09rNUNmKUHbgwKwUUGATVMkbfaLmyzAN2tvJjQNeikYhKv+YQNNpWI5FaoUckX
-	 ZOiCveZSqVhdEM+PW2PkqwFSWHYtcGiP6PlNAUPyR4brdV9Kk0H2qYXHfAIENhDjt1
-	 IoO5gy5Fbkg6s5wrEIQg9QzzBMW2AtNjOOBjHmSRotWLB+Sl/aEnlHk1+gAW9rDvmL
-	 5j0MCyvtMapnAZpeVEDr9tir6xMgEayp9HMW1wez9uldhcJtp7DBJkQ8klYFzZAsic
-	 24rkeGa7H3NfA==
-Date: Wed, 15 Jul 2026 14:37:12 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: Janani Sunil <janani.sunil@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
-	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
-Subject: Re: [PATCH v6 1/5] spi: dt-bindings: Add spi-device-addr peripheral
- property
-Message-ID: <157154d1-3995-454b-9e08-1527f1c5d409@sirena.org.uk>
-References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
- <20260715-ad5529r-driver-v6-1-cfdf8b9f5ee3@analog.com>
- <1c4af9b1-9937-4cbb-b57f-52ac575b8b89@sirena.org.uk>
- <lpbqk3wv6emhdtxhnczrgufzzxprcfpfgenfepnmzhzfj3b3ci@rdphuko7ikti>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="INUyZ+2K"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-381b831d535so3016996a91.0
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 15:13:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784153628; x=1784758428; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S+cmnwHjCLxQUJ1DbHmEfqrymZHn9umz8cSa/aq1fok=;
+        b=INUyZ+2KfG3ZkxTGvrd7spXT2qOjwr/V4tkYpQF3Z7BCQsKxCU9Mf4dVHz15KZsG5L
+         YAdi3TxjBA2qbMidyZx/Bde9uEWCwkeYpviDWuYHfO9NPblV5aQ7+sxSsrM4g9iwDGtU
+         HsJIjAsqS38ugVQaAiRfGWHRZodhR7rrR78iasEkk0Mbuyn7MFK6VEEHs3ph79eAg7Kh
+         hG+yfimDBG/qjsFTUSTOl2Cf/qbobiVcRRpriJ6dLh2eC2CBt/X+pOwvTxY4YqqxChvT
+         ua483CWY+U4GMcHdU2I6hbiSwLjZrHpzLAY2QR5HSoisQcy1U8dwq+DFSuO1ZELUrXRs
+         MTzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784153628; x=1784758428;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=S+cmnwHjCLxQUJ1DbHmEfqrymZHn9umz8cSa/aq1fok=;
+        b=aRHlSYzUoJi70jiiIqelX4RJu1qNNtZEb22moQqYwNYjyjN9asyGyQyi07tuYOJoTV
+         ZJVZDbvVwFPnIOU2fBm+ND7UFZTM0xtUiLqzL1GZndT+1KrGr5NPAkp1fXeduO6iBITi
+         oKgZo2Uf7BYgXeZH70F/U/VLwY+lhZ6wRa6JjDg9/oQSlRYs2xMnX8EUsqzBzfdtJCU3
+         YJ08828yS8abdTOAVU7s3uc1OJ99jsOJK2s0GkWbZ3wwhPJRrkVT84OVIwnG2xJvyvLj
+         jbsPQq4QSf69j4EIaihLhe3QgNVdNQO5Uu2Vc5g3vX0oIYyR7AYbHcBrKrhaKJ0NqZUb
+         T6fg==
+X-Gm-Message-State: AOJu0YyFt50lq1kLQuC68kAimUr43MSNB+3WToBcgJ1W8PUDDK9XAAsy
+	4ugrofCMCLBuB/nB8p8C86aknsHgeZBFIMz5oPaCiGSLyNLS2Hz/ZonZoOWi6Q==
+X-Gm-Gg: AfdE7clK/NLLzD+sdOv8aL82wFm1bZG1bn/zg9R3vSYUQ0caDXZKDsUZ27JTU8u1uAf
+	6jN50oU8mG5tzJuKYX8EWW1KH3I1BQh4h8+WvYgZV8kWh1rxAfip8wTYUknlotwaCRvNZNcyGlj
+	RttUKTf809BM/hF5A13gISQbrJ7hk4ZHF8iDrI2JIAgAf6EH8YTk/hYeMyDPD/YQcKFA9FfCK3D
+	AAaaItSQkjSjqkF76DfHV2dcfeySReSAa8cIZUyoZ7tJx1rm273JxImOt2eMg2o9ZOt4sSQaDHV
+	GlSffk+Rp9zMVsC85J9/ZWtrP/rzllA0DoqO4IPsAcxzIT0g/BkkQ+LPGT0TlR7nJX6cspgxWIa
+	Fc88oUQtjX7s0IZ2pWG/Q3lGBj4uRbG/GF+jCtS3gkO1u2xzpIQ5D1wGV1kt9X+3ui8HvFH9g/j
+	+9LJPZMN+iHuuJztJZRSY5gS2moQXsbsYr91Q0+ZuWkvRZ61uOujPqBkDuKqi7YAPN7CkWeBLVA
+	wwOLFHQfqEwhEpVpu9EpO8aNW+nB/VN49EkmTzINpvwY7mquTpBEPA=
+X-Received: by 2002:a17:90b:4c89:b0:387:e0db:3fb2 with SMTP id 98e67ed59e1d1-38dc779ac27mr17745813a91.43.1784153628189;
+        Wed, 15 Jul 2026 15:13:48 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e2a06436asm1078628a91.0.2026.07.15.15.13.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2026 15:13:45 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-spi@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] spi: orion: use devm_clk_get_optional_enabled for axi clock
+Date: Wed, 15 Jul 2026 15:13:43 -0700
+Message-ID: <20260715221343.474130-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="EWFsD0OyCJy7C58E"
-Content-Disposition: inline
-In-Reply-To: <lpbqk3wv6emhdtxhnczrgufzzxprcfpfgenfepnmzhzfj3b3ci@rdphuko7ikti>
-X-Cookie: "Speed is subsittute fo accurancy."
+Content-Transfer-Encoding: 8bit
 
+Replace the open-coded optional axi clock get/prepare/enable and the
+manual cleanup in probe/remove/runtime_resume with the managed helper
+devm_clk_get_optional_enabled(). This removes the now-unused
+out_rel_axi_clk error path and simplifies the clock lifecycle.
 
---EWFsD0OyCJy7C58E
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Assisted-by: opencode:hy3-free
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/spi/spi-orion.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-On Wed, Jul 15, 2026 at 03:29:32PM +0200, Nuno S=E1 wrote:
-> On Wed, Jul 15, 2026 at 02:09:19PM +0100, Mark Brown wrote:
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 265708a94984..b1049fd66313 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -691,12 +691,9 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(spi->clk);
+ 
+ 	/* The following clock is only used by some SoCs */
+-	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
+-	if (PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
+-		return -EPROBE_DEFER;
+-
+-	if (!IS_ERR(spi->axi_clk))
+-		clk_prepare_enable(spi->axi_clk);
++	spi->axi_clk = devm_clk_get_optional_enabled(&pdev->dev, "axi");
++	if (IS_ERR(spi->axi_clk))
++		return PTR_ERR(spi->axi_clk);
+ 
+ 	tclk_hz = clk_get_rate(spi->clk);
+ 
+@@ -719,10 +716,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	host->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
+ 
+ 	spi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
+-	if (IS_ERR(spi->base)) {
+-		status = PTR_ERR(spi->base);
+-		goto out_rel_axi_clk;
+-	}
++	if (IS_ERR(spi->base))
++		return PTR_ERR(spi->base);
+ 
+ 	for_each_available_child_of_node(pdev->dev.of_node, np) {
+ 		struct orion_direct_acc *dir_acc;
+@@ -757,9 +752,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		dir_acc = &spi->child[cs].direct_access;
+ 		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
+ 		if (!dir_acc->vaddr) {
+-			status = -ENOMEM;
+ 			of_node_put(np);
+-			goto out_rel_axi_clk;
++			return -ENOMEM;
+ 		}
+ 		dir_acc->size = PAGE_SIZE;
+ 
+@@ -789,8 +783,6 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+-out_rel_axi_clk:
+-	clk_disable_unprepare(spi->axi_clk);
+ 
+ 	return status;
+ }
+@@ -804,7 +796,6 @@ static void orion_spi_remove(struct platform_device *pdev)
+ 	spi_unregister_controller(host);
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+-	clk_disable_unprepare(spi->axi_clk);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+@@ -830,8 +821,7 @@ static int orion_spi_runtime_resume(struct device *dev)
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct orion_spi *spi = spi_controller_get_devdata(host);
+ 
+-	if (!IS_ERR(spi->axi_clk))
+-		clk_prepare_enable(spi->axi_clk);
++	clk_prepare_enable(spi->axi_clk);
+ 	return clk_prepare_enable(spi->clk);
+ }
+ #endif
+-- 
+2.55.0
 
-> > This really isn't a generic SPI thing, if nothing else you need *far*
-> > more information in there about how exactly this would be put onto the
-> > bus.  If it belongs anywhere outside of the specific device's binding it
-> > feels like it might be regmap.
-
-> Just for some context,
-
-> For the analog chip, it can share the same CS line with another 3
-> identical chips. It has two pins that depending on how they are set act
-> as the device address (so only one replies to a given transfer -
-> naturally the peripheral driver needs to setup the correct transfer
-> and that depends on these pins setup and hence dt property).=20
-
-> This property reflects that. Apparently some microchip chips are doing so=
-mething
-> very similar so Conor proposed a generic property given that we would hav=
-e at
-> least 3 users of it.
-
-You still need to work out how the ID appears in the byte stream that
-gets sent to/from the device, that's way more information than just a
-number and not something the byte stream SPI offers is going to cope
-well with.
-
---EWFsD0OyCJy7C58E
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpXjQgACgkQJNaLcl1U
-h9C1IAf/TpU+6+pdtt/gB6xbCDRW71qXK0+xCE1MWXM3qXIxP0etZhigDidgTGx5
-kfYD/W0RzhdheLuSn6InN1fliX5N8fYFYoVhlbdD+IJF+WcyBiFtUT+nvTuvX58C
-YAMgdyfhrV3hWIj4RNfKq5z6jL/x+7DkP+T08wBpxOnSJi8XC6cil7N9RV6Llwpa
-maXLGgeYUOzoVgfSxO5c6RQQ2C0o6RPJVuCDg0WudkrZva4McGmu1/qTRw7dHd3g
-NDL15BU5AACAMy4MxzlgaIMIbssMhnCVHoD2ZzinZjuivQME/7t4ecyZIwhrvOno
-ZVYN+IBSwfdyssj8rwLdoeG5bI4w9Q==
-=0xYZ
------END PGP SIGNATURE-----
-
---EWFsD0OyCJy7C58E--

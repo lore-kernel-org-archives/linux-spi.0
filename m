@@ -1,159 +1,140 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC433CF203
-	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 22:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E97C3CF218
+	for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 22:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784153630; cv=none; b=W9RPg9kaZoyyz5/oZHoYKM0Z6f22zZTLBOF+ZQX8ZBTgKih/rkZS0i3RMbe3gEdfc06qWpFU6rTdvRzDOaINVX5XBprvSyJqFNtmF7GzSwZcshz8/wCTqwTtf+QqrW2zUaAscI49bc2of5XU8RPXvAXvxrQvsLVRZMuA5tByK2E=
+	t=1784154150; cv=none; b=k1xzLu+GLjR2wJp4NWRWLN8349UGNum6KQNjZqmgcuGsax/MrqvjegaFYR8EchlUikZ+8ibt73faECyx+jNmajL8t0oW8urXcGiOUjmsL2wQdRhMPlQGCfPzQlAyd3fDiiAb+aziJIeapQcD8x5ekJON6bhqjgAwQPnI9aJqxhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784153630; c=relaxed/simple;
-	bh=xAI4aSvx8toD6uvFflQxRXfUUkOjhwKQLQvQohnKOUM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q6eltLYaoC38392WQzGyA/J8aAVgxkyXwf8Z+yk4GSTNTRLKvJ+Gdamad/8iJbEhtxiUkncVZDTsQ6qYgztHV6bZK5f3sRFim8vYkGwuBFZZM6/zNY4CL6YsVoycdZduVocxKEjldruI2c8Hb/03RCG7nZmSkF+2Ejr4qIXdBwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=INUyZ+2K; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784154150; c=relaxed/simple;
+	bh=eGItwZhXhjcCNzydKc7M4IOfg6/7bc3EJbzam0oesV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AKaoeA/cMZ/QcaBRK+0Fhe/IDZdmcN02EnqcEb52y+idEj1X7BmBDFKH9dizhGmBpl9niADbAWIJPF3sDJCTYe4L339wEo+QaLJ1oovs/OMwgDKmJ7GPJXwrTWZ/PiJgNR9KnUm2w93pGI7l6B87i5vfQ1R6OH3DLkY9u6XNCjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=eqTEQ29N; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="INUyZ+2K"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-381b831d535so3016996a91.0
-        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 15:13:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="eqTEQ29N"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493bf73ec2aso40498045e9.2
+        for <linux-spi@vger.kernel.org>; Wed, 15 Jul 2026 15:22:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784153628; x=1784758428; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S+cmnwHjCLxQUJ1DbHmEfqrymZHn9umz8cSa/aq1fok=;
-        b=INUyZ+2KfG3ZkxTGvrd7spXT2qOjwr/V4tkYpQF3Z7BCQsKxCU9Mf4dVHz15KZsG5L
-         YAdi3TxjBA2qbMidyZx/Bde9uEWCwkeYpviDWuYHfO9NPblV5aQ7+sxSsrM4g9iwDGtU
-         HsJIjAsqS38ugVQaAiRfGWHRZodhR7rrR78iasEkk0Mbuyn7MFK6VEEHs3ph79eAg7Kh
-         hG+yfimDBG/qjsFTUSTOl2Cf/qbobiVcRRpriJ6dLh2eC2CBt/X+pOwvTxY4YqqxChvT
-         ua483CWY+U4GMcHdU2I6hbiSwLjZrHpzLAY2QR5HSoisQcy1U8dwq+DFSuO1ZELUrXRs
-         MTzw==
+        d=baylibre.com; s=google; t=1784154147; x=1784758947; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eGItwZhXhjcCNzydKc7M4IOfg6/7bc3EJbzam0oesV0=;
+        b=eqTEQ29N1NF52BAPZ+DLQLG5hsZXPjuOb0wfMKF+jdxQ6VNb3Unu/Q6mTNoxui9M06
+         M2urGLHhoJbVZ5fbkUMJtHEeYZqhBYcbNpigtyq7S6IcgmK1XICl9JnQVOOENvsasVaQ
+         jrmoaYtASVJsaw25WKzG96LmzoFedYYTovj+4A+QWW7hqT7ZgU/sgKrdDxk1JrvvcJxa
+         zCIAXuUIt9IYgCguLXXJJYV9/uqNdTTfCjdKdaXf1kFjINftyiMaTsTb/hxyHMf8OSsw
+         UBA3EKnpr5Y0rCFuLL38xBN2C8odMWzxs54kpMEzXAi0rgoeOYI0j5cGvu3nrjbY/fu9
+         vD+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784153628; x=1784758428;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S+cmnwHjCLxQUJ1DbHmEfqrymZHn9umz8cSa/aq1fok=;
-        b=aRHlSYzUoJi70jiiIqelX4RJu1qNNtZEb22moQqYwNYjyjN9asyGyQyi07tuYOJoTV
-         ZJVZDbvVwFPnIOU2fBm+ND7UFZTM0xtUiLqzL1GZndT+1KrGr5NPAkp1fXeduO6iBITi
-         oKgZo2Uf7BYgXeZH70F/U/VLwY+lhZ6wRa6JjDg9/oQSlRYs2xMnX8EUsqzBzfdtJCU3
-         YJ08828yS8abdTOAVU7s3uc1OJ99jsOJK2s0GkWbZ3wwhPJRrkVT84OVIwnG2xJvyvLj
-         jbsPQq4QSf69j4EIaihLhe3QgNVdNQO5Uu2Vc5g3vX0oIYyR7AYbHcBrKrhaKJ0NqZUb
-         T6fg==
-X-Gm-Message-State: AOJu0YyFt50lq1kLQuC68kAimUr43MSNB+3WToBcgJ1W8PUDDK9XAAsy
-	4ugrofCMCLBuB/nB8p8C86aknsHgeZBFIMz5oPaCiGSLyNLS2Hz/ZonZoOWi6Q==
-X-Gm-Gg: AfdE7clK/NLLzD+sdOv8aL82wFm1bZG1bn/zg9R3vSYUQ0caDXZKDsUZ27JTU8u1uAf
-	6jN50oU8mG5tzJuKYX8EWW1KH3I1BQh4h8+WvYgZV8kWh1rxAfip8wTYUknlotwaCRvNZNcyGlj
-	RttUKTf809BM/hF5A13gISQbrJ7hk4ZHF8iDrI2JIAgAf6EH8YTk/hYeMyDPD/YQcKFA9FfCK3D
-	AAaaItSQkjSjqkF76DfHV2dcfeySReSAa8cIZUyoZ7tJx1rm273JxImOt2eMg2o9ZOt4sSQaDHV
-	GlSffk+Rp9zMVsC85J9/ZWtrP/rzllA0DoqO4IPsAcxzIT0g/BkkQ+LPGT0TlR7nJX6cspgxWIa
-	Fc88oUQtjX7s0IZ2pWG/Q3lGBj4uRbG/GF+jCtS3gkO1u2xzpIQ5D1wGV1kt9X+3ui8HvFH9g/j
-	+9LJPZMN+iHuuJztJZRSY5gS2moQXsbsYr91Q0+ZuWkvRZ61uOujPqBkDuKqi7YAPN7CkWeBLVA
-	wwOLFHQfqEwhEpVpu9EpO8aNW+nB/VN49EkmTzINpvwY7mquTpBEPA=
-X-Received: by 2002:a17:90b:4c89:b0:387:e0db:3fb2 with SMTP id 98e67ed59e1d1-38dc779ac27mr17745813a91.43.1784153628189;
-        Wed, 15 Jul 2026 15:13:48 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38e2a06436asm1078628a91.0.2026.07.15.15.13.44
+        d=1e100.net; s=20251104; t=1784154147; x=1784758947;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eGItwZhXhjcCNzydKc7M4IOfg6/7bc3EJbzam0oesV0=;
+        b=gsHUfGe3GauZ70bPgbARmxqf75GQ6m2UvH6lJ6mSGe4sX9ZQVciOkOgKlbQVnoGY0C
+         iCblJ0lnh89l2t1yYJ2A274vPQjq/f98GGcFPP+D+rYbokzW8s/kdf3iTnYtCKLz78uM
+         FoVE5iQh+Ifc1Lcn2rYZ3mdbYvTXAtVvxsuWF6mYW8SbYWEcPv7cqhuLmtGNRDLc3W4k
+         SQyaUxyidkIcQeIexKjpDqi7FJnC//wgXgjpX+iSU+srB8oKugHKfgQVZYsRGDpZxUwk
+         bYf29mL3g5ZW+gJNxyowEdhDfZ/R6k5liYs6bRKsZrOrgY6n1KNQdUE2iYTw9TUXgyCR
+         b3Uw==
+X-Forwarded-Encrypted: i=1; AHgh+RoeY/U9EOlx5bRxdXwHR+cpolGuKaLPhvJZNlB06aETwBusDRJm8lqTvVpzNZHjGErXovIjO+tzttU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyE/LDPiVFv8dd0StFVBeBHNSd4Qvrfe443+PgksgPf7yssBYFb
+	KWVS54hVZwfLow8bNkyoEtgfxQ6MdUganDGxg7wLjZzXqEk1x9+9msDiboqe7y3JzDE=
+X-Gm-Gg: AfdE7cmDrUeW2rCi3a6M1tB7LxsRDJz8PPurqrgulRTzxBlB+0vF2/5Z1kt2OXc6R+b
+	9CCFbG3SHwWjJ4R6ZxOhlYehY6km4g0tpNYHckeKtA8miraUiHGuzqFO5mCQeZrMlSFNvREOYdp
+	lODKQUOhFwKKIxC+PGzqfaTLZzUOmiBxU3k/245tOF9/I5WM15Up/lY29lfmlTWqpcrUKDcGxc/
+	/5v9BL3b6hyXD8spc493rIZU5fgG3pUXG5mLply5MOLtXlTHtTZ2DKy8lzxPO6Mjf8Z8h2EM2Kq
+	w9YonvlyLOxyyJK7Ty0VbpSBfrnwQeB2A5gqX6EBNZL5aObnHqDdRlXGdLpvPTG/eOlXXr/3SgY
+	BWAQ7bjKCv8MAAeknrSLzG5dYL7bwZKwQQaeMvRjMCshXH8LaVYPUrP8pgLdYtp4M1A1ce5FhB1
+	4DFZCP72U=
+X-Received: by 2002:a05:600c:58d6:b0:493:f262:b8 with SMTP id 5b1f17b1804b1-4953c147474mr41635105e9.1.1784154146840;
+        Wed, 15 Jul 2026 15:22:26 -0700 (PDT)
+Received: from localhost ([2a02:8071:56d1:2de0:1d24:d58d:2b65:c291])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4953c59b810sm88924315e9.0.2026.07.15.15.22.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2026 15:13:45 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-spi@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] spi: orion: use devm_clk_get_optional_enabled for axi clock
-Date: Wed, 15 Jul 2026 15:13:43 -0700
-Message-ID: <20260715221343.474130-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        Wed, 15 Jul 2026 15:22:26 -0700 (PDT)
+Date: Thu, 16 Jul 2026 00:22:24 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Janani Sunil <janani.sunil@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, 
+	Marius Cristea <marius.cristea@microchip.com>, Marcus Folkesson <marcus.folkesson@gmail.com>, 
+	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>, 
+	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
+Subject: Re: [PATCH v6 5/5] iio: dac: Add AD5529R DAC driver support
+Message-ID: <algHt_w841FltSnL@monoceros>
+References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
+ <20260715-ad5529r-driver-v6-5-cfdf8b9f5ee3@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="z552sxv3apml2j3g"
+Content-Disposition: inline
+In-Reply-To: <20260715-ad5529r-driver-v6-5-cfdf8b9f5ee3@analog.com>
 
-Replace the open-coded optional axi clock get/prepare/enable and the
-manual cleanup in probe/remove/runtime_resume with the managed helper
-devm_clk_get_optional_enabled(). This removes the now-unused
-out_rel_axi_clk error path and simplifies the clock lifecycle.
 
-Assisted-by: opencode:hy3-free
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/spi/spi-orion.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+--z552sxv3apml2j3g
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH v6 5/5] iio: dac: Add AD5529R DAC driver support
+MIME-Version: 1.0
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 265708a94984..b1049fd66313 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -691,12 +691,9 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		return PTR_ERR(spi->clk);
- 
- 	/* The following clock is only used by some SoCs */
--	spi->axi_clk = devm_clk_get(&pdev->dev, "axi");
--	if (PTR_ERR(spi->axi_clk) == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
--
--	if (!IS_ERR(spi->axi_clk))
--		clk_prepare_enable(spi->axi_clk);
-+	spi->axi_clk = devm_clk_get_optional_enabled(&pdev->dev, "axi");
-+	if (IS_ERR(spi->axi_clk))
-+		return PTR_ERR(spi->axi_clk);
- 
- 	tclk_hz = clk_get_rate(spi->clk);
- 
-@@ -719,10 +716,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	host->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
- 
- 	spi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &r);
--	if (IS_ERR(spi->base)) {
--		status = PTR_ERR(spi->base);
--		goto out_rel_axi_clk;
--	}
-+	if (IS_ERR(spi->base))
-+		return PTR_ERR(spi->base);
- 
- 	for_each_available_child_of_node(pdev->dev.of_node, np) {
- 		struct orion_direct_acc *dir_acc;
-@@ -757,9 +752,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		dir_acc = &spi->child[cs].direct_access;
- 		dir_acc->vaddr = devm_ioremap(&pdev->dev, r->start, PAGE_SIZE);
- 		if (!dir_acc->vaddr) {
--			status = -ENOMEM;
- 			of_node_put(np);
--			goto out_rel_axi_clk;
-+			return -ENOMEM;
- 		}
- 		dir_acc->size = PAGE_SIZE;
- 
-@@ -789,8 +783,6 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
--out_rel_axi_clk:
--	clk_disable_unprepare(spi->axi_clk);
- 
- 	return status;
- }
-@@ -804,7 +796,6 @@ static void orion_spi_remove(struct platform_device *pdev)
- 	spi_unregister_controller(host);
- 
- 	pm_runtime_get_sync(&pdev->dev);
--	clk_disable_unprepare(spi->axi_clk);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
-@@ -830,8 +821,7 @@ static int orion_spi_runtime_resume(struct device *dev)
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct orion_spi *spi = spi_controller_get_devdata(host);
- 
--	if (!IS_ERR(spi->axi_clk))
--		clk_prepare_enable(spi->axi_clk);
-+	clk_prepare_enable(spi->axi_clk);
- 	return clk_prepare_enable(spi->clk);
- }
- #endif
--- 
-2.55.0
+Hello,
 
+On Wed, Jul 15, 2026 at 01:41:08PM +0200, Janani Sunil wrote:
+> +#include <linux/array_size.h>
+> +#include <linux/bits.h>
+> +#include <linux/delay.h>
+> +#include <linux/dev_printk.h>
+> +#include <linux/err.h>
+> +#include <linux/errno.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/reset.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/types.h>
+> +#include <linux/units.h>
+
+Please don't add new usages of <linux/mod_devicetable.h>, both
+of_device_id and spi_device_id are provided by <linux/spi/spi.h>, so the
+#include for <linux/mod_devicetable.h> can just be dropped.
+
+Best regards
+Uwe
+
+--z552sxv3apml2j3g
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmpYCB4ACgkQj4D7WH0S
+/k61Bwf/XWRg8XAN3lHoIJhsnA8+g3296Hm+E93+U777lyf9jyFKLx7iYqDKHWA9
+kU2LMnREIemDelxgrlmVQ04lxzLBNI4KzBLvD3fyJHVaq/vL+TMQSTyfV1kb+g4t
+w0HZrHT+ETT7mkD8rUtLLXsOyg2cBqauEU+s4Zte8QWbZliDqQ+dVrn+/yugVccG
+F8Cv0+sAEkOhY+7Rp6BJTfsMJWgw8FnCDBWL7tB7OPsiUc0WIrKMq4x6Hpo/x1Jt
+FH3wCIlAxKaE3x1GqiGec5q3WKFej3wvlwRiBZf+yKkobCQkFE8Wc79+SWFm6kDg
+R06LdtSuCgAuTVHAXqMvde5Pysc4zw==
+=f3f3
+-----END PGP SIGNATURE-----
+
+--z552sxv3apml2j3g--

@@ -1,251 +1,276 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010066.outbound.protection.outlook.com [52.101.201.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC823C141F
-	for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 13:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784209862; cv=none; b=VCHPZzXtZ/BbIU9N/MHC4GEUlncOq4XZe9Q5ZXHLxs0g3EjZ9ON4aB+5fcYkf/QHMPA7TP7OffZszbcqTdSM7xkwe9yR/P5xiJkHq0rPsIU9kjHUc2ZeavU0AXjlSIPRXn8jBMdacmz7MxaomVxm653g3QzRQcEYfrEqgXfddqc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784209862; c=relaxed/simple;
-	bh=LtCVk3GlRvz5O/3cpR8WnyAUtXQ+EmvpDFP2wCdQ7gM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ur2fSSLJSBIqZSdjnQscmIV7IBHVn8RJ1w9ipBL9d3CHjRGj/2fIvkKzrCbCLYn+SIHj0eNwHaoJCV12WSN+UHwEczxnNZ43/gjSumgLnCsP7Gx5g2n4S3BEby7oJpbpq0ji4OPy7b+dhw5izp9fw2w1npvtfqjERazy88Uu31k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T0C4XiTc; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E7F3FF1BC;
+	Thu, 16 Jul 2026 13:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784210249; cv=fail; b=T+fFMucTHpDfZYEXbnjcCdlLS5njjk8hMJieIZdA4a6PTIwiYTz2BMotTrJo9tRie0Qn5biLs0lTy2DsCOII/dbgP66GozPEEPtCSxSLjQKJuUvwAs/uIvFBSx9DBMj/KJSL49iQVeBY8F7Ki8Dc1lwdQtygtxjZBQ/eAY69F+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784210249; c=relaxed/simple;
+	bh=16xdDo6SZRHa0Rr2x18Y0GwbvYoY85x/dR8D0EavV1A=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U8Fmc1xafnvHcqCRRJ+1xbzb76j3XiKjJhAuvcIzATuu9y5jherGP1THIcZYfDcjiik68sTnCYAik6uhmZxBs6eyYlwbruHN8ti9Dd1CMCC5orggjteJidPRX4I/dCBBaQ+eRDEYJMz9q866dxt9CseiF1TbxfUP94AaCrA3ZDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=oEShmw+e; arc=fail smtp.client-ip=52.101.201.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T0C4XiTc"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-69c82519403so875480a12.3
-        for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 06:51:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784209859; x=1784814659; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0lc7I38yh7L/gqBncqtshTplNceE/IFKEhJvkcN3z1E=;
-        b=T0C4XiTcMLFLW2jbfq8QujKdiZe3I6jI/rxrlP6ZR1/UmYxFjFUfj3SPe4S8L/tLM6
-         B9dJDlQkJS+v2GDWGbNqVQu2+CnJMzYyryz0sJgujI5NKNiaYpGo8jvtTYW2TJpVAlNB
-         scF5cH5Hpvt4Jt4BJ6otS+mNMRrvx2xzc6GpVrFYAz82RpYmewopFFKH7mMEy7JlBuuu
-         1sYm1DDPj9Q/U7ZWM4Qk0qG4g7EoFdZXEoS7bEjhU8ME/6pwzTfp/rZvJvCfqYouQewu
-         MdsrT2TXCqHYHgSVw1EM/9udnEHnZvmXNTA/a20eygBhpYbuusfyVhTghBwqbUA9WtkT
-         ucpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784209859; x=1784814659;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=0lc7I38yh7L/gqBncqtshTplNceE/IFKEhJvkcN3z1E=;
-        b=Bb8OXp7LRn/64iJprLNcFJfmIqWp/50dQYGR/yVAMjZ9Q5ARP0MrTV6woge2LzsA+a
-         Dnx/sZKKLrvZ19PU7TLjNIsoV39oH2YspX7eKkEam3sAwalLQknyx/6/o3V51WvkUnOr
-         ujhP7Bvg5rxVO6YdC0W9+qeuV3RPLdglU1zcmEHhpmVVz2xa2QcHmsTEgv3k/uLiIjrV
-         wwE42A5T2WZAzcX9/Vq6xJ6tL2+u/Q1eNpyqZn0xbAB8Z2mf2wxiGR1VWTndA/r3RhBJ
-         VhSUhP+dkwDUXXJ5q/lnT7vPnfYNIFuQTihaX/lxWgHvoIlp1U0Gd32ZB24ecvC7fwfl
-         fWjA==
-X-Forwarded-Encrypted: i=1; AHgh+Roi4a0D4w9s4GcUvrZR3WmTRADFoKsD9HxGueDBF3C9NlqUW/aGr9WTle3V6AHKP0Oz3/9KQtYrBhs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7wuTYgOorLvFQOW/TuWTD4PVkMnsy9RQwdXcmFMY/8zkH5T7G
-	sEg4269apCN32wvW+OeB723w1RAGykCYyb9C4bad4R5OngJrVMlr4PCO
-X-Gm-Gg: AfdE7ckTru16xoHfhwBmZ74hmqaJclANHFIRMInKydt1EOrmzfDwKFZkB3GA+fFsr42
-	HfUh6K6rYdbRQ1i+z8RNjd20Me80wZYAtW51TisEGOez6iZsWVLSsjVpxx84zLb0gelkWyPbgKr
-	x886vA1jnglEbkMvBKaxVSn1otOXj8zfkyeGv2B/pBmzDsQN8aZdI1KknVOIr0atUieUVfp9QAd
-	da6DxEXxhtH6vpDMZUSDEB2DH1GNETnpCd97ggE+ZHpRIEwlpw40mcWtgzc/cxJySi2NcXhckMQ
-	VS9ZiL3/ThtQ6qiQw8bwhRYZka6Y1fg6YeUx8zUhkWBBlup3oVpMM4GZfy3fEonqQsO+osG0lcQ
-	RfOCed8A1rTw3XhxMsSDwMJX++9A+swIKUbsZbTwnHg1K8vmVKxeYYonof7nODWTAkUe9MKqyau
-	f9eym+RxBA6iwTmuUDEpZlK3Ym8g8H9vJu
-X-Received: by 2002:a05:6402:2694:b0:699:6415:751e with SMTP id 4fb4d7f45d1cf-69c5f130032mr5962038a12.4.1784209858553;
-        Thu, 16 Jul 2026 06:50:58 -0700 (PDT)
-Received: from JSANTO12-L01.ad.analog.com ([191.255.131.70])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69e12ccd067sm2823890a12.21.2026.07.16.06.50.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 06:50:57 -0700 (PDT)
-Date: Thu, 16 Jul 2026 13:50:37 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	nuno.sa@analog.com, michael.hennerich@analog.com,
-	broonie@kernel.org, marcelo.schmitt1@gmail.com, andy@kernel.org
-Subject: Re: [PATCH 0/6] spi: add multi-CS and per-transfer lane mask support
-Message-ID: <alkL3Sh7kmq7Yr1c@JSANTO12-L01.ad.analog.com>
-References: <cover.1783729282.git.Jonathan.Santos@analog.com>
- <eplbtsrc2rojtpuxdtcy7vp63fhzl4ckb5cobs45y6fmcjy3wj@g3ccws2qeg2d>
- <6576af52-19d1-4b79-879e-bbd09df40a7a@baylibre.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="oEShmw+e"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xiy2bIR2iOO9y7tATOCNoXTSCmC4W84J9WbecDR1SkUKtVgZCJpy+Ci8Dzu6+I82bIdK1Brt9BWRgbxFch5jxGPUWjcWWPLXDytMwHvc69LNd9DXneIzHxoAA69ScSlzM79IwOgU8KIM4vh9UAnlmRGSs8RCXR7+Xhmmuc55unA/93Tnk8fnUAqM+ro+hYoJhC7K2v0ZR/nL/MCQwf6HkIEyrCVe2YCoIRG/hNrud/EUPJkg0Pxaaa0RjNRmvc2ngxkjXRJETzTpP+u/+hYMue8udm0utZhQpi55RdMx5F9F0WOCPsEcVFbuGPaLqOSYsBseYV1JRNYvWATccGVbSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0ZvSRWYodKkMM9SUhKz4VpEyKocTeHkDqe0gltuLMUY=;
+ b=LQ2s35QBUmC3wHLJ0NPwZUhz2nkfelHip4kV/Jd42xDmGMkcc3UZeSs/Hv/SReyMKDB0OpqpEAYugr3i0JYmRn7IhQ2THdoh54MmvlrL7FkMhWulCizPgxnfRMJq20DQ5nxgNvyLq9lFQnKxM0rIxU8C4r5wKour7/sVjhZaiHDE4Bs0MEDDusXi8oFpQRkuvFWXf4l2ZTxkZyrLZRvhF+JJBw78RRL3Zw2Axteop1vrnW2Fo42MORQlWaZn5X3Hv6tHlLGDoSZk3CftqMXur+ounJHCAO0y8ccW93kyLpWB8acaGWJ4rZPpG3r+PTcXjY9crElQTK3Rw0JBc5uL+g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ZvSRWYodKkMM9SUhKz4VpEyKocTeHkDqe0gltuLMUY=;
+ b=oEShmw+ezZSxwdXYjiAOFiwvlvQ6NjIu3QjYKOE7ZEcpPBESUX4W0pnLrl/1lYge6wkMvVOzztLetTrkTIsoEDNRuzB1ViCF28uKq08zoa3itJ3L+xZbbRpSr+nTT0MbqCWG8qXXD4oNTNH5XnVsUw3ypmlLg7Aw6Oa2m56NtB0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from LV5PR12MB9779.namprd12.prod.outlook.com (2603:10b6:408:301::14)
+ by SA5PPFF1E6547B5.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8ea) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.11; Thu, 16 Jul
+ 2026 13:57:19 +0000
+Received: from LV5PR12MB9779.namprd12.prod.outlook.com
+ ([fe80::8ac8:e862:8ae9:9287]) by LV5PR12MB9779.namprd12.prod.outlook.com
+ ([fe80::8ac8:e862:8ae9:9287%3]) with mapi id 15.21.0223.008; Thu, 16 Jul 2026
+ 13:57:18 +0000
+Message-ID: <979c6ed6-4e75-416a-ae5f-a2a8d3ec1a4c@amd.com>
+Date: Thu, 16 Jul 2026 15:57:09 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/16] spi: cadence-quadspi: add PHY tuning support
+To: Santhosh Kumar K <s-k6@ti.com>,
+ "Mahapatra, Amit Kumar" <amit.kumar-mahapatra@amd.com>,
+ "broonie@kernel.org" <broonie@kernel.org>, "robh@kernel.org"
+ <robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "miquel.raynal@bootlin.com" <miquel.raynal@bootlin.com>,
+ "richard@nod.at" <richard@nod.at>, "vigneshr@ti.com" <vigneshr@ti.com>,
+ "pratyush@kernel.org" <pratyush@kernel.org>,
+ "mwalle@kernel.org" <mwalle@kernel.org>,
+ "takahiro.kuwano@infineon.com" <takahiro.kuwano@infineon.com>
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "praneeth@ti.com" <praneeth@ti.com>, "u-kumar1@ti.com" <u-kumar1@ti.com>,
+ "a-dutta@ti.com" <a-dutta@ti.com>, "git (AMD-Xilinx)" <git@amd.com>,
+ Amit Mohapatra <amitrkcian2002@gmail.com>
+References: <20260618073725.84733-1-s-k6@ti.com>
+ <DS7PR12MB9503EA13A8FB71938556F1CDDCEF2@DS7PR12MB9503.namprd12.prod.outlook.com>
+ <13926125-5e55-43c5-b502-4e487d561ee2@ti.com>
+Content-Language: en-US
+From: Michal Simek <michal.simek@amd.com>
+Autocrypt: addr=michal.simek@amd.com; keydata=
+ xsFNBFFuvDEBEAC9Amu3nk79+J+4xBOuM5XmDmljuukOc6mKB5bBYOa4SrWJZTjeGRf52VMc
+ howHe8Y9nSbG92obZMqsdt+d/hmRu3fgwRYiiU97YJjUkCN5paHXyBb+3IdrLNGt8I7C9RMy
+ svSoH4WcApYNqvB3rcMtJIna+HUhx8xOk+XCfyKJDnrSuKgx0Svj446qgM5fe7RyFOlGX/wF
+ Ae63Hs0RkFo3I/+hLLJP6kwPnOEo3lkvzm3FMMy0D9VxT9e6Y3afe1UTQuhkg8PbABxhowzj
+ SEnl0ICoqpBqqROV/w1fOlPrm4WSNlZJunYV4gTEustZf8j9FWncn3QzRhnQOSuzTPFbsbH5
+ WVxwDvgHLRTmBuMw1sqvCc7CofjsD1XM9bP3HOBwCxKaTyOxbPJh3D4AdD1u+cF/lj9Fj255
+ Es9aATHPvoDQmOzyyRNTQzupN8UtZ+/tB4mhgxWzorpbdItaSXWgdDPDtssJIC+d5+hskys8
+ B3jbv86lyM+4jh2URpnL1gqOPwnaf1zm/7sqoN3r64cml94q68jfY4lNTwjA/SnaS1DE9XXa
+ XQlkhHgjSLyRjjsMsz+2A4otRLrBbumEUtSMlPfhTi8xUsj9ZfPIUz3fji8vmxZG/Da6jx/c
+ a0UQdFFCL4Ay/EMSoGbQouzhC69OQLWNH3rMQbBvrRbiMJbEZwARAQABzSlNaWNoYWwgU2lt
+ ZWsgKEFNRCkgPG1pY2hhbC5zaW1la0BhbWQuY29tPsLBlAQTAQgAPgIbAwULCQgHAgYVCgkI
+ CwIEFgIDAQIeAQIXgBYhBGc1DJv1zO6bU2Q1ajd8fyH+PR+RBQJn8lwDBQkaRgbLAAoJEDd8
+ fyH+PR+RCNAP/iHkKbpP0XXfgfWqf8yyrFHjGPJSknERzxw0glxPztfC3UqeusQ0CPnbI85n
+ uQdm5/zRgWr7wi8H2UMqFlfMW8/NH5Da7GOPc26NMTPA2ZG5S2SG2SGZj1Smq8mL4iueePiN
+ x1qfWhVm7TfkDHUEmMAYq70sjFcvygyqHUCumpw36CMQSMyrxyEkbYm1NKORlnySAFHy2pOx
+ nmXKSaL1yfof3JJLwNwtaBj76GKQILnlYx9QNnt6adCtrZLIhB3HGh4IRJyuiiM0aZi1G8ei
+ 2ILx2n2LxUw7X6aAD0sYHtNKUCQMCBGQHzJLDYjEyy0kfYoLXV2P6K+7WYnRP+uV8g77Gl9a
+ IuGvxgEUITjMakX3e8RjyZ5jmc5ZAsegfJ669oZJOzQouw/W9Qneb820rhA2CKK8BnmlkHP+
+ WB5yDks3gSHE/GlOWqRkVZ05sUjVmq/tZ1JEdOapWQovRQsueDjxXcMjgNo5e8ttCyMo44u1
+ pKXRJpR5l7/hBYWeMlcKvLwByep+FOGtKsv0xadMKr1M6wPZXkV83jMKxxRE9HlqWJLLUE1Q
+ 0pDvn1EvlpDj9eED73iMBsrHu9cIk8aweTEbQ4bcKRGfGkXrCwle6xRiKSjXCdzWpOglNhjq
+ 1g8Ak+G+ZR6r7QarL01BkdE2/WUOLHdGHB1hJxARbP2E3l46zsFNBFFuvDEBEACXqiX5h4IA
+ 03fJOwh+82aQWeHVAEDpjDzK5hSSJZDE55KP8br1FZrgrjvQ9Ma7thSu1mbr+ydeIqoO1/iM
+ fZA+DDPpvo6kscjep11bNhVa0JpHhwnMfHNTSHDMq9OXL9ZZpku/+OXtapISzIH336p4ZUUB
+ 5asad8Ux70g4gmI92eLWBzFFdlyR4g1Vis511Nn481lsDO9LZhKyWelbif7FKKv4p3FRPSbB
+ vEgh71V3NDCPlJJoiHiYaS8IN3uasV/S1+cxVbwz2WcUEZCpeHcY2qsQAEqp4GM7PF2G6gtz
+ IOBUMk7fjku1mzlx4zP7uj87LGJTOAxQUJ1HHlx3Li+xu2oF9Vv101/fsCmptAAUMo7KiJgP
+ Lu8TsP1migoOoSbGUMR0jQpUcKF2L2jaNVS6updvNjbRmFojK2y6A/Bc6WAKhtdv8/e0/Zby
+ iVA7/EN5phZ1GugMJxOLHJ1eqw7DQ5CHcSQ5bOx0Yjmhg4PT6pbW3mB1w+ClAnxhAbyMsfBn
+ XxvvcjWIPnBVlB2Z0YH/gizMDdM0Sa/HIz+q7JR7XkGL4MYeAM15m6O7hkCJcoFV7LMzkNKk
+ OiCZ3E0JYDsMXvmh3S4EVWAG+buA+9beElCmXDcXPI4PinMPqpwmLNcEhPVMQfvAYRqQp2fg
+ 1vTEyK58Ms+0a9L1k5MvvbFg9QARAQABwsF8BBgBCAAmAhsMFiEEZzUMm/XM7ptTZDVqN3x/
+ If49H5EFAmfyXCkFCRpGBvgACgkQN3x/If49H5GY5xAAoKWHRO/OlI7eMA8VaUgFInmphBAj
+ fAgQbW6Zxl9ULaCcNSoJc2D0zYWXftDOJeXyVk5Gb8cMbLA1tIMSM/BgSAnT7As2KfcZDTXQ
+ DJSZYWgYKc/YywLgUlpv4slFv5tjmoUvHK9w2DuFLW254pnUuhrdyTEaknEM+qOmPscWOs0R
+ dR6mMTN0vBjnLUeYdy0xbaoefjT+tWBybXkVwLDd3d/+mOa9ZiAB7ynuVWu2ow/uGJx0hnRI
+ LGfLsiPu47YQrQXu79r7RtVeAYwRh3ul7wx5LABWI6n31oEHxDH+1czVjKsiozRstEaUxuDZ
+ jWRHq+AEIq79BTTopj2dnW+sZAsnVpQmc+nod6xR907pzt/HZL0WoWwRVkbg7hqtzKOBoju3
+ hftqVr0nx77oBZD6mSJsxM/QuJoaXaTX/a/QiB4Nwrja2jlM0lMUA/bGeM1tQwS7rJLaT3cT
+ RBGSlJgyWtR8IQvX3rqHd6QrFi1poQ1/wpLummWO0adWes2U6I3GtD9vxO/cazWrWBDoQ8Da
+ otYa9+7v0j0WOBTJaj16LFxdSRq/jZ1y/EIHs3Ysd85mUWXOB8xZ6h+WEMzqAvOt02oWJVbr
+ ZLqxG/3ScDXZEUJ6EDJVoLAK50zMk87ece2+4GWGOKfFsiDfh7fnEMXQcykxuowBYUD0tMd2
+ mpwx1d8=
+In-Reply-To: <13926125-5e55-43c5-b502-4e487d561ee2@ti.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0127.namprd03.prod.outlook.com
+ (2603:10b6:a03:33c::12) To LV5PR12MB9779.namprd12.prod.outlook.com
+ (2603:10b6:408:301::14)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6576af52-19d1-4b79-879e-bbd09df40a7a@baylibre.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV5PR12MB9779:EE_|SA5PPFF1E6547B5:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21feda4a-6711-4999-b07f-08dee342265f
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|921020|6133799003|56012099006|11063799006|10067099003|4143699003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	whGIZpVcp11BLsMA9T2cmF2Uf8F1kuIgKNrEPa4Q2B0SfhaLT9bNuJgnewf3xGF54Rvm9URdlNO0l2ijxuBAC0Oa/sMHEQQZeK+PmWcivtEDOIte3282kVdlGK3Yv4VaVGngzMFvlfQSG+fZLR6PpWSzaW7qt35BseDMmh4szRKLNoORaZZrjBF5+5tH1LXUMFkF6pX/gUlasI2pywSow53xtAX62tlMR6AkXnFd5bE0ewoLNhh1ISem0F2xcjTuQSumnq5nzOdlH2iD+rq6fc8rheErHJBIQJ4BSelE4NWnWPsiSk4rEhZRFki4ivcEeTT9eYX6iom7tGtsspOSlYb3lD6YDXauJ8dyXUwQOIIhbC8oIGrMThkqlF89UMBEOsos2EOS1gFb2eFIIKWOdX899QKM7sJhWeFY10iaHK/LmhHeVQJSYph2LYUXZCaH+RaXPHikAwmMBf06o7i5nb36YQUPuvlUiseI2J27X2rjcALH4EoUY3681mcB09cxaV9tcooiUPPUXJWOndItmBAer2AIwTNbpihxuox6cN0nxubjPZGRj9nL/+5iKAiTEOCq3tAeS4JmZsedEGkt18PL0G6x2qpN5MQazDBBfTd5tZYVG0dx3OZ1yGtidh3a6wctSCw0hoM4GSDKGihNTr+YA+CPxGGG4OROwJonaDEHQwEVdv+DFDskkOt2DzB3DCqrW5VZ6LG80bT6KGdNcw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV5PR12MB9779.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(921020)(6133799003)(56012099006)(11063799006)(10067099003)(4143699003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S3pBd0ZKUjZwRzdpeHhKWkNLOVlxNzJGN2lScGlxalBWRHpwY2xCbnZ2bUts?=
+ =?utf-8?B?R0FqNStmMm90Nm5SUDhnVCtNR3NvcGs4Q0xraVVNNEdnV3U5RHVkQ1RtK05o?=
+ =?utf-8?B?Y1dBRnVkNnMyTWdhSzgycmZKcXhDNHV3aE53SG9KRTg3L0xKOHQ3WktuN0l0?=
+ =?utf-8?B?N2w4VmErZllLdTRnNHk1cm1XWkRaVUhUR1RuZUpka3NuUndRcEkrMVhZS0No?=
+ =?utf-8?B?dEN6c0l3dnJRL0syQXRkRHc2eklRbTAwTlFqQTI1RG9Jdy9idmE5Tmt6Y1RD?=
+ =?utf-8?B?cStzRzVWUTFxTG1lYWVzN1NJQ0JSOHp1WVhJR0RPVDRyYjFBMExCSWJQWWZl?=
+ =?utf-8?B?UDNTOGNtRUUzY3h3b1NEcWtJaW53T09FQUNnVkNzcFZMTDBrZ0hiUytWZFBX?=
+ =?utf-8?B?T3FPTDVMcjhuZDZBWGppTTdDL2lWSWlvb0lTV1UwZ1FhRHFzcm5rUUN1by8y?=
+ =?utf-8?B?ZEo4RXBwcUJxWlMzOVZkYmxTc00rRnZ1YVI3Z3o5V3NDR094bmhNaldCWG4v?=
+ =?utf-8?B?Z1hnWFhNMlBQd1hiZjhzZk00SnI5OHJLLzlGaFZUYzNSSVdZYWwyZmtEcC9v?=
+ =?utf-8?B?d0RLMHZ5R1YrRWRlUk1Ea0dyRERQeDN3SU1ONTVsckNiZE1RVWZpTkY0RlB2?=
+ =?utf-8?B?eGNBOWh5L2h4YzV2eXdJU09mR3VRdWIzNEplTkZqSlJWVFlVYVZ1OFpLRkJP?=
+ =?utf-8?B?a1YrWVZDVU9BUXlTYTd6cjVqYzA4N0UxeFdpdHlxK0dMK1ZwTDI1QnhYeU5a?=
+ =?utf-8?B?NGVrYlVKbndlM2tGNlJsOFZ4Vm5RMExqS1g3WmlZeWc1b0J5L015TWJkNWNr?=
+ =?utf-8?B?T0Evem9saTd1OUFQVlQrb21ZaHAwVEZMWW1IYlp4K3BldDN1ZGxPdFVsVHd6?=
+ =?utf-8?B?enQ5TG03bVEvSGdsWHArNEZ4SG41bzc5c0tYemo5eVpwRGllNnpQT1hCM205?=
+ =?utf-8?B?ZEVETzNybld6Q0MzVFpkdDFhaUV6amUrV3pMQUpOSDFGU2hZM0h3YkVCRGp0?=
+ =?utf-8?B?VFU0dGNNaWNrN0xLaWtoRm1CRDVGczNKODl5c2tzSkd5TEdnbzhON1NMeTN1?=
+ =?utf-8?B?eUlZWXQ2ckZFMDJFNUZHeHVPQlJ6ekFneE1BaFlWY1VpbE00dndhRVJ3ZnUr?=
+ =?utf-8?B?cWhXSGxTR0o3OFYzcGUvQm1ZWk11bW5BV0xWaVZLR3lXWTJHNmhTeE5jemRh?=
+ =?utf-8?B?MDR1RE14UGlFS1g0aDJvVzFaaFdpZm5ZQ0p3VnVLSDQ1emdqTzdQT0FzeHIz?=
+ =?utf-8?B?SmczUHZUcnlPUFB2VTE4SlBWMFhiamt3NTBvSEFBQTgvV1llcUt3Rk5rbUVN?=
+ =?utf-8?B?ME5rN2s4OFRCZyt6L2g3cWxxTk9BY3FHM2xmMGJpV3JTR1RUaXdRRDF0cElt?=
+ =?utf-8?B?VTRxVHFlbTNoeUZOUWhhYk9HMHdTbjhldkJIcTFiUFlGcW8rTGNqNzZiQ0hr?=
+ =?utf-8?B?djFKZEY4QUt1bDBKZXpLRkF4WlhtR1diQnV3dUxzVmkwVk8yeUlBRktnVUZq?=
+ =?utf-8?B?NGVLMjBXK2c2OTZadUlTdHZFUFNVR3JMTko4SDhDYzVqVXdyU3d4cm5LbTM2?=
+ =?utf-8?B?QTNBdjBzQVFVZlo3SGtYWmllc2RpSndFUHY5UUR1aFZKMTBpaVp6M3h6NDd6?=
+ =?utf-8?B?U1VsU2h3MFBIM2x2QmFkZ1Y4T29xbGpMZzFlR1pveDJPbmlJZHVVeUo5ckRn?=
+ =?utf-8?B?V2ZMVWZrVTJiNFY1U2xTOG5xYnBPMzVZRDNlY3RHaVlvTjdXR2JhR0l3bEd6?=
+ =?utf-8?B?ZVJMaERFYjFGVjVaRlZrdHRYV3R0ZnplcUMrSGhYRi9LZGFaM1FxNzNKVjE2?=
+ =?utf-8?B?RUNsbnJnN1J5czQyZFQvYm1mWU5jR01GeTVVZUMvNmMzdk1FdGdVUGpXQWxo?=
+ =?utf-8?B?NXJmQTRibTdldlZaK2JYQUd3TXJyTW9WK051L0RhK1YveWI5WFZZL0hyUFRL?=
+ =?utf-8?B?TElOcGd4d2RyMDc3M3ZiUStuUWpoRkJiTklYbFZUTkFYc2lid1FMUU5FT1o1?=
+ =?utf-8?B?NUNRbEp2NFR4MXNaVm9jQVBzd1FPMmUzZk5IbmF4cDUvUHJweWZMa1N3QTha?=
+ =?utf-8?B?ckRwdmFxNmF2UnZFMXFIYStlZ2kveW5tcUFVb2dWRy81MnVCenlHdWtBZE9B?=
+ =?utf-8?B?MkVYcU1tUEhuYjduKy94bU9YNFhELy9SOC9TZTUrNjY0aVlnWHpONDMyS1Z4?=
+ =?utf-8?B?Sy9Xc2EzaE1DSjJsUTZBeDQ2WWdVNElYZkxEQkVOM040bXBrYlZJTUt2NkRi?=
+ =?utf-8?B?dkJOc21HdTcxdnlERmRjSjBaQkxKRFhUM1VsU1g5N3JTM2dsQ2JFSkxpcmdJ?=
+ =?utf-8?B?UElPc3ZzUWloVUxBRmtSanhUR1NBb3BBanplSEp6S1FlelI0RTlDQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21feda4a-6711-4999-b07f-08dee342265f
+X-MS-Exchange-CrossTenant-AuthSource: LV5PR12MB9779.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2026 13:57:18.5694
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Kd+eVnanPAsGD0mCfmaNiELBoLcpn2f0z1/dB4K4PfUZMun3MraUBMCoELkc2l9u
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFF1E6547B5
 
-On 07/14, David Lechner wrote:
-> On 7/14/26 5:29 AM, Nuno S� wrote:
-> > On Tue, Jul 14, 2026 at 02:55:31AM -0300, Jonathan Santos wrote:
-> >> This series introduces two SPI subsystem features: per-transfer chipselect
-> >> masks and multi-CS device support. Together they address the multi-device
-> >> setup described in [1] and the limitation noted in [2], where no SPI
-> >> controller completely handles logical chip selects beyond the first one.
-> >>
-> >> The first part of the set addresses multi-CS support. Some SPI controllers
-> >> can assert multiple chip selects simultaneously, but the existing code
-> >> hardcoded CS index 0 in both spi_set_cs() and of_spi_parse_dt(),
-> >> preventing this from working.
-> >>
-> >> The second part addresses dynamic lane selection for STRIPE mode. In
-> >> SPI_MULTI_LANE_MODE_STRIPE, all available lanes are currently always
-> >> active. Some peripherals need to select a different subset of rx/tx lanes
-> >> per transfer. New fields are added to the spi_transfer struct to allow
-> >> drivers to specify which lanes to use for each transfer. The documentation
-> >> is also updated to describe this new behavior.
-> >>
-> >> [1]: https://lore.kernel.org/linux-iio/af0EGv172ZMl%2F6N5@JSANTO12-L01.ad.analog.com/T/#t
-> >> [2]: https://lore.kernel.org/all/20250915183725.219473-1-jonas.gorski@gmail.com/
-> >>
-> >> Jonathan Santos (6):
-> >>   spi: support simultaneous assertion of multiple CS
-> >>   spi: add per-transfer CS mask
-> >>   spi: spi-engine-ex: Add support for multi-CS devices
-> >>   spi: Documentation: multiple-data-lanes: describe rx and tx lane mask
-> >>   spi: add rx and tx lane mask to spi_transfer struct
-> >>   spi: axi-spi-engine: add support for dynamic multi-lane selection
 
-Hi david,
-Thanks for the suggestions!
 
-> > 
-> > It would be nice to include an actual user for this in the series.
+On 7/16/26 08:04, Santhosh Kumar K wrote:
+> Hello Amit,
 > 
-> Agree.
+> Apologies for the delayed response.
 > 
-> For context, here is the scenario from [1] (with arrow directions fixed):
+> On 22/06/26 10:00, Mahapatra, Amit Kumar wrote:
+>> AMD General
+>>
+>> Hello Santosh,
+>>
+>>> -----Original Message-----
+>>> From: Santhosh Kumar K <s-k6@ti.com>
+>>> Sent: Thursday, June 18, 2026 1:07 PM
+>>> To: broonie@kernel.org; robh@kernel.org; krzk+dt@kernel.org;
+>>> conor+dt@kernel.org; miquel.raynal@bootlin.com; richard@nod.at;
+>>> vigneshr@ti.com; pratyush@kernel.org; mwalle@kernel.org;
+>>> takahiro.kuwano@infineon.com
+>>> Cc: linux-spi@vger.kernel.org; devicetree@vger.kernel.org; linux-
+>>> kernel@vger.kernel.org; linux-mtd@lists.infradead.org; praneeth@ti.com; u-
+>>> kumar1@ti.com; a-dutta@ti.com; s-k6@ti.com
+>>> Subject: [PATCH v4 00/16] spi: cadence-quadspi: add PHY tuning support
+>>>
+>>> This series implements PHY tuning support for the Cadence QSPI controller to
+>>> enable reliable high-speed operations. Without PHY tuning, controllers use
+>>> conservative timing that limits performance. PHY tuning calibrates RX/TX 
+>>> delay lines
+>>> to find optimal data capture timing windows, enabling operation up to the 
+>>> controller's
+>>> maximum frequency.
+>>>
+>>> Background:
+>>> High-speed SPI memory controllers require precise timing calibration for 
+>>> reliable
+>>> operation. At higher frequencies, board-to-board variations make fixed timing
+>>> parameters inadequate. The Cadence QSPI controller includes a PHY interface with
+>>> programmable delay lines (0-127 taps) for RX and TX paths, but these require
+>>> runtime calibration to find the valid timing window.
+>>>
+>>> Approach:
+>>> Add SDR/DDR PHY tuning algorithms for the Cadence controller:
+>>>
+>>> SDR Mode Tuning (1D search):
+>>>   - Searches for two consecutive valid RX delay windows
+>>>   - Selects the larger window and uses its midpoint for maximum margin
+>>>   - TX delay fixed at maximum (127) as it's less critical in SDR
+>>>
+>>> DDR Mode Tuning (2D search):
+>>>   - Finds RX boundaries (rxlow/rxhigh) using TX window sweeps
+>>>   - Finds TX boundaries (txlow/txhigh) at fixed RX positions
+>>>   - Defines valid region corners and detects gaps via binary search
+>>>   - Applies temperature compensation for optimal point selection
+>>>   - Handles single or dual passing regions with different strategies
+>>
+>> Thank you for this series. I had a question regarding the Virtual Concat
+>> driver patch series [1]. Now that it has been merged into the kernel and
+>> enables support for multiple flash devices connected in stacked mode-where
+>> each flash device is probed and configured independently-if both flash
+>> parts are required to operate in DDR mode, each device would need to
+>> perform tuning and store its tuning data separately.
+>>
+>> Given this, should we consider this use case and adapt the tuning
+>> architecture to support it?
+>>
+>> I'd appreciate your thoughts on this.
 > 
-> +---------------+                                                 
-> |     ADC 0     |                                                 
-> |               |                                                 
-> |        SYNC_IN|<--+---------------------------+                 
-> |          DRDY0|---|------------------------+  |                 
-> |               |   |                        |  |   +------------+
-> |          SCLK0|<--|------+                 |  |   |    HOST    |
-> |           SDI0|<--|------|--+              |  |   |            |
-> |            CS0|<--|------|--|-----------+  |  +---|ADC_SYNC    |
-> |          DOUT0|---|------|--|--------+  |  |      |            |
-> |               |   |      |  |        |  |  |      |            |
-> +---------------+   |      +--|--------|--|--|------|SCLK        |
->                     |      |  +--------|--|--|------|MOSI        |
-> +---------------+   |      |  |        |  |  |      |            |
-> |     ADC 1     |   |      |  |        |  |  |      |            |
-> |               |   |      |  |        |  |  +----->|DRDY0       |
-> |        SYNC_IN|<--+      |  |        |  +---------|CS0         |
-> |          DRDY1|---|------|--|----+   +----------->|MISO0       |
-> |               |   |      |  |    |                |            |
-> |          SCLK1|<--|------+  |    |                |            |
-> |           SDI1|<--|------|--+    +--------------->|DRDY1       |
-> |            CS1|<--|------|--|---------------------|CS1         |
-> |          DOUT1|---|------|--|-------------------->|MISO1       |
-> |               |   |      |  |                     |            |
-> +---------------+   |      |  |                     | .          |
->                     |      |  |                     | .          |
->        ...          |      |  |                     | .          |
->                     |      |  |                     |            |
-> +---------------+   |      |  |            +------->|DRDYN       |
-> |     ADC N     |   |      |  |            | +------|CSN         |
-> |               |   |      |  |            | | +--->|MISON       |
-> |        SYNC_IN|<--+      |  |            | | |    |            |
-> |          DRDYN|----------|--|------------+ | |    +------------+
-> |               |          |  |              | |                  
-> |          SCLKN|<---------+  |              | |                  
-> |           SDIN|<------------+              | |                  
-> |            CSN|<---------------------------+ |                  
-> |          DOUTN|------------------------------+                  
-> |               |                                                 
-> +---------------+  
+> Good point.
 > 
+> The current implementation already stores the calibration state per
+> chip select (delay line settings, tuned flags, and operation templates),
+> so the data model supports independent tuning for each device.
 > 
-> And the proposed DT from the discussion in [1].
+> However, the runtime path that enables PHY mode does not restore the
+> per-CS delay line settings when switching between chip selects. As a
+> result, consecutive PHY accesses to different devices could end up using
+> the wrong delay line settings.
 > 
-> spi {
->     #address-cells = <1>;
->     #size-cells = <0>;
-> 
->     adc@0 {
-> 	compatible = "adi,adaq7768-1";
-> 	reg = <0>, <1>, <2>, <3>;
->         
->         spi-rx-bus-width = <1>, <1>, <1>, <1>;
-> 
-> 	/* other properties */
->     };
-> };
-> 
-> As a refresher, the idea is that this is considered to be one big ADC
-> with more channels (for simultaneous sampling) even though it is
-> physically multiple chips. 
-> 
-> Currently, this series is treating CS selection and mutli-lane SPI line
-> selection as completely independent. However, clearly certain spi-rx-bus
-> lines are tightly coupled with certain CS lines.
-> 
-> To reflect that (and easier to use in peripheral drivers), I think we
-> could bake this correlation into the SPI core code.
-> 
-> So struct spi_device.rx_lane_map would become a 2-D array where the
-> first index is the logical CS (following the pattern of .chip_select)
-> and the second index is the existing one for the data lane.
-> 
-> The trivial implementation would be to assume that reg and spi-rx-bus-width
-> have the same length and there is just a 1-to-1 correspondence (first data
-> lane is associated with first CS, and so on).
-> 
-I like the idea of binding the CS to rx/tx lanes. I have a concern though: could this 1-1 correspondence break the current implementations where we have multiple data lanes per channel and only one CS? (and in those cases spi-rx-lane-map is ommited, so it is used the default mapping based on the spi-rx-bus-width). 
+> This can be addressed with a small change by reading the currently
+> programmed DLL and reprogramming the PHY configuration registers
+> whenever they differ from the calibrated values for the selected chip.
 
-Also, could we extend the ancillary device framework to deal with the multiple data lanes? Maybe it is easier to bind the logical CS with the data lanes in there because there is the assumption of sub-devices with multiple CS (even if we don't use the ancillary device for this case).
+Are you going to include it to your series?
 
-> And we could add a new DT property for more complex mappings (multiple
-> data lanes per CS or wires not connected in logical order). We probably
-> don't need to do that right now though if there are no expected users
-> at the moment.
-> 
-> Then we would only need to add the CS selection to struct spi_transfer
-> and the controller driver would just use the map to pick the correct
-> data lanes based on other parameters as it does now. (So no need to
-> add .rx_lane_mask to struct spi_transfer.)
-> 
-
-Yes, this is less prone to mistakes.
-
-> This way, the ADC (SPI peripheral driver) can set 1 CS in order to
-> configure individual chips and then set all CS to read sample data.
-> And all of the data lane selection is all handled transparently between
-> the core SPI code and the SPI controller driver.
-> 
-
-Another concern with the CS selection is how to handle this in the
-driver using regmap (i will add the driver patches in the next version).
-I Created custom regmap write and read handlers and a regmap instace for
-each sub-device. Each instace have a context data with the corresponding
-CS mask, but it looks overcomplicated. Dealing with this correlation in
-the ancillary would be simpler. Don't know if this makes sense.
-
-> (And obviously everything above applies to tx too, I just wrote rx
-> everywhere to keep it shorter.)
-> 
-> > 
-> > - Nuno S�
-> > 
-> >>
-> >>  Documentation/spi/multiple-data-lanes.rst |  30 ++++++
-> >>  drivers/spi/spi-axi-spi-engine.c          | 106 +++++++++++++++++-----
-> >>  drivers/spi/spi.c                         |  97 +++++++++++++++++---
-> >>  include/linux/spi/spi.h                   |  12 +++
-> >>  4 files changed, 206 insertions(+), 39 deletions(-)
-> >>
-> >>
-> >> base-commit: 093239070573637ad2b4cb56abc9c4c7ee109294
-> >> -- 
-> >> 2.34.1
-> >>
+Thanks,
+Michal

@@ -1,89 +1,90 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659B2324B06
-	for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 23:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6EFFBE1;
+	Sat, 18 Jul 2026 00:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784332091; cv=none; b=XIsL98kSzGW/nlJc6XrepJznWyYNoJUERyzJEFhqyJyEiiNUFBmfuo5R/hddonefFOVpOV0fPz7+GZvDi1U8PeD9iECnBhysXMmy00IJYTR1miyh3jf6yGEqzvoXFrGqOmGgA+WZ/M5Xf6D1e5uCxTIx8FeiVSV7JxRS/QwpP4Q=
+	t=1784334205; cv=none; b=pA4LgSeG3scd7qoYlACmBqOa+lvLlBcGnjYvQ8fwIKqDBtKY2dydvtMGUgBT7RMzC1YZFx+PL+sKyTkSLQe4HgdYcf/zP58diV45oEMOTOUP04LNlOEBUB42cl1Aje95g7BEBAs1vouCFQe36gi7EdNH+wueYsVkBqwmogShAkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784332091; c=relaxed/simple;
-	bh=TxgWEC5OxJ4YCZu2v2EhY3J3m93CWafpLRaOj8MGYzI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tugFeiqiYRPKLmKXrgs1ZmPo5u3PykAGFHosvqf0IsYRCJaEb3rlfG1/ARH0K/mrFsWsp6m/cDLAzMND2hSOSIW9UsxS/DusTfYK+48mz2m16hDm0YoRKIafS4GTxSoLLtCDmA/5wx49gDe3JiUZ6f7bfb5Aa2jCKgfVNTYP1Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7eb1dc6bd53so4518193a34.2
-        for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 16:48:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784332089; x=1784936889;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TxgWEC5OxJ4YCZu2v2EhY3J3m93CWafpLRaOj8MGYzI=;
-        b=Lhpey5rRQ1WWL8dBxYxiJpbkA6oxxSf4MSzM4RrFzajoYeHz9HX61jRk5QYepmglp4
-         ZnWe2IBy6L+gnabOF/LhT+SXHlip/hEtFzfq2wkqGSc+2AxhXNNxnojKa0WeQ8BKEDkZ
-         4/Awpbsvj/1tVjf/AIImFApShIc25glMsHdOGAVecn5HLpB0csLQM+ZesoBWatnTe/Pa
-         +w5cwM0UUzQP4nn4FNc9KU+Unw6xU1zMImAnNAN3Ym34t+/hQPY688rAFs/JwKtMgFyM
-         NdOAJAObKeuWqh0Bv7HC3qp9bnIgqOvxSspuajMnESiTxpdNs6jSQImeeTzRSTqjQpXo
-         dcZw==
-X-Gm-Message-State: AOJu0Yy/zGfoCbdBAH+UW9G1WhJq2gCssflCoQ5Pk+pWc+7i4JyblyqC
-	jLj44utP8sIqCMQusM7soEjykDJOSmYjI+DcO+0d9j/P5nn8ARewI9KWQCPm
-X-Gm-Gg: AfdE7cm9Sr2cWIYlMfs9mbkUFEpXaHgKvT9jnR1zJwYtfVgDgXFkKOVGLVCEpmc8c5t
-	Ujydr/sZwCnXlXUhSu2SvYUoS4PUO/CA1sLJJ+tLDex7pGASh4xUDBHAfv3xp6zeO7Lgd01Rs/1
-	24WjUXy5z46FerzpG+JLo9YMSglfeU8ChG5USdDKmsRl/zpH5L0Y9DfHoYiFdz/TzcQzH3QDgZu
-	Z/KmpMl3o3/Xmdxt2uQ/sRoS6tUPt2Oc9Xg/aOw2toTvX4/cfeWDOD7lbGsaOLa1BZ5cxziSUv8
-	rQlmli/M9KWYhWBocF8yYreoD9Gxdx7ZsTX0z6kjXrPu5O2FsrAwX1PGF0V15WD5erIgdzIX6fl
-	uR/FyBC5BjDznEmJ0FuceKcYHECYXSl9yyUqfBOLNfTMBOcyd+Go7KHgLSUdYQg4vjFz5Ldf51c
-	3Zk+rJtmSwRsHO3hAtamqNYsxsOU/j0HkW+4Kc9pLZn/cwtfVVR7lgS5U32wpl5qz17S9V7Z6y
-X-Received: by 2002:a05:6830:81f1:b0:7e9:b4d0:df75 with SMTP id 46e09a7af769-7eda1594647mr2330485a34.29.1784332088953;
-        Fri, 17 Jul 2026 16:48:08 -0700 (PDT)
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com. [209.85.160.44])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7edaf9cd6f4sm2407649a34.23.2026.07.17.16.48.08
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jul 2026 16:48:08 -0700 (PDT)
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-45133d2974fso5066421fac.1
-        for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 16:48:08 -0700 (PDT)
-X-Received: by 2002:a05:6870:9a06:b0:44c:3269:4d40 with SMTP id
- 586e51a60fabf-456908c1ad0mr2006868fac.7.1784332088156; Fri, 17 Jul 2026
- 16:48:08 -0700 (PDT)
+	s=arc-20240116; t=1784334205; c=relaxed/simple;
+	bh=ZLifpG7icI9PqEEut6ouhRKp6wmS6CvhjoNbhSSnV2o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Gsz25AuZjMIeyUn097R4qt1Hhgd1XTmleoFVIawROmiviFvCr4uGY0eBReNQszZUGSdKdgxu85ivVbRi6A+B+s6gRmS18g6fvVKqlmYBJpzzIfRCeijQ8qhi7e/DpzuX/VmNjiNl4LS7qbhg655AaiXcRKy7mTxxqdSJWFIJYoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7wdkFMP; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7wdkFMP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA161F000E9;
+	Sat, 18 Jul 2026 00:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784334203;
+	bh=KWd1tvmgv0UYrgt/pYkzyfFYKRvzyH/ABVaUgoO59CI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=C7wdkFMPxCj3t74nAY6WOvUaxLw+BQR7Wwe4gYHgPAqWuXfZVYBxOx9uDZm5OygLi
+	 KmifjgiS3aaveDtAGwpVFRH70kDluwPrIK5ZKIbTfsAJSxjEhe7EojFiAQfzIEdhKX
+	 OefcXNCCadUr52RAmZxxLB1V77gQf6HnX/r+6Q9ikytW8RfzR4PhThQLjJpAeLuxkm
+	 RpHS1iwqEda5HS/P0GX2J/QHh/LyjUBZqr9IN9/QE7ll9RRs9uHk46qfA7BwfRW1VE
+	 gLdN83I3x7f2CKFFNHR+kZxJqBBQ7vCBca2qL9lT4uMBeiU9kWcB3oy+WQe2Ji1xY9
+	 lSVbcSb2EFJNQ==
+From: Mark Brown <broonie@kernel.org>
+To: Bert Vermeulen <bert@biot.com>, Birger Koblitz <mail@birger-koblitz.de>, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Rustam Adilov <adilov@disroot.org>
+Cc: Carlo Szelinsky <github@szelinsky.de>
+In-Reply-To: <20260711083411.45836-1-adilov@disroot.org>
+References: <20260711083411.45836-1-adilov@disroot.org>
+Subject: Re: [PATCH] spi: realtek-rtl: change to __raw reads and writes
+Message-Id: <178420684300.63368.10149032349840537073.b4-ty@b4>
+Date: Thu, 16 Jul 2026 14:00:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260712162420.7453-1-fourdollars@debian.org> <20260717154646.5854-1-fourdollars@debian.org>
- <51a76c7a-1cec-4d2a-9a78-1ef0da890636@sirena.org.uk>
-In-Reply-To: <51a76c7a-1cec-4d2a-9a78-1ef0da890636@sirena.org.uk>
-From: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
-Date: Sat, 18 Jul 2026 07:47:56 +0800
-X-Gmail-Original-Message-ID: <CAAT15mPUw6-YRx+bUumybHaQ+6PNyQycsb8BbQyvViC6rA-wLQ@mail.gmail.com>
-X-Gm-Features: AUfX_mzOsQ5Wns2xYHxLmzDYk3ukE-3AWDGcrrqW-ynlPVnfvs4NTS6W080LeVU
-Message-ID: <CAAT15mPUw6-YRx+bUumybHaQ+6PNyQycsb8BbQyvViC6rA-wLQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] spi: pxa2xx: MacBook8,1 quirk and LPSS S3 resume
- state fixes
-To: Mark Brown <broonie@debian.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1115; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ZLifpG7icI9PqEEut6ouhRKp6wmS6CvhjoNbhSSnV2o=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqWsd5TjaOzT57HcIqjKTINkoiJouljnfSTxhLm
+ r3PUbirqHqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCalrHeQAKCRAk1otyXVSH
+ 0GR6B/9MgLDmLfdL1a5CfD1xqBoxlEsmXLMSwyoIEFDz1L9Ox43CL29AUXDd2TpQL6GN76tOPIi
+ fZevsTQS6+bFo9PKs8PU50e94NAYmlPIF3+rayuAkPPb2qpJzLv3o6WRvJ+9ezqGvN3VuypAAvC
+ z+X8iD9XbG08JHwDQ2b16MgbB0lOn6lBkpaaQ9KD2/78nB7kr6u9XQ26D+YxMaKeTdcYlcrGGxk
+ 4z4psGHTgghhMTA2k7bHwlsYzj2aOkvj0R4UPtury8EQB/BI3fu9esIveUyDnuOftAwC9cszgQ5
+ sIjrTKhvPJT+mN9RJRTZTEbk0bcTWsVH/CE7EfKCVY+qkjPQ
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sat, Jul 18, 2026 at 5:44=E2=80=AFAM Mark Brown <broonie@debian.org> wro=
-te:
->
-> On Fri, Jul 17, 2026 at 11:46:44PM +0800, Shih-Yuan Lee wrote:
-> > Hi Mark,
-> >
-> > This patch series resolves two issues in the spi-pxa2xx host controller=
- driver
-> > related to Intel LPSS SPI controllers.
->
-> Please don't send new patches in reply to old patches or serieses, this
-> makes it harder for both people and tools to understand what is going
-> on - it can bury things in mailboxes and make it difficult to keep track
-> of what current patches are, both for the new patches and the old ones.
+On Sat, 11 Jul 2026 13:34:11 +0500, Rustam Adilov wrote:
+> spi: realtek-rtl: change to __raw reads and writes
 
-Understood. I will make sure to start a new thread for next time.
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+
+Thanks!
+
+[1/1] spi: realtek-rtl: change to __raw reads and writes
+      https://git.kernel.org/broonie/spi/c/4bc5a274edab
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

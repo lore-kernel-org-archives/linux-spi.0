@@ -1,131 +1,154 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7948C3D7D67
-	for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 09:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C102B3955EA
+	for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 09:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784193747; cv=none; b=WOAKUAfmTEEZOg3nYIiAi0srtDsKJhJogaiMpgt5nRHer1+KzbMnClhzbGmM1r2LBAn6PdIQqsW9PGCy3ZYRpku0ANJwJm+l+6kSXFFAlW7QPE/ykS6qM5NRpKHG+cuWsih1crl6KJRLTUtx+nMTrbkbVyzgq5S4p8G/Aihw3ws=
+	t=1784194601; cv=none; b=D6vtUkfnEXGHwmJ77IeALjjKt8Nfk/XAvWliyrjErX61X5TzIzYnYQ1MasHDYXFdn1mDdY8gEW1kMY2utMZyb5qWgh9BzQRim2HIsJ6M2dw/dXN5KHql51gLKqflBzmY6L6miql4LOPQp8Ag4y8l7j8w+2QSyiX99kKBmQKYmP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784193747; c=relaxed/simple;
-	bh=rzqO5CDfV2tieACWMMf/aFToKmo74knunxI4lMWi1/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nb6O7Ei3zXZOL18IhLizAQytSEdJ2wuTTiaKiPjeBkARqlcGlEcbVl/UMdy4yRkQkJ/xbPj2/xJmOILSpN358bJfIX+PpXyCWYNqXuXSw0IG4KpRqLZqCGGpln1tKEonj5zIdU5OGeulT5i23O5j6sp2vCt/Viwg2c74GRodwRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmZjswKe; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784194601; c=relaxed/simple;
+	bh=m+4b3aLkvYKYXjk/5jBk13X1toi/h2jJT0j9yCVHa34=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MYhLIMJF0FGuwkS85kwjy5fV6wZj7SJnvbnNaLey4/ZQWCelUmS112mEawL0qFAVCYCeJbekD32kX2XTx9RbRujtqGuUTw7vjyHgEN6l5erHrUzCL2QTbr+LnhHPvj7UTjQ8unH+8dJ2sqN4B2MABZfcpHXVvfE6OaGo9jU24o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ImarmEFv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Y+g+lcFu; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmZjswKe"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c15d5468673so347187166b.0
-        for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 02:22:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ImarmEFv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Y+g+lcFu"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66G7DQCm2102717
+	for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 09:36:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	iQneF3Snhi2o+9zW2iPm4mlK7O1KLd3pE5NOe2Pedfg=; b=ImarmEFvRplhQtnn
+	96EQn0rHWlVLm/2BIio7tnfNugFZSYwdkNTl0hgpbjgS1HGNliGGk7VXOU/Dc7UK
+	C1IGWEIs23ZXlEG9sK40DMsu1sC5Kp1bjcyNggvOiGYmR6CoBCc9oGpJXQKJbZUK
+	yakevVvt5ztCkKKZJcEg0jCJsUCzpYnXQpjdXbpNautrp0V4xjK3teVliJkPSH7o
+	WywlIOVcVrvV5qaMWtRh/Tmsm/73wHnsDxv7EWbWJQ5VfNs/4bK5ktEVWUFaJrO/
+	66CkOD7sDDY1JSlyiRCIS0G0hHRwjlKlhTbe05UmaB+p1RkMvkZQac4V6NZv3MBk
+	GjGEvg==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fen4w9pex-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 09:36:38 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-51bfa45b280so14704991cf.3
+        for <linux-spi@vger.kernel.org>; Thu, 16 Jul 2026 02:36:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784193744; x=1784798544; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=n6wOUdncDgzNL344qtaFFDOsPjqPXofjtfmeNQYdoHU=;
-        b=HmZjswKel4QxxpyT6Y3sPgOGh1D/6kZTad6T6JU8PGTInB/XrDvTh4ZOnQVfEp9Uaf
-         3qkxmg38RojIuAc9BxJSxVU2j+KO7i84AnhI81KqsCKcjrTFj7sT9w5ruJYmBgfnxisP
-         NKeQgIFxKtxVFNiCmb56oYwweDavQjEy9TsKFVkJLuRPaRi6tck8T/+/3+ni92bDrMbb
-         0lF8Xd1JU7TzM7z3nDgJn3zmTH7hL+aoayq2RRxQXq3MVzgbfugmyXeZFO0FxCM2ymnA
-         KzfsDSTgIlU8Bqat2AARMlcB9IwW3NxviGijjY59iQyk1qIFqDqUpVIoGGO1oeWOIy6s
-         EWdw==
+        d=oss.qualcomm.com; s=google; t=1784194598; x=1784799398; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iQneF3Snhi2o+9zW2iPm4mlK7O1KLd3pE5NOe2Pedfg=;
+        b=Y+g+lcFuCuW8WY/8qVtVpBZ0s1Ed53WUxsFjh+D1inETbgXkS/9p2WKZmMkvLlGvsT
+         tX9p797VnRoAFbcnjIA9NCekDYz+RBta5ZOLSJa3aKyoBEKjcd4b8XDBxzVpw+Tk7xTs
+         +t4rZZA3t/aKDOUEawUAl7+xIRIVv1Nq7X0DWlY2Jq4/yAKbwCp9dABV2VUFSagG6VdC
+         OkrazWvLmYIcQ27AetY7LA8tIo+CDiXkydPY5OkyIN5iGrCAmDgqcOK6m8Bq1thGhNGU
+         j5bGCkk1xveslA0zfh+3j14D2l3Mu96HQml2Hh9p+ONpN1y0g2SscVKO3ul4UDFs4NZ/
+         o1mw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784193744; x=1784798544;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=n6wOUdncDgzNL344qtaFFDOsPjqPXofjtfmeNQYdoHU=;
-        b=o4xPnnLvJfSozy6LSfL2drV7ja+qxrpW9pohYpYQGiAI0e58RKznEGrmYK+l97KKJs
-         gGfaf1lw/zdwkZUdn8QlZy6N0dVJz285uUdjsPnuvL/BGcf0JWFTbSbxUWvM8ewre8az
-         34WnJ14xY7KNlyDQz3PyVjwPWvGWosQnM7BQpoKYvdw/GnQEY6NKk4RIAmML6F+EWYYQ
-         hw/9NVo9s5qZ3GTYRkmBhMhynkIrIgOkDZVfrrCSn1a++WkrBBZSQfiksHXvM6erXSw9
-         LWS1H7+wZJZSkwXPakNpk/r1tYVhD1qdpOlCmhLVNvHEqabKX6kf9rxOaiI7lFnsy/RC
-         P9jA==
-X-Forwarded-Encrypted: i=1; AHgh+RojxViqPMARfolYt/CCaMzPgMOrpM1xUJmNKvDanGjWxAcCn4LXm4BUoIcMLw5G/bqq3Utop68FyGo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUMlTVWTe42gw5B66T2wTK+xCYYdnnoZSqBWBwxUHZbNM5LDSn
-	VcTzdHkPlhY4EkPQ5B/HAPA7+O7QqkbWmCuy7PhikH2y49JlMszGITUI
-X-Gm-Gg: AfdE7cm6dMhPLMtpFM/kz3S4jNZ91irh8f9QUWiud8Udp3Pg5MFNO3R0cDiN6umSHf+
-	yNGTGjUifNnuVKrL1aiGy2pM7ht5atlN9ZG6YNBQHSCiOSpPamnC/RuRQ7MJZ2ohHp8vce3ZZjZ
-	De1u9c9f1tdCthCMQr7Dycxicni0A9FaFaNqsg6L8lmOUUuWnIAqsDkfOb8XHmqMNlBU5PDiHhj
-	o+lqgKaYzrj0tudMmtKSgZcBYmwObYa0jiVjNWD56cqwcWu845BlZBMldtpd4idQMeF4lJ2YoV7
-	88Wh7vo5jiVoxoQW9eQxagpRilOHQastQlOrVUSUGftOAGS5Ozf/XAclqX/pRC7YCU4owIiuftX
-	/csn7Zstl9S+K8zpbFSFkPJbwN2ZxEPrqUv7VRIN6/fr4QDohjPpl+qpQvVFQkI99iwLDI2XTvf
-	eCTqTcOiVS+aE61jRz
-X-Received: by 2002:a17:907:3e1a:b0:c16:358d:df3 with SMTP id a640c23a62f3a-c16358d0fecmr1012405766b.63.1784193743476;
-        Thu, 16 Jul 2026 02:22:23 -0700 (PDT)
-Received: from NSA-L02.ad.analog.com ([137.71.226.102])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-69e12ccd067sm2385553a12.21.2026.07.16.02.22.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jul 2026 02:22:23 -0700 (PDT)
-Date: Thu, 16 Jul 2026 11:22:19 +0200
-From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Janani Sunil <janani.sunil@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Marius Cristea <marius.cristea@microchip.com>, 
-	Marcus Folkesson <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Janani Sunil <jan.sun97@gmail.com>, linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
-Subject: Re: [PATCH v6 1/5] spi: dt-bindings: Add spi-device-addr peripheral
- property
-Message-ID: <jsximyohkijphqrtgat6cjtcvtirjsdtbgn3lb6npw6yhgmcth@tq64dotfowss>
-References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
- <20260715-ad5529r-driver-v6-1-cfdf8b9f5ee3@analog.com>
- <1c4af9b1-9937-4cbb-b57f-52ac575b8b89@sirena.org.uk>
- <lpbqk3wv6emhdtxhnczrgufzzxprcfpfgenfepnmzhzfj3b3ci@rdphuko7ikti>
- <157154d1-3995-454b-9e08-1527f1c5d409@sirena.org.uk>
+        d=1e100.net; s=20251104; t=1784194598; x=1784799398;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iQneF3Snhi2o+9zW2iPm4mlK7O1KLd3pE5NOe2Pedfg=;
+        b=BVsDXkakHeC7KB81Ok7j2OsHGUcf+jJymP7m0wSpwbajuvXntVWCXEowhRixzUfyKv
+         VQKJPkwTkBvxOT8+/k3jkvea9egjrqsg3eAjBUMOFpvdRGl6u31IbEJtJ0DTHc555xB1
+         sh4oeckgWqqtcH5AYcUiCfmR2SSzMs//k8LT9a09lIIPkKIz+4NXsyXc2NrdEWrkab5l
+         rzfqbSkKt/lcr8Tsdu9r+iYhyM3OMRqkz3l2MokR0od/SsrUwOhuxWv84b9FnZ+NFa1P
+         NRZc4txLLgzN3t6wf4euOizDNo2C0VR77XfkUAAYl1o3y6BjKr3PnbS90b/q/ctc2RI6
+         7gOg==
+X-Forwarded-Encrypted: i=1; AHgh+RrUTudkW/qtYEl5svlBp5bHa5Toub3xg8tY/+y1hwIkqPeFrAV8++cGUtgwTVMuVPdwAtbwgT405Ac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQTpDnP9tAHzd5M6ozoRfZFIetvyAqfGTpl1OfQlMspMIn0L9U
+	CB8nEODJ2iYUNf5lZsI/n3hCqyfk10KCR5bf64LbjSbh05jrd0NrvpmbJdES+bWSh5hqDFkPgsK
+	66kCB7bbLqoulXwnqMASPRHCNx1xp8D4EuQwI1O7+HJeNVOSuo7QN0uTDzTorpcc=
+X-Gm-Gg: AfdE7cmWGy0EHaea1Wpw2vlfax8FJujGMvFdtl9bZg3ag4vxboWOHAlqzhqr+9BjHA7
+	CMVy5Kq3ofRAqcnmTh+sE6A7Q3hD6jTshlYuBEQpv5lsFuDvxRHaLaQ2tO/ubO3fXMoMOCQ8CRU
+	zY7/YlpIqnRkYqgIfUMLkSgRet9lR/cZP5VNGm11fbnqegOf5aKGUt13PNE9upmcIYpcKDSt5J/
+	IWDKT0qQQEf6Qn50SRM03O4L3+SJxxigavV4NC2kgioeQhQxStpVXiW6NwJt9uLpVqXoSByWAMf
+	7xQHWjeuHLpNdzYvZY9GBVoVoH65ACZWdAuREtwkcA2alhNGJOOc016nimOYN1qwY8/4Q2gZxEu
+	VDCx7UR8BlMTPWwPckAAdMexs
+X-Received: by 2002:a05:622a:389:b0:51c:83f1:bcd4 with SMTP id d75a77b69052e-51cbed7dccbmr25593721cf.0.1784194598033;
+        Thu, 16 Jul 2026 02:36:38 -0700 (PDT)
+X-Received: by 2002:a05:622a:389:b0:51c:83f1:bcd4 with SMTP id d75a77b69052e-51cbed7dccbmr25593571cf.0.1784194597674;
+        Thu, 16 Jul 2026 02:36:37 -0700 (PDT)
+Received: from [192.168.120.193] ([178.235.128.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c1687126353sm178908166b.13.2026.07.16.02.36.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jul 2026 02:36:36 -0700 (PDT)
+Message-ID: <c6cf4da0-15f6-4f43-8f06-0e47d8058ff4@oss.qualcomm.com>
+Date: Thu, 16 Jul 2026 11:36:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <157154d1-3995-454b-9e08-1527f1c5d409@sirena.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: geni-qcom: Fix sticky ret causing wrong return value
+ on invalid proto
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+        kernel test robot <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
+References: <20260716-fix_return_error_code-v1-1-3295003aacd5@oss.qualcomm.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20260716-fix_return_error_code-v1-1-3295003aacd5@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=PsejqQM3 c=1 sm=1 tr=0 ts=6a58a627 cx=c_pps
+ a=EVbN6Ke/fEF3bsl7X48z0g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8
+ a=hRfWpAjuP3xw3JzzUMgA:9 a=QEXdDO2ut3YA:10 a=a_PwQJl-kcHnX1M80qC6:22
+X-Proofpoint-GUID: oT-AZsdsXRM-FQqqG0NBO4p7ypaSnFzr
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE2MDA5OCBTYWx0ZWRfX37hW/XM2h3tl
+ GQ7Nvv3e6eUvrLnPQLpyLbCziT2hWJ1bpJvt0UBjGCSx3nA2CgL5puwcOn1FWt+vC2OfHYUx272
+ h3Ek82yg5pJDaMS2T8Ss+DKB1OLIVNc=
+X-Proofpoint-ORIG-GUID: oT-AZsdsXRM-FQqqG0NBO4p7ypaSnFzr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE2MDA5OCBTYWx0ZWRfX9xOp4SvAhJ+O
+ QjfKkWOXvrAZWcslXvFe7BTG/inV4IZ7/j+VANvV6qQFTU8KwIbMT610rrTDbqWtWMSIZ1dMWBs
+ TGy4EKpCwLL36UZmWAyhJdvK1tX13BpbU3vmQi67osk3HaGGjj4h5xZBTdSilCLVGhEAD2JUnJg
+ IAs49apYuPm/XMcTJpcS+fQ2eKuhGVgPYOI0WCWW8sSLbvlQ6oaPHloNG1MKjK8WwJpAKlVWYIR
+ 9c1i8FUCap2IcruW50yHb0okQyfPn6stYdrdkUvdLFUlQpYsHMHJTeqAFVAg0a/Y+cSnFVkXSby
+ idFrWyCbu6wTqlHF2aKialUYz6c4xFyQk7Z0yRLdvXBHLiVRNnj71z/FJA6vqmcExCIYbQnm+hu
+ 2FeJS6Pk7s8aX8aONLFYb1JigQ7uq6w+TC5mvT8EPrjKf141Oun1kcD5vIYwuThNGkmC4GH8I23
+ z8/qe88F2JPSH6+WNHw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-16_03,2026-07-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 clxscore=1015 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 adultscore=0 suspectscore=0 spamscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607160098
 
-On Wed, Jul 15, 2026 at 02:37:12PM +0100, Mark Brown wrote:
-> On Wed, Jul 15, 2026 at 03:29:32PM +0200, Nuno Sá wrote:
-> > On Wed, Jul 15, 2026 at 02:09:19PM +0100, Mark Brown wrote:
+On 7/16/26 10:25 AM, Praveen Talari wrote:
+> spi_geni_init() reuses 'ret' after it has already been set by the
+> runtime PM acquire check earlier in the function. When an invalid
+> protocol is later detected, the function returns this stale 'ret'
+> value instead of a proper error code, so it can end up returning 0
+> (or some other non-error value) even though the protocol check
+> failed.
 > 
-> > > This really isn't a generic SPI thing, if nothing else you need *far*
-> > > more information in there about how exactly this would be put onto the
-> > > bus.  If it belongs anywhere outside of the specific device's binding it
-> > > feels like it might be regmap.
+> Fix this by returning -EINVAL directly on both invalid-proto paths.
 > 
-> > Just for some context,
-> 
-> > For the analog chip, it can share the same CS line with another 3
-> > identical chips. It has two pins that depending on how they are set act
-> > as the device address (so only one replies to a given transfer -
-> > naturally the peripheral driver needs to setup the correct transfer
-> > and that depends on these pins setup and hence dt property). 
-> 
-> > This property reflects that. Apparently some microchip chips are doing something
-> > very similar so Conor proposed a generic property given that we would have at
-> > least 3 users of it.
-> 
-> You still need to work out how the ID appears in the byte stream that
-> gets sent to/from the device, that's way more information than just a
-> number and not something the byte stream SPI offers is going to cope
-> well with.
+> Fixes: d8e9ea989acb ("spi: qcom-geni: Fix missing error check on pm_runtime_get_sync()")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202607122241.qzP3QAXF-lkp@intel.com/
+> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+> ---
 
-Not sure if I'm following you. Those ID pins just become something you
-need to set on the spi_xfer. Or in Janani case, she's using regmap
-reg_base in order to set the right thing depending on the address. I
-would image this is always something that peripherals need to address in
-terms of how the message/stream needs to be set. So my understanding is
-that this should be pretty much transparent for the spi core.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-But I might be just focused on this usecase and missing the big picture.
-
-Thx!
-- Nuno Sá
-
+Konrad

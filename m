@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5C23783C3;
-	Fri, 17 Jul 2026 07:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72E37DABD;
+	Fri, 17 Jul 2026 07:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784274578; cv=none; b=YNdSk8cgmTmKeXtwXhUMg1XQyRn7vG0sm/5/ankPWyobDZF8T7soNcLlXB1VMnYBIi/YtJxgajnrN7cWGd8uc9JDV/Hz3pkRlcjVZ4Aur8Bx9KaN7D3ABzKDSZ5eIEo09Laf98JvguSFXkP4HoptTJpdJcX+wVno1XF6xEBay4M=
+	t=1784274578; cv=none; b=UIZncbhizSYld350cfLGqqATGLy+IxMj5084pMn5A0PaJDt+UnQQcXfCtwksqX1uYOWYLoSfWbFjvX9d8oKvmZUmcVr3jBEf7CGP7UckSls5LbNT5QOa/F5oWCD5MPaJGs/kuykzoiqKgcCgO0ejH/dicHHErCQ+zThf7Z4j4xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784274578; c=relaxed/simple;
-	bh=hl4y02I9tA4u+DQHQqqO/xk7mXY4kQUgmqTa/x0JXaE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=O4fQ5UG5nBzlxSu53biSrkcrMey7FA6ZYSWGAsgFyXkW8JLUrnFZFB1HkzjbxJxhl4gGig0jt/3FYz1kM8s98vITAgmafq0VzNoQpGnlmGPe8A0ZkJbbYGeTtONKEFsEan5Az3/tjAohva02fdwIQ9TzKU8cqyt03FmmMbFKIXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jv1GF3bJ; arc=none smtp.client-ip=10.30.226.201
+	bh=qS2DLzuRq1fyJA41MJOJ8kFpVv3gdzDCD3kTwkTmt6A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SvF5vAvjHG+fsNsqdSCqOfVi3vO30t3iu1qGytSc8vMyafgQ2T0OxadlbdouYiBgkb6AsRj2qbMwYhwOEgl5pkznLJl3hef23asHWRvmbB+c+iXcRMx9fngeXJhx2tcbLfSYGWAZfbsJEVoZpnA34oUQm8YdLPgKEL1Zm7Hydjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNeG6Ntf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jv1GF3bJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6ADEFC2BCB9;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNeG6Ntf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A59A4C2BCC9;
 	Fri, 17 Jul 2026 07:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784274577;
-	bh=hl4y02I9tA4u+DQHQqqO/xk7mXY4kQUgmqTa/x0JXaE=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=jv1GF3bJTnz8aME1PSNqcIK970ID3TJFdrzvXhGOsalzm9MHOCJ53R438Gd75gJyu
-	 twxoUpX5J7jyJTcnMGi8dyAZPozZluUIhhackvOEyobUf7wsBM3UwFblxvnRJv1eIf
-	 0z3txs323o8SBbyZB5QUHqSPYVuaCLi4siDiV0kIeAFhYzpgMB0UYBztrQzYaygQDR
-	 xRtETdtn6PVKcam7LB8ljHWSFyzjR2Kb43YdGVVwFrDGtHEqptiB40lb//Uy8xOvkk
-	 SFt8wSFwDc01E3K3l39aStwn+lKybXN02e97LyNvIGtV3va3h2pqVYl/CH3y8hemRm
-	 jTpFVSGAeQMjw==
+	bh=qS2DLzuRq1fyJA41MJOJ8kFpVv3gdzDCD3kTwkTmt6A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=eNeG6Ntf+UJgsZK9CAj3BQGtEF0EUB5NDYFX3KnQ5TLuIHznHjieVFYbkvWqgms7g
+	 AquXiV3RlHyla0/D0DLSqeSf0SUIybEiY7vUWUEiD/CNXXZn75wu4AJ322HQrJYTiy
+	 TCQBFu2ME/dfYG5voxbJD4d1VsQ4J/7uq7MNsiTLa/oaprhAv/pi9H8VJQlUspmHc1
+	 EKMmqJPluf38SfsEfCHq3AaUSVpKxrs4yMPy231ws9vcGilm2ZXGwx/Y2GGu6BJp7b
+	 RT4Gkp6c9jckOX1WLO5H9am5PslcyUs8ZliBpm+UqJcUJqP2rY1xLhIt7CwUXuFTVR
+	 P/1z8mpDNLDVA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56196C44507;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AFF8C44515;
 	Fri, 17 Jul 2026 07:49:37 +0000 (UTC)
 From: Xianwei Zhao via B4 Relay <devnull+xianwei.zhao.amlogic.com@kernel.org>
-Subject: [PATCH 0/3] spi: add support for Amlogic A9
-Date: Fri, 17 Jul 2026 07:49:32 +0000
-Message-Id: <20260717-a9-spisg-v1-0-2eeea77be19f@amlogic.com>
+Date: Fri, 17 Jul 2026 07:49:35 +0000
+Subject: [PATCH 3/3] spi: amlogic: spisg: Add support for A9 controller
+ features
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIzeWWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDc0NT3URL3eKCzOJ03TRDy+RUAxMD40RTAyWg8oKi1LTMCrBR0bG1tQA
- yW0scWgAAAA==
-X-Change-ID: 20260715-a9-spisg-f19ce0403a50
+Message-Id: <20260717-a9-spisg-v1-3-2eeea77be19f@amlogic.com>
+References: <20260717-a9-spisg-v1-0-2eeea77be19f@amlogic.com>
+In-Reply-To: <20260717-a9-spisg-v1-0-2eeea77be19f@amlogic.com>
 To: Sunny Luo <sunny.luo@amlogic.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
@@ -51,11 +51,11 @@ Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274574; l=813;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274574; l=5993;
  i=xianwei.zhao@amlogic.com; s=20251216; h=from:subject:message-id;
- bh=hl4y02I9tA4u+DQHQqqO/xk7mXY4kQUgmqTa/x0JXaE=;
- b=ya0yNDSjGaGqYZuUAwyX5QW7AKAbiK0wPvRNHxKiKnT5Tfk7qIdIVPww5XU87USkzsRsxrvkx
- HEhWy/wo1iQAgAXRoUww+8OAHhTjukbMZm+eJ9Ia0HW6R74Ze6bU6uO
+ bh=hSBlHqyRKAFzXRe5Mipf9iWE55K2Qe+NrDF5i5K4r+4=;
+ b=oJ1QsKwU7s3BAluM3mGKO9WRC4zRwLYDoY+4s6U5EPkqNgmGIe7vUcOeypBUE1oHw6hxR2dVa
+ XfpSOOFoTCRA8vjc421OToQlLakawI22icz4mguovajuGe6u7QescAl
 X-Developer-Key: i=xianwei.zhao@amlogic.com; a=ed25519;
  pk=dWwxtWCxC6FHRurOmxEtr34SuBYU+WJowV/ZmRJ7H+k=
 X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
@@ -63,28 +63,180 @@ X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
 X-Original-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 Reply-To: xianwei.zhao@amlogic.com
 
-Add bindings for A9 with some features, and driver for A9 base on A4.
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-Fix the incorrect keep_ss of the last descriptor.
+The Amlogic A9 SPISG controller extends the A4 controller with additional
+configuration options, including:
+
+- Extended CS setup timing
+- Hardware-controlled CS hold timing
+- MOSI idle output configuration
+- Configurable word gap
+
+Add SoC-specific capability data and configure these features when they
+are supported by the underlying hardware while keeping compatibility with
+existing A4 controllers.
 
 Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
 ---
-Sunny Luo (1):
-      spi: amlogic: spisg: Fix the incorrect keep_ss of the last descriptor
+ drivers/spi/spi-amlogic-spisg.c | 65 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 61 insertions(+), 4 deletions(-)
 
-Xianwei Zhao (2):
-      spi: dt-bindings: amlogic: spisg: Document A9-specific properties
-      spi: amlogic: spisg: Add support for A9 controller features
+diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
+index 0f026d3e43e0..845eb81d483a 100644
+--- a/drivers/spi/spi-amlogic-spisg.c
++++ b/drivers/spi/spi-amlogic-spisg.c
+@@ -37,6 +37,12 @@
+ #define CFG_HW_POS			BIT(6)
+ /* start on vsync falling */
+ #define CFG_HW_NEG			BIT(7)
++#define CFG_WORD_GAP			GENMASK(9, 8)
++#define CFG_MO_IDLE_OUTPUT		GENMASK(11, 10)
++/* cs hold time in pclk */
++#define CFG_CS_HOLD			GENMASK(26, 12)
++/* high 4 bits of cs setup time in sclk */
++#define CFG_CS_SETUP_EXTEND		GENMASK(30, 27)
+ 
+ #define SPISG_REG_CFG_START		0x08
+ #define CFG_BLOCK_NUM			GENMASK(19, 0)
+@@ -143,6 +149,13 @@ struct spisg_descriptor_extra {
+ 	int				rx_ccsg_len;
+ };
+ 
++struct aml_spisg_data {
++	bool				mo_idle_output_ctrl;
++	bool				word_gap_ctrl;
++	bool				cs_hold_ctrl;
++	bool				cs_setup_extend_ctrl;
++};
++
+ struct spisg_device {
+ 	struct spi_controller		*controller;
+ 	struct platform_device		*pdev;
+@@ -152,6 +165,7 @@ struct spisg_device {
+ 	struct clk			*sclk;
+ 	struct clk_div_table		*tbl;
+ 	struct completion		completion;
++	const struct aml_spisg_data	*data;
+ 	u32				status;
+ 	u32				speed_hz;
+ 	u32				effective_speed_hz;
+@@ -483,6 +497,7 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ {
+ 	struct spisg_device *spisg = spi_controller_get_devdata(ctlr);
+ 	struct device *dev = &spisg->pdev->dev;
++	const struct aml_spisg_data *data = spisg->data;
+ 	unsigned long long ms = 0;
+ 	struct spi_transfer *xfer;
+ 	struct spisg_descriptor *descs, *desc;
+@@ -491,6 +506,7 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 	int desc_num = 1, descs_len;
+ 	bool last_xfer_keep_ss = false;
+ 	u32 cs_hold_in_sclk = 0;
++	u32 val;
+ 	int ret = -EIO;
+ 
+ 	if (!aml_spisg_sem_down_read(spisg)) {
+@@ -525,9 +541,17 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 		}
+ 
+ 		/* calculate cs-setup delay with the first xfer speed */
+-		if (list_is_first(&xfer->transfer_list, &msg->transfers))
+-			desc->cfg_bus |= FIELD_PREP(CFG_CS_SETUP,
+-				spi_delay_to_sclk(xfer->effective_speed_hz, &msg->spi->cs_setup));
++		if (list_is_first(&xfer->transfer_list, &msg->transfers)) {
++			val = spi_delay_to_sclk(xfer->effective_speed_hz, &msg->spi->cs_setup);
++			if (data && data->cs_setup_extend_ctrl) {
++				val = min_t(u32, 0xFF, val);
++				desc->cfg_bus |= FIELD_PREP(CFG_CS_SETUP, val & 0xF);
++				FIELD_MODIFY(CFG_CS_SETUP_EXTEND, &spisg->cfg_spi, val >> 4);
++			} else {
++				val = min_t(u32, 0xF, val);
++				desc->cfg_bus |= FIELD_PREP(CFG_CS_SETUP, val);
++			}
++		}
+ 
+ 		/* calculate cs-hold delay with the last xfer speed */
+ 		if (list_is_last(&xfer->transfer_list, &msg->transfers)) {
+@@ -542,7 +566,12 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 				       xfer->effective_speed_hz);
+ 	}
+ 
+-	if (cs_hold_in_sclk) {
++	if (data && data->cs_hold_ctrl) {
++		cs_hold_in_sclk = cs_hold_in_sclk ? : 1;
++		val = cs_hold_in_sclk * (FIELD_GET(CFG_CLK_DIV, spisg->cfg_bus) + 1);
++		FIELD_MODIFY(CFG_CS_HOLD, &spisg->cfg_spi, val);
++		desc--;
++	} else if (cs_hold_in_sclk) {
+ 		/* additional null-descriptor to achieve the cs-hold delay */
+ 		aml_spisg_setup_null_desc(spisg, desc, cs_hold_in_sclk);
+ 		desc--;
+@@ -722,6 +751,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 	struct spisg_device *spisg;
+ 	struct device *dev = &pdev->dev;
+ 	void __iomem *base;
++	u32 val = 0;
+ 	int ret, irq;
+ 
+ 	const struct regmap_config aml_regmap_config = {
+@@ -740,6 +770,7 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 
+ 	spisg = spi_controller_get_devdata(ctlr);
+ 	spisg->controller = ctlr;
++	spisg->data = (struct aml_spisg_data *)of_device_get_match_data(dev);
+ 
+ 	spisg->pdev = pdev;
+ 	platform_set_drvdata(pdev, spisg);
+@@ -770,6 +801,21 @@ static int aml_spisg_probe(struct platform_device *pdev)
+ 
+ 	spisg->cfg_spi = FIELD_PREP(CFG_SFLASH_WP, 1) |
+ 			 FIELD_PREP(CFG_SFLASH_HD, 1);
++
++	if (spisg->data && spisg->data->mo_idle_output_ctrl) {
++		if (!of_property_read_u32(dev->of_node, "amlogic,mo-idle-output", &val))
++			spisg->cfg_spi |=  FIELD_PREP(CFG_MO_IDLE_OUTPUT, val);
++		else
++			spisg->cfg_spi |=  FIELD_PREP(CFG_MO_IDLE_OUTPUT, 0);
++	}
++
++	if (spisg->data && spisg->data->word_gap_ctrl) {
++		if (!of_property_read_u32(dev->of_node, "amlogic,word-gap", &val))
++			spisg->cfg_spi |=  FIELD_PREP(CFG_WORD_GAP, val);
++		else
++			spisg->cfg_spi |=  FIELD_PREP(CFG_WORD_GAP, 1);
++	}
++
+ 	if (spi_controller_is_target(ctlr)) {
+ 		spisg->cfg_spi |= FIELD_PREP(CFG_SLAVE_EN, 1);
+ 		spisg->cfg_bus = FIELD_PREP(CFG_TX_TUNING, 0xf);
+@@ -856,6 +902,13 @@ static int spisg_resume_runtime(struct device *dev)
+ 	return 0;
+ }
+ 
++static const struct aml_spisg_data a9_spisg_data = {
++	.mo_idle_output_ctrl = true,
++	.word_gap_ctrl = true,
++	.cs_hold_ctrl = true,
++	.cs_setup_extend_ctrl = true,
++};
++
+ static const struct dev_pm_ops amlogic_spisg_pm_ops = {
+ 	.runtime_suspend	= spisg_suspend_runtime,
+ 	.runtime_resume		= spisg_resume_runtime,
+@@ -865,6 +918,10 @@ static const struct of_device_id amlogic_spisg_of_match[] = {
+ 	{
+ 		.compatible = "amlogic,a4-spisg",
+ 	},
++	{
++		.compatible = "amlogic,a9-spisg",
++		.data = &a9_spisg_data,
++	},
+ 
+ 	{ /* sentinel */ }
+ };
 
- .../devicetree/bindings/spi/amlogic,a4-spisg.yaml  | 36 ++++++++--
- drivers/spi/spi-amlogic-spisg.c                    | 78 ++++++++++++++++++++--
- 2 files changed, 103 insertions(+), 11 deletions(-)
----
-base-commit: d0b5dd16226814e5c73ba8daf88d3d91c990a38f
-change-id: 20260715-a9-spisg-f19ce0403a50
-
-Best regards,
 -- 
-Xianwei Zhao <xianwei.zhao@amlogic.com>
+2.52.0
 
 

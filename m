@@ -1,101 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8273B14BC;
-	Fri, 17 Jul 2026 12:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649523ED13F
+	for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784289764; cv=none; b=Os7Up/kif5vG6gFjprqVZ6279G5FRjmqOgQFLRfUM/pjsZmQsZxczJs4ohwIZTiUs+DUWj11YOI48nqlDf6qgwfB7zNT7CxX1/czPbCwkRq0ypJR24mGzyHABA0h/ScO0riP8/nlDjRZdPhs10a9ztW+1/ohgk6pHqTCPOoiWXg=
+	t=1784295639; cv=none; b=JODCWvp6j2aqMdSqpvXhsVYVkhrMJO78kox0OTydZFiosbs0MVYl99KWK4PiA6QsiLuS1DoS2juIJynBG9kPAQHK5dG0uE+EsAWG3C8y6BIUQfkO6lwqi4iszehA6xB+0kwtCU4QD9knEK1xhiKu8/VqVPzdWlmejMjqeZV1g3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784289764; c=relaxed/simple;
-	bh=M6dliTL3upPz3AWTcFuW/Bf8sQHGqFSf/FvFJ52AEJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l9MYNYWA3Bpp819UCNDe+JUNa+wOfKqcDXg60x+0q3Tiihwwh2VuedriQwhzMjh5tHoeRlNtyHuqNfDHcDp6NqTMTfuAaobhd4zx3otJJJY8bA3VWpv/Xi19pDfNyYQvyU7sCFUeD6PiaGIMzRS6Oml+v3LwFxstZU6eU13KywE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afG26BD5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784295639; c=relaxed/simple;
+	bh=thWGrdb2fcSCV4Sq08exHOMIVFkzeIfGlVKEO2f9GZM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=nS6qY5ZtU7KtV6pbDH8Q7+XRXU6SOJtukwG/5kAq2jF6PL7z3QTsoIw9rMvX5T2/7b6nxVreLzfSTKHpkrpEneR14gZETMd96efdU4XmVBchfr0EJIs+dY9DFV1fO3m8Ax5FZBMLm+lNHcspFHqcHadNayvA8H1tD1RfIIsspbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixWBFZkv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afG26BD5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A1A1F000E9;
-	Fri, 17 Jul 2026 12:02:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixWBFZkv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063891F00A3D;
+	Fri, 17 Jul 2026 13:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784289763;
-	bh=M6dliTL3upPz3AWTcFuW/Bf8sQHGqFSf/FvFJ52AEJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=afG26BD5DJqcY9jFPHWwLoeF+nbY3GkVgbzmYISsj7xeZVCukUAa6Tdq4RdHOi1kv
-	 VhO0c4wlgnq8/uJ4G1UyEHvTyxI9wOPKKaqgViGb19EFGyS0cg19B9qoWfDnJR0YZm
-	 xD7VopeVKolG7iP9adxYqAQAtLV8auh9YJx/PsTDMa4HNn8peJiYCom6ppiEpBE6Ri
-	 O5VPY2KO8x4IepP8GFuNG7upUnYOFwAgzIaIiRLTvysiIiBbNcvkYDfO9/wew8cRsb
-	 l3JKPUr7GFFU/UKQZM1P948sh1G9gBvmTEg4KhGcT678i50OfZ6MBUBq9hVbqmsveD
-	 3Nyo9BqNTTjfQ==
-Date: Fri, 17 Jul 2026 13:02:35 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Swark Yang <syang@axiado.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Harshit Shah <hshah@axiado.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Jan Kotas <jank@cadence.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-i3c@lists.infradead.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH v3 6/8] dt-bindings: spi: dw-apb-ssi: add Axiado AX3005
- SPI variant
-Message-ID: <6d69cfd0-5f3b-4324-8d64-b4695cbb3e92@sirena.org.uk>
-References: <20260716-upstream-axiado-ax3005-upstream-v3-0-c429095143ec@axiado.com>
- <20260716-upstream-axiado-ax3005-upstream-v3-6-c429095143ec@axiado.com>
+	s=k20260515; t=1784295638;
+	bh=2vNfO1htdtFFKYYz7YJI9i1rfHgy+SnjHGZtav9ZB+c=;
+	h=Subject:From:Date:To;
+	b=ixWBFZkv+qO0EuXNJolzd2JHIz36J1N3PdN0lMLCXoNUuYvBMY4Y0LV4ttTY9q3Mi
+	 qOt4/929eHDTadDTTuWP+cy8daVvO3D6XfdXeYTSro81Bi5zEFUuVQ4bixwKaWXs6a
+	 07PV56+yNTEnH9a/INCitc7jqPGQ8IuuxJap+bgfB9tCOMz6dWfmc4zFUjUvprloir
+	 jSernK632FteDkyiMSyCU1H13BOXM/nHu96WH3eIXHJkvJuVdBHxd2F7GnU13NPn4T
+	 t6uGq7bEvINbcMTMYigwL0FV2TWHYSDXbL8p+bZtT11AqkIPhUeurGi+CmVQhw8IS6
+	 aVY4MgxVWvV5g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 96A0F380CEE7;
+	Fri, 17 Jul 2026 13:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="70M3+S0UoM/WolbI"
-Content-Disposition: inline
-In-Reply-To: <20260716-upstream-axiado-ax3005-upstream-v3-6-c429095143ec@axiado.com>
-X-Cookie: Enjoy yourself while you're still old.
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178429561012.1724817.352190480038262170.git-patchwork-summary@kernel.org>
+Date: Fri, 17 Jul 2026 13:40:10 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Hello:
+
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
+
+Patch: spi: realtek-rtl: change to __raw reads and writes
+  Submitter: Rustam Adilov <adilov@disroot.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1125768
+  Lore link: https://lore.kernel.org/r/20260711083411.45836-1-adilov@disroot.org
+
+Patch: spi: geni-qcom: Fix sticky ret causing wrong return value on invalid proto
+  Submitter: Praveen Talari <praveen.talari@oss.qualcomm.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1128638
+  Lore link: https://lore.kernel.org/r/20260716-fix_return_error_code-v1-1-3295003aacd5@oss.qualcomm.com
 
 
---70M3+S0UoM/WolbI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Total patches: 2
 
-On Thu, Jul 16, 2026 at 08:51:13PM -0700, Swark Yang wrote:
-> Add binding for Axiado AX3005 SPI controller. So far, no changes
-> are known, so it can fall back to the snps,dwc-ssi-1.01a compatible.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Please include human readable descriptions of things like commits and
-issues being discussed in e-mail in your mails, this makes them much
-easier for humans to read especially when they have no internet access.
-I do frequently catch up on my mail on flights or while otherwise
-travelling so this is even more pressing for me than just being about
-making things a bit easier to read.
 
-If there is no need for things to be part of a multi-subsystem series
-(eg, dependencies) it's normally better to send each subsystem
-separately.
-
---70M3+S0UoM/WolbI
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpaGdoACgkQJNaLcl1U
-h9CYYgf/a6ZXfaJE/jmFwdCosDxknw75RDj7nPAqr8ZtQ6OEKCVRSIVBgwrMG1B6
-7TPPAIzIrDPqOWeb/BZihDW7BKUj2aDsl7pZivADMe0txrRhev2UcBUZUMxW1sXn
-DgyCTELlXBzkCAltV41zPIZTn6Rwcy8lHkkDXAfh0JGD5azOUiDxKAusCY9IhML1
-YtCaED6Zm325NAZ+cUqXIKy177WK3d4XQrt4N/qPahtGnlsER6BwUocE9HGNpNLh
-l3iTBw5h+slXmMR6H40Ax4/E64jiKe5RpDEW3MeDQgZLROX+xs5G+fp3eE5NGFPQ
-Z9zQeNxaiqK3XtZlukPgm9tW3O9UDA==
-=i8XU
------END PGP SIGNATURE-----
-
---70M3+S0UoM/WolbI--

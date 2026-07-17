@@ -1,241 +1,153 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11023111.outbound.protection.outlook.com [40.93.196.111])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11021124.outbound.protection.outlook.com [52.101.52.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511FD2BEC3F;
-	Fri, 17 Jul 2026 01:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991CA277C9E;
+	Fri, 17 Jul 2026 03:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784251545; cv=fail; b=it83nM80+VIBHKXnEY2x+5SiODrfQR911shGDGaS+TBZf7f+5pabp90wEln/3FuWOP4pCOccoC3T+Wtv5YCcIZjfuKF/Ygwq3Ex27WoQfedK2P8GawQBa0+DmN0nrBjsFODZlTw9UL36zowHMxBUsq/quAZJfk4HGwe0sVeQLF4=
+	t=1784260292; cv=fail; b=rNVIfZp4lHOf7SkZ6VFUqwO67/KggKWnkyapcQZtP2ARuPPmimnVsso2E5RqAHgkKqwe0LZZfKWnYXWxYUbnZ2LBY/5XbcAabWKw3fHdEj2aZ3GSq8vlN/5sGT75xeu4N3+fXkNJVGYwoPn2idGJ9ZA9M97xW7cu2av0pALJFRc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784251545; c=relaxed/simple;
-	bh=/vbzbto79eQ1cnm0szYXHDACGkZkq2+z9ogaNrDVNf8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kmcunB3ZI25lWqKLWdwRQ/VTkoWezQ3ITjr8XdMXjZqHS5cd8PMukWb1HP1KAacD0OAYEaaQv5SRRnDArh7zQp5HqLMJF1mS8SogNodsZsLxmgYUGrJdNVnZ9vp2BxTuPdrMrdm7bFogHWcTXUkYrmT8ELQFjJtwyZ/hou2Itmk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com; spf=pass smtp.mailfrom=axiado.com; dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b=YIVrO4+C; arc=fail smtp.client-ip=40.93.196.111
+	s=arc-20240116; t=1784260292; c=relaxed/simple;
+	bh=lRd5fEURFEd7L6FVtJkfNOmGCkYyQJoZtmef8h3/52s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WyydvFrxPx9BVXUJSTsOT1cqRq6ZvH2w9eq3uBSSJhMarUy60m1EpXClF3Z+JqBXXlo5DuZSxM+aXwMsYHMF4KD97Vt+tUm8WwR7PasFn/2X6hdy0XIZyCwrX9xlOv9RWyHvc8pgsG7TGJikICaSnEb8SSxSMg6iXATKWLpkHJ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com; spf=pass smtp.mailfrom=axiado.com; dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b=ucv9OBm2; arc=fail smtp.client-ip=52.101.52.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axiado.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axiado.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b="YIVrO4+C"
+	dkim=pass (2048-bit key) header.d=axiado.com header.i=@axiado.com header.b="ucv9OBm2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HzdhhLvnYO5L9QYKh7VY9zqiksO+CVVLsT9kO7uNdEKHXS12smwxxzzQ+vxeFnU2iHgzDgxu6XmWrkaZRSJgdKEELCPSbzNH2yzji1FM0uaSs4lx/VV+Lbq06HKIXGJNa+4HkmeQPy6NkqWVWU2t0P1xh7BDqQ+YbZxE3LIRzpjep7uHSgXGCjpvWfuEVZ+lDfk9PLByZDWFJ4xQDizhwjnRo0aZcQEvlPvmmNwwey/H1pduWMVzMMIGZYVfMi8l4feUNTGph/wZOGyjS2mBrybY/+2jZpscwIU/GbHJGTSK4SNmxMg9nx5382LkSGzBrVjbCM5JLvMULxwGkPhsuA==
+ b=JE3+uwE9fxcidfQOSlxAj5dyFLIV0LlsllOK0gT73c8ilRkgopeY3YihIh7VqFERuKZzM2SmmZW/A4SwSBQ95I12S/c33TSobYPdKPnqwpFZJVS7GmXcX9l6cljD+866b4MWPu8rHkQ2eO50uu96+D3zB8WySxG9PnlG71tj5bOxOv6IPnx+AIhshiwLaUjrAo3teUOUuCqXPaxBwEwqt9V5hxb0k5v90C045LHjWJciWP3QR4He/LnyRWQ/MJkECTNb9JQCoHa2OAge0QvYJe22lap/f1PJ6GsFdZaH6CFgxVn5en+r0o2Xu/hTg30ydms72kp6LWvJ0y+HWa7oYA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LXPGno41VjlIgX8XWDzgbc8iFaSJGk+fs3T+KQmgKrw=;
- b=YBuALW/30ze5ryD/gxVvIRHVz8uCjye9VacAFk8wnPktziOFF5g+z+OjPK1GqISiqOuGxYP7M2VNBs2VYsF2RDrNYVNdhCdpj6lYBkAsWXSzE4M2q2cE+7wevgW6XYEczfqujhE7JaR9jRH89ORFAhBb5Rr+XDgR3QdDGvkkmenVBdIQvIrV4SVJMbfGgGv2+uisn3bn+YQzFaiKkv9DYzwXu16bA2ztkagcNsCLnfyhqnqD/EzSAI+uFj9Mtg/GAe6qf2lh/NTAiJ6iuqWaunmHRPRXh2kE8d3wSmQ+RjHZHc/gluisEQdcmkmDIT18U88pFCmEI02UrP7hn6qvZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axiado.com; dmarc=pass action=none header.from=axiado.com;
- dkim=pass header.d=axiado.com; arc=none
+ bh=2ywj/R598DHvTK5R2nBVRB/G7elq9O/Ae5ypwi9az0Q=;
+ b=LZ9++RgBH58QWBj2TrICFZ2EMA0JW2yRwh5IaVmaHZ9LiU8DLjt9CT2V6/bTpIaBgJ5u3FfcfTz8JI8S9LE32/UHkwMBnOiNRzJjoQXEBYqsq06yL6XU5N2DEB9adnnNNDx06UC2ic9zMcns704d7vpsBAnw/k5fN6QWfFdoDU7ExesyWqR+PbV80pitiS2dbX7s6e9q7R7J2eefm55R+Mj/QO6JasdoEm2t642aY9JOUTw7OKabJHdvfPFep03WEW8kBKhMq7jACq6qHNPkvIn8os6XGqTgjCoVGp1W2ATZyqozzTSwWQ2kn3NIGjUhq4BR8i607wejo+gnrCELvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 64.62.143.114) smtp.rcpttodomain=amd.com smtp.mailfrom=axiado.com; dmarc=none
+ action=none header.from=axiado.com; dkim=none (message not signed); arc=none
+ (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axiado.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LXPGno41VjlIgX8XWDzgbc8iFaSJGk+fs3T+KQmgKrw=;
- b=YIVrO4+CQajDNfEwFs9N0xChZ91HEdbqlWFIOd2ueUGedbg3cNFeVEfwNGY1XPKlHJoIvUhXZNENKA7uAg4Ddf1q82GhFjCvTyxfLrpdgUTAUEmUU5/SHAUmkZx/VZIqpeUGL1woSaqdlCTOnmkVRXkspMYhjkYWKdL3RIVVOUAH5W6+qw7/2jPyVjS82XFoDHBEglN66mi7xt3RsRmrVLeI+6DoBDJjJHjqUzsvuRRaLVKbD0aXvpDEps73b7rwA9cQi1J/ebaqTRv7eC8+yu6u5yxGyfbTmWaMDAlsZ2kIXrVtmgy2P+PpRYI5DwIEHECum0QFEqRNhVczIAw3Zg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axiado.com;
-Received: from PH0PR18MB4558.namprd18.prod.outlook.com (2603:10b6:510:ac::13)
- by SJ4PPF9C6BCAB60.namprd18.prod.outlook.com (2603:10b6:a0f:fc02::f31) with
+ bh=2ywj/R598DHvTK5R2nBVRB/G7elq9O/Ae5ypwi9az0Q=;
+ b=ucv9OBm2b8DLu+X2K4+LVze6NfGiUviC3XQSj/2B7goHEkQ78yVGbxOhFuWZT9YKM9AFbVUi4mwW1kvLT/U2S4/DSB2TdoQVqoEmh++tPEkwM5ORtJGbkovmrNAfCwMYGLkNvMQkY9JpOT+6DPdigjpTYwqMiNLbDm4fODKacVFVnvjx16boLa1eX+C+oxFuWxBW5dF9PWCX9QZwn3MBDS2vwwLBoNM4y/RulBxcFam7Uga1UNki55NsxDSLsnx9M5vKIQvCJne6/Adl7arJ8WZOQlY0rvj7H7M5tskIZ0POLvE6LQg/6Y/gc5e6S4NYwjExRcjvbaAXGziEEqN5OA==
+Received: from IA4P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:558::12)
+ by IA5PR18MB988632.namprd18.prod.outlook.com (2603:10b6:208:607::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.12; Fri, 17 Jul
- 2026 01:25:38 +0000
-Received: from PH0PR18MB4558.namprd18.prod.outlook.com
- ([fe80::ba9:422:da8:b963]) by PH0PR18MB4558.namprd18.prod.outlook.com
- ([fe80::ba9:422:da8:b963%6]) with mapi id 15.21.0223.011; Fri, 17 Jul 2026
- 01:25:38 +0000
-Message-ID: <5c2e0f14-e53f-4353-b3b5-526fe9c1e2a3@axiado.com>
-Date: Fri, 17 Jul 2026 09:25:31 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] spi: axiado: fix kernel-doc comments
-To: Babanpreet Singh <bbnpreetsingh@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: Vladimir Moravcevic <vmoravcevic@axiado.com>,
- Swark Yang <syang@axiado.com>, Prasad Bolisetty <pbolisetty@axiado.com>,
- Karthikeyan Mitran <kmitran@axiado.com>, kernel test robot <lkp@intel.com>,
- Julia Lawall <julia.lawall@inria.fr>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260713060807.7-1-bbnpreetsingh@gmail.com>
- <20260713060807.7-3-bbnpreetsingh@gmail.com>
-Content-Language: en-US
-From: Tzu-Hao Wei <twei@axiado.com>
-In-Reply-To: <20260713060807.7-3-bbnpreetsingh@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TP0P295CA0009.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:2::19) To PH0PR18MB4558.namprd18.prod.outlook.com
- (2603:10b6:510:ac::13)
+ 2026 03:51:27 +0000
+Received: from BL02EPF0002992B.namprd02.prod.outlook.com
+ (2603:10b6:208:558:cafe::22) by IA4P220CA0003.outlook.office365.com
+ (2603:10b6:208:558::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.12 via Frontend Transport; Fri,
+ 17 Jul 2026 03:51:27 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 64.62.143.114)
+ smtp.mailfrom=axiado.com; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axiado.com;
+Received-SPF: Fail (protection.outlook.com: domain of axiado.com does not
+ designate 64.62.143.114 as permitted sender) receiver=protection.outlook.com;
+ client-ip=64.62.143.114; helo=smtp.corp.axiado.com;
+Received: from smtp.corp.axiado.com (64.62.143.114) by
+ BL02EPF0002992B.mail.protection.outlook.com (10.167.249.56) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.5
+ via Frontend Transport; Fri, 17 Jul 2026 03:51:26 +0000
+Received: from [127.0.0.1] (unknown [10.4.1.181])
+	by smtp.corp.axiado.com (Postfix) with ESMTPS id 365AE4186B53;
+	Thu, 16 Jul 2026 20:51:26 -0700 (PDT)
+From: Swark Yang <syang@axiado.com>
+Date: Thu, 16 Jul 2026 20:51:08 -0700
+Subject: [PATCH v3 1/8] dt-bindings: arm: axiado: add AX3005 EVK
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260716-upstream-axiado-ax3005-upstream-v3-1-c429095143ec@axiado.com>
+References: <20260716-upstream-axiado-ax3005-upstream-v3-0-c429095143ec@axiado.com>
+In-Reply-To: <20260716-upstream-axiado-ax3005-upstream-v3-0-c429095143ec@axiado.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Harshit Shah <hshah@axiado.com>, 
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Jan Kotas <jank@cadence.com>, Michal Simek <michal.simek@amd.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ =?utf-8?q?Przemys=C5=82aw_Gaj?= <pgaj@cadence.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Frank Li <Frank.Li@nxp.com>, Boris Brezillon <bbrezillon@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>, 
+ Mathias Nyman <mathias.nyman@intel.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org, 
+ linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-usb@vger.kernel.org, Swark Yang <syang@axiado.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=syang@axiado.com;
+ h=from:subject:message-id; bh=lRd5fEURFEd7L6FVtJkfNOmGCkYyQJoZtmef8h3/52s=;
+ b=owGbwMvMwCHWlWK8+EozbyzjabUkhqzIZXum16rf+c65p3sP28Z3h5rZ3oV7c0XN2z6/d94S7
+ QOs27RmdZSyMIhxMMiKKbJ81fmWfzJX+17n3pWlMHNYmUCGMHBxCsBE1hUwMqzPt1OP9PSZZ8Zy
+ xH5v97aj/HMTHweedjU3irk//8u53rmMDIfmdvH0J+XulD3oePtJ7sqMrvatVoIea86v19N/u/2
+ 5BisA
+X-Developer-Key: i=syang@axiado.com; a=openpgp;
+ fpr=F52CF66FC96D2BDE89BDA9758A6433A3D4830D5D
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR18MB4558:EE_|SJ4PPF9C6BCAB60:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f0dca9c-fc63-4d36-4308-08dee3a24e55
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992B:EE_|IA5PR18MB988632:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6512681c-b003-434b-f58a-08dee3b6ada9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|42112799006|23010399003|366016|10067099003|5023799004|4143699003|56012099006|6133799003|18002099003|22082099003;
+	BCL:0;ARA:13230040|82310400026|23010399003|7416014|376014|1800799024|36860700016|3023799007|56012099006|10067099003|921020|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	O/hq6En2ij4DLg5F0sAHipPO6Q1GhQPi9eXBcHhPeu7i0ggyKBmrcZ/99B+nx5ufqALui3VjULy35dTRR4inbbjxlZUal+7dCXsEOkH7O4K+VSzHeSfMEsax7YG2IcHXyzXkvamcolYQ5qtYXWN03N6sSAPbdE3BVAYLGWwL++TW3QrsJ1gxI6qczkln/RNR4zsY33ULhOaWIv60L2djKiPwVkiv7CFabwT4f0Ea1bN+HZftjLfPXJ5tUTUuA2zB7/1xsydzlPT3zTbt4AnvLNK9VW9RKppOKnf7AJgy4cL8ORpcI14E7OEDI1tWHIXWf66kt/5u8xb3VPggYgtrgTAvLFYsbhhjUHDQTzKQBQS/0eQe8POuLLMsNcyD4XDoLt0OEkp3RKgZZPzD5/a3CLdeWv4qiWIK3ki+Gf1UzRLRnJ3j616fgPiD1rq01Us/UqMOoW/9S1RntBmHntvTHZxXUWXpvQfKB3io0ZjWc5GN25TysoZLj6xLSDfAjb7zxlt3RlmkPiOQrLyyj0spuexD3PGPIE6WoF6ntxuKhDkOMb2JZjiKYhoFNQ2LPrqePKJp3M5/q0ZAUfgVmEUmoe2ISvfXR3KeZL5bA+b/hU7xcOv0wOOaXG+oyB34seb7IKdtWEgT9I8lGSdyMITZuKPrx8S7OKPAz0jlbOGqB5E=
+	JodlnM7YRwBR+OcwmEWuCyroxszfRaCe0qfj0IYMhgJRlBE8sHYebDwENpIWUH0upNfIE6nMZjJhSwUbc5fpXFkpBXo0wPsNqprynbXpBtKwdbGzbUqQTU/XM6vWst3blbeEukb6dR+bK51+ETVHXZrSNmxHZyiEOpvh8IhC8K2nwKevRgM8Ib2odxDrpUpm8LIpzw3/vjpC4+ooHfc4CLdHpfEV7Tg4+BRA0DPXPlNhYjAqjq61oLFV9AvQLEKyybejSaqi8xufCSuy+G1zO77V47NwS9k62yMhIsuWanl9QzE8cxkg9YFQ+Z6NMT5gjPC8jqYcWy1N20TOYpxb/MzwIqh4IkvqlTu2pI6nv4N62MWGZUq/vl1g91CZdLgMxX0nzXJOxkjoSljS3DvtqHzv3BJGKgSyVNzj325syQIRTvWVA/9GqWLIPlUSGMkOQlEgoMFCHPWBFjfTosLXS+gOmlpHj4d1qfHnzZwXb1bUB5aRJy/vHXqwG17mhyCnx262JsM+SnDOWtSJvgguPjt9Vy4SpiiuzOdUZxxedfQDt777+3khMDHGVR76xOrWr4irJGvWOaeV1QQONIjt7+ROBm5ws3ezTOGZ5W9iPlCxeeY0giLIEwyxI06NMJ7/NO81+iPAWXd+VHgl+FOTtriqlFw1XULpd1qUpw4SNxZHId9RnGiEvzHfnGvL+A0KRavjSfhjy2MVTYGWZJqpA6pO5peR/pFO+PCfPGyI7xwB6q+w/10CDajDURVEgCnl
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB4558.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(42112799006)(23010399003)(366016)(10067099003)(5023799004)(4143699003)(56012099006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+	CIP:64.62.143.114;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:smtp.corp.axiado.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(7416014)(376014)(1800799024)(36860700016)(3023799007)(56012099006)(10067099003)(921020)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dTFSZ2t6SHJNNDVIdkpjdE5WcjFkWG9acFlNckNCRkNtVUJOUWVwRjcxNTJl?=
- =?utf-8?B?bDlaK0JkcENQaklrcDdtSi9ydFhMMnF4Q2hSY01yOVI3MVhiZS9QendMT1lU?=
- =?utf-8?B?L3BWNE1CKzlGL3o0cXJJUTUvRG54NzJNeDhCWTMzZ0JMejIrTktPOEJNZFVa?=
- =?utf-8?B?Z2RFWmorMjFmbjhsZFVLN3phMzBTVmh5R2RDaDBjUTJac2dha2FMWmhJUGF4?=
- =?utf-8?B?MGpWWmZJeWlDRjFDYWxXcDBzcTlLd2hxUUFuSW1JTkZpN2lVQ0I4UE1VR3R0?=
- =?utf-8?B?NW5NYXQreGRhWkNoYU81cDFyMFZGWGM5R0RUVlh5QVl4ODRlMnRxUnRGRCt6?=
- =?utf-8?B?MkpnS1I5SFRwOXBDMVdDQXl4YU9HSWd5MUtlQXV0YzlTWmRrYUNkaU1zUnB6?=
- =?utf-8?B?YUUvQk04M21BUjJ3dTFsaG5UQnBDVGVsZHlESW5vRUpVR0lacjkzMjVHWm5F?=
- =?utf-8?B?LzQ2U0JibDU2VkZoNVdrNklUT2dxZjdMMkRrcjNJbXg2WFUzbTZsbmVuRmc1?=
- =?utf-8?B?amI5YnBYaGp4UDJ2RXJSdEZod3M4V3BRUG9ERjFuNEdOYjlOUkxWVnY0ZFhO?=
- =?utf-8?B?aDdoUG9LRE56U3ZGa1MvV1pnd3FOWEZ0cFY0SVcvckpoR3hTMmdNVEp0SVkz?=
- =?utf-8?B?L2tLdmxwUGtCUjROckk0ZVFhSVE1eGg1b1plNVg3a2Zsa1hQM1oveCtxVEU1?=
- =?utf-8?B?MnpZYVBYQ3U1NDBBa3RLdTAwZEVrL3g0dHoxbE1pNUVxUE5NTHF2QTZFVWRJ?=
- =?utf-8?B?K2w5VHJtLzVKTDEzOGhNY0RQT3ZOTjNvay9xZ0huWjlnMlZKRHV0OFMxcTRW?=
- =?utf-8?B?S2g3L1dXOEhKVmFLZzRxdmlGU3dJdzNvOXcxT3JQdnF3MVN1R1BBV0h2bmJD?=
- =?utf-8?B?WTROYm82eTk0MlVEUE4vY0IrdUdVR1BLQkxZdC9TUWdTcGdwYi9RSWl5U04v?=
- =?utf-8?B?WjcwWVA4czNQenhqekhGdkRFK0dXTFpia2dybWFrSzdmTFF5ckhmSFVzdVFY?=
- =?utf-8?B?bjJnZ3Fad2Q1VzhpMG1XWFdqMUdjaUYvR2MvYWJGRnBIL1RLTjRMMjZUclJS?=
- =?utf-8?B?NlphMmN0bjZxMVVtRTIvblNOUSt0WU9YNG9YUW5XN0J3ai9FY0Vyc25vYzQ3?=
- =?utf-8?B?MkhHUThpZGlzcElJT09ZYndkSExFblErTnNRVkdOU05vNTRZa0dzOHkvT0k1?=
- =?utf-8?B?OC9rbnpjREo3TGlid3BkOUM2MnVaSVFpZUIyVkEyWDNudXlKa3RGeHVyYnRY?=
- =?utf-8?B?YzBkcys5c2ZVUVE1eStXbzB0TnA5eWJBT1loZXlSYTV1VElXSUtMNldYMFNw?=
- =?utf-8?B?cG9DZnRnREJ2ODBhVzFwRldDamo3bytSOVJOZHBHK3J2RW5SUUl4MHRFdHUw?=
- =?utf-8?B?aURkVjYrMC9CbWpIamZZSi9ZZFFHMFVyUWVlYlUxTUw0NVJtcDB1UWVzMmhZ?=
- =?utf-8?B?YURIUm9MVzZvejYzQjI4bWJPdDhhUkg1TWVkYThDSmpYRjV1QmJZMGJrMyto?=
- =?utf-8?B?ZDZ1OGFEVDBibTE5YlFHNmlyNjhlNndNNEpnaWZvaE1iNTU5NVRvUmdwQzlE?=
- =?utf-8?B?L1VzenZSeHYrcFZwaGoxRm9QOWFVbEdJT0dPbFNNa1hhYmM0TW9waUxtcC9G?=
- =?utf-8?B?SjVHNmt6VzZRQjc2dkFrK1d5cExIckowY3VKTE1zMnRVSFJWM3ljWVNONWxG?=
- =?utf-8?B?T0lCemFSYXg4VFgrenF6YklmcFVhSEI3ZnVaZWRreEZGUXB3akJXRlIyUVpI?=
- =?utf-8?B?Y3R0UG9NdXk3RXNPMDlpeCtrODEyNzJLTzJZMzZTbldxVitWeTU5UHhEL09u?=
- =?utf-8?B?NCsxVy9ZVkVWNE9aRFdKK3hnQUVoSGgxOHhXOEdPRzVtWEg1UXpHczA4Uzcz?=
- =?utf-8?B?alhrdlNBaDA0b2FnQVJVSXZrOU1mci84WnVkUlVZN0NLd0RzVEVLSm4xR1pl?=
- =?utf-8?B?azlZblllNFhvZHhPWTQycCtYZW1BcXVWbnVPVFR1RWRhS0JTL3gyMTFEWi93?=
- =?utf-8?B?eGlLdGRoMWg2YlQ1dDE2cTQrWjVsNFdUcy93STlDWDFpNXB0ekdTbTJteGtw?=
- =?utf-8?B?QlNaQVlhS2VNVCt2eDY2QUd5ZnZmNEhsYU5xMHJ4c0NMTW5pRHRrb09HVjlC?=
- =?utf-8?B?di83MktOY2EzbkNQa3ptYXhBbFp4WDVLTEJBOE5VV25EYkRBeEQzSitrZ00z?=
- =?utf-8?B?TmlacGRiOU9rQk8rYnFoNTFyYmxPY0JobTVGSlZEUmdWb3p4bnZycDJRRmVW?=
- =?utf-8?B?dTRzaDYvUnJiUE5OZHpETFl6OGtuTTZUN0Rjenpvc2ExRmo0aElzSjJmdkhO?=
- =?utf-8?Q?wlVJM3WnXl6ejibZaz?=
+	oEVgZjNBsbdm1gT8K1nhaV/Bn71iNDeBNHhjaZal1h13WzEqbnQ7QXGpYE+jSIvBPIEU+q683zcSsYTjyXMGpwaR1+qZfUasTau17Uq3Itc7s00P2i/xmd2QQearzda4k0wwgpPguIcNsmJnKD99eO9GVFjHJfCxpDViQtkfbKqt1FEJYVGYADdRAM+o3/Z9ge4woBlx33m1Codn560COEVit2MWQEiuVD2+TlbcBrydi6pHk+Qb87nwdP+71L1rsrwIAtTU2xFembq76AqLNAoYvfXLM7Q1++hErNkY7eVkgld9pHk+Qu/0eYvk06cd+mnv22vD69EGwva9VxnT7RlIlildfRj2fqhc2sA9sge8BdXHO8cw5IUXGals8WVQFe4FUBdFli2rQlH7WRGWZjEBlBqUxblQJbIQ6a/kL+tHmiDydA8NrLqcLewNaXKm
 X-OriginatorOrg: axiado.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f0dca9c-fc63-4d36-4308-08dee3a24e55
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB4558.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 01:25:37.9933
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 03:51:26.8656
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6512681c-b003-434b-f58a-08dee3b6ada9
 X-MS-Exchange-CrossTenant-Id: ff2db17c-4338-408e-9036-2dee8e3e17d7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rz8DfheJMBSq44SEzsypZ48zcCfkZt7mV4dKUv70elpd+rIQCXJVJQF+dte2TmEg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ4PPF9C6BCAB60
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=ff2db17c-4338-408e-9036-2dee8e3e17d7;Ip=[64.62.143.114];Helo=[smtp.corp.axiado.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0002992B.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA5PR18MB988632
 
-On 7/13/2026 2:08 PM, Babanpreet Singh wrote:
-> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.
-> 
-> 
-> Running kernel-doc -Wall on the driver reports 7 warnings, all present
-> since the driver was added in commit e75a6b00ad79 ("spi: axiado: Add
-> driver for Axiado SPI DB controller"). Two are in spi-axiado.c and
-> also show up in W=1 builds of drivers/spi:
-> 
->   Warning: drivers/spi/spi-axiado.c:226 expecting prototype for
->   ax_spi_get_rx_byte(). Prototype was for ax_spi_get_rx_byte_for_irq()
->   instead
->   Warning: drivers/spi/spi-axiado.c:248 This comment starts with
->   '/**', but isn't a kernel-doc comment. Refer to
->   Documentation/doc-guide/kernel-doc.rst
-> 
-> The other five are for struct ax_spi in spi-axiado.h, seen when
-> kernel-doc is invoked on the header directly (headers are not scanned
-> by the build-time kernel-doc checks):
-> 
->   Warning: drivers/spi/spi-axiado.h:130 Excess struct member 'rxbuf'
->   description in 'ax_spi'
->   Warning: drivers/spi/spi-axiado.h:130 Excess struct member 'txbuf'
->   description in 'ax_spi'
->   Warning: drivers/spi/spi-axiado.h:130 struct member 'clk_rate' not
->   described in 'ax_spi'
->   Warning: drivers/spi/spi-axiado.h:130 struct member 'rx_buf' not
->   described in 'ax_spi'
->   Warning: drivers/spi/spi-axiado.h:130 struct member 'tx_buf' not
->   described in 'ax_spi'
-> 
-> Fix the three underlying defects:
-> 
->  - The comment on ax_spi_get_rx_byte_for_irq() carries the name of
->    ax_spi_get_rx_byte(), from which it was evidently copied when the
->    IRQ variant was split out; fix the function name.
-> 
->  - The comment on ax_spi_process_rx_and_finalize() is opened with the
->    kernel-doc /** marker but has no identifier line; turn it into
->    proper kernel-doc (identifier line, @ctlr, Return:) since it
->    already describes the behavior and the return value.
-> 
->  - The struct ax_spi comment documents @txbuf and @rxbuf while the
->    members are named tx_buf and rx_buf, and does not document
->    clk_rate; fix the member names and describe clk_rate.
-> 
-> No functional change.
-> 
-> Assisted-by: Claude:claude-fable-5 [kernel-doc]
-> Signed-off-by: Babanpreet Singh <bbnpreetsingh@gmail.com>
-> ---
->  drivers/spi/spi-axiado.c | 8 ++++++--
->  drivers/spi/spi-axiado.h | 5 +++--
->  2 files changed, 9 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
-> index c4bc7a50d6c9..25561aa9f76f 100644
-> --- a/drivers/spi/spi-axiado.c
-> +++ b/drivers/spi/spi-axiado.c
-> @@ -213,7 +213,7 @@ static void ax_spi_fill_tx_fifo(struct ax_spi *xspi)
->  }
-> 
->  /**
-> - * ax_spi_get_rx_byte - Gets a byte from the RX FIFO buffer
-> + * ax_spi_get_rx_byte_for_irq - Gets a byte from the RX FIFO buffer
->   * @xspi: Controller private data (struct ax_spi *)
->   *
->   * This function handles the logic of extracting bytes from the 32-bit RX FIFO.
-> @@ -246,9 +246,13 @@ static u8 ax_spi_get_rx_byte_for_irq(struct ax_spi *xspi)
->  }
-> 
->  /**
-> + * ax_spi_process_rx_and_finalize - Process RX bytes and check for completion
-> + * @ctlr:      Pointer to spi_controller structure
-> + *
->   * Helper function to process received bytes and check for transfer completion.
->   * This avoids code duplication and centralizes the completion logic.
-> - * Returns true if the transfer was finalized.
-> + *
-> + * Return: true if the transfer was finalized.
->   */
->  static bool ax_spi_process_rx_and_finalize(struct spi_controller *ctlr)
->  {
-> diff --git a/drivers/spi/spi-axiado.h b/drivers/spi/spi-axiado.h
-> index 6cf0e5bf5879..d24d31c3a446 100644
-> --- a/drivers/spi/spi-axiado.h
-> +++ b/drivers/spi/spi-axiado.h
-> @@ -98,9 +98,10 @@
->   * @regs:                                      Virtual address of the SPI controller registers
->   * @ref_clk:                                   Pointer to the peripheral clock
->   * @pclk:                                      Pointer to the APB clock
-> + * @clk_rate:                                  Reference clock rate in Hz
->   * @speed_hz:                                  Current SPI bus clock speed in Hz
-> - * @txbuf:                                     Pointer to the TX buffer
-> - * @rxbuf:                                     Pointer to the RX buffer
-> + * @tx_buf:                                    Pointer to the TX buffer
-> + * @rx_buf:                                    Pointer to the RX buffer
->   * @tx_bytes:                                  Number of bytes left to transfer
->   * @rx_bytes:                                  Number of bytes requested
->   * @tx_fifo_depth:                             Depth of the TX FIFO
-> --
-> 2.43.0
-> 
-Thanks!
-Acked-By: Tzu-Hao Wei <twei@axiado.com>
+Add device tree binding schema for the Axiado AX3005 SoC and its
+associated evaluation board. This binding will be used for the
+board-level DTS files that support the AX3005 platforms.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Swark Yang <syang@axiado.com>
+---
+ Documentation/devicetree/bindings/arm/axiado.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/axiado.yaml b/Documentation/devicetree/bindings/arm/axiado.yaml
+index bfabe7b32e65..008d2b1d4e62 100644
+--- a/Documentation/devicetree/bindings/arm/axiado.yaml
++++ b/Documentation/devicetree/bindings/arm/axiado.yaml
+@@ -20,4 +20,10 @@ properties:
+               - axiado,ax3000-evk       # Axiado AX3000 Evaluation Board
+           - const: axiado,ax3000       # Axiado AX3000 SoC
+ 
++      - description: AX3005 based boards
++        items:
++          - enum:
++              - axiado,ax3005-evk       # Axiado AX3005 Evaluation Board
++          - const: axiado,ax3005       # Axiado AX3005 SoC
++
+ additionalProperties: true
+
+-- 
+2.34.1
 

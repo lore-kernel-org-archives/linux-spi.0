@@ -1,89 +1,89 @@
 Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019D73A0B38;
-	Fri, 17 Jul 2026 18:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598AB39D6D4;
+	Fri, 17 Jul 2026 18:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784314368; cv=fail; b=qQTkUlTwCYR4U2TnlyQIdolndrkQl7B3gdUoJNeLmRd9iFq9tPTRZG7TUkSYLPVb06QiiFbUd5VHaA9RPNpSRj06ICyGdMAgF0bpbN0AzTPJ3zASJHqlyvJwpgShnltCoL+xxx1DCIrldvs9PVToRbRrk7H13Io+G49gCKciI/Q=
+	t=1784314369; cv=fail; b=Sifabvwb8ZkzYOh2nY0bWVlswuzkYXeOey8xDCYgP2xW1NVnb/I8yH7QQy25ieQkLZYuVc6PuWutVyn9jLIK80O6PHhsdbaZuaUWfU4jo0QRXZ8324niPGIPyJ4T0LKZLMM4clIBBn6uncV2zVVbBwZw3m/YWtFUy1VXGyMJJiI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784314368; c=relaxed/simple;
-	bh=r6mmBI47kM6LbC2TeTm5XGDNze+9ICvcqteBVTKQmZc=;
+	s=arc-20240116; t=1784314369; c=relaxed/simple;
+	bh=NlBClPnibM0KySwnwhBAcwY1mjSRn1kZGPB81D3dGzE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rUJ3WlVYatbXZbtuG/QQs/WbyhQ5TTdlZXScSQE28vV82y14mN3Pe54bBhcw0txnxNdy9H6JOZ4lW+RUADZLpEdl0BMJNRYxgwC6r5vqqYsVO7TEEI89BDZ5S4t/gFom4scB1vTSH5H+pjrGVZH4fFc4CRLunf+a4Olfb9ZCqrw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=ViR/CaDf; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AQwLOrms; arc=fail smtp.client-ip=148.163.150.75
+	 MIME-Version:Content-Type; b=M1e+pzDZuoUkx8rm0NQXB+K72Yb8E8tp/UelLFD0S0yZjtQrKtLGf2hhSmDmrbCeuRai5TBeEbgBy6jjxyv3hoj6QTOqyD19rxhaUcxhRTFVBC3wQ7uWRaUjzvMD9j0DME50fKV3hsedvMDaIkYFuLFhfxGF6mAJCvE27MNSILY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=ejYE4V46; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oNadOK85; arc=fail smtp.client-ip=148.163.150.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="ViR/CaDf";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AQwLOrms"
-Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
-	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 66HIlUBo1570175;
-	Fri, 17 Jul 2026 13:52:36 -0500
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="ejYE4V46";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oNadOK85"
+Received: from pps.filterd (m0380145.ppops.net [127.0.0.1])
+	by m0380145.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 66HIlA5T3254275;
+	Fri, 17 Jul 2026 13:52:38 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=Jn4J4+v73YafNI7rjY+a4Pdbl5UXyUH8s/LMgvnmx
-	Js=; b=ViR/CaDf6KSHGfMHE8gMNkpxJkIFSWif5SA2JyToDG0BhbzGaFtANGcKd
-	DCyCfAqb1aLDZ0ZR+sLsk4hB75pE0YfcZKJDG9Wyb3MJysnZ7ldON53bYYWrAbLs
-	6pIM/4ogLXN46xxIRf+V3kUE4qzElcE1+9mNMvJKa8XHWJoSHQwmdz/LcLLJS3aL
-	b0DVYK3JsNjdujZoregowEcgfTTn3+ECnWk8/6/gw+s89DDz/7aqHoQkidPFFPNT
-	4PWZyLilUz3fDb8Tof0oEw5MDT2PHzQGFnz2E96H/TAvibEH7ZOtQPhQZnkgW+PY
-	PrOoKZnQifUio0Ynbiuu16vZN229w==
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010058.outbound.protection.outlook.com [52.101.46.58])
-	by m0384305.ppops.net (PPS) with ESMTPS id 4ffgsmbgte-1
+	proofpoint-05-2026; bh=Z+0x/gTksPXU7FZ2D9S8r1K8rcyMlV9iapZy8UL0O
+	Z0=; b=ejYE4V46y39I5gYZ5X/0leEUqIbpa+l5KE1Wks6+RgV6Q3aDnddR8vWNM
+	12QWVdVR2Q6pvfB/ECetYZTwycxVTMOgeZEP68/5D2bwIlO0m2mrynPa+aai51nj
+	MsAPg1Rxi2zAXJ7JEnajaoyI22umQJ6Cem00b0XPN9YJaRXa8VbaPPnpB2+mcK9O
+	Cy5zsPDcmRZratHhIgBuyll4Vu5xQzCRvf72dtY86hR12Jj1KvtaTV2wlWqrcaYK
+	wwn5ydjurhOPZLEGGy8gWZUAIG2OjqB7oLC+h6Bup32au9GbrZUPPKQBBYV0Cc2Y
+	7/hlrUN0uAdbJ63oqeVRbsSfssTfA==
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012027.outbound.protection.outlook.com [52.101.43.27])
+	by m0380145.ppops.net (PPS) with ESMTPS id 4ffks32kh0-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 17 Jul 2026 13:52:36 -0500 (CDT)
+	Fri, 17 Jul 2026 13:52:37 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b/mfNFdxCg7HqG2Pf2Xo9m6q+ln/QjtOgF7N5VH7vN4kCGDfjvezILEROv9Unq5rVAXWxRUcuU80dOsw999klhoMXojp2fIwzC/pkHxlX65XP1uSu4TCG4xyb70E3QslOKMakb6nFZv5H/jbvB+iR7pqe4whSgOi9GLvIgp/YPVK8dIp6vKG6E/DJXur69bfNjUQY3K4PsQVcSht4uHSoqfVtlMU/btqVoFaHAXpnF46wifs2a60xAgJa0tj1x38XZLsU/QVcy9RarAqB0DFSqhCWs2/5ngi/dlDtgR2DuI9+fr5bsofD8tlF0cYQPfEce0eO9bzXJxU9McNEKrQUw==
+ b=eez2nCvd0fj5EQdScjYkqk4KGo4y76phq2ZZC12+XtmQ6lBcAL7nunPJiM2X6cpTmbFjtYgDGvThmm/9doGIBXS1L5jmy+2h3DFDpc7t1J/VU+s/E9/HgWB0aS0sbKLIP+s33l1DG4zMmjwQdoz5ufhN1R7DRDvufYfD06Q3n0TttUpUUTUOqgGRHh6B8iT1DR9dGyAVjPgD0zaIRgERf2WmjiVVdOCC2jPvDo9vlukZClmR1RjwCJzZVttcdyXMhqnKdHiOLGMk3wletd9TFXSXy89zzrCnuy3xLGs31Ygvhtduk68FSWYR3460EmVCh1LBD7JFnrgYghZFimT2lA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Jn4J4+v73YafNI7rjY+a4Pdbl5UXyUH8s/LMgvnmxJs=;
- b=rd6F6mNE+TUGmVnSJn6IY3IPShA9/OYAwO35aFJFvL0lFq8mnUF/lx4SjIBQP66t1aEJF1kk5akTsp+bLx1pxJjMSGCDAwhUnJjie5tEELMmW1GbZ+E0XARrifPqcmWyPCvcVG5IytAZDnxKj1XwDePrtuSWzOwkyTwzY3CwmkabLp/MkiVDOzTVoAnX9Q4cnwTRzUYYRpcHORXVyseKe5W/4PhugVHHt/6gwDeey5FwYAAbx4Y0BFS/J4x3h8vd1wctuyfSEEQ8P1GXJDbP3Wj8WZ4rDGhp/L6dkgDDVphGfO5Cwl2M5T0G6P/GwtPTgy5H2yiNUW79mUvWY6N1dg==
+ bh=Z+0x/gTksPXU7FZ2D9S8r1K8rcyMlV9iapZy8UL0OZ0=;
+ b=uXKK9qKGPhow0iTYxDZqhqRSU53kyEOGYj4afeEbvVuyq/H2gRwytQfnFVMrvc4PKOTTl9oH35lI3UxtTMCd8QvbL7bVB1a7v9cG/3beTaUouh9c8b34/pV0/UCNbjgykg2M5jssX19llQhnnomipbcFSUx/HuhByTQ41/avb2cUR09KtivIfFwxXpea4loJxNk4J2UkKh58HYVvyPsrxoQRX/txkTNEzIaD3PGWmNVZgB8b4P3FG0FEh3F/vMHkD1mZWEpDstlmpYtRV79iutjCN+sjAYa1sIokaZuMp+2TRHdTW8Igaec+2X3+LxSkEf7RHMpNiWn+OLzT8m1mnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.21.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Jn4J4+v73YafNI7rjY+a4Pdbl5UXyUH8s/LMgvnmxJs=;
- b=AQwLOrms7Oa2Ef/EkD0ARx9eamXQ52mKz8bOQ9MJR3qhsh/yGnjgn6igGsqYFwF9LXpUawSb7DEs/ZoQg/UwtzLroFFIfpUMnQo6VBu0Foimt0HrFpqhMO+wGqIISMiz5Lj6i9LoFaLCFV+UfODx+rXIfHbyqcyx8iUOQ3Y+CDE=
-Received: from MN2PR08CA0009.namprd08.prod.outlook.com (2603:10b6:208:239::14)
- by SJ0PR10MB6375.namprd10.prod.outlook.com (2603:10b6:a03:484::13) with
+ bh=Z+0x/gTksPXU7FZ2D9S8r1K8rcyMlV9iapZy8UL0OZ0=;
+ b=oNadOK85vk1Wz68Qd/V+XPTw5tFrwhfh9rvR1n1Gu/KRDnVzMDCJn3D+cLvC3NKN3JD0RPXGgggS7GnD/HYRPdeO7Q3axbPdDbQP82YjdKGgZafUZHCH0WyvHZv4amx4PeNMjfnAj43NXnS2GMSDdX6hxcooaSpDNNuqcfsfaQA=
+Received: from SJ0PR05CA0137.namprd05.prod.outlook.com (2603:10b6:a03:33d::22)
+ by SA2PR10MB4746.namprd10.prod.outlook.com (2603:10b6:806:11c::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.13; Fri, 17 Jul
- 2026 18:52:31 +0000
-Received: from BL02EPF0001A0FF.namprd03.prod.outlook.com
- (2603:10b6:208:239:cafe::4a) by MN2PR08CA0009.outlook.office365.com
- (2603:10b6:208:239::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.223.13 via Frontend Transport; Fri,
- 17 Jul 2026 18:52:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
+ 2026 18:52:32 +0000
+Received: from SJ5PEPF00000208.namprd05.prod.outlook.com
+ (2603:10b6:a03:33d:cafe::17) by SJ0PR05CA0137.outlook.office365.com
+ (2603:10b6:a03:33d::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.6 via Frontend Transport; Fri, 17
+ Jul 2026 18:52:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.195)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
-Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- BL02EPF0001A0FF.mail.protection.outlook.com (10.167.242.106) with Microsoft
+ 198.47.21.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.195; helo=flwvzet201.ext.ti.com; pr=C
+Received: from flwvzet201.ext.ti.com (198.47.21.195) by
+ SJ5PEPF00000208.mail.protection.outlook.com (10.167.244.41) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Fri, 17 Jul 2026 18:52:28 +0000
-Received: from DFLE214.ent.ti.com (10.64.6.72) by flwvzet200.ext.ti.com
- (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.245.5 via Frontend Transport; Fri, 17 Jul 2026 18:52:31 +0000
+Received: from DFLE204.ent.ti.com (10.64.6.62) by flwvzet201.ext.ti.com
+ (10.248.192.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 17 Jul
- 2026 13:52:26 -0500
-Received: from DFLE200.ent.ti.com (10.64.6.58) by DFLE214.ent.ti.com
- (10.64.6.72) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 13:52:31 -0500
+Received: from DFLE200.ent.ti.com (10.64.6.58) by DFLE204.ent.ti.com
+ (10.64.6.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Fri, 17 Jul
- 2026 13:52:25 -0500
+ 2026 13:52:31 -0500
 Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DFLE200.ent.ti.com
  (10.64.6.58) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Fri, 17 Jul 2026 13:52:26 -0500
+ Transport; Fri, 17 Jul 2026 13:52:30 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [10.24.52.55])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 66HIpU4u240969;
-	Fri, 17 Jul 2026 13:52:21 -0500
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 66HIpU4v240969;
+	Fri, 17 Jul 2026 13:52:26 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -92,9 +92,9 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <praneeth@ti.com>, <u-kumar1@ti.com>, <a-dutta@ti.com>, <s-k6@ti.com>
-Subject: [PATCH v5 10/17] spi: cadence-quadspi: refactor direct read path for PHY support
-Date: Sat, 18 Jul 2026 00:21:09 +0530
-Message-ID: <20260717185116.2065505-11-s-k6@ti.com>
+Subject: [PATCH v5 11/17] spi: cadence-quadspi: enable PHY for direct reads
+Date: Sat, 18 Jul 2026 00:21:10 +0530
+Message-ID: <20260717185116.2065505-12-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260717185116.2065505-1-s-k6@ti.com>
 References: <20260717185116.2065505-1-s-k6@ti.com>
@@ -109,196 +109,234 @@ Content-Type: text/plain
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FF:EE_|SJ0PR10MB6375:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9c63049-5f06-40bc-ab20-08dee4348d1e
+X-MS-TrafficTypeDiagnostic: SJ5PEPF00000208:EE_|SA2PR10MB4746:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0881c66a-a4fa-42bb-abc1-08dee4348ec2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|82310400026|1800799024|36860700016|22082099003|18002099003|3023799007|10067099003|56012099006|921020|6133799003;
+	BCL:0;ARA:13230040|36860700016|376014|7416014|23010399003|1800799024|82310400026|921020|6133799003|56012099006|10067099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	pOW/CraEobjpuHIF/j+xtpGY55qmxHL2W0BrCtf8ETxMvLHBi8avGUfa4MeWTy/sm7Rpa/54foXP4UNPYrLbZ/a8TD2WXYsGhPv008Q7BbCXFQrdDJ/S6XtJikVxbCmcqgh2Caz1UjvWTG3C+fI4Wt0CAh+EJEQWLwIGQwCl06PH0TiGNpzGwr48vRT/gi5O3r+rm3tTh+Ct/lPIjYgs0OOcJEAMTI/+obb4G6FwQSHOIgpHPKLrd3VkVW9S04XEobA302lJJ6Pg8Q0tBw74dtSEsGdzfcO+n6KgYoSo6GEtyrx+eJAO5Zdpfmu9IjXA2RjiBZciYV6mLRHrNTuon7CN6TrzReui9AnsfBXQKn6p/43HooA8G3AQdA5kiMlIRTGYUtwD6UyFyPmGFchS1q4a4sFmxjGfXTYCRJFidYK+qK49Tlwy52yTgWjJCmzXEppmuvKKN2F+vcSxF4w5/QZWeDAL+IFr+lY9TD8H12nZpm0dFF+FFVeGStaFAz8RPctD9lBqKKZo+fFb3UuPPdHb7v7jrAOMtF5JUCv3AeCivmjHnGK4OTEac8I5Da8BdkMuyPdEOEGeQmq5kqMKmkwpD/sz0fIcPy+z3VGDOPXCX0ScD9BJVJlrIPU+lMI4FNUeZWsnWeYljj+YSe8FKayMoYmSizTRfaHU6RTZZLjQ4mKgy6GtGiRGsPqA9MSXfwNOX9cfXvZuPy8DSYU9AMRxOAd8MXUyPdq0MbwUcNQhZyPHOYlirYpmzjTbMmX+
+	dGftsrfzKL/Z0E4+l8HHO3c/28sLoPmb7Q0K6oN+ugA0cJtxeuYOH8IGTf3L1mokmH9ZnSrMNFutpnJRp9KvNq4THIGt9GmeqAWYnz6khik4jiljUY78CeCZ3HrL4ROpx5KtDeZNO3/ySs/fd3gZW7Maq6DvrWinWH/os1IKI+fR04UmcsTOXeI0ULAj0NG+N06Yjv2YlCVnN4C/r8wkCBWPFrDlYDCOLq6oz9HiuZgzZ9835+DwqkYUyIxLpG1HAMhcQlwOX1rFpDNbe27FYEw2s9DIJ+OL4JbUUfaVcsp7eFVWlzbKPA3fFlzyaabWgJvhdGGa8fOToIhDc7xpLmNXXd7vDrxgHIDGZ90BpAUUxlodHCoaiFPv7DVIXL3odqCIdrP1U63ZnLQYJp+eR/3caKgCXZlfO8pNn4XtJKJoFZWK87CuMFj/CWXoZj+/GTQIkz08GV9j+MfE7vvaLYi+5Gq7PGt0sYgG/tZoPv1UKNWQAvdwPo2VNgSwrkq1Fc4wnuMdAlGVYzYUnjUI/RgqUU7K2upS8qCBbvSnO+CL0YUas3d40p04C4lLhTuBApj4+cMQzG+iMZx8yhXS4+My1oSsBCUVX6V9jGl5Mc2j5upZ6NicGq8G7o+eTz52BBJbEZPEnUc1FK5nAyDySh5UXHsk7ZUeZgcZNC1pr9MdOiRB6kSCwjV4YWzEbnhF+b7qSkL32CqLwKnSsaIA5vfI4UM07DtUsFC1O9ln1hdPywnmLpsOFVd3Eiujr29n
 X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(82310400026)(1800799024)(36860700016)(22082099003)(18002099003)(3023799007)(10067099003)(56012099006)(921020)(6133799003);DIR:OUT;SFP:1101;
+	CIP:198.47.21.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet201.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(36860700016)(376014)(7416014)(23010399003)(1800799024)(82310400026)(921020)(6133799003)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	st3025d7dt8OII0OROQJ08xXAHpQzAkpKjVgoJb2WlCN0mUTltBgH3Gs6wnBoeeFWnziSsOZnSIUXUQVm7BQUYG3J1pA4YC3X4bqSb2TDh66yBybOSDFRLMt2tlovGtk82nCp9Hun5Kn4NfDGBxjWRKS9L0G8XU5H5Jq0RPvQtZrg2KBjkroIsDP88z1ZjRIlr63yoFquKDXi2YDZuhOzcKrdAnbwi8X/JIlgsQXPtmCSbboi/BZWJq2PpmbgS5PyVZ/62d/tsYEtHdZ3Tz2Al4zBL9hgrlAQmtHC6DRubT0+ngNPPV6YttsDJ8XcSGaH8+Ll5fNsG8nvOKNUxM/9+aN2HXlH2Rd9xiv3xvnbMC5WwnU0TV9VyeGrffm5SGgROsGrAxo7j8WIDF6azlpbsW43XEgXXlSe45VvE0xVjyb8dOw2q4g3yXsFUvpZhlv
+	ixcBjv/7ZjsaVP5kjeuF2/GRFJ0yTdFxeCgANI4leE8WT3dTAuq0D8RbwwHEk7JHJoZEz7xD01r4OiPyRKq7tFN7JlCFIMTKZd4v31dr5ClTHcsumapzkYdv2wf8dH5ZwbEmywWeV768Sk+Mt7XfYd63k4phONSiy2qIobLZkwq54X91nP7IXO0q0UXtCaU7BGHkDrY7OHcpFrLhWMNFsBVKscQNqO20dtxMbVo9Cn87aS0jnSV7yo0ayWSWocoiLfDpAUTVJJ1y8z4pFPuQGgVzuqLfYXCRhv4qQtkcv3X4oXPAumMZxAxek7IyXz+8D2ppTvRr89zd+BqybrbelaifEgkJLl5mVpkPvyxdgIrIUTQP1TN3lknUt8gdAzVzxMd5KBY2VswGOrFTt0q++zv012A5+Cb9VLShHU9UCaL7UYA9tkIxnQhLKSpEpOLI
 X-Exchange-RoutingPolicyChecked:
-	QtFv8o0sgd+1VdD+7KaNGZ7znuwYsKITw6zz+0EizSY7Feyu0bEYLhYuRwIaexrUpCra/w2m4TybO+wtiqJH0syQT3fZVycF4fDIKRb2IDmvP2E/XkBFxr0FYstUUOK4sP4xUc751NtOvNL8iZYPProXwdFiLeJUTwxGkGievuQM6exm9M+qO/UmAUcvtgnlrEqy5CTB3WvRj7Bu6gqp7MFRZ4ij7uICZyD3K0J0P0BAOXL0LLiIncZ+R7kTblo7PZ5oPIoKx6aPTr6N/WSqTu/cU6nShCCf0IJ+rr5g/H5poYRwwCNM7eB0Cx6C740VfAj8UYdKOcv/MbaQeLyiMA==
+	a6vw+7MPJwxNRxl6EnfHfoiLPG013JdpZNnJZq1xqF+JXqz2uin1wcig4MQKlj91ReeSRL9FYjji37UWdshfBetwZTD9r2tKjWlYw0ys1PFb2tywhJS4n0Fj+WXhO1h24MyfFLs08FV4iKo5/62UNnVFvGEKgSsK1J3wiBBXi9sMQnDWk9o8ctJ1AL0fQdpd6AzE0+ldNeWPM27kWqD6Zuzl1Auqw2ggvmZmDrxYsjdlAeLcbv1ECB5YYwFCq13gkF65JCnw5HyTnMdNAMBW1LGIQ8DVVogsGwWGfSM5cWWeq1gZO9JeC7+7gfoybyimI1gMnZNdxk0nyeG0CSmSvg==
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 18:52:28.9109
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2026 18:52:31.6357
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9c63049-5f06-40bc-ab20-08dee4348d1e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0881c66a-a4fa-42bb-abc1-08dee4348ec2
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.195];Helo=[flwvzet201.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FF.namprd03.prod.outlook.com
+	SJ5PEPF00000208.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB6375
-X-Proofpoint-GUID: kZ67-bun3MZlTHJ-gVU_Uuigf4kINWDh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDE5MiBTYWx0ZWRfXyVl6mRDCGlPL
- UJii4mv6xJqt6x9Lg/tmjqzluspeo6dcxnjOT5mulpaAhkyMLKR1RMkmD2eQ2PiF9CFqSBTJtHt
- ct/+9wstEymfTbaVC3EAfuhuwtr+QtYsGzrBTZ6/WI/os8KVwcP8AmPZJpezJwlpH22QScAiSep
- H+j1dctXRZj+gL1I06ht6eep3CDkAW8kTlmmDyUqNvR+gwA7fUrOl3WhIaIW3yQN6EdAL9ADdWI
- 4nAwLRdGxsY9QPEy0NpVeKmo1mrPS8YrTKcRdm/1HRFwol9E/Ev1CEoXr80UkT2a6EOctGbeljj
- abIfZXcUkEMb+eTjPuT8w3hpavow2ddcOm/Btqq4GoZ78ZFBVKCe9MRfQ/InBOOblI9ezR9u39U
- tq5riFH+BdB603pH6f72X6wD7ZPSvvOLViCrRiN4ReTzuMaPEUPrP7oxWlBXkPKb1r1m6ABh27Q
- a1Uh5ekUURHQQgqYGRQ==
-X-Authority-Analysis: v=2.4 cv=GJ841ONK c=1 sm=1 tr=0 ts=6a5a79f4 cx=c_pps
- a=ixAZ6W2pdOuc7GYTaWtIWQ==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR10MB4746
+X-Authority-Analysis: v=2.4 cv=e9Y2j6p/ c=1 sm=1 tr=0 ts=6a5a79f5 cx=c_pps
+ a=8g4i1X1tkAMDiabECo8pFg==:117 a=tJyPKKxUohctrY4NYmUjkA==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=RAioF0-LDSMA:10 a=V5UXEbMT0ywA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=taLDd7a_hP9WKsMzeGRc:22
- a=sozttTNsAAAA:8 a=kQoCic6YF6TU8Y4tUr0A:9
-X-Proofpoint-ORIG-GUID: kZ67-bun3MZlTHJ-gVU_Uuigf4kINWDh
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDE5MiBTYWx0ZWRfX2gucHtccW1PL
- qQGLpxInEJczriRhl2KXfX9u85Q71sHHzHEf8RAE35xSaPhJ77El1kRDuC0E2pBum66ZgLa3Kv9
- 2YaLdRBlw0GVLL+mdeIionsI/dvmUjk=
+ a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=gO1vWkAQAl3rybz1DQOp:22
+ a=sozttTNsAAAA:8 a=EeSCy0yzjnJx7k32krcA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDE5MiBTYWx0ZWRfXxdgjq8TY0ibS
+ NntsikqtdjfTWFMGye5+c77NrbGgwft9Jxv57ceYYUIRc3SrlGbzDN7lrQGiK7O+MoTvP/YeVi9
+ PEhjt/6AmjbSiQmzi4HF2ePHAD9hk/HEW9I2p8ArStpg2+kJPJUZSGiPpicntZlaxCc8NiKmgrM
+ qNgGK/MDRvhiCKuNxHzZ8fvpqguibv5QgFAbeoawUj0ud7aVZJwGikIqR1prozdhUD/19Rclx3F
+ 47JFJ1b4j6mzZCVZf5OvHb9HTufpxnnuN6XETiL5AA2shhzw4GbjpVciieyYlHdEJ4jz8jRSeSV
+ nuxUK9JkcRfkKEkJrakTf9ey27u+GfnUo6hPw7XQTqdT/kyAZk1tYjFJeJbzX2tjUKpwWt5nFZk
+ US3aokUubcGgWdRybk5zizubm+lliXduTVLcObHHlQeqKvr70wsfgMsNxdSBk+mpOSSl3eBPSz3
+ 8y+FNB3yCLysPGOYzCw==
+X-Proofpoint-GUID: xFPJYKJzYzQRzuLGZ26Rx4Co_5QY2qL5
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDE5MiBTYWx0ZWRfX208Upasw4rDT
+ EdPUVOFk8v85OGGMb/lNZAnjAk5ZS6g9T3SuJPzpgWrMQ2gyDftgwFisCtwg41XUqMvfBKZo+9x
+ Z9ywuow3u3nda5BXKj/zExOg1Tc+Sv8=
+X-Proofpoint-ORIG-GUID: xFPJYKJzYzQRzuLGZ26Rx4Co_5QY2qL5
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-17_05,2026-07-17_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 suspectscore=0 phishscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607170192
 
-Extract the DMA transfer code from cqspi_direct_read_execute() into a
-new cqspi_direct_read_dma() helper. Add cqspi_memcpy_fromio() to handle
-non-DMA transfers, with 2-byte-aligned I/O accesses for 8D-8D-8D mode.
+Add cqspi_tune_phy() to toggle PHY mode. Enabling sets the calibrated
+read-capture delay, asserts PHY_EN and PHY_PIPELINE, and decrements the
+dummy cycle count by one since the PHY pipeline absorbs that latency.
+When multiple chip selects have different calibration results, the DLL
+is reprogrammed on each enable to match the active device's settings.
+Disabling reverses all three.
 
-Change cqspi_direct_read_execute() to take the full spi_mem_op and
-post_config_max_speed_hz instead of separate buf/from/len parameters,
-matching the interface needed by the PHY-aware version in the following
-patch. Thread post_config_max_speed_hz from cqspi_mem_process() through
-cqspi_read().
-
-Transfers shorter than CQSPI_PHY_MIN_DIRECT_READ_LEN bytes always use
-the memcpy path; longer transfers use DMA when available.
+For direct reads, split the transfer into an unaligned head, a
+16-byte-aligned middle section with PHY active, and an unaligned tail.
+PHY is used when tuning completed successfully and the transfer is at
+the calibrated frequency.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 72 ++++++++++++++++++++++++++-----
- 1 file changed, 62 insertions(+), 10 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 124 +++++++++++++++++++++++++++++-
+ 1 file changed, 123 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 5070ffc53d5e..322e95b3bc17 100644
+index 322e95b3bc17..35a400073944 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -151,6 +151,8 @@ struct cqspi_driver_platdata {
- #define CQSPI_READ_TIMEOUT_MS			10
- #define CQSPI_BUSYWAIT_TIMEOUT_US		500
- #define CQSPI_DLL_TIMEOUT_US			300
-+/* Minimum transfer length to use DMA for direct reads */
-+#define CQSPI_PHY_MIN_DIRECT_READ_LEN		17
- 
- /* Runtime_pm autosuspend delay */
- #define CQSPI_AUTOSUSPEND_TIMEOUT		2000
-@@ -1521,8 +1523,8 @@ static void cqspi_rx_dma_callback(void *param)
- 	complete(&cqspi->rx_dma_complete);
- }
- 
--static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
--				     u_char *buf, loff_t from, size_t len)
-+static int cqspi_direct_read_dma(struct cqspi_flash_pdata *f_pdata, u_char *buf,
-+				 loff_t from, size_t len)
- {
- 	struct cqspi_st *cqspi = f_pdata->cqspi;
- 	struct device *dev = &cqspi->pdev->dev;
-@@ -1534,11 +1536,6 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
- 	dma_addr_t dma_dst;
- 	struct device *ddev;
- 
--	if (!cqspi->rx_chan || !virt_addr_valid(buf)) {
--		memcpy_fromio(buf, cqspi->ahb_base + from, len);
--		return 0;
--	}
--
- 	ddev = cqspi->rx_chan->device->dev;
- 	dma_dst = dma_map_single(ddev, buf, len, DMA_FROM_DEVICE);
- 	if (dma_mapping_error(ddev, dma_dst)) {
-@@ -1580,8 +1577,61 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+@@ -1067,6 +1067,82 @@ static int cqspi_resync_dll(struct cqspi_st *cqspi)
  	return ret;
  }
  
-+static void cqspi_memcpy_fromio(const struct spi_mem_op *op, void *to,
-+				const void __iomem *from, size_t count)
-+{
-+	if (op->data.buswidth == 8 && op->data.dtr) {
-+		unsigned long from_addr = (unsigned long)from;
-+
-+		/* Handle unaligned start with 2-byte read */
-+		if (count && !IS_ALIGNED(from_addr, 4)) {
-+			*(u16 *)to = __raw_readw(from);
-+			from += 2;
-+			to += 2;
-+			count -= 2;
-+		}
-+
-+		/* Use 4-byte reads for aligned bulk (no readq for 32-bit) */
-+		if (count >= 4) {
-+			size_t len = round_down(count, 4);
-+
-+			memcpy_fromio(to, from, len);
-+			from += len;
-+			to += len;
-+			count -= len;
-+		}
-+
-+		/* Handle remaining 2 bytes */
-+		if (count)
-+			*(u16 *)to = __raw_readw(from);
-+
-+		return;
-+	}
-+
-+	memcpy_fromio(to, from, count);
-+}
-+
-+static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
-+				     const struct spi_mem_op *op,
-+				     u32 post_config_max_speed_hz)
++static int cqspi_tune_phy(struct cqspi_flash_pdata *f_pdata, bool enable)
 +{
 +	struct cqspi_st *cqspi = f_pdata->cqspi;
-+	loff_t from = op->addr.val;
-+	size_t len = op->data.nbytes;
-+	u_char *buf = op->data.buf.in;
++	void __iomem *reg_base = cqspi->iobase;
++	u32 reg;
++	u8 dummy;
++	int ret;
 +
-+	if (!cqspi->rx_chan || !virt_addr_valid(buf) ||
-+	    len < CQSPI_PHY_MIN_DIRECT_READ_LEN) {
-+		cqspi_memcpy_fromio(op, buf, cqspi->ahb_base + from, len);
-+		return 0;
++	if (enable) {
++		/*
++		 * CQSPI_REG_PHY_CONFIG holds the RX/TX delay line tap counts
++		 * and is a single global register with no per-CS equivalent.
++		 * Reprogramme and resync the DLL when the active device's
++		 * calibrated values differ from what is currently in hardware,
++		 * which happens when alternating PHY reads between two chip
++		 * selects with different calibration results.
++		 */
++		reg = readl(reg_base + CQSPI_REG_PHY_CONFIG);
++		if (((reg >> CQSPI_REG_PHY_CONFIG_RX_DEL_LSB) &
++		     CQSPI_REG_PHY_CONFIG_RX_DEL_MASK) != f_pdata->phy_setting.rx ||
++		    ((reg >> CQSPI_REG_PHY_CONFIG_TX_DEL_LSB) &
++		     CQSPI_REG_PHY_CONFIG_TX_DEL_MASK) != f_pdata->phy_setting.tx) {
++			cqspi_set_dll(reg_base, f_pdata->phy_setting.rx,
++				      f_pdata->phy_setting.tx);
++			ret = cqspi_resync_dll(cqspi);
++			if (ret)
++				return ret;
++		}
++
++		cqspi_readdata_capture(cqspi, true, f_pdata->use_dqs,
++				       f_pdata->phy_setting.read_delay);
++
++		reg = readl(reg_base + CQSPI_REG_CONFIG);
++		reg |= CQSPI_REG_CONFIG_PHY_EN | CQSPI_REG_CONFIG_PHY_PIPELINE;
++		writel(reg, reg_base + CQSPI_REG_CONFIG);
++
++		/*
++		 * The PHY data-capture pipeline absorbs one dummy cycle's
++		 * worth of latency; reduce the count to avoid over-compensation.
++		 */
++		reg = readl(reg_base + CQSPI_REG_RD_INSTR);
++		dummy = FIELD_GET(CQSPI_REG_RD_INSTR_DUMMY_MASK
++					  << CQSPI_REG_RD_INSTR_DUMMY_LSB,
++				  reg);
++		dummy--;
++		reg &= ~(CQSPI_REG_RD_INSTR_DUMMY_MASK
++			 << CQSPI_REG_RD_INSTR_DUMMY_LSB);
++		reg |= FIELD_PREP(CQSPI_REG_RD_INSTR_DUMMY_MASK
++					  << CQSPI_REG_RD_INSTR_DUMMY_LSB,
++				  dummy);
++		writel(reg, reg_base + CQSPI_REG_RD_INSTR);
++	} else {
++		cqspi_readdata_capture(cqspi, !cqspi->rclk_en, false,
++				       f_pdata->read_delay);
++
++		reg = readl(reg_base + CQSPI_REG_CONFIG);
++		reg &= ~(CQSPI_REG_CONFIG_PHY_EN |
++			 CQSPI_REG_CONFIG_PHY_PIPELINE);
++		writel(reg, reg_base + CQSPI_REG_CONFIG);
++
++		reg = readl(reg_base + CQSPI_REG_RD_INSTR);
++		dummy = FIELD_GET(CQSPI_REG_RD_INSTR_DUMMY_MASK
++					  << CQSPI_REG_RD_INSTR_DUMMY_LSB,
++				  reg);
++		dummy++;
++		reg &= ~(CQSPI_REG_RD_INSTR_DUMMY_MASK
++			 << CQSPI_REG_RD_INSTR_DUMMY_LSB);
++		reg |= FIELD_PREP(CQSPI_REG_RD_INSTR_DUMMY_MASK
++					  << CQSPI_REG_RD_INSTR_DUMMY_LSB,
++				  dummy);
++		writel(reg, reg_base + CQSPI_REG_RD_INSTR);
 +	}
 +
-+	return cqspi_direct_read_dma(f_pdata, buf, from, len);
++	return cqspi_wait_idle(cqspi);
 +}
 +
- static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
--			  const struct spi_mem_op *op)
-+			  const struct spi_mem_op *op,
-+			  u32 post_config_max_speed_hz)
+ static int cqspi_versal_indirect_read_dma(struct cqspi_flash_pdata *f_pdata,
+ 					  u_char *rxbuf, loff_t from_addr,
+ 					  size_t n_rx)
+@@ -1516,6 +1592,14 @@ static ssize_t cqspi_write(struct cqspi_flash_pdata *f_pdata,
+ 	return cqspi_indirect_write_execute(f_pdata, to, buf, len);
+ }
+ 
++static bool cqspi_use_tuned_phy(struct cqspi_flash_pdata *f_pdata,
++				const struct spi_mem_op *op,
++				u32 post_config_max_speed_hz)
++{
++	return f_pdata->use_tuned_phy &&
++	       op->max_freq == post_config_max_speed_hz;
++}
++
+ static void cqspi_rx_dma_callback(void *param)
+ {
+ 	struct cqspi_st *cqspi = param;
+@@ -1617,8 +1701,11 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
  {
  	struct cqspi_st *cqspi = f_pdata->cqspi;
- 	const struct cqspi_driver_platdata *ddata = cqspi->ddata;
-@@ -1597,7 +1647,8 @@ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
+ 	loff_t from = op->addr.val;
++	loff_t from_aligned, to_aligned;
+ 	size_t len = op->data.nbytes;
++	size_t len_aligned;
+ 	u_char *buf = op->data.buf.in;
++	int ret;
  
- 	if ((cqspi->use_direct_mode && ((from + len) <= cqspi->ahb_size)) ||
- 	    (cqspi->ddata && cqspi->ddata->quirks & CQSPI_NO_INDIRECT_MODE))
--		return cqspi_direct_read_execute(f_pdata, buf, from, len);
-+		return cqspi_direct_read_execute(f_pdata, op,
-+						 post_config_max_speed_hz);
- 
- 	if (cqspi->use_dma_read && ddata && ddata->indirect_read_dma &&
- 	    virt_addr_valid(buf) && ((dma_align & CQSPI_DMA_UNALIGN) == 0))
-@@ -1625,7 +1676,8 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
- 		     !cqspi->disable_stig_mode))
- 			return cqspi_command_read(f_pdata, op);
- 
--		return cqspi_read(f_pdata, op);
-+		return cqspi_read(f_pdata, op,
-+				  mem->spi->post_config_max_speed_hz);
+ 	if (!cqspi->rx_chan || !virt_addr_valid(buf) ||
+ 	    len < CQSPI_PHY_MIN_DIRECT_READ_LEN) {
+@@ -1626,7 +1713,42 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		return 0;
  	}
  
- 	if (!op->addr.nbytes || !op->data.buf.out)
+-	return cqspi_direct_read_dma(f_pdata, buf, from, len);
++	if (!cqspi_use_tuned_phy(f_pdata, op, post_config_max_speed_hz))
++		return cqspi_direct_read_dma(f_pdata, buf, from, len);
++
++	/* Split into unaligned head, aligned middle, unaligned tail */
++	from_aligned = ALIGN(from, 16);
++	to_aligned = ALIGN_DOWN(from + len, 16);
++	len_aligned = to_aligned - from_aligned;
++
++	if (from != from_aligned) {
++		ret = cqspi_direct_read_dma(f_pdata, buf, from,
++					    from_aligned - from);
++		if (ret)
++			return ret;
++		buf += from_aligned - from;
++	}
++
++	if (len_aligned) {
++		ret = cqspi_tune_phy(f_pdata, true);
++		if (ret)
++			return ret;
++		ret = cqspi_direct_read_dma(f_pdata, buf, from_aligned,
++					    len_aligned);
++		cqspi_tune_phy(f_pdata, false);
++		if (ret)
++			return ret;
++		buf += len_aligned;
++	}
++
++	if (to_aligned != (from + len)) {
++		ret = cqspi_direct_read_dma(f_pdata, buf, to_aligned,
++					    (from + len) - to_aligned);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
+ }
+ 
+ static ssize_t cqspi_read(struct cqspi_flash_pdata *f_pdata,
 -- 
 2.34.1
 

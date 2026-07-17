@@ -1,265 +1,135 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD796418A3A
-	for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 14:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B562D0615
+	for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 14:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784298991; cv=none; b=ll1UmvxDcSdS4FSXy4Uv8A+SP/KqOpLzG54tH1FFdAAbjHFf6uCy+R0bByU4Ddt1RqG7uurcJ4d5YuMlcQIgHcwiAEnnBSEGPnmcWde4W5JJjP2arUSSqhTA5lYO7iuPYPMqvAJeeSSohW0ViIojNIbzF+vlzticdK+Tru0ZMfs=
+	t=1784299584; cv=none; b=oboNoK18vAnNpI2XaTBqrkHRu0LdZtXkaCqi1YzwLFqdXYx/q9hsO37T97BgL9fAgxp9RG44ligob9IHGfGl30RUWqjr9gKgaT5NVuD/d4EnmW8M4HVv21F4ukJsIRD9Uz8eyEmQBDblcCzeD4MZfZiy9+JSFAzF+62Nds8Zfgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784298991; c=relaxed/simple;
-	bh=ukKOayovYPz+N1uxirJ7SNW+NLgElUDsr8xtH0cDn80=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A8DEREKNmPjg2wIsqBs5ivMvX79pyOOZ+/Z10kpn+iIsrlstj5bCYlIbw1HfOMYyMQEqYxXeE+DoP6WDJIG2E5XAyifOtkSK6zehPLnUAIwKu7RydH5yp2VmcH6RXUGdm3Oc4U3iSB0ExHMdMD41oqOx28D4mHe4Ciw8dQ1BVU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f5zRdjzQ; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1784299584; c=relaxed/simple;
+	bh=OIPMXvKZwuWAWDHePcauH/eSNbDXWC6yVHtpY8sqHRI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oPgxVsFH4RAP/eso8J0KL5vK+l9OLhFZ3MvX88QM1RoasXkYdQgoVBZVWfYjDb6Vkt94c42us+fbhHZ48VYb+Wwv25enhnhNHLJ89lxD6y3HIalk7aK0gWVLR1M0SFZBzwpKEm4rl0LERrNeYFSZk1Ol2ugDmsOb2EnX6w51vfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ55eadi; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f5zRdjzQ"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc61541f8cso17337885ad.0
-        for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 07:36:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ55eadi"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8485b358552so8708876b3a.2
+        for <linux-spi@vger.kernel.org>; Fri, 17 Jul 2026 07:46:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784298989; x=1784903789; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zsezRzUgH4CnJUtyPPiS7O3QQiFIeq4/udW8yu2mReo=;
-        b=f5zRdjzQ9+NF9jTVuLOGUBLYuTEAURMCj58uEvgHtFFNPTiXyOJiXN7e68nDy5jPPk
-         J2iUo2F7b/gJ/fPLmHyFheekwtv3wF88qurlxE9LqImZgu8vo4BIDz+7rhA4zYjyzGjJ
-         V3DRYwCu3PPNuB+BNQ8JLyjStt8LcrZJ2/jyd2U0E0RWhal+dhh9mf7Um10QtSLEXOmU
-         P/AXlAcYMoLq3rzmvrJ/yQ4ZLoXwuO+6Iu4C5yylbsVyt4f7BT55/mpYn2Nfn+QA71l2
-         +UzK6ZFxbT5mq7dva//iH9W30rzZOyJaSsZk3mBNc4VriKgkMQn/AE2oyE3o3iZA8MWs
-         3pXA==
+        d=gmail.com; s=20251104; t=1784299582; x=1784904382; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=m6JMxGAMeORwl1SYUzJ4Avq6RnSUEQpdwdVOG9zM+x0=;
+        b=ZJ55eadiSz/HA6N8F7GM3oNOwvUQ4fXvnr9pQ42x/t2tDJRjDBgB9ohwqcsvlo0EkW
+         6VbVAAsqo0X7kXHLGESOZTDr7VntuQjcBkHvX7kKVrKLh7WsZtECGIoAyJbBp9WJiBj9
+         BYyivlAwEqaat+131a4d23i5CyXxhXjBOLvgXtFM+XX/Oh+3uhEAALvrGYzlzp4C4SsU
+         MsSAZybjB1J1eVvO6maX1oFMg6UzBxbLbPRj452a+bpmF1ktg185yHulzJd2FvgW9FLu
+         NK9S23xiFR58+SPNAwFW5OmfJa36eaSYbo2SuD/h3mYIbRtisgdVGc7HptM3HOmJCRLk
+         /drw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784298989; x=1784903789;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zsezRzUgH4CnJUtyPPiS7O3QQiFIeq4/udW8yu2mReo=;
-        b=fl9wp0x9jpSru2xt9oCXWBpm77b3mwAKd2yaMAP/d7k3nQpqgCcUqd+y9Zgyv5DkiV
-         CFzHiVnMX7V9nyA069PM9wyLxhZgUihAIaTOc9ScmHGlsZPumttPGX2eYiZtFrjjlsw9
-         UwapjAMgpFLwqAs6WYjDWlfmsv2jYD3OG5aTbszBSD//0gpoG43Crp6/Eyno4B0+1DC7
-         1mSQaj6HaJShM0wkTBQ864ZCf94AknQ9jQv5A0SEv4I0pwVvFC/dPdRThcS5syNvciEt
-         x9QBfGE4cpyWTI8IR3y3lZmC1DVbiUh7FOH02/wwlMJp4OrBj0H1nsqJIHvoOHEmpo8n
-         KN/A==
-X-Gm-Message-State: AOJu0Yz6p1FusXA29wBfuuu5fvHknVIAqIPCijeUnf6RWSR2Z2YMgb7H
-	VEdQfDW81tUrK619zc+ywy7wjSqPMK85AXKFAFY+k9UaYYO4UdjV1pw=
-X-Gm-Gg: AfdE7clbSb+HCwScjmpDfcTYpwiGSogUhwKRZCvSblD8UZ2VFXKdgoFPwtVI75kDU7B
-	K/xZtBK9UYOKA9LB5XaNke0L5F1JKLjlvxcH5ffwFVUmqTj7OG0MZ0TCbJcVz2eL+SaYzdt4gar
-	HPpFhfZu+NwlyVcArz8AqdqQi2tuR1M9b+usJ3EU01BQ26gQalVcpC4yGXYFYS6HICoArtJa+NG
-	TKNDYAUImVtR/izfmb2EA2lhPm6+S5zp02ppaG/WTZB+KfBXJ8lDbNrYJz3KKIt/MbJRFK4rYeY
-	qfLab874uwF34bq8+uQ3ullzEkzIw3HfW/FDxGFpr1GR9fWBmxRZzzWz4BfNTnjkB+j8YkE6W9G
-	jCNqLfFTuIT7eqoiUP5OqpveblzkWzU2aVQkSDpQQIZ1Cnhfo0KEKbzV6h1BLbmscn9nHHGN6uh
-	Ooc1frja7JnflSIaRiMs2mtVhwSng5HmvMVq/tB0xUaMTFWQRv0AuUKHtP+FgFHHS1yk5+a8MrB
-	sOxdiPfRWp1sQ==
-X-Received: by 2002:a17:902:fc43:b0:2cf:41ba:96c2 with SMTP id d9443c01a7336-2cf41bab3cdmr1005375ad.12.1784298988850;
-        Fri, 17 Jul 2026 07:36:28 -0700 (PDT)
-Received: from penguin.tail0a1999.ts.net (61-228-46-68.dynamic-ip.hinet.net. [61.228.46.68])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf346d9bd5sm12145695ad.45.2026.07.17.07.36.27
+        d=1e100.net; s=20251104; t=1784299582; x=1784904382;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=m6JMxGAMeORwl1SYUzJ4Avq6RnSUEQpdwdVOG9zM+x0=;
+        b=rCL7LCin0NJpTfhj0fy+YmoRwoDv6GWhz5SQblTXjF88ro4kGDIRiSqGkK8s7mdpg/
+         B7vs7KKMXiWS1OupnNwrto/3e0bQG85va+zfE7d4btlRsieEKUr4cgXvhiEhN3OSyPn1
+         fPF5oanBmjSsHLwWpEFvhfpGjuaQLY07O6MTVNobcD7yG571NtcG4CfPjiGlmCJO6jcb
+         8fLa2d87NIyLmdJnDtATzIZKNPDWLRx7uvkRsbST75ALyuB260QH8BfSRmKa3oaUMc9I
+         d3IvapHbPFZVDDB8UI1KAA3wa/W7OjtAXh0SI6Z6V7nlIz46j8j++Od+yM2MV+shiTQH
+         4MSg==
+X-Forwarded-Encrypted: i=1; AHgh+Rpu8ZlCMK+SWX1IQz3u/3ciu4NaA06XM8h+42eqGS22msPwf+ApyXWLKnEMHeDRwck4lYuEKkgI9ec=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9Yvvn1Eo50od8EN1MlrThixjQOCw3Q39HjinhOy/MwBqCg89j
+	uY/rrfMarf25aatjOFgtMKVoV4jSrVuOMhDG0Hsj+FxaHTvfmhP6alKE
+X-Gm-Gg: AfdE7cnXhFXRZP7knhhZuyoKlOk9ij3GVxfwcQDL1bL7xqJH1/HJnjEJOAHcq8zfz59
+	I+Xfy0hSIRziZuvYPMI95gSj3Stj2UEP3iQOqs4yIP8JUQadg/Ujsmd5k6q1TM2GUcP+5x3c5J/
+	0OoNb27IIf/v8nSe5a5YE5CFoBf/MpvMbvKLGaY4w0RkfxR84nCApr4ut7nU0Tw8PYrs2HBRy01
+	V9vLDSWC6NOJXxaObX2mIoGGRzZenx/p0AspRImbA/1h8+IONRy6X/507LkPzKF0izQCV4g4/6j
+	GYA5HjPXbPkmZlHnQ2a1zE8fc5xv28AFyXHKgZ1xrBwoyxXi8lWdvUSbTJa4z85n4+BQguOIumz
+	Ni1sSWQRvFHs7v/Q9uppG72yFwFnWJWv5+enYwBWZi313NiKSHHpsR4fBDqRBNNrjkENjw88a4T
+	lF1Q==
+X-Received: by 2002:a05:6a00:1784:b0:848:65f3:23c0 with SMTP id d2e1a72fcca58-84c2923a63bmr2877553b3a.1.1784299582194;
+        Fri, 17 Jul 2026 07:46:22 -0700 (PDT)
+Received: from [127.0.1.1] ([192.220.14.58])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af6d519sm1166408b3a.40.2026.07.17.07.46.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2026 07:36:28 -0700 (PDT)
-From: "Shih-Yuan Lee (FourDollars)" <fourdollars@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v2 2/2] spi: pxa2xx: restore LPSS private register state on S3 resume
-Date: Fri, 17 Jul 2026 22:36:16 +0800
-Message-Id: <20260717143616.4765-3-fourdollars@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260717143616.4765-1-fourdollars@gmail.com>
-References: <20260712162420.7453-1-fourdollars%40debian.org>
- <20260717143616.4765-1-fourdollars@gmail.com>
+        Fri, 17 Jul 2026 07:46:21 -0700 (PDT)
+From: Zhengyu He <hezhy472013@gmail.com>
+Subject: [PATCH 0/4] spi: spacemit: support K3 SPI controllers
+Date: Fri, 17 Jul 2026 07:45:24 -0700
+Message-Id: <20260717-k3-com260-spi-v7-2-rc2-b4-preview-20260716-v1-0-969a1b0f783f@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/z2N0QrCMBAEf6XcswtJDIn4K+KDTS96im3JaRVK/
+ 91UwceB2Z2ZlIuw0r6ZqfAkKkNfwW4aSpdTf2ZIV5mcccFEG3DbIg33CtBRMEU4lOTQeozrnl/
+ 4qybGvAud9T4bqodVyPL+xg7HH+uzvXJ6rAValg9gBWi9jgAAAA==
+X-Change-ID: 20260716-k3-com260-spi-v7-2-rc2-b4-preview-20260716-077f86d144f0
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Yixun Lan <dlan@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, Alex Elder <elder@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-spi@vger.kernel.org, Zhengyu He <hezhy472013@gmail.com>, 
+ wefu@redhat.com, liyeshan <yeshan.li@spacemit.com>, 
+ Guodong Xu <docular.xu@gmail.com>, Cody Kang <cody.kang.hk@outlook.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1159; i=hezhy472013@gmail.com;
+ h=from:subject:message-id; bh=OIPMXvKZwuWAWDHePcauH/eSNbDXWC6yVHtpY8sqHRI=;
+ b=owEBbQKS/ZANAwAKAc32nDaAuA3YAcsmYgBqWkAt6LQ1BMVvY5sduW/KRV9RVz2vmM1p+9bjq
+ P+2is2xrAaJAjMEAAEKAB0WIQS9XD2kxy1NmfC2u/XN9pw2gLgN2AUCalpALQAKCRDN9pw2gLgN
+ 2LRYEACGXe+KRwOLl6dDegR3fIqUbV3Spz7oC1VhGZo+Ogpb4C56+sLl8CngaAHlpFyyv3gyqpQ
+ q58zd8HxcznBK6W+syG9HQzhCaeQxpceyb/WYTeEb7+UoKPbZ0IyhJFSn4dlqdFdIpaZgmYwCdM
+ xLQVaG36ffyc1/u/6n3b3REhKzWKKhB7P+Sh/8V1ZF2aDbDzGpr/E6DSKQN3Wo4RtSuTemi+PJ+
+ PwC013IrNg4LLps7qPu5IqJ6RQ8y9MH1thoFIMHAUoWi1/b+Ixajk0xRYXJ9X1Mihz1MiJWKrd4
+ wGPAKrayGl0CjOKI6wjqEw2VnHdHEOK/0w+PMGWzsLtBILZCFSL0ZBL2rpv0bJfYvACPmFT08PR
+ QCao193VhuW0hQHbFbH6Km+tzmg921cKQH08Y9S5vQkz+Cj3LHS+pCH0M3D3d0ssf0tFxnMIuIF
+ CMiAAE2XTH5vPZE0HQK36n7Ez1p+POPLhQZx2MhpX9WeSErDz3LRDH+vRe9lOgXZK+T9jv7k2/l
+ 4r6s0ahnqkJUaI7aw0zZG/+Dn6QhyduANPqsIvruZmZdaq17su/+3rgdiDX9sFcJ8ixJ3lucdn+
+ MQvbvaV/5tIsgDiX3p5iGNlC+iE3oHHB7pKozFtVxrFAKIiYGuzVaSvAyqtedi4HIqBrBZXPGLj
+ GtbxA0tYKjHBjig==
+X-Developer-Key: i=hezhy472013@gmail.com; a=openpgp;
+ fpr=26CA97B1A229C229822278F254AF850165158959
 
-From: Shih-Yuan Lee <fourdollars@debian.org>
+This series adds K3 PDMA request numbers, documents the K3 SPI
+compatible, and enables SPI0 on the K3 CoM260-IFX.
 
-Intel LPSS SPI controllers lose all private register state across S3
-suspend because the LPSS power domain is fully removed.  On resume the
-driver only re-enables the SSP clock, leaving the LPSS private registers
-in their power-on-reset state, which causes two problems:
+This series is available here:
+  https://github.com/imguoguo/linux/tree/k3-com260-spi-v1
 
-1. LPSS_PRIV_RESETS (offset 0x04 within the LPSS private space) stays
-   zero, keeping the functional block in reset.  Any MMIO access while
-   the block is held in reset causes a PCIe Completion Timeout and a
-   watchdog-triggered system reset.  LPSS_PRIV_RESETS_FUNC and
-   LPSS_PRIV_RESETS_IDMA must be de-asserted before any other register
-   access on resume.
+This series is based on v7.2-rc2.
 
-2. The LPSS software chip-select control register must not be blindly
-   restored from its suspend-time snapshot: if CS was asserted at the
-   moment of suspend, restoring that state corrupts the first
-   post-resume SPI transaction.  Instead, call lpss_ssp_setup() which
-   unconditionally writes SW_MODE | CS_HIGH (idle/deasserted), matching
-   the state established at probe time.
-
-To resolve these issues safely:
-- Wrap S3 suspend/resume with pm_runtime_resume_and_get() and
-  pm_runtime_put_autosuspend() respectively.  This ensures that if the
-  device was runtime-suspended, it is temporarily resumed to active state
-  prior to suspend.  This guarantees that the clock and power domain are
-  active during MMIO register access, and that the private registers are
-  consistently saved and restored across S3 sleep cycles.
-- Save only the first 6 LPSS private registers (offsets 0x00 to 0x14)
-  via drv_data->lpss_base during suspend.  Offsets beyond 0x14 (except
-  CS control at 0x18, which is re-initialised by lpss_ssp_setup()) are
-  reserved/unimplemented on LPT platforms (such as MacBook8,1), and
-  writing to them triggers a PCIe Completion Timeout causing a system
-  freeze.
-- Store the saved context in drv_data->lpss_priv_ctx[6] (inside struct
-  driver_data) which is private to the core driver.  This avoids changing
-  the layout of struct pxa2xx_spi_controller, preventing ABI symbol
-  version mismatches with uncompiled platform drivers (e.g.,
-  spi-pxa2xx-platform.ko).
-
-On resume, de-assert resets first, restore all other saved registers,
-then call lpss_ssp_setup() to re-initialise CS.
-
-Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
+Signed-off-by: Zhengyu He <hezhy472013@gmail.com>
 ---
- drivers/spi/spi-pxa2xx.c | 88 +++++++++++++++++++++++++++++++++++-----
- drivers/spi/spi-pxa2xx.h |  1 +
- 2 files changed, 78 insertions(+), 11 deletions(-)
+Zhengyu He (3):
+      spi: dt-bindings: spacemit: add K3 SPI compatible
+      riscv: dts: spacemit: add SPI controllers for K3
+      riscv: dts: spacemit: enable SPI0 on K3 CoM260-IFX
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f9dde4b28c32..6e554911c076 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -72,7 +72,12 @@ struct chip_data {
- #define LPSS_CAPS_CS_EN_SHIFT			9
- #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
- 
--#define LPSS_PRIV_CLOCK_GATE 0x38
-+/* Offsets from drv_data->lpss_base */
-+#define LPSS_PRIV_RESETS			0x04
-+#define LPSS_PRIV_RESETS_IDMA			BIT(2)
-+#define LPSS_PRIV_RESETS_FUNC			0x3
-+
-+#define LPSS_PRIV_CLOCK_GATE			0x38
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK	0x3
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_ON	0x3
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_OFF	0x0
-@@ -1488,16 +1493,38 @@ static int pxa2xx_spi_suspend(struct device *dev)
- 	struct ssp_device *ssp = drv_data->ssp;
- 	int status;
- 
-+	status = pm_runtime_resume_and_get(dev);
-+	if (status < 0)
-+		return status;
-+
- 	status = spi_controller_suspend(drv_data->controller);
- 	if (status)
--		return status;
-+		goto out_put;
- 
- 	pxa_ssp_disable(ssp);
- 
--	if (!pm_runtime_suspended(dev))
--		clk_disable_unprepare(ssp->clk);
-+	if (is_lpss_ssp(drv_data)) {
-+		unsigned int i;
- 
--	return 0;
-+		/*
-+		 * Save the first 6 LPSS private registers (offsets 0x00 to 0x14)
-+		 * while the clock is still enabled.  They are lost when the LPSS
-+		 * power domain is removed across S3 and must be restored on resume.
-+		 * Use drv_data->lpss_base so the correct per-platform offset
-+		 * is applied regardless of LPSS IP revision.
-+		 * Registers beyond 0x14 (except CS control at 0x18) are reserved
-+		 * or unimplemented on LPT, and accessing them triggers a PCIe
-+		 * Completion Timeout causing a system halt.
-+		 */
-+		for (i = 0; i < 6; i++)
-+			drv_data->lpss_priv_ctx[i] = readl(drv_data->lpss_base + i * 4);
-+	}
-+
-+	clk_disable_unprepare(ssp->clk);
-+
-+out_put:
-+	pm_runtime_put_noidle(dev);
-+	return status;
- }
- 
- static int pxa2xx_spi_resume(struct device *dev)
-@@ -1507,14 +1534,53 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	int status;
- 
- 	/* Enable the SSP clock */
--	if (!pm_runtime_suspended(dev)) {
--		status = clk_prepare_enable(ssp->clk);
--		if (status)
--			return status;
--	}
-+	status = clk_prepare_enable(ssp->clk);
-+	if (status)
-+		return status;
-+
-+	if (is_lpss_ssp(drv_data)) {
-+		unsigned int i;
- 
-+		/*
-+		 * The LPSS power domain is removed across S3, taking
-+		 * all private registers with it.  De-assert the
-+		 * functional block and IDMA resets first; any MMIO
-+		 * access while the block is held in reset causes a
-+		 * PCIe Completion Timeout and a watchdog-triggered
-+		 * system reset.
-+		 */
-+		writel(LPSS_PRIV_RESETS_FUNC | LPSS_PRIV_RESETS_IDMA,
-+		       drv_data->lpss_base + LPSS_PRIV_RESETS);
-+
-+		/* Restore the other 5 saved private registers */
-+		for (i = 0; i < 6; i++) {
-+			if (i == LPSS_PRIV_RESETS / 4)
-+				continue;
-+			writel(drv_data->lpss_priv_ctx[i],
-+			       drv_data->lpss_base + i * 4);
-+		}
-+
-+		/*
-+		 * Re-initialise the SW chip-select control register so
-+		 * CS starts deasserted (SW_MODE | CS_HIGH), regardless
-+		 * of the state it was in at suspend time.  A stale
-+		 * asserted CS on the first post-resume transaction
-+		 * corrupts the write-status response from the device.
-+		 */
-+		lpss_ssp_setup(drv_data);
-+	}
- 	/* Start the queue running */
--	return spi_controller_resume(drv_data->controller);
-+	status = spi_controller_resume(drv_data->controller);
-+	if (status) {
-+		clk_disable_unprepare(ssp->clk);
-+		return status;
-+	}
-+
-+	/* Let runtime PM autosuspend again if needed */
-+	pm_runtime_mark_last_busy(dev);
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
- }
- 
- static int pxa2xx_spi_runtime_suspend(struct device *dev)
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 447be0369384..fce776e2404c 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -71,6 +71,7 @@ struct driver_data {
- 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
- 
- 	void __iomem *lpss_base;
-+	u32 lpss_priv_ctx[6];
- 
- 	/* Optional slave FIFO ready signal */
- 	struct gpio_desc *gpiod_ready;
--- 
-2.39.5
+liyeshan (1):
+      riscv: dts: spacemit: add K3 PDMA request numbers
+
+ .../devicetree/bindings/spi/spacemit,k1-spi.yaml   |  6 +-
+ arch/riscv/boot/dts/spacemit/k3-com260-ifx.dts     | 13 +++-
+ arch/riscv/boot/dts/spacemit/k3-pdma.h             | 83 ++++++++++++++++++++++
+ arch/riscv/boot/dts/spacemit/k3-pinctrl.dtsi       | 21 ++++++
+ arch/riscv/boot/dts/spacemit/k3.dtsi               | 49 ++++++++++++-
+ 5 files changed, 169 insertions(+), 3 deletions(-)
+---
+base-commit: 8cdeaa50eae8dad34885515f62559ee83e7e8dda
+change-id: 20260716-k3-com260-spi-v7-2-rc2-b4-preview-20260716-077f86d144f0
+
+Best regards,
+--  
+Zhengyu He <hezhy472013@gmail.com>
 

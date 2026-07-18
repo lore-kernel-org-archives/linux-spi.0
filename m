@@ -1,57 +1,57 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8A32D29C7
-	for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 15:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ED52C3757
+	for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 15:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784388782; cv=none; b=uxBRcwXWCG8W6B8tm21iMusy5avK92AvUwNGD8UFdMAaOA3Y+CED/1k5LdFIz7X/eSEFGpTv95xLrNJksAOaRCGxMidpOWn7jE4ny2rfbb5kYj3LgFgEMiry9F9cuG59lVmmADLJyXbFxU69gtnkRKowGPkntIkdQGLVCERo42k=
+	t=1784388793; cv=none; b=c9hxHNF30PmuFgbAROrVJH0iUfV2XNVFvKvSVbDKhtE+TspacPgOZsJFNPWgAf4idmRPzChD2hYK7Kisz/5b/oeFUauDZASTK0T8WM3v7HuTCApc5f5RaPWOrf9VTi7Pi/9HzSMYqDND61kt+K+F79kRd24vacK99Jmlfs0pyMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784388782; c=relaxed/simple;
-	bh=j1VdhiR8aYaQLKwfSgwwoPOaC0Y4qh6/plOT/8eUtcQ=;
+	s=arc-20240116; t=1784388793; c=relaxed/simple;
+	bh=hoX/TWo6r/94eyI3ahhuk2BDP1Nd7ZgqQk6yVk0sUDM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dwzJdmpgHFqjMGqfcntpJuhXK+5n1OLigL/O+K/MjaEyYlYgL04e/oK9YsgngepJmJD2ZUT/Y5BV5xFdt4W/zz4drXPbOPgfOu1b51iHV9F/Bz958ufRvnJtJdlT+CeJa/igmumB9jutu1TibYDOFsZmIONyqxZ9WF5gnBAiYdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=K5UB+fPXvoJOIxcZdrjf6uX3kLcVqwq7BOJOB8l7qeKAQiBkotYBGyMdFZlfObuoyR7iOqSTi+vJSS0/HuMmy05SqD+LpAFPk4jXQZEZAeeAcSQ/pJTOVvyx9SezsapLOjD/BPWBg8cQfpMXE/gjRNaerIclZZ5V3N+WAbZ6fsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2cf41bab353so15069985ad.0
-        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 08:32:59 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc73e322dbso105127565ad.1
+        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 08:33:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784388779; x=1784993579;
+        d=1e100.net; s=20251104; t=1784388781; x=1784993581;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8WfMjGOxfuM1U2/Yw/DDP44y5VWIdO5yPXCnLZY6pLo=;
-        b=LTYkHROtOSxivhVc9T+cnhD6+Awwr/XerzT5TNjejc+gJCRXmUZAadCQ1yaFt5LPkV
-         rS4yl9mzv1lBKQuvB/5QEX5oKj50cEFY9A5bO+Z3SRayq6Nj5KovKIyXiFqAH63BkXky
-         ayIEkcYlOSt1029TWLqZ85FnQg+TI9sTf9Xw6/Cnoi3mbus7J42lTC7eMQtp1nO9CcPg
-         moJAhf5LdIImUigqbRvSCmRKf0rRNCVjkZU56UptM9PP0PY28mpyX1AprKwfNzNYMfv+
-         O3R/jXT+Q1CKW0UG8o2QhxtVBkLGZCi/P7NFECVhPgU8ARf6OwFAK2xPhj8N4V8WBE2v
-         2JAg==
-X-Gm-Message-State: AOJu0YxGsjZkXEAf7rTsegkYm7L0e/BtYe/wYDs981AxeFXXRWeYteeo
-	ioBSqdLBYPtFSWpGe8o0TD71hFadKhyMQmjt+dEfbCcfocz5dNhW7faZ2HAySycjhQ==
-X-Gm-Gg: AfdE7clSmK6Lxoi9yBzOQQYRa1uSncTU6IcX0NcnNypCIvnhLsH2zfmAX3nC2c1qLnG
-	YKcVRdFfE1T4ku+99+dSMW7UAZpmkNUSzrqnnQ4YsFJKfOr+SsqZNWIz25ZSE3b/zbG/PG5iWkF
-	gdLXyRSasCUFmy5Nfi3uIJX2SLSHnzJZyYA92Z6gcNBBueXAvzVReeUDXab9M789NRYsANvtai7
-	PEcd3r3RWf+z3Fg9tVVcuWN1sD4RcP7V5OtQf4EnXu+ItSWAzcmlDwwd8KPN0C3EuAkMcsg/WUz
-	zyqjMrJlLvcwEoBdAOcCEKItbctKkv1h6hyzuA3QYviVyDMzJ8TAG4YYZ5MAQt8iadFGYTPBhRL
-	ReeIeyueT6OO8VqkuZqp65BfgvGFOh4HsSSI3TOXZ9TybdSkbRmXtFvhnrgxfZ30QC6y++S4cP0
-	XnNfF7VsqlT/vmguFz/v3t4MGu4i1dAw2No5T7A9Cg8BrR9jDxmKOMDxuiRGiwZjSHNR39gI/sS
-	o46a+DfqrvcuYM=
-X-Received: by 2002:a17:903:1c8:b0:2be:3850:297e with SMTP id d9443c01a7336-2cf349bff53mr68185405ad.31.1784388779000;
-        Sat, 18 Jul 2026 08:32:59 -0700 (PDT)
+        bh=O+m7QRADgnNK6LEYYEyJLdDHpqpIoQWfFeq6ZiuFaq8=;
+        b=C6fEo0yKk/76FXoRATnFwMLWhMytOCaiN0l6hAnx5oDH6ikNVaEWqxg6q2uQ+Bs+E5
+         lwNanASQ0G5wJO5jUYsgPR9Y25/dnF0JwLfctrOiIIKnEIzM/EkYTLh9xJroQM2I5CxJ
+         tKpkvG42KazTdzoBaQhNk+kz1+th1qluQ7CXjWIPHIdazGur5lPoSXq4vKyfygk3HQMU
+         JEMmBEUyBPaHCj28mO10OM5f8KweELbLiMdq8NgMQ88VSXumvI8xkQlOElIQnRXqersy
+         wZsEKI48c9DwfbkadOe3UiRqTZ4YSlVWFa5r6MYXuGRIIZPmXGA9j1J1hHYLEJ2i1Opi
+         TbMg==
+X-Gm-Message-State: AOJu0Yy4+oudChEq02TvT9vV6svGCz6OOHlnrnx0QDkPY9/uwF/gjCQv
+	lJdu2k24/0utXgiUzKWIl/jEkC1NAo6A1sXj8aN0OGIHm+BSo2wtnoo=
+X-Gm-Gg: AfdE7cn2E55RVOYMr0IgLK0vUeoG36awMWRkQf2jeFl++HDibVIW4QKJdoUmHKLIzHG
+	KfJvHhqfYQEK0JBKPSwFgLgey3tRfkREWcnfKm7HQ+KL4raaMhT2BDYnOlyvfBWCFrYXCKs9nLJ
+	CyV0Yy+EUI2DXm885kt/AjTuldYPzrUVYb3D9/iH//SzjXPUxBv0y+boMbBiB+5v+DB7zcWbNx1
+	o6BiK67ZCn0rZF2PNmhNn2vrHrVax4yxJSRYmq0wqNdF1fNEyygPnOzu4WQFgwT/RpeZGsJxFiy
+	RNCO4KeyZOvu61X0S95EmmaUmektrdYq4vCGxD7+L0LLo8QxE4+SZKvPOXQo/HBN8ZN7pBEzgye
+	Y7mRzYVrdX/fV3lesiEmk9q8FuVvfjbVqMLu3VRvZZ4oDk4o2j4IU/JnXrj6hDewugWzjHRT8Wy
+	f41SXYuwzCnFHLb4mqnZFMzabE0r8RWA1UvC/0cadscoZ5mfNXaVhpJvPYbLBqxAS5fLM2CWq5j
+	pdXWWiqdeeF5eo=
+X-Received: by 2002:a17:902:f70d:b0:2c6:9f6a:9f6f with SMTP id d9443c01a7336-2cf349b8d41mr77809585ad.28.1784388780771;
+        Sat, 18 Jul 2026 08:33:00 -0700 (PDT)
 Received: from penguin.tail0a1999.ts.net (61-228-48-72.dynamic-ip.hinet.net. [61.228.48.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344bd3aesm28731535ad.26.2026.07.18.08.32.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344bd3aesm28731535ad.26.2026.07.18.08.32.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 08:32:58 -0700 (PDT)
+        Sat, 18 Jul 2026 08:33:00 -0700 (PDT)
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v13 2/3] spi: pxa2xx: fix runtime PM and interrupt handling in PIO mode
-Date: Sat, 18 Jul 2026 23:32:50 +0800
-Message-Id: <20260718153251.7353-3-fourdollars@debian.org>
+Subject: [PATCH v13 3/3] spi: pxa2xx: restore LPSS private register state on S3 resume
+Date: Sat, 18 Jul 2026 23:32:51 +0800
+Message-Id: <20260718153251.7353-4-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260718153251.7353-1-fourdollars@debian.org>
 References: <20260718153251.7353-1-fourdollars@debian.org>
@@ -63,310 +63,198 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When operating in PIO mode on Intel LPSS SPI controllers, runtime PM
-autosuspend clock-gates the hardware block, causing PCIe Completion
-Timeouts on subsequent MMIO accesses.
+Intel LPSS SPI controllers lose all private register state across S3
+suspend because the LPSS power domain is fully removed. On resume the
+driver only re-enables the SSP clock, leaving the LPSS private registers
+in their power-on-reset state, which causes two problems:
 
-To fix this:
-- Scope PIO mode autosuspend lockout (pm_runtime_get_noresume() /
-  put_sync()) strictly to LPSS controllers via is_lpss_ssp(), preserving
-  autosuspend for non-LPSS SoCs.
-- Acquire pm_runtime_get_noresume() exactly once in pxa2xx_spi_probe()
-  after spi_register_controller() succeeds, and release it via
-  pm_runtime_put_sync() in pxa2xx_spi_remove(). Using pm_runtime_put_sync()
-  ensures the runtime PM state machine transitions to RPM_SUSPENDED upon
-  driver unbind, preventing active child count leaks on the parent LPSS
-  power domain.
-- Track clock state using drv_data->clk_enabled in helper functions
-  pxa2xx_spi_clk_enable/disable() to prevent clock count underflows
-  on error paths.
-- Protect ssp_int() using drv_data->clk_enabled, drv_data->suspended, and
-  checking pm_runtime_get_if_active() == 0 to return IRQ_NONE immediately,
-  avoiding unclocked MMIO reads and level-triggered shared IRQ storms.
-- Register IRQ in probe only after enabling the clock and clearing
-  suspended.
-- Overhaul pxa2xx_spi_remove() teardown sequence: disable SSP hardware
-  IRQ, set suspended flag, synchronize IRQ, free IRQ, and disable
-  clocks.
-- Guard MMIO access in pxa2xx_spi_runtime_suspend() with
-  drv_data->clk_enabled check.
+1. LPSS_PRIV_RESETS (offset 0x04 within the LPSS private space) stays
+   zero, keeping the functional block in reset. Any MMIO access while
+   the block is held in reset causes a PCIe Completion Timeout and a
+   watchdog-triggered system reset. LPSS_PRIV_RESETS_FUNC and
+   LPSS_PRIV_RESETS_IDMA must be de-asserted before any other register
+   access on resume.
+
+2. The LPSS software chip-select control register must not be blindly
+   restored from its suspend-time snapshot: if CS was asserted at the
+   moment of suspend, restoring that state corrupts the first
+   post-resume SPI transaction. Instead, call lpss_ssp_setup() which
+   unconditionally writes SW_MODE | CS_HIGH (idle/deasserted), matching
+   the state established at probe time.
+
+To resolve these issues safely:
+- Wrap S3 suspend/resume with pm_runtime_resume_and_get() and
+  pm_runtime_put_autosuspend() to guarantee active clocks during MMIO
+  access and preserve PM reference counting.
+- Restrict LPSS private register save/restore to LPT, BYT, and BSW
+  platforms via pxa2xx_spi_need_lpss_restore() (newer platforms are
+  handled by intel-lpss.c).
+- Save only the first 6 LPSS private registers (offsets 0x00..0x14) in
+  drv_data during suspend, avoiding reserved offsets beyond 0x14.
+- On resume, de-assert resets first, restore saved registers, call
+  lpss_ssp_setup(), and clear drv_data->suspended to prevent unclocked
+  IRQ access.
+- Add error recovery paths for spi_controller_suspend/resume failures.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=108331
 Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
 ---
- drivers/spi/spi-pxa2xx.c | 138 +++++++++++++++++++++++++++++----------
- drivers/spi/spi-pxa2xx.h |   3 +
- 2 files changed, 108 insertions(+), 33 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 94 +++++++++++++++++++++++++++++++++++++---
+ drivers/spi/spi-pxa2xx.h |  1 +
+ 2 files changed, 89 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6291d7c2e06f..443800bffbeb 100644
+index 443800bffbeb..864b9ca61bb2 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -72,7 +72,12 @@ struct chip_data {
- #define LPSS_CAPS_CS_EN_SHIFT			9
- #define LPSS_CAPS_CS_EN_MASK			(0xf << LPSS_CAPS_CS_EN_SHIFT)
- 
--#define LPSS_PRIV_CLOCK_GATE 0x38
-+/* Offsets from drv_data->lpss_base */
-+#define LPSS_PRIV_RESETS			0x04
-+#define LPSS_PRIV_RESETS_IDMA			BIT(2)
-+#define LPSS_PRIV_RESETS_FUNC			0x3
-+
-+#define LPSS_PRIV_CLOCK_GATE			0x38
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_MASK	0x3
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_ON	0x3
- #define LPSS_PRIV_CLOCK_GATE_CLK_CTL_FORCE_OFF	0x0
-@@ -713,6 +718,28 @@ static void handle_bad_msg(struct driver_data *drv_data)
- 	dev_err(drv_data->ssp->dev, "bad message state in interrupt handler\n");
+@@ -194,6 +194,18 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
+ 	}
  }
  
-+static int pxa2xx_spi_clk_enable(struct driver_data *drv_data)
++static bool pxa2xx_spi_need_lpss_restore(const struct driver_data *drv_data)
 +{
-+	int status;
-+
-+	if (drv_data->clk_enabled)
-+		return 0;
-+
-+	status = clk_prepare_enable(drv_data->ssp->clk);
-+	if (status == 0)
-+		drv_data->clk_enabled = true;
-+
-+	return status;
-+}
-+
-+static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
-+{
-+	if (drv_data->clk_enabled) {
-+		clk_disable_unprepare(drv_data->ssp->clk);
-+		drv_data->clk_enabled = false;
++	switch (drv_data->ssp_type) {
++	case LPSS_LPT_SSP:
++	case LPSS_BYT_SSP:
++	case LPSS_BSW_SSP:
++		return true;
++	default:
++		return false;
 +	}
 +}
 +
- static irqreturn_t ssp_int(int irq, void *dev_id)
+ static bool is_quark_x1000_ssp(const struct driver_data *drv_data)
  {
- 	struct driver_data *drv_data = dev_id;
-@@ -721,19 +748,18 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
- 	u32 status;
+ 	return drv_data->ssp_type == QUARK_X1000_SSP;
+@@ -1532,16 +1544,46 @@ static int pxa2xx_spi_suspend(struct device *dev)
+ 	struct ssp_device *ssp = drv_data->ssp;
+ 	int status;
  
- 	/*
--	 * The IRQ might be shared with other peripherals so we must first
--	 * check that are we RPM suspended or not. If we are we assume that
--	 * the IRQ was not for us (we shouldn't be RPM suspended when the
--	 * interrupt is enabled).
-+	 * The IRQ might be shared with other peripherals or trigger during
-+	 * power state transitions. First check if device is suspended or if
-+	 * clock is disabled; if so, return IRQ_NONE immediately to avoid
-+	 * unclocked MMIO reads.
- 	 */
--	if (pm_runtime_suspended(drv_data->ssp->dev))
-+	if (drv_data->suspended || !drv_data->clk_enabled)
- 		return IRQ_NONE;
- 
- 	/*
--	 * If the device is not yet in RPM suspended state and we get an
--	 * interrupt that is meant for another device, check if status bits
--	 * are all set to one. That means that the device is already
--	 * powered off.
-+	 * If the device is not yet suspended and we get an interrupt that is
-+	 * meant for another device, check if status bits are all set to one.
-+	 * That means that the device is already powered off.
- 	 */
- 	status = pxa2xx_spi_read(drv_data, SSSR);
- 	if (status == ~0)
-@@ -1288,6 +1314,7 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 	drv_data->controller = controller;
- 	drv_data->controller_info = platform_info;
- 	drv_data->ssp = ssp;
-+	drv_data->suspended = true; /* Start suspended until clock is enabled */
- 
- 	/* The spi->mode bits understood by this driver: */
- 	controller->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP;
-@@ -1330,10 +1357,6 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 						| SSSR_ROR | SSSR_TUR;
- 	}
- 
--	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
--			drv_data);
--	if (status < 0)
--		return dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
- 
- 	/* Setup DMA if requested */
- 	if (platform_info->enable_dma) {
-@@ -1352,9 +1375,18 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 	}
- 
- 	/* Enable SOC clock */
--	status = clk_prepare_enable(ssp->clk);
-+	status = pxa2xx_spi_clk_enable(drv_data);
- 	if (status)
--		goto out_error_dma_irq_alloc;
-+		goto out_error_dma_alloc;
-+
-+	drv_data->suspended = false;
-+
-+	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
-+			drv_data);
-+	if (status < 0) {
-+		status = dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
-+		goto out_error_clock_enabled;
-+	}
- 
- 	controller->max_speed_hz = clk_get_rate(ssp->clk);
- 	/*
-@@ -1434,7 +1466,7 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 						"ready", GPIOD_OUT_LOW);
- 		if (IS_ERR(drv_data->gpiod_ready)) {
- 			status = PTR_ERR(drv_data->gpiod_ready);
--			goto out_error_clock_enabled;
-+			goto out_error_irq_alloc;
- 		}
- 	}
- 
-@@ -1443,17 +1475,22 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 	status = spi_register_controller(controller);
- 	if (status) {
- 		dev_err_probe(dev, status, "problem registering SPI controller\n");
--		goto out_error_clock_enabled;
-+		goto out_error_irq_alloc;
- 	}
- 
-+	if (is_lpss_ssp(drv_data) && !platform_info->enable_dma)
-+		pm_runtime_get_noresume(dev);
-+
- 	return status;
- 
-+out_error_irq_alloc:
-+	free_irq(ssp->irq, drv_data);
-+
- out_error_clock_enabled:
--	clk_disable_unprepare(ssp->clk);
-+	pxa2xx_spi_clk_disable(drv_data);
- 
--out_error_dma_irq_alloc:
-+out_error_dma_alloc:
- 	pxa2xx_spi_dma_release(drv_data);
--	free_irq(ssp->irq, drv_data);
- 
- 	return status;
- }
-@@ -1466,16 +1503,26 @@ void pxa2xx_spi_remove(struct device *dev)
- 
- 	spi_unregister_controller(drv_data->controller);
- 
--	/* Disable the SSP at the peripheral and SOC level */
-+	/* Disable SSP interrupt generation on hardware level while clock is active */
- 	pxa_ssp_disable(ssp);
--	clk_disable_unprepare(ssp->clk);
- 
--	/* Release DMA */
--	if (drv_data->controller_info->enable_dma)
--		pxa2xx_spi_dma_release(drv_data);
-+	/* Mark as suspended to prevent further IRQ handling */
-+	drv_data->suspended = true;
-+
-+	/* Wait for any pending interrupt handlers to complete */
-+	synchronize_irq(ssp->irq);
- 
- 	/* Release IRQ */
- 	free_irq(ssp->irq, drv_data);
-+
-+	/* Safe to disable the SSP clock now */
-+	pxa2xx_spi_clk_disable(drv_data);
-+
-+	/* Release DMA */
-+	if (drv_data->controller_info->enable_dma)
-+		pxa2xx_spi_dma_release(drv_data);
-+	else if (is_lpss_ssp(drv_data))
-+		pm_runtime_put_sync(dev);
- }
- EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_remove, "SPI_PXA2xx");
- 
-@@ -1490,10 +1537,10 @@ static int pxa2xx_spi_suspend(struct device *dev)
+-	status = spi_controller_suspend(drv_data->controller);
+-	if (status)
++	status = pm_runtime_resume_and_get(dev);
++	if (status < 0)
  		return status;
  
- 	pxa_ssp_disable(ssp);
-+	drv_data->suspended = true;
-+	synchronize_irq(ssp->irq);
- 
--	if (!pm_runtime_suspended(dev))
--		clk_disable_unprepare(ssp->clk);
--
-+	pxa2xx_spi_clk_disable(drv_data);
- 	return 0;
- }
- 
-@@ -1505,28 +1552,53 @@ static int pxa2xx_spi_resume(struct device *dev)
- 
- 	/* Enable the SSP clock */
- 	if (!pm_runtime_suspended(dev)) {
--		status = clk_prepare_enable(ssp->clk);
-+		status = pxa2xx_spi_clk_enable(drv_data);
- 		if (status)
- 			return status;
- 	}
- 
-+	if (is_lpss_ssp(drv_data))
-+		lpss_ssp_setup(drv_data);
-+
-+	drv_data->suspended = false;
-+
- 	/* Start the queue running */
--	return spi_controller_resume(drv_data->controller);
-+	status = spi_controller_resume(drv_data->controller);
++	status = spi_controller_suspend(drv_data->controller);
 +	if (status) {
-+		drv_data->suspended = true;
-+		synchronize_irq(ssp->irq);
-+		pxa2xx_spi_clk_disable(drv_data);
-+		return status;
++		spi_controller_resume(drv_data->controller);
++		goto out_put;
 +	}
 +
-+	return 0;
++	/* Disable SSP interrupt generation on hardware level while clock is active */
+ 	pxa_ssp_disable(ssp);
++
++	/* Mark as suspended and synchronize IRQ before disabling clock */
+ 	drv_data->suspended = true;
+ 	synchronize_irq(ssp->irq);
+ 
++	if (pxa2xx_spi_need_lpss_restore(drv_data)) {
++		unsigned int i;
++
++		/*
++		 * Save the first 6 LPSS private registers (offsets 0x00 to 0x14)
++		 * while the clock is still enabled.  They are lost when the LPSS
++		 * power domain is removed across S3 and must be restored on resume.
++		 * Use drv_data->lpss_base so the correct per-platform offset
++		 * is applied regardless of LPSS IP revision.
++		 * Registers beyond 0x14 (except CS control at 0x18) are reserved
++		 * or unimplemented on LPT, and accessing them triggers a PCIe
++		 * Completion Timeout causing a system halt.
++		 */
++		for (i = 0; i < 6; i++)
++			drv_data->lpss_priv_ctx[i] = readl(drv_data->lpss_base + i * 4);
++	}
++
+ 	pxa2xx_spi_clk_disable(drv_data);
+ 	return 0;
++
++out_put:
++	pm_runtime_put_noidle(dev);
++	return status;
+ }
+ 
+ static int pxa2xx_spi_resume(struct device *dev)
+@@ -1554,12 +1596,47 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	if (!pm_runtime_suspended(dev)) {
+ 		status = pxa2xx_spi_clk_enable(drv_data);
+ 		if (status)
+-			return status;
++			goto out_put;
+ 	}
+ 
+-	if (is_lpss_ssp(drv_data))
++	if (pxa2xx_spi_need_lpss_restore(drv_data)) {
++		unsigned int i;
++
++		/*
++		 * The LPSS power domain is removed across S3, taking
++		 * all private registers with it.  De-assert the
++		 * functional block and IDMA resets first; any MMIO
++		 * access while the block is held in reset causes a
++		 * PCIe Completion Timeout and a watchdog-triggered
++		 * system reset.
++		 */
++		writel(LPSS_PRIV_RESETS_FUNC | LPSS_PRIV_RESETS_IDMA,
++		       drv_data->lpss_base + LPSS_PRIV_RESETS);
++
++		/* Restore the other 5 saved private registers */
++		for (i = 0; i < 6; i++) {
++			if (i == LPSS_PRIV_RESETS / 4)
++				continue;
++			writel(drv_data->lpss_priv_ctx[i],
++			       drv_data->lpss_base + i * 4);
++		}
++	}
++
++	if (is_lpss_ssp(drv_data)) {
++		/*
++		 * Re-initialise the SW chip-select control register so
++		 * CS starts deasserted (SW_MODE | CS_HIGH), regardless
++		 * of the state it was in at suspend time.  A stale
++		 * asserted CS on the first post-resume transaction
++		 * corrupts the write-status response from the device.
++		 */
+ 		lpss_ssp_setup(drv_data);
++	}
+ 
++	/*
++	 * Now that resets are de-asserted and registers are restored,
++	 * it is safe to handle interrupts.
++	 */
+ 	drv_data->suspended = false;
+ 
+ 	/* Start the queue running */
+@@ -1568,10 +1645,15 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 		drv_data->suspended = true;
+ 		synchronize_irq(ssp->irq);
+ 		pxa2xx_spi_clk_disable(drv_data);
+-		return status;
++		goto out_put;
+ 	}
+ 
+-	return 0;
++out_put:
++	/* Let runtime PM autosuspend again if needed */
++	pm_runtime_mark_last_busy(dev);
++	pm_runtime_put_autosuspend(dev);
++
++	return status;
  }
  
  static int pxa2xx_spi_runtime_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 
--	clk_disable_unprepare(drv_data->ssp->clk);
-+	if (!drv_data->clk_enabled)
-+		return 0;
-+
-+	pxa_ssp_disable(drv_data->ssp);
-+	drv_data->suspended = true;
-+	synchronize_irq(drv_data->ssp->irq);
-+	pxa2xx_spi_clk_disable(drv_data);
- 	return 0;
- }
- 
- static int pxa2xx_spi_runtime_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	int status;
-+
-+	status = pxa2xx_spi_clk_enable(drv_data);
-+	if (status)
-+		return status;
- 
--	return clk_prepare_enable(drv_data->ssp->clk);
-+	drv_data->suspended = false;
-+	return 0;
- }
- 
- EXPORT_NS_GPL_DEV_PM_OPS(pxa2xx_spi_pm_ops, SPI_PXA2xx) = {
 diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 447be0369384..44f37bf9c519 100644
+index 44f37bf9c519..48169494f74e 100644
 --- a/drivers/spi/spi-pxa2xx.h
 +++ b/drivers/spi/spi-pxa2xx.h
-@@ -72,6 +72,9 @@ struct driver_data {
+@@ -71,6 +71,7 @@ struct driver_data {
+ 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
  
  	void __iomem *lpss_base;
++	u32 lpss_priv_ctx[6];
  
-+	bool suspended;
-+	bool clk_enabled;
-+
- 	/* Optional slave FIFO ready signal */
- 	struct gpio_desc *gpiod_ready;
- };
+ 	bool suspended;
+ 	bool clk_enabled;
 -- 
 2.39.5
 

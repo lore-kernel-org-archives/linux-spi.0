@@ -1,150 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2557D212548;
-	Sat, 18 Jul 2026 20:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE1536E460;
+	Sat, 18 Jul 2026 21:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784405668; cv=none; b=A8X00tC8UkReagZgrfe1+i7SLaTvEFbnAJpJVgP8xeBgvGqFCLCvhAZTuzYgp1pGbN3JaDHApd1iDPhjd4PCo0ldE8jmHYXWQ43M037C9IfLhvbiHSPRvseFcItzHieBzmAAk/atFXKhxO9VDnJr7Vc7amzAwimyIuWL/sNZqBU=
+	t=1784411807; cv=none; b=FtKAFu8h098uwl1+EhSq/Eo3yuEZGTnivqnFP0SCs87oITBZTIqRxRfhr60mh5W7qL+v8QA4A/Y7sDNB1F3OkdvK6B81CUeN/WvS3YVQmNJ1rl81VM2XSZHH5VHXmc5cf3TMP9JtozNZs0eHGfITZ1Vda86bbEh9Y2n6NK32Bs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784405668; c=relaxed/simple;
-	bh=oQ4SeKSYL+saaGuM7lhSqsIWQevdtjGImhAIBqZoYng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gwb7caLE4lPmbgIRXwhU4NYcAAARcWcsS/f7jckaygsNMQqCQ7AVPsEC8yxZN+pRLqPNbAaSFrtiyRVCqLqjoBsrLHF9NXGZNtx3q41gsNr/lrno3cDy59+iVgPYfVaaRZefVbpUxpIWMptUrVHdvRVIlIQatX6WUUe0FsvogHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0081F000E9;
-	Sat, 18 Jul 2026 20:14:25 +0000 (UTC)
-Date: Sat, 18 Jul 2026 21:14:23 +0100
-From: Mark Brown <broonie@debian.org>
-To: Shih-Yuan Lee <fourdollars@debian.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v14 2/3] spi: pxa2xx: fix runtime PM and interrupt
- handling in PIO mode
-Message-ID: <5cc70d8c-9bde-4d92-9bb3-7902586b631e@sirena.org.uk>
-References: <20260718160702.7861-1-fourdollars@debian.org>
- <20260718160702.7861-3-fourdollars@debian.org>
+	s=arc-20240116; t=1784411807; c=relaxed/simple;
+	bh=h8zhREtGJLvO7iSEfChFPjTYzuDO1sEdErI364gAwnU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JH74hKE1vJj4oB4bvdv/gDOYfiQUs3i3RxAGAVHpT7t2BkrzOMxdI17xmhDVCRVi6yHuclV5yVBfCIA3ZbmwKaGffwsCspCmt40HcrO2r5iE43YGtbIZM0atS1e7+yoYQcu49M8inYRlG2GpgguO9Gap+enlTzYhDLImvWET62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dWbEHGEd; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dWbEHGEd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBCC1F00A3A;
+	Sat, 18 Jul 2026 21:56:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784411806;
+	bh=1gqBYQBGkgBUDfYbhyeXiYj90UVwqTYRtWwAvxgYFI0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=dWbEHGEdIu+dXwJ7mpSItMkoq9r0iFUTXOLrMorsZ8SO2Kuu4ePK66kEzpQje/Kj7
+	 yz4eXgJmTvto40A/5p4sBd7mrid1Cxo/fUiS1IU10cLyA/mk2f3F9TLVdBkssmm/oa
+	 fVGx9IcfhtkYzjT17+bQ6TuFcy4Vh++TjOKziVwqe+jzoI6c+9wp4IQaSYLnlJvip9
+	 1YOuHVN0tLK1MjvXx1svBDszdIr8CFvC6KNyT1Mi5zSpIV0HmlPR7RXNewro+Ern3+
+	 7RWk1btLG86r4IUgg9V62q8QAAXVmLEw+pUfzb9hjf/mDYzsE/H1HdtoFqvGQnY6Y7
+	 kZvxnEoWU5RdQ==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Rosen Penev <rosenp@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+In-Reply-To: <20260716231411.1737001-1-rosenp@gmail.com>
+References: <20260716231411.1737001-1-rosenp@gmail.com>
+Subject: Re: [PATCHv2] spi: orion: use devm_clk_get_optional_enabled for
+ axi clock
+Message-Id: <178437850374.5332.10672824807350986052.b4-ty@b4>
+Date: Sat, 18 Jul 2026 13:41:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uRleXeXHWzbJ1rVN"
-Content-Disposition: inline
-In-Reply-To: <20260718160702.7861-3-fourdollars@debian.org>
-X-Cookie: Do not pick the flowers.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1131; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=h8zhREtGJLvO7iSEfChFPjTYzuDO1sEdErI364gAwnU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqW/acQbj/m6CqlgkbNhQPMboLYRnRzQ+EVGLC6
+ GNdfsLgBVKJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCalv2nAAKCRAk1otyXVSH
+ 0AacB/9+Jz5yOgQI0hjSds7oCn9dLwQu89kriHjov4Pz/h+gvNYMzO7N7PWptxrdAOJSptIqZOk
+ JlEAC0bNgEfmD3palp3R+oD7/pDaqAHiNoZdOC9uH2J+JPolDO1p9/gLv8KOPNL+fOGKqnCyqey
+ Fr4uez1xK+XVG62QmsMYSpX347zyLB7HKOOPGJUk+zJ53Xto/FsjKx/dizWMz7rAdOWBNSXDE+w
+ sj3KI9984S80A4G+SW8ubMyivr1+L2eBv/ujBdvfreb5cYewENxaNXaTbZqdnANPw85gl1WtRou
+ CxXu+iass+res1rXEZ8Hlonm7ui+jMnI6EpQHQoJPvs2BKPU
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Thu, 16 Jul 2026 16:14:11 -0700, Rosen Penev wrote:
+> spi: orion: use devm_clk_get_optional_enabled for axi clock
 
---uRleXeXHWzbJ1rVN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Sun, Jul 19, 2026 at 12:07:01AM +0800, Shih-Yuan Lee wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-> When operating in PIO mode on Intel LPSS SPI controllers, runtime PM
-> autosuspend clock-gates the hardware block, causing PCIe Completion
-> Timeouts on subsequent MMIO accesses.
->=20
-> To fix this:
-> - Scope PIO mode autosuspend lockout (pm_runtime_get_noresume() /
->   put_sync()) strictly to LPSS controllers via is_lpss_ssp(), preserving
->   autosuspend for non-LPSS SoCs.
-> - Acquire pm_runtime_get_noresume() exactly once in pxa2xx_spi_probe()
->   after spi_register_controller() succeeds, and release it via
->   pm_runtime_put_sync() in pxa2xx_spi_remove(). Using pm_runtime_put_sync=
-()
->   ensures the runtime PM state machine transitions to RPM_SUSPENDED upon
->   driver unbind, preventing active child count leaks on the parent LPSS
->   power domain.
-> - Track clock state using drv_data->clk_enabled in helper functions
->   pxa2xx_spi_clk_enable/disable() to prevent clock count underflows
->   on error paths.
-> - Protect ssp_int() using drv_data->clk_enabled and drv_data->suspended
->   flags to return IRQ_NONE immediately if the device is suspended or
->   unclocked, avoiding unclocked MMIO reads and level-triggered shared IRQ
->   storms. Active SPI transfers hold a PM reference via the SPI core,
->   preventing autosuspend during FIFO transfers.
-> - Register IRQ in probe only after enabling the clock and clearing
->   suspended.
-> - Overhaul teardown sequence in pxa2xx_spi_remove(), suspend, and
->   runtime_suspend: first disable SSP hardware IRQ generation via
->   pxa_ssp_disable(), set suspended flag, synchronize IRQ to drain in-flig=
-ht
->   handlers, and then disable clocks.
-> - Guard MMIO access in pxa2xx_spi_runtime_suspend() with
->   drv_data->clk_enabled check.
+Thanks!
 
-This is a very big change doing a lot of different things which could
-probably use being split out, if you find yourself writing a list like
-this it's often a sign that the bullet points should be split out (as
-submitting-patches.rst hints at).
+[1/1] spi: orion: use devm_clk_get_optional_enabled for axi clock
+      https://git.kernel.org/broonie/spi/c/61c2eaa653c2
 
-> +static int pxa2xx_spi_clk_enable(struct driver_data *drv_data)
-> +{
-> +	int status;
-> +
-> +	if (drv_data->clk_enabled)
-> +		return 0;
-> +
-> +	status =3D clk_prepare_enable(drv_data->ssp->clk);
-> +	if (status =3D=3D 0)
-> +		drv_data->clk_enabled =3D true;
-> +
-> +	return status;
-> +}
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-This sort of refcount suppression is often a bit worrying, why are we
-doing things this way - the changelog mentions error paths but which
-error paths, and why is this the most sensible fix? =20
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Also we typically use 'ret' in the kernel.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
->  	/*
-> -	 * The IRQ might be shared with other peripherals so we must first
-> -	 * check that are we RPM suspended or not. If we are we assume that
-> -	 * the IRQ was not for us (we shouldn't be RPM suspended when the
-> -	 * interrupt is enabled).
-> +	 * The IRQ might be shared with other peripherals or trigger during
-> +	 * power state transitions. First check if device is suspended or if
-> +	 * clock is disabled; if so, return IRQ_NONE immediately to avoid
-> +	 * unclocked MMIO reads.
->  	 */
-> -	if (pm_runtime_suspended(drv_data->ssp->dev))
-> +	if (drv_data->suspended || !drv_data->clk_enabled)
->  		return IRQ_NONE;
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Why are we switching to this suspended flag rather than using
-pm_runtime_suspended()?
+Thanks,
+Mark
 
->  static int pxa2xx_spi_runtime_suspend(struct device *dev)
->  {
->  	struct driver_data *drv_data =3D dev_get_drvdata(dev);
-> =20
-> -	clk_disable_unprepare(drv_data->ssp->clk);
-> +	if (!drv_data->clk_enabled)
-> +		return 0;
-> +
-> +	pxa_ssp_disable(drv_data->ssp);
-
-Note that there's an inconsistently quirk to suppress SSP disables on
-MMP2, did you check if we need to do that here?  It comes from
-29d7e05c5f75 ("spi: pxa2xx: Avoid touching SSCR0_SSE on MMP2").
-
---uRleXeXHWzbJ1rVN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpb3p4ACgkQJNaLcl1U
-h9DKuQf9H0y2OMmLuBJLnUlGwjyyjJCLoh+6LmrF2WjL9SbEXH3bqa1nU/VV+oiZ
-ZWSmPLbuXwho/1msh6hts1qEXTrLCJ7Lbv6R04koT9Gs9ZHW6WwVtu9aQVZu6bqg
-6KPcL1Gqn3+sFCj9CxjtecN0lhk18qaZ2TEwFg6QyuSMsPYn8+ok2I8jJRHrbZQp
-xRUWOwwmfWPO2qiIXPzeGIrB3TtsPsPqFbFUAYCiyNnGVyi2fCI+SDQIc+/gype/
-LLCFWGcUWMLXjuMtEry43VbzBje+meaHBdIQ4w314Es3Vje1hfwSxrAnC9/L2XSX
-JmbXX3e/9z65A8Vh6k5DAgf7icyy8A==
-=/+hP
------END PGP SIGNATURE-----
-
---uRleXeXHWzbJ1rVN--

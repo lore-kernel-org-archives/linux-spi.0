@@ -1,57 +1,57 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EED71E2858
-	for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 14:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D948E1D63F3
+	for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 14:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784383247; cv=none; b=MA3KGaEUNFUF49gyo2yYh7YrepKmNiTYA8TdTaI91LvH09nBlptU89HIU1F9+QrMjFFs8zPXZ0mnvdweWQ64Gy03PM85eplbftBRAbx1pxL26FBvFPkmJZNfr+8WUg12ohVm5a8Ido93DIdxDc2CwFHqkhKeDIoPU4FKA4o9k4M=
+	t=1784383249; cv=none; b=MjRUfrCfB7A3q+sQKdH+4sz1XmorfWZgC9Wp7wXImvzt3GX+YAMQmPBTeW608cZOMbZTnMH8Z8MzmlJ3fVmWSGaTY3EauA1FNmavMM3n9mUjFixG0v1l7ge5sviPV0zgsZeaililITraTfpAqQoCpuzXQoGZsKm4Vgaq+9/F8a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784383247; c=relaxed/simple;
-	bh=vMxi0GBCmk6kSxxY3msXn6b8DUdRebKtLoidNsiWryg=;
+	s=arc-20240116; t=1784383249; c=relaxed/simple;
+	bh=KHAPT0VOSNNyr+gu5L9PbXnDUfTOXEJw5BU5RjRERgI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G6Hmr7l8u/ZCW+VwGrsJpKmZS58QjsRQJFFJAeSWAVZJBXLfsK/Mk+GxYoOE+ZyvpiJ4nxuXxvMeGQ9ntRNYRptz28Bzc75hPSuXSlF2sOu6vriV0nPzJpWKvv4nXfuJ662sHGNs4oTZMoksqrL6BJrcb2mHf+2/mYtkyGUFn0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.179
+	 MIME-Version; b=hW0YiYxBEL1d+R1ASvF7/H3K+vQHLvZBHj28tCsUWgyiUZPp1mmXXs8rSCA8h494sa7gUz1Mek48BM2W2EnqhQVyPsh190t6cyDOPvMFtFry1iH7bhpwgfHc2UXpK2qGpy726SzCi8kAGDoL1jS+2QWkG7WTLSUEjIiAMoJGTV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8484f229529so3715619b3a.2
-        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 07:00:44 -0700 (PDT)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-848595b338cso10165563b3a.0
+        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 07:00:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784383244; x=1784988044;
+        d=1e100.net; s=20251104; t=1784383247; x=1784988047;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lgLs8NK0XHHTysnGduh8WTtXMi/Zls+hjiJh2kwYBOI=;
-        b=fmAIw6wLdxIX7YWQr49NyOeuAkeRaFyV7c8Ydj0SyWeQz3OSpaZFPqsQQdHvnL5bvn
-         tP8ZeWp1ZCs1GMFfXibkrE96fERiPsFD/ARKFMv92u1W0vxm6nAMT7EPlDtET1ECGTHg
-         WpkJhxK5OavKSZZdi9DW4BbFXOKnGL9PPqs8YCHaJpwGuNRXegr4kLteXGQo7hItoFXs
-         Xw/A/SKEt0s2PNVBG4hMlhfihkoQ9coaMKRXA1dWNNNO1BKh2SH2xcOLFXZuphkKBuO+
-         O70BK0ipKWjYDy0v+H8vV0572CK3P+hyfBJX66VpVyfojNS3XYOH+sp2oNfAwcYrd4FJ
-         ECpw==
-X-Gm-Message-State: AOJu0YxrKeK2jP+NO/SdXUb9zS5MbWu5A9Dh5HUedNpFRIXCGMz6vRcW
-	NhjxKSOxqQQyifmmTfPphtHglm5s8AEP57e0URLKCLKPdXEy2G6f/iKpSqn4hOHy7A==
-X-Gm-Gg: AfdE7cm4FWYW/WYNI+a67SCjalTFBdxEWLjN+My94vUFyh12215G11revnKa9sKQ1nY
-	bGjYjs2myikZBcUFXPU1J6Stek1FKEcQpWGu5ftByhpCqvecpIOXL9aAeWPUNteuDcU6WX46H+g
-	XSAUlO6+o2UhfztcRXeTP68l3tKL0rCNOckKvyPhgs7nw5GvfOgT4wZVU6gSQEAkiQ6JGz+8M8L
-	GC8iOaeLlNDIQjBBtzkoOZN5nk2Ym23qqhRp43U0sX9ftROJlzvc0ZN4m9FXSU9GSHsO8cJGvB5
-	krYHecSosAg52sdLEvJlfSbwRgmTuIHoBV+tlDOXgzbWi21Xp8oGjbBTbwn/j6XOkUM4O8asUAt
-	bw50+/lbwo9eR9mpFTVjKqTNoxr5pynDeWirhjnJES++1CkVuu+Rst4gX6UIFKVmcDn2hlqwlgd
-	L+h9BWd3NJhT9inR2sEYm72BfGu0RhjEn9ELRHikcN+aTmOgSCAfD+e1gFrj36J4YsdgtDuFEB8
-	Ib6OObzMb1/M8E=
-X-Received: by 2002:a05:6a00:9285:b0:848:438d:3665 with SMTP id d2e1a72fcca58-84c2945d173mr7360565b3a.41.1784383243653;
-        Sat, 18 Jul 2026 07:00:43 -0700 (PDT)
+        bh=Q+3p0nOPDFK1jgflx6KTezX76UCIvfC9c0mBsjVxCOQ=;
+        b=mOuGRDlZfF7r2OAMQbIwva7MFe+aByhWf/KEbTgFnyUoL2sSDs/6V5sqXl9essSGuj
+         RGN7e2MUk+RQLJ9vqUL1Uvjs0VZMQWQJXSafjXwDQFRiL9lZkU/Gm3MScrtYCv6ItgD8
+         5gtDRc7rJOPHGG2iC+hAPY0LM9Kky3TdOydo9Zs6bYOOKX1ucDM5E97uN/Oz7cKJ5quu
+         +CByP1PYl1iExI1EtWGe84RGH21mdF1n5PzYl9FdDWuUGe1qaO2G49n20qq2/rkS6gcW
+         /J4Q2pEqTg55LHQSj/RO2DVJxF+3wGH/S25MpN4HfgVYiOO1dbsLxaohlnXcEwVkTeY2
+         W+Cg==
+X-Gm-Message-State: AOJu0Yz1BJ8CcB5KYxYxexV/v2U1KLBIMIL/4/0deCJ6zn74IIOWjhoR
+	iPmc/UUhAz/3rANqBQBAkBCd6HjdkapNxQkwUSQ9FzIIJPdxAe4JGe0=
+X-Gm-Gg: AfdE7clowsd7OSPy8XK4fqttX98VurE326di/NPKH5CEWEXv6hP6EadbtZLccy4OpFk
+	N5XWryqMWKugp1Jux2q4JOo9tO9Rbds/v9F/kiA68zM97vgVtPcapSoFoZWZfeX7VR+wA1y6alH
+	ND2WA522bD1U3XPKA0NITThsX3D/dGDrKqR5ciMpYoex3yGGrHVPNzbHE9jHBUgNJZbG+n5qk57
+	wODyOrALwacHeX24l5BvmFIj4EXJQrSKrseVGNSCXAjUXvsRgXfnjmfUkSBGLWamJML3VskABxC
+	e8Y2/gM6goIesgCgG/oRJFLy/547Rv+/L1d13aeJRRka43wXnMlhRUQ33bTBcF3UBp0wJXcXNTV
+	Tf7SE0LfTC/RYd9Lw8N/XaOM0duZACx8M5dm0EMlRcy5kyDwEL+JIXrbQ199P16pST4UCg5i4kx
+	hlWOPtFiLWg6ZdVXYR1lQgoYLg8+SEG3ixVnNWDErKsa6tp+z7MhZQGXhR9bjWTBnTRdiaIVaAt
+	SDDTHQQr1YnFYs=
+X-Received: by 2002:a05:6a00:9092:b0:848:2ab3:ddeb with SMTP id d2e1a72fcca58-84c292a0e7bmr7650997b3a.14.1784383246977;
+        Sat, 18 Jul 2026 07:00:46 -0700 (PDT)
 Received: from penguin.tail0a1999.ts.net (61-228-48-72.dynamic-ip.hinet.net. [61.228.48.72])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af6ea1csm2816890b3a.49.2026.07.18.07.00.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c2af6ea1csm2816890b3a.49.2026.07.18.07.00.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 07:00:43 -0700 (PDT)
+        Sat, 18 Jul 2026 07:00:46 -0700 (PDT)
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v11 1/3] spi: pxa2xx: disable DMA for Apple MacBook8,1
-Date: Sat, 18 Jul 2026 22:00:35 +0800
-Message-Id: <20260718140037.4299-2-fourdollars@debian.org>
+Subject: [PATCH v11 3/3] spi: pxa2xx: restore LPSS private register state on S3 resume
+Date: Sat, 18 Jul 2026 22:00:37 +0800
+Message-Id: <20260718140037.4299-4-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260718140037.4299-1-fourdollars@debian.org>
 References: <20260718140037.4299-1-fourdollars@debian.org>
@@ -63,94 +63,197 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On MacBook8,1 (early 2015 12" MacBook), the LPSS SPI controller at
-00:15.4 suffers from hardware DMA handshake failures and interrupt
-routing bugs, causing keyboard/touchpad transactions to fail when
-DMA is enabled.
+Intel LPSS SPI controllers lose all private register state across S3
+suspend because the LPSS power domain is fully removed. On resume the
+driver only re-enables the SSP clock, leaving the LPSS private registers
+in their power-on-reset state, which causes two problems:
 
-Move the forced PIO mode DMI quirk to spi-pxa2xx-pci.c (the LPSS host
-controller PCI glue driver) to avoid layering violations in client
-drivers (such as applespi).
+1. LPSS_PRIV_RESETS (offset 0x04 within the LPSS private space) stays
+   zero, keeping the functional block in reset. Any MMIO access while
+   the block is held in reset causes a PCIe Completion Timeout and a
+   watchdog-triggered system reset. LPSS_PRIV_RESETS_FUNC and
+   LPSS_PRIV_RESETS_IDMA must be de-asserted before any other register
+   access on resume.
 
-Add an explicit DMI match table for MacBook8,1 and a module parameter
-spi_pxa2xx_force_pio to allow forcing PIO mode on demand.
+2. The LPSS software chip-select control register must not be blindly
+   restored from its suspend-time snapshot: if CS was asserted at the
+   moment of suspend, restoring that state corrupts the first
+   post-resume SPI transaction. Instead, call lpss_ssp_setup() which
+   unconditionally writes SW_MODE | CS_HIGH (idle/deasserted), matching
+   the state established at probe time.
+
+To resolve these issues safely:
+- Wrap S3 suspend/resume with pm_runtime_resume_and_get() and
+  pm_runtime_put_autosuspend() to guarantee active clocks during MMIO
+  access and preserve PM reference counting.
+- Restrict LPSS private register save/restore to LPT, BYT, and BSW
+  platforms via pxa2xx_spi_need_lpss_restore() (newer platforms are
+  handled by intel-lpss.c).
+- Save only the first 6 LPSS private registers (offsets 0x00..0x14) in
+  drv_data during suspend, avoiding reserved offsets beyond 0x14.
+- On resume, de-assert resets first, restore saved registers, call
+  lpss_ssp_setup(), and clear drv_data->suspended to prevent unclocked
+  IRQ access.
+- Add error recovery paths for spi_controller_suspend/resume failures.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=108331
 Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 35 +++++++++++++++++++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 94 +++++++++++++++++++++++++++++++++++++---
+ drivers/spi/spi-pxa2xx.h |  1 +
+ 2 files changed, 89 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index cae77ac18520..31bdaa096d9e 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -18,9 +18,14 @@
- 
- #include <linux/dmaengine.h>
- #include <linux/platform_data/dma-dw.h>
-+#include <linux/dmi.h>
- 
- #include "spi-pxa2xx.h"
- 
-+static bool spi_pxa2xx_force_pio;
-+module_param_named(force_pio, spi_pxa2xx_force_pio, bool, 0444);
-+MODULE_PARM_DESC(force_pio, "Force PIO mode (disables DMA) for SPI transfers. ([0] = disabled, 1 = enabled)");
-+
- #define PCI_DEVICE_ID_INTEL_QUARK_X1000		0x0935
- #define PCI_DEVICE_ID_INTEL_BYT			0x0f0e
- #define PCI_DEVICE_ID_INTEL_MRFLD		0x1194
-@@ -93,6 +98,32 @@ static void lpss_dma_put_device(void *dma_dev)
- 	pci_dev_put(dma_dev);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 317e2c24ae67..368c7f97bfe9 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -194,6 +194,18 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
+ 	}
  }
  
-+static const struct dmi_system_id pxa2xx_spi_pci_dmi_table[] = {
-+	{
-+		.ident = "Apple MacBook8,1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook8,1"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static bool pxa2xx_spi_pci_can_dma(struct pci_dev *dev)
++static bool pxa2xx_spi_need_lpss_restore(const struct driver_data *drv_data)
 +{
-+	if (spi_pxa2xx_force_pio) {
-+		pci_info(dev, "Forcing PIO mode (disabling DMA)\n");
++	switch (drv_data->ssp_type) {
++	case LPSS_LPT_SSP:
++	case LPSS_BYT_SSP:
++	case LPSS_BSW_SSP:
++		return true;
++	default:
 +		return false;
 +	}
-+
-+	if (dmi_check_system(pxa2xx_spi_pci_dmi_table)) {
-+		pci_info(dev, "MacBook8,1 detected: disabling DMA to force PIO mode\n");
-+		return false;
-+	}
-+
-+	return true;
 +}
 +
- static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ static bool is_quark_x1000_ssp(const struct driver_data *drv_data)
  {
- 	struct ssp_device *ssp = &c->ssp;
-@@ -166,7 +197,7 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ 	return drv_data->ssp_type == QUARK_X1000_SSP;
+@@ -1542,16 +1554,46 @@ static int pxa2xx_spi_suspend(struct device *dev)
+ 	struct ssp_device *ssp = drv_data->ssp;
+ 	int status;
  
- 	c->dma_filter = lpss_dma_filter;
- 	c->dma_burst_size = 1;
--	c->enable_dma = 1;
-+	c->enable_dma = pxa2xx_spi_pci_can_dma(dev);
+-	status = spi_controller_suspend(drv_data->controller);
+-	if (status)
++	status = pm_runtime_resume_and_get(dev);
++	if (status < 0)
+ 		return status;
+ 
++	status = spi_controller_suspend(drv_data->controller);
++	if (status) {
++		spi_controller_resume(drv_data->controller);
++		goto out_put;
++	}
++
++	/* Disable SSP interrupt generation on hardware level while clock is active */
+ 	pxa_ssp_disable(ssp);
++
++	/* Mark as suspended and synchronize IRQ before disabling clock */
+ 	drv_data->suspended = true;
+ 	synchronize_irq(ssp->irq);
+ 
++	if (pxa2xx_spi_need_lpss_restore(drv_data)) {
++		unsigned int i;
++
++		/*
++		 * Save the first 6 LPSS private registers (offsets 0x00 to 0x14)
++		 * while the clock is still enabled.  They are lost when the LPSS
++		 * power domain is removed across S3 and must be restored on resume.
++		 * Use drv_data->lpss_base so the correct per-platform offset
++		 * is applied regardless of LPSS IP revision.
++		 * Registers beyond 0x14 (except CS control at 0x18) are reserved
++		 * or unimplemented on LPT, and accessing them triggers a PCIe
++		 * Completion Timeout causing a system halt.
++		 */
++		for (i = 0; i < 6; i++)
++			drv_data->lpss_priv_ctx[i] = readl(drv_data->lpss_base + i * 4);
++	}
++
+ 	pxa2xx_spi_clk_disable(drv_data);
  	return 0;
++
++out_put:
++	pm_runtime_put_noidle(dev);
++	return status;
  }
  
-@@ -238,7 +269,7 @@ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ static int pxa2xx_spi_resume(struct device *dev)
+@@ -1563,11 +1605,46 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	/* Enable the SSP clock */
+ 	status = pxa2xx_spi_clk_enable(drv_data);
+ 	if (status)
+-		return status;
++		goto out_put;
  
- 	c->dma_filter = lpss_dma_filter;
- 	c->dma_burst_size = 8;
--	c->enable_dma = 1;
-+	c->enable_dma = pxa2xx_spi_pci_can_dma(dev);
- 	return 0;
+-	if (is_lpss_ssp(drv_data))
++	if (pxa2xx_spi_need_lpss_restore(drv_data)) {
++		unsigned int i;
++
++		/*
++		 * The LPSS power domain is removed across S3, taking
++		 * all private registers with it.  De-assert the
++		 * functional block and IDMA resets first; any MMIO
++		 * access while the block is held in reset causes a
++		 * PCIe Completion Timeout and a watchdog-triggered
++		 * system reset.
++		 */
++		writel(LPSS_PRIV_RESETS_FUNC | LPSS_PRIV_RESETS_IDMA,
++		       drv_data->lpss_base + LPSS_PRIV_RESETS);
++
++		/* Restore the other 5 saved private registers */
++		for (i = 0; i < 6; i++) {
++			if (i == LPSS_PRIV_RESETS / 4)
++				continue;
++			writel(drv_data->lpss_priv_ctx[i],
++			       drv_data->lpss_base + i * 4);
++		}
++	}
++
++	if (is_lpss_ssp(drv_data)) {
++		/*
++		 * Re-initialise the SW chip-select control register so
++		 * CS starts deasserted (SW_MODE | CS_HIGH), regardless
++		 * of the state it was in at suspend time.  A stale
++		 * asserted CS on the first post-resume transaction
++		 * corrupts the write-status response from the device.
++		 */
+ 		lpss_ssp_setup(drv_data);
++	}
+ 
++	/*
++	 * Now that resets are de-asserted and registers are restored,
++	 * it is safe to handle interrupts.
++	 */
+ 	drv_data->suspended = false;
+ 
+ 	/* Start the queue running */
+@@ -1576,10 +1653,15 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 		drv_data->suspended = true;
+ 		synchronize_irq(ssp->irq);
+ 		pxa2xx_spi_clk_disable(drv_data);
+-		return status;
++		goto out_put;
+ 	}
+ 
+-	return 0;
++out_put:
++	/* Let runtime PM autosuspend again if needed */
++	pm_runtime_mark_last_busy(dev);
++	pm_runtime_put_autosuspend(dev);
++
++	return status;
  }
  
+ static int pxa2xx_spi_runtime_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
+index 44f37bf9c519..48169494f74e 100644
+--- a/drivers/spi/spi-pxa2xx.h
++++ b/drivers/spi/spi-pxa2xx.h
+@@ -71,6 +71,7 @@ struct driver_data {
+ 	irqreturn_t (*transfer_handler)(struct driver_data *drv_data);
+ 
+ 	void __iomem *lpss_base;
++	u32 lpss_priv_ctx[6];
+ 
+ 	bool suspended;
+ 	bool clk_enabled;
 -- 
 2.39.5
 

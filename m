@@ -1,85 +1,85 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E234421ABB1
-	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF827280A
+	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784426860; cv=none; b=EY2Sl8xxjqadMVnlBzzmJbNANMn2IErB2Fcnq0Y2AbYM/oER1EQK8WsU8ioBlfGToFc+9Ulvz97IFu2d8UPhwj9bHcrLiJLabBZam/SNa7jtNuXWRfGr8bmITG1LJ4iXrSgGq2kgQ7DF5w/kndYqyvoqNw+hOVBktprhkKIakiA=
+	t=1784426913; cv=none; b=IUm//DYvXJHgw8k8YC//v/IWaJp/1ZGvKOONtxUsVhggipC0fepdXUoEYYspfTaZiP4xQmrFTBmaP5i5u0/oh9U+gcjkx5FUkAQlSUMGFn8YB1D2qyeKKwfMGD79A5MePk4pHQ7/PfmJGFYu2sI78MQhsjKVik/n0kxg26X6dMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784426860; c=relaxed/simple;
-	bh=0U5P265APA9y42OE48PXJRVs+DVukO5q8VN35MNnDus=;
+	s=arc-20240116; t=1784426913; c=relaxed/simple;
+	bh=kdWlN1B24Q6VKMAxP6/Hwzp7Jv1wwzj1dE9wrvjjOD8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AnZXr6RvXLh7VmfL68eIItEv8JONwfUusijZANKHtUdK5U8zFGeZe+jC3Cgjr3ACsUuhPzNfHDHM3ju5kcJC9qAzj/jJbahAqYgpM83Rqd7FpuoGRmVrQSi/o1koSfw/lPURYRZ6yKQ5xRDv2bHNal9F9xE+1zSVYcW//qluSfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=inbb7BZ9; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WOXuJk3Q; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=u6X5UdLxOrtnI1oAWYFmlPg5OMAYQf5AdiCpBtDb+nr4A/oLkTsznOvjWwttcai1yOtc0NVUMWieD8s8D2HtjTNrO86fHmzo/UShia7AOHm7gctxQtDmx/bYUZl1ReDHzGpR9zaCighNu4dCjVQp9swm4V2vFeBtPue3cX28mhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ZhSift6x; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=SuEjmOXP; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="inbb7BZ9";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WOXuJk3Q"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66J24FLE2313220
-	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:07:36 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ZhSift6x";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="SuEjmOXP"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66J21WoM3423433
+	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:08:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bij0tRK5KgUgPL1VneMcyKdlpgkQ1t1V4gnjIpr3G9s=; b=inbb7BZ94Y8yja+z
-	5N4QJkhLH4yo/P2TXNa0Hz8VPLBE/0RaFG8qa4X/0rB9RUlglayZJmrQEstzsswY
-	/b305XSVWcwVwKwwHzaMPz+9Djf27r7i95ToKjFSRphNqYrWOfQWYxUredWUn9Q+
-	Gt+K3rwXIBrt1/pYo98Nhw2kopSrIikHPCAqBTfEW0j85rYj+UzDg81oUksOv1c9
-	FtXL0J2cJsXtkF4Gncm1gny+Y6wKWnGIaQvlWYMsBcwN1mpCbIiuWUyrtBohYBEq
-	NF0YblUiPGlvR89hSLYhTQa0XaHk1oJs5N91KMUqvqOA7OpGd/iwQ/Q878pZ8ld3
-	m7fr9Q==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fgd04rvdb-1
+	v5PtlqNjcSs4unf7+PEYRQ0YSF7XRPuFYxXj3KTAnZ0=; b=ZhSift6xgUHC7KZx
+	6POYZfXPYCDWHVfR5I5bqKmGTZ7Sp1vH1V0WdO2tsDjR2eaLKLRFrVmi94hpLnYl
+	vN4jv/gLRFLSsaC6Hi2he/HBDcCPA8AqqypafbXl2C2Kws0vADtYN5R/KXsqTX+N
+	iQqZoh938sulWp7SelMon+w86ZZvg/xJKkVKdRvqSjoRUws1Uh8QUj/sxA+LsNVS
+	+01EPbbMOkgW7s8E2RD2Xyv5Tm0l8OuCiluCgQ3xdsgxgQlEVeXOXEyOHxB5747A
+	R9EXTr2k0Clh00WQUgablkXswALaKRZr2udoWCZVFnPH069w5yBGlXKiWsQzy5ZH
+	vZZj+A==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4fg2aaswv3-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:07:36 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8483e038efeso6339770b3a.2
-        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 19:07:36 -0700 (PDT)
+	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 02:08:30 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2cd01a14e81so130932225ad.1
+        for <linux-spi@vger.kernel.org>; Sat, 18 Jul 2026 19:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1784426856; x=1785031656; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1784426910; x=1785031710; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bij0tRK5KgUgPL1VneMcyKdlpgkQ1t1V4gnjIpr3G9s=;
-        b=WOXuJk3QkrPHYVC3Fm+rWBwF747FBG2Qvas5v1G5iP4lPR58FfBPbHCuX4yLx8R0gp
-         wUJTHD37Eq1rFQ7qot9+DPgPxKUt2VtjR+BfOdWhc4MtGhHI1jBnU55nvfMaGuVlvIUP
-         Dt2cX8t6ZStCOwfrnN6MUmiYlRp2OJy2eA+u/koN4J1n0WSITGFFl0J+9BvCPpKHJXoR
-         WxZ9smHPnUgRcYz51oC7nUQEFs5t3Spe8OtLqoBJx1WYgPt4WSY9JhQaKm2dO6HU/kmA
-         CfrG7nr9CdaeLvX1Il1zdcjOTDklxJHsOOPGh5u/MRWUc1kvSKSVBcn8yJdOff7r0EME
-         wGhw==
+        bh=v5PtlqNjcSs4unf7+PEYRQ0YSF7XRPuFYxXj3KTAnZ0=;
+        b=SuEjmOXPL6t+jfwoX0OuVZZHXxyE5o3AnPb8HRiHhVwZLXCN6581LucCkDykrxp/Yc
+         gnlax+gDwVkfZZqHZ2BOJ3nTPQDASrPSavSAqAJ98b+NR3X1dt8wI5IgH5LhOm6Kl+jV
+         Y5WA31edUTSYtUoe9SkrZX1yxEU1w4ke2JPFlcCjibMDL/yMvbHf6ADOpNP2ratbqVzz
+         UIsxkyz4pqh0h31yWnVoJ//Aefz3INWCAQ2Yjgne1WIKsPHYHpq2r+TmyM6E6qI858Of
+         bAX/PIDNoapm1S3iqWJ0qDMFLzT4llKFg9IQfaIcy1ILEbgMVXTQ4/Pk/cHEQLQWyEDH
+         8cGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784426856; x=1785031656;
+        d=1e100.net; s=20251104; t=1784426910; x=1785031710;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bij0tRK5KgUgPL1VneMcyKdlpgkQ1t1V4gnjIpr3G9s=;
-        b=DOJbRlf4jvy2yPhlmXQ3nQCzuqxR9DhQoZSCmOYUzXzSYvtbJVgjIi5WE4VkIULBJU
-         rrKm/mXCJ4qX0PYp4eVfCMYlxMfRt8JS5QPR4c0vx2VdUbz/XcpNp/q9gPH+1Ozv7oJh
-         yC47iqIE5Etqh01NEGTeuK967Yan88rPeqT0egx9hvKl31RL9x8l6CyY2W5hGKsjxM4N
-         2M33A+Dkinad5ErKAU387R/d9L+9B/S6mjwGa0z2z08Gd+BkVFnfx5StBTkQaWT1GSrj
-         Vo8RQvz49a8OtxF7OqvXXtnwOcYBaekmff9fd6r1TQQHM3bcJb4nwK5zcnRjZs3vnuto
-         bdag==
-X-Forwarded-Encrypted: i=1; AHgh+Rpjij6fPRjKvRJoe0NLaTyPmuVzuODmlfKmt3itlt8iSKGyXkQ71wtjs0wc2VGll6rBi6Mg7tFrqbc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwczvOWeekGj1UScLXnxTxMuXX4eHOicSTxRDX31ggyHLWr+LSr
-	bW3Q0iwGG9P6RDEpAZK9vWcoCc0d4f4CxQ761kOHYt7UD6iOdETJziSVNYpo7puAef7G75rmwqh
-	+vE2qWrOFue/MHN7WLcFIrSAcP6qiaxQFewDgT1/kE1r+E37O1nAKUx5c+e7j3qA=
-X-Gm-Gg: AfdE7cmFy+nwk5pg4xhD/fO6+h3CHVkdGkCF6Xy2yI6X8vw8mGsVr/q2zzSk+H3J5Bb
-	+2oe+yED+irvkPQQgvWMy3YDlvyOcq3mRsSk2shyICNzUIHc4SuGgOjKm7dTb2Vxw1wtl2gtGnY
-	uxahc2ZPMmUdWYU1yg8/lU8pJJvXTfJLTVOeZfaF17bR7Mq9vk8POeBGuNB9Qno5G7eiZ9G6a9S
-	S61jx8PNmEQ12/hAuGK5rZax8AvK6TRN70w3YG8BUCpWO5pXaDugjnP7xYjgYkHsrSrS3hK/0B/
-	qS0QWCRt9JKiVBvGNnsPj7vcBBZ6zB6iA1Nuvu9+ZmBQdfE4m0U3k1r+YfqDKId/ur5TVKV0aRE
-	w3cfqZgMSKeRuggzZ
-X-Received: by 2002:a05:6a00:228e:b0:848:47db:a0ac with SMTP id d2e1a72fcca58-84c292ab554mr8722167b3a.27.1784426855556;
-        Sat, 18 Jul 2026 19:07:35 -0700 (PDT)
-X-Received: by 2002:a05:6a00:228e:b0:848:47db:a0ac with SMTP id d2e1a72fcca58-84c292ab554mr8722131b3a.27.1784426855066;
-        Sat, 18 Jul 2026 19:07:35 -0700 (PDT)
+        bh=v5PtlqNjcSs4unf7+PEYRQ0YSF7XRPuFYxXj3KTAnZ0=;
+        b=jsw+1YPGlIRh0Kfpd0Kohp9oaaEah72tnrFzAdluBkm1pxZ30ZIi111jTm5v91Nqw2
+         GaYazrv6MAK+71rh9UMEBw12EV2RUUfssavcQ2O7Vm04P/0vh11yr9kAw2EcuqevimRg
+         WdInBUtLDDLiLlaDluLYc7pAqzYc++TAYzAF+Wlgsrvq31HRERxvSw7RP3ZzBtj8n+p/
+         XL5K5qPLeQN8zbdLk6LCeZp1y2do70GvRZdXDGBTdWBmYoOYAY7lNuurMW41YNtPP0dS
+         vjxipwMfJuwRsVgT9h4GqpovQp9ldcnJETupcQC7An0wcJmnXcJ60SnKccM3x1FK86KU
+         zCcw==
+X-Forwarded-Encrypted: i=1; AHgh+RqXqf8lnkkFEdIEuByw761hVCdA2l9yYLfEqWkvUgA7vtAfDyUnckISI7VZ9MFU716pXPEeoodliVU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpoM6l9wmB7oH5ZdV1RBZ8ICtNW+OuwFOZzyoOOLHiC819raJV
+	oAk1zdlVSBRP8Sqwn4lIWXypm53XlACX+y1o8VOG/f5Tgui/okFb9yxU2m1yqxRZIXx5NN0z8Qv
+	xzAcddYcUnNbvDa5KCEK6F2gqrdAXwFfZvotnNDrb2NF767VPbPspM464svwbs6Q=
+X-Gm-Gg: AfdE7cne5pjjkDn6+JVZ8dh9MpXpEarCHffgirken9nXX9Sm97c6gBsRZMoFwdjLBHX
+	LWKyAB55/Yxy7AJSnXKa6FwUw5/R1v8foXG7YQt3GPWh/8IXHCNzXqIL/2IJDhv5vbIIb+U2knV
+	OADsGL7eaaKkgH32jtFJSZvAdP0veyN/DKfd/73T9aqRuD8eP1emcTcFhL+218gHvWe2Z9vK6ig
+	OAAA4OOZMaRXrvhKh3eyKm9LClhYZ+MpeZhnaQsi7cy8PhD3D4vJdxI5dfrNdsQkBREx7uDFEK1
+	r7NrVgnlXABvHVG3asHdE5tzz7Jf7KdpLCIFVc3KPT1gHMoetBonel0hCXrXujmgzT8Ogeufr+B
+	eTWpg4hpnL+8lubqS
+X-Received: by 2002:a17:902:dacb:b0:2ca:329:3da1 with SMTP id d9443c01a7336-2cf348abd80mr100376825ad.16.1784426909971;
+        Sat, 18 Jul 2026 19:08:29 -0700 (PDT)
+X-Received: by 2002:a17:902:dacb:b0:2ca:329:3da1 with SMTP id d9443c01a7336-2cf348abd80mr100376485ad.16.1784426909491;
+        Sat, 18 Jul 2026 19:08:29 -0700 (PDT)
 Received: from jic23-huawei ([50.35.46.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84c30fb62fesm2946475b3a.29.2026.07.18.19.07.32
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3474100fsm34318815ad.66.2026.07.18.19.08.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Jul 2026 19:07:34 -0700 (PDT)
-Date: Sun, 19 Jul 2026 03:07:29 +0100
+        Sat, 18 Jul 2026 19:08:28 -0700 (PDT)
+Date: Sun, 19 Jul 2026 03:08:23 +0100
 From: Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>
 To: Janani Sunil <janani.sunil@analog.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -108,12 +108,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  <jan.sun97@gmail.com>,
         <linux-spi@vger.kernel.org>, Kent Gustavsson
  <nedo80@gmail.com>
-Subject: Re: [PATCH v6 2/5] dt-bindings: iio: adc: microchip,mcp3564: Add
+Subject: Re: [PATCH v6 3/5] dt-bindings: iio: adc: microchip,mcp3911: Add
  spi-device-addr
-Message-ID: <20260719030717.3ec27870@jic23-huawei>
-In-Reply-To: <20260715-ad5529r-driver-v6-2-cfdf8b9f5ee3@analog.com>
+Message-ID: <20260719030810.13a090e1@jic23-huawei>
+In-Reply-To: <20260715-ad5529r-driver-v6-3-cfdf8b9f5ee3@analog.com>
 References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
-	<20260715-ad5529r-driver-v6-2-cfdf8b9f5ee3@analog.com>
+	<20260715-ad5529r-driver-v6-3-cfdf8b9f5ee3@analog.com>
 X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -123,96 +123,73 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=POs/P/qC c=1 sm=1 tr=0 ts=6a5c3168 cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=qC1CW/w66vtJz1P9yTJxNA==:17
+X-Proofpoint-GUID: ctbuin9M7kycyexwTa7EKJZzrskPP0vR
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDAxNyBTYWx0ZWRfXwgvglh7JRs1F
+ 07bqa5K6d3t7VGZBdVBYPKw37EoRgin7j/wJIGTW+kK1Qlbx/G/LCXZCJwhpR2bxpnbG7keS6fi
+ JjxwpINQuiIiCuvLn+ffzoN7LaaDrg8=
+X-Authority-Analysis: v=2.4 cv=b9aCJNGx c=1 sm=1 tr=0 ts=6a5c319e cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=qC1CW/w66vtJz1P9yTJxNA==:17
  a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=gAnH3GRIAAAA:8 a=WutwVF5OcC7bkNhAIqMA:9 a=CjuIK1q_8ugA:10
- a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDAxNyBTYWx0ZWRfX2GBfZfUbrnfi
- KB4V8PPsDzXUdvTCWU7yF5VXjMljTcZF62pdaZfswZPGVhwukxJrbwkqnb66I7pLIwn1sTjrVGa
- 3bBoZUQwmsVy9NW7stByKGnXK/sEW0lTs3j2kHsd6Mfim0eeLelmkuanAkEJyA5f2W8NQhfL2Th
- dynZdtDy+DfWkyaS66hZN/pLoxRX1BA2JAlT4g6UZGZIZLv2ls3sviTVwNQBx56SS8gXYyGl/EE
- dox0EVdrUwUn28QcGFWzYdGuXpqojaTJKqan5JcNNl2mFibIDCK5gOmhENVMunIeldKSA528N7I
- jhZRs5zOP1H3XcdMwAA4y5b2/MPZrkTqoKtFu5p9Lkfjd7Zpa2L9fH4RwEm5V6HIncNdK6xJMDu
- EJpZx3I/uo+El034wfzg6q7toIeZoshDZ8tBaYFnLj9S0ur29R1zHTcaAMOuIhMRdnRSY1b4YiH
- Fedgvoaom3VEUcZUHTA==
-X-Proofpoint-ORIG-GUID: dTmKW8lQdkN6k-AXhKSBb3BRQyZ8P4fB
-X-Proofpoint-GUID: dTmKW8lQdkN6k-AXhKSBb3BRQyZ8P4fB
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE5MDAxNyBTYWx0ZWRfX34bzTm76QxOH
- 5SW9hW/V+UmjrBCPkDPXTJ+p6eBiE7pvMEfV0puxJr7w8RsxI2PnQ+YrJEX0Fb5762MzNTIf8aL
- SK7VT8XnOSleTBxgInJACdBVqO1c3do=
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=gAnH3GRIAAAA:8 a=279Z2W4kbCX7q3JdIJsA:9 a=CjuIK1q_8ugA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-ORIG-GUID: ctbuin9M7kycyexwTa7EKJZzrskPP0vR
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE5MDAxNyBTYWx0ZWRfX0X7VocwdIaae
+ NM7Pf2amG9njFWQq0kwg+3KO44mHny6UhG0V3f4C27cP/0XDwu1f7sTUK1akdZIOMXWV1V1bEch
+ F3njnQud9DqaPbrJGL39Mm/jzDHnT9OpmrkBu5DEZWS2gI3EpTkXEsQQUhgmqQwfn4WgWCvPNm2
+ EmM/5q3YqT3taXuqCJaugNNzNJ91xNEmLGfD5jUc/iCF3tjnmlKsH+fjDHQtpdmm+JSHKuVL5+j
+ ACJ9uZYYzeFgRnLKzla6ggeqxDktDn1BeqThE2i6rComaD5PxF69Zyh5I6rYtIojyr1TXab6tl7
+ pvbBBbc0pqqrCy/JqKnY8ax7PF+j8Tr7PyKC+z7gJxAZyEi7trYnVJtG5SXEKptfhNn82u1trNF
+ w7jc6cpZxn6sR8ioAmJT6PUQAv4+ju8xRHE5rQh+w4+b1dpsHwsDHIvRQP0Pev+XzgzaNIBvLRg
+ RiztXumPkTaa/4BIudA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-19_01,2026-07-17_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011 suspectscore=0
- priorityscore=1501 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607190017
+ impostorscore=0 suspectscore=0 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1011 adultscore=0 malwarescore=0 bulkscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2607190017
 
-On Wed, 15 Jul 2026 13:41:05 +0200
+On Wed, 15 Jul 2026 13:41:06 +0200
 Janani Sunil <janani.sunil@analog.com> wrote:
 
 > Add the generic spi-device-addr property to the binding and deprecate
-> the existing vendor specific microchip,hw-device-address property.
+> the existing vendor specific microchip,device-addr property
 > 
 > Signed-off-by: Janani Sunil <janani.sunil@analog.com>
-
-Maybe I'm reading the situation wrong but I was expecting to see
-driver patches as well. Or is the now deprecated binding element
-not actually used?
-
-One other thing below.
-
-Jonathan
-
 > ---
->  Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+>  Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> index 675319276197..02bb198e9fa7 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> @@ -80,6 +80,7 @@ properties:
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> index 3a69ec60edb9..4a60df06bd35 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> @@ -57,6 +57,12 @@ properties:
 >      $ref: /schemas/types.yaml#/definitions/uint32
->      minimum: 0
->      maximum: 3
+>      enum: [0, 1, 2, 3]
+>      default: 0
 > +    deprecated: true
->      description:
->        The address is set on a per-device basis by fuses in the factory,
->        configured on request. If not requested, the fuses are set for 0x1.
-> @@ -91,6 +92,11 @@ properties:
->        clocking of the device address (BITS[7:6] - top two bits of COMMAND BYTE
->        which is first one on the wire).
->  
+> +
 > +  spi-device-addr:
 > +    maxItems: 1
 > +    items:
 > +      enum: [0, 1, 2, 3]
-No default here, yet not required, so how do we know what the value is
-if this property isn't there?
-> +
->    "#io-channel-cells":
->      const: 1
+Needs to carry the default as the old binding did.
+
 >  
-> @@ -123,7 +129,6 @@ dependencies:
->  required:
->    - compatible
->    - reg
-> -  - microchip,hw-device-address
->    - spi-max-frequency
->  
->  allOf:
-> @@ -159,7 +164,7 @@ examples:
->              spi-cpha;
->              spi-cpol;
->              spi-max-frequency = <10000000>;
-> -            microchip,hw-device-address = <1>;
-> +            spi-device-addr = <1>;
->  
->              #address-cells = <1>;
->              #size-cells = <0>;
+>    vref-supply:
+>      description: |
+> @@ -86,7 +92,7 @@ examples:
+>          interrupts = <15 2>;
+>          reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+>          spi-max-frequency = <20000000>;
+> -        microchip,device-addr = <0>;
+> +        spi-device-addr = <0>;
+>          vref-supply = <&vref_reg>;
+>          clocks = <&xtal>;
+>        };
 > 
 

@@ -1,112 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97C7E573;
-	Sun, 19 Jul 2026 07:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784447602; cv=none; b=GnFyA1SGp/sJzqt83VEOzYeHiCTMEZ2AIUc9wyTizQMKRdN8P0mFyNC9tikHlKaF0KQ0NVBxuUjbTOUWLVXz3rob8Am7zvLI+1E1T+qPg3m9kCZTVXOV43h7ho/uyMEs3w4C/VBmJA5+IKb9Z5bPUX8P/7XiTzOuGWYGry5wycQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784447602; c=relaxed/simple;
-	bh=sl2horV50lnhE84rW79Xs4WQ2NVNCmOai5zekMJVNgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UcIOo/xNB+/E1PQBdwY9KTh6jfkrdfU7G0tncxW3MfR5rMYIv6xf7eN1xufDG++sOt/5/y+gsYTvKTgyXDby1flJPBZxh1bEnphFS3hg/dfVE8SvVUXmD13NUrl5T61tAI78aBiELA1/z3aC6aDFdDy2X4nikJJTFxoheo2BpXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JVMZMzGB; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029BA38E8AC
+	for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 10:12:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784455954; cv=pass; b=AD/mcC2PW/phhsalNjnpeJTF3c14Yu7sLlOk8rvOusyp2KW2P7WQIp+MTiy8Frx+9KVBWztDRExbgs7HiR0xukB1K+YN3P7pb4F5qXDIhBmVY1Za/t3MaI3jt+3HZ8yymXrE2wXeZP3Jm0sgiJNb6UYOZbwK6V556azLVPKw25Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784455954; c=relaxed/simple;
+	bh=+SWRgwJpI5208jPonUHKde/p1vpdQPTExC1afsSyq6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BtyLKFNrwSI5aBPfCTKGyGuqk0oVTz6y0MRZSvR/PwZ0fgQ9zXgVRQ1v9NlMkfxQRHEsYo/soGRHVTebxpgTzrtj72LzxEd74libcVXRueHt7pbLMdER2sYImIwnpLdfXQKwGQVo/y8hHRP6eeC5wI08Noo0F5bQ2nFilbgwdNQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LU/dJn7I; arc=pass smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JVMZMzGB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784447599; x=1815983599;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sl2horV50lnhE84rW79Xs4WQ2NVNCmOai5zekMJVNgw=;
-  b=JVMZMzGB10ivUd/gL3j2h+bA2g6EjNTZULTYzhVi2I+7NZlKQX4oSycL
-   U7qPgeqQFWeiu7CNpeEg9SKC7nfqmF1OwBgHBEaWW4UO8oSDcyn0ylLrK
-   bPUPANYvkNZL2boRrtPjkX6Xd3Ad6ylYnp9A4toGpIhnch2LnOqKxM/pC
-   KXn45YGtwTOCWlKTX/AlQvpoD3MQYMlWEj2EvY+DJOPhu1V3xHHY3DJ58
-   LFpic87rysnM9NgkpFI+jz8biD11AjQoEQ7SroWpB4LyvqVhh+2bh9BOp
-   uOpg6ep1KspUZcCHbjkuHYnTZSfKSLiBrX/xl71GhiyBmPDqYYffc6Gal
-   A==;
-X-CSE-ConnectionGUID: iv297JtTQdGJF+OwRJdL5g==
-X-CSE-MsgGUID: JNhxAkYXT26MyWpWzy0uow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11850"; a="88881663"
-X-IronPort-AV: E=Sophos;i="6.25,172,1779174000"; 
-   d="scan'208";a="88881663"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jul 2026 00:53:18 -0700
-X-CSE-ConnectionGUID: zZbMTxriS5S9vrciAOLl+Q==
-X-CSE-MsgGUID: FCfyWab2ToedBoRwHgmb/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,172,1779174000"; 
-   d="scan'208";a="257813299"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa009.jf.intel.com with ESMTP; 19 Jul 2026 00:53:17 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 0EB9395; Sun, 19 Jul 2026 09:53:16 +0200 (CEST)
-Date: Sun, 19 Jul 2026 09:53:16 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Shih-Yuan Lee <fourdollars@debian.org>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v12 0/3] spi: pxa2xx: MacBook8,1 quirk, runtime PM, and
- LPSS S3 resume state fixes
-Message-ID: <alyCbKAQh4jtZVDv@black.igk.intel.com>
-References: <20260718145209.6678-1-fourdollars@debian.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LU/dJn7I"
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5bf5370d38fso3553684e0c.2
+        for <linux-spi@vger.kernel.org>; Sun, 19 Jul 2026 03:12:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784455948; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SBwRKerOxFtDiaLQOEZ9SmuF2J6uxfYCJwnk2fxYewUanvxBOWr43zS8ndkrKbQOVg
+         Rs7XvGUASQYLWhTCMXcUibvopKuUqIvYSPmA3nlx9KbFLToootzn5avKo06IseOjl7RU
+         UUA+W2lhgwDTkNt1O6bF8HPHTB1Rgo5JY4ekE3lDaUapRtlJGPE8To+hLTyVTcjl5scK
+         QGWl5yqZiIfhtHQBFLfd653aTn3ekXzZ3QM2Xg6X9fMweeQM7wARJL03Qf8Dl02bxn9Y
+         zUThd28eip6Fp1/mpVP26B1DjZE5uObcbuLOiUu9ZGYCLUchQRIn2hWYK1qUMsI4D3mV
+         CC6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+SWRgwJpI5208jPonUHKde/p1vpdQPTExC1afsSyq6g=;
+        fh=+KGB3hWmNeS0LPQzIzUHaw6yrFkCvZHJF6SOug1sHeQ=;
+        b=A/tVXFXp8qBJOIJs0coo82KYPnu/n+2Q5nxmw5s3FNMLVfCnHLdzIXwz5iQgaUpu/D
+         w1zd20heUrcg4H8InGNDf+wYfhOY28GmiIX55XBJNqXT+fkjzCtptDXJoHIXz0Vplkxl
+         m6R/FFL5oKFUzDjB11p2W1fqBZrcxjciOZIdoLGa2/qD4tvmx0qzLswmTPJEpgl+tlBv
+         lqsfO9Lejh9LmFFq7VcflonVT8BVaUDqZFnmKLySJwzs9xYNpQM4DQINUl886uQO5mVH
+         z+yy26GZgkNh3H7saIhUiYUaGCDPLTnx1hDT8IbBPfxe35jx45ZWD9NRK5dFyhxhUSyr
+         LcRw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784455948; x=1785060748; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+SWRgwJpI5208jPonUHKde/p1vpdQPTExC1afsSyq6g=;
+        b=LU/dJn7IdLOP543F/L5LQJ5HIPwPSv3Z1vdFD3MElAxTb7OgxqJzSJ4WtfQoAwiNxE
+         +lg9+HJFxNXoL6EDc8uZyLVa6DiL9ExXkrtr3ec1VNQX/0l3YniQHSQF/RdzwdKDK87P
+         3UyyFbR/aUif4Rnmms3VVQMMGJaFEZnj33Qy23LY8QorPj7A6adurLaiQIgqJR63zafX
+         1Uirf16AU2iF76/iZcJqph+tZsvLSp5vYB+AGjFU9HkcA4stlcJh2Yax/gR1FfsWxcww
+         9oggxmzZjsWdBSUCUz0fBkGSQ6do+mby7KPDJ4ksbRF5q9eCjYSUfObelTnEGIhLVkAW
+         A/Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784455948; x=1785060748;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+SWRgwJpI5208jPonUHKde/p1vpdQPTExC1afsSyq6g=;
+        b=nNo573sHs3oRw2USCQe7/Zwz3nsLA4lt6Jvf1BObBaQabY2aDHWCV12RJnDzDh07vt
+         gHHyJc7+T4ao7lDLwqszDi8mbzk2d8yqf8eohtdTdJRgHlxNDY9oVOE0RnFesLThFZcD
+         JduTVGUWa9t5oTR9i6gP34ZjCo946w1jTGyyrIAJfjgpOr+G2zFm5U+DgjHR9UvYKPFq
+         3MCywPY/XhrmFmJvWBYNMnT72z7G/7N1h9Sg2Wrk0AShBabPXjYlDAoFZ7PNyX7U5DTn
+         kMcjsc6qPZLVmXQqiyUT2yGR2kwno6RBe5asBCCk+YVWvZI60j9zOKm4IpvxTkQ8ay4E
+         EieQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoOgOaWBi3imOmMs3Z9BZMbB1a/WIhuvvkROpf5Fq/4SvzHGr8iUhcwTdV7l1KkZzta88xQSYplE2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLpdJK6e8ZzWOw6kd7Nbw4VI2sS6KcJMymbxHjRBcdsQ76d280
+	G5LbM6jbI871u0sERZQy3A2qxem4GaJHsUJy3niO9LS/QSyUB7rz8OFek/sLSlt5SWUhRTNnlZ+
+	Ac+lYY7z5pdM+piMULJu4Y/OQwwkQ0KM=
+X-Gm-Gg: AfdE7cnuv33NiMQZkCiiOTIpjL2XV89QRNmeEIgxkKVmsVxhNX/4tuKCMcPt+qx+7L7
+	hZlAXM5GYA3w00KALhu9jIEdm+9ZetTOAClVlh8rufi1mZaSPSkuwcfAtE3oG6rAniITy0/4+Lg
+	GQGxkklCc8USbTPYFCCcKl931uUYnHQoU63EaB9djFf6Sisb/P8JqgNNeObkLqqpqjVEEpY7PRm
+	pUNaw7Myx7NW9W1eJMjdbIUZgVb+mhnTKK2chzoax2c0Lt2AmJ4MuBYUqwpi2cRDq1Wz71HF7Bm
+	qpwgjmkE2ePXBpnRoA==
+X-Received: by 2002:a05:6102:3751:b0:73f:7bca:217d with SMTP id
+ ada2fe7eead31-747536f091bmr2060442137.20.1784455948074; Sun, 19 Jul 2026
+ 03:12:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260718145209.6678-1-fourdollars@debian.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20260616122605.668908-1-mitltlatltl@gmail.com> <77953dc6-a7a9-4d74-be14-0424d019b8fb@sirena.org.uk>
+In-Reply-To: <77953dc6-a7a9-4d74-be14-0424d019b8fb@sirena.org.uk>
+From: Pengyu Luo <mitltlatltl@gmail.com>
+Date: Sun, 19 Jul 2026 18:10:50 +0800
+X-Gm-Features: AUfX_myK2M84Hx7_NX8fCV8CD5e4weA3q6bfbwaUlyBWXK9agR3ne4npIEk94H8
+Message-ID: <CAH2e8h6wrK0ZbXJqJ6Lix9FNgtE98tGKPxmOnqd0Kn7hpzrJFA@mail.gmail.com>
+Subject: Re: [PATCH v2] spi: qcom-geni: Use GSI mode if DMA channels are available
+To: Mark Brown <broonie@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 18, 2026 at 10:52:06PM +0800, Shih-Yuan Lee wrote:
-> Hi Mark,
-> 
-> This 3-patch series resolves issues in the spi-pxa2xx host controller driver
-> related to Intel LPSS SPI controllers and the Apple MacBook8,1.
-> 
-> Patch 1 moves the forced PIO mode quirk for the Apple MacBook8,1 LPSS SPI
-> controller from the client driver (applespi) to the host controller PCI glue
-> driver (spi-pxa2xx-pci) where it belongs.
-> 
-> Patch 2 fixes runtime PM and interrupt handling in PIO mode: when DMA is
-> disabled, aggressive runtime clock gating causes PCIe Completion Timeouts on
-> subsequent MMIO accesses. It scopes autosuspend lockout strictly to LPSS controllers,
-> tracks clock state to avoid disable underflows, protects shared IRQ handling,
-> preserves the if (!pm_runtime_suspended(dev)) check in suspend/resume to avoid
-> PM state desynchronization on non-LPSS SoCs, and uses pm_runtime_put_sync() upon
-> driver remove to correctly synchronize the PM state machine to RPM_SUSPENDED.
-> 
-> Patch 3 fixes S3 suspend/resume for Intel LPSS SPI controllers. The LPSS
-> power domain is fully removed across S3, losing all private register state.
-> Accessing MMIO on resume while the block is held in reset causes a PCIe Completion
-> Timeout and a watchdog system reset. To fix this, we save the LPSS private
-> registers in struct driver_data during suspend, de-assert resets first on
-> resume, and restore the saved registers.
+On Tue, Jul 14, 2026 at 8:27=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Tue, Jun 16, 2026 at 08:26:05PM +0800, Pengyu Luo wrote:
+> > Some devices (such as gaokun3) do not disable FIFO mode, causing the
+> > driver to fallback to FIFO mode by default. However, these platforms
+> > also support GSI mode, which is highly preferred for certain
+> > peripherals like SPI touchscreens to improve performance.
+>
+> This needs a rebase against my current branch.
 
-> Changes in v12:
->   - Addressed feedback from Sashiko review on the v11 patchset for Patch 2:
->   - Preserved the if (!pm_runtime_suspended(dev)) check prior to enabling/disabling
->     the clock in pxa2xx_spi_suspend() and pxa2xx_spi_resume(). On non-LPSS platforms,
->     if a device was runtime suspended prior to system sleep, unconditionally enabling
->     its hardware clock during system resume forced the clock ON while the PM core
->     retained RPM_SUSPENDED. Restoring this check prevents PM state desynchronization,
->     avoiding power leaks on non-LPSS platforms.
+Please ignore this patch. After discussion[1], let us keep using the
+fifo_disabled variable to determine the mode.
 
-What's going on here, please?
+[1]: https://lore.kernel.org/linux-arm-msm/94956a19-153f-4bce-a824-7608bbff=
+c98a@oss.qualcomm.com
 
-It's v12 and you haven't even a thought to add the authors of the drivers, nor
-any one from Intel whose SoCs are under the question here.a Besides that the patches
-need more work.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Best wishes,
+Pengyu

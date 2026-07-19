@@ -1,79 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB66D15C14F;
-	Sun, 19 Jul 2026 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018981C5F1B;
+	Sun, 19 Jul 2026 16:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784472625; cv=none; b=oICsWFguW+Cn27ISrP1wAzLd5ns9R0r4C8SDBJgjvk1iPj6OdaRPEwysFBs6m4t6k3IXStvleZbfI+BcXbfW8+CC07QfUKh23l+9YYd9aSYDRYatVrGs7SkLvCj780u5azIas5QFyb1G5PKJszENYr4bLGLwktK1VEOX6L2BnHo=
+	t=1784479543; cv=none; b=OM8OQZTHAGAQVjQXiznk6Jiqus8dwaTL4visSXcEbMMSRljNW+BBf8WSEd395xc/S3QRYkywyZa90+qce2N3GeUcE2POz03GKpMUTZaqitCJyw58BnUxqc0Td14WhA+OCud4y1ZeeHiM/mRogY0jh0N0GEV8SBINRX1+dYX2LWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784472625; c=relaxed/simple;
-	bh=vhBrze3NWSYtz/miPrWh1wuNwJ+jo9iJwd1O5X2fH/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GRBiWRzyl08UsTOREBlMlX9ePgtSC0SnUrXVeejQmQmWs+a5iMgB6Svu+RAzyX/yBG4TajuzCKR4QJGBN0c3Clos9UjGZC4r8Fexvp+PGMBSnNgbxFNVIv6gIqGeHBMzZgrxKTvVJtSySZrhekjTFz0618HDEAHtRbpLDrlbVQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2086A1F000E9;
-	Sun, 19 Jul 2026 14:50:21 +0000 (UTC)
-Date: Sun, 19 Jul 2026 15:50:19 +0100
-From: Mark Brown <broonie@debian.org>
-To: Vishwaroop A <va@nvidia.com>
-Cc: Thierry Reding <thierry.reding@kernel.org>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Suresh Mangipudi <smangipudi@nvidia.com>,
-	Krishna Yarlagadda <kyarlagadda@nvidia.com>,
-	linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 0/3] spi: tegra210-quad: Improve interrupt handling
- for loaded systems
-Message-ID: <c1100cde-ffe9-42b7-9f21-827cae7248e7@sirena.org.uk>
-References: <20260708011257.1712961-1-va@nvidia.com>
+	s=arc-20240116; t=1784479543; c=relaxed/simple;
+	bh=L2UK6OIJR/P5t329NbuIGVW8t56r6t88LxzOjX/RjhY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=YrfToMuFwuptHPvNpuQ9kfMojpzrXc0m3ujjQbttnx1MtCiURwIUdmCHzgqzQEXlQ+nCnGHiX1kBoHbnSbQthRSKOgHB+bnfU4hroAQ0sK4ho814lPrs0n741BWNrZvelVr+FLntpAyqgQ/HUVeD/6Tih7yU1btoZilgbHc9zOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qvuit30W; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qvuit30W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04661F000E9;
+	Sun, 19 Jul 2026 16:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1784479542;
+	bh=fneNOmBNEvX7MZ7EPRtWqyUPLyUdWGaAYX7DIT5FsGc=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=Qvuit30WilJxl7IdaxF7EEwW+W1Qg/PDJIZkvo42DjArF+9WZQo2HLX3dhKVW8ciM
+	 Jcc9KpZFsIVbQFcJYOpjmgq9b0h+A4qzIVI9/82zy2xcsrIsi5CatYYYB9bEjUN5j4
+	 8r7rCmtfU+cYoq3SvseFmIqeA6x94CLRZvNwkHpTkqXelrooJwm6wYWrLMVaZa0fx2
+	 5GaQ2qXNvQuZ+vfWBWqCBho5uX9Yumvj84VzbC+mJ33B19OiJFjfVjpe68TtC50PFt
+	 yIV5VYMfDfBV4x8rVefgchsQieLmpuUGJiyVtVcoVI/lHbI5CmI7eRR92lXWBXMsW2
+	 jqa3uuxGfohNQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19AC538119C8;
+	Sun, 19 Jul 2026 16:45:15 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.2-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <3aee33eeb68bc75cc295997d3b1c182f@kernel.org>
+References: <3aee33eeb68bc75cc295997d3b1c182f@kernel.org>
+X-PR-Tracked-List-Id: <linux-spi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <3aee33eeb68bc75cc295997d3b1c182f@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc3
+X-PR-Tracked-Commit-Id: e919ca35a6e84b5adf085da9ffa1544c01d4ce1e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 8b752c85019958558972b75c8703caccd6fd7c47
+Message-Id: <178447951361.2771094.3282977210926464718.pr-tracker-bot@kernel.org>
+Date: Sun, 19 Jul 2026 16:45:13 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kvxvVOWO2BSOvtse"
-Content-Disposition: inline
-In-Reply-To: <20260708011257.1712961-1-va@nvidia.com>
-X-Cookie: Courage is grace under pressure.
 
+The pull request you sent on Sun, 19 Jul 2026 13:39:35 +0100:
 
---kvxvVOWO2BSOvtse
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc3
 
-On Wed, Jul 08, 2026 at 01:12:54AM +0000, Vishwaroop A wrote:
-> The current threaded IRQ implementation in spi-tegra210-quad suffers from
-> scheduler-induced latency on heavily loaded systems. Because threaded IRQ
-> handlers are subject to CFS scheduling, they can be delayed long enough to
-> trigger transfer timeouts even though hardware completes in microseconds.
-> This results in false timeout errors and WARN_ON splats during normal
-> operation.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/8b752c85019958558972b75c8703caccd6fd7c47
 
-Is the handling for timeouts with DMA transfers that get split or
-chained together safe?  handle_dma_based_xfer() starts a new DMA after
-the current one completes if there's more work to do but it looks like
-_combined_seq_xfer() will clear curr_xfer if we didn't get an error from
-handling the timeout.
+Thank you!
 
---kvxvVOWO2BSOvtse
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpc5CoACgkQJNaLcl1U
-h9BbTgf8CYbgoUMsXHKhpfVE2XUJ0Y0pBQhodvk/MlN9N3S0plYLN/2AA7oJZ/O1
-Z+LvCVnReggifw4TD52M9H9T7yUqz0Iy/QtvXQB5rBHEbmB77G7E6l5JEHctglUN
-axtLTRfFrZ0ziCU2ZEoRttYt5HDqksedLEmy4q71zy3ufKcTafosZCVmnj3BhXx4
-dn4A2JRCBwrHDepkT2cd6pl7NpYtGfCNcW6OcRfUoAuFjXeMnIBxbuj4pbY4zJIa
-jEn7iMhv3mG7U8o25+qLO9iSDF62gaIk3CTFi+jkBzq5K+SCj9ghBeceIEbZ46h7
-QC/zhYweCoL9xmlmma88SAu2PblolA==
-=xEde
------END PGP SIGNATURE-----
-
---kvxvVOWO2BSOvtse--
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

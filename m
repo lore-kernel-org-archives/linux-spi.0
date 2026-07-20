@@ -1,50 +1,50 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A90E43DA4C
-	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 16:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E2B43C7D6
+	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 16:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784564492; cv=none; b=PO/8Ao5uYIYi8yqdhgglA/95YMJpYu/WrE2GwJsuDmdtqNn2ewvy0vrfzgP8nAGy6inXmfNvd6t+J+axcyZUlm/YxNTX66+Kof9E2toI6NTPH4jvAREGUYuXWCgVh7AhFtY2R8/bXaW6KUrP3eLPtU9vlld9P5MFp4vh94I3XjQ=
+	t=1784564495; cv=none; b=bsjNYT+yB6tGQwgP9BCoObuxEyQ30aJgEhWTcKFcHEBMpUWdj5rjLkNBxLxjfAiY8hfGXwBWNbWhAGzkRqnARL6hWNY+12z6dZby9d+RdeD/vHnSXlbW/3mXB/cIRCIg5gBWdUnITdw9/fFpn6wIZLJHM1EpoQvUbbFJrjihPW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784564492; c=relaxed/simple;
-	bh=HzKgSIrjEnCFgGyoWIETQ8+443CNcjWwxAUt1BL2sx0=;
+	s=arc-20240116; t=1784564495; c=relaxed/simple;
+	bh=UVo5c4lR5R7fmIYod3yy0OHjJHPgUxAKWu1/O3B+npo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FmIksCu5eAKcK+gPN9n9Fh8HHj3XFmcPCmwZyaw27pGFlC3ga2CsGfaiBtPIxygJ9A+i3QbUk5euUBmMKe3vEAYEwCsjJByXqGqJtU2UQbkEevZkRqoxL0ysYZEjjSEDGQnTl/dGsp39rk6na4smxObgMoMkInuFw2mZ4EdJ4Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
+	 MIME-Version; b=kzg4Lsex0zgvwV3k1sdWdflZplcS+Nuz2XnawcP07X4i0vRfKerq70ttqVR0drbcvIXKJuhtdd2+EY15KsbC7wjKcRPG1aQhoitUA/XWaQxATwXt1AH6inqYQRcHEu0awwRCsQGBlwpVZ1mE7VahZjr7UWTRzX+M4jtc8uoNPps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cad4170e8eso142214975ad.3
-        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 09:21:31 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cee9b74ee1so63493705ad.3
+        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 09:21:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784564490; x=1785169290;
+        d=1e100.net; s=20251104; t=1784564493; x=1785169293;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zjfjMNm+cQqraDceqixUdtwSS848knI19QAP7FSOitc=;
-        b=MmjFN4Gw+hhS5gCYPL4Im+7Dq8rFFgElniAjNiE5shTTCBBKXRH/fMrKoWzMgjBue2
-         Di5NuLecHiS/c/VxC8uYWWKA3Ifwf5XfAGdn8VuSHdcjcV9e32MUSsVJzJh6x9qX+ncY
-         1GuKNVNDj/AdSNnCT1XwQaYD1aBkO80UaDL0PrLhtO7VyAhz01nU/fHtfgiEOVZH20vE
-         k3uhJWcDZmgMbTzi2y+dIHc5asfyv1n4NKVHGxq9qMFRKVpVH9dkt0wf5PCnAiGWfWyJ
-         A2/t3+h37nBJAecc/iQZF1+LI4+gM2fhtNtqynYvbj+KsuVC+H6amDbs2O/nqR5sq5n3
-         So3g==
-X-Forwarded-Encrypted: i=1; AHgh+Rr5Z4K8PeUPNESV0IrRlNjYdxRzqQa2gBVDoTcbIPKXoc5Mpj+MYwPkoxSMOn05s05EQWEHmQwARb0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2E+Un5FsiWUUz6LJkdSzFf/N0/OgLLgQG1UF+gtVARfS/4Mjx
-	clmAFwxGBDdUYyGgh6eTrYSZJERU5cQyj+KfmLhTFUuxyLqxrelSWjI=
-X-Gm-Gg: AR+sD13CB+45uIa92XOtfBrxz/NN8LHeQuhZ+z1jItWYcPHGZTRxu85loCIRHba7UMu
-	GEpLbKhOZITDOPzUrLaWvrMGstqzSSBtVJF9wujbTUxc4TZJVfMBCmJ/ifQVJR2eUu5ggwODBEs
-	/9xz2NSRY0k1EhUIAH+6aUJXeSNwO6nDObcKcK6Uh6o34orYMA5xDgXwUw52YqaW3epTLap2Rg2
-	fXE9m3ju2evNhIF9iG+ENQ1gvg37NggLeT0fAFZDbNL7l09q/AvaIzYcMpx8K6hTMtdvI1wwApY
-	R4WxyyKQHItJuj+tXBk4LJTTFtZG3Ie2o1m3uqXhYF1D8irT6P+vukD/4CwCkDLQ96j/fjvju2u
-	KU9y2a2d3Q8eLcu4pP73NQ98s52P+810Z6DWoSLvPjPKliPswPeYPojzywTTCcM00uH69FiH8dR
-	xa6kWWgWylhvgoh1ncgond8ooxYpIOoRuND5DwHdDg4+FURHBJ39eJh5MZQDVy/Ih+KZ8TdEe1I
-	UUFMbSVmGJeXUV/ow==
-X-Received: by 2002:a17:902:dac9:b0:2ca:1479:d9dc with SMTP id d9443c01a7336-2cf34853397mr160016285ad.12.1784564490463;
-        Mon, 20 Jul 2026 09:21:30 -0700 (PDT)
+        bh=aLETP574W//JLh+FTkzjcKwtbtDnoO3wAXCceho0s4c=;
+        b=ljrbLgZRqE7pQgccLNllO5zHZodSpNTlJU9c+8Eot+rD1aIN8wczmcETUtLErnuPys
+         /iyzYBGaa/868DfHbIsenAd03ozGA1tZe4e6XBqAToz/prUXNisuXr2MuLY6vO5ZozLe
+         X9jWQFhPEamhtpdsef1UwgFY4RZe4OLvDJFO9x1VGzM9STUGpVWpQ3fC8MYkC9crVzqQ
+         gLM8h3VTvyQgYTWGFTYtKwmkhMJgEZsAf7fPe8OK5OWfFs+TsWjh66/uWRWt2kH1d3wl
+         snjkEabgd7DNZWGMgPotu74+4EV3VF2funi/xGaeJaTMKXj2EgXrAIrqjINaXsZzwT3d
+         xCYQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqJZFTv7OuAlgLIA/Eyv7iQNWWLs6m7ORW5sk4oykch+Ma7Fe7qvR7YLj78zbqO3V7SUKvkj/A0c+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0B05RHIQ9iev9rY3cl5rvp7LrKUizzRVnK0Q8vs/toZC+uIIy
+	4PfVcPacf9nERSRy/B5y59i8LaN8bIE7GEWBl9N5sb38uig2XLUiFFw=
+X-Gm-Gg: AR+sD13rHTEPWwf1ePGqfulwf49NFCG9H+fi9JOzpLb7lENWJGgMsa9FEX8dK1mO4Mo
+	3AQrRnKF9riXhiSyNcqM07AeD1nx+p8O0NWC3eyzaPxutq0HdjnNOZH6hLIYnkqMUNs0Z0m9rI+
+	rrlXqalk7S7y8LilRKYyXBlq6x0ud3ON9rghKFGI4sJALU8e2HeqkdzHpQjUYK9oZDXcQE/ZAuB
+	Smu4s8TdMB3sdqOgS57x+2niU+ChIbBuWLd5MTBSwuytr186JJgeB5uWf/x0DFtRKIVgvPWzqe0
+	Ab/JtwGVBcZsNppNjhzDEcvI7kBw/w3z9ZlGwEiUKJECf9ISyh92TmGHh/6tubVJEQLjNkdIixP
+	8vflDRTUuzXm5T5kiguR7+abWINaXOxoX4KFpVfaRV8Hwl4yrRXs+Xd0v/unD1sKYZ0OES1mkJH
+	JcxlXgg7tyUZ5ytKLoIdu/Rbm9JUXK81rys9lNSbS+8SOZdfHLRbQR2+MIdivPP8fm11AOAhqX3
+	kYpVOYmPohB0T7Oa2tnsCG8c7YS
+X-Received: by 2002:a17:902:fdae:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2cf3466a93fmr166932475ad.0.1784564493132;
+        Mon, 20 Jul 2026 09:21:33 -0700 (PDT)
 Received: from penguin.tail0a1999.ts.net (61-228-16-100.dynamic-ip.hinet.net. [61.228.16.100])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm58467385ad.80.2026.07.20.09.21.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm58467385ad.80.2026.07.20.09.21.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 09:21:29 -0700 (PDT)
+        Mon, 20 Jul 2026 09:21:32 -0700 (PDT)
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
@@ -57,9 +57,9 @@ Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v16 3/7] spi: pxa2xx: overhaul teardown and suspend sequence using pxa2xx_spi_off
-Date: Tue, 21 Jul 2026 00:21:12 +0800
-Message-Id: <20260720162117.32304-4-fourdollars@debian.org>
+Subject: [PATCH v16 4/7] spi: pxa2xx: lock out runtime autosuspend for Intel LPSS SPI in PIO mode
+Date: Tue, 21 Jul 2026 00:21:13 +0800
+Message-Id: <20260720162117.32304-5-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260720162117.32304-1-fourdollars@debian.org>
 References: <20260720162117.32304-1-fourdollars@debian.org>
@@ -71,130 +71,55 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When removing the driver or suspending the device, the clock must not
-be disabled while shared interrupts are still active. Gating the clock
-before waiting for in-flight interrupt handlers to complete results
-in race conditions where the handler performs unclocked MMIO accesses,
-causing PCIe Completion Timeouts.
+When operating in PIO mode on Intel LPSS SPI controllers, runtime PM
+autosuspend clock-gates the hardware block when idle. On subsequent
+transfers, MMIO accesses to trigger resume are performed before the runtime
+PM state machine can wake the controller, causing PCIe Completion Timeouts.
+This issue does not affect DMA mode, where the DMA engine holds the required
+resources, nor does it affect non-LPSS controllers.
 
-Overhaul the remove, suspend, and runtime_suspend paths to use a strict
-synchronized teardown order:
-1. Disable hardware interrupt generation at the controller level.
-2. Mark the device state as suspended (suspended = true) to prevent
-   subsequent interrupt handlers from attempting MMIO reads.
-3. Call synchronize_irq() to wait for any active interrupt handlers
-   to drain completely.
-4. Gate the clock via pxa2xx_spi_clk_disable().
+Lock out runtime PM autosuspend for LPSS SPI controllers specifically
+when operating in PIO mode.
 
-Additionally, commit 29d7e05c5f75 ("spi: pxa2xx: Avoid touching
-SSCR0_SSE on MMP2") documented that disabling the hardware block via SSE on
-MMP2 SoC platforms corrupts the RX/TX FIFO. Instead of calling
-pxa_ssp_disable() directly, use the helper function pxa2xx_spi_off(),
-which respects the MMP2 platform quirk by bypassing SSE register writes.
+Acquire a runtime PM reference via pm_runtime_get_noresume() in
+pxa2xx_spi_probe() after registration, and release it via
+pm_runtime_put_noidle() in pxa2xx_spi_remove() before hardware teardown to
+ensure the runtime PM reference held in probe is released without invoking
+runtime_suspend on already-unclocked hardware.
 
 Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
 ---
- drivers/spi/spi-pxa2xx.c | 45 ++++++++++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 13 deletions(-)
+ drivers/spi/spi-pxa2xx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index c44349ab2b52..6bfd3382acc3 100644
+index 6bfd3382acc3..34241a6742eb 100644
 --- a/drivers/spi/spi-pxa2xx.c
 +++ b/drivers/spi/spi-pxa2xx.c
-@@ -1495,16 +1495,24 @@ void pxa2xx_spi_remove(struct device *dev)
+@@ -1473,6 +1473,9 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
+ 		goto out_error_irq_alloc;
+ 	}
+ 
++	if (is_lpss_ssp(drv_data) && !platform_info->enable_dma)
++		pm_runtime_get_noresume(dev);
++
+ 	return status;
+ 
+ out_error_irq_alloc:
+@@ -1495,6 +1498,13 @@ void pxa2xx_spi_remove(struct device *dev)
  
  	spi_unregister_controller(drv_data->controller);
  
--	/* Disable the SSP at the peripheral and SOC level */
--	pxa_ssp_disable(ssp);
-+	/* Disable SSP interrupt generation on hardware level while clock is active */
-+	pxa2xx_spi_off(drv_data);
++	/* Release the PM reference held in probe for LPSS PIO mode before
++	 * hardware teardown so the PM core does not invoke runtime_suspend
++	 * on already-unclocked hardware.
++	 */
++	if (is_lpss_ssp(drv_data) && !drv_data->controller_info->enable_dma)
++		pm_runtime_put_noidle(dev);
 +
-+	/* Mark as suspended to prevent further IRQ handling */
-+	drv_data->suspended = true;
-+
-+	/* Wait for any pending interrupt handlers to complete */
-+	synchronize_irq(ssp->irq);
-+
-+	/* Release IRQ */
-+	free_irq(ssp->irq, drv_data);
-+
-+	/* Safe to disable the SSP clock now */
- 	pxa2xx_spi_clk_disable(drv_data);
+ 	/* Disable SSP interrupt generation on hardware level while clock is active */
+ 	pxa2xx_spi_off(drv_data);
  
- 	/* Release DMA */
- 	if (drv_data->controller_info->enable_dma)
- 		pxa2xx_spi_dma_release(drv_data);
--
--	/* Release IRQ */
--	free_irq(ssp->irq, drv_data);
- }
- EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_remove, "SPI_PXA2xx");
- 
-@@ -1519,10 +1527,10 @@ static int pxa2xx_spi_suspend(struct device *dev)
- 		return status;
- 
- 	drv_data->suspended = true;
--	pxa_ssp_disable(ssp);
-+	pxa2xx_spi_off(drv_data);
-+	synchronize_irq(ssp->irq);
- 
--	if (!pm_runtime_suspended(dev))
--		pxa2xx_spi_clk_disable(drv_data);
-+	pxa2xx_spi_clk_disable(drv_data);
- 
- 	return 0;
- }
-@@ -1530,6 +1538,7 @@ static int pxa2xx_spi_suspend(struct device *dev)
- static int pxa2xx_spi_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	struct ssp_device *ssp = drv_data->ssp;
- 	int status;
- 
- 	/* Enable the SSP clock */
-@@ -1542,7 +1551,15 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	drv_data->suspended = false;
- 
- 	/* Start the queue running */
--	return spi_controller_resume(drv_data->controller);
-+	status = spi_controller_resume(drv_data->controller);
-+	if (status) {
-+		drv_data->suspended = true;
-+		synchronize_irq(ssp->irq);
-+		pxa2xx_spi_clk_disable(drv_data);
-+		return status;
-+	}
-+
-+	return 0;
- }
- 
- static int pxa2xx_spi_runtime_suspend(struct device *dev)
-@@ -1550,6 +1567,8 @@ static int pxa2xx_spi_runtime_suspend(struct device *dev)
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 
- 	drv_data->suspended = true;
-+	pxa2xx_spi_off(drv_data);
-+	synchronize_irq(drv_data->ssp->irq);
- 	pxa2xx_spi_clk_disable(drv_data);
- 	return 0;
- }
-@@ -1557,11 +1576,11 @@ static int pxa2xx_spi_runtime_suspend(struct device *dev)
- static int pxa2xx_spi_runtime_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
--	int ret;
-+	int status;
- 
--	ret = pxa2xx_spi_clk_enable(drv_data);
--	if (ret)
--		return ret;
-+	status = pxa2xx_spi_clk_enable(drv_data);
-+	if (status)
-+		return status;
- 
- 	drv_data->suspended = false;
- 	return 0;
 -- 
 2.39.5
 

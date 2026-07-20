@@ -1,105 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EABE477999;
-	Tue, 21 Jul 2026 10:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5E6373C10;
+	Tue, 21 Jul 2026 13:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784629101; cv=none; b=bqWvayc642afB6bknpggQ+duARJzqQktq3G3Z9GFoF8Q+lVQfsLKNOzWUA1LpQo/I+zs+5kjCBUOf8LGK5ZDlWE6M1feAZVJmVRuEsT8sPNoGctglJcLmcoqTIah/YaP/zb7oRU2jj3tQIl4xXvWG2sCpHGNFNFhbSuJ326RR8c=
+	t=1784642086; cv=none; b=qkuOoAJNxF+2tT5/paFexZTtHB9P08B+LfwGkzfOW5Tn86kUy8o0hKHVvmCpT8nN3ocm5Yb/5w7O0/uv/0RZ7BsY5acWOU0X6DqdsPy5cmPHSvC0boN/lhy6h62s3ODjFP3oJQFj79R2xcnFS5QBEsk4nZJHjkOsla1xuY6XfoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784629101; c=relaxed/simple;
-	bh=S0BFgDd3Dcq+vxv0MAWLFvTce0rMVWp3+v+vvmmcBsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ldg2SWYhNs3QLCwspbce2zu45U7Er8dSP1vf2kk9M1slLcABzuEazEWBtqN3ik69cgGPztIPSo18E7qKBPIJHGCZumvs0SNdJhIXrNO20Z0myru903Go1yitmI0+yIA6QEmvpw9anY39BziP3n/XbdHonWb75W4jkm3e3WQfI0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9HJc6UK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784642086; c=relaxed/simple;
+	bh=ucM/8aLNkU6vHK0y9Z9NzD0923i+XMCxDNWORwdAAbk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=gOp/x9Se1WiCFQf4KmYAhuMAt2oCYyv2CxVbsOy3H0e6CqwQh7T2DEa44x7+UQLeTdPf7j1Vz16CysTJerMcIT0piM3fGmc+iHslgo7JRh4Mvm2oewLaMB0LTTBGfb8JaKmIZ+tNZ12lK7aSKM5y6FmhHG1KEIfQSSE0Ftn3aGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afGA6/qD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9HJc6UK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2351F00A3A;
-	Tue, 21 Jul 2026 10:18:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afGA6/qD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48751F00A3D;
+	Tue, 21 Jul 2026 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784629095;
-	bh=r5RopncFPg5QRigLJNMgc9wUVIR6ORq/KvFLSj474Mg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=M9HJc6UK0ovXEHl6kBjrN7Imtv7NCZKFRoaFp4VcHjxMMizJneVvSjy1z5L4yp1oN
-	 xshdlOIXuKbSw3fRJAHEnZ+wngaxxYlAtnsukGx7Zn97Edo0x4tPQzYEJlRqAy6tBy
-	 vR4WUKhKFTghsUOtovyPUqVA+KpecjauoSZ73cIvAGeXTM3hEQP0QTvkGT+sfXh1EW
-	 oGc20ZFIpZvqZv8X5fsBTujormRpvMfTtYu+bV33MsuF9XWhagJ4Ak0O504H7MvQ1a
-	 d0CbtlZIDsNGt+PASALZKgNntwYOceB045vlYyR+9Irf4EPqm8JNN6ueOpLfa9Ko1O
-	 DC5s0D79v1nvw==
-Date: Tue, 21 Jul 2026 12:18:11 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Cc: Sunny Luo <sunny.luo@amlogic.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] spi: dt-bindings: amlogic: spisg: Document
- A9-specific properties
-Message-ID: <20260721-determined-melodic-boa-c379fb@quoll>
-References: <20260717-a9-spisg-v1-0-2eeea77be19f@amlogic.com>
- <20260717-a9-spisg-v1-1-2eeea77be19f@amlogic.com>
+	s=k20260515; t=1784642085;
+	bh=FI+AsYiNeSzQrDIATIKSDIkf2UISz2OwCoqHg53Ubc8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=afGA6/qDpM44mtCv62IP1Vj7TWWUrN5CKqzoybaRZN3n80ErExxOsIiREtEYJ9/fo
+	 oPlG/DfNWLyqnJxpTyFJGeXM9zyQ3zy7TV5HWSqBzcjOpmHUtZhgD8rgeAuFNpUKjU
+	 h1WVnwmKrYc1NlINQkDi62MjxM5E5frANUHHpz73ubtRhAv/Zzt+8kjtuxqto7Ugu3
+	 WbZTVsgyme/4jdOGZRBBaSxYtzFfLoLCjo5mbVdl6WzHnnJWFk7OzHv6tUuK6GEPT0
+	 +FOMdd4liTldoSRH621CPjs5ma4Xj+sol8sFiat35iwwSugNlrlO8b8rx1sSXJpZi6
+	 aDvVLYlLzxUJA==
+From: Mark Brown <broonie@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Prabhakar <prabhakar.csengg@gmail.com>
+Cc: linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Prabhakar <prabhakar.csengg+renesas@gmail.com>, 
+ Biju Das <biju.das.jz@bp.renesas.com>, 
+ Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20260715222417.2997712-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+References: <20260715222417.2997712-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: Re: (subset) [PATCH 0/7] memory: renesas-rpc-if: Optimize transfer
+ overhead and implement runtime PM autosuspend
+Message-Id: <178455380089.8049.17726957653779366428.b4-ty@b4>
+Date: Mon, 20 Jul 2026 14:23:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260717-a9-spisg-v1-1-2eeea77be19f@amlogic.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1588; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ucM/8aLNkU6vHK0y9Z9NzD0923i+XMCxDNWORwdAAbk=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqX3oiVbKSM1PkDXaMEIgPgtzm3QDk+BFWvJP45
+ NTu8Z8L2PyJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCal96IgAKCRAk1otyXVSH
+ 0LOtCACGexykDD32VPZqtS7/ow4yhZX7lUG0df3DuL8OUcgqhJSqlPabRSKzk3r1dWKXyb56Y4U
+ 79cBuk61tu5CIrkyPgUUhW05P3olqBucpOieTniWFDhpO4fxmQb3La/c1CcAyNj3ZJTBkmscXfX
+ +qkqGuzhjNQ9Is4QRv7DrS2aqN1tkyHaKoIQzCuW3fWwwWgLFiamZFbCC2gg0dErrBqHsSO/LUX
+ Q3IdmJhC90Q+tqL8CFUI6qAAeqHtrrY2/m5CRtD7eAbTY7UhVAUhqhfYdqgRqUGKqzLsbyVi6ZL
+ c43yyyhcMGwLKmhBDrDRbJdStaiCYzfdvjztSyLt2wB2oo4M
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, Jul 17, 2026 at 07:49:33AM +0000, Xianwei Zhao wrote:
-> Document the Amlogic A9 SPISG controller and its additional
-> Device Tree properties.
+On Wed, 15 Jul 2026 23:24:10 +0100, Prabhakar wrote:
+> memory: renesas-rpc-if: Optimize transfer overhead and implement runtime PM autosuspend
 > 
-> Add the "amlogic,a9-spisg" compatible string and define the
-> A9-specific "amlogic,mo-idle-output" and "amlogic,word-gap"
-> properties, which configure the MOSI idle output level and
-> the inter-word gap, respectively.
+> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > 
-> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-> ---
->  .../devicetree/bindings/spi/amlogic,a4-spisg.yaml  | 36 +++++++++++++++++++---
->  1 file changed, 32 insertions(+), 4 deletions(-)
+> Hi all,
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml b/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
-> index 9bfb8089f7ea..7efdc748d566 100644
-> --- a/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
-> +++ b/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
-> @@ -11,12 +11,11 @@ maintainers:
->    - Xianwei Zhao <xianwei.zhao@amlogic.com>
->    - Sunny Luo <sunny.luo@amlogic.com>
->  
-> -allOf:
-> -  - $ref: spi-controller.yaml#
-> -
->  properties:
->    compatible:
-> -    const: amlogic,a4-spisg
-> +    enum:
-> +      - amlogic,a4-spisg
-> +      - amlogic,a9-spisg
->  
->    reg:
->      maxItems: 1
-> @@ -42,6 +41,35 @@ required:
->    - clocks
->    - clock-names
->  
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - amlogic,a9-spisg
-> +    then:
-> +      properties:
+> This patch series optimizes the Renesas RPC-IF driver by significantly
+> reducing software overhead in both the direct memory-mapped (dirmap) and
+> manual transfer paths, maximizing transaction throughput, and introducing
+> runtime PM autosuspend to prevent aggressive power gating during
+> consecutive flash operations.
+> 
+> [...]
 
-Properties MUST be defined in top-level. You only restrict them here.
-See writing-schema and example-schema.
+Applied to
 
-Best regards,
-Krzysztof
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+
+Thanks!
+
+[6/7] spi: spi-rpc-if: Implement 200ms runtime PM autosuspend delay
+      https://git.kernel.org/broonie/spi/c/af4b98e33d56
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

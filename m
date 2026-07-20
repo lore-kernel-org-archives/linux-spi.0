@@ -1,249 +1,110 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC49B3D6CC7
-	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 10:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EA33EB101;
+	Mon, 20 Jul 2026 10:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784544054; cv=none; b=qtNidvAwUqnBGPMVZyv7FNOcBKzKQLOuYLRYU0je9F/lZ2nn3UnebXkkROVEseMAKgEM0725FVEi1hOZ7Lc4/PPkB0oWLlHXXms2jx5eKWlgPYG/h+HZuwJMNGj34oR7eVhwInWUlWMCMpMHIY/1cgv2snvs+YcUjXwv+OPk8Jg=
+	t=1784545041; cv=none; b=DpXT7wUd94GMh0km+njhnrtiQ0E7dJgNO4Pv09309K/rQ1sPnDRLnhyu6BN7JRD1l8kKhuxtBB1U2W4G/HBOkAXbUM4Wjbnvt8BT0xKhruAKUNt3xKBUDhNNHd/bJ38ERiZglhRdeNFx+EIvSc07BjMlnLonFgpcd5gCccinMF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784544054; c=relaxed/simple;
-	bh=1VOB5qihoLYvUrKgDurvNJnb5E6H9r/MCX/C1s4p2D8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CmmArjPtjKKyTLIEzyHYqyMCKNEqx7nS780juVYDZUP2kMnaCXsQJY6fL/JEdpkYPmPSZx2o3lLxUsSkGoWer5IPWDY6NOXJqR0h6PRF0byxrFvr4xy5YCzy7GRyUbSbEIg/96csUG7UyexXOsOMWV/5MQ0yaZITadHFFkz3gTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so8463045ad.0
-        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 03:40:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784544051; x=1785148851;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5cHJ+v/E14jZBDLKhft+LTxzEaKtkH3VvD3xnlIFMVc=;
-        b=WtbasQf1w5aSRkpN/ns4tc6od1kWgdFm71xqqdR6NCZ/e6adgZ0fbNJL5VakH+r6Ay
-         SwZGRhKRX8EG/RCahPlR8eH4AUERbjcI+4/x9HNuuynoorDNf+IJ7QuKA+ZjyV84smr8
-         7yBLhyr1FzQP5YGfcmZGEB5m+fp79Ht8shyolK2jE/ZRpycBHPFpzefc0ZU6Oc/W5fZQ
-         F/R2cqmm6cvQBLHe0Ok2c37cBdaIY/+AUCEp5BMXa4W5ruPVG75rSXcj0GTM+MvqXXT4
-         GBE7dRyGHrViUKZp1DT9BEUbzGUYvRRZ3JrotaEzlPvGFLAJAn4GbqT0GEouoX2lDfQz
-         tEVw==
-X-Forwarded-Encrypted: i=1; AHgh+Rq/dQwVnL2aKmPAtX2y3R45ZENe2DmrsC4DXV7XqJsrEM/4LbAgpb6c3QLM5VSHIyddEHKJQZqefRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzh9N0Nf7jVYGhcxjr9HUdnPY07u0d0FMQTiETbb7Lzk61Noftx
-	/i78TYFuhy0UAYeIkA5S8Tya695KFK509bKtSIiauRzsUH44FoAChII=
-X-Gm-Gg: AR+sD10mmBAycrPXbCgp/9iZGDemFXn1ZVkPLjliNh8WXGK3r9fuDxHP3bZD5LIEnlj
-	qqD3xvbEXfGmSVAG45YRxBrdwJw84H1YHZDRYfoV5VIPXud2umrPpwWdQsbHGTW/C+Sp0q3A5Z1
-	F9zy7t05wIJ4peYSNsFHPAE8SfmVrIgYVkM/JUbLHRXMy1q2eFO7oGg6RFOpCwcCl4XXMBfzOte
-	WYxJkicQrg9P/nlfmmfSmP9BfH6j7f7MF6/5z5oGfrMEuJEc+XXjHRZASy6WRyKHRFYVlcPhpeV
-	qDputiyFUTGyb99z7F3VcnFuO/z8P5bqJf7krFCaPn2HLg2PXW0giDaEOTl99noh2o1DL6E8HXP
-	I/C0vnEjwl6FZJyGXY41MvpWct5tYteZLcNGfvyD57CevSrbSkRo73MbcNhagv5rUL0PXAtxQ0R
-	ZxjJXEzqE2DgEzG8Y1DGSp4YtbqTbk6jJ5TMzVY1z7Y4v6wiabtP4Lwmyi3kI1IkJaDU7t/RTHP
-	7qN3NTi/KCe011PWA==
-X-Received: by 2002:a17:902:e80a:b0:2c9:fc14:588f with SMTP id d9443c01a7336-2cf3494afc3mr150265455ad.29.1784544051064;
-        Mon, 20 Jul 2026 03:40:51 -0700 (PDT)
-Received: from penguin.tail0a1999.ts.net (61-228-16-100.dynamic-ip.hinet.net. [61.228.16.100])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344f61ffsm54900325ad.33.2026.07.20.03.40.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 03:40:50 -0700 (PDT)
-From: Shih-Yuan Lee <fourdollars@debian.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v15 7/7] spi: pxa2xx: rename local status variable to ret
-Date: Mon, 20 Jul 2026 18:40:29 +0800
-Message-Id: <20260720104029.13740-8-fourdollars@debian.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260720104029.13740-1-fourdollars@debian.org>
-References: <20260720104029.13740-1-fourdollars@debian.org>
+	s=arc-20240116; t=1784545041; c=relaxed/simple;
+	bh=NXLsN0NLLc10WDiTAYubEPEYUbp4CgElqUIeeqtCXh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p8kyOyAi9rKncLbhrll5Tkv9m3EwLcDmT597GoPpPMvlwkWz1UWT+j49Nk6yFgVcu4V6fAvCeZrlePrOHi0dzKFvIsCOhhy/PNhyr1v4V50+A9tfj5eD8wCjEzt6kaPG460K3Mnav3zZZcll3ATrAzNDo9Z7Vy5WYrvrnqTY8lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nh1CY847; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nh1CY847"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784545037; x=1816081037;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=NXLsN0NLLc10WDiTAYubEPEYUbp4CgElqUIeeqtCXh0=;
+  b=Nh1CY847IEFeR6lpA9Nx6N4sPe8ATQph6tHMKFuLXbwXgdMUBhqJAyVA
+   e+FqZfGC1nlQB/IS44FpD4QOxoNMHNBPgFlweL8rZa5skz2NPMOkrrWYJ
+   ohFpN/h+Erle0N5BhIfaPy/yFLZkH5dJwKCC0wbOlx2pP8+BRtikoELWH
+   3PKXk6vzcUTnNPQbVYbn0CM24l4aSWsaQfM2QicKscp9JG862wwUDJFU1
+   HtibeHfPVPvqdgLJb0iZs7wO3fE56x4WNgF+YbHxp70SRexRnR/a6btbU
+   lXwzL+/xCytYMMW1J/+VjoAzSmngZF8SVv+bpJFl8HeYPrr8gx4MK90ob
+   g==;
+X-CSE-ConnectionGUID: AclMNgs8SOOqyppU0r9Uiw==
+X-CSE-MsgGUID: 0+IsWRrkSH6ryTcv0oVLKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="84106230"
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="84106230"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 03:57:14 -0700
+X-CSE-ConnectionGUID: FMYNt92OSyu/rpeMyKJZtg==
+X-CSE-MsgGUID: fJhUkwZLQ8ScJBVAPNpQeA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+   d="scan'208";a="254814597"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.175])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 03:57:12 -0700
+Date: Mon, 20 Jul 2026 13:57:09 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 0/3] spi: pxa2xx: MacBook8,1 quirk, runtime PM, and
+ LPSS S3 resume state fixes
+Message-ID: <al3_BbJGxtKDt4H4@ashevche-desk.local>
+References: <20260718145209.6678-1-fourdollars@debian.org>
+ <alyCbKAQh4jtZVDv@black.igk.intel.com>
+ <CAAT15mN3B4=7eaQUO9nmdP3SCN21ffKyK7VD4Vxck6gbH3izuw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAT15mN3B4=7eaQUO9nmdP3SCN21ffKyK7VD4Vxck6gbH3izuw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Rename the return value variable name from 'status' to 'ret' in the
-pxa2xx_spi_probe(), pxa2xx_spi_suspend(), pxa2xx_spi_resume(), and
-pxa2xx_spi_runtime_resume() functions to conform to standard Linux kernel
-coding conventions.
+On Sun, Jul 19, 2026 at 07:41:16PM +0800, Shih-Yuan Lee (FourDollars) wrote:
+> On Sun, Jul 19, 2026 at 3:53 PM Andy Shevchenko
+> <andriy.shevchenko@intel.com> wrote:
+> > On Sat, Jul 18, 2026 at 10:52:06PM +0800, Shih-Yuan Lee wrote:
 
-Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
----
- drivers/spi/spi-pxa2xx.c | 62 ++++++++++++++++++++--------------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+...
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 56e434f6e794..612361ffe6dc 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1313,7 +1313,7 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 	struct spi_controller *controller;
- 	struct driver_data *drv_data;
- 	const struct lpss_config *config;
--	int status;
-+	int ret;
- 	u32 tmp;
- 
- 	if (platform_info->is_target)
-@@ -1372,8 +1372,8 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 
- 	/* Setup DMA if requested */
- 	if (platform_info->enable_dma) {
--		status = pxa2xx_spi_dma_setup(drv_data);
--		if (status) {
-+		ret = pxa2xx_spi_dma_setup(drv_data);
-+		if (ret) {
- 			dev_warn(dev, "no DMA channels available, using PIO\n");
- 			platform_info->enable_dma = false;
- 		} else {
-@@ -1387,16 +1387,16 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 	}
- 
- 	/* Enable SOC clock */
--	status = pxa2xx_spi_clk_enable(drv_data);
--	if (status)
-+	ret = pxa2xx_spi_clk_enable(drv_data);
-+	if (ret)
- 		goto out_error_dma_alloc;
- 
- 	drv_data->suspended = false;
- 
--	status = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
-+	ret = request_irq(ssp->irq, ssp_int, IRQF_SHARED, dev_name(dev),
- 			drv_data);
--	if (status < 0) {
--		status = dev_err_probe(dev, status, "cannot get IRQ %d\n", ssp->irq);
-+	if (ret < 0) {
-+		ret = dev_err_probe(dev, ret, "cannot get IRQ %d\n", ssp->irq);
- 		goto out_error_clock_enabled;
- 	}
- 
-@@ -1477,23 +1477,23 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 		drv_data->gpiod_ready = devm_gpiod_get_optional(dev,
- 						"ready", GPIOD_OUT_LOW);
- 		if (IS_ERR(drv_data->gpiod_ready)) {
--			status = PTR_ERR(drv_data->gpiod_ready);
-+			ret = PTR_ERR(drv_data->gpiod_ready);
- 			goto out_error_irq_alloc;
- 		}
- 	}
- 
- 	/* Register with the SPI framework */
- 	dev_set_drvdata(dev, drv_data);
--	status = spi_register_controller(controller);
--	if (status) {
--		dev_err_probe(dev, status, "problem registering SPI controller\n");
-+	ret = spi_register_controller(controller);
-+	if (ret) {
-+		dev_err_probe(dev, ret, "problem registering SPI controller\n");
- 		goto out_error_irq_alloc;
- 	}
- 
- 	if (is_lpss_ssp(drv_data) && !platform_info->enable_dma)
- 		pm_runtime_get_noresume(dev);
- 
--	return status;
-+	return ret;
- 
- out_error_irq_alloc:
- 	free_irq(ssp->irq, drv_data);
-@@ -1504,7 +1504,7 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- out_error_dma_alloc:
- 	pxa2xx_spi_dma_release(drv_data);
- 
--	return status;
-+	return ret;
- }
- EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_probe, "SPI_PXA2xx");
- 
-@@ -1542,14 +1542,14 @@ static int pxa2xx_spi_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 	struct ssp_device *ssp = drv_data->ssp;
--	int status;
-+	int ret;
- 
--	status = pm_runtime_resume_and_get(dev);
--	if (status < 0)
--		return status;
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret < 0)
-+		return ret;
- 
--	status = spi_controller_suspend(drv_data->controller);
--	if (status)
-+	ret = spi_controller_suspend(drv_data->controller);
-+	if (ret)
- 		goto out_put;
- 
- 	/* Disable SSP interrupt generation on hardware level while clock is active */
-@@ -1582,19 +1582,19 @@ static int pxa2xx_spi_suspend(struct device *dev)
- 
- out_put:
- 	pm_runtime_put_noidle(dev);
--	return status;
-+	return ret;
- }
- 
- static int pxa2xx_spi_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 	struct ssp_device *ssp = drv_data->ssp;
--	int status;
-+	int ret;
- 
- 	/* Enable the SSP clock */
- 	if (!pm_runtime_suspended(dev)) {
--		status = pxa2xx_spi_clk_enable(drv_data);
--		if (status)
-+		ret = pxa2xx_spi_clk_enable(drv_data);
-+		if (ret)
- 			goto out_put;
- 	}
- 
-@@ -1639,8 +1639,8 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	drv_data->suspended = false;
- 
- 	/* Start the queue running */
--	status = spi_controller_resume(drv_data->controller);
--	if (status) {
-+	ret = spi_controller_resume(drv_data->controller);
-+	if (ret) {
- 		drv_data->suspended = true;
- 		synchronize_irq(ssp->irq);
- 		pxa2xx_spi_clk_disable(drv_data);
-@@ -1651,7 +1651,7 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	if (!pm_runtime_suspended(dev))
- 		pm_runtime_put_noidle(dev);
- 
--	return status;
-+	return ret;
- }
- 
- static int pxa2xx_spi_runtime_suspend(struct device *dev)
-@@ -1668,11 +1668,11 @@ static int pxa2xx_spi_runtime_suspend(struct device *dev)
- static int pxa2xx_spi_runtime_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
--	int status;
-+	int ret;
- 
--	status = pxa2xx_spi_clk_enable(drv_data);
--	if (status)
--		return status;
-+	ret = pxa2xx_spi_clk_enable(drv_data);
-+	if (ret)
-+		return ret;
- 
- 	drv_data->suspended = false;
- 	return 0;
+> > > Changes in v12:
+> > >   - Addressed feedback from Sashiko review on the v11 patchset for Patch 2:
+> > >   - Preserved the if (!pm_runtime_suspended(dev)) check prior to enabling/disabling
+> > >     the clock in pxa2xx_spi_suspend() and pxa2xx_spi_resume(). On non-LPSS platforms,
+> > >     if a device was runtime suspended prior to system sleep, unconditionally enabling
+> > >     its hardware clock during system resume forced the clock ON while the PM core
+> > >     retained RPM_SUSPENDED. Restoring this check prevents PM state desynchronization,
+> > >     avoiding power leaks on non-LPSS platforms.
+> >
+> > What's going on here, please?
+> >
+> > It's v12 and you haven't even a thought to add the authors of the drivers, nor
+> > any one from Intel whose SoCs are under the question here.a Besides that the patches
+> > need more work.
+> 
+> Understood. I will add the required authors/Intel folks and address
+> the remaining issues for the next version.
+> 
+> Could you please help provide the email addresses for the relevant
+> Intel maintainers or authors I should include except the list below?
+> 
+> $ ./scripts/get_maintainer.pl drivers/spi/spi-pxa2xx-pci.c drivers/spi/spi-pxa2xx.c drivers/spi/spi-pxa2xx.h
+
+Compare to
+
+$ ./scripts/get_maintainer.pl drivers/spi/spi-pxa2xx*
+
+And on top of that: Mika Westerberg <mika.westerberg@linux.intel.com>, Lukas Wunner <lukas@wunner.de>
+
 -- 
-2.39.5
+With Best Regards,
+Andy Shevchenko
+
 

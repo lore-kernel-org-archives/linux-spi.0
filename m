@@ -1,232 +1,319 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010041.outbound.protection.outlook.com [52.101.85.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB77433BCE;
-	Mon, 20 Jul 2026 15:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784562922; cv=fail; b=QQAdR5Bmpcg1b1aqd2CJRUd4n0ByVW7TtD9HuncRVO8jRm8efRBtsMGeh17cUSRFrRSG6FmVeTy9fzysMknQDmxGPmIAk724g+4ieuv4bzMqgKYckTNAp6ugRSUh7JT5f8/rZuIEASAgR5gFhE5AAjHAFDXVBLSApTMIVfKHZtE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784562922; c=relaxed/simple;
-	bh=pYqTmJnBFFfecxdkTkmTEXrAdeJhQWPamJ00AWh7LzE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=o9Cmbej3Q6t8tN4PMpNgK/D6fd/MDF4xFtx/P7UHkGmNYtZVxrPYOONUJXiwsJudt56p+USk6gcK+L3QuZZItHF2BEiysE20o6AAkiNwEXu6vgX3CDVEDOeCTFOeei1qttkegyUGaRDA9Gy8mt8MeF6dEeieulXBqZXkZahjQzo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=WBO6ILrS; arc=fail smtp.client-ip=52.101.85.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="WBO6ILrS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RG8lwYmmkLjzlaLP3XR0R9vOzCzKKvKcOK0+AIRGxNbN5dOiEuLCZIJZr+XepgtGXAYP7OkAK+5qyuK5v/xIjWEqjjYfJwRXllSdGO9vpbf/7Rr4JpxJCdkNO2PIcW5jCcWG3DOZCpMKUV0EC2bWUP0X//ywCxncBZUSKrGdK9z5kHx+9EUTOcTX2oQq2bUOKb4BGIi0zka6yffDDX1prdvrFPxeJa73KmvhKJh6OCI8pjfVjN3zCBIILGKEBMpWd9vk6y1X6yohRllYADeoSpbNj8vGvf2kZ1roBJRuJ3aXgHfyLvdA4XDyinJR1x92jsr44PPHXLXYjoK6XLvXtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6e3Jn77Cj72OQYkbA/ABnsrMr41rIGwqgovvK4bvwd0=;
- b=RCjDVQ0ozGhX3vBzDFBcNtMxmLJkX/4uOh6JHjgNFl2/T/xzGBMqu2U6Gysei5/6gfYmdhAdbHpAxkDxnF6FlKyOQxcCdaQnGD0Id0CIyZAHChRphKpaQXM+udtjPA1SMbXGIAsaDG1/+d3XnFVQUztPofgsESpNaB/3K8wAK3xRHB3HuB41D4nXg1a5VatzokpRQSqyrc2sfAp+Mxe9kLQsqxCZn+Fw/HvMEFhaueNtjMFInLbcvHihGFyruTAeslXqmUnrlU2cF0D22YeugE6uV4aOL1dA+LUaOxHm7rJ8rbjLvTBTcwlCDrZhl8oPjio0iQE/oIx/nnZDfo0TrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6e3Jn77Cj72OQYkbA/ABnsrMr41rIGwqgovvK4bvwd0=;
- b=WBO6ILrSja8BV2xADT5++ugO/IMI3012CBUIO0tGuFOibIR4lJgfeDP4xILiqRjNaFQRQd/APdI7Erxc/eJxtGvzmjAB/6T887ps9DPq5oyLfXazUx9jsWJeBzxduehP/NQwPz/Us7M7QnrG2hCZ4guUuBiaVSF4SWIAcMxLNJQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com (2603:10b6:930:107::6)
- by MN6PR12MB8543.namprd12.prod.outlook.com (2603:10b6:208:47b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
- 2026 15:55:18 +0000
-Received: from CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d]) by CY1PR12MB9697.namprd12.prod.outlook.com
- ([fe80::3a41:55a0:8203:596d%6]) with mapi id 15.21.0223.017; Mon, 20 Jul 2026
- 15:55:18 +0000
-Message-ID: <81d818c5-c7f5-43b5-b8d2-202250ad213e@amd.com>
-Date: Mon, 20 Jul 2026 21:25:12 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: spi-cadence: Move TX FIFO full busy-wait into FIFO
-To: Srikanth Boyapally <srikanth.boyapally@amd.com>,
- Mark Brown <broonie@kernel.org>
-Cc: sxauwsk <sxauwsk@163.com>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260720125510.60166-1-srikanth.boyapally@amd.com>
-Content-Language: en-US
-From: "Pandey, Radhey Shyam" <radheys@amd.com>
-In-Reply-To: <20260720125510.60166-1-srikanth.boyapally@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PN4P287CA0029.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:26f::17) To CY1PR12MB9697.namprd12.prod.outlook.com
- (2603:10b6:930:107::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026252C11EE
+	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 16:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784564484; cv=none; b=nRoJHuxVDIL1qDEeCsS2AgrnijdaHwita43H+RpwmaYADRN9udD8+pld0/nb8HWot6g/oNRfnU1oRjrHtr1DMPamjWIEfJDxR2FWlSDTXxPWXRE/RSMAotVO7AEyXpD8/Uju2sf90pxhBDPljrZJRuIn/NQkEhL92Aan/S9busk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784564484; c=relaxed/simple;
+	bh=oZwlRU6rq/N7f09C7B3TohKosfUAiVxfg41/3dgvf1Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tFpS/2wZISxJHppJA02yYMRxkru+h8r+wk6Ua2PW3ztETw7mItXJB64O2i/EMkHHlfjEG+RfBbAMU4qUNkoM539ITJNR6Fo9j2VJ1YIFhpAv9P736eE4fh9+ZPIzFfwUAGCV/r2jrGi8HLCrmsTS/wIMu5OrETXQx/SOJFIDILA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cf6d65d8a7so13652795ad.0
+        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 09:21:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784564482; x=1785169282;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=l4jnLzYhODQ28ldF6cU1gNdsC8JYdLXk3goyGX+8Ec0=;
+        b=Z9nSo/7RhEt5lxM5tCTCRhmfxIU4VMPJ4RzDoOZ4RWd0I7ldH4TMS7/DQ0CXw6f7OE
+         wqHXohIE4CKJLXKaZUHK/haJNkuyZtZ09YOuVmqMsGQQwQC5fE9CeSGvOCD94tt1Gsxd
+         6AmcXIo3o3ur55uG9RFuP21leIT41Z480hXERvu4MFzbRLB8DTGDWF8I6/udQmGC3Em5
+         aoPknGsgL2eEgEIw1662+CozOpbnyN94q8kS7/h6K1CIkG4xvx0nekyMTZBYlSsdSjI3
+         UNf53KNK2+MWK0uvlbLWZTle6Ex/D7z+EnBFuVPpCdanydj5XH69rdmUYN0iFMzrqppw
+         ntPg==
+X-Forwarded-Encrypted: i=1; AHgh+RoaEnipwlI9TKdziZpa9NgzsQxALm+hu60LfHYQu9FDeaggN5/rcEWRB9Wkv2LutmZ9ir8uvHA073Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOMOst+WyH7kxAhY5HY1jCTVYV+2J/FSSZWIxxHzHvUUFzzzQ+
+	pSDPP0DoQId8deYqzRkJ96mbxLcI13LZqJUX8SBoOAwgGl1ls7yuZyE=
+X-Gm-Gg: AR+sD11CaK5wJsWa701FbD1C8oApVT6MNokypdCPXvvqOBsTeUsvtZf+WDp6Gf9nWS0
+	734W8HRSXtUzgzZc5yP+kpJ3WIkDmnnvFOyLLOv6P0nYNcYKUF9BZz3G+Qn/FMkUXPVY0v1jW8p
+	a+lBZNHUi+dbdNhT0+p8x+DkPPvcFMbQEOXwL1IVUenzWju4rQWrDwb76RqsQ0uoWyMPmhvoUHh
+	8jDCdPuwpid3zWq+QFKq/INV0LluGc52U2yEKaf578GZQRsZhPBDPnnYVuibi5SIjMQ+FsGWgxm
+	VF4V6GJB6YSuB+6lt5AQ/wLHu8omM3GEtuD6K3dH5502fuNTFcMlVwiS1i9TPc3wbI9D1ivHBad
+	LYvjKITqaMuZNDIIY6TPMqOQ3s55DrPTGEbZLg4j2Akb9pEy7Me2YARFiJ3BppK8Atth8P9CR8k
+	JhXnj6Kw+jAvu9WEgi4QNq/9og83arSICJg5BaIssUtkuc25mux3S0R1gt5fI4MsFWZHXaUsjER
+	ZQKL46yMS82VdvNZQ==
+X-Received: by 2002:a17:902:c411:b0:2c9:97a9:2096 with SMTP id d9443c01a7336-2cf349edab6mr150119295ad.42.1784564482107;
+        Mon, 20 Jul 2026 09:21:22 -0700 (PDT)
+Received: from penguin.tail0a1999.ts.net (61-228-16-100.dynamic-ip.hinet.net. [61.228.16.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm58467385ad.80.2026.07.20.09.21.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 09:21:21 -0700 (PDT)
+From: Shih-Yuan Lee <fourdollars@debian.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shih-Yuan Lee <fourdollars@debian.org>
+Subject: [PATCH v16 0/7] spi: pxa2xx: Fix PM and interrupt issues on Intel LPSS SPI
+Date: Tue, 21 Jul 2026 00:21:09 +0800
+Message-Id: <20260720162117.32304-1-fourdollars@debian.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY1PR12MB9697:EE_|MN6PR12MB8543:EE_
-X-MS-Office365-Filtering-Correlation-Id: d78025b4-0b1e-4714-eab0-08dee6774c00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|22082099003|18002099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	yIWV6wFgR4UgyfyCuVoJk7u18KHQOPRAgdPJXo7QTdvmHuZkF1Epeza3X8HA5v18vnDxWpOBKIaxRUDIsrTndGlIv/JZj4Mpz4+1o66C62zQSdT07XATxnAFu0YvzdsEHzqW0+L6PbymOvEFIIzQEqhj5NtH++QtwinISa4jwNQLCJ/o+sZJQzVq6A88CLERq0/0FIiaEaBV6lYVCMWAi+30fVosu2Kv0pPfyK8Pm3y0FXRtlDMdhzN+j2whpsKF8nLWv7s9qb3l2JVZVd8Rw1mZOxDQkVFJcrzxZlL0Oh+gI2fiZ9K6UsUMifK5yceH0553h82CLS5NuDsuKpvN8k+tAVZGmxD5KAEs7+/dvhGBbHHXMWT0MO2PmIhmOBQfK2C0I0iHRTp38P9ASyQE7ucUmZz5gqYtDD9TGUut/7gfjxNiG3iN3H+rFRu+8ZOkJQOTM8IE0brr3i9UP/xzleM2/02Pg2pYTJGHAN0s0BTv7n+RfCeau2GJTrLcv32zRzpeyvR1IqAer7SS4difFyATyaqY5anhQ2i2qBv1dKiwE9xfwv8FtUW03L63/altDjLFbZO6H/5yDT5e33tbrbdaVMUkdxiAHu/uSuuZmHarjAlIt0vyFTypJdbDOttdqOInhtUYW84rRy90xfa50ydvww5iiruICu8uCJbwJEw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY1PR12MB9697.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VUhBV2xLNUNtaUxueVRTOWZSOUFEbEN0eTVJcGtyd3UweC9HYzNVSUVlazc2?=
- =?utf-8?B?dFlteFlkOHpMditKM21idW8vNEY2RCtuSTRLNVJ5QzgxZFpJaWc0bE1xdnl3?=
- =?utf-8?B?OXZMNTVvK05SMExpTytzL0NwOFdLdGZZNWdqZnF3eU8ra0pPREVqTjZTeitJ?=
- =?utf-8?B?V2NnYm4xUlh6eWYzblFVYmZuVGV2aEgzZEc0WTVFbkg2TFRGODNxRVVRQ1Ns?=
- =?utf-8?B?U2JhZHAxL2pXSWVBa1dPWmcyN1JIZnB5bUJYZHU2bDZUWXJYRFlrRU5SMkx1?=
- =?utf-8?B?OW1VRGowdjNlTHNWVTgvZ2FWRXlQenZiNi83Ymk0SVBGR1Y2YnBGR0lmRjQ0?=
- =?utf-8?B?RWdmRVUyRjhJUUIrbXdNUHVWMlpyVGp2WWZ2NkFwYlcvYVNPQ2tsNW1FaDZR?=
- =?utf-8?B?RFYySWVJaDF4Qk8vZm5xOFRNczE1d3FMVmhnWFN4SFdMaUw3cS9veGtmZXlK?=
- =?utf-8?B?MlZnNXUyaEVwc05xRHRYVjJFbUZZRFM3Q29NQnJJSUh6cU5NazdMVmxpbnl5?=
- =?utf-8?B?K2ltWVRKbk5ObWNBTUFWZ0M4L2dONjJucnpTTDlFTFZxQVVoZThqY3NLV3Ft?=
- =?utf-8?B?UFNsL1lJdWFHTUp3Wm43bUJRZmhiT0EyRS9SUnZ4RVFOWVVOOU9pMTBzVm5D?=
- =?utf-8?B?L0RoOFh1RERXUTFBSW90emVoMitrQVRDZE91Q2ZYVWJzVFlYVzg5ZTA2U0sx?=
- =?utf-8?B?UFBvRm8yTkNwSmsvTzNSMWVDQ1Z1TlhpK0lNVTN4V1MxVm1UZGlpNmxwZEFN?=
- =?utf-8?B?K3dqSTBTYXJBakgxdWI4NzNCSHpnMjRIKzhqVnhEWGhCdTVXVE9hSURFbTVh?=
- =?utf-8?B?KzBNMGdZSlpGRlVvWm1ubmJsbFhHYzRZSStJVys3YnN1UHROeGpPRXE5WGxL?=
- =?utf-8?B?VGdENFlOT3JXaHY3Z3VHWXdRbVBiTHN6cUIyQ0ovQnhpbk1NdFlEcjZmUE91?=
- =?utf-8?B?TDYzMjBlZDVTNGMzaGlFT1Z6ZVMrL0YzSi9EVFFscVZCcENzNjNDYXN4V3h6?=
- =?utf-8?B?aFlxSnVIMERKNW16VG83bjZQcWNJTEliVzNVZGx4ZzJpbmloS0Q1MjN6R2VI?=
- =?utf-8?B?UGFFNWlvRld2K0l5TDhuS3VPWWI2eGhKbVpJRlBpZ2JRM3I5MmpOcXJvczlY?=
- =?utf-8?B?Y0pQN3Z6WUc4NmNTTlovd2l5cVplSFVmT1FkQlFabUN0M2k4UFRzMmpMTU1p?=
- =?utf-8?B?V1Btdm1pUmtFRldua2pOcXZ4bFdWTGU4cWdZcTltTjVvUTV6N3VFL1k4UDE1?=
- =?utf-8?B?cUFhSW4vL1pxbDlJaEhlaXB0MFZuRVNEZDh1ay9SWmhjTm1iS09kR0ZtQVZk?=
- =?utf-8?B?ZGd4ejZaaVNndjlCYmNLeWFZZVY0UVRVUisrZ3BLZlpTRTZxZ3VVeW1SQ1Z1?=
- =?utf-8?B?VzJPUVEyS3IzZTRqbjgxZlFtVmVHak9uZXd4aWtKbGNlUldsVWlZNmR5bkJF?=
- =?utf-8?B?aTQxSUJ5bXZHTlUxb1FDZGNsQ2N2RXZMUXN2RmpROHQrUE9BVW5tdDh5VVRZ?=
- =?utf-8?B?VTRqWmEvcEhQSWxOSi9ZQ1kyNm12NmRSM3c1OEpBUUthUEFVdVhURU9iYUdC?=
- =?utf-8?B?YVNNci9hbCtpenhHeGlEOFR4YlYwQksyY1VOM0hMZk0vTFZlQjNZMGZQbWlm?=
- =?utf-8?B?bGtVdTBkc29WVnZQT3ZHajF1d3FPVlRuRTVxSXRiVFFmRVlwblFKSS9PTUdM?=
- =?utf-8?B?emZ4OWtvOXJWK2VCVlRqcVBBTUNVbDlpd2pSR09aM1VhN1lwdnBOSXlCVWQ4?=
- =?utf-8?B?Vm52eTFsMnNRcVMzRjhPSXNTMGpJZ3ZWMFJINGIyZndGQzI2ZmdkaEQ2cGp5?=
- =?utf-8?B?dlZKWHBPWm5YYmRQN3ZjN0tGVkpaK3Qzek1LTWtmTTB4RFVidFUzUDlGdlRt?=
- =?utf-8?B?TGlaUXRXM0hKcktIUldCelRFMmR0eTFxaGZPQy9yenhNM2QzODdXTnd6L2Fy?=
- =?utf-8?B?eW12UFk0bVZyRjQyb2tsemg0aFBJR0VwWWpoa3dFMTdhQnRWZGlPcXZKdWN3?=
- =?utf-8?B?VENpUmlya1BzYUxyRXlYWktOSUJTand1WkZqck5qTGVQbithWHhTL0tKWFpJ?=
- =?utf-8?B?ZWYzMEUvTEh4YmppdW5MNUh0WWVWVU9TSWtwSzZ3WHc4NS9zN2c0UXh6QlpD?=
- =?utf-8?B?aEFEWE0vZEdOdWlOWm85M3JxZFBzOXZEUW5EYXduNllKZmdXZVZxNDJPZ2VY?=
- =?utf-8?B?TmZqc3FFSkF2dmJ0bStDb0g0S3JyYXZtRzBKWFhYd2NKT0ZaQXc3MTlHWGtG?=
- =?utf-8?B?M0ZJbllnbzZENVdLVUs4cjJBTHpyM2JFZDNFV24yQjZCS29HbzQxWHVWbUFH?=
- =?utf-8?B?WXFsdUpQUDdFVFkzMCtzcWFtcnA5UXJoWklDQkpTVG5pcTU3MlRYQT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d78025b4-0b1e-4714-eab0-08dee6774c00
-X-MS-Exchange-CrossTenant-AuthSource: CY1PR12MB9697.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 15:55:18.4711
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: epgtRXRV6IKWBadxaEAfD5JuD7wNsosIQp4LiD1AtHXM5HCmuF58441vRzj5hk/9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8543
+Content-Transfer-Encoding: 8bit
 
-On 7/20/2026 6:25 PM, Srikanth Boyapally wrote:
-> SPI host transfers could intermittently stall with spi_transfer timeouts.
-> The TXFULL condition was checked only once in cdns_transfer_one() before
-> cdns_spi_process_fifo(), so if the FIFO became full again during refill,
-> writes could be dropped and the transfer would never complete.
-> 
-> Move the TXFULL busy-wait into the TX path of cdns_spi_process_fifo() so
-> the 10µs back-off is applied per FIFO entry during filling, ensuring
-> forward progress and eliminating spurious timeouts.
-> 
-> Restrict the delay to host mode using spi_controller_is_target(), the
-> controller is passed into cdns_spi_process_fifo() so the check is made at
-> the point of use. In target mode this delay must not run as it causes the
-> target to miss its transfer window and corrupt data.
-> 
-> Fixes: 49530e641178 ("spi: cadence: Add usleep_range() for cdns_spi_fill_tx_fifo()")
-> Signed-off-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
-> ---
+This 7-patch series addresses long-standing power management (PM), runtime autosuspend,
+and interrupt synchronization regressions in the spi-pxa2xx host controller driver,
+specifically targeting Intel Low Power Subsystem (LPSS) SPI controllers and platforms
+such as the Apple MacBook8,1.
 
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Thanks!
+Specifically, this series:
+  - Prevents system hangs and PCIe Completion Timeouts during S3 suspend/resume by
+    restoring Intel LPSS private register context (resets and control registers).
+  - Resolves race conditions in the shared interrupt handler (ssp_int()) during PM power
+    state transitions (RPM_SUSPENDING) by tracking suspend states and guaranteeing
+    active hardware clocks prior to MMIO register access.
+  - Locks out runtime PM autosuspend for Intel LPSS SPI controllers in PIO mode to avoid
+    unclocked MMIO accesses on subsequent transfers.
+  - Applies a PCI glue DMI quirk to force PIO mode for Apple MacBook8,1 to work around
+    persistent hardware DMA timeouts.
+  - Cleanly refactors clock helper functions, PM callback state alignments, and local
+    variable conventions across the driver.
 
-> Note: checkpatch suggests usleep_range() over udelay(), but this code
->        runs in interrupt context where sleeping is not allowed, so udelay() is
->        intentional.
-> ---
->   drivers/spi/spi-cadence.c | 26 ++++++++++++++++----------
->   1 file changed, 16 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-> index 9b4e5b7013ae..af1a05e78492 100644
-> --- a/drivers/spi/spi-cadence.c
-> +++ b/drivers/spi/spi-cadence.c
-> @@ -388,11 +388,13 @@ static inline void cdns_spi_writer(struct cdns_spi *xspi)
->   
->   /**
->    * cdns_spi_process_fifo - Fills the TX FIFO, and drain the RX FIFO
-> + * @ctlr:	Pointer to the spi_controller structure
->    * @xspi:	Pointer to the cdns_spi structure
->    * @ntx:	Number of bytes to pack into the TX FIFO
->    * @nrx:	Number of bytes to drain from the RX FIFO
->    */
-> -static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
-> +static void cdns_spi_process_fifo(struct spi_controller *ctlr,
-> +				  struct cdns_spi *xspi, int ntx, int nrx)
->   {
->   	ntx = clamp(ntx, 0, xspi->tx_bytes);
->   	nrx = clamp(nrx, 0, xspi->rx_bytes);
-> @@ -407,6 +409,16 @@ static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
->   		}
->   
->   		if (ntx) {
-> +			/* When xspi in busy condition, bytes may send failed,
-> +			 * then spi control didn't work thoroughly, add one byte
-> +			 * delay. Only in host mode; in target mode this delay
-> +			 * causes data corruption as the target fails to prepare
-> +			 * data in time.
-> +			 */
-> +			if (!spi_controller_is_target(ctlr) &&
-> +			    (cdns_spi_read(xspi, CDNS_SPI_ISR) & CDNS_SPI_IXR_TXFULL))
-> +				udelay(10);
-> +
->   			cdns_spi_writer(xspi);
->   			ntx--;
->   		}
-> @@ -460,14 +472,14 @@ static irqreturn_t cdns_spi_irq(int irq, void *dev_id)
->   			cdns_spi_write(xspi, CDNS_SPI_THLD, 1);
->   
->   		if (xspi->tx_bytes) {
-> -			cdns_spi_process_fifo(xspi, trans_cnt, trans_cnt);
-> +			cdns_spi_process_fifo(ctlr, xspi, trans_cnt, trans_cnt);
->   		} else {
->   			/* Fixed delay due to controller limitation with
->   			 * RX_NEMPTY incorrect status
->   			 * Xilinx AR:65885 contains more details
->   			 */
->   			udelay(10);
-> -			cdns_spi_process_fifo(xspi, 0, trans_cnt);
-> +			cdns_spi_process_fifo(ctlr, xspi, 0, trans_cnt);
->   			cdns_spi_write(xspi, CDNS_SPI_IDR,
->   				       CDNS_SPI_IXR_DEFAULT);
->   			spi_finalize_current_transfer(ctlr);
-> @@ -520,17 +532,11 @@ static int cdns_transfer_one(struct spi_controller *ctlr,
->   			cdns_spi_write(xspi, CDNS_SPI_THLD, xspi->tx_fifo_depth >> 1);
->   	}
->   
-> -	/* When xspi in busy condition, bytes may send failed,
-> -	 * then spi control didn't work thoroughly, add one byte delay
-> -	 */
-> -	if (cdns_spi_read(xspi, CDNS_SPI_ISR) & CDNS_SPI_IXR_TXFULL)
-> -		udelay(10);
-> -
->   	xspi->n_bytes = cdns_spi_n_bytes(transfer);
->   	xspi->tx_bytes = DIV_ROUND_UP(xspi->tx_bytes, xspi->n_bytes);
->   	xspi->rx_bytes = DIV_ROUND_UP(xspi->rx_bytes, xspi->n_bytes);
->   
-> -	cdns_spi_process_fifo(xspi, xspi->tx_fifo_depth, 0);
-> +	cdns_spi_process_fifo(ctlr, xspi, xspi->tx_fifo_depth, 0);
->   
->   	cdns_spi_write(xspi, CDNS_SPI_IER, CDNS_SPI_IXR_DEFAULT);
->   	return transfer->len;
+Changes in v16:
+  - Addressed feedback from Sashiko review on the v15 patchset:
+  - Fixed 'bool suspended' field location in spi-pxa2xx.h (moved from Patch 1 to Patch 2).
+  - Updated pxa2xx_spi_clk_disable() to set drv_data->clk_enabled = false BEFORE
+    calling clk_disable_unprepare(), eliminating an IRQ handler race window on
+    multi-core systems.
+  - Updated pxa2xx_spi_suspend() and pxa2xx_spi_runtime_suspend() to explicitly
+    set drv_data->suspended = true.
+  - Fixed pm_runtime_put_sync() in pxa2xx_spi_remove(), moving the PM reference drop
+    to before hardware teardown and using pm_runtime_put_noidle() to prevent
+    runtime_suspend calls on unclocked hardware.
+  - Fixed PM runtime state alignment in pxa2xx_spi_resume() error path using
+    pm_runtime_set_suspended().
+  - Resolved merge conflicts and renamed remaining 'status' variables to 'ret'
+    in suspend/resume handlers.
 
+Changes in v15:
+  - Split the large PIO mode PM and interrupt patch (v14 Patch 2) into 4 distinct,
+    single-purpose commits (clock helpers, suspended flag, teardown overhaul,
+    and autosuspend lockout).
+  - Reordered the commits so that PIO PM and interrupt bug fixes are applied
+    before disabling DMA on MacBook8,1, satisfying kernel bisection safety.
+  - Replaced raw pxa_ssp_disable() calls in PM suspend/remove with
+    pxa2xx_spi_off() to respect the MMP2 platform's SSE-disable quirk.
+  - Renamed return variables from 'status' to 'ret' in clock helper functions,
+    and added a cleanup commit to rename 'status' to 'ret' in the PM and probe
+    callbacks to conform to standard coding conventions.
+
+Changes in v14:
+  - Addressed feedback from Sashiko review on the v13 patchset for Patch 2:
+  - Updated commit message text for Patch 2 to accurately reflect that ssp_int()
+    uses drv_data->suspended and drv_data->clk_enabled instead of pm_runtime_get_if_active().
+  - Clarified in commit message that active SPI transfers hold a PM reference via
+    spi_controller.auto_runtime_pm (pm_runtime_get_sync()), preventing autosuspend
+    from racing while an IRQ handler is reading/writing FIFO registers.
+  - Clarified teardown ordering: pxa_ssp_disable() disables hardware interrupt generation
+    first, followed by setting drv_data->suspended = true and calling synchronize_irq(),
+    ensuring in-flight IRQ handlers drain completely before clock gating.
+
+Changes in v13:
+  - Addressed feedback from Sashiko review on the v12 patchset for Patch 2:
+  - Removed pm_runtime_get_if_active() check from ssp_int(). During PM state
+    transitions (such as RPM_SUSPENDING or RPM_RESUMING), pm_runtime_get_if_active()
+    returns 0 because the state is not RPM_ACTIVE. Returning IRQ_NONE during transition
+    without clearing a level-triggered interrupt would cause the interrupt controller
+    to endlessly re-invoke the handler in a loop.
+  - Rely on drv_data->suspended and drv_data->clk_enabled in ssp_int() instead.
+    If the clock is enabled (drv_data->clk_enabled == true), MMIO reads are 100% safe
+    and will not cause PCIe Completion Timeouts. If the clock is disabled or the device
+    is suspended, ssp_int() immediately returns IRQ_NONE to prevent unclocked access.
+
+Changes in v12:
+  - Addressed feedback from Sashiko review on the v11 patchset for Patch 2:
+  - Preserved the if (!pm_runtime_suspended(dev)) check prior to enabling/disabling
+    the clock in pxa2xx_spi_suspend() and pxa2xx_spi_resume(). On non-LPSS platforms,
+    if a device was runtime suspended prior to system sleep, unconditionally enabling
+    its hardware clock during system resume forced the clock ON while the PM core
+    retained RPM_SUSPENDED. Restoring this check prevents PM state desynchronization,
+    avoiding power leaks on non-LPSS platforms.
+
+Changes in v11:
+  - Addressed feedback from Sashiko review on the v10 patchset for Patch 2:
+  - Replaced pm_runtime_put_noidle() with pm_runtime_put_sync() in pxa2xx_spi_remove().
+    Using pm_runtime_put_noidle() dropped usage count without executing the runtime_suspend
+    callback or updating the device runtime status, leaving it stuck in RPM_ACTIVE. This
+    permanently leaked an active child count on the parent LPSS power domain, preventing
+    the parent from entering low-power runtime suspend. Switching to pm_runtime_put_sync()
+    ensures the runtime PM state machine properly transitions to RPM_SUSPENDED upon driver
+    unbind.
+
+Changes in v10:
+  - Addressed feedback from Sashiko review on the v9 patchset:
+  - Fixed ssp_int() by explicitly returning IRQ_NONE when pm_runtime_get_if_active()
+    returns 0 (device inactive or suspending). This prevents reading SSSR and MMIO
+    registers when the hardware is powered down or in power transition.
+  - Resolved PM usage counter leak and double-increment for PIO mode devices. Removed
+    the redundant/unconditional pm_runtime_get_noresume() in pxa2xx_spi_probe() and
+    moved the single pm_runtime_get_noresume() call to occur strictly after
+    spi_register_controller() succeeds.
+
+Changes in v9:
+  - Separated the original "disable DMA and fix runtime PM" patch into two distinct commits:
+    1. spi: pxa2xx: disable DMA for Apple MacBook8,1 (PCI glue DMI quirk)
+    2. spi: pxa2xx: fix runtime PM and interrupt handling in PIO mode (core driver PM/IRQ fixes)
+  - Condensed commit messages for Patches 2 and 3 for clarity and brevity.
+  - Fixed checkpatch.pl warning regarding unnecessary braces in pxa2xx_spi_remove().
+  - Addressed feedback from Sashiko review on the v8 patchset:
+  - Scoped pm_runtime_get_noresume() in pxa2xx_spi_probe() and pm_runtime_put_noidle()
+    in remove/error paths using is_lpss_ssp(drv_data). This locks out autosuspend
+    for LPSS controllers operating in PIO mode without causing power regressions on
+    non-LPSS platforms (e.g. PXA25x, Intel Quark, CE4100) operating in PIO mode.
+  - Guarded MMIO accesses in pxa2xx_spi_runtime_suspend() with a drv_data->clk_enabled
+    check. If the clock has already been turned off (e.g. in pxa2xx_spi_remove() or
+    resume error path), runtime suspend skips hardware writes, avoiding unclocked
+    MMIO accesses and PCIe Completion Timeouts if runtime PM triggers after teardown.
+  - Cleaned up pxa2xx_spi_pci_can_dma() signature in spi-pxa2xx-pci.c by removing the
+    redundant `bool verbose` parameter.
+
+Changes in v8:
+  - Addressed feedback from Sashiko review on the v7 patchset:
+  - Fixed runtime PM resume interrupt storm in ssp_int() by checking drv_data->clk_enabled
+    instead of pm_runtime_get_if_active() == 0.
+  - Fixed PM disabled configuration (CONFIG_PM=n) support in ssp_int() by avoiding
+    active <= 0 early returns.
+  - Reordered suspend and remove sequences to invoke pxa_ssp_disable() before setting
+    drv_data->suspended = true and synchronizing the IRQ, closing a race window
+    where level-triggered interrupts could cause a storm.
+  - Masked hardware interrupt generation in pxa2xx_spi_runtime_suspend() via
+    pxa_ssp_disable() to prevent unexpected interrupts during clock enable.
+  - Avoided PCIe Completion Timeout system hangs on newer LPSS platforms (SPT, BXT, CNL)
+    by introducing pxa2xx_spi_need_lpss_restore() to restrict MMIO save/restore
+    loops to LPT, BYT, and BSW platforms (which lack an MFD parent).
+  - Fixed compiler error in pxa2xx_spi_probe() due to unused label.
+
+Changes in v7:
+  - Addressed feedback from Sashiko review on the v6 patchset:
+  - Fixed a race condition during probe by moving the request_irq() call after
+    the clock is enabled and the suspended flag is cleared. This prevents an early
+    shared interrupt from asserting and triggering an interrupt storm before the clock
+    is active to allow clearing it.
+  - Rectified the teardown sequence in pxa2xx_spi_remove(): first set drv_data->suspended
+    to true and disable SSP hardware-level interrupt generation (pxa_ssp_disable()), then call
+    synchronize_irq() to wait for in-flight interrupt handlers to complete, free the
+    IRQ, and only then disable the clocks. This eliminates both post-clock-disable MMIO
+    accesses and unhandled shared hardware interrupt storms.
+  - Clarified that the unconditional MMIO register access in pxa2xx_spi_suspend()
+    is safe because pm_runtime_resume_and_get() is invoked at the very beginning of the
+    suspend callback, guaranteeing the LPSS device is active and clocked during register
+    disabling/saving.
+  - Added spi_controller_resume() recovery to the error path of spi_controller_suspend()
+    in pxa2xx_spi_suspend() to prevent the controller from remaining permanently disabled
+    in the event system suspend is aborted.
+
+Changes in v6:
+  - Addressed feedback from Sashiko review on the v5 patchset:
+  - Added a synchronize_irq() call to the spi_controller_resume() error path in
+    pxa2xx_spi_resume(). This ensures any concurrent shared interrupt handlers
+    (which might execute because drv_data->suspended = false was set earlier)
+    finish executing before we disable the clock, preventing PCIe timeouts.
+  - Checked and confirmed that active == 0 is the correct check in ssp_int(). If
+    Runtime PM is disabled, pm_runtime_get_if_active() returns a negative error
+    code (like -EINVAL). Changing this check to active <= 0 would cause a
+    regression on non-PM configurations because the handler would always return
+    IRQ_NONE. Under disabled Runtime PM, the hardware clock is kept constantly
+    active, so it is safe to proceed and read registers when active < 0.
+
+Changes in v5:
+  - Reverted runtime PM configuration in spi-pxa2xx-pci.c to be unconditional.
+    This prevents the usage count from leaking by +1 on unbind for PIO mode,
+    while letting pxa2xx_spi_probe()'s pm_runtime_get_noresume() and
+    pxa2xx_spi_remove()'s pm_runtime_put_noidle() handle the permanent
+    autosuspend lockout for PIO devices symmetrically.
+  - Removed the pm_runtime_forbid() call from pxa2xx_spi_remove(). This resolves
+    reference leaks for non-PCI platform devices where pm_runtime_allow() was
+    never called during probe.
+  - Delayed clearing the drv_data->suspended flag on resume until after LPSS reset
+    deassertion and private register restoration are complete. This prevents a
+    shared interrupt from firing during resume and attempting to read the SSSR
+    register while the LPSS block is still held in reset.
+  - Set drv_data->suspended = true on spi_controller_resume() failure path in
+    pxa2xx_spi_resume(). This ensures that subsequent shared interrupts do not
+    attempt register access once the clock is disabled.
+
+Changes in v4:
+  - Track clock state using drv_data->clk_enabled via pxa2xx_spi_clk_enable() and
+    pxa2xx_spi_clk_disable() helper functions. This guarantees clock enable/disable
+    symmetry, preventing clock disable count underflows and framework warnings on S3
+    resume or runtime autosuspend error paths.
+  - Introduce drv_data->suspended flag to protect MMIO access in ssp_int() during
+    system suspend and runtime suspend transition windows.
+  - Initialize drv_data->suspended = true early in probe(), clearing it only after
+    the clock is successfully enabled. This completely prevents shared interrupt
+    handler races during device probe when the clock is still off.
+  - Call synchronize_irq() after setting drv_data->suspended = true in suspend and
+    runtime_suspend. This ensures any running shared interrupt handlers finish
+    executing before the clock is physically turned off.
+
+Changes in v3:
+  - Avoid PM reference leaks on probe bind/unbind cycle by keeping probe PM
+    configuration symmetric.
+  - Prevent userspace (PowerTOP, udev) from overriding runtime PM settings when
+    DMA is disabled by holding a PM reference via pm_runtime_get_noresume()
+    in pxa2xx_spi_probe() and dropping it in remove/error paths.
+  - Check device status in the shared interrupt handler ssp_int() using
+    pm_runtime_get_if_active() instead of pm_runtime_suspended(). If the device is
+    suspending (RPM_SUSPENDING) or suspended, ssp_int() immediately returns
+    IRQ_NONE to avoid reading unclocked MMIO registers during power transition.
+  - Adjust the driver teardown order in pxa2xx_spi_remove() and probe error paths:
+    always call free_irq() to unregister the handler before calling
+    clk_disable_unprepare() to turn off the clock, preventing concurrent
+    interrupts from reading registers while the clock is disabled.
+  - Avoid duplicate can-DMA pci_info() logging by checking the pre-computed
+    enable_dma status in probe and passing a verbose flag to can_dma().
+
+Changes in v2:
+  - Addressed feedback from Mark Brown on the original v1 series.
+  - Used drv_data->lpss_base together with relative offsets rather than
+    hardcoding absolute MMIO offsets that vary between LPSS IP revisions.
+  - Moved the register save block in suspend to after the controller is quiesced
+    (after spi_controller_suspend() and pxa_ssp_disable()).
+  - Store the context array lpss_priv_ctx[6] inside struct driver_data instead of
+    struct pxa2xx_spi_controller. This keeps the changes entirely local to the
+    core driver, preventing symbol version mismatches (disagrees about version
+    of symbol) for other subsystem components (e.g., spi-pxa2xx-platform.ko).
+  - Restrict the save/restore loop to the first 6 LPSS private registers
+    (offsets 0x00 to 0x14). Offsets beyond 0x14 (except CS control at 0x18, which is
+    re-initialised by lpss_ssp_setup()) are reserved/unimplemented on LPT
+    platforms (such as MacBook8,1), and writing to them triggers a PCIe
+    Completion Timeout causing a system freeze.
+  - Added named constants for LPSS_PRIV_RESETS and the de-assert value.
+  - Wrapped S3 suspend/resume with pm_runtime_resume_and_get() and
+    pm_runtime_put_autosuspend() respectively.
+
+Shih-Yuan Lee (7):
+  spi: pxa2xx: introduce clock enable and disable helper functions
+  spi: pxa2xx: introduce suspended flag for interrupt synchronization
+  spi: pxa2xx: overhaul teardown and suspend sequence using
+    pxa2xx_spi_off
+  spi: pxa2xx: lock out runtime autosuspend for Intel LPSS SPI in PIO
+    mode
+  spi: pxa2xx: disable DMA for Apple MacBook8,1
+  spi: pxa2xx: restore LPSS private register state on S3 resume
+  spi: pxa2xx: rename local status variable to ret
+
+ drivers/spi/spi-pxa2xx-pci.c |  35 ++++-
+ drivers/spi/spi-pxa2xx.c     | 256 ++++++++++++++++++++++++++++-------
+ drivers/spi/spi-pxa2xx.h     |   4 +
+ 3 files changed, 246 insertions(+), 49 deletions(-)
+
+-- 
+2.39.5

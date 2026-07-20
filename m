@@ -1,87 +1,140 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EB23F44CB;
-	Mon, 20 Jul 2026 11:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784545936; cv=none; b=j22FNYCOM6ITjPlSSAnIZH5V6Zm2HS68mjIUFNNGmz1+zJfVfwQHekUCAVrORLLThKyeMwkwIpuZCvqmu+9/GaQs8vknoF4TdrOZbWioaMqr/+6oqZOdHvAXIQrdN3/3sQm8c9vKqrNcUzkBD1iiGAJCtteh1ivuefcu6J+PPFU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784545936; c=relaxed/simple;
-	bh=8Tu1sNIjvh0qe7418eMkiZjWGhY5PHNA0ccDcGQxbH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gERFcGh/XSnotmHAWMwgxlhyDVU9MtLgii2c6X8IrC+ExGA4l/k8fy7uy3RCkRT2KLsdp7KShnX3+1JS8LA2Ii/d8pK6i/1dbfArUsXr+rgVvN7Kj2uvrQ6zbklnoOSats9zdmSch8W9Tqy4bWGWBJA40wglqMpdCTunlF3Fw70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i5WRy5jc; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A403FBB7D
+	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 11:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784547805; cv=pass; b=s66XFCS5V0p5Mr2nioVFWhqNmJZgGNnmC/6ao2bb2KyAP8gP61rSreKaBH6JK5HU5UJu6nHOQszLmqDi8lzuQza/ZnZ+QYRpY6bhO0w8SocTz5MQ1/w2W9zcg0VDYQMT/O3nBWsapfYC5QmFsJMDQIFOpfdCMiu4wknfGUOu88g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784547805; c=relaxed/simple;
+	bh=fdtWv+prESztRJE+/K3wcrpe+upv+fIpI0YZYMbpZeg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UQH9gEk+fTmpCprBGx7CGds0rfrFPlShJNqIrIhZyy4iquPsV7y7MYuAPZlmXBQ5C7nVH4P9kT27zvdYvlVwk3ChnfPFsAS5XxjEnRx8yV2AAZ/f9V223h605vRHPu0YbWH5Ms4pRdnOLxH0LPHEZt5hcBGgRj9mWtf4edvtvQA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipvHfziF; arc=pass smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i5WRy5jc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784545934; x=1816081934;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8Tu1sNIjvh0qe7418eMkiZjWGhY5PHNA0ccDcGQxbH8=;
-  b=i5WRy5jcz1RLQXO/pRliYmGtvoZTZzG/7SvMJVHyYiOZ+A0f7shEa3ZT
-   CLLf6WiVIgbsGtyR5mrmfXEmA94FIAiAhnC/vvon3JlCrm6agds+xBupP
-   S9zn8/gh4eD77+5OZmLqGK4QS9oDJbn6bqa2Ml4BdrobNVwHTiM4rfV0C
-   xzkD5oEX+IhWXkcCRbsvDsdoFatkDDpNeoeY803qV58Q3wqgk7kDVFnMr
-   WinZ0Qg4HLWHyDQ9Q4E4LPQ3mjd9n93doJUFNqW9fmReeJhtaSqHEngU/
-   xCCYsXT+zPT1NarY1kCorujZILrZqEBTT+cE1GeMe0L5QheSFfosxh++p
-   Q==;
-X-CSE-ConnectionGUID: D6PTQotXR/2yCCfC9WvvCA==
-X-CSE-MsgGUID: C+/JTX0MSduczWsnS4pRoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="95776378"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="95776378"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 04:12:13 -0700
-X-CSE-ConnectionGUID: 0IEGxcEkSyqqW1z1IDaPng==
-X-CSE-MsgGUID: TrEMbgEwR5myB/DSP6nxvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
-   d="scan'208";a="256852429"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.175])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 04:12:12 -0700
-Date: Mon, 20 Jul 2026 14:12:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Shih-Yuan Lee <fourdollars@debian.org>
-Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v15 1/7] spi: pxa2xx: introduce clock enable and disable
- helper functions
-Message-ID: <al4CiYmT10s8mrZ_@ashevche-desk.local>
-References: <20260720104029.13740-1-fourdollars@debian.org>
- <20260720104029.13740-2-fourdollars@debian.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipvHfziF"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-495437bb891so29176705e9.1
+        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 04:43:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784547800; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Q+ScVwq3cLLI0McUojKNX0cpnQPczqiNw71avm+dicYSlym33mpMg2s1Ysh1pyyk+Y
+         hSSY/4YHEhGogNBLOxNWLREZdI2TglSyCugsFvDrhjiFnK47WMgDZnXJJ8+eIXGC/jHU
+         MPB4jfylg8Z+0lxw9t2VG+gLIQHcrYAIjsmyLxpnYEahVoQUIIPUj+OrGXm+a7/lZMLl
+         Xe7Vd3Ku32aiwXGQQhCriVxuZZTOYtIpcWXVB8x7sWo0frl8skSXpc878sZSqzJNdRow
+         LPV9ZarHypVUp+WQmkrY8HC8uhBb7co2K6GNeJem4Wrholv80ukg/yaWo8L5A4FP9YuO
+         tfnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fdtWv+prESztRJE+/K3wcrpe+upv+fIpI0YZYMbpZeg=;
+        fh=frSp0kUrOvpnEdO7vXe37LM/ZxbhgtWzguMB4HPx5h8=;
+        b=YkBvCpxItE6wqk5N1QyzQUyQMU6UJYKV2bFXUIFb3BBgBrQvVuFeYpNMt7UKgUcl4R
+         S83UPjGpDG/L+COCY3ey5CtiEEus1a38KE6Eg5V6WwuBlGAbUqhvZV/p+or/KUwrs/23
+         zKmUlu8gaiFBuaC6wh+A2Y7XNP7oMY4hJpkaIAFst0yFuq7mN0xLjHBHYhfeaYOnu6TN
+         XAdQ7y/H2qVXYsyNhknfo48L+le4dZzmT1TWSUFk8ov6jqBJuPptsC+fZ9Mh4CVNCNQr
+         m6GBnCumdR+4Nnwsulhp9L5BhYz4+Pj5AsJU046gXV4YWskLv8tJTycrAsjtjPPX/+IB
+         N6eQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784547800; x=1785152600; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fdtWv+prESztRJE+/K3wcrpe+upv+fIpI0YZYMbpZeg=;
+        b=ipvHfziFb88BeNwLCAorVsFn0dU/ZRgXpR9MPnpyblN5Tl4iu1SMIXoAw7/qDQy4Pv
+         ZmB2nLONVeAr/OPMJHLw7tBbK+THtvzfN8y79OHvtRWCLi4uyH4wNk40ePx6qw8ZyMfw
+         60tX7+OIKd6XbS4yQO+ElGERRqdjX5IAbyuNQLpOSm9BJTMbAQ2GoSAnlY1FuMkLBQXI
+         6jIBuKfHXlRh+p7FX8niwZ/kZHE84yKTfx+vWmVIVJSqTzxrjdRpOx/96ihUFG1xaZpL
+         0PFF7B7NvhoRpE1OuZu4vuwQk4UzQ2dWx23QeTf4rInyoqBfKqKCuodJFRzKG6VEclPb
+         /4SQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784547800; x=1785152600;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fdtWv+prESztRJE+/K3wcrpe+upv+fIpI0YZYMbpZeg=;
+        b=KRETLPTHMRh8vWgPLQX2bH2CL35P5Kt5oGAZxlzkcQUuZU5a6T0WEdJPEfSeQ9BKle
+         TBlAbv9inAP4Xlqd2FDhCHj0MXa7RKA3k9iM5rB2EbtuZgyBvcsnsmIkGzj/3ulLernT
+         IwmDjNo3v9tjkia2Ouayq7ulmPHLftmIFJlfg8xlvHqbaGzIw40INvgXxpJHdfADLV41
+         ffMAGjZ6Uwd2WYjDhBxv6w2jKKni1OU7luQKIUYlLzdiNOpJ4z+AoEKlafXM6uSoHQM2
+         t3I7ZO1sqiMIzUFeyabFf9vY86ArpiGHHYZT3lxCvuOKoyFnO5cWh1DaSuhERftXEn4n
+         /DiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoFFKMEoZVtqsAZ/KTQOi5U5b89yeLerIXwDC3cw4CDkafyKa5vywuR9vD8JUzT+XMHmYcMHVO+h6g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdhJ7skr+8BjVe0iltzkJrn6Y7pNEMmF2TjAaiFewIyX9RrO2j
+	sDTfw/yIgW/oQlQOACMLRkyBK8g8Hwtx3wo59vubYZasoXVldt/MOauL2M42vVj1rKQfJVwbAo0
+	s5aDSX2k7z/4D/i8yuzOqI6vb43oNdgw=
+X-Gm-Gg: AfdE7cmg4Ni/ry4qFgMyWVjwKZVhuAgNl1Y+BkgKORzicxkXz4yo0U4UacPZm1ZnEk8
+	c+LXBVlHY0W1+d4Ars9GB/5IHcfIdAkin9DZnhSe8RZoXLOr3+NDzXxJFPoeJJhljKTp+0iMQcZ
+	sV8MiJqeIeMBBJwSZgrsFNkHX4NHUnE3Dq9jjkuCcpkJw/OpdOVzYiW3uJJJp63v162O4drvGLq
+	xfV5kmBvotaP6sfuOYJR306OeBTVTKEqB14p9KMJsNVoiWeABYjGp2Qss3VksfFY3oF/aWNvdsK
+	Y56BKG+ayBJpy8jQb7Ljoy7Q/+kufaTvLLtZJbCqsiiuTMYR/aeYa2oqlw==
+X-Received: by 2002:a05:600c:3485:b0:495:6193:c6c0 with SMTP id
+ 5b1f17b1804b1-49561a30bb3mr23882765e9.18.1784547800422; Mon, 20 Jul 2026
+ 04:43:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260720104029.13740-2-fourdollars@debian.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20260715222417.2997712-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <d2213a9b-9a12-4ebd-beee-9385ee4e77e7@kernel.org>
+In-Reply-To: <d2213a9b-9a12-4ebd-beee-9385ee4e77e7@kernel.org>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Mon, 20 Jul 2026 12:42:54 +0100
+X-Gm-Features: AUfX_mzY7bY49TGWSRlukzBkDBBtD47hjKyYIuJbD-DXbsbN1rg6kSUis-qm_Hk
+Message-ID: <CA+V-a8taF4U7QD7N4gQZWAOC+vSuTpxgk9OJhqd28NtN9SmDLQ@mail.gmail.com>
+Subject: Re: [PATCH 0/7] memory: renesas-rpc-if: Optimize transfer overhead
+ and implement runtime PM autosuspend
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	linux-renesas-soc@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Prabhakar <prabhakar.csengg+renesas@gmail.com>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 20, 2026 at 06:40:23PM +0800, Shih-Yuan Lee wrote:
-> The driver disables the clock during PM runtime suspend, PM system
-> suspend, and device unbinding (remove). It also disables the clock
-> on various error unwinding paths in pxa2xx_spi_probe().
+Hi Krzysztof,
 
-You forgot to add cover letter (or forgot to Cc me). On top of that you haven't
-waited for at least 24h (and for this series even more) as stated in the
-Documentation. Last but not least, I only today answered with the people who
-will be interested (in my opinion) to glance on this.
+On Sun, Jul 19, 2026 at 3:42=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 16/07/2026 00:24, Prabhakar wrote:
+> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >
+> > Hi all,
+> >
+> > This patch series optimizes the Renesas RPC-IF driver by significantly
+> > reducing software overhead in both the direct memory-mapped (dirmap) an=
+d
+> > manual transfer paths, maximizing transaction throughput, and introduci=
+ng
+> > runtime PM autosuspend to prevent aggressive power gating during
+> > consecutive flash operations.
+>
+> Why is spi patch in the middle of the set without any explanation of
+> merging dependencies/order?
+>
+The rpc-if core driver acts as the low-level controller wrapper used
+by spi-rpc-if. In this series, autosuspend is enabled in the SPI
+driver, while the corresponding pm_runtime_put_autosuspend() calls are
+added in the core wrapper driver.
 
-So, thanks for the effort.
+Apologies for missing this explanation in the cover letter. Since
+these changes do not break build or runtime bisectability if applied
+independently, the rpc-if and spi-rpc-if patches can safely go through
+separate maintainer trees.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Mark has already Acked the SPI patch. I will check if he is OK with
+the SPI driver changes going via the memory tree. If not, I will
+update the cover letter and split the patches up to send them
+separately in v2.
 
-
+Cheers,
+Prabhakar

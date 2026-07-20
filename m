@@ -1,121 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331393B8BB9;
-	Mon, 20 Jul 2026 17:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0213211CA9;
+	Mon, 20 Jul 2026 19:22:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784567922; cv=none; b=VdUtgWYC0EX1RY75f7Q81sLn8OMV68eK/QRbz8VFJ1qtT4Jd0VicLyQ1s4tWpGVOoXG6iknBUjeuj7iM6cQKi2/MzhuCnRK8mUExPgBWRjLckY+gDXoXcgU0nbaQE8T8ReZKuMizT0JBYxuOv0AOcxw9LJthngKh4qn1aHmVzEw=
+	t=1784575370; cv=none; b=NhfEIPx0M2uLRhfDIQQStDXYD2vzNpWXnIBhXRzl84Ue7rJUScxE+i5+m2psk32KHZAtHAdcc0D9OjqJoJghfKpuN+wzw0B4Gfe+727O7GXmh4vXS6Slc5QHoaEWoUcXiJKNvVjfoA8flQBmCjuLfkH+ZXZOfMGl26vtdQfdpEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784567922; c=relaxed/simple;
-	bh=yFKSRh6QKeWhRL2A0QWU6u+qCL6rqWanOY2zBQa22jM=;
+	s=arc-20240116; t=1784575370; c=relaxed/simple;
+	bh=JHcppqoikoS8e0wMZIde7eaA2lWQyyAwdPloNvfOIcs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=esgY6MJZGEcw5+KDq8WF5a5n5STs0W2ZVd1vTSdg0Rvbek5vutgpJl8Z2iu1OOoPaVjOb18kqlNJ0NejJI7ooVHzZsQXSHDDU1spW34C+M2GyOlO6M5eEVPFqC8hrUzdzjVXb37JA33OPP5+yoXE6NhQNFCkTvHE0tYVuHrLa3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628E11F000E9;
-	Mon, 20 Jul 2026 17:18:37 +0000 (UTC)
-Date: Mon, 20 Jul 2026 18:18:34 +0100
-From: Mark Brown <broonie@debian.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=W1Z2JjJqZ7qLNWuG8XcPCfGcTy06W+yphAi5Mx1QaOFN7sKIxHIkXCVL7QaiUKi/T2uj4J5Qlg7K72Vx4cUuQmOehxtRDwRyyNlGDqBPIu8Hp5c9ID6BhvjSGekjbTMNiLqarcl6io2l0HC617p5BANX1v7uzij77O2JenjOHko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=feoeOsEq; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="feoeOsEq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1784575369; x=1816111369;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JHcppqoikoS8e0wMZIde7eaA2lWQyyAwdPloNvfOIcs=;
+  b=feoeOsEq1xyTYVQAyKzugT9Du8Gjywyclkd0Fi1YfL+qnWLagFdnGoGu
+   a3mkPXcdDOfvwcb/eEWE+5TXUm0fbGgI7rBa1yLFvXWJuJHy+es8WCLgS
+   HLZSxg3lCKu2O39wKunXamsI0EGOQQt3Lx/912HoDfeJZD3n3KireStVe
+   eyv2FzWS+m1SOtxJJk9abK87vdOx0yiGJqqAuOJjlwyAe92FLunCKgUw9
+   QAfx3tPX8oJE6YtF12+naMaTCYpfr5iVZ9svkmevKx+JAF14QHTB/h0tR
+   2eTSrtuRCshSknDgok7MP4o8Bh0JLOJZ9jw1A0kblogVwLcp06dwzED1m
+   g==;
+X-CSE-ConnectionGUID: /itRfqBPSDWkvyzRVA+wCw==
+X-CSE-MsgGUID: fB7HzX3mSqysBb31qF8P5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="96299856"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="96299856"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 12:22:48 -0700
+X-CSE-ConnectionGUID: LuL0t+6hQgex6EGAUYO66g==
+X-CSE-MsgGUID: zUA/8s2zRDq/rrKDCG7NAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; 
+   d="scan'208";a="258181719"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.175])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 12:22:46 -0700
+Date: Mon, 20 Jul 2026 22:22:43 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Shih-Yuan Lee <fourdollars@debian.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
 	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v16 2/7] spi: pxa2xx: introduce suspended flag for
- interrupt synchronization
-Message-ID: <862b86bb-6c7d-487c-b790-fa5d5a5217b2@sirena.org.uk>
+Subject: Re: [PATCH v16 1/7] spi: pxa2xx: introduce clock enable and disable
+ helper functions
+Message-ID: <al51g77Zsdr3OyBS@ashevche-desk.local>
 References: <20260720162117.32304-1-fourdollars@debian.org>
- <20260720162117.32304-3-fourdollars@debian.org>
+ <20260720162117.32304-2-fourdollars@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wDBoPWn34SqK+tZE"
-Content-Disposition: inline
-In-Reply-To: <20260720162117.32304-3-fourdollars@debian.org>
-X-Cookie: Caution: Keep out of reach of children.
-
-
---wDBoPWn34SqK+tZE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260720162117.32304-2-fourdollars@debian.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jul 21, 2026 at 12:21:11AM +0800, Shih-Yuan Lee wrote:
-> When a shared interrupt line is used, the interrupt handler ssp_int()
-> can be triggered by other devices sharing the line. The handler must
-> ensure it does not access the SSP controller registers via MMIO when
-> the device is powered down or when its clock is gated; otherwise, it
-> will cause PCIe Completion Timeouts and system hangs.
+On Tue, Jul 21, 2026 at 12:21:10AM +0800, Shih-Yuan Lee wrote:
+> The driver disables the clock during PM runtime suspend, PM system
+> suspend, and device unbinding (remove). It also disables the clock
+> on various error unwinding paths in pxa2xx_spi_probe().
+> 
+> However, if the clock is already disabled (for example, if the device is
+> already runtime-suspended during driver unbinding), calling the common
+> clock framework's clk_disable_unprepare() again leads to clock prepare/enable
+> count underflows, generating kernel warnings.
 
-> Currently, ssp_int() guards MMIO access using:
->     if (pm_runtime_suspended(drv_data->ssp->dev)) return IRQ_NONE;
+Any real life example here?
 
-=2E..
+> Introduce pxa2xx_spi_clk_enable() and pxa2xx_spi_clk_disable() helper
+> functions that track the clock enable state using a new 'clk_enabled'
+> boolean flag in struct driver_data.
+> 
+> This ensures clk_disable_unprepare() is called only when the clock is
+> active, preventing clock underflows during suspend transitions and unbind.
+> It also allows the probe function to safely unwind resource allocations
+> without triggering clock underflows.
 
-> Introduce a custom 'suspended' boolean flag in struct driver_data to
-> track the device's suspended state across all PM transitions. Check
-> both 'drv_data->suspended' and '!drv_data->clk_enabled' in ssp_int()
-> to return IRQ_NONE immediately before any MMIO access is attempted.
+...
 
->  static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
->  {
->  	if (drv_data->clk_enabled) {
-> -		clk_disable_unprepare(drv_data->ssp->clk);
->  		drv_data->clk_enabled =3D false;
+Same issue, I have no cover letter in my mailbox. Please, slow down and check
+your email setup. Something is wrong.
+
+...
+
+> +static int pxa2xx_spi_clk_enable(struct driver_data *drv_data)
+> +{
+> +	int ret;
+> +
+> +	if (drv_data->clk_enabled)
+> +		return 0;
+> +
+> +	ret = clk_prepare_enable(drv_data->ssp->clk);
+
+> +	if (ret == 0)
+> +		drv_data->clk_enabled = true;
+> +
+> +	return ret;
+
+Use usual pattern
+
+	if (ret)
+		return ret;
+
+	...
+	return 0;
+
+> +}
+
+> +static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
+> +{
+> +	if (drv_data->clk_enabled) {
+
+	if (!drv_data->clk_enabled)
+		return;
+
 > +		clk_disable_unprepare(drv_data->ssp->clk);
->  	}
->  }
+> +		drv_data->clk_enabled = false;
+> +	}
+> +}
 
-It's probably better to avoid extra changes like this, it makes the
-patch bigger and a bit harder to review.
+...
 
-> @@ -743,12 +743,12 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
->  	u32 status;
-> =20
->  	/*
-> -	 * The IRQ might be shared with other peripherals so we must first
-> -	 * check that are we RPM suspended or not. If we are we assume that
-> -	 * the IRQ was not for us (we shouldn't be RPM suspended when the
-> -	 * interrupt is enabled).
-> +	 * The IRQ might be shared with other peripherals or trigger during
-> +	 * power state transitions. First check if device is suspended or if
-> +	 * clock is disabled; if so, return IRQ_NONE immediately to avoid
-> +	 * unclocked MMIO reads.
->  	 */
-> -	if (pm_runtime_suspended(drv_data->ssp->dev))
-> +	if (drv_data->suspended || !drv_data->clk_enabled)
->  		return IRQ_NONE;
-> =20
->  	/*
+> struct driver_data {
 
-The local flags *must* be racy - I'm not seeing any locking which
-protects them, nor anything that stops something else dropping a runtime
-PM reference and powering things down after we checked here.  There's a
-helper in the power management code pm_runtime_get_if_active() which I
-think is what you want here, it'll tell you if the device is runtime
-suspended and if the device is active it'll ensure nothing else drops
-the last reference while we're running.
+>  	void __iomem *lpss_base;
+>  
+> +	bool clk_enabled;
 
---wDBoPWn34SqK+tZE
-Content-Type: application/pgp-signature; name="signature.asc"
+How is this protected against simultaneously called enable/disable on different
+CPUs?
 
------BEGIN PGP SIGNATURE-----
+>  	/* Optional slave FIFO ready signal */
+>  	struct gpio_desc *gpiod_ready;
+>  };
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpeWGkACgkQJNaLcl1U
-h9DXnQf+OfcZGh9JPbb3NhXFSyLk28Jh+30oXYLKXqLn4xgn4eVVdAujTZ8qrw8E
-QjDYZ+bW6ZOSHv8mBkYuT9BFEacsoY5qTR7SzK3J9uFYXCQe2uHZ6koKlqwK03eN
-mCdCsh5O3UQo8i7PZOb/xYZrFYCeadoHg0KnxWD3PwgfFmqCmZc0BMqIDje5DCPZ
-swwdd6N883etfknEBvfM/YCHWqAGEzB4hyCnpZlfPeOtKFCnPjxiiEcvCuC1w/Y3
-0t55IWgYL1oHk0jIig8qP6Fed8LCjD1DWzEzDZUg5LjKDiJbydbV5xmnkEZtLBYG
-QIdBYcqMmjcwy6cyoNNHYBTTvMbgAA==
-=KXgo
------END PGP SIGNATURE-----
+Whenever you add the field, check with `pahole` that the layout is optimal.
 
---wDBoPWn34SqK+tZE--
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

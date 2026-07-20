@@ -1,246 +1,288 @@
-Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502A8395AE7;
-	Mon, 20 Jul 2026 10:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784543706; cv=fail; b=ZOiKbxOhAMR9QvkXjVDWXRy0jRczE1lMkT5DRUqXXSFOreu7TasYGCg2Lsa6uhHbrBwPNON3Cz3gav9RzrDgZrmwxzw/P+8mdnqWNk/AHT77wnLVJEqBw/pPi3Y1AL/PVvFdjbHw/0TRy8iaeTj6nus4BunSZyUmdNuXK5brP4k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784543706; c=relaxed/simple;
-	bh=fi4jovF70aHdGAoqxK9dnmTdNFIRsC1zbGQBkmklgFQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EKTELwLZF27i4CUcsE/5zhc2j8UuMJAjfjhYD65O/+0hgkBWFJnyWuvDzN5xv2ID6TH5C5fls7yr0xrS6QqOFaOxQPiAI4m+gF1pgly7/rwuZEvIf6B5GABr0zyVIBp8GmB6lB72EU8hIoyhforcKfSq18kVmYsOzexf9itxNs8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=GSmL4ZLJ; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=IM871ERk; arc=fail smtp.client-ip=148.163.154.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="GSmL4ZLJ";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="IM871ERk"
-Received: from pps.filterd (m0374956.ppops.net [127.0.0.1])
-	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66K9vNUd1859646;
-	Mon, 20 Jul 2026 05:34:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=009hu5qVL3bUFSWkgvvrGkskBkP330BpIvb1ujQIQ
-	7I=; b=GSmL4ZLJ4llYfcKoOju3loqtwcMB1SOWvIOQ28VnlI8Nmc1YIYrTL7qV4
-	jOXBOg8dEbJt6jRJfrmaVmNR2Q4H3l1FSy48pzChuAIe+i9scavMAqOA7xApoiX/
-	SjWdVIHcsWPk1hDOKaVwAwjrUhVmx7UyFxtbFglynqivBaSlbCYPDm/c8OgfCym7
-	nZpJC5T4wcfJYgMade933Ajg/VswZe8DktaFaqp0BYfCwFL8hhpg/xdmyVNOIyh3
-	JEhoxZGbvE02Ir2Gs34loUJ7bXGA+iqpBgF1iyRD/RtIHgq7fWCzBw69pPxYIjtz
-	6uGEjFkpFsvjkPBQm+4TBWu5IrMeQ==
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010024.outbound.protection.outlook.com [52.101.85.24])
-	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4fgrmkwhew-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 20 Jul 2026 05:34:49 -0500 (CDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VbVNp5Res58AqF8kEhU2uDWdoCRwOL3gBY/w5x2+NmmZNngsVTIFRuFp1jngIm4JFNwKR2WwvbhnSoVidZDa1CyTj012/x3DM4gmmf7SU129gn0oMU2mjR3JEMv0hJFRb53xvOEAQXLuU3Ejtg4zHTLTCBjB333FCp4OzKN0f1xqoFN6lBJaQ1i+XT7hz96de+8czs5ShT/SPWzeY9IrwhlNc8Ujpkrz4BLfZ1Y60jfxPRxejsKgrZr2bdGtorwW2Rafs6kSaF8nNqu7uiQdAW81ycrKzEWZ2C1ydzgZF2TRgjZjPeSCcIiS7Yd2hPkMw13AKJ5oGi0E0a1hU724Gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=009hu5qVL3bUFSWkgvvrGkskBkP330BpIvb1ujQIQ7I=;
- b=MfqO/5EWSwUj3ynsWBpuJc+5Rfh692FWhiexm7sbTqEG5nV0amgLUDlcXfT2S42PPTo3/P1TAtjveLoXLisdoEThpmDj3PJ/onmFysD9vjehLGcekrZ8GQGUsITgcYrn1UvKZ14szY7IYzO99IRMOeuG04z1RBw8UjwkbpJZiHkjVz/MchrhngtPBIIzCiwfp7bw3mrRp9nGCxsGgfAeTwKoNNAvx2xf0i3tOTpRascmcYIYmtgJ3X26UzLnDZYEj879yo457D4LLnYaBR5vEVt9O88hKnRWxSCZDbE6WUAD7yWM7cEPruFnN6/QyjEK52cq9jVA+c/7UoPOP+fJyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=microchip.com smtp.mailfrom=ti.com;
- dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=009hu5qVL3bUFSWkgvvrGkskBkP330BpIvb1ujQIQ7I=;
- b=IM871ERkr3l0TEUzZ5Nm5cPhNmOveaDqAqwGtGG1YybGn5OI7m9QMifaoD7Dp0TfWW5xHyxu2nMGNIxh6IpH3XFB32seeqoIbo5dujwxYCe72uTdkWBG8dlEjnWIjGmmkaXniluTDuayHB5HEwKorWa2vHRGBuj6zS3eWB5mh7M=
-Received: from SJ0PR13CA0006.namprd13.prod.outlook.com (2603:10b6:a03:2c0::11)
- by DM4PR10MB6038.namprd10.prod.outlook.com (2603:10b6:8:8f::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.223.16; Mon, 20 Jul 2026 10:34:44 +0000
-Received: from MWH0EPF000A6730.namprd04.prod.outlook.com
- (2603:10b6:a03:2c0:cafe::76) by SJ0PR13CA0006.outlook.office365.com
- (2603:10b6:a03:2c0::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Mon,
- 20 Jul 2026 10:34:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- MWH0EPF000A6730.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Mon, 20 Jul 2026 10:34:44 +0000
-Received: from DLEE214.ent.ti.com (157.170.170.117) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 20 Jul
- 2026 05:34:43 -0500
-Received: from DLEE208.ent.ti.com (157.170.170.97) by DLEE214.ent.ti.com
- (157.170.170.117) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 20 Jul
- 2026 05:34:43 -0500
-Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE208.ent.ti.com
- (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37 via Frontend
- Transport; Mon, 20 Jul 2026 05:34:43 -0500
-Received: from [10.24.52.55] (santhoshkumark.dhcp.ti.com [10.24.52.55])
-	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 66KAYb2T2762196;
-	Mon, 20 Jul 2026 05:34:38 -0500
-Message-ID: <2aa827c7-afc0-4edd-8ecc-786ff96913ca@ti.com>
-Date: Mon, 20 Jul 2026 16:04:36 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3563C76BC
+	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 10:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784544037; cv=none; b=OndzAOXfB/7DxrztkWvgpkRtcSqFYHeC6dvJmqf0Aosc3VJ3tRvUAzgdTGKyvyneuRLGWO1yytBmXK5Uw+oz0gK2syldcjz7flwu9TsQDzXNRYmvuIjfGNkhMckDwYVWoOVnQc5RG0HaY49q+eY5RV5g7L4ijDzAvczpMeGitmg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784544037; c=relaxed/simple;
+	bh=6Yo8S8DJRyMiDkoTFoIEjwQhPEUSrlCrNhm8yl970Cg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HT1r2cWP0liJpf/s/g1j4/47pjzWkfbc2dMgM+H+pwpFbz7jKedQ+y6/lZh+GHcyX/+3J2oxqYreJlqZvhtjvnLuVC6/ozXNZHeud5mMj8XFaPQ15hmLKISOQyl+Yf48xydPR/oY1yLFWjvf+tkwsgj4vpEf3r4ufFtBHyBVeX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc97653887so108681875ad.1
+        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 03:40:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784544034; x=1785148834;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hILNR9k3hXFYG9NAdXW8UXhclKYONi6NDxe7T+WX1EE=;
+        b=nyq1/Wbaj9wnEUso8V+/xbozu8iqPx8DM3/O9VUG0wj7hpQ2PkLtQGQfpFvGr0zH+j
+         pxjwAGFk1ldvR5QnWjQteiuzFHY1FdAZbYa2Fg4GFpSpUHFfPaFwHTO7cwF79PAnSD5A
+         vL4fWQZSU71u+vONH8x5RfASFfmkGaid6ZidwkVH7955SQpeASqyxVWsZOB8nBAZrqXr
+         OzBHPQ53emhRpCwLehcGBQ0mnsgXqztXzLdmELnWvVGEAC7XjC+hYosddo9TjB/GVzkd
+         4eh06CwrUmIgP7NJXw+iQup0JMerMi2MMbyfS1wXoM/LLl+XbdD7TdF1gwSnCXSIon5P
+         HWRQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5zA5eYUyRaOmpt2299Fm8cuGTo7j37Ql+12YPHXu8ORqbkz9xTVHdQA4xTeowqyJpW+vTkjQbqRs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJX6maNW3LDMCPu10rNOY4r/cSM4TrpoAWbghHcM/mKCqJB5o2
+	H1bu4rCzweM9C0jRUfsxHRM6EPzv9RGNhJaFOUjnFHPdSPgTTmGfYsg=
+X-Gm-Gg: AR+sD119WUuczDs2VCqG+FRsrfwBAan9KtEE9ao8QMFk1pqKB8rJql0V3H2Fhp9j1rw
+	N6UHSkGmRgUkdumAToi5FgJMVlBNXto3p4WSSrfs9FSuQYtbMNSBzXBUFwPkePyTYz+8O/HPo70
+	O901mS9KYst0jy19FEDMAl+YGW9ys+rIUzDJY0ho5ZjhshL3weoXtuB7YCMBpBUkbN+Anx7yMT6
+	eGOESM8bINUeSr3tFOS8bzUTDmzuO/4OHXoRCtbCQbrvErsA13lbYJpvk1CnDspOGST6rPcEqRT
+	O7KCxtC8mX07v/m3ArBkAsUjkUvP8mJ8iawXA1oFDt1mun/5frDjZvsl7HdxcKBfkTSS4E8vOMD
+	IXTe1LPLyPmLO7vKJ5HuySCQs8itBan+EgManyFVLf2oZkHWd7mlHTapG/7Mll1v+PxSA8/QulN
+	kybS1rRBf2zkc7ErrPTxqIaC3tmly6LRVr9Th4shqu7ZKqpnFJcDPYYApsNQwTzQv7EugysCfNq
+	ZOjrjxsYUo7VQe/fnBvpd/71xVK
+X-Received: by 2002:a17:903:3d0e:b0:2cf:6dba:b294 with SMTP id d9443c01a7336-2cf6dbab68emr31159675ad.22.1784544034339;
+        Mon, 20 Jul 2026 03:40:34 -0700 (PDT)
+Received: from penguin.tail0a1999.ts.net (61-228-16-100.dynamic-ip.hinet.net. [61.228.16.100])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf344f61ffsm54900325ad.33.2026.07.20.03.40.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jul 2026 03:40:33 -0700 (PDT)
+From: Shih-Yuan Lee <fourdollars@debian.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shih-Yuan Lee <fourdollars@debian.org>
+Subject: [PATCH v15 0/7] spi: pxa2xx: Fix PM and interrupt issues on Intel LPSS SPI
+Date: Mon, 20 Jul 2026 18:40:22 +0800
+Message-Id: <20260720104029.13740-1-fourdollars@debian.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/17] spi: dt-bindings: add
- spi-max-post-config-frequency-hz property
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
-        <vigneshr@ti.com>, <pratyush@kernel.org>, <mwalle@kernel.org>,
-        <takahiro.kuwano@infineon.com>, <linux-spi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <praneeth@ti.com>, <u-kumar1@ti.com>,
-        <a-dutta@ti.com>, Conor Dooley <conor.dooley@microchip.com>,
-        <s-k6@ti.com>
-References: <20260717185116.2065505-1-s-k6@ti.com>
- <20260717185116.2065505-2-s-k6@ti.com>
- <20260719-camouflaged-unyielding-sawfish-b6fd09@quoll>
- <3d470ec8-870a-4e14-90e8-6c7444950192@ti.com>
- <fba1531e-e416-4817-848e-94e9b3f3b501@kernel.org>
- <d6b3c768-bff2-40b1-b767-f17219281fb7@ti.com>
- <1a681388-5ffe-4df9-83bf-a7622ee489bf@kernel.org>
-Content-Language: en-US
-From: Santhosh Kumar K <s-k6@ti.com>
-In-Reply-To: <1a681388-5ffe-4df9-83bf-a7622ee489bf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A6730:EE_|DM4PR10MB6038:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0823a98-e9e4-4904-d2dd-08dee64a839d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|7416014|376014|36860700016|22082099003|18002099003|3023799007|56012099006|4143699003|10067099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	NF906+tO0zYNboo8YczJV08mS70JVzSuzfka9nX68vgRATU5OJoe3z+4GtA2pa8HBBgZyQipedipzzvTXfMbo8xzd7bLRvlsoW8gz+XN+TVYOdMbUp1d5bOl5PGi1xujm8yZ07u4NpuCoEvwWaZfjHeW+OOaFEpXiR1XY2NWuT3M43b2eNbi0r/+/FGPevlRQ04+nSKWWB4D5YHUnpfkanhF7VExgiXoZWfLeYv2F8T6FZUodVSRx04V5/NPW9sZ7bvGUIMNF6fIj3y0pxy7lCiqqH+v2lGK24dseLqho9T4tMHJW/6Esk3XpEZT3KlLGyIUfYJwx5W9bq+98hJlVDE2tF5mavwHcVx9Cxac5zVA2HWXhypcXgeMmv+8hs5AtYGZtfNns/UMtYtG8zW19Z46cvXdJAmrQ5sTB7AoVjDWdybr4RGjt82clE3F42nmn43GQUfWfyZPQrbPZMKBdtyJ1PRJkEeZdweziOAKwYHml/Rto6WFnsqNL3z21apBFMIY3GBzfC/VGUCoWk4sOo5HzfpvQDDH60Fl9nIImif9OaUCWC/r4xKqwe9TVtQos5AykhQMLUUEHTm36s+63v+p9KBL6GquqEMX5XBOZwyjEm/QZ+iUeefPJe/GRZRz23Re5nSvdMwKSW6LFOhmGgxG8nobJmymIn0fhM3HLC3lBpHKyRNpZeubUtyvmbMYLxntTHXU76xuzkS30Jea3g==
-X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(7416014)(376014)(36860700016)(22082099003)(18002099003)(3023799007)(56012099006)(4143699003)(10067099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	yvtCulGs7K95DL3DxMIBy8AItyvY/MqGO+zv7xvn5uAO7iAs7AVub55lZg1KR4H54V/INY5l+SqEJsLwh0PetXhCh8zsZHG8WUVq5nxSnFOv9p55pZXh6BN2WrC0FxTd9NdLfxwEA8z55OoyInnTPMNsz9EFUhmt+oOlVWc7enY400lFEt4E4Nbg3Zn3GiwNt3O66EfK3C30yTqSHsmJg65detO23kRwPGYiAld7XzrrG0fPS8cb6dZdZZAt0U7kKmAr63MW1FQVBiXOE7TAe2/cP5CZDmt2jl0wIFIHrk5QjypwNCU2ccRupvS/L0luVc8GFdNmpSWsf2I8HLTRV+DjWOni3yo6wn6sN8/dRVEzjztQdF1ZOWGwPJWpwJaQiMz05d7wGx5Rsaz4R12ykPtYCo1H1iGnqZooSFrWJuppGNNVcQphH/iBbx0iso9l
-X-Exchange-RoutingPolicyChecked:
-	oEc6lMiV3sIrJBdZ8y7AFIKDIIIKrB7f5ijpDNKyj/tQt/qpMaA2CpVKeOH4VeWikA9m+AXMuy6eToi/lVw+vGddNQj4+cBSQiY6xhjkA3RnpCcw3rbuy3h/TslLeHKNHqtRCbsizfCvQ4MiGP+dQ0Wc9q0bZisHFjVWsVQsc/UcUFWUjaukIHKUNfoIitd0U1fVKm+4fA0BiKlvv5k3BgioMR2YEhiKpS7xm03sTUgQuBr9deJkfblB4A5yhWxS9gLFW4yYWzBw9ubxyGO/SEao+C5+IjoWdYnr5tyygh6uHLt/E3oUxO90CUy8DrriLomiYvhmz0a7sfEKpUFlRQ==
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 10:34:44.1955
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0823a98-e9e4-4904-d2dd-08dee64a839d
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A6730.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB6038
-X-Proofpoint-GUID: OE0b6d_uCZG9XxVubdOQH_8s5GEernRx
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzIwMDExOCBTYWx0ZWRfXxraGhrhtumV9
- xDuZtqxuUii+GcoN3hUot6kWTyhB7JfQPJVAkVSY8WXFVeHGpfgc2rRib30SUi8vch8trILKFc9
- Qg8ccoy5ZpInc0fYmVES8Nqg+OUS2H4=
-X-Proofpoint-ORIG-GUID: OE0b6d_uCZG9XxVubdOQH_8s5GEernRx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzIwMDExOCBTYWx0ZWRfX8XFKKpwUkckE
- E+TaMxvMeY//RA0oDBYbxCdPttFqWcm3eop81tsZbwIa1faGQ8I2uxHEXnK6Xm3PBGZ18hocfY3
- kibPOVqLDnSySj0wzi09HgKe1zRZwMSeppYrxvzLjnGzOVK0iG9KcuVqZxbaUrEc1nnQb3z7gNo
- 6O955FQ9R8rHdKvAswkYMyYcEuaLF5B6rcQaIRI9FywWn0mg53kQyZibCSqxMzLa3hvVGpXcKfo
- jt/AnRNGpPb2eKT1wWUvfSG83uqXt8bnRTQyFt3EXzs/yuqoAjCMenhkaIkMSPbfApKNNd2r2Qw
- PSUCOTZpDovMK4pAzGlyGgJ9TarENWpnS5yIDt1kdtVXXPiheI0aherULuQq5vk0gwUQL06hfaa
- vWIaaqmxwl6ySk2LBA8Idk7bFrhtb6plA0i4si7qRYb39FoAKSadjBqlX+N7CZamd3AExVc5CzT
- Df50+7AqtmJbal1mjIw==
-X-Authority-Analysis: v=2.4 cv=KIJqylFo c=1 sm=1 tr=0 ts=6a5df9c9 cx=c_pps
- a=N6jWaT6qAb3kxWP2Z7atcw==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
- a=s63m1ICgrNkA:10 a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Z8NIEmU8O1QQgoT56wFK:22 a=jwouBfj2j3NM8CExmVVE:22 a=MiX5mLSNAeYTziVGc1cA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-20_02,2026-07-17_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 adultscore=0
- phishscore=0 impostorscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607200118
+Content-Transfer-Encoding: 8bit
 
+Hi Mark,
 
+This 7-patch series resolves issues in the spi-pxa2xx host controller driver
+related to Intel LPSS SPI controllers and the Apple MacBook8,1.
 
-On 20/07/26 15:39, Krzysztof Kozlowski wrote:
-> On 20/07/2026 10:48, Santhosh Kumar K wrote:
->>
->>
->> On 20/07/26 13:10, Krzysztof Kozlowski wrote:
->>> On 20/07/2026 09:38, Santhosh Kumar K wrote:
->>>>>> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>>>> index 880a9f624566..12211f8c9f7d 100644
->>>>>> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>>>> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>>>> @@ -45,6 +45,11 @@ properties:
->>>>>>         description:
->>>>>>           Maximum SPI clocking speed of the device in Hz.
->>>>>>     
->>>>>> +  spi-max-post-config-frequency-hz:
->>>>>> +    description:
->>>>>> +      Maximum SPI clock frequency in Hz achievable after controller-side
->>>>>> +      configuration.
->>>>>
->>>>> How did you implement my feedback?
->>>>
->>>> Three points from your feedback:
->>>>
->>>> 1. -hz suffix: added
->>>>
->>>> 2. Array property: I still lean towards keeping this as a scalar for
->>>> now, as we don't have a concrete use case for multiple values today, and
->>>> supporting two frequencies should be sufficient for the foreseeable
->>>> future. I had responded to this in the v4 discussion as well, you may
->>>> have missed that response.
->>>>
->>>> 3. maxItems: Since the property remains a scalar, I have not added maxItems.
->>>
->>> So how did you make this property scalar?
->>
->> The -hz suffix constraints the property to a uint32 scalar through the
->> DT schema framework's property-units.yaml.
-> 
-> Hm, where? I completely missed that, can you point me to the specific
-> line? I see clearly that it is not a scalar.
-> 
-> 
->>
->> Adding an explicit $ref or maxItems for a unit-suffixed property is
->> rejected by dtbs_check with:
->>    - "Standard unit suffix properties don't need a type $ref"
-> 
-> This I did not propose - the type is fixed.
-> 
->>    - "Scalar properties should not have array keywords"
-> 
-> Cannot reproduce it.
+Changes in v15:
+  - Split the large PIO mode PM and interrupt patch (v14 Patch 2) into 4 distinct,
+    single-purpose commits (clock helpers, suspended flag, teardown overhaul,
+    and autosuspend lockout).
+  - Reordered the commits so that PIO PM and interrupt bug fixes are applied
+    before disabling DMA on MacBook8,1, satisfying kernel bisection safety.
+  - Replaced raw pxa_ssp_disable() calls in PM suspend/remove with
+    pxa2xx_spi_off() to respect the MMP2 platform's SSE-disable quirk.
+  - Renamed return variables from 'status' to 'ret' in clock helper functions,
+    and added a cleanup commit to rename 'status' to 'ret' in the PM and probe
+    callbacks to conform to standard coding conventions.
 
-I overlooked this. You are right, and I apologize for the incorrect
-explanation.
+Changes in v14:
+  - Addressed feedback from Sashiko review on the v13 patchset for Patch 2:
+  - Updated commit message text for Patch 2 to accurately reflect that ssp_int()
+    uses drv_data->suspended and drv_data->clk_enabled instead of pm_runtime_get_if_active().
+  - Clarified in commit message that active SPI transfers hold a PM reference via
+    spi_controller.auto_runtime_pm (pm_runtime_get_sync()), preventing autosuspend
+    from racing while an IRQ handler is reading/writing FIFO registers.
+  - Clarified teardown ordering: pxa_ssp_disable() disables hardware interrupt generation
+    first, followed by setting drv_data->suspended = true and calling synchronize_irq(),
+    ensuring in-flight IRQ handlers drain completely before clock gating.
 
-The -hz suffix maps to uint32-matrix in property-units.yaml, not a
-scalar. Without 'maxItems: 1', the property can accept multiple values.
-I should have verified this before responding. Sorry again!
+Changes in v13:
+  - Addressed feedback from Sashiko review on the v12 patchset for Patch 2:
+  - Removed pm_runtime_get_if_active() check from ssp_int(). During PM state
+    transitions (such as RPM_SUSPENDING or RPM_RESUMING), pm_runtime_get_if_active()
+    returns 0 because the state is not RPM_ACTIVE. Returning IRQ_NONE during transition
+    without clearing a level-triggered interrupt would cause the interrupt controller
+    to endlessly re-invoke the handler in a loop.
+  - Rely on drv_data->suspended and drv_data->clk_enabled in ssp_int() instead.
+    If the clock is enabled (drv_data->clk_enabled == true), MMIO reads are 100% safe
+    and will not cause PCIe Completion Timeouts. If the clock is disabled or the device
+    is suspended, ssp_int() immediately returns IRQ_NONE to prevent unclocked access.
 
-I'll add 'maxItems: 1' in the next version.
+Changes in v12:
+  - Addressed feedback from Sashiko review on the v11 patchset for Patch 2:
+  - Preserved the if (!pm_runtime_suspended(dev)) check prior to enabling/disabling
+    the clock in pxa2xx_spi_suspend() and pxa2xx_spi_resume(). On non-LPSS platforms,
+    if a device was runtime suspended prior to system sleep, unconditionally enabling
+    its hardware clock during system resume forced the clock ON while the PM core
+    retained RPM_SUSPENDED. Restoring this check prevents PM state desynchronization,
+    avoiding power leaks on non-LPSS platforms.
 
-Thanks,
-Santhosh.
+Changes in v11:
+  - Addressed feedback from Sashiko review on the v10 patchset for Patch 2:
+  - Replaced pm_runtime_put_noidle() with pm_runtime_put_sync() in pxa2xx_spi_remove().
+    Using pm_runtime_put_noidle() dropped usage count without executing the runtime_suspend
+    callback or updating the device runtime status, leaving it stuck in RPM_ACTIVE. This
+    permanently leaked an active child count on the parent LPSS power domain, preventing
+    the parent from entering low-power runtime suspend. Switching to pm_runtime_put_sync()
+    ensures the runtime PM state machine properly transitions to RPM_SUSPENDED upon driver
+    unbind.
 
-> 
-> Best regards,
-> Krzysztof
+Changes in v10:
+  - Addressed feedback from Sashiko review on the v9 patchset:
+  - Fixed ssp_int() by explicitly returning IRQ_NONE when pm_runtime_get_if_active()
+    returns 0 (device inactive or suspending). This prevents reading SSSR and MMIO
+    registers when the hardware is powered down or in power transition.
+  - Resolved PM usage counter leak and double-increment for PIO mode devices. Removed
+    the redundant/unconditional pm_runtime_get_noresume() in pxa2xx_spi_probe() and
+    moved the single pm_runtime_get_noresume() call to occur strictly after
+    spi_register_controller() succeeds.
 
+Changes in v9:
+  - Separated the original "disable DMA and fix runtime PM" patch into two distinct commits:
+    1. spi: pxa2xx: disable DMA for Apple MacBook8,1 (PCI glue DMI quirk)
+    2. spi: pxa2xx: fix runtime PM and interrupt handling in PIO mode (core driver PM/IRQ fixes)
+  - Condensed commit messages for Patches 2 and 3 for clarity and brevity.
+  - Fixed checkpatch.pl warning regarding unnecessary braces in pxa2xx_spi_remove().
+  - Addressed feedback from Sashiko review on the v8 patchset:
+  - Scoped pm_runtime_get_noresume() in pxa2xx_spi_probe() and pm_runtime_put_noidle()
+    in remove/error paths using is_lpss_ssp(drv_data). This locks out autosuspend
+    for LPSS controllers operating in PIO mode without causing power regressions on
+    non-LPSS platforms (e.g. PXA25x, Intel Quark, CE4100) operating in PIO mode.
+  - Guarded MMIO accesses in pxa2xx_spi_runtime_suspend() with a drv_data->clk_enabled
+    check. If the clock has already been turned off (e.g. in pxa2xx_spi_remove() or
+    resume error path), runtime suspend skips hardware writes, avoiding unclocked
+    MMIO accesses and PCIe Completion Timeouts if runtime PM triggers after teardown.
+  - Cleaned up pxa2xx_spi_pci_can_dma() signature in spi-pxa2xx-pci.c by removing the
+    redundant `bool verbose` parameter.
+
+Changes in v8:
+  - Addressed feedback from Sashiko review on the v7 patchset:
+  - Fixed runtime PM resume interrupt storm in ssp_int() by checking drv_data->clk_enabled
+    instead of pm_runtime_get_if_active() == 0.
+  - Fixed PM disabled configuration (CONFIG_PM=n) support in ssp_int() by avoiding
+    active <= 0 early returns.
+  - Reordered suspend and remove sequences to invoke pxa_ssp_disable() before setting
+    drv_data->suspended = true and synchronizing the IRQ, closing a race window
+    where level-triggered interrupts could cause a storm.
+  - Masked hardware interrupt generation in pxa2xx_spi_runtime_suspend() via
+    pxa_ssp_disable() to prevent unexpected interrupts during clock enable.
+  - Avoided PCIe Completion Timeout system hangs on newer LPSS platforms (SPT, BXT, CNL)
+    by introducing pxa2xx_spi_need_lpss_restore() to restrict MMIO save/restore
+    loops to LPT, BYT, and BSW platforms (which lack an MFD parent).
+  - Fixed compiler error in pxa2xx_spi_probe() due to unused label.
+
+Changes in v7:
+  - Addressed feedback from Sashiko review on the v6 patchset:
+  - Fixed a race condition during probe by moving the request_irq() call after
+    the clock is enabled and the suspended flag is cleared. This prevents an early
+    shared interrupt from asserting and triggering an interrupt storm before the clock
+    is active to allow clearing it.
+  - Rectified the teardown sequence in pxa2xx_spi_remove(): first set drv_data->suspended
+    to true and disable SSP hardware-level interrupt generation (pxa_ssp_disable()), then call
+    synchronize_irq() to wait for in-flight interrupt handlers to complete, free the
+    IRQ, and only then disable the clocks. This eliminates both post-clock-disable MMIO
+    accesses and unhandled shared hardware interrupt storms.
+  - Clarified that the unconditional MMIO register access in pxa2xx_spi_suspend()
+    is safe because pm_runtime_resume_and_get() is invoked at the very beginning of the
+    suspend callback, guaranteeing the LPSS device is active and clocked during register
+    disabling/saving.
+  - Added spi_controller_resume() recovery to the error path of spi_controller_suspend()
+    in pxa2xx_spi_suspend() to prevent the controller from remaining permanently disabled
+    in the event system suspend is aborted.
+
+Changes in v6:
+  - Addressed feedback from Sashiko review on the v5 patchset:
+  - Added a synchronize_irq() call to the spi_controller_resume() error path in
+    pxa2xx_spi_resume(). This ensures any concurrent shared interrupt handlers
+    (which might execute because drv_data->suspended = false was set earlier)
+    finish executing before we disable the clock, preventing PCIe timeouts.
+  - Checked and confirmed that active == 0 is the correct check in ssp_int(). If
+    Runtime PM is disabled, pm_runtime_get_if_active() returns a negative error
+    code (like -EINVAL). Changing this check to active <= 0 would cause a
+    regression on non-PM configurations because the handler would always return
+    IRQ_NONE. Under disabled Runtime PM, the hardware clock is kept constantly
+    active, so it is safe to proceed and read registers when active < 0.
+
+Changes in v5:
+  - Reverted runtime PM configuration in spi-pxa2xx-pci.c to be unconditional.
+    This prevents the usage count from leaking by +1 on unbind for PIO mode,
+    while letting pxa2xx_spi_probe()'s pm_runtime_get_noresume() and
+    pxa2xx_spi_remove()'s pm_runtime_put_noidle() handle the permanent
+    autosuspend lockout for PIO devices symmetrically.
+  - Removed the pm_runtime_forbid() call from pxa2xx_spi_remove(). This resolves
+    reference leaks for non-PCI platform devices where pm_runtime_allow() was
+    never called during probe.
+  - Delayed clearing the drv_data->suspended flag on resume until after LPSS reset
+    deassertion and private register restoration are complete. This prevents a
+    shared interrupt from firing during resume and attempting to read the SSSR
+    register while the LPSS block is still held in reset.
+  - Set drv_data->suspended = true on spi_controller_resume() failure path in
+    pxa2xx_spi_resume(). This ensures that subsequent shared interrupts do not
+    attempt register access once the clock is disabled.
+
+Changes in v4:
+  - Track clock state using drv_data->clk_enabled via pxa2xx_spi_clk_enable() and
+    pxa2xx_spi_clk_disable() helper functions. This guarantees clock enable/disable
+    symmetry, preventing clock disable count underflows and framework warnings on S3
+    resume or runtime autosuspend error paths.
+  - Introduce drv_data->suspended flag to protect MMIO access in ssp_int() during
+    system suspend and runtime suspend transition windows.
+  - Initialize drv_data->suspended = true early in probe(), clearing it only after
+    the clock is successfully enabled. This completely prevents shared interrupt
+    handler races during device probe when the clock is still off.
+  - Call synchronize_irq() after setting drv_data->suspended = true in suspend and
+    runtime_suspend. This ensures any running shared interrupt handlers finish
+    executing before the clock is physically turned off.
+
+Changes in v3:
+  - Avoid PM reference leaks on probe bind/unbind cycle by keeping probe PM
+    configuration symmetric.
+  - Prevent userspace (PowerTOP, udev) from overriding runtime PM settings when
+    DMA is disabled by holding a PM reference via pm_runtime_get_noresume()
+    in pxa2xx_spi_probe() and dropping it in remove/error paths.
+  - Check device status in the shared interrupt handler ssp_int() using
+    pm_runtime_get_if_active() instead of pm_runtime_suspended(). If the device is
+    suspending (RPM_SUSPENDING) or suspended, ssp_int() immediately returns
+    IRQ_NONE to avoid reading unclocked MMIO registers during power transition.
+  - Adjust the driver teardown order in pxa2xx_spi_remove() and probe error paths:
+    always call free_irq() to unregister the handler before calling
+    clk_disable_unprepare() to turn off the clock, preventing concurrent
+    interrupts from reading registers while the clock is disabled.
+  - Avoid duplicate can-DMA pci_info() logging by checking the pre-computed
+    enable_dma status in probe and passing a verbose flag to can_dma().
+
+Changes in v2:
+  - Addressed feedback from Mark Brown on the original v1 series.
+  - Used drv_data->lpss_base together with relative offsets rather than
+    hardcoding absolute MMIO offsets that vary between LPSS IP revisions.
+  - Moved the register save block in suspend to after the controller is quiesced
+    (after spi_controller_suspend() and pxa_ssp_disable()).
+  - Store the context array lpss_priv_ctx[6] inside struct driver_data instead of
+    struct pxa2xx_spi_controller. This keeps the changes entirely local to the
+    core driver, preventing symbol version mismatches (disagrees about version
+    of symbol) for other subsystem components (e.g., spi-pxa2xx-platform.ko).
+  - Restrict the save/restore loop to the first 6 LPSS private registers
+    (offsets 0x00 to 0x14). Offsets beyond 0x14 (except CS control at 0x18, which is
+    re-initialised by lpss_ssp_setup()) are reserved/unimplemented on LPT
+    platforms (such as MacBook8,1), and writing to them triggers a PCIe
+    Completion Timeout causing a system freeze.
+  - Added named constants for LPSS_PRIV_RESETS and the de-assert value.
+  - Wrapped S3 suspend/resume with pm_runtime_resume_and_get() and
+    pm_runtime_put_autosuspend() respectively.
+
+Shih-Yuan Lee (7):
+  spi: pxa2xx: introduce clock enable and disable helper functions
+  spi: pxa2xx: introduce suspended flag for interrupt synchronization
+  spi: pxa2xx: overhaul teardown and suspend sequence using
+    pxa2xx_spi_off
+  spi: pxa2xx: lock out runtime autosuspend for Intel LPSS SPI in PIO
+    mode
+  spi: pxa2xx: disable DMA for Apple MacBook8,1
+  spi: pxa2xx: restore LPSS private register state on S3 resume
+  spi: pxa2xx: rename local status variable to ret
+
+ drivers/spi/spi-pxa2xx-pci.c |  35 +++++-
+ drivers/spi/spi-pxa2xx.c     | 225 +++++++++++++++++++++++++++++------
+ drivers/spi/spi-pxa2xx.h     |   4 +
+ 3 files changed, 224 insertions(+), 40 deletions(-)
+
+-- 
+2.39.5

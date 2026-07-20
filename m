@@ -1,79 +1,121 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574A130C15A;
-	Mon, 20 Jul 2026 17:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331393B8BB9;
+	Mon, 20 Jul 2026 17:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784566861; cv=none; b=Z/ky/4XwWGOStemJvn7ZsHu+5VgMvvyQ1fSl3DR7khzrCoj15pJYXy49gGjmWEQdA/cqP0ixx3AyBF4qyWvo7Pzqg0QTp+K9UzAKkKOvwZVbyH/S51d5S4t4f/opajg9RmAao1JaZlK1UdkV4cKJRaXpU7rDPaIuf0XbqInviBs=
+	t=1784567922; cv=none; b=VdUtgWYC0EX1RY75f7Q81sLn8OMV68eK/QRbz8VFJ1qtT4Jd0VicLyQ1s4tWpGVOoXG6iknBUjeuj7iM6cQKi2/MzhuCnRK8mUExPgBWRjLckY+gDXoXcgU0nbaQE8T8ReZKuMizT0JBYxuOv0AOcxw9LJthngKh4qn1aHmVzEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784566861; c=relaxed/simple;
-	bh=ZnocIwDopiqqJVtg7Vh0BtT5txebzTbq20nDoe2yfWQ=;
+	s=arc-20240116; t=1784567922; c=relaxed/simple;
+	bh=yFKSRh6QKeWhRL2A0QWU6u+qCL6rqWanOY2zBQa22jM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S9qkkmpZDY6vP34kQ7Q1+gA+VuSiREXRBgTF7JYoXeKw7UYluOUGji6R1pif5JzjUeoWo2zMIxsipsy/SHeyxhBDRo83ppv/7msH63wp0bOT66aSASSmrOgFv7fC5ik7khtvq8ZHRVfdpUwxmVkO7AYnufWhIpiThWXIgyWMEaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NO3JayVd; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NO3JayVd"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id ADC061A10FF;
-	Mon, 20 Jul 2026 17:00:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7C80260360;
-	Mon, 20 Jul 2026 17:00:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2CC2111BD0382;
-	Mon, 20 Jul 2026 19:00:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1784566857; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=mZZOF6F/+6qbNKDZNrs6o2rZDEXs+kob5JewkcsaTMI=;
-	b=NO3JayVdQ3CLT/6I5bhNFXPmsyyk3gjtLO74861rznSjjAiL0jbKD4m/9c7UTOuXhyAZIE
-	hK/5x73D6QSBO6KzbYGfA8N2DK7QfB3w0lUQaN293kooZPGiZwXbqtSsOuOm0b/2gdyxe5
-	uoIfaTD8Y7wFX5SCHtuKQrQjcTq+1VykLD3I+wGic9mG0oGlfuOiV4pgz2WvJJABCwuE7i
-	fiRRx9Mq54xB5lnICoVgjRkZ+SYxwhArSIUOW8i5Hx2K2DiXxVsaKuEx+80N3eA+Yb8DZz
-	9FlCpISUFqqIZ+0NJrAH3crNikvFUwc3QiLr1vU1wpoqTvn1YUpNxlpOMtKdaw==
-Date: Mon, 20 Jul 2026 19:00:52 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Harshit Shah <hshah@axiado.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>, Jan Kotas <jank@cadence.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Mathias Nyman <mathias.nyman@intel.com>,
-	Swark Yang <syang@axiado.com>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org,
-	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 4/8] dt-bindings: i3c: cdns: add Axiado
- AX3005 I3C variant
-Message-ID: <178456684519.97914.11616437803490580349.b4-ty@b4>
-References: <20260716-upstream-axiado-ax3005-upstream-v3-4-c429095143ec@axiado.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=esgY6MJZGEcw5+KDq8WF5a5n5STs0W2ZVd1vTSdg0Rvbek5vutgpJl8Z2iu1OOoPaVjOb18kqlNJ0NejJI7ooVHzZsQXSHDDU1spW34C+M2GyOlO6M5eEVPFqC8hrUzdzjVXb37JA33OPP5+yoXE6NhQNFCkTvHE0tYVuHrLa3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628E11F000E9;
+	Mon, 20 Jul 2026 17:18:37 +0000 (UTC)
+Date: Mon, 20 Jul 2026 18:18:34 +0100
+From: Mark Brown <broonie@debian.org>
+To: Shih-Yuan Lee <fourdollars@debian.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v16 2/7] spi: pxa2xx: introduce suspended flag for
+ interrupt synchronization
+Message-ID: <862b86bb-6c7d-487c-b790-fa5d5a5217b2@sirena.org.uk>
+References: <20260720162117.32304-1-fourdollars@debian.org>
+ <20260720162117.32304-3-fourdollars@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wDBoPWn34SqK+tZE"
+Content-Disposition: inline
+In-Reply-To: <20260720162117.32304-3-fourdollars@debian.org>
+X-Cookie: Caution: Keep out of reach of children.
+
+
+--wDBoPWn34SqK+tZE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260716-upstream-axiado-ax3005-upstream-v3-4-c429095143ec@axiado.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 16 Jul 2026 20:51:11 -0700, Swark Yang wrote:
-> Add binding for Axiado AX3005 I3C master. So far, no changes
-> are known, so it can fall back to the cdns,i3c-master compatible.
+On Tue, Jul 21, 2026 at 12:21:11AM +0800, Shih-Yuan Lee wrote:
+> When a shared interrupt line is used, the interrupt handler ssp_int()
+> can be triggered by other devices sharing the line. The handler must
+> ensure it does not access the SSP controller registers via MMIO when
+> the device is powered down or when its clock is gated; otherwise, it
+> will cause PCIe Completion Timeouts and system hangs.
 
-Applied, thanks!
+> Currently, ssp_int() guards MMIO access using:
+>     if (pm_runtime_suspended(drv_data->ssp->dev)) return IRQ_NONE;
 
-[4/8] dt-bindings: i3c: cdns: add Axiado AX3005 I3C variant
-      https://git.kernel.org/i3c/c/0dbcbd4c0b7a
+=2E..
 
-Best regards,
+> Introduce a custom 'suspended' boolean flag in struct driver_data to
+> track the device's suspended state across all PM transitions. Check
+> both 'drv_data->suspended' and '!drv_data->clk_enabled' in ssp_int()
+> to return IRQ_NONE immediately before any MMIO access is attempted.
+
+>  static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
+>  {
+>  	if (drv_data->clk_enabled) {
+> -		clk_disable_unprepare(drv_data->ssp->clk);
+>  		drv_data->clk_enabled =3D false;
+> +		clk_disable_unprepare(drv_data->ssp->clk);
+>  	}
+>  }
+
+It's probably better to avoid extra changes like this, it makes the
+patch bigger and a bit harder to review.
+
+> @@ -743,12 +743,12 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
+>  	u32 status;
+> =20
+>  	/*
+> -	 * The IRQ might be shared with other peripherals so we must first
+> -	 * check that are we RPM suspended or not. If we are we assume that
+> -	 * the IRQ was not for us (we shouldn't be RPM suspended when the
+> -	 * interrupt is enabled).
+> +	 * The IRQ might be shared with other peripherals or trigger during
+> +	 * power state transitions. First check if device is suspended or if
+> +	 * clock is disabled; if so, return IRQ_NONE immediately to avoid
+> +	 * unclocked MMIO reads.
+>  	 */
+> -	if (pm_runtime_suspended(drv_data->ssp->dev))
+> +	if (drv_data->suspended || !drv_data->clk_enabled)
+>  		return IRQ_NONE;
+> =20
+>  	/*
+
+The local flags *must* be racy - I'm not seeing any locking which
+protects them, nor anything that stops something else dropping a runtime
+PM reference and powering things down after we checked here.  There's a
+helper in the power management code pm_runtime_get_if_active() which I
+think is what you want here, it'll tell you if the device is runtime
+suspended and if the device is active it'll ensure nothing else drops
+the last reference while we're running.
+
+--wDBoPWn34SqK+tZE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpeWGkACgkQJNaLcl1U
+h9DXnQf+OfcZGh9JPbb3NhXFSyLk28Jh+30oXYLKXqLn4xgn4eVVdAujTZ8qrw8E
+QjDYZ+bW6ZOSHv8mBkYuT9BFEacsoY5qTR7SzK3J9uFYXCQe2uHZ6koKlqwK03eN
+mCdCsh5O3UQo8i7PZOb/xYZrFYCeadoHg0KnxWD3PwgfFmqCmZc0BMqIDje5DCPZ
+swwdd6N883etfknEBvfM/YCHWqAGEzB4hyCnpZlfPeOtKFCnPjxiiEcvCuC1w/Y3
+0t55IWgYL1oHk0jIig8qP6Fed8LCjD1DWzEzDZUg5LjKDiJbydbV5xmnkEZtLBYG
+QIdBYcqMmjcwy6cyoNNHYBTTvMbgAA==
+=KXgo
+-----END PGP SIGNATURE-----
+
+--wDBoPWn34SqK+tZE--

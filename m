@@ -1,50 +1,50 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E2B43C7D6
-	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 16:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C43943E4B5
+	for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 16:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784564495; cv=none; b=bsjNYT+yB6tGQwgP9BCoObuxEyQ30aJgEhWTcKFcHEBMpUWdj5rjLkNBxLxjfAiY8hfGXwBWNbWhAGzkRqnARL6hWNY+12z6dZby9d+RdeD/vHnSXlbW/3mXB/cIRCIg5gBWdUnITdw9/fFpn6wIZLJHM1EpoQvUbbFJrjihPW4=
+	t=1784564498; cv=none; b=mbnnfKqmpDeCs600gWrPU1OffPSqI/DBq4uT+zFQcZjMTcTHZ4LrOWgZ4nj9LgkcTsc18SHYkkIrzuq6yV2WT/vukfBw7pCmjUpndQWdbyyEEfCxcEtw+9/IJjPjgeQW6QQFq5p+KYMfm+6t6B6vynd0zkB4IkJzpQRUtlqKWdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784564495; c=relaxed/simple;
-	bh=UVo5c4lR5R7fmIYod3yy0OHjJHPgUxAKWu1/O3B+npo=;
+	s=arc-20240116; t=1784564498; c=relaxed/simple;
+	bh=vMxi0GBCmk6kSxxY3msXn6b8DUdRebKtLoidNsiWryg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kzg4Lsex0zgvwV3k1sdWdflZplcS+Nuz2XnawcP07X4i0vRfKerq70ttqVR0drbcvIXKJuhtdd2+EY15KsbC7wjKcRPG1aQhoitUA/XWaQxATwXt1AH6inqYQRcHEu0awwRCsQGBlwpVZ1mE7VahZjr7UWTRzX+M4jtc8uoNPps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=lPC1UPRWFGf7t1oE+lxLe2q2KNSgEZjhOGb/CKJQ6Hw6XWT00QH1as/y49tSRqoEJwkg0EpRa9vvmbJZTux3zEkd+kKdPBDkE+UcJxBA02HqTbNTl+unUOGHIlg7XYJ4kCzsZG/jxU2QBatVBfTa6F7YUrxbom5c6Rk67Fl+btw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cee9b74ee1so63493705ad.3
-        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 09:21:33 -0700 (PDT)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc7e86e7aeso75452435ad.2
+        for <linux-spi@vger.kernel.org>; Mon, 20 Jul 2026 09:21:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784564493; x=1785169293;
+        d=1e100.net; s=20251104; t=1784564496; x=1785169296;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aLETP574W//JLh+FTkzjcKwtbtDnoO3wAXCceho0s4c=;
-        b=ljrbLgZRqE7pQgccLNllO5zHZodSpNTlJU9c+8Eot+rD1aIN8wczmcETUtLErnuPys
-         /iyzYBGaa/868DfHbIsenAd03ozGA1tZe4e6XBqAToz/prUXNisuXr2MuLY6vO5ZozLe
-         X9jWQFhPEamhtpdsef1UwgFY4RZe4OLvDJFO9x1VGzM9STUGpVWpQ3fC8MYkC9crVzqQ
-         gLM8h3VTvyQgYTWGFTYtKwmkhMJgEZsAf7fPe8OK5OWfFs+TsWjh66/uWRWt2kH1d3wl
-         snjkEabgd7DNZWGMgPotu74+4EV3VF2funi/xGaeJaTMKXj2EgXrAIrqjINaXsZzwT3d
-         xCYQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqJZFTv7OuAlgLIA/Eyv7iQNWWLs6m7ORW5sk4oykch+Ma7Fe7qvR7YLj78zbqO3V7SUKvkj/A0c+k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0B05RHIQ9iev9rY3cl5rvp7LrKUizzRVnK0Q8vs/toZC+uIIy
-	4PfVcPacf9nERSRy/B5y59i8LaN8bIE7GEWBl9N5sb38uig2XLUiFFw=
-X-Gm-Gg: AR+sD13rHTEPWwf1ePGqfulwf49NFCG9H+fi9JOzpLb7lENWJGgMsa9FEX8dK1mO4Mo
-	3AQrRnKF9riXhiSyNcqM07AeD1nx+p8O0NWC3eyzaPxutq0HdjnNOZH6hLIYnkqMUNs0Z0m9rI+
-	rrlXqalk7S7y8LilRKYyXBlq6x0ud3ON9rghKFGI4sJALU8e2HeqkdzHpQjUYK9oZDXcQE/ZAuB
-	Smu4s8TdMB3sdqOgS57x+2niU+ChIbBuWLd5MTBSwuytr186JJgeB5uWf/x0DFtRKIVgvPWzqe0
-	Ab/JtwGVBcZsNppNjhzDEcvI7kBw/w3z9ZlGwEiUKJECf9ISyh92TmGHh/6tubVJEQLjNkdIixP
-	8vflDRTUuzXm5T5kiguR7+abWINaXOxoX4KFpVfaRV8Hwl4yrRXs+Xd0v/unD1sKYZ0OES1mkJH
-	JcxlXgg7tyUZ5ytKLoIdu/Rbm9JUXK81rys9lNSbS+8SOZdfHLRbQR2+MIdivPP8fm11AOAhqX3
-	kYpVOYmPohB0T7Oa2tnsCG8c7YS
-X-Received: by 2002:a17:902:fdae:b0:2ca:ecf6:910e with SMTP id d9443c01a7336-2cf3466a93fmr166932475ad.0.1784564493132;
-        Mon, 20 Jul 2026 09:21:33 -0700 (PDT)
+        bh=lgLs8NK0XHHTysnGduh8WTtXMi/Zls+hjiJh2kwYBOI=;
+        b=KwfA2DjuJlGT/YpXVPgjgc+M+oj8VJXJkdAkTdIDQpbFA6RsTBCoZauWoWKH8+7jWz
+         XF4aAIWxh2/vIBpcSct5ObOLiVUkeuTj1tUYVFK4dSj2hxNMPFo8ijLJEsPRDMKpG8re
+         ZGLTdBQRbaT4RHep/12MES5d+i9bH6HdoDA8QBBoM1SI2Mr8EOVfokIXv4cOiD6hMG8j
+         yjZHUDABMIj4GoDTIwCvjHl6dSJZ4EmgTKvFuUeRtPM1mRieAiaYWSyTU/5LjpEctatW
+         3aCu1Ln85J5nq2ESwNhPnmHFyIc5qlWasRZUqrNRoZ9hGlv++jljWjKsuAoU1rr0zcre
+         trkA==
+X-Forwarded-Encrypted: i=1; AHgh+RrNQevgPR5QdmrKWIRbP2tNPlTz7YLT7kZVODgnJxjMNJXWlERUrHMsG2ltPOYS+5kb00hMLJQ1t5Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbREolwQ6ub7XJFRY2cP4IyrOInZJvnsiWa3vSTelbDI1tTk+s
+	QQubcC8SITjEDeteHMVvH39fjzpGuWQ0g2xp39mHBCMk6LFIs/YnLyk=
+X-Gm-Gg: AR+sD12eD+BAXFk/i+c5heEia25ublvs8HBIDo2mgvBfk43/4HyFrwzXZRLDKZ5bqRL
+	N5Ig/epHKCY524fB747Pl8x3EMBnEkWdWxy/+fXwMdKOkXOjBRIJJqYHrSEu9FGa5YnLC2QmANw
+	9R1ghiwiA+9+5GFUx6BorJ2HBaSCzPQK1kbBLViOoPRyg7XmI80IzZzeClodAKPDPdltDv/1HzY
+	zpk8iaNthz1q2rBdWbkG60yPJ3HadY6CvxpSYKBKXmwKr8rZm4cus5ew5h/wis6K5CfZpAgoYHH
+	iXxtGJpUY0LaESS3VoYOEFjxrkdJPAlbxAcK7YFXPNGpZlowPH6SCFOVaTk8WgVzXTS02g+HbSP
+	Y1/zfvQBoL4NXcz0cI7AXq161AH8An0GxLLIsh3Y7kmwjH+eZsqe0imzT/75b0bnb0waXgXaQpv
+	mMFWUEdOwChPogTrtlJJJe9qtzAI5Ue+sXRLPF1lHAQpp4djNA2WM0jHv6GCXr2611IEZ3wDn7W
+	gLw36rE1u/3a3j5pQ==
+X-Received: by 2002:a17:903:2350:b0:2c6:a981:b591 with SMTP id d9443c01a7336-2cf349961dcmr158135355ad.30.1784564495679;
+        Mon, 20 Jul 2026 09:21:35 -0700 (PDT)
 Received: from penguin.tail0a1999.ts.net (61-228-16-100.dynamic-ip.hinet.net. [61.228.16.100])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm58467385ad.80.2026.07.20.09.21.30
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cf3479463bsm58467385ad.80.2026.07.20.09.21.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jul 2026 09:21:32 -0700 (PDT)
+        Mon, 20 Jul 2026 09:21:35 -0700 (PDT)
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
@@ -57,9 +57,9 @@ Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v16 4/7] spi: pxa2xx: lock out runtime autosuspend for Intel LPSS SPI in PIO mode
-Date: Tue, 21 Jul 2026 00:21:13 +0800
-Message-Id: <20260720162117.32304-5-fourdollars@debian.org>
+Subject: [PATCH v16 5/7] spi: pxa2xx: disable DMA for Apple MacBook8,1
+Date: Tue, 21 Jul 2026 00:21:14 +0800
+Message-Id: <20260720162117.32304-6-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260720162117.32304-1-fourdollars@debian.org>
 References: <20260720162117.32304-1-fourdollars@debian.org>
@@ -71,54 +71,93 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When operating in PIO mode on Intel LPSS SPI controllers, runtime PM
-autosuspend clock-gates the hardware block when idle. On subsequent
-transfers, MMIO accesses to trigger resume are performed before the runtime
-PM state machine can wake the controller, causing PCIe Completion Timeouts.
-This issue does not affect DMA mode, where the DMA engine holds the required
-resources, nor does it affect non-LPSS controllers.
+On MacBook8,1 (early 2015 12" MacBook), the LPSS SPI controller at
+00:15.4 suffers from hardware DMA handshake failures and interrupt
+routing bugs, causing keyboard/touchpad transactions to fail when
+DMA is enabled.
 
-Lock out runtime PM autosuspend for LPSS SPI controllers specifically
-when operating in PIO mode.
+Move the forced PIO mode DMI quirk to spi-pxa2xx-pci.c (the LPSS host
+controller PCI glue driver) to avoid layering violations in client
+drivers (such as applespi).
 
-Acquire a runtime PM reference via pm_runtime_get_noresume() in
-pxa2xx_spi_probe() after registration, and release it via
-pm_runtime_put_noidle() in pxa2xx_spi_remove() before hardware teardown to
-ensure the runtime PM reference held in probe is released without invoking
-runtime_suspend on already-unclocked hardware.
+Add an explicit DMI match table for MacBook8,1 and a module parameter
+spi_pxa2xx_force_pio to allow forcing PIO mode on demand.
 
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=108331
 Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
 ---
- drivers/spi/spi-pxa2xx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/spi/spi-pxa2xx-pci.c | 35 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 6bfd3382acc3..34241a6742eb 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1473,6 +1473,9 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 		goto out_error_irq_alloc;
- 	}
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index cae77ac18520..31bdaa096d9e 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -18,9 +18,14 @@
  
-+	if (is_lpss_ssp(drv_data) && !platform_info->enable_dma)
-+		pm_runtime_get_noresume(dev);
+ #include <linux/dmaengine.h>
+ #include <linux/platform_data/dma-dw.h>
++#include <linux/dmi.h>
+ 
+ #include "spi-pxa2xx.h"
+ 
++static bool spi_pxa2xx_force_pio;
++module_param_named(force_pio, spi_pxa2xx_force_pio, bool, 0444);
++MODULE_PARM_DESC(force_pio, "Force PIO mode (disables DMA) for SPI transfers. ([0] = disabled, 1 = enabled)");
 +
- 	return status;
+ #define PCI_DEVICE_ID_INTEL_QUARK_X1000		0x0935
+ #define PCI_DEVICE_ID_INTEL_BYT			0x0f0e
+ #define PCI_DEVICE_ID_INTEL_MRFLD		0x1194
+@@ -93,6 +98,32 @@ static void lpss_dma_put_device(void *dma_dev)
+ 	pci_dev_put(dma_dev);
+ }
  
- out_error_irq_alloc:
-@@ -1495,6 +1498,13 @@ void pxa2xx_spi_remove(struct device *dev)
- 
- 	spi_unregister_controller(drv_data->controller);
- 
-+	/* Release the PM reference held in probe for LPSS PIO mode before
-+	 * hardware teardown so the PM core does not invoke runtime_suspend
-+	 * on already-unclocked hardware.
-+	 */
-+	if (is_lpss_ssp(drv_data) && !drv_data->controller_info->enable_dma)
-+		pm_runtime_put_noidle(dev);
++static const struct dmi_system_id pxa2xx_spi_pci_dmi_table[] = {
++	{
++		.ident = "Apple MacBook8,1",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "MacBook8,1"),
++		},
++	},
++	{ }
++};
 +
- 	/* Disable SSP interrupt generation on hardware level while clock is active */
- 	pxa2xx_spi_off(drv_data);
++static bool pxa2xx_spi_pci_can_dma(struct pci_dev *dev)
++{
++	if (spi_pxa2xx_force_pio) {
++		pci_info(dev, "Forcing PIO mode (disabling DMA)\n");
++		return false;
++	}
++
++	if (dmi_check_system(pxa2xx_spi_pci_dmi_table)) {
++		pci_info(dev, "MacBook8,1 detected: disabling DMA to force PIO mode\n");
++		return false;
++	}
++
++	return true;
++}
++
+ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ {
+ 	struct ssp_device *ssp = &c->ssp;
+@@ -166,7 +197,7 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ 
+ 	c->dma_filter = lpss_dma_filter;
+ 	c->dma_burst_size = 1;
+-	c->enable_dma = 1;
++	c->enable_dma = pxa2xx_spi_pci_can_dma(dev);
+ 	return 0;
+ }
+ 
+@@ -238,7 +269,7 @@ static int mrfld_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ 
+ 	c->dma_filter = lpss_dma_filter;
+ 	c->dma_burst_size = 8;
+-	c->enable_dma = 1;
++	c->enable_dma = pxa2xx_spi_pci_can_dma(dev);
+ 	return 0;
+ }
  
 -- 
 2.39.5

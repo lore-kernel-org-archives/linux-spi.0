@@ -1,64 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B60A386C1C;
-	Tue, 21 Jul 2026 20:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A72D8376;
+	Tue, 21 Jul 2026 20:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784665893; cv=none; b=QGLposBphdBHIh1ucmaiUmwUENX9QYN41964aQGtk4rhwKAu+D7towK+VN24iPhWe9nKJBuBP7V+xf+JJnCX1ULkkHaAL2EAYkNK2kv0dSe06Yr44q4zxvGPQmVeExOIiRUt2xMxgc3/v5qAmfmrIEGuv/tOGlPbrEVMr27Oc9M=
+	t=1784666523; cv=none; b=OxnFHaMZEB26VT0sMMnSMayPU8v4vDzwUiI4pZp4MUPovw2jHkvx4GKo0KpCaFFhwXGwY8CyMUA4EmIxNNICBurw9p1EQf+TZdY277vthfqbPxQg/a36LGzd6nyPflSGTbglC9pVj2H/dNer3KwyCmy1uesL3XvXQzRFcQUxb9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784665893; c=relaxed/simple;
-	bh=mELpT8EvpAt86dh+Sl+XOiKX3cuLi6TaXGjWeybKb3c=;
+	s=arc-20240116; t=1784666523; c=relaxed/simple;
+	bh=skSQxPyPM6bJlDc9hM3ypyDg9GlQqaAJt8Rd7J/fRrM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jl6sE6g+jVo11XrZhU8nkaALJxio0TwIABbvlHDzJfPUJvkjVzTWKr0ZvVj88Sf3fnXWZlPIfD0OPIH9POR8CzDAoMzhiwbrgqfNHU7bPFy0nz9/7T5KfEUAAQh/RkboYpjjrv8fSh2o1w8dcD01//23R4tE3Xrse36NRzvETRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iP4XN+Ig; arc=none smtp.client-ip=198.175.65.20
+	 Content-Type:Content-Disposition:In-Reply-To; b=d2KDPFSwdSMuWkGdI0NuS0Jst5npEUVd02gG4+qjwTovTkUSxQHrA0sbzK5g8pPtxwuS23s/wlwGVx+cM1ZP4TfdwpTLNPInrNoG7Ri4RZkcnG3wvw98UDDNwoPrw6tFoWyL98Y6y7487jmrh9H62YdPA/J5sQPRmgdz/GI1g+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eRz05PKB; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iP4XN+Ig"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eRz05PKB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1784665891; x=1816201891;
+  t=1784666523; x=1816202523;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=mELpT8EvpAt86dh+Sl+XOiKX3cuLi6TaXGjWeybKb3c=;
-  b=iP4XN+Igw1puPa+uAtQgahHWgeJPBRGQPWOVSS2PPn1dSLvTZC6fZfoL
-   +VY0PY6Ihacw+Llux7Kd8Lf7vG9M8kCm1ZJL3FflZHzyJo3A746TjC7g/
-   VIOpWjyv2ANzhqHWTA36h/2evu0J30PjPJDGYeDpyat2kOUk+6Gw/pnjZ
-   SMrbkNmpBOMWRD1AI0dli7BCWk5HgkRxIxpc/R81tmXVKKruBug10WezN
-   j0fqcrGg3FWEdHO9gKxQlv13P61Z/hJizMUy9cclJUFbzlOv2nlPkkXJO
-   5pyJVSiLE7cQJ1mI5lPMXQ7i2a7/bGN5jNrzz+vV4nZHXzVGfrEaQj1gf
-   w==;
-X-CSE-ConnectionGUID: f6WpGwgeQ4uHKJFu5usYyw==
-X-CSE-MsgGUID: 1QvZ1EMhRmC4yUiomeA2KA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="85046553"
+  bh=skSQxPyPM6bJlDc9hM3ypyDg9GlQqaAJt8Rd7J/fRrM=;
+  b=eRz05PKB/XNHGSd99DqTtx6aAwOrk3QfOwVda4mRl2G0x1iXI3BCGO77
+   /4POFwf9o9JNFul5uKilP8fIjw+LXeLxIHdOAnRVPuBqSRLHDgDuYdMEk
+   vHHyFb6T+8O7I0Hzb4ZRo9VNHL80yAcM7x4ibv0wtyyRru8qYwZkj232M
+   X1iJd4SkT8i9GH8/v5pHOkCXEBmp4H8WkFa1uH7vthacXbBgd6si9CUxW
+   EScSXSiC5iwLanI1HWqx6yRi9K/cTHcU2QNf1PznVHQASVpp27GJMnXlh
+   dcMVH/yRFCTsNsusDjj+ouYQYNwc44zT/WeyqLEkrFZyhHk1BqxEYtNam
+   Q==;
+X-CSE-ConnectionGUID: pisXMLLyRKexLStIiRwSew==
+X-CSE-MsgGUID: x4vMJg56Q26Z9seBtxMPbQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="96798226"
 X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="85046553"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 13:31:30 -0700
-X-CSE-ConnectionGUID: iT9pIwoOSTusznNhX95K7g==
-X-CSE-MsgGUID: 1l8sK7okT1O+xBqBdpftvA==
+   d="scan'208";a="96798226"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 13:42:03 -0700
+X-CSE-ConnectionGUID: xcyV9Z45RoqNUi+xXhBnVw==
+X-CSE-MsgGUID: O43iy8aXT3eVMe6FOM7Brg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; 
-   d="scan'208";a="257940865"
+   d="scan'208";a="258537927"
 Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.67])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 13:31:27 -0700
-Date: Tue, 21 Jul 2026 23:31:25 +0300
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2026 13:41:59 -0700
+Date: Tue, 21 Jul 2026 23:41:57 +0300
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
-Cc: Mark Brown <broonie@kernel.org>,
+Cc: Mark Brown <broonie@debian.org>, Lukas Wunner <lukas@wunner.de>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>,
+	Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
 	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v16 5/7] spi: pxa2xx: disable DMA for Apple MacBook8,1
-Message-ID: <al_XHWJktSD_MWHe@ashevche-desk.local>
+Message-ID: <al_ZlTkEUHj-X1YS@ashevche-desk.local>
 References: <20260720162117.32304-1-fourdollars@debian.org>
  <20260720162117.32304-6-fourdollars@debian.org>
- <al52kpB1hklx5guG@ashevche-desk.local>
- <CAAT15mOxrJxb+jRf1P=yu=vXgDj9kRhrdSLkB8v4tEbhHOZ+Pw@mail.gmail.com>
+ <al81PmK1UMr2g8p-@wunner.de>
+ <CAAT15mPuO71WbbS2ZpWjceCVj3FUTqHLi3wbbeV7B33JHbPRsQ@mail.gmail.com>
+ <CAAT15mPrwAqLmFVF730G+iJugzNzaT=HDj_7G5-wXbhBNU7ANg@mail.gmail.com>
+ <f7449a69-98e3-41c0-b535-847b8c520e10@sirena.org.uk>
+ <CAAT15mNppZ6nPQ9a8Hp54XK4BXndfv+G24n4VeQ1X8GOk6fSyQ@mail.gmail.com>
+ <CAAT15mMc73=cnqx7jvPXWjVUuzr-E54qh5+BR3d_G6m3NoXrng@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,50 +72,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAT15mOxrJxb+jRf1P=yu=vXgDj9kRhrdSLkB8v4tEbhHOZ+Pw@mail.gmail.com>
+In-Reply-To: <CAAT15mMc73=cnqx7jvPXWjVUuzr-E54qh5+BR3d_G6m3NoXrng@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Tue, Jul 21, 2026 at 10:49:17PM +0800, Shih-Yuan Lee (FourDollars) wrote:
-> On Tue, Jul 21, 2026 at 3:27 AM Andy Shevchenko
-> <andriy.shevchenko@intel.com> wrote:
-> > On Tue, Jul 21, 2026 at 12:21:14AM +0800, Shih-Yuan Lee wrote:
+On Wed, Jul 22, 2026 at 12:09:44AM +0800, Shih-Yuan Lee (FourDollars) wrote:
+> On Tue, Jul 21, 2026 at 11:26 PM Shih-Yuan Lee (FourDollars)
+> <fourdollars@debian.org> wrote:
 
-...
-
-> Thank you for the review and feedback.
+> I just tested the Initrd ACPI Table Override on the machine. Here is
+> what I found.
 > 
-> Regarding your question about why DMA fails on this hardware, I have
-> just sent a detailed reply to Lukas in this thread outlining our
-> physical verification findings. In short, I confirmed that the
-> DMA controller's physical interrupt line is not functioning on this
-> motherboard,
+> I patched the _PRT table in the DSDT to remap device 00:15.0 (Pin 0
+> and Pin 1) from GSI 20 to GSI 21 to match the SPI controller's
+> interrupt line, 
 
-It might be wrongly described in ACPI tables, but in HW it works.
+I'm lost here. Why SPI controller and DMA controller has to share an interrupt
+line?
 
-> and macOS and Windows 10 also completely bypass the DMA
-> controller. Please refer to that email for the DMAR/IOMMU and
-> cross-OS analysis details.
+> umped the OEM Revision from 0x00080001 to 0x00080002
+> so the kernel would accept the override, and prepended it to the
+> initramfs.
 > 
-> Regarding your other comments:
-
-> 2. The force_pio Module Parameter:
-> The original spi-pxa2xx driver is designed to hardcode DMA usage if
-> DMA channels are available. I introduced the force_pio module
-> parameter for two reasons:
->   • It serves as a diagnostic tool for users on similar hardware to
-> easily test and verify if their issues are related to DMA.
->   • It allows developers to easily test and debug the PIO code path on
-> DMA-capable LPSS hardware to prevent regressions.
+> The override was successfully applied:
 > 
-> That being said, if module parameters of this type are strictly not
-> preferred, I am completely fine with removing force_pio and keeping
-> only the DMI-based quirk for the MacBook8,1. Please let me know your
-> preference.
+>   ACPI: Table Upgrade: override [DSDT-APPLE - MacBook]
+>   ACPI: DSDT ... 007EB5 (v03 APPLE  MacBook  00080002 INTL 20251212)
+> 
+> After rebooting, the DMA controller loaded without errors and both
+> dw:dmac168 and the SPI controller 0000:00:15.4 now correctly share IRQ
+> 21:
+> 
+>   21: 0  0  0  0  IR-IO-APIC  21-fasteoi  dw:dmac168, 0000:00:15.4
+> 
+> However, SPI transfers still timed out with -ETIMEDOUT (-110) and the
+> IRQ 21 counter remained at zero — no interrupts were actually received
+> from the DMA hardware, despite the corrected ACPI routing.
+> 
+> This confirms the root cause is not a software IRQ routing issue but
+> rather that the DMA controller's interrupt line is physically
+> non-functional on this motherboard. macOS also does not use DMA for
+> this device, which is consistent with that conclusion.
+> 
+> It is also worth noting that Apple may have intentionally mapped the
+> DMA controller to GSI 20 — an otherwise unused interrupt — precisely
+> because the interrupt line is not physically connected.
 
-Neither is preferred until we will fully understand what's going on there.
-Yes, DMI quirk is a last resort, but to come to that we need to try better
-options. See my other reply about the DMA case.
+It's impossible. The interrupt line from DMA controller is an IOAPIC RTE that
+is programmed by BIOS, there is no "physical wire" in traditional meaning.
+In any case this link is done on the SoC level. Apple can't burn that out
+of the die. They even can't fuse out that (of my knowledge LPSS is always
+present IP, the fuse works against the full controller, not parts like
+disabling interrupt message or "line").
+
+> On macOS and
+> Windows, no DMA driver is ever loaded for this device, so the bogus
+> GSI 20 entry is harmless. It effectively acts as a silent signal to
+> the OS that interrupt-driven DMA should not be used on this platform.
+
+Maybe because they didn't get how it's supposed to work.
+
+> Since the DMA interrupt line is physically unconnected, no completion
+> interrupt ever fires, causing all SPI transfers to time out with
+> -ETIMEDOUT (-110) and ultimately deadlocking the applespi driver.
+
+No, this analysis is wrong. There are up to 3 interrupts that may participate
+in the design: DMA controller; SPI controller; and SPI peripheral. The first
+two usually use IOAPIC RTEs for the interrupts (and hence represented as
+Interrupt() resources in _CRS methods on DSDT, plus CSRT for DMA), and the
+last one often is GpioInt() and has nothing to do with DMA at all.
+
+> Therefore, forcing PIO mode via a DMI quirk in spi-pxa2xx-pci remains
+> the only viable out-of-the-box solution for this platform.
 
 -- 
 With Best Regards,

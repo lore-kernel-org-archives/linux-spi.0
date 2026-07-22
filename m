@@ -1,196 +1,140 @@
-Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazon11023077.outbound.protection.outlook.com [52.101.127.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C6E23909C;
-	Wed, 22 Jul 2026 02:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.127.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784686882; cv=fail; b=EOsUXEfReeQ1odJ26vBkqNUO+6ZlNtjolQ1vCIpR6HedTJKN5/+V5V73VOypIzlgVM/l5wcmvvlfeFRix7cbPSpX9l05z++SFfiiQ5y0cN6RbzzpvQ5axbFttHgAVgPXFXuw3E6i9jeAylPNwE4csS8uJ1BGMzzHWzWKjUbkTeo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784686882; c=relaxed/simple;
-	bh=DYSMUfP5WqCH8STjHU1hLRLeK8+WqdJJt3Xddo3WDQI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dfnYFx9XAbCrbLYBpRqctssMkBxDU6uqAU8ICczcdtDsFihs0rb0b4zpoY1TevHBR2vIjtl39f1348xSSIxodqB8iOfsIO7O/Yx2iO4CGM2JULDk0e6c6tE2vWfdZlC0c8zadmouIYlUPaJYxQFNXZMGTQ6sVDr0hP11nd7VIaU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amlogic.com; spf=pass smtp.mailfrom=amlogic.com; dkim=pass (2048-bit key) header.d=amlogic.com header.i=@amlogic.com header.b=dHDuK2fo; arc=fail smtp.client-ip=52.101.127.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amlogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amlogic.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BAE3E5A22
+	for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 03:41:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1784691677; cv=none; b=Fy516XH5IEciIC1/7WKtLZCs1PNyficxxrUmqqmin8ZV/1t/IormKaAc/V0b8le6oAWDiYD7w/1Mu9P8HKnHS1ULJDCToKr3Xhou4A6cW3ByJte65+DhizGr7RGQulz2AUXnCz0gr9sOWO3fhxGhp97ETbxiQKCa0Pm1cljGsMg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1784691677; c=relaxed/simple;
+	bh=omr1+5FGqP/4cAjLJuIvC7am2JBR6QvgB8tGwxi3xIM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sF9mmkkGE4zTOxWLN769wqabwEXmErYcQlgdoij2Ko46EhCdgDXF/YLmISZvAWTFHdvVk3GCnthKbAuqB1pHGISiDoCaBgY+WdToRhLGDYjwGlhcPZQhXwso4Ydd+bWlRumgs7302+i7u6bE3zVfpkUecfDPVOiQUSkSLuTMWis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HAjMGWjo; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amlogic.com header.i=@amlogic.com header.b="dHDuK2fo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wM3jr49uox7P5UmO2XjG4Pw2MQWORQcen39JlMdtKc6PjMzDtJTM0TkssTraN/N32QR3SyIJvcdQ34kBS2WI/0rodTADlYnWE611oLMbGDtF5b82+njI+/fFqbekoBwmL/elAO+4c0dkyXFIbflDphssid1jQZCFGJh3Rr2CXKM7T5osc0Kk2t4V27hcb52t9iCNN59ZLXe5F5lXqm8qM1eOPFr8bs4ma7Uta5ORS9bSvq2i/lpz/kJx9r7z2UWpf/zcF6cnBAI0ClTZt2agUtPs4nmzCO3MYzdScgyWimgcdRKleyTldEowBuVwMxlJDFF470XdjC7Z9rMLP4ewIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=63dv/dniBjV4ZvxkzpSHAkzQqfUJVoC8s4IFRL7jr4s=;
- b=yOrS8BaVNTFD3F60ppnkCcsCmuvAMfmObMluzbtEVWM8BzPpy7gy2MJPu7K0JvMUeSZ/LYXfej6P3vku+iSsf3jFynzxeaHKb7F9UNBAm7mr4Qtvm5TlbuvT8IXVaZOt0scJTPjvyeMYy7M1yCDu+iSzcjOwbSN7WJn2cqQd/qFX7sdYve/tCT5tpcz7dC9lYVBXzSUJv5/eTzoBhOjT+VS0Zeo6XQJM/sixvFDBqAyzrfJVZGmlEkByAyLZQy3Pl3MDK84DGUqGE9CNEHS5Gmnr75O3PUggThrywpx9Axb2dInchGx//MtJSD2CrUUn11YdwQI8H2vJRKrDY84nKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amlogic.com; dmarc=pass action=none header.from=amlogic.com;
- dkim=pass header.d=amlogic.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amlogic.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=63dv/dniBjV4ZvxkzpSHAkzQqfUJVoC8s4IFRL7jr4s=;
- b=dHDuK2foToFXfHRjFzTKfl2IZTvyFDbGfYORw4+JMjCIMVANv9voGRxgoasNdgma7vWBq2pVSyaTiuYz6RwtitP/7RdRNdo1Xbt2U+9Z6PikN3FyYa4a1me1mqZzYjZvDiMjG0DpQ8VXUYQ4vXi/j4wby59ImzSpYZUrLVfTU50oLm/pmWkqWTGexkMf+0+sx+pzA/RcPpT6o/Hg4ROi+NTgcfIp3ppejWsqdxR6JV3CfcXfnZmH5aN1Oy0kUwFympQQAYaVChyjN0N9dVs/2pRtP6CuFPOiiLdAxpcrjRHRnaCAmTlGiwUHFc+lFHXE2Rq9G5E6Z+fdBlEfZoowRw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amlogic.com;
-Received: from TYZPR03MB6896.apcprd03.prod.outlook.com (2603:1096:400:289::14)
- by PUZPR03MB7187.apcprd03.prod.outlook.com (2603:1096:301:11c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Wed, 22 Jul
- 2026 02:21:16 +0000
-Received: from TYZPR03MB6896.apcprd03.prod.outlook.com
- ([fe80::78d4:9dee:2e32:d1e4]) by TYZPR03MB6896.apcprd03.prod.outlook.com
- ([fe80::78d4:9dee:2e32:d1e4%5]) with mapi id 15.21.0245.009; Wed, 22 Jul 2026
- 02:21:16 +0000
-Message-ID: <9568564b-be74-4a5e-a84d-c548af398995@amlogic.com>
-Date: Wed, 22 Jul 2026 10:21:08 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] spi: dt-bindings: amlogic: spisg: Document
- A9-specific properties
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Sunny Luo <sunny.luo@amlogic.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-amlogic@lists.infradead.org,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260717-a9-spisg-v1-0-2eeea77be19f@amlogic.com>
- <20260717-a9-spisg-v1-1-2eeea77be19f@amlogic.com>
- <20260721-determined-melodic-boa-c379fb@quoll>
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
-In-Reply-To: <20260721-determined-melodic-boa-c379fb@quoll>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ME0P300CA0021.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:220:20f::25) To TYZPR03MB6896.apcprd03.prod.outlook.com
- (2603:1096:400:289::14)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HAjMGWjo"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cce6a0c9c3so110831285ad.1
+        for <linux-spi@vger.kernel.org>; Tue, 21 Jul 2026 20:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784691673; x=1785296473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fMsLP/6JMCFywbSNUxwQOz2CeAVV57hRVViNt75YJiE=;
+        b=HAjMGWjo1cFnZNC9vmWxdr6dgguJJZcbOmA56CgQHS25PFjXFYuOu2hXFvrqk6igyi
+         JVaZ5s1DVoZvJ6pP8e/AI7kAky6nDMk0x8KscIjMsJSHctne0/tMUyBF6p12ynJjzU1Y
+         ZNhZgQ8esURuefcLXEUnYkRtWxsQWMsDF9yFdSuE2LljBJInz5rd6+TsxmdaO+EIrshH
+         tUeqyrbn70ItGJjpAI+AeJ8zX0E8SDLU0DXo76EdRazJmRPvIrnmkmluuEKVWYF3m1G4
+         5hT0OgFSRN3ShETl+iae6t6uk5gj7ljzLmAetlloe/SCVYVB4ELA3G8S7Z4bcPs3+Q8o
+         6rMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784691673; x=1785296473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fMsLP/6JMCFywbSNUxwQOz2CeAVV57hRVViNt75YJiE=;
+        b=mPNvpBH3eGaU6c7UucvQObak9hqT9YI+jJ7vxf8gPPMvmY9rzuZmX+cZSubsSaqiNs
+         G6qDZkfLX+MZPcnCKVjsabxx0FN8URp2lt8ancKe59NbXJ+/DecckMAaS8XQ7mNcPDg6
+         X75KOr5W7+/YbXpVMMQoFYgvEYwahBOhPV9ejg3Jaw53SSn2QwjvuOLqVM2RrtpFie1b
+         +tl0/4zAsLegcIT6khNNuKGsgb7+GT9Ap6eQMF9CBbpyPzsD0NL477mVMnNB0HGBWLto
+         b6mIG5h93ljM4etjkEw95L0IxzPnMw5uUaH8qM1bMlcZaJS3fokXmxg0iKEvsopYgsXR
+         3LRQ==
+X-Forwarded-Encrypted: i=1; AHgh+RowzK1r2NitkL3f5QNq0RIB7ifxLBpu0R/jt21KOPzFVWIbbxTY90kA2IpS/CJGpJgM4kMMtnUwW58=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVTyXogsdVijp7RAN9cv8HrII+clwZ/hLGwZxR8dL+SRs0T6ga
+	Yp/pmBnzMZtQz8ZO2vjWXsBgtiHaKQ7EQKtYWYXNw7Pluq9V3LCLTfs=
+X-Gm-Gg: AR+sD118FRvgromXNn/A7YF4LVpbJf3diyagK5gbrshiMUis6SvhgxSGGOf1lrj2lPq
+	bhlHuWagFzDfMHxcBsIwffFrivzioJXtCNw+kpbldn4Ay8PXyf/uawT8MEFRDsWHZRF8q6NWJvW
+	5XEConKn9qzVhkqFytMWt+fszWgHx7OBP5Mz2Jw1ntWNBbXO/SizHBbMHOIn8e3zUbwNfVs+SYD
+	1+ibdBXbq0ufcdV/Vx1VnuSCyACiGtZwxK8InCr7Z6rbQ5DfttSM+41KqsCgPCiyUuTRoPRbCXd
+	f2ZxmYbRr0v/m+/53yKcc/8ACRVPLzHtk0SgvBGgVys5up47lpUClts5QGaBvUP+bYC7rlLPz4j
+	1eV668Abu5yeYLe6CElwsTr9O2Og3e2qJ9GWO7e4bcZc6EUAsALI8OS9j7FbnPSIBlUUm4/Ipeb
+	Cm8dy2X+PGZR0oh39lorrnX+Kgcok=
+X-Received: by 2002:a17:903:1247:b0:2ca:de3:15e1 with SMTP id d9443c01a7336-2cf34a0a682mr225407425ad.31.1784691673137;
+        Tue, 21 Jul 2026 20:41:13 -0700 (PDT)
+Received: from t-rex ([2401:4900:adaa:53ec:4dd9:f3bc:714a:d631])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147dc193f8sm7523404eec.1.2026.07.21.20.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Jul 2026 20:41:12 -0700 (PDT)
+From: kr494167@gmail.com
+To: broonie@kernel.org,
+	dlan@kernel.org
+Cc: elder@riscstar.com,
+	guodong@riscstar.com,
+	linux-spi@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	surendra <kr494167@gmail.com>
+Subject: [PATCH] spi: spacemit: prepare both DMA descriptors before submitting
+Date: Wed, 22 Jul 2026 09:11:03 +0530
+Message-ID: <20260722034103.12190-1-kr494167@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB6896:EE_|PUZPR03MB7187:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86f1e905-6b50-4b25-02fa-08dee797e867
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|22082099003|18002099003|3023799007|56012099006|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	0lFicoAkeZg/PWTdOHLSfnQPg3ZK/tmUbw7EOJdFrvhq0srdzu+1xAP7o2aK7fsxI4tVNXe7e/d8ENM0MwO1Ox3lJxdJrjV1BFD2ZMC3LN+GJc/O+YzpW44smCGDERxNFCXuBPDDm9rsnPedsOoYyjDjD6AW6h11ctvjTz8DLfuJh99GUwlTl6cDxF5g6PVDHr67t64+qKn/hqe48Sea+UmYEX59Fl3/esMcoTupuyZr7fosGNtH+bET56uCkIbfIEGAinflpS5oxjZDQ21ci386F1gmq3G0dRy8MtgAk92WGcu1nUXPejr89Ev2CXyOyzHb/FH5GZ76EK9GZThuCUJtdwAa39aXzmbIEDXkxhgUevMbGLkmdfiafxz3KBISEaWXcXTBHlFaG7HQFgOFrEBYpxOAhEFYKVnScGnJlpJc2zSS5CYcLz1Zz5c6WssBZ2VHxXrZicl3tpqmvz3xMSUCGkBo2Qh77ILWyXA2SEPT+2XTMtVjTQE/2Urmj7wIl6ur7dFUFGED4FVHy9ijX79OlkdpRDzOiavnSshgzflM3RToY417XlFaCRcHtyZFN+AwYx2knI/wUpDg/Ywv29CTPdkXwvLG9yZNDSnnu24pt83OnnPa2pGtdE/uQjTfcUeNqANf0eKNdk7Fc18S/zXsgQd6YsLKSOziYTE7D5E=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB6896.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(3023799007)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEpBMXBMa0RaWlhCZWYvQjdrTm5hMVU0eUczbGZqQWZWWEhZTGE0azJaalFJ?=
- =?utf-8?B?WGMzTnJpWTRLdm1IU3V5Rm5McWpaa2FvTVJPZm5HY0ZHVUVaWE9DR2YvRHBs?=
- =?utf-8?B?L3hQUWZPa2J5VzBmQktlRnNKV1NQeXVGblFJMFgzOGE1dXVCU1JKYVlPRk5z?=
- =?utf-8?B?WTFXMjhUUDRsTzc4d0ZidXlxVVFxbFA3RkJYa1Vlb2tDcWhwTHFCL1FXcVhB?=
- =?utf-8?B?K2lvb2paQkFPUmwwQkFnRGRKTm9yUkdqQ0hJQktISDhKU2YrUHdlM3N4cmZC?=
- =?utf-8?B?RFRRTkUxM3U1OGdOSFhzRkhqeVpNcjFtUktHVzZ1Qzhqbk9aVWVZdkFzNEsz?=
- =?utf-8?B?SmZiYzFxMzV4MlJBcWJleERrOExmdWFPZk5UT2VHWWNEMmVpK3BXREYrWEo5?=
- =?utf-8?B?NlJ0SnZvbjZuWDNaUUZvRi9RMEhKM0dPOVcxR3l1K0E5R3VqQXVobi83a0ZT?=
- =?utf-8?B?dWJLUGh6WGpIaEJzNTdiTjRYa0NrU092ZEIxWTZkS2hQYkRMMmh5Z3l0QkhL?=
- =?utf-8?B?NWp0VmZxVjZTQ0E5TGp2YVJGcWt3bG85WVYveUxuclROY1BZR1JLNjR2SlVQ?=
- =?utf-8?B?ZzRDb2dJQVRrVDhwUnN0WlM2U0ZJdGExTndIVkFvQkk1U2w5bVg4U1NqM2to?=
- =?utf-8?B?Wm1kV1FGcGRmUDd1ZE5Pa0g5MG1LRlZkWGM0K0hHNEUybGxoR00wVWwyTkRW?=
- =?utf-8?B?THNGYk40OEtGSHJ3L3Irb2h0cDk4NStJNDJaaDdZYkRvMUN5d3NYbEVmblhW?=
- =?utf-8?B?L2FkeGJEcTV3OExiaThXcGU1MkxiRzlJSHMvSEpzU3JkVnppRndlNHdrS1Ji?=
- =?utf-8?B?TzVmbkEvaEEvUGdCOEk5aDZISnJRNmd6eTArWHhJK042OFJOd3h0ZUJDN1ln?=
- =?utf-8?B?dzhRUWM4eVJlWXFOQkxJalFDc3VwN3pmSCtXVVVwRHBpUzNHekMyUS9UcldQ?=
- =?utf-8?B?OGV6dFpDVlhCR1BXRktkUzB2YWVyVWFtOFBubXRhVGN3VkVqL1JVMXFCMEF2?=
- =?utf-8?B?VytGSkt0RnEzVVNxdURRblZUSExONWZ6Mjh2dW5LTjRuSitkT1VzMDlQcGdk?=
- =?utf-8?B?YVVaM2hrajd0R1ZhQnNneVp1cStLc0lMUjVGSDBBWHhjY1RvZC9jUU55c3Ez?=
- =?utf-8?B?UENVTHNQb21pMDE3N0xldHJ6cXdjZUhydEw5ZjZQM0hoejVtMG84Wi9jTzFR?=
- =?utf-8?B?dUdnQlNaSUk4eWphWEhGM00wbWZhL0RWTGlOMkpIN0ZXWVVBelJBK3dCQnpt?=
- =?utf-8?B?Z2c0MnRZMzNWNVZRVmJKZEpKc3hSMXBQSnp3T0ViR2djSlFiSFl4TUIwQWox?=
- =?utf-8?B?ZXZXcFp4cW1aQ3N4c2FHK2JZVlZmOERPWUx2ekRMLy8rRzRSTUQzemtWWHZF?=
- =?utf-8?B?Vjdwam5sTWVIK2hQL1pIZlZPYVVMSlNOUDgzL0xFQkZkTVZvVUJjSDB6S1Qz?=
- =?utf-8?B?em1OTTJZWGcweFFNK3l2eVdPZG1yZE5EdE1HVE1lRUNObEgyU0dmL0QrZDU2?=
- =?utf-8?B?T0JWWnJRSEdJS2crSWJQWS91RFBCeVc1ZkkrUjJVaFRXblhkUDN6a29nZUFu?=
- =?utf-8?B?QlQzNmtXOEtHR1NYZDBaclJ1V3Y5VjJKOE9BREN0L25lWFZ0bFg5eDFxWS9K?=
- =?utf-8?B?eVVSaXVyVEF1NUNheWR6dE02cnYyOE4ydTN0RmxrWTkzdkx6UWplejV2dDBu?=
- =?utf-8?B?bXBNOTEzcVNXSy9rTVpBNjluQ085ZFBZdStqWjF5OVphbGpoaDM3WU5NRE9U?=
- =?utf-8?B?OWZIcG5VNWRubG82Z0MyMUtkK3VNU2dVOVFxRzlVd0xsMk83V2FObjVsS29h?=
- =?utf-8?B?L1J6U3lISFk2czd3VlB1dFoxWEFSbFF6aUVYRVdubUI3RkhoTkMvRDAreUhR?=
- =?utf-8?B?WFp0N0FNa0dmbnpzeWxQQ0J4T3VkTVRvMVc5ZzdDRVZHaHlZcGplZGlubkNn?=
- =?utf-8?B?eTdXaGY0Ty9TcnVMS2lsWU1VRzMvWDJlL0tHbGdUNUJQK1Vsb1VNVW1xeFNz?=
- =?utf-8?B?M3d2STBvTVlLT0NHbFVuTGJiWHBLUmZSWS9FcTlpWW01b29WNnhjeHBiK0tl?=
- =?utf-8?B?dzZ4eXRUSGthUDQ0QlA1SXNGcEtvYmREM2VhNVRhbkhRa1JXandydndzNjN5?=
- =?utf-8?B?ZTRKbVU2TnpSanBsSGthUWJoWHlTSUNtS2xiZFR0SW9oZnl3SXpoYitNVXhp?=
- =?utf-8?B?MCtyTktNcXNXZzNGSzBnbmRqRFJPSEVRS29wNitzQ1lyaFdtTzBJUFRDUktF?=
- =?utf-8?B?Sis0VU51Rm5CYnVocmVJcVNFQWpCOUJjNSthdFhleUNwRVpVY2dMaVRCY0pL?=
- =?utf-8?B?MkdYdFZ5Z1hvUE9zUDBXQzI1U1lpODVlWEF0dFNPY1hsNFRNY0c4Zz09?=
-X-OriginatorOrg: amlogic.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86f1e905-6b50-4b25-02fa-08dee797e867
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB6896.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 02:21:16.2337
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0df2add9-25ca-4b3a-acb4-c99ddf0b1114
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1sAA/yERMMlgVXwWJB/RuoOkhqeR0zJhsbqrBhGC634K0jFhM42oMSV4Arb/7iySrLa/hozOz+Wt/SYjMRjY7knz6PiBaLu1q8sLrRVZIr8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR03MB7187
+Content-Transfer-Encoding: 8bit
 
-Hi Krzysztof,
-    Thank you for your advice.
+From: surendra <kr494167@gmail.com>
 
-On 2026/7/21 18:18, Krzysztof Kozlowski wrote:
-> On Fri, Jul 17, 2026 at 07:49:33AM +0000, Xianwei Zhao wrote:
->> Document the Amlogic A9 SPISG controller and its additional
->> Device Tree properties.
->>
->> Add the "amlogic,a9-spisg" compatible string and define the
->> A9-specific "amlogic,mo-idle-output" and "amlogic,word-gap"
->> properties, which configure the MOSI idle output level and
->> the inter-word gap, respectively.
->>
->> Signed-off-by: Xianwei Zhao<xianwei.zhao@amlogic.com>
->> ---
->>   .../devicetree/bindings/spi/amlogic,a4-spisg.yaml  | 36 +++++++++++++++++++---
->>   1 file changed, 32 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml b/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
->> index 9bfb8089f7ea..7efdc748d566 100644
->> --- a/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
->> +++ b/Documentation/devicetree/bindings/spi/amlogic,a4-spisg.yaml
->> @@ -11,12 +11,11 @@ maintainers:
->>     - Xianwei Zhao<xianwei.zhao@amlogic.com>
->>     - Sunny Luo<sunny.luo@amlogic.com>
->>
->> -allOf:
->> -  - $ref: spi-controller.yaml#
->> -
->>   properties:
->>     compatible:
->> -    const: amlogic,a4-spisg
->> +    enum:
->> +      - amlogic,a4-spisg
->> +      - amlogic,a9-spisg
->>
->>     reg:
->>       maxItems: 1
->> @@ -42,6 +41,35 @@ required:
->>     - clocks
->>     - clock-names
->>
->> +allOf:
->> +  - $ref: spi-controller.yaml#
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - amlogic,a9-spisg
->> +    then:
->> +      properties:
-> Properties MUST be defined in top-level. You only restrict them here.
-> See writing-schema and example-schema.
-> 
+k1_spi_dma_one() currently submits the TX DMA descriptor to the DMA engine
+before preparing the RX DMA descriptor. If preparing the RX descriptor
+subsequently fails, the function jumps to the fallback error path without
+canceling or aborting the already submitted TX DMA descriptor.
 
-Will do.
+Fix this by preparing both the TX and RX descriptors before submitting
+either of them to the DMA engine.
 
-> Best regards,
-> Krzysztof
+Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
+Signed-off-by: surendra <kr494167@gmail.com>
+---
+ drivers/spi/spi-spacemit-k1.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
+index 215fe66d27b4..96b41b67fcbf 100644
+--- a/drivers/spi/spi-spacemit-k1.c
++++ b/drivers/spi/spi-spacemit-k1.c
+@@ -278,25 +278,25 @@ static int k1_spi_dma_one(struct spi_controller *host, struct spi_device *spi,
+ 			  struct spi_transfer *transfer)
+ {
+ 	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
+-	struct dma_async_tx_descriptor *desc;
++	struct dma_async_tx_descriptor *txdesc, *rxdesc;
+ 	u32 val;
+ 
+-	/* Prepare the TX descriptor and submit it */
+-	desc = k1_spi_dma_prep(drv_data, transfer, true);
+-	if (!desc)
++	/* Prepare the TX descriptor */
++	txdesc = k1_spi_dma_prep(drv_data, transfer, true);
++	if (!txdesc)
+ 		goto fallback;
+-	dmaengine_submit(desc);
+ 
+-	/* Prepare the RX descriptor and submit it */
+-	desc = k1_spi_dma_prep(drv_data, transfer, false);
+-	if (!desc)
++	/* Prepare the RX descriptor */
++	rxdesc = k1_spi_dma_prep(drv_data, transfer, false);
++	if (!rxdesc)
+ 		goto fallback;
+ 
+ 	/* When RX is complete we also know TX has completed */
+-	desc->callback = k1_spi_dma_callback;
+-	desc->callback_param = drv_data;
++	rxdesc->callback = k1_spi_dma_callback;
++	rxdesc->callback_param = drv_data;
+ 
+-	dmaengine_submit(desc);
++	dmaengine_submit(txdesc);
++	dmaengine_submit(rxdesc);
+ 
+ 	val = readl(drv_data->base + SSP_TOP_CTRL);
+ 	val |= TOP_TRAIL;		/* Trailing bytes handled by DMA */
+-- 
+2.55.0
+

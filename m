@@ -1,153 +1,150 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E596338B7C3
-	for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 12:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF793563E1
+	for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 12:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784722165; cv=none; b=HDrqOZ+pnGtr1EfQtBSwGEROdcEL68f9mndk68KJJlfJ+WwACiZxNvaR3x8JeWA21CaLxPdy+OUrjntA8GjxuIYgUX9vkmDrISgVt+ofXiypl03sHfX8Ucf3uobX6poHgZrs+/q0WW4rZkqO/zPTP++KQEK2aA1ETtMGHpzQA6M=
+	t=1784722458; cv=none; b=kC8j0UDFOv32/eTA23zfeJtiIjRxdo4MdZ6AGx/4n1h9PEnow9WCm/r+IFfDmI/mKvTF9A+aam4N4xg9LDexvRnjzIf9YUvwCXzC7WuWn5K4zS7VRM89iYEav6/HLGZ3ivAvfbutHqyiy5z/e1tiGbT9q9gyWArgZFvD5Zzhmtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784722165; c=relaxed/simple;
-	bh=c3pkZ4yaYJT5mT5XE0KdrjdNHM42/8KaKebxAgWgvPY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Nm+sPXB+xr5OoNkzsayaYnR/EynCUe66I40UqlvAZwApA9eL5Q0BC/TOwHh6A0qsITbXpr6i0Cs1wSXe7t5H+WR3+0cv6hwHUT0FK7W40DcII0HpCoBkm3kuwQxaWANG5/5+1dIBWY3CFDRicmVQvMxzj1OW2l17YoBApNvpkDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=br2qJjI5; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1784722458; c=relaxed/simple;
+	bh=BNDSL0Nv+QnTOb/BpUOkxBNpTRpd3JVzXhV1IfBtomY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZQ0KtmZYxDIFkudjVDHxU3xEc3jsm+HmJcgMzUZ+2WbbVEyat3zzQU9nV3r420zQ9aai8PoVoGwpXqIIruO5RLOTJGssq30/FQSQ9PfvnoDfpBNsuq8eam24c9LMunuaHwd8OHnZW1jsMFTNV0Sliw02wx6pmUwlNKpe0WGCOjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=tp4SmWK1; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="br2qJjI5"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84e0688b859so266691b3a.0
-        for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 05:09:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="tp4SmWK1"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c2808dbc3so88131501cf.1
+        for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 05:14:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1784722161; x=1785326961; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JnCZkgkGfZi2Ykzq8Jw5LKRVV2duYzk4jC1BEsMVF60=;
-        b=br2qJjI5bpKx1mb/2jg6BxHDlIiq5J26TQB/bzGo44h/KcZYRUoaCJB/V6W5SlHfUw
-         Iu4nmNRDpbfocM4VSHNz3qKpqdMOGuexO+Oy52uPuWT7yqfgcWQkEuijaitVL5QIc1YT
-         RV+DY4ctxFZA5QaMTsetga9/ad0Ppr4a+1vgYSHKCfCn/TmVDYhzDclwq6KGPJgWKGSm
-         iJdesuHePbyEXz2tHjW/jxfsR6/3If7LVqsAzZgMG4dc+NUDTd3iKG0MjIsaezpBzVDy
-         iR4yE0K9ISLvs0gyj5qw8zsagI2IdJ9rIILm31WgZL67o42CG49PQtfyhN9nW9nkzYT7
-         F0xw==
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1784722455; x=1785327255; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jGQC9a0lDQVYs2rzJjXKUgf6ViPQ8mWczj4aICyEJF0=;
+        b=tp4SmWK19Oa3tWYBp7HalYrg5Fs4nkt/5MMcckst5gx2M8t7r1DL1b0erjjDzOa4xv
+         TnJFaUQvT5y4YbS1u2t3KlbnIDFG3n0/lYsQIJMFYVZBOiCxlJ7EUMf9YbC5PftHGvAF
+         V1PvZKV9bbaFrQ2mIgUa1+z2eoy4DUJSJTMbvToVWzqOaRxDAjjmv4QL4/jD8fIoInDX
+         VKwaWRPzmcZcgEMrmpeUjF5fYmkpiWpxijkH8YuwTEEoqqzT/m8jT9HNrpGkuuUtn1l9
+         /ayGnePNW1GOB7sSMq5RwlpJwc1tgNol2LG2V8QhgxxMXftKnEAVVIxJ0e7hht4YtHl8
+         yYCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1784722161; x=1785326961;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=JnCZkgkGfZi2Ykzq8Jw5LKRVV2duYzk4jC1BEsMVF60=;
-        b=iMGU2pT5fITLIcoe7y16UJjUZx1LcIT2Vef6wgsvnbxIGwhZw1ordq0HniZ3Ld6ACg
-         uTCSRo2eBuD9/RMxxIek1IOcMKhfN+brOrfU8+jHu4iMJun6v4Qe2lRJc4ChTgofo1Ud
-         tq7oSuiToETFIU2mCyIfqbO9vqnQW4MxQtdR5O5OsfI4W/rn/AoEDJNFoQeJsDsde8oY
-         v2Vj71Gh/t5Vj7E9NaoQ5Ef803YQIK/wysi5ZzV4sSFJi9uby1jjcBHzjR9tixDTsNeH
-         xtmCgU0HmS/FSm6mDcgZeDoE00lkGqWbeQgH4CAGdplt6yFrOpVQsZmv4ZO9NGqGCJA2
-         eQ8Q==
-X-Gm-Message-State: AOJu0YxlS6F+bs6CxcTr2/QzAzwkxcb+Z56sTr5UrXzKvEPCoakBXCJn
-	pHarNR/fMQhwTdf0kDztObg9umiufFgmXY2VSC9cTxUwYhifyKpSlURE
-X-Gm-Gg: AR+sD11GtyPP1EC4kPqDD8Y449euKKVSuSz5eEJh3CUYjbGgFUnFS6E3/ShZOswlf1G
-	Kx0iVyfjCXtWM0+S86/sijCOWV+ZtpLuVC30zEGoU3A2OGzcPyGq+WhhTKmZyq4fSWS312kCKln
-	ftHsSFCNdMEXyLxCX6CmBuDLZqzYy8nqrM37cp9lRcEwmGVLJeuf0ZZgb95fpFlAlJ/AGSvIs9h
-	U60H057hTz+RwMucQAG032QQD399ss89NDSXrDNfV/PIt3DUHQcV0o8WGCpFY88mz7czwltO64l
-	hYeGVO7bCjT8CV2CowvonATOUQ3aWBpLW8WW/cpGmMXUzbatGY7BnD23QuNPa2+VH1tcGOfCn2y
-	wSkD1itzwNkb2lf9/D7ylpgR4STkH9wTntQBibSbVbrSrrLr8CT38DwzkqtDDfhk2ApgmXfKVsX
-	0wN4UJfEpjS9cdcY3VrEL1TqjRMXWVf7vYnP/FFW4xHPGJ03hvx3unD38nLTLMW5mJksNzzg==
-X-Received: by 2002:a05:6a00:3c92:b0:846:bc81:3e29 with SMTP id d2e1a72fcca58-84c29305401mr23707166b3a.2.1784722161238;
-        Wed, 22 Jul 2026 05:09:21 -0700 (PDT)
-Received: from junjungu-PC.localdomain ([223.166.246.74])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84e17286798sm1200884b3a.23.2026.07.22.05.09.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jul 2026 05:09:20 -0700 (PDT)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Wed, 22 Jul 2026 20:09:17 +0800
-Subject: [PATCH] spi: meson-spifc: use devm_pm_runtime_set_active_enabled
+        d=1e100.net; s=20251104; t=1784722455; x=1785327255;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jGQC9a0lDQVYs2rzJjXKUgf6ViPQ8mWczj4aICyEJF0=;
+        b=IImGm3pQUCd6Pz1bVMj1dlhvOxO4jxLNcLNwjMWin0wRSgjS2LwM6WYYUOp3jaq2T7
+         KCENPJ+AgHD2CKbOwO7zAImNFlmGfYOXKraciBhlzYBV8sXVHUl44qhtR5B9JS6wbNiv
+         BzlM4GDEinCpIDy+T5e3lZLSulIwENmvZQ3ChD9sEqupvKQVPxIiA6M2B8EwmL+pLEWQ
+         MuwiwWSZPOduQyDGtDnDzmnQpZTtg7genk19xl6cMYHgSNBrm4B/j/GxYh5qqlxbzuzQ
+         cyTz2PQSC25YeffB3AhAiO6D5P/+qPHbtS7h+RVf6hlcReVgwos0zdTjIOld69rY3n4A
+         F8hw==
+X-Forwarded-Encrypted: i=1; AHgh+RpLEG+x6x0OgO84fd92WlfcO5UVunedscjhxaIYRkJXMKJ8lsHUkj5D8yXEvDJn52HNwGhN5LBQnlU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQobtr2H9c7PvUiA+C2hdeq547wrzmLP06yY2h4BHdVopJGLnO
+	wLYLk0O0GQUfCRDOw26nzlRL3VJQjG3KubEduLIHwmz5EOtA4G3868mkMqgpNV3T1kw=
+X-Gm-Gg: AR+sD13fCRZcApVb79w+9+Kh9BS7t3tzPXDyB/ldHiAdH18rixBnHeKowtugCflxyER
+	sdfTjhW1JooIIRowyqm+YiL6uDEp8KCcqR904fp8x1mIzCm1IiDVLQ3S0+zbn9vtBIWdxBoax8f
+	67HZCdIcZgsP0+m9RGked46J4vGN++179j4KhGts8DFBAAEdcjF9aFienKaD8szJn69PWLHSIkH
+	hPN7f6ebStpeSLE9kgGgaNWt+vypp/QZy4tk0Q8RsnxXDdNhmYhBpUvff8Mkf9J9ou37lf4CqYu
+	/Zq/hdkn652qRtSIbzksfoB/+qvjFNrl2nBS7vAgfWh692GMuGRyQXITVXYEfmB7a+6ApCdjkgO
+	ZA+ChAcMKyM3yV7W7D41bTB//IOktkiPNMYDoZ4JArc9wEy/Jt+ZgzttF/XOWlw4PHfYzNYMOL5
+	Q9TQ==
+X-Received: by 2002:a05:622a:58cb:b0:51c:19af:6341 with SMTP id d75a77b69052e-5213cbd5495mr205627331cf.36.1784722455297;
+        Wed, 22 Jul 2026 05:14:15 -0700 (PDT)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-527d402caf9sm13896591cf.30.2026.07.22.05.14.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jul 2026 05:14:14 -0700 (PDT)
+Message-ID: <3793653d-f06e-4353-968d-ea42200899a5@riscstar.com>
+Date: Wed, 22 Jul 2026 07:14:13 -0500
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] spi: spacemit: prepare both DMA descriptors before
+ submitting
+To: kr494167@gmail.com, broonie@kernel.org, dlan@kernel.org
+Cc: guodong@riscstar.com, linux-spi@vger.kernel.org,
+ linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260722034103.12190-1-kr494167@gmail.com>
+Content-Language: en-US
+From: Alex Elder <elder@riscstar.com>
+In-Reply-To: <20260722034103.12190-1-kr494167@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260722-spifc-v1-1-e4462a4c6a06@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOyyYGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDcyMj3eKCzLRkXWNjs7SklFRLU0PDJCWg2oKi1LTMCrA50bEQfnFpUlZ
- qcglIs1JtLQBIqdjmaQAAAA==
-X-Change-ID: 20260722-spifc-336fbde9511b
-To: Mark Brown <broonie@kernel.org>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784722159; l=1841;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=c3pkZ4yaYJT5mT5XE0KdrjdNHM42/8KaKebxAgWgvPY=;
- b=LoDm1A0vxhBozG2ZbQAhtbUdmBpLnVMM36EGCfhoSXvay3NCvKqH10RJPwYb3BAxDUP0e9oA9
- 12dhC8v+Fz+DGwjb2Oc++chA1I4nvnKvYojwuuCva2XpeIw0bXba4yQ
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-Use devm_pm_runtime_set_active_enabled to replace
-pm_runtime_set_active() + pm_runtime_enable() and drop the out_pm
-error label and now-unnecessary remove function.
+On 7/21/26 10:41 PM, kr494167@gmail.com wrote:
+> From: surendra <kr494167@gmail.com>
 
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-meson-spifc.c | 23 +++++------------------
- 1 file changed, 5 insertions(+), 18 deletions(-)
+Do you have a more complete identity?
 
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index e36aa94bbdae..f67a0d10b602 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -325,27 +325,15 @@ static int meson_spifc_probe(struct platform_device *pdev)
- 
- 	meson_spifc_hw_init(spifc);
- 
--	pm_runtime_set_active(spifc->dev);
--	pm_runtime_enable(spifc->dev);
-+	ret =  devm_pm_runtime_set_active_enabled(spifc->dev);
-+	if (ret)
-+		return dev_err_probe(spifc->dev, ret, "failed to set runtime PM\n");
- 
- 	ret = devm_spi_register_controller(spifc->dev, host);
--	if (ret) {
--		dev_err(spifc->dev, "failed to register spi host\n");
--		goto out_pm;
--	}
-+	if (ret)
-+		return dev_err_probe(spifc->dev, ret, "failed to register spi host\n");
- 
- 	return 0;
--out_pm:
--	pm_runtime_disable(spifc->dev);
--
--	return ret;
--}
--
--static void meson_spifc_remove(struct platform_device *pdev)
--{
--	pm_runtime_get_sync(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
--	pm_runtime_put_noidle(&pdev->dev);
- }
- 
- #ifdef CONFIG_PM_SLEEP
-@@ -423,7 +411,6 @@ MODULE_DEVICE_TABLE(of, meson_spifc_dt_match);
- 
- static struct platform_driver meson_spifc_driver = {
- 	.probe	= meson_spifc_probe,
--	.remove = meson_spifc_remove,
- 	.driver	= {
- 		.name		= "meson-spifc",
- 		.of_match_table	= of_match_ptr(meson_spifc_dt_match),
+> k1_spi_dma_one() currently submits the TX DMA descriptor to the DMA engine
+> before preparing the RX DMA descriptor. If preparing the RX descriptor
+> subsequently fails, the function jumps to the fallback error path without
+> canceling or aborting the already submitted TX DMA descriptor.
+> 
+> Fix this by preparing both the TX and RX descriptors before submitting
+> either of them to the DMA engine.
+> 
+> Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
+> Signed-off-by: surendra <kr494167@gmail.com>
 
----
-base-commit: 3fe08b9796f36ef437ab9328e7dd1e5ff2d66603
-change-id: 20260722-spifc-336fbde9511b
+This looks good to me.
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
+
+> ---
+>   drivers/spi/spi-spacemit-k1.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
+> index 215fe66d27b4..96b41b67fcbf 100644
+> --- a/drivers/spi/spi-spacemit-k1.c
+> +++ b/drivers/spi/spi-spacemit-k1.c
+> @@ -278,25 +278,25 @@ static int k1_spi_dma_one(struct spi_controller *host, struct spi_device *spi,
+>   			  struct spi_transfer *transfer)
+>   {
+>   	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
+> -	struct dma_async_tx_descriptor *desc;
+> +	struct dma_async_tx_descriptor *txdesc, *rxdesc;
+>   	u32 val;
+>   
+> -	/* Prepare the TX descriptor and submit it */
+> -	desc = k1_spi_dma_prep(drv_data, transfer, true);
+> -	if (!desc)
+> +	/* Prepare the TX descriptor */
+> +	txdesc = k1_spi_dma_prep(drv_data, transfer, true);
+> +	if (!txdesc)
+>   		goto fallback;
+> -	dmaengine_submit(desc);
+>   
+> -	/* Prepare the RX descriptor and submit it */
+> -	desc = k1_spi_dma_prep(drv_data, transfer, false);
+> -	if (!desc)
+> +	/* Prepare the RX descriptor */
+> +	rxdesc = k1_spi_dma_prep(drv_data, transfer, false);
+> +	if (!rxdesc)
+>   		goto fallback;
+>   
+>   	/* When RX is complete we also know TX has completed */
+> -	desc->callback = k1_spi_dma_callback;
+> -	desc->callback_param = drv_data;
+> +	rxdesc->callback = k1_spi_dma_callback;
+> +	rxdesc->callback_param = drv_data;
+>   
+> -	dmaengine_submit(desc);
+> +	dmaengine_submit(txdesc);
+> +	dmaengine_submit(rxdesc);
+>   
+>   	val = readl(drv_data->base + SSP_TOP_CTRL);
+>   	val |= TOP_TRAIL;		/* Trailing bytes handled by DMA */
 

@@ -1,104 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF910302163;
-	Wed, 22 Jul 2026 13:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27595439F71
+	for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 16:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784727246; cv=none; b=FhDiLCEfOjS0l156yQ44XJ4lit0fqL78wGt8kZp8VXe81kQQownWFT3rj1aX8BT5Kt5PzGUaJPzdy/exBjWYiofaX0ARlAiH/wn/6LbTI84XDt7OPtFjpml64OGKmcKbDnS0GlV9ypoBWiMQv/P9kN/nZ/0mk3peOkSxrwu4rSE=
+	t=1784737504; cv=none; b=ZZ7DqEaWRgXKKVNvNwgNPA2Z4rgn9nLZYO0fccmPCYRGNPD8SoG0JWGTaLfIvRHU0lG+IBpAHhAQHk5ujGUOhN65eVBaghn5VZ7pOSEhBNCBl1Ex63Im5XDQuxzGTdk45gluCez+JQV3zfUxDL17x18TqMXaYmmzdPUscjMQQ4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784727246; c=relaxed/simple;
-	bh=3XhPVfYAn5ogg+I8EwpEx5n1phNWzzGfCew+/3A7vfY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fQNBg4eXvdsKboqy/wqmayNCggqRr2/a/fUvEWBHEbShR1Y19hK1mP8vLx/YbmyLgL6nydeSGwFNZEeX4ZTCc4+NRbSoebWcBBvkPfkMcy/6BZ6Gv8qVMYM5HXkwobNUFNYj7D9cRX44J8+/Ynjn1eJ3vGmtaEHddMux/XghNxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+xE/OUx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784737504; c=relaxed/simple;
+	bh=afNZGMtYzA30KV4bDEhm00UcoH2/+9UJYMOEjo4Xyt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=USeoHBh/p6VfZ6zfkeScHuVp5lklH7hitDB2OI1QMToCVsHDi3spc+K0vGni2FUkRXEuMQhs0l0AN5cEPHP7TOZRM14s+RcsSg35ClTrUp4OEgofAVyUXz7fWsoH7w6dWpbDKVdeqwXBplXo8w7wczZULT3JzJ4nYvzvo0u8d0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z7yrjnwn; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+xE/OUx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0F31F00A3A;
-	Wed, 22 Jul 2026 13:34:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784727244;
-	bh=Nlz16QiOQhVVn8iXqqYb5Q5dqwZF2ocDB1E2YIBPKJA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=H+xE/OUxoazgHV3/EbDlhN+tSyNFM5sM0csw7NkmHKLCFDb3Nd+TYeuxWBOCvxmsl
-	 CpWohe/e56Zx+lPC2jvi8n+O735kadt/Ki/D/0dP4GvYkA0l37tl44FdzCtIQzLSQn
-	 mokLge1Yw6G5XFy2b/INo63kr2cGCrqBNELbpdXJEoukN0uULKWIDMMCmciZyHtO8U
-	 nyRx9ysPQOkxqavP5+/SEj2+qeSfjaJ/cwblPbAmWBbVgTtYPK898up6q65FobHpBO
-	 AxkdAhLe8N7RWShdo+eofHR2Q6cpaCeHcTqKoL82xPcIVYpLjJahfk3tV3fn5kc3LD
-	 HDLhLAsUHXraQ==
-From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Yixun Lan <dlan@kernel.org>, 
- Alex Elder <elder@kernel.org>, Zhengyu He <hezhy472013@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, wefu@redhat.com, 
- liyeshan <yeshan.li@spacemit.com>, Guodong Xu <docular.xu@gmail.com>, 
- Cody Kang <cody.kang.hk@outlook.com>
-In-Reply-To: <20260717-k3-com260-spi-v7-2-rc2-b4-preview-20260716-v1-0-969a1b0f783f@gmail.com>
-References: <20260717-k3-com260-spi-v7-2-rc2-b4-preview-20260716-v1-0-969a1b0f783f@gmail.com>
-Subject: Re: (subset) [PATCH 0/4] spi: spacemit: support K3 SPI controllers
-Message-Id: <178467008173.260430.15881924669346340499.b4-ty@b4>
-Date: Tue, 21 Jul 2026 22:41:21 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z7yrjnwn"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c998fd549a8so8477346a12.2
+        for <linux-spi@vger.kernel.org>; Wed, 22 Jul 2026 09:25:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1784737502; x=1785342302; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tXYrafFh6v41hHNrCujwkEXP25aXy1QcuniyU+tuiOM=;
+        b=Z7yrjnwn1T/FgpH2ZBaGlcKT5OzJRnd8eY5VzV4OzUaJS45HsX8WcSGMbT8shCgvvj
+         O51gJ+VC6bjArBim+8EnqkiRNPGzzVj6QhBqIwMg9nG7jMWRHZcp2cdbyNcsTrJmf9Z4
+         wHrEu5qqRBG2UqHryjbPH8B2yELf13Oi1tDd62mer5HXrXluMeJHPQuL/d5rBIgbfzKv
+         MzbPHeBrnT52jPhqqQf8GFMseg6CEOHyC9vYhZy/UEzlay4A9a1PFGEwWCObDZNdmjkA
+         GxT6GW8pbP+OoDsqFSbFmVncL3Pa9/9fGInNTUjeVF5uY32HaJ9/uCbL939j7MA/ZGXe
+         3HFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784737502; x=1785342302;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tXYrafFh6v41hHNrCujwkEXP25aXy1QcuniyU+tuiOM=;
+        b=DUyiMCe/jzvP9UeTE6zDbu88CXJ0/xt0Ns+eeQ2nZTCec2uwM0DWkcNw8hov6c2c7c
+         dizp5ptTFggR1xMS1cCCiipC5kF1CZy6vBsI53Rhl+cml+MywF+QMyeOV7/QByCJlq/G
+         Ns5jXDS/RvwXn/f9N+fMivJmf0Uu1HaT/Xh8x7I9E/F23AdAbveVxMvkBfNEyJ370MJ8
+         REJovsc53XnnUjN9hdzxUkzey9ruDXOPJII7ieHitUyZJxCDLD3HbRqxG02hWZMTGmMX
+         b/ize0gNaQTv6Cn+X+fy4quoDpMRTy2tpKWM/f6UdplUYHTJvmx1iBKJBwGqf8FT3+/J
+         MgtA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq9GReHXW9n/ot5/qdA2ngv6GUTEn3Hq/Cgjm0i10cMDxz3tl1bxqn9Z7QbTXJpPuNUlJhh+6RDP94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdeeijJzTSEBrHPc15J9vs+vRfpEO68qwVwZ7Wx1rhMAEFxmuX
+	i7QXv/rrq/EBvVipjb6n6iqOZQwa3iHHDw9ZKFR9wvUpdCezFsrTjHQ=
+X-Gm-Gg: AR+sD10v80DfOKaAWj65ufJBBHo+G42UBIKfpHtsDgRXoLtdRETOaKXksSuHp21qvlO
+	1KIyvcKR6ZRXlkLjbHYFK+ycg1qREbsPV77mYZ+/4AdN6KNW1dxf+X3gYGe/ropQ9afG3IPfGam
+	X4SPVuc6YhIhdj3oJy/Xmp39zbrI9Uw9CW3WTK/WnW500REnhMYJpt3P3w7xdLX/RuJj3unKEP5
+	ORanebSb2hD81bWkwpY+HvzFGBsz5MueqHzUQXzWOSUw54XwwO1mV3E2i09n6VkBWCBNDK2dC34
+	8GCUYKncj6yWQcU3GWF301Q+vaqycmcTlyp8UZAe1ro0Oqqs7priUphgNOB4qJGSMHylkO6CGAb
+	3AtMAn1fWtKD1y5H1gz3D/kltIBPsi+OtQMEliV+fkwh10jsYxgf8FAHnEJzPjMiEg29m73mFDW
+	DZbxnncsL/jcyNo6eoNXkkfsn0YfSgywdj08EH
+X-Received: by 2002:a05:6a20:a10a:b0:3c3:88a5:83db with SMTP id adf61e73a8af0-3c3ad6036b0mr25638872637.5.1784737502208;
+        Wed, 22 Jul 2026 09:25:02 -0700 (PDT)
+Received: from t-rex ([2401:4900:c212:546e:3d3e:f0d9:52c0:8a0])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3147dc6162csm10753122eec.7.2026.07.22.09.24.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jul 2026 09:25:01 -0700 (PDT)
+From: kr494167@gmail.com
+To: broonie@kernel.org,
+	dlan@kernel.org
+Cc: elder@riscstar.com,
+	linux-spi@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Surendra Singh Chouhan <kr494167@gmail.com>
+Subject: [PATCH v2] spi: spacemit: prepare both DMA descriptors before submitting
+Date: Wed, 22 Jul 2026 21:54:44 +0530
+Message-ID: <20260722162444.11415-1-kr494167@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1338; i=broonie@kernel.org;
- h=from:subject:message-id; bh=3XhPVfYAn5ogg+I8EwpEx5n1phNWzzGfCew+/3A7vfY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqYMbHcpeaZIkEhoZSEkLpuqvZJ8xpWXXkReHdy
- gRpwegzGEOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamDGxwAKCRAk1otyXVSH
- 0PMtB/9FGlzd12BgBvdcW30NNMQqd8KjXqB+KkLAmtx4cNoA1IzxpACg62sIUpQAcGGBV7wIp8r
- 2GFCXThClJZHaGn+35Uom0jKZToHaaS4aABEdWdQfC73b4gxoh2KbRmRA4UfoN9X+Rr/d7LVIoR
- APYRfwIrqemHA++MbBhjHVoQIEr+qkL7YJf71/6MsURlSL79E8EeMZxsfN+rMsUu4pJ+nugAoMz
- 6MYS/xSGb6fXxPjVCV7j4i3c+9G9vRydRicMMd/BzydCpR+LrHBnnHSoEc9MC+Hd4/ckFexIBgi
- arjULGqLLZgWGpEKeqKEORE/SIou9COaGv0mhv8rskpjxhA+
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Fri, 17 Jul 2026 07:45:24 -0700, Zhengyu He wrote:
-> spi: spacemit: support K3 SPI controllers
-> 
-> This series adds K3 PDMA request numbers, documents the K3 SPI
-> compatible, and enables SPI0 on the K3 CoM260-IFX.
-> 
-> This series is available here:
->   https://github.com/imguoguo/linux/tree/k3-com260-spi-v1
-> 
-> [...]
+From: Surendra Singh Chouhan <kr494167@gmail.com>
 
-Applied to
+k1_spi_dma_one() currently submits the TX DMA descriptor to the DMA engine
+before preparing the RX DMA descriptor. If preparing the RX descriptor
+subsequently fails, the function jumps to the fallback error path without
+canceling or aborting the already submitted TX DMA descriptor.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+Fix this by preparing both the TX and RX descriptors before submitting
+either of them to the DMA engine.
 
-Thanks!
+Fixes: efcd8b9d1111 ("spi: spacemit: introduce SpacemiT K1 SPI controller driver")
+Reviewed-by: Alex Elder <elder@riscstar.com>
+Signed-off-by: Surendra Singh Chouhan <kr494167@gmail.com>
+---
+ drivers/spi/spi-spacemit-k1.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-[2/4] spi: dt-bindings: spacemit: add K3 SPI compatible
-      https://git.kernel.org/broonie/spi/c/6389eaf11d6c
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/drivers/spi/spi-spacemit-k1.c b/drivers/spi/spi-spacemit-k1.c
+index 215fe66d27b4..96b41b67fcbf 100644
+--- a/drivers/spi/spi-spacemit-k1.c
++++ b/drivers/spi/spi-spacemit-k1.c
+@@ -278,25 +278,25 @@ static int k1_spi_dma_one(struct spi_controller *host, struct spi_device *spi,
+ 			  struct spi_transfer *transfer)
+ {
+ 	struct k1_spi_driver_data *drv_data = spi_controller_get_devdata(host);
+-	struct dma_async_tx_descriptor *desc;
++	struct dma_async_tx_descriptor *txdesc, *rxdesc;
+ 	u32 val;
+ 
+-	/* Prepare the TX descriptor and submit it */
+-	desc = k1_spi_dma_prep(drv_data, transfer, true);
+-	if (!desc)
++	/* Prepare the TX descriptor */
++	txdesc = k1_spi_dma_prep(drv_data, transfer, true);
++	if (!txdesc)
+ 		goto fallback;
+-	dmaengine_submit(desc);
+ 
+-	/* Prepare the RX descriptor and submit it */
+-	desc = k1_spi_dma_prep(drv_data, transfer, false);
+-	if (!desc)
++	/* Prepare the RX descriptor */
++	rxdesc = k1_spi_dma_prep(drv_data, transfer, false);
++	if (!rxdesc)
+ 		goto fallback;
+ 
+ 	/* When RX is complete we also know TX has completed */
+-	desc->callback = k1_spi_dma_callback;
+-	desc->callback_param = drv_data;
++	rxdesc->callback = k1_spi_dma_callback;
++	rxdesc->callback_param = drv_data;
+ 
+-	dmaengine_submit(desc);
++	dmaengine_submit(txdesc);
++	dmaengine_submit(rxdesc);
+ 
+ 	val = readl(drv_data->base + SSP_TOP_CTRL);
+ 	val |= TOP_TRAIL;		/* Trailing bytes handled by DMA */
+-- 
+2.55.0
 

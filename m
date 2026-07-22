@@ -1,56 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1723002C8;
-	Wed, 22 Jul 2026 16:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D3946EF8C;
+	Wed, 22 Jul 2026 16:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784738720; cv=none; b=jbSqr8lDt4UE6LMV/X3WFUBZwzF7d/obRd0CiGmY3u+I2ophRBGbmmbV/mcbMLp0XUwXyYTvRPN7wFu7AwoQJCeEbTTkQONbXrqdfMTP+FBegJ9025BVNlFa7WhG8PWh2ycns7zCLpMfQpFwvGLDzx0+bBzhwSqmuLTP5L9uxME=
+	t=1784738788; cv=none; b=YyUk+n7SW/VIa/ORi/e5nBf4DVGgjWS3LcHTiD29iwxh+rfqu9NVIvoiK/dqkqjbgUi2hNsMC2/KMNiOC5cFOq4xWj2x0KGEDuj+cfZ2L4P9+CnGtxzsg9/0wsk652OuR3yiiBICfk21585tIBQBPHpiL0hRHjmTqyLOqYHr2oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784738720; c=relaxed/simple;
-	bh=UKSu/98l29oWnHXmNZE6AqnpP8wzNFcgfW/LkW480AU=;
+	s=arc-20240116; t=1784738788; c=relaxed/simple;
+	bh=wy9889ywZyXjB8TSkRKsFnyt1F8rIxKEnnNuJ4OM0YQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vA+YMRVwgya2kkl977sqJYrDfyuFkBDtG/CkPvIrHwABhPPem6RP1rmxofty9MSkeM+I7zN0orYt2DQtiyfPG8378cYKuHgUpu1vF43eJyYm08DFkxcw8MTuNTicaz6+wQbCbAMHtqMzndBoFAtw/ojTROGugkYCJmdXBOftb70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3HNK9jw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=DjUmwtTyePBDcDW2AOCjqVLYpdGdyM/IgeA/+nrI/m6//j7wn4zHJQ1DTNpRNxIYAMMBpNy1csosC2oHe+WI/nVDqm+HHWG6bKJoDVNG8buunKaJlSlHTmUWG49LWLLJRy5qFAog3j32m0YYSCTwUggebDKMUQVdkDOjM8nBdqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnxW2ckT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3HNK9jw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2111F00A3A;
-	Wed, 22 Jul 2026 16:45:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnxW2ckT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4934B1F000E9;
+	Wed, 22 Jul 2026 16:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784738709;
-	bh=QbkBpIQcNQohMGeDvjiAc0s7tZBvSrmmZfhHeUo9ERY=;
+	s=k20260515; t=1784738777;
+	bh=1AsC7BFG5mj92FJSoHowKooJs6gEPFD7nWYs6mjDbh0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=W3HNK9jwJg4xgwywJ3U5Y4+cdfgypdOAlemv68Ys9lC7z9dxYveF+cGuuG71QmTQZ
-	 QJp5IcAs14VAdA9v6BSrBgPv2FrnjuLmZIy3Wjlcvt1j6AA/r2v1J2e1cIqn9heQej
-	 mpMLAa5Q2I1IVHdlj8G/fwR/bxQ9XlWsvAkILaygtO4iW1zSVxIKiAdWne/mZEHYHT
-	 EWOqhIWDWW1G3LrTpaf4aB/2303rC/h/rLGOXnSR1reXbsVXHx4yueVT7Pts+zkEgB
-	 jaVyrHWIag5F+29H/kOfSuHoWbOxFP/eeHdvYgNSLl13Fw+q5I/e07tjiFQDahpNqB
-	 4bHMaSZ1vRvHA==
-Date: Wed, 22 Jul 2026 17:45:02 +0100
+	b=cnxW2ckTw/3C5NxLkORl5zEfiqs3MuVpK71LXlX/M3EOPYsLP4fEOP5TG3KFwmZwL
+	 eXHbOns5sAw1gmrYHWLYxMzIJdRONeyyvIbd1rVKus/sJoBQ7iK1bKd6k+c+qvgZGU
+	 Hc2HeW6o7Ex9GmPXO8x8WiJSQj98rj/KqpSOIIZeZpNiJ1sTS23LnrNC/H+aUIaSY9
+	 oBilkqgwShMHwo1Y3GD2NInFd15JkDWknwaWMOC4XUTA3B05w2+xyXA5Ixpb8FuRwh
+	 Tj/WMuZWZEQ06ZuHY36i8inF0GtRb5lX2xnHo2mxmw4bNIE0t81fkWFLzqSrzTHAM3
+	 0ywAdQNCIO/aQ==
+Date: Wed, 22 Jul 2026 17:46:12 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
-	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
-Subject: Re: [PATCH v7 3/7] iio: adc: mcp3564: Add support for spi-device-addr
-Message-ID: <20260722-violet-dayroom-f1ec88771772@spud>
-References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
- <20260722-ad5529r-driver-v7-3-7781cd74ad75@analog.com>
+To: han.xu@oss.nxp.com
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Han Xu <han.xu@nxp.com>
+Subject: Re: [PATCH v2 1/3] spi: dt-bindings: nxp,imx94-xspi: add DMA
+ properties
+Message-ID: <20260722-divinity-urethane-da0cab030adb@spud>
+References: <20260721-xspi_dma_upstream-v2-0-9e19d80e7762@nxp.com>
+ <20260721-xspi_dma_upstream-v2-1-9e19d80e7762@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -58,61 +50,66 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o4/2wA7Y+HIrX7pW"
+	protocol="application/pgp-signature"; boundary="uzpimjthc/PatwgU"
 Content-Disposition: inline
-In-Reply-To: <20260722-ad5529r-driver-v7-3-7781cd74ad75@analog.com>
+In-Reply-To: <20260721-xspi_dma_upstream-v2-1-9e19d80e7762@nxp.com>
 
---o4/2wA7Y+HIrX7pW
+--uzpimjthc/PatwgU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 09:54:15AM +0200, Janani Sunil wrote:
-> Read the generic spi-device-addr property when determining the hardware
-> device address. Fall back to the deprecated microchip,hw-device-address
-> property to preserve compatibility with existing device trees.
+On Tue, Jul 21, 2026 at 04:01:42PM -0500, han.xu@oss.nxp.com wrote:
+> From: Han Xu <han.xu@nxp.com>
 >=20
-> The device address remains 1 when neither property is present.
+> Add dmas and dma-names to describe TX and RX DMA channels for the i.MX94
+> XSPI controller.
 >=20
-> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> Signed-off-by: Han Xu <han.xu@nxp.com>
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
+
 > ---
->  drivers/iio/adc/mcp3564.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >=20
-> diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-> index 36675563829e..71deb05e878e 100644
-> --- a/drivers/iio/adc/mcp3564.c
-> +++ b/drivers/iio/adc/mcp3564.c
-> @@ -1122,7 +1122,9 @@ static int mcp3564_config(struct iio_dev *indio_dev=
-, bool *use_internal_vref_att
->  	 * addresses are available when multiple devices are present on the same
->  	 * SPI bus with only one Chip Select line for all devices.
->  	 */
-> -	device_property_read_u32(dev, "microchip,hw-device-address", &tmp);
-> +	ret =3D device_property_read_u32(dev, "spi-device-addr", &tmp);
-> +	if (ret)
-> +		device_property_read_u32(dev, "microchip,hw-device-address", &tmp);
-
-Same on this one, shouldn't it check the return value so that the below
-check of temp > 3 doesn't just pass with the default value of tmp?
-
+> diff --git a/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml b/=
+Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
+> index 16a0598c6d033..ccf841f194c06 100644
+> --- a/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
+> @@ -30,6 +30,16 @@ properties:
+>        - const: base
+>        - const: mmap
 > =20
->  	if (tmp > 3) {
->  		dev_err_probe(dev, tmp,
+> +  dmas:
+> +    items:
+> +      - description: Transmit DMA
+> +      - description: Receive DMA
+> +
+> +  dma-names:
+> +    items:
+> +      - const: tx
+> +      - const: rx
+> +
+>    interrupts:
+>      items:
+>        - description: interrupt for EENV0
 >=20
 > --=20
-> 2.43.0
+> 2.34.1
 >=20
 
---o4/2wA7Y+HIrX7pW
+--uzpimjthc/PatwgU
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCamDzjgAKCRB4tDGHoIJi
-0iivAP4xx5UiXvW3340sAe2/uks3I8mKJ106TzV6e++z5VyK8QD8D6LHMl4fTsrF
-P0isMIcFcOsqdqYw2XqfQPy4qop9tg4=
-=aOJq
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCamDz1AAKCRB4tDGHoIJi
+0gBjAQDDaTVY/p3HfrZwRPlKeI6O0mHfuCHsA7jzs8i8/hBsHQEAn37K39nj07xY
+j6UCwmnMPTvle1FzwgbmdqflUB0/0Ao=
+=Wa/1
 -----END PGP SIGNATURE-----
 
---o4/2wA7Y+HIrX7pW--
+--uzpimjthc/PatwgU--

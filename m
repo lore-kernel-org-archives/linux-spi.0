@@ -1,48 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7A82EACEF;
-	Fri, 24 Jul 2026 00:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EBD2F619D;
+	Fri, 24 Jul 2026 00:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784854723; cv=none; b=Ew9pYWISeknJ9za2NgCoLRcJ26uYZYsbG52CAIbpUGaOF/r3TbJ0d8WoHZaFU7+8579wyERRHh7V3CnZK+TolsRUh1KnZfFqs60saRxTmp497ep/LsQkOOpqMZSjOoPdH3XzEx10kRAXjsS/cSw/sfONLXxz1DZqscztOWgOuYg=
+	t=1784854750; cv=none; b=OPN3oGSeRxYp2MgGkQJhBmlp1Na1hU5XTeGGk1Eti5yHXyPi32I0A6mzgqk1DL6nFhv66vEBWhNB/MiVloihneB4Lz63qSeSdj9pmk911m6aiZXuIX32LaAC7V0v9AgH1K7+vsCPTOYLDjN1MunSFjDvGoex0vKB0xcc7HH5yzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784854723; c=relaxed/simple;
-	bh=paT0EgDOjc3vEpgjmtYJsq9rFphaCgtgbuM51+hgsUY=;
+	s=arc-20240116; t=1784854750; c=relaxed/simple;
+	bh=te6kRqkLmO1krs0PSiQDjUfDFEbV9v++PLkeJvIjwSQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=e9cAWdvyI+4PdcjGLiGLtZKpJAJnKTDP8m72BQjWd5xO/B459RIFg7pHAWJhNteX5g5aRWwOyamkx+IU5NJ9u1IZHLf1LPt2j9vQWysCUpiMlZrNP+riMRDN2ex4gwDvh516/JSXC+U2iXQ4Lta+5kfA7HFAgexnTgW53uvz0ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MiRHR6My; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=TL1k3BMuzMih9TgxhpKd+TOezs5HakqMc8Z6eKB4uQ1fX1IF1ivdOaWMYRczkD6qkFHJhp6BSej7hSEZlfYKlkJ28g3yU0cTSKWeKjczi6Z+GJiJ1el/hBJ0UgVwSbrqiIbwlkBug2WhuV4k7eBkrLjLZJn3qo5DuIGn6QFHFg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJyJPYoz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MiRHR6My"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DACC1F000E9;
-	Fri, 24 Jul 2026 00:58:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJyJPYoz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30981F000E9;
+	Fri, 24 Jul 2026 00:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784854722;
-	bh=MTE3ekRM/dUuD7swK2qnfDz3MgDaOVtmfU7rqUsKiP4=;
+	s=k20260515; t=1784854749;
+	bh=iyw4jjWpPNdvDo9cinrLl296ZjpnyaO9BrHyNRq15M8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=MiRHR6MywchzHg5bAjcpNQsAP3QwCZ9F6go+5x2rrZmZBlEQSP3glnevKs3MZrq5Z
-	 0oWnwY3FqG/cc+HMdd3C0UlxVSYrRQRcj8uuFRsCIqplOKDZk6KHIdR90SJu2wxIsO
-	 maFC8w7owyJCu2TyrtgzbsXERxXrp5Zv+iFstjsxujzbjhbQF/o0a2xejuLxcQcSgl
-	 TxElx9XPZvETJVDkbO8whoOMtmwJ4MNp+VPJVwNrjjVfltgo8+j0eqq1AhnxxeeKYa
-	 sWG6TOxf7oLbkIqoO3jCYx/cglEGNrFQnF75MPwYvnKs9q/1FUMJSKxQQUQ+giFdVN
-	 lp2aPj34bWYWg==
+	b=aJyJPYoz6Gd7gkzAcgDHEkL4vBL+x7Dfcuuv/Owvobr3sWQg7XwgUN4rNvsnyy1Xr
+	 IZu0LO1ZiWZolUSpOdROzhteQ5xZPCOYFGavcCLviRygmi5F9h/S9pP2UhYO4iNkYJ
+	 bIj1Qm5kU8XskUnQDW1DP8X2vbO3hUXN13B/9ew3zb+VyY09x/cES3Ign1ZY51MkXU
+	 O1MERQRGov23T/VNCPWdZgZ04sfjc5y8Elb9X1oMO5lbdecfWvSanMjWZQPk3GNgrq
+	 6/mZbHe323pMToNg7nsM+PIWvNBnfE5gOEv0uqq9V2Hf8LlBm2sJVo2Ph77zO+dldT
+	 Il6r1TzCg40BA==
 From: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>, 
- han.xu@oss.nxp.com
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Han Xu <han.xu@nxp.com>, 
- Conor Dooley <conor.dooley@microchip.com>
-In-Reply-To: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-References: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
-Subject: Re: (subset) [PATCH v3 0/3] Add DMA support for i.MX94 and improve
- AHB read performance
-Message-Id: <178481660524.53486.16709271966474677924.b4-ty@b4>
-Date: Thu, 23 Jul 2026 15:23:25 +0100
+To: dianders@chromium.org, linux-arm-msm@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Vijaya Krishna Nivarthi <vnivarth@qti.qualcomm.com>
+Cc: konrad.dybcio@oss.qualcomm.com, damiendejean@google.com, 
+ Vijaya Krishna Nivarthi <vijaya.nivarthi@oss.qualcomm.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20260722092358.459943-1-vnivarth@qti.qualcomm.com>
+References: <20260722092358.459943-1-vnivarth@qti.qualcomm.com>
+Subject: Re: [PATCH v1] spi: qcom-qspi: Correct max DMA length to avoid 64K
+ boundary failure
+Message-Id: <178482982951.53486.6775425961212426017.b4-ty@b4>
+Date: Thu, 23 Jul 2026 19:03:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,40 +48,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1547; i=broonie@kernel.org;
- h=from:subject:message-id; bh=paT0EgDOjc3vEpgjmtYJsq9rFphaCgtgbuM51+hgsUY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqYri+L5XkQxLBYrzQPKVS4j973YIp6flIsz7cu
- cgR3QQNbPmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamK4vgAKCRAk1otyXVSH
- 0JXwB/9y9jkv9rM1aQpigs8h/xGon6ocqEPIndgStSKUfsm4LIyO9J7p58WgCdMBzxVSI92Tk8P
- c4XxY8edb5msw7tUI4kF4PN4HwQLuU4KaBHnedu4q0MNr2d0XeV550syZw7AUiJE6RS5YmTwlry
- TxqToN0IH3lpt7EpuScWdtrnJFx4mQWyWH0ODuYR3bWJ4W2+R3GMn9kmKZZq8ufjZbSdh7ZwdX5
- hEBBbkIYHNTavPNloeft0g2ZupEdq4KCET/Dx1E5Hqndi3ssen66KGr6zGpsVnK6tAIWZmsFh1G
- I76lI6lSD7gCTdCMy0mXRCngcLXT/YIVd8fC0u2ulIpQfBS9
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=te6kRqkLmO1krs0PSiQDjUfDFEbV9v++PLkeJvIjwSQ=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqYrjaNu9CHzBo9p26+cGi4onkU5kZomGDMRTUC
+ uK4RW0uq/iJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamK42gAKCRAk1otyXVSH
+ 0NEhB/4lrwB6XnLvSEJb8F8L8cPB5gX9f33JkVF7QnGc4J5E0ddcg118rb2PGr/3R6pd8YX48Bx
+ 4fEEdppDArclN9SPPFtkqnMkPPibfreNAuYRepwxqUhIo2ujpwo/auxwznoiKvTMDuiqS0WycID
+ cekdEShI0LNkOpch5kvzazZNcWC/Q4/2b87RcXqPzTtMZjJw5wcidM80RKm5E4vC7UFPZuMPMvn
+ 5gG6jWM/sQoCatNal+iOTsvO13AhtGwwtanNUz3dfXGQ7WgphIbcDE4nlNWlQNAiHwS/roLffVP
+ DoJbAyUXZ/oyJPN0KclcNcrd5wtUSBYV/DmDhuS40c2+Mh7R
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 22 Jul 2026 17:00:41 -0500, han.xu@oss.nxp.com wrote:
-> Add DMA support for i.MX94 and improve AHB read performance
-> 
-> This series adds DMA support to the NXP XSPI controller on i.MX94
-> and enables the use of DMA for AHB read operations to improve
-> performance.
-> 
-> On i.MX943 EVK, the measured read throughput improves 4x higher, from
-> approximately 70 MB/s to 290 MB/s when DMA is used.
-> 
-> [...]
+On Wed, 22 Jul 2026 14:53:58 +0530, Vijaya Krishna Nivarthi wrote:
+> spi: qcom-qspi: Correct max DMA length to avoid 64K boundary failure
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
 
 Thanks!
 
-[1/3] spi: dt-bindings: nxp,imx94-xspi: add DMA properties
-      https://git.kernel.org/broonie/spi/c/6f99efb11526
-[2/3] spi: nxp-xspi: Improve AHB read performance with DMA
-      https://git.kernel.org/broonie/spi/c/38d11bb2cd1d
+[1/1] spi: qcom-qspi: Correct max DMA length to avoid 64K boundary failure
+      https://git.kernel.org/broonie/spi/c/90ef2f2961c2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

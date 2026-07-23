@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2DA3CAA55;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391A3CBE6E;
 	Thu, 23 Jul 2026 06:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784789035; cv=none; b=oT15gBwptNQIIMS52wPTlJp/mpSTEpYAfiK5rpNVE4rWxx3BgIxJp4P3SYMjwnvUght820NxK13cDnro0gCFnYRqtwSOue5uGWuKQkv+uuI5dN8lCRXK+E/RQ+UAqK7Xrq5iwyacdMUWyrl9Cp1lJnG1e85zYme8V5gSqnY6C1c=
+	t=1784789035; cv=none; b=EBGcqc79nzUfqxOFInJ0QOFbbYinUdIjlhTiUE/2sVw8sQFNLnKyHnkaelXSy21a31ZXqF3qrnQoDf9et8ptsSa8oaG1flE1QBM7a3pfaPbz3u/plyJDF8WoYZsApsMjUxBDp1f8yokk9e2hmSlKYT43aHfmcviEXDzhvdfdXpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1784789035; c=relaxed/simple;
-	bh=rq/tb46DP924L/FjVCUkL1FIttRHuK8j2ySAzVvIQZM=;
+	bh=3M0OnshwTVK0UfKz0PIBYXEPXb40nt8Uug0ad6cJ1QQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eKLt01DaHa7GvG/FRdmvLvpQ/swSEXRzqAWnUJ0fjst2UKM8izCxYdS4X5ltXuT14n2hReBLvS4YHuoQxSOUzF60spFqX3NinRAprcwFWWfpXKvUjGhzm3Tcxf40+f9PKOcjjjHHzVhUSHDaPY/Y4asRrwyQgDBtrsbYJ+hlLQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbYL4BSG; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tK76l2hTKrUr2IrEk9woRkoxsUpB+JqXJYaFQPFg7dvVGv1cEK0rQH1qwfoY6A0hL1V+a32zzvlLCI9hu/UijjLr42dZTGQyfsmmaOmjpZZY/pq7mrgHz6y4QicZKGf7cDy4PulCY5uRFxaqSEpM/hBVYhYyT1uRreSx3tdKYbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIADCJSw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbYL4BSG"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 58C4EC2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIADCJSw"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D02FC2BCFA;
 	Thu, 23 Jul 2026 06:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784789035;
-	bh=rq/tb46DP924L/FjVCUkL1FIttRHuK8j2ySAzVvIQZM=;
+	bh=3M0OnshwTVK0UfKz0PIBYXEPXb40nt8Uug0ad6cJ1QQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XbYL4BSGZAv0WxaCtL8jmrjVRgzC0CFAE9Ab1JbksIpmQyf0ciXvgt/KkwPfqGsqO
-	 KWe1O+xA3Q+TzUGlZtKuTRO06vuHMiGiwPqSNZh7UzANxWHzxzFQfg1ND7JyM0RFlU
-	 gqst3UuxImXzGRzxqtOB7WKv2/piiyqlR+7pLB9N9cw0XaGmJiiKfstFac+ikguCua
-	 sh+di3XtXZDvnC6G9sIzivoXbzgq2E34noVl0T0VnZC/F/2+hR63oC9A630iRqlcJ2
-	 Gqz54e9VIEy7Zw2ar6Qbcq30Okdup7ixrobCDZ6HyPv+BUd6N+CVxz4wFVT4JkAbBS
-	 v6l077mDNEYDA==
+	b=lIADCJSwav7DYdpcWivV1Dg/XPEDiN5pi2yJW7lIKgA21mhJnLPmbUgeU8J1HMoOI
+	 sppOwplMU3MRVwrihcyqXfLJKGbwbmuoIRPBzOjt1pQ+wu4WwDfJrDmd8j0W7OUPXC
+	 4pugB8A8wHwcLeVCfirAloViNJ0Jkm2DTREzz6tybNoz8IW04XsVp6xggtMTmPhu3i
+	 X9Kp3Mm0sI1Z5YDi36CtCKnQMfa2rOyIUb83cTWfVlt/vKzaDt6si+98+zw40yZ4/y
+	 h41qpu1AlOG8Y28cRPyF0vRW5b07oW9CRLUkn9X2Aj0XHiFoMiPYzNKjyAFUliyfsi
+	 fUR7i8T1nno/Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E053C531CC;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55C4AC531C7;
 	Thu, 23 Jul 2026 06:43:55 +0000 (UTC)
 From: Xianwei Zhao via B4 Relay <devnull+xianwei.zhao.amlogic.com@kernel.org>
-Date: Thu, 23 Jul 2026 06:43:43 +0000
-Subject: [PATCH v2 2/4] spi: amlogic: spisg: Fix transfer size limit and
- timeout handling
+Date: Thu, 23 Jul 2026 06:43:44 +0000
+Subject: [PATCH v2 3/4] spi: amlogic: spisg: Fix the incorrect keep_ss of
+ the last descriptor
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-a9-spisg-v2-2-9fc39106b7e2@amlogic.com>
+Message-Id: <20260723-a9-spisg-v2-3-9fc39106b7e2@amlogic.com>
 References: <20260723-a9-spisg-v2-0-9fc39106b7e2@amlogic.com>
 In-Reply-To: <20260723-a9-spisg-v2-0-9fc39106b7e2@amlogic.com>
 To: Sunny Luo <sunny.luo@amlogic.com>, Mark Brown <broonie@kernel.org>, 
@@ -51,11 +51,11 @@ Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784789030; l=1947;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784789030; l=2503;
  i=xianwei.zhao@amlogic.com; s=20251216; h=from:subject:message-id;
- bh=BRq2nLOiEjtiR+0vj/uM6L8HPr1w32uaAGwS/r33K78=;
- b=PgCQZw3mX0UQF39rzre8XLicz8qQXc+g7Wvu8j+DV8pNFDId2rQQuwKINbqgS1PSUnglS1j7Y
- rUOXJreyVG8Aj2RH0Hk9o4kRGLtkgtqyt+v3Unci8I/MoDGBXl26Svo
+ bh=GYCmSYjNwUITh84G97V/SeftRuFlV+MEyMTKnf7GhHw=;
+ b=GkR8HB8K1/PECYh7EuOrs6MPtpCN5QXiQFktK4qOkKRr/LKpLJqc1a5JrBW22QjHi87Vefd/y
+ zNFBqbugbMQAjC3YXxBrkGEO2zthU2go/HYM7SMI+0Fr9nm0vw8V06W
 X-Developer-Key: i=xianwei.zhao@amlogic.com; a=ed25519;
  pk=dWwxtWCxC6FHRurOmxEtr34SuBYU+WJowV/ZmRJ7H+k=
 X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
@@ -63,61 +63,73 @@ X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
 X-Original-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 Reply-To: xianwei.zhao@amlogic.com
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Sunny Luo <sunny.luo@amlogic.com>
 
-The CFG_BLOCK_NUM field can encode at most 20 bits, so reduce
-SPISG_BLOCK_MAX to 0xfffff to avoid programming a zero-length transfer.
+The driver currently unconditionally clears CFG_KEEP_SS on the last
+descriptor, causing the last transfer's cs_change setting to be ignored.
 
-Perform the delay calculation in 64-bit arithmetic to avoid overflow
-when converting nanoseconds to SPI clock cycles.
+Record the cs_change value of the last SPI transfer and use it to
+program CFG_KEEP_SS on the final descriptor. When a null descriptor is
+inserted to implement the cs-hold delay, keep CFG_KEEP_SS set on the
+preceding transfer descriptor and apply the recorded value to the final
+descriptor instead.
 
-Stop the controller on transfer timeout by clearing the descriptor list
-register before returning an error.
+This ensures the controller handles chip select correctly for the last
+transfer regardless of whether a cs-hold delay is required.
 
 Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
+Signed-off-by: Sunny Luo <sunny.luo@amlogic.com>
 Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
 ---
- drivers/spi/spi-amlogic-spisg.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/spi/spi-amlogic-spisg.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index afc8af04638d..a6123975a37c 100644
+index a6123975a37c..2d66f00dccd4 100644
 --- a/drivers/spi/spi-amlogic-spisg.c
 +++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -95,7 +95,7 @@
+@@ -489,6 +489,7 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 	struct spisg_descriptor_extra *exdescs, *exdesc;
+ 	dma_addr_t descs_paddr;
+ 	int desc_num = 1, descs_len;
++	bool last_xfer_keep_ss = false;
+ 	u32 cs_hold_in_sclk = 0;
+ 	int ret = -EIO;
  
- #define SPISG_MAX_REG			0x40
+@@ -529,9 +530,11 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 				spi_delay_to_sclk(xfer->effective_speed_hz, &msg->spi->cs_setup));
  
--#define SPISG_BLOCK_MAX			0x100000
-+#define SPISG_BLOCK_MAX			0xFFFFF
+ 		/* calculate cs-hold delay with the last xfer speed */
+-		if (list_is_last(&xfer->transfer_list, &msg->transfers))
++		if (list_is_last(&xfer->transfer_list, &msg->transfers)) {
+ 			cs_hold_in_sclk =
+ 				spi_delay_to_sclk(xfer->effective_speed_hz, &msg->spi->cs_hold);
++			last_xfer_keep_ss = xfer->cs_change;
++		}
  
- #define SPISG_OP_MODE_WRITE_CMD		0
- #define SPISG_OP_MODE_READ_STS		1
-@@ -175,7 +175,7 @@ static int spi_delay_to_sclk(u32 slck_speed_hz, struct spi_delay *delay)
- 	if (ns < 0)
- 		return 0;
+ 		desc++;
+ 		exdesc++;
+@@ -539,13 +542,17 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
+ 				       xfer->effective_speed_hz);
+ 	}
  
--	return DIV_ROUND_UP_ULL(slck_speed_hz * ns, NSEC_PER_SEC);
-+	return DIV_ROUND_UP_ULL((u64)slck_speed_hz * ns, NSEC_PER_SEC);
- }
- 
- static inline u32 aml_spisg_sem_down_read(struct spisg_device *spisg)
-@@ -565,10 +565,13 @@ static int aml_spisg_transfer_one_message(struct spi_controller *ctlr,
- 	aml_spisg_pending(spisg, descs_paddr, false, true);
- 	if (wait_for_completion_timeout(&spisg->completion,
- 					spi_controller_is_target(spisg->controller) ?
--					MAX_SCHEDULE_TIMEOUT : msecs_to_jiffies(ms)))
-+					MAX_SCHEDULE_TIMEOUT : msecs_to_jiffies(ms))) {
- 		ret = spisg->status ? -EIO : 0;
+-	if (cs_hold_in_sclk)
++	if (cs_hold_in_sclk) {
+ 		/* additional null-descriptor to achieve the cs-hold delay */
+ 		aml_spisg_setup_null_desc(spisg, desc, cs_hold_in_sclk);
 -	else
+ 		desc--;
++		desc->cfg_bus |= FIELD_PREP(CFG_KEEP_SS, 1);
++		desc++;
 +	} else {
-+		/* stop transfer */
-+		regmap_write(spisg->map, SPISG_REG_DESC_LIST_H, 0);
- 		ret = -ETIMEDOUT;
++		desc--;
 +	}
  
- 	dma_unmap_single(dev, descs_paddr, descs_len, DMA_TO_DEVICE);
- end:
+-	desc->cfg_bus |= FIELD_PREP(CFG_KEEP_SS, 0);
++	FIELD_MODIFY(CFG_KEEP_SS, &desc->cfg_bus, last_xfer_keep_ss);
+ 	desc->cfg_start |= FIELD_PREP(CFG_EOC, 1);
+ 
+ 	/* some tolerances */
 
 -- 
 2.52.0

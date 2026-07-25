@@ -1,156 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC8E484232;
-	Fri, 24 Jul 2026 23:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8E331E820
+	for <linux-spi@vger.kernel.org>; Sat, 25 Jul 2026 04:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1784937443; cv=none; b=XSMi1wz/TPPVfvJAW4h/FCIzy9y1CBjIeM+VM/Z6lmCuAvvaVf/6yHPXVbGIhTTYULhl47ihf/58WgznE+fPnAvSIjLsQa8f8mifwvS4TjYMY3kvPdRRSzIcuc73NQvZ8lwawTjrAUVcJyGXjhfdrRWj2HXcHjfB7zN68jlr8w0=
+	t=1784953813; cv=none; b=e/tlfcY0xMaZdrr7Fwab0umwyQzcwvwjVRsyGpHHgtydfNa1jTfWmNCTVTBXpqOmh2BSNBSoyfUCbm2ovH6SIyrd9Vih+4RkM08ZxaqrAzrweuPx9M4Ha0mf2KAyBA9tQ5IckAmNx9g3BhSDiJobSnnYPjl7+0NYF3nU3WyI0fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1784937443; c=relaxed/simple;
-	bh=VLFRgFB8k6jSFCc2/m122MOjG32aZgdusOd+F9kCF4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ICWKk+E2aPMlhwK6oIGuy9X+3BjbW4NgHFck71l3UZ+7cWYXt65JDKNeOqMtduPEBfI7/gTdGk1sQQcs5ll9+F5JGBZ/hAoyaKmZg5kgp37a6rbvZzwi3JnlCZuAfArwN0KJrzepw9/sB9ocz09hWX3URz0FZQDrNOkmqM22h3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq4tAO83; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1784953813; c=relaxed/simple;
+	bh=musYvu4kG+XXqxnTHrbOaZuAwdan+yHB+92wfOCg1PM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sIB/eU7QK+LyfYmoMA4zI5/XwJuHmt2M5Vz6OrJya2rREVW9GqmTBWiEdASEJ3xptmWJ9cyS5APiXsblUyFevNMwQ2U681U2ljYIBdt1q67ec3eRxeUHwGyMfpDnAvFPVKk5DWj4QyJcXOvp1L5OV2DYhRu2hJY3DsTaTa5JmRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maticrobots.com; spf=pass smtp.mailfrom=matician.com; dkim=pass (2048-bit key) header.d=maticrobots.com header.i=@maticrobots.com header.b=T01Dbcwk; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maticrobots.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matician.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq4tAO83"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39A91F000E9;
-	Fri, 24 Jul 2026 23:57:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1784937441;
-	bh=luou0a9E4J3Yzrp5vnno3ir/fWWZK4SMn+VFxGiw2ag=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Pq4tAO83vbZo0KJu2KtgxEOQTp7lUHBWgp2DiCrb7shKZku07bDJ+U0OoLVYJSaVH
-	 7EARG4gkdsSBGgq3Z6xSRlJxwM5JKkkXCtyM6orTTGJUImFSOj+5IRUu9HVwmKfZib
-	 WW4yh7KqrP5xQ7EFxKQD2P9ZzRMc2vreKWDQ7WNPCUNhta9kn2XBgjBetavjSnkS+o
-	 peAlpKiWc12AXBRlg0cTpcRiM+v7m0muJCt/KCMEdYLXBJ2EjTURGpBeq5kWBeoM1X
-	 VgtFG2EJ5dXZ9CAAxAPG7To9C7Y7pVEH6fLIw6Awsf5DJxHLZVQujMVcq2EISeE+Kr
-	 q5R2F26JQByjg==
-Date: Sat, 25 Jul 2026 00:57:14 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, "David Lechner" <dlechner@baylibre.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andy@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Philipp Zabel
- <p.zabel@pengutronix.de>, "Jonathan Corbet" <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, Marius
- Cristea <marius.cristea@microchip.com>, "Marcus Folkesson"
- <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, Janani Sunil
- <jan.sun97@gmail.com>, <linux-spi@vger.kernel.org>, Kent Gustavsson
- <nedo80@gmail.com>
-Subject: Re: [PATCH v7 7/7] iio: dac: Add AD5529R DAC driver support
-Message-ID: <20260725005714.034b50bf@jic23-huawei>
-In-Reply-To: <20260722-ad5529r-driver-v7-7-7781cd74ad75@analog.com>
-References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
-	<20260722-ad5529r-driver-v7-7-7781cd74ad75@analog.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=maticrobots.com header.i=@maticrobots.com header.b="T01Dbcwk"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ca97d139d5fso677006a12.0
+        for <linux-spi@vger.kernel.org>; Fri, 24 Jul 2026 21:30:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=maticrobots.com; s=google; t=1784953812; x=1785558612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EjohzwxsJRfPbC2U2sWKg8g16sF/knZCZszVfz0+Kq4=;
+        b=T01DbcwkuNOiALqPv+mOpI21gYOVK1xpEz1S+bRM6rv0uEvmgoYx4yKyuQxJNL8zCB
+         Az+Fhd85wyBHkrgzCTw7eR+hKKtycilsh9nJAr+yTodGY9O/+MDnKSczCaqLPa61bCTk
+         /n59kYtHnBcfUidvDj3qFQ2iAcZ+w0hWl2iVLd+NxJM5al9kgqyf5+5HO/Do2ZzDUzbf
+         NVqi86z+jUKacxv+PWs+uWWSOBS3xsxdd9J0MLu0yaHGixOfminPKQ1oIbIdImcVgobo
+         BtzEIhUfb2yFT698Dd4wobsOtsAKvMofkMj8UJZF4pf87R8nHffrOzWYV9Yfm97cF+wq
+         CrTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1784953812; x=1785558612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EjohzwxsJRfPbC2U2sWKg8g16sF/knZCZszVfz0+Kq4=;
+        b=SBiTu1L5dXkzMCCUF+bu7qEHWlt/qJ+1w/TB7H2CN3SVF5v/lmMX3X9oGLyDnjlPxI
+         Y2k7FPfZ7lmYZKwzET4epUHdV4k68xRoTk4ft1rKmozgkBQ7uy9EvZCWKAni0dXMvdNb
+         YI1UdtEHydxFF6XwB72XPrlnWqCQdqxjZ+CC43TxUVtKmVno80/iim2yv09V69ZJkt1r
+         r7/ukJvpS6c0FmGhAJaFXE8E7v+z7kSknRZuCOjYmjTXOMwJtG+9okuFgZ4w41r11Jdj
+         WAHRdYu00ogSdRNlaLB8JQq8mltygHeBus1rXVGrvpewcoEXkc+/M6yji9RsD3rOX6OD
+         9fbg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp3NrPLKXlwP14SmBdFF6mKaeI/G6pJayrcZlLrgRACPjJYUrDr+V0HlQd4Lf6NFZnYIrUV4jQCrbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrC8QFX3NkFT7Vcm0KtwqOBaO0CYZl4Gqv5EIT+UJ/ghA3+3WP
+	83DvyRepuDw67lAdGItuf9KgcjwJqgwx9IVadjk8cncVrgLXG8KNVllKQBPVH/BWEcc=
+X-Gm-Gg: AR+sD13yDUUq/1zjGqZtxPcQzviy68vMi6V+VgYPhFg4Hj3V5Le6TkbwUCIXze0EaJm
+	kDr3yx2hImv0s+YrbxcU4BqESgOfJHcJj/IPpKuVlSIiQYeWokZvMarPxGxCU2uymdJ6l81rJl9
+	lgdNo4/g7pIvOD43JeLCJjOSmWUCytTbm7NC7Nq1D4Y82lwVsfpSaEOQAbtivg1lkflZkgVC85z
+	4brdCeG903krVlW3JYUF6JHDfJjdlRi4DPmhFSaMJwPfcpRbwT6F1Siftx3XOfcLHnZlThE2f+k
+	ahzn08j1/jLoT+gScP7A3zc0PDdxeezgoikYtJvVgRsVNsNqKJSUWXsbqHQBF5S/9zjKlK/QZhU
+	PHO8wCjvENNm9Ylhoh+xJsaOYU+40DNZltfPvcyUG+J0jQ+j+wbNv4KeKVNOtqc9+UTkkDffPUS
+	XuIQ4SCOligSogXONXhUBaIsL7kWA4gKoX4Srz0TAgmDUeacw6Anc=
+X-Received: by 2002:a05:6a20:9f46:b0:3c4:46ca:3350 with SMTP id adf61e73a8af0-3c67dae9748mr1209444637.6.1784953811727;
+        Fri, 24 Jul 2026 21:30:11 -0700 (PDT)
+Received: from abeMaticDesktop.1020marsh.offices.matician.com ([2600:1700:471:807f:da8a:3174:41e9:b949])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-314bc5a04b2sm5158361eec.28.2026.07.24.21.30.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2026 21:30:11 -0700 (PDT)
+From: Abraham Zukor <abe@maticrobots.com>
+To: Mark Brown <broonie@kernel.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-spi@vger.kernel.org,
+	linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Abraham Zukor <abe@maticrobots.com>
+Subject: [PATCH] spi: tegra114: initialize native chip selects inactive
+Date: Fri, 24 Jul 2026 21:29:44 -0700
+Message-ID: <20260725042944.1204409-1-abe@maticrobots.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 22 Jul 2026 09:54:19 +0200
-Janani Sunil <janani.sunil@analog.com> wrote:
+tegra_spi_probe() initializes SPI_COMMAND1 with only SPI_M_S, leaving
+CS_POL_INACTIVE clear for every chip select. This drives every native
+active-low chip select low until tegra_spi_setup() runs for that device.
 
-> Add support for AD5529R 16-channel, 12/16 bit Digital to Analog Converter
-> from Analog Devices.
-> 
-> The device communicates over SPI and supports per-channel output range
-> configuration. An optional external 4.096V reference can be used in
-> place of the internal reference.
-> 
-> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+SPI children are registered and probed one at a time. A synchronous
+probe of an earlier child can therefore transfer while a later child's
+chip select is still asserted. On a Tegra234 system with active-low devices
+on CS0 and CS1, this caused both devices to be selected when the CS1
+device probed first. Its initialization then intermittently failed. A
+logic analyzer showed CS0 remained low throughout the CS1 transfer and
+went high only after the CS1 probe failed.
 
-Sashiko had one comment that I think deserves a tiny modification.
+The Tegra234 TRM also documents all CS_POL_INACTIVE bits as one after
+reset, so the existing probe code replaces the hardware's safe reset
+polarity with zeros on that SoC.
 
-Otherwise looks good to me.
+Set CS_POL_INACTIVE for all native chip selects during controller probe.
+This matches SPI's default active-low polarity and the documented
+Tegra234 reset polarity. tegra_spi_setup() continues to configure the
+inactive polarity of SPI_CS_HIGH devices before their drivers probe.
 
-I would have just tweaked that and  the [] (and still may) bit giving time for that SPI
-ack from Mark for the generic property before I pick this series up.
+Fixes: f333a331adfa ("spi/tegra114: add spi driver")
+Assisted-by: Codex:GPT-5
+Signed-off-by: Abraham Zukor <abe@maticrobots.com>
+---
+ drivers/spi/spi-tegra114.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Feel free to send a new version if you prefer.
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index aa44ffd09e61..c28aae093d57 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1394,7 +1394,7 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	reset_control_assert(tspi->rst);
+ 	udelay(2);
+ 	reset_control_deassert(tspi->rst);
+-	tspi->def_command1_reg  = SPI_M_S;
++	tspi->def_command1_reg  = SPI_M_S | SPI_CS_POL_INACTIVE_MASK;
+ 	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
+ 	tspi->spi_cs_timing1 = tegra_spi_readl(tspi, SPI_CS_TIMING1);
+ 	tspi->spi_cs_timing2 = tegra_spi_readl(tspi, SPI_CS_TIMING2);
+-- 
+2.54.0
 
-Thanks,
-
-Jonathan
-
-
-> diff --git a/drivers/iio/dac/ad5529r.c b/drivers/iio/dac/ad5529r.c
-> new file mode 100644
-> index 000000000000..2fd1dd053da5
-> --- /dev/null
-> +++ b/drivers/iio/dac/ad5529r.c
-
-> +
-> +static int ad5529r_parse_channel_ranges(struct device *dev,
-> +					struct ad5529r_state *st)
-> +{
-> +	s32 vals[2];
-> +	int ret, range_idx;
-> +	u32 ch;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-
-As below, lets check we don't come in here once too many.
-		if (st->num_channels == ARRAY_SIZE(st->channels))
-			return dev_err_probe(dev, -EINVAL, "Too many channels\n");
-
-> +		ret = fwnode_property_read_u32(child, "reg", &ch);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Missing reg property in channel node\n");
-> +
-> +		if (ch >= 16)
-> +			return dev_err_probe(dev, -EINVAL,
-> +					     "Channel %u exceeds maximum 15\n",
-> +					     ch);
-> +
-> +		if (fwnode_property_present(child, "output-range-microvolt")) {
-> +			/*
-> +			 * DT stores cells as raw 32-bit values; signed endpoints are
-> +			 * encoded by dtc in two's-complement and then interpreted
-> +			 * here as s32.
-> +			 */
-> +			ret = fwnode_property_read_u32_array(child,
-> +							     "output-range-microvolt",
-> +							     (u32 *)vals, ARRAY_SIZE(vals));
-> +			if (ret < 0)
-> +				return dev_err_probe(dev, ret,
-> +						     "Failed to read range for ch %u\n",
-> +						     ch);
-> +
-> +			range_idx = ad5529r_find_output_range(vals);
-> +			if (range_idx < 0)
-> +				return dev_err_probe(dev, range_idx,
-> +						     "Invalid range [%d %d] for ch %u\n",
-> +						     vals[0], vals[1], ch);
-> +		} else {
-> +			range_idx = AD5529R_RANGE_0V_5V;
-> +		}
-> +
-> +		st->output_range_idx[ch] = range_idx;
-> +		ret = regmap_write(st->regmap_16bit,
-> +				   AD5529R_REG_OUT_RANGE(ch), range_idx);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to configure range for ch %u\n",
-> +					     ch);
-> +
-> +		st->channels[st->num_channels++] = AD5529R_DAC_CHANNEL(ch);
-
-Sashiko calls out that a malformed DT could have repeat entries and so overflow channels.
-Given it is easy to harden against that, let us do so alongside that check on
-if (ch < 16) above.
-
-> +	}
-> +
-> +	return 0;
-> +}

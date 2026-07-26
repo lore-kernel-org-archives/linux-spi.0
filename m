@@ -1,58 +1,57 @@
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59B135C181
-	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 10:35:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425B6322B8F
+	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 11:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785062156; cv=none; b=sbLkv+Wq6eVivOEtieThAMGY3VZgn0aeLz0JrW62sJjH8G8LejKv1MTlhiGnNHRMLsV/XhkSwoQzfnWf2g//ha9ywNHpHY6tLwQqYtDKbKc0Me6ElBECxQI/CDMT1rRtWG4OLTn1YzKxWAKMf5njaj4fKoknXbBfErf3zVy3ixw=
+	t=1785064354; cv=none; b=ipPa9aB1ywXkmS6EhcnCu2umPlEPFtm30K1V3/K3ty9fMOfymrMPjgZD5o1KD3ZAN3cjc5dfjYqIXMIREGOldGjDJJikK3Mk9JpXXAVGAhSocZxLE52RW/rZdEFekmuWOxQCkfrQcfq1yhQRXXs6Jo3FjevV+/NXEmZkVq994fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785062156; c=relaxed/simple;
-	bh=M+Vu4cRpIMQHfugoF63KNOvGVy9PGz1OJMvs0R11CG0=;
+	s=arc-20240116; t=1785064354; c=relaxed/simple;
+	bh=CrO3m5lVOVX9pKW7m5uGi7Il6Sad2PRx5vibMcDIgCM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kBnOgihQNHOfbWshAeJMuNIqDsi3FXSs+WiTw7QYUssCMDP8Dwfxt7YknlxPCKA37NDEL/I0jG6H4lPKbI0dM9eQoZIZRcpUWsWwVYU1tgDLlyWs/kEpfD6h/XuJxXqDxQAY4h9MgllcLQSncvDkui2xJGU9PnydhorHicYjaPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.47
+	 To:Cc:Content-Type; b=RUf3BnYguadjEAZqo2M1/Mac75MeuN/rNTRUwcRecke31Yc5bp/IkSM/34oNTM07K8cMe667D1GsKXD3tpo16qOGLKJ2VfVLvsHQ/Ua7zM/0/VchbhGL2h9QtwhZ+WnPvPZWxlWyfpFdMyqM0HPq6NbR8sl1YfOJyu40XyCML6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7eb1dc6bd53so1028382a34.2
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 03:35:53 -0700 (PDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-45133d2974fso1478672fac.1
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:12:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785062151; x=1785666951;
+        d=1e100.net; s=20251104; t=1785064351; x=1785669151;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r5WlHwA8oA2RvyaPhBL6aXKI/6RszyoEP/Z/bWJtOFU=;
-        b=mhLxkXbev6hRW1xFcCpSeYgT+C3lilshe6NmVyrAj3w7V8cz0MtEpvFizbF3DCZ2CT
-         yPM0L9NnfD9egEn6JkVPVGki5+mQpyhXBvfE75paTxAGF24ch6kmPcXbbcXX/cKpquMc
-         5AnyQM3T85xFJ/TQSdT21dZ8uWYk6Olq+v5AuG+XZbn+5RzVq99Hpl30YKI3aOhAV0BK
-         5o7Z4VZZLGoLP8/x+/vwfqfjuc7ogG+gHQfvloHfKWLWtTTIxkgWhUjFSzz7g3vYogBA
-         msFAeWSHuQd5b5iwPi/v4Y8/gB6oRR7oAJbTbfz5HClnEVoQ+bY+d5rHl8APJDkPURPM
-         WUew==
-X-Forwarded-Encrypted: i=1; AHgh+RqqlhxQ1iPUQhle1WCERY8ZgdW3XmjlrOOrhg48I5860xX9sN2p3iQA2xOlBlc5cbceEm4KoUYXu9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu9RRRK9aB1kr9uRQtjOXhgrjteUYTUnymbvQoNGJAGcGwT3Ky
-	VBeOaSwkvEBzaN7Y7Qg/fUPkpSIAdxSE5nqfOL4ZcFikGbEZBdwcC4a01+/InTYUpQ==
-X-Gm-Gg: AR+sD12QWubXgldcqi7owYaolwehJGpDl1lMTkc8Vj2BWqoWueS8JhcYVKqR8Q35VZV
-	vCwYE56u+9uqSDs+M2JBQ8ihiq/gtDloI+v41xda7NVO+RcX82QOEyofhuIFU1DJw+mnWHi7HaV
-	jX+dy6n1RwwdMXhq5YpGk+yZU+a8zspXIiKRh34tmO4WHEYVM+5dIphrcAkfOQ4Tfg9PuBllltf
-	ALXovXN3vDLgqKwP6wQk+o8ZyU1CxeTYvigKUA0TUFJ5hVgZW6ZvJ1Y8Y0luyZzF6Q8cPZ7IDnT
-	7cB4ZjF06zFknqFfhKiMifDY9o8PptWM7WvMKaHpKXVcuqjE0UtpjPKTROc7VvKhiyKZdx+x/fB
-	S34RezM8xMSHDbpu5Tk3KyQgIou04ya4rYRThtyzg4xNx2B9SrSYtO1DCCGMd70lJVeAdntOw11
-	Y3RtAd2rOHJIc28EqK0b3JRJLNeI9VuSgJx3ehKZMpLwHC7MCCh6Prv3mkfQKqFT0KudPs9gRoi
-	h/b/ZOnurs=
-X-Received: by 2002:a05:6830:82b8:b0:7e9:c8e3:4473 with SMTP id 46e09a7af769-7ee78d5acffmr4413942a34.16.1785062151467;
-        Sun, 26 Jul 2026 03:35:51 -0700 (PDT)
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com. [209.85.161.44])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ee29db283dsm9991103a34.3.2026.07.26.03.35.50
+        bh=GKU0QhAvsBejgAlbDaY2+1ClKAxRltlgTuy03z+3isE=;
+        b=IT8uaEGYz8Ynl0pyDfFLeBIL5uNoYTTFHk/ALpCWPz6MCSAxDatT6DGLwvmkL9fAA8
+         M7ggRPC54vwGmNn3QnKJZ9oN52M8/OMfl2xzA2ajXkeCShVL4hpYX5BWQnuuopipgMjc
+         0+DFd0AkYrcwvE3PTiMt5bC3/yH02wWTgsRMOIJ0HZWhyRXKvcbUfAUJWCKOCGS/YqVp
+         92/kjuBIa0AIARDD9cVTXecWZb3g8EDuAYsV7/irl7A9MitkYoilpCjesW02AyJsOpTt
+         jJB5S0aatyBSyQp+ksI9+GarEbATPFYUOWHQ/lxNetbzL9dxZZ5/ReLk1FTzJVnNiOC5
+         /Gmg==
+X-Forwarded-Encrypted: i=1; AHgh+Rrci4nTEMxB7lBk0aLRrN+bGZPJ2txUNkvoftJgcI15XWahHeGGPZxNCdjHH7nZiwei97VNbOUXqm8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyaj3BgtX76GabuQAZLprlguiimWJnMS+hcN9Nrci4GrzHii1U5
+	YNTPMCTe8ISDrSTNIeim4nXNAS2icw/6jU3uDg8sN0qoJO46kvgPw6A9EUFKIX51CA==
+X-Gm-Gg: AR+sD11heQcSL/PYthEdg8eNenHDEZUkbOq4fEBOgFv4q3BqTfTjONlM1iPqeMiMNfZ
+	Ur6thd1l+CYD9RF6L8ZeE47KP87TcaxR2o9w7x++lJTJh0TV7irLuT9xZWVZSWEJofDKCm2mbyC
+	elLX+wGRFUQ6L4hAxzMNMzGa1XAXMOvgxBk+YOWAmZbAJEELkbiN+09UTLBd3jxp6AslvNaWqk3
+	6kk82LEU/P2sF1gccm9S3hZMdmTgdqhmexlUgsbfEg2Nw0ghO6AsjGx2N1z0T1cc80c6/vzsuiB
+	nZ2SEG+43epDf6PfhPSutjxFZvieDwvAbmz6HJSIrJSdAc9x3S/0PlLkyanUz1cUqEKvnDgJevL
+	IA6aocWLmfHrpyTf/8AtT8ltXG5MrN022MEqCTFpuNrWm9qZVUlrl6G3xHDQZYktrKNlSEZCvGS
+	Et1S8OM1hXIuqdFmk54knmkbW01R6z5DC13nS9t+yxsG1RDBJDayEg4re3L23WoXUXmCkIxzyp
+X-Received: by 2002:a05:6870:a116:b0:447:2ca4:918 with SMTP id 586e51a60fabf-457f278c8ebmr4277339fac.33.1785064350855;
+        Sun, 26 Jul 2026 04:12:30 -0700 (PDT)
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-45766e7d640sm12063413fac.4.2026.07.26.04.12.29
         for <linux-spi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jul 2026 03:35:51 -0700 (PDT)
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6ab015de764so367800eaf.3
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 03:35:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqGFKY/NdtgMu8JXR+QyhbMfSODx+lYmwCqJKmgIfkvdHmL0NSXboHcAS4QP1JYNx41CTegqYACkbo=@vger.kernel.org
-X-Received: by 2002:a05:6820:1c96:b0:6a1:4347:8ff1 with SMTP id
- 006d021491bc7-6aaff9a5acemr3595412eaf.38.1785062150696; Sun, 26 Jul 2026
- 03:35:50 -0700 (PDT)
+        Sun, 26 Jul 2026 04:12:29 -0700 (PDT)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7eb6573bd52so1171070a34.3
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:12:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqncLN8w6w9WRiAB9F5FZ1BQLHj3ftAhsITBitv2UOyRK4eZaOhMIwKA7w6/rH9d5dWtWdPgHPIYQo=@vger.kernel.org
+X-Received: by 2002:a05:6820:4d0a:b0:6aa:d792:e078 with SMTP id
+ 006d021491bc7-6aaff87594fmr3257957eaf.27.1785064349448; Sun, 26 Jul 2026
+ 04:12:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -60,123 +59,68 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260720162117.32304-1-fourdollars@debian.org>
- <20260720162117.32304-3-fourdollars@debian.org> <862b86bb-6c7d-487c-b790-fa5d5a5217b2@sirena.org.uk>
-In-Reply-To: <862b86bb-6c7d-487c-b790-fa5d5a5217b2@sirena.org.uk>
+ <20260720162117.32304-4-fourdollars@debian.org> <al58ubdrmJpPtr0F@ashevche-desk.local>
+In-Reply-To: <al58ubdrmJpPtr0F@ashevche-desk.local>
 From: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
-Date: Sun, 26 Jul 2026 18:35:38 +0800
-X-Gmail-Original-Message-ID: <CAAT15mNJRmkJ4fi4gymMXHCMQ+0=fNOV+HLw1T0r3VpqeGT9OA@mail.gmail.com>
-X-Gm-Features: AUfX_mw7ir5Ox5ZC24FajjkO2Ca-90Uoe83WqcIQY__elW4XN7H4XnpkwcBwMeo
-Message-ID: <CAAT15mNJRmkJ4fi4gymMXHCMQ+0=fNOV+HLw1T0r3VpqeGT9OA@mail.gmail.com>
-Subject: Re: [PATCH v16 2/7] spi: pxa2xx: introduce suspended flag for
- interrupt synchronization
-To: Mark Brown <broonie@debian.org>
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Lukas Wunner <lukas@wunner.de>, 
-	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, linux-arm-kernel@lists.infradead.org, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 26 Jul 2026 19:12:18 +0800
+X-Gmail-Original-Message-ID: <CAAT15mNAKHdJTrxqctHe4o99TTN18481r+TVAL0ubA44zM1Yug@mail.gmail.com>
+X-Gm-Features: AUfX_mytscuS4j8uP2M1eAMvyLvFoGxgNoXb9GjOvRAaNp-ItKcKS9Ve7cJtouU
+Message-ID: <CAAT15mNAKHdJTrxqctHe4o99TTN18481r+TVAL0ubA44zM1Yug@mail.gmail.com>
+Subject: Re: [PATCH v16 3/7] spi: pxa2xx: overhaul teardown and suspend
+ sequence using pxa2xx_spi_off
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>, 
+	Haojian Zhuang <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Mark,
-
-Thanks for the sharp observation and the suggestion!
-
-On Tue, Jul 21, 2026 at 1:18=E2=80=AFAM Mark Brown <broonie@debian.org> wro=
-te:
+On Tue, Jul 21, 2026 at 3:53=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
 >
-> On Tue, Jul 21, 2026 at 12:21:11AM +0800, Shih-Yuan Lee wrote:
-> > When a shared interrupt line is used, the interrupt handler ssp_int()
-> > can be triggered by other devices sharing the line. The handler must
-> > ensure it does not access the SSP controller registers via MMIO when
-> > the device is powered down or when its clock is gated; otherwise, it
-> > will cause PCIe Completion Timeouts and system hangs.
->
-> > Currently, ssp_int() guards MMIO access using:
-> >     if (pm_runtime_suspended(drv_data->ssp->dev)) return IRQ_NONE;
+> On Tue, Jul 21, 2026 at 12:21:12AM +0800, Shih-Yuan Lee wrote:
+> > When removing the driver or suspending the device, the clock must not
+> > be disabled while shared interrupts are still active. Gating the clock
+> > before waiting for in-flight interrupt handlers to complete results
+> > in race conditions where the handler performs unclocked MMIO accesses,
+> > causing PCIe Completion Timeouts.
+> >
+> > Overhaul the remove, suspend, and runtime_suspend paths to use a strict
+> > synchronized teardown order:
+> > 1. Disable hardware interrupt generation at the controller level.
+> > 2. Mark the device state as suspended (suspended =3D true) to prevent
+> >    subsequent interrupt handlers from attempting MMIO reads.
+> > 3. Call synchronize_irq() to wait for any active interrupt handlers
+> >    to drain completely.
+> > 4. Gate the clock via pxa2xx_spi_clk_disable().
+> >
+> > Additionally, commit 29d7e05c5f75 ("spi: pxa2xx: Avoid touching
+> > SSCR0_SSE on MMP2") documented that disabling the hardware block via SS=
+E on
+> > MMP2 SoC platforms corrupts the RX/TX FIFO. Instead of calling
+> > pxa_ssp_disable() directly, use the helper function pxa2xx_spi_off(),
+> > which respects the MMP2 platform quirk by bypassing SSE register writes=
+.
 >
 > ...
 >
-> > Introduce a custom 'suspended' boolean flag in struct driver_data to
-> > track the device's suspended state across all PM transitions. Check
-> > both 'drv_data->suspended' and '!drv_data->clk_enabled' in ssp_int()
-> > to return IRQ_NONE immediately before any MMIO access is attempted.
+> > +     /* Wait for any pending interrupt handlers to complete */
+> > +     synchronize_irq(ssp->irq);
 >
-> >  static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
-> >  {
-> >       if (drv_data->clk_enabled) {
-> > -             clk_disable_unprepare(drv_data->ssp->clk);
-> >               drv_data->clk_enabled =3D false;
-> > +             clk_disable_unprepare(drv_data->ssp->clk);
-> >       }
-> >  }
->
-> It's probably better to avoid extra changes like this, it makes the
-> patch bigger and a bit harder to review.
-Agreed. I have dropped the unnecessary diff churn from pxa2xx_spi_clk_disab=
-le().
->
-> > @@ -743,12 +743,12 @@ static irqreturn_t ssp_int(int irq, void *dev_id)
-> >       u32 status;
-> >
-> >       /*
-> > -      * The IRQ might be shared with other peripherals so we must firs=
-t
-> > -      * check that are we RPM suspended or not. If we are we assume th=
-at
-> > -      * the IRQ was not for us (we shouldn't be RPM suspended when the
-> > -      * interrupt is enabled).
-> > +      * The IRQ might be shared with other peripherals or trigger duri=
-ng
-> > +      * power state transitions. First check if device is suspended or=
- if
-> > +      * clock is disabled; if so, return IRQ_NONE immediately to avoid
-> > +      * unclocked MMIO reads.
-> >        */
-> > -     if (pm_runtime_suspended(drv_data->ssp->dev))
-> > +     if (drv_data->suspended || !drv_data->clk_enabled)
-> >               return IRQ_NONE;
-> >
-> >       /*
->
-> The local flags *must* be racy - I'm not seeing any locking which
-> protects them, nor anything that stops something else dropping a runtime
-> PM reference and powering things down after we checked here.  There's a
-> helper in the power management code pm_runtime_get_if_active() which I
-> think is what you want here, it'll tell you if the device is runtime
-> suspended and if the device is active it'll ensure nothing else drops
-> the last reference while we're running.
-That makes total sense. Using pm_runtime_get_if_active() is indeed
-much cleaner, atomic, and eliminates the potential race condition
-where another CPU drops the runtime PM reference while ssp_int() is
-running. It also avoids adding an ad-hoc suspended boolean flag to
-struct driver_data.
+> Unneeded. free_irq() implies that.
+Hi Andy,
 
-I will update ssp_int() in the next version to use pm_runtime_get_if_active=
-():
+Thanks for pointing this out.
 
-    static irqreturn_t ssp_int(int irq, void *dev_id)
-    {
-        struct driver_data *drv_data =3D dev_id;
-        struct device *dev =3D &drv_data->pdev->dev;
-        u32 sccr1_reg;
-        u32 mask =3D drv_data->mask_sr;
-        u32 status;
+Good catch. Since free_irq() internally calls synchronize_irq() before
+releasing the IRQ, calling synchronize_irq() right before free_irq()
+in pxa2xx_spi_remove() is indeed redundant.
 
-        /*
-         * Ensure the device is active and acquire a PM runtime reference s=
-o
-         * PM runtime cannot power down the device or gate the clock while
-         * ssp_int() is running.
-         */
-        if (pm_runtime_get_if_active(dev) <=3D 0)
-            return IRQ_NONE;
-
-        ...
-
-        pm_runtime_put_autosuspend(dev);
-        return IRQ_HANDLED;
-    }
+I will remove the explicit synchronize_irq() call from
+pxa2xx_spi_remove() for the next version, while retaining it in the
+suspend() and runtime_suspend() paths where free_irq() is not called.
 
 Thanks,
 Shih-Yuan

@@ -1,140 +1,233 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493E729D264
-	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 07:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E859327EC7C
+	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 08:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785050544; cv=none; b=GEsrtRzbgjJlwVwMxaERgGUyCSi04fjoQR50jeXCGL7jigmU8zfaikuKr1pymfQlqdOuRRz6ObhdIFRwOJJwbkerlyZms4r0Ge7S+KdfkBm0zUc9Jpu07jXFBnWFJQdXZLdoNVkDCrq4azrh8s4vQ2+aFm5yWhCsEdujtYz7oag=
+	t=1785053774; cv=none; b=O7BqfyteUVCIXPoKS0wAUX8kMbq/7AONiOJbg2f6zlpuIdy508nPMESWv6q7VYxdqdKzy2WnULcm9jtvD3FbsSfYkeLvOsNpq6cyXLwqREdVPTyYgpC7CUOIJjtLesbUYPO0s3pp5guiqiMXTjz09t/1uGpmeCYcGOa3lh/73n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785050544; c=relaxed/simple;
-	bh=DNC6Q9R6tFKQWo6Vyk42M9qQGGwCkIPajaqmxo8sjmY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i8jKuT1G4PTwSenSk5SwygupO5YqgPd1az6xfZHkkst+ZEUp22+Vniw0e3447IZTj3htwZiFkN+8ZjeeCL9Cc537Dy1bXEJkdgIPhf2tG4wnHjNHmbU1LI7koZ/2nsi1o0xeec7xTk7D420h9v6xrstqt+yn1cOE0xFOKQI6Dno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HuYG/w11; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1785053774; c=relaxed/simple;
+	bh=cBeVYugjf2pCZb2MvgaJbZN8hN71Kllfonxg0KjoOTo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWxYFmUNEamb2iz5l0Yild9SJptKy+un6TkumPdmHQBdkqPftDRHonRYETFoGpQ5d58BPLpYZA5QdAy+n5XaQ5DHu7MdunrVqsryTMMLgto5MPzpffSckF84zbw+DxLnmtSEjvgp4/hCkcXhOcAqMClKb9WeJ50+0ddkSB52GCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HuYG/w11"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ca913a601fbso1284783a12.3
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 00:22:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785050543; x=1785655343; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=p7I2i4OrtuamUjaD5MYy4r8wCU1Supcz4UPlETqL+tw=;
-        b=HuYG/w11S6ohag69SPuGVU3/kOTCM/5v/MPkEgDrSZdW13t4aXyq2IZdKOoWyrJboS
-         /gflIHo2F/WyjwHUlLo2dS5uRSB1UhC2JLuOqZJHxHa37awKp6chfyiezu+Uc6FBuA64
-         OjUDPAji8rJSdKlAjYmc4jBNV4PdVBG3HFWG/WXEOYizw+LdTXgXdvNa35Wsw9gh4r5s
-         1Al3Q7a3YhYu+MaUDHueC+KpXhsXE25/Qztev8KC6JmwEu8F+rFVdP1zQsllVv9r8cR6
-         MkjsaK9oR9cgDsvJCNUJd9pT3lRbsuB/z8vRyWLXnn33XH+Vy30r537U+2083DUBXRGj
-         g8rw==
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7ebd88be784so1281180a34.2
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 01:16:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785050543; x=1785655343;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p7I2i4OrtuamUjaD5MYy4r8wCU1Supcz4UPlETqL+tw=;
-        b=V1bN/sFxnQ4w/fijef0V0hExZKad+qbAtHj5LV0RCZ+lM5OtWp+hHXARYE2g7B14bv
-         qnOKcaKnerdoHjxpHD3QtF6kzazYT1Ak0zGQiCCxHI50wO+cWtOyeuz/XNzgtnS2rcVc
-         AAm9OjZwThq7l3DYQzKNfM94eXzT5HhrYB7XtEYuFMNQPMWqain5d5JhK7IGNRz/+E0V
-         XbxQmWeDAnKJCS9otn2dXHF9CVi/3ojQ8Tr4FIedRxjbwknjrImTNege5SNDDse8lTdD
-         QJVLyauLlSt+8qEGUTcVk0rNndIk1DOVctqvT2agvR85iVO6ev4TEFp486lM8iyO/3fD
-         9KJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrJ4f8Q7cY24SaZw26kfke6hsPX+nBenP8xAbDjXGyHKomnEMtsdqOkicO1svY8y4E5oUnnWab0U2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMStOkLEWzru0+/m+CyfPWi9eAySFVEL7EM9yPFPM9j9wO5qRh
-	XDlrFE3hNDWeBEuDgi/fzgtgsoF7uKoAvqDaePxBYiFb5SxPwJJkiuYw
-X-Gm-Gg: AR+sD12beT8J6x45w3u4RvbSAqRBiDppiPhM/MQbTRDzwNnpva5Jr6XSOQCW5tksUwc
-	NURjafzBjmdvDIcVpaNYhUbgOs5SJCSchm89/h+zDWnngxehio6PEQOI+2GJK2Jg42JMl9yjR0G
-	EZhDgVLWco3D5FWg1cJsvP58SA7tu4kKFqPo3Q08PcB++7Xh+mtvwCHUOm1smT/LpDjjfGs/Oz1
-	2rx+GyAXpe4d9IEtpjyGu4U9Okk5F7JFfnbY0tKplP41n9DV7f2Qz66vAf1g1vU3HkgHaRxjR44
-	Qn4lhHWvJl4zpgMa7rvVnxKwnYsYs0GehbYb0g8ymcc4QCdRsWWAjR6ePQ7I7nUdftwfE5cLs1+
-	2LTV9hXSKWTS3Fmk2Dib+eP4vpN4Ea6njZnHOkIL6P3dTSGbKE4KA8iYYZj8qmhAaEVeev2Jkqf
-	bY2eK8lXpiwCeu
-X-Received: by 2002:a05:6a20:9f46:b0:3c4:46ca:3350 with SMTP id adf61e73a8af0-3c67dae9748mr4518322637.6.1785050542641;
-        Sun, 26 Jul 2026 00:22:22 -0700 (PDT)
-Received: from kdev.. ([108.180.130.139])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb660ee91sm1863606a12.7.2026.07.26.00.22.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Jul 2026 00:22:22 -0700 (PDT)
-From: Babanpreet Singh <bbnpreetsingh@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Orson Zhai <orsonzhai@gmail.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Chunyan Zhang <zhang.lyra@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Babanpreet Singh <bbnpreetsingh@gmail.com>
-Subject: [PATCH] spi: sprd-adi: Fix probe succeeding without registering the controller
-Date: Sun, 26 Jul 2026 07:22:21 +0000
-Message-ID: <20260726072221.7-1-bbnpreetsingh@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20251104; t=1785053770; x=1785658570;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D3/Czl+COk9w01pROEOZpbCYgsdFmFL2CocMf8Tbq88=;
+        b=YK1x5/Y76RN6fq1wM8Ji9zmrbOnboROUxpTVNNiubhZwYMsuH4mG16UkzYz22rZ3iT
+         wpLs/RQ3fDgETEUnuoQiAAzwc7u4ZZbl7KzGRS6amMGrmeZvX2g5c04cZpEqMqSulMpb
+         cv/JulfkRHyW7Zx9wRN3end4siDlk5xzhuz4y6B/HBLVN6SfBdjfXSo3G82C/JFOlg6H
+         oNkXYLKkk7bNCFI0kEgPHZ5zgzTW3K8QbvXwPgHdb7fkyjCgYK7TDLsNDrS1OvvWSQqT
+         FntbSozQs7UGR0VeaFqxLdyFGCISN9H7PbujwT7KF4YARrXReWr8usnmEXcipp+o4AfG
+         UgYA==
+X-Forwarded-Encrypted: i=1; AHgh+RrX2oovaA2JKIvnQB2gNbU6IAb68ugwr8goqMo9zUYH+hgVl9VGfiv8JSJEMEA4JpTSKjk3Vk9x5Y0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIo0A0eHV4N8gdxu51sLASZWahHTpG0V1uQamxl8JyGfWsYHUY
+	bk2iKu5xG2XWc9+uuSi6phyLRiRSg+870cOpHSfkpukU8gjiktmyOU5DKG+WWj5dXg==
+X-Gm-Gg: AR+sD12OThxmVbEsZypqzqMGINcEQwAaw/SEUInoCjHGTGMQDrHLpNGSA7XuMwTK+kI
+	kzlYdQdV8NBBvpikk4X92D4EX7Rupbx1ZxFyWtLlgjU++vtjVZA8bIJrpp3QyTiXxIP+Qf4i0+r
+	XleAFl1HZb6hA26SLXx0YqACS0a/n3bWcoTTgmEM6BspuJBA3UkhUGJXAp+RfCp9uVQ7gPXEyjg
+	qsCNpMzJhl5DqRSiaJcY5IZ5SiPoaW4BjOH7YnSVmLkNWwjRLQZFerj67jika8DXW+TQo+eNrCd
+	Hu/4jtwzMw1yzhnqQIa5A2dI4XrXULvjrvng4NxuDnhV3BqTv5dUhpUzTVurTerSQtwomZdiL3q
+	86p6m3pmtcxdb2pHQnjL4/LrwAwciBbSWJevoTkrbcTS3Kvi7b9ZU+ZDkTii1o8v3rUz9thep/v
+	/uifCXfSYL7rIeBsnnyiLAlpYQXJmPJrsV0ManHP5m/V8YwfSV8KN2dChJiTSlwT4aU0QNu7kL
+X-Received: by 2002:a05:6830:2b27:b0:7ee:41ca:e7b0 with SMTP id 46e09a7af769-7ee78bc8a63mr3990369a34.14.1785053770430;
+        Sun, 26 Jul 2026 01:16:10 -0700 (PDT)
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com. [209.85.161.42])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ee29a8d094sm9962859a34.0.2026.07.26.01.16.08
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Jul 2026 01:16:09 -0700 (PDT)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-6ab04bbcc8fso455141eaf.1
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 01:16:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro4zSfph5bbQOQkgCttGMTcSjVUapCwi6wnpEEBQ178Um6KtkHu3m2pYVO1x7ZqA5VqpoQk3dJRwhU=@vger.kernel.org
+X-Received: by 2002:a05:6820:1a07:b0:6a3:94bc:bdcf with SMTP id
+ 006d021491bc7-6aaffa23c8dmr3588711eaf.57.1785053768456; Sun, 26 Jul 2026
+ 01:16:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260720162117.32304-1-fourdollars@debian.org>
+ <20260720162117.32304-2-fourdollars@debian.org> <al51g77Zsdr3OyBS@ashevche-desk.local>
+In-Reply-To: <al51g77Zsdr3OyBS@ashevche-desk.local>
+From: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
+Date: Sun, 26 Jul 2026 16:15:57 +0800
+X-Gmail-Original-Message-ID: <CAAT15mNscX3-PChHGZ3iE+sHHted74Mo+dP=x_rfeAuu77w_Tw@mail.gmail.com>
+X-Gm-Features: AUfX_mwSSUq4mpHdPGRdERx0wviVImIOJ13XOXAQfqWnzyGYCfq9MB5T7xI5qTE
+Message-ID: <CAAT15mNscX3-PChHGZ3iE+sHHted74Mo+dP=x_rfeAuu77w_Tw@mail.gmail.com>
+Subject: Re: [PATCH v16 1/7] spi: pxa2xx: introduce clock enable and disable
+ helper functions
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Mark Brown <broonie@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>, 
+	Haojian Zhuang <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-With CONFIG_HWSPINLOCK=n the of_hwspin_lock_get_id() stub returns 0
-unconditionally. In sprd_adi_probe() the guard
+Hi Andy,
 
-	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0))
+  Thanks for the detailed review comments.
 
-is false for that 0, so it takes the else branch, where the switch has no
-case for 0 and lands in
+On Tue, Jul 21, 2026 at 3:22=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@intel.com> wrote:
+>
+> On Tue, Jul 21, 2026 at 12:21:10AM +0800, Shih-Yuan Lee wrote:
+> > The driver disables the clock during PM runtime suspend, PM system
+> > suspend, and device unbinding (remove). It also disables the clock
+> > on various error unwinding paths in pxa2xx_spi_probe().
+> >
+> > However, if the clock is already disabled (for example, if the device i=
+s
+> > already runtime-suspended during driver unbinding), calling the common
+> > clock framework's clk_disable_unprepare() again leads to clock prepare/=
+enable
+> > count underflows, generating kernel warnings.
+>
+> Any real life example here?
+Yes, a concrete real-world scenario occurs during sysfs driver
+unbinding while the device is in PM runtime suspend:
 
-	default:
-		return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+  1. When the system is idle, PM runtime suspends the controller,
+disabling the clock (clk_disable_unprepare()).
+  2. If the user unbinds the driver via sysfs:
+   echo 0000:00:15.4 > /sys/bus/pci/drivers/pxa2xx_spi_pci/unbind
+  pxa2xx_spi_remove() is invoked.
+  3. Without clk_enabled tracking, pxa2xx_spi_remove() unconditionally
+calls clk_disable_unprepare() a second time on the already disabled
+clock.
+  4. This triggers a Common Clock Framework (CCF) underflow warning:
+  WARN_ON(clk->enable_count =3D=3D 0)
 
-dev_err_probe() returns its err argument unchanged, so probe logs
-"failed to find hwlock id" and then returns 0, reporting success.
-sprd_adi_hw_init(), the restart handler and devm_spi_register_controller()
-are all skipped: the device binds but no SPI controller is ever
-registered. Since the stub is a constant-returning static inline, the
-compiler folds the whole remainder of probe away as dead code - an
-object built in that configuration contains no reference to
-devm_spi_register_controller() at all.
+A similar underflow occurs if pxa2xx_spi_probe() fails and executes
+error unwinding after disabling the clock.
+>
+> > Introduce pxa2xx_spi_clk_enable() and pxa2xx_spi_clk_disable() helper
+> > functions that track the clock enable state using a new 'clk_enabled'
+> > boolean flag in struct driver_data.
+> >
+> > This ensures clk_disable_unprepare() is called only when the clock is
+> > active, preventing clock underflows during suspend transitions and unbi=
+nd.
+> > It also allows the probe function to safely unwind resource allocations
+> > without triggering clock underflows.
+>
+> ...
+>
+> Same issue, I have no cover letter in my mailbox. Please, slow down and c=
+heck
+> your email setup. Something is wrong.
+Duly noted. I will check my git send-email configuration and ensure the
+cover letter is properly sent as the thread root.
+>
+> ...
+>
+> > +static int pxa2xx_spi_clk_enable(struct driver_data *drv_data)
+> > +{
+> > +     int ret;
+> > +
+> > +     if (drv_data->clk_enabled)
+> > +             return 0;
+> > +
+> > +     ret =3D clk_prepare_enable(drv_data->ssp->clk);
+>
+> > +     if (ret =3D=3D 0)
+> > +             drv_data->clk_enabled =3D true;
+> > +
+> > +     return ret;
+>
+> Use usual pattern
+>
+>         if (ret)
+>                 return ret;
+>
+>         ...
+>         return 0;
+>
+> > +}
+Will update in the next version to follow the standard guard pattern:
 
-The hardware spinlock is optional for this controller and the -ENOENT arm
-already covers "no hardware spinlock supplied". Treat the stub's 0 the
-same way and continue without a lock; all four users of sadi->hwlock
-already test it for NULL.
+    static int pxa2xx_spi_clk_enable(struct driver_data *drv_data)
+    {
+        int ret;
 
-This is not reachable on production kernels. Kconfig has
+        if (drv_data->clk_enabled)
+            return 0;
 
-	depends on HWSPINLOCK || (COMPILE_TEST && !HWSPINLOCK)
+        ret =3D clk_prepare_enable(drv_data->ssp->clk);
+        if (ret)
+            return ret;
 
-so the affected configuration exists only under COMPILE_TEST, where no
-real hardware is present. Object code for CONFIG_HWSPINLOCK=y builds is
-byte-identical before and after this change.
+        drv_data->clk_enabled =3D true;
+        return 0;
+    }
+>
+> > +static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
+> > +{
+> > +     if (drv_data->clk_enabled) {
+>
+>         if (!drv_data->clk_enabled)
+>                 return;
+>
+> > +             clk_disable_unprepare(drv_data->ssp->clk);
+> > +             drv_data->clk_enabled =3D false;
+> > +     }
+> > +}
+Will update in the next version to use early return:
 
-Found by smatch:
-drivers/spi/spi-sprd-adi.c:560 sprd_adi_probe() warn: passing zero to 'dev_err_probe'
+    static void pxa2xx_spi_clk_disable(struct driver_data *drv_data)
+    {
+        if (!drv_data->clk_enabled)
+            return;
 
-Fixes: f9adf61e983f ("spi: sprd: adi: Change hwlock to be optional")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Babanpreet Singh <bbnpreetsingh@gmail.com>
----
- drivers/spi/spi-sprd-adi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+        drv_data->clk_enabled =3D false;
+        clk_disable_unprepare(drv_data->ssp->clk);
+    }
+>
+> ...
+>
+> > struct driver_data {
+>
+> >       void __iomem *lpss_base;
+> >
+> > +     bool clk_enabled;
+>
+> How is this protected against simultaneously called enable/disable on dif=
+ferent
+> CPUs?
+pxa2xx_spi_clk_enable() and pxa2xx_spi_clk_disable() are only invoked
+within serialized contexts:
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index e7d83c16b46c..7c29115c5b8b 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -553,6 +553,11 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 			return -ENXIO;
- 	} else {
- 		switch (ret) {
-+		case 0:
-+			/*
-+			 * Only reachable with CONFIG_HWSPINLOCK=n, where the
-+			 * of_hwspin_lock_get_id() stub returns 0.
-+			 */
- 		case -ENOENT:
- 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
- 			break;
--- 
-2.43.0
+  1. Driver probe() / remove() paths (serialized by bus locks).
+  2. PM Runtime callbacks (serialized by dev->power.lock in PM core).
+  3. System suspend / resume callbacks (serialized by PM subsystem).
 
+They are never called concurrently from asynchronous contexts or worker thr=
+eads.
+>
+> >       /* Optional slave FIFO ready signal */
+> >       struct gpio_desc *gpiod_ready;
+> >  };
+>
+> Whenever you add the field, check with `pahole` that the layout is optima=
+l.
+Thanks for pointing out pahole. Checked with pahole: bool clk_enabled;
+is placed immediately after bool suspended; in struct driver_data.
+Since both are 1-byte booleans, clk_enabled fits into the existing
+struct padding byte, resulting in zero additional hole padding and keeping
+the total struct size unchanged.
+
+Thanks,
+Shih-Yuan

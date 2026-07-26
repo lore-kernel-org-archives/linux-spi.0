@@ -1,60 +1,73 @@
-Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2A2360EDC;
-	Sun, 26 Jul 2026 05:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493E729D264
+	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 07:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785045130; cv=none; b=AfnsXJT0E0YU0+8XYx+Is+UpShar80oq2Da5IT1xFRzghbPbV1Q8uXQ5XwQ9z//ZLjF2JcM/n9HEfig3AEetT8k8PBs6VJJYiJXuKEUGt9w3/m1qc6tLKmnAjvhWixXy9N4P4BpxR1gWGodI1/SQplz3sIXh9wRs3PVUly8w95Q=
+	t=1785050544; cv=none; b=GEsrtRzbgjJlwVwMxaERgGUyCSi04fjoQR50jeXCGL7jigmU8zfaikuKr1pymfQlqdOuRRz6ObhdIFRwOJJwbkerlyZms4r0Ge7S+KdfkBm0zUc9Jpu07jXFBnWFJQdXZLdoNVkDCrq4azrh8s4vQ2+aFm5yWhCsEdujtYz7oag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785045130; c=relaxed/simple;
-	bh=kwucQG+xExy9rhtQqxhTLUYmWy7QJpI7ijSd1iPz6+w=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UFiToDh2xUaATpnFwwSQjQAuOdt/5MqEo7JURub5sFVZk84BHauubdbfRU8qHqshkpzQFHCeKnuxGi+xm9Jxd7H4k/27p3BQHr3+o7OBGVOICp+/fOrbmGKe6YtQDIJ2PovViMghQg+rxNgJtIWFqmEMDssbODjBr8Id/W80KmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=I128UY3W; arc=none smtp.client-ip=203.205.221.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1785050544; c=relaxed/simple;
+	bh=DNC6Q9R6tFKQWo6Vyk42M9qQGGwCkIPajaqmxo8sjmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i8jKuT1G4PTwSenSk5SwygupO5YqgPd1az6xfZHkkst+ZEUp22+Vniw0e3447IZTj3htwZiFkN+8ZjeeCL9Cc537Dy1bXEJkdgIPhf2tG4wnHjNHmbU1LI7koZ/2nsi1o0xeec7xTk7D420h9v6xrstqt+yn1cOE0xFOKQI6Dno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HuYG/w11; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="I128UY3W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1785045123; bh=0LPLvQIVYpcaGTgXQxvhW7Bbbp0nXz9jWnUHxpMJhpE=;
-	h=From:To:Cc:Subject:Date;
-	b=I128UY3WZ8Ral2aLbF8V90YABG7+dfVxBhIWbJrOJGu7weIrivTMeDyu8UYzhDoCs
-	 v60yoUJXFUJvb9L8zWv8RZLVCajvJCq8SIjiXIyOXXQsz7pDrHRs1m8SUtmYVFsNQ0
-	 bHLhiW+xsaBIvsrpjXJ7H8KiSDFnhFD5OAhdrN5w=
-Received: from ws006419.mbzu.ae ([5.195.0.150])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id CF11F2FD; Sun, 26 Jul 2026 13:51:49 +0800
-X-QQ-mid: xmsmtpt1785045109tae9le73y
-Message-ID: <tencent_D74B48085D60A729C0BE5FD64A87FAB9A207@qq.com>
-X-QQ-XMAILINFO: N/WmRbclY25Gvxu2gMb0xKf28BiKvllqeQPooAqTqh1tXbF/3AinGgQO+5b5O1
-	 ziASW8lRAfq2Gyn+OWVl644Pyt7CwwQFvoGYevtV4xMm8GzP8JfI8rOhs3Dzdts34EdyKpSG7+0b
-	 Q1DOvesu4lgJBGiTwj3KiFqcAoGiHDXgSrEo+l3bmN8OT+lF3QXuLsMCTr35c1tjmZQuQJyap0HL
-	 DYaUypc0hmhoDfJrX0LURNx6GhQcIZygMKEmnhY7cWjBEChqCvStFlxNsWNnCcHPvf177NjsgQEy
-	 6rXFeY3zN/EYJh4lsTfPT06w1FDlONcOsq+eSPZnpdSiA9ZlyoSHGA17zvWIDrkpcILgJ586UPxQ
-	 ttK0pf8PlOQzp+Xx+DdORcfjQxbUZARclnDhmU5LmP220uBmEdEhlt59GFm1wSrKIjGCLrwnw2Gk
-	 EegTBAyUmOrwLEDtjaQwosqGMh26MFLfgB4Qcc8geR9An/uug5Ma3Ai+5GbwFo1QUEJDjvD0HJJc
-	 rgasNDR8fMDXwQD8kIILppOtjh0uj8wtUvwRr3HUWBCC5kIHDgDlu42RBaYN8jmSurCBa+8SGkH9
-	 +PvCYtOXtI7ZjaWZAIEH4MglWY2K/CIXwUWHm+V6vZYalZbynzJqgICWYiFHjFuQnSrVZMEuxMLL
-	 rm3oUitVToobIax84NtM9Et5taVXqk/Kdr0ICy+xT5vQjjq9rIo3WmzK+YCM33KQp8cUCh9aPX6A
-	 vz4owW2cPNSIw1sHVkCnd2jU/Wmu13eg/GMyGqrgM51hE+8QTCVcpbRmsNPh2N/T/DQttAR4v0Lk
-	 tGmK7ftZXtLeergg/PUdPBbvgPnFZxRCsLYYPl1rLSsfCaSg67r8OPE3CiM+yTTSpzoHqxjqaZu4
-	 HpPTVDzMe/Q8ihk+fWxL5Jqh/iDGEth24VCP65zEvfI/pf/PzSbgqAHpcTiHBDhCFUmvOqC73n4m
-	 PZmGXm3dHgyZgL7yHnPu61x1NqxXxEv2CMVcB9HbNlrZ0PS3bC69wT2iaFjnzVAPKsee0+JBN/rs
-	 jsiqYVkyJ2tF4Hvphzm/IHlfoiUI/ct/tjNhvp1A==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Jiawen Liu <1298662399@qq.com>
-To: Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HuYG/w11"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ca913a601fbso1284783a12.3
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 00:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1785050543; x=1785655343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=p7I2i4OrtuamUjaD5MYy4r8wCU1Supcz4UPlETqL+tw=;
+        b=HuYG/w11S6ohag69SPuGVU3/kOTCM/5v/MPkEgDrSZdW13t4aXyq2IZdKOoWyrJboS
+         /gflIHo2F/WyjwHUlLo2dS5uRSB1UhC2JLuOqZJHxHa37awKp6chfyiezu+Uc6FBuA64
+         OjUDPAji8rJSdKlAjYmc4jBNV4PdVBG3HFWG/WXEOYizw+LdTXgXdvNa35Wsw9gh4r5s
+         1Al3Q7a3YhYu+MaUDHueC+KpXhsXE25/Qztev8KC6JmwEu8F+rFVdP1zQsllVv9r8cR6
+         MkjsaK9oR9cgDsvJCNUJd9pT3lRbsuB/z8vRyWLXnn33XH+Vy30r537U+2083DUBXRGj
+         g8rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785050543; x=1785655343;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=p7I2i4OrtuamUjaD5MYy4r8wCU1Supcz4UPlETqL+tw=;
+        b=V1bN/sFxnQ4w/fijef0V0hExZKad+qbAtHj5LV0RCZ+lM5OtWp+hHXARYE2g7B14bv
+         qnOKcaKnerdoHjxpHD3QtF6kzazYT1Ak0zGQiCCxHI50wO+cWtOyeuz/XNzgtnS2rcVc
+         AAm9OjZwThq7l3DYQzKNfM94eXzT5HhrYB7XtEYuFMNQPMWqain5d5JhK7IGNRz/+E0V
+         XbxQmWeDAnKJCS9otn2dXHF9CVi/3ojQ8Tr4FIedRxjbwknjrImTNege5SNDDse8lTdD
+         QJVLyauLlSt+8qEGUTcVk0rNndIk1DOVctqvT2agvR85iVO6ev4TEFp486lM8iyO/3fD
+         9KJQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrJ4f8Q7cY24SaZw26kfke6hsPX+nBenP8xAbDjXGyHKomnEMtsdqOkicO1svY8y4E5oUnnWab0U2Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMStOkLEWzru0+/m+CyfPWi9eAySFVEL7EM9yPFPM9j9wO5qRh
+	XDlrFE3hNDWeBEuDgi/fzgtgsoF7uKoAvqDaePxBYiFb5SxPwJJkiuYw
+X-Gm-Gg: AR+sD12beT8J6x45w3u4RvbSAqRBiDppiPhM/MQbTRDzwNnpva5Jr6XSOQCW5tksUwc
+	NURjafzBjmdvDIcVpaNYhUbgOs5SJCSchm89/h+zDWnngxehio6PEQOI+2GJK2Jg42JMl9yjR0G
+	EZhDgVLWco3D5FWg1cJsvP58SA7tu4kKFqPo3Q08PcB++7Xh+mtvwCHUOm1smT/LpDjjfGs/Oz1
+	2rx+GyAXpe4d9IEtpjyGu4U9Okk5F7JFfnbY0tKplP41n9DV7f2Qz66vAf1g1vU3HkgHaRxjR44
+	Qn4lhHWvJl4zpgMa7rvVnxKwnYsYs0GehbYb0g8ymcc4QCdRsWWAjR6ePQ7I7nUdftwfE5cLs1+
+	2LTV9hXSKWTS3Fmk2Dib+eP4vpN4Ea6njZnHOkIL6P3dTSGbKE4KA8iYYZj8qmhAaEVeev2Jkqf
+	bY2eK8lXpiwCeu
+X-Received: by 2002:a05:6a20:9f46:b0:3c4:46ca:3350 with SMTP id adf61e73a8af0-3c67dae9748mr4518322637.6.1785050542641;
+        Sun, 26 Jul 2026 00:22:22 -0700 (PDT)
+Received: from kdev.. ([108.180.130.139])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbbb660ee91sm1863606a12.7.2026.07.26.00.22.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jul 2026 00:22:22 -0700 (PDT)
+From: Babanpreet Singh <bbnpreetsingh@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Orson Zhai <orsonzhai@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Chunyan Zhang <zhang.lyra@gmail.com>,
+	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH] spi: nxp-fspi: fix runtime PM cleanup on probe failure
-Date: Sun, 26 Jul 2026 09:51:44 +0400
-X-OQ-MSGID: <20260726055144.1388819-1-1298662399@qq.com>
-X-Mailer: git-send-email 2.34.1
+	Babanpreet Singh <bbnpreetsingh@gmail.com>
+Subject: [PATCH] spi: sprd-adi: Fix probe succeeding without registering the controller
+Date: Sun, 26 Jul 2026 07:22:21 +0000
+Message-ID: <20260726072221.7-1-bbnpreetsingh@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -63,46 +76,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nxp_fspi_probe() enables runtime PM before calling pm_runtime_get_sync()
-to bring the controller clock on for register initialization.
+With CONFIG_HWSPINLOCK=n the of_hwspin_lock_get_id() stub returns 0
+unconditionally. In sprd_adi_probe() the guard
 
-If pm_runtime_get_sync() fails, the function currently returns immediately.
-That leaves runtime PM enabled and leaves the usage counter incremented.
-Clean up the failed get with pm_runtime_put_noidle() and disable runtime PM
-before returning the error.
+	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0))
 
-Signed-off-by: Jiawen Liu <1298662399@qq.com>
+is false for that 0, so it takes the else branch, where the switch has no
+case for 0 and lands in
+
+	default:
+		return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+
+dev_err_probe() returns its err argument unchanged, so probe logs
+"failed to find hwlock id" and then returns 0, reporting success.
+sprd_adi_hw_init(), the restart handler and devm_spi_register_controller()
+are all skipped: the device binds but no SPI controller is ever
+registered. Since the stub is a constant-returning static inline, the
+compiler folds the whole remainder of probe away as dead code - an
+object built in that configuration contains no reference to
+devm_spi_register_controller() at all.
+
+The hardware spinlock is optional for this controller and the -ENOENT arm
+already covers "no hardware spinlock supplied". Treat the stub's 0 the
+same way and continue without a lock; all four users of sadi->hwlock
+already test it for NULL.
+
+This is not reachable on production kernels. Kconfig has
+
+	depends on HWSPINLOCK || (COMPILE_TEST && !HWSPINLOCK)
+
+so the affected configuration exists only under COMPILE_TEST, where no
+real hardware is present. Object code for CONFIG_HWSPINLOCK=y builds is
+byte-identical before and after this change.
+
+Found by smatch:
+drivers/spi/spi-sprd-adi.c:560 sprd_adi_probe() warn: passing zero to 'dev_err_probe'
+
+Fixes: f9adf61e983f ("spi: sprd: adi: Change hwlock to be optional")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Babanpreet Singh <bbnpreetsingh@gmail.com>
 ---
- drivers/spi/spi-nxp-fspi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sprd-adi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 1e36ae084dd8..c6037f3209c5 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1352,7 +1352,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	/* enable clock */
- 	ret = pm_runtime_get_sync(f->dev);
- 	if (ret < 0)
--		return dev_err_probe(dev, ret, "Failed to enable clock");
-+		goto err_pm_runtime;
- 
- 	/* Clear potential interrupts */
- 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
-@@ -1389,6 +1389,13 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	return devm_spi_register_controller(&pdev->dev, ctlr);
-+
-+err_pm_runtime:
-+	pm_runtime_put_noidle(dev);
-+	pm_runtime_dont_use_autosuspend(dev);
-+	pm_runtime_disable(dev);
-+
-+	return dev_err_probe(dev, ret, "Failed to enable clock");
- }
- 
- static int nxp_fspi_runtime_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index e7d83c16b46c..7c29115c5b8b 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -553,6 +553,11 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 			return -ENXIO;
+ 	} else {
+ 		switch (ret) {
++		case 0:
++			/*
++			 * Only reachable with CONFIG_HWSPINLOCK=n, where the
++			 * of_hwspin_lock_get_id() stub returns 0.
++			 */
+ 		case -ENOENT:
+ 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
+ 			break;
 -- 
-2.34.1
+2.43.0
 

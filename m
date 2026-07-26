@@ -1,65 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172EB28751B;
-	Sun, 26 Jul 2026 16:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8221F3CAA59;
+	Sun, 26 Jul 2026 16:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785081954; cv=none; b=UdOx9/Y2RcEwt9AyptE4VI3eZ9Pg4/X6KKRNNCcOFpAEMsgAddEUHYmXXpC8X3wQTwrN43ex2rg2gSXDdf/o8WhFT+WEE867Ml2s5erbDXslH1bBbRKGEhrY+N47AB15thJlypOiAhyr4qR3ru/9Nkv9VXAskb/YuI3Ei+aQ0Mg=
+	t=1785082508; cv=none; b=iKepPXprtV+BHUEkhGABNRmNU1bRy8LV2cC14PYNSUqpwxSkfqfdukAl6sh5qO//c0PHJXEeTkJ+0o0uza/MMFYtPziGRRg/Fn9yPELIsSS4CjqtntlXiDwDe9uV07yjXf5b+ZyCl0H/fR4H/J+pK4kbne6d95LUjHb5J0n6Utg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785081954; c=relaxed/simple;
-	bh=XQd8tLRoMhOUs0o/BTr8iIhboAr8ndn1QQLd1JLSoA0=;
-	h=Message-ID:From:To:Cc:Subject:Date; b=JTIW/MuVyhSn2n235iG2GhFaS+JS9vOZNdapqHuhwePT+ILSHdYfwMArwQBkkVqOQsmwZ3tYQ7sciflDZw248iA516yelSEALB9ETiU0UqDFr8UkYWq/p3nCMwLM8fPt7LktdqS9vlXh6ODK+qcTpz4+d0FWJl02AcUsXYhIxqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpqX63/O; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpqX63/O"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 3AC571F000E9;
-	Sun, 26 Jul 2026 16:05:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785081952;
-	bh=VicJfAw2EbuKMrcGKVSZCYuw79UGDIhTQJmhznlg5ag=;
-	h=From:To:Cc:Subject:Date;
-	b=VpqX63/ObCiU7Mb971Cd7vnD4sgKAXnRMiWZCKMa3+VxFYyv/6uTJ7GyQ3hkyioM1
-	 bsu43y+4mkOgH91xljUu5uc3cVcBUMzlvWWmJKAsR8O2pJsJ832IwEMQHYKZU+HxNT
-	 dIewQxeDvW225OFs9UxKiYLn0KnPSGhMuGkCCWq5LlMak29qYL2HGii46Knj8NkOJq
-	 u5K15TagT4pENkI+f0cLfyBepOD/siNo//7t/uOY9NvvLOOxxKkmp0oyExg1QVT4py
-	 DCHZUeXipgz5IjGy8dCu7++gunfmpWyJyzZVoUlene/ogIUeNRXCLMq08XozElSUjt
-	 A05A7DcdgrcPg==
-Message-ID: <fb6ebc01f222a49400ca0aa3d9597648@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.2-rc4
-Date: Sun, 26 Jul 2026 17:05:41 +0100
+	s=arc-20240116; t=1785082508; c=relaxed/simple;
+	bh=0FmqO68oIUQQEPjHg8UnkgDCeEClaUQRemyTenVmnZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KbrejlnqXgIc+KGQbUcvx0KJT0Q5LhTGqd1UZYTr1Q/GOx7FxiOcZiviyGZ4H4JKBpH9ExbRNlA/kvjumDyRzOKmFfJ+s4huvm3gg13kdAq81bQYxm7eTuy7Wb3zYmSVLf9mIuMGhPI6wY27jGJPgvjwAXCSe9qP7H0jfa+1RTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature ECDSA (secp384r1) server-digest SHA384
+	 client-signature ECDSA (secp384r1) client-digest SHA384)
+	(Client CN "*.hostsharing.net", Issuer "GlobalSign GCC R6 AlphaSSL CA 2025" (verified OK))
+	by mailout2.hostsharing.net (Postfix) with ESMTPS id EF8A51062B;
+	Sun, 26 Jul 2026 18:14:35 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id DC283614B38E; Sun, 26 Jul 2026 18:14:35 +0200 (CEST)
+Date: Sun, 26 Jul 2026 18:14:35 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Mark Brown <broonie@debian.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v16 5/7] spi: pxa2xx: disable DMA for Apple MacBook8,1
+Message-ID: <amYya_hiHM6lrxTX@wunner.de>
+References: <20260720162117.32304-1-fourdollars@debian.org>
+ <20260720162117.32304-6-fourdollars@debian.org>
+ <al81PmK1UMr2g8p-@wunner.de>
+ <CAAT15mPuO71WbbS2ZpWjceCVj3FUTqHLi3wbbeV7B33JHbPRsQ@mail.gmail.com>
+ <CAAT15mPrwAqLmFVF730G+iJugzNzaT=HDj_7G5-wXbhBNU7ANg@mail.gmail.com>
+ <f7449a69-98e3-41c0-b535-847b8c520e10@sirena.org.uk>
+ <CAAT15mNppZ6nPQ9a8Hp54XK4BXndfv+G24n4VeQ1X8GOk6fSyQ@mail.gmail.com>
+ <CAAT15mMc73=cnqx7jvPXWjVUuzr-E54qh5+BR3d_G6m3NoXrng@mail.gmail.com>
+ <al_ZlTkEUHj-X1YS@ashevche-desk.local>
+ <CAAT15mMaZWdkp9YRKvRDRw-WCA-4nWGGo8gge=D7oBKUr1yysw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAT15mMaZWdkp9YRKvRDRw-WCA-4nWGGo8gge=D7oBKUr1yysw@mail.gmail.com>
 
-The following changes since commit 1590cf0329716306e948a8fc29f1d3ee87d3989f:
+On Sun, Jul 26, 2026 at 11:41:39PM +0800, Shih-Yuan Lee (FourDollars) wrote:
+> Direct MMIO inspection of the LPSS DMA controller (PCI device 00:15.0)
+> on physical MacBook8,1 hardware reveals that Apple's EFI firmware
+> leaves the functional reset register (LPSS_PRIV_RESETS at BAR0 +
+> 0x204) permanently set to 0x00000000 (held in reset).
+> 
+> Since the LPSS DMA controller is held in reset (0x0) by EFI firmware
+> and the SPI peripheral relies on the dedicated OOB GpioInt() line for
+> PIO transfers, forcing PIO mode via the DMI quirk in spi-pxa2xx-pci.c
+> accurately reflects how EFI configures the hardware, allowing the
+> driver to operate reliably out-of-the-box without system hangs.
 
-  Linux 7.2-rc4 (2026-07-19 13:54:41 -0700)
+The OOB GpioInt() and the DMA controller are two different things:
+The former allows the peripheral to signal that a key has been pressed etc,
+whereas the latter allows feeding the FIFOs of the SPI host controller
+without CPU involvement (or with *less* CPU involvement, the CPU is still
+needed to configure the DMA engine for a transfer).
 
-are available in the Git repository at:
+I'm not sure why Apple chose to keep the DMA controller in reset,
+but have you explored enabling it on boot?  If this can only be performed
+before EFI hands over control to the OS, then it could be done in the
+EFI stub, see setup_quirks() in drivers/firmware/efi/libstub/x86-stub.c.
+Or maybe it can be done at runtime after the kernel has assumed control,
+I'm not sure.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc4
+Thanks,
 
-for you to fetch changes up to 6389eaf11d6cd3a66d10d0a5ea9cd91f242ccba2:
-
-  spi: dt-bindings: spacemit: add K3 SPI compatible (2026-07-21 22:39:30 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v7.2
-
-Just a couple of small bits for the SpacemiT driver - one small fix, and
-a new compatible in the DT binding.
-
-----------------------------------------------------------------
-Zhengyu He (2):
-      spi: spacemit: Correct TX FIFO slot calculation
-      spi: dt-bindings: spacemit: add K3 SPI compatible
-
- Documentation/devicetree/bindings/spi/spacemit,k1-spi.yaml | 6 +++++-
- drivers/spi/spi-spacemit-k1.c                              | 4 ++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+Lukas

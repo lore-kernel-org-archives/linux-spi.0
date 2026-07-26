@@ -1,57 +1,57 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425B6322B8F
-	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 11:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11E537B3E4
+	for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 11:18:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785064354; cv=none; b=ipPa9aB1ywXkmS6EhcnCu2umPlEPFtm30K1V3/K3ty9fMOfymrMPjgZD5o1KD3ZAN3cjc5dfjYqIXMIREGOldGjDJJikK3Mk9JpXXAVGAhSocZxLE52RW/rZdEFekmuWOxQCkfrQcfq1yhQRXXs6Jo3FjevV+/NXEmZkVq994fI=
+	t=1785064731; cv=none; b=C4vKPji8BpbjWNMN8LPF/xJN6EpQgJu2NjAdxoLh52vgnSuxWKPhd74OshqwvcrZoFs5WYK/wS2OoztYL5GX+JZFJtfS3RStdB/UibtEQ96UJakHFORNUqFEFHAuE1+wEcfOLUFL+ewslMKHXgxwX3VhLkWEr3/MgSzTCWic6Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785064354; c=relaxed/simple;
-	bh=CrO3m5lVOVX9pKW7m5uGi7Il6Sad2PRx5vibMcDIgCM=;
+	s=arc-20240116; t=1785064731; c=relaxed/simple;
+	bh=nxusbugxTptpa+rPpPTZTTrxFEmCuoSHa5aCbDPS+xM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RUf3BnYguadjEAZqo2M1/Mac75MeuN/rNTRUwcRecke31Yc5bp/IkSM/34oNTM07K8cMe667D1GsKXD3tpo16qOGLKJ2VfVLvsHQ/Ua7zM/0/VchbhGL2h9QtwhZ+WnPvPZWxlWyfpFdMyqM0HPq6NbR8sl1YfOJyu40XyCML6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
+	 To:Cc:Content-Type; b=GIdQKleElxHVaiVCdHvFcXguzY11LK2t7I2XRyfcIJpvJGoppflctHcTWdYLaIT+RIxgLsf2WpIES5kSg3xqyB09T+1umDNhPuXFc1pY+EbVBAWncesteT1KpGhB7S94/GxIKfmrxHibmcv/aqY99DwWu6h1Ky6jeuJI+GG9P8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-45133d2974fso1478672fac.1
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:12:31 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7ea9c6ea7deso1194528a34.3
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:18:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785064351; x=1785669151;
+        d=1e100.net; s=20251104; t=1785064729; x=1785669529;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GKU0QhAvsBejgAlbDaY2+1ClKAxRltlgTuy03z+3isE=;
-        b=IT8uaEGYz8Ynl0pyDfFLeBIL5uNoYTTFHk/ALpCWPz6MCSAxDatT6DGLwvmkL9fAA8
-         M7ggRPC54vwGmNn3QnKJZ9oN52M8/OMfl2xzA2ajXkeCShVL4hpYX5BWQnuuopipgMjc
-         0+DFd0AkYrcwvE3PTiMt5bC3/yH02wWTgsRMOIJ0HZWhyRXKvcbUfAUJWCKOCGS/YqVp
-         92/kjuBIa0AIARDD9cVTXecWZb3g8EDuAYsV7/irl7A9MitkYoilpCjesW02AyJsOpTt
-         jJB5S0aatyBSyQp+ksI9+GarEbATPFYUOWHQ/lxNetbzL9dxZZ5/ReLk1FTzJVnNiOC5
-         /Gmg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrci4nTEMxB7lBk0aLRrN+bGZPJ2txUNkvoftJgcI15XWahHeGGPZxNCdjHH7nZiwei97VNbOUXqm8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyaj3BgtX76GabuQAZLprlguiimWJnMS+hcN9Nrci4GrzHii1U5
-	YNTPMCTe8ISDrSTNIeim4nXNAS2icw/6jU3uDg8sN0qoJO46kvgPw6A9EUFKIX51CA==
-X-Gm-Gg: AR+sD11heQcSL/PYthEdg8eNenHDEZUkbOq4fEBOgFv4q3BqTfTjONlM1iPqeMiMNfZ
-	Ur6thd1l+CYD9RF6L8ZeE47KP87TcaxR2o9w7x++lJTJh0TV7irLuT9xZWVZSWEJofDKCm2mbyC
-	elLX+wGRFUQ6L4hAxzMNMzGa1XAXMOvgxBk+YOWAmZbAJEELkbiN+09UTLBd3jxp6AslvNaWqk3
-	6kk82LEU/P2sF1gccm9S3hZMdmTgdqhmexlUgsbfEg2Nw0ghO6AsjGx2N1z0T1cc80c6/vzsuiB
-	nZ2SEG+43epDf6PfhPSutjxFZvieDwvAbmz6HJSIrJSdAc9x3S/0PlLkyanUz1cUqEKvnDgJevL
-	IA6aocWLmfHrpyTf/8AtT8ltXG5MrN022MEqCTFpuNrWm9qZVUlrl6G3xHDQZYktrKNlSEZCvGS
-	Et1S8OM1hXIuqdFmk54knmkbW01R6z5DC13nS9t+yxsG1RDBJDayEg4re3L23WoXUXmCkIxzyp
-X-Received: by 2002:a05:6870:a116:b0:447:2ca4:918 with SMTP id 586e51a60fabf-457f278c8ebmr4277339fac.33.1785064350855;
-        Sun, 26 Jul 2026 04:12:30 -0700 (PDT)
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-45766e7d640sm12063413fac.4.2026.07.26.04.12.29
+        bh=632RwbBBibm199GNX2dzWevYniUR/dq64yJK2ZdxiqY=;
+        b=bcJBn1SjJVxlgcSQvsA9PeE7cgibvUamVsEb5o1eSomYCNnZqCG1/MfIbghsvPCZVm
+         p8EiBe9miBH3C02TJTjjPYK+iqaoMoMiVNgzs+xLzcgWc9v9qvNjYTtcF3tXGOffeDhL
+         vhQc8Dj1L5l1BW8/srWkTML271sRjn6ONP3ivDi3YGv1PS3jGYoVm2xHmY/9hhbIMO0a
+         Pcx4KU/C/+JIgJwD9fuzfvM1j3yJt5DvkxDaLvIzQfHOwXCHpC4JaFsWeE0eBovE/+in
+         mivNkpPnePOZ+Rzhf0xVGfebIlSJcyhQELVRCMkjAFAJP95F/xRcHM+QuSMtQZ6zVhoX
+         VTsw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3YdKYU8kr18+GCQa5TvBQqE/hvjZhk5CE8gFcvGeDcRYdGi5oqPHZBgZF8d1Cre1Bh/X7Bas8A+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS4TAMGloeaiiomlNUKA8aWSfzkggSTh9gTp8U9ntX7Mze8CyA
+	qocEGwcQE6DXe3TjgsDFG49bGtkPCChDYQ5dn91zbFNIxzBdyb7jq/con6Gv7TGZJw==
+X-Gm-Gg: AR+sD13Guum1orxdqq4fokeZc2f0w7SnrHvzM7LiK51aJKjZf3Tu/KLx+TDwW/QP/Eu
+	qEkNUVdCcw5VUt9hjWmIIDWXpkhN2gx8Vi60916SiLqmD5e2bmr1g8W7B/DVJPN8dOpU7ZhFuZD
+	9rFJaYuqGaRGGl06/ON1ISPHL42ysC7ci/GaY5tnKTbwpLxOGJEHyHi4hzqlIqv/XChRETm5dXx
+	PF/WCmg+PAEYguf22PdY5lFqmEJho5A8CplfDlMGN9rxT1kgBj0n9QwpXW5d+A2SIFNFl9fHG+e
+	sjtGZHj/CyTw0GQTw6WDNfQTOvsQovU9dLlUyY5KIgZmanhhOv+O35sHhRSEEc856qqcUW4w7nI
+	6Hz8X73pO4lcmsUbXFrl2adl7JJjHhns5XXrq1VkPXzMwcJfLayMvtsJEMQ7xcwqxEEEGU4MRtg
+	l7vRtXHXVGY6sN1IVPilqV57xC0dauoxFTFbKnLsLv3grhBlqNuNVbWcYven22HOeJgMbVW/e/
+X-Received: by 2002:a05:6830:498f:b0:7e9:b537:102c with SMTP id 46e09a7af769-7ee78dad27fmr4366484a34.25.1785064728782;
+        Sun, 26 Jul 2026 04:18:48 -0700 (PDT)
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com. [209.85.160.53])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ee29a8d094sm10181911a34.0.2026.07.26.04.18.47
         for <linux-spi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jul 2026 04:12:29 -0700 (PDT)
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7eb6573bd52so1171070a34.3
-        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:12:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqncLN8w6w9WRiAB9F5FZ1BQLHj3ftAhsITBitv2UOyRK4eZaOhMIwKA7w6/rH9d5dWtWdPgHPIYQo=@vger.kernel.org
-X-Received: by 2002:a05:6820:4d0a:b0:6aa:d792:e078 with SMTP id
- 006d021491bc7-6aaff87594fmr3257957eaf.27.1785064349448; Sun, 26 Jul 2026
- 04:12:29 -0700 (PDT)
+        Sun, 26 Jul 2026 04:18:47 -0700 (PDT)
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-44caeb973b3so996795fac.1
+        for <linux-spi@vger.kernel.org>; Sun, 26 Jul 2026 04:18:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqtMrm8eumqtF78F7LMpeGVpmw3bxsTg3cjpNzYUnmnraTLqQa6zdgQDYYGnq90oI5duSHd0aE+Emc=@vger.kernel.org
+X-Received: by 2002:a05:6871:1c7:b0:417:3441:6c54 with SMTP id
+ 586e51a60fabf-457f26b3ab8mr4168574fac.27.1785064727020; Sun, 26 Jul 2026
+ 04:18:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,15 +59,15 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260720162117.32304-1-fourdollars@debian.org>
- <20260720162117.32304-4-fourdollars@debian.org> <al58ubdrmJpPtr0F@ashevche-desk.local>
-In-Reply-To: <al58ubdrmJpPtr0F@ashevche-desk.local>
+ <20260720162117.32304-5-fourdollars@debian.org> <al59LnVJQhiZq9yR@ashevche-desk.local>
+In-Reply-To: <al59LnVJQhiZq9yR@ashevche-desk.local>
 From: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
-Date: Sun, 26 Jul 2026 19:12:18 +0800
-X-Gmail-Original-Message-ID: <CAAT15mNAKHdJTrxqctHe4o99TTN18481r+TVAL0ubA44zM1Yug@mail.gmail.com>
-X-Gm-Features: AUfX_mytscuS4j8uP2M1eAMvyLvFoGxgNoXb9GjOvRAaNp-ItKcKS9Ve7cJtouU
-Message-ID: <CAAT15mNAKHdJTrxqctHe4o99TTN18481r+TVAL0ubA44zM1Yug@mail.gmail.com>
-Subject: Re: [PATCH v16 3/7] spi: pxa2xx: overhaul teardown and suspend
- sequence using pxa2xx_spi_off
+Date: Sun, 26 Jul 2026 19:18:35 +0800
+X-Gmail-Original-Message-ID: <CAAT15mNtGTyHHdYooj=Swe1hZ1K3Jo4TkO1groi1LnVih4M+ig@mail.gmail.com>
+X-Gm-Features: AUfX_mzTCh_05ojLUq8ZB-hAiaGj-Auwe5dWIigJ-AodVsVlW5LsP53qKDqeICk
+Message-ID: <CAAT15mNtGTyHHdYooj=Swe1hZ1K3Jo4TkO1groi1LnVih4M+ig@mail.gmail.com>
+Subject: Re: [PATCH v16 4/7] spi: pxa2xx: lock out runtime autosuspend for
+ Intel LPSS SPI in PIO mode
 To: Andy Shevchenko <andriy.shevchenko@intel.com>
 Cc: Mark Brown <broonie@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
 	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>, 
@@ -77,50 +77,56 @@ Cc: Mark Brown <broonie@kernel.org>, Mika Westerberg <mika.westerberg@linux.inte
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 21, 2026 at 3:53=E2=80=AFAM Andy Shevchenko
+On Tue, Jul 21, 2026 at 3:55=E2=80=AFAM Andy Shevchenko
 <andriy.shevchenko@intel.com> wrote:
 >
-> On Tue, Jul 21, 2026 at 12:21:12AM +0800, Shih-Yuan Lee wrote:
-> > When removing the driver or suspending the device, the clock must not
-> > be disabled while shared interrupts are still active. Gating the clock
-> > before waiting for in-flight interrupt handlers to complete results
-> > in race conditions where the handler performs unclocked MMIO accesses,
-> > causing PCIe Completion Timeouts.
+> On Tue, Jul 21, 2026 at 12:21:13AM +0800, Shih-Yuan Lee wrote:
+> > When operating in PIO mode on Intel LPSS SPI controllers, runtime PM
+> > autosuspend clock-gates the hardware block when idle. On subsequent
+> > transfers, MMIO accesses to trigger resume are performed before the run=
+time
+> > PM state machine can wake the controller, causing PCIe Completion Timeo=
+uts.
+> > This issue does not affect DMA mode, where the DMA engine holds the req=
+uired
+> > resources, nor does it affect non-LPSS controllers.
 > >
-> > Overhaul the remove, suspend, and runtime_suspend paths to use a strict
-> > synchronized teardown order:
-> > 1. Disable hardware interrupt generation at the controller level.
-> > 2. Mark the device state as suspended (suspended =3D true) to prevent
-> >    subsequent interrupt handlers from attempting MMIO reads.
-> > 3. Call synchronize_irq() to wait for any active interrupt handlers
-> >    to drain completely.
-> > 4. Gate the clock via pxa2xx_spi_clk_disable().
+> > Lock out runtime PM autosuspend for LPSS SPI controllers specifically
+> > when operating in PIO mode.
 > >
-> > Additionally, commit 29d7e05c5f75 ("spi: pxa2xx: Avoid touching
-> > SSCR0_SSE on MMP2") documented that disabling the hardware block via SS=
-E on
-> > MMP2 SoC platforms corrupts the RX/TX FIFO. Instead of calling
-> > pxa_ssp_disable() directly, use the helper function pxa2xx_spi_off(),
-> > which respects the MMP2 platform quirk by bypassing SSE register writes=
-.
+> > Acquire a runtime PM reference via pm_runtime_get_noresume() in
+> > pxa2xx_spi_probe() after registration, and release it via
+> > pm_runtime_put_noidle() in pxa2xx_spi_remove() before hardware teardown=
+ to
+> > ensure the runtime PM reference held in probe is released without invok=
+ing
+> > runtime_suspend on already-unclocked hardware.
+Hi Andy,
+
+Thanks for the feedback.
+>
+> .runtime_suspend()
+>
+> // this is how we refer to the callbacks.
+Updated the commit message to format PM callbacks as .runtime_suspend().
+>
 >
 > ...
 >
-> > +     /* Wait for any pending interrupt handlers to complete */
-> > +     synchronize_irq(ssp->irq);
+> > +     /* Release the PM reference held in probe for LPSS PIO mode befor=
+e
+> > +      * hardware teardown so the PM core does not invoke runtime_suspe=
+nd
+> > +      * on already-unclocked hardware.
+> > +      */
 >
-> Unneeded. free_irq() implies that.
-Hi Andy,
-
-Thanks for pointing this out.
-
-Good catch. Since free_irq() internally calls synchronize_irq() before
-releasing the IRQ, calling synchronize_irq() right before free_irq()
-in pxa2xx_spi_remove() is indeed redundant.
-
-I will remove the explicit synchronize_irq() call from
-pxa2xx_spi_remove() for the next version, while retaining it in the
-suspend() and runtime_suspend() paths where free_irq() is not called.
+> /*
+>  * Keep the comment style as per SPI and many other subsystems
+>  * and as in this example.
+>  */
+Updated the multi-line comment in pxa2xx_spi_remove() to adhere to the
+standard Linux kernel multi-line comment style with an empty starting
+line.
 
 Thanks,
 Shih-Yuan

@@ -1,131 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out203-205-221-190.mail.qq.com (out203-205-221-190.mail.qq.com [203.205.221.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A14945039;
-	Sat, 25 Jul 2026 22:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2A2360EDC;
+	Sun, 26 Jul 2026 05:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785017268; cv=none; b=fojDvDx+ensG77AdB6EpD1Qt5jBibzgpPDVfNjd9x4IUrqREbXao37EvQ750K67aMXVJkMAfMR0S88MdzpTPkM5skHZuVdnDRSIKP5Nt68IIFrz94NuoWlInLQ5E4ix2IiKFr/aKh+thWdEIHTzOv3FGFWk5+A6ES3X/IOUtivY=
+	t=1785045130; cv=none; b=AfnsXJT0E0YU0+8XYx+Is+UpShar80oq2Da5IT1xFRzghbPbV1Q8uXQ5XwQ9z//ZLjF2JcM/n9HEfig3AEetT8k8PBs6VJJYiJXuKEUGt9w3/m1qc6tLKmnAjvhWixXy9N4P4BpxR1gWGodI1/SQplz3sIXh9wRs3PVUly8w95Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785017268; c=relaxed/simple;
-	bh=9hoBPLWjtW8H6/G9SFcJCKiStKt1yPcHqg7PfWX0t0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tsEYY4riab2zyw5UUuENkgm9UNvzrnvpd5k53n8OHmm4nypthWDG7vBJbpVuv8Rs4UdwZ3xB2VgHbICHNZ5CVoiL0RHJIAWZQfxWWRog0WHfcVgF0IiNgA1nQjrp58nAxUuueuATPv3V9Owo8ONzJBgTtG8AipA/VS826DVp71c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGCgcseY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785045130; c=relaxed/simple;
+	bh=kwucQG+xExy9rhtQqxhTLUYmWy7QJpI7ijSd1iPz6+w=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UFiToDh2xUaATpnFwwSQjQAuOdt/5MqEo7JURub5sFVZk84BHauubdbfRU8qHqshkpzQFHCeKnuxGi+xm9Jxd7H4k/27p3BQHr3+o7OBGVOICp+/fOrbmGKe6YtQDIJ2PovViMghQg+rxNgJtIWFqmEMDssbODjBr8Id/W80KmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=I128UY3W; arc=none smtp.client-ip=203.205.221.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGCgcseY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE75A1F000E9;
-	Sat, 25 Jul 2026 22:07:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785017267;
-	bh=Cv/aYRG/taYJih8iMhkHPxpMiNDEpXM4DMRQI2zjEUo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=cGCgcseYNOov8g8Z8+k9oG+97EsclrawqMLIDMamVf0YR0v4M6QLv8vit/hZg+gIs
-	 XAq8xz5BfhgYtfEOrLm3I33WGN2kl8obaH0ATj5emNv4gI+wWGqy5YBqvgWMnvWQL2
-	 /tVtNDr9SJJZJCnWMzY7wdwv3G4TW0vHAAzFKK3IaZGrCvTOWqJ59RfY9VknHJPSFs
-	 kmSl50Pg0Fb7BkCz/jqiuJK6r6X9zZMNvvcNiV6sYTdEng3jTEaT45RgnB9TKB5nTS
-	 CKxmRxQkZIrkI4tcsKSmjH79bvrpS/i/pkghq+YVsUNHyfD/84BJzvO5SLfVk53L/L
-	 yi9z8wdRJiJ4w==
-Date: Sat, 25 Jul 2026 23:07:39 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, Marius Cristea
- <marius.cristea@microchip.com>, Marcus Folkesson
- <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Janani Sunil
- <jan.sun97@gmail.com>, linux-spi@vger.kernel.org, Kent Gustavsson
- <nedo80@gmail.com>
-Subject: Re: [PATCH v7 2/7] dt-bindings: iio: adc: microchip,mcp3564: Add
- spi-device-addr
-Message-ID: <20260725230739.63ff7000@jic23-huawei>
-In-Reply-To: <cb4098c1-4bad-4a11-9a6f-a833e554f197@baylibre.com>
-References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
-	<20260722-ad5529r-driver-v7-2-7781cd74ad75@analog.com>
-	<cb4098c1-4bad-4a11-9a6f-a833e554f197@baylibre.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="I128UY3W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1785045123; bh=0LPLvQIVYpcaGTgXQxvhW7Bbbp0nXz9jWnUHxpMJhpE=;
+	h=From:To:Cc:Subject:Date;
+	b=I128UY3WZ8Ral2aLbF8V90YABG7+dfVxBhIWbJrOJGu7weIrivTMeDyu8UYzhDoCs
+	 v60yoUJXFUJvb9L8zWv8RZLVCajvJCq8SIjiXIyOXXQsz7pDrHRs1m8SUtmYVFsNQ0
+	 bHLhiW+xsaBIvsrpjXJ7H8KiSDFnhFD5OAhdrN5w=
+Received: from ws006419.mbzu.ae ([5.195.0.150])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id CF11F2FD; Sun, 26 Jul 2026 13:51:49 +0800
+X-QQ-mid: xmsmtpt1785045109tae9le73y
+Message-ID: <tencent_D74B48085D60A729C0BE5FD64A87FAB9A207@qq.com>
+X-QQ-XMAILINFO: N/WmRbclY25Gvxu2gMb0xKf28BiKvllqeQPooAqTqh1tXbF/3AinGgQO+5b5O1
+	 ziASW8lRAfq2Gyn+OWVl644Pyt7CwwQFvoGYevtV4xMm8GzP8JfI8rOhs3Dzdts34EdyKpSG7+0b
+	 Q1DOvesu4lgJBGiTwj3KiFqcAoGiHDXgSrEo+l3bmN8OT+lF3QXuLsMCTr35c1tjmZQuQJyap0HL
+	 DYaUypc0hmhoDfJrX0LURNx6GhQcIZygMKEmnhY7cWjBEChqCvStFlxNsWNnCcHPvf177NjsgQEy
+	 6rXFeY3zN/EYJh4lsTfPT06w1FDlONcOsq+eSPZnpdSiA9ZlyoSHGA17zvWIDrkpcILgJ586UPxQ
+	 ttK0pf8PlOQzp+Xx+DdORcfjQxbUZARclnDhmU5LmP220uBmEdEhlt59GFm1wSrKIjGCLrwnw2Gk
+	 EegTBAyUmOrwLEDtjaQwosqGMh26MFLfgB4Qcc8geR9An/uug5Ma3Ai+5GbwFo1QUEJDjvD0HJJc
+	 rgasNDR8fMDXwQD8kIILppOtjh0uj8wtUvwRr3HUWBCC5kIHDgDlu42RBaYN8jmSurCBa+8SGkH9
+	 +PvCYtOXtI7ZjaWZAIEH4MglWY2K/CIXwUWHm+V6vZYalZbynzJqgICWYiFHjFuQnSrVZMEuxMLL
+	 rm3oUitVToobIax84NtM9Et5taVXqk/Kdr0ICy+xT5vQjjq9rIo3WmzK+YCM33KQp8cUCh9aPX6A
+	 vz4owW2cPNSIw1sHVkCnd2jU/Wmu13eg/GMyGqrgM51hE+8QTCVcpbRmsNPh2N/T/DQttAR4v0Lk
+	 tGmK7ftZXtLeergg/PUdPBbvgPnFZxRCsLYYPl1rLSsfCaSg67r8OPE3CiM+yTTSpzoHqxjqaZu4
+	 HpPTVDzMe/Q8ihk+fWxL5Jqh/iDGEth24VCP65zEvfI/pf/PzSbgqAHpcTiHBDhCFUmvOqC73n4m
+	 PZmGXm3dHgyZgL7yHnPu61x1NqxXxEv2CMVcB9HbNlrZ0PS3bC69wT2iaFjnzVAPKsee0+JBN/rs
+	 jsiqYVkyJ2tF4Hvphzm/IHlfoiUI/ct/tjNhvp1A==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Jiawen Liu <1298662399@qq.com>
+To: Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Jiawen Liu <1298662399@qq.com>
+Subject: [PATCH] spi: nxp-fspi: fix runtime PM cleanup on probe failure
+Date: Sun, 26 Jul 2026 09:51:44 +0400
+X-OQ-MSGID: <20260726055144.1388819-1-1298662399@qq.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 25 Jul 2026 15:57:07 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+nxp_fspi_probe() enables runtime PM before calling pm_runtime_get_sync()
+to bring the controller clock on for register initialization.
 
-> On 7/22/26 2:54 AM, Janani Sunil wrote:
-> > Add the generic spi-device-addr property to the binding and deprecate
-> > the existing vendor specific microchip,hw-device-address property.
-> > 
-> > Signed-off-by: Janani Sunil <janani.sunil@analog.com>
-> > ---
-> >  .../devicetree/bindings/iio/adc/microchip,mcp3564.yaml         | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> > index 675319276197..de1ea289e7f5 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
-> > @@ -80,6 +80,7 @@ properties:
-> >      $ref: /schemas/types.yaml#/definitions/uint32
-> >      minimum: 0
-> >      maximum: 3
-> > +    deprecated: true
-> >      description:
-> >        The address is set on a per-device basis by fuses in the factory,
-> >        configured on request. If not requested, the fuses are set for 0x1.
-> > @@ -91,6 +92,12 @@ properties:
-> >        clocking of the device address (BITS[7:6] - top two bits of COMMAND BYTE
-> >        which is first one on the wire).
-> >  
-> > +  spi-device-addr:
-> > +    maxItems: 1  
-> 
-> Does it not make sense to all for more than once device connected
-> to the same CS here? I would expect maxItems to be 4 to match the
-> number of possible addresses.
-> 
+If pm_runtime_get_sync() fails, the function currently returns immediately.
+That leaves runtime PM enabled and leaves the usage counter incremented.
+Clean up the failed get with pm_runtime_put_noidle() and disable runtime PM
+before returning the error.
 
-I think for this part their isn't a reason to aggregate.
-No magic accesses that touch them all at once.  So this hits
-exactly the point you raised about how we set the address for
-more than one of them.
+Signed-off-by: Jiawen Liu <1298662399@qq.com>
+---
+ drivers/spi/spi-nxp-fspi.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Jonathan
-
-> > +    items:
-> > +      enum: [0, 1, 2, 3]
-> > +    default: [1]
-> > +
-> >    "#io-channel-cells":
-> >      const: 1
-> >  
-> > @@ -123,7 +130,6 @@ dependencies:
-> >  required:
-> >    - compatible
-> >    - reg
-> > -  - microchip,hw-device-address
-> >    - spi-max-frequency
-> >  
-> >  allOf:
-> > @@ -159,7 +165,7 @@ examples:
-> >              spi-cpha;
-> >              spi-cpol;
-> >              spi-max-frequency = <10000000>;
-> > -            microchip,hw-device-address = <1>;
-> > +            spi-device-addr = <1>;
-> >  
-> >              #address-cells = <1>;
-> >              #size-cells = <0>;
-> >   
-> 
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 1e36ae084dd8..c6037f3209c5 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -1352,7 +1352,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 	/* enable clock */
+ 	ret = pm_runtime_get_sync(f->dev);
+ 	if (ret < 0)
+-		return dev_err_probe(dev, ret, "Failed to enable clock");
++		goto err_pm_runtime;
+ 
+ 	/* Clear potential interrupts */
+ 	reg = fspi_readl(f, f->iobase + FSPI_INTR);
+@@ -1389,6 +1389,13 @@ static int nxp_fspi_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	return devm_spi_register_controller(&pdev->dev, ctlr);
++
++err_pm_runtime:
++	pm_runtime_put_noidle(dev);
++	pm_runtime_dont_use_autosuspend(dev);
++	pm_runtime_disable(dev);
++
++	return dev_err_probe(dev, ret, "Failed to enable clock");
+ }
+ 
+ static int nxp_fspi_runtime_suspend(struct device *dev)
+-- 
+2.34.1
 

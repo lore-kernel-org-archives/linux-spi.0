@@ -1,151 +1,165 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011055.outbound.protection.outlook.com [52.101.70.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011E8423E88
-	for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 16:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785169944; cv=none; b=E0MbJaa+6qJM+ZwfhvX1IrwcxbA+Tf11ffMO9hAZAP4KOWvhMCseEqWTO9BODQn9d1yFNheuMJo7StCQEZWa9sef4H/BISBmqGk92pMYp/0J7VwVQaoxRL/9Oq58NxnpSP2wf8YF2Fe5r5YQwIRSxsoEOFxFBNQ7jSScom7OhdE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785169944; c=relaxed/simple;
-	bh=RGCKEOMha9P/cJMiFFMNuTbLtfsjjddXLsvFvL+tt60=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P24RlGaFliyBHbF0zZsp377Oto/X5FJw4JZaIpc/VAMNDxCCIhT32JTiW1d8/StpFeo7G8v6LdSIZp3NGNBEHqHJQVGR6+1MQB7RtzUV6pY2U+ZAUZblltNPFxCBRif/3lTNvRVBTQgPEl+qN2ptuTaEKUA9eOqTXVzrUfTp4dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kcGoiiRj; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D632E3D45EA;
+	Mon, 27 Jul 2026 19:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785180686; cv=fail; b=AYX/s4ot8GHMwSPNV4P1Z2FITAeLBdIP6huuUNiH//IRzWw8WONwz3ujDLGQk3Nv1mE5vO0ddI8UkC1Y39jJEWWh5UiRedY63zDLn3ft6An5DteLzfRSxFh5Y239hIc/PGo5fTg05g371ixffCH+tDYYtXHSfeUKDlYJ4QVto4I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785180686; c=relaxed/simple;
+	bh=dfI4aElAMdOv/4xlaceJ6XZb+cKlqhRoe4LDQohshxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QYc0BwrYVjHVtdbS59h+idaV/O5rAQbtVYm63yqcHRhvJESp8+R4xW59Wnxhta5VrEvMxussb2Na4YQRL8EJRb6Gas1yCFfzVuBOr6QbmcWPycbF0T3IsD95n6OqurINjN0Y972I/95Pbn/sMvWe8EPUGC4EhGw3T24kA/mRfMY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ABOJrySQ; arc=fail smtp.client-ip=52.101.70.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kcGoiiRj"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-495635a85d2so24467225e9.0
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 09:32:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785169940; x=1785774740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jjStuC+Z5BSoMlb9btbKypwZnxjerVTTywVtGN/OSE0=;
-        b=kcGoiiRjLmw7au3yEla2o5cWEH15nz6h5ymWmcmPQWZ6qYFp4mKTZ64gMF0DR6HQp/
-         FbouctBjmBU79XgT2xCkP1jvn59PrgJlEEawAbB25kDln/yBsJ6g0V4Y7Z94Tz1s3Tdk
-         iLSkZyzYs53ONfqIrbJ4+oiXrMKbAHa+t/r5JogQxdS+niKXCfyj3l3eTausYX7EvD6k
-         4Jqy9dT9X0eoALfY8ac6mFqqF0L8yirHCYSzc7ZSLwo1d4zPqqTeO/BTA1L3sJA2Wlkt
-         FUFmOYmdbJvUlfGIcyUlKm9pziDFkRyDoGHedkLPsBJAGK0ogtCmU6MxClW47ukpM210
-         yRlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785169940; x=1785774740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jjStuC+Z5BSoMlb9btbKypwZnxjerVTTywVtGN/OSE0=;
-        b=a3c9FAuZzlV/+lU7kqTHIf40AmZl0NwW+fFl42TB9vk+zjhYCBmZ5p6aM0CnJX2KW2
-         OTpID1wOGfVXZSeO92EaR+XhrdFIBKgQn527vRgTRbfTj9p4L6JGpYlTTR8E068mOVWR
-         TBD/R9fFhgiVEUYEcNlohb5Dz7VGo9ojKjqbUHXJbb8JOZ0ai88yxbNCcFys0K8r4GJz
-         PiAGG4VvO1Qj3MA/BfUIMKKoc0UHd/jdObsvtajskKgrBFImUppNIVUszTz5vHNGf3BH
-         tQ5p045HwGSJCNJW/pP3HHuCgi0S/1EQpecLlarV84yG3od6ThFbyVDTDM6Bm6wCMQZl
-         k6Hg==
-X-Gm-Message-State: AOJu0YwXajVThmGxjnU1RyaY9JgVu8pN46gayzAMj4PKcKTCKhuppukf
-	Jb8Q2MAfLmmE6NkQ2qW7pdIYBOp5IPtvvnDigJl6O9oe/RZcvE37wDPFSXphxYTU
-X-Gm-Gg: AR+sD13cIGP3A+zMvjivAtnCaxQsKWt2VSsoTELvpY43ZJYYHNf+8/amXpy8wtKYAYP
-	YWXoBHKzbz9dt5DEgQbqKKyfjXQFTnkHhB49V4ipp9Th0eOIgdOes8kd6rZaGvs6BvvkoknLQdL
-	gfwPXpqVGBBOKX/oqLLP4AedG2fXCEQocXZRl5ODBJSVCmHEn/0qoVVfq1uzltfxUgE6t4VttPH
-	BTRSnNyFB8HuQ1zhmirjjldS6xePYgd421DuUbK8v3qXWNSf7V2Xh911huYVhfEPrpZZuwu5758
-	mz+QkaRn3FiJNPMoQUOSBpG753Y00tQgDEpnsJMjhyrLMXroTJxxSIoFoGvXV92V7mYxY92KqYH
-	52DdaQPQeUKJxGGvdZvpzCTw2ouDqu7VRYnKpFxNVAEwB2FrAO1MNwcPKCiqxs3DFj4yv3pCTlq
-	edSHuWQFTvW0YV/u8sWo49i5a2Q0A56HCdihzTisqd1Gj+uwAqdd70cC6hf6QLyGNK
-X-Received: by 2002:a05:600c:5253:b0:495:636b:e519 with SMTP id 5b1f17b1804b1-496b56ff142mr126651835e9.21.1785169939939;
-        Mon, 27 Jul 2026 09:32:19 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs192625.centertel.pl. [46.134.91.178])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-496c44a91ebsm4458925e9.3.2026.07.27.09.32.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 09:32:19 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Stanislaw Pal <kuncy7@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] spi: spi-qpic-snand: write the feature value before executing SET_FEATURE
-Date: Mon, 27 Jul 2026 18:32:16 +0200
-Message-ID: <20260727163216.109938-1-kuncy7@gmail.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ABOJrySQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kjUMBQRMgThwPuM7E0X9zoSbVJoXGNcsUMq3uz6QTSfflaiJo0UQImO3cMSfZv2K+GPsXLxidKbXvJJjC9xenh7I7j6/5WytMFyzWwHKqOuXzBdkEmCvoA9/Gt1tUEt0x+X+03xKm5hk2eWfm44LkXvM8rMTZIyH/ouHaEQaZKWokHKDSHhZhiw4x+Smf8r5IT0LQUai9vbfQtrA605oyWL6fAvPszCe0rzm34b8bbxxdQSQ3vlZ2AjRLhiMDr9wW5/rms2XmiFAEP9qi7N0hxkorcORntglWLAwPZec4srFPtbVys6tyeNJK/dcRLlqSvFExewFxO6rmEY39aUCVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h+xPuh+zQksPq1zB0a5As0p7vLzE4MY19JjIUCua6bE=;
+ b=ANs+gK26Rc+Zoe7lWVrO6ANYJuvi4S+poOH7xHt1fQGX7NsjcB/6noOXNXh7aCYjRuDF7IiGuH/m1w1Dln0ky3p5r8JhN8OwfJRmnCSvB5IaERn5ELPHMOgIz8coZjK4Pa/RcmFQ5Mt4tfex8tOF+QWvuEyqtVWUU46GvDL7JPm9mpZO3JSS8rzS/Gu9MoJb98r2Yg6oDvfW4aNDzMpeTfG+aYZxEJbO/XVkoQ3U6L9w1lNp2UA7IT70fyTAsKeqBey8apmZ05hiTiE7FUg4eH+Dmn8mRQ8/UDib3TqbsK6fahUeurazgMNqTnkVQ09Z9DPjuP6CrIR+0yx7CINt0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h+xPuh+zQksPq1zB0a5As0p7vLzE4MY19JjIUCua6bE=;
+ b=ABOJrySQ4SdfPDEwGusatXFfPh7iJTdsE/oa6NaSMR8n0YQp6kjtksZXlVgZjDNAuPI12Hu1r9wkK8l0dsdKAmAhYFyEfnK9aAeHJcmw7HdabgwOEDJ1899HKpEUHEjtWb8DOr3JV15nuTpIwjWbAI0L6Ipnt79TAVwGxHTTKVLsZgS/0GiGsWsewxxfAoDQFFdC3x8Z/xQkoNRJqbRO+52lwkh5QXl2JZkuCc4aRI5ZptJy4xtrv5+JjwLm1g9jmbhkg/waLm0nLcYn4tVxN4YdhLqWJNIh8856KP/Y8cikil1YolHWDa5Q50yHSMcic0y6xw4e2BAEZd585+fxhw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AM0PR04MB6947.eurprd04.prod.outlook.com (2603:10a6:208:18d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Mon, 27 Jul
+ 2026 19:31:21 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%6]) with mapi id 15.21.0245.012; Mon, 27 Jul 2026
+ 19:31:21 +0000
+From: Frank.Li@oss.nxp.com
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	han.xu@oss.nxp.com
+Cc: Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Han Xu <han.xu@nxp.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: (subset) [PATCH v3 0/3] Add DMA support for i.MX94 and improve AHB read performance
+Date: Mon, 27 Jul 2026 15:31:10 -0400
+Message-ID: <178518066116.2648170.15820007549794747555.b4-ty@b4>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
+References: <20260722-xspi_dma_upstream-v3-0-6b7ff50cae8e@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PH8PR22CA0016.namprd22.prod.outlook.com
+ (2603:10b6:510:2d1::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AM0PR04MB6947:EE_
+X-MS-Office365-Filtering-Correlation-Id: 124dd789-ee3f-4b8a-2d56-08deec15a333
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|7416014|366016|23010399003|1800799024|11063799006|56012099006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	JaRHzzvWPc/5EoF19hDwz0Kk9MvzVdTlE8CZnBqvgYy1kztVqdPut+z6fPF9zcvNBERA85Wk++daz1ZlbvlaqIQx3lnh9BG0StMelZtEAV78Pcwp5IkrSuoGexkeOY6AVlCYA0JljSg+7bf0BSDfyC2ZKHUdl7xdcv7Y4GAZDyva0+82049L31dOL2c8Rg5zfAwjXdf2BAzGV9VzYJIrqB40jssvFhgJRVncmLRWz5YLi/bW3UsBcQdIRRE6P3De83er1DhegyXIqSRvccbasGirlKEUeBNGsIVAeRqPFRNonRfAT9iw58uLHmy+jUQ1mt+MRLFrFvquEP8Rxp/umgeTn+mnAV96FLXmE0W4xguVhDYi7iGimRu+9WrmOnbkSVJKgdiKaVtdDLe3ZCNjqo3+lLoprvrJZeLfx+WWaOsfUe6TDfwzxd34hQsOG2pn404Gf+KWiOf+HsDsmktN1h3XTKuqWWLgdQfvYfEriZYmcMgNC0tfd4m6EEDzgpYtv5OlpfBI4NUR1va55osYMQlt78ZVzwgfy/WgaOwMis3AtMS+p//mzOX3dyhMBvvVV86uRdJVcAXKDJFcfDV/2pXOQf/4XtU2WeIyu8TE2TmF2VU6ZLMZtguXykDpQE9Fai+hB0Fhzdpt9OSuevDNLQkdID0oD26Ac085bC7Nqo8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(366016)(23010399003)(1800799024)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bHMvbzJTMW9wRm5HeXExaW5kd01FYzZMLytWKytieHljSGMyVWtIVDZtQUQz?=
+ =?utf-8?B?L1hPNnZ2TENUbGNiQ3B2ei9LM1dxTjhKbm8zVTNmc3pXdkVoNHlyNCtxUkFo?=
+ =?utf-8?B?Rmt5SWFmV3pxUmJleDlscGNRZ21iQUNVa0Z0RThzTTIwRkZ5RmVIVWFHUXdx?=
+ =?utf-8?B?ZlNBdlZoY2xIUmtaeG5Udmg0Vk8wNkJ4V0hNWWlQdEd1anRpMnpxOTk0TkdU?=
+ =?utf-8?B?VDA2SkUwWitmdVJFZkYzUVBTTXhHaEJ4QkhuZjdac0NFMmZJUXFxMFhJY3A0?=
+ =?utf-8?B?bE8vZ1NXclNqVHBEVXlIc0VEbXRQbzNGNGJrMnZiT0k5TkR4L2NaWDhFMHFa?=
+ =?utf-8?B?UUlDNzVkV0t5TkxJM05xRmZlem5qWkxoK3YvNXpiY3RuV0VCUjZWb2NNSzlM?=
+ =?utf-8?B?R1A1YTVzU01ZUE1Ea2VpYXkzcnpDNUwvSnUxSENOM2tleFoxUGFtZjlodjBH?=
+ =?utf-8?B?QTdlRzRwL3pjTVpQSzFQcEw0N0lnVVF2aTlNSkliRHcxN3lYTjRDQitya1R5?=
+ =?utf-8?B?V0tvaGFZN2FNZE0zMnNsVWpXRCs2d0NEelhrQjRsVG1FL09OSDZtZ2phem9t?=
+ =?utf-8?B?RWJOU0JzZUZzYlovczZNTGROU3hzdTI0ak9UN3d1WmVIWnlwb3hidXdxQ2ZR?=
+ =?utf-8?B?ajlZUTNqQzNwUXRNMXpPR3ljOUhhMng1MGRCRGZPL3pURUdJd1pFbnE1NzUy?=
+ =?utf-8?B?L3JQL2NRR0JsSlkxNlI0WCt4cnArNlpmajVtRVk0WWRIYWhvZkFPbVZFL1Ns?=
+ =?utf-8?B?N0VUYlc5RGdvNkJmRDhMdG9oU1o5YlRqWXI3bGVNNWxXZ2ExQk5pVGlhWVdS?=
+ =?utf-8?B?L2NDQlljWWQ2RnVtLzNERlZ3c1ZYTEVvRmU0cnBUcWZXUUFQc0tpZWdJNXFm?=
+ =?utf-8?B?WUp1eVVoTVlWL2F5WlJuZ2lyVytqZWo0NzdMVFF3TklzdDdZeElkTjI5YTNN?=
+ =?utf-8?B?eUZEN0l0RFRIU0N5U216eml0K0IzdkZEbG9UTXJHUjJEREhIa1FsZW45RFNZ?=
+ =?utf-8?B?bnFTaDllSTFqK0FGWExsakpyNzhxSjBkMVl1YWY1U1AvY2xyRFYxYjlnTHFP?=
+ =?utf-8?B?akdSb2ovVVRzL0F2N1Q3amE4NFVkMDJ6L0FzaVlkeUF6R2N5OEJ0V01PTG5U?=
+ =?utf-8?B?cVBxK2Q3M05DRmhCSWoxRWt2bkxFOVVMSmU1RDEyV21ma0cwbUZIRzZ6dnc5?=
+ =?utf-8?B?YzVCWFprVmdUVmhkYUJ3UzZpZXNRck9tazVlZlZaSlFPbFFxSjlrSm9oTjda?=
+ =?utf-8?B?NVZ1djhHLzhOUGFyOXpiUFI4N053eTcvTXFwTGFnSnU5RktZYlpGYmh4dWR0?=
+ =?utf-8?B?UDVHYncrZE5COVRiY2VrTlN1Z3lhQURFTHhQaEpEK0pSSHFmbkhKbWRKVEVs?=
+ =?utf-8?B?cGJaUTZsUllHamNTVHNWVlQ1SEwweGNHMmVsK0l2NGxidUM1QVVydng1dWpx?=
+ =?utf-8?B?MnplakIrYk9GaXlCb0NRZHRGSkIrSWUrSE9GYjBPeXo4R2s5eFkrd0pxVjdx?=
+ =?utf-8?B?SzNCU2QrY1NLcDFybW5lSXdEYU5kcXY2YjhyOUkxaHhJUlA2aGpUYTV2K3I0?=
+ =?utf-8?B?ZEpOWWVtakUya0psdUVVVEpsOWtXdEFDMnc1dHFwQ0RWV1lzeE5jbkxocW5h?=
+ =?utf-8?B?VjNhTCt2Z2FqTkdXejlFNkxBT1FkZVN4UGcyY2NWaTkrNnZKNVJyK2tuOHBp?=
+ =?utf-8?B?TjBjbzNTaDdFN3ZTQmRHMVR4YVlDdHFsUG1ZRVJISmU5WjBQZWxXOGpiZ3ZV?=
+ =?utf-8?B?Vk5WWTVYRHBtajhXRFFTQ3dxbFV0UWhlTlZNVkFXSDlIZ2pLN05xdFBwV0Zl?=
+ =?utf-8?B?T28vdWg0SjJ4VjgwV1BpRFg1VmxtdkV1NWRzM2FzTGdVcG9kQi9hb0U0RzBL?=
+ =?utf-8?B?VktmZVI5bFVnbXdqbXRGRWFLOGhsS2RIYXp2VUNWTkIrUFFNL2RQRTl3eTVl?=
+ =?utf-8?B?TXBWblhMTVI3aFZOeDdzWlFaa0kvWFZKamJ5SWl5UlNOYVRRcitsMXJQRXNV?=
+ =?utf-8?B?cDJrS0lxaTAwQjRqNXFGWjNvMGJVWUtiek43VHNkRzZQTjdrSE5VWGxpZFlz?=
+ =?utf-8?B?TUxBcGdFc1grQUcwMUdlQ2lWY1FQWjJOUitFZnEzK2doYmJhOGg3cytxMFVN?=
+ =?utf-8?B?eFFKTmVialMrVFV0aXJjU1VYS3RjdlZDLzdnbUtBYURQV0VURFBrUlFDUm05?=
+ =?utf-8?B?WHMwNjVWQ2lVYjlrVDdyc3NNTlNVR2xhMXdXUVJaMlcydUNNSG5CYlhEdXZM?=
+ =?utf-8?B?Z0dVelhEazdmRGxTR0JJN2lwV05Sek41aUtaMk9ETDZLVUpMMWJ3Wm5jZ1BP?=
+ =?utf-8?B?ZDRTYWx2eHFKNEt0ekRvcVNqcXRWQmtBV3NrVysrYmNLUXJRL3ZsL2FpSnFh?=
+ =?utf-8?Q?PhNKAOkxqTEK823gduUF3oQK94feWVA6kS3Pc?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 124dd789-ee3f-4b8a-2d56-08deec15a333
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jul 2026 19:31:21.1378
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iPaKUTkwiJo+0jInlU23OtkBIvPC+5Yf9BfhqfkBd/TGxRo/rIBEhawHujfQ2cRofe5r5k+5PGRJRd5mqD0iGM2wf8EA3rGXfxxVCYJL2ckVhGhOHZkyS5yR32m0A26H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6947
 
-qcom_spi_send_cmdaddr() programs NAND_FLASH_CMD/NAND_EXEC_CMD and submits
-the descriptors, which makes the controller execute the command
-immediately. For SPINAND_SET_FEATURE the value to be written is only
-placed into NAND_FLASH_FEATURES afterwards, by qcom_spi_io_op(), in a
-second submission - so the chip is programmed with whatever that register
-happened to hold from a previous operation, and the intended value is only
-applied by the *next* SET_FEATURE.
+From: Frank Li <Frank.Li@nxp.com>
 
-Measured on a TP-Link Archer AX55 v1 (IPQ5018, ESMT F50L1G41LB): writing
-0x40 to the configuration register (0xb0) leaves the chip at 0x00, and the
-subsequent write of 0x00 leaves it at 0x40 - every write lands one
-operation late.
 
-This stayed unnoticed until v6.18 added SPI-NAND OTP support together
-with OTP entries for ESMT chips. spinand_otp_rw() enables OTP mode,
-reads, and disables it again, and mtd_otp_nvmem_add() does this during
-MTD registration. With the off-by-one, the "disable" write actually
-applies the previously requested value, so CFG_OTP_ENABLE ends up set:
-the chip stays in OTP mode, every subsequent array read returns the OTP
-area instead of the array (UBI reports an empty device) and all writes
-fail with -EIO because the OTP area is write protected. On this board
-that makes the whole flash unusable and the device unbootable.
+On Wed, 22 Jul 2026 17:00:41 -0500, han.xu@oss.nxp.com wrote:
+> This series adds DMA support to the NXP XSPI controller on i.MX94
+> and enables the use of DMA for AHB read operations to improve
+> performance.
+> 
+> On i.MX943 EVK, the measured read throughput improves 4x higher, from
+> approximately 70 MB/s to 290 MB/s when DMA is used.
+> 
+> [...]
 
-Write the feature value into NAND_FLASH_FEATURES as part of the same
-transaction, before NAND_EXEC_CMD. While at it, copy only the bytes the
-operation actually carries - the previous code dereferenced a 4-byte
-pointer on a one-byte buffer (spinand->scratchbuf).
+Applied, thanks!
 
-With this patch the flash contents read back bit-identical to a
-known-good dump of the same board taken under the vendor firmware
-(md5-verified across partitions), and writes work.
+[3/3] arm64: dts: imx94-xspi: add the DMA channels
+      commit: 933bb140ffbd5015e940ea376a8c5c15b0fbf5d6
 
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Pal <kuncy7@gmail.com>
----
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -1358,6 +1358,22 @@
- 	snandc->regs->addr0 = cpu_to_le32(op->addr.val);
- 	snandc->regs->addr1 = cpu_to_le32(0);
- 
-+	/*
-+	 * The feature value has to reach NAND_FLASH_FEATURES before the
-+	 * command is executed, otherwise the controller programs the chip
-+	 * with whatever the register happened to hold from a previous
-+	 * operation.
-+	 */
-+	if (opcode == SPINAND_SET_FEATURE) {
-+		u32 ftr = 0;
-+
-+		memcpy(&ftr, op->data.buf.out,
-+		       min_t(size_t, op->data.nbytes, sizeof(ftr)));
-+		snandc->regs->flash_feature = cpu_to_le32(ftr);
-+		qcom_write_reg_dma(snandc, &snandc->regs->flash_feature,
-+				   NAND_FLASH_FEATURES, 1, NAND_BAM_NEXT_SGL);
-+	}
-+
- 	qcom_write_reg_dma(snandc, &snandc->regs->cmd, NAND_FLASH_CMD, 3, NAND_BAM_NEXT_SGL);
- 	qcom_write_reg_dma(snandc, &snandc->regs->exec, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
- 
-@@ -1395,10 +1411,8 @@
- 		copy_ftr = true;
- 		break;
- 	case SPINAND_SET_FEATURE:
--		snandc->regs->flash_feature = cpu_to_le32(*(u32 *)op->data.buf.out);
--		qcom_write_reg_dma(snandc, &snandc->regs->flash_feature,
--				   NAND_FLASH_FEATURES, 1, NAND_BAM_NEXT_SGL);
--		break;
-+		/* fully handled by qcom_spi_send_cmdaddr() */
-+		return 0;
- 	case SPINAND_PROGRAM_EXECUTE:
- 	case SPINAND_WRITE_EN:
- 	case SPINAND_RESET:
+Best regards,
+-- 
+Frank Li <Frank.Li@nxp.com>

@@ -1,68 +1,68 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4BB3D890B
-	for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 19:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA86429025
+	for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 20:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785181641; cv=none; b=Wq2nHAaNS6T88n8nrUaFguz/m8oyTfCDq6ZJFBumhxL/DszO/z+soo41X9j7XHYfShibIDj5LKMR9trn3vF59f4FH5rfWJY05OzTo728mkWwO+XBuOLLy/67XD6aVTMqgWMpe1zC0nN64p3fc05lqc+7NDGOIe9he/+sqg55zGg=
+	t=1785183350; cv=none; b=EKcUAtw0wEnvxuzk99XdJmnRAnp69AMRbMz7kZMTL7HltHg1vpXU8m3Y9GRFnrtAAfPX2RbF9/88v1G5f6qinjsihmMiEvhyJTCztddXl3+4ezNNN+fHZTNHZb3P4FSVz6l612JrvRE/s4n38UlqQaXtzC5DkE34e4WG+lnXQvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785181641; c=relaxed/simple;
-	bh=oFzg3w1o83cUPrm6E2TI1hZm4hbYZedb89KGuqdzWKk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMcBEbxznygs8NqPnMrNwLJCC6TkYJ+yn2PCB6xHIO+iqnKzT4Ofuxp4vTUGWKMyJu2R4GCrRrldTGW2S9NL5kDT+m2X2z3slPOpCVe4auctZEgQ/EgcfeR2z0uAxs4oCFdXr+RArRFZIPqE4uujhjirjjN6/xQdB8Rg3EEjRkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n4zjhzum; arc=none smtp.client-ip=209.85.216.53
+	s=arc-20240116; t=1785183350; c=relaxed/simple;
+	bh=1GoRFCat+ErrB3hAtE60uqnxLaB3juM+9KFO4jka8VA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZTeJkekQ8PEX6dHGO69lOhyVuYNcJUYDmMNOGi2SuxR8/3vNu7CtudS2v28Thgyf2cfa7dvPigSnHDPcLJOsMNgf5YGP3IaxIMdZeB8blpDwRPgIa2YsfHkE2iZpgiBLw7Ktfh8LJq4MflC2sBD5dHhBAt9EQ2D2vFRs7xq25hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWHAtIWO; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n4zjhzum"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38125cebfdaso4408635a91.1
-        for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 12:47:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWHAtIWO"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-930f618435cso234921385a.3
+        for <linux-spi@vger.kernel.org>; Mon, 27 Jul 2026 13:15:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785181636; x=1785786436; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785183346; x=1785788146; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XSCXn/eGldKKU2rs41dq3NxOCETw1/WpvSD3oUZHWac=;
-        b=n4zjhzumYVNDgBAz/mnf5d7fgGm90Kcajp4lWw0hR0VgfvJ04SCDYvuLcDFEZGH+GX
-         iaIxaBFrAe4nuzmfwR5nSToJkhlKofVIAgdyXWr3kQjX5S4b25E7ie2lfZTgf94iPtR0
-         vDEo76DHHbbKf2kgFoq5DQgvmTbfXnS6mtFXLAXxdB8Z6dofYwXvzg6XnZu2/8VnXIgm
-         xO+Snuab4XydULFd6OLI/4MRNJHLyhiDOR5oUeklULISouzRXa6/gQUEaUYo8LVXTiGT
-         ozajlEjpQgX4MAiJ58FHapHYowNNi1bC1HOjqxmy3n4YrJ/SaCYLBMF1SJ1+D6UUvb4M
-         giZw==
+        bh=tDME+g3Hpcs7tuajmBtOQU1/TxU8l89I/sLTGgXuXUg=;
+        b=MWHAtIWOjr5mq2Qyz3MAvwpKWSj3xbqqY8c2TK8M1foQaleAGr8icAzHeELdsPz+D3
+         SH23JyJZJ47U/hjMm+qoa0fI6rQcuHk7ZAoYVrm/HAfDZFSVDA0zBSkQvGUY7rHszQxD
+         n+KV1HACM/PYN3LiVNb2CkNXswpPVGxBU2fBodKbs+jcXCKQ7qW7eOMzjL2a9rzd3+b2
+         LXUQS0EA8nvkfscNzhjV8nEtI9DqT77nbSMEaoGxfOMI/ykkPcfX8BxcIu0xUVkB7DLI
+         +CnAQ7jbNtU2dv4MD3LgfBuvCsCmJa4OMYJcqMPx8OmEJT8gdsdZBeoNCtfl0YeZK0y7
+         acrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785181636; x=1785786436;
+        d=1e100.net; s=20251104; t=1785183346; x=1785788146;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=XSCXn/eGldKKU2rs41dq3NxOCETw1/WpvSD3oUZHWac=;
-        b=sD8Pi94YMF5UoH6sMcd54a2AV6T9W4XdGhQt2Uwf6VnBlG0gzjA4J1MzjRsImQcQ4L
-         HUANfLFB208lNzGnO2SjUPZG0bzLo5rIIQq7YoIBZq/1kj76saQaWsGI65pWpTWpozFw
-         2rpb9QMGHUTk372vD11yg7vjBJGA3FeFuUIJr38Fb4+skWjG4wU5ZdcRcZkX51cWXilR
-         Prp4nS8F3Nt+W9DzH3+bE8/xshYsu5HD6MIt+cGOvL3a7L9HMl8C1z6mqCvb8t8eFpP1
-         UqlwNK35qSUVILlPUwjwjoQtuMHkFUhG7ZihyDiOqIOb7UquKihHJJ/vG7gtv+i0OOsI
-         HDHg==
-X-Gm-Message-State: AOJu0Yw4lspq+ItaMEreyuC8N1avUB3PwOGfBPItf0UzmNGch0mO0mtf
-	BMY5kWBt/b/zFklIVXGAg8Av6SiTVdJH/2GAO1yzx8Trg5ETCEd4oF7H0gw+ZfQY
-X-Gm-Gg: AR+sD10Wau5J8F5eu9eUSOhcKZPHN16OfSZvvxnHL1mpGDAOgnL6iozenVLOlhFoyqI
-	aw1eKcLVTElf46m+Be0zjrnKlAr3tibCXhppdXe/bckRFbDxTVWjTJCjwgjPTM0iB6+FaJXg/YE
-	+4RSfjWkAvrcmnx86K8PLUEpq4HECn0VhFeKcUwWhutKAoLSSqbcWSlXJe9AwsRldfnHTs17lQ7
-	RHBrTnoTPRm190wfFPRO1Y8gHuYCaLGcK+jHZbjl5ks/zez1h+0C2ohahz7KN0dPFGaKaLksr+k
-	yTI2OvHlY1WT2aucecF75jXkCsp0FYIn4cvlSDmBjlLvrmeFRlkO84h0q8wbqYiAd63KogJu8UT
-	qqcqy6UHw8ZvluJ7xoqfPWXPMaTxLvzSoesuWKbsz8SbYVDWGR58O8CeLfXPNa0g0XjiP6cPSa/
-	KRabyu00U3eW08AspeD6Z/PAbSo8Nd7NoDwVL0Yam7k6U6WgNXgrFytsi9kiwNQ20ylmdpL0n2I
-	WNHoHhiTFXGFMHxmTA2A37n7nEf4RcaRQcewyKzlX7uyZ5Kh0vgxqe1jl8rgh/B2U797kBzamD7
-X-Received: by 2002:a17:90b:5750:b0:38e:655c:6516 with SMTP id 98e67ed59e1d1-38f29265995mr9506496a91.0.1785181636524;
-        Mon, 27 Jul 2026 12:47:16 -0700 (PDT)
+        bh=tDME+g3Hpcs7tuajmBtOQU1/TxU8l89I/sLTGgXuXUg=;
+        b=CApYM8l7E8QXpMVZdUvwkf78kwFXtNYHpXnVinf6F4VcVD0z05jSS2oDyE1/FDv3sz
+         mDbLf/dFrv+KXbyPM+fWNKmZzYRbFeZt4qd0FonunnmGgoB2aM3XMKnGDVT9cuQJuhOU
+         CUb3523ju43jolKsvY7BOjXZ5G7D90PKH/UXC2WY0sVEQ4AeSgJz/Pt6gHAAgzLpQSTs
+         SvQl3FAolyhtgLxpWdMJNZL2MFYVhgSkCQqcfI0anr/Z73BpZ6Du1DFDYtOv1ZqHYUEx
+         9iGGcs8KoHLrlSM6JhclCyvqGgKtFTsARk8YETqXox8NsEzvaiIDDb+3JWchz4JL2Spc
+         IFLA==
+X-Gm-Message-State: AOJu0YzlytgfI31kUJtC12D5gKUnZs65GxP8pbDhF51wsUQHjlCDV71F
+	8R3tJ549k64tW6wryIluDsgLvqoA3Nnp+3Fd770uOnEnkoLoyEGjLwlEgN2CFEmL
+X-Gm-Gg: AR+sD12qk0mh28C1BIXz60f11P4sDkRVzthr0t8/MAYwrQAIv+U2RGLJNjBZhm+hXqE
+	VebmnsMa/fAZji3HHZ55ARiAJ4XIZ31Ci3fyFMCGM/XPO0b+/NrH5guYdsxf0TPFJ7+8oxM7AJh
+	NP2GwB+w7ewulV2hlZLuHsEsfes5a7VNMISjXyGVVqaO1fiRAbq8oDxKAaIOKHxQyzCscySl7jP
+	d7KPckCFaKnWLyzffmca5f4ZjENaFeu7cRE+Le8uyNLn6jHo9TK0VV4tqssBDoybUJm/KpmrA0A
+	T5wFDVfiDVpmgzWC0trVj0YgpZZfsoG0qaMIYAPhF+0yCexHCdtOzyfIol+RMTYnijNPVulz7Xl
+	zG35+mB62mlqyHS3Z52TzFXWAmAVam2WZug+ovOm0Iq1q042725Thuu33sAv7jOoEejRoyKQ6d3
+	1+3wtJbXW885zQ2LvCyjVpTP3cwsQLl2r/5j4uWeEN/Rqoz6XDtkovutk1a05fk1eIdInffwuTB
+	TRm/pMa8SprwWe7iLyoK3MId++fU+cg1/NAiq2d9F6VF1CRtptFRoaE9VCXt+BsLw==
+X-Received: by 2002:a05:620a:2403:10b0:92e:c197:e9f5 with SMTP id af79cd13be357-932df75c07fmr788497585a.77.1785183345611;
+        Mon, 27 Jul 2026 13:15:45 -0700 (PDT)
 Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38f6410ff7dsm279656a91.4.2026.07.27.12.47.15
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-932de569a84sm697800985a.21.2026.07.27.13.15.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jul 2026 12:47:15 -0700 (PDT)
+        Mon, 27 Jul 2026 13:15:44 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-spi@vger.kernel.org
 Cc: Mark Brown <broonie@kernel.org>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] spi: spi-mpc52xx: use platform_get_irq_optional for IRQ lookup
-Date: Mon, 27 Jul 2026 12:47:14 -0700
-Message-ID: <20260727194714.11354-1-rosenp@gmail.com>
+Subject: [PATCH] spi: ath79: use devm everywhere in probe
+Date: Mon, 27 Jul 2026 13:15:43 -0700
+Message-ID: <20260727201543.18857-1-rosenp@gmail.com>
 X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -72,53 +72,80 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace irq_of_parse_and_map() calls with platform_get_irq_optional()
-to fetch both IRQs in the probe function. This is a more portable
-approach that works with both DT and non-DT platforms and follows
-modern platform API conventions.
+Use devm_spi_alloc_host() instead of spi_alloc_host() so that the spi
+controller is automatically freed on probe failure or device removal.
+This lets us eliminate the err_put_host label and goto error path in
+probe, as well as the spi_controller_put() call in remove.
 
-The -EPROBE_DEFER case is handled properly so deferred probe works
-as expected, and invalid IRQ numbers are normalized to 0.
+It's also a bit weird as everything in probe is using devm except the
+first allocating function. Might fix an ordering issue on teardown.
 
+Assisted-by: opencode:big-pickle
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/spi/spi-mpc52xx.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/spi/spi-ath79.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 70d8e17e8c43..563b1f627be9 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -392,6 +392,18 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	void __iomem *regs;
- 	u8 ctrl1;
- 	int rc, i = 0;
-+	int irq0;
-+	int irq1;
-+
-+	irq0 = platform_get_irq_optional(op, 0);
-+	if (irq0 == -EPROBE_DEFER)
-+		return irq0;
-+	irq0 = max(irq0, 0);
-+
-+	irq1 = platform_get_irq_optional(op, 1);
-+	if (irq1 == -EPROBE_DEFER)
-+		return irq1;
-+	irq1 = max(irq1, 0);
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index 2f61e5b9943c..1f5d0fb03917 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -173,7 +173,7 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	unsigned long rate;
+ 	int ret;
  
- 	/* MMIO registers */
- 	dev_dbg(&op->dev, "probing mpc5200 SPI device\n");
-@@ -436,8 +448,8 @@ static int mpc52xx_spi_probe(struct platform_device *op)
- 	ms = spi_controller_get_devdata(host);
- 	ms->host = host;
- 	ms->regs = regs;
--	ms->irq0 = irq_of_parse_and_map(op->dev.of_node, 0);
--	ms->irq1 = irq_of_parse_and_map(op->dev.of_node, 1);
-+	ms->irq0 = irq0;
-+	ms->irq1 = irq1;
- 	ms->state = mpc52xx_spi_fsmstate_idle;
- 	ms->ipb_freq = mpc5xxx_get_bus_frequency(&op->dev);
- 	ms->gpio_cs_count = gpiod_count(&op->dev, NULL);
+-	host = spi_alloc_host(&pdev->dev, sizeof(*sp));
++	host = devm_spi_alloc_host(&pdev->dev, sizeof(*sp));
+ 	if (host == NULL) {
+ 		dev_err(&pdev->dev, "failed to allocate spi host\n");
+ 		return -ENOMEM;
+@@ -194,22 +194,16 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 	sp->bitbang.flags = SPI_CS_HIGH;
+ 
+ 	sp->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(sp->base)) {
+-		ret = PTR_ERR(sp->base);
+-		goto err_put_host;
+-	}
++	if (IS_ERR(sp->base))
++		return PTR_ERR(sp->base);
+ 
+ 	sp->clk = devm_clk_get_enabled(&pdev->dev, "ahb");
+-	if (IS_ERR(sp->clk)) {
+-		ret = PTR_ERR(sp->clk);
+-		goto err_put_host;
+-	}
++	if (IS_ERR(sp->clk))
++		return PTR_ERR(sp->clk);
+ 
+ 	rate = DIV_ROUND_UP(clk_get_rate(sp->clk), MHZ);
+-	if (!rate) {
+-		ret = -EINVAL;
+-		goto err_put_host;
+-	}
++	if (!rate)
++		return -EINVAL;
+ 
+ 	sp->rrw_delay = ATH79_SPI_RRW_DELAY_FACTOR / rate;
+ 	dev_dbg(&pdev->dev, "register read/write delay is %u nsecs\n",
+@@ -224,9 +218,6 @@ static int ath79_spi_probe(struct platform_device *pdev)
+ 
+ err_disable:
+ 	ath79_spi_disable(sp);
+-err_put_host:
+-	spi_controller_put(host);
+-
+ 	return ret;
+ }
+ 
+@@ -236,7 +227,6 @@ static void ath79_spi_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&sp->bitbang);
+ 	ath79_spi_disable(sp);
+-	spi_controller_put(sp->bitbang.ctlr);
+ }
+ 
+ static void ath79_spi_shutdown(struct platform_device *pdev)
 -- 
 2.55.0
 

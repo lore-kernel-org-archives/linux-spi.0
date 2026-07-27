@@ -1,39 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA60B42CB18;
-	Mon, 27 Jul 2026 22:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C8442FCB0;
+	Mon, 27 Jul 2026 22:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785192917; cv=none; b=Tz+6yZDCXjfC0+TWzyYEF7iLiLhFgwu82Q+0iTOlg9W54MAutIJbp9xtBq7aTrhZhOm8lVmwjAocZrcXYOS2qv5eB6skhzZYboZFQx9t8SIU3tnOKV9FY/P1963oHkwgAK+oINIDpyPdgz392fP5XcA5c3a5lYqFwdCv0xWia2o=
+	t=1785192921; cv=none; b=hnkFZLokPE7J2jpPo3to8YX4M01VmVhAF54izlSEuwKl5FyPWqS7/02zBszllHfhQ1PEITP8kdbFeYQW0XSux5uZ5cJS8mG73WCbzwa1ARswfLDkaLwTKK5yYc3y5Wv3m2i/iTGSnIy3eH8y1V9yADoQNxky8SxNwAT6eLxYyMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785192917; c=relaxed/simple;
-	bh=o8bW1uDcIlMOOCb/v+JJiZOhoRwvyAnJQVVS5QFmtmE=;
+	s=arc-20240116; t=1785192921; c=relaxed/simple;
+	bh=t2L1/52jcN/yikhDHwRXymAi1tNNZhVuG93OkJs41OA=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=S8VIeczHW9T5d4G6R62Rpw43qNC1j14WAdK9deDMpmi53CcgLRdgoMz5dCSC0aQDcnvMfqtd49nQwo//4q9S8Dmo5N2RGpakdMpw2yce/tGC5WCcHgQHFPGqRLTKXGTPxa2bMqlKJIPwH84KX6KDuCuVKGCO+0AZKD5G7SUii7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FAsAKU5l; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=DEwSczoLIJCSfBC6uimzxNLj9gn6dcY1LD7eIejy1OcMEg8R3CX7eEDJY7fh5/6vm76+scrl0Jd7E1A2lZpIa736cLN4/6Df8lhEI190rOilkg7WcPniWbPdrZ3rKH4UcIHTsAj+kKTYJD7Mz38BfVnj8cuE+B/HjKDjHC+rqNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WenzdwPA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FAsAKU5l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E471F000E9;
-	Mon, 27 Jul 2026 22:55:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WenzdwPA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 163C31F000E9;
+	Mon, 27 Jul 2026 22:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785192916;
-	bh=0852csyWDUpIynklJWjUCMN5ef3cTMCMg6/euO4X67k=;
+	s=k20260515; t=1785192919;
+	bh=PcCkppdQZyJG3G4/8u+i7PtFUDcOYUvqp+mZF0nbRKI=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=FAsAKU5l1kZ4U7gkmvi9ShkYyL11h+QYbZ4yMvgcMINz+NN+pORcURDDf2BGGOwdO
-	 JPPNPoJ7cbEcPIA9JS28hEx5I9mUWQ34PO8e61HotqIgoXcDSvHUuON2wjEMxD62Hz
-	 m69Y9arK7eBwN3hzw0SxRS3DIRhlKXOXtzwaspTATIUR881zOoj5tVGM0k/agh2N5a
-	 BAskkct9VttR3dDgpBU90ba+3YGfKHmgVrLXYwfnlTOpRy3Pa7iaDf0W2F/g8J/aS/
-	 czKtht0HfCBifqvlgE8GKyb8NlhfKMNPtbYNRMv0HxhdUoZw7oHaKJGLdZIYntJxGA
-	 iC+OyZoxf9tUQ==
+	b=WenzdwPAZeZlKsu7ul+ZpsJHOuwR19BnWHecYJMJxak9C8r7KoAKnfYL7z/QjqKA+
+	 jxniE7E2PGcf4Dh0zNB/B2d7AlVd0EZEQc/vZC7b/1N3EstQPCTk7sCPpE1g4nfJwX
+	 iyJchW4EUfT55XrNsqe8A1Ba+YpQRUOVhpT9VndtxtoqsgYHTuJ/Yoq2f7Lf+DDjyb
+	 Ne35YWBbJnf2W3Z2yBsSaCyzlt5Z+Ik7xUE04SPWRr+2l4taPsdvAmWIl5Jwo79V0a
+	 BjZxo1ErqECeDK5mexROe08FRLi8BnE1D3TdyVM7VAa6jyTbGn/OAaf7C58Y/lfqVz
+	 rdfEYKiizvgpQ==
 From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Fan Wu <fanwu01@zju.edu.cn>
+To: linux-spi@vger.kernel.org, Rosen Penev <rosenp@gmail.com>
 Cc: linux-kernel@vger.kernel.org
-In-Reply-To: <20260719010014.3163356-1-fanwu01@zju.edu.cn>
-References: <20260719010014.3163356-1-fanwu01@zju.edu.cn>
-Subject: Re: [PATCH] spi: oc-tiny: switch to managed controller allocation
-Message-Id: <178517410595.50339.9207832521965682254.b4-ty@b4>
-Date: Mon, 27 Jul 2026 18:41:45 +0100
+In-Reply-To: <20260720003043.1536358-1-rosenp@gmail.com>
+References: <20260720003043.1536358-1-rosenp@gmail.com>
+Subject: Re: [PATCHv2] spi: ppc4xx: devm-ify probe and drop manual resource
+ management
+Message-Id: <178517425482.50339.5908120506912544581.b4-ty@b4>
+Date: Mon, 27 Jul 2026 18:44:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,20 +44,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1114; i=broonie@kernel.org;
- h=from:subject:message-id; bh=o8bW1uDcIlMOOCb/v+JJiZOhoRwvyAnJQVVS5QFmtmE=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqZ+HSgHqoGChyOY/hMB1nWjWMK7NrixoNHsxId
- +xYvYw9UfaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamfh0gAKCRAk1otyXVSH
- 0AqWB/9GZl07KvAaCJucSVO7CksL/4SKSjeMgL0iNf1luKE+/a1G3PP76afuU3jNpHYV8Stg48N
- 7bmmT5XgV2me8Uvpp0OiWGI3Ode6EzOHm/hn9bDFAF8xquvup0lWS9Po7j89yRzN2S5hElXTp3w
- eU3VYKLfyviyQIWaLDejdUrFaVFrRSF01vEXlhgcr9ld45jLDXuGAvvEwOTrMoEaFWqUSAwCEWs
- 0sgsXZRZO9CX1pChieyw2UxEUDCMrFQ1u5RSugsKLZArGqW6pTKtHc2TMnPCWblHYocSPiSy/SI
- KnVwJCc46b+8sP8363UXTwVR1wmPZcc2uRR/4iNQN+1CNS5M
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1139; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=t2L1/52jcN/yikhDHwRXymAi1tNNZhVuG93OkJs41OA=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqZ+HWkAkFb5k/y2i3Lrc3tGjom8AAEm8IssRIW
+ YtDmNl5iYGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamfh1gAKCRAk1otyXVSH
+ 0Mt2B/0Z5bbQfubZE4i0lD83xESgjz7cqzOh8yPyyJOvJUOxw5hmHn7E82CkkEh7it/EVsqgs7U
+ ZdUQ8B3aJc46JWjEacXpjExxJYiVMR3gWp2u2rEstsdA7LVIVYtPX7AppRBlZp7auZSiop/udy7
+ RdAd+5rFuzoGnmiuS5kxl0FbwT3WTrYwh3bZ15+uYR89A37diW+Zni3rfZ5mqw/dzKIQOxPbIqE
+ F/DFjSK+oBuljvlT50odeeRfmdGYjBt/I025jSoUzHxc+11DVkgQ5dr4tg9aW9KP2s1syTYiX7f
+ GNJNZQheqlCMYsFfjDeB/0X2LoyEc5BRPKBpV4cxhF1nMhDu
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sun, 19 Jul 2026 01:00:13 +0000, Fan Wu wrote:
-> spi: oc-tiny: switch to managed controller allocation
+On Sun, 19 Jul 2026 17:30:43 -0700, Rosen Penev wrote:
+> spi: ppc4xx: devm-ify probe and drop manual resource management
 
 Applied to
 
@@ -64,8 +65,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: oc-tiny: switch to managed controller allocation
-      https://git.kernel.org/broonie/spi/c/d710f43ce309
+[1/1] spi: ppc4xx: devm-ify probe and drop manual resource management
+      https://git.kernel.org/broonie/spi/c/fd741c46ae03
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

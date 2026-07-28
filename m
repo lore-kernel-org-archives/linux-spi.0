@@ -1,48 +1,49 @@
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699103D6CCF;
-	Tue, 28 Jul 2026 08:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279723CB2D9;
+	Tue, 28 Jul 2026 08:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785225916; cv=none; b=oTuB7VcXL/76IQuWlzH8AVBmuHfCrUIBRl6yP9NcBEtoaFzkgrq92bxD15WoBY2k3ZE9dyWJBj1EicQAsjZPfYx0S4tNr+uF5co37swscpxt4FQEtmR/Avv57XDh/3+9MPn3HDmCmweGklKJIQBidc/5YBdYO53lwF3g6GIo5BI=
+	t=1785225917; cv=none; b=lKtv2CY/jVUDsyGN8LsCpUK7zdxRvVGrt2HkGn0nnqMNVMWJSPSm7ZpZrKYwOFuAVdTBSjEfdF9wDxDg6GJIoSNWkGJ9Lm3ZVjWOwmUaQAU4rMK3gll84n48mOigwa6xG27ASv/W8Of7RzEyvcvKEbS4jIWP+bj283l3blt0u/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785225916; c=relaxed/simple;
-	bh=/EJ59EVgmGs+wpGuR5MI9Rfm17v9hWsaXj3Y5ItVIhg=;
+	s=arc-20240116; t=1785225917; c=relaxed/simple;
+	bh=HaiQ625Ljeut2k8BGmf/zrDG0K09qrM7SfXiXlbyeu8=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=oTcrTisqkEMx9Y/mHs1XYNXmkcFJm37r6N+nUCBPFS7Y3ocm8cMeawNU2o9IvUKmoqqPksCUbiqKxp+RhIOqteeRZX0hagJWMUPlEF+91kwNC/8QUOm7eRHr7d37pVglkP5aZkZ7aLtWvXYxbwaM8hNSj3ynC8LGvUKcen97clg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ypxtmJLg; arc=none smtp.client-ip=162.62.57.49
+	 MIME-Version; b=gmXxbByE71caF4GNItdgizkUkMqfPHpopiyIlPMjR0rXtT/h78aoB9HvPGm3NNGLpOQU4f1XghD0t6UXKKdRwnITkQQ+h+oM64K0qrALJMYJ8ITAaSaG+EG3DxgQLKXc66toSzvrQV7svu2O3c8fKvfQVmrUhfOO3zBSVssT2k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ot6yGPvh; arc=none smtp.client-ip=162.62.58.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ypxtmJLg"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ot6yGPvh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1785225903; bh=kS48lR5yCmBFIkW1Y9w82Qwc19/67awgBhHL6qyuQcE=;
+	t=1785225905; bh=6CkhQvU7AhKWkI+WdisZ5s6NGaw33xt8r3EKWCWR5X8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ypxtmJLgk02Pukth8sEY365w4GjzRib6mjqz2117pvGXZhq7SQbbocn4GfJF11Hd9
-	 Q1NnJYhUGOeyUcNcbu6FJK6laR/f1P28qN2FnOUkurJwZktcLhIXvbvtRpjBR0/H5l
-	 FCQtHls5q0iimUcsgRaRh3OA34w/bRe4LGdAN26c=
+	b=ot6yGPvhUxP5JP+5Y1sNWfP3bRQzaJSmcuM0t6jYv3cJ0zfbvd6ugUmZje/bRAnsD
+	 XMSMo77XKs7CXGThvxCM5fLYDvBcjx+DhOQp3EZkPXDRqgAE6pBOu3GbJI4mfw08uE
+	 8Mwks5yDu6jHVCGf68wA824bqiABYwq4k1JpGb8s=
 Received: from ws006419.mbzu.ae ([5.195.0.150])
 	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
 	id 12B9D80E; Tue, 28 Jul 2026 16:04:43 +0800
-X-QQ-mid: xmsmtpt1785225900thi5ozi1l
-Message-ID: <tencent_F25742D45315ED400AEA2E39210242FCFE0A@qq.com>
-X-QQ-XMAILINFO: NQp/UN4soYLTRtY6BSJsze4pUGTAzQ/WLgBK5ZGgzpElZ+Qv05yLmROUjS3Bxn
-	 cRtONOh50Q32JPuvc8/JQcdEWU1+zWsoYujpCkusF1Im47TMpWb3JGfnxHuRpMCci0+Y3Vde/6XH
-	 WoFPoKR8NxGn8lhppWfd1nWYbckzyfPr3wkW5EPbi6yB/1xlt8m7Z0NSboK7+Cc9jruG8IMQ9cn4
-	 mss/P8zHsA7w3wXlvgPG/KCVGapIXX0/oHNeq3kEudHaLvKmO+mZkADCE5lR/fJSCyqddyYQ+7tM
-	 cduq7ai15gJWRmraqoKC0w95tOIpk1HGRISjW9FHbS5bPhcRaecJqa6k0Bern+IEkyFMfWm86so8
-	 MjGC5hHCPkqWVQbEGcx9GPIvFcRYIJ9DUAVa9e7/abRnyMsnc0C4OatTP55LEH7VYXBqy17/yg44
-	 u7KsCC7TdEHkO+3+H2G9rlZhqWzR2NphiwQc+miXueI4aVgZ1n4FzmIVODO6YxCFNRZlSYxYx2lu
-	 TrP9jLngyrTy2rdIoXBUJ0JY+DYHCNjkV2Bbb/CKWsPOqxGKPUTjB4zoj/mDGTDD3K4gIGCZJ3Ax
-	 pgX9J2z1sqbAJbUpQe6u9bODEpguL6YnEp3C/jr922bEQ6kMA/BCn806WKMqsJOMmRigpQuYGNWg
-	 hQr1qG05ugo3d0Qq79mCJ9IRiXW//tUY05EPTH0082x6NLDqpxe+RV5mkcw0f8Nx9OL3/5ItN5EU
-	 +XI297i3w0jNiAwWl8AXkLkxxyv+9CoSY5t+aTUCmtdjkfPjT57J1jTgbzhYxMTb6ga87kE6YDFO
-	 P31URn9KCTB0oEqmUQPT3MIaHaexxBRQc1pfjJ5/3IVdCeNbHbL8bzsO5jlIHQy5oBcWhlJnlz2j
-	 Kcb3tUo03ljrMuYbXbeQO2iAk8CkcSqD3J4Kp6aCFtgVY2cXxF7wXijM9w+l2Fn5c2+5jEc9+QoC
-	 FxAydlGXT5dEqRI1O6LZtDWnBPCj22WhBrtg1WNh160XHVQp3jcoQh1eQl1/fLjX+hFIv3wVJdim
-	 rytUpzYt+Z54ZL9AH9slqdHD7wnWvOuQZSg+ik3VlTZD0xn3Aw
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-mid: xmsmtpt1785225902tn30x4u1e
+Message-ID: <tencent_9A37C7A91DB0EF57A552A99EAC881CD24605@qq.com>
+X-QQ-XMAILINFO: MDbayGdXPuoe0jkdZScXxa+9aeXz1k+rAII5BXPUdeYpSQLaFdjnvO6zDov9P3
+	 izZ547NF1aFT/okEAMzG1Bn1PytdO5C9YFRFkzJ30v0zvTEwazTokOmDryG+LzxBRTm6LkZxlmv2
+	 hUsR8Fjspy4GTr45d2LGPzRfeR6NDM3Sc0jEHt5xQEh9mDbsdOZ4Q6Qlfx1yju3FtfthcqvQUvbE
+	 +WgtcnzmbjddQbqJq9pNx6sMn4C/WGzmvq9cY20csKz4rwtYuP+FtIq4f/4HZAfhI+xGPS0K/PSx
+	 21ll4RRfK+tSRhKEX19/Vy2d4G1/uZNx38LGCp7vEB6y65d1FAmsnEnR7Qt7Xo8BxpkvidQpRTKY
+	 UZ0GhNMtH7GRxg5zrQE9W3RYtZqGk1iAXtgluPxiiHi3LRwjM4ny8SSFzW4EgA7a0L0DLW8LnzL2
+	 o3KJpQM1tiIjrCTY1wJOPuvKAHNvFcoPYPPxBYkT9wz/ucmkzCXGgNZQEf0Pf2u+q85xqM8Y4siZ
+	 NvvO0ii3iZ+hxqcm5gKc4WNurrRzva+LuAWM3Po1e6xSjd2nmt0ibFEe7ApNMyX/dbKnAXDeKeO1
+	 0dMFiSsD1AanonBLnU/no3VPJG7aiwtdQhcyqMPqfkIxXxrO5R1lrnrvuOAAXOD3Bts3Ga48J2Fn
+	 qigmhODE+21SO7fz/tUCDon6hTzFk+uaeVx6TLZMp1dXJW5VY2P8bVBqsfxnmYruimjAZF+9N8Hc
+	 4/cmZTkcsUiQOl4aO6amIRGWJxCdPArIYNTGw8qtTn4j0Vs28W74Qi6t8tt6Hsho8NaXGg/PzbRH
+	 m0uLBvAYH+2JpA2z1BGP/AUh76buy/RbT35hvleIVe7Eke6McRdPRrWP2s2Hk6kudyQ/EbcCjC0W
+	 2q9QrrmFaA38AqrdkUKIzt6HrnE9DGmANhZkDyNMmT33XX9EjJxlGPgFZYVZTaj8j0aMSjyoMPfV
+	 GkhGR52i2zSYVWSY1+HKbOkhinmy3Q01MDx8bTjlS4bfngeaKWWqhiu/kUC8OjoGqGu+5fZMhpjV
+	 mMnMwVP06AquDJR8CyK7W+/Dhr4HZPzQUZrSssRM6oGlWPwtqDayrJNe5Mzy6QGzAXRu8r5Pfp8V
+	 ntiSI4
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
 From: Jiawen Liu <1298662399@qq.com>
 To: Han Xu <han.xu@nxp.com>,
 	Haibo Chen <haibo.chen@nxp.com>,
@@ -52,9 +53,9 @@ Cc: linux-spi@vger.kernel.org,
 	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Jiawen Liu <1298662399@qq.com>
-Subject: [PATCH v2 2/3] spi: nxp-fspi: propagate default setup failures
-Date: Tue, 28 Jul 2026 12:04:42 +0400
-X-OQ-MSGID: <20260728080443.153827-3-1298662399@qq.com>
+Subject: [PATCH v2 3/3] spi: nxp-fspi: check runtime PM get in cleanup
+Date: Tue, 28 Jul 2026 12:04:43 +0400
+X-OQ-MSGID: <20260728080443.153827-4-1298662399@qq.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260728080443.153827-1-1298662399@qq.com>
 References: <20260728080443.153827-1-1298662399@qq.com>
@@ -66,46 +67,51 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nxp_fspi_default_setup() may fail while setting the controller clock rate
-or while preparing and enabling the clock. The probe and runtime-resume
-paths currently ignore that return value and continue as if the controller
-was usable.
+nxp_fspi_cleanup() resumes the device before disabling the controller,
+because the cleanup path writes to controller registers. The return value
+from the runtime PM get is currently ignored, so a failed resume can be
+followed by MMIO access while the controller clock is still gated.
 
-Return the setup error from probe and runtime resume so the driver does not
-leave the PM core believing the controller is active after setup failed.
+Use PM_RUNTIME_ACQUIRE() and check the acquire result before touching the
+registers. If the device cannot be resumed, skip the hardware-disable MMIO
+write and continue with the remaining cleanup.
 
 Signed-off-by: Jiawen Liu <1298662399@qq.com>
 ---
- drivers/spi/spi-nxp-fspi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 6be78712b534..3f1c3ed748eb 100644
+index 3f1c3ed748eb..2671ffb49096 100644
 --- a/drivers/spi/spi-nxp-fspi.c
 +++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1361,7 +1361,9 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	if (reg)
- 		fspi_writel(f, reg, f->iobase + FSPI_INTR);
+@@ -1268,14 +1268,21 @@ static const struct spi_controller_mem_caps nxp_fspi_mem_caps_disable_dtr = {
+ static void nxp_fspi_cleanup(void *data)
+ {
+ 	struct nxp_fspi *f = data;
++	int ret;
  
--	nxp_fspi_default_setup(f);
-+	ret = nxp_fspi_default_setup(f);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to setup controller");
+-	/* enable clock first since there is register access */
+-	pm_runtime_get_sync(f->dev);
++	{
++		/* enable clock first since there is register access */
++		PM_RUNTIME_ACQUIRE(f->dev, pm);
  
- 	init_completion(&f->c);
- 	ret = devm_request_irq(dev, irq,
-@@ -1408,7 +1410,10 @@ static int nxp_fspi_runtime_resume(struct device *dev)
- 		return ret;
+-	/* disable the hardware */
+-	fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
++		ret = PM_RUNTIME_ACQUIRE_ERR(&pm);
++		if (ret < 0) {
++			dev_warn(f->dev, "Failed to enable clock for cleanup: %d\n", ret);
++		} else {
++			/* disable the hardware */
++			fspi_writel(f, FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
++		}
++	}
  
- 	if (f->flags & FSPI_NEED_INIT) {
--		nxp_fspi_default_setup(f);
-+		ret = nxp_fspi_default_setup(f);
-+		if (ret)
-+			return ret;
-+
- 		ret = pinctrl_pm_select_default_state(dev);
- 		if (ret)
- 			dev_err(dev, "select flexspi default pinctrl failed!\n");
+-	pm_runtime_put_noidle(f->dev);
+ 	nxp_fspi_clk_disable_unprep(f);
+ 
+ 	if (f->ahb_addr)
 -- 
 2.34.1
 

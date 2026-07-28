@@ -1,70 +1,70 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011030.outbound.protection.outlook.com [52.101.65.30])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012052.outbound.protection.outlook.com [52.101.66.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C33341D62A;
-	Tue, 28 Jul 2026 10:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDD541F366;
+	Tue, 28 Jul 2026 10:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785233710; cv=fail; b=krSt2mcpJConCEbpvFd0CciTKMQnwKQeYutsGCkfaJqO6d8nQAhZsnQypckCkhJTnEVPZ7imzT/knI2lO2doj+rocyYg5jUVlFAER/4V2stAIUUW3rbCrCDpvREYtuXz5VE/ynInQYH+BdLUcZVse/RtXj/XEEob+i16lj7EvKo=
+	t=1785233717; cv=fail; b=dFUrNVmrZlybcycQ2MHyotPRLtepGni3LQb+H7fvAC3mxxIkG03XECDSOBuBoQXOD06MLgNh8XOBEv5mc8eyrd5/z7KMhHyutLx2UovqVG6B74TZ/FneeIIHgC+ZAzXKXBO0P7lEpT0FeLac+zKgMalU8vyvIYuzRoKJMArDXsY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785233710; c=relaxed/simple;
-	bh=Yz/MgDXOFwvMmARJm66qPunuWHy7JHptXALTE7BEyjc=;
-	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=uDnsbiMgcSYVYDSkLmsUKm5IQuL0cXufVLrKy4IIg4a4HMj3/CtHNDFx3ogASKN20XgmvX3vV0llTtv/eCn4eWkSJondZd4P2YmyX4dtNp6xJEmNd6NAqtAuFRPYhDmfK4ijPcpDOfaQd9KCGKWQUX2+1iJkwagIMu+OJkgaeI0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OChnhRJI; arc=fail smtp.client-ip=52.101.65.30
+	s=arc-20240116; t=1785233717; c=relaxed/simple;
+	bh=zU+tSzetGmoM3vX8lWWfNBuoNE9U53X7vYoEmkJl9Zc=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=hEoOW7naeOnAPVCTtOBXmsPF8hOm5UidVnPchJ9PRjuU+Fkr4UcVfboYIvwcDo+HSnV++O0FxmxPe2emqFUaBuq/73mUxF+Hj+szAnC0M32rCL85FUnf3RSgpCA1eh5Ta8T2yJYiNLShBMdkMmZzYHEC9jGKQOzPNXv+c8iwYx8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TCiRPwSf; arc=fail smtp.client-ip=52.101.66.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OChnhRJI"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TCiRPwSf"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PrW6bl6zeDzV/fJPKeXhIHHYP6lqT3NpA1nJVWqh5zEn+hNZvEW0mV4him8HLpb/nDbNkFOffC+4Ku+HVDRaK1Xmh+ZAM3SVs+tLIZcHWwI7TbaS3OJ5f3LWxkI8di7xmKe31hhArGL+niJD4zghW+ia26wl9E7q8xP6XxGWtwwRajakm3FgQJN2EvMT00vAmG3ULS2goGlneAa4DhmAhwaUVQeIMsXHZ5inQeZvRxV2sffTPTirvcxT11iSEUwr+N8kVj0Fu5VUJo47y7G+aCeWI1kcb96Cmd/qbuZ6RAKKqfyx1Re6ePi2IgjU5VYOon0SS4RsTWzcYpZA6NSEkw==
+ b=v7g/IjjyWXtVhdfp4VUHZh+Bx3XQIphg5PqI2pNPJFriF3DZ22Eo2sMLtJZjv2q7xiSrt1u85uKOaJk6NFIW7PIQDyZULE+gSD1jti3rD0wFXDvBFBseRBVZyd3IWw0v7LjqGeIsCy3CSMTWuk07KIrrUzdDk3j+487W+gMyGc6XmkaQXGGw+2HEtepk4kVJw61LxhihgLVgv4VTyJBgHODFPTECB2mRNYP7F6y5tFqtl66Vjl9YtJ4UVmayN++cNQcZ71x4YGRY0wOcFfUpC7a6rgz9/jHi2YxFEHD6UXbHOOyFHofWK81i/nbkq5lr1ZxkaOFRGllpKra+q0zj4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XYKmO9C8GwtmO99V01Ddnf/RH9nIIQmVl0fWqQW85kY=;
- b=TYid/vxvKf+gE7s4OFWvDmFK4ymwH34C44hqSSc427Ho75RX0xpVfmfOa0XFo3T85I7z47PQICRDqzgCm49avQNwhMhLjbNr9wFgOpjgj9gbeOiImvYhuz+pF2UskYDAlkZksM+KsMR8u5E2w72YKrorCglGRHsT9qYBWYrHiTTAsqGBCSuPX8IpvNBh6tqAsgxAG5IsSypAfQHc1PIJfvi7g4DrjmvqZDIzlwfqL56UKqrMAMluhpKZvAPm49zv16oEzalZL3WYn7T04HzPDMQtcFwBDUWCgOE1cXdlSR7xZQypPhNF3Qr55CvmHSgFgzu98wdrdQ/Ux3mBVMZ9Lw==
+ bh=4sjU2S77WehAgUQtSn4iDIkgWBAUUuNQE8/tayMraCo=;
+ b=wLtWfLpqWrxGtT1cyp6Ml12fMrghJtPd6x2yf3XN89/EfbkGDzNulm5mHJUhPEKf4BVFPdG1g/3sG+lwYbRQ2z9SrXBcslPWiTgBo/dbANWda+4R8q6P7kDQuKftoH4IbwTKnDD0Ht1K/TNKNlMPi9IU6c/AOKOzu8RKb9qOfTzWXwmncMeNG5DcWGEDYO3RgLl5zjXp4V6zM84jLwsd51T3BK385XheqHIoGgciagR8Y+Z7mAvdQndm4aP6wDbnOqeNf7yukS525kzhxg9x2voj1uvwFwvfMvqEQ9PLcHgjb3b6gLUG8Rf+C/wlVgd/xff6FdZDl2I0/kmpjG5pyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XYKmO9C8GwtmO99V01Ddnf/RH9nIIQmVl0fWqQW85kY=;
- b=OChnhRJIbZIXwVDy1WaV5lpbTBU6qhkGoTxjcL0SkibX/SzTQc5ey8CBaPGzD+YDWovV+uIuzRzRTwN6AFmVogPWH4khNnlE229UTIrrb+ZqBIM/tkzagGozyG9VFYBnHEWwgC90vXIu8s3FZlLJsYfHQN2EPUGysjkSuhwWhZ02qqyGXq28vdNjuxuvvimJaSALmmtq+Dq/M8Yye/sxWW9vK2UdJ4VUwpQnFthUX9j1EUjTmhYYgkslXJL+4HBIpZ5ICq2NPrauqbQzHQka1/W5iVYN9+FfHx3M/R2dWIrRPyBmt1mB63h/o5tpjwO3dRj0HU6MvuGqUaQzSVU74A==
+ bh=4sjU2S77WehAgUQtSn4iDIkgWBAUUuNQE8/tayMraCo=;
+ b=TCiRPwSfsnBBWv5Ix806X2dpIMnKgj6T2VFulLphtPHParovWI0ixPhBGOKZExMKmCx5FZvQfcJoVPEUQwsHMcIrampFIAcHAreQW/JvgEAjVLRuUa2fMA2nbzDEKJ0HIkSItApvEQYtvp/NHjl5TwbG5MmuIsqQPIuKhUIxa0Ylb3NPAD/3FB8uYNajhMMKU9TLQJgz0s5aRcmQ63mWYmxmjkTu8crtxHlzAepOlzLNdvCx/97bGLc79oWVRbyvI7hyR+5BzKL/FKU8yeb5XMJtfeicLj8HgcZbcawpBCcde0cmaAYpzkw+cV2m5SpAeX6ENp5600VE8A2B9C3oag==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
  (2603:10a6:102:51c::22) by DB8PR04MB6858.eurprd04.prod.outlook.com
  (2603:10a6:10:113::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 10:15:05 +0000
+ 2026 10:15:09 +0000
 Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
  ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
  ([fe80::a4b:fa4e:7fe7:e6a2%5]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 10:15:04 +0000
+ 10:15:09 +0000
 From: haibo.chen@oss.nxp.com
-Subject: [PATCH v2 0/3] Few fix/improvement for spi-nxp-fspi
-Date: Tue, 28 Jul 2026 18:18:07 +0800
-Message-Id: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
+Date: Tue, 28 Jul 2026 18:18:08 +0800
+Subject: [PATCH v2 1/3] spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate
+ limits for all supported SoCs
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAN+BaGoC/23MywrCMBCF4VcpszaSi6biyveQLupkYgc1CYmES
- um7G7t2+R843wKFMlOBc7dApsqFY2ihdx3gNIY7CXatQUttZa974Utigc+IDzE6HEmiOeqTgXZ
- ImTzPG3YdWk9c3jF/Nruq3/qXqUoo4Q/e3MiisdZdwpz2GF8wrOv6BT3lc1iiAAAA
-X-Change-ID: 20260727-fspi-clock-adcae0c35283
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260728-fspi-clock-v2-1-dbe786a4a6eb@nxp.com>
+References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
+In-Reply-To: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
 To: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
  Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
  linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785233928; l=1175;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785233928; l=6946;
  i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=Yz/MgDXOFwvMmARJm66qPunuWHy7JHptXALTE7BEyjc=;
- b=3qTtkIoitc2z1j5TW5QJfFVXvnvKXAX/mQKV1YBwuE/tq0TeF2TZ+t8Fzu98oz167D5iWT08R
- mTKEz9jz3VyDP7MJZEb7eA9+uL/MVy0C21cTmP42ksGMD6wXkvzonMt
+ bh=izwP6Tujqqf5uZLERGwLN+30JiIbHue8si2gnuH0h3M=;
+ b=w4OGqg6PhSV/EJ41OhiJNP0qXAAgUL59RwLmJR5M6AT1EhXHPf/BmNeRcABXntJZlpnB8BBZq
+ 65xW2M+lSAGBDwlvDgruhYl9t8bVPGWgIdEfGiOil+Im0lx37rT6/+5
 X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
  pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: SI2PR02CA0010.apcprd02.prod.outlook.com
- (2603:1096:4:194::15) To PA6PR04MB11909.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SI3PR02CA0007.apcprd02.prod.outlook.com
+ (2603:1096:4:295::9) To PA6PR04MB11909.eurprd04.prod.outlook.com
  (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -74,95 +74,250 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|DB8PR04MB6858:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8197212-9574-4a81-dcae-08deec911777
+X-MS-Office365-Filtering-Correlation-Id: a57327bb-befa-4c7a-1d86-08deec911a94
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|56012099006|10067099003|6133799003|11063799006|18002099003;
+	BCL:0;ARA:13230040|376014|1800799024|23010399003|19092799006|366016|56012099006|10067099003|11063799006|3023799007|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	oBn2rf5Gm0tW+HKCB7gLXJ+g5JZXIyZl29oyVKcYrwVheKRArURC6QltXDduiM09k9VSsoX0e+BcWYMDcnadmUH/AYq+qiYtZg+2G91WdGjxEzSvttKjjyfC0lhXUgqm8MsrfGs3CBz+XRH7oHLFsGykO5yp4b8gYEYEp8P5UP9/xeE7IWwO/39sDudEQ05Zn96eiOGCja+4QW7Q/jPu/RHfF7eFFO1XbyeokYWtO1Yq4iUYSGfAJeh0Ohbzb4HA4Hrj9mcfwBSKD3gsrPJDURUHACeHhrVRyX4SRtzcz5YggPzPdBo0CXeXsEAqy1dz7dZD74HIbMW8qkonAdg9zKVWM5P6jLu+7Ktao1mlTdFG0y8IcNaf7MZ9moJi+vcQHS346lS/e5N4z8D9X7lp2V1ST3pDUO++5KVAvkKhN/1OfStTHTqrcebQiI+IMwttgcg3QVw/12o40tMKNnf+3h+aG9WNLKaEh9ecW5yBRiuCHjPZd24ZSJF3udVuzRzUb7Vdx+s5AZNn1pDvNcVeQ8qXxU6JlgnuNPr+lfvgx07IdJhZ8Q34YoC0SmioSGEKf4dcO8mBFIq1LJdke1Ixe7Nb6bIN/GJY7R1ZetPRlnrC8Wce57N880sdFovkdkIa9ZEFpuMrqjdDEb+wqsKPh4gt5Yde4u/G1FRnsaIu+Cc=
+	rOvxol8EXRk4H5+V65bkwXMnKR4MlbaDUcY4vcEylbjsaU2fZeKiXrc2QxpGmTlIviruZsURZ0zo03AYj2H6tl5mJbozY/a1kMQOmFoV24S+y6ImDkG0qsi/CAKYb4tyGYl6SPJ0sYts1qSYDKe3OFxAUN8gblYVOulzjzyCHr9WHWKmEgOVFoqnCVxHMnra6+sXY+3A2aUO/auqOOSKi8e/GWbnbjMpD9XXYqj96+XgmVDUjewxunzEBpu/YxooPNLm7Vaz9ngTPEBQkcXAJWRifEeoXHGSKbLZlcbnQ4UyMeV1EdrCH0+MfIuh6+EJN/FC0I1ViglVpIKNCJCir5FTTfAGEjzVnoKRMr+pC35l0uMvpdo90mDkIE/y4e1i4Bu/6wH0eXC7bKos368hueX3+2p58GbedAkMl2Iqu7STa0OIVFRUbJ75/56cKY6duOlere6om6KRZh1CHow+2HvZXf5Zuu/uGYQF8ujUNrdNWwbN5l5upNXSIBV/O5ep/6BlbkWL+N4NH5iBHxk84ttDZ7efCw5UHhucobPRwoHPkymBv8jYmHCfSqWWiniUxv0OEXnVqV7URknc7aV3RWcSv4s1IXycN+99Tb2YBFxmwkM7Fi/uV7U27q8q1SBm1ArZ+xOMdIGl8uYXEAuWNHoRmMebvsKeEWo7JiceVns=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(56012099006)(10067099003)(6133799003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(23010399003)(19092799006)(366016)(56012099006)(10067099003)(11063799006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUNKNWl3R1dPczlVclZEYVo2LzJQK3B2SDFpcXNqWkFaMXN3YUtUK2hpUDVW?=
- =?utf-8?B?QVYxYy9CWUhYNE5vUXVhaGEvQlMveUlvSFFEdGpQZG5rcllQN01VWlkwWEhK?=
- =?utf-8?B?Y2FOUkN3RUg0SC9OSUc4MmpSeWpYaWhEeWJoREluU0JXcmpRMW5EZkxKUnhN?=
- =?utf-8?B?WHpIb2VHU0U0VDgrMENCTTR6eGs2ME5MZmJZVGZTVUdGQXBRTkMyNVhpenRv?=
- =?utf-8?B?ckx3V25xaUp1WnJYMmJ5RnhlL3dKd3VnRjdiOHRZcVVHYmV0VEgybUhGMHlJ?=
- =?utf-8?B?VzB3dnNrZXpNc292REZvZmVuelRIaGVEWU92TUNSbTR6akp1ZndTbGVoVnZI?=
- =?utf-8?B?aGZmUlhNOHlQQzcxNkFBTmM2c2JyNExqbHhzcVozN1RFaGtRWUtWbDJieXlU?=
- =?utf-8?B?bVc3M3BuWVFqc2RRZUNlWFFRaC9VVVdMQzFyQnVEMGhkQ29ybVVUQ1R0TmUr?=
- =?utf-8?B?Q3NJMG9iSlRMQUNpRG9XZ2p0R3BmSS9qS2lqZzRrbXJyNWt5b1d0VTNsMm5G?=
- =?utf-8?B?S21XZGhHQXFucTZwMHc2V2wxTEtlVlVoQTZDMDdkS2lJTzdoOTRNMWs5UTd3?=
- =?utf-8?B?aXZpSjZick4yLzBGTFZRRkt5Vk5GcFpEZWN5UHEwVE5jZE5oWDhBb2p4M2Fu?=
- =?utf-8?B?VmZTdHRZdWVPVUxIQ2dUa0IrQU1EUE9WQ2pBUW04dDdUMEQ0aXhuOE1UZlB0?=
- =?utf-8?B?dVpPdHBrWTVuQUNnMHJZNkU2Z2VzN3RlQzZYV25wUGdRQVJNZ21VenFUVitO?=
- =?utf-8?B?dkJQSzBkek13NG52SUpINUNOcG5EeVlyRmNzeEtkVUdodkxBamQ3TENoZ1Q3?=
- =?utf-8?B?UmZOS0czakRDWG0yRGJUT2dnSkRDZEllMlA5RjVIWkt4K21pNUFzUm5ZWCsz?=
- =?utf-8?B?Ymo5cW52czVQR0c5d042SVQrNGFMTUZuQVJWcmZ2NTErOWFVTCtGL1N1YVdO?=
- =?utf-8?B?azlPdXhUQ3U3OUh2ZUZGZE1PNEpaSFJ4Y3ZnUWVwM0U4K25qUjJIZHhTelNs?=
- =?utf-8?B?Si9JSjZDb3IranA2QUhRdFE2Uzc5M1JOME5OVXFBNEtlN3hwbUxTMmZuc3Nt?=
- =?utf-8?B?STVhUHZvZlMyWGk2ZUlvbDhESlQyRHdFS1FKV2lyeTRtWWN0UDV5YUlrSWVT?=
- =?utf-8?B?eUZwS3lqQUxRdTR1RW5yVGliL0ROZXNTanVlUVJHRDNVOCtOWGFzUEZNZkRa?=
- =?utf-8?B?c05YSlJmeGVtQktuWHNoeXpLYVRTNXVWd1ZZeWtvNEhXd0VLSC91UlNobnl1?=
- =?utf-8?B?bG5GRExGWitCbTVRM0ZUVXlYdHpCdzgySjZVeUtiYk1TRGg2YW5RTXRUVnNX?=
- =?utf-8?B?VnRYY0NpYTBGcnVXRHp5dWk2Q2F5RHRvdXR3TDVldWxQdE56cFYwRkhRV1BJ?=
- =?utf-8?B?TUl2QVVBVUlSdHBwYUFuV2tCbFpQanE3MDk4ZXZqeTJFaUFRcmJFNHBsUms3?=
- =?utf-8?B?b3F0UlB4RVh6eTVmeW1jK2hPOTN3bjI1cnhsODEveG1MdHhDTGJpbDJNSklj?=
- =?utf-8?B?VWUwV2NlWTlOQUhIT2c3eHNCTFdTdzBzM0FtVUdyVVBXUVUxUmEzTjZrOGtl?=
- =?utf-8?B?dk1hdk5tTDJ4cDdncjVsMFpMR1NsNXVsSGxoK0F2Nzd3amxuOGhXbCttNGkv?=
- =?utf-8?B?M2ZCWnJ3TlpCYXo0Z051OW0vaWF1THJBSk12YVM1WVpQZ2laa0p4NzJvL1JJ?=
- =?utf-8?B?YXpvZDhDcW9ra1ZwcnJ2QlFwMC9qMExtVzFpQXVZdXN6L083Vzg1VlpNVTQx?=
- =?utf-8?B?cFIvcnowNmR0ZWJHWERyWkQ0SnZBdXBBdGdaSFlKc3hScHl4eHQremxYK29i?=
- =?utf-8?B?NGF2L0FQd29VdmQvYnFjL3Z6R0tOM2lpQ09HeDd0S1l4bFVLbXpzV2dsTThS?=
- =?utf-8?B?ZFE0TDZIbmZyTHR2b0dNeE42SFVzckp5NytQLzNqd20wcTNCaVdISkdCVVpG?=
- =?utf-8?B?ODFFMnE5dGdNd3hQV0ZiNnZYb2JlY3kxSzcwVUc3QkFNWmMxVlRlNjNOYTFx?=
- =?utf-8?B?TGxjd0p1eGJFczVwa1cwR0twV2JIcDZVd25yRExMY2VMNm9OM1huZ3ZvQktE?=
- =?utf-8?B?TmVRT2VYNTFJWWtJZFJwWW5HL1BSdGI5ODJ1NGVJcXdqb2w1T2dSTWo2d1p3?=
- =?utf-8?B?aW91cUd1NkdESG9KOTEwZjdEM3NLQnZ6MWdoenJ2dFRHT0NKQ3F2a3BiNnBr?=
- =?utf-8?B?ZzZ4bU4yOFZKbURsWlhSMW5pN1RGSndGUXZDaC9qYkRJNXdZbTBJR0hST1oz?=
- =?utf-8?B?MDE5a0NMcXFzTTUzUHVhZVFhT0FERWtHYy9CZjNSRkdDZzEyOHJncDFoaGcv?=
- =?utf-8?B?YmJWdWp1OXp1UzlZYVBSMTJKSE5raDFJOXRXT3BCZVFYTzlsQnFRS1Z0ME9I?=
- =?utf-8?Q?60oYZ0qVQukF/5lvMY0jLkaJ2xAKCZh3RaPdp?=
+	=?utf-8?B?YUdxSXVmVklEWWE2cTc0akpkSkpDMXBJcmVRc2d4YXBLQUwzQWdaVWh4RWxo?=
+ =?utf-8?B?SHJRT0tUNVYzZE9EVW5nTzR1NGlGQlU2ZFcraUMvMTN3d3JaNGkveHI2OTBL?=
+ =?utf-8?B?OU54dmJtajRSMGxSUkg1L2IzOFdsUGhDVm50dTRBUktid3QwQzFGaWxOa1Vp?=
+ =?utf-8?B?eUg4TnlJOUV2Z3M2aHFsOXBPR2I0YXFvdk9yQmx4SlkxdG42TXNtRUp3U09a?=
+ =?utf-8?B?ODJFMHRKbEhCdkNaajdNdi9xT29Gb05qSkVyNU9MOXhzN01uVzgvOTRIOVFR?=
+ =?utf-8?B?SEFvTGxJNmtIQjFKMHMrS1paM1IrWVF1L1JtRDdhS2JaVzkrdXluWGV0RGdp?=
+ =?utf-8?B?bnp3ODVVUUk3dTZDY0NWdmVOYlRtK2IrWHBoUUs2c3NCTTBZaTVDS3JQVFNV?=
+ =?utf-8?B?czBlTmF5VG96NGV5bHdzY3cwTVdoYWlEWThYbEtJQVdBbzM4MTVyNko3cHZu?=
+ =?utf-8?B?Zko1c2xmWkFxWXVjQUprTjE4WjNQUnE4bWpQR3JxeGw0SnRIWityY3N1KzNL?=
+ =?utf-8?B?ZTFtd1VoZDVXTzhnV0RXN05JSUN3Qm15MkFzMlFjT3BKY1BFSHR2VWxKUjBB?=
+ =?utf-8?B?RElHeUxNejVTV2xrU3pvd2VmY3dZY3VHUmJlUG9MbU5YQlRpbTdtQnMrNE9B?=
+ =?utf-8?B?SVlhVjdjeGc1ei9DYWdYcHYxYi96eWNqaUVERysxK1lmOWZ3NVg3Ny9UcHp4?=
+ =?utf-8?B?TXYwcVRUSDNuemt4TW82L0ZkOFhEajArMmNyZWFpeUhZOEpDQ0l1cGZjT0pL?=
+ =?utf-8?B?YnFNaEV1aHdIT2swUWdDWGYyYmlLK2ZPRGNMcXhlN2NaaUJIbUtHZWtCUGR1?=
+ =?utf-8?B?aWY0R3hvZFMrczNFOGhyaGtRc09Ha0VUMTkxdEVZdVlaU0lxL3JzWGpQSDF6?=
+ =?utf-8?B?RkJ4MW5CM3FnQ0grU3JQQjlIZGZ0RHdBUFhlZDFqb3RmSWhINWlkcHVtbU41?=
+ =?utf-8?B?MjcyTUs3K3YxWVh2RUhzU3cwdlJZbk1nVWlqZEpsdUxOcXlyMmh4YitkRFNv?=
+ =?utf-8?B?Uk5vQi9JbGdSbGJxTkZYazhrQzZ2ZXArU01tVjBudldQVlNkMGUrVm9HUyt2?=
+ =?utf-8?B?UFNyQURZL1V3a0dBQnA5aFNvNmZxVlR4WDMwR05EWjVUR1BYZ244dm5rZk5p?=
+ =?utf-8?B?VDJxWUltT0FVb05kRTYxcmE1UEl2K1YrL1hhWHp1Ukp0clg4NzhBV1RtczU3?=
+ =?utf-8?B?R3B5MEtMWS9uRnpCUWFBY0JnRmhBVkZTMnRvczFQSGFSY1h1d3FETWoxNS9J?=
+ =?utf-8?B?WUtKOUFtSmR5QlpMK1VUakNSSzEzY0NNTVdYbU5qeTNlRmhtdkxJNTJkQlBa?=
+ =?utf-8?B?dXQ2Z0VLU3ZtOUc3NHB1Z0dZbkRhWHpwRDlEck9nQklqRkRia0pRcGUxN1J1?=
+ =?utf-8?B?TmpCdW43VlhGa2RXRkl6NGtZaWxZNUQxNGROMHl3OVlPNnZOS1ZVckxGYlI5?=
+ =?utf-8?B?UXMwVG5hZHVweWpoSnNtNms2ZXpscEc1NTVDRFptdkMvRDNKL3ViZHBOTHRp?=
+ =?utf-8?B?S3dKUzAvYk9UNTE2ZlVqVHNOaWgyL2xOOU0rZWkvZHpTbjE3QWNJQkFTR00x?=
+ =?utf-8?B?WEtYWEdjTGRyNjhzVkZUNyswcy9RZmFDNGhEdjZScWY0d1lQRnRQMHBhSmdL?=
+ =?utf-8?B?Q1ZLbG1IUFRURHg2R3RGZG5oNFFLS3FNOXVFT292M0tSQWlkR1NNRUx3anp0?=
+ =?utf-8?B?M0NlaEpLZlZScytXRVR3S0w5a3VwZ2xES3NnYld1K0hNSzlPVnNtTEFHMVF3?=
+ =?utf-8?B?RE5uQzB1d3pLZ09UZjA0UEpiaDBtZFZ0bWxhMThuS0l0ZE9oRFBXY3BacGdu?=
+ =?utf-8?B?UU4vSkJDazV4VXNiNjBHRFpISjdkcVM0NVMzblpqR1haSGVBMGR5dEJwajZl?=
+ =?utf-8?B?TjRKTGViNkJ6MWRYU09VTlovOUJCb2EzOC9rYlBFT0NUekJlMXF1b2dFdlpn?=
+ =?utf-8?B?cHdmOUZmRktiSERlS2pJMkl6aDArMkM1SW00U3V6bVJTT3RoaVdoRWFJdmc3?=
+ =?utf-8?B?akFNYjlTUWZwSHRUREp2UVI4OW9hSnRMc09qSlhNNlFhOXVlNmRMdnlBWGtJ?=
+ =?utf-8?B?c3ZRS0FRbWljcFNzKzJRenVINlJhWFdYenliam9kS3RodVlmTXhwMVEvYk00?=
+ =?utf-8?B?QWxDcURZaTZPL1Z1eHVpYllHc1duSndPSEV3VWp5TjhBUnVTTWMvMDh5NEZp?=
+ =?utf-8?B?MGJoMkcxMWEyaUdFVmtvSHQwOW5EMW5URHE0MmUrWTlvWnN5TXFvM3lCcUNE?=
+ =?utf-8?B?dkxEaHhWRVQyVWV2cmRZdUM3MUF3NHBqdTZuaXI4YXNWSFFsMUkzRFUzNkk4?=
+ =?utf-8?B?c1JqeXFkMjhscHRUdVFHWW9Xb3h2cXhDa2dwMlNzbkJreXpST3p5bWhWeHBP?=
+ =?utf-8?Q?JL3dtFeqcDgzkWShmRApHJYoKMe+R1dssPRae?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8197212-9574-4a81-dcae-08deec911777
+X-MS-Exchange-CrossTenant-Network-Message-Id: a57327bb-befa-4c7a-1d86-08deec911a94
 X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 10:15:04.7286
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 10:15:09.5524
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ctchyTqxkkL4JYk3mgFN3JGY6xDSOFFhMo4qUaX4rMkaHFY/3SsNl+zCh9hHp/yXZpBWZjxkuZNAe36Rfx8oeiKCBmwfyB1qUYG+xTmsuSvspSvdpGe4kNe3JeUTqwO
+X-MS-Exchange-CrossTenant-UserPrincipalName: yM3WDrDHb0Xd2obVnF48jdLxe9osjLofcwUKX07guALPKCFxIph9QNldqopzqyjKsOIc/2VGUlSKV3ibjY6r2YVPw5ro9gPsRo53s7CW5u+7HhjQkyU6KY4sedQgsaRO
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6858
 
-Patch 1 introduce per-SoC clock rate limits for both SDR and DTR modes
-        by adding max_sdr_rate and max_dtr_rate to nxp_fspi_devtype_data.
-Patch 2 enter stop mode before reconfiguring MCR0 and DLL to follow
-	FlexSPI reference manual initialization sequence
-Patch 3 propagate clock reconfig failures in nxp_fspi_select_mem()
+From: Haibo Chen <haibo.chen@nxp.com>
 
+The commit f43579ef3500 ("spi: spi-nxp-fspi: limit the clock rate for
+different sample clock source selection") introduced a global 166MHz
+cap for DTR mode (RXCLKSRC=3), based on the i.MX8MN datasheet timing
+specification (Section 3.9.9, page 65).
+
+After reviewing the FlexSPI timing parameters in the datasheets for all
+supported SoCs, the following corrections and additions are needed:
+
+1. SDR mode (RXCLKSRC=0) limits vary per SoC:
+   - i.MX8MN/MM/MP/95: 66MHz  (IMX8MNCEC §3.9.9, IMX8MMCEC §3.9.10,
+                                IMX8MPCEC, IMX95CEC Rev.8 §4.11.7)
+   - i.MX8QXP/QM/DXL/ULP: 60MHz (IMX8QXPCEC, IMX8QMCEC, IMX8DXLCEC,
+                                   IMX8ULPCEC §7.3.1 ND mode)
+   - LX2160A: 100MHz            (LX2160ACEC FlexSPI timing parameters)
+
+2. DTR mode (RXCLKSRC=3) limits vary per SoC:
+   - i.MX8MN/MM/MP/ULP: 166MHz
+   - i.MX8QXP/QM/DXL: 200MHz   (same FlexSPI IP across this family)
+   - i.MX95: 200MHz             (IMX95CEC §4.11.7.3.2.3 Table 106)
+   - LX2160A: DTR disabled      (FSPI_QUIRK_DISABLE_DTR)
+
+Update related platform data with correct speed limation according
+to datasheet.
+
+Fixes: f43579ef3500 ("spi: spi-nxp-fspi: limit the clock rate for different sample clock source selection")
 Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
-Changes in v2:
-- Patch1: rework the commit log by Frank's comment.
-- Add Patch2 and Patch 3 accroding to AI Sashiko's comment.
-- Link to v1: https://lore.kernel.org/r/20260727-fspi-clock-v1-1-f4f3be6c366d@nxp.com
+ drivers/spi/spi-nxp-fspi.c | 83 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 80 insertions(+), 3 deletions(-)
 
----
-Haibo Chen (3):
-      spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported SoCs
-      spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
-      spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index d94a2a7b98d44db217ba96a8ce7df23e37a08ba4..6de6d432cdcb2ee383a02d72f20000045903e176 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -340,6 +340,18 @@ struct nxp_fspi_devtype_data {
+ 	unsigned int quirks;
+ 	unsigned int lut_num;
+ 	bool little_endian;
++	/*
++	 * The max clock rate (Hz) that FlexSPI can output to the device
++	 * in SDR mode (RXCLKSRC=0). Defaults to 66MHz if zero.
++	 * Some SoCs (e.g. LX2160A) support up to 100MHz in SDR mode.
++	 */
++	unsigned long max_sdr_rate;
++	/*
++	 * The max clock rate (Hz) that FlexSPI can output to the device
++	 * in DTR mode (RXCLKSRC=3). Defaults to 166MHz if zero.
++	 * Some SoCs (e.g. i.MX95, i.MX8QM, i.MX8DXL) support up to 200MHz.
++	 */
++	unsigned long max_dtr_rate;
+ };
+ 
+ static struct nxp_fspi_devtype_data lx2160a_data = {
+@@ -349,6 +361,10 @@ static struct nxp_fspi_devtype_data lx2160a_data = {
+ 	.quirks = FSPI_QUIRK_DISABLE_DTR,
+ 	.lut_num = 32,
+ 	.little_endian = true,  /* little-endian    */
++	/*
++	 * LX2160ACEC: SDR RXCLKSRC=0 max 100MHz, DTR disabled via quirk.
++	 */
++	.max_sdr_rate = 100000000,
+ };
+ 
+ static struct nxp_fspi_devtype_data imx8mm_data = {
+@@ -358,6 +374,21 @@ static struct nxp_fspi_devtype_data imx8mm_data = {
+ 	.quirks = 0,
+ 	.lut_num = 32,
+ 	.little_endian = true,  /* little-endian    */
++	/* IMX8MMCEC §3.9.10: SDR RXCLKSRC=0 max 66MHz, DDR RXCLKSRC=3 max 166MHz */
++	.max_sdr_rate = 66000000,
++	.max_dtr_rate = 166000000,
++};
++
++static struct nxp_fspi_devtype_data imx8mp_data = {
++	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
++	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
++	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
++	.quirks = 0,
++	.lut_num = 32,
++	.little_endian = true,  /* little-endian    */
++	/* IMX8MPCEC: SDR RXCLKSRC=0 max 66MHz, DDR RXCLKSRC=3 max 166MHz */
++	.max_sdr_rate = 66000000,
++	.max_dtr_rate = 166000000,
+ };
+ 
+ static struct nxp_fspi_devtype_data imx8qxp_data = {
+@@ -367,6 +398,12 @@ static struct nxp_fspi_devtype_data imx8qxp_data = {
+ 	.quirks = 0,
+ 	.lut_num = 32,
+ 	.little_endian = true,  /* little-endian    */
++	/*
++	 * IMX8QXPCEC: SDR RXCLKSRC=0 max 60MHz, DDR RXCLKSRC=3 max 200MHz.
++	 * i.MX8QM and i.MX8DXL share the same FlexSPI IP and limits.
++	 */
++	.max_sdr_rate = 60000000,
++	.max_dtr_rate = 200000000,
+ };
+ 
+ static struct nxp_fspi_devtype_data imx8dxl_data = {
+@@ -376,6 +413,12 @@ static struct nxp_fspi_devtype_data imx8dxl_data = {
+ 	.quirks = FSPI_QUIRK_USE_IP_ONLY,
+ 	.lut_num = 32,
+ 	.little_endian = true,  /* little-endian    */
++	/*
++	 * IMX8DXLCEC (i.MX 8XLite): SDR RXCLKSRC=0 max 60MHz,
++	 * DDR RXCLKSRC=3 max 200MHz.
++	 */
++	.max_sdr_rate = 60000000,
++	.max_dtr_rate = 200000000,
+ };
+ 
+ static struct nxp_fspi_devtype_data imx8ulp_data = {
+@@ -385,6 +428,29 @@ static struct nxp_fspi_devtype_data imx8ulp_data = {
+ 	.quirks = 0,
+ 	.lut_num = 16,
+ 	.little_endian = true,  /* little-endian    */
++	/*
++	 * IMX8ULPCEC §7.3.1, Normal Drive (ND, 1.0V) mode:
++	 * SDR RXCLKSRC=0 max 60MHz, DDR RXCLKSRC=3 max 166MHz.
++	 * Note: Overdrive (OD, 1.05V) allows up to 180MHz DTR
++	 * but is not the default use case.
++	 */
++	.max_sdr_rate = 60000000,
++	.max_dtr_rate = 166000000,
++};
++
++static struct nxp_fspi_devtype_data imx95_data = {
++	.rxfifo = SZ_512,       /* (64  * 64 bits)  */
++	.txfifo = SZ_1K,        /* (128 * 64 bits)  */
++	.ahb_buf_size = SZ_2K,  /* (256 * 64 bits)  */
++	.quirks = 0,
++	.lut_num = 32,
++	.little_endian = true,  /* little-endian    */
++	/*
++	 * IMX95CEC Rev.8 §4.11.7: SDR RXCLKSRC=0 max 66MHz,
++	 * DDR RXCLKSRC=3 max 200MHz (Nominal/Overdrive mode).
++	 */
++	.max_sdr_rate = 66000000,
++	.max_dtr_rate = 200000000,
+ };
+ 
+ struct nxp_fspi {
+@@ -691,10 +757,20 @@ static void nxp_fspi_select_rx_sample_clk_source(struct nxp_fspi *f,
+ 	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
+ 	if (op_is_dtr) {
+ 		reg |= FSPI_MCR0_RXCLKSRC(3);
+-		f->max_rate = 166000000;
++		/*
++		 * Use the SoC-specific DTR max rate if provided, otherwise
++		 * fall back to 166MHz (limit from IMX8MN datasheet §3.9.9).
++		 */
++		f->max_rate = f->devtype_data->max_dtr_rate ?
++			      f->devtype_data->max_dtr_rate : 166000000;
+ 	} else {	/*select mode 0 */
+ 		reg &= ~FSPI_MCR0_RXCLKSRC(3);
+-		f->max_rate = 66000000;
++		/*
++		 * Use the SoC-specific SDR max rate if provided, otherwise
++		 * fall back to 66MHz (limit from IMX8MN datasheet §3.9.9).
++		 */
++		f->max_rate = f->devtype_data->max_sdr_rate ?
++			      f->devtype_data->max_sdr_rate : 66000000;
+ 	}
+ 	fspi_writel(f, reg, f->iobase + FSPI_MCR0);
+ }
+@@ -1457,10 +1533,11 @@ static const struct dev_pm_ops nxp_fspi_pm_ops = {
+ static const struct of_device_id nxp_fspi_dt_ids[] = {
+ 	{ .compatible = "nxp,lx2160a-fspi", .data = (void *)&lx2160a_data, },
+ 	{ .compatible = "nxp,imx8mm-fspi", .data = (void *)&imx8mm_data, },
+-	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mm_data, },
++	{ .compatible = "nxp,imx8mp-fspi", .data = (void *)&imx8mp_data, },
+ 	{ .compatible = "nxp,imx8qxp-fspi", .data = (void *)&imx8qxp_data, },
+ 	{ .compatible = "nxp,imx8dxl-fspi", .data = (void *)&imx8dxl_data, },
+ 	{ .compatible = "nxp,imx8ulp-fspi", .data = (void *)&imx8ulp_data, },
++	{ .compatible = "nxp,imx95-fspi",   .data = (void *)&imx95_data, },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, nxp_fspi_dt_ids);
 
- drivers/spi/spi-nxp-fspi.c | 129 +++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 119 insertions(+), 10 deletions(-)
----
-base-commit: c5e32e86ca02b003f86e095d379b38148999293d
-change-id: 20260727-fspi-clock-adcae0c35283
-
-Best regards,
 -- 
-Haibo Chen <haibo.chen@nxp.com>
+2.34.1
 

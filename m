@@ -1,40 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9D048D89E;
-	Wed, 29 Jul 2026 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1074570EE;
+	Wed, 29 Jul 2026 13:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785331944; cv=none; b=YrSkNlGXUWsnHohmy/A1tjYRAir/ohkW60ZJEs8PVNVspveQk455YwMzY1raxf2MREmSijKST7Vt6iV4cKZencyMEKwfu+NHX6lgYNQGPsPitTxRQzigdvleg1LqPc/Z8ztuIKLWgUvKda3ivOLuEwwbcTmOzFGI0XUFgdEFx3w=
+	t=1785331953; cv=none; b=tPlajJyZSxCe/URdu3PFSQbhWbUtQGaDdKdpWlnNVaRM67jxrH+7T55UNp/AqRv7mkJoznlHpToI8rU1KZWbp5JVE0sLofUCFnk+rwj6abynEj8WZ4p3T+cKdEDat28DKnLvEq7XQc0jTm4kGxBW0ZZfeHwbaQyVYQEnFnoOaJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785331944; c=relaxed/simple;
-	bh=CGG+dd39rhYGTzWUkXzphAhxR8cRymnBQlxykMZwGI0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Nq/3V36u760fYwiIkVdI9+yYRlcQOK2rJUOqa2eTj9CDYP66tY6aQbV+jwhjQ4PHL5dIIeyVKejyajVDwXlbhrysriGSNWSgidiAhsieQwteAvuUciLNdbblSYbUACZYSyk8sTKqkn1zAjXLNeENIo1TvpWgpgX1N6dBCQguBsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1NuYzvC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785331953; c=relaxed/simple;
+	bh=sYO3OQMt/+Stif8+cNPvSfMwor9ljLrebznuS3yEydo=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=QQrKzVojWDwFgMplnS6+5oNEbIVCJdvqfjUzMCZIdV/nwD4G7Zf9m6X6r+vC8avKyUvc1OAS6EfSHEQOpluXjLtUIOHYRiYLbxVBvT2+EdsnKo7NC3pyhGzHcB+y8mUsNE7rp5eWCEsxOHiGo/hOj7/NGtslpLTVUqOX1lxYQ8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYqI90r3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1NuYzvC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE601F00A3E;
-	Wed, 29 Jul 2026 13:32:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYqI90r3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A271F00A3D;
+	Wed, 29 Jul 2026 13:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785331935;
-	bh=q0snjwYY/35qjO+0aSAGGXjnXUIy59ZB59Qt/9t+lAY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=S1NuYzvCwXI3OG/ntZWASONS/WAN97+ClbVmLNLhLJHSQoxyMJ4CtRWBkdCl6LCNF
-	 7w+hCI34AOGOnyIDDukIuuP/aguYdiiU939XGsqSbPHfidxqDgVDTSuiP5G7bQ5vAK
-	 O/EvybziqbmPb+avbIzQGzS0KpcDv3KUVUwISxBSS6mOVp8qDpDFF8kp5VIXUSIu/J
-	 RMFFvwg0aIsfk9bJkgH4bOJC/mixpLGHsJFhtf9hSXarCzpZqw9eBMYqhaceK/BVnL
-	 91XNoOXW69wrSeFEHzq1fUwv0YdrDwtKr1U4NELp66Vy0TKT1BilXKs7eVZVxXp61l
-	 Jzel8vnhj5jRw==
+	s=k20260515; t=1785331943;
+	bh=f3O03q8g4zY3UkiuqFzkFOLvkkuY7KoV7rgZS+bJHG0=;
+	h=From:To:In-Reply-To:References:Subject:Date;
+	b=hYqI90r3Pj4axo/IkXm4UdGkdF/0ickGExddREMrxm7OlQ+37epBduCM//XKLqwWk
+	 EIPK43P7LivY4I/bXRO0rN28k+jxRNgAdOmIrcIK4JTzElC/EEPzfyZKmQQWAGH7Fl
+	 TmS25fepzui0nEEM0zT+Ywl+/sqo+P+ZwKwhDDi8LfSF99ru4Z8SSMTKIrxD0ojrLg
+	 9xyBFLDbvQr6qAUk457ci+3X+psX9yrD1kx+Mo2kWh1sLDo38Y6xy48kMPRUIIVVBD
+	 EgLkxvTyPIwctOULLnLe8oVfPJ60OJuaOtjgM1Ws6WtOJHNQvk/lIeGmuUAiVuQzcn
+	 Bn+OpOMOoZzgA==
 From: Mark Brown <broonie@kernel.org>
-To: Md Sadre Alam <md.alam@oss.qualcomm.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260716-8bitecc-v1-1-6eef4bcc3a14@oss.qualcomm.com>
-References: <20260716-8bitecc-v1-1-6eef4bcc3a14@oss.qualcomm.com>
-Subject: Re: [PATCH] spi: spi-qpic-snand: Increase ECC strength for large
- OOB SPI-NAND devices
-Message-Id: <178519396846.552178.12604052410733033393.b4-ty@b4>
-Date: Tue, 28 Jul 2026 00:12:48 +0100
+To: dlan@kernel.org, elder@riscstar.com, guodong@riscstar.com, 
+ linux-spi@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Pei Xiao <xiaopei01@kylinos.cn>
+In-Reply-To: <cover.1784527556.git.xiaopei01@kylinos.cn>
+References: <cover.1784527556.git.xiaopei01@kylinos.cn>
+Subject: Re: [PATCH 0/2] fix and cleanup in spi-spacemit-k1
+Message-Id: <178526212208.13644.13743864400074628954.b4-ty@b4>
+Date: Tue, 28 Jul 2026 19:08:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,20 +45,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=broonie@kernel.org;
- h=from:subject:message-id; bh=CGG+dd39rhYGTzWUkXzphAhxR8cRymnBQlxykMZwGI0=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqagDd6HrWUOUGIwpVNTTzFdWMTuLiaxCtQ+hZ+
- NE7M+6fCCOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamoA3QAKCRAk1otyXVSH
- 0MN1B/4plazBwu7ykxmxMUbtVEIqXVmeS3xK5y8URTW/SIwTLih8SwZ/oLfvPm1EJkP8p1fDaK1
- 0dsY/gAUt16VinrJbuQThc9IGy8YCFhLrvpTpi+CYwh+gitbrgpZVogNInsB9+4J3QgRZ2IFfEx
- TW/rr/lEtbul66XZB6NUDi+2GUDSo0Uys62s2VhKrzU+EvriIFLZe5uUAYNIQKNv5apn5dz3USG
- EZkWfRVZkJzHyV94426DBygW22kj16gkPZuhq84dxiZRhygAdXO9A3WTsiZGCpAbSI0zgF/Qv3W
- O3qobAcOPFm4hrbCOqY1WDWWNsrTRzct9p++OrHHnkfDxUMo
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1509; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=sYO3OQMt/+Stif8+cNPvSfMwor9ljLrebznuS3yEydo=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqagDlvAGIROrYOOVdq9xw2Bu9XpOSqAvBUu3xE
+ nSvFgs/iIuJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCamoA5QAKCRAk1otyXVSH
+ 0JloB/9mrloYBsxFc3DmMt2jQDXe/kbgXHKA62LBppIHoKvnp5kQrALUQw4TJ38655Db3Jl0BPe
+ aiGoPaCdkFaxpR4VzRDXPX44p1ujH7F+7ql+5tz+/KjFKO1bWH6xFn7UpouVDOFWRpKnah5hy8Z
+ 55PnHDs23MXAvG+OX453G3d4BnDwPftT4/TPoig7QJjPGSeunBRR8Q4qeYNsrgdopqDCGhR8DBD
+ liUzmnCgdMz1MMHGzuu+nqZbrr4dQdHK0LJ99GdCGR04lQp0t6JMUbY7ioMvmheZ6QguefkeF3D
+ xDgU8XA4lCw2TzFUcWEAMcR6LPQ63OFp0XQ6v1QxfdhCu59H
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Thu, 16 Jul 2026 11:13:05 +0530, Md Sadre Alam wrote:
-> spi: spi-qpic-snand: Increase ECC strength for large OOB SPI-NAND devices
+On Mon, 20 Jul 2026 14:08:42 +0800, Pei Xiao wrote:
+> fix and cleanup in spi-spacemit-k1
+> 
+> 1.fix TX DMA descriptor on RX prep failure
+> 2. drop redundant dev_err_probe() around irq
+> 
+> Pei Xiao (2):
+>   spi: spacemit: fix dangling TX DMA descriptor on RX prep failure
+>   spi: spacemit: drop redundant dev_err_probe() around irq helpers
+> 
+> [...]
 
 Applied to
 
@@ -65,8 +75,10 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-qpic-snand: Increase ECC strength for large OOB SPI-NAND devices
-      https://git.kernel.org/broonie/spi/c/ed4b52b24c55
+[1/2] spi: spacemit: fix dangling TX DMA descriptor on RX prep failure
+      https://git.kernel.org/broonie/spi/c/8955fbad8aad
+[2/2] spi: spacemit: drop redundant dev_err_probe() around irq helpers
+      https://git.kernel.org/broonie/spi/c/79052a6a6f5b
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

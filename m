@@ -1,70 +1,70 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39AF3914E2
-	for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 16:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866D839B94D
+	for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 17:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785257686; cv=none; b=DitGjpxqo+nkDzGbORFUIWWIzn5WreUZ/4bc689EpIfti73PBzW5nu26PR9GElwMfD7EyNtArsAD9HmCu4xEyTtPQO2zOCLvFxUhE8nzpzI7Bmk8TrtJP0HZhBsOmSgyTmdlVEXQR4tMs34Kk9dycikTdN3O4l7nhDcjTeg36kw=
+	t=1785258328; cv=none; b=btLZXe+36ZVzTcx0FTfgENixLt1rC3bGBPgUncOT8VJoVZlPt/Dqav+s1Oy4Qrny5StXFWzusZQxE6UQYdg8q5+MRo9YHf+sh7+wHR9ULVV7PMmWT3foIMZmWTZfu+us6ulqjymIhXjrz9IT3ypU8c1EWE8csnDNmzvgctnA3io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785257686; c=relaxed/simple;
-	bh=jhSuL7gt9VIpF/6X00TJsqok9yskPwKTngvmyB336xs=;
+	s=arc-20240116; t=1785258328; c=relaxed/simple;
+	bh=n7CgoaZqr25unr4no0HsGwzLBnJCj3mA2MkjSjcOB6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LDiHywkwrUadakve98OG69Aj1Jff7/SQO55nb0Y3X3XVXlqLMiSQdbpxR0sYAlWmwRySbq4H6fcij+7OlRVbhvWx5UhgRA1Rhva41kXLRyqVwBPGsFttMa8YQtHDzrxrXqdXcW7JnDYOr8HLaNbTi/YUrvwiHm0gRzw3xg/3JSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L9BEWwb9; arc=none smtp.client-ip=209.85.221.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZqoA99f2ObNkJUk97zif8N+Q/spOBV3gSfhFEy7Vc0BNRngRqHL1DpzV+X+oT/t5v7/b90Q8hHGawRt1GowcZBwENonMDqI328l9WuTcOvuTLblpctjRgGkF3ZiMfjU7xzwVIiMZgjnxr9nnX/pifH1kSv4W+dFNIDgmp2jSnyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XiM17znt; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L9BEWwb9"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47f3b39f2a1so99778f8f.2
-        for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 09:54:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XiM17znt"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47c2b362ee2so97376f8f.1
+        for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 10:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785257682; x=1785862482; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785258325; x=1785863125; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lW1gGRbXyp32cWc8RnOmCHBS0mWa+Js0uD7RvlhagQk=;
-        b=L9BEWwb9mNi3QHRZxtd7JNr4cvX7ydc+N+epqEtJSvddyzuWq8fcOlUSDFU7GeSXqP
-         nPqFi8lDfrqWyOVnsG7M2cibJmeYqDpXfWW13ftLfEUmb+r/VKKf1WXwQrw6qg2SRBNo
-         Zp34ZR5WXKIMESAoNhMw+f+jTJs39Pr6pT7WlcIrqiU/kAxJoIKp+B/lunlEYtnkbp8n
-         qCVYQyTmNyNoo8MA6PG3wdt2UU+4lG0dd7GpAOaiA/83l9IKDSC7FJw53a8OLDpji2Ah
-         WjAKZDeeDA88HpkLh5Pc+hMtnU4xAxOpUMBen0l9E0fHn4Yf4RIyWrylX0T230sMZYmi
-         A34A==
+        bh=tYZP5/3CgfmqEEWV1DMpqycEKSi9QwQIjdLpIqKHQGs=;
+        b=XiM17zntFyKPA4+ixNMomTahiTpPL5Q9c47fVBj02gphkiT2ce/IhPXe6MAjENLgFc
+         gzH9Zk11LdfcmyYMIgeiy9+oUZybXhnSX2Q4r5Owl30GchTuhY7Vu0uw/rhhT+CwTyLV
+         25duh5XVSoUefEMRyO/tzfnhHdtzxkwPib5nX+URMxJ0XYNY9JXMMwPkkln6F0/H1k5+
+         1U0Sr47V8sdWFocuMxa8RxgcOfI83zzuEHkVH9D4ZZKRYfe2MT1/9DJCNYuNfPd3J9fl
+         UzKNiRTKlWHeig2uze5ylGrtfnXahbVXuEOLwuCZ8uwnfjFK1ax4slJT40mhrnqtb+Xn
+         nwTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785257682; x=1785862482;
+        d=1e100.net; s=20251104; t=1785258325; x=1785863125;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=lW1gGRbXyp32cWc8RnOmCHBS0mWa+Js0uD7RvlhagQk=;
-        b=lXfppMSfUq7ERM0V9s9kdxa6XQ5dq1cgkbVHVQqL/352PFuvM8tPTl18SkXNgGa+Ry
-         h7OLuHgodkA/bYuTBAVpUXn/WIOOHFvOYpUhlxu/ZsZo45gmyGAHPQ1NydwhhnbvZzZO
-         EBX3+Cps5UCSRuSh1e5QbuPIHfek+a5yz3dceXCThYNcSJhrVA61FHgUVDlGI4Dd/By3
-         CNbweurirkX3ztrQhsawmjVNOW/2d1H1hsrZFhr0uw9Id4RpaTXLY3mv2tvJFGeaoWAM
-         6vIky75bA8OpeOajgRiRqoOXv9qOMTNCs+H3XQrMMaL+0c4n5twVIio9gWCOZdwl0Dcn
-         T4Xg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro044kaHSM8e+Sa2R0nUm2f3j3Q3BmYhMxypyw5sLQU0Ms540gwUslSn49U+VCnZgw9TOqe099NLnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxIoz01zcIXMO7bH+9TrqOgg5wenFmdDEfYdi0J1ibSCg8xCap
-	uzFZ7PoyZsUt6v5FgV/B2208xgwsk3M0tr++QSsfj/nIOCBai7DgIXdD
-X-Gm-Gg: AR+sD137qBmVIzZNF9x7unnqNGj54gnSq7fPvo+MrDuVDrpTSJZXl2faqmgFj7tUeHj
-	KUQLtCDifH1p8l6NslfszlEUVgZvVYojtIGmqsSlz6NwCVAT9mEJyRy32LH1KFtA9THJjXmZ5d1
-	tdDjJzLe4vGMkSNRnzsJuRP8L1Hf3SeDXIzk916VmbJn65xE+aqgxWBeJ/P0k7+YIodEHEdAAsD
-	ppQ85LXgTOrOffo9ypBpXjbri2d4winhTlWTVoX2AAV6XkZBn3gOrLgg+T06/pzW6CnyDV8riJH
-	I4r2SHoApjQqqTjF87ZYm0bbmDt48/LBbAbwOWdEiL2BWvATsrwce4UxJQqVI4mNkSA2jgM2ThH
-	CJb09Wy7C1In//3EfHX9MdpG1Fnk7ZvXdpsj6Uh7z6XE1r63nSgQRHEKb4MIDSYLQCaXBDQ==
-X-Received: by 2002:a05:6000:471b:b0:47f:90a4:ff41 with SMTP id ffacd0b85a97d-47fb1ebbdf8mr3941679f8f.58.1785257682051;
-        Tue, 28 Jul 2026 09:54:42 -0700 (PDT)
+        bh=tYZP5/3CgfmqEEWV1DMpqycEKSi9QwQIjdLpIqKHQGs=;
+        b=NK6a3v7ZcbV4In605HmpvaQ0v/qjaoelsG09196EU3qG5H8rtxiY8ftkzhap1FSBGz
+         QFHnf91CHV/8oNtoHtunoaMvjnQFxq9VPWmEJlMhUBtykwkHRQ63IyYDEvQyHPpA0Zcz
+         78wbzuaaBgiTp+ThO3NrGKpTcqYHTUkdwK/R9fqcSByMuU+Ru64Eo4ZbXy6lvhGhL1jf
+         O26cqevgRn7s+rGNt5dFinbgH+esSybNfQElG52IVGcn+QZ5QnbpE7cxOO7Z4pf/DhMf
+         bZgIPtVug2B2rLWNK8bWZC5DMkgc6S7zARHV6sTG2zopbLRla9526xt6Xzp3QXT2YIMU
+         Mmcg==
+X-Forwarded-Encrypted: i=1; AHgh+RqBES5LgMFImBcF4yWFJyLDZE6W+qNwJnXmXjEOi6GI0bJG2ozezC+/XlG415KozBlffhqE1K+LqRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbPFpZaDBjAwUtr3N0JXP605Tq897uuVK1QwPIQcE3matZeY74
+	ENqOhxQHB2mcqs5HD1Pw3WuwSRdiME5wJWzaZaznx13Y9tUWhBBkZL2A
+X-Gm-Gg: AR+sD11z4ymhj+kh9tszCvu6KgZoRI4HyvpNY8wUTl/JmQnc/JbvK+VH7NmNehbC58P
+	APqoW4hDHlQ5A4BAHSfDSYenL79mF6YrwPoSA2eCj1dBCib8xYRZ3Gmilj+HIr7xVGHFwtG1NmE
+	/jZFMg48XnCXJIjwG1BU7qh2qbda4OCUVRX4Fy32medicU7gFGs/mQN0HqWutmVQxePygn61jBh
+	UtQGScyu4PyX55jHdr6gyXzedi05anzM1dJa+ue6JWWpRTo9C6/mI5YZxPotYLrP9BNDG8xXyji
+	TFYyQFBW0wX4kQH60Er8v55HaME3sqIoUW4iL664jnOIGwFHN9oScOb0GQHq9Xv2VE0dh9Z+dPM
+	j9e19NicCyhA8g+XV8h5VYHVFJ+lzgXuMdOrbQrcttRLbUsBEEoltg7pE601Tdsu3+Jsh1Q==
+X-Received: by 2002:a5d:64c3:0:b0:47f:9446:95a8 with SMTP id ffacd0b85a97d-47fb1f359a2mr4033641f8f.59.1785258324657;
+        Tue, 28 Jul 2026 10:05:24 -0700 (PDT)
 Received: from nsa ([148.63.225.166])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6aa3a88sm495883f8f.6.2026.07.28.09.54.40
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fb6b0f039sm538560f8f.18.2026.07.28.10.05.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jul 2026 09:54:41 -0700 (PDT)
-Date: Tue, 28 Jul 2026 17:55:50 +0100
+        Tue, 28 Jul 2026 10:05:24 -0700 (PDT)
+Date: Tue, 28 Jul 2026 18:06:32 +0100
 From: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-To: Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+To: Conor Dooley <conor@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Janani Sunil <janani.sunil@analog.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
 	Shuah Khan <skhan@linuxfoundation.org>, Mark Brown <broonie@kernel.org>, 
@@ -74,9 +74,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
 Subject: Re: [PATCH v7 1/7] spi: dt-bindings: Add spi-device-addr peripheral
  property
-Message-ID: <amjfAV5HvcIxOdv_@nsa>
+Message-ID: <amjgbH3VpssOlFzs@nsa>
 References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
  <20260722-ad5529r-driver-v7-1-7781cd74ad75@analog.com>
+ <e2118cfc-feef-4843-917f-844834ef4e60@baylibre.com>
+ <20260725230445.60a445a0@jic23-huawei>
+ <20260728-barrette-rickety-788b47da503c@spud>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -86,42 +89,96 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260722-ad5529r-driver-v7-1-7781cd74ad75@analog.com>
+In-Reply-To: <20260728-barrette-rickety-788b47da503c@spud>
 
-On Wed, Jul 22, 2026 at 09:54:13AM +0200, Janani Sunil wrote:
-> Some SPI devices support sharing a single chip select across multiple
-> physical chips by encoding a device address in the SPI frame itself.
-> Add the generic spi-device-addr property for describing these hardware
-> addresses. The property is placed on the SPI peripheral node and may
-> contain multiple addresses.
+On Tue, Jul 28, 2026 at 05:10:55PM +0100, Conor Dooley wrote:
+> On Sat, Jul 25, 2026 at 11:04:45PM +0100, Jonathan Cameron wrote:
+> > On Sat, 25 Jul 2026 15:55:01 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> > 
+> > > On 7/22/26 2:54 AM, Janani Sunil wrote:
+> > > > Some SPI devices support sharing a single chip select across multiple
+> > > > physical chips by encoding a device address in the SPI frame itself.
+> > > > Add the generic spi-device-addr property for describing these hardware
+> > > > addresses. The property is placed on the SPI peripheral node and may
+> > > > contain multiple addresses.
+> > > > 
+> > > > Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> > > > ---
+> > > >  Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 7 +++++++
+> > > >  1 file changed, 7 insertions(+)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > > > index 880a9f624566..b59d047cf117 100644
+> > > > --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > > > +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > > > @@ -142,6 +142,13 @@ properties:
+> > > >      minItems: 2
+> > > >      maxItems: 4
+> > > >  
+> > > > +  spi-device-addr:
+> > > > +    $ref: /schemas/types.yaml#/definitions/uint32-array
+> > > > +    description:
+> > > > +      Device addresses used when multiple peripherals share a single chip
+> > > > +      select. The array allows one logical peripheral to comprise multiple
+> > > > +      physical devices, with one address per device.  
+> > > 
+> > > "per physical device" for clarity.
+> > > 
+> > 
+> > We may end up relaxing that again if multichip packages start doing this.
+> > Fine to add that clarification for now. We can revisit when / if it ever
+> > needs that relaxing.
+> > 
+> > > > +
+> > > >    st,spi-midi-ns:
+> > > >      deprecated: true
+> > > >      description: |
+> > > >   
+> > > 
+> > > If there is nothing useful the SPI core code can do with this information,
+> > > I'm not entirely convinced that this needs to be a common property.
+> > 
+> > I think being common does make some sense from a standarization point of
+> > view and it isn't obvious where to put it other than under spi.
+> > 
+> > > 
+> > > And this only allows for one logical device. If we wanted to treat each
+> > > address as a logical device (all with same CS), we would need #address-cells = <2>;
+> > > instead where the DT "address" is two values, the CS and the device address.
+> > 
+> > Ah.  Good point for the adc@address or similar needing to match a combination
+> > of CS and spi-device-addr.  Conor any thoughts on how this would be done?
 > 
-> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
-> ---
+> I'm sorry, I don't quite understand. Why do you want to support both of
+> these representations? Hardware wise both of these things would be
+> describing the same setup, so allowing this alternate "multiple logical
+> device" typically is not permitted. What even is the use case of it?
+> Does it matter at all if you have one or more logical devices from a
+> consumer perspective?
+> 
+> I do have an idea of how to solve the adc@address problem (you can do
+> adc@address,spi-device-address like some other devices) but as I said I
+> don't get why it would be needed.
 
-Acked-by: Nuno Sá <nuno.sa@analog.com>
+IIUC, I think for the current ADI device it could actually be useful to have
+the above representation given that, in theory, any of the logical
+devices can have their own supplies, pins, etc (so it would help to have
+each of them as adc@address,spi-device-address)... But we choose not to go
+down that path (in previous versions) for simplicity. So yeah, not sure
+:).
 
->  Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
+- Nuno Sá
+
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> index 880a9f624566..b59d047cf117 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> @@ -142,6 +142,13 @@ properties:
->      minItems: 2
->      maxItems: 4
->  
-> +  spi-device-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    description:
-> +      Device addresses used when multiple peripherals share a single chip
-> +      select. The array allows one logical peripheral to comprise multiple
-> +      physical devices, with one address per device.
-> +
->    st,spi-midi-ns:
->      deprecated: true
->      description: |
+> > 
+> > 
+> > Also feels like this series should update the one use of the microchip binding
+> > in tree.
+> > 
+> > arch/riscv/boot/dts/microchip/mpfs-beaglev-fire.dts
 > 
-> -- 
-> 2.43.0
-> 
+> I never asked for this cos I maintain the platform and was gonna fix it
+> up myself, but sure!
+
+

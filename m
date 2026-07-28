@@ -1,106 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A3F30568D;
-	Tue, 28 Jul 2026 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB30324B06;
+	Tue, 28 Jul 2026 16:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785252268; cv=none; b=OsTcd+rgI3WCOIMR172rxbLjq66lUh/Id42jBoXAFcIq+pFWGzHn9F9MFdSLqzHk8ILk4nn9ZQ1BWlV1+CpzIyCBkBzgI8iFn9/ZE6jFZZ4mEypGldZ/3vDlB94/GquOyIED3DXOqqDVs2TwZ9NC26Ds/K8owtSdAQOxjcXwbTU=
+	t=1785254464; cv=none; b=KV0bdHni0jC/NCcyNChiDoYnyM8jOt73joaoE3sK36vTavve1YInm3jhOO8+p/rMLF3UMIcbciT2d+46TDIjzeC00h7xIvqwuegOR92Ft9ShW3s0rr923ul6tCeGZ5M8oH0TSQ6ItsEerjFbdwM0WuIggsQD7nkWf6HUxGt7FM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785252268; c=relaxed/simple;
-	bh=HbAXE+kt/gg6/vVHF+a8eI7tJ3ds+StEx30QT3bbTIY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pNRvweJp0iR1qAVQgJ0A731GxVwvB9lQIBIa0/4f0sRdyy94TB+baP+y25G7xTNrAOCuzEtGpCBdcO5vo0D+s4X7mH71hUHERD4LfUGdhCw08/pMr+JCOvoXaJ7xu2WxM/5pl/rHV8S3UUJyix5cmv6uq8h67bFUKVC+168JkMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQXRuwAn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785254464; c=relaxed/simple;
+	bh=czRWxwPdV0B/TC9cXN1ww//UFiMOnbUt5OusGyRLRdY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PHVDcwFBZpfcOw5d1Zl7cjoA5Z2IwQel0gHclFTan0eXP+sBlXl9+sGI5KPsBusFXLzIZuAJui1TBJe3ztP9/RJFVG87rfMzjsz8OwjBGUmHAU8p9dS1jV1lrXB33NHStxqEs5xzHCgOCgZbrkmGs2SqakhLG15Ypz6FjQ5/aG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fl/g7mzg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQXRuwAn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40C91F00A3A;
-	Tue, 28 Jul 2026 15:24:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fl/g7mzg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76C41F000E9;
+	Tue, 28 Jul 2026 16:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785252267;
-	bh=+XBHM4Y2azxZZa9+2n0cn7/S1Zo1nqK1cbQKursEuU8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AQXRuwAnmeNsCUMnDuyVSTCYhTop9FeluTrtQtmzhUKpET33xZQPbfMa/FsniHPe1
-	 jKfwwk1BzCkD2McI7qFj+Og0wcyJNXZUUhx4U6VMOm9Eoa9EGoypukF4qlVj3O2uB6
-	 uGvGpkG4eP5IVy+v/62ogTjydHTTIE/miaHcxSY4VEUVO7BJSKABFvx9rmLuiGi4t3
-	 KXI2mJpnvGKmIrAAlzbTHjtIADZcaTAs3cN0rufVC9R9/xiv2Alg65YXlTUfbIYiYQ
-	 rhzjx4WpOV3R2iGo4RIZUFdh2JChcxhkwF3zdsg0BDMslT6rdF0xGzd5/602iK+WFb
-	 zVIQsy6+FquJw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wojfM-00000009kmG-1Tn4;
-	Tue, 28 Jul 2026 15:24:24 +0000
-Date: Tue, 28 Jul 2026 16:24:23 +0100
-Message-ID: <86v79zcf2w.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Swark Yang <syang@axiado.com>
-Cc: Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,	Harshit Shah <hshah@axiado.com>,	Linus
- Walleij <linusw@kernel.org>,	Bartosz Golaszewski <brgl@kernel.org>,	Jan
- Kotas <jank@cadence.com>,	Michal Simek <michal.simek@amd.com>,	Andi Shyti
- <andi.shyti@kernel.org>,	=?UTF-8?B?UHJ6ZW15c8WCYXc=?= Gaj
- <pgaj@cadence.com>,	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,	Boris Brezillon <bbrezillon@kernel.org>,	Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,	Jiri Slaby
- <jirislaby@kernel.org>,	Mark Brown <broonie@kernel.org>,	Mathias Nyman
- <mathias.nyman@intel.com>,	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org,	linux-i2c@vger.kernel.org,
-	linux-i3c@lists.infradead.org,	linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org,	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v3 8/8] arm64: dts: axiado: Add initial support for AX3005 SoC and eval board
-In-Reply-To: <20260716-upstream-axiado-ax3005-upstream-v3-8-c429095143ec@axiado.com>
-References: <20260716-upstream-axiado-ax3005-upstream-v3-0-c429095143ec@axiado.com>
-	<20260716-upstream-axiado-ax3005-upstream-v3-8-c429095143ec@axiado.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20260515; t=1785254462;
+	bh=+1ypUeeD+B1IwxzZUM25vLW6cTdOr3YMLvqGxJNEiDk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fl/g7mzgatzU05Syo9DEk3Dm2ynabnYerxBsx9Q2ml+z7r7w/l61mxRNZ3alVb903
+	 k4yMsVtWFbKpKTatT/enw2xYEK2mrdRxPcbfHTKdM37QXIibXabplwyRgmzIfs9w+F
+	 sG6M7wlgZyGtGTCCRJQau8ISxenSX6K4VfdmwsVBZjnm/8HAoRje9DiP8qhRryF8qh
+	 KV3MKZGzmWNDihur5nC8KTiksrFkrQ5hkETwb3js6qN8Vyv0gFGrCLarMQnIZIZzxx
+	 JwvyIgi00vKu2MTGcv/ePd50imGydE2/K8ScXv+1v/fcne4tzxHcCpv9eBlnsYOMT3
+	 tAMVErJ6ZtdUg==
+Date: Tue, 28 Jul 2026 17:00:55 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Janani Sunil <janani.sunil@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
+	linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
+Subject: Re: [PATCH v7 2/7] dt-bindings: iio: adc: microchip,mcp3564: Add
+ spi-device-addr
+Message-ID: <20260728-patronize-thwarting-56fab2e11077@spud>
+References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
+ <20260722-ad5529r-driver-v7-2-7781cd74ad75@analog.com>
+ <cb4098c1-4bad-4a11-9a6f-a833e554f197@baylibre.com>
+ <20260725230739.63ff7000@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: syang@axiado.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, hshah@axiado.com, linusw@kernel.org, brgl@kernel.org, jank@cadence.com, michal.simek@amd.com, andi.shyti@kernel.org, pgaj@cadence.com, alexandre.belloni@bootlin.com, Frank.Li@nxp.com, bbrezillon@kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org, broonie@kernel.org, mathias.nyman@intel.com, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org, linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xuABnB4oaxi0GLxH"
+Content-Disposition: inline
+In-Reply-To: <20260725230739.63ff7000@jic23-huawei>
 
-On Fri, 17 Jul 2026 04:51:15 +0100,
-Swark Yang <syang@axiado.com> wrote:
->
+--xuABnB4oaxi0GLxH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[...]
+On Sat, Jul 25, 2026 at 11:07:39PM +0100, Jonathan Cameron wrote:
+> On Sat, 25 Jul 2026 15:57:07 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+>=20
+> > On 7/22/26 2:54 AM, Janani Sunil wrote:
+> > > Add the generic spi-device-addr property to the binding and deprecate
+> > > the existing vendor specific microchip,hw-device-address property.
+> > >=20
+> > > Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/adc/microchip,mcp3564.yaml         | 10 =
+++++++++--
+> > >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3=
+564.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
+> > > index 675319276197..de1ea289e7f5 100644
+> > > --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
+> > > @@ -80,6 +80,7 @@ properties:
+> > >      $ref: /schemas/types.yaml#/definitions/uint32
+> > >      minimum: 0
+> > >      maximum: 3
+> > > +    deprecated: true
+> > >      description:
+> > >        The address is set on a per-device basis by fuses in the facto=
+ry,
+> > >        configured on request. If not requested, the fuses are set for=
+ 0x1.
+> > > @@ -91,6 +92,12 @@ properties:
+> > >        clocking of the device address (BITS[7:6] - top two bits of CO=
+MMAND BYTE
+> > >        which is first one on the wire).
+> > > =20
+> > > +  spi-device-addr:
+> > > +    maxItems: 1 =20
+> >=20
+> > Does it not make sense to all for more than once device connected
+> > to the same CS here? I would expect maxItems to be 4 to match the
+> > number of possible addresses.
+> >=20
+>=20
+> I think for this part their isn't a reason to aggregate.
+> No magic accesses that touch them all at once.  So this hits
+> exactly the point you raised about how we set the address for
+> more than one of them.
 
-> +	soc {
-> +		compatible = "simple-bus";
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		interrupt-parent = <&gic500>;
-> +		ranges;
-> +
-> +		gic500: interrupt-controller@40400000 {
-> +			compatible = "arm,gic-v3";
-> +			reg = <0x0 0x40400000 0x0 0x10000>,
-> +			      <0x0 0x40500000 0x0 0xc0000>;
+No David is actually right here, and maxitems should be 4.
+Setting the address for multiple was already discussed I thought, with
+the property being an array and each compatible being used to determine
+the "stride" between entries based on the number of supported channels?
 
-This is missing the GICC, GICH and GICV regions that are implemented
-on Cortex-A53. See the binding document.
+>=20
+> Jonathan
+>=20
+> > > +    items:
+> > > +      enum: [0, 1, 2, 3]
+> > > +    default: [1]
+> > > +
+> > >    "#io-channel-cells":
+> > >      const: 1
+> > > =20
+> > > @@ -123,7 +130,6 @@ dependencies:
+> > >  required:
+> > >    - compatible
+> > >    - reg
+> > > -  - microchip,hw-device-address
+> > >    - spi-max-frequency
+> > > =20
+> > >  allOf:
+> > > @@ -159,7 +165,7 @@ examples:
+> > >              spi-cpha;
+> > >              spi-cpol;
+> > >              spi-max-frequency =3D <10000000>;
+> > > -            microchip,hw-device-address =3D <1>;
+> > > +            spi-device-addr =3D <1>;
+> > > =20
+> > >              #address-cells =3D <1>;
+> > >              #size-cells =3D <0>;
+> > >  =20
+> >=20
+>=20
 
-> +			ranges;
-> +			#interrupt-cells = <3>;
-> +			interrupt-controller;
-> +			#address-cells = <2>;
-> +			#size-cells = <2>;
-> +			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
-> +			#redistributor-regions = <1>;
+--xuABnB4oaxi0GLxH
+Content-Type: application/pgp-signature; name=signature.asc
 
-This is the default, and isn't required.
+-----BEGIN PGP SIGNATURE-----
 
-	M.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCamjSNwAKCRB4tDGHoIJi
+0rn4AP42ioQsDXk1nWfaQ52szjKb9oAfOTImJ1DGK2rKiMAIMAEA+twTrfpIzo0F
+YYUt5tBk1kRPX4fcAx5R0otddEZVbww=
+=qzWE
+-----END PGP SIGNATURE-----
 
--- 
-Without deviation from the norm, progress is not possible.
+--xuABnB4oaxi0GLxH--

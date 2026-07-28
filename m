@@ -1,76 +1,79 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012000.outbound.protection.outlook.com [52.101.53.0])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012070.outbound.protection.outlook.com [52.101.48.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2663C44AB6F;
-	Tue, 28 Jul 2026 19:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB0644C50C;
+	Tue, 28 Jul 2026 19:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785265884; cv=fail; b=FKvNbF0wle+7ugrsMW4+n9x0SkOZk2nz62omLuLX8asGTyvxzVufBztddNBVs+mZOlQMfWEIAQqiEdBUL3ZlOs2XCR1dvVbpwG8Dzse0WvT6GXZVNawqtjB6lAF/XZtLnXkmHFvA4YBLsybqpDHVid9HLNuWz+bcoBKbecZ3Esw=
+	t=1785265891; cv=fail; b=R5MTs6Kx33ewOqPj2tvt0rzAa9i65JAypxvTZG8Xas0gUe/qbxTkesvPfacPo3vBjjz4J5vv5bCXA5EZvF+6zMeGX+d2YN5vbvhWXR1YqwrDlxbALNlDmaydjhrgUAy2fkyVsQPI3ryGL8VUDQZDZOJsmWtsloRD+9l3wpxP38U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785265884; c=relaxed/simple;
-	bh=47+rWuUVAnMTu7phD5LbV3IRmcItFpRf8HLUZZPBlqM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lrjagf9QgVYG7bl7yBGvKX4u1Al/N00wXTes7CdVptiZVpm1UVccecF4nCjaHrwkmkh/8tXTvdtJx7tYALgBPLqsoBt/DqEQdaZ+sG2IeRcWEgO6e9lrGrJtXRrIWvfczSpr61gENncS9FsGJ8DJQJF3gKMr0GIFNDdF6LFxIuQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uZYfSHYD; arc=fail smtp.client-ip=52.101.53.0
+	s=arc-20240116; t=1785265891; c=relaxed/simple;
+	bh=Ou83dAw2WBD3/Hzx1mZsd7+BkNqm3pBdFfvn15o/wqs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jBKmvU8M8nl77w+g7B+pC8TdQnhS5Z5RZgxe3FPdhNVfPS2f6v+aG4rN8R+EcqNwDKjLOW1CbMKpz9+jR/r0piBigMmkWGrArzrRYR/k7YCL4RrAtA0N9zD6fajTAfjRu9vQAD9Lc96VUW3d9bhQEr75JLCb16Ew3KiNR73UfMY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=moqH2YVU; arc=fail smtp.client-ip=52.101.48.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uZYfSHYD"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="moqH2YVU"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EW18TG57ZBabl6btG0v1ilu0usRQA+DKlU2GrJOJ+R7jBH4WzHjSpQ86nNEYjNFAAxZ70oamCjK3QWNE30GzhnnnOjGJTm2J+QMkHid8mXHAkoJ4eV1aBNG3uee9tZx2st4+sGNqONYjwYrGcVtKMo1NjCnNG5Fd0suBX9n+st7qNV4muVbg9Ih8deMafnfKR1ucyD0V9hERZAoaUARnKRlcIRpog/uIkpt3VTBwosmnGfv19o0aay+zkcLchAeyzoHPzjnPAzSZtgJxjARqg0/7bUJBbdPYV3sZ+gb44Y46+3/SG0t+wtgJb6iU5S8WUJjVoGJd2yl7rSA9cZkAlw==
+ b=dStHrVaWxTjAdBK9khlSUEQjZsI1oRotLXp4ri648kCvDa12u54UbMdtXiAJOE/Ix6p0nd3TEk3yxIDMeIvQlB20gR9NrdLjLFfVYKmbMo5BqJMJscGlWDhoJGKOxZxRC4B/g5p7OaA4WulkjhNjru8WO0LUww5LGRDQRTbFflIWXewYJ9psUgyt2juaLEVSEudJtkfPfRuSfISEO9Ye/iteBiR60lCHBSNL9hN7hPNy+qxdC725PIqV1+NuOSJX4+fxMopaAbFuncTDYPBPsZm9e/Sm0VpUJHB4pCjMYf7i8Exwt3nvgrYsjpVlrtnlDV4omLGvN3e5Niv1lm53Vw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YCsggAagejOv86ML0SFX7ZWFLMhWWMRh2D1CCbGQOgc=;
- b=i5MJRuDSKU69qPpnA8Z+dKW19/LXWfIVWUXUTcOj4y4fBoaJ0HFHf+LYBtcnMo3bVLD1rQbG4MEOu8RbN8CuO7Y7YAKyBGe/32e3BANFyhnCVrCeon5MYPjwfmQYP5su9JusYSApGNYvxvdgS4D44/msjGpvtQJKwPRshbY4MzYE1CCFwUwuooTCawyYZSCmQryFVZwmRlITElFYyJ7/CeGFof4uhln0im6kmpNFIC0NL8xPUNHXIOIa3H0feE4j38ReCrXKi6bkp5Nmm9395BkgOwnpDkPWrIbzRnjurHhc8ZE4Fxpp6U2z3mqKOTraHm4e1GzI/6fR2JfLGTRJUw==
+ bh=sHzC2Nb1OFnYoQpsB5d+r63ZC5H9ijhPswIpPK5NHoI=;
+ b=kVlC+kOLp3aWsRHyWN2u7EWjUW2RmYkLDa4InS7MQzYf/aIXnxOkUaU011rrFJZ2glAix3dSXTMrn2U2FR+QIKUtjxtMuSoZYJRANCKwphqPJZkpt/evqv2Bus/0uB0kPi2xRsnQECbZ4q+37+OXoptc0mG6SiZn4lD9l7K96NKBvLJG0GFqPox+t6Pys8Lh2QH1/lz4KaLb4NFX9BUQte6UEVaAuG67dG2e21TM0Oztzdp8+mYKqbiHEf7mzpe/LgKovFWmjCMzKEM5WXWwSDXrQs4LK4uMSRkWggtcnrvSjdXb56h4LWrWHcpY4ua5vCMtCZOzoBnE5oqXoHgKpQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YCsggAagejOv86ML0SFX7ZWFLMhWWMRh2D1CCbGQOgc=;
- b=uZYfSHYDwb+QbgPYUUXCIACm4R/dVmciUCPa9wHXU8vjpVZ3QvNlYeLLXPza5bcqkIHj7gn0GadAb7C2XvifHU0/yi4qQDWKCeKk1ejZiE4aE86medPF/N7zcTg8w8JUl2I3Q6KDuJOweyzD/M4iCQwUaBCT0+Lht6BkQ/Jbzw5soan+Nh2ZVo8eUx77Tk0Vz9Og8OqOwoDFwiElFmyD5++d5Xzn8z9cYpCbqpZS+g9w527TunmZDE2PBQb+urF60CShTfOKTsopLjlvumrF7zsPFxDL8fAk6AHx4aO6e8E9FzKyt9NKJAvbSHSsFN23MXsWmxBtM2D8p7ypgWisNg==
-Received: from CH2PR07CA0059.namprd07.prod.outlook.com (2603:10b6:610:5b::33)
- by SA0PR12MB4381.namprd12.prod.outlook.com (2603:10b6:806:70::14) with
+ bh=sHzC2Nb1OFnYoQpsB5d+r63ZC5H9ijhPswIpPK5NHoI=;
+ b=moqH2YVU+3HceWuo31ftZAfG7srJYG3RyI5tdpTo3+9ZQbLYkpWHM2MPH8OmIx46Hh/Nrex4u8k8/0xvQ/liWk3xpe7VCSaLyuiOw+eXqVhddjrLKWgYjDpooRovVc3NpxlsZ/TetyQFiOmRlSzjaXydG7e5v3Dwlt+xvGf54VpddvJR4XTqedH98veMslM0boNHwFdnWMnw8o+Y5Vt1vJAgfauMcp3+lhIMf3gxy2qWJWWwHpfUoCFMcF6qMb1ZDQsXn9Aqq90Y1eWXcUFiyqWEAAYc/gIZXo7ajmSiXWJW7lvNs2Xljwgc/fWKLMLTljoUKuEdKLVKIsgXNnnidA==
+Received: from CH2PR07CA0065.namprd07.prod.outlook.com (2603:10b6:610:5b::39)
+ by DM4PR12MB7767.namprd12.prod.outlook.com (2603:10b6:8:100::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 19:11:17 +0000
-Received: from CH2PEPF0000009E.namprd02.prod.outlook.com
- (2603:10b6:610:5b:cafe::3) by CH2PR07CA0059.outlook.office365.com
- (2603:10b6:610:5b::33) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 19:11:23 +0000
+Received: from BL02EPF0001A100.namprd03.prod.outlook.com
+ (2603:10b6:610:5b:cafe::7a) by CH2PR07CA0065.outlook.office365.com
+ (2603:10b6:610:5b::39) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Tue,
- 28 Jul 2026 19:11:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 28 Jul 2026 19:11:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CH2PEPF0000009E.mail.protection.outlook.com (10.167.244.27) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL02EPF0001A100.mail.protection.outlook.com (10.167.242.107) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 19:11:17 +0000
+ 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 19:11:22 +0000
 Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Jul
- 2026 12:10:57 -0700
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 28 Jul
+ 2026 12:10:58 -0700
 Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
  (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Jul
- 2026 12:10:57 -0700
+ 2026 12:10:58 -0700
 Received: from build-va-bionic-20260204.nvidia.com (10.127.8.12) by
  mail.nvidia.com (10.129.68.9) with Microsoft SMTP Server id 15.2.2562.20 via
- Frontend Transport; Tue, 28 Jul 2026 12:10:56 -0700
+ Frontend Transport; Tue, 28 Jul 2026 12:10:58 -0700
 From: Vishwaroop A <va@nvidia.com>
 To: <broonie@kernel.org>
 CC: <linux-spi@vger.kernel.org>, <jonathanh@nvidia.com>,
 	<thierry.reding@gmail.com>, <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
 	<smangipudi@nvidia.com>, <va@nvidia.com>
-Subject: [PATCH v8 0/2] spi: add new_device/delete_device sysfs interface
-Date: Tue, 28 Jul 2026 19:10:54 +0000
-Message-ID: <20260728191056.2337791-1-va@nvidia.com>
+Subject: [PATCH v8 2/2] docs: spi: add documentation for userspace device instantiation
+Date: Tue, 28 Jul 2026 19:10:56 +0000
+Message-ID: <20260728191056.2337791-3-va@nvidia.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260728191056.2337791-1-va@nvidia.com>
+References: <20260728191056.2337791-1-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -81,106 +84,195 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009E:EE_|SA0PR12MB4381:EE_
-X-MS-Office365-Filtering-Correlation-Id: b83744c4-7df8-4c4b-4cf9-08deecdc0048
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A100:EE_|DM4PR12MB7767:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6c93282-1568-497f-ee7b-08deecdc0386
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|30052699003|82310400026|376014|23010399003|36860700016|1800799024|13003099007|11063799006|56012099006|10067099003|18002099003;
+	BCL:0;ARA:13230040|82310400026|376014|30052699003|23010399003|36860700016|1800799024|11063799006|56012099006|10067099003|3023799007|22082099003|18002099003|6133799003;
 X-Microsoft-Antispam-Message-Info:
-	zW2ZHjDxxq0LZHlZIRN5Nb2YKuWKDfCqletcMQJwCKWdZ4y8VXePOcLbd47JCJMTjepp/hkfqGxQZzYuW0JSUBtYU93UNVyt02yK0Ramcl4cKpM7Y6DGPf0QIWBCqVh90BX5hSD+bpGlxiaUlIT1uLVbkw/14kcCWTed3s9QzmB80MOHoD64hrwJWstL9HbQ204f/dBWTdZhyl/GAzCJ5+4DKLYqtC6tBg68IyphYYvzvqOswV+0oOdRTmGI90eJLwni0nNfSNLic5jGi+sUxUAJWgslCbKgoMCakyELRqUU/eolBUwtC6k+/ADWqqfQbnkH2BvXPadpFpEg2FZZszxlmgIFZilS+JOpIjbSTOBOEeArav4TuC+C9xj/ngQaUD7WoNraNa0PR+FPpsTWcLHjFaDrrlmbwgDvBfA2reDMhl4AnllPCV+l3Qn9Zd04ZZcqP5YhoYWv28D5VVZdE4CxXLPdsG4Eoxm4aU1aA9Un6F7msmPGfxWxY/9161GQM1W5WRjuu8/IawbBl+tpM0vsak5FwLlZftJT4Z1DL8IpJtH3P70su3RJEGB0kxzzOzHZlyXZo/fjscP99yfXQFL7dHEAMILVFlzYcF5CJ0NzHBx8VJvo+xnGKhzdvspMq9X8r2lThItTku+4raSjdRhXfSvE8bTusmJtWzR0/pHJLLny+Z0+7POr2SDm1LC3pd5Egfd7SISh/xIraSQEYA==
+	74h/2HLPbWotmvncHbw+zouDrNWgvmh6ZmUtVKQzPYTdibqMdZJqsnblFs8y+oeXMiWDXFMA54wRWuulPkId0XVSeXOB7JsdfsEfzPydHM6TZlcLNVsWwG5S4GekBxqQyl+8KY5+m5vojfL6iZscV82PX34t7a7ifyFv9oiRk9XvkWMF8Kn38R1JWdWXkQ7yIoRcbGCYayl7HKV5FaXF16qsZ24A36nOfyJJisJza2Ibw+jZ+LuLX76Ku+wuYJjc34a4CGwQX0kgkWCzabLCv8UcXZ5Xpit89zWd99uamFAywh1v3YPxHY3xbtGpeZA+9xWREtQ4DS9fy68ItEpr0oY4L4b/5TIxYIGb4GieBU612Rj5Onzx/SAUe0tvboPcGup33mdSywqW05iJV7MiAK3Zb5I2k3BNqucze8H0HN1zNsIDzyXfYbmY2XXWFpWz1u/T6UbWolGFwiU5CVhuhmFB2tBPbHtA0H9NyaFYmEIkTuct+WAcPTbg6jCtLIbDdhZHeQyj2Jh+YcbHa4zWrIRaIUEsKod9kP558Uh8BmyPExqtjDbfWONK0WG0Tmxz9Sa6ukoDcCxNXTtgbFbHKk12MjW7Tu0NhwE610Mj9QLHWHQczZTltyUuInv262Yej2DoRdjR8gixSGLqHmjLG6PKrN9xyuu1ArN8h9G8tuveM8O04Nqb92Ytj6zJEIrr8/IJ0hWIDjKGMiyUo/fsYQ==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(30052699003)(82310400026)(376014)(23010399003)(36860700016)(1800799024)(13003099007)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(30052699003)(23010399003)(36860700016)(1800799024)(11063799006)(56012099006)(10067099003)(3023799007)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	GGnKyZxBPAh6HIIQRuSr5c1EjkGwiEJ2yjtVyj7o0ImSNxNbo4s3CeWgv1DX3mWt0r7YQ05iZWTgKe+Qmkwhtmx+UFn3XjuOUYM9oSu2ckVVebETu2KZ/k3DjtPJRvYLKCFsUgSigSnzB8fjsOCuzLy5f9NMTOYesLa3EYdgxOd/du4E27hFQgECmMCBr+06KqGdoiog2xOUlE5MycKfyBCORJK8SYQFZL6Ynq/c8kXMsb+QLsV8FvmiTz35VIL5/p7xs2DNY4nGi++/c3Y2Xa1VaUNWEFQpUnbMnBOsyCMIDO5fgArC3Fi0oq3yIVOwOqLOzXw4VOBMXt96ZWsGhATIB8zTWV/jEmuaPDqlqmwj18Fu47beOQyG8Ba2DH33A9RX908cKGwD536oHjg/cU3HgAZtJOkurUj2qLO12r0SvzP6vx0LKdj++1KH++nd
+	l/qBR7U8ET67QsA0pSkuOpWjap4dYgKPCsHgZgUqr1Jjgnu3HigAHuDyZr5KDCJI5MyJFyMlzPU/lbt3gDQ6jISKV6KHhpZvGsRJ4ThxCR4GKXWX1KX8t2C1E7eAb01R5mUeGbbzd51X8KoNhhozPHsn04j/kTcRL2+vR7QyrC82VIkYf3TJ2CQycRzioRIfO+hIST8Lw4YfrkjrZhSZ2YzZHMrL9rriywBBCUgwtqHV1xyBEm42KtLCjm9sqFDVdEiIa1Iy4enJ9oHmHUd5el+ESJGa76IwpvQn3fYZUP6c4P/DVsMGDTe5763zV7d3tUkzjJkDQABfQQSoAExc1vyu9FDx/T9nsu75HnP4GFN3t+gpEJUo06KHSmbZ0MEH03Z5zEJehy++aZWy+9PzJaYWcJm7GwwXpa8toWzW7ReG2Jfd69YlVJUxb3gwcC3M
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 19:11:17.3393
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 19:11:22.7532
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b83744c4-7df8-4c4b-4cf9-08deecdc0048
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6c93282-1568-497f-ee7b-08deecdc0386
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009E.namprd02.prod.outlook.com
+	BL02EPF0001A100.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4381
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7767
 
-Add I2C-style new_device/delete_device sysfs attributes to SPI host
-controllers, allowing userspace to instantiate and remove SPI devices
-at runtime without device-tree changes.
+Document the new_device and delete_device sysfs attributes on SPI
+controllers:
 
-Patch 1 adds the new_device/delete_device attributes and the supporting
-infrastructure (userspace_clients list, manual sysfs group registration).
-Patch 2 adds the ABI and user-facing documentation.
+  - Documentation/spi/instantiating-devices.rst: describes when and
+    why this interface is needed, accepted parameters, usage examples,
+    and limitations.
+  - Documentation/ABI/testing/sysfs-class-spi-master: formal ABI
+    entry for both attributes.
 
-Changes since v7:
-  - Remove the redundant CONFIG_SPI_DYNAMIC guard around
-    spi_controller_groups[].  (Jon Hunter)
-  - Restore the original add_lock release point; the userspace sysfs
-    group is removed and drained before the lock is taken.  (Jon Hunter)
-  - Remove the redundant dead flag and retain the base-tree
-    device_is_registered() teardown check.  (Jon Hunter)
-  - Simplify parsing, diagnostics and comments.  (Jon Hunter)
-
-Changes since v6:
-  - new_device_store(): reject empty device names.  (Mark Brown)
-  - Move sysfs userspace group registration out of the automatic
-    ctlr->dev.groups path; create it manually at the end of
-    spi_register_controller() and remove it at the start of
-    spi_unregister_controller().  (Mark Brown)
-  - Drop userspace_clients_lock; reuse the existing add_lock.
-    new_device_store() calls __spi_add_device() directly under
-    add_lock; delete_device_store() also takes add_lock.
-    new_device is DEVICE_ATTR_IGNORE_LOCKDEP alongside delete_device
-    to silence the class-level splat.  (Jon Hunter)
-  - kernel-doc / inline comment updates for the new struct fields.
-
-Changes since v5:
-  - Rebased on next-20260727 (v7.2-rc5); applies cleanly.
-  - kernel-doc entries for the new struct spi_controller /
-    struct spi_device fields.
-  - new_device_store(): reject chip_select > U8_MAX; parse with %u.
-  - new_device_store(): reject mode bits outside SPI_MODE_USER_MASK.
-  - new_device_store(): drop the unused 'n' / '%n' from sscanf().
-
-Changes since v4:
-  - Removed spi_unregister_device() call from new_device_store()'s
-    controller-teardown error path.
-
-Changes since v3:
-  - Replaced holding add_lock across __spi_add_device() + list
-    insertion with the design that eventually landed as v8: sysfs
-    group removed before add_lock is taken, so kernfs_drain()
-    serialises us with unregister.
-
-Changes since v2:
-  - Gated sysfs attributes and locking on CONFIG_SPI_DYNAMIC.
-
-Changes since v1:
-  - Added locking to prevent races between new_device_store() and
-    concurrent spi_unregister_controller().
-
-Link: https://lore.kernel.org/linux-spi/20260728030541.2279518-1-va@nvidia.com/  # v7
-Link: https://lore.kernel.org/linux-spi/cover.1784000000.git.va@nvidia.com/  # v6
-Link: https://lore.kernel.org/linux-spi/20260517201602.498135-1-va@nvidia.com/  # v5
-Link: https://lore.kernel.org/linux-tegra/909f0c92-d110-4253-903e-5c81e21e12c9@nvidia.com/
-
-Vishwaroop A (2):
-  spi: add new_device/delete_device sysfs interface
-  docs: spi: add documentation for userspace device instantiation
-
- .../ABI/testing/sysfs-class-spi-master        |  34 +++
- Documentation/spi/index.rst                   |   1 +
- Documentation/spi/instantiating-devices.rst   |  88 +++++++
- drivers/spi/spi.c                             | 241 ++++++++++++++++++
- include/linux/spi/spi.h                       |  18 ++
- 5 files changed, 382 insertions(+)
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+---
+ .../ABI/testing/sysfs-class-spi-master        | 34 +++++++
+ Documentation/spi/index.rst                   |  1 +
+ Documentation/spi/instantiating-devices.rst   | 88 +++++++++++++++++++
+ 3 files changed, 123 insertions(+)
  create mode 100644 Documentation/ABI/testing/sysfs-class-spi-master
  create mode 100644 Documentation/spi/instantiating-devices.rst
 
-
-base-commit: 0d33d21e47d9dc66f91e44da3fc9220c74d93df7
+diff --git a/Documentation/ABI/testing/sysfs-class-spi-master b/Documentation/ABI/testing/sysfs-class-spi-master
+new file mode 100644
+index 000000000000..b498be128bad
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-class-spi-master
+@@ -0,0 +1,34 @@
++What:		/sys/class/spi_master/spiB/new_device
++Date:		April 2026
++KernelVersion:	7.2
++Contact:	linux-spi@vger.kernel.org
++Description:	(WO) Instantiate a new SPI device on bus B, where B
++		is the bus number (0, 1, 2, ...). Takes parameters
++		in the format:
++
++		<modalias> <chip_select> [<max_speed_hz> [<mode>]]
++
++		where modalias is the driver name, chip_select is the
++		CS line number, and max_speed_hz and mode are optional.
++
++		The device can later be removed with delete_device.
++
++		Only devices created via this interface can be removed
++		with delete_device; platform and DT devices are not
++		affected.
++
++		Example:
++		# echo spidev 0 > /sys/class/spi_master/spi0/new_device
++		# echo spidev 0 10000000 > /sys/class/spi_master/spi0/new_device
++		# echo spidev 0 10000000 3 > /sys/class/spi_master/spi0/new_device
++
++What:		/sys/class/spi_master/spiB/delete_device
++Date:		April 2026
++KernelVersion:	7.2
++Contact:	linux-spi@vger.kernel.org
++Description:	(WO) Remove a SPI device previously created via
++		new_device. Takes a single parameter: the chip select
++		number of the device to remove.
++
++		Example:
++		# echo 0 > /sys/class/spi_master/spi0/delete_device
+diff --git a/Documentation/spi/index.rst b/Documentation/spi/index.rst
+index ac0c2233ce48..3f723e2c07da 100644
+--- a/Documentation/spi/index.rst
++++ b/Documentation/spi/index.rst
+@@ -8,6 +8,7 @@ Serial Peripheral Interface (SPI)
+    :maxdepth: 1
+ 
+    spi-summary
++   instantiating-devices
+    spidev
+    multiple-data-lanes
+    butterfly
+diff --git a/Documentation/spi/instantiating-devices.rst b/Documentation/spi/instantiating-devices.rst
+new file mode 100644
+index 000000000000..9ed08d94ae01
+--- /dev/null
++++ b/Documentation/spi/instantiating-devices.rst
+@@ -0,0 +1,88 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++==============================
++How to instantiate SPI devices
++==============================
++
++SPI devices are normally declared statically via device-tree, ACPI, or
++board files. When the SPI controller is registered, these devices are
++instantiated automatically by the SPI core. This is the preferred method
++for any device with a proper kernel driver.
++
++Instantiate from user-space
++---------------------------
++
++In certain cases a SPI device cannot be declared statically:
++
++* The ``spidev`` driver, which provides raw userspace access to SPI
++  buses, explicitly rejects the bare ``"spidev"`` compatible string in
++  device-tree because spidev is a Linux implementation detail, not a
++  hardware description. Vendor-specific compatible strings for spidev
++  (e.g. ``"vendor,board-spidev"``) are also generally not accepted
++  upstream. Device-tree overlays do not help here either, since the
++  spidev driver performs the same compatible check regardless of how
++  the DT node was loaded.
++
++* You are developing or testing a SPI device on a development board
++  where the SPI bus is exposed on expansion headers, and the connected
++  device may change frequently.
++
++For these cases, a sysfs interface is provided on each SPI controller
++(similar to the I2C ``new_device``/``delete_device`` interface described
++in Documentation/i2c/instantiating-devices.rst). Two write-only
++attribute files are created in every SPI controller directory:
++``new_device`` and ``delete_device``.
++
++File ``new_device`` takes 2 to 4 parameters: the name of the SPI
++device (a string), the chip select number, and optionally
++``max_speed_hz`` and ``mode``::
++
++  <modalias> <chip_select> [<max_speed_hz> [<mode>]]
++
++The modalias is set both as the device's ``modalias`` field and as its
++``driver_override``. This ensures that the device binds to the named
++driver directly, bypassing the normal bus matching logic (OF, ACPI,
++and ``id_table``). This is necessary because drivers like ``spidev``
++deliberately exclude generic names from their ``id_table``.
++
++If ``max_speed_hz`` is omitted or 0, ``spi_setup()`` clamps it to
++the controller's maximum speed. If ``mode`` is omitted, SPI mode 0
++(CPOL=0, CPHA=0) is used.
++
++File ``delete_device`` takes a single parameter: the chip select
++number. As no two devices can share a chip select on a given SPI bus,
++the chip select is sufficient to uniquely identify the device.
++
++Examples::
++
++  # Create a spidev device on SPI bus 0, chip select 0
++  echo spidev 0 > /sys/class/spi_master/spi0/new_device
++
++  # Create with explicit clock rate and SPI mode
++  echo spidev 0 10000000 3 > /sys/class/spi_master/spi0/new_device
++
++  # Remove the device
++  echo 0 > /sys/class/spi_master/spi0/delete_device
++
++On systems that need spidev access at boot, a systemd service or
++udev rule can write to ``new_device`` after the SPI controller is
++available.
++
++Limitations
++^^^^^^^^^^^
++
++Devices created through this interface have the following limitations
++compared to devices declared via device-tree:
++
++* No interrupt (IRQ) support.
++* No additional properties such as ``spi-max-frequency`` DT bindings
++  or controller-specific configuration.
++* No platform data or software nodes.
++
++For ``spidev`` usage these limitations are not relevant, since spidev
++provides a raw byte-level interface that does not require any of these
++features.
++
++Only devices created via ``new_device`` can be removed through
++``delete_device``. Devices declared via device-tree, ACPI, or board
++files are not affected by this interface.
 -- 
 2.17.1
 

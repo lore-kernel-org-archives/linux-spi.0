@@ -1,191 +1,106 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011068.outbound.protection.outlook.com [52.101.65.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF094570EB;
-	Tue, 28 Jul 2026 15:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785251810; cv=fail; b=SkL2FmtkQqYrFDMw2OOkeNzYo4L68B2C5BYtAihGgTmV06Oh/Lym3dA4QvihKa8HzdNThjqSaISaxfKH0J10ovMD9/Z3jfp1rnM1uH4ZRTGTcdVGeNAaPcQDeQULdg6v/74bdfVDvCUp6Kx0PaewlX4xWb2/iPB1hp+jJBLWFtI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785251810; c=relaxed/simple;
-	bh=XlZCX2orAG9A7CaHiGc+AadKeWMD7s3uC/dtTUezOIY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LES7aFxisU7ozR6/GRvnU5slq3mE726lQAitGrVjK18I5ivEjoWexLuJL8/BKh/+OLFtA5nzQpM3hBo40oOeDzDIw5VFjNKXj2GE8H9eqDKBoo96qkIgHMjNeUwWBtSjPDNU6jqO0BmGFm7Nc2y9kEmwEU38TcZsWBK6H5FOFh8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=IqQYWl4E; arc=fail smtp.client-ip=52.101.65.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A3F30568D;
+	Tue, 28 Jul 2026 15:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785252268; cv=none; b=OsTcd+rgI3WCOIMR172rxbLjq66lUh/Id42jBoXAFcIq+pFWGzHn9F9MFdSLqzHk8ILk4nn9ZQ1BWlV1+CpzIyCBkBzgI8iFn9/ZE6jFZZ4mEypGldZ/3vDlB94/GquOyIED3DXOqqDVs2TwZ9NC26Ds/K8owtSdAQOxjcXwbTU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785252268; c=relaxed/simple;
+	bh=HbAXE+kt/gg6/vVHF+a8eI7tJ3ds+StEx30QT3bbTIY=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pNRvweJp0iR1qAVQgJ0A731GxVwvB9lQIBIa0/4f0sRdyy94TB+baP+y25G7xTNrAOCuzEtGpCBdcO5vo0D+s4X7mH71hUHERD4LfUGdhCw08/pMr+JCOvoXaJ7xu2WxM/5pl/rHV8S3UUJyix5cmv6uq8h67bFUKVC+168JkMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQXRuwAn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="IqQYWl4E"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uZK9ZsORIz6NJNmk/NqjfWuXo4N0Io5ndm7omnkok9aJma+ejc0PuLJerfVmZ4pIaLB3tDNLTfz9iauJSF0qPrUixAqRDNE6cnWfK+6opJe+9n7Ch7ve0UagMCH7Ls4f2c1kXmQCy3ivdmZBGdslbny+PDKO65w32lTi/MRY+cYsR6GdvA8RaU8jlkBstM0bdbCFTSl2rccsNdpLs1V9PiDUIkaVC2LQwI+QTupKUywJCl6aIh5rNqPwGk77UKno0EmM7KDdqAvTREYDtb9yr5r+P/RqjASk+TkmOs4nVyslRRrJ9N4H8JGoeU/Ps8DHWVU+AkqOLvSN7qm9rgzHVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CSIozhHv14vivHjD1Ub85YRscU3C72z2cLQQO7mk7Gc=;
- b=Es/dgtuj52nA6+TA2TfR5uh4mhwZVBOLlztTCR3v626FBsXd1SSLE8W6SElQZD2ygTw2A73yjJdaRi++/v495GYHRsoMHMSvc8VQiVhyQk9HUYW0QYPQtYo4I0uqWRE4zCHpeB5Y/YaWNAGtF7fDKa8ej80TBd4siipjn3gdDK5Vg/aK589PYor028ButzCe0+KUvXgzGkVmni6sWPAHw/wKFbSdrx9J/fKq4rcikSWcdvxbVH37SRN/dsEoU73rMaRfMN+Nyo/raiNU3PM5yZKHxxaaYIyGQ3frq81VR5cPK+CNDBS9y4hvKXWsafXNE6Ry805jnJDLwyRiP5nMGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CSIozhHv14vivHjD1Ub85YRscU3C72z2cLQQO7mk7Gc=;
- b=IqQYWl4EUjF4v/8Zoam7flBJaTQStisnAwhpSmg2HWK59JxdLnG4MHHVjcR/uqGCD2Y/wDWlM8b31uP+kzQertg79FDIx8zrC4AUXlnOL7qvv3bcEwE+jpmzunHW5FTpOmwN82VdzSUlSboBl0fIDzoEKvq0AQcceuoytbPsbekKtAV8nZwLcwPu7RpWCxI8wJqPRjl7fF5s1P3cyYwED/Rcvek1fmX3FAYkJtI5xoFhmOeT6v+05yTzwglXb2BychXc+BFTY1+YuUomvlPVNTkAjtk93ChTh52w2bgUjPQtAUq9XSIeUq6SGeHtj0wlN4aufur8N2aqpKXpkyrQmA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by VI1PR04MB7184.eurprd04.prod.outlook.com (2603:10a6:800:125::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
- 2026 15:16:44 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0270.009; Tue, 28 Jul 2026
- 15:16:44 +0000
-Date: Tue, 28 Jul 2026 10:16:36 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: haibo.chen@oss.nxp.com
-Cc: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Haibo Chen <haibo.chen@nxp.com>
-Subject: Re: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
- reconfiguring MCR0 and DLL
-Message-ID: <amjH1P7Q6tZkEuoL@SMW015318>
-References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
- <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
-X-ClientProxiedBy: PH7P220CA0060.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32b::29) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQXRuwAn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40C91F00A3A;
+	Tue, 28 Jul 2026 15:24:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1785252267;
+	bh=+XBHM4Y2azxZZa9+2n0cn7/S1Zo1nqK1cbQKursEuU8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=AQXRuwAnmeNsCUMnDuyVSTCYhTop9FeluTrtQtmzhUKpET33xZQPbfMa/FsniHPe1
+	 jKfwwk1BzCkD2McI7qFj+Og0wcyJNXZUUhx4U6VMOm9Eoa9EGoypukF4qlVj3O2uB6
+	 uGvGpkG4eP5IVy+v/62ogTjydHTTIE/miaHcxSY4VEUVO7BJSKABFvx9rmLuiGi4t3
+	 KXI2mJpnvGKmIrAAlzbTHjtIADZcaTAs3cN0rufVC9R9/xiv2Alg65YXlTUfbIYiYQ
+	 rhzjx4WpOV3R2iGo4RIZUFdh2JChcxhkwF3zdsg0BDMslT6rdF0xGzd5/602iK+WFb
+	 zVIQsy6+FquJw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wojfM-00000009kmG-1Tn4;
+	Tue, 28 Jul 2026 15:24:24 +0000
+Date: Tue, 28 Jul 2026 16:24:23 +0100
+Message-ID: <86v79zcf2w.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Swark Yang <syang@axiado.com>
+Cc: Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,	Harshit Shah <hshah@axiado.com>,	Linus
+ Walleij <linusw@kernel.org>,	Bartosz Golaszewski <brgl@kernel.org>,	Jan
+ Kotas <jank@cadence.com>,	Michal Simek <michal.simek@amd.com>,	Andi Shyti
+ <andi.shyti@kernel.org>,	=?UTF-8?B?UHJ6ZW15c8WCYXc=?= Gaj
+ <pgaj@cadence.com>,	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,	Boris Brezillon <bbrezillon@kernel.org>,	Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,	Jiri Slaby
+ <jirislaby@kernel.org>,	Mark Brown <broonie@kernel.org>,	Mathias Nyman
+ <mathias.nyman@intel.com>,	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org,	linux-i2c@vger.kernel.org,
+	linux-i3c@lists.infradead.org,	linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org,	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v3 8/8] arm64: dts: axiado: Add initial support for AX3005 SoC and eval board
+In-Reply-To: <20260716-upstream-axiado-ax3005-upstream-v3-8-c429095143ec@axiado.com>
+References: <20260716-upstream-axiado-ax3005-upstream-v3-0-c429095143ec@axiado.com>
+	<20260716-upstream-axiado-ax3005-upstream-v3-8-c429095143ec@axiado.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|VI1PR04MB7184:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29711807-8af4-43d3-effc-08deecbb3c24
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|19092799006|6133799003|56012099006|11063799006|4143699003|10067099003|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	EdngNG67Yrp2YphMYb3SJY6YVlJLC1THvd9vlaVp65JBLr3JpIvA1ZmEkwa9YnFynYmPBL8Q46xArdHoQ03Gj5atCEK+jTu4Ze3EeMMxcJtQhijqCEnonp+HwJz8mMuMMrodHlhPcE/LPPwoLD1jjp7ID+ML+H1VdKhDXSfdkgMC7Qo+KhmEsPh8bvDPc6CubjiuiK5vHIBCOS3ps4kl8SLBHwYDpACDfitdHwTJ1PKJ+1l0F06ng5TNtXdfUpvNAhTXqc+oCfol3fyeAxaY8/5PWmxCoLc4LSJ9+X3+XElb9g1Up9u6IHIFzaH6B43S/ZjkE36I5OfXveUIVH8dg9YD60WZ4MWX7WN5N3ABU3KqUGg5G6dHnkoL5KmYI3ZnNGOtA6TlxWfNZA70NVuhL6g35GEdcpvOpGBXV/o4DgoMcohK0jyf3Hb7z70Me3qZ1kX44OV8qP9j25TaSMB+Gzs2JFPiCHJ3Z36XBAz07eJmRIgGc3xvKTwxOM0bvUc55oxcGO76XE9Cqf3oq16N/zRYEDhXKN4FApfVjmuXYITppSSorkAnkpEWfAl2kYL5iXfp8tqZb3ddNUcPTEcTmHrg+wGrHcFcWKqnvDxdunXZAYZU3VrHc2ZG6icMvi2qDC/R0rTi2Uwfs2RK3URB8Psv/Y7+IVJTlf4QVLXpgWU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(19092799006)(6133799003)(56012099006)(11063799006)(4143699003)(10067099003)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?I/OY9O230XTz4/v4ldEWw/XJ3UczCE6+EbCR81Xtjnpu1FDenAMSZCBUSrNq?=
- =?us-ascii?Q?nioZyRLd78ftUKfVZWH/Zlyzn5Bgun/yXPGkY9njpI5srNWHdlMkRe5fhsgN?=
- =?us-ascii?Q?8tX3jCtEpmyOCcKB1DvWELT68+3F9cwVTnoPq8yAgoVQJdyklmgL+kt8a49/?=
- =?us-ascii?Q?b0qKuNWfskR8rg9D+3xd+FArW3jA4mDjSVaE+SEgbnURswDzE074digXTI4f?=
- =?us-ascii?Q?FL8Ij/Ek8nk5rFztVcOqHtCkhWGXoOtSKNW5FAdlnexPtShQTl0aHqJOrZef?=
- =?us-ascii?Q?YPXbSdnWrKQDkxm1hwFjY6YSbirmMT57Wa3ha3ldhUKjnpXL8DII1Y61V+cB?=
- =?us-ascii?Q?+4WrEQ0xY6qea4eSxH+4r3wb6PDzoM7bwyqc611XzsJqunfm+W676gHAWamH?=
- =?us-ascii?Q?rnVMBHxYcfyn4Lpscpm9fYG6hLpQ2yGguVrTWgItRO44NJx3qsUI75hSFvrj?=
- =?us-ascii?Q?SZkbDV9/iFJHY7xJCCuv5ml+ecdvSLRFRHEBrq+uXxvqUDxbmjvENpIedctN?=
- =?us-ascii?Q?ZDyoVD4P2OGyTSog0ICivEClQuGQdaaWkQj0IW0lHFv88AuoS1rDoOr55jU2?=
- =?us-ascii?Q?IDo8c7RlXZ0iBcCkTnN0TWd6GYz0GNPEKKhpaU+zROl5LK7oFHz208cBDCG4?=
- =?us-ascii?Q?8mUL6DMmhJUcX8fvx0OGbqME+KxoGAKxf9xLgBp7/yvWhqYjOCAolfd3Yar0?=
- =?us-ascii?Q?lgjVF73fvQqHr9rg6r5FHPnmyC9Vx4PgIqoJP14k8o/K2cy5UuJThvKseYRl?=
- =?us-ascii?Q?5R97vqNidPlzzgBvjzK17IcVjFoJ0cOcaIaKBkby9mSYBJ1ZsbL2ZCG/llk/?=
- =?us-ascii?Q?cyw7KkaV4wJiAxrr8/xpmzb+hSDeDeMET0K0fEFzvL6S0u3JjhpwfYd0rUP0?=
- =?us-ascii?Q?eDGz1CDiMRIP1bI++aU4r9Wko+i367iLU/QQ2IBdR+GjrW+OAtKd47H2o0+n?=
- =?us-ascii?Q?eiKEi9lIc4923FhgFFs3gE2ZRCYmT8+19X75aNxjC7Q3sn9cRHgO0LNgW6Z7?=
- =?us-ascii?Q?Tv6hSJsfxJrjMGKil3NjRzNRKBSNsvMOTsI+35AKWNeQoYiUO+yVYnfP7Khr?=
- =?us-ascii?Q?lC/b6Ol4aS+12AeC+2Aqc3v4WEz5+qSjj7ZyMzl+vAJInHKXFKgIrqgR5YF0?=
- =?us-ascii?Q?HU5KvjlY2kIn4q0Lj66zmC/UPqQy+afPZlMOlEs6ddKdGHRr/2vdlvgsZ2ZR?=
- =?us-ascii?Q?cvxT+9GaqmgaHo0CsGU/klMfeetLxlQ0zOJABzaB3MLcnmOCLu67X1myS1cD?=
- =?us-ascii?Q?R+JMyzUnXWayNpIXH5OC5dPV2kMfAknI5+DVHTtCJG4kyXz5n5qGwZGJ9eaL?=
- =?us-ascii?Q?hzUYQAaXxkQXeBdRygycywl5r1x65SMmTRwlQN8N3lqr+ZCPURxnnj6t6AwL?=
- =?us-ascii?Q?PQC8keFCF+2JWKbmpnvgIC/cyCeM9AjL+zx1oDzgmggcbbulM30HWuh2lVDc?=
- =?us-ascii?Q?LnP/1a5NyPRSp7V/WB6T/dINmRGAnrAT7QFkjbQswyrLUfNwn+Et8JqjPfLn?=
- =?us-ascii?Q?Hln1mH5IpLTj5KXXtUVkpJn9OdHXX9wgqWbDiZ15mDxZT0I64U6eYhDaN/dv?=
- =?us-ascii?Q?LbX5nqnHF9Z6zmjOIo99/RObZuTd0UrxPbItzJcnRx2aHom8TOULJF8q1/NF?=
- =?us-ascii?Q?sy/dEcnZQHi/lkaBekFbp/lYR7YCOaLPxIObeqdqmYsedrc9Qy0AUs7tJuZR?=
- =?us-ascii?Q?zaihm6LIoeYPROQbAXN3ykgnTORpU6Vyf8UZWDaB9+YoRMK0eRitWqwyZPu/?=
- =?us-ascii?Q?7FuEb+n4FK2TxlR1SWAwhTvMPoA5O7FiIp7i3iJG7saqBw9VCoVj?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29711807-8af4-43d3-effc-08deecbb3c24
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 15:16:44.8159
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BR5Nw3wJSDWRLUHWkkO20yrJTQP4ypOyUkDZrQDqdOq2YFWB7r+IFEEnRu4fcTxCuOciKLuzMVmEZAcKa7HR/1gCP2zUM0r9DvSfBDBpXK2nPUDfNAXHhormCndEH5eR
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7184
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: syang@axiado.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, hshah@axiado.com, linusw@kernel.org, brgl@kernel.org, jank@cadence.com, michal.simek@amd.com, andi.shyti@kernel.org, pgaj@cadence.com, alexandre.belloni@bootlin.com, Frank.Li@nxp.com, bbrezillon@kernel.org, gregkh@linuxfoundation.org, jirislaby@kernel.org, broonie@kernel.org, mathias.nyman@intel.com, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, linux-i2c@vger.kernel.org, linux-i3c@lists.infradead.org, linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, linux-usb@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, Jul 28, 2026 at 06:18:09PM +0800, haibo.chen@oss.nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
+On Fri, 17 Jul 2026 04:51:15 +0100,
+Swark Yang <syang@axiado.com> wrote:
 >
-> In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
-> and the DLL control registers (DLLxCR) are reconfigured while the
-> FlexSPI module is still enabled. According to the FlexSPI reference
-> manual initialization sequence, MCR0 and the DLL control registers
-> should be programmed while the module is in stop mode, i.e. with
-> MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] = 0)
-> afterwards.
->
-> Wrap the RX sample clock source selection and the DLL calibration/
-> override reconfiguration in a stop-mode window to align with the RM
-> and avoid reconfiguring timing-critical registers while the module is
-> active.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+[...]
 
->  drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->
-> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> index 6de6d432cdcb2ee383a02d72f20000045903e176..a426b8d92193a4e303f411cd17c16cb31c3f3873 100644
-> --- a/drivers/spi/spi-nxp-fspi.c
-> +++ b/drivers/spi/spi-nxp-fspi.c
-> @@ -867,6 +867,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
->  	unsigned long rate = op->max_freq;
->  	int ret;
->  	uint64_t size_kb;
-> +	u32 reg;
->
->  	/*
->  	 * Return when following condition all meet,
-> @@ -896,6 +897,15 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
->
->  	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
->
-> +	/*
-> +	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
-> +	 * the DLL control registers should be configured while the module is in
-> +	 * stop mode (MCR0[MDIS] = 1). Enter stop mode before reconfiguring the
-> +	 * RX sample clock source and the DLL, then exit stop mode afterwards.
-> +	 */
-> +	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-> +	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> +	soc {
+> +		compatible = "simple-bus";
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		interrupt-parent = <&gic500>;
+> +		ranges;
 > +
->  	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
->  	rate = min(f->max_rate, op->max_freq);
->
-> @@ -928,6 +938,10 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
->  	else
->  		nxp_fspi_dll_override(f);
->
-> +	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
-> +	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
-> +	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-> +
->  	f->pre_op_rate = op->max_freq;
->
->  	f->selected = spi_get_chipselect(spi, 0);
->
-> --
-> 2.34.1
->
->
+> +		gic500: interrupt-controller@40400000 {
+> +			compatible = "arm,gic-v3";
+> +			reg = <0x0 0x40400000 0x0 0x10000>,
+> +			      <0x0 0x40500000 0x0 0xc0000>;
+
+This is missing the GICC, GICH and GICV regions that are implemented
+on Cortex-A53. See the binding document.
+
+> +			ranges;
+> +			#interrupt-cells = <3>;
+> +			interrupt-controller;
+> +			#address-cells = <2>;
+> +			#size-cells = <2>;
+> +			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_LOW>;
+> +			#redistributor-regions = <1>;
+
+This is the default, and isn't required.
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.

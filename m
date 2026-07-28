@@ -1,180 +1,186 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012000.outbound.protection.outlook.com [52.101.53.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D10B466B7B
-	for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 18:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785263966; cv=none; b=fXRz7mPmeO+VJFas4kdLbiAwQ047v1fvc4iM4/6rVSxONwgoCbkn5LH8k07VAhdbrteyJgUAwbaynU6p6Ih+7kMCfzLm73Ie2w0nDlhvsbuMskaoSdnVwf/t/BYyro6kSfOHj4FD0wQo/oanEm4u1KiWSznPc/6O2EW6ZPJq8+c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785263966; c=relaxed/simple;
-	bh=RKr4sPw7yY59cnecNrMMRCBGIPohNGrdz5d9epxLmFA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rf8orBhiqL8vlAozIfv9/yj2qBD5Z+mVaSX6cV62iRe4O41KNAbzV0TxvS0wTITehH6DnVB+lJnCNEXEsbye2rN2sdAwU6lxnOE05+YhX/C1m77zQTYcIfZ/UYXrKGBwHLhWKXLuhxna+DU2/KAxaO3yvLUh8PL/FECElr2Z0Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=LfB8KLug; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2663C44AB6F;
+	Tue, 28 Jul 2026 19:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785265884; cv=fail; b=FKvNbF0wle+7ugrsMW4+n9x0SkOZk2nz62omLuLX8asGTyvxzVufBztddNBVs+mZOlQMfWEIAQqiEdBUL3ZlOs2XCR1dvVbpwG8Dzse0WvT6GXZVNawqtjB6lAF/XZtLnXkmHFvA4YBLsybqpDHVid9HLNuWz+bcoBKbecZ3Esw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785265884; c=relaxed/simple;
+	bh=47+rWuUVAnMTu7phD5LbV3IRmcItFpRf8HLUZZPBlqM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lrjagf9QgVYG7bl7yBGvKX4u1Al/N00wXTes7CdVptiZVpm1UVccecF4nCjaHrwkmkh/8tXTvdtJx7tYALgBPLqsoBt/DqEQdaZ+sG2IeRcWEgO6e9lrGrJtXRrIWvfczSpr61gENncS9FsGJ8DJQJF3gKMr0GIFNDdF6LFxIuQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uZYfSHYD; arc=fail smtp.client-ip=52.101.53.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="LfB8KLug"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4864ebb6268so45783b6e.3
-        for <linux-spi@vger.kernel.org>; Tue, 28 Jul 2026 11:39:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1785263963; x=1785868763; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eZ6KjfVMquoraO1Ezx1ttR0tE2SHYdbVoIEX1Kyjbc0=;
-        b=LfB8KLugj2YxSi5Tcqp+57pn5TicfayF9BCYrbMPzlZfNYQSfdqgybl5hoIpKoYQ9s
-         8+PB6pHbsa8v1kUeExycdGYz2u7FDbsyRLT0gNSG2A3UMac9/1EwrWCLIrWdg+EXHdZu
-         c1h4jIjFA7cnfR3yG4XZ8/GGywvHOSGwd9agpuEGXUw7kJpUaMV7axQ52zRBW8cOy4Jt
-         Bkyhe401J89xER3pErUa7hr5jDBhXHKHMhKHHAr7ZtmBqTVF+Uyur4iJ0NukKtHL26SX
-         MbjyX2P+I2Ul6DuVtL774rTlomP8WzmY7evjNc7NtN9o5sNGaWphiVUFCO5Nk9TAOCVW
-         n4/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785263963; x=1785868763;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eZ6KjfVMquoraO1Ezx1ttR0tE2SHYdbVoIEX1Kyjbc0=;
-        b=X5VweSx/JKrVaxwA3Z1LPKKrokXBsmevcR/pmX8EKZ04Q4GALmgrMvXjgQxq0XCHzy
-         G9UxJEoehH0cEuoHQ401O4bHjfsWuLTZ8STf8oG0TGjpJPz+3ZXhrqS461PjYChgATEj
-         FqLK5JfPffvtlS08bcvJFRho0Xx0p+XGqIz+UpnhGN52P2H8F0y2u7ThOm1doTLuo7wE
-         v48EQlUCf9MH4JZlDUyjQpdFk8pEKPqBiVglpQjmW/SRS7ak8w3bZIND07dcVLCUKQyk
-         NsLnkBS6qc8gW0CUPhioJTaEuVa9JcSv3r72Lxu9sa0ZbW1xrKW5W8VsWRgEm+GLXRFF
-         dBgw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr1iExjtTerpaYtnjWlViCeUXnuBDtSR/bfYxnXvXvjsiMJ1DImeJs639XPbn9T5XYVg/p5dDOJmEo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDw/SSK8Gt+PboJ41BRW5wVR6C4XCyP7WFuHCuiyo1NFGsMd66
-	lKTPiEXKxN94hFtwXxi5QAo6g9QhKACx5obcYLmOOBEZvB9FyNi9gRE9X5dWjZ4Xy40=
-X-Gm-Gg: AR+sD133nvOdEctNH24nTGnnS6qOibOWoj2OCdZuHBYcEJDH2hOWc9pzd8i7q2pdVHz
-	WahLmceqQaHGz+6BXGn5m/99PgzjA0Y2kz2lFbrAqCiUtBjGOAGSTR7iZYyHiaKhSZHSOVCdLdV
-	v+IHYajFbkWeL1YWcFCc0V9eDtgFzYwancO4Lc0lZ+i25X4eTxYBz6of5ZkHBzcty3XgiefKegn
-	haV4sxmktVKM0PILSiEtzclFvKmHTMwsJK3E2sBNPblk4PHE9sWbEZdrrahEZLfOLF3xMvcFtBB
-	ZTR4fM3wqWyfBsjQdVJFe5KPiTHS0nNlbDyHAMztCMoWQed3XEenTM6C34bhoE0Y6f1q5uLEuqJ
-	nJBRnMLt4cfqFVK77vbEG3N+5wKjblgTgNEHXWs4jI5JJHshXos1Jhqhl9xS/QMOXHu/sU1ee32
-	P2ZkezQnyoy/3Pqj5rQTWBWe/gbkhRSsgSTJ1TKWGA6Pr3Eu+/hWHH
-X-Received: by 2002:a05:6808:2221:b0:497:da7f:179a with SMTP id 5614622812f47-4ad5bb442cemr2111452b6e.21.1785263962996;
-        Tue, 28 Jul 2026 11:39:22 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:3026:75d1:db9d:8984? ([2600:8803:e7e4:500:3026:75d1:db9d:8984])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4ad6b3f025dsm409931b6e.3.2026.07.28.11.39.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jul 2026 11:39:22 -0700 (PDT)
-Message-ID: <e1f977a8-ab38-4dc6-a82b-b955545550a0@baylibre.com>
-Date: Tue, 28 Jul 2026 13:39:20 -0500
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uZYfSHYD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EW18TG57ZBabl6btG0v1ilu0usRQA+DKlU2GrJOJ+R7jBH4WzHjSpQ86nNEYjNFAAxZ70oamCjK3QWNE30GzhnnnOjGJTm2J+QMkHid8mXHAkoJ4eV1aBNG3uee9tZx2st4+sGNqONYjwYrGcVtKMo1NjCnNG5Fd0suBX9n+st7qNV4muVbg9Ih8deMafnfKR1ucyD0V9hERZAoaUARnKRlcIRpog/uIkpt3VTBwosmnGfv19o0aay+zkcLchAeyzoHPzjnPAzSZtgJxjARqg0/7bUJBbdPYV3sZ+gb44Y46+3/SG0t+wtgJb6iU5S8WUJjVoGJd2yl7rSA9cZkAlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YCsggAagejOv86ML0SFX7ZWFLMhWWMRh2D1CCbGQOgc=;
+ b=i5MJRuDSKU69qPpnA8Z+dKW19/LXWfIVWUXUTcOj4y4fBoaJ0HFHf+LYBtcnMo3bVLD1rQbG4MEOu8RbN8CuO7Y7YAKyBGe/32e3BANFyhnCVrCeon5MYPjwfmQYP5su9JusYSApGNYvxvdgS4D44/msjGpvtQJKwPRshbY4MzYE1CCFwUwuooTCawyYZSCmQryFVZwmRlITElFYyJ7/CeGFof4uhln0im6kmpNFIC0NL8xPUNHXIOIa3H0feE4j38ReCrXKi6bkp5Nmm9395BkgOwnpDkPWrIbzRnjurHhc8ZE4Fxpp6U2z3mqKOTraHm4e1GzI/6fR2JfLGTRJUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YCsggAagejOv86ML0SFX7ZWFLMhWWMRh2D1CCbGQOgc=;
+ b=uZYfSHYDwb+QbgPYUUXCIACm4R/dVmciUCPa9wHXU8vjpVZ3QvNlYeLLXPza5bcqkIHj7gn0GadAb7C2XvifHU0/yi4qQDWKCeKk1ejZiE4aE86medPF/N7zcTg8w8JUl2I3Q6KDuJOweyzD/M4iCQwUaBCT0+Lht6BkQ/Jbzw5soan+Nh2ZVo8eUx77Tk0Vz9Og8OqOwoDFwiElFmyD5++d5Xzn8z9cYpCbqpZS+g9w527TunmZDE2PBQb+urF60CShTfOKTsopLjlvumrF7zsPFxDL8fAk6AHx4aO6e8E9FzKyt9NKJAvbSHSsFN23MXsWmxBtM2D8p7ypgWisNg==
+Received: from CH2PR07CA0059.namprd07.prod.outlook.com (2603:10b6:610:5b::33)
+ by SA0PR12MB4381.namprd12.prod.outlook.com (2603:10b6:806:70::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.12; Tue, 28 Jul
+ 2026 19:11:17 +0000
+Received: from CH2PEPF0000009E.namprd02.prod.outlook.com
+ (2603:10b6:610:5b:cafe::3) by CH2PR07CA0059.outlook.office365.com
+ (2603:10b6:610:5b::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.12 via Frontend Transport; Tue,
+ 28 Jul 2026 19:11:17 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF0000009E.mail.protection.outlook.com (10.167.244.27) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.270.5 via Frontend Transport; Tue, 28 Jul 2026 19:11:17 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Jul
+ 2026 12:10:57 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 28 Jul
+ 2026 12:10:57 -0700
+Received: from build-va-bionic-20260204.nvidia.com (10.127.8.12) by
+ mail.nvidia.com (10.129.68.9) with Microsoft SMTP Server id 15.2.2562.20 via
+ Frontend Transport; Tue, 28 Jul 2026 12:10:56 -0700
+From: Vishwaroop A <va@nvidia.com>
+To: <broonie@kernel.org>
+CC: <linux-spi@vger.kernel.org>, <jonathanh@nvidia.com>,
+	<thierry.reding@gmail.com>, <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+	<smangipudi@nvidia.com>, <va@nvidia.com>
+Subject: [PATCH v8 0/2] spi: add new_device/delete_device sysfs interface
+Date: Tue, 28 Jul 2026 19:10:54 +0000
+Message-ID: <20260728191056.2337791-1-va@nvidia.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/7] spi: dt-bindings: Add spi-device-addr peripheral
- property
-To: Conor Dooley <conor@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Cc: Janani Sunil <janani.sunil@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
- linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>
-References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
- <20260722-ad5529r-driver-v7-1-7781cd74ad75@analog.com>
- <e2118cfc-feef-4843-917f-844834ef4e60@baylibre.com>
- <20260725230445.60a445a0@jic23-huawei>
- <20260728-barrette-rickety-788b47da503c@spud>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20260728-barrette-rickety-788b47da503c@spud>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009E:EE_|SA0PR12MB4381:EE_
+X-MS-Office365-Filtering-Correlation-Id: b83744c4-7df8-4c4b-4cf9-08deecdc0048
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|30052699003|82310400026|376014|23010399003|36860700016|1800799024|13003099007|11063799006|56012099006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	zW2ZHjDxxq0LZHlZIRN5Nb2YKuWKDfCqletcMQJwCKWdZ4y8VXePOcLbd47JCJMTjepp/hkfqGxQZzYuW0JSUBtYU93UNVyt02yK0Ramcl4cKpM7Y6DGPf0QIWBCqVh90BX5hSD+bpGlxiaUlIT1uLVbkw/14kcCWTed3s9QzmB80MOHoD64hrwJWstL9HbQ204f/dBWTdZhyl/GAzCJ5+4DKLYqtC6tBg68IyphYYvzvqOswV+0oOdRTmGI90eJLwni0nNfSNLic5jGi+sUxUAJWgslCbKgoMCakyELRqUU/eolBUwtC6k+/ADWqqfQbnkH2BvXPadpFpEg2FZZszxlmgIFZilS+JOpIjbSTOBOEeArav4TuC+C9xj/ngQaUD7WoNraNa0PR+FPpsTWcLHjFaDrrlmbwgDvBfA2reDMhl4AnllPCV+l3Qn9Zd04ZZcqP5YhoYWv28D5VVZdE4CxXLPdsG4Eoxm4aU1aA9Un6F7msmPGfxWxY/9161GQM1W5WRjuu8/IawbBl+tpM0vsak5FwLlZftJT4Z1DL8IpJtH3P70su3RJEGB0kxzzOzHZlyXZo/fjscP99yfXQFL7dHEAMILVFlzYcF5CJ0NzHBx8VJvo+xnGKhzdvspMq9X8r2lThItTku+4raSjdRhXfSvE8bTusmJtWzR0/pHJLLny+Z0+7POr2SDm1LC3pd5Egfd7SISh/xIraSQEYA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(30052699003)(82310400026)(376014)(23010399003)(36860700016)(1800799024)(13003099007)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	GGnKyZxBPAh6HIIQRuSr5c1EjkGwiEJ2yjtVyj7o0ImSNxNbo4s3CeWgv1DX3mWt0r7YQ05iZWTgKe+Qmkwhtmx+UFn3XjuOUYM9oSu2ckVVebETu2KZ/k3DjtPJRvYLKCFsUgSigSnzB8fjsOCuzLy5f9NMTOYesLa3EYdgxOd/du4E27hFQgECmMCBr+06KqGdoiog2xOUlE5MycKfyBCORJK8SYQFZL6Ynq/c8kXMsb+QLsV8FvmiTz35VIL5/p7xs2DNY4nGi++/c3Y2Xa1VaUNWEFQpUnbMnBOsyCMIDO5fgArC3Fi0oq3yIVOwOqLOzXw4VOBMXt96ZWsGhATIB8zTWV/jEmuaPDqlqmwj18Fu47beOQyG8Ba2DH33A9RX908cKGwD536oHjg/cU3HgAZtJOkurUj2qLO12r0SvzP6vx0LKdj++1KH++nd
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 19:11:17.3393
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b83744c4-7df8-4c4b-4cf9-08deecdc0048
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009E.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4381
 
-On 7/28/26 11:10 AM, Conor Dooley wrote:
-> On Sat, Jul 25, 2026 at 11:04:45PM +0100, Jonathan Cameron wrote:
->> On Sat, 25 Jul 2026 15:55:01 -0500
->> David Lechner <dlechner@baylibre.com> wrote:
->>
->>> On 7/22/26 2:54 AM, Janani Sunil wrote:
->>>> Some SPI devices support sharing a single chip select across multiple
->>>> physical chips by encoding a device address in the SPI frame itself.
->>>> Add the generic spi-device-addr property for describing these hardware
->>>> addresses. The property is placed on the SPI peripheral node and may
->>>> contain multiple addresses.
->>>>
->>>> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
->>>> ---
->>>>  Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 7 +++++++
->>>>  1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>> index 880a9f624566..b59d047cf117 100644
->>>> --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>> +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
->>>> @@ -142,6 +142,13 @@ properties:
->>>>      minItems: 2
->>>>      maxItems: 4
->>>>  
->>>> +  spi-device-addr:
->>>> +    $ref: /schemas/types.yaml#/definitions/uint32-array
->>>> +    description:
->>>> +      Device addresses used when multiple peripherals share a single chip
->>>> +      select. The array allows one logical peripheral to comprise multiple
->>>> +      physical devices, with one address per device.  
->>>
->>> "per physical device" for clarity.
->>>
->>
->> We may end up relaxing that again if multichip packages start doing this.
->> Fine to add that clarification for now. We can revisit when / if it ever
->> needs that relaxing.
->>
->>>> +
->>>>    st,spi-midi-ns:
->>>>      deprecated: true
->>>>      description: |
->>>>   
->>>
->>> If there is nothing useful the SPI core code can do with this information,
->>> I'm not entirely convinced that this needs to be a common property.
->>
->> I think being common does make some sense from a standarization point of
->> view and it isn't obvious where to put it other than under spi.
->>
->>>
->>> And this only allows for one logical device. If we wanted to treat each
->>> address as a logical device (all with same CS), we would need #address-cells = <2>;
->>> instead where the DT "address" is two values, the CS and the device address.
->>
->> Ah.  Good point for the adc@address or similar needing to match a combination
->> of CS and spi-device-addr.  Conor any thoughts on how this would be done?
-> 
-> I'm sorry, I don't quite understand. Why do you want to support both of
-> these representations? Hardware wise both of these things would be
-> describing the same setup, so allowing this alternate "multiple logical
-> device" typically is not permitted. What even is the use case of it?
-> Does it matter at all if you have one or more logical devices from a
-> consumer perspective?
-> 
-> I do have an idea of how to solve the adc@address problem (you can do
-> adc@address,spi-device-address like some other devices) but as I said I
-> don't get why it would be needed.
+Add I2C-style new_device/delete_device sysfs attributes to SPI host
+controllers, allowing userspace to instantiate and remove SPI devices
+at runtime without device-tree changes.
 
-I would expect that if such a device was intended to be used as individual
-logical devices that they would just be wired up each with their own chip
-select rather than sharing one.
+Patch 1 adds the new_device/delete_device attributes and the supporting
+infrastructure (userspace_clients list, manual sysfs group registration).
+Patch 2 adds the ABI and user-facing documentation.
 
-The only reason I can think of actually needing adc@address,spi-device-address
-would be on a system that was really short on pins on the MCU.
+Changes since v7:
+  - Remove the redundant CONFIG_SPI_DYNAMIC guard around
+    spi_controller_groups[].  (Jon Hunter)
+  - Restore the original add_lock release point; the userspace sysfs
+    group is removed and drained before the lock is taken.  (Jon Hunter)
+  - Remove the redundant dead flag and retain the base-tree
+    device_is_registered() teardown check.  (Jon Hunter)
+  - Simplify parsing, diagnostics and comments.  (Jon Hunter)
 
-So not saying that we need it right now. Just wanted to make sure we were
-intentional about saying we don't need it if we don't.
+Changes since v6:
+  - new_device_store(): reject empty device names.  (Mark Brown)
+  - Move sysfs userspace group registration out of the automatic
+    ctlr->dev.groups path; create it manually at the end of
+    spi_register_controller() and remove it at the start of
+    spi_unregister_controller().  (Mark Brown)
+  - Drop userspace_clients_lock; reuse the existing add_lock.
+    new_device_store() calls __spi_add_device() directly under
+    add_lock; delete_device_store() also takes add_lock.
+    new_device is DEVICE_ATTR_IGNORE_LOCKDEP alongside delete_device
+    to silence the class-level splat.  (Jon Hunter)
+  - kernel-doc / inline comment updates for the new struct fields.
+
+Changes since v5:
+  - Rebased on next-20260727 (v7.2-rc5); applies cleanly.
+  - kernel-doc entries for the new struct spi_controller /
+    struct spi_device fields.
+  - new_device_store(): reject chip_select > U8_MAX; parse with %u.
+  - new_device_store(): reject mode bits outside SPI_MODE_USER_MASK.
+  - new_device_store(): drop the unused 'n' / '%n' from sscanf().
+
+Changes since v4:
+  - Removed spi_unregister_device() call from new_device_store()'s
+    controller-teardown error path.
+
+Changes since v3:
+  - Replaced holding add_lock across __spi_add_device() + list
+    insertion with the design that eventually landed as v8: sysfs
+    group removed before add_lock is taken, so kernfs_drain()
+    serialises us with unregister.
+
+Changes since v2:
+  - Gated sysfs attributes and locking on CONFIG_SPI_DYNAMIC.
+
+Changes since v1:
+  - Added locking to prevent races between new_device_store() and
+    concurrent spi_unregister_controller().
+
+Link: https://lore.kernel.org/linux-spi/20260728030541.2279518-1-va@nvidia.com/  # v7
+Link: https://lore.kernel.org/linux-spi/cover.1784000000.git.va@nvidia.com/  # v6
+Link: https://lore.kernel.org/linux-spi/20260517201602.498135-1-va@nvidia.com/  # v5
+Link: https://lore.kernel.org/linux-tegra/909f0c92-d110-4253-903e-5c81e21e12c9@nvidia.com/
+
+Vishwaroop A (2):
+  spi: add new_device/delete_device sysfs interface
+  docs: spi: add documentation for userspace device instantiation
+
+ .../ABI/testing/sysfs-class-spi-master        |  34 +++
+ Documentation/spi/index.rst                   |   1 +
+ Documentation/spi/instantiating-devices.rst   |  88 +++++++
+ drivers/spi/spi.c                             | 241 ++++++++++++++++++
+ include/linux/spi/spi.h                       |  18 ++
+ 5 files changed, 382 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-spi-master
+ create mode 100644 Documentation/spi/instantiating-devices.rst
+
+
+base-commit: 0d33d21e47d9dc66f91e44da3fc9220c74d93df7
+-- 
+2.17.1
 

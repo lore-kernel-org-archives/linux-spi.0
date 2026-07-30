@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C6938837B;
-	Thu, 30 Jul 2026 12:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE23437124;
+	Thu, 30 Jul 2026 13:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785413149; cv=none; b=JB+V5laLa18TNOHakwn+5aAn6ZiYBd++/YrrJp0qs1AtXxxmOjUMEEHMaRv00zwL7MXdV7f+x3ao1XO713Zjz1RjoWITjhWNL/vaZ5tSmsIqPQolTB2B6R3cbEwRcDTm6ijeRmzii68WDIEvA+YA1xeW7u1FBx8JFibX92FzdpM=
+	t=1785417755; cv=none; b=FUxhZjegu0M7tXR9zPETONdd18l38FviMJdXx/XBznRQbz8DYrEWjL11al6PLsCzfMeVpVxaewNNfM2L7WdWHXFTHFDoPqxoeONi45cZ+xm86W7fPKDkODWhz7fI1HB9MzrLmX3r2ITMdMWxpJNrVTjb4pbzS4bmCbb7sc2fokg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785413149; c=relaxed/simple;
-	bh=yMJtZAEaPAwhFjSwKhfm0pX9S3qY4eiB47M6qmEtGQk=;
+	s=arc-20240116; t=1785417755; c=relaxed/simple;
+	bh=mIo3bDHGxiYgzwh+V9qnJf9WN84MJyrvU3GvTfByHMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tf1pTWmpl7OmNSHGVz1EPnkn4UufiDfjWAiGT/3UJZbfwhqwvczRn27R3+AjLTjz2kiBpd0g3JfSISxzorb1pNzE4wobEtl/8s4b+gbRV5wFsA8TwF08NGpfjg0VY+EGXV4ZlmstNl5xOU1iIWPdsro/b9H8KK+vCUmYe48IDSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2gk9GyZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=ssvPp6jlPtGKbhfsj1fsVVymWqYSP6DKj3/w1ryLzJBTvYWjeZ2mxQLja9WDeERKJp9rczsRkJIy3GFUawqaMu7MTtC891Lj5jjhgCrcGTcKGX2X6kPwnF8YGOzPZyrhV21YUKlb99JThK0czRzO+aEWt3w02lQEclmCbIQPccw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/O8Ol09; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2gk9GyZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E571F000E9;
-	Thu, 30 Jul 2026 12:05:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/O8Ol09"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C06F1F000E9;
+	Thu, 30 Jul 2026 13:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785413148;
-	bh=qsUQy8M66IQC4lINcyq/oQdCxyYdqshF1zc1xBHxHA4=;
+	s=k20260515; t=1785417753;
+	bh=9Q3HIxWWSodqt0Bo0OCgnfV4yYAcllzEKkbzND1L9o0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e2gk9GyZgq8oQEURY5p40WzWG9z4659Vkf3Ehzzt6nAG7f59GgY9fEXIQKviG6uxV
-	 s1OGPXVVbPk2Z7CX8V59491Lap2GC79ZUr2osPt9XIdbtvmgaqMec/nYObE7QyTBH+
-	 nyGeYAAFXGdxJ3av2WpsMgeDjUd4boPv/Jkse01hSAhr07CmZGL/wzgL+vCIocG+/y
-	 jw3UhkyxKZpYLecDHrSmL9Tn+YGyOKZUoltrU0XK1Z1ZQ9wkt49KNvHD+pyC5pQJMj
-	 g0QgSNkP6K8T0f2euFhc4GFcujxYpeLWe8mnXiuo3RDYCG9PtfqYrPUeQN1V75C83T
-	 XKE9oNVwsAw+w==
-Date: Thu, 30 Jul 2026 13:05:43 +0100
+	b=B/O8Ol09cZSmMUODobcKqSgd5Q/JcwB+2tZgm0DaW+RO4xPO7iONvAMbU7s8GrSss
+	 tF71RlusA1A8HJt452LGRwMCcB+O2o5A+ngycPYg/Pn6KsVL8Zy1VIuU7WWaMht3I1
+	 0050WXTMkk7gol4vgXHOeTeAFqzR2l3icuVR7z2g0PmSwR0DM3skSzni0sjgoafmZd
+	 vnSfQHPVUf0C8FiZDURuUF/UMKh/fEO/i4hKC8kSFW0RbqHKFp5TJhPoRk56uEhQO/
+	 8ihOS88SOl29wZ09Wr6XN2aX/RUL7xIZD0rW0ttoinnmiUzo65zvplml7lv7YQ5Lcl
+	 cyf7wIqfPgXgw==
+Date: Thu, 30 Jul 2026 14:22:28 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: meson-spifc: use devm_pm_runtime_set_active_enabled
-Message-ID: <d91cc800-1f41-424d-baf8-c1b2fe935978@sirena.org.uk>
-References: <20260722-spifc-v1-1-e4462a4c6a06@gmail.com>
+To: xianwei.zhao@amlogic.com
+Cc: Sunny Luo <sunny.luo@amlogic.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] spi: dt-bindings: amlogic: spisg: Document
+ A9-specific properties
+Message-ID: <db111663-27a2-4299-a692-6154f1f842ca@sirena.org.uk>
+References: <20260723-a9-spisg-v2-0-9fc39106b7e2@amlogic.com>
+ <20260723-a9-spisg-v2-1-9fc39106b7e2@amlogic.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,45 +46,66 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="/A/xRZp0AlOIxdtl"
+	protocol="application/pgp-signature"; boundary="9CS4vkVm2ZtSBEMP"
 Content-Disposition: inline
-In-Reply-To: <20260722-spifc-v1-1-e4462a4c6a06@gmail.com>
+In-Reply-To: <20260723-a9-spisg-v2-1-9fc39106b7e2@amlogic.com>
 X-Cookie: In specially marked packages only.
 
 
---/A/xRZp0AlOIxdtl
+--9CS4vkVm2ZtSBEMP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 22, 2026 at 08:09:17PM +0800, Felix Gu wrote:
-> Use devm_pm_runtime_set_active_enabled to replace
-> pm_runtime_set_active() + pm_runtime_enable() and drop the out_pm
-> error label and now-unnecessary remove function.
+On Thu, Jul 23, 2026 at 06:43:42AM +0000, Xianwei Zhao via B4 Relay wrote:
+> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-> -static void meson_spifc_remove(struct platform_device *pdev)
-> -{
-> -	pm_runtime_get_sync(&pdev->dev);
-> -	pm_runtime_disable(&pdev->dev);
-> -	pm_runtime_put_noidle(&pdev->dev);
->  }
+> Document the Amlogic A9 SPISG controller and its additional
+> Device Tree properties.
 
-We still need the pm_runtime_get_sync() here since the driver uses
-devm_get_clk_enabled() - we need to exit remove() with the clock
-enabled.  The other changes look OK.
+> Add the "amlogic,a9-spisg" compatible string and define the
+> A9-specific "amlogic,mo-idle-output" and "amlogic,word-gap"
+> properties, which configure the MOSI idle output level and
+> the inter-word gap, respectively.
 
---/A/xRZp0AlOIxdtl
+> @@ -35,6 +34,23 @@ properties:
+>    resets:
+>      maxItems: 1
+> =20
+> +  amlogic,mo-idle-output:
+> +    description: |
+> +      Controls the MOSI output level when the controller is idle.
+> +      0 - Drive MOSI low
+> +      1 - Drive MOSI high
+> +      2 - Follow the last transmitted bit
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [0, 1, 2]
+> +    default: 0
+> +
+> +  amlogic,word-gap:
+> +    description: |
+> +      Number of idle clock cycles inserted between consecutive SPI words.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [0, 1, 2, 3]
+> +    default: 1
+
+I'd expect these to be per-device properties, not per controller.  The
+word_gap sounds a lot like the existing word_delay feature we have - if
+it's different it'd be good to be clear why.
+
+--9CS4vkVm2ZtSBEMP
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmprPhcACgkQJNaLcl1U
-h9BCFwf/fJYvAB49gnyQfVxHK32NXtzFjH+/iHS5QiweU/ilAXloDOMCGhHxw6Bt
-wEUpzncjFa+GP0Cy3L3uqO5+o2daTAh1JjfRsai8wCZ2OSa20PqmVJDmw+liiL0c
-jf86aCksazxg9Cx19/wyEPJ98mqcLUu3rLPrQ6VTi/DvWggukh3cs2o1q2XWK7qb
-eJb/+X57ex9cffILOmueqjG9SJSQQstM9k2MhRCfTeZw0hKwigKeGZW1F9JY95JW
-LqoAnFMbyx4Jk3Fcj6fr/KIYroMKNGSTaTh0mVQ5Cmnvp/lbYc0fWny861xwW0yb
-g7yhZ0cNaCHvxq4U/zBKFslj5eznMA==
-=JqfB
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmprUBMACgkQJNaLcl1U
+h9B6Igf/X+zzg9VfJoUN5T5BGj5eihf8ukNh7rLmr4zYQsfOkHIr/NcL/kZsXsxf
+7KuCeVVRO/KVxZesl6kSr8Kf7h8SEjJChTauUDDy2Yy3up9zzI0seOO2Kpibc3Nh
+Xq+6ZmSDie9G3zBKMHNB71//bhMI+K5duCbfk8A0F6dsG1wsJobxAAlhTcHZnsiu
+LkmiQ+7p/rbBodJ6B+zk7tnpSvNFYaOkXVYO0I+kgDCF7uCyHok1/UKT/iYaaBbI
+R6ryWEykKC5fRmxPgculPRoamYLQhC/uMIMtSLdQK1DiKxVc5tEzp0pVLkKi4xss
+nQMdyTzCWVf4gThGtW1MS6J6xSXnRw==
+=2hV1
 -----END PGP SIGNATURE-----
 
---/A/xRZp0AlOIxdtl--
+--9CS4vkVm2ZtSBEMP--

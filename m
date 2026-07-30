@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6754E358373;
-	Thu, 30 Jul 2026 15:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D54143FD01;
+	Thu, 30 Jul 2026 15:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785426636; cv=none; b=odkPYrUUhWpANcdzaRNODCR9WGYB5dV35BnvoVTak7LBe002ZThF56sSXDHW4rLHwHmU621MLzhJucMEJnKPMdnNgKTH06Ar1qwj0dsJyLBLeqZByQvO/oZSyoO6q21HjSQtTyz9+4IwU2gO/m51JrEspmf6otkh9WKtuipApEU=
+	t=1785426639; cv=none; b=aiILk3yaQY5Jz7g4O+QZ4f3d0/HoGye6kflyanuA2Sbxp+2MxbGQszrsBCsVQioXP7KzyDXbORIbhaaxS5y1VxCnsRwNn2RkzGh8QxuVKoI0wqsA/ldtDMFxu840PCfx4ZMJKqr4AijZ6t7rXTHdi52DcjFNNQde1otYf3Wpd8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785426636; c=relaxed/simple;
-	bh=eEagDVNa74snUjVb+2QD9R1XSCdWxJ9S9H2GGmns5MQ=;
+	s=arc-20240116; t=1785426639; c=relaxed/simple;
+	bh=dr6iG6osjaLocDGYREZaQmbHB5gCia52HLqij4xsPMw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rLShF1ufJrJV9MZ8IWBjl22G6c4Uxhn/MJRl6UFObHETVTjQhE5G4PMkYIpn6PYcymtP8X9/SOcHWW3758rHW9LZII9pM6KljFd/qHQ6MZ0kKDLwUne60NRefMWLGBb2fl1M+JdqFAFJL/nocnwjLHfB0X0o8Vz9E6qGZz3d3Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9bBYW55; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ktwte8GuGMHbQIfaWgmjWt0wb5tU13Fi6WFqU6u0gKDgv/VFIzY06GdoafkBwhaZEDNk8ny334057hxLH41QnxsfKWiSAoByfTVxos+NwIdqtjbtnxnAY+dOSNBHUS2b3y+HQPUw5DiIFkF5Nmzj0QGLrriD1Ei5Ga1d8my2z9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwHkKMXX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9bBYW55"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66B11F00A3D;
-	Thu, 30 Jul 2026 15:50:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwHkKMXX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E531F00A3D;
+	Thu, 30 Jul 2026 15:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785426635;
-	bh=DFBbCu7MXNkrRdNdjcdS2i6Yb/YnpCSeqktE6bleyZU=;
+	s=k20260515; t=1785426637;
+	bh=G5h+AipDvccgog7pk45ebn2XpsOQhgcN3dHDXPGKXzk=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=D9bBYW55Y1ChDJxkbaPBL8RyIyhV5I4WqDfHpePtZ5dM0kSxaexkhB+seG8NKC5br
-	 v+j771bvyHaKRGYj4DZjOtacrVqbDBCKUUcDJBdg04EmCbhZk3KusQ3KCEmn2Jx0pp
-	 iu00HxB9xxbQxXqbXj02KZHoap9J/N1CeTIr8KAtjFaDYBtlVvOPcYTTCi5ruyG3Ix
-	 lObOgSViSuKaTr3MJcSv5UduijtkF92fUvr5mKPEZwxWnhJARk2YcwKaR3J9PtR/uF
-	 Rmqt7wY1BPbcmB0tIRHqM9wLc6eRV89pHFHCCC9oItAMcDrS89Q+RIvK15HEiPH6Gj
-	 KxYJVNhFlkslw==
+	b=dwHkKMXXg+ToqLBYD1ZBPQkeI5w1hq+yCfa1d7YWLn5JcylVxWjpaFzTbbwNEES6b
+	 hKLoHbXmGIxu63oQkFx1HqTQNLULwKy36f8wRW6uKwlOyU5EcHLOu9AEvlAaV+TGr5
+	 32fbczqGSfhCTuD3AQhyhJTaudKPjKGSPJZwroRyQUlDtCswopCxjtN0jsEtLPTMI7
+	 31AM3VuYt+cdfTPkZ5kAlPTuvxyFe4TzzIikMB3u4MW9ti80s7oyE4YwGkP3wmPSPI
+	 YAbN18+OUjJk/N0JpN3jJKvOnJqtIs46o+8tHTP3D/4Cx8a6eDErqAz6ATvz2RbybR
+	 BB1JVJaMfGwmA==
 From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- haibo.chen@oss.nxp.com
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
-In-Reply-To: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
-References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
-Subject: Re: [PATCH v2 0/3] Few fix/improvement for spi-nxp-fspi
-Message-Id: <178541365553.81171.1972476944935498438.b4-ty@b4>
-Date: Thu, 30 Jul 2026 13:14:15 +0100
+To: linux-spi@vger.kernel.org, Rosen Penev <rosenp@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+In-Reply-To: <20260727194714.11354-1-rosenp@gmail.com>
+References: <20260727194714.11354-1-rosenp@gmail.com>
+Subject: Re: [PATCH] spi: spi-mpc52xx: use platform_get_irq_optional for
+ IRQ lookup
+Message-Id: <178541244855.81171.17307971925800575584.b4-ty@b4>
+Date: Thu, 30 Jul 2026 12:54:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,29 +45,17 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16-dev
 
-On Tue, 28 Jul 2026 18:18:07 +0800, haibo.chen@oss.nxp.com wrote:
-> Few fix/improvement for spi-nxp-fspi
-> 
-> Patch 1 introduce per-SoC clock rate limits for both SDR and DTR modes
->         by adding max_sdr_rate and max_dtr_rate to nxp_fspi_devtype_data.
-> Patch 2 enter stop mode before reconfiguring MCR0 and DLL to follow
-> 	FlexSPI reference manual initialization sequence
-> Patch 3 propagate clock reconfig failures in nxp_fspi_select_mem()
-> 
-> [...]
+On Mon, 27 Jul 2026 12:47:14 -0700, Rosen Penev wrote:
+> spi: spi-mpc52xx: use platform_get_irq_optional for IRQ lookup
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.2
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
 Thanks!
 
-[1/3] spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported SoCs
-      https://git.kernel.org/broonie/spi/c/9c19d60fea9f
-[2/3] spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
-      https://git.kernel.org/broonie/spi/c/b4bde5cfff8e
-[3/3] spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
-      https://git.kernel.org/broonie/spi/c/b5902b977979
+[1/1] spi: spi-mpc52xx: use platform_get_irq_optional for IRQ lookup
+      https://git.kernel.org/broonie/spi/c/09d083d6757a
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

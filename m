@@ -1,91 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918BD446842;
-	Fri, 31 Jul 2026 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F834519A0;
+	Fri, 31 Jul 2026 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518546; cv=none; b=lq7+bLnum4KSD4O1/oO3eIllKH7BF0MEiH9csKKXIgF+kTa2yXmeDH82MVVzIft83kzaEQD85i4EGDIBswgt58GR7AeKqA5jBgPyU4vZBPM2oka1AyGCatIkw+twvYEvC4NuL4uNfLE2oUp7LSun8namgT+K2I3lGVosLXYDs3o=
+	t=1785521110; cv=none; b=RWZz8nZ8FcXfuBL3KUvwxhF7akH76ILxeHhEyIfPI8Sbbz4sxNks7tyLvOLrbBDUYTdRps4KXheX37tUio9KEon0HW2Th6nHQosiC50XvSz1/9j29k/oVazksdJnUgLqOxVNlW54BI2J5VimJgpSNHoSd6jKkPz/2tL9L9hFLu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518546; c=relaxed/simple;
-	bh=W1oO+ADGo9gyWhBG0QBswl5Or6C1cfUY909XIM/3290=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WEpRRmdsbxsVJ/tS1e9sPpAWbRhLYvXiz+nDCcZYZebwYAqfYK/zuJ+SvxLLipm9oYgZvkNnPMdc2zCA4o6hFbmf6OS2r25MP47tlliGO7/EMp9/v8D1Lz2q3engz/+wfdBJ2NQEvj3phNUCQUA3/Bdgw0Io1zsZ17nleP3IFxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKnHIU3c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785521110; c=relaxed/simple;
+	bh=vT0bphIuHRIJBEUkwzchbG1dvvO+qFTmQvv615Hjliw=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=DxCxvjb9h8EQYE634pgNAja/4+ZHen7OTH8goEp777i+SMYLlHGiKQQEzHLhH2nsslQbfdKAV052k3pgoH4hTO8wns35nbwfgduf1/UeQK7RHKEv1ETZVsMaOLLwNu7UXZu6X8T8GCV8CsLNXhnQWA+m9CkCS/VyrCSVWZ0/XBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6Dvy9O4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKnHIU3c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B821F00AC4;
-	Fri, 31 Jul 2026 17:22:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6Dvy9O4"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 47C261F00AC4;
+	Fri, 31 Jul 2026 18:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785518545;
-	bh=esBbtSATVpE7OKqQ/Ers3GZhdi/vzVT1f4Nq3U5LmFc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OKnHIU3cFlOtMLEaQD2xmnhYWXCXKzAmMWLHL02ITxkGSDMhK8LkP9moI4iSu8jHe
-	 UmTQ11Dhp7vyCr+F6HI0UQBU00CGw55dTNU3zm9xucay5bxRqHlmcCH8OUFQNRzxXI
-	 7MQTG8nQ4McQCijTVNiJuLfDmuhEWRbi4Sf/vaHwhRJqMPO2BC50dxLLo2D1UUaVXY
-	 bkmvawzqEU0/HEjXBoGZfs9dd3OcWRa/0EtbLHr4/5BujVRbtjviHJy72SvWJq6G6o
-	 x7l3RbgMo/TwMJIXTW5ojCqKrYhktv7IJa6aFub0iz45CF5k2l3BjyUOk+RUV3IM7r
-	 yTx6TLrAYUuvA==
-Date: Fri, 31 Jul 2026 18:22:21 +0100
+	s=k20260515; t=1785521106;
+	bh=ND/fxAXoknVogNugYMULwU/JiBjADi3TUDRfj9UxEf4=;
+	h=From:To:Cc:Subject:Date;
+	b=Y6Dvy9O4Tv31dZM8PI+C6lApKJ0K3Ke76sZR4TA1Kb5OdA6oVuaE6Lc3ugWjH2byj
+	 fWYtlrMjawv+5Do/Tygakma62gm0Fuz3RmYXbMqDe/jZMsXaI6dYXRDouAaHNW8Flr
+	 3N42CNjx1pfBmHut63BWR0AeJyJKduJLg1VhCTkO+T6AJ1lL971rhRJtrQbO4GR0nS
+	 CMAXIXD/4tfCGlu2adbxWaMnUbdTwKZegVotiOJAzreCGuqLbQEapqaMIiyh/rSnfu
+	 6gqRj9OsD+a8xyIoVImeJMDCmvWFMCwIikQh5UotpuZFRbvfmjIiMxf5FfavDkeXAl
+	 nYBFKHAiT1TXg==
+Message-ID: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
 From: Mark Brown <broonie@kernel.org>
-To: Vishwaroop A <va@nvidia.com>
-Cc: linux-spi@vger.kernel.org, jonathanh@nvidia.com,
-	thierry.reding@gmail.com, corbet@lwn.net, linux-doc@vger.kernel.org,
-	smangipudi@nvidia.com
-Subject: Re: [PATCH v8 2/2] docs: spi: add documentation for userspace device
- instantiation
-Message-ID: <b48bef52-4851-49ea-8f5f-d142d478f096@sirena.org.uk>
-References: <20260728191056.2337791-1-va@nvidia.com>
- <20260728191056.2337791-3-va@nvidia.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.2-rc5
+Date: Fri, 31 Jul 2026 19:04:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="596JTbBaHDJa302v"
-Content-Disposition: inline
-In-Reply-To: <20260728191056.2337791-3-va@nvidia.com>
-X-Cookie: No shirt, no shoes, no service.
 
+The following changes since commit f5098b6bae761e346ebcd9da7f95622c04733cff:
 
---596JTbBaHDJa302v
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+  Linux 7.2-rc5 (2026-07-26 14:45:48 -0700)
 
-On Tue, Jul 28, 2026 at 07:10:56PM +0000, Vishwaroop A wrote:
-> Document the new_device and delete_device sysfs attributes on SPI
-> controllers:
+are available in the Git repository at:
 
-> +What:		/sys/class/spi_master/spiB/new_device
-> +Date:		April 2026
-> +KernelVersion:	7.2
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
 
-These need updating.
+for you to fetch changes up to 9513b642d233bedb0b703ea75b5f3230eb6293a0:
 
-> +On systems that need spidev access at boot, a systemd service or
-> +udev rule can write to ``new_device`` after the SPI controller is
-> +available.
+  spi: Few fix/improvement for spi-nxp-fspi (2026-07-30 13:13:51 +0100)
 
-The fixes for safe ordering of init mean that the new sysfs files will
-appears slightly after the device is registering, we ought to do
-something about ensuring there's a notification for the hotplug of the
-properties.
+----------------------------------------------------------------
+spi: Fixes for v7.2
 
---596JTbBaHDJa302v
-Content-Type: application/pgp-signature; name="signature.asc"
+The drip of driver specific fixes, mostly from the device vendors
+themselves, keeps on coming in.  There's more than I'd like right now
+but equally nothing hugely alarming.
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+Haibo Chen (3):
+      spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported SoCs
+      spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
+      spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmps2cwACgkQJNaLcl1U
-h9CcKQf/TyWJU/SYtGlwANMCEq6k3344PbhUKlrrimm/XLYdyHIwJpi5zqbMnawi
-5IK4esPqEIspck34edS9baUZfKNzNku7WVr4r1ZfAHllMd532G35OHCNANSBXDtJ
-yvQO5Zy7axKY9f4fQ4+V7MS2RJzBanpVuXOME1BgksdvSzVl8pGnDjzoQ15sGkB0
-MO1blFZ5DTWea6J/6EHL3hab67K2RnnHjLtdnfggHKPpEwmlMXMaoA782vsPJKtr
-RMpudJ5b2AjetGmUuXy7n4jQyP7BqnxiYImKI51FR/F5NOvURic5R8Ur/7msynQ6
-+Se22gAERoKNoPKHK9afixqIsdbJAg==
-=Ktsh
------END PGP SIGNATURE-----
+Mark Brown (1):
+      spi: Few fix/improvement for spi-nxp-fspi
 
---596JTbBaHDJa302v--
+Srikanth Boyapally (1):
+      spi: spi-cadence: Move TX FIFO full busy-wait into FIFO
+
+Stanislaw Pal (1):
+      spi: spi-qpic-snand: write the feature value before executing SET_FEATURE
+
+Surendra Singh Chouhan (1):
+      spi: spacemit: prepare both DMA descriptors before submitting
+
+Vijaya Krishna Nivarthi (1):
+      spi: qcom-qspi: Correct max DMA length to avoid 64K boundary failure
+
+ drivers/spi/spi-cadence.c     |  26 +++++----
+ drivers/spi/spi-nxp-fspi.c    | 129 ++++++++++++++++++++++++++++++++++++++----
+ drivers/spi/spi-qcom-qspi.c   |   3 +-
+ drivers/spi/spi-qpic-snand.c  |  22 +++++--
+ drivers/spi/spi-spacemit-k1.c |  22 +++----
+ 5 files changed, 166 insertions(+), 36 deletions(-)

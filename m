@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7D9327BF8;
-	Fri, 31 Jul 2026 17:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918BD446842;
+	Fri, 31 Jul 2026 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785518314; cv=none; b=Qv2peNUhIppk4+uUJUQjZmz7fs6HDWLKGyJQoyKlmo0J7sVkeGMxKwMJ4H2pwCWia/VOvL8dfGnkUDcf5f2flJXry9+MJ4tj5mM1gR6z0tl+Dio4RAb2bVVOiKRyXgh4Tq/4dFzFaTvhm8bHDl4V3Nv+YfNZt9Bz3pU7e3YIkzA=
+	t=1785518546; cv=none; b=lq7+bLnum4KSD4O1/oO3eIllKH7BF0MEiH9csKKXIgF+kTa2yXmeDH82MVVzIft83kzaEQD85i4EGDIBswgt58GR7AeKqA5jBgPyU4vZBPM2oka1AyGCatIkw+twvYEvC4NuL4uNfLE2oUp7LSun8namgT+K2I3lGVosLXYDs3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785518314; c=relaxed/simple;
-	bh=RNjBGiq5S/gVR+7e2xm3VIYoq9fVXmbsU1u5Lha2ekI=;
+	s=arc-20240116; t=1785518546; c=relaxed/simple;
+	bh=W1oO+ADGo9gyWhBG0QBswl5Or6C1cfUY909XIM/3290=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JD/+43j1y9GgBPpv+B/SYImWY+ELjBBSyeWQmhJ0H+Zl+eDuNxQZEfr2Leh+ozeanx48J5FDZPZRc0JiX1E5BKL13V3iI3HxPrdy5CtJWhm+4xmk2yHr2OKQsVw3KS/esfPfvS2nKub7NzzXC6/f9DH2StpmtrHbTADTwwfYiy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jqQaXWxB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=WEpRRmdsbxsVJ/tS1e9sPpAWbRhLYvXiz+nDCcZYZebwYAqfYK/zuJ+SvxLLipm9oYgZvkNnPMdc2zCA4o6hFbmf6OS2r25MP47tlliGO7/EMp9/v8D1Lz2q3engz/+wfdBJ2NQEvj3phNUCQUA3/Bdgw0Io1zsZ17nleP3IFxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKnHIU3c; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jqQaXWxB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FAF1F00AC4;
-	Fri, 31 Jul 2026 17:18:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKnHIU3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B821F00AC4;
+	Fri, 31 Jul 2026 17:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785518313;
-	bh=RNjBGiq5S/gVR+7e2xm3VIYoq9fVXmbsU1u5Lha2ekI=;
+	s=k20260515; t=1785518545;
+	bh=esBbtSATVpE7OKqQ/Ers3GZhdi/vzVT1f4Nq3U5LmFc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jqQaXWxBLsFNFak9qi+cJkw6O/kVrV3Ig1IRicBEfhMyAkVxfEMOQhtx7BwxL57K8
-	 HlihiopqhmuUPIwKyq/ghj9PtY/5Qwaz5mLl4lZkYTcbaNK9CM9cQg4B+Ik9GGM8SY
-	 lKYVdGpv9SnGpwAAVCj2XA8IByWcnrt12+meIynDfuOGc5wwEssTUHazsJkBmsiSKh
-	 RzPQzxCxAwVX21o7crI/nVCRxrcLNfqwlwuBweEcKtOuMoJJbp/xz9Nh4+Hx7zvsgW
-	 BKtqGON0dZtf2YfKzWTOIVxE0pPwyvClEs4a25CSMksdrBe2fOjFw/0xtSOsvlfyBz
-	 QpDrflvftoIuw==
-Date: Fri, 31 Jul 2026 18:18:28 +0100
+	b=OKnHIU3cFlOtMLEaQD2xmnhYWXCXKzAmMWLHL02ITxkGSDMhK8LkP9moI4iSu8jHe
+	 UmTQ11Dhp7vyCr+F6HI0UQBU00CGw55dTNU3zm9xucay5bxRqHlmcCH8OUFQNRzxXI
+	 7MQTG8nQ4McQCijTVNiJuLfDmuhEWRbi4Sf/vaHwhRJqMPO2BC50dxLLo2D1UUaVXY
+	 bkmvawzqEU0/HEjXBoGZfs9dd3OcWRa/0EtbLHr4/5BujVRbtjviHJy72SvWJq6G6o
+	 x7l3RbgMo/TwMJIXTW5ojCqKrYhktv7IJa6aFub0iz45CF5k2l3BjyUOk+RUV3IM7r
+	 yTx6TLrAYUuvA==
+Date: Fri, 31 Jul 2026 18:22:21 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Vishwaroop A <va@nvidia.com>
 Cc: linux-spi@vger.kernel.org, jonathanh@nvidia.com,
 	thierry.reding@gmail.com, corbet@lwn.net, linux-doc@vger.kernel.org,
 	smangipudi@nvidia.com
-Subject: Re: [PATCH v8 1/2] spi: add new_device/delete_device sysfs interface
-Message-ID: <db0c0aea-af0b-4f0e-a9f0-08d6e0d72c34@sirena.org.uk>
+Subject: Re: [PATCH v8 2/2] docs: spi: add documentation for userspace device
+ instantiation
+Message-ID: <b48bef52-4851-49ea-8f5f-d142d478f096@sirena.org.uk>
 References: <20260728191056.2337791-1-va@nvidia.com>
- <20260728191056.2337791-2-va@nvidia.com>
+ <20260728191056.2337791-3-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,40 +44,48 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Y80LgV6xSDQeQgvo"
+	protocol="application/pgp-signature"; boundary="596JTbBaHDJa302v"
 Content-Disposition: inline
-In-Reply-To: <20260728191056.2337791-2-va@nvidia.com>
+In-Reply-To: <20260728191056.2337791-3-va@nvidia.com>
 X-Cookie: No shirt, no shoes, no service.
 
 
---Y80LgV6xSDQeQgvo
+--596JTbBaHDJa302v
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jul 28, 2026 at 07:10:55PM +0000, Vishwaroop A wrote:
-> Development boards such as the Jetson AGX Orin expose SPI buses
-> on expansion headers (e.g. the 40-pin header) so that users can
-> connect and interact with SPI peripherals from userspace. The
-> standard way to get /dev/spidevB.C character device nodes for
-> this purpose is to register spi_device instances backed by the
-> spidev driver.
+On Tue, Jul 28, 2026 at 07:10:56PM +0000, Vishwaroop A wrote:
+> Document the new_device and delete_device sysfs attributes on SPI
+> controllers:
 
-I think we're almost there here, but this does need to be restricted to
-host controllers.
+> +What:		/sys/class/spi_master/spiB/new_device
+> +Date:		April 2026
+> +KernelVersion:	7.2
 
---Y80LgV6xSDQeQgvo
+These need updating.
+
+> +On systems that need spidev access at boot, a systemd service or
+> +udev rule can write to ``new_device`` after the SPI controller is
+> +available.
+
+The fixes for safe ordering of init mean that the new sysfs files will
+appears slightly after the device is registering, we ought to do
+something about ensuring there's a notification for the hotplug of the
+properties.
+
+--596JTbBaHDJa302v
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmps2OQACgkQJNaLcl1U
-h9AtBwf/U1Zq0nzBHuvEMS/592GY7mjNZ5VH36pYaDZEe9mHyA8+Ls/GLo1QJtQE
-UVQDOpLBt06V9mf68gl1bKGQPViFZJwhg9uwjX1gt2gvwSPKTW3Fcq0BXjImfsrV
-LmfDWN60hvF34jdaGMZcu+pVRKUjvQuO9bcRlePaapaXeTeLNqCcpOnevMhU5jow
-bXmsFFOnbdMnD5pgGVamCIMS4Wfba68GYC82tz+8A53W8j/sEwMphaUbhj9WWmQb
-rt2z/wcxu5767ouJ9FL2/5wh8Y9chlwU+UIQicli41bXLya90izd29wWTYZ1Wl24
-Wiqg1VrWGV2nzsWA79Y1iM35OpqmDA==
-=eE1A
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmps2cwACgkQJNaLcl1U
+h9CcKQf/TyWJU/SYtGlwANMCEq6k3344PbhUKlrrimm/XLYdyHIwJpi5zqbMnawi
+5IK4esPqEIspck34edS9baUZfKNzNku7WVr4r1ZfAHllMd532G35OHCNANSBXDtJ
+yvQO5Zy7axKY9f4fQ4+V7MS2RJzBanpVuXOME1BgksdvSzVl8pGnDjzoQ15sGkB0
+MO1blFZ5DTWea6J/6EHL3hab67K2RnnHjLtdnfggHKPpEwmlMXMaoA782vsPJKtr
+RMpudJ5b2AjetGmUuXy7n4jQyP7BqnxiYImKI51FR/F5NOvURic5R8Ur/7msynQ6
++Se22gAERoKNoPKHK9afixqIsdbJAg==
+=Ktsh
 -----END PGP SIGNATURE-----
 
---Y80LgV6xSDQeQgvo--
+--596JTbBaHDJa302v--

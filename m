@@ -1,63 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A2C330656;
-	Fri, 31 Jul 2026 19:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316B3378D98;
+	Fri, 31 Jul 2026 20:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785526286; cv=none; b=PuWhn+3ysl3AznzQsTCB+qML8NX88DAqgTpdfySlIp+XwD9HQtN0Hd59VpXpbOTecK0zBILCKxn6jhC4rT/cB8XDgl5IfXHCslJXz/4FJSiGkpQGHVJYUqzCa0dZ/JiYU0Az46QDBN4reXlZANawbDcvwZneMj1GjzdKsbuzDlE=
+	t=1785529705; cv=none; b=GOe1nftpwUW39Bz96G2mA634CacHJpBo32FSZi39/Pgzt8BGrQx6bsXKKJ4XMon3Y6Vna0s0j795uxn5R7RlwHSmU233HkDjlzgRKxQsiGiywgxGyEppdmTpkrH4lTgd9Mp+xE4RDU0P22Y8k/R68pEgIL5bxZhlDCRqK5SgWYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785526286; c=relaxed/simple;
-	bh=PSPslov++Zxl+J3G56+4lbvk+zRegOyhbwcfOgFy8pE=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ElUN/DuTtGoIWyTJx+nFZqsQvPhs9mSR5FjSjRxI/poMBXpoEv7WrgAyw38HhOTOtRSkxbeDP1dxyh6HtpeRohQ9evHXn2HFO2LiCl57EaX5lQqEH21/6J8ZJ7AvesvLVilctjfq3QrfCMXB4JjWodaoWOWX0vRdDnnvtRQdA6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNQJFNXR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785529705; c=relaxed/simple;
+	bh=UlfLHhsfVRRA2IXK/jiVHmYps1AcbvBZLryo0bq3ryA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1qbjWaRTSh7h3OQ4m3XCWdZUaH94PqgOy7PrngRjCR/7xo8/oProBpBlEN7vEdIO9+jFmLeHoaaVzdU8DLP3E8tbUMGKlTV0peYMRx8PIzRb3EM3frWZRzOZfcNeBEG8rcqpCEWoU23V++17U6K4kOg92Cd0F5qUO50z5sfLwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RocqfHZ4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNQJFNXR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA251F00ACF;
-	Fri, 31 Jul 2026 19:31:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RocqfHZ4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46341F00AC4;
+	Fri, 31 Jul 2026 20:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785526285;
-	bh=ui+lczv8H2dUeFIUSpx6XJd4vvt/PvFudvfFyz+od+A=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=kNQJFNXRrt4+MhBRrTexN8NDVlTN8w6NWtatVPUuTWBZs11OXIYbneAr1T3y8chIP
-	 RD+7u/JpsNa5HfgOfuMxN52eLJhQJdL9KlyqI0nJXjit4P/yOYUeyHKasuiqg/+AiQ
-	 FVB2KRueiLxHeJ3K9uAI3SXtgmRI5kW2PUeU+CrlLkSaiY/16TmLTyws5DKNs92+FQ
-	 mFBhLzWeeWIDLYuD7btdt2QoH6SRXefUfhMxLaccR481cGHIiTrxAbDtPjPd3niZiV
-	 XZQKzDWg+ZKBO8nl1qo+4qpddCC6kf5P0yfQVZtPyGdDXlJGmLebPetHM9gCReQRT8
-	 W7AN+2IVjZrfw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19AC73926649;
-	Fri, 31 Jul 2026 19:30:49 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v7.2-rc5
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
-References: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
-X-PR-Tracked-Commit-Id: 9513b642d233bedb0b703ea75b5f3230eb6293a0
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6269cc6f52c68f6f5474f86e94256c81d1ff24cb
-Message-Id: <178552624772.874622.18279066863120420931.pr-tracker-bot@kernel.org>
-Date: Fri, 31 Jul 2026 19:30:47 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	s=k20260515; t=1785529703;
+	bh=YwfwtYedoAYnXW3RFF0QQ984O9NKILCL29Vuw4RagBI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RocqfHZ4DdmBRsHm0GYmpWyjw3R2lD2KQ3rujjOaUt+3YXjFAmK/ehdX/+kZw0BNc
+	 yn3JnvxAJt0IhCyFSSbTwDcxhojvaq83/WaANL++PXuQfxAlcpycaPD/uchKxQgBaR
+	 3LNa71E2G+h9Tc3ALO7YjTH4BxR3C87QI9bxVAetjZ47R/q8AAAY5MRTIf9zjSQpdD
+	 vkFD6/XtYtacAMhVrZe7XyCBgCYI2G2m4mdvpaZ/zgr470MFztOUSr4i4/aq+9qNPF
+	 QGGxIpZy6PIaSz0e3Q036Byhdt1rv/YRo4PVSaZGyiuvdeM5uB2DFWVOvAFmp/o5Rx
+	 yu7FdbDZZkzgg==
+Date: Fri, 31 Jul 2026 21:28:19 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Chi-Wen Weng <cwweng.linux@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cwweng@nuvoton.com,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v5 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Add
+ Nuvoton MA35D1 QSPI
+Message-ID: <5769eae0-1b40-419f-8311-0d919bf619fa@sirena.org.uk>
+References: <20260731023818.1626075-1-cwweng.linux@gmail.com>
+ <20260731023818.1626075-2-cwweng.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Cs5fTReg+qQ322w5"
+Content-Disposition: inline
+In-Reply-To: <20260731023818.1626075-2-cwweng.linux@gmail.com>
+X-Cookie: No shirt, no shoes, no service.
 
-The pull request you sent on Fri, 31 Jul 2026 19:04:54 +0100:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
+--Cs5fTReg+qQ322w5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6269cc6f52c68f6f5474f86e94256c81d1ff24cb
+On Fri, Jul 31, 2026 at 10:38:17AM +0800, Chi-Wen Weng wrote:
+> From: Chi-Wen Weng <cwweng@nuvoton.com>
+>=20
+> Add a devicetree binding for the Quad SPI controller found in
+> Nuvoton MA35D1 SoCs.
 
-Thank you!
+This leaves the generic binding's support for GPIO chip selects enabled
+but the driver doesn't set use_gpio_descriptors so they don't actually
+work.  Either the binding or the driver needs an update.  Otherwise
+things seem mostly OK so I'll apply, please send an incremental patch
+for this.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+--Cs5fTReg+qQ322w5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmptBWIACgkQJNaLcl1U
+h9Bvdwf+IyO6Hu9Z5099OlvPR/gx0z5P+A2YPrWyLLDOKaffMb1GC8evhY20FanO
+e/xY0SsVy0K4M5UwbfvOBfK4eBfMujZO48FaFx/7eSWrs9H2pHytLSdJfN6DXrFr
+93XpW0f0gafiU8vxRMu2mY7fnqR3B7VtdhsjIW09gCG44LxWi3YbIE4s/IQVCQT1
+QnUB6DSjDB6e7YNDha19LVEqjdp/vxZgmpsEt43xs9TvZqC5iyOn3Ycuuxy7/eLm
+y66Vr4vMVCTkkQ9jbR0orEdJzKY5I1QKcrJUc0+0/kX1FTrXPp5QcxCH2/ex6yGk
+UWID0/HT7/b3Vv5M3v3M3QyVljIl2A==
+=GnHY
+-----END PGP SIGNATURE-----
+
+--Cs5fTReg+qQ322w5--

@@ -1,64 +1,64 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE45F330D29
-	for <linux-spi@vger.kernel.org>; Fri, 31 Jul 2026 02:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3800F331A78
+	for <linux-spi@vger.kernel.org>; Fri, 31 Jul 2026 02:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785465513; cv=none; b=dahxyvv7CbANWvlMN7bB4+R2IbNEKBlfbg9wB1/4GWj6Eyh/2OLws+0Ux5RrXAsSx2nGz4Dd3USTRWizLpHBgzZEoDUyXDtamSg3N19pMOPyUlobaSRgTQi042rhNd+9fHj+NNwMXcAmVTy9I0eggG1DbFgctwg22pZNER2SKCU=
+	t=1785465518; cv=none; b=fJxlDbohiFy5Qjz6+mdDndHvr3uxQyMSMyRNLWzGWyrYJ4IxH2LJCeHYqvlJ4xjvhPXGDPL6RPwL+LgIATndoEZECPhsYGBv7Wk7OMgoN6YBPDFelvXrMgUrzBUeUD/txAXHEyQj1Lm2PLWs97WQj4NYIY60EvpQH/vL3/kK2w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785465513; c=relaxed/simple;
-	bh=9/LoeI+/IuoG2Uexy61PZsKhk2Qa8plLvXsvIoDhxN0=;
+	s=arc-20240116; t=1785465518; c=relaxed/simple;
+	bh=+ymkwRuiIMebV8vbtKLSG6IOsEgv9ys6vzeJTFUPJH8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JrLr4hdYjJEDxQFchMlJKD9xOuzlkSEk56sLMRMyUAppysnPGzsz7B41F9kXckYiKlkx/uGOQNW2N0nLhY1b34g57/FuafT5zt+pplnh8Lb7ObkYEUbolMrTEgQQmrkmIxSAMW9KGpcjb3B+iFZfTLpjb9HJhYd18K5oUaaqpEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EcHyvEQn; arc=none smtp.client-ip=209.85.215.171
+	 MIME-Version; b=GQF3RJvEn8mGKEwoZxGdZ/sZk6hohBRC32JiYD4lRoeHE0HkBULr8VrXeLQliIfvSRaed3/V+CsJitNmBvczGW0l4GiR2i/irWMe0uc8u9txKcE+tJW3B4aLOHib3QJzTRHF7cEG8lNO02iZ8CviDfCjzCn7+bYWBlAfO3uTrEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MpFC6eIG; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EcHyvEQn"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c9aea40d799so245900a12.0
-        for <linux-spi@vger.kernel.org>; Thu, 30 Jul 2026 19:38:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MpFC6eIG"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c99eaa1f020so445987a12.2
+        for <linux-spi@vger.kernel.org>; Thu, 30 Jul 2026 19:38:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785465511; x=1786070311; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785465515; x=1786070315; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YfzAVera8YPzEZfXN0c8xQO741Yx6s8VOLnFqWs4cSQ=;
-        b=EcHyvEQnDk2BaiKM8f0xaUM6f3BU5RL9XZ+W9N0XC39H4WsB6mCdKaC88EYKas84DK
-         PnGapf8XttTTkBULEogMUnopbfArzR9v056k0Vyy2Kj/OlYsvz/AEOKHToEfDwclYbJt
-         Sjcd1UXd/qF+ITcLe4zAi8mhKgNe28bLr3yfXphL57oPgw+/Eu28L8XW3U00O8wfcjpl
-         CzpulVbk4qoGK7ddGZ9+Vr0WXSjAe9Ml0/mSu85ijdKee6rS+Nm/Rq3znFcHOqjaBUzq
-         YOu3lvchWVHx0h3enthe1SezxXZACiF3tcktwyEgQAn4/8wp4lWZEask9vg36NOwkp95
-         KsgA==
+        bh=7L7NxzCoTEtLzlj/84sWyAar8r99rZ+COm/cf+Q7yCA=;
+        b=MpFC6eIGjdQeZmayWM0qEbMP4EA+QEwFxO3at45YaUOBjagbVwZCSbFPR0UcXeSQae
+         hQgclhi5+7Mt0j1ud9wIAi8Oi38OQDCr+otSXlo4gdgjuH3+3QeYqSAwRlhjWFtWdJfs
+         0Fvp47/OGhUbNvC1kMPkeY3MnTCX5C0iPR1Z9R8ElJqfyy4ConmEsGTxt76nHbHQKO3p
+         GnvbMxlSEz59c/pRoLLCH0b1nM+J1NIYIcCIK0am8YAU6SwG/BYvorUs4JTC/eJfZk8n
+         ehcFQMh6J0edkMJkDSRfSigiwn1TeZoTSSzThxS9wXGFuTy6bkqFXTyvLWjl+X6yXJXK
+         L33A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785465511; x=1786070311;
+        d=1e100.net; s=20251104; t=1785465515; x=1786070315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YfzAVera8YPzEZfXN0c8xQO741Yx6s8VOLnFqWs4cSQ=;
-        b=e7yqFczBE5ifieSD7/Fd2IauH5SF3Nql+oAmdViWc+IRn2uDaD5hNqg+Te4o5tmugq
-         ZEXZNmNbX+HYsXK5UqG1uAHNFVidUVt+63WNsVlWPdeKp6ddqCZJx0/1rvUwiRhjI55q
-         0vXY5Ca1zcuqt16+FB4EoLM0fsy5elZS34/K8Hvu7/OadHFLm1k9SeKdOBvjpjwI2rWg
-         oM2SN8ljC3c9Ygak7zJ3WcJu2/Q+I04bFPpWn/Ercynp3+tbB94tCkfwTWZGfXmVM9gl
-         WjKKqhK0azZTEdtoO+f8n/exQFBHVEyPdsvwvt7q9rIjK04i2aXkwU/Rv+DEwTkOcYoT
-         LO0w==
-X-Forwarded-Encrypted: i=1; AHgh+RoYw5I8ao03DoHl+NhUhLK7f5Lh8+rG/5F077aIF8ct2H81p+57pDMiAqlgcO4TaL4TPJxtx9K72HQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAnnZwqol3Ml4pq/KvszsNxDVpGLtea+pO6x1CnLEP9EvdzdE1
-	7YYaA/x0sTy5GrY7nE1LC7nH4QCGpifoH0zYDE4+783qR0u2iEEObvHU
-X-Gm-Gg: AR+sD11TrhF7d+W/0na5DQ8CXltDv6gs/0trxMxZHFWNaN0WXPIFi4sl/AE5ienOKt9
-	SqAvttt6tP7Lpyb/PEYrAItlmafoo6WrxGZg+War4FEs6SVZF6TNIuZLtJTlD1VloBdTztf1SNf
-	c7ST01Haik3uG2PdPRPxEQFKlbTFUI/xsrDgf8Rt82LK0SfqBYxs/E1FnqRlTYBHEjQQdsRoV4B
-	H7lDHrlEm/EZJK7fOVzhvozjcrypIVYKxLkH/QswFG1uI2XmCXJ6fvEPKtbMH+ZmCmlWn6LDJ1O
-	xlTHvRlxV4G0ZzrlH7N3SgltMPcLXoT66ECBmH+nH2P81FjxBAhstF7FTcDH0ZeFIISDwlQ6mHx
-	N+McB0mqsL9ONUlnQwK2CthynDXjoFeDGiZ5JJs7UjIPL0oCLlNeZHdmNT41kGNyXF0fqsFS/0R
-	YXvwOWTbn1CgCA/VLN+K8c3Jgh0zW4EcnyoydpSWi+QCAnre9pNG10tlDdNB29E69BGXU+SpWnw
-	o4OsOIJblXvHgKB4Tr8UNP2Iivr8WQGVWu4tJODnUobJJmS034=
-X-Received: by 2002:a05:6a21:6f8c:b0:3be:b0b3:3962 with SMTP id adf61e73a8af0-3c91b12935cmr74236637.9.1785465510997;
-        Thu, 30 Jul 2026 19:38:30 -0700 (PDT)
+        bh=7L7NxzCoTEtLzlj/84sWyAar8r99rZ+COm/cf+Q7yCA=;
+        b=gDfTLMi2V1VXWssxIj9qHhvdpn3pcpLJd5nlM1Zr21oVlP+1HrNB6EpIg/zZuN+0Zd
+         Gve0xv7kA9IA9tn2KIkW+LJn4AebWIWEKyY0Hp8rtH1JyE9mp1QK3NY688LSqMNy+kJz
+         9VTcT4rcM/ckgFy0cz23YqWn15KbCAlUtw3OKOCB5KwhYemWoWrVduf+pHrmORVT6wcQ
+         GfW1u3FxlHx2rVmKrc4nwkn2CoTyX9xHPaSHDvhZRqV5nQIlmh8JPId2chhvkqPs90Ml
+         npLu+PcmYs60lRbbIblJrpPBpzlkxDmahOsHkY5FSO+UjjXNa+x8GeF6O5OLAQDcDzlG
+         DG2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoH6JFLbnxUU/vBNHD06S4WLlPXzqqDG71F/VxDxjNvLuhpopylUy+NLrK+irnZRnJyOy+QQrL7uhA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn9Bc7975moREvUqrvXvhhMCSgqO5470f4tl1vhe7Wuaz27kVx
+	HfiFIoORTkLSSbfwipYBU23sAB5FhyYkIHgirVGEHNNEf8gPfEIcwWrK
+X-Gm-Gg: AR+sD13wvx9WeX7iOObDo6yXIw0FC/roCAkEDoEKnSTTl6YU5D7ivsFOBsqg6iiF3uf
+	FUgw61ImGmC82NLiFWo5ENSRyGGIxHXNU5cR0AZBURplDFMwQUgQlEdGRF/9h8NgrMn2wNr/B8V
+	z7sC2eMXdwkht4KrtIh/6xhACArszHpIzfKxX48Y2F0gwIs25bHnf6cQncSrcydBD6447jt6xWQ
+	WFtmDCdB9cRoDQR+s9ApuK1ceq4rKf/0DrKF3TYh1vtJbFxcQIBfjZQvdqGPj/CzUHISsQSI6HA
+	NgvNne0E3SshqtpWos77K9YQfBa7wbXVK62QatDi22eCo6sbXg1WQSSogpb7QVc5BRGSN7EDric
+	w/1lf/eDSptiwzCwm5wGuZIvlfBu6UwPgGcPDYS4LeAKI1g2uFGzRFm+Z+G03CmwazehlcxCs9Z
+	gXVKkKZofIANnBo9khQ7azWiTuMHuwBDunptjQzDBJZK8II8qDJz0xvRmaMUn0P9TdPY7CTDGzh
+	8ZoCNh/HBt68uAcKzBDrqXzZZ7zZc0H7nCUv8BrjbBjwt+lt1I=
+X-Received: by 2002:a05:6a20:d43:b0:39c:126c:93b5 with SMTP id adf61e73a8af0-3c91b151e9amr93653637.21.1785465515379;
+        Thu, 30 Jul 2026 19:38:35 -0700 (PDT)
 Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe3808a8d9sm81938a12.7.2026.07.30.19.38.28
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cbe3808a8d9sm81938a12.7.2026.07.30.19.38.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jul 2026 19:38:30 -0700 (PDT)
+        Thu, 30 Jul 2026 19:38:34 -0700 (PDT)
 From: Chi-Wen Weng <cwweng.linux@gmail.com>
 To: broonie@kernel.org,
 	robh@kernel.org,
@@ -69,11 +69,10 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	cwweng@nuvoton.com,
-	cwweng.linux@gmail.com,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v5 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Add Nuvoton MA35D1 QSPI
-Date: Fri, 31 Jul 2026 10:38:17 +0800
-Message-Id: <20260731023818.1626075-2-cwweng.linux@gmail.com>
+	cwweng.linux@gmail.com
+Subject: [PATCH v5 2/2] spi: ma35d1-qspi: Add Nuvoton MA35D1 QSPI controller support
+Date: Fri, 31 Jul 2026 10:38:18 +0800
+Message-Id: <20260731023818.1626075-3-cwweng.linux@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260731023818.1626075-1-cwweng.linux@gmail.com>
 References: <20260731023818.1626075-1-cwweng.linux@gmail.com>
@@ -87,89 +86,726 @@ Content-Transfer-Encoding: 8bit
 
 From: Chi-Wen Weng <cwweng@nuvoton.com>
 
-Add a devicetree binding for the Quad SPI controller found in
+Add SPI controller driver support for the Quad SPI controller found in
 Nuvoton MA35D1 SoCs.
 
-The controller supports SPI memory devices such as SPI NOR and SPI NAND
-flashes. It has one register range, one clock input and one reset line,
-and supports up to two chip selects.
+The controller provides two native chip selects and supports standard SPI
+and spi-mem operations, including single-bit full-duplex transfers and
+dual or quad half-duplex transfers. Implement 8-bit PIO transfers,
+per-operation clock configuration, clock and reset handling, and direct
+execution of SPI memory operations.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Limit individual transfers to 4 KiB and SPI messages to 8 KiB to keep the
+PIO polling path bounded. Read the optional num-cs property and fall back
+to the hardware default of two chip selects when it is not present.
+
+Active-high chip select and DMA transfers are not supported by this
+initial implementation.
+
 Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
 ---
- .../bindings/spi/nuvoton,ma35d1-qspi.yaml     | 63 +++++++++++++++++++
- 1 file changed, 63 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
+ drivers/spi/Kconfig           |  10 +
+ drivers/spi/Makefile          |   1 +
+ drivers/spi/spi-ma35d1-qspi.c | 657 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 668 insertions(+)
+ create mode 100644 drivers/spi/spi-ma35d1-qspi.c
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b563f49e2197..8b8297ee3f2e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -694,6 +694,16 @@ config SPI_LJCA
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called spi-ljca.
+ 
++config SPI_MA35D1_QSPI
++	tristate "Nuvoton MA35D1 QSPI controller"
++	depends on ARCH_MA35 || COMPILE_TEST
++	help
++	  This enables support for the Quad SPI controller found in
++	  Nuvoton MA35D1 SoCs.
++
++	  The controller supports SPI memory devices such as SPI NOR and
++	  SPI NAND flashes in single, dual and quad I/O modes.
++
+ config SPI_MESON_SPICC
+ 	tristate "Amlogic Meson SPICC controller"
+ 	depends on COMMON_CLK
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9d36190a9884..c5bb0efd108c 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -85,6 +85,7 @@ obj-$(CONFIG_SPI_LOONGSON_CORE)		+= spi-loongson-core.o
+ obj-$(CONFIG_SPI_LOONGSON_PCI)		+= spi-loongson-pci.o
+ obj-$(CONFIG_SPI_LOONGSON_PLATFORM)	+= spi-loongson-plat.o
+ obj-$(CONFIG_SPI_LP8841_RTC)		+= spi-lp8841-rtc.o
++obj-$(CONFIG_SPI_MA35D1_QSPI)		+= spi-ma35d1-qspi.o
+ obj-$(CONFIG_SPI_MESON_SPICC)		+= spi-meson-spicc.o
+ obj-$(CONFIG_SPI_MESON_SPIFC)		+= spi-meson-spifc.o
+ obj-$(CONFIG_SPI_MICROCHIP_CORE_QSPI)	+= spi-microchip-core-qspi.o
+diff --git a/drivers/spi/spi-ma35d1-qspi.c b/drivers/spi/spi-ma35d1-qspi.c
 new file mode 100644
-index 000000000000..377ccf4fb224
+index 000000000000..541d5d72484c
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-@@ -0,0 +1,63 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/nuvoton,ma35d1-qspi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/spi/spi-ma35d1-qspi.c
+@@ -0,0 +1,657 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++//
++// Nuvoton MA35D1 QSPI controller driver
++//
++// Copyright (c) 2026 Nuvoton Technology Corp.
++// Author: Chi-Wen Weng <cwweng@nuvoton.com>
 +
-+title: Nuvoton MA35D1 Quad SPI Controller
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/clk.h>
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/io.h>
++#include <linux/iopoll.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/property.h>
++#include <linux/reset.h>
++#include <linux/sizes.h>
++#include <linux/spi/spi.h>
++#include <linux/spi/spi-mem.h>
++#include <linux/spinlock.h>
 +
-+maintainers:
-+  - Chi-Wen Weng <cwweng@nuvoton.com>
++/* Register offset definitions */
++#define NUVOTON_QSPI_CTL_OFFSET		0x00 /* Control Register, RW */
++#define NUVOTON_QSPI_CLKDIV_OFFSET	0x04 /* Clock Divider Register, RW */
++#define NUVOTON_QSPI_SSCTL_OFFSET	0x08 /* Slave Select Register, RW */
++#define NUVOTON_QSPI_FIFOCTL_OFFSET	0x10 /* FIFO Control Register, RW */
++#define NUVOTON_QSPI_STATUS_OFFSET	0x14 /* Status Register, RW */
++#define NUVOTON_QSPI_TX_OFFSET		0x20 /* Data Transmit Register, WO */
++#define NUVOTON_QSPI_RX_OFFSET		0x30 /* Data Receive Register, RO */
 +
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
++/* QSPI Control Register bit masks */
++#define NUVOTON_QSPI_CTL_QUADIOEN_MASK	BIT(22) /* Quad I/O Mode Enable */
++#define NUVOTON_QSPI_CTL_DUALIOEN_MASK	BIT(21) /* Dual I/O Mode Enable */
++#define NUVOTON_QSPI_CTL_DATDIR_MASK	BIT(20) /* Data Port Direction Control */
++#define NUVOTON_QSPI_CTL_REORDER_MASK	BIT(19) /* Byte Reorder Function Enable */
++#define NUVOTON_QSPI_CTL_LSB_MASK	BIT(13) /* Send LSB First */
++#define NUVOTON_QSPI_CTL_DWIDTH_MASK	GENMASK(12, 8) /* Data Width */
++#define NUVOTON_QSPI_CTL_SUSPITV_MASK	GENMASK(7, 4) /* Suspend Interval */
++#define NUVOTON_QSPI_CTL_CLKPOL_MASK	BIT(3) /* Clock Polarity */
++#define NUVOTON_QSPI_CTL_TXNEG_MASK	BIT(2) /* Transmit on Negative Edge */
++#define NUVOTON_QSPI_CTL_RXNEG_MASK	BIT(1) /* Receive on Negative Edge */
++#define NUVOTON_QSPI_CTL_SPIEN_MASK	BIT(0) /* QSPI Transfer Control Enable */
 +
-+properties:
-+  compatible:
-+    const: nuvoton,ma35d1-qspi
++/* QSPI Clock Divider Register bit masks */
++#define NUVOTON_QSPI_CLKDIV_MASK	GENMASK(8, 0) /* Clock Divider */
 +
-+  reg:
-+    maxItems: 1
++/* QSPI Slave Select Control Register bit masks */
++#define NUVOTON_QSPI_SSCTL_SS1_MASK	BIT(1) /* Slave Selection 1 Control */
++#define NUVOTON_QSPI_SSCTL_SS0_MASK	BIT(0) /* Slave Selection 0 Control */
 +
-+  interrupts:
-+    maxItems: 1
++/* QSPI FIFO Control Register bit masks */
++#define NUVOTON_QSPI_FIFOCTL_TXRST_MASK	BIT(1) /* Transmit Reset */
++#define NUVOTON_QSPI_FIFOCTL_RXRST_MASK	BIT(0) /* Receive Reset */
 +
-+  clocks:
-+    maxItems: 1
++/* QSPI Status Register bit masks */
++#define NUVOTON_QSPI_STATUS_TXRXRST_MASK	BIT(23) /* TX or RX Reset Status */
++#define NUVOTON_QSPI_STATUS_TXFULL_MASK	BIT(17) /* Transmit FIFO Full */
++#define NUVOTON_QSPI_STATUS_SPIENSTS_MASK	BIT(15) /* QSPI Enable Status */
++#define NUVOTON_QSPI_STATUS_RXEMPTY_MASK	BIT(8) /* Receive FIFO Empty */
++#define NUVOTON_QSPI_STATUS_BUSY_MASK	BIT(0) /* Busy Status */
 +
-+  resets:
-+    maxItems: 1
++#define NUVOTON_QSPI_MAX_NUM_CS		2
++#define NUVOTON_QSPI_DEFAULT_NUM_CS	2
++#define NUVOTON_QSPI_DEFAULT_BPW	8
++/* Bound PIO operations to avoid long atomic polling loops. */
++#define NUVOTON_QSPI_MAX_TRANSFER_SIZE	SZ_4K
++#define NUVOTON_QSPI_MAX_MESSAGE_SIZE	SZ_8K
++#define NUVOTON_QSPI_TIMEOUT_US		10000
 +
-+  num-cs:
-+    minimum: 1
-+    maximum: 2
-+    default: 2
++struct nuvoton_qspi {
++	void __iomem *regs;
++	struct clk *clk;
++	struct device *dev;
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - resets
++	/* Protects read-modify-write accesses to the SSCTL register. */
++	spinlock_t ssctl_lock;
++	u32 speed_hz;
++};
 +
-+unevaluatedProperties: false
++static u32 nuvoton_qspi_read(struct nuvoton_qspi *qspi, u32 reg)
++{
++	return readl(qspi->regs + reg);
++}
 +
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    #include <dt-bindings/clock/nuvoton,ma35d1-clk.h>
-+    #include <dt-bindings/reset/nuvoton,ma35d1-reset.h>
++static void nuvoton_qspi_write(struct nuvoton_qspi *qspi, u32 val, u32 reg)
++{
++	writel(val, qspi->regs + reg);
++}
 +
-+    soc {
-+        #address-cells = <2>;
-+        #size-cells = <2>;
++static void nuvoton_qspi_update_bits(struct nuvoton_qspi *qspi, u32 reg,
++				     u32 mask, u32 val)
++{
++	u32 tmp;
 +
-+        spi@40680000 {
-+            compatible = "nuvoton,ma35d1-qspi";
-+            reg = <0 0x40680000 0 0x100>;
-+            interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-+            clocks = <&clk QSPI0_GATE>;
-+            resets = <&sys MA35D1_RESET_QSPI0>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+        };
-+    };
++	tmp = nuvoton_qspi_read(qspi, reg);
++	tmp &= ~mask;
++	tmp |= val & mask;
++	nuvoton_qspi_write(qspi, tmp, reg);
++}
++
++static int nuvoton_qspi_wait_ready(struct nuvoton_qspi *qspi)
++{
++	u32 val;
++
++	return readl_poll_timeout(qspi->regs + NUVOTON_QSPI_STATUS_OFFSET,
++				  val,
++				  !(val & NUVOTON_QSPI_STATUS_BUSY_MASK),
++				  0, NUVOTON_QSPI_TIMEOUT_US);
++}
++
++static int nuvoton_qspi_reset_fifo(struct nuvoton_qspi *qspi)
++{
++	u32 val;
++
++	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_FIFOCTL_OFFSET);
++	val |= NUVOTON_QSPI_FIFOCTL_TXRST_MASK |
++	       NUVOTON_QSPI_FIFOCTL_RXRST_MASK;
++	nuvoton_qspi_write(qspi, val, NUVOTON_QSPI_FIFOCTL_OFFSET);
++
++	/*
++	 * Give the controller a short time to latch the FIFO reset request
++	 * before polling the reset status bit.
++	 */
++	udelay(1);
++
++	return readl_poll_timeout_atomic(qspi->regs + NUVOTON_QSPI_STATUS_OFFSET,
++					 val,
++					 !(val & NUVOTON_QSPI_STATUS_TXRXRST_MASK),
++					 1, NUVOTON_QSPI_TIMEOUT_US);
++}
++
++static int nuvoton_qspi_set_speed(struct nuvoton_qspi *qspi, u32 speed_hz)
++{
++	unsigned long clk_rate;
++	u32 div;
++
++	if (!speed_hz)
++		return -EINVAL;
++
++	if (qspi->speed_hz == speed_hz)
++		return 0;
++
++	clk_rate = clk_get_rate(qspi->clk);
++	if (!clk_rate) {
++		dev_err(qspi->dev, "failed to get clock rate\n");
++		return -EINVAL;
++	}
++
++	div = DIV_ROUND_UP(clk_rate, speed_hz) - 1;
++	if (div > FIELD_MAX(NUVOTON_QSPI_CLKDIV_MASK)) {
++		dev_err(qspi->dev, "unsupported SPI clock %u Hz\n", speed_hz);
++		return -EINVAL;
++	}
++
++	nuvoton_qspi_write(qspi, FIELD_PREP(NUVOTON_QSPI_CLKDIV_MASK, div),
++			   NUVOTON_QSPI_CLKDIV_OFFSET);
++	qspi->speed_hz = speed_hz;
++
++	return 0;
++}
++
++static int nuvoton_qspi_set_bits_per_word(struct nuvoton_qspi *qspi, u8 bpw)
++{
++	if (bpw != NUVOTON_QSPI_DEFAULT_BPW)
++		return -EINVAL;
++
++	nuvoton_qspi_update_bits(qspi, NUVOTON_QSPI_CTL_OFFSET,
++				 NUVOTON_QSPI_CTL_DWIDTH_MASK |
++				 NUVOTON_QSPI_CTL_REORDER_MASK,
++				 FIELD_PREP(NUVOTON_QSPI_CTL_DWIDTH_MASK, bpw));
++
++	return 0;
++}
++
++static int nuvoton_qspi_setup_transfer(struct spi_device *spi,
++				       u32 speed_hz, u8 bpw)
++{
++	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
++	u32 mode = spi->mode & SPI_MODE_X_MASK;
++	u32 ctl = 0;
++	int ret;
++
++	if (!speed_hz)
++		speed_hz = spi->max_speed_hz;
++
++	if (!bpw)
++		bpw = NUVOTON_QSPI_DEFAULT_BPW;
++
++	ret = nuvoton_qspi_set_speed(qspi, speed_hz);
++	if (ret)
++		return ret;
++
++	ret = nuvoton_qspi_set_bits_per_word(qspi, bpw);
++	if (ret)
++		return ret;
++
++	if (mode == SPI_MODE_0 || mode == SPI_MODE_3)
++		ctl |= NUVOTON_QSPI_CTL_TXNEG_MASK;
++	else
++		ctl |= NUVOTON_QSPI_CTL_RXNEG_MASK;
++
++	if (spi->mode & SPI_CPOL)
++		ctl |= NUVOTON_QSPI_CTL_CLKPOL_MASK;
++
++	if (spi->mode & SPI_LSB_FIRST)
++		ctl |= NUVOTON_QSPI_CTL_LSB_MASK;
++
++	nuvoton_qspi_update_bits(qspi, NUVOTON_QSPI_CTL_OFFSET,
++				 NUVOTON_QSPI_CTL_TXNEG_MASK |
++				 NUVOTON_QSPI_CTL_RXNEG_MASK |
++				 NUVOTON_QSPI_CTL_CLKPOL_MASK |
++				 NUVOTON_QSPI_CTL_LSB_MASK, ctl);
++
++	return 0;
++}
++
++static void nuvoton_qspi_set_bus_width(struct nuvoton_qspi *qspi,
++				       unsigned int buswidth,
++				       enum spi_mem_data_dir dir)
++{
++	u32 ctl = 0;
++
++	if (buswidth == 4)
++		ctl |= NUVOTON_QSPI_CTL_QUADIOEN_MASK;
++	else if (buswidth == 2)
++		ctl |= NUVOTON_QSPI_CTL_DUALIOEN_MASK;
++
++	if (buswidth > 1 && dir == SPI_MEM_DATA_OUT)
++		ctl |= NUVOTON_QSPI_CTL_DATDIR_MASK;
++
++	nuvoton_qspi_update_bits(qspi, NUVOTON_QSPI_CTL_OFFSET,
++				 NUVOTON_QSPI_CTL_QUADIOEN_MASK |
++				 NUVOTON_QSPI_CTL_DUALIOEN_MASK |
++				 NUVOTON_QSPI_CTL_DATDIR_MASK, ctl);
++}
++
++static u32 nuvoton_qspi_tx_byte(const void *txbuf, unsigned int idx)
++{
++	if (!txbuf)
++		return 0;
++
++	return ((const u8 *)txbuf)[idx];
++}
++
++static void nuvoton_qspi_rx_byte(void *rxbuf, unsigned int idx, u32 val)
++{
++	if (rxbuf)
++		((u8 *)rxbuf)[idx] = val;
++}
++
++static int nuvoton_qspi_wait_tx_not_full(struct nuvoton_qspi *qspi)
++{
++	u32 val;
++
++	return readl_poll_timeout_atomic(qspi->regs + NUVOTON_QSPI_STATUS_OFFSET,
++					 val,
++					 !(val & NUVOTON_QSPI_STATUS_TXFULL_MASK),
++					 0, NUVOTON_QSPI_TIMEOUT_US);
++}
++
++static int nuvoton_qspi_wait_rx_not_empty(struct nuvoton_qspi *qspi)
++{
++	u32 val;
++
++	return readl_poll_timeout_atomic(qspi->regs + NUVOTON_QSPI_STATUS_OFFSET,
++					 val,
++					 !(val & NUVOTON_QSPI_STATUS_RXEMPTY_MASK),
++					 0, NUVOTON_QSPI_TIMEOUT_US);
++}
++
++static int nuvoton_qspi_txrx(struct nuvoton_qspi *qspi, const void *txbuf,
++			     void *rxbuf, unsigned int len)
++{
++	unsigned int i;
++	u32 val;
++	int ret;
++
++	if (!len)
++		return 0;
++
++	if (len > NUVOTON_QSPI_MAX_TRANSFER_SIZE)
++		return -EMSGSIZE;
++
++	ret = nuvoton_qspi_reset_fifo(qspi);
++	if (ret) {
++		dev_err(qspi->dev, "FIFO reset timed out\n");
++		return ret;
++	}
++
++	/*
++	 * Use conservative byte-by-byte PIO access. This keeps the initial driver
++	 * simple and avoids relying on FIFO threshold interrupts or DMA support.
++	 *
++	 * The MA35D1 QSPI controller pushes one RX FIFO entry for each TX byte in
++	 * single, dual-output and quad-output modes. Drain RX after every TX byte
++	 * and discard the value for TX-only transfers to avoid RX FIFO overflow.
++	 */
++	for (i = 0; i < len; i++) {
++		ret = nuvoton_qspi_wait_tx_not_full(qspi);
++		if (ret) {
++			dev_err(qspi->dev, "TX FIFO full timeout\n");
++			return ret;
++		}
++
++		nuvoton_qspi_write(qspi, nuvoton_qspi_tx_byte(txbuf, i),
++				   NUVOTON_QSPI_TX_OFFSET);
++
++		ret = nuvoton_qspi_wait_rx_not_empty(qspi);
++		if (ret) {
++			dev_err(qspi->dev, "RX FIFO empty timeout\n");
++			return ret;
++		}
++
++		val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_RX_OFFSET);
++		if (rxbuf)
++			nuvoton_qspi_rx_byte(rxbuf, i, val);
++	}
++
++	ret = nuvoton_qspi_wait_ready(qspi);
++	if (ret)
++		dev_err(qspi->dev, "controller busy timeout\n");
++
++	return ret;
++}
++
++static int nuvoton_qspi_hw_init(struct nuvoton_qspi *qspi)
++{
++	u32 val;
++	int ret;
++
++	ret = nuvoton_qspi_set_bits_per_word(qspi, NUVOTON_QSPI_DEFAULT_BPW);
++	if (ret)
++		return ret;
++
++	nuvoton_qspi_update_bits(qspi, NUVOTON_QSPI_CTL_OFFSET,
++				 NUVOTON_QSPI_CTL_SUSPITV_MASK |
++				 NUVOTON_QSPI_CTL_TXNEG_MASK |
++				 NUVOTON_QSPI_CTL_RXNEG_MASK |
++				 NUVOTON_QSPI_CTL_CLKPOL_MASK |
++				 NUVOTON_QSPI_CTL_LSB_MASK,
++				 NUVOTON_QSPI_CTL_TXNEG_MASK);
++
++	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_CTL_OFFSET);
++	nuvoton_qspi_write(qspi, val | NUVOTON_QSPI_CTL_SPIEN_MASK,
++			   NUVOTON_QSPI_CTL_OFFSET);
++
++	ret = readl_poll_timeout(qspi->regs + NUVOTON_QSPI_STATUS_OFFSET, val,
++				 (val & NUVOTON_QSPI_STATUS_SPIENSTS_MASK),
++				 1, NUVOTON_QSPI_TIMEOUT_US);
++	if (ret) {
++		dev_err(qspi->dev, "failed to enable controller\n");
++		return ret;
++	}
++
++	ret = nuvoton_qspi_reset_fifo(qspi);
++	if (ret)
++		dev_err(qspi->dev, "FIFO reset timed out\n");
++
++	return ret;
++}
++
++static size_t nuvoton_qspi_max_transfer_size(struct spi_device *spi)
++{
++	return NUVOTON_QSPI_MAX_TRANSFER_SIZE;
++}
++
++static size_t nuvoton_qspi_max_message_size(struct spi_device *spi)
++{
++	return NUVOTON_QSPI_MAX_MESSAGE_SIZE;
++}
++
++static int nuvoton_qspi_mem_adjust_op_size(struct spi_mem *mem,
++					   struct spi_mem_op *op)
++{
++	if (op->data.nbytes > NUVOTON_QSPI_MAX_TRANSFER_SIZE)
++		op->data.nbytes = NUVOTON_QSPI_MAX_TRANSFER_SIZE;
++
++	return 0;
++}
++
++static bool nuvoton_qspi_mem_supports_op(struct spi_mem *mem,
++					 const struct spi_mem_op *op)
++{
++	if (!spi_mem_default_supports_op(mem, op))
++		return false;
++
++	if (op->cmd.buswidth > 4 || op->addr.buswidth > 4 ||
++	    op->dummy.buswidth > 4 || op->data.buswidth > 4)
++		return false;
++
++	if (op->cmd.nbytes != 1)
++		return false;
++
++	if (op->addr.nbytes > 4)
++		return false;
++
++	return true;
++}
++
++static void nuvoton_qspi_set_cs_level(struct nuvoton_qspi *qspi,
++				      unsigned int cs, bool assert)
++{
++	unsigned long flags;
++	u32 mask;
++	u32 val;
++
++	switch (cs) {
++	case 0:
++		mask = NUVOTON_QSPI_SSCTL_SS0_MASK;
++		break;
++	case 1:
++		mask = NUVOTON_QSPI_SSCTL_SS1_MASK;
++		break;
++	default:
++		dev_warn(qspi->dev, "invalid chip select %u\n", cs);
++		return;
++	}
++
++	spin_lock_irqsave(&qspi->ssctl_lock, flags);
++
++	val = nuvoton_qspi_read(qspi, NUVOTON_QSPI_SSCTL_OFFSET);
++	if (assert)
++		val |= mask;
++	else
++		val &= ~mask;
++	nuvoton_qspi_write(qspi, val, NUVOTON_QSPI_SSCTL_OFFSET);
++
++	spin_unlock_irqrestore(&qspi->ssctl_lock, flags);
++}
++
++static void nuvoton_qspi_set_cs(struct spi_device *spi, bool level)
++{
++	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
++
++	/*
++	 * The SPI core passes the physical CS level to ->set_cs(). This
++	 * initial driver only supports active-low native chip selects.
++	 */
++	nuvoton_qspi_set_cs_level(qspi, spi_get_chipselect(spi, 0), !level);
++}
++
++static void nuvoton_qspi_mem_set_cs(struct spi_device *spi, bool assert)
++{
++	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
++
++	/* The direct spi-mem path passes a logical assertion state. */
++	nuvoton_qspi_set_cs_level(qspi, spi_get_chipselect(spi, 0), assert);
++}
++
++static int nuvoton_qspi_mem_exec_op(struct spi_mem *mem,
++				    const struct spi_mem_op *op)
++{
++	struct spi_device *spi = mem->spi;
++	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
++	u8 opcode = op->cmd.opcode;
++	u8 addr[4];
++	int ret;
++	int i;
++
++	ret = nuvoton_qspi_setup_transfer(spi, op->max_freq,
++					  NUVOTON_QSPI_DEFAULT_BPW);
++	if (ret)
++		return ret;
++
++	nuvoton_qspi_mem_set_cs(spi, true);
++
++	nuvoton_qspi_set_bus_width(qspi, op->cmd.buswidth, SPI_MEM_DATA_OUT);
++	ret = nuvoton_qspi_txrx(qspi, &opcode, NULL, 1);
++	if (ret)
++		goto out_deassert_cs;
++
++	if (op->addr.nbytes) {
++		for (i = 0; i < op->addr.nbytes; i++)
++			addr[i] = op->addr.val >> (8 * (op->addr.nbytes - i - 1));
++
++		nuvoton_qspi_set_bus_width(qspi, op->addr.buswidth,
++					   SPI_MEM_DATA_OUT);
++		ret = nuvoton_qspi_txrx(qspi, addr, NULL, op->addr.nbytes);
++		if (ret)
++			goto out_deassert_cs;
++	}
++
++	if (op->dummy.nbytes) {
++		nuvoton_qspi_set_bus_width(qspi, op->dummy.buswidth,
++					   SPI_MEM_DATA_OUT);
++		ret = nuvoton_qspi_txrx(qspi, NULL, NULL, op->dummy.nbytes);
++		if (ret)
++			goto out_deassert_cs;
++	}
++
++	if (op->data.nbytes) {
++		nuvoton_qspi_set_bus_width(qspi, op->data.buswidth,
++					   op->data.dir);
++		ret = nuvoton_qspi_txrx(qspi,
++					op->data.dir == SPI_MEM_DATA_OUT ?
++					op->data.buf.out : NULL,
++					op->data.dir == SPI_MEM_DATA_IN ?
++					op->data.buf.in : NULL,
++					op->data.nbytes);
++	}
++
++out_deassert_cs:
++	nuvoton_qspi_set_bus_width(qspi, 1, SPI_MEM_DATA_IN);
++	nuvoton_qspi_mem_set_cs(spi, false);
++
++	return ret;
++}
++
++static const struct spi_controller_mem_ops nuvoton_qspi_mem_ops = {
++	.adjust_op_size = nuvoton_qspi_mem_adjust_op_size,
++	.supports_op = nuvoton_qspi_mem_supports_op,
++	.exec_op = nuvoton_qspi_mem_exec_op,
++};
++
++static const struct spi_controller_mem_caps nuvoton_qspi_mem_caps = {
++	.per_op_freq = true,
++};
++
++static int nuvoton_qspi_transfer_one(struct spi_controller *ctlr,
++				     struct spi_device *spi,
++				     struct spi_transfer *xfer)
++{
++	struct nuvoton_qspi *qspi = spi_controller_get_devdata(ctlr);
++	unsigned int tx_nbits = xfer->tx_nbits ?: SPI_NBITS_SINGLE;
++	unsigned int rx_nbits = xfer->rx_nbits ?: SPI_NBITS_SINGLE;
++	enum spi_mem_data_dir dir = SPI_MEM_DATA_IN;
++	unsigned int buswidth = 1;
++	int ret;
++
++	ret = nuvoton_qspi_setup_transfer(spi, xfer->speed_hz,
++					  xfer->bits_per_word);
++	if (ret)
++		return ret;
++
++	if (xfer->tx_buf && xfer->rx_buf &&
++	    (tx_nbits != SPI_NBITS_SINGLE ||
++	     rx_nbits != SPI_NBITS_SINGLE))
++		return -EOPNOTSUPP;
++
++	if (xfer->tx_buf) {
++		dir = SPI_MEM_DATA_OUT;
++
++		if (tx_nbits == SPI_NBITS_QUAD)
++			buswidth = 4;
++		else if (tx_nbits == SPI_NBITS_DUAL)
++			buswidth = 2;
++	} else if (xfer->rx_buf) {
++		if (rx_nbits == SPI_NBITS_QUAD)
++			buswidth = 4;
++		else if (rx_nbits == SPI_NBITS_DUAL)
++			buswidth = 2;
++	}
++
++	nuvoton_qspi_set_bus_width(qspi, buswidth, dir);
++	ret = nuvoton_qspi_txrx(qspi, xfer->tx_buf, xfer->rx_buf,
++				xfer->len);
++	nuvoton_qspi_set_bus_width(qspi, 1, SPI_MEM_DATA_IN);
++
++	return ret;
++}
++
++static int nuvoton_qspi_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct spi_controller *ctlr;
++	struct nuvoton_qspi *qspi;
++	struct reset_control *rst;
++	u32 num_cs = NUVOTON_QSPI_DEFAULT_NUM_CS;
++	int ret;
++
++	ctlr = devm_spi_alloc_host(dev, sizeof(*qspi));
++	if (!ctlr)
++		return -ENOMEM;
++
++	platform_set_drvdata(pdev, ctlr);
++
++	qspi = spi_controller_get_devdata(ctlr);
++	qspi->dev = dev;
++	spin_lock_init(&qspi->ssctl_lock);
++
++	qspi->regs = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(qspi->regs))
++		return PTR_ERR(qspi->regs);
++
++	rst = devm_reset_control_get_exclusive(dev, NULL);
++	if (IS_ERR(rst))
++		return dev_err_probe(dev, PTR_ERR(rst),
++				     "failed to get reset\n");
++
++	qspi->clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(qspi->clk))
++		return dev_err_probe(dev, PTR_ERR(qspi->clk),
++				     "failed to get and enable clock\n");
++
++	ret = reset_control_assert(rst);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to assert reset\n");
++
++	udelay(2);
++
++	ret = reset_control_deassert(rst);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to deassert reset\n");
++
++	ret = device_property_read_u32(dev, "num-cs", &num_cs);
++	if (ret && ret != -EINVAL)
++		return dev_err_probe(dev, ret, "failed to read num-cs\n");
++
++	if (!num_cs || num_cs > NUVOTON_QSPI_MAX_NUM_CS)
++		return dev_err_probe(dev, -EINVAL, "invalid num-cs %u\n",
++				     num_cs);
++
++	ctlr->num_chipselect = num_cs;
++	ctlr->max_transfer_size = nuvoton_qspi_max_transfer_size;
++	ctlr->max_message_size = nuvoton_qspi_max_message_size;
++	ctlr->mem_ops = &nuvoton_qspi_mem_ops;
++	ctlr->mem_caps = &nuvoton_qspi_mem_caps;
++	ctlr->set_cs = nuvoton_qspi_set_cs;
++	ctlr->transfer_one = nuvoton_qspi_transfer_one;
++	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
++	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST |
++			  SPI_RX_DUAL | SPI_TX_DUAL |
++			  SPI_RX_QUAD | SPI_TX_QUAD;
++	ctlr->dev.of_node = dev->of_node;
++
++	ret = nuvoton_qspi_hw_init(qspi);
++	if (ret)
++		return ret;
++
++	ret = devm_spi_register_controller(dev, ctlr);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "failed to register spi controller\n");
++
++	return 0;
++}
++
++static const struct of_device_id nuvoton_qspi_of_match[] = {
++	{ .compatible = "nuvoton,ma35d1-qspi" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, nuvoton_qspi_of_match);
++
++static struct platform_driver nuvoton_qspi_driver = {
++	.driver = {
++		.name = "ma35d1-qspi",
++		.of_match_table = nuvoton_qspi_of_match,
++	},
++	.probe = nuvoton_qspi_probe,
++};
++module_platform_driver(nuvoton_qspi_driver);
++
++MODULE_DESCRIPTION("Nuvoton MA35D1 QSPI controller driver");
++MODULE_AUTHOR("Chi-Wen Weng <cwweng@nuvoton.com>");
++MODULE_LICENSE("GPL");
 -- 
 2.25.1
 

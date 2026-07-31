@@ -1,85 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F834519A0;
-	Fri, 31 Jul 2026 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A2C330656;
+	Fri, 31 Jul 2026 19:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785521110; cv=none; b=RWZz8nZ8FcXfuBL3KUvwxhF7akH76ILxeHhEyIfPI8Sbbz4sxNks7tyLvOLrbBDUYTdRps4KXheX37tUio9KEon0HW2Th6nHQosiC50XvSz1/9j29k/oVazksdJnUgLqOxVNlW54BI2J5VimJgpSNHoSd6jKkPz/2tL9L9hFLu0=
+	t=1785526286; cv=none; b=PuWhn+3ysl3AznzQsTCB+qML8NX88DAqgTpdfySlIp+XwD9HQtN0Hd59VpXpbOTecK0zBILCKxn6jhC4rT/cB8XDgl5IfXHCslJXz/4FJSiGkpQGHVJYUqzCa0dZ/JiYU0Az46QDBN4reXlZANawbDcvwZneMj1GjzdKsbuzDlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785521110; c=relaxed/simple;
-	bh=vT0bphIuHRIJBEUkwzchbG1dvvO+qFTmQvv615Hjliw=;
-	h=Message-ID:From:To:Cc:Subject:Date; b=DxCxvjb9h8EQYE634pgNAja/4+ZHen7OTH8goEp777i+SMYLlHGiKQQEzHLhH2nsslQbfdKAV052k3pgoH4hTO8wns35nbwfgduf1/UeQK7RHKEv1ETZVsMaOLLwNu7UXZu6X8T8GCV8CsLNXhnQWA+m9CkCS/VyrCSVWZ0/XBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6Dvy9O4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785526286; c=relaxed/simple;
+	bh=PSPslov++Zxl+J3G56+4lbvk+zRegOyhbwcfOgFy8pE=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ElUN/DuTtGoIWyTJx+nFZqsQvPhs9mSR5FjSjRxI/poMBXpoEv7WrgAyw38HhOTOtRSkxbeDP1dxyh6HtpeRohQ9evHXn2HFO2LiCl57EaX5lQqEH21/6J8ZJ7AvesvLVilctjfq3QrfCMXB4JjWodaoWOWX0vRdDnnvtRQdA6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNQJFNXR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6Dvy9O4"
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 47C261F00AC4;
-	Fri, 31 Jul 2026 18:05:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNQJFNXR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA251F00ACF;
+	Fri, 31 Jul 2026 19:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785521106;
-	bh=ND/fxAXoknVogNugYMULwU/JiBjADi3TUDRfj9UxEf4=;
-	h=From:To:Cc:Subject:Date;
-	b=Y6Dvy9O4Tv31dZM8PI+C6lApKJ0K3Ke76sZR4TA1Kb5OdA6oVuaE6Lc3ugWjH2byj
-	 fWYtlrMjawv+5Do/Tygakma62gm0Fuz3RmYXbMqDe/jZMsXaI6dYXRDouAaHNW8Flr
-	 3N42CNjx1pfBmHut63BWR0AeJyJKduJLg1VhCTkO+T6AJ1lL971rhRJtrQbO4GR0nS
-	 CMAXIXD/4tfCGlu2adbxWaMnUbdTwKZegVotiOJAzreCGuqLbQEapqaMIiyh/rSnfu
-	 6gqRj9OsD+a8xyIoVImeJMDCmvWFMCwIikQh5UotpuZFRbvfmjIiMxf5FfavDkeXAl
-	 nYBFKHAiT1TXg==
-Message-ID: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.2-rc5
-Date: Fri, 31 Jul 2026 19:04:54 +0100
+	s=k20260515; t=1785526285;
+	bh=ui+lczv8H2dUeFIUSpx6XJd4vvt/PvFudvfFyz+od+A=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=kNQJFNXRrt4+MhBRrTexN8NDVlTN8w6NWtatVPUuTWBZs11OXIYbneAr1T3y8chIP
+	 RD+7u/JpsNa5HfgOfuMxN52eLJhQJdL9KlyqI0nJXjit4P/yOYUeyHKasuiqg/+AiQ
+	 FVB2KRueiLxHeJ3K9uAI3SXtgmRI5kW2PUeU+CrlLkSaiY/16TmLTyws5DKNs92+FQ
+	 mFBhLzWeeWIDLYuD7btdt2QoH6SRXefUfhMxLaccR481cGHIiTrxAbDtPjPd3niZiV
+	 XZQKzDWg+ZKBO8nl1qo+4qpddCC6kf5P0yfQVZtPyGdDXlJGmLebPetHM9gCReQRT8
+	 W7AN+2IVjZrfw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19AC73926649;
+	Fri, 31 Jul 2026 19:30:49 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.2-rc5
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
+References: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <7c414832b0625d7838a18e0bf589b4d4@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
+X-PR-Tracked-Commit-Id: 9513b642d233bedb0b703ea75b5f3230eb6293a0
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6269cc6f52c68f6f5474f86e94256c81d1ff24cb
+Message-Id: <178552624772.874622.18279066863120420931.pr-tracker-bot@kernel.org>
+Date: Fri, 31 Jul 2026 19:30:47 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 
-The following changes since commit f5098b6bae761e346ebcd9da7f95622c04733cff:
+The pull request you sent on Fri, 31 Jul 2026 19:04:54 +0100:
 
-  Linux 7.2-rc5 (2026-07-26 14:45:48 -0700)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6269cc6f52c68f6f5474f86e94256c81d1ff24cb
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc5
+Thank you!
 
-for you to fetch changes up to 9513b642d233bedb0b703ea75b5f3230eb6293a0:
-
-  spi: Few fix/improvement for spi-nxp-fspi (2026-07-30 13:13:51 +0100)
-
-----------------------------------------------------------------
-spi: Fixes for v7.2
-
-The drip of driver specific fixes, mostly from the device vendors
-themselves, keeps on coming in.  There's more than I'd like right now
-but equally nothing hugely alarming.
-
-----------------------------------------------------------------
-Haibo Chen (3):
-      spi: spi-nxp-fspi: add per-SoC SDR/DTR clock rate limits for all supported SoCs
-      spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
-      spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
-
-Mark Brown (1):
-      spi: Few fix/improvement for spi-nxp-fspi
-
-Srikanth Boyapally (1):
-      spi: spi-cadence: Move TX FIFO full busy-wait into FIFO
-
-Stanislaw Pal (1):
-      spi: spi-qpic-snand: write the feature value before executing SET_FEATURE
-
-Surendra Singh Chouhan (1):
-      spi: spacemit: prepare both DMA descriptors before submitting
-
-Vijaya Krishna Nivarthi (1):
-      spi: qcom-qspi: Correct max DMA length to avoid 64K boundary failure
-
- drivers/spi/spi-cadence.c     |  26 +++++----
- drivers/spi/spi-nxp-fspi.c    | 129 ++++++++++++++++++++++++++++++++++++++----
- drivers/spi/spi-qcom-qspi.c   |   3 +-
- drivers/spi/spi-qpic-snand.c  |  22 +++++--
- drivers/spi/spi-spacemit-k1.c |  22 +++----
- 5 files changed, 166 insertions(+), 36 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

@@ -1,57 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706B73D6CC1
-	for <linux-spi@vger.kernel.org>; Fri, 31 Jul 2026 09:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283003B83FE;
+	Fri, 31 Jul 2026 10:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785491957; cv=none; b=XpDdbA07qL+Dew47N8MR5THyYAtqwPwBU7AVye3k+YNTx/93oI3zL+w01RgwNuZ9VgqAAcvDQCoUhh/ibEiDctlBQivmxhe6sb+aBiX0FGJ5Hv8CBvtFc40OXbDnyiND1z9EyN0slKDANn5g2duNtqG0+veCQ82+i9bNcIP6xek=
+	t=1785495283; cv=none; b=ZGSTw3atJ4iw8A7cmFsTSxbCDUFpgGRXrBNSG303hH2NcelA4x8qlw32Z0OX+rM9kIX4umiPt3aD8rdez8WSTBBGOphl9XHVMc0icCWrLMOggqYcMOrUTVe+NBZYuBEe7Jalskr5axDGzVnq3TtE8YvLm2okYMeq8SNkvqPySXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785491957; c=relaxed/simple;
-	bh=SHWxTcUX8px8YY+lGOI+aNpgfUL8ZgX2HCblvSTy/xk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=nJnJjgWMOHljEFIp8tSORU6YRl2tqCjLD/G88hSLw9+Z3IXKPz3EivxHqogzHK6HK/vEGuTi02WWH2uxj/D9fJDaa4J+lTeNRfld6nPsZC3bjHZLmHdGqGaETOU9AXDKHeh1587Qi8bVmSHVJvYhHQ71eYhD3Dxjrep/DhgzU6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnJlIn80; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785495283; c=relaxed/simple;
+	bh=opKORBieQve1PBtOwkTqy4ayYxkg0xZx5VbSMhf+Fo8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tvbvKrbzJhoZJjxL99EkXL0LioBwh5WBMmHE4CCIPwZkgkLv0Ll8WZyJpITGKMWpKGJA1MP3gfo4DNOZW1AKGu/KL/dFa4Q2728GncNIhPaAodGUl22/GgigCGNe7vwLuEX4PrVQ1i5+Hib3Zo0++K/zmfI7XMpCdMkxGny6q3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BBQowLeK; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnJlIn80"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118C11F00A3A;
-	Fri, 31 Jul 2026 09:58:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785491938;
-	bh=+j9gaxwk074Y1ZwASNGnFdbaDkOJ7ExJzEkNewTRvvw=;
-	h=Subject:From:Date:To;
-	b=EnJlIn80rFXktJ0+scUlhe/uAv24sUWL1POqYi03JNJXHTxePU2jUldWzsMT6BmI/
-	 kRHvRgBgmny5PxECGB4xU422whdKi8gtFiAgLATDbefkF9ZV4gegjjyM/U8xKLC+uh
-	 LxEkJWb9WWeAo+tQrk80yXOcSOwUhdW7ddlz2C9/xFYeZO9hVRP7SYvO77BCSs8cLA
-	 ez04FTA9aqnrhS/XPzRh+Z3+AK+5YDHOFG7h85jawnGHeIA2yprDFVwE0Lk5mXAhiJ
-	 dFN/Fbb0eMViUTWCVkSeHgpDFfu4aysW1guw7J1fxETA4Tpcvit9vRKqW80fdEKwPk
-	 LZTuCHbI6tw2g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A3239253D7;
-	Fri, 31 Jul 2026 09:58:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BBQowLeK"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CF8974E41048;
+	Fri, 31 Jul 2026 10:54:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 876A06039A;
+	Fri, 31 Jul 2026 10:54:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2ADD811C166EE;
+	Fri, 31 Jul 2026 12:54:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1785495262; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=PVfTgw5RIOrG0Sy53AUsU/OG/wjlitk1KG+YHSlD8QQ=;
+	b=BBQowLeKYPdiotIGFnRSN9CjBzZyEk/eT+yLVf3CdtGiKu8+xCoZtMnw8R38cCT3FdnSac
+	iJuNIh2T9fEka7i9J/y5gLiVJO5sob2YtmhKIEWMn8kG371RnZk2pZi+STEhlP8rZkr+2c
+	VswE2O9p2+tCsQGVcAV/KodZAP9emxpZoMGwT+s1wqpyaVlNI7uEEUY7UKdXG0PZpa5LYw
+	pR28SDDJHWgk73RsLlbfL9TCQ21VGeOuXRUfh3Bm03RSvoZqe7DudIiH/Bc4aifFBRLD9a
+	LgnXvNwJGNT8tRNaExeWw9cWfkNnI+FsZsvx2cagWULaum37BU+Lw31gjL0NIg==
+From: "Diogo Ivo (Schneider Electric)" <diogo.ivo@bootlin.com>
+Subject: [PATCH 0/2] spi: cadence-quadspi: fix probe error path and remove
+Date: Fri, 31 Jul 2026 12:53:45 +0200
+Message-Id: <20260731-cqspi-pm_runtime-v1-0-ff0bfc9e8e56@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178549190091.224253.2808817521026678571.git-patchwork-housekeeping@kernel.org>
-Date: Fri, 31 Jul 2026 09:58:20 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDc2MD3eTC4oJM3YLc+KLSvJLM3FTdRItEw2QzQyMjSxMTJaC2gqLUtMw
+ KsJHRsRB+cWlSVmpyCcgcpdpaAIH1BER0AAAA
+X-Change-ID: 20260730-cqspi-pm_runtime-a8a1c6122944
+To: Mark Brown <broonie@kernel.org>, 
+ Matthew Gerlach <matthew.gerlach@altera.com>, 
+ Khairul Anuar Romli <khairul.anuar.romli@altera.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dan Carpenter <dan.carpenter@linaro.org>
+Cc: miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com, 
+ Pascal EBERHARD <pascal.eberhard@se.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Diogo Ivo (Schneider Electric)" <diogo.ivo@bootlin.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1375; i=diogo.ivo@bootlin.com;
+ h=from:subject:message-id; bh=opKORBieQve1PBtOwkTqy4ayYxkg0xZx5VbSMhf+Fo8=;
+ b=owEBbQKS/ZANAwAKAQa+fFtWXslFAcsmYgBqbH7biOcDH24gqSmcosoTEL+bogfD+O6wVshWj
+ 0GNijhq/OqJAjMEAAEKAB0WIQTma35o1i1081e8B2UGvnxbVl7JRQUCamx+2wAKCRAGvnxbVl7J
+ RYQDD/469bGLM35Q+R4GOElEYpojPrXwKnXu6goXfESIkwZPDETF+NHqEoTSJ+QS6L2H+OsvhuC
+ wPAi2UTebnkw3i4KHmJWbGdszfOLhuXTjSRXfwMfA4IU5NU/9J4AF+qX9GxT+DzdaoAaWG0nUfj
+ wAFR3KOcnyixvaHbIyVDwwpLxRJbpOrEYpYE3fBfZlTZ+pcvZn+FhNuTjzAIzrTxFbd3vhV2lxJ
+ XzC76u3YU6rx2LCqyQ+P8sV0bt4ne42pL+otail8oHhjPk+UOmRQ8y/iyZHxHgqbLDRoOqfasvv
+ 4HNcV/P4njHcPw7OxKI9NBgA66T3rpkRlkiTJUo4srMr432PUAsMnvDAdWd5z05rYM7DlRS5jht
+ QAp07uVOND3XsQdM+W4yQWUqu4tp2h07bcDgrcuLi2SRLUg45QehyNC6eIhHjanHuDzOOmh5HhM
+ Xyut8h4g+5DLxFvM9M17BLgis5fKxQ15s/4uWt5ViZIQ3CyyWV+nj41rsLvH1ejehIq0QG42C85
+ BmpOo5B6kUQwy54OMLFdEplCKAbhlGoEH561nhMw0rpoktzs+PwEaiMLLkWaBrxjZaBPnuZcGwd
+ TfIuxqGN8ZFzhEp1ENcKPJmLp3JtkRdFpNG4CjEA2yon0o3koLtC4mFzAb6ruAJa4XwU3qNWCzA
+ xvLc+UcFrqjRx9A==
+X-Developer-Key: i=diogo.ivo@bootlin.com; a=openpgp;
+ fpr=E66B7E68D62D74F357BC076506BE7C5B565EC945
+X-Last-TLS-Session-Version: TLSv1.3
 
-Latest series: [v3] spi: add support for Amlogic A9 (2026-07-31T09:08:25)
-  Superseding: [v2] spi: add support for Amlogic A9 (2026-07-23T06:43:41):
-    [v2,1/4] spi: dt-bindings: amlogic: spisg: Document A9-specific properties
-    [v2,2/4] spi: amlogic: spisg: Fix transfer size limit and timeout handling
-    [v2,3/4] spi: amlogic: spisg: Fix the incorrect keep_ss of the last descriptor
-    [v2,4/4] spi: amlogic: spisg: Add support for A9 controller features
+This series fixes two resource leaks in the cadence-quadspi driver's
+probe error path and remove callback.
 
+Patch 1 fixes an imbalanced pm_runtime_enable()/pm_runtime_disable()
+pair: when probe defers after cqspi_request_mmap_dma(),
+pm_runtime_disable() is called without a prior pm_runtime_enable().
+It also adds the missing pm_runtime_dont_use_autosuspend() in both
+the probe error path and the remove callback and a missing
+pm_runtime_put_noidle() in the probe error path. This consolidates
+fixes from upstream commits 5ff4d5d1af0c and 5e8bb0cc72f1.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Patch 2 fixes a DMA channel leak: when spi_register_controller() fails,
+the channel acquired via cqspi_request_mmap_dma() is never released.
+A dedicated error label is added to release it before the runtime PM
+teardown. This fix is one part of upstream commit f18c8cfa4f1a.
+
+Signed-off-by: Diogo Ivo (Schneider Electric) <diogo.ivo@bootlin.com>
+---
+Diogo Ivo (Schneider Electric) (2):
+      spi: cadence-quadspi: fix runtime pm cleanup on probe failure/unbind
+      spi: cadence-quadspi: release DMA channel on probe failure
+
+ drivers/spi/spi-cadence-quadspi.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+---
+base-commit: 52a355b23cd2dd77b683ed1a1bbe2b7408bd9c74
+change-id: 20260730-cqspi-pm_runtime-a8a1c6122944
+
+Best regards,
+--  
+Diogo Ivo <diogo.ivo@bootlin.com>
 

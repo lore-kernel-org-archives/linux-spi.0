@@ -1,83 +1,67 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54B5432302;
-	Sat,  1 Aug 2026 11:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6540648988E;
+	Sat,  1 Aug 2026 15:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785583649; cv=none; b=rWZsQo01zIIeNMnTzyjVWGg9ha4BBrFgXi2zkhmrh5cl6WYvm159yfDM/Fs+LY9k/M8R8mJlORuKtzACcHXVVZapK8QimQT2XcVJ1R8HZxmqxV4Y+b7BRo4oYaP2i9dLY8DFEK29AtHhVNMEdfVE76jBEfYDFdrkEuf5NMeo0As=
+	t=1785599691; cv=none; b=SeX5eyEwuvgoo9wwyRWiXY6Ls6/lxTB/H9WrRMmQeh67IbV5jda9AAMKO8phtdIhMWWJglkul7IV/UBW6HrpCTIkubRAZ+ijzyiig32T83CUJ9f7YuO2bApB7iy1UKbUequ3Km5k2eGq7Z3x804i5Len37YQqUH49mMyW1A0ipI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785583649; c=relaxed/simple;
-	bh=YFJFNiG/dCjzfVJ+FS0HnxSkZpVKlnNaqoS0nAaybVY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZTKCvwMhpg4p4h2XMo5/dovAU1+k9zeNEAQT4PUcO/r4Buk7+fgyE+GaidkBw8HdgpqRHHwOKVJ3iMgfjT94GRQk9Bv1g3PKMFxNLkd+frm0LOMLLiQqKZaYWSzhpWEGcnslGMoyFFITN4ZIULcBwFphJ5CK276keFlShp4nG2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Pjum6oZA; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1785599691; c=relaxed/simple;
+	bh=NfKQ3C27ZyOXt9VqRC3enedGJ2XGJRoP1zuJttga37I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EY1xeUzTsnG5er6geEqJG3mqA9Uv+XI1yUM1NGalfFf2E4zVldE9KQ2DnAgGZlsTiCO5H9GECNeuV48Z0FpxYyfuZ4eV5onB526OGoNgKil5xYLyOKAVadqV4PFUtdDArr2Gat0v4gDNBYbLktsKq7nvBZt3puzSm3dVNy/hzvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs+ZHpN4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Pjum6oZA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 63FFC1A1395;
-	Sat,  1 Aug 2026 11:27:19 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 345A9603C2;
-	Sat,  1 Aug 2026 11:27:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AEA9811C170EE;
-	Sat,  1 Aug 2026 13:27:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1785583634; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=QKObjQZ0eiPXWIcCdUDPDX8kQvNyavu8as7Hof/t/FE=;
-	b=Pjum6oZAfGJso6gXTr+YOmhulEcrUSG1YPaRDXCMUAJolWvEKuTQu6ovWiXEWLlH9qCeZm
-	mvmEZvpxPxsWsjk7xDJMFPx48dkSwiJiC0ZhDwnHR8G9Asi7+jU9oRDhveKZTdPH21gWXi
-	IzaXGLY87ytHRAG66izbASx6ueIdFJ0ECAsaRtveMXHGG67p9K2vKwdZAytjpPZFqszb/A
-	pIVopmqxuZu/8lQrBKTaXNOrUWuiAKT7u7Sx40HZsQS3+HGEl1+TPYdU4pUiRZvRrip9A+
-	CSgzOJjhXTNckpBh0/2W7QqnSquhj+BVAcVVp/rkpX3quaHIeGiLHI4R2oHqqQ==
-Message-ID: <72162aab-ac18-4089-9a38-ea1b162b2610@bootlin.com>
-Date: Sat, 1 Aug 2026 13:27:10 +0200
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs+ZHpN4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E43D1F00AC4;
+	Sat,  1 Aug 2026 15:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1785599690;
+	bh=TbA0K6FaORwLguJmxTI6dO/8Lbfn3XfQz2bYMu5MwZw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bs+ZHpN4GrPfwUky3N9Rcqx43ht74mG+AWLewhEaMADWyBwB0b89GRRH1eQ2vL/b/
+	 ElQOnvXs3xZnqeao2UzKhA6GZeT1uFQIMfwxVUsGLpnQVZMfh0S5WXWQmdwk+obR19
+	 sj3ZHfI7rJOhzeG9Fr1ZdI6R4lMCHB/96n1Q/m6I=
+Date: Sat, 1 Aug 2026 17:54:35 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Diogo Ivo <diogo.ivo@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>, miquel.raynal@bootlin.com,
+	thomas.petazzoni@bootlin.com,
+	Pascal EBERHARD <pascal.eberhard@se.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] spi: cadence-quadspi: fix probe error path and remove
+Message-ID: <2026080123-marshland-curtsy-8a64@gregkh>
+References: <20260731-cqspi-pm_runtime-v1-0-ff0bfc9e8e56@bootlin.com>
+ <6bcaa81c-d52a-4a4f-9bba-8c61f6890fb3@sirena.org.uk>
+ <72162aab-ac18-4089-9a38-ea1b162b2610@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] spi: cadence-quadspi: fix probe error path and remove
-To: Mark Brown <broonie@kernel.org>
-Cc: Matthew Gerlach <matthew.gerlach@altera.com>,
- Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dan Carpenter <dan.carpenter@linaro.org>, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, Pascal EBERHARD <pascal.eberhard@se.com>,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260731-cqspi-pm_runtime-v1-0-ff0bfc9e8e56@bootlin.com>
- <6bcaa81c-d52a-4a4f-9bba-8c61f6890fb3@sirena.org.uk>
-Content-Language: en-US
-From: Diogo Ivo <diogo.ivo@bootlin.com>
-In-Reply-To: <6bcaa81c-d52a-4a4f-9bba-8c61f6890fb3@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72162aab-ac18-4089-9a38-ea1b162b2610@bootlin.com>
 
-Hi Mark,
-
-On 8/1/26 1:48 AM, Mark Brown wrote:
-> On Fri, Jul 31, 2026 at 12:53:45PM +0200, Diogo Ivo (Schneider Electric) wrote:
->> This series fixes two resource leaks in the cadence-quadspi driver's
->> probe error path and remove callback.
+On Sat, Aug 01, 2026 at 01:27:10PM +0200, Diogo Ivo wrote:
+> Hi Mark,
 > 
-> This doesn't apply against current code, please check and resend.
-
-This series is meant to be applied only on the stable trees, as there
-was a backport there that broke probing in certain scenarios. I should
-have mentioned this more clearly in the cover letter, apologies for the
-noise. If I need to resend explicitly mentioning which stable trees this
-patch should be applied to let me know and I'll happily do it.
-
->> base-commit: 52a355b23cd2dd77b683ed1a1bbe2b7408bd9c74
+> On 8/1/26 1:48 AM, Mark Brown wrote:
+> > On Fri, Jul 31, 2026 at 12:53:45PM +0200, Diogo Ivo (Schneider Electric) wrote:
+> > > This series fixes two resource leaks in the cadence-quadspi driver's
+> > > probe error path and remove callback.
+> > 
+> > This doesn't apply against current code, please check and resend.
 > 
-> That's v6.12, that's rather ancient...
+> This series is meant to be applied only on the stable trees, as there
+> was a backport there that broke probing in certain scenarios. I should
+> have mentioned this more clearly in the cover letter, apologies for the
+> noise. If I need to resend explicitly mentioning which stable trees this
+> patch should be applied to let me know and I'll happily do it.
 
-Best regards,
-Diogo
+Please do, as I'm confused :)

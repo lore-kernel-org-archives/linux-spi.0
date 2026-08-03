@@ -1,65 +1,65 @@
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A77B23395F;
-	Mon,  3 Aug 2026 03:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D7194C98;
+	Mon,  3 Aug 2026 03:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785726158; cv=none; b=gW+4QMgNQh4RandvVOXhAebv90TMQMoyju+8ntISuHGe/GGUZRkuMnfNIaVMUkIE9R2oOwfFQZFF0CzwvbE6hwlbs/Eh3qF4rI9qPBy6Apz3qAloFKjVMnqPPRYdZGrdiOPBI5OQNwRAjzQeHApoHiSvJGaKbNbw8lpymHmgh0g=
+	t=1785726174; cv=none; b=MVbynZx6THefLaBcUNluiy3O4l3+MpethAYS6voKp9OoGY91u8VqvpwfvDh8M8tu+QYhLNL/itYACU8DnQKKe1gg3gZY728j22cFjFcMnY6CyviWnywDmJsO9RjrLiW1dPd8e8Tz8hsxvuSzFtR5cr9KGvcpnNdwPWvkFEtlQFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785726158; c=relaxed/simple;
-	bh=89VaO+GuejkXaL0nK7MMQZwZAfJXlOlOReouxxIDrAA=;
+	s=arc-20240116; t=1785726174; c=relaxed/simple;
+	bh=eo06UpYyuW1lWB+qrrHCuHTfBVjsF6wEWGGnZsfNnfs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=abs9qZju6/YaLdGAKOMr7Zk1b41iAGVhwiU8rassNsD44HwVC260CmTISHS9RIq6tfpXrDIQeVc+/cF8Qjyb4gkFZhsvIgzdCmlSl83iXZioeNrhJHJeRhqsOrbR9NXkVA0E9O8x0je0pW4+8or7koNaPrYD8yFQDhJnLbwGkUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=nf4FkVi9; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=YqPXRhopJ/KaMEspQSFqzIL0DcttzsyHfNLHzP9WLp3DUdLAGwQc0eu/fxwo9fxThcsIOaDBBicqsqS003T3LF6Hd7sccWYREhAGc6/itirFvXy5cAb3z7Xdhf1Neu0/haBQjmNuRT9q6LR8Vo3pywkolMswUmc55R97rhRqDP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=0vLO2EAk; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="nf4FkVi9"
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672LV3sK1127294;
-	Sun, 2 Aug 2026 23:02:33 -0400
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="0vLO2EAk"
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67330gwK1716826;
+	Sun, 2 Aug 2026 23:02:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=JfL8N
-	KpiQeVTrnHbTQfWyFuhppVsVgQFcQ8e1yEck/M=; b=nf4FkVi9VHpo2pRr5oIoV
-	KbSUoTJsXWcmuD6LJrFTeFQxOhtHCa9kPs8we5nRryCE8+D/dQoUtopznkaspgEA
-	6uwjvnlkXGBp1YryiQZ/nq4k1aurWeNfrZWMDucdgsELBltMi/prrGk+qgjvYOvY
-	YIEtOV+fhoxM7SYmX5DpKqF69hjXSxsofDcYF1NynRGTvajVG+wANhp/aMdgEe91
-	RyPJDLh7rPOZblrk4DurASHgm0yJMb0XGBTgGl9zlCnm789ho47gkhe2Tqw4DmuZ
-	ZtaVruKoidN/UxS0h4hLRRx3M6eXUXsvZfSUPLd18UX2IpwSCZyf65m71r5l4bNp
-	A==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=/iDTm
+	Ki/BO1H1dXQlS5qcuwglI5x2oVcmf2bNyz7bwQ=; b=0vLO2EAki5l6XFc58ejXL
+	W2iGNR5ScGfjVWcMysMlHM1DvOgY2MDeBB4DQSmgycocpIgt5e2IBC5/fRsd+UW3
+	3xE52c9zAbWdl9YdmVq0/4z3NhtC5RDoHymslBBScNTlxnaYKMUySaTaVd2b9Ent
+	XrMk8v6vLaMkjZqL72gpzpS+Oo0qG5aTix3rnnrJoZmG+dF6Q3BkAJJPhJobRJuw
+	tuzgxwW7vb23o/Vp05hmJhZR30v5tWNpjyur9bEvO8eYvAkg7I4caOgu4Q0TtPqH
+	aIZ+0qKRzUXEKDQe/2ps0lyIyWPNyCEgfykBBiQ91yGlgWoCXEaOo4A5yRi7PSqE
+	Q==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4fsy4bt7n6-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4fsamxmw03-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 02 Aug 2026 23:02:33 -0400 (EDT)
+	Sun, 02 Aug 2026 23:02:49 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 67332Wl2035380
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 67332mi1035422
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 2 Aug 2026 23:02:32 -0400
+	Sun, 2 Aug 2026 23:02:48 -0400
 Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
  ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Sun, 2 Aug 2026 23:02:32 -0400
+ 15.2.1748.37; Sun, 2 Aug 2026 23:02:47 -0400
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
  ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Sun, 2 Aug 2026 23:02:32 -0400
+ 15.2.1748.37; Sun, 2 Aug 2026 23:02:47 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Sun, 2 Aug 2026 23:02:32 -0400
+ Transport; Sun, 2 Aug 2026 23:02:47 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 67332LXu011642;
-	Sun, 2 Aug 2026 23:02:23 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 67332Z5A011649;
+	Sun, 2 Aug 2026 23:02:37 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: Jonathan Santos <Jonathan.Santos@analog.com>, <dlechner@baylibre.com>,
         <nuno.sa@analog.com>, <michael.hennerich@analog.com>,
         <broonie@kernel.org>, <jonath4nns@gmail.com>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v2 3/5] spi: introduce SPI ancillary device with lanes
-Date: Mon, 3 Aug 2026 00:02:15 -0300
-Message-ID: <55c674601bfb3ba5495bc364cf2f7b86d0e4e65c.1785725359.git.Jonathan.Santos@analog.com>
+Subject: [PATCH v2 4/5] spi: spi-engine-ex: Add support for multi-CS devices
+Date: Mon, 3 Aug 2026 00:02:29 -0300
+Message-ID: <a595944fda10f801dd3d11640f3a3726401c40d9.1785725359.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1785725359.git.Jonathan.Santos@analog.com>
 References: <cover.1785725359.git.Jonathan.Santos@analog.com>
@@ -72,192 +72,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfXy9mHYDQiqgfM
- fqXEsWyVhR4gEV8koKzelCpFb7VzSAfoz6CCmzRyex6AREAr5+dyynQ2Bq/VAYKvMabxv5zwv9w
- gmHNb7nmxKGo33VotXldHmTizc2DL3tnL52JAg0P5FqOv9qBhHM1gFgPH1ho0VBSJu2hSKmnBVF
- XPtG16iS5L+/b0zG7iRWM6chhbqci4Klvkh/o5YSHH9lHA4pcE47QnHztTWyV6ATnSEArUm7RD1
- dk/MUic5H8EnsPPCQFThs020H/Ki/1xvyLxELkJlZA10XbyzgapvdDgqxAn0cleEgEnse5WVuxu
- cZ8/f+dHHs3TsUCOUIpegz2n/vkGHm5ERwJ+3hQjXWF+dVW9kTM3NEc+AvYUQM0tSOCNGO33jtq
- cvbcqc3QlR7SR5/8VBoGvxe1ilzmkQRyn1s4JVVSdQx4gZkG4MNti5g1jkUKsoKxcieknqW0kTf
- /RM6+UyOX7KQ6vXIuVg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfXxC9Vdw1e76kU
- YYLMKKjP66MsWcQ2dFbvW/4DmJdy/rPw4yWXiJ4lQ4NmyekqNmDy3lFTtNMTGQk+k/IdNGZD+gB
- UOXoaFQQGf2l0INqni6Xv9sZvLrhryo39XaQaqX5ehpe94fqcGyS
-X-Proofpoint-ORIG-GUID: lBDuig05vRkyzd0xE1xCdqmmM_uIqlMD
-X-Proofpoint-GUID: lBDuig05vRkyzd0xE1xCdqmmM_uIqlMD
-X-Authority-Analysis: v=2.4 cv=QKRYgALL c=1 sm=1 tr=0 ts=6a7004c9 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfX4tjDlGewoT5i
+ zMz5IIvsLqIiI4KAH4BIH/wS0mEq7zbfCsQrHDGTB7hcECPlR+GPQ+QFl9O8jseqaRe1EbfksPJ
+ fsyuYxhoHeHA+iQx5ty5kOSFd8VBjVsgPU5IdKS0WvWhfjnaiJa0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfX5KFNOPQp8SGD
+ 1SPJ40HtAGllKhcY60MMK759npUhCYnEcn5MxANGs/poYmT0/sjbQxW9HQ9Phlo+imQfCXFw+oZ
+ CumtbWl44CTncDbRQHGrEl1+o5PNA04n+Y7LutD94OlqE1Q8791dbx81inNSzZrVVc3nmgR6vsC
+ Bc4bgnBVlf45cYFHLoysv3C4StajFNCrfIAqCyfGgb1CoNuoWc/JtTX2+OYfeyuezddUjiLha/l
+ p+GsoIriKebWdMrQNMCYdOTKhSfO8Cw1A5JKrhfkwgMl3AcQwfMWH/flljly+7tiTp5wSqJfey1
+ ZSymkEcV2yo5PLUAT51i+B86LBF+YFyaNdm1SGwQ1MJNizwXHj3d98+lqBkNy5ko7ZYB1l57VFG
+ BoX+ajD9WkS4e37RvqveTuIxe7FDGxMeOl+Yyu4I6BfAa7SsLL9rd/2lzFD2HInSpNNsbpmZ041
+ x3izX8EL+uh2epZMoIg==
+X-Authority-Analysis: v=2.4 cv=daWwG3Xe c=1 sm=1 tr=0 ts=6a7004d9 cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
  a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
- a=N--XFCr6TIEc_64PeIT2:22 a=gAnH3GRIAAAA:8 a=85GZpr9K2BDV8NdfQd4A:9
+ a=uXIjobp8t2wMuQ0fPvqm:22 a=gAnH3GRIAAAA:8 a=ENVVfsUtpBKDjCfSmAkA:9
+X-Proofpoint-ORIG-GUID: AowrSaE64hGZqx0p1x_bEysYRjDOe1_A
+X-Proofpoint-GUID: AowrSaE64hGZqx0p1x_bEysYRjDOe1_A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0
- priorityscore=1501 spamscore=0 impostorscore=0 phishscore=0 suspectscore=0
+ spamscore=0 impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030023
 
-The existing spi_new_ancillary_device() creates an ancillary SPI device
-but does not consider the parent's lane map. In multi-device setups where
-each sub-device's chip-select is bound to a dedicated data lane, there is
-no way to bind an ancillary device to an arbitrary lane index.
+The SPI Engine controller only handled the first chip select when
+asserting CS lines and configuring CS polarity inversion, ignoring
+additional CS indices present in cs_index_mask.
 
-Introduce spi_new_ancillary_device_with_lane() and
-devm_spi_new_ancillary_device_with_lane(), which accept rx_lane_idx and
-tx_lane_idx parameters to select a specific lane from the parent's
-rx_lane_map and tx_lane_map respectively. The resulting ancillary device
-is registered with a single RX and TX lane, keeping it independent from
-the other sub-devices sharing the same controller.
+Update spi_engine_gen_cs() to iterate over all set bits in
+cs_index_mask and toggle each corresponding CS line in the assert mask.
+Update spi_engine_setup() likewise so that SPI_CS_HIGH polarity is
+applied to every active CS index rather than only index 0.
+
+Set SPI_CONTROLLER_MULTI_CS in the controller flags to reflect the
+capability to the SPI core.
 
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 Changes in v2:
-* New patch.
+* Adaptation of the patch
+  "spi: spi-engine-ex: Add support for multi-CS devices" from v1,
+  discarding the per transfer CS mask and keeping the Multi-CS support
+  only.
 ---
- drivers/spi/spi.c       | 102 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |   8 ++++
- 2 files changed, 110 insertions(+)
+ drivers/spi/spi-axi-spi-engine.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 61423aee1525..d41c9392c04e 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2749,6 +2749,72 @@ struct spi_device *spi_new_ancillary_device(struct spi_device *spi,
- }
- EXPORT_SYMBOL_GPL(spi_new_ancillary_device);
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 02bbc5d0cfc5..8a2cae81aea6 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -46,6 +46,7 @@
+ #define SPI_ENGINE_REG_SDI_DATA_FIFO_PEEK	0xec
  
-+/**
-+ * spi_new_ancillary_device_with_lane() - Register ancillary SPI device bound to specific lane
-+ * @spi:          Pointer to the main SPI device registering the ancillary device
-+ * @chip_select:  Chip Select of the ancillary device
-+ * @rx_lane_idx:  Lane index within the parent's rx_lane_map
-+ * @tx_lane_idx:  Lane index within the parent's tx_lane_map
-+ *
-+ * Like spi_new_ancillary_device(), but additionally binds the ancillary device
-+ * to a single lane from the parent's lane map. Use this in multi-device setups
-+ * where each sub-device is physically wired to a dedicated CS and a dedicated
-+ * data lane.
-+ *
-+ * This may only be called from main SPI device's probe routine.
-+ *
-+ * Return: Pointer to new ancillary device on success; ERR_PTR on failure
-+ */
-+struct spi_device *spi_new_ancillary_device_with_lane(struct spi_device *spi,
-+						      u8 chip_select,
-+						      unsigned int rx_lane_idx,
-+						      unsigned int tx_lane_idx)
-+{
-+	struct spi_controller *ctlr = spi->controller;
-+	struct spi_device *ancillary;
-+	int rc;
-+
-+	ancillary = spi_alloc_device(ctlr);
-+	if (!ancillary) {
-+		rc = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	strscpy(ancillary->modalias, "dummy", sizeof(ancillary->modalias));
-+
-+	spi_set_chipselect(ancillary, 0, chip_select);
-+
-+	ancillary->max_speed_hz = spi->max_speed_hz;
-+	ancillary->mode = spi->mode;
-+	ancillary->cs_index_mask = BIT(0);
-+
-+	if (rx_lane_idx >= spi->num_rx_lanes || tx_lane_idx >= spi->num_tx_lanes) {
-+		rc = -EINVAL;
-+		goto err_out;
-+	}
-+
-+	ancillary->rx_lane_map[0] = spi->rx_lane_map[rx_lane_idx];
-+	ancillary->num_rx_lanes = 1;
-+	ancillary->tx_lane_map[0] = spi->tx_lane_map[tx_lane_idx];
-+	ancillary->num_tx_lanes = 1;
-+
-+	WARN_ON(!mutex_is_locked(&ctlr->add_lock));
-+
-+	/* Register the new device, passing the parent to skip CS conflict check */
-+	rc = __spi_add_device(ancillary, spi);
-+	if (rc) {
-+		dev_err(&spi->dev, "failed to register ancillary device\n");
-+		goto err_out;
-+	}
-+
-+	return ancillary;
-+
-+err_out:
-+	spi_dev_put(ancillary);
-+	return ERR_PTR(rc);
-+}
-+EXPORT_SYMBOL_GPL(spi_new_ancillary_device_with_lane);
-+
- static void devm_spi_unregister_device(void *spi)
+ #define SPI_ENGINE_MAX_NUM_OFFLOADS		32
++#define SPI_ENGINE_MAX_CS			8
+ 
+ #define SPI_ENGINE_REG_OFFLOAD_CTRL(x)		(0x100 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
+ #define SPI_ENGINE_REG_OFFLOAD_STATUS(x)	(0x104 + SPI_ENGINE_MAX_NUM_OFFLOADS * (x))
+@@ -281,10 +282,14 @@ static void spi_engine_gen_sleep(struct spi_engine_program *p, bool dry,
+ static void spi_engine_gen_cs(struct spi_engine_program *p, bool dry,
+ 		struct spi_device *spi, bool assert)
  {
- 	spi_unregister_device(spi);
-@@ -2789,6 +2855,42 @@ struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi,
++	unsigned long cs_index_mask = spi->cs_index_mask;
+ 	unsigned int mask = 0xff;
++	unsigned int cs_bit;
+ 
+-	if (assert)
+-		mask ^= BIT(spi_get_chipselect(spi, 0));
++	if (assert) {
++		for_each_set_bit(cs_bit, &cs_index_mask, SPI_ENGINE_MAX_CS)
++			mask ^= BIT(spi_get_chipselect(spi, cs_bit));
++	}
+ 
+ 	spi_engine_program_add_cmd(p, dry, SPI_ENGINE_CMD_ASSERT(0, mask));
  }
- EXPORT_SYMBOL_GPL(devm_spi_new_ancillary_device);
+@@ -886,12 +891,16 @@ static int spi_engine_setup(struct spi_device *device)
+ {
+ 	struct spi_controller *host = device->controller;
+ 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
++	unsigned long cs_index_mask = device->cs_index_mask;
+ 	unsigned int reg;
++	u32 cs_bit;
  
-+/**
-+ * devm_spi_new_ancillary_device_with_lane() - Register managed ancillary SPI device bound to a lane
-+ * @spi:         Pointer to the main SPI device registering the ancillary device
-+ * @chip_select: Chip Select of the ancillary device
-+ * @rx_lane_idx: Per-device lane index within the parent's rx_lane_map
-+ * @tx_lane_idx: Per-device lane index within the parent's tx_lane_map
-+ *
-+ * Managed version of spi_new_ancillary_device_with_lane(). The ancillary device
-+ * will be unregistered automatically when the parent SPI device is unregistered.
-+ *
-+ * This may only be called from main SPI device's probe routine.
-+ *
-+ * Return: Pointer to new ancillary device on success; ERR_PTR on failure
-+ */
-+struct spi_device *devm_spi_new_ancillary_device_with_lane(struct spi_device *spi,
-+							   u8 chip_select,
-+							   unsigned int rx_lane_idx,
-+							   unsigned int tx_lane_idx)
-+{
-+	struct spi_device *ancillary;
-+	int ret;
-+
-+	ancillary = spi_new_ancillary_device_with_lane(spi, chip_select,
-+						       rx_lane_idx, tx_lane_idx);
-+	if (IS_ERR(ancillary))
-+		return ancillary;
-+
-+	ret = devm_add_action_or_reset(&spi->dev, devm_spi_unregister_device,
-+				       ancillary);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return ancillary;
-+}
-+EXPORT_SYMBOL_GPL(devm_spi_new_ancillary_device_with_lane);
-+
- #ifdef CONFIG_ACPI
- struct acpi_spi_lookup {
- 	struct spi_controller 	*ctlr;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 4c285d3ede1d..91c9e2d2e7e3 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -385,6 +385,14 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+-	if (device->mode & SPI_CS_HIGH)
+-		spi_engine->cs_inv |= BIT(spi_get_chipselect(device, 0));
+-	else
+-		spi_engine->cs_inv &= ~BIT(spi_get_chipselect(device, 0));
++	for_each_set_bit(cs_bit, &cs_index_mask, SPI_ENGINE_MAX_CS) {
++		if (device->mode & SPI_CS_HIGH)
++			spi_engine->cs_inv |= BIT(spi_get_chipselect(device, cs_bit));
++		else
++			spi_engine->cs_inv &= ~BIT(spi_get_chipselect(device, cs_bit));
++	}
  
- extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
- extern struct spi_device *devm_spi_new_ancillary_device(struct spi_device *spi, u8 chip_select);
-+extern struct spi_device *spi_new_ancillary_device_with_lane(struct spi_device *spi,
-+							     u8 chip_select,
-+							     unsigned int rx_lane_idx,
-+							     unsigned int tx_lane_idx);
-+extern struct spi_device *devm_spi_new_ancillary_device_with_lane(struct spi_device *spi,
-+								  u8 chip_select,
-+								  unsigned int rx_lane_idx,
-+								  unsigned int tx_lane_idx);
+ 	writel_relaxed(SPI_ENGINE_CMD_SYNC(0),
+ 		       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+@@ -1222,6 +1231,7 @@ static int spi_engine_probe(struct platform_device *pdev)
+ 	host->unoptimize_message = spi_engine_unoptimize_message;
+ 	host->get_offload = spi_engine_get_offload;
+ 	host->put_offload = spi_engine_put_offload;
++	host->flags |= SPI_CONTROLLER_MULTI_CS;
+ 	host->num_chipselect = 8;
  
- /* Use a define to avoid include chaining to get THIS_MODULE */
- #define spi_register_driver(driver) \
+ 	if (adi_axi_pcore_ver_gteq(version, 1, 2)) {
 -- 
 2.34.1
 

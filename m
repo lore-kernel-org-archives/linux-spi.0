@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C51314A8E;
-	Mon,  3 Aug 2026 14:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E58415F08;
+	Mon,  3 Aug 2026 14:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768237; cv=none; b=dym1pzQx3tHUyriTye70RgsjokZwVR3vhJyea/ZGVdvyOrxDOprkdcjPaSar8dZ4+67J9G1RlngPeBOS6frksnMSM4YJlSaUijW/ktPwSfK9P+ZCGm8MV/c0/FdcVbvg8Gi27rnqu2mqZbA552fjDUwerb9Ltdf7HuWLBDe5a7g=
+	t=1785768254; cv=none; b=pbmel/1eNj43uIlQq/4ZllulIwUL+IEWYgxRBFcnv/O4nZnN7E6SjITIh3IqZQhs4RZ6oBIlvTu2BHoSHZUb4JafAOQHhiVY9K50f0tpwWzqqAWMuKbMkpuUoLpNiKQc95f095A3y50js2W8ao2D4gyz+nH5lh4hUMw9mWUFM3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768237; c=relaxed/simple;
-	bh=6x1chWzRmz3GtKAZMXqA3VpMzOHiVAzj3Ew/WfpXWMQ=;
+	s=arc-20240116; t=1785768254; c=relaxed/simple;
+	bh=DunFNjHwf3icjYe5ZHlztX4j2oXJeKJ129eE46vw5/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Es1n+mHVXFKM5y0xkgmB/CONsSVQadueystK1JSdswEVd6prty/QrjhWAxIY2ZpJt2ziA0UoSOk3ks5ak3jqu8AW2ZLZmANqDA0bX1GUeA1O2E9RvANlRLxcKhN2DAXbrR0w69IM6NwgM2aLJaNx53AbP/1Xg4mBfMUFhV8NGKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6/Hu9Se; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=uUTAO/EYdmMG/11SlaSpIO9XHbeyt0ZtzZD0fIWjQ36gJVOJbGcyJ4Myi6zx5f7qTUI+qI9JR3blsvd6hq11XiM3Kn+6TQc4QSEOf/oZZmo94H+O1oKfdIvLArl230qFCkVft3Jq/S86beQ5cpLY7GLMShYDv6QY1t6loF2vBJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrYZUQoq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6/Hu9Se"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C0B1F000E9;
-	Mon,  3 Aug 2026 14:43:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrYZUQoq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CBD1F00A3A;
+	Mon,  3 Aug 2026 14:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768236;
-	bh=hZrAkotQa6HumBZo0ApaJSkT743EScJ3Bb7qgki/piI=;
+	s=k20260515; t=1785768252;
+	bh=0Wy9JOaeFGBeAJk92ZmHHFd5ZfCYJpWQRTgBXTS91c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c6/Hu9SewVq06BlnIrTLSNmsjzLZk6VF7rXadROXYNpr89qk5YBPDf0S/a9L3xnUJ
-	 awTLWdx+cE+TRMObOg/4kf+zLC2RaT4J+eb7eFNbctR1MwX8/o+5Y2rmurmZT7F1CZ
-	 7N6bF/vZ4AMu/unLS/LFLVJINW4AefPRjnrxF4FAYrF/Mnq4jhqdLrqXB6dJjw6SJJ
-	 yN0xINHYUghpn21gz4QmvDCnNS5UJxMRF0AyahuOGVx9iUvSj9QfrMX/dWkTMScDvu
-	 5s8dH2cfNq3ch8kcIn/r6wXiImO4V4ZDuJlQE1ZwxGQrmiEvFHGM/m9xDpqW1YKKd4
-	 WFXozR35JcGFA==
+	b=OrYZUQoq0laq8B7dUK0dQO+htHpXQwZrGnduhQUnF9/U6evzdxDerO+bgxkoMHVVQ
+	 x4oxojMN+2ehH0hWDWAzt5DZErNKnTLZjlckqMo+JDlvFmhGRs8RUYVxm2TqWOZ05C
+	 /qnkRdlRhPXHlIB0Xd55ML6EhGbO1+4GP6MNMEjqJ1G8V1zM6JbOjgU1minK09vy1t
+	 U69m6JMKdko8At1EYn16xcgcgS607UBhE1xBIepZU0ma4h+zSfAPnCVmhAvGIMfhDO
+	 mSegpMW2pEmO/Jv7Jiq23zw6Q3sqUMa1hHFpgi3z50FaZsGN6Mogty05BM6UKRvFmX
+	 vaTVmnq9UmkhQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 20/39] spi: mtk-nor: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:44 +0800
-Message-ID: <20260803142003.12857-21-jszhang@kernel.org>
+Subject: [PATCH 21/39] spi: mxic: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:45 +0800
+Message-ID: <20260803142003.12857-22-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -94,66 +94,50 @@ CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-mtk-nor.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/spi/spi-mxic.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
-index 74f34537b02c..5e1fdbb40ffb 100644
---- a/drivers/spi/spi-mtk-nor.c
-+++ b/drivers/spi/spi-mtk-nor.c
-@@ -947,7 +947,7 @@ static void mtk_nor_remove(struct platform_device *pdev)
- 	mtk_nor_disable_clk(sp);
- }
- 
--static int __maybe_unused mtk_nor_runtime_suspend(struct device *dev)
-+static int mtk_nor_runtime_suspend(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
-@@ -957,7 +957,7 @@ static int __maybe_unused mtk_nor_runtime_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
+index 83b688e65284..e3c85e5191e3 100644
+--- a/drivers/spi/spi-mxic.c
++++ b/drivers/spi/spi-mxic.c
+@@ -721,7 +721,7 @@ static int mxic_spi_mem_ecc_probe(struct platform_device *pdev,
  	return 0;
  }
  
--static int __maybe_unused mtk_nor_runtime_resume(struct device *dev)
-+static int mtk_nor_runtime_resume(struct device *dev)
+-static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
++static int mxic_spi_runtime_suspend(struct device *dev)
  {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
-@@ -965,12 +965,12 @@ static int __maybe_unused mtk_nor_runtime_resume(struct device *dev)
- 	return mtk_nor_enable_clk(sp);
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+@@ -732,7 +732,7 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
+ 	return 0;
  }
  
--static int __maybe_unused mtk_nor_suspend(struct device *dev)
-+static int mtk_nor_suspend(struct device *dev)
+-static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
++static int mxic_spi_runtime_resume(struct device *dev)
  {
- 	return pm_runtime_force_suspend(dev);
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
+@@ -748,8 +748,7 @@ static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
  }
  
--static int __maybe_unused mtk_nor_resume(struct device *dev)
-+static int mtk_nor_resume(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct mtk_nor *sp = spi_controller_get_devdata(ctlr);
-@@ -986,16 +986,15 @@ static int __maybe_unused mtk_nor_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops mtk_nor_pm_ops = {
--	SET_RUNTIME_PM_OPS(mtk_nor_runtime_suspend,
--			   mtk_nor_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(mtk_nor_suspend, mtk_nor_resume)
-+	RUNTIME_PM_OPS(mtk_nor_runtime_suspend, mtk_nor_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(mtk_nor_suspend, mtk_nor_resume)
+ static const struct dev_pm_ops mxic_spi_dev_pm_ops = {
+-	SET_RUNTIME_PM_OPS(mxic_spi_runtime_suspend,
+-			   mxic_spi_runtime_resume, NULL)
++	RUNTIME_PM_OPS(mxic_spi_runtime_suspend, mxic_spi_runtime_resume, NULL)
  };
  
- static struct platform_driver mtk_nor_driver = {
+ static int mxic_spi_probe(struct platform_device *pdev)
+@@ -850,7 +849,7 @@ static struct platform_driver mxic_spi_driver = {
  	.driver = {
- 		.name = DRIVER_NAME,
- 		.of_match_table = mtk_nor_match,
--		.pm = &mtk_nor_pm_ops,
-+		.pm = pm_ptr(&mtk_nor_pm_ops),
+ 		.name = "mxic-spi",
+ 		.of_match_table = mxic_spi_of_ids,
+-		.pm = &mxic_spi_dev_pm_ops,
++		.pm = pm_ptr(&mxic_spi_dev_pm_ops),
  	},
- 	.probe = mtk_nor_probe,
- 	.remove = mtk_nor_remove,
+ };
+ module_platform_driver(mxic_spi_driver);
 -- 
 2.53.0
 

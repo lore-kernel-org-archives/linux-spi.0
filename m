@@ -1,26 +1,26 @@
 Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2115.outbound.protection.partner.outlook.cn [139.219.146.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976F041A4E7;
-	Mon,  3 Aug 2026 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A061A40B0FE;
+	Mon,  3 Aug 2026 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785760871; cv=fail; b=tvKPrPGKdfqynWAGFI6k3JkCYh/atA4L/fuGIQy9Hwmi9NNIK3lM9exR6AN2Uu3BZSJzwbyFwttbmeH/frVhmK42vaa210Mko4WuGgT9+OlmbOcmFt6Qg3Ib4WUkqwPNExM+rI8/Dq1IRvUwayI5bkxaMVoYPWH2a2qEIYvFd34=
+	t=1785760873; cv=fail; b=gQJp3En0PTFfwkRH6m52tR2QRAurSdgtAVIqXlTBBZs5vW9IvQaVTvvlQ1Vq3I5u63sMCvK+2trTGvFm6lFkyhtAeUeXsJZ6DgoNomC/r8YR5l5NEXNTKGGjSh9NsSaq3GZ+Tzxvsqd15kCqEM41PYEg4EyudI2Rh6a3ZJZ1hAI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785760871; c=relaxed/simple;
-	bh=x8bOY7B/r9n4+ZArqs6SOcqk7MvPqLBuk0k1Gz0/hrY=;
+	s=arc-20240116; t=1785760873; c=relaxed/simple;
+	bh=JE2j/Ha5zC5s6MNigi+KrHFpMojZgIBNun6F/x6H3hI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZwGdwv6L1YQLjS9rsVkBHHnCzo5gONHwaRjkAQjm39QcVa2JG4WWeAVdFedkk4ABZFBeIob/RhADMOFSDkEvAFsC8CPOsSRwvYPNFpoq+MPsGswcPTvDch2+bg2J1Sm7kGXYcbq2tpKkDrP59SOW6SGCQkPBk5fAZzLSSPCEiis=
+	 Content-Type:MIME-Version; b=i1CzQHiZPsLzSU6G0zs0ekYTUJdzuTIoj7M3PK2XG5i77NCkHWP/XTbS1/Qe4I1O3TLlJUoqlvkJB2q6n+FI/wrCcnLikaYIaJDEOwLtxMUu42h5XveHAO+ylbshpKEvJDNtTSklv8lgRdKTlsNNt3c1apld0LaqkxDQ+T9i1VY=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.115
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QZQltensakqEH3dABziASRaIodXwkHEEO3XT4/6Ev6ieBSgvqBuDvqe/ogRCmycoygZ8VS0uE+koT1QPX7IebQI5UdM282Naza1VrOmlRfybVMQ4TONt4WGyo/oSOCmhH+2kKbZwzpfJEX65Q5aUPjt+TmAnOobEJ0J/OCeMuj4NnB2dL/Mx3YrK5ynw98HEwpGRF1w3MYQIO7O8jDsL25B1bYMQ/8E5Ve1m6oaSIYsWAAjvLTAo8nEwvcLbS3rOehZFWOUPiYDyU/zeYqKLsihrBt534D/ZwHameM/WtlmbYDgjoj7j8bYHVpXsrz0bqPID+RdQUjajqrhXORALbQ==
+ b=EDRAKSczQPfOplF63H6maG4MUAaDcX2dtHhHYo4kyxdpsr25g1wRziaE886VYM37o774IcILpMWQ5v+0WuhGYxCbU0PtVQwAHMioaYO9AIO6fGtpi3rxKtvLzGyo5wn2pqxzni6jg/6onjgf40u13pym7/kRXvD8UXJ/WvAu1QCSC6fX8ZtjLH/JRLdUWiLH8AhhPn0t+xit5fQ7Ve+tI/xvrNK34pCL6CVr6ObHFGri1b0HQPzFw7O5n5fzMYaFcJ4OWAkqUsS3Zi/mLxqFfPu75xErqUjTKtSRQ6Pw6qH93ZqIKApc71mR2qrsCnGMFS18wG+crB/yCxGsoJqBAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JTyS+EFu07iONfpbFsR138tEe31ooOx5os0vHylDYMU=;
- b=RVI32GvapD3K86iqPG25O8+PeDV369clAiCUF5Xj64phnXMsiGAvRaQjwx3Lr7lsNlDPOVR6eyxwZqjNLNcE7X/CXZ1vphyKlUK2A8LEmRY4yhChoAclo73bqqhHw8WcPohVaQJVzMtpRLe91ZkQVjr1SSh6hLpzh/6b1e561j3Ce63J5tEy22EFLbPp9wFll/4QwB8gJx1OpQWHG/1X/5Ed5unevQnZINInA/ThJgNu/uqBjvaHFNwq7FLx/nCF+kOAJu5bUUcF7dFWS32DfMe/brGIjfBCsj8J0cg7O+EhcWYZ3cn+XWLh1wVG8x9EmrcwkzeU8WU2Oz1mfedPqw==
+ bh=uzuze5fxKrXKGakFpgmBtxYB02MT0W6li+s0/FS+Uqo=;
+ b=PdEUyzjaMkN2tkCSHDxNHQseRtlEwvPrnR2wwHmG2KPkO3X5W5UZoYCaFlcM0Rm7NthDf4cQDVO20HKr5rEJCAAJpFC5MkCzphvYiUCtSBd/AihE9cLhCOZgU+bIq5DUtDVeIkj763HlLemuAPIkj2g2at4CKLGXp8SmCxCTyOJfEvE7iSsj1AFlpM423WgwlLBBO3+DVG/Gafc7FmpaMujsPvZr/iqQa8sf7G4Z9FPZjkQkVEOkvUjxJklk+6ct6RtdUAe00DtcvpJqypByx6WW8C8WnpV0KAokvCYsZ/VqWEJkeqDIdOu30Km+abuZgd70LWSbASIvtFckqbmLgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
@@ -30,11 +30,11 @@ Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:17::6) by ZQ4PR01MB1267.CHNPR01.prod.partner.outlook.cn
  (2406:e500:c550:16::5) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.18; Mon, 3 Aug
- 2026 12:40:54 +0000
+ 2026 12:40:55 +0000
 Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
  ([fe80::e7d4:256c:b066:850d]) by
  ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
- with mapi id 15.21.0270.016; Mon, 3 Aug 2026 12:40:54 +0000
+ with mapi id 15.21.0270.016; Mon, 3 Aug 2026 12:40:55 +0000
 From: Changhuang Liang <changhuang.liang@starfivetech.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -46,9 +46,9 @@ Cc: Sudip Mukherjee <sudip.mukherjee@sifive.com>,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v2 03/11] spi: dw: add check for support of enhanced spi
-Date: Mon,  3 Aug 2026 05:40:36 -0700
-Message-Id: <20260803124044.156998-4-changhuang.liang@starfivetech.com>
+Subject: [PATCH v2 04/11] spi: dw: adjust size of mem_op
+Date: Mon,  3 Aug 2026 05:40:37 -0700
+Message-Id: <20260803124044.156998-5-changhuang.liang@starfivetech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260803124044.156998-1-changhuang.liang@starfivetech.com>
 References: <20260803124044.156998-1-changhuang.liang@starfivetech.com>
@@ -65,137 +65,108 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1267:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8a19ada-5003-452a-aec2-08def15c758b
+X-MS-Office365-Filtering-Correlation-Id: 052ef2c0-0541-4a84-17e9-08def15c7618
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|38350700014|6133799003|10067099003|56012099006|22082099003|18002099003|3023799007;
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|38350700014|10067099003|56012099006|22082099003|18002099003|3023799007;
 X-Microsoft-Antispam-Message-Info:
-	cmTokfzyGqagx/JGK54oj288F8odkLw9hFIoKqj0ylPcnj6r/EXdUgTzHWHJVD2wxP0TmHP/pm35GQO3/G4VhLxVHtWNWEiMUXkmAg3/3XvXfm2PPADs9dD+04CZjOhtzEoaYa1siFJbJ7D7DPiBDeBTixFZQYGYHJHYCM7Agt1eyBxF7arft4X2vfdOv+cJI0VOOtfn51iq1b2n1lluCVLiKKdk5IuKLgVTBBsBebVutn8cD0FVDrwMyugzwy1TUhPFNbGEd3UNf/To5s9ZcXUQtB5VHi7nFW4Zv6abUPoPN3NQc81RUAHSsPLSNdL00nyCqFBTlaS7YqZ2/Zx7zfTKFavMdP1U359ZgvZcN1fbqLJo3JaGcOwo7gdzUWP/M0GRhrMoq6sBObaLdc6+zhTUHMRDmjgyurqOwpNbODJcHOUW/xKUL11bDgdyISR9dA4lgMRV2l5IxTPz6keH2vCl/51ibiwSjE7/UgXloDfJ8biMLEJohiAhAFBQJg3jn4K1jZMd5exvSKzXkPUmp5H1Wm8KKhtMrFxzmwOPMqNAnsj0+Ba9nYr6EnV38ulL
+	5UBZjrmoN5n+X3fXrb+4XHG4xgrwM+C9joXR5tIgcemYvvjaqIp4SGw2+WToHYdzBgjaztIMIcXtCYg0xPGlySg3dpd/hiIScVgsuzXBtr279w5V3RD/ZtE53CUAr1BAfBPoR27TBhmU7rU8LJhPo9AOQZTM1fTJMjE97w9fjiyEF5faDRmB5rnX+dRcWSjM7RrWTnsweOtmBK1I6bUklizdA7ofd7nq7X2R/ySB7S3RZ/3DkncDT10+S6kP3IF074MECyCPNhVOgoRX047xTaK1PR/u8Q7Gbxv4w0ToPtDdR9hGWW7DHe+KbOLraFaYvPSm3I06GvKWDfBI3H5VFOlBZWdruXN3p+ZRwZhNgfFZGZ++75HkA3cyPTqgXf1KGOps66/EvKvU3iqSG4mZu8R7C+/McdOxf/bx8iun3Wj+hCIeuWVQN4BUoM+3LzjXUMDXqXqA8GsCVX8KBuokNdu01W/SxKjWROG8yn8l7coNyEtCxt4V0qmdWpE7afScfn/GYcNz6aPEuwhLYBb69jdegcVTif/556pvd2Y+RnZOObvUTEcgUf+PVebD72bt
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(38350700014)(6133799003)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(38350700014)(10067099003)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Hvdaa+jgPij7Ink+B/rFFZ6/SiYiVVWx839CbWdLKqC3ooJQCyaWX9BTUJE7?=
- =?us-ascii?Q?Lo8VHGo2DMON31YMrsvTvzQ0SpubEAFoX/MaoHzeL6n47v4wgWB7eKka6/Y+?=
- =?us-ascii?Q?jRzOKrz3XJzUKIjcTve5TmbjiQMl9qkLYqZ+DO3MCU1MON5bnMX7qWKXalkh?=
- =?us-ascii?Q?PZZu99aLcbuQByKJECEF14MAg0zz53/MNKTrK9SJAeCPVvZbcrdxPMENUFSl?=
- =?us-ascii?Q?m0MuJGSAL1lz5IC5UPuEiOX7rX3gw8tZpH9smfDUg2MK1bdcM+MTfhUpbjgM?=
- =?us-ascii?Q?b4RSuhDb5f6BmSCU+thUR8ZO9VoM2U+j8zvEkvQJUQ3sj/IUgPMMkM1P+62w?=
- =?us-ascii?Q?LOqPqKdO1/YuNiHbKDEkGAbv4RhE4N2xBj1bsc1189Zb/iN/yx3rn5n98YD2?=
- =?us-ascii?Q?aFypFYAN9Qcs/6X3Q8qAaP67tY22QV39Az7WKVTcKU17j8+JiwxEmaL7NbP/?=
- =?us-ascii?Q?BHvn/NsgAVvXcv9TZqnuia/HufF/vu5gUE/gAWEU7mDDc2KGxZnkaYpJX1j/?=
- =?us-ascii?Q?N94nfwsq9bCed5FW3tcwtZBDaoynT872tcPKLEOSGRkOn8Tj74rQcdEZoqMY?=
- =?us-ascii?Q?0MbUaHH5o4LOc0iBdLMS0VxkByycgFYt8Xb2wOv+rVLmbpcah2VuHulH4WVu?=
- =?us-ascii?Q?7PLUy4NBrVzjsvykOBSOvto5gPJu4uBQKcAxV70UUa1BKwLdVbN5LrLXxuvV?=
- =?us-ascii?Q?QtXbeBKGgOxVGWMcLfq2ioyOBD76GoLaJ726N6nuSVedx+YrhXfBMsDwnK06?=
- =?us-ascii?Q?b2mE220Iv/oXuG3Dubnz02noJ2XozChdH7jWcdRIua1uLYiPBFJUesQavjvT?=
- =?us-ascii?Q?z76V44ZXTVo8WDDYww1GbPlYabcE7LWN1oNy7r3z7WITuHbBGNq66h0iuSZp?=
- =?us-ascii?Q?RsPgY2aicjLcwqE8DbCnDcaQm2aYMWpIeVE4pjmzCIBZ0dwdMpUsgMSFc3xC?=
- =?us-ascii?Q?xpyyyOZvV11IXYk4JyYV94vrQ/jvhjglNCZx2qEsmbSUjMbwHuloPQzgom9t?=
- =?us-ascii?Q?C9fuvocpr4uNu3vfNEKGhlIghRxkje7JbDBfH9TeZlSUKBywQwzBMNBQTsni?=
- =?us-ascii?Q?HRoDTyLtaehsSd/TrdpCcNem/MrAYDiQo4nuHy+eGQOkOkIPUiY1GEIC93qJ?=
- =?us-ascii?Q?CHPuC+lTcC5Z4esiGUQ341IoXLvX3ASJ+4htbYU6p4l2Ma4cHbmx7GnQcBer?=
- =?us-ascii?Q?rUKf5pTZVJCSwU7yw/tGZ/WPYylHlpqruT/5TjdvT2dxXkrqMHITz2MdoVbF?=
- =?us-ascii?Q?Bjw5d0UbI3Y1YAVKDb63K4v/23sK37t1zv5Ci6OV+XPv2RumS+7+WPL98dvz?=
- =?us-ascii?Q?qKH5bF4E1P4hVmCU24N+MlfbrK64k+6in2Mxk1qJGDkPPBgv41oVpg1Zp3rN?=
- =?us-ascii?Q?3MzY9yRiuqfVkUnrQ7t+0SK5VhrROOZmRAQnzEjmYXfrjOkDxlwVpTV7ctuz?=
- =?us-ascii?Q?sOMWGcSu2t+UkcmL8CIHKW9Y/gZOOPsaGHzzApUsVCgb9p8f0VkNpyDPCc0u?=
- =?us-ascii?Q?U8UzHO4giCCVTiiG0AgkAIuPgtKHTwiS2CY4UuwiodxvGq9npPEHjF0Pk7AG?=
- =?us-ascii?Q?Mz6r0Di7xE9gVkyZkcqgHjDysYh7UQYRwYVJ85OW9K36iCoJz7Vo9PwTWE9A?=
- =?us-ascii?Q?Fkvtan12los2SsQV7BgQHbPMEOKcm2YOLG44cKORe1yX9kI0jLgf7uAE8M4U?=
- =?us-ascii?Q?sdQNg+qr5T9bcJT6vPGaLAVJEMvNew5sak1JR7CXZSW0QvDhUKspyIDmFUno?=
- =?us-ascii?Q?GpiTXRMvArlcFpc3Lko8XcgH6K15+Czp4Hup/qgHLDscXlzZbOjV?=
+	=?us-ascii?Q?OCWmOMFHyp07L6O5EMuyXgKNejPpYvdv7+bXLXmFmGmf4Dt8Gq9wAU8zHvUN?=
+ =?us-ascii?Q?86Gq+6UFbbNtcV5GuKIRuuCam62CCwZAfClnSNNhvzQk1yDvW67Zqb+fZgBT?=
+ =?us-ascii?Q?OSyEWuVHP/Or/8pGwt6Arq6atgSgH/28llr4wE/rgBj4DJ3kxsdz+rYap89h?=
+ =?us-ascii?Q?UUdNiOnZQZ490OZzMYYYjAQKg1LVWU895CLuGo7OIb8zj+e/sbBaERixRCgp?=
+ =?us-ascii?Q?/fpIIw2Pztgg1rpYrtPdg4+MS6BUb82HmGSfxmDjfsUNsN/y5YA5GI+Sz/tI?=
+ =?us-ascii?Q?RQa0hl7ZPIVLh3R4x5ZF6YhFlIVplhD6Vua+C4GjhyjUJ0+U+VFmwFhsRJEo?=
+ =?us-ascii?Q?Nl2NBO6SkGHRbdkQPCcWsdID1owt6ATcIr67srqQ6o4XxpmUrZbNg0sAJ/Lu?=
+ =?us-ascii?Q?ymKtSazdSfHi/Fys81qXLI8MKvJAJ+u/6BkrXpa93bQ6G1hgMXvu9qLIhUHd?=
+ =?us-ascii?Q?zyzJ88who8KADzpyIiYzNYvxLM2KfMk0ciynB8Jf1RwrpbUVnwc7qj/VY37U?=
+ =?us-ascii?Q?A6Y4RY0UQH26NeCJn2GYt1RD9/zb9GgTERbSgM9nYvlXBl2qOww1N8n142Nh?=
+ =?us-ascii?Q?SsDBQUNPxiyi0EVQwRIxojGASbCsy1nSTR27PyQxbZAJuqRbpMT1k/QpXUqB?=
+ =?us-ascii?Q?1geQyZaEBxO15vbwg1rM2Jpxos2VVHYc1lAtZmrjFgC7nqcG5AY3RUvAy/yK?=
+ =?us-ascii?Q?IMPhLQ849/PqHNUCWtmeaZ2g/b+I2ZJmLzAZrNO85ZWqv1DJMG6bLAwVUY1V?=
+ =?us-ascii?Q?zsEkPXSOp5hxsgOoD185wdBPShdxP4A3S9PKUhA9pyGNLmwh1Lbb0a/7ySo+?=
+ =?us-ascii?Q?W0/Myfcpn5NEmbvi8UTF6ASr/EpscDCMR3RTIc9WEyTJwoLELfyAsWEFlwl3?=
+ =?us-ascii?Q?2bLj1tED/KtPz/tG2g1CNomI40w9ri6vvB8r5rYYQw2BmGTi6/wCDDT0mnyF?=
+ =?us-ascii?Q?C4C/q1Hg7nP2zfoQzNu50zGOO5wh9d5C1u7K1cFO++ik4omC6QmH3t4IE5Nq?=
+ =?us-ascii?Q?LuGalwo+jZ2YDY5agwChzzgiIx0wrNVmeTj6olDyh2kZqnBp3JIX5/urZXZa?=
+ =?us-ascii?Q?OyIi9UuvuIQhNqxhzhxEn6LqYVKCTyHZq3nvA5cTJFPeDlOxl7P/vNC99kuQ?=
+ =?us-ascii?Q?ekruGG6IsmZDrh3Eg3Ab/7TpYBIms3WF83LsecUnsQSnWPF23Ao4KbwfdVys?=
+ =?us-ascii?Q?Wrjf7vyAiUDROcRIAfJ6jZDMbwx4prmCZDpGJSqMQsoX18Vb0eJMhsNlqaTj?=
+ =?us-ascii?Q?NzDBH7kWZQabblKfC64yyNEWf8cBzJP+kFUWV0z0pfAlI47hJxklWfY0FzQf?=
+ =?us-ascii?Q?61LmLvNYgSZVgnVVWQZt7XqM1KjKnV9LXHOWvR1i2UPNDUnIBY1CBR/vMfcr?=
+ =?us-ascii?Q?hY9jcIvmS+vZ5TQ2f/anJASICBGPtZ+tvqlN56wW15o4jNRh/cehMKG5UcFq?=
+ =?us-ascii?Q?JZt9aCDF8fCA4DUyLB3XriuH+XKBYMP3cI7plGvqT2Y1LElPlGM5s9CuwYi0?=
+ =?us-ascii?Q?+9qOOHtzANTA98jEWMZscw/sWKxlv//CVH4ZN2D8gQBJlx5CQn5W84YoYzJ/?=
+ =?us-ascii?Q?6ITONYgaVAYlNU+lCo3t5U6PAhJQuMVd/pqPiCDup3sREE1PMW3S/Us95IiE?=
+ =?us-ascii?Q?CS8EI4EKbjCbNFvSAojkxbmepZpOmvjpQasskKxomtD5T8GbVX6SGPyQOkL3?=
+ =?us-ascii?Q?VQLqqEORaIbvq2WXEx5HfGT2lkw4W+jYaUcbanU5QuOvUw9vhdfuWk9/rzYw?=
+ =?us-ascii?Q?Y1J59XdOFC3cAgC2xbE0btxZDBke4TqkwXEv732dM/DrEmo/V8nr?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8a19ada-5003-452a-aec2-08def15c758b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 052ef2c0-0541-4a84-17e9-08def15c7618
 X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 12:40:54.6178
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 12:40:55.4661
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /OyJLoLgqB3SIuFIkABL/yvekhsP720HkS3RO5v+7qkJPQ3YWKaNk5I88W6HOPwBVgjcDHwdbLGcWxa2Dl6bsKvg2eKMUPDWsj7hbkHurGtx8+H8j662DTBS1T9CrS9W
+X-MS-Exchange-CrossTenant-UserPrincipalName: w5VX0hmJ0N25PSWL2syKZgPAor3y2SQNl/Ou/H5uWPDmHzlRHr0YHO+VZgGwx28S1QV/fzc5T8Rjqo3rP7uAlzRbYlk1xxaX6bsCrzF/D5wBMSLLC/U05KrKkNIO4gS2
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1267
 
 From: Sudip Mukherjee <sudip.mukherjee@sifive.com>
 
-Before doing the mem op, spi controller will be queried about the
-buswidths it supports. Add the single/dual/quad/octal if the controller
-has the DW_SPI_CAP_EMODE capability.
-The DW_SPI_CAP_EMODE capability will be enabled in a later patch.
+In enhanced mode adjust the size of the data that can be sent or received
+as this will then be used to set the NDF.
 
 Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
 Co-developed-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 ---
- drivers/spi/spi-dw-core.c | 34 +++++++++++++++++++++++++++++++++-
- drivers/spi/spi-dw.h      |  1 +
- 2 files changed, 34 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-core.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 7601a53d6f34..7275b7a9945f 100644
+index 7275b7a9945f..c7cd24337188 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -518,6 +518,35 @@ static int dw_spi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
+@@ -510,6 +510,16 @@ static int dw_spi_target_abort(struct spi_controller *ctlr)
  	return 0;
  }
  
-+static bool dw_spi_supports_enh_mem_op(struct spi_mem *mem,
-+				       const struct spi_mem_op *op)
++static int dw_spi_adjust_enh_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
 +{
-+	if (op->addr.nbytes != 0 && op->addr.buswidth != 1 &&
-+	    op->addr.buswidth != op->data.buswidth)
-+		return false;
++	if (op->data.dir == SPI_MEM_DATA_IN)
++		op->data.nbytes = clamp_val(op->data.nbytes, 0, DW_SPI_NDF_MASK + 1);
++	else
++		op->data.nbytes = clamp_val(op->data.nbytes, 0, DW_SPI_NDF_MASK);
 +
-+	if (op->addr.nbytes >= 8)
-+		return false;
-+
-+	if (op->cmd.buswidth != 1 && op->cmd.buswidth != op->addr.buswidth &&
-+	    op->cmd.buswidth != op->data.buswidth)
-+		return false;
-+
-+	if (op->dummy.nbytes && !op->dummy.buswidth)
-+		return false;
-+
-+	if (op->dummy.nbytes != 0 && op->data.dir == SPI_MEM_DATA_OUT)
-+		return false;
-+
-+	/* WAIT_CYCLES is a 5-bit field in SPI_CTRLR0 */
-+	if (op->dummy.nbytes != 0 &&
-+	    op->dummy.nbytes * BITS_PER_BYTE / op->dummy.buswidth >
-+	    FIELD_MAX(DW_SPI_ENH_CTRLR0_WAIT_CYCLE_MASK))
-+		return false;
-+
-+	return spi_mem_default_supports_op(mem, op);
++	return 0;
 +}
 +
- static bool dw_spi_supports_mem_op(struct spi_mem *mem,
- 				   const struct spi_mem_op *op)
+ static int dw_spi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
  {
-@@ -800,7 +829,10 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
+ 	if (op->data.dir == SPI_MEM_DATA_IN)
+@@ -829,10 +839,14 @@ static void dw_spi_init_mem_ops(struct dw_spi *dws)
  	if (!dws->mem_ops.exec_op && !(dws->caps & DW_SPI_CAP_CS_OVERRIDE) &&
  	    !dws->set_cs) {
  		dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
--		dws->mem_ops.supports_op = dw_spi_supports_mem_op;
-+		if (dws->caps & DW_SPI_CAP_EMODE)
-+			dws->mem_ops.supports_op = dw_spi_supports_enh_mem_op;
-+		else
-+			dws->mem_ops.supports_op = dw_spi_supports_mem_op;
+-		if (dws->caps & DW_SPI_CAP_EMODE)
++		if (dws->caps & DW_SPI_CAP_EMODE) {
+ 			dws->mem_ops.supports_op = dw_spi_supports_enh_mem_op;
+-		else
++			dws->mem_ops.adjust_op_size = dw_spi_adjust_enh_mem_op_size;
++		} else {
+ 			dws->mem_ops.supports_op = dw_spi_supports_mem_op;
++			dws->mem_ops.adjust_op_size = dw_spi_adjust_mem_op_size;
++		}
++
  		dws->mem_ops.exec_op = dw_spi_exec_mem_op;
  		if (!dws->max_mem_freq)
  			dws->max_mem_freq = dws->max_freq;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 16a8c7ab7364..81a433ab759b 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -35,6 +35,7 @@
- /* DW SPI controller capabilities */
- #define DW_SPI_CAP_CS_OVERRIDE		BIT(0)
- #define DW_SPI_CAP_DFS32		BIT(1)
-+#define DW_SPI_CAP_EMODE		BIT(2)
- 
- /* Register offsets (Generic for both DWC APB SSI and DWC SSI IP-cores) */
- #define DW_SPI_CTRLR0			0x00
 -- 
 2.25.1
 

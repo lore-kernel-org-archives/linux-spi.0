@@ -1,112 +1,167 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B0022D7A1
-	for <linux-spi@vger.kernel.org>; Mon,  3 Aug 2026 02:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02F194C98;
+	Mon,  3 Aug 2026 03:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785724901; cv=none; b=MLjZoS5F5ZVJZty4JQ/HRbqQZLB37kmAHqFonp95iWKBC9vdKcKXKrKPDBDw82MBw9aX251HpPnMn/I9wtf0dluRddejpAHxpzPy9wOTQfK4DbZGQdG0cV2ZJLO0kYrmUCZnJV06mEOK+6Z4jzVyjse/4afj19tjatciBHZTqlk=
+	t=1785726123; cv=none; b=tN9g8EPlnGgujfQDxuS+tcMigvRY7cP4Gk+LvapJoP7+2gw/BB3shSAYTSnhSLVtYcfw7tdwpfN6qyKC1zaIrG0fH4vJeTS4gsFSdmaUyGNp+GD7Lu6fhCAvaihN3kflp9jy4myfQPyYjEUfxrJ460bwvv6wA3Xj+p3LrMWCeno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785724901; c=relaxed/simple;
-	bh=zIrrFuB7x4ex4Jv1JNXALjQ07Vk9xYw7VV0Zi32eI1w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WX9WJOIoNzp84UU3yVtvc1lg8NzIsjEoVlOwnYDiOLU7SUuUzWgGsaZSayD4DwaXWto2UCh/O8PEf3GIucGZWUTt+5RqrUY5r0tFmktNn8Axst//VLQNMVZpwAvGmjsyidaKfpDA0em1f5LcDwVvkzOrjfqsgF8Ejob5LuYNCpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nB/yvzXI; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1785726123; c=relaxed/simple;
+	bh=yDPoI+k7lNQgy3iS0vwWQsY6EuNulBE+y4Az1MpM5vY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nQPqVg32Yy1NM68GwEKPobzdH80zBENDMa+8dF0HTW4L/RjzHDgvDx1EhrLgn6GDwVWXPsQlPhYCoBBvOyAN5emE2eo20VjivVhbOB6RdNakzv5WAWN7bNgCtW4WSXnVLzgwS/4S0OX1Seflbk2LBdbi+WoPttuAbQLo7h+px9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=AMk6aj/z; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nB/yvzXI"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2cf27856f9cso28284465ad.2
-        for <linux-spi@vger.kernel.org>; Sun, 02 Aug 2026 19:41:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785724899; x=1786329699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sCHwCKyWw8sq72dejSTrSVAee4EJg7rmMPvIvja2B2Q=;
-        b=nB/yvzXImkLOEDvp/LPr1tKtecByc7rNZCwR/8djEJj3Yl8HeKlf4jSAnZOG8XKPGK
-         0njTIN1C5Van4bjliTdWzdghj7CPx9ZGv817T7uSN3vSMBsAca0HocV36u+dsIibfQab
-         nf1aGDlRpscOyN+dAtnHHrZVMHqj+c1iejwsKQqvtuJ7mdq9howysJXb1SwBnCd1GP3w
-         DgCcexBkTk7xnOrtTZPRUoobHvPIqdgXUJQyDGQl8IJ5TbMgJfbmCpq3jCuawPsd3+Rl
-         wqvBZJSN/6YtezoZmeGwv1RYf8j/nMHYKY2u4hdYr0VFkJlrf8xVM8/Uja0W11hambDw
-         hEIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785724899; x=1786329699;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sCHwCKyWw8sq72dejSTrSVAee4EJg7rmMPvIvja2B2Q=;
-        b=rIPkNcuJ0t4aX9OYsuxAvQkF+lcSdSpTpQZSm9mRYFOtFzeFH+rQPBX4ZztIMoaAmK
-         3ROeDmzGzjMINl7KGo17WDGBd3xKRnRLbkl71Pl+QjU8wJBzLqW6yrl5zaXmaM7fV4VE
-         87MbkMcvbGZoM4uRFA8LdWn9o0pyRrJnbCpsy9w1ZyyAQQEPPfaJF10uFWAUhBWY3Iqs
-         6IbmC9x6FE09DAf00D9BycXkeL3fvoyS9tgKAHP+Vfs5NJbrJdH2NgOoIYzPiLVt2k89
-         Egcv6P/o8MQYmSheK+ylioVDF1CsEEuxF+XoQ1o5Tw94U/n95JK959uMWI/66fnsywer
-         hRFA==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8RBPvM3/IWMIc2Vnx0vpaw8nfAo2ApUmoFd1I2NTHrcPYzSbBK1vlByMnAizJL/6EmpmdlOhtYog=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB/o5VAVfwOkt+hKsgTWMavDJUuQY0DvPBL8xKgTVMcOF9c2nD
-	+8QqY+3efA6llNfKFm0ZypIhei2GCvnabQ4HVgRe5e8SK+7xIiFOPMfU
-X-Gm-Gg: AR+sD13Ax+oIZCk7w99wR4zlqszuqa+OC+lx2E2/FYiFVgudxjWvngB5eVtU7Llq5o6
-	iboNs+Ph98FhtGD8TTDQKvA/N9+31DAK5n5NJkMBhVSy9dKU569jrcEwWeUEQfP6kZSwa9bNE0X
-	MrgD3UYQ8fm6eC4x8Sjp4l4Jx9wcMjB77IWN8SEEPVJEE+b8s+SLPv2Ec+//LPRt3NkBI5SYi/X
-	xarZaDkm31+x+lWvkQYMr7vJfOtXdrMvcZiEnf+KChTkvvqSw4OFPPJIcHIE8DqC987KODUrx9p
-	ODMjpdwGFjbme+RfUvARFAWF4ehymRFnfM30FUHVjRIdMq6b6Rqj4rkHA3pA/f31Gnj62T6I0l0
-	ZRBtMK7wq/DRz1UFe60GvcWcMoGTStNmNFKV5aCZO+6nsacbSKkfxKN3xkVErSRQ1Qf9IxdNAHv
-	/bBrOMu1J9MS+FKkZdsfR4oj01ZznEP1I6dnUOB4wVnR99RPjuo9sGABBxpSXw6pa6G+cX6oB1g
-	hSUn/vqg84CHfbHpqBgrz3kAuQXP5gJWlLOMs5OtPq3TwHWFeg=
-X-Received: by 2002:a17:903:252:b0:2cf:b6b5:9cce with SMTP id d9443c01a7336-2d0524cd574mr99284765ad.46.1785724899298;
-        Sun, 02 Aug 2026 19:41:39 -0700 (PDT)
-Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04ae5abaesm30827645ad.27.2026.08.02.19.41.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Aug 2026 19:41:38 -0700 (PDT)
-From: Chi-Wen Weng <cwweng.linux@gmail.com>
-To: broonie@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	cwweng@nuvoton.com,
-	cwweng.linux@gmail.com
-Subject: [PATCH] dt-bindings: spi: nuvoton,ma35d1-qspi: Disallow GPIO chip selects
-Date: Mon,  3 Aug 2026 10:40:48 +0800
-Message-Id: <20260803024048.1641756-1-cwweng.linux@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="AMk6aj/z"
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 672LVn7w1718278;
+	Sun, 2 Aug 2026 23:01:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=nd7zdFyR8yGS6gKX5ZgUQeRyubT
+	7h/v0lAXrAQ2zL3s=; b=AMk6aj/zfbvgxjAUQ2L1ivmMicY0HusSYwl6FWvFhPK
+	kdYSXCxm6r0TMjjdHMAmrDxMWWcXuxfffwKBlmd9dGE5VjTc3vBqRdJxmXSddWbZ
+	IMpH1hwLiYF95jcrM4P3jlNXPSsm6YpPW7LgpWeYyJyJlBP4Jaz9MfXt42Gcgtzc
+	/JwSIC5Y9RD6Q8arn+zTeSHN0e/PdrEE0LVPg478NiIAVCyw7n2+t2Ugy1pAzMnx
+	5zFiSa7SrLMXJqTIp7D8l+QxaICnwK9wUNNcKjKcDK04xjRbZ6MLV2I5sx9KsVQg
+	wqMkfE/spK1l/BU/uzIiwPpWvUzqpKYfaQPe982KHNA==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4fsamxmvtm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 02 Aug 2026 23:01:51 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 67331oDF035222
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 2 Aug 2026 23:01:50 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Sun, 2 Aug 2026 23:01:50 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Sun, 2 Aug 2026 23:01:50 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Sun, 2 Aug 2026 23:01:50 -0400
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 67331dfa011624;
+	Sun, 2 Aug 2026 23:01:41 -0400
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>, <dlechner@baylibre.com>,
+        <nuno.sa@analog.com>, <michael.hennerich@analog.com>,
+        <broonie@kernel.org>, <jonath4nns@gmail.com>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v2 0/5] spi: add multi-CS and multi-chip aggregation support
+Date: Mon, 3 Aug 2026 00:01:33 -0300
+Message-ID: <cover.1785725359.git.Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfXz1jOgsRr0KIX
+ G9gSKcFTepHT3+GgX74VwfGUYOPlYFdfe7EbM3vUYDJ7AX14Rq10iaxnh7K1YW1mczjKKmb+fmY
+ IIPWXMbRv+KEEY5aU3CYFwgHA6EtuLSkqtjhe3OdKw5nN5RoKa6l
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODAzMDAyMyBTYWx0ZWRfXxxFFLf59jjod
+ S9mCCyh0R70sRiRVhkJwO+6Sp78YIC6tEsv4EsBrXReptcOU7xsjW7aY82p4+ZZiN917ySRZTWd
+ Gnc7rk7RnKL0STwVeZlBOYJ0z6DIHlNp6N5eMgI8bcZeHTzrs1fJkPIvRriiW9sjuttVma+7P72
+ aANcNrePyJR6Qr8YNDkazFmNaWuEzhtillPD1fFxplKym1yxd9C+M1EnIdoTrfWbOOQa+mYdo2p
+ prnW4fLS6LaKI6JwKRqJ1Nt9J7yZnuyj1UimRcTtLB3etlSRk9jZsg9qay12pxmsNncCVlKGYzz
+ rFsI4oQ4eUR2PyUAmVUPmA9/wfbPZncA0HibGQOklM4EMaNJV5j7nR6CrJk5gA2EnxaxB3fFRVc
+ kPg+WatIIIAP9Tz3Z4Wt9xrfOZdHBhnvzTW+diV5iPH1yICTTvZFw04BzsttG5Wj5gzEpTUR5tE
+ XSlD0ANYl8c5HjndmxA==
+X-Authority-Analysis: v=2.4 cv=daWwG3Xe c=1 sm=1 tr=0 ts=6a70049f cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=0sLvza09kfJOxVLZPwjg:22 a=uXIjobp8t2wMuQ0fPvqm:22 a=VwQbUJbxAAAA:8
+ a=gAnH3GRIAAAA:8 a=pGLkceISAAAA:8 a=ctrc8raZ2tMGTsnIRwsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: w-p_Vvo_gvymHoisF2i2XYTWYuh-7sLU
+X-Proofpoint-GUID: w-p_Vvo_gvymHoisF2i2XYTWYuh-7sLU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-02_06,2026-07-30_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608030023
 
-From: Chi-Wen Weng <cwweng@nuvoton.com>
+This series adds support to multi-CS devices and ancillary device with
+lanes, to enable the multi-device setup described in [1],  where multiple
+AD7768-1 ADCs are wired to the same controller in a synchronized sampling
+configuration, and the limitation noted in [2], where no SPI controller 
+completely handles logical chip selects beyond the first one.
 
-The generic SPI controller binding allows GPIO-based chip selects, but
-the MA35D1 QSPI driver currently supports only the controller's native
-chip selects.
+The first part of the set addresses multi-CS support. Some SPI controllers
+can assert multiple chip selects simultaneously, but the existing code
+hardcoded CS index 0 in both spi_set_cs() and of_spi_parse_dt(),
+preventing this from working. The spi device name pattern is modified to
+include all active CS lines, so multi-CS devices are distinguishable in
+sysfs.
 
-Disallow the cs-gpios property so that the binding matches the
-functionality provided by the driver.
+The second part introduces spi_new_ancillary_device_with_lane() and its
+devm variant, used here to create subdevices that binds the CS with a 
+correspondent rx and tx lane from the parent device. With that we can 
+handle each device individually when there are separate data lanes.
 
-Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
+The last part uses the above infrastructure in the AD7768-1 driver to
+support aggregating multiple chips as a single IIO device. The number of
+sub-devices is derived from spi->num_rx_lanes. IIO channels are
+allocated dynamically, buffered capture is restricted to the full-device
+scan mask, and SPI offload mode enables SPI_MULTI_LANE_MODE_STRIPE to
+interleave samples from all lanes into the DMA stream.
+
 ---
- Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+v2 summary:
+* Removed the per-transfer CS mask patches, the devices will be 
+  individually handled by the ancillary device feature.
+* Removed dynamic multilane selection patches. The lane is bound to the 
+  CS using the new spi_new_ancillary_device_with_lane() feature.
+* Included a use case patch modifying the AD7768-1 driver to support 
+  multidevice aggregation.
+* Link to v1: https://lore.kernel.org/linux-spi/cover.1783729282.git.Jonathan.Santos@analog.com/T/#t
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-index 377ccf4fb224..40965ec5163b 100644
---- a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-@@ -33,6 +33,8 @@ properties:
-     maximum: 2
-     default: 2
- 
-+  cs-gpios: false
-+
- required:
-   - compatible
-   - reg
+OBS: The ancillary device approach was chosen over per-transfer CS masks
+because it has better integrattion with regmap. Both approaches require
+multiple regmap instances, but the CS mask approach would additionally
+require custom read/write functions to route transfers to the correct CS,
+while ancillary devices handle this more transparently.
+
+David suggested adding an ancillary device field to spi_message, I guess to
+enable dynamic CS-lane selection. For now, using one ancillary device per 
+chip for individual access and the main SPI device for simultaneous access
+seems to be sufficient. The dynamic approach can be implemented in the future
+if needed.
+
+---
+
+[1]: https://lore.kernel.org/linux-iio/af0EGv172ZMl%2F6N5@JSANTO12-L01.ad.analog.com/T/#t
+[2]: https://lore.kernel.org/all/20250915183725.219473-1-jonas.gorski@gmail.com/
+
+Jonathan Santos (5):
+  spi: support simultaneous assertion of multiple CS
+  spi: expand device name to include all CS lines for multi-CS devices
+  spi: introduce SPI ancillary device with lanes
+  spi: spi-engine-ex: Add support for multi-CS devices
+  iio: adc: ad7768-1: add support for multiple chip aggregation
+
+ drivers/iio/adc/ad7768-1.c       |  99 ++++++++++++++++++++++---
+ drivers/spi/spi-axi-spi-engine.c |  22 ++++--
+ drivers/spi/spi.c                | 121 +++++++++++++++++++++++++++++--
+ include/linux/spi/spi.h          |   8 ++
+ 4 files changed, 227 insertions(+), 23 deletions(-)
+
+
+base-commit: e0484d62e8e1cff75b210938be835ea6221bda59
 -- 
-2.25.1
+2.34.1
 

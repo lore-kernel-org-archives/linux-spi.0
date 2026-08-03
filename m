@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79354305680;
-	Mon,  3 Aug 2026 14:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06B7400DFF;
+	Mon,  3 Aug 2026 14:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768031; cv=none; b=ov06QFbPjlNaAtLm13V+Gb/aiUqDSywooUdpGmLTvRmENzA8QDbzcvivPtoJkCrXC9TkVxRk6PQCD23s88h3e8WFQdhdg4Rk96/jCPWGZlhGFitz8hbFk2YqX9uBDvO08xmFNV1n+EX02Vv+0vltSMgLU3K8D0fI9pKCNORTAUA=
+	t=1785768044; cv=none; b=PKc/3oVzM3r/nmusm3d9EEuKQCMdqxS1Q+Y044Pp0M8MirwFNmjAJNDCGIfgv1kzU93JRrGTRhFgyYq4cCOg8BASytF0g1SYhoYwSVqiufOVC+AT8kzyUt1v2b0A2gFSlIuut14dgG8edb+m4UkcuyWVNuotNcWT9NCRdO7B+ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768031; c=relaxed/simple;
-	bh=FRMTeOORCNHJa+B3xULuyOtxsobQDwoma4CE7UPW16o=;
+	s=arc-20240116; t=1785768044; c=relaxed/simple;
+	bh=8zI5Hz2QVh5YdJw9ebJiuqgTOOtUw6epfK6KtmVJ7CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9JTJazBTFxgxgPypINBVYuA8rdiSd84xWp+q8f1QdAQxfwewMBNrj8YkdOXvX5ejZENR0tdQhSaT72saHntNbiyGD7+WxnzQGmuiU4ITE0lJtOJfkGkrUblhQ0yR5DHGZQWhbNjLzMwBtZdexXkW3dc4cs746dxmB0pM1E6OsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fh6FaZZY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=VuNAPuVZ5Eloc+dWzg7k6so//yBCd8Bf0VEsivICvqkNwhtLI2FLmNyemUENHDTjmBjQ1QBsrjKny1raYfiFkfD3B/E6dmrwS/Q66YckYqmXY5ka+jP8gtWq2zeupHQsqcV1dP7VtPC7HyhNz6t03sVSxuzjMT3zyhmiscMlQE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yt9F+Y9j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fh6FaZZY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0481F00A3D;
-	Mon,  3 Aug 2026 14:40:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yt9F+Y9j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E408D1F00A3A;
+	Mon,  3 Aug 2026 14:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768030;
-	bh=bipLPRMz6JcFCwPqw3LLEk55cURIlQcQ9jExHCqAyWs=;
+	s=k20260515; t=1785768042;
+	bh=TSi20WCkH5JDBxJK1bjShT5TFErSjKY4MvQZmEwMtjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fh6FaZZYr+oCLPA/RJwYvBZ22dX0wnTAK7oK9cJMnwrgAq9ck6bbORM/RE94u44ZP
-	 XYhMZaOEIIyIEOKroZT8Yz/oFjyGNGvJXeGcTSwzloAKIiCBkg6qcVk/eS8YlNMJv1
-	 IrCqJQdfKW1/uvhKqXabS/LCmuNQAuKCf8OHXKfMy+4vUGHHmOnt81Z+shapvFcCeS
-	 7i8B9I9LFgCNqXdX0PwHf4m5JRtlgL+tAqSVvbCI1hWsauZRuUjiB7ONpS/WEeftzp
-	 IZ5qf3WM6X+e8d4VN8XZOhmOdR3ufNjmSzHs30rqMBvMrBdr7JKUTUMyQButJmmHjh
-	 DRa10br+6pgRg==
+	b=Yt9F+Y9j9QSvoF+22q6z7h/6RyseB4zldF+TpwkoJpPHtcuwhPSkXbjgswk83llti
+	 lQb2+aqRd6C6knyyMOZW0woAgi9gaAIe/91X7GD0pIiFQ5yuaMjwLmTbt6M/urTHAg
+	 HM7m1LfbSeUY//dTvEGNijlyMLIlCj2FHs5WN9UrmecBkdUkxD8vTCrmDLN+F9D2lH
+	 X3V/sWXeGHi2F/dX7UwcELvC6oGtecQfApXwTYjtOZkaOK/wRkxXpJ+xQpfpDSAvzN
+	 D+PojuRVdSl4EuNcy/PHOB14hHCrFbvC9AI1/oXqkECtMvP8Mpq/KWk0D4AeAPLa2q
+	 RBrtzLAt96A3g==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 03/39] spi: at91-usart: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:27 +0800
-Message-ID: <20260803142003.12857-4-jszhang@kernel.org>
+Subject: [PATCH 04/39] spi: axiado: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:28 +0800
+Message-ID: <20260803142003.12857-5-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -94,47 +94,70 @@ CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-at91-usart.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-axiado.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index 77cad4118202..804f6194c830 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -571,7 +571,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--__maybe_unused static int at91_usart_spi_suspend(struct device *dev)
-+static int at91_usart_spi_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-axiado.c b/drivers/spi/spi-axiado.c
+index 649f149617ce..c8e389e3e97e 100644
+--- a/drivers/spi/spi-axiado.c
++++ b/drivers/spi/spi-axiado.c
+@@ -902,7 +902,7 @@ static void ax_spi_remove(struct platform_device *pdev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int __maybe_unused ax_spi_suspend(struct device *dev)
++static int ax_spi_suspend(struct device *dev)
  {
- 	struct spi_controller *ctrl = dev_get_drvdata(dev);
- 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
-@@ -587,7 +587,7 @@ __maybe_unused static int at91_usart_spi_suspend(struct device *dev)
- 	return 0;
- }
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
  
--__maybe_unused static int at91_usart_spi_resume(struct device *dev)
-+static int at91_usart_spi_resume(struct device *dev)
+@@ -917,7 +917,7 @@ static int __maybe_unused ax_spi_suspend(struct device *dev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int __maybe_unused ax_spi_resume(struct device *dev)
++static int ax_spi_resume(struct device *dev)
  {
- 	struct spi_controller *ctrl = dev_get_drvdata(dev);
- 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
-@@ -616,13 +616,13 @@ static void at91_usart_spi_remove(struct platform_device *pdev)
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+@@ -934,7 +934,7 @@ static int __maybe_unused ax_spi_resume(struct device *dev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int __maybe_unused ax_spi_runtime_resume(struct device *dev)
++static int ax_spi_runtime_resume(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+@@ -963,7 +963,7 @@ static int __maybe_unused ax_spi_runtime_resume(struct device *dev)
+  *
+  * Return:	Always 0
+  */
+-static int __maybe_unused ax_spi_runtime_suspend(struct device *dev)
++static int ax_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct ax_spi *xspi = spi_controller_get_devdata(ctlr);
+@@ -975,9 +975,8 @@ static int __maybe_unused ax_spi_runtime_suspend(struct device *dev)
  }
  
- static const struct dev_pm_ops at91_usart_spi_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(at91_usart_spi_suspend, at91_usart_spi_resume)
-+	SYSTEM_SLEEP_PM_OPS(at91_usart_spi_suspend, at91_usart_spi_resume)
+ static const struct dev_pm_ops ax_spi_dev_pm_ops = {
+-	SET_RUNTIME_PM_OPS(ax_spi_runtime_suspend,
+-			   ax_spi_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(ax_spi_suspend, ax_spi_resume)
++	RUNTIME_PM_OPS(ax_spi_runtime_suspend, ax_spi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(ax_spi_suspend, ax_spi_resume)
  };
  
- static struct platform_driver at91_usart_spi_driver = {
+ static const struct of_device_id ax_spi_of_match[] = {
+@@ -993,7 +992,7 @@ static struct platform_driver ax_spi_driver = {
  	.driver = {
- 		.name = "at91_usart_spi",
--		.pm = &at91_usart_spi_pm_ops,
-+		.pm = pm_sleep_ptr(&at91_usart_spi_pm_ops),
+ 		.name = AX_SPI_NAME,
+ 		.of_match_table = ax_spi_of_match,
+-		.pm = &ax_spi_dev_pm_ops,
++		.pm = pm_ptr(&ax_spi_dev_pm_ops),
  	},
- 	.probe = at91_usart_spi_probe,
- 	.remove = at91_usart_spi_remove,
+ };
+ 
 -- 
 2.53.0
 

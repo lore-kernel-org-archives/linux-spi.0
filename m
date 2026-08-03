@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928454137B5;
-	Mon,  3 Aug 2026 14:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD61A37187C;
+	Mon,  3 Aug 2026 14:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768323; cv=none; b=IVIcxVl6zW9AkBKUsQGlKU1nbM9+lRETcCptG5RCbSYs5yxg0NmfKrWx4Gk/gDTbFF7fNN0Mb6+5SN4j+vhC4I2NthdoWjGfaYkuuBopJlsaeJUNsp18mF/vu8mAMfOU0IuNnDbjlJYKL53M96OCPxNoTyATwdyaT0bfLcj552o=
+	t=1785768335; cv=none; b=A/mqLsnv4mvtsgNLW/7ZCn5fyYm+iuhK8ZSGbJ9BHleww+eqHrNk5tFbCvVE4+7iqJAV+OPpPU9c/q7YB1Gv2VfFmJzw4WpTB826297Xn3I5R0CwyRKVVJkskDyxJZlozRhSsXy0yZRpYx+//w1clSmZDHRjZbEvgfly9mYTMGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768323; c=relaxed/simple;
-	bh=slhoggWz7pPyKpRVUPl9vdCdwgaHZrzrbhKPzBX0JC0=;
+	s=arc-20240116; t=1785768335; c=relaxed/simple;
+	bh=J9A0Un2PWtIhfI338cDbcnzA6xh883TV7fFuwTjAEDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDxj+wHgY5Keuqo3ty/VkylsycOLLfanfNPqAppn9k2COxlsNpzLyxPgOZ+cxnZ0gU4bes9lmxRsClvim/9jN+BgxVXmLAusbavpDcFrLBEk7h4lbZosr1cnc1czWXRAN98StoOMmE52upyCkz++07syDBOtnaO4E5iDwTMBmDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsSS3w5w; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=PgcBurED82RUusvLRSawS+GxN7uKxGrxRRDV+kTKKVfsSgIYF2TbBos7+e15b8WHUWoMUnrrPjxT5aj+ug8NgqwG6HTWCjCBwT6XbyyRkmzUcuHa4EiE2f0XrsmALEfGU0XbADNh5M+dbeDvbR/iYcB6Dd7HnoA4BUaqkHJ2oek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eM/WTBAR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsSS3w5w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AB61F00A3A;
-	Mon,  3 Aug 2026 14:45:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eM/WTBAR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7D51F000E9;
+	Mon,  3 Aug 2026 14:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768322;
-	bh=47vBJGCs0olAvDipuGWQVcPv02dyV3Whb//pV4b0Fqg=;
+	s=k20260515; t=1785768334;
+	bh=D/0nUPO3LXoRbsEgRI74rqRRQDZqRdYuJsmYZrG/oqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nsSS3w5w5a4BoSq36WGN63111iNPtpaXdr2ZEwSspSSUPEo4IxPVVfhGWdup0Qb/9
-	 gYTaY/GnVz+BT7ACvEVZpGWHvXczFzAy/Aay1RAu/z/7ksyniIv+sMC/W1cPb6uFV2
-	 b4pEFIqkNOm7GheHPvbRDB27tWSKVn9PLBdFs+NAAtU/xMEcCJ7fHeK7JmmG13U/uQ
-	 cYiOzFofIL5UcVG1uuVdpj2+kqS2PXJxNNj1zLpjwVw/FjlGO5y39JZhTMhMlsBsMG
-	 6L9elxFWbD7CqVb0TpzP55BORlh7j/5Ng5IOZJaDh22cLtVpeuRmJhvrg8fErm1Te4
-	 +Gj720Dv1vkRA==
+	b=eM/WTBARuf4/9PK1noMQWUHTY9L3DQlycPf6W8PFpzN2TEm+z3RznQrJ2Urv+Y94S
+	 aTl0EGQxAo07mQCKOG8zHivnOu+Gbfj3rOVchMfF2FTiA2LT9AfAJXRZqHkWbsddN/
+	 Dhv9vNXSz1Kv5mylxJel96PdsXyYGwRogUmZkKi9BlYSlxnPai1my6voGhxj/xdjYd
+	 AM7zlwSsbzVBPUc6ycTPjwPC1veD77dlY/mAP3+Q8pHvSgDBydAdLf/LYw1/quypN6
+	 tX/2ppP3tshoVV8ADXL0wMdIHCt2Fht2NRs46UNSV3XsJ+VBQv5GEIQsNCchZaegyl
+	 nXHQB/xLQeoxA==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 27/39] spi: rockchip-sfc: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:51 +0800
-Message-ID: <20260803142003.12857-28-jszhang@kernel.org>
+Subject: [PATCH 28/39] spi: rockchip: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:52 +0800
+Message-ID: <20260803142003.12857-29-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -98,56 +98,56 @@ regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-rockchip-sfc.c | 12 ++++--------
+ drivers/spi/spi-rockchip.c | 12 ++++--------
  1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
-index 174995042f53..662a994da60b 100644
---- a/drivers/spi/spi-rockchip-sfc.c
-+++ b/drivers/spi/spi-rockchip-sfc.c
-@@ -751,7 +751,6 @@ static void rockchip_sfc_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(sfc->hclk);
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 231fbcf0e7aa..1a81fd94b439 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -938,7 +938,6 @@ static void rockchip_spi_remove(struct platform_device *pdev)
+ 		dma_release_channel(ctlr->dma_rx);
  }
- 
--#ifdef CONFIG_PM
- static int rockchip_sfc_runtime_suspend(struct device *dev)
- {
- 	struct rockchip_sfc *sfc = dev_get_drvdata(dev);
-@@ -777,9 +776,7 @@ static int rockchip_sfc_runtime_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif /* CONFIG_PM */
  
 -#ifdef CONFIG_PM_SLEEP
- static int rockchip_sfc_suspend(struct device *dev)
+ static int rockchip_spi_suspend(struct device *dev)
  {
- 	pinctrl_pm_select_sleep_state(dev);
-@@ -810,12 +807,11 @@ static int rockchip_sfc_resume(struct device *dev)
+ 	int ret;
+@@ -972,9 +971,7 @@ static int rockchip_spi_resume(struct device *dev)
  
- 	return 0;
+ 	return spi_controller_resume(ctlr);
  }
 -#endif /* CONFIG_PM_SLEEP */
  
- static const struct dev_pm_ops rockchip_sfc_pm_ops = {
--	SET_RUNTIME_PM_OPS(rockchip_sfc_runtime_suspend,
--			   rockchip_sfc_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(rockchip_sfc_suspend, rockchip_sfc_resume)
-+	RUNTIME_PM_OPS(rockchip_sfc_runtime_suspend,
-+		       rockchip_sfc_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(rockchip_sfc_suspend, rockchip_sfc_resume)
+-#ifdef CONFIG_PM
+ static int rockchip_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+@@ -1002,12 +999,11 @@ static int rockchip_spi_runtime_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-#endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops rockchip_spi_pm = {
+-	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
+-	SET_RUNTIME_PM_OPS(rockchip_spi_runtime_suspend,
+-			   rockchip_spi_runtime_resume, NULL)
++	NOIRQ_SYSTEM_SLEEP_PM_OPS(rockchip_spi_suspend, rockchip_spi_resume)
++	RUNTIME_PM_OPS(rockchip_spi_runtime_suspend,
++		       rockchip_spi_runtime_resume, NULL)
  };
  
- static const struct of_device_id rockchip_sfc_dt_ids[] = {
-@@ -828,7 +824,7 @@ static struct platform_driver rockchip_sfc_driver = {
+ static const struct of_device_id rockchip_spi_dt_match[] = {
+@@ -1030,7 +1026,7 @@ MODULE_DEVICE_TABLE(of, rockchip_spi_dt_match);
+ static struct platform_driver rockchip_spi_driver = {
  	.driver = {
- 		.name	= "rockchip-sfc",
- 		.of_match_table = rockchip_sfc_dt_ids,
--		.pm = &rockchip_sfc_pm_ops,
-+		.pm = pm_ptr(&rockchip_sfc_pm_ops),
+ 		.name	= DRIVER_NAME,
+-		.pm = &rockchip_spi_pm,
++		.pm = pm_ptr(&rockchip_spi_pm),
+ 		.of_match_table = of_match_ptr(rockchip_spi_dt_match),
  	},
- 	.probe	= rockchip_sfc_probe,
- 	.remove = rockchip_sfc_remove,
+ 	.probe = rockchip_spi_probe,
 -- 
 2.53.0
 

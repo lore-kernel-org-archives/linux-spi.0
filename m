@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6198D41687C;
-	Mon,  3 Aug 2026 14:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE7238837D;
+	Mon,  3 Aug 2026 14:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768178; cv=none; b=HO7AjI9Rqw9M7LYikCTlkyPkCSmCmxPkKwXhyBYLBxFh7vU++nYb5+Aibfw5Hf76GY8X2Sar0L1vGSE878JQ8yUlFYKxsnKljlMhNAE0nJUbD02+9omChXxzHRLJz7setjGa6FHcglZF4911NCLvaRIJkug5LGqaHduiwrQyQwI=
+	t=1785768189; cv=none; b=VhRITwlvebrdOMil1CGx6gaOu9dmHxm3RIFEu8VJKDY5CPINlSYPbB2LWPbbc7iSQLuXmIFy8j5BcNNoYzKfS/5APTSd02XyGVgetBQv9LrV/Qp8C3liPxCWlzanZIYOwOiEfLSRBUr28xSUoDZ4KetkSF7DyZ7ENOoz4KWhI5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768178; c=relaxed/simple;
-	bh=YjEkptkkjUucN7xS1M9k9TojJa6LecmCsbw/OO3hswo=;
+	s=arc-20240116; t=1785768189; c=relaxed/simple;
+	bh=OdCi3x60R6oZKpMlzyxLYNTTaKUiDXUPphpFYWqThWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWQE93Jwgv1oFjC26GzSD2OxEUDegRD1o53SvdCEEOzlN+Csk95ks8lnRDWKqbGOYjvrhRXdhUROyKtc7fRhPaDiqkYJVUDbqE9+FcB8J8sigGovLzkSilRRM8b2sNW/Nrcd8UDD/VJvOOoTaJ85sDPSUdfWAIcL/ImJbi599rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXHzpm6H; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=h/EY7m3nrS9pDnNnmPL8lDMhWZlcGgBotIulKG/6StNzfDPLY1Q0lkznI2vCZQSwOchdfnwQ/MLhClw+Htx9kmIWAjlcaHCaUGpmbbNmdyVI5tzFuVyP+ILerO9nUeHOx9s3T0LpobfykZAUfmc5g+Eoq57G41KYwZ3tqVvVIdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUAkb6ts; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXHzpm6H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BFA1F000E9;
-	Mon,  3 Aug 2026 14:42:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUAkb6ts"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965C21F00A3A;
+	Mon,  3 Aug 2026 14:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768177;
-	bh=8NjXoA9GQkX96CvZjFUHkqjbXY29+/71VYBPqzvTc1U=;
+	s=k20260515; t=1785768188;
+	bh=daGpi8WW17Z4aS26DoYco+2G9yFG/WRrelS5U9+0Kfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gXHzpm6HXTzihvojHbQPerVlSMds4SS+IIHVpWnxJj6n1JMvLVLQ+PPWXb0rgHhF1
-	 iFSWtQWQFDDbhupDplAViZ4CRDaEGy5IgKZrHci9RCimxh6Cix+WZFO9meDj+rAD0b
-	 dN8elbzLrN2joyTd6C9qOFn9/Pqkp3KRxFBZKTnWsQyiCwA/Fxw+uQzKfRO3Zp5NMO
-	 jAtKmRTXr1E8N6qqiagpSKaPX397MjJ6izkxy5+k14gCKqe+qlTqJy4/jdNTgT/2GS
-	 6+v/sHOu4o1IN9QgUH8bGi9RslrknyiDmdtPjhXmpnz+ddtixiFb6Xk/2mqBsB3n3r
-	 Wb69/7L7nSqFQ==
+	b=hUAkb6ts/hWwVE48dyESArnWGp5vpZQVxEQm6uGv32P9H3PorTaqd+GXSDJKXBoob
+	 dHraq16tB3if1Lmc16qL1Uo/oZ/cWQOxbDMGY7j5/bUVSbox6eEB+nkwuBHtleYtYV
+	 qAdA7OVX0h1pGYNJInajj6nqXKsGMA39XqN+EbG/IxVF8QI2atbT85WVuYqfDiNevO
+	 yJkUcNO5ZBPCPZAKsXs2RxcAONlfzBuOCnAhHJY73ELsqpC/AGwmo3tTz+El4yanG9
+	 hXe07rBs4ko2D6W7/Sd5aEeDpGYLxTWeqkSfAodKRMwy4HV3lUyJn5ZMA7P8CsfnQX
+	 cGwiW+/RRNgmg==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 15/39] spi: qcom-geni: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:39 +0800
-Message-ID: <20260803142003.12857-16-jszhang@kernel.org>
+Subject: [PATCH 16/39] spi: img-spfi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:40 +0800
+Message-ID: <20260803142003.12857-17-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,74 +90,63 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/spi/spi-img-spfi.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 26e723cfea61..3b055d087b55 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1150,7 +1150,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	return devm_spi_register_controller(dev, spi);
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index aec724e3f824..19c8250ddb64 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -677,7 +677,6 @@ static void img_spfi_remove(struct platform_device *pdev)
+ 	}
  }
  
--static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
-+static int spi_geni_runtime_suspend(struct device *dev)
+-#ifdef CONFIG_PM
+ static int img_spfi_runtime_suspend(struct device *dev)
  {
- 	struct spi_controller *spi = dev_get_drvdata(dev);
- 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-@@ -1166,7 +1166,7 @@ static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
- 	return geni_icc_disable(&mas->se);
- }
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -706,9 +705,7 @@ static int img_spfi_runtime_resume(struct device *dev)
  
--static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
-+static int spi_geni_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+-#endif /* CONFIG_PM */
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int img_spfi_suspend(struct device *dev)
  {
- 	struct spi_controller *spi = dev_get_drvdata(dev);
- 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
-@@ -1183,7 +1183,7 @@ static int __maybe_unused spi_geni_runtime_resume(struct device *dev)
- 	return dev_pm_opp_set_rate(mas->dev, mas->cur_sclk_hz);
- }
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -730,12 +727,10 @@ static int img_spfi_resume(struct device *dev)
  
--static int __maybe_unused spi_geni_suspend(struct device *dev)
-+static int spi_geni_suspend(struct device *dev)
- {
- 	struct spi_controller *spi = dev_get_drvdata(dev);
- 	int ret;
-@@ -1199,7 +1199,7 @@ static int __maybe_unused spi_geni_suspend(struct device *dev)
- 	return ret;
+ 	return spi_controller_resume(host);
  }
+-#endif /* CONFIG_PM_SLEEP */
  
--static int __maybe_unused spi_geni_resume(struct device *dev)
-+static int spi_geni_resume(struct device *dev)
- {
- 	struct spi_controller *spi = dev_get_drvdata(dev);
- 	int ret;
-@@ -1216,9 +1216,8 @@ static int __maybe_unused spi_geni_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops spi_geni_pm_ops = {
--	SET_RUNTIME_PM_OPS(spi_geni_runtime_suspend,
--					spi_geni_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(spi_geni_suspend, spi_geni_resume)
-+	RUNTIME_PM_OPS(spi_geni_runtime_suspend, spi_geni_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(spi_geni_suspend, spi_geni_resume)
+ static const struct dev_pm_ops img_spfi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(img_spfi_runtime_suspend, img_spfi_runtime_resume,
+-			   NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(img_spfi_suspend, img_spfi_resume)
++	RUNTIME_PM_OPS(img_spfi_runtime_suspend, img_spfi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(img_spfi_suspend, img_spfi_resume)
  };
  
- static const struct of_device_id spi_geni_dt_match[] = {
-@@ -1231,7 +1230,7 @@ static struct platform_driver spi_geni_driver = {
- 	.probe  = spi_geni_probe,
+ static const struct of_device_id img_spfi_of_match[] = {
+@@ -747,7 +742,7 @@ MODULE_DEVICE_TABLE(of, img_spfi_of_match);
+ static struct platform_driver img_spfi_driver = {
  	.driver = {
- 		.name = "geni_spi",
--		.pm = &spi_geni_pm_ops,
-+		.pm = pm_ptr(&spi_geni_pm_ops),
- 		.of_match_table = spi_geni_dt_match,
+ 		.name = "img-spfi",
+-		.pm = &img_spfi_pm_ops,
++		.pm = pm_ptr(&img_spfi_pm_ops),
+ 		.of_match_table = of_match_ptr(img_spfi_of_match),
  	},
- };
+ 	.probe = img_spfi_probe,
 -- 
 2.53.0
 

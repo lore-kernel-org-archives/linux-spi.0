@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9309D303C9C;
-	Mon,  3 Aug 2026 14:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313A741D12C;
+	Mon,  3 Aug 2026 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768458; cv=none; b=UX83g+cAAGprboDozR+NZZwouZcQLgvpS6549/PdPQfDbv4acJDgB8o0VKQJFN/a+XByEmGTsrXKPLnqpUX72zqOPGZ1k8IxBHHIYQaQKsgqXc+/9cNqpF6OWSyMCAFogWOFCyNDKVAnEjbG3k2xGRHK1Z3+wGzYXhQuj2baOuA=
+	t=1785768470; cv=none; b=oIxTcEK0iyRbIafTcRxa/EHzkoMXPoNTFQYINOd083QIBxhOaLG3XxXdNBnje+ytdMxa/OMvFShnnbkUkj8Ytuq5nV/7PSMFPH60T2MzR8zAuDt0p9IPILWUjQZj0CLhboH+s4EAvvX8SQ86PiBWlempfP7f14ewYhKTxX0F5x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768458; c=relaxed/simple;
-	bh=m8v3OFLIti6H8Cp6MomDvkipHJpgMuOdRXDtyCF4IZM=;
+	s=arc-20240116; t=1785768470; c=relaxed/simple;
+	bh=th+gSz3ZfFcXLd9CAONrz47oXizCQjZk1hkgHWndUZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUmQxOR+Y590VqSdSONa7s6tfY/t1FuiLsTpvLOcVpXZBHZ2xLHMCsFdEYhDDMIOQojfnyUG/TJ6Lf7aHDur5USlPxoM2EAra9nDkxszIacYST8P/h4Di7bQR51K3d+dBPg1/dZIAJSkcx+ycHVGrFPjH5j7sMD4ex1wCL2+Fis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxO4qi9S; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=OCcHYNjXKg22HBD4Gb7flZ/JJ6+U4JjJLN36L/+Ddu8VXJCggEZBLopjIxR0ju0QykGfYOXqUMCT8ZcPk8v+c5Va/AgPHQnHV7zy2K6su0Ris+4n+RwlMcpwaHL679CK4ub4Yp1vaqmE28PtgFWoNrlltKQnedgt2fM2A50ilvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmUJmptS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxO4qi9S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4312B1F000E9;
-	Mon,  3 Aug 2026 14:47:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmUJmptS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1054D1F00A3A;
+	Mon,  3 Aug 2026 14:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768457;
-	bh=QJStuAggcKF1nXu7NXEt8uGHvIkJp1MSnsjyNzc0HrI=;
+	s=k20260515; t=1785768468;
+	bh=zkX/3dzt/quj43edlafhWH61EJ/HhtjA4rsT3qwwG8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mxO4qi9SIsYk+tYSasKFQn0rlVuTurEOxyGXkn6cfsVxn+KT8vd94SQ0BP9tr9wmv
-	 3hgCFr4RTcwQBGIApXoqL7SdHp2gvkmeT4JQVB2eO6RpyW5fcPPQFpmkVWbxbCc0SU
-	 twLZh6/OQG1KxvUq430hVGyXmQcmt0WCOYrREyoVCeh+12lKV2YrsLqvcntsFCA8tz
-	 8TfDJupMMggl8T2iJhFb6ChzcfetEaRNtdohQOzs+uJcbsB1/4wq8EGIwh9xcvVs/k
-	 613JSx57TxEC9nsTJkElHM5kKtuCj5r8ea3TP5D6zrzQg2urfXKtLde8E74eSsmQYm
-	 n9WwloeMoXSRA==
+	b=bmUJmptS05vLn302+g04AnpaBKS1dxJatne2B4RJkuqR28nUNl9c2VT6adbYuCDIL
+	 EbIUB1yOAsI00pp47UXjpfecaATFregOwoEEoGFwMcPp7PJjvvq7Iki6pkJ2rBDfSb
+	 +xKPYQ0A7aNBZGvH7slyomm7ypFAt01TqOTg1DCwh7vI1zkg2+Wz4lHOCqfca2OPu7
+	 SardyHykGd/CC81EtpwAV+AEZzod12rvuexV4PiQe3bUX4qWRtRPlTJBlaS8dC83WY
+	 lrcoebiUiuvdU81Gk8fbYHqeMDhc41S3MO+3XTfkHWOT+PGohbVu+wxEm18yWNpHyv
+	 daTLK4vBWaTFQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 38/39] spi: topcliff-pch: use modern PM macros
-Date: Mon,  3 Aug 2026 22:20:02 +0800
-Message-ID: <20260803142003.12857-39-jszhang@kernel.org>
+Subject: [PATCH 39/39] spi: zynqmp-gqspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:20:03 +0800
+Message-ID: <20260803142003.12857-40-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,147 +90,74 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
-
-This has the advantage of always compiling these functions in,
-independently of any Kconfig option. Thanks to that, bugs and other
-regressions are subsequently easier to catch.
-
-At the same time, for pch_spi_pd_driver, we also switch to modern
-driver.pm for pm ops.
+CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-topcliff-pch.c | 47 +++++++++++++++-------------------
- 1 file changed, 20 insertions(+), 27 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index c5409ca7faef..98723042c16f 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1438,19 +1438,17 @@ static void pch_spi_pd_remove(struct platform_device *plat_dev)
- 
- 	spi_controller_put(data->host);
- }
--#ifdef CONFIG_PM
--static int pch_spi_pd_suspend(struct platform_device *pd_dev,
--			      pm_message_t state)
-+
-+static int pch_spi_pd_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index f9a1427dabad..4d55090fa443 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -935,7 +935,7 @@ static int zynqmp_qspi_read_op(struct zynqmp_qspi *xqspi, u8 rx_nbits,
+  *
+  * Return:	Always 0
+  */
+-static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
++static int zynqmp_qspi_suspend(struct device *dev)
  {
- 	u8 count;
--	struct pch_spi_board_data *board_dat = dev_get_platdata(&pd_dev->dev);
--	struct pch_spi_data *data = platform_get_drvdata(pd_dev);
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(dev);
-+	struct pch_spi_data *data = dev_get_drvdata(dev);
- 
--	dev_dbg(&pd_dev->dev, "%s ENTRY\n", __func__);
-+	dev_dbg(dev, "%s ENTRY\n", __func__);
- 
- 	if (!board_dat) {
--		dev_err(&pd_dev->dev,
--			"%s pci_get_drvdata returned NULL\n", __func__);
-+		dev_err(dev, "%s pci_get_drvdata returned NULL\n", __func__);
- 		return -EFAULT;
- 	}
- 
-@@ -1471,22 +1469,20 @@ static int pch_spi_pd_suspend(struct platform_device *pd_dev,
- 		free_irq(board_dat->pdev->irq, data);
- 
- 		data->irq_reg_sts = false;
--		dev_dbg(&pd_dev->dev,
--			"%s free_irq invoked successfully.\n", __func__);
-+		dev_dbg(dev, "%s free_irq invoked successfully.\n", __func__);
- 	}
- 
- 	return 0;
- }
- 
--static int pch_spi_pd_resume(struct platform_device *pd_dev)
-+static int pch_spi_pd_resume(struct device *dev)
+ 	struct zynqmp_qspi *xqspi = dev_get_drvdata(dev);
+ 	struct spi_controller *ctlr = xqspi->ctlr;
+@@ -959,7 +959,7 @@ static int __maybe_unused zynqmp_qspi_suspend(struct device *dev)
+  *
+  * Return:	0 on success; error value otherwise
+  */
+-static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
++static int zynqmp_qspi_resume(struct device *dev)
  {
--	struct pch_spi_board_data *board_dat = dev_get_platdata(&pd_dev->dev);
--	struct pch_spi_data *data = platform_get_drvdata(pd_dev);
-+	struct pch_spi_board_data *board_dat = dev_get_platdata(dev);
-+	struct pch_spi_data *data = dev_get_drvdata(dev);
- 	int retval;
+ 	struct zynqmp_qspi *xqspi = dev_get_drvdata(dev);
+ 	struct spi_controller *ctlr = xqspi->ctlr;
+@@ -979,7 +979,7 @@ static int __maybe_unused zynqmp_qspi_resume(struct device *dev)
+  *
+  * Return:	Always 0
+  */
+-static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
++static int zynqmp_runtime_suspend(struct device *dev)
+ {
+ 	struct zynqmp_qspi *xqspi = dev_get_drvdata(dev);
  
- 	if (!board_dat) {
--		dev_err(&pd_dev->dev,
--			"%s pci_get_drvdata returned NULL\n", __func__);
-+		dev_err(dev, "%s pci_get_drvdata returned NULL\n", __func__);
- 		return -EFAULT;
- 	}
- 
-@@ -1495,8 +1491,7 @@ static int pch_spi_pd_resume(struct platform_device *pd_dev)
- 		retval = request_irq(board_dat->pdev->irq, pch_spi_handler,
- 				     IRQF_SHARED, KBUILD_MODNAME, data);
- 		if (retval < 0) {
--			dev_err(&pd_dev->dev,
--				"%s request_irq failed\n", __func__);
-+			dev_err(dev, "%s request_irq failed\n", __func__);
- 			return retval;
- 		}
- 
-@@ -1507,19 +1502,17 @@ static int pch_spi_pd_resume(struct platform_device *pd_dev)
- 	}
- 	return 0;
+@@ -997,7 +997,7 @@ static int __maybe_unused zynqmp_runtime_suspend(struct device *dev)
+  *
+  * Return:	0 on success and error value on error
+  */
+-static int __maybe_unused zynqmp_runtime_resume(struct device *dev)
++static int zynqmp_runtime_resume(struct device *dev)
+ {
+ 	struct zynqmp_qspi *xqspi = dev_get_drvdata(dev);
+ 	int ret;
+@@ -1186,9 +1186,8 @@ static int zynqmp_qspi_exec_op(struct spi_mem *mem,
  }
--#else
--#define pch_spi_pd_suspend NULL
--#define pch_spi_pd_resume NULL
--#endif
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(pch_spi_pd_pm_ops,
-+				pch_spi_pd_suspend, pch_spi_pd_resume);
  
- static struct platform_driver pch_spi_pd_driver = {
+ static const struct dev_pm_ops zynqmp_qspi_dev_pm_ops = {
+-	SET_RUNTIME_PM_OPS(zynqmp_runtime_suspend,
+-			   zynqmp_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
++	RUNTIME_PM_OPS(zynqmp_runtime_suspend, zynqmp_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(zynqmp_qspi_suspend, zynqmp_qspi_resume)
+ };
+ 
+ static const struct qspi_platform_data versal_qspi_def = {
+@@ -1382,7 +1381,7 @@ static struct platform_driver zynqmp_qspi_driver = {
  	.driver = {
- 		.name = "pch-spi",
-+		.pm = pm_sleep_ptr(&pch_spi_pd_pm_ops),
+ 		.name = "zynqmp-qspi",
+ 		.of_match_table = zynqmp_qspi_of_match,
+-		.pm = &zynqmp_qspi_dev_pm_ops,
++		.pm = pm_ptr(&zynqmp_qspi_dev_pm_ops),
  	},
- 	.probe = pch_spi_pd_probe,
- 	.remove = pch_spi_pd_remove,
--	.suspend = pch_spi_pd_suspend,
--	.resume = pch_spi_pd_resume
  };
  
- static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-@@ -1618,7 +1611,7 @@ static void pch_spi_remove(struct pci_dev *pdev)
- 	kfree(pd_dev_save);
- }
- 
--static int __maybe_unused pch_spi_suspend(struct device *dev)
-+static int pch_spi_suspend(struct device *dev)
- {
- 	struct pch_pd_dev_save *pd_dev_save = dev_get_drvdata(dev);
- 
-@@ -1629,7 +1622,7 @@ static int __maybe_unused pch_spi_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused pch_spi_resume(struct device *dev)
-+static int pch_spi_resume(struct device *dev)
- {
- 	struct pch_pd_dev_save *pd_dev_save = dev_get_drvdata(dev);
- 
-@@ -1641,14 +1634,14 @@ static int __maybe_unused pch_spi_resume(struct device *dev)
- 	return 0;
- }
- 
--static SIMPLE_DEV_PM_OPS(pch_spi_pm_ops, pch_spi_suspend, pch_spi_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(pch_spi_pm_ops, pch_spi_suspend, pch_spi_resume);
- 
- static struct pci_driver pch_spi_pcidev_driver = {
- 	.name = "pch_spi",
- 	.id_table = pch_spi_pcidev_id,
- 	.probe = pch_spi_probe,
- 	.remove = pch_spi_remove,
--	.driver.pm = &pch_spi_pm_ops,
-+	.driver.pm = pm_sleep_ptr(&pch_spi_pm_ops),
- };
- 
- static int __init pch_spi_init(void)
 -- 
 2.53.0
 

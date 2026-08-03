@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774DC411FA9;
-	Mon,  3 Aug 2026 14:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F3033B966;
+	Mon,  3 Aug 2026 14:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768213; cv=none; b=JgntCkVFcsovyddVxWjNhNwJxQjjNcIK4cst6IFuLTw7OsWRJZXqWnsFrE10GOM3spU+8eqOoiEoVYN/3bqxPF6LoTMTalEL6fjVqSbrU+rOW/uRQPIqXeATqMwwg+wkyDDap/82QMAJ1HacZKFUIvyeHNs/6Gr2i2FfcseCXSQ=
+	t=1785768225; cv=none; b=nFEHNOQRmUdnyBuy64FeghpGYK6FsuCjPfeM61c2SSJswBdb3XOo6vww8uSq6yxrG2vQtfCIYGflyf/Q6WhBVuIPNT3fOgWX2Vf8frPXKL+UxNGv5WJnRnGLs/Gf2hkgqA/JYKpJ7GeQ2GK4jpqieFaSNrqjdx8inZONpNltGzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768213; c=relaxed/simple;
-	bh=47hBFYwv1QdhUP4ows3APuspFj39h+bkn8E16rn4EEs=;
+	s=arc-20240116; t=1785768225; c=relaxed/simple;
+	bh=eEw8Qk2hOhPUcBITw/f2Wb4FvaPaelHXMrBfA+OllwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ed46SP6DYOKiti5UBCB8it9nW+6ZVvjrkKXoA23Ky0E6dFmDiOhLRFO4gVQkmwzDMUQz0pRia1LJ+UCDLA2aq49KRcR3h8RuN6Ychi/XpxVn/giGhu3dBPgNPwNY5bpxS5+nfthtLSN+54gmM2xC5hJPGTFVlVCwgIzXrb11Mt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2WPZiZQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ZkP6R5dYLC88QbRmnk9t1Lz9ZUcoKxMAvQQy8fnS89WQhXL0lWc4GnnteHLfD88B06FihsoAVpCTj21XulYbguzOt+T2FHzRUwoQiE5tCcNZesKvCiY2JqBr1qTFRjMPea2LK+ctIa0SMzSymcMp2kiLKflSF0yUYW+/mlGdaK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MA9a0iDQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2WPZiZQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6771F00A3A;
-	Mon,  3 Aug 2026 14:43:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MA9a0iDQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7381F00A3D;
+	Mon,  3 Aug 2026 14:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768212;
-	bh=qlIUiMjQYU3CDsVD7Nq654m9H5XXKXU9Fx2wGOali6M=;
+	s=k20260515; t=1785768223;
+	bh=Aq5eKq2jQllo0UFgmqt8MgpdseF2d22YCYfpSye94Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q2WPZiZQm+TAUHy80rzSrKMgpSEkbdagezOFxnshMyTOfln15G1ptgLJTN4RoGiAU
-	 fS8j9n9fgEVK5x87v+O3HTxsNS7Vo2RaUqBLrvMjvSVIZH0JByv6XSs0dIFM+Nlksj
-	 jSNao/hBQDc/sBETw11b5p7tyScC4+TEK8+xI07pnjOaL1ArOgzppdkEEvx0xvjh6T
-	 e+O1U1EnMOjFSkEYt99NItGIY+RTcSqHHsW3uqQBqmweHUrvsGWNwOCnXbIVMxxdmL
-	 LCP7JN/lNfDWnN9lctSWJHQVdh8lockkPjQ1/c3hXc9GNgDX1BeX7wnrzJkucPTs2W
-	 8dbV0G4jIhF2g==
+	b=MA9a0iDQTpjsMzVcuXmY7ReHpQMBNOgCbYtLmvRch+jN2aRExK8yKwHhx4J09UmF8
+	 lfBwmvY3/zRg9y5Y3O6NiLnvTUkD4FB8hA7NKlqQqN0vuq3L14ykeLyuW2axpeeQLK
+	 9T0U25UL4pRak4mSI1Rh4ej111CHTcQC/cRdk648UUcwkWlV8KP/1ZSMtu5304+tlF
+	 cI154XM0qwPXkFa5tub+H9lcppaNWrQrrqT9ffP1zRuP89Lq1GmvJk+fdUXLHxyykl
+	 p6qSGA18xKWAOYae9WySvYE8Pdu5epIYHPxpTHLf45HeFsQYRFJdgdAGxI6BUJkFGc
+	 wta0SSjtlNQrw==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 18/39] spi: meson-spifc: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:42 +0800
-Message-ID: <20260803142003.12857-19-jszhang@kernel.org>
+Subject: [PATCH 19/39] spi: mt65xx: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:43 +0800
+Message-ID: <20260803142003.12857-20-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -98,58 +98,53 @@ regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-meson-spifc.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/spi/spi-mt65xx.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
-index e36aa94bbdae..2ef090dec7ba 100644
---- a/drivers/spi/spi-meson-spifc.c
-+++ b/drivers/spi/spi-meson-spifc.c
-@@ -348,7 +348,6 @@ static void meson_spifc_remove(struct platform_device *pdev)
- 	pm_runtime_put_noidle(&pdev->dev);
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index 96f8555be983..b845a599f7c6 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -1367,7 +1367,6 @@ static void mtk_spi_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int meson_spifc_suspend(struct device *dev)
+ static int mtk_spi_suspend(struct device *dev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -385,9 +384,7 @@ static int meson_spifc_resume(struct device *dev)
+ 	int ret;
+@@ -1419,9 +1418,7 @@ static int mtk_spi_resume(struct device *dev)
  
  	return ret;
  }
 -#endif /* CONFIG_PM_SLEEP */
  
 -#ifdef CONFIG_PM
- static int meson_spifc_runtime_suspend(struct device *dev)
+ static int mtk_spi_runtime_suspend(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -405,13 +402,12 @@ static int meson_spifc_runtime_resume(struct device *dev)
+@@ -1473,18 +1470,16 @@ static int mtk_spi_runtime_resume(struct device *dev)
  
- 	return clk_prepare_enable(spifc->clk);
+ 	return 0;
  }
 -#endif /* CONFIG_PM */
  
- static const struct dev_pm_ops meson_spifc_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(meson_spifc_suspend, meson_spifc_resume)
--	SET_RUNTIME_PM_OPS(meson_spifc_runtime_suspend,
--			   meson_spifc_runtime_resume,
--			   NULL)
-+	SYSTEM_SLEEP_PM_OPS(meson_spifc_suspend, meson_spifc_resume)
-+	RUNTIME_PM_OPS(meson_spifc_runtime_suspend,
-+		       meson_spifc_runtime_resume,
-+		       NULL)
+ static const struct dev_pm_ops mtk_spi_pm = {
+-	SET_SYSTEM_SLEEP_PM_OPS(mtk_spi_suspend, mtk_spi_resume)
+-	SET_RUNTIME_PM_OPS(mtk_spi_runtime_suspend,
+-			   mtk_spi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(mtk_spi_suspend, mtk_spi_resume)
++	RUNTIME_PM_OPS(mtk_spi_runtime_suspend, mtk_spi_runtime_resume, NULL)
  };
  
- static const struct of_device_id meson_spifc_dt_match[] = {
-@@ -427,7 +423,7 @@ static struct platform_driver meson_spifc_driver = {
- 	.driver	= {
- 		.name		= "meson-spifc",
- 		.of_match_table	= of_match_ptr(meson_spifc_dt_match),
--		.pm		= &meson_spifc_pm_ops,
-+		.pm		= pm_ptr(&meson_spifc_pm_ops),
+ static struct platform_driver mtk_spi_driver = {
+ 	.driver = {
+ 		.name = "mtk-spi",
+-		.pm	= &mtk_spi_pm,
++		.pm	= pm_ptr(&mtk_spi_pm),
+ 		.of_match_table = mtk_spi_of_match,
  	},
- };
- 
+ 	.probe = mtk_spi_probe,
 -- 
 2.53.0
 

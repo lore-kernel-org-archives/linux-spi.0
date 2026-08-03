@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EAE34F497;
-	Mon,  3 Aug 2026 14:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36EF3126C0;
+	Mon,  3 Aug 2026 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768156; cv=none; b=FZ/LovpCKk8thPYEA7oQsnBiGY7cf77XMAHacuf9DaLK9g7ogsguoDzX8UdwWxH/AvYNF9CMdagxOJQg8/Qb0EZQy4nT6LazDStu8gmZRV+e8bDKZV1l1pXeo3aJq/PF7Ky8jGd7+19q55HZJ016ORpnk2iI4I4kS0atvf6o7n8=
+	t=1785768168; cv=none; b=Ye6SJe7iaafY5i0UZ+MlgWLPPkBXr9lp92Fly9ulVyVxBJxeGK0b+DAVO0aCj+1SBv1LEwCUwfl9sCrilbUCac/xCUmWqyjAa2i5cWTa3OLQWktMh+1l4MCNXmQReHEPPZJYv/QisNW8KugS/Fqqm8NajiODvRsaANXZQ/BvBxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768156; c=relaxed/simple;
-	bh=wi4rSLjF8igkEk5Hb4y1uIgJc2aGWF9+Vfs+f881cKk=;
+	s=arc-20240116; t=1785768168; c=relaxed/simple;
+	bh=cIObQkN3i8E7FNYuQ1EXWCTa23k7x49O2WzfO1Nwtjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/fk1KlHGrrenbICZNfDhADZ0seSTNzMXWsENwqS6EeUT6ZPMl36xiATx0KQfhDNSurVYejSI9R+V6VVJwlgmuKddtpowwmP923UPWtGkwytAQsW6nAnoLp1GTWswn0JHCoWRu/ncHx5DvdVswIpAmFAy0ySQkTf1+IvEfhDA20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2Z23oOB; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=KTq/Rq58W/gkrguPsyvtT3oJWiVjNhA68gNlS2nVJfssis52/OUWih/SuI5tWcIZhxwxiklRFaYQBaP11G0MfhKjptsK7RLzLW2xPz6sfXlG68VPA3ddjghH+3Odrbttw/0TPS/DKx2RsmFKfNH02uhj84ja5Ws4WF71dYWfkms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jq0SzQuC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2Z23oOB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405881F000E9;
-	Mon,  3 Aug 2026 14:42:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jq0SzQuC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A589F1F00A3A;
+	Mon,  3 Aug 2026 14:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768155;
-	bh=vMpPIe2+3JKmGQVDSBH5+n4a6i7E8FOu08o9TWP+o54=;
+	s=k20260515; t=1785768166;
+	bh=mu04nVcHEVGTHqVvLbmhVSQzsCdFINUhaQSAgnCXqz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T2Z23oOBdOFyR2gO3/YnPcslmtdAI05sg4yCtD4fHqI1rtigB793GgBQI6bWSdjlL
-	 RHRYsz6Zyje283JV3wn+4ZW0bHprbFh9RX8+qCD2DAij77FiuL6dGVPTabSaPqBZfv
-	 gsWiXj2cwKL7BXwyJWDsQ9CJf3e7Ok8Fzpa7bbXYsDrga4iG0HjR/cW5+weX4LUlLa
-	 0vfArkZmv/crDwI2wgyaAon6P9MQJkmi9CzuksvT2UkbKS8AXoFhHkc/G4A1q6R4vq
-	 ZF+ezXXqPcCoUKjz6idfBCFMVgLrpoI7xHUeTMol4gjHFGiD7paQTTwkx6gVSdvB3/
-	 RU9mXrCuDsnaA==
+	b=Jq0SzQuCKBUhLxcWGUxwGft/o2OElSpoXRZRXR5jPNRm2yedF5jG171F8u160+piV
+	 UludJvSE1p6LTZkWNzEW+L5sOXZbb9S0s06zMY2HGUYUqvriUb6zLIylRjYZ66jitu
+	 zPhbZBW62udEUl3MN1fFYwSbhRmiGV8kNP7qYYlfZk9ucSY5GE1jJKC16rDDctQ1J6
+	 wEwpyeRDu1YA1cHZWZdzFofBUNFXP/Ce8dIBtY4kcj10qnAjO3y6eaF9GRsG3TFtzV
+	 m+d5L6W/aTUn8ejSvS3Snclm3kfH6IrOSYzg47cPEWI8iiM4+OSNrs2wHKKy6oB51C
+	 bA2q3zXjUjhbQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 13/39] spi: fsl-espi: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:37 +0800
-Message-ID: <20260803142003.12857-14-jszhang@kernel.org>
+Subject: [PATCH 14/39] spi: fsl-lpspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:38 +0800
+Message-ID: <20260803142003.12857-15-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -98,61 +98,40 @@ regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-fsl-espi.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 1341bdd7db75..4ac8f9b06783 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -580,7 +580,6 @@ static irqreturn_t fsl_espi_irq(s32 irq, void *context_data)
- 	return IRQ_HANDLED;
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index e14753144e19..5aa0a75b4e57 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -842,7 +842,6 @@ static irqreturn_t fsl_lpspi_isr(int irq, void *dev_id)
+ 	return IRQ_NONE;
  }
  
 -#ifdef CONFIG_PM
- static int fsl_espi_runtime_suspend(struct device *dev)
+ static int fsl_lpspi_runtime_resume(struct device *dev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -606,7 +605,6 @@ static int fsl_espi_runtime_resume(struct device *dev)
+ 	struct spi_controller *controller = dev_get_drvdata(dev);
+@@ -876,7 +875,6 @@ static int fsl_lpspi_runtime_suspend(struct device *dev)
  
  	return 0;
  }
 -#endif
  
- static size_t fsl_espi_max_message_size(struct spi_device *spi)
+ static int fsl_lpspi_init_rpm(struct fsl_lpspi_data *fsl_lpspi)
  {
-@@ -785,7 +783,6 @@ static void of_fsl_espi_remove(struct platform_device *dev)
- 	pm_runtime_disable(&dev->dev);
+@@ -1056,8 +1054,8 @@ static int fsl_lpspi_resume(struct device *dev)
  }
  
--#ifdef CONFIG_PM_SLEEP
- static int of_fsl_espi_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -811,12 +808,10 @@ static int of_fsl_espi_resume(struct device *dev)
- 
- 	return spi_controller_resume(host);
- }
--#endif /* CONFIG_PM_SLEEP */
- 
- static const struct dev_pm_ops espi_pm = {
--	SET_RUNTIME_PM_OPS(fsl_espi_runtime_suspend,
--			   fsl_espi_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(of_fsl_espi_suspend, of_fsl_espi_resume)
-+	RUNTIME_PM_OPS(fsl_espi_runtime_suspend, fsl_espi_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(of_fsl_espi_suspend, of_fsl_espi_resume)
+ static const struct dev_pm_ops fsl_lpspi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
+-				fsl_lpspi_runtime_resume, NULL)
++	RUNTIME_PM_OPS(fsl_lpspi_runtime_suspend,
++		       fsl_lpspi_runtime_resume, NULL)
+ 	SYSTEM_SLEEP_PM_OPS(fsl_lpspi_suspend, fsl_lpspi_resume)
  };
  
- static const struct of_device_id of_fsl_espi_match[] = {
-@@ -829,7 +824,7 @@ static struct platform_driver fsl_espi_driver = {
- 	.driver = {
- 		.name = "fsl_espi",
- 		.of_match_table = of_fsl_espi_match,
--		.pm = &espi_pm,
-+		.pm = pm_ptr(&espi_pm),
- 	},
- 	.probe		= of_fsl_espi_probe,
- 	.remove		= of_fsl_espi_remove,
 -- 
 2.53.0
 

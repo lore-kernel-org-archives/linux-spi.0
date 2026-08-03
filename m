@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EF741D21E;
-	Mon,  3 Aug 2026 14:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39A04137BA;
+	Mon,  3 Aug 2026 14:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768376; cv=none; b=tWSieChI118+P+tPJ+xSOIRI8Tnyt4x/3QqFi2H12sDJBooR9I0KrQGPL2Fz1J6L6UObqaaeg1uaDSSVamqqKaolLqb42+BxZiyPxPHOw2+SY7++LikYcL4qwopVHeXu9jfaBjg1Dl9/JJ2C7XwUrv8hU4DfHN82KsAJPCdoVWk=
+	t=1785768388; cv=none; b=sSnwYxtIwxRzo2ngHFZ9cOOnS6GLsZCh7V9GYILtlibh4pIczuM1zpVHMLu/syoXuLF16ZTgUYP+iBXCSg4QKuGK4QnpQgGt14aGQ8QA5Dvqqrssg0SY5Qh5GaJpbkZotTEHsOJDc+AaOWIMtPzKFA+htXUg05Z/mNXTGEDTcCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768376; c=relaxed/simple;
-	bh=HlpKTsyKoHTmzQrNpZAv5jOHHbvlj4P35xVIVLaPlDA=;
+	s=arc-20240116; t=1785768388; c=relaxed/simple;
+	bh=Rg9R4XtLvFWg8NFF4P8t+FRCJByUC/qZSIO2kKSaT64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rM9j8oRcs0VSLoEPW7km2yLnfa1Wiy+sV26lTkxp+wfcwue+hELQpIYFiG/Sa6XYAXcK/jBdJK/ByEz+UHe1H/TWMdJJSZr8zSFpKrmNz8fDJ2nPCe5UpDu0bD/8evuq/tEx2zDRQyBIowMqp0DEcLJuuRfFOjl+bVFfn60fCuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gzzocITx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=XLxbsMmGXQatcM6tsX2w3+efuWQ9u+Fvue6EQYDpiwOkXZFUhoZhxXMHfhgonkz9FnW5TeSbeEANjelFy8kettsgxRUrWQQGOl4PrOS2T+b0K2jBn7DThuGpQnnhKKPqUA+sY9Wfjn7ZCNmqPkHnE/1JdJlEBcguviO5vmY+oQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biiNQJ3t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gzzocITx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01B61F00A3A;
-	Mon,  3 Aug 2026 14:46:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biiNQJ3t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB611F00A3D;
+	Mon,  3 Aug 2026 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768373;
-	bh=llaQZ6uCqmKYby9DFqY5vdo6Mqo0ZPuV/PFMlIezwUU=;
+	s=k20260515; t=1785768386;
+	bh=Bcbtf6ZHAJGJTJISXdZ1qfeCTDXIgQZLsOdyVwXUbJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gzzocITx7naUalh1nwW/zr7lTVTdTp98MkwwzHocAJuEdCu/i2fuD+hcH4CaG3mvf
-	 4vRKQIzIyUXyByMowUeWn6Ge4uVK7xtIfPMCbp8C2HgKeWXlj3cmJjZ5RylPYS7h4O
-	 jv6JOv53PCv491baP45xMT3AvPbjxPOsQ5Or0CBwuD3k9UtfuufnovCxl1FgGFjOL/
-	 h6k44kNs19I/qCGh/+XzPwqnJ8aa2COU7ky+fg32Uxv4cmIYVPIBwIZiX9xdPc38fB
-	 EiW7Ftny1bGhQm9897ykYDxcYYwk5GxsL2lX/fquMh5w9HqXameEX5YMKn9Daw9nke
-	 IyOhLKXqJ0YAg==
+	b=biiNQJ3tBbti1oLeRgBek5MLDQXcbX07IeQZAcdpqbAavhl7nXyzWtOFDVct7w6dN
+	 qz2pa9H8yrF9E5bU5tBOYVIu8uWagrRSMWpyMfS1nitE7jVdfsjvepvClvPNrfqHtV
+	 RjdRSv/y4exPiC9u/26DvIS6duADsVSUNBWQIWoAysa/n2OnhCdl4HehS9NkwW2hbq
+	 EBnS2XmQt4AYgO1SYiY/Ow/xdMImpGshKyPAIKOyQJ467zYbLjViFwhPpykA9KCdPP
+	 fFMFu4b5Pr5UJJj9ow/5RxKnml2nib6clRVPgyKv0t+Yl7IQkE5aWjD2XfQVxLgH3w
+	 K8bRTTWCXiZsQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 31/39] spi: sprd: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:55 +0800
-Message-ID: <20260803142003.12857-32-jszhang@kernel.org>
+Subject: [PATCH 32/39] spi: sunplus-sp7021: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:56 +0800
+Message-ID: <20260803142003.12857-33-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,54 +90,75 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards or
+__maybe_unused.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-sprd.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sunplus-sp7021.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd.c b/drivers/spi/spi-sprd.c
-index 29380938ef65..12b09174bb24 100644
---- a/drivers/spi/spi-sprd.c
-+++ b/drivers/spi/spi-sprd.c
-@@ -1016,7 +1016,7 @@ static void sprd_spi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
+diff --git a/drivers/spi/spi-sunplus-sp7021.c b/drivers/spi/spi-sunplus-sp7021.c
+index c1870322d976..f16fcda187dd 100644
+--- a/drivers/spi/spi-sunplus-sp7021.c
++++ b/drivers/spi/spi-sunplus-sp7021.c
+@@ -498,7 +498,7 @@ static void sp7021_spi_controller_remove(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(&pdev->dev);
  }
  
--static int __maybe_unused sprd_spi_runtime_suspend(struct device *dev)
-+static int sprd_spi_runtime_suspend(struct device *dev)
+-static int __maybe_unused sp7021_spi_controller_suspend(struct device *dev)
++static int sp7021_spi_controller_suspend(struct device *dev)
  {
- 	struct spi_controller *sctlr = dev_get_drvdata(dev);
- 	struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
-@@ -1029,7 +1029,7 @@ static int __maybe_unused sprd_spi_runtime_suspend(struct device *dev)
- 	return 0;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+@@ -506,7 +506,7 @@ static int __maybe_unused sp7021_spi_controller_suspend(struct device *dev)
+ 	return reset_control_assert(pspim->rstc);
  }
  
--static int __maybe_unused sprd_spi_runtime_resume(struct device *dev)
-+static int sprd_spi_runtime_resume(struct device *dev)
+-static int __maybe_unused sp7021_spi_controller_resume(struct device *dev)
++static int sp7021_spi_controller_resume(struct device *dev)
  {
- 	struct spi_controller *sctlr = dev_get_drvdata(dev);
- 	struct sprd_spi *ss = spi_controller_get_devdata(sctlr);
-@@ -1050,8 +1050,7 @@ static int __maybe_unused sprd_spi_runtime_resume(struct device *dev)
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+@@ -515,7 +515,6 @@ static int __maybe_unused sp7021_spi_controller_resume(struct device *dev)
+ 	return clk_prepare_enable(pspim->spi_clk);
  }
  
- static const struct dev_pm_ops sprd_spi_pm_ops = {
--	SET_RUNTIME_PM_OPS(sprd_spi_runtime_suspend,
--			   sprd_spi_runtime_resume, NULL)
-+	RUNTIME_PM_OPS(sprd_spi_runtime_suspend, sprd_spi_runtime_resume, NULL)
+-#ifdef CONFIG_PM
+ static int sp7021_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+@@ -531,13 +530,12 @@ static int sp7021_spi_runtime_resume(struct device *dev)
+ 
+ 	return reset_control_deassert(pspim->rstc);
+ }
+-#endif
+ 
+ static const struct dev_pm_ops sp7021_spi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(sp7021_spi_runtime_suspend,
+-			   sp7021_spi_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(sp7021_spi_controller_suspend,
+-				sp7021_spi_controller_resume)
++	RUNTIME_PM_OPS(sp7021_spi_runtime_suspend,
++		       sp7021_spi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(sp7021_spi_controller_suspend,
++			    sp7021_spi_controller_resume)
  };
  
- static const struct of_device_id sprd_spi_of_match[] = {
-@@ -1064,7 +1063,7 @@ static struct platform_driver sprd_spi_driver = {
+ static const struct of_device_id sp7021_spi_controller_ids[] = {
+@@ -552,7 +550,7 @@ static struct platform_driver sp7021_spi_controller_driver = {
  	.driver = {
- 		.name = "sprd-spi",
- 		.of_match_table = sprd_spi_of_match,
--		.pm = &sprd_spi_pm_ops,
-+		.pm = pm_ptr(&sprd_spi_pm_ops),
+ 		.name = "sunplus,sp7021-spi-controller",
+ 		.of_match_table = sp7021_spi_controller_ids,
+-		.pm     = &sp7021_spi_pm_ops,
++		.pm     = pm_ptr(&sp7021_spi_pm_ops),
  	},
- 	.probe = sprd_spi_probe,
- 	.remove = sprd_spi_remove,
+ };
+ module_platform_driver(sp7021_spi_controller_driver);
 -- 
 2.53.0
 

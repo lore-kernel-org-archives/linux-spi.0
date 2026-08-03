@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143640DB46;
-	Mon,  3 Aug 2026 14:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F036C3043DB;
+	Mon,  3 Aug 2026 14:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768299; cv=none; b=X+KiR85f2ZF4FBpDuotL8iDe9rrG84r1GwGNbN9OT6fp6PAMgznH5cLYtj7aWFaICEzpXSzn6mnBg4/hX9wLO+F9vrFNu5+lOmTaaN9VOKNPMeGUwlbzhldxBwhlpLgf62nJc1jigW4p1Wdd2SuZuiK5ygGho/3v1AZlIyHr+9w=
+	t=1785768312; cv=none; b=oeLkMHy223HSrjIYwfia0OkWYBPPAwKn98wFDBxM7Q4ZNoy6bEl8fifHr9m076oahWq1DgOCXIwrnpNFUegn9+vqYcu6OcQhnegI9CHsyLQL+lBOBhuAPs/NzqUKNJ9Uvb+Yl7cNSk+ZnNO3PvW9FHnl6L7lKDVM7MN6LbiPLZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768299; c=relaxed/simple;
-	bh=UNSKTuRmiOEsmMGigBwqUvq7f/+uzz/d1bv+ZEdBJwI=;
+	s=arc-20240116; t=1785768312; c=relaxed/simple;
+	bh=oIRs66QZvJQSNZyNkENWFPxE2U5vULn8lIiwe2SBGHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euVC0MeuCqqp7EWJ0BkLse9vcf8e2xBYQeoJB3+sNz0n5HdCbJzNPl+sXbaZhCBTzLBxoMPuGBy9S0mPjPnLOSnpC5bxD1W7XuLD+kzaCVr4JotTiTC0+cLT6OI3ea6H//VEXL9dOExz5xTLZS3vqhOz1hfWl0pJjFTPNo/uQK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FguBdYtO; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=pxuvvUv9gHd+KkrZOAC2dXRUrhiz2KgUDXv9Fs3J/88YrL3qWvewrmUlXv1y4F+oZS11dh8rlE57jxoeDnBUf/XJ2R99CVBhsOxRR8nIhh78IxvR8ZCG9BW/AfHNWjBVoVSssC5z3TGWRf0hsmAbaHmRgPk/Hj7igd1P5YTgFGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FkKP2Qvy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FguBdYtO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684681F00A3D;
-	Mon,  3 Aug 2026 14:44:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FkKP2Qvy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48821F000E9;
+	Mon,  3 Aug 2026 14:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768298;
-	bh=y/BAOdQjaKVdNWLZgzpeRkbbNiAISlSOmcwNyY7cYho=;
+	s=k20260515; t=1785768310;
+	bh=ZmQyfTV1Mv5u+ObaXKEqD3LBqLLXg6aYEChvXy0LKRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FguBdYtOD6gwBRDMujVlcTSZ5O9D/32GspkJQGQ055Rf1bsbGUz2sCoR1SK5eoMW+
-	 DCzIR0XzZ/CFytAoW03p0ENuLukt65WyhVgMboFIFOYuuCeuC1RFRZaCGKx2OMzYJY
-	 tyAzCeH60hLrQRYiP2ayClaGADwStSFS5/juGZWVLOcVydM2kFVQdzqdTHwfUQ5SwB
-	 B0D6f6PU0EQWN+WfDRUCC4yr9yLmD33Gfn0Hg0lj2w6E8PkZJ4uxRR97xfdkCGeiKZ
-	 Y+PNQ/KWC8YnAdtqwK2F2FupCmOTgm/WipOSD6ppexHGFGELSjwmsKUDUuF7g5q9rD
-	 e0uRdFJ8rwL+A==
+	b=FkKP2QvyHa4+J9NQd83z3CnHfXJMse0Q0oCp+aYWOx1bADRSbYV6C3K5r98STcpof
+	 YlaTVCb51YXIHaBiyNtl0TO31NGT2pmFunUoJq4F/BY9TXcGG6n9H/aD76tKeYgFIm
+	 SjWFvqRYSPpl3I8iSI6DHsz8D31Qvj2JsKWcgqvCNtAoqXR/OYRQXV6eDKu2mlXrO1
+	 0emmOeahSx3QeueLuMHeSMJGdQpnyS1heuK+aegtT/gmDdU3r/vm4/5M5QSQ8AmDYv
+	 qx4ixFhejPUcX/nrjCUxD7svJKU16y+ubml22orYFfrYcxhir2FGYFnX+0EauEB0cn
+	 9a6nRkMB64dqA==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 25/39] spi: spi-qcom-qspi: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:49 +0800
-Message-ID: <20260803142003.12857-26-jszhang@kernel.org>
+Subject: [PATCH 26/39] spi: qup: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:50 +0800
+Message-ID: <20260803142003.12857-27-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,75 +90,69 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-qcom-qspi.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/spi-qup.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
-index caf55a6f70b3..0ac06a1ab868 100644
---- a/drivers/spi/spi-qcom-qspi.c
-+++ b/drivers/spi/spi-qcom-qspi.c
-@@ -828,7 +828,7 @@ static void qcom_qspi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- }
- 
--static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
-+static int qcom_qspi_runtime_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
-@@ -872,7 +872,7 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 034546b3f058..e8b076b1622d 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1211,7 +1211,6 @@ static int spi_qup_probe(struct platform_device *pdev)
  	return ret;
  }
  
--static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
-+static int qcom_qspi_runtime_resume(struct device *dev)
+-#ifdef CONFIG_PM
+ static int spi_qup_pm_suspend_runtime(struct device *device)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
-@@ -916,7 +916,7 @@ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+ 	struct spi_controller *host = dev_get_drvdata(device);
+@@ -1253,9 +1252,7 @@ static int spi_qup_pm_resume_runtime(struct device *device)
+ 	writel_relaxed(config, controller->base + QUP_CONFIG);
+ 	return 0;
+ }
+-#endif /* CONFIG_PM */
+ 
+-#ifdef CONFIG_PM_SLEEP
+ static int spi_qup_suspend(struct device *device)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(device);
+@@ -1312,7 +1309,6 @@ static int spi_qup_resume(struct device *device)
+ 	clk_disable_unprepare(controller->iclk);
  	return ret;
  }
+-#endif /* CONFIG_PM_SLEEP */
  
--static int __maybe_unused qcom_qspi_suspend(struct device *dev)
-+static int qcom_qspi_suspend(struct device *dev)
+ static void spi_qup_remove(struct platform_device *pdev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	int ret;
-@@ -932,7 +932,7 @@ static int __maybe_unused qcom_qspi_suspend(struct device *dev)
- 	return ret;
- }
+@@ -1352,16 +1348,16 @@ static const struct of_device_id spi_qup_dt_match[] = {
+ MODULE_DEVICE_TABLE(of, spi_qup_dt_match);
  
--static int __maybe_unused qcom_qspi_resume(struct device *dev)
-+static int qcom_qspi_resume(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	int ret;
-@@ -949,9 +949,9 @@ static int __maybe_unused qcom_qspi_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops qcom_qspi_dev_pm_ops = {
--	SET_RUNTIME_PM_OPS(qcom_qspi_runtime_suspend,
--			   qcom_qspi_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(qcom_qspi_suspend, qcom_qspi_resume)
-+	RUNTIME_PM_OPS(qcom_qspi_runtime_suspend,
-+		       qcom_qspi_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(qcom_qspi_suspend, qcom_qspi_resume)
+ static const struct dev_pm_ops spi_qup_dev_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(spi_qup_suspend, spi_qup_resume)
+-	SET_RUNTIME_PM_OPS(spi_qup_pm_suspend_runtime,
+-			   spi_qup_pm_resume_runtime,
+-			   NULL)
++	SYSTEM_SLEEP_PM_OPS(spi_qup_suspend, spi_qup_resume)
++	RUNTIME_PM_OPS(spi_qup_pm_suspend_runtime,
++		       spi_qup_pm_resume_runtime,
++		       NULL)
  };
  
- static const struct of_device_id qcom_qspi_dt_match[] = {
-@@ -963,7 +963,7 @@ MODULE_DEVICE_TABLE(of, qcom_qspi_dt_match);
- static struct platform_driver qcom_qspi_driver = {
+ static struct platform_driver spi_qup_driver = {
  	.driver = {
- 		.name		= "qcom_qspi",
--		.pm		= &qcom_qspi_dev_pm_ops,
-+		.pm		= pm_ptr(&qcom_qspi_dev_pm_ops),
- 		.of_match_table = qcom_qspi_dt_match,
+ 		.name		= "spi_qup",
+-		.pm		= &spi_qup_dev_pm_ops,
++		.pm		= pm_ptr(&spi_qup_dev_pm_ops),
+ 		.of_match_table = spi_qup_dt_match,
  	},
- 	.probe = qcom_qspi_probe,
+ 	.probe = spi_qup_probe,
 -- 
 2.53.0
 

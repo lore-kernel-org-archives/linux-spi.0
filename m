@@ -1,25 +1,26 @@
 Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2115.outbound.protection.partner.outlook.cn [139.219.146.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4E1410D06;
-	Mon,  3 Aug 2026 12:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22BF4195B5;
+	Mon,  3 Aug 2026 12:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785760864; cv=fail; b=tEYyHXb11avpubf4Xj5jPQq2dK7g2dRWHPuGK4XLJ8WShZ5LZtALQqhTYGyGhuaEyXGgnYHTDH2Pn0Dk83Ml+bWwubxllWsLzKNFTwFuhLFnW41Mxm/OfeFuT6SGf8RFVcNXfeZN6uUhEzgu3rarWS80CJOOWysKqk/vzwtqI2Q=
+	t=1785760868; cv=fail; b=FgIhp5n4A4dv8Xev8vq85euZ3tsfwWusuDOczcVgeb2f6LYzs1dQ6y28y27wK/uDg1CNrI7YN0D9PDdhQh1xoZnaQHs8ylvC24tFP7q57GU/sVyMwpPO0JMa8R67TYI082Dg77OyjIrGtQYY1/XIkgQEYiyz7J0XAcJsvy64tSw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785760864; c=relaxed/simple;
-	bh=O3zRtlo7JWlErgCphWkW/Ar4hMWcQ87LOm+xeXzQ7Dg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UZ8B2of9HMrUw10XnsEVu3M3VJ6rRBi08bbaBKilIARgRUnV8XYPA9DYnWFTY30pk3APC+WpKJcXcx5q0lDyhR2dPQnuzkEhnPZkGTePow2htk4TafcTo1b3n+tGHvmlPmRJuNKD+RD1YQuq26coxSfZVkP8xA8/QuqwggxG4xc=
+	s=arc-20240116; t=1785760868; c=relaxed/simple;
+	bh=/dwlo+HKG11bv57IM2NFTbD5nvIPlJ0FeqS9dwTrX0c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gUiR3zgW6twSpJTqV38zouCm2st3xJmh+A9itfXMwgMl41+KJ4jLRCOvx8d0o5pGd9U7slXxjJd7kA3Kl566HuLTkT6MmEOhZoC/Q8YuXYjGEQVzXKlMxr7y9Ua7qq/NtvmtWfbYAxrtNBAsxz3Jpu3tFd36coi+VRGE9gLnrMc=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.115
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NoWbrH+6bVASfkJS46+rAx1qFec5drKgOayfM+UekMyDUKbQKfspzn6aB/1YAYTzbFWgfQYHrHaPPnJI1CEXZiAoLIg0IRj9oYL4N7mNTr4caPcvzDFA+JlspuwfTa0fabxFzNOa65sQ5ZoKMyNKVLgDd09LrOAMbryVLRai27Frc16qImYWqztAOTCBU1CSWkjBzHtiAWa2B8UKvhw2dFN6zrqIsHs4P9505zJs30unWPA1HSrlnGCjgq5lCptweiroRFKjMD7zgW8QRO0ufQEgSHatR8ml8WOmxF+BRq8sI2msPVPfXhb70XODmGgTjFveaDbg8vDt3cEXFTyxwg==
+ b=Cz91O+sln6h3nm06IsHCn+COkBdVUkWVU8uZSBjfJ0MW5Bb3d9ifSsAAynE9hjttH4r4yzhZ67C5n2iaJ82SnJM89rq6eBlFLgwku1sy8HXL9LMDTMpcGLu5o8e4yG1jpjwHpsHN3X3uJtHE3aEdy6SQkdXvgtv8guNO5Y6hOQlOxgut/a/GQsvDIuViQ2aPzc+4VGdFCUkXbf9DjCrQlCM5CxWorDF90V/gDDhoRAcxMzbvVt5rVM2nwpU2RWcJe1fXAd2+JjOrr3Fn4hoPJeGuXZGeDbs6bSiYZO5mZu81J2xnW8EtEjf6VdEyfqwCpEAY1/zXCwj917wGNPYnTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=omohw4DeZIYGPdXXozk2uh9C8XPZ/Z3teCXhbZGIfRw=;
- b=KN/BEmMbO54UdZh07m32NDn5DT50khddH5JP3KxLD/aQIL7W0Ad2cONVqeyunSZExsv5IAAjgCqwO19FwwK4XwzESQCyHsGJEB4Yu/s+AcL2FAmPmfJjywwd+Ct7QRysFq6KfQZg36aULJ4daSRGCjK6GZt784As+Luq4VsI33XfOV3+Q4eN+YlJvt6VNM++B7UfJQw1dwTS8D0mrfsFBywlRi4r5Qj/lE/KxLjQPu9AsyTVj6YyHSmSpqHjOMciVLaDE374jyXGkFj2pfG91DMukK81EXCLo1CiLij2GOBDA4RLlQK99dEHcf5/zvUrEA05IchPb05ZFrUSAWcUDQ==
+ bh=U2OplIiNX6SWaCfDxn8hAcGzUnPJcCcOIQsmZHsvHZs=;
+ b=lNj5zbMsp45yNNQzcYV17JYxT+9JGm3L4CH3+Ru/l8Zu0XVaHxuGJ5xvX37QLuptEfa3T2tBONgYqOfxn/XRkaAt1WVleRAFOrZrFNmEuLFvLkMrs1XD+uJLsGffGUkIAZoRrla0y52RRDYI0gbEsexO4teSR46CED5ZJ6aQfdSBV8OuA8l5wJ9VORJRrICJ93mOoyUI/i5FDs+HSfTefH1hbGQAWyYKcJznUYvlQPrKfoxeXynGifQliatSeViLVD11IrpdQABtNbJdjgjQHQ3c5TV4MNqWibSgeB0IhkRZNG38NS5GenF4UAP3blTOUVN0HN8VsbFIoISUeJLuiQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
@@ -33,7 +34,7 @@ Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
 Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
  ([fe80::e7d4:256c:b066:850d]) by
  ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
- with mapi id 15.21.0270.016; Mon, 3 Aug 2026 12:40:51 +0000
+ with mapi id 15.21.0270.016; Mon, 3 Aug 2026 12:40:52 +0000
 From: Changhuang Liang <changhuang.liang@starfivetech.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -45,10 +46,12 @@ Cc: Sudip Mukherjee <sudip.mukherjee@sifive.com>,
 	linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v2 00/11] Add support for StarFive JHB100 SFC
-Date: Mon,  3 Aug 2026 05:40:33 -0700
-Message-Id: <20260803124044.156998-1-changhuang.liang@starfivetech.com>
+Subject: [PATCH v2 01/11] spi: dw: Introduce spi_frf and STD_SPI
+Date: Mon,  3 Aug 2026 05:40:34 -0700
+Message-Id: <20260803124044.156998-2-changhuang.liang@starfivetech.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260803124044.156998-1-changhuang.liang@starfivetech.com>
+References: <20260803124044.156998-1-changhuang.liang@starfivetech.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SHXPR01CA0023.CHNPR01.prod.partner.outlook.cn
@@ -62,109 +65,143 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1267:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dbda597-afce-4ce3-bdd0-08def15c73d7
+X-MS-Office365-Filtering-Correlation-Id: 46f7c7d6-11d3-4842-12b6-08def15c7479
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|38350700014|10067099003|56012099006|18002099003;
+	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|23010399003|38350700014|10067099003|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	uCC8RrOnDScE9gOZlMXDxoI2d1Xk7U2wXIiy8QVqJz0iyiUiCYIqyriuPDFz0/BnBeUCUqXM1F8MYaZmhgFvfXSP6P5drEKZPbHU18rNqPM30YiaUtVGHkqMI1aGyIh8U9jr2yCA7Nzkcab03zBC58ktlYqK/xf0DC+ZMom7BLfMZV3cElKwZDUXsYr2+ZRy77sG7o8pC1dTziChvorJK/7iCNtfZt3rlGYMoaMy580TMIo4E4/CLJtaLLmUsLNkdbOhJ5P2jgyIhtlQ8PIUZqetb66cOGNO6YsdODTHS6PprIyJ1rB8Pus+1xsP3LechbY4fXSA5l2ShhA8LVZnW0Q2jrjSbHSi1uuldVS2fnZn6BciWlSI0IcchTlxkp+EXgLVnETDozPHvSD6K4f8Ky4gYmHVbhT7G+OLWLHvRI3OSlr/af2spySvE3DHvh5uPaHJVMu32CWGad3nfMg+2/xO7pF2s/HpkQD4YRCOM/Ha/XkpjSs6dJ/oV/D8x2hro2KHCW0P/MkPiN2Sy57KZyrXuBbP03o44v3e1CGrCTr0stToZQkpbl6oHtQYmibd
+	04gNYfLKU8Yr7ke1IRruhZ4DkerV2VXDc9VM4D5URtT5zwBxoozbhaVT6V3wrunwHGH5lSpT8APo9AIU7xs4bEGDMipCBRlYmgrEfMvYD/gxwWRBI8JhwlX6r7rAyR8eo4v6dHGBnHpeWoSIFM4kYW1qVId0j4mAMip7m4PqLzKrW7824Z03nfH0D7pwvqoG9wTjK+Sf/kcuPn7ntVUZM6pqDLm36XMdw5EwMW6BnZyUz4h+uEhu7yjQCTnlF7TtsCNE7L6bttqkjxotOVPUCPqhA+vJBqxnFjSde3fHRQ18ZO28hbQUCIWjw1HLTdMmdqgYqGyAxHpo/MVymvtQJxs7XiKklv6JaqLAh4Sn3RGc1o9w88t2HmpromNYUnzdnQ1eoqfUI+OGWc9/mnE9Mo1FHq07ls/lGqcw5/kDT7X7WH7VuxfGJGwAH2toOCePav/VY5arH7mGQYqHSvlRf+LDYNfjGEM/92nOjvErlD66u3EsOu7hvSSW3ohStp/W59A5FO+wWB+x6BT0mW4Oy7JuY5JgrMhUv476lbdtHXSiTnCXF7L30xmkZ87h9Ayf
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(38350700014)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(23010399003)(38350700014)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TNl9LTi4WBC+Q4Hn7dM9c0/URHVlPxV6aT+OD4KfcBdNOkUG4LKFJAMmLzFS?=
- =?us-ascii?Q?WYWjkB7b7vE9gUxfibswe9AKuFmjWjhsVgkpYh9lBhOYao5dqA40xfVg9Geg?=
- =?us-ascii?Q?Fo29pTSt+PlYlW0mhrACsQOyj7NaygdYmevVtP1v+ecXk5Xya2eBG58McJ0b?=
- =?us-ascii?Q?ZQRhcNUdStOANmnTUsUjQdv3IfgbUuiMABNBc3SGRmdRvyAzM6pcHS8JTrZI?=
- =?us-ascii?Q?GQ2BSVBOerGhfVfxP/0e5/vbRvWvz7rLO4MZo3uTwCZINgs+bkwVUmnxU4lL?=
- =?us-ascii?Q?DbpO0EQH2ocs+CqLw42QLDMN+Erz9wtrdKpkvomsjTc71BwZKRHGcZib2rCd?=
- =?us-ascii?Q?TAplM81USw+x4MwP9NMcRD3kipbKFg004ANj+F5E6UKgTLx9tsCW/6kQNX0m?=
- =?us-ascii?Q?eB+7gvLzGy4McmCHay4qEuoa8QH2NukeU0+OEONMi0XeOXkArKxVv/lDK5BY?=
- =?us-ascii?Q?M+mkSJb6tO8/H3D9ABFSwIRbM8yuhZMbQJMd3Bl6IWDRZ+NTFm+hjfNtk6e7?=
- =?us-ascii?Q?UDo/sDigKKGdhe5FR92MA7aQdzg0Hdx4KK31YONrk24bGSNP8TTxNObpN2dD?=
- =?us-ascii?Q?TQs3spViTzFYX3t9kRDsCx9T1C4if7PfNb6WajWa3yO6nzygVsIDL1R2EU2Z?=
- =?us-ascii?Q?trniUmK3AoYI9bcwPHUNzmgIrwBNgHPYkjMl9+8nUeo++zdmSDo+ns/vYyKg?=
- =?us-ascii?Q?68sGae9V/rM4Qgqof3nXUNF77xQrho+TMZ9dKsxUGwqau2iamcOSwSIrYAE+?=
- =?us-ascii?Q?wvMwVhSA53FohMPlHYSxCbjSdo6+VidYzu1xvQXievl3YIjd5ZFKOkyfMHzj?=
- =?us-ascii?Q?8PZNgcTv7uuqontqkpzV4VStD7bQDQ5k3LCo/u8ZuUzIm1wkq79DomF4wBZH?=
- =?us-ascii?Q?Tw9ImRZnj4S9USyEOsHxF4zzGse5UQDm3N3b0Unc/EVCuzR3f9e27YQrrGOi?=
- =?us-ascii?Q?o4Wjh1MZDYK+njcdKZ/gHQHMZqnNBFkBtdRvXER4tH17rPCZ2cy4n+QIQVIE?=
- =?us-ascii?Q?Hx7LJXm4LyUMCpP65ZXy/LYMoGPEnMVJANgwkZGWpDEdeOqJbBP6bISXGb7O?=
- =?us-ascii?Q?K5Bw4FnugJI+Xzt/dM0Eytq9Mm/T1H2/OjitmW1SRx+wr2EmXOhiHx7T7vmi?=
- =?us-ascii?Q?b8nMqFFPtbvL1KODzPFpFOkT9BZG4FyJLg+pZRzyHeLyTKwOAH5KK4qF71af?=
- =?us-ascii?Q?uUPoKOTv/mAP/qg/UN33iAd7iHwE6GFPgveEmXelhBK1Z9pUZGvypke+jGJ5?=
- =?us-ascii?Q?h7I9Xd+z+mX/g3yx9R5ys9fSRrjuoKETe3YuLTeALb0qSOgR5Jh/Ywg/r4Wk?=
- =?us-ascii?Q?FHGi8uY+VJtb6IftyPUVGvgg0hpnJVzz3z7rk75JlrEXMUjpJs6Vkmm9XAn6?=
- =?us-ascii?Q?3g0BJm1mZa+yPGb5s7bgZmbpS0a4abjXSOixYQklTkMgsfW06kKxvGObqfRJ?=
- =?us-ascii?Q?8+cLGAmtviYB3VxENkUkw3CFsf9yEm4thWkdKz433iUS8W55t6G7IOh4ysCh?=
- =?us-ascii?Q?ka2fbW/dBGp5HNzx3+GAbsOBm5zB7RSWPT2jyoiaHzIIslq3BiRqOo7BC54V?=
- =?us-ascii?Q?31OOWDdIyeH1mAAdf8vQah12twdLC1X+UQLhuJwCRe6RHhZr+MkgSv18fgOT?=
- =?us-ascii?Q?Bx+BW5po0+N+Q4KxE1Sm2mr1d8Sg7p/Zpy5j5kmRqhY2ETSDa3vzsoKJznTt?=
- =?us-ascii?Q?ZjsDFhZ53oDD+FiqU41351buil2JJbVkDYVZuqrM844dtMCvmD6E3Ry01Mk9?=
- =?us-ascii?Q?imCKQ4zAzDf4ivuqCJfBFfi3Mu3H2JgieP5IE0E98eP9P7cKiDiw?=
+	=?us-ascii?Q?qxOfoK1G0wy7+STbmFj1iehfFpyxFEeFjps/3URmdWci64zPCz1kz52/3sbS?=
+ =?us-ascii?Q?LVJnQqb2dLbRCI5T6lSOZjvvuoUOM3wOnK983vjRmQLQnvCL/G8LFg5H0jVm?=
+ =?us-ascii?Q?0A3mKWmYyEPIrdJoTPeHT3Yj7Dx1Cxywg0mBn/FB1OSuXNPPh+8ZdlI1ET6G?=
+ =?us-ascii?Q?e1ZhxTneLDDSnkQUe2f6VDZhyy4fWcJ5WQA33a9WAzIFU8LenQS3TM3/aQE6?=
+ =?us-ascii?Q?iVuTlN7auGdgJFkZGk024DC4o/NBNJqJXMVlJIAKsNeHrK8ZpQsVvg1vq0+k?=
+ =?us-ascii?Q?ldSJYx4wvuUL4rzONbgiS4jHYc+rpUN6zGo3qSStBdIPCc76HgrYWzvzROo9?=
+ =?us-ascii?Q?HeFQGJdqNsNS+/1QZKrn/jWEdN7IgW6AT8/RE2Vp1GxplRGLUsbPNMooyzMW?=
+ =?us-ascii?Q?9nAt+TuLQ9g7kUu6p/i5GiLjmu3/AtZuML1PUv7B29dwCBiJ13bE+YrBm9ZD?=
+ =?us-ascii?Q?37xw7yHCkENScZTzHElkt2rVZR4ftVsp3ibBIqwf+7j0eSH5+VksaUxREFkY?=
+ =?us-ascii?Q?hIXpALi4w3iykxJ7adVw1feVRBkJcVMKjLmLo1hJS+QxB3n9QchcaOUYY+TY?=
+ =?us-ascii?Q?OV9d4rNCJU+narc2SEt9xM5WVb6CrlRtwNlafnIm+vz3FmrscJ18DHHTc/3I?=
+ =?us-ascii?Q?hNsbJD6UEr8Xy8yZ+axwl4+Z8kqFGgHetov6L0HGcOqAZ8fKfubCyJ+/GDJv?=
+ =?us-ascii?Q?1suChM/R3fTeq61J/U8fCkCBhFSf4ClTTZy1T5H6dtMO2jpdfDxnsXKS1pns?=
+ =?us-ascii?Q?qevpi1I267camI5eQ+T+mAkani3UHxv5jX3bcJ8kPJznwOxkIZkARyT7RKDR?=
+ =?us-ascii?Q?hfFhRN8JTPb708fXjFTTXL69pih2IFhPtelF1voZ3anSEv5flhUndg6Md8O1?=
+ =?us-ascii?Q?5Z1yJfkzusyZEoXSZZxTVE6q5J1OUmCKZL73qFETdZSoJ79GpzSjEECnlEOn?=
+ =?us-ascii?Q?1xmNUNxJNbX1lrWTCg4Y2k1ezxk0PU07+6wubCnEdlWx/Sgpma2vNCxPSD3t?=
+ =?us-ascii?Q?sOomtwrDdCo1aVarB70zRPcX1Tu38W1NZFw2jlNx7xgze8oCTunur0vajVlU?=
+ =?us-ascii?Q?RSiDI/3rBUL9Aa+k+/hSub6Us1J3fgvM7vJi/YxP/Y+HDo59uhRcD0wotB/P?=
+ =?us-ascii?Q?Zec+t2mLm05jGIomEjFbAbfCgoQkNYb9XRG4S+eTGma2DdAmJcCfQ/QalZjd?=
+ =?us-ascii?Q?V+nVRHnW9r18QDr9gpOLy3X/9UD7+Opzu8vrHYIKFCCv7j7HMaJqA7AFW00/?=
+ =?us-ascii?Q?qw8qcHut9pW4IFGPBGg7I/aRjnT0NILnrwxVvA0l5h5GID8Plcrqp37T7S45?=
+ =?us-ascii?Q?mAbxD28u8diosgUSi5ZfML5FrntOhVLJGjqOWnPlEmKKgS3sVCR4Fo2X77kg?=
+ =?us-ascii?Q?Q66IidEwztwPi93RBjybTB76KPfxL6IZnPAfqZ9jHCiGPVM5V/UXSle6rJd4?=
+ =?us-ascii?Q?7vOt9PtpQnL8h9qfPGJOkD+9M8imzV8usHzH5stHcjBc2xssy/To7RypOfyX?=
+ =?us-ascii?Q?1goc9YMyicJahuOGyTS1aWXTSIeX6cJmqeJ/thPVwhWsXXr2abSHHcTe6aCb?=
+ =?us-ascii?Q?1YzTF2lVBb2PQ083q4WDUNNLG+8LZgZcmFdIuuC74eTVjUd8Cmdfo1yhCu2t?=
+ =?us-ascii?Q?MD2JdefGnIpSFvvivqzisXFQF9ma4m/Gp1KmxWlCDb+MC7iYkBKwjHk7Ilmn?=
+ =?us-ascii?Q?38IXMWVb5ilBR5tlLW7mOQLiOM9/DdNglrDR5Necsq0DZ4Jd3K/75W5wgNkZ?=
+ =?us-ascii?Q?RrHoj65hxGwVRoKvCLKIdy8vQGlrVwo9MibuB4oF8XNKdmvB1ghv?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dbda597-afce-4ce3-bdd0-08def15c73d7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46f7c7d6-11d3-4842-12b6-08def15c7479
 X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 12:40:51.8607
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Aug 2026 12:40:52.7995
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NB0xSU2lPDy760or99VZFFTriIlZfr+fXqtFmSNzeFhLjj2hifox0CAEq+3n1vShc2RA5n1mPW6EiTYCU4WmDH27DIlSCxETQKK3sMYQEx8leMeTUMeO5hLcJPBimcNI
+X-MS-Exchange-CrossTenant-UserPrincipalName: ++P7haTzO1cKcunL4GQ69oInHcLOl2SGeRgsHVsWnw7GjY/vNugtjNXFW/JkNra67V+JSfgTxF5BnrOLwjAjYZ7k7S3GfP42d3kJWB8xb/xTty0eJrxkwzQO+ZJwDR10
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1267
 
-This serial add support for the StarFive JHB100 SoC SPI Flash
-Controller (SFC), which is based on the Synopsys DesignWare SSI
-version 2.00a but with some customizations and it also add
-enhanced SPI for DesignWare SPI controllers.
+From: Sudip Mukherjee <sudip.mukherjee@sifive.com>
 
-I picked up some patches from series [1].
-This series depends on the series [2]:
+The DW APB SSI controllers of v4.x and newer and DW AHB SSI controllers
+supports enhanced SPI modes which can be defined from SPI_FRF of
+DW_SPI_CTRLR0 register. Without enhanced mode, these controllers will
+work in the standard spi mode.
 
-[1] https://lore.kernel.org/all/20221212180732.79167-1-sudip.mukherjee@sifive.com/
-[2] https://lore.kernel.org/all/20260521012932.24163-1-changhuang.liang@starfivetech.com/
+Signed-off-by: Sudip Mukherjee <sudip.mukherjee@sifive.com>
+Co-developed-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+---
+ drivers/spi/spi-dw-core.c | 13 ++++++++++++-
+ drivers/spi/spi-dw.h      |  7 +++++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-Change since v1:
-- Reordered the series so that every symbol is introduced before its
-  first user and each patch is independently reviewable.
-- adjust_op_size(): clamp DATA_IN to DW_SPI_NDF_MASK + 1 and DATA_OUT to
-  DW_SPI_NDF_MASK, matching the two NDF programming conventions (receive
-  writes ndf - 1, transmit writes ndf).
-- exec_enh_mem_op(): use op->max_freq rather than mem->spi->max_speed_hz
-- detect_enh_mode(): clear the accumulated mode bits when clock
-  stretching turns out to be unavailable.
-- dw_spi_jhb100_set_addr_nbyte() returns an error code, rejects anything
-  other than 3 or 4 address bytes with a message.
-- platform_suspend() and platform_resume() callbacks are introduced to
-  handle platform-private suspend/resume procedures. JHB100 SFC used it
-  to re-mask the SFC filter interrupts after a system resume.
-- Limit address bytes supported by JHB100 SFC.
-- Remove underflow/overflow interrupts in enhanced SPI mode, as clock
-  stretching ensures these will not occur.
-
-v1: https://lore.kernel.org/all/20260709055204.138168-1-changhuang.liang@starfivetech.com/
-
-Changhuang Liang (2):
-  spi: dt-bindings: snps,dw-apb-ssi: Add starfive,jhb100-sfc
-  spi: dw: Add support for StarFive JHB100 SoC SFC
-
-Sudip Mukherjee (9):
-  spi: dw: Introduce spi_frf and STD_SPI
-  spi: dw: update SPI_CTRLR0 register
-  spi: dw: add check for support of enhanced spi
-  spi: dw: adjust size of mem_op
-  spi: dw: update NDF while using enhanced spi mode
-  spi: dw: Introduce enhanced single/dual/quad/octal spi
-  spi: dw: send cmd and addr to start the spi transfer
-  spi: dw: use irq handler for enhanced spi
-  spi: dw: detect enhanced spi mode
-
- .../bindings/spi/snps,dw-apb-ssi.yaml         |  22 +
- drivers/spi/spi-dw-core.c                     | 386 +++++++++++++++++-
- drivers/spi/spi-dw-mmio.c                     |  72 ++++
- drivers/spi/spi-dw.h                          |  52 ++-
- 4 files changed, 521 insertions(+), 11 deletions(-)
-
---
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index eff08461c2f5..86e3e7487bc7 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -330,6 +330,16 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ 		/* CTRLR0[11:10] Transfer Mode */
+ 		cr0 |= FIELD_PREP(DW_HSSI_CTRLR0_TMOD_MASK, cfg->tmode);
+ 
++	if (dw_spi_ver_is_ge(dws, HSSI, 103A)) {
++		cr0 &= ~DW_HSSI_CTRLR0_SPI_FRF_MASK;
++		cr0 |= FIELD_PREP(DW_HSSI_CTRLR0_SPI_FRF_MASK,
++				  cfg->spi_frf);
++	} else if (dw_spi_ver_is_ge(dws, PSSI, 400A)) {
++		cr0 &= ~DW_PSSI_CTRLR0_SPI_FRF_MASK;
++		cr0 |= FIELD_PREP(DW_PSSI_CTRLR0_SPI_FRF_MASK,
++				  cfg->spi_frf);
++	}
++
+ 	dw_writel(dws, DW_SPI_CTRLR0, cr0);
+ 
+ 	if (spi_controller_is_target(dws->ctlr))
+@@ -422,6 +432,7 @@ static int dw_spi_transfer_one(struct spi_controller *ctlr,
+ 		.tmode = DW_SPI_CTRLR0_TMOD_TR,
+ 		.dfs = transfer->bits_per_word,
+ 		.freq = transfer->speed_hz,
++		.spi_frf = DW_SPI_CTRLR0_SPI_FRF_STD_SPI,
+ 	};
+ 	int ret;
+ 
+@@ -677,7 +688,7 @@ static void dw_spi_stop_mem_op(struct dw_spi *dws, struct spi_device *spi)
+ static int dw_spi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ {
+ 	struct dw_spi *dws = spi_controller_get_devdata(mem->spi->controller);
+-	struct dw_spi_cfg cfg;
++	struct dw_spi_cfg cfg = {0};
+ 	unsigned long flags;
+ 	int ret;
+ 
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 2f2debc64e73..19cf1b1a5d4f 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -17,6 +17,9 @@
+ 
+ /* Synopsys DW SSI component versions (FourCC sequence) */
+ #define DW_HSSI_102A			0x3130322a
++#define DW_HSSI_103A			0x3130332a
++#define DW_HSSI_200A			0x3230302a
++#define DW_PSSI_400A			0x3430302a
+ 
+ /* DW SSI IP-core ID and version check helpers */
+ #define dw_spi_ip_is(_dws, _ip) \
+@@ -94,6 +97,9 @@
+ #define DW_HSSI_CTRLR0_TMOD_MASK		GENMASK(11, 10)
+ #define DW_HSSI_CTRLR0_SRL			BIT(13)
+ #define DW_HSSI_CTRLR0_MST			BIT(31)
++#define DW_HSSI_CTRLR0_SPI_FRF_MASK		GENMASK(23, 22)
++#define DW_PSSI_CTRLR0_SPI_FRF_MASK		GENMASK(22, 21)
++#define DW_SPI_CTRLR0_SPI_FRF_STD_SPI		0x0
+ 
+ /* Bit fields in CTRLR1 */
+ #define DW_SPI_NDF_MASK				GENMASK(15, 0)
+@@ -135,6 +141,7 @@ struct dw_spi_cfg {
+ 	u8 dfs;
+ 	u32 ndf;
+ 	u32 freq;
++	u8 spi_frf;
+ };
+ 
+ struct dw_spi;
+-- 
 2.25.1
+

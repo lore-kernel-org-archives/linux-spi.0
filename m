@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E58415F08;
-	Mon,  3 Aug 2026 14:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1102418A2D;
+	Mon,  3 Aug 2026 14:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768254; cv=none; b=pbmel/1eNj43uIlQq/4ZllulIwUL+IEWYgxRBFcnv/O4nZnN7E6SjITIh3IqZQhs4RZ6oBIlvTu2BHoSHZUb4JafAOQHhiVY9K50f0tpwWzqqAWMuKbMkpuUoLpNiKQc95f095A3y50js2W8ao2D4gyz+nH5lh4hUMw9mWUFM3s=
+	t=1785768266; cv=none; b=chJimTUqlnrcDZ4PS4VVSbo6VpGElzAJNd9w92FNOEOoMqLOekJ2LF0nEz/OV53p48rvkUjNCuYs1QguJO+gYTy+zBILwrNkpCUZ6eWwGJr8sXmlW+kwGQ/C0ndTBcDWdGD9LxRjFjfTpghnN9SyILVfHwIKgN96UI7Oz5r4HxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768254; c=relaxed/simple;
-	bh=DunFNjHwf3icjYe5ZHlztX4j2oXJeKJ129eE46vw5/c=;
+	s=arc-20240116; t=1785768266; c=relaxed/simple;
+	bh=OZMf4gTIrZ/pVY27YsjH+kf+35klhlZ0okl4yrZutk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUTAO/EYdmMG/11SlaSpIO9XHbeyt0ZtzZD0fIWjQ36gJVOJbGcyJ4Myi6zx5f7qTUI+qI9JR3blsvd6hq11XiM3Kn+6TQc4QSEOf/oZZmo94H+O1oKfdIvLArl230qFCkVft3Jq/S86beQ5cpLY7GLMShYDv6QY1t6loF2vBJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OrYZUQoq; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=kfire+EvWACYJ9P+2edxHJVoYHLb9k7jbjK5XkFgZB9bFH5V7bqtcjPpImHkLhBjupk9sA//bfvMfZ+I4aPmztkHZH4gmbNY2eLRcnFcsv05CuDo/n2mahKLUzUCVA/LoCmicGonUb/VFu6YpOw9BrppH7rOEVO/x9nfhRzpdkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ok4kDBXP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OrYZUQoq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CBD1F00A3A;
-	Mon,  3 Aug 2026 14:43:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ok4kDBXP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591581F000E9;
+	Mon,  3 Aug 2026 14:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768252;
-	bh=0Wy9JOaeFGBeAJk92ZmHHFd5ZfCYJpWQRTgBXTS91c4=;
+	s=k20260515; t=1785768264;
+	bh=4BXG8pZY3UvhCBljpc68bnMGflRKin05J/fYHypUzMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OrYZUQoq0laq8B7dUK0dQO+htHpXQwZrGnduhQUnF9/U6evzdxDerO+bgxkoMHVVQ
-	 x4oxojMN+2ehH0hWDWAzt5DZErNKnTLZjlckqMo+JDlvFmhGRs8RUYVxm2TqWOZ05C
-	 /qnkRdlRhPXHlIB0Xd55ML6EhGbO1+4GP6MNMEjqJ1G8V1zM6JbOjgU1minK09vy1t
-	 U69m6JMKdko8At1EYn16xcgcgS607UBhE1xBIepZU0ma4h+zSfAPnCVmhAvGIMfhDO
-	 mSegpMW2pEmO/Jv7Jiq23zw6Q3sqUMa1hHFpgi3z50FaZsGN6Mogty05BM6UKRvFmX
-	 vaTVmnq9UmkhQ==
+	b=ok4kDBXPSJgspsKclwuqrWvx1gikabqhUoBWl1UTXy4VvijFBTYHJ8Besb/e1EjGu
+	 3oWTEE3S/wuNNjQcZpMEAN/2aqgZR9CsCyiatv8/J+9uLpJnfLSolhiBWh2W9g0QXv
+	 CBk+HiMdtY4wYrVzLuOH04wHdm4vXOQXAuwxZIl95GCPxvmbGHI6o9rEDDGGzdw7PP
+	 bUOddhnTLrdflFUmwpH0upbXWRwp/rY+7QZv3b7f/7a09GJNO8nJ/SvTnYcelEQEUt
+	 TOtpmZ67F8Uezvo4nvkMDf7Txn7ssqS5l7jqIAB7g6DGCGqF7h04LjE8k80taspWlE
+	 +NemcXfMoYH7Q==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 21/39] spi: mxic: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:45 +0800
-Message-ID: <20260803142003.12857-22-jszhang@kernel.org>
+Subject: [PATCH 22/39] spi: omap2-mcspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:46 +0800
+Message-ID: <20260803142003.12857-23-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -94,50 +94,50 @@ CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-mxic.c | 9 ++++-----
+ drivers/spi/spi-omap2-mcspi.c | 9 ++++-----
  1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-mxic.c b/drivers/spi/spi-mxic.c
-index 83b688e65284..e3c85e5191e3 100644
---- a/drivers/spi/spi-mxic.c
-+++ b/drivers/spi/spi-mxic.c
-@@ -721,7 +721,7 @@ static int mxic_spi_mem_ecc_probe(struct platform_device *pdev,
- 	return 0;
- }
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 9cc078acc13c..a3355147f5de 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1620,7 +1620,7 @@ static void omap2_mcspi_remove(struct platform_device *pdev)
+ /* work with hotplug and coldplug */
+ MODULE_ALIAS("platform:omap2_mcspi");
  
--static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
-+static int mxic_spi_runtime_suspend(struct device *dev)
+-static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
++static int omap2_mcspi_suspend(struct device *dev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
-@@ -732,7 +732,7 @@ static int __maybe_unused mxic_spi_runtime_suspend(struct device *dev)
- 	return 0;
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
+@@ -1639,7 +1639,7 @@ static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
+ 	return pm_runtime_force_suspend(dev);
  }
  
--static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
-+static int mxic_spi_runtime_resume(struct device *dev)
+-static int __maybe_unused omap2_mcspi_resume(struct device *dev)
++static int omap2_mcspi_resume(struct device *dev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct mxic_spi *mxic = spi_controller_get_devdata(host);
-@@ -748,8 +748,7 @@ static int __maybe_unused mxic_spi_runtime_resume(struct device *dev)
+ 	struct spi_controller *ctlr = dev_get_drvdata(dev);
+ 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
+@@ -1654,8 +1654,7 @@ static int __maybe_unused omap2_mcspi_resume(struct device *dev)
  }
  
- static const struct dev_pm_ops mxic_spi_dev_pm_ops = {
--	SET_RUNTIME_PM_OPS(mxic_spi_runtime_suspend,
--			   mxic_spi_runtime_resume, NULL)
-+	RUNTIME_PM_OPS(mxic_spi_runtime_suspend, mxic_spi_runtime_resume, NULL)
+ static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend,
+-				omap2_mcspi_resume)
++	SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend, omap2_mcspi_resume)
+ 	.runtime_suspend	= omap_mcspi_runtime_suspend,
+ 	.runtime_resume		= omap_mcspi_runtime_resume,
  };
- 
- static int mxic_spi_probe(struct platform_device *pdev)
-@@ -850,7 +849,7 @@ static struct platform_driver mxic_spi_driver = {
+@@ -1663,7 +1662,7 @@ static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+ static struct platform_driver omap2_mcspi_driver = {
  	.driver = {
- 		.name = "mxic-spi",
- 		.of_match_table = mxic_spi_of_ids,
--		.pm = &mxic_spi_dev_pm_ops,
-+		.pm = pm_ptr(&mxic_spi_dev_pm_ops),
+ 		.name =		"omap2_mcspi",
+-		.pm =		&omap2_mcspi_pm_ops,
++		.pm =		pm_ptr(&omap2_mcspi_pm_ops),
+ 		.of_match_table = omap_mcspi_of_match,
  	},
- };
- module_platform_driver(mxic_spi_driver);
+ 	.probe =	omap2_mcspi_probe,
 -- 
 2.53.0
 

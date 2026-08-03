@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5A0411F84;
-	Mon,  3 Aug 2026 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6163438A2;
+	Mon,  3 Aug 2026 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768096; cv=none; b=u8StgB3oewSWtcd8WGireHvK/xPeHrnnN5084Zw5T9JZkqbKDt14ESu5UuQ3qrUBOom40nIhf90Qx/DBxv+Bq2yqa5oxVTCbDUVA7UJh5RYXp8MXt+jAZQp6mB1ahr3oNfypMMDi75N6j4PblT1ERtfEECj2BBM/LRQaJ6DP040=
+	t=1785768107; cv=none; b=a7oNpRkM/v/kp5yqnG68keV5lM7LdAkbWkVMLukVbLjHqljWquvyLqTPejghKM4COBH7l0kG8s5Sdbwka/yZ6UAOE4qsZJrIYCMMWjUHEZsLDnzcd3M4umdo9Insi1z1+zZF0pAzSDAdYHDKUPan8t74FEGX1pjXa7ZqIbUZJbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768096; c=relaxed/simple;
-	bh=0asNrLcvhZ2XBzhqXhAK7XMkZnVd3O4Yq9Ox+DK4dJI=;
+	s=arc-20240116; t=1785768107; c=relaxed/simple;
+	bh=gz3szEOCrC9R8SjBVtMeP8ZWLxODaFtFa8nAVXagjkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6d/w3YfZ5AcvmdmbUNW7OvaYs9WK19LB6lCkE7At7wksXhiZ/BK1DQQFuAusC8yV4IesKMvzWg/4QiHfcfDJWxzxV3hgDHTgE/cTuyCZ50ELi+0Dk/upuZon7iIRVQ4sJWzHXaLL9JJyYz5HEu0hNhzZEIGDZ3BkIFKu4s8ic4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxGP9gUC; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=NfBrfPgDIJv0NZBdFCliQwhljSrg/DCaxXIM7lolWtvyG+a/D+R7IrYeNfoZAlor7OsU9ToUB9ypZPKt1en2I64bujX1kTjCAsS2V2FYMYMSah4eUbaEbA34YkFF48A3Bw382xSYkEJ6djl3+bXtYFTOzMqhtpnX8XBCCgp0iJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=likeEqfA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxGP9gUC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F225C1F00A3A;
-	Mon,  3 Aug 2026 14:41:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="likeEqfA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436FA1F00A3E;
+	Mon,  3 Aug 2026 14:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768095;
-	bh=MAIwjk+5CNQswN5q5GYfXKSlxvy7dSo8503a5y5nOgE=;
+	s=k20260515; t=1785768105;
+	bh=ky+A7/Ksh+2lxFezuifq/rx0NQiQ9BbBRodbWBfFtU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LxGP9gUCUKBBON8LKPIYo/vxWduOwjs+b5rA+/uNqUB6Wq0dcPLjCHQ5QeSMfl4hr
-	 68ukS9W90IlOepPoZhm5XZNnALM+NRAW6kSSEQlG0am5i664MhLPIjN6G8+08SmZ3t
-	 jsr26bCANf2oyIdJJZ3FoRK9m/4l9wjIb0xl6vRhJ9FDLeUlGrU484NxxGMKzJZAUn
-	 1pOW8gZXs8naD9B+kYcYglB1WjA/lwqD6UJBuYj8OH38fCD42oEy+84eSj7UzCdgFo
-	 xI9aGFIiLl71fCDVxIQJq5IUUZLeNQ0LIY+1qyMkwOg7JBn++8SCVJvdswx5GTpLK5
-	 S+TyYHyP0yJlA==
+	b=likeEqfAZs3IraEH3/HWcIP6S2RCdbSJVDku0V5SrfxRGNeKXB3eD8XmagMR2MmM5
+	 JTY35EDCby1ZnwxxwFG4UHNH/LAJa9P8ldTvgBuSJfvV98Qj+XKqjmg25E3QfgdbqQ
+	 eSXbuJsBSQanQve0jsz2eVkMu7PcLdy6qe/xomb9LkFj05YR9oJrDhkBV9Fx4/WVd6
+	 WI62WAZYL0h2gAG11XtLizthA0YOZ+a6WzvNUQhTn+VM+4WBV7pnZ/xRXaHmdQQZeY
+	 DhYCv1bHPJmVLcvh4H+6cobBOcPSJa9aY22ybzYvABN5JsHShyjzV0Po/8PQazKinb
+	 2+8eBr3Y0d0hQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 08/39] spi: cadence: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:32 +0800
-Message-ID: <20260803142003.12857-9-jszhang@kernel.org>
+Subject: [PATCH 09/39] spi: coldfire-qspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:33 +0800
+Message-ID: <20260803142003.12857-10-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,74 +90,61 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index 9b4e5b7013ae..a5e1e5a46bb4 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -801,7 +801,7 @@ static void cdns_spi_remove(struct platform_device *pdev)
-  *
-  * Return:	0 on success and error value on error
-  */
--static int __maybe_unused cdns_spi_suspend(struct device *dev)
-+static int cdns_spi_suspend(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 
-@@ -816,7 +816,7 @@ static int __maybe_unused cdns_spi_suspend(struct device *dev)
-  *
-  * Return:	0 on success and error value on error
-  */
--static int __maybe_unused cdns_spi_resume(struct device *dev)
-+static int cdns_spi_resume(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
-@@ -833,7 +833,7 @@ static int __maybe_unused cdns_spi_resume(struct device *dev)
-  *
-  * Return:	0 on success and error value on error
-  */
--static int __maybe_unused cdns_spi_runtime_resume(struct device *dev)
-+static int cdns_spi_runtime_resume(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
-@@ -862,7 +862,7 @@ static int __maybe_unused cdns_spi_runtime_resume(struct device *dev)
-  *
-  * Return:	Always 0
-  */
--static int __maybe_unused cdns_spi_runtime_suspend(struct device *dev)
-+static int cdns_spi_runtime_suspend(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct cdns_spi *xspi = spi_controller_get_devdata(ctlr);
-@@ -874,9 +874,8 @@ static int __maybe_unused cdns_spi_runtime_suspend(struct device *dev)
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index 3b175c1da36b..3c8290e08b6d 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -437,7 +437,6 @@ static void mcfqspi_remove(struct platform_device *pdev)
+ 	mcfqspi_cs_teardown(mcfqspi);
  }
  
- static const struct dev_pm_ops cdns_spi_dev_pm_ops = {
--	SET_RUNTIME_PM_OPS(cdns_spi_runtime_suspend,
--			   cdns_spi_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(cdns_spi_suspend, cdns_spi_resume)
-+	RUNTIME_PM_OPS(cdns_spi_runtime_suspend, cdns_spi_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(cdns_spi_suspend, cdns_spi_resume)
+-#ifdef CONFIG_PM_SLEEP
+ static int mcfqspi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -462,9 +461,7 @@ static int mcfqspi_resume(struct device *dev)
+ 
+ 	return spi_controller_resume(host);
+ }
+-#endif
+ 
+-#ifdef CONFIG_PM
+ static int mcfqspi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -484,17 +481,16 @@ static int mcfqspi_runtime_resume(struct device *dev)
+ 
+ 	return 0;
+ }
+-#endif
+ 
+ static const struct dev_pm_ops mcfqspi_pm = {
+-	SET_SYSTEM_SLEEP_PM_OPS(mcfqspi_suspend, mcfqspi_resume)
+-	SET_RUNTIME_PM_OPS(mcfqspi_runtime_suspend, mcfqspi_runtime_resume,
+-			NULL)
++	SYSTEM_SLEEP_PM_OPS(mcfqspi_suspend, mcfqspi_resume)
++	RUNTIME_PM_OPS(mcfqspi_runtime_suspend, mcfqspi_runtime_resume,
++		       NULL)
  };
  
- static const struct of_device_id cdns_spi_of_match[] = {
-@@ -894,7 +893,7 @@ static struct platform_driver cdns_spi_driver = {
- 	.driver = {
- 		.name = CDNS_SPI_NAME,
- 		.of_match_table = cdns_spi_of_match,
--		.pm = &cdns_spi_dev_pm_ops,
-+		.pm = pm_ptr(&cdns_spi_dev_pm_ops),
- 	},
+ static struct platform_driver mcfqspi_driver = {
+ 	.driver.name	= DRIVER_NAME,
+-	.driver.pm	= &mcfqspi_pm,
++	.driver.pm	= pm_ptr(&mcfqspi_pm),
+ 	.probe		= mcfqspi_probe,
+ 	.remove		= mcfqspi_remove,
  };
- 
 -- 
 2.53.0
 

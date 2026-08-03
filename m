@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1102418A2D;
-	Mon,  3 Aug 2026 14:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539BB41D227;
+	Mon,  3 Aug 2026 14:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768266; cv=none; b=chJimTUqlnrcDZ4PS4VVSbo6VpGElzAJNd9w92FNOEOoMqLOekJ2LF0nEz/OV53p48rvkUjNCuYs1QguJO+gYTy+zBILwrNkpCUZ6eWwGJr8sXmlW+kwGQ/C0ndTBcDWdGD9LxRjFjfTpghnN9SyILVfHwIKgN96UI7Oz5r4HxQ=
+	t=1785768277; cv=none; b=bJzhadPLTkFoYIynpnHGrXB665oXFkprAVmJm2JakhOKphXeSStOy+5Zm9C4iQNtYtOJtnNzbhU6X5kXx1/Jp4Tm8k7LF4e6lCGo6yINV8iCbkscpjhe59ouRJDDF+4WQDwLFTpNPw3zgzr5EOmlpNtjgliuB3OC4t4WysmW2f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768266; c=relaxed/simple;
-	bh=OZMf4gTIrZ/pVY27YsjH+kf+35klhlZ0okl4yrZutk8=;
+	s=arc-20240116; t=1785768277; c=relaxed/simple;
+	bh=QAH8O2n0XZVtqOMENH1xpHdVuTvSWcyBNs1sKcOfQTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfire+EvWACYJ9P+2edxHJVoYHLb9k7jbjK5XkFgZB9bFH5V7bqtcjPpImHkLhBjupk9sA//bfvMfZ+I4aPmztkHZH4gmbNY2eLRcnFcsv05CuDo/n2mahKLUzUCVA/LoCmicGonUb/VFu6YpOw9BrppH7rOEVO/x9nfhRzpdkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ok4kDBXP; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=h66wzbEEzKbJi4o5lx8VZe+dItTOn7iFi4d2JW0m7DWed+8sB6IIwuge7+8v+Czf7vTk/Bst+5WHygILLr043E90sXBoNe+6oULEMBJrZZu9v0Tc9GbUMsfbDKyeiLeSl+2GWjOyvDVXX6OV7e/lNlQXHu2aFc+heBG0MNrTvjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W320FhgI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ok4kDBXP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591581F000E9;
-	Mon,  3 Aug 2026 14:44:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W320FhgI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3F71F00A3A;
+	Mon,  3 Aug 2026 14:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768264;
-	bh=4BXG8pZY3UvhCBljpc68bnMGflRKin05J/fYHypUzMY=;
+	s=k20260515; t=1785768276;
+	bh=CjaGFOxr4nU+4hu6sOP96XKGU6m8y4A1jNpucRrIXvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ok4kDBXPSJgspsKclwuqrWvx1gikabqhUoBWl1UTXy4VvijFBTYHJ8Besb/e1EjGu
-	 3oWTEE3S/wuNNjQcZpMEAN/2aqgZR9CsCyiatv8/J+9uLpJnfLSolhiBWh2W9g0QXv
-	 CBk+HiMdtY4wYrVzLuOH04wHdm4vXOQXAuwxZIl95GCPxvmbGHI6o9rEDDGGzdw7PP
-	 bUOddhnTLrdflFUmwpH0upbXWRwp/rY+7QZv3b7f/7a09GJNO8nJ/SvTnYcelEQEUt
-	 TOtpmZ67F8Uezvo4nvkMDf7Txn7ssqS5l7jqIAB7g6DGCGqF7h04LjE8k80taspWlE
-	 +NemcXfMoYH7Q==
+	b=W320FhgIR3sDSIMSzQ3s9AsS5ld544sgO/L7h/zDkkknjjHreEIS8ILx9il4qjnpt
+	 kohdQxBo+hh/717VKan7AATNkuuWWyqpCspgG8N6qhQykYWOmeYXg5Uki21SpoH/cC
+	 2bxamaaaUR9hznOsPbD877Oidydz3yxJfs4ePS4wZzr64aP4GYItQz6h7Z2+PtPGMu
+	 fLLSwd5tFOwdsi10UykS5uvFNhaxNs8D7sFwbD88u8a/t59LG2QzArMAD953w/dtks
+	 q2mZVACHLMjrnT9vYFyYyKiw8mwPdKTArkXnZbDhJ3Oe8fHy/SJsAwE40NdxESbUXX
+	 qmwsBGLjaC0Tw==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 22/39] spi: omap2-mcspi: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:46 +0800
-Message-ID: <20260803142003.12857-23-jszhang@kernel.org>
+Subject: [PATCH 23/39] spi: orion: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:47 +0800
+Message-ID: <20260803142003.12857-24-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,54 +90,63 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/spi/spi-orion.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 9cc078acc13c..a3355147f5de 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1620,7 +1620,7 @@ static void omap2_mcspi_remove(struct platform_device *pdev)
- /* work with hotplug and coldplug */
- MODULE_ALIAS("platform:omap2_mcspi");
- 
--static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
-+static int omap2_mcspi_suspend(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
-@@ -1639,7 +1639,7 @@ static int __maybe_unused omap2_mcspi_suspend(struct device *dev)
- 	return pm_runtime_force_suspend(dev);
- }
- 
--static int __maybe_unused omap2_mcspi_resume(struct device *dev)
-+static int omap2_mcspi_resume(struct device *dev)
- {
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
- 	struct omap2_mcspi *mcspi = spi_controller_get_devdata(ctlr);
-@@ -1654,8 +1654,7 @@ static int __maybe_unused omap2_mcspi_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops omap2_mcspi_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend,
--				omap2_mcspi_resume)
-+	SYSTEM_SLEEP_PM_OPS(omap2_mcspi_suspend, omap2_mcspi_resume)
- 	.runtime_suspend	= omap_mcspi_runtime_suspend,
- 	.runtime_resume		= omap_mcspi_runtime_resume,
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 265708a94984..a33b5840b95f 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -100,10 +100,8 @@ struct orion_spi {
+ 	struct orion_child_options	child[ORION_NUM_CHIPSELECTS];
  };
-@@ -1663,7 +1662,7 @@ static const struct dev_pm_ops omap2_mcspi_pm_ops = {
- static struct platform_driver omap2_mcspi_driver = {
+ 
+-#ifdef CONFIG_PM
+ static int orion_spi_runtime_suspend(struct device *dev);
+ static int orion_spi_runtime_resume(struct device *dev);
+-#endif
+ 
+ static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
+ {
+@@ -814,7 +812,6 @@ static void orion_spi_remove(struct platform_device *pdev)
+ 
+ MODULE_ALIAS("platform:" DRIVER_NAME);
+ 
+-#ifdef CONFIG_PM
+ static int orion_spi_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -834,18 +831,17 @@ static int orion_spi_runtime_resume(struct device *dev)
+ 		clk_prepare_enable(spi->axi_clk);
+ 	return clk_prepare_enable(spi->clk);
+ }
+-#endif
+ 
+ static const struct dev_pm_ops orion_spi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(orion_spi_runtime_suspend,
+-			   orion_spi_runtime_resume,
+-			   NULL)
++	RUNTIME_PM_OPS(orion_spi_runtime_suspend,
++		       orion_spi_runtime_resume,
++		       NULL)
+ };
+ 
+ static struct platform_driver orion_spi_driver = {
  	.driver = {
- 		.name =		"omap2_mcspi",
--		.pm =		&omap2_mcspi_pm_ops,
-+		.pm =		pm_ptr(&omap2_mcspi_pm_ops),
- 		.of_match_table = omap_mcspi_of_match,
+ 		.name	= DRIVER_NAME,
+-		.pm	= &orion_spi_pm_ops,
++		.pm	= pm_ptr(&orion_spi_pm_ops),
+ 		.of_match_table = of_match_ptr(orion_spi_of_match_table),
  	},
- 	.probe =	omap2_mcspi_probe,
+ 	.probe		= orion_spi_probe,
 -- 
 2.53.0
 

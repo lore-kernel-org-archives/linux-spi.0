@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644D74137B9;
-	Mon,  3 Aug 2026 14:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774DC411FA9;
+	Mon,  3 Aug 2026 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768201; cv=none; b=dGkoF9fpUpVX6JTmY2WWKDBZn/yl8X5k0WxlTRHs3zfkZtIMt1r/Za+alm41g3Mol+z3TDfmR6NwzNS9KCGX8MCHvQFPvrG1foxddpHSevg4dxMTJzPrddHDw9loDBdwknk+8q08TkzT/fHvRqRDWqS0qWAH1KupfL7BXbA7eRE=
+	t=1785768213; cv=none; b=JgntCkVFcsovyddVxWjNhNwJxQjjNcIK4cst6IFuLTw7OsWRJZXqWnsFrE10GOM3spU+8eqOoiEoVYN/3bqxPF6LoTMTalEL6fjVqSbrU+rOW/uRQPIqXeATqMwwg+wkyDDap/82QMAJ1HacZKFUIvyeHNs/6Gr2i2FfcseCXSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768201; c=relaxed/simple;
-	bh=128D1CmfpB4hDCFvZHbrEcuX3UD620EghvWdnOwKeTw=;
+	s=arc-20240116; t=1785768213; c=relaxed/simple;
+	bh=47hBFYwv1QdhUP4ows3APuspFj39h+bkn8E16rn4EEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSDvbi5L2sYn1SVt1/ytlYtIrA3PVMbv2b51x27zzozeeOtSz7WZXzldJaB7NaZJ/arrgM8tc7HdDgh42dE20ScoC6C43HPxw9DBeSReIoCdqlPMmBp8oJaSHnTrz00CTnFb1P/JokYdV8XKZqHmb3fS1cAYsBbK26FhC/9lUSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2s49sww; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=ed46SP6DYOKiti5UBCB8it9nW+6ZVvjrkKXoA23Ky0E6dFmDiOhLRFO4gVQkmwzDMUQz0pRia1LJ+UCDLA2aq49KRcR3h8RuN6Ychi/XpxVn/giGhu3dBPgNPwNY5bpxS5+nfthtLSN+54gmM2xC5hJPGTFVlVCwgIzXrb11Mt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2WPZiZQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2s49sww"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A0D1F000E9;
-	Mon,  3 Aug 2026 14:43:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2WPZiZQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6771F00A3A;
+	Mon,  3 Aug 2026 14:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768200;
-	bh=ivN5Aq/EyYjo0qiUP2YpxxDgbYqAgKxP7Zc3nRYCQaw=;
+	s=k20260515; t=1785768212;
+	bh=qlIUiMjQYU3CDsVD7Nq654m9H5XXKXU9Fx2wGOali6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Y2s49swwDTPZYVKstRSKor/OasJIfy5JkXJVanG3QXw37G34OoJG3D6julTn2dyDl
-	 EdbTyzXnGJiWvebreM1RwPfcXqZTA+fGI9ERxBr4Q4/zg72bwvVlNoX5yDv+uFt6Pi
-	 czWRNBbiEHXCiRVCLFf+/tfvTdjmUNiodd3f9vU6v3mDU8GSzclXIhRZDav1ass1Mx
-	 CrFfOUW5WedVvdzly9IvbTeIEvNSYQ4F56lNTtNMaxkBiZ+88beZVhDPsMY6Z2OJfl
-	 KOD1b/r/ySAdyoznCFGpo17czmLcqMsS9N1zWkoD/Yh4SIROoWNcShHNoWBauleV3Y
-	 8nvm8GxkdojBw==
+	b=Q2WPZiZQm+TAUHy80rzSrKMgpSEkbdagezOFxnshMyTOfln15G1ptgLJTN4RoGiAU
+	 fS8j9n9fgEVK5x87v+O3HTxsNS7Vo2RaUqBLrvMjvSVIZH0JByv6XSs0dIFM+Nlksj
+	 jSNao/hBQDc/sBETw11b5p7tyScC4+TEK8+xI07pnjOaL1ArOgzppdkEEvx0xvjh6T
+	 e+O1U1EnMOjFSkEYt99NItGIY+RTcSqHHsW3uqQBqmweHUrvsGWNwOCnXbIVMxxdmL
+	 LCP7JN/lNfDWnN9lctSWJHQVdh8lockkPjQ1/c3hXc9GNgDX1BeX7wnrzJkucPTs2W
+	 8dbV0G4jIhF2g==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 17/39] spi: loongson: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:41 +0800
-Message-ID: <20260803142003.12857-18-jszhang@kernel.org>
+Subject: [PATCH 18/39] spi: meson-spifc: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:42 +0800
+Message-ID: <20260803142003.12857-19-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,63 +90,66 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-loongson-core.c | 4 ++--
- drivers/spi/spi-loongson-pci.c  | 2 +-
- drivers/spi/spi-loongson-plat.c | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi-meson-spifc.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-core.c
-index f50423c3db4c..30b6a7176ce9 100644
---- a/drivers/spi/spi-loongson-core.c
-+++ b/drivers/spi/spi-loongson-core.c
-@@ -229,7 +229,7 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
- }
- EXPORT_SYMBOL_NS_GPL(loongson_spi_init_controller, "SPI_LOONGSON_CORE");
- 
--static int __maybe_unused loongson_spi_suspend(struct device *dev)
-+static int loongson_spi_suspend(struct device *dev)
- {
- 	struct loongson_spi *loongson_spi;
- 	struct spi_controller *controller;
-@@ -249,7 +249,7 @@ static int __maybe_unused loongson_spi_suspend(struct device *dev)
- 	return 0;
+diff --git a/drivers/spi/spi-meson-spifc.c b/drivers/spi/spi-meson-spifc.c
+index e36aa94bbdae..2ef090dec7ba 100644
+--- a/drivers/spi/spi-meson-spifc.c
++++ b/drivers/spi/spi-meson-spifc.c
+@@ -348,7 +348,6 @@ static void meson_spifc_remove(struct platform_device *pdev)
+ 	pm_runtime_put_noidle(&pdev->dev);
  }
  
--static int __maybe_unused loongson_spi_resume(struct device *dev)
-+static int loongson_spi_resume(struct device *dev)
+-#ifdef CONFIG_PM_SLEEP
+ static int meson_spifc_suspend(struct device *dev)
  {
- 	struct loongson_spi *loongson_spi;
- 	struct spi_controller *controller;
-diff --git a/drivers/spi/spi-loongson-pci.c b/drivers/spi/spi-loongson-pci.c
-index 2fe5419a8dd2..ccc26efd88fe 100644
---- a/drivers/spi/spi-loongson-pci.c
-+++ b/drivers/spi/spi-loongson-pci.c
-@@ -43,7 +43,7 @@ static struct pci_driver loongson_spi_pci_driver = {
- 	.probe      = loongson_spi_pci_register,
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -385,9 +384,7 @@ static int meson_spifc_resume(struct device *dev)
+ 
+ 	return ret;
+ }
+-#endif /* CONFIG_PM_SLEEP */
+ 
+-#ifdef CONFIG_PM
+ static int meson_spifc_runtime_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -405,13 +402,12 @@ static int meson_spifc_runtime_resume(struct device *dev)
+ 
+ 	return clk_prepare_enable(spifc->clk);
+ }
+-#endif /* CONFIG_PM */
+ 
+ static const struct dev_pm_ops meson_spifc_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(meson_spifc_suspend, meson_spifc_resume)
+-	SET_RUNTIME_PM_OPS(meson_spifc_runtime_suspend,
+-			   meson_spifc_runtime_resume,
+-			   NULL)
++	SYSTEM_SLEEP_PM_OPS(meson_spifc_suspend, meson_spifc_resume)
++	RUNTIME_PM_OPS(meson_spifc_runtime_suspend,
++		       meson_spifc_runtime_resume,
++		       NULL)
+ };
+ 
+ static const struct of_device_id meson_spifc_dt_match[] = {
+@@ -427,7 +423,7 @@ static struct platform_driver meson_spifc_driver = {
  	.driver	= {
- 		.bus = &pci_bus_type,
--		.pm = &loongson_spi_dev_pm_ops,
-+		.pm = pm_sleep_ptr(&loongson_spi_dev_pm_ops),
+ 		.name		= "meson-spifc",
+ 		.of_match_table	= of_match_ptr(meson_spifc_dt_match),
+-		.pm		= &meson_spifc_pm_ops,
++		.pm		= pm_ptr(&meson_spifc_pm_ops),
  	},
  };
- module_pci_driver(loongson_spi_pci_driver);
-diff --git a/drivers/spi/spi-loongson-plat.c b/drivers/spi/spi-loongson-plat.c
-index 550b237838c0..6f8202264341 100644
---- a/drivers/spi/spi-loongson-plat.c
-+++ b/drivers/spi/spi-loongson-plat.c
-@@ -35,7 +35,7 @@ static struct platform_driver loongson_spi_plat_driver = {
- 	.driver	= {
- 		.name	= "loongson-spi",
- 		.bus = &platform_bus_type,
--		.pm = &loongson_spi_dev_pm_ops,
-+		.pm = pm_sleep_ptr(&loongson_spi_dev_pm_ops),
- 		.of_match_table = loongson_spi_id_table,
- 	},
- };
+ 
 -- 
 2.53.0
 

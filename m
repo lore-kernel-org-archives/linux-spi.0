@@ -1,64 +1,64 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3CA39FCB4
-	for <linux-spi@vger.kernel.org>; Mon,  3 Aug 2026 07:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5A939185E
+	for <linux-spi@vger.kernel.org>; Mon,  3 Aug 2026 07:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785743380; cv=none; b=WNG7EoUckCDPehawtDVIbWfLmxryztstrK8E7g7pwLcgAZyrMuw69X9HsDkGki/nXf5Yrgq2pRNiOoJjglSGXwhaFonCUgw0yF3x2Cma1j/AhONvRqbHwLwn3wLafwNEJ57skIKU/XB6XeSes5UYm4fGpmrmONiZ2ACwX/L7GR4=
+	t=1785743386; cv=none; b=rHxulIt9c/vUFB7CVdpsVLFJT8i5EXjoEjH/Fi7KWp4ouwu29Ywvhq8Mez0Kp/cUi0/hPSItr9TjgI7JjLRskt/1mdz8fAEY6lYZUt/xcCRe6Y6cBWFWpJiK4Z0k/lj3Jb4/Tc8Y/zYnFvtmkMge0zJlD1mNwxzWWiVCpZEEaQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785743380; c=relaxed/simple;
-	bh=lpNjW0A4H86kFIRK+2Ey6s8T/jaWVaEc8oAcNIcvbIY=;
+	s=arc-20240116; t=1785743386; c=relaxed/simple;
+	bh=GO3Sz/cw7cI0HCk+Bed3MtNGnWNHKZUKealu4ttJIp4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=siNCIrTfbKMFvoRviCRaZWmFhDlkgYbhtCBYIJ65IXqT8tc7yo3pRY0OFf5aZvPEH0Ep8lYFwTx5Af01yzSgKut6mfn4jLCQuFcSkGEZ0xxSObMPqlTkYOurqQqR6o5wziBvqwarGzwVyrgxLKB0txCjRF3UDq5vnesTUXbKVqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aa26u2qn; arc=none smtp.client-ip=209.85.214.169
+	 MIME-Version; b=PrEa7jDy4tH5T4RWca9BcqdUx5s/tJkqULx705We/TPFeG+lz/nL0jC3mN/42ApEfFyEoGhgUC2fDcgKp05KCPe4d2nkmv1M7E88WjXS+k5uv3LWRbVYf2BGWLjDTmXorncHiQ+Tg6SykGmpqbkpm56Qe4Qh7nCYRvgMNM2n5tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NiJrzgIP; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aa26u2qn"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cacf197759so44182145ad.2
-        for <linux-spi@vger.kernel.org>; Mon, 03 Aug 2026 00:49:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NiJrzgIP"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2ce7d2adef4so50694045ad.3
+        for <linux-spi@vger.kernel.org>; Mon, 03 Aug 2026 00:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785743378; x=1786348178; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1785743384; x=1786348184; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LX9tJPPybQG23QnWol+WkuZghQpoeotorNVxrLWGsFg=;
-        b=Aa26u2qn1W7x1RVAgO7kbMsToNHPcQuyYbdAVIXPwynf4t4QxtI75W2oEMtizWAkhR
-         57c5Qx68qYmNk7rPrF5nvs3oaLkHW9iuq3I64Inhs6zHIMXm09pu/VUPiHcLKAlftK7C
-         Uc8RTZrfi2/hBkIIYZNAebnOHheVPATOEJ+YSPASizaa1ztsEFXBNV1P1TsMNHnoEq9K
-         yyd6xDlFT7G6x3AJktrluExOyjK7bH46Vz/tLLhaiOsoJNIuebuF6Oktf1leq51j5OrE
-         9rSq+2/JRe5ENGyTkegQRu3Tmye58VoOA3wp8PDUuXVv7L4ldwIm1AlCP/keL2s8C+wY
-         yp2g==
+        bh=Mh0zq1YTh3UJhLL40JBJykkOmBY5F9aAuS/qMZKEofk=;
+        b=NiJrzgIPYFhc2/us9ghPkcRkp5HcupJzWqyhgtMu+uRP2dfBWIfg6yfIEfLEnhyrId
+         49cTGO5fZ8UHi7wJs4VNT8FwVDZqvrOht99wac0PQppr5ZLf4QHP73ILMvXGE7akngxo
+         9acVt17rVets2HdclsdpJIv3nXzopyZU5qJ1cNrYYXCQetvseuVc76MRFXSkM9jfZY1W
+         BhgaylV6iI3PajbMqouAya26xWcUvHELSqP4jlQyiwakKN139QT4FvlP/FJRcr+7vpTZ
+         X4DgvY5ZZXC5YK7cbDTnAJRVSskbFoTiJh4MaupJvyFiGzuhUr7JZOHCq/PuOX6x55S3
+         m5XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785743378; x=1786348178;
+        d=1e100.net; s=20251104; t=1785743384; x=1786348184;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LX9tJPPybQG23QnWol+WkuZghQpoeotorNVxrLWGsFg=;
-        b=OZILdS7kUcyVzuQtV0lQwDjv9nLzRuMassKIL8LTRAng6pN3gnrDY7PykjkIEvq++r
-         6C+1W0/UiCKe2snf5UCo04RZ0SK75ve7xryzFFfYhkJE4eZOM/D1ocF6Rg6F12E6bS3j
-         1yG3AgCmwOEGUIoSAUR9IweNLfSMv2GWVB6deUvzoS9UAnjtbqCFoFv8kNPeBitn6ww4
-         gSJOBmgaVzrIOANboKBR6SURfTYn4SKLed75Hnuq7D9Z/ty6GcvV5sz5pS+11YmlvZi2
-         b+cYv9twOpYfUtKDSGr5ZG5AGeSGU8pxdfZ8YlVv+uSPu6LRacn2288KiVJ2i8YodDG2
-         uRBg==
-X-Forwarded-Encrypted: i=1; AHgh+RpBTOvMbpqMJXFN3RZJjFcf58k1EPuSEQIMF7h4nwxaEpinFzrLmMioNn6oQSPMJN0mbZqr7Ye1rTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi0G1orfFBnbYR1FBF1A+JON4gwCXzby5/OEhAcoZqvSe5xrsL
-	xbxD8HzZ0m4GoLWtpw1gD4ZmEc0kWD/XB0sBDFDLZtx5NhvU9foWlrpp
-X-Gm-Gg: AR+sD12IPMDYRAhTznk6wD30WZ3oXIKOTmakaOXN9a/lTmxOSjx9oLANqAA82loePaY
-	TWljWsmYSE6qe+/FxRn60AJzXC0TbteReD/LkUXrNDOPyJltKjkdtEr5QPGQKD8DhFpFFSUSN7Y
-	h7JDOpQ0+qz9kEZTZsgUsF1BouqqVwBB26+2anJ6xfpBZU3MfcFVcQbmr5Y05MV5c3jwyeMNupi
-	1Xm2l7Zpqx20ClbTNTUJgX3sbjeUTWMGn0t3LNImZ2OHI9gt30+Pb6mN1xWeepK967OprrArLbQ
-	DqAnQ4HLRfzUfVhzR1eO06H2WNa6iOGICVqjekKqnqD6suxOR51oG+kXcRouVkU40ysZnCzt1k9
-	nkR7eXXQ/7tU/6602Ye3je2DUq64We1zruUkbhsoI02HEpuPxLwNZgVHV/a7al3Zr/rjYkGwA1G
-	UR+4xYctvUD5aQ6k/DN+MolA3HlRLHU27KQVSziq99w8yNCyjw6e0tNSWQv0P2nXgc5gqv2Uccx
-	DbC09ZzSCpW7OXQByB/0S6SECBg/ktBKLHAo8MQnCtW6bwB0NtJGKH6hLb/Mw==
-X-Received: by 2002:a17:902:e5cd:b0:2c9:97a9:2098 with SMTP id d9443c01a7336-2d052421484mr95275985ad.44.1785743378231;
-        Mon, 03 Aug 2026 00:49:38 -0700 (PDT)
+        bh=Mh0zq1YTh3UJhLL40JBJykkOmBY5F9aAuS/qMZKEofk=;
+        b=aR2A6FCBSThenlCToyXqggyfQ4kLcODmq/n/GSbZ7IZzkok2izTYfbTaiRDxLS8gMa
+         6HbOpuoR9V9ntn8ctXgrWSNivCKM6FhFXE74RBaYCwR/VSlwX+kw+g7rGtwsczk12/I4
+         2XPC8CwEwgBmynElTY+xi6V7ILwDERtc8BV84Gcr7UlY9SVVJeXwdLChyL22dFE0a2Eh
+         EaZXzQIbhAMkiJb8RSkfKtRYebhQB+SYy4cqxauQIOmzLmaClPmR5rc2OK44fhmzJ5nd
+         Wo6j5BBtBi58qSmI1iKeeAa0DUjRSnz68KzdoW8hvW5HyZb7RGYXwAK3wI1eETvw82G/
+         wI6A==
+X-Forwarded-Encrypted: i=1; AHgh+RoaPk9V2ITG5WyjCgUOkV/T6bQTMZrAWc+8s8y6ol8R56a9Qt0xTHBWvbBXZAXwpa1D3ab6jVEujPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysCm+qh0j7XvR9xGB4pSVVKIbdFSJiqN+ISLBsYqUDg3r9AlWv
+	mXT6DWatuY430Rf8GlNizAvk4IvuzzrCq2FvHgTfjnQBbQM5N7nf9JGV
+X-Gm-Gg: AR+sD1004TeHSJpK5n0fsBR+ZBODRp5dQhb0KdCSd7m8Sbucv5PcbCbI05t+AXIbQp2
+	L11v5Xx1IG+GaujMFwuCAG13pdlXXnVrDsTDp88cSIRRxSuEZ12I+KE1x53fhYyo1ABKvpbj9ub
+	/zt7USmBjp9JpSXgUNDQLWTGM/UFI5OQjO8FEb60lHO6YRnr9KCt/w4LTDPN8ssPDuV+74J1G8m
+	1mmYvpGnI1XAQn0RaeSMaoVjpOByL0PNIr6fh0ahXkyp4+FQy3FWXDaXcGg3swXGBPfEx8xYdWV
+	xd3ZkwrIFmKDBpLTZvQcjpqmoTkbi8ZK7mPwV8U/8qQOj12kFDyC7jXoCFHhh3trA3rEAt0Gy7E
+	PpQNrOBvtg+F6WNnFcldLgAZvFoqBi8lDvWDKnm9DV70wUc9zfWnQKpCQ1GTGpPErHNBXihYkm9
+	C4Z8xGbSAxXtwtuRKd+Bh4jx2GsXneHcVC9cgaB3WZcX+lV+F/9rk1NkDacXyLw1frZ0eDJL+BR
+	tP3uZ5tfQ/NR97LxiCKZixUUv0AX7M52oPo5PpARV/MsTHLzdw=
+X-Received: by 2002:a17:902:e84d:b0:2cf:84bb:1ebc with SMTP id d9443c01a7336-2d0521e9e05mr90498015ad.15.1785743384392;
+        Mon, 03 Aug 2026 00:49:44 -0700 (PDT)
 Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b120f2fsm33679845ad.64.2026.08.03.00.49.35
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d04b120f2fsm33679845ad.64.2026.08.03.00.49.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Aug 2026 00:49:37 -0700 (PDT)
+        Mon, 03 Aug 2026 00:49:43 -0700 (PDT)
 From: Chi-Wen Weng <cwweng.linux@gmail.com>
 To: broonie@kernel.org,
 	robh@kernel.org,
@@ -70,9 +70,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	cwweng@nuvoton.com,
 	cwweng.linux@gmail.com
-Subject: [PATCH v3 1/2] dt-bindings: spi: nuvoton,ma35d1-qspi: Allow additional GPIO chip selects
-Date: Mon,  3 Aug 2026 15:49:12 +0800
-Message-Id: <20260803074913.1656675-2-cwweng.linux@gmail.com>
+Subject: [PATCH v3 2/2] spi: ma35d1-qspi: Enable GPIO chip selects
+Date: Mon,  3 Aug 2026 15:49:13 +0800
+Message-Id: <20260803074913.1656675-3-cwweng.linux@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260803074913.1656675-1-cwweng.linux@gmail.com>
 References: <5769eae0-1b40-419f-8311-0d919bf619fa@sirena.org.uk>
@@ -87,31 +87,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Chi-Wen Weng <cwweng@nuvoton.com>
 
-The MA35D1 QSPI controller provides two native chip selects, but the
-generic SPI controller binding defines num-cs as the total number of
-native and GPIO-based chip selects.
+The generic SPI controller binding allows GPIO-based chip selects, but
+the MA35D1 QSPI driver does not currently enable the SPI core's GPIO
+descriptor handling.
 
-Remove the maximum value of two from num-cs so that board device trees
-can describe additional GPIO chip selects while retaining two as the
-default chip-select count.
+Enable GPIO chip-select support and distinguish the total number of chip
+selects from the controller's two native chip selects. Allow num-cs to
+include additional GPIO chip selects and set max_native_cs to the native
+hardware limit.
+
+Add a setup callback that rejects chip-select indices beyond the native
+limit when no GPIO descriptor is present. Also reject active-high
+polarity only for native chip selects, while allowing GPIO chip-select
+polarity to be handled by the GPIO subsystem.
 
 Signed-off-by: Chi-Wen Weng <cwweng@nuvoton.com>
 ---
- Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-ma35d1-qspi.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-index 377ccf4fb224..f837367e6d5f 100644
---- a/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/nuvoton,ma35d1-qspi.yaml
-@@ -30,7 +30,6 @@ properties:
+diff --git a/drivers/spi/spi-ma35d1-qspi.c b/drivers/spi/spi-ma35d1-qspi.c
+index 541d5d72484c..f893a4160528 100644
+--- a/drivers/spi/spi-ma35d1-qspi.c
++++ b/drivers/spi/spi-ma35d1-qspi.c
+@@ -61,7 +61,7 @@
+ #define NUVOTON_QSPI_STATUS_RXEMPTY_MASK	BIT(8) /* Receive FIFO Empty */
+ #define NUVOTON_QSPI_STATUS_BUSY_MASK	BIT(0) /* Busy Status */
  
-   num-cs:
-     minimum: 1
--    maximum: 2
-     default: 2
+-#define NUVOTON_QSPI_MAX_NUM_CS		2
++#define NUVOTON_QSPI_MAX_NATIVE_CS	2
+ #define NUVOTON_QSPI_DEFAULT_NUM_CS	2
+ #define NUVOTON_QSPI_DEFAULT_BPW	8
+ /* Bound PIO operations to avoid long atomic polling loops. */
+@@ -430,13 +430,34 @@ static void nuvoton_qspi_set_cs_level(struct nuvoton_qspi *qspi,
+ 	spin_unlock_irqrestore(&qspi->ssctl_lock, flags);
+ }
  
- required:
++static int nuvoton_qspi_setup(struct spi_device *spi)
++{
++	unsigned int cs = spi_get_chipselect(spi, 0);
++
++	if (spi_get_csgpiod(spi, 0))
++		return 0;
++
++	if (cs >= NUVOTON_QSPI_MAX_NATIVE_CS) {
++		dev_err(&spi->dev, "invalid native chip select %u\n", cs);
++		return -EINVAL;
++	}
++
++	if (spi->mode & SPI_CS_HIGH) {
++		dev_err(&spi->dev,
++			"active-high native chip select is not supported\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static void nuvoton_qspi_set_cs(struct spi_device *spi, bool level)
+ {
+ 	struct nuvoton_qspi *qspi = spi_controller_get_devdata(spi->controller);
+ 
+ 	/*
+-	 * The SPI core passes the physical CS level to ->set_cs(). This
+-	 * initial driver only supports active-low native chip selects.
++	 * The SPI core passes the physical CS level to ->set_cs(). Native
++	 * chip selects are active low.
+ 	 */
+ 	nuvoton_qspi_set_cs_level(qspi, spi_get_chipselect(spi, 0), !level);
+ }
+@@ -608,15 +629,18 @@ static int nuvoton_qspi_probe(struct platform_device *pdev)
+ 	if (ret && ret != -EINVAL)
+ 		return dev_err_probe(dev, ret, "failed to read num-cs\n");
+ 
+-	if (!num_cs || num_cs > NUVOTON_QSPI_MAX_NUM_CS)
++	if (!num_cs)
+ 		return dev_err_probe(dev, -EINVAL, "invalid num-cs %u\n",
+ 				     num_cs);
+ 
+ 	ctlr->num_chipselect = num_cs;
++	ctlr->max_native_cs = NUVOTON_QSPI_MAX_NATIVE_CS;
++	ctlr->use_gpio_descriptors = true;
+ 	ctlr->max_transfer_size = nuvoton_qspi_max_transfer_size;
+ 	ctlr->max_message_size = nuvoton_qspi_max_message_size;
+ 	ctlr->mem_ops = &nuvoton_qspi_mem_ops;
+ 	ctlr->mem_caps = &nuvoton_qspi_mem_caps;
++	ctlr->setup = nuvoton_qspi_setup;
+ 	ctlr->set_cs = nuvoton_qspi_set_cs;
+ 	ctlr->transfer_one = nuvoton_qspi_transfer_one;
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
 -- 
 2.25.1
 

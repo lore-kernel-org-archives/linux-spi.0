@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2A6414DFA;
-	Mon,  3 Aug 2026 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79354305680;
+	Mon,  3 Aug 2026 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768016; cv=none; b=O5UKeIn2cHfmybDW+Sus0QaRyoCFrgApRDjDv99wICiwZ/Ten70CsXHd1HmMZ7q7uiiHcWZRwjk/fgLrQlOlm8atmHQtgWCIBDAWoO2kCc19E0KXaxUcbzR1Jc14dX6jt277WcQIvXeQDQFCPa8qHXrlVU0wgDiTplCJPSubOeI=
+	t=1785768031; cv=none; b=ov06QFbPjlNaAtLm13V+Gb/aiUqDSywooUdpGmLTvRmENzA8QDbzcvivPtoJkCrXC9TkVxRk6PQCD23s88h3e8WFQdhdg4Rk96/jCPWGZlhGFitz8hbFk2YqX9uBDvO08xmFNV1n+EX02Vv+0vltSMgLU3K8D0fI9pKCNORTAUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768016; c=relaxed/simple;
-	bh=j03Ip6HwLTm4Bm01zZdYl5S7cjV8eaaNcVDuFyQLqCQ=;
+	s=arc-20240116; t=1785768031; c=relaxed/simple;
+	bh=FRMTeOORCNHJa+B3xULuyOtxsobQDwoma4CE7UPW16o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FMnS7ReifhhxNr/3FOb13suUtFGDpmU51Sq4PM7oSXOmRo4SAHqJtucOX5SPxw9SFBbA5TSnZgfoLgsWjZzO6zfwIZ8J5P6SXnRHsZeElGSYOSHR50hjgC84ExSHol1AqCu/1NqlTKz1LpMegjYdGFbgYzYHpZyy7bxYNOemS9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oouUE4Gu; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=d9JTJazBTFxgxgPypINBVYuA8rdiSd84xWp+q8f1QdAQxfwewMBNrj8YkdOXvX5ejZENR0tdQhSaT72saHntNbiyGD7+WxnzQGmuiU4ITE0lJtOJfkGkrUblhQ0yR5DHGZQWhbNjLzMwBtZdexXkW3dc4cs746dxmB0pM1E6OsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fh6FaZZY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oouUE4Gu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26601F000E9;
-	Mon,  3 Aug 2026 14:40:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fh6FaZZY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0481F00A3D;
+	Mon,  3 Aug 2026 14:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768014;
-	bh=VxglCs+ea3c0Dxgwyd90UOXbko+4Uh7TAYs69rXIsqE=;
+	s=k20260515; t=1785768030;
+	bh=bipLPRMz6JcFCwPqw3LLEk55cURIlQcQ9jExHCqAyWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oouUE4GuXW5dVVs3myp/tQcsUMd8xfQZda2iTuHW+9oFkcJs7BI6LWR+lVI0R/2a5
-	 eHC1J7ShZaXwzs/pcK1cYmIsRboY8zzdy7j85tbXTHLQTOLWnMdJLQ47gRc0wRxCYY
-	 8UaoO6/HNhVWmLq2a1EOTnbilu5Qik+RQ5KDDTx2rQOXxF8LyrN5RT2AH3JkmMNZT4
-	 cDX3M97jvJN23HgzmDr5LzGW8ksEJ4whM5Yttqc74l1WnKF98s0l4mXino1kcRyJ3N
-	 KAEXvu5fBwIP9JWDP++PpJ66E/ln0vrkpblvzBXBuabmnoW+YwHIXyVVYAR1w9C14s
-	 9IMTj9vWPVDGg==
+	b=Fh6FaZZYr+oCLPA/RJwYvBZ22dX0wnTAK7oK9cJMnwrgAq9ck6bbORM/RE94u44ZP
+	 XYhMZaOEIIyIEOKroZT8Yz/oFjyGNGvJXeGcTSwzloAKIiCBkg6qcVk/eS8YlNMJv1
+	 IrCqJQdfKW1/uvhKqXabS/LCmuNQAuKCf8OHXKfMy+4vUGHHmOnt81Z+shapvFcCeS
+	 7i8B9I9LFgCNqXdX0PwHf4m5JRtlgL+tAqSVvbCI1hWsauZRuUjiB7ONpS/WEeftzp
+	 IZ5qf3WM6X+e8d4VN8XZOhmOdR3ufNjmSzHs30rqMBvMrBdr7JKUTUMyQButJmmHjh
+	 DRa10br+6pgRg==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 02/39] spi: amlogic-spifc-a1: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:26 +0800
-Message-ID: <20260803142003.12857-3-jszhang@kernel.org>
+Subject: [PATCH 03/39] spi: at91-usart: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:27 +0800
+Message-ID: <20260803142003.12857-4-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,67 +90,51 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
-
-This has the advantage of always compiling these functions in,
-independently of any Kconfig option. Thanks to that, bugs and other
-regressions are subsequently easier to catch.
+CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-amlogic-spifc-a1.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/spi/spi-at91-usart.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spifc-a1.c b/drivers/spi/spi-amlogic-spifc-a1.c
-index 77a2c11bec5e..388bd2472dc0 100644
---- a/drivers/spi/spi-amlogic-spifc-a1.c
-+++ b/drivers/spi/spi-amlogic-spifc-a1.c
-@@ -374,7 +374,6 @@ static int amlogic_spifc_a1_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 77cad4118202..804f6194c830 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -571,7 +571,7 @@ static int at91_usart_spi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-__maybe_unused static int at91_usart_spi_suspend(struct device *dev)
++static int at91_usart_spi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+ 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
+@@ -587,7 +587,7 @@ __maybe_unused static int at91_usart_spi_suspend(struct device *dev)
  	return 0;
  }
  
--#ifdef CONFIG_PM_SLEEP
- static int amlogic_spifc_a1_suspend(struct device *dev)
+-__maybe_unused static int at91_usart_spi_resume(struct device *dev)
++static int at91_usart_spi_resume(struct device *dev)
  {
- 	struct amlogic_spifc_a1 *spifc = dev_get_drvdata(dev);
-@@ -409,9 +408,7 @@ static int amlogic_spifc_a1_resume(struct device *dev)
- 
- 	return ret;
+ 	struct spi_controller *ctrl = dev_get_drvdata(dev);
+ 	struct at91_usart_spi *aus = spi_controller_get_devdata(ctrl);
+@@ -616,13 +616,13 @@ static void at91_usart_spi_remove(struct platform_device *pdev)
  }
--#endif /* CONFIG_PM_SLEEP */
  
--#ifdef CONFIG_PM
- static int amlogic_spifc_a1_runtime_suspend(struct device *dev)
- {
- 	struct amlogic_spifc_a1 *spifc = dev_get_drvdata(dev);
-@@ -432,14 +429,12 @@ static int amlogic_spifc_a1_runtime_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif /* CONFIG_PM */
- 
- static const struct dev_pm_ops amlogic_spifc_a1_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(amlogic_spifc_a1_suspend,
--				amlogic_spifc_a1_resume)
--	SET_RUNTIME_PM_OPS(amlogic_spifc_a1_runtime_suspend,
--			   amlogic_spifc_a1_runtime_resume,
--			   NULL)
-+	SYSTEM_SLEEP_PM_OPS(amlogic_spifc_a1_suspend, amlogic_spifc_a1_resume)
-+	RUNTIME_PM_OPS(amlogic_spifc_a1_runtime_suspend,
-+		       amlogic_spifc_a1_runtime_resume,
-+		       NULL)
+ static const struct dev_pm_ops at91_usart_spi_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(at91_usart_spi_suspend, at91_usart_spi_resume)
++	SYSTEM_SLEEP_PM_OPS(at91_usart_spi_suspend, at91_usart_spi_resume)
  };
  
- #ifdef CONFIG_OF
-@@ -455,7 +450,7 @@ static struct platform_driver amlogic_spifc_a1_driver = {
- 	.driver	= {
- 		.name		= "amlogic-spifc-a1",
- 		.of_match_table	= of_match_ptr(amlogic_spifc_a1_dt_match),
--		.pm		= &amlogic_spifc_a1_pm_ops,
-+		.pm		= pm_ptr(&amlogic_spifc_a1_pm_ops),
+ static struct platform_driver at91_usart_spi_driver = {
+ 	.driver = {
+ 		.name = "at91_usart_spi",
+-		.pm = &at91_usart_spi_pm_ops,
++		.pm = pm_sleep_ptr(&at91_usart_spi_pm_ops),
  	},
- };
- module_platform_driver(amlogic_spifc_a1_driver);
+ 	.probe = at91_usart_spi_probe,
+ 	.remove = at91_usart_spi_remove,
 -- 
 2.53.0
 

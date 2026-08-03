@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A9441F7E9;
-	Mon,  3 Aug 2026 14:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797283932F9;
+	Mon,  3 Aug 2026 14:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768399; cv=none; b=uwO300wlICYYoAoBsqIX/mtHSJVb7eimEjfDk6Z74P5mt2kg8dvoInMYVvK/SGZSe+x0BMl+QroJTA0hsMPc85kzKYaamPgvIZmKsfd7qkE1U66x1G1Pm3QhqCUAvILfsTgUBHuNntA0gU3D6zS1OgxL2pGOrqavDlctAn3I5sU=
+	t=1785768409; cv=none; b=WF3aAy3fTqejwiAag+euaSrx+PEoEqKVb2DI7RpbsA4FM7AheOr/k4sCQGzE5bw0kvbSCldsB6gCxkO2UG2plVa0eHX2MfMlB6m6EUuFvrXg9xpk5mCBNPiNGN4xD68b9W2/6JbP0paZt44QS68uj7KnckAw5Jqn5HsjN2xGqco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768399; c=relaxed/simple;
-	bh=eVDYNxzibgGEnzdKlm5tkSAIZrnvBCygHRYmPVA9tmU=;
+	s=arc-20240116; t=1785768409; c=relaxed/simple;
+	bh=qGulrWSdVKRo+oGA8tzD/K6Jrdx7b00h11uK3yAic60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUbm8DKFN/VMVWN59thz4rfS5zWq26cdsB4YhV44JE3TRg+xmErE65ZsM2+k0QszHiuwwUxM/fBgO4I9WP/3AdYBs6xXpZj72I+4YmQb7WEsiIEYUbppKeJZbFWCHqIuE87/fvS1dEeKYAVXI0wHHSALEMH8XTbL3bJ/B9DGbVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9H/RQdX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=fYdNa9airxugWTRPj8P6vHjDzTOsf7gFeMa7xoHx9DRBWKiRw/jCkUTkgmiY2viKbYi8r+nuqLM8YfM1KHH/gndpVX3/a8N8jbjLvToxWKucfskbGZlGG24uY6qlHttuJY+5iHunLh0n8jYZbD3x2uALD6KvAS37ncLv4MReqrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laqBd3N5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9H/RQdX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514B61F00A3A;
-	Mon,  3 Aug 2026 14:46:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="laqBd3N5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458711F000E9;
+	Mon,  3 Aug 2026 14:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768397;
-	bh=M6KcyTYYdhKMb90eB7bE0t1c7687yortLmew/Ul/dm4=;
+	s=k20260515; t=1785768407;
+	bh=n6B911MUpU04sAyipsQMTPqrOspQmhlLZqXEs7dHirA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K9H/RQdXCRnqmyicFBdwcAhCDsoJRlBPSmc3DqSLuRiUF52ZdqpjV5mASbaTKBD7n
-	 j1am6pXzUirCpxOc37IppWJ+xBAPM9/6Y0B+7iMZ6H8SchaTjmbp5GXBGUKn7xWLz2
-	 JjLym+HjARhfQcYmDm02lMZbhXO8uWgKqsMpkWWUnFDTtivcMXt1y385jtOD5M1CT5
-	 l4qqiMShfRJzuLdZIOdu59Wy0H5rCpdo9nhDYSkTwENspARQpZXYSAuQ6CzXNXSjWg
-	 9U7Wm02Mul8Cyr4p7A1NfT7GztNZ9P0cXMSZZZqb0q6+b4nJ4AvzTmSj/WaIzoFQIO
-	 Nai8JKT5kyoGA==
+	b=laqBd3N5vPetI7kroNFcmZRkGkyjUH01GQfE37Im3g8KMDPVkaci1lbpTw05KwFFb
+	 IJBoqxW0I7dsmR9Dp+Z+2C8X2/R08zCMRLoGgatpxJWRRUce735BzGvPQt2DEYCwaA
+	 0UrfZYGldzZrjeNRxlrgyXmtz2n9/3jbbyMLY8K0e2SLjPnMhqa3E8BVAjsptEFJIF
+	 G8gBqLzaNGQ+yzlspE+mYoQbB9KwxGkr17A9lZJ39xT7/vkHdTnH9CCMr2LGvPOoEz
+	 noZanYgGGJlaYvSuLR3wFOH54odVjiDpmwy/PK1S2N1wqzCBFzFkkiwe4AMzhCYJl5
+	 i4q3+IF0KjhtQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 33/39] spi: syncuacer: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:57 +0800
-Message-ID: <20260803142003.12857-34-jszhang@kernel.org>
+Subject: [PATCH 34/39] spi: tegra114: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:58 +0800
+Message-ID: <20260803142003.12857-35-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,55 +90,56 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-synquacer.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-tegra114.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-synquacer.c b/drivers/spi/spi-synquacer.c
-index c14225e39fd1..6d0cd11637b5 100644
---- a/drivers/spi/spi-synquacer.c
-+++ b/drivers/spi/spi-synquacer.c
-@@ -738,7 +738,7 @@ static void synquacer_spi_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(sspi->clk);
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index aa44ffd09e61..333fb549214e 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1450,7 +1450,6 @@ static void tegra_spi_remove(struct platform_device *pdev)
+ 		tegra_spi_runtime_suspend(&pdev->dev);
  }
  
--static int __maybe_unused synquacer_spi_suspend(struct device *dev)
-+static int synquacer_spi_suspend(struct device *dev)
+-#ifdef CONFIG_PM_SLEEP
+ static int tegra_spi_suspend(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
-@@ -754,7 +754,7 @@ static int __maybe_unused synquacer_spi_suspend(struct device *dev)
- 	return ret;
- }
+@@ -1476,7 +1475,6 @@ static int tegra_spi_resume(struct device *dev)
  
--static int __maybe_unused synquacer_spi_resume(struct device *dev)
-+static int synquacer_spi_resume(struct device *dev)
+ 	return spi_controller_resume(host);
+ }
+-#endif
+ 
+ static int tegra_spi_runtime_suspend(struct device *dev)
  {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct synquacer_spi *sspi = spi_controller_get_devdata(host);
-@@ -786,8 +786,8 @@ static int __maybe_unused synquacer_spi_resume(struct device *dev)
- 	return ret;
+@@ -1505,14 +1503,14 @@ static int tegra_spi_runtime_resume(struct device *dev)
  }
  
--static SIMPLE_DEV_PM_OPS(synquacer_spi_pm_ops, synquacer_spi_suspend,
--			 synquacer_spi_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(synquacer_spi_pm_ops, synquacer_spi_suspend,
-+				synquacer_spi_resume);
- 
- static const struct of_device_id synquacer_spi_of_match[] = {
- 	{.compatible = "socionext,synquacer-spi"},
-@@ -806,7 +806,7 @@ MODULE_DEVICE_TABLE(acpi, synquacer_hsspi_acpi_ids);
- static struct platform_driver synquacer_spi_driver = {
+ static const struct dev_pm_ops tegra_spi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(tegra_spi_runtime_suspend,
+-		tegra_spi_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(tegra_spi_suspend, tegra_spi_resume)
++	RUNTIME_PM_OPS(tegra_spi_runtime_suspend,
++		       tegra_spi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(tegra_spi_suspend, tegra_spi_resume)
+ };
+ static struct platform_driver tegra_spi_driver = {
  	.driver = {
- 		.name = "synquacer-spi",
--		.pm = &synquacer_spi_pm_ops,
-+		.pm = pm_sleep_ptr(&synquacer_spi_pm_ops),
- 		.of_match_table = synquacer_spi_of_match,
- 		.acpi_match_table = ACPI_PTR(synquacer_hsspi_acpi_ids),
+ 		.name		= "spi-tegra114",
+-		.pm		= &tegra_spi_pm_ops,
++		.pm		= pm_ptr(&tegra_spi_pm_ops),
+ 		.of_match_table	= tegra_spi_of_match,
  	},
+ 	.probe =	tegra_spi_probe,
 -- 
 2.53.0
 

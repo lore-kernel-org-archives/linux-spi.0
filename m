@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5F840E8E7;
-	Mon,  3 Aug 2026 14:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BCF40F75D;
+	Mon,  3 Aug 2026 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768060; cv=none; b=ewTl1UQJfuYlO3+wdwyqmNJN19MX+CmORNmcazJVs73qg8GIeYERr6L8C1vl1yzT+DK/pE4CJbeGgYamXAOq23z7Cn8QZiq6xQ5m6QVkS4dlxPzfMLolIRrVTdEPLstGCHFwxhw460sczNopQ3zimzMxXRz7kaSChZnWWNMinKo=
+	t=1785768071; cv=none; b=c2faOakhpNTpB+NrL1XlpWYWmQqCy68HhQKmaGxeB4ZLRM1WZyRmXbDbVaeXLohBAPFm68xZiukcux3JNnjGn2T0RG6yRmirHit7L7t9nvhgGvZ8uRtrxZAOZHKFbfrD1TPpoH+43de4EotyGsSSzf4DyfQZrmyapj1GytvCRGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768060; c=relaxed/simple;
-	bh=PGAoRXoN0hyS54Lr9Rc8E3c+eY5oWMkvJfeVcCjTjho=;
+	s=arc-20240116; t=1785768071; c=relaxed/simple;
+	bh=8XMGcf4hqA37XtV1JFhfvIHAKpWdPrJl0mhUxOEJTgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3Q9LORmdX8kIekNWTyBC068oqJ5Gyg89e06naAYALhcZiowsJol0vQ28oN17Oo4yTZi7BrC6dBkhmoLpGAVp8CC8DeCoUacRUbmOf9sFVekm0d21wz/RSDIGB/iK12XqOHGBWtT/X3A+CLIRjr6aKTTyW4TQEDXQaESOFFrQRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctWWWFFn; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=sIJvQkgIeU0tbrg3jfwtfNxZ8UREZXMCe8HxzbxOs+G3bIUbkV66mgAUwD+Mjv5VW6O8G03ZgxoqBagychm4DC5qC5PH/OIi41ldM1YaSpCI00i1DvZd5qVKy+S6IFuzY1VmE7bcrWqbGYqjz2YK8lDue+AD2CIT1YRx5pKL1eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeljzgWe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctWWWFFn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933C91F000E9;
-	Mon,  3 Aug 2026 14:40:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeljzgWe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F15E1F00A3A;
+	Mon,  3 Aug 2026 14:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768058;
-	bh=FErana6KyfLoG+9M15o1hw3+E0XT2WYvRc8tNlGG7O0=;
+	s=k20260515; t=1785768070;
+	bh=oIrju3YJXP0D6mBAvc98/Vs2ufAIvXkeUIskpU98D7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ctWWWFFnrwmypgMYWcxzJFo5TtsX6EMIUzsSXQXSHM0O9KZ/jg10h8NvvP0WaRdml
-	 W2G56FZfmg3ex0ZUNrwaOMXBVsoksqdS0ZMb8fjNyINFRo2nQCxvf2PEYEkLc/L39+
-	 NuZs3efWumZ/c40m43kfwHiKpa2A7pglgKMQgBWzuDzOi5RTyzpgBPuB8/ZdLDwIpy
-	 RmcoG5msJuoXlDHlLnajejsnh3kUbc0BswKSC3hHX7H0yLBFP5m5JtFpF0pZsEvTXo
-	 x6qNE6bGzKxeQ7FZ9/aOh1erx6tFuNk8k61XZKDnrCgNAhz3fzA72GZH9bs9XGdG0G
-	 NtX63Hb20lddw==
+	b=VeljzgWeF9lfqns1Cu7UtJkRkwXLD1EGFMt6lP31jhUrOkrCcedmVkouA+akmotpV
+	 qMmQ60EqBvEmJ1dTRCV5Nc5CM+2llVFiDEPzekqfd4AWE2rIbjQJOjTZ4F0X4UEFJr
+	 sDQbPLdB2QV1vwBYTM+wkiEs13COu3H3A7BxB6CGDG0kg2G+modaIj5AJWhrA7tI/I
+	 0Vh81ZXkbfXPQQmsp9A5hRdU2KQDthn8BUqgpW1y4i/kDyYt9wF4kdo+2op7yGDTNj
+	 b116t4qlEKEAJkEq+nbna3Y/nfeBhnYUKMgg70OBFFhOZjnl0wFVDPp7ra6V2V1in5
+	 Cxvbc3HeP6CSQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 05/39] spi: bcm-qspi: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:29 +0800
-Message-ID: <20260803142003.12857-6-jszhang@kernel.org>
+Subject: [PATCH 06/39] spi: bcm63xx-hsspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:30 +0800
+Message-ID: <20260803142003.12857-7-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,72 +90,51 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-bcm-qspi.c     | 6 +++---
- drivers/spi/spi-brcmstb-qspi.c | 2 +-
- drivers/spi/spi-iproc-qspi.c   | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index dcade7b99cef..0db24fe7a109 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -1689,7 +1689,7 @@ void bcm_qspi_remove(struct platform_device *pdev)
- /* function to be called by SoC specific platform driver remove() */
- EXPORT_SYMBOL_GPL(bcm_qspi_remove);
- 
--static int __maybe_unused bcm_qspi_suspend(struct device *dev)
-+static int bcm_qspi_suspend(struct device *dev)
- {
- 	struct bcm_qspi *qspi = dev_get_drvdata(dev);
- 
-@@ -1705,7 +1705,7 @@ static int __maybe_unused bcm_qspi_suspend(struct device *dev)
- 	return 0;
- };
- 
--static int __maybe_unused bcm_qspi_resume(struct device *dev)
-+static int bcm_qspi_resume(struct device *dev)
- {
- 	struct bcm_qspi *qspi = dev_get_drvdata(dev);
- 	int ret = 0;
-@@ -1724,7 +1724,7 @@ static int __maybe_unused bcm_qspi_resume(struct device *dev)
- 	return ret;
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 58012e1b5ae7..ca6cf7c19835 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -884,7 +884,6 @@ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcm63xx_hsspi_group);
  }
  
--SIMPLE_DEV_PM_OPS(bcm_qspi_pm_ops, bcm_qspi_suspend, bcm_qspi_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(bcm_qspi_pm_ops, bcm_qspi_suspend, bcm_qspi_resume);
+-#ifdef CONFIG_PM_SLEEP
+ static int bcm63xx_hsspi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+@@ -919,10 +918,9 @@ static int bcm63xx_hsspi_resume(struct device *dev)
  
- /* pm_ops to be called by SoC specific platform driver */
- EXPORT_SYMBOL_GPL(bcm_qspi_pm_ops);
-diff --git a/drivers/spi/spi-brcmstb-qspi.c b/drivers/spi/spi-brcmstb-qspi.c
-index 7a33b479c1f7..651a73446cff 100644
---- a/drivers/spi/spi-brcmstb-qspi.c
-+++ b/drivers/spi/spi-brcmstb-qspi.c
-@@ -31,7 +31,7 @@ static struct platform_driver brcmstb_qspi_driver = {
- 	.remove			= brcmstb_qspi_remove,
+ 	return 0;
+ }
+-#endif
+ 
+-static SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
+-			 bcm63xx_hsspi_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
++				bcm63xx_hsspi_resume);
+ 
+ static const struct of_device_id bcm63xx_hsspi_of_match[] = {
+ 	{ .compatible = "brcm,bcm6328-hsspi", },
+@@ -934,7 +932,7 @@ MODULE_DEVICE_TABLE(of, bcm63xx_hsspi_of_match);
+ static struct platform_driver bcm63xx_hsspi_driver = {
  	.driver = {
- 		.name		= "brcmstb_qspi",
--		.pm		= &bcm_qspi_pm_ops,
-+		.pm		= pm_sleep_ptr(&bcm_qspi_pm_ops),
- 		.of_match_table = brcmstb_qspi_of_match,
- 	}
- };
-diff --git a/drivers/spi/spi-iproc-qspi.c b/drivers/spi/spi-iproc-qspi.c
-index 392acc4026ab..5255d5124385 100644
---- a/drivers/spi/spi-iproc-qspi.c
-+++ b/drivers/spi/spi-iproc-qspi.c
-@@ -141,7 +141,7 @@ static struct platform_driver bcm_iproc_driver = {
- 	.remove			= bcm_iproc_remove,
- 	.driver = {
- 		.name		= "bcm_iproc",
--		.pm		= &bcm_qspi_pm_ops,
-+		.pm		= pm_sleep_ptr(&bcm_qspi_pm_ops),
- 		.of_match_table = bcm_iproc_of_match,
- 	}
- };
+ 		.name	= "bcm63xx-hsspi",
+-		.pm	= &bcm63xx_hsspi_pm_ops,
++		.pm	= pm_sleep_ptr(&bcm63xx_hsspi_pm_ops),
+ 		.of_match_table = bcm63xx_hsspi_of_match,
+ 	},
+ 	.probe		= bcm63xx_hsspi_probe,
 -- 
 2.53.0
 

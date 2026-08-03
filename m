@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220E533B966;
-	Mon,  3 Aug 2026 14:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422040DB47;
+	Mon,  3 Aug 2026 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768121; cv=none; b=l1vq+6zcbXz0cevJNc3agqv7bApV+/Xu6x1hoeqYpWrydCfERIl7cyNpZb91sSOXJqsravo+wYdyj9k5/ZWj3rcGDqG/zcA9cvNsxqBzs7asfH6VQKwalm4UgKfu+9Blwp7HF9dY9zuyeAMQkzetAwgCQn+DAGY03Gmx4l0eRvU=
+	t=1785768133; cv=none; b=S063ieMOCjkuMe0iIPH1DIl04LidIrFnOZiiCnQMS2wcZuoYShPms1JBzbnsN16oz8ZNS+wzcTcmm7R7t3P+s26+Omi8OCiuplaVyj8xb98/fIdaG5Un1hNgvsIsjh03icl1rRQ/IAm6jsTLjYvBLp9LBGtMAjxqz7C0RNcbkAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768121; c=relaxed/simple;
-	bh=1wd+C6cKWSo6dzRaHPjd4tZ420rBctZI2BavERGy3oI=;
+	s=arc-20240116; t=1785768133; c=relaxed/simple;
+	bh=zENYT5DzrS8BJScxKJ1eXzPGAS9tDYUtGL7IBMZyKm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYNFXooHc8YebLVBut6S9XqkZsJnzl/UGnP3S49sCbaZoyS23Dv8f9+oxBUlnWzAx7uVpKqXJuD+sSmBG2ZrXdbGfgc3tHkHvPtKFq9HiiWjYubdr2PAUpy2VuO5GDaoCGAmlnpDMEnMhK5aUuSiBfo6mT4bc79Cl8DK4CJ82+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YXPZVPib; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=MDcu9sN2B/S5tLWzKBqLZAk2bV4M6+HDt805McEcUzJWhrViMIYsFdG282DQQRa9wYfg0vp9c+i8RKsYKfa/dhzrq3DpBpqQC6E7c3AD2Gaim2+F4oQBaL80inKnR9nnn0KWKla7DmU59GlC98LDtba2I1cY/s66wMD62jAopc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6GckL2+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YXPZVPib"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1921F00A3D;
-	Mon,  3 Aug 2026 14:41:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6GckL2+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8551F000E9;
+	Mon,  3 Aug 2026 14:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768119;
-	bh=nwXyZFKSpehk0+5nBqQkijz+4Lthn5Q3qCLKD5iQ6D0=;
+	s=k20260515; t=1785768132;
+	bh=7RCVfL8Urn36uGNhjYgoVgTOFCNUrI39Z/L69BlIOVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YXPZVPiba0MM0l+dBNlq6FZzsCYfKNT/Xf/ohaVI2I0fqk+H28B+AvHOt2yKSigpx
-	 mn2RiOVVH4Y0II8nZguX3XlEjX/dsXOxXEmcLadpbKX43OLIgpC3qhWC9buOAG9mfD
-	 /I/m99+rbMmF8U/cBcap/CMtowrrLVesBtmI2zzyDHvlyeiQm1ZJrp93yHBmXs/con
-	 yKrZnvyT2NucCV8EhBu9iIPVl/CMhxdc7RoBVI3QT9XO9ndFEo6OX/DWgi6TtILUaX
-	 B/lETaA6Zy+nW7eAf64B7Q9/sksQy1bkYT+kaFMB0F1WUQqJDytKigIRq7RJnOSnlK
-	 q951pAGsyuhaA==
+	b=F6GckL2+gQYCe0GKb7Ch2/FYD4wS9CU3Do7nHwqd3tmmwiWemXCzBqisEZxZrHjdZ
+	 r97U0OpcklaJLYnOTrsdub+Upgi+GHz09naK0ynF5LZo31jGQHgrPFQ70rKoKFJkgW
+	 EaAUh3bOFDkMEadvMAPXo85zR7n7UFXLfPDOwRtLxJ5BBF/LmJhON9OZxE19FuyaKf
+	 ZPaa9im75e0OipwvgxPLNQkrZBnPQUM+q0Sq/Y5J5OlR5EnbEZtkMmVyD9rAoDBstf
+	 tNgb0hQTdfQyf6SLoCV2icyONX6cu43wGDSvLr4gzZ+uhI5/K+eRDq0DZuqyYaDqlt
+	 KY2pCsM1m0gUA==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 10/39] spi: dln2: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:34 +0800
-Message-ID: <20260803142003.12857-11-jszhang@kernel.org>
+Subject: [PATCH 11/39] spi: dw-pci: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:35 +0800
+Message-ID: <20260803142003.12857-12-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -98,53 +98,41 @@ regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-dln2.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/spi/spi-dw-pci.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-dln2.c b/drivers/spi/spi-dln2.c
-index 8333dda7d1e8..60085ed04a06 100644
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -787,7 +787,6 @@ static void dln2_spi_remove(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "Failed to disable SPI module\n");
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index bfb874f96a26..2f3bea51f1e6 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -154,7 +154,6 @@ static void dw_spi_pci_remove(struct pci_dev *pdev)
+ 	dw_spi_remove_controller(dws);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int dln2_spi_suspend(struct device *dev)
+ static int dw_spi_pci_suspend(struct device *dev)
  {
- 	int ret;
-@@ -834,9 +833,7 @@ static int dln2_spi_resume(struct device *dev)
+ 	struct dw_spi *dws = dev_get_drvdata(dev);
+@@ -168,9 +167,8 @@ static int dw_spi_pci_resume(struct device *dev)
  
- 	return spi_controller_resume(host);
+ 	return dw_spi_resume_controller(dws);
  }
--#endif /* CONFIG_PM_SLEEP */
+-#endif
  
--#ifdef CONFIG_PM
- static int dln2_spi_runtime_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -852,18 +849,16 @@ static int dln2_spi_runtime_resume(struct device *dev)
+-static SIMPLE_DEV_PM_OPS(dw_spi_pci_pm_ops, dw_spi_pci_suspend, dw_spi_pci_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(dw_spi_pci_pm_ops, dw_spi_pci_suspend, dw_spi_pci_resume);
  
- 	return  dln2_spi_enable(dln2, true);
- }
--#endif /* CONFIG_PM */
- 
- static const struct dev_pm_ops dln2_spi_pm = {
--	SET_SYSTEM_SLEEP_PM_OPS(dln2_spi_suspend, dln2_spi_resume)
--	SET_RUNTIME_PM_OPS(dln2_spi_runtime_suspend,
--			   dln2_spi_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(dln2_spi_suspend, dln2_spi_resume)
-+	RUNTIME_PM_OPS(dln2_spi_runtime_suspend, dln2_spi_runtime_resume, NULL)
- };
- 
- static struct platform_driver spi_dln2_driver = {
- 	.driver = {
- 		.name	= "dln2-spi",
--		.pm	= &dln2_spi_pm,
-+		.pm	= pm_ptr(&dln2_spi_pm),
+ static const struct pci_device_id dw_spi_pci_ids[] = {
+ 	/* Intel MID platform SPI controller 0 */
+@@ -197,7 +195,7 @@ static struct pci_driver dw_spi_pci_driver = {
+ 	.probe =	dw_spi_pci_probe,
+ 	.remove =	dw_spi_pci_remove,
+ 	.driver         = {
+-		.pm     = &dw_spi_pci_pm_ops,
++		.pm     = pm_sleep_ptr(&dw_spi_pci_pm_ops),
  	},
- 	.probe		= dln2_spi_probe,
- 	.remove		= dln2_spi_remove,
+ };
+ module_pci_driver(dw_spi_pci_driver);
 -- 
 2.53.0
 

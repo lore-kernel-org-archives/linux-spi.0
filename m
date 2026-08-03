@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551A83E1693;
-	Mon,  3 Aug 2026 14:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D583267B07;
+	Mon,  3 Aug 2026 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768437; cv=none; b=jw5v6BQKx07ctPqNcyi21Z1kdv8m1pXYh9pBFraZOvRmvY8Cu5SMYtIOBKWRC3UsuhExRaVavWD1Bo51EdYEzskdtBHWlwBA8GIhMTeXWoo5e/UQcj1TpgGsK5waGISOQHVNGnv2Mjn4HQFtpbd9m6+02LSIcFmhq+jMIouQE+w=
+	t=1785768446; cv=none; b=owuiZLWXSWjK6cLCPcEdJYx5PIVY7YQGJmzGZbU2+9B3NNueYb2Q5+4H5ogQIMuj+VrcSYdKAOb3+DQ4TgTVKj7NPZf1aUELq2cgQBGZwhIwzz1ilq1OXAXt2eDa+VdiD6/cZh/Vke+FwpyFSbx6GwdrZ8drZ0moqP3hhaHlCGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768437; c=relaxed/simple;
-	bh=uclEmFxV03jriluxmcY89G7LolTTF7FzDhkDAFfCBaA=;
+	s=arc-20240116; t=1785768446; c=relaxed/simple;
+	bh=OP4yhx7wZia7YCXeLoQEJ3Imk8DGC1p0azH81HLrnh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYSNmfqWGy3SZlwrLNzukw/XSGeXfgQ7jYYj0nkXYo+TsWjDrbYIOykXuqPfQKgT3SeEGBv+dfL2KMIGQeelw9zXjXinWssoPEHn5Xj9RHTjwUSkKC0UBNNQj5KC6tU1hDkPQsvYH7HEPWJM6Nm6IEMUsX9x+x6SVqFtfM8ZIMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8afrLM0; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=mn5a7yefiJzxyTqUtJ9P7eXFkpW31hSO48wRVXqK26vsRd8mghoxHGiO4fM49JMxWGyMnzj1ybxhkjD/9SnhSqKfqguDFB9aHbl377ihfntMvnk4rHKdCb2Xlxt3OAt2uCgoBajpRWPZvP5Y+ORfwqGbpfCSpdawo8BQtD78Ef0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JN+o+baV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8afrLM0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B54A1F000E9;
-	Mon,  3 Aug 2026 14:47:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JN+o+baV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA321F00A3A;
+	Mon,  3 Aug 2026 14:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768436;
-	bh=6NkiNvgbgYuE5f4JQ+Ko6GUV8Jy8D2RlfkfEKUf2PDs=;
+	s=k20260515; t=1785768445;
+	bh=Mo+WbYK0qfnbpg3vk5MVhQ1BxW8zq7G90SRaL0JyLX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K8afrLM0szciqnFhbEHQXQWkmd2S0ITwg0QdarhEepDiZHQr2HOAJCd+ZDh/Aju3P
-	 3lYreLmtYDHjiPyTd+Ds/W3oPHLterDG4mBpqyr4wZgXN9peiAa8IfhOi5YxNZu3UW
-	 YjhLM6Z+sqHCVlOHkT7uXDhcRxPwLddFQ0PaIEha+q91KYxKW28+DrnyWiALGBK1E3
-	 gdPZL4oVgcOsO6b80fnZp/9pfMS2yoW2yXXtgk1x1njtkFlk/3NiBkgCWdhb3oyWJA
-	 o89LEqB3VIbRik2m11jnXgHw606Ntet88RqJ9/Y0HIwjG2blmCGEogS1aYXAfbNZtJ
-	 DF+48dnHOOWyA==
+	b=JN+o+baVU/qosAsXKlbdV/gjb99HAu91oaUADIOH2LpRCjTYfsecT9mGwQmX1uBeu
+	 1+uOCt6DfHZ6yFv46yNUuIMUfRf5y08/+rQO6/veoMA51d70hpCBOmSBgUUJgYR8o0
+	 SkaMb1ZfnenpiXTLq25sZqA4GQdx1j9WeQawyBTZxKIRdHnCaocRq4S7L2NO7jeOj9
+	 bYHWZujqU9nFWQpsBTdpOPibUUOns2rHW8wR2++OIyqCHoGboYkBVPe983a4ZkcNgA
+	 tl+3QJ8jAH7IPiat6pGoDD6quAh4kN0XqweMGM4BoSgFeLQ1kQze2yTZG/UpUFib5H
+	 8uCAzssAVSyyg==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 36/39] spi: tegra20-slink: use modern PM macros
-Date: Mon,  3 Aug 2026 22:20:00 +0800
-Message-ID: <20260803142003.12857-37-jszhang@kernel.org>
+Subject: [PATCH 37/39] spi: tegra210-quad: use modern PM macros
+Date: Mon,  3 Aug 2026 22:20:01 +0800
+Message-ID: <20260803142003.12857-38-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,69 +90,70 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards or
-__maybe_unused.
-
-This has the advantage of always compiling these functions in,
-independently of any Kconfig option. Thanks to that, bugs and other
-regressions are subsequently easier to catch.
+CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-tegra20-slink.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index c15c076295cd..ed1fcf57dd30 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1144,7 +1144,6 @@ static void tegra_slink_remove(struct platform_device *pdev)
- 		tegra_slink_deinit_dma_param(tspi, true);
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 588a929a9785..8ede864c3d3c 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1837,14 +1837,14 @@ static void tegra_qspi_remove(struct platform_device *pdev)
+ 	tegra_qspi_deinit_dma(tqspi);
  }
  
--#ifdef CONFIG_PM_SLEEP
- static int tegra_slink_suspend(struct device *dev)
+-static int __maybe_unused tegra_qspi_suspend(struct device *dev)
++static int tegra_qspi_suspend(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -1169,9 +1168,8 @@ static int tegra_slink_resume(struct device *dev)
  
+ 	return spi_controller_suspend(host);
+ }
+ 
+-static int __maybe_unused tegra_qspi_resume(struct device *dev)
++static int tegra_qspi_resume(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
+@@ -1863,7 +1863,7 @@ static int __maybe_unused tegra_qspi_resume(struct device *dev)
  	return spi_controller_resume(host);
  }
--#endif
  
--static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
-+static int tegra_slink_runtime_suspend(struct device *dev)
+-static int __maybe_unused tegra_qspi_runtime_suspend(struct device *dev)
++static int tegra_qspi_runtime_suspend(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
-@@ -1183,7 +1181,7 @@ static int __maybe_unused tegra_slink_runtime_suspend(struct device *dev)
+ 	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
+@@ -1879,7 +1879,7 @@ static int __maybe_unused tegra_qspi_runtime_suspend(struct device *dev)
  	return 0;
  }
  
--static int __maybe_unused tegra_slink_runtime_resume(struct device *dev)
-+static int tegra_slink_runtime_resume(struct device *dev)
+-static int __maybe_unused tegra_qspi_runtime_resume(struct device *dev)
++static int tegra_qspi_runtime_resume(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct tegra_slink_data *tspi = spi_controller_get_devdata(host);
-@@ -1198,14 +1196,14 @@ static int __maybe_unused tegra_slink_runtime_resume(struct device *dev)
+ 	struct tegra_qspi *tqspi = spi_controller_get_devdata(host);
+@@ -1896,14 +1896,14 @@ static int __maybe_unused tegra_qspi_runtime_resume(struct device *dev)
  }
  
- static const struct dev_pm_ops slink_pm_ops = {
--	SET_RUNTIME_PM_OPS(tegra_slink_runtime_suspend,
--		tegra_slink_runtime_resume, NULL)
--	SET_SYSTEM_SLEEP_PM_OPS(tegra_slink_suspend, tegra_slink_resume)
-+	RUNTIME_PM_OPS(tegra_slink_runtime_suspend,
-+		       tegra_slink_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(tegra_slink_suspend, tegra_slink_resume)
+ static const struct dev_pm_ops tegra_qspi_pm_ops = {
+-	SET_RUNTIME_PM_OPS(tegra_qspi_runtime_suspend, tegra_qspi_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(tegra_qspi_suspend, tegra_qspi_resume)
++	RUNTIME_PM_OPS(tegra_qspi_runtime_suspend, tegra_qspi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(tegra_qspi_suspend, tegra_qspi_resume)
  };
- static struct platform_driver tegra_slink_driver = {
+ 
+ static struct platform_driver tegra_qspi_driver = {
  	.driver = {
- 		.name		= "spi-tegra-slink",
--		.pm		= &slink_pm_ops,
-+		.pm		= pm_ptr(&slink_pm_ops),
- 		.of_match_table	= tegra_slink_of_match,
+ 		.name		= "tegra-qspi",
+-		.pm		= &tegra_qspi_pm_ops,
++		.pm		= pm_ptr(&tegra_qspi_pm_ops),
+ 		.of_match_table	= tegra_qspi_of_match,
+ 		.acpi_match_table = ACPI_PTR(tegra_qspi_acpi_match),
  	},
- 	.probe =	tegra_slink_probe,
 -- 
 2.53.0
 

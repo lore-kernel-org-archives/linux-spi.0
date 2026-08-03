@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BCF40F75D;
-	Mon,  3 Aug 2026 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891B340E8E7;
+	Mon,  3 Aug 2026 14:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768071; cv=none; b=c2faOakhpNTpB+NrL1XlpWYWmQqCy68HhQKmaGxeB4ZLRM1WZyRmXbDbVaeXLohBAPFm68xZiukcux3JNnjGn2T0RG6yRmirHit7L7t9nvhgGvZ8uRtrxZAOZHKFbfrD1TPpoH+43de4EotyGsSSzf4DyfQZrmyapj1GytvCRGE=
+	t=1785768082; cv=none; b=RqfgLrfv74YKClzFbuVvtCJ5b4yPZSV5uz9ZqkSUKUrDjbcxFF7QjG/VxPvtcuVwC1enUGQuYt1Cmjc3xMh6W0Mabj1BX+q9lCZbEyCfB4nkY9/gzhS5+Gw8RQu6CcYdYQOSPkFsAm0xjK9nSWb4Ks1T8eeMY4DfQEJ3e9Dy2ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768071; c=relaxed/simple;
-	bh=8XMGcf4hqA37XtV1JFhfvIHAKpWdPrJl0mhUxOEJTgU=;
+	s=arc-20240116; t=1785768082; c=relaxed/simple;
+	bh=1rRNGmFC+phyVnpsF/RZ2gxLxly4iuZul4MaBmj+rJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIJvQkgIeU0tbrg3jfwtfNxZ8UREZXMCe8HxzbxOs+G3bIUbkV66mgAUwD+Mjv5VW6O8G03ZgxoqBagychm4DC5qC5PH/OIi41ldM1YaSpCI00i1DvZd5qVKy+S6IFuzY1VmE7bcrWqbGYqjz2YK8lDue+AD2CIT1YRx5pKL1eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VeljzgWe; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=t4xJYq3xfyK6TUSuQGUqjSScdme2qZwnruuZBEXbf7qhKvscw1DwK9H9R4Jpmk36OnTSq0lFhnJVF3uztPu8izyZkYSa21OTwYHGeA21MzfMX7DglqMoi4Lq9/+ZC8kl53s+iuxW1Z4oq/VlaZnvPek0UaHwhoRHwBDAk95kUYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5MXt0h0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VeljzgWe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F15E1F00A3A;
-	Mon,  3 Aug 2026 14:40:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5MXt0h0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FF81F000E9;
+	Mon,  3 Aug 2026 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768070;
-	bh=oIrju3YJXP0D6mBAvc98/Vs2ufAIvXkeUIskpU98D7w=;
+	s=k20260515; t=1785768081;
+	bh=4kKTt8aTkXsYE6TUcGdMGQEvWc7I+G4sEwM6xHPmeM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VeljzgWeF9lfqns1Cu7UtJkRkwXLD1EGFMt6lP31jhUrOkrCcedmVkouA+akmotpV
-	 qMmQ60EqBvEmJ1dTRCV5Nc5CM+2llVFiDEPzekqfd4AWE2rIbjQJOjTZ4F0X4UEFJr
-	 sDQbPLdB2QV1vwBYTM+wkiEs13COu3H3A7BxB6CGDG0kg2G+modaIj5AJWhrA7tI/I
-	 0Vh81ZXkbfXPQQmsp9A5hRdU2KQDthn8BUqgpW1y4i/kDyYt9wF4kdo+2op7yGDTNj
-	 b116t4qlEKEAJkEq+nbna3Y/nfeBhnYUKMgg70OBFFhOZjnl0wFVDPp7ra6V2V1in5
-	 Cxvbc3HeP6CSQ==
+	b=O5MXt0h0aTm9O9hWUSNVLaXpD2kB/Xwnc0z7aJfFqku+7qFIqOY0NgqAANgOvHcYy
+	 37V8mZaazE1Vmoi6RJJMSprbeo1hBYT/b7SibDTH6HYCc4dLUzAjZsfPw4zH3lcEYO
+	 JPtTAJu0CZxeA/bv/dJgMIkB5OJwrSJjEzzMi5KxxDiSB7kRbkvWHpsAHYlIItBob8
+	 Q8BJz1I2cRScr58CE+fdIHZ8EgXc/Ta2YT3gQiHsHZ+JJR6f5PGDsmbxs9bOu5Mk53
+	 dk8+RBp6k83uiiHOjrUgZbHnvEH9oywZu0BKBr5JikfJgTb4PSxcDw8NfoL42ZpdZM
+	 ioqI8V5M+Vi3g==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 06/39] spi: bcm63xx-hsspi: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:30 +0800
-Message-ID: <20260803142003.12857-7-jszhang@kernel.org>
+Subject: [PATCH 07/39] spi: bcmbca-hsspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:31 +0800
+Message-ID: <20260803142003.12857-8-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -98,43 +98,43 @@ regressions are subsequently easier to catch.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 8 +++-----
+ drivers/spi/spi-bcmbca-hsspi.c | 8 +++-----
  1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 58012e1b5ae7..ca6cf7c19835 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -884,7 +884,6 @@ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
- 	sysfs_remove_group(&pdev->dev.kobj, &bcm63xx_hsspi_group);
+diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
+index 09c1472ae4fa..570ea635ab0c 100644
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -563,7 +563,6 @@ static void bcmbca_hsspi_remove(struct platform_device *pdev)
+ 	sysfs_remove_group(&pdev->dev.kobj, &bcmbca_hsspi_group);
  }
  
 -#ifdef CONFIG_PM_SLEEP
- static int bcm63xx_hsspi_suspend(struct device *dev)
+ static int bcmbca_hsspi_suspend(struct device *dev)
  {
  	struct spi_controller *host = dev_get_drvdata(dev);
-@@ -919,10 +918,9 @@ static int bcm63xx_hsspi_resume(struct device *dev)
+@@ -598,10 +597,9 @@ static int bcmbca_hsspi_resume(struct device *dev)
  
  	return 0;
  }
 -#endif
  
--static SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
--			 bcm63xx_hsspi_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(bcm63xx_hsspi_pm_ops, bcm63xx_hsspi_suspend,
-+				bcm63xx_hsspi_resume);
+-static SIMPLE_DEV_PM_OPS(bcmbca_hsspi_pm_ops, bcmbca_hsspi_suspend,
+-			 bcmbca_hsspi_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(bcmbca_hsspi_pm_ops, bcmbca_hsspi_suspend,
++				bcmbca_hsspi_resume);
  
- static const struct of_device_id bcm63xx_hsspi_of_match[] = {
- 	{ .compatible = "brcm,bcm6328-hsspi", },
-@@ -934,7 +932,7 @@ MODULE_DEVICE_TABLE(of, bcm63xx_hsspi_of_match);
- static struct platform_driver bcm63xx_hsspi_driver = {
+ static const struct of_device_id bcmbca_hsspi_of_match[] = {
+ 	{ .compatible = "brcm,bcmbca-hsspi-v1.1", },
+@@ -613,7 +611,7 @@ MODULE_DEVICE_TABLE(of, bcmbca_hsspi_of_match);
+ static struct platform_driver bcmbca_hsspi_driver = {
  	.driver = {
- 		.name	= "bcm63xx-hsspi",
--		.pm	= &bcm63xx_hsspi_pm_ops,
-+		.pm	= pm_sleep_ptr(&bcm63xx_hsspi_pm_ops),
- 		.of_match_table = bcm63xx_hsspi_of_match,
- 	},
- 	.probe		= bcm63xx_hsspi_probe,
+ 		   .name = "bcmbca-hsspi",
+-		   .pm = &bcmbca_hsspi_pm_ops,
++		   .pm = pm_sleep_ptr(&bcmbca_hsspi_pm_ops),
+ 		   .of_match_table = bcmbca_hsspi_of_match,
+ 		   },
+ 	.probe = bcmbca_hsspi_probe,
 -- 
 2.53.0
 

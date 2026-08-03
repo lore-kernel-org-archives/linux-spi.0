@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1635D42122B;
-	Mon,  3 Aug 2026 14:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143640DB46;
+	Mon,  3 Aug 2026 14:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785768290; cv=none; b=uCzJZZdbYeSWKDf/bVefOYtg8oOqe7IW0l/9LqkJ0gEkE0vbCHeBjsvKipcTMseumrWmUh2oiTmep1/YLf2MlTBw18/xoBMQ6zPZU8G54TRgsIEskjezC9987kiL0CQisUhneSDowqoZt97fvRuNpuHpKOpx0bMvbgJy2jrKmQM=
+	t=1785768299; cv=none; b=X+KiR85f2ZF4FBpDuotL8iDe9rrG84r1GwGNbN9OT6fp6PAMgznH5cLYtj7aWFaICEzpXSzn6mnBg4/hX9wLO+F9vrFNu5+lOmTaaN9VOKNPMeGUwlbzhldxBwhlpLgf62nJc1jigW4p1Wdd2SuZuiK5ygGho/3v1AZlIyHr+9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785768290; c=relaxed/simple;
-	bh=hYzhGLxgD9w7IbZFWF/gsM2g6Bjy4QmH6doHcS1NlDc=;
+	s=arc-20240116; t=1785768299; c=relaxed/simple;
+	bh=UNSKTuRmiOEsmMGigBwqUvq7f/+uzz/d1bv+ZEdBJwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yeonv9uR5EN+SlOzjnDF4JhNh50eJP6fHTcIxzRJWYBKDuLj4FJM+SaGHYTE6OzXU6+pvHRnIuloMT3y/g1l79z3cuK36D/U7CTZZ6HR3JrulcTnkIEtLKW/t9p76lajTEOmRIVdmkvl9DgQYegylOS8sibea+C1Ze7drtBN66s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpQT0iHX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=euVC0MeuCqqp7EWJ0BkLse9vcf8e2xBYQeoJB3+sNz0n5HdCbJzNPl+sXbaZhCBTzLBxoMPuGBy9S0mPjPnLOSnpC5bxD1W7XuLD+kzaCVr4JotTiTC0+cLT6OI3ea6H//VEXL9dOExz5xTLZS3vqhOz1hfWl0pJjFTPNo/uQK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FguBdYtO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpQT0iHX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6434B1F000E9;
-	Mon,  3 Aug 2026 14:44:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FguBdYtO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684681F00A3D;
+	Mon,  3 Aug 2026 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785768289;
-	bh=qy56uKywTC/l6VJWha0vrsN0jl56R/p44DX7cb65BIE=;
+	s=k20260515; t=1785768298;
+	bh=y/BAOdQjaKVdNWLZgzpeRkbbNiAISlSOmcwNyY7cYho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=YpQT0iHXQKfps7LyHkx3qAqVwoBah4JHtspAQ8zIrCB/hRwYVRv1H4ByaqiQio9sQ
-	 9Wxb9Zh1KcvXmsIVnOF22fxsY3+7+7nWTMMjxmg+o556UjCwYmloY2AdOjBd9GQ7Pb
-	 efK39my8hA+tE2EtW+p1lXZkKbwQ3R00j5nwnu6BX6+7jP3IFIbC9OgGwlHttsj39V
-	 jJXwXN6oIgP/zuYWUSSFD7pk1gi3Ecrl6yS6nkERKvhEgaWGG7lNNFNePnVicbDDzI
-	 BJD1MIL5Y9Hv1LE2B7OAHIYHVS0CmuuU+oiqHL04nfkpvy9dz2ZUSXaO2QleivT3A1
-	 qinOQs7AMB0CQ==
+	b=FguBdYtOD6gwBRDMujVlcTSZ5O9D/32GspkJQGQ055Rf1bsbGUz2sCoR1SK5eoMW+
+	 DCzIR0XzZ/CFytAoW03p0ENuLukt65WyhVgMboFIFOYuuCeuC1RFRZaCGKx2OMzYJY
+	 tyAzCeH60hLrQRYiP2ayClaGADwStSFS5/juGZWVLOcVydM2kFVQdzqdTHwfUQ5SwB
+	 B0D6f6PU0EQWN+WfDRUCC4yr9yLmD33Gfn0Hg0lj2w6E8PkZJ4uxRR97xfdkCGeiKZ
+	 Y+PNQ/KWC8YnAdtqwK2F2FupCmOTgm/WipOSD6ppexHGFGELSjwmsKUDUuF7g5q9rD
+	 e0uRdFJ8rwL+A==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -74,9 +74,9 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: bcm-kernel-feedback-list@broadcom.com,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 24/39] spi: pl022: use modern PM macros
-Date: Mon,  3 Aug 2026 22:19:48 +0800
-Message-ID: <20260803142003.12857-25-jszhang@kernel.org>
+Subject: [PATCH 25/39] spi: spi-qcom-qspi: use modern PM macros
+Date: Mon,  3 Aug 2026 22:19:49 +0800
+Message-ID: <20260803142003.12857-26-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260803142003.12857-1-jszhang@kernel.org>
 References: <20260803142003.12857-1-jszhang@kernel.org>
@@ -90,62 +90,75 @@ Content-Transfer-Encoding: 8bit
 
 Use the modern PM macros for the suspend and resume functions to be
 automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
-
-This has the advantage of always compiling these functions in,
-independently of any Kconfig option. Thanks to that, bugs and other
-regressions are subsequently easier to catch.
+CONFIG_PM_SLEEP are disabled, without having to use __maybe_unused.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 ---
- drivers/spi/spi-pl022.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/spi/spi-qcom-qspi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 95652df5fd09..4877ab909c51 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2011,7 +2011,6 @@ pl022_remove(struct amba_device *adev)
- 	amba_release_regions(adev);
+diff --git a/drivers/spi/spi-qcom-qspi.c b/drivers/spi/spi-qcom-qspi.c
+index caf55a6f70b3..0ac06a1ab868 100644
+--- a/drivers/spi/spi-qcom-qspi.c
++++ b/drivers/spi/spi-qcom-qspi.c
+@@ -828,7 +828,7 @@ static void qcom_qspi_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(&pdev->dev);
  }
  
--#ifdef CONFIG_PM_SLEEP
- static int pl022_suspend(struct device *dev)
+-static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
++static int qcom_qspi_runtime_suspend(struct device *dev)
  {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
-@@ -2049,9 +2048,7 @@ static int pl022_resume(struct device *dev)
- 
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+@@ -872,7 +872,7 @@ static int __maybe_unused qcom_qspi_runtime_suspend(struct device *dev)
  	return ret;
  }
--#endif
  
--#ifdef CONFIG_PM
- static int pl022_runtime_suspend(struct device *dev)
+-static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
++static int qcom_qspi_runtime_resume(struct device *dev)
  {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
-@@ -2071,11 +2068,10 @@ static int pl022_runtime_resume(struct device *dev)
- 
- 	return 0;
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct qcom_qspi *ctrl = spi_controller_get_devdata(host);
+@@ -916,7 +916,7 @@ static int __maybe_unused qcom_qspi_runtime_resume(struct device *dev)
+ 	return ret;
  }
--#endif
  
- static const struct dev_pm_ops pl022_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
--	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
-+	SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
-+	RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
+-static int __maybe_unused qcom_qspi_suspend(struct device *dev)
++static int qcom_qspi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+@@ -932,7 +932,7 @@ static int __maybe_unused qcom_qspi_suspend(struct device *dev)
+ 	return ret;
+ }
+ 
+-static int __maybe_unused qcom_qspi_resume(struct device *dev)
++static int qcom_qspi_resume(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	int ret;
+@@ -949,9 +949,9 @@ static int __maybe_unused qcom_qspi_resume(struct device *dev)
+ }
+ 
+ static const struct dev_pm_ops qcom_qspi_dev_pm_ops = {
+-	SET_RUNTIME_PM_OPS(qcom_qspi_runtime_suspend,
+-			   qcom_qspi_runtime_resume, NULL)
+-	SET_SYSTEM_SLEEP_PM_OPS(qcom_qspi_suspend, qcom_qspi_resume)
++	RUNTIME_PM_OPS(qcom_qspi_runtime_suspend,
++		       qcom_qspi_runtime_resume, NULL)
++	SYSTEM_SLEEP_PM_OPS(qcom_qspi_suspend, qcom_qspi_resume)
  };
  
- static struct vendor_data vendor_arm = {
-@@ -2166,7 +2162,7 @@ MODULE_DEVICE_TABLE(amba, pl022_ids);
- static struct amba_driver pl022_driver = {
- 	.drv = {
- 		.name	= "ssp-pl022",
--		.pm	= &pl022_dev_pm_ops,
-+		.pm	= pm_ptr(&pl022_dev_pm_ops),
+ static const struct of_device_id qcom_qspi_dt_match[] = {
+@@ -963,7 +963,7 @@ MODULE_DEVICE_TABLE(of, qcom_qspi_dt_match);
+ static struct platform_driver qcom_qspi_driver = {
+ 	.driver = {
+ 		.name		= "qcom_qspi",
+-		.pm		= &qcom_qspi_dev_pm_ops,
++		.pm		= pm_ptr(&qcom_qspi_dev_pm_ops),
+ 		.of_match_table = qcom_qspi_dt_match,
  	},
- 	.id_table	= pl022_ids,
- 	.probe		= pl022_probe,
+ 	.probe = qcom_qspi_probe,
 -- 
 2.53.0
 

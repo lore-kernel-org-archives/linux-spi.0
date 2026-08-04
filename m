@@ -1,328 +1,243 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B0A47AF6E;
-	Tue,  4 Aug 2026 16:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C078C48C8A3
+	for <linux-spi@vger.kernel.org>; Tue,  4 Aug 2026 17:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785861577; cv=none; b=H6dWj7qilOVPHt4XdD8TOTkf2eyDK5MXcSJVPAew0hy3Sg9e3+sfxKRGPUPEMgmplWIONWwWT0sVR6oDtiImOq5fSISWXG2Lsu3aNlu8r3BvJw4cb6gHP53DCz4al/NVD02JyOn4m1g7yseCPKDpTxXDyjSjJZKBhtsTKi/j/7M=
+	t=1785864209; cv=none; b=Qhr7DiNkS8yCIFoxcKIMmPTjuEXzba876oh2Mfa0HEcuSWHntYweAFb1hpMSTcplAGqG/qyMhrCQh4q5SaTg9pq3MN3OXoqZlqS0SwjPzu8QZwWwXhBr69XhAHBqppFPVU1kVTmymondLj4KZXzMcGRFfQYSvz40rnjCQ0QdRkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785861577; c=relaxed/simple;
-	bh=ibghQBdjErDhHsep17c28aqJevHJwGvjmM3OXKAWvr4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rlud9ARF2MEeHgi5W1hCGJt4uJMKarG4MLdepapn1+Q4pMu1UJWHe4kIoQAeN+81KFt9z0RJd3Vu2VTvRjznmJZ3uIuyQgRujSuXPlUgOCn/HQTp1Lez+QVNBDU3O8VvUPxZxs3i5Zl3BoD7rF4SysW/fQYfWBL87h8297wVwSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rl2FXhVX; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1785864209; c=relaxed/simple;
+	bh=53CVZQEWqYzkZRQVuv6OVsVU9E9MxYVUCaBIzzl8Oaw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SnPrMGWn7Mxp4zPehYSOBgO7lqBunLjJp+8Oa6nSaONtU9tpO9CF4WX3xLi8uWmDqXzFI0ExtJ400h8JuzwdRHYDso+SS3UzPrUdtbS2WnBv1yxnBYVEa7ZtBHqp5yuzcCCM5DwRxbwshzYjx3EhPii0XF7OoimYT2/Z4J71erM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=O4KKF/TP; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rl2FXhVX"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=C1Exlsw58tBiSkTE/438ODOUsmIy5tK5v/ELF0RItqA=; b=rl2FXhVXUZ7FykfYmPsp9ULuKD
-	jtukEVV+SsrZHXqeX/OUCL8nH+GxZ3tprNx+XKIdXdo0okauEEgHV1ZaMmecAnVYxWFEsmXm8q5BM
-	+aHMGdQuYk8yQZzHw5P8BDMKGzYB3LP4WkwFX/KHuz5D0SSmsErPCmIZt4M5ZavBHJVNCBAuKNxSN
-	GKKkj1IMOUJ9qQnRY7VHG0I8q+Je2rHVSryS43zMJFUYMHyPt9QwKFUU4brwnZVDJiNMQ2GFG/byB
-	i3JXqQjpT9xd5jRytvlmgdhk/R8MZxk6qg9jJKoYva6z2wbLk/I04ssNP+P56j9Hcd/vZ5eaShq6Q
-	z26kOvQg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrIAa-00000002MYP-1pJI;
-	Tue, 04 Aug 2026 16:39:12 +0000
-Message-ID: <cba4de8f-0c4c-4c53-82c4-f6972cb4f4d6@infradead.org>
-Date: Tue, 4 Aug 2026 09:39:10 -0700
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="O4KKF/TP"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2caced6038eso2145125ad.0
+        for <linux-spi@vger.kernel.org>; Tue, 04 Aug 2026 10:23:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1785864196; x=1786468996;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bxFqDSPQDgS+AMQp3fv6vigNrKi5PhV7qciBOr6ELhQ=;
+        b=SOqffwS6UsE4BhcVk7nXRPpTcbtNvpAJeuStcONx5M5G+Q/tocfdvdlcF1a3Cq2rVa
+         A+aLq5FUwTWbwjZhazyNxQTqkVKjVNC3PVML+pW5GJlul6DdHFHdr6e4T2NaPGveErTu
+         HZkqdjKDfTsSKV9S2xOvJAv+HpL+VSlfd5KeUMFWH+hUDb1hPL+PQhkhaPOhxzWXMPDn
+         e4wimlw+bvOSsrCXkVTxlLFHMdSbdMu99QG/KTXchFjqrHIXqOW+MrvyWosuH3/AZfGr
+         kTN0kdJVwBXm50dgqYpMIIHeUtsE04lUyzIy61XWOR/8PnE33dQLyirBUhWEBkDdLyy7
+         lSTA==
+X-Forwarded-Encrypted: i=1; AHgh+RoxSf7Nlf5IPknepBN0z3nphtvPzITv4bq3lwljEWZLgSPjui9sypyfqbRrPcvi4GEF0CXTUi7Fv68=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvCPH3mvOG6UD9mINxhM+HBJyq3a/MIVVSUxhHdIjst0cWDMY2
+	NHRCyoZWcY8NfE72cNQo+cro/ksYKVTmozNRgyQl3tNt8Wzm9BEBLkrkQ0j2srLsgN4fYapqAuA
+	N1WNX88CwbINXHbtxGhy08HwjS8HaO4XEt25sw17hp2P9H8Ib9sWHqOMSLUqCSeW53EFMMmXTJy
+	7gGX5ZSCic9/PxZYT+1KoCErGb5Xlu4Rm04YXnO0rdeyEBsL31Iz/lvNaxoF24Q0GmryV1Tmqdt
+	rzvSmhLAC4uwg==
+X-Gm-Gg: AR+sD13l3kENfCC5TL7KJ0xkml6++Cx5pos5mE52G9p7NpqZliVw7JjU18z69TXWCn3
+	hCDPJJfBTeEtwON3MoHLBO6ZyuQ8NI+msRQQD3KnsLytpw81k/KmdDVkavtcwsLPfSLRjnQHiQN
+	O+V/sLZlJXSn/0cH3IIC722SLbIAEQrRZFVWcUt0LmJqCLIBqL6NWJ2CyRt+9vtrXP/6wGTmcXu
+	Z9saAiZcBGXeLNKc+Vci6GqoYReoldObyTHKJ0c4Y8eidSyw2Vgu+YCyFqlBpjWb7KM+l0gktX0
+	uo1y3h8RMejYIMtz1MWNsF0M7hdUdHUqPot037YUUPALNgFngOV5s+500zaLtE+liuopYkXaSWF
+	HniJYzTUL9IfR+4FZtZbm24g0nP3zB7DxrmniVNH+BjZgR6Cz/8nFYNZme7fbI3FCX3wSji1PQD
+	GqBSJ9pdTxqc5R98+K+BHARb6XVsgikNlN+A==
+X-Received: by 2002:a17:902:ebd1:b0:2cc:db7a:251 with SMTP id d9443c01a7336-2d08aa1ca92mr49223245ad.2.1785864196384;
+        Tue, 04 Aug 2026 10:23:16 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-26.dlp.protect.broadcom.com. [144.49.247.26])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2d0aa00c4e2sm1609175ad.14.2026.08.04.10.23.15
+        for <linux-spi@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Aug 2026 10:23:16 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5aebd5e989cso78810e87.3
+        for <linux-spi@vger.kernel.org>; Tue, 04 Aug 2026 10:23:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1785864194; x=1786468994; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bxFqDSPQDgS+AMQp3fv6vigNrKi5PhV7qciBOr6ELhQ=;
+        b=O4KKF/TPabV0Y4eVrY+vynPozjlF6a+9DV9G4xLFQmLtxWLao1jmVDrLtuAAswXu/j
+         6X4yVX1QjsIseyo3/u3OjdBlWvWg0McWrCKpyZvMwP+ZSjYtLraibwclN0X/yJ5Td8UE
+         B9oHx2k9sJ/Bql+MPpi32WWwXG5HWyRKYUxY0=
+X-Forwarded-Encrypted: i=1; AHgh+Rp6k7/oto5lfzjoEvk1hl4JSiRkrlq7dK1BkHviTg2lDvI+aAqYY+H4Agdrvok2QGcje4/XTcV0x28=@vger.kernel.org
+X-Received: by 2002:a05:6512:6683:20b0:5b0:1359:3dd4 with SMTP id 2adb3069b0e04-5b2f4b88af4mr36787e87.5.1785864194058;
+        Tue, 04 Aug 2026 10:23:14 -0700 (PDT)
+X-Received: by 2002:a05:6512:6683:20b0:5b0:1359:3dd4 with SMTP id
+ 2adb3069b0e04-5b2f4b88af4mr36774e87.5.1785864193488; Tue, 04 Aug 2026
+ 10:23:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/4] Documentation: espi: add subsystem overview and
- MAINTAINERS entry
-To: Krishnamoorthi M <krishnamoorthi.m@amd.com>, linux-kernel@vger.kernel.org
-Cc: gregkh@linuxfoundation.org, broonie@kernel.org,
- linux-spi@vger.kernel.org, akshata.mukundshetty@amd.com,
- bleung@chromium.org, groeck@chromium.org, chrome-platform@lists.linux.dev,
- corbet@lwn.net, linux-doc@vger.kernel.org, skhan@linuxfoundation.org,
- andrew@codeconstruct.com.au, linux-aspeed@lists.ozlabs.org,
- openbmc@lists.ozlabs.org
-References: <20260804115259.4065638-1-krishnamoorthi.m@amd.com>
- <20260804115259.4065638-4-krishnamoorthi.m@amd.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260804115259.4065638-4-krishnamoorthi.m@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260804071904.860842-1-pengcan@kylinos.cn>
+In-Reply-To: <20260804071904.860842-1-pengcan@kylinos.cn>
+From: Kursad Oney <kursad.oney@broadcom.com>
+Date: Tue, 4 Aug 2026 13:23:00 -0400
+X-Gm-Features: AUfX_mzpgt47XuQbfnsbecGhD0MWE5BYmKiAwsEOsjeyd25D-PahBe4WmeXRDaY
+Message-ID: <CAMm8Nh3Fo5+jvo16RDY2HaS1eD+r8qdUbuc55ij-k01XS-gAFA@mail.gmail.com>
+Subject: Re: [PATCH] spi: bcmbca-hsspi: disable clocks on resume failure
+To: Can Peng <pengcan@kylinos.cn>
+Cc: jonas.gorski@gmail.com, william.zhang@broadcom.com, broonie@kernel.org, 
+	anand.gore@broadcom.com, florian.fainelli@broadcom.com, rafal@milecki.pl, 
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000ec3d1606583be8cd"
 
+--000000000000ec3d1606583be8cd
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 8/4/26 4:52 AM, Krishnamoorthi M wrote:
-> Add a driver-api overview of the eSPI subsystem and a MAINTAINERS entry
-> covering the subsystem files.
-> 
-> The document describes the architecture, how to write a controller driver
-> and a slave driver, the per-channel APIs (Peripheral, Virtual Wire, OOB,
-> Flash), the alert mechanism flow, and the event notification model. An
-> API Reference section renders kernel-doc from the exported symbols.
-> 
-> Signed-off-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+On Tue, Aug 4, 2026 at 3:20=E2=80=AFAM Can Peng <pengcan@kylinos.cn> wrote:
+>
+> bcmbca_hsspi_resume() enables the HSSPI clock, and optionally the PLL
+> clock, before restarting the SPI controller queue.
+>
+> If spi_controller_resume() fails, the function currently reports success
+> and leaves those clocks enabled. Propagate the error and disable the
+> clocks before returning.
+>
+> Fixes: a38a2233f23b ("spi: bcmbca-hsspi: Add driver for newer HSSPI contr=
+oller")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Can Peng <pengcan@kylinos.cn>
 > ---
->  Documentation/driver-api/espi.rst  | 213 +++++++++++++++++++++++++++++
->  Documentation/driver-api/index.rst |   1 +
->  MAINTAINERS                        |   8 ++
->  3 files changed, 222 insertions(+)
->  create mode 100644 Documentation/driver-api/espi.rst
-> 
-> diff --git a/Documentation/driver-api/espi.rst b/Documentation/driver-api/espi.rst
-> new file mode 100644
-> index 000000000000..60a3187edb05
-> --- /dev/null
-> +++ b/Documentation/driver-api/espi.rst
-> @@ -0,0 +1,213 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +===========================================
-> +eSPI (Enhanced Serial Peripheral Interface)
-> +===========================================
-> +
-> +Introduction
-> +============
-> +
-> +eSPI is a bus defined by Intel that replaces the legacy LPC bus. Unlike
-> +SPI it is a structured, capability-negotiated, message-oriented protocol
-> +with four logically independent channels (Peripheral, Virtual Wire, OOB,
-> +Flash) over a shared physical link, and asynchronous target-to-controller
-> +events, so it is modelled as its own bus type rather than an extension of
-> +the SPI subsystem.
-> +
-> +Architecture
-> +============
-> +
-> +* ``struct espi_controller`` - host controller, created with
-> +  espi_controller_alloc() and registered with espi_controller_register().
-> +  It is not itself a device on espi_bus_type.
-> +* ``struct espi_device`` - a target on the bus, matched to a
-> +  ``struct espi_driver`` via its modalias.
-> +* ``struct espi_controller_ops`` - the optional hardware-op table; the
-> +  channel API returns -EOPNOTSUPP for ops a controller does not provide.
-> +
-> +Writing a controller driver
-> +===========================
-> +
-> +A controller driver allocates and registers a controller from its
-> +``probe()`` function::
-> +
-> +    ctrl = espi_controller_alloc(&pdev->dev, sizeof(*priv));
-> +    if (IS_ERR(ctrl))
-> +        return PTR_ERR(ctrl);
-> +
-> +    priv = espi_controller_get_devdata(ctrl);
-> +    ctrl->ops = &my_espi_ops;
-> +    ctrl->max_targets = 1;
-> +
-> +    /* populate ctrl->caps from hardware capability registers */
-> +    ctrl->caps.supported_channels = ESPI_CHANNEL_ALL;
-> +    ctrl->caps.max_freq_mhz       = 33;
-> +    ctrl->caps.io_mode            = ESPI_IO_MODE_SINGLE;
-> +
-> +    ret = espi_controller_register(ctrl);
-> +    if (ret)
-> +        goto err_put;
-> +
-> +After registration the controller calls espi_new_device() for each
-> +target enumerated from firmware (ACPI or device tree)::
-> +
-> +    struct espi_board_info info = {
-> +        .type = "my-ec",
-> +        .cs   = 0,
-> +    };
-> +    edev = espi_new_device(ctrl, &info);
-> +
-> +On removal::
-> +
-> +    espi_remove_device(edev);
-> +    espi_controller_unregister(ctrl);
-> +    espi_controller_put(ctrl);
-> +
-> +Writing a slave driver
-> +======================
-> +
-> +A slave driver declares a device ID table and a ``struct espi_driver``::
-> +
-> +    static const struct espi_device_id my_ec_ids[] = {
-> +        { "my-ec", 0 },
-> +        { }
-> +    };
-> +    MODULE_DEVICE_TABLE(espi, my_ec_ids);
-> +
-> +    static int my_ec_probe(struct espi_device *edev)
-> +    {
-> +        /* register for hardware events */
-> +        nb->notifier_call = my_ec_event;
-> +        espi_register_notifier(edev->ctrl, nb);
-> +        return 0;
-> +    }
-> +
-> +    static void my_ec_remove(struct espi_device *edev)
-> +    {
-> +        espi_unregister_notifier(edev->ctrl, nb);
-> +    }
-> +
-> +    static struct espi_driver my_ec_driver = {
-> +        .driver   = { .name = "my-ec" },
-> +        .id_table = my_ec_ids,
-> +        .probe    = my_ec_probe,
-> +        .remove   = my_ec_remove,
-> +    };
-> +    module_espi_driver(my_ec_driver);
-> +
-> +Channel-independent commands
-> +============================
-> +
-> +espi_get_configuration(), espi_set_configuration(), espi_inband_reset()
-> +and espi_get_status(). GET_STATUS is optional: controllers whose hardware
-> +does not implement the wire command leave .get_status unset.
-> +
-> +Capability negotiation and channel management
-> +=============================================
-> +
-> +At boot the controller driver reads the target's capability registers via
-> +espi_get_configuration(), negotiates link parameters (I/O mode, clock
-> +frequency, CRC) via espi_set_configuration(), then enables each channel
-> +with espi_enable_channel(). espi_channel_is_enabled() may be called at
-> +any time to query the current state. Channels may be disabled individually
-> +with espi_disable_channel(), for example before an in-band reset.
-> +
-> +Channel APIs
-> +============
-> +
-> +Peripheral channel
-> +------------------
-> +
-> +Carries I/O and memory cycles between the host and target endpoints.
-> +
-> +* espi_periph_io_read() / espi_periph_io_write() — 16-bit I/O port
-> +  access; ``width`` is the access size in bytes (1, 2, or 4).
-> +* espi_periph_mem_read() / espi_periph_mem_write() — 32-bit memory
-> +  mapped access.
-> +
-> +Virtual Wire channel
-> +--------------------
-> +
-> +Carries logical signal state (power sequencing, SMI#, SCI#, IRQs) as
-> +indexed wire groups. Each group carries up to four wire values with
-> +individual valid bits.
-> +
-> +* espi_vwire_get() — read a wire group from the target.
-> +* espi_vwire_put() — send a PUT_VIRTUAL_WIRE command to the target.
-> +  Named after the eSPI PUT_VW wire command, not a reference-count
-> +  release.
-> +
-> +Wire changes from the target generate an ``ESPI_EVENT_VWIRE_CHANGED``
-> +event delivered through the notifier chain.
-> +
-> +OOB channel
-> +-----------
-> +
-> +Tunnels SMBus/I2C messages between the host and target out-of-band
-> +processor (BMC, EC). Messages are exchanged as opaque byte buffers with
-> +a tag field for matching requests to responses.
-> +
-> +* espi_oob_send() / espi_oob_recv()
-> +
-> +Incoming OOB messages generate an ``ESPI_EVENT_OOB_RECEIVED`` event.
-> +
-> +Flash Access channel
-> +--------------------
-> +
-> +Provides access to a SPI flash device attached to the target. The target
-> +acts as a proxy for flash read, write, and erase operations.
-> +
-> +* espi_flash_read() / espi_flash_write() / espi_flash_erase()
-> +
-> +Alert mechanism
-> +===============
-> +
-> +When the target has upstream data pending it asserts ``ALERT#``. The
-> +controller's hard-IRQ handler acknowledges the interrupt and defers
-> +processing to a threaded IRQ or workqueue. From that process context the
-> +controller driver calls espi_handle_alert(), which acquires the
-> +controller lock and dispatches to ``ops->handle_alert``. The hardware
-> +callback reads the target's status register (GET_STATUS), identifies the
-> +pending channel, and calls espi_notify_event() to deliver the appropriate
-> +``ESPI_EVENT_*`` to all registered slave driver notifiers::
-> +
-> +    ALERT# asserted by target
-> +          |
-> +          v
-> +    hard-IRQ handler (controller driver)
-> +          |
-> +          v
-> +    threaded IRQ / workqueue
-> +          |
-> +          v
-> +    espi_handle_alert(ctrl)          [espi-core.c]
-> +          |
-> +          v
-> +    ops->handle_alert(ctrl)          [controller driver]
-> +          | reads GET_STATUS, decodes channel
-> +          v
-> +    espi_notify_event(ctrl, &event)  [espi-slave.c]
-> +          |
-> +          v
-> +    slave driver notifier callback
-> +
-> +espi_handle_alert() must always be called from process context; it must
-> +never be called from a hard-IRQ handler.
-> +
-> +Events and concurrency
-> +======================
-> +
-> +Hardware events (Virtual Wire changes, OOB messages, Peripheral channel
-> +completions, channel state changes) are delivered through a per-controller
-> +blocking notifier chain (espi_register_notifier()/espi_notify_event()).
-> +Callbacks run in process context; controllers deliver events from a
-> +threaded IRQ or workqueue, never from hardirq and never while holding the
-> +controller lock.
-> +
-> +API Reference
-> +=============
-> +
-> +.. kernel-doc:: include/linux/espi/espi.h
-> +
+>  drivers/spi/spi-bcmbca-hsspi.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hssp=
+i.c
+> index af88ce04948b..2aed876e5deb 100644
+> --- a/drivers/spi/spi-bcmbca-hsspi.c
+> +++ b/drivers/spi/spi-bcmbca-hsspi.c
+> @@ -598,7 +598,13 @@ static int bcmbca_hsspi_resume(struct device *dev)
+>                 }
+>         }
+>
+> -       spi_controller_resume(host);
+> +       ret =3D spi_controller_resume(host);
+> +       if (ret) {
+> +               if (bs->pll_clk)
+> +                       clk_disable_unprepare(bs->pll_clk);
+> +               clk_disable_unprepare(bs->clk);
+> +               return ret;
+> +       }
+>
+>         return 0;
+>  }
+> --
+> 2.53.0
+>
 
-Describe each of these:
+Reviewed-by: Kursad Oney <kursad.oney@broadcom.com>
 
-WARNING: ../include/linux/espi/espi.h:176 struct member 'setup' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'cleanup' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'get_configuration' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'set_configuration' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'inband_reset' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'get_status' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'enable_channel' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'disable_channel' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'periph_io_read' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'periph_io_write' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'periph_mem_read' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'periph_mem_write' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'vwire_get' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'vwire_put' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'oob_send' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'oob_recv' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'flash_read' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'flash_write' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'flash_erase' not described in 'espi_controller_ops'
-WARNING: ../include/linux/espi/espi.h:176 struct member 'handle_alert' not described in 'espi_controller_ops'
+--000000000000ec3d1606583be8cd
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-
-or don't use "/**" for that struct's comment header.
-
-> +.. kernel-doc:: drivers/espi/espi-slave.c
-> +   :export:
-
-
--- 
-~Randy
-
+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
+WLjT+gks0Kd/cbP0dcNN3CUcYMYtVlHhJc0alhNIUhEYGBn5FXwIovRjv4w8vYdAGu3Mn4GwoqgH
+BnSQFD3St8aq6hgohc9jxXxTR/9DDqSSq64xM/ugqaLZXv5xuQK1zCt8lK07JWIJ1rXkqKtennWP
+nt58zpNGlmYBHojF6BbjYTd6vpd1pHQISwi8DrWMAUDa7iWHpBocw6gSZm8SvaRJFodIma4Ev9kW
+ekRCoHi74o5vbrDz/aqNlFa0iAIHoDNw11sCAwEAAaOCAdwwggHYMA4GA1UdDwEB/wQEAwIFoDAM
+BgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3NlY3Vy
+ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEFBQcw
+AYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1UdIARe
+MFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIBFiZo
+dHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAyhjBo
+dHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwIwYDVR0RBBww
+GoEYa3Vyc2FkLm9uZXlAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8GA1UdIwQY
+MBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBRaQVTN1g3mGepKgQklJr3uMbCS9DAN
+BgkqhkiG9w0BAQsFAAOCAgEAE2m7WsjjPj3wmw0t3GJ0XtNFKqFHZfT6zb3d4heSwp+Tq1fHkjpF
+xUhIzJnD2MXCryCAuX73pAQmLEf8UDdEPZegH6g4poXTtCd2WBv3B2NU0TIMjCEhk5u+XIroo7Sz
+p9g+wuVY0yUcl5QBswTk3kT3jkd6jx7k59ihAYsTMMUNK6RPOQHJazd+CY+A48ptKEzcauFBVUwg
+l/ZEcN6oWAP9DY5J8aQCLH73UFn7mo2Qkmvx2wzEGlq8ilowQtOwpPHdKjxaMaR9x7NZMU5IE/cX
+hClA1WVIp0Cp6CUUJh8Z3RPss8624Ct2QfedUjKjK2TtaiIAv4dcJF0NXoBWx9J0r8Z5IGDGCC0t
+xiRAyerE6s5S90gIvKSKA4kz1kGjoFD0g0Mu88Wklna1FxyX72YwJY6XGqUpxfUSJpj/6+hEqpLe
+Lucnxpvr0aqEZrjnm3at4dwAMd3bpddoSDkGIzXgB/EDinMopHueiwlvK0vIbrX5eHue7yFCJhpr
+s24mwnppy3Oy++8ql2+ifJ7VbVqYdYAKzjVrx0E7KqHH2/QqgW4fv9fQwQjHaslT/r0Qv0XVyNtR
+wRPbY6ZzeUcVxB6a5vC8XrXD/+k+ujXBjRIg/yKZk7OB2sFC8cv9Up8rPQDaguQMJ0BRG53ggwcO
+ikPna8ZaE9vI/f7PcdSt3v0xggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBH
+bG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAyMDIz
+Agw5Ja1W5pJarmzi09UwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIDNXmZeU1Hys
+KLV62IDS/GdvPnkMOFZ7onlZimlamh8kMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
+hvcNAQkFMQ8XDTI2MDgwNDE3MjMxNFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJ
+YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
+BAIBMA0GCSqGSIb3DQEBAQUABIIBAGxHB5fc/OKgG4phUxnAtYZNEi8XpAqCtCw0d4YFnWfa/BIa
+94UcpkuBzOnFUBEjK/AmF6AhK1R1CUIHgncsoOolnCOt1mCSkLw/paoKqwDCTfiv5MLJCWoedW0J
+yzfYlcpQGfCgqT6Gg0tIa630Um9RrOrUi0GQIxzSI/GwcBIg40TFmFQm91KbMx1fmHhHEYMRG5R2
+rVJPzHWkGGl4sOkmIIyTNsf888zizfC7/NeEGzqvYEd1N/SfiRq6+Ig8XogILO2sbT7yGANerXto
+GHNPNoAH3/+Qlf3+Pa2Nq0cxOJW01H59q1u+5bkbslC6qJ1HRQ3cZDl0eELRpxP+Gv8=
+--000000000000ec3d1606583be8cd--

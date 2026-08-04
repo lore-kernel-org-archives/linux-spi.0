@@ -1,285 +1,293 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013057.outbound.protection.outlook.com [40.93.201.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943A3449997
-	for <linux-spi@vger.kernel.org>; Tue,  4 Aug 2026 10:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785839814; cv=none; b=rbzxl9fogPBa8M/6ubAMLLQLaGcd7PziyJP98fbGuVcwzFLsotEEoSg/21vGTxhZIngiGdHgS34c7bh5FdatXzSXq4iQBb/yvixqvbtkUlbPudNQvduyotv9LkMrpyj1SOEaELR+rFcvmX3zkJTgMHriX+3CWbztWlhzO9jfO10=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785839814; c=relaxed/simple;
-	bh=4womcYsF9mcBGVtFV27nvc/PSxv0+NBwgwSEiADK8oY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KCVTQHu/fs0Cz7Nz+tp7sm2s3ptuMrWdD6ikqA/IybpcUF8d6dcFzKV2iUht9AGzxYCcjc99GjPsgqAKcFbMkZkSdtImBsqJnURwefkA3Ip+jFTAPiwtF6AEVumpbDjNXJVuFU9LYqWRhwRU39z6MH9NOFwgLfzhM4hme4ZzHiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHxUuCQi; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2312C38422D;
+	Tue,  4 Aug 2026 11:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1785844456; cv=fail; b=mf7D5qy4g74nPmC2Mkc6qglBp2c4jcz7JZWJW3yY5ms2aW6cBavzIRVf4ixY19+UGdu53MmFxm1GDuhdIcds4/SVBCEKZfEiS8K+VJxcZBuAVDygjTDccHIQ7WinJQscin5bmjgH9v8AbwwfGUA93u1jMV8ChlIvchQeTkfDyKU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1785844456; c=relaxed/simple;
+	bh=MP6bqvjb68ldQSLy86Fol22CqIU5GIPHMBFUFDW4MMI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GCdXGHgWjt8CdtvgzwJOi+wv2Jh2vFFQyx81U9c2sSmB9H6PHX4jTePT7J3SVHFRpT3vnQvhdLFHGnVqO78tCg8E1QaDda/62urbie+Cl3cmSNa2BNIS1APon7dYvPFE0v7Btq6v48V+uW/YfShLLx2kqRjms3BL68kdLtd81v4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=EwLwCmRz; arc=fail smtp.client-ip=40.93.201.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHxUuCQi"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-47f703a9d05so2661355f8f.0
-        for <linux-spi@vger.kernel.org>; Tue, 04 Aug 2026 03:36:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1785839809; x=1786444609; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9wfrbatFPCH8NCTYo6x4uNCytfKAxBGUxu1j+wIy4q8=;
-        b=KHxUuCQie+x/e5x3GbwZdpF9LUMt9sIhifFvllZgZ78b4U3ZNxKcwkX8Mb0VSpox+u
-         /Iz28fCic7gKp81WorkWm2g7n6z/+Bg2W/mnbSwXt0UpTOKfhEK+np5VUobNDXm9TKL4
-         9Hg5rW0mokGGcjtjR+PWBAG0rTjZk+qoH82zwzn921+BjLpH0w+qSD3a1wNEDAeTCoOx
-         YeZwFcJ3KOoOEIvDbLDqpmc4cbEmoPDIKjJD6pws8cOQMREJjS/zhrxiDqQ88fOXcvt0
-         oIwe1Lf+kAk8KaVVJh2g6aLkSf9/ac3vDay2hxrny4IZuS3TzWl98rJqD9nH9pJtByi4
-         iQnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1785839809; x=1786444609;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9wfrbatFPCH8NCTYo6x4uNCytfKAxBGUxu1j+wIy4q8=;
-        b=fxeBPusbd6IQgYzw+U5d+0gf+Ny/9lUQ0Kfz1EGRsBsqtZOlCVcTlpQzBfDt5QWN8a
-         zrq+WDvD2XUHignHBqVeg7pB4+8ailK0T0sLdXz65hxCZwlcBpi/NJEeAFFzBiS9ut5p
-         thipUczW4VmTNuf3ECoWLK0y46OFdpZHsYh8qzbtNbTDiwIsy+G3JllSOtVW6TmRHDEt
-         EeJxeKxZXhHEhDNNKrnyzjZQfkNO1kPriqmXJ0ujI6lilxSQ2blDvN+V3/9bZ74Yk2wE
-         oaxBRmQtz+k674I0VoPAtImtLAAY2UWC7cRYW/m3IgkQEY2nj5qeuvTGZpGdcDn+vskq
-         UMUw==
-X-Forwarded-Encrypted: i=1; AHgh+RqtCQ7oNw+F8lFQXOje2oqygfSI/jeeyBkd8RIpyYtBzsmB14+/qUNTGji8B3RI29Cmi+WAKmGq8Xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd8LImQnALr33jx6Jlf21uKZJiY8B1rk7rU+5A1OYn185lkRvs
-	MsxBHKFMpfW/w5R15Bl3E4ilfsuy8HCGXLkoZXZPCoc4ZeIZZpJ0mOwA
-X-Gm-Gg: AR+sD12in2o84tbxMNemwSucrSGZGlWb9SQ64a7RWGBccd9dQIUArj5JiQ5jLlhdmPz
-	deyHWPcZi60DmdA0nsbUJAdo4grs1mHX/axEz9XKc4a8VCP+MnJMQ27JSpDHY8T+x9eNTV9Ge84
-	TCZSM4Yog+TSQWoVpoDNi/F97zl86BVkyByBnoe4sgqhXR/NUiRH8IdJwVPQZHeev1PyvQ1lUwC
-	ZiCkkis62/iq2LDl6uK+bF2tLEFzEu1LBw3+fjQHJjZA25XTcNj0Hkl+cs6r9PQ3wmI3LXdGoDd
-	m76/7+BNF5ItmKiGajdh34qU6HVYb5uHjs/rDtbry4xTWo82wqxky8MM9ebrV1CsQv90MuK9oJu
-	DHg9rk2HAQw3ld74aueHqyL3U7wlvbFGFfuZAoO6SviGF1aE9hUG10KXpSS5XT6eIZOWPsxgclb
-	RLYkXmln7hWcSRflmQnED1hW4fklSqHRW+KQeqXxOo0gG5cW+x4bZPvQMYuhr9QIS3WGjLfJtMW
-	Yj7qggriUNbhjrkt5IOdgQAKrQCw0lgjEpkawZnMPk823Jh1W1sJGyZH/sXHs3a4KyRHYSGVUMX
-	Im8=
-X-Received: by 2002:a05:6000:200d:b0:47f:25e4:5c34 with SMTP id ffacd0b85a97d-47fd7309771mr35812640f8f.29.1785839808450;
-        Tue, 04 Aug 2026 03:36:48 -0700 (PDT)
-Received: from [172.24.138.145] (dynamic-176-002-083-080.176.2.pool.telefonica.de. [176.2.83.80])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47fd456220esm43851882f8f.18.2026.08.04.03.36.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Aug 2026 03:36:47 -0700 (PDT)
-Message-ID: <c20621fd-571b-4c96-8397-c644970c6548@gmail.com>
-Date: Tue, 4 Aug 2026 12:36:46 +0200
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="EwLwCmRz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FboHvIx+jiMknu+KApT8mfcnhHKkEL0Dev9jn+DEvx7Y5hKu+kFe69sJ/Cs40OI67YYatQcdUfoP+6f7XbXRYerW8oGEpHfIV7N1QNV8NSfJ0iNyiHbCRElcwLEbYlp4hrlJZVolCzKhEI1x9CIBa4leipk+dJ3SbaTcFvPm/nQjW32k1UEBvzlysuW/lw4joVRyoNe38QkUOQXaqoHHVBolyWK1HYDi4tpwWipVzWCQarPPN8zCWTyyqkq2AtuoJknBz3c7fmaJYvloQct9KWwvEtsE0t//lUwIuipl/S4cr3nHqM/5DNGdl5qdN5PQ/9HfS/fKB3tcXFGjgmufgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I6bhbTYx6dfn3Kv1u7wKpF3NOeOnG7RiVaM57KwCAjs=;
+ b=Et0W9yj1bnX6UZ1JeVJF47ZoxJaqxOtT2tjy5xmJD7c5wgA3o8QRaJ6kqC8djHu4TcHKNr2Y6bE7bNPQxFT6m6HhywW+6+NpeOsJ+XV697YcAE/7BjsPRuGtTLNq0uHBD4S5gH0EfFgSBB/wwLohvMysdfiyzD32q2S8EG7sYQQIcIlkuFoXpG/5nxgr62KX9pBaCTFWjqbSr5NoK+7bSzI/706LEFS5IZw5I8dT4/EKcpFRjBZktMvL5PpOylJMMLLh/iRxLHc8jPoTBQmo3XgISaMYMpTK5d2RgoN8J2lMMwtqh2UceK7Jp93ei0892S6N9vAaq3vlkyMTlzHE1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I6bhbTYx6dfn3Kv1u7wKpF3NOeOnG7RiVaM57KwCAjs=;
+ b=EwLwCmRzVseE86Bnhawi7LZ482o5X3GvA+NrN8jeEbfxA6wVqqbF6uoE5h0M9xf9oAFDNpCvCDw2jD9mh/mdb1k+T9W7pfjuJQSf6WJNzRnrS2dAb+PZbSPZKoXjVziNEF8b9iquiSKOko7i4nt4Fxp1+8nhDgZMxbVojkVHoVQ=
+Received: from CH0PR03CA0264.namprd03.prod.outlook.com (2603:10b6:610:e5::29)
+ by SJ2PR12MB9138.namprd12.prod.outlook.com (2603:10b6:a03:565::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.15; Tue, 4 Aug
+ 2026 11:54:08 +0000
+Received: from CH3PEPF00000010.namprd04.prod.outlook.com
+ (2603:10b6:610:e5:cafe::99) by CH0PR03CA0264.outlook.office365.com
+ (2603:10b6:610:e5::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.292.16 via Frontend Transport; Tue, 4
+ Aug 2026 11:54:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH3PEPF00000010.mail.protection.outlook.com (10.167.244.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Tue, 4 Aug 2026 11:54:07 +0000
+Received: from airavat.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 4 Aug
+ 2026 06:54:03 -0500
+From: Krishnamoorthi M <krishnamoorthi.m@amd.com>
+To: <linux-kernel@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <broonie@kernel.org>,
+	<linux-spi@vger.kernel.org>, <akshata.mukundshetty@amd.com>,
+	<bleung@chromium.org>, <groeck@chromium.org>,
+	<chrome-platform@lists.linux.dev>, <corbet@lwn.net>,
+	<linux-doc@vger.kernel.org>, <skhan@linuxfoundation.org>,
+	<andrew@codeconstruct.com.au>, <linux-aspeed@lists.ozlabs.org>,
+	<openbmc@lists.ozlabs.org>, Krishnamoorthi M <krishnamoorthi.m@amd.com>
+Subject: [RFC PATCH 0/4] espi: introduce eSPI bus framework
+Date: Tue, 4 Aug 2026 17:22:55 +0530
+Message-ID: <20260804115259.4065638-1-krishnamoorthi.m@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/7] dt-bindings: iio: adc: microchip,mcp3564: Add
- spi-device-addr
-To: Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
- Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
- Kent Gustavsson <nedo80@gmail.com>
-References: <20260722-ad5529r-driver-v7-0-7781cd74ad75@analog.com>
- <20260722-ad5529r-driver-v7-2-7781cd74ad75@analog.com>
- <cb4098c1-4bad-4a11-9a6f-a833e554f197@baylibre.com>
- <20260725230739.63ff7000@jic23-huawei>
- <20260728-patronize-thwarting-56fab2e11077@spud>
- <20260728221719.7f668a73@jic23-huawei>
- <20260729-hundredth-suffice-f28afa67bc06@spud>
- <20260730000929.2ec20cf8@jic23-huawei>
- <20260730-impaired-protector-b58ae56ae3f6@spud>
- <20260801024114.4c606ef7@jic23-huawei>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <20260801024114.4c606ef7@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000010:EE_|SJ2PR12MB9138:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad025195-5fb7-4fb4-5a4b-08def21f1724
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|36860700016|82310400026|10067099003|11063799006|6133799003|56012099006|3023799007|18002099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	K9UHhpdcgc5yaIPEWceXIwyn7m07RX86N/wvEIjXGmPLgJxtg33rcjVLMqqpRyNdlnhHhaiXEHlVS/8EMy5fFY8yImCUE/9mXHt2UmmOe/Fxkyn4zRDCENHJl05bCDdasNzkcVH5vrge5ix+TNJ5jUAlFhKp+SYZWv6Z5p8b3Yr2wbTKOVdfoaFRDnH+zxJ4NgQHgHgItu13XK1ZvUrPJPqe3eJMiSAkUgJ2Gfsqg8/BWvb9m3RFnRKK+kQ1+eH9UkE6CfRp/J/wsz0ITKb+nECA0fwkGavcTR1Mbs8eVYGU/BLse//3obfqgl1SzagElxWfDnbECn7XTg+gEwmj0iT3xZgC5yJ43jPzM0M0TZQmyfKY9UC2tD8iQv0oSJdtdM+W+S8XKDUHoLYzbegls56WpqsH1RduyOtCVCi0guTuErbfclcDZNuzMXvQjrORk4QYxG7aLa7Oc+AEY+RXGrt0sXQswBeWqluiaY3eyamhwK4p6klespU58TFBAcNXhWk/g6CqKJiihtwnBEInzm5SB9UhsOdTky4Nr0JyHVf7ytcor55UkZfzVKSVAKUcHbF/o5Nwj289lLjb+hQyHr/lPK+UhYM6GUTkLlmgoJJT3C2gYYuCol788mPywLUQHn86vZHuFQ7asrWaTPTgwJsAO5467DaaktMUy1W6pwvSDZrF+N+TQvABqkz9jvEVbPSqHECeVjXnHISMMbcxMA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(36860700016)(82310400026)(10067099003)(11063799006)(6133799003)(56012099006)(3023799007)(18002099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	CRN7OeBVEFEDK5gtbtvYpcTM17sMXlfI0NKVUn1BzGEetb/a+MDQnp1UM3X2V5MJc8DQl9zGnC88pWMxCLW5P5E9OA73Z5RgH/bVbV5gUMNfp0bMyqGGY5HKhe9hk2ecol/L/2eMjO4KFT8JQ4/zGPkwph9IjZjNwINPnYucmXulOFgEm20i6yZ3yhsrusPd+KS0GJa1+vKhQvuO47nlUhGfj1Wa+WmPnLIznP2jmvXM09guuunzNpzA6gxixKBls3Eb7pgAsbRRwEOfxjD/BYCWUVSoy67HfJC2EhSSyHYuiP94I4TKzaxuVcjmEqp89WTRkqTglujlgARvqwIOBddOWhDG2BTmOs45KPR2NzHO07AdntfOHe8YiWqkRSVopDEKkJVu/4UxwlK+3Vodj8T7faEAYJOWT0Bu3jWoODZSaqdSMufGl4jNo2SbDtI3
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2026 11:54:07.9070
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad025195-5fb7-4fb4-5a4b-08def21f1724
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000010.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9138
 
+This RFC proposes a new eSPI (Enhanced Serial Peripheral Interface) bus
+subsystem for Linux.
 
-On 8/1/26 03:41, Jonathan Cameron wrote:
-> On Thu, 30 Jul 2026 19:02:08 +0100
-> Conor Dooley <conor@kernel.org> wrote:
->
->> On Thu, Jul 30, 2026 at 12:09:29AM +0100, Jonathan Cameron wrote:
->>> On Wed, 29 Jul 2026 21:47:45 +0100
->>> Conor Dooley <conor@kernel.org> wrote:
->>>    
->>>> On Tue, Jul 28, 2026 at 10:17:19PM +0100, Jonathan Cameron wrote:
->>>>> On Tue, 28 Jul 2026 17:00:55 +0100
->>>>> Conor Dooley <conor@kernel.org> wrote:
->>>>>      
->>>>>> On Sat, Jul 25, 2026 at 11:07:39PM +0100, Jonathan Cameron wrote:
->>>>>>> On Sat, 25 Jul 2026 15:57:07 -0500
->>>>>>> David Lechner <dlechner@baylibre.com> wrote:
->>>>>>>        
->>>>>>>> On 7/22/26 2:54 AM, Janani Sunil wrote:
->>>>>>>>> Add the generic spi-device-addr property to the binding and deprecate
->>>>>>>>> the existing vendor specific microchip,hw-device-address property.
->>>>>>>>>
->>>>>>>>> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
->>>>>>>>> ---
->>>>>>>>>   .../devicetree/bindings/iio/adc/microchip,mcp3564.yaml         | 10 ++++++++--
->>>>>>>>>   1 file changed, 8 insertions(+), 2 deletions(-)
->>>>>>>>>
->>>>>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
->>>>>>>>> index 675319276197..de1ea289e7f5 100644
->>>>>>>>> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
->>>>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3564.yaml
->>>>>>>>> @@ -80,6 +80,7 @@ properties:
->>>>>>>>>       $ref: /schemas/types.yaml#/definitions/uint32
->>>>>>>>>       minimum: 0
->>>>>>>>>       maximum: 3
->>>>>>>>> +    deprecated: true
->>>>>>>>>       description:
->>>>>>>>>         The address is set on a per-device basis by fuses in the factory,
->>>>>>>>>         configured on request. If not requested, the fuses are set for 0x1.
->>>>>>>>> @@ -91,6 +92,12 @@ properties:
->>>>>>>>>         clocking of the device address (BITS[7:6] - top two bits of COMMAND BYTE
->>>>>>>>>         which is first one on the wire).
->>>>>>>>>   
->>>>>>>>> +  spi-device-addr:
->>>>>>>>> +    maxItems: 1
->>>>>>>> Does it not make sense to all for more than once device connected
->>>>>>>> to the same CS here? I would expect maxItems to be 4 to match the
->>>>>>>> number of possible addresses.
->>>>>>>>        
->>>>>>> I think for this part their isn't a reason to aggregate.
->>>>>>> No magic accesses that touch them all at once.  So this hits
->>>>>>> exactly the point you raised about how we set the address for
->>>>>>> more than one of them.
->>>>>> No David is actually right here, and maxitems should be 4.
->>>>>> Setting the address for multiple was already discussed I thought, with
->>>>>> the property being an array and each compatible being used to determine
->>>>>> the "stride" between entries based on the number of supported channels?
->>>>> I don't think that applies for this device or at least to do so
->>>>> is a major driver rewrite, not a simple binding change.  Probably we'd
->>>> Whether or not it is a big driver change, the binding should represent
->>>> what the hardware is capable of.
->>>>    
->>>>> just add a bus and hang the 4 instances off it. They are running on own
->>>>> timing etc so we can't grab data across all of them in any sort of
->>>>> synchronous way - the clocks will probably drift over time etc.
->>>> Did I miss something about the ADI devices in this thread where they
->>>> have some multicast ability to read all devices at once? I thought that
->>>> that was a different series where each device had dedicated mosi and
->>>> miso lines, rather than the shared ones here. I didn't think the ad5529r
->>>> did anything special from my reading of the datasheet but I'm not the
->>>> expert in this area!
->>> It's a DAC so other way around but yes they have exactly that in the section:
->>> https://www.analog.com/media/en/technical-documentation/data-sheets/ad5529r.pdf
->>>
->>> 	Register Details: Hotpath DAC registermap.
->>>
->>> The is a brief description earlier of the whole feature that might
->>> serve for this discussion:
->>>
->>> "DAC HOTPATH
->>> The DAC hotpath is a dedicated register region that optimizes
->>> DAC updates in multidevice configurations where several AD5529R
->>> devices share a common SPI bus. It reduces the number of SPI
->>> frames required to write DAC data and supports synchronized
->>> output updates across devices. In single device systems, the hotpath
->>> offers no advantage over the standard register map and can be
->>> disregarded."
->>>
->>> As an example
->>> MULTI DEVICE SW LDAC MODE 0 REGISTER
->>> "This register sends a software LDAC update to the selected devices
->>> that share the SPI lines but have different addresses, using the ID0
->>> and ID1 pins. The selection is done on a per-device basis corresponding
->>> to the configured bit field."
->>>
->>> This one triggers all selected DACs (there is bit corresponding to
->>> each address) to update in sync. (Lets put aside normal systems
->>> where an LDAC gpio is wired to multiple devices as that is a whole
->>> different problem).
->>>
->>>
->>> It is this part that is driving the suggestion of having
->>> a combined device representation for multiple physical devices.
->>> In practice it is very similar to chained devices where we do that
->>> already in that a longer access sequence is used to talk to multiple
->>> devices at once.
->> Ah I see. I definitely missed this section.
->>
->>> Those SPI messages do not carry the address (or they are ignored - I didn't
->>> dig into the mechanism).
->> It's definitely hard to tell this at a glance, nor does it really
->> matter.
->>
->>>>> They are independent devices (think of them using spi-device-address
->>>>> like an i2c address) -  so why have one DT node for up to 4 of
->>>>> them?  Note this is different from the AD5529R where the design
->>>>> is intended for them to operate as one single larger device.
->>>> I don't buy this argument, I just don't see what differs between the
->>>> devices. The microchip datasheet I read talked about using 3 devices to
->>>> measure 3 phase power setups (I think that's what it was) which is, in
->>>> my book, evidence that they're not just intended to be used
->>>> independently.
->>> Sure but that could just as easily be done with normal SPI and 3 chip
->>> selects. For these devices there is no broadcast write magic (I think
->>> anyway!)
->> I don't think there's any magic, and yes I do buy the argument that it
->> could be done normally.
->> Quite frankly, I don't know why the device works like this other than
->> pin saving. Probably some customer asked for it rather than there being
->> a generic use case.
->>
->>>> That said, the more this discussion goes on, the more I think that
->>>> merging the devices into a single node is a mistake. Logically there may
->>>> be one device, but really there are one to four devices. Doing the
->>>> logical device thing is nice maybe for software but I no longer think
->>>> that it represents the hardware correctly. I know this will cause
->>>> problems with registration of devices in the SPI core, but we need to
->>>> pick one representation for these devices that fits in all usecases
->>>> and with the things brought up in the other mail I am having a lot of
->>>> doubts.
->>> This wasn't about use cases as such but the broadcast like facilities the
->>> ADI parts have which to me smell like the main reason you'd put them on
->>> a single bus and use this feature in the first place - you are making
->>> one big DAC from multiple chips.
->> No, I think the use case bit is important. The representation (in dt)
->> shouldn't change because someone wants to use the device as one big dac
->> or 4 smaller dacs. The multicast thing does certainly lend a lot of
->> weight to treating the dacs as one device, so I guess that would be the
->> designated representation for this dac.
->> But then I don't see why the microchip devices couldn't be dealt with in
->> the same way, even if they don't have multicast, in order to create a
->> single consistent way of describing the devices.
-> How about we kick this down the road. Leave the two microchip devices
-> alone for now with their vendor binding (which we have to carry on supporting
-> anyway) and just do the AD part.  For future devices we can push towards
-> that model if they have such a device-address feature.
->
-> I don't mind changing the microchip parts in principle, but it is going
-> to be a non trivial change and I'd certainly be nervous to make it without test
-> parts
->
-> Of course if anyone does mix parts we have to think again.
->
-> Jonathan
+Background
+==========
 
-Hi All,
+I previously posted to the list asking whether extending the existing SPI
+subsystem or introducing a new bus type was the preferred direction for eSPI
+support [1]. This series represents the new-bus-type approach, implemented
+and validated on AMD hardware.
 
-Based on the discussion for v8, I plan to:
+eSPI is an Intel-defined protocol replacing the legacy LPC bus. Unlike SPI,
+eSPI is capability-negotiated: the controller and target exchange capability
+registers at link bring-up to agree on I/O mode, clock frequency and CRC.
+Traffic is carried over four logically independent channels on a single
+shared physical link, and the target signals upstream data availability
+asynchronously via an ALERT# pin rather than chip-select assertion.
+These characteristics do not fit the synchronous, single-channel, transfer-
+oriented SPI model, so a dedicated bus type is proposed.
 
-1) Drop the Microchip-related patches from this series
-2) Keep the spi-device-addr property and the AD5529R binding/driver and represent AD5529R sharing one CS as one device using the address array.
+Channel Model
+=============
 
-This would reduce v8 into just three patches related to the AD5529r.
+The four eSPI channels each serve a distinct purpose:
 
-Please let me know if I missed anything.
+  - Peripheral channel: carries host I/O and memory cycles to/from the
+    target, replacing the LPC I/O and memory cycles used by devices such
+    as EC and BMC firmware.
 
-Regards,
-Jan
+  - Virtual Wire channel: transfers logical signal state (power sequencing
+    signals, SMI#, SCI#, IRQs) as indexed wire groups, replacing the
+    physical LPC sideband signals.
+
+  - OOB channel: tunnels SMBus/I2C messages between the host and an
+    out-of-band processor on the target, enabling management traffic
+    independent of the host OS.
+
+  - Flash Access channel: provides access to a SPI flash device attached
+    to the target, allowing the host to share a single flash with the
+    target firmware.
+
+Design Overview
+===============
+
+The framework follows the established Linux bus/device/driver model:
+
+  - struct espi_controller: the host controller, registered with
+    espi_controller_register(). Capabilities are negotiated at runtime
+    and stored in struct espi_capabilities. Each controller is assigned
+    a bus number from an XArray allocator. Read-only sysfs attributes
+    (supported_channels, channel_enabled, io_mode, max_freq_mhz) expose
+    the negotiated link state to userspace.
+
+  - struct espi_device: a target on the bus, identified by its Chip
+    Select# index (cs field). The eSPI spec allows one controller to
+    drive multiple targets via separate CS# pins; ctrl->max_targets
+    advertises the hardware limit and cs is range-checked at device
+    creation. Devices are matched to drivers by modalias.
+
+  - struct espi_controller_ops: an all-optional hardware callback table.
+    The core returns -EOPNOTSUPP for unimplemented ops, allowing
+    incremental controller driver development across patch series.
+
+  - A per-controller blocking notifier chain delivers hardware events
+    (Virtual Wire changes, OOB messages, channel state transitions,
+    In-Band Reset) to slave drivers from process context. A blocking
+    notifier is used rather than a raw notifier because slave driver
+    callbacks may sleep, for example to issue follow-up configuration
+    commands over the bus.
+
+  - A single per-controller mutex serialises all channel operations.
+    This is intentional: eSPI has one shared physical link and only one
+    downstream transaction can be in flight at a time regardless of the
+    logical channel, consistent with how struct spi_controller is modelled.
+    Because the mutex is a sleeping lock, all ops must be called from
+    process context; the alert handler is therefore registered with
+    IRQF_ONESHOT and dispatches from a threaded IRQ.
+
+Alert Mechanism
+===============
+
+When the target has upstream data pending it asserts ALERT# (dedicated
+pin or in-band on I/O[1]). The controller's hard-IRQ handler acknowledges
+the interrupt and defers processing to a threaded IRQ, which calls
+espi_handle_alert(). This dispatches to ops->handle_alert WITHOUT holding
+ctrl->lock, so that the driver callback can call espi_notify_event() to
+deliver the appropriate ESPI_EVENT_* to registered slave driver notifiers
+without deadlocking: notifier callbacks may in turn call channel APIs
+that also acquire ctrl->lock. The driver is responsible for acquiring
+ctrl->lock around any register accesses that require serialisation with
+the channel API. The alert path implementation is deferred to follow-on
+patches; the hook points are in place in this series.
+
+Scope of this RFC
+=================
+
+This series covers the framework foundation and the AMD FCH controller
+driver (ACPI HID: AMDI0070). It intentionally limits scope to the
+channel-independent layer: capability discovery, GET/SET_CONFIGURATION
+and In-Band Reset. Channel-specific operations (Peripheral I/O and
+memory, Virtual Wire, OOB, Flash Access) and the alert/interrupt path
+are declared in the API but their implementations are deferred to
+follow-on patches, to be posted once the framework design is reviewed.
+
+Testing
+=======
+
+The series has been validated on AMD hardware (AMD FCH, AMDI0070) using
+an internal test slave driver that binds as an eSPI slave device and
+exposes a sysfs command interface. The following scenarios were
+exercised:
+
+  - GET_CONFIGURATION on the General Capabilities register (0x08):
+    verified correct decoding of I/O mode, operating frequency, CRC,
+    Alert mode, Max WAIT STATE, and supported channels.
+
+  - SET_CONFIGURATION on the General Capabilities register: verified
+    successful negotiation of I/O mode (single/dual/quad) and operating
+    frequency (16/33/66 MHz), and confirmed the host-side register is
+    updated to match the negotiated parameters.
+
+  - In-Band Reset: verified the reset completes successfully and the
+    host controller registers are restored to match the target's
+    post-reset state (16 MHz / single I/O).
+
+Known Limitations / Future Work
+================================
+
+  - No Device Tree bindings in this series. The AMD controller uses
+    ACPI enumeration. DT support will follow.
+
+  - Slave device enumeration is manual (espi_new_device). ACPI/DT-based
+    enumeration will be added in a subsequent patch.
+
+  - Channel ops (Peripheral, VWire, OOB, Flash) and alert/interrupt
+    handling are deferred to follow-on patches.
+
+Feedback Requested
+==================
+
+  1. We chose a dedicated bus_type for the reasons described above
+     (capability negotiation, four independent channels, asynchronous
+     ALERT#). Does the community agree this is the right direction, or
+     is there a strong preference to extend the SPI subsystem instead?
+  2. Is the blocking notifier chain the right mechanism for event
+     delivery to slave drivers?
+  3. Any concerns with the ops table design or the -EOPNOTSUPP fallback?
+  4. Naming and structure of the public API in include/linux/espi/espi.h.
+
+References
+==========
+
+[1] https://lore.kernel.org/lkml/9548669c-7d3c-4053-b28b-c82490c0c2b8@amd.com/T/#u
+[2] Intel Enhanced Serial Peripheral Interface (eSPI) Interface Base
+    Specification
+
+Krishnamoorthi M (4):
+  espi: add core bus framework
+  espi: add slave device model and event notification
+  Documentation: espi: add subsystem overview and MAINTAINERS entry
+  espi: amd: add AMD eSPI controller driver
+
+ Documentation/driver-api/espi.rst  | 213 +++++++++++++
+ Documentation/driver-api/index.rst |   1 +
+ MAINTAINERS                        |   8 +
+ drivers/Kconfig                    |   2 +
+ drivers/Makefile                   |   1 +
+ drivers/espi/Kconfig               |  41 +++
+ drivers/espi/Makefile              |   3 +
+ drivers/espi/espi-amd.c            | 453 ++++++++++++++++++++++++++
+ drivers/espi/espi-amd.h            | 126 ++++++++
+ drivers/espi/espi-core.c           | 493 +++++++++++++++++++++++++++++
+ drivers/espi/espi-slave.c          | 177 +++++++++++
+ include/linux/espi/espi.h          | 345 ++++++++++++++++++++
+ 12 files changed, 1863 insertions(+)
+ create mode 100644 Documentation/driver-api/espi.rst
+ create mode 100644 drivers/espi/Kconfig
+ create mode 100644 drivers/espi/Makefile
+ create mode 100644 drivers/espi/espi-amd.c
+ create mode 100644 drivers/espi/espi-amd.h
+ create mode 100644 drivers/espi/espi-core.c
+ create mode 100644 drivers/espi/espi-slave.c
+ create mode 100644 include/linux/espi/espi.h
+
+-- 
+2.34.1
 

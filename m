@@ -1,108 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0263A0E99;
-	Tue,  4 Aug 2026 17:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40082417BCA;
+	Tue,  4 Aug 2026 18:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785865617; cv=none; b=MyfrATQK+Nq7+S1305tToY1HSFRTiFzH4p9ZMBthrJp5oA+kAn8sSZQyqYqRdZZzUY2aZR2aaQ/FHCdZYxM+DBA9M94tG1xcJLbESzFm4WmNjLNSDTBlLTfVhOeguZVxfNBETcQeZslwIGGijNjobycN7kq+idnyH0Hr2D/lKrE=
+	t=1785868593; cv=none; b=UGBLeyP0j+u8ZjG0/r1XZ7BujLMGgX3AH6sqPYm+/zAakeuUcxgUhBodAUW9TdRl2zfjy5DcXFhGa2XcwcqpGlCulfpQ/PMOeGwEbPKUAUOqfEThmWneRHU4Mis75ZS1fRKNojEcFSKV0JvD4CKDBRsyTGnSdZgeq4v2NLddOgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785865617; c=relaxed/simple;
-	bh=8bS6rY5Z84xBuNdz9oIjeOWVaxNllCLB7dHER8USCXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oSLETMo4wZQ2eTMUdggG3IpBY/iN96krmAz3Ww7G7KgTnHPgG73uipozCTZJKDdtx4rnvO1oPNLAqc6m+oc4/6qZNTSbbqhzAi1wSrx26TQ0P9wPUNdFqXoN8w4FNMABtgpciAp6Dew8OwF/pOQGesBmY9lD5EAYOVH7u+TC7Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBqMjyM2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785868593; c=relaxed/simple;
+	bh=k0RUbAfmtJOPPe1nwm6bWd+HuBRuvJIE/lXtvoCHCg8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=KCWQOXu2LjnlNOcolwdmc0agCI7/Sa/Wc9Dun7Hv/7KR1sFKOwi4GnXHtcQ4KcPOk1e8+xdZooEAKoThTX7MtD5pX3bxtDYH1Uss4A36PU1QmpJEN9CO8opb7WleLCLQ+6Wqtzhv9NoF17+qw8EllM5Zulayxa5AXUjWg7tdeX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eq1c7yd2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBqMjyM2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27B11F000E9;
-	Tue,  4 Aug 2026 17:46:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eq1c7yd2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2701F00A3A;
+	Tue,  4 Aug 2026 18:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785865616;
-	bh=8bS6rY5Z84xBuNdz9oIjeOWVaxNllCLB7dHER8USCXo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=CBqMjyM2zfyQH+l1Tl4AR36KpJck1WeF1OJZQ3KGr+GVvN4GcZ51vVX5+GPtgcTxv
-	 sUggidh4cKMa8e4Rl/mXGtTuLDO6v/0TpnDJESFcOICOTBcIhbHuHBQNrSJeBbuIxD
-	 sJ6POEbrYRhpSUZ3Gv1a3hUd1uRk/0d4tjZlxo9wB/ZGjAS7ZX8xV8lMJD7EnrR6bn
-	 SEZiI+SUDDCTM/5HIBjO7CFuiMC9oq4IWPMCaykikCrHiTu5n6kZMTvMg/3WjGxgtE
-	 Blc57nYygdrNys+u+2iQQwdi9+OYndJksLZVdVwqDH+vQjeAg04RGRPr03ud84J7lK
-	 CDzjIMI5KhO8g==
-Date: Tue, 4 Aug 2026 18:46:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Janani Sunil <jan.sun97@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Janani Sunil <janani.sunil@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Kent Gustavsson <nedo80@gmail.com>
-Subject: Re: [PATCH v7 2/7] dt-bindings: iio: adc: microchip,mcp3564: Add
- spi-device-addr
-Message-ID: <20260804-patrol-surpass-8e7c2a829e12@spud>
-References: <20260722-ad5529r-driver-v7-2-7781cd74ad75@analog.com>
- <cb4098c1-4bad-4a11-9a6f-a833e554f197@baylibre.com>
- <20260725230739.63ff7000@jic23-huawei>
- <20260728-patronize-thwarting-56fab2e11077@spud>
- <20260728221719.7f668a73@jic23-huawei>
- <20260729-hundredth-suffice-f28afa67bc06@spud>
- <20260730000929.2ec20cf8@jic23-huawei>
- <20260730-impaired-protector-b58ae56ae3f6@spud>
- <20260801024114.4c606ef7@jic23-huawei>
- <c20621fd-571b-4c96-8397-c644970c6548@gmail.com>
+	s=k20260515; t=1785868591;
+	bh=0X8IhTHvQpkzvsUwD/aLL8e80jF3EDnUkpv/vfqz7YA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=eq1c7yd2TrJ65ThIcsy6Jdz+QfQyVijiSu0rM22lDvp/4lQLP1UfSXwO+F+tevQ2i
+	 ogn2eG43aZXz1Tp7k+9YHYdjAJTGK1KCpNA1gIK7aGfoaKHkeJL0hsgkr9WeDQQ9x9
+	 TAUQTL0GpudKl4vdoNEJJCol4KnWlFKgdS9o5TGYgHUpbknDlr0wsxbLZiT8KR1acB
+	 5pZpiQz2DAQjA5UQHtgRmZ6EHf/086I3rL1032yGZ8nKGzlox7K/t/Wvf15i1fHBmT
+	 BgKuRqGjCV+fHalb4uW2NLqxAqgTu2hMsNyTCH+pisMFvKpa3+E3wl03aXDG4PVm9r
+	 1KrswEXfwdfew==
+From: Mark Brown <broonie@kernel.org>
+To: jonas.gorski@gmail.com, Can Peng <pengcan@kylinos.cn>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20260804071831.860784-1-pengcan@kylinos.cn>
+References: <20260804071831.860784-1-pengcan@kylinos.cn>
+Subject: Re: [PATCH] spi: bcm63xx: disable clock on resume failure
+Message-Id: <178586850216.111355.10824926560684951483.b4-ty@b4>
+Date: Tue, 04 Aug 2026 19:35:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fqdqxmi/we6pcyex"
-Content-Disposition: inline
-In-Reply-To: <c20621fd-571b-4c96-8397-c644970c6548@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1101; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=k0RUbAfmtJOPPe1nwm6bWd+HuBRuvJIE/lXtvoCHCg8=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqcjEtSr2RDwV1XYfUiGEk+YUyKNtn61JkqhUGD
+ HOSe+TA02WJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCanIxLQAKCRAk1otyXVSH
+ 0AIOB/0foPZA9cxx8Wi1ehLVSeaGIIrXE4czr4EMyc9xQJYEBXJNDpHQ8XB3fJ8Ea4idMaVQG0c
+ pNHrOSM4DohETx2FFj3C5tuFgg6ZeqTyLA9zmb6FJQ1ed/LYc4YOVC16aBP8GvFjlQfpSNQd4Du
+ Ie8rJrUEH0p5i5B6ptKVBA09VhsYhg8UyEcV9th7oPkw0WbRzytYLbATDo4Vt7q6hwUVBX9pXs7
+ GXX8Ww/vB55agf3NfKpmWmjgWuqtFTfJHhAuLEOX7AkLhy2QCc5VBFY7h+4DQzMzinnxb4Y9Lhd
+ Cs42ykFXhw5SSPdY6hJutmjwlcTssekgRhffQdjOosZJ/IEV
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
---fqdqxmi/we6pcyex
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 04 Aug 2026 15:18:31 +0800, Can Peng wrote:
+> spi: bcm63xx: disable clock on resume failure
 
-On Tue, Aug 04, 2026 at 12:36:46PM +0200, Janani Sunil wrote:
->=20
-> Hi All,
->=20
-> Based on the discussion for v8, I plan to:
->=20
-> 1) Drop the Microchip-related patches from this series
-> 2) Keep the spi-device-addr property and the AD5529R binding/driver and r=
-epresent AD5529R sharing one CS as one device using the address array.
->=20
-> This would reduce v8 into just three patches related to the AD5529r.
->=20
-> Please let me know if I missed anything.
->=20
+Applied to
 
-Sure, wfm.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
---fqdqxmi/we6pcyex
-Content-Type: application/pgp-signature; name=signature.asc
+Thanks!
 
------BEGIN PGP SIGNATURE-----
+[1/1] spi: bcm63xx: disable clock on resume failure
+      https://git.kernel.org/broonie/misc/c/2b62c2c134fa
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCanIliQAKCRB4tDGHoIJi
-0nkiAQCgqo7hK7tjCd47M7wIm/wUnyb4ezgxRvkbfBzCVq/jDgD/Y8iYse3Eu6Yf
-w5TWvQ9BEP9YOsPps0bzKzhJ+Qll8ww=
-=0fIc
------END PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---fqdqxmi/we6pcyex--
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

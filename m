@@ -1,126 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1761F2B8D;
-	Wed,  5 Aug 2026 00:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BE519D065;
+	Wed,  5 Aug 2026 00:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785890209; cv=none; b=nP54saSTwiFpMFmuFqE3V0nvpbCb+Ppshd0Yze+no+cdtjA8FYi0PS2o677aj+v4/C74QUE5pvddYBl8lbFEIIRein1G5UtkSDaThRK6cZDhCcKzBD1S0Xa1NRXMTjDVHVLv/E/ZfEpl3Md48tXoP3+iwBSLt6I1Wn46Z/QzBiw=
+	t=1785890562; cv=none; b=Qq/6i7cOSpYcu6oYUqwUDk5jnbaixMT8octsd0D6QDla3b+OMwxrFihhH+gFhGshnOCZ1mujf5kvb6CEb8ZcXOZIjKZG0FKpu6XUIlOQIJvZZfvz8pB0Rmx9KPxZelIh8I3jcWu8wnvTWsDyJvaCqxXaYKYf1NomOau6NDxA7W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785890209; c=relaxed/simple;
-	bh=Wnci9jVVcW+6VJ7mqgWN3hxueduOOx5o7+FaA1eL1MI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kbEPUlOTKrEGFyjhUIYqCPHhdlm2T1Favp4DIiwtHjXtyJEjANNE1IhCMe65nt/wkbXzMxOxkgr7BL1pRwuTz5Iz6vq7A6M3a34SjHsth8t8mPUhT8oAbSP2HePST4buBgksJdyLG/w+0aoPRzxiqg0y+A6a4EnXGcL0agnl5ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUKwzP27; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1785890562; c=relaxed/simple;
+	bh=oF+pMqKRVfoHbj0aKmhSJyXoon4yiMyJ+CZtPLw2efU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Pbm7l9Nz+iX/cUwXhFa9SEkUPoHbct9keG9fMC2A8SWkjk8W0OhdcRkMJ9yNGydWHyoczry3DK4kS5DMwJr90B5SN06hf90ETSq9ctBNyX/o6YSjWtUM37T/Jc21ou1nempvph1nQohsMuFCov+nd3SMcsLp5dOL9SVJ5dgyTWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=c51MoOa0; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUKwzP27"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1785890208; x=1817426208;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wnci9jVVcW+6VJ7mqgWN3hxueduOOx5o7+FaA1eL1MI=;
-  b=QUKwzP27+5PYmvQvXgYs/4RMEXimqiMYWch1CVRVX63Wd78qsVFMhAre
-   pnsaL8PvNFB2/adFd3eS13Mz122LebqxU1fpf4l2vb76zmniyupaw7iB5
-   bSEGpT6TTUa/1X98rB9rb2sicNkYFCkGQvUPWlZj0HRxSeCM/Gn4jm6pN
-   lRMunVyuQuTUihiZLhyrE/nCzsd1GBRQ9TWiSW9hV1wRdPUTzXneYi4Zf
-   B3bEQ2BuEdmpmaeFSn3AkHFXf6n4WFh52sh+Hgtr9cTO9k/YKJuCz+IDR
-   ip2QzL2MmyxorySHHgBPvvas0h7eSHKeffuDTCT3ZQ/5wUsR/ZCy/8Pp6
-   w==;
-X-CSE-ConnectionGUID: F6ePdimDQGSTT33joQuz7Q==
-X-CSE-MsgGUID: R92yV0fSRhWA5DkXfBqS1Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="90265906"
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="90265906"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2026 17:36:47 -0700
-X-CSE-ConnectionGUID: jt7OGor2RyKB5WZLQmxTpw==
-X-CSE-MsgGUID: fJ/RlcYmQuKrrYO021yycg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,205,1779174000"; 
-   d="scan'208";a="261717211"
-Received: from igk-lkp-server01.igk.intel.com (HELO 3cba2a188a06) ([10.211.93.152])
-  by orviesa007.jf.intel.com with ESMTP; 04 Aug 2026 17:36:45 -0700
-Received: from kbuild by 3cba2a188a06 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wrPch-000000004JC-2xXB;
-	Wed, 05 Aug 2026 00:36:43 +0000
-Date: Wed, 5 Aug 2026 02:35:59 +0200
-From: kernel test robot <lkp@intel.com>
-To: Shih-Yuan Lee <fourdollars@debian.org>, Mark Brown <broonie@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: Re: [PATCH v4 2/2] spi: pxa2xx: restore LPSS private register state
- on S3 resume
-Message-ID: <202608050250.Walny9nd-lkp@intel.com>
-References: <20260717163731.6782-3-fourdollars@debian.org>
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="c51MoOa0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1785890557;
+	bh=oF+pMqKRVfoHbj0aKmhSJyXoon4yiMyJ+CZtPLw2efU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=c51MoOa0qnaW3TduSdx06EE6rJuShhuxXVETYm2f1U2ukoI0+XhZOrLuGUJ8nphU3
+	 97nskKjuXTQHfWVza+H5DxU68zAYrb+h5sRgO5vYvhIfDCguZV3bM3EDAnsa7AmzZw
+	 mck/Me0g6012NuTdXFokiaJWE/3vwGMLaMRuODe9MNIJisqZzoxFCGd9Q32IYr7vJy
+	 jzjBHZq5lZyRyKTJFNFemv2H1nopyQjavdGlsiKfXOVbB7GKx6eRt4d80VeUn+HxuM
+	 7QRJQ1NvLnsm24lO1B71uU+7UXX/a8EOJ+qTUVWqEr6Gvgcz0B/+N5csdmLqtIjU2a
+	 l6lhOZ6hkoLLg==
+Received: from [192.168.68.117] (unknown [180.150.113.112])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id DAD4166B55;
+	Wed,  5 Aug 2026 08:42:35 +0800 (AWST)
+Message-ID: <83210c6e2a7b203bd5913b455ea45cfddf3d29ec.camel@codeconstruct.com.au>
+Subject: Re: [RFC PATCH 0/4] espi: introduce eSPI bus framework
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Greg KH <gregkh@linuxfoundation.org>, Krishnamoorthi M
+	 <krishnamoorthi.m@amd.com>, aspeedyh <yh_chung@aspeedtech.com>
+Cc: linux-kernel@vger.kernel.org, broonie@kernel.org,
+ linux-spi@vger.kernel.org, 	akshata.mukundshetty@amd.com,
+ bleung@chromium.org, groeck@chromium.org, 	chrome-platform@lists.linux.dev,
+ corbet@lwn.net, linux-doc@vger.kernel.org, 	skhan@linuxfoundation.org,
+ linux-aspeed@lists.ozlabs.org, 	openbmc@lists.ozlabs.org
+Date: Wed, 05 Aug 2026 10:12:34 +0930
+In-Reply-To: <2026080416-lagoon-delirium-8e84@gregkh>
+References: <20260804115259.4065638-1-krishnamoorthi.m@amd.com>
+	 <2026080416-lagoon-delirium-8e84@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260717163731.6782-3-fourdollars@debian.org>
 
-Hi Shih-Yuan,
+Hi Greg, Krishnamoorthi,
 
-kernel test robot noticed the following build warnings:
+YH Chung has been working on eSPI support for ASPEED's BMC SoCs, so
+I've included them in the To line.
 
-[auto build test WARNING on broonie-spi/for-next]
-[also build test WARNING on linus/master v7.2-rc6 next-20260804]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Tue, 2026-08-04 at 14:18 +0200, Greg KH wrote:
+> On Tue, Aug 04, 2026 at 05:22:55PM +0530, Krishnamoorthi M wrote:
+> > Feedback Requested
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >=20
+> > =C2=A0 1. We chose a dedicated bus_type for the reasons described above
+> > =C2=A0=C2=A0=C2=A0=C2=A0 (capability negotiation, four independent chan=
+nels, asynchronous
+> > =C2=A0=C2=A0=C2=A0=C2=A0 ALERT#). Does the community agree this is the =
+right direction, or
+> > =C2=A0=C2=A0=C2=A0=C2=A0 is there a strong preference to extend the SPI=
+ subsystem instead?
+>=20
+> That's up to the SPI maintainers and developers...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shih-Yuan-Lee/spi-pxa2xx-disable-DMA-and-fix-runtime-PM-for-Apple-MacBook8-1/20260804-222537
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-patch link:    https://lore.kernel.org/r/20260717163731.6782-3-fourdollars%40debian.org
-patch subject: [PATCH v4 2/2] spi: pxa2xx: restore LPSS private register state on S3 resume
-config: x86_64-rhel-9.4-bpf (https://download.01.org/0day-ci/archive/20260805/202608050250.Walny9nd-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260805/202608050250.Walny9nd-lkp@intel.com/reproduce)
+There's concurrent discussion from YH regarding device-side eSPI
+support in the thread ending here:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202608050250.Walny9nd-lkp@intel.com/
+https://lore.kernel.org/all/KL1PR0601MB4276FA2C6347192CC45826E490ED2@KL1PR0=
+601MB4276.apcprd06.prod.outlook.com/
 
-All warnings (new ones prefixed by >>):
+So far it's arrived at a matching proposal for drivers/espi.
 
-   drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_resume':
->> drivers/spi/spi-pxa2xx.c:1554:28: warning: unused variable 'ssp' [-Wunused-variable]
-    1554 |         struct ssp_device *ssp = drv_data->ssp;
-         |                            ^~~
+>=20
+> > =C2=A0 3. Any concerns with the ops table design or the -EOPNOTSUPP fal=
+lback?
+> > =C2=A0 4. Naming and structure of the public API in include/linux/espi/=
+espi.h.
+>=20
+> What specifically are you asking for for this?=C2=A0 Do you have userspac=
+e
+> code you want to integrate, if so, does it work with this?=C2=A0 And wher=
+e
+> does it live?
 
+I've seen your follow-up realisation Greg, however, regarding
+userspace, the thread above suggests that we should be able to back
+existing subsystems (GPIO for VW, MCTP for OOB, MTD for some flash
+functionality) onto eSPI to minimise eSPI-specific interfaces:
 
-vim +/ssp +1554 drivers/spi/spi-pxa2xx.c
+https://lore.kernel.org/all/KL1PR0601MB4276B5BE3B96C18E3A66AD709049A@KL1PR0=
+601MB4276.apcprd06.prod.outlook.com/
 
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1550  
-86d2593afeb94e drivers/spi/pxa2xx_spi.c Mike Rapoport   2009-07-21  1551  static int pxa2xx_spi_resume(struct device *dev)
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1552  {
-86d2593afeb94e drivers/spi/pxa2xx_spi.c Mike Rapoport   2009-07-21  1553  	struct driver_data *drv_data = dev_get_drvdata(dev);
-2f1a74e5a2de04 drivers/spi/pxa2xx_spi.c eric miao       2007-11-21 @1554  	struct ssp_device *ssp = drv_data->ssp;
-bffc967e93c771 drivers/spi/spi-pxa2xx.c Jarkko Nikula   2016-09-07  1555  	int status;
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1556  
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1557  	/* Enable the SSP clock */
-62bbc864d1946c drivers/spi/spi-pxa2xx.c Tobias Jordan   2018-04-30  1558  	if (!pm_runtime_suspended(dev)) {
-74ff7000fd41ae drivers/spi/spi-pxa2xx.c Shih-Yuan Lee   2026-07-18  1559  		status = pxa2xx_spi_clk_enable(drv_data);
-62bbc864d1946c drivers/spi/spi-pxa2xx.c Tobias Jordan   2018-04-30  1560  		if (status)
-62bbc864d1946c drivers/spi/spi-pxa2xx.c Tobias Jordan   2018-04-30  1561  			return status;
-62bbc864d1946c drivers/spi/spi-pxa2xx.c Tobias Jordan   2018-04-30  1562  	}
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1563  
-74ff7000fd41ae drivers/spi/spi-pxa2xx.c Shih-Yuan Lee   2026-07-18  1564  	drv_data->suspended = false;
-74ff7000fd41ae drivers/spi/spi-pxa2xx.c Shih-Yuan Lee   2026-07-18  1565  
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1566  	/* Start the queue running */
-51eea52d26d493 drivers/spi/spi-pxa2xx.c Lubomir Rintel  2019-01-16  1567  	return spi_controller_resume(drv_data->controller);
-e0c9905e87ac1b drivers/spi/pxa2xx_spi.c Stephen Street  2006-03-07  1568  }
-7d94a505858841 drivers/spi/spi-pxa2xx.c Mika Westerberg 2013-01-22  1569  
+That doesn't cover the peripheral channel, as that's dealt with in
+hardware on the device side, but for the purpose of the controller the
+devices on the peripheral channel should all be driven by the kernel
+anyway.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Andrew

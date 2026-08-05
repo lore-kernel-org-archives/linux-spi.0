@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0963806C4;
-	Wed,  5 Aug 2026 15:15:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E8D46D554;
+	Wed,  5 Aug 2026 15:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785942932; cv=none; b=LZkb6uEV0jZtC1TMc/DBrTdmjs8U9cZtXHiwG4LDI/9llepukewRMnpgX0qMeQyff2n0q7PXIN5eol7VY486gU+9TeiU8XWIHfRaJ3RNX0mjctOQE+8uM37tnqwlvrxtxKp/k7E3MMGydv/ydaft+wYLUReirYBINIXvKIdhpbo=
+	t=1785942935; cv=none; b=lWs2DW2Eeh4SvYyJP4nRHZU31WjZ91sydBBuftel7tpzGSYeBBUDlRrGPShH+1wCoTaCfx3qg9Az/XufqJo8KAfepqwVBCz8QJVAMpE/6ce9EScKr1IifXzYqmEfOgGZdTnP9oTPGn8xVM/KmTuO9YI6pwHe8w1l8tnMLC1YBjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785942932; c=relaxed/simple;
-	bh=vpR+RWdNJcp86gwIj9XC2G/BJ+zicPixVXzW41Rfht8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zjf340ehYk7jG7x/GJ7YKI5RBJ8gUMegLD0kMFi9oMhNNgy/3Bm0qJtSoF6Xo4Ku7LEwhMe86tKVvkYytHiRO2SepuuPgMiEh+MrnIL7dqY2Y81wPcdtk3/hkQYyRyJ0XgF87cOuxWN/L2viaX5aYUWypy6s7Y4qBlfwJbJPoxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JHGIDfjP; arc=none smtp.client-ip=117.135.210.2
+	s=arc-20240116; t=1785942935; c=relaxed/simple;
+	bh=lBqh7Q7tCR32zdoJbq4nH7WQoUNmx4LJ7FiBHZcSctI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p4FMxNkxwqGw6AK3RvpjMm5qIGKWEc66qdUOSQ6QpDNkTKUMGvVGM/DAfCdUUpUxT5WczcxQwCg9uiXC0qbDAwW9vTLC5ZuMU4yCzVaLHZi7QyyxxTitl5XZ0G3HxlM3WNxPNTcDyv9Iw5h+sS+KEuRqrundcBrL/9CFNidLUt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bU1hwoGI; arc=none smtp.client-ip=220.197.31.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JHGIDfjP"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bU1hwoGI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=IM
-	jsJNpggY+DC36BugxXjwMyUnwgPSg8cA3Uxlka01M=; b=JHGIDfjPVTp/9Oy9RK
-	vV3UYpQJGjZYty6St7ZKjgge2lGySOdFVtfIUaUjbvWkwiazKAESaxuBoddkbEUq
-	/icIbjgOoObgDJ480xbx9okv13x3xJw8IycOrAUX17UTvfLWmc662QZmvC3T+4GM
-	skjFTvXP6OFLVTxXZ9CQppS8U=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=A/
+	eL8vaJLROkUGuFGpEkzqGVSCkE3NlsX8c5nRfPXfw=; b=bU1hwoGIO0MBB+fSaz
+	94gvQefnyXbppk506w3DgZd45ErWV4FqjdwFv0kJb+obHGIavw2/ttkrSciVZvv2
+	Ar12YOk3ZulKuwUlxBv6G8uJPCxdZo9lgU82DwLel9T9oWHZ7NCVe9R5cd0i0AH5
+	GLoZXN/UXvdjeKpP6hqjOxTDU=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3H31xU3Nq02g5AA--.30422S3;
-	Wed, 05 Aug 2026 23:15:00 +0800 (CST)
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD3H31xU3Nq02g5AA--.30422S2;
+	Wed, 05 Aug 2026 23:14:59 +0800 (CST)
 From: Honghui Jiang <jiang_hh2019@163.com>
 To: broonie@kernel.org
 Cc: andy@kernel.org,
@@ -33,12 +32,10 @@ Cc: andy@kernel.org,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Honghui Jiang <jiang_hh2019@163.com>
-Subject: [PATCH 1/2] spi: Fix DMA mapping ownership on partial map failure
-Date: Wed,  5 Aug 2026 23:14:55 +0800
-Message-ID: <20260805151456.756579-2-jiang_hh2019@163.com>
+Subject: [PATCH 0/2] spi: Fix DMA mapping ownership on partial map failure
+Date: Wed,  5 Aug 2026 23:14:54 +0800
+Message-ID: <20260805151456.756579-1-jiang_hh2019@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260805151456.756579-1-jiang_hh2019@163.com>
-References: <20260805151456.756579-1-jiang_hh2019@163.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,107 +43,51 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3H31xU3Nq02g5AA--.30422S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCw47WFy3Xr4xur43uw47twb_yoW5Zry8pF
-	43GFW5tF48tF4FgF4a9w4q9FnIvFZ5G347C3yjkasYkwn8XF13tFy8CF1SqFy5JFWxX3W5
-	urWYyFW8GryqyrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pKYLyiUUUUU=
-X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC9hVpqWpzU3U-8wAA3Q
+X-CM-TRANSID:_____wD3H31xU3Nq02g5AA--.30422S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJrW8tFyUArW8uw4UWFWkCrg_yoW8AFy5pF
+	Z8tFWYkr4DXFyay3ZxA3yj9F13Gr93GryYyr13KwnrZFyqgFyYyFW0ka4UXay7GFn7Ja1j
+	yrZYkr1DGryjka7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE1vVZUUUUU=
+X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC9RNoqGpzU3M4RQAA3i
 
-If RX mapping fails after TX mapping succeeds, __spi_map_msg() unmaps
-TX but leaves tx_sg_mapped set.  If TX mapping fails on a later
-transfer, mappings created for earlier transfers remain active.
+__spi_map_msg() can fail after mapping only part of a message.  The
+normal cleanup path may then act on stale mapped flags using a NULL or
+stale DMA device, causing a NULL dereference or an extra unmap.
 
-In both cases, cur_{tx,rx}_dma_dev have not yet been updated because they
-are assigned only after every transfer has been mapped.  The subsequent
-spi_unmap_msg() may therefore unmap the TX mapping again or release
-earlier mappings using a NULL or stale device.  An empty SG table does
-not prevent the NULL dereference because dma_unmap_sg_attrs() accesses
-the device before checking the entry count.
+The core DMA mapping path is used by 28 in-tree SPI controllers.  The
+bug remains reachable until a controller completes its first DMA-mapped
+message, since cur_{tx,rx}_dma_dev are only set on success.  can_dma()
+length checks may postpone that point well beyond probe.  A two-transfer
+message with a mapped command followed by an unmappable static payload
+reproduces the failure without memory pressure.
 
-Publish both mapping devices before mapping starts and unwind all
-failures through __spi_unmap_msg().  This clears the mapping flags and
-releases each mapping once with the device that created it.
+Patch 1 publishes the mapping devices before mapping starts and uses a
+common unwind path for all failures.  Patch 2 adds KUnit coverage for
+partial TX and RX mapping failures, successful map/unmap, and messages
+which require no mapping.
 
-Link: https://lore.kernel.org/r/20240531194723.1761567-9-andriy.shevchenko@linux.intel.com
-Fixes: e289df82344f ("spi: Rework per message DMA mapped flag to be per transfer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Honghui Jiang <jiang_hh2019@163.com>
----
- drivers/spi/spi.c | 33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+Tested on v7.2-rc6 under x86_64 QEMU with KASAN.  All three cases that
+previously oopsed complete cleanly after the fix, and the RX-only case
+no longer issues an empty unmap.  DMA map/unmap counts changed from
+3/4, 2/3 and 5/6 to 3/3, 2/2 and 5/5.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d9e6b4b87..05a852494 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1231,6 +1231,8 @@ void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
- 	spi_unmap_buf_attrs(ctlr, dev, sgt, dir, 0);
- }
- 
-+static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg);
-+
- static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- {
- 	struct device *tx_dev, *rx_dev;
-@@ -1254,7 +1256,14 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	else
- 		rx_dev = ctlr->dev.parent;
- 
--	ret = -ENOMSG;
-+	/*
-+	 * Store the devices before mapping so partial failures can be unwound
-+	 * with the device that created each mapping.
-+	 */
-+	ctlr->cur_tx_dma_dev = tx_dev;
-+	ctlr->cur_rx_dma_dev = rx_dev;
-+
-+	ret = 0;
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/* The sync is done before each transfer. */
- 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-@@ -1268,7 +1277,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 						xfer->len, DMA_TO_DEVICE,
- 						attrs);
- 			if (ret != 0)
--				return ret;
-+				goto unwind;
- 
- 			xfer->tx_sg_mapped = true;
- 		}
-@@ -1277,25 +1286,19 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 			ret = spi_map_buf_attrs(ctlr, rx_dev, &xfer->rx_sg,
- 						xfer->rx_buf, xfer->len,
- 						DMA_FROM_DEVICE, attrs);
--			if (ret != 0) {
--				spi_unmap_buf_attrs(ctlr, tx_dev,
--						&xfer->tx_sg, DMA_TO_DEVICE,
--						attrs);
--
--				return ret;
--			}
-+			if (ret != 0)
-+				goto unwind;
- 
- 			xfer->rx_sg_mapped = true;
- 		}
- 	}
--	/* No transfer has been mapped, bail out with success */
--	if (ret)
--		return 0;
--
--	ctlr->cur_rx_dma_dev = rx_dev;
--	ctlr->cur_tx_dma_dev = tx_dev;
- 
- 	return 0;
-+
-+unwind:
-+	__spi_unmap_msg(ctlr, msg);
-+
-+	return ret;
- }
- 
- static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+Two of the four KUnit cases fail without patch 1; all four pass with it.
+Patch 1 also builds independently with x86_64_defconfig plus SPI.
+
+Honghui Jiang (2):
+  spi: Fix DMA mapping ownership on partial map failure
+  spi: Add KUnit coverage for DMA mapping error paths
+
+ drivers/spi/.kunitconfig      |   4 +
+ drivers/spi/Kconfig           |  11 ++
+ drivers/spi/spi.c             |  37 +++--
+ drivers/spi/tests/spi_kunit.c | 301 ++++++++++++++++++++++++++++++++++
+ 4 files changed, 338 insertions(+), 15 deletions(-)
+ create mode 100644 drivers/spi/.kunitconfig
+ create mode 100644 drivers/spi/tests/spi_kunit.c
+
+
+base-commit: 075b74841bd0065a3bda3440873c747938e69b68
 -- 
 2.43.0
 

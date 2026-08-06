@@ -1,129 +1,165 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF714C9579
-	for <linux-spi@vger.kernel.org>; Thu,  6 Aug 2026 19:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EF2448BA1
+	for <linux-spi@vger.kernel.org>; Thu,  6 Aug 2026 19:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786044792; cv=pass; b=b9Or+HWLNv4j+Eqqe7x0DmTwgBBIUyz2akbSwfSJSWC+dN8FefQMYYbK5WJ7YJgavur2Z58Sx92AaVIz5JgcWco2mJuNMCmeZarHJAUoFlCMRL6aOKU2gl7QdV0vpc0xH+TN30KLsg5G13kQ/4TiMudD0BM4I+kFuOQFOQXhO2A=
+	t=1786044896; cv=pass; b=MYaKS95CVId8Ga+1yqWbx/A0KFSnkXKKr5/5Rbg5IeVyUBkRX1/GakAxNOdVGqUawkh2CN8aOba3mry7vCqPgA8q9n1RV38HKR+4KDNI1UrXk5YMhq75O5SCZef5a+yp9NuiIOiEZ5bYrup8pxcC7g/6OPBIthjvVLGy2dUYe8w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786044792; c=relaxed/simple;
-	bh=mFDOjPwGZDFc6PbCyPa1fT2cRiIAZWrtnaU+b2kuGOA=;
+	s=arc-20240116; t=1786044896; c=relaxed/simple;
+	bh=IPGYrL5YopGY6jHYZUjhq4IWDB6CwkF4f3RnyaldM64=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B0C3EswhVLI3urbd0tCyquZzkAhSHApYQO0fheFmM5GRNAN9zeD5kx56YQqHaoufFMixRkHyd7lEbt48xe972tcLjhInCnKgJVfRFOr4gaTyxAoNjkWZ7PgeCfsFU+7eySveq7lonq8nGkqnj4QhWeN5WpB/680PjiXBfDPKWNg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ORZDNi/z; arc=pass smtp.client-ip=209.85.218.53
+	 To:Cc:Content-Type; b=nPjBNcgPkZNXLSf3e1+Cuk78NR2AI4bnnBix/hSS/uZyCUTcxRhf3fXNfxCb8FuoClVk9dvo27rmrK7frWiAdl/qb8hubM33M7M2EHGD2x6/HJVjdCK3aDBAI5tGnsqcvRiFsVy4Y+iwqK+VFFuMRjphJcN74fL6lDVeSB3P21Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3DIe8FD; arc=pass smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ORZDNi/z"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2055f5a993so163422166b.2
-        for <linux-spi@vger.kernel.org>; Thu, 06 Aug 2026 12:33:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786044790; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3DIe8FD"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c1f5208b38dso466825366b.0
+        for <linux-spi@vger.kernel.org>; Thu, 06 Aug 2026 12:34:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1786044892; cv=none;
         d=google.com; s=arc-20260327;
-        b=lf9F9JO7ial0POINCjN+5zm5ITg8zf8EXdFz2/k6f20GtrZIUXxNhfSdqdA566Dbfy
-         uFQ8YN4P1Ts7k7YLC58VSBxTQhzV8elPtlXcL7yW7aR55JD2dOKHml6PXWnIvkiI+6py
-         JxX7EqC51ANQUiJdEc/zCHYVLeeJJcn9RM4pLf5VsVzlxuGHpqs1lJj+9Tdq5W4VD0KS
-         LOQT9TMiyCpT02RW3Jf/o1nl2iV/kOXmg+NcvIM4uJ/a3mtqJ14SzmKlsPWC5JOVZzRJ
-         p6X/tiYPhRSvJ+/p/g45ED6Mtk+WLceEKYgeC+qOZaaDytafIfXjrH912eDX0JNa6sRj
-         1gEg==
+        b=ba/jaTS1mC/b6hKm48tzGuonpP+5ubdfTrUucmyFpAmNFH+I+joefn3cNRRq8pbfCP
+         jnb1qHm3vSUOZo07m7f9f+2fNC3xTzl7ajZR471sa5pkuRz1GdI5ww7zSZjlbpi56NaX
+         TbYWXT8fFiwL+iXqA1V82nQISefZ6FD5CTTBstKvaruosxMFIh3tWtQ5OuK/Woj1kmyB
+         dhtyn1lRkD5/MoalMAqTYHilgXphf9xejaHFzVQjQnPvMfh5HGUroHzFexE/M4Sp3GDP
+         CADcybB/HPtPq8t8O7hUoGKIV8wZS0w+WuRCPPaea4ZlVK+25mCEz4ix2qZm5r0UsZYG
+         mhaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ItYHsDfurYvZ5ceNkpYD86l11NBWSHQsSYdzzb3uODY=;
-        fh=8j5V1MncUo6gWTK0zXgpWWE6jpISfLm8cop0oD2GhUA=;
-        b=TEGDc3IrR2zqkRLvcTejpPpAyv7le0rHvjLkIE+tDOq1oEcEatj4VcMkJd8Ia43+aU
-         jggKCPxH+YbHJ+9LUWNW8/9OHu+yygV3qVwefD0WeQMUZWqwimidclDq9e3blO1j4PWu
-         aMOEqNZhHXsA7ehIJlhwC/Md3N8NB02yH8DsvzK5XNtYsGRp0RIGlNOBDZqg30/QwSnI
-         VPCyagxRLljeGMKVQQx/QhcXSU58AQ6X95C0C9Q/2XWEA5eCm7ggZT1+PMcmBeyHKZfy
-         xVclfTycy+p6FDfvvydMgh/PZ4fxJSzUPN8hu4rrxUWuHRp9cjTQcYANJAIgXlC143Z1
-         2Vtw==;
+        bh=yTybaho/RnG78AyalN7ANgkLVE3kyTSc7lUe0ekmOL4=;
+        fh=9HxaSDyez3di68rNTGAsXLbC99xFXI23MKZtHSZcvac=;
+        b=bX5OSMXH/Ey7N+LQaBOBjK23vO6bpM6sk591e5Su/BFbqwg9g+TedAVDaKP+0uK/1O
+         Jk/Mitq1Rx92slFsyw3g3pZGVB6FOV/W1ECf6NgijQe1vuL2iheI6XELewOOLjCbhJSn
+         c+ZS4yMHnf+/s4Zo8lJFScguqDvuVZCn/EmHY1FUdoWCI3OFNPmFwc1xwscM7lkBk4Qc
+         Y27j3vm9QwW7wy4e5XC3baUICMFOkm1oMvMi40RoI1iwyzrE5t2B5yqOm6HUZZNuysGn
+         SV4DSuj7jbX+/bLTQoqlDSgDuFs5LKo4YqUu9LHaSQ6PuEvoyi5j/ehDVV8rwwwz8P81
+         1mLA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786044790; x=1786649590; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786044892; x=1786649692; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ItYHsDfurYvZ5ceNkpYD86l11NBWSHQsSYdzzb3uODY=;
-        b=ORZDNi/zBNoiz8iflCd8N4806zvzhRu5rzzmQbDjzbZBSh4Vqkjvdfaz53ZtSMFLty
-         32/sIoFLfyYmFVfqwXDnCEQ/4Z/jgHtSOXsyW4KztKr5oe5izbTVJtFvWQ1/05yD6fvV
-         /J8uO65C1ZUkpCcujK9eHyiwTjXM5mCq0y8ehd8vgo7SGq0b480d/8V3sq0zomnD3/lW
-         vM8Xp5YJWWpOi1XC623fpP61RJbTzf992km8aeE5nDszbkoUobLyBmsahB4MurxOe5Gu
-         vHebFknEAia13ImH7PpwxgyCAgak/41ZjvzGJQt6oWAcUPrv8YLPlIZpzcA/6RY1etzq
-         vijQ==
+        bh=yTybaho/RnG78AyalN7ANgkLVE3kyTSc7lUe0ekmOL4=;
+        b=Z3DIe8FDKyQD/kvjrLm7w7C6mMPxiYK54QWun4v/xRe3L2ZPgWdxV7zLnUM9xgBLkZ
+         0IN0fp9M7x3MCh9MCXigPOuWOXRfpEnMEr1x4/VUfR5gFh8zc4Ckm0XsC0fitwLtUss4
+         sn2GMEUriC6dUMcMZnSWXO1lNB/gdSmR4MP1QyVX+5ltcecgNI2Aun5LEOwZ5taG5mt7
+         WwfoiehH3nwRcsLYMBEo72/2Bi6v10jjX6vtlLyUUI+PU3U88N3NbqZGCYd7Vz2Cmme4
+         SYrf1QMj3TifHKyqO2rpqtU97BVBLB4GufUt4DtmI+EgEABGSFYhfDIUCy+uzwE0pAzn
+         V+Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786044790; x=1786649590;
+        d=1e100.net; s=20251104; t=1786044892; x=1786649692;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ItYHsDfurYvZ5ceNkpYD86l11NBWSHQsSYdzzb3uODY=;
-        b=UCfzFSDfR0i9nvrwrLWcuGkHwmGUI14aBrWP+6DPNdfI51Y/WHFTMZFbN7sWUgbEr6
-         9DygE3MrNRgVtjjeOCtoutr6HBpPwd4GPV1tqZk76bi2AW2AuLysSl0/CQC0ALGxs4JQ
-         ZA6zXFU0FaZD7F5+hM2neqspWLv7vFGs/gtmIPc2C1lT3bUNZTz3gsUkVcOHdb9zM/mK
-         6HLBmw2KkZ6+UbJqrPm7gragxEG4Oh5XwbywSxvu90lB2WSEbtFQq4ZEl1BsX2h7E/HC
-         0qGIhiQzw9RnlQwywRv/uEA/Ge1FIgoW1Ar3qU2JyRztQR0X4d4eXV0Recw6AepTYQ9C
-         9lMg==
-X-Forwarded-Encrypted: i=1; AHgh+RoS+VW7RU/KFkkuiRDnDivtH6rB4RALGuzZyrcTOE+6MG7DC7oUTWyLmfhHjKpS1S6JiVyWTumdLuA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo2JGsMo5/NvyNQnu25kRaXyDKqY3bcUznzuMiSqb29I8IVSIL
-	049sHqLeOUWQiGyFnDr8ndXlXyMVj/KLtNqV8+y7JS1IJSpeDF28r0OLlEY4vrs7otESycI7OOY
-	CtRtWk7g8NDdqH28jYRLRkKzm3tpQ25R/AlvH
-X-Gm-Gg: AR+sD11lTfv0gTf6s1Jw9+A7/42K2KR+x64ruJaNlnfrDEOE+LOXy96DdJmOeslaGmE
-	/LAASLN1COknFBAWLX0BeVqVWKEzkB+Z0S3B2HBD/wjkO9BM79BE969LxXOQyWpQytFxVv4sejh
-	du8xtPZoxePB5j7AXP6sznDk+7eyynsjmuIIAXmbCg/BcyL2JAIMJOFlYmSjQ2eJOma7eAth+FE
-	wr90Q8TqLbhtjmhNudfGuBo2fS7548QM3LMdwNZ1C+YF9mcUD9XChY4VoRcztNoURGtybsgPHPn
-	xgedlWh6wLhbAn31Te8qASNxgXNYdgl373cqU31DZ121qLEsmmomF3aoZUVoFJ0sXXo3CJVHSth
-	dRuky+pEaY1ChF3BNOE/lzNsLIzWK+ojHwDpJu2lDByoSyTkQ0PrA46nixkpzmqER+qnwtM2SB3
-	UWp8P2JX7e9xMPaf05ICNzd2r2awkTEw==
-X-Received: by 2002:a17:907:7ba8:b0:c12:a469:c with SMTP id
- a640c23a62f3a-c2039b348cdmr855071966b.9.1786044789372; Thu, 06 Aug 2026
- 12:33:09 -0700 (PDT)
+        bh=yTybaho/RnG78AyalN7ANgkLVE3kyTSc7lUe0ekmOL4=;
+        b=UH+FSEqxANkBYgTiuxbPX30+pyuC6rIQUyf21fikBibiR7lVT5TIeXKtgho0j91BFZ
+         Y4OaBCqi8H4FYsJyrfTQgdXhZMMPkx+de1XwpJ6lcf3Rlq6VODahEC6NYaLL/PrcPNP6
+         JEZtNOWKlbx+EJghrpn1WDB7nvo/lWBYIXx2gHUXZpeTw7i3d70J5cvsViw6V3FwE2WR
+         7Ttt+vBjGDLFIBdTpWHhKKT7Nml55ZEI7hQLA6cJlq1arRNlQSqa2zN85R4JjEtf6mJ+
+         lZqT0iDDf6Crz9EhzHGgHfpDSmTm3zxVojw+QR3PNvs7k8oxx0+pjxJyxNgBsgTvpCRT
+         bQiQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqbbmEW77dokElWz//Hh43hLpbPIWDf+X2clFfrh9qOI1hoq7RdyqnMTNb2Jzlkpz3MxrklejTkbWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLGvRKZ/KiuUXZRkLvz1FNZtLhjADOwZP5bG3L/AhLdBisazbZ
+	Ndc2wCKqGRMjsG4tW6rt2h2bGTcG72EVtdp78yCJhHMKuQSnLVGRzIU7bnuUxt9ALgpnYQcIx2G
+	4kxPvwhgmlsrj7YuwUn9unzzy/Pm/b3o=
+X-Gm-Gg: AR+sD13AOTvj83QouBECkVHSuMyFMU8idcacLq4TXuNB9fFjQPfflehA1w6ZPlJVuos
+	xeCm/eLX2Bo/CHmUoVxh2yJtCKNXHkDKa1b9CLfkV1SxERUI38v0qt24+cG9GzOdC1AVR4QPPzK
+	ThELsI/b15ArT6ZUoYExdD4Alp+qLEiX65E/6k4lKNisvZjtvIQ0JcASrvSNj5OF88wQsvlyXzM
+	ZP0vEuXy1M0oSlegnAIMgpzmDUs3jpXG8y5039Zr8lKR8aWFfvcL0igwf6I2e20ByZh7dypLcvN
+	lARH3Llxrm08GSk1IRjOvUfKMVYHB3vyM6+aBJbeUY6lLJraXERih1X/UBUvovNZYTfSiZdP0xs
+	LfzexDVJuEpqJRFYBFK9iUm2Zcx/OLzMUBcZ/7QcrtGqixIVEkBhLPuaEhEdhj9CY2mD4PZUgDz
+	HJfmX9HI6Zqh15QZQ5uFmAUhX+ROtMAQ==
+X-Received: by 2002:a17:907:a0b:b0:beb:133d:cf02 with SMTP id
+ a640c23a62f3a-c2039e29ef4mr932664266b.26.1786044892248; Thu, 06 Aug 2026
+ 12:34:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260805151456.756579-1-jiang_hh2019@163.com> <20260805151456.756579-3-jiang_hh2019@163.com>
- <fbc72384-2f47-4577-859f-719d55a2a66a@sirena.org.uk>
-In-Reply-To: <fbc72384-2f47-4577-859f-719d55a2a66a@sirena.org.uk>
+References: <20260805151456.756579-1-jiang_hh2019@163.com> <20260805151456.756579-2-jiang_hh2019@163.com>
+In-Reply-To: <20260805151456.756579-2-jiang_hh2019@163.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 6 Aug 2026 22:32:32 +0300
-X-Gm-Features: AUfX_mwNi0CUOGPz5WPL121FGV3gRLCTBq9zD5-EpZ0kM7_M3Y5AsND2WZceNRk
-Message-ID: <CAHp75Vdhu9QC5D56ZDDYx_x6TqU+FR4KfZP_fdoBDxP7-YuaAw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] spi: Add KUnit coverage for DMA mapping error paths
-To: Mark Brown <broonie@kernel.org>
-Cc: Honghui Jiang <jiang_hh2019@163.com>, andy@kernel.org, 
-	andriy.shevchenko@linux.intel.com, fancer.lancer@gmail.com, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 6 Aug 2026 22:34:16 +0300
+X-Gm-Features: AUfX_mzhpZOoP5SBgm7z7n7EE78rYd3qIr5_cLrLJQFQNkIrGO20BV3BHjV1M0g
+Message-ID: <CAHp75Vf=riT4uCVrF+bHuAB-xCLV8wRZrn0WVVRsfxN_-0WAPg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] spi: Fix DMA mapping ownership on partial map failure
+To: Honghui Jiang <jiang_hh2019@163.com>
+Cc: broonie@kernel.org, andy@kernel.org, andriy.shevchenko@linux.intel.com, 
+	fancer.lancer@gmail.com, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 6, 2026 at 12:57=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
-te:
-> On Wed, Aug 05, 2026 at 11:14:56PM +0800, Honghui Jiang wrote:
+On Wed, Aug 5, 2026 at 6:15=E2=80=AFPM Honghui Jiang <jiang_hh2019@163.com>=
+ wrote:
+>
+> If RX mapping fails after TX mapping succeeds, __spi_map_msg() unmaps
+> TX but leaves tx_sg_mapped set.  If TX mapping fails on a later
+> transfer, mappings created for earlier transfers remain active.
+>
+> In both cases, cur_{tx,rx}_dma_dev have not yet been updated because they
+> are assigned only after every transfer has been mapped.  The subsequent
+> spi_unmap_msg() may therefore unmap the TX mapping again or release
+> earlier mappings using a NULL or stale device.  An empty SG table does
+> not prevent the NULL dereference because dma_unmap_sg_attrs() accesses
+> the device before checking the entry count.
+>
+> Publish both mapping devices before mapping starts and unwind all
+> failures through __spi_unmap_msg().  This clears the mapping flags and
+> releases each mapping once with the device that created it.
+
+The Fixes tag refers to the commit that moved from per message to per
+transfer mapping flags. Can you elaborate why it was no problem
+before? (Not sure if we need the answer to be included in the commit
+message, probably the cover letter is the best choice for this info.)
 
 ...
 
-> >  postcore_initcall(spi_init);
-> > +
-> > +#ifdef CONFIG_SPI_KUNIT_TEST
-> > +#include "tests/spi_kunit.c"
-> > +#endif
->
-> If this is just so we can peer into the internals it'd be better to add
-> a local header for internals and build as a separate translation unit
-> like normal rather than doing this sort of bodge.
+> +static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_messa=
+ge *msg);
 
-Yep, and we have kunit/visibility.h in case it is needed.
+For a fix this is probably okay to introduce, but can we get rid of
+forward declaration by moving the unmapping routine above? If so, can
+you also add another patch for that?
 
-> > diff --git a/drivers/spi/tests/spi_kunit.c b/drivers/spi/tests/spi_kuni=
-t.c
->
-> Everywhere else we use - as a separator.
+>  static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message=
+ *msg)
 
-I think for kunit tests there is a pattern which is xxx_kunit.c.
+...
 
---=20
+> -       ret =3D -ENOMSG;
+> +       /*
+> +        * Store the devices before mapping so partial failures can be un=
+wound
+> +        * with the device that created each mapping.
+> +        */
+> +       ctlr->cur_tx_dma_dev =3D tx_dev;
+> +       ctlr->cur_rx_dma_dev =3D rx_dev;
+
+Does unwind routine nullify them? If not, there is a chance that some
+code (maybe in the future) might use stale pointers.
+
+...
+
+>                         if (ret !=3D 0)
+> -                               return ret;
+> +                               goto unwind;
+
+> +                       if (ret !=3D 0)
+> +                               goto unwind;
+
+Since you touched these lines, perhaps it makes sense to drop ' !=3D 0'
+parts to make it follow the regular pattern.
+
+
+--
 With Best Regards,
 Andy Shevchenko

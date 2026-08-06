@@ -1,131 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02E83F44EB;
-	Wed,  5 Aug 2026 21:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F150375F9E;
+	Thu,  6 Aug 2026 04:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1785967067; cv=none; b=HhAnHVMz+2uhG0dAeZHJsnqih+BotnXge2BS88YNKVV//4l2HO01tWAfHORiqv4JGIq2mDragPNxvYvENaAPT3x3Sz82r+iZGY1P4TUQH5Unb1slb6sXGb+1Y86bgA1DB6RUpVSc234QF+KZXgv+4mk2SI7climrha/im2nl9JE=
+	t=1785990039; cv=none; b=oeL+jpBoTLMtsOyqKSOsDQlWmOIPl5NH7AVHLs2c6yudJdK+8vkTG7t74rhBCgxecIUWPRN+PPfb/pyyBtEJFJRxVX5VkHGicwoVelE6VAnqoxLe49Nqjw9h1mTELm2kcClno3tEZsJRv7Dw0PstEvef5ZbCyG1KDo/oFLiTZps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1785967067; c=relaxed/simple;
-	bh=UIHmsXpdNuWoFBoIbHiYhr7f75+sYin5ZiadL7/3Ujc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KEDygBG8eVH2e9iwngoxmSpReIYXMrAU3SkXmANI0GlIESWpvS5z0hc68lntei78vSi5fyn6eMPDC29MI7XyGnYhhvc0gVyyDIlZ7zkD2sq3Ci2XIOpF4qx0a865aSfwDwlOMd9DCCteuHnqFZVTBoHkhRx5gokDzKa74L2TJTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obyj/gHU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1785990039; c=relaxed/simple;
+	bh=eCgqqkfm0UeUdXoUV/DHe1r1g3ztPDdn3Z7TKQgojPE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=rNbibuSe9rfHG4Xq4hvXiZjW8gfW2Sluubc2459ckD4A5LZvaFOl9pYfHX9d6ykfnZHZAf1VwqPztePQK4dZcYGp1muAR+VaZ6fhxuEeWtdFY7nsaaW1QG0GCT3yucavG+5noDlA27A3IVi1SBW4AmRd4m3e5VRU3fk8JezROE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=pWGjgZev; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obyj/gHU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86D31F000E9;
-	Wed,  5 Aug 2026 21:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1785967065;
-	bh=PCSg8wxXQwhweaduFBlyw+m+o1F9qQircZb9vnaMbtM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=obyj/gHU7Ib0CMjbTv9GkuHY/GQv3uQ6kOmXJwiQQZ9ZeEC3kzS69gqi8F8ywO1+/
-	 SiD+HkgIyCZEZxS4/CycEllptCtZxE4bpodASkq/QdWy85sEptetpdCWyL3Tijct0o
-	 rKHjXS9XlXBRkxIC7KrEMRmnRhJoU/5ZUUPRQgv1BxvWDFYMG39yBluSVrfD4ORKei
-	 jUuQaqmTQuzHkpzItIBBDEpQ1j4bWLumfj2rXDyI8mi5JevSPED669mG2mN/d+5xQF
-	 2Av86COVyM7o48+6VRtfS/Q6xqhOaag0bg0HJOTkGM7HhalMgEacNRxYxOl1Jv9de8
-	 plbBe+IP6kmZg==
-Date: Wed, 5 Aug 2026 22:57:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Honghui Jiang <jiang_hh2019@163.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="pWGjgZev"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=eCgqqkfm0UeUdXoUV/DHe1r1g3ztPDdn3Z7TKQgojPE=; b=p
+	WGjgZevefMOatvvj1wfLIK7MziKKkqDLNKICmCINgpq4VXIOETFgYaHsG3QFofGL
+	Tzr6aC7Es+IYZ8U/LDrnJxOofWhPkII/Zv9HtXFAOYknOghkIcfxpNlHjVjzznAK
+	zkOoX5IfN5UtloSJIaRbBeQonuDsJF13b+6ZfoilZk=
+Received: from jiang_hh2019$163.com ( [180.168.188.67] ) by
+ ajax-webmail-wmsvr-40-101 (Coremail) ; Thu, 6 Aug 2026 12:20:02 +0800 (CST)
+Date: Thu, 6 Aug 2026 12:20:02 +0800 (CST)
+From: =?GBK?B?va266rvUIA==?= <jiang_hh2019@163.com>
+To: "Mark Brown" <broonie@kernel.org>
 Cc: andy@kernel.org, andriy.shevchenko@linux.intel.com,
 	fancer.lancer@gmail.com, linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/2] spi: Add KUnit coverage for DMA mapping error paths
-Message-ID: <fbc72384-2f47-4577-859f-719d55a2a66a@sirena.org.uk>
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <fbc72384-2f47-4577-859f-719d55a2a66a@sirena.org.uk>
 References: <20260805151456.756579-1-jiang_hh2019@163.com>
  <20260805151456.756579-3-jiang_hh2019@163.com>
+ <fbc72384-2f47-4577-859f-719d55a2a66a@sirena.org.uk>
+X-NTES-SC: AL_Qu2TB/WSv0gr5CmfbOkdmU8age42XMSzuP4u2YJTc+oEmjzt9jogd117BH3b0u+eDx22rwS+bTte5dhUXpVDWSEHY/ZIxxYEvWIjEFdjSw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FrLLJjW7SGEwmpUS"
-Content-Disposition: inline
-In-Reply-To: <20260805151456.756579-3-jiang_hh2019@163.com>
-X-Cookie: Stop ahead.
+Message-ID: <51604e4f.383b.19fd54cb92c.Coremail.jiang_hh2019@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:ZSgvCgBn73dzC3Rq2L0sAA--.16309W
+X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC1BOW1mp0C3M5rgAA32
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-
---FrLLJjW7SGEwmpUS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Aug 05, 2026 at 11:14:56PM +0800, Honghui Jiang wrote:
-> Add KUnit tests for the __spi_map_msg() error paths.  The tests verify
-> that mappings created before a later TX or RX failure are unwound, their
-> flags are cleared, and cur_{tx,rx}_dma_dev point to the device used for
-> the mapping.
-
-The tests themselves look good but some style/integration stuff:
-
-> --- /dev/null
-> +++ b/drivers/spi/.kunitconfig
-> @@ -0,0 +1,4 @@
-> +CONFIG_KUNIT=y
-> +CONFIG_SPI=y
-> +CONFIG_SPI_MASTER=y
-> +CONFIG_SPI_KUNIT_TEST=y
-
-This also needs enabling in the KUnit defconfigs in
-tools/testing/kunit/configs.
-
-> index 05a852494..42e337c54 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -5146,3 +5146,7 @@ static int __init spi_init(void)
->   * include needing to have boardinfo data structures be much more public.
->   */
->  postcore_initcall(spi_init);
-> +
-> +#ifdef CONFIG_SPI_KUNIT_TEST
-> +#include "tests/spi_kunit.c"
-> +#endif
-
-If this is just so we can peer into the internals it'd be better to add
-a local header for internals and build as a separate translation unit
-like normal rather than doing this sort of bodge.
-
-> diff --git a/drivers/spi/tests/spi_kunit.c b/drivers/spi/tests/spi_kunit.c
-
-Everywhere else we use - as a separator.
-
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * KUnit tests for the SPI core DMA mapping error paths.
-> + *
-
-Please make the entire comment a C++ one so things look more intentional.
-
-> + * The invariant under test:
-> + *
-> + *   When __spi_map_msg() returns an error, no transfer in the message may
-> + *   still claim a DMA mapping.  Any transfer that was mapped before the
-> + *   failure must have an empty SG table and a cleared *_sg_mapped flag.
-> + *   ctlr->cur_{tx,rx}_dma_dev must identify the device used for this map,
-> + *   rather than a device retained from an earlier message.
-
-This is for one specific test, either this file should have a test
-specific name with everything else namespaced to make room for further
-tests or all this should go with the specific test.  This looks like a
-DMA subsuite so possibly named after that?  The same applies to internal
-identifiers.
-
---FrLLJjW7SGEwmpUS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmpzsdQACgkQJNaLcl1U
-h9B/fgf9Gw8KnvDf5UwgZX9s1UqYkz3M6ZVSVZErzXGtdvpsg0K8RKC83d+/wwK/
-FOsOgSrvKAE5TcPV23+w4AIeAXI21HJNHFBZqemVFdQFA0CUYQI+Vgl4H2MSiDwf
-SvWDJP6SwKuK9n17s21HoD8ociqKFk0vUyDXU+GZuOgbZhjot8AI9y0wPhpYw/vc
-IWC2g853XkT9WhWSZFrVgwzVRgnIXpY2QMcy89fdrS8AVCYu64lSMhdSRsv7/PKm
-Wn1bKrCUf9L9ViwxcTtkUgffwRBwK3wOExqAT7GufWnZKbgGmwUGIJjklvUFZY7Q
-GV7qlI00LRqIAgLJNqdEoXsuC1lSjA==
-=rpC4
------END PGP SIGNATURE-----
-
---FrLLJjW7SGEwmpUS--
+VGhhbmtzIGZvciB0aGUgcmV2aWV3LgoKSSdsbCBhZGRyZXNzIHRoZXNlIGNvbW1lbnRzIGluIHYy
+IGFuZCByZXdvcmsgdGhlIHRlc3QgaW50ZWdyYXRpb24KYXMgc3VnZ2VzdGVkLgoKQXQgMjAyNi0w
+OC0wNiAwNTo1Nzo0MSwgIk1hcmsgQnJvd24iIDxicm9vbmllQGtlcm5lbC5vcmc+IHdyb3RlOgo+
+T24gV2VkLCBBdWcgMDUsIDIwMjYgYXQgMTE6MTQ6NTZQTSArMDgwMCwgSG9uZ2h1aSBKaWFuZyB3
+cm90ZToKPj4gQWRkIEtVbml0IHRlc3RzIGZvciB0aGUgX19zcGlfbWFwX21zZygpIGVycm9yIHBh
+dGhzLiAgVGhlIHRlc3RzIHZlcmlmeQo+PiB0aGF0IG1hcHBpbmdzIGNyZWF0ZWQgYmVmb3JlIGEg
+bGF0ZXIgVFggb3IgUlggZmFpbHVyZSBhcmUgdW53b3VuZCwgdGhlaXIKPj4gZmxhZ3MgYXJlIGNs
+ZWFyZWQsIGFuZCBjdXJfe3R4LHJ4fV9kbWFfZGV2IHBvaW50IHRvIHRoZSBkZXZpY2UgdXNlZCBm
+b3IKPj4gdGhlIG1hcHBpbmcuCj4KPlRoZSB0ZXN0cyB0aGVtc2VsdmVzIGxvb2sgZ29vZCBidXQg
+c29tZSBzdHlsZS9pbnRlZ3JhdGlvbiBzdHVmZjoKPgo+PiAtLS0gL2Rldi9udWxsCj4+ICsrKyBi
+L2RyaXZlcnMvc3BpLy5rdW5pdGNvbmZpZwo+PiBAQCAtMCwwICsxLDQgQEAKPj4gK0NPTkZJR19L
+VU5JVD15Cj4+ICtDT05GSUdfU1BJPXkKPj4gK0NPTkZJR19TUElfTUFTVEVSPXkKPj4gK0NPTkZJ
+R19TUElfS1VOSVRfVEVTVD15Cj4KPlRoaXMgYWxzbyBuZWVkcyBlbmFibGluZyBpbiB0aGUgS1Vu
+aXQgZGVmY29uZmlncyBpbgo+dG9vbHMvdGVzdGluZy9rdW5pdC9jb25maWdzLgo+Cj4+IGluZGV4
+IDA1YTg1MjQ5NC4uNDJlMzM3YzU0IDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL3NwaS9zcGkuYwo+
+PiArKysgYi9kcml2ZXJzL3NwaS9zcGkuYwo+PiBAQCAtNTE0NiwzICs1MTQ2LDcgQEAgc3RhdGlj
+IGludCBfX2luaXQgc3BpX2luaXQodm9pZCkKPj4gICAqIGluY2x1ZGUgbmVlZGluZyB0byBoYXZl
+IGJvYXJkaW5mbyBkYXRhIHN0cnVjdHVyZXMgYmUgbXVjaCBtb3JlIHB1YmxpYy4KPj4gICAqLwo+
+PiAgcG9zdGNvcmVfaW5pdGNhbGwoc3BpX2luaXQpOwo+PiArCj4+ICsjaWZkZWYgQ09ORklHX1NQ
+SV9LVU5JVF9URVNUCj4+ICsjaW5jbHVkZSAidGVzdHMvc3BpX2t1bml0LmMiCj4+ICsjZW5kaWYK
+Pgo+SWYgdGhpcyBpcyBqdXN0IHNvIHdlIGNhbiBwZWVyIGludG8gdGhlIGludGVybmFscyBpdCdk
+IGJlIGJldHRlciB0byBhZGQKPmEgbG9jYWwgaGVhZGVyIGZvciBpbnRlcm5hbHMgYW5kIGJ1aWxk
+IGFzIGEgc2VwYXJhdGUgdHJhbnNsYXRpb24gdW5pdAo+bGlrZSBub3JtYWwgcmF0aGVyIHRoYW4g
+ZG9pbmcgdGhpcyBzb3J0IG9mIGJvZGdlLgo+Cj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS90
+ZXN0cy9zcGlfa3VuaXQuYyBiL2RyaXZlcnMvc3BpL3Rlc3RzL3NwaV9rdW5pdC5jCj4KPkV2ZXJ5
+d2hlcmUgZWxzZSB3ZSB1c2UgLSBhcyBhIHNlcGFyYXRvci4KPgo+PiArLy8gU1BEWC1MaWNlbnNl
+LUlkZW50aWZpZXI6IEdQTC0yLjAKPj4gKy8qCj4+ICsgKiBLVW5pdCB0ZXN0cyBmb3IgdGhlIFNQ
+SSBjb3JlIERNQSBtYXBwaW5nIGVycm9yIHBhdGhzLgo+PiArICoKPgo+UGxlYXNlIG1ha2UgdGhl
+IGVudGlyZSBjb21tZW50IGEgQysrIG9uZSBzbyB0aGluZ3MgbG9vayBtb3JlIGludGVudGlvbmFs
+Lgo+Cj4+ICsgKiBUaGUgaW52YXJpYW50IHVuZGVyIHRlc3Q6Cj4+ICsgKgo+PiArICogICBXaGVu
+IF9fc3BpX21hcF9tc2coKSByZXR1cm5zIGFuIGVycm9yLCBubyB0cmFuc2ZlciBpbiB0aGUgbWVz
+c2FnZSBtYXkKPj4gKyAqICAgc3RpbGwgY2xhaW0gYSBETUEgbWFwcGluZy4gIEFueSB0cmFuc2Zl
+ciB0aGF0IHdhcyBtYXBwZWQgYmVmb3JlIHRoZQo+PiArICogICBmYWlsdXJlIG11c3QgaGF2ZSBh
+biBlbXB0eSBTRyB0YWJsZSBhbmQgYSBjbGVhcmVkICpfc2dfbWFwcGVkIGZsYWcuCj4+ICsgKiAg
+IGN0bHItPmN1cl97dHgscnh9X2RtYV9kZXYgbXVzdCBpZGVudGlmeSB0aGUgZGV2aWNlIHVzZWQg
+Zm9yIHRoaXMgbWFwLAo+PiArICogICByYXRoZXIgdGhhbiBhIGRldmljZSByZXRhaW5lZCBmcm9t
+IGFuIGVhcmxpZXIgbWVzc2FnZS4KPgo+VGhpcyBpcyBmb3Igb25lIHNwZWNpZmljIHRlc3QsIGVp
+dGhlciB0aGlzIGZpbGUgc2hvdWxkIGhhdmUgYSB0ZXN0Cj5zcGVjaWZpYyBuYW1lIHdpdGggZXZl
+cnl0aGluZyBlbHNlIG5hbWVzcGFjZWQgdG8gbWFrZSByb29tIGZvciBmdXJ0aGVyCj50ZXN0cyBv
+ciBhbGwgdGhpcyBzaG91bGQgZ28gd2l0aCB0aGUgc3BlY2lmaWMgdGVzdC4gIFRoaXMgbG9va3Mg
+bGlrZSBhCj5ETUEgc3Vic3VpdGUgc28gcG9zc2libHkgbmFtZWQgYWZ0ZXIgdGhhdD8gIFRoZSBz
+YW1lIGFwcGxpZXMgdG8gaW50ZXJuYWwKPmlkZW50aWZpZXJzLgo=

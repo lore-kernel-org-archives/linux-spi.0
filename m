@@ -1,110 +1,92 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A7842BEAF
-	for <linux-spi@vger.kernel.org>; Fri,  7 Aug 2026 10:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C87141D4EA;
+	Fri,  7 Aug 2026 11:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786099149; cv=none; b=TD2R4Nlo5HL1C1M5OTtDCeWZsP+UYiEl9bF4/K9g21LFQJGRx7xNK8F3bz/NG5RTg41bMEwLm7KHeCw4kRslhnYZQsQRmhxzEMR8fEKQdZk3X80DK+QjbO1d0ArB734xkVI8TQrr4qUXnmic0hdOzMAbGQHP85Ss29AMfNhel7o=
+	t=1786101866; cv=none; b=jxxYOwuHLZ1RB/pUWvwFp8NrV8/qF/UAfxD08O22sGiawF2y8TkaaAWt6kLP+ZWCxI4VRt+CI2fNe2eomOvyDEEfO2AF+paOwBWp1PuMX3bSj9wdQtzqidCjyihEHHp5nlQpqsAL4KAsUHJF28eXU4UpBAZtTnNQfPn+2ksWt40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786099149; c=relaxed/simple;
-	bh=N1STeXF3gIvX3FxBoq06brZY6ylGnfR9VHOV/+Bw0ZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F9/UUvLQfFAtoriDPpB/J7bJ46o+V2wKCOcVi3R7NKWEKsU9T0ln+NREqWs3Be5ylLcyr8We40xBxFdHcJ9S/+0/dTGfThysQ1oI2C/+qiY7sBfcee2rMpjpcZkOKKaZmNLt6Mrs8GjDoL8mVerZlPrb3bB7w7IT5UDDDzUPS9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GoA2ecoa; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786101866; c=relaxed/simple;
+	bh=BLpAfIgdKE2g2TXD0nYMJQzdWT+koZWc69P9ILVrv8A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=P1EIx9HwGBqLiqvtDtW9enxNGm0oyDBV/skyUPLfCvJ8h/iPJ6GQDhIuzaM+0XRt6zvzsvWTRXobAdApJHezrWBxHk/RIdVmHJlW/fSZxPqeZ7hqcKBsvwyldQTM8e41m0eFxXtAveOmotS47kj/9239DVd9Crc8+NlesEJ628c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpAyYgYi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GoA2ecoa"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-38d489b6b71so3139043a91.0
-        for <linux-spi@vger.kernel.org>; Fri, 07 Aug 2026 03:39:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786099145; x=1786703945; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=THE3ZPWZNV9KVTBiqYcB6B3/WjvgPYV/yxC+aR7o4nI=;
-        b=GoA2ecoaRoklssdN9dlILA0gGJeDXk6iJD+4m5V9bV35w4meykLW2eqyhWQOwif6tD
-         QypWTCUrwfM/I1hfFifGNLgDf6xHXD0zeDdVvLkmhpxXf7n+6DQVvSEF2R8ImUqe48YH
-         UkUUkRwogcl3iO50gv9xK69R6w5vgrgqKH/h3di5ek3MsRudtvwyCMJymC9P/OCdWcES
-         BhspLdh9KGBnXtty9wuITE1q3I9txbd8xpFXmU673BMgMU+wP3zWsAMsdBmCQFa+BURF
-         e9GwFdvzhzhIye27o8V4XNl1pz6jnYkpnRKeAiaC5QL7sQlR+HBY2pJo3OixEAq69Hof
-         0nCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786099145; x=1786703945;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=THE3ZPWZNV9KVTBiqYcB6B3/WjvgPYV/yxC+aR7o4nI=;
-        b=giDDcZRQup9D29N3RqAdFULYH7zxSsknrvCRTiMTmkKOwLX/L1NqsFzj2KGYi+3CPf
-         aCrsDCFByrzl5tEMAYiPGT5D7xA7OPgyV2e+aAj8g60WQHaXL8UciK5pj7Zd6jS4IUYU
-         uhZtBmetjTQ6XHr+nc8tXvRM1oIPOaCkGXFZdP5iIdNZUQGc2W2XiaCrkc8101vKG6al
-         q2jn99DU93ocrq0pHpUjir0x2amYRS5l2UczoeXUjlbMchSmw8+NZMpV7g9xgqdqzHhx
-         GeRTiJBlxSeK9BmU2lGDUCYUr9ckDleDJmnkXp5Fna/uZOspTcfbtmiAH6L2ULwsbB5R
-         KU+A==
-X-Gm-Message-State: AOJu0Yyu3/LVGnVXPK/rlwnl1SvkuAIYvMpj/uHBDEMa030+MvHkc5vu
-	8KqTt2Wh3Fsvd+5lJVsqPDTjMY/BVCO1lZyKgVQwHpLzcNMPseBRQp+R
-X-Gm-Gg: AR+sD10czauW0fK6K9yPhPT96fd65PPTY11zyfs9rt1S9u0l+z9f3uJiE5vjU/hHZmv
-	Ulqdt8KCK03AlxK7VSfg/+K5cmJak056tTgdmq6LEfl0PZVj14CsMIQV8hNu4Saf9L/+h+6PGvx
-	OKUC/b66XA1ST2ZSHLeyHI+tCRxD4YquD5CRBOiI+WQ1M1POiDVjEV5JbKXD4JurZRZrFO08VN7
-	afbQc0W1vgoqDkUT4hpVLe3MOdfX7d1z2XZcKE5KS68pSF9u7Yq08qmZn1iTc054chVyZh2vOCr
-	ORTxQSBN8/ggj9KsRtyv6fBl33IRNGTAGTvFSC2ZK1zIcXQ3tsFg4lXgjB9og143yalDSMspVF3
-	D2Poze9fjZ9kwLgRFOu9qDXfkFC8M5AmSQK5/Fb0q9xcMHflD7++8Qkz9EOg58W+oSm3NzENihU
-	GJZdamt6434836reShG+2B23c34KL6alpEDH/9RSozA85tPbtnRRTLDqHnH6rH8UHxH6OxLbPyV
-	2SAmhIgbMj2V6GvwxpYVuDDV6Evin+Yu4MFziyL/vP0WhjDdK01fp+NcMBYTPRjgk7MOhjARWpB
-	gEIa
-X-Received: by 2002:a17:90b:28d0:b0:38d:fda6:4873 with SMTP id 98e67ed59e1d1-3903c57a0bbmr20936458a91.10.1786099144794;
-        Fri, 07 Aug 2026 03:39:04 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39085dbf82csm4425865a91.1.2026.08.07.03.39.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Aug 2026 03:39:03 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Mark Brown <broonie@kernel.org>,
-	Yang Shen <shenyang39@huawei.com>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH] spi: hisi-sfc-v3xx: Propagate errors from optional IRQ lookup
-Date: Fri,  7 Aug 2026 17:38:47 +0700
-Message-ID: <20260807103848.46315-1-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpAyYgYi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89471F000E9;
+	Fri,  7 Aug 2026 11:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786101865;
+	bh=Y+OnyiutdAeZqdCaIL9vv826Rscy3ErecGau84y8hCg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=NpAyYgYiTHhaj/NZS4GWynUp3LpN7jIhG81h+HIdZraHExddMxDRJ91fY1Y5yauEx
+	 X2TOAGXLZ2DU8KQmxJ9Opb2fkTHC2qIIyPkUy2/xn44b9QZxH+xjszl3MiND1Rjw3c
+	 iro6fps9K0L/RWzXSDSf3yruV9kfsIBXCwbeKnpYqDTSzwKBWbxUybu0b80BUhMUsg
+	 C6+y0djxelL0spLEisLJxLIsl1SxTiqpMbu8JgQpN2OBYzHqwsKbR2T1NnOlsWDHqN
+	 ymRmnC5uzx7DXutci5iaC+jy+XOZ2HkVJYZZLuqM65YfRgHJX3QRLsU07sOEOx2jDD
+	 2mSJ/uZsQvvaQ==
+From: Mark Brown <broonie@kernel.org>
+To: Vishwaroop A <va@nvidia.com>
+Cc: linux-spi@vger.kernel.org, jonathanh@nvidia.com, 
+ thierry.reding@gmail.com, corbet@lwn.net, linux-doc@vger.kernel.org, 
+ smangipudi@nvidia.com
+In-Reply-To: <20260803104614.2548375-1-va@nvidia.com>
+References: <20260803104614.2548375-1-va@nvidia.com>
+Subject: Re: [PATCH v9 0/2] spi: add new_device/delete_device sysfs
+ interface
+Message-Id: <178604004753.110757.12124960041355613352.b4-ty@b4>
+Date: Thu, 06 Aug 2026 19:14:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+On Mon, 03 Aug 2026 10:46:12 +0000, Vishwaroop A wrote:
+> spi: add new_device/delete_device sysfs interface
+> 
+> Add I2C-style new_device/delete_device sysfs attributes to SPI host
+> controllers, allowing userspace to instantiate and remove SPI devices
+> at runtime without device-tree changes.
+> 
+> Patch 1 adds the new_device/delete_device attributes and the supporting
+> infrastructure (userspace_clients list, manual sysfs group registration).
+> Patch 2 adds the ABI and user-facing documentation.
+> 
+> [...]
 
-platform_get_irq_optional() returns a positive IRQ number on success or
-a negative error code on failure. For an optional IRQ, -ENXIO indicates
-that no IRQ is available, while other errors should be propagated.
+Applied to
 
-Instead of only checking for -EPROBE_DEFER, propagate all error codes
-returned by platform_get_irq_optional() other than -ENXIO, so that
-failures are properly reported to the caller.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
- drivers/spi/spi-hisi-sfc-v3xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index d60db579b0fb..0790c7179868 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -454,8 +454,8 @@ static int hisi_sfc_v3xx_probe(struct platform_device *pdev)
- 		return PTR_ERR(host->regbase);
- 
- 	host->irq = platform_get_irq_optional(pdev, 0);
--	if (host->irq == -EPROBE_DEFER)
--		return -EPROBE_DEFER;
-+	if (host->irq < 0 && host->irq != -ENXIO)
-+		return host->irq;
- 
- 	hisi_sfc_v3xx_disable_int(host);
- 
--- 
-2.43.0
+[1/2] spi: add new_device/delete_device sysfs interface
+      https://git.kernel.org/broonie/spi/c/e0db3f62dbe6
+[2/2] docs: spi: add documentation for userspace device instantiation
+      https://git.kernel.org/broonie/spi/c/036d4b059be0
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

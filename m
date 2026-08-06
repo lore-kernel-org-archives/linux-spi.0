@@ -1,91 +1,205 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D122EEE7C;
-	Thu,  6 Aug 2026 18:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CACA847A874
+	for <linux-spi@vger.kernel.org>; Thu,  6 Aug 2026 19:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786041282; cv=none; b=Lr/luWfHmnVwVb7OWhIOcmDuq/VEgdOf0/wiC7eQ2gQh05yf/VOiuWGiX41apYHTcqbXPfUsrFwBJ97ZuQakrZGyc+qM/SbmFSrZbsdKvvx3lesZnaNfXu8Ae91/stkBF03BMbiMWocBzt65IaAU5UHt4gCl3gTil4Gb+HundpE=
+	t=1786043950; cv=none; b=b72tAh522MaPX2Iz9fXTAciKQ8XJGhRQlspXkMd7ZZVneM/nDUf7a2GWfON+9cVZE4Bgj058VbShrJjZ+ftSOxCxIzOYTf2eGdejNFsc3+2iQrtocwaBTSDp0hzI9jZMy6dzttyIjO5wbXFuTcxJVM6h9PJ0OpCpBQjenM3DPag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786041282; c=relaxed/simple;
-	bh=mDCPSzh6rMRjDZZdVvq+/wEd+AVZYVPO4Jz2cpunOJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcLfG4mvqXXLadERuZtdlGCjCopjyZxKyS6W0xsFFkdh6Sn+OfDDLguLqckG5MD72ZWHXadyf1Cz1qncjjPj26bkdTw+ros7GU0gvJRHVBRdpcxtwl//643nSNdFubFeVM9NBaC0JJeDSE0onopSunKJkau6RiYwOGXIZ6FckZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlYXFqW/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786043950; c=relaxed/simple;
+	bh=51nhUZ36HVPR/vZg+M/rCeJtONDFxUX0gazcIser9OE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g67ISdpoAv1bbuor5L+Q6kCvIno2o41XI8v4Mgcvpewx8TE6kKSU5CILRR5ZqvQWe98sYLlwXcz6IIAaUocxpfrbz71/NXRZZEAYJnW4TWPs0Olk3cX8/50RzLDeNwxbMSoKO/LOVtLcw5P+NNMWPsnV6oLhVvz95J2+WaTM4LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AebnzJL0; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlYXFqW/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880AC1F000E9;
-	Thu,  6 Aug 2026 18:34:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786041281;
-	bh=mDCPSzh6rMRjDZZdVvq+/wEd+AVZYVPO4Jz2cpunOJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mlYXFqW/QSTKwZ08+7MMf2SChseEHoSG/ppVw6Lb0jqmLqM2bvf2VWBgRYbJdbMGA
-	 Pv//9uUmYYtrDsIEOfPg/uOUJkrTDO3ndEayupNxM0tq6luhc/k+KDlo9smsgBwIL0
-	 x5qiaYAFTguR+IDK3zRNBCX4l0lAJ9OH2WYt3Q6LXL7pjxKqetFSktfQtLWF4EYowv
-	 T7lbEsjKWoDaR9Otz0WT+x0NBooPWTyr90HJpQ/HltBnG/Tn0crwQSuCcvPN6O+g0W
-	 buR9dmgXuuTMVVNUKBPXNxlaYgOmL9GS0COo322oK8thf5HtQaOoNeozEK00NLqPNE
-	 A8Y7Jd/G1AVnQ==
-Date: Thu, 6 Aug 2026 19:34:35 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: konrad.dybcio@oss.qualcomm.com, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	chandana.chiluveru@oss.qualcomm.com,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: spi: qcom-geni: Document device-gpios
- property
-Message-ID: <65e5ead6-6159-4660-a699-db46fb4caf17@sirena.org.uk>
-References: <20260806-use_gpio_to_notify_master_of_spi_target_activity-v1-0-c363a9b5df69@oss.qualcomm.com>
- <20260806-use_gpio_to_notify_master_of_spi_target_activity-v1-1-c363a9b5df69@oss.qualcomm.com>
- <57719877-b8d8-4df0-acce-2c4faf5a5899@sirena.org.uk>
- <3594bbdd-e457-4a88-9e37-7acf0f3d87d2@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AebnzJL0"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5aeb98460c6so2465557e87.2
+        for <linux-spi@vger.kernel.org>; Thu, 06 Aug 2026 12:19:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786043947; x=1786648747; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0Rntni/+iFL5zOCPoEwUROZX0FJSnIqGs1w4smqyZiM=;
+        b=AebnzJL0f4yQbSa5RGDhRFRVo25In6qh51SBPcqsGZ/XEwQhSI4iitwYPifotgQ1XD
+         8QOYzULggP6FpSLX+SJLKj5wEUsogrfMzgsucNIWrsBqKLZyY/eaxkEumYHy7hC0iViL
+         8VQigax9VWQlVOBQXAaINABkRbjnsoTMsNbkg1mathxpQkXqhgAbIDLTwtpKnnlCJ2Rv
+         +ROAJYvhWJrHOYzG6pO/YPRVhkhJSo+Sp9i1HpHSPeIFQc2EdGUVlTw50VwyVkX8ZtQT
+         3dVavwuOMvGaQFEnFDVXxV9MM1Ywt4/ayzeNcN9gRnZRQ/tsJCa/2AjeqQKnCUvF8u2K
+         p9GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786043947; x=1786648747;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0Rntni/+iFL5zOCPoEwUROZX0FJSnIqGs1w4smqyZiM=;
+        b=T8SF1GZBQBZw9YgRJBGj/Gs/AgEDh6uyqbaKoODPDbM90LVimGYrD+qyxKV+JogZFQ
+         OOJ8PpCBRFFt83dOIpZ1d3yO07e9jlWC4/y0gny7KiuCRUZQQ7Kj1M0E18TUqXplbalh
+         fFMz3L18eoXzZoTe+RZr/iI1ZE4QUr+qzZyrMPl3sgzh9W6g8MOUp+wZCBxjaahgKLYS
+         MeFNS7lhRrAzRZ2X7rTKz2Hk0+ALsNALw809iLC1rhRNHb1Ewt1akGdcTB/Drpul5JoB
+         6m1u/3U/k90jLTX0BbWzv23Fwznuu2uzdXvOiFoNvjtoJ2RPvMTsQscVPQxipvChDOvS
+         zOsQ==
+X-Gm-Message-State: AOJu0YyraWYeHJiU0Vzny2/f7tb93HfK6CbN+34DLUrKMEQDEH0n63mh
+	Sey9grfT58cynQBAS0WzRo+cR7OQeQk/7RXmeNg7VzQ3sWY8r8XqKSEhLD9pvA==
+X-Gm-Gg: AR+sD13EsSUBzVd8qWxEApaN2NimeiZfKLvgM9fd/YiOQC60MrTTyb2iIfpV0vitY3w
+	nKAZF7m5NYYmejXPYGDuqB+ncVQ3lvJmg5GIUOSqi+1QFts2THSoQGh9sWngfmFWXn8gqNzuLu6
+	4E0L7+W804zHN68TAuuI4w+Des4mb1mf+upl0d74iWcsIt5cEpKdwwOdqAE7YOv5V3x8uKKc6me
+	whrum7QdI1tJiw0o1Ss4hGrFMa2i0JutZZpj7sjUNNvk40a2LMcTCs2J+FwfA2zUxNVOaT+zhPy
+	MuCAfV3nlRPZ6xx34AMlelUYv1Fg6QgiCgMFxVlbI3RSseoPI41mNekscKEDB81pI8hyx7Fum5P
+	Vl5Lt8tEqtjz5LBzbUgECMpUaLWKWl8Q5ENLRrHrPH3YHs8Rdcw3VzswpxqBozwEamjbXQtJITH
+	IYfI6eXJXJtWXCMHImtVU9CiyrwX6H9eaF/Hm/ackEIzr5o7d+hKXey0Sd0O+TVP0EcjxoOyXnY
+	jpclxvhhsMg3Ac=
+X-Received: by 2002:ac2:4bc4:0:b0:5ad:5c4a:8221 with SMTP id 2adb3069b0e04-5b303aeeab0mr626768e87.0.1786043946449;
+        Thu, 06 Aug 2026 12:19:06 -0700 (PDT)
+Received: from gentoo.sknt.ru ([95.161.221.172])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b3050cfa83sm57071e87.22.2026.08.06.12.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Aug 2026 12:19:04 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: linux-spi@vger.kernel.org
+Cc: linux-rockchip@lists.infradead.org,
+	Mark Brown <broonie@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Alexander Shiyan <eagle.alexander923@gmail.com>
+Subject: [PATCH] spi: rockchip: Fix runtime PM underflow on CS error paths
+Date: Thu,  6 Aug 2026 22:18:54 +0300
+Message-ID: <20260806191854.922530-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="SiavI59hKZmQToq+"
-Content-Disposition: inline
-In-Reply-To: <3594bbdd-e457-4a88-9e37-7acf0f3d87d2@oss.qualcomm.com>
-X-Cookie: Brain fried -- Core dumped
+Content-Transfer-Encoding: 8bit
 
+The Rockchip SPI driver manages runtime PM reference counting around
+chip select (CS) assertion: pm_runtime_get_sync() is called when CS is
+asserted, and pm_runtime_put() when deasserted. This balanced pair is
+expected.
 
---SiavI59hKZmQToq+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+However, when a transfer is aborted due to an error (e.g., power domain
+timeout, DMA failure, or suspend/resume), the CS may remain in asserted
+state while the transfer is terminated early. In such cases the
+corresponding pm_runtime_put() is never called, leaving the usage count
+artificially high. A later attempt to deassert CS (either explicitly or
+during a new transfer) will call pm_runtime_put() without a prior get(),
+triggering a "Runtime PM usage count underflow" warning and breaking
+subsequent SPI operations.
 
-On Thu, Aug 06, 2026 at 11:47:46PM +0530, Praveen Talari wrote:
-> On 06-08-2026 23:05, Mark Brown wrote:
+Furthermore, the error handler may already have released the PM
+reference and cleared the CS, but the SPI core may still call
+rockchip_spi_set_cs() to deassert CS at message completion. Without
+additional state tracking, this results in an extra pm_runtime_put()
+and another underflow.
 
-> > This seems a lot like the ready-gpios property we have for some other
-> > drivers?
+Add a cs_claimed flag to struct rockchip_spi to track whether the
+runtime PM reference is currently held. Set it in the CS assertion path
+after pm_runtime_get_sync(), clear it in deassertion path after
+pm_runtime_put(). In error paths (rockchip_spi_handle_err() and
+rockchip_spi_target_abort()), check this flag and release the reference
+if still held. In rockchip_spi_set_cs() deassertion branch, only call
+pm_runtime_put() if cs_claimed is true, preventing double decrement.
+---
+[root@diasom-evb ~]# rtcwake -s 15 -v -m freeze
+rtcwake: assuming RTC uses UTC ...
+Using UTC time.
+        delta   = 37
+        tzone   = 0
+        tzname  = UTC
+        systime = 1773421731, (UTC) Fri Mar 13 17:08:51 2026
+        rtctime = 1773421694, (UTC) Fri Mar 13 17:08:14 2026
+alarm 0, sys_time 1773421731, rtc_time 1773421694, seconds 15
+rtcwake: wakeup from "freeze" using /dev/rtc0 at Fri Mar 13 17:08:30 2026
+suspend mode: freeze; suspending system
+[   28.951039] PM: suspend entry (s2idle)
+[   28.957997] Filesystems sync: 0.006 seconds
+[   28.963184] Freezing user space processes
+[   28.966553] Freezing user space processes completed (elapsed 0.003 seconds)
+[   28.967162] OOM killer disabled.
+[   28.967464] Freezing remaining freezable tasks
+[   28.968457] Freezing remaining freezable tasks completed (elapsed 0.000 seconds)
+...
+[   33.249429] spi_master spi2: Failed to power device: -13
+[   33.249893] spi_master spi2: noqueue transfer failed
+[   33.250331] spi_master spi2: Failed to power device: -13
+[   33.250797] spi_master spi2: noqueue transfer failed
+[   33.251230] rockchip-spi feb20000.spi: Runtime PM usage count underflow!
+---
 
-> Yes, you're right. The intention was the same when I added this property.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/spi/spi-rockchip.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-> Would you prefer that I use the ready-gpios property instead?
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 231fbcf0e7aa..fb5795bc734d 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -191,6 +191,7 @@ struct rockchip_spi {
+ 	bool target_abort;
+ 	bool cs_inactive; /* spi target transmission stop when cs inactive */
+ 	bool cs_high_supported; /* native CS supports active-high polarity */
++	bool cs_claimed; /* runtime PM reference taken for CS */
+ 
+ 	struct spi_transfer *xfer; /* Store xfer temporarily */
+ };
+@@ -256,6 +257,7 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 	if (cs_asserted) {
+ 		/* Keep things powered as long as CS is asserted */
+ 		pm_runtime_get_sync(rs->dev);
++		rs->cs_claimed = true;
+ 
+ 		if (spi_get_csgpiod(spi, 0))
+ 			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
+@@ -263,14 +265,18 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
+ 			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER,
+ 					      BIT(spi_get_chipselect(spi, 0)));
+ 	} else {
++		/* Clear CS first, then release PM */
+ 		if (spi_get_csgpiod(spi, 0))
+ 			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
+ 		else
+ 			ROCKCHIP_SPI_CLR_BITS(rs->regs + ROCKCHIP_SPI_SER,
+ 					      BIT(spi_get_chipselect(spi, 0)));
+ 
+-		/* Drop reference from when we first asserted CS */
+-		pm_runtime_put(rs->dev);
++		/* Only release PM if we still hold the reference */
++		if (rs->cs_claimed) {
++			pm_runtime_put(rs->dev);
++			rs->cs_claimed = false;
++		}
+ 	}
+ }
+ 
+@@ -279,6 +285,12 @@ static void rockchip_spi_handle_err(struct spi_controller *ctlr,
+ {
+ 	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+ 
++	/* If CS was claimed, release it to avoid PM underflow */
++	if (rs->cs_claimed) {
++		pm_runtime_put(rs->dev);
++		rs->cs_claimed = false;
++	}
++
+ 	/* stop running spi transfer
+ 	 * this also flushes both rx and tx fifos
+ 	 */
+@@ -624,6 +636,12 @@ static int rockchip_spi_target_abort(struct spi_controller *ctlr)
+ 	struct dma_tx_state state;
+ 	enum dma_status status;
+ 
++	/* If CS was claimed, release it */
++	if (rs->cs_claimed) {
++		pm_runtime_put(rs->dev);
++		rs->cs_claimed = false;
++	}
++
+ 	/* Get current dma rx point */
+ 	if (atomic_read(&rs->state) & RXDMA) {
+ 		dmaengine_pause(ctlr->dma_rx);
+-- 
+2.52.0
 
-Yes, we should have a consistent name.
-
---SiavI59hKZmQToq+
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp007sACgkQJNaLcl1U
-h9BJpAf/ZvGuYNR8ph5K8AGotwW2rlx7waIg8MPC1X1bxqDn/t2eAWWUD64p5int
-QWQ0OGGLCytnx5gsxV0pz4jXVS/tlJ7bJ5Ef9UFmbGGBt7bHgo0X2w0bEtJ+WkdM
-FWmyqRh85QVGe+Q5rXM8ViIeU5Pwc3cXjq98r9lJB2pFN1zp30I5oaWWq2URYioc
-3xPlB9MvB9kZ52+mEYMCAvZuIiv2H3id7JOPXQnRvSF0DWjCuSQsQUkkW/M5B3++
-0P1GLnqJFK14yMxsVax7FNMaIM4eSVuCmBGTT7Qzr9uTyG0GPGROppNCrQJu+vq+
-l8kg3YrD0VKjYUjSrwbbnI8Ntf9B7w==
-=u2l8
------END PGP SIGNATURE-----
-
---SiavI59hKZmQToq+--

@@ -1,40 +1,41 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE03A39CD16;
-	Fri,  7 Aug 2026 14:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19B035CB60;
+	Fri,  7 Aug 2026 14:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786114022; cv=none; b=P32CrFBHsN5dfaCCWjulXAWJfQsUiJFbBRjkNh592qsw7OaEj3BU0m/ITtrF7T+0C5ov2fvrqZ1jDP+lwyr6Ljpapew2dp9sjMhSbqC+Nlfgh66g7NTodpQ/Un3KA3vOpFFISlhB1uCF2t+1T9fWFvyX9fcfrVrKO44lOXQWP+c=
+	t=1786114023; cv=none; b=JYZ0Qyzh70cHAcT1til2RZy1N7M2f7yC3l70dDxp74I/Oy9kz7Sbe8V7TgXq90UXoeM8ifdC5xRhcMzh/upolumaOB0qtoqFA2STvhECNvxINK1vngmkj31MZBKygNVCj+CTziB/h7CyZG8yZPIqfXfO2WsLc0bagRiV3vKOjAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786114022; c=relaxed/simple;
-	bh=X/T3PsDg8tdK+nw23JOmOBzymNkQC6jUJHhCLZMbRQ0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NMbXkbGE2l4sh2rcBPLx8UgYzxHbPQUq2LYsUwFG+RuGSg6kSPD7jiiTnTivtO9oTENIKb1e95KpodHu+grktlTy4gxnyQHL2mCpujp8kbWlOyfIFIVa+blrtZcK8eSaXoJWTxLLa3pAayhe002qRKhZqupiEiR3mkUc/LF69mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kZw213R+; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1786114023; c=relaxed/simple;
+	bh=6U/Z+bAw+q5xT//V5j5bGdzx7yiFSpk9YA3+F2HTaLU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LYud4Vb/uJVHAdzQk95J4JdcSvzB4EpwPhl/hZGMKh5ouuv866F2V/NKlqq/GKBQsuoZg8vBeDU3yILpbNkQdZnW0K9ux0M5lJGvGgLstcRvMkMwWH5LuqBNv9sbWthrowqOymKQ0X4jPtdGnyUwtb1VqVsKvPkzSzz5/bIX+cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dwyPBSkO; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kZw213R+"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dwyPBSkO"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1E3151A14B1;
-	Fri,  7 Aug 2026 14:46:55 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7B0C14E41140;
+	Fri,  7 Aug 2026 14:46:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E0876603F0;
-	Fri,  7 Aug 2026 14:46:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3C2311C37A53;
-	Fri,  7 Aug 2026 16:46:51 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 505BC603F0;
+	Fri,  7 Aug 2026 14:46:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3BC711C37A5C;
+	Fri,  7 Aug 2026 16:46:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786114013; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=3U7zmB0jNuLDEjK8WDzNya+qqpQQtuz/BAdCFoUahL0=;
-	b=kZw213R+pTzitdHxqYdmusyT/SFJdxWZGvTmo5T0FkB4h0rJV/xIfT2hnPXaPyJoy73c/w
-	D+hhlaZEYHZc1LktNKpEGCcLUyVuCH83SLa/xmuef4A/Fnf0jitiHMxx9Z367A8UjDVk9G
-	SP8HykE7mV0aNEnmYwilLFAZYqdk7+494ZGc8EM+i0O6vC/O3D6K5CEuY7PVupKZdddjbA
-	zvKXpv3dXrxjEs63ZAwBZK1yaK+GiQwmw/YzCi0nlTrYcNr+E0DwOcpEA4IHfi28M8HXWW
-	C1fqJZnkWNcP7X2T0vPDCMtoSWebdD3hGs04nmZLvBZlnG5tfPMxS7SRbotksg==
+	t=1786114015; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=iyEhVWiiJcMafyU2wvE/rdUOzD3sdnM9u1y11KR3HLs=;
+	b=dwyPBSkORIwBhtcXMH3U1Tl8HmDDkGLV6ErCoTW7EAuvYbTM6A59mxFohdz+KBGaCrx+Yv
+	MrqA0FqFHCmjHfI2DU+LNiIHeZsaRgG5tEL46l9ZQ8cFjpk+3Hv8xg8PLSycj9ZwOEnJGk
+	rN8qN7E7VOvfLXKTD8oJH8GjB2lkffn7Llx4FAKiq+lmnZJw9Wuap2AufWPgD1OEfIi1HK
+	7mhPGayFIdDPORQJBCmzPTfzj4ts3N00PIsVrbkmv9aTCOkidJ0mfuDGM0OohY2nQSyBZA
+	R4dvWvKKoDvJIRHXcxPgSOU0ycOGv16Z+GVrij6ZiisC7k4iP54ckkoGRRS8zQ==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2 0/3] mtd/spi-mem: Enable DQS support
-Date: Fri, 07 Aug 2026 16:46:46 +0200
-Message-Id: <20260807-winbond-nand-next-phy-tuning-v2-0-73595e89d6e3@bootlin.com>
+Date: Fri, 07 Aug 2026 16:46:47 +0200
+Subject: [PATCH v2 1/3] spi: spi-mem: Flag DQS capability
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,11 +44,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0K6dkxbAqgr7mFYFJjCJDolbUUI4
- e4WTuDmJ+8v3ttEQE8YxCPbhMeZAjlOoC+Z6EbDAwL1iYWWupRaFvAlbh33wOYYXCJM4wrxw8Q
- DGNOi7aS6yVyLpJg8WlpO/bNJPFKIzq9nbVbH+6d4ViChwKrP71VppVV161x8EV879xbNvu8/H
- GkA4coAAAA=
-X-Change-ID: 20260205-winbond-nand-next-phy-tuning-aabefc018032
+Message-Id: <20260807-winbond-nand-next-phy-tuning-v2-1-73595e89d6e3@bootlin.com>
+References: <20260807-winbond-nand-next-phy-tuning-v2-0-73595e89d6e3@bootlin.com>
+In-Reply-To: <20260807-winbond-nand-next-phy-tuning-v2-0-73595e89d6e3@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
  Vignesh Raghavendra <vigneshr@ti.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
@@ -57,61 +56,96 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-For his PHY tuning series on the Cadence QSPI controller embedded in TI
-SoCs, Santhosh initially needed to access the availability of the DQS
-(data strobe) signal. This is a chip dependent capability, which may
-sometimes be enabled.
+DQS is a typical SPI memory signal used to help with reading the data on
+the bus at high speeds (especially in DTR mode) by avoiding clock
+skews. The chip generates a clock signal synchronized with its data
+output fronts, also called data strobe.
 
-Create a SPI memory flag for it, let the SPI NAND core set this flag
-when it knows about the capability, and expect manufacturer drivers to
-enable it for octal needs when the chips are compatible.
+SPI NOR and SPI NAND cores must set this flag in order to indicate to
+other layers that DQS is available.
 
-This is an alternative at needing a DT property. Please note that there
-are a few blind spots:
-- the line may not be wired (this would be surprising, but can be
-  flagged this time by a DT property)
-- manufacturer drivers must enable the feature if it is
-  available (especially for high speed DTR modes)
-- this implementation is proposed for SPI NANDs only, if this proposal
-  is accepted the same approach may be taken in SPI NOR.
-
-Here is the original thread which lead to this series:
-https://lore.kernel.org/linux-spi/87v7gbdwdh.fsf@bootlin.com/T/#ma79fc364d7b882a48dbdf47203dde75df4bb0ec4
-
-This series was compile tested only at this stage. As DDR tuning does
-not yet work on my board, I cannot make sure this change has a real
-impact.
-
-Mark, as agreed, you can take the spi-mem patch through spi for this
-cycle, and I will pick up the remaining spi-nand patches after the merge
-window.
+Create a getter and a setter to reach this capability.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Mark Brown <broonie@kernel.org>
 ---
-Changes in v2:
-- Dropped the RFC prefix.
-- Rebased on top of v7.2-rc1.
-- Dropped the spi patch for now, just allowing to use DQS on a few
-  Winbond SPI NANDs (can be improved later).
-- Link to v1: https://lore.kernel.org/r/20260205-winbond-nand-next-phy-tuning-v1-0-5e7d3976f0f1@bootlin.com
+ drivers/spi/spi-mem.c       | 32 ++++++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h |  4 ++++
+ 2 files changed, 36 insertions(+)
 
----
-Miquel Raynal (3):
-      spi: spi-mem: Flag DQS capability
-      mtd: spi-nand: Set the DQS spi-mem capability if available
-      mtd: spi-nand: winbond: Enable the DQS pin on W35N**JW series
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index 1816d9d2712a..cb5ec486f494 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -541,6 +541,38 @@ const char *spi_mem_get_name(struct spi_mem *mem)
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_get_name);
+ 
++/**
++ * spi_mem_set_dqs() - Mark DQS as being available
++ * @mem: the SPI memory
++ *
++ * When reading at high frequencies (> 100MHz), especially when DTR is enabled,
++ * transfer speed is limited due to clock skews. In particular, the controller
++ * does not know the board propagation delay nor the memory chip internal delay
++ * (clock in to data out) and thus cannot optimize its sampling points.
++ * Mitigating this limitation is possible with the addition of a data strobe
++ * signal, commonly named DQS.
++ *
++ * Set the DQS boolean if the feature is available and configured at the chip
++ * level. Controllers may query this value.
++ */
++void spi_mem_set_dqs(struct spi_mem *mem)
++{
++	mem->dqs = true;
++}
++EXPORT_SYMBOL_GPL(spi_mem_set_dqs);
++
++/**
++ * spi_mem_has_dqs() - Query whether the DQS is available or not
++ * @mem: the SPI memory
++ *
++ * Return: a boolean indicating whether the DQS signal is available or not.
++ */
++bool spi_mem_has_dqs(struct spi_mem *mem)
++{
++	return mem->dqs;
++}
++EXPORT_SYMBOL_GPL(spi_mem_has_dqs);
++
+ /**
+  * spi_mem_adjust_op_size() - Adjust the data size of a SPI mem operation to
+  *			      match controller limitations
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index c4e7ebafdf0e..89d3f0218cc9 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -275,6 +275,7 @@ struct spi_mem_dirmap_desc {
+  * @spi: the underlying SPI device
+  * @drvpriv: spi_mem_driver private data
+  * @name: name of the SPI memory device
++ * @dqs: extra data trobe pin available for high frequency read operations
+  *
+  * Extra information that describe the SPI memory device and may be needed by
+  * the controller to properly handle this device should be placed here.
+@@ -286,6 +287,7 @@ struct spi_mem {
+ 	struct spi_device *spi;
+ 	void *drvpriv;
+ 	const char *name;
++	bool dqs;
+ };
+ 
+ /**
+@@ -463,6 +465,8 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
+ }
+ #endif /* CONFIG_SPI_MEM */
+ 
++void spi_mem_set_dqs(struct spi_mem *mem);
++bool spi_mem_has_dqs(struct spi_mem *mem);
+ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
+ void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op);
+ u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op *op);
 
- drivers/mtd/nand/spi/core.c    |  4 ++++
- drivers/mtd/nand/spi/winbond.c |  8 ++++----
- drivers/spi/spi-mem.c          | 32 ++++++++++++++++++++++++++++++++
- include/linux/mtd/spinand.h    |  1 +
- include/linux/spi/spi-mem.h    |  4 ++++
- 5 files changed, 45 insertions(+), 4 deletions(-)
----
-base-commit: 6f787fd9f19e4e1bc80d3eee1a394eb65defdff7
-change-id: 20260205-winbond-nand-next-phy-tuning-aabefc018032
-
-Best regards,
 -- 
-Miquel Raynal <miquel.raynal@bootlin.com>
+2.54.0
 

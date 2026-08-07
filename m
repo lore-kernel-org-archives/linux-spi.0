@@ -1,121 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09143E7BB7;
-	Thu,  6 Aug 2026 20:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B9746EF8D
+	for <linux-spi@vger.kernel.org>; Fri,  7 Aug 2026 10:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786047898; cv=none; b=JifwrPAewT9Tx4EztsndIT1/F6r6yoCazH7zjCAwmt/nErvhM6ho0sJP95bgvLPZKqGwK9bJEIYKj3rPFZlhUbCxYIGfVe4k8TLNvlZOVzqOsJi7y3kMWfmz/4ov5ASlEIsS8Gf8Kcu+4zdQX1Qpx9SMyVoExnQTxgQOJMuGAY8=
+	t=1786098593; cv=none; b=X/22OQljm1hMPOdukGjgLeJ5AwbtKHGP/MoqvmcBemM6UN3ZcemRSzdWbbPgDdgAuQJV4iK5e4jftW8QxMRorwLUX6PtcffUe+hjmJzd19hkROpBiP6TPm/6LRZUVUDRMScJjt+DPpT+I4bZdeOidI6HVHV5qk7htTlnoxrlQKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786047898; c=relaxed/simple;
-	bh=CP3wHDYVhQB60zwjDHpFdYkgmzJXwfa0mm+U0jmkRRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F9m7iGICl0W/S5ZcMG19Z4qnH3ZYRBd3LJxYm5N0ATAwh2FRYxTk8cQIjDeBAER036/IXUQAIgoUZ7mEYtphNq8T7vrffQL77fefDXecwrWUGE8xj7kgozeEfuAtQ4K7fbxGOswDoYDNFFMcT8n7S3iB+qax2TO0/j7WeUUW8oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DpPf+E3M; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1786098593; c=relaxed/simple;
+	bh=WWAAQdVCBeXAfxIC2KLs+oriyhRks9JZ8iBNmRWlKIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lfakkkRVJ/qMePLXN2nZ2ckHD9PGM9Q14u/vDi25G/pH9AT8HkylTO0y1ZZrpzhzuwr85JKCN2K5+fM8jQULTMTYz2JoonpjHYirAjnlAZMP4Nzq21tqVOkkg3dNUhrB+HLAgzKJpxHZNxbDWYGwlICwcx97u7vUA2vBPQ2EiYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azaWnCjg; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DpPf+E3M"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1786047897; x=1817583897;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CP3wHDYVhQB60zwjDHpFdYkgmzJXwfa0mm+U0jmkRRM=;
-  b=DpPf+E3MKsM9LGGYFWufe9VfXkaKhfeDG+9+bEBSUqJ1iVxSW4dTOSJC
-   euItjpHOA5G+KZ7pmeYkD5u9ZZ4CgivFK2RqzvDeSHtle9lOlForUiRng
-   ZysIP4Sv8asQpqbwnvhqFA5ddAPE5RrUX0GM7AwvvGbB9r70DVVfIIjPV
-   GRUkG/ocNxuGYEqRAVnRRwz3juROnG4FXwtB4GH17wHCo9Pqe4VG68MPf
-   Za1RmlB571cxX3FEAXeaIwnuZ7zb3kZ9YIa1n1hTseH8x1R7N0IajMc+v
-   KKqs5yI1Wrnov+r3AY4U0RmCsaAzCkZs4G9K+M9yv4nxHvdNu4y+aZ3B7
-   A==;
-X-CSE-ConnectionGUID: L90d4nIKQbighwtU+F/nyQ==
-X-CSE-MsgGUID: SacymGCzRDOZHJCEwGQPaA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="97303695"
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="97303695"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 13:24:56 -0700
-X-CSE-ConnectionGUID: xOBKRLieTniids7AZV1SsA==
-X-CSE-MsgGUID: 5gh4RNyoSUeuiy0J+nFmkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,209,1779174000"; 
-   d="scan'208";a="258875949"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.50])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 13:24:53 -0700
-Date: Thu, 6 Aug 2026 23:24:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: "Shih-Yuan Lee (FourDollars)" <fourdollars@debian.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v16 6/7] spi: pxa2xx: restore LPSS private register state
- on S3 resume
-Message-ID: <anTtk2ilyFLDeGLi@ashevche-desk.local>
-References: <20260720162117.32304-1-fourdollars@debian.org>
- <20260720162117.32304-7-fourdollars@debian.org>
- <al5-JasTYF5r8A-j@ashevche-desk.local>
- <CAAT15mM_5t9YuEsEKN8UkJh_AoY_PPVkstVujdBM6QJpq7O0=g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azaWnCjg"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-38dc69c74b8so3398867a91.0
+        for <linux-spi@vger.kernel.org>; Fri, 07 Aug 2026 03:29:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786098592; x=1786703392; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HZTcrQzGXuunNIwct3+GtblbyDkGvD9ZQvC5QSvDxeM=;
+        b=azaWnCjgG887j/YkT0g3cR43WfIGzJbl95dM65UShK6e3zkZMSubJHJaK8UOL2ABPn
+         /r59IQn+KlBFDwfm4VFnjmFjrvUN7Qs6b/pAGqRp8sWu7gVSumQvM9p5TZR0VLDOSB/S
+         xkcJzRPP1KJHDflD3h68jG1podk5rE2/swT8GyQE5iMLH94jiPfN0KPH+mpaeTk/wZdR
+         pRtmkHOGuSFgyoTCi2Y2ao5Cc16XxaZHHMdvUHqgI9pljSRsn5Lcy+ijKoSMY7ZvnTaD
+         wxo7PbLnJmg4tsBcuCXYWByOmAvz6K5vJvyG0+fVWslaaEJFF3BepB/Yd6DPK8UWlhWR
+         scXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786098592; x=1786703392;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HZTcrQzGXuunNIwct3+GtblbyDkGvD9ZQvC5QSvDxeM=;
+        b=YjkdC5vRiHs+ZkTjqDa5uz787iXvjoTaHmRJtOiDeejKgzRcvaz6yLE290Ov5F0nU3
+         y6G0ggvodtn2QP59akrSwEAXMmUfSeZ21ueFYBg9onYFiRhBfhMw58hgROA/VRPh3cgz
+         awfrE1ZxHJ3tofi4+VxaulCQDR7GLpBva82/LtNr3tEPWl4nJMRtdPczWPvJCgJLtYy3
+         j01sFPt9UEZHr8VpkTKsmT/oucA6DNCUV8McguxalJborcquo1G5oEmEa8IWOdTHutny
+         t+cxIc+t9iR3Cgnou3ZqH38ZxP8b3INAiQfGzZ14E3ae84qyMs26DPNbS8lEia2HXG9l
+         fGGA==
+X-Gm-Message-State: AOJu0YyyXSRxLCWLzxfl9wRqh5QGBXhNgzHdrI103TfdrFv0cbwg994z
+	i31uy4C8ck4amdenR28yjtf+3+zxcmuGFcYrA9hX0DPgULda7ZUK4su3
+X-Gm-Gg: AR+sD10vIASCu3EQvnq+x/volySqgh4qL16xxL/+KPwDSfHfGhaFE/C0I7v0l174KHj
+	1f2RyC8xzHzIAToomgo7OlGEk1thim1VL1bm9RedEIYyonL5rd13mr/8V7bt9Rd4zZQG/bUDL2d
+	o/OOrPq3uWXdVx03PbYMMr3HePeHVaStGvktLrCrGp6/uMRjVlQxuXlfT3X6rq+cIDVssFgqI7r
+	kIhya5c8dz2oytldzEE3cUIpNvNXuzN2/TPrZ+OvLKaAZvCbH2/q2CbMP3CagXNHps8rUmMk/hj
+	DrMErS33HPUFRvULJPtMxICOkgQQFm8HIM8raqV2AUQa25onRrCsUgcqo13gTqdLvkoJbwFP6Gw
+	RnrAJJz31aTmC3JjbCIjoSj8YncheutdNJ6jLeNfE6OSHR3pJup3fVmDP6b6qF6036jL4AtDHJ2
+	Q9IYCPQIE6THTlEHzi+mWxXx1yKxEK1Phy1cdE6H62djXtjWEaja8Y2XEGzCzx4CFdH5+nL6TDJ
+	af2avbqnHptgDhgsfkN0RsYOJdaqwGKV5qTB4iVUEMHCenB0EE4WYiz/TOLLjnCF1OPGg68hlQQ
+	6/pp
+X-Received: by 2002:a17:90b:1d10:b0:390:b41a:b92f with SMTP id 98e67ed59e1d1-390b41acf77mr3051923a91.18.1786098591764;
+        Fri, 07 Aug 2026 03:29:51 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-390b1389e1fsm1133614a91.0.2026.08.07.03.29.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 03:29:51 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Mark Brown <broonie@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH 1/2] spi: mtk-nor: Propagate errors from optional IRQ lookup
+Date: Fri,  7 Aug 2026 17:29:30 +0700
+Message-ID: <20260807102932.45785-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAAT15mM_5t9YuEsEKN8UkJh_AoY_PPVkstVujdBM6QJpq7O0=g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 26, 2026 at 07:48:27PM +0800, Shih-Yuan Lee (FourDollars) wrote:
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-...
+platform_get_irq_optional() returns a positive IRQ number on success or
+a negative error code on failure. For an optional IRQ, -ENXIO indicates
+that no IRQ is available, while other errors should be propagated.
 
-> > Is this series AI-assisted?
+Propagate errors such as -EPROBE_DEFER and -EINVAL instead of continuing
+probe without the IRQ.
 
-> Yes, I used an LLM assistant to help format and polish the commit messages.
-> However, all hardware register analysis (such as inspecting BAR0 +
-> 0x204 LPSS Private Resets), DSDT ACPI overrides, schematic
-> verifications for logic board 820-00244-A, and physical S3
-> suspend/resume hardware testing on MacBook8,1 were performed
-> empirically on real hardware.
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
+ drivers/spi/spi-mtk-nor.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Check the kernel documentation if you need or may use Assisted-by tag.
-
-...
-
-> > This is an ugly hack.
-> >
-> > Saving context is done in drivers/acpi/x86/lpss.c (see #1 why this file).
-> > If something wrong in the flow it has to be fixed there, not here.
-> I checked drivers/acpi/x86/lpss.c and its LPSS_SAVE_CTX mechanism.
-> However, on MacBook8,1, the LPSS SPI controller is instantiated as a
-> PCI device (00:15.4 / 8086:9ce6) bound to spi-pxa2xx-pci.c, rather
-> than an ACPI platform device handled by drivers/acpi/x86/lpss.c. As a
-> result, acpi_lpss_restore_ctx() is never invoked for this PCI device.
-> 
-> Physical hardware S3 testing (rtcwake -m mem) confirms that across S3
-> suspend, LPSS_PRIV_RESETS (BAR0 + 0x204) is reset to 0x00000000
-> (functional block held in reset) by the PCH, causing all post-resume
-> SPI transfers to fail  continuously with -110 timeouts (applespi
-> spi-APP000D:00: SPI transfer timed out).
-> 
-> I understand your point about not doing context saving in spi-pxa2xx.c.
-> Would moving the LPSS private register context save/restore into
-> spi-pxa2xx-pci.c (the PCI glue driver) be an acceptable approach for
-> PCI-enumerated devices?
-
-I see. Can we do something similar to what drivers/pci/pci-mid.c does?
-And somehow to unify the core part of the context saving, et cetera
-between two ACPI and PCI cases?
-
+diff --git a/drivers/spi/spi-mtk-nor.c b/drivers/spi/spi-mtk-nor.c
+index 74f34537b02c..6b9a5d728549 100644
+--- a/drivers/spi/spi-mtk-nor.c
++++ b/drivers/spi/spi-mtk-nor.c
+@@ -895,6 +895,10 @@ static int mtk_nor_probe(struct platform_device *pdev)
+ 	irq = platform_get_irq_optional(pdev, 0);
+ 
+ 	if (irq < 0) {
++		if (irq != -ENXIO) {
++			ret = irq;
++			goto err_disable_clk;
++		}
+ 		dev_warn(sp->dev, "IRQ not available.");
+ 	} else {
+ 		ret = devm_request_irq(sp->dev, irq, mtk_nor_irq_handler, 0,
+@@ -928,6 +932,7 @@ static int mtk_nor_probe(struct platform_device *pdev)
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 
++err_disable_clk:
+ 	mtk_nor_disable_clk(sp);
+ 
+ 	return ret;
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 

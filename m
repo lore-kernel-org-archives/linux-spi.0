@@ -1,88 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C7A34389F;
-	Fri,  7 Aug 2026 17:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A14A83515D1
+	for <linux-spi@vger.kernel.org>; Fri,  7 Aug 2026 17:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786123970; cv=none; b=HjDI5DAk/+Wn1tp3Lm4xqIfck30vluukrDR1f7uE4iXm8CSk75w/LrfVlbpAQk8V5Nub3XTVeDVxHS39TPaGCSRYTIb0K4utAjzvJLV59qTDXYeifdzBRhk8Rb+f/UvFpivxWxDa9iZ17myifxK0yrx8rQWIxbJkAIg5ei4YKak=
+	t=1786124513; cv=none; b=rFAzBq2G6RisbSsyEbor2LXDXjqtGkMy0YzD2PIvH0SF5PM+wy1XwXUDT+9iTAcQ5K+EF5XeTouZQxrruCWCe2dher/vU9eYudSB0SNPpaenm1PUabJNR/pMHNfORhNp8QJRKXJRcs8LJHEfhbT1w4eqm+1pWSOoLz4dNJakB3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786123970; c=relaxed/simple;
-	bh=KitkeLExiYfT4Wyjr1X6KmtQkOFob9mUkzahmCKDTtk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m94JQiQYmSqjR4bEGryA8G6Gw5soaUWD5/WA8/p5DHct4F/AlBkV6ZwzjllDM+oXJNj7ZILjt3VLZpahW9zIYrn6VnMQfKdh7GEo8wRyvYpQZ8iJmI6/FRg6wN0jTcVHgeGLoarD3n756yc6xlyHOpEaSPgMMXXmE1iiyN5rNR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aaSkl0Fa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786124513; c=relaxed/simple;
+	bh=n2FF6yTybhDp/bZ90SDTSjgM6yCnUR63Nrzc303VrvU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LXIVjeTtmI+mq7qpQf/RnGkj91U5d9271BXHgYI1vYRVi3K0WIc2YrxDYn9ZBj0X3UUSq9ETfapOvelEuCFIb7TIf5YAY5m7ZC5wihHy2ogtKdjpfS0WoS7JSsnUTYSWu4ltEFyPC2tKm2IZSCvIV2NU+AZqt90sXN9+BBk2R3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+q7KENd; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aaSkl0Fa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0824C1F000E9;
-	Fri,  7 Aug 2026 17:32:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786123967;
-	bh=Nb79dty7Q1Ygm6NodF75IXTKvgQrkKgAEnfqavxtKCo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aaSkl0FascTidt1TpbvhmEIqN3IHjeuQXm1px2lMFmf2AxwsKX6VB1jWN5sdD9fkR
-	 0MrM0be1LO8h4ygSMTMSsGIcYLkKaVY3nRQfwuGRGyhEoncjypkq4YbMTwfZ0dYFRT
-	 j2xLo1mRh8BS7wbbp9bvr/6Fl27BGW4Lu/KaihVxOMXJ+lCj79qVhncxJiu3aDegko
-	 hZJyB45Iq76vYl+mh+O/tflMCUCXRfklyN/BE+weJ6T+i2buCoTu+tN516JsngP8oe
-	 8LR+IPTg5oLpk6PKR2e3zYsfNkXuldIc4kH+10yHCrOvyoXr2Kxl0fdM2CmlnEAAJT
-	 +1ed37IVDQqFQ==
-Date: Fri, 7 Aug 2026 18:32:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] spi: dw: use threaded interrupt and optimize the
- threaded ISR
-Message-ID: <ec1559ba-92d8-44d7-93da-e217b02f9399@sirena.org.uk>
-References: <20260803140649.12718-1-jszhang@kernel.org>
- <20260803140649.12718-4-jszhang@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+q7KENd"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38deea72eebso3192448a91.1
+        for <linux-spi@vger.kernel.org>; Fri, 07 Aug 2026 10:41:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786124510; x=1786729310; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rTKEFy1dHQS9eTV30s1RmJcGez8nqQ/r+IruxxzByOc=;
+        b=L+q7KENdQkogWEy4JmbIFNaguzjWWo5U/R0ibcoIlKdix7sFInTSuI54mSDkbSStfW
+         N840QdV8eOHO9avicqnOpKkArjSmtH0scSTCPTdiGxJMqfBXPTwekVVyk+jZcb8aC6th
+         5QzSKcYb4rRgNQihaFi6CJA6IbOe7epLUnCAulJXw9aycpN2iM6/K/nKtdT7RHVY08Qv
+         fcTLFtoI2GGBLm6s2RQij0cpB24GDgj8IGBS7u/saZPnDZltv/X/7qBTzVGAGjA8MuRU
+         W04KD7VCJomk9DKI0C4QVoF8Sc8osUO100T2yH1mEx6J7V02dCELARzE434lBJPUb+yq
+         MT3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786124510; x=1786729310;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=rTKEFy1dHQS9eTV30s1RmJcGez8nqQ/r+IruxxzByOc=;
+        b=ZVjCoZcgG09tBmB5rGD5RJNHiDXGOitIkjAH3k+HagBAGl1sDhJP8AhV4nMo+5xAaW
+         0Wcd91XHS+LimMvOqZrzphPXnOpUf54jIxVgoDZN37xHER9NB+dZ2sfy2usRdpf52WN2
+         N60wK3Ob7biiY/J8KprFUMnkSO8HbZfPmbD5HQdRdfmifnrAECCWaM5iCIr9GZFk4lCO
+         HJK9cha/EvGxIBnnuFH51fPqzkJm+gCXUnALG/dLZJ40tVu/qP/QLdFj9+Aynnk8Ubnp
+         vLmo0Tvg96MyAiHBfJQV8/0bkO3Ug60Ln05ne0+kgnLLBtuESW+WFrXbERJmRCrATMHo
+         d3Ig==
+X-Gm-Message-State: AOJu0Ywa5Jbely+wVQcYfC1/s0QqqaBHkpe29Dxvql5qUfmtonKr8jgP
+	JHZee8TpjmF8ZxX9saEKicgMI/L857qUZg5S2OLTSCfxbUTtwS0C1VFF20jBVw==
+X-Gm-Gg: AR+sD11OCBedazZnGqJqMxZay2nBz3ETpG1MSyEU+pLTFULpqutX2kk985GFIznLLNF
+	cMk5sIv45HLJrH9oE7nlEnez9ATDfgbLcVkW/++oAytyVSmQ6j+88KZsDq/hk3vZQ6Npkoh0C0i
+	qCVtZ83r/HPtHFMlHkPjEjbLf+UBd3NulonARQr/rFxaUn8Mrod6um/wOOgBznQ4bnlsA+TvOAF
+	J9VO8x/zZCDHOTppjq3WVpfLcCIMcA5uO+TU12kkbLt53YDkz2973XUEYApZWnudHKrWxeMl04G
+	9iy+Q3cA0gaoVal5t3JwJ6zIcufKnqglvGkCwsALprxvV9Gvh69MW5jg8eEfO6yrGUHz065fc1y
+	HH0cYa0w0xCa3i0Zhqt+JmW+N5MSOu/ynUl30hT64Dzl95Y/KcWqk+UBIxhwOAvroy6r1OkTf+H
+	6SctaU+A/MmT59lZt/lVstMk2tKeNrAk32kOYic//9r3kgxFT5fYGSFvZt8yiSZepmtlsJmxeNV
+	ZCO6LxoQRLKGnWxdxBoiFUfcJWpfP+TKjRwOAI5+t3/csDP6vM0Y6Fp
+X-Received: by 2002:a17:90b:4f81:b0:38c:e9e9:e7ce with SMTP id 98e67ed59e1d1-392822bf6abmr1208572a91.3.1786124509914;
+        Fri, 07 Aug 2026 10:41:49 -0700 (PDT)
+Received: from junjungu-PC.localdomain ([223.166.246.74])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3925ff912c7sm3503364a91.17.2026.08.07.10.41.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Aug 2026 10:41:48 -0700 (PDT)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Sat, 08 Aug 2026 01:41:43 +0800
+Subject: [PATCH] spi: img-spfi: don't disable runtime PM on DMA deferred
+ probe
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nH2v8V4Ij7uN36tl"
-Content-Disposition: inline
-In-Reply-To: <20260803140649.12718-4-jszhang@kernel.org>
-X-Cookie: 1 + 1 = 3, for large values of 1.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260808-spfi-v1-1-6bc4345be430@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANYYdmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDCwNz3eKCtEzdlNREM0MTiyRTi7RkJaDSgqLUtMwKsDHRsRB+cWlSVmp
+ yCUivUm0tAFsZMNFoAAAA
+X-Change-ID: 20260807-spfi-dea6148b58fc
+To: Mark Brown <broonie@kernel.org>, Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786124505; l=1621;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=n2FF6yTybhDp/bZ90SDTSjgM6yCnUR63Nrzc303VrvU=;
+ b=oHDWFYyWlsStzsEx9ZWzxDqEPhpnEGqeJkGUOMR0YBevf/nqXJC+RVAoviSJAoekTfOzjuIHz
+ YuO//6CAFEnD2qYJsv3MUkW0l94LP1qdCEOKgICuTvAlaz2DvwE2KfE
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
+When dma_request_chan() returns -EPROBE_DEFER, the error path jumps to
+disable_pm and calls pm_runtime_disable() even though pm_runtime_enable()
+was never called, leaving disable_depth unbalanced and the device
+permanently PM-disabled.
 
---nH2v8V4Ij7uN36tl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Route the defer path through free_dma to skip pm_runtime_disable().
 
-On Mon, Aug 03, 2026 at 10:06:49PM +0800, Jisheng Zhang wrote:
+Fixes: 6bfbf4d0aa0c ("spi: img-spfi: Use dma_request_chan() instead dma_request_slave_channel()")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+ drivers/spi/spi-img-spfi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> To avoid blocking for an excessive amount of time, eventually impacting
-> on system responsiveness, hard interrupt handlers should finish
-> executing in as little time as possible.
->=20
-> Use threaded interrupt and move the SPI transfer handling to an
-> interrupt thread.
+diff --git a/drivers/spi/spi-img-spfi.c b/drivers/spi/spi-img-spfi.c
+index aec724e3f824..a9310a1b0354 100644
+--- a/drivers/spi/spi-img-spfi.c
++++ b/drivers/spi/spi-img-spfi.c
+@@ -611,7 +611,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(spfi->tx_ch);
+ 		spfi->tx_ch = NULL;
+ 		if (ret == -EPROBE_DEFER)
+-			goto disable_pm;
++			goto free_dma;
+ 	}
+ 
+ 	spfi->rx_ch = dma_request_chan(spfi->dev, "rx");
+@@ -619,7 +619,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(spfi->rx_ch);
+ 		spfi->rx_ch = NULL;
+ 		if (ret == -EPROBE_DEFER)
+-			goto disable_pm;
++			goto free_dma;
+ 	}
+ 
+ 	if (!spfi->tx_ch || !spfi->rx_ch) {
+@@ -647,6 +647,7 @@ static int img_spfi_probe(struct platform_device *pdev)
+ 
+ disable_pm:
+ 	pm_runtime_disable(spfi->dev);
++free_dma:
+ 	if (spfi->rx_ch)
+ 		dma_release_channel(spfi->rx_ch);
+ 	if (spfi->tx_ch)
 
-It might be safer to make this happen only in host mode, not in target
-mode - while the performance improvement will apply for both target mode
-has no control over the clocking of data by the host so is much more
-vulnerable to dropping data in a threaded interrupt if the system is
-loaded.  In host mode this isn't an issue since we'll simply stop
-clocking data while waiting for the scheduler to get round to the
-interrupt thread.
+---
+base-commit: 1701fda2f58e345c050f4309971bdc07cd6146ba
+change-id: 20260807-spfi-dea6148b58fc
 
---nH2v8V4Ij7uN36tl
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+--  
+Felix Gu <ustc.gu@gmail.com>
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp2FrsACgkQJNaLcl1U
-h9CnBwf8CDXYrliuhcMpvFjtY9AevzWw0jNeKlhUMRAsVgTg93To7KGE7gAvoodB
-jG+0WnE13uM7jboJbeUOL+5IUnrKboIAAYDWZAQ1bURL2sfkRI2mXcaST6fHlI9h
-gUAY60PKB0Jkeyg5GjdswpwbaqiTcE8GJf1uLd2+Hsobvd4F6wN+yrgKgTDgorMT
-XpX8vFTKxK64g/8PDsAcvF7bkXjfLMM1+soyMUUaSciYcgVUAgAThQwSUAzvDXbg
-T6nEEi5JMbFy8AVdphopYiA/mVk7G90PUl/VUCszre6BPUZa1xxUwGvc+g5ZfHMM
-3tuiGIIL/pikKi0Xn10xdwR5leXTyQ==
-=Bq7k
------END PGP SIGNATURE-----
-
---nH2v8V4Ij7uN36tl--

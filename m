@@ -1,38 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C9349CEE;
-	Fri,  7 Aug 2026 17:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C7A34389F;
+	Fri,  7 Aug 2026 17:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786123455; cv=none; b=OVlIPDsOfePPhKPzgV3yv0K5TYmXDblhVe2WSUB1AY3fnA0Wp/c4G2YAKHZtaSb97qDS9gzeBwf6CBcwHITZU6OMzF1xWTXyvVVWECPpbwg80U9kE7p6YuD7jIeMes67S+93DNBawx2YB5aLjLAvRytY1RmNTRVjyQ3T0W+7tfk=
+	t=1786123970; cv=none; b=HjDI5DAk/+Wn1tp3Lm4xqIfck30vluukrDR1f7uE4iXm8CSk75w/LrfVlbpAQk8V5Nub3XTVeDVxHS39TPaGCSRYTIb0K4utAjzvJLV59qTDXYeifdzBRhk8Rb+f/UvFpivxWxDa9iZ17myifxK0yrx8rQWIxbJkAIg5ei4YKak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786123455; c=relaxed/simple;
-	bh=dp+rQ+9tXN+ILP39MtpVWdK/56TUiIFgbZEK/rGCry8=;
+	s=arc-20240116; t=1786123970; c=relaxed/simple;
+	bh=KitkeLExiYfT4Wyjr1X6KmtQkOFob9mUkzahmCKDTtk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mGpemt36k+3bDJDOQJWPc6bttnT5T9YLEcQqR+izhI0Afo2aybpfiT39bw6ZgBvoiG/sNccoNFqaVVpmQsBGZMfW36yRLBo2J1ul368Rg4YjeNs0OZN8nf/xQJjaNMqKNsFPj9x8qUKlQbI5bvd9MQCy6p3sBcaYm+UN1A7fk1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWvpwDAS; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=m94JQiQYmSqjR4bEGryA8G6Gw5soaUWD5/WA8/p5DHct4F/AlBkV6ZwzjllDM+oXJNj7ZILjt3VLZpahW9zIYrn6VnMQfKdh7GEo8wRyvYpQZ8iJmI6/FRg6wN0jTcVHgeGLoarD3n756yc6xlyHOpEaSPgMMXXmE1iiyN5rNR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aaSkl0Fa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWvpwDAS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E03C1F000E9;
-	Fri,  7 Aug 2026 17:24:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aaSkl0Fa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0824C1F000E9;
+	Fri,  7 Aug 2026 17:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786123453;
-	bh=dp+rQ+9tXN+ILP39MtpVWdK/56TUiIFgbZEK/rGCry8=;
+	s=k20260515; t=1786123967;
+	bh=Nb79dty7Q1Ygm6NodF75IXTKvgQrkKgAEnfqavxtKCo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kWvpwDASOGrXOaCK48UqKL1L/VSWGuXmoZ4Qo5lXfQcf1IFtOSKhL5TlerAkHDs3U
-	 +BK/RbjX4tGC1lX2a3QFFDgnIjipDMg/NhEc9W6o8rnykXQKiroJFU/90KheZPrCB8
-	 AppEMwsdqNAeVPnK1nhj4Dy9rtWE1NGLPU7tO3MNQF7DD8oZz+XOnqIBJuLesJhFOT
-	 C5aRkX723vgdFFwSAPBu65JKQO9XFKpsloNDUWpTvXTWKTqoOLWmUSLTUIl2ct6Cb8
-	 iohnLAnA4za4bHpky8pvHrei974W+kW21Y//qbBTX0pQqENBXwAL9v+9tQAPVnGfmo
-	 2c2abMCHCJN3g==
-Date: Fri, 7 Aug 2026 18:24:09 +0100
+	b=aaSkl0FascTidt1TpbvhmEIqN3IHjeuQXm1px2lMFmf2AxwsKX6VB1jWN5sdD9fkR
+	 0MrM0be1LO8h4ygSMTMSsGIcYLkKaVY3nRQfwuGRGyhEoncjypkq4YbMTwfZ0dYFRT
+	 j2xLo1mRh8BS7wbbp9bvr/6Fl27BGW4Lu/KaihVxOMXJ+lCj79qVhncxJiu3aDegko
+	 hZJyB45Iq76vYl+mh+O/tflMCUCXRfklyN/BE+weJ6T+i2buCoTu+tN516JsngP8oe
+	 8LR+IPTg5oLpk6PKR2e3zYsfNkXuldIc4kH+10yHCrOvyoXr2Kxl0fdM2CmlnEAAJT
+	 +1ed37IVDQqFQ==
+Date: Fri, 7 Aug 2026 18:32:44 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Jisheng Zhang <jszhang@kernel.org>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] spi: dw: use threaded interrupt
-Message-ID: <f612ec54-6aa4-4b25-80fa-22666cad7227@sirena.org.uk>
+Subject: Re: [PATCH v2 3/3] spi: dw: use threaded interrupt and optimize the
+ threaded ISR
+Message-ID: <ec1559ba-92d8-44d7-93da-e217b02f9399@sirena.org.uk>
 References: <20260803140649.12718-1-jszhang@kernel.org>
+ <20260803140649.12718-4-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,37 +42,47 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RQVSMlE7aA9ItFry"
+	protocol="application/pgp-signature"; boundary="nH2v8V4Ij7uN36tl"
 Content-Disposition: inline
-In-Reply-To: <20260803140649.12718-1-jszhang@kernel.org>
+In-Reply-To: <20260803140649.12718-4-jszhang@kernel.org>
 X-Cookie: 1 + 1 = 3, for large values of 1.
 
 
---RQVSMlE7aA9ItFry
+--nH2v8V4Ij7uN36tl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 03, 2026 at 10:06:46PM +0800, Jisheng Zhang wrote:
+On Mon, Aug 03, 2026 at 10:06:49PM +0800, Jisheng Zhang wrote:
+
 > To avoid blocking for an excessive amount of time, eventually impacting
 > on system responsiveness, hard interrupt handlers should finish
 > executing in as little time as possible.
+>=20
+> Use threaded interrupt and move the SPI transfer handling to an
+> interrupt thread.
 
-This is broadly good but needs a rebase against current code, I do have
-a couple of smaller comments.
+It might be safer to make this happen only in host mode, not in target
+mode - while the performance improvement will apply for both target mode
+has no control over the clocking of data by the host so is much more
+vulnerable to dropping data in a threaded interrupt if the system is
+loaded.  In host mode this isn't an issue since we'll simply stop
+clocking data while waiting for the scheduler to get round to the
+interrupt thread.
 
---RQVSMlE7aA9ItFry
+--nH2v8V4Ij7uN36tl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp2FLgACgkQJNaLcl1U
-h9AkZQf/YJjckvIWrV7/MsW9mMemAijX1XgIwiQ8sGFogilczD6FhMpnZVd/Lq2m
-k+Q/8kebR1zgbWyaFrZaN12r+3s3Z8TcCvJj+tyP82DflOHETR4lTKFrWf3o4j7m
-oh3/BTo9m11hoEXRO3wYjXEJjxXBAOL3vYF1ZXPce7d0amW/JMMHNugyzYCmr9Hp
-urfMTGbi0m8YVnBQoLUPB0MnAvYYg/81WbTdn9pNkE4X8EcEm9PzqREuzEpeIMny
-VR0sDQ8Z97w1TawEzigHUP3gsTSDOvGRZZckjoBy9blEDhnZUGATMM59vqIUQXLQ
-16pMI1+IvIehrvFrIutRR8cng1TYgQ==
-=8WZP
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp2FrsACgkQJNaLcl1U
+h9CnBwf8CDXYrliuhcMpvFjtY9AevzWw0jNeKlhUMRAsVgTg93To7KGE7gAvoodB
+jG+0WnE13uM7jboJbeUOL+5IUnrKboIAAYDWZAQ1bURL2sfkRI2mXcaST6fHlI9h
+gUAY60PKB0Jkeyg5GjdswpwbaqiTcE8GJf1uLd2+Hsobvd4F6wN+yrgKgTDgorMT
+XpX8vFTKxK64g/8PDsAcvF7bkXjfLMM1+soyMUUaSciYcgVUAgAThQwSUAzvDXbg
+T6nEEi5JMbFy8AVdphopYiA/mVk7G90PUl/VUCszre6BPUZa1xxUwGvc+g5ZfHMM
+3tuiGIIL/pikKi0Xn10xdwR5leXTyQ==
+=Bq7k
 -----END PGP SIGNATURE-----
 
---RQVSMlE7aA9ItFry--
+--nH2v8V4Ij7uN36tl--

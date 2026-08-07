@@ -1,56 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EDD314A73
-	for <linux-spi@vger.kernel.org>; Fri,  7 Aug 2026 16:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8C9349CEE;
+	Fri,  7 Aug 2026 17:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786121935; cv=none; b=PFkjY6z3t7bBeHdPtu29vo2R06tjqwH6OGRVKaB3pqondI4l41Kg6JaBXxHayBrolIupmDypbZWZVy9zhBLOSK8IQY5uT3k/u1r9qJaFcCJPT0LnZ/W3sj5x5wNQ+cEgPBGivK/WAXV5PrsletXFbOPAn9gt7SWpOnL9zb3QgfI=
+	t=1786123455; cv=none; b=OVlIPDsOfePPhKPzgV3yv0K5TYmXDblhVe2WSUB1AY3fnA0Wp/c4G2YAKHZtaSb97qDS9gzeBwf6CBcwHITZU6OMzF1xWTXyvVVWECPpbwg80U9kE7p6YuD7jIeMes67S+93DNBawx2YB5aLjLAvRytY1RmNTRVjyQ3T0W+7tfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786121935; c=relaxed/simple;
-	bh=Z9ETvtCh3dtU6ktY65f+rrPHUhBgORsBKWocXd7vX/I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=VKgZa6x1t9qKvIqvGKqBC5ZPNGnANldPB/0RHSoKGa1iYrpuoGZBlM0ifaiMQQ+nY5d6heCI5bSSeG+9K15xnWfqVbHIp0IUX6xVpe5bXWMp6rvf4ym73ewF00zS2vxkq3CFFtghHXbO5qW/tsYBnjIWRoDWE2voHA8SUbycw4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnDWcqha; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786123455; c=relaxed/simple;
+	bh=dp+rQ+9tXN+ILP39MtpVWdK/56TUiIFgbZEK/rGCry8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mGpemt36k+3bDJDOQJWPc6bttnT5T9YLEcQqR+izhI0Afo2aybpfiT39bw6ZgBvoiG/sNccoNFqaVVpmQsBGZMfW36yRLBo2J1ul368Rg4YjeNs0OZN8nf/xQJjaNMqKNsFPj9x8qUKlQbI5bvd9MQCy6p3sBcaYm+UN1A7fk1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWvpwDAS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnDWcqha"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7408A1F000E9;
-	Fri,  7 Aug 2026 16:58:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWvpwDAS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E03C1F000E9;
+	Fri,  7 Aug 2026 17:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786121934;
-	bh=YKIaJsmaJvyleuItjvjJ4AZM30AEYib1KtkbVr0wFsM=;
-	h=Subject:From:Date:To;
-	b=cnDWcqha8PXe0AO1nOQ+AX+uOTACzyN/FMozGwIOlO7YoSwnBauBtyfpx5U5VwKlF
-	 04fUsxKk66bMo1md6EJbqcrrjyaBLGNXJYwsEy9qP+O4XKqkvVCYq77JPZmH30vPh+
-	 V8BaKQfntk+vXcRnSjarMevhNG61hlUgN4SyMx9f7g1is5Oi+fC93JSSEkl67VeR2B
-	 IKYS13wZ9fWYyQkofbFOGq7ksO8eh8ak6K5/uc8AzVkc5DJbT7E3CqBAvcgQfkX1Zb
-	 HMosJEkyFHXUTKylTKiLENnrnvNjE4kvOUVHWRdm/TLDBT4KP7Hg1wILXNJwqQUi6L
-	 EjGP7zYE9w9gA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56998380CEE3;
-	Fri,  7 Aug 2026 16:58:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786123453;
+	bh=dp+rQ+9tXN+ILP39MtpVWdK/56TUiIFgbZEK/rGCry8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kWvpwDASOGrXOaCK48UqKL1L/VSWGuXmoZ4Qo5lXfQcf1IFtOSKhL5TlerAkHDs3U
+	 +BK/RbjX4tGC1lX2a3QFFDgnIjipDMg/NhEc9W6o8rnykXQKiroJFU/90KheZPrCB8
+	 AppEMwsdqNAeVPnK1nhj4Dy9rtWE1NGLPU7tO3MNQF7DD8oZz+XOnqIBJuLesJhFOT
+	 C5aRkX723vgdFFwSAPBu65JKQO9XFKpsloNDUWpTvXTWKTqoOLWmUSLTUIl2ct6Cb8
+	 iohnLAnA4za4bHpky8pvHrei974W+kW21Y//qbBTX0pQqENBXwAL9v+9tQAPVnGfmo
+	 2c2abMCHCJN3g==
+Date: Fri, 7 Aug 2026 18:24:09 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] spi: dw: use threaded interrupt
+Message-ID: <f612ec54-6aa4-4b25-80fa-22666cad7227@sirena.org.uk>
+References: <20260803140649.12718-1-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178612189284.1896333.15107234121788750093.git-patchwork-housekeeping@kernel.org>
-Date: Fri, 07 Aug 2026 16:58:12 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
-
-Latest series: [v2] Add quad mode support for QPIC SNAND (2026-08-07T16:03:54)
-  Superseding: [v1] Add quad mode support for QPIC SNAND (2026-07-16T05:27:44):
-    [1/3] spi: spi-qpic-snand: move command mapping helper
-    [2/3] spi: spi-qpic-snand: add quad mode support
-    [3/3] spi: spi-qpic-snand: Handle Macronix quad read opcode 0x6b
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="RQVSMlE7aA9ItFry"
+Content-Disposition: inline
+In-Reply-To: <20260803140649.12718-1-jszhang@kernel.org>
+X-Cookie: 1 + 1 = 3, for large values of 1.
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+--RQVSMlE7aA9ItFry
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Mon, Aug 03, 2026 at 10:06:46PM +0800, Jisheng Zhang wrote:
+> To avoid blocking for an excessive amount of time, eventually impacting
+> on system responsiveness, hard interrupt handlers should finish
+> executing in as little time as possible.
+
+This is broadly good but needs a rebase against current code, I do have
+a couple of smaller comments.
+
+--RQVSMlE7aA9ItFry
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp2FLgACgkQJNaLcl1U
+h9AkZQf/YJjckvIWrV7/MsW9mMemAijX1XgIwiQ8sGFogilczD6FhMpnZVd/Lq2m
+k+Q/8kebR1zgbWyaFrZaN12r+3s3Z8TcCvJj+tyP82DflOHETR4lTKFrWf3o4j7m
+oh3/BTo9m11hoEXRO3wYjXEJjxXBAOL3vYF1ZXPce7d0amW/JMMHNugyzYCmr9Hp
+urfMTGbi0m8YVnBQoLUPB0MnAvYYg/81WbTdn9pNkE4X8EcEm9PzqREuzEpeIMny
+VR0sDQ8Z97w1TawEzigHUP3gsTSDOvGRZZckjoBy9blEDhnZUGATMM59vqIUQXLQ
+16pMI1+IvIehrvFrIutRR8cng1TYgQ==
+=8WZP
+-----END PGP SIGNATURE-----
+
+--RQVSMlE7aA9ItFry--

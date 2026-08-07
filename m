@@ -1,92 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492E82C031E;
-	Fri,  7 Aug 2026 13:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE03A39CD16;
+	Fri,  7 Aug 2026 14:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786110409; cv=none; b=iIUwmYEVDR1rx9kyvioud5+vYsAQOE4SfenTOBRKKFo/tWrfkOLNab1FMhAcQCEeYo5d2YSpYDMnUBEGDMxGuq9QTsXR5xS0jE4dm0dyavmAZcMPy9RpbCgI9gF+4k20XDsg6eljl2wJZxUms9ZIWitBjtQQtf/117wCnuzRGB8=
+	t=1786114022; cv=none; b=P32CrFBHsN5dfaCCWjulXAWJfQsUiJFbBRjkNh592qsw7OaEj3BU0m/ITtrF7T+0C5ov2fvrqZ1jDP+lwyr6Ljpapew2dp9sjMhSbqC+Nlfgh66g7NTodpQ/Un3KA3vOpFFISlhB1uCF2t+1T9fWFvyX9fcfrVrKO44lOXQWP+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786110409; c=relaxed/simple;
-	bh=cmqYBlnct7r1eSvl3keP4l1RODPew0sPkcfPKeIwyw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UPTQbq2QiTqHvA+mKtG/CD1QcdZZqU90YchcPBIm3k/pP5jPJivc2uHBgGaWn6ccxNdmhh9RnEpn6iI+yEDDM9bWTiXfiKfZ87uoluDQXUgO/mglhFp9NK45Mnls9j2I47FvixmFWA1+AXVUptASFUlWLDErtLbXAWEl+bLw1Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4NZxl55; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786114022; c=relaxed/simple;
+	bh=X/T3PsDg8tdK+nw23JOmOBzymNkQC6jUJHhCLZMbRQ0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NMbXkbGE2l4sh2rcBPLx8UgYzxHbPQUq2LYsUwFG+RuGSg6kSPD7jiiTnTivtO9oTENIKb1e95KpodHu+grktlTy4gxnyQHL2mCpujp8kbWlOyfIFIVa+blrtZcK8eSaXoJWTxLLa3pAayhe002qRKhZqupiEiR3mkUc/LF69mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kZw213R+; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4NZxl55"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E465D1F000E9;
-	Fri,  7 Aug 2026 13:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1786110402;
-	bh=mr2oycUYSpgdrZRRCb02qrSx4UWRahk0vdIrX+0vKxI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q4NZxl55Osgx09mPim3swuRsEV5oVH+tKtv/EKF7bGOXmaQZGWvGoBHfvzyC9x5aZ
-	 K3wVtubrtJ3v7a1RfFKtMCyswe7VlXs1jvqf1bK321t4gBK92dHqX8HUpbM6N059rY
-	 DmjyJwkRx2xNn3pbEVlLJBjmQtjrUBPcbqjWXhEw=
-Date: Fri, 7 Aug 2026 15:46:24 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Diogo Ivo (Schneider Electric)" <diogo.ivo@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Khairul Anuar Romli <khairul.anuar.romli@altera.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>, miquel.raynal@bootlin.com,
-	thomas.petazzoni@bootlin.com,
-	Pascal EBERHARD <pascal.eberhard@se.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6.12.y 0/2] spi: cadence-quadspi: fix probe error path
- and remove
-Message-ID: <2026080717-payday-closable-07be@gregkh>
-References: <20260807-cqspi-pm_runtime-v1-0-5973a0a208c4@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kZw213R+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1E3151A14B1;
+	Fri,  7 Aug 2026 14:46:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E0876603F0;
+	Fri,  7 Aug 2026 14:46:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3C2311C37A53;
+	Fri,  7 Aug 2026 16:46:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1786114013; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=3U7zmB0jNuLDEjK8WDzNya+qqpQQtuz/BAdCFoUahL0=;
+	b=kZw213R+pTzitdHxqYdmusyT/SFJdxWZGvTmo5T0FkB4h0rJV/xIfT2hnPXaPyJoy73c/w
+	D+hhlaZEYHZc1LktNKpEGCcLUyVuCH83SLa/xmuef4A/Fnf0jitiHMxx9Z367A8UjDVk9G
+	SP8HykE7mV0aNEnmYwilLFAZYqdk7+494ZGc8EM+i0O6vC/O3D6K5CEuY7PVupKZdddjbA
+	zvKXpv3dXrxjEs63ZAwBZK1yaK+GiQwmw/YzCi0nlTrYcNr+E0DwOcpEA4IHfi28M8HXWW
+	C1fqJZnkWNcP7X2T0vPDCMtoSWebdD3hGs04nmZLvBZlnG5tfPMxS7SRbotksg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2 0/3] mtd/spi-mem: Enable DQS support
+Date: Fri, 07 Aug 2026 16:46:46 +0200
+Message-Id: <20260807-winbond-nand-next-phy-tuning-v2-0-73595e89d6e3@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260807-cqspi-pm_runtime-v1-0-5973a0a208c4@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0K6dkxbAqgr7mFYFJjCJDolbUUI4
+ e4WTuDmJ+8v3ttEQE8YxCPbhMeZAjlOoC+Z6EbDAwL1iYWWupRaFvAlbh33wOYYXCJM4wrxw8Q
+ DGNOi7aS6yVyLpJg8WlpO/bNJPFKIzq9nbVbH+6d4ViChwKrP71VppVV161x8EV879xbNvu8/H
+ GkA4coAAAA=
+X-Change-ID: 20260205-winbond-nand-next-phy-tuning-aabefc018032
+To: Mark Brown <broonie@kernel.org>, Richard Weinberger <richard@nod.at>, 
+ Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, praneeth@ti.com, 
+ u-kumar1@ti.com, p-mantena@ti.com, a-dutta@ti.com, s-k6@ti.com, 
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, Miquel Raynal <miquel.raynal@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Aug 07, 2026 at 01:49:19PM +0200, Diogo Ivo (Schneider Electric) wrote:
-> This series fixes two resource leaks in the cadence-quadspi driver's
-> probe error path and remove callback.
-> 
-> Patch 1 fixes an imbalanced pm_runtime_enable()/pm_runtime_disable()
-> pair: when probe defers after cqspi_request_mmap_dma(),
-> pm_runtime_disable() is called without a prior pm_runtime_enable().
-> It also adds the missing pm_runtime_dont_use_autosuspend() in both
-> the probe error path and the remove callback and a missing
-> pm_runtime_put_noidle() in the probe error path. This consolidates
-> fixes from upstream commits 5ff4d5d1af0c and 5e8bb0cc72f1.
-> 
-> Patch 2 fixes a DMA channel leak: when spi_register_controller() fails,
-> the channel acquired via cqspi_request_mmap_dma() is never released.
-> A dedicated error label is added to release it before the runtime PM
-> teardown. This fix is one part of upstream commit f18c8cfa4f1a.
-> 
-> Signed-off-by: Diogo Ivo (Schneider Electric) <diogo.ivo@bootlin.com>
-> ---
-> Diogo Ivo (Schneider Electric) (2):
->       spi: cadence-quadspi: fix runtime pm cleanup on probe failure/unbind
->       spi: cadence-quadspi: release DMA channel on probe failure
-> 
->  drivers/spi/spi-cadence-quadspi.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
-> ---
-> base-commit: 7351870f56cba79097a2ab57e609469719ea4f73
-> change-id: 20260730-cqspi-pm_runtime-a8a1c6122944
-> 
-> Best regards,
-> --  
-> Diogo Ivo <diogo.ivo@bootlin.com>
-> 
+For his PHY tuning series on the Cadence QSPI controller embedded in TI
+SoCs, Santhosh initially needed to access the availability of the DQS
+(data strobe) signal. This is a chip dependent capability, which may
+sometimes be enabled.
 
+Create a SPI memory flag for it, let the SPI NAND core set this flag
+when it knows about the capability, and expect manufacturer drivers to
+enable it for octal needs when the chips are compatible.
 
-<formletter>
+This is an alternative at needing a DT property. Please note that there
+are a few blind spots:
+- the line may not be wired (this would be surprising, but can be
+  flagged this time by a DT property)
+- manufacturer drivers must enable the feature if it is
+  available (especially for high speed DTR modes)
+- this implementation is proposed for SPI NANDs only, if this proposal
+  is accepted the same approach may be taken in SPI NOR.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Here is the original thread which lead to this series:
+https://lore.kernel.org/linux-spi/87v7gbdwdh.fsf@bootlin.com/T/#ma79fc364d7b882a48dbdf47203dde75df4bb0ec4
 
-</formletter>
+This series was compile tested only at this stage. As DDR tuning does
+not yet work on my board, I cannot make sure this change has a real
+impact.
+
+Mark, as agreed, you can take the spi-mem patch through spi for this
+cycle, and I will pick up the remaining spi-nand patches after the merge
+window.
+
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+Changes in v2:
+- Dropped the RFC prefix.
+- Rebased on top of v7.2-rc1.
+- Dropped the spi patch for now, just allowing to use DQS on a few
+  Winbond SPI NANDs (can be improved later).
+- Link to v1: https://lore.kernel.org/r/20260205-winbond-nand-next-phy-tuning-v1-0-5e7d3976f0f1@bootlin.com
+
+---
+Miquel Raynal (3):
+      spi: spi-mem: Flag DQS capability
+      mtd: spi-nand: Set the DQS spi-mem capability if available
+      mtd: spi-nand: winbond: Enable the DQS pin on W35N**JW series
+
+ drivers/mtd/nand/spi/core.c    |  4 ++++
+ drivers/mtd/nand/spi/winbond.c |  8 ++++----
+ drivers/spi/spi-mem.c          | 32 ++++++++++++++++++++++++++++++++
+ include/linux/mtd/spinand.h    |  1 +
+ include/linux/spi/spi-mem.h    |  4 ++++
+ 5 files changed, 45 insertions(+), 4 deletions(-)
+---
+base-commit: 6f787fd9f19e4e1bc80d3eee1a394eb65defdff7
+change-id: 20260205-winbond-nand-next-phy-tuning-aabefc018032
+
+Best regards,
+-- 
+Miquel Raynal <miquel.raynal@bootlin.com>
+

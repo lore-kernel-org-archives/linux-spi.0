@@ -1,33 +1,33 @@
-Received: from 13.mo561.mail-out.ovh.net (13.mo561.mail-out.ovh.net [188.165.33.202])
+Received: from 2.mo576.mail-out.ovh.net (2.mo576.mail-out.ovh.net [178.33.251.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D589416CFE
-	for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 14:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.33.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402D93BD22E
+	for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 15:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.251.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786373622; cv=none; b=UxDbVsDp5VLVaxnvXd+/Mr0EbPr1uMhCk6KtaXbdFMZds6zIX0snqPCHV970C6jLreOgQSh2Ry86GPFVFWLy+WdEurEoC4Y1ZeUDnCaHe8M1zktvGQQ2+JKrMEoy/m2sVvzL2JLeS58QO62Ne0nG+TYXe42Kn6zZk5OLuoZ04Ms=
+	t=1786374107; cv=none; b=oLSszRfm6f/+ffT6KDYOX/DN4+k2lHG3Gm3rA2azp/oCRafdBQH5bRHcMzozVbT3+DtMRUxTN0RHDIK6hhDhZ3uwRUDupTMykBz7NfQg4YocJNZgO11rndE+evbDiwLik3RRC4KsCPEqg2sfNYKDAMuP90JHbyf5MwrE1eFJaPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786373622; c=relaxed/simple;
-	bh=khtKjUjkFdnLjRe7hqxidH1JU3UV/vwbLf2gEb0XDxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=LfoJzSUWBP18XKWRFa381N+c2Xb7j+o3AlDzuD4pMnd8GzpZ5JNFwK20jM1LhmblGRMXaxWEzlHi6yjuiRuiOIrAcaK2kqP2yaHQoYVoRXx4jrQ9wJLw0TuMWzdb/kPFyYHHtctxMhAViheiAB9NrESSwqMHtYwV3UiyQ84GwrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m-works.net; spf=pass smtp.mailfrom=m-works.net; arc=none smtp.client-ip=188.165.33.202
+	s=arc-20240116; t=1786374107; c=relaxed/simple;
+	bh=h8JMm3lG2PkZasKfNow2aML+HILdmmApWdsNUKU/K0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VkHhzUcoeqG+WQl+zQaAwZbBKC/5UtMCzeCT6D9JjJfOcWHpXViozqFf1dhRHhhv6ja0jHVbFGVfWBssSPUx+j0VwOXlk8ewCyBgo2rU2Q/HuYgHO7k2/U4o2kfeN1wfKu/haeeHST834kk633lKYrNO3l24SuNFeu7qjUVB9II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m-works.net; spf=pass smtp.mailfrom=m-works.net; arc=none smtp.client-ip=178.33.251.80
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m-works.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m-works.net
-Received: from director5.ghost.mail-out.ovh.net (unknown [10.110.58.72])
-	by mo561.mail-out.ovh.net (Postfix) with ESMTP id 4hJcJK4K4zz5wL0
-	for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 14:16:49 +0000 (UTC)
-Received: from ghost-submission-7d8d68f679-m6tqn (unknown [10.110.164.42])
-	by director5.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 5890C100149;
-	Mon, 10 Aug 2026 14:16:46 +0000 (UTC)
-Received: from m-works.net ([37.59.142.110])
-	by ghost-submission-7d8d68f679-m6tqn with ESMTPSA
-	id xxv+C07deWpnricAYgYEpQ
-	(envelope-from <maciej.andrzejewski@m-works.net>); Mon, 10 Aug 2026 14:16:46 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-110S004f5443822-10dd-4813-abb4-14c34041e314,
+Received: from director9.ghost.mail-out.ovh.net (unknown [10.109.254.116])
+	by mo576.mail-out.ovh.net (Postfix) with ESMTP id 4hJcJZ5R11z5vLm
+	for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 14:17:02 +0000 (UTC)
+Received: from ghost-submission-7d8d68f679-5z4sg (unknown [10.110.168.82])
+	by director9.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 44E7F80F5E;
+	Mon, 10 Aug 2026 14:17:00 +0000 (UTC)
+Received: from m-works.net ([37.59.142.108])
+	by ghost-submission-7d8d68f679-5z4sg with ESMTPSA
+	id 4EegBlzdeWqH/wUAQ8H/aw
+	(envelope-from <maciej.andrzejewski@m-works.net>); Mon, 10 Aug 2026 14:17:00 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-108S002f1246bdd-25f1-4367-ad77-4adbbe4a8bb8,
                     ED6AA3D647CD945153C5C800EF75597CE9F2D384) smtp.auth=maciej.andrzejewski@m-works.net
 X-OVh-ClientIp:144.125.48.245
-Date: Mon, 10 Aug 2026 16:16:45 +0200
+Date: Mon, 10 Aug 2026 16:16:59 +0200
 From: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
 To: Linus Walleij <linusw@kernel.org>,
 	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org,
@@ -46,8 +46,9 @@ Cc: linux-gpio@vger.kernel.org, Mark Brown <broonie@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
-Subject: [PATCH 0/2] gpiolib: of: Scope the legacy SPI CS quirk to SPI
-Message-ID: <20260810141629.81650-1-maciej.andrzejewski@m-works.net>
+Subject: [PATCH 2/2] gpiolib: of: Identify SPI controllers by nodename
+Message-ID: <20260810141629.81650-3-maciej.andrzejewski@m-works.net>
+References: <20260810141629.81650-1-maciej.andrzejewski@m-works.net>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -56,73 +57,82 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260810141629.81650-1-maciej.andrzejewski@m-works.net>
 X-Mailer: git-send-email 2.43.0
-x-ovh-tracer-id: 15947527757042492195
+x-ovh-tracer-id: 15951186934430573347
 X-VR-SPAMSTATE: OK
 X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTEP/idJ4lNWMfRTNA5bt6+yShru4F5S1mK0jnWkEI5ocbjzIyrNRvm9zG/q4g91bfcuMv+NNBM11kZYEjVEPchDdmdUyL8MjlbGk+5AEHdkrpXZljPNc93lPHW5lc1wXdjxOF4ewXdqNMKK/HPv/XcyAdS/4dWpWSHnqLpDOX6wUOTeDrVCr/YxdecSCH85qkeroEGMxrMgV5eWMNLmgkN7i0a0d8uu9H0cQnyeerCr1c6b0UhLcsXyDX4dpoEqMlGPxVJYUVf2fkL5vkAnc+S4KQkq3AAZxv/y23ylCX9gr04qNO1UapptwjdxKA9kfvlSKPk/UgJDfqCmMvh/p88YBQ4lMU3xaMfrOw2f1ezEI6RN5LhBz/s0esqZ1aWy7TZrqmeuLuS4nDdmOQ4S+6672NZpgmmRyDj8XVtvWPP37hNSUpcDPHuImW38p1bxGqh5ZNUtOGHkvYQsAhnMoQ/eL+ubKd0hbYqL6asOpYpa1XIFd8p5lEMh1xBBb/LmNqQEBLjhlSYJBcreUOvxTseU3nJ14AaVmMm8OBPPS5hHB1RTQMI35QTyAq204Pw219szwh0uV0EjYb6XefH7DdbtSPTDkhNqmxmQFzdkMcUmJKVbdHgVrKRVpFDgNg5zigQCAmPu3hbBNyGtTkJ1w2J0CwAxW3hqA8Egb6qhTjvMVQ
+X-VR-SPAMCAUSE: dmFkZTEFIaKoSFRHDjlvEiufjoWcD4cmBUs4G1gkwG+emCAn12twDtQ828LrUUBIp6+oc63Pl1IZhTbYYnD9+OcBLoKPOl05sT6lJvvFsfhsoFtEoWhmZjwf0mt1qHt+i7I0F3iSUlydsnJ+BBo+IBleI0Ojd0VNHdKBk6xRoSCjFwoNNNQLnaZ9w1zKAwYl2KhtJHHKmgtMroyXBzf6h8SKyW/0ADno3WUXP2hhaHAogAUdhe+9CBROLDVJASqsWAaN5y2QiG3UsVHAXkCpGwHOHWCu7oQkAHTR9AD4a6kc3GT/DH8buSkzgyHjzYk8tW+uQSdd7AG6INqyqJsgUmqO12ybjo7BBKPfNNu9A38vALzcVXDw/JrFuUV4H84Mwh0S6qdUEYANCiS+9d8y64cgJ1ATHGVzetAMBN0SRHP4ut9MpbX2gZatoahtETPeJU9EIbudlDxq/GHBjdwrdhv7XyBj3tHXEWs+ydZJpsV0CZek3JTouQeRG8hc9/U5WRe+fdReLGU+vd8e0mc8waJt7QMIMq5bxNzgI/sh04EvaOerQsl43w2L0qGT6AR8q7ycZZG2OiA6J5sLZNsyyFMhlBp1m7tDeQeCSGRN6oAG1QOlUzWMaai7stmqzBbrrr7qHaOMVLGTHZi8oPx0FyHIG7ry8bg02jji4kr2SGmZitfNLw
 
-of_gpio_flags_quirks() decides whether to apply SPI chip-select polarity
-semantics purely from the property name "cs-gpios". Nothing about that
-name is SPI specific. nand-controller.yaml documents it for NAND
-controllers too, and rawnand_dt_parse_gpio_cs() asks for those lines
-with gpiod_count(dev, "cs"), which gpiolib expands to "cs-gpios". The
-result is that a NAND chip node whose first reg cell happens to equal a
-GPIO index gets flipped to active low, and since the NAND core requests
-the descriptors GPIOD_OUT_HIGH and drivers assert with a logical 0, the
-die is never selected.
+The "spi-" property scan added by the previous patch misses SPI
+peripherals that declare nothing beyond compatible and reg, which are
+the only two properties spi-controller.yaml makes mandatory for a child
+node. Let the controller settle those cases: spi-controller.yaml
+constrains the controller nodename to ^spi(@.*|-[0-9]+)?$, so the name
+is the one bus marker every conforming SPI controller has to carry, and
+of_node_name_prefix() is the existing helper for testing it.
 
-We hit this on an Arasan controller with a GPIO CS1 and worked around it
-downstream by putting spi-cs-high on the NAND chip node, which is
-plainly the wrong property to need. These two patches narrow the quirk
-instead, so that it only fires on an SPI bus.
+Both tests were scored over every board device tree in the kernel,
+expanded with the same cpp and scripts/dtc pipeline the build uses, at
+v7.2-rc7. All 3620 trees under arch/*/boot/dts expand; 503 of them hold
+at least one GPIO chip select that can reach the quirk, 765 such chip
+selects in total. 761 are matched by both tests, and none are matched by
+neither, so no in-tree board changes behaviour.
 
-Device tree has no bus type marker, so the series uses two tests, one
-per patch, and applies the quirk if either matches:
+One needs the property scan on its own: psc@11400 on ac14xx, a
+fsl,mpc5121-psc-spi named after the hardware block rather than the bus,
+whose m25p128@0 child carries spi-max-frequency.
 
-  1. the matched child has a property namespaced with "spi-"
-  2. the controller nodename has the "spi" prefix that
-     spi-controller.yaml requires
+Three need the nodename on its own, all peripherals with no "spi-"
+property of any kind:
 
-Testing
--------
+  - panel@0 under the spi-gpio controller on rk3566-anbernic-rg503
+  - can@0, an mcp251xfd, under ecspi3 on imx8mn-vhip4-evalboard-v1
+  - spi@1 under ecspi1 on imx53-ppd
 
-Both tests were scored against every board device tree in the kernel.
-Each .dts under arch/*/boot/dts was expanded with the same cpp and
-scripts/dtc pipeline the build uses; all 3620 expand. 503 of them hold
-at least one GPIO chip select that can reach the quirk, 765 in total.
-761 match both tests, 1 needs only the property scan, 3 need only the
-nodename, and none match neither, so no in-tree board changes behaviour.
-Patch 2 names the four exceptions individually.
+of_gpio_spi_cs_get_count() in this file identifies SPI controllers with
+of_device_is_compatible() instead, but it only has to name three legacy
+controllers whose bindings are closed. An allow-list here would have to
+name every SPI controller binding in the tree, 71 distinct compatible
+strings among the candidates alone, and grow with every new one.
 
-The collision with NAND is in-tree but latent: 36 board trees, all
-Atmel/Microchip at91, give their nand@3 controller a cs-gpios line and
-escape only because the sole child of those nodes is a partitions
-container with no reg for the quirk to match against.
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+---
+ drivers/gpio/gpiolib-of.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-drivers/gpio/gpiolib-of.o builds warning-free at W=1 with CONFIG_SPI=y
-and with CONFIG_SPI=n.
-
-Note on bisect
---------------
-
-The two tests are complementary rather than layered, so patch 1 on its
-own would stop applying the quirk to the three peripherals that carry no
-"spi-" property (a panel, an mcp251xfd and one ecspi child, all named in
-patch 2). Only the pair is behaviour-preserving. They are split because
-the property scan and the nodename test are separate arguments and I
-expect the second to attract more discussion. Happy to squash them into
-one commit if you would rather not have that window.
-
-Maciej Andrzejewski ICEYE (2):
-  gpiolib: of: Only apply the SPI CS quirk to SPI peripherals
-  gpiolib: of: Identify SPI controllers by nodename
-
- drivers/gpio/gpiolib-of.c | 40 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
-
-
-base-commit: db2ddb87143519e20a95aa36c60b36107b736a58
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index bd9a623f2ae1..959b32b3bea0 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -359,6 +359,17 @@ static bool of_gpio_child_is_spi_peripheral(const struct device_node *child)
+ 	return false;
+ }
+ 
++/*
++ * A minimal SPI peripheral may carry no "spi-" property at all, so also let
++ * the controller identify the bus. spi-controller.yaml constrains the
++ * controller nodename to ^spi(@.*|-[0-9]+)?$, which makes the name the one
++ * bus marker a controller is required to have.
++ */
++static bool of_gpio_node_is_spi_controller(const struct device_node *np)
++{
++	return of_node_name_prefix(np, "spi");
++}
++
+ static void of_gpio_flags_quirks(const struct device_node *np,
+ 				 const char *propname,
+ 				 enum of_gpio_flags *flags,
+@@ -395,7 +406,8 @@ static void of_gpio_flags_quirks(const struct device_node *np,
+ 			if (cs == index) {
+ 				bool active_high;
+ 
+-				if (!of_gpio_child_is_spi_peripheral(child))
++				if (!of_gpio_child_is_spi_peripheral(child) &&
++				    !of_gpio_node_is_spi_controller(np))
+ 					break;
+ 
+ 				/*
 -- 
 2.50.1
 

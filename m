@@ -1,87 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1E3C1D54;
-	Mon, 10 Aug 2026 12:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365EF3EF640
+	for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 14:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786364749; cv=none; b=WoLmUEpsqIlo+7zhskPBlZ1E+WPRymJ4UVhuDqzOSKAkjOgvd3N38fRfSuDJKXSr4eMzKBuTNfTt0bfOmVP/sItaz5q06UFZERjRBwUUmax96zjEFQpi3e028706UuPNdhHJaUsloDL+z1aPUL8N2Q955ZCEE6Qp3m9wd3a9Zdw=
+	t=1786371282; cv=none; b=djEwb2WBy6UJto1ht48ugqAA2Giwx9PPVdZ1D1oJSTa5wm2ORAT+DZTEO13C50En0Em8hPmeA0M61pcWpaiLgVmBI/2pJRFlihyfnx1aYFdPjw1W+ZGYUxoOCxly6Ln5imy+tmX74VfO6/6WcCPFCQW1r0PWu3lFeU7kQUxVQus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786364749; c=relaxed/simple;
-	bh=+SGImHe1Sw1NGnkTVFXM+So9uxRP3NcboX61zAirfxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZckXFiPyeSVVq6IlPv1/2La4xn02TdLcT5sHHYTb+L4cLhKKz/88bue1h80cmUs9I1FwLnr6ghNB+rGhiGSk+Lbtvdz7TEJu91jexe1QymMJj5JAIMRdRxYgADVjfjdVQYLDudB4H5oQKpzLAeHHBEy6BziQfp0vufsaaswhNQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K/u+uhRx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786371282; c=relaxed/simple;
+	bh=9C+hFacNwZLvnISMeK73Fc5lVhuaZky39s3GFGDIx7Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iSWPYuYXb+dVx3Ci6AT0H2TVcrStWui0wGmpvoLnxpXF/b2qzGS2qNuu8j1i/jfCz/v4j8O4G2erK3X7DBDDDrvJJiq5r49ZgDcc+JONdHD5YJOBrdPCKxWxutL2a0u9qabh2uCe0OSU3oCsBDfEN/4mVM3dY6kz7ArV5MJ+PF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvS0ok9z; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K/u+uhRx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098A51F000E9;
-	Mon, 10 Aug 2026 12:25:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786364747;
-	bh=+SGImHe1Sw1NGnkTVFXM+So9uxRP3NcboX61zAirfxc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=K/u+uhRxvNI6p2boOssYbjp+/nH43F8F8t0UIF5iGR9wL06ro1o/QV6i7cwzLYWXb
-	 Pi3soYXJryou8hrDzvLHYNMkcj7rzLuTXlQ9JoT0oiJHo8wkqI98GpirYZNhd7s5Cx
-	 Ht/Ep9cU3vEKIKHISvP09W6hHJ/09y6wJ/KP8NIVn6ZPi5DzgFKagDMTua+reTpiH0
-	 0BEmtUY2u3X4DBboIB5bk3zdXYno58L8E+BeXVdvSfOX91zzJuxsts1RXCdcMJWWM9
-	 gmCiHKtALyOKNNo7eKzC6nS72vSUef8QwbJCfUvL62NveUVvG684HweT4AEO690+3V
-	 ZxmGHmg0LCDyA==
-Date: Mon, 10 Aug 2026 13:25:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Vladislav Leonov <vlad@zlab.su>
-Cc: linux-rockchip@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	Simon Glass <sjg@chromium.org>, linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Rob Herring <robh@kernel.org>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 17/25] dt-bindings: spi: rockchip: Add RV1106 compatible
-Message-ID: <6c480623-9195-42de-9a13-fa97c6fb4253@sirena.org.uk>
-References: <20260810121121.210040-1-vlad@zlab.su>
- <20260810121121.210040-18-vlad@zlab.su>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvS0ok9z"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-47f93b2fe4cso1042727f8f.0
+        for <linux-spi@vger.kernel.org>; Mon, 10 Aug 2026 07:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786371279; x=1786976079; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=za0i0XUEXRkUjzBa8+DfiNoHd/qp+XXAbyHUlY7SpcA=;
+        b=kvS0ok9zTtvZPoOxXFRQVhBF3j9DvKIBZYW78fHh721En+QqUtOQEaIaxW7z6MmDKT
+         UVvMbVrRMTFBZv6cNNeLmi8kppHuaZ1rY111/d4vkFGbm1kfMjCA+98tK4bLyNeEcq06
+         SHMeBoRLDWceT4bxVgk0nZ4hGq2+NbSRkbI0q3x/GzXN77YAfpsWAJLJwWK9hZn1b52C
+         hK+YEDAnci1KWUGAxJ2mVZOPGIpTChihw3n5QSpVNGZTlLEUd17a2EvILxEPdURmRrwh
+         n3fn2AEDnADWDmN5j7xjGhgxlTkq0aGp0Y5wXqvVoAzpDwNXsnyReEnMsYbZAlWZ1LSt
+         6fWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786371279; x=1786976079;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=za0i0XUEXRkUjzBa8+DfiNoHd/qp+XXAbyHUlY7SpcA=;
+        b=c3zYaW/fQDJxEX9HFForUDw1u5iPZTxtRaRHWiLZT5UsN4ZCpaSvqujAnBaJ4GHBMU
+         w0TW/0o7nR8IrQVNBveXH03uZsv5X2hVUzdEPnNJmf6zfyDaN8SaSLVvFPhSmJghQAQL
+         IZUsHUNuyOxuDo9XVyeQniLmBhwKvcJKCJQnRcXB5SuL6w+jRw5q5DWYvuR5CTf4zqjL
+         AQHeF8qNRG3+TnIUtVZFk6GjARVJRUojnRWGaTT3otGxvJcHxuF3WvbnjJzKimLV/1Uq
+         1uFyrGqvhSIMD10Qnq5d2ioAfL4GNX4O9BXgZMI7gKDHRoztmfB/5hY8TwH09S6vI/qQ
+         bJqQ==
+X-Forwarded-Encrypted: i=1; AHgh+RrLyNy+rhOUQSyMg9ncLPkldQWz1irGiv05dIRKkqZSjkANeb8G1ix3DAxKPwaT2+f5K97d0Eq4VQE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3SK2boNWyxYxzG52rzzi/feTSl0ArtxoiivObC2JFCCpUGid9
+	B/sFn7Aa2+mMPVzx2mpC0A/DVqBPEEJ//Pb9oMA91q0akkuuBEo8s7/opaL/QiBs
+X-Gm-Gg: AR+sD10UUlxBj2OJ3mA6TWPtytZUBRYP35FrNqzs8WkBgLsuYmmWL/NwSXG6/q5crkS
+	nRtIEEq7de0iSTPTxGPUX2cTMFtRqi0dWgXJRTzXOGrOwhPF/AssUXdSLa5uvutdoHOC75al1h5
+	W0LDZXNbLiqqNlAt3jWB561oR1dpB79k22rLnf4KkLSOPz3szAgtP6Ej2CzlNb5u1nVtU+siwTO
+	RM467AF3TasXw2RV3Zouj0cFN3koBJ2wCB5LIrU4fazbEUToVo2S/tvKAWs2eduFLvzFiv44p6f
+	iWeGju2VCOVCeHK01VBcpvGBemzTC5CkD6wH/786yvl8LgDtyfMoYxY7FaKLBnUANTsorQBEGFY
+	axPcv+L3NbxjE31pwDVVsOmORmyrsALDxghOHk0l/YAzjuO0Ou4/XzUkn7ZzThIJ0MLrZHf9ghg
+	loCTwyf1YtCgyrAAFGUTk8T1t8h6qRrQDSpp0HcyJ1Vgpd6331A2tz5aFoOPI+RdJoBCCo
+X-Received: by 2002:a05:6000:41ed:b0:47f:8d71:210a with SMTP id ffacd0b85a97d-48130ed871emr30408214f8f.15.1786371279186;
+        Mon, 10 Aug 2026 07:14:39 -0700 (PDT)
+Received: from deb05.proceq.com ([213.160.61.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-480021509a5sm32680580f8f.16.2026.08.10.07.14.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Aug 2026 07:14:38 -0700 (PDT)
+From: Mehmet Fide <mehmet.fide@gmail.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Larisa Grigore <larisa.grigore@nxp.com>,
+	James Clark <james.clark@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.12.y] spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers
+Date: Mon, 10 Aug 2026 16:14:37 +0200
+Message-ID: <20260810141437.2805389-1-mehmet.fide@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3a58eJ5RGHjnM4Jx"
-Content-Disposition: inline
-In-Reply-To: <20260810121121.210040-18-vlad@zlab.su>
-X-Cookie: Polymer physicists are into chains.
+Content-Transfer-Encoding: 8bit
 
+Please consider commit cac7e5054115 ("spi: spi-fsl-dspi: Avoid setup_accel
+logic for DMA transfers") for 6.12.y. It is in mainline since v6.17 and
+applies cleanly to 6.12.y.
 
---3a58eJ5RGHjnM4Jx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It went in as a cleanup, so it carries neither a Fixes: tag nor a stable
+tag, but on vf610 the logic it removes corrupts data in DMA mode, in two
+ways:
 
-On Mon, Aug 10, 2026 at 03:11:08PM +0300, Vladislav Leonov wrote:
-> The RV1106 SPI controller is compatible with the one found on RK3066,
-> so add the "rockchip,rv1106-spi" compatible to the list of variants
-> that fall back to "rockchip,rk3066-spi".
+1. For an odd number of bytes the accel logic packs into 16 bit frames and
+   computes the word count as len / 2, so a 5 byte transfer puts 4 bytes in
+   the first DMA transfer and leaves the last byte to a second one with
+   different timing.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+2. With SPI_LSB_FIRST the accel helpers byte swap through cpu_to_be16(),
+   which combines with the hardware LSBFE bit and puts multi byte transfers
+   on the wire in the wrong byte order.
 
---3a58eJ5RGHjnM4Jx
-Content-Type: application/pgp-signature; name="signature.asc"
+Both are visible on a Colibri VF50 (vf610, DSPI in DMA mode), and both go
+away with this commit, which is what we have been carrying locally against
+6.12 to get correct transfers. Every stable tree older than 6.17 is
+affected in the same way.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp5w0UACgkQJNaLcl1U
-h9C3iAf+NyRB4/H6HfbMVMgbmtfWJwDWkx4+mQlRg/QJJsB16UQDVfnStvgWXjeZ
-/r8fT4ETbJdneMjvNxT2SjWrRzgrMbFs64lV6V30hUEhYBA16MTyZcR9rEpDuBcC
-a74jE2a6oFU7P2sMbK78pizMBvXPcBA1W28Q1W+VP3MEW1t5YqJZQobyxLKTzBWe
-nEgj28jHHaugDRkNmvlOVAONvkLbdAhwVJc5sN/TzcDkiWRw0zeMlY35Ymotj4YW
-oNIdLGYK/NiY3BbwEmNb041SPj+g08kmUu5DMWoIq2idRgDB1ndPIOZZekYjffF3
-VQty06MYLBilknfvEaAmvHCGV5dU5A==
-=2zwJ
------END PGP SIGNATURE-----
-
---3a58eJ5RGHjnM4Jx--
+Thanks,
+Mehmet

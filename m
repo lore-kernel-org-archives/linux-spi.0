@@ -1,95 +1,105 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F1142A781
-	for <linux-spi@vger.kernel.org>; Tue, 11 Aug 2026 09:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFCC44605E;
+	Tue, 11 Aug 2026 14:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786439607; cv=none; b=FZqNFzLfb1dieUGfXhYb6p3FDeLOBgCCOG5P7gm2KYMnDI2X0hIckEet6ZAEyR7Lt6BuOp7bg0ZWvwL508qWkiotQh7vQOvoHTjIzITMqLo3rYLib//RdO0KTttGQgk88St61T06Z1dwoDbKkRGeRgedIIu6RKnKW1PJ4HkjmSo=
+	t=1786458997; cv=none; b=ndYyIM0NGliDIB5ph6GQFsn5HTGfjZMJCIVY9TjhxzUAQWV08B9yG79qNdMZczDhMkGZyX1jb+bTeIzNqg+Ni9aSYeAw96HuGVTSZn7Cns8+4sw7ehsWiZhn944HhL8+/wBcIJGmngJU36g4Ek+lvfA3CllpRLsxpq+rUhiR0Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786439607; c=relaxed/simple;
-	bh=eXTEDFxSkgdYFKaZ+v9LnbZewalK3Gedj5d7pJyL5F8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5g5ULbC9S0VzA6GJV7WXVPcvDwWMO7hSy/87LQWd4H+6MQvOkNunei7B4NNTFc+OerlZfUZcQH9DLPpF+NJeCk9LsV+U9/2bPtwzRTpJZp5m2ECBevo4N/lJlETgC1gmRGuaIQa2xA+j6QeXlCJxvoanXtEGSKN3O0sGIcda1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Al85h61b; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786458997; c=relaxed/simple;
+	bh=SWxH+mb3VCfT7J5Xo6DasTdYiKW4M3Qf0ZfEvbkcjvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gULjrUDMA+BWi7dvOr4cHgGoBv+3hzmAQWBFakxi+aS82Ki6zYc/y+ceJrYi55QaMUutnp4bLJQj0QwWs4L8sUUWcBWhCwAguyaGN5ukUzopePW/rw2LQgae9ORaejul8wBHbH44xk9+bnYijH//cVtVxoxTEkNmKpc4tLSGIoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZB+2JJ+a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Al85h61b"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4956242332dso27464995e9.2
-        for <linux-spi@vger.kernel.org>; Tue, 11 Aug 2026 02:13:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786439604; x=1787044404; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eXTEDFxSkgdYFKaZ+v9LnbZewalK3Gedj5d7pJyL5F8=;
-        b=Al85h61bREn4kxCaJ0kDVEytK9rE/+udegJqwFEs26j2iNHJcKVgY3gweliz6lSIlL
-         gZKM4Ktuy8tP5DBBGJkUEjMLAVGauz69jVyLzMVLnWSxyXwUunvq/9qU9rDMpb2S8UOY
-         MLlST2odWibL3tI88DsoK39kFM+K16egmO452n8qcEWOPdAekJxlNmFlwqTBjNEqm/36
-         7crs9GBQCKfsPrLDXkqNhF9zzrfDufDpesw3gUvTq5jgm4b8P0gaaOsVvBZgCvDyXzXb
-         h2dyZgEl4KWvlhooSd9a4m1beEoFx1uMuRW9qUvM1Fb96F1YFK1X/uP1GNJ74BY28iNT
-         xkSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786439604; x=1787044404;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eXTEDFxSkgdYFKaZ+v9LnbZewalK3Gedj5d7pJyL5F8=;
-        b=SSO1Ynx+n0yA8IhW1INOMszGTKE6qMhpZpOo8TXNw6PeJaxqdMC5u6SYentXg/vh7D
-         wQa/EgukbRrylq6rUszaNCsUquM40ohv7i3o8ZqTpapNgOpg44zE72lNR0DYXkGge1gV
-         bpN9QP0eZuy2fLJno7hgoMPRP3zIuVCM4E/ZvgXHM39Ehjsy4c6GoJwRzV6CsRU9ubdu
-         8H26N6lUysF+b10h8DAhZXfSFBpAYPqla5hmIsBljM7vY3Rqn5bqFqvIOBSol5bxN2Vm
-         pBahrBmfFM5Ga1dsYaTlkRaE4j0HERBH8gYPUtbyO/IPJuGYKXmoXqDma/7UfHyRfCqF
-         cixQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqDNIbhHFxpN77cYE1RpBnNjDc+WXoGatbUotvrtLyP1Sz0Xk+ofCBhC8FAtt+8ocsEoW1Zz5h0veA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwttxdWRS4guVuuT5LIlwia20O6sr4ki79Zr6GOPgbjvVmZvnes
-	3Dv4ooZ4fenMcTjrr9jDxV9MQ4g6E2dUeOwfAIlTWx2ZMaPFS3JOcwUu
-X-Gm-Gg: AR+sD12CQSyk3fcqu/FPiZ0GZeoJzgeivxcNGXh8YDIxlZAgHChlXtnCoVBhOHNQFdy
-	yRHYWJxHxnvQJ6HrxV/u9TAafcD0YlyY7bTyEIDaqgpJ30/z4NahBgKjCJCw/jjN4FKTxR1AiaQ
-	3KYxDnTP6s57kVK5i34ZURoN4Hwpq2CbPagvLPKxGHujpk3MHPlsTaH6k/zMbHwIdQN9+30AnL1
-	xOL8P9YKeMg3s8EjW1WmmQruUXIu5OQqe6QJHWQ8YGi0Z3vD1OFDlFu3VJ7SUzbFthQnMo0WOje
-	y7r5m0qTFkuFz/K+5qWk65Q6Kboo6zm0foMkCpGIiVSgIQP2ajm/z1ZuWd0E3/+OstHKtUZjuj5
-	4gL5EaPwOPAEQDaD70vwQ49+wl3B76TazqF8Opti5EP4IAGveEU74Zp4TsiGNqkaQ1hoz6pLqhZ
-	N/AJD6Z+vKVlFBv7APsr2a4c8fIql6ludBLKeHznQYX8WaeKfzl3T2UzmPr0hv+RkW1Ifv0yegU
-	LarpA==
-X-Received: by 2002:a05:600c:3104:b0:493:f0f5:f2d7 with SMTP id 5b1f17b1804b1-4997842f614mr27031495e9.7.1786439603740;
-        Tue, 11 Aug 2026 02:13:23 -0700 (PDT)
-Received: from deb05.proceq.com ([213.160.61.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4814a5be1b7sm2787760f8f.14.2026.08.11.02.13.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 02:13:22 -0700 (PDT)
-From: Mehmet Fide <mehmet.fide@gmail.com>
-To: James Clark <james.clark@linaro.org>
-Cc: stable@vger.kernel.org,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.12.y] spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers
-Date: Tue, 11 Aug 2026 11:13:21 +0200
-Message-ID: <20260811091322.3592403-1-mehmet.fide@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260811084018.3566861-1-mehmet.fide@gmail.com>
-References: <20260811084018.3566861-1-mehmet.fide@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZB+2JJ+a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142721F000E9;
+	Tue, 11 Aug 2026 14:36:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786458996;
+	bh=wiZ7no0XlCoBnIs6g2WSqwwt3nDM4+tURvWhQMCc1d4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZB+2JJ+aRn+oTtZ1RSMbtJDOJJU3HjjrRW8cZ7RZOuYYBBJy7yfAKthOyICAnnALE
+	 zU2U4g+AZ47Zwp9paUv6EVVGJj6uPzSj3jBoWAYX7mOMJE7plkHRX0kd7FJti7Mxpc
+	 Mqa3uYD0Y3mFMatfF245ZJ7a2j4sk5sxhdSzDPm2IGuOnIpme1wVIKgjNMrIQ7B/KP
+	 GyDKQLvnxZSbQ1ey/PJqF6st+IZhUutgTG6/gicwpro4sXZdeakC5qY3VZQiZq9iCZ
+	 N5rq2B+bicL0N9+2PQwKwFlZSLGywDlVTryiHJkEtMXBp5qcxdzw42gdDkkPakJZ1Q
+	 15mN4oe9LN/yA==
+Date: Tue, 11 Aug 2026 15:36:32 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Cc: konrad.dybcio@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
+	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, chandana.chiluveru@oss.qualcomm.com
+Subject: Re: [PATCH 2/2] spi: qcom-geni: Add panic notifier to suspend
+ controller during panic
+Message-ID: <92fc6c7b-ea87-4577-b200-2bb36388f387@sirena.org.uk>
+References: <20260805-add-shutdown-and-panic-notifier-for-spi-v1-0-b5db170d491e@oss.qualcomm.com>
+ <20260805-add-shutdown-and-panic-notifier-for-spi-v1-2-b5db170d491e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BLl5EzWbCCQL02Jn"
+Content-Disposition: inline
+In-Reply-To: <20260805-add-shutdown-and-panic-notifier-for-spi-v1-2-b5db170d491e@oss.qualcomm.com>
+X-Cookie: Take me drunk, I'm home again!
 
-Thanks, that fits what we see. Larisa is on cc, so she may remember whether it
-started as a fix in the NXP branch.
 
-Either way the behaviour is the same. On vf610 in DMA mode the accel path drops
-the tail of odd length transfers and byte swaps under SPI_LSB_FIRST, and this
-commit removes both. That is what makes it worth having in 6.12.y, whatever the
-original intent was.
+--BLl5EzWbCCQL02Jn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-Mehmet
+On Wed, Aug 05, 2026 at 04:12:10PM +0530, Praveen Talari wrote:
+> When a VM crashes with an active SPI DMA transfer in progress, the
+> SMMU raises context faults as the DMA engine continues to access
+> IOVAs that are invalidated when the VM's memory context is torn down.
+> These faults can affect other VMs sharing the same SMMU instance and
+> obscure the root cause of the crash.
+
+> +static int spi_geni_panic_notifier(struct notifier_block *nb,
+> +				   unsigned long action, void *data)
+> +{
+> +	struct spi_geni_master *mas = container_of(nb, struct spi_geni_master, panic_nb);
+> +	struct spi_controller *spi = dev_get_drvdata(mas->dev);
+> +
+> +	spi_controller_suspend(spi);
+
+This will take locks - are you sure that's OK in a panic handler?
+
+> -	return devm_spi_register_controller(dev, spi);
+> +	ret = devm_spi_register_controller(dev, spi);
+> +	if (ret)
+> +		return ret;
+> +
+> +	mas->panic_nb.notifier_call = spi_geni_panic_notifier;
+> +	ret = atomic_notifier_chain_register(&panic_notifier_list, &mas->panic_nb);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return devm_add_action_or_reset(dev, spi_geni_unregister_notifiers, mas);
+
+Should we have the notifier in place before registation, what happens if
+we panic while probing a SPI device which is probing as a result of
+registering the controller?
+
+--BLl5EzWbCCQL02Jn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp7M28ACgkQJNaLcl1U
+h9CtgAf/f+6KUg6XOD9iIRFVR4rVpXye7ircQCwBQTKLQmyadEoMmiseBOTGIlGz
+S+0SKs/Qjy/k+zIyDeJtacOCxEEtVXgs+YZ/Vt3x6yv0fvwqjA70ZZBJguLGb1UZ
+EBdRiCE2MuxkeMrmuVvN1Slkth+OPL9U0h6Lh2T0Ue6PO9gM+ZlNWVqCSU3mDybQ
+GLDGWZw7xYtBrfPZ5oMmp0SEMmJHIvi9BWx64+kvNQ+Q4nPnIzGd2+8wGKUW30gL
+OEcYXD54lUv2RxVZ5rQKxI+eT5kdCPc92M6x3+O2XwTi8RSwmmqWQApxViQwc4Mw
+suRbzVi+MP4YnPsfvmWY64X3LV7Cxg==
+=f4mQ
+-----END PGP SIGNATURE-----
+
+--BLl5EzWbCCQL02Jn--

@@ -1,89 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D22136728D;
-	Tue, 11 Aug 2026 17:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E6C345EBF
+	for <linux-spi@vger.kernel.org>; Tue, 11 Aug 2026 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786470915; cv=none; b=k/h8uCZk0Pmh6f4YriGrtBE9r+sXum2nMHCz0Xy3kqGJQYaFWnMY8R61I2Q0Pg2Tr26eKuKLcS1ymPv2mAPZM/MN0Pj73eFfA0FIYqR1Yb8NtcDnVi1BYIzcpvouhDTdI1BbJInI4BnA78C77a9P9il3if4xRl/2kNMXBaCA8DM=
+	t=1786471259; cv=none; b=VlH5kc+sgFnj+xvmoGgz+nGXOblwXZhoxRtzm6zupx7XROgOqGBV6wcgA9hCKlDMJwrwTEahorhj1L6xNrqr7WKWM8kV4eUZJ1AEHEs9Wq3pQaKaB1yOoCwBFapj5F9pCDl12VxpcnB5pmUY178219nhywZE7GWt80YM+gTRWoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786470915; c=relaxed/simple;
-	bh=7HyzjH+CUTTGPErOFzf3nAnR0Xils4AtlIefRaBUdlw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=u/2VDhfoNV3arW3uor/Wo61YnG1DFP+ExFYntj6uRb1lAJYpc8GL/JZ3FfqNq84KUPxGkPvEbR46E1YA/kPn3mR4giyU9fYx6eKxQmjUJVHq3cDGtFSn6pGdnJR9mrDEzSFwy+8rnAcFBTh0d4Y770p649aJ+/tlqEQcI1TbNWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N7VKC/AX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786471259; c=relaxed/simple;
+	bh=hgXJai1sxKRkO+38yFbq8qV6yABhRDWGm/0xrms8gaE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=JS4HslgFlqkD76+MFpW6T3KQT8Byyeb3pbUtKaN5VRGEp4O+thFbbMcbo1THY1uPOfdhvIpWOf2aaba50sEUIGVtxUESinhOn40kyQytF1Sd19QXZAEgXdGs64+Pxb36nwxuNpQchOkFzMoNAeuvw0E+SKZmdunMWk1qN32itWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KcDjYOVk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N7VKC/AX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308781F000E9;
-	Tue, 11 Aug 2026 17:55:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KcDjYOVk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E331F000E9;
+	Tue, 11 Aug 2026 18:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786470914;
-	bh=sJCVcseMsGHH1jluMOLr3srtxo60ge4sSxKLDTGGAaQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=N7VKC/AXemGLtEVc8lwMTTSbz+x0ijEYHhlLPCgirySG+/Q34QryCeqGpSLljiPEQ
-	 W0xuv4kN5+/L0KbHlh1ZA4V1n31C6tviYBeHfXB5RRWFIuVsXwJkv9JrQHqt59Mu33
-	 jG9/ZTk79XOq1AHyHyufJWQyIoM2ngeVz8LLhXFZI1lA4Z1ILGyrfPYxuHjpH6kS5d
-	 GP92siDAsWGK1YaReh0TujjbGhOn3UIQ9oUlW7OETprXcCf9ZrD/kmLKs53k2neIV5
-	 ayuQwlHaAIsP2fyBevLpAyZJisyEeqSggBPNeIT2gvOQXiQqwiBfuhf35qFf3NCviE
-	 3/bVMbtceyurg==
-From: Mark Brown <broonie@kernel.org>
-To: Yang Shen <shenyang39@huawei.com>, phucduc.bui@gmail.com
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260807103848.46315-1-phucduc.bui@gmail.com>
-References: <20260807103848.46315-1-phucduc.bui@gmail.com>
-Subject: Re: [PATCH] spi: hisi-sfc-v3xx: Propagate errors from optional IRQ
- lookup
-Message-Id: <178646294663.119683.15361969604878272831.b4-ty@b4>
-Date: Tue, 11 Aug 2026 16:42:26 +0100
+	s=k20260515; t=1786471258;
+	bh=YNf3w9Lx4ZHOpGun0XP2ywnsmZ0IJKo/OfJ+71I5pGc=;
+	h=Subject:From:Date:To;
+	b=KcDjYOVkEaZjfoGsEZCdy6fpDXh/+FYvk5Qc83QFzEyMUBMvjwoupogyG/9vVeZl6
+	 t8mo3apbh/tolmkiIIN3PR4pH2Pn0jp3oBL41z8hdLXvnCgRkT/JOZpAUiCB+oYAKY
+	 vl2sX1SoQZemiYb3A41E+pH8xf5EWjP0Hb3GNiBexKqVE4fd1mwuyHH9TdHYUu18pX
+	 CBvgr/OEk05FaliXdXu60/Vd0YHrR0b6377Nk0ZVPucgCtEVqCDfq5d37nIEx4D6o8
+	 BohXV4HXYxZKOgcnaD1xqIpZoK508TpNhicIYd2tupZ7h6daePth6P9hSujTbEnBwz
+	 jIxhfeWWQUcGg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5A427380820D;
+	Tue, 11 Aug 2026 18:00:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1145; i=broonie@kernel.org;
- h=from:subject:message-id; bh=7HyzjH+CUTTGPErOFzf3nAnR0Xils4AtlIefRaBUdlw=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqe2IAkXY0A/yUlHde/csJUfqjL3noShko2M2zh
- XYJIJqNhH+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCantiAAAKCRAk1otyXVSH
- 0LvCB/93noNaeN7a62nlP8dL5mJNVk/hAmzyjLoUTk10AVP58ccIC0UolTGoAC3sle21SycfLuq
- 2mBCryG/Jm+q3hqpoMvtEr4kE2+R5qaCCNyZXzFgaxpidQfsLDzMfxdNN7RVfs/FOL5oFLg2WSY
- HcW8We68mIFARY7IxjD7siQJRNlCFYBx1CTOeqrm2YiNqP4SneVRgxAW3b+D4YvCxK/b3EaM9ki
- LmD+gHiQndHBBR+vkkP6V6nbsLzJRm5N1R21y1FH2H+WpKNN+iftgmpdc7wA0ZVP9U+pSFNTwap
- Y62Xu3JvaAxdVm/8xRu9lus7goqebw0ZpY4zBBJM3SX9h3wX
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178647121375.1087421.7777586843086447816.git-patchwork-summary@kernel.org>
+Date: Tue, 11 Aug 2026 18:00:13 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Fri, 07 Aug 2026 17:38:47 +0700, phucduc.bui@gmail.com wrote:
-> spi: hisi-sfc-v3xx: Propagate errors from optional IRQ lookup
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+Patch: [v2] spi: meson-spifc: use devm_pm_runtime_set_active_enabled
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1138686
+  Lore link: https://lore.kernel.org/r/20260802-spifc-v2-1-46e9d06a3217@gmail.com
 
-Thanks!
+Patch: spi: dw: fix wrong RX_SAMPLE_DLY setting after resume
+  Submitter: Jisheng Zhang <jszhang@kernel.org>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1139471
+  Lore link: https://lore.kernel.org/r/20260803135925.12622-1-jszhang@kernel.org
 
-[1/1] spi: hisi-sfc-v3xx: Propagate errors from optional IRQ lookup
-      https://git.kernel.org/broonie/spi/c/e4702b6ff30e
+Patch: spi: hisi-sfc-v3xx: Propagate errors from optional IRQ lookup
+  Submitter: Bui Duc Phuc <phucduc.bui@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1142125
+  Lore link: https://lore.kernel.org/r/20260807103848.46315-1-phucduc.bui@gmail.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Patch: [v2] spi: sprd-adi: Fix probe succeeding without registering the controller
+  Submitter: Babanpreet Singh <bbnpreetsingh@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1136369
+  Lore link: https://lore.kernel.org/r/20260729053543.7-1-bbnpreetsingh@gmail.com
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Total patches: 4
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Mark
 

@@ -1,188 +1,100 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D061C2236F7
-	for <linux-spi@vger.kernel.org>; Tue, 11 Aug 2026 21:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450D4248A5;
+	Tue, 11 Aug 2026 22:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786483743; cv=none; b=eK1jCiPLJ+/tyTtuQbXLrR6d5IW3Lga9/B3X9diTR37Bq3q+paXrXUSKisbGIz6WmNza1oCClUwWurS/QRYYrsZUsvQbU6fZBo5wz+FCIbvJY7A0k3pI+puYbkwrQ4Iehp1u680MvRQtmfzQ4BwFHt5bRVhA+3ZT6BnaqZ6qMtI=
+	t=1786486815; cv=none; b=LBodIwMTqlpdbr7SdOEJHnrAaHxgeorFBQcDv+eDGyCQbGsZqvgRspIlxfxxhx0FdELdKghYuc2qr2hMRYmGvEo6bIRLcErJf93zMa3frtHl9WXUC/qEk8kHOH3IStAaxE55b4o68/Ey636dZD/vNX6Mdgis4eHxvmunDeKre5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786483743; c=relaxed/simple;
-	bh=wtyFxw87QIcDyVCMx9KJ/sLvqa5v/E/XfP2PTsKx8J0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NI7ZF6u/HOJA1nwTPVpie40iGXL5/QmH0genz7s2SJv+wa0J1kuI7ktjrEGdgp8e7AYn4KeHi+Hb5xPexboUy4ys32gDCqURgTb6RooAr4pI0eIuYUbR3J+y5CuFJs4ml3+b/5EcnS4SHYDPCaD8UectE7wPriYJNv1MBzQ+y1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9D7zehZ; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786486815; c=relaxed/simple;
+	bh=zsuJPKQQoZ9WUZlLumAK8jhQU0lCOfBtI5jhGxhI0i4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=B4YZ1v6YAAtoFO+yUhZUKXaoWNa2uZ3KRcDbbSwFJZgQ5nWfp+IYexYmR9etu9Ix4C8RLfpDCKArgrixi9IxyCh3LzBkEcYCC8E0zzdtw1sb+YRWrWe0HGY5xBqFspzRq/hyLNKWuV4/pjCdrxoAXnRu4h/MV5Y6GORuxCWTnlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l1sl58P6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9D7zehZ"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4954c08a7c8so211455e9.3
-        for <linux-spi@vger.kernel.org>; Tue, 11 Aug 2026 14:29:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786483740; x=1787088540; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4gI9dvpa01ZokOTfkufKVuKta6ddjK6CUnqdhudxrHk=;
-        b=m9D7zehZT5B9BoWggIlejtInoNkObwXmzf/kNoiBygEofARdRXZ5L9gtPEWWPACPrz
-         gVbXNNs7MGzaOkfIcSlJF4G5EOCahTBuz5V9VRgEk/rWIg9u8TENrOAj3ACHDAdttsME
-         KoS0wxHhCEXbZ4e3+P17mxJFSgOMEI1eOrjZIdA6cFxxJ4xKoMI4i7/d7qNz0fggJL3h
-         nXSBrTOeyfUBbkML8+3i/vpbBCuythRS/JKmjCXE/Ywvp7JgBl4sWdC7jSLzw5XFvum6
-         ViaGZNknq94YTBBiTmpkYg7tx3fBsnVPowCQ22YJXCTO+7dDaf1jOnb3cqvykC40NeVF
-         5znA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786483740; x=1787088540;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4gI9dvpa01ZokOTfkufKVuKta6ddjK6CUnqdhudxrHk=;
-        b=ISGqoiToD/fFlXFd0LSrT7B0jNyUbxwal+9AezeSXiTfpeogzMcm3V/dvPBm8I5D5n
-         VV/RefWnya2St54arlDEOqAXJMrHc9BdsEVkGvVEHAz8CNJpK9c3nI/jHjWgAb5i/Bfx
-         xSYAYpfBCRa2Bz+eGq4irqKpU20B1ZH9GOw0LJWAH7/HxDGuqOPq/iBTf/DnIolLRmi8
-         8SrBUORgjLpXsOqUckx5tU3O5mAyTcReGpXUgirzocsHVw4JwGOZVj5ueemSmU8P/axD
-         ZY+/9xwcbgt1axxo4VIcCLOfhUqeVtjM0V39fma09UnTsNnH4JzfyqpQzz8Vy03ghZAi
-         SjBg==
-X-Forwarded-Encrypted: i=1; AHgh+RpMPp4R1aX1fC8DKQ/57kx9ryaFJEZV5vVtYaQ+EEMPWq2xZ6uMxX0CzaXU5PMH//3Q1A+0hkJ4GG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywFXse5c5UDy7KWwF5kBrgmvADr3hoJ+IanXvU7JYKlx8L50yq
-	UBs4DvyN2Uj9TiuP+LLu15fb5xb2MLnufcXOczG37QKhjd5j7+Ba5U5l
-X-Gm-Gg: AR+sD102I9wRKcF1vwFO0NPX3h349R7ezzyLiTAb4tKKErmdKZf8jqu53hGZbBCQ51R
-	KPZtbKYOJtRT1kGT/2y4FGS5mWQ4N+Kg8mE6pYpBEuBQotpje7G1BGgLMHWq13hInEy3+MYbScq
-	/AhDWRYK/XuUMACGaTx2rpiZX89TPApGVNWCqHLRiLCt/fU5hg8DB8BHCMpwdtUSF6JO+ObLUJa
-	Q/4ksMiYZnqDr9f1bndq42OUh5pZC4mLOtRP9RWHijaOpFddAGr6zMSkkJXSJKORm818PcHVxDh
-	0u+TDRisT88375+imZlqmPNBfZcqYFn66ds+x+KGOkeOjPpiuD+z6/9sUYi+ezZ9+rKep7HuRqD
-	AaiX1TMycxfU9dKsJFQsyvSI59EJjZR8ahXZdwNUbBfCwOhdAJFwSoaE268nGlEGDeSpiu5pehe
-	6Pa088JRYB409lXc9UslSgHX1mE0TJq++rKR8C/pkhJUr51c/P
-X-Received: by 2002:a05:600c:4ecc:b0:499:5b0f:72b with SMTP id 5b1f17b1804b1-4997c0f76b8mr1016395e9.1.1786483739910;
-        Tue, 11 Aug 2026 14:28:59 -0700 (PDT)
-Received: from skbuf ([86.127.220.200])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997aaa63cbsm22316875e9.6.2026.08.11.14.28.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2026 14:28:58 -0700 (PDT)
-Date: Wed, 12 Aug 2026 00:28:56 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: James Clark <james.clark@linaro.org>, stable@vger.kernel.org,
-	Larisa Grigore <larisa.grigore@nxp.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Mehmet Fide <mehmet.fide@gmail.com>
-Subject: Re: [PATCH 6.12.y] spi: spi-fsl-dspi: Avoid setup_accel logic for
- DMA transfers
-Message-ID: <20260811212856.4wp56ryqgtgzahhc@skbuf>
-References: <20260811091322.3592403-1-mehmet.fide@gmail.com>
- <20260811184500.stable-0013-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l1sl58P6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF011F000E9;
+	Tue, 11 Aug 2026 22:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786486814;
+	bh=EGyQcmQ3lzLMKxDWNjsFrElf3eMPppwiSH7C2+HBmx8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=l1sl58P66dogw6JIzjtWvI/VyP52ZTa2uXOKXVX2nK26s4viPY8loVCvMdqhsREch
+	 f+uTj90zj+Fprs/OhM09szC5VZBORWNwpqCHBrleRKzCfk/rihquuesahFkZZ8paXx
+	 bMGFnKvGVOmB7oNyeSYi0vyhGnnGJ9VVxOHEU6qwFgdq1d6iYO0QbdTcAL75y4av7R
+	 lrsMI5K6LTD1vbK03PFtFVrjx0GHtJf9epDFwkRAArXJPeIXC1qAFRsWNPsauf6vWU
+	 eoB6lcF9N6MHKrwTAduMO2hvArNISitkAhBdKFI2CMVoktriD+nN+167mIeJtg+FdC
+	 QPfxnYzYCZPdA==
+From: Mark Brown <broonie@kernel.org>
+To: Md Sadre Alam <md.alam@oss.qualcomm.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, Md Sadre Alam <mdalam@qti.qualcomm.com>
+In-Reply-To: <20260807-quad-v2-0-8ec821e2f22b@oss.qualcomm.com>
+References: <20260807-quad-v2-0-8ec821e2f22b@oss.qualcomm.com>
+Subject: Re: [PATCH v2 0/3] Add quad mode support for QPIC SNAND
+Message-Id: <178648290697.390283.3049277534434118401.b4-ty@b4>
+Date: Tue, 11 Aug 2026 22:15:06 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260811184500.stable-0013-sashal@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1637; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=zsuJPKQQoZ9WUZlLumAK8jhQU0lCOfBtI5jhGxhI0i4=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqe6Ac3v+u3wrloZpnMWgBeF5c6pIYSe3/dEWIC
+ MI9A7RsxDaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCanugHAAKCRAk1otyXVSH
+ 0BSnB/92CCN4p38O2haUViPn14P6qI9Q9dYOYaU+cSCGi2QjD/IGMmxsWelezH5FOwPHNs9LVEn
+ krpwRkgOyBH+H9aQ32JEXuAW9bGFNzS1pKc7m5/BtiobQxTSELcTiI+gZOldvD25M3hC4X+4VV3
+ u7VWpmC6egTGGdJbG9VDaG44HoE8JIaYpZ8+0Gkfr55fqmyon27XzGJ/I3G8nZJNH4+AXJHcVHG
+ lqJsiCsPi3AVnK1NH2hHbhRxCbMN2jQWXTdR9mW4MoXruF0boUjjnUnhjjPiUkEoZsw3/jyyL9u
+ ibiOcTMklsxswyn03x6IqudFZrAyciUkd+Nu9obXeEdS0xAM
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, Aug 11, 2026 at 02:55:56PM -0400, Sasha Levin wrote:
-> > Either way the behaviour is the same. On vf610 in DMA mode the accel path drops
-> > the tail of odd length transfers and byte swaps under SPI_LSB_FIRST, and this
-> > commit removes both. That is what makes it worth having in 6.12.y, whatever the
-> > original intent was.
+On Fri, 07 Aug 2026 21:33:54 +0530, Md Sadre Alam wrote:
+> Add quad mode support for QPIC SNAND
 > 
-> cac7e5054115 ("spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers")
-> applies cleanly to 6.12 with no dependencies, so this is not a mechanical
-> question - it is whether it qualifies. It has no Fixes: tag and no stable tag,
-> and James reads it as a refactor.
+> The Qualcomm QPIC SPI-NAND controller supports both single (x1) and
+> quad (x4) transfer modes, however the current driver operates only in
+> single-bit mode. This series adds support for quad data transfers and
+> includes a vendor-specific fix required for Macronix SPI-NAND devices.
 > 
-> Larisa, Mark, Vladimir - was this a fix? If so, a Fixes: tag would let me take
-> it here and on the older trees, where it applies just as cleanly.
-> 
-> -- 
-> Thanks,
-> Sasha
+> [...]
 
-It wasn't understood as a correctness change until now, but yes, it is a fix.
+Applied to
 
-Fixes: a957499bd437 ("spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode")
-Acked-by: Vladimir Oltean <olteanv@gmail.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-Explanation:
-As part of the original introduction of dspi_setup_accel() in commit
-6c1c26ecd9a3 ("spi: spi-fsl-dspi: Accelerate transfers using larger word
-size if possible"), it was well understood that this is not applicable
-to DMA transfers.
+Thanks!
 
-The reason is that the correct clustering of 8 bit frames into 16 bit PUSHR
-transfers ultimately depends on the ability to modify the SPI_CTAR_FMSZ
-(frame size) on the go. In the case of a 3 byte SPI transfer using
-8-on-16 acceleration, the logic of this clustering is to first transfer
-the first 2 bytes using a 16-bit PUSHR transfer (with SPI_CTAR_FMSZ=15),
-then to update SPI_CTAR_FMSZ=7 in order to be able to push the last byte
-using a single 8-bit PUSHR write.
+[1/3] spi: spi-qpic-snand: move command mapping helper
+      https://git.kernel.org/broonie/spi/c/0d51ff742b41
+[2/3] spi: spi-qpic-snand: add quad mode support
+      https://git.kernel.org/broonie/spi/c/cdb1dbba4902
+[3/3] spi: spi-qpic-snand: Handle Macronix quad read opcode 0x6b
+      https://git.kernel.org/broonie/spi/c/7e3ffa9f46b7
 
-The difference between FIFO mode and DMA mode is that in DMA mode, there
-is no software hook to update SPI_CTAR_FMSZ in between PUSHR FIFO
-updates. The DMA engine handles them.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-This was well understood and was the basis of this code path, which
-explicitly excluded DMA from dspi_setup_accel() with its dynamic frame
-size updating:
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-		/*
-		 * Static CTAR setup for modes that don't dynamically adjust it
-		 * via dspi_setup_accel (aka for DMA)
-		 */
-		regmap_write(dspi->regmap, SPI_CTAR(0),
-			     dspi->cur_chip->ctar_val |
-			     SPI_FRAME_BITS(transfer->bits_per_word));
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-However, this truth was forgotten soon after, because as soon as a bug
-report came in - the trigger behind commit a957499bd437 ("spi:
-spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode") - it became
-broken.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Namely, the separate code path for static SPI_CTAR_FMSZ settings for DMA
-mode got deleted, and dspi_dma_xfer() started calling dspi_setup_accel().
-This had two effects:
-- dspi_setup_accel() correctly updates dspi->oper_word_size, necessary
-  in common code: intended, fixes the bug reported by Michael Walle
-- dspi_setup_accel() enables 8-on-16 acceleration for DMA mode now,
-  which will transfer 1 byte too few if the buffer size is odd (it
-  incorrectly assumes that the caller can dynamically alter
-  SPI_CTAR_FMSZ and then send the trailing word separately):
-  unintended, causes the bug reported by Mehmet Fide
+Thanks,
+Mark
 
-The breakage probably went largely unnoticed because Michael Walle's
-peripheral only used even-sized buffers (a flash, IIRC), and the silicon
-on which I regularly test the DSPI driver doesn't use DMA.
-
-The commit under question here - cac7e5054115 ("spi: spi-fsl-dspi: Avoid
-setup_accel logic for DMA transfers") - fixes the unintended side effect
-while maintaining the intention of previous bug fix a957499bd437 ("spi:
-spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode"). By having
-the "goto no_accel", we bypass the 8-on-16 acceleration on DMA, while
-still assigning dspi->oper_word_size - which was the reason for calling
-dspi_setup_accel() in the first place.
-
-Note that 8-on-16 acceleration is not intrinsically broken for DMA mode
-(it can yield a DMA buffer more densely packed with PUSHR data), it just
-needs more work to skip it for odd-sized transfers. However, that work
-may or may not be justified from a performance standpoint, so the
-approach taken here is reasonable.
-
-
-Regarding the SPI_LSB_FIRST issue - from the description it seems to be
-a completely distinct problem not intrinsically limited to DMA mode
-(should also be visible in XSPI mode), so disabling dspi_setup_accel()
-on Vyber and Coldfire only partially addresses it.
-
-I don't have a use case for SPI_LSB_FIRST peripherals, so I don't
-personally mind another "goto no_accel" follow-up patch rather than
-fixing the underlying byte packing mechanism, BUT this should be done
-by the issue reporter with a proper explanation in the commit message
-now that the issue is more clearly understood, rather than just be
-happy that backporting commit cac7e5054115 sidesteps the problem on his
-platform.
-
-I am currently on vacation, and I am unable to do much testing on actual
-hardware. I also haven't completely evaluated the SPI_LSB_FIRST behaviour
-with 8-on-16 acceleration, it just *seems* plausible that there is an issue.

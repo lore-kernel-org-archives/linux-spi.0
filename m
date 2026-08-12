@@ -1,67 +1,87 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964D738239F
-	for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 08:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481123876DF
+	for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 08:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786522816; cv=none; b=mqUlDyLGm2pyNIOt2tNne1YosepH1y5CaFJWPyHzDclXWjGUsjfMVy1wNXjoQXYJzMRvBNYqwBPUgJbMYrlwwn/boQsEO4Td4oxDFyErdLt3JdN5JE9FpjP8YBIIB3Qwtio5iE3mzex+zIc2Rz5p0Ykhko3H38p4XzTrq0mPk8g=
+	t=1786524916; cv=none; b=B9czqw4xNoUE6hc14ymmiDAapM2+IwOzmq9R3X0jPi9QMDokeZfU2Vj6qInft9MzRX4jqLmAJYB7uajkWPLFhapo7UPmKtPRWWqNPhACcQ5kBN1rCNIMUHmhPZpWdpVUt774vwzN21kRkLy+VMhCcvLGUD/lRCzUvq9POVYzayk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786522816; c=relaxed/simple;
-	bh=19QElKc8Z4AqLbONO1diyd00Et4pA8DxWHmwjN27wXw=;
+	s=arc-20240116; t=1786524916; c=relaxed/simple;
+	bh=F7MqsTpvXEhShRZzCrVhWm+SLKO+Vc5RAc23Ul79HmY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Fwy0i0TWc+UfQlEuHZ1peF5nvubMdw6lR506Ez1hx4fcRDFIPkekqqgsUUvZR7MloHS/zpjD3iTNFYviv8kD35mAB1Vd7Pl5SvEAmCGiYvGSygbRRfsz+cPb7nlbBrx6U/QjfFg/I1B41krMtIYgeKSZYWUmGrdEAfxAhhpIolw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RZPc4Eur; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=uAfKyR9M+4iGr/thX8xCRiOdHubG4nRo0tG4+ySn1SCTX8XGivHPVdVtMmvfAfEA8R0IAH7OrdY+r8tFCEQuovy88beE0NNb4cfeSbwVGhPgdVqYx3NPglEd/909s1SDaNSAnzIzyND8khyZyk+9zJEpt+1bFHgymVVPri4VpL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cL67h0iu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=QfbOGbE1; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RZPc4Eur"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49800c6a846so6385235e9.3
-        for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 01:20:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cL67h0iu";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="QfbOGbE1"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67C8Y9p63331683
+	for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 08:55:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	l/9WLhEJTgXWRjhzQHboMAkJhxat9TGdxV61Ba2hGvY=; b=cL67h0iuMunP3Yqn
+	+dKF8mXZ2XFnPGfyvHp1w2Ih1MY1WrOc6GqtrXdddlSD7I0/N47HFrp6Div3gJ4N
+	KSf0k7v4+2I4IDFhcaTepJbDkcoV0eepRY4mCcUExPzizr1RZuCVaqtdzohIYdkq
+	C4aobWj+TeBFiCVxLqNYUQouMenBZeDMXHXsWhzR//tZPW8TUGKKDIB80rQmCA25
+	ZujvmJvrbpJtjiwR12Rs24X/aFvxhZSvEsQO4USZgnlEgX0t2cA5XejgTsQc9YBT
+	Ad1nc5Wr4jv9C01nbuBtwEPSe7UWmUWbuftY/gnXRceX0v2IsDfI8M7CqP12vA+M
+	4zclJw==
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g0m6rgcm6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 08:55:14 +0000 (GMT)
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e5a616d07so993022a91.2
+        for <linux-spi@vger.kernel.org>; Wed, 12 Aug 2026 01:55:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1786522813; x=1787127613; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1786524914; x=1787129714; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Yr1Y7iy9IPSmNqTQd+CZP9OkFr9hJGR5T9MqLlZLr88=;
-        b=RZPc4EurzQYkphc1z9Ibp0bBjvw/ffS2U/t5rZdrOehS9CqMzbaQ5zwvKIq5XEQ4DZ
-         W5KNGXDWP0Q8igT1RdGN4Kc8RzqFxzdw//9aSNFNgdfw9uGQdEZjgapFRLcnKWECoFvV
-         rq1mW+jlCFNmVtNkKtjWGdJ7vG3LZ6BEgsz9L1DJzxSNrsd6qGCzSncSOC05XiIIqGx/
-         duKTjdYWm35dvVnjF1cPlu3g0NrMfUP7Vs8H78b4oGWJxu7Zm3LHRXdLRHIcP7+U7uV/
-         pujjsj0yCzoRydqITzUzGHBG3H6pMtIvpN1FIKZ6uumZQ46JhY4bNqDO7t50oQdUzMzB
-         Jz8Q==
+        bh=l/9WLhEJTgXWRjhzQHboMAkJhxat9TGdxV61Ba2hGvY=;
+        b=QfbOGbE1dT4ou/+9LRTPtoNUH8UNZMkDn6xnSeV/pE9QkX4Ue23uAY+ExS9evvb+Kd
+         Jzz9jdosEVxztAA5YkGXoLBG8A7dFoITcxBJutE0Fe34VCuHV40njSjniTPwPym4o94L
+         nTivS27WwQL6OOhaJm/FHjUDOLwhuSclxv/fVdomAs6LRniVUrPj0FcvT1TprseA5AKS
+         HpaXqlRqiMk526WE05YSmu6nxX5b1/c505GE908jb+CVU0xJPVzjlUNQlLBxQAnqZvKB
+         jWSpAhZHbRetdAVodjucv2osdP4avQz6dHnsoSVhVhuHKWSJnQYcDBezx+o+LjJcDSuW
+         JQ5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786522813; x=1787127613;
+        d=1e100.net; s=20251104; t=1786524914; x=1787129714;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Yr1Y7iy9IPSmNqTQd+CZP9OkFr9hJGR5T9MqLlZLr88=;
-        b=EwXgbxb7eKAJSlOSQqe5WLjux/xIOZTnLoGzmUToMQOJbcyrue3xZRCS2H/Hss5NFD
-         B5tjQ/InuAr8aII+OEQOvzSoLcOO90HRqFJcG8xSlLmlkIF1/97iC65ebJ9a7FvxEQ+g
-         6DZ3jbsrEftSqVvtB5aV8HAk08dSKvFu+FKrnjUdKugDIABk7pzKjB9dNZ6qMySkVqMa
-         1X59VJ/PtKvyi+PNxPTM6HsJHTlVKD/Y4tebAP6Drz12co1gZ6oBGVIqPTg7RxGmwGt1
-         cEYvzAdc9q9M69IrJbkiuGZCpFZAv1raUfxLDOv66uz4ul/pgIO6215e8OCRjFTmFLi5
-         Omtg==
-X-Forwarded-Encrypted: i=1; AHgh+RpuGbHh1CWzIxQdSEyZ6ING1REd+Db9xaNRgsa+hibY9/tc8znOP5So5iFBScNDWukjdLlfda/pi5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtYGDvfb0GR2wqWsQ3iOq0sun6CQ1ARpSOzv8NYqZoai2Tx9sy
-	amvoO1jE1fdv7KvZSV44NooOJIOjQEsCcrqqL/T9mOhKdS8MG6GtVBSCjB2xgEl4vIA=
-X-Gm-Gg: AR+sD10nt081i3yfCsmGHhcEYo9Pr59uDi0CMOF05pNJ3DVs8T6LhMCyPu1Crhz/rul
-	ktCQttJ6Q4MZV8pi09c4LjdzvtGF894c3yiEEMrC1rOIi0SP7oYKLrD3SHWb2nluwRbjknyuzkG
-	QTdJ/at8l+BcQignly4/pyAdUjwO8JsA/KnCfnmE5uA3HdoT4wcytbIbc3k9p3GWmdkxAQKnyMx
-	m+QhjpPIsYpHRniDDtLlLqGGLIG4qjGt4hn6oC6X1HzWSbNJOrQU/fj0THIe7NUlMSWNk5xTYzO
-	xD7WtU/C9peEo8irks4WU8KVTiR6mZfwlXVsJYgPj1XcNliEi0rkH83yaOVod0KlbirrjqOnmVJ
-	Be32BigdKYKsvx1eZBw0OHfD0jFRiYMdl9uqf3XuRQYA9UhnlFTcoHvZv5pst0RUY4Wbq9nFoVE
-	YPCMUQ2mMhaWN7F8UO0lRXP65/cDArQ5vy7R5oer/Ae2t5MA4VySyWS94Z1dr6ax7QLg==
-X-Received: by 2002:a05:600d:6446:10b0:499:593c:3384 with SMTP id 5b1f17b1804b1-4997c1070f3mr28058535e9.6.1786522812683;
-        Wed, 12 Aug 2026 01:20:12 -0700 (PDT)
-Received: from [192.168.1.3] ([37.18.141.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4997aaa5d04sm51386525e9.2.2026.08.12.01.20.11
+        bh=l/9WLhEJTgXWRjhzQHboMAkJhxat9TGdxV61Ba2hGvY=;
+        b=JHjRpDQItdO2jAJUt33SbiYa2PH2jNM9LawUagkdV75FT922JdwyXKLn335HVZss0Z
+         aw5EuBJS4Iv/r4qhklgk25Tb4kKjTckis9XDN0LP8ZIADhMT0oxwPuLOq54NE2X8zxdH
+         PHMalSHnpYO5i38B1wU/ZuyS5ruXOFTF9BJOX5+TUkoQnqOUE8HlYmY6FHBBaRqj4Yo1
+         926pNwMQS5LREluqALq2Fc80tHyBbOf7kMUX2Eljz7qAuNXye3MJn7ZLjkVS8x7Wbp6B
+         sQxEgL67bK6lxRx5o3GNpyT07DBed0K0ibve0CQQa8+DeGIWpJJZly0EhxoFRAOWlbpA
+         lm8w==
+X-Forwarded-Encrypted: i=1; AHgh+Rrq8jTz3jXcGlamc/hy1+rY905NGfjlt0sWywb1giEtvnYpyMm3vjGrS9JLkjRMGWUTVq/CQfjgeNY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDNXxlZNSHhZwZ21Em2S5Jozjk8kwSZWh8BhsUYaC1H2kxF9AP
+	4WkX8F8fdmEKI5owT7PPz6zoRg+rWNKFdzNSCvj3ttxrJzjHD3YzOu/4kHvX4PWEXIPstw0NsZ6
+	W1Twe5lMOgkBH6zGb0FhbzpSC9mfdBqFOW1WTOfezCZGAemrDpop9eeBAyh0tpxM=
+X-Gm-Gg: AR+sD12ReRt8tu2WT4fdrKXnUnBP934/BV1SCxHA/P3Il+oHl6KCmg94Rwi/yLyYyyK
+	8SICZj/brh9mh6kkxorzgkFwNrZfZb96TXLnmSpMuZniec04JqtnPdP3ggf1xGkhe5rxETyrZv1
+	E4xGF4ktYbD6Ci+/HPgoIsXkwU7t7YO7rE+SmEkijTxE2rvNmaSH+cS8QG5heTxi/uffcFUGE65
+	j2ppugDA0Py+P/DGJ567UIy/8fiN6Qy/KvYgGWTsL3CMRZwV+QNKveqPSclg3prz6rOPGeozdU4
+	VN+Mc0bNj0BXjzkPhd/kv4RPiUQjAMHgFJWw69zxPezeJW+D0OusI6CG9OOFJvncJa6dK3hJqwE
+	mlLHiNplUP46V9FXO0qHFktX8KgnqtOySjg==
+X-Received: by 2002:a17:90b:3802:b0:38e:5c6:4db9 with SMTP id 98e67ed59e1d1-39301490a5emr3605674a91.11.1786524913685;
+        Wed, 12 Aug 2026 01:55:13 -0700 (PDT)
+X-Received: by 2002:a17:90b:3802:b0:38e:5c6:4db9 with SMTP id 98e67ed59e1d1-39301490a5emr3605632a91.11.1786524913227;
+        Wed, 12 Aug 2026 01:55:13 -0700 (PDT)
+Received: from [10.217.219.92] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-392f908a82bsm2808212a91.0.2026.08.12.01.55.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Aug 2026 01:20:12 -0700 (PDT)
-Message-ID: <ff3580ae-1b04-49b7-b438-e8ee5a0c04a9@linaro.org>
-Date: Wed, 12 Aug 2026 09:20:11 +0100
+        Wed, 12 Aug 2026 01:55:12 -0700 (PDT)
+Message-ID: <de19d0ac-3b3c-494b-a3da-028570989bc7@oss.qualcomm.com>
+Date: Wed, 12 Aug 2026 14:25:04 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,137 +89,76 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12.y] spi: spi-fsl-dspi: Avoid setup_accel logic for DMA
- transfers
-To: Vladimir Oltean <olteanv@gmail.com>, Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Larisa Grigore <larisa.grigore@nxp.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Mehmet Fide <mehmet.fide@gmail.com>
-References: <20260811091322.3592403-1-mehmet.fide@gmail.com>
- <20260811184500.stable-0013-sashal@kernel.org>
- <20260811212856.4wp56ryqgtgzahhc@skbuf>
+Subject: Re: [PATCH 3/7] soc: qcom: geni-se: Add helper to set SE clock rate
+ via OPP
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
+        konrad.dybcio@oss.qualcomm.com, Sudeep Holla <sudeep.holla@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Ulf Hansson <ulfh@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Andi Shyti <andi.shyti@kernel.org>
+Cc: chandana.chiluveru@oss.qualcomm.com, arm-scmi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+References: <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-0-61171ab1cdce@oss.qualcomm.com>
+ <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-3-61171ab1cdce@oss.qualcomm.com>
 Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20260811212856.4wp56ryqgtgzahhc@skbuf>
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-3-61171ab1cdce@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODEyMDA3MCBTYWx0ZWRfXyuSa+7eKKlBK
+ 2aaRQDJwXAFOaAnAhlKTdfSmOtZJtVhvNdBUXYYjEwDmdXXKt7vDIobKsr6zVCtULkfH2h6pNxh
+ 7u2tMdUs7j+M73ZXcEtGDnOxWvuFNySeU8GxyzDplE1KSN+UXc0RGkxqRzPgnX2leMpWF056wBG
+ 5Cuh1FxjwUcgMtBUZ3andWV6YSIHln+cqdhv/StwrJDbyHS67eXgVHU+Y0WcAqbrnTFqI4wpZSH
+ tO2vUdmh0usMLr36VYxduA3Dp5VSkrxIcWvWpwvs1Ezo5amgbRIdZOU5i2SVPkAj+oqh3R5xb9I
+ o5yWTv4P5rtC6d5RHiAY1I8K48aanjA/x8B2Bn2J1Okgs+PrJS/rSTIh5PmQ7VY1w/+K9QLJlF5
+ bl1umWlp9NiXwSzOnfsXyLMNdF5clQf9uyPs1StucR/oGU/ytDOIDq9YjUFd5oqoVvsRCNBjo9I
+ P5lIyvYS0kDcEzP7Scg==
+X-Authority-Analysis: v=2.4 cv=Wb08rUhX c=1 sm=1 tr=0 ts=6a7c34f2 cx=c_pps
+ a=RP+M6JBNLl+fLTcSJhASfg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=EUspDBNiAAAA:8 a=9aiwZt7zaXvVnErAyWsA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=iS9zxrgQBfv6-_F4QbHw:22
+X-Proofpoint-GUID: yKbiTZy9IajdKqqp80O_HOGW8ollzOiM
+X-Proofpoint-ORIG-GUID: yKbiTZy9IajdKqqp80O_HOGW8ollzOiM
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODEyMDA3MCBTYWx0ZWRfX/vqDN0tNF9Sw
+ gSSapPC0lOnRXK6LMCdvgOJYuGdqQlWxyxnypgN3UiQqKqN6miyWVfRkaGa7XOAogmaNEhxU7g+
+ liOkEkxAaHmaIgFsO+AwlyYHpWrJFRM=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-12_02,2026-08-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608120070
 
 
 
-On 11/08/2026 22:28, Vladimir Oltean wrote:
-> On Tue, Aug 11, 2026 at 02:55:56PM -0400, Sasha Levin wrote:
->>> Either way the behaviour is the same. On vf610 in DMA mode the accel path drops
->>> the tail of odd length transfers and byte swaps under SPI_LSB_FIRST, and this
->>> commit removes both. That is what makes it worth having in 6.12.y, whatever the
->>> original intent was.
->>
->> cac7e5054115 ("spi: spi-fsl-dspi: Avoid setup_accel logic for DMA transfers")
->> applies cleanly to 6.12 with no dependencies, so this is not a mechanical
->> question - it is whether it qualifies. It has no Fixes: tag and no stable tag,
->> and James reads it as a refactor.
->>
->> Larisa, Mark, Vladimir - was this a fix? If so, a Fixes: tag would let me take
->> it here and on the older trees, where it applies just as cleanly.
->>
->> -- 
->> Thanks,
->> Sasha
+On 8/5/2026 1:27 AM, Praveen Talari wrote:
+> GENI protocol drivers need a common way to scale the SE source clock
+> through the OPP framework. However, the device that owns the OPP table
+> differs depending on how the SE resources are managed. For Linux clock
+> managed platforms, the OPP table is associated with the SE device,
+> whereas on firmware-managed platforms it is associated with the
+> performance power-domain device. This requires protocol drivers to be
+> aware of the underlying resource management model when requesting
+> frequency changes.
 > 
-> It wasn't understood as a correctness change until now, but yes, it is a fix.
+> Introduce geni_se_set_rate(), a common helper that abstracts this
+> difference and applies the requested frequency through the appropriate
+> device. The helper automatically selects the performance-domain device
+> when power domains are attached and falls back to the SE device
+> otherwise.
 > 
-> Fixes: a957499bd437 ("spi: spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode")
-> Acked-by: Vladimir Oltean <olteanv@gmail.com>
-> 
-> Explanation:
-> As part of the original introduction of dspi_setup_accel() in commit
-> 6c1c26ecd9a3 ("spi: spi-fsl-dspi: Accelerate transfers using larger word
-> size if possible"), it was well understood that this is not applicable
-> to DMA transfers.
-> 
-> The reason is that the correct clustering of 8 bit frames into 16 bit PUSHR
-> transfers ultimately depends on the ability to modify the SPI_CTAR_FMSZ
-> (frame size) on the go. In the case of a 3 byte SPI transfer using
-> 8-on-16 acceleration, the logic of this clustering is to first transfer
-> the first 2 bytes using a 16-bit PUSHR transfer (with SPI_CTAR_FMSZ=15),
-> then to update SPI_CTAR_FMSZ=7 in order to be able to push the last byte
-> using a single 8-bit PUSHR write.
-> 
-> The difference between FIFO mode and DMA mode is that in DMA mode, there
-> is no software hook to update SPI_CTAR_FMSZ in between PUSHR FIFO
-> updates. The DMA engine handles them.
-> 
-> This was well understood and was the basis of this code path, which
-> explicitly excluded DMA from dspi_setup_accel() with its dynamic frame
-> size updating:
-> 
-> 		/*
-> 		 * Static CTAR setup for modes that don't dynamically adjust it
-> 		 * via dspi_setup_accel (aka for DMA)
-> 		 */
-> 		regmap_write(dspi->regmap, SPI_CTAR(0),
-> 			     dspi->cur_chip->ctar_val |
-> 			     SPI_FRAME_BITS(transfer->bits_per_word));
-> 
-> However, this truth was forgotten soon after, because as soon as a bug
-> report came in - the trigger behind commit a957499bd437 ("spi:
-> spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode") - it became
-> broken.
-> 
-> Namely, the separate code path for static SPI_CTAR_FMSZ settings for DMA
-> mode got deleted, and dspi_dma_xfer() started calling dspi_setup_accel().
-> This had two effects:
-> - dspi_setup_accel() correctly updates dspi->oper_word_size, necessary
->    in common code: intended, fixes the bug reported by Michael Walle
-> - dspi_setup_accel() enables 8-on-16 acceleration for DMA mode now,
->    which will transfer 1 byte too few if the buffer size is odd (it
->    incorrectly assumes that the caller can dynamically alter
->    SPI_CTAR_FMSZ and then send the trailing word separately):
->    unintended, causes the bug reported by Mehmet Fide
-> 
-> The breakage probably went largely unnoticed because Michael Walle's
-> peripheral only used even-sized buffers (a flash, IIRC), and the silicon
-> on which I regularly test the DSPI driver doesn't use DMA.
-> 
-> The commit under question here - cac7e5054115 ("spi: spi-fsl-dspi: Avoid
-> setup_accel logic for DMA transfers") - fixes the unintended side effect
-> while maintaining the intention of previous bug fix a957499bd437 ("spi:
-> spi-fsl-dspi: Fix bits-per-word acceleration in DMA mode"). By having
-> the "goto no_accel", we bypass the 8-on-16 acceleration on DMA, while
-> still assigning dspi->oper_word_size - which was the reason for calling
-> dspi_setup_accel() in the first place.
-> 
-> Note that 8-on-16 acceleration is not intrinsically broken for DMA mode
-> (it can yield a DMA buffer more densely packed with PUSHR data), it just
+> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+> ---
 
-My commit message on cac7e5054115 was probably a bit misleading then, 
-because there is some benefit. I was only thinking from the point of the 
-FIFO, not the memory backing a DMA transfer.
-
-> needs more work to skip it for odd-sized transfers. However, that work
-> may or may not be justified from a performance standpoint, so the
-> approach taken here is reasonable.
-> 
-
-The commit could have mentioned that it wastes 1 byte per entry in favor 
-of simplicity and correctness. But DMA isn't limited in size like the 
-FIFO, so waste isn't an issue.
-
-> 
-> Regarding the SPI_LSB_FIRST issue - from the description it seems to be
-> a completely distinct problem not intrinsically limited to DMA mode
-> (should also be visible in XSPI mode), so disabling dspi_setup_accel()
-> on Vyber and Coldfire only partially addresses it.
-> 
-> I don't have a use case for SPI_LSB_FIRST peripherals, so I don't
-> personally mind another "goto no_accel" follow-up patch rather than
-> fixing the underlying byte packing mechanism, BUT this should be done
-> by the issue reporter with a proper explanation in the commit message
-> now that the issue is more clearly understood, rather than just be
-> happy that backporting commit cac7e5054115 sidesteps the problem on his
-> platform.
-> 
-> I am currently on vacation, and I am unable to do much testing on actual
-> hardware. I also haven't completely evaluated the SPI_LSB_FIRST behaviour
-> with 8-on-16 acceleration, it just *seems* plausible that there is an issue.
-
+Acked-by: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>

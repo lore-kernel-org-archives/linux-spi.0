@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0D1472521;
-	Fri, 14 Aug 2026 12:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF16245A286;
+	Fri, 14 Aug 2026 12:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786711801; cv=none; b=mrC3XKkeaCW2JWpTG40Be5ww+lAZOUoHXn6L8APn3j9vRLpoOrAgzs2I20GGCcL2wegRcLc8CwOZg+VE5wBG1gFME5u89fZlccAD2c2xkoMlnszZuqniu8H7d3bIjHI4AM3ItP5/4s2oD3oeXjJLGyeFLR3qWIejcyL8OA9sKA8=
+	t=1786712176; cv=none; b=rsRJaExb6WbILPhYEFTivhWAnBwF1k+ZfuKgHF7kv3Ufea8QVKvH4SmgVV7OasaYjZDKiCyvY4kVhyk5HZGsCh2NnpqWIOf+W1sssAUIcn6tQ7nFvqHTQrFUBa2RLdNotYUv5IdyN3r9yTE3sK47Gv20X1wFDTuDMyj2eIlHNNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786711801; c=relaxed/simple;
-	bh=3TklQdqemkgoIXYlyCZS5WtzU7vc1hhNbPZ5FcaiImw=;
+	s=arc-20240116; t=1786712176; c=relaxed/simple;
+	bh=alS2YydTNEyTI30Jdjv6ERlLUUBMeqn6gyqXW1xiStI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g+/pE0lnUMu48z/hydDL5ZhC/mzkl2vBTKqezUnvMUKDQ/0L+d5ygpdSpa1zE/kTXVqV7Lxf0cVm3hcBTcPwoj6J/7mZye2qXtLJWxNhWInCkEPf1MGYdL59cixbgNhq18COLFn+xnZjCdzNk2cRMepKzbz25RCU3d54A9PdHkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtfMxA7e; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nulgWQuVh45edY24ENflfx+0EWxLZfNjX2l/q/sOtDAs/ltPx5UxnXfrGhi6RGLCJrQWlgSuM+hI25G9vvNPWwlk00Jd08EtNsVTFVsXhY2WJ50v1YvXqTtmU82lwNtxI5TO9CgL7oWqcAyIVVeuOtR5LZ/tUkqI04ZgDW7U0Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPabFxzk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtfMxA7e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3901F00A3D;
-	Fri, 14 Aug 2026 12:49:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPabFxzk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E990E1F000E9;
+	Fri, 14 Aug 2026 12:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786711795;
-	bh=Eol6eLHoqu7HuHR9wB+lOSHn9H+ZvhVg3MutcIPfN9I=;
+	s=k20260515; t=1786712174;
+	bh=alS2YydTNEyTI30Jdjv6ERlLUUBMeqn6gyqXW1xiStI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OtfMxA7eU6XuLTqNTVc8tnoW82ptVc/u2aWF3jPUqhQxmPa3W9sjrGR8JsEXM8zO6
-	 Vw+H8crQmuZYrEzmexIBjJMXwSVXYsoCkJFkaq9H2hS2Rr+UVrpo79abWaxC0xCyWx
-	 43e45m5BkCiYxKf/zOa7IjLOWBWXIL6qYRJTGPvkShcXSOrsKBN0fmXua0L+JNqLj/
-	 rnNLY6CgpZkpEDNoqQZY7xrKTp66LZMvTVV5jnvrEkdBlZdKT/CLVkoHG8c50pkU5l
-	 zY+1omVbkROI6IVIK21NydDmMMoIbL6Nq8egz9qFQIyGSe4NyHr8icQPGpOOy+VrvM
-	 sxQK1TveniKRw==
-Date: Fri, 14 Aug 2026 13:49:50 +0100
+	b=jPabFxzkvoVOiIOPpefynquGg2E057KJapjJgd/6sQCiKOHFkIP6B9Myd4WxUpViH
+	 b8mfjh5aBvI5WN4P9Pugivf0PFSrTdNoVWqzCoIpkIm7ZIutJEjUuB0BF6s7qMsnfC
+	 Q4NoSX65zanATUzGfU+GlUPn5xYcWW+lMw/QrGG9ni8TYdJBKUZqOpIdKukVxoGdLb
+	 62mURXFjZplls1+7e3NuMDybE7tKRtFvSoQ8PMuQEIQzhg3k+VD6axwblLYpvRvyY9
+	 lW06Api4fFpX29/s5LVUvl+IkDxgb584/rRubdXfhSsusDMJcqGePoJaRj0snRLNeW
+	 5gru6vQ1byINw==
+Date: Fri, 14 Aug 2026 13:56:10 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Honghui Jiang <jiang_hh2019@163.com>, Andy Shevchenko <andy@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Subject: Re: [PATCH v2 4/4] spi: Add KUnit coverage for DMA mapping error
- paths
-Message-ID: <93950eda-ee8e-4a28-8e3c-707d64c956fe@sirena.org.uk>
-References: <20260814031419.43378-1-jiang_hh2019@163.com>
- <20260814031419.43378-5-jiang_hh2019@163.com>
- <an8JaNLIy4je-tiG@ashevche-desk.local>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Steam Lin <STLin2@winbond.com>,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] spi: ma35d1-qspi: Add DTR support
+Message-ID: <34412d10-cea1-42ef-a53c-ef515b452793@sirena.org.uk>
+References: <20260813-perso-ma35d1-upstream-qspi-v1-0-b217b9870eb1@bootlin.com>
+ <20260813-perso-ma35d1-upstream-qspi-v1-4-b217b9870eb1@bootlin.com>
+ <09c3928f-4b58-4ac6-8e1a-84dfe3ff6b92@sirena.org.uk>
+ <87ik5ckh2j.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,44 +47,39 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="VkLJR19Okf05R84I"
+	protocol="application/pgp-signature"; boundary="1MaZfmoaBHarMF2m"
 Content-Disposition: inline
-In-Reply-To: <an8JaNLIy4je-tiG@ashevche-desk.local>
+In-Reply-To: <87ik5ckh2j.fsf@bootlin.com>
 X-Cookie: Body by Nautilus, Brain by Mattel.
 
 
---VkLJR19Okf05R84I
+--1MaZfmoaBHarMF2m
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Aug 14, 2026 at 03:27:13PM +0300, Andy Shevchenko wrote:
-> On Fri, Aug 14, 2026 at 11:14:18AM +0800, Honghui Jiang wrote:
+On Fri, Aug 14, 2026 at 02:44:04PM +0200, Miquel Raynal wrote:
 
-> > +++ b/tools/testing/kunit/configs/default.config
-> > @@ -1,3 +1,4 @@
-> >  CONFIG_KUNIT=y
-> >  CONFIG_KUNIT_EXAMPLE_TEST=y
-> >  CONFIG_KUNIT_ALL_TESTS=y
-> > +CONFIG_SPI=y
+> > This needs ctlr->dtr_caps configuring, otherwise the validation will
+> > block it - only the _mem_caps were updated.
 
-> This is a stray change.
+> Ok, thanks!
 
-Well, one of the config changes is.  Clearly spi is critical enough to
-be tested by default!  :P
+I've queued the existing stuff for CI since it all looks good and we're
+almost at the merge window - please send an incremental change for this.
 
---VkLJR19Okf05R84I
+--1MaZfmoaBHarMF2m
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp/Du4ACgkQJNaLcl1U
-h9BsCAf9E9436owfoOpp2YSJsHcXippykAK9tgZB3x05UYKy8dgNSzufoN9u9Czo
-boNSu59ZdYvwDFmaXFtoP9KRggPIkcz5G8OaSU8VUJj35dhFM34lDSmh9oq61vK8
-kZYkiTpZAnf2Beaq4PDSYFt+qNLf6chSlBgw4X9ZgLvLRtUtqBDc459Hj+6fgMaD
-cgKdO1k/C7Df/c8JzfwUe5Fcl8apYn4ty7Pombp2Vgs14vYRZ3BzOvb0H1Hhohfm
-gen7QYH29dD9LFbh55jbidjBOHJiDQVR/fYKgSbYkJYxpXPawx8InXeVrizpvyEn
-0tdUbzfbszGMTOzJHkQYsEsK6rnupQ==
-=9jNV
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp/EGkACgkQJNaLcl1U
+h9DimAf+N+eY2OkutKjODCreckb50OMMtInbw8eyFbrin7FL+EcAfU9TxMq0G3jG
+0wd1MOhs8Jrnbs3G7g0R31rh0dxq6ygGv/M4mMbTP28D/gpU5G1fbSozEnbvAMIR
+EA4qmz4ILhq7DXaWZGW7qqg5TRDmTRN5+cGOFIlQKo5Udq+RmhpXleoV69xnbf2W
+v9Rd/R2kqR3vTyHdTydFSv/jXhAmW1HgCWiNDh498w49uRP42bRBir6gp12VeLKb
+AtJR+yiqRLzqHt7u3xxfsikV5AFAE0O4pwU9fIN8HxKICL8Mz9xqCngDKR9+eK4E
+hWaM/GdSlouGolgZbvyY/ShdibVZ3A==
+=2jD8
 -----END PGP SIGNATURE-----
 
---VkLJR19Okf05R84I--
+--1MaZfmoaBHarMF2m--

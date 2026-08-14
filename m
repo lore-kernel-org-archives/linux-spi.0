@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EE53D9549;
-	Fri, 14 Aug 2026 03:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B163DAAA2;
+	Fri, 14 Aug 2026 03:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786677330; cv=none; b=AwhUc4fbtUJAfPZrGe14QjL4utyTXcvVyRJ1l4W2YSEEL8LA9/swYH8nCBr1kyJh4nvq3OwwtX/1dXxpKvGtijYnME8KmT4Iny7F8z3jKjOUfaWpgye3bs4Kb8YTS2QBGGjlPpN6dUYT81uSAnn1AwuZHN29SPe2uWy0UY7rQhc=
+	t=1786677330; cv=none; b=LLUmhosSiykQWD9xnZngt/1gp9yOabOsa755N62Zs4tkjjgnBECwktyzX5zMga9n2RQkepns8shSxM+jOCulXkcmCbg6iOXA9RTeRYO/7slQ1orxOeJ0UUfUv19cCgvcwi4jbSrPRa4xcdYygTBIpuZ7n7IpUH5STvSzgLW/HQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1786677330; c=relaxed/simple;
-	bh=J9XbMsxRndxGJyUJZumUqWe51cotzgOck8sh4nWLj88=;
+	bh=uPxjT7bySkgptLNuQjYwxORmGWM4xH6vh8boTgwb1Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDRLOC0Kz28uvO3Zi55t0t6v66kRglFhRgAw1jsUcox0DiG3ARFWs041F5WYUuRoNdA+wDOLO+0ReM+LIftVV3oJsYK/a3cHEUj/ukW+0u8PeJP9Eztp265TLvAxzOiq1GYcCtj1NqXP2k0VyKSqal9SZUVRvB6pACLs+qnLIkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Hs/PRPTa; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=CpOv+XLE/k5HH+9t9eHJvuZoccDxz+xStyNzIQFveme2+Be+APOuQAbPMDJNfU0obFeVdG54v/vv/CM2rbJWt4zDqqI+qgxQF4rg0C5NkGbilM6pW9lOnI9Z6WjATEBxD0wLJH8oXc2/cJjWaxdkMynkqgPVCVRFBKaaI9EneoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FZG6aP9Y; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Hs/PRPTa"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FZG6aP9Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Bi
-	W95dK0QU3NeJPlxhPQThilW1+H2m99HL/aqjlINd4=; b=Hs/PRPTaufseRlEMvH
-	t2RnB4P168S74G0RZnc6ccNucG/FGSSTBTTea25+1008oDk7a7UV3JMw3ZInUlxv
-	HFj+xxKV4dVuRdvTVfNQfOjRK5bylx2M8OMhnENejDy9z264KeJgff3QX71Y8P12
-	yVgTQ+OmMW0+LLIDwzXo+y67c=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=mN
+	MZRiyCCjmUR1o25ec8mWzv0jBDnEec0F+3umYO430=; b=FZG6aP9YO+gZGWeLZ4
+	5njzzX2RXixufaV/a8iuXPk8O9wTVWCs2O33beGa9ZkwLz2Uf1WkMNQXQzor9mrF
+	w+u9NMRxdjMN20ru0q48qVH7LRff2W88w6zMvTnG/jiGhKwrUmBq8K8Mwd8Br4be
+	c1X+LuB0LCCduYE4K+vhwe5+M=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3n_USiH5qk89SOw--.19210S2;
-	Fri, 14 Aug 2026 11:14:26 +0800 (CST)
+	by gzsmtp3 (Coremail) with SMTP id PigvCgAX2wITiH5q7v_hMw--.17682S2;
+	Fri, 14 Aug 2026 11:14:27 +0800 (CST)
 From: Honghui Jiang <jiang_hh2019@163.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Andy Shevchenko <andy@kernel.org>,
@@ -38,9 +38,9 @@ Cc: Andy Shevchenko <andy@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	kunit-dev@googlegroups.com,
 	Honghui Jiang <jiang_hh2019@163.com>
-Subject: [PATCH v2 3/4] spi: Clear current DMA devices when unmapping a message
-Date: Fri, 14 Aug 2026 11:14:17 +0800
-Message-ID: <20260814031419.43378-4-jiang_hh2019@163.com>
+Subject: [PATCH v2 4/4] spi: Add KUnit coverage for DMA mapping error paths
+Date: Fri, 14 Aug 2026 11:14:18 +0800
+Message-ID: <20260814031419.43378-5-jiang_hh2019@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260814031419.43378-1-jiang_hh2019@163.com>
 References: <20260814031419.43378-1-jiang_hh2019@163.com>
@@ -51,55 +51,455 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n_USiH5qk89SOw--.19210S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr47CrWfZw1fXFWxAr4fZrb_yoW8Xr15pF
-	4rKFWUCFs5KFWFk3Wa9a1j9F1av397XrW7G3y0yw4Syw1kXF1IqFyrtr15XF9xZF48A34j
-	krZ0ka18u342yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEmL9UUUUUU=
-X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC0xJgoGp+iBLPpgAA3m
+X-CM-TRANSID:PigvCgAX2wITiH5q7v_hMw--.17682S2
+X-Coremail-Antispam: 1Uf129KBjvAXoWfGF15Wr43CryDAw4ftryftFb_yoW8Wr1fto
+	WxWF43J3WrW34xXFZrJF1kGFWa93Wv9r4rAws5Crs8Xa4UAFy3Xr1xta47uF1aqr1fGr97
+	GF9ayw4UXFs8WFn3n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRtCzCDUUUU
+X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC1BRhoWp+iBTTPAAA3n
 
-The current DMA device pointers remain set after a message has been
-unmapped. Existing users either check the corresponding mapped flag or
-access the pointers before finalizing the message, but retaining stale
-device pointers is fragile.
+Add KUnit tests for the __spi_map_msg() error paths. The tests verify
+that a later TX or RX mapping failure clears the mapping state of
+earlier transfers and leaves cur_{tx,rx}_dma_dev identifying the
+current mapping device.
 
-Clear both pointers in spi_unmap_msg() after the internal unmap
-completes. Keep them intact in __spi_unmap_msg(), since that helper is
-also used during partial-map unwind and the in-message DMA-to-PIO
-fallback, before processing of the current message is complete.
+A zero-length transfer causes sg_alloc_table() to return -EINVAL,
+providing deterministic failure injection without test hooks.
+Additional cases cover successful map/unmap and a message which
+requires no mapping.
 
-Suggested-by: Andy Shevchenko <andy@kernel.org>
+Build the DMA suite as a separate translation unit, exposing the two
+internal mapping helpers only for KUnit through the local internal
+header. Enable SPI in the default and all-tests KUnit configurations so
+the suite is exercised there.
+
 Signed-off-by: Honghui Jiang <jiang_hh2019@163.com>
 ---
- drivers/spi/spi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/.kunitconfig                     |   4 +
+ drivers/spi/Kconfig                          |  13 +
+ drivers/spi/Makefile                         |   1 +
+ drivers/spi/internals.h                      |   9 +-
+ drivers/spi/spi.c                            |   9 +-
+ drivers/spi/tests/Makefile                   |   3 +
+ drivers/spi/tests/spi-dma-kunit.c            | 259 +++++++++++++++++++
+ tools/testing/kunit/configs/all_tests.config |   1 +
+ tools/testing/kunit/configs/default.config   |   1 +
+ 9 files changed, 296 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/spi/.kunitconfig
+ create mode 100644 drivers/spi/tests/Makefile
+ create mode 100644 drivers/spi/tests/spi-dma-kunit.c
 
+diff --git a/drivers/spi/.kunitconfig b/drivers/spi/.kunitconfig
+new file mode 100644
+index 000000000..07fa092c8
+--- /dev/null
++++ b/drivers/spi/.kunitconfig
+@@ -0,0 +1,4 @@
++CONFIG_KUNIT=y
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++CONFIG_SPI_DMA_KUNIT_TEST=y
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 8782514bb..74382c31e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -1360,6 +1360,19 @@ config SPI_SPIDEV
+ 	help
+ 	  This supports user mode SPI protocol drivers.
+ 
++config SPI_DMA_KUNIT_TEST
++	tristate "KUnit tests for SPI core DMA mapping" if !KUNIT_ALL_TESTS
++	depends on KUNIT && HAS_DMA
++	default KUNIT_ALL_TESTS
++	help
++	  Build KUnit tests for SPI core DMA mapping. The tests exercise
++	  partial TX and RX mapping failures, verify that the mapping state is
++	  unwound, and check that the current DMA devices identify the owner of
++	  those mappings when the error is returned. They also cover a
++	  successful mapping and a message which requires no mapping.
++
++	  If unsure say N.
++
+ config SPI_LOOPBACK_TEST
+ 	tristate "spi loopback test framework support"
+ 	depends on m
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 9fa12498c..f693699f8 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -13,6 +13,7 @@ obj-$(CONFIG_SPI_MUX)			+= spi-mux.o
+ obj-$(CONFIG_SPI_OFFLOAD)		+= spi-offload.o
+ obj-$(CONFIG_SPI_SPIDEV)		+= spidev.o
+ obj-$(CONFIG_SPI_LOOPBACK_TEST)		+= spi-loopback-test.o
++obj-$(CONFIG_SPI_DMA_KUNIT_TEST)	+= tests/
+ 
+ # SPI master controller drivers (bus)
+ obj-$(CONFIG_SPI_AIROHA_SNFI)		+= spi-airoha-snfi.o
+diff --git a/drivers/spi/internals.h b/drivers/spi/internals.h
+index 1f459b895..c56c190b0 100644
+--- a/drivers/spi/internals.h
++++ b/drivers/spi/internals.h
+@@ -5,8 +5,8 @@
+  *
+  * Author: Boris Brezillon <boris.brezillon@bootlin.com>
+  *
+- * Helpers needed by the spi or spi-mem logic. Should not be used outside of
+- * spi-mem.c and spi.c.
++ * Helpers needed by the SPI core and its tests. Should not be used outside
++ * drivers/spi/.
+  */
+ 
+ #ifndef __LINUX_SPI_INTERNALS_H
+@@ -20,6 +20,11 @@
+ void spi_flush_queue(struct spi_controller *ctrl);
+ 
+ #ifdef CONFIG_HAS_DMA
++#if IS_ENABLED(CONFIG_KUNIT)
++int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg);
++int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg);
++#endif
++
+ int spi_map_buf(struct spi_controller *ctlr, struct device *dev,
+ 		struct sg_table *sgt, void *buf, size_t len,
+ 		enum dma_data_direction dir);
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 96f5058c7..e5b1531b9 100644
+index e5b1531b9..6be7987ed 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1373,6 +1373,7 @@ static inline int spi_unmap_msg(struct spi_controller *ctlr,
- 				struct spi_message *msg)
- {
- 	struct spi_transfer *xfer;
-+	int ret;
+@@ -4,6 +4,7 @@
+ // Copyright (C) 2005 David Brownell
+ // Copyright (C) 2008 Secret Lab Technologies Ltd.
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/*
-@@ -1385,7 +1386,12 @@ static inline int spi_unmap_msg(struct spi_controller *ctlr,
- 			xfer->rx_buf = NULL;
- 	}
- 
--	return __spi_unmap_msg(ctlr, msg);
-+	ret = __spi_unmap_msg(ctlr, msg);
-+
-+	ctlr->cur_rx_dma_dev = NULL;
-+	ctlr->cur_tx_dma_dev = NULL;
-+
-+	return ret;
++#include <kunit/visibility.h>
+ #include <linux/acpi.h>
+ #include <linux/cache.h>
+ #include <linux/clk/clk-conf.h>
+@@ -1231,7 +1232,8 @@ void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
+ 	spi_unmap_buf_attrs(ctlr, dev, sgt, dir, 0);
  }
  
- static int spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+-static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
++VISIBLE_IF_KUNIT
++int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ {
+ 	struct device *rx_dev = ctlr->cur_rx_dma_dev;
+ 	struct device *tx_dev = ctlr->cur_tx_dma_dev;
+@@ -1254,8 +1256,10 @@ static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_IF_KUNIT(__spi_unmap_msg);
+ 
+-static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
++VISIBLE_IF_KUNIT
++int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ {
+ 	struct device *tx_dev, *rx_dev;
+ 	struct spi_transfer *xfer;
+@@ -1321,6 +1325,7 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL_IF_KUNIT(__spi_map_msg);
+ 
+ static void spi_dma_sync_for_device(struct spi_controller *ctlr,
+ 				    struct spi_transfer *xfer)
+diff --git a/drivers/spi/tests/Makefile b/drivers/spi/tests/Makefile
+new file mode 100644
+index 000000000..26689e0cb
+--- /dev/null
++++ b/drivers/spi/tests/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++obj-$(CONFIG_SPI_DMA_KUNIT_TEST) += spi-dma-kunit.o
+diff --git a/drivers/spi/tests/spi-dma-kunit.c b/drivers/spi/tests/spi-dma-kunit.c
+new file mode 100644
+index 000000000..ee5476ff3
+--- /dev/null
++++ b/drivers/spi/tests/spi-dma-kunit.c
+@@ -0,0 +1,259 @@
++// SPDX-License-Identifier: GPL-2.0
++// KUnit tests for the SPI core DMA mapping error paths.
++//
++// A mapping error must clear all SG tables and *_sg_mapped flags while
++// cur_{tx,rx}_dma_dev identify the devices used for the attempted mapping.
++// Zero-length transfers make sg_alloc_table() fail with -EINVAL, providing
++// deterministic failure injection without test hooks.
++
++#include <kunit/device.h>
++#include <kunit/test.h>
++#include <linux/dma-mapping.h>
++#include <linux/limits.h>
++#include <linux/spi/spi.h>
++
++#include "../internals.h"
++
++MODULE_IMPORT_NS("EXPORTED_FOR_KUNIT_TESTING");
++
++#define SPI_DMA_TEST_LEN		256
++#define SPI_DMA_TEST_XFERS		2
++
++struct spi_dma_test_ctx {
++	struct spi_controller	*ctlr;
++	struct spi_device	*spi;
++	struct device		*dma_dev;
++	struct device		*stale_dma_dev;
++	struct spi_transfer	xfer[SPI_DMA_TEST_XFERS];
++	struct spi_message	msg;
++	void			*buf[SPI_DMA_TEST_XFERS * 2];
++};
++
++static bool spi_dma_test_can_dma(struct spi_controller *ctlr,
++				 struct spi_device *spi,
++				 struct spi_transfer *xfer)
++{
++	/* Opt every transfer into the core DMA mapping path. */
++	return true;
++}
++
++/*
++ * A bare controller is sufficient because the mapping helpers do not
++ * dereference ctlr->dev. With dma_tx and dma_rx unset, both directions use
++ * dma_map_dev, so the controller need not be registered.
++ */
++static struct spi_dma_test_ctx *spi_dma_test_ctx_new(struct kunit *test)
++{
++	struct spi_dma_test_ctx *ctx;
++
++	ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
++
++	ctx->dma_dev = kunit_device_register(test, "spi-dma-error-path");
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->dma_dev);
++	ctx->stale_dma_dev =
++		kunit_device_register(test, "spi-dma-stale-device");
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->stale_dma_dev);
++
++	/* Keep both devices valid if an assertion aborts the test. */
++	KUNIT_ASSERT_EQ(test, 0,
++			dma_coerce_mask_and_coherent(ctx->dma_dev,
++						     DMA_BIT_MASK(64)));
++	KUNIT_ASSERT_EQ(test, 0,
++			dma_coerce_mask_and_coherent(ctx->stale_dma_dev,
++						     DMA_BIT_MASK(64)));
++
++	ctx->ctlr = kunit_kzalloc(test, sizeof(*ctx->ctlr), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->ctlr);
++
++	ctx->spi = kunit_kzalloc(test, sizeof(*ctx->spi), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->spi);
++
++	ctx->ctlr->can_dma = spi_dma_test_can_dma;
++	ctx->ctlr->dma_map_dev = ctx->dma_dev;
++	/* Normally initialized by spi_register_controller(). */
++	ctx->ctlr->max_dma_len = INT_MAX;
++
++	ctx->spi->controller = ctx->ctlr;
++	spi_message_init(&ctx->msg);
++	ctx->msg.spi = ctx->spi;
++
++	return ctx;
++}
++
++static void *spi_dma_test_buf(struct kunit *test, struct spi_dma_test_ctx *ctx,
++			      unsigned int slot)
++{
++	KUNIT_ASSERT_LT(test, slot, ARRAY_SIZE(ctx->buf));
++
++	ctx->buf[slot] = kunit_kzalloc(test, SPI_DMA_TEST_LEN, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->buf[slot]);
++
++	return ctx->buf[slot];
++}
++
++/*
++ * Emulate DMA devices retained from an earlier message. Using valid devices
++ * also lets the unfixed path reach the assertions instead of dereferencing
++ * NULL during cleanup.
++ */
++static void spi_dma_test_pin_stale_dma_devs(struct spi_dma_test_ctx *ctx)
++{
++	ctx->ctlr->cur_tx_dma_dev = ctx->stale_dma_dev;
++	ctx->ctlr->cur_rx_dma_dev = ctx->stale_dma_dev;
++}
++
++static void spi_dma_test_assert_dma_devs_published(struct kunit *test,
++						   struct spi_dma_test_ctx *ctx)
++{
++	KUNIT_ASSERT_PTR_EQ(test, ctx->ctlr->cur_tx_dma_dev, ctx->dma_dev);
++	KUNIT_ASSERT_PTR_EQ(test, ctx->ctlr->cur_rx_dma_dev, ctx->dma_dev);
++}
++
++static void spi_dma_test_assert_nothing_mapped(struct kunit *test,
++					       struct spi_dma_test_ctx *ctx,
++					       unsigned int nr_xfers)
++{
++	unsigned int i;
++
++	for (i = 0; i < nr_xfers; i++) {
++		KUNIT_ASSERT_FALSE_MSG(test, ctx->xfer[i].tx_sg_mapped,
++				       "xfer[%u] still claims a TX mapping after __spi_map_msg() failed",
++				       i);
++		KUNIT_ASSERT_FALSE_MSG(test, ctx->xfer[i].rx_sg_mapped,
++				       "xfer[%u] still claims an RX mapping after __spi_map_msg() failed",
++				       i);
++		KUNIT_EXPECT_NULL(test, ctx->xfer[i].tx_sg.sgl);
++		KUNIT_EXPECT_EQ(test, ctx->xfer[i].tx_sg.orig_nents, 0U);
++		KUNIT_EXPECT_EQ(test, ctx->xfer[i].tx_sg.nents, 0U);
++		KUNIT_EXPECT_NULL(test, ctx->xfer[i].rx_sg.sgl);
++		KUNIT_EXPECT_EQ(test, ctx->xfer[i].rx_sg.orig_nents, 0U);
++		KUNIT_EXPECT_EQ(test, ctx->xfer[i].rx_sg.nents, 0U);
++	}
++}
++
++/*
++ * xfer0 maps TX and RX; zero-length xfer1 then fails its TX mapping.
++ * The failure must unwind xfer0 and update cur_*_dma_dev.
++ */
++static void spi_dma_later_tx_fail_rolls_back_earlier(struct kunit *test)
++{
++	struct spi_dma_test_ctx *ctx = spi_dma_test_ctx_new(test);
++	int ret;
++
++	ctx->xfer[0].tx_buf = spi_dma_test_buf(test, ctx, 0);
++	ctx->xfer[0].rx_buf = spi_dma_test_buf(test, ctx, 1);
++	ctx->xfer[0].len = SPI_DMA_TEST_LEN;
++
++	ctx->xfer[1].tx_buf = spi_dma_test_buf(test, ctx, 2);
++	ctx->xfer[1].rx_buf = NULL;
++	ctx->xfer[1].len = 0;			/* forces -EINVAL */
++
++	spi_message_add_tail(&ctx->xfer[0], &ctx->msg);
++	spi_message_add_tail(&ctx->xfer[1], &ctx->msg);
++
++	spi_dma_test_pin_stale_dma_devs(ctx);
++
++	ret = __spi_map_msg(ctx->ctlr, &ctx->msg);
++	KUNIT_ASSERT_EQ(test, ret, -EINVAL);
++
++	spi_dma_test_assert_dma_devs_published(test, ctx);
++	spi_dma_test_assert_nothing_mapped(test, ctx, SPI_DMA_TEST_XFERS);
++
++	KUNIT_EXPECT_EQ(test, 0, __spi_unmap_msg(ctx->ctlr, &ctx->msg));
++}
++
++/*
++ * xfer0 maps TX and RX; zero-length RX-only xfer1 then fails.
++ * The failure must unwind xfer0 without leaving either mapping flag set.
++ */
++static void spi_dma_later_rx_fail_rolls_back_earlier(struct kunit *test)
++{
++	struct spi_dma_test_ctx *ctx = spi_dma_test_ctx_new(test);
++	int ret;
++
++	ctx->xfer[0].tx_buf = spi_dma_test_buf(test, ctx, 0);
++	ctx->xfer[0].rx_buf = spi_dma_test_buf(test, ctx, 1);
++	ctx->xfer[0].len = SPI_DMA_TEST_LEN;
++
++	ctx->xfer[1].tx_buf = NULL;
++	ctx->xfer[1].rx_buf = spi_dma_test_buf(test, ctx, 2);
++	ctx->xfer[1].len = 0;			/* forces -EINVAL */
++
++	spi_message_add_tail(&ctx->xfer[0], &ctx->msg);
++	spi_message_add_tail(&ctx->xfer[1], &ctx->msg);
++
++	spi_dma_test_pin_stale_dma_devs(ctx);
++
++	ret = __spi_map_msg(ctx->ctlr, &ctx->msg);
++	KUNIT_ASSERT_EQ(test, ret, -EINVAL);
++
++	spi_dma_test_assert_dma_devs_published(test, ctx);
++	spi_dma_test_assert_nothing_mapped(test, ctx, SPI_DMA_TEST_XFERS);
++
++	KUNIT_EXPECT_EQ(test, 0, __spi_unmap_msg(ctx->ctlr, &ctx->msg));
++}
++
++/* Ensure the error unwind does not affect successful mappings. */
++static void spi_dma_map_success_publishes_dma_devs(struct kunit *test)
++{
++	struct spi_dma_test_ctx *ctx = spi_dma_test_ctx_new(test);
++	int ret;
++
++	ctx->xfer[0].tx_buf = spi_dma_test_buf(test, ctx, 0);
++	ctx->xfer[0].rx_buf = spi_dma_test_buf(test, ctx, 1);
++	ctx->xfer[0].len = SPI_DMA_TEST_LEN;
++
++	spi_message_add_tail(&ctx->xfer[0], &ctx->msg);
++
++	ret = __spi_map_msg(ctx->ctlr, &ctx->msg);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	KUNIT_EXPECT_TRUE(test, ctx->xfer[0].tx_sg_mapped);
++	KUNIT_EXPECT_TRUE(test, ctx->xfer[0].rx_sg_mapped);
++	KUNIT_EXPECT_PTR_EQ(test, ctx->ctlr->cur_tx_dma_dev, ctx->dma_dev);
++	KUNIT_EXPECT_PTR_EQ(test, ctx->ctlr->cur_rx_dma_dev, ctx->dma_dev);
++
++	KUNIT_EXPECT_EQ(test, 0, __spi_unmap_msg(ctx->ctlr, &ctx->msg));
++
++	KUNIT_EXPECT_FALSE(test, ctx->xfer[0].tx_sg_mapped);
++	KUNIT_EXPECT_FALSE(test, ctx->xfer[0].rx_sg_mapped);
++	KUNIT_EXPECT_NULL(test, ctx->xfer[0].tx_sg.sgl);
++	KUNIT_EXPECT_NULL(test, ctx->xfer[0].rx_sg.sgl);
++}
++
++/* A transfer without buffers requires no DMA mapping. */
++static void spi_dma_map_nothing_is_success(struct kunit *test)
++{
++	struct spi_dma_test_ctx *ctx = spi_dma_test_ctx_new(test);
++	int ret;
++
++	ctx->xfer[0].tx_buf = NULL;
++	ctx->xfer[0].rx_buf = NULL;
++	ctx->xfer[0].len = SPI_DMA_TEST_LEN;
++
++	spi_message_add_tail(&ctx->xfer[0], &ctx->msg);
++
++	ret = __spi_map_msg(ctx->ctlr, &ctx->msg);
++	KUNIT_EXPECT_EQ(test, ret, 0);
++
++	spi_dma_test_assert_nothing_mapped(test, ctx, 1);
++}
++
++static struct kunit_case spi_dma_error_path_cases[] = {
++	KUNIT_CASE(spi_dma_later_tx_fail_rolls_back_earlier),
++	KUNIT_CASE(spi_dma_later_rx_fail_rolls_back_earlier),
++	KUNIT_CASE(spi_dma_map_success_publishes_dma_devs),
++	KUNIT_CASE(spi_dma_map_nothing_is_success),
++	{}
++};
++
++static struct kunit_suite spi_dma_error_path_suite = {
++	.name = "spi_dma",
++	.test_cases = spi_dma_error_path_cases,
++};
++
++kunit_test_suite(spi_dma_error_path_suite);
++
++MODULE_DESCRIPTION("KUnit tests for SPI core DMA mapping");
++MODULE_LICENSE("GPL");
+diff --git a/tools/testing/kunit/configs/all_tests.config b/tools/testing/kunit/configs/all_tests.config
+index bccc2c771..7bdcbdec2 100644
+--- a/tools/testing/kunit/configs/all_tests.config
++++ b/tools/testing/kunit/configs/all_tests.config
+@@ -21,6 +21,7 @@ CONFIG_VFAT_FS=y
+ CONFIG_PCI=y
+ CONFIG_USB4=y
+ CONFIG_I2C=y
++CONFIG_SPI=y
+ 
+ CONFIG_NET=y
+ CONFIG_MCTP=y
+diff --git a/tools/testing/kunit/configs/default.config b/tools/testing/kunit/configs/default.config
+index e67af7b9f..2f24147c9 100644
+--- a/tools/testing/kunit/configs/default.config
++++ b/tools/testing/kunit/configs/default.config
+@@ -1,3 +1,4 @@
+ CONFIG_KUNIT=y
+ CONFIG_KUNIT_EXAMPLE_TEST=y
+ CONFIG_KUNIT_ALL_TESTS=y
++CONFIG_SPI=y
 -- 
 2.43.0
+
 

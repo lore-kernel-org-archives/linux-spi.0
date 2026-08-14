@@ -1,30 +1,30 @@
 Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5FA33BBAF;
-	Fri, 14 Aug 2026 03:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EE53D9549;
+	Fri, 14 Aug 2026 03:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786677325; cv=none; b=kXkYkjMvnPERgeYeYBEYX8hWm2JfzyLeVZ0ASW/Qq9Gkh1TTjqIKfOtrNMjQ8zc5FbSgbnra/737mcNAYBfHFwIW2nYHNPYg+c8/dIM53i++/0TxEb6j6WWxolK9j23feRXNA9NyJ8FdnbIN4MZvSASEDxl0/Z3DjF92bM97SzQ=
+	t=1786677330; cv=none; b=AwhUc4fbtUJAfPZrGe14QjL4utyTXcvVyRJ1l4W2YSEEL8LA9/swYH8nCBr1kyJh4nvq3OwwtX/1dXxpKvGtijYnME8KmT4Iny7F8z3jKjOUfaWpgye3bs4Kb8YTS2QBGGjlPpN6dUYT81uSAnn1AwuZHN29SPe2uWy0UY7rQhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786677325; c=relaxed/simple;
-	bh=ZImj8O1RwBbSgTOtIj6qO7FCs5lHJzELBM5p9mj6YVs=;
+	s=arc-20240116; t=1786677330; c=relaxed/simple;
+	bh=J9XbMsxRndxGJyUJZumUqWe51cotzgOck8sh4nWLj88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uog4KgX7Mk/5TOYat5rUWqoV6D8z1I7Qe+u/5P+wtjpHgCMNzQymyrtFnpu9keKevRmZx5WuVNFw2OE4MhN7OTAF138e+aRcUY/V2zyBIiqzGvaKbU9PFor/xh9UXvmMgdyO3jefWqv4zsTOJ9OWjXUYp9YNDFyxFxhomMOpgLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WF9scX22; arc=none smtp.client-ip=220.197.31.3
+	 MIME-Version; b=bDRLOC0Kz28uvO3Zi55t0t6v66kRglFhRgAw1jsUcox0DiG3ARFWs041F5WYUuRoNdA+wDOLO+0ReM+LIftVV3oJsYK/a3cHEUj/ukW+0u8PeJP9Eztp265TLvAxzOiq1GYcCtj1NqXP2k0VyKSqal9SZUVRvB6pACLs+qnLIkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Hs/PRPTa; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WF9scX22"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Hs/PRPTa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Xu
-	NlL9yBR16QuhSPEU4qesOF4KWiDHceSxgJFywaTUs=; b=WF9scX22pOKAGumuSb
-	vmXa1zbRIyo9S9cstJVOVfU/0MdSHvUSIqksO379CBHpn8TZYMs4AFldAoXsFByd
-	PqMYX215DhSjnzt2FytE4icj8O2g55Tc/L88qm2OTW07HzJA66pacrPNXWhMD/K4
-	gOPGW3Z9Wmwiv5APk6cFYJe3I=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Bi
+	W95dK0QU3NeJPlxhPQThilW1+H2m99HL/aqjlINd4=; b=Hs/PRPTaufseRlEMvH
+	t2RnB4P168S74G0RZnc6ccNucG/FGSSTBTTea25+1008oDk7a7UV3JMw3ZInUlxv
+	HFj+xxKV4dVuRdvTVfNQfOjRK5bylx2M8OMhnENejDy9z264KeJgff3QX71Y8P12
+	yVgTQ+OmMW0+LLIDwzXo+y67c=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wC3SQEOiH5qyzohNg--.157S2;
-	Fri, 14 Aug 2026 11:14:24 +0800 (CST)
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3n_USiH5qk89SOw--.19210S2;
+	Fri, 14 Aug 2026 11:14:26 +0800 (CST)
 From: Honghui Jiang <jiang_hh2019@163.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Andy Shevchenko <andy@kernel.org>,
@@ -38,9 +38,9 @@ Cc: Andy Shevchenko <andy@kernel.org>,
 	linux-kselftest@vger.kernel.org,
 	kunit-dev@googlegroups.com,
 	Honghui Jiang <jiang_hh2019@163.com>
-Subject: [PATCH v2 1/4] spi: Fix DMA mapping ownership on partial map failure
-Date: Fri, 14 Aug 2026 11:14:15 +0800
-Message-ID: <20260814031419.43378-2-jiang_hh2019@163.com>
+Subject: [PATCH v2 3/4] spi: Clear current DMA devices when unmapping a message
+Date: Fri, 14 Aug 2026 11:14:17 +0800
+Message-ID: <20260814031419.43378-4-jiang_hh2019@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260814031419.43378-1-jiang_hh2019@163.com>
 References: <20260814031419.43378-1-jiang_hh2019@163.com>
@@ -51,113 +51,55 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wC3SQEOiH5qyzohNg--.157S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCw47WFy3Xr4xtF4fCryxuFg_yoW5uF1UpF
-	43GFW5tr48JF4FgF4Y9w4q93ZIvFZ5C347C34jk3sYkws8XFy3tFyUCF1SqF98JFWxX3W5
-	urWYyFWxG34jyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE73kJUUUUU=
-X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC0xBgoGp+iBDPbwAA3v
+X-CM-TRANSID:_____wD3n_USiH5qk89SOw--.19210S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr47CrWfZw1fXFWxAr4fZrb_yoW8Xr15pF
+	4rKFWUCFs5KFWFk3Wa9a1j9F1av397XrW7G3y0yw4Syw1kXF1IqFyrtr15XF9xZF48A34j
+	krZ0ka18u342yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEmL9UUUUUU=
+X-CM-SenderInfo: xmld0whbkkjiirz6il2tof0z/xtbC0xJgoGp+iBLPpgAA3m
 
-If RX mapping fails after TX mapping succeeds, __spi_map_msg() unmaps
-TX but leaves tx_sg_mapped set. If TX mapping fails on a later
-transfer, mappings created for earlier transfers remain active.
+The current DMA device pointers remain set after a message has been
+unmapped. Existing users either check the corresponding mapped flag or
+access the pointers before finalizing the message, but retaining stale
+device pointers is fragile.
 
-In both cases, cur_{tx,rx}_dma_dev have not yet been updated because they
-are assigned only after every transfer has been mapped. The subsequent
-spi_unmap_msg() may therefore unmap the TX mapping again or release
-earlier mappings using a NULL or stale device. Using a NULL device can
-trigger an oops. An empty SG table does not prevent the NULL dereference
-because dma_unmap_sg_attrs() accesses the device before checking the
-entry count.
+Clear both pointers in spi_unmap_msg() after the internal unmap
+completes. Keep them intact in __spi_unmap_msg(), since that helper is
+also used during partial-map unwind and the in-message DMA-to-PIO
+fallback, before processing of the current message is complete.
 
-Publish both mapping devices before mapping starts and unwind all
-failures through __spi_unmap_msg(). This clears the mapping flags and
-releases each mapping once with the device that created it.
-
-Publishing the devices before the loop also refreshes them when no
-transfer needs mapping. No mapping flag is set in that case, so current
-users do not use the pointers as mapping owners.
-
-Fixes: e289df82344f ("spi: Rework per message DMA mapped flag to be per transfer")
-Cc: stable@vger.kernel.org
+Suggested-by: Andy Shevchenko <andy@kernel.org>
 Signed-off-by: Honghui Jiang <jiang_hh2019@163.com>
 ---
- drivers/spi/spi.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/spi/spi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d9e6b4b87..12b3a3b29 100644
+index 96f5058c7..e5b1531b9 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1231,6 +1231,8 @@ void spi_unmap_buf(struct spi_controller *ctlr, struct device *dev,
- 	spi_unmap_buf_attrs(ctlr, dev, sgt, dir, 0);
- }
- 
-+static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg);
-+
- static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
+@@ -1373,6 +1373,7 @@ static inline int spi_unmap_msg(struct spi_controller *ctlr,
+ 				struct spi_message *msg)
  {
- 	struct device *tx_dev, *rx_dev;
-@@ -1254,7 +1256,13 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 	else
- 		rx_dev = ctlr->dev.parent;
+ 	struct spi_transfer *xfer;
++	int ret;
  
--	ret = -ENOMSG;
-+	/*
-+	 * Store the devices before mapping so partial failures can be unwound
-+	 * with the device that created each mapping.
-+	 */
-+	ctlr->cur_tx_dma_dev = tx_dev;
-+	ctlr->cur_rx_dma_dev = rx_dev;
-+
  	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		/* The sync is done before each transfer. */
- 		unsigned long attrs = DMA_ATTR_SKIP_CPU_SYNC;
-@@ -1267,8 +1275,8 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 						(void *)xfer->tx_buf,
- 						xfer->len, DMA_TO_DEVICE,
- 						attrs);
--			if (ret != 0)
--				return ret;
-+			if (ret)
-+				goto unwind;
- 
- 			xfer->tx_sg_mapped = true;
- 		}
-@@ -1277,25 +1285,19 @@ static int __spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
- 			ret = spi_map_buf_attrs(ctlr, rx_dev, &xfer->rx_sg,
- 						xfer->rx_buf, xfer->len,
- 						DMA_FROM_DEVICE, attrs);
--			if (ret != 0) {
--				spi_unmap_buf_attrs(ctlr, tx_dev,
--						&xfer->tx_sg, DMA_TO_DEVICE,
--						attrs);
--
--				return ret;
--			}
-+			if (ret)
-+				goto unwind;
- 
- 			xfer->rx_sg_mapped = true;
- 		}
+ 		/*
+@@ -1385,7 +1386,12 @@ static inline int spi_unmap_msg(struct spi_controller *ctlr,
+ 			xfer->rx_buf = NULL;
  	}
--	/* No transfer has been mapped, bail out with success */
--	if (ret)
--		return 0;
--
--	ctlr->cur_rx_dma_dev = rx_dev;
--	ctlr->cur_tx_dma_dev = tx_dev;
  
- 	return 0;
+-	return __spi_unmap_msg(ctlr, msg);
++	ret = __spi_unmap_msg(ctlr, msg);
 +
-+unwind:
-+	__spi_unmap_msg(ctlr, msg);
++	ctlr->cur_rx_dma_dev = NULL;
++	ctlr->cur_tx_dma_dev = NULL;
 +
 +	return ret;
  }
  
- static int __spi_unmap_msg(struct spi_controller *ctlr, struct spi_message *msg)
+ static int spi_map_msg(struct spi_controller *ctlr, struct spi_message *msg)
 -- 
 2.43.0
-
 

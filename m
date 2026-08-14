@@ -1,91 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DD2492196
-	for <linux-spi@vger.kernel.org>; Fri, 14 Aug 2026 18:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DA4908B5;
+	Fri, 14 Aug 2026 19:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786733462; cv=none; b=JbIZaQey7ptDuIdKgFBX+qbWT5Xdm/3LWgM7KHjT7aeWgs74lkZr/t2UnKajPo3epDPvyxfxsIG1HOcbK5HVPZGgvRNBpSqeNx/PCpaHz6r/lkd1ITTkBJ8AVeoJA3T4cF/DyYkaguTnNBGwRmBXo+ghsiQGyT9iDIdYXAtqjiw=
+	t=1786734482; cv=none; b=iUnJDxD7BEg3j73FVMAscxqJaKt29KWfmrAauiQLt9D+PFOZPCQ/nxnGxDwOH14eUlMo01I5gXpiCWE25DqDi+G3/0eQo2fzBfM0Nf5L0n074/qtUeJnLJ9lkbRu9p8ZgxrnqQYrU1/RRhFOzF/wqg3Ybd9hLAwzhDwwl+0FHQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786733462; c=relaxed/simple;
-	bh=Ly+JcCJJBjarCZ+L6Vg654EhgMS8thQGFV8u9SUbJnA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Vuv3DWc+nt2NNba95/jqzdsWaIlaQQV+hZRGgw9r32TIn2yo5G5ixv7tXO/UwlKDBbyC64fetBfLPkoSO/8zLm/fY3sr0E+rOHqVaU3bvj+w3wtGLMjT26oA7HeZnw0zE7IjSYZv+fSjLJR8BEuDCN2eDF91LWlwrZPQJKzHQ4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7jDcdA3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786734482; c=relaxed/simple;
+	bh=DfwN4wUJYIBH4+mWePMH+NwRLqUAC5YZ3yzUksIO5Tw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VXXWZ8cmps+P5r8JvwhyT2Dpqwm2Xce6yksum+kqHRPUKfJyN0DmMxS2Svpqyb5QTxUT0pTQ9RxqKMOKsV795Sye2SIwG9qN3Sy6NOhvwZte4rfKJcvbAU53MwiQ8/CU6WbjjvFsZ2bvXFKsKyZNfMBzG85N+JsP6soGmekjOCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ku2v2QXI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7jDcdA3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7321F00A3D;
-	Fri, 14 Aug 2026 18:51:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ku2v2QXI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB61F000E9;
+	Fri, 14 Aug 2026 19:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786733461;
-	bh=vkgQH/P8LKKnXt1V2Mz7czywy0B++PJ/jhMG5oaBPVI=;
-	h=Subject:From:Date:To;
-	b=Z7jDcdA3LG8wjCeH5Yn4fM3I8D403Vf8nUaVuP6AG4prqCq64VydWMAyU7SX/drVi
-	 CZC9rx5d92OFyCDZq3tP52uK5MjCmb4xOq/CVO8nCVy7rZ4diwO+S3rl/hHibn3qre
-	 riZpmWjLPyxFEF1DGWdjdlUIuaKmvaIdBbuMtxzlSVABYEcIoVGakHjZYT8DbTBzs1
-	 m5mDjXHYFQVPZpnA6uCtyceNM+4hNNtc9FCqSxC0P/xMGTyU1TRzEUkaZz4xUp5BiY
-	 ddz/4APyWUvpEc2oCh678HMoZRXMIF8Aqd52ZBXlOgsHu61H49/qts0Wr8z1JJaBmp
-	 sR7No5BowrSQg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 963FB392445A;
-	Fri, 14 Aug 2026 18:50:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1786734480;
+	bh=AlFnFinqOG+lpIH46M7c3gdq1dWVIKx/tZ41es1dxCM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ku2v2QXI2Jd1TCZiZMEuvSed/TdPGnfIcyxUvPXC0fMJD7YKu4yL7lQjQBC/rqhIK
+	 G97Azcmt2t6xPce8OAhNA1WzuK27N5U4TFg8VzZFMgLF+qNtoimXghpzmcBMsTXxQX
+	 TrqaxlItBb/SYhTV1jVtcRZIOB7Hrd0gLNHK+1musSKxFpecWTHorZuth+X+8TZDPT
+	 WrK+AYL86QkOT4y/WllsLhAEQIckKisQZZwSJtuvle1E6AXR+iZZgk+TCUQxUMfLDb
+	 MLfCIds92gXv8EwEglSnk4I0yUZGlwg7Rcft0H7Px9MLwxs2IFt4S5zlRzEvFvmnlB
+	 Z9puJVSUzOGfQ==
+Date: Fri, 14 Aug 2026 14:07:59 -0500
+From: Rob Herring <robh@kernel.org>
+To: Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Udaya Kiran Challa <challauday369@gmail.com>, krzk+dt@kernel.org,
+	conor+dt@kernel.org, skhan@linuxfoundation.org,
+	me@brighamcampbell.com, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: Re: [PATCH v4] spi: dt-bindings: microchip,pic32mzda-spi: Convert to
+ DT schema
+Message-ID: <20260814190759.GA2496807-robh@kernel.org>
+References: <20260814083221.34606-1-challauday369@gmail.com>
+ <e7efc91b-9d8f-4344-982b-c2b5014985b6@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178673341515.3915421.11059317836767652909.git-patchwork-summary@kernel.org>
-Date: Fri, 14 Aug 2026 18:50:15 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e7efc91b-9d8f-4344-982b-c2b5014985b6@sirena.org.uk>
 
-Hello:
+On Fri, Aug 14, 2026 at 03:54:55PM +0100, Mark Brown wrote:
+> On Fri, Aug 14, 2026 at 02:02:21PM +0530, Udaya Kiran Challa wrote:
+> > Convert Microchip PIC32 SPI controller devicetree binding
+> > from legacy text format to DT schema.
+> 
+> > +maintainers:
+> > +  - Mark Brown <broonie@kernel.org>
+> 
+> Try again!  :P  I think the DT people had some default they used for
+> cases like this, but ICBW?
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+I'm the default, but really I wonder if pic32 could just be dropped. No 
+commits from a Microchip person since 2016 on arch/mips/pic32 or 
+arch/mips/boot/dts/pic32. Almost all generic cleanups otherwise. These 
+chips appear to max out at 32MB (SiP) or 128MB DDR2. 
 
-Series: spi: Fix DMA mapping ownership on partial map failure
-  Submitter: Honghui Jiang <jiang_hh2019@163.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1145805
-  Lore link: https://lore.kernel.org/r/20260814031419.43378-1-jiang_hh2019@163.com
-    Patches: [v2,1/4] spi: Fix DMA mapping ownership on partial map failure
-             [v2,2/4] spi: Move __spi_unmap_msg() before __spi_map_msg()
-             [v2,3/4] spi: Clear current DMA devices when unmapping a message
-             [v2,4/4] spi: Add KUnit coverage for DMA mapping error paths
+Perhaps I should send some AI patches against it...
 
-Series: spi: ma35d1-qspi: Improvements and DTR support
-  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1145220
-  Lore link: https://lore.kernel.org/r/20260813-perso-ma35d1-upstream-qspi-v1-0-b217b9870eb1@bootlin.com
-    Patches: [1/5] spi: ma35d1-qspi: Remove redundant reset operation
-             [2/5] spi: ma35d1-qspi: Move speed setting to bus configuration
-             [3/5] spi: ma35d1-qspi: Allow several command bytes
-             [4/5] spi: ma35d1-qspi: Add DTR support
-             [5/5] spi: ma35d1-qspi: Use the existing update helper
+There's this[1], but no updates in 5 years.
 
-Patch: [v2] spi: dt-bindings: sun6i: Add compatibles for A733's SPI controllers
-  Submitter: Jerome Brunet <jbrunet@baylibre.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1144993
-  Lore link: https://lore.kernel.org/r/20260812-allwinner-a733-spi-support-v2-1-937bff0fa78e@baylibre.com
+Arnd, Thomas, any thoughts on this platform?
 
-Patch: spi: dw: Remove shadowed dws in dw_spi_setup()
-  Submitter: Liang Hao <haohlliang@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/project/spi-devel-general/list/?series=1146030
-  Lore link: https://lore.kernel.org/r/20260814114235.31281-1-haohlliang@gmail.com
+Rob
 
-
-Total patches: 11
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+[1] https://github.com/jjr-simiatec/Linux-LTS-for-PIC32

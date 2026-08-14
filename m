@@ -1,91 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA924908B4;
-	Fri, 14 Aug 2026 17:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B7D49502B;
+	Fri, 14 Aug 2026 17:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786729305; cv=none; b=GPXrWiBb4iA/n/O1q/DyfhPWeDXuWLtpVwpU/DQJMQ/7Z85N7A2UmTgXYniq1HhBhQqlYnTd5x1d1nsig59OjaK8Pt/Fqer3Baoc8OWy5prjh8cgXLLm0fTx2siqn8FhpBVZOmwTiePARIGljh+HH3OjGx86WQCmONiNaYq8KAE=
+	t=1786730134; cv=none; b=FJYzfWRTsoBTnjN8bo+powZR7mvAZn90Ln1jmgLh0rtr/u14j6CtpYjEC5RhOt6jrX6BVOuhklB8qkDRnUozPu2H0tjLzCMDlCtz+Fkf5/1eF6NmtT+H73wf+qIDHHjMEDgsO0xS9JejVlb3hJd4TwyTKauVCDg/u8V4kRxbgVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786729305; c=relaxed/simple;
-	bh=ZaI4ojQJI8KLdxZWDMHAqMT1JrJovr0G8iAVI9gyhZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dQ7dnfI8Lch90uGEIa9tFIFSshuJ4YpmL/WH56uIZviNtuFy0pD6hq0Reljw4GiB7oZAqYLvltAcpKrHHXcyiH0lG/qm0bfKqa8fV2HMV5e1YBtuIlOziVu77XKsnIZ+2amYQ8R+8hSxmM3WrF85WYI0m4NCM+w6RgQy/Fbv8o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9c3vXC2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786730134; c=relaxed/simple;
+	bh=ZCI0nioGzrIRiazrtSfxql80pwLfQkvWbK9WgVNYzN4=;
+	h=Message-ID:From:To:Cc:Subject:Date; b=hx025RXtGLpJRLtSnssSxUzcuEl9CYVvVWwp56GMYY69RVp4XQQPUvDvZcwn7e4j3jaIRhlWgVPqRj5RHfkLK6MaC/6mkh1fg8k3dAs+oTWAEq8fpFfcdhFYz4x8ZER5UMP0tRMJsnbxY+73qyn2rylOAeEmpxpKaoPKkZcqgKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ArWC8zgu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9c3vXC2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19861F000E9;
-	Fri, 14 Aug 2026 17:41:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ArWC8zgu"
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 9114B1F000E9;
+	Fri, 14 Aug 2026 17:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786729304;
-	bh=Y+u7FXSJY3hzwnNhU+/OewoWE7AAIpifvv43gvfjulU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=V9c3vXC2cp8blKnbjgidRWJ+jo1+SLnr+PG0FJcoE5YPvVIqMIEkSpN7N0vgprMp8
-	 5WNnmzHJ16Uxt9Eyn5fpq9NHRCETB+8JjPOzayvK2TehvwNaMs8v3LCctqTGAT0mf3
-	 VD2BtwDTYBIsIrk7YnvUm8ocVKlD8HPF7gizY8w64ahaiAKRgRb2lFdg2zhlauV6vp
-	 4m+1Gp4TvQ2N0YT7fnRelZswf+friQj8ZEonRm1jL6TFr5YLpZJ0FxGDEV3nap4ush
-	 E/tUVYcuJeyFnnOktQIPNkQran8qsfwvpnJbQBGnFbyFL3Im05TqJaHp45/fgWMK1i
-	 RODb7DiZ5vqUQ==
-Date: Fri, 14 Aug 2026 18:41:39 +0100
+	s=k20260515; t=1786730128;
+	bh=1UKAHXA7fUJFQD1FC/GvY/Tr/zmPtl2ROWc3wrHyWh8=;
+	h=From:To:Cc:Subject:Date;
+	b=ArWC8zgu1DOrmAXFK7DWF48glvjTENDBUUQVhSDx1zNOca1owCMCPHADDZNsKvtMH
+	 flHzS6JHyHwrQlaQfsD7/AWJwkbPicOHNpcQXAvMkD41L21JuVuOIdYFImFBJNeRFS
+	 KcqUd2I7hp2YbyemfvBuCGfcV+ipep/lJHGtJvdJlukxtJnzDd8RhyVQYAWqLzNr+y
+	 BFeCT04YlvWT/nAppJ1Gc1zaH4YpuhFlqgVk+P5p3r1pV8hFUNHK/GBq+inaSgsHkG
+	 bEzpvrNoI9sg40YtjLI5ca3mIQla3QEEV1ZC3+B5ent3ap9HseTJKnV/BosoRg2J9H
+	 YfwaE+JsnkBxQ==
+Message-ID: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
 From: Mark Brown <broonie@kernel.org>
-To: Honghui Jiang <jiang_hh2019@163.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Subject: Re: [PATCH v2 4/4] spi: Add KUnit coverage for DMA mapping error
- paths
-Message-ID: <3b3f84f5-b922-4a97-ae16-1f380035a53a@sirena.org.uk>
-References: <20260814031419.43378-1-jiang_hh2019@163.com>
- <20260814031419.43378-5-jiang_hh2019@163.com>
- <an8JaNLIy4je-tiG@ashevche-desk.local>
- <93950eda-ee8e-4a28-8e3c-707d64c956fe@sirena.org.uk>
- <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v7.2-rc7
+Date: Fri, 14 Aug 2026 18:55:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vL6qZ56Kaxp7GABN"
-Content-Disposition: inline
-In-Reply-To: <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
-X-Cookie: Body by Nautilus, Brain by Mattel.
 
+The following changes since commit 075b74841bd0065a3bda3440873c747938e69b68:
 
---vL6qZ56Kaxp7GABN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+  Linux 7.2-rc6 (2026-08-02 16:24:24 -0700)
 
-On Sat, Aug 15, 2026 at 01:38:11AM +0800, Honghui  Jiang wrote:
-> On Fri, Aug 14, 2026 at 01:49:50PM +0100, Mark Brown wrote:
+are available in the Git repository at:
 
-> > Well, one of the config changes is.  Clearly spi is critical enough to
-> > be tested by default!  :P
+  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc7
 
-> Thanks, both. I'll drop CONFIG_SPI=y from default.config in v3 and keep
-> it in all_tests.config.
+for you to fetch changes up to 11058bd3d47d57eb3473935feae53868d6d168b7:
 
-It's OK, I deleted the extra change locally - no need to resend unless
-my CI blows up.
+  spi: virtio: mark device ready before registering the controller (2026-08-13 17:34:01 +0100)
 
---vL6qZ56Kaxp7GABN
-Content-Type: application/pgp-signature; name="signature.asc"
+----------------------------------------------------------------
+spi: Final fixes for v7.2
 
------BEGIN PGP SIGNATURE-----
+A couple of relatively minor (but as ever important if you're hitting
+them) and straightforward driver specific fixes, plus one new device ID
+documented in the DT bindings for the DesignWare controller.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmp/U1IACgkQJNaLcl1U
-h9B0bQf9HECSF2EjFIh7o0n2WvZC8+Gsod813EvFuSCF6JqmW8Ne0EIWIkIXQjmG
-INqKZWXOruGAs2oYhkoueQQ9UukuXn7PiVp7vSDrBd9G8w3npSjJ5FftYuL1PMRG
-bQaT6NYBW5sF71PVegxApxZ+GaQSnKFLm9gUVE5ajuCiSMCPfjefUhr7IXlrgSxb
-4up+1EX57B5B0wmRGn31puRZAjVzX+89v7PReE0iwc6VlHdd2CvkTIp+dLj+TKQd
-0opUawCO/Chw8j8b04mBRdZHrEeON5JJw2ZCM9e/2eHryg3FNq4kduhE29olcOw0
-fU27FeaZSKyZyI78o0tC4g7r3/wUpg==
-=6PY6
------END PGP SIGNATURE-----
+----------------------------------------------------------------
+Jasper Wise (1):
+      spi: virtio: mark device ready before registering the controller
 
---vL6qZ56Kaxp7GABN--
+Jisheng Zhang (1):
+      spi: dw: fix wrong RX_SAMPLE_DLY setting after resume
+
+Swark Yang (1):
+      spi: dt-bindings: snps,dw-apb-ssi: Document Axiado AX3005
+
+ Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.yaml | 5 +++++
+ drivers/spi/spi-dw.h                                       | 1 +
+ drivers/spi/spi-virtio.c                                   | 2 ++
+ 3 files changed, 8 insertions(+)

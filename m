@@ -1,75 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E549370AF6;
-	Fri, 14 Aug 2026 10:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B867143E07D
+	for <linux-spi@vger.kernel.org>; Fri, 14 Aug 2026 10:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786703028; cv=none; b=CL0qdeZzvEL0JWFnFbTzyPTb12jyE5YjK1pHjon43/Acvw1wFvzEt3bYyDpcSulXt4JP11noHnmaSA0RXAVZmlnlo3si2r3ZUME/q1zpUx8gRuq8IchQtSBQZOzoqeHf8DQS5Ab6AZ3G4FYphkB4JfbssxulktQoAihXcn4+1bY=
+	t=1786705158; cv=none; b=UvJILvw+ltEIoUi2asFjk4qthMbCmtQNOXhSiDFTNUEeYmcdX6cgFRGKuxfRNMRuoegy5bUTCJNxvd/T2aY6LZWv3DVXSzrCtu367bcMv7CgAwSqvwvslZKyXGPxRMwUdRMhwtQIS611xYuqwO8phtH7qU0WbNVOckTa7+3KllY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786703028; c=relaxed/simple;
-	bh=hRSbzC0Pc9dhnfKC/c3R1xawMz7yD+2YD/1SBksfKxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n31lxJ/SvSID26FraJQWB1ITPZc99bh9V1J+IFYu+YqIaSBnE3vpG2ArHgNEgRL/NidyHAhZAb2B1fJ/90bIEMM+QjeWp1pzhk6AKOg8V7fnr2pm5+rS1GZ8kZUagEwatyvdrvDREgFFVCxVzIvCgeZpTB9GfBAiWC2s06CeJkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQS9sxXy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786705158; c=relaxed/simple;
+	bh=iLOAXXqIe8tUlZb2sqHCeNp2BICDXG/CKM/yjkrCHkc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=hD7ZynsSnhN3hJzh4l+dtLs3hbI3Vt8uM14wAiwHkQsqsrz+RmfZV8lAf+5AIJGbIMtPqN5Ih3L5erRII98T0wrN4z8Ug75DVlm55ENBRtRXsPjGMkYJg0lj02oRiReDZVi9LrmSsv8cAI9gVV/yf5cEe41K9peCBZiyRl1gMvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEaD2E6z; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQS9sxXy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2BF1F00A3A;
-	Fri, 14 Aug 2026 10:23:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEaD2E6z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610411F000E9;
+	Fri, 14 Aug 2026 10:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786703020;
-	bh=Vv9ElWHr/YmaE7l5LFfutWEHAKuNlZRFB/RqWtFexJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fQS9sxXypKq0JbDvJieP+FbkJqcDMbLuY8RsXx1mNzQGqNdxU6HOCNzWJMbgQSi0W
-	 jH+RwDIhcRpL/W09Jf8JNNSiEJ8YwwG6KsRK0E0T4PdRYb5GyEWvPjjX4wPAKT0Jol
-	 4BTIjLoWV0HZMm19RoS7Thm9aN5N7Dr/8BvWwdPgaP7xcnm2WJOHmWAyuYHKgou5N5
-	 j5svN3n5M3nzvT7OeIpPyZ0Tpk5DdrVbUNvYhsevyPRm3Oa+2oH0ecvn0KcIAiPL9o
-	 V5JmVUbydgfMzRubR++NPyRHih5KMTaiEsiplyp0faSvsO9i+GGaPcJFSjSRm6hG3m
-	 Om/r+7onHCMaw==
-Date: Fri, 14 Aug 2026 12:23:33 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Vladislav Leonov <vlad@zlab.su>
-Cc: linux-rockchip@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, Simon Glass <sjg@chromium.org>, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>, 
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH 18/25] spi: rockchip: Add support for RV1106
-Message-ID: <20260814-jovial-black-swift-bf0dce@quoll>
-References: <20260810121121.210040-1-vlad@zlab.su>
- <20260810121121.210040-19-vlad@zlab.su>
+	s=k20260515; t=1786705150;
+	bh=ogf1E6x8rglQuSDJX8yjGsbBDcLkLt/VPV0HSHYVMyA=;
+	h=Subject:From:Date:To;
+	b=aEaD2E6zaNVFKd5raxDxy21sDO9GLSNaPTiyrbMmsGpFMLzggPJ4krfBpIoOLTUiX
+	 HohdQfnQot+lmUzeJTTS74V5eqU/aBqk9NhtWInwtcQE1v2J/sMl3uFWkIm7bRB0U/
+	 UA/3LCGbHITtYWHEBGSqAoX31944WEP3Z1MK231rA6hiK8ikSSJCcQq4lXXBsUeaQP
+	 39Y6AIScznwmKeV4RMcOBiRWwXNWLJRbHicV0olYeOckGvmOxrRCwAtckuHC0Yx6Mv
+	 3a6Uk8tLmSRBm2tQEtperA8/Wn+jcMf3szozQxdyF4eZm38+bWt5UvpGJX4/TriYPs
+	 CleC8F/fcl+cQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D3252380CFE1;
+	Fri, 14 Aug 2026 10:58:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260810121121.210040-19-vlad@zlab.su>
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178670510435.3302804.13487593825989602859.git-patchwork-housekeeping@kernel.org>
+Date: Fri, 14 Aug 2026 10:58:24 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, Aug 10, 2026 at 03:11:09PM +0300, Vladislav Leonov wrote:
-> Add the "rockchip,rv1106-spi" compatible to the match table. No driver
-> changes are needed beyond that, since the controller behaves like the
-> other Rockchip variants already handled by the driver.
-> 
-> Signed-off-by: Vladislav Leonov <vlad@zlab.su>
-> ---
-> 
->  drivers/spi/spi-rockchip.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index 231fbcf0e7aa..447e6ff47c53 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -1021,6 +1021,7 @@ static const struct of_device_id rockchip_spi_dt_match[] = {
->  	{ .compatible = "rockchip,rk3328-spi", },
->  	{ .compatible = "rockchip,rk3368-spi", },
->  	{ .compatible = "rockchip,rk3399-spi", },
-> +	{ .compatible = "rockchip,rv1106-spi", },
+Latest series: [v3] spi: dt-bindings: microchip,pic32mzda-sqi: Convert to DT schema (2026-08-14T10:17:33)
+  Superseding: [v2] spi: dt-bindings: microchip,pic32mzda-sqi: Convert to DT schema (2026-06-25T06:09:03):
+    [v2] spi: dt-bindings: microchip,pic32mzda-sqi: Convert to DT schema
 
-Why do you need this? It's fully compatible, no?
 
-Best regards,
-Krzysztof
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

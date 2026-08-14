@@ -1,77 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036DA4908B5;
-	Fri, 14 Aug 2026 19:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292C3AEF24;
+	Fri, 14 Aug 2026 22:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786734482; cv=none; b=iUnJDxD7BEg3j73FVMAscxqJaKt29KWfmrAauiQLt9D+PFOZPCQ/nxnGxDwOH14eUlMo01I5gXpiCWE25DqDi+G3/0eQo2fzBfM0Nf5L0n074/qtUeJnLJ9lkbRu9p8ZgxrnqQYrU1/RRhFOzF/wqg3Ybd9hLAwzhDwwl+0FHQ8=
+	t=1786748350; cv=none; b=f0aPCRTLfgBcc4FIxKRV/ZoIe1Mxbj087eufvhAAGMofVYwn8vMnyVpGvTkt5FGj2WM2/XnMe+I/15ZeeKawhm6iHHsC2QtfzWlOn2muAxJLUR2Hjcr05otMMBJOzcsacnyRsqxChNy7rtj/wIxipvX7DvMqg+CuHU5afZcATmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786734482; c=relaxed/simple;
-	bh=DfwN4wUJYIBH4+mWePMH+NwRLqUAC5YZ3yzUksIO5Tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VXXWZ8cmps+P5r8JvwhyT2Dpqwm2Xce6yksum+kqHRPUKfJyN0DmMxS2Svpqyb5QTxUT0pTQ9RxqKMOKsV795Sye2SIwG9qN3Sy6NOhvwZte4rfKJcvbAU53MwiQ8/CU6WbjjvFsZ2bvXFKsKyZNfMBzG85N+JsP6soGmekjOCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ku2v2QXI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786748350; c=relaxed/simple;
+	bh=yiVYMcL4FYsXIgy4D3uxZt3ULL9bClOPWtapVT2uyZA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=CS6HwVjc2zjSQTTGJ1my18WhLM4lI9ElDZ34Iy8vsCNhJvEELhzBjeS4rmY+uVrQ/qg+tO1/zkQqz8nWWbW5RZzFhKnuOvqxfPaa+n8DiTBMKIUrFwJVRpLq+alNMc3mRXrFAzLP4n3ir2WxMgxiGBHxWqqzo4rynqEq+6zHWw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvno1yGf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ku2v2QXI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFB61F000E9;
-	Fri, 14 Aug 2026 19:08:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvno1yGf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2991B1F000E9;
+	Fri, 14 Aug 2026 22:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786734480;
-	bh=AlFnFinqOG+lpIH46M7c3gdq1dWVIKx/tZ41es1dxCM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ku2v2QXI2Jd1TCZiZMEuvSed/TdPGnfIcyxUvPXC0fMJD7YKu4yL7lQjQBC/rqhIK
-	 G97Azcmt2t6xPce8OAhNA1WzuK27N5U4TFg8VzZFMgLF+qNtoimXghpzmcBMsTXxQX
-	 TrqaxlItBb/SYhTV1jVtcRZIOB7Hrd0gLNHK+1musSKxFpecWTHorZuth+X+8TZDPT
-	 WrK+AYL86QkOT4y/WllsLhAEQIckKisQZZwSJtuvle1E6AXR+iZZgk+TCUQxUMfLDb
-	 MLfCIds92gXv8EwEglSnk4I0yUZGlwg7Rcft0H7Px9MLwxs2IFt4S5zlRzEvFvmnlB
-	 Z9puJVSUzOGfQ==
-Date: Fri, 14 Aug 2026 14:07:59 -0500
-From: Rob Herring <robh@kernel.org>
-To: Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Udaya Kiran Challa <challauday369@gmail.com>, krzk+dt@kernel.org,
-	conor+dt@kernel.org, skhan@linuxfoundation.org,
-	me@brighamcampbell.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: Re: [PATCH v4] spi: dt-bindings: microchip,pic32mzda-spi: Convert to
- DT schema
-Message-ID: <20260814190759.GA2496807-robh@kernel.org>
-References: <20260814083221.34606-1-challauday369@gmail.com>
- <e7efc91b-9d8f-4344-982b-c2b5014985b6@sirena.org.uk>
+	s=k20260515; t=1786748349;
+	bh=QHhmn9S2m7E8R1GJQf4+kwvlTVIvXTYx8cwMaoy4Yyg=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=dvno1yGfrcxr7CpnAPt6N7CdHZX6jCzB2w/e6/J0C8dTXy+5hkknOd0OqCPTd/A/h
+	 U4rXJ4Mm2Nvo6ZlKUt+pWdRfU9A6Ak0Zp7l+Ko6QrNDTh50eWPnvC5dj2G5oJZEMdz
+	 ft+vahycLEm3I9pFnd3CoEd6hb8rGJ6rG45klOdDczhbzJWJ6GGJGBEXO+TpLlkcah
+	 GXxQ5buciQg4bKPshIBWHAgAJV58xD5Tq3Z1FBZBKXk/dhUsj+T7aSQ1N2ZBp49REx
+	 5MYQWz3Mdb8eAH41Ng0vntfhHiSuryi+Stx0QzHICAj3/aJR3/VdL4kDLnEQwduVIu
+	 rnbihr8gStLbg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5681C3924460;
+	Fri, 14 Aug 2026 22:58:24 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.2-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
+References: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc7
+X-PR-Tracked-Commit-Id: 11058bd3d47d57eb3473935feae53868d6d168b7
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 06d9a86e0222dcf6858544ba7257994bfe9e63c7
+Message-Id: <178674830295.3991221.6402718889890902853.pr-tracker-bot@kernel.org>
+Date: Fri, 14 Aug 2026 22:58:22 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e7efc91b-9d8f-4344-982b-c2b5014985b6@sirena.org.uk>
 
-On Fri, Aug 14, 2026 at 03:54:55PM +0100, Mark Brown wrote:
-> On Fri, Aug 14, 2026 at 02:02:21PM +0530, Udaya Kiran Challa wrote:
-> > Convert Microchip PIC32 SPI controller devicetree binding
-> > from legacy text format to DT schema.
-> 
-> > +maintainers:
-> > +  - Mark Brown <broonie@kernel.org>
-> 
-> Try again!  :P  I think the DT people had some default they used for
-> cases like this, but ICBW?
+The pull request you sent on Fri, 14 Aug 2026 18:55:20 +0100:
 
-I'm the default, but really I wonder if pic32 could just be dropped. No 
-commits from a Microchip person since 2016 on arch/mips/pic32 or 
-arch/mips/boot/dts/pic32. Almost all generic cleanups otherwise. These 
-chips appear to max out at 32MB (SiP) or 128MB DDR2. 
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc7
 
-Perhaps I should send some AI patches against it...
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/06d9a86e0222dcf6858544ba7257994bfe9e63c7
 
-There's this[1], but no updates in 5 years.
+Thank you!
 
-Arnd, Thomas, any thoughts on this platform?
-
-Rob
-
-[1] https://github.com/jjr-simiatec/Linux-LTS-for-PIC32
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

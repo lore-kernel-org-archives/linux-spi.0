@@ -1,388 +1,116 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30E33909B5
-	for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 21:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDC0301486;
+	Sat, 15 Aug 2026 21:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786830637; cv=none; b=ZdjxPqUcuDYAe3+j78qMqWokbkaBPRB8wMP/fmlicoWbtAGN8IGJuawoKMjwJRMclETFhCECxOIDpU00Rd/wUxtVBEvUKEUprREVdn1t6mpO5Ix9tlu2TBwgXdMnDIohgHZCdnS8+uTLYBtC/pWlO2Er1O23S3Itet1Zp1eWOIo=
+	t=1786830837; cv=none; b=D64gyE6VNTwlc9U8sTk19ACwGLegYjegt4+yfKnjasTi3jGWx/v497UBqlKjgjdZR+4IaPcAbIvZlvxX4Qb6rcKh77wp3stDFNwuFYVNO/KIN18/iIyhCMFMXxLEyb/lO890rMvfLj8UB3raLU/9sOSs6mk75nCfS6URKLR6y9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786830637; c=relaxed/simple;
-	bh=55tNRnilXGUpfBe40ZOG32nJPAfFrWCC6SLA0JdnEME=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dW4iSrSG4u27U3tISEibjsitpi7YFkW6WOXM+uqBb4uuQIriK8noBteQ+74HSOcvVs2iZdcicML/l/hTkRhpbJO27FVZIz8uMREBTS6abztfGQhA0HNKDJ0DGjGDl1LZkSBoFwItLyYSnrJRZ4utsZsKmDolB5DHbLaD4RWDvLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grrEP04D; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1786830837; c=relaxed/simple;
+	bh=VXmq9K/HRCVD/gkYVmOmNvAEYGioPR9ndL6kBSh4Q1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dLK9kY56DHP9kDkz7fXPV8ShQb2FUez2gOriKMPOVkc0vQRQjhMrfwEh5RplXvAIAkAnD+8HmOn9G7jYd67fXwwScjzvkJPHJZsAeAOZcZR31NA7tDjtCwaNyOB3ikvgIJKLXlhNrSECNBrigFDvJrW84Qpu5t025P37Z074KFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P2YM3pUO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grrEP04D"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ceeee8c46bso5095035ad.2
-        for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 14:50:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786830631; x=1787435431; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RRTi+2XfPP4e/3o2uPviWSe0YdqRzssbdRkwWqs+fb4=;
-        b=grrEP04D0SFD/giFhldu8hCLxAocNWV4T10+xeB8xYPxfouz+CFVwWc5qiqZWcYrEv
-         /cqnxXrZIfe1QVK0FAZ6Jd9NmWU7efCXF0TTFFjVcyKDeU+duWZCN3x7ZFi8nhS9IKM3
-         AnSQv7coxt35klB3d4aypI6VEhDE3Wq+5py51WXBcavfsmR3JB/TA3CxKJwYWkTd4xjE
-         j7xRzDUL1TCcmznOQvnwlATrJ6VLCIUnei5L8mZ3kquhDqiA6XVOxrresGvWFogpnag6
-         TyPB+dia0hYLe0nANQcd7DpJozolOk8xBwLkC7k2wnjUDamrirSXgJtFrE8QS5XIklec
-         WRGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786830631; x=1787435431;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RRTi+2XfPP4e/3o2uPviWSe0YdqRzssbdRkwWqs+fb4=;
-        b=TI18/cma/i54DpGO7YHDGCeIf6P7ZYRM/M7Zx4L/lcmr3QpIVpbbPKxjXwdew43Zlw
-         FgzQRf4xdQbb2ucyZ0j7b6pQBG1Yfmk7NoiG7Jz8laWy7tqEEHNt2I2NtKMdJN/9BLr7
-         lIuTmkZXTzCjbGEQ8Ftg/IjuifkGkky8W2HehB0xCcSug9CQDFLk+SoE4x9lvYsnoZdN
-         fUH4I26zX2TduU8odoTBbDu1iwMux861s9V9/EnSBtcsu2ZKnxKowDmXH0wNWM0iQ0OU
-         aDAmZJZFqbINV57h640sJ+Zt8szZvKLo+hM7ZJBkvykxKlizkgK0oSBbYmM3VQ72nihw
-         R3RQ==
-X-Gm-Message-State: AOJu0YxNR2ng0Cj8vo2WINFc/17m10ms8AE5QUzDuRTp5oDr1Kw1JcZy
-	9F73TjCKfM6W/SRBE6ZdFtgDpfTdNYH0XbFspPQ4fwVyI0hQN+cm1ZZM
-X-Gm-Gg: AR+sD10y3qo3aTuyPSmXQJSqBFQxAlLMj1QuDVSyakHvZkdZRbpUr5xd5o/3kAUueis
-	bNDot5bWH68wFuyWAoL9nkK/0+bgxhRDbmvj6J2OBQBDtWA4U702U+Kzj/uens5w+DpWEcHYr90
-	8V0yohZlUvsEwnsEU3uplsqAnMN8vj+5Am7iAeeICjUeet6vJX0cpVlTUjpjbmCjite1nfo4Xmz
-	JaZEAOJ/0+S56RWTpoUUFjfG0+6Ue62K1WtWx799M9sriu0I4FNs98L54b8yn+d13c22rKlm8Gt
-	EpdpkWsToGBJ/Nkd6MphR93bO2CPGsYSj815nydvBZRQ+emnI1GTWt9x8Y/0BC58GZ1Et+Fa0wq
-	QeH64wD2ZZUxypJcQ5RMSJO4gyIZC/l9oJ0H0KF7dDPdQ4AvndPdZLF/QSM+rAyOh8U42ooQkA3
-	50p68zqueBHGU3IOirIerxyKzceBzarSzpyKGM34HBvVOs8w6C6w9hf5HTTuyJffqeeefsCRR5B
-	8KLzIbD+GMRgZU5+fM628E=
-X-Received: by 2002:a17:90b:4c87:b0:38e:549:9e04 with SMTP id 98e67ed59e1d1-3933b7d1d85mr11505275a91.1.1786830631002;
-        Sat, 15 Aug 2026 14:50:31 -0700 (PDT)
-Received: from [10.112.173.252] ([2409:40c2:505d:7e1:7f19:edf4:38f3:dccf])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141388b2554sm33541829c88.14.2026.08.15.14.50.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 14:50:30 -0700 (PDT)
-From: Bhargav Joshi <j.bhargav.u@gmail.com>
-Date: Sun, 16 Aug 2026 03:19:32 +0530
-Subject: [PATCH 2/2] dt-bindings: spi: ti,davinci-spi: convert to DT schema
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P2YM3pUO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCFD1F000E9;
+	Sat, 15 Aug 2026 21:53:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1786830836;
+	bh=Mng5BWniPeM9reYy1Ta8r3Rg3KlW7xeXbQGcgXUrO34=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=P2YM3pUORIKpEYq4xfYIc2GwhcWeDZbxxcP4lsSSZX/EuKfkGIWFksrUm593hpj2V
+	 QQPywa1gnaeYt6zSlInPsAX27cRe8s3RcSoAyIxeR6w8UaWMRtczvz/33lIgHFTDkV
+	 CZWbqITuvZ9Z20aWtrPOtTot/pwF5WNkbuR7C5IPRM1mACFS+UKhF04YIcaSEpkFaj
+	 AsBRHxRNvFa14B/+nZEevp/yHgMvu7ZdmFwijPehZABB8DJ4Ozke5BAzm8GXCwkphl
+	 Ao0gYq+evbHOqdOXx9cBoRRFKCyhJcfkOx4HrsAH7Wmi5hrAY8u2p68T84DqkrKYJ1
+	 F2EvcDDE3s9rw==
+Date: Sat, 15 Aug 2026 22:53:48 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Janani Sunil <janani.sunil@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Mark Brown <broonie@kernel.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Marcus Folkesson
+ <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>, Conor
+ Dooley <conor.dooley@microchip.com>, Daire McNamara
+ <daire.mcnamara@microchip.com>, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+ Ghiti <alex@ghiti.fr>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, Janani Sunil <jan.sun97@gmail.com>,
+ <linux-spi@vger.kernel.org>, Kent Gustavsson <nedo80@gmail.com>,
+ <linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH v8 3/3] iio: dac: Add AD5529R DAC driver support
+Message-ID: <20260815225348.7a3bef4d@jic23-huawei>
+In-Reply-To: <20260805-ad5529r-driver-v8-3-b41781f5632a@analog.com>
+References: <20260805-ad5529r-driver-v8-0-b41781f5632a@analog.com>
+	<20260805-ad5529r-driver-v8-3-b41781f5632a@analog.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-ti-davinci-spi-v1-2-a7f57dfd5262@gmail.com>
-References: <20260816-ti-davinci-spi-v1-0-a7f57dfd5262@gmail.com>
-In-Reply-To: <20260816-ti-davinci-spi-v1-0-a7f57dfd5262@gmail.com>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- goledhruva@gmail.com, m-chawdhry@ti.com, daniel.baluta@gmail.com, 
- simona.toaca@nxp.com, j.bhargav.u@gmail.com
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786830590; l=9738;
- i=j.bhargav.u@gmail.com; h=from:subject:message-id;
- bh=55tNRnilXGUpfBe40ZOG32nJPAfFrWCC6SLA0JdnEME=;
- b=Sm05bewC87sUqORgXy+/OaVlBGt+UhxbSF0u2lvPauwoxS1kKgyi5NuuxaP49AaoWlSYOImTA
- 1BbK5JtNUwrATY8dZsexV8fjm3BvFgMutbbu0Yousz6H6Zv3AJlvofF
-X-Developer-Key: i=j.bhargav.u@gmail.com; a=ed25519;
- pk=IqNDwUZKECEA+n8wXctFLBbYL9NhFstZNbOznm/nX1k=
 
-Convert the TI DaVinci/Keystone SPI controller binding from text format
-to DT schema.
+On Wed, 5 Aug 2026 09:17:43 +0200
+Janani Sunil <janani.sunil@analog.com> wrote:
 
-Changes during the conversion:
-- Create a separate ti,davinci-spi-peripheral-props.yaml schema to
-  properly define the ti,spi-wdelay peripheral property.
-- Add missing dmas and dma-names properties.
-- Add constraints to ti,spi-wdelay based on the 6-bit width
-  of the SPIFMTn.WDELAY hardware register field.
-- Add constraints to num-cs based on the maximum hardware chip
-  selects available on the DA850 SoC.
+> Add support for AD5529R 16-channel, 12/16 bit Digital to Analog Converter
+> from Analog Devices.
+> 
+> The device communicates over SPI and supports per-channel output range
+> configuration. An optional external 4.096V reference can be used in
+> place of the internal reference.
+> 
+> Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+> ---
+>  MAINTAINERS               |   1 +
+>  drivers/iio/dac/Kconfig   |  17 ++
+>  drivers/iio/dac/Makefile  |   1 +
+>  drivers/iio/dac/ad5529r.c | 530 ++++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 549 insertions(+)
+> 
+>
 
-Signed-off-by: Bhargav Joshi <j.bhargav.u@gmail.com>
----
- .../devicetree/bindings/spi/spi-davinci.txt        | 100 -----------------
- .../bindings/spi/spi-peripheral-props.yaml         |   1 +
- .../spi/ti,davinci-spi-peripheral-props.yaml       |  25 +++++
- .../devicetree/bindings/spi/ti,davinci-spi.yaml    | 118 +++++++++++++++++++++
- 4 files changed, 144 insertions(+), 100 deletions(-)
+...
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-deleted file mode 100644
-index f012888656ec..000000000000
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ /dev/null
-@@ -1,100 +0,0 @@
--Davinci SPI controller device bindings
--
--Links on DM:
--Keystone 2 - https://www.ti.com/lit/ug/sprugp2a/sprugp2a.pdf
--dm644x - https://www.ti.com/lit/ug/sprue32a/sprue32a.pdf
--OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf
--
--Required properties:
--- #address-cells: number of cells required to define a chip select
--	address on the SPI bus. Should be set to 1.
--- #size-cells: should be zero.
--- compatible:
--	- "ti,dm6441-spi" for SPI used similar to that on DM644x SoC family
--	- "ti,da830-spi" for SPI used similar to that on DA8xx SoC family
--	- "ti,keystone-spi" for SPI used similar to that on Keystone2 SoC
--		family
--- reg: Offset and length of SPI controller register space
--- num-cs: Number of chip selects. This includes internal as well as
--	GPIO chip selects.
--- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
--	IP to the interrupt controller within the SoC. Possible values
--	are 0 and 1. Manual says one of the two possible interrupt
--	lines can be tied to the interrupt controller. Set this
--	based on a specific SoC configuration.
--- interrupts: interrupt number mapped to CPU.
--- clocks: spi clk phandle
--          For 66AK2G this property should be set per binding,
--          Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
--
--SoC-specific Required Properties:
--
--The following are mandatory properties for Keystone 2 66AK2G SoCs only:
--
--- power-domains:	Should contain a phandle to a PM domain provider node
--			and an args specifier containing the SPI device id
--			value. This property is as per the binding,
--
--Optional:
--- cs-gpios: gpio chip selects
--	For example to have 3 internal CS and 2 GPIO CS, user could define
--	cs-gpios = <0>, <0>, <0>, <&gpio1 30 0>, <&gpio1 31 0>;
--	where first three are internal CS and last two are GPIO CS.
--
--Optional properties for slave devices:
--SPI slave nodes can contain the following properties.
--Not all SPI Peripherals from Texas Instruments support this.
--Please check SPI peripheral documentation for a device before using these.
--
--- ti,spi-wdelay : delay between transmission of words
--	(SPIFMTn.WDELAY, SPIDAT1.WDEL) must be specified in number of SPI module
--	clock periods.
--
--	delay = WDELAY * SPI_module_clock_period + 2 * SPI_module_clock_period
--
--Below is timing diagram which shows functional meaning of
--"ti,spi-wdelay" parameter.
--
--             +-+ +-+ +-+ +-+ +-+                           +-+ +-+ +-+
--SPI_CLK      | | | | | | | | | |                           | | | | | |
--  +----------+ +-+ +-+ +-+ +-+ +---------------------------+ +-+ +-+ +-
--
--SPI_SOMI/SIMO+-----------------+                           +-----------
--  +----------+ word1           +---------------------------+word2
--             +-----------------+                           +-----------
--                                          WDELAY
--                                <-------------------------->
--
--Example of a NOR flash slave device (n25q032) connected to DaVinci
--SPI controller device over the SPI bus.
--
--spi0:spi@20bf0000 {
--	#address-cells			= <1>;
--	#size-cells			= <0>;
--	compatible			= "ti,dm6446-spi";
--	reg				= <0x20BF0000 0x1000>;
--	num-cs				= <4>;
--	ti,davinci-spi-intr-line	= <0>;
--	interrupts			= <338>;
--	clocks				= <&clkspi>;
--
--	flash: flash@0 {
--		#address-cells = <1>;
--		#size-cells = <1>;
--		compatible = "st,m25p32";
--		spi-max-frequency = <25000000>;
--		reg = <0>;
--		ti,spi-wdelay = <8>;
--
--		partition@0 {
--			label = "u-boot-spl";
--			reg = <0x0 0x80000>;
--			read-only;
--		};
--
--		partition@1 {
--			label = "test";
--			reg = <0x80000 0x380000>;
--		};
--	};
--};
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 880a9f624566..cb5d608998e1 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -155,5 +155,6 @@ allOf:
-   - $ref: fsl,dspi-peripheral-props.yaml#
-   - $ref: samsung,spi-peripheral-props.yaml#
-   - $ref: nvidia,tegra210-quad-peripheral-props.yaml#
-+  - $ref: ti,davinci-spi-peripheral-props.yaml#
- 
- additionalProperties: true
-diff --git a/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml
-new file mode 100644
-index 000000000000..1060f176c6cb
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml
-@@ -0,0 +1,25 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/ti,davinci-spi-peripheral-props.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TI DaVinci/Keystone SPI Peripheral Properties
-+
-+maintainers:
-+  - Bartosz Golaszewski <brgl@kernel.org>
-+
-+description:
-+  Peripheral-specific properties for SPI devices attached to a TI
-+  DaVinci/Keystone SPI controller.
-+
-+properties:
-+  ti,spi-wdelay:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 63
-+    description:
-+      delay between transmission of words (SPIFMTn.WDELAY, SPIDAT1.WDEL)
-+      must be specified in number of SPI module clock periods.
-+
-+additionalProperties: true
-diff --git a/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml b/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml
-new file mode 100644
-index 000000000000..81014e963909
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml
-@@ -0,0 +1,118 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/ti,davinci-spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: TI DaVinci/Keystone SPI Controller
-+
-+maintainers:
-+  - Bartosz Golaszewski <brgl@kernel.org>
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - enum:
-+          - ti,da830-spi
-+          - ti,keystone-spi
-+      - items:
-+          - const: ti,keystone-spi
-+          - const: ti,dm6441-spi
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    maxItems: 1
-+
-+  power-domains:
-+    maxItems: 1
-+    description:
-+      Should contain a phandle to a PM domain provider node
-+      and an args specifier containing the SPI device id
-+      value.
-+
-+  num-cs:
-+    minimum: 1
-+    maximum: 6
-+    default: 1
-+    description:
-+      Number of chip selects supported by the controller. This
-+      includes both internal and GPIO chip selects.
-+
-+  ti,davinci-spi-intr-line:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1]
-+    description:
-+      Interrupt line used to connect the SPI IP to the interrupt
-+      controller within the SoC.  The SPI peripheral can route its
-+      interrupt output to one of two lines (INT0 or INT1). Set
-+      this based on the SoC-specific wiring to the interrupt
-+      controller.
-+
-+  dmas:
-+    items:
-+      - description: RX DMA channel
-+      - description: TX DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: rx
-+      - const: tx
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - ti,davinci-spi-intr-line
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          const: ti,keystone-spi
-+    then:
-+      required:
-+        - power-domains
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi@20bf0000 {
-+        compatible = "ti,keystone-spi","ti,dm6441-spi";
-+        reg = <0x20bf0000 0x1000>;
-+        num-cs = <4>;
-+        ti,davinci-spi-intr-line = <0>;
-+        interrupts = <338>;
-+        clocks = <&clkspi>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        flash@0 {
-+            compatible = "jedec,spi-nor";
-+            spi-max-frequency = <25000000>;
-+            reg = <0>;
-+            ti,spi-wdelay = <8>;
-+        };
-+    };
-+
-+  - |
-+    spi@41000 {
-+        compatible = "ti,da830-spi";
-+        reg = <0x41000 0x1000>;
-+        num-cs = <6>;
-+        ti,davinci-spi-intr-line = <1>;
-+        interrupts = <20>;
-+        dmas = <&edma0 14 0>, <&edma0 15 0>;
-+        dma-names = "rx", "tx";
-+        clocks = <&psc0 4>;
-+        power-domains = <&psc0 4>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+    };
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 657c68e75542..bb1d59889a2a 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -134,6 +134,23 @@ config AD5449
+>  	  To compile this driver as a module, choose M here: the
+>  	  module will be called ad5449.
+>  
+> +config AD5529R
+> +	tristate "Analog Devices AD5529R High Voltage DAC driver"
+> +	depends on SPI_MASTER
+> +	select REGMAP_SPI
+> +	help
+> +	  Say yes here to build support for Analog Devices AD5529R
+> +	  16-Channel, 12-Bit/16-Bit, 40V High Voltage Precision Digital to Analog
 
--- 
-2.55.0
+Trivial but this wrap is rather random. Please tidy it up to a consistent 80 chars
+
+> +	  Converter.
+> +
+> +	  The device features multiple output voltage ranges from -20V to +20V,
+> +	  built-in 4.096V voltage reference, and digital functions including
+> +	  toggle, dither, and ramp modes. Supports both 12-bit and 16-bit
+> +	  resolution variants.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called ad5529r.
+> +
+>  config AD5592R_BASE
+>  	tristate
 

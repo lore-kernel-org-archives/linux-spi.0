@@ -1,68 +1,67 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B9E38F922
-	for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 21:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30E33909B5
+	for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 21:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786830623; cv=none; b=CR82xTliOw2GYESVQiTHnT4y8nx2PQY5Jf66PaMCI/JylS37jtXqb4n6ssjqEU8ouXpSKFmA9GuCTk9UN2a99Mg5s2wsNYm29M3bsREAMLuK7dq5EaSuN4jpP2h9omVJ/uLeJv2jWK6pmh7tK6zFdqJmAP6X+VEZPJGmt07qq4E=
+	t=1786830637; cv=none; b=ZdjxPqUcuDYAe3+j78qMqWokbkaBPRB8wMP/fmlicoWbtAGN8IGJuawoKMjwJRMclETFhCECxOIDpU00Rd/wUxtVBEvUKEUprREVdn1t6mpO5Ix9tlu2TBwgXdMnDIohgHZCdnS8+uTLYBtC/pWlO2Er1O23S3Itet1Zp1eWOIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786830623; c=relaxed/simple;
-	bh=XFoqZ+z5QG7ECO6zr8uQu6XY/OuKqIE2k3KDt9TGDaI=;
+	s=arc-20240116; t=1786830637; c=relaxed/simple;
+	bh=55tNRnilXGUpfBe40ZOG32nJPAfFrWCC6SLA0JdnEME=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YIo171GU0Y/eMvG62ByZy8+vrFOzO5/SJMAC8Yzos4PehLKl8W4K6LdHxMGaOfBmcM1FqZKbpa+wFuMiqpam8I1ExL2LJI8UK96YEom2IGpVo4aQwCR8ROfz0xN3IhIo2pjn/IDk5WO66de2muRqd8VqN3o0yKkRR01+XPoNmrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SPKkm6rd; arc=none smtp.client-ip=209.85.214.174
+	 In-Reply-To:To:Cc; b=dW4iSrSG4u27U3tISEibjsitpi7YFkW6WOXM+uqBb4uuQIriK8noBteQ+74HSOcvVs2iZdcicML/l/hTkRhpbJO27FVZIz8uMREBTS6abztfGQhA0HNKDJ0DGjGDl1LZkSBoFwItLyYSnrJRZ4utsZsKmDolB5DHbLaD4RWDvLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grrEP04D; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SPKkm6rd"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cecdc24b1cso4273805ad.1
-        for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 14:50:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grrEP04D"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ceeee8c46bso5095035ad.2
+        for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 14:50:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786830619; x=1787435419; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1786830631; x=1787435431; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mq/fIWFrC8Wf8aflDG3c+bHNDMcwMOJsMYCo8Rnm+2U=;
-        b=SPKkm6rdy1iNBOefB9iN/4yGktF2WQEkkDPl520L/B5KVw0CsO8EYMlIFokk0o64NN
-         EsZqVGLCxBMncV82ZE4pwWuA9aDgABVB4lQ1SdwpzihB8ZBsucjOAAdq8WQtbDguJaNR
-         dT1E70dtO10r0uV78RRs5q0DYPUmZSSxO0wjRbxvPA5+yg6LBbfCTa5yCYvq5pnPvS3y
-         xjIiJEIL5Abw4gFOR0v0HP/GnZKg8QyXpPQ+OHkr2EPfoov7pMbXYTXLZHMKCeN5CkVA
-         s5ELrnMwkjvv+YPJ258DGTBN8/BBV7Hf9dJ42uagKo9NoWGiyezM+DyzTWww+/o6fNew
-         bVYA==
+        bh=RRTi+2XfPP4e/3o2uPviWSe0YdqRzssbdRkwWqs+fb4=;
+        b=grrEP04D0SFD/giFhldu8hCLxAocNWV4T10+xeB8xYPxfouz+CFVwWc5qiqZWcYrEv
+         /cqnxXrZIfe1QVK0FAZ6Jd9NmWU7efCXF0TTFFjVcyKDeU+duWZCN3x7ZFi8nhS9IKM3
+         AnSQv7coxt35klB3d4aypI6VEhDE3Wq+5py51WXBcavfsmR3JB/TA3CxKJwYWkTd4xjE
+         j7xRzDUL1TCcmznOQvnwlATrJ6VLCIUnei5L8mZ3kquhDqiA6XVOxrresGvWFogpnag6
+         TyPB+dia0hYLe0nANQcd7DpJozolOk8xBwLkC7k2wnjUDamrirSXgJtFrE8QS5XIklec
+         WRGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786830619; x=1787435419;
+        d=1e100.net; s=20251104; t=1786830631; x=1787435431;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=mq/fIWFrC8Wf8aflDG3c+bHNDMcwMOJsMYCo8Rnm+2U=;
-        b=m2gWIj1iYbhGpC67zsiE6nNnrltz52A7OCgDVaMUHWhQSG0m70b+wrwrQuryaBay06
-         WxB4q9oZvznFmDKeY2quPdlR72pmuiO/cys7YQTUlp/hDAScqQUC57qwJRihh1vQfXnG
-         dYZx+JOmFT/AH98+sYO4lZfFP/I/3gIeVsIp8zllj6c4yYam2aXa+88TcD3taVS2nMsa
-         KoHdJlndQHFpU9/tndHQTRGafkbjVfUan2+JuocL7eJuCCkDP1Y55m4vZbGPjWeeKR2h
-         Iq9b0LTtd/qXfFnamjPSKGHh90h404FopMncXCchitH1s9pQD+CExCGGAcTIsu9HqU7h
-         lHNw==
-X-Gm-Message-State: AOJu0YyTQpv9WO6WUEc2LA1CKXJIX+vWUaW5vrL4Eb9s+tYZCrokeHaD
-	4NHtd0Va/IpTP3BVPjoEScnv5o/51RPcj1d3rFzhiNHyw6m0wyXV92uDXaC9Wg==
-X-Gm-Gg: AR+sD11zmWaNZrr03fkZptjJm3j5/zkAxycJ6oLzEAhPk6a2Dl8zP7N6a8Ct/a+lxvD
-	S1jcGb0XxpWUFSSk6IdVYVcLdGIffUFmjJ8P/jATLnN4utYA8FIY44WiLhLAem/s7nhRtuHYtC4
-	kXrpKE4XXVzKh1SEIfPHFyE2klNMBhCF49F6pE5DGn9nQRjYgard+93BiRne2Ia4GsTfwcmVqrf
-	Wfa0iZCKC/ai+ANXwd7YEX9N5lf71MvG48cU4r46Qm96iBDo9VnunKw8Z4Oy/8pdS2185by5waP
-	2mkATJYf3FDnZuQG8Uqw2jbQ/nUTEdoja1We27+x9Ci9RujK3FL5TftV9iAuIVP4MWkKXxAnv1Q
-	7NE2Tqccexw/Kp9K10qYAw9LH12seRykVjYsUOk1XO1ryNEKD9J5YlJWGibnHa31ATLOISIk0oX
-	rm3Q4P21v3D4GXdZk+y5WgQX58RzFy+cGPRFZ+KyFqR3uXZ0843AwBbSk0EEnK9H1dAXe2O+kd0
-	vpDQKN8eZQ=
-X-Received: by 2002:a17:90b:4c47:b0:381:28e0:6248 with SMTP id 98e67ed59e1d1-3933b6fa584mr12370734a91.1.1786830618690;
-        Sat, 15 Aug 2026 14:50:18 -0700 (PDT)
+        bh=RRTi+2XfPP4e/3o2uPviWSe0YdqRzssbdRkwWqs+fb4=;
+        b=TI18/cma/i54DpGO7YHDGCeIf6P7ZYRM/M7Zx4L/lcmr3QpIVpbbPKxjXwdew43Zlw
+         FgzQRf4xdQbb2ucyZ0j7b6pQBG1Yfmk7NoiG7Jz8laWy7tqEEHNt2I2NtKMdJN/9BLr7
+         lIuTmkZXTzCjbGEQ8Ftg/IjuifkGkky8W2HehB0xCcSug9CQDFLk+SoE4x9lvYsnoZdN
+         fUH4I26zX2TduU8odoTBbDu1iwMux861s9V9/EnSBtcsu2ZKnxKowDmXH0wNWM0iQ0OU
+         aDAmZJZFqbINV57h640sJ+Zt8szZvKLo+hM7ZJBkvykxKlizkgK0oSBbYmM3VQ72nihw
+         R3RQ==
+X-Gm-Message-State: AOJu0YxNR2ng0Cj8vo2WINFc/17m10ms8AE5QUzDuRTp5oDr1Kw1JcZy
+	9F73TjCKfM6W/SRBE6ZdFtgDpfTdNYH0XbFspPQ4fwVyI0hQN+cm1ZZM
+X-Gm-Gg: AR+sD10y3qo3aTuyPSmXQJSqBFQxAlLMj1QuDVSyakHvZkdZRbpUr5xd5o/3kAUueis
+	bNDot5bWH68wFuyWAoL9nkK/0+bgxhRDbmvj6J2OBQBDtWA4U702U+Kzj/uens5w+DpWEcHYr90
+	8V0yohZlUvsEwnsEU3uplsqAnMN8vj+5Am7iAeeICjUeet6vJX0cpVlTUjpjbmCjite1nfo4Xmz
+	JaZEAOJ/0+S56RWTpoUUFjfG0+6Ue62K1WtWx799M9sriu0I4FNs98L54b8yn+d13c22rKlm8Gt
+	EpdpkWsToGBJ/Nkd6MphR93bO2CPGsYSj815nydvBZRQ+emnI1GTWt9x8Y/0BC58GZ1Et+Fa0wq
+	QeH64wD2ZZUxypJcQ5RMSJO4gyIZC/l9oJ0H0KF7dDPdQ4AvndPdZLF/QSM+rAyOh8U42ooQkA3
+	50p68zqueBHGU3IOirIerxyKzceBzarSzpyKGM34HBvVOs8w6C6w9hf5HTTuyJffqeeefsCRR5B
+	8KLzIbD+GMRgZU5+fM628E=
+X-Received: by 2002:a17:90b:4c87:b0:38e:549:9e04 with SMTP id 98e67ed59e1d1-3933b7d1d85mr11505275a91.1.1786830631002;
+        Sat, 15 Aug 2026 14:50:31 -0700 (PDT)
 Received: from [10.112.173.252] ([2409:40c2:505d:7e1:7f19:edf4:38f3:dccf])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141388b2554sm33541829c88.14.2026.08.15.14.50.05
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-141388b2554sm33541829c88.14.2026.08.15.14.50.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Aug 2026 14:50:17 -0700 (PDT)
+        Sat, 15 Aug 2026 14:50:30 -0700 (PDT)
 From: Bhargav Joshi <j.bhargav.u@gmail.com>
-Date: Sun, 16 Aug 2026 03:19:31 +0530
-Subject: [PATCH 1/2] ARM: dts: ti: keystone-k2l: Remove obsolete
- ti,davinci-spi-num-cs property
+Date: Sun, 16 Aug 2026 03:19:32 +0530
+Subject: [PATCH 2/2] dt-bindings: spi: ti,davinci-spi: convert to DT schema
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -71,7 +70,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-ti-davinci-spi-v1-1-a7f57dfd5262@gmail.com>
+Message-Id: <20260816-ti-davinci-spi-v1-2-a7f57dfd5262@gmail.com>
 References: <20260816-ti-davinci-spi-v1-0-a7f57dfd5262@gmail.com>
 In-Reply-To: <20260816-ti-davinci-spi-v1-0-a7f57dfd5262@gmail.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -83,45 +82,306 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  goledhruva@gmail.com, m-chawdhry@ti.com, daniel.baluta@gmail.com, 
  simona.toaca@nxp.com, j.bhargav.u@gmail.com
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786830590; l=1015;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786830590; l=9738;
  i=j.bhargav.u@gmail.com; h=from:subject:message-id;
- bh=XFoqZ+z5QG7ECO6zr8uQu6XY/OuKqIE2k3KDt9TGDaI=;
- b=g8WO4io71QaI4Ew5Y7WTJ0khQq7KbCNYzY4E/lg3TJEguYq3S70aKQ0/uzAD/IV01GCnAsVeT
- Dj/b6W3jGGfB1M0hOTZXP0IfuLKzaK1jBQx4zq21KJVcczYoUC4qh0e
+ bh=55tNRnilXGUpfBe40ZOG32nJPAfFrWCC6SLA0JdnEME=;
+ b=Sm05bewC87sUqORgXy+/OaVlBGt+UhxbSF0u2lvPauwoxS1kKgyi5NuuxaP49AaoWlSYOImTA
+ 1BbK5JtNUwrATY8dZsexV8fjm3BvFgMutbbu0Yousz6H6Zv3AJlvofF
 X-Developer-Key: i=j.bhargav.u@gmail.com; a=ed25519;
  pk=IqNDwUZKECEA+n8wXctFLBbYL9NhFstZNbOznm/nX1k=
 
-Remove the property `ti,davinci-spi-num-cs` that is present in the SPI
-nodes of keystone-k2l.dtsi, but it has never been documented in the
-bindings or matched by driver. Driver relies on standard `num-cs`
-property instead.
+Convert the TI DaVinci/Keystone SPI controller binding from text format
+to DT schema.
+
+Changes during the conversion:
+- Create a separate ti,davinci-spi-peripheral-props.yaml schema to
+  properly define the ti,spi-wdelay peripheral property.
+- Add missing dmas and dma-names properties.
+- Add constraints to ti,spi-wdelay based on the 6-bit width
+  of the SPIFMTn.WDELAY hardware register field.
+- Add constraints to num-cs based on the maximum hardware chip
+  selects available on the DA850 SoC.
 
 Signed-off-by: Bhargav Joshi <j.bhargav.u@gmail.com>
 ---
- arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi | 9 ---------
- 1 file changed, 9 deletions(-)
+ .../devicetree/bindings/spi/spi-davinci.txt        | 100 -----------------
+ .../bindings/spi/spi-peripheral-props.yaml         |   1 +
+ .../spi/ti,davinci-spi-peripheral-props.yaml       |  25 +++++
+ .../devicetree/bindings/spi/ti,davinci-spi.yaml    | 118 +++++++++++++++++++++
+ 4 files changed, 144 insertions(+), 100 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-index 330b437b667f..65fdb45e8368 100644
---- a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-+++ b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
-@@ -400,16 +400,7 @@ mdio: mdio@26200f00 {
- 		/include/ "keystone-k2l-netcp.dtsi"
- };
+diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+deleted file mode 100644
+index f012888656ec..000000000000
+--- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
++++ /dev/null
+@@ -1,100 +0,0 @@
+-Davinci SPI controller device bindings
+-
+-Links on DM:
+-Keystone 2 - https://www.ti.com/lit/ug/sprugp2a/sprugp2a.pdf
+-dm644x - https://www.ti.com/lit/ug/sprue32a/sprue32a.pdf
+-OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf
+-
+-Required properties:
+-- #address-cells: number of cells required to define a chip select
+-	address on the SPI bus. Should be set to 1.
+-- #size-cells: should be zero.
+-- compatible:
+-	- "ti,dm6441-spi" for SPI used similar to that on DM644x SoC family
+-	- "ti,da830-spi" for SPI used similar to that on DA8xx SoC family
+-	- "ti,keystone-spi" for SPI used similar to that on Keystone2 SoC
+-		family
+-- reg: Offset and length of SPI controller register space
+-- num-cs: Number of chip selects. This includes internal as well as
+-	GPIO chip selects.
+-- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
+-	IP to the interrupt controller within the SoC. Possible values
+-	are 0 and 1. Manual says one of the two possible interrupt
+-	lines can be tied to the interrupt controller. Set this
+-	based on a specific SoC configuration.
+-- interrupts: interrupt number mapped to CPU.
+-- clocks: spi clk phandle
+-          For 66AK2G this property should be set per binding,
+-          Documentation/devicetree/bindings/clock/ti,sci-clk.yaml
+-
+-SoC-specific Required Properties:
+-
+-The following are mandatory properties for Keystone 2 66AK2G SoCs only:
+-
+-- power-domains:	Should contain a phandle to a PM domain provider node
+-			and an args specifier containing the SPI device id
+-			value. This property is as per the binding,
+-
+-Optional:
+-- cs-gpios: gpio chip selects
+-	For example to have 3 internal CS and 2 GPIO CS, user could define
+-	cs-gpios = <0>, <0>, <0>, <&gpio1 30 0>, <&gpio1 31 0>;
+-	where first three are internal CS and last two are GPIO CS.
+-
+-Optional properties for slave devices:
+-SPI slave nodes can contain the following properties.
+-Not all SPI Peripherals from Texas Instruments support this.
+-Please check SPI peripheral documentation for a device before using these.
+-
+-- ti,spi-wdelay : delay between transmission of words
+-	(SPIFMTn.WDELAY, SPIDAT1.WDEL) must be specified in number of SPI module
+-	clock periods.
+-
+-	delay = WDELAY * SPI_module_clock_period + 2 * SPI_module_clock_period
+-
+-Below is timing diagram which shows functional meaning of
+-"ti,spi-wdelay" parameter.
+-
+-             +-+ +-+ +-+ +-+ +-+                           +-+ +-+ +-+
+-SPI_CLK      | | | | | | | | | |                           | | | | | |
+-  +----------+ +-+ +-+ +-+ +-+ +---------------------------+ +-+ +-+ +-
+-
+-SPI_SOMI/SIMO+-----------------+                           +-----------
+-  +----------+ word1           +---------------------------+word2
+-             +-----------------+                           +-----------
+-                                          WDELAY
+-                                <-------------------------->
+-
+-Example of a NOR flash slave device (n25q032) connected to DaVinci
+-SPI controller device over the SPI bus.
+-
+-spi0:spi@20bf0000 {
+-	#address-cells			= <1>;
+-	#size-cells			= <0>;
+-	compatible			= "ti,dm6446-spi";
+-	reg				= <0x20BF0000 0x1000>;
+-	num-cs				= <4>;
+-	ti,davinci-spi-intr-line	= <0>;
+-	interrupts			= <338>;
+-	clocks				= <&clkspi>;
+-
+-	flash: flash@0 {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "st,m25p32";
+-		spi-max-frequency = <25000000>;
+-		reg = <0>;
+-		ti,spi-wdelay = <8>;
+-
+-		partition@0 {
+-			label = "u-boot-spl";
+-			reg = <0x0 0x80000>;
+-			read-only;
+-		};
+-
+-		partition@1 {
+-			label = "test";
+-			reg = <0x80000 0x380000>;
+-		};
+-	};
+-};
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 880a9f624566..cb5d608998e1 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -155,5 +155,6 @@ allOf:
+   - $ref: fsl,dspi-peripheral-props.yaml#
+   - $ref: samsung,spi-peripheral-props.yaml#
+   - $ref: nvidia,tegra210-quad-peripheral-props.yaml#
++  - $ref: ti,davinci-spi-peripheral-props.yaml#
  
--&spi0 {
--       ti,davinci-spi-num-cs = <5>;
--};
--
--&spi1 {
--       ti,davinci-spi-num-cs = <3>;
--};
--
- &spi2 {
--       ti,davinci-spi-num-cs = <5>;
-        /* Pin muxed. Enabled and configured by Bootloader */
-        status = "disabled";
- };
+ additionalProperties: true
+diff --git a/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml
+new file mode 100644
+index 000000000000..1060f176c6cb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml
+@@ -0,0 +1,25 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/ti,davinci-spi-peripheral-props.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI DaVinci/Keystone SPI Peripheral Properties
++
++maintainers:
++  - Bartosz Golaszewski <brgl@kernel.org>
++
++description:
++  Peripheral-specific properties for SPI devices attached to a TI
++  DaVinci/Keystone SPI controller.
++
++properties:
++  ti,spi-wdelay:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    minimum: 0
++    maximum: 63
++    description:
++      delay between transmission of words (SPIFMTn.WDELAY, SPIDAT1.WDEL)
++      must be specified in number of SPI module clock periods.
++
++additionalProperties: true
+diff --git a/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml b/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml
+new file mode 100644
+index 000000000000..81014e963909
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml
+@@ -0,0 +1,118 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/ti,davinci-spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: TI DaVinci/Keystone SPI Controller
++
++maintainers:
++  - Bartosz Golaszewski <brgl@kernel.org>
++
++properties:
++  compatible:
++    oneOf:
++      - enum:
++          - ti,da830-spi
++          - ti,keystone-spi
++      - items:
++          - const: ti,keystone-spi
++          - const: ti,dm6441-spi
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  power-domains:
++    maxItems: 1
++    description:
++      Should contain a phandle to a PM domain provider node
++      and an args specifier containing the SPI device id
++      value.
++
++  num-cs:
++    minimum: 1
++    maximum: 6
++    default: 1
++    description:
++      Number of chip selects supported by the controller. This
++      includes both internal and GPIO chip selects.
++
++  ti,davinci-spi-intr-line:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    enum: [0, 1]
++    description:
++      Interrupt line used to connect the SPI IP to the interrupt
++      controller within the SoC.  The SPI peripheral can route its
++      interrupt output to one of two lines (INT0 or INT1). Set
++      this based on the SoC-specific wiring to the interrupt
++      controller.
++
++  dmas:
++    items:
++      - description: RX DMA channel
++      - description: TX DMA channel
++
++  dma-names:
++    items:
++      - const: rx
++      - const: tx
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - ti,davinci-spi-intr-line
++
++allOf:
++  - $ref: spi-controller.yaml#
++  - if:
++      properties:
++        compatible:
++          const: ti,keystone-spi
++    then:
++      required:
++        - power-domains
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi@20bf0000 {
++        compatible = "ti,keystone-spi","ti,dm6441-spi";
++        reg = <0x20bf0000 0x1000>;
++        num-cs = <4>;
++        ti,davinci-spi-intr-line = <0>;
++        interrupts = <338>;
++        clocks = <&clkspi>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        flash@0 {
++            compatible = "jedec,spi-nor";
++            spi-max-frequency = <25000000>;
++            reg = <0>;
++            ti,spi-wdelay = <8>;
++        };
++    };
++
++  - |
++    spi@41000 {
++        compatible = "ti,da830-spi";
++        reg = <0x41000 0x1000>;
++        num-cs = <6>;
++        ti,davinci-spi-intr-line = <1>;
++        interrupts = <20>;
++        dmas = <&edma0 14 0>, <&edma0 15 0>;
++        dma-names = "rx", "tx";
++        clocks = <&psc0 4>;
++        power-domains = <&psc0 4>;
++        #address-cells = <1>;
++        #size-cells = <0>;
++    };
 
 -- 
 2.55.0

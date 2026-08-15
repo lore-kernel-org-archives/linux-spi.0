@@ -1,63 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292C3AEF24;
-	Fri, 14 Aug 2026 22:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08BC10F2;
+	Sat, 15 Aug 2026 02:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786748350; cv=none; b=f0aPCRTLfgBcc4FIxKRV/ZoIe1Mxbj087eufvhAAGMofVYwn8vMnyVpGvTkt5FGj2WM2/XnMe+I/15ZeeKawhm6iHHsC2QtfzWlOn2muAxJLUR2Hjcr05otMMBJOzcsacnyRsqxChNy7rtj/wIxipvX7DvMqg+CuHU5afZcATmk=
+	t=1786761172; cv=none; b=B2c1InHYNQ3UY63AILThQiMywP/rL/AGJZxraHHNCAwa/iDaVbKTgIAg0ns1Gihc4nawG8Fp098j/eodVV6g6mvfnnxldT2Tc90/xsFTed5nyl9ipE58kEYQXMXBCX0lz+BQs1GMyiQPQigzW6T4xE4oP9XcPKBqqvCdUJ1eng0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786748350; c=relaxed/simple;
-	bh=yiVYMcL4FYsXIgy4D3uxZt3ULL9bClOPWtapVT2uyZA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=CS6HwVjc2zjSQTTGJ1my18WhLM4lI9ElDZ34Iy8vsCNhJvEELhzBjeS4rmY+uVrQ/qg+tO1/zkQqz8nWWbW5RZzFhKnuOvqxfPaa+n8DiTBMKIUrFwJVRpLq+alNMc3mRXrFAzLP4n3ir2WxMgxiGBHxWqqzo4rynqEq+6zHWw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvno1yGf; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvno1yGf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2991B1F000E9;
-	Fri, 14 Aug 2026 22:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786748349;
-	bh=QHhmn9S2m7E8R1GJQf4+kwvlTVIvXTYx8cwMaoy4Yyg=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=dvno1yGfrcxr7CpnAPt6N7CdHZX6jCzB2w/e6/J0C8dTXy+5hkknOd0OqCPTd/A/h
-	 U4rXJ4Mm2Nvo6ZlKUt+pWdRfU9A6Ak0Zp7l+Ko6QrNDTh50eWPnvC5dj2G5oJZEMdz
-	 ft+vahycLEm3I9pFnd3CoEd6hb8rGJ6rG45klOdDczhbzJWJ6GGJGBEXO+TpLlkcah
-	 GXxQ5buciQg4bKPshIBWHAgAJV58xD5Tq3Z1FBZBKXk/dhUsj+T7aSQ1N2ZBp49REx
-	 5MYQWz3Mdb8eAH41Ng0vntfhHiSuryi+Stx0QzHICAj3/aJR3/VdL4kDLnEQwduVIu
-	 rnbihr8gStLbg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5681C3924460;
-	Fri, 14 Aug 2026 22:58:24 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v7.2-rc7
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
-References: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <917f2746ec579064ac9e7603c3e3ee73@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc7
-X-PR-Tracked-Commit-Id: 11058bd3d47d57eb3473935feae53868d6d168b7
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 06d9a86e0222dcf6858544ba7257994bfe9e63c7
-Message-Id: <178674830295.3991221.6402718889890902853.pr-tracker-bot@kernel.org>
-Date: Fri, 14 Aug 2026 22:58:22 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	s=arc-20240116; t=1786761172; c=relaxed/simple;
+	bh=coBX8vE1oP3dXhBWhX8r/5fMm6jnvtpL3zOeEuBtyks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SVgri1epUg8hYaqtp60ej4NvfaX8IgJqecW7Oe4Ye/0TPiXKlKtHErnCRmRaDpXN+ZOALNXhAIZIwC7MaaOA51JeOj4aVzvQGDy54A8Y14jQ4HL2Ls8Eafv1RTOtvqK71j0A0sQPO8Wl7ny3u8BSKJFalgN7gaeB9fU7pdTK74A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
+Received: by sphereful.davidgow.net (Postfix, from userid 119)
+	id 028081EA93C; Sat, 15 Aug 2026 10:32:42 +0800 (AWST)
+X-Spam-Level: 
+Received: from [IPV6:2001:8003:8802:7000::9c4] (unknown [IPv6:2001:8003:8802:7000::9c4])
+	by sphereful.davidgow.net (Postfix) with ESMTPSA id 9A92A1EA934;
+	Sat, 15 Aug 2026 10:32:39 +0800 (AWST)
+Message-ID: <f2f4be53-2cce-4517-9e37-518150b7764b@davidgow.net>
+Date: Sat, 15 Aug 2026 10:32:36 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] spi: Add KUnit coverage for DMA mapping error
+ paths
+To: Honghui Jiang <jiang_hh2019@163.com>, Mark Brown <broonie@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Andy Shevchenko <andy@kernel.org>, Serge Semin <fancer.lancer@gmail.com>,
+ Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
+References: <20260814031419.43378-1-jiang_hh2019@163.com>
+ <20260814031419.43378-5-jiang_hh2019@163.com>
+ <an8JaNLIy4je-tiG@ashevche-desk.local>
+ <93950eda-ee8e-4a28-8e3c-707d64c956fe@sirena.org.uk>
+ <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
+From: David Gow <david@davidgow.net>
+Content-Language: fr
+In-Reply-To: <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Fri, 14 Aug 2026 18:55:20 +0100:
+Le 15/08/2026 à 1:38 AM, Honghui Jiang a écrit :
+> On Fri, Aug 14, 2026 at 01:49:50PM +0100, Mark Brown wrote:
+>> On Fri, Aug 14, 2026 at 03:27:13PM +0300, Andy Shevchenko wrote:
+>>> This is a stray change.
+>>
+>> Well, one of the config changes is.  Clearly spi is critical enough to
+>> be tested by default!  :P
+> 
+> 
+> Thanks, both. I'll drop CONFIG_SPI=y from default.config in v3 and keep
+> it in all_tests.config.
+> 
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.2-rc7
+Thanks: we want to keep the default config to only match things
+otherwise enabled in Kconfig (via CONFIG_KUNIT_ALL_TESTS=y).
+all_tests.config is the right place for this.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/06d9a86e0222dcf6858544ba7257994bfe9e63c7
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Cheers,
+-- David

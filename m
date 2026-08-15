@@ -1,69 +1,78 @@
-Received: from sphereful.davidgow.net (sphereful.davidgow.net [203.29.242.92])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08BC10F2;
-	Sat, 15 Aug 2026 02:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.242.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FFE369203
+	for <linux-spi@vger.kernel.org>; Sat, 15 Aug 2026 09:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786761172; cv=none; b=B2c1InHYNQ3UY63AILThQiMywP/rL/AGJZxraHHNCAwa/iDaVbKTgIAg0ns1Gihc4nawG8Fp098j/eodVV6g6mvfnnxldT2Tc90/xsFTed5nyl9ipE58kEYQXMXBCX0lz+BQs1GMyiQPQigzW6T4xE4oP9XcPKBqqvCdUJ1eng0=
+	t=1786785846; cv=none; b=tv2Ag3tLaaAD0jggrth3+mkejkDU4zbbPQ97/RyXizAgG6sVWkSFzusrEkUTQsdRHhLkXQGwIJql3Mr7981Tj6wW/l9OyfRqvxOB5NQ5JJMc/6wVBu7+Ymy5tIRxs+PW8l9sOJwxinYvR6G0Kl10MY2VTCcPrUZBmnPo6FPPjjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786761172; c=relaxed/simple;
-	bh=coBX8vE1oP3dXhBWhX8r/5fMm6jnvtpL3zOeEuBtyks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SVgri1epUg8hYaqtp60ej4NvfaX8IgJqecW7Oe4Ye/0TPiXKlKtHErnCRmRaDpXN+ZOALNXhAIZIwC7MaaOA51JeOj4aVzvQGDy54A8Y14jQ4HL2Ls8Eafv1RTOtvqK71j0A0sQPO8Wl7ny3u8BSKJFalgN7gaeB9fU7pdTK74A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net; spf=pass smtp.mailfrom=davidgow.net; arc=none smtp.client-ip=203.29.242.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=davidgow.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=davidgow.net
-Received: by sphereful.davidgow.net (Postfix, from userid 119)
-	id 028081EA93C; Sat, 15 Aug 2026 10:32:42 +0800 (AWST)
-X-Spam-Level: 
-Received: from [IPV6:2001:8003:8802:7000::9c4] (unknown [IPv6:2001:8003:8802:7000::9c4])
-	by sphereful.davidgow.net (Postfix) with ESMTPSA id 9A92A1EA934;
-	Sat, 15 Aug 2026 10:32:39 +0800 (AWST)
-Message-ID: <f2f4be53-2cce-4517-9e37-518150b7764b@davidgow.net>
-Date: Sat, 15 Aug 2026 10:32:36 +0800
+	s=arc-20240116; t=1786785846; c=relaxed/simple;
+	bh=Q69I5kR0I1QwXgOBFOzjho6suHR3Ek6iV/goTrGeyN4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=bvMLTW0ugRXmeGFSvQTHosJ+Nz18vP/YDOY35gJpYShwIrsk5pHygLk30/imPBivUYQddJvK/WNysEJp3ukvoGTscRAIVL6rLuBr4MhPcON0UAQLsI9uZhlQTNCzwGb03uExUyODv1ToOLvo8arjOmbwIciwot74IcKyOXrc4oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2ZhRWxqQ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2ZhRWxqQ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id D43B71A14F6;
+	Sat, 15 Aug 2026 09:23:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9323C604AA;
+	Sat, 15 Aug 2026 09:23:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCB0411C4F477;
+	Sat, 15 Aug 2026 11:23:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1786785830; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Q69I5kR0I1QwXgOBFOzjho6suHR3Ek6iV/goTrGeyN4=;
+	b=2ZhRWxqQpKrj1UYWokB3VMcuXHLckjJOdgERbJeii/4ZPLfGYBZOe34qGK/Lxzci9Lt5Nj
+	DyAngLI3bJi0WVVRy0q4i3Tbl+WfE5xaMJ+Cmuw5hNzHP23p5Md5vFfmOQ/yhi0lwRFafU
+	nszhIxFy/n6ViyKg3z++Uy+qG6jpiDkbLLO1LYzRDGY9ili/RYFU4/behaq+6nddEVpkri
+	tiG9SKAhfb4CwcyQbepUc41oyF2yumHbao2WHhMtnpQwxVbBkyeB3CVhHA+0gEfRczdkm0
+	OtDs3oBzRiTJpuuylwKGhWPePAWzteYH3r4Zv3kirR/7oL7gWHQwhjYJOHhwXQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Jacky Huang <ychuang3@nuvoton.com>,  Shan-Chun Hung
+ <schung@nuvoton.com>,  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+  Steam Lin <STLin2@winbond.com>,  linux-arm-kernel@lists.infradead.org,
+  linux-spi@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/5] spi: ma35d1-qspi: Add DTR support
+In-Reply-To: <34412d10-cea1-42ef-a53c-ef515b452793@sirena.org.uk> (Mark
+	Brown's message of "Fri, 14 Aug 2026 13:56:10 +0100")
+References: <20260813-perso-ma35d1-upstream-qspi-v1-0-b217b9870eb1@bootlin.com>
+	<20260813-perso-ma35d1-upstream-qspi-v1-4-b217b9870eb1@bootlin.com>
+	<09c3928f-4b58-4ac6-8e1a-84dfe3ff6b92@sirena.org.uk>
+	<87ik5ckh2j.fsf@bootlin.com>
+	<34412d10-cea1-42ef-a53c-ef515b452793@sirena.org.uk>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Sat, 15 Aug 2026 11:23:46 +0200
+Message-ID: <877blrka8t.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] spi: Add KUnit coverage for DMA mapping error
- paths
-To: Honghui Jiang <jiang_hh2019@163.com>, Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Andy Shevchenko <andy@kernel.org>, Serge Semin <fancer.lancer@gmail.com>,
- Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <raemoar63@gmail.com>,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-References: <20260814031419.43378-1-jiang_hh2019@163.com>
- <20260814031419.43378-5-jiang_hh2019@163.com>
- <an8JaNLIy4je-tiG@ashevche-desk.local>
- <93950eda-ee8e-4a28-8e3c-707d64c956fe@sirena.org.uk>
- <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
-From: David Gow <david@davidgow.net>
-Content-Language: fr
-In-Reply-To: <53943105.8b50.1a0015a531c.Coremail.jiang_hh2019@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Le 15/08/2026 à 1:38 AM, Honghui Jiang a écrit :
-> On Fri, Aug 14, 2026 at 01:49:50PM +0100, Mark Brown wrote:
->> On Fri, Aug 14, 2026 at 03:27:13PM +0300, Andy Shevchenko wrote:
->>> This is a stray change.
->>
->> Well, one of the config changes is.  Clearly spi is critical enough to
->> be tested by default!  :P
-> 
-> 
-> Thanks, both. I'll drop CONFIG_SPI=y from default.config in v3 and keep
-> it in all_tests.config.
-> 
+On 14/08/2026 at 13:56:10 +01, Mark Brown <broonie@kernel.org> wrote:
 
-Thanks: we want to keep the default config to only match things
-otherwise enabled in Kconfig (via CONFIG_KUNIT_ALL_TESTS=y).
-all_tests.config is the right place for this.
+> On Fri, Aug 14, 2026 at 02:44:04PM +0200, Miquel Raynal wrote:
+>
+>> > This needs ctlr->dtr_caps configuring, otherwise the validation will
+>> > block it - only the _mem_caps were updated.
+>
+>> Ok, thanks!
+>
+> I've queued the existing stuff for CI since it all looks good and we're
+> almost at the merge window - please send an incremental change for this.
 
-Cheers,
--- David
+Ok perfect, I'll send a follow-up patch at -rc1.
+
+Thanks,
+Miqu=C3=A8l

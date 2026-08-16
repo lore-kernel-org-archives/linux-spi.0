@@ -1,174 +1,128 @@
-Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazolkn19012057.outbound.protection.outlook.com [52.103.43.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79532AD2E;
-	Sun, 16 Aug 2026 13:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786888380; cv=fail; b=Wx62J7awJXxbQeAqe3VEJerFUg6K51OYK3HjOSLvaTXC+Jb9pL4w7CzfIj4Evy8rCVVwlOU1x5Axiun+dzHzih8hxB19JX+ovVFyJjrdqs3SPH7vZu3S5wVTjWYPPa8jIP/y/NTo+G0lQJsKr6y+n3AwjOvN9UeEm9dK064v0kw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786888380; c=relaxed/simple;
-	bh=QGztCPs6ffKvUdHsV2MM8qd7XkYFX4i38RBnnqZnnRA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=YcQk6PQfnKCioTumDXcOFyeabliWYAinlPizEyuAfPujtahNoNVUHz618ekahy1s05jTcjIGSza8i+uZVAG6sa2mi9zyBva5SQS0BlI7F3s6rjUzYR/WmLXYsChmWGLJQUUliTMKG7mrdErhdU9yUpAm5K3fNdD3fC2NL5M9q+Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=hckpPimh; arc=fail smtp.client-ip=52.103.43.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BA8318EF4
+	for <linux-spi@vger.kernel.org>; Sun, 16 Aug 2026 17:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1786900968; cv=none; b=o9ZJuc4+Q5qgZ64Ulw7AHLvV6+MtEA5/KXrQhI5yZNtD0X0ky7Mhafm+GPKqfVkH8S4wY7H/crb4lphEz2WwhWSGxwu9cA0k3qvIYChjOJWvtVEKMjlf+IbAdvKoL3zIG033jgq8OtC9Zp4L9sT7ujDzj5g4ok9GY8GoeahL+Vo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1786900968; c=relaxed/simple;
+	bh=lgumcRrJ8rwjWqiPstt94JVjeTNFgWTtkydtyZ8eNvk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AHdf8jdO6+Sb9TomX3dHJL6GOju9cvj99n2fx9IbUUCcsHem0coHJ1XjelVhSGbViThs8OSPw89ADvzcxQTt0Sk/TWi0Xd59kT3WwLG2WSueOsWntgL3kKZTBwPJxJ8zwuSC6RJUHfVGYRe0gv/f6bt0zVA+DdhsPz9hmcQGokA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nx1/1vUw; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="hckpPimh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qBlC2ttpW+GdXCN3b8iYrbN7cATeOKm16X1Y4ViKL3fBEaEaTmlqcZ3hRUyHomVEFu+Uec79jJpF9ttisVGKX7tsTiNrOgfindNQgoY6LBeIM3hvJ9c5AroNC/UZ09nPwrZlgbS9X/1R1TcMTLv+24PCmh2hTlVO91GfL0+FLIlxwmFn5aYv/O06QE4n2H1J8dSbs002S3ZLu7AaFSxI6H//vy7C75hIJbkJ8SnO/GJGktdLpEFPJJIWKEP7oUL0Z0cyLbxfLDX8f2GjVqApSkd0n32gXviDFAX8Svgs2o6Hwo70yF27VphtfDRH4jpco0boDsx5fcBhvYktAX0dJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=smB7V0vbyUlDm0qpJzmOsxrQtVLo26vp394SgODFTcw=;
- b=LI1Uei++OFhVlWrKsuaS//dUxrowrmHrGzdCMwB3skdUiq+5HSpcv0ravKCaM4F/CoxUU72E8CrJZDTRypYGU4ZZUPzzhrA1HaXAEkevOwu3ULoqgcs8tfNgIgkMGs3tdyjaebeQtB9q0UgDSMEv0dRA1/846ptnO6iMF5iA6oTfSL9wLZmAh/ZHTVZrscHWmGPK7G2PJ2W3Nyhy/Jrf8TgIVEdIgBJOumUyEgtPyUtSafntzfa+6TxJioBSJp7iDEAb6JVhYPZLv1fYJJLhrx3ed322AV/gdeWf7eTfGZ+JFlgbMrNyxkJVUHpMwYcZ24pnLsKVzas5BcB9mMrXIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=smB7V0vbyUlDm0qpJzmOsxrQtVLo26vp394SgODFTcw=;
- b=hckpPimh5pySIpecD+lSzBCmyQRg36NCoa6jqwN06nwqAXoNBJonXWMhtayMX00A4qdm6KU5nFWcPOVlN1d60fzv6p3UWHWyS4B8hDLydaydqvKcoFlzV2H/k8H33YXQHlV8pZ0maDfy8z1znAyYwXZBkz+SS8D2EOACKnWDlYGfjmcZZYrlyMPD2J1CaKnbd46FTbLqLP3JdIs+picArbAKc04Y7R7bDW0pTgyO2jpiJ66HyrdDgFYM729hy1myM92EfM3L3t9zTD4B4naz+lxHgW1a0G9WBZ53RGn4bmyUEjr0FSkNShyPivfE72PeP9/vGNx1mI2VZgKJW3KPaw==
-Received: from SEYPR01MB5882.apcprd01.prod.exchangelabs.com
- (2603:1096:101:1e1::9) by SEZPR01MB5205.apcprd01.prod.exchangelabs.com
- (2603:1096:101:eb::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Sun, 16 Aug
- 2026 13:52:55 +0000
-Received: from SEYPR01MB5882.apcprd01.prod.exchangelabs.com
- ([fe80::36dc:66d8:26a6:5612]) by SEYPR01MB5882.apcprd01.prod.exchangelabs.com
- ([fe80::36dc:66d8:26a6:5612%5]) with mapi id 15.21.0315.014; Sun, 16 Aug 2026
- 13:52:55 +0000
-From: Ziyang Huang <hzyitc@outlook.com>
-To: quic_mdalam@quicinc.com
-Cc: j4g8y7@gmail.com,
-	broonie@kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ziyang Huang <hzyitc@outlook.com>
-Subject: [PATCH] spi: spi-qpic-snand: pick default ECC settings based on OOB size
-Date: Sun, 16 Aug 2026 21:52:32 +0800
-Message-ID:
- <SEYPR01MB58823B8C66E5044EADED1609C9D82@SEYPR01MB5882.apcprd01.prod.exchangelabs.com>
-X-Mailer: git-send-email 2.40.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TPYP295CA0016.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::8)
- To SEYPR01MB5882.apcprd01.prod.exchangelabs.com (2603:1096:101:1e1::9)
-X-Microsoft-Original-Message-ID: <20260816135232.2672709-1-hzyitc@outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nx1/1vUw"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso1988220a91.3
+        for <linux-spi@vger.kernel.org>; Sun, 16 Aug 2026 10:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1786900966; x=1787505766; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TBm1Wzj4BfERzM11I76dZxF/81NgZjZU3GpBir27U1A=;
+        b=nx1/1vUwlIcScEmKmb4y7SGw55tE3haYAVqX/6W5ughnqew2MtaXvhimYLby6Fqq2U
+         mFGw4r44Ps595ktaaqCFwBCaRqkxRT7NAt0812Y3ToybHw+gQ9TIlLtzoRqTUhH6cv9D
+         uksxIIAtJA2JQw9lXC3C1t0BlY4E9cBXOQUhlc4LaU8Cpx30etmHc9s0Mk4yql5pzDpC
+         WCPisfpwfN4mPUpDrWXNTFD9VQDtnKAKcDH5sIpOu+beTFzv6nkUnhRMRpmPtzzOc3Zh
+         dR5ZrE2UGy5DDQUc9EofdnNvZnyjLn6MNO42844Jr/5jhzv2SOCosjWYjgJS5OVNCbXj
+         +91A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1786900966; x=1787505766;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TBm1Wzj4BfERzM11I76dZxF/81NgZjZU3GpBir27U1A=;
+        b=aikev2+A40wCV6glR48POcIeLfvE+xTWx1WRHaiTSMmwbAM/01QDGCeio6bstTwetQ
+         guY6luJldrhJiJWByEQnVUk2WzomoBDUutMi+4vbsvbaDStO1hiIvLodVIwEQ9M9XuTx
+         t6bzaPM7FdvHXYhkWzLBNAB45quu/uWLSKEXpB0mC+VYpJvtoKBl6VPNpWgbbcbJrk4A
+         ohaL1GtOp+BAezTxzE8lhSmL7U6Ct9usq/CZir7RRJaqr7OWVR47GP1lzR1bmhjNDmGu
+         IYptgGgJ3/I+aB/B1QhLS0jiQUPiWs+sx/pBda9jQ9cEV+GvBBwVNCJhzWGwOvcJFwWn
+         DkYA==
+X-Gm-Message-State: AOJu0Yzz/689lmvjhhG+RiZNwfcLTHgYFsz5eqbcvNLV8vC1xpRxpSzG
+	1dPYn5yROuN9qy4JIvAmGkRBpEg0UlSYABn9WBDEwNAywG3xDm5an1u4
+X-Gm-Gg: AR+sD13/ss5FX93UyvpwnZvxt9E7rRvD75Fl4lMRla9ZO/AWBXsw3FmPOdgvXMt3dbh
+	+PLVmpWMiM+CyM4Go9ib0r4sDfYqaSU+qMCGlMQNGZE9LS4/Y7nG8UAuTjcatlRyitXC20h0CvH
+	KBtrXXNK/6Am2MJ/n8ChIoLZ/VrD4N5SYMf2oW89+oF/ZUTcHxCxBPEuhQPvKntJqE+GBV8aV8f
+	m3z3eGcINwoWdskRPu+5sPbTnnLISCr5FyUia1zYOs9d85LIPlc8BTIi+pX2DStcsCDb9fClhQ9
+	B+gLl5YUVwXNZxXwrilCOveBYCcFptKXHjtR76H3Jgo3sP0t+/EqdzgZs9Gt8JF/n2uVxt5pkLT
+	MeLZXWZLBYR7l1eI63kOZMvHdscDn1byMYBeG6Fx5TA33kfsDlKIxJ1IZFAyVgypgkYAHL6uuJg
+	0d9J3VmSC9Ztd2ycJqWsI6XlN49+yUQg9Q1AprWeBHoGwzEE/9DiDT4Nf+SFLOLCdM8Q1k6JmtQ
+	S+LU/fgInCGmMahnvDEN6udsE8PbWh0m4SMWnE=
+X-Received: by 2002:a17:90b:3c91:b0:380:f85c:94b4 with SMTP id 98e67ed59e1d1-3933b78e3c2mr21847371a91.7.1786900966082;
+        Sun, 16 Aug 2026 10:22:46 -0700 (PDT)
+Received: from ?IPV6:2406:7400:56:e503:403c:f88f:3e17:55ae? ([2406:7400:56:e503:403c:f88f:3e17:55ae])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-320e9df03f9sm28351382eec.19.2026.08.16.10.22.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Aug 2026 10:22:45 -0700 (PDT)
+Message-ID: <fd81d0ce-46d4-4655-aebf-1387e5b030b6@gmail.com>
+Date: Sun, 16 Aug 2026 22:52:35 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEYPR01MB5882:EE_|SEZPR01MB5205:EE_
-X-MS-Office365-Filtering-Correlation-Id: fadb36fa-2ec4-4299-e45e-08defb9dac20
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5062599005|19110799012|25010399006|4140399003|5072599009|8060799015|51005399006|24021099003|15080799012|23021999003|12091999003|3412199025|440099028|26104999009|40105399003|2607281247196008|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?s3BjSmowsWKQlG+d3Si+gF3nB3y0LTUrERxYayKs0Gm9+1Q0nWXr/wOxirs0?=
- =?us-ascii?Q?gg+rY9X4UYfVM4lTW31431qF9jsSwVrSdJas6PMAPVT5+4ekXKdEVVgNWK7y?=
- =?us-ascii?Q?6Ayb+dA/tDTPVcsTafw+4m7WJQ9V/tX5J39ZHsy0/wuyeoro1ElrQOhH8bp7?=
- =?us-ascii?Q?t+EjmVJ1WR+0vUTWCqXD8/A73NobCk3TsThwgAD/+ErcwNfFz2qoip2Abc6T?=
- =?us-ascii?Q?sWEBOgmKqG+10XM/AMNVApZP5w1i68UXe20y5NfUQ3Sn+PAArpVKk1XgyU3Y?=
- =?us-ascii?Q?YtiUy3+8Sk483Dwk9zWhnTfnQJ2hl9Le0HjepS9ughlM4xn0ABiMW5Y7CLOI?=
- =?us-ascii?Q?0g6sD+JpkZfuXKAjsXcW97giCi62jcTjqBpl678H2Bov5tsuqjy1L8epHM46?=
- =?us-ascii?Q?wpUPQwCu18husLAcC4tuZ1jgbu/ACWJl+9qEqlWOysxi+FJjP0fW35pTYTGu?=
- =?us-ascii?Q?wLIcqjL5k2S/cwUAKHbLW5bt0E7Q4cLHddDf9IMKB1weP5EydkVy3t6Vo8hb?=
- =?us-ascii?Q?y/Exp8/OIzW9+P2WdwDXNrhRTNiERY7XluUB7t3lvnmkbCMns9LB/dwIYjU+?=
- =?us-ascii?Q?wK8++wwRrrMK0XvJNELYYybUj2ci7P05/a3GxKllYeaIZi4T4gGDB3qf8aCe?=
- =?us-ascii?Q?ty6RrFN4BdU+ByKfdjl2mRJFfKZGWojMxFPitqJqQkddg3uou+rX0JebZOGR?=
- =?us-ascii?Q?lTgLd5fgMQq4z1juNBx5O080riQ7txWr2AnQZ/0gdQilXXeMt01ynoVhs/PG?=
- =?us-ascii?Q?Iut2d/4Tdi4YoMOcuYOBQ+3ao9VrkVFNyJszxpPsaxAuaWmBgf9EofWuvOkD?=
- =?us-ascii?Q?YbgrG/kUvmgfSPAjZuJOUbgLKP3MMaPl3ThU5TR+RIF161EnIYSejpeJcn86?=
- =?us-ascii?Q?3v7ccwFbTKADBhwFYUCgq7A0F3F2LrMH8vdUaTpi8lggPD3z/RES97AJzthV?=
- =?us-ascii?Q?FT9wuIl4v2rjHEa4A95CLvkCddO7TiM/NsaKJaV6bdPik+PFIdmzihq8Tu08?=
- =?us-ascii?Q?6bKiRx89xzQVmC2nulDkIVDHYw=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VywMvarkX1/TmlCnnFkDT8I3vcSI3dsgRYUK8sL4HjVfAl1hFo4YEXQFA6iF?=
- =?us-ascii?Q?PKLXfxKYj9+m0fl2d2yeGkrDexv40iD37DaJ7UyFVjTS7k1Z7zofS9Wk27a+?=
- =?us-ascii?Q?wB0sha3Yk7PgaGhZpk0BrGHxVG8y9kXWwWAC1PLjlHwjX/TmCMIvJ9aMzeHQ?=
- =?us-ascii?Q?0/8sfiYzpEfWpSh/IYImHV7dAX1zp3FksiH0xNbkXKDtGAMhcigsshXCI6r0?=
- =?us-ascii?Q?TyonAnZGzbBtA65BAsTzCRTy/GSNibdVdC2LbnhfxIlphEaOwWWM7RpHDzaq?=
- =?us-ascii?Q?Xtbn0eigj1fuhfVTJ5h6g5MvVzygwXFRN+Xu4tY0z/Wt9Ai+yA37919buq5r?=
- =?us-ascii?Q?mMXrEkLyQ3Tq82FhsQf9pHnSKPI5URYVAttcZcnq/QlB4fYQ8ZmPot/hPpFP?=
- =?us-ascii?Q?Y2CHTS/SLQ97PPcZdoBVW8eYahuF9XePJ49NLbZpyC7aClNfE2YlRZH6bsNB?=
- =?us-ascii?Q?nXSuxT6EsesZAssJcrJt80bMYy+OzgWGu6D8pOHGZluBZbOEMaoTbQ45JyQN?=
- =?us-ascii?Q?GX2wJYoCjm2YBElqDdEd31YaV+I95541wcffZ0Z4emEUNsGgTJ+c145usBb4?=
- =?us-ascii?Q?VKSC0d+nki7DRDPMOGwJzH/gIVpr+/dJuhUSFnmh5q+0kTo1EzSsbCy8BgT1?=
- =?us-ascii?Q?O/nX9mk2Gp4cXU2fOlXiVB11BOPgJ07pEXTCKe2m1FLTpdX7iBa6wTkuslDN?=
- =?us-ascii?Q?qn4h2sos5lP/VRa94MUIm5XPXfYK+zCndz5+8JzbmNtOWkShuK9FrwnhphQD?=
- =?us-ascii?Q?qlPLTE0N46xEqR5cS7Aa/PnAHKnJn6XCc/M+tgNcQzt9Gmx2Lkb/Ls8Rt9IR?=
- =?us-ascii?Q?NCVEW2Pz2K4V+GYmuh16TBZfdPfcm5scrHP0Z+MpM7cg1CyNZ+Wluy2DLTEv?=
- =?us-ascii?Q?8BqpsDGaEZMloPMqSXdY7m6AeTneokd2m+NfrBGs9y5Rvyz+FoS/rTC8BaDt?=
- =?us-ascii?Q?mIJYA1Y+WGghLcJteCdQBc9OBpMKWYjXY8dPBPBBls/0Bv8NZ/zRxcqGdhOD?=
- =?us-ascii?Q?S1KZbidW0IcdPZIf2jF5Ezb2Ok5q2UcljN66nGPyoRUmXTCLpDqZmywrqa9z?=
- =?us-ascii?Q?SUrnDuEpGZ28Am8gGrdraYuiS7A/8LA/m3Flre0HWllRjsdYtzv9DVwzvYkE?=
- =?us-ascii?Q?uiQw87JgrE1ZqjmqWkBa66NRXKGFtlIvZfO0MWKiiZykk7yj3Jt8qzUwaGSr?=
- =?us-ascii?Q?R83lA3ptP2ZVJjYxZVxrjNleN4ULcydKbyhY0tlb8A19PGbAkOD4sUns3ctA?=
- =?us-ascii?Q?2hP97LYQRBJCM3FLxEn+nJfin/OaWz/UKp2FbcZWZ9xw9vvzdAvS736/hEJV?=
- =?us-ascii?Q?Sk1FJKCMSww6VSWtM6JzoAXjYwMafT0iKlT47bspPwr4svCOQJ0eM/AZyMOT?=
- =?us-ascii?Q?phrekDY=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fadb36fa-2ec4-4299-e45e-08defb9dac20
-X-MS-Exchange-CrossTenant-AuthSource: SEYPR01MB5882.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2026 13:52:55.1549
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR01MB5205
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] ARM: dts: ti: keystone-k2l: Rename
+ ti,davinci-spi-num-cs to num-cs
+To: Bhargav Joshi <j.bhargav.u@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Nishanth Menon <nm@ti.com>, Santosh Shilimkar <ssantosh@kernel.org>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ m-chawdhry@ti.com, daniel.baluta@gmail.com, simona.toaca@nxp.com
+References: <20260816-ti-davinci-spi-v2-0-6c6f5171422b@gmail.com>
+ <20260816-ti-davinci-spi-v2-1-6c6f5171422b@gmail.com>
+Content-Language: en-US
+From: Dhruva G <goledhruva@gmail.com>
+In-Reply-To: <20260816-ti-davinci-spi-v2-1-6c6f5171422b@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Instand of using the ECC provided by the flash chip, QPIC handles ECC by
-itself. So the ECC capabilities of the flash chip is useless.
+On 16-08-2026 03:53, Bhargav Joshi wrote:
+> Property ti,davinci-spi-num-cs is present in the SPI
+> nodes of keystone-k2l.dtsi, but it has never been documented in the
+> bindings or matched by driver. Driver relies on standard num-cs
+> property instead. Use standard property num-cs instad of
+> davinci-spi-num-cs.
+> 
+> Signed-off-by: Bhargav Joshi <j.bhargav.u@gmail.com>
+> ---
 
-The max ECC capabilities of QPIC depends on the page size (include OOB).
-For ECC4, it needs 64B OOB space. For ECC8, it needs 80B OOB space. Use
-the max capabilities as the default value.
+Reviewed-by: Dhruva Gole <goledhruva@gmail.com>
 
-Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
----
- drivers/spi/spi-qpic-snand.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index b6c58d9cfe14..9d94e69cae26 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -248,7 +248,6 @@ static const struct mtd_ooblayout_ops qcom_spi_ooblayout = {
- static int qcom_spi_ecc_init_ctx_pipelined(struct nand_device *nand)
- {
- 	struct qcom_nand_controller *snandc = nand_to_qcom_snand(nand);
--	struct nand_ecc_props *reqs = &nand->ecc.requirements;
- 	struct nand_ecc_props *user = &nand->ecc.user_conf;
- 	struct nand_ecc_props *conf = &nand->ecc.ctx.conf;
- 	struct mtd_info *mtd = nanddev_to_mtd(nand);
-@@ -265,13 +264,16 @@ static int qcom_spi_ecc_init_ctx_pipelined(struct nand_device *nand)
- 	if (user->step_size && user->strength) {
- 		ecc_cfg->step_size = user->step_size;
- 		ecc_cfg->strength = user->strength;
--	} else if (reqs->step_size && reqs->strength) {
--		ecc_cfg->step_size = reqs->step_size;
--		ecc_cfg->strength = reqs->strength;
- 	} else {
- 		/* use defaults */
- 		ecc_cfg->step_size = NANDC_STEP_SIZE;
--		ecc_cfg->strength = 4;
-+		if (mtd->oobsize < 64) {
-+			ret = -EOPNOTSUPP;
-+			goto err_free_ecc_cfg;
-+		} else if (mtd->oobsize < 80)
-+			ecc_cfg->strength = 4;
-+		else
-+			ecc_cfg->strength = 8;
- 	}
- 
- 	if (ecc_cfg->step_size != NANDC_STEP_SIZE) {
--- 
-2.40.1
+>  arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
+> index 330b437b667f..39a846d7f8a4 100644
+> --- a/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
+> +++ b/arch/arm/boot/dts/ti/keystone/keystone-k2l.dtsi
+> @@ -401,15 +401,15 @@ mdio: mdio@26200f00 {
+>  };
+>  
+>  &spi0 {
+> -       ti,davinci-spi-num-cs = <5>;
+> +	num-cs = <5>;
+>  };
+>  
+>  &spi1 {
+> -       ti,davinci-spi-num-cs = <3>;
+> +	num-cs = <3>;
+>  };
+>  
+>  &spi2 {
+> -       ti,davinci-spi-num-cs = <5>;
+> +	num-cs = <5>;
+>         /* Pin muxed. Enabled and configured by Bootloader */
+>         status = "disabled";
+>  };
+> 
 

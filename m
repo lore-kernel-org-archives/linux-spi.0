@@ -1,65 +1,65 @@
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9B02C15BE;
-	Mon, 17 Aug 2026 23:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB66037C0F0;
+	Mon, 17 Aug 2026 23:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787009601; cv=none; b=Lm9ftxbQyfk/Y/uz6QG2cLtKoxixPkjMfHt1AYhLmQHlrNi0hmKwFsgzkANceH0j0wmxyMLbGvpRIGToWO5pSNcOQChUJAVE78KmBoNQD720FajWPoC0mUNBsv3bJ7N9I11otZONZaUq4xwMsS7VLb5hZBYTEkPt+QPkWTgt9QM=
+	t=1787009608; cv=none; b=ho2SvbeI1dBeYlDIZiFYlbhYl6BFs6/iJCD1Boumn7pL8knzHZafa64GCm9RVh2OfLz4hCbv0KAf2p/7r1MkOXHBJAIQXsS2qZntzFzKlTyT4JXWOeSKVKW5ZXny5e1ZXxH8RImFyVXAbGM2t4xL+dgTiC7P7D7ytT9tSVMdHws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787009601; c=relaxed/simple;
-	bh=Lk3F8LjVYmEMjIMhrygX3gzWYCTmczPnRoCGMKY0JYQ=;
+	s=arc-20240116; t=1787009608; c=relaxed/simple;
+	bh=zQvezol5TUt14zgSwjX8/JYwDtYEHk/IK22UDA0gNlw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lHLH0oswKiTHdLmmX6h8WcFQcWSUc0JU66hloLvT5ew27VThD9DvXxkiwYGAMzKbXFLcNXqE9TEZqJrowQzEU1GmbXX02b2Yq9kxGWLUc58iYh82Fr4oAJhYRt1gwk07nJEOsCAeQ/AVg2TuveU/ZPd6pbpEfcbtk7Qu3qHxSxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=JSG+ARTW; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=E+iBr/QZQmz2rT28WwkmgXYIqfC2hm+3oNbg4agB/rrrIr+bsIGvtj3oIiOKfYLX626wA+rQzU3Ox9tHid1PsyQj7/opxentyqdZZfbUGAZzuMZ3WIav7fO4Jdx0WlAoW09ax0nrot3KjevbC2bi8WeLqsC62MZj2AgsuLrfXU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=zAurNIXB; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="JSG+ARTW"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="zAurNIXB"
 Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HLqsWO1731269;
-	Mon, 17 Aug 2026 19:33:15 -0400
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67HLr1gS1731704;
+	Mon, 17 Aug 2026 19:33:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=UVS0t
-	dlFIUaDBtjC0iI/1HoSrwk00F43xbD51P26C4w=; b=JSG+ARTWBFaXS727EoOTw
-	i87xeLU2Q6bv4Z21GHJpY2F8EwscS/BlJ7IsAcpA1BbX1yI9iQF9vCD63X2eVLcf
-	2/lJ7l/tQrjzPaPQ08Oa6Ex8rCQmZzYPiwHRsHuARmd2v77zDwr6Cv8vKNxU5A7j
-	WQc5B/XbPsntorM8U83ZT8KMVxaRMi5jS77sIONDsktbYfWPI9XvK4HjQ//Bks3a
-	7pjmsSd/kH5xFVHf3wLkemHkvcviPwEYtdrqF1e7RpZdxknlp9H5OSu9rjPbu1QC
-	MryFD5tLYkNbT34wqwHfORhrC2nEag982qLCJjyJfiCtw5kKqmU521DOuSs7If8F
-	A==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=b7IXl
+	DlTDRn0nyDwzsHIHsdP7O4M5rFW26rrhs7jfc8=; b=zAurNIXBb8h8GN1BHAdic
+	CDMN73u5uYLrUBv5zeeaAfGyDn5cV/b6m6PqVRFJ7MtcVXbDfsVdB7H86wa07Jcj
+	iCByTj8YieFKxrlSgYShy2LNacTjyWkUhYiAAlm9grLC0XyFW0UdnRKOF+Kz97ke
+	zneLPXIEmExW/c2Oxb0qAy8pNndP9t0nsoPHwlMQP2S25lIkBJoagitafRxlvIdb
+	491aJq8M5s/uaDyCUImq6vmNR7fKU4fpoYUDMfIlXVwzur+1pqqWexc648vZzZ/d
+	UHTNrRWGF0HgsvsQFjcW/aK5PMJnC3qgAQeOcwMYWz/ZterXMrA9khPAb4kC4J/D
+	g==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4g2hy02wnr-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4g2hy02wp6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Aug 2026 19:33:15 -0400 (EDT)
+	Mon, 17 Aug 2026 19:33:22 -0400 (EDT)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 67HNXEUA025247
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 67HNXLRt025273
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 17 Aug 2026 19:33:14 -0400
+	Mon, 17 Aug 2026 19:33:21 -0400
 Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
  ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 17 Aug 2026 19:33:14 -0400
+ 15.2.1748.37; Mon, 17 Aug 2026 19:33:21 -0400
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
  ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.37; Mon, 17 Aug 2026 19:33:07 -0400
+ 15.2.1748.37; Mon, 17 Aug 2026 19:33:21 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Mon, 17 Aug 2026 19:33:07 -0400
+ Transport; Mon, 17 Aug 2026 19:33:21 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 67HNWsI6020595;
-	Mon, 17 Aug 2026 19:32:56 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 67HNX8ol020600;
+	Mon, 17 Aug 2026 19:33:11 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: Jonathan Santos <Jonathan.Santos@analog.com>, <dlechner@baylibre.com>,
         <nuno.sa@analog.com>, <michael.hennerich@analog.com>,
         <broonie@kernel.org>, <jonath4nns@gmail.com>,
         <marcelo.schmitt1@gmail.com>, <andriy.shevchenko@intel.com>
-Subject: [PATCH v3 2/6] spi: support simultaneous assertion of multiple CS
-Date: Mon, 17 Aug 2026 20:32:43 -0300
-Message-ID: <e8870b405f29cc89439701d1fcc7e88781aaab22.1786973376.git.Jonathan.Santos@analog.com>
+Subject: [PATCH v3 3/6] spi: expand device name to include all CS lines for multi-CS devices
+Date: Mon, 17 Aug 2026 20:32:57 -0300
+Message-ID: <5719698587a0a7658a3980168eef0731a5e7506a.1786973376.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1786973376.git.Jonathan.Santos@analog.com>
 References: <cover.1786973376.git.Jonathan.Santos@analog.com>
@@ -69,97 +69,84 @@ List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: As2l_6XgCND0FQltQbNwIhJ8kpS9WYdi
-X-Proofpoint-GUID: As2l_6XgCND0FQltQbNwIhJ8kpS9WYdi
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE4MCBTYWx0ZWRfX8FxGdGg0hXE2
- Sjt0jhHdtIZy/kdYkGkz1W/DNuxIfsENFLU4Hbb1qm6z7Kw/dncfklFpqyd3iV7t/GTzrEZ9nWv
- /P/n2Rslqnem3FIvzPRmaEjWs0s3GvfbE8ivvNsjcHhpdxkKQWpY82XUyObUZGJ8LaSSu0MZQ4u
- 0KdPn3Wm4jUQ+8P0RnGbJhFUKJ0ytzaNyz1u8fmI8NL4UkOASIdha6sxlJ2YoesENPa8loXySES
- lUXhyGhIEcPtfkPzPHY1ybMU9HKpsF75XH4nAOWXs8dyYVYQWAoko5rVNEl2gqABuXTvttR6PD7
- 6uo0b+B6qewmnpBStyEoVs2uvdflP9xL9N92NzHj+5ykE4Ay82lmgGfg1eFwhzEAWRHGs5NuK8e
- ts09sa70gw14U6364mEn84coiaBmPXb+fxe0X4axP3HEvtc41YU9aWCL/FoDG4u4ZrSeAnmEmU7
- DdruoS/n6PuXomOjmtg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE4MCBTYWx0ZWRfX/ee6tXdaR4c/
- PkF2fnqLaU4z868Gv30NOgSqabEEcEaW9a+jy9JTy9Xg9jXx43NZZnhHpZakVC5L7+F18c8UGU1
- 1t7hVDWBhjGODuOfS9Wjzxtw4wBN5VzGefk+9Tvdz9Rv3uhfd8dA
-X-Authority-Analysis: v=2.4 cv=KYTidwYD c=1 sm=1 tr=0 ts=6a839a3b cx=c_pps
+X-Proofpoint-ORIG-GUID: LzEtIW6TjCO5iBKXefAwDIL3EZwbs4oA
+X-Proofpoint-GUID: LzEtIW6TjCO5iBKXefAwDIL3EZwbs4oA
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE3MDE4MCBTYWx0ZWRfX823Ng8umkxFP
+ e8mmSSqlRoKKDVEKYkG04P45e++wYPawu+ZKnWZVy0g2UeoAkPWHE6tRXH5zlOOhtAOE+rCDacX
+ tyiplyEW7uW0OFk+5KPw/ZSu/NIFxCNlxbqrGoADDj+Q37cHv+WHZJ5vDCv8jLCP1UiccX+7QaT
+ BJteRXGuj9liI9tcpBEUXa8q7sKnUfn8AnHMHEd9ZogIP+Klnu/asdcXx1XDLL4tkOQRMYDEuga
+ hmdBgYl5OOGc0Y5pi05/BxNKey71pUsEBXvXoCs0L5cVUTANrE6hQ83BZeGR+U4kboPLCKF2Gji
+ UdtbXw5hivJS4fevvrVPgkcoAcOD85TUd06DTTi6mQPZKvLayFQv9hlXUxTJ9VUo9zleGU2FSwF
+ PWvRCv2uzrE3m5bp9YllIi3QYfeGCXKe3iriDqm7HUfaqiFUtqxJ3rAeTvg3Z8aeD+vXwY1fH7t
+ MlM4WKgj0B3kVt6cogg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE3MDE4MCBTYWx0ZWRfX11UzLlkuU/sA
+ 2c8DAv56wh1iq/zTIWfjSYYwKyoFouyMK8HWw5mPrqdDfDsknTnfcZ1oDungG5dyHnLuTtr/Qpn
+ 0kk67bdDaSOwwQiEdoeYUAUslV9KITz5Vae1EFbxx+weVgzdMLtG
+X-Authority-Analysis: v=2.4 cv=KYTidwYD c=1 sm=1 tr=0 ts=6a839a43 cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=0sLvza09kfJOxVLZPwjg:22 a=uXIjobp8t2wMuQ0fPvqm:22 a=gAnH3GRIAAAA:8
- a=k-FQ2K6VbMuEqB_s0bsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=Sv0fKeRqtYgA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
+ a=uXIjobp8t2wMuQ0fPvqm:22 a=gAnH3GRIAAAA:8 a=fYqlP5uAqiFSQV6okFIA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-17_04,2026-08-12_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0
- clxscore=1015 spamscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 spamscore=0 impostorscore=0 lowpriorityscore=0
  priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2608170180
 
-Some SPI controllers allow multiple CS lines to be toggled at the same
-time. The existing code always used CS index 0 when tracking the last
-active CS in spi_set_cs(), and unconditionally set cs_index_mask to
-BIT(0) when parsing DT, both forcing the single CS usage.
+The device name for SPI devices was formatted as <controller>.<cs0>,
+always using only the first chip-select index, ignoring the remaining CS
+lines.
 
-Modify spi_set_cs() to iterate last_cs[] using each logical CS index
-instead of always reading index 0. Modify of_spi_parse_dt() to build
-cs_index_mask from all parsed CS entries rather than hardcoding BIT(0),
-so the controller correctly identifies which CS lines belong to a device
-when asserting them simultaneously.
+Change the naming format to <controller>.<cs0>+<cs1>+... so that all
+active chip-selects are reflected in the device name. Single-CS devices
+are not affected since the loop only appends extra indices when
+num_chipselect is greater than one.
 
-Board info, ACPI, and ancillary device paths are not updated here.
-Board info would require an API change to accept an array of CS values
-and is left for a follow-up when we have a use case for this. Ancillary
-devices are by design single-CS, so multi-CS is not a current use case for
-them. ACPI represents the CS as a 64-bit integer with no established
-convention for encoding multiple CS indices yet, so any extension there
-would require a separate specification effort.
-
-Acked-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 Changes in v3:
-* None.
+* replaced `int idx = 1` by `unsigned int idx = 1` in the for loop.
 
 Changes in v2:
-* Include Summary describind why the other SPI paths were not addressed
-  here.
+* New patch.
 ---
- drivers/spi/spi.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d9e6b4b87c89..55fb96fea243 100644
+index 55fb96fea243..9ccfa5be557b 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -1090,7 +1090,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
- 	spi->controller->last_cs_index_mask = spi->cs_index_mask;
- 	for (idx = 0; idx < SPI_DEVICE_CS_CNT_MAX; idx++) {
- 		if (enable && idx < spi->num_chipselect)
--			spi->controller->last_cs[idx] = spi_get_chipselect(spi, 0);
-+			spi->controller->last_cs[idx] = spi_get_chipselect(spi, idx);
- 		else
- 			spi->controller->last_cs[idx] = SPI_INVALID_CS;
+@@ -594,6 +594,8 @@ static void spi_dev_set_name(struct spi_device *spi)
+ {
+ 	struct device *dev = &spi->dev;
+ 	struct fwnode_handle *fwnode = dev_fwnode(dev);
++	char cs_str[32];
++	int cs_len;
+ 
+ 	if (is_acpi_device_node(fwnode)) {
+ 		dev_set_name(dev, "spi-%s", acpi_dev_name(to_acpi_device_node(fwnode)));
+@@ -605,8 +607,12 @@ static void spi_dev_set_name(struct spi_device *spi)
+ 		return;
  	}
-@@ -2594,10 +2594,11 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
- 		spi_set_chipselect(spi, idx, cs[idx]);
  
- 	/*
--	 * By default spi->chip_select[0] will hold the physical CS number,
--	 * so set bit 0 in spi->cs_index_mask.
-+	 * Set cs_index_mask to indicate which logical CS indices are active.
-+	 * Each bit corresponds to a logical CS index in the spi->chip_select array.
- 	 */
--	spi->cs_index_mask = BIT(0);
-+	for (idx = 0; idx < rc; idx++)
-+		spi->cs_index_mask |= BIT(idx);
+-	dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->controller->dev),
+-		     spi_get_chipselect(spi, 0));
++	cs_len = scnprintf(cs_str, sizeof(cs_str), "%u", spi_get_chipselect(spi, 0));
++	for (unsigned int idx = 1; idx < spi->num_chipselect; idx++)
++		cs_len += scnprintf(cs_str + cs_len, sizeof(cs_str) - cs_len,
++				    "+%u", spi_get_chipselect(spi, idx));
++
++	dev_set_name(&spi->dev, "%s.%s", dev_name(&spi->controller->dev), cs_str);
+ }
  
- 	/* Device speed */
- 	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
+ /*
 -- 
 2.34.1
 

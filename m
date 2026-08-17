@@ -1,38 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368BF43CEC1;
-	Mon, 17 Aug 2026 15:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B524457A3;
+	Mon, 17 Aug 2026 15:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1786980827; cv=none; b=a91Nrm0yxZccu+HHyFAKQvqqxDg5VTWAgxlbWvrcl39bQFSA6bXNOjOzb0hJ6totSaluE1Nlq2N1v8PX5i7hrrdZ1ldmz7dfP2O4Dcrz0zbIEkDnSglKPrISjScMkFMIhkY6C1mErf9/i/GpzOxkLPeWFlqw2oMQpOIzVSNVC0o=
+	t=1786980829; cv=none; b=XbV6LHAZRVrmzfIIiZewwAc0CKA7L4DS2vDuQ0IjR+XpZv2djZtyK9t9Q4TS7zO53iQpZkyJvjakQEGpZ1n3Wb1+OYNfom2bCv4WiO48bkisvQB+h44ZQKp9GsYHEviKj/SGA5kCFPsE+RZuJzlxgki+gQb3m04iiXekLZqummk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1786980827; c=relaxed/simple;
-	bh=0kc3SnJwCR7zZWzgespb5hyvhM1PfcghoOT+2JVWFqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LNx/rhi7LdQjl/MNiMYLT+q1SYLzoEt8jvbEgY1CkbGLXXSFhJ+MXWXYtYFNDnBT5GhHSH61yGvtnQg+O4LMVBpnLDVJTVJg2mXSwFAJkJOL9onhtTyOdsNV1zmLeCE98T4Z5Og0S2VvoiSFo73J2iJtQMeoixCXl1M32E10AOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwTBkjRU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1786980829; c=relaxed/simple;
+	bh=AJEVyUufuEw/cA7FDQs6Ot+e7oyx8PwO8gg1XD380mQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bOE7Blj+xOqkE6YaEy6wdihS2npSgddzkTaE5lVQUjgovhZVyoUmNSJvZDMDJKYU2tsmwxnlNF1Ks8DNvxh7SAo+t0xlQ8oxJ6sVhe7ivG+GxDBI1MR49S+biW9FlNqcGXRmeUBA1DZ8cOe55AYlvvfsegBOSbM4/riFH7DXe9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M91IJ3Vq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwTBkjRU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936F61F000E9;
-	Mon, 17 Aug 2026 15:33:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M91IJ3Vq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3F01F00A3A;
+	Mon, 17 Aug 2026 15:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1786980825;
-	bh=ge8phMPWbZ8mkjO8I/rjfbqxL9xXn3e3OcxFan1ILho=;
-	h=From:To:Cc:Subject:Date;
-	b=TwTBkjRU76poJiTj1AGXoD7XNTMTjz0x0TTiFO9fahwOnc9ljNyu0VcYGP34rW/O6
-	 zbMXOViC4FT5cqJsAZCHqjBuGMYZswkxrT23m7epTXw7GJUbOWz0pv/DATjpfXCJpJ
-	 XuLAVz5X0xWDuhzGYBJoeLDTWEp02k4kmnzV7DgtRSA6VF+uPCafGVH5XCKa5Vbkzg
-	 5L89DDzjK9a1iVsiOomZTTZI61zsCVrHAIAUGYtZzqQaQZfoecRvNpL+wL9M2vdj41
-	 9FcdsHjIixz8D8BT5iF71us6405zIxNeBi3AFO0tTrIYJnhDgi2uvthWuxzNs3BZhu
-	 RzFdyb33anpsA==
+	s=k20260515; t=1786980828;
+	bh=MdWXow5IpF+qkWj5WkeTBDxTAucTX7Bn9hGMobsDAgc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=M91IJ3VqtMhC1zI2PX58NQSPL+i68ptu5bsjNRDVWrTYMA5tjO6gKVTJU0D5IZn78
+	 DFBBWfygEyjrRsfBEoAkIpuTjimUkAFknOlj6/cyXXO//m9aWZTtTVvBP/eJhrs+q/
+	 U7qKxtaH91Y4vGfUnZBMqRJYh3UhLn4vahPTzd/WwBuAq2rg4HarJbLC0MWMgUSbm1
+	 gq0xESbNZb1xjEGSqR2YQWfdRNIt5UVo6fy0PVKRzmJNXxc5oirLGwHQ0flyIKjNDr
+	 cVesaKYX5UTSBgEHpB3piVeEUdpFQiexUgKbmEgdFMkcJ9VuXxkuFthwy/Ohe0uuHg
+	 d+k9OgAxmopeQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] spi: dw: clean ups from "use threaded interrupt"
-Date: Mon, 17 Aug 2026 23:14:02 +0800
-Message-ID: <20260817151404.28324-1-jszhang@kernel.org>
+Subject: [PATCH 1/2] spi: dw: use DW_SPI_ISR directly
+Date: Mon, 17 Aug 2026 23:14:03 +0800
+Message-ID: <20260817151404.28324-2-jszhang@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260817151404.28324-1-jszhang@kernel.org>
+References: <20260817151404.28324-1-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,29 +44,27 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Two clean ups from the series "spi: dw: use threaded interrupt"
+The DW_SPI_ISR register reports the masked interrupts, no need to mask
+again.
 
-Hi Mark,
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+---
+ drivers/spi/spi-dw-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The enhanced spi mode was merged, I'm a bit concerned with potential
-bugs with "use threaded interrupt" with it, it's better to let the
-threaded interrupt tested with it. But I don't have available HW, so I
-will cook new version once v7.3-rc1 is out and ask sifive people help
-for test.
-
-But the two clean ups in the "use threaded interrupt" series are ready
-so I pull them out of the series and rebase on latest spi-next tree, I
-hope they can be merged for v7.3-rc1.
-
-Thanks in advance
-
-Jisheng Zhang (2):
-  spi: dw: use DW_SPI_ISR directly
-  spi: dw: use DW_SPI_INT_MASK instead of hardcoded 0xff
-
- drivers/spi/spi-dw-core.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index dfce2fa20adf..299474507663 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -275,7 +275,7 @@ static irqreturn_t dw_spi_irq(int irq, void *dev_id)
+ {
+ 	struct spi_controller *ctlr = dev_id;
+ 	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
+-	u16 irq_status = dw_readl(dws, DW_SPI_ISR) & DW_SPI_INT_MASK;
++	u16 irq_status = dw_readl(dws, DW_SPI_ISR);
+ 
+ 	if (!irq_status)
+ 		return IRQ_NONE;
 -- 
 2.53.0
 

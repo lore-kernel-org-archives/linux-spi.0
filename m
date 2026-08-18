@@ -1,51 +1,113 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792580685;
-	b=X/neRbwSUbH33WvTr+QUFtouym/0vKeJNOeXt4jd5tnPePzYH92IAKUy+iKs02QYoGbc
-	 i63932ChSjvyWM5w0LhFDtSKrdEjxAILpWs908VIrffiFhsjHVPL+WDYYKD1NEx0BQJNH
-	 70OxZ9dVxci8wwFh6LpV/yCgDUvZwyxWTFFWhS0CFeltnpeytGoATbhTKHMAgY2cB366Z
-	 K7Cs4g3DajvQWhsNahCZTKZnAZ/VD2h3dQJnG4M5u/cSEwsH3l+vVbQHVW9gb+SGqCoSh
-	 o+zzyrm9EeG7QD7ij83l9SnrzpTO8DdQxvJz6bu11X6ZgQYAjHvo+q1Ih40N+p5cmGQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792580685;
-	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id;
-	bh=KEyWZpn7GCxKyFe1cxVvA+i6hof6XrBCfCM5wK05RnI=;
-	b=JjwR0WSQBQwCT0oMpWdhvDkkrQ7iFXVb2FoPId83DyOJZmK99br6r7sTTlH1PuycWtZY
-	 wihVM1djBLmy7Ds8McP6v5HiSYxEU1t7pZ+YNA8aSq3vA8VbnRLUKwtd4T406QDKRuuXh
-	 jW6uo42QEoRLKo13fb3lRyT74aRbYGiozPDxTkPzuMdxeuMYY/yE7AKZuB3mn8P4bRlSk
-	 E0DkRgEefz5yMg80B+V5BuJvQCIb0Qg+mw8902fM91vpamtZj5cf1ITDqmJRsZE0Ce8Uw
-	 xG6oblw1BO6VJCFzTSeOI4Cxg8EWd1cVITXe18W/EKoA4Kn6A8RVdv7fFa/o00IOXhA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a0vDXS2z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.49
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1792588976;
+	b=wJw3VzDR1O2nTLxXv+d8AMKsbu8RCYwVfxuUtdcfKx86vskTOj18AHKJj6s9r2YlWeGJ
+	 AJ5yCuseaESdzRKkurFl+3mfzIKFbnmq+NjyjcgPtMnSGKXVhK/qc+XBk+mMKThAzF9Mz
+	 r6LUc7OdCa0Zv1xfK023/D8CztMtuL8FQw5xQ8vsOSb5VZvu7lLvFMlAJfff1NtQ/P5Cr
+	 XDgMpDFsrT2z0FIc5Fw7ZymJFriGhMCexnQYfybPeO8sRFbxPmjqEa+/lTzTPsWDed2hf
+	 V3XMXrpBvLi9dAMvAMgH92VBFEOlsOhHaZOaJvXNxHsZpJOd/1Vy1vWjsIK0/vi98RA==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792588976;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:
+	 X-MS-Exchange-Authentication-Results:Received-SPF:Received:Received:
+	 Received:Received:Date:Subject:From:Message-ID:In-Reply-To:References:
+	 To:CC:MIME-Version:Content-Type:X-NV-OnPremToCloud:
+	 X-EOPAttributedMessage:X-MS-PublicTrafficType:
+	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-Id:
+	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
+	 X-MS-Exchange-CrossTenant-AuthSource:X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
+	bh=LRK5iJiA5XXN8lyOrq8YqLPIDaQ7pK4kKoe5w1iG+ZQ=;
+	b=e3Hceo5wAGn/M4xuY8cycTXjDiI2SLE3ayzqfaHEU1i1yEXlvRG+9d2uG5HVHEk1GJ0O
+	 p409NSSCFc5bEAod0RbXg0GcpSlcR+e6qN5Y3AQBqj+ok39D1hrWiHMrwcZU333xDppSo
+	 xkZMsLAZ4cp2dB+GfsmWKUYeVgTal8It7gFuDeGL2nAJR0cG698q/MTTUIQW4USYj0VNM
+	 xEatKKIkJEClxzCcWpHUQIYY2CFeJ22LevHgRj2dDOFUAYH2MfQxUWdX8isLGltYqi1ff
+	 u5n/h8mprHvQJPKublK4CkZkJaTuuXrZYxXan0SIYh1Fv+9chq/6cWEnl0i+NrJfu8g==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=D77yUrbF;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.46.49
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010049.outbound.protection.outlook.com [52.101.46.49])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9FB606A319;
-	Wed, 21 Oct 2026 11:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A621606A319;
+	Wed, 21 Oct 2026 13:22:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8A621606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a0vDXS2z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8744E1F000C9;
-	Wed, 21 Oct 2026 11:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792580684;
-	bh=KEyWZpn7GCxKyFe1cxVvA+i6hof6XrBCfCM5wK05RnI=;
-	h=From:To:Cc:Subject:Date;
-	b=a0vDXS2z+3BJvzseCZvWZS178zabUBM12dt9uZuAT8c9vzQIB8l42/FHR/0F5fn7C
-	 WEVAHD7CvrrdppVW4/cklsU45lSCPyImvhMHsJluSZcHj/O+QvI+2pmSpPAgxQRmi2
-	 LF36C62+IAwEWnbt2T84EhD/A0UhrdzDnoUkCuhPEBbMzH6ZgvLS+1PyQiTyzPXROl
-	 az5RGUNxLVNap7yin28pegCZbzZrK4b6CnZzk//FR5z9wyQezu6IYpZ/y+b+OU+HdD
-	 16XdklW3JJ76JwrMoPsn26l0+YQCcDP2dM6qDwmoJl9jBt6RRw0Qwv0qxRE+0U7bYp
-	 WL2ha5F3VDpDw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 5E5C91AC5994; Wed, 21 Oct 2026 12:04:41 +0100 (BST)
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v7.4
-Date: Wed, 21 Oct 2026 12:03:53 +0100
-Message-Id: <20261021110441.5E5C91AC5994@finisterre.sirena.org.uk>
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=D77yUrbF
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qtOm2OHGzSbjTqWoQoKaf1FBkYtNm2j/3c+vhMiAbns1PkwjVGNyGcYAWbiXyHV/ROKURag91zvd8fgn2PXv4P8GCaV11JRym40I17SZ0CWrkE9utvEwcobMXfogmrAWkru7UT2GpNa0/tDLykmjL0Vt6CYes/XYluACQiE1LNlUIKzc+6pfJrIV2D9O9Tg8zIPwBW0yMqdB7Fl0DpWxJB5ytyRSh2VnqH/H5X2hqV3Sw+qYJ44c/jXGVZ9IpFXpfxiVWwUzsxbqphaHG+N7DQMErp0ZmCNxelIQbGmasq6uLtlxHY7gvONnsysUunIh7qPOZePgn04zRiBEZQ7pZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LRK5iJiA5XXN8lyOrq8YqLPIDaQ7pK4kKoe5w1iG+ZQ=;
+ b=sRQ1mt+vsJPuDP4oUKcFywHAkocqIb5UsYak7a1xML1vadwRUjDR7S+RB9UThdsDx6DAsw3ohUfIMTlc6mBUlfDChYOq+B3Fb6c1t5zhfX3iFl/BPEMPqKxuAemO8Jjif9JSkgjaTyIvN0t4F9P/z3cWqgBWtD6vjYt09mnqDVgD29tqdLULKayb7AzKPaaGdUz+bHX8nvMi4w3T5HbVnTHUl6SrmEvkL84WE5GdAvMMWBCvWoDyi7SDsnnV7Q3a77y8sQKTUnjUs8HyjARFu5d3hM+qrqXL0nk7NnxS65w1ggrWTD6kurtFHPe4isiNdX7DORbfbLQjt53sqq38sA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LRK5iJiA5XXN8lyOrq8YqLPIDaQ7pK4kKoe5w1iG+ZQ=;
+ b=D77yUrbFnA8Zvy1YSyz5Whz9rPkpMqR2Nz+6oLq0Gn5gqsZoy7M6dJEvp5pNF23aYk9LdcwxTP8r9WcDig/vL+vne8HUTy09SQ9JdyGp5A4YJaFbfs5C87jW9ouNsfs8IznurJoCMCYVhfe5SpnMDMrXsFyYU5PkEezjjzrqRARONXRJhVfGhNFoTpnbg/NYHKmq0ffCub+M0JJ+jK4BKKFeJCkndS7RyNGsb4xHMBUaA1L7q5HMaRZzL5drpNC3p6soQU1m4naaAaidiQiZz6emU9ICqMQgIAcx7su9069pMu6L54CZ9MSH1V9q1ixVaglaW4tzxoH1crSQpGusDQ==
+Received: from CH2PR07CA0039.namprd07.prod.outlook.com (2603:10b6:610:5b::13)
+ by LV2PR12MB683086.namprd12.prod.outlook.com (2603:10b6:408:414::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Wed, 21 Oct
+ 2026 13:22:53 +0000
+Received: from CH01EPF000BE946.namprd02.prod.outlook.com
+ (2603:10b6:610:5b:cafe::24) by CH2PR07CA0039.outlook.office365.com
+ (2603:10b6:610:5b::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.15 via Frontend Transport; Wed,
+ 21 Oct 2026 13:22:53 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH01EPF000BE946.mail.protection.outlook.com (10.167.244.138) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.546.15 via Frontend Transport; Wed, 21 Oct 2026 13:22:53 +0000
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 21 Oct
+ 2026 06:22:35 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail204.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 21 Oct
+ 2026 06:22:35 -0700
+Received: from nvidia.com (10.127.8.14) by mail.nvidia.com (10.129.68.9) with
+ Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Wed, 21 Oct
+ 2026 06:22:34 -0700
+Date: Tue, 18 Aug 2026 14:34:43 +0000
+Subject: [PATCH 1/5] spi: tegra114: Allow PIO fallback when DMA is unavailable
+From: Vishwaroop A <va@nvidia.com>
+Message-ID: <179258895296.403962.7785404408966779179@nvidia.com>
+In-Reply-To: <179258895296.403962.3492255118456900623@nvidia.com>
+References: <179258895296.403962.3492255118456900623@nvidia.com>
+To: Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>
+CC: Laxman Dewangan <ldewangan@nvidia.com>, Thierry Reding
+	<thierry.reding@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
+	"Sowjanya Komatineni" <skomatineni@nvidia.com>, Rhyland Klein
+	<rklein@nvidia.com>, Suresh Mangipudi <smangipudi@nvidia.com>, Krishna
+ Yarlagadda <kyarlagadda@nvidia.com>, Vishwaroop A <va@nvidia.com>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -54,400 +116,100 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH01EPF000BE946:EE_|LV2PR12MB683086:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1243e13e-aea9-4fb2-1d7a-08df2f7669b2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|36860700016|82310400026|56012099006|260925022911599003|260925021911599003|261009220027099003|260925021311599003|261009221227099003|11063799006|261009221727099003|261009223327099003|261009223027099003|18002099003|10067099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	tpPp4Kp78CeRv6VVTizR/W46J3T2h4PZzL7YftJYWj2gV8bFq6aVVzGLG+A+Agc9gG4rObl4hc1vBGQ+TbTE7lMjcjp5vwnTTwfOW4PNF9S5ug7o4Gex3FYc6Tglu9f2dfrGewM1Afcr+jXVpKvMhjzQazihzAb179Y0jQGF5pxF8Vf2EqgIK76pMfBFmRK9powFHxaLeWVUHzdxP8c/5N/E4f5a/iFbxCTnMcJKqBeSTYHFW7JIu5vq53PGQKAH7KlOlQ65YYLxct47z7OO5ERiVDpSwocoW/HVUVvVpRA3jlRln0N0sGwLhC5zMSD3aI3MPNoLnqBGg8pM7WpN4mJ/Oa8DnT7zmY9cf5q7L9hOR6heAcQzxPCXbLYWAWMTlcsdPvDy8oTgWO4+BXrOLN3TO4FEItFqwvgv7qihYyGYQK0muoFE9Rc1HkAaRg9Hx8TUSXoixUXgO+Ros1YaeW+rP/Pc75l1I9XFrhbi0nVmX2iSupnRpbMCOSyJN8C0mqYFi9IUMq1CnUbdi/nxbf+KqyX6FtGQnUprrj4XyUDQHMa82XJinsRMGgzOBISx9wKCt9yYxoJ6xtO2MY4pegrZmrvi6wEq4teZQecs6RDCLuLKk8ZoAz60snDbBH9rvLTBBEgI/mO+7aEy7Iuuyt9CUFwGUIFFQqQg9Qn6X2s5WLEwX42EXSzNQGgF+cBe9zskz50q160il+NqjhXv4Q==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(56012099006)(260925022911599003)(260925021911599003)(261009220027099003)(260925021311599003)(261009221227099003)(11063799006)(261009221727099003)(261009223327099003)(261009223027099003)(18002099003)(10067099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iSsyBVseE8pg/KuhiqS/C83QMoYxFbCcDO443tPI+xNPgnJhHN8YZaAjxxNz2tAM2j7wPSdsvAK4S68D1H1Z8I66/2Y5+HQmNzb2mBnX2AVgRifH7QlckZsSI+EoMWZwkPu0Ts9wdKDgh/wpsFCxXdSNXVNS5JMpBZbqLhmBjyOVtxZWnKXCgLcldITZtC6F73GUKcgvi/sBjPIDc0q6LxEhkpophYqzUfeQj2UaKuyZXwsXZNRAjx0Mg0paPR6zL1GlL+goNSErgThvQWL+fpVJ+uGWploFnJpGE93QassE8NLsIUurMlJo6ZJAszXY6eZ7/TJTBubCaDhwQh6+FeJV2XYgbYYHW5g2q1FhbzCEdz6uLlDPO6pA4iKjXg1vzXh8KHuUmEJWALmj/GnwOJXh/uAUMumUNmSMzak/uDk2TLwzi9XcTwI70oNgk/Sh
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 13:22:53.4168
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1243e13e-aea9-4fb2-1d7a-08df2f7669b2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH01EPF000BE946.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB683086
 
-The following changes since commit b0f0c761ed3fa10754dc9295db85374a173123b7:
+From: Krishna Yarlagadda <kyarlagadda@nvidia.com>
 
-  spi: spi-fsl-lpspi: directly return ret in fsl_lpspi_transfer_one() (2026-10-15 22:37:15 +0100)
+The driver can still use PIO if DMA is not declared in DT. The DT
+binding lists 'dmas' as required, but tolerate its absence by
+falling back to PIO instead of failing probe. This lets platforms
+that legitimately do not wire up a DMA controller use the SPI
+controller in PIO-only mode.
 
-are available in the Git repository at:
+The runtime transfer path only takes DMA when both channels are
+set, so PIO-only probes automatically stay on the PIO path.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v7.4
+Signed-off-by: Krishna Yarlagadda <kyarlagadda@nvidia.com>
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+---
+ drivers/spi/spi-tegra114.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-for you to fetch changes up to d5acef12e819c1627c8bf6a0325845ab39d8c99d:
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 333fb549214e..f9bd783cb4dc 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -901,7 +901,8 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+ 	ret = tegra_spi_flush_fifos(tspi);
+ 	if (ret < 0)
+ 		return ret;
+-	if (total_fifo_words > SPI_FIFO_DEPTH)
++	if (total_fifo_words > SPI_FIFO_DEPTH &&
++	    tspi->tx_dma_chan && tspi->rx_dma_chan)
+ 		ret = tegra_spi_start_dma_based_transfer(tspi, t);
+ 	else
+ 		ret = tegra_spi_start_cpu_based_transfer(tspi, t);
+@@ -1366,15 +1367,21 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	tspi->max_buf_size = SPI_FIFO_DEPTH << 2;
+ 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
+ 
+-	ret = tegra_spi_init_dma_param(tspi, true);
+-	if (ret < 0)
+-		return ret;
+-	ret = tegra_spi_init_dma_param(tspi, false);
+-	if (ret < 0)
+-		goto exit_rx_dma_free;
+-	tspi->max_buf_size = tspi->dma_buf_size;
+-	init_completion(&tspi->tx_dma_complete);
+-	init_completion(&tspi->rx_dma_complete);
++	if (of_property_present(pdev->dev.of_node, "dmas")) {
++		ret = tegra_spi_init_dma_param(tspi, true);
++		if (ret < 0)
++			return ret;
++		ret = tegra_spi_init_dma_param(tspi, false);
++		if (ret < 0)
++			goto exit_rx_dma_free;
++
++		tspi->max_buf_size = tspi->dma_buf_size;
++		init_completion(&tspi->tx_dma_complete);
++		init_completion(&tspi->rx_dma_complete);
++	} else {
++		dev_warn(&pdev->dev,
++			 "'dmas' is required by the binding, falling back to PIO\n");
++	}
+ 
+ 	init_completion(&tspi->xfer_completion);
+ 
 
-  spi: Merge up fixes (2026-10-19 18:00:23 +0100)
+base-commit: b810335a0699d1810683796b0e3ffe8827ddfe6c
+-- 
+2.17.1
 
-----------------------------------------------------------------
-spi: Updates for v7.4
-
-Quite a lot of work in the SPI subsystem this time around, almost all in
-drivers rather than the core.  As well as the general cleanup/fix work
-we're seeing over most of the kernel there's been some substantial
-performance work to two existing drivers and support for a number of new
-devices including a couple of new drivers.  There was also a big
-overhaul of the spidev_test utility from the Pengutronix people.
-
- - Improvements for spidev_test to cover additional use cases, plus be a
-   bit easier to use.
- - Substantial performance work in both DesignWare and Tegra210 QSPI
-   drivers, making their interrupt handling more efficient to drive up
-   hardware utilisation.
- - Documentation clarifications.
- - Fixes for some runtime PM and error handling issues.
- - Support for Nuvoton MA35D1, Qualcomm QPIC SNAND v2, Renesas R-Car
-   Gen5 and X5H and Realtek RTD1625.
-
-Some of these updates are also present in my ASoC pull request to
-Takashi, b4's base selection logic picked a SPI commit for an ASoC
-branch and I didn't notice until far too late after I'd already merged
-the ASoC branch and stacked further work on it.
-
-----------------------------------------------------------------
-Aayush Kumar (12):
-      spi: bcm63xx-hsspi: Use sysfs_emit() instead of sprintf()
-      spi: bcmbca-hsspi: Use sysfs_emit() instead of sprintf()
-      spi: tle62x0: Use kstrtoul() instead of simple_strtoul()
-      spi: omap2-mcspi: Use snprintf() instead of sprintf()
-      spi: s3c64xx: Use snprintf() instead of sprintf()
-      spi: sh-hspi: Use devm_platform_ioremap_resource()
-      spi: jcore: Use devm_platform_ioremap_resource()
-      spi: butterfly: Use strscpy() instead of strcpy()
-      spi: lm70llp: Use strscpy() instead of strcpy()
-      spi: tle62x0: Use kstrtoul() instead of simple_strtoul()
-      spi: omap2-mcspi: Use snprintf() instead of sprintf()
-      spi: s3c64xx: Use snprintf() instead of sprintf()
-
-Abraham Zukor (1):
-      spi: tegra114: initialize native chip selects inactive
-
-Alban Bedel (1):
-      spi: Fix ACPI SPI resources using relative path
-
-Andrew Gaylard (1):
-      spi: sunplus: handle signal interruption in transfer wait
-
-Andy Shevchenko (3):
-      spi: Fix tab and space mixture in Kconfig
-      spi: Drop redundant dependency on SPI_MASTER
-      spi: Fix the section ordering in accordance with the comment
-
-Bhargav Joshi (1):
-      spi: dt-bindings: ti,davinci-spi: Convert to DT schema
-
-Changhuang Liang (4):
-      spi: dw: Convert the Tx done delay from SCK cycles to time
-      spi: dw: Support DMA with a single channel
-      spi: dw: Add DMA support for enhanced memory operations
-      spi: dw: Unconditionally stop DMA on errors
-
-Chi-Wen Weng (4):
-      spi: dt-bindings: nuvoton,ma35d1-qspi: Add MA35D1 SPI controller
-      spi: ma35d1: Add Nuvoton MA35D1 SPI controller support
-      spi: ma35d1-qspi: Add GPIO chip select support
-      spi: dt-bindings: nuvoton,ma35d1-qspi: Drop redundant SPI example
-
-Felix Gu (5):
-      spi: omap2-mcspi: Remove unbalanced pm_runtime_put_sync() calls
-      spi: ingenic: release tx DMA channel when rx request fails
-      spi: mtk-nor: fix runtime PM usage count leak in probe error path
-      spi: ar934x: Convert to devm_spi_register_controller()
-      spi: mxic: fix ps_clk leak in runtime resume
-
-Francesco Valla (3):
-      spi: virtio: drop duplicate completion init
-      spi: virtio: fix max frequency setting
-      spi: virtio: drop unused field from private data
-
-Frank Li (4):
-      spi: ingenic: remove dmaengine_desc_free()
-      spi: use dmaengine public API instead of raw ops
-      spi: use dmaengine_get_dma_device() instead of chan->device->dev
-      spi: use dmaengine_submit() instead of ->tx_submit()
-
-Frieder Schrempf (3):
-      spi: dt-bindings: Clarify what rx-sample-delay-ns describes
-      spi: Parse the rx-sample-delay-ns peripheral property in the core
-      spi: dw: Use the rx-sample-delay-ns value parsed by the core
-
-Gabor Juhos (8):
-      spi: spi-qpic-snand: remove interim 'dev_data' variable from qcom_spi_probe()
-      spi: spi-qpic-snand: remove unnecessary cast to '__le32 *'
-      spi: spi-qpic-snand: add qcom_spi_config_page_read() helper
-      spi: spi-qpic-snand: drop ecceng_to_qspi() macro
-      spi: spi-qpic-snand: fix read location register usage in qcom_spi_config_cw_read()
-      spi: spi-qpic-snand: remove 'ecc_buf_cfg' member of struct 'qpic_ecc'
-      spi: spi-qpic-snand: set 'qpic_version2' flag
-      spi: spi-qpic-snand: skip BBM copy on regular raw reads
-
-Geert Uytterhoeven (1):
-      spi: sh-msiof: Add support for R-Car Gen5
-
-Guangshuo Li (2):
-      spi: fsl: unmap immr_spi_cs on remove
-      spi: bcm63xx-hsspi: Disable runtime PM on remove
-
-Han Gao (2):
-      spi: sg2044-nor: Return transfer errors
-      spi: sg2044-nor: Honor SPI clock limits
-
-Hemanth Selam (1):
-      spi: fix typos in comments
-
-Hongjian Dai (1):
-      spi: meson-spicc: fix invalid DMA unmap on mapping failure
-
-Jesse Jeronimus (1):
-      Documentation: devres: Remove non-existent SPI register helpers
-
-Jiawen Liu (1):
-      spi: rockchip-sfc: disable runtime PM in remove
-
-Jisheng Zhang (6):
-      spi: dw: use DW_SPI_ISR directly
-      spi: dw: Make dw_spi_update_config()
-      spi: dw: remove useless dws->transfer_handler check
-      spi: dw: remove duplicated "!rx_len && !tx_len" handling from dw_spi_irq
-      spi: dw: restore previous irq handling behavior when !ctlr->cur_msg
-      spi: dw: use threaded interrupt and optimize the threaded ISR
-
-Johan Alvarado (2):
-      spi: spi-qpic-snand: publish the ECC context to snandc->qspi
-      spi: spi-qpic-snand: drop the redundant ECC context handling
-
-Jonas Jelonek (1):
-      spi: realtek-rtl: add support for second CS
-
-Jonas Rebmann (9):
-      spi: spidev_test: include tools/include
-      spi: spidev_test: clarify usage for --size
-      spi: spidev_test: make size argument mandatory for --size
-      spi: spidev_test: allow zero-length transfers
-      spi: spidev_test: abort when -I is selected without -S
-      spi: spidev_test: always compare loopback data
-      spi: spidev_test: send predictable data
-      spi: spidev_test: rewrite unescape() to stay in bounds
-      spi: spi-sun4i: sun4i_spi_transfer_one(): add error handling at clock setup
-
-Jonathan Santos (2):
-      spi: axi-spi-engine: fix stale SYNC IRQ pending
-      spi: axi-spi-engine: fix stale SYNC IRQ pending in trigger_enable
-
-Jyan Chou (2):
-      spi: dt-bindings: Add Realtek RTD1625 SPI NOR support
-      spi: spi-mem: Add Realtek SPI NOR flash controller driver
-
-Karl Mehltretter (3):
-      spi: docs: Use the multi-lane mode constants in examples
-      spi: Fix the return value in spi_new_ancillary_device() kernel-doc
-      spi: atmel-quadspi: balance runtime PM and pclk across system sleep
-
-Kathiravan Thirumoorthy (1):
-      spi: dt-bindings: spi-qpic-snand: Add IPQ9650 compatible
-
-Li Youhong (2):
-      spi: ma35d1-qspi: assert reset on probe error paths
-      spi: amlogic-spisg: check clk_prepare_enable() return value
-
-Lucas Costa (1):
-      spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
-
-Marc Kleine-Budde (10):
-      spi: spidev_test: add compare mode
-      spi: spidev_test: allow disabling rx or tx buffers
-      spi: spidev_test: don't send 0x0 or 0xff
-      spi: spidev_test: add option to split message into multiple transfers
-      spi: spidev_test: print TX on error
-      spi: spi-sun4i: sun4i_spi_transfer_one(): fix transfers for SUN4I_FIFO_DEPTH
-      spi: spi-sun4i: sun4i_spi_fill_fifo(): always apply A10 FIFO fill level workaround
-      spi: spi-sun4i: sun4i_spi_transfer_one(): fix setting of clock rate
-      spi: spi-sun4i: sun4i_spi_handler(): fix race condition between transfer completion and RX FIFO interrupt
-      spi: spi-sun4i: sun4i_spi_transfer_one(): report effectively used speed_hz of transfer
-
-Mark Brown (23):
-      spi: Kconfig cleanups
-      spi: qcom-geni: Add shutdown and panic notifier support
-      spi: add support for Amlogic A9
-      spi: ma35d1-qspi: Flag the DTR capability correctly
-      spi: tegra210-quad: Improve interrupt handling for loaded systems
-      spi: virtio: fix max frequency setting plus minor cleanup
-      spi: spi-qpic-snand: fix the stale ECC context pointer
-      spi: Better specification for rx-sample-delay-ns and core parsing
-      spi: sh-msiof: Add support for R-Car X5H
-      spi: spidev_test: new features
-      spi: realtek: Add support for RTD1625 SPI NOR Flash Controller
-      Add enhance SPI DMA support for JHB100 SFC
-      spi: Add Nuvoton MA35D1 SPI controller support
-      spi: qcom-geni: Use GPIO to notify master of SPI target activity
-      spi: spi-sun4i: assorted fixes
-      spi: use sysfs_emit() in bcm63xx-hsspi and bcmbca-hsspi
-      spi: use kstrtoul() and snprintf()
-      spi: dw: use threaded interrupt
-      spi: axi-spi-engine: fix stale SYNC IRQ pending
-      spi: use devm_platform_ioremap_resource() in sh-hspi and jcore
-      spi: replace strcpy(), sprintf() and simple_strtoul() with strscpy(), snprintf() and kstrtoul()
-      spi: cadence-xspi: two memory-safety fixes in the slave-DMA paths
-      spi: Merge up fixes
-
-Miquel Raynal (3):
-      spi: spi-mem: Enable DTR transfers using the standard API
-      spi: ma35d1-qspi: Allow DTR operations with the regular SPI API
-      spi: cadence-qspi: Prevent SPI NAND continuous reads
-
-Myeonghun Pak (1):
-      spi: rockchip-sfc: skip DMA cleanup in PIO mode
-
-Ovidiu Panait (1):
-      spi: rspi: Fix DMA mode when the DMA controller is built as a module
-
-Peng Fan (1):
-      spi: use dmaengine_get_dma_device() for DMA mapping
-
-Pengpeng Hou (1):
-      spi: sh-msiof: propagate setup runtime-PM errors
-
-Pin-Hao Chen (1):
-      spi: stm32: fix double free of SRAM buffer on MDMA fallback
-
-Praveen Talari (4):
-      spi: qcom-geni: Add shutdown callback to quiesce hardware on reboot
-      spi: qcom-geni: Add panic notifier to cancel and reset DMA during panic
-      spi: dt-bindings: Document ready-gpios property
-      spi: qcom-geni: Use GPIO to notify master of SPI target activity
-
-Randy Dunlap (1):
-      spi: spi-master: use literal blocks for commands
-
-Rosen Penev (1):
-      spi: orion: yield to scheduler in transfer wait loop
-
-Saad Anjum (1):
-      spi: bitbang: Drop duplicated word in file header comment
-
-Sahaj Chaudhari (1):
-      spi: omap2-mcspi: handle DMA setup failures
-
-Sunny Luo (1):
-      spi: amlogic: spisg: Fix the incorrect keep_ss of the last descriptor
-
-Thanh Quan (1):
-      spi: dt-bindings: renesas,sh-msiof: Add support for R-Car X5H
-
-Udaya Kiran Challa (1):
-      spi: dt-bindings: microchip,pic32mzda-spi: Convert to DT schema
-
-Viken Dadhaniya (1):
-      spi: qcom-geni: rename setup_fifo_params() to setup_spi_params() and make it void
-
-Vishwaroop A (3):
-      spi: tegra210-quad: Convert to hard IRQ with high-priority workqueue
-      spi: tegra210-quad: Cache TRANS_STATUS in ISR for timeout handler
-      spi: tegra210-quad: Process small PIO transfers in hard IRQ context
-
-Weibin Liu (9):
-      spi: ljca: validate the response length before copying the data
-      spi: cadence-xspi: reject SDMA transfers larger than the requested length
-      spi: cadence-xspi: fix stack buffer overflow in the Marvell b0 path
-      spi: jcore: fix divide-by-zero when speed_hz is zero
-      spi: npcm-fiu: limit UMA data_size to the 16-byte staging buffer
-      spi: bcm-qspi: reject oversized dummy bytes in mspi exec_mem_op
-      spi: amd: fix len==0 underflow and FIFO overflow
-      spi: spi-pci1xxxx: quiesce DMA engines on transfer timeout
-      spi: ch341: handle transfers without a TX or RX buffer
-
-Xianwei Zhao (4):
-      spi: dt-bindings: amlogic: spisg: Document A9-specific properties
-      spi: amlogic: spisg: Fix transfer size limit and timeout handling
-      spi: amlogic: spisg: Add support for A9 controller features
-      spi: dt-bindings: amlogic,meson-gx-spicc: add T7 compatible
-
-Yu-Chun Lin (1):
-      spi: rtk-nor: Fix incorrect boolean return value
-
-Ziyang Huang (1):
-      spi: spi-qpic-snand: reject when no enough OOB space
-
- Documentation/ABI/testing/sysfs-class-spi-master   |   6 +-
- .../devicetree/bindings/spi/amlogic,a4-spisg.yaml  |  30 +-
- .../bindings/spi/amlogic,meson-gx-spicc.yaml       |  13 +-
- .../bindings/spi/microchip,pic32mzda-spi.yaml      |  82 +++
- .../bindings/spi/microchip,spi-pic32.txt           |  34 -
- .../bindings/spi/nuvoton,ma35d1-qspi.yaml          |  21 +-
- .../bindings/spi/qcom,sa8255p-geni-spi.yaml        |   9 +
- .../bindings/spi/qcom,spi-geni-qcom.yaml           |   9 +
- .../bindings/spi/qcom,spi-qpic-snand.yaml          |   1 +
- .../bindings/spi/realtek,rtd1625-nor.yaml          |  65 ++
- .../devicetree/bindings/spi/renesas,sh-msiof.yaml  |   9 +-
- .../devicetree/bindings/spi/spi-davinci.txt        | 100 ---
- .../bindings/spi/spi-peripheral-props.yaml         |   9 +
- .../spi/ti,davinci-spi-peripheral-props.yaml       |  25 +
- .../devicetree/bindings/spi/ti,davinci-spi.yaml    | 125 ++++
- Documentation/driver-api/driver-model/devres.rst   |   2 -
- Documentation/spi/multiple-data-lanes.rst          |  10 +-
- MAINTAINERS                                        |   6 +
- drivers/spi/Kconfig                                | 379 +++++------
- drivers/spi/Makefile                               |   2 +
- drivers/spi/atmel-quadspi.c                        |  26 +-
- drivers/spi/spi-amd.c                              |  17 +
- drivers/spi/spi-amlogic-spisg.c                    | 116 +++-
- drivers/spi/spi-ar934x.c                           |  13 +-
- drivers/spi/spi-at91-usart.c                       |   8 +-
- drivers/spi/spi-atmel.c                            |   8 +-
- drivers/spi/spi-axi-spi-engine.c                   |  20 +-
- drivers/spi/spi-bcm-qspi.c                         |   3 +-
- drivers/spi/spi-bcm2835.c                          |  29 +-
- drivers/spi/spi-bcm63xx-hsspi.c                    |   5 +-
- drivers/spi/spi-bcm63xx.c                          |   2 +-
- drivers/spi/spi-bcmbca-hsspi.c                     |   2 +-
- drivers/spi/spi-bitbang.c                          |   2 +-
- drivers/spi/spi-butterfly.c                        |   3 +-
- drivers/spi/spi-cadence-quadspi.c                  |  12 +-
- drivers/spi/spi-cadence-xspi.c                     |  52 +-
- drivers/spi/spi-ch341.c                            |   6 +
- drivers/spi/spi-dw-core.c                          | 218 +++++--
- drivers/spi/spi-dw-dma.c                           | 289 +++++++--
- drivers/spi/spi-dw-mmio.c                          |   2 +
- drivers/spi/spi-dw.h                               |  26 +-
- drivers/spi/spi-ep93xx.c                           |   8 +-
- drivers/spi/spi-fsl-dspi.c                         |  35 +-
- drivers/spi/spi-fsl-spi.c                          |   8 +
- drivers/spi/spi-geni-qcom.c                        | 114 +++-
- drivers/spi/spi-imx.c                              |  12 +-
- drivers/spi/spi-ingenic.c                          |  10 +-
- drivers/spi/spi-jcore.c                            |  16 +-
- drivers/spi/spi-ljca.c                             |   7 +-
- drivers/spi/spi-lm70llp.c                          |   2 +-
- drivers/spi/spi-ma35d1-qspi.c                      |  64 +-
- drivers/spi/spi-ma35d1.c                           | 716 +++++++++++++++++++++
- drivers/spi/spi-mem.c                              |  14 +-
- drivers/spi/spi-meson-spicc.c                      |  11 +-
- drivers/spi/spi-mtk-nor.c                          |   1 +
- drivers/spi/spi-mxic.c                             |   8 +-
- drivers/spi/spi-npcm-fiu.c                         |   8 +
- drivers/spi/spi-nxp-xspi.c                         |  16 +-
- drivers/spi/spi-omap2-mcspi.c                      | 246 ++++---
- drivers/spi/spi-orion.c                            |   9 +
- drivers/spi/spi-pci1xxxx.c                         |  71 ++
- drivers/spi/spi-pic32.c                            |   2 +-
- drivers/spi/spi-pl022.c                            |  19 +-
- drivers/spi/spi-qpic-snand.c                       | 119 ++--
- drivers/spi/spi-realtek-rtl.c                      |  36 +-
- drivers/spi/spi-rockchip-sfc.c                     |  21 +-
- drivers/spi/spi-rspi.c                             |  49 +-
- drivers/spi/spi-rtk-nor.c                          | 624 ++++++++++++++++++
- drivers/spi/spi-s3c64xx.c                          |   5 +-
- drivers/spi/spi-sh-hspi.c                          |  15 +-
- drivers/spi/spi-sh-msiof.c                         |  18 +-
- drivers/spi/spi-stm32.c                            |   5 +-
- drivers/spi/spi-sun4i.c                            |  68 +-
- drivers/spi/spi-sun6i.c                            |   2 +-
- drivers/spi/spi-sunplus-sp7021.c                   |  13 +-
- drivers/spi/spi-tegra114.c                         |  49 ++
- drivers/spi/spi-tegra210-quad.c                    | 509 +++++++++++++--
- drivers/spi/spi-ti-qspi.c                          |   2 +-
- drivers/spi/spi-tle62x0.c                          |   6 +-
- drivers/spi/spi-topcliff-pch.c                     |   4 +-
- drivers/spi/spi-virtio.c                           |  22 +-
- drivers/spi/spi-xilinx.c                           |   2 +-
- drivers/spi/spi.c                                  |  19 +-
- include/linux/spi/spi.h                            |   9 +
- tools/spi/Makefile                                 |   2 +-
- tools/spi/spidev_test.c                            | 330 +++++++---
- 86 files changed, 4066 insertions(+), 1056 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/microchip,pic32mzda-spi.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
- create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
- create mode 100644 Documentation/devicetree/bindings/spi/ti,davinci-spi-peripheral-props.yaml
- create mode 100644 Documentation/devicetree/bindings/spi/ti,davinci-spi.yaml
- create mode 100644 drivers/spi/spi-ma35d1.c
- create mode 100644 drivers/spi/spi-rtk-nor.c

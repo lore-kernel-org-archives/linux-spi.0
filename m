@@ -1,334 +1,201 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010013.outbound.protection.outlook.com [52.101.61.13])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3ED46D540;
-	Tue, 18 Aug 2026 13:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787059558; cv=fail; b=G5SI3uueR5T+V49Ya1dPHYdwgqbJQVsnye//mOqWDGHq0KzZ7f1Y2PaTGXVoL9enZRSZRpCPmoUroMrBytJN+9lBoQET+4QFLnVvDNqViGupc0uXprqXXf/gjgFzLO0J6TVLuc8JntBu+sZQ8LlqKnrSKupNeWR7CdDENSZYPSM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787059558; c=relaxed/simple;
-	bh=jMDn0vtouCucfSWag4i38NlewRAfJOHrXs9dOft7l3I=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=KUYvXnfgvS+WmcodREn3c1s9H6Iqj5pjocT88INmoO4akq0dWbrzn4HtpQhfkU9gwJQzyLfG7TgSoSUTuFyXuJ92IqUeJ4cHSH5CWvOF48fVm4YiWBbIWvU+6kMVkUpdHb2fL0x62U0o2RP+yng/2DuVYXpRZvCsfTzHPPGf38c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=o2ABzX1p; arc=fail smtp.client-ip=52.101.61.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA8439FCD8
+	for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 13:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787059698; cv=none; b=B7B69Vru+BhzrSOFgpqb4RDWOBTTbTGN9goOZqIoBznvpra3cq8LRZFGR9XAxRkVc0+JXBffCislkk/shFmOAkDbSPvM+mfoHsTID7DTj5XZNlyqBS3JwkBVtTsSmEQkWJxTkLXJEsxZTGfd/8FeKk4N6kpuOKHh5zbbORH3TLQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787059698; c=relaxed/simple;
+	bh=RfpT2A8mXmIgd9/rzkJjpIStePeF6g3Bowgnv4/GJIc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LooOre17ldIDc9GDTpXmStR+u9WCNaYY2AfPazRvkf5UcdYr3wAmaWeLD34adIMXReMKIP2OvOiOLudcxL9y3ZBm+Ymi64WGVM4m1Vt3eSbBLgo1VhpiO8MtOTbcKcBKe0bEZwVtz9IbARmN//HPIHznH8jGT3zgm416SLD/pTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YiM8ea8e; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AgVxcD+/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="o2ABzX1p"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PddADsqG1Bxh3FJloPD3k+eHOJj62/ctD7mwWlTRE86bmQkDcGaimLrapw6kzls/Kv5Ax50zgmT7qt7ezP2uUpUe4wKtQHj/JS5xyjoEtFGGT19jpAXZRJJ9NURfcTQ83UflX6rp4zf7pe4dhPI6+Ao8w0Ig55WNTHQlAp5ruGkdybE+8PNsM3dN5IGgoAsy20koBpyHwdgMk2Bi0/opMq+M84dhKdv9aPUjrwGvODsdd4RnkzjtBLrudkhPLn9ZlJAfOzd3QprmFEeq9ICQmu9alMsbzndqConLJKTUGc93U9/VfumJ5G7ipbaZ2EW2KEuDtzVCy6F0wuCHuq4uhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yxjlTP53SQoeogNhOuOEBlnVgbnKw2L3P1OM3KGtioU=;
- b=AZwTPGuzh7FDhswo3aXe+83QWWXFis6E9nzkk1NQNiAF+OOBuYUfFcDHzGlUO4+WqzsQzNfco6UrHrfRp+ClUhJPBpfbAdgtpCDykJpmzuerwiABhRXaxBMBh/jIPxpkzIgE6naM0UHqb8xWIJa1DNZmW7ZBb3Xn4lEOPNxrESpmIMSjJVor9ID0x1myebepNnPkM/eXTiAcxocxoCFpZhtO3y1OkSySBm+G3c7thvlsqo0WQkdyWWO1I/nnhwP26+wgOr5uUIps9mGHSxkS5v13mGy7FRE3/QYSX8N68gDr+hT2QAUshaBSe786dLx028Y9KasbUu4z5i1WhbA5Vg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yxjlTP53SQoeogNhOuOEBlnVgbnKw2L3P1OM3KGtioU=;
- b=o2ABzX1p6rFTAHUa+ipVAUb+byWO3lcD8ix3nH5SkRASc6c+i/hcXdaT1ojpcaPZADU+d7tDjOVdgAcD3wNezrOE4FA3SenYMrtZZC8nosgdELTCL4MSk7cqti3HQ1hiNoENP1WPzueU4VNHTyq3SyYvMIJhaCFO8Xith26PK2I=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB9733.namprd12.prod.outlook.com (2603:10b6:8:225::13)
- by BN7PPFCE25C719B.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6e1) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
- 2026 13:25:53 +0000
-Received: from DM4PR12MB9733.namprd12.prod.outlook.com
- ([fe80::aeaa:23b5:1d59:602c]) by DM4PR12MB9733.namprd12.prod.outlook.com
- ([fe80::aeaa:23b5:1d59:602c%3]) with mapi id 15.21.0315.014; Tue, 18 Aug 2026
- 13:25:51 +0000
-Message-ID: <d1bdc779-724a-4851-8c26-7e02981bae7a@amd.com>
-Date: Tue, 18 Aug 2026 18:55:42 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/4] espi: introduce eSPI bus framework
-To: YH Chung <yh_chung@aspeedtech.com>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "broonie@kernel.org" <broonie@kernel.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "akshata.mukundshetty@amd.com" <akshata.mukundshetty@amd.com>,
- "bleung@chromium.org" <bleung@chromium.org>,
- "groeck@chromium.org" <groeck@chromium.org>,
- "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
- "corbet@lwn.net" <corbet@lwn.net>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
- "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
- "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
- YC Hsieh <yc_hsieh@aspeedtech.com>,
- Maciej Lawniczak <maciej.lawniczak@intel.com>,
- Ryan Chen <ryan_chen@aspeedtech.com>
-References: <20260804115259.4065638-1-krishnamoorthi.m@amd.com>
- <2026080416-lagoon-delirium-8e84@gregkh>
- <83210c6e2a7b203bd5913b455ea45cfddf3d29ec.camel@codeconstruct.com.au>
- <9180f5d5-9885-492b-b80e-c2aaaeb39501@amd.com>
- <KL1PR0601MB42768F2FB7E907618E1DAB4E90DE2@KL1PR0601MB4276.apcprd06.prod.outlook.com>
-Content-Language: en-US
-From: "M, Krishnamoorthi" <krishnamoorthi.m@amd.com>
-In-Reply-To: <KL1PR0601MB42768F2FB7E907618E1DAB4E90DE2@KL1PR0601MB4276.apcprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0076.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d8::10) To DM4PR12MB9733.namprd12.prod.outlook.com
- (2603:10b6:8:225::13)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YiM8ea8e";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AgVxcD+/"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IDR0Lx1451353
+	for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 13:28:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=MTslnVHVNGICAAwDfmm7mt
+	HNXgqom7YGBRdt0SDwdBk=; b=YiM8ea8eZhcHPxlqcbSyWkDA/uGnmWBK2ftFTg
+	CUGK2Y/IsrcZVJegeyM8Dp2w+abC8nnKb4a/4LvSiNhhlSvEMLoQBGQ07i7EaAxm
+	Mt0/mqZVoY9SDQYAVldfNnzH7MtFJIxuEdfloQY8Gm+ZPoslSiU+i5Ox8+Dh5I0m
+	4aW4Co9e5UlChScRewQ5OxMXeVl/K1xCmDmh9N/H4+9K3+Jb+6MZztHURd9v6aOq
+	GKaY1xbt97BmI933seefRgXtJphb9pKU01NQl9dhPiRgznx8dMCFaOrT/cWgsYKh
+	P58BnkTg5pM7TknNzv4ayhHkdXxOG49dvLo/pXSutBCV1BPQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g4qyx033g-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 13:28:15 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8e9489f62bfso54711936d6.2
+        for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 06:28:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787059695; x=1787664495; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=MTslnVHVNGICAAwDfmm7mtHNXgqom7YGBRdt0SDwdBk=;
+        b=AgVxcD+/H82h9/8jJOUi1HdSdHpCiFC22oMT7lACkHr2nzdBqkAsnT7jHgVtqz7Ira
+         UB9MMUdAXF5ZYuqDuKzaAFOrlLDxYQ+QlBQGt2dHfR37jaf/u5JWePIjLxD0cn/S7NEd
+         WP7hTiEKVMNXRpJodXEp9I8AkGpwDA/uPgXuVLFquYfk5A1LW7pjl2SGYrQXhSY02pY1
+         haEfkAkhSvGx1/FvNeBpYbl36sqqNOnQZ/ABnpxzhc4cUFodOt0C3d5nOdVvHnKC4mUG
+         fkuV5eZxSTYlQ/DxthgKeKIpa+huXKpPxM+UW2UQnUfGCOk+wPJiW7WymLJJLcC9B2aI
+         cx0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787059695; x=1787664495;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=MTslnVHVNGICAAwDfmm7mtHNXgqom7YGBRdt0SDwdBk=;
+        b=JtZ/K++tpgd5zXSzeMo0Jrec6h/uSjM19IJiyAQWbdw4EP5fOb5VxLikS9Kuxc4kvv
+         gOtqczCniVTr2P2hWieHWke20FHFx1Z4VchW/bSdyRFGy6qGLAz0J4LQR/JP6jUiqRmx
+         rxrSYk5tK7O+GHb+RAOzekn4IG2ly7G/Q6VbaKGTHyJPaCxpZoit+J68eZIYinONUkml
+         ia4YYvB15LeUm/iiCowFelA8w5fLo3iSbFuXBo1zW8YUDBOgy9U//g1dPbklm0UHMVTw
+         kkSdydCUR7gkwDhYEPGAvwd4Ya65VVnH+pic6Oth2/82OhxL5uFqhf+LoEQ8IL6bEcWM
+         28uw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr38ZNtxJ8t+TGfRdzBz+wSWH6T5BHCNv2Kz17yxhx5OXDOmZKvT79CGz7KSW8/MrV/rGb5871gBT0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHUP9jzOWVO6+3iDVsN850t7VM+KR+/I+qrGViRs++xsUlyNnj
+	C7PGFNTlwyjeXLjqj2tJIRyt75NNYIv3UAZB3EA2y5mQfnyS4vBhaNb5cCSuM1YACrV8uTK0oSd
+	eQMiphbWH3EwFQL1NjsuBw+wC6Vi5WB43n62V1AvNVj3Mf/lc9IaqXM7wEGlIKgXnEpChyj4=
+X-Gm-Gg: AR+sD10a62VRXWIfT+DooVzXm3d6vd6ndrgvcVgj7kDACkgjG7Re14HYYUCNx3U5tio
+	Emrvb+1Jb07NfoZIi06AwaW8ocGBMjhd9SW8KehC2Dpo/179H+K4mP6iYxCkTKK3TK1QUUvUntf
+	F0RgH/2qwcY6wFJVEgg2b4lNAT4Mwc1T8P+CvpMkiHk+skMGgkSJlO1q8RXVd2SN0zWTPhIJCo2
+	NAu+BMBCwUmmTmlTXQ7itMKAvd2NYJvqDs269McmotWHllyHuUUlTwU1+O2XtQWseSM0L2ZnZOv
+	/eAQs4kVEwHAsbMCTLcxlvBoKCCXOt5IRhl1IHWqDRo0AOb5fGaINvcosPIyXnOZNuWvzC5T75G
+	Eb3JpvCNoVFvwwtzIoGqGm84WCTzvYBfcFg==
+X-Received: by 2002:a05:6214:4281:b0:90a:3291:7ba3 with SMTP id 6a1803df08f44-90a91c5c3d4mr380897856d6.5.1787059695262;
+        Tue, 18 Aug 2026 06:28:15 -0700 (PDT)
+X-Received: by 2002:a05:6214:4281:b0:90a:3291:7ba3 with SMTP id 6a1803df08f44-90a91c5c3d4mr380896926d6.5.1787059694656;
+        Tue, 18 Aug 2026 06:28:14 -0700 (PDT)
+Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-90c4580f611sm32304636d6.6.2026.08.18.06.28.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Aug 2026 06:28:14 -0700 (PDT)
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Subject: [PATCH v3 0/2] spi: qcom-geni: Add shutdown and panic notifier
+ support
+Date: Tue, 18 Aug 2026 18:58:06 +0530
+Message-Id: <20260818-add-shutdown-and-panic-notifier-for-spi-v3-0-8b62c4bc2d21@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB9733:EE_|BN7PPFCE25C719B:EE_
-X-MS-Office365-Filtering-Correlation-Id: cdcf0578-d21b-495b-7a2f-08defd2c3942
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|6133799003|10067099003|4143699003|11063799006|56012099006|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	/k3dpoIBTZG86wKtVTQSdv4E0YuIN/y6oGsxGVDIbRO/Wb4o8SGOiU0mzQ3ZiiOTvoVKDBj40a06gQdStLF2t42ytjRNuPcgJ3xU4EB5MULNPpDUER2Jiy7MUjsDJilumkfhFKFAzi3rl3czjL7/psIxt8cE3nBVO3ZFw8425vMxiaBkFOYmy21HQGWiWntQ8pbA/y4p4mxsVmsWV4gLUpMlzL1j0WOsNd5b5wdYuobNLehfmDym4FDPxdqOitpcOM4ItgnmC6uIFa7LeJ/M48qMpNCfVS4rQo6utIeNEbdT5p+QFgMlEAw6oLIzzndkSBU4g0fWJ6P++iRFZ3XMRPxWm2/QG0nfk3JPpmLB1L7P/D4xKiH6RSCSNXgEn72G553lYITLkRA8ayaKpjZxYgHz1DKP7p271o8coSak/qmJH8Ut9Qyo2PVb6Pd574mv3imxmAMlZbpUSgq00iTOO89vu9ua4R058kiX61/TgwXwYweu8qC6ie35KWkMKUw7nDTo/fkvCYMwwKXgl4SGiEqrljcNLiZb3ECVhTqZFrZmMIkdY9zP4YPN1h9jgGAJoq7S8zem4vRli+7kI9XwgRaJ7QKEu5f6nKX/Ns3i89QMdI/Oz46ftyAkQ0c2pguFVDK66MimNTVK2kDowMj9Gduu7GTD7Z7ZPtqe8MUd6Cw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9733.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MnQrWndFUno4aTVIcTdNWjNRUSszRFN5OTE0MW9aSC93YnNSSXVWS2Q4WWFh?=
- =?utf-8?B?L2h4U011aGJrajJnRlNwMDFncWoxSFZjNGVEeUVUMk1GWkxTY2dmOWdhcXk4?=
- =?utf-8?B?SjdDUXZnVVM2YWk5RVdOL2ZXOXpRMUNVMVpyaHNMVGYrQmVRSGwzcUFVK3BB?=
- =?utf-8?B?K2k0M29ES1A3NURaaDhvaXlIeTEzcmtEOUxWKzFZM3NjQkxUUWdsZ3d0eUpv?=
- =?utf-8?B?M0FObncyYzlaSHN4V2pZR0s3UkMveW1FWTN3WVExb3g5OHMydUVLMXNzb2Ix?=
- =?utf-8?B?UGlMc05EeDUvMTdDRmI4OHg3UXE4THhueTNNWUx4WlBlbWtiamVHT3pyM1N6?=
- =?utf-8?B?OFFHUkJPZ2NmcXJRTzN1Q1prWW54cEkrTWszdjUzak1lcXBEM0pSY280cHFk?=
- =?utf-8?B?NzhhYWpudGkrdm9yVCtMV3o4UFB6aVYxYXdwS1FtYnQ4ZFhnZVFxZkFFU0FC?=
- =?utf-8?B?aGp4ajR4NTE4c0J0VU45NWpsL1VvNXJMTHdmOVdNc3FSZmFsUlovcFJjUHBr?=
- =?utf-8?B?YURTdXlyQ1grZ3Y2YnluOHpSMDRtWEx6cGRsdjk5WTBzZUJPSUw0czVFU3Y2?=
- =?utf-8?B?eG51NU82NzRVb0ZiS2ZrcXh3TDA0YWMyTExHWEVpclh3VlUzV0Z1a1FKSGVt?=
- =?utf-8?B?UFNBaFg1bmRoZWl6M0cyYVowN1BqL3o2Z09zT3F1VGN3RDFJaEpiOEN3L0RR?=
- =?utf-8?B?K1I2Zk1Tbjd4bzZsekZ2bm4wUHNUM2k2WkdFbnJHSDYrSDdmTWJXbjdMMmNZ?=
- =?utf-8?B?MmV0aEk0aVd3MXpKNi9pRDV5ZnRwOFlwbGNQa1ZhMUdTcVcxbzVybG4zTHdM?=
- =?utf-8?B?bUI3Zm1PSkJwMGdTYS9qQkZrczQvSFM5N2hPbCt1UVZTcUlXb1BNbzlBZzho?=
- =?utf-8?B?dHV2RDRJVVNnNWw4WlYwbzlHaVJFMU40US8vcmJmb0JtTGtHaWFWRU1vVDND?=
- =?utf-8?B?VUtPTnNSaVNpQTh2U3lTYkhSVERMZXB2S2laR2ozUFRQY3lQb0hDWlpSQkpk?=
- =?utf-8?B?WXJZMkExN2QxR3F1RDJOVGNNRFVYWmtEMTNKMEg4NVpTL1BSQnRrMko4KzhS?=
- =?utf-8?B?ZWtDWi94WUVtTkdTVHZ1Tlp6YWtJNlFaOUZJYjRnZ2ZLbjlRRk5EZ3RSdytv?=
- =?utf-8?B?NThHUjZ4MDVWbHRWelZHRk5LbGJEdmFQV2RRS0hkM2svVDUvd01WUUZUSEVx?=
- =?utf-8?B?ZFd3dmhIZi9HL3JQNTJ6T0tFbXBRQnRQN2VycWw4YzNkN2tUeHBlTTFHWi9Y?=
- =?utf-8?B?RkRXTWZjNS90VWpqUFA3VjVwRmhldGNjQjliM3dxbmR4MzkwVjE2TmFZeUFl?=
- =?utf-8?B?QWVoZGkrQS9wWERCME5GcFNiclhTcEZrVzRqOHEzOHFVdHNCOUFaNytidkhW?=
- =?utf-8?B?Y0VtbXMvc1lLL1lkMTkwbG9zRzNYbXRteC9adyt1SmZwODh2WUdnOEpScy9q?=
- =?utf-8?B?VHlwQ0VlaWp6YUd2WHZoRWp1UjZKWlRaMmNRUmoyWlcvWU8wT1k1TDNDRnpt?=
- =?utf-8?B?UjV4WEFud0ZsS3ZIT1hMYisxc1NtREk3R3pYWjhHU3ZSelJ1RTE1Y3dJQ0xk?=
- =?utf-8?B?SDlxWlZxTUo4WW5OZk5mZllrQitSYmpuR3ZSb01aQ0hvcGFkZmpMd085L1pq?=
- =?utf-8?B?N2ZXcFQxQzc0WDRpZ1BlemNWTVNOTVhFbE4yUFRQL3JRNW1NMHV0S1lUSWQz?=
- =?utf-8?B?ZGl2R1NkbWw1VjJxQUFMTHY2VzgwM2VodzZKNy9TSkZhenM4WGxVSW8yY2xi?=
- =?utf-8?B?SmJhWVZOVE1UZDBaU3drRFU2RHA4N0VXS3B3STFOaTNmUVk2eTF3WjU4MTAy?=
- =?utf-8?B?aGgvTmNLRjhDUEdUOEFDY3pmMGRIdkwxZ3ZER3hiNkdqcFdHZU5nR1BaNTAx?=
- =?utf-8?B?bzJrRTAwQTZCQ011SkNzOTk2VWpLYWFpWVp0eEE4c2E5Q2ZoK0U4RW52dlI0?=
- =?utf-8?B?Uit3MFhScHMxZVU2OSswbGVOKzNVWVE4ZUJKWVNsV1hEYzZrb2dQUG53bmZC?=
- =?utf-8?B?ZjRmTFNmb0J3UlhkdVpOSkxnM0gyNzh3U0NMV3RtS0NWajhKanBaK01MRWNz?=
- =?utf-8?B?Y0U0NnlSeVY2akY5c2VHbSswbnEvc1BnVy84SDRNUGE5enFVUDVUbEx1OTRt?=
- =?utf-8?B?eXNIdjlLaWhMcGVkcjJ1VlRGV3pQdEh0aUxvRC9Ob3Z1aHpHVHAzQVdIeHFK?=
- =?utf-8?B?cEFpa0ZpRVdDc1RCS2ZmL0doMzJ6RDhkcTBCaGpFaVBQOEdrRXVlWlZxTlQw?=
- =?utf-8?B?bkVXbGl1TVgzYVVQWlcydFozcHhjUkNZRHFrcGdoSDNqKzhzRU54bWx2NVQ4?=
- =?utf-8?B?MFZCbnhpNzlXOGlCc0IzKytXanpob3g4MGRUQ0txVStFdEVnRnVsUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cdcf0578-d21b-495b-7a2f-08defd2c3942
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9733.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 13:25:51.7557
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2+mttYKCtZncdodBWHnw88+MVf5zKm0m1B+ZujHDBG3WddwfMjSFnVUXWgIbaczOP9jhPlBaHIqG/n6qCHemXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPFCE25C719B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOZdhGoC/42OzU7DMBAGX6Xyma1s569w4j0QB9u7abZq7eBNA
+ qjKu+MUIXHooZeVRvo0s1cllJlEveyuKtPCwikWqJ52KgwuHgkYCyurbasPugaHCDLME6bPCC4
+ ijC5ygJgm7pky9CmDjAy96yrrqQsdoiq2MVPPX7fS2/svy+xPFKZNvy0Glinl79sri9l2f9Xm4
+ epiQINv0JtOY/1s6DWJ7D9mdw7pctmXo7b4Yv/pzeFxvS168rbBpm2r2uk7+nVdfwAuAfxTVgE
+ AAA==
+X-Change-ID: 20260804-add-shutdown-and-panic-notifier-for-spi-fa732be7c7dd
+To: konrad.dybcio@oss.qualcomm.com, Mark Brown <broonie@kernel.org>
+Cc: mukesh.savaliya@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        chandana.chiluveru@oss.qualcomm.com,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787059691; l=3099;
+ i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
+ bh=RfpT2A8mXmIgd9/rzkJjpIStePeF6g3Bowgnv4/GJIc=;
+ b=oFWbA3zxcF7YOd4pszY8PO3OZS4CHt+2oOJsEXSguxcEysq6daxK6KxqioGXVa/YagYfzn35Y
+ gZVBiQB5OKIBz98YFEGYgiMdNN5nmQxbYd3q0DJW4Vmqqy0ZNEe8e3g
+X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
+ pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDA5OSBTYWx0ZWRfX7qQhFDt2Mvzf
+ mr7e7CgOl1qMPMhlNYr7jCBzp9DivUbZmkocXXswTvuATGxwWRHQNkenzgkliYDgrFJAJCFD831
+ dYy3CD2Ia6Ul7+SPkRbktTa1iXvD2Jw=
+X-Proofpoint-GUID: zPVktpZsVm-AtMrLPWHwiaoSx5tWoinV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDA5OSBTYWx0ZWRfXzw8L3e+zAYAM
+ VJ8J46mChxfNLOzbBKZCW54frAvz5EbaSo0ZDpCuLSnKvEERkE/wVBboyOK7uAkxdCD02zLKTIk
+ 2hzQ5Zrf4CdBwetMxHHjjoOUeD8QnwTqRWdDJvSaZj2prkNud6GAEFx2LEGsFNT3sind9/3OR3p
+ AKTTawOMsZR41GCsSY8NQdmWNifEs9RIztky/vuX0ySyobKCEa0hQNvj6+dV1Ks8U4wZBidFzee
+ 27iGOHgHdVMNuYG+9PomYDeXJ50vvXc67rTL36xCcwNqx+KbGo0v4GcQRArFC4ClhlM5kpOFSxC
+ UjBUJBpjPIlAve0e2iDGoBXtZx7dr8N0ulw7gRHTl1GXcvIG3fSNDSNWClhItb7JZNmJ0YL8KuU
+ Rbchf0IUTCKgqHerww1bWKLDTlf6T8j7NxJXtNMTS3HMOabSpzMEa7q/85X3vtFjnpUD00Q7E1b
+ EXUsdE/ZrU1QAUY+tAg==
+X-Authority-Analysis: v=2.4 cv=Ad+B2XXG c=1 sm=1 tr=0 ts=6a845df0 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=3TSnfN-DnJKibx1arKwA:9 a=QEXdDO2ut3YA:10
+ a=iYH6xdkBrDN1Jqds4HTS:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-ORIG-GUID: zPVktpZsVm-AtMrLPWHwiaoSx5tWoinV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_02,2026-08-12_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 priorityscore=1501 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180099
 
-Hi Chung,
+On VM-based platforms, if an SPI DMA transfer is in progress when the
+guest is torn down (via reboot/shutdown or a panic/crash), the DMA
+engine can keep issuing transactions to IOVAs that have already been
+invalidated as part of teardown. The SMMU then raises context faults,
+which can affect other VMs sharing the same SMMU instance and obscure
+the real root cause of the crash.
 
-On 8/10/2026 11:43 AM, YH Chung wrote:
-> Hi Krishnamoorthi,
-> 
->> YH Chung, would you be open to collaborating on the slave-side
->> interfaces of the new eSPI framework? Happy to discuss further on the
->> list or off-list to align on the design before the next revision.
-> 
-> Thanks for reaching out. I am glad to share some design considerations
-> from a target-side point of view.
-> 
-> After reading the series, I think it might be useful to align on the
-> layering between the eSPI core, channel implementations, and hardware
-> drivers as part of defining the target-side interfaces.
-> 
-> 1. Reuse existing kernel subsystems for the individual channels
-> 
-> I agree that we should reuse existing kernel subsystems where their
-> semantics match, for example GPIO for general-purpose Virtual Wire
-> groups, MCTP for MCTP-over-OOB, and MTD for flash access. Other Virtual
-> Wire groups and OOB protocols may need different consumers.
-> 
-> The eSPI subsystem could provide common adapters between those
-> subsystems and the corresponding channel instead of requiring each
-> controller or target hardware driver to implement the integration
-> independently.
-> 
-> For example, Controller Attached Flash Sharing (CAFS) and Target
-> Attached Flash Sharing (TAFS) have different ownership and transaction
-> directions, but share the eSPI Flash packet and request/completion
-> semantics. A common Flash layer could provide that protocol handling,
-> with a requester-side MTD frontend that turns MTD operations into eSPI
-> requests and a provider-side backend that services requests using
-> locally attached flash.
+This series adds two independent quiesce paths for the GENI SPI
+controller so that any in-progress transfer is stopped and the DMA
+engine is left idle before the IOVA mappings are torn down:
 
-Reusing GPIO for VWire, MCTP for OOB, and MTD for Flash where semantics 
-match is the right direction.
+- Patch 1 adds a platform shutdown() callback that suspends the SPI
+  controller (via spi_controller_suspend()) on a normal
+  reboot/shutdown path, where sleeping is safe.
 
-For CAFS/TAFS, the same espi-flash channel type is used on both sides: a 
-requester role exposing an MTD frontend (controller owns flash), and a 
-provider role servicing requests from local flash (target owns flash). 
-It's the same channel/protocol layer and packet/completion semantics on 
-each side; on any given endpoint, only one role is active.
+- Patch 2 registers a panic notifier that cancels/aborts the
+  in-flight command and resets the TX/RX DMA FSMs (or terminates the
+  GPI DMA channels) when the kernel panics, covering the crash path
+  as well. The notifier bails out early if the device is not
+  runtime-active or has no active command, and otherwise uses
+  readl_poll_timeout_atomic() to poll status registers directly
+  instead of waiting on completions/IRQs like the regular
+  error-handling path does, since panic notifiers run with IRQs and
+  preemption disabled. The notifier is registered before
+  devm_spi_register_controller() so a panic during child device
+  probing is still handled.
 
-> 
-> 2. Consider the boundary between channel semantics and hardware transport
-> 
-> The current struct espi_controller_ops exposes high-level operations
-> such as periph_io_read(), oob_send(), and flash_read(). These may be
-> useful as channel-consumer APIs, but I wonder whether they are too
-> high-level for the hardware-driver interface itself.
-> 
-> Would it make sense to keep high-level behavior in the channel layers
-> while defining the hardware-facing boundary in terms of per-channel
-> transmit and receive primitives?
-> 
-> Conceptually:
-> 
->      TX: core/channel -> *_tx()      -> hardware
->      RX: hardware IRQ -> espi_*_rx() -> core/channel
-> 
-> The packet or request structure could remain channel-specific. The main
-> idea is to keep register, FIFO, and DMA handling below this boundary and
-> eSPI channel semantics above it.
-> 
-> For example, a controller read from target-attached flash could use the
-> same transport interface on both sides:
-> 
->      Controller (requester)        Target (flash owner)
->      ----------------------             --------------------
-> 
->      MTD frontend
->         |
->      Flash layer
->         |
->      build READ request
->         |
->      flash_tx()    ------- READ ------->   espi_flash_rx()
->                                      |
->                                   Flash provider
->                                      |
->                                   local MTD read
->                                      |
->      espi_flash_rx() <-- COMPLETION --- flash_tx()
->         |
->      match request
->         |
->      complete MTD read
-> 
-> One option would be for controller and target drivers to use the same
-> low-level endpoint interface, including the same per-channel *_tx()
-> callbacks and espi_*_rx() entry points. A common endpoint object could
-> carry the role, for example:
-> 
->      enum espi_role {
->          ESPI_ROLE_CONTROLLER,
->          ESPI_ROLE_TARGET,
->      };
-> 
-> The endpoint role and capabilities would determine which transaction
-> types are valid and which optional operations are implemented. Object
-> lifetime, capabilities, packet definitions, and request state could
-> also be shared. Linux SPI's shared spi_controller infrastructure for
-> host and target roles may be a useful reference, although eSPI's
-> role-specific protocol behavior is more asymmetric.
-> 
-> The benefit of this boundary is that common packet and channel protocol
-> handling can be implemented once while each hardware driver remains
-> focused on its registers, FIFOs, DMA, and interrupts. It should reduce
-> duplication and role-specific divergence, make support for additional
-> controller or target hardware easier to add, and allow both roles to be
-> tested against the same transport contract.
-> 
-> Channel-independent commands such as GET/SET_CONFIGURATION and
-> GET_STATUS may likewise need role-specific callbacks within this common
-> endpoint interface: command submission/completion on the controller
-> side and configuration-provider callbacks on the target side. These
-> callbacks could be optional to support hardware-assisted
-> implementations.
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+---
+Changes in v3:
+- Rebased on linux-next tip (next-20260817).
+- Link to v2: https://patch.msgid.link/20260818-add-shutdown-and-panic-notifier-for-spi-v2-0-eb25d56634a0@oss.qualcomm.com
 
-The TX/RX boundary is a clean separation and we agree hardware drivers 
-should focus purely on registers, FIFOs and DMA while channel semantics 
-live above. That means the current high-level ops (flash_read(), 
-oob_send(), ...) move up into the channel layers, and the hardware 
-boundary becomes your per-channel *_tx() / espi_*_rx() primitives.
+Changes in v2:
+- Patch 2: instead of just disabling the SPI IRQ (or suspending the
+  controller, which is unsafe in panic context), actively cancel/abort
+  the in-flight command and reset the TX/RX DMA FSMs (or terminate the
+  GPI DMA channels) using atomic-safe register polling
+  (readl_poll_timeout_atomic()), so the DMA engine is actually left
+  idle rather than just having its completion interrupt masked.
+- Patch 2: skip the quiesce sequence entirely if the device is not
+  runtime-active (pm_runtime_active()) or if there's no active GENI
+  command, to avoid touching registers on a clock-gated SE.
+- Patch 2: register the panic notifier before
+  devm_spi_register_controller() so a panic during child SPI device
+  probing is still caught.
+- Link to v1: https://patch.msgid.link/20260805-add-shutdown-and-panic-notifier-for-spi-v1-0-b5db170d491e@oss.qualcomm.com
 
-As an alternative to a shared espi_role endpoint, we are considering one
-device per channel under the target (CS#), single target shown for
-clarity:
+---
+Praveen Talari (2):
+      spi: qcom-geni: Add shutdown callback to quiesce hardware on reboot
+      spi: qcom-geni: Add panic notifier to cancel and reset DMA during panic
 
-     espi0                     (controller)
-     `-- espi0-cs0             (target at Chip Select 0)
-         |-- espi0-cs0-periph  -> I/O + memory
-         |-- espi0-cs0-vwire   -> gpiochip (GP VWire groups; system
-         |                        VWires handled separately)
-         |-- espi0-cs0-oob     -> MCTP
-         `-- espi0-cs0-flash   -> MTD
+ drivers/spi/spi-geni-qcom.c | 78 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 77 insertions(+), 1 deletion(-)
+---
+base-commit: e6664f2b33db9b6811eb4cec109f06cb2b4f458d
+change-id: 20260804-add-shutdown-and-panic-notifier-for-spi-fa732be7c7dd
 
-Both controller and target drivers populate the same per-channel ops and 
-the role (requester/provider) stays local to each channel driver and 
-decides direction and which optional callbacks exist. The 
-channel-independent commands (GET/SET_CONFIGURATION, GET_STATUS) are 
-link-level, so they stay on the controller device with role-specific 
-callbacks. This gives the same separation as your endpoint model.
-
-> 
-> 3. Leave room for asynchronous deferred transaction handling
-> 
-> This does not necessarily need to be implemented in the initial
-> framework. A synchronous API may be a practical first step, provided
-> the hardware-facing interface does not prevent asynchronous handling
-> from being added later.
-> 
-> As a future improvement, the common channel layer could track
-> outstanding non-posted Peripheral and Flash requests and complete them
-> when the corresponding completion packets arrive. For tagged requests,
-> this state would be scoped by endpoint/Chip Select#, channel, and tag.
-> A complete request object would also need to handle split completions,
-> timeouts, errors, and cancellation during channel or link reset.
-> 
-
-Agreed on synchronous first. We will keep the boundary open for later 
-async tracking of non-posted requests, scoped by CS#/channel/tag.
-
-Thanks for the detailed design considerations. Do you have any 
-comments/suggestions about the per channel approach as a starting point? 
-Happy to continue on or off the list.
-
-Thanks,
-Krishna
-
-> The exact model could remain channel-specific because OOB is
-> message-oriented and Virtual Wire is event/state-oriented. Keeping this
-> possibility open would allow asynchronous handling to be added later
-> without changing the hardware-driver interface.
-> 
-> These are my initial thoughts from the target-side implementation
-> perspective. I hope they are useful when considering the layering and
-> public interfaces for the next revision, and I would be interested in
-> your thoughts on the proposed transport boundary and common endpoint
-> model.
-> 
-> Regards,
-> Yun-Hsuan Chung
+Best regards,
+--  
+Praveen Talari <praveen.talari@oss.qualcomm.com>
 

@@ -1,229 +1,225 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4BA26E71F
-	for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 16:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787069190; cv=none; b=sJvwwsgJhWcL3ZVbYYOzVtjzcgVsmInbq6ZGWB0+yJr+OOb+tGYbjaKTHg/ssHUGdMz3nSFq32oKR1WkjL7kieDmELW92vVtS1Imv+wghUCjtQPq3U1yKXIeSa0hU+LbIJImhsRV2WEc5rq2ExqPl+bHApxYO0xjomwewT58oO8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787069190; c=relaxed/simple;
-	bh=B2ywwMonHrBnjH6vS+Aj0n1qipbU/Z36vRox+vXALBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VbybGO63HHTJ1dmUm8kZL9Kj8fWBsKWN5WEPWnTYWFqzx20Z0UV7lXkScaoihqolvb849u7BKP15lfVka611/u5O6dJDfuPZlS046RUGHotSbDC42huSMWJemu0npzCgLdJwfuPxhwhmwPiptBpA/VuI/t03R5xqJzByWBGNKy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=UAh8xeUj; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07EB35DA61;
+	Tue, 18 Aug 2026 16:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787069603; cv=fail; b=f+kTwHPGp6+lWmilleC9AFPecCMF3yRG1ZTyN+SGzAoY/zN/FHCZAf3lkCLnpEJr3ut98rriGz0BQGfHjSWnqzuqeb0b8YhnY4Jzs5t6MhCCuBgriqwpQolfLXdBoyeZnNKHjglr8CQJPGq0N5banvCxAdXla8FY+vjPZ0+rens=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787069603; c=relaxed/simple;
+	bh=YyzDQCyYsAnIQ5iIkopvwKGl1pSTVJMXpitQkna5N4Y=;
+	h=Content-Type:Subject:From:To:Cc:In-Reply-To:References:Date:
+	 Message-Id:MIME-Version; b=dIUbqW4cR5ADcW1ISIsmZwVU9Kqgsh0r8e6Oo4mY2f/UcSM8K6Nu9TON/MmAUXsGGd7LZmPFjc9P+tCCHY+7QYCXUN5A7N2/BxVVpwMx5m4/bVx+NKKti/50UoEmzGZhDpIRTdTgSCYqq0w8eclEn0VxHHzqlHTYdnP3uKSSWjI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=QsFD3sNZ; arc=fail smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="UAh8xeUj"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7ec1e9d3359so13353a34.0
-        for <linux-spi@vger.kernel.org>; Tue, 18 Aug 2026 09:06:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1787069186; x=1787673986; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=y6N4VqRsPZbynWcj29TJaieC8DdAOJl0e37hrVQsSOU=;
-        b=UAh8xeUjAqAITwiCdntbGGtcV8ea6F9Gx2nOxgOK2DHUfEVeCBAtgeC+Pcf0ROWLCQ
-         g2U7D4RnUh+P8TOTrbnXXeyfegh8zRydqUp5AfQxJ4Yb8TizYL8slXlUHTwtccaEI5Om
-         AfcZrBkLM3SR1qrDShjT8LWhvEHWH1j3X4oQM9Yq6jmDcOfaEqJzhXHXFlb6Kd94iYNZ
-         zf420GZyfIiI63EWEr10j7syvOVgD2g331BtX5M4NFHCbaXdIwopmSBXPZ8c64dz4M28
-         lLvYxT8RhBeM1iYhxnCvwsCV06GBQ4EAbHKEfYusSd1RgyFgve40yFNqTQsvfXTPUfEH
-         5mlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787069186; x=1787673986;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y6N4VqRsPZbynWcj29TJaieC8DdAOJl0e37hrVQsSOU=;
-        b=GJE/+artcqbkqqF4LOdyn7EtIXVaQqUohV4FJtvBcIY2pHWWh8FdVjPUef+C78qMge
-         YXzPGMkpaw22eoMIje1quUWIHzHOHbolSOkwKvCUa98b6HjJ2B8uowt0lnL4xKUhBYAI
-         EoxMxTnLOTD4Dhj2NUq6HIKmu3ch8JNMB1amGIrLBJIQ0E+d21WeV/eJiSKJIE0rQ9TZ
-         gmITqMO+OEbOXMBaz5bO0+V74WkFIIdVa7s08tRYP64wixtvALpi+GK6J3ygSYw3xCeK
-         B3sN9x/ler0EYW6meLr+iebF0R7x24BgrJtYAx5FqZq2abh9s0zzAnZiKETobTipY9Rw
-         uWTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoH40QBWpDkj7mB9JF3iybDZlctFcD6zP9ZlSxVGhXOdiHE9lEzqQ9Fx9XNq+mBPTUIqrdx5ct6Wfg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPOUeaHaAJUE0gwMwurYnkVtj7pYrW9udlY0f1ehm63EQwEfMY
-	tKJ8H8Ch9R/Im69djaMJgQSZjpAPMV4D2oLN5nPYjRHmnxHZvTgxUPYVad2XfTdkUJM=
-X-Gm-Gg: AR+sD12a/grEfkc+k9rOZf4plA3pklXvm5QreFBT4nRSyXpHZ+UofATDQQgy7fN1T1J
-	0vTX9sZExxK0aXvQr8rbQ5y6eQoQ557nFMbyJzVPDdBa6GOdl4IcuGFj11oyl5PJcTudPUjoQU+
-	SpmkWNrCgiRDM9lv722zH/Upj6PSQZmjC51VM/he4bLvQ0sHAt30FsHKkZ7voaDSmDW+Tql9S+7
-	z1SB++naOOuZue4lqzrH6p9i7PmSiSc/n/DX5hD418ZmGEKdQCSaCbKkL/i0+l0nKPhfsXMEDiU
-	VsRGF58qNWyUILQWJDWNhc2direSocMCmtoaWpWDIGBgjnwjuYz/3+w657BjzQ09DUgZUXXHI0Q
-	8Nlpra9buBQIuK6f3tCm2dOFpC8KUcOjFiR5IO4o9EFO9kEn4CMz4m1G3tq6sJgedRNojtKPPIK
-	cDp7a/JX+ccmdEzRz5q2yTRUuvTgUfaoFFQ6A5rKQJQiE6qMXDz/eNcFCoHUYBJLbfAH5N7Mk0/
-	muwW4QbUt7FgLUOPf6KYoseL2Kvnyj1EywkOdY=
-X-Received: by 2002:a05:6830:3142:b0:7ec:2fe:1ec0 with SMTP id 46e09a7af769-7f423c25d11mr8527346a34.4.1787069185976;
-        Tue, 18 Aug 2026 09:06:25 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:1cf0:fc72:ac61:29db? ([2600:8803:e7e4:500:1cf0:fc72:ac61:29db])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7f41c12af87sm4613659a34.25.2026.08.18.09.06.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Aug 2026 09:06:25 -0700 (PDT)
-Message-ID: <e2016946-83e8-46f5-975d-634a219417e7@baylibre.com>
-Date: Tue, 18 Aug 2026 11:06:24 -0500
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="QsFD3sNZ"
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67IDuTGK3681489;
+	Tue, 18 Aug 2026 12:13:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=DIMlO
+	a4JiSlWrf7z88Y+3A8Vs0ZRggrEUHXpJLEuask=; b=QsFD3sNZbI8P8Z1cGawlb
+	3vx+nt7YI0pxuqDir+ZdTy2M2V95tum5JfHT6eX2DbeuZdoAoD2PTkp7sn/D4jz6
+	drEqKpZHKsd0qsRGnobFvXJFwuAKCrjJTW6gxDXA1C12Z8aAqfGYcFOvWcapQS1u
+	4Y3hYuEx7q6Oj3zJQBqZTspLhozCBCXlhfR7SR0RdS+niayo8LoEq3eLyo6GyUYj
+	oRD3mYy4kTBpKOUZ9Cd4r13/UhL72kutbrpKUDe2tc5XJSrV3XPqU3To9hqkDKis
+	N7ipDtlyjOQ6oMmiIuxVfkin9suHFXzYVTNc869YChJLAK21LPxJvzJFnuXGD59S
+	w==
+Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012070.outbound.protection.outlook.com [40.107.209.70])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4g4mn5ah4v-2
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 18 Aug 2026 12:13:15 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kVB8YGVKk903wKjQbjgojEGxFNm3T3kGu00frYr+cOOvJFXHwB2dBc+u7vOXE3peFRCBKvOvBPqEV2RhOSf4SR3AvnhhMFW1Zevu+ZUcKYGp1BEfjcZUceVFQwb6SCbHOS2/06ezz24dxbtaTW7fQwstTnq2edPu1sS9fSeN5k3WiFiL09a10S2VbyAXfLMQ3lMYkaTPgwHQ6lsWjvv5VLHwwzgEKL+cuI47XJG2PLOY6+b3N2dP0DYXjmHimBJ2juSnZVd7BQSoRntbfbPewES8T9fC2JyC0DrsnxwlsTaUl/kkxa44BazgtGq/ATgvFbkVinFZGM8rDq1lEp7tWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DIMlOa4JiSlWrf7z88Y+3A8Vs0ZRggrEUHXpJLEuask=;
+ b=jVBAH28yTedyM3OMXIA/XxdiK5RZHEmwZLJe1KSBgbrrYriwU06xjj9O2K9Cak3R1QW467Y8nL+Pu1QbXP5/yQNCgSwGAwgL5MIejUpUfDfXPFerf/9zUjNu03EAbjrgd9jhS3xQoi/UAoT7mjlmwpKPM202g1Lmw8/OVq+Ks5yAl4Jn70U3DHAZuX7xUivMb+vwYQloiRh+k9Fy570sPJlrbv5ZINsGyAaxqFx7E89Uh7pmdzqF0atJVR/gDnR3gcYNRGvazdFRCk3ozPlCa53E+hRbNHi7Q8Oqh1PvHTynlv1M/j8WudkeqhYsjR30vWBdE793S5FU/sK1U6ahjg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from SJ0PR03MB5469.namprd03.prod.outlook.com (2603:10b6:a03:28a::17)
+ by PH7PR03MB7268.namprd03.prod.outlook.com (2603:10b6:510:24f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Tue, 18 Aug
+ 2026 16:13:12 +0000
+Received: from SJ0PR03MB5469.namprd03.prod.outlook.com
+ ([fe80::2a19:76b2:e731:8c5a]) by SJ0PR03MB5469.namprd03.prod.outlook.com
+ ([fe80::2a19:76b2:e731:8c5a%6]) with mapi id 15.21.0339.007; Tue, 18 Aug 2026
+ 16:13:10 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 3/6] spi: expand device name to include all CS lines
+ for multi-CS devices
+From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dlechner@baylibre.com,
+        nuno.sa@analog.com, michael.hennerich@analog.com, broonie@kernel.org,
+        jonath4nns@gmail.com, marcelo.schmitt1@gmail.com
+In-Reply-To: <aoP_cbcqHEA5L7iK@ashevche-desk.local>
+References: <cover.1786973376.git.Jonathan.Santos@analog.com>
+ <5719698587a0a7658a3980168eef0731a5e7506a.1786973376.git.Jonathan.Santos@analog.com>
+ <aoP_cbcqHEA5L7iK@ashevche-desk.local>
+Date: Tue, 18 Aug 2026 17:14:20 +0100
+Message-Id: <178706966052.3163.11425556311922813200.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787069660; l=1903;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=YyzDQCyYsAnIQ5iIkopvwKGl1pSTVJMXpitQkna5N4Y=;
+ b=NJtDtarpXNyGK5WeggKLKvvjqfBzFETiyGJ8VsX363Mb+gbXop6wmvDf/SL79FkUlufgH0mqF
+ IckSjIBQBYMCLY19fw0cZHVLOY9gr/3BTmkSrUYnIpaI7U360bgVCzm
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ClientProxiedBy: MR1P264CA0003.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:2e::8) To SJ0PR03MB5469.namprd03.prod.outlook.com
+ (2603:10b6:a03:28a::17)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] spi: support simultaneous assertion of multiple CS
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: nuno.sa@analog.com, michael.hennerich@analog.com, broonie@kernel.org,
- jonath4nns@gmail.com, marcelo.schmitt1@gmail.com, andriy.shevchenko@intel.com
-References: <cover.1786973376.git.Jonathan.Santos@analog.com>
- <e8870b405f29cc89439701d1fcc7e88781aaab22.1786973376.git.Jonathan.Santos@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <e8870b405f29cc89439701d1fcc7e88781aaab22.1786973376.git.Jonathan.Santos@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB5469:EE_|PH7PR03MB7268:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1f3a4a4-4b68-4189-9a4a-08defd4398c5
+X-LD-Processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|23010399003|376014|1800799024|366016|10067099003|56012099006|11063799006|6133799003|4143699003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+ rTX9ykFjmOLbDIHRhLDuS+Lw6WbkzvExfrro9OpBduDG4wAk5T/OjE51sBmrObT8xhFjJzZKAK/HXlNA/KIeJa3cjVqrlpTrgbMCbdaEtyRhG8Dqt/qJIQXLOwXVQLdgaz2P2gewI9/4Pg113JpOpL+SVFU0QoAc2apWmfMsW/ed75+h96RgsAam7aMvPWCuMHeaQr7NwbtgvJz4CJD1iUitq0m1acblgjcOdsNfuAjrTuJGaGjMRpiGnBVNvUFjEBJbHAkXyUUqJuqZJijJ4I6ttwj5YAJ4EV7L/ARxH+5YvRpqkZGqfIcc4K+jX6e1hT2QZH/j+PuQxCniWxfrAD5gRUg8E9WdHczolUNus4ZXaqSQLtblFlOY20RDTZiI9jizc8S1Tpm2ws/UumalgzGsaQks+zZLERswNnCmF4C8kDozRAPgSODOa278yI75aVcqwG8EEjmwPsECysX8m94CMS5G0GfG7wYPEAPl/p0ym32Aya5yr+bErqlNv55HYDzLDXonwqpBBz8/tSUo4Sg26thl/KjpzVwYayS6pcBWL2LUeCardPUy9jMKv3zPbFKs9GERjM1YxRJWxT1pyZTqWEE4I8Umj/Acp90bb8mj0hyTQgKqcLR218Vyxjfc8AA6zUN1D3vCeM/S7RJtrO23sCDLQ7gCvBtIc7vaHwU=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB5469.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(10067099003)(56012099006)(11063799006)(6133799003)(4143699003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?eTN2bSt2YkVwajVYK2taZjNiTk4rblFnTUZQMGZiV2J4azB1dU91QVZqbnZF?=
+ =?utf-8?B?NzlIb05mUW1OalI4b1FkMmhpWGx4eDBQeHJhUFo1NmcwcjkxK29yb2VJTUZG?=
+ =?utf-8?B?YmRIakp5cmQ4MjR6YTU0OGZqSEQwNjV0L3VNUFRWNit1NUJyc2tCbGRUOGx2?=
+ =?utf-8?B?TDltZlUzNmlRa0J3NVg5UE82OUtnYUd0WG85MGxPTzFQS1NuRnBaN2N0RlVC?=
+ =?utf-8?B?QUw2M3RRYmFJVEtMa3ExWWU3bXhtTVBXbit1amFXU2x5NWFKdHpPWXdGY2ky?=
+ =?utf-8?B?YTNOc3VHTnlSdEppMkhPdXd5Nnhsd3JFMHJaaS9KQnp4R0lsYWRXbnlEZUQr?=
+ =?utf-8?B?STE5LzRpVzdva1ZzMi9vY0F5RUZUZ1ZkUi8yaWJsS2tUQnd1TFFxeG9PdVFw?=
+ =?utf-8?B?VFdrbFd3VmVjTC9qems2aW5mL3AySEN3QjhHdTFCOUxPTlVnQ0Z3c3dDSUNy?=
+ =?utf-8?B?WGU5cW83anNxU0Z5dlRUamoxdmFFVExsNlhOWWFTU0lNcUd4MW9oeEZJbitt?=
+ =?utf-8?B?MTcrSUpteEszRFVKVDVWKytRMS90SWh5MW5rL0huMWIzY0hIQ0NxWTU3WHRp?=
+ =?utf-8?B?OHFKc1N3am5qaUNRazNhSWRhSHFoMVdyOEhqclYxUVhKcFh4QVZKdkxhNER2?=
+ =?utf-8?B?Z2orQ3lDcXMzeGVQdk5VaXZwcTBLWi83cWoyWDBvTFNpa2FwNEpkdHp2bTJ0?=
+ =?utf-8?B?OFU1a1RtdWRiZ09qMnRKQW1SaWh1NndMZFVoTVRUby9qSHNmbWY5Vm50L0FV?=
+ =?utf-8?B?TlBEdXN2aGdPZlJRMjFhOFM1N3JUT0xIVEwwTTltNlNETXZzaHNPeUFVV1BR?=
+ =?utf-8?B?eHloUkV4WUF6alVGa2ZTMXYyVDNjMm8zSUp5UkVkNFR6cFFGL3pBZGpYY1Jt?=
+ =?utf-8?B?SEVXM0ZSYys3V2tndjFuTll5TmQveWpuQkdIamtDRnoxQnRZUkFtYkpNSUY2?=
+ =?utf-8?B?T1YzTXphdjhvckg5ZnZWcmc0Q0w5ZXpUV1g3T2xmUjZYWHFCWTF3UzdCTWdH?=
+ =?utf-8?B?QjZZUU9nVTFoWnpsSFdzTFJ6c0ZPZHQzd3JNVWIwczJ2TUdsMTRVSnNoNnc1?=
+ =?utf-8?B?dEtyYU01M2YvT2lNS1AvODNCRXB2ZmZEN0RLTUtNSjA5MmVjaDF5eTE3VEUx?=
+ =?utf-8?B?dlh2TFN2MzlQVTRGK2tMMi9hTC96Z3JCT1FuRmx0UkJSQlNzNEg2WUt5TlFr?=
+ =?utf-8?B?bTUvd1FrK1VPOUpTRktCNVprclZCRnhiQjRRZGZ6c2lZMmRTNC9naVQ2SlRM?=
+ =?utf-8?B?Q3lBN0NuMHVkNWVQNE1sWmNJRTNsRmhRMTl3dWtubTNEc01oeFZwWENpdFlE?=
+ =?utf-8?B?U2RvZ3N2OEszWXpBaStCWFhYdGlkYlBBRkxCVVA4eENlZ2tyZTA2UUhZSWJ1?=
+ =?utf-8?B?R3FoM0xxNUI5bERqV0hRVStqSkE2UDVHNzJHY0J4aWdoWHdQNnJxTGt5VVBF?=
+ =?utf-8?B?Njc4M2YzVUJiaXNmb0NwaWRHdTFXUlVyTnkzcTJFYUtFZFIrTWU5UE1vUmZD?=
+ =?utf-8?B?bjZaK09vaFRwUm92NlBtSEg5UDhxaHdhYWFueHpXYVg5M0FDM1ZhV2EyekE2?=
+ =?utf-8?B?SWRRaTBkUWl0VlJhaU1Dbk9UbmR0N3M1eHIrbXdROGFubFlTd3dHM0oyWTNs?=
+ =?utf-8?B?T2tFUDMrM3FMcGdIZTBkNEZ0WjIvdjhvNjBZdkkrUnB1bUM0WEpGRVFXME1v?=
+ =?utf-8?B?OGY1MUM2U1QrSXhzeEhNaExGUERGOW5EZ1FvUG45dzJ2NmFkdUJoWTFBUTdZ?=
+ =?utf-8?B?Y2FhTFQ5WGEyMEtEUTFMN3FIaHRSNlVuS3FFM0RVNjd4bCtvNHVkNGU1Qm5k?=
+ =?utf-8?B?L1NBbE8ydUJPeVRvYk1BQWtRK3FZVEVubzFxTTJNZk9GV0pveXg5RUtvdmEr?=
+ =?utf-8?B?UGFRMFVuYUhvYUo3dWl4eVBlOWdnSGZTVUhTUU9uT3A4czByVmVQeTB0ZkxP?=
+ =?utf-8?B?L1cvbFdUWWxWZmFUOTBNTUk5YzhqQnlSMnpDWFhFYkJKZHNLcSsvZ0xhMmJw?=
+ =?utf-8?B?TmV1bW1tUTZzUnVFNklWdTJqQjY5blg0alR4U2krN212TjJaRHZKOFVFSUQx?=
+ =?utf-8?B?WlBubTg4R3pVMU1mTXF6c2R4MTd1Q0EwTFF0Rjg4a0VFSWFCZnJiOXRaam16?=
+ =?utf-8?B?bFpWWTIzK1NScGRJZUNZMHZNbm4zYW54WjFWRk1NVjg1WVlUQzRYdkRxU1VZ?=
+ =?utf-8?B?Qkt5R1JSVERJaTdEbXZId0hlVnN5U0pnWFAzSmk3bHlSWlljcTBFdlJyTjUv?=
+ =?utf-8?B?dklqTHZzUU1zU1N6MDA3Mkd1LzZGeTM5aFZ2N0FNVS9jOFZ3NmZJRGZTTTdT?=
+ =?utf-8?B?TDZsQmdTL1JuS0JKaHFmU3ExS2w0WkRHdUR0MnVwVUpwR2ZJM1pGZz09?=
+X-Exchange-RoutingPolicyChecked:
+	JXT8zayCqs3XmFIfMwwXtQr5D8oCYEls2bRjgUCUN+DnK5MEFKQ/4zmZuaCfCr5TN5VkkRKqiFD5c/pbZ+M7WVL13v3gb7BM1t0f8OTGp7ousXOnfFM2b3IfcGEfLRBKGa4a8vMYBmMkxbouo9U3RGchWremMuujSatiZ/ANy7V2328vCH/JF9Fr+AS2N0YCnO/FLutkLALcxMKWfByOfCo5t49GZxakxZLVf+kg7SaL+K2xMLFowyeK40jeAPME6T+JDzWGgU0NtgZXzSTlWkkF1yV4FUV6nfKTjWS+1x4v29QeYs5Hd+Fxo9spqMxgpEbShTwan9JKCnYkjtBPug==
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1f3a4a4-4b68-4189-9a4a-08defd4398c5
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB5469.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2026 16:13:10.2256
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HADL3U3FBCs9PdYj6PeLWRP8f8Ngl2kn+S3ENmJilq3ZxHsipPjBWKL2hT4lwMXiNho1SjMTY7+Ie4jI7S/WLg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR03MB7268
+X-Proofpoint-GUID: ebAXsXN30fyFQEQOxhcebs0k8OkoVmxg
+X-Authority-Analysis: v=2.4 cv=Lc0MLDfi c=1 sm=1 tr=0 ts=6a84849b cx=c_pps
+ a=c7CpAOS9Jb82g9OYW51qCA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=M51BFTxLslgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=uXIjobp8t2wMuQ0fPvqm:22
+ a=MGWj_vWPkVdxS589E4kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODE4MDExOSBTYWx0ZWRfX2Wanm4oaiXOa
+ vRHIQ6OcLb602EjAsyK1848q+bqrt9ppD7mAhIuMlt10BNHGx2DpsUbc6L8j0HQkoIc57lwc1Zi
+ EedkeHtpuas6xFPLR+64bdfKeug4neDb0+Iumy9TMMC+nNGiV4im
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE4MDExOSBTYWx0ZWRfXww69m/XtBQgj
+ nrtnqNi/ZJrAZugcBgUH91xM5zLrSIn6Lexpe4To76oe3TFtXEaq6BltSYYxfumL0YLtQ4F3NzU
+ d98r27c2XYnIK6Q6Z9QlwzeJRW/V3da4lMtyZF5WyBkJBbnQ67s5LJBULD8Wb8LWxM9asI9LReD
+ SbFTJHZoSL6439QAmrRQxB0th8kdWYdPHA/58FSnZDoGw8HFv6P9VCMEH+FPvHGIHGzMjL8ocw2
+ 65qiujdc9qxIiJ2bh6wwf/AsaWmBZJ9p/Z0yp6tG3Mz7LN1TU2NMlPTQh/+qmZmaeD/7b+AiFbp
+ ZgPr+05WDxvy2AL2rICdnz+DqxnBTaiflLZ4GvSAaYTzfhJQOXdBf1sDf3wMoVOFxuN3QBnHhAr
+ 5GAUVVfDToDWULxrs1hwLOqyT4LJbfUaHSICzFwBNFVZ8ziWgckPSiGZIBaxdvEr84+2mOPNITD
+ N7q3uZvJfLKUPx1uOEg==
+X-Proofpoint-ORIG-GUID: ebAXsXN30fyFQEQOxhcebs0k8OkoVmxg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-18_02,2026-08-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608180119
 
-On 8/17/26 6:32 PM, Jonathan Santos wrote:
-> Some SPI controllers allow multiple CS lines to be toggled at the same
-> time. The existing code always used CS index 0 when tracking the last
-> active CS in spi_set_cs(), and unconditionally set cs_index_mask to
-> BIT(0) when parsing DT, both forcing the single CS usage.
+On 2026-08-18 09:45:05+03:00, Andy Shevchenko wrote:
+> On Mon, Aug 17, 2026 at 08:32:57PM -0300, Jonathan Santos wrote:
 > 
-> Modify spi_set_cs() to iterate last_cs[] using each logical CS index
-> instead of always reading index 0. Modify of_spi_parse_dt() to build
-> cs_index_mask from all parsed CS entries rather than hardcoding BIT(0),
-> so the controller correctly identifies which CS lines belong to a device
-> when asserting them simultaneously.
+> > The device name for SPI devices was formatted as <controller>.<cs0>,
+> > always using only the first chip-select index, ignoring the remaining CS
+> > lines.
+> > 
+> > Change the naming format to <controller>.<cs0>+<cs1>+... so that all
+> > active chip-selects are reflected in the device name. Single-CS devices
+> > are not affected since the loop only appends extra indices when
+> > num_chipselect is greater than one.
 > 
-> Board info, ACPI, and ancillary device paths are not updated here.
-> Board info would require an API change to accept an array of CS values
-> and is left for a follow-up when we have a use case for this. Ancillary
-> devices are by design single-CS, so multi-CS is not a current use case for
-> them. ACPI represents the CS as a 64-bit integer with no established
-> convention for encoding multiple CS indices yet, so any extension there
-> would require a separate specification effort.
+> ...
 > 
-> Acked-by: Nuno Sá <nuno.sa@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
-> Changes in v3:
-> * None.
+> > -	dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->controller->dev),
+> > -		     spi_get_chipselect(spi, 0));
+> > +	cs_len = scnprintf(cs_str, sizeof(cs_str), "%u", spi_get_chipselect(spi, 0));
+> > +	for (unsigned int idx = 1; idx < spi->num_chipselect; idx++)
+> > +		cs_len += scnprintf(cs_str + cs_len, sizeof(cs_str) - cs_len,
+> > +				    "+%u", spi_get_chipselect(spi, idx));
 > 
-> Changes in v2:
-> * Include Summary describind why the other SPI paths were not addressed
->   here.
-> ---
->  drivers/spi/spi.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+> So, if this won't support sparse CS list, I would just go with a standard range:
 > 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index d9e6b4b87c89..55fb96fea243 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1090,7 +1090,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
->  	spi->controller->last_cs_index_mask = spi->cs_index_mask;
->  	for (idx = 0; idx < SPI_DEVICE_CS_CNT_MAX; idx++) {
->  		if (enable && idx < spi->num_chipselect)
-> -			spi->controller->last_cs[idx] = spi_get_chipselect(spi, 0);
-> +			spi->controller->last_cs[idx] = spi_get_chipselect(spi, idx);
->  		else
->  			spi->controller->last_cs[idx] = SPI_INVALID_CS;
->  	}
-> @@ -2594,10 +2594,11 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->  		spi_set_chipselect(spi, idx, cs[idx]);
->  
->  	/*
-> -	 * By default spi->chip_select[0] will hold the physical CS number,
-> -	 * so set bit 0 in spi->cs_index_mask.
-> +	 * Set cs_index_mask to indicate which logical CS indices are active.
-> +	 * Each bit corresponds to a logical CS index in the spi->chip_select array.
->  	 */
-> -	spi->cs_index_mask = BIT(0);
-> +	for (idx = 0; idx < rc; idx++)
-> +		spi->cs_index_mask |= BIT(idx);
->  
->  	/* Device speed */
->  	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
+> 	dev_set_name(&spi->dev, "%s.%u-%u", dev_name(&spi->controller->dev),
+> 		     spi_get_chipselect(spi, 0), spi_get_chipselect(spi, 0) + spi->num_chipselect - 1);
+> 
 
-I have the same concern that sashiko calls out here.
+I don't think there's anything forcing cs to be contiguous. So cs4-0 does
+not mean we have 0,1,2,3 and 4 which I think the above implies.
 
-Existing users of multi-cs (not including spi-mem) follow the pattern
-that a SPI device gets registered with the CS at index 0 and they later
-create an auxiliary using the additional CS. This would cause the main
-device to now assert both CS. Not what we want to happen.
+Moreover, i also don't think is guaranteed that `spi_get_chipselect(spi,
+0) + spi->num_chipselect - 1)` yields a valid cs. IOW, in theory
 
-If I understood (and remember) the previous explanations of this series
-correctly, we have a different case for this one.
+spi_get_chipselect(spi, spi->num_chipselect - 1) might be different
+than spi_get_chipselect(spi, 0) + spi->num_chipselect - 1
 
-We want a main device that acts as a single composite device that asserts
-all 4 CS at the same time. Then we also need 4 auxiliary devices that
-only assert one CS at a time for configuring the individual chips.
+- Nuno Sá
 
-So it seems to me like we need a new DT property or some way to be able to
-tell the difference to decide whether we just use the first CS here or all
-of them.
+> (yes, need a variation for num_chipselect == 1, but I leave the rest for you)
+> 
+> Note, I do not see that we are expecting to see the sparse CS list here. It
+> would make too complex logic to follow. So, range approach is KISS in my opinion.
 
-Perhaps another possibility would be to leave this code the way it is and
-do it this way instead:
-- The SPI device passed to the IIO driver is just the first chip (one CS)
-- The IIO driver then registers auxiliary drivers for the other 3 chips
-  (also 1 CS each)
-- These 4 devices will be used individual to handle configuration.
-- The IIO driver registers a separate composite device that has the
-  multiple lanes and and multiple CS. Whether this using the same
-  auxiliary mechanism with additional parameters or something new
-  probably doesn't matter too much.
-- In this way of doing things, it would not make sense to have the
-  spi-rx-bus-width property in the devcietree since as far as the
-  devicetree is concerned, these are more-or-less 4 separate devices
-  (from the SPI point of view).  Instead, this new composite device
-  registration function would be the one setting the number of lanes
-  based on the number of chip selects.
 
----
-sashiko output for reference:
-
---- Patch [2]: [PATCH v3 2/6] spi: support simultaneous assertion of multiple CS ---
-commit 17290644299c39d6ca397b14180cd885c5b04919
-Author: Jonathan Santos <Jonathan.Santos@analog.com>
-Subject: spi: support simultaneous assertion of multiple CS
-
-This commit modifies spi_set_cs() and of_spi_parse_dt() to allow
-simultaneous toggling of multiple chip select lines. It builds
-cs_index_mask from all parsed CS entries instead of hardcoding
-bit 0.
-
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index d9e6b4b87c899..55fb96fea2432 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-
-[ ... ]
-
-> @@ -2594,10 +2594,11 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->  		spi_set_chipselect(spi, idx, cs[idx]);
->  
->  	/*
-> -	 * By default spi->chip_select[0] will hold the physical CS number,
-> -	 * so set bit 0 in spi->cs_index_mask.
-> +	 * Set cs_index_mask to indicate which logical CS indices are active.
-> +	 * Each bit corresponds to a logical CS index in the spi->chip_select array.
->  	 */
-> -	spi->cs_index_mask = BIT(0);
-> +	for (idx = 0; idx < rc; idx++)
-> +		spi->cs_index_mask |= BIT(idx);
-
-Will this loop break backward compatibility for devices that use multiple
-reg entries for independent logical chip selects?
-
-For example, if a device has multiple reg entries and uses
-spi_new_ancillary_device(), the primary device's cs_index_mask will now have
-multiple bits set. During a transfer on the primary device, all of these
-parsed chip selects would be asserted simultaneously.
-
-Could this result in multiple chips driving the shared MISO line at the same
-time, causing bus contention and data corruption?
-
->  
->  	/* Device speed */
->  	if (!of_property_read_u32(nc, "spi-max-frequency", &value))

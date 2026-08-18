@@ -1,81 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out203-205-221-233.mail.qq.com (out203-205-221-233.mail.qq.com [203.205.221.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826DD2C15AB;
-	Tue, 18 Aug 2026 13:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9EF2DF13F;
+	Tue, 18 Aug 2026 13:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787058128; cv=none; b=pOFN7W/VFRBU2iaupPCGSEQIwMDk+G/sr7B8y3wRpLYQ9qOaU06hC7e6s7fr5HtVqLKApIz/BxEzz1O7N5fLND/gDn+u0ZdviqweHO6jLXgmqjg0fVQ5cOnQoTnKcKNPa4xQa6aCvDnQQxZEeEsGfLRGUykMvPNGyBYSjMQYFzU=
+	t=1787058359; cv=none; b=A8oJFHTH0N/53XnMp9qLQkNGcjIH2RLk6+RaULsCrPMq0s5sROzZsF77KJ0eB8Q6IPCKWFMSUWWjUBveKH7JJPk2tCi41qLvkS7VNdttKf7XR5jE56dusqtv0Su/0ca7qDHrC1Mn3un6IarhDawpbW9AEaR4My2zQ6gkcfG6NlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787058128; c=relaxed/simple;
-	bh=HNHH/4IyUACffgLs8fjtH7lkK2cGElZU/Dw8wCOUOxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NuvpY1RJi2+D3TPp3Lolg7E1Yhu0McIpO5nb/enDIAwju5IEyredFnqHe33cZ0jbHa4rk/OAT/lER042nD7084eJSlEYQ6H6MDErYhBTy5s/6FTZbHBDPBKvsFLs9AnJByDwnzi/DKUGgh4ohmc7KU/AHIkfURjnP9j/5Rf+m48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3ofqNQk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1787058359; c=relaxed/simple;
+	bh=hniaFIhoOHzqge2o2wLYQ0rXQ5lsV14d8559TujYhOU=;
+	h=Message-ID:From:Subject:To:Date; b=hxZV40z87jcs8Q5+AZqQL1FIjq/sB4b+j+ZBYAbOTxx6QnYM0ahzIVjxFarn5C1gwKnSv1wrF810NerEYLPRK0Z8S7jnqCy+JAM2jsFYp0SzReF48wlixwh6GlB5ifw+OmN9Wv0J+V8QZgrYFv1ZRBxynzR6ZqDcULCsu4FCoMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=gE1uzqCD; arc=none smtp.client-ip=203.205.221.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3ofqNQk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31741F00A3F;
-	Tue, 18 Aug 2026 13:02:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787058127;
-	bh=HNHH/4IyUACffgLs8fjtH7lkK2cGElZU/Dw8wCOUOxg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=j3ofqNQksTuAzXBkn7Y0dAM5dr+l84wFwA4xBrmjnpspbl+QK86wesZ/jVGsESVAu
-	 xD/ErqJJsRh9J8pS8zAw72LauSVXtUz//zvCG0OHHRqWEmyG4DYdQdexvNzx1xbFA1
-	 +r31bvn3UPLFb+g8UIsLs6DJSkh0E+wKWE3ahzfunijYSsCaZYkZJNOWuPXHQ+2BMr
-	 vRh5QmZFO+8HrIP05fsJqYImsZmyt7kq7OAftdSJnoGylH8+JqPMaRrWQgQmUB5TQ+
-	 1yOyqsaZERd0qGmKNqJ792S1deTNUyfCLwF6ABmJyG2OrdAv7ckhTEzCKqVETyuc9w
-	 74SOU8ecqYkIQ==
-Date: Tue, 18 Aug 2026 14:02:03 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Cc: konrad.dybcio@oss.qualcomm.com, mukesh.savaliya@oss.qualcomm.com,
-	linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chandana.chiluveru@oss.qualcomm.com
-Subject: Re: [PATCH v2 0/2] spi: qcom-geni: Add shutdown and panic notifier
- support
-Message-ID: <7603533a-92e1-44b0-a301-dac79dd27923@sirena.org.uk>
-References: <20260818-add-shutdown-and-panic-notifier-for-spi-v2-0-eb25d56634a0@oss.qualcomm.com>
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="gE1uzqCD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1787058353; bh=Asc17psHKNAaSbNMycO1gd0Irfg/HEZLdr8szashNPw=;
+	h=From:Subject:To:Date;
+	b=gE1uzqCDY44EC3qXSlRjW3t0ZY2d/Z8qjL5Wu4bQVwzl0BSrKhreCQnvLD/HIPxIC
+	 Kf/Rs38MbdNokY+wydyhJs5MN0YOftYq4R9GMSNpnSkf2JoK/W0ZworBW2M7+S/a3t
+	 HHUZhqp8M0jDMaP9MvVGWk/uYrUrF86nYDOXXfRc=
+Received: from [127.0.1.1] ([5.195.0.150])
+	by newxmesmtplogicsvrsza63-0.qq.com (NewEsmtp) with SMTP
+	id 1721C6D8; Tue, 18 Aug 2026 21:05:50 +0800
+X-QQ-mid: xmsmtpt1787058350t92l880bm
+Message-ID: <tencent_DD16C0EEDFEF4ACAFAB5A23EC8235D462707@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JuTFiJHSXhG2jjRqHVE0lhZ6fR30r8eFb7fhrQgkuPImiL+Qtb/B
+	 NM88BKMuz/8v4tH+QUMd279UbaBpmn46OEmHiaZeSlfl1WsCqtRDu0sMbg3GB6GdbZvdbKS9NzSD
+	 jjTVzWhszt3cSrOb7QXZ4AXiF2ZKAMA3G3shfUvhK34GpmjoyvsXjjpHKOoKmsOChmDP8RV3kb2k
+	 nKXp1LwevqXaXeLshellpMc3CxrrAXqN24DRqPp3wLlcL6Zu36ueYGAyniny9TxBzoRT04D5vcyS
+	 7AnByDk77D+fJsCnGNv1EllfI4rbsuYm0v2Ink3DmuxOA/cKflbjtKI0f1csRbtQ29rr0QKE1gfC
+	 fAKekd3P5fRDLoCTCUrZ+w2quQexQ6aKQwjPiLz8NsiH3WHSlO+6sfOBv60hdWJziOG7HfBa40GA
+	 kDXqeiilfdxmiSru02V8aT3zcyd2E4LpdgsZKwRh4s/2QKeX74rHQTY4k5et/pEarRy2aPf/Cu4V
+	 4sCQq+D3nTRoNIZQztwxRNeDWD5+oNIlqpPc5HA0IQwqfjd3dVp/0Zdzs0rFC1KlbLoPnm+GI2R4
+	 mYjT/W6DEZ6w/MBMKnUE4GIimhXscSAw9mrZW+OKju6s90xQW4RNBkbxXXwh7+yjtXsDtv0aIMZZ
+	 5sxuLI0rl4cxLUaPIvL5HqHckiO2mYuIZrPiKvUVoOU0GhrDokEC7NV7Raa1shi8GXjDRKb5P/3b
+	 g8UCUAoSZd01fk+McPhY+LZfC63NiMjYNPMBF3TYT/nw7MwIvBrnhnJICRLRMRCjKdHDNdd5ByQD
+	 1ptwrpmo5e19yS5iEI5OYQ7yHJZIRFI1q3uhq3XFEeRodZMXtKDnmJ1hR/PniiLTM7qMHENFD6Hl
+	 fHDVLjJz3radqFmMCGpWt65WNIaSfd40amc7xTbkiIXSVsfM1Mn04BWlaMZfYwgYh/ZDojPLiWTr
+	 /zSegCgF8MDdTwLzAkEBZf8bMmwc6UhLJ8nYaumuyMYN9v7Dl6aywNhPeoV6E4Wcp/aDRBX8915B
+	 RUnm2E7/Bo8d3DzgHP1ef6tV5cGvvNeo56VKdIZw==
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Jiawen Liu <1298662399@qq.com>
+Subject: [PATCH] spi: rockchip-sfc: disable runtime PM in remove
+To: Mark Brown <broonie@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Tue, 18 Aug 2026 17:05:50 +0400
+X-OQ-MSGID: <178705835086.291840.15105782669010201958@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7OnN4c4Ovz95NXMs"
-Content-Disposition: inline
-In-Reply-To: <20260818-add-shutdown-and-panic-notifier-for-spi-v2-0-eb25d56634a0@oss.qualcomm.com>
-X-Cookie: Smile!  You're on Candid Camera.
 
+rockchip_sfc_probe enables runtime PM and leaves the device active with
+a usage count held by pm_runtime_get_noresume(). The remove callback
+only disables the clocks and does not disable runtime PM, leaving the
+device in an inconsistent state and leaking the runtime PM reference.
+Add the missing runtime PM teardown in rockchip_sfc_remove to balance
+the probe's enable and get_noresume calls.
 
---7OnN4c4Ovz95NXMs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: jiawen <1298662399@qq.com>
+---
+diff --git a/drivers/spi/spi-rockchip-sfc.c b/drivers/spi/spi-rockchip-sfc.c
+--- a/drivers/spi/spi-rockchip-sfc.c
++++ b/drivers/spi/spi-rockchip-sfc.c
+@@ -743,6 +743,11 @@
+ 	struct spi_controller *host = sfc->host;
+ 
+ 	spi_unregister_controller(host);
++	pm_runtime_get_sync(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	dma_unmap_single(&pdev->dev, sfc->dma_buffer, sfc->max_iosize,
+ 			 DMA_BIDIRECTIONAL);
+ 	free_pages((unsigned long)sfc->buffer, get_order(sfc->max_iosize));
 
-On Tue, Aug 18, 2026 at 04:15:53PM +0530, Praveen Talari wrote:
-> On VM-based platforms, if an SPI DMA transfer is in progress when the
-> guest is torn down (via reboot/shutdown or a panic/crash), the DMA
-> engine can keep issuing transactions to IOVAs that have already been
-> invalidated as part of teardown. The SMMU then raises context faults,
-> which can affect other VMs sharing the same SMMU instance and obscure
-> the real root cause of the crash.
-
-This doesn't apply against current code, please check and resend.
-
---7OnN4c4Ovz95NXMs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqEV8oACgkQJNaLcl1U
-h9C9Zwf+K0069U7xnVdkmj+9ormsD+ZIVwtZiiQndjHqPCYfbj/pDUbS98P5GEDS
-czpBslllmUIViB2HXG7b0y+9h/EwQOmgZ6pBSZdlLBDSmBnJXZl1LsmTfNPjInlg
-fBRZIxxyYz6cnZbSKhVWs+UmIRnH18EYLiJgtU0UoMEuIyCmfRl7t72vnETKBGjw
-4kEwCzBs2UJ9cYt8KHD3wffRDuxjzU3GhNg7aMFT6Nw0Edz4DWUroFFrwB/l92Xb
-LBSs/IvLsS5pHBY6S+9bzxe2tdnbTQSamV406NLxtDtSBAXTmM10Sy77ri8jd+00
-t6BfDK5cvsS2FlqjCSGESD0JoZDPkw==
-=XgsM
------END PGP SIGNATURE-----
-
---7OnN4c4Ovz95NXMs--

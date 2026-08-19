@@ -1,197 +1,144 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DC330F95C
-	for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 19:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D1933B6C4
+	for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 20:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787167936; cv=none; b=tawCOXi3O2Zn+5WDwSLPtsNkG3F0Z9AGFJCc9o8JYrS6q2XLLbE7k0eNEoSfv4LWF6PQNtXKenPl1P0yQaV5BUUuZMnD0RvW6vNVeg4teYLvqDxevojzhvQxvyxL5D0IiojgCQL+RW3vi550BfwzizJ7V2AuCQEwnvYNqY4FNAU=
+	t=1787171537; cv=none; b=gZYUpB41ve3gxztQk4ipP3b1Ifkln6caWaC5c2fOq1oUncedQVBLMFnOzn2eU/wMi4YCnlaLtHc7qW5S10/ZrV0WqrqHSdsHOLNt3ZMLAXGNmf3acDevocExXp9vfsVGyglVHblJGXAgKOn0w8ERDQ+w1vTZWCIr5G4N6c6LHjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787167936; c=relaxed/simple;
-	bh=SBSyjmnWu1n9LAqvatiRuMvNqWlIwoZUcRDTxxgTpls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WDtjkYn2aZspZmDPfQy+JSdR+abN9sWu0PMQGcoDHuUr1XovFkVRnFvaw1T6RH/q2en/fjnY6Q8TUVO7siskJhOVKW3sjjNWvh4xfcAtYkDOHiT5JQtaJS4P1tE8KN/U4+p13uoHiXjAhHc5Jzg6pTaq6SGK+vOJisgtJFhDHpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=I6cwVX6L; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VcfFnI0R; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1787171537; c=relaxed/simple;
+	bh=sR917INAPqiRWTwUavwb9f+zXWLqhKiK8ywqX9IbxYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyi8ghEQ0IInQL7JZw3cjmuRV9z3slPQ2Q7rtgsL+zUgjnEKBH67q3c5wrky9qXlY9nwEwZqvkEsNRTJf/eYMPMoZ8gd1bHFQZkATUZGZHqsywZnEgeAh5FIF174/Uk6UWG6MF5uhu/DHMFso+YPd+WNnJUDkSXO4SChL4ZQsCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wp1RrccS; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="I6cwVX6L";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VcfFnI0R"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67JHqNEu923035
-	for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 19:32:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8MeEX1ADqXj+R9Unp2Zz/zfrEDHKASiO/sxNbzyCrE0=; b=I6cwVX6LmC5JGOB2
-	tb1Dtx8GfuBLCZdbKIGCRniSp7zOD4rzyGhAtgZMdgr0oo7Ft/HINy6rGtHa9LAM
-	Xsz8w05D0Ti7JwXgoNj+9bDM6uT4MAbENafXQMRyK46DSEP7/rJ4Jj+x8Z6EZVoK
-	hi+p9vm4vvkmfScLhUZ5l9vXpen8bbDG48uCDhUmUdfRx9kogjf/HwDFfAHOK1cT
-	sRHqnFa63aN8uLzMk/KJWxxh33UiPW/FZ2MDHGlGl84SZG4Zyh5ZEXhhOaVho16E
-	BfHUe5SKdJtpgAj0W+1xXjJpbNJ3arM4e9Tf2z47azSyol0E9ZbXP7+IXwZNfox+
-	OC2RTg==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g5es59bmu-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 19:32:14 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2cea6a46766so20982175ad.0
-        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 12:32:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wp1RrccS"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c96b08cdd1cso955427a12.0
+        for <linux-spi@vger.kernel.org>; Wed, 19 Aug 2026 13:32:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1787167933; x=1787772733; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8MeEX1ADqXj+R9Unp2Zz/zfrEDHKASiO/sxNbzyCrE0=;
-        b=VcfFnI0RhheCDK7ijZUf1fmAfF1oeAb+c1tx3BPCNaLhjzhfS9lJk95RDYw3pjMsFF
-         UdXC2zzmD0cpNHiKWnFHJs/D3fhQEdbBRbLst4mQ9TgzJnZFix5fzimkoosbzNb11fB4
-         8/Bupm7/ZEEbaHVQnZJNyNCxe5z8khbW66pvlPLGwdZBE0zwtRK5RRP6i5UUeO9emrR2
-         47RYRaDs/tdiyavlTevkxh5A8+P6BMLRTQwXirZCmtY4AXhxNObb5tEhXqkFpC5Z4Isn
-         ePMfw43Pu6/+9Oc5C2yV6p5fv4nvl7yIv28p2k2Fgoh11auC5oWBf/PoHsJKA9IhyE5E
-         Bydg==
+        d=gmail.com; s=20251104; t=1787171535; x=1787776335; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:sender:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=kakQd7SwwB4qJFxzAT3GLQtskQ627s0NDgwkRoO1YnU=;
+        b=Wp1RrccSlW1X9+Uaa1CnjB3s3pmxp7EniiOiDc+oDMhRJ6u8Tk5F2zuqktrdtcNhzV
+         M05YvG3dnqFyPg8Rrs85KXdVDVM8jnXUco8dRrKVhfDahOSRUuchMInR2YiYfFBVTH/p
+         Nkxc2Q+cXV77WyL93cqYvy7OUjulbrY045zyjER18oCu282KE8BG2txIAJy+WhBCE4Tl
+         nG2fQ8j3JZtIuOuXSTuqmUY180bhQo3EjyFgCfoA/jz020Im456ZWaDGgqg5bWRLkDwr
+         mWyickHWeugP70D72A+1XE/fWH8wF4tdxOEiJ22QUA+D+iUkpJxnqHy9PRAxvzpPnGR3
+         TuFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787167933; x=1787772733;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8MeEX1ADqXj+R9Unp2Zz/zfrEDHKASiO/sxNbzyCrE0=;
-        b=ZIXNRbM+WNgALjIBDpnPlvgsC3xZDQHTGFrXjHtvp8jlnT3AjknLjn0G2vQYv9/J1b
-         N1gWJEiI4fxkofU9iXDsXS6KzTYI/eC3RKoxrV/CpBhJPe4kmocW6Dtez9cz4mID52uU
-         cHH+ZlFSFfqoLdYy+94F3jWIdebd+se5JR9bNgZ/gmgFdHJxg+xymiLIubWMlRa5Ujgz
-         vN1zHnKMh58z/hzOTt542bvlR8L3ReBqU/f/VJCNAtM638HMs1izBc1SuFBsBrsJZot2
-         LHVsZqTjQFKmpM7BNzriBeTPIdHCkSlOm8EQ57ZhjKT8k5/CYBSAWVvLQbwIVISrJ4J+
-         dBvA==
-X-Forwarded-Encrypted: i=1; AHgh+RprZyvVRNk9g0Cprd3j8W0cqdqQSToWGy6jwU7B9PcUYnfhN7F0DdO13hS+e+G/RKCrbZpeLhccbNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvnxbLASM+lbEvKgYzK7rKBW5xkMK5QlBFvPY4gQI9G/d+JIzj
-	1hepirwAhBdmk5z3vHDIDDSgQ0/sH36uw6s62ACoFUx6lRBNa8CE+d+QlB4cfWYQ1HUHBcMQN08
-	aTOptQFR/oHWyeGX8ktWWUjJlKaLIZMhfUFCuwZ29Xnq3ncQzIM2ELwa5IshZI5E=
-X-Gm-Gg: AR+sD13ZA/I8mrAy3AHHIdFX0prooZPNEMZ9lONwOMPdTQFQseJeQ7Eg76ZBzvMKYKF
-	B9ZcaBpjlJPH89kBleIYOOBkTF2BlysVla1Gq0tYUqSJxKn1XpD2Y/CpUTUK0FLjjNHCFp5aPOy
-	kVIRhr7Tj7jJPAlseHuVw/Wc2DyHGwTTGwDCvx83XPpvkwBp0qqvTbpIjYfF/hzRiDZycYn4YAx
-	NRnETCH4b+bNqDubUEdQIOxHjP2Qgslm0GhhHOby8ePFX6yEim+O3c/pjZzDNSOxXQRPd69s9Ho
-	YC8qVMs44Vp2p4BAnE0J+IHyPXc4EiHJB2KmjZ7vqEf/q4FRpaJOqzB/OEoodboMKNVr9tBW3Ec
-	IaxhtD8JO/Csa8+0OBOZ74YViE3tqfPt9akc=
-X-Received: by 2002:a05:6a21:6da8:b0:3c3:7ac4:dac0 with SMTP id adf61e73a8af0-3cd011b6517mr12158853637.13.1787167933069;
-        Wed, 19 Aug 2026 12:32:13 -0700 (PDT)
-X-Received: by 2002:a05:6a21:6da8:b0:3c3:7ac4:dac0 with SMTP id adf61e73a8af0-3cd011b6517mr12158786637.13.1787167932597;
-        Wed, 19 Aug 2026 12:32:12 -0700 (PDT)
-Received: from [192.168.1.5] ([106.222.232.233])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-327bf1a1de1sm9919127eec.31.2026.08.19.12.32.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Aug 2026 12:32:12 -0700 (PDT)
-Message-ID: <54e4fa7b-9a95-4871-94f9-65ac55688f7b@oss.qualcomm.com>
-Date: Thu, 20 Aug 2026 01:02:07 +0530
+        d=1e100.net; s=20251104; t=1787171535; x=1787776335;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:sender:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kakQd7SwwB4qJFxzAT3GLQtskQ627s0NDgwkRoO1YnU=;
+        b=hxJzzNw3Ei6sFsVjXaDHEuJDp+tYFfRoH2ywAEg113MuT6yEqjfJwkC6aHU/zQsQqA
+         Q8lZNM+4CgAfRSy16o3nwhoabkmUsOx2vcSqAKCl5y3cux31o2dqPKUOPJe9nXcugSy6
+         NPVtkOS6637IKhvzR8uSJFQ5nomtd8aDTVnmXbtm/BBvEN64GyOwZ942JAi6CpjVseZB
+         f7SWCAyOz1a5llbg1taXpyQlgNVb2DVnfjPXdmtkKHsy2/hw1P4c62OJghTkjHEcB7a9
+         nW2BAOuvtC6YFQlixU9tu/eVhiNodddM+XyocJZ/qu4XcajmabZJgNJUk0K051FJXSKX
+         1M3A==
+X-Forwarded-Encrypted: i=1; AHgh+RqoQvzHDvR2ju86jhiCwvZ7XujcrLnJC2/UhB1pCCWdlz5itmQq6kAloGvCIhtTsR5w2Crw9FV2Vi0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mhOoa9n943azs4lhITWgpkxLllKt9bWsz8QSvIdoD/6HuYSTDX
+	/kHaRQCVLoJjvw62t/UoMAa6admUY2WoXHsVPpa2xh11F9tknI/2qzAZ
+X-Gm-Gg: AR+sD13k1Ie316IlvUGOFQX0ZDCjk6xmWKZsQjpUs/mD0L+35qdAXUK5IDyvBW7iAOD
+	5rAtGj0GAX24ePjySmcY1PBr04pWS1hXxUacThydQZU/pCkvupMNQT0BCXs6T9uAW8F691jhgF5
+	dr55mTRm/mCBcZLCyNeL0ik8nadsG0uJwV6pcDHnDcHqh64tMcxVSlVLozbH1D7LTw0G95dxqzk
+	9mGhbu0pqXdjaJUusjfVvhem24W1GJYLKqCNi1XMStht9BQjRUiD2VWA1FFMw6vnrEy2CX0YsDH
+	Nr/f1uOpH9ovXMKPA7Io3gQyLLQMAzNoVsHO2lQdcDpeMQYme+hiH+V7vq3lqxMuNUZvTnpEvhU
+	oc/g3KsBEt9kfD364GDWBHer8UYs6ltKGR5ElHJWxn9qNwuzpMUR3EOVt/y0AmuHRxKErqx2v9B
+	bAkztGWp4MpheUnt+uFPbj0Gee7hBdQQHKDmg6hOZtMXh+VaA3IuQTVgbCp1o2Rjo1R5e41oL4N
+	g==
+X-Received: by 2002:a17:90b:4a8d:b0:38e:ad9d:1161 with SMTP id 98e67ed59e1d1-39580553dfamr13842543a91.0.1787171535016;
+        Wed, 19 Aug 2026 13:32:15 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1416ad6060asm16706081c88.6.2026.08.19.13.32.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2026 13:32:14 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Wed, 19 Aug 2026 13:32:12 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Tero Kristo <kristo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Sunny Luo <sunny.luo@amlogic.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Mark Brown <broonie@kernel.org>, Kees Cook <kees@kernel.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Mathieu Dubois-Briand <mathieu.dubois-briand@bootlin.com>,
+	linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hwmon@vger.kernel.org, linux@analog.com,
+	linux-iio@vger.kernel.org, linux-amlogic@lists.infradead.org,
+	linux-spi@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH treewide 3/5] hwmon: (ltc4282) Make sure clk_init_data is
+ fully initialized
+Message-ID: <0ee768d3-f913-4d29-902b-39f8bf973dd6@roeck-us.net>
+References: <cover.1787165329.git.geert+renesas@glider.be>
+ <8ec3c5cbd2df675a938f090470f5da5f22008517.1787165329.git.geert+renesas@glider.be>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] spi: qcom-geni: Add panic notifier to cancel and
- reset DMA during panic
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        konrad.dybcio@oss.qualcomm.com, Mark Brown <broonie@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, chandana.chiluveru@oss.qualcomm.com
-References: <20260818-add-shutdown-and-panic-notifier-for-spi-v3-0-8b62c4bc2d21@oss.qualcomm.com>
- <20260818-add-shutdown-and-panic-notifier-for-spi-v3-2-8b62c4bc2d21@oss.qualcomm.com>
-Content-Language: en-US
-From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-In-Reply-To: <20260818-add-shutdown-and-panic-notifier-for-spi-v3-2-8b62c4bc2d21@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: SwaagMemH3GpOmyYeqKlkpWppTXZWBLi
-X-Proofpoint-GUID: SwaagMemH3GpOmyYeqKlkpWppTXZWBLi
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODE5MDE1MSBTYWx0ZWRfXxmZ6kul3PbI1
- KvfyL6aO9pfJQeNLWWeFvu9hYb+G3sYk5EpyXVzTaQ5dRbbPRmKJvkqCM7bv/m81ixwwhCpu+Yz
- TRJEUS3GaWBaAoi6zCJ4uOcXCOzxLGA=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODE5MDE1MSBTYWx0ZWRfXwPY79qJJRllp
- LDH2W4f3aVg9psQ8Aa/3o0fTTjIGF/dup/fRPTS0D6p5bTetqtxUHawQlc9b1Pvw+jByp1gi270
- GKzDcDoDbPZrMvBWfiwjrvwT/F0bgYsUiBXMq4vUIkQ5iP6pFc9D3HgWqwU+fQ5R8yeHtnSZm5B
- 4ECIVLKbiVJli+98VKJ7fj3h7+sVKkOoOxb9j7bFpXWReLWqKKt8hQ6281c6YcEhnirKAfU4/vr
- gmNMWBUld6YXfVtO9RdUmr/X7BTdmhCbZjFyQnSUCqbdAoitmzXKr21oe5XfDmJrhpY+xHNieNb
- N21OgziEVnhJJs/bWRpBk5vWIwULMdzHZrB9aY6dZnpeO0ondAcOMzUTU2Vj0ij41BQ6tTjTCQu
- ZqhvhqdzQCfgvbpL3wOFFjmGL9D62807aCGt/m1XGOlr3XxKp5FvpoyjsQM7Qpejjz3sMDXV3gl
- j2hOiYag03xBjxnMWIA==
-X-Authority-Analysis: v=2.4 cv=Oc+oyBTY c=1 sm=1 tr=0 ts=6a8604be cx=c_pps
- a=cmESyDAEBpBGqyK7t0alAg==:117 a=5XCNgjhq8C3qGxAi4A93cA==:17
- a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=0pvDCryYY5rQeRNKz3IA:9 a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-08-19_05,2026-08-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0 suspectscore=0
- clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2608190151
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8ec3c5cbd2df675a938f090470f5da5f22008517.1787165329.git.geert+renesas@glider.be>
 
+On Wed, Aug 19, 2026 at 09:05:17PM +0200, Geert Uytterhoeven wrote:
+> The clk_init_data structure contains several mutually-exclusive members
+> for different methods to specify the possible parents of a clock,
+> prompting drivers to initialize only the members they need.  However,
+> not initializing all members may cause subtle issues, which are only
+> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> enabled.
+> 
+> ltc428_clk_provider_setup() does not fill in any parent clocks, and
+> assumes that init.num_parents is NULL.  However, the latter in
+> uninitialized, and thus may cause a crash.
+> 
+> Make sure all members are fully initialized, to fix such bugs, and to
+> avoid future breakage when converting drivers to a different method for
+> specifying the parents.
+> 
+> Fixes: cbc29538dbf7d740 ("hwmon: Add driver for LTC4282")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
+Applied.
 
-On 8/18/2026 6:58 PM, Praveen Talari wrote:
-[...]
+Thanks,
+Guenter
 
-> +static int spi_geni_panic_notifier(struct notifier_block *nb,
-> +				   unsigned long action, void *data)
-> +{
-> +	struct spi_geni_master *mas = container_of(nb, struct spi_geni_master, panic_nb);
-> +	struct spi_controller *spi = dev_get_drvdata(mas->dev);
-> +	struct geni_se *se = &mas->se;
-> +	u32 val;
-> +
-> +	if (!pm_runtime_active(mas->dev))
-
-Not completely sure, but why not NOTIFY_DONE ? we haven't handled 
-anything here.
-
-> +		return NOTIFY_OK;
-> +
-> +	if (mas->cur_xfer_mode == GENI_GPI_DMA) {
-> +		dmaengine_terminate_async(mas->tx);
-> +		dmaengine_terminate_async(mas->rx);
-> +		return NOTIFY_OK;
-> +	}
-> +
-> +	if (!(readl_relaxed(se->base + SE_GENI_STATUS) & M_GENI_CMD_ACTIVE))
-Shouldn't this be under FIFO mode check  ? As i can see SE DMA mode and 
-GPI mode conditions present but not for FIFO.
-
-> +		return NOTIFY_OK;
-> +
-> +	if (!spi->target) {
-> +		geni_se_cancel_m_cmd(se);
-> +		if (!readl_poll_timeout_atomic(se->base + SE_GENI_M_IRQ_STATUS, val,
-> +					       val & M_CMD_CANCEL_EN, 10, 50000)) {
-> +			writel_relaxed(M_CMD_CANCEL_EN, se->base + SE_GENI_M_IRQ_CLEAR);
-> +			return NOTIFY_OK;
-> +		}
-> +	}
-> +
-> +	geni_se_abort_m_cmd(se);
-
-why abort is done directly for target device and not for master ?
-shouldn't be combined with cancel failure ?
-> +	if (!readl_poll_timeout_atomic(se->base + SE_GENI_M_IRQ_STATUS, val,
-> +				       val & M_CMD_ABORT_EN, 10, 50000))
-> +		writel_relaxed(M_CMD_ABORT_EN, se->base + SE_GENI_M_IRQ_CLEAR);
-> +
-> +	if (mas->cur_xfer_mode == GENI_SE_DMA) {
-> +		writel_relaxed(1, se->base + SE_DMA_TX_FSM_RST);
-> +		readl_poll_timeout_atomic(se->base + SE_DMA_TX_IRQ_STAT, val,
-> +					  val & TX_RESET_DONE, 10, 50000);
-> +		writel_relaxed(val, se->base + SE_DMA_TX_IRQ_CLR);
-> +
-> +		writel_relaxed(1, se->base + SE_DMA_RX_FSM_RST);
-> +		readl_poll_timeout_atomic(se->base + SE_DMA_RX_IRQ_STAT, val,
-> +					  val & RX_RESET_DONE, 10, 50000);
-May be good to declar macro for 10usec and 50msec ? Multiple places it's 
-being used.> +		writel_relaxed(val, se->base + SE_DMA_RX_IRQ_CLR);
-> +	}
-> +
-> +	return NOTIFY_OK;
-> +}
-> +[...]
+> ---
+> Compile-tested only.
+> ---
+>  drivers/hwmon/ltc4282.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/ltc4282.c b/drivers/hwmon/ltc4282.c
+> index b1675dc5b3c7fd2f..54ba4b8542e94b7b 100644
+> --- a/drivers/hwmon/ltc4282.c
+> +++ b/drivers/hwmon/ltc4282.c
+> @@ -1106,7 +1106,7 @@ static const struct clk_ops ltc4282_ops = {
+>  static int ltc428_clk_provider_setup(struct ltc4282_state *st,
+>  				     struct device *dev)
+>  {
+> -	struct clk_init_data init;
+> +	struct clk_init_data init = {};
+>  	int ret;
+>  
+>  	if (!IS_ENABLED(CONFIG_COMMON_CLK))

@@ -1,64 +1,64 @@
 Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D644C64E;
-	Fri, 21 Aug 2026 11:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C4B376A19;
+	Fri, 21 Aug 2026 11:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787312984; cv=fail; b=LcgfFyzLkqxqbfRIMZOxoCFRpo4rOjUwHCuurnG5A0xG40R6suDXT06IgxfxhLcD/DU+neYKL7O+t9dASAML0r39/snavZDCptIcIVLuiCfRQ+TLoCVnHZOIfLVch15XCiRabXjacXIAekE8pRRXn033SpeoEFLpW3yGAcaTHx0=
+	t=1787312985; cv=fail; b=jNDn9nEGuUM17/42UHMcRjvlWnmZUlIFpL/OKgkxR0A+ipMo2lMUjiK8yX/0nphGQ10A/ktdMobJfi2Q/v/Jn81hnOQ8K1nqpP0Mf1hpNdQyNTC9s6JtYcsCodapwkEKdmgXZ7p4VCz0Y5hQ1jNGj72OoJrrBeHjacOhTYpaOiA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787312984; c=relaxed/simple;
-	bh=NpoT/cBBl4rAzM2NVlulrn3aPKLC+iksPz2nkPNIsok=;
+	s=arc-20240116; t=1787312985; c=relaxed/simple;
+	bh=jWsZQ8OrcqpFqX4dCEKZbtqhz7uNq3Qk8YJy2FkPPYc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IY4CwI9kjD0uBBfF2Y7QMWRD5eUDiMgNFyWyFEt4wBXMDxfxXlQXGEp1eCGauGNM1unjoDT2esBaYp0+aIxPULM8ugyd54qG7op5s1ThPmpzxdubphSyHKzdFS6YFzNww7WyNMPvzAq+iNfQbHe9zlU7WxcTiOl3kEnl8vqBolg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=AuMF4Ijt; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=kOiQC+Mm; arc=fail smtp.client-ip=148.163.150.75
+	 MIME-Version:Content-Type; b=UJhEqu4J7iITD2Rab3vDi8QCoMrcPkT1GwIyD+tDbxYMKRpiN7mVxmLuW+mqug2rZB9vznA1c62bwvQ8kmQeCpqHtMf9bhol5VXEZTDaNuQ8Y3oEiA+s6b94YW+U02FUhS5I69A0azqw2AigzkZgPasY2QkU8fCXBB58XEpTwKo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=ADRqtyBO; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Nf1cblEU; arc=fail smtp.client-ip=148.163.150.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="AuMF4Ijt";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="kOiQC+Mm"
-Received: from pps.filterd (m0380145.ppops.net [127.0.0.1])
-	by m0380145.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 67L9KNI03254941;
-	Fri, 21 Aug 2026 06:49:25 -0500
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="ADRqtyBO";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Nf1cblEU"
+Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
+	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 67L9KRtn2887015;
+	Fri, 21 Aug 2026 06:49:32 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=+pWYfJ1EP748IQC6CtiOQMdvqHr9KlmObkQrKfpTY
-	Hk=; b=AuMF4Ijt8dXz2EjyqoMTeCUaetHpGNMgZ1AGps2Y/hByumUtm2XY2VgIK
-	Q6Rrcd7hLylFQNIbnw3WkKcAeGId6Wpm7RT81Ad2Rp3vZ6DnUPOro9mEN02g9lVM
-	pKpXvEi7tqQwhSUL3pvmuI7N1ZCwT+pWcTK+2ICv/ZvkbU5I5ioQc8S/bCDHmhGQ
-	7gO8Ov/LBb1L3eTRWuOHenPgFWi72f5fKSMk1vXcFxQ7tNcSvLF9zhTQ484fuRvL
-	lLDjPTIRvo/AQSlkPMjeh08Q+UQpzQ7auMJLltJjIENJrMoZ0R1AnySG7ddXWl44
-	P6U67G8mD4JQFnvaIDXrxjp3ixbEw==
-Received: from bl0pr03cu003.outbound.protection.outlook.com (mail-eastusazon11012035.outbound.protection.outlook.com [52.101.53.35])
-	by m0380145.ppops.net (PPS) with ESMTPS id 4g6hfk1de9-1
+	proofpoint-05-2026; bh=AIKfefqLLNKtwN3tukdkBIjsxtF9B5GgFsNKrzvlC
+	So=; b=ADRqtyBO876YlWVkNJ79gQXsHAp3BrCDYt+S0KbbigaLAe8q4KwdEql1B
+	8ySfnHBZQuyckfRzQRoalxYp6aQmv9pMHVVhnDtjbAR+Zp6qO169ZX4T9dd7/eOf
+	5sbuMiZcXVqoKqmvoX3UxxefGLgGi3eMwAp4P+WrV/VAYTe6vkGUcJg/v9Z+E3bx
+	r9fxLHxCTFpT8xxAQEufFDd2TMFMp4vWZO2tA61HYiWGihjtDbRlu6ZU+6J5vYfw
+	u/QCV3T2pQsIkJ6g/gmHrVup5FjcUAyNoNQxquR824ZtX81G2oz7XDNgFNWtnGs3
+	pOtUHHWgq/eG3vztUt1kkVO0WiNaQ==
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013056.outbound.protection.outlook.com [40.93.201.56])
+	by m0384305.ppops.net (PPS) with ESMTPS id 4g6gke1mhq-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 21 Aug 2026 06:49:25 -0500 (CDT)
+	Fri, 21 Aug 2026 06:49:32 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hwJDA1f1mZ27Iro3/GPzbKDkvB+ZpTZpE6WZ6bYdFaML8aSWxmtg+Hke+LfiAUqPhlbd7XGxN+X4sZJupNS+evH+kkxDRBa4I7ompx3HbQFZf7OM/689dDE/Cn6j93H4PfLTd41oyzTFD2bOwN3NjHsOVbYlesbEdvfdE7DtwuwLNkKCAcQ4uBx1rNp2X6aJ70whcrAvcIpayceVpe3mCvxUoMy8Mfl4II2BWLxWdnZRCwOTdalMJCoyfPN+i6eVEIUdN2iJvt60atGpa5R+tJEYeZwNke8Vg8j2H203DMCeucQn9QIUYrY1lJjgvfeZmJBsACuY9JmmGqgkWmWwGQ==
+ b=nuf6iKaB0XWPt9CEFV55q59wmoGxENH/+8UgW3xsS8Ue2kFLuf8pghEfV0+Bd2gxGKxGiXk1bjetGl/XBGVbmzjz8TrkoCtoXknMhpLT59ZRN6T2cH78QcDlidZvE31M6VQlT5F1CyQDdzr2Lpdbd33ThTIipGWxa4h0FpkVHqp4zK5BV+l8jGDN+TeG/uaI6Kxmrg/uoGz0FsylCyfH0NRDRby+yU/nqjgqu6rt1u+FvbVMNRlXYTAnkDFatDPHb1b7l7GIfEQmxMJdCZAouPGE8+cShkEA+RMyY46rNbSbFb/A7Y/RhJmzhU6dbWSe8OLGUNHpfEiWNGOLpn7dxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+pWYfJ1EP748IQC6CtiOQMdvqHr9KlmObkQrKfpTYHk=;
- b=oXbF+570L8OVMUu5zT5Kts+ILkWXEcbmstfsXLcZD3zupEnM1Ki1ziOIMKWvTD6qlqfonL5yEGaBUHwG+4lf6Ut41XkdRoeXdB91dum1TrdTE3pQjnIwvsadYA1LbFfyACcBphKYXPMApCnNDXLGaSd/CkSbUVT8wLlED2hDWAsRKjN57gWY16Kk3yYsO9Q/atyt/abh8gv0vfVSblabFFSEhlrgv9eH2rDWmu1pejoEVEKPYvDKoq/0sGa4heNYXK5m7ZeABcXZH/krQDFvANL1v4vVo9ExhzcNNSHcpNd7U7qshwlpO+iAS1ojliOfoNKQRmi2po1gguPU8sKtDA==
+ bh=AIKfefqLLNKtwN3tukdkBIjsxtF9B5GgFsNKrzvlCSo=;
+ b=phou3BQLkknoDg8+6Fmr0WmGdYCEHfxtR3JnI0jXQVLPrzaZZlRqVZGjT3RRhxyhp1ppR7nfHoPFZiCSE0ryPerIjDuzOie0ZC+vZ/uL3CG4PdvWPHJmtDpv8neIH814ZzcOzfqOS0qBnz83AXO4q+R3JbEbJg2v+7bkaAw5/lzulSNTaEgOlfv0JOmM2AdrDLLd8qZn1PFKF+uq0i2eguE2SGQrjsm7tj24T6//S41GRFC6ddcsU1188P5aAAclGetYpxp8QXFUOex3CMgWRLbUZBSDteWLxMwBF4t6M/ukA4U9+kNNCJltvMWHpHGqbA0dYW+xPzMxUYosPvcerA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.21.194) smtp.rcpttodomain=microchip.com smtp.mailfrom=ti.com;
+ 198.47.21.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+pWYfJ1EP748IQC6CtiOQMdvqHr9KlmObkQrKfpTYHk=;
- b=kOiQC+Mmxfra0O2LCjzltCntY2HA4g9Fc7I2g3cMlItZKUKhHPrDq6DgimgZHMMW0+tpixThMWE7vf4mi1Uv00sGSQJT8GfxGp8j7gvNrIM0dcJeNzs+jDewsUvz9zpXvpxCh0hrSbFk3irHDCS8QOXysREEW438A2tWzo/sDA4=
-Received: from BN9P222CA0029.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::34)
- by PH7PR10MB7783.namprd10.prod.outlook.com (2603:10b6:510:2ff::8) with
+ bh=AIKfefqLLNKtwN3tukdkBIjsxtF9B5GgFsNKrzvlCSo=;
+ b=Nf1cblEUXBbj1UWzGc3iR8inuSKm8T49p+HKhHbC7HYbI19M1fMvF97Vbk4bafdHpgMwaSa9EokPXpnD5dfzCHum3F1nRRyAkTk7pMuf/KhY3xrfTD5QT9LYOp/jFlfOLU2GtAdDy1DWAdpMnKQbI+c70gNMenFNxBUKqL4dl5s=
+Received: from BN1PR12CA0007.namprd12.prod.outlook.com (2603:10b6:408:e1::12)
+ by SN7PR10MB6288.namprd10.prod.outlook.com (2603:10b6:806:26c::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
- 2026 11:49:19 +0000
-Received: from LV8PEPF0000005D.namprd02.prod.outlook.com
- (2603:10b6:408:10c:cafe::7b) by BN9P222CA0029.outlook.office365.com
- (2603:10b6:408:10c::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.10 via Frontend Transport; Fri,
- 21 Aug 2026 11:49:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Fri, 21 Aug
+ 2026 11:49:29 +0000
+Received: from LV8PEPF0000005A.namprd02.prod.outlook.com
+ (2603:10b6:408:e1:cafe::ac) by BN1PR12CA0007.outlook.office365.com
+ (2603:10b6:408:e1::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
+ 21 Aug 2026 11:49:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.21.194)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
@@ -66,24 +66,24 @@ Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
  198.47.21.194 as permitted sender) receiver=protection.outlook.com;
  client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
 Received: from flwvzet200.ext.ti.com (198.47.21.194) by
- LV8PEPF0000005D.mail.protection.outlook.com (10.167.245.134) with Microsoft
+ LV8PEPF0000005A.mail.protection.outlook.com (10.167.245.135) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 11:49:17 +0000
-Received: from DFLE204.ent.ti.com (10.64.6.62) by flwvzet200.ext.ti.com
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 11:49:27 +0000
+Received: from DFLE206.ent.ti.com (10.64.6.64) by flwvzet200.ext.ti.com
  (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 06:48:42 -0500
-Received: from DFLE203.ent.ti.com (10.64.6.61) by DFLE204.ent.ti.com
- (10.64.6.62) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 06:49:04 -0500
+Received: from DFLE209.ent.ti.com (10.64.6.67) by DFLE206.ent.ti.com
+ (10.64.6.64) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 06:48:42 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE203.ent.ti.com
- (10.64.6.61) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 06:49:04 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE209.ent.ti.com
+ (10.64.6.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Fri, 21 Aug 2026 06:48:42 -0500
+ Transport; Fri, 21 Aug 2026 06:49:04 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [10.24.52.55])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 67LBmVlc2022942;
-	Fri, 21 Aug 2026 06:48:37 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 67LBmVlg2022942;
+	Fri, 21 Aug 2026 06:48:59 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -92,11 +92,10 @@ To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
 CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <praneeth@ti.com>, <sebin.francis@ti.com>, <u-kumar1@ti.com>,
-        <a-dutta@ti.com>, <s-k6@ti.com>,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v8 01/18] spi: dt-bindings: add spi-max-post-config-frequency-hz property
-Date: Fri, 21 Aug 2026 17:18:05 +0530
-Message-ID: <20260821114822.4040338-2-s-k6@ti.com>
+        <a-dutta@ti.com>, <s-k6@ti.com>
+Subject: [PATCH v8 05/18] spi: spi-mem: add execute_tuning callback and spi_mem_execute_tuning()
+Date: Fri, 21 Aug 2026 17:18:09 +0530
+Message-ID: <20260821114822.4040338-6-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260821114822.4040338-1-s-k6@ti.com>
 References: <20260821114822.4040338-1-s-k6@ti.com>
@@ -110,92 +109,173 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PEPF0000005D:EE_|PH7PR10MB7783:EE_
-X-MS-Office365-Filtering-Correlation-Id: 683c801c-0bc1-4125-89ca-08deff7a3b16
+X-MS-TrafficTypeDiagnostic: LV8PEPF0000005A:EE_|SN7PR10MB6288:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cb77eba-aeff-4bb4-7aad-08deff7a40ec
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|36860700016|7416014|82310400026|376014|56012099006|10067099003|6133799003|18002099003|22082099003|921020;
+	BCL:0;ARA:13230040|23010399003|7416014|36860700016|1800799024|376014|82310400026|56012099006|921020|10067099003|6133799003|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	68QfZyQQkVBI7/XLY2b/6xjmLDOyAjtiYKoOMZLZHMe7BRfSJfh98Bk/l3heLaIaheThGXYDDefuIliHzCd6++TU7rKgLAm3O+q9Bfm7bf2GHuowOiZWfP1eQ8gmN4AdYNZ7Bq0zr0TquEM/ZEs/MT1h/PmVc9YNSU0OZ9UQofz1f6TpIy/fnl6EZaE+D4Ew2guyHcOdlGrjc9GmtNctC7FwXKdgHZx+XL9hmaZoo+7NTXUMPSCo1Tm7v0g7ep68Im1+FY+rq61P0NJHdiMHPrBlqLULbWl+F+T4GjxWDFenoH2ZoF4lD/cBT9jMm7xAi5SZWIGdAP89NbhJwIMh3RLmlb7eA4avvmS5kKJOGl1+fLIQ5ggA+edIMPt30BlEZe331zAUZQhlpjQghk+wooM1MODE3X3g9/UtZYLGJANwhfvFkx6nApKlm1SZNaHSWxmU8IgWEtCrWZMQzx9nQ++pQbtVhkCFmANjcdS+oUvkUFnig+Q45OLfIJE/7vEY1kBVDfqe6ld5UWeQoCnWUN/JC1eiDKx32y7uZyDqkGnoj9ZsL/6Y22c83i7BOgQqWMsBggnyVn5bvIR+ILpSMldNSasC2w1boZN3afKW4HIAPrY0jSBNgV+pMIxv9IB+fEI69TBx557j1dzeSQzT4efbZmU+EsKXTxqxUuxRGu2AASZmYmJg0++cIR9fpq/bTnyJpzlBBRz6U6VdHDrue9lSsMavtTW0vEUBhjl2L8gv9KrtfN7xmbi3/j+XkbtP
+	ammip5y93WrBxfw5ilMkGreNgoFP8naCqiOiXjZ5xpzTj4soJhEDZc3h+nidmUoemdhlORCwhCzLGvm88+IF5w34FkZsIULJRRaT2hfmITjwGlkbKHEXVmwC+q53L8aT3Pnt5u34pGtUT1hpGHUdX2O0wwlhv2Zud7eXEcl60njAyp67HbFb/Ck9J3mbxnuvtlIxRO887Vq/5K6vmt+w1iOAXw2+p91H7c/TQMLKyfOK0N92zjAUkbKA4mwhpqqEnqSgsBvzJHUxIhxXdVfRCxf6cASXYYQGRAnt3ZPg9wjijuMUpMSyJM/+zQbx62N5l1hbwLMPhNxU4+10zfC9vjHpbpWKmbrMIocVDg9WfezN0T5MZbTmb+PMKcijqS2AwAquAtPNL7Cz0dniW1Lfz+eznxy30lYOfF6TcE2c7wMOxEZtQdJl2YjSZ2NAFaUPbWAeq2MvP3Y1n4DDqv02icPpWUtxcPHB+rRev02g4HPy8nz+8LutyDrtvGJDEDlid26xcHxbHHaiqKiLyJlJJecsQxxNMf1/dVriL6xktj60O2CUlnVE/UkBL+TwmeCb1JIiOwxtW5Vy6ExRJ1S35CgBR6b26OtMvO5ishKd1KGPl9vpqenpp/VoroqLmRKnfQnfubGM17bx+gnXQeHV86jIPbI4Vfe9h4GZuqDhOJ+owp26skevCxbMoBWFNTo6UGMR7GInygbqK19yi4sOqpTC8Eorc7ZiB4ZMM+XHg0voytXPM0QqqSwn+n6E8E1p
 X-Forefront-Antispam-Report:
-	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(36860700016)(7416014)(82310400026)(376014)(56012099006)(10067099003)(6133799003)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(36860700016)(1800799024)(376014)(82310400026)(56012099006)(921020)(10067099003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	j8T9Mlcuhcv++FOfrYHkWpuV3rmlTN68JZOdf+d5KWkklj1y4xkfX/vLd/93h9O2RIQqzBvZWjjTN7azp1LqeASxq8ikX/Jb07CjwguJYcXpVYboyb733GQwtMoV3zOqb66HB3Xt1F9MvDhEwq4Hh4v93bWRvF6KV/J6uB3k776y+2QYSu0DtiMd+a4hxEKLv+reynaKpXd4YTt9AfRtMSd8YyrCltrGK7SpQztitZZGbJeJxv4hUdMrd+J/JNRQ1jP/p260/H/1RsdEK3s7uvoOoKo6drqgEW/IIecL7ROdtXU2Fyh6td0TRfhOhadPnq/mNxt4jnwzbXgqo1dNnp6wvY7T8Sa2eTzWfJnFE1rRiZmjs7PBOD+j2yyIw5Nda9LojTg54hXIk/ZpKKOGLHX5VX8eizAbAIzVIG9ryPqKwLzM3zAcWYhHk+ScIt8T
+	vbhnyxbFS0U2Cdw3XwyMXSBstX/vXumUfQPLYzDwdod0qjMnCI8k32YWIdZT1ZfQmtQPdwpMHggjts+2+ZaY2nigpZM8spdE4DcYHaJ6Oj1r0jOACPKNMoYYuOM6q6IrYxrb7GkEwpMu4VN344x/4iISlg6gOOLb0wZUuZ4TPDpztRYmZVVqbGw3omXI8XQAZa0sSDn+KfbOScvSt290hndtpYyDIIeBosoFXQbkZgH1hk5TuMiP3uGQX6DrCTBSk+cZcxvHt17E96uyF8h0XidilcVwLEYFoR4pkcGqXdHs89k7z0EF1tNLgWqL3GItu66XKGG1MAWtG0Qr1JJ8tj/FQZYGvE7e9104/ahoEmL65CTpdu0LDuamTKt9CklY2xgmIkTNqz5fPiXKCCCGOPMKMsRSJgRxDyk6bUp5AHCN5Qs5ysWrv79Dfj6e38F7
 X-Exchange-RoutingPolicyChecked:
-	pg8lpJPUQymh0cH/7l9gz8XyKA5lPiF7oZWKl6wEw9KUPiDnw3L7Q+3YJGRiLKE74YX8sI0YmsH0Ivc3jYggP8Zc5zI5ZxXRcwtn3Z0PeG4DEAUv5q5lVWDrLjGzgjqRvN3dUbPljN79Z6LVap4isR1Nt0ircydyzAMrkECa7ftwYPtPqgpamozqWFZlqgchUVEgdXoSKSxlJnYa7koIEyO/HQCr006OBRybtR8KOiLKifjFaNflSVlIeyU3kCZ6/zHl/EAACAiS9939pIl9fi2J+jE+CXBP+tR3xFZg4jAFu5v8See9QxlexspilZxABOMA0HQI5oyjBWth0vE3qg==
+	TdrzTPJrW0SdpBnbuyRHFl7zZ5cD4RLVmiyzq/+00+bDL6YR7Ulyts5XUSH1rbTgoR1r9l14jzwQoSuOyYQfqle9NKi7O1ED6iYojMW1TWJT/kgFX8Zi8WbGmRQHshKRhTCGi+1K0ubeZ7E3NdF5QCOSde1fuFJXX4piPiNUu+ybyMC0FwUZflggM7rsmRWOCTukySoKS5E1cKCR8pXySlpwBDkmqq8kzch/nXchRTne2yZz+uauoE07tQfVM9STgbO79Ch5fMXK/fVzC1yo1gdkbQu8/MTzPLntglrcKEQo9CYfNhdc9F0jDfCakONTtbJxAwKo8a3uDr9URlCgVQ==
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 11:49:17.4499
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 11:49:27.2326
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 683c801c-0bc1-4125-89ca-08deff7a3b16
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cb77eba-aeff-4bb4-7aad-08deff7a40ec
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	LV8PEPF0000005D.namprd02.prod.outlook.com
+	LV8PEPF0000005A.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7783
-X-Authority-Analysis: v=2.4 cv=O7AJeh9W c=1 sm=1 tr=0 ts=6a883b45 cx=c_pps
- a=3/9ZW+mBBPtU5+OO10+n1Q==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB6288
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfX4EwpSzYp1yKd
+ NBGcOYcue+VtolMIp6x/YM4uRlVYQ3iGgBytNtUYTst4QmYcWUrgu0+1NtlCwoYlBhG84o2Ywi3
+ Nj185iHf05h1Df3K+a82YIvaY58kdn4=
+X-Proofpoint-GUID: yqnn4_HszUHF5xRs1TqjRVSMnvpbeh6_
+X-Authority-Analysis: v=2.4 cv=Fp41OWrq c=1 sm=1 tr=0 ts=6a883b4c cx=c_pps
+ a=nYaA4L0hYP7ZHAKl0WLIGg==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=Sv0fKeRqtYgA:10 a=V5UXEbMT0ywA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=gO1vWkAQAl3rybz1DQOp:22
- a=XYAwZIGsAAAA:8 a=sozttTNsAAAA:8 a=skPbNTvFiSR7kuR3s9sA:9
- a=E8ToXWR_bxluHZ7gmE-Z:22
-X-Proofpoint-ORIG-GUID: nBIZVHcBYHRwE9J6Tn4MgTiHaCBQDFhi
-X-Proofpoint-GUID: nBIZVHcBYHRwE9J6Tn4MgTiHaCBQDFhi
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfX+Hti4bWH0MEM
- /fUohhm3garA2R8EI0tvSn2uAWmg6vlEtJ160C4fQox3tsjTTaZO31Qc1UbQZ/9upq+jxdOrxKm
- 9SIL2bPc4fs6xWSFn6CGwausExwpVfg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfXxrESoefxnRHX
- +i/Z15SIakve7fmdtGYwpd1hrfMWrKLITGUOMeWONJYoWDo3n+yOZXw/ht7aklGmc42W5avn6VS
- 7LwqG75tf+j8MMAm/PiS7IN1d5EW3CMfYSrOZ9wxcqpFlOU2a9eTWxMyFB/gMQGJewNZqM/hPpR
- IK/X5cvh/pv14aknHSSVF+sXCXnf3YpvCDRa66zmXVKDrpLAGCCED7bvCwu4BXUP1tFMpE140YE
- OC75PQ0aTZsHlv1sSHhkprY2w2MSmf/K8gB+wqle1WAU5Ni7SyC0oSgUq53o+TfmapNPxm216zP
- aDHXkD1oG1B9m9Sc4wbSjAFllV5nA7oItokQPbdgaifDueQ04F58yi02MOietIqhRcbuphiyYsR
- T1LNCfZBVHtNuzMw9gn+aNlVYY1lcgZbYOait3o8Hk8fqDbJ09X/l0XuZHYWQzDcJLjywwYvHSp
- LxRij16x++/h59n454Q==
+ a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22 a=taLDd7a_hP9WKsMzeGRc:22
+ a=P-IC7800AAAA:8 a=sozttTNsAAAA:8 a=XczTfz52Gg2yNcvB9tIA:9
+ a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-ORIG-GUID: yqnn4_HszUHF5xRs1TqjRVSMnvpbeh6_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfXwfv0B/MYUnFk
+ jWeXkkCqCIRqtdaNOD58vhBapRke7cDVdphDDwp9R6edKmUkzlaY/nMQSx8/f2wcaPZRQA0iMHq
+ HirtMU0r7UUQ8TmjOmngLfVMcEhFs8DWq59wh9IPF3O5E1swI5zLy4GAMxJYZ00twbddv6J7Kq2
+ gaGAv1SQ3M/aHmi1PMk+vtPw4Li1ULkwHfQhqpcpJE7u6dqAI/m+oWk9LWTQZRMJfbF0e4TdRR3
+ vcaIKwEglxXLlrk8D2MSRAqwyo2e/F775UH/q1RNJ8uDY75sakdA7YbL746rgIN8R4xCUZ03MU7
+ H0jwcqACjQQTjkCYpnznL9Xtept26XlnRukhxqvWDW9WnCRExY0OQYcWIZq88qNskA9ia6a2xjt
+ a3Ai5zxqPT3YBu7BF6JPocqESsbjgGF6yijSrsjeE4caApAdneSEVLTLOgPTL9nIdmzdiCof8uH
+ OnioAsNmfw4l6/eu01w==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 phishscore=0 adultscore=0 suspectscore=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ phishscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608210090
 
-Add spi-max-post-config-frequency-hz, a generic property for SPI
-peripherals that operate at two distinct clock rates: a conservative
-rate always reachable without controller configuration, and a higher
-rate achievable only after controller-side configuration.
+Add an execute_tuning callback to struct spi_controller_mem_ops. The
+callback receives a mandatory read op template and an optional write op
+template. On success the controller sets op->max_freq in each provided
+template to the validated clock rate. A callback return of 0 with
+max_freq left at zero signals that this specific op variant cannot be
+PHY-tuned (e.g. a hardware erratum blocks it), allowing the caller to
+try a different variant without treating it as a hard error.
 
-When both properties are present, spi-max-frequency gives the
-conservative pre-configuration rate and spi-max-post-config-frequency-hz
-gives the higher post-configuration target.
+Add the corresponding spi_mem_execute_tuning() wrapper. Like other
+mem_ops paths it serialises access with spi_mem_access_start/end for
+serialisation and runtime PM, and rejects GPIO CS configurations which
+cannot support hardware-level tuning.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- .../devicetree/bindings/spi/spi-peripheral-props.yaml       | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/spi-mem.c       | 43 +++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi-mem.h | 14 ++++++++++++
+ 2 files changed, 57 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 880a9f624566..84976fd3ee1b 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -45,6 +45,12 @@ properties:
-     description:
-       Maximum SPI clocking speed of the device in Hz.
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index cd4bc4c914e7..79e89de1ce8d 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -693,6 +693,49 @@ u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op *op)
+ }
+ EXPORT_SYMBOL_GPL(spi_mem_calc_op_duration);
  
-+  spi-max-post-config-frequency-hz:
-+    maxItems: 1
-+    description:
-+      Maximum SPI clock frequency in Hz achievable after controller-side
-+      configuration.
++/**
++ * spi_mem_execute_tuning() - Execute controller tuning procedure
++ * @mem: the SPI memory device
++ * @read_op: read operation template (mandatory)
++ * @write_op: write operation template (optional, may be NULL)
++ *
++ * Requests the controller to perform tuning for high-speed operation
++ * using the provided op templates. On success the controller callback
++ * sets @read_op->max_freq (and @write_op->max_freq when non-NULL) to
++ * the validated clock rate.
++ *
++ * Return: 0 on success, -EINVAL if @mem or @read_op is NULL,
++ *         -EOPNOTSUPP if the controller doesn't support tuning,
++ *         or a negative error code on failure.
++ */
++int spi_mem_execute_tuning(struct spi_mem *mem, struct spi_mem_op *read_op,
++			   struct spi_mem_op *write_op)
++{
++	struct spi_controller *ctlr;
++	int ret;
 +
-   spi-cs-setup-delay-ns:
-     description:
-       Delay in nanoseconds to be introduced by the controller after CS is
++	if (!mem || !read_op)
++		return -EINVAL;
++
++	ctlr = mem->spi->controller;
++	if (!ctlr->mem_ops || !ctlr->mem_ops->execute_tuning)
++		return -EOPNOTSUPP;
++
++	if (spi_get_csgpiod(mem->spi, 0))
++		return -EOPNOTSUPP;
++
++	ret = spi_mem_access_start(mem);
++	if (ret)
++		return ret;
++
++	ret = ctlr->mem_ops->execute_tuning(mem, read_op, write_op);
++
++	spi_mem_access_end(mem);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(spi_mem_execute_tuning);
++
+ static ssize_t spi_mem_no_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 				      u64 offs, size_t len, void *buf)
+ {
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 0cce6b57242a..b69f671c40e7 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -348,6 +348,15 @@ static inline void *spi_mem_get_drvdata(struct spi_mem *mem)
+  * @poll_status: poll memory device status until (status & mask) == match or
+  *               when the timeout has expired. It fills the data buffer with
+  *               the last status value.
++ * @execute_tuning: run the controller tuning procedure using the provided
++ *		    read and optional write op templates. On success, set
++ *		    @read_op->max_freq (and @write_op->max_freq when non-NULL)
++ *		    to the validated clock rate. Return a negative errno on
++ *		    error. Return -EOPNOTSUPP if the controller has no tuning
++ *		    capability at all. Return 0 with @read_op->max_freq left at
++ *		    zero to signal that this specific op cannot be PHY-tuned
++ *		    (e.g. a hardware erratum blocks it) but another variant may
++ *		    succeed; the caller will iterate remaining op variants.
+  *
+  * This interface should be implemented by SPI controllers providing an
+  * high-level interface to execute SPI memory operation, which is usually the
+@@ -378,6 +387,8 @@ struct spi_controller_mem_ops {
+ 			   unsigned long initial_delay_us,
+ 			   unsigned long polling_rate_us,
+ 			   unsigned long timeout_ms);
++	int (*execute_tuning)(struct spi_mem *mem, struct spi_mem_op *read_op,
++			      struct spi_mem_op *write_op);
+ };
+ 
+ /**
+@@ -469,6 +480,9 @@ int spi_mem_adjust_op_size(struct spi_mem *mem, struct spi_mem_op *op);
+ void spi_mem_adjust_op_freq(struct spi_mem *mem, struct spi_mem_op *op);
+ u64 spi_mem_calc_op_duration(struct spi_mem *mem, struct spi_mem_op *op);
+ 
++int spi_mem_execute_tuning(struct spi_mem *mem, struct spi_mem_op *read_op,
++			   struct spi_mem_op *write_op);
++
+ bool spi_mem_supports_op(struct spi_mem *mem,
+ 			 const struct spi_mem_op *op);
+ 
 -- 
 2.34.1
 

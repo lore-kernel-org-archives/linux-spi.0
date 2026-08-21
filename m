@@ -1,89 +1,89 @@
-Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
+Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7398345C718;
-	Fri, 21 Aug 2026 11:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A0048D862;
+	Fri, 21 Aug 2026 11:50:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787313013; cv=fail; b=NuiYhjVAA4DQL5V/kIqmj/habLiKfsOEKgq+T7Rv34U3/bCzsRPHu5ILTO1xqIcR/Y+5Bm8/msDkuGTacY7/J1FfwWXhkf3PAWs518o0W+pdwd6IoknDFC8gtEvAmbBYhNEvnefAKwecSCZGe/4nrfqJkIs1C0OrRLh3GJKTYNY=
+	t=1787313017; cv=fail; b=IPNG+5mT85ahiB2SUFC3uD5JzGWJSNt97PvIfKIk0Kp+IEPSU5rDV5yYYPEcbjGZpT0ylfsDC6XzAjEc70wLlXSKm6DUw+VY9xvPzFZKB1L0jIK5Gb9Wlx4GkmXW/QcOHX7pm1I58QeDYXnZCgXdaWVBfx3VR/jxklWo7Lw8O7w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787313013; c=relaxed/simple;
-	bh=hq3CAzkpUTFk1VJMd1fRN0aOyH91Gsjw88BXwndIXfQ=;
+	s=arc-20240116; t=1787313017; c=relaxed/simple;
+	bh=/36EtgSHJjgS4ho34Va/fE/UiN7oZO1CuCAHGVoo6vY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lOeGyIAd5s5GlTB4ZS6czLWj1069MTB0Cc4lXDIrrUnCvkLdA1KS7R4g0zH7OUsNY7fEUiPv6TtRe6prhVb8ygOlQdwDpOGjix8bePdefRQ657meuD8ZY4zXbrEpb4w+ZSJbUXprRbDT6qVLo4Gg7VluvLMlaOnw/Xm0OOHxdSc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=DscyiKgw; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=oBFk/9hK; arc=fail smtp.client-ip=148.163.154.28
+	 MIME-Version:Content-Type; b=ZXyA8ZGW4gQ7tO2vEud9futY/IT75Cuhw0Tcv/XTGxFIa2rFGFQmPHflPBC64+PmNrPfVN0ywFsJ3pYp3DWeV1egYaRnigFm2wev2foJFWMG+glQ22hWN1LQTiMzpKycPbTjeOoTGJ8S4fH2UQHyN7PDTt/trD93sFyJkk7QH+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=SO7SWRU2; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=YMwCyciB; arc=fail smtp.client-ip=148.163.150.75
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="DscyiKgw";
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="oBFk/9hK"
-Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
-	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67L9KJBH3421338;
-	Fri, 21 Aug 2026 06:49:46 -0500
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="SO7SWRU2";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="YMwCyciB"
+Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
+	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 67L9KRpb2887012;
+	Fri, 21 Aug 2026 06:50:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	proofpoint-05-2026; bh=320EJlLRqwG8h40qGDXjoLwm6rLEiZlkRgVW5kT+7
-	i4=; b=DscyiKgwgStsfsc19jfYrc/UXsh/ylYm3XTEO8eqQGTIH/Brz09fFBIKZ
-	ddjxkMeFRkOmn12l1xYyaeP5R4es5K0O2d+76c3XLuZfvaVIo7PL0gk20TKp+u58
-	tbW21dByX8C5w/2+Cdg1qtvcaETBlDl/wxfYdZlTJCTUQqis3Be3gkTjyS4ABvmp
-	afNFVnJlYM8boPiCKrgLh0nrBcsLxmgP8bGg8g6MwWeCnfsptPo1UgUwYxOxy8cs
-	UoE8onMPVfb+qd7U7vU/dDt1FHxKDG+CPcr+DMY6QdH4vVshu+s2/wzVQadhU4u/
-	B+ye020IcYFBy0vxLtglWvL6X2Ylg==
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013029.outbound.protection.outlook.com [40.93.196.29])
-	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4g6knmrn0r-1
+	proofpoint-05-2026; bh=Y5jcawn8CrAjnwc0j/CFtto7zEM1fdC/gjWbyM1Nf
+	eI=; b=SO7SWRU2teduYX9F7R0GXIDa9afi0SuXJlEk64tdjvB7ShDws5zojQf1j
+	RZunRR5qPUN8Krke005CNvh2dsx9pFBRxIuIcrmcblr0q3zhGv3UUzY2xXadzt+m
+	jlJH94flGOL4T7okoB+onv6hUAdZc53ZdlBSDwldqvlo5YU0MPP4t3Pv8xLHMjfV
+	PsiKP+LtB20dL9zgwRCA2EqK2FIlsm9g9Lr7buTdjnN+dhB6K1uCKfqjx/Wha9vU
+	IbRv6ObBNNLJbE0L4gJa4M/k4EsPR5A9QJI8Ni1Pi/rwgStTWyhLtSLzHp5FdKFD
+	8aiXh3LwsVHL6TOLkBglb1tH2U4rA==
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011028.outbound.protection.outlook.com [40.93.194.28])
+	by m0384305.ppops.net (PPS) with ESMTPS id 4g6gke1mkr-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 21 Aug 2026 06:49:46 -0500 (CDT)
+	Fri, 21 Aug 2026 06:49:59 -0500 (CDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tXRGSwcNtxEEaOhWmJlNNTyCQLWuz3Dw/xYzsOd0EQkkHO1vmdPtPgobQTfZ+e2pD4sM3gXbm8C0Go9JlVW73CKJicxmhVw9eXHaEIThz4NW21xvwjSJgMe5y8fpBQY25eUYTAt+vQ8y0RU6jBNw+KuOUn/pPPhJGC3T8C7QVfnVO/tqkLPidqOreBtHsY7auVaXIXRB3rIyaHWNXR+uqrnJpo0MXZ2cIh6CSDyhlNNiv551fwR7JHU+n81UthVFJtSKILLky0Zk+Vc8WMntqc8Piy97py5Jqcm7ILkqOxaa28w4eiKtXm9X4xJQCUvtqnFiisEebaPQaRGZ4S/ArQ==
+ b=yDfEghNnzYt1Q2YLo50VdjDCrZh0JqCg95SNFEEFnF0D1xJ/TBy0xjcufNJfu04cgJa6I/bKn1xjyjVyd/7gUpR5rZxTkH1HxpyJBxCzijG+xqzsUKvpiCl3jwS3642PfsYZPUW+dsimCdWP4lon6p0C1TcrQ912tSSlOwaFrcj5rQxW0RAlk0dL3F2j3C9TuyJRSCDawqEFe4rHhanrevUAzF5PcHrdOpvxguU4daLoANzH+aK5Ku5Ue280/u0m2pI7BjfIxVEkvbFpBcn+DZQHAONjaKYQg+P160YXPMPpkC0DEixixVcIjHV4kwsoE5Gbt7m/2rHxufHz9KMyyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=320EJlLRqwG8h40qGDXjoLwm6rLEiZlkRgVW5kT+7i4=;
- b=hoS1Yo/Z/3MAB4Z5M89ooC2sPuvOcES9C5engxnlHAyJqpynwJzUQ1jBdb0Xbl6Oh1YfFmytbQv9xmIdrmcpeQI7UHpeOgauhGwOwYlFa1tZsr+fJf5l7yNx0mvRo1uqAYO5qokwTjAosIuB+UmTiqQITblOXXgkKlDAP+aWbuPhmvk4KBDKpTQu6sxIDLFtfGBwf8kQmoqdA0UxShETnqz07STK0FN627M33rGBdJaDyk5zIU5bCeYJUyDANYK8vwnY79qGU+KcKcdmMbcDAsFCJhPapYXr4K4OX5+QjzfwZqnurrwYberxBNkPyaWAJQdWp6y56av74A/ez4YD/A==
+ bh=Y5jcawn8CrAjnwc0j/CFtto7zEM1fdC/gjWbyM1NfeI=;
+ b=ZfWZbzZL2FucteVHb75049ZFLgSRL7Ndab3x3iZJnspRCIA/s00oOp8v2IfKnc/L17gjDQEW5WKIDUIvXvDc54nZYu2jyEBuLS3ux0pNBMPZfzuv8p7ZWrtIfWVyrJ1u+mW4ktZq1rOfz/QDiWRZ9ebpKIA2J9Yt3t1d1Lk5XYJQPEl097rtE4E5dNfyqgk7zIm7QAdgdIeAXIQQhvafWxiQ0FvVQTVVoyDxBOoy0UnpZq4X9UyCZljvgWUI62hFFNGR2J5lJrVbtEIb2GF2XsIGlKHzZF9SR9ZBVfCo+m/iNrj2+bltd0LEzLwLykCrZ6+zMzuK+1lY1cL8OLLmBg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ 198.47.23.194) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
  dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=320EJlLRqwG8h40qGDXjoLwm6rLEiZlkRgVW5kT+7i4=;
- b=oBFk/9hK/Vp5fDtuhMxH6nUTUUgttOPAHNNfNuGcZpx8SvAEYxpnSOs2NfPenD3qD9dbQAErX9LZbj3X7chM2hsrULosA3MUl+zFPEjYeOQ7I40Zvh8NTiKoev6IotNzIbSC+AIPwB/yn9Al0Gf4pBvE7RawJv1yIsLe4S9qxJg=
-Received: from SJ0PR03CA0129.namprd03.prod.outlook.com (2603:10b6:a03:33c::14)
- by DS0PR10MB997650.namprd10.prod.outlook.com (2603:10b6:8:313::5) with
+ bh=Y5jcawn8CrAjnwc0j/CFtto7zEM1fdC/gjWbyM1NfeI=;
+ b=YMwCyciB9pG2hum2gxupUF2gtUlPfXBl2ngnFVsLHixCu2FwZEelC2vODeWQgXybdlq8xrehYWVKtVGsqaBtygYzoNKcutU/5zCAz8QAJNv9WqjIcti95Tb0joUCn4/C0/FA53vz7kx3VCuIfDDnWYQ66Q7wPvOofOWUuPN9nF8=
+Received: from CH5P222CA0023.NAMP222.PROD.OUTLOOK.COM (2603:10b6:610:1ee::11)
+ by PH7PR10MB7010.namprd10.prod.outlook.com (2603:10b6:510:274::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
- 2026 11:49:44 +0000
-Received: from BY1PEPF0001AE1A.namprd04.prod.outlook.com
- (2603:10b6:a03:33c:cafe::8) by SJ0PR03CA0129.outlook.office365.com
- (2603:10b6:a03:33c::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.17 via Frontend Transport; Fri,
- 21 Aug 2026 11:49:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Fri, 21 Aug
+ 2026 11:49:54 +0000
+Received: from CH1PEPF0000AD82.namprd04.prod.outlook.com
+ (2603:10b6:610:1ee:cafe::73) by CH5P222CA0023.outlook.office365.com
+ (2603:10b6:610:1ee::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
+ 21 Aug 2026 11:49:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.194)
  smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
  action=none header.from=ti.com;
 Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- BY1PEPF0001AE1A.mail.protection.outlook.com (10.167.242.102) with Microsoft
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ CH1PEPF0000AD82.mail.protection.outlook.com (10.167.244.91) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 11:49:43 +0000
-Received: from DLEE209.ent.ti.com (157.170.170.98) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 11:49:53 +0000
+Received: from DLEE203.ent.ti.com (157.170.170.78) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 06:49:42 -0500
-Received: from DLEE215.ent.ti.com (157.170.170.118) by DLEE209.ent.ti.com
- (157.170.170.98) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 06:49:53 -0500
+Received: from DLEE205.ent.ti.com (157.170.170.85) by DLEE203.ent.ti.com
+ (157.170.170.78) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 06:49:42 -0500
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE215.ent.ti.com
- (157.170.170.118) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 06:49:53 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE205.ent.ti.com
+ (157.170.170.85) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
- Transport; Fri, 21 Aug 2026 06:49:42 -0500
+ Transport; Fri, 21 Aug 2026 06:49:53 -0500
 Received: from santhoshkumark.dhcp.ti.com (santhoshkumark.dhcp.ti.com [10.24.52.55])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 67LBmVln2022942;
-	Fri, 21 Aug 2026 06:49:37 -0500
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 67LBmVlp2022942;
+	Fri, 21 Aug 2026 06:49:48 -0500
 From: Santhosh Kumar K <s-k6@ti.com>
 To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <miquel.raynal@bootlin.com>, <richard@nod.at>,
@@ -93,9 +93,9 @@ CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
         <praneeth@ti.com>, <sebin.francis@ti.com>, <u-kumar1@ti.com>,
         <a-dutta@ti.com>, <s-k6@ti.com>
-Subject: [PATCH v8 12/18] spi: cadence-quadspi: enable PHY for indirect writes
-Date: Fri, 21 Aug 2026 17:18:16 +0530
-Message-ID: <20260821114822.4040338-13-s-k6@ti.com>
+Subject: [PATCH v8 14/18] spi: cadence-quadspi: reprogram PHY DLL on runtime resume
+Date: Fri, 21 Aug 2026 17:18:18 +0530
+Message-ID: <20260821114822.4040338-15-s-k6@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260821114822.4040338-1-s-k6@ti.com>
 References: <20260821114822.4040338-1-s-k6@ti.com>
@@ -109,181 +109,115 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE1A:EE_|DS0PR10MB997650:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1360da1e-5070-41af-1a87-08deff7a4a6c
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD82:EE_|PH7PR10MB7010:EE_
+X-MS-Office365-Filtering-Correlation-Id: 56a6ca32-02f2-4662-5c2d-08deff7a50da
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|82310400026|7416014|376014|921020|22082099003|18002099003|56012099006|10067099003|6133799003;
+	BCL:0;ARA:13230040|1800799024|36860700016|7416014|376014|82310400026|23010399003|10067099003|56012099006|6133799003|22082099003|18002099003|921020;
 X-Microsoft-Antispam-Message-Info:
-	hDINCgiJ+yzRytAA0OUCsXva1ZK3bDovYCXK4OPs3IK9qwFiforTOxxXs9kWn986HsK2wF3IZMcdNkBxQC68C5/2kRnugI3FVHB5WTORepoEIinFlyuLr4nemqTiRNDCPxpHpzC2ZHKVdfnslGEcdbrpbDUyAM3O0T5/QBKmq+zyBip4cfcI4JFe1owU6k/9A3nGNnq73iD8NOyzGiIcfVm+qwKQoi6Y84XhFE86cCRtR47PTjVFebXoZsb37sBRIOtdtzkaVDZCUZvS5NODUVVw7r3Codcfn+ihnbVmcPVbKm+DrKyeuzXMpE6zfkdwZ12o4MklZY4B0xbw1H5IMJGVHj+bU2Gz1TelkxPOE/cBT1j7VbrJ+uN56nj2Urnuk7BZPNwA4f9gSDcuYCKo8E5C0AIdPx57hLc817ZfGK3rcLwr3Hb9tmw7tVsGQfdgf9V7CrihGS/rK9A8x+UBHaWdmYbonSIp1qLoUKCYZbLuRKSN9ox4hiKgxspZbNOZDW04jyA/SOlefHi+ropLgIRV6u6oQzqgbdm5ueQsZT/PZV6p3ZeKH/v6254OXmfJIy8UfUGY1KKruwaty0iDqAiGUYsercTPs8xl7bQ70TDVaX60zedJObaqAc6H52RQpcEFBcxk5+JwgCQXifA7aYdJuPFM81PIqO5PDA31zn0cQtE4jMbo42ClZc0PdlLwVfiwKk3V2SwKfN4r0FOQ6Da5fEr0SCHV/r+qQm3WVgF61hQYKtiHRInElEGBQuCB
+	vnXsZ/b1RCf75L+qhud72bubYiupJceGoAzgsdrYzZGx4oTqlgldXAjW+c7yaE7YsuEoPaQnFAJmFUENlS4mhHtTq2br/m8bgxQCAK5Y+uxBI5DkOlVlfsx8IZAAnN+H21ORRgMU1C7liYe9Fx8mWRnywGwD+lKQAWpehPKSNp+yr0Aj9zE78LptQK5dnFK7a9TFTaSMy2tVFnrDex5rh1fVGanRvRpbIDHS+tpxjiXW4L7Mqs81Md8N+qzl27X0bqgSslIjNR/8i/V979+Lt4/kkNIwJ2b8uPkYTDBS050LdwPW4WBbo74F6J3gZRi07JpM5Fj+p2tiHIWCZ2zPbYTInVRBuTHOs0IJuEx3DfYMKw/29Z88bnL9eKWQPTw6q+NRb/PCZgcxGlX18mtu0l6WRF33tp72ImPD/OYkjRc+qORXOrCVQid31oYykym4nnU/AflhXQAqR7NUuYJNBZJGEcl6n5izj/GBqSKMicQX/EicgkK50u7WqTQqWBwf5S+d8el+ma1PZKVVk0waPy0swxP0NNasy66bfsrfZi9opyZja++kVJx01/IICaZkVV00lW5Ts+CfCOnhd8yOCu0DY7jhkatjciq8ykpGM0LcK9LVkIpgLHtM09ZpKCHwcjF3ImAtNvvI2SWQN8hHMwlQMQC0wZGG2tRxQyeSGrG6L40TAtlu65f8mzxR9Rmrtj39tt/RBU+izhzviyPTSxF+MeVYSSGU45ruH5HS/7K5BDwmkB/8oeAdjTP++zM7
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(7416014)(376014)(921020)(22082099003)(18002099003)(56012099006)(10067099003)(6133799003);DIR:OUT;SFP:1101;
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(7416014)(376014)(82310400026)(23010399003)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	gKWZY6M4lHKnyqSnPjZ9K+u3vFY0vBLpvNJgKy+uel3tz7408kpiq3InO0Rz73xO/LmTMmv98DBBg9s+yCDLuz8QFgSZPtkAVImPFmQDG91YKaDqZ6saNwH4+96vYXVJnSGFByXjELpAGNPWtV3Sr2LxbL6j32wfwbERp7zblXTPXN6mKxnqMlfROhWeu08mZE5ckSeqf3dPE/eV7rrOOeORyO1hS7s0ELchi/2oaZiyrPMdj4mx/xWq0F/gcN8+Rz4mmnqRltFqFdgr1IfBPcE/ZM630TiqTe9A5M8N/54ZN4pH/ytMnsRXCumYAIciwzUOUPBSRVENJpRW0m8dY5QerMwzBNxUTG5DmZU6A/vnpbD2ppj2ijvhdLNE6J+E9hFsd4X4SJtkGaWuDoVNpnUsQ9vYE/cfzB3HvSSUuGX4WJqqvBP2DXVfEsj5YZYQ
+	mJgGf0OuYckrwLWkAkcvreHEOYdhP0Qu4SNhO6KN0sBAtjMSzvzhnnBx4f9gLsj6CRMPdD7gtckhZS7Q84ZpuqiuOVQhTMmn6RowP1RSQbhBfmoUVR2wln2veAsofnbGnrYyFiR/s00wTdyvWwyOGvLQcZhxUo4cyOqp8b9ZOXhs3O1wMxEcjxMDniiPO7wVSZPvLBS7wax3UJ0xSYnrPPdpeoRIskNUaMcctCYgXCqBFQaf9tbTNt/zdj5hbDpJGKhympO0F72kO5otvDTyReoI5A3C/MmEYJdEZqPgvzznG+gJ+bH2WKM/ulI4x6T6QgWgcMkqpcKLj4UP+/szcT8nNIuw6NMUcNCnPudL2nS+o6EZyLzooWmc1zbQ6bET3a1PHDxbei/DIqbfxUlfAdyYHXb/mxGGaeDdC2qyKoj0bUUpnYVcZAKFYDf0ZRVF
 X-Exchange-RoutingPolicyChecked:
-	gz/JKrhKAniRPdeoUdG/upS65AVhrGSaky78SFIRKg247XBjS7xx9geexlLgwOwJ9kfPcBJ6VTxrxfQJJ3zMyOrh/y4VkXS+EdwBmPF0zJxltRbaWndTak1gAu4Q4qeWiF+hBjXTRAAfhsMbQk/Dt4jVPEWopXqPpfAnbqTkGvw+SDzvVXgbILPFldouzxn60f/KhhPv1sdzFMkmr6eoPPLHjMnTiAwf7ZWjV+yLzs43q1oRKmyoPADYRbUsgaIoybfnDMXZTmx9P43MgWZpALErebLQOBMCGPyix8CcVC35pFTNugpj6VpVXJvNzBVLj7eKL9/9I1oQx4la2Xu5mA==
+	bRk5odW/G6wzYKs1BhojFrEcRQBlQ9V5qKT1QuNTz3q/ctzP69J7Yf5GPp+Sm7mfA6T468dXaS42kyq3oRgJsIUjUROhjH1yp+pIDt1bKz0p07ckFGCREpsjavHl2KNbKStNhCD0m7v5U6y/kZEFBWmyXnzIKm7W1io8hrXYuJth41dBaSkbzkdeFJXQ5joSdg3v2iBbAT4NWZ8jr2P0GHwDAdZ3h12WuePAi3GumrsgGc8ab1JVukWRLbYIJfspkbRw3dJIae7JRcsI9UQy51HFqO0RxuSJMU2CJCO2hvrt6ev0dOfyZaPRWKXrHRj8Cb/ETSK3KVtOYb5jPwlD7g==
 X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 11:49:43.2127
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 11:49:53.9784
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1360da1e-5070-41af-1a87-08deff7a4a6c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56a6ca32-02f2-4662-5c2d-08deff7a50da
 X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BY1PEPF0001AE1A.namprd04.prod.outlook.com
+	CH1PEPF0000AD82.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB997650
-X-Proofpoint-GUID: m4HhcOeUzFzYcVmXUQxuwi6asdVEjpHF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfX1cUMpOUURgZ6
- lzY/Q5nj3lcV1Fhpg28EvC7Ls8i+HiywagXUGfeuckTMWJ8YPUft+nXOiJt+dz6V0ndSZ2v+Hpm
- iQdAInB/yY/rDTZfp+aQODn74YvyufT2vdgTrLhhwPzrjWeRkOlXKf9MFIR3FPqkGRbMzsLhozF
- 95JOHz3hAHsYrughjyfEgY1csNEQT9641DDWrgwA7c7cZL+xu1OlO+Si3xTgqZUHt3bPbw7XhcM
- HM0gGnK4O/uGlR4MB9uGgqEAqoAvwB6vOw5taseP9ZcWME/vjcNChK9ZnniVyKXwWkzBKfS7YIL
- ObKD74L+OrYnQDhO/wvWUJ+jfCyWuJKoP7Gk9M81fBASjPobJy3EhEt2HxqqgyKYJ4MLHzxL+A3
- EuHnceMN1yy/+gJRLKeGZf8sN2fenZcUoL9eiqP+MaXYnhFjS0ducbSnz1FR6Cz+XK6fISCFnW5
- c6hRsKFhPEa4BvLueew==
-X-Proofpoint-ORIG-GUID: m4HhcOeUzFzYcVmXUQxuwi6asdVEjpHF
-X-Authority-Analysis: v=2.4 cv=fuzsol4f c=1 sm=1 tr=0 ts=6a883b5a cx=c_pps
- a=y599upwrfiZ3HV94zaFOUg==:117 a=f+v6EHfkeJbVwR46tk4DMg==:17
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7010
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfXw0IH/yQzeWMF
+ uuI3eBXs0PV2Wpv1hi4O92fUmcPmdNIhkZEviEjpmLjcvPUhX92MJ2WPgMAP/u10BCbecUZLUJI
+ jwHuF3BFkfiCMwgELSSsx8h5PCLgfb4=
+X-Proofpoint-GUID: fdljtLPmi9KQymp1frUYaohEGbC2GEX6
+X-Authority-Analysis: v=2.4 cv=Fp41OWrq c=1 sm=1 tr=0 ts=6a883b68 cx=c_pps
+ a=auv0RDqIM0MEGdyBMEg3Kw==:117 a=WotqVVQAdb04rnGuttW3Kw==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=Sv0fKeRqtYgA:10 a=s63m1ICgrNkA:10
  a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
- a=fPAWb5peG099m5CrUpKH:22 a=sozttTNsAAAA:8 a=JqbSXTAX1eT4zVGs_pkA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfX1VOd0AqR0etl
- r/Lk4pzD2VpVYAVJdkKDx5kyfqBCwEBbejADaOG1lQDZ627Un0PtExTxiImtfUPoTEJSu0qd1Tp
- e23qBuLl5da86KHkMQomW1hwLgScCx0=
+ a=taLDd7a_hP9WKsMzeGRc:22 a=sozttTNsAAAA:8 a=UNEB7AwOHobNk7BaE54A:9
+X-Proofpoint-ORIG-GUID: fdljtLPmi9KQymp1frUYaohEGbC2GEX6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODIxMDA5MCBTYWx0ZWRfX4vzvKPv3BXkD
+ P/Es4LiSPURz0iKC5FOtHuYUW0SU3V/3+Vj/cYQuJvn/bfiUC5+9+UbTKqhwvZ5O5u2KEBQxMRH
+ kbOBZ67yzyKss9DV/ZTRGtGAQZkmHcWkdBqcWxbmD4MH6palT+kvFAq45wZVs3g8jljcAbjuSFr
+ kEhp/S6uEqm8wqJc64yyH3KSoFK/u4O1GIV/MOCGGoWRXJayT0Twu/hVXJdC4BRjEeSd5c8A/xc
+ c4XJTris1wnbGTzRl2RiV/Pf1vbgkFugzr5inpcwr5KllHvBNI5IXZN88ycueeUjcJcuT5CAWrf
+ x/XApE5mCt/Fluh2K5/XPvqKRv9qSBRNerPVYgblZacjoXX0UcKkEoiBk0Jxec8OfNXyrFaYk1m
+ fhKSYJRI9A3UgnRrAf3sTtWCgB7lhmnf8n40LlE6NrZjPpnWFsJlspKV+8GvhkTpuCdckLQfWIU
+ Kmhx93IMLHSSGo8QC/g==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-21_03,2026-08-21_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 clxscore=1015 phishscore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ phishscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608210090
 
-Enable PHY for indirect writes of at least CQSPI_PHY_MIN_INDIRECT_WRITE_LEN
-bytes. PHY is activated only when tuning completed successfully and the
-write op was calibrated at the post-config frequency (phy_write_op.max_freq
-matches), which restricts PHY writes to NAND devices where a write op
-template was provided to execute_tuning. NOR flash writes are unaffected.
+The PHY DLL loses its programmed delay values and lock when the OSPI
+controller is power-gated during runtime suspend. On resume,
+cqspi_controller_init() reinitialises the controller but does not
+touch the PHY DLL registers, leaving the DLL in an unlocked state.
+Any subsequent PHY read or write would then fail at the cqspi_resync_dll()
+call inside cqspi_tune_phy().
 
-The indirect write is cancelled before disabling PHY in the error path
-so that cqspi_wait_idle() inside cqspi_tune_phy() does not time out
-while the controller is still waiting for AHB data.
-
-Thread post_config_max_speed_hz from cqspi_mem_process() through
-cqspi_write() into cqspi_indirect_write_execute() for the frequency check.
+After the controller re-initialisation, iterate over all chip selects
+and reprogram the DLL with each CS's stored calibrated RX/TX tap counts,
+then resync to relock it. One invocation per calibrated CS allows each
+calibration to be independently validated after resume. DLL resync
+failure is non-fatal: a warning is emitted and resume continues, so the
+system degrades to non-PHY speed rather than blocking the resume path.
 
 Signed-off-by: Santhosh Kumar K <s-k6@ti.com>
 ---
- drivers/spi/spi-cadence-quadspi.c | 39 +++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ drivers/spi/spi-cadence-quadspi.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 8903b4cf4f6f..940cfb72b946 100644
+index d4181b501d8d..c78d4ce1c930 100644
 --- a/drivers/spi/spi-cadence-quadspi.c
 +++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -157,6 +157,8 @@ struct cqspi_driver_platdata {
- #define CQSPI_DLL_TIMEOUT_US			300
- /* Minimum transfer length to use DMA for direct reads */
- #define CQSPI_PHY_MIN_DIRECT_READ_LEN		17
-+/* Minimum indirect write length to amortize PHY enable/disable overhead */
-+#define CQSPI_PHY_MIN_INDIRECT_WRITE_LEN	SZ_1K
- 
- /* Runtime_pm autosuspend delay */
- #define CQSPI_AUTOSUSPEND_TIMEOUT		2000
-@@ -1362,18 +1364,32 @@ static int cqspi_write_setup(struct cqspi_flash_pdata *f_pdata,
- 
- static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 					loff_t to_addr, const u8 *txbuf,
--					const size_t n_tx)
-+					const size_t n_tx,
-+					u32 post_config_max_speed_hz)
+@@ -4017,7 +4017,7 @@ static int cqspi_runtime_suspend(struct device *dev)
+ static int cqspi_runtime_resume(struct device *dev)
  {
- 	struct cqspi_st *cqspi = f_pdata->cqspi;
- 	struct device *dev = &cqspi->pdev->dev;
- 	void __iomem *reg_base = cqspi->iobase;
- 	unsigned int remaining = n_tx;
- 	unsigned int write_bytes;
-+	bool use_tuned_phy_write;
- 	int ret;
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	int ret;
++	int cs, ret;
  
- 	if (!refcount_read(&cqspi->refcount))
- 		return -ENODEV;
+ 	ret = clk_bulk_prepare_enable(CLK_QSPI_NUM, cqspi->clks);
+ 	if (ret)
+@@ -4030,6 +4030,23 @@ static int cqspi_runtime_resume(struct device *dev)
  
-+	/* Use PHY only for large writes at the calibrated rate */
-+	use_tuned_phy_write = n_tx >= CQSPI_PHY_MIN_INDIRECT_WRITE_LEN &&
-+			      f_pdata->use_tuned_phy &&
-+			      f_pdata->phy_write_op.max_freq ==
-+				      post_config_max_speed_hz;
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
 +
-+	if (use_tuned_phy_write) {
-+		ret = cqspi_tune_phy(f_pdata, true);
++	for (cs = 0; cs < CQSPI_MAX_CHIPSELECT; cs++) {
++		struct cqspi_flash_pdata *f_pdata = &cqspi->f_pdata[cs];
++
++		if (!f_pdata->use_tuned_phy)
++			continue;
++
++		cqspi_phy_set_dll_master(cqspi);
++
++		cqspi_set_dll(cqspi->iobase, f_pdata->phy_setting.rx,
++			      f_pdata->phy_setting.tx);
++		ret = cqspi_resync_dll(cqspi);
 +		if (ret)
-+			return ret;
++			dev_warn(dev, "cs%d: PHY DLL resync failed on resume: %d\n",
++				 cs, ret);
 +	}
 +
- 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
- 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
- 
-@@ -1452,15 +1468,26 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 
- 	cqspi_wait_idle(cqspi);
- 
-+	if (use_tuned_phy_write)
-+		cqspi_tune_phy(f_pdata, false);
-+
  	return 0;
- 
- failwr:
- 	/* Disable interrupt. */
- 	writel(0, reg_base + CQSPI_REG_IRQMASK);
- 
--	/* Cancel the indirect write */
-+	/*
-+	 * Cancel the indirect write before disabling PHY so that
-+	 * cqspi_wait_idle() inside cqspi_tune_phy() does not time out
-+	 * while the controller is still waiting for AHB data.
-+	 */
- 	writel(CQSPI_REG_INDIRECTWR_CANCEL_MASK,
- 	       reg_base + CQSPI_REG_INDIRECTWR);
-+
-+	if (use_tuned_phy_write)
-+		cqspi_tune_phy(f_pdata, false);
-+
- 	return ret;
  }
  
-@@ -1590,7 +1617,8 @@ static void cqspi_configure(struct cqspi_flash_pdata *f_pdata,
- }
- 
- static ssize_t cqspi_write(struct cqspi_flash_pdata *f_pdata,
--			   const struct spi_mem_op *op)
-+			   const struct spi_mem_op *op,
-+			   u32 post_config_max_speed_hz)
- {
- 	struct cqspi_st *cqspi = f_pdata->cqspi;
- 	loff_t to = op->addr.val;
-@@ -1617,7 +1645,8 @@ static ssize_t cqspi_write(struct cqspi_flash_pdata *f_pdata,
- 		return cqspi_wait_idle(cqspi);
- 	}
- 
--	return cqspi_indirect_write_execute(f_pdata, to, buf, len);
-+	return cqspi_indirect_write_execute(f_pdata, to, buf, len,
-+					    post_config_max_speed_hz);
- }
- 
- static bool cqspi_use_tuned_phy(struct cqspi_flash_pdata *f_pdata,
-@@ -1810,7 +1839,7 @@ static int cqspi_mem_process(struct spi_mem *mem, const struct spi_mem_op *op)
- 	if (!op->addr.nbytes || !op->data.buf.out)
- 		return cqspi_command_write(f_pdata, op);
- 
--	return cqspi_write(f_pdata, op);
-+	return cqspi_write(f_pdata, op, mem->spi->post_config_max_speed_hz);
- }
- 
- static int cqspi_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
 -- 
 2.34.1
 

@@ -1,38 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93153E5A01;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC34D395266
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 10:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787552111; cv=none; b=NIBsvs61RFH4yWfjZbBv1QjRNoR+znAC1rQfiJBCmEMRbsvOQddE0JH2OdgT91susZeHfMrvKQIVzUIeoY4VtdpS08gDgs4uY5ZHWfUglAEbl8PsN3vmc4KxKHOQNFdmaO5drwRYEHqBCA3KLK7J9bPhXsb1ifKC4RDG+Xgzh8o=
+	t=1787566449; cv=none; b=MYzKmoumoMKOefcD80tCjstUjKY+Nq34fn1iqtkrfqfCJUC9yKPyOYpl6pnZkHLGSX1O6/8ZoBbawWApQPGff4KiaPBvg1wkvNx8Y1fFfz3KeUnc7UIWnEZDERtG+XdfLxSwcSJtFfw31SkWKc4wpx1sInXunPYjufwDBsFk8QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787552111; c=relaxed/simple;
-	bh=X5m53fEjiCLQUHwbyO6HUdCjFfSdafZX1sAdv/zfC/M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dmrulb9hb9qDdQiHqtSuDI3ffxmZN0e1BYZt2aYwjfaUUUNLlx+a/7fIzKGshq8IxUITVz6SFIGW9SKHlYJgRYzPiYtG/eUc3JbkdWs8AqK8Vb8wV0AIj+gY/Eh/KuB4rTOQ/scEm0bJKADJMz3JBfliemlgc9ajRs4RgCYMAtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pG1BOiGk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1787566449; c=relaxed/simple;
+	bh=iEg5OVD1F5GXb53Zr7ITshBjfFUnQh3uwGa/F9+0QfU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KGb4QWnShssn0h453n25gojkH4ks/dcPyWO9QYW54nfrjrnTQ+YuYO39S5CIlFdYenNPkacAUas70SNd1AC8XJSj2/v26k2jaKh2lFKfiIIoH5BAHAnz2MQxV4AS1nDw+8Od3sCIqBYvgJlsuAzlnu0hHKwDwItjBuM0/uqnmQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YS8SE85N; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=UOB+4YhL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pG1BOiGk"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80A93C4AF15;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787552111;
-	bh=X5m53fEjiCLQUHwbyO6HUdCjFfSdafZX1sAdv/zfC/M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pG1BOiGkqkdHlRvvF9FpLdWT8t0rM1iHdg6/2tNfs/3bbYoBuIVgwAn+BDQe5rmJI
-	 Q6BxWf+Xyqwj75XnIKRZZUda/AbvOU9G6a8Ev/JNkhfvnrabQ6Eq4yeGgfwOWCiHpt
-	 ToDtKcZBz5GWkMwAgbeRr/0Byx1P8viX4n8F03J/FKqbZ6hmTXBBGWxz8aTAVQKbb/
-	 uQwcsZol/ct6w/w556uovCzqkXapHNWh/AuRgU945yySQ8s6jjGxoZzt4rNl328M5+
-	 lBJ0gHnWXutmdjc4bdWAtHNcCORfnRNJC6OyJep01nhgt2ri0uuomyrkZgcj+p6z2W
-	 mjPNhfrYWwl5A==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6911EC61CE2;
-	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
-From: Jia Wang via B4 Relay <devnull+wangjia.ultrarisc.com@kernel.org>
-Date: Mon, 24 Aug 2026 13:54:25 +0800
-Subject: [PATCH 12/12] riscv: dts: ultrarisc: Add Milk-V Titan board device
- tree
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YS8SE85N";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="UOB+4YhL"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67O992Po1377876
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 10:14:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=G0TmPJrFxxESNUUTbGxESe
+	qBeDyVihupH0UpjNRr/tY=; b=YS8SE85N9vTLlzxfuXPIqUlKXl0bZVqwgG6WXi
+	DTpLVT9UyvGQFp0OUQX0WvDmAX0g0eleLbmWe2ORVf+TKNQmenKU2N+2oXfi+bM0
+	94TjaZMjJkVok9oddwObXy0zK/JE3lz/SfXZ7RgY40iwwrvjy6kywwF3eHxmy+Fv
+	7bnxcdu4TfRx6HTaN9FQOlUrnA0FfbdkI3aMsMIvquyCoabMrqV4Tl789cqv/byF
+	a1Q/kOSskbBS6bQCDjDgYjjiispylzy4Bl048slakRB7yaA4Yi/NxigI4eEqnatF
+	AhKI7j61KjjHu+C79ZOS6SHFITeUqG2Rx8aUi/dfK84sA0Eg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g8huf0pw4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 10:14:06 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2cc7e86e7c5so61854395ad.3
+        for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 03:14:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787566446; x=1788171246; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=G0TmPJrFxxESNUUTbGxESeqBeDyVihupH0UpjNRr/tY=;
+        b=UOB+4YhLXD6e4Elc0bjgHW1Z0BY+22e4epL6ok0yTaJAP+hPNTSD+2ve0AXYGmzaE9
+         y94Yzx5XcBeNejXWaV1AjAmq2zK2043RXGRo16/BXkRBElbZpaSJsX/WbpsCpsGiZ1l5
+         sVC7F5oAyCdyWdmsmwKVpLIA5PWYS1jKkr2+mqoN6R+z+En+OfPaISVHdkSqo0WImBY+
+         p0EnaQXFG5Z87iQvr2m6xeT35W4GPSXcrTmQ+njiK6JMRbDfXIPYECL0lT4whHpkECif
+         Jxxqr1bplP03VgaAhutPZRgL6Oxo7HV1xDvWrQHl32tK5kKIRMSfQYbzcRXFFo33jYD9
+         437A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787566446; x=1788171246;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=G0TmPJrFxxESNUUTbGxESeqBeDyVihupH0UpjNRr/tY=;
+        b=SU2Y3kuh5HBfkNfuwVECh6TWpzhFJNtAAgcfu0M4l2/DBGkKozKSFKZLfpLQY93/db
+         W9Qz61ANBLEaK2wk8uySGQG2bhwu2gpuUL2hh/IPkrnoYJF6kEQ3bR7W4MJ8+UQeQzGU
+         D/ZDZP9syjCoAFKSH1fY8h5AfFkIjozq4mdOhklcOpS5rHYYUg4AUNUbHIa/yMjPmiFZ
+         kTtU93P2txVINQ43btS2iqFK0FuEX+rhlik+ZefWIadZjE+MfN5WlP2NXUMT2VI8WM8k
+         8IZ7MY1MdOUuz69UIjNax7EzYOurcWvRVa0EDJqLc4q9ZMhY6pQiAmF+zCewXdg+BSYB
+         0euA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4kk83KUJaKeytsyoFCBVHUrOmypz3AtpXd02Mnucy/F4yHNWgi5hAPWEXUsJ2zMnlahmfF9xtIvc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nUHbNYi6cLy8uM9CVUaIV4ZKYbij8QcmFaeHCt+CVaXw+dOh6Q
+	4BmJWDBvlJYvPxB0KlCQ5WsH4r84EFwxe8L/gFMKY6P106+bgeblDD4rhDkPvPj/peX7ZN+MmrZ
+	i8L2OJmPkRZQY2AI0bDXYJvuXTzNGh3p59oIs8N8T1WW8IcyVlYcO+UpgIh/Pe80=
+X-Gm-Gg: AR+sD108yFaYHBXSPPjCnmOAg/XDpXKCAL3fuDnXHJfpXm/gfyss+YrBrZJO7OUhPq7
+	ke/mgI9So43bUBzk0NePhv+hd+yOeln9tTerQ06zIh20fnbz/29ljCaIaftC5mNStadGjbUe5V0
+	7avlpaJNtCTiu/KH2Jczd6Zvm0ek0PZCgBcijSsrvQ2V4bfXPm+HAO35JZ56QYxuQf4aa1S0GWJ
+	3x7ih1JOj7khvvQ23aGmeCejNmugxZneFZs0LHODnF9c1QBjCKMtfNmiEIc67rGrG7CoH4i38eD
+	MCWMywkUdKP6+2QJwp0G/JREf7kXg+jzj8O54YoB5Gvra4roYuSaZF8JRMpXnbfxgU2VzTUx5Ru
+	a8PI+Ufox8b9Xay+ZV7HrMHuay/Wq2flhs6gv
+X-Received: by 2002:a17:902:cf04:b0:2ce:93a3:c16c with SMTP id d9443c01a7336-2d670cbd304mr20783865ad.12.1787566445742;
+        Mon, 24 Aug 2026 03:14:05 -0700 (PDT)
+X-Received: by 2002:a17:902:cf04:b0:2ce:93a3:c16c with SMTP id d9443c01a7336-2d670cbd304mr20783105ad.12.1787566445333;
+        Mon, 24 Aug 2026 03:14:05 -0700 (PDT)
+Received: from hu-vdadhani-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d6768956fasm15892865ad.40.2026.08.24.03.14.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 03:14:04 -0700 (PDT)
+From: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Date: Mon, 24 Aug 2026 15:43:58 +0530
+Subject: [PATCH] spi: qcom-geni: rename setup_fifo_params() to
+ setup_spi_params() and make it void
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,390 +88,126 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-ultrarisc-dts-v1-12-61ab7aebe9e5@ultrarisc.com>
-References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
-In-Reply-To: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
- devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
- linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
- dmaengine@vger.kernel.org, Jia Wang <wangjia@ultrarisc.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=7355;
- i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=zBhtRfmKKWpJufh5JQfrWxerGCRdaDPbp3rtX+6ZO1c=;
- b=3jzES90pfxMiJBYWUQ6MSAJXJiiH4BhSUaV6y79VZz5pBaLoIzpUeePKM0sYg7t1D9FUKxt0+
- iVoJ+mii09BB7enwkirZz2y1AzNIJIH1c1zy6xwP5iEgeJTyo+k19RX
-X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
- pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-Endpoint-Received: by B4 Relay for wangjia@ultrarisc.com/20260515 with
- auth_id=779
-X-Original-From: Jia Wang <wangjia@ultrarisc.com>
-Reply-To: wangjia@ultrarisc.com
+Message-Id: <20260824-spi-qcom-geni-cleanup-setup-fifo-params-v1-1-bdf98ae62953@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAGUZjGoC/yXNQQrCMBCF4auUWTvQhqZUryIuknFSR2wSM60Ip
+ Xc36ubBt/nfBspFWOHUbFD4JSopVnSHBujm4sQo12owrRna0fSoWfBJacaJoyA92MU1o/JSN0h
+ ImF1xs6K1ZP3Y9X44EtRaLhzk/Xs6X/7W1d+Zlm8e9v0DoL36dosAAAA=
+X-Change-ID: 20260824-spi-qcom-geni-cleanup-setup-fifo-params-55c5b814b69c
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787566442; l=2701;
+ i=viken.dadhaniya@oss.qualcomm.com; s=20260324; h=from:subject:message-id;
+ bh=iEg5OVD1F5GXb53Zr7ITshBjfFUnQh3uwGa/F9+0QfU=;
+ b=uFmxUMzZkSBR77JmGkuHxy93EsPknFTFqky3nSUxCAcNtktv7w8ypaXbwLfBYs76uCNjTW8Yn
+ wBcQBpH7SBsCxGX25UiAcerGGbk1nH4HHKVLHfbH2uK/sN/vGz/u0mp
+X-Developer-Key: i=viken.dadhaniya@oss.qualcomm.com; a=ed25519;
+ pk=C39f+LOIGhh/02LQpT46TsUSXRvBn9qXC8Xb26KJ44Y=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDA4NiBTYWx0ZWRfXydSW5Hc93v7J
+ J51yr+Zs8A1h4bUnK60FpcqgleIwSZcE9jyySs6sy8iQO6B+ic+f7BnvcJF1EClQjT2LV+c8OyT
+ zHeFJsmlgyqvcImusa98hfWFA+j4h1c=
+X-Authority-Analysis: v=2.4 cv=Wac8rUhX c=1 sm=1 tr=0 ts=6a8c196e cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=EUspDBNiAAAA:8 a=sOcVE3KtW0qtki6gBMoA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-ORIG-GUID: wtIWftEUNyaQhuj-ahUj90KFDDQ__zuF
+X-Proofpoint-GUID: wtIWftEUNyaQhuj-ahUj90KFDDQ__zuF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDA4NiBTYWx0ZWRfX547yCv/v61gu
+ JGYr+64RrthLEFC2pyDc0AChXEkZeO5j9t8PJ46JKOnud0j7yveiuaOxIKV5Zkxx88rYPJrMn5R
+ 1qMSpG1LE/YfUA0e3Rb94Tupe7DF9dt2IFkPIoJgHfl2h8PK8gpica7X02UiCshG/g+wqtm1bDV
+ 95QaVVklEZwlx7w2ckf9oCyiyE3spwwDsrNuXbxB0SYSr3JiR0BlD2sTwNBR358fbg4+EDVq69t
+ H8xO8z5L87zHnCEXHbxhQ8veeKYsGhIDPunvlVb6pN3a49Uloq60czF6nb2MuKlk30WAZmpAXYo
+ kQ4xnKBVH5tI53gxJ6gVo29k28hHOTFSKo9bCjmXTQ5oZ0LdCFZQzXQB/ifpoeEq59Od/JtD7LA
+ EiJ72j4mJT7zWk44bNuKh6juMP4e/uUrhSLsOy7jWIJqRT2Sn4pbdNzIunfsM2Uvu+HDkQqL1yg
+ USL7E0xlV1edipOnohQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-24_03,2026-08-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 suspectscore=0 impostorscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240086
 
-From: Jia Wang <wangjia@ultrarisc.com>
+The function always returned 0 and had no error paths, so change its
+return type to void. Drop the now-dead ret variable and error check
+in spi_geni_prepare_message().
 
-Milk-V Titan is an ITX motherboard based on the UltraRISC DP1000 SoC.
+setup_fifo_params() is called for both GENI_SE_FIFO and GENI_SE_DMA
+modes, so the "fifo" in the name is misleading. Rename it to
+setup_spi_params() to better reflect its purpose of configuring SPI
+mode parameters (CS, CPHA, CPOL, loopback, LSB-first).
 
-Link: https://milkv.io/docs/titan/overview
-Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+No functional change.
+
+Signed-off-by: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 ---
- arch/riscv/boot/dts/ultrarisc/Makefile             |   1 +
- .../dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi  | 108 +++++++++++
- .../boot/dts/ultrarisc/dp1000-milkv-titan.dts      | 203 +++++++++++++++++++++
- 3 files changed, 312 insertions(+)
+ drivers/spi/spi-geni-qcom.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/ultrarisc/Makefile b/arch/riscv/boot/dts/ultrarisc/Makefile
-index 454d849a6ce4..dfd15c064d07 100644
---- a/arch/riscv/boot/dts/ultrarisc/Makefile
-+++ b/arch/riscv/boot/dts/ultrarisc/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
-+dtb-$(CONFIG_ARCH_ULTRARISC) += dp1000-milkv-titan.dtb
- dtb-$(CONFIG_ARCH_ULTRARISC) += dp1000-shenrongda-m0.dtb
-diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi
-new file mode 100644
-index 000000000000..7a812e40a249
---- /dev/null
-+++ b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi
-@@ -0,0 +1,108 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
-+ */
-+
-+#include "dp1000.dtsi"
-+#include "dp1000-pinctrl.h"
-+
-+&pinctrl {
-+	i2c0_pins: i2c0-pins {
-+		pins = <PA12 PA13>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c1_pins: i2c1-pins {
-+		pins = <PB6 PB7>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c2_pins: i2c2-pins {
-+		pins = <PC0 PC1>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	i2c3_pins: i2c3-pins {
-+		pins = <PC2 PC3>;
-+		function = "i2c";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	io_pins: io-pins {
-+		pins = <PA10 PA15 PB0 PB1 PB2 PD6 PD7>;
-+		function = "gpio";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	gpio_keys_pins: gpio-keys-pins {
-+		pins = <PA4 PA11 PA14>;
-+		function = "gpio";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	mux_dcdc_i2c_pins: mux-dcdc-i2c-pins {
-+		pins = <PA5>;
-+		function = "gpio";
-+	};
-+
-+	mux_i2c3_pins: mux-i2c3-pins {
-+		pins = <PA6>;
-+		function = "gpio";
-+	};
-+
-+	mux_uart0_pins: mux-uart0-pins {
-+		pins = <PA7>;
-+		function = "gpio";
-+	};
-+
-+	spi0_pins: spi0-pins {
-+		pins = <PD0 PD1 PD2 PD3 PD4 PD5>;
-+		function = "spi";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	spi1_pins: spi1-pins {
-+		pins = <PA0 PA1 PA2 PA3>;
-+		function = "spi";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart0_pins: uart0-pins {
-+		pins = <PA8 PA9>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart1_pins: uart1-pins {
-+		pins = <PB4 PB5>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart2_pins: uart2-pins {
-+		pins = <PC4 PC5>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+
-+	uart3_pins: uart3-pins {
-+		pins = <PC6 PC7>;
-+		function = "uart";
-+		bias-pull-up;
-+		drive-strength = <33>;
-+	};
-+};
-diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts
-new file mode 100644
-index 000000000000..f1a0efee3d74
---- /dev/null
-+++ b/arch/riscv/boot/dts/ultrarisc/dp1000-milkv-titan.dts
-@@ -0,0 +1,203 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
-+ */
-+
-+#include "dp1000-milkv-titan-pinctrl.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/input/gpio-keys.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "Milk-V Titan";
-+	compatible = "milkv,titan", "ultrarisc,dp1000";
-+
-+	aliases {
-+		serial0 = &uart0;
-+		serial1 = &uart1;
-+		serial2 = &uart2;
-+		serial3 = &uart3;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_pins>;
-+
-+		key-wakeup-0 {
-+			label = "Wake-Up";
-+			gpios = <&gpio_a 14 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_WAKEUP>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+			wakeup-event-action = <EV_ACT_ASSERTED>;
-+		};
-+
-+		key-wakeup-1 {
-+			label = "Power";
-+			gpios = <&gpio_a 11 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_POWER>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+			wakeup-event-action = <EV_ACT_ASSERTED>;
-+		};
-+
-+		key-wakeup-2 {
-+			label = "Wake-Up-by-USB";
-+			interrupts-extended = <&gpio_a 4 IRQ_TYPE_EDGE_FALLING>;
-+			linux,code = <KEY_WAKEUP>;
-+			linux,input-type = <EV_KEY>;
-+			debounce-interval = <10>;
-+			wakeup-source;
-+		};
-+	};
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins>;
-+};
-+
-+&i2c1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c1_pins>;
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c2_pins>;
-+
-+	rtc@68 {
-+		compatible = "st,m41t11";
-+		reg = <0x68>;
-+	};
-+};
-+
-+&i2c3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c3_pins>;
-+};
-+
-+&spi0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins>;
-+};
-+
-+&spi1 {
-+	num-cs = <1>;
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi1_pins>;
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins>;
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart1_pins>;
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart2_pins>;
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart3_pins>;
-+};
-+
-+&pcie_x16 {
-+	status = "okay";
-+};
-+
-+&pcie_x4a {
-+	status = "okay";
-+};
-+
-+&pcie_x4b {
-+	status = "okay";
-+};
-+
-+&gpio {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&io_pins &mux_dcdc_i2c_pins &mux_i2c3_pins &mux_uart0_pins>;
-+};
-+
-+&gpio_a {
-+	dcdc-i2c-mux-hog {
-+		gpio-hog;
-+		gpios = <5 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "dcdc-i2c-mux";
-+	};
-+
-+	i2c3-mux-hog {
-+		gpio-hog;
-+		gpios = <6 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+		line-name = "i2c3-mux";
-+	};
-+
-+	uart0-mux-hog {
-+		gpio-hog;
-+		gpios = <7 GPIO_ACTIVE_HIGH>;
-+		output-high;
-+		line-name = "uart0-mux";
-+	};
-+};
-+
-+&ethernet {
-+	phy-handle = <&phy0>;
-+	/*
-+	 * RTL8211F: board timing uses PHY strap delays; keep plain "rgmii".
-+	 * Enabling PHY internal delays via "rgmii-id" breaks Ethernet traffic.
-+	 */
-+	phy-mode = "rgmii";
-+
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		phy0: phy@0 {
-+			reg = <0>;
-+
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@1 {
-+					label = "eth-link";
-+					reg = <1>;
-+					color = <LED_COLOR_ID_YELLOW>;
-+					function = LED_FUNCTION_INDICATOR;
-+					default-state = "keep";
-+					linux,default-trigger = "netdev";
-+				};
-+
-+				led@2 {
-+					label = "eth-activity";
-+					reg = <2>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					function = LED_FUNCTION_ACTIVITY;
-+					default-state = "keep";
-+					linux,default-trigger = "netdev";
-+				};
-+			};
-+		};
-+	};
-+};
+diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
+index 6c57f8309a3b..05abaf18a0f4 100644
+--- a/drivers/spi/spi-geni-qcom.c
++++ b/drivers/spi/spi-geni-qcom.c
+@@ -363,8 +363,8 @@ static int geni_spi_set_clock_and_bw(struct geni_se *se,
+ 	return 0;
+ }
+ 
+-static int setup_fifo_params(struct spi_device *spi_slv,
+-					struct spi_controller *spi)
++static void setup_spi_params(struct spi_device *spi_slv,
++			     struct spi_controller *spi)
+ {
+ 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+ 	struct geni_se *se = &mas->se;
+@@ -390,8 +390,6 @@ static int setup_fifo_params(struct spi_device *spi_slv,
+ 
+ 	trace_geni_spi_setup_params(mas->dev, chipselect, spi_slv->mode,
+ 				    mode_changed, cs_changed);
+-
+-	return 0;
+ }
+ 
+ static void
+@@ -554,17 +552,14 @@ static int spi_geni_prepare_message(struct spi_controller *spi,
+ 				    struct spi_message *spi_msg)
+ {
+ 	struct spi_geni_master *mas = spi_controller_get_devdata(spi);
+-	int ret;
+ 
+ 	switch (mas->cur_xfer_mode) {
+ 	case GENI_SE_FIFO:
+ 	case GENI_SE_DMA:
+ 		if (spi_geni_is_abort_still_pending(mas))
+ 			return -EBUSY;
+-		ret = setup_fifo_params(spi_msg->spi, spi);
+-		if (ret)
+-			dev_err(mas->dev, "Couldn't select mode %d\n", ret);
+-		return ret;
++		setup_spi_params(spi_msg->spi, spi);
++		return 0;
+ 
+ 	case GENI_GPI_DMA:
+ 		/* nothing to do for GPI DMA */
+@@ -700,7 +695,7 @@ static int spi_geni_init(struct spi_geni_master *mas)
+ 	case 0:
+ 		mas->cur_xfer_mode = GENI_SE_FIFO;
+ 		geni_se_select_mode(se, GENI_SE_FIFO);
+-		/* setup_fifo_params assumes that these registers start with a zero value */
++		/* setup_spi_params assumes that these registers start with a zero value */
+ 		writel(0, se->base + SE_SPI_LOOPBACK);
+ 		writel(0, se->base + SE_SPI_DEMUX_SEL);
+ 		writel(0, se->base + SE_SPI_CPHA);
 
--- 
-2.34.1
+---
+base-commit: 903c1cf6dff9964e71eda98a39e2e5d442050472
+change-id: 20260824-spi-qcom-geni-cleanup-setup-fifo-params-55c5b814b69c
 
+Best regards,
+--  
+Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
 

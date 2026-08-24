@@ -1,139 +1,172 @@
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69527218EBA
-	for <linux-spi@vger.kernel.org>; Sat, 22 Aug 2026 07:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787383145; cv=pass; b=UpXpesjn99GdFYAdXcw5iySEu/2FfUum+Gh4jnp2oK604TRNAQkIgVTK1rjPv4FnEo45/r83399JXDbjuhyp8khGDU7LXQSfEWQaF+r65mLDyS+70nl+nZTu/DAVJLe43aBAOX3pb6gJ/o5Ly0fp9b6Meo8Z+Y0U9xd+B6urHJ8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787383145; c=relaxed/simple;
-	bh=oM02a2mnkQuSYdKv1ayoKOy9Qu4BLdImQAtdLtY4ruA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZdcSws5gLxzQmGh4sUXnTJetZjbk/lMbJ/QAjHO4IEyqtP14msTkZa7rdkYCbgo5+4AzLwxGaYnmKr3Jmk82zcXDtLNC7HsVEyTKm4NDhQVXPaedOYqMY+OJL4lX16h+06RS75R2XoMLtC3TMLM+CKlUVQkPUOkokoM1vlSnY90=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJY2sAlT; arc=pass smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE696331ED1;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1787552111; cv=none; b=lKBPkz5OKo82MewRUn4VDd8iBvaKjt7nSAaRuWocz5Hl4b1N6oscK4RxDWsp2yHGEV78htg+hGq/18aNvU+fp80ETB5R/VzRj57m/1jDLMOX9s1STZTPwoSXaFKkq+is+/vvNWcXzcAFoilh2niAK58WQflTPuKCy+kIM6Gfczc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1787552111; c=relaxed/simple;
+	bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n7/1i3XnJ01ZJVjQtQ4BhPYd9VlavW5jk7fRNbMSLgMfobO1p1XUEUB9cg1rVhdfR6gqjRycLWA1IRUgCPLlgQIbMdv/Wffrfatoab2ey+gOoBAFbi1VlTOI1pYeXqw8Fap5OZGjJsSe81BXtYEYCpnHFab8AzaEdkNvAS1AMpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpEWe64a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJY2sAlT"
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-836f34a0ceaso28042237b3.1
-        for <linux-spi@vger.kernel.org>; Sat, 22 Aug 2026 00:19:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787383143; cv=none;
-        d=google.com; s=arc-20260327;
-        b=reT0BCETR2Ik1C7KeAzJGNzNB/ndxkvLlaM/EmPlNMs5JYQR2pepSc4HZuX2LNKLTn
-         NJT47n9Imb5RGhVy3RWF82/LlCUKRqCM+35jtN7NhAbBv+SAlDjsac8GmcE0yF2u1OGA
-         iQtXo+jg6Cz+M5xJ8YMRImrayw/dM3ixdTBtRdQkzFTYLHNIwUJIHpHpfjAPMRf62PHU
-         vcvHRsTlsCu2TENVtEFqwvb3eAX1FrZ9TkPeYn06LVD7UnfJZ6RszrylAdt5H2cF9/xu
-         b9qkBLrY29Xd3Cpm1W8dtwSggBdy1uCzzE7kmu2zXzZ+bqUBeYouBzoTCzlNWDULHYXJ
-         Ry2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2EyolxnGOd3oJbXQjfAMl9517AL75MOEE5l1MmMpyIc=;
-        fh=Ib/eNH+6sXaf63Qaij137zBp0Ag7lDNvhBobEM7riGI=;
-        b=huyjWvPol8cs0CC83A/dw61ooMjaeFhRK1WlyvG9RCHS0sPDnuIhVWExiQf+luFCN7
-         dD9P0o9IvVk6N7yQNZCIpuKGnqvIyj5wkMlETodFnm+6mbpJYCpNiNjP5DjdGQ+LZMcv
-         /7n+yuNlJoY48+She3txdNmwF8umYD5oW8sEFIeCbMnvazTRuKNIEe+97zccJYN03sVF
-         tzMfvillE+7rE6ppX9Dn980jZ/lBveOSkWJjGc3e7J1mX0/fxzF0yd54hnfcE0ClQz+L
-         FVY0fVNzfD7EpLGLS/7gXPplP/BXZfDEQaEQJe+yGTupWTyrdqVpN90d2+/+O2VySOcd
-         H1Yw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787383143; x=1787987943; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2EyolxnGOd3oJbXQjfAMl9517AL75MOEE5l1MmMpyIc=;
-        b=mJY2sAlTpZn1zjmBzaDPA89UsIN5jMIwwuo7mtIUBfjTWcXD20Qfi3O4LruCOSI6JT
-         1G2DGQscIZPLFdCFdHwf5GMwZnlbfaJCYPQVQyIcr2O4q+z/UWaPfWvWScTsJ9RjaqhX
-         wznidl9JLkk7N3jwcurHGfUszQdAt0chMSX8SI/iQEmbIgPl5Drlseo7k+h192PwWBGp
-         7h7HFEj9apKSwg719N858csjs9e5oVXxso/rVLQn215LXWW6lx+bxTx2l71HOsxgiehn
-         W7MuREeuxxWJgi1dtTxO8ymQ4P3/uJDP3cxw47oXRpukSFhg/NdoarBlYGZ61//qOFYz
-         FLBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787383143; x=1787987943;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2EyolxnGOd3oJbXQjfAMl9517AL75MOEE5l1MmMpyIc=;
-        b=PIdRe0ky05DVKmz74SVeGKy3ew7HSgd2U6YxkauLibLZVhUVMA/F4XpWHXeMlKTQrZ
-         bhF09Cs7PNrIoFH2UOz8TlwgyaxNyaSVWvR8EpT8kN7v9qERgjYGiaEaqvq/yNVNsQxf
-         X+TjqYc0MEWcKjrDrGxCLpXUwYJlRXcmAB+N8BeEXXxbTD2JtO84d/VYrLub0LcJGm0N
-         hGqrssVIT/+nSeI9SsmduF/MxJH35wCnK/ZsqpoI/HXrD3GQgm7I/wlPN/I3l+atdPz4
-         5/jRjy4c+K4SHyCG6f+yyD6Ww91KN9nh+CWAU/PtlJJmUvnACNYKu9/1F435w9GEp6R4
-         Wqkg==
-X-Forwarded-Encrypted: i=1; AHgh+RrKWzrJA6ZFkTvput4+9C9c219kr4ykslVFSRxXQ4/cA/e8zrd17PLdS4Opn2uhUD31sMkS5Yinj1A=@vger.kernel.org
-X-Gm-Message-State: AFuF++lnhEZXBH33gIHbhrNnKlEOdHDBO2j4wQFU4YE0EjGv4mlgoDBy
-	qxM1q9HFcGG8KVp737ecXFx7L3XfV7z78SlrnhZpe/cjFBX+KJa7a1SrjlE2oAuJ9eddhBV6ql6
-	E5GR4sbkTdBUdJv/Sx9yYGyjUz3KI2yM=
-X-Gm-Gg: AR+sD13rw+bnE95v21slfEpQRBAbVR6S2RtW1iKWfe9BpiTq4eBBdkmeQEHDYCifAaS
-	bQy8yN5vNZ2VtZSDbQBf3/bn1Uk0YUnjhxI098TpgQm+Vs71MwqYC/pjcs0YlSOeQylz65B2i7I
-	FjXD/ZoxqxmjdLI6NdPpbmT9VkOO2JN4msT9eexu6eNKvMWE1UF2/gj9wp8d1bCLIhgj0yRBkMB
-	li4eJjnlRBBLDQ3iO4wz/8/9RdcJQYL30w+BE6H5EKLg2url9SJKF9LaRbVYMe3hZFM4maGHgae
-	gWito8aRYgQsp64JVIAdSiqyPdXSbZn9NhPA3ozzaBA38ihz5uO+SvtwdAZfCSqiuXEckRgfO+8
-	=
-X-Received: by 2002:a05:690c:6512:b0:825:468e:e0eb with SMTP id
- 00721157ae682-84a1ac40605mr45066577b3.15.1787383142939; Sat, 22 Aug 2026
- 00:19:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpEWe64a"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A7DEC2BCF4;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1787552110;
+	bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=tpEWe64aeJPhbY/8iS6k98xzCTy5t4MZCsj2rhXtFWZy/bJLbbqUJ/8YbDQZEIC+u
+	 GG1ghSml13r4uiK71H3Pa/od0hRtNf85yFFyw+POMEpJGIgMkN3DvJCFHna6BM2Lr0
+	 n+3X6HPBEg19SZ+GiDhikqQok4o40gmidkPJaEVlFVvopOZ48qnxwD/tL2ZOt+QU2R
+	 o6tVL1QsX43bZ3ytiXVbC0/dFtEs3jQ4eX6X78mmvV/81SiFpL8pnqTxTclTesrpS7
+	 x+cepDG+z19TZ6W5+gWWE2+x+5FYDKUUy18lqmdr0v05fGCNWP2l7iQHW5WdeLRgsR
+	 3NgKAjzvau72A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BEA4C5DF81;
+	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+From: Jia Wang via B4 Relay <devnull+wangjia.ultrarisc.com@kernel.org>
+Subject: [PATCH 00/12] riscv: Add device tree support for UltraRISC DP1000
+Date: Mon, 24 Aug 2026 13:54:13 +0800
+Message-Id: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260814083221.34606-1-challauday369@gmail.com>
- <e7efc91b-9d8f-4344-982b-c2b5014985b6@sirena.org.uk> <20260814190759.GA2496807-robh@kernel.org>
- <20260821143242.GA3830037-robh@kernel.org>
-In-Reply-To: <20260821143242.GA3830037-robh@kernel.org>
-From: Uday Kiran <challauday369@gmail.com>
-Date: Sat, 22 Aug 2026 12:48:51 +0530
-X-Gm-Features: AcwNN1Uis6UfIZ0co-b-UtUGD8A07GKsu-HIrWVBLcEcN-_X7pT5x_d88yjoLbc
-Message-ID: <CAAj-GBmHCUb-ArgjHLZ2mxc9261eJ2Z4jL8ZaAaG1d8w8ivGPQ@mail.gmail.com>
-Subject: Re: [PATCH v4] spi: dt-bindings: microchip,pic32mzda-spi: Convert to
- DT schema
-To: Rob Herring <robh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	skhan@linuxfoundation.org, me@brighamcampbell.com, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIXci2oC/22Nyw6DIBQFf8WwLgmCgPorjYsLXFtaHy2gaWL89
+ 2pt0k2Xk5wzs5CIwWMkdbaQgLOPfhw2yE8ZsVcYLki925hwxhWTnNOpSwGCj5a6FGnlwAjgIld
+ Gke3zCNj618d3bg6Ok7mhTbvkuwj4nLZQOma/Tp39qdhutHcKudEAsmoVM/Vc7CIDEakd+96nO
+ iuE5KYExKpkTJZSACjRSu2U0JqX3GGuQYiWNOv6BtIRknj0AAAA
+X-Change-ID: 20260522-ultrarisc-dts-9dab3a2316b6
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ Thomas Gleixner <tglx@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
+ Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
+ dmaengine@vger.kernel.org, Jia Wang <wangjia@ultrarisc.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=4470;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=0/Xzhe2w9Sk25MhwhUaru7RZxcbtsKDtkT59/Di0x8U=;
+ b=muAC+VMha9vnX4vL4gDakTbk8VFQlQQhKDwQGjzBj7GfU6pvTzZXdrQ5kUQKMiW2JcExPOqSO
+ EhlHFWHWBomAbCbQ3MnlJ5UsptqgsPUWV8cJfCN49tMU0XuTPJCsT6R
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-Endpoint-Received: by B4 Relay for wangjia@ultrarisc.com/20260515 with
+ auth_id=779
+X-Original-From: Jia Wang <wangjia@ultrarisc.com>
+Reply-To: wangjia@ultrarisc.com
 
-On Fri, Aug 21, 2026 at 8:02=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Fri, Aug 14, 2026 at 02:07:59PM -0500, Rob Herring wrote:
-> > On Fri, Aug 14, 2026 at 03:54:55PM +0100, Mark Brown wrote:
-> > > On Fri, Aug 14, 2026 at 02:02:21PM +0530, Udaya Kiran Challa wrote:
-> > > > Convert Microchip PIC32 SPI controller devicetree binding
-> > > > from legacy text format to DT schema.
-> > >
-> > > > +maintainers:
-> > > > +  - Mark Brown <broonie@kernel.org>
-> > >
-> > > Try again!  :P  I think the DT people had some default they used for
-> > > cases like this, but ICBW?
-> >
-> > I'm the default, but really I wonder if pic32 could just be dropped. No
-> > commits from a Microchip person since 2016 on arch/mips/pic32 or
-> > arch/mips/boot/dts/pic32. Almost all generic cleanups otherwise. These
-> > chips appear to max out at 32MB (SiP) or 128MB DDR2.
-> >
-> > Perhaps I should send some AI patches against it...
-> >
-> > There's this[1], but no updates in 5 years.
-> >
-> > Arnd, Thomas, any thoughts on this platform?
->
-> Thomas agreed to be maintainer on IRC.
+Add Devicetree support for the UltraRISC DP1000 RISC-V SoC and two
+DP1000-based motherboards: Shenzhen Rongda M0 and Milk-V Titan.
 
-Thanks, Rob. Understood. I=E2=80=99ll update the maintainer to Thomas
-Bogendoerfer for microchip,pic32mzda-spi & microchip,pic32mzda-sqi dt-bindi=
-ngs
-and send the next revision.
+DP1000 integrates eight UltraRISC CP100 CPU cores.  The SoC description
+includes the CPU and cache topology, CLINT, PLIC, clock controller,
+pinctrl, GPIO, four UARTs, two SPI controllers, four I2C controllers,
+three PCIe root complexes, GMAC, and the DMA controller.
 
-Regards,
-Udaya Kiran Challa
+The Shenzhen Rongda M0 and Milk-V Titan device trees add their
+board-specific pin multiplexing, RTC devices, and Ethernet PHY
+configuration.  Both boards enable the three PCIe root complexes and
+the GMAC described as disabled by default in the SoC DTS.  The Titan
+description also provides its GPIO wakeup keys.
+
+The binding patches add the vendor, CPU, board, and peripheral
+compatible strings consumed by the new device trees.  The SPI, I2C,
+GMAC, and AXI DMA nodes use their respective generic DesignWare
+compatible strings as fallbacks.
+
+An earlier version of the DP1000 SoC and board Devicetree support was
+posted as part of a combined Devicetree and pinctrl series. The pinctrl
+binding and driver were subsequently split out and merged separately.
+This series carries the updated Devicetree portion.
+
+Link: https://lore.kernel.org/all/20260515-ultrarisc-pinctrl-v1-0-bf559589ea8a@ultrarisc.com/
+
+This series depends on the UltraRISC DP1000 clock controller series:
+
+clk: ultrarisc: add DP1000 clock support
+https://patch.msgid.link/20260720-ultrarisc-clock-v4-0-fe639d63bbac@ultrarisc.com
+
+Testing:
+- Built dp1000-shenrongda-m0.dtb and dp1000-milkv-titan.dtb with
+  ARCH=riscv and W=1.
+- Ran dt_binding_check for the modified and prerequisite bindings.
+- Validated both DTBs against the relevant Devicetree schemas with
+  CHECK_DTBS=y.
+- Boot-tested both DTBs on Shenzhen Rongda M0 and Milk-V Titan. Verified
+  the CPU topology and CBO selftests, UART, SPI, I2C/RTC, Ethernet, system
+  memory, and all three PCIe root complexes. The expected PCIe endpoints
+  were enumerated on both boards.
+
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+---
+Jia Wang (12):
+      dt-bindings: riscv: cpus: Fix yamllint style issues
+      dt-bindings: vendor-prefixes: Add shenrongda
+      dt-bindings: riscv: cpus: Add UltraRISC CP100 compatible
+      dt-bindings: riscv: Add UltraRISC DP1000 board compatibles
+      dt-bindings: timer: Add UltraRISC DP1000 CLINT
+      spi: dt-bindings: snps,dw-apb-ssi: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: i2c: dw: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: net: snps,dwmac: Add compatible for UltraRISC DP1000 SoC
+      dt-bindings: dma: snps,dw-axi-dmac: Add UltraRISC DP1000 compatible
+      riscv: dts: ultrarisc: Add initial device tree for UltraRISC DP1000
+      riscv: dts: ultrarisc: Add Shenzhen Rongda M0 board device tree
+      riscv: dts: ultrarisc: Add Milk-V Titan board device tree
+
+ .../devicetree/bindings/dma/snps,dw-axi-dmac.yaml  |   1 +
+ .../bindings/i2c/snps,designware-i2c.yaml          |   1 +
+ .../devicetree/bindings/net/snps,dwmac.yaml        |   1 +
+ Documentation/devicetree/bindings/riscv/cpus.yaml  |   9 +-
+ .../devicetree/bindings/riscv/ultrarisc.yaml       |  27 +
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.yaml   |   1 +
+ .../devicetree/bindings/timer/sifive,clint.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |   8 +
+ arch/riscv/boot/dts/Makefile                       |   1 +
+ arch/riscv/boot/dts/ultrarisc/Makefile             |   3 +
+ .../dts/ultrarisc/dp1000-milkv-titan-pinctrl.dtsi  | 108 +++
+ .../boot/dts/ultrarisc/dp1000-milkv-titan.dts      | 203 +++++
+ arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h     |  63 ++
+ .../ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi    |  79 ++
+ .../boot/dts/ultrarisc/dp1000-shenrongda-m0.dts    | 114 +++
+ arch/riscv/boot/dts/ultrarisc/dp1000.dtsi          | 899 +++++++++++++++++++++
+ 17 files changed, 1517 insertions(+), 4 deletions(-)
+---
+base-commit: 4352b8aee98005853aa63f57d6377282de17a33f
+change-id: 20260522-ultrarisc-dts-9dab3a2316b6
+prerequisite-change-id: 20260522-ultrarisc-clock-a1b7aa59f60b:v4
+prerequisite-patch-id: 9dc814b858bc1cf4736cc54bb85c26e9ca89eb59
+prerequisite-patch-id: 4b2811f1845e86731e887f66fd31978b72885f37
+prerequisite-patch-id: 37ec1006cbead8c4eef7e3c8f146fabab5875edf
+
+Best regards,
+--  
+Jia Wang <wangjia@ultrarisc.com>
+
+

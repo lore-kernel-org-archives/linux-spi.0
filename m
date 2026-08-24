@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F008841E6C5;
-	Mon, 24 Aug 2026 13:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36C327456;
+	Mon, 24 Aug 2026 13:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787576585; cv=none; b=p325RQsek/TtCzYndq5lYPhKJSeKjsBB7a8u+Er/pVCBHn1UzQJx9yMIXMApMENa/MIz1xklXjZg+n6D30XSS9/RW6XvqIp0k36UI9PMUWnNptcmrb910i3l+qD6MwviGBVk52hW8GBpQFapl7y/SBJ6DydOQjMXPA4nqOOXH+I=
+	t=1787576827; cv=none; b=aIycM3uR12Sl0Tt1q/awVAyN2IGh2WYUDp6etVa5VOm94DIC0tHLUnUg2eTZLwJfllG9sJ/2iQ0q0BAXXovqZ7krR+F7aJnlvTux2dWmSNGGqelqJC38IrhRVdrZ/oKU4j/UcvvN4pWynaK7rr+Hoiu3E4Tr0M0DUJ3U51FlSB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787576585; c=relaxed/simple;
-	bh=rISoIGcu3acgHcr6u7ATXSnlDoqloOptU3VnGEGcGZs=;
+	s=arc-20240116; t=1787576827; c=relaxed/simple;
+	bh=nHPhXiSkktmIjZtqvT4NSVrblmXHSIXsEt7s4o5pTi8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S/BAq2B46Ye7rGEbZ1bQSqTjHU5DakMA7Y2oiknZZ/gRVsX2P6K+/4e/AbORSiQC4bUHcihQqMBHwxxQlX/q+8JFwQD64d3TnIByM1TweNBHrBLWkeN2YWXEa2fScVq3QgAuvDQG89DL5avsO3h5m8Js01dAuwvthIs8YyIhjNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lsPC+KZc; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXO5ks918SfDAumjfmdbv/IpxuVyRwbQIHlE1967kqjberfEyHbq3tXvNl/I7Y1Km2rL5yGZAlWxBsKwI5quMlqaTlDniat25TW9zoGBmm8RFWv9niWox+DVfBiTckqt7tdoTFCUWvBEWyhYacjt0OnK5++8wxbzOrzoaM9ygEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZYMGhMg6; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lsPC+KZc"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZYMGhMg6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3ct6506Qb0sPYJHueF+mC3+i6CnJwRsT9BxuFgK8Ljg=; b=lsPC+KZcrkWtq8gMhRbGTgoNAI
-	kleVUabpmWsgOIq1Jwv2A8PwZJBW62DsUJVBQaCB5XEKQLWKEMi21Tn9q0F1yMcSDa89PyDKzCLSf
-	RoLqks98BL8ePQk2JTnnzAx6++qHOGYl9KGqsMds/wkIei86ik3W4WZUH+9riybmlh4s=;
+	bh=G20m0dlWZFuFMp97M72WP7j3a4Nl0NQXlbLAsz70gvA=; b=ZYMGhMg69/rBZukUYCl5FP3b+b
+	ewTm5vpm6xXhbXfsRqKdzEAWA8KDuIC3yvT5SNwfvA8O3MpcPMrzGVUho/Z+otwUbntU/WaWDjNMj
+	e/rYIGzOoAwq3wkQx8/KH9B+LCiY8bbPT6FSoWFhFHeKDv5yPQCOr+3+Zem9dq2fQo3U=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1wyUJy-001EfO-OB; Mon, 24 Aug 2026 15:02:38 +0200
-Date: Mon, 24 Aug 2026 15:02:38 +0200
+	id 1wyUNy-001Ehe-02; Mon, 24 Aug 2026 15:06:46 +0200
+Date: Mon, 24 Aug 2026 15:06:45 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: wangjia@ultrarisc.com
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -55,11 +55,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
 	dmaengine@vger.kernel.org
-Subject: Re: [PATCH 11/12] riscv: dts: ultrarisc: Add Shenzhen Rongda M0
- board device tree
-Message-ID: <d93868e7-00c7-4251-9b23-8b3ed0535185@lunn.ch>
+Subject: Re: [PATCH 12/12] riscv: dts: ultrarisc: Add Milk-V Titan board
+ device tree
+Message-ID: <26430c94-95ee-42a1-bfda-89e0ce24f194@lunn.ch>
 References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-11-61ab7aebe9e5@ultrarisc.com>
+ <20260824-ultrarisc-dts-v1-12-61ab7aebe9e5@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -68,16 +68,22 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260824-ultrarisc-dts-v1-11-61ab7aebe9e5@ultrarisc.com>
+In-Reply-To: <20260824-ultrarisc-dts-v1-12-61ab7aebe9e5@ultrarisc.com>
 
 > +&ethernet {
 > +	phy-handle = <&phy0>;
 > +	/*
-> +	 * YT8531 RGMII timing on this board requires no PHY internal delays.
+> +	 * RTL8211F: board timing uses PHY strap delays; keep plain "rgmii".
+> +	 * Enabling PHY internal delays via "rgmii-id" breaks Ethernet traffic.
 
-Please extend this sentence with an explanation why it needs no delay?
+This actually indicates something is wrong.
 
-There are times this is correct, but it is also mostly wrong. Without
-an explanation, i cannot say if this is correct or not.
+When passed PHY_INTERFACE_MODE_RGMII, the PHY driver should change the
+PHY to not add delays, overriding the strapping.
 
-   Andrew
+Given my previous comment, you need to spend some time understanding
+what is going on here. Something is not correct.
+
+https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
+
+	Andrew

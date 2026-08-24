@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6FC3E4514;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ACC3E49F5;
 	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787552111; cv=none; b=PgRYdzIfaoMO1TBz2iD1moj/f6cWjtdYE8PjZ2p54VjTd6YzLbtPmJ89GwA/YU6mXW+xh/fhT62BRYUdDCFgz33w1vsujc3yZ6olbWeTjnkXUSiQL/AGWh/H/6Pamz/MGiBHX2/muBpLPWP/0/EtLQZBlzpKzCZpjIZ4sQ34gk4=
+	t=1787552111; cv=none; b=UkSC/3pbTuSHuJBRXnTQ+gS4TtRHUgVJ2mY2AJb6UqsB+UvIlbkwM1EnOKeSHq5wWSoaWfTvO7+k0GanS8trjfU83pGTaPZIqR8ejb/sE7LC2OzkK0NMXOo3ibvj3xyhZb4Tf9gP+foKIL8pzLH1FRivnXm3ix4p0XVxPYwot4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787552111; c=relaxed/simple;
-	bh=/tORglKOn/6hGNCzOPRziWVwHttzvbuXlVQzocvD4VY=;
+	bh=d/97sB9yXoZ5Hr4PrQPzx5HtGOwTN1VEBcKj6JjfMh0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e+qyDA54p92IHPb1JNHEDF+EP/UYFxjXRxlQyJrePaevhj3Hg2m4K92YSYqkhZTEugr1Kmw7GjGRat0W4dl8gShran6hcVoUXrFmaF3wHY9477es3vGIpdmkm7ItzwBjdn9ph8Nv6dx21VzDQaNk+Nh8CVbUOzk3nMbcW81puck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=so7BWFEm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=JciWRtZvHzmBKXYBf85LQWwyPa0WOzttcWl9y15aKW2joRqkTVUh4nvwvLgTyF3XJ9pVsndyfEMqqArYPIAM30sP/NPxlXq3RaKT51g2iEXVzcK3kb2bQjztUzC3TuDB7y+6DhjIVQ+MTEYNJvnvwwlPsoEdLcbKFxaMAmD9NA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPZwxKc4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="so7BWFEm"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1496FC32782;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPZwxKc4"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 68485C4AF54;
 	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1787552111;
-	bh=/tORglKOn/6hGNCzOPRziWVwHttzvbuXlVQzocvD4VY=;
+	bh=d/97sB9yXoZ5Hr4PrQPzx5HtGOwTN1VEBcKj6JjfMh0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=so7BWFEmHR5F2wte9vg5VuHjetEVyy9NRI/bG6xxy9dOG6Bfy7KOlyNy6lO1pHU0+
-	 +ZUSG92wSBwa+SUjgxmsgA8Q79S0LXUFF3RxWLcNOUtGovIhRO13YoXTnCwQEmVUCp
-	 R/LpDLvJW47shUxxYtcV8YnhgcpLYfV5c14LQlUH96Bx5ZmSzPHpOwyP0EQoINu/1k
-	 RpImfsYR7y5kdQt/4D2WSw50DVoclsaYycpLf2JU0KJfpsNEW9KNgXVV8yKB0/2sa0
-	 PaUBmDAgpM4CTT9Na5dZj4B34zq4A7hvI7zP0RhNyBIdeaIdAT68tDovfkdQmjEsns
-	 M49TGLyC8/Pkg==
+	b=jPZwxKc4h/68zODeRfEL2qwO3k0cMbnHMgARpZetCkPsIxEyqG73mcsM75RZcxX/l
+	 K/0scLzOGrtCHjQfj7PNH1W5VYbWsUdWrxJUaHIsQUY+ijSz0YhYK8YCrH1CXUCbLF
+	 nGwYpcQQLJM412bqEDuj6oyGieAaQvtxrQiLI7KQH5Gq8LqUMB2TXHMIpsdOVYn6Z5
+	 y5+EP+TfyoCWtOWAHSt3RJ9TmQVd5wOef+4ZzYPJY+olVhg4HI8WWMcJK1Hcm3udV9
+	 VsK1dwirAZkBHvX9hUYeWYZXyL7xhZXE0CcxNt42ut62fg+ROT3zARiqyCH3eMDtnY
+	 ZKgjhIa1S/pEA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1B8FC5DF9D;
-	Mon, 24 Aug 2026 06:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52F65C5DF9D;
+	Mon, 24 Aug 2026 06:15:11 +0000 (UTC)
 From: Jia Wang via B4 Relay <devnull+wangjia.ultrarisc.com@kernel.org>
-Date: Mon, 24 Aug 2026 13:54:20 +0800
-Subject: [PATCH 07/12] dt-bindings: i2c: dw: Add compatible for UltraRISC
- DP1000 SoC
+Date: Mon, 24 Aug 2026 13:54:24 +0800
+Subject: [PATCH 11/12] riscv: dts: ultrarisc: Add Shenzhen Rongda M0 board
+ device tree
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260824-ultrarisc-dts-v1-7-61ab7aebe9e5@ultrarisc.com>
+Message-Id: <20260824-ultrarisc-dts-v1-11-61ab7aebe9e5@ultrarisc.com>
 References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
 In-Reply-To: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -68,11 +68,11 @@ Cc: Paul Walmsley <paul.walmsley@sifive.com>,
  linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
  dmaengine@vger.kernel.org, Jia Wang <wangjia@ultrarisc.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=846;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787552108; l=6623;
  i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=a3FLG1v/opm8P6Mx7tFBUWeLRZtmVFCN4Uxnx7ELy+8=;
- b=FZb78z8T9rITx8H9711DLMJwoTpitGFde0UxVr48CTWjgXqPmZIps0nVG5x8Ive0NSxtUTIag
- x3P+jfsIl4CDCgsd45dmaaxozFkO1pbWp2oQT4QQIDnp4SGSBiQMxvT
+ bh=VdtPdgAxWwRO256lD7Yt9GobfVR5Y/a9bayAnZ+sowg=;
+ b=RARhmPur7yhZH2cweeTkT3tEDxZqGP66VILv207fNDoxM+69X/On1VwolT40j4oWbN78hk9NF
+ N4dYW2aJ8i1DLNbedALamHNdku0WgLz1+nAOjjBkyzFdyueQPq3UZX5
 X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
  pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
 X-Endpoint-Received: by B4 Relay for wangjia@ultrarisc.com/20260515 with
@@ -82,26 +82,309 @@ Reply-To: wangjia@ultrarisc.com
 
 From: Jia Wang <wangjia@ultrarisc.com>
 
-Add the SoC-specific compatible string and use the generic one as fallback
-for the UltraRISC DP1000 I2C controller.
+Shenzhen Rongda M0 is an mATX motherboard based on the UltraRISC DP1000
+SoC.
 
 Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
 ---
- Documentation/devicetree/bindings/i2c/snps,designware-i2c.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/boot/dts/Makefile                       |   1 +
+ arch/riscv/boot/dts/ultrarisc/Makefile             |   2 +
+ arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h     |  63 ++++++++++++
+ .../ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi    |  79 ++++++++++++++
+ .../boot/dts/ultrarisc/dp1000-shenrongda-m0.dts    | 114 +++++++++++++++++++++
+ 5 files changed, 259 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/i2c/snps,designware-i2c.yaml b/Documentation/devicetree/bindings/i2c/snps,designware-i2c.yaml
-index 467bdcbb8538..eee21ca8d7ed 100644
---- a/Documentation/devicetree/bindings/i2c/snps,designware-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/snps,designware-i2c.yaml
-@@ -44,6 +44,7 @@ properties:
-               - mscc,ocelot-i2c
-               - sophgo,sg2044-i2c
-               - thead,th1520-i2c
-+              - ultrarisc,dp1000-i2c
-           - const: snps,designware-i2c
- 
-   reg:
+diff --git a/arch/riscv/boot/dts/Makefile b/arch/riscv/boot/dts/Makefile
+index 69d8751fb17c..702882974251 100644
+--- a/arch/riscv/boot/dts/Makefile
++++ b/arch/riscv/boot/dts/Makefile
+@@ -12,3 +12,4 @@ subdir-y += spacemit
+ subdir-y += starfive
+ subdir-y += tenstorrent
+ subdir-y += thead
++subdir-y += ultrarisc
+diff --git a/arch/riscv/boot/dts/ultrarisc/Makefile b/arch/riscv/boot/dts/ultrarisc/Makefile
+new file mode 100644
+index 000000000000..454d849a6ce4
+--- /dev/null
++++ b/arch/riscv/boot/dts/ultrarisc/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0
++dtb-$(CONFIG_ARCH_ULTRARISC) += dp1000-shenrongda-m0.dtb
+diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h b/arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h
+new file mode 100644
+index 000000000000..4668e45d2335
+--- /dev/null
++++ b/arch/riscv/boot/dts/ultrarisc/dp1000-pinctrl.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
++ */
++
++#ifndef _DP1000_PINCTRL_H
++#define _DP1000_PINCTRL_H
++
++#define PA0		0
++#define PA1		1
++#define PA2		2
++#define PA3		3
++#define PA4		4
++#define PA5		5
++#define PA6		6
++#define PA7		7
++#define PA8		8
++#define PA9		9
++#define PA10		10
++#define PA11		11
++#define PA12		12
++#define PA13		13
++#define PA14		14
++#define PA15		15
++#define PB0		16
++#define PB1		17
++#define PB2		18
++#define PB3		19
++#define PB4		20
++#define PB5		21
++#define PB6		22
++#define PB7		23
++#define PC0		24
++#define PC1		25
++#define PC2		26
++#define PC3		27
++#define PC4		28
++#define PC5		29
++#define PC6		30
++#define PC7		31
++#define PD0		32
++#define PD1		33
++#define PD2		34
++#define PD3		35
++#define PD4		36
++#define PD5		37
++#define PD6		38
++#define PD7		39
++#define LPC0		40
++#define LPC1		41
++#define LPC2		42
++#define LPC3		43
++#define LPC4		44
++#define LPC5		45
++#define LPC6		46
++#define LPC7		47
++#define LPC8		48
++#define LPC9		49
++#define LPC10		50
++#define LPC11		51
++#define LPC12		52
++
++#endif /* _DP1000_PINCTRL_H */
+diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi b/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi
+new file mode 100644
+index 000000000000..ab927c6cd614
+--- /dev/null
++++ b/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0-pinctrl.dtsi
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
++ */
++
++#include "dp1000.dtsi"
++#include "dp1000-pinctrl.h"
++
++&pinctrl {
++	i2c0_pins: i2c0-pins {
++		pins = <PA12 PA13>;
++		function = "i2c";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	i2c1_pins: i2c1-pins {
++		pins = <PB6 PB7>;
++		function = "i2c";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	i2c2_pins: i2c2-pins {
++		pins = <PC0 PC1>;
++		function = "i2c";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	i2c3_pins: i2c3-pins {
++		pins = <PC2 PC3>;
++		function = "i2c";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	spi0_pins: spi0-pins {
++		pins = <PD0 PD1 PD2 PD3 PD4 PD5 PD6 PD7>;
++		function = "spi";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	spi1_pins: spi1-pins {
++		pins = <PA0 PA1 PA2 PA3>;
++		function = "spi";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	uart0_pins: uart0-pins {
++		pins = <PA8 PA9>;
++		function = "uart";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	uart1_pins: uart1-pins {
++		pins = <PB4 PB5>;
++		function = "uart";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	uart2_pins: uart2-pins {
++		pins = <PC4 PC5>;
++		function = "uart";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++
++	uart3_pins: uart3-pins {
++		pins = <PC6 PC7>;
++		function = "uart";
++		bias-pull-up;
++		drive-strength = <33>;
++	};
++};
+diff --git a/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0.dts b/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0.dts
+new file mode 100644
+index 000000000000..da831da819ef
+--- /dev/null
++++ b/arch/riscv/boot/dts/ultrarisc/dp1000-shenrongda-m0.dts
+@@ -0,0 +1,114 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright(C) 2026 UltraRISC Technology (Shanghai) Co., Ltd.
++ */
++
++#include "dp1000-shenrongda-m0-pinctrl.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++
++/ {
++	model = "Shenzhen Rongda M0 Board";
++	compatible = "shenrongda,m0", "ultrarisc,dp1000";
++
++	aliases {
++		serial0 = &uart0;
++		serial1 = &uart1;
++		serial2 = &uart2;
++		serial3 = &uart3;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c0_pins>;
++};
++
++&i2c1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c1_pins>;
++};
++
++&i2c2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c2_pins>;
++
++	rtc@32 {
++		compatible = "whwave,sd3078";
++		reg = <0x32>;
++	};
++};
++
++&i2c3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c3_pins>;
++};
++
++&spi0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pins>;
++};
++
++&spi1 {
++	num-cs = <1>;
++
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi1_pins>;
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_pins>;
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart1_pins>;
++};
++
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart2_pins>;
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart3_pins>;
++};
++
++&pcie_x16 {
++	status = "okay";
++};
++
++&pcie_x4a {
++	status = "okay";
++};
++
++&pcie_x4b {
++	status = "okay";
++};
++
++&ethernet {
++	phy-handle = <&phy0>;
++	/*
++	 * YT8531 RGMII timing on this board requires no PHY internal delays.
++	 * Using "rgmii-id" together with rx/tx-internal-delay-ps results in RX CRC
++	 * errors and no usable traffic, so keep plain "rgmii" here.
++	 */
++	phy-mode = "rgmii";
++
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		phy0: phy@0 {
++			reg = <0>;
++		};
++	};
++};
 
 -- 
 2.34.1

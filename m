@@ -1,207 +1,195 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A55429003
-	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 13:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CE843D4EF
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 14:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787578924; cv=none; b=E5EMfsMicOYf5GbRXYxinbUitRyvzPOi5o8dU5+4nXuokQP5JEg6qUHJJMAH+THTE7LchxrSkVHpabPRlxFKY8gkent29MMEJFUcWhtx7psFtz/MkVtWWXfuOppwl661n1bnB52zmG7gxpVfGMGHMG4xXHcHSDSPjlj3DOhvfNk=
+	t=1787581576; cv=none; b=OKuTqxnjNBSW40H7fO+/VSAqylHqf7nDf5Fr18ZIyYEUKwOq7/EiJ76hw4yZkSmr+u4gTgylMYzM6EMN84ZyffIYKc1Y5XiU0InSwv9rFCfQP3SYmBypKUP5GeLuuIeFj5/kE4gOCuUy4C+cPXQkdxAV1Y40g0ZIe3ZrGwdj8Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787578924; c=relaxed/simple;
-	bh=220sKSJfAH66EhAx6MKsNA3uJHuVRcM7xOCoY8od3n0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fbuA2fjuqVeYXkRhBSqu6UYFqNBpwRixsrILBSZBHrkxxAQeqb1SgYIeJgVmVmy1jRYnOyuWGZhrX/wZRkACxq235+R7vu3Xj0NQTp1N+J5CGJ6SL4cMbez+7DcYjHnSrbLG3zLSVReZGUs1jWtCWYkV4/5CHGXmgqHOtY9vM6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WeLnskcV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=OM+pGXEK; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1787581576; c=relaxed/simple;
+	bh=0ShdK6homdK1I4Ywr5MsXY3zf48ku883tIe9a+2wHr4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NGHxujYGASS2kGi1t3a/jkCtS1pqDPMmfMQUp1NfsMwv5D4S27xxkfNUbT77NN5THhUygfGbCe+ux3mVY4e2SdFCAC5BI5I/2iheiqQRiWzNDSFmeYG3eRgl5dRDOcQi0z0BWMFaqk+VuMJZXBvcVQ62mTYGXFNvDM0TsPOXaLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HNqfA0oq; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=drTiUr8N; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WeLnskcV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="OM+pGXEK"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OCusqC2583541
-	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 13:42:01 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HNqfA0oq";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="drTiUr8N"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67OCv1jS2949942
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 14:26:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4nn3T1t/sB7+ffZyruvK0mZmx5y7OMfO+jTRwc/O4fA=; b=WeLnskcVZok8Wavb
-	M2odJvv5d8hV/LD5NQp27uGONnXiEafmZkgE5sg4Sjf62xEqH6D74PlYl0xvO93k
-	04Nf71ranEH5xPy5z0e3iywNAYhUMUYubaMk4JJuiaB96nxzuCr2V1j4tDc6E532
-	QIvjOdRcqyjgE8N3Q8xqz+MfZ8Kji5dpI9gtXa3WF7BB0cDciV6AQbmcYwLgomM0
-	ncmZVxqqqEhympv/jZRilWh5VIj+SUsAw6kEqxFmF9kaMZCtIjahq06Oli8t5Ztv
-	dSrGJp+Q9Z56fnRzHeENNT5x3XMjMHLskW9MSF3lk3vyLfyR+sGuaN01L8jXNyxJ
-	GVv6+Q==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g8hbthmbc-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=WBLWbc7fIPLRFV4iwOUNp6
+	Gtzj8ymWvJS14YqGKh6GM=; b=HNqfA0oqJ0O49IeT+BuprgDmxxTlv0V8vwVGQ2
+	/pnnK8yF8wD3JIwu/4fwm6WhwpNdAUwwLCCyak2MxLC+ENiK+zymPBmsJ8D0hF0I
+	yaTW8xY/VJFuP4FqlFM8jelC7mRW4OuRDwdGgDsup7bvOreHSovuic4G5QNdPPx6
+	Q25txM+1c6/n+7cVgcQaoZDOHUXLqK+L8T3LC9JlYhhzHkigKYNwjrZ6yJI5r2Ir
+	LKVf1dCmgBe9TZ7oyoKU3ycVF5x3dUfgNPnkA9c7ZCpzTE3kfMqIwtXceYBFqFIp
+	0b5Hd4XPIAEWmprItx6lUUnjNFTC6b93JiQJk0Md9LSyR6Hw==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g8j7r1j3t-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 13:42:00 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e475f83a2so6353629a91.1
-        for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 06:42:00 -0700 (PDT)
+	for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 14:26:13 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2ce7dff6253so44946615ad.1
+        for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 07:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1787578920; x=1788183720; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4nn3T1t/sB7+ffZyruvK0mZmx5y7OMfO+jTRwc/O4fA=;
-        b=OM+pGXEKndGdb2eKbWcGMWHrc43pPutKa/fpI70ZTCXh3H0Sb30FMe9d++yGoEImTx
-         K0rL4x2lwJ3PvWP+Mpzl9TvKtMA++doIeF/yFovYdEBj26Hcy4AVUiCPoZ4ZCQ7C+yZq
-         RK9MWI6aNEMcBpfhENw5lQc1/po4oN1WC86kdJwwhAjpDkN0KdoEi2L4Qh1LGy5gFHCt
-         dWefkA0ssQq1mJeBD3dZdx6RWu5ktc7ZsiSYXvD6+8wUWukOCnCDiY5OjIVzN7whRNRt
-         LzcRCZhTLzjp5xNUQSEr2oaI2idDO0PBqGxvnWRADzxpevM4SiPCSTaEjS5r64UrQsgQ
-         RMMw==
+        d=oss.qualcomm.com; s=google; t=1787581572; x=1788186372; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=WBLWbc7fIPLRFV4iwOUNp6Gtzj8ymWvJS14YqGKh6GM=;
+        b=drTiUr8NSvFmO9G064YL8TC6kyOjkaTv9e8GmBy/2vUMGyqvFVgNsNMp1boqld0shy
+         Oj+uB++R1HMywE9a2Nvf8bi4Cm6Kofg7HEJEJmpScjTZUm/EB/H0vZctnx8ss94aAkbA
+         Cs2gucqYZjcXwD2lw98cghL2fN+65kk5brg+0uUXzoqAzWvrD+5Ul7u6ARKZ6UeM0QYM
+         ZCvGHsYspY5o2z+c5R0Ib457Y8tmBbCQneUzLBPM/jlP6Nltk572sgFyZHSPhm0Up7xk
+         bAeVDzm2XmKQjRGks6+4vyYw9byU7EYVnUg2fVxOiqw5BK0zV8JKqjgptWfum7xVOz1G
+         KN9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787578920; x=1788183720;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4nn3T1t/sB7+ffZyruvK0mZmx5y7OMfO+jTRwc/O4fA=;
-        b=qR1fLsHMLEsKxwDsRaRW9HKTy7+O/aU1LKqyAtryoTTAmNdEx/TOxS/OT370GmxGcF
-         O9Hw6zFOEDT7OfjXjoAiB2IcTDZ1OcYB6YBuMyz7nz3hhdrQ+vqrKL6G0gbpKocPfirq
-         L8xLPuPBwBul56b81xkHns0mGbK3GEXAMwvgMat04XwGQ85oBWp9BTQG6HjjsY5lE2Xx
-         Dw4stHMBwJs4NEtQXcH1y0otVYc2mPIwxwu9bXPsKNRfyKUHN3bJCc6zpXiO75okbbXl
-         0xE9qIiyBI22rF3bedUGMZTYDYuH4PGzrgWtcCbkoz9Wh3+J/vWC+oZVrFAsWnfE7t1A
-         BpbA==
-X-Forwarded-Encrypted: i=1; AHgh+Rq4ymiCLDMe7elEFdXQfOjTj5yh4fVk4W0iSNN7GqrCM+L4OQpEh5+Bol3tVVHsN1MvK1MxVxAQoUg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kqgFNkZWCe6Yt+k4IgNF4fbBCnLMrbtQgnho8G2I82ebYEgp1V
-	aIt401PD/loHJYzfUrblySHnWiqsWqCtnBvK+H9BwK+l2ZEc0K0ffZCMRsxg5L5wMau5XL46ap9
-	l3PYJnIXa+9KyCAmBEsiezvkSXcN335JRXQ5Kx/JRfm+Mqjyawre4mez6LoMB4A8=
-X-Gm-Gg: AR+sD10LTpETlmgHTujY0xeuJ48rYvjW4K7dk1ke9gCuEE2J7irnLGKiBb5grWZNQgs
-	+sb/U0tK2dpXS7TR31rFRzOWdkeHolm+FrBkZ0W+q6zL1OZXkNaKIk4A1Q2junfpb7omWZApNen
-	H+p11dxBlAq+Lh6ffmkCudav8msPGfe3rWBpdwqq7Zn7uB9w2jV26qixQKybb8Gaabo1jmZxW7Y
-	P+El/+DDqA20JUCas8Qvh5YUsDuIa/0sYzc+UFnH/p/6yiumCxjQ7+u64/yrXEYp5Mt2OuCWy9P
-	K9gfMiG5aWlsJuiH5VP7Lb8amJOvxIX/Yzlkh1G8YUbyDMZ6E4OIps0kDY4auZfdZWOZnaVUHS6
-	hEWacqKR3q0rXnxJdQs6TkH/J3fBXUeecOvs=
-X-Received: by 2002:a17:90b:1b41:b0:383:5a16:bd70 with SMTP id 98e67ed59e1d1-395c39f97e8mr42709381a91.16.1787578920185;
-        Mon, 24 Aug 2026 06:42:00 -0700 (PDT)
-X-Received: by 2002:a17:90b:1b41:b0:383:5a16:bd70 with SMTP id 98e67ed59e1d1-395c39f97e8mr42709251a91.16.1787578919646;
-        Mon, 24 Aug 2026 06:41:59 -0700 (PDT)
-Received: from [10.217.218.158] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-395e42d6139sm10107597a91.0.2026.08.24.06.41.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Aug 2026 06:41:58 -0700 (PDT)
-Message-ID: <8af7a34a-da4f-492f-a51c-cc420edc5e6e@oss.qualcomm.com>
-Date: Mon, 24 Aug 2026 19:11:51 +0530
+        d=1e100.net; s=20251104; t=1787581572; x=1788186372;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WBLWbc7fIPLRFV4iwOUNp6Gtzj8ymWvJS14YqGKh6GM=;
+        b=mfTSpG4aP6tj4VP6drR4wAfNudqhXgz0XNCHI36g7egDi6fj4Ey/9J/Dm8C2hVX33q
+         lOVvG3bEs8pL/MBbQ7YRWlwvbukI8x75oEts34yJNtiaskdpP5YiR86hRzdHSl8qlYCr
+         Tv1mhgQxqc/rk70xtcqOMYRNu2cycR3fYxPEolWTAHwafZ3keydVue56gNzO8WZLEhhS
+         MDWzzI3Np8Gpca538S2Vz6/08gtQOq78Lb3yU8JIddKRDRN5VPfzF9MVNzrnMOzVDKow
+         cCcoS/G2JnHkwVeSOw1fS3fq+DVL/8RU8vnXtNfnWtg4O0vG3Uv7LlMxUZE5JhGAnEtr
+         a8rQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5btrprgPe6DJDrsdszvRq5B59uezT4kCODMQ0Km8Lcg+IgwYipgbMzxV7o04UhQiiSf0Pg50kSRo=@vger.kernel.org
+X-Gm-Message-State: AFuF++miBu2vKyABq73mKxFea62+Ra/E0xqiUfhlD2rh3HfFmEblNCIG
+	8LHCrcAK7S9fAxq/8di/x+pi9ysGSyV/Vj1tLIcRGOJ7HN8FOkjyJKuY9PJQjI7m3B+bugoNwR6
+	+pG0PzMzbZBwPLi976sTIR63XRZX0LkTqJ1LZ3hBTxU/zheHL+rwdq6ulXla/Y+8=
+X-Gm-Gg: AR+sD11bXTrjaeaQxCMvYouivf+ROjdqUBRhktpYd9CU9v0Ls8YONUQVHKelihxV4OJ
+	bO8rrG4n7T3QGBV4KSqd88Q2bJZQkIGjBOIwcD3e7DYLdYb4TvBZMzauSArHMz0IG6gnWqhlpur
+	HQLT9EMmaubGuLaeoxMUFKxrionqEzkC1fb9mLB2KV65pM+OBVvJFIydpkKE0me6VeUvpBBhBZh
+	iGKhgFstxxtMT+/unaFHN7+s4MS2+HmpTVRGJFf3GMKg0nMXUy3cGc38Vw/DmpQIeCapGfNnLla
+	Vlf7fm7hw0c15/3sMlKLipTAtn4tkx7jpFvXamIrHXy76dDlfJ6yzFk04v2LNtWzCYkrvbAXR9x
+	nUH38HH48kduJr/3ZYmaz6KEQwHDrMtfD1Q==
+X-Received: by 2002:a17:902:ec8c:b0:2d3:b109:bd7c with SMTP id d9443c01a7336-2d61a064bdemr393425445ad.4.1787581572247;
+        Mon, 24 Aug 2026 07:26:12 -0700 (PDT)
+X-Received: by 2002:a17:902:ec8c:b0:2d3:b109:bd7c with SMTP id d9443c01a7336-2d61a064bdemr393424625ad.4.1787581571695;
+        Mon, 24 Aug 2026 07:26:11 -0700 (PDT)
+Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d676761fbcsm18523275ad.4.2026.08.24.07.26.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2026 07:26:11 -0700 (PDT)
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Subject: [PATCH v4 0/2] spi: qcom-geni: Use GPIO to notify master of SPI
+ target activity
+Date: Mon, 24 Aug 2026 19:55:58 +0530
+Message-Id: <20260824-use_gpio_to_notify_master_of_spi_target_activity-v4-0-fde2ebf043db@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] i2c: qcom-geni: Use geni_se_set_rate() for setting
- source clock frequency
-To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
-        konrad.dybcio@oss.qualcomm.com, Sudeep Holla <sudeep.holla@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Ulf Hansson <ulfh@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
-        Andi Shyti <andi.shyti@kernel.org>
-Cc: chandana.chiluveru@oss.qualcomm.com, arm-scmi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-i2c@vger.kernel.org
-References: <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-0-61171ab1cdce@oss.qualcomm.com>
- <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-7-61171ab1cdce@oss.qualcomm.com>
-Content-Language: en-US
-From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
-In-Reply-To: <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-7-61171ab1cdce@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDExNSBTYWx0ZWRfX5ZKG7+HBSGtF
- de0jtPcgrL/tMfK/JS2K1ozVIcejQn907NDA4gcJD+lH9g90og5ElyZYNY1E0605gF8SaKl5wyE
- YloAnrxFAfMxXiZcY6XKkYwQEb1/DJZuI44YAd/4zKHehsqSsh6yvdlkk8VeNq8Xs5WM3VIarFG
- 7f995XVUkmI1iOGsSGyqRs6KzRXOvuUtOPR6eCReFMp2hTsUKTTJxtzWGunT9tKfoHB15kWOUR3
- qphEqOxCskX49hMBMw+6ihBmIhJnU3RFzjW8+bseZoX8BWHtpu2ewhPvg/dzA+XhYk/wExlYIRr
- 6utC336+x4S3aUyahlT7sHcD33eNBrttNpsI+m8AiHIyhdZl/4FUW4rK2Z2MMKU3mtr5PYsl+Kb
- Bqxuju0uOqt+mf1R4YOYY5HpZMcsmxsa2BdsAnLbpGm/0sqAAkpzrFisH4Mlxi49VQuKRQjb0Ub
- jrzyyWzt3gM4NzYkoDA==
-X-Authority-Analysis: v=2.4 cv=JL0LdcKb c=1 sm=1 tr=0 ts=6a8c4a29 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+X-B4-Tracking: v=1; b=H4sIAHZUjGoC/53OTW6DMBAF4KtEXpfIP2BwVr1HFFnGjMlUBVPbo
+ KKIu9ckmyzaRbMZ6UlP870biRAQIjkdbiTAghH9mEP5diD2asYeCuxyJpxySWuuijmC7if0Onk
+ 9+oRu1YOJCYL2TscJdTKhh6SNTbhgWovKSW4UsLKpK5LfTgEcft/J8+WR49x+gE27szeuGJMP6
+ 33Twvbeg2+o/D+/sIIWVkhhVFt1Tqp3H+Pxazaf1g/DMR+yr1j4k8PqFxyeHVV2DJwTrK7cH45
+ 4dpoXHJEdYFYB7UzbduYXZ9u2H6sZbmnZAQAA
+X-Change-ID: 20260729-use_gpio_to_notify_master_of_spi_target_activity-5f62a9e14875
+To: konrad.dybcio@oss.qualcomm.com, Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc: chandana.chiluveru@oss.qualcomm.com, Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Praveen Talari <praveen.talari@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787581567; l=2479;
+ i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
+ bh=0ShdK6homdK1I4Ywr5MsXY3zf48ku883tIe9a+2wHr4=;
+ b=vClp/Vnl3qxxU6XUxaggYIocXx5KsFznab0WvxYNbzLNYsnzX96SfSCWijywuhyNhcvSr6CgI
+ 87RRfxRXGpZCYMGHJya7tMO1nhCtwZ0vsHqGGAxoditVW5yRdCquisr
+X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
+ pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI0MDEyMSBTYWx0ZWRfXxSPInZr1Os93
+ qL8qTS9+5XIV2oi0NkLnyEQNuyINu+5FB8nW8QRVY/t08MjE4/+qV5b1WaRvx56LHPVqBGZud/2
+ Bk5nN13z83qeHsnuJ0jNgmQLe3qKfRpKpt1BJs3Re+iaKKi4ILGaKdsOSA+UAnELceR8Aib7uU6
+ pLSjdinHu6bq7mLN3Bft3+aPFeVJBY73z/CxkhZBjETnn4iikfet0zbEZXFrwYRkaGijn3o+oHt
+ joOIjcmvnm7GhjFYAvmTnlsVS+TBMxmS7es/cYtjL/hghGVf3I+/MDfGhC4G4k8ivDlhAAvTfse
+ CXEyXMl/lpMhzqxfxT4m9UU9uaWf7oC7it8a7mmrlB8ij5Pz1TUOUwSR4nOyVTN8c+299o5k8IT
+ TER7PqNqDdJ1lD6GSodA1V9l3H4GJymxICPLcIjK7WGjKh7sepi8OWm8hhKrSkLREMigAIhG4iZ
+ SzA34jNXi07M1JY8zqQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDEyMSBTYWx0ZWRfXwzp+AkkH8Tzq
+ XUUCk/soQSYSAQExVyPmuSN+P1UsUtPytg3AEC6Zo4X/jAEusnGeF1o0h0wHvWAInKWvxY+EeK9
+ irNGpzKM4DlrOaMgS7vJRwvUlgvjyjA=
+X-Proofpoint-GUID: daO0jiiUgBMLJ9fwzU9gpnIJlES8XGLv
+X-Authority-Analysis: v=2.4 cv=IL8yzAvG c=1 sm=1 tr=0 ts=6a8c5485 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
  a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=bL_AZauQwEGehf-WiMEA:9 a=QEXdDO2ut3YA:10
- a=iS9zxrgQBfv6-_F4QbHw:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwODI0MDExNSBTYWx0ZWRfX6gbS/NuBj3em
- rlYZ4sCHOqVTu4z7qU9nnVAxI5C79cf4XBCMxc9J8DTvPuI6lvM6uIbBSTbH0MJGjnNBuI8quCt
- tgfXpQ53xlc8vosWL7eZtaFnj2GzaP4=
-X-Proofpoint-GUID: 5IRtNNofHzmEy3I7dmG_MrLE-SQit2WH
-X-Proofpoint-ORIG-GUID: 5IRtNNofHzmEy3I7dmG_MrLE-SQit2WH
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=Qt6qZxy4Ex0I4-ZmshwA:9 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22 a=FO4_E8m0qiDe52t0p3_H:22
+X-Proofpoint-ORIG-GUID: daO0jiiUgBMLJ9fwzU9gpnIJlES8XGLv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-08-24_04,2026-08-24_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- adultscore=0 bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 malwarescore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240115
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608240121
 
+When operating in SPI target mode, the GENI controller relies on an
+external GPIO to notify the SPI master about the target's active state.
 
+Add support for an optional device GPIO that is asserted when a target
+transfer begins and deasserted when the transfer completes, is aborted,
+or hits a timeout. This allows the target to explicitly signal its
+availability to the master and ensures the GPIO is released in all error
+and completion paths, preventing the master from observing a stale or
+incorrect target ready indication.
 
-On 8/5/2026 1:27 AM, Praveen Talari wrote:
-> On the SA8255P platform there is no Linux clock handler for the SE source
-> clock; resources are instead managed by firmware via a genpd performance
-> domain. The I2C driver therefore relies on geni_se_set_rate() to apply the
-> fixed 19.2 MHz source clock frequency expected by the SCL divider and
+The ready GPIO is intentionally made optional and is requested only
+when target mode is enabled. This preserves existing behaviour for
+systems that do not require the signal and avoids regressions on
+deployed platforms where the GPIO is already controlled from userspace.
+Targets without a ready GPIO continue to operate unchanged by using
+devm_gpiod_get_optional().
 
-somewhere it's 32 MHz also and this may change too ?
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+---
+Changes in v4:
+- Used devm_gpiod_get_optional() instead of
+  devm_gpiod_get_index_optional(), since a single GPIO is requested.
+- Dropped the redundant mas->ready_gpio NULL checks before
+  gpiod_set_value(), since it already handles a NULL descriptor.
+- Renamed target_gpio to ready_gpio to match the property name.
+- Link to v3: https://patch.msgid.link/20260818-use_gpio_to_notify_master_of_spi_target_activity-v3-0-e1c9e0dabbda@oss.qualcomm.com
 
-> counter values programmed by qcom_geni_i2c_conf().
-> 
-> Call geni_se_set_rate() directly from qcom_geni_i2c_conf() so the
-> configured frequency is applied to the correct device (the perf domain
-> device on the firmware-managed path, or se->dev otherwise) without the I2C
-> driver needing to know which resources_init() variant is in use.
-> 
-> Drop the now-unused set_rate field from struct geni_i2c_desc, the
-> geni_se_set_perf_opp() usage on the SA8255P variant, and the unused freq
-> parameter from qcom_geni_i2c_conf().
-> 
-> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-> ---
->   drivers/i2c/busses/i2c-qcom-geni.c | 13 +++++++------
->   1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-> index a23554d101fd..4561e2d235d5 100644
-> --- a/drivers/i2c/busses/i2c-qcom-geni.c
-> +++ b/drivers/i2c/busses/i2c-qcom-geni.c
-> @@ -213,11 +213,11 @@ static int geni_i2c_clk_map_idx(struct geni_i2c_dev *gi2c)
->   	return -EINVAL;
->   }
->   
-> -static int qcom_geni_i2c_conf(struct geni_se *se, unsigned long freq)
-> +static int qcom_geni_i2c_conf(struct geni_se *se)
->   {
->   	struct geni_i2c_dev *gi2c = dev_get_drvdata(se->dev);
->   	const struct geni_i2c_clk_fld *itr = gi2c->clk_fld;
-> -	u32 val;
-> +	u32 val, ret;
->   
->   	writel_relaxed(0, gi2c->se.base + SE_GENI_CLK_SEL);
->   
-> @@ -233,6 +233,10 @@ static int qcom_geni_i2c_conf(struct geni_se *se, unsigned long freq)
->   				 itr->clk_div, itr->t_high_cnt,
->   				 itr->t_low_cnt, itr->t_cycle_cnt);
->   
-> +	ret = geni_se_set_rate(&gi2c->se, 19200000);
+Changes in v3:
+- Rebased on linux-next tip.
+- Link to v2: https://patch.msgid.link/20260817-use_gpio_to_notify_master_of_spi_target_activity-v2-0-94d1eff3175f@oss.qualcomm.com
 
-hard code ?
-May work currently, but if higher frequency support added, source may 
-change.
+Changes in v2:
+- Used ready-gpio instead of target-gpio.
+- Updated commit text.
+- Link to v1: https://patch.msgid.link/20260806-use_gpio_to_notify_master_of_spi_target_activity-v1-0-c363a9b5df69@oss.qualcomm.com
 
-Also you have added in commit message, but add a comment also here.
+---
+Praveen Talari (2):
+      spi: dt-bindings: Document ready-gpios property
+      spi: qcom-geni: Use GPIO to notify master of SPI target activity
 
-> +	if (ret)
-> +		return ret;
-> +
->   	return geni_icc_set_bw_ab(&gi2c->se, GENI_DEFAULT_BW, GENI_DEFAULT_BW,
->   				  Bps_to_icc(gi2c->clk_freq_out));
->   }
+ .../bindings/spi/qcom,sa8255p-geni-spi.yaml        |  9 ++++++++
+ .../bindings/spi/qcom,spi-geni-qcom.yaml           |  9 ++++++++
+ drivers/spi/spi-geni-qcom.c                        | 25 ++++++++++++++++++++--
+ 3 files changed, 41 insertions(+), 2 deletions(-)
+---
+base-commit: e6664f2b33db9b6811eb4cec109f06cb2b4f458d
+change-id: 20260729-use_gpio_to_notify_master_of_spi_target_activity-5f62a9e14875
 
-[...]
+Best regards,
+--  
+Praveen Talari <praveen.talari@oss.qualcomm.com>
 

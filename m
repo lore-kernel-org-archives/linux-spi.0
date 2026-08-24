@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B6630BB8A;
-	Mon, 24 Aug 2026 17:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2673453A50;
+	Mon, 24 Aug 2026 17:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787591260; cv=none; b=L9rWdFvXo24ClYuWdUDcaPDUo+fOQpd/hJC1ihYKu2Fqew2dL3Z0tkyhic9JQ7fp/Q6Md7UVvLzZG3Kh1eMSzlMRor+NIe4ME2dXH4X2erng7JQOvtrKqPY5Ux0GdsutMvIURmCONEWkmu6hbfMDvr8Gaznx4PpD9LFiS5b4bBQ=
+	t=1787591400; cv=none; b=YGZBiTn4CS0XEkQzEpDZTyffz/ivdcy7NAHwC8J4eEwmiDaG/GNDtATuw/DvhK5BY7dvYUkpQM5X7u5ev3hnmINl4rWjjYOXWffZ8+BL6mpHgFFlRR7OJayJSuEkNyYmn9QJqaLikMReD79mxPZWZyNaNvo3HdmNZMVOSJB5vB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787591260; c=relaxed/simple;
-	bh=5zzBlRRW+p4N0hvKvXFBc4noB+H2gMROn6oFNdVBBWk=;
+	s=arc-20240116; t=1787591400; c=relaxed/simple;
+	bh=FgChfMGiLK32deSNrFItn2zmIlLtFV0wAcS3/9wz4s4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q5NgEval9mnclF+abl0K9yI9WQ5MVE+ZqYu+BCXSRQO5Yyr/6nnwh14mb5Oe8KItlugWe6z/FiwSyWPZGCZjZojbdXAoYkTQtJXzk+FSSExZN3IXnewKnWCEyvhcvMIOZR9t4T/SnhprdVVMvy/mq1T5OJsAid2zs1C6KwvOCbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDjGCzTx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqk0UV0/79oHIHexBFtNtGkqDMcAdoMVvq5rUkFlkpZR5n517W3iwAXQ9qnVZkBHds6bWXgm/YwB/YrxsPa6+QL9CqTgr7SFcjZt9eYMTPtg7/k71zOqpYA7RIjXMf49EBYEUEENxnju3Y0O0id97rD4I2EpobKuzV6yKAf2fTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBE4zd6g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDjGCzTx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D241F00A3A;
-	Mon, 24 Aug 2026 17:07:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBE4zd6g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B490A1F00A3A;
+	Mon, 24 Aug 2026 17:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787591257;
-	bh=5zzBlRRW+p4N0hvKvXFBc4noB+H2gMROn6oFNdVBBWk=;
+	s=k20260515; t=1787591396;
+	bh=FwmTQgduIcESVM14ioF4YCJ2FYEmLMqGqgTSkuep9b0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kDjGCzTxIgb8KwapjiPT47fITOVRTacMOC7NJ9ad4fq4DXT7zGRZ6APX89uJwhIjO
-	 BBBs6RYmqZlCpHKUncVKfO2Swe92V+mHp7r01TZYB7y5HnDsZSXLSPPr++kenQkYi1
-	 uaRH8vzf4y8DtyCfIFdRbsCbkf4+q8m04oSs0NOvsgpUkDsSnUMeOl80OVQ3EY1Pq5
-	 HOtphptYpSwbHgItmgncT4ER/oHKNzXeNqU+T5WYOPrJo0PVRjtvqRAr8nqrJ5fO/E
-	 XB2xwRznJfsKC7YPzMwQ8DfwXWLjiByb7UYJDqfjqzUcRRWg3O6thsuieywkOwgO9C
-	 L3upEpQL2DZXw==
-Date: Mon, 24 Aug 2026 18:07:29 +0100
+	b=KBE4zd6god5alO0ShtW7GkVbW2bSx08dA6sgkajjGqtJDJMdqBhppvL3/AAmYh7uY
+	 aFqnh+QUazqvPsdVBAswvmlh4AyFhXUQ1AkzPgJlHGXmWbjpaatrszxSdcp9sKwEDp
+	 N+jVv8V3zL1ZHJXvRUN2XjSNBEPkjHvdb4GhnFBpS8i81zAKYZfkHZe17rNg3afUr8
+	 4eGiNf62laEB6aBRCozDokoSUqPCZnZbHHxDbkOEjZZuHEcJTjlmFqoskco0VFmqLC
+	 PHhqx1p837AmjA7rcv9u5A+ATtHL99hRHdLtx0hgtrXvN1xLsES/yoJ/71YCAY8cNZ
+	 /0DZei7eWWKSw==
+Date: Mon, 24 Aug 2026 18:09:48 +0100
 From: Conor Dooley <conor@kernel.org>
 To: wangjia@ultrarisc.com
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -53,11 +53,11 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
 	netdev@vger.kernel.org, dmaengine@vger.kernel.org
-Subject: Re: [PATCH 07/12] dt-bindings: i2c: dw: Add compatible for UltraRISC
- DP1000 SoC
-Message-ID: <20260824-oppressed-jogging-5b055ca274b1@spud>
+Subject: Re: [PATCH 08/12] dt-bindings: net: snps,dwmac: Add compatible for
+ UltraRISC DP1000 SoC
+Message-ID: <20260824-bride-food-052b313e4b76@spud>
 References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-7-61ab7aebe9e5@ultrarisc.com>
+ <20260824-ultrarisc-dts-v1-8-61ab7aebe9e5@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -65,35 +65,73 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ypjxoWnZgSDokRmL"
+	protocol="application/pgp-signature"; boundary="67g/wgnDkPTAfNY1"
 Content-Disposition: inline
-In-Reply-To: <20260824-ultrarisc-dts-v1-7-61ab7aebe9e5@ultrarisc.com>
+In-Reply-To: <20260824-ultrarisc-dts-v1-8-61ab7aebe9e5@ultrarisc.com>
 
---ypjxoWnZgSDokRmL
+--67g/wgnDkPTAfNY1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 24, 2026 at 01:54:20PM +0800, Jia Wang via B4 Relay wrote:
+On Mon, Aug 24, 2026 at 01:54:21PM +0800, Jia Wang via B4 Relay wrote:
 > From: Jia Wang <wangjia@ultrarisc.com>
 >=20
-> Add the SoC-specific compatible string and use the generic one as fallback
-> for the UltraRISC DP1000 I2C controller.
+> Add the SoC-specific compatible string for the UltraRISC DP1000 GMAC
+> controller to the DesignWare MAC binding.
 >=20
 > Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+The dts may not be right, but I am also a bit concerned here.
 
---ypjxoWnZgSDokRmL
+This binding permits 100s of combinations of properties, of which only
+a very limited set can be correct for your device. Just adding the
+compatible permits all of this variation.
+
+Please add some restrictions.
+
+pw-bot: changes-requested
+
+Thanks,
+Conor.
+
+> ---
+>  Documentation/devicetree/bindings/net/snps,dwmac.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Docu=
+mentation/devicetree/bindings/net/snps,dwmac.yaml
+> index 2449311c6d28..2ed4564ae99d 100644
+> --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+> @@ -119,6 +119,7 @@ properties:
+>          - starfive,jh7110-dwmac
+>          - tesla,fsd-ethqos
+>          - thead,th1520-gmac
+> +        - ultrarisc,dp1000-gmac
+> =20
+>    reg:
+>      minItems: 1
+>=20
+> --=20
+> 2.34.1
+>=20
+>=20
+>=20
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
+--67g/wgnDkPTAfNY1
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaox6UQAKCRB4tDGHoIJi
-0tDgAP4maHyBh0jMjn9z5RCMaYOe0lnbfrGgHf1xQlVCs8SjgwD+KLe1U3wfT4tr
-HDrk17RO7KEIAysOIRzo2oG2VbfibwI=
-=nYgQ
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaox63AAKCRB4tDGHoIJi
+0nLRAQDinWB+XfM2/QTXUk4Ody64yC5jV6BrjL3lw7bW3tgNPAEA9v9bujPOE9gS
+y6K7xdapP5bKe9eVLZuBpEH8dYS52wQ=
+=xtCe
 -----END PGP SIGNATURE-----
 
---ypjxoWnZgSDokRmL--
+--67g/wgnDkPTAfNY1--

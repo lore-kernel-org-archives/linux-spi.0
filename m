@@ -1,77 +1,78 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0C23515C9
-	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 16:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819FA38838F
+	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 16:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787675008; cv=none; b=R7cgJc0iCXOyDrlkqMxWr5ZSxxoG9c5N+e1VocwsWfA3fnQfiUFFbAudJ8Lo0DYHRi89Ilh41zcR/R/nHSmELiVvv6tE2K0uXabSBEuVrJYzxqe0vK+9lIMbBfBT8SfKA7LJMgP8woEFvxf3Jr/SSP6ouhC8pyVTRSDCvUWz9kQ=
+	t=1787675788; cv=none; b=Tm1x60hrdmMe1yUEPd7fwRyZJKvquZIUhoNfi8o9bSdY9YpOmSCc+CrhVdaafOnNZ5hcPthfNoPMrMgP2FsAzHhXAQWZyO2vjeEeSfjMbfOXXpPSivCuxqFBfLTaCFiYajnDqpta3eVpXGxRvOj1vudpA5Xs5fHdv/dRHmLHUbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787675008; c=relaxed/simple;
-	bh=ysoHY3SLi8Xlfwy2rIEXN2Q/taJhPUpIC77tj83FcYU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D7mUO94zK3BWi90nD4o7XxfHx5jHeWOu36G6UqC+Ce0iHwyCrH7V3gjbh/KMd7hY8fIGJQICJkex4Nph31P44IEygjIUjw2jWF4qsEfYLLo9a0q6sql9o5/q1eT1IJ1o21Fz3fEYh8Zffyrfj4iVB37WGCquaJXhysJljmpgnKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJkxLZ5e; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1787675788; c=relaxed/simple;
+	bh=i8eodjsuIdPpCX04HGaCZ6BaFipCim8Lde/X299xfiY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aMY6vfa4ADjRujRUbHBdnM67C2Pq7YQoaiRbHL2eIdbliqDMLTkt8y9a3S6m6GD1g3niE7dtboGGdFEs1MvvFTTW/8dLxzy7VecXbn/khvuXBsn6AfF3kzpmngZuufnrW5SShPPAlxny9sO5lVu3QzB18JMNE70Vear73N0guqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IpOx8Czy; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJkxLZ5e"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d560775ca2so467235ad.1
-        for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 09:23:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IpOx8Czy"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-84830c774a0so62410b3a.1
+        for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 09:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787675007; x=1788279807; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1787675787; x=1788280587; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1WQ9kthHmMpag/c69Wm9Q+6Otvy5A1GAgbAGrjlGGoE=;
-        b=ZJkxLZ5eGpqqdoOsh5D2mHWmP1B75jx5A0wtOtjJFzzwiCBxe4pl7PPGTA+K2K4XCJ
-         cdgVOWcMvV5Fn3fQJUW/TboBcsvYn4Im86Hpbq6cXvUr7sYrXLAP6GvuhD6UbtBu4NDh
-         GEPZcwuaEhiNcF91mhgus6kOJ8yd9vbKWnDmbHR9edTXLeQQwUkc3AV9Bxn/XwjSlusz
-         P52YSWNaE3uyAJE2wc3komRBuPQBidpYiWmWDYrCn3HSBohV5VXSbhm/7DKyk28o6U44
-         IdH5Hyo3HYPNaxYmx3EocNnVXhQ5ilbNhrUgIaR8w1hjM1BjkSkpnbdTdvnviU44r2+t
-         xkBA==
+        bh=Wodm8m2zjhUXQujtK3fCFfHBkirwYTQboCwEV2qWqmc=;
+        b=IpOx8Czy11N6uMsdJH25tG+zjCz8mTarfl58DnJ6rnPpwmslXbKLeqaajQnomXgckv
+         mu9yW896fikk9wO6xVl9PJSCnO1IUgWvCIEYWE0EWrGvKhQD+RI2Lz+nXelnViA2bapS
+         CN31c7si5ofDrvQfLQ2lYlB0qWcXWPKVqcllrJDPtdHM+aKrXh4IXnS3LA4ixNyH+9ne
+         u/XIYqA2eJzJj6L3g6DARbJZ0QG6GCApUnAqayTNdzPDeto4uPPvu1u462CP6vb+ukxu
+         TpsNVFvBSE/hL/Oku7dntQ567dXIuxTOdp4POfgU7qOZgIAUJzJVa4zdVJpgtHTkyv5d
+         GYzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787675007; x=1788279807;
+        d=1e100.net; s=20251104; t=1787675787; x=1788280587;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1WQ9kthHmMpag/c69Wm9Q+6Otvy5A1GAgbAGrjlGGoE=;
-        b=Y+2qJ/f+qt65bEjgCs6A8xI6ortmTosr6OAg3j7BB3Ij63JDLjQj+vbU/VkNtkNl+g
-         P1R79iRNJMJbQ8PvuYY++msMM9pcHvhTfasUpDWpqcEUtLJMy/Qq910T+Ra/ET5mmcyz
-         5F8xayevhUix5NdAVzMOka9ciEdEzTe6egktSVmXJQJhngirCXAjxmOdQkFJzVxzBs+A
-         dYxPGiRnnduRyfXdcp3IyNLsEjiVUucxl62YOJmuACKqZn0Q9OENirDXb4cqIHpgP1o+
-         VjlNwPPwaIEfkJSmM6trM9pkfKaQY28fURiwbJzdoZ0sqCum0rjG09KtBsBYynYCHsk2
-         gvRg==
-X-Forwarded-Encrypted: i=1; AHgh+RrDP2dC+gdipJEeK/f8vGmJ/I66QiVvmz3gdlDoQoOfm1cBSssrpruBq2ZMd+HPN6WH+zrnqYDECkU=@vger.kernel.org
-X-Gm-Message-State: AFuF++l3ONG5NyIxLd//OwpaELbBH8K2+uxdkA4CP7fkV4p0rA3QjUYP
-	qfCNxryGxO04AXMNnzWBtYb3nYOnz9IZFvR7nFGoh4bJ216avcu2ckaK
-X-Gm-Gg: AR+sD13Tf1PrUh/VKaqIMLdLtauzfDBeIfj/js+h66+jifHocqWtUSoiWbrw+PActii
-	n5RPERyRkZzC2lDL5FgMtjhSebogpiZZQV/xOhrNNbSCkggKeUFEWZ2AFXW61lwSYgxD1R8fqKH
-	oJrzRUCCFR/uq0o3C3ENiDefgAntyz5KjKwfQy54KQO6eaBUP5ulvPJWkG48rbgJmjHBJKq0Iky
-	fpa/oSrOPGgB8mUxrKrnDbXEG5KUNySVHQCSdxRAWqoPrsWnRUcCzIwm/qBHpAkrwIyJkvHh2TF
-	3I1Bdtzkp8m7P1DIxheAkM2Gvxjt6r23g5n/7xKIlM++NH2/+f+bxxKec2LTCt7LbJ9qH9o87bY
-	gRV33VPNN0sUhlA0erT3+hqZ+Y8kw4PqsJuQW4opKKR3KA4L3gZtcUfvHfTtEFcKrYYViLkNoJZ
-	uI3MYznaAqyzZZs06yrDCLZbsjCeKYU2xfEgiIYo30CEZf2SgCP/JjCqeTwXZz+8yJ3tovOSmEe
-	+mr9w==
-X-Received: by 2002:a17:903:b85:b0:2d6:ccc5:a3dd with SMTP id d9443c01a7336-2d6ccc5a4dbmr260612805ad.4.1787675006324;
-        Tue, 25 Aug 2026 09:23:26 -0700 (PDT)
+        bh=Wodm8m2zjhUXQujtK3fCFfHBkirwYTQboCwEV2qWqmc=;
+        b=mj2UPjyhQiVj9GeFdQW+nmy7rFBUKeC1FG2afYm+y738XjGZY99ZNTWxHeBCL4dbDN
+         UF9RI8W4OHXb8/ZrJxdg5APuJgb+XMIRjfxLRh6K+cVFrs3LATCn7oA4/vUrh8EFL8ad
+         X14JMgzuhfeP8bfy1r6RpluZjTbC7AZjkr5HvybGy6wpx5TZZFxZJMIVYJNedfoqpk9b
+         Z39Bn6zuGSpcIRi2ZWZgy6To4E4CYjo6GzOITd4Cm5EIOVM/bxuoacL/KBYFjJvpNIXc
+         4Djsuu7ayuBdTQsH95WV9c3CZU2Lfg3N2ZBDTA+IyFIwCfivrDTDJ9gGkdKR0WAjMeGY
+         5xqA==
+X-Forwarded-Encrypted: i=1; AHgh+RoRl/Z5PBz3ItVsdAHqhcCFT0nM9D7h4zYTfW/R9DNt7HeI4ze3081yH+V+pWxHeBpxjsE4Q4txe+c=@vger.kernel.org
+X-Gm-Message-State: AFuF++n97M9VDwuy9FQUAMMa1/GtywlTcsOy1PvWRX1aC4dzD5l9l/Sq
+	h0B2i/ls9c364atF6lbTn5J4CNYThwflljNcllkEUU+3iKyOVTFrtLdJ
+X-Gm-Gg: AR+sD10P+cjjVkQBfLNhXRVajuAz4Tl7telmtrI/LZCW4THIvY0/L8lSQUcZC0IauL1
+	A5UfXrjRTcqRMERJOgWihIF8BuY3E/VH/gA+6zIQrouP1wmK34h6zAEn5Ap6qXTdQGH/79NS4fq
+	S34WtRQh1kTCVR0Uu1kcbqgfQLmvWUKzFVRJOsWPwZikAeeHFsH6ZGmJQPK4+Ml5tuhmFxW9U5O
+	pgQfgNZrr8z6tWkiN+YjObLoTWXyLlCkUJvLdijb7FLgnBfiDtrzOOrnSXPbISo/ORwYZLTjXoL
+	yF1yNF7UOKldJJv3pG7u+G+orZHOT5+4tDgoBrvi2LD3aTzzGVf0Ep0QQescCFX79Uapm4b1mJX
+	BgRkDkudJ9jF8VWbopTB0v2FA4TqnjaNTs+5TM9o1K92r0nmRTZv7mvg3eYquAWM3ViDHVdfdrE
+	YeiLQfWlKPckxXI0YEPWB0PTLir2s7nM8S2KQc6YFjmhCKB6/bhniV2E/CqsT8oy1b7GJlA/gSi
+	gkwSw==
+X-Received: by 2002:a05:6a00:7488:b0:853:2e35:ad84 with SMTP id d2e1a72fcca58-8532e35bfd2mr3411792b3a.14.1787675786854;
+        Tue, 25 Aug 2026 09:36:26 -0700 (PDT)
 Received: from inhnjlux1020.ls.ege.ds ([2406:b400:53:dfb:c17a:6cf8:3d2c:cd28])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2d704c11ac2sm540925ad.68.2026.08.25.09.23.21
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8535cdc03d6sm88527b3a.32.2026.08.25.09.36.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Aug 2026 09:23:24 -0700 (PDT)
+        Tue, 25 Aug 2026 09:36:26 -0700 (PDT)
 From: Udaya Kiran Challa <challauday369@gmail.com>
 To: tsbogend@alpha.franken.de,
 	robh@kernel.org,
 	krzk+dt@kernel.org,
-	conor+dt@kernel.org
+	conor+dt@kernel.org,
+	broonie@kernel.org
 Cc: skhan@linuxfoundation.org,
 	me@brighamcampbell.com,
 	linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Udaya Kiran Challa <challauday369@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v5] spi: dt-bindings: microchip,pic32mzda-spi: Convert to DT schema
-Date: Tue, 25 Aug 2026 21:52:57 +0530
-Message-Id: <20260825162257.77042-1-challauday369@gmail.com>
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v4] spi: dt-bindings: microchip,pic32mzda-sqi: Convert to DT schema
+Date: Tue, 25 Aug 2026 22:05:51 +0530
+Message-Id: <20260825163551.79603-1-challauday369@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -81,53 +82,48 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert Microchip PIC32 SPI controller devicetree binding
+Convert Microchip PIC32 Quad SPI controller devicetree binding
 from legacy text format to DT schema.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Udaya Kiran Challa <challauday369@gmail.com>
 ---
 Changelog:
-Changes since v4:
+Changes since v3:
 - Update the binding maintainer to Thomas Bogendoerfer
 
-Link to v4: https://lore.kernel.org/all/20260814083221.34606-1-challauday369@gmail.com/
-
-Changes since v3:
-- Change maintainer to SPI subsystem maintainer
-
-Link to v3: https://lore.kernel.org/all/20260617101009.148851-1-challauday369@gmail.com/
+Link to v3: https://lore.kernel.org/all/20260814101733.46406-1-challauday369@gmail.com/
 
 Changes since v2:
-- Add cs-gpios to required property
+- Change maintainer to SPI subsystem maintainer
 
-Link to v2: https://lore.kernel.org/all/20260615115311.515404-1-challauday369@gmail.com/
+Link to v2: https://lore.kernel.org/all/20260625060903.14661-1-challauday369@gmail.com/
 
 Changes since v1:
-- Rename schema file to microchip,pic32mzda-spi.yaml
-- Update subject prefix to match SPI DT binding conventions
+- Drop maxItems and add items list in 'clocks' property
+- Remove unsed label from example node
 
-Link to v1: https://lore.kernel.org/all/20260614175005.435826-1-challauday369@gmail.com/
+Link to v1: https://lore.kernel.org/all/20260624061329.130468-1-challauday369@gmail.com/
 ---
- .../bindings/spi/microchip,pic32mzda-spi.yaml | 82 +++++++++++++++++++
- .../bindings/spi/microchip,spi-pic32.txt      | 34 --------
- 2 files changed, 82 insertions(+), 34 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/spi/microchip,pic32mzda-spi.yaml
- delete mode 100644 Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+ .../bindings/spi/microchip,pic32mzda-sqi.yaml | 55 +++++++++++++++++++
+ .../devicetree/bindings/spi/sqi-pic32.txt     | 18 ------
+ 2 files changed, 55 insertions(+), 18 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/microchip,pic32mzda-sqi.yaml
+ delete mode 100644 Documentation/devicetree/bindings/spi/sqi-pic32.txt
 
-diff --git a/Documentation/devicetree/bindings/spi/microchip,pic32mzda-spi.yaml b/Documentation/devicetree/bindings/spi/microchip,pic32mzda-spi.yaml
+diff --git a/Documentation/devicetree/bindings/spi/microchip,pic32mzda-sqi.yaml b/Documentation/devicetree/bindings/spi/microchip,pic32mzda-sqi.yaml
 new file mode 100644
-index 000000000000..4669b521fa1f
+index 000000000000..c8f58c506087
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/microchip,pic32mzda-spi.yaml
-@@ -0,0 +1,82 @@
++++ b/Documentation/devicetree/bindings/spi/microchip,pic32mzda-sqi.yaml
+@@ -0,0 +1,55 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/microchip,pic32mzda-spi.yaml#
++$id: http://devicetree.org/schemas/spi/microchip,pic32mzda-sqi.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Microchip PIC32MZDA SPI Controller
++title: Microchip PIC32MZDA Quad SPI controller
 +
 +maintainers:
 +  - Thomas Bogendoerfer <tsbogend@alpha.franken.de>
@@ -137,112 +133,69 @@ index 000000000000..4669b521fa1f
 +
 +properties:
 +  compatible:
-+    const: microchip,pic32mzda-spi
++    const: microchip,pic32mzda-sqi
 +
 +  reg:
 +    maxItems: 1
 +
 +  interrupts:
-+    items:
-+      - description: Fault interrupt
-+      - description: Receive interrupt
-+      - description: Transmit interrupt
-+
-+  interrupt-names:
-+    items:
-+      - const: fault
-+      - const: rx
-+      - const: tx
++    maxItems: 1
 +
 +  clocks:
-+    maxItems: 1
++    items:
++      - description: SPI source clock
++      - description: SQI register interface clock
 +
 +  clock-names:
 +    items:
-+      - const: mck0
-+
-+  cs-gpios:
-+    maxItems: 1
-+
-+  dmas:
-+    items:
-+      - description: RX DMA channel
-+      - description: TX DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: spi-rx
-+      - const: spi-tx
++      - const: spi_ck
++      - const: reg_ck
 +
 +required:
 +  - compatible
 +  - reg
 +  - interrupts
-+  - interrupt-names
 +  - clocks
 +  - clock-names
-+  - cs-gpios
 +
 +unevaluatedProperties: false
 +
 +examples:
 +  - |
++    #include <dt-bindings/clock/microchip,pic32-clock.h>
 +    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/gpio/gpio.h>
 +
-+    spi@1f821000 {
-+        compatible = "microchip,pic32mzda-spi";
-+        reg = <0x1f821000 0x200>;
-+        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
-+                     <110 IRQ_TYPE_LEVEL_HIGH>,
-+                     <111 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "fault", "rx", "tx";
-+        clocks = <&PBCLK2>;
-+        clock-names = "mck0";
-+        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
-+        dmas = <&dma 134>, <&dma 135>;
-+        dma-names = "spi-rx", "spi-tx";
++    spi@1f8e2000 {
++        compatible = "microchip,pic32mzda-sqi";
++        reg = <0x1f8e2000 0x200>;
++        interrupts = <169 IRQ_TYPE_LEVEL_HIGH>;
++        clocks = <&rootclk REF2CLK>, <&rootclk PB5CLK>;
++        clock-names = "spi_ck", "reg_ck";
 +    };
-diff --git a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt b/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+diff --git a/Documentation/devicetree/bindings/spi/sqi-pic32.txt b/Documentation/devicetree/bindings/spi/sqi-pic32.txt
 deleted file mode 100644
-index 79de379f4dc0..000000000000
---- a/Documentation/devicetree/bindings/spi/microchip,spi-pic32.txt
+index c82d021bce50..000000000000
+--- a/Documentation/devicetree/bindings/spi/sqi-pic32.txt
 +++ /dev/null
-@@ -1,34 +0,0 @@
--Microchip PIC32 SPI Master controller
--
+@@ -1,18 +0,0 @@
+-Microchip PIC32 Quad SPI controller
+------------------------------------
 -Required properties:
--- compatible: Should be "microchip,pic32mzda-spi".
--- reg: Address and length of register space for the device.
--- interrupts: Should contain all three spi interrupts in sequence
--              of <fault-irq>, <receive-irq>, <transmit-irq>.
--- interrupt-names: Should be "fault", "rx", "tx" in order.
--- clocks: Phandle of the clock generating SPI clock on the bus.
--- clock-names: Should be "mck0".
--- cs-gpios: Specifies the gpio pins to be used for chipselects.
--            See: Documentation/devicetree/bindings/spi/spi-bus.txt
--
--Optional properties:
--- dmas: Two or more DMA channel specifiers following the convention outlined
--        in Documentation/devicetree/bindings/dma/dma.txt
--- dma-names: Names for the dma channels. There must be at least one channel
--             named "spi-tx" for transmit and named "spi-rx" for receive.
+-- compatible: Should be "microchip,pic32mzda-sqi".
+-- reg: Address and length of SQI controller register space.
+-- interrupts: Should contain SQI interrupt.
+-- clocks: Should contain phandle of two clocks in sequence, one that drives
+-          clock on SPI bus and other that drives SQI controller.
+-- clock-names: Should be "spi_ck" and "reg_ck" in order.
 -
 -Example:
--
--spi1: spi@1f821000 {
--        compatible = "microchip,pic32mzda-spi";
--        reg = <0x1f821000 0x200>;
--        interrupts = <109 IRQ_TYPE_LEVEL_HIGH>,
--                     <110 IRQ_TYPE_LEVEL_HIGH>,
--                     <111 IRQ_TYPE_LEVEL_HIGH>;
--        interrupt-names = "fault", "rx", "tx";
--        clocks = <&PBCLK2>;
--        clock-names = "mck0";
--        cs-gpios = <&gpio3 4 GPIO_ACTIVE_LOW>;
--        dmas = <&dma 134>, <&dma 135>;
--        dma-names = "spi-rx", "spi-tx";
--};
+-	sqi1: spi@1f8e2000 {
+-		compatible = "microchip,pic32mzda-sqi";
+-		reg = <0x1f8e2000 0x200>;
+-		clocks = <&rootclk REF2CLK>, <&rootclk PB5CLK>;
+-		clock-names = "spi_ck", "reg_ck";
+-		interrupts = <169 IRQ_TYPE_LEVEL_HIGH>;
+-	};
 -- 
 2.34.1
 

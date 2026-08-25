@@ -1,142 +1,179 @@
-Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA2421257F
-	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 01:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20743A4F50
+	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 04:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787621965; cv=none; b=oE7/r/ldAobCXOvF3oYau3/LqlmN60ZahSlWX/3qhRnfCxPQmaWlmh1BsYQ3v288u5Yj9MVR9BSTTXJX3g9upysbuozAFHbkJMDGyWYFU58onIWuDYK77KAc9+Y0Tr43WmXWI1RviKl/kI5zi5zf0BmxIRdyKvis2PaAKK98FU8=
+	t=1787630463; cv=none; b=rt9rMtCYkNsEEFFThRrNRVF3Qe67R2RRgeqNXP03n6jcFnaKl1+3i+lvEIReSmc0XBtItumu5b/hGnTc82IKfEmrkCCSrq5oNgkYtQWWREBHL7YngbC26dE//Ua5Yd1zKJ0KoTU51VeoukWBVw8C6tJ98U0ydQqIIOQsRIRdfrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787621965; c=relaxed/simple;
-	bh=S41ebfT7xo/qZtIIIBZyOORVT3DUlpSqNwSmIUKtTl0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mIHG9SxG2lbP8SGDkHI5LH5GnjVL3GLOxE0c5/W71VNjCi2JCYLuzIGDZhhvaP/zem89S5K2MxC5Zhwju31DjcYT2dxy78agftI3HoHjSHWQIfH5Sdz7sn5snqF3JP43X+wzkHGczJS6U7qhDuU6rKgvlP+/nrnbdUKNdQ3PGC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev; spf=pass smtp.mailfrom=c127.dev; dkim=pass (2048-bit key) header.d=c127.dev header.i=@c127.dev header.b=e01QFpG9; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=LPJQDrx/; arc=none smtp.client-ip=34.202.193.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=c127.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c127.dev
+	s=arc-20240116; t=1787630463; c=relaxed/simple;
+	bh=YWl90OOdVCd9KNVgHHy4ovXFe+CNKeFkWuTjHDRfD6g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y532P2vI+B4ktU47WKmBqIRzBpoUJiTjwucLmdyn7jc8BHOad66OM+AVMd6MIvuLjCi1Rfk67B5T6sSII5aWegNsD4X5d2gZ9a8J5v53tdEufdsjESnw3APsimUitz8RVmyUYR5PlDJSQ5watnTVUYBEAnnocP3kaqB7seD7LX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CIKC2iN1; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YUzmf28P; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=c127.dev header.i=@c127.dev header.b="e01QFpG9";
-	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="LPJQDrx/"
-DKIM-Signature: a=rsa-sha256; b=e01QFpG9Gq3786qtZIww7tX6T1Ihw9j1szgJSJhkyyw2oFtXg7DTeSV7KNzgSTsdbhr3kPiVsgMZMRv9qbUrLsjoeRgEMmudMiXzYxKfZDn7yJcZAMpph+10eg16xHtEXAXnMWthmQfN9BV7ZBye6jLNJmpYkcjGQditZ2sz5xrlI41J6knNY/DHp7MsKbnjDjCzWMI5AljOOKghyBpkF/IpQXfzyoALqrOZduz+C8MU+RaMa2kVNRmoWiVYFCcXdHeAC3HA2us/G2WQLRBV7jdxnNp6C6p9X4dbNDcyegHYd895I5qg8VFtyZxLT/48C2Ieu2Sq4vlgeeBtyE2S9Q==; s=purelymail1; d=c127.dev; v=1; bh=S41ebfT7xo/qZtIIIBZyOORVT3DUlpSqNwSmIUKtTl0=; h=Received:From:To:Subject:Date;
-DKIM-Signature: a=rsa-sha256; b=LPJQDrx/fajOg6CYdhAOYtztRZMC3ueqX9+tgZk1ZEbzKPbE0vJjjSLtgLUEwzbYbLasHIUGo+veK6dFFJhtTHhlc7hPxvXYRss2OkTIysm+iou2onk40qcpTXEaVKbVwWr699e4Tqw6jRWRfthWO1YOAmu1O+EUYFcWUEyu/BVGj5j3yzXDvbzh0UAP3qHCXxnnXy4zTW3rLeUOKMZbQLuIqobqHXsNnT3Gh8nkKaZ0SuGpGVD6XcdOSSDXPtI7QdKZnfGblpNDbqURBHu7LbHNCIdl44s3gyzTcxEiaZc+g0rQ7bhRTx/ai4Yf53NmF4YZuFwo4igsaytn5WlZ+w==; s=purelymail1; d=purelymail.com; v=1; bh=S41ebfT7xo/qZtIIIBZyOORVT3DUlpSqNwSmIUKtTl0=; h=Feedback-ID:Received:From:To:Subject:Date;
-Feedback-ID: 1017243:43747:null:purelymail
-X-Pm-Original-To: linux-spi@vger.kernel.org
-Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 936311042;
-          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-          Tue, 25 Aug 2026 01:38:52 +0000 (UTC)
-From: Johan Alvarado <contact@c127.dev>
-To: broonie@kernel.org,
-	md.alam@oss.qualcomm.com
-Cc: konradybcio@kernel.org,
-	pengpeng@iscas.ac.cn,
-	miquel.raynal@bootlin.com,
-	j4g8y7@gmail.com,
-	quic_varada@quicinc.com,
-	quic_srichara@quicinc.com,
-	linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Alvarado <contact@c127.dev>
-Subject: [PATCH] spi: spi-qpic-snand: publish the ECC context to snandc->qspi
-Date: Mon, 24 Aug 2026 20:38:48 -0500
-Message-ID: <20260825013848.1056946-1-contact@c127.dev>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CIKC2iN1";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YUzmf28P"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 67P2RG3E120846
+	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 04:01:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	C+XQZtMktBy7ekGjf4/plKpxlv6MDb59qUzxqeoByG0=; b=CIKC2iN1ZReAWWl4
+	16vuxGWUUJO4xlufvERdBG5vjw/2gSxGqmXPC3TO7qRE01rxoNS3b0E6F0UWkQ2K
+	QckfiY4rR5jXrMqy40XdPryMBVmLBSUaL1UuSGjLWV3KIy/uz/xZtAAgmhlzp45M
+	HK6JULyoHkGuMBOxSZabRJxkrGFdjLMMe7TdnLRgD8zBLP2vm4w7v9ancNLyWVLl
+	TgxoTUwWMI3dGtzARP2pFInlrRH+smkBhuxm1CGTOAzZXx0kht45IKSJhqTpbV9S
+	zVl47i3TaNETzacmw0QpARosk1k2JHFISAAOM+BmBeD6LzEjWK1uqsXsKcydMsBX
+	GhzTgg==
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4g8t3dt061-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Tue, 25 Aug 2026 04:01:00 +0000 (GMT)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-84865f326efso4231170b3a.0
+        for <linux-spi@vger.kernel.org>; Mon, 24 Aug 2026 21:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1787630459; x=1788235259; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C+XQZtMktBy7ekGjf4/plKpxlv6MDb59qUzxqeoByG0=;
+        b=YUzmf28PbofztZn+3f0/ELIvx+6cCQcsbwmPEYaPiz6h5VT2Phr665iE0ArPYqKHDO
+         w//j1xbT+toYiugC6yEmrZnLVaH4nuRFwAZfmsRlCXYS9hvcgKbszOMK9ZJVUVHWRC84
+         QX2nMEX2AMu3R1JKs9aID9ijNMgFuFvuEn4mdNMfp1i7b70HRdzGSzUdzjkeK5FhPCEL
+         V9ZBWgGESSVU9tUSgGrsUhy6SoSXtGSNdnKENqhOofkuXYRs52fvi4Dv/zx86nyWAKl9
+         S4AsylhRJD8CNh68wLzhEO+hA7loJskQEe5HcGZfTltlXhYb3k8Hiuwp2nWhj4P0vX2P
+         l7dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787630459; x=1788235259;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=C+XQZtMktBy7ekGjf4/plKpxlv6MDb59qUzxqeoByG0=;
+        b=WFK0dxOC3XI9RVuZCuN8Rxf5uUc/3h17zhzJnC7+1Z0Q8DXCzXTDGL/17dQOdeVf8Q
+         7TIIlCxeB/AqaLQRa0Qwk2cHue/jVD45eZeloXhW/Sg3l0fM/f8ETspvyQx7ApWxLRjW
+         eMdOTgRcocVD0+pctmBHi83AsZdglqwmbwquAUhcl3fFhpC4OJnxBiktt6P2uzRRnRP+
+         Kw3UTI+fYg4MgoInHCH8V5/KmayVuiCdCFDW6HOr70B/XWxY/A+WYh/U9p72Tlgqy0uQ
+         blyzBjaEGrNc3k5Wv1CotWZRB5caz4O7lcJskQvU3BGQKWUO1nmCTDcZ39TUUbQt21T+
+         p5xQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoBWvrqPaT/7M+tfR4CMiwFQNtNC02j016C9w6QQQj5GBnj/f2J+BNOXZwvCnIO/BQkWD9hyTz/M+8=@vger.kernel.org
+X-Gm-Message-State: AFuF++ktM4oh0DhW/3+trWX47RXyMVpnxxNs+Zg/1ZA/QaJHjTdCebmN
+	G0gqpfHWwdoatJ7SLXZe7udw/Aouu8zx1xGbMxnm4EaFA9GdJZ7LVHRw/uhdBCMrmLb6m5v0h7F
+	Os4Bi89NncOAE/xXfA97Y8hY4jw40Zd9fr3KfADlpITXHAqtUA27IKJdHmFXnE6M=
+X-Gm-Gg: AR+sD13oL75GwM8Iu5VbxSzCvw/vjZ0Y5kSiQjkpJYKcFdDgJkEnSNQ7xrYMHJaXf7w
+	Q4X4ou9kOPvoDH2n1Bn2i9fsTnkrVwkK9SVgNrXtOgaRZV9PrH6A674QCOkyoQYVkuZvODL4+4F
+	E/t4aGWLqbb5IwedOwpzMgs1K8D4IvdxPLtiTd+m7xpJt0+rQo7gkR5c8ZzTVD2MBal++Ople6+
+	Dq4rl/bx4tBjvgyNVTARYV5WisjDbPLTOJgshy4hIex6U80PMzDrwMDq81tSkqy9dRpofm7tjYV
+	Gg2CTMbdA/VX1DXeDKKDgCFnlJIzFG2ameas4+z3HkJF4C+js8f/kngys03nOTpQyL+Ex3n1Esl
+	G9nEy46+waHccL1yh2NM/n5Q+SPBh2QE=
+X-Received: by 2002:a05:6a00:4c13:b0:851:8bde:7873 with SMTP id d2e1a72fcca58-8520b98be69mr40252200b3a.8.1787630459248;
+        Mon, 24 Aug 2026 21:00:59 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4c13:b0:851:8bde:7873 with SMTP id d2e1a72fcca58-8520b98be69mr40252038b3a.8.1787630458620;
+        Mon, 24 Aug 2026 21:00:58 -0700 (PDT)
+Received: from [10.218.14.97] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8520f1638aesm2534359b3a.57.2026.08.24.21.00.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Aug 2026 21:00:58 -0700 (PDT)
+Message-ID: <17735f83-fd07-4fad-97a3-727cfbeabbcb@oss.qualcomm.com>
+Date: Tue, 25 Aug 2026 09:30:50 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/7] serial: qcom-geni: Use geni_se_set_rate() for source
+ clock configuration
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Sudeep Holla <sudeep.holla@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Ulf Hansson <ulfh@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Andi Shyti <andi.shyti@kernel.org>
+Cc: mukesh.savaliya@oss.qualcomm.com, chandana.chiluveru@oss.qualcomm.com,
+        arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org
+References: <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-0-61171ab1cdce@oss.qualcomm.com>
+ <20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-4-61171ab1cdce@oss.qualcomm.com>
+ <4e0d636a-7975-4711-8070-6f71957b754e@oss.qualcomm.com>
+Content-Language: en-US
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+In-Reply-To: <4e0d636a-7975-4711-8070-6f71957b754e@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: gAWHB1PXbq4Bt-ahtYVmQjejRP-FzkRe
+X-Authority-Analysis: v=2.4 cv=OLAXGyaB c=1 sm=1 tr=0 ts=6a8d137c cx=c_pps
+ a=WW5sKcV1LcKqjgzy2JUPuA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=Sv0fKeRqtYgA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=gztmCChag-4to_nYmxUA:9 a=QEXdDO2ut3YA:10 a=OpyuDcXvxspvyRM73sMx:22
+X-Proofpoint-GUID: gAWHB1PXbq4Bt-ahtYVmQjejRP-FzkRe
+X-Proofpoint-Spam-Info: AW1haW4tMjYwODI1MDAzMSBTYWx0ZWRfXwE9a/ivSXwHz
+ wbE2amrUlhAJllZl/Cdw0jK8zAUHAEmADYSd+qUeCEa1ZNzNSNPh8M5IfpeTPy6WMv02dTayWC9
+ NO3ssSPUsgLoxD1+iYXTHW6Y4H9C4iw=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwODI1MDAzMSBTYWx0ZWRfXzW3B7CqRSN57
+ eirHcY7fQ7zJ0tFhEL3b2g6BIk2sL5wEmeF66MJ3XTI/MaB3Y0bko4Ex8ZLC3OsW3WdFlej8+1p
+ d1QrJXi6nkLSeUK2ztu7n4Jpg8jvUe9qX5EE4t9mKaspVb8gUoKnCzE/o97XirkhpaAz9U+9N/O
+ YSGKlK0zjJ2Bn3KSmGST8YB2UvMn5diuFOm8DimIWvnhbtUKXWOO7Nj6uw6iD3n0SjsjJHlgjeP
+ T01hH+PCCrq258LWXLdqsKp8NS/giJ5ackMc4VcuIB/ozEmVO7tA8KQ1cvh0IuFExaEh9Qxy5Lq
+ wghTuU6vyq1BZRlJnn/U19q6oYSqahkCZ9WEGPC0PYtBhlWT+nJ2V2ytD6xeHFTCrpdaHoKYrzQ
+ O9IwGKL9hTlawkqhBXvt/s3Gecs/Ytwo60NuFs46xmZ62J3fvFcAswdxTQdNxcvkqhTIBJPSRZa
+ xrHY2IdSC99/58Poo7w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-08-25_01,2026-08-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 adultscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2608250031
 
-qcom_spi_ooblayout_ecc() and qcom_spi_ooblayout_free() read the ECC
-configuration through snandc->qspi->ecc. qcom_spi_probe() points it at a
-zeroed scratch struct and only qcom_spi_ecc_prepare_io_req_pipelined(),
-which runs on page I/O, ever updates it. qcom_spi_ecc_init_ctx_pipelined()
-installs the ooblayout but does not publish the context it just
-allocated, and qcom_spi_ecc_cleanup_ctx_pipelined() frees that context
-without clearing the pointer.
+HI Konrad,
 
-spinand_init() calls mtd_ooblayout_count_freebytes() right after the ECC
-context is created and before any page I/O, so the ooblayout always runs
-against a pointer that does not describe the current context:
+On 24-08-2026 20:35, Konrad Dybcio wrote:
+> On 8/4/26 9:57 PM, Praveen Talari wrote:
+>> The driver calls dev_pm_opp_set_rate() directly on uport->dev to apply
+>> the computed source clock frequency, and dispatches baud rate handling
+>> through a per-variant dev_data->set_rate() callback that either
+>> recalculates the clock divider (Linux clock managed path) or selects
+>> a performance level via geni_se_set_perf_level() (SA8255P firmware
+>> managed path).
+> [...]
+>
+>> +	geni_se_set_rate(&port->se, 0);
+> This ends up calling dev_pm_opp_set_rate(0) [i see this is an existing
+> bug in geni_se_resources_deactivate()], which removes the power vote,
+> but does nothing to the clock (neither set_rate nor disable_unprepare),
+> which will crash the platform
+>
+> Both of these calls (new and existing) should be removed. Clocks will
+> be disabled by geni_se_clks_off() in geni_se_resources_deactivate().
+>
+> Then, we should do dev_pm_set_opp(se->dev, NULL) *after* they are off
+> to remove any trailing OPP resources (i.e. icc votes defined in the OPP
+> table in our case)
+So, if I understand correctly, the expected sequence is:
 
-  - On a first probe it reads the zeroed struct from qcom_spi_probe(),
-    so steps, bytes and bbm_size are 0. The count then returns 0 rather
-    than an error, so the probe continues with mtd->oobavail set to 0.
+1. Disable the clocks.
 
-  - On a probe retry it reads the ecc_cfg the previous attempt freed.
+2. Remove the OPP/performance resources.
 
-A retry is easy to hit. On IPQ5018 with the qcom,smem-part parser the
-partition parse returns -EPROBE_DEFER until SMEM has probed, so the
-first spi-nand probe defers. It defers inside
-mtd_device_parse_register(), after mtd_otp_nvmem_add() has already read
-the factory OTP - that read goes through prepare_io_req and leaves
-snandc->qspi->ecc pointing at the context that spinand_cleanup() then
-frees. The second probe allocates a new context, never publishes it, and
-computes the OOB layout from the freed one. Once the slab has been
-reused, qecc->steps holds garbage and
 
-  oobregion->length =3D qecc->steps * 4;
+Thanks,
 
-goes negative. qcom_spi_ooblayout_free() only reports -ERANGE for
-section 1 and later, so mtd_ooblayout_count_bytes() sums the regions and
-returns that negative length as the byte count. The -512 below is
-steps * 4 with steps =3D=3D -128. It is a byte count that happens to
-collide with -ERESTARTSYS, not an error the driver returned.
-spinand_init() takes it as an error, and because it is not
--EPROBE_DEFER the driver core never retries and the NAND never appears:
+Praveen Talari
 
-  spi-nand spi0.0: ESMT SPI NAND was found.
-  spi-nand spi0.0: probe with driver spi-nand failed with error -512
-  UBI error: cannot open mtd rootfs, error -2
-  Waiting for root device /dev/ubiblock0_1...
-
-On a Mercusys MR80X (IPQ5018, ESMT F50D1G41LB) about half of the boots
-failed to mount the rootfs, the outcome depending on whether the freed
-memory had been overwritten yet.
-
-Publish the context when it is created and clear the pointer when it is
-destroyed. Clearing leaves snandc->qspi->ecc NULL after cleanup, which
-is safe: the mtd is unregistered before cleanup_ctx runs, so no
-ooblayout callback can follow.
-
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Int=
-erface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Alvarado <contact@c127.dev>
----
-Tested on a Mercusys MR80X (IPQ5018, ESMT F50D1G41LB) running 6.18.44
-with the equivalent change; mainline build-tested with W=3D1, no warnings.
-
- drivers/spi/spi-qpic-snand.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index 61b1f2eb19ce..0d0ae93ad4bf 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -411,6 +411,8 @@ static int qcom_spi_ecc_init_ctx_pipelined(struct nand_=
-device *nand)
- =09dev_dbg(snandc->dev, "ECC strength: %u bits per %u bytes\n",
- =09=09ecc_cfg->strength, ecc_cfg->step_size);
-=20
-+=09snandc->qspi->ecc =3D ecc_cfg;
-+
- =09return 0;
-=20
- err_free_ecc_cfg:
-@@ -427,6 +429,7 @@ static void qcom_spi_ecc_cleanup_ctx_pipelined(struct n=
-and_device *nand)
-=20
- =09kfree(snandc->qspi->oob_buf);
- =09snandc->qspi->oob_buf =3D NULL;
-+=09snandc->qspi->ecc =3D NULL;
- =09kfree(ecc_cfg);
- }
-=20
---=20
-2.55.0
-
+>
+> Konrad

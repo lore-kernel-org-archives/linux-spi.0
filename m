@@ -1,136 +1,150 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189BA3D811E;
-	Wed, 26 Aug 2026 14:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF3943CEDD
+	for <linux-spi@vger.kernel.org>; Wed, 26 Aug 2026 14:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787753138; cv=none; b=L+dZu4V5aJCrnT8X2tpM8hay49H4coT1KXCPj9JMkIht1XN3fh+W+Q8ep982Qidcr/i3Qz5Cq2n6GDdcfBhgjTzawhP3fPaLC2QIov1bNqCKBKoHRHEtI+/NfLSCsaKnU70OWKt+AxFV0YScOLUYe5U8e6T19WfxRFa7/OWeTXQ=
+	t=1787754019; cv=none; b=QedzoeL+/v/Dn9bOsm+nAo3/f/fTrqHvo2uUf3eJFQ41K+fIlLSjUhSam/HtvP9QtQTNifRXqVYKkb5oQ4BHxuRZW+zonj3Xn4Nluy8gDFAgZKudv2TSbzawXzDLkSoXVA1+k+9M/9bcpTQLfYV1kJ4zWR4/WU0hKOnH5Af9eIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787753138; c=relaxed/simple;
-	bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fi+YnbY9dgreLY2vKlA3WnJcaDy8kb25C9teIll/lfkuzjjnYQFttrWipZJrVQKVj1zWYpOFU2Qr5CJWBCo1j63cXf5eNLiIMA/tWjD4jSOnOGLrlOQ3tAf31JyyHX0FRDho0BJLaimgz87osEvL5n9mQ9S2IR4pNadEkyqgWSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=koAwKrYh; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1787754019; c=relaxed/simple;
+	bh=wukuL8CwW5Sw95Eq3HK+NwHjNtJ5hpUPHptVYnfF13I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=of77quuFM6EcFv7hGCqMBYKtpRRdq1hBBmWw5Tz3r9Z7ZP1fJVxw0ILW2EdmnjpOz/xD/bU6tnlFph1LuATHfnn+Yr+ogdLM9HfolpJEuQnOqI+1vCXKdQaqvJsKdZlcqQChqE/038oe9GuFZrEbRSEbHZDR8OkBCh5Ng1Pl+Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cVrkRI/P; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="koAwKrYh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1787753133; x=1819289133;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zp4ZxFvHpCyZaEKvO6J2cBCPxykmOIHLHvOYN+zVeBI=;
-  b=koAwKrYhqfF0YaxYagDwRiKK4MDFVKRASD4n059W7VcuKU21rcP9kru9
-   B7+xTBV+YRAtYC32isq/4dM2b9Nyd20oFB6P/fLUeyTMwE2QzQXAD1rC9
-   cY09AMMCy0bS+w0XTW+bKODmpAOyGlQ39fh2gJDYJ1AamILHPeTiLpegH
-   zYJTXHCy04LXUlpZNeDCtiZOSm0uWvRqE9ReVdrN4CTzf2J0RyIyByiCN
-   OjVumKkc179fGghMb1+iwJpB9WW+wTdV9Hfym0GJ3RpVynjPtVxYIuDiE
-   I3/YMliPF2XrlfQAMi5kER0BxEnDswgzEt5NvR4pOhwY/nEgaDBbKZvcw
-   w==;
-X-CSE-ConnectionGUID: pV8XyPOHSEG5CPqTvJWjFg==
-X-CSE-MsgGUID: 57fNYr+KR/urc1pyaRUf3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88362974"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="88362974"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:31 -0700
-X-CSE-ConnectionGUID: MfkaBtSDSpmzcaUT3yBSlg==
-X-CSE-MsgGUID: ntLGhDOUTCuyxLKkJe4VcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; 
-   d="scan'208";a="271090744"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 07:05:12 -0700
-Date: Wed, 26 Aug 2026 17:05:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Boris Brezillon <bbrezillon@kernel.org>, info@mocean-labs.com,
-	Olof Johansson <olof@lixom.net>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	mfd@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-	openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop redundant white-space around values in
- <>
-Message-ID: <ao7ylZTVJFeUJ5h3@ashevche-desk.local>
-References: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cVrkRI/P"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc11a905ba5so674014a12.2
+        for <linux-spi@vger.kernel.org>; Wed, 26 Aug 2026 07:20:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787754014; x=1788358814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/1XUCO5ehW6HIK1UxtZ/MdhG2zZvli3B4/DG5Oizxoc=;
+        b=cVrkRI/PMurosqZocvroLG2C2KTArW7gOLQgtIC/Yvq7jlbJhoreSZ7D7umvnULUPW
+         Md3KpIdecg4PTIlWfifW/lkmAUj2tfCoqbhm1Qgl8xLfe7mz7kkhvBqymh1w/4fytj65
+         KVDkIeY3S0WpxkrzmjxYZstufgX8p6WqiJRD4lIog/FKe4yXYKq7o2O+JDqyxqf1n53j
+         R5OVGCiA71M2BeHH9BMGQE77As131utbJpRe0lLLXpukuwGgNR+phrIaWcurAelTYSEh
+         5DQlTD6yN6mgMARUfm4NmDbWguE20NQNA8O3J1/i81M2hFlFyNCwGMRKF6MkbH92Nyz4
+         G0WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787754014; x=1788358814;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/1XUCO5ehW6HIK1UxtZ/MdhG2zZvli3B4/DG5Oizxoc=;
+        b=PY+Ot7EeCATeId6DibBFJEA+pYrpBEJ59em3CgFX1qseJVCNe4QEOQqW/Xs8AZT6h1
+         y4GL/jEQjswD9y7w78Bfzo7FxLFFdSH5n4FMjoYojWiiB2lrePXMN2ENFg7WEXWTpQ8/
+         b74FeDARpBlNONINlLdpVI1Opq3Rt8mWA622NBDYKBHjl0G2+mmbiQIrvo9fvZjBor/C
+         1OcvFVIz8Ac0B632Y+ldH3JfwU/x0Z29Cx4E+GZGG/l0A4toMGgBDhXwekyjsDOVAy1j
+         8E9lAZu051JroQe+1u2hFJ+XzdI8UXuHiyDpFs6tbVQAcT4LPcqJwHI+Q0DA4ZbjC6kd
+         ovFw==
+X-Forwarded-Encrypted: i=1; AHgh+RpTQKyHFMuSE00x25soRS6RTzmCqs0NsYG6kO7utK65epZwJcxzvGSYRd8WuG1kECnhTj4xVKE787A=@vger.kernel.org
+X-Gm-Message-State: AFuF++lDqjo0lDUR6W7anar14foj6L954pubcbedHJWlLC1IuVqC8Cdb
+	bA5g9B+BgYJSllvI8QTG9zu5CW1keJkZPs63nbLUfgeUOELDNLzwg3XE
+X-Gm-Gg: AR+sD13o+AZhliSNmMW2cm6z6WavDXZjBdAxLTAM8+jeI9UrgtBtSPIggP0+tJkeXBV
+	E1RWBGk5LTUpZWXeeTohIzgXFmeyUQF+0VLR4qgBkWsHo9YzJpri1chiEyUPfyPDPiLMnaCFuwU
+	f+O1REwb8g/dnLq6JE9lOnXRMlfI7Z4g2eUWbGvimCLcXnFdXx1yBt2kJsIZK7pGSQE3k9f5e1r
+	DxgqIB9AmNpLy6QbMZf15mWOJI6hxel05U5UBvNScMz850SJSZ2D9LpObgQkkNM4lShifD0s2Bk
+	uyNsybqTAGzF6UwFEhL6jpC8No13jMsqBoz5tcqt3z/i70n8z9lL2aavlMgp35FOMC+wy+DudGH
+	li89p9T7evr5Ik2Hql5pzd3CzlNYkUdUQa0X738Q0vfSLZCt4+2wyErxBswHQ+P/qWnwJIkARRS
+	DemlrNiH0Zw2vnAdrx2KLlwBNxZJ4ojKFEDLAyxGAtyOFqpfGRnGkhU8p6VXSKD0z7IBRub1ocW
+	Jj31L99EQb5oMBHGBX7iRS3rV1Lz52ZWwPvpg==
+X-Received: by 2002:a17:90a:d2c6:b0:38e:5c6:4db9 with SMTP id 98e67ed59e1d1-3966d3dafb9mr16370184a91.11.1787754014381;
+        Wed, 26 Aug 2026 07:20:14 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3283d60bf36sm9592172eec.2.2026.08.26.07.20.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Aug 2026 07:20:13 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <7532cd0d-6f9d-4278-9216-5d9aea92fa16@roeck-us.net>
+Date: Wed, 26 Aug 2026 07:20:11 -0700
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] treewide: fix spelling of "overridden"
+To: Linlin Yang <yanglinlin@kylinos.cn>, linux-kernel@vger.kernel.org
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-mmc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20260826083715.625136-1-yanglinlin@kylinos.cn>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <20260826083715.625136-1-yanglinlin@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 26, 2026 at 12:20:45PM +0200, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues around <>, which will be flagged by
-> dt-check-style.  No functional changes.
+On 8/26/26 01:37, Linlin Yang wrote:
+> Fix misspelling of "overridden" (missing a 'd') in comments across
+> multiple drivers.  The correct spelling "overridden" is already used
+> 292 times in the same drivers/ directory.
+> 
+> All occurrences are in comments only, no functional change.
+> 
+> Signed-off-by: Linlin Yang <yanglinlin@kylinos.cn>
+> ---
+>   .../gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c    | 2 +-
+>   .../gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c    | 2 +-
+>   .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
+>   drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c               | 2 +-
+>   drivers/gpu/drm/msm/registers/gen_header.py                   | 2 +-
+>   drivers/gpu/drm/nouveau/nouveau_bios.c                        | 2 +-
+>   drivers/hwmon/abituguru.c                                     | 2 +-
 
-Don't know which file triggers my name to appear in Cc, but the change
-I like, and indeed it makes style better to read and consistent.
+I would expect this to be a separate patch to even consider applying it.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Guenter
 

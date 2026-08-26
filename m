@@ -1,96 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D4035E93B;
-	Wed, 26 Aug 2026 16:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5153F3B14B3;
+	Wed, 26 Aug 2026 21:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787760285; cv=none; b=A3VUexClCjhFQFLj1J0JklPNPhcSqESqnkRGwFK0NA98h0zoFSOL4QMTNWTkFjYquIqzT3Ty1/EUjTIqAY8lHYcuEVnGqB4kLZMHZ81tXAmdGxeHQUdka8hdn67wc6eDUbGGvi0LmJmyKKkUcA8uwJmFfAaN+GfB6ChFZUX2CVQ=
+	t=1787780625; cv=none; b=hJ2ED4S/YCNm0WQzrwDdkAhzd8YrXRFb3mLLQqXv4Sv/04PFyu9E1QF47OiZraZA5cvlNNgHL1zwbEn6NVHw5GJPV0Z2ZRWunGDmZ6TW8rsopia+cVVZygnm1UpKgIjQVE7u1HcjkA9Is70fPe5wT75QHVBiXw/lu/CasXhEujQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787760285; c=relaxed/simple;
-	bh=J3HAsU1KwO4mqDetIrd6P/XZ/1/GwfDOnfmgJD5u77Y=;
+	s=arc-20240116; t=1787780625; c=relaxed/simple;
+	bh=KodbtscHuhyT4e9uaCejK1SwHL6vJcWIU4ma3ia0xtI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qmtjKeYUu25SkhnSg0O3h9qfVjfOqKy8ywci0tHldXekayiWCIBmR2hgaFDd/XgepWw/STl7J20xy6qY/TAGwVZ97ncnMgDDqolXWhtr1FO/yqOwQLZkJaqWWc0XxXB9DYlbyXeomvUUx1zXfF8way7J1sc/gSKbtVbxOIqIw1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXIEkoWy; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFKNZlNEnsfYDMQKu6+u1VvN5G4u37RZb5CLffOzEX74P2xlhv86BvgKwtFq6PIbT4Eu1YJQXbv5djfb6mAZG7b1uOKFomDCSoDMZc8P3eUveeLnZhQ/NqxpyJ6ciUQ3+vW6ch95M66Mioii1BZIvVfsdMG1LTmJDcApF2LXTyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ChqqMJa3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXIEkoWy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187B41F000E9;
-	Wed, 26 Aug 2026 16:04:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ChqqMJa3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D011F000E9;
+	Wed, 26 Aug 2026 21:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1787760282;
-	bh=Y8nG5Q59DmZU2W8YTNmb9FicIVaa2DhnYG0xPHeq4QM=;
+	s=k20260515; t=1787780623;
+	bh=PSSo4bsAC2cEjTDtAnRZIQ9NfAW3QdjZrYCnvuLAkE4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oXIEkoWyhVF9O0ycvD4nLcJ11qe08oUKMmfsiwjwiio2a2VH9xvNqubdjmcmWTP9Y
-	 Bht9x/Wh39srsO4PB1OUiOIMYnQJNw1rxz0UhlitqScVm4QP2xUmeqyFmxvbmD6H6M
-	 kt9kyXF+EC9RJcq8TMqglLQPNm6bdQ06SQqHx1Z9z3r8g8FxbaFGdkeBT5grkeoVpo
-	 Wjh0jIhz6u6ZhOyO3gaXtFcf/O1sDe316jbE8/QJ2LREUwww1zshVu3Tz7Y4W0Xi4Z
-	 4Ij1967veWkgHclJ/mMqCWTw7xLAV0C+J/wS/qReNpbtyGnhlW1ipRQRU3rbwe9iB3
-	 imPHWJcoQmQfw==
-Date: Wed, 26 Aug 2026 17:04:28 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@arm.com>,
-	James Clark <james.clark@linaro.org>, Leo Yan <leo.yan@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Michal Simek <michal.simek@amd.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Mirela Rabulea <mirela.rabulea@nxp.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Lee Jones <lee@kernel.org>,
-	Xiaowei Song <songxiaowei@hisilicon.com>,
-	Binghui Wang <wangbinghui@hisilicon.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Dvorkin Dmitry <dvorkin@tibbo.com>, Wells Lu <wellslutw@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>,
-	=?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
-	Mark Brown <broonie@kernel.org>, Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Boris Brezillon <bbrezillon@kernel.org>, info@mocean-labs.com,
-	Olof Johansson <olof@lixom.net>,
-	Shree Ramamoorthy <s-ramamoorthy@ti.com>,
-	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
+	b=ChqqMJa3vxAiQad8g3dw8iasniT73h2asuuBLUzmnNANnaUP31o+KyDZuOY0hQQnl
+	 zLsEAHlr8uMYX3p4oSKLfjQocnhfkDYH/F6ZyJRg8KM05kmGKdEyiaIPPoMPieiB4j
+	 L4dXQO7wnmoNHCJCrEoQtICccHRvv0ix+og7ZY+w7eFblO2IZXSzL3poAsP8kEQt+v
+	 jHCKPMZMYXhBFNsQyCoUbJCEIAMipli3CTwlvrV50S0JF/9WW1sjl4ahjBEmHHHilX
+	 pZE3mp3iCJBd0iYDyqbt6mlLXWULkkl5JsyDsgNpP2076JFQ4gm73DXIbD+p1CdFtd
+	 YLUD5MdlyMjnA==
+Date: Wed, 26 Aug 2026 22:43:38 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Santhosh Kumar K <s-k6@ti.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com,
+	pratyush@kernel.org, mwalle@kernel.org,
+	takahiro.kuwano@infineon.com, linux-spi@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	mfd@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
-	openbmc@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Drop redundant white-space around values in
- <>
-Message-ID: <20260826-frequent-parchment-b8baeeafd583@spud>
-References: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
+	linux-mtd@lists.infradead.org, praneeth@ti.com,
+	sebin.francis@ti.com, u-kumar1@ti.com, a-dutta@ti.com
+Subject: Re: [PATCH v9 08/18] spi: cadence-quadspi: add PHY tuning support
+Message-ID: <8aac0c42-fad5-4146-a2a3-b60bdab71a20@sirena.org.uk>
+References: <20260825171737.776052-1-s-k6@ti.com>
+ <20260825171737.776052-9-s-k6@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -98,39 +47,84 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="P8HG2tUakdLhQuVM"
+	protocol="application/pgp-signature"; boundary="nryroxhrKHKI4MVn"
 Content-Disposition: inline
-In-Reply-To: <20260826102044.142986-2-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260825171737.776052-9-s-k6@ti.com>
+X-Cookie: Obey all traffic laws.
 
---P8HG2tUakdLhQuVM
+
+--nryroxhrKHKI4MVn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 26, 2026 at 12:20:45PM +0200, Krzysztof Kozlowski wrote:
-> Correct a few white-space issues around <>, which will be flagged by
-> dt-check-style.  No functional changes.
+On Tue, Aug 25, 2026 at 10:47:27PM +0530, Santhosh Kumar K wrote:
+> The Cadence QSPI controller supports a delay-line PHY for high-speed
+> operation. Without calibration the PHY is unused and read capture relies
+> on a fixed delay, limiting throughput at frequencies above the base
+> operating speed.
 
-Tool seems pretty useful!
+> Add an execute_tuning callback that performs delay-line calibration using
+> a known data pattern written to a dedicated flash region. The pattern is
+> either read from a NOR partition identified by the DT property
+> spi-phy-pattern-partition, or written to the NAND page cache before
+> each calibration read.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>  struct cqspi_flash_pdata {
 
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
->=20
-> ---
->=20
-> Rob, Can you take it directly?
+> +	bool			use_dqs;
+> +	bool			use_tuned_phy;
 
---P8HG2tUakdLhQuVM
-Content-Type: application/pgp-signature; name=signature.asc
+The AM65x has a fun erratum i2189 which mentions that it requires=20
+disabling DQS for writes:
+
+   https://www.ti.com.cn/lit/er/sprz452i/sprz452i.pdf
+
+which suggests we might need separate controls for read and write
+operation.
+
+> +static int cqspi_write_pattern_to_cache(struct cqspi_flash_pdata *f_pdat=
+a,
+> +					struct spi_mem *mem,
+> +					const struct spi_mem_op *write_op)
+> +{
+> +	struct spi_controller *ctlr =3D mem->spi->controller;
+> +	struct device *dev =3D &f_pdata->cqspi->pdev->dev;
+> +	struct spi_mem_op op =3D *write_op;
+> +	int ret;
+> +
+> +	op.max_freq =3D mem->spi->max_speed_hz;
+> +	op.data.nbytes =3D sizeof(phy_tuning_pattern);
+> +	op.data.buf.out =3D phy_tuning_pattern;
+> +
+> +	ret =3D ctlr->mem_ops->exec_op(mem, &op);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to write PHY pattern to cache: %d\n", ret);
+> +		return ret;
+> +	}
+> +	dev_dbg(dev, "PHY pattern (%zu bytes) written to cache\n",
+> +		sizeof(phy_tuning_pattern));
+> +
+> +	return 0;
+> +}
+
+spinand_write_page() has a multi-operation sequence, I've not checked if
+any fancy flashes with DQS support actually need that.  _read_page()
+looks more straightforward.
+
+--nryroxhrKHKI4MVn
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCao8OjAAKCRB4tDGHoIJi
-0tqoAP9QAMmXPklodIMJgwkYAyiHY6wJXbsca2yegWqjDpaZ8gEAzCaVWA0HkeeD
-+jnyIqHP/qOtLch52tvPYIHhTjCRRQ8=
-=3be7
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqPXgkACgkQJNaLcl1U
+h9CVpgf+IEFBtsEfC8voVsHpmOfwjvGr+ozW/f+mGll/kPgYXkUFR5UgVC+QMaF6
+3S6zPGMFpJNRm4DAo3iIaiXXgiZ7DMkjr7Q7ougvDy7JVJWv3csUMu/RKZIy++Dx
+o2K1Da6/W4AzDrQExhVklMLQpa0wTaMav8FeEv23oOvFqPmwPBIryDzQRUB5Xz4Z
+MCPmMvgG8wCXG3bPk/Ueigap6FXN3Xh7dVR9PEFEnYVrxj6DD4ladF9bc6GGd25x
+4e/rMV2ra6P84FeUryMHBpbXwAv6/tq2UZS3Tijf6bF17giPvx2EAelgwdpA9OCg
+a/Fbtj+DnJpFaO8EnzNiYorzzawsQg==
+=f6hj
 -----END PGP SIGNATURE-----
 
---P8HG2tUakdLhQuVM--
+--nryroxhrKHKI4MVn--

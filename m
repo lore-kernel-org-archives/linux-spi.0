@@ -1,29 +1,29 @@
 Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDFE37A834;
-	Thu, 27 Aug 2026 02:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FE4369985;
+	Thu, 27 Aug 2026 02:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787797229; cv=none; b=Ohv3TPBVKS4hzhAK+IhCYgDHYOssIPmjkTcBa+a8a/t6FJqBZjTpYiwl9hVbg4zriJgs1u37f3s0GWzInCfxAyFAfrUIsvulSIIvJ7Z7zvBkLRsfV/jYpkDyUtudARv8IU4l4lvxr/COn70EVFmnKwfVYUYUwB+pIY/EI5eiBPI=
+	t=1787797474; cv=none; b=vBH+FO+sFxNh8CsMlE6t6lUcQbqk3eCYNIvfLhA7Dtq6ot8QN6o7OLEh+cOQ6jzlVTIicjbx4EoXQdnOLi/HI8Rza0vSAr2pKoJYwFCcY12d9fFzvG2NE4mzXBKEwBRxCY0Giqk6DkMeYd76s5oHafbUAEV6+dzA3QN+qBZXhvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787797229; c=relaxed/simple;
-	bh=5OqQzlbqYVr45HuP8CzJ8xK1/ImXnbxc1gUkVx1yUQ8=;
+	s=arc-20240116; t=1787797474; c=relaxed/simple;
+	bh=rOuyynZ/7DqdiTSKwcajrSxvr6DHN0X0uUwNMTAjYXI=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=B7QKwq/pZKJFvZBPpqeLx6PkKJFGYgXfoMDE5CcrbawZ/w8WEGAdxql+XhzHx+57mah7Pcy5seyUZahqicySmb0oc7X3MawtElfQGv86TM6Z1XExSGL7N+R5i1txhvAX2ju+2CMjZbbubgIqEbJcDNV+E1t2XfHPdQQlt2r9UmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=pass smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=TY2z6cPv; arc=none smtp.client-ip=218.76.62.146
+	 References:Date:Message-Id; b=ggvbLXpcO8lC7clxAuHUPpkkmN38esdkWSPyORe2KT1KAy0K1hj+JyGdNKoR5fdwJ0sNb8/pPIlPVXYg0LVYopMFNII+tOCwBkq7zCjuTcIW/eiU9DVvv99vMrq2ipniUGmLKqN29LHSBM4BFTIKjKMXlwmL0eso+9Q9jmQ2h3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=VcbfzGWz; arc=none smtp.client-ip=218.76.62.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="TY2z6cPv"
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="VcbfzGWz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
 	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	References:Date:Message-Id; bh=w0EtslnP22yBs3lOjrkCV+37dpn1xRuqk
-	llSuzAy1I0=; b=TY2z6cPvsxabnuBwCtD79vWosmMoAH64x/bTx6yM5WNZY925K
-	tl7vL0ZviE4zkOgeIb2zeGGKrl6GlU9i+B8D00CIbbAbR1oh4NG6WpXwZ83AnY0N
-	jzKYvQMjNZgjMef2oKGiTm8RRXrucabW3P2evT9MlUjiD7Bu5SdjQg3Oag=
+	References:Date:Message-Id; bh=uTTBr9BYADGrDlvaR72tqo6yyeyYDRVT8
+	0MDKdlK22s=; b=VcbfzGWzuQq/vKxPGS7W+rYnq6L+W+vsI79O46UChDKj5ID1d
+	GPlv5LxprXMM9c3Q4yFQg0VJEzwz9drpiTYeGg/pXfne+IWw/1br7AFL+GKKQyAo
+	qVwyBNn7DzHE9mnb5MN33EHFMoUCW5OimmdRvo4/sVyz+87LpCiDQP3C8o=
 Received: from [127.0.0.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwB3V87Nno9qO1gBAA--.420S2;
-	Thu, 27 Aug 2026 10:19:57 +0800 (CST)
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwBHds3Wn49qTFgBAA--.47S2;
+	Thu, 27 Aug 2026 10:24:23 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -32,8 +32,8 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 11/12] riscv: dts: ultrarisc: Add Shenzhen Rongda M0
- board device tree
+Subject: Re: [PATCH 12/12] riscv: dts: ultrarisc: Add Milk-V Titan board
+ device tree
 From: Jia Wang <wangjia@ultrarisc.com>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: wangjia@ultrarisc.com, Rob Herring <robh@kernel.org>, 
@@ -60,58 +60,65 @@ Cc: wangjia@ultrarisc.com, Rob Herring <robh@kernel.org>,
  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
  linux-i2c@vger.kernel.org, netdev@vger.kernel.org, 
  dmaengine@vger.kernel.org
-In-Reply-To: <d93868e7-00c7-4251-9b23-8b3ed0535185@lunn.ch>
+In-Reply-To: <26430c94-95ee-42a1-bfda-89e0ce24f194@lunn.ch>
 References: <20260824-ultrarisc-dts-v1-0-61ab7aebe9e5@ultrarisc.com>
- <20260824-ultrarisc-dts-v1-11-61ab7aebe9e5@ultrarisc.com>
- <d93868e7-00c7-4251-9b23-8b3ed0535185@lunn.ch>
-Date: Thu, 27 Aug 2026 10:19:43 +0800
-Message-Id: <178779718359.1423015.16616466921659081322.b4-reply@b4>
+ <20260824-ultrarisc-dts-v1-12-61ab7aebe9e5@ultrarisc.com>
+ <26430c94-95ee-42a1-bfda-89e0ce24f194@lunn.ch>
+Date: Thu, 27 Aug 2026 10:24:09 +0800
+Message-Id: <178779744933.1423015.12629307530730828329.b4-reply@b4>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787797183; l=664;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787797449; l=1039;
  i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=5OqQzlbqYVr45HuP8CzJ8xK1/ImXnbxc1gUkVx1yUQ8=;
- b=yHT5l7woiE13ali+aRwkhOVLsiVN7IAmPwkjvoIIymR9DjgUi8sK31AQOcIJn4H0uEettZWdH
- 43IbNZ6ebeQDn1/w+88/c3jZgTi80yZISTvM4ZaeSb9AU293MCOB4aG
+ bh=rOuyynZ/7DqdiTSKwcajrSxvr6DHN0X0uUwNMTAjYXI=;
+ b=fYna5w+fcRvxVgwKTCOlXsgUCDi1WRMO6pggwzsx88z2rGTPBS4y85OGFAC10EDrS0PYQVLZa
+ DlYCSEh0o/DD/oIh3qDZLjir9hPrF9rkrYRGHRChc3tLprTz2v5CEUs
 X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
  pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-CM-TRANSID:AQAAfwB3V87Nno9qO1gBAA--.420S2
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYX7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E
-	6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-	kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8I
-	cVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aV
-	CY1x0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE
-	5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeV
-	CFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAqzxv26x
-	kF7I0En4kS14v26rWY6Fy7MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkGc2
-	Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_
-	Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMI
-	IF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUd8n5UUUUU
-	=
-X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAMEWqOWvsALAABs0
+X-CM-TRANSID:AQAAfwBHds3Wn49qTFgBAA--.47S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw43WFWkJFyDKr4rZr4fKrg_yoWDWFg_uF
+	ZFqF18C3s8AayDAa13tF43Aay3J3Z5AFykA348trWSvr9FyrWkXFykXw1Iv3ZrXr12kr15
+	JwnxZrZakwnIgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTkFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWrXVW3AwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRVOJ5UUUUU=
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAMEWqOWvsALAAEsx
 
-On 2026-08-24 15:02 +0200, Andrew Lunn wrote:
+On 2026-08-24 15:06 +0200, Andrew Lunn wrote:
 > > +&ethernet {
 > > +	phy-handle = <&phy0>;
 > > +	/*
-> > +	 * YT8531 RGMII timing on this board requires no PHY internal delays.
+> > +	 * RTL8211F: board timing uses PHY strap delays; keep plain "rgmii".
+> > +	 * Enabling PHY internal delays via "rgmii-id" breaks Ethernet traffic.
 > 
-> Please extend this sentence with an explanation why it needs no delay?
+> This actually indicates something is wrong.
 > 
-> There are times this is correct, but it is also mostly wrong. Without
-> an explanation, i cannot say if this is correct or not.
+> When passed PHY_INTERFACE_MODE_RGMII, the PHY driver should change the
+> PHY to not add delays, overriding the strapping.
+> 
+> Given my previous comment, you need to spend some time understanding
+> what is going on here. Something is not correct.
+> 
+> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bindings/net/ethernet-controller.yaml#L287
 > 
 
-Thanks for the review.
+Thanks for pointing this out. You are right that the RTL8211F driver
+disables its internal delays for "rgmii", so the strap-delay explanation
+was incorrect.
 
-The DP1000 SoC integration provides the required TX and RX RGMII clock
-skew, so enabling the YT8531 internal delays would apply the delay twice.
+The same fixed DP1000 TX and RX RGMII clock skew described in my M0 reply
+applies here. I will correct the comment in the next version.
 
-I will clarify this in the next version.
-
->    Andrew
+> 	Andrew
 > 
 
 Best regards,

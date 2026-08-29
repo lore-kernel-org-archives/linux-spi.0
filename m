@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070743976B8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FFE31E83B;
 	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787965478; cv=none; b=Go3NKLCBWG7f/AvgiNTPuqQXM/YVqyQOBTnwSvhEWQXemTdWuSt7yAV2sYDp1V7mDhrovHGjepHnb4ktd8AsraiQJEzNKsdVvprUkJm6wLZtXS+/8qMthICC8wf/YFAJneNA0VdaxRQWqEV+bUfG/sCqui5bZEn9thvKM7VD0tA=
+	t=1787965478; cv=none; b=dLXPvk2mhv8vM9LFoHtK6W58sQamTTUMh0rhTmwb3tatdlCvOJgUY4tlMdCW2iqiHg0jKc8vTIvfi9QNU766ylwLMzLwnxQwOElojy7fcyOPUVCN2qlnrSAmaaJj2VKBtKc0eQaFJJuRSOeaEGLbTLLU64d8RYj0lvD5uilokSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1787965478; c=relaxed/simple;
-	bh=PBI+LaNfGSxOirkJdYCxWZ8AJkmpI5XaPvy0YgrWEek=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aQm60W87Rqxdx64G+sONBQB3aIyHOeTyu4sf/1QfAd1If6IxxszzJaX4M6zOP9q09gDK2J9rFoHS9CYD9ypMHLsF0sbbn50l8lhQu9X6DHqTiLpwitujZREs7XBnzbWfJmMmHC7RFKwwEP+j9bx0rDJ/RGGlzwkhlQuF4bLEYio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZUB82B3; arc=none smtp.client-ip=10.30.226.201
+	bh=VPYJCxBeblxwAcDG8IcpAjTqQ9gl1z3gbn2Vowk/qYA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lTueYOcO3XbtuPT6GllDhrg9MDeVxMFhN9aymalk/L8c/cG2HgSFzHiLIqWTAcgH7Dwf6OcwkC3LH6NqTGXlAIuS/LP764bhdUz6vQhnAM5P630KTRcHvg6+t0Cs6Qnrf+ym+mW9SMDOx2nGAGc8aClFAs0ru2xIVmnGUhOJelc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdqngOCq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZUB82B3"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 923CDC2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdqngOCq"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B207CC4AF0B;
 	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1787965477;
-	bh=PBI+LaNfGSxOirkJdYCxWZ8AJkmpI5XaPvy0YgrWEek=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=rZUB82B3Coy2oGC7Fs9xHghm7YhPSwqvN6pXej40bS0CpoSO/pYyulH6bZ2jz6nEd
-	 GUXnSlRtQN18hpFh20g9aH5WO0ujYrncEaGzSmJcgw+IbtFvucDaSgUy3CIwIBaVQ+
-	 Upn0EzfURGxY1GV8OO1tFeboWZIC1wvoY7QNr3xyIEq8nh+qgTeE7MGX1NffjMnYdk
-	 qM69jk5b201D1HLFN7JqG4kmRGuDvEuwwhWip3Pxg0rJx1lwND3y3UtGoBAItPL9fh
-	 +zT9Ngt3azRHu59vrDUsM5Fev4jCTBJdQ0/qX2X9P7mld9FKFO/pKFi9h1pjngDtc8
-	 RzBVPCl3/o7nQ==
+	bh=VPYJCxBeblxwAcDG8IcpAjTqQ9gl1z3gbn2Vowk/qYA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=cdqngOCqNcn2SOi1ZDpPRWhAEB6clKAcxLf34Fvs7+dDegdgQwrcEQtNf4oScRFBq
+	 xLRoMrSoLaufjlApx9PlpCDOFUDEPdhTGMD41c68wB6ZKRESdDi22rM5QUU629Lhro
+	 m2eeXhhL1pykDoh9TJGwCZ/ZK3QIftqyyoCn83/xK8aebcKf+aqfNUCsqYaSvLKcYm
+	 mz2XdeTKESVl2uGHzyeFVHPyBcGNO+43A2insNndee8cv1O8+ClnzxW7auC9EL9YI/
+	 WtDkFmWniwgd4qdCwD9J4eQJkbeU3kA0nbLHaOB+9m7j6WGlm7B00jcMBO39uyu8DH
+	 5oAG+I8MNSVaQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DDEFC61DB9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92067C61DCB;
 	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
 From: Tobias Jakobsen via B4 Relay <devnull+tjakobsen84.protonmail.com@kernel.org>
-Subject: [PATCH 0/2] Report platform enforced SPI flash write protection
-Date: Sat, 29 Aug 2026 03:04:31 +0200
-Message-Id: <20260829-spi-nor-platform-lock-v1-0-cd362d4914e2@protonmail.com>
+Date: Sat, 29 Aug 2026 03:04:33 +0200
+Subject: [PATCH 2/2] spi: spi-intel: report controller enforced write
+ protection
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,10 +41,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQqDMAyA4VeRnA1oGK76KuIhtHEL07akMgbiu
- 694/A7/f0IRUykwNSeYfLVoihV924B/c3wJaqgG6mjoHI1YsmJMhnnjY02245b8BwPz6B6ByT0
- JaptNVv3d33m5rj9VYQJ2ZwAAAA==
-X-Change-ID: 20260829-spi-nor-platform-lock-daa984da2872
+Message-Id: <20260829-spi-nor-platform-lock-v1-2-cd362d4914e2@protonmail.com>
+References: <20260829-spi-nor-platform-lock-v1-0-cd362d4914e2@protonmail.com>
+In-Reply-To: <20260829-spi-nor-platform-lock-v1-0-cd362d4914e2@protonmail.com>
 To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
  Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
  Miquel Raynal <miquel.raynal@bootlin.com>, 
@@ -53,11 +53,11 @@ Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
  linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux-spi@vger.kernel.org, Tobias Jakobsen <tjakobsen84@protonmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787965476; l=2383;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787965476; l=3457;
  i=tjakobsen84@protonmail.com; s=20260829; h=from:subject:message-id;
- bh=PBI+LaNfGSxOirkJdYCxWZ8AJkmpI5XaPvy0YgrWEek=;
- b=7ZRRI9GhC5gUJfBbhnYTWjPUeUAGrjglrB3dDPoLyZpLpokf/7UNQ5vB4Y0G7YLU3ZJmoZMxp
- B7ahFGi/8RNBGTPP72mHpraZqueZvF0feYTKz3aSM0hgPe6OTdWhbfH
+ bh=gtEEAKizpcnWW1tUrFGFb4Gr6XQwi2idSgfJOzM3heg=;
+ b=NKpDKeAa95+S/284Or3ncZbzcN15LrGx+vzGVdClOGc8pkjWpxqzTfoSd/t2Xh3BYsdjWFifP
+ ZKP2wx74Y9TDUGvCbybWdMm80iFd8N0wmmI0YnQGudh7Ex0EkMAjC9u
 X-Developer-Key: i=tjakobsen84@protonmail.com; a=ed25519;
  pk=UREd6cisfwsFIDP455nUH6Ysx+ZDGnAVE9nGmKzm1Ks=
 X-Endpoint-Received: by B4 Relay for tjakobsen84@protonmail.com/20260829
@@ -65,57 +65,106 @@ X-Endpoint-Received: by B4 Relay for tjakobsen84@protonmail.com/20260829
 X-Original-From: Tobias Jakobsen <tjakobsen84@protonmail.com>
 Reply-To: tjakobsen84@protonmail.com
 
-MEMISLOCKED currently answers only from the flash chip's own block
-protection bits. On platforms where write protection is enforced
-elsewhere -- an Intel PCH SPI controller with protected range registers
-being the common case -- those bits say nothing about what is actually
-enforced, and are typically left clear.
+From: Tobias Jakobsen <tjakobsen84@protonmail.com>
 
-The result is that MEMISLOCKED either fails with -EOPNOTSUPP, or, once
-the chip gains SPI_NOR_HAS_LOCK, confidently reports a range as unlocked
-while the controller is refusing writes to it. As more chips gain lock
-flags over time, the second case replaces the first, so the wrong answer
-spreads rather than the missing one.
+On Intel PCH platforms write protection is enforced by the controller's
+protected range registers, not by the flash chip's block protection
+bits, which are typically left clear. The SPI MEM conversion left
+spi-intel without visibility of the MTD device, so it cannot supply MTD
+locking operations directly.
 
-Patch 1 lets a platform supply an is_locked() callback through struct
-flash_platform_data, which spi-nor prefers over the chip's own bits. It
-is inert on its own: nothing sets the callback, so every existing
-platform keeps the behaviour it has today, and the series stays
-bisectable.
+Pass a write protection query through struct flash_platform_data, which
+spi-intel already uses to hand the partition layout to spi-nor.
 
-Patch 2 adds the only user, spi-intel, which already computes protected
-range state at probe but has had no way to expose it since the SPI MEM
-conversion removed its visibility of the MTD device.
+Note this asks the opposite question to intel_spi_is_protected(): rather
+than whether a flash region contains a protected range, it asks whether
+the queried range is itself entirely covered by one, which is what the
+MTD layer means by locked.
 
-Full before/after numbers from a Coffee Lake NUC are in patch 2. Only
-the Intel PCH path is functionally tested; the flash.h change is an
-append-only addition and all existing users of that struct use
-designated initialisers, so they are unaffected.
+Tested on a Coffee Lake i5 with PR0 covering 0x860000-0xffffff and
+FLOCKDN set, querying MEMISLOCKED over four ranges:
 
-This came out of a discussion about fwupd reporting the BIOS region as
-unlocked on Intel PCH systems:
-https://bugzilla.kernel.org/show_bug.cgi?id=221927
+                               PR0 range  whole chip  in PR0  below PR0
+  unpatched                       -95        -95       -95      -95
+  chip lock flags only              0          0         0        0
+  patched, no chip lock flags       1          0         1        0
+  patched + chip lock flags         1          0         1        0
 
-Question for the maintainers: this straddles MTD and SPI, so I do not
-know which tree it should go through. Happy to resend in whatever shape
-suits.
+The whole chip and below-PR0 columns stay unlocked because only
+0x860000-0xffffff is covered by a protected range.
 
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221927
 Signed-off-by: Tobias Jakobsen <tjakobsen84@protonmail.com>
 ---
-Tobias Jakobsen (2):
-      mtd: spi-nor: allow the platform to supply write protection state
-      spi: spi-intel: report controller enforced write protection
+ drivers/spi/spi-intel.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
- drivers/mtd/spi-nor/core.c | 52 ++++++++++++++++++++++++++++++++++++++++++++--
- drivers/spi/spi-intel.c    | 46 ++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/flash.h  | 12 +++++++++++
- 3 files changed, 108 insertions(+), 2 deletions(-)
----
-base-commit: 1b78070aaef63512688aebfbc82365ef9d6660f1
-change-id: 20260829-spi-nor-platform-lock-daa984da2872
+diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
+index 7494b921a..667291979 100644
+--- a/drivers/spi/spi-intel.c
++++ b/drivers/spi/spi-intel.c
+@@ -1223,6 +1223,46 @@ static bool intel_spi_is_protected(const struct intel_spi *ispi,
+ 	return false;
+ }
+ 
++/*
++ * Unlike intel_spi_is_protected(), which asks whether a flash region contains
++ * any protected range, this asks the opposite: whether the given range is
++ * itself entirely covered by a write protected range. That is what the MTD
++ * layer means by "locked".
++ */
++static bool intel_spi_is_range_protected(const struct intel_spi *ispi,
++					 unsigned int base, unsigned int limit)
++{
++	int i;
++
++	for (i = 0; i < ispi->pr_num; i++) {
++		u32 pr_base, pr_limit, pr_value;
++
++		pr_value = readl(ispi->pregs + PR(i));
++		if (!(pr_value & PR_WPE))
++			continue;
++
++		pr_limit = (pr_value & PR_LIMIT_MASK) >> PR_LIMIT_SHIFT;
++		pr_base = pr_value & PR_BASE_MASK;
++
++		if (base >= pr_base && limit <= pr_limit)
++			return true;
++	}
++
++	return false;
++}
++
++static int intel_spi_is_locked(struct spi_device *spi, loff_t ofs, u64 len)
++{
++	struct intel_spi *ispi = spi_controller_get_devdata(spi->controller);
++
++	if (!len)
++		return 0;
++
++	/* Protected range registers work in 4k units */
++	return intel_spi_is_range_protected(ispi, ofs >> 12,
++					    (ofs + len - 1) >> 12);
++}
++
+ /*
+  * There will be a single partition holding all enabled flash regions. We
+  * call this "BIOS".
+@@ -1395,6 +1435,12 @@ static int intel_spi_populate_chip(struct intel_spi *ispi)
+ 
+ 	intel_spi_fill_partition(ispi, pdata->parts);
+ 
++	/*
++	 * The protected range registers address the first chip, so only it can
++	 * be queried this way.
++	 */
++	pdata->is_locked = intel_spi_is_locked;
++
+ 	memset(&chip, 0, sizeof(chip));
+ 	snprintf(chip.modalias, 8, "spi-nor");
+ 	chip.platform_data = pdata;
 
-Best regards,
 -- 
-Tobias Jakobsen <tjakobsen84@protonmail.com>
+2.53.0
 
 

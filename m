@@ -1,82 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFEF4CCDE3;
-	Mon, 31 Aug 2026 17:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65AA4A3859;
+	Mon, 31 Aug 2026 18:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788198497; cv=none; b=KvZYRD4NzokX2uA70+FVbNjIFCst5ECVtWyrw88LUivK/4KL18OOUcPf++dzvBmaj003R/8oRXMqkynghZMrswg9AmJUmsgl7Ej1EKoCJjse9SUjG6QRjfjAbiAN4KYmsLKR+l47lV12ax/DfuOVGlIJkIE4lfdnVGetqJR26Bg=
+	t=1788200411; cv=none; b=kPLgyRwiYoecaxKFPtWvu4xcKo97Ge3OYcOfnIxTJc6bjibtmBbHPL7PJpnfFXYVU9yZf1Rj+kNrJzVfSp6jZCPlj+AGjlyng1mOYoRuouXReEeLldjvDOE7F1F74LSNZZN9K7axmyEpdQe7BVHcw8JY0ZpevQRKFxKyyLlUI4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788198497; c=relaxed/simple;
-	bh=wbO4FN7CCabZt8UHD6/mZvwW1+J7zI2RVsnN2vpuxEo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g2jhEQkmv3ymIJvzRxwSUZ2+DRjKSpBFKeFFnGMPMwBoMytHGjT+clALPzPE7JUnGG9UEhxoPQ+p/+3572Aa/EgXH+0hNajq8LEJKpOKYBGvrDDav51jpjamZjG9iUTXa24IEH4EezMUMyMrit8uRCXbc0KHY4gNRWa/kk9ZJg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRLrHlKo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788200411; c=relaxed/simple;
+	bh=64RgWKapbpcbTo++x8oKoCjSO4fGjfuVJKQTTCf8nFw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qgcN3yIDM4i79AhrMh88Mn+0oTf/BgO6cLwuu7JmpB7t2jCAFAbqEZOZqGZ818q8aPbrByfZBKb1zb3Grr5dTRpL1qaKbyvicyPMxHOvUa18jBMX15VKJmZaEol+MZiU3FF+dVNso0aqkGeC82Yj3UraiX61Nc4f10RPmLmGE04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XMArrpKg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRLrHlKo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE2C1F000E9;
-	Mon, 31 Aug 2026 17:48:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XMArrpKg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3381F000E9;
+	Mon, 31 Aug 2026 18:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788198495;
-	bh=wbO4FN7CCabZt8UHD6/mZvwW1+J7zI2RVsnN2vpuxEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jRLrHlKorwgutcnZqJFX+QPI9HoW7kuLvK/RMtidHcZsuAVflL0TXDDTss1LQ7c0r
-	 qLqEIi9Kn5RQYX6CwuwVA/ohQYbhHXCoVW91EGRMpUTV1RwyFoQ+G8jTLwTg3MM2ds
-	 qcL5gK3rU9iW2VxfLKpigDMTdix58fBxkqx8IUIfacquOVoCQMhL39peSIcjWUkhQz
-	 r6BKflOd2TPTAcKcJKdvXoRx7B110SJr2Bs/OIqHLkXIgr5WgKXrGEm5ldo2YyctBP
-	 uJa7xYfP4UY54MsFuimp75TSdfFqXVad9A5IMQulQ5pyf1XaZnBJbRXfptbBuOoZAn
-	 7UUMldRYJsnsA==
-Date: Mon, 31 Aug 2026 18:48:10 +0100
+	s=k20260515; t=1788200410;
+	bh=OcVayUEOylEhJ95Hs31FmQv3AK1ni05LLXEAjjJILmE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=XMArrpKgi1ESB44cv8SiSrBZFPnHsPtFgz1yy0b7Up76mtKlYWBsn5Nk6+Samp2LX
+	 TUvPoOzHzcPhplWEkO8QNmdGwV3qksdN4p1k8jkXyeZawW4kk+MGAwuz6qvdB5B06z
+	 dG0VMkzT1zZYhSNZwZV9688NrLNx8U64XrZoBe/1bLlhFmhrG1yFgF+WcIUrtytkNH
+	 HLp0ZVs+uzX8cu2nMe6fkvEFJ95+T19pFABo9Z9Xs2IsmsWK6BivKrhlV57KHY/qpA
+	 zrpF3w/sKeEhzqUxXgtf9YiCp0cOqSiygyy7Dd673HaRotTCw33rD4LmHvqVna9ArP
+	 Zv7NCTMuL7iFQ==
 From: Mark Brown <broonie@kernel.org>
-To: Jingcheng Ji <ot_jingcheng.ji@mediatek.com>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Project_Global_Chrome_Upstream_Group@mediatek.com,
-	jarried.lin@mediatek.com, vince-wl.liu@mediatek.com,
-	justin.yeh@mediatek.com
-Subject: Re: [PATCH] spi: spi-mtk-nor: Get clocks from devicetree in bulk
-Message-ID: <b03aa685-3632-4a8e-a292-4d0897ba2c3e@sirena.org.uk>
-References: <20260821090046.2353986-1-ot_jingcheng.ji@mediatek.com>
+To: Haixu Cui <quic_haixcui@quicinc.com>, 
+ Francesco Valla <francesco@valla.it>
+Cc: virtualization@lists.linux.dev, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260830-virtio-spi-fix-v1-1-62f486f4acdc@valla.it>
+References: <20260830-virtio-spi-fix-v1-1-62f486f4acdc@valla.it>
+Subject: Re: [PATCH] spi: virtio: drop duplicate completion init
+Message-Id: <178812668896.13461.6916167520873314863.b4-ty@b4>
+Date: Sun, 30 Aug 2026 22:51:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="iiZjd5K58NJ/2Uds"
-Content-Disposition: inline
-In-Reply-To: <20260821090046.2353986-1-ot_jingcheng.ji@mediatek.com>
-X-Cookie: snafu = Situation Normal All F%$*ed up
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=64RgWKapbpcbTo++x8oKoCjSO4fGjfuVJKQTTCf8nFw=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqlcXXyaLPGOELx8FlQjQeO/DNmQWxcyRasPAP1
+ EOSA3I+A+mJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapXF1wAKCRAk1otyXVSH
+ 0CYeB/9JYeRTXXPn3BVLcS1aZFEbg0sn7JMBtTSpzipPYsIpFUQs1avExyP/S1g76v4u0miS1aP
+ 4+sd6Y5jM9gQ966iQsgitl1K/tihTIsldm+pVulySPRBzP04+vphH3mW0DN+5TdPupVjx+7G5FI
+ CQbYbsa3/qVEzSTwyXWckn5ExY6GrGlFjh1WigfdVJ/wrHFucvmkK8lfwLWjtlGjC0SY2K31ck0
+ S27oGM8aNeSA6BeDnzas2HEU5eqZHRtnoTxwR5c9nz7bcv7ASenOihHEpG52pVY10QbkDMjWrrr
+ Di32uSwkhrKGv/DjrQAkbrzlDfAlvpjC+Y+AQ7NkWfdD3WLE
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Sun, 30 Aug 2026 15:48:35 +0200, Francesco Valla wrote:
+> spi: virtio: drop duplicate completion init
 
---iiZjd5K58NJ/2Uds
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Fri, Aug 21, 2026 at 05:00:22PM +0800, Jingcheng Ji wrote:
-> The driver currently gets a fixed set of clock inputs by name. This ties
-> the driver to the clock names used by existing devicetrees and silently
-> ignores any additional clocks declared by a future platform.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-This doesn't apply against current code, please check and resend.
+Thanks!
 
---iiZjd5K58NJ/2Uds
-Content-Type: application/pgp-signature; name="signature.asc"
+[1/1] spi: virtio: drop duplicate completion init
+      https://git.kernel.org/broonie/spi/c/b34c325539ca
 
------BEGIN PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqVvlkACgkQJNaLcl1U
-h9AcCAf+IF424GXDSYuGasJOVMsE660FZzM74ZGUdS2CC+p8NKO1Ldpn5dXhFPit
-AZlouTOhqQ6yYMeILwK/2wO8rFathl0SNEENSZyNJ9Wg7ZuFq1GS45P9BCuLd0D3
-giMwfnadXQW+0vWF6J5Yt1v7g9jsFq8+GzAxijTZ5Xm4GFO/93AwXPgG+KBRvkB1
-P1Dw0LGLBc+yjwI5go3bS0kmtaDLvoze9xvHBT0ON7odTo0Xw49DoBEf8c97V0Bp
-/CjQparCNFFYOwmeqbBqBwaVArHppA4lNNDqrwiy5HlNyq8EOYptWSDC+EQ/g3rq
-INTsNBdB7/X4yF1rn5mA78dsOnyaQw==
-=B1qX
------END PGP SIGNATURE-----
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---iiZjd5K58NJ/2Uds--
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

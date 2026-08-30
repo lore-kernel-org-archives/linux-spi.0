@@ -1,40 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE4E37C911;
-	Tue,  1 Sep 2026 21:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0F7406261;
+	Tue,  1 Sep 2026 21:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788296942; cv=none; b=Cw7Xq7KFjr2S6bR3K4q4bgvFqpR+dYWNcvbGeCEz2qOC8TEsEeUCKk5WjhDgQSq3jz4vO2RA0nxbSDZYTy7nb5+LESPnZGcjEuuOeLZkk2TPPDuAuM/t/WSu5+GFHEFLNGptBiHiVEhFDz0/yhqxY3fsfbnPUHD6y01Gm/LMFlY=
+	t=1788296945; cv=none; b=aTKGqlPqtMGdI+ptSRipwE6rKJ9IDeQiG0qr9S8ohF7bIB9rIE/7j3ZJlixPB/xyOLC+UgUqZm60UullJvTCjtCuRo1vpXIz86WLm2/ME/cbH0yqQrl2/Ifz5LTTvR6E12SzNjVlRMaOeIek2ntRNCcLZ7WuorjHPVMNyOGKhpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788296942; c=relaxed/simple;
-	bh=JX/26bGGUmRq2h2//+GZyw07D++3XMqRoIT9K6XN0sY=;
+	s=arc-20240116; t=1788296945; c=relaxed/simple;
+	bh=GLcklj6qLIp+nWJbUd6zXIgEsBhhkvooKqgSxHth9m8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=JOvqF88XrU2CEA6CoUSjWx9ShKXbKafT6M2b0n2Fui02xXHsibltpzbGO2e45k39+85eXaaxig+ZXUHpEjf5ynoujbwpxFG5pb8uP2vHFVpO/JaSpXEwS/+eow4IX5/JEZmQFfvhuQeuvn1/yQ/qdqFoxpexRofMc5GyXSNH1Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enoF4Rl9; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ZjXQzPGqiBlcQWdrFBDkj2RJqYXRHqQfO1gNIvnhNGDArORj+wttKrFQg4X3ClY4d0DcSzN1H5si6pcXWsl0bBGs3qszVEu4xIhVBTKYQkjS9Lmdd1QEhaXIlM4oVquDtXYd+5plYA8LPrpDprTwn21ODXeXOw69URZoDjmkqkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4GFMVTS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enoF4Rl9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD381F000E9;
-	Tue,  1 Sep 2026 21:09:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4GFMVTS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8C71F00A3D;
+	Tue,  1 Sep 2026 21:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788296941;
-	bh=XUMv00uhmmWGwBOFUJ8oZ8pHerEsNkVTCktSbF4UHy0=;
+	s=k20260515; t=1788296944;
+	bh=eVjH9lat57y5/U8gDPOxhK4QGvgeHhJB3V8fRTXqB5w=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=enoF4Rl9lGm6gf9QZCm9I2gIxdkXAUrDxyUWpFbbchRIOTUE3MmNUm9wnJjWvEdiq
-	 bRo/2kG/tOSYrIUijJhBueBnSdYbyRFoZk2gKDKqwwpEr/C6F8lonNStQWyJ9a8KJE
-	 mpF4LW4Riw7BTqpArmqAtbSRCJ4cq0xnGr1cfwYX6qBFNATD2R/b4cWjZfXfi6pF0F
-	 UDShhImEuortB8lI8D4fk+1HAcn8+4Vv2ApAwpUKB7JGbeSsU8DmcuutEpIBch3fg+
-	 HWA0TLwOh64Nbu4efqDg1wpm9E1TPRLEUroSIWx6Xt3aFShnLPyRROCse3Gce+c8jJ
-	 jdc3OAPgayzMA==
+	b=A4GFMVTScBTHngzyWwJq9TfqjuxxxpTQsOAy2X0WlSDCjYR2CaAWAUgWL8uHHA+Mo
+	 lYEVKnw1BKf2XVFu6LGC5b/6nlqKMm6uWCKb9J6jPSaZhJPIwEBTwINrewVXy7/5rp
+	 pnDtbl7KnXJHJtIXpj1e9ugGX10XxzMLnKUhFfKqtdySCiMFv3RmThyIjQwsQKyW3X
+	 agoGMPY3CQf1SmYe65blir2dTdgN4F2HIq1uFI9oKPZP+Lhpml+w7+MjGAmXsOmr7q
+	 HH/Fberr/MmdnqnuW6gj0Kc19jPP9GuIVGxANdWmeE/xzOyGLW4GKvOHOEZ0DHWTKX
+	 vhAqzsqu5D8KQ==
 From: Mark Brown <broonie@kernel.org>
-To: Tony Lindgren <tony@atomide.com>, Felix Gu <ustc.gu@gmail.com>
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260826-mcspi-v1-1-0a8dd7f6dd56@gmail.com>
-References: <20260826-mcspi-v1-1-0a8dd7f6dd56@gmail.com>
-Subject: Re: [PATCH] spi: omap2-mcspi: Remove unbalanced
- pm_runtime_put_sync() calls
-Message-Id: <178821330672.439600.3685098405160829295.b4-ty@b4>
-Date: Mon, 31 Aug 2026 22:55:06 +0100
+In-Reply-To: <20260830140133.24156-1-pengpeng@iscas.ac.cn>
+References: <20260830140133.24156-1-pengpeng@iscas.ac.cn>
+Subject: Re: [PATCH] spi: sh-msiof: propagate setup runtime-PM errors
+Message-Id: <178813304450.13461.6050584362669723666.b4-ty@b4>
+Date: Mon, 31 Aug 2026 00:37:24 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,20 +43,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1136; i=broonie@kernel.org;
- h=from:subject:message-id; bh=JX/26bGGUmRq2h2//+GZyw07D++3XMqRoIT9K6XN0sY=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqlz7pHW+iO8I1vOqyt20TJOlhNJVUcpeC38498
- oby/VEcd+yJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapc+6QAKCRAk1otyXVSH
- 0JfkB/9dNgi1Y5fMQup4CuhNsoV1r7xD39b7f4Cdkp6AloFMCJ3FksdZqskIrSEz7pCDEpA1+xX
- PyPoWFdShj3aIBVvTNJtwLYvoQWOCHhNMfVuPMXFPkGtvSmKXWxzEFmc9YsI3kcMtga3r3xh78z
- NXYHU+2VEqbvIaJFfd42vQbHrzI8VctlHwmUPQDtEIDDoscjQlQlWkntFsubEcaUyM6nsnz5hva
- dbeKFdoJmH/tVw+dnUgY+AidwdSag8o6LDM5TouglGGFLs9hiNtOc/HU3lhnQDY9qCeTzP3cMRJ
- L6izHDe05/gpsqKUoA0upwX2722XrczaQggRgLzR/AhQLpvT
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1110; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=GLcklj6qLIp+nWJbUd6zXIgEsBhhkvooKqgSxHth9m8=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqlz7tCANLpKGP0BVhwcMzj7f42l6xbSrB8qQmG
+ 3944Nawp9iJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapc+7QAKCRAk1otyXVSH
+ 0PoEB/9k5fbcZ9UeBiIU3k1n8LMb/Fvm67xBT0QK05WPnA5QDpxfsLkeaaYs/2lgQ7ipjw4o2eA
+ JmUDzd8fj3nTAmPB2La+YoX78tl/t1MFAj1poEx9oAfop2+54paeJDMTbU3cbIhdyg16MjIgPfa
+ i2FMgFGlh4r/OxFXQjgjnnf6dcfna1xWJ++NIT3IesYo6DnI5JBAEPSuEKx0v6FrTgr3ePNOLQW
+ /BaaiRfya6Cp4yLoZ6dg+e9oWfw60w6cR1di3Y3pPqkxShW1SesbRND1Mt44j2sbzsvATEED7+x
+ X70XRMtvsKI/+T9gskHA2oUx9jZvib1PwdIuSqlWchR+lwGO
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 26 Aug 2026 01:08:40 +0800, Felix Gu wrote:
-> spi: omap2-mcspi: Remove unbalanced pm_runtime_put_sync() calls
+On Sun, 30 Aug 2026 22:01:33 +0800, Pengpeng Hou wrote:
+> spi: sh-msiof: propagate setup runtime-PM errors
 
 Applied to
 
@@ -65,8 +64,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: omap2-mcspi: Remove unbalanced pm_runtime_put_sync() calls
-      https://git.kernel.org/broonie/spi/c/5f01cb141169
+[1/1] spi: sh-msiof: propagate setup runtime-PM errors
+      https://git.kernel.org/broonie/spi/c/152867998da9
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

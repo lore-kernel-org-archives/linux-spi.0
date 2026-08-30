@@ -1,144 +1,92 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F0C381B10;
-	Sun, 30 Aug 2026 13:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788097746; cv=pass; b=XQEl9eoIfWRtt//BhoRoVytWtFN70XtIefA0BJj33EBRF7yDCbPCvDDfrkWrAYn9HDyeMLIu87+IJcbjC7cceB+E0fyhJKe5SerJ0sDoz+W7uyloU4wmfqBSgemEGMZGN1m5L5jQ3OywqAJt65JWWuY3R7mT5/cpguK6/GIUx/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788097746; c=relaxed/simple;
-	bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HQgF6vNT2TlYIruFPu85il1DyvmFVL1q9ovqL8jDB8k9yAdvOEmjkiAUTJGDPxvWFcdUclZbo0sgLxVWFtRklz9hr9OkhjCQtAy/rhxCMfw2l5Ocf1um7DUKI22yx1yw59MBapg9X8TGECwU46e08WyRa+qs+a3hTSEzuxLOKXk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=On/ce1C+; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=PytnO4U2; arc=pass smtp.client-ip=185.56.87.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="On/ce1C+";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="PytnO4U2"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; s=arckey; t=1788097744;
-	 b=d5kGvx4V14auVOTnKAjLIDv/o/41/EzNXdjkwSiK+UcrmEuZkzDrflK5iAFeII3pxNQXA7utT2
-	  Odr5cjB93CPkRZAKDO3VG++uNkFrpB5M+qvzSojpDFjWAy6umwtXDCD7zTB2U5W7QZaMrkoqOI
-	  MBIbooOv0cY4IBExZ5gU1CXnuyA0u7jAGL9VD7XNdeANM+fXlCWckKWhtcvj2ZO6HPvQ5nAeSt
-	  9mtiScu7PT0REpvyQXLmncWR8eqhHA4E+4YPXsNb3vgaBLHrR/JeozWi9EmmrxlqlACIGjzOWl
-	  lV5a0iAYKbmCppfROmeNN7ykAs4v/tZmjNdLuPcQw0xunA==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; s=arckey; t=1788097744;
-	bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
-	h=Cc:To:Message-ID:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	  Subject:Date:From:DKIM-Signature:DKIM-Signature;
-	b=M7g8HOyixMQgArfW70bfWbibVzxeljWkovM1IiHmfBLJoPPwq8ey/na4jYWYMckEUj8VqScBcF
-	  UG4qbng4EcwGs8maCpX50HWnmjjlZoopgDJsFQp8xq/Fmgfa1TO4yXCadQt9xD76+SlGGH/LYn
-	  nKsUZhnw2p+JEmZpbYo9WQJge6Q80GqGpcMTilhx4QDKWllcK9d1UkKApFNU2qvVe0Yafz4GZQ
-	  jzeo6zcQkXyn5N3B7B9yKK7mq62i1Ul6MGT3dovpsj/9O9ZHIeRNI/60RB7BX0J7tGH/sgpz0N
-	  h4G3Il2YNih2Pm2Ypxg4n2tbRa2LDvWp+9F+Y5+Q7V0ucw==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
-	:Date:From:Reply-To:List-Unsubscribe;
-	bh=DiHD8En7fq2ugx0Pu3ejCIoYiYpClHsgUceUJ/BO04Y=; b=On/ce1C+koBTg36DTgHgp47OPA
-	NOroWNk6Z2Vt91Lyv8vDFfVjZ7eZw5I7bxOaBIQtvzvgT5/7j3DeOoj/SXfKq92Qzl6Omn6nSpSA2
-	PuAL5UD938gn0ZVVXAh9M3yRRmBK1LFZVQZ3u7Np0Jr8nXNyyJPi9eRUcruJDi6cKTpA=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x0fu2-0000000Cihp-1K4k;
-	Sun, 30 Aug 2026 13:48:55 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=DiHD8En7fq2ugx0Pu3ejCIoYiYpClHsgUceUJ/BO04Y=; b=PytnO4U2/w2IfKUZiuQ3lt/wQa
-	ghrfIgmxTn0X9L1uMAtUSR9sjr6Bi2My5wdzotlnL9gEA2iBnzdd3ZRkj/lmtCs3DWfHdqcViiCxg
-	umhOdf9MiQduejSg23gE+j+uP6RYFI0AD0U3T/iaRO1/CzkyEGnGrfFs9NCb6qJJ6r9c=;
-Received: from [87.5.139.196] (port=60542 helo=[192.168.178.158])
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <francesco@valla.it>)
-	id 1x0fty-00000000Ep8-01NB;
-	Sun, 30 Aug 2026 13:48:50 +0000
-From: Francesco Valla <francesco@valla.it>
-Date: Sun, 30 Aug 2026 15:48:35 +0200
-Subject: [PATCH] spi: virtio: drop duplicate completion init
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132EF70809;
+	Sun, 30 Aug 2026 14:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788098500; cv=none; b=hrgFYt8qrTAWmQea6a9+gX6cIPcz3RetEOsLtMZbFQM5HYlpmReBYWd8JXb4R1qTaKBeEzokwB3fZb/mqNMvdl5xHqfCRNb7CFCyIe2n1Gvkc/O808gcgWEM99DTUmKMKKKHfhRH1HYpbZN8gMrnqRQ0xX1zEctbqfXDtwIY37s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788098500; c=relaxed/simple;
+	bh=gFikO6UFfebVtmJXqk2YlhurRboIP+j5W8AzkmpQGls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ae+lB1H0ukCFyi2B8C8gOMXhlrANXf2bzUp6VAHp0G1kiMUbNi1YgKxUYE8cspdT9oxS5U8F3qFm8wnj6UV2Ke6HkSbogF425FucvHtXYKA7IGGHQt+lGlQz6iFjW7p9H39UlpSKXxkPspfc+htnDRwrPhesO3WS7YSAPfV/CDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.241.250])
+	by APP-03 (Coremail) with SMTP id rQCowAD3AUC_N5RqRHmbBg--.27689S2;
+	Sun, 30 Aug 2026 22:01:35 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Mark Brown <broonie@kernel.org>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: sh-msiof: propagate setup runtime-PM errors
+Date: Sun, 30 Aug 2026 22:01:33 +0800
+Message-ID: <20260830140133.24156-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260830-virtio-spi-fix-v1-1-62f486f4acdc@valla.it>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAQBCF4VfRXJtauyV5FbnYWYNxgXaQkne3u
- PxOnf8C5SisUGcXRD5EZZkTijyDMPp5YJQuGayxpamcwUPiJgvqKtjLicE7R4UlT5YgndbIaf6
- CTftbd5o4bG8F7vsBK5m7P3IAAAA=
-X-Change-ID: 20260830-virtio-spi-fix-ca33b12bab2b
-To: Haixu Cui <quic_haixcui@quicinc.com>, Mark Brown <broonie@kernel.org>
-Cc: virtualization@lists.linux.dev, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Francesco Valla <francesco@valla.it>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=871; i=francesco@valla.it;
- h=from:subject:message-id; bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
- b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFlTTPZonj6ls3Uy38dn06zYZ7T1rc+5Iv+vzHnnztMv9
- otr/Lt1uKOUhUGMi0FWTJElZN2Ne3vmmn9L28D4CGYOKxPIEAYuTgGYyJxnDD8Z50c+3nUgUIGx
- /OGx2fsNyjk1JDOf6VgGruf6efhJ3AknRoa7pUFLTl9yvaDf83e2z14p5dxvQWIO1c0CLCtyzx5
- 8a8wBAA==
-X-Developer-Key: i=francesco@valla.it; a=openpgp;
- fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: beb358e599b79f6ef325c6715a078fc7
-X-AntiAbuse: ID - beb358e599b79f6ef325c6715a078fc7
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1x0fu2-0000000Cihp-1K4k-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAD3AUC_N5RqRHmbBg--.27689S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww45JFy7JFW3Zr4xWrWkCrg_yoW8Gw1DpF
+	4xXFyxAr4ktw40kF47Aw4UuF1a9FWxKry8J3yIgw4kCr1Fy34vvF1UWFy2qF15trWDCa43
+	Za1qy395XF1Y9F7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUyG14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUj9a97UUUUU==
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
 
-The completion iused for SPI transfers is initialized twice in the
-same function, without it being used in between. Drop the redundant
-initialization.
+sh_msiof_spi_setup() ignores pm_runtime_get_sync() before programming
+native chip-select registers and marking the configuration initialized.
 
-Signed-off-by: Francesco Valla <francesco@valla.it>
+Use the checked runtime-PM helper and return failure before register
+access.
+
+Fixes: 7ff0b53c4051 ("spi: sh-msiof: Avoid writing to registers from spi_master.setup()")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- drivers/spi/spi-virtio.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-virtio.c b/drivers/spi/spi-virtio.c
-index 2256dfec5407..87ce32b6d133 100644
---- a/drivers/spi/spi-virtio.c
-+++ b/drivers/spi/spi-virtio.c
-@@ -162,8 +162,6 @@ static int virtio_spi_transfer_one(struct spi_controller *ctrl,
- 	if (!spi_req)
- 		return -ENOMEM;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 1aeab7ec0bc8d..4c425ec627767 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -453,6 +453,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 	struct sh_msiof_spi_priv *p =
+ 		spi_controller_get_devdata(spi->controller);
+ 	u32 clr, set, tmp;
++	int ret;
  
--	init_completion(&spi_req->completion);
--
- 	th = &spi_req->transfer_head;
- 
- 	/* Fill struct spi_transfer_head */
+ 	if (spi_get_csgpiod(spi, 0) || spi_controller_is_target(p->ctlr))
+ 		return 0;
+@@ -468,7 +469,9 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 		clr |= SIMDR1_SYNCAC;
+ 	else
+ 		set |= SIMDR1_SYNCAC;
+-	pm_runtime_get_sync(&p->pdev->dev);
++	ret = pm_runtime_resume_and_get(&p->pdev->dev);
++	if (ret < 0)
++		return ret;
+ 	tmp = sh_msiof_read(p, SITMDR1) & ~clr;
+ 	sh_msiof_write(p, SITMDR1, tmp | set | SIMDR1_TRMD | SITMDR1_PCON);
+ 	tmp = sh_msiof_read(p, SIRMDR1) & ~clr;
 
----
 base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
-change-id: 20260830-virtio-spi-fix-ca33b12bab2b
-
-Best regards,
---  
-Francesco Valla <francesco@valla.it>
+-- 
+2.50.1
 

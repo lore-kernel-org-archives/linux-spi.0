@@ -1,38 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F601A3AB0;
-	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1787965478; cv=none; b=SEId2Ch7VUPYxPwKq2TvpcyHsgKjE8yO5cL2SmhFfszXRrC7Ibdr9h8Kk5RzLp9xWMGV/sJB+iOKUu9D+mSEcTPP+LlvsnDKTeAorW0GWP8nD5n9AB1E2u7zF7pmm9GnGpx17H7JHZRdY85FDN8wLD9a5Lha0w0iyPHnj/hiHio=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1787965478; c=relaxed/simple;
-	bh=wnU3s+PY7ZNxdKFVmGRin9VkrUvIoJthhqJ8bKEVwTA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EIIy1ZodSbQLVnPZeQnwJxzd009ZYjU27ukgQpN9y1MPVTNhN242ueY4mFrujhbGGi3jdq9qfCg9SQPwChbK9ghsUTLLa7CzyBl/lYEBdhVrTVumjRdvpJ+ASnDvXsRHNXAR7OLkL8MubFYzPOkFPiIyH228GX5EyX65kZD+cOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lO1Loyky; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F0C381B10;
+	Sun, 30 Aug 2026 13:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788097746; cv=pass; b=XQEl9eoIfWRtt//BhoRoVytWtFN70XtIefA0BJj33EBRF7yDCbPCvDDfrkWrAYn9HDyeMLIu87+IJcbjC7cceB+E0fyhJKe5SerJ0sDoz+W7uyloU4wmfqBSgemEGMZGN1m5L5jQ3OywqAJt65JWWuY3R7mT5/cpguK6/GIUx/I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788097746; c=relaxed/simple;
+	bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HQgF6vNT2TlYIruFPu85il1DyvmFVL1q9ovqL8jDB8k9yAdvOEmjkiAUTJGDPxvWFcdUclZbo0sgLxVWFtRklz9hr9OkhjCQtAy/rhxCMfw2l5Ocf1um7DUKI22yx1yw59MBapg9X8TGECwU46e08WyRa+qs+a3hTSEzuxLOKXk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=On/ce1C+; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=PytnO4U2; arc=pass smtp.client-ip=185.56.87.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lO1Loyky"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A6D43C2BCF6;
-	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1787965477;
-	bh=wnU3s+PY7ZNxdKFVmGRin9VkrUvIoJthhqJ8bKEVwTA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lO1Loyky1yafw/YKJFYgfsyow4GYg920D6keIGv/KY1zTWFveA6M9Rmxk9EuMbMGq
-	 wxHHvltYy+zhTbwnYX09mfPBF+nYvoMr0khAs6r2AUYTy9MB+4oR+rnQHcVExNT+7a
-	 sakP2Ah5SO80/pt+1xoJVi9nQp986IhoNDpqZCMjBm9WIBUbYMaNjyGZRhlNOIlNiI
-	 xBhuRltNs+gTRELygG/uXr/Q9YgrCsdvPAoBwwaVZdHMpW645+TokicpHHhc/smRSm
-	 unNYov79ykRv5frU62leR4vzJ42P1mfpMyWq3ZJ7aSoqDMODeojTB73uJe241h/HRz
-	 st1qk+zRsFOlw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80986C61DD3;
-	Sat, 29 Aug 2026 01:04:37 +0000 (UTC)
-From: Tobias Jakobsen via B4 Relay <devnull+tjakobsen84.protonmail.com@kernel.org>
-Date: Sat, 29 Aug 2026 03:04:32 +0200
-Subject: [PATCH 1/2] mtd: spi-nor: allow the platform to supply write
- protection state
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="On/ce1C+";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="PytnO4U2"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; s=arckey; t=1788097744;
+	 b=d5kGvx4V14auVOTnKAjLIDv/o/41/EzNXdjkwSiK+UcrmEuZkzDrflK5iAFeII3pxNQXA7utT2
+	  Odr5cjB93CPkRZAKDO3VG++uNkFrpB5M+qvzSojpDFjWAy6umwtXDCD7zTB2U5W7QZaMrkoqOI
+	  MBIbooOv0cY4IBExZ5gU1CXnuyA0u7jAGL9VD7XNdeANM+fXlCWckKWhtcvj2ZO6HPvQ5nAeSt
+	  9mtiScu7PT0REpvyQXLmncWR8eqhHA4E+4YPXsNb3vgaBLHrR/JeozWi9EmmrxlqlACIGjzOWl
+	  lV5a0iAYKbmCppfROmeNN7ykAs4v/tZmjNdLuPcQw0xunA==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com; s=arckey; t=1788097744;
+	bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
+	h=Cc:To:Message-ID:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	  Subject:Date:From:DKIM-Signature:DKIM-Signature;
+	b=M7g8HOyixMQgArfW70bfWbibVzxeljWkovM1IiHmfBLJoPPwq8ey/na4jYWYMckEUj8VqScBcF
+	  UG4qbng4EcwGs8maCpX50HWnmjjlZoopgDJsFQp8xq/Fmgfa1TO4yXCadQt9xD76+SlGGH/LYn
+	  nKsUZhnw2p+JEmZpbYo9WQJge6Q80GqGpcMTilhx4QDKWllcK9d1UkKApFNU2qvVe0Yafz4GZQ
+	  jzeo6zcQkXyn5N3B7B9yKK7mq62i1Ul6MGT3dovpsj/9O9ZHIeRNI/60RB7BX0J7tGH/sgpz0N
+	  h4G3Il2YNih2Pm2Ypxg4n2tbRa2LDvWp+9F+Y5+Q7V0ucw==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
+	:Date:From:Reply-To:List-Unsubscribe;
+	bh=DiHD8En7fq2ugx0Pu3ejCIoYiYpClHsgUceUJ/BO04Y=; b=On/ce1C+koBTg36DTgHgp47OPA
+	NOroWNk6Z2Vt91Lyv8vDFfVjZ7eZw5I7bxOaBIQtvzvgT5/7j3DeOoj/SXfKq92Qzl6Omn6nSpSA2
+	PuAL5UD938gn0ZVVXAh9M3yRRmBK1LFZVQZ3u7Np0Jr8nXNyyJPi9eRUcruJDi6cKTpA=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x0fu2-0000000Cihp-1K4k;
+	Sun, 30 Aug 2026 13:48:55 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=DiHD8En7fq2ugx0Pu3ejCIoYiYpClHsgUceUJ/BO04Y=; b=PytnO4U2/w2IfKUZiuQ3lt/wQa
+	ghrfIgmxTn0X9L1uMAtUSR9sjr6Bi2My5wdzotlnL9gEA2iBnzdd3ZRkj/lmtCs3DWfHdqcViiCxg
+	umhOdf9MiQduejSg23gE+j+uP6RYFI0AD0U3T/iaRO1/CzkyEGnGrfFs9NCb6qJJ6r9c=;
+Received: from [87.5.139.196] (port=60542 helo=[192.168.178.158])
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <francesco@valla.it>)
+	id 1x0fty-00000000Ep8-01NB;
+	Sun, 30 Aug 2026 13:48:50 +0000
+From: Francesco Valla <francesco@valla.it>
+Date: Sun, 30 Aug 2026 15:48:35 +0200
+Subject: [PATCH] spi: virtio: drop duplicate completion init
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,171 +72,73 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260829-spi-nor-platform-lock-v1-1-cd362d4914e2@protonmail.com>
-References: <20260829-spi-nor-platform-lock-v1-0-cd362d4914e2@protonmail.com>
-In-Reply-To: <20260829-spi-nor-platform-lock-v1-0-cd362d4914e2@protonmail.com>
-To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>, 
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Tobias Jakobsen <tjakobsen84@protonmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1787965476; l=5341;
- i=tjakobsen84@protonmail.com; s=20260829; h=from:subject:message-id;
- bh=UHLaWTixtcU+k1LSS+E9v9r7hrQI/HQPhvP207K3ckc=;
- b=Uc6lZZVF5l+oa1XBG2QK/BZpMBVQdT7Qg/6dqsmR7YyvjNV08simmoHiRb+3omLFJzKFQtWHc
- Y/MO/PaaGykBXxyYOT5YnunkGFGSnmR9LQJng5ZjWBG3BLxnMaZuOfR
-X-Developer-Key: i=tjakobsen84@protonmail.com; a=ed25519;
- pk=UREd6cisfwsFIDP455nUH6Ysx+ZDGnAVE9nGmKzm1Ks=
-X-Endpoint-Received: by B4 Relay for tjakobsen84@protonmail.com/20260829
- with auth_id=986
-X-Original-From: Tobias Jakobsen <tjakobsen84@protonmail.com>
-Reply-To: tjakobsen84@protonmail.com
+Message-Id: <20260830-virtio-spi-fix-v1-1-62f486f4acdc@valla.it>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAQBCF4VfRXJtauyV5FbnYWYNxgXaQkne3u
+ PxOnf8C5SisUGcXRD5EZZkTijyDMPp5YJQuGayxpamcwUPiJgvqKtjLicE7R4UlT5YgndbIaf6
+ CTftbd5o4bG8F7vsBK5m7P3IAAAA=
+X-Change-ID: 20260830-virtio-spi-fix-ca33b12bab2b
+To: Haixu Cui <quic_haixcui@quicinc.com>, Mark Brown <broonie@kernel.org>
+Cc: virtualization@lists.linux.dev, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Francesco Valla <francesco@valla.it>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=871; i=francesco@valla.it;
+ h=from:subject:message-id; bh=2kiaebJ+Y29rKyDA9vC1b/injJL9UjUWKm+oKK61hrE=;
+ b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFlTTPZonj6ls3Uy38dn06zYZ7T1rc+5Iv+vzHnnztMv9
+ otr/Lt1uKOUhUGMi0FWTJElZN2Ne3vmmn9L28D4CGYOKxPIEAYuTgGYyJxnDD8Z50c+3nUgUIGx
+ /OGx2fsNyjk1JDOf6VgGruf6efhJ3AknRoa7pUFLTl9yvaDf83e2z14p5dxvQWIO1c0CLCtyzx5
+ 8a8wBAA==
+X-Developer-Key: i=francesco@valla.it; a=openpgp;
+ fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: beb358e599b79f6ef325c6715a078fc7
+X-AntiAbuse: ID - beb358e599b79f6ef325c6715a078fc7
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1x0fu2-0000000Cihp-1K4k-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-2mqh.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-From: Tobias Jakobsen <tjakobsen84@protonmail.com>
+The completion iused for SPI transfers is initialized twice in the
+same function, without it being used in between. Drop the redundant
+initialization.
 
-Some flashes are write protected by the platform they are attached to
-rather than by their own block protection bits. An Intel PCH SPI
-controller programmed with protected range registers is one example: it
-refuses writes to a range regardless of what the chip's status register
-says, while the chip's block protection bits are typically left clear.
-
-MEMISLOCKED therefore either fails with -EOPNOTSUPP, or, once the chip
-gains SPI_NOR_HAS_LOCK, reports a range as unlocked while writes to it
-are in fact being refused.
-
-Let the platform supply an optional is_locked() callback in struct
-flash_platform_data, alongside the partitions it can already supply, and
-prefer it over the chip's own block protection bits. This is independent
-of SPI_NOR_HAS_LOCK, so an answer is also given for chips that have no
-block protection support of their own.
-
-lock() and unlock() return -EOPNOTSUPP, as platform enforced protection
-is not expected to be changed at runtime.
-
-Platforms that do not supply the callback are unaffected.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221927
-Signed-off-by: Tobias Jakobsen <tjakobsen84@protonmail.com>
+Signed-off-by: Francesco Valla <francesco@valla.it>
 ---
- drivers/mtd/spi-nor/core.c | 52 ++++++++++++++++++++++++++++++++++++++++++++--
- include/linux/spi/flash.h  | 12 +++++++++++
- 2 files changed, 62 insertions(+), 2 deletions(-)
+ drivers/spi/spi-virtio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index ccf4396cd..a5c37eea4 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -3001,6 +3001,50 @@ static void spi_nor_init_fixup_flags(struct spi_nor *nor)
- 		nor->flags |= SNOR_F_IO_MODE_EN_VOLATILE;
- }
+diff --git a/drivers/spi/spi-virtio.c b/drivers/spi/spi-virtio.c
+index 2256dfec5407..87ce32b6d133 100644
+--- a/drivers/spi/spi-virtio.c
++++ b/drivers/spi/spi-virtio.c
+@@ -162,8 +162,6 @@ static int virtio_spi_transfer_one(struct spi_controller *ctrl,
+ 	if (!spi_req)
+ 		return -ENOMEM;
  
-+static int spi_nor_platform_lock(struct spi_nor *nor, loff_t ofs, u64 len)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int spi_nor_platform_unlock(struct spi_nor *nor, loff_t ofs, u64 len)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int spi_nor_platform_is_locked(struct spi_nor *nor, loff_t ofs, u64 len)
-+{
-+	struct flash_platform_data *data = dev_get_platdata(nor->dev);
-+
-+	return data->is_locked(nor->spimem->spi, ofs, len);
-+}
-+
-+static const struct spi_nor_locking_ops spi_nor_platform_locking_ops = {
-+	.lock = spi_nor_platform_lock,
-+	.unlock = spi_nor_platform_unlock,
-+	.is_locked = spi_nor_platform_is_locked,
-+};
-+
-+/**
-+ * spi_nor_init_platform_locking_ops() - Use the platform supplied write
-+ *	protection query, if there is one.
-+ * @nor:	pointer to a 'struct spi_nor'
-+ *
-+ * Some flashes are write protected by the platform they are attached to rather
-+ * than by their own block protection bits, for example by an Intel PCH SPI
-+ * controller programmed with protected range registers. In that case the chip's
-+ * block protection bits are typically left clear and say nothing about what is
-+ * actually enforced, so prefer the platform supplied query when available.
-+ */
-+static void spi_nor_init_platform_locking_ops(struct spi_nor *nor)
-+{
-+	struct flash_platform_data *data = dev_get_platdata(nor->dev);
-+
-+	if (!data || !data->is_locked || !nor->spimem)
-+		return;
-+
-+	nor->params->locking_ops = &spi_nor_platform_locking_ops;
-+}
-+
- /**
-  * spi_nor_late_init_params() - Late initialization of default flash parameters.
-  * @nor:	pointer to a 'struct spi_nor'
-@@ -3040,9 +3084,13 @@ static int spi_nor_late_init_params(struct spi_nor *nor)
- 	spi_nor_init_fixup_flags(nor);
+-	init_completion(&spi_req->completion);
+-
+ 	th = &spi_req->transfer_head;
  
- 	/*
--	 * NOR protection support. When locking_ops are not provided, we pick
--	 * the default ones.
-+	 * NOR protection support. Platform enforced protection is preferred
-+	 * over the chip's own, as the chip is not necessarily aware of it.
-+	 * When locking_ops are not provided, we pick the default ones.
- 	 */
-+	if (!nor->params->locking_ops)
-+		spi_nor_init_platform_locking_ops(nor);
-+
- 	if (nor->flags & SNOR_F_HAS_LOCK && !nor->params->locking_ops)
- 		spi_nor_init_default_locking_ops(nor);
- 
-diff --git a/include/linux/spi/flash.h b/include/linux/spi/flash.h
-index 2401a0887..f415e2c0b 100644
---- a/include/linux/spi/flash.h
-+++ b/include/linux/spi/flash.h
-@@ -2,7 +2,10 @@
- #ifndef LINUX_SPI_FLASH_H
- #define LINUX_SPI_FLASH_H
- 
-+#include <linux/types.h>
-+
- struct mtd_partition;
-+struct spi_device;
- 
- /**
-  * struct flash_platform_data: board-specific flash data
-@@ -11,6 +14,13 @@ struct mtd_partition;
-  * @nr_parts: number of mtd_partitions for static partitioning
-  * @type: optional flash device type (e.g. m25p80 vs m25p64), for use
-  *	with chips that can't be queried for JEDEC or other IDs
-+ * @is_locked: optional callback to query write protection enforced by the
-+ *	platform rather than by the flash chip itself, for example a SPI
-+ *	controller that gates writes to a range of the flash. Returns 1 if
-+ *	the whole range is protected, 0 if it is not, or a negative errno.
-+ *	When supplied it takes precedence over the chip's own block
-+ *	protection bits, which do not necessarily reflect what is actually
-+ *	being enforced.
-  *
-  * Board init code (in arch/.../mach-xxx/board-yyy.c files) can
-  * provide information about SPI flash parts (such as DataFlash) to
-@@ -26,6 +36,8 @@ struct flash_platform_data {
- 
- 	char		*type;
- 
-+	int		(*is_locked)(struct spi_device *spi, loff_t ofs, u64 len);
-+
- 	/* we'll likely add more ... use JEDEC IDs, etc */
- };
- 
+ 	/* Fill struct spi_transfer_head */
 
--- 
-2.53.0
+---
+base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+change-id: 20260830-virtio-spi-fix-ca33b12bab2b
 
+Best regards,
+--  
+Francesco Valla <francesco@valla.it>
 

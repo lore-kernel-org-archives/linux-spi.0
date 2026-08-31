@@ -1,42 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D004A3F21;
-	Mon, 31 Aug 2026 13:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856D652B1EE;
+	Mon, 31 Aug 2026 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183767; cv=none; b=EGEBMGPj/Y8qtRjQT+zkXZ1oiy+NIxvCBLbhSNUYIJDmUGzWU1Y1ubO8jPjBZL+ss7/UgdYEvy731mio+QCRlbLYzYT5Kg9Iq3VnqOeMNzQ6SLt0l8a8mOKom/q+33t5yviLaZJ55zSptmB+Tr7iMGmzxeq8ki/u9PYKb2Uz4MU=
+	t=1788183885; cv=none; b=nWo4s58OKMyW+7MqKAsIjZNDL+6tQQR0r3kuUmzf5OOiC5V8LRcf/lozQrZE80OkEMW9eQmN8FBDW0fqzTHyKpVLy9DDedVcojShBtADAFnGnepjSwYk1UdMVX2dw9n/z7FCeBas/zEwel0OHHuxCdvd/q0wG+tLH0A9BfW82DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183767; c=relaxed/simple;
-	bh=N1BBOcRLSxkUYj5Gm3D04LAXXCGrD8BKwFAkDmTPJy8=;
+	s=arc-20240116; t=1788183885; c=relaxed/simple;
+	bh=A5hPM0g5evR4DBZD9VQ6sDFfX579nlx7iFKlq8o25qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xlj7VHCYvKwlEm+eskOsAaBXRci5UMUeJZhZVaP9I45W/drndkexH18ARPxZ6OhGQC+hGLVCHEzZPGsRAiCvnTHy03oEUle8FIsdN5cIeXjkTCBUaZHqXVvGP8NMrTCOWEfTASdg3CZWlZGpAGV9lHp3pAptTxwDb8DxMHhNsyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MT7xgvAU; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=CFf+VKBGzk0p/W6h+yYG1PrFmQddTXVriZrdOCAkw7byFvwuKDbybSHz70ELLTgnk6OOJT0n+2SR2WcAMogLVoQ7z/o4yDROxLq6zYboH/+QEHMwqsYWuaPWO0eNMGITOWO1YEQRn9t4KlAkgNWq6c/76e3ue3HHwAn1P6CDOCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enYB5y/P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MT7xgvAU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8AB1F00ACA;
-	Mon, 31 Aug 2026 13:42:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enYB5y/P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9788F1F000E9;
+	Mon, 31 Aug 2026 13:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183764;
-	bh=xnn9bQwB9WoD2kfZ2oydpaRS5gjrdq+bI3UUoQyCI8E=;
+	s=k20260515; t=1788183882;
+	bh=73G7ahY4Nv2gXPcEUSletcWwSG2vP4x0WbSd/O0heXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MT7xgvAUeJQC9PWX62vjCTXO7o5Gu6z8vKS69fWAojCrneG2ROSUo6hvVoT19imqa
-	 IkveRZbAQF8vri/r7HD8+b/pecnB+NDiVRKvU995eTHC+oI/Ya6XalodVL+VLO6Do+
-	 41ynzYdr8G8uI6e/hH7a1uajqIt4WZs5b72mtdlwx59NUUhhpg//kG/bQjGgshLMmg
-	 pj+AM0O+/LXXfXGNhtXFwgIXJcQ7Kq8J2/QnQ61FEe2X4LMqEr8Dj5rBnCwIl5fgtp
-	 IUi1XeqXKD/QeUlBLWQbGwTutLXHHq3rJcomIMfEnrAMu46Gup2o1ampeW5AT4hr02
-	 TgH6WZoolhfZA==
+	b=enYB5y/Pibn2hO92ZOzIS10IzPRmY2A9oT/9kgc5UYob1JVeoxor0Njyaoc2kvnV5
+	 RRCmEHNoAm60bt5/DpDr/z83ObXuGX1jmoSe5wwb2GXcq6mKbd0JTpJVm0qg3TcOLt
+	 4Odp814Qd48CcFD35Ku08Yq2PAOnI/d5oHFInIofeTE85Wt8UoIM2p7KJfyG2Zy9IK
+	 Wgmo9LzkHzwW3+qn4KKCg2AZWmtOIbr4/X9K86hPite3lI0yDF+WhObzpM7i/YzQkK
+	 OZRJoEb6stsa2iS3N8JgNO9Jkkk6wMB8wv4rOk9geXHQWcs1peGiuUh7b7h8zoiduW
+	 qmhDOOLiupD3A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jisheng Zhang <jszhang@kernel.org>,
+Cc: Aaron Kling <webgeek1234@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	thierry.reding@kernel.org,
+	jonathanh@nvidia.com,
+	skomatineni@nvidia.com,
+	ldewangan@nvidia.com,
+	linux-tegra@vger.kernel.org,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.1] spi: dw: fix wrong RX_SAMPLE_DLY setting after resume
-Date: Mon, 31 Aug 2026 09:25:19 -0400
-Message-ID: <20260831133314.4125787-291-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] spi: tegra210-quad: Allocate DMA memory for DMA engine
+Date: Mon, 31 Aug 2026 09:26:27 -0400
+Message-ID: <20260831133314.4125787-359-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -52,396 +58,526 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 133c71b2c0bc976a4751f9e05ef7cdea67f964e5 ]
+[ Upstream commit f469138a77ac5ab685dfe15dfed7dccb9d5c33e5 ]
 
-On platforms which need a non-zero rx sample delay, the RX_SAMPLE_DLY
-reg setting is lost after resume. The reason is that the reg may be
-reset to 0 after resuming, but dws->cur_rx_sample_dly doesn't know
-this fact. Fix this issue by clearing dws->cur_rx_sample_dly in
-dw_spi_shutdown_chip().
+When the SPI controllers are running in DMA mode, it is the DMA engine
+that performs the memory accesses rather than the SPI controller. Pass
+the DMA engine's struct device pointer to the DMA API to make sure the
+correct DMA operations are used.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Suggested-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20260803135925.12622-1-jszhang@kernel.org
+Suggested-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://patch.msgid.link/20260525-tegra194-qspi-iommu-v2-1-a11c53f804b2@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `spi: dw: fix wrong RX_SAMPLE_DLY setting
-after resume`
+## Phase 1: Commit Message Forensics
 
-**Local tree:** `stable/linux-6.18.y` at **v6.18.44** (`make
-kernelversion` = 6.18.44)
+**Step 1.1 — Subject line**
+- Record: `[spi: tegra210-quad] [Allocate] — Use the DMA engine's struct
+  device for DMA API calls instead of the SPI controller device`
 
----
+**Step 1.2 — Tags**
+- Record:
+  - `Suggested-by: Thierry Reding <treding@nvidia.com>` — NVIDIA Tegra
+    maintainer input
+  - `Signed-off-by: Aaron Kling <webgeek1234@gmail.com>` — author
+  - `Link: https://patch.msgid.link/20260525-tegra194-qspi-
+    iommu-v2-1-a11c53f804b2@gmail.com` — patch submission thread
+  - `Signed-off-by: Mark Brown <broonie@kernel.org>` — SPI subsystem
+    maintainer
+  - No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, or `Cc:
+    stable@vger.kernel.org`
+  - Notable: maintainer involvement (Brown, Reding suggestion), but no
+    fuzzer/user bug report tags
 
-## PHASE 1: COMMIT MESSAGE FORENSICS
+**Step 1.3 — Body analysis**
+- Record:
+  - **Bug:** DMA memory mapping/allocation uses the SPI controller
+    `struct device` (`tqspi->dev`) even when an external DMA engine
+    (GPCDMA/APBDMA) performs the actual memory accesses.
+  - **Symptom:** Incorrect DMA operations / IOMMU mappings; DMA
+    transfers can fail or access memory through the wrong DMA/IOMMU
+    context.
+  - **Root cause:** The DMA engine, not the SPI controller, owns the bus
+    master accesses in external-DMA mode; the DMA API must be called
+    with the DMA engine's device pointer.
+  - **Version info:** None in the commit message itself.
 
-### Step 1.1: Subject Line
-**Record:** `[spi: dw]` `[fix]` — wrong `RX_SAMPLE_DLY` register setting
-after system resume.
-
-### Step 1.2: Commit Tags
-**Record:**
-- **Signed-off-by:** Jisheng Zhang `<jszhang@kernel.org>` (author)
-- **Suggested-by:** Mark Brown `<broonie@kernel.org>` (SPI subsystem
-  maintainer)
-- **Link:**
-  https://patch.msgid.link/20260803135925.12622-1-jszhang@kernel.org
-- **Signed-off-by:** Mark Brown `<broonie@kernel.org>` (maintainer ack)
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Cc:
-  stable@vger.kernel.org`
-- Notable: maintainer suggested and signed off; no syzbot report
-
-### Step 1.3: Body Analysis
-**Record:**
-- **Bug:** On platforms needing non-zero RX sample delay, the
-  `RX_SAMPLE_DLY` hardware register is lost after resume, but
-  `dws->cur_rx_sample_dly` still holds the old cached value.
-- **Symptom:** SPI transfers fail after suspend/resume because
-  `dw_spi_update_config()` skips rewriting the register when cached and
-  desired values match, while hardware is actually at 0.
-- **Root cause:** `dw_spi_shutdown_chip()` does not clear
-  `dws->cur_rx_sample_dly` when the controller is shut down for suspend.
-- **Fix:** Clear `dws->cur_rx_sample_dly = 0` in
-  `dw_spi_shutdown_chip()`, mirroring the existing `dws->current_freq =
-  0` pattern.
-
-### Step 1.4: Hidden Bug Fix Detection
-**Record:** Not hidden — explicitly a bug fix. Same class of
-software/hardware state desync as the already-backported BAUDR resume
-fix (`95028569589f4`).
+**Step 1.4 — Hidden bug fix?**
+- Record: **Yes.** Although the subject says "Allocate," this is a DMA-
+  correctness bug fix, not a feature. It mirrors the already-accepted
+  `i2c: tegra: Allocate DMA memory for DMA engine` fix (commit
+  `cdbf26251d3b3`, present in this tree).
 
 ---
 
-## PHASE 2: DIFF ANALYSIS
+## Phase 2: Diff Analysis
 
-### Step 2.1: Change Inventory
-**Record:**
-- **Files:** `drivers/spi/spi-dw.h` only (+1 line)
-- **Function modified:** `dw_spi_shutdown_chip()` (static inline)
-- **Scope:** Single-file, surgical one-line fix
+**Step 2.1 — Inventory**
+- Record:
+  - Files: `drivers/spi/spi-tegra210-quad.c` only (+18 / -11 lines)
+  - Functions modified: `tegra_qspi_dma_map_xfer()`,
+    `tegra_qspi_dma_unmap_xfer()`, `tegra_qspi_deinit_dma()`,
+    `tegra_qspi_init_dma()`
+  - Struct modified: `struct tegra_qspi` (adds `rx_dma_dev`,
+    `tx_dma_dev`)
+  - Scope: single-file, surgical fix
 
-### Step 2.2: Code Flow Change
-**Record:**
-- **Before:** `dw_spi_shutdown_chip()` disables chip, sets clock to 0,
-  clears `current_freq`; `cur_rx_sample_dly` left stale.
-- **After:** Also clears `cur_rx_sample_dly = 0`, so next
-  `dw_spi_update_config()` call rewrites `RX_SAMPLE_DLY` after resume.
-- **Path affected:** Suspend (`dw_spi_suspend_host()` →
-  `dw_spi_shutdown_chip()`) and remove (`dw_spi_remove_host()`).
+**Step 2.2 — Code flow changes**
+- Record:
+  - **Before:** All `dma_map_single()`, `dma_unmap_single()`,
+    `dma_alloc_coherent()`, and `dma_free_coherent()` used `tqspi->dev`
+    (SPI controller).
+  - **After (external DMA path):** Uses `dmaengine_get_dma_device()` on
+    the requested RX/TX DMA channels.
+  - **After (internal DMA / tegra234 path):** Explicitly sets
+    `rx_dma_dev = tx_dma_dev = tqspi->dev` — behavior unchanged.
+  - Affected path: DMA-based SPI transfers when `has_ext_dma == true`
+    and DMA channels are successfully requested.
 
-### Step 2.3: Bug Mechanism
-**Record:** **Logic/correctness fix** — cached register shadow
-(`cur_rx_sample_dly`) diverges from hardware after resume reset. The
-optimization in `dw_spi_update_config()`:
+**Step 2.3 — Bug mechanism**
+- Record:
+  - **Category:** DMA / IOMMU correctness (logic/correctness fix)
+  - **Mechanism:** External DMA engine accesses memory using its own DMA
+    ops and IOMMU stream ID. Mapping buffers against the SPI controller
+    device creates mappings in the wrong IOMMU context. The GPCDMA
+    engine cannot correctly access those buffers → IOMMU faults,
+    transfer failures, or memory corruption.
 
-```348:352:drivers/spi/spi-dw-core.c
-        /* Update RX sample delay if required */
-        if (dws->cur_rx_sample_dly != chip->rx_sample_dly) {
-                dw_writel(dws, DW_SPI_RX_SAMPLE_DLY,
-chip->rx_sample_dly);
-                dws->cur_rx_sample_dly = chip->rx_sample_dly;
-        }
-```
-
-skips the register write when values appear equal, but hardware has been
-reset to 0.
-
-### Step 2.4: Fix Quality
-**Record:** Obviously correct. Minimal, mirrors the proven BAUDR fix
-already in this tree. No new locks, no API changes. Regression risk:
-very low — only forces a register rewrite on the first transfer after
-shutdown/resume on platforms that use non-zero delay.
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: Blame
-**Record:**
-- `dw_spi_shutdown_chip()` introduced by Andy Shevchenko (2015)
-- `dws->current_freq = 0` added by `95028569589f4` (Jun 2026, already in
-  6.18.y)
-- `cur_rx_sample_dly` field added by `bac70b54ecb53` (Sep 2020) —
-  present since v5.9 era
-- Bug has existed since RX sample delay support was added (2020)
-
-### Step 3.2: Fixes Tag
-**Record:** N/A — no `Fixes:` tag. The analogous BAUDR fix used `Fixes:
-e24c74527207` (original DW SPI driver). Same underlying pattern.
-
-### Step 3.3: Related File History
-**Record:**
-- `95028569589f4` — "spi: dw: fix wrong BAUDR setting after resume" —
-  **already in 6.18.y**
-- `bac70b54ecb53` — "spi: dw: Add support for RX sample delay register"
-  — **ancestor of HEAD**
-- This fix is a natural companion to the BAUDR fix; standalone, not part
-  of a series
-
-### Step 3.4: Author Context
-**Record:** Jisheng Zhang authored both the BAUDR resume fix and this
-RX_SAMPLE_DLY fix. Mark Brown (SPI maintainer) suggested and signed off.
-
-### Step 3.5: Dependencies
-**Record:** No external dependencies. Requires only code already in
-6.18.y:
-- `cur_rx_sample_dly` field in `struct dw_spi`
-- `dw_spi_update_config()` RX delay logic
-- `dws->current_freq = 0` in `dw_spi_shutdown_chip()` (from BAUDR fix)
-- `git apply --check` passes cleanly on current tree
+**Step 2.4 — Fix quality**
+- Record:
+  - Fix is obviously correct and follows established kernel pattern
+    (`dmaengine_get_dma_device()` API exists at
+    `include/linux/dmaengine.h:1672`).
+  - Minimal, no unrelated changes.
+  - Regression risk: very low. Internal-DMA (tegra234) path explicitly
+    preserves `tqspi->dev`.
+  - No public API changes.
 
 ---
 
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+## Phase 3: Git History Investigation
 
-### Step 4.1: Original Discussion
-**Record:** `b4 dig -c 607bd93e3d397` →
-https://patch.msgid.link/20260803135925.12622-1-jszhang@kernel.org. `b4
-dig -a` returned no additional revisions. Lore.kernel.org fetch blocked
-by Anubis bot protection — could not read thread content for stable
-nominations or NAKs.
+**Step 3.1 — Blame**
+- Record:
+  - Buggy `dma_map_single(tqspi->dev, ...)` lines date to
+    `921fc1838fb036` (Dec 2020, "Add support for Tegra210 QSPI
+    controller").
+  - Bug present since initial driver DMA support; not a recent
+    regression.
 
-### Step 4.2: Reviewers
-**Record:** `b4 dig -w` returned the same lore URL. Mark Brown
-`Suggested-by` and `Signed-off-by` confirms maintainer involvement.
+**Step 3.2 — Fixes: tag**
+- Record: N/A — no `Fixes:` tag present.
 
-### Step 4.3: Bug Report
-**Record:** No external bug report or syzbot link. Bug class inferred
-from commit message and parallel BAUDR fix ("spi transfer stops working
-after resume").
+**Step 3.3 — Related file history**
+- Record:
+  - `017f1b0bae08e` — added `has_ext_dma` flag distinguishing external
+    GPCDMA (tegra210/186/194/241) from internal DMA (tegra234); is an
+    ancestor of HEAD.
+  - Commit `f469138a77ac5` is on mainline but **NOT** in
+    `stable/linux-6.18.y` (HEAD = v6.18.44).
+  - Part of v2 series `[PATCH v2 0/2] arm64: tegra: Enable DMA Support
+    on Tegra194 QSPI`; patch 2/2 adds `dmas` properties to tegra194 QSPI
+    nodes in DT.
 
-### Step 4.4: Related Patches
-**Record:** Direct companion to `95028569589f4` (BAUDR resume fix,
-already backported to 6.18.y). Same author, same function, same
-mechanism.
+**Step 3.4 — Author context**
+- Record: Aaron Kling is a Tegra contributor (also tegra114 SPI patches
+  in tree). SPI maintainer Mark Brown merged. Thierry Reding (NVIDIA)
+  suggested the approach.
 
-### Step 4.5: Stable List History
-**Record:** Could not search lore stable list (bot protection). BAUDR
-sibling fix was already accepted into 6.18.y stable.
-
----
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-### Step 5.1: Key Functions
-**Record:** `dw_spi_shutdown_chip()`, `dw_spi_update_config()`,
-`dw_spi_suspend_host()`, `dw_spi_resume_host()`
-
-### Step 5.2: Callers
-**Record:**
-- `dw_spi_shutdown_chip()` — called from `dw_spi_remove_host()` and
-  `dw_spi_suspend_host()`
-- `dw_spi_update_config()` — called from `dw_spi_transfer_one()` and
-  SPI-mem paths in `spi-dw-core.c` and `spi-dw-bt1.c`
-- `dw_spi_suspend_host()` / `dw_spi_resume_host()` — used by `spi-dw-
-  pci.c` PM ops
-
-### Step 5.3: Callees
-**Record:** `dw_spi_shutdown_chip()` calls `dw_spi_enable_chip()`,
-`dw_spi_set_clk()`. `dw_spi_resume_host()` calls `dw_spi_hw_init()` →
-`dw_spi_reset_chip()`, which resets hardware but not software shadow
-`cur_rx_sample_dly`.
-
-### Step 5.4: Reachability
-**Record:** Triggered on system suspend/resume on DW SPI controllers
-with `rx-sample-delay-ns` in device tree. Affects normal SPI transfers
-and SPI-mem (flash/NAND) operations post-resume. Not a syscall-level
-bug, but affects common embedded suspend/resume workflows.
-
-### Step 5.5: Similar Patterns
-**Record:** Identical pattern to `dws->current_freq = 0` fix in
-`95028569589f4`. Both are "shadow register cache vs. hardware reset
-after resume" bugs.
+**Step 3.5 — Dependencies**
+- Record:
+  - Standalone driver fix applies cleanly to 6.18.44 (verified via `git
+    cherry-pick --no-commit f469138a77ac5`, exit 0).
+  - Functionally pairs with patch 2/2 (tegra194 DT DMA enablement) but
+    does not require other code-structure changes.
+  - `dmaengine_get_dma_device()` API is present in this tree.
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
+## Phase 4: Mailing List and External Research
 
-### Step 6.1: Buggy Code Present?
-**Record:** **YES.** Current `dw_spi_shutdown_chip()` in this tree:
+**Step 4.1 — Original discussion**
+- Record:
+  - `b4 dig -c f469138a77ac5`:
+    https://patch.msgid.link/20260525-tegra194-qspi-
+    iommu-v2-1-a11c53f804b2@gmail.com
+  - Series revisions: v1 (3 patches, DT bindings + IOMMU), v2 (2
+    patches, simplified to driver + DT dmas)
+  - Cover letter states Jetson Xavier NX (tegra194/p3668) SPI NOR "would
+    time out on all transfers and sometimes even trigger a cbb fault,
+    locking up the entire unit"
+  - No explicit stable nomination found in thread
+  - No NAKs found; merged by Mark Brown
 
-```281:286:drivers/spi/spi-dw.h
-static inline void dw_spi_shutdown_chip(struct dw_spi *dws)
-{
-        dw_spi_enable_chip(dws, 0);
-        dw_spi_set_clk(dws, 0);
-        dws->current_freq = 0;
-}
-```
+**Step 4.2 — Reviewers**
+- Record: CC'd to Thierry Reding, Jonathan Hunter, Sowjanya Komatineni,
+  Mark Brown, linux-tegra, linux-spi, devicetree lists.
 
-Missing `dws->cur_rx_sample_dly = 0`. Feature present since
-`bac70b54ecb53` (2020).
+**Step 4.3 — Bug report details**
+- Record:
+  - Cover letter documents real hardware failure: SPI NOR timeouts and
+    CBB faults on Jetson Xavier NX.
+  - Severity from reporter: system lockups (CRITICAL class).
+  - Full fix requires patch 2/2 (DT DMA properties) plus this driver fix
+    for correct DMA engine device usage.
 
-### Step 6.2: Backport Complications
-**Record:** **Clean apply.** `git apply --check` of commit
-`607bd93e3d397` succeeds with no conflicts. Patch adds one line
-immediately after `dws->current_freq = 0`.
+**Step 4.4 — Related patches**
+- Record:
+  - Patch 2/2: `arm64: tegra: Enable DMA Support on Tegra194 QSPI` —
+    adds `dmas = <&gpcdma 5>` to tegra194 QSPI nodes.
+  - Sashiko AI review flagged pre-existing driver issues exposed by
+    enabling DMA (unmap-on-error path, packed-mode buffer rounding);
+    those are separate from this commit.
 
-### Step 6.3: Related Fixes Already Present?
-**Record:** BAUDR resume fix (`95028569589f4`) is in 6.18.y.
-RX_SAMPLE_DLY fix (`607bd93e3d397`) is **not** in `stable/linux-6.18.y`
-— only on `autosel` branch. Upstream mainline commit:
-`133c71b2c0bc976a4751f9e05ef7cdea67f964e5`.
-
----
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: Subsystem Criticality
-**Record:** `drivers/spi/` — DesignWare SPI core driver. **IMPORTANT**
-for embedded SoCs (Intel SoCFPGA, Microchip Sparx5, RISC-V platforms,
-etc.) using SPI for storage and peripherals.
-
-### Step 7.2: Subsystem Activity
-**Record:** Actively maintained. Recent stable backport of sibling BAUDR
-fix confirms maintainer awareness of resume-path bugs in this driver.
+**Step 4.5 — Stable list history**
+- Record: No stable-list discussion found for this specific SPI patch.
+  (Lore direct fetch blocked by bot protection; b4 mbox used instead.)
 
 ---
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+## Phase 5: Code Semantic Analysis
 
-### Step 8.1: Who Is Affected
-**Record:** Users of DesignWare SPI controllers with non-zero `rx-
-sample-delay-ns` in device tree who suspend/resume. Examples in this
-tree: Microchip Sparx5 NAND
-(`arch/arm64/boot/dts/microchip/sparx5_nand.dtsi`, 7 ns), Rockchip
-Veyron (`arch/arm/boot/dts/rockchip/rk3288-veyron.dtsi`, 12 ns — if
-using DW SPI). Config- and platform-specific, but hits real production
-hardware.
+**Step 5.1 — Key functions**
+- Record: `tegra_qspi_init_dma()`, `tegra_qspi_deinit_dma()`,
+  `tegra_qspi_dma_map_xfer()`, `tegra_qspi_dma_unmap_xfer()`,
+  `tegra_qspi_start_dma_based_transfer()` (caller)
 
-### Step 8.2: Trigger Conditions
-**Record:** System suspend-to-RAM followed by resume, then SPI transfer.
-Requires non-zero RX sample delay. Moderately common on embedded systems
-with PM enabled. Not unprivileged-triggerable in isolation, but affects
-system reliability after normal suspend.
+**Step 5.2 — Callers**
+- Record:
+  - `tegra_qspi_init_dma()` called from probe (`~line 1693`) during
+    device initialization.
+  - `tegra_qspi_dma_map_xfer()` called from
+    `tegra_qspi_start_dma_based_transfer()` for packed transfers.
+  - DMA transfers triggered from `tegra_qspi_setup_transfer_one()` when
+    `use_dma && total_fifo_words > QSPI_FIFO_DEPTH`.
+  - Reachable on every large SPI transfer on DMA-enabled platforms.
 
-### Step 8.3: Failure Mode Severity
-**Record:** SPI transfers silently fail or return corrupt data after
-resume — **HIGH** functional impact (boot/storage/peripheral failure),
-though not a kernel oops/panic. Same severity class as the BAUDR bug
-("spi transfer stops working").
+**Step 5.3 — Callees**
+- Record: `dma_request_chan()`, `dmaengine_get_dma_device()`,
+  `dma_alloc_coherent()`, `dma_map_single()`,
+  `dmaengine_slave_config()`, `dmaengine_prep_slave_single()`.
 
-### Step 8.4: Risk-Benefit
-**Record:**
-- **Benefit:** HIGH for affected platforms — restores SPI after resume
-- **Risk:** VERY LOW — one-line cache invalidation, proven pattern
-- **Ratio:** Strongly favors backport
+**Step 5.4 — Call chain / reachability**
+- Record:
+  - Probe → `tegra_qspi_init_dma()` → DMA buffer allocation (boot/init
+    path).
+  - Userspace SPI ioctl → `spi_sync()` → controller transfer → DMA path
+    for large transfers.
+  - **Userspace-reachable** on platforms with external DMA enabled
+    (tegra210 has `dmas` in DT; tegra194 will once patch 2 lands).
+
+**Step 5.5 — Similar patterns**
+- Record: Identical fix already applied in this tree for `i2c-tegra.c`
+  (`cdbf26251d3b3`), which explicitly documents SMMU stream-ID
+  misconfiguration without the fix. Other drivers in tree use
+  `dmaengine_get_dma_device()` (e.g., `j721e-csi2rx`, `k3-udma`).
+
+---
+
+## Phase 6: Cross-Referencing Against Local Tree (6.18.44)
+
+**Step 6.1 — Does buggy code exist?**
+- Record: **Yes.** Current `spi-tegra210-quad.c` uses `tqspi->dev` for
+  all DMA API calls (lines 577–810). No `rx_dma_dev`/`tx_dma_dev` fields
+  exist. Bug present since driver introduction (2020).
+
+**Step 6.2 — Backport complications**
+- Record: **Clean apply** — cherry-pick auto-merges with no conflicts
+  (18 insertions, 11 deletions).
+
+**Step 6.3 — Related fixes already present?**
+- Record: `i2c: tegra: Allocate DMA memory for DMA engine`
+  (`cdbf26251d3b3`) is already in 6.18.y. No equivalent SPI fix yet.
+  This SPI commit is NOT in HEAD.
+
+**Platform-specific notes for this tree:**
+| Platform | `has_ext_dma` | DMA in DT (6.18.44) | Bug path active? |
+|----------|---------------|---------------------|------------------|
+| tegra210 | true | Yes (`apbdma`) | Yes — external DMA used today |
+| tegra186/194 | true | No (194 lacks `dmas`) | No — falls back to PIO
+before DMA alloc |
+| tegra234 | false | N/A (internal DMA) | No behavior change from fix |
+| tegra241 | true | No DT in tree yet | N/A currently |
 
 ---
 
-## PHASE 9: FINAL SYNTHESIS
+## Phase 7: Subsystem and Maintainer Context
 
-### Step 9.1: Evidence Summary
+**Step 7.1 — Subsystem criticality**
+- Record: `drivers/spi/` — IMPORTANT (peripheral driver), but DMA/IOMMU
+  correctness on embedded Tegra hardware with SPI flash boot/storage.
 
-**FOR backport:**
-- Real, reproducible functional bug on suspend/resume
-- Same mechanism as BAUDR fix already accepted into 6.18.y
-- One-line, obviously correct fix
-- Maintainer-suggested and signed-off
-- Applies cleanly to current tree
-- Affects production DT configurations with `rx-sample-delay-ns`
-- Bug present since 2020; long-standing issue for affected users
-
-**AGAINST backport:**
-- Only affects platforms with non-zero RX sample delay (subset of DW SPI
-  users)
-- No crash/oops — functional failure rather than kernel panic
-- Only `spi-dw-pci.c` has PM ops in-tree (other platform drivers may add
-  PM externally)
-
-**Unresolved:**
-- Full lore thread content unavailable (bot protection)
-- No explicit user bug report or `Tested-by:` in commit message
-
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — mirrors proven BAUDR fix;
-   maintainer reviewed
-2. Fixes a real bug affecting users? **PASS** — SPI broken after resume
-   on affected platforms
-3. Important issue? **PASS** — functional breakage on resume (HIGH
-   severity for affected users)
-4. Small and contained? **PASS** — 1 line, 1 file
-5. No new features or APIs? **PASS** — cache invalidation only
-6. Can apply to local tree? **PASS** — `git apply --check` succeeds
-
-### Step 9.3: Exception Categories
-**Record:** N/A — standard bug fix, not a quirk/DT/device-ID exception.
-
-### Step 9.4: Decision Rationale
-
-This commit is the direct companion to the BAUDR resume fix already
-backported to Linux 6.18.y. The same software-shadow-vs-hardware-reset
-desync affects `cur_rx_sample_dly`. Without this fix, platforms that
-depend on non-zero RX sample delay (e.g., Microchip Sparx5 SPI NAND)
-will have broken SPI after suspend/resume. The fix is minimal, obviously
-correct, maintainer-endorsed, and applies cleanly.
+**Step 7.2 — Subsystem activity**
+- Record: Actively maintained — recent 6.18.y commits include timeout
+  handling, `curr_xfer` race fixes, internal DMA support
+  (`017f1b0bae08e`).
 
 ---
+
+## Phase 8: Impact and Risk Assessment
+
+**Step 8.1 — Who is affected**
+- Record: Tegra platforms using external DMA for QSPI — tegra210 today;
+  tegra194/241 once DT enables GPCDMA. Jetson Xavier NX (p3668) is the
+  documented failing platform for the companion DT patch.
+
+**Step 8.2 — Trigger conditions**
+- Record:
+  - External DMA path active (`has_ext_dma=true`, DMA channels
+    successfully requested, `use_dma=true`).
+  - Large SPI transfers exceeding FIFO depth.
+  - Most impactful when IOMMU/SMMU separates DMA engine and controller
+    stream IDs (tegra194 with GPCDMA).
+  - Unprivileged users can trigger via SPI device access.
+
+**Step 8.3 — Failure mode severity**
+- Record:
+  - IOMMU faults (CBB faults mentioned in cover letter) — **CRITICAL**
+  - SPI transfer timeouts / hangs — **CRITICAL**
+  - Potential buffer corruption with wrong mappings — **HIGH**
+  - On tegra210 without IOMMU: bug may be latent (mappings may work by
+    accident) — lower practical severity there.
+
+**Step 8.4 — Risk-benefit**
+- Record:
+  - **Benefit:** HIGH for tegra194 DMA enablement; MEDIUM for tegra210;
+    enables correct external DMA operation matching established
+    i2c-tegra precedent.
+  - **Risk:** VERY LOW — 29-line single-file change, proven API, no-op
+    for internal-DMA path.
+  - **Ratio:** Strong benefit, minimal risk.
+
+---
+
+## Phase 9: Final Synthesis
+
+**Evidence FOR backport:**
+- Real DMA/IOMMU correctness bug with established kernel precedent
+  (i2c-tegra fix already in 6.18.y).
+- Required prerequisite for tegra194 DMA enablement fixing Jetson Xavier
+  NX SPI NOR timeouts and CBB faults.
+- tegra210 already uses external DMA with buggy device pointer today.
+- Small, surgical, applies cleanly.
+- Maintainer-reviewed and merged (Mark Brown; suggested by Thierry
+  Reding).
+- Prevents IOMMU faults, hangs, and potential data corruption.
+
+**Evidence AGAINST backport:**
+- Alone does not enable tegra194 DMA (needs companion DT patch 2/2).
+- On current 6.18.44 tegra194 configs, driver falls back to PIO (no
+  `dmas` in DT) — this specific commit doesn't fix the documented Xavier
+  NX timeout by itself.
+- tegra234 (internal DMA) unaffected.
+- No syzbot report or explicit user `Reported-by:` in commit message.
+
+**Unresolved questions:**
+- Exact practical impact on tegra210 without IOMMU is unverified (may be
+  latent).
+- Pre-existing driver issues flagged by Sashiko review when DMA is
+  enabled are separate bugs.
+
+**Stable rules checklist:**
+1. Obviously correct and tested? **PASS** — mirrors accepted i2c-tegra
+   fix; API well-established.
+2. Fixes a real bug affecting users? **PASS** — DMA engine device
+   mismatch is a real bug; tegra210 affected now, tegra194 when DMA
+   enabled.
+3. Important issue? **PASS** — IOMMU faults, system lockups, transfer
+   failures (CRITICAL/HIGH).
+4. Small and contained? **PASS** — 29 lines, one file.
+5. No new features or APIs? **PASS** — bug fix only.
+6. Can apply to local tree? **PASS** — verified clean cherry-pick.
+
+**Exception category:** Not a device-ID/quirk/DT-only fix; this is a
+driver DMA correctness bug fix.
+
+---
+
+## Problem Summary
+
+The tegra210-quad SPI driver allocates and maps DMA buffers using the
+SPI controller's `struct device`, but when `has_ext_dma` is true, an
+external DMA engine (GPCDMA on tegra194/241, APBDMA on tegra210)
+performs the actual memory accesses. The DMA API must use the DMA
+engine's device so IOMMU mappings and DMA operations match the hardware
+master doing the transfer.
+
+Without this fix, enabling external DMA (as done in the companion
+tegra194 DT patch) can cause IOMMU faults, SPI transfer failures,
+timeouts, and system lockups — exactly what the series cover letter
+documents for Jetson Xavier NX SPI NOR flash.
+
+For 6.18.44 users, tegra210 platforms with `dmas` in DT already exercise
+the buggy path. The fix is a necessary prerequisite before tegra194 DMA
+can work correctly.
 
 ## Verification
 
-- [Phase 1] Parsed commit message and tags from `git show 607bd93e3d397`
-  and user-provided diff
-- [Phase 1] Confirmed `Suggested-by` and `Signed-off-by` from Mark Brown
-  (SPI maintainer)
-- [Phase 2] Read current `drivers/spi/spi-dw.h` lines 281–286 — bug
-  present (no `cur_rx_sample_dly = 0`)
-- [Phase 2] Read `dw_spi_update_config()` at lines 348–352 in `spi-dw-
-  core.c` — conditional register write confirmed
-- [Phase 3] `git describe HEAD` → v6.18.44; `make kernelversion` →
-  6.18.44
-- [Phase 3] `git blame drivers/spi/spi-dw.h:281-286` — shutdown_chip
-  from 2015, current_freq fix from 95028569589f4
-- [Phase 3] `git log -S cur_rx_sample_dly` → introduced in bac70b54ecb53
-  (2020-09-08)
-- [Phase 3] `git merge-base --is-ancestor bac70b54ecb53 HEAD` → ancestor
-  (feature present)
-- [Phase 3] `git merge-base --is-ancestor 95028569589f4 HEAD` → ancestor
-  (BAUDR fix present)
-- [Phase 3] `git show 95028569589f4` — BAUDR sibling fix already in
-  6.18.y with identical pattern
-- [Phase 3] `git show 133c71b2c0bc976a4751f9e05ef7cdea67f964e5` —
-  upstream mainline version confirmed
-- [Phase 4] `b4 dig -c 607bd93e3d397` → lore URL found
-- [Phase 4] `b4 dig -c 607bd93e3d397 -a` → no additional revisions
-- [Phase 4] UNVERIFIED: Lore thread content (Anubis bot protection on
-  lore.kernel.org)
-- [Phase 5] `grep dw_spi_update_config` — callers in transfer_one and
-  SPI-mem paths
-- [Phase 5] `grep dw_spi_suspend_host` — used by spi-dw-pci.c PM ops
-- [Phase 5] Read `dw_spi_suspend_host()` / `dw_spi_resume_host()` at
-  lines 1008–1025
-- [Phase 6] `git apply --check` of 607bd93e3d397 → applies cleanly
-- [Phase 6] `git branch --contains 607bd93e3d397` → only `autosel`, not
-  stable/linux-6.18.y
-- [Phase 6] `grep rx-sample-delay-ns arch/` → sparx5_nand.dtsi (7ns),
-  rk3288-veyron.dtsi (12ns)
-- [Phase 8] Failure mode: SPI non-functional after resume on affected
-  platforms (HIGH functional severity)
+- [Phase 1] `git describe HEAD` → `v6.18.44`; parsed commit message tags
+  and body from provided diff and `git show f469138a77ac5`
+- [Phase 2] Read current `spi-tegra210-quad.c` lines 568–818; confirmed
+  all DMA API calls use `tqspi->dev`
+- [Phase 3] `git blame` lines 577/801 → introduced in `921fc1838fb036`
+  (2020); `017f1b0bae08e` added `has_ext_dma`; `git merge-base --is-
+  ancestor f469138a77ac5 HEAD` → NOT in HEAD
+- [Phase 3] `git cherry-pick --no-commit f469138a77ac5` → exit 0, clean
+  auto-merge
+- [Phase 4] `b4 dig -c f469138a77ac5` → lore URL found; `b4 dig -a` →
+  v1/v2 series; `b4 dig -m` → cover letter documents Xavier NX
+  timeouts/CBB faults
+- [Phase 4] `b4 dig -w` → Mark Brown, Thierry Reding, linux-tegra CC'd
+- [Phase 5] Traced call chain: probe → `tegra_qspi_init_dma()`; transfer
+  → `tegra_qspi_start_dma_based_transfer()` →
+  `tegra_qspi_dma_map_xfer()`
+- [Phase 5] `grep dmaengine_get_dma_device` → API present in
+  `include/linux/dmaengine.h:1672`
+- [Phase 6] `grep rx_dma_dev` in driver → no matches (fix absent);
+  tegra210 DT has `dmas` at `tegra210.dtsi:1883`; tegra194 QSPI nodes
+  lack `dmas` at `tegra194.dtsi:921-932`
+- [Phase 6] `git log stable/linux-6.18.y --grep='Allocate DMA memory' --
+  i2c-tegra.c` → `cdbf26251d3b3` present
+- [Phase 8] Cover letter: "time out on all transfers... cbb fault,
+  locking up the entire unit"
+- UNVERIFIED: Practical tegra210 impact without IOMMU (no IOMMU property
+  in tegra210 QSPI DT)
 
-**YES**
+**YES**The background search finished and matches what the full review
+already found.
 
- drivers/spi/spi-dw.h | 1 +
- 1 file changed, 1 insertion(+)
+**Commit:** `f469138a77ac5` — `spi: tegra210-quad: Allocate DMA memory
+for DMA engine`
+**Tree:** `v6.18.44` (`stable/linux-6.18.y`) — the fix is **not** in
+this tree yet, but it cherry-picks cleanly.
 
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index 8a3c085c85e07..81609d2a3da6e 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -283,6 +283,7 @@ static inline void dw_spi_shutdown_chip(struct dw_spi *dws)
- 	dw_spi_enable_chip(dws, 0);
- 	dw_spi_set_clk(dws, 0);
- 	dws->current_freq = 0;
-+	dws->cur_rx_sample_dly = 0;
+**What it does:** Uses the external DMA engine’s `struct device` (via
+`dmaengine_get_dma_device()`) for DMA map/alloc/unmap instead of the SPI
+controller device — same pattern as the existing `i2c: tegra` fix
+already in 6.18.y.
+
+**Why it matters:** Needed for correct external DMA on Tegra QSPI
+(tegra210 today; tegra194 once DMA is enabled in DT). Without it, you
+can get IOMMU faults, transfer failures, and hangs — the Jetson Xavier
+NX SPI NOR issue from the patch series.
+
+**Verdict: YES** for backport to 6.18.y.
+
+ drivers/spi/spi-tegra210-quad.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index 83def82fe48c1..543f13503df3d 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -226,11 +226,13 @@ struct tegra_qspi {
+ 	struct completion			xfer_completion;
+ 	struct spi_transfer			*curr_xfer;
+ 
++	struct device				*rx_dma_dev;
+ 	struct dma_chan				*rx_dma_chan;
+ 	u32					*rx_dma_buf;
+ 	dma_addr_t				rx_dma_phys;
+ 	struct dma_async_tx_descriptor		*rx_dma_desc;
+ 
++	struct device				*tx_dma_dev;
+ 	struct dma_chan				*tx_dma_chan;
+ 	u32					*tx_dma_buf;
+ 	dma_addr_t				tx_dma_phys;
+@@ -574,15 +576,15 @@ static int tegra_qspi_dma_map_xfer(struct tegra_qspi *tqspi, struct spi_transfer
+ 	len = DIV_ROUND_UP(tqspi->curr_dma_words * tqspi->bytes_per_word, 4) * 4;
+ 
+ 	if (t->tx_buf) {
+-		t->tx_dma = dma_map_single(tqspi->dev, (void *)tx_buf, len, DMA_TO_DEVICE);
+-		if (dma_mapping_error(tqspi->dev, t->tx_dma))
++		t->tx_dma = dma_map_single(tqspi->tx_dma_dev, (void *)tx_buf, len, DMA_TO_DEVICE);
++		if (dma_mapping_error(tqspi->tx_dma_dev, t->tx_dma))
+ 			return -ENOMEM;
+ 	}
+ 
+ 	if (t->rx_buf) {
+-		t->rx_dma = dma_map_single(tqspi->dev, (void *)rx_buf, len, DMA_FROM_DEVICE);
+-		if (dma_mapping_error(tqspi->dev, t->rx_dma)) {
+-			dma_unmap_single(tqspi->dev, t->tx_dma, len, DMA_TO_DEVICE);
++		t->rx_dma = dma_map_single(tqspi->rx_dma_dev, (void *)rx_buf, len, DMA_FROM_DEVICE);
++		if (dma_mapping_error(tqspi->rx_dma_dev, t->rx_dma)) {
++			dma_unmap_single(tqspi->tx_dma_dev, t->tx_dma, len, DMA_TO_DEVICE);
+ 			return -ENOMEM;
+ 		}
+ 	}
+@@ -597,9 +599,9 @@ static void tegra_qspi_dma_unmap_xfer(struct tegra_qspi *tqspi, struct spi_trans
+ 	len = DIV_ROUND_UP(tqspi->curr_dma_words * tqspi->bytes_per_word, 4) * 4;
+ 
+ 	if (t->tx_buf)
+-		dma_unmap_single(tqspi->dev, t->tx_dma, len, DMA_TO_DEVICE);
++		dma_unmap_single(tqspi->tx_dma_dev, t->tx_dma, len, DMA_TO_DEVICE);
+ 	if (t->rx_buf)
+-		dma_unmap_single(tqspi->dev, t->rx_dma, len, DMA_FROM_DEVICE);
++		dma_unmap_single(tqspi->rx_dma_dev, t->rx_dma, len, DMA_FROM_DEVICE);
  }
  
- extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+ static int tegra_qspi_start_dma_based_transfer(struct tegra_qspi *tqspi, struct spi_transfer *t)
+@@ -745,7 +747,7 @@ static int tegra_qspi_start_cpu_based_transfer(struct tegra_qspi *qspi, struct s
+ static void tegra_qspi_deinit_dma(struct tegra_qspi *tqspi)
+ {
+ 	if (tqspi->tx_dma_buf) {
+-		dma_free_coherent(tqspi->dev, tqspi->dma_buf_size,
++		dma_free_coherent(tqspi->tx_dma_dev, tqspi->dma_buf_size,
+ 				  tqspi->tx_dma_buf, tqspi->tx_dma_phys);
+ 		tqspi->tx_dma_buf = NULL;
+ 	}
+@@ -756,7 +758,7 @@ static void tegra_qspi_deinit_dma(struct tegra_qspi *tqspi)
+ 	}
+ 
+ 	if (tqspi->rx_dma_buf) {
+-		dma_free_coherent(tqspi->dev, tqspi->dma_buf_size,
++		dma_free_coherent(tqspi->rx_dma_dev, tqspi->dma_buf_size,
+ 				  tqspi->rx_dma_buf, tqspi->rx_dma_phys);
+ 		tqspi->rx_dma_buf = NULL;
+ 	}
+@@ -782,6 +784,7 @@ static int tegra_qspi_init_dma(struct tegra_qspi *tqspi)
+ 		}
+ 
+ 		tqspi->rx_dma_chan = dma_chan;
++		tqspi->rx_dma_dev = dmaengine_get_dma_device(tqspi->rx_dma_chan);
+ 
+ 		dma_chan = dma_request_chan(tqspi->dev, "tx");
+ 		if (IS_ERR(dma_chan)) {
+@@ -790,15 +793,19 @@ static int tegra_qspi_init_dma(struct tegra_qspi *tqspi)
+ 		}
+ 
+ 		tqspi->tx_dma_chan = dma_chan;
++		tqspi->tx_dma_dev = dmaengine_get_dma_device(tqspi->tx_dma_chan);
+ 	} else {
+ 		if (!device_iommu_mapped(tqspi->dev)) {
+ 			dev_warn(tqspi->dev,
+ 				 "IOMMU not enabled in device-tree, falling back to PIO mode\n");
+ 			return 0;
+ 		}
++
++		tqspi->rx_dma_dev = tqspi->dev;
++		tqspi->tx_dma_dev = tqspi->dev;
+ 	}
+ 
+-	dma_buf = dma_alloc_coherent(tqspi->dev, tqspi->dma_buf_size, &dma_phys, GFP_KERNEL);
++	dma_buf = dma_alloc_coherent(tqspi->rx_dma_dev, tqspi->dma_buf_size, &dma_phys, GFP_KERNEL);
+ 	if (!dma_buf) {
+ 		err = -ENOMEM;
+ 		goto err_out;
+@@ -807,7 +814,7 @@ static int tegra_qspi_init_dma(struct tegra_qspi *tqspi)
+ 	tqspi->rx_dma_buf = dma_buf;
+ 	tqspi->rx_dma_phys = dma_phys;
+ 
+-	dma_buf = dma_alloc_coherent(tqspi->dev, tqspi->dma_buf_size, &dma_phys, GFP_KERNEL);
++	dma_buf = dma_alloc_coherent(tqspi->tx_dma_dev, tqspi->dma_buf_size, &dma_phys, GFP_KERNEL);
+ 	if (!dma_buf) {
+ 		err = -ENOMEM;
+ 		goto err_out;
 -- 
 2.53.0
 

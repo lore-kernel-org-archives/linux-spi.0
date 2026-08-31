@@ -1,526 +1,237 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013031.outbound.protection.outlook.com [52.101.72.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027B74B5CBB;
-	Mon, 31 Aug 2026 13:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788184385; cv=none; b=cQtv+6VvQLrpkvzSow0y0/0xF6Mq1d6ZAxK/acsSgw4ydb8+WDhkqIo0gM3PHv5T1y31j1LSzCRTLqUtQrcOqgEqJvh+9oBHa/PV7YJMJNKcG8uvcJkVzLbPm3ky/nRpjmJBXW0xooD+3WO38mbzr/h6p0UXEie1Z9vThzEpgho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788184385; c=relaxed/simple;
-	bh=pxJqVe2JeqZ0DeqrNVtYgSl9R1Ly+XRBSM9st5GdjTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rDZTc6+HoxXoSAOwQKvxLv2dHOwgt5Kv1ZMGgpPXIRLsY+Vl1F0M7LvGaK8RHUSVSIKRV6U1myRHuDt6mr58IxwFOV4zNwyj6aqqGCdeTTSFF/ZwT8iFu2Dl3fk/nThnOglEskk6FpPLat3IqZzUyVo0AMv7qbtDoswhHeegvdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZq0u3Gf; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446C652ED46;
+	Mon, 31 Aug 2026 14:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788184897; cv=fail; b=XdMF2iOodEyVy3dAaJsqC+NaRQJwv8+1PU0QHjSKsymTacIBpxN8mM3jKJC8HPwjUXmR8ZjNkoT+1lDagSydMUiZ2wOv84yib4/Q8itNFe833JplTIb6JDccPnel/A9HHWq+O5yZH18hY6KRmllRMCpFBF7wH1D5QghGS1y0/MA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788184897; c=relaxed/simple;
+	bh=8pey+3pSmgTA0ZLiJO0GucuKnLOyGboFVHSgeGfUzLI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JZGPb798reuA/uZYBzC6MJGQDXrAKH+5iF/1uSmAU7yfy8F3NbeXtmprv0GWMwGcMRAi//fPcDb/gupzDXpjmGaLxgvaIk5oZRIPMCk9tgSADwuXI34EwHi2WKQEtmnW72TT7wUa3eyEHLDGwzlEu9sjWKEt5Vh8wojndqJH11g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=bZHvh3Rw; arc=fail smtp.client-ip=52.101.72.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZq0u3Gf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BA51F000E9;
-	Mon, 31 Aug 2026 13:53:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788184383;
-	bh=wQtAP4WPaZgC8vzljHhmC9u3m5h5hgTOsfh3R0/nUTo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nZq0u3GfghDV8VSVJaXo7oY51TIuvN1N4fmtkyh/a+ezkKIqtEYYGkCYWSnAh5TGu
-	 L8yvvxe0qfa0OYJG8akhyhSTW5djssoanL72UiOPQLcpFjfN4P/KLLefOg93tZhTO/
-	 pzGColXRhsy6PQvJVWa3kJzw8BBV9O5bVfK59Wowna5GO5QDQP56P0k/dXqXl7r/o0
-	 wPE1BVvU7/0Lyo4c4zNmk3mw0x4DE8+3s5/v0GgmcoU9oceT4vBnCQhgrxx9hIcBNR
-	 PRMFUY2ZevdPdbKuLTZGAUDxHevtP1mtcClAnJFy57FZG9/Fqjx+riV/8vv09R4wYq
-	 lsp9VBq3OyyRA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Haibo Chen <haibo.chen@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	han.xu@nxp.com,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] spi: spi-nxp-fspi: propagate clock reconfig failures in nxp_fspi_select_mem()
-Date: Mon, 31 Aug 2026 09:31:29 -0400
-Message-ID: <20260831133314.4125787-661-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
-References: <20260831133314.4125787-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="bZHvh3Rw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PTxXdwfaix5jI4RAv4vWsQ1K5me2W4vt7TbdJqyetfJWyo6UounxgZWtZ09M487RQ19kspib0sn81cbFwqTboPQ5KVNOcSUkVJApGnAphk7rmLZJ+x/hXXbbJG9jKClGgewvgLLyd27nLpIiHZDjsY4iZ1iSWoesASJuRB5GxDAmoHt2CL5wC824+rEnpi7GuKP0nPtlf7S4eVpQ68Q7RIJLXn2K+tzdNtJ3wc/Ws46ehdnovdOiOxxOXlANc9vpyDAzunL5Sl6KRRLPPb17q5p+VGqE3u2IVuwNHOg/XiE/hKUT8/n07EseDaTRGkpy4Iiuf558yigAsKTe6dThDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w5j6cX9aQpWckUrkXpGzk+3puZNHRCaENq65S6Hd53k=;
+ b=wpttS1v9Um4Btifbqg8LedJcwx7ENLtZxkNB+jFIL6ZKz/U88h66VBuCjd9pf4gAyGkifI3R2o2cMGP8S7kxgi0Vy/Cg2bd22Dc85jgXsQjQ+GGruFutA9PIPIiVYN4RyYhgu1gzh8pWmls9riJBtut4GGTOGUzWeOfJAUvhdh2JsA7HJgCoMJObbuLaZS+4j1UeT+zG5RtC7yzIQrFdJv6yFVP2MSA1k+w/P6KIGOCqp+VwzCOesKRMYpz+ibSQaC5g9zAa6QsAKdRXvCJhKNWkmGUcJtgU6/tvf3R0I1gIzN09mmj+cqj+Y9RLLPXWL/LixNGWWsHXAvyPSdLmqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.87) smtp.rcpttodomain=analog.com smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w5j6cX9aQpWckUrkXpGzk+3puZNHRCaENq65S6Hd53k=;
+ b=bZHvh3Rwx4uTs0sNaUlPfPRXrcBSxlN7XPziAiJKwRbatJHAK9JqKMka8GPwVF6krhdh9aHCwyF8BsDbWGsC6dvkYnJ+g+radCTbQogbxJzLWuWYicXvvWA72O873qSLwupDSklFUbcdrq1lkDLx2b+t2NvnxBH4/Iy5rENkYhsW/9QNbfLUVJoNiDSoq1olVDv0Z0jBFmTJP6mQ6ppRw2pr5fjieFekbwkNaQHO8RAloeWHEhBGylF6M4Pxj7et/k2Y0Ns6hQrha0Oa9tbAKxPSGn8s6UAN/WPjHcnVuIslE7NAo8jVVZaawrHP6c6q5Rjy3GE6vGExTU/+79sqNQ==
+Received: from DB9PR02CA0013.eurprd02.prod.outlook.com (2603:10a6:10:1d9::18)
+ by VI0PR10MB8762.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:234::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
+ 2026 14:01:27 +0000
+Received: from DB1PEPF000509EB.eurprd03.prod.outlook.com
+ (2603:10a6:10:1d9:cafe::73) by DB9PR02CA0013.outlook.office365.com
+ (2603:10a6:10:1d9::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Mon,
+ 31 Aug 2026 14:01:27 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.87)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.87 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.87; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.87) by
+ DB1PEPF000509EB.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.360.3 via Frontend Transport; Mon, 31 Aug 2026 14:01:26 +0000
+Received: from ENXDAG1NODE4.st.com (10.75.129.197) by smtpo365.st.com
+ (10.250.44.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 31 Aug
+ 2026 16:03:24 +0200
+Received: from [10.48.87.20] (10.48.87.20) by ENXDAG1NODE4.st.com
+ (10.75.129.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Mon, 31 Aug
+ 2026 16:01:24 +0200
+Message-ID: <eb9fa2ed-e59d-4ad4-9218-f7473ceb9f9b@foss.st.com>
+Date: Mon, 31 Aug 2026 16:01:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.48
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/9] dmaengine: stm32-dma3: Use bus width capability
+ helpers
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	<linux-kernel@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+	<linux-arm-msm@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
+	<linux-sound@vger.kernel.org>, <linux-spi@vger.kernel.org>
+CC: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, "Lars-Peter
+ Clausen" <lars@metafoo.de>, Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, Jonathan Cameron <jic23@kernel.org>, "David
+ Lechner" <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>,
+	"Jaroslav Kysela" <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Mark Brown
+	<broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>
+References: <20260831-dmaengine-support-wider-dma-masks-v3-0-507d97496f2d@analog.com>
+ <20260831-dmaengine-support-wider-dma-masks-v3-5-507d97496f2d@analog.com>
+Content-Language: en-US
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+In-Reply-To: <20260831-dmaengine-support-wider-dma-masks-v3-5-507d97496f2d@analog.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-
-From: Haibo Chen <haibo.chen@nxp.com>
-
-[ Upstream commit b5902b9779796d515b7d65eb9205994b7a8d00cb ]
-
-nxp_fspi_select_mem() disables the FlexSPI clocks before calling
-clk_set_rate() and re-enabling them. If clk_set_rate() or the clock
-re-enable fails, the function returned early (as void) leaving both the
-serial root clock and the register interface clock disabled.
-
-As the function returned void, nxp_fspi_exec_op() had no way to know
-about the failure and continued to access FlexSPI registers (LUT setup,
-data transfer, AHB buffer invalidation). Accessing the controller
-registers while its clock is gated off results in a synchronous external
-abort.
-
-Make nxp_fspi_select_mem() return an error code and have
-nxp_fspi_exec_op() bail out on failure before any further register
-access, including nxp_fspi_invalid().
-
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://patch.msgid.link/20260728-fspi-clock-v2-3-dbe786a4a6eb@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-# Stable Backport Analysis: `spi: spi-nxp-fspi: propagate clock reconfig
-failures in nxp_fspi_select_mem()`
-
-**Local tree:** Linux **6.18.44** (`git describe HEAD` →
-`v6.18.44-2-g1b9e1abadee04`, Makefile `6.18.44`)
-
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
-
-### Step 1.1: PARSE THE SUBJECT LINE
-**Record:** `[spi: spi-nxp-fspi]` `[propagate]` — propagate clock
-reconfiguration failures from `nxp_fspi_select_mem()` to its caller.
-
-### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
-**Record:**
-- **Fixes:** — none
-- **Reported-by:** — none
-- **Tested-by:** — none
-- **Reviewed-by:** — none
-- **Acked-by:** — none
-- **Link:** `https://patch.msgid.link/20260728-fspi-
-  clock-v2-3-dbe786a4a6eb@nxp.com` (PATCH v2 3/3)
-- **Cc: stable:** — none (expected for manual review)
-- **Signed-off-by:** Haibo Chen `<haibo.chen@nxp.com>`, Mark Brown
-  `<broonie@kernel.org>` (SPI maintainer)
-
-Notable: part of a 3-patch series; no syzbot/fuzzer report, but
-maintainer merge is a quality signal.
-
-### Step 1.3: ANALYZE THE COMMIT BODY TEXT
-**Record:**
-- **Bug:** `nxp_fspi_select_mem()` disables FlexSPI clocks, calls
-  `clk_set_rate()`, then re-enables. On `clk_set_rate()` or re-enable
-  failure, it returns early as `void`, leaving clocks disabled.
-- **Symptom:** `nxp_fspi_exec_op()` continues with LUT setup, data
-  transfer, and `nxp_fspi_invalid()` — register accesses with clocks
-  gated → **synchronous external abort** (SoC bus fault / kernel crash).
-- **Root cause:** Missing error propagation from a `void` helper.
-- **Fix:** Return `int` from `nxp_fspi_select_mem()`, re-enable clocks
-  on `clk_set_rate()` failure (for runtime PM balance), bail out of
-  `nxp_fspi_exec_op()` before any further register access.
-
-### Step 1.4: DETECT HIDDEN BUG FIXES
-**Record:** Not disguised — this is an explicit crash-prevention fix on
-an error path, not cosmetic cleanup.
-
----
-
-## PHASE 2: DIFF ANALYSIS
-
-### Step 2.1: INVENTORY THE CHANGES
-**Record:**
-- **File:** `drivers/spi/spi-nxp-fspi.c` (~25 insertions, ~7 deletions)
-- **Functions:** `nxp_fspi_select_mem()`, `nxp_fspi_exec_op()`
-- **Scope:** Single-file, surgical fix
-
-### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
-
-**Hunk 1 — `nxp_fspi_select_mem()`:**
-- **Before:** `static void`; early-exit paths return nothing;
-  `clk_set_rate()` / `nxp_fspi_clk_prep_enable()` failures silently
-  return with clocks disabled.
-- **After:** `static int`; success returns `0`; `clk_set_rate()` failure
-  re-enables clocks then returns error; `clk_prep_enable()` failure
-  returns error; success returns `0`.
-
-**Hunk 2 — `nxp_fspi_exec_op()`:**
-- **Before:** Ignores `nxp_fspi_select_mem()` result; always runs
-  `nxp_fspi_prepare_lut()`, transfer path, and `nxp_fspi_invalid()`.
-- **After:** Checks return value; on failure calls
-  `pm_runtime_put_autosuspend()` and returns immediately — no register
-  access.
-
-### Step 2.3: IDENTIFY THE BUG MECHANISM
-**Record:** **Error-path / memory-mapped I/O safety fix.** Category:
-NULL/gated-clock register access leading to synchronous external abort
-(ARM-class failure). Mechanism: clocks disabled at lines 912–920 in the
-current tree, failure swallowed, MMIO continues.
-
-### Step 2.4: ASSESS THE FIX QUALITY
-**Record:**
-- Fix is obviously correct and minimal.
-- Re-enabling clocks on `clk_set_rate()` failure preserves runtime PM
-  reference counting — thoughtful detail.
-- Low regression risk: only affects already-failing paths.
-- On `nxp_fspi_clk_prep_enable()` failure, clocks may still be left
-  disabled, but caller correctly avoids MMIO (better than crashing).
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: BLAME THE CHANGED LINES
-**Record:** In this 6.18.44 tree, the buggy `clk_set_rate()` early-
-return pattern at lines 914–920 is present. `git blame` attributes
-surrounding code to `10eaa4c4a2579` (bulk import in this checkout; not a
-meaningful per-line history). The void-return + silent-failure pattern
-is in the current file.
-
-### Step 3.2: FOLLOW THE FIXES: TAG
-**Record:** No `Fixes:` tag. N/A.
-
-### Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES
-**Record:**
-- `51c52e493346f` — **already in this tree**: patch 1/3 of the same
-  series (per-SoC SDR/DTR rate limits), committed by Greg K-H as stable
-  backport.
-- Patch 2/3 (“enter stop mode before reconfiguring MCR0 and DLL”) is
-  **not** in this tree.
-- This fix (patch 3/3) is **not** in this tree.
-- Standalone for the error-propagation bug: patch 3 does not require
-  patch 2; patch 2 is an init-sequence improvement.
-
-### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
-**Record:** Haibo Chen (NXP) authored `51c52e493346f` already backported
-here; SPI maintainer Mark Brown committed both.
-
-### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
-**Record:**
-- Series context: v2 0/3 cover letter lists patches 1–3; patch 1 is
-  already present.
-- Patch 3 applies cleanly to **this tree's** simpler
-  `nxp_fspi_select_mem()` (no MCR0 stop-mode hunks from patch 2).
-- **Can apply standalone:** YES (minor context adaptation only).
-
----
-
-## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
-
-### Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION
-**Record:**
-- `b4 dig -c <commit>`: commit not in this tree; could not run against
-  commitish.
-- **lkml.iu.edu:** [PATCH v2 3/3] — confirms diff and crash description.
-- **lists.openwall.net:** [PATCH v2 0/3] series cover letter — patches
-  1–3 described; v2 adds patches 2–3 per review feedback.
-- lore.kernel.org blocked by bot protection; used lkml/openwall mirrors
-  instead.
-
-### Step 4.2: CHECK WHO REVIEWED THE PATCH
-**Record:** Cover letter To: Han Xu, Yogesh Gaur, **Mark Brown** (SPI
-maintainer). Cc: linux-spi, imx, linux-kernel. Mark Brown committed the
-patch upstream.
-
-### Step 4.3: SEARCH FOR THE BUG REPORT
-**Record:** No external bug report or syzbot link. Bug identified by
-code-path analysis in the patch series (v2 added per review). Severity
-described authoritatively: synchronous external abort.
-
-### Step 4.4: CHECK FOR RELATED PATCHES AND SERIES
-**Record:** 3-patch series; patch 1 backported here; patch 2 optional;
-patch 3 is the subject commit.
-
-### Step 4.5: CHECK STABLE MAILING LIST HISTORY
-**Record:** Not searched separately; patch 1 already landed in this
-6.18.y tree via Greg K-H, indicating the series is stable-appropriate.
-
----
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-### Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF
-**Record:** `nxp_fspi_select_mem()`, `nxp_fspi_exec_op()`, plus callees
-`nxp_fspi_clk_disable_unprep()`, `clk_set_rate()`,
-`nxp_fspi_clk_prep_enable()`, `nxp_fspi_prepare_lut()`,
-`nxp_fspi_invalid()`.
-
-### Step 5.2: TRACE CALLERS
-**Record:** `nxp_fspi_exec_op` is registered in
-`nxp_fspi_mem_ops.exec_op` (line 1329). Called from `spi_mem_exec_op()`
-in `drivers/spi/spi-mem.c`, which is the standard path for SPI NOR flash
-operations (read/program/erase). Common on NXP i.MX and Layerscape
-boards using FlexSPI for boot flash.
-
-### Step 5.3: TRACE CALLEES
-**Record:** Clock disable/enable (`nxp_fspi_clk_*`), `clk_set_rate()`,
-MMIO via `fspi_readl`/`fspi_writel` in LUT prep and `nxp_fspi_invalid()`
-(MCR0 SWRESET).
-
-### Step 5.4: FOLLOW THE CALL CHAIN
-**Record:** MTD/spi-nor → `spi_mem_exec_op()` → `nxp_fspi_exec_op()` →
-`nxp_fspi_select_mem()`. Reachable during normal flash I/O when chip-
-select, DTR/STR mode, or `max_freq` changes between operations
-(`per_op_freq = true` in mem caps). **Userspace-reachable** via flash
-access (root typically, but critical for system stability).
-
-### Step 5.5: SEARCH FOR SIMILAR PATTERNS
-**Record:** ACPI path skips manual clock disable/enable
-(`is_acpi_node()` early return in `nxp_fspi_clk_disable_unprep` /
-`nxp_fspi_clk_prep_enable`). Bug is most severe on **Device Tree**
-platforms (primary NXP embedded use case) where
-`nxp_fspi_clk_disable_unprep()` actually gates clocks.
-
----
-
-## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
-
-### Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?
-**Record:** **YES.** Current 6.18.44 code:
-
-```862:920:drivers/spi/spi-nxp-fspi.c
-static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device
-*spi,
-                                const struct spi_mem_op *op)
-{
-        // ...
-        nxp_fspi_clk_disable_unprep(f);
-
-        ret = clk_set_rate(f->clk, rate);
-        if (ret)
-                return;
-
-        ret = nxp_fspi_clk_prep_enable(f);
-        if (ret)
-                return;
-```
-
-```1121:1142:drivers/spi/spi-nxp-fspi.c
-        nxp_fspi_select_mem(f, mem->spi, op);
-
-        nxp_fspi_prepare_lut(f, op);
-        // ... transfer ...
-        nxp_fspi_invalid(f);
-```
-
-### Step 6.2: CHECK FOR BACKPORT COMPLICATIONS
-**Record:** **Clean apply expected.** This tree lacks patch 2's MCR0
-stop-mode code in `nxp_fspi_select_mem()`, so the backport is actually
-simpler than upstream context. No conflicting changes found.
-
-### Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE
-**Record:** Patch 1 (`51c52e493346f`) present. This error-propagation
-fix is **not** present. No duplicate fix found.
-
----
-
-## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
-
-### Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY
-**Record:** **drivers/spi** — NXP FlexSPI (`CONFIG_SPI_NXP_FLEXSPI`,
-depends on `ARCH_MXC || ARCH_LAYERSCAPE`). **IMPORTANT** for embedded
-NXP platforms (boot flash, MTD); not universal core code, but critical
-where enabled.
-
-### Step 7.2: ASSESS SUBSYSTEM ACTIVITY
-**Record:** Active in 6.18.y — recent backports include `51c52e493346f`,
-`c1c2871f33360`, `40ad64ac25bb7`.
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: DETERMINE WHO IS AFFECTED
-**Record:** Users of `CONFIG_SPI_NXP_FLEXSPI` on i.MX
-(8MM/MP/QXP/DXL/ULP/95) and Layerscape (LX2160A) platforms with DT-based
-clock control.
-
-### Step 8.2: DETERMINE THE TRIGGER CONDITIONS
-**Record:** Any SPI-mem operation requiring chip-select or clock/mode
-reconfiguration when `clk_set_rate()` or `nxp_fspi_clk_prep_enable()`
-fails (unsupported rate, CCM/clock driver error, resource pressure).
-Uncommon but realistic; more likely after dynamic per-op frequency
-changes. Privileged flash access path.
-
-### Step 8.3: DETERMINE THE FAILURE MODE SEVERITY
-**Record:** **Synchronous external abort** on MMIO with gated clocks →
-kernel oops/panic. **Severity: CRITICAL.**
-
-### Step 8.4: CALCULATE RISK-BENEFIT RATIO
-**Record:**
-- **Benefit:** HIGH — prevents hard kernel crash on error path.
-- **Risk:** LOW — ~30 lines, error-path only, SPI maintainer committed.
-- **Ratio:** Strongly favors backport.
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: COMPILE THE EVIDENCE
-
-**FOR backport:**
-- Real bug with documented CRITICAL failure mode (sync external abort)
-- Small, surgical, maintainer-merged fix
-- Buggy code confirmed present in Linux 6.18.44
-- Patch 1 of same series already backported to this tree
-- Standalone application without patch 2
-- Prevents crash on flash I/O error paths
-
-**AGAINST backport:**
-- No syzbot/user bug report (theoretical until clock reconfig fails)
-- Affects driver-specific embedded platforms only
-- Patch 2 of series not in tree (minor context difference, not a
-  blocker)
-
-**UNRESOLVED:**
-- Exact upstream commit SHA not in this checkout (fix not merged here
-  yet)
-- No explicit `Cc: stable` in review thread found
-
-### Step 9.2: STABLE RULES CHECKLIST
-1. Obviously correct and tested? **PASS** — logic is clear; merged by
-   SPI maintainer.
-2. Fixes a real bug affecting users? **PASS** — crash on FlexSPI flash
-   operations.
-3. Important issue? **PASS** — CRITICAL (kernel crash / external abort).
-4. Small and contained? **PASS** — one file, ~32 lines.
-5. No new features or APIs? **PASS** — error propagation only.
-6. Can apply to the local tree? **PASS** — bug present; clean/minor-
-   context apply.
-
-### Step 9.3: EXCEPTION CATEGORIES
-**Record:** None (not device ID, quirk, DT, build, or docs). Standard
-bug-fix backport.
-
-### Step 9.4: DECISION RATIONALE
-
-For **this 6.18.44 tree**, the buggy void-return pattern is live in
-`spi-nxp-fspi.c`. When clock reconfiguration fails during a flash
-operation, the driver continues accessing gated FlexSPI registers and
-can trigger a synchronous external abort — a production-killing failure
-on affected NXP hardware. The fix is minimal, obviously correct, already
-vetted by the SPI maintainer, and independently applicable (patch 1 is
-already here; patch 2 is not required). Risk is low; benefit is
-preventing kernel crashes.
-
----
-
-## Verification
-
-- **[Phase 1]** `git describe HEAD` → v6.18.44; parsed subject, tags
-  (Link, SOBs), body
-- **[Phase 1]** No Fixes:/Reported-by:/Cc: stable tags
-- **[Phase 2]** Read current `spi-nxp-fspi.c` lines 862–934, 1103–1147;
-  confirmed void return + silent failure
-- **[Phase 2]** Confirmed `nxp_fspi_invalid()` does MMIO (lines 611–622)
-- **[Phase 2]** Confirmed ACPI skips manual clk disable/enable (lines
-  704–705, 722–723)
-- **[Phase 3]** `git log -20 -- drivers/spi/spi-nxp-fspi.c` — recent
-  fspi commits
-- **[Phase 3]** `git show 51c52e493346f` — patch 1/3 already backported
-  to this tree
-- **[Phase 3]** `git blame -L 900,950` — buggy clk path present
-- **[Phase 3]** `git log --grep="propagate clock"` — fix not in tree
-- **[Phase 4]** `b4 dig` — commit not in tree; usage confirmed
-- **[Phase 4]** WebFetch lkml.iu.edu/2607.3/07703.html — patch 3/3
-  content confirmed
-- **[Phase 4]** WebFetch lists.openwall.net — series cover letter
-  (patches 1–3) confirmed
-- **[Phase 4]** lore.kernel.org — blocked (bot protection); used mirrors
-- **[Phase 5]** `grep nxp_fspi_exec_op` — mem_ops registration at line
-  1329
-- **[Phase 5]** Read `spi-mem.c` `spi_mem_exec_op()` — standard flash
-  path
-- **[Phase 5]** Kconfig `SPI_NXP_FLEXSPI` — ARCH_MXC || ARCH_LAYERSCAPE
-- **[Phase 5]** `of_device_id` — imx8*, lx2160a, imx95 compatibles
-- **[Phase 6]** Buggy code verified present in 6.18.44 checkout
-- **[Phase 6]** No duplicate fix in tree
-- **[Phase 6]** Patch 2 (MCR0 stop mode) absent — backport simpler
-- **[Phase 8]** Failure mode: synchronous external abort — CRITICAL
-
-**YES**
-
- drivers/spi/spi-nxp-fspi.c | 32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index b504a5c86692a..69ab72fff19d2 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -859,8 +859,8 @@ static void nxp_fspi_dll_override(struct nxp_fspi *f)
-  * Value for rest of the CS FLSHxxCR0 register would be zero.
-  *
-  */
--static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
--				const struct spi_mem_op *op)
-+static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
-+			       const struct spi_mem_op *op)
- {
- 	/* flexspi only support one DTR mode: 8D-8D-8D */
- 	bool op_is_dtr = op->cmd.dtr && op->addr.dtr && op->dummy.dtr && op->data.dtr;
-@@ -880,7 +880,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	if ((f->selected == spi_get_chipselect(spi, 0)) &&
- 	    (!!(f->flags & FSPI_DTR_MODE) == op_is_dtr) &&
- 	    (f->pre_op_rate == op->max_freq))
--		return;
-+		return 0;
- 
- 	/* Reset FLSHxxCR0 registers */
- 	fspi_writel(f, 0, f->iobase + FSPI_FLSHA1CR0);
-@@ -912,12 +912,19 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	nxp_fspi_clk_disable_unprep(f);
- 
- 	ret = clk_set_rate(f->clk, rate);
--	if (ret)
--		return;
-+	if (ret) {
-+		/*
-+		 * clk_set_rate() failed with the clocks already disabled.
-+		 * Re-enable them so the enable count matches what the caller's
-+		 * pm_runtime_put() (runtime_suspend) will drop.
-+		 */
-+		nxp_fspi_clk_prep_enable(f);
-+		return ret;
-+	}
- 
- 	ret = nxp_fspi_clk_prep_enable(f);
- 	if (ret)
--		return;
-+		return ret;
- 
- 	/*
- 	 * If clock rate > 100MHz, then switch from DLL override mode to
-@@ -931,6 +938,8 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
- 	f->pre_op_rate = op->max_freq;
- 
- 	f->selected = spi_get_chipselect(spi, 0);
-+
-+	return 0;
- }
- 
- static int nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
-@@ -1118,7 +1127,16 @@ static int nxp_fspi_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 				   FSPI_STS0_ARB_IDLE, 1, POLL_TOUT, true);
- 	WARN_ON(err);
- 
--	nxp_fspi_select_mem(f, mem->spi, op);
-+	err = nxp_fspi_select_mem(f, mem->spi, op);
-+	if (err) {
-+		/*
-+		 * On failure the FlexSPI clock may be left disabled, so avoid
-+		 * any further register access (which would trigger a synchronous
-+		 * external abort) and bail out.
-+		 */
-+		pm_runtime_put_autosuspend(f->dev);
-+		return err;
-+	}
- 
- 	nxp_fspi_prepare_lut(f, op);
- 	/*
--- 
-2.53.0
-
+X-ClientProxiedBy: ENXCAS1NODE2.st.com (10.75.128.138) To ENXDAG1NODE4.st.com
+ (10.75.129.197)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509EB:EE_|VI0PR10MB8762:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb58c925-3e9f-4bab-47dd-08df07685954
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|1800799024|23010399003|7416014|376014|10067099003|6133799003|22082099003|56012099006|4143699003|5023799004|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	pIJ/rHjc4eUp3uziMcdO0FED3+SEBVMVBHuANIHEff2xvTSpOhXC6jUVqbkwVVn+8chEixyYuPywRZZv75AcVXXbKRFfBwc3uRgQPJThxtEA+xMQ3jh0demRQlTriEXszYJUlWEijyY/6MrKUEYYWbh5YYdBbuG/fP3C7+XevjM4VeZymNwDd6q/TPgKbAJs1uQcMT90dHmlkp0EAfyqDbyU17JoHtcndyP1aFlhkh2NUD8XRXiTqplvsWB0mkXnOT5UaBHI59tqeJ7gpvHTRhzMAVc7cF6xifczOQbMlYFGrPWdtH94yfsuCGPZkAT/ezp3ThsZJ32y6EIfpyJ5FIDKbb8jK9aA0PBpOxdRZOTL1swdDdjEqfFBNvnnxtLOVCW3dAde4Q/ovi3zi4RQ4m866qbuFDdKT1PDf/rV5j3a8PnzEhVwj5K2tMPnO/6E9kjbrRscKlN9zdoWYt7ipKbbqzKY9gUcwdFD6p3lRPZBx7uVF9CsCIo+uv86yNKYtxr1LA5m0rbrSKdZ90eiaO/oxKtL+1mdkN+jIz9C9q9z+FzvXK1Z/Sp2afUQlHQAqMo6o7SgS9tJeY9h2rSCmE+W5BDdJR8ByOiO1QFMnfOMYEB8C19jt3ecZ017tP8NlIoerrFqLTK7WrdF/mQRbXabLN//LPKql3KIXXkmVXJE1tjzrorIZCYLc+59n9KzL0g5OZebBUNAXw7qRKlVeg==
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.87;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(23010399003)(7416014)(376014)(10067099003)(6133799003)(22082099003)(56012099006)(4143699003)(5023799004)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lQ5J6/XuSl7bmwg0CHTWGaAPqk1Ep5MrJV83Qsav5vUkYbJtdaNgX8BxntTyF56qX66/6CT5vY1IZtHQ7OPQTT0w05dndPXd6AfNlWHQNWcRjc2BDb0ruFPHJOREIhDlHK0dqPGbNGhuUrEU9fNfEcw0tlD5WCFINXLu77x8Zl2CY0rGciNMilxv3tO4z0FOVvl1EkuLhnfB0hxflEhyvX1AhsoehU7r3bTyzWITfNlFVn6GCQenJD+2HKodzShO2nbJstIxHJcdgCeLr3O3so6aCrzinDxJk9MrDuUBp14ssuKfDwEXGLEXtCg8oJRL2TgwrlqMoR8n0lI4eGAVYNJBwB/8AlIXXxxrEPeZA4U6gfErrH2nruqsAglOaM0mIZ9aXFs05XuRRQKyaJigu59N6swGhJNCXX+vLyVx6PSg1AYWWyzUy2TojL+nQv0a
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 14:01:26.5344
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb58c925-3e9f-4bab-47dd-08df07685954
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.87];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509EB.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB8762
+
+Hi,
+
+Thanks for the updates!
+
+On 8/31/26 13:46, Nuno Sá wrote:
+> Advertise the controller-wide bus width capabilities through the new
+> dma_bus_width_set_many() helper and clear the per-channel unsupported
+> widths through dma_bus_width_clear().
+> 
+> While at it, validate the requested transfer bus widths against the new
+> capability mask instead of the legacy u32 one. Besides not depending on
+> the legacy field anymore, this also stops BIT() from being fed a bus
+> width coming from the device tree without any bound check.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> ---
+>   drivers/dma/stm32/stm32-dma3.c | 34 +++++++++++++++++++++-------------
+>   1 file changed, 21 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/dma/stm32/stm32-dma3.c b/drivers/dma/stm32/stm32-dma3.c
+> index 4724e7fa0008..0689aeb7cff5 100644
+> --- a/drivers/dma/stm32/stm32-dma3.c
+> +++ b/drivers/dma/stm32/stm32-dma3.c
+> @@ -9,6 +9,7 @@
+>   #include <linux/bitfield.h>
+>   #include <linux/clk.h>
+>   #include <linux/dma-mapping.h>
+> +#include <linux/dma/engine/widthmask.h>
+>   #include <linux/dmaengine.h>
+>   #include <linux/dmapool.h>
+>   #include <linux/init.h>
+> @@ -588,7 +589,8 @@ static int stm32_dma3_chan_prep_hw(struct stm32_dma3_chan *chan, enum dma_transf
+>   	dbl_max = chan->dma_config.dst_maxburst ? : 1;
+>   
+>   	/* Following conditions would raise User Setting Error interrupt */
+> -	if (!(dma_device.src_addr_widths & BIT(sdw)) || !(dma_device.dst_addr_widths & BIT(ddw))) {
+> +	if (!dma_bus_width_test(dma_device.src_bus_widths, sdw) ||
+> +	    !dma_bus_width_test(dma_device.dst_bus_widths, ddw)) {
+
+Just to come back to one point you mentioned in your cover letter, "this 
+stops BIT() from being fed an unvalidated device tree bus width". Here, 
+sdw and ddw are set either by dma_config.[src|dst]_addr_width, or forced 
+to DMA_SLAVE_BUSWIDTH_4_BYTES or DMA_SLAVE_BUSWIDTH_8_BYTES depending on 
+the channel capabilities. So, unless I'm missing something, they do not 
+come from an "unvalidated *device tree* bus width".
+
+Anyway, it's great to see another use of the new API.
+
+
+>   		dev_err(chan2dev(chan), "Bus width (src=%u, dst=%u) not supported\n", sdw, ddw);
+>   		return -EINVAL;
+>   	}
+> @@ -1469,14 +1471,14 @@ static void stm32_dma3_caps(struct dma_chan *c, struct dma_slave_caps *caps)
+>   
+>   	if (!chan->fifo_size) {
+>   		caps->max_burst = 0;
+> -		caps->src_addr_widths &= ~BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> -		caps->dst_addr_widths &= ~BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> +		dma_bus_width_clear(caps->src_bus_widths, DMA_SLAVE_BUSWIDTH_8_BYTES);
+> +		dma_bus_width_clear(caps->dst_bus_widths, DMA_SLAVE_BUSWIDTH_8_BYTES);
+>   	} else {
+>   		/* Burst transfer should not exceed half of the fifo size */
+>   		caps->max_burst = chan->max_burst;
+>   		if (caps->max_burst < DMA_SLAVE_BUSWIDTH_8_BYTES) {
+> -			caps->src_addr_widths &= ~BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> -			caps->dst_addr_widths &= ~BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> +			dma_bus_width_clear(caps->src_bus_widths, DMA_SLAVE_BUSWIDTH_8_BYTES);
+> +			dma_bus_width_clear(caps->dst_bus_widths, DMA_SLAVE_BUSWIDTH_8_BYTES);
+>   		}
+>   	}
+>   }
+> @@ -1734,6 +1736,12 @@ static int stm32_dma3_probe(struct platform_device *pdev)
+>   	struct reset_control *reset;
+>   	struct stm32_dma3_chan *chan;
+>   	struct dma_device *dma_dev;
+> +	enum dma_slave_buswidth buswidths[] = {
+> +		DMA_SLAVE_BUSWIDTH_1_BYTE,
+> +		DMA_SLAVE_BUSWIDTH_2_BYTES,
+> +		DMA_SLAVE_BUSWIDTH_4_BYTES,
+> +		DMA_SLAVE_BUSWIDTH_8_BYTES,
+> +	};
+>   	u32 master_ports, chan_reserved, i, verr;
+>   	u64 hwcfgr;
+>   	int ret;
+> @@ -1775,14 +1783,14 @@ static int stm32_dma3_probe(struct platform_device *pdev)
+>   	 * channel, and can only access address at even boundaries, multiple of the buswidth.
+>   	 */
+>   	dma_dev->copy_align = DMAENGINE_ALIGN_8_BYTES;
+> -	dma_dev->src_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_1_BYTE) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_2_BYTES) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_4_BYTES) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> -	dma_dev->dst_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_1_BYTE) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_2_BYTES) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_4_BYTES) |
+> -				   BIT(DMA_SLAVE_BUSWIDTH_8_BYTES);
+> +	ret = dma_bus_width_set_many(dma_dev->src_bus_widths, buswidths, ARRAY_SIZE(buswidths));
+> +	if (ret)
+> +		goto err_clk_disable;
+> +
+> +	ret = dma_bus_width_set_many(dma_dev->dst_bus_widths, buswidths, ARRAY_SIZE(buswidths));
+> +	if (ret)
+> +		goto err_clk_disable;
+> +
+>   	dma_dev->directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV) | BIT(DMA_MEM_TO_MEM);
+>   
+>   	dma_dev->descriptor_reuse = true;
+> 
+
+It looks nicer this way. Thanks!
+
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+
+Regards,
+Amelie

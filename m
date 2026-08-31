@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DCB523784;
-	Mon, 31 Aug 2026 13:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5808C55EAF7;
+	Mon, 31 Aug 2026 13:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788183946; cv=none; b=m76ZTGrf5s1hn4k3Ic7iBWV15FVHLXUUrOAEI/KyiKMpaKAFILr1cjQfVjnXZZ1ZO5erTlzVzWOD82HKL+fDl46Yo3ZTmtNnX2+PsWioKCSmafElgthRdA1KxTPRa1ZmjmAOWifyOxFb4cXbmzyLQ/JrIydKou7bMJty/mc/Bbg=
+	t=1788184055; cv=none; b=gmN47l0jlajLrCbNm38ctk3/Ry7WcXP/bBiX2t9LWuiRUFzW/crUpNBNVD76ChXrDMB6ta2th6+fo5JQxekaxKO6agkufxhGlq1dYOQTKBmdbJ1Lq5qRREiXWxhvYcV4AImpFmRv4EB2WY+PVbeApzXVOsRj1S4JM0dFHvGjwzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788183946; c=relaxed/simple;
-	bh=hI+v3RdLOqP7+hhi7jivf5MIUn3GZx4JDmDXjG51kYo=;
+	s=arc-20240116; t=1788184055; c=relaxed/simple;
+	bh=7yjxVhNAX9o3HTxeQpJ0/t/F3IDXyVkBk3Rljnq0Pk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u3O13NmYDtbGkvblMeJRJuN7F3mLLOMY7HdMhn6KfK3RjaoU3kGfqRixOniiauSbdA4SylE+MFTtMpRfXI2hKthhk96BO/RrE87fQ5ABF5k4zn4pBgNv/3b3H2XbCwhtxxBrNqRyEotMi809OFz254KJUZcamdQbN4g8BQn2Yx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJQLpJ6L; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=rpc0DEGUsms7uF4+fl1xdHF3apmyyVM/sTpHUxma6988oMBcXbrZT5fJpygdvoDik2Jx4LDVc5gpGJm9MBTfUH91lO86GBAB6WFTzU2VKcaKTjzVC6SRHAlCbxr6YAAUJRejhUZZR5Y1C0Pnshd7O4gJdEU6IAS9B8HkWeL5i68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILcvsDTN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJQLpJ6L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9775D1F00ACF;
-	Mon, 31 Aug 2026 13:45:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILcvsDTN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7C01F00ACF;
+	Mon, 31 Aug 2026 13:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788183943;
-	bh=sIc59oaUWX+y+J9S60XYbLue/pJllJgUM6bZUiJhWnQ=;
+	s=k20260515; t=1788184053;
+	bh=Jgg4sdSKbomE329Nl7tVODUKAEXno6ZeeSXNFVTs4r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AJQLpJ6LntCYdAdaee84zzyFCHLw0tA1VKgrTYliDlUWia4om3s/qpOlLY3muagEO
-	 nZ68KRV4Wc6FZT6Tc0ATHzJU90TnrHN/obqSvf8zO40TQ6Dwg04x0RO5Yk5V6Rev83
-	 4XYwpeku9kfDZHIuAYWfvDXd1Wi3moavibe0MULol7GhMMkkwfQO8ytMyybsUxr6/5
-	 XoWdHXka2eNPTTXyhIsOLy+wZJKYlMphsuPnWWGh6NlAL4vLxNGTpk+bU4TWsaqT3K
-	 tpOVsLxNJQIriRH++ZkgxnkmBpbs03g8ytWagwRcBmpZb7R87UG1Qn3OtgHa1H3wXr
-	 Sz3AqAjoW0eBw==
+	b=ILcvsDTNC3/+2JCCTIQDPLXOdlMAd4m1Mk634fbNR0XRKWvKfXvduykTTdx/vVdEr
+	 +u1BOELQ8lWlY0Huc910AC3U13rdXPMNZYPd10EzchhXD2X8bYcMOk/ZEreEdHX1+2
+	 2Gaqnc30x+tdHuKqkrgye18UiTmsFxQwalorHzhE/pABQaUl8AeCkekxli+wO7kpQW
+	 l8WkfT8i4Q5P1w6REmppC6VOIexnsiCOMzEy+21KIjUNixBYss4hsYioRbowDd/web
+	 EzQ4WDaijA4Ymz0xgnCBpwZwoijyoRaLAj2vHjRoKJB6nUjNX2VUrgntO5GAbakY1k
+	 s+9B+0nuCOX+w==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Michal Simek <michal.simek@amd.com>,
+Cc: Haibo Chen <haibo.chen@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	han.xu@nxp.com,
 	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.1] spi: xilinx: let transfers timeout in case of no IRQ
-Date: Mon, 31 Aug 2026 09:27:03 -0400
-Message-ID: <20260831133314.4125787-395-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL
+Date: Mon, 31 Aug 2026 09:28:11 -0400
+Message-ID: <20260831133314.4125787-463-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260831133314.4125787-1-sashal@kernel.org>
 References: <20260831133314.4125787-1-sashal@kernel.org>
@@ -54,394 +55,429 @@ X-stable-base: Linux 6.18.48
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 0f95264f49ace739d411fd9149e2b3545d741d06 ]
+[ Upstream commit b4bde5cfff8e43e948219f0a598e4bf057ecfba4 ]
 
-In case of failed HW the driver may not see an interrupt and will stuck
-in waiting forever. We can avoid such situation by timing out of
-transfers if the interrupt is not seen in a reasonable time.
+In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
+and the DLL control registers (DLLxCR) are reconfigured while the
+FlexSPI module is still enabled. According to the FlexSPI reference
+manual initialization sequence, MCR0 and the DLL control registers
+should be programmed while the module is in stop mode, i.e. with
+MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] = 0)
+afterwards.
 
-This problem can be found on unload of ptp_ocp driver for TimeCard which
-uses Xilinx SPI AXI and SPI-NOR flash memory. During tear-down process
-spi-nor drivers send soft reset command which is not triggering an
-interrupt stalling the unload process completely.
+Wrap the RX sample clock source selection and the DLL calibration/
+override reconfiguration in a stop-mode window to align with the RM
+and avoid reconfiguring timing-critical registers while the module is
+active.
 
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Link: https://patch.msgid.link/20260610222843.782337-1-vadim.fedorenko@linux.dev
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-# Stable Backport Analysis: `spi: xilinx: let transfers timeout in case
-of no IRQ`
+# Stable Backport Analysis: `spi: spi-nxp-fspi: enter stop mode before
+reconfiguring MCR0 and DLL`
 
-**Local tree:** `v6.18.44-1-g2736c32da98b9` (linux-6.18.y stable)
-**Commit under review:** `0f95264f49ace` (mainline; **not** in this tree
-yet)
+**Local tree:** Linux 6.18.44 (`v6.18.44-2-g1b9e1abadee04`, Makefile
+`VERSION=6 PATCHLEVEL=18 SUBLEVEL=44`)
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
-### Step 1.1: Subject Line
-**Record:** `[spi: xilinx]` `[let]` — Add transfer timeout when IRQ-
-based completion never arrives.
+**Step 1.1 – Subject line**
 
-### Step 1.2: Tags
-**Record:**
-- **Signed-off-by:** Vadim Fedorenko `<vadim.fedorenko@linux.dev>`
-  (author)
-- **Acked-by:** Michal Simek `<michal.simek@amd.com>` (Xilinx/AMD
-  maintainer)
-- **Link:** https://patch.msgid.link/20260610222843.782337-1-
-  vadim.fedorenko@linux.dev
-- **Signed-off-by:** Mark Brown `<broonie@kernel.org>` (subsystem
-  maintainer, committer)
-- No Fixes:, Reported-by:, Tested-by:, Cc: stable, or syzbot tags
-- Notable: maintainer Ack from Xilinx/AMD; no user/fuzzer report, but
-  concrete hardware scenario described
+Record: `[spi: spi-nxp-fspi]` `[enter/align]` — Enter FlexSPI stop mode
+(MCR0[MDIS]=1) before reprogramming MCR0 RX clock source and DLL control
+registers during runtime memory selection.
 
-### Step 1.3: Body Analysis
-**Record:**
-- **Bug:** In IRQ transfer mode, if the TX-empty interrupt never fires,
-  `wait_for_completion()` blocks forever.
-- **Symptom:** Complete hang during `ptp_ocp` driver unload on TimeCard
-  hardware (Xilinx SPI AXI + SPI-NOR). During teardown, spi-nor sends a
-  soft reset that does not trigger an interrupt, stalling unload
-  indefinitely.
-- **Root cause:** IRQ path has no timeout; polling path already has
-  stall detection (added in 2017).
-- **Version info:** None explicit; bug predates `force_irq` (2023) but
-  is exposed by it.
+**Step 1.2 – Tags**
 
-### Step 1.4: Hidden Bug Fix?
-**Record:** No — this is an explicit bug fix for an infinite-wait hang,
-not disguised cleanup.
+| Tag | Value |
+|-----|-------|
+| Signed-off-by | Haibo Chen \<haibo.chen@nxp.com\> |
+| Reviewed-by | Frank Li \<Frank.Li@nxp.com\> (NXP) |
+| Link | https://patch.msgid.link/20260728-fspi-
+clock-v2-2-dbe786a4a6eb@nxp.com |
+| Signed-off-by | Mark Brown \<broonie@kernel.org\> (SPI maintainer) |
+
+Notable: No Reported-by, Fixes:, Cc: stable, or syzbot tags. Reviewed by
+NXP engineer. Link indicates patch **2/2** of `fspi-clock-v2` series
+(patch 1 is already in this tree as `51c52e493346f`).
+
+Record: Reviewed-by from NXP; part of v2 series; no user/fuzzer bug
+report in message.
+
+**Step 1.3 – Body analysis**
+
+Record:
+- **Bug:** `nxp_fspi_select_mem()` reprograms MCR0[RXCLKSRC] and DLLxCR
+  while FlexSPI is still enabled (MCR0[MDIS]=0), violating the FlexSPI
+  reference manual initialization sequence.
+- **Symptom:** Timing-critical registers changed while the module is
+  active; can cause unreliable flash reads when switching chip-select,
+  DTR/STR mode, or clock rate.
+- **Root cause:** Runtime reconfiguration path omits the stop-mode
+  window that probe initialization already uses correctly.
+- **Version info:** None in message.
+
+**Step 1.4 – Hidden bug fix?**
+
+Record: **Yes.** Although framed as RM compliance, this is a hardware
+correctness bug fix. The driver’s own probe path already disables the
+module (MDIS) before DLL programming; `select_mem()` was inconsistent,
+creating a real stability risk on flash access paths.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
-### Step 2.1: Inventory
-**Record:**
-- **Files:** `drivers/spi/spi-xilinx.c` (+5 / -1)
-- **Function:** `xilinx_spi_txrx_bufs()`
-- **Scope:** Single-file surgical fix in IRQ transfer path
+**Step 2.1 – Inventory**
 
-### Step 2.2: Code Flow Change
-**Record:**
-- **Hunk (IRQ path, ~line 288):**
-  - **Before:** `wait_for_completion(&xspi->done)` — blocks forever if
-    IRQ never arrives
-  - **After:** `wait_for_completion_timeout(&xspi->done,
-    secs_to_jiffies(1))` — on timeout: log error, call
-    `xspi_init_hw(xspi)`, return `-ETIMEDOUT`
-- **Path affected:** IRQ-based SPI transfers (`use_irq == true`),
-  entered when `xspi->irq >= 0` and (`force_irq` or `remaining_words >
-  buffer_size`)
+Record:
+- **File:** `drivers/spi/spi-nxp-fspi.c` (+14 lines net in
+  `nxp_fspi_select_mem()`)
+- **Function modified:** `nxp_fspi_select_mem()`
+- **Scope:** Single-file, surgical fix
 
-### Step 2.3: Bug Mechanism
-**Record:**
-- **Category:** Logic/correctness — missing timeout on blocking wait
-  (hang/deadlock class)
-- **Mechanism:** `xilinx_spi_irq()` calls `complete(&xspi->done)` only
-  on `XSPI_INTR_TX_EMPTY`. If that IRQ never fires (soft reset during
-  teardown, failed HW), the caller blocks indefinitely. The polling path
-  already detects stalls via status-register polling; the IRQ path had
-  no equivalent safety net.
+**Step 2.2 – Code flow change**
 
-### Step 2.4: Fix Quality
-**Record:**
-- **Quality:** High — minimal, follows established SPI subsystem pattern
-- **Regression risk:** Very low — 1-second timeout is generous for SPI;
-  matches `spi.c` core and many other SPI drivers; `xspi_init_hw()` is
-  already used on stall detection in the same function
-- **No red flags:** No API changes, no locking changes, no refactoring
+Record:
+- **Hunk 1 (before RX/DLL reconfig):** Reads MCR0, sets MDIS (stop
+  mode), then proceeds with `nxp_fspi_select_rx_sample_clk_source()`,
+  clock rate change, and DLL calibration/override.
+- **Hunk 2 (after DLL reconfig):** Clears MDIS to re-enable the module.
+- **Before:** MCR0 and DLL registers written while module active.
+- **After:** Same operations wrapped in stop-mode window, matching probe
+  init at lines 1244–1252.
+
+**Step 2.3 – Bug mechanism**
+
+Record: **Category (g) logic/correctness + hardware workaround.**
+Reprogramming timing-critical MCR0/DLL registers on a live FlexSPI
+controller violates documented hardware sequencing. The probe path
+already does this correctly; runtime `select_mem()` did not.
+
+**Step 2.4 – Fix quality**
+
+Record:
+- **Obviously correct:** Yes — mirrors existing probe/cleanup MDIS usage
+  in the same file.
+- **Minimal:** Yes — ~14 lines, no refactoring.
+- **Regression risk:** Low overall. **Minor concern:** pre-existing
+  early `return` on `clk_set_rate()` / `clk_prep_enable()` failure would
+  now leave MDIS=1 (module disabled). These paths existed before; stop
+  mode makes failure state slightly worse, but `clk_set_rate()` failure
+  is rare and the function already had unsafe early returns.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
-### Step 3.1: Blame
-**Record:** `wait_for_completion(&xspi->done)` introduced in
-`5fe11cc09ce81b` (Ricardo Ribalda, 2015-01-28, "spi/xilinx: Support
-cores with no interrupt"). Bug present since IRQ mode was added — long-
-standing in this tree.
+**Step 3.1 – Blame**
 
-### Step 3.2: Fixes: Tag
-**Record:** N/A — no Fixes: tag. Bug is inherent to IRQ-path design, not
-introduced by a single recent commit.
+Record: Lines 899–929 in current tree blame to `10eaa4c4a2579` (tree
+import artifact; entire `spi-nxp-fspi.c` arrived with stable tree). The
+runtime reconfiguration path without stop mode has been present since
+the driver exists in this tree.
 
-### Step 3.3: Related File History
-**Record:**
-- `5a1314fa697fc` (2017): stall detection for polling path — **in
-  tree**, Cc: stable
-- `939edfaa10f1d` (2025): increased stall retry count — **in tree**
-- `1dd46599f83ac` (2023): `force_irq` for QSPI — **in tree**, same
-  author (Fedorenko); forces IRQ path on ptp_ocp TimeCard
-- `1c9246a199e19` (2026): FIFO buffer size fix — **in tree** (separate
-  hang in IRQ mode, already backported)
-- Standalone fix, not part of a multi-patch series
+**Step 3.2 – Fixes: tag**
 
-### Step 3.4: Author Context
-**Record:** Vadim Fedorenko authored `force_irq` for xilinx SPI (2023)
-and works on ptp_ocp/TimeCard. Michal Simek (AMD/Xilinx) Acked. Mark
-Brown (SPI maintainer) committed.
+Record: N/A — no Fixes: tag in commit message.
 
-### Step 3.5: Dependencies
-**Record:** No dependencies. `force_irq`, `xspi_init_hw()`,
-`wait_for_completion_timeout()`, and `secs_to_jiffies()` all exist in
-this tree. Cherry-pick to HEAD auto-merges cleanly.
+**Step 3.3 – Related file history**
+
+Record:
+- `51c52e493346f` — v2-1 per-SoC rate limits (already in tree; does
+  **not** include stop mode)
+- `40ad64ac25bb7` — ACPI fwnode propagation
+- No stop-mode fix already present
+
+**Step 3.4 – Author context**
+
+Record: Haibo Chen (NXP) authored both `51c52e493346f` (v2-1) and this
+v2-2 patch. Frank Li (NXP) reviewed. Mark Brown (SPI maintainer)
+committed.
+
+**Step 3.5 – Dependencies**
+
+Record: Part of `fspi-clock-v2` 2-patch series. **v2-1 is already in
+this tree.** This patch is standalone — it only wraps existing
+reconfiguration in stop mode and does not depend on v2-1’s data
+structures. Can apply cleanly to current `nxp_fspi_select_mem()`.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
-### Step 4.1: Original Discussion
-**Record:**
-- **URL:** https://patch.msgid.link/20260610222843.782337-1-
-  vadim.fedorenko@linux.dev
-- **Series:** v1 only (single patch, no revisions)
-- **Feedback:** Mark Brown applied to broonie/spi `for-7.2`; Michal
-  Simek Acked-by in thread
-- **No NAKs or objections** found in mbox
-- **No explicit Cc: stable** nomination in thread
+**Step 4.1 – Original discussion**
 
-### Step 4.2: Reviewers
-**Record:** CC'd: Mark Brown, Michal Simek, linux-spi@vger.kernel.org.
-Subsystem maintainer and Xilinx maintainer both involved.
+Record: **UNVERIFIED** — `b4 dig -c` could not run (commit not in tree);
+lore.kernel.org and patch.msgid.link returned 403/bot protection. Link
+confirms patch `fspi-clock-v2-2` from NXP.
 
-### Step 4.3: Bug Report
-**Record:** No external bug tracker or syzbot report. Bug described from
-real hardware (TimeCard/ptp_ocp unload). Severity from reporter:
-complete unload hang.
+**Step 4.2 – Reviewers**
 
-### Step 4.4: Related Patches
-**Record:** Related but independent from `1c9246a199e19` (FIFO size IRQ
-hang). Both are IRQ-path hang fixes; neither depends on the other.
+Record: **UNVERIFIED** via b4 dig -w. Commit message shows Reviewed-by:
+Frank Li (NXP), Signed-off-by: Mark Brown (SPI maintainer).
 
-### Step 4.5: Stable List History
-**Record:** No stable-list discussion found for this specific patch.
-(WebFetch to lore blocked by bot protection; used b4 mbox download
-instead.)
+**Step 4.3 – Bug report**
+
+Record: No Reported-by or syzbot link. Bug inferred from RM requirement
+and inconsistency with probe init.
+
+**Step 4.4 – Series context**
+
+Record: `fspi-clock-v2` series:
+- v2-1 (`51c52e493346f`) — per-SoC SDR/DTR limits — **in tree**
+- v2-2 (this commit) — stop mode before MCR0/DLL reconfig — **not in
+  tree**
+
+**Step 4.5 – Stable list**
+
+Record: **UNVERIFIED** — could not search lore stable archive (403).
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-### Step 5.1: Key Functions
-**Record:** `xilinx_spi_txrx_bufs()` (modified), `xilinx_spi_irq()`
-(completes wait), `xspi_init_hw()` (recovery on timeout)
+**Step 5.1 – Key functions**
 
-### Step 5.2: Callers
-**Record:** `xilinx_spi_txrx_bufs` assigned to `xspi->bitbang.txrx_bufs`
-at probe; invoked via `spi_bitbang` → `spi_sync()` for all SPI transfers
-on this controller. Called from probe, normal I/O, and module-remove
-teardown paths.
+Record: `nxp_fspi_select_mem()` modified; calls
+`nxp_fspi_select_rx_sample_clk_source()`, `nxp_fspi_dll_calibration()`,
+`nxp_fspi_dll_override()`.
 
-### Step 5.3: Callees
-**Record:** `wait_for_completion_timeout()`, `xspi_init_hw()`,
-`dev_err()`, `xspi->write_fn()`/`read_fn()` for register access
+**Step 5.2 – Callers**
 
-### Step 5.4: Call Chain / Reachability
-**Record:**
-```
-rmmod ptp_ocp → spi-nor remove → spi_nor_soft_reset() →
-spi_mem_exec_op()
-  → spi_sync() → spi_bitbang → xilinx_spi_txrx_bufs() [IRQ path with
-force_irq]
-  → wait_for_completion() [hangs forever without fix]
-```
-Reachable from module unload on TimeCard hardware. Also reachable on any
-IRQ-mode transfer where HW fails to assert TX-empty interrupt.
+Record: `nxp_fspi_select_mem()` called from `nxp_fspi_exec_op()` (line
+1121), which is the `spi_mem` exec_op handler — invoked on every SPI
+flash memory operation when CS, DTR/STR mode, or frequency changes.
 
-### Step 5.5: Similar Patterns
-**Record:** Many SPI drivers use `wait_for_completion_timeout(...,
-msecs_to_jiffies(1000))` or `secs_to_jiffies(1)`. Core `spi.c` uses
-adaptive timeout with `-ETIMEDOUT` return. xilinx was an outlier using
-unbounded `wait_for_completion()`.
+**Step 5.3 – Callees**
+
+Record: `fspi_readl`/`fspi_writel` on MCR0,
+`nxp_fspi_select_rx_sample_clk_source()` (writes MCR0 RXCLKSRC),
+`clk_set_rate`, `nxp_fspi_dll_calibration()`/`nxp_fspi_dll_override()`
+(write DLLACR/DLLBCR).
+
+**Step 5.4 – Reachability**
+
+Record: **Userspace-reachable** via MTD/SPI-NOR flash access on NXP
+platforms. Triggered when:
+- Switching between chip-selects (multi-flash boards)
+- Switching DTR ↔ STR mode (e.g., after `spi_nor_suspend` per driver
+  comment at line 754)
+- Changing operation frequency
+
+**Step 5.5 – Similar patterns**
+
+Record: Probe init (lines 1244–1252) and cleanup (line 1352) already use
+`FSPI_MCR0_MDIS`. `select_mem()` was the inconsistent outlier. Driver
+comment at lines 749–751 notes DTR mode without proper RXCLKSRC “read
+operation may meet issue.”
 
 ---
 
-## PHASE 6: CROSS-REFERENCING AGAINST LOCAL TREE
+## PHASE 6: CROSS-REFERENCE AGAINST LOCAL TREE (6.18.44)
 
-### Step 6.1: Buggy Code Exists?
-**Record:** **Yes.** `drivers/spi/spi-xilinx.c:288` still has
-`wait_for_completion(&xspi->done)`. `ptp_ocp.c:702` sets `.force_irq =
-true` for TimeCard Xilinx SPI. Bug introduced 2015; exposed on TimeCard
-since `force_irq` (2023).
+**Step 6.1 – Buggy code present?**
 
-### Step 6.2: Backport Complications
-**Record:** Cherry-pick of `0f95264f49ace` onto HEAD succeeds with auto-
-merge (tested). Expected: **clean apply**.
+Record: **Yes.** Current `nxp_fspi_select_mem()` at lines 899–929
+reprograms MCR0/DLL without entering stop mode. Commit is **not** yet
+applied.
 
-### Step 6.3: Related Fixes Already Present?
-**Record:** Polling-path stall detection (`5a1314fa697fc`,
-`939edfaa10f1d`) and FIFO size fix (`1c9246a199e19`) are in tree. **This
-IRQ-timeout fix is not** — grep for "SPI transfer timed out" in spi-
-xilinx.c returns nothing.
+**Step 6.2 – Backport complications**
+
+Record: **Clean apply expected.** Only adds `u32 reg` and MDIS set/clear
+around existing code. No structural conflicts with recent changes.
+
+**Step 6.3 – Related fixes already present?**
+
+Record: **No.** `git log --grep='stop mode'` returns nothing. v2-1 rate
+limits are present but stop-mode fix is absent.
 
 ---
 
 ## PHASE 7: SUBSYSTEM CONTEXT
 
-### Step 7.1: Subsystem Criticality
-**Record:** `drivers/spi/` — **IMPORTANT** (peripheral driver, but SPI
-core path used by many devices; ptp_ocp is production timing hardware)
+**Step 7.1 – Subsystem and criticality**
 
-### Step 7.2: Subsystem Activity
-**Record:** Active — 3 commits to spi-xilinx.c in 2025–2026 in this tree
-(stall retries, FIFO fix, cleanups)
+Record: **drivers/spi** — NXP FlexSPI controller
+(`CONFIG_SPI_NXP_FLEXSPI`, depends on `ARCH_LAYERSCAPE || ARCH_MXC`).
+**IMPORTANT** for NXP embedded (i.MX8, i.MX95, LX2160A) — boot/storage
+flash lives on this controller.
+
+**Step 7.2 – Activity**
+
+Record: Active — recent commits `51c52e493346f`, `40ad64ac25bb7` in this
+tree.
 
 ---
 
-## PHASE 8: IMPACT AND RISK ASSESSMENT
+## PHASE 8: IMPACT AND RISK
 
-### Step 8.1: Who Is Affected
-**Record:** Users of Xilinx SPI in IRQ mode — especially `ptp_ocp`
-TimeCard (`force_irq = true`). Also any platform with failed/misbehaving
-HW that fails to generate TX-empty IRQ. Config: driver built-in or
-module; no special Kconfig beyond SPI + device.
+**Step 8.1 – Who is affected**
 
-### Step 8.2: Trigger Conditions
-**Record:**
-- **Primary:** `rmmod ptp_ocp` on TimeCard (soft reset during teardown)
-- **Secondary:** Any IRQ-mode transfer where interrupt never fires (HW
-  failure)
-- **Likelihood:** Deterministic on affected hardware during unload; rare
-  but catastrophic when it hits
-- **Unprivileged trigger:** Module unload typically requires
-  root/CAP_SYS_MODULE
+Record: **Platform-specific** — NXP i.MX and Layerscape boards using
+FlexSPI for SPI-NOR flash (common boot media).
 
-### Step 8.3: Failure Mode Severity
-**Record:** **CRITICAL** — unbounded hang (hung task), module cannot be
-unloaded, may block reboot/shutdown. Not data corruption, but system
-becomes unresponsive for that operation.
+**Step 8.2 – Trigger conditions**
 
-### Step 8.4: Risk-Benefit
-**Record:**
-- **Benefit:** HIGH — prevents permanent hang on module unload and HW-
-  failure scenarios
-- **Risk:** VERY LOW — 5-line change, established pattern, hardware
-  reset on timeout matches existing stall recovery
-- **Ratio:** Strongly favors backport
+Record: Chip-select switch, DTR/STR mode change, or frequency change
+during flash I/O. Moderately common on multi-CS or DTR-capable setups.
+Unprivileged users can trigger via normal flash/MTD access.
+
+**Step 8.3 – Failure mode severity**
+
+Record: **Flash read corruption or failures** when timing registers are
+reprogrammed on an active controller. Severity: **HIGH** for affected
+platforms (silent data corruption risk on NOR flash reads).
+
+**Step 8.4 – Risk/benefit**
+
+Record:
+- **Benefit:** HIGH for NXP embedded users — prevents unreliable flash
+  reads during runtime reconfiguration.
+- **Risk:** LOW — small change, matches existing probe pattern, NXP-
+  reviewed.
+- **Ratio:** Strong benefit, low risk.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-### Step 9.1: Evidence Summary
+**Evidence FOR backport:**
+- Fixes real hardware programming sequence violation
+- Probe init already uses stop mode; runtime path was wrong by
+  comparison
+- Can cause flash read instability/corruption on CS/mode/freq switches
+- Small (~14 lines), surgical, NXP-reviewed
+- Buggy code confirmed present in Linux 6.18.44 tree
+- v2-1 prerequisite already in tree; patch applies standalone
+- Hardware workaround / correctness fix category
 
-**FOR backporting:**
-- Fixes real, reproducible infinite hang on ptp_ocp unload (TimeCard)
-- CRITICAL severity (hung task, blocked unload)
-- Minimal 5-line fix, obviously correct
-- Matches SPI core and peer driver conventions
-- Acked by Xilinx maintainer, committed by SPI maintainer
-- Buggy code confirmed present in 6.18.44 tree
-- Cherry-picks cleanly
-- No dependencies, standalone patch
-- Complements existing polling-path stall detection (fills IRQ-path gap)
+**Evidence AGAINST:**
+- No explicit user bug report or syzbot finding
+- Platform-specific driver (not universal)
+- Early-return error paths could leave MDIS=1 (pre-existing pattern,
+  rare trigger)
+- Mailing list discussion unverified
 
-**AGAINST backporting:**
-- Affects relatively niche hardware (TimeCard/ptp_ocp with force_irq)
-- No syzbot/fuzzer report
-- No explicit Cc: stable nomination
-- Theoretical false-timeout risk on extremely slow transfers (mitigated
-  by 1-second timeout, same as rest of SPI subsystem)
+**Stable rules checklist:**
 
-**Unresolved:** None that affect the decision.
+| Criterion | Result |
+|-----------|--------|
+| 1. Obviously correct and tested? | **PASS** — matches probe pattern;
+NXP-reviewed |
+| 2. Fixes real bug affecting users? | **PASS** — RM violation on live
+controller during flash ops |
+| 3. Important issue? | **PASS** — flash read corruption risk, HIGH for
+NXP platforms |
+| 4. Small and contained? | **PASS** — single function, ~14 lines |
+| 5. No new features/APIs? | **PASS** — sequencing fix only |
+| 6. Can apply to local tree? | **PASS** — buggy code present, clean
+apply expected |
 
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **PASS** — standard timeout pattern;
-   Acked-by Xilinx maintainer
-2. Fixes a real bug affecting users? **PASS** — ptp_ocp unload hang on
-   TimeCard
-3. Important issue? **PASS** — CRITICAL hang on module unload
-4. Small and contained? **PASS** — 5 lines, 1 file
-5. No new features or APIs? **PASS** — error-path safety only
-6. Can apply to local tree? **PASS** — cherry-pick auto-merges
-
-### Step 9.3: Exception Categories
-**Record:** N/A — standard bug fix, not device ID/quirk/DT/build/docs
-exception.
-
-### Step 9.4: Decision Rationale
-
-For **linux-6.18.y**, the IRQ-path infinite wait is a real bug with a
-concrete trigger on hardware this tree supports (`ptp_ocp` +
-`force_irq`). Without the fix, `rmmod` hangs forever. The fix is
-minimal, follows established SPI patterns, resets hardware on timeout
-(same as existing stall path), and applies cleanly. This meets all
-stable kernel criteria.
+**Exception category:** Hardware workaround / correctness fix for
+timing-critical register programming.
 
 ---
 
 ## Verification
 
-- [Phase 1] `git show 0f95264f49ace`: parsed full commit message and
-  tags
-- [Phase 1] Acked-by Michal Simek confirmed in commit and mbox
-- [Phase 2] `git show 0f95264f49ace -p`: verified +5/-1 diff in
-  `xilinx_spi_txrx_bufs()`
-- [Phase 2] Read `drivers/spi/spi-xilinx.c:238-336`: confirmed IRQ vs
-  polling paths and existing stall handling
-- [Phase 3] `git blame -L 286,292 drivers/spi/spi-xilinx.c`:
-  `wait_for_completion` from 2015 (`5fe11cc09ce81b`)
-- [Phase 3] `git log --oneline -20 -- drivers/spi/spi-xilinx.c`: related
-  stall/FIFO/force_irq commits identified
-- [Phase 3] `git merge-base --is-ancestor`: `5a1314fa697fc`,
-  `1dd46599f83ac`, `939edfaa10f1d` confirmed in HEAD; `0f95264f49ace`
-  NOT in HEAD
-- [Phase 4] `b4 dig -c 0f95264f49ace -w`: recipients Mark Brown, Michal
-  Simek, linux-spi
-- [Phase 4] `b4 dig -c 0f95264f49ace -a`: single v1 patch, no revisions
-- [Phase 4] `b4 dig -c 0f95264f49ace -m /tmp/spi-xilinx-timeout.mbx`:
-  downloaded thread; Mark Brown applied, Michal Simek Acked, no NAKs
-- [Phase 5] Read `drivers/ptp/ptp_ocp.c:693-707`: confirmed `.force_irq
-  = true` for TimeCard Xilinx SPI
-- [Phase 5] Read `drivers/mtd/spi-nor/core.c:3282-3304`: confirmed
-  `spi_nor_soft_reset()` during remove path
-- [Phase 5] Grep `wait_for_completion_timeout` in `drivers/spi/`: many
-  drivers use 1-second timeout pattern
-- [Phase 5] Read `drivers/spi/spi.c:1463-1471`: core SPI layer uses
-  timeout + `-ETIMEDOUT`
-- [Phase 6] `git describe HEAD`: v6.18.44 (linux-6.18.y)
-- [Phase 6] Grep `wait_for_completion` in spi-xilinx.c: buggy line at
-  :288 confirmed
-- [Phase 6] Grep "SPI transfer timed out" in tree: only in spi.c, not
-  spi-xilinx.c (fix not present)
-- [Phase 6] `git cherry-pick --no-commit 0f95264f49ace`: auto-merge
-  succeeded; reset afterward
-- [Phase 8] Failure mode: infinite hang on IRQ-path transfer without
-  interrupt — severity CRITICAL
+- [Phase 1] Parsed subject, tags (Reviewed-by Frank Li, Link to v2-2),
+  body — no Reported-by/syzbot
+- [Phase 2] Diff analysis: adds MDIS stop-mode window in
+  `nxp_fspi_select_mem()`, +14 lines
+- [Phase 3] `git blame -L 899,929`: buggy path in current tree; `git log
+  --oneline -- drivers/spi/spi-nxp-fspi.c`: v2-1 present, stop-mode fix
+  absent
+- [Phase 3] `51c52e493346f` confirmed as v2-1 already in tree; stop mode
+  not included
+- [Phase 3] `git merge-base --is-ancestor f43579ef3500 HEAD`: f43579 NOT
+  ancestor (stable import), but runtime reconfig code exists
+- [Phase 4] b4 dig: commit not in tree, could not run `-c`
+- [Phase 4] lore.kernel.org / patch.msgid.link: 403 Forbidden —
+  **UNVERIFIED** discussion content
+- [Phase 5] `nxp_fspi_select_mem()` called from `nxp_fspi_exec_op()`
+  line 1121 — flash hot path
+- [Phase 5] Probe lines 1244–1252 use MDIS before DLL config; cleanup
+  line 1352 uses MDIS
+- [Phase 6] `git describe HEAD`: v6.18.44; buggy code at lines 899–929
+  confirmed by read
+- [Phase 6] `git log --grep='stop mode'`: no matches — fix not yet
+  applied
+- [Phase 7] `CONFIG_SPI_NXP_FLEXSPI` in drivers/spi/Kconfig,
+  ARCH_MXC/ARCH_LAYERSCAPE
+- [Phase 8] Supported SoCs: imx8mm/mp/qxp/dxl/ulp/95, lx2160a (device
+  table lines 1522–1529)
 
-**YES**
+This is a small, hardware-correctness fix that prevents reprogramming
+timing-critical FlexSPI registers while the controller is active — a
+documented violation that can cause flash read failures on NXP embedded
+platforms. The fix mirrors the probe init sequence already in the
+driver, applies cleanly to 6.18.44, and its series prerequisite is
+already present.
 
- drivers/spi/spi-xilinx.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+**YES**The background `git log -S 'select_rx_sample_clk_source'` search
+timed out and was killed; it wasn’t needed for the verdict — the
+relevant history was already covered via blame, file log, and reading
+the current `nxp_fspi_select_mem()` code.
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 8085571913c8b..dac6c695f0727 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -285,7 +285,11 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+**Conclusion for Linux 6.18.44:** backport **YES**. The driver
+reprograms MCR0/DLL timing registers at runtime without entering stop
+mode, while probe init already does — a small hardware-correctness fix
+that can affect flash read reliability on NXP i.MX/Layerscape platforms
+when switching chip-select, DTR/STR mode, or frequency.
+
+ drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 69ab72fff19d2..5cdd14d72c34c 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -867,6 +867,7 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	unsigned long rate = op->max_freq;
+ 	int ret;
+ 	uint64_t size_kb;
++	u32 reg;
  
- 		if (use_irq) {
- 			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
--			wait_for_completion(&xspi->done);
-+			if (!wait_for_completion_timeout(&xspi->done, secs_to_jiffies(1))) {
-+				dev_err(&spi->dev, "SPI transfer timed out\n");
-+				xspi_init_hw(xspi);
-+				return -ETIMEDOUT;
-+			}
- 			/* A transmit has just completed. Process received data
- 			 * and check for more data to transmit. Always inhibit
- 			 * the transmitter while the Isr refills the transmit
+ 	/*
+ 	 * Return when following condition all meet,
+@@ -896,6 +897,15 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 
+ 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+ 
++	/*
++	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
++	 * the DLL control registers should be configured while the module is in
++	 * stop mode (MCR0[MDIS] = 1). Enter stop mode before reconfiguring the
++	 * RX sample clock source and the DLL, then exit stop mode afterwards.
++	 */
++	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
++	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
++
+ 	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
+ 	rate = min(f->max_rate, op->max_freq);
+ 
+@@ -935,6 +945,10 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	else
+ 		nxp_fspi_dll_override(f);
+ 
++	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
++	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
++	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
++
+ 	f->pre_op_rate = op->max_freq;
+ 
+ 	f->selected = spi_get_chipselect(spi, 0);
 -- 
 2.53.0
 

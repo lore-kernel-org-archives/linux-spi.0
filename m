@@ -1,39 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3E637F8BA;
-	Tue,  1 Sep 2026 21:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2EC37C911;
+	Tue,  1 Sep 2026 21:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788296934; cv=none; b=tanQ0QaLeK0ZObbz35JtNtBjFjPbVGZv2Wx2rBgyoLyTIEjZbA4GiIrtp4megs7Nq4W3jwPmUv7VPtDe6cRCGVP/kw/Uzhyv3sFqa9l5tE3385109qEJ5Wcf82O5yHMTDefw+N8pEHmnCKzlshDmb4ZOMOo1CzMgXVmko0N8X7I=
+	t=1788296938; cv=none; b=itJFih+Enz42FBLNrSkoY2y4q8Wvo3vT1cUsZkja6/l+WrstDhXOehncpi1EUY5wLAvh9rc4Y9xN9j/TIgQ3SrCtianMxmgZ9yGXlzgBKVd1/buRUT8IqAYPWq+iKHajha9M5mVAtybd0vFNAchi67pnKuzG6T2zgxT5SXVWZYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788296934; c=relaxed/simple;
-	bh=mmYt39LnvCNEcwATxeLYyW0mch6/WCobWSTwzhik6G8=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=vAoUjp9ISUzF/5QnUrOTQP9EcTNZHOsqPwvv5YdaE1ccjhr2FbtDHDGFkorBmEPRlV0lmz2z5WEKwqTIJEm+oECavhcHFXZbO88iZfR6SLTgEqocJLmnUFnXKFKny4gPxWcLHKJVnmTunduEkq1Ho0FwoxhF1Tb5IgpfTuhBcpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6g1V6dC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788296938; c=relaxed/simple;
+	bh=RTLE6gZgRbyuxtnnzOrorUSP+uMBRfUHS7j4OjUredA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=q2T3XKBS7bOCuZtjyC926z4YqrTnEq9uMw1tP7O5TwSgEULfwg06aVreiMh0hNTw9nDH7UQfSDm/7cHuWEuqaIzA505108u+nRGQJDa9X2qHdun981yyRCHEjwXWXrQGx7Hpe5uBN1gMs9qnS3uspglWb0TG6aE+o6rRRjYnXzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJhRkwbz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6g1V6dC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D791F000E9;
-	Tue,  1 Sep 2026 21:08:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJhRkwbz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F366D1F000E9;
+	Tue,  1 Sep 2026 21:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788296932;
-	bh=QPncs8blFpXiOAlFtz/zklCEij/uJJhr0vvVB+kLjAQ=;
-	h=From:To:In-Reply-To:References:Subject:Date;
-	b=h6g1V6dCq9bzAYbiU8tz9YShtRcfYd6lHTLs6z5xbAzt6PRDbSe5jHhNG6p60Y+42
-	 WSZAWSWYRs0DdLo1zQ34Pxk+dlPkqLmUy2cTgZUWEPOZTe/M+0DZqkOnIPNYzrygjA
-	 2fAIHkI737+y3FLI/RM4pyIAWcfNFzOO9W9VkEEzgjcnRzz2rcx8FCCsCk50J+ZLyA
-	 odD2aXvVZQ833ApRBYTbUzR681rVzx5DpyfZBu2DoWqYrGmVRAnAWZpfQPyorZ8Vzc
-	 DZKWsx4LarR7YDbRfKwlv9gebUxuwW3vW5k1SZre59v1jqnN+q5NbtrGD02jfUpmVt
-	 u+6zdAI6q6yLA==
+	s=k20260515; t=1788296936;
+	bh=VybXJ8SD60aPKpFwFoaNuzXTDLb2GQY0/FeQGMpfffk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=GJhRkwbzOSwWkHo9JAQKkSG1VdCTDfUm/VWTdD7l6zQlvcclH0xyF0a21NLorCf/o
+	 +957uld5KCt8JfvPKqJXcnvx8ne2prUXwQ48MxhA4r0UhWWRkZaYhKrtetxYzjdQ0+
+	 F5TBZKAkkXslC/9BsnlXM+0IloJ94hb72vVOeP7UmTv50c87RnaScKUXbmSMVnJZuG
+	 El75zUocKGZJHikOX6w/JPqUMkSjhUiZ4iHjaWyo+jBE7tTQ8qU9vZmqXtHSDorATy
+	 nIYXG+WhkkZDanFAnXZtFZc2Kk2EM5LVhO6hci2ZsTRjCl570nk3oS3APkcIrhTTbF
+	 qtYOkQ75glT1Q==
 From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20260821105541.1432348-1-andriy.shevchenko@linux.intel.com>
-References: <20260821105541.1432348-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v1 0/3] spi: Kconfig cleanups
-Message-Id: <178813044759.13461.8252493848794533489.b4-ty@b4>
-Date: Sun, 30 Aug 2026 23:54:07 +0100
+To: Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260824-spi-qcom-geni-cleanup-setup-fifo-params-v1-1-bdf98ae62953@oss.qualcomm.com>
+References: <20260824-spi-qcom-geni-cleanup-setup-fifo-params-v1-1-bdf98ae62953@oss.qualcomm.com>
+Subject: Re: [PATCH] spi: qcom-geni: rename setup_fifo_params() to
+ setup_spi_params() and make it void
+Message-Id: <178819868940.141190.6264743722267135456.b4-ty@b4>
+Date: Mon, 31 Aug 2026 18:51:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,29 +45,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1589; i=broonie@kernel.org;
- h=from:subject:message-id; bh=mmYt39LnvCNEcwATxeLYyW0mch6/WCobWSTwzhik6G8=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqlz7hFk9NQ6kVH2ghoHhnU/hH+TcgYksq/I7wE
- RjZG4rop4eJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapc+4QAKCRAk1otyXVSH
- 0DidB/0aebhbL5gwotamrtaSPj/Js0HvMAsGJ0XanHCkuYnnloc9T1IPQjMhbKPzGvadqi45Sj0
- UvDX5JEk2TU4Kdm8aTnK85I8BYJ1Nv6p1xROn6h7JMgi/TsMxyJDu8vm+xMhuB5fwX+0qYbu+gg
- omRZgYHWhlKCnPfLp+dU5FtJ6fUtxrURoSmcFYJLhB40OBDOMvR3/qQ8EE7N0E3CdnUSoRzLQ+J
- No2k0aztK3MD3R+fairIC95vQ6Z7+zJXFlylx3LVNU56aWqC9/tBkh1s5V0bjCNqONsEHMbUVTQ
- tAqEip4hdI0jMNG1vlAoKD57fPfo4bGP+rlb7zQBbJedAhrH
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1179; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=RTLE6gZgRbyuxtnnzOrorUSP+uMBRfUHS7j4OjUredA=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhqzpdk8LI9iTpdnf/xHO7b3LfvPn0/+qrnXpPLoTtOJs3
+ 7UYNUzvZDRmYWDkYpAVU2RZ+yxjVXq4xNb5j+a/ghnEygQyhYGLUwAmMk2Mg6G5enI0H/dMnreb
+ fO4HsbL3JV+zynRM9GN3Y5/ikMIxk7XT86khc3OPoNeOuw0K5uJ7DlwJD2bKE30979DTRYcNdxp
+ zCyb/mB591kSD9QnLjvM/8tlPnYqNq4i+sHRjQt2MZtbNjo1Fn/K2+SRVbLYIU/06UWiFEXt1VI
+ 3wd7XPOteufVm7aco95wubPb5zO7Wf1r38c4O0gc0U24nzr6pdWGevX6jcf5hpBrMavyr7HkHOD
+ XryB5xthV2jBI4ml5h9M9S3c964PTDs0uEnzf+XMT++XjmlpIPNf6PHFCNVs3jd61xe10wCFK8J
+ 6qcGvwryj9Hkn8p2JyBf7bjc65SzNmrCJcmFpzi/T90AAA==
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, 21 Aug 2026 12:54:51 +0200, Andy Shevchenko wrote:
-> spi: Kconfig cleanups
-> 
-> With time the section order is diverged, put it back into order.
-> 
-> Andy Shevchenko (3):
->   spi: Fix tab and space mixture in Kconfig
->   spi: Drop redundant dependency on SPI_MASTER
->   spi: Fix the section ordering in accordance with the comment
-> 
-> [...]
+On Mon, 24 Aug 2026 15:43:58 +0530, Viken Dadhaniya wrote:
+> spi: qcom-geni: rename setup_fifo_params() to setup_spi_params() and make it void
 
 Applied to
 
@@ -73,12 +66,8 @@ Applied to
 
 Thanks!
 
-[1/3] spi: Fix tab and space mixture in Kconfig
-      https://git.kernel.org/broonie/spi/c/dd007297551f
-[2/3] spi: Drop redundant dependency on SPI_MASTER
-      https://git.kernel.org/broonie/spi/c/4895d7068723
-[3/3] spi: Fix the section ordering in accordance with the comment
-      https://git.kernel.org/broonie/spi/c/d696b9109d23
+[1/1] spi: qcom-geni: rename setup_fifo_params() to setup_spi_params() and make it void
+      https://git.kernel.org/broonie/spi/c/ed07cdb2b386
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

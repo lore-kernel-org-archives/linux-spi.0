@@ -1,98 +1,80 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C6930DEB0;
-	Mon, 31 Aug 2026 13:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43BC426690;
+	Mon, 31 Aug 2026 13:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788181638; cv=none; b=YvBvSx9mXWIrb3Ign9RxdwhQ1NILznGZ/n0MHX4VrT4wKmYPQ/k2NUWomMwPVLz+EUkxGipv2HI6Za4yS/HqcAw76CAlNG7PUneb0ZfgoGYGYf/HHdRNAmw7hcU8Xc8XLzvNRgxHIrl6wC1mcqMfVCioI5QiG+7kkgdy4qtyv5k=
+	t=1788182978; cv=none; b=csm65no6pnGdS+Tv1JiC9+a1QA4olfkBRWh9/ygUbM6YCwcb27OVzJiiMUqBSDNS2Uo5XBmpupKc9Yo7qDuno9oCsMlI8YLBfraq4GIViKOl8iFCrOm4+rkwPCGgOC7+uwodV66U125FN+lCA4Z1fxN7fMjk8hqQMIBVafQXB90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788181638; c=relaxed/simple;
-	bh=6/vscZ84sW1fUTAC+I6IPslPZth5hZiW4QMeEDVqzFc=;
+	s=arc-20240116; t=1788182978; c=relaxed/simple;
+	bh=73mSS0Tt6A1dF0wd+cp2ahK9NmE2qOPfwz+DR+7Whdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICXMoEIH5gGGdm0mTzxMv453Qgf0cjqqVP7f9GeTwUEW36hqr+/ps6eIDAe+UfXCK1T/h1jT+rTPaWl0YIkzolhYrdtn23tE42cdFs2mLfhrK9hcnjlEJjyjmQFGkprLd/c05GvCxVy6cYf5Vjj5qLTm0W6H88FH7+dpnpH9lVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B3xdzRrg; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MAvqBPrYonnsLwcbmfhJtxXZuEP0qLwVL1xVB7f0M79UUAVKc5rdyYcOoYCXIWBpDfOuOJjhg8gAMfjQwRwgisIvZcAaaVn+eqAv8KCGmCnLzvSovFVGnNLSyUNWLeprAWriJ3Gl546CeaX9eJHCC9pfDpkv0eIDJbzNzogRqww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Or94cuh/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B3xdzRrg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788181637; x=1819717637;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6/vscZ84sW1fUTAC+I6IPslPZth5hZiW4QMeEDVqzFc=;
-  b=B3xdzRrgsEAWpXrHuJvXq5jJC3Y6hdafpHAItnXBJX4f/LKS7wBRNSN1
-   6t0q8x9cRiQUhEbszbgIOawG7WWb3nf38PNcG+EQomJtJYLxZEVhzOU+T
-   JRQXu+vQZOVvb+KIUl45yNvpRI6oBsFih4JbEG3Jr/xk1Xgkk5/UIzIT+
-   GGXuo8DG8iOycOt1xMwYT8QOMyaxUnXWwUhyQhYGs41VQ2pSP23SmZFn3
-   OjOTqBDhKJn5H/xfkotn+Gdq9GmF7FjaSlzgSN+Gb/BsWrI6W8rJ3GYdd
-   1Wr7uG/b4tg2GL6YTUvYW/iSGsg7KWsWnNtUbYBaeE3ciXAtiba5r+mkK
-   Q==;
-X-CSE-ConnectionGUID: Jg8fKf7ESpWdU8qxqGVUmQ==
-X-CSE-MsgGUID: r5jfKSMVSgaDnwrqLQs8EA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88793647"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
-   d="scan'208";a="88793647"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 06:07:17 -0700
-X-CSE-ConnectionGUID: b4TMZ87/SOWF/aw21zrwvw==
-X-CSE-MsgGUID: qDMR9we+Szm2xt3XEdbShg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; 
-   d="scan'208";a="272594617"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa004.jf.intel.com with ESMTP; 31 Aug 2026 06:07:14 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id EBF1E99; Mon, 31 Aug 2026 15:07:12 +0200 (CEST)
-Date: Mon, 31 Aug 2026 15:07:12 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Michael Walle <mwalle@kernel.org>
-Cc: tjakobsen84@protonmail.com, Pratyush Yadav <pratyush@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Report platform enforced SPI flash write
- protection
-Message-ID: <20260831130712.GL124825@black.igk.intel.com>
-References: <20260831-spi-nor-platform-lock-v2-0-6cc75b909241@protonmail.com>
- <DL34V3WU5UY1.3FYYB7UPWYY83@kernel.org>
- <20260831125526.GJ124825@black.igk.intel.com>
- <DL35CFJ3BXZ1.2RE00JYDZKXXU@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Or94cuh/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFEE1F000E9;
+	Mon, 31 Aug 2026 13:29:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788182977;
+	bh=bSGncVD5qJeowyD9nhbZoeYdhb4eCRI1Fy+X8N6WL3Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Or94cuh/gVo4Pfz9Y33b8l/4PK/nS1P8FN++kCjxZh3Kbv1W7JjXhW+6wXKAumXku
+	 PTFPfgfakVQSLGzE5pg3pjPHOta7nZ4ZM9QnAVsQkAC/48pzYLkZt9cjbKTnsXpJ5F
+	 VhbvO2V4gZvV5dDIzclI1yK9xPSg/Kby+r7coUfVXsFRaNWhYJ6nNwm02ilc5rpj+m
+	 DkYm6kzwPDzFXm2mfalXnQ3aha4Tv2xoBPoR1dtU2O1eORR1QbkBYlXGbmHPOd8eVt
+	 GBasDih2ioiOEoZIfSeZrDi/6zBmmo//q4Yb2c3Y/0R9AznCM2LpFAmYyaodemfUtj
+	 VTxXdnoUugbaA==
+Date: Mon, 31 Aug 2026 08:29:36 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Bhargav Joshi <j.bhargav.u@gmail.com>
+Cc: simona.toaca@nxp.com, linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <brgl@kernel.org>, daniel.baluta@gmail.com,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, goledhruva@gmail.com,
+	Nishanth Menon <nm@ti.com>, linux-spi@vger.kernel.org,
+	m-chawdhry@ti.com, devicetree@vger.kernel.org,
+	Santosh Shilimkar <ssantosh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: spi: ti,davinci-spi: convert to DT
+ schema
+Message-ID: <178818297576.700625.8066248525340534710.robh@kernel.org>
+References: <20260816-ti-davinci-spi-v1-0-a7f57dfd5262@gmail.com>
+ <20260816-ti-davinci-spi-v1-2-a7f57dfd5262@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DL35CFJ3BXZ1.2RE00JYDZKXXU@kernel.org>
+In-Reply-To: <20260816-ti-davinci-spi-v1-2-a7f57dfd5262@gmail.com>
 
-On Mon, Aug 31, 2026 at 03:00:36PM +0200, Michael Walle wrote:
-> Hi,
-> 
-> On Mon Aug 31, 2026 at 2:55 PM CEST, Mika Westerberg wrote:
-> > Hi,
-> >
-> > On Mon, Aug 31, 2026 at 02:37:59PM +0200, Michael Walle wrote:
-> >> Hi,
-> >> 
-> >> On Mon Aug 31, 2026 at 2:05 PM CEST, Tobias Jakobsen via B4 Relay wrote:
-> >> > Patch 2 adds the only user, spi-intel, which already computes protected
-> >> > range state at probe but has had no way to expose it since the SPI MEM
-> >> > conversion removed its visibility of the MTD device.
-> >> 
-> >> Where was it removed, though?
-> >
-> > After the SPI MEM conversion the driver is a regular SPI driver so it can
-> > only use spi_new_device() to add and configure the SPI-NOR chip (via
-> > platform data, struct flash_platform_data). Prior this it was creating the
-> > MTD device itself.
-> 
-> Yeah, but it never exposed the _is_locked() op, right?
 
-Ah, yeah that's right :)
+On Sun, 16 Aug 2026 03:19:32 +0530, Bhargav Joshi wrote:
+> Convert the TI DaVinci/Keystone SPI controller binding from text format
+> to DT schema.
+> 
+> Changes during the conversion:
+> - Create a separate ti,davinci-spi-peripheral-props.yaml schema to
+>   properly define the ti,spi-wdelay peripheral property.
+> - Add missing dmas and dma-names properties.
+> - Add constraints to ti,spi-wdelay based on the 6-bit width
+>   of the SPIFMTn.WDELAY hardware register field.
+> - Add constraints to num-cs based on the maximum hardware chip
+>   selects available on the DA850 SoC.
+> 
+> Signed-off-by: Bhargav Joshi <j.bhargav.u@gmail.com>
+> ---
+>  .../devicetree/bindings/spi/spi-davinci.txt        | 100 -----------------
+>  .../bindings/spi/spi-peripheral-props.yaml         |   1 +
+>  .../spi/ti,davinci-spi-peripheral-props.yaml       |  25 +++++
+>  .../devicetree/bindings/spi/ti,davinci-spi.yaml    | 118 +++++++++++++++++++++
+>  4 files changed, 144 insertions(+), 100 deletions(-)
+> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+

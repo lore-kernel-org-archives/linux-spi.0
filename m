@@ -1,268 +1,131 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5B91C5D72
-	for <linux-spi@vger.kernel.org>; Tue,  1 Sep 2026 16:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C9B4A0EF3
+	for <linux-spi@vger.kernel.org>; Tue,  1 Sep 2026 19:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788281336; cv=none; b=u8l8SSDosI/w7Epfr+sJG2lacWrpMra0edXke084Lt/Cd2QYI0BH8bpqQx37J+/o0/F5XNC/LryTTQW3noMUlRlCxxslTvjLq36FX1ovjd4JDkEFtrZZbRUR21v2ESLPphKn39IqknvjXsH482y72JTje6PmaxvQEK0otYlGoXo=
+	t=1788290796; cv=none; b=ewXqerz6IQqpkMLJVam9wd+M3qhwHeh9r36ixnSJN/9WZvjTZFxG9xehAHR+W4XoCscPVDID3h7Nsdal6afi1QoZ0dUsz2cHsNGAChbWB3RaeskUn8D5KuMGZjBRlcykmKb7JbSiZa/4gEGku37wGczJUikDU9mRGRDudYKA8yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788281336; c=relaxed/simple;
-	bh=CfzWqf5o+3N92HLjtir92933+kWR07XnaDw5BK9jsWQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZmH6/XGSlOBnut59/ANnVEwPIQKs/mhdiryNfe9Q5sPPrbwrngkmqATV8ExdZ46YxDer7xcvtg0MIEMz9TkIKVNMya995LRiBaWsQjQ4rI6vchKrNfFQpD+L0Swow8qgutmv5QFfUc34Ls61QqmC9iSyIDjg+JN26ox5FvyBa5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gLNqsggg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hI+IV1JF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788290796; c=relaxed/simple;
+	bh=8IldVcKFWxRF8a6xnc4EgOvN6n/T6fyKnTnlCA44KsM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jhmkYOisqM8ewlCdtVWLUjFkprEre3qIFbTV7VFfczviDINHGUoDjHl465nNKuk02rorMCui9P3PO83X3M6itg+48EG3HHvZxWZo0ohNlGeUX3ipKUfcfqPO+47P6w0jpwSHir08h8r40RRUoIWvvcE4OOUyhmi7TZdxH4AK7IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ocFyX2/p; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gLNqsggg";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hI+IV1JF"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 681E8X9c2145826
-	for <linux-spi@vger.kernel.org>; Tue, 1 Sep 2026 16:48:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	b62TM3b+R7LBBBMdiFoxJotUo5iPVNG6UJ+rLi3xZbw=; b=gLNqsgggpn1u3v7B
-	ihUObr1bhMSg+9eNo6gGT6JwdQ7VCl51Iw1tDlfT4vRHHDM0zHCPu7D0NAMXY0zW
-	AAwHroDHKm4owfTqo/eS9u+jDHHeLbm3JKcUK52z+XGnbU9RvFqJ+1KwRR2L6qJk
-	JVLFPl1EYWSvB0Ua4ajiC5qSdyS0Qg1A3IHBC2SWo8BSj87hAUb7ZPFrDWH/qiP3
-	OCjG5jrZyzgig4exr5ZLAcflW30O/0utbZfTJY3ql5AOlbKCGyvJQ+X+aeyedqW2
-	IulmWho7SXtAee0CvZgQClTNGFS6P8W7Q6rG9pVLPhmpYQp1fQj5rLHqH7AmI4kd
-	rX2J3Q==
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gdnk8v084-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Tue, 01 Sep 2026 16:48:53 +0000 (GMT)
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-385d2703b64so1445992a91.1
-        for <linux-spi@vger.kernel.org>; Tue, 01 Sep 2026 09:48:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ocFyX2/p"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-69fab5a852cso356823a12.0
+        for <linux-spi@vger.kernel.org>; Tue, 01 Sep 2026 12:26:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788281333; x=1788886133; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b62TM3b+R7LBBBMdiFoxJotUo5iPVNG6UJ+rLi3xZbw=;
-        b=hI+IV1JFvx2lYKZoDbus3DhNXE0sLMcx/UCUUFDRUWewDOIWaXI7vsMNt2CvH5OyQG
-         dBOLa7aNImfryyC6I/Y2Acy/HZzMBKx+x633xuo+ZTdPTnjexp4i1c/N0w9krP5x65+I
-         YJH5M0R//cQkfQHy9GH+uuwwdIi0D98FD8/FVIqdW3lFnlm9274YYBojKXRQCdkBQ2cj
-         EMXUAkFfW5DFcEcA872tGJYEH5ldLwFfgo9O8bJe6U4rIcBlVIxtJwtoObft0oK6IYYi
-         KwxgdcIo/FS1CInRv9J5RbeZYbKyWo0kl9vwoLqhNsqwczjebAiUK6DsvOeno/pKs65N
-         BBXg==
+        d=gmail.com; s=20251104; t=1788290793; x=1788895593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=R+dXlhW9X6Vrf/RHdUTXz/EyouRxzz9SL0VdPXRzdMM=;
+        b=ocFyX2/pyQNio0CRrsg2Rx8OvZTrONbRU0wGmi3iA5xKSDvKSL2a3iyY8cyCfwfWex
+         ar7+ldz4uhJ+RTQcj9FOv5OZFufVo/eclXExogi3+PmXsDIuYVQYRQEwf/9m3xPv5XYf
+         o1vY0QaMjvM90vOIamed9iqGLbgSyiGpy1LdgT1fG0Ul/KH9EXtEiqQ3OrNNSgiv0RUp
+         K354k3ikbAyfm/0Ur85LF+KTqvqb1kxRnfAEVMpVeksKq5o23SBRkQwRfFX0oz2SK2DF
+         KyYWmcz2htoQfQkw1x47CcJBv/d6w6rOW3z2m8p4zc6YMn1xxaZ8POogSo3iT/vpn2EO
+         U+tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788281333; x=1788886133;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788290793; x=1788895593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=b62TM3b+R7LBBBMdiFoxJotUo5iPVNG6UJ+rLi3xZbw=;
-        b=Xy3akPRvZgZ0C3/q0Q4k8wIz7z2FKWmM5f8eYZf0Lg+34Elmrk5sEmowYTMSZmkF+q
-         sXXYTuXq11IVhsJAeXRcmW48cdCpf0rNZ2nExhOaIDNH2iEUjTwISJb7+UeuHZJCM4oR
-         qezJTTlj9xsD4Og3nrYaZu8bmivTNU3EUS6E6E9ROzngs3BC40nCKsPI1zsl4rLqWe9x
-         3y5MhTI0AVjLsJK8nzE3eZAb6KzGtB9lxu1CqDPavhZdSkqxOuPuUTFtEycROi9UrMj5
-         fW5WkWjdhNgBvJx9dmyWTUXq/QimGs07HXru7bke9J84kv8G5vhjskXt6Q1oFm0d1zyq
-         EDlg==
-X-Forwarded-Encrypted: i=1; AKwUvBzQDc9xlFZUiVTbNg8qUQyrsIGXDDlq6560nTgRous159opvdoxtqpcBp9YQFdKj0tNAHysXcidPqk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nC4rEg4duLzM+kd93mrpmjjyTVwsyfj89iRBJw45whobZY31i/
-	GRNFnooIZTcdErWXypXtpB+b6F06iEnQ2Y4IMKSfmgudw8o6LJGhso3/nXz3QswOP5YfdrNNWYb
-	GuINP7+Tt/GFUaLcegggcvhPMFlK69zbV2e2eKrC4nF6LpkzLZSdaB6ATb3YfD+c=
-X-Gm-Gg: AYBFou3OMtelwTFQZHBxuihZdf2O4N9yYJFzV3vl/WEZHLmEC2y/xptc+F3Rm0OC+fT
-	6ZJq9oofVR6dsGmIZsv5pkSyDe0TlTi//f8QvXxIYrHqigl6TCzHukABZOVrFdpJuVcw7qEFxHp
-	8eUYAHXmdSmk+08OOCsdJWuBXi24wc7kSleiPz1iNMAgVi0ogTxt/Z46csoGR1ksqSeGEEJ29ZP
-	iqf0yxbDU1UlTedlUyV+tfd4GrxKGME74rclPdiieskoPcAoMMoGk47ifAQoP0B3dLgLD8ekIHW
-	APQViKIxj2yYLys5ib/QaOKaFQ2xhN/oswAkDgfgf5iLjzfHDA4qBHpHROgJaKFxrFLOiE9DA9A
-	Ga51fWOt+1RC6jzcl6ZNlGH0HfvCLRNZ/
-X-Received: by 2002:a17:90b:2247:b0:37f:a913:1554 with SMTP id 98e67ed59e1d1-3990f890861mr6902050a91.16.1788281333017;
-        Tue, 01 Sep 2026 09:48:53 -0700 (PDT)
-X-Received: by 2002:a17:90b:2247:b0:37f:a913:1554 with SMTP id 98e67ed59e1d1-3990f890861mr6901973a91.16.1788281332349;
-        Tue, 01 Sep 2026 09:48:52 -0700 (PDT)
-Received: from [192.168.0.5] ([49.204.111.114])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-328713b944bsm41662284eec.27.2026.09.01.09.48.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2026 09:48:51 -0700 (PDT)
-Message-ID: <177884a8-902f-49be-8fcb-b2bec3ec7d6c@oss.qualcomm.com>
-Date: Tue, 1 Sep 2026 22:18:44 +0530
+        bh=R+dXlhW9X6Vrf/RHdUTXz/EyouRxzz9SL0VdPXRzdMM=;
+        b=AfCizVhK8/NcFTnA3RV7vjpHYcO81iMYihHMAudeTs6wtM3cnM+VRQtQwMUsB1V+Au
+         C1PHITJsjBO2NC7nESODFKO9e6eraLBvLQWl3WKDjBOONYpuBdXWnvlH2kxd8yVMBETy
+         DJWpeOTEXQFouzNVIIWOI0+YQpdvyGO/4DxdZ5QV7S7E+pqhGm2Qr10VZujVNnNYXQC4
+         XRbvIww8wmNd1vVlUNWtGw1hBTJVano9fdTI5kboWKtpQ+XyTO1toODcPOVXqCdXwoZA
+         fC2uvYASzcQnQ4QAY+FRSGE5Lbyyv+g4Xxkd/qsSXrBl5gHDrBKF6bNQ2xLdeVW2BsCN
+         bG9g==
+X-Forwarded-Encrypted: i=1; AKwUvBwt3S6VePST9jIM2pwij1YN3fQtKslFPJHNZWHbY1Z5cE4kCThWFOuw8Q9+QSbZgwCmnR1r9duYEdg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nFYpi8AQz5r+H3cU5IQUxLxtdTQIYR+gkUvBnjRzW5reECuXis
+	Poz0GYR2BfVhPCJWhO4+3BckB7rSa9YketPq5yaSPAnjraWkZ8A3tAMC
+X-Gm-Gg: AYBFou2/M2YjofnpOZrQs0aysCnGcnVIcRy/GPjmklg1p8YcEm+zZspR90wo+MaGYiD
+	pjA2SeGJsTzXyOeX4GdKoC5F85BWKE94vzYcN3r+M5qxrUo234yfgD1bQlhdsQLyDHCbaRoL2F6
+	X6G2zEXmmYoNvpunHe/Fj81c6aKtTnAu3m7O41V+lR8IwDcyahEhzGDN6PiyoDuGFdtQ64qRhGq
+	+dhqe5FK6XjOA1wNuSNFXMT7O2SbQLhPjrjkqll2/GBE6AK0yPd2ycnXrSEKieASWHsj5/SnBYV
+	FFZhdjSac6xiTGgAVw+cuctmfHay3jUABEWFiZTifdHXYXIjaF5mzfUpW07CO17UxodKZIWGAV/
+	WI7jWlIWmgt6CGUDTYtAAO4QPdLxHaKT0Z5guq7s7fECZ39U3o9ikI1Fypt0LXLtn4bkAIgEZUH
+	tUCJQKBFtYS4nPv6XF/MC8+fqWO5IKT6ObwWI8Eg8UbVhO+7rDuzeindKnwd+19g==
+X-Received: by 2002:a05:6402:388b:b0:6a3:f4fe:9d5f with SMTP id 4fb4d7f45d1cf-6a6829af072mr27436a12.11.1788290792518;
+        Tue, 01 Sep 2026 12:26:32 -0700 (PDT)
+Received: from khalil-hp.home ([62.250.116.161])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f94242csm146373a12.21.2026.09.01.12.26.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 12:26:32 -0700 (PDT)
+From: Khalil <khalilst@gmail.com>
+X-Google-Original-From: Khalil <khalil@rentman.nl>
+To: Mark Brown <broonie@kernel.org>,
+	Hans de Goede <hansg@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Richard Fitzgerald <rf@opensource.cirrus.com>,
+	patches@opensource.cirrus.com,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	linux-spi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Khalil <khalil@rentman.nl>
+Subject: [PATCH v3 0/3] Fix CS35L56 amplifier on Intel LPSS SPI with broken ACPI cs-gpios
+Date: Tue,  1 Sep 2026 21:26:22 +0200
+Message-ID: <20260901192625.1497791-1-khalil@rentman.nl>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/9] soc: qcom: geni: Derive SE clock configuration
- from OPP table on SA8255P
-To: Ulf Hansson <ulf.hansson@oss.qualcomm.com>
-Cc: konrad.dybcio@oss.qualcomm.com, Sudeep Holla <sudeep.holla@kernel.org>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Ulf Hansson <ulfh@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
-        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
-        Andi Shyti <andi.shyti@kernel.org>, mukesh.savaliya@oss.qualcomm.com,
-        chandana.chiluveru@oss.qualcomm.com, arm-scmi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-i2c@vger.kernel.org, Abel Vesa <abel.vesa@oss.qualcomm.com>
-References: <20260827-derive_clk_perf_tbl_from_perf_domain_opp_table-v2-0-091697dbeb02@oss.qualcomm.com>
- <CAPx+jO9fcvBsxe9yx9oK=0EXmpNwub5ba0a-TGk1WRFaRGsqpA@mail.gmail.com>
-Content-Language: en-US
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-In-Reply-To: <CAPx+jO9fcvBsxe9yx9oK=0EXmpNwub5ba0a-TGk1WRFaRGsqpA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=f6p4wuyM c=1 sm=1 tr=0 ts=6a9701f5 cx=c_pps
- a=RP+M6JBNLl+fLTcSJhASfg==:117 a=Z/g59IqO3Gki/5UUpFMnLg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=bC-a23v3AAAA:8 a=EUspDBNiAAAA:8 a=1OWG-U-0pMjJ1F8qq_YA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=iS9zxrgQBfv6-_F4QbHw:22 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAxMDE0OCBTYWx0ZWRfX4xCIfiCZ6mrz
- 0NudMQkSdhlrflJXskVJEc9XDDWIErcZPc1GBicVAD3NQEHMT8z/VBXXUE/v/j8jH6RZoXXWVeV
- RFqgm7UohFk39IuPlIgTG/MM8zPYnWd/boa2SafvZyLPnV5epyuOULy7eSdDng2txciqbSQrYuv
- Rp5dMw8rZ9KMeuI3YofMPgjOXO8EdakBkmt4H8Qyg708e7KOqZYL6YdU3xSO63YORGfVizy05bM
- NB6nmpE03657YtXQgA+nRX5TWZ4ZD9d5nt3pmorT4eWgf9YhZS+VvCB4ai7HaDL8Tfn6yegnfnS
- OeBn1W8+i9cbRkUJosiTSgeQgTMkEyLKTpVzTE0FTQLV0KTPENz1xC1FITOt2wByY5WJUfV2Bb9
- fT1NajGWAdrqi/p0GPqDAEJfQucLdWhv2dsqSJcuvhM5SQpruhJsSWy/17ORffGzC0mNbs0Q2Hh
- OnNNO5VNmkHiHCfPrRQ==
-X-Proofpoint-ORIG-GUID: RCmIEYGv1-3EoQKHHIwJr8hYIxk-Dx5A
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAxMDE0OCBTYWx0ZWRfX1ipUYOZu70Kq
- NAyCzMen0qWEqxtZQwDEwV1Bv5QAeUv084GOBYQqlindP0nhans3PoczglBp+NmL44y/X0RJal0
- yVrmx1pcbpM//C6yaCyQeM/mXeqkKUg=
-X-Proofpoint-GUID: RCmIEYGv1-3EoQKHHIwJr8hYIxk-Dx5A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-01_04,2026-09-01_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 priorityscore=1501 suspectscore=0
- impostorscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609010148
 
-Hi Ulf,
+v3 of the patch series fixing dual CS35L56 amplifiers on HP laptops
+with Intel Lunar Lake and broken ACPI cs-gpios.
 
-On 01-09-2026 20:22, Ulf Hansson wrote:
-> On Thu, Aug 27, 2026 at 7:59 PM Praveen Talari
-> <praveen.talari@oss.qualcomm.com> wrote:
->> On firmware-managed platforms such as SA8255P, there is no Linux clock
->> handler available to determine the appropriate SE source clock, source
->> clock index, and divider values for a requested protocol frequency.
->> However, these parameters are required when programming GSI TREs, where
->> the hardware expects an explicit clock source selection and divider
->> configuration for the serial engine.
->>
->> In contrast, platforms using Linux-managed clocks derive these
->> parameters through geni_se_clk_freq_match() using the source clock
->> information stored in clk_perf_tbl. Since the firmware-managed path
->> lacks equivalent clock information, protocol drivers cannot reuse the
->> existing frequency matching logic and instead rely on a direct mapping
->> between protocol-requested frequencies and performance levels. This
->> creates a separate clock configuration flow and prevents
->> firmware-managed platforms from deriving the actual SE clock parameters
->> required for GSI TRE programming.
-> Hmm, this sounds like moving backwards when it comes to keeping
-> drivers as portable as possible.
->
-> I understand geni_se_clk_freq_match() has been around for a while, but
-> fortunately its use seems limited to only a few qcom specific drivers.
->
-> Rather than continue down this path, would it not be possible to find
-> a more generic solution for "geni_se_clk_freq_match()"? Can we replace
-> it with a common clock/OPP API? In this way, we would not need to
-> sprinkle drivers with calls to platform specific  code.
-I agree that protocol drivers should not need to know whether GENI resources
-are managed through the clock framework or a firmware-provided 
-performance domain.
+Changes since v2:
+- Rebased onto broonie/spi for-next (commit b00c00f7dc)
+- No code changes
 
-The intent of this series is actually to move in that direction rather than
-introduce a separate flow. Today firmware-managed platforms cannot use
-geni_se_clk_freq_match() because clk_perf_tbl is only populated when a 
-Linux clock
-is present. This series derives the same clock-performance 
-information(clk_perf_tbl) from the OPP
-table and populates clk_perf_tbl during geni_se_domain_attach(), 
-allowing both
-resource-management models to reuse the existing 
-geni_se_clk_freq_match() infrastructure.
+Changes since RFC v1 (addressing feedback from Richard Fitzgerald):
+- Added DMI quirk table: GPIO CS fixup is now only applied on known
+  affected platforms (HP EliteBook 8 G1i, board 8D8A), not generically
+  for all devices with CS > 0.
+- Fixed chip select range check: only chip selects outside the
+  controller's num_chipselect range are fixed up. A NULL cs_gpiods[cs]
+  within range means "native chip select", not broken.
+- Removed ASUS reference (GU605C was fixed by BIOS update).
+- Added Patch 1/3 (spi core): __spi_add_device() now preserves preset
+  cs_gpiod on the device instead of unconditionally overwriting from
+  ctlr->cs_gpiods. Suggested by Richard Fitzgerald.
+- Patch 2/3 (serial-multi-instantiate): Extracted GPIO fixup into a
+  dedicated helper function with DMI-based quirk table.
+- Patch 3/3 (spi-pxa2xx): Handles clock gating on Intel LPSS
+  controllers when GPIO chip select is active.
 
-Likewise, geni_se_set_rate() hides whether the underlying implementation 
-uses
-dev_pm_opp_set_rate() on a perf-domain device or a regular clock-backed 
-device,
-so protocol drivers no longer need platform-specific callbacks. The goal 
-is to
-converge both paths behind common GENI helpers rather than maintain separate
-clock-selection mechanisms.
->
->> To address this limitation, the performance-domain OPP table is treated
->> as the representation of SE-supported source clock frequencies. During
->> geni_se_domain_attach(), the OPP entries are used to populate
->> clk_perf_tbl and related clock performance data, allowing
->> firmware-managed platforms to leverage the same clock frequency matching
->> infrastructure used by Linux-managed platforms.
->>
->> With this change, protocol drivers can use geni_se_clk_freq_match() to
->> select the closest supported source clock frequency for a requested
->> protocol rate, derive the corresponding source clock index and divider
->> values required for GSI TRE programming, and apply the matched clock
->> through the OPP framework. This removes the dependency on direct
->> protocol-frequency-to-performance-level mappings and provides a common
->> clock selection and configuration mechanism across both firmware-managed
->> and Linux-managed GENI deployments.
-> Rather than adding yet another platform specific method, would it be
-> possible to extend the generic OPP library with the pieces that are
-> missing to make this work in a generic way?
-I agree with the goal of using generic infrastructure. However, 
-geni_se_clk_freq_match()
-derives GENI-specific parameters such as the source clock, clock index, 
-and divider values
-required for GSI TRE programming, which are not represented by the 
-generic OPP interface today.
+Tested on HP EliteBook 8 G1i 16 inch (Intel Core Ultra 7 258V,
+Lunar Lake-M) with 2x CS35L56 Rev B0. Both amplifiers probe
+successfully, load calibration and tuning, and produce audio.
 
-This series does not introduce a new clock selection path; it reuses the 
-existing
-geni_se_clk_freq_match() flow on firmware-managed platforms by populating
-clk_perf_tbl from OPP data.
->
->> Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-> Kind regards
-> Uffe
->
->> ---
->> Changes in v2:
->> - Add new patch to remove OPP rate reset from resource deactivation
->> - Add new patch to vote source frequency via OPP for I2C
->> - Compress the SPI, I2C and serial commit messages per review feedback
->> - Drop a stray blank line before trace_geni_i2c_bus_setup() in the
->>    I2C resource-initialization helper commit.
->> - Link to v1: https://patch.msgid.link/20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-v1-0-61171ab1cdce@oss.qualcomm.com
->>
->> ---
->> Praveen Talari (9):
->>        pmdomain: arm: Fix -EINVAL from scmi_pd_set_perf_state() on state 0
->>        soc: qcom: geni-se: Populate clk_perf_tbl with SE source clock frequencies from perf OPP table
->>        soc: qcom: geni-se: Add helper to set SE clock rate via OPP
->>        soc: qcom: geni-se: Remove OPP rate reset from resource deactivation
->>        serial: qcom-geni: Use geni_se_set_rate() for source clock configuration
->>        spi: qcom-geni: Use geni_se_set_rate() for setting source clock frequency
->>        i2c: qcom-geni: Vote for SE clock rate using OPP
->>        i2c: qcom-geni: Use common GENI resource initialization helper
->>        i2c: qcom-geni: Use geni_se_set_rate() for setting source clock frequency
->>
->>   drivers/i2c/busses/i2c-qcom-geni.c      | 72 +++++++++++++++++----------------
->>   drivers/pmdomain/arm/scmi_perf_domain.c |  2 +-
->>   drivers/soc/qcom/qcom-geni-se.c         | 62 +++++++++++++++++++++++++---
->>   drivers/spi/spi-geni-qcom.c             | 24 +++++------
->>   drivers/tty/serial/qcom_geni_serial.c   | 26 ++++++------
->>   include/linux/soc/qcom/geni-se.h        |  2 +
->>   6 files changed, 122 insertions(+), 66 deletions(-)
->> ---
->> base-commit: 0f6da28aab51b16762ed82e8fdeaa5042da45b08
->> change-id: 20260805-derive_clk_perf_tbl_from_perf_domain_opp_table-2f29ad32226a
->>
->> Best regards,
->> --
->> Praveen Talari <praveen.talari@oss.qualcomm.com>
->>
+Related bug reports:
+- https://bugs.launchpad.net/ubuntu/+source/alsa-driver/+bug/2131138
+- https://bugzilla.kernel.org/show_bug.cgi?id=221064
+- https://github.com/thesofproject/linux/issues/5621
+
+Khalil (3):
+  spi: Preserve preset cs_gpiod in __spi_add_device()
+  platform/x86: serial-multi-instantiate: Fix SPI chip select on
+    platforms with incomplete ACPI cs-gpios
+  spi: pxa2xx: Handle clock gating for GPIO chip select devices
+
+ .../platform/x86/serial-multi-instantiate.c   | 168 ++++++++++++++++++
+ drivers/spi/spi-pxa2xx.c                      |  45 ++++-
+ drivers/spi/spi.c                             |   3 +-
+ 3 files changed, 211 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
+

@@ -1,58 +1,109 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EC538D6A2
-	for <linux-spi@vger.kernel.org>; Mon, 31 Aug 2026 23:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C479B38F934;
+	Tue,  1 Sep 2026 01:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788220762; cv=none; b=qR0cfUyAVFS1sO3eHEKQY22k6Jvqgaq7GRZmAsx8BIyHzZx/hVbHjH3KG9F0rmeQ/PDqsdO1xTYwI/urxCXufgAyHFIDw1Pxh5kTcWd94VFErtgRNXlXFhx5CVu0u0eoZicxsxsLBrsMiP5DYYdzmBOuoSCaL5TtK59+FvC9ly0=
+	t=1788226696; cv=none; b=UAwZtCSI6vOuN/f1uObMjnQUNtYCFYk882UbEaBHPu443tQ3g6TfaziDENSmz3c0IVIjw+Lc/Jm9RhiWdeGzSesXVOSy2AyHNgrqXwFnilLNlnda+gdQorQijhIc40W7isFe/Vp2cVhCCV5sIf84eAmQFwhclrJzSpjb9RbbDo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788220762; c=relaxed/simple;
-	bh=W9YEWmzpalswqKpdFmMYczPsRjCzIFM7IsQ+aJEdXhI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=svk1UW5DO85wG3uNfBAR2c/3jGEjLg9tQwa0jAA4h1rJCDbSzWC4U0T645k7bZj1zdKC7C/PzlOq+LIOS6ZI0Ir/xwpsyws8VvGIbuX7mO69FT8U8HwjlJEyYMX4CauYGBDkbsx9UrLwcTBVnsFyFqivtV3IfVwNBdd/uch9QJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8dRTlff; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788226696; c=relaxed/simple;
+	bh=Kd0aQb2iW9hJJk5GOwilOGsnDa4JsdghPXrfBvtR52c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WErbryyAc3jm1dy1E9J+3w1fKO2Ceq298aKVfCL3FBufdtbYBk5QeRbyCqcQCvXbNrLzg9C5KVdFuN97aq7Uz+3yQ46bJfuvyVQdhiTlCgFvBw2Wml8rHeJQZHk6mJyjp4JuqoQTC7x8l7wqDSGDtIb4qR3+m8U5NP1HaO7CTHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcdeswUl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8dRTlff"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DA91F000E9;
-	Mon, 31 Aug 2026 23:59:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcdeswUl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8071F000E9;
+	Tue,  1 Sep 2026 01:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788220760;
-	bh=SnuRlt2YaIUhTXxleIM9HtGfFGujMJDVV6tDelIXqyk=;
-	h=Subject:From:Date:To;
-	b=K8dRTlff7+uWL0kj1Kc50N7pzo5VPTx4Oo53n03McUGu7WwOcQDChzENp+nUzAUzH
-	 JXXUBj3r0yueVPOD+mK3+saGiNshK8Ya+EHfz930+dDayz0xDTB78Il8nr1y806v8m
-	 RJ68ymJa5YaaH3d9YqExcdlEk8XGBCpyWNJZ0znF4NXyMs/mVjE6Udj8rULzlMkETc
-	 As/medoLfxY55rD7XPbu8MhV6B1eKmsS7MBgnnaDAfh5KfuOMsd7+HFw3mIQNNA7Gv
-	 ymBwGWL6i5Yd+l2gSDpW4cX3N+mkZFR4kXDL0IvohqD4RT1Igmlg/WOvSXOk3+uRct
-	 OcJae7s/gGLOQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198F6392447D;
-	Mon, 31 Aug 2026 23:58:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788226691;
+	bh=BrIiRFWtczkZQEdzjQfU9/6RPpw/i2QrGgvd2I+VXzs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NcdeswUltGsBhID6VXv/iVFj1j2VSDPdMjVwIMYNjhwk+qAL2m3Tij7x+6lPct52V
+	 SylHxgblCs1CbxzFhF8XlDug85XelzDJLFy160Rku11eEmBe4+WC1r0gtgBDo1wjCW
+	 x5qSDPmUVvrCjoVld7nDbuS42ebeC00QMNv1qn16e+WtUR1+ChiHq7xFlpOgtbKd/O
+	 sSaVkW2mE0F0U1nSRH8GojV62Ia0ow3GVB1GI1z/udq+g0gbx0k71n75x4279cw3VA
+	 AtYvM7tXgXg2RalTE7wO6M0MVuN2EAL7i8HzPqKURD42lhfpD0WTcaiA3Cc4XdE4xq
+	 GnBZ7Ep70PC3w==
+Date: Tue, 1 Sep 2026 02:38:05 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
+ Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, Jonathan
+ Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Mark Brown
+ <broonie@kernel.org>, Marius Cristea <marius.cristea@microchip.com>, Marcus
+ Folkesson <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>,
+ Conor Dooley <conor.dooley@microchip.com>, Daire McNamara
+ <daire.mcnamara@microchip.com>, Paul Walmsley <pjw@kernel.org>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+ Ghiti <alex@ghiti.fr>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
+ linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>,
+ linux-riscv@lists.infradead.org
+Subject: Re: [PATCH v10 3/3] iio: dac: Add AD5529R DAC driver support
+Message-ID: <20260901023805.20abc542@jic23-huawei>
+In-Reply-To: <apUo4afCh5LhUqIO@ashevche-desk.local>
+References: <20260827-ad5529r-driver-v10-0-38f2be07b824@analog.com>
+	<20260827-ad5529r-driver-v10-3-38f2be07b824@analog.com>
+	<ao_z9QTJC_q8gH0v@ashevche-desk.local>
+	<178813177252.2788519.10940489053707901297.b4-reply@b4>
+	<apUo4afCh5LhUqIO@ashevche-desk.local>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178822070374.841093.12210911776121306834.git-patchwork-housekeeping@kernel.org>
-Date: Mon, 31 Aug 2026 23:58:23 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Latest series: [v4] spi: davinci: Convert bindings to DT schema and clean up DTS (2026-08-31T23:32:09)
-  Superseding: [v3] spi: davinci: Convert bindings to DT schema and clean up DTS (2026-08-16T21:55:24):
-    [v3,1/2] ARM: dts: ti: keystone-k2l: Rename ti,davinci-spi-num-cs to num-cs
-    [v3,2/2] dt-bindings: spi: ti,davinci-spi: convert to DT schema
+On Mon, 31 Aug 2026 10:10:25 +0300
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-Checked 167 series in 3.78 seconds.
-This project currently has 16428 active patches.
+> On Mon, Aug 31, 2026 at 12:16:12AM +0100, Jonathan Cameron wrote:
+> 
+> ...
+> 
+> > > > +	device_for_each_child_node_scoped(dev, child) {
+> > > > +		if (st->num_channels == ARRAY_SIZE(st->channels))
+> > > > +			return dev_err_probe(dev, -ECHRNG, "Too many channels\n");  
+> > > 
+> > > Okay, this actually better to be ENOSPC
+> > >   
+> > > > +		ret = fwnode_property_read_u32(child, "reg", &ch);
+> > > > +		if (ret)
+> > > > +			return dev_err_probe(dev, ret,
+> > > > +					     "Missing reg property in channel node\n");
+> > > > +
+> > > > +		if (ch >= AD5529R_MAX_CHANNELS)
+> > > > +			return dev_err_probe(dev, -EINVAL,  
+> > > 
+> > > and ECHRNG is here.  
+> > 
+> > That one is getting rather creative even though I guess the description
+> > does fit rather well.  So I don't object, but also feel -EINVAL is
+> > probably good enough for an invalid property value.  
+> 
+> But missing property message propagates the fwnode return code (which will be
+> EINVAL IIRC). So the above is not about missing property, it's about wrong
+> channel. Note, I have checked uses of ECHRNG in the kernel, and many of them
+> are fine with the suggested one.
 
+Fair enough and works for me.  We can add this to the list of things
+to tidy up if we happen to be touching other code that deals with
+wrong channel numbers.  Not something we want to generate churn though
+unless there are far fewer instances of this than I think there are!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Jonathan
+
+> 
+> > > > +					     "Channel %u exceeds maximum 15\n",  
+> 
 

@@ -1,109 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C479B38F934;
-	Tue,  1 Sep 2026 01:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9B1396585
+	for <linux-spi@vger.kernel.org>; Tue,  1 Sep 2026 02:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788226696; cv=none; b=UAwZtCSI6vOuN/f1uObMjnQUNtYCFYk882UbEaBHPu443tQ3g6TfaziDENSmz3c0IVIjw+Lc/Jm9RhiWdeGzSesXVOSy2AyHNgrqXwFnilLNlnda+gdQorQijhIc40W7isFe/Vp2cVhCCV5sIf84eAmQFwhclrJzSpjb9RbbDo0=
+	t=1788231124; cv=none; b=NGifMkIpaVwuP5g7QOl8FWHjdHaEbJw/J5rXFRt18ezh0PYQOXVEQqUrd7ClMguxBha2LeKwyK/1ELYkEEsTy5m715hdkhVP7stj9hqdVMVeEeu9EoPCTF0Wr4LQViWvKWBvrQjw7LUwZp8h3WXxZcN5n41Np7rhxOwo9aT/f3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788226696; c=relaxed/simple;
-	bh=Kd0aQb2iW9hJJk5GOwilOGsnDa4JsdghPXrfBvtR52c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WErbryyAc3jm1dy1E9J+3w1fKO2Ceq298aKVfCL3FBufdtbYBk5QeRbyCqcQCvXbNrLzg9C5KVdFuN97aq7Uz+3yQ46bJfuvyVQdhiTlCgFvBw2Wml8rHeJQZHk6mJyjp4JuqoQTC7x8l7wqDSGDtIb4qR3+m8U5NP1HaO7CTHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NcdeswUl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788231124; c=relaxed/simple;
+	bh=prt2hkMi9GWN5msRjQ5ekIkTxQHIbvhqaYytq7D+fAA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vCGe6oXDjdcQsrUqw/XutA/LpRyA2rzhNimbDq3ZQyce/eLTdBg5iPDaPFFiW39LIREi54/y58G+cm+Te2rjyXywtsPc5mG+cIaUQvUnMHaXqN6UFmxoai+NZXlGnC2IHaSWcsrf3J1eNs0ztycqygu8QhabpW1zJfw9U584A5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=julSyJEf; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NcdeswUl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8071F000E9;
-	Tue,  1 Sep 2026 01:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788226691;
-	bh=BrIiRFWtczkZQEdzjQfU9/6RPpw/i2QrGgvd2I+VXzs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NcdeswUltGsBhID6VXv/iVFj1j2VSDPdMjVwIMYNjhwk+qAL2m3Tij7x+6lPct52V
-	 SylHxgblCs1CbxzFhF8XlDug85XelzDJLFy160Rku11eEmBe4+WC1r0gtgBDo1wjCW
-	 x5qSDPmUVvrCjoVld7nDbuS42ebeC00QMNv1qn16e+WtUR1+ChiHq7xFlpOgtbKd/O
-	 sSaVkW2mE0F0U1nSRH8GojV62Ia0ow3GVB1GI1z/udq+g0gbx0k71n75x4279cw3VA
-	 AtYvM7tXgXg2RalTE7wO6M0MVuN2EAL7i8HzPqKURD42lhfpD0WTcaiA3Cc4XdE4xq
-	 GnBZ7Ep70PC3w==
-Date: Tue, 1 Sep 2026 02:38:05 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Janani Sunil <janani.sunil@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
- Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, Jonathan
- Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Mark Brown
- <broonie@kernel.org>, Marius Cristea <marius.cristea@microchip.com>, Marcus
- Folkesson <marcus.folkesson@gmail.com>, Kent Gustavsson <kent@minoris.se>,
- Conor Dooley <conor.dooley@microchip.com>, Daire McNamara
- <daire.mcnamara@microchip.com>, Paul Walmsley <pjw@kernel.org>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
- Ghiti <alex@ghiti.fr>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Janani Sunil <jan.sun97@gmail.com>,
- linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>,
- linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v10 3/3] iio: dac: Add AD5529R DAC driver support
-Message-ID: <20260901023805.20abc542@jic23-huawei>
-In-Reply-To: <apUo4afCh5LhUqIO@ashevche-desk.local>
-References: <20260827-ad5529r-driver-v10-0-38f2be07b824@analog.com>
-	<20260827-ad5529r-driver-v10-3-38f2be07b824@analog.com>
-	<ao_z9QTJC_q8gH0v@ashevche-desk.local>
-	<178813177252.2788519.10940489053707901297.b4-reply@b4>
-	<apUo4afCh5LhUqIO@ashevche-desk.local>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="julSyJEf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=FU
+	81qntwAFVdmVb/UmW5+/CYllzLnCuEzEsQatHhMLA=; b=julSyJEfZcSqmgFYWU
+	v1gfoKz744FUqnFfVfos86QMdr6oXu5D8gxOaEoy6J6W8oeEW17T5dAYmjtAhtHG
+	ZVONcfPaWeI05INJIWJUl9zzDsCysyTzdvpKSkbkk5Txfq5n6mZfRzgBSZoXdW2i
+	3NWcurGYN89jw/BN9fkY9rriI=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wBnbpiyPZZqN4jWSg--.25091S2;
+	Tue, 01 Sep 2026 10:51:30 +0800 (CST)
+From: "Li Youhong" <dayou5941@163.com>
+To: ychuang3@nuvoton.com,
+	schung@nuvoton.com,
+	broonie@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org,
+	Li Youhong <liyouhong@kylinos.cn>
+Subject: [PATCH] spi: ma35d1-qspi: assert reset on probe error paths
+Date: Tue,  1 Sep 2026 10:51:29 +0800
+Message-Id: <20260901025129.359960-1-dayou5941@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBnbpiyPZZqN4jWSg--.25091S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw4UGr1rGryxXF4DZw1UWrg_yoW8uFy3pF
+	srGF4FkFy0q3WfX3y3Aa1DXF1YkFyIva1UGrW2gw1xZrZ5tryDJw17AFWfK3ZrtFyjya47
+	JFWUZay8CFsrZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOjjgUUUUU=
+X-CM-SenderInfo: 5gd103ivzuiqqrwthudrp/xtbC+hO7amqWPbOc1wAA3B
 
-On Mon, 31 Aug 2026 10:10:25 +0300
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+From: Li Youhong <liyouhong@kylinos.cn>
 
-> On Mon, Aug 31, 2026 at 12:16:12AM +0100, Jonathan Cameron wrote:
-> 
-> ...
-> 
-> > > > +	device_for_each_child_node_scoped(dev, child) {
-> > > > +		if (st->num_channels == ARRAY_SIZE(st->channels))
-> > > > +			return dev_err_probe(dev, -ECHRNG, "Too many channels\n");  
-> > > 
-> > > Okay, this actually better to be ENOSPC
-> > >   
-> > > > +		ret = fwnode_property_read_u32(child, "reg", &ch);
-> > > > +		if (ret)
-> > > > +			return dev_err_probe(dev, ret,
-> > > > +					     "Missing reg property in channel node\n");
-> > > > +
-> > > > +		if (ch >= AD5529R_MAX_CHANNELS)
-> > > > +			return dev_err_probe(dev, -EINVAL,  
-> > > 
-> > > and ECHRNG is here.  
-> > 
-> > That one is getting rather creative even though I guess the description
-> > does fit rather well.  So I don't object, but also feel -EINVAL is
-> > probably good enough for an invalid property value.  
-> 
-> But missing property message propagates the fwnode return code (which will be
-> EINVAL IIRC). So the above is not about missing property, it's about wrong
-> channel. Note, I have checked uses of ECHRNG in the kernel, and many of them
-> are fine with the suggested one.
+nuvoton_qspi_probe() pulses the exclusive reset and leaves it
+deasserted for normal operation. Later probe failures returned
+without re-asserting the reset, leaving the controller out of
+reset after a failed probe. Assert the reset on those error
+paths.
 
-Fair enough and works for me.  We can add this to the list of things
-to tidy up if we happen to be touching other code that deals with
-wrong channel numbers.  Not something we want to generate churn though
-unless there are far fewer instances of this than I think there are!
+Fixes: 78b16af159ae ("spi: ma35d1-qspi: Add Nuvoton MA35D1 QSPI controller support")
+Signed-off-by: Li Youhong <liyouhong@kylinos.cn>
+---
+ drivers/spi/spi-ma35d1-qspi.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-Jonathan
-
-> 
-> > > > +					     "Channel %u exceeds maximum 15\n",  
-> 
+diff --git a/drivers/spi/spi-ma35d1-qspi.c b/drivers/spi/spi-ma35d1-qspi.c
+index 7f938d0c6f1f..cf731fa2f7e2 100644
+--- a/drivers/spi/spi-ma35d1-qspi.c
++++ b/drivers/spi/spi-ma35d1-qspi.c
+@@ -633,12 +633,16 @@ static int nuvoton_qspi_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, ret, "failed to deassert reset\n");
+ 
+ 	ret = device_property_read_u32(dev, "num-cs", &num_cs);
+-	if (ret && ret != -EINVAL)
+-		return dev_err_probe(dev, ret, "failed to read num-cs\n");
++	if (ret && ret != -EINVAL) {
++		ret = dev_err_probe(dev, ret, "failed to read num-cs\n");
++		goto err_assert;
++	}
+ 
+-	if (!num_cs || num_cs > NUVOTON_QSPI_MAX_NUM_CS)
+-		return dev_err_probe(dev, -EINVAL, "invalid num-cs %u\n",
++	if (!num_cs || num_cs > NUVOTON_QSPI_MAX_NUM_CS) {
++		ret = dev_err_probe(dev, -EINVAL, "invalid num-cs %u\n",
+ 				     num_cs);
++		goto err_assert;
++	}
+ 
+ 	ctlr->num_chipselect = num_cs;
+ 	ctlr->max_transfer_size = nuvoton_qspi_max_transfer_size;
+@@ -655,14 +659,20 @@ static int nuvoton_qspi_probe(struct platform_device *pdev)
+ 
+ 	ret = nuvoton_qspi_hw_init(qspi);
+ 	if (ret)
+-		return ret;
++		goto err_assert;
+ 
+ 	ret = devm_spi_register_controller(dev, ctlr);
+-	if (ret)
+-		return dev_err_probe(dev, ret,
+-				     "failed to register spi controller\n");
++	if (ret) {
++		ret = dev_err_probe(dev, ret,
++				    "failed to register spi controller\n");
++		goto err_assert;
++	}
+ 
+ 	return 0;
++
++err_assert:
++	reset_control_assert(rst);
++	return ret;
+ }
+ 
+ static const struct of_device_id nuvoton_qspi_of_match[] = {
+-- 
+2.25.1
 

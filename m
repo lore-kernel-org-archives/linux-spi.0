@@ -1,217 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CD94854F2
-	for <linux-spi@vger.kernel.org>; Wed,  2 Sep 2026 15:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6352B424646
+	for <linux-spi@vger.kernel.org>; Wed,  2 Sep 2026 20:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788364104; cv=none; b=SR5AEGTTvDmOD2vRIzCah2K1W0wNV/+jtLXF99qFo89rfEflpGhLcD2FFF4qbHcUic3AgNJMq/0hMIjgiZqj53QRhVpef8iVGP/nyw72nWrI9YBHz8p6Vy9WW3j5rfQJ/SJq9Kia5D7sAVspSdOI1UGm8C5BlDnYRebw3Chq1Cc=
+	t=1788380002; cv=none; b=pMQoTfB6S8kHcDPY7HlsXFyEbaWz/kYWde0p08vB2ekFoL532oEkSnkZJTBWEz2pkZMZLqDllctdA2iG17y6svKNr4GkR57GdERXBjqJqw2rh2+QPwSYw6jnzQJTqTtY5IJP3CUlwzAvo2YGImkMw9K7cHaRGtokxbV914mjiEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788364104; c=relaxed/simple;
-	bh=dd9Bc4n94EKXDL0ADU2/wZrlcVly5/OAqlHH4Cf65Xo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HndXbkbC2WDt5raWxUS3x/k2IltVeRk5TKdDKFFt4Xwvwb6Z+JZTe5dA2HdUsLnNjmHM9O9uswIS7Z5BzNlMLoEsE/wTerZOndUKvwxrFC1iEUzDaaAI45zwIYYe/zL62ALfnVaEW6uS3j2IKQ52zmBFBCa3g8WywLG7dTG/NkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JODVhp6S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788380002; c=relaxed/simple;
+	bh=gBn7jCjW9/1RWJD8NyT5yfQPPWsYf3qMJi0i9yM1c48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K6Vq8JwJ2E9bTUHUX4lgIeYGMnu1L7dqBqrC4RbINCg2Peg6eLm0YgovbVzTCQGtxfdlc9IpI7E0mYtBnwLHVMkJ4FcRj6x6i3ZMwqCBm6uarqCwewJRwld7OABTCYHYJHXi7LZy15r/i1LFkFxLbXckWgEoIcujTAYs3wXqKiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=DUOZ8VQI; arc=none smtp.client-ip=209.85.167.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JODVhp6S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AAD1F00A3A
-	for <linux-spi@vger.kernel.org>; Wed,  2 Sep 2026 15:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788364102;
-	bh=WvDDggsJCp8fWjpjbH2MZ34V8WTIMSRAsuek7J69Z2o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JODVhp6SRX1XR4znAyCaW2UPD+FDbnGSvfHbCC+k45gxVC7aNVrYuQEvG890ao/6r
-	 6T1UZ2F7mLSwWB+TUV/7NN9d3vu1GCq0l+OWkFlu5Xv64bnK5LK0APUSatecOnjw4d
-	 c0YWgi0PYEbR2VgrQxMwy199ToKiNGNgnvyu6cA/tDDZp6tbRl8aB18WFlXFdYK1hu
-	 jwYXTu5tGh7kUyFH35JaQgsz3nwHF4k5MhMYgCkhfXvCBKG5vHp5ahyY8Zs5zyM9Oj
-	 37tEwFOwaJKlb+Ra0Qa31B6bwa4555RH8tnTOmmh944q50cZMD/41esy98FvKphmGk
-	 jL2rvYpI7YRZw==
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2533d83e3bso178725966b.2
-        for <linux-spi@vger.kernel.org>; Wed, 02 Sep 2026 08:48:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxj4gPIxGEmdHZ6+DCA4hpTuyG5MXJNd5KlnJhm8x/tB40KKkTuye0vheeCkWA9t5LoyqY0K6C/+Fo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lsqaj+j0b3j0WMN+RPVOxjmuoH4CDwMDBiJw6KY6nkLhuqmFWf
-	Y1RRLrX/ST79cz5XHmGw1WMQGVSWDSAIHY9gxGW+8MnaHpGvLx19B/S0KPj5frKMitUOIHmrPlK
-	D3wPF0ZdsRybqW7U8gtzvqWbkXfRkDQ==
-X-Received: by 2002:a17:907:6090:b0:c25:c979:e76a with SMTP id
- a640c23a62f3a-c25d54fe9f3mr276782466b.22.1788364100947; Wed, 02 Sep 2026
- 08:48:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="DUOZ8VQI"
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4b1ba286f6bso215323b6e.1
+        for <linux-spi@vger.kernel.org>; Wed, 02 Sep 2026 13:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1788379998; x=1788984798; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LK9aotORi87rRhUj6UK1F5F8i5HbF9lJJNEH2vwmoh8=;
+        b=DUOZ8VQICwiwhVLAY+mpuOzr91bQI56li5yAzKb3IGSV72GE3S5JBKdNCKdP9vmASq
+         +ED7oykENRyJBSbekPGNIjpbtF72/y90RehMQ5SWF0g7VJ8+10d9NPHrwS3WfK9GWA3N
+         A0yGuK2JLLqK6cV3fnEw+uKqTxmiuiCdzSI+3BTLNHQQyvhBzd4ODrCBWQDgPPOYikvW
+         3kvlM4JGJlVVm7uN2TcLN6+Z88d8Zt+Pmyn6S0abiz/YpCJ0lcIDHZdjrryEOLJ9kbny
+         j36ghvqwGWlIP/KShv+/iT1Rh4LuhIoT8MbckAQSmwop9TMDON4WINGrFuIBGn4OjX4B
+         EAfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788379998; x=1788984798;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LK9aotORi87rRhUj6UK1F5F8i5HbF9lJJNEH2vwmoh8=;
+        b=CxVo1b/skHLDaMqRrkBKG+hde/rJaCPITt/yoklfe6zrRsXBhkXXFx42/Yu+pFEem8
+         2zIzCKNrOnX9ssEhdy0v+NDQrFxnHEV+e1nl30wptXkFumYwL3UJWVw0GWW1G9sh5y6L
+         oj8ZgLr4q4XUfFNmwuNN0wgGAdtKw/2Zu7YMUkB8m8PFAGG/Ho3xv7H48JozgeTLp0V1
+         JLqJUVSWymT8Jo/PiroelbxNn+CCwNPj3Uyx4nF1ouAzsXxOcvZ/mvM37MCKG2uy06cQ
+         nU53MX9e+JnYBiISzGbycHWtlnOF/U0eMZDxRjLcm23iAaj9FXlkZwvV7ghDWy4u1bjW
+         MW8w==
+X-Forwarded-Encrypted: i=1; AHgh+Ro+yChzvIMG3kvfaukkCzgbOT2ZYtwN748JEGBuPgtTl5En6WUNvTwvkBCXpQHUs1ydDjg60SBGDws=@vger.kernel.org
+X-Gm-Message-State: AFuF++m0NzsD7JX/3HSRKATZAliFHDIhlsXhsNg8RzF7kg7DBgQi/yen
+	aePYPZQ6xihEFVSyVN6BIPb3GD32l1lLJ9zIxKZ043czt4si63ri+cwXqSW/3hC8iIs=
+X-Gm-Gg: AR+sD11FERUX2YHRe8EEilzdLNefdNzoko2xb674P/BW3mVSlx+pvCpK1HXXyrfx/FY
+	o/BBIvzB/pMWHCxm5Gp2j8ZrTOMHpMfOI7mfPVuX73deEcoXAifTis4JR9nU/YbXJW0f2398VEG
+	Ip5rmOlDBjJ+y48gdnbM5Tc0IPqv/CP/IOV9JXdNFLMDuWqEjn4+PF+Qgc7jFwEA9A+leI60b/k
+	7JYdjuYf8Iftv2956BY76kGO/VCaPH5gsGl0KcnpUviYK3XiNDGSa/B0sWif2yWvHHJ5jsTt7/X
+	7vy4g/aILjRqKwWgGE5bRy+PnZSAR4zkZuV8GG1xBk1ond7ZdHN8KU/xOTZAgU0b8FjIwAK9S0J
+	AAQ84CVigUndtJbWiFxuNPXnO0Eg/VdVgtgifemTelSnVVL7htPksAbJ2GjyHb1qZG1pCeMUUlE
+	pXy3NSiaLFi+NJaPWjoDlxuVDfUzPm+TCTXZSqY/8fbIbKfTydyaj4vhIOklN0+VLK9fj7sixyN
+	+ZKKvAj+5OWIDdMSB3FPJROlPt32Uwa/CQcI/Yu
+X-Received: by 2002:a05:6808:f89:b0:496:976:acad with SMTP id 5614622812f47-4b7d9e50996mr1248833b6e.1.1788379997955;
+        Wed, 02 Sep 2026 13:13:17 -0700 (PDT)
+Received: from ?IPV6:2600:8803:e7e4:500:518a:9db8:615b:293f? ([2600:8803:e7e4:500:518a:9db8:615b:293f])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b698a38f62sm2719950b6e.7.2026.09.02.13.13.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Sep 2026 13:13:17 -0700 (PDT)
+Message-ID: <33e466d8-962b-44a3-bc32-7afb00821428@baylibre.com>
+Date: Wed, 2 Sep 2026 15:13:16 -0500
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260819155502.3934837-1-maciej.andrzejewski@m-works.net> <e7995f64-3210-455d-bc97-9f3b51099162@kernel.org>
-In-Reply-To: <e7995f64-3210-455d-bc97-9f3b51099162@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 2 Sep 2026 10:48:09 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJ2zHrEf6-4Gohaqj+jq_dTeVoR=xyH=yZDTpjBEDoLBw@mail.gmail.com>
-X-Gm-Features: AcwNN1Vp-60QgsJjsf8yFslx_Y0cjbf_CPILfdaB6rH4W7MLE--uqVMj_JD2DH8
-Message-ID: <CAL_JsqJ2zHrEf6-4Gohaqj+jq_dTeVoR=xyH=yZDTpjBEDoLBw@mail.gmail.com>
-Subject: Re: [PATCH v2] gpiolib: of: Only apply the SPI CS quirk to SPI buses
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>, Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-gpio@vger.kernel.org, broonie@kernel.org, 
-	linux-spi@vger.kernel.org, miquel.raynal@bootlin.com, richard@nod.at, 
-	vigneshr@ti.com, linux-mtd@lists.infradead.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/6] spi: support simultaneous assertion of multiple CS
+To: Jonathan Santos <jonath4nns@gmail.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.sa@analog.com,
+ michael.hennerich@analog.com, broonie@kernel.org,
+ marcelo.schmitt1@gmail.com, andriy.shevchenko@intel.com
+References: <cover.1786973376.git.Jonathan.Santos@analog.com>
+ <e8870b405f29cc89439701d1fcc7e88781aaab22.1786973376.git.Jonathan.Santos@analog.com>
+ <e2016946-83e8-46f5-975d-634a219417e7@baylibre.com>
+ <aojo2zHCrBPmt9S/@JSANTO12-L01.ad.analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <aojo2zHCrBPmt9S/@JSANTO12-L01.ad.analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 2, 2026 at 4:28=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.org=
-> wrote:
->
-> On 19/08/2026 17:55, Maciej Andrzejewski ICEYE wrote:
-> > The legacy SPI chip-select polarity quirk in of_gpio_flags_quirks() is
-> > keyed on nothing but the property name "cs-gpios". That name is not
-> > exclusive to SPI: nand-controller.yaml documents the very same property
-> > for NAND controllers, and rawnand_dt_parse_gpio_cs() requests those
-> > lines with gpiod_count(dev, "cs"), which gpiolib expands to "cs-gpios".
-> > A NAND controller therefore has SPI chip-select semantics forced onto
-> > its chip selects, and any chip node whose first reg cell matches a GPIO
-> > index is silently flipped to active low. The NAND core requests the
-> > descriptors GPIOD_OUT_HIGH and drivers assert with a logical 0, so the
-> > inversion leaves the die permanently deselected.
-> >
-> > The example in nand-controller.yaml is itself affected: it pairs a
-> > native chip select with a GPIO one and gives the second chip a reg of 1=
-,
-> > which trips the quirk whenever CONFIG_SPI_MASTER is enabled. In-tree th=
-e
-> > collision is real but latent. 36 board trees, all Atmel/Microchip at91,
-> > give their nand@3 controller a cs-gpios line, and they escape only
-> > because the sole child of those nodes is a partitions container with no
-> > reg for the quirk to match against.
-> >
-> > Device tree carries no bus type marker, so identify the bus from two
-> > hints. Properties of an SPI peripheral are namespaced with "spi-"
-> > (spi-max-frequency, spi-cpol, spi-cs-high and the rest of
-> > spi-peripheral-props.yaml), whereas a NAND chip node carries only reg,
-> > nand-* and its partition table. That is a convention rather than a
-> > guarantee, since compatible and reg are the only properties
-> > spi-controller.yaml makes mandatory for a peripheral, so let the
-> > controller settle the remaining cases: spi-controller.yaml constrains
-> > the controller nodename to ^spi(@.*|-[0-9]+)?$, which makes the name th=
-e
-> > one bus marker every conforming controller has to carry. A peripheral
-> > that carries nothing but compatible and reg therefore keeps its active
-> > low default through its parent. Skip the quirk only when neither test
-> > matches.
-> >
-> > Both tests were scored over every board device tree in the kernel,
-> > expanded with the same cpp and scripts/dtc pipeline the build uses, at
-> > v7.2-rc7. All 3620 trees under arch/*/boot/dts expand; 503 of them hold
-> > at least one GPIO chip select that can reach the quirk, 765 such chip
-> > selects in total. 761 are matched by both tests, and none are matched b=
-y
-> > neither, so no in-tree board changes behaviour.
-> >
-> > One needs the property scan on its own: psc@11400 on ac14xx, a
-> > fsl,mpc5121-psc-spi named after the hardware block rather than the bus,
-> > whose m25p128@0 child carries spi-max-frequency.
-> >
-> > Three need the nodename on its own, all peripherals with no "spi-"
-> > property of any kind:
-> >
-> >   - panel@0 under the spi-gpio controller on rk3566-anbernic-rg503
-> >   - can@0, an mcp251xfd, under ecspi3 on imx8mn-vhip4-evalboard-v1
-> >   - spi@1 under ecspi1 on imx53-ppd
-> >
-> > The two tests are complementary, so both are needed to keep every
-> > in-tree board working. A tree that names its controller after the
-> > hardware block and gives it a peripheral with no "spi-" property would
-> > still lose the quirk. No in-tree board does, and such a controller is
-> > already outside the nodename pattern spi-controller.yaml requires.
-> >
-> > of_gpio_spi_cs_get_count() in this file identifies SPI controllers with
-> > of_device_is_compatible() instead, but it only has to name three legacy
-> > controllers whose bindings are closed. An allow-list here would have to
-> > name every SPI controller binding in the tree, 71 distinct compatible
-> > strings among the candidates alone, and grow with every new one.
-> >
-> > Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.n=
-et>
-> > ---
-> > Changes in v2:
-> > - Squashed the two patches into one. The property scan and the nodename
-> >   test are complementary, so patch 1 alone stopped applying the quirk t=
-o
-> >   the three peripherals that carry no "spi-" property, which would have
-> >   broken those boards for anyone bisecting through the series. Reported
-> >   by an automated review of v1.
-> > - Folded the two helpers into a single of_gpio_is_spi_chipselect().
-> > - Said outright that a peripheral with nothing but compatible and reg
-> >   keeps its active low default through the controller nodename.
-> > - Rebased; drivers/gpio/gpiolib-of.c is unchanged since v7.2-rc7, so th=
-e
-> >   diff itself is the v1 pair verbatim.
-> >
-> > v1: https://lore.kernel.org/r/20260810141629.81650-1-maciej.andrzejewsk=
-i@m-works.net
-> >
-> >  drivers/gpio/gpiolib-of.c | 31 +++++++++++++++++++++++++++++--
-> >  1 file changed, 29 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-> > index 940b566946ce..d73114166f6b 100644
-> > --- a/drivers/gpio/gpiolib-of.c
-> > +++ b/drivers/gpio/gpiolib-of.c
-> > @@ -340,6 +340,28 @@ static void of_gpio_set_polarity_by_property(const=
- struct device_node *np,
-> >       }
-> >  }
-> >
-> > +/*
-> > + * The legacy SPI chip select binding below is keyed on a property nam=
-e that
-> > + * other subsystems reuse for the same purpose, notably NAND controlle=
-rs (see
-> > + * Documentation/devicetree/bindings/mtd/nand-controller.yaml), whose =
-chip
-> > + * selects carry no SPI polarity semantics. Device tree has no bus typ=
-e
-> > + * marker, so take two hints. Properties of an SPI peripheral are name=
-spaced
-> > + * with "spi-", and a peripheral that declares none is covered by the
-> > + * controller, whose nodename spi-controller.yaml constrains to
-> > + * ^spi(@.*|-[0-9]+)?$.
-> > + */
-> > +static bool of_gpio_is_spi_chipselect(const struct device_node *np,
-> > +                                   const struct device_node *child)
-> > +{
-> > +     struct property *pp;
-> > +
-> > +     for_each_property_of_node(child, pp)
-> > +             if (str_has_prefix(pp->name, "spi-"))
->
-> You should not rely on prefixes of properties. Node can have no such
-> properties at all.
->
->
-> > +                     return true;
-> > +
-> > +     return of_node_name_prefix(np, "spi");
->
-> And neither this. You just added node name based ABI.
->
-> Nope.
->
-> Each peripheral exactly knows that it is a SPI device - it 100% specific
-> knowledge based on the bus, thus nothing of above is needed.
+On 8/21/26 7:10 PM, Jonathan Santos wrote:
+> On 08/18, David Lechner wrote:
+>> On 8/17/26 6:32 PM, Jonathan Santos wrote:
+>>> Some SPI controllers allow multiple CS lines to be toggled at the same
+>>> time. The existing code always used CS index 0 when tracking the last
+>>> active CS in spi_set_cs(), and unconditionally set cs_index_mask to
+>>> BIT(0) when parsing DT, both forcing the single CS usage.
+>>>
+>>> Modify spi_set_cs() to iterate last_cs[] using each logical CS index
+>>> instead of always reading index 0. Modify of_spi_parse_dt() to build
+>>> cs_index_mask from all parsed CS entries rather than hardcoding BIT(0),
+>>> so the controller correctly identifies which CS lines belong to a device
+>>> when asserting them simultaneously.
+>>>
+>>> Board info, ACPI, and ancillary device paths are not updated here.
+>>> Board info would require an API change to accept an array of CS values
+>>> and is left for a follow-up when we have a use case for this. Ancillary
+>>> devices are by design single-CS, so multi-CS is not a current use case for
+>>> them. ACPI represents the CS as a 64-bit integer with no established
+>>> convention for encoding multiple CS indices yet, so any extension there
+>>> would require a separate specification effort.
+>>>
+>>> Acked-by: Nuno Sá <nuno.sa@analog.com>
+>>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+>>> ---
+>>> Changes in v3:
+>>> * None.
+>>>
+>>> Changes in v2:
+>>> * Include Summary describind why the other SPI paths were not addressed
+>>>   here.
+>>> ---
+>>>  drivers/spi/spi.c | 9 +++++----
+>>>  1 file changed, 5 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>>> index d9e6b4b87c89..55fb96fea243 100644
+>>> --- a/drivers/spi/spi.c
+>>> +++ b/drivers/spi/spi.c
+>>> @@ -1090,7 +1090,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
+>>>  	spi->controller->last_cs_index_mask = spi->cs_index_mask;
+>>>  	for (idx = 0; idx < SPI_DEVICE_CS_CNT_MAX; idx++) {
+>>>  		if (enable && idx < spi->num_chipselect)
+>>> -			spi->controller->last_cs[idx] = spi_get_chipselect(spi, 0);
+>>> +			spi->controller->last_cs[idx] = spi_get_chipselect(spi, idx);
+>>>  		else
+>>>  			spi->controller->last_cs[idx] = SPI_INVALID_CS;
+>>>  	}
+>>> @@ -2594,10 +2594,11 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
+>>>  		spi_set_chipselect(spi, idx, cs[idx]);
+>>>  
+>>>  	/*
+>>> -	 * By default spi->chip_select[0] will hold the physical CS number,
+>>> -	 * so set bit 0 in spi->cs_index_mask.
+>>> +	 * Set cs_index_mask to indicate which logical CS indices are active.
+>>> +	 * Each bit corresponds to a logical CS index in the spi->chip_select array.
+>>>  	 */
+>>> -	spi->cs_index_mask = BIT(0);
+>>> +	for (idx = 0; idx < rc; idx++)
+>>> +		spi->cs_index_mask |= BIT(idx);
+>>>  
+>>>  	/* Device speed */
+>>>  	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
+>>
+>> I have the same concern that sashiko calls out here.
+>>
+>> Existing users of multi-cs (not including spi-mem) follow the pattern
+>> that a SPI device gets registered with the CS at index 0 and they later
+>> create an auxiliary using the additional CS. This would cause the main
+>> device to now assert both CS. Not what we want to happen.
+> 
+> Indeed, enalbing all CS for those cases would cause problems (like you
+> describe below). AD4080 would be an example.
+> 
+> The devicetree property seems to be a good ideia to fix this and simpler
+> to execute, but the composite device is interesting.
+> 
+>>
+>> If I understood (and remember) the previous explanations of this series
+>> correctly, we have a different case for this one.
+>>
+>> We want a main device that acts as a single composite device that asserts
+>> all 4 CS at the same time. Then we also need 4 auxiliary devices that
+>> only assert one CS at a time for configuring the individual chips.
+>>
+>> So it seems to me like we need a new DT property or some way to be able to
+>> tell the difference to decide whether we just use the first CS here or all
+>> of them.
+>>
+>> Perhaps another possibility would be to leave this code the way it is and
+>> do it this way instead:
+>> - The SPI device passed to the IIO driver is just the first chip (one CS)
+>> - The IIO driver then registers auxiliary drivers for the other 3 chips
+>>   (also 1 CS each)
+>> - These 4 devices will be used individual to handle configuration.
+>> - The IIO driver registers a separate composite device that has the
+>>   multiple lanes and and multiple CS. Whether this using the same
+>>   auxiliary mechanism with additional parameters or something new
+>>   probably doesn't matter too much.
+>> - In this way of doing things, it would not make sense to have the
+>>   spi-rx-bus-width property in the devcietree since as far as the
+>>   devicetree is concerned, these are more-or-less 4 separate devices
+>>   (from the SPI point of view).  Instead, this new composite device
+>>   registration function would be the one setting the number of lanes
+>>   based on the number of chip selects.
+>>
+> 
+> My initial idea was to use the main device as the "composite" because it
+> holds the hw description, therefore the multi-lane would be handled by
+> the existing flow (that's why the spi-rx-bus-width property was
+> mandatory). This way each ancillary device would take the lane index
+> from the main device. Using the main + 3 ancillaries for individual
+> access and the new composite for simultaneous is a great alternative,
+> but removing the spi-rx-bus-width kind of excludes the information that
+> we are using multiple lanes for this device. Unless we document that 
 
-Do you have an actual suggestion on how to fix it instead? It is
-needed for every SPI controller that uses cs-gpios which is
-potentially all of them. There's 522 cases of cs-gpios and only a few
-are NAND. Even if it is 10 boards per SoC, that's still 52 cases which
-would be more than I want to list in the kernel.
+I don't think it hides it. How the chip handles multi-lane is described
+by the compatible string itself. So it will be up to the IIO driver to
+call the composite device creation function with the appropriate parameters
+to tell it that in this case we need to assert all 4 CS in order to get
+a 4-lane device. I don't think we need any extra devicetree description
+for this.
 
-Perhaps the SPI core when requesting "cs-gpios" could state "apply the
-polarity quirk to to this GPIO" rather than the GPIO core having any
-specific knowledge about "cs-gpios".
+> "number of CS = number of lanes" on multiple-data-lanes.rst, the 
+> assumption is:
+> 
+> spi-rx-bus-width = <1>
+> spi-rx-lane-map = <1>
+> 
+> Also, it would make more sense to take the lane description from the
+> main device described in the DT considering cases like non-default
+> mapping. Or at least take it into consideration.
 
-However, IMO, for bus nodes, the node names are ABI. That's the only
-way we can identify what type of bus for some buses. The DT core looks
-for "isa", "pci" or "pcie" node names for ISA and PCI buses for
-example. So I don't have much issue with the current approach.
+I think if we put the CS lines in a logical order, we don't need any
+mapping. For example:
 
-Rob
+CS | Lane
+---+-----
+0  |  0
+1  |  2
+2  |  1
+3  |  3
+
+Would just be:
+
+reg = <0>, <2>, <1>, <3>;
+
+	

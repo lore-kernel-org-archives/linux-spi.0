@@ -1,131 +1,180 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845F53EDADC
-	for <linux-spi@vger.kernel.org>; Wed,  2 Sep 2026 08:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D492C384CF2;
+	Wed,  2 Sep 2026 09:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788338946; cv=none; b=PW0lEbIKy4x0XkBqIKoRBS7vJusRnll9eE+vFz/f6ZUAjxAs5AEhTvBlEEHpdGdEAhIblyeSpplWdTjX0B39JPfNotu8JB2YkwToXNbOZYld4SezsEaGB8INMpTnuvbS5iMYUOv8IPcCI0AOp/+cKVkQQMoMdZHGEugCesGNj7w=
+	t=1788341277; cv=none; b=iUKlGKB7g9GWoPXXXCXVF+7p21VF18tmUSaDZUpVWLnCb3Xp8zHMJVVp4gooKbnaihf41YYrzJi+IzrLuM25MOLasfiCQv7yuiHkKMbKOKKG2dAPPGZAi+nRYwabCTIN/h0GnsE837ITBQaM+dJuJxEJrH2/p70JxbrirY92oRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788338946; c=relaxed/simple;
-	bh=ss5xROj8OM3lYj+pqG6TTIF5SBt62U9/oUBoQLswgBg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IyTEoYbmIqWK/RvL6urU1rwjYKfTUGdWPKuhkrsJJ7S/3JcvkFmf/vmJBrlmJ7qH8vyKqM3x+pQDf2XV/y9Z02QRXaCBUJBTvSwEDgYeCSQSMIay0zULxSi1+oVTh/crJhk6yEXlXdbKOM+KWadpTlzTVwvuvOr50b3T7+OSz54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FRGhUyVe; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788341277; c=relaxed/simple;
+	bh=ZKN1B2gZYBwuyNnxocxDDBrNCih2O5jweGLmrMvotJQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=Ap8ROsyIujolYka1rJx6c5yjeyCfqofwsyngqSet3XofIeHpv+ZJt+f+k4DDq4FgFL+75Q8sxefmduobZ8uSK6+AJwNwB8cRWaqKXenVRAuC3B8bAaTzE+5Q9MXRk+2sMjrJ0NFJgxf9BmXpmb2AfAQAquge3mYcE4V4wCmpxMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=dhQNi34G; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FRGhUyVe"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a6868f18aeso662973a12.0
-        for <linux-spi@vger.kernel.org>; Wed, 02 Sep 2026 01:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788338942; x=1788943742; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f7aqc1YiIFFi2S/7+a4K7uWSUn18PjZkaszy4zjXDoY=;
-        b=FRGhUyVeZHhqIQy7V+2OH9vwODwXTRs47UnHugrTgp+LSOzcThFqsRm2bSfBJMwhBk
-         199eI9nSLNaLiHNvQEMwpmT0gpKbAzwHhN7wqzLBlykqSHwCMXCrF6cXhYR3fiC0tX72
-         2J9XYkRWq68ZDFW4+MxdKrdDPS2FRzLnZuskT7IirKoyI8ysnZNo46D72xxdOyz5EDnD
-         0H3JcRfYn/vmWl59ZTXEHfOeLzzb4ELjTwLPeyyKnk7w8uBlCJtOSvytm6rAy+1f6Xe7
-         VxRrKYJrF4GcM2ZVCIp+gNMeEUCF4h7Wpu5MCZhU6mYcXgR5UdXplfMT1J+mZOP9DuVa
-         AjSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788338942; x=1788943742;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=f7aqc1YiIFFi2S/7+a4K7uWSUn18PjZkaszy4zjXDoY=;
-        b=tAMGKnfoP6OmeLovlrkc0HDdMj9YHg9tzWLMnfeWvQhN7DOSLXB3vBZ506+w6VzDDY
-         lKiMWW0U14V8zkVKLwIs22qa54zBRMfAu871z0sqQtDC56P0joAY4qhvXldvt5QAANIH
-         H71BlGtZyVa3ASAh8n3/mM/TM/sNxzHSXu8iQsAWswXu+X1D4HNTGCeZUaOHVZ+ACcrc
-         E8C0yJRzNIGsKdtBNgnKfpE4NQpv7bwKpKENuI05lloaDX5ODq5+Xh/rC4B3x8vUN0Q8
-         Q2tN6HNEQK8HSorUejHK5XHWiFeJI610ut+L357l2jYtODKwaYMB/cGqZ/IZzC1qvzm6
-         brRA==
-X-Forwarded-Encrypted: i=1; AKwUvBw9n+84GDcEtRNDd+fA0+xdyueO0rJ1AR8zyj+3chDXNp/AwhSW7sO067J1A8mdVI7AFJ6hlM7tGtg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lH6JrGZLWospgOpHItyBSo81bs6YjT6CPZ57OC3F8pHVi8ytdK
-	SHAKvY8D0Y8KOM5GbXDChN7/YkloBRUJkJ6ybcqEXBaZ1x4F0U1fhvhx
-X-Gm-Gg: AYBFou0mp0sVw4xUb7B5VjWxjkU4bNSrmZnC1pCDBSRE9XrRiOzK30R4uizPkLdsX+n
-	RzuEc8Vn3LRRdF0h6mabdu66WoOsFS7FIDoPjSD4wt/gOAZo2AIZEnMAG9DitG3Cie5uX0nQP7+
-	EBJoiUXLq17dwCXQF+R1gKZrmTAmhKQx5Tlkx42C2CvQA7tnJOri1vGEuA4jJXmZiHk0uX2GVZS
-	QeGFYDx9CGXFLo3ToUjbgtRQtZPyO7WY0iFVPEsckkqYxp918fMm82wjgnlXa4Uvhf5Z871Du+Q
-	A0fZ8fH2qpogNVOEWXT/S8bSc5TEIfMswU4+FaLRpArtqZOUuJHDfAvG0i/oaTeRNyOCj4+xwWi
-	EjoU9EehJbKpOpQJe4vXnkAqy4ZM7RlPtPfHfXGKfs0UTUkwMhNwp3WrGa1lFHtgyCsjoKYr4fd
-	Wt2wJiJy6/RM3NnlH+Tz+bzmWDyfZ0XwCVUHXX7KkYyAf188NPVrnRkeEk0A5Z3vXo4lBTvGAop
-	bAz2DjAKjnpoYE+hFFv5Hls6Q==
-X-Received: by 2002:a05:6402:21d4:b0:6a3:f63a:4997 with SMTP id 4fb4d7f45d1cf-6a682567131mr2048216a12.3.1788338942157;
-        Wed, 02 Sep 2026 01:49:02 -0700 (PDT)
-Received: from [172.24.138.145] ([137.71.226.102])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a67f895f29sm764636a12.2.2026.09.02.01.48.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 01:49:01 -0700 (PDT)
-Message-ID: <0c5a657d-e134-49a7-b2cd-82f293685cb7@gmail.com>
-Date: Wed, 2 Sep 2026 10:48:58 +0200
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="dhQNi34G"
+Received: from pps.filterd (m0516787.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6826Vkfq2268882;
+	Wed, 2 Sep 2026 05:27:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=c8Rp8
+	EOzkyMI8boZQTY40lparKG2slm87g2a/+q88n0=; b=dhQNi34GPtmEpMgqpZjfx
+	c1JN7PV2F+8nAR+qyvx59EU1KVqJr+6C44PL1nZCQWfaz83QZZrOBzZUHPfcYHjy
+	nju4DWFEGyWtE6uix+ydgpTy3Nz2D3mAFL0QMidsNbRof7GQp6WSZ1TdGxAtJ1rl
+	qz/J1Kvs60UYRVA2b6zTeDDqoYdVdI6I4RCHfs06SGxgCAhaxX90JOjXISJquNrP
+	W7dC1qTJhG3tRqtDO5GqVGUb1FsdpNKjKjEUYFD8toOcSNMKVsFW8YHIAfI43Wr0
+	mkP7EJOA4tSCxGj/9uXu5MKCzx8OsnrAo7bAKZXET1hmY0zZT5Z1s1waLDWW3y8j
+	A==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4ge0yqmax2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 02 Sep 2026 05:27:15 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 6829RENd029577
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 2 Sep 2026 05:27:14 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Wed, 2 Sep 2026 05:27:14 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1748.37; Wed, 2 Sep 2026 05:27:14 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Wed, 2 Sep 2026 05:27:14 -0400
+Received: from HYB-e1y2fvUQ3cx.ad.analog.com ([10.32.223.174])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 6829QU5Q032677;
+	Wed, 2 Sep 2026 05:27:00 -0400
+From: Janani Sunil <janani.sunil@analog.com>
+Date: Wed, 2 Sep 2026 11:26:15 +0200
+Subject: [PATCH v11 1/3] spi: dt-bindings: Add spi-device-addr peripheral
+ property
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 3/3] iio: dac: Add AD5529R DAC driver support
-To: Jonathan Cameron <jic23@kernel.org>,
- Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- David Lechner <dlechner@baylibre.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Kent Gustavsson <kent@minoris.se>, Conor Dooley
- <conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-spi@vger.kernel.org, Kent Gustavsson <nedo80@gmail.com>,
- linux-riscv@lists.infradead.org
-References: <20260827-ad5529r-driver-v10-0-38f2be07b824@analog.com>
- <20260827-ad5529r-driver-v10-3-38f2be07b824@analog.com>
- <178813261957.2788519.4929586195765891569.b4-review@b4>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <178813261957.2788519.4929586195765891569.b4-review@b4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-ID: <20260902-ad5529r-driver-v11-1-301c491a0719@analog.com>
+References: <20260902-ad5529r-driver-v11-0-301c491a0719@analog.com>
+In-Reply-To: <20260902-ad5529r-driver-v11-0-301c491a0719@analog.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "David
+ Lechner" <dlechner@baylibre.com>,
+        =?utf-8?q?Nuno_S=C3=A1?=
+	<nuno.sa@analog.com>,
+        Andy Shevchenko <andy@kernel.org>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        "Jonathan
+ Corbet" <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Mark Brown
+	<broonie@kernel.org>,
+        Marius Cristea <marius.cristea@microchip.com>,
+        "Marcus
+ Folkesson" <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara
+	<daire.mcnamara@microchip.com>,
+        Paul Walmsley <pjw@kernel.org>, "Palmer
+ Dabbelt" <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, "Alexandre
+ Ghiti" <alex@ghiti.fr>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        Janani Sunil
+	<jan.sun97@gmail.com>, <linux-spi@vger.kernel.org>,
+        Kent Gustavsson
+	<nedo80@gmail.com>, <linux-riscv@lists.infradead.org>,
+        Janani Sunil
+	<janani.sunil@analog.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788341190; l=1442;
+ i=janani.sunil@analog.com; s=20260507; h=from:subject:message-id;
+ bh=ZKN1B2gZYBwuyNnxocxDDBrNCih2O5jweGLmrMvotJQ=;
+ b=YV6+BagmjHIANYKMpll8awUZGvHE9RXhITbbff+8bDx6XSROypy2AliYNpFziJAKJLWLVhICl
+ 5gDLTQQQ9P9DFdwvuwBOEsR2ze7gchNXegu7e3iSZH+FRPcc9FfFQik
+X-Developer-Key: i=janani.sunil@analog.com; a=ed25519;
+ pk=e25MyjRLPY3RWrYm/LrJ+/+t1MZJUbkgIW5CZg+g+hA=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: vkC6VWBQxx7MQBNKck2Gg-VfjLxTmiNp
+X-Authority-Analysis: v=2.4 cv=S93pBosP c=1 sm=1 tr=0 ts=6a97ebf3 cx=c_pps
+ a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=0sLvza09kfJOxVLZPwjg:22 a=OmVn7CZJonkx5R5zMQLL:22 a=gAnH3GRIAAAA:8
+ a=XYAwZIGsAAAA:8 a=pGLkceISAAAA:8 a=p7DZuduEnTu05McJuzUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=E8ToXWR_bxluHZ7gmE-Z:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTAyMDA4MiBTYWx0ZWRfX7k839VeRMWQL
+ L9OgRK1TKLBM8j4Y8y8/2AQ+BRTe0pIJG3fUC7WFJSo9QfmLVyKDp63NFbPMt4m6+3w4VXqYilW
+ HF6WbChA2sMKACX2NHZ4xJtKE0IMclv4l7BLNH5I0XM1Ik2sQKDoqw1zLln2bAQxbGrWI36V5rt
+ nm7Ri1lbJKiTBvcfE/XGMTATOVBqL77c6QeJwnGGNTr2GlV7Y90K/hBXr6Do11ymhsZzyHT6b7Z
+ KrHGXGiKc+pRaFwHOqKTlRuPqQDKHsDJVh2xw5Mf3cQuQt8CHn9bmo0EikPhw+yltVzeLebXRaB
+ LgTiuCwQHOJu5DSwxcTeQ4ablo5arztyO6OHkvmk/VDskvcFBRNIclhKVVOFJIGZpDiBjpmQ3/H
+ 4DvSooe92jvz3XLVe5hZ9NVyaS5yKw03OI1XmrW4bxMN+s+Qu79yi44rHMktywa89FSE0jk/qhd
+ AGuUcwU4Gzon3ath/Ig==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTAyMDA4MiBTYWx0ZWRfX1ts2HLrsdW7h
+ OTyZqSW6uH8c1MsjjPSPLufurMmjy6Vpil1yLlErmQ9DjF7jzXn20uXJQnE+dffqieue45JGxij
+ VGIY1w7Mc4+twggkVRQyb0i5wJFIgSQCRfc30C9XAoJyjqgZvb5A
+X-Proofpoint-ORIG-GUID: vkC6VWBQxx7MQBNKck2Gg-VfjLxTmiNp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-02_01,2026-09-01_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 suspectscore=0 adultscore=0 phishscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609020082
 
+Some SPI devices support sharing a single chip select across multiple
+physical chips by encoding a device address in the SPI frame itself.
+Add the generic spi-device-addr property for describing these hardware
+addresses. The property is placed on the SPI peripheral node and may
+contain multiple addresses.
 
-On 8/31/26 01:30, Jonathan Cameron wrote:
->>   
->> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
->> index 992f8930f95c..8dc644522b1e 100644
->> --- a/drivers/iio/dac/Makefile
->> +++ b/drivers/iio/dac/Makefile
->> @@ -18,6 +18,7 @@ obj-$(CONFIG_AD5446) += ad5446.o
->>   obj-$(CONFIG_AD5446_SPI) += ad5446-spi.o
->>   obj-$(CONFIG_AD5446_I2C) += ad5446-i2c.o
->>   obj-$(CONFIG_AD5449) += ad5449.o
->> +obj-$(CONFIG_AD5529R) += ad5529r.o
->>   obj-$(CONFIG_AD5592R_BASE) += ad5592r-base.o
->>   obj-$(CONFIG_AD5592R) += ad5592r.o
->>   obj-$(CONFIG_AD5593R) += ad5593r.o
->> diff --git a/drivers/iio/dac/ad5529r.c b/drivers/iio/dac/ad5529r.c
->> new file mode 100644
->> index 000000000000..52601cbf28d5
->> --- /dev/null
->> +++ b/drivers/iio/dac/ad5529r.c
->> @@ -0,0 +1,536 @@
-> Why do we need those outer () ?
->
-> ...
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Signed-off-by: Janani Sunil <janani.sunil@analog.com>
+---
+ Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-The outer parenthesis are required by checkpatch for macros with complex values. The same pattern is also used by AD3552R_CH_DAC() in drivers/iio/dac/ad3552r.c
+diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+index 880a9f624566..4894196c8f9c 100644
+--- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+@@ -142,6 +142,13 @@ properties:
+     minItems: 2
+     maxItems: 4
+ 
++  spi-device-addr:
++    $ref: /schemas/types.yaml#/definitions/uint32-array
++    description:
++      Device addresses used when multiple peripherals share a single chip
++      select. The array allows one logical peripheral to comprise multiple
++      physical devices, with one address per physical device.
++
+   st,spi-midi-ns:
+     deprecated: true
+     description: |
 
--Jan
+-- 
+2.43.0
 

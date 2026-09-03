@@ -1,236 +1,189 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6352B424646
-	for <linux-spi@vger.kernel.org>; Wed,  2 Sep 2026 20:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788380002; cv=none; b=pMQoTfB6S8kHcDPY7HlsXFyEbaWz/kYWde0p08vB2ekFoL532oEkSnkZJTBWEz2pkZMZLqDllctdA2iG17y6svKNr4GkR57GdERXBjqJqw2rh2+QPwSYw6jnzQJTqTtY5IJP3CUlwzAvo2YGImkMw9K7cHaRGtokxbV914mjiEQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788380002; c=relaxed/simple;
-	bh=gBn7jCjW9/1RWJD8NyT5yfQPPWsYf3qMJi0i9yM1c48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K6Vq8JwJ2E9bTUHUX4lgIeYGMnu1L7dqBqrC4RbINCg2Peg6eLm0YgovbVzTCQGtxfdlc9IpI7E0mYtBnwLHVMkJ4FcRj6x6i3ZMwqCBm6uarqCwewJRwld7OABTCYHYJHXi7LZy15r/i1LFkFxLbXckWgEoIcujTAYs3wXqKiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=DUOZ8VQI; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2161E38838B;
+	Thu,  3 Sep 2026 06:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=60.244.123.138
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788415994; cv=fail; b=K3m2fx4ZrGMR13wiTj7ffMP9gfTIlgun0mvl+uj4NLhfCxLiEP68x6zRGj1OOsnZEdSPUWRbfC/YKizoVN2LBV1PGrTpPPFnlUwJLgqiCPCCsoYWuTNGVpNMD+BNLnCf17cidHs/8VDZ+CkCngTQIiT1WQl+V0keVGLVu6YsESY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788415994; c=relaxed/simple;
+	bh=kw7PKqgLm+1SKejzzHvy1Lxf5Pn2WLEqU2T29/7r3vg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Iwa/t/PkPrtaZbujaj//vJW31bTio1UCn6kIbmxbO6dQ6oAZqMPFEYrvKxVj59wcCDi8ofZL8k7t7aiR2BWUXbfyrMrbY5MbluUi+2AOjO01nr0xjPJ/bTiM3GHkqaupM7GUJLvFmNwACztLhV0NgfldqDpEwBlkh1HXji3rb/Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=YcpaNLGz; dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b=jxLKsC4I; arc=fail smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="DUOZ8VQI"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4b1ba286f6bso215323b6e.1
-        for <linux-spi@vger.kernel.org>; Wed, 02 Sep 2026 13:13:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="YcpaNLGz";
+	dkim=pass (1024-bit key) header.d=mediateko365.onmicrosoft.com header.i=@mediateko365.onmicrosoft.com header.b="jxLKsC4I"
+X-UUID: 87911e84a75e11f1b1788b6acf885367-20260903
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=MIME-Version:Content-Transfer-Encoding:Content-ID:Content-Type:In-Reply-To:References:Message-ID:Date:Subject:CC:To:From; bh=kw7PKqgLm+1SKejzzHvy1Lxf5Pn2WLEqU2T29/7r3vg=;
+	b=YcpaNLGzhffhop8Ifzchanf8u4lKRTOV3YK8Hs9oT6sbH563+kMjXvHc6CFGDuteBCwJPJckz1vJFJ/0+KotL+Wb9QLQiWtyGD1enw0rqd3HoXzSqTPQEoHqi/9I3sIcQ0JkXalmC0Bi1CgEa3XRf84TQ/6zAYoGQFVFNbLoLKw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:7bff213d-9e82-411b-be7c-7fecad4ef60b,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:a4a96296-8382-4d0c-b42c-b0965a0d23b4,B
+	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
+	Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-
+	1,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 87911e84a75e11f1b1788b6acf885367-20260903
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
+	(envelope-from <ot_jingcheng.ji@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 35136598; Thu, 03 Sep 2026 14:13:06 +0800
+Received: from mtkmbs10n2.mediatek.inc (172.21.101.183) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 3 Sep 2026 14:13:05 +0800
+Received: from SI4PR04CU001.outbound.protection.outlook.com (172.21.101.237)
+ by mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 3 Sep 2026 14:13:05 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iyjehG6g8qzIgm4/0No2zsCHM4pS99NdrmPzGNJnEdIeBAgJmS+k48J6SDW61FfxDIibCbCZ188dE5R+aZqt04vlsEyAWBTCcHAZM1SF+DyiDWLLf1t4hzlN2Sa8N6roReH8Tx3YdYCSP04ukn3221H9PLMzrHSAwZ/M0L04z8EIRVmpFF1HIPgXiVjrjNINprYGMBKHAknQlT3BD2H2spk2JIvUFAmVAh1K5XPDlw+LGOcl1qBwcL2XqFt3aXSAXdI3SxA2H0SEpmn5jQ0GME3ureiCK+uYlzGK38CwoQuP0c0LbDvbWG4A/oJFH5vlkkNeuiXUgOMSAKfQVWVtjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kw7PKqgLm+1SKejzzHvy1Lxf5Pn2WLEqU2T29/7r3vg=;
+ b=Ly68x8v/hYy1ayFKMUK00WVWCLlCxdVa2wtNIAZXBRl7Bm3zWXxmcDaqbVPxS3V4m4W7a1JlGd32/RUymXwvoY7Em9dp89HMo+nVkWNKqmG501cIC9gDGS6JA31/1Up+Il4XB0cm3P4uQKUZTFa5bqZcWdhUTWhB2C2eOzbC+PRGH9nk3zFcMF3JP+oprQp+OU3752Q08Z0AVQT4Vz0dsdKr2moNAlQ3gxm6/FbQpQT6Ynvege30LmQxRnTId/NlnQUol0/Se5DCsgSvlSX7QdKr5J5sDK8+lNh17xbwZi+m1TCCp65hw1JdeonwzlUrHWqQZaRk+b7lJgZ77xEY0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mediatek.com; dmarc=pass action=none header.from=mediatek.com;
+ dkim=pass header.d=mediatek.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1788379998; x=1788984798; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LK9aotORi87rRhUj6UK1F5F8i5HbF9lJJNEH2vwmoh8=;
-        b=DUOZ8VQICwiwhVLAY+mpuOzr91bQI56li5yAzKb3IGSV72GE3S5JBKdNCKdP9vmASq
-         +ED7oykENRyJBSbekPGNIjpbtF72/y90RehMQ5SWF0g7VJ8+10d9NPHrwS3WfK9GWA3N
-         A0yGuK2JLLqK6cV3fnEw+uKqTxmiuiCdzSI+3BTLNHQQyvhBzd4ODrCBWQDgPPOYikvW
-         3kvlM4JGJlVVm7uN2TcLN6+Z88d8Zt+Pmyn6S0abiz/YpCJ0lcIDHZdjrryEOLJ9kbny
-         j36ghvqwGWlIP/KShv+/iT1Rh4LuhIoT8MbckAQSmwop9TMDON4WINGrFuIBGn4OjX4B
-         EAfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788379998; x=1788984798;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LK9aotORi87rRhUj6UK1F5F8i5HbF9lJJNEH2vwmoh8=;
-        b=CxVo1b/skHLDaMqRrkBKG+hde/rJaCPITt/yoklfe6zrRsXBhkXXFx42/Yu+pFEem8
-         2zIzCKNrOnX9ssEhdy0v+NDQrFxnHEV+e1nl30wptXkFumYwL3UJWVw0GWW1G9sh5y6L
-         oj8ZgLr4q4XUfFNmwuNN0wgGAdtKw/2Zu7YMUkB8m8PFAGG/Ho3xv7H48JozgeTLp0V1
-         JLqJUVSWymT8Jo/PiroelbxNn+CCwNPj3Uyx4nF1ouAzsXxOcvZ/mvM37MCKG2uy06cQ
-         nU53MX9e+JnYBiISzGbycHWtlnOF/U0eMZDxRjLcm23iAaj9FXlkZwvV7ghDWy4u1bjW
-         MW8w==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+yChzvIMG3kvfaukkCzgbOT2ZYtwN748JEGBuPgtTl5En6WUNvTwvkBCXpQHUs1ydDjg60SBGDws=@vger.kernel.org
-X-Gm-Message-State: AFuF++m0NzsD7JX/3HSRKATZAliFHDIhlsXhsNg8RzF7kg7DBgQi/yen
-	aePYPZQ6xihEFVSyVN6BIPb3GD32l1lLJ9zIxKZ043czt4si63ri+cwXqSW/3hC8iIs=
-X-Gm-Gg: AR+sD11FERUX2YHRe8EEilzdLNefdNzoko2xb674P/BW3mVSlx+pvCpK1HXXyrfx/FY
-	o/BBIvzB/pMWHCxm5Gp2j8ZrTOMHpMfOI7mfPVuX73deEcoXAifTis4JR9nU/YbXJW0f2398VEG
-	Ip5rmOlDBjJ+y48gdnbM5Tc0IPqv/CP/IOV9JXdNFLMDuWqEjn4+PF+Qgc7jFwEA9A+leI60b/k
-	7JYdjuYf8Iftv2956BY76kGO/VCaPH5gsGl0KcnpUviYK3XiNDGSa/B0sWif2yWvHHJ5jsTt7/X
-	7vy4g/aILjRqKwWgGE5bRy+PnZSAR4zkZuV8GG1xBk1ond7ZdHN8KU/xOTZAgU0b8FjIwAK9S0J
-	AAQ84CVigUndtJbWiFxuNPXnO0Eg/VdVgtgifemTelSnVVL7htPksAbJ2GjyHb1qZG1pCeMUUlE
-	pXy3NSiaLFi+NJaPWjoDlxuVDfUzPm+TCTXZSqY/8fbIbKfTydyaj4vhIOklN0+VLK9fj7sixyN
-	+ZKKvAj+5OWIDdMSB3FPJROlPt32Uwa/CQcI/Yu
-X-Received: by 2002:a05:6808:f89:b0:496:976:acad with SMTP id 5614622812f47-4b7d9e50996mr1248833b6e.1.1788379997955;
-        Wed, 02 Sep 2026 13:13:17 -0700 (PDT)
-Received: from ?IPV6:2600:8803:e7e4:500:518a:9db8:615b:293f? ([2600:8803:e7e4:500:518a:9db8:615b:293f])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b698a38f62sm2719950b6e.7.2026.09.02.13.13.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Sep 2026 13:13:17 -0700 (PDT)
-Message-ID: <33e466d8-962b-44a3-bc32-7afb00821428@baylibre.com>
-Date: Wed, 2 Sep 2026 15:13:16 -0500
+ d=mediateko365.onmicrosoft.com; s=selector2-mediateko365-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kw7PKqgLm+1SKejzzHvy1Lxf5Pn2WLEqU2T29/7r3vg=;
+ b=jxLKsC4Itu4PNAKRwgMvqt8OuM1zJXJHtkahmAmjiienl59WgHpH0Amfyxb8vY/rDResM8ja0x2uWHMFyXLcR68OIVSJNKuqizfeuLPWqmuI0DtKzhxW5pj8GIJaXWD2i/rlGVc5Pcm5a7hoBdxP0ELIehupbA4vs9+28HfDZu4=
+Received: from SEZPR03MB7703.apcprd03.prod.outlook.com (2603:1096:101:132::12)
+ by KUXPR03MB10381.apcprd03.prod.outlook.com (2603:1096:d10:6a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
+ 2026 06:13:02 +0000
+Received: from SEZPR03MB7703.apcprd03.prod.outlook.com
+ ([fe80::6b83:8640:56bb:d507]) by SEZPR03MB7703.apcprd03.prod.outlook.com
+ ([fe80::6b83:8640:56bb:d507%3]) with mapi id 15.21.0360.008; Thu, 3 Sep 2026
+ 06:13:02 +0000
+From: =?utf-8?B?SmluZ2NoZW5nIEppICjnuqrkuqzln44p?=
+	<ot_jingcheng.ji@mediatek.com>
+To: "broonie@kernel.org" <broonie@kernel.org>
+CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	=?utf-8?B?SmFycmllZCBMaW4gKOael+ijleWTsik=?= <Jarried.Lin@mediatek.com>,
+	Project_Global_Chrome_Upstream_Group
+	<Project_Global_Chrome_Upstream_Group@mediatek.com>, "AngeloGioacchino Del
+ Regno" <angelogioacchino.delregno@collabora.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	=?utf-8?B?VmluY2UtV0wgTGl1ICjlionmlofpvo0p?= <Vince-WL.Liu@mediatek.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	=?utf-8?B?SnVzdGluIFllaCAo6JGJ6Iux6IyCKQ==?= <Justin.Yeh@mediatek.com>,
+	"linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>
+Subject: Re: [PATCH] spi: spi-mtk-nor: Get clocks from devicetree in bulk
+Thread-Topic: [PATCH] spi: spi-mtk-nor: Get clocks from devicetree in bulk
+Thread-Index: AQHdMUuVkRfkMayYkUeIKpHoM9I+v7a4fy8AgAP0xYA=
+Date: Thu, 3 Sep 2026 06:13:02 +0000
+Message-ID: <556d2a683646776d9ef08f790aa118454739d994.camel@mediatek.com>
+References: <20260821090046.2353986-1-ot_jingcheng.ji@mediatek.com>
+	 <b03aa685-3632-4a8e-a292-4d0897ba2c3e@sirena.org.uk>
+In-Reply-To: <b03aa685-3632-4a8e-a292-4d0897ba2c3e@sirena.org.uk>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mediatek.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEZPR03MB7703:EE_|KUXPR03MB10381:EE_
+x-ms-office365-filtering-correlation-id: d4e716e5-3991-43a3-3c1a-08df0982695a
+x-ld-processed: a7687ede-7a6b-4ef6-bace-642f677fbe31,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|18002099003|22082099003|11063799006|4143699003|38070700021|10067099003|6133799003|56012099006;
+x-microsoft-antispam-message-info: lwgNFYYARHvX8HMPM2+ALBdBLQaG+AdJ907SRpvSUAWsRJysDf7OUDEWfBlVK8Ki3IJIkfnOHc5XI6y9BhhaI9B2/Jxnv+g13FCs17mHjoWPTOQzs9ebnFEnc70AR+ah2C2reElUR3u9HPWPzTA+X3NAHRP+wmrXWiGUSxslLub01RkV3BRfbyte4XGRcufp2gT06NGyuo59vRWcymHy4+Z0EdQQZkOl+OKkCptI6U1hO1/R2rVFeeU1GWz/jaXkQsD5CSlH0zcrAYP0x2/8GjBzw4xa0rZ0QW1zrQKAKNX8j78/yKDh+mdNNoejfUPBiaBlE3kz54ZOnmnwsdIhouZ5pHPyPVReeI+8ZB1OP53a8KPpMT8G7vUKxx2RVLG1MujXzlgJs4yYKW/UBq1ehLCDRjLz2p0h2vjCALDuWuZg8GqdyTOyJRt4xo9zDF9H27NUSb11brX8a4C+pLoNobHF8RnIRDWLuJaDg/hUnREdOy61jHTPXvOha/oeEQTMAU83jTaQkUDJaT8ISE9TGwGG5OgE3AOR7XuytP5bDm91N4Iu5lZ+IIXh7fSttEXePZmOWCuN8uzKyf5xYvUwxmH2ovB5l9la950POLtdzHcYy7EvyU97qXSsP4GMrjIP6vP308paMv9Vr04nujTgCcHVcQ8DUpqJz9wmJgl7NvaS6A91hyoDbBdgg8wjdQ8V0b8uCUa2MqcKRQrRtCuAYVTc3Wpxs6mN7QFQG5JmvB8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEZPR03MB7703.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(18002099003)(22082099003)(11063799006)(4143699003)(38070700021)(10067099003)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dkJrd2NJOTk2NmJGWXhTbysxbzlwZGxlQWF5UnpyNmRNKzZFSjVrMk85aE4v?=
+ =?utf-8?B?cHcrb1Qrc251SmEyR2tsRnRCZmZ5U0tZc3FUVTgwWkNIdG5kMEJ1cHBpNk9h?=
+ =?utf-8?B?TitjbmVjMHZvQU9qcE84aDBnWUlaYzdSd2NqbVNVaDMrODhscnBEenZRUHpR?=
+ =?utf-8?B?amxxblIyS2RKNTZzajBvd1FVOS9uOHRKVUhra2I1TFdWc2NyRXQzNXJwQTY3?=
+ =?utf-8?B?ZnJkdWh6YkZLNy9tdzhkYi84V3g1MzRhOUNXQzhZTDM0WHJzWGQveWl6OVVi?=
+ =?utf-8?B?SFFONTZ5aEQ3dnVhMEVHazgxOUlka2RRUWdIT2dlM2IxK2tKd0ZhZUkzSnhS?=
+ =?utf-8?B?Z1c2VU5RbysrUDR1UmpiMkYxMmppSmVLVG4yOUg1R0JEOGo5RVNGWC8wY3dM?=
+ =?utf-8?B?TXFUNlo0d2hCSTdhaWllaC9HMlZoL1NGazdEMFR2RXY3eE5DS050N1RYUzJO?=
+ =?utf-8?B?WnlqalcwNEJ6ZlZNK3ZISGtXcmwveGgycWQvNWhGcm02eisrWFJuRDUrZ1ZW?=
+ =?utf-8?B?WE5ZM3VwVnBzRGFsakVJVElFYlRTM0xhVHdmOTJ5Z2lUM3U1RTE3ZTd5UUVa?=
+ =?utf-8?B?YjFDTnU0QVg3ODVWcWRCZ1dJNmZibjMwUXRvQm1SeE1pbndiendnY016Ni90?=
+ =?utf-8?B?YzIwcjV2S0RjclRPZ2wwTEgwZ25HMHRCLzRvUm5pVXhqVFArTlc1WFpmNTNP?=
+ =?utf-8?B?US9YOU9rUVl0bzVsOUlCTGgyYjVBdUZrV0Y2THFmd3NVL1pEOUR5VFNjbURj?=
+ =?utf-8?B?QjdvRmdaSnFiZ0dtSVZNRWJ1ZXdvYnNhbUdwbE1CcU94bTJkTGdWSkFtUUpX?=
+ =?utf-8?B?M1pqelM3TmRzZXN1L1hFWmM1QjR2OWlvRlFkVE1VaUMvNndHYmt6dlNMVGF0?=
+ =?utf-8?B?d0J6OE1GaU1XeWwxbjFueWU1TjJvMy8wWkhuWTBIQXhUM2NxVTNwWXRMdHRG?=
+ =?utf-8?B?QzhoT3gwZUNucGdPYkFwZ1Foc3ZUUllBRXVES2QxT3FOa1lxZUlPSTZPWlBR?=
+ =?utf-8?B?VkRrYVhaRHdXTFp6TEpKWFNIWFE4bGgzSFFUemlOWDZtb1FVdVFLdHI1MGZJ?=
+ =?utf-8?B?UVNJTlpVTVN1TmxGdVAwOEEyZ2pEcGtuNHBuYVRIQkpwMUJBWFRrclB2T0VU?=
+ =?utf-8?B?S1ZRNWc3STh2bUhVNC9GTjI0V2NnSHM4eStRVC9DWW9DR1V4NmN5SXdkenZz?=
+ =?utf-8?B?ek11dVY1WW5xNVl0SHQzUlJxZ0tncHUwRmIxTHFGcHZmRWpSNW9LM1RCZFJh?=
+ =?utf-8?B?bUQyVVNmd0VCSmpEOHBJUmZPdHpvZjFNYnZWYmxaWG1USW5WYTRlSm1UWEY3?=
+ =?utf-8?B?bFJmN085S1psUldKVG5YbXpsd1ZPYkFMUzBCaXpFSS9EdHhjNm1DN084cEhG?=
+ =?utf-8?B?SDNoUmFTa21BbEE4ZnJjMTg1YUNDa2dlSmNRZEV4a0ZXT29xSy9qSGwwVlVj?=
+ =?utf-8?B?Z0pXK2VrUHUwRHZ1QU5WVU5NNWVMaituWE55Zlk1VHJIMDZhRFF4R21USElp?=
+ =?utf-8?B?WFVQNEs0SUYxRG5xQm9mTVFENnBJQnZ4Sjg1cW9DVnVMTGdJOWpOd2doSjVP?=
+ =?utf-8?B?Z1YybTJ2UkVJZ1kvaEI0TGY1TnFaV1VIWFpuOVN0S3Awd1BSdVFLR1E1VjE2?=
+ =?utf-8?B?aUQwOE0zWjViZERYL2ZRaFUzb1lZdUhPV1RMS1Evd2hwdHFET0ppL3I5ZHQ3?=
+ =?utf-8?B?T0hYYkRRcG1OemRtMHUyRHV3aUt2RVRMeVFNMk90Nm9ITTJIUmVja1FqaW1v?=
+ =?utf-8?B?R0RHcWptWFVaYit2bHBtS0c4bXF3OHk2QjJzNm0yVDZqVXp2L1dETmdTdmlZ?=
+ =?utf-8?B?SkNmSVJhL2NxUG9zcDdmYnpkczI1SWFhOWUyQm5KdnNWOEVETG8xQytqQWcx?=
+ =?utf-8?B?Z2RSSDdCejFUMlJlM0xkSjRrLzBGL2tzTXQrWkFiMllrZFA0NG9yUXI0VitW?=
+ =?utf-8?B?VmJuR1pQeWNleFU0Sjhxa1M2ZWJwNHpia1RuazZMNG5iOVhUWncrWEdVc0lj?=
+ =?utf-8?B?eWtYaWlFc3pWSHJLN3RmQ0ZLb0JTUUltbVNqUDZ0QUV0WHJLRFVFWlA2SkdW?=
+ =?utf-8?B?NHhYTVY0M3lNd3lZL2lBV0w1MGFKcURBdE92VlQ0Q1pITEpWQXkwRHlHRjJI?=
+ =?utf-8?B?NmlMWEI0dVVsOGp0b3VHWk9aQnhORHM0TW5FazAwbmVlTnU2eE9WK2Q3TG01?=
+ =?utf-8?B?RjdSd2MzR2QzaHFSYUtFTW9UamF6VGVDTlZmaUFVbGhxTWZrUDBBMGFRTkJw?=
+ =?utf-8?B?Q1BDNHl0M0E0WFlsdFVubVhob0dEaSs3ODN5N1RsTjRqNmVkaVhlVjZGNis3?=
+ =?utf-8?B?dzZVaU1tbU9vWU1qc1IvRThSalRwQmFMZFpPZnB5ME5iaU5ia2Z4dTlhRWlk?=
+ =?utf-8?Q?7hzkMEgODJjvFXKQ=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EE39AC469999B046A946BB0FF24D7EA2@apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] spi: support simultaneous assertion of multiple CS
-To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, nuno.sa@analog.com,
- michael.hennerich@analog.com, broonie@kernel.org,
- marcelo.schmitt1@gmail.com, andriy.shevchenko@intel.com
-References: <cover.1786973376.git.Jonathan.Santos@analog.com>
- <e8870b405f29cc89439701d1fcc7e88781aaab22.1786973376.git.Jonathan.Santos@analog.com>
- <e2016946-83e8-46f5-975d-634a219417e7@baylibre.com>
- <aojo2zHCrBPmt9S/@JSANTO12-L01.ad.analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aojo2zHCrBPmt9S/@JSANTO12-L01.ad.analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: U7RUgEB1qshDRG3VJ/46bM1oRKRC/RdO/mjaZi5U+6QPsCMm/qHhO1KBHKzfkaFBZ/g+10GUi4a7VrUwGIGnCq3EVJi1xQLizS6FUeqVeAvABjRMHwOCelQUIx7JDChGb/dVHWdkQrE4KWNvLQvd1ccohnfak93hh3FpvXxPftEvrr7xwkfYhFc/c9m/4/ZmpvDZnIAQp/Sro9gXt4oJmJ8T0yFfCOphOphwuN1sz3PqRT+KlBPoRymvdZiJ88Vregd7SU6iCN8KnCE8DoPzz2mj5w9t2YzpAl7IXQaF9FOSBEq/h8lDGvTfIUqmcI8++cGxoH1SLmZmZIiYfeKQMw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEZPR03MB7703.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4e716e5-3991-43a3-3c1a-08df0982695a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Sep 2026 06:13:02.7301
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a7687ede-7a6b-4ef6-bace-642f677fbe31
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: KHLw2ZCJt/hiXP2HxtP/AAJzWl903JpW/m9sExiTmJecFiCY4t21I8TmIT8s5EfTWjDkUS+W6pPxVhNUu0q0MMT7E5zidbpo2+CD0ciDYlo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KUXPR03MB10381
 
-On 8/21/26 7:10 PM, Jonathan Santos wrote:
-> On 08/18, David Lechner wrote:
->> On 8/17/26 6:32 PM, Jonathan Santos wrote:
->>> Some SPI controllers allow multiple CS lines to be toggled at the same
->>> time. The existing code always used CS index 0 when tracking the last
->>> active CS in spi_set_cs(), and unconditionally set cs_index_mask to
->>> BIT(0) when parsing DT, both forcing the single CS usage.
->>>
->>> Modify spi_set_cs() to iterate last_cs[] using each logical CS index
->>> instead of always reading index 0. Modify of_spi_parse_dt() to build
->>> cs_index_mask from all parsed CS entries rather than hardcoding BIT(0),
->>> so the controller correctly identifies which CS lines belong to a device
->>> when asserting them simultaneously.
->>>
->>> Board info, ACPI, and ancillary device paths are not updated here.
->>> Board info would require an API change to accept an array of CS values
->>> and is left for a follow-up when we have a use case for this. Ancillary
->>> devices are by design single-CS, so multi-CS is not a current use case for
->>> them. ACPI represents the CS as a 64-bit integer with no established
->>> convention for encoding multiple CS indices yet, so any extension there
->>> would require a separate specification effort.
->>>
->>> Acked-by: Nuno Sá <nuno.sa@analog.com>
->>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
->>> ---
->>> Changes in v3:
->>> * None.
->>>
->>> Changes in v2:
->>> * Include Summary describind why the other SPI paths were not addressed
->>>   here.
->>> ---
->>>  drivers/spi/spi.c | 9 +++++----
->>>  1 file changed, 5 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
->>> index d9e6b4b87c89..55fb96fea243 100644
->>> --- a/drivers/spi/spi.c
->>> +++ b/drivers/spi/spi.c
->>> @@ -1090,7 +1090,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable, bool force)
->>>  	spi->controller->last_cs_index_mask = spi->cs_index_mask;
->>>  	for (idx = 0; idx < SPI_DEVICE_CS_CNT_MAX; idx++) {
->>>  		if (enable && idx < spi->num_chipselect)
->>> -			spi->controller->last_cs[idx] = spi_get_chipselect(spi, 0);
->>> +			spi->controller->last_cs[idx] = spi_get_chipselect(spi, idx);
->>>  		else
->>>  			spi->controller->last_cs[idx] = SPI_INVALID_CS;
->>>  	}
->>> @@ -2594,10 +2594,11 @@ static int of_spi_parse_dt(struct spi_controller *ctlr, struct spi_device *spi,
->>>  		spi_set_chipselect(spi, idx, cs[idx]);
->>>  
->>>  	/*
->>> -	 * By default spi->chip_select[0] will hold the physical CS number,
->>> -	 * so set bit 0 in spi->cs_index_mask.
->>> +	 * Set cs_index_mask to indicate which logical CS indices are active.
->>> +	 * Each bit corresponds to a logical CS index in the spi->chip_select array.
->>>  	 */
->>> -	spi->cs_index_mask = BIT(0);
->>> +	for (idx = 0; idx < rc; idx++)
->>> +		spi->cs_index_mask |= BIT(idx);
->>>  
->>>  	/* Device speed */
->>>  	if (!of_property_read_u32(nc, "spi-max-frequency", &value))
->>
->> I have the same concern that sashiko calls out here.
->>
->> Existing users of multi-cs (not including spi-mem) follow the pattern
->> that a SPI device gets registered with the CS at index 0 and they later
->> create an auxiliary using the additional CS. This would cause the main
->> device to now assert both CS. Not what we want to happen.
-> 
-> Indeed, enalbing all CS for those cases would cause problems (like you
-> describe below). AD4080 would be an example.
-> 
-> The devicetree property seems to be a good ideia to fix this and simpler
-> to execute, but the composite device is interesting.
-> 
->>
->> If I understood (and remember) the previous explanations of this series
->> correctly, we have a different case for this one.
->>
->> We want a main device that acts as a single composite device that asserts
->> all 4 CS at the same time. Then we also need 4 auxiliary devices that
->> only assert one CS at a time for configuring the individual chips.
->>
->> So it seems to me like we need a new DT property or some way to be able to
->> tell the difference to decide whether we just use the first CS here or all
->> of them.
->>
->> Perhaps another possibility would be to leave this code the way it is and
->> do it this way instead:
->> - The SPI device passed to the IIO driver is just the first chip (one CS)
->> - The IIO driver then registers auxiliary drivers for the other 3 chips
->>   (also 1 CS each)
->> - These 4 devices will be used individual to handle configuration.
->> - The IIO driver registers a separate composite device that has the
->>   multiple lanes and and multiple CS. Whether this using the same
->>   auxiliary mechanism with additional parameters or something new
->>   probably doesn't matter too much.
->> - In this way of doing things, it would not make sense to have the
->>   spi-rx-bus-width property in the devcietree since as far as the
->>   devicetree is concerned, these are more-or-less 4 separate devices
->>   (from the SPI point of view).  Instead, this new composite device
->>   registration function would be the one setting the number of lanes
->>   based on the number of chip selects.
->>
-> 
-> My initial idea was to use the main device as the "composite" because it
-> holds the hw description, therefore the multi-lane would be handled by
-> the existing flow (that's why the spi-rx-bus-width property was
-> mandatory). This way each ancillary device would take the lane index
-> from the main device. Using the main + 3 ancillaries for individual
-> access and the new composite for simultaneous is a great alternative,
-> but removing the spi-rx-bus-width kind of excludes the information that
-> we are using multiple lanes for this device. Unless we document that 
-
-I don't think it hides it. How the chip handles multi-lane is described
-by the compatible string itself. So it will be up to the IIO driver to
-call the composite device creation function with the appropriate parameters
-to tell it that in this case we need to assert all 4 CS in order to get
-a 4-lane device. I don't think we need any extra devicetree description
-for this.
-
-> "number of CS = number of lanes" on multiple-data-lanes.rst, the 
-> assumption is:
-> 
-> spi-rx-bus-width = <1>
-> spi-rx-lane-map = <1>
-> 
-> Also, it would make more sense to take the lane description from the
-> main device described in the DT considering cases like non-default
-> mapping. Or at least take it into consideration.
-
-I think if we put the CS lines in a logical order, we don't need any
-mapping. For example:
-
-CS | Lane
----+-----
-0  |  0
-1  |  2
-2  |  1
-3  |  3
-
-Would just be:
-
-reg = <0>, <2>, <1>, <3>;
-
-	
+T24gTW9uLCAyMDI2LTA4LTMxIGF0IDE4OjQ4ICswMTAwLCBNYXJrIEJyb3duIHdyb3RlOg0KPiBP
+biBGcmksIEF1ZyAyMSwgMjAyNiBhdCAwNTowMDoyMlBNICswODAwLCBKaW5nY2hlbmcgSmkgd3Jv
+dGU6DQo+ID4gVGhlIGRyaXZlciBjdXJyZW50bHkgZ2V0cyBhIGZpeGVkIHNldCBvZiBjbG9jayBp
+bnB1dHMgYnkgbmFtZS4gVGhpcw0KPiA+IHRpZXMNCj4gPiB0aGUgZHJpdmVyIHRvIHRoZSBjbG9j
+ayBuYW1lcyB1c2VkIGJ5IGV4aXN0aW5nIGRldmljZXRyZWVzIGFuZA0KPiA+IHNpbGVudGx5DQo+
+ID4gaWdub3JlcyBhbnkgYWRkaXRpb25hbCBjbG9ja3MgZGVjbGFyZWQgYnkgYSBmdXR1cmUgcGxh
+dGZvcm0uDQo+IA0KPiBUaGlzIGRvZXNuJ3QgYXBwbHkgYWdhaW5zdCBjdXJyZW50IGNvZGUsIHBs
+ZWFzZSBjaGVjayBhbmQgcmVzZW5kLg0KDQpEZWFyIE1hcms6DQoJVGhhbmtzIGZvciBwb2ludGlu
+ZyB0aGlzIG91dC4gWW91IGFyZSByaWdodDogdjEgd2FzIGJhc2VkIG9uDQphbiBvdXRkYXRlZCBz
+bmFwc2hvdCBhbmQgZG9lcyBub3QgYXBwbHkgY2xlYW5seSBiZWNhdXNlIGN1cnJlbnQNCnNwaS9m
+b3ItbmV4dCBhbHJlYWR5IGNvbnRhaW5zIHRoZSBlcnJfZGlzYWJsZV9jbGsgY2xlYW51cCBwYXRo
+IGFkZGVkIGJ5DQp0aGUgSVJRIGVycm9yIGhhbmRsaW5nIGNoYW5nZXMuDQoNClRoZSBmaXhlZCBw
+ZXItbmFtZSBjbG9jayBsb29rdXBzIGFyZSBzdGlsbCBwcmVzZW50IGluIGN1cnJlbnQgc3BpL2Zv
+ci0NCm5leHQuSSBoYXZlIHJlYmFzZWQgdGhlIHBhdGNoIG9udG8gdGhlIGN1cnJlbnQgdHJlZSwg
+cmV1c2VkIHRoZQ0KZXhpc3RpbmcgY2xlYW51cCBwYXRoLCBhbmQgdmVyaWZpZWQgdjIgd2l0aCBj
+aGVja3BhdGNoLCBnaXQgYXBwbHksIGdpdA0KYW0gLS0zd2F5LCBhbmQgYW4gQVJNNjQgb2JqZWN0
+IGJ1aWxkLg0KDQpJIHdpbGwgc2VuZCB2MiBzaG9ydGx5Lg0KDQpCZXN0IFJlZ2FyZHMsDQpKaW5n
+Y2hlbmcgSmkuDQoNCg0K

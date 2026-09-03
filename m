@@ -1,75 +1,61 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DBB3DF001;
-	Thu,  3 Sep 2026 08:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBAD3BB69D
+	for <linux-spi@vger.kernel.org>; Thu,  3 Sep 2026 08:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788423399; cv=none; b=kDpBOsamRDzaUYANpMMK8lHTMDvtODXagsnolhswqpifh+M0DsrQVc3aFjltL7t3d7Uz/AjOqk3+FVRQebJb9vBvY7pPgn2aLPMeCVW44z9QQ5qh5FHJgq6IhpvvzBsdPeNe+Vx7VkHeZB+BqcEM4s7qfy0C5tTcRmrLpj8Rz5U=
+	t=1788425962; cv=none; b=Fq0dt0QPP6xI7FgKd4yZawsYI0bExMot17/rHYwOvy6c6yc4nNTyLEH4BTYtHz1m22hEU6mLHQhUPc0C6CrKA56B0M/3BiTX7Z32Bo5psPmYIQNj3ATIxaVl8Xzwg3UZbd2gF6hDXez5uHQB7LGufbxGZc+cOHjlTfk2/IAoHLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788423399; c=relaxed/simple;
-	bh=YLfdgrdlzJj/pA2hZxsG9Y8cox2mPc65rtCPL4VHF9o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Fl1Frmsw5upd6PlXeFRSl8SW/eJL9QQEW8dYMXJ+u0o1AxFSPaTLpPHHxAVIwXkKkE8YUu8GooUffuixq+mXkD+hGnpY5d94IZya7erGlbVOPSzVndpbCNknLjrgN+8kRKLRRUR8Hwk+os61LuIdiJS+WTWG9Osx4luQAM/byAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QaeMTs0Y; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788425962; c=relaxed/simple;
+	bh=dM2aRCq36pWI7iwGVCE+8cqzMU2r8e7vq2UZeo3cnJQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=UAylloFRngrv862qO7RlE7DzQ6N6Td0FVAevMtJ00ews9GyYet20DbFHeTOs/OvAwMzkN8HCRB+Cg6xXC0yIB/ho4kvDHeumE/ngXkhDfMBFDbhdProDYgTura3KX15QUX7BFYHB5Xl/h4JnbPBcafBVj1k2Izz/4XZ4ez+Pm78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AeSqpfL/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QaeMTs0Y"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C728D4E414EA;
-	Thu,  3 Sep 2026 08:16:36 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8C227602B8;
-	Thu,  3 Sep 2026 08:16:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4259511C79B6F;
-	Thu,  3 Sep 2026 10:16:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788423391; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=YLfdgrdlzJj/pA2hZxsG9Y8cox2mPc65rtCPL4VHF9o=;
-	b=QaeMTs0YKnXkCj5NgrK/CQd21t8R3DVdCU9qx6WjgKS1bKEHNSM++I2MzZI4MJKbrTaxP+
-	16ZmiVnbkjmkEPiOWLs5bwMoOxAMF1bwkIwtqyKIbXGuQpk37Ru7JfsJZuv554AhEn1XZ2
-	EUfoKHh+cAh9PgfqWHbkJ9im/nNtw3fawjw4jwCYpt+rMPICSqwFdTvzelW+jwtMgJWMTz
-	K7JhWC16MA2GhcGwtwBQHF2HlExG0HGlgj03PGIqAGReKEW2yZzk7hkLBO/ErRQHio5Vdu
-	Tyi9aybLxs5VMNO+ppG94q3zUXl3xb+C7SHCpt+m3YGJpkWE6dWrIsQMDNrToA==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: Mark Brown <broonie@kernel.org>,  <robh@kernel.org>,
-  <krzk+dt@kernel.org>,  <conor+dt@kernel.org>,  <richard@nod.at>,
-  <vigneshr@ti.com>,  <pratyush@kernel.org>,  <mwalle@kernel.org>,
-  <takahiro.kuwano@infineon.com>,  <linux-spi@vger.kernel.org>,
-  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,
-  <sebin.francis@ti.com>,  <u-kumar1@ti.com>,  <a-dutta@ti.com>
-Subject: Re: [PATCH v9 08/18] spi: cadence-quadspi: add PHY tuning support
-In-Reply-To: <ebf61988-9fe6-495b-b1e2-eaeba9f6b98f@ti.com> (Santhosh Kumar
-	K.'s message of "Wed, 2 Sep 2026 15:15:24 +0530")
-References: <20260825171737.776052-1-s-k6@ti.com>
-	<20260825171737.776052-9-s-k6@ti.com>
-	<8aac0c42-fad5-4146-a2a3-b60bdab71a20@sirena.org.uk>
-	<ebf61988-9fe6-495b-b1e2-eaeba9f6b98f@ti.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 03 Sep 2026 10:16:28 +0200
-Message-ID: <875x0m7ns3.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AeSqpfL/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259421F000E9;
+	Thu,  3 Sep 2026 08:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788425961;
+	bh=NT8W3s+FQNb129S/+gDGH9DfSUsA/WYJm/u/1PqPYc8=;
+	h=Subject:From:Date:To;
+	b=AeSqpfL/WpAfHkaWtrBLq2o6CEZmQKeqZVB8fY5iS5xlAVcugLihQ2JcCeT1J/Dik
+	 OsVrqCs6eOnapofmo+XYM9kDtsLPVaKei6z/QzDomlA8nzSqPwAHsrzziEPqBz9Yws
+	 SyVS1frVBV9AoGC+mXwuZQWo9aJ4AnsdZFWcSr0w6x5VlcDULmLnUGxit9wBMkadrJ
+	 oR3YKCtkjNF7OnZh4mCrGgWSWu74F732OYKyGgUGQWE0QB3xgOVjsDJLHah6GIiin2
+	 RP9UBOTEGt05BHubD97EFTI1SmeG3exdSjaP4rX2U1fgISkvds1aKnLwwWtoawGBOG
+	 e4QWduS3V+FcQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A0F381195D;
+	Thu,  3 Sep 2026 08:58:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178842590229.3206159.12347279055096900096.git-patchwork-housekeeping@kernel.org>
+Date: Thu, 03 Sep 2026 08:58:22 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hi Santhosh,
+Latest series: [v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk (2026-09-03T08:09:32)
+  Superseding: [v1] spi: spi-mtk-nor: Get clocks from devicetree in bulk (2026-08-21T09:00:22):
+    spi: spi-mtk-nor: Get clocks from devicetree in bulk
+  Superseding: [v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk (2026-09-03T07:56:28):
+    [v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk
+  Superseding: [v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk (2026-09-03T08:07:09):
+    [v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk
 
-> The DQS bit in CQSPI_REG_READCAPTURE is used for read data capture and
-> it's not consulted during writes.
+Checked 168 series in 3.84 seconds.
+This project currently has 16442 active patches.
 
-In the end, how do you know you can expect a DQS signal during reads?
-Will that work if the chip does not enable it? I still do not understand
-how this can work.
 
-Thanks,
-Miqu=C3=A8l
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+

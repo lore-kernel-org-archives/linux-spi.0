@@ -1,30 +1,31 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE113B636C;
-	Thu,  3 Sep 2026 08:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1435E2D5C83;
+	Thu,  3 Sep 2026 08:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788422847; cv=none; b=PUSv2KX5OWHPQ4k3lB/+9kQgLbAUs2HZQ6o7xfAA9WQYXawaYcAP8V+8pNDJrNdEkoqxLhhsEY9+agwb2V9fmFRX/bG04JViSLlOB6a4/5XvwZf9F2rtbK6yTO1QfBoI0GyEEp6CU8IxLaW8/WcILA6PztHZiFbuCc41BxJ3Yz0=
+	t=1788422997; cv=none; b=m1w8ZV77FnWuQy41QQ0c6puKK98XqxtdcfwBLr0B2VbZZuMFvyVS5hSZooT9gE/D7k/3LqFtfQlBNmOusksfWsOXoAp+sWfBhxstaHeV3AVxGZfJB1nXG9XKUcs3l3ILJJRi0hAZIZY19r/0WqZAq6NxZX3Z+p+tLUv3AjSqktA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788422847; c=relaxed/simple;
+	s=arc-20240116; t=1788422997; c=relaxed/simple;
 	bh=beIb62cHVy+CYxcQZM1LJlMfrvDjLbcIGieklNMDGhA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P6sOITwbPaookAWGb/8x1GIfAcsVfaT6mhGjnIYi0WJCB1Ou6kp4RNmQMp6H0vNscPRxiOZwVNYb0BFOQEIj2NxbIH0OLP2Nj4B9KGSwVRaOBaKiZijxUyAKXEtEbuNiu6Cj4JtE8nKLAlK4Ri1md6p4n5JABFAuTCMIbaL9FP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Ia38we6L; arc=none smtp.client-ip=210.61.82.184
+	 MIME-Version:Content-Type; b=B0dgEn759o8+nkBXwOqM0UirMPAd/jOuasPnNbamEeYjSWSb0Xx86I1/a8XmcYYX4Hu0TD773MmvzB5q7weh6KKznKJaw3PN78PWID+rhTpIe2AGk/JdNN9k2OPR8rMdAov7E40N9nMoGlIss0TxApwtfh/mXZbv2zD6PgNW2oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DoIW6Bea; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Ia38we6L"
-X-UUID: 7b76055aa76e11f18dc8c9802ae25ab1-20260903
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DoIW6Bea"
+X-UUID: d3e00bbea76e11f1b1788b6acf885367-20260903
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
 	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=VUxWm/z7xLtLP5dz8f8UFkQB4ImA8Yg4bPohYdRPwwA=;
-	b=Ia38we6LlI+wABzWxX23BxBJppS59a5DnVbxZewmYM6xkGgTPNJjlAP293x7atIzUG3URT+TIrHlE9YqhgPsNkhN/W18fuxmXMvkTaKeMdi2Xl3c2d4Iq8iUTKzCOh2N+b1qYnaOCArPoq/um9UTfJZrBeeaxQFk91AKMvPsnIM=;
+	b=DoIW6Beanz9UUrohSgtAE20Yt8bqRnCP0s9LaYALJjcM6rCEEQEWPURhB2rC2n48TuXtC45iA1DA3TP+tOhzPCv4ayXcFtu0YEs/z7CpIW6XlSIR+VarBUkdDSmydgfevGrIVov3EoeCI5fJLIwp2J+ehSj9oZ74o879es1te3g=;
+X-CID-CACHE: Type:Local,Time:202609031556+08,HitQuantity:1
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:ada85e6e-49a0-46ab-bc1b-d3a7bcba6b33,IP:0,U
+X-CID-O-INFO: VERSION:1.3.19,REQID:5d43f65e-cca4-4e01-9bd9-7949f0309295,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
 	N:release,TS:-25
-X-CID-META: VersionHash:7db8b62,CLOUDID:92cb6396-8382-4d0c-b42c-b0965a0d23b4,B
+X-CID-META: VersionHash:7db8b62,CLOUDID:cb35c60b-079b-435d-86f5-6a8271106506,B
 	ulkID:nil,BulkQuantity:0,SF:81|82|102|836|865|888|898,TC:-5,Content:0|15|5
 	0|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,
 	OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -32,28 +33,28 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 7b76055aa76e11f18dc8c9802ae25ab1-20260903
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+X-UUID: d3e00bbea76e11f1b1788b6acf885367-20260903
+Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
 	(envelope-from <ot_jingcheng.ji@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 95512855; Thu, 03 Sep 2026 16:07:18 +0800
+	with ESMTP id 1329234165; Thu, 03 Sep 2026 16:09:46 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 3 Sep 2026 16:07:17 +0800
+ 15.2.2562.29; Thu, 3 Sep 2026 16:09:45 +0800
 Received: from gcnsap21.gcn.mediatek.inc (10.17.81.22) by
  mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Thu, 3 Sep 2026 16:07:16 +0800
+ 15.2.2562.29 via Frontend Transport; Thu, 3 Sep 2026 16:09:45 +0800
 From: Jingcheng Ji <ot_jingcheng.ji@mediatek.com>
 To: Mark Brown <broonie@kernel.org>
 CC: Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioachino.delregno@collabora.com>, <linux-spi@vger.kernel.org>,
+	<angelogioacchino.delregno@collabora.com>, <linux-spi@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-mediatek@lists.infradead.org>, Jingcheng Ji
 	<ot_jingcheng.ji@mediatek.com>
 Subject: [PATCH v2] spi: spi-mtk-nor: Get clocks from devicetree in bulk
-Date: Thu, 3 Sep 2026 16:07:09 +0800
-Message-ID: <20260903080709.3049832-1-ot_jingcheng.ji@mediatek.com>
+Date: Thu, 3 Sep 2026 16:09:32 +0800
+Message-ID: <20260903080932.3049888-1-ot_jingcheng.ji@mediatek.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260821090046.2353986-1-ot_jingcheng.ji@mediatek.com>
 References: <20260821090046.2353986-1-ot_jingcheng.ji@mediatek.com>

@@ -1,97 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48924A8A2F;
-	Fri,  4 Sep 2026 13:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FEB49EC45
+	for <linux-spi@vger.kernel.org>; Fri,  4 Sep 2026 14:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529239; cv=none; b=QaMTxSJ/lc2cK5TRaJouNsmoh8rV4xp1VoL/vgYbjAb4r7wiIhaWfkgQke//+UyJz+zRq4+mqnNBmGmei+LEgLQJfEemsbhkIyNl+kYeo6Phj2LvEXnpmL7C6BxNNlYxmUsIony3W685rYVo7jZMTA+6E8zuTjKaeQmby7JMCFE=
+	t=1788531289; cv=none; b=gwjeD0JRQxO7yiJtd/PBedv4uwNCEAYKkabXguJmYpQt/75T5tcYsQAPbHsaFK0wxS41FWQmuLYL5bv6HzcASPz5T5/qtI7nDBp9jEBIXn+F2XlQssu5JIyMly104/JuThkcKtC1LhXrzHiQacQ4lbh7CWYiaGFeDM8TPxz/Y0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529239; c=relaxed/simple;
-	bh=oDTUjGw+6W/laJihCaI/nHIVNNBRUwU1ZUguXF7ceNo=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=nrfJKhoNebXvTkB3gjugN5GlAJDnudeip9FgwGtWJA/9jzH1N8bulld6+3+MU9z0DLspEv5hzESjaOI1QwH+h2I+SZk8fqOoOlILlhotyeFfF0AFea2sfeZX0Z1Cg0JcvN9OcV/kUYu5lOrucP7YOE/a75vpHZCszJWXJ5zomSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QowOtgL7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788531289; c=relaxed/simple;
+	bh=bXUUFTrQPpAc+iKmJN+Y3+pAIqk/wumQU91M8g4LqA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HrEDgWbRLs3C5qdVPckRPVvoMZYrft7GLkBQ3crWe+Z6N9cDohyrUyXoUIoxeif8xQMY0teJ7U4isL0Gt6J2LUJqw0RPoMSDkvtsPvLaVsBbFh4SXoIdP2Dd36KeHbUtn35L9GQg9exob+pKXgkCpMIa9FVjbVeirMJGSrbHFps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XGQuVtZx; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QowOtgL7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30ECF1F00A3E;
-	Fri,  4 Sep 2026 13:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788529237;
-	bh=qSvx0dH2njZ5k/zFksKTcMGlm2nSFiXEvYGqs2t+ybA=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=QowOtgL77QVimOnRTCXdrXfBmc83w2GgoSYbfiQsdp3TRdT91e55tt8kx/1SgoDZf
-	 pYNfEXF6S7V7fC3mwvN3h3Rb0DV1yWA78Z4Mb9wMbLE9Wm5rNpNif2I8jwEa6IQIWe
-	 DGs+x+85+VhP1QxBX0nbHxwqZw6O9E1ZUiDuMVsxaJZHhuw9iV2ctqk/Lr9uPPAte3
-	 UWrl4r3lKO137HOaZROWzS3MsWvMeZd2ibAwVNP0fsnDXHEK21emIQDdUXhqSCvzFY
-	 Tfde95Xpix+MOEZW+rAWt0a4TuF6dEDnmTt0Ml3/UoMH7KQOtlpK4QhF50FPVlsQVD
-	 eemSoxeSsWt8A==
-Date: Fri, 04 Sep 2026 08:40:34 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XGQuVtZx"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-84e4efb18c9so50126b3a.0
+        for <linux-spi@vger.kernel.org>; Fri, 04 Sep 2026 07:14:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788531287; x=1789136087; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lPRA+ajA+tYqtSUpBWFvED6ALQ4ZW0UcvXJfNjQCvJw=;
+        b=XGQuVtZx02DZmoFdjrTCVL9zKbbLPRijmF0D2mqPxEzGC/CRnpCoNBWaOd/nZpKVqb
+         3WmCry6YXp2h2SDrqQhapP9VZza8L/UItXqmb3Uy6jZqyehaeq+vVzrQir3b/feT1Zbn
+         wPc8Py4nZBDKCRLmBCh9G2vjPRvvTyg6UFn0bFuDMiszRUacOaz27/PQ1v1/TBdzGa6t
+         975XU9Tge+JkQmRX6+AFAlFmVDKXcGepPIRIwJD0LlvS2F5RPblC5mKhrVhllFWDgsUJ
+         nTJtGp/vuSh9qIBB6w43bt5IWWINOzT/FxVOsYCqp2fXKzuLu4X2eXC9tY77AdyGpXcQ
+         krGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788531287; x=1789136087;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lPRA+ajA+tYqtSUpBWFvED6ALQ4ZW0UcvXJfNjQCvJw=;
+        b=tM6JojvdvaeTA9t+ajoeHei2HEBsHABrw+YRa3viNuJ7wSUzVYM5zKA0jiiMGrMOAp
+         2ppfVUrDYD/VNMEWaCuxMPqbqWrCbGZTXj7VpYGYDixbERpHttiK0bOPqXDJ6+X7FOBz
+         X/Qm/LH7OmKgicrm+0EUL3MUbqfhhzmHiycD9tFgklPGxlySL9u/PsNpxBRrFrIcQV6Q
+         K0WPSCY8Ze3g4Zxu/MJKccSDn6TcIoJI7Mn+JQGo0ZYjtpFB/OWP6a6kZIjr1FRJIJL4
+         jUDUkp6AhUPa+e85LIt/vqqC8sLsFOG/qAWO9X0L83CvhXP2dvnFt5KpZOnQzZpFl61H
+         6n1w==
+X-Forwarded-Encrypted: i=1; AKwUvBz4P+Yyhvn4Bm4NNoT5PoZ4ivF5mUY1hyCoVtnux3DVqkQgmcBvFg/YGdNp2e0QsrfNBMINW7u7sqU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lEn5ZMS1qn1vXVJ2VHM82oGCI743BvqD/RJyHcOCUYMHsJKymd
+	/nvsfa0U4RNxVWq+GG5414c6nNgz5kBGhuVw2JvkvRC9PdVvcngQ+jdx
+X-Gm-Gg: AYBFou0wa98AXFTo1o8todFweEyGX9ZQ2O59JyJAJdjsWtZbaWSQewLNeDlqRqRQk6A
+	EK5g8ldZDZDiFWYGEX2Zzfq6lJtq5XNhSxwseWjPoTh536axBRhIBUQtPGQmtf263tOTzqV7Ud8
+	R6z662NxFRm1Zunfj+LOdj4BHz7fpQz+3YgbOG4MeBMHBNtOIQPVs5EgEL7V9qVS2ld+JQefOFA
+	eEEMfd0nsiSHSK7ciumtZmtyFjkfqXMWIC5kIyuq9Aq/qKtO04jNncgnKE4vkqbNkGD2YYMLNer
+	bCBbaA1sjRqjBCtZsL4LVSpJCBWg6npNArL8FHE7JZvM1mt0e6AtPhYnAbIBIhs1EKo9yfLw/DU
+	EP4kBUlygDOodc0RtcyDhCaDABAkPA69I4mpE7JDBEKH2ErpFpjG3UoHvvQzkT4UcTpwlmc9L2w
+	RVHVRvVNBM32uKmRMCWOpbGP88cEsZq05vdiHqbRnsMV5y5U98jjbIdpSkLr1zpDHJIjjMcKW6I
+	I1q
+X-Received: by 2002:a17:90b:3b81:b0:39b:3510:4af7 with SMTP id 98e67ed59e1d1-39b380fb91bmr1732726a91.1.1788531286631;
+        Fri, 04 Sep 2026 07:14:46 -0700 (PDT)
+Received: from JSANTO12-L01.ad.analog.com ([191.23.4.35])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339885d29esm7939487eec.2.2026.09.04.07.14.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 07:14:45 -0700 (PDT)
+Date: Fri, 4 Sep 2026 11:14:40 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	broonie@kernel.org, nuno.sa@analog.com,
+	michael.hennerich@analog.com, andriy.shevchenko@intel.com,
+	Dennis Heinzel <dennis.heinzel@irs.systems>
+Subject: Re: [PATCH] spi: axi-spi-engine: fix stale SYNC IRQ pending
+Message-ID: <aprSUH9u5W8hNUpV@JSANTO12-L01.ad.analog.com>
+References: <04d51e99b8cddce51113db933d806e83848f04f5.1788313558.git.Jonathan.Santos@analog.com>
+ <db8c87a3-1035-4023-8929-aae47ef7b20a@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: krzk+dt@kernel.org, stanley_chang@realtek.com, afaerber@suse.com, 
- bartosz.golaszewski@oss.qualcomm.com, linux-spi@vger.kernel.org, 
- conor+dt@kernel.org, cy.huang@realtek.com, devicetree@vger.kernel.org, 
- broonie@kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-realtek-soc@lists.infradead.org, 
- jyanchou@realtek.com, james.tai@realtek.com
-To: Yu-Chun Lin <eleanor.lin@realtek.com>
-In-Reply-To: <20260904031252.244280-2-eleanor.lin@realtek.com>
-References: <20260904031252.244280-1-eleanor.lin@realtek.com>
- <20260904031252.244280-2-eleanor.lin@realtek.com>
-Message-Id: <178852862340.96570.7431727982828977183.robh@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: spi: Add Realtek RTD1625 SPI support
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <db8c87a3-1035-4023-8929-aae47ef7b20a@baylibre.com>
 
-
-On Fri, 04 Sep 2026 11:12:50 +0800, Yu-Chun Lin wrote:
-> From: Jyan Chou <jyanchou@realtek.com>
+On 09/03, David Lechner wrote:
+> On 9/3/26 8:49 AM, Jonathan Santos wrote:
+> > spi_engine_setup() sends a SYNC(1) command and polls SYNC_ID to confirm
+> > it was parsed by the FPGA, but never clears the corresponding interrupt
+> > pending bit (INT_PENDING[SYNC]). When the first real SPI transfer starts
+> > and INT_SYNC is enabled, that stale pending bit fires immediately, causing
+> > the IRQ handler to see the leftover SYNC_ID from setup, match it against
+> > the current transfer's ID, and prematurely signal completion before the
+> > hardware finishes.
+> > 
+> > This race manifests at low SPI clock frequencies (~2-3 MHz), where the
+> > FPGA takes long enough to execute the transfer that handler is parsed
+> > before it finishes. At higher SCLK rates the transfer completes fast
+> > enough that the issue is masked.
+> > 
+> > Fix this by clearing INT_PENDING[SYNC] after the polled SYNC, ensuring no
+> > stale interrupt is left pending.
+> > 
+> > Reported-by: Dennis Heinzel <dennis.heinzel@irs.systems>
+> > Link: https://ez.analog.com/linux-software-drivers/f/q-a/604145/axi-spi-engine-stale-sync-pending-can-complete-first-transfer-early-at-low-spi-clock-2-3-mhz
 > 
-> Add DT binding schema for Realtek RTD1625 SPI Flash Controller
+> Should be Closes rather than Link in this case.
 > 
-> Signed-off-by: Jyan Chou <jyanchou@realtek.com>
-> Co-developed-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-> Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-> ---
->  .../bindings/spi/realtek,rtd1625-nor.yaml     | 68 +++++++++++++++++++
->  1 file changed, 68 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
+> And needs a Fixes tag.
 > 
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---
+> >  drivers/spi/spi-axi-spi-engine.c | 10 ++++++++--
+> >  1 file changed, 8 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+> > index 02bbc5d0cfc5..9e9bbe109ce5 100644
+> > --- a/drivers/spi/spi-axi-spi-engine.c
+> > +++ b/drivers/spi/spi-axi-spi-engine.c
+> > @@ -887,6 +887,7 @@ static int spi_engine_setup(struct spi_device *device)
+> >  	struct spi_controller *host = device->controller;
+> >  	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
+> >  	unsigned int reg;
+> > +	int ret;
+> >  
+> >  	if (device->mode & SPI_CS_HIGH)
+> >  		spi_engine->cs_inv |= BIT(spi_get_chipselect(device, 0));
+> > @@ -922,8 +923,13 @@ static int spi_engine_setup(struct spi_device *device)
+> >  	writel_relaxed(SPI_ENGINE_CMD_SYNC(1),
+> >  		       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+> >  
+> > -	return readl_relaxed_poll_timeout(spi_engine->base + SPI_ENGINE_REG_SYNC_ID,
+> > -					  reg, reg == 1, 1, 1000);
+> > +	ret = readl_relaxed_poll_timeout(spi_engine->base + SPI_ENGINE_REG_SYNC_ID,
+> > +					 reg, reg == 1, 1, 1000);
+> > +
+> > +	/* Clear the stale SYNC pending bit so it doesn't fire when the IRQ is later enabled */
+> > +	writel_relaxed(SPI_ENGINE_INT_SYNC, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+> > +
+> > +	return ret;
+> >  }
+> >  
+> >  static int spi_engine_transfer_one_message(struct spi_controller *host,
+> > 
+> > base-commit: 183f05a300eab41e4578337eac59335730dfebf9
+> 
+> We have the same poll timeout in spi_engine_trigger_enable(). Do we need
+> a similar fix there too?
+>
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Yes, Thanks for pointing that out! We have the same issue there:
+The _trigger_enable() generates the SYNC interrupt, which is not cleared
+while in offload mode and it is fired in the next FIFO mode transfer
+when the SYNC interrupt is enabled.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.example.dts:18:18: fatal error: dt-bindings/clock/realtek,rtd1625-clk.h: No such file or directory
-   18 |         #include <dt-bindings/clock/realtek,rtd1625-clk.h>
-      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[2]: *** [scripts/Makefile.dtbs:140: Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/linux-dt-review/Makefile:1717: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20260904031252.244280-2-eleanor.lin@realtek.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+I will include this in the next version.

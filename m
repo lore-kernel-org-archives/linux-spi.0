@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76D24DBD67
-	for <linux-spi@vger.kernel.org>; Fri,  4 Sep 2026 20:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBBE51FCA9;
+	Fri,  4 Sep 2026 20:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788552766; cv=none; b=VLJRVuzfUhBHZBVbgUJoD0Ux3k9Om/0Tg1soqwe6efNHaPoYRStIWiPOPQZcC3qxW6K4pSzCpmmcC4Ti3uu1l7PrNHDGB1/IGp7cTMuix3VOoyYo8fSzK5yeBhKoBg4VSGsRoTLr39gKyQTfwCDGHk4lmoGsF+0PYg3ixu2nyTc=
+	t=1788552771; cv=none; b=imYRajyCI92KvgiUQjBN/aHtMYu0AOk4NLpQb3FiXtVEkKrxH+1fABUWUD36lLruB+OgXAmwJvi8sZwiQtKvW2YYITBXtiGeXyu6Stz09aGHFqQvTzHE+xQHNwHifSo93cZr9R8kh0YeykOGS4gChpjSXk1bxp0BG4+aTmzh7Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788552766; c=relaxed/simple;
-	bh=9NNiNkIhkWioxv54G8qMXV7N2CmJ8UHysUOt8WjPS6E=;
+	s=arc-20240116; t=1788552771; c=relaxed/simple;
+	bh=aVAUFyN2fcAsGtIsHiEfxnnWzQCBgyC816+4/EFFpWs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OwrgEMYyPBG+oden16WkwhmnE+FqGCnhuTDkfLKwHvTP9FomeHE60mlIy7lOZm3X+2wylV6jnAPWuv81Exrtcz7fKHh/Y5yfJFQ8D7p1pnNTJU2BPqulcmuECtTVrxg2kv9lW0eU2+QxAC70pD+JVDbj7mQJU+lFe1z4cw83TW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hg3YaQh8; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YItlbfmr8ZUNsz37ZOnIhdktn6zb7rWX0fUNnjPdUTEB1dhoYaTo9YaY6vj8eHqOlFBOo7rAF/R+YasUg+a5sJNt3p03739hJuPJuvPM/k9gxenpF6BO8BLF4ScDim7vr8Tye0YietGyopXxAiNeyxkd0fQ1dDgOfac/sz1mdKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVReHXE+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hg3YaQh8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C154B1F00A3E;
-	Fri,  4 Sep 2026 20:12:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVReHXE+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7728F1F00A3F;
+	Fri,  4 Sep 2026 20:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788552754;
-	bh=lbT1VLDIS80UBAzC8yx9HtCTeNwNwTpzzQk3VWwmyyo=;
+	s=k20260515; t=1788552758;
+	bh=EFflaqNvAutXjvz21YeG1GMFMdMMYJym8w2IUJTAZYs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=hg3YaQh8sb4xeRkcp2NOeZZFgQqcO1jOd9zcKjr3bsQqpv/d+JnnUlHIeZ82GVczI
-	 W3KusPXZraaxOEhVwO+HCEO6FqBXeVwx82kWM8GIXec2XiioYlJ5dN8XotmH8blSW/
-	 4ihFmADP/eWDNWtAfi9f7dHhLygPo1MTHJ3nMs0PROiAbSAynnARmgaXqwZLEuFSc9
-	 Z6jr83uc8vWdNPY688R3CeGvuRJ6oVjD2QNLBexs6pv75IzI/5LGY2EI/wHYWUTwDP
-	 5KPIjaOJ22sJySnTk2aa18jCyhyq1ASgisisKoseYhUWh99OhifQ/r4jFK6KW2HAqZ
-	 bN3SvVIdG1tlA==
+	b=mVReHXE+4ckfWMOa1/mayCrlZMXjauiaU5J5/ntwCs23N9JBgcBcKvPi9EqZuOHoN
+	 qjeMPvIlPw/xA5O3zRSIak5iLavPrOvW0F5yXvJD23ryxfTyOuOliMfI/lu9mDB9wK
+	 BAGSVdZZZ4WLdnuie6SQB1RlBNP5gBiSNeEICs3OOKzm1UMRNZVZitXhggr+WgLMGe
+	 GUkFMXLggEVLUDJCPkDrPAvhO4g/tyQWV0/fqjmjI6Oo5AWdJZwtRmYzai2aXPBxWD
+	 rvXMfbI0MDyrqcdEGXsU63P8feCgC4+oKj9bNu+hhRNsXb8osyK2Aa1jFMRg/Vetze
+	 bdy2e8Gn+j9ZA==
 From: Mark Brown <broonie@kernel.org>
-To: ychuang3@nuvoton.com, schung@nuvoton.com, 
- Li Youhong <dayou5941@163.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
- Li Youhong <liyouhong@kylinos.cn>
-In-Reply-To: <20260901025129.359960-1-dayou5941@163.com>
-References: <20260901025129.359960-1-dayou5941@163.com>
-Subject: Re: [PATCH] spi: ma35d1-qspi: assert reset on probe error paths
-Message-Id: <178854594307.632048.12009363322377734268.b4-ty@b4>
-Date: Fri, 04 Sep 2026 19:19:03 +0100
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260904-ingenic-v1-1-06218181a4f8@gmail.com>
+References: <20260904-ingenic-v1-1-06218181a4f8@gmail.com>
+Subject: Re: [PATCH] spi: ingenic: release tx DMA channel when rx request
+ fails
+Message-Id: <178854187653.632048.17193090018816306723.b4-ty@b4>
+Date: Fri, 04 Sep 2026 18:11:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,20 +44,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1114; i=broonie@kernel.org;
- h=from:subject:message-id; bh=9NNiNkIhkWioxv54G8qMXV7N2CmJ8UHysUOt8WjPS6E=;
- b=owGbwMvMwMWocq27KDak/QLjabUkhqzZanpz7WqSbSyq8kOFLfzyug4YdbzQFg5YNPNRxjOd9
- sdF2lydjMYsDIxcDLJiiixrn2WsSg+X2Dr/0fxXMINYmUCmMHBxCsBE6prY/6nZMUpMCZzaYBM5
- Q1/mRcBapbyFiz723il69yrec2LjEQ6e6sB9m3I51ORPX+K/dlbN0F0pavs0hozZhnuBJvnayJu
- FauYf+xi7ojO9bt17ruCfffI965Y/PcR6Wkj2V67zte3OLcJWv0oi7snVrYgX1I9YtujyGiFjCc
- 33Jt9+N2aoZcjNupRfxxpYuvrJc95/UvPuBB2xU3iXb9O3w0Ps3MrmiO9FrYIlF5T81Y8bNRbZ/
- 7u4yXnDASdN0fsXAlmtMw//e73Ax2La7hUbpjFq2oruLDDccebaobe1u25yKQZ8KDCavFqzVbZ8
- js3lwMLCT+F3GdUTGxas/fVj4yfvic0dc58/+3ZjM+sCAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1126; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=aVAUFyN2fcAsGtIsHiEfxnnWzQCBgyC816+4/EFFpWs=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqmyYyeJuzFXal1mv6+R83G22jA5yS+aiBZfBpx
+ U5m/2IQZCeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapsmMgAKCRAk1otyXVSH
+ 0KQeB/0S9lbadUwvO7BrPLNVGNYhs4FmT5nJ+nJC9bdfF5waUKm0gD/oJ5sXWzB5FQ4o8WACSF/
+ xn8olR8itOpfkceVNT9DfOl+ZgtMg68ToTZ/K3MZpWZ+9F8vMF5Yqs8XZB448EjnLs5vmTQfad6
+ jReLmvIrQ6tKXrHhIb0q3Nijztl1dKUJBRznGZiIWukGfa9GbQIyQDDbOSqMRnnu47g+yJoau+x
+ 1mFa1N/hONW+GsJD8z4zpaVjxAy6Y/j4UafJ4HK2vgKmMnPQDkwCY4folHeayfDXK8Sw9YL6BPl
+ WA2mzs75nbZCT2TLgurqEY5DUy10Zq9qnqa5UkwXlqF4yIc/
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 01 Sep 2026 10:51:29 +0800, Li Youhong wrote:
-> spi: ma35d1-qspi: assert reset on probe error paths
+On Fri, 04 Sep 2026 01:17:33 +0800, Felix Gu wrote:
+> spi: ingenic: release tx DMA channel when rx request fails
 
 Applied to
 
@@ -66,8 +65,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: ma35d1-qspi: assert reset on probe error paths
-      https://git.kernel.org/broonie/spi/c/8992169e7ac6
+[1/1] spi: ingenic: release tx DMA channel when rx request fails
+      https://git.kernel.org/broonie/spi/c/bb308b27016c
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

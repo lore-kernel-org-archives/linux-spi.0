@@ -1,82 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851EC4FC8F4;
-	Thu,  3 Sep 2026 17:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11CE253B42;
+	Fri,  4 Sep 2026 03:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788458124; cv=none; b=QO9Lh26N3AD4tf/WEGqjKrw0y4m6GAQSTSDRvgyxygTVPkvbliu3vVNHwKrPgGuI4Z3WopwitlOQMXzIaRbMuTi4eBQGftABWJL9OiNzsLE4ZEgM6nkDJhWcwQErgOb08l8NhPdlrIyNGr+9wbz39BzrWc+Dod4RYHG9YgmVjZs=
+	t=1788491640; cv=none; b=GenaHdRXEy5N2LhkBHXiH1E/exZuEzWphrpU5aoJdXi4dI19qDRfpe7hIHuXK5tciiT+8PIxGCZhh1RUebIgNGvIu5v1nMITU4m+Jedf1AHYNyc4BJoOKpzgXli7lS3LCWcNmE9w+0+v9bJxS0U5wn1cQ+aLa2QgfCzHSsjsQFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788458124; c=relaxed/simple;
-	bh=LOAtcg1KYF6lB41X99rB06UgRQwziM+xiJEqeXODtIY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V8nCK6MD4rU1xBnq68jAQoLcM+3duTK+dzdDrPEQ7WH2mzIJ8YOlq+ToT64OFC4fuayeq8wYRBGPrLWA7FG+PR4bJUKVTOYCEl3tnVoCX5nk6FQceMcBqNovvJ4qszHNA2CloIKMOD3wg7QPOCmDX+g6Oqs9MllXfj+F6oflpuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KEiKGBsW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788491640; c=relaxed/simple;
+	bh=fg2bsL2pyLeKWO4ca9K3vU48m47qLXISWTiyTOg57hQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VHXGpNt0ytuG+nD50xYtEISEP3LSY7+jxK0B6zPOf/4m3TRIJUtXBlRr9BNBsrqVe16O3hEtRHskm188ziB0z9KRKAbgdAvtCOjRD6yjTB3edJ5KJZyCO/AqvYWCuubp+bEbHidqB+0YQ8k/fFnlCikCkBfnyJpgbaBfD/wzX4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=F0U1/avG; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KEiKGBsW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EADC1F000E9;
-	Thu,  3 Sep 2026 17:55:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788458123;
-	bh=yICCSCAcuhUA36xxNq/ZPvJoy+98fuFhMbUfdfYXPZM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KEiKGBsW537Fthl1v2Ev8tkuQozXOYG7WJ836vf7cXsrIw4eWQAb9/onhsCEObdVf
-	 TxF9pg4hCu2hWgfdCqPJ3TtY/P90NqJ/C9lJbuLVNaBHmxk+qyVAPp2wIqTFj5HQsg
-	 C9r81wFVSuYj+GBJ2Bfb10+tpp8HSFjOj7e8A0mh//H6tb0Dl8Za9WxnFTmlHbVZnw
-	 e/0lUTKbhAu0EwEDKc5bO9CppqVoRuf4W5yR44O9S9liXH0m2/9WxaOqtkyQWKs9NE
-	 keFpMKTXCZ3dOVwIEDngMLftUymk4T4zHzpwfo3kJzhKbbYq2Z606EunE8tf3uo1o1
-	 0iI1s57ftR+Fw==
-Date: Thu, 3 Sep 2026 18:55:18 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	dlechner@baylibre.com, nuno.sa@analog.com,
-	michael.hennerich@analog.com, jonath4nns@gmail.com,
-	andriy.shevchenko@intel.com,
-	Dennis Heinzel <dennis.heinzel@irs.systems>
-Subject: Re: [PATCH] spi: axi-spi-engine: fix stale SYNC IRQ pending
-Message-ID: <75a27e3d-ea3d-42ce-b4c3-920c71e9c8b1@sirena.org.uk>
-References: <04d51e99b8cddce51113db933d806e83848f04f5.1788313558.git.Jonathan.Santos@analog.com>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="F0U1/avG"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6843CqdfE4114200, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788491572; bh=+3dQ4EXCJkdc+MbQXCx9yljD58LDbDwzPzubxY8NvWU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=F0U1/avGNFsH8gJptrdkod8ybG6hWdmsu8sj94EQpTsl5DZcFjW5u1+bX/xbFt3Gz
+	 G74xqQGYqIG5B+TmNaXbpgcu3W79akvVOUD/l9sEUzkUGykIk6YKKWXD3U46hox6vV
+	 S7VOcmESUdU4Vh5XpQYLVyLzFD8htsCvxf7UvoT3osHwYXzzvveFLBqLfa6qYcTPsZ
+	 MiuFDTG7Whzamb4RaV603kFrtJQy5gm8GTxxb01DOPy+RgbqsN6KegcSR2VDE3WlBk
+	 EWk34d9SdIv2cIDgOUM2w+FUM3PeKO60GUfFkjH0yMrIMgVNZdmDACO30sV9OgqIxn
+	 XUUxX2hhCMHiQ==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6843CqdfE4114200
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 4 Sep 2026 11:12:52 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 4 Sep 2026 11:12:53 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 4 Sep 2026 11:12:52 +0800
+Received: from cn1dhc-k02 (172.21.252.101) by RTKEXHMBS06.realtek.com.tw
+ (10.21.1.56) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
+ Transport; Fri, 4 Sep 2026 11:12:52 +0800
+From: Yu-Chun Lin <eleanor.lin@realtek.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <afaerber@suse.com>
+CC: <bartosz.golaszewski@oss.qualcomm.com>, <james.tai@realtek.com>,
+	<cy.huang@realtek.com>, <stanley_chang@realtek.com>,
+	<eleanor.lin@realtek.com>, <jyanchou@realtek.com>,
+	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-realtek-soc@lists.infradead.org>
+Subject: [PATCH 0/3] spi: realtek: Add support for RTD1625 SPI Flash Controller
+Date: Fri, 4 Sep 2026 11:12:49 +0800
+Message-ID: <20260904031252.244280-1-eleanor.lin@realtek.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="nXJfhlQ63sdcYu2d"
-Content-Disposition: inline
-In-Reply-To: <04d51e99b8cddce51113db933d806e83848f04f5.1788313558.git.Jonathan.Santos@analog.com>
-X-Cookie: Surprise due today.  Also the rent.
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+Hi all,
 
---nXJfhlQ63sdcYu2d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch series introduces support for the Realtek RTD1625 SPI Flash
+controller. 
 
-On Thu, Sep 03, 2026 at 10:49:22AM -0300, Jonathan Santos wrote:
-> spi_engine_setup() sends a SYNC(1) command and polls SYNC_ID to confirm
-> it was parsed by the FPGA, but never clears the corresponding interrupt
-> pending bit (INT_PENDING[SYNC]). When the first real SPI transfer starts
+Please note, this series depends on the RTD1625 clock driver patch series,
+which is currently under review.
 
-> +	/* Clear the stale SYNC pending bit so it doesn't fire when the IRQ is later enabled */
-> +	writel_relaxed(SPI_ENGINE_INT_SYNC, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
+Link: https://lore.kernel.org/lkml/20260901072446.2563145-1-eleanor.lin@realtek.com/
 
-Is there something later which posts the write?
+Thansk,
+Yu-Chun
 
---nXJfhlQ63sdcYu2d
-Content-Type: application/pgp-signature; name="signature.asc"
+Jyan Chou (2):
+  dt-bindings: spi: Add Realtek RTD1625 SPI support
+  spi: spi-mem: Add Realtek SPI flash controller driver
 
------BEGIN PGP SIGNATURE-----
+Yu-Chun Lin (1):
+  arm64: dts: realtek: Add SPI NOR flash node for RTD1625
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqZtIYACgkQJNaLcl1U
-h9B2lwf/W4FCGdTWNLk+AxmWzoVGMTk7X22pM37OP7oYHfFaFhl1aQpwoE53z7Fd
-KzssTRivULoatDC5vEOJcAFrsdhQtKziH88HDC3BKT969T9kYdJ0DqP8clpYL/QD
-R/iuoXZFxQthgUQrj1kErv/1Isos2MzsVIUZa0r5PYlNxtJc+IAauWTEhwRc2Iv3
-1Il3FZm4WYZcfTsUmsT/uZfFof1rwEG0MT3Gmw7nA4hT/hsxZmf0V1z4jwqfL4/r
-d7tWItGDEM5JRIz08MhPCMoQ02C436TCY0xUVxtdgXTSK/e6TJylpFGhsxXJJb9P
-5ORjA+ghpyPgzudLkNEqSxwZwQ85DQ==
-=Yiql
------END PGP SIGNATURE-----
+ .../bindings/spi/realtek,rtd1625-nor.yaml     |  68 ++
+ MAINTAINERS                                   |   6 +
+ arch/arm64/boot/dts/realtek/kent-pinctrl.dtsi |  16 +
+ arch/arm64/boot/dts/realtek/kent.dtsi         |  26 +
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-rtk-nor.c                     | 637 ++++++++++++++++++
+ 7 files changed, 764 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
+ create mode 100644 arch/arm64/boot/dts/realtek/kent-pinctrl.dtsi
+ create mode 100644 drivers/spi/spi-rtk-nor.c
 
---nXJfhlQ63sdcYu2d--
+-- 
+2.43.0
+

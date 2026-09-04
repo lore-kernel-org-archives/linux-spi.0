@@ -1,127 +1,81 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3684F7986
-	for <linux-spi@vger.kernel.org>; Fri,  4 Sep 2026 16:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2C5503BDD;
+	Fri,  4 Sep 2026 17:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788539118; cv=none; b=P7iAVwviAsT851KfZhak9mm2H5MbK0DXRA13GqsKgZc1qAVfJscUCD/YtPsU8C+zxLQec0aydrv06iwHGkjKCJHzLeVFKrDAGqnrMuvrAFF/cmO1/RVpbllaAMcnJsbs008XA6YswzEQ1knqD97tZqfVrGQwlfwWORW0IciJIMs=
+	t=1788543506; cv=none; b=SFrPf3+O/Hlxalyu8HiibwxuTWle1MUWdScrAeKHfq6n/NwQScIx31z+oIGdlliVb3zxynrpBMyle/MrLk/GHa6v4zWxbO4HO1BCqwQFb15p9fi3DmQ+j4zFbr5nnEEnNsyljbPEB4KLCfpxsGYM8CSszRfu30JBvjqu7R+RAXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788539118; c=relaxed/simple;
-	bh=KpKl3UVi9Fq7dKiIeQaxU6LbPlOWOfgwtqgdEjyxlmA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ENbFAZ9Kc2L6Q2CktQND4s465iI9v1AL/5iiPfPST46jOvmOZkypk0OeXMXlpxns/Aa78akMetKA1DT6XOqyH7+gn7KLSpXhSyePJXG2YcSXVeaGU46eRyJHvCiy6EPx8sOAenMk4+ouThF9hB0FoZHIuel2ABNAg7jvOMhvKG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=G+ANkK2H; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1788543506; c=relaxed/simple;
+	bh=e64PdfBDY4GOCWxQ91wvOELd3e4fIm4ygKYvU6StGF0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=b0QiAf0TsMaPithS2lS73bE1lQpaP14e0LcrPpuidrGiYfJ5gN4LqUugmT/sn2EsL0JwYqKPnrnumhLtCqQIR0BSshWSYb1KW4pqWQPpc5z7FEP1pLjlwmOVOkswfNlEGmk9nngGi9Hy7jq0Gtom8OJRyQMQgAVDj+GICQljG4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=s2ciaPVL; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="G+ANkK2H"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="s2ciaPVL"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 2C6104E41512;
-	Fri,  4 Sep 2026 16:25:14 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3440D4E4151A;
+	Fri,  4 Sep 2026 17:38:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 015486057F;
-	Fri,  4 Sep 2026 16:25:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 82B0211C787BD;
-	Fri,  4 Sep 2026 18:25:04 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 008546057F;
+	Fri,  4 Sep 2026 17:38:23 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CA85811C78158;
+	Fri,  4 Sep 2026 19:38:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788539109; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1788543497; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=iyGbuXlnEHu5IZ2Y67+lbl3dPNb3QBxNs0BWA67Ll5g=;
-	b=G+ANkK2H6/aFhwPmFuRcpqZ3mwSHSh27XhVyoIdKGhKiRh/20momsiWHTh1jGlCagjl9cp
-	un/H+5TyQwux9KIktJkpzPZ6jCT3Z6rwB/tVCpsCuNWahE1y3jJagSC4rqIvV5Tb2ypt9T
-	onqcj3ltdvwMCbcgYcUzvmLyn29Pi3ZLAJkQkBWtEZPh+Lh/5POHGevtKB8qf8cCwGbOsT
-	HCm0aLkvWmbkj0uzmUAYID3fLTUjOakvSH7bgymRSJGFFgt+UNfSADXosw9xS+AiaxW5si
-	qACcfiALENuz0P6Dm/Gs1y4cPv9XOk5T3bn8+gLIbQsV2VAjGjFM8HAkfgqQ5A==
+	bh=3E8dPhUGulwBvC2FDqxVtlrQlaozuEVc311pKm8kPdo=;
+	b=s2ciaPVL4AVMnm0zd8VU8Qr1pHFD9nt3vipOUcU+L98ZxCJnvEoRGEPmGRW1xMlVzi5JcT
+	jRpMACiO6fgvx+QfXLzhDjn1g5iR7EPK9oKeCiid6B222uR96eFOWedQs7Rk+ka6FmDwFF
+	YTXoQu/YEZOI7t2MzmDpNdl0ABqO1i2A3opzzFZSMA8AXiH4qFU5/qPXfFlzrYJE2l1945
+	cjnjHawKk8uJq9F68SoKFH/7d0lHXkZLmNiiJOQJmBqWsrBJSbjfznEwCjUveAn/xjChVw
+	wmfXJOuVosiKc2ZkbzQWqwSVlrUDnmGNdgTO4DhYMlnfJ+BriaIb0jz3iA2S5w==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Santhosh Kumar K <s-k6@ti.com>
-Cc: <broonie@kernel.org>,  <robh@kernel.org>,  <krzk+dt@kernel.org>,
-  <conor+dt@kernel.org>,  <richard@nod.at>,  <vigneshr@ti.com>,
-  <pratyush@kernel.org>,  <mwalle@kernel.org>,
-  <takahiro.kuwano@infineon.com>,  <linux-spi@vger.kernel.org>,
-  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-mtd@lists.infradead.org>,  <praneeth@ti.com>,
-  <sebin.francis@ti.com>,  <u-kumar1@ti.com>,  <a-dutta@ti.com>
-Subject: Re: [PATCH v9 16/18] mtd: spinand: negotiate optimal controller
- operating point before dirmap creation
-In-Reply-To: <8733vp0yuv.fsf@bootlin.com> (Miquel Raynal's message of "Fri, 04
-	Sep 2026 18:23:36 +0200")
-References: <20260825171737.776052-1-s-k6@ti.com>
-	<20260825171737.776052-17-s-k6@ti.com> <8733vp0yuv.fsf@bootlin.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Fri, 04 Sep 2026 18:25:04 +0200
-Message-ID: <87wlt1yof3.fsf@bootlin.com>
+To: broonie@kernel.org, md.alam@oss.qualcomm.com, 
+ Johan Alvarado <contact@c127.dev>
+Cc: konradybcio@kernel.org, pengpeng@iscas.ac.cn, j4g8y7@gmail.com, 
+ quic_varada@quicinc.com, quic_srichara@quicinc.com, 
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260825013848.1056946-1-contact@c127.dev>
+References: <20260825013848.1056946-1-contact@c127.dev>
+Subject: Re: [PATCH] spi: spi-qpic-snand: publish the ECC context to
+ snandc->qspi
+Message-Id: <178854349408.1467647.16557341714581809344.b4-ty@bootlin.com>
+Date: Fri, 04 Sep 2026 19:38:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
+On Mon, 24 Aug 2026 20:38:48 -0500, Johan Alvarado wrote:
+> qcom_spi_ooblayout_ecc() and qcom_spi_ooblayout_free() read the ECC
+> configuration through snandc->qspi->ecc. qcom_spi_probe() points it at a
+> zeroed scratch struct and only qcom_spi_ecc_prepare_io_req_pipelined(),
+> which runs on page I/O, ever updates it. qcom_spi_ecc_init_ctx_pipelined()
+> installs the ooblayout but does not publish the context it just
+> allocated, and qcom_spi_ecc_cleanup_ctx_pipelined() frees that context
+> without clearing the pointer.
+> 
+> [...]
 
-On 04/09/2026 at 18:23:36 +02, Miquel Raynal <miquel.raynal@bootlin.com> wr=
-ote:
+Applied to mtd/fixes, thanks!
 
-> Hello Santhosh,
->
->> +static bool spinand_try_ranked_variant(struct spinand_device *spinand,
->> +				       struct spi_mem *mem,
->> +				       enum spinand_bus_interface iface,
->> +				       u32 *tried_mask)
->> +{
->> +	const struct spinand_op_variants *variants =3D spinand->all_read_varia=
-nts;
->> +	struct spinand_mem_ops *templates =3D iface =3D=3D ODTR ?
->> +		&spinand->odtr_op_templates : &spinand->ssdr_op_templates;
->> +	const struct spi_mem_op *best;
->> +	int ret;
->> +
->> +	if (!variants)
->> +		return false;
->> +
->> +	while ((best =3D spinand_op_find_best_variant(spinand, variants, iface,
->> +						    *tried_mask, NULL))) {
->> +		*tried_mask |=3D BIT(best - variants->ops);
->> +		spinand->max_read_op =3D *best;
->> +		spinand->max_read_op.max_freq =3D 0;
->> +		spinand->max_write_op.max_freq =3D 0;
->> +		ret =3D spi_mem_execute_tuning(mem, &spinand->max_read_op,
->> +					     &spinand->max_write_op);
->> +		if (ret && ret !=3D -EOPNOTSUPP)
->> +			dev_dbg(&mem->spi->dev, "%s optimization failed: %d\n",
->> +				iface =3D=3D ODTR ? "ODTR" : "SSDR", ret);
->> +		if (!ret && spinand->max_read_op.max_freq) {
->> +			templates->read_cache =3D best;
->> +			if (spinand->all_cont_read_variants) {
->> +				templates->cont_read_cache =3D
->> +					spinand_find_cont_read_variant(spinand, best, iface);
->> +				spinand->cont_read_possible =3D
->> +					!!templates->cont_read_cache;
->
-> I believe you almost addressed the concerns raised in v7 about
-> cont_read_possible, except what you do here is still a bit dangerous
-> since you could re-enable continuous reads on no_cs_assertion capable
-> controllers. I believe you should clear the flag only, never risk to set
-> it, something like:
+[1/1] spi: spi-qpic-snand: publish the ECC context to snandc->qspi
+      commit: 93bc7c4d2f4198586a6dbd7797c3bbf1ca845761
 
-cf. Sashiko's: [High] Unconditional overwrite of `spinand->cont_read_possib=
-le`
-bypasses system capability checks, risking unsupported continuous reads.
+Patche(s) should be available on mtd/linux.git and will be
+part of the next PR (provided that no robot complains by then).
 
->
-> if (!templates->cont_read_cache)
->     spinand->cont_read_possible =3D false;
->
-> With this fixed,
->
-> Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
->
-> I believe I will take this patch only after Mark takes the batch before,
-> which looks mostly good for my non-spi-expert eyes. Either Mark shares
-> an immutable tag, or I wait one cycle.
->
-> Thanks,
-> Miqu=C3=A8l
+Kind regards,
+Miquèl
+

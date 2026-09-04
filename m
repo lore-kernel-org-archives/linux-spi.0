@@ -1,92 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BBC4EE857;
-	Fri,  4 Sep 2026 18:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76D24DBD67
+	for <linux-spi@vger.kernel.org>; Fri,  4 Sep 2026 20:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788547112; cv=none; b=kOEJEfiaR43VgTLSwCi3p/5z4Zy+VPV7154fDIyjyyIo+2I5lfth0TiKaqQtuT6y3YmHAV3w7bLIYpRUL/xN7KKrjJmFznLavCy1ZvIxEqmcwPnT9vG0KYHsUMTw3RLLc5aXwgROfTNdbB8QEKmeb5WpN4vwMFz5QgINO/4Hnm0=
+	t=1788552766; cv=none; b=VLJRVuzfUhBHZBVbgUJoD0Ux3k9Om/0Tg1soqwe6efNHaPoYRStIWiPOPQZcC3qxW6K4pSzCpmmcC4Ti3uu1l7PrNHDGB1/IGp7cTMuix3VOoyYo8fSzK5yeBhKoBg4VSGsRoTLr39gKyQTfwCDGHk4lmoGsF+0PYg3ixu2nyTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788547112; c=relaxed/simple;
-	bh=jm8TQq+VoLXhUDvyZ3/ObZBgI6lhHh+1ts1w0UFMm0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mQvr9C6032P+IaHX7LXaGir8nt8MiVfo9nUla90mmMY+Aw5qOFay+OoSIrMN6VIGoEEQPL5a5SNfG6QiogA29A5TKBGYs13CX+vzl2eY4yrKEeGOdzU6wrUdnYjB15ZdoxMx6fR7USQKWBNCAYpw4GulxZ3qXDccsoMLkM3M1uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9OQ+/Np; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788552766; c=relaxed/simple;
+	bh=9NNiNkIhkWioxv54G8qMXV7N2CmJ8UHysUOt8WjPS6E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OwrgEMYyPBG+oden16WkwhmnE+FqGCnhuTDkfLKwHvTP9FomeHE60mlIy7lOZm3X+2wylV6jnAPWuv81Exrtcz7fKHh/Y5yfJFQ8D7p1pnNTJU2BPqulcmuECtTVrxg2kv9lW0eU2+QxAC70pD+JVDbj7mQJU+lFe1z4cw83TW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hg3YaQh8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9OQ+/Np"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CBB1F00A3D;
-	Fri,  4 Sep 2026 18:38:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hg3YaQh8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C154B1F00A3E;
+	Fri,  4 Sep 2026 20:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788547111;
-	bh=SXyJ6920QF42qa44IDGNS2RwOkKRcWoyi4Fs69ey/6g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l9OQ+/Np5chFEKzkkf9owVEKIy1jBhY/SCNIhONzZxq3sLpywfgcl235vLcdkeU7r
-	 84nTwWplQ1gVBxYuLbUpbLqJEL1Dyop0VPXFzVOGYV8JLU/atJtmI8Jma/cmfOB8YL
-	 B61EphGC5Y5xTCOadDipz2Zm6Rah/RFjGmU39HmYO06UmSCJ0pg/BwGA5877MWou2x
-	 f8H9uq9nikzvQfc9ngRSmmSTZZmRL284/xQAzmlSohrNXfkLVbAFfkJ7hyMZ1NRiYV
-	 VcSnYyQbwPbicwDE4cj1usl3s7h3Rsi9KU+M6frObJP3bSMt3j6Uyui+gdhQH5QzQC
-	 oJXAf76DSZJZg==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 4EFC11AC52F1; Fri, 04 Sep 2026 19:38:28 +0100 (BST)
-Date: Fri, 4 Sep 2026 19:38:28 +0100
+	s=k20260515; t=1788552754;
+	bh=lbT1VLDIS80UBAzC8yx9HtCTeNwNwTpzzQk3VWwmyyo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=hg3YaQh8sb4xeRkcp2NOeZZFgQqcO1jOd9zcKjr3bsQqpv/d+JnnUlHIeZ82GVczI
+	 W3KusPXZraaxOEhVwO+HCEO6FqBXeVwx82kWM8GIXec2XiioYlJ5dN8XotmH8blSW/
+	 4ihFmADP/eWDNWtAfi9f7dHhLygPo1MTHJ3nMs0PROiAbSAynnARmgaXqwZLEuFSc9
+	 Z6jr83uc8vWdNPY688R3CeGvuRJ6oVjD2QNLBexs6pv75IzI/5LGY2EI/wHYWUTwDP
+	 5KPIjaOJ22sJySnTk2aa18jCyhyq1ASgisisKoseYhUWh99OhifQ/r4jFK6KW2HAqZ
+	 bN3SvVIdG1tlA==
 From: Mark Brown <broonie@kernel.org>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: md.alam@oss.qualcomm.com, Johan Alvarado <contact@c127.dev>,
-	konradybcio@kernel.org, pengpeng@iscas.ac.cn, j4g8y7@gmail.com,
-	quic_varada@quicinc.com, quic_srichara@quicinc.com,
-	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: spi-qpic-snand: publish the ECC context to
- snandc->qspi
-Message-ID: <apsQJFvhnI-1V8DE@sirena.co.uk>
-References: <20260825013848.1056946-1-contact@c127.dev>
- <178854349408.1467647.16557341714581809344.b4-ty@bootlin.com>
- <apsKiRC-bn7oPS2P@sirena.co.uk>
- <874ig4zx4o.fsf@bootlin.com>
+To: ychuang3@nuvoton.com, schung@nuvoton.com, 
+ Li Youhong <dayou5941@163.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org, 
+ Li Youhong <liyouhong@kylinos.cn>
+In-Reply-To: <20260901025129.359960-1-dayou5941@163.com>
+References: <20260901025129.359960-1-dayou5941@163.com>
+Subject: Re: [PATCH] spi: ma35d1-qspi: assert reset on probe error paths
+Message-Id: <178854594307.632048.12009363322377734268.b4-ty@b4>
+Date: Fri, 04 Sep 2026 19:19:03 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mXqNAXms/6jab0lX"
-Content-Disposition: inline
-In-Reply-To: <874ig4zx4o.fsf@bootlin.com>
-X-Cookie: My vaseline is RUNNING...
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1114; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=9NNiNkIhkWioxv54G8qMXV7N2CmJ8UHysUOt8WjPS6E=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhqzZanpz7WqSbSyq8kOFLfzyug4YdbzQFg5YNPNRxjOd9
+ sdF2lydjMYsDIxcDLJiiixrn2WsSg+X2Dr/0fxXMINYmUCmMHBxCsBE6prY/6nZMUpMCZzaYBM5
+ Q1/mRcBapbyFiz723il69yrec2LjEQ6e6sB9m3I51ORPX+K/dlbN0F0pavs0hozZhnuBJvnayJu
+ FauYf+xi7ojO9bt17ruCfffI965Y/PcR6Wkj2V67zte3OLcJWv0oi7snVrYgX1I9YtujyGiFjCc
+ 33Jt9+N2aoZcjNupRfxxpYuvrJc95/UvPuBB2xU3iXb9O3w0Ps3MrmiO9FrYIlF5T81Y8bNRbZ/
+ 7u4yXnDASdN0fsXAlmtMw//e73Ax2La7hUbpjFq2oruLDDccebaobe1u25yKQZ8KDCavFqzVbZ8
+ js3lwMLCT+F3GdUTGxas/fVj4yfvic0dc58/+3ZjM+sCAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Tue, 01 Sep 2026 10:51:29 +0800, Li Youhong wrote:
+> spi: ma35d1-qspi: assert reset on probe error paths
 
---mXqNAXms/6jab0lX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Fri, Sep 04, 2026 at 08:31:35PM +0200, Miquel Raynal wrote:
-> On 04/09/2026 at 19:14:33 +01, Mark Brown <broonie@kernel.org> wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-> >> [1/1] spi: spi-qpic-snand: publish the ECC context to snandc->qspi
-> >>       commit: 93bc7c4d2f4198586a6dbd7797c3bbf1ca845761
+Thanks!
 
-> > Oh?
+[1/1] spi: ma35d1-qspi: assert reset on probe error paths
+      https://git.kernel.org/broonie/spi/c/8992169e7ac6
 
-> -ETOOMANYKEYWORDS ._.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> Dropped, my bad :)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Ah, OK!
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---mXqNAXms/6jab0lX
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqbECMACgkQJNaLcl1U
-h9D9lAf+IZaw+kwCDRnV/MFBJfEhRpBMSvA1Py8PNv+9liGULZ1JWolFUk4gjThw
-hLGJuDu7Pvt9rsK82ONydDPMVHxi3vGJwrgo21NLF400e93nof+s+C2rbvBZC0H1
-RIl4Ja3jG5jd9/s50HfXzqA/qQUiDMyRINZz8I3LKcbWzxzMZt05qDU02LvA1vp/
-mE9vo7+AcpGTcuFt88ncnawuXxyQJrKQ+xb9jTUovhkSkOjxjbVdCwf+LhkT+Q4E
-pjgsYj3ZgSimphapOn4nApeuZv6eHjHKzocc4L2tGmO+vuzSgUbQYjbEVp8EkkTW
-P2PZzsX9KKsbHhBAwkoEEltuTgWdxQ==
-=OfTx
------END PGP SIGNATURE-----
-
---mXqNAXms/6jab0lX--

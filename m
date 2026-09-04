@@ -1,75 +1,92 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34E64A8FF8;
-	Fri,  4 Sep 2026 18:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BBC4EE857;
+	Fri,  4 Sep 2026 18:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788546709; cv=none; b=L3zirsrkUPLLXbLu/5b6fMswD1lBRMTq0K220TmldlobQ39/RQdfNNm06jMcqe+RKBZORhnNtNkwzOQiwhYi0fGqfhYIe9zJTKM8jPqdcjRtptKkhRzoemE1SqVQ+f6BUr/WGIoorxo/IQC1kIHJs/r3PV7LWwVpsfaksqkSmlU=
+	t=1788547112; cv=none; b=kOEJEfiaR43VgTLSwCi3p/5z4Zy+VPV7154fDIyjyyIo+2I5lfth0TiKaqQtuT6y3YmHAV3w7bLIYpRUL/xN7KKrjJmFznLavCy1ZvIxEqmcwPnT9vG0KYHsUMTw3RLLc5aXwgROfTNdbB8QEKmeb5WpN4vwMFz5QgINO/4Hnm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788546709; c=relaxed/simple;
-	bh=QnsG/88k4AwYZQ1AIOz3tt/8r8BB2ggrWu8fFatvZ9g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lbMMftBfrbW1TEq+j16Qy+EW3Wj0yYfiVvAJVP9KhTXVcXrEeyEqp/jCo+bBMRwJHqEG/31XDt1qRu/4jF8UvE61/oNIg+5eZt8mvlV6+f5NxN2yjR3HISqLnCzq8MG7P77JipDKnng22qOnkDSZY0L9fj6/YU6mIU2ciM/+pyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fp7eHj3I; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788547112; c=relaxed/simple;
+	bh=jm8TQq+VoLXhUDvyZ3/ObZBgI6lhHh+1ts1w0UFMm0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mQvr9C6032P+IaHX7LXaGir8nt8MiVfo9nUla90mmMY+Aw5qOFay+OoSIrMN6VIGoEEQPL5a5SNfG6QiogA29A5TKBGYs13CX+vzl2eY4yrKEeGOdzU6wrUdnYjB15ZdoxMx6fR7USQKWBNCAYpw4GulxZ3qXDccsoMLkM3M1uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9OQ+/Np; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fp7eHj3I"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 303584E4152F;
-	Fri,  4 Sep 2026 18:31:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DA9476057F;
-	Fri,  4 Sep 2026 18:31:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A6E511C78158;
-	Fri,  4 Sep 2026 20:31:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788546699; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=P+rdDJwO1BaO3hbIt3/EpCrUPVPc1TD/epdBPBg67zI=;
-	b=fp7eHj3IgTf5mmV0IwpYZtRclyXlk0Pu+yb/2whutuBYdtRbH0GGwUk1RFS/YhdBbr6jVY
-	11Ldmbf6/7b+P6cE63ASK7GuMYSWSt46SltJ2AZo5+L+S3XgfCsqTlFqMcWn/nuE21Kok6
-	R/J2jfDbpjxXqY21hdD9yW+b7ILGSt/xNlFMmuFTzGkPV2FG1Dc+ET9z2d5xZcSNHarRyX
-	u2buxRlFFHMBE7SLdKF5PS5Wa1HO+LAEHb/p/ejyaV6iTMRqvzwvZxQ1bEtPnR6sRPo4Pd
-	uOjHeAYASW4OtFnszft1EIF2y0/Y+f2BVB7d8KMwA1qnLA95A8HXBJiqMGirnw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: md.alam@oss.qualcomm.com,  Johan Alvarado <contact@c127.dev>,
-  konradybcio@kernel.org,  pengpeng@iscas.ac.cn,  j4g8y7@gmail.com,
-  quic_varada@quicinc.com,  quic_srichara@quicinc.com,
-  linux-spi@vger.kernel.org,  linux-mtd@lists.infradead.org,
-  linux-arm-msm@vger.kernel.org,  linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9OQ+/Np"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CBB1F00A3D;
+	Fri,  4 Sep 2026 18:38:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788547111;
+	bh=SXyJ6920QF42qa44IDGNS2RwOkKRcWoyi4Fs69ey/6g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l9OQ+/Np5chFEKzkkf9owVEKIy1jBhY/SCNIhONzZxq3sLpywfgcl235vLcdkeU7r
+	 84nTwWplQ1gVBxYuLbUpbLqJEL1Dyop0VPXFzVOGYV8JLU/atJtmI8Jma/cmfOB8YL
+	 B61EphGC5Y5xTCOadDipz2Zm6Rah/RFjGmU39HmYO06UmSCJ0pg/BwGA5877MWou2x
+	 f8H9uq9nikzvQfc9ngRSmmSTZZmRL284/xQAzmlSohrNXfkLVbAFfkJ7hyMZ1NRiYV
+	 VcSnYyQbwPbicwDE4cj1usl3s7h3Rsi9KU+M6frObJP3bSMt3j6Uyui+gdhQH5QzQC
+	 oJXAf76DSZJZg==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 4EFC11AC52F1; Fri, 04 Sep 2026 19:38:28 +0100 (BST)
+Date: Fri, 4 Sep 2026 19:38:28 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: md.alam@oss.qualcomm.com, Johan Alvarado <contact@c127.dev>,
+	konradybcio@kernel.org, pengpeng@iscas.ac.cn, j4g8y7@gmail.com,
+	quic_varada@quicinc.com, quic_srichara@quicinc.com,
+	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] spi: spi-qpic-snand: publish the ECC context to
  snandc->qspi
-In-Reply-To: <apsKiRC-bn7oPS2P@sirena.co.uk> (Mark Brown's message of "Fri, 4
-	Sep 2026 19:14:33 +0100")
+Message-ID: <apsQJFvhnI-1V8DE@sirena.co.uk>
 References: <20260825013848.1056946-1-contact@c127.dev>
-	<178854349408.1467647.16557341714581809344.b4-ty@bootlin.com>
-	<apsKiRC-bn7oPS2P@sirena.co.uk>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Fri, 04 Sep 2026 20:31:35 +0200
-Message-ID: <874ig4zx4o.fsf@bootlin.com>
+ <178854349408.1467647.16557341714581809344.b4-ty@bootlin.com>
+ <apsKiRC-bn7oPS2P@sirena.co.uk>
+ <874ig4zx4o.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mXqNAXms/6jab0lX"
+Content-Disposition: inline
+In-Reply-To: <874ig4zx4o.fsf@bootlin.com>
+X-Cookie: My vaseline is RUNNING...
 
-On 04/09/2026 at 19:14:33 +01, Mark Brown <broonie@kernel.org> wrote:
 
-> On Fri, Sep 04, 2026 at 07:38:14PM +0200, Miquel Raynal wrote:
->> On Mon, 24 Aug 2026 20:38:48 -0500, Johan Alvarado wrote:
->> > qcom_spi_ooblayout_ecc() and qcom_spi_ooblayout_free() read the ECC
->> > configuration through snandc->qspi->ecc. qcom_spi_probe() points it at a
->
->> [1/1] spi: spi-qpic-snand: publish the ECC context to snandc->qspi
->>       commit: 93bc7c4d2f4198586a6dbd7797c3bbf1ca845761
->
-> Oh?
+--mXqNAXms/6jab0lX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--ETOOMANYKEYWORDS ._.
+On Fri, Sep 04, 2026 at 08:31:35PM +0200, Miquel Raynal wrote:
+> On 04/09/2026 at 19:14:33 +01, Mark Brown <broonie@kernel.org> wrote:
 
-Dropped, my bad :)
+> >> [1/1] spi: spi-qpic-snand: publish the ECC context to snandc->qspi
+> >>       commit: 93bc7c4d2f4198586a6dbd7797c3bbf1ca845761
+
+> > Oh?
+
+> -ETOOMANYKEYWORDS ._.
+
+> Dropped, my bad :)
+
+Ah, OK!
+
+--mXqNAXms/6jab0lX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqbECMACgkQJNaLcl1U
+h9D9lAf+IZaw+kwCDRnV/MFBJfEhRpBMSvA1Py8PNv+9liGULZ1JWolFUk4gjThw
+hLGJuDu7Pvt9rsK82ONydDPMVHxi3vGJwrgo21NLF400e93nof+s+C2rbvBZC0H1
+RIl4Ja3jG5jd9/s50HfXzqA/qQUiDMyRINZz8I3LKcbWzxzMZt05qDU02LvA1vp/
+mE9vo7+AcpGTcuFt88ncnawuXxyQJrKQ+xb9jTUovhkSkOjxjbVdCwf+LhkT+Q4E
+pjgsYj3ZgSimphapOn4nApeuZv6eHjHKzocc4L2tGmO+vuzSgUbQYjbEVp8EkkTW
+P2PZzsX9KKsbHhBAwkoEEltuTgWdxQ==
+=OfTx
+-----END PGP SIGNATURE-----
+
+--mXqNAXms/6jab0lX--

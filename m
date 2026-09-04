@@ -1,42 +1,42 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27F747F2D8
-	for <linux-spi@vger.kernel.org>; Fri,  4 Sep 2026 16:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE204A3F17;
+	Fri,  4 Sep 2026 16:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788538529; cv=none; b=CR9q4QvgZtFoeeHpYn9LC4INAGFqHZSEA4+YWMIyHdYY1Jfz6F4gh6WYVIsUa9e0vhZ6RRhipRPKVkGQHFHCvd4DqeNkarZzftBCRPXOyOApALj4Y01wIFE1zr1uR/U2KpJBylAPfKmca+5U5iuyfIXlKw7G625GMVRxj3KzW58=
+	t=1788538534; cv=none; b=WXLHoIs8DLFFNuZpMTgWF1aIBAfH0Y0sgK3W0v5Nyo0uv2iEHT+/+djOri/RVOBuFr7jw91KDN9J0RMC9IKLXycK7m8bdXBzWXzKa2JPciwgxRCxPMTtwPsHA3pJ5UDdQRft9Lrpb3py3scTib8YhVr8qjWFEqTQktYJwirR9gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788538529; c=relaxed/simple;
-	bh=APtoFyzTyhZ52EVQzRs8ocjOQ5XXqng6P+8bPR0yUDY=;
+	s=arc-20240116; t=1788538534; c=relaxed/simple;
+	bh=jXlLT8SaK+Ps3N5vV4xJEUHEU3WB8mRODl7Q9bkHRKw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pH9czXYz5WyzVNmnwVIBBgwKg84cypym/SEicfMobj3DrjSG/PHSso42n1ocSCnL7PE5Jfnzowsx1h2hy2ePFPOFV9sduQjFLn1/yLz3VGds4SvsFb2sGTFiqTB7uyg+qC7U+j35m7kMvUuAKcilMSsvtVNbcgQ8T97o9eGNils=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=H0Vk1qXV; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:To:Cc; b=rraqdV1rK0Z/e/k5R3ZJ0QPzVzPpc3LmP0NIUr1cpo4EED9KuiToeW7aPUCpIdU2WSWbhJ3t7awTa5X6l0GzBC6V2ViDtzA05vYuJDWqwjeTMMoFgyMrduj/bOpqRo/1OzjmjgzsDstqOlPoGR7FFlURtj6W02cKgoldeho6pFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IAl74W7I; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="H0Vk1qXV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IAl74W7I"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1C46B1A19AD;
-	Fri,  4 Sep 2026 16:15:26 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 16F961A19AB;
+	Fri,  4 Sep 2026 16:15:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E6C3F6057F;
-	Fri,  4 Sep 2026 16:15:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A86DF11C798EA;
-	Fri,  4 Sep 2026 18:15:20 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DA2B36057F;
+	Fri,  4 Sep 2026 16:15:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9C09211C78767;
+	Fri,  4 Sep 2026 18:15:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788538521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1788538526; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=kG8qOJf7J4aEU/n1neCfbmEvJTcve4JDlz0x4pKitok=;
-	b=H0Vk1qXVoRRry0l7BegGRBAY/sT20QUCYlyAyoNT4ts5Dwmjj2mSlx5TKSmTtqTBxfN3Tj
-	Lnmc37/LqEIhCMEISd2Fm6p1WL4yOKEbRoDlhzgj6KLyidKcNLhOxHMGxf6IYzAii+pRcu
-	goPFNPWSeAV7QKqTx/pdeTyGKDyhNseLwG7KfSBUZn1K4v9jWBOHL9ozcArcG8wqwKkU4K
-	UtE/OkFp1ZZsIa29e+Z1Q2AIoCsoGXjgAMTM3Nvy1b5iw3MTZ8/QiO40+ZH5/W/JoOaiNA
-	u7+p3XELRfjd6H+EDc6THH5bU/GuRvn1SXifYLjBOcTwO3KVw8rorhZOsIE1+w==
+	bh=SYNMh+wlYQbXqey/rgOB5yDcItmOFPFcTITbDauYbKE=;
+	b=IAl74W7ImszHKs0rHmLq7TC01B3a+fipQqD9OUxGgAnar6XLleRvLssoJa/mjAme5IvCUg
+	fz4n1vWwsLgHlEbXwZkqPlxG2nfPVcoC5Qq6hS4hvzn61FID2DVqso+cNUKTx7WQgR5/Pj
+	wyNBOXVQLrby+Azn+5uvOAdJUYWFbQGtXs4fR9YfK/BRlBGO771PasLZarWIyvWIfqtpqp
+	4KbSza2273Afyy8XYuHkRqYsHFywo6n+TQQIa7OkNJ/auftcZ92cgvYoL+m0RMxsIO+ob3
+	oJ5AAhX3nzcfiDQIxlnz1h/6+r18+80n3l4eeL0F2ocVyUowS8QOxFO1xn0THA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-Date: Fri, 04 Sep 2026 18:15:10 +0200
-Subject: [PATCH 1/2] spi: spi-mem: Enable DTR transfers using the standard
- API
+Date: Fri, 04 Sep 2026 18:15:11 +0200
+Subject: [PATCH 2/2] spi: ma35d1-qspi: Allow DTR operations with the
+ regular SPI API
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-perso-ma35d1-master-v1-1-b6936e8c6fa1@bootlin.com>
+Message-Id: <20260904-perso-ma35d1-master-v1-2-b6936e8c6fa1@bootlin.com>
 References: <20260904-perso-ma35d1-master-v1-0-b6936e8c6fa1@bootlin.com>
 In-Reply-To: <20260904-perso-ma35d1-master-v1-0-b6936e8c6fa1@bootlin.com>
 To: Mark Brown <broonie@kernel.org>, Jacky Huang <ychuang3@nuvoton.com>, 
@@ -57,65 +57,30 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Most spi-mem operations today go through controllers implementing the
-spi-mem API. But it is also totally possible to use any standard SPI
-controller to operate these memories. If the controllers support DTR,
-there is no reason to prevent this feature from being used.
+The feature was implemented but not actually enabled for regular SPI
+operations (as opposed to spi-mem operations). Make sure the missing
+capability is actually set.
 
-Extend spi_mem_exec_op()'s fallback to the standard SPI API, by filling
-the transfer DTR information. Doing so also requires checking the
-dtr_caps flag, of course.
-
+Reported-by: Mark Brown <broonie@kernel.org>
+Closes: https://lore.kernel.org/all/09c3928f-4b58-4ac6-8e1a-84dfe3ff6b92@sirena.org.uk/
+Fixes: 15e9362f6190 ("spi: ma35d1-qspi: Add DTR support")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/spi/spi-mem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-ma35d1-qspi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index 5f973ebfb8b6..94d122be1c93 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -172,7 +172,7 @@ bool spi_mem_default_supports_op(struct spi_mem *mem,
- 		op->cmd.dtr || op->addr.dtr || op->dummy.dtr || op->data.dtr;
- 
- 	if (op_is_dtr) {
--		if (!spi_mem_controller_is_capable(ctlr, dtr))
-+		if (!spi_mem_controller_is_capable(ctlr, dtr) && !ctlr->dtr_caps)
- 			return false;
- 
- 		if (op->data.swap16 && !spi_mem_controller_is_capable(ctlr, swap16))
-@@ -461,6 +461,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	xfers[xferpos].len = op->cmd.nbytes;
- 	xfers[xferpos].tx_nbits = op->cmd.buswidth;
- 	xfers[xferpos].speed_hz = op->max_freq;
-+	xfers[xferpos].dtr_mode = op->cmd.dtr;
- 	spi_message_add_tail(&xfers[xferpos], &msg);
- 	xferpos++;
- 	totalxferlen++;
-@@ -476,6 +477,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		xfers[xferpos].len = op->addr.nbytes;
- 		xfers[xferpos].tx_nbits = op->addr.buswidth;
- 		xfers[xferpos].speed_hz = op->max_freq;
-+		xfers[xferpos].dtr_mode = op->addr.dtr;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->addr.nbytes;
-@@ -488,6 +490,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		xfers[xferpos].tx_nbits = op->dummy.buswidth;
- 		xfers[xferpos].dummy_data = 1;
- 		xfers[xferpos].speed_hz = op->max_freq;
-+		xfers[xferpos].dtr_mode = op->dummy.dtr;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->dummy.nbytes;
-@@ -504,6 +507,7 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 
- 		xfers[xferpos].len = op->data.nbytes;
- 		xfers[xferpos].speed_hz = op->max_freq;
-+		xfers[xferpos].dtr_mode = op->data.dtr;
- 		spi_message_add_tail(&xfers[xferpos], &msg);
- 		xferpos++;
- 		totalxferlen += op->data.nbytes;
+diff --git a/drivers/spi/spi-ma35d1-qspi.c b/drivers/spi/spi-ma35d1-qspi.c
+index 7f938d0c6f1f..ee3427640f3a 100644
+--- a/drivers/spi/spi-ma35d1-qspi.c
++++ b/drivers/spi/spi-ma35d1-qspi.c
+@@ -645,6 +645,7 @@ static int nuvoton_qspi_probe(struct platform_device *pdev)
+ 	ctlr->max_message_size = nuvoton_qspi_max_message_size;
+ 	ctlr->mem_ops = &nuvoton_qspi_mem_ops;
+ 	ctlr->mem_caps = &nuvoton_qspi_mem_caps;
++	ctlr->dtr_caps = true;
+ 	ctlr->set_cs = nuvoton_qspi_set_cs;
+ 	ctlr->transfer_one = nuvoton_qspi_transfer_one;
+ 	ctlr->bits_per_word_mask = SPI_BPW_MASK(8);
 
 -- 
 2.54.0

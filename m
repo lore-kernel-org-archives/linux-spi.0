@@ -1,92 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD56D490C0B;
-	Sat,  5 Sep 2026 11:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EFF221F39;
+	Sun,  6 Sep 2026 14:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788609568; cv=none; b=UNb9JIDY9DuzfrSSgBRI8g7R29GThw6q8Hz1Tj9NZLc/c04zMALTAMZI1LoxMS+Mz0EanDeHUtNUkJVrvthBgqcPMgFXCR46gzt5SDIXDlN7ioMik7/oeQ4GRUfL+27nqt0H7T4sELLfmaVWgtxhw2nRzIVL9KUvtwr9jdE0OXE=
+	t=1788706694; cv=none; b=dhu57jKHTB5ap8ftdAeii87cEsaMycJ9wlbZlwk57uY4q8/Q+iuSoBrJXfqQXecu8UMlWv1bBpUKFEKC/sTtOlexJWTh/SpY+qmipwsn2GyIMdsPioV3STGh6wSyxoBa3cgSECXtxA+DLmPZJx3aRYJhSn3AhhmyEweu5l7ML30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788609568; c=relaxed/simple;
-	bh=uCd0Y2s1ntfPkF8I49DOtN1YzSDetCsyUch43wSRXSg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sMUTLtAYq46fRGGBcJfpUNbWuc5n/EswR8Pgr7ljKfPgzlXbwxk3yfmK9DCXEyz7IZ2xbe99f8UDNNIDRIVuqnf5oSYiELdaOW0Bky5b8PxPZf/Kl+rWVDer1tyih27wou9mZtY0YVsyUkqwNlOOEoipJ/XZmCDGXYNaqUSg6AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsbMrz/H; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788706694; c=relaxed/simple;
+	bh=MVcLgggaWyruXfyN1BNweCSyr3THPYrIxjee14sZrlc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KHKWl8sAiZOMtnyJCSkjqkfiY3MPk6cdZDNlVH9GWDa3x+9WjNoA8gIlApvVH/8XBwXTweKa43AAPUz70trqjT76TKP6L2Nf6euLzpC6QoTBTDs9bIHh3Cd3ojmGd/9wJgeeL0QN515r4N9fVKcOe2+mshB+NAaIdPFaDrpjgGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=wZU0gUJE; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsbMrz/H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7910C1F00A3D;
-	Sat,  5 Sep 2026 11:59:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788609567;
-	bh=D51OQaPymGUeRCghX48Gk3kPeHwg7sCjWLRZ+NnuoY0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=BsbMrz/HgGZhfDPss1emYfP++PCe60dt5hFwzIZGnYzBdISCTYxXvigK5/dFt5wh+
-	 l67nD02jT/yrrKg7OmM0qPQiJQUHB+JWvh0H7QU0YKgkQNtPWlkwIiKeHP1KpyeTc9
-	 Kfzpu5F6fHK6bguTBiY0osvvf5sgWROCEyiIG2ndCOXCPKURjPwIYWPwKF27HfRhCC
-	 wC0CTy4bgRkF+pyY9gWlNV4wE3al50N4LPd08F00Wjc6gs/oWH0kBKlokNpg/OFjoF
-	 GR6etXhfzaiyjDgP7UmegQ5DlVe3JHBzzPATPXRvPtCB7uwlu2TJ1QMToBlJQT+bnm
-	 NiX4Yu+y3lqKA==
-From: Mark Brown <broonie@kernel.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Ikjoon Jang <ikjn@chromium.org>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-In-Reply-To: <20260904-mtk-nor-v1-1-cefdca098f83@gmail.com>
-References: <20260904-mtk-nor-v1-1-cefdca098f83@gmail.com>
-Subject: Re: [PATCH] spi: mtk-nor: fix runtime PM usage count leak in probe
- error path
-Message-Id: <178854774645.632048.7126140576103303391.b4-ty@b4>
-Date: Fri, 04 Sep 2026 19:49:06 +0100
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="wZU0gUJE"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 686EvuRS32020808, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788706676; bh=8HcEcqHp68g4Vh+ciwgOGWeQeGwe9lWxEKHt5DqfTKc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=wZU0gUJETB3FZbG4eZ0HJ5w+FCkRCJuOx7NASuc3DX/390vL0J2Yh/S2e4/52EyRV
+	 izd8SVOVr66TEaWFTrWgo+wRzlh2JJhf6piT2Y3us7cW/e5lYueKnwYW98O6LxpOq1
+	 kbfoXxlozAofUChGZbWjjWhxUlPNQ8zL2g3/z4x4Dj2t4igEmJA8hi3A/Ldau5JnKn
+	 ElZ6TS4uiUlnXbANr2GO9IQkR8P3tM5pF/4YWrCZeW9ZSlTnObGg7pXCkaYRArpzEf
+	 VMyRHMKGibBbickNQ4HZIQZKlI6XEdHwNSID+ATp/NcvTgjpwSWdrbq9h7wg1Z4Hab
+	 DbJ8erfIp1cwA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 686EvuRS32020808
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 6 Sep 2026 22:57:56 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Sun, 6 Sep 2026 22:57:56 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Sun, 6 Sep 2026 22:57:56 +0800
+Received: from cn1dhc-k02 (172.21.252.101) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
+ Transport; Sun, 6 Sep 2026 22:57:56 +0800
+From: Yu-Chun Lin <eleanor.lin@realtek.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <jyanchou@realtek.com>, <p.zabel@pengutronix.de>
+CC: <afaerber@suse.com>, <devicetree@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<james.tai@realtek.com>, <cy.huang@realtek.com>, <stanley_chang@realtek.com>,
+	<eleanor.lin@realtek.com>
+Subject: [PATCH v2 0/2] spi: realtek: Add support for RTD1625 SPI Flash Controller
+Date: Sun, 6 Sep 2026 22:57:53 +0800
+Message-ID: <20260906145755.1230079-1-eleanor.lin@realtek.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1140; i=broonie@kernel.org;
- h=from:subject:message-id; bh=uCd0Y2s1ntfPkF8I49DOtN1YzSDetCsyUch43wSRXSg=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqnAQaaY4GiSLKP34zq6mShUvL4Ags9zm8EIUcd
- TVQl30UFWOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCapwEGgAKCRAk1otyXVSH
- 0Ct1B/9PW0ZumOIjwq2XTY3SF8GLJ8lUSYSFQ5+tCw8dj+FJ4IOHjqpq1TTz4TxBhd4LPCDLbtg
- S1bJyRlP2KYMeBPyi5B2E89PVzLhQs47iDldDu1DuCw6QBQRIH93IcMcFDrv8HADXYjhkMubgDK
- ZZe5Umaf88kWFs2Wn4d/ITXp3w7/yXcyo6FrjnricbLEAHUMdnw5unjGj0AOD7g+cnTIRRF2bQL
- DSCzUzfRa1INdV4IkcP9ANHn6Ld4i0D52y+fm2S56vmNjxQWdCwPxxI+rLHYyJUgfLr1cxS6Xtx
- krWthXEojov5bt8UsQBnTJoIW2fnoy7J2eyQSENdFWhIzxjU
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Fri, 04 Sep 2026 23:51:29 +0800, Felix Gu wrote:
-> spi: mtk-nor: fix runtime PM usage count leak in probe error path
+Hi all,
 
-Applied to
+This patch series introduces support for the Realtek RTD1625 SPI Flash
+controller.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+Thansk,
+Yu-Chun
 
-Thanks!
+---
+Changes in v2:
+- Dropped the DTS patch to avoid apply conflicts.
+- Removed clock and reset header inclusions, and replaced macros with raw
+numbers in the dt-binding example to resolve dependencies.
 
-[1/1] spi: mtk-nor: fix runtime PM usage count leak in probe error path
-      https://git.kernel.org/broonie/spi/c/4cee1ed13e26
+v1: https://lore.kernel.org/lkml/20260904031252.244280-1-eleanor.lin@realtek.com/
+---
+Jyan Chou (2):
+  dt-bindings: spi: Add Realtek RTD1625 SPI support
+  spi: spi-mem: Add Realtek SPI flash controller driver
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ .../bindings/spi/realtek,rtd1625-nor.yaml     |  65 ++
+ MAINTAINERS                                   |   6 +
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-rtk-nor.c                     | 637 ++++++++++++++++++
+ 5 files changed, 719 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
+ create mode 100644 drivers/spi/spi-rtk-nor.c
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+2.43.0
 

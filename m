@@ -1,299 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1AB463B94;
-	Mon,  7 Sep 2026 13:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2D4E80CD;
+	Mon,  7 Sep 2026 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788788625; cv=none; b=mltlsw7xnKl20OUElwTi0c2f1CPsFdhlV8f6wmxUhtvx8BTHgpEulmamGYzLOp4Fnkg53T+FhPPgH4Z40AXc055aBCv7V2iyCGvi4BoC0XMpUlgEKqhpQ3iwuHKG4Ipoh4KuAV93BpCLkwvZtr6NF8PcvYG1JTsRq45afF2Tn60=
+	t=1788788831; cv=none; b=T0yCxN4Q2H+EW2xzexjN0vOx2AOn0zY4FLmokVeuGRtnFOjDjs92YAiZOy8TuGo0ycxex9J1t0DcG8nEjp40HhiKATSwL8kjYn43XOAgg2uGcWDQY/aFWQRyfHhAzV2V3fKhw/PlDlsOs9BSveqZ0fv+eqZOGZkKM6h+wF+Ee/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788788625; c=relaxed/simple;
-	bh=YZ8FA5JL6PMill5gcWmIwEDZT1PtVMuLuMDMyIsfqPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEi1lplJXYHBlQDLzuJymRvFY7Qe1sIwXWWIOxlWgvEMDFxhtQM5LJvqSa6Ug1YriTP277aw3ny81HaR2RA94esUeAObfqU29DlhNPwNqW2abHBs1L4znfxlslFtpxJq3clWUzHqPn4rKxhyek3V01VSwht9EWJSBXPSBP0vpwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1F21F00A3A;
-	Mon,  7 Sep 2026 13:43:33 +0000 (UTC)
-From: Greg Ungerer <gerg@linux-m68k.org>
-To: linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	arnd@kernel.org,
-	wei.fang@nxp.com,
-	frank.li@nxp.com,
-	shenwei.wang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	nico@fluxnic.net,
-	linux-can@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	olteanv@gmail.com,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCHv3 3/3] m68k: coldfire: fix non-standard readX()/writeX() functions
-Date: Mon,  7 Sep 2026 23:37:11 +1000
-Message-ID: <20260907134037.1855408-4-gerg@linux-m68k.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907134037.1855408-1-gerg@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+	s=arc-20240116; t=1788788831; c=relaxed/simple;
+	bh=kbbIYku2jDxALVuBt8IOwMMSyMY7ylnMQtiOc9f5haE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqJrcRigw6/WgaFcEFloZhyq2kdqAFQ2KHTyd8srxG+tCf+jST7aWVOHvjsTssUZO6YA1DKIaHaYaKZscsb9EKVxUjM5OV5XlXL/GZfJq6koWI31PwEgajOw9UbOTVUPONqxVdO295l83rvRGbPpKEzk2z9FNI8PHSct2S4AyTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOneXm87; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOneXm87"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B601F00A3A;
+	Mon,  7 Sep 2026 13:47:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788788826;
+	bh=HUVDPKeZ74v3BFh7Tch9+2MMZc+U1E5RK2oiY040Eqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HOneXm8779L8HUKFMz3jGOwAR+G8YWowOIGjJgb3gM2Gorz0NaGHwcpGXqt5Uia6r
+	 tjUTuFoXElGPrgvY9oZZ05+81BlT+aYhvSBYlx5IqlKimEVU+VHAlm32u6sxDSllxu
+	 U6Jmf/i+7yaerkv6URPqLpb2TIqVo08uNzPniTNk96njFZrmTWcb+Y+GCDy/i+GynZ
+	 eB+a6hdSfgVQ/0qPHEe5o0XUso51oC1lsboPoOAbe556pfyIam5RXUo2CFCgiKU25m
+	 c1YkGZpIl77b7ISWG/ULpNu+uIwQ5Dn52r/NYRCfDSAGfn0MbYYEZGv1x1I/KNoNxM
+	 V9uBMhvpJQR6Q==
+Date: Mon, 7 Sep 2026 14:47:01 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Yu-Chun Lin <eleanor.lin@realtek.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	jyanchou@realtek.com, p.zabel@pengutronix.de, afaerber@suse.com,
+	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, james.tai@realtek.com,
+	cy.huang@realtek.com, stanley_chang@realtek.com
+Subject: Re: [PATCH v2 2/2] spi: spi-mem: Add Realtek SPI flash controller
+ driver
+Message-ID: <0752aad9-7ed1-407e-951d-18a61d945119@sirena.org.uk>
+References: <20260906145755.1230079-1-eleanor.lin@realtek.com>
+ <20260906145755.1230079-3-eleanor.lin@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XtWmWUqLPiPGDe5b"
+Content-Disposition: inline
+In-Reply-To: <20260906145755.1230079-3-eleanor.lin@realtek.com>
+X-Cookie: Who's on first?
 
-Remove the local ColdFire definitions of readb()/readw()/readl() and
-writeb()/writew()/writel() and use the asm-generic versions of them.
 
-The implementation of the readX()/writeX() family of IO access functions
-is non-standard on ColdFire platforms. They either return big-endian (that
-is native endian) data, or on platforms with PCI bus support check the
-supplied address and return either big or little endian data based on that
-check. This is non-standard, they are expected to always return
-little-endian byte ordered data. Unfortunately this behavior also means
-that ioreadX()/iowroteX() and their big-endian counter parts
-ioreadXbe()/iowriteXbe() are currently broken because they are implemented
-using the readX()/writeX() functions.
+--XtWmWUqLPiPGDe5b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The change to use the asm-generic versions of readX()/writeX() itself is
-quite straight forward, just remove the ColdFire local versions of them. But
-this of course has implications for any remaining drivers that use any of
-these IO access functions. A number of drivers can be independently fixed,
-before this final fix to readX()/writeX() for ColdFire. A small number of
-drivers cannot easily be independently fixed and remain in a working
-state. Those drivers are fixed here as well:
+On Sun, Sep 06, 2026 at 10:57:55PM +0800, Yu-Chun Lin wrote:
 
-drivers/dma/mcf-edma-main.c
-  Supports big-endian access by setting the big-endian flag of
-  the drivers struct fsl_edma_engine. But locally should be using
-  ioread32be() and iowrite32be() instead of ioread32() and iowrite32().
+> Add a spi-mem driver for the SPI Flash Controller (SFC) found on Realtek
+> DHC SoC. SFC supports Dual I/O.
 
-drivers/net/can/flexcan/flexcan-core.c
-  Setting the driver quirks flag for big-endian access will force
-  driver to use correct access functions.
+>  drivers/spi/Makefile      |   1 +
+>  drivers/spi/spi-rtk-nor.c | 637 ++++++++++++++++++++++++++++++++++++++
 
-drivers/spi/spi-fsl-dspi.c
-  Setting the regmap format_endian flags to use native endian will
-  force driver to use appropriate big or little endian access on
-  whatever platform it is built for.
+Are we sule Realtek won't have more flash controllers?
 
-These drivers have only been compile tested.
+> @@ -0,0 +1,637 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Realtek SPI Nor Flash Controller Driver (SFC)
+> + *
+> + * Copyright (c) 2024-2026 Realtek Technologies Co., Ltd.
+> + */
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can/flexcan
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
----
-v2: changed from RFC to PATCH
-    use separate regmap config for mcf5441x (spi-fsl-dspi.c)
-    reorder quirks for mcf5441x (flexcan-core.c)
-v3: no change
+Please make the entire comment block a C++ one so things look more
+intentional.
 
- arch/m68k/include/asm/io_no.h          | 68 +++-----------------------
- drivers/dma/mcf-edma-main.c            | 14 +++---
- drivers/net/can/flexcan/flexcan-core.c |  1 +
- drivers/spi/spi-fsl-dspi.c             | 14 +++++-
- 4 files changed, 27 insertions(+), 70 deletions(-)
+> +static int rtk_spi_do_write_and_cmds(struct rtk_spi_host *host, const struct spi_mem_op *op)
+> +{
 
-diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
-index 4f0f34b06e37..2f12f4ed0da5 100644
---- a/arch/m68k/include/asm/io_no.h
-+++ b/arch/m68k/include/asm/io_no.h
-@@ -3,15 +3,10 @@
- #define _M68KNOMMU_IO_H
- 
- /*
-- * Convert a physical memory address into a IO memory address.
-- * For us this is trivially a type cast.
-- */
--#define iomem(a)	((void __iomem *) (a))
--
--/*
-- * The non-MMU m68k and ColdFire IO and memory mapped hardware access
-- * functions have always worked in CPU native endian. We need to define
-- * that behavior here first before we include asm-generic/io.h.
-+ * Historically the raw native endian IO access macros for non-MMU m68k and
-+ * ColdFire have accepted any integral value as the address argument.
-+ * The asm-generic versions of these expect "void __iomem *" for the address,
-+ * so define local permissive versions here.
-  */
- #define __raw_readb(addr) \
-     ({ u8 __v = (*(__force volatile u8 *) (addr)); __v; })
-@@ -45,66 +40,15 @@
-  * applies just the same of there is no MMU but something like a PCI bus
-  * is present.
-  */
--static int __cf_internalio(unsigned long addr)
-+static inline int __cf_internalio(unsigned long addr)
- {
- 	return (addr >= IOMEMBASE) && (addr <= IOMEMBASE + IOMEMSIZE - 1);
- }
- 
--static int cf_internalio(const volatile void __iomem *addr)
-+static inline int cf_internalio(const volatile void __iomem *addr)
- {
- 	return __cf_internalio((unsigned long) addr);
- }
--
--/*
-- * We need to treat built-in peripherals and bus based address ranges
-- * differently. Local built-in peripherals (and the ColdFire SoC parts
-- * have quite a lot of them) are always native endian - which is big
-- * endian on m68k/ColdFire. Bus based address ranges, like the PCI bus,
-- * are accessed little endian - so we need to byte swap those.
-- */
--#define readw readw
--static inline u16 readw(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readw(addr);
--	return swab16(__raw_readw(addr));
--}
--
--#define readl readl
--static inline u32 readl(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readl(addr);
--	return swab32(__raw_readl(addr));
--}
--
--#define writew writew
--static inline void writew(u16 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writew(value, addr);
--	else
--		__raw_writew(swab16(value), addr);
--}
--
--#define writel writel
--static inline void writel(u32 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writel(value, addr);
--	else
--		__raw_writel(swab32(value), addr);
--}
--
--#else
--
--#define readb __raw_readb
--#define readw __raw_readw
--#define readl __raw_readl
--#define writeb __raw_writeb
--#define writew __raw_writew
--#define writel __raw_writel
--
- #endif /* IOMEMBASE */
- 
- #if defined(CONFIG_COLDFIRE)
-diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-index 9e1c6400c77b..4ed0ce644e37 100644
---- a/drivers/dma/mcf-edma-main.c
-+++ b/drivers/dma/mcf-edma-main.c
-@@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
- 	unsigned int ch;
- 	u64 intmap;
- 
--	intmap = ioread32(regs->inth);
-+	intmap = ioread32be(regs->inth);
- 	intmap <<= 32;
--	intmap |= ioread32(regs->intl);
-+	intmap |= ioread32be(regs->intl);
- 	if (!intmap)
- 		return IRQ_NONE;
- 
-@@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 	struct edma_regs *regs = &mcf_edma->regs;
- 	unsigned int err, ch;
- 
--	err = ioread32(regs->errl);
-+	err = ioread32be(regs->errl);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 		}
- 	}
- 
--	err = ioread32(regs->errh);
-+	err = ioread32be(regs->errh);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -203,8 +203,8 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 		edma_write_tcdreg(mcf_chan, cpu_to_le32(0), csr);
- 	}
- 
--	iowrite32(~0, regs->inth);
--	iowrite32(~0, regs->intl);
-+	iowrite32be(~0, regs->inth);
-+	iowrite32be(~0, regs->intl);
- 
- 	ret = mcf_edma->drvdata->setup_irq(pdev, mcf_edma);
- 	if (ret)
-@@ -248,7 +248,7 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Enable round robin arbitration */
--	iowrite32(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-+	iowrite32be(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
- 
- 	return 0;
- }
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index f5d22c61503f..f0571b97817b 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -295,6 +295,7 @@ static_assert(sizeof(struct flexcan_regs) ==  0x4 * 18 + 0xfb8);
- 
- static const struct flexcan_devtype_data fsl_mcf5441x_devtype_data = {
- 	.quirks = FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-+		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
- 		FLEXCAN_QUIRK_NR_IRQ_3 | FLEXCAN_QUIRK_NR_MB_16 |
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
- 		FLEXCAN_QUIRK_SUPPORT_RX_FIFO,
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 23e6bc5f202e..5fb5f5dd1b0d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -192,6 +192,7 @@ enum {
- 	DSPI_XSPI_REGMAP,
- 	S32G_DSPI_XSPI_REGMAP,
- 	DSPI_PUSHR,
-+	MCF5441X_DSPI_REGMAP,
- };
- 
- static const struct regmap_config dspi_regmap_config[] = {
-@@ -238,6 +239,17 @@ static const struct regmap_config dspi_regmap_config[] = {
- 		.reg_stride	= 2,
- 		.max_register	= 0x2,
- 	},
-+	[MCF5441X_DSPI_REGMAP] = {
-+		.reg_bits	= 32,
-+		.val_bits	= 32,
-+		.reg_stride	= 4,
-+		.max_register	= SPI_RXFR3,
-+		.volatile_table	= &dspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
-+		.reg_format_endian = REGMAP_ENDIAN_BIG,
-+		.val_format_endian = REGMAP_ENDIAN_BIG,
-+	},
- };
- 
- static const struct fsl_dspi_devtype_data devtype_data[] = {
-@@ -303,7 +315,7 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.trans_mode		= DSPI_DMA_MODE,
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
--		.regmap			= &dspi_regmap_config[DSPI_REGMAP],
-+		.regmap			= &dspi_regmap_config[MCF5441X_DSPI_REGMAP],
- 	},
- 	[S32G] = {
- 		.trans_mode	  = DSPI_XSPI_MODE,
--- 
-2.55.0
+> +	} else {
+> +		readb(host->iobase);
+> +
+> +		/*
+> +		 * For pure commands that require internal state synchronization
+> +		 * (such as Chip Erase), poll the flash status.
+> +		 */
+> +		ret = rtk_spi_read_status(host);
+> +	}
 
+Shouldn't this be done by the spi-nor core if it's needed?  There's also
+some timeout logic there which this will override.
+
+> +static int rtk_spi_dma_transfer(struct rtk_spi_host *host, loff_t offset,
+> +				size_t len, bool is_read)
+> +{
+
+> +	writel(DMA_W_EN | DMA_START, host->mdbase + MD_FDMA_CTRL1);
+> +	udelay(1);
+
+> +	ret = readl_poll_timeout(host->mdbase + MD_FDMA_CTRL1, val,
+> +				 !(val & DMA_START), 100, timeout_us);
+> +	if (ret) {
+> +		dev_err(host->dev, "DMA transfer timed out\n");
+> +		return ret;
+> +	}
+
+Don't we need to turn off the hardware here?
+
+> +static int rtk_spi_runtime_resume(struct device *dev)
+> +{
+> +	struct spi_controller *ctlr = dev_get_drvdata(dev);
+> +	struct rtk_spi_host *host = spi_controller_get_devdata(ctlr);
+> +	int ret;
+> +
+> +	ret = clk_prepare_enable(host->clk);
+> +	if (ret < 0) {
+> +		dev_err(dev, "clk_prepare_enable failed: %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	reset_control_assert(host->rstc);
+> +	usleep_range(10, 20);
+> +	reset_control_deassert(host->rstc);
+> +
+> +	rtk_spi_init(host);
+> +
+> +	return 0;
+> +}
+
+rtk_spi_init() doesn't handle 4 byte mode does it?
+
+--XtWmWUqLPiPGDe5b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqewFQACgkQJNaLcl1U
+h9BIvgf9GrIUJa8zL++BdHo3crKhybLo0SdrvyVM138OfNSr4bdlA4EWSQBCs7cy
+52MJYlgf0bi6UFTURjWlPvzzfhcqbq0id/i1n/cVGtuIvW9cbAWiyIEEFOMSgp/z
+o+36KVqBHume+PXDNL2YmgrPx69SoTHScMDbIM1maQHKrCXFpisxCpC3i8g6LMqI
+DEkW/NQnYJ409mEAz+shwmvvNCVk5mV9QdV+yGGxsj82CeFqAHCGWTSUGe3JdcB/
+3kFNRyxzNO/pLX6Ni+POiBDBgHC08BGVvRMIB9T+CWdJWi1fHk9lsaz2S2Klk9FU
+ZCrlwCGeuc2d/RF5NORIB+Fzjcyywg==
+=xTSe
+-----END PGP SIGNATURE-----
+
+--XtWmWUqLPiPGDe5b--

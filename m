@@ -1,177 +1,112 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0021491580
-	for <linux-spi@vger.kernel.org>; Tue,  8 Sep 2026 19:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC79545D9A
+	for <linux-spi@vger.kernel.org>; Tue,  8 Sep 2026 19:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788895888; cv=none; b=eaqjeV94SU68/fvaWIzfzpT3V6EzPUGV4GEiKEXjcBvnLKrrtP/Qv2SjaN/6cT3/lEQf/bBDV3OUeaNESlzxFHUDekNwX205dAz5Dc15dUI4kajK3v8EfgHxMbRouMb5Ei+QJyvykITY8r6tNaiD6LG7+m/cKqbsQMi88BI3u6k=
+	t=1788897211; cv=none; b=FnYkQodE2P+r3W+awr0P6EGcIpQf7ZLi/4yJUy9FRWxNcCYpyukyuj7wBq2mZJ8bvnAoMMlxbhCa022oZtwzv+pUCsoycz6b7EycU0KQZH42AWyF/IilekHlVM5MUkYHHu+tAHNF562jy8XIezfI/pnzw71AUkBq/oWZPwbuFjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788895888; c=relaxed/simple;
-	bh=/1pXjrR9cuOnK2vYyqHrGZFoJSq2pPsJGh6P1fXARuw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CO128i5D4cj8y4rHe1uA+Xa3DkuJoUP71fLGINGBdJzf+c71yw5DkMRGXw4OUPGyxpufy/ZYLFQJH1y7+fAUnuDi106xZFC9/3AZnHEvU0wJN9ERAa7aleldVZTmabZArDlxDHAlpy6ysPBGNJWs3kTZ/8xNcAKgSbUTZGwv0B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gPCgwmXa; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1788897211; c=relaxed/simple;
+	bh=NTd2pp5ANgj0lmniIesf6GIajPDFvFvZIKDPSGDqkEY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RX4l/1Pxv23NIfSWzxB9KKhatMzo1y3bxLAEVIBGLyb8xl9j2IvMuP+N5mBVWtXXVLfDrjtUJ1//I+jcGp7PUfkdXkHKfxE4b+G3j6thFq6I30Ssw8QmZheXsi9/XgfQrCnAeJLHOn9VA0dwzJiYrq+tNIw7paiIFnzNHXeiTqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o0jVGLeX; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gPCgwmXa"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4859245e493so2670270f8f.1
-        for <linux-spi@vger.kernel.org>; Tue, 08 Sep 2026 12:31:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o0jVGLeX"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4956869750eso45110475e9.2
+        for <linux-spi@vger.kernel.org>; Tue, 08 Sep 2026 12:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788895885; x=1789500685; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bnI1itulTesLodw5EkiLefmn13ex/6XxibeK3IHMIsk=;
-        b=gPCgwmXaZQyhbKMsqvImGNlqtpeofWtuLoruBIuXOp3auRsbNRieGVYGt+QHCfzB+E
-         CLpv6dkW/BK6s14ZkRtAsFUnire1joEjp9pRttPo2+nePhDNky3X+VAmVz1rXq6dDdZo
-         nxNKzZEhlfskxuMnk7k002jNwHYRVzMlp8liuxpH/UrHsmt2FLGrrP/0vamt4j/jkSrW
-         HeBaAHKfRxNEKzSu4OS8uWd0IEPOMfc+ugXhJ/05fEtDYos59W0s7G8vlgIxsi7o2vUS
-         N2YrppmffQJZEoew4ixzAZFdeYFfcCPRZhuHbKGqZ6/Tf8QN5DXrN0y9h0zfcWuqOO1Y
-         pqCg==
+        d=gmail.com; s=20251104; t=1788897208; x=1789502008; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=d34WrDSCafXYxFFebWg84mmDn+YaaqWAdBrUeMqE4nk=;
+        b=o0jVGLeXFM+lkuUdxQ7YjkyrzTQdtuRvHQIUVQFmCBpFCSImOEaxOx1hKNNFH/5Lda
+         7RjLKVW5Bv1H5OTu9iPjKlA6FxFyZBco9XQ/pnrTYGutKmF/Bv7hx6fu1S1CyqFpl5cY
+         ROHtSGj/aCDcvGkFzXzaC+Qr6i9Sh5EilyIsvplDPxMA/6nBJynUhf+cVRXnRAloEbQU
+         wlxqGe1O4LJyA9+rBBOapvL9sD2rtQmtUo9fhkv1vbYXSO9BxIECIsGgdvu20irZOQDA
+         /PZJhXJotp9GWyK+BfVraNfBNx3Z07uNK3kxj7cODhypCgeSVbf68AmT/7CS/7hcRoix
+         cgSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788895885; x=1789500685;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bnI1itulTesLodw5EkiLefmn13ex/6XxibeK3IHMIsk=;
-        b=pGNlmZSl2z1wT82qNYqkiFsdIdjS/amaQKRmIME7xiecbmmglrsGaCHzMpARI0zOJ1
-         VHDqYYUhjKFTvOhk0l1RHsfxDVRt/ApA33pFi4mNh0xrwNstuEpHAgUwroNAoC278+oh
-         jymSD2eJMKbU73wPXhlnkLi8gOdvP62deX67mtSDd+JnzwCDSqH2NwxU8pUskUReYiMJ
-         wFVZYnFv8ph+c4fS7nhjJUm/LbZBM9H8qY8w5bl4B044UX+cywnOiw3b103IjrFFWAMV
-         HpyS6yyxbqeTYkNeRUqvv7TIHRnCld3Qd/1S09wrgvTshGZfcx32SIBvK24xx/hE0KF2
-         qPfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy8bTm/R+MbvKg7Sh5VaM8bI1IPYm9A5OKkQOJgXnFZanN5UIfKcz86aCVFPFVP87duMRRoAqWpv+c=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHuquXlSy9GErrlo/LNUOWStugm+x2G4dVkr08JD/AShHmem2W
-	mRXC220KBrcWcGiIQisrTixk6KkIWHgO42vc5dyqrJ2GpSEdTQAh0QQR
-X-Gm-Gg: AYBFou1kCeKDygFzVllpcq+f+gG6wqvBxHQSCWGOVipw07dRwsnuYeIT8q9qid/K+pH
-	sUoVmPSqv0JMe2E4M/dJRlg02M9gSxuQwfOBdL3Ei18TnpoORRdKNG18oyQjiXgQrrkNwAj8URj
-	RfGS2NgEs2jT2fMfV1Bw4ZXXqikKMLVX0Js7srkq8IOLwfJvxOdYgxk+R3o4X12CwOVhD0EZ4fP
-	uD7X8nljB6uWUF6A6g9NvLCS2KeTDsDCUZQAVVwf3aUroC6pvio+RGQjZagQubalC5zAJ1AMXIF
-	f7f5Byizj79KDfLC/9IFvr6lMhSNc58+6QGJpKNXQEnTO20D+T1OG1z8ogZwmygOGDoBFhUrLL8
-	jviDa4d2vuu7Knm4KAKAfG02+9L8qLVbBakD7kpKnjYKDXOHf9e89f7z5uPYoPzzhPObrvAA85r
-	H6aRFBa+IS8fIqtKIXIE1RoflVeZPOTX1E8oKCFuC1liN9KNOXvSL7qlAR9AM+AL9Ymv2c1ZtVS
-	rylWqkI4p5+nTxnqAmtGeKlS+PMqPut0oVtCw==
-X-Received: by 2002:a05:6000:470a:b0:47f:4919:d5b2 with SMTP id ffacd0b85a97d-4858707f262mr33763744f8f.1.1788895884671;
-        Tue, 08 Sep 2026 12:31:24 -0700 (PDT)
-Received: from [192.168.20.170] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485aa2c9acasm2597169f8f.36.2026.09.08.12.31.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 12:31:24 -0700 (PDT)
-Message-ID: <5231553f-c24d-4bae-a73e-1f2af8c13636@gmail.com>
-Date: Tue, 8 Sep 2026 21:31:21 +0200
+        d=1e100.net; s=20251104; t=1788897208; x=1789502008;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=d34WrDSCafXYxFFebWg84mmDn+YaaqWAdBrUeMqE4nk=;
+        b=E1Fmd4epKp7cb/dquzeCJqCQMo5FqWZo9TmaJqZIg08vSlyiFfdO6CPOBB59JMDY6j
+         xpw7X2LAvYF7XK6IzhGvdXnqcurTAHkGV83Q4Qk+zZGisdKgfzyK7nC8XZJYbgyhfQMD
+         fJYYzDx62ZBvcJGfyMEm1gAtmiCE7i6dMxTkx/mEtSMYDHrwT1pcicws4I7XGtW79h1r
+         HtXCLU7CacbLd9uq1VX0nPiazQ6UBnfplFWgjPv9jALGLS9ChepA5051tBtci7H+IIps
+         WCEF28h/6ck+9YmnK3Z8c7oapyd9L1Nh2XGkMukiLpuBUFaVcNc3XihQ5jR9c8B2tdR9
+         yzyw==
+X-Gm-Message-State: AFuF++lY2IU+60XFqFZUlTY7O7PH+y1BHHWsi12SJhD97udu5lGrbfDN
+	f2sDEZSbvtSRQPsmQn/Ap1DAtVCe88d+Davg0WCOJ5a2JRvy3SzMCrgfYgjp0g==
+X-Gm-Gg: AYBFou1FAkHz9E2merJdXVInCdWMRKiEMmAtJnJO9Z/jhnlyZKpYUkABsvBP3jA02NE
+	xA/GLVrAABmxmGzaZOAlCh0q8OB7ii4g3lofNdY0PC9rqk6mDxhQ9bjkVpH7Wx0o7nzvYfXboDR
+	uaSiAeJr6iQJX5sNNTOHpubLOyTJVLM59x6dzlplVrRVsBo0saeJzQepQXS6s8Z1Hi9Eh+SsZMi
+	+gw/CVm1m1cwizmAEMFdfqkS7pWTr15iCGx++tboGLVwhSppUji6pzTM3WWOp0x42Uz+TtgqsCm
+	/2JBTnJBf9IgQvzOh62VRYe43J/NO6dQ6IV1Q5KvyV1VrWAQVQncgnhtLCyZ0xe+FVTa6dDFvii
+	L0cO39eG0lLIce4qZu8HK5jpKAN9jvJlge4VJKK+YzW9lie0/bKFMshIAdnkoJn3PRzE8bkO4wy
+	cRbLug4kudQjr/8OdGRIEd/QxSdiHF6SuCJ/B/wQ5bIPkmzvL5hN68JHHwh2QA8PpXvHbfev8+G
+	QCTWSkRiltNKXz7
+X-Received: by 2002:a05:600c:620b:b0:49c:fa20:cc07 with SMTP id 5b1f17b1804b1-49cff19cbf4mr255212345e9.30.1788897207627;
+        Tue, 08 Sep 2026 12:53:27 -0700 (PDT)
+Received: from [192.168.0.253] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-49cee5d476esm547748475e9.1.2026.09.08.12.53.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 12:53:27 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Tue, 08 Sep 2026 21:53:16 +0200
+Subject: [PATCH] spi: spi-qpic-snand: remove unnecessary cast to '__le32 *'
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: spi-qpic-snand: publish the ECC context to
- snandc->qspi
-Content-Language: hu
-To: Johan Alvarado <contact@c127.dev>, broonie@kernel.org,
- md.alam@oss.qualcomm.com
-Cc: konradybcio@kernel.org, pengpeng@iscas.ac.cn, miquel.raynal@bootlin.com,
- quic_varada@quicinc.com, quic_srichara@quicinc.com,
- linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260825013848.1056946-1-contact@c127.dev>
-From: Gabor Juhos <j4g8y7@gmail.com>
-In-Reply-To: <20260825013848.1056946-1-contact@c127.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260908-qpic-snand-unnecessary-cast-v1-1-26df1cdd4bb6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQ6CQAwAwK+Qnm1SiEHWrxgPTbdqLwW2SiCEv
+ 7vhOJfZIbSYBtybHYouFjZ6RXtpQD7sb0XL1dBR11OiAefJBMPZM/7cVTSCy4bC8cV0yzTwtZU
+ kBHWYir5sPffH8zj+2d2XPm0AAAA=
+X-Change-ID: 20260908-qpic-snand-unnecessary-cast-97d08a41c9c0
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.3
 
-Hi Johan,
+Remove an unnecessary cast to '__le32 *' in the qcom_spi_io_op()
+function. The 'reg_read_buf' member of the 'qcom_nand_controller'
+structure is defined as '__le32 *' already, so the cast is not
+needed.
 
-2026. 08. 25. 3:38 keltezéssel, Johan Alvarado írta:
-> qcom_spi_ooblayout_ecc() and qcom_spi_ooblayout_free() read the ECC
-> configuration through snandc->qspi->ecc. qcom_spi_probe() points it at a
-> zeroed scratch struct and only qcom_spi_ecc_prepare_io_req_pipelined(),
-> which runs on page I/O, ever updates it. qcom_spi_ecc_init_ctx_pipelined()
-> installs the ooblayout but does not publish the context it just
-> allocated, and qcom_spi_ecc_cleanup_ctx_pipelined() frees that context
-> without clearing the pointer.
-> 
-> spinand_init() calls mtd_ooblayout_count_freebytes() right after the ECC
-> context is created and before any page I/O, so the ooblayout always runs
-> against a pointer that does not describe the current context:
-> 
->   - On a first probe it reads the zeroed struct from qcom_spi_probe(),
->     so steps, bytes and bbm_size are 0. The count then returns 0 rather
->     than an error, so the probe continues with mtd->oobavail set to 0.
-> 
->   - On a probe retry it reads the ecc_cfg the previous attempt freed.
-> 
-> A retry is easy to hit. On IPQ5018 with the qcom,smem-part parser the
-> partition parse returns -EPROBE_DEFER until SMEM has probed, so the
-> first spi-nand probe defers. It defers inside
-> mtd_device_parse_register(), after mtd_otp_nvmem_add() has already read
-> the factory OTP - that read goes through prepare_io_req and leaves
-> snandc->qspi->ecc pointing at the context that spinand_cleanup() then
-> frees. The second probe allocates a new context, never publishes it, and
-> computes the OOB layout from the freed one. Once the slab has been
-> reused, qecc->steps holds garbage and
-> 
->   oobregion->length = qecc->steps * 4;
-> 
-> goes negative. qcom_spi_ooblayout_free() only reports -ERANGE for
-> section 1 and later, so mtd_ooblayout_count_bytes() sums the regions and
-> returns that negative length as the byte count. The -512 below is
-> steps * 4 with steps == -128. It is a byte count that happens to
-> collide with -ERESTARTSYS, not an error the driver returned.
-> spinand_init() takes it as an error, and because it is not
-> -EPROBE_DEFER the driver core never retries and the NAND never appears:
-> 
->   spi-nand spi0.0: ESMT SPI NAND was found.
->   spi-nand spi0.0: probe with driver spi-nand failed with error -512
->   UBI error: cannot open mtd rootfs, error -2
->   Waiting for root device /dev/ubiblock0_1...
-> 
-> On a Mercusys MR80X (IPQ5018, ESMT F50D1G41LB) about half of the boots
-> failed to mount the rootfs, the outcome depending on whether the freed
-> memory had been overwritten yet.
-> 
-> Publish the context when it is created and clear the pointer when it is
-> destroyed. Clearing leaves snandc->qspi->ecc NULL after cleanup, which
-> is safe: the mtd is unregistered before cleanup_ctx runs, so no
-> ooblayout callback can follow.
-> 
-> Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Johan Alvarado <contact@c127.dev>
-> ---
-> Tested on a Mercusys MR80X (IPQ5018, ESMT F50D1G41LB) running 6.18.44
-> with the equivalent change; mainline build-tested with W=1, no warnings.
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+ drivers/spi/spi-qpic-snand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Gabor Juhos <j4g8y7@gmail.com>
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index 61b1f2eb19ce..4bee26b06ff1 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -1485,7 +1485,7 @@ static int qcom_spi_io_op(struct qcom_nand_controller *snandc, const struct spi_
+ 
+ 	if (copy_ftr) {
+ 		qcom_nandc_dev_to_mem(snandc, true);
+-		val = le32_to_cpu(*(__le32 *)snandc->reg_read_buf);
++		val = le32_to_cpu(*snandc->reg_read_buf);
+ 		val >>= 8;
+ 		memcpy(op->data.buf.in, &val, snandc->buf_count);
+ 
 
-Tested on top of v7.3-rc2, running on the Tp-Link Archer AX55 v1. It works as
-expected, yet I have some comments, see below.
+---
+base-commit: cb2ad3c020579bf51fb0d702db9cf64af9698377
+change-id: 20260908-qpic-snand-unnecessary-cast-97d08a41c9c0
 
-> 
->  drivers/spi/spi-qpic-snand.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-> index 61b1f2eb19ce..0d0ae93ad4bf 100644
-> --- a/drivers/spi/spi-qpic-snand.c
-> +++ b/drivers/spi/spi-qpic-snand.c
-> @@ -411,6 +411,8 @@ static int qcom_spi_ecc_init_ctx_pipelined(struct nand_device *nand)
->  	dev_dbg(snandc->dev, "ECC strength: %u bits per %u bytes\n",
->  		ecc_cfg->strength, ecc_cfg->step_size);
->  
-> +	snandc->qspi->ecc = ecc_cfg;
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
 
-For the sake of completeness we should remove the identical assignment from the
-qcom_spi_ecc_prepare_io_req_pipelined() function as it gets redundant after the
-change.
-
-Additionally, the zeroed ecc_cfg instance allocated in qcom_spi_probe() become
-unused so the allocation can be dropped. However, since this is not strictly
-required for fixing the use-after-free issue, it could be done in a separate patch.
-
-Regards,
-Gabor

@@ -1,95 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFF84B0487;
-	Tue,  8 Sep 2026 09:48:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7758F4FDE78;
+	Tue,  8 Sep 2026 11:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788860928; cv=none; b=e+2OXQLvyMwwyXoFlrR9gvao5eB2L0C6YNMAU1jQUTYaZFXuUrl10J4aExiicJD/0KsQs4bcX8/l8ktvE0bTZDcNtGhrgqm7mqi8UqH97qyRUwYnbund+e/WF+EFeJIj26sifihy3M76ALjRmPMuhfCTYaeZE3ggCUwnlAVuQgU=
+	t=1788866225; cv=none; b=VrVJSuX8OExBbcKwYVT8XxCu5MOq6tR9ALig8DP5e3xhrTPwOANZTzMx3GnVEk4ww8dYE0NwhHJjk8dPDhQMCpF4vDO5xAETWtP3R9E4RzJBP8qVhFX3zKuFcTWvN2einwohnZB57/pfh7hTvmaFYFPiHEQEA1Il1D7Do9oqtuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788860928; c=relaxed/simple;
-	bh=si+pQMS2orFm2KYIwbM662sl0NYGSij8sMghKY+BowE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a2d0YcNjDp99WZKu8UPfcS/0vBhp5k7o2AU8SNybMX5AnFrhV8gMP6AAOgyRVIuBP+p8ogL295mHGral2XsWFEF6kw3IGKhmSlceaFUslMwC5qNzQIOZsBKnvCag4IMAjAE04Ugxg5z8vdF4Q0NoqT5uurRSFWECGf+zrNGxYYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YxXJdg+t; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1788866225; c=relaxed/simple;
+	bh=tMvI0hLZTaC0e9X21b0/9HxOrIOwMf/d57+XNT7Yidw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iieYV+i/JeM7z8KpwEpo+4f1hMHAzWPpmizvADTLmfgMSKsHOZIPI7stgQ5bjqpt24Fynf3GK8k3DNPfFCdQ+hkIZcM501oVA4GiEffyMp1leTeQtb20NGlYp/dgv17hZKuOEWphdyJLkhjXIYof9E23wu0T1VNY/YDKKTIS8ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=isrb1ZHE; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YxXJdg+t"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788860926; x=1820396926;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=si+pQMS2orFm2KYIwbM662sl0NYGSij8sMghKY+BowE=;
-  b=YxXJdg+tHrNSnnX3X36e74OftG1vSqaaNmLySOqa72qBb91bQaCB5kjQ
-   /v8FzW0PHQMy8FTg96scaHxBAtMMJE9238XtUh8PKvoKvacyVG+9Qz9aR
-   gWGgDOSqQ7pr5BycSzRGx4cXr8wpV3lLmWzqC1M2/iQApoz7ujllMOwxo
-   3uJdav7rc6afxsK2A1UPDIG7KsrKNPAOr/Qo5CpUnEvVn7Dl9aiwjrA3T
-   UdsqwzM7y3WTpVRa+9PIWCQKQ/WyUXQ+HMK0nq/LTPe2++629qHeMVllC
-   gtzJuYJEFq4hxV5w0/Sq+1UN1qfhgBPUu731ph3Pl3y27ylPBJ0T+mMpa
-   w==;
-X-CSE-ConnectionGUID: jlN197COSHiuTWDlPg9pDg==
-X-CSE-MsgGUID: uHRKhUpFSeyY4JAnK42NSw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="89301145"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="89301145"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 02:48:45 -0700
-X-CSE-ConnectionGUID: yiLn9v7XQR6NiVWkIyNgqw==
-X-CSE-MsgGUID: fgg/IIrsQAy1UtuZOE0jPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="272879880"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa004.fm.intel.com with ESMTP; 08 Sep 2026 02:48:41 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1001)
-	id A666B99; Tue, 08 Sep 2026 11:48:39 +0200 (CEST)
-Date: Tue, 8 Sep 2026 11:48:39 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: wangjia@ultrarisc.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>,
-	linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, dmaengine@vger.kernel.org
-Subject: Re: [PATCH v2 06/10] dt-bindings: i2c: dw: Add compatible for
- UltraRISC DP1000 SoC
-Message-ID: <20260908094839.GF106095@black.igk.intel.com>
-References: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
- <20260907-ultrarisc-dts-v2-6-5eb4c97477c5@ultrarisc.com>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="isrb1ZHE"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 688BGeejE3868315, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788866200; bh=xJPz6x4UeTrmhs5HtckqmYCQLpO6tU6cQhKJ5b0QYl8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=isrb1ZHEWQcSaGD5txuGJsGo7MhCzFCd8/V1G++jUx0OIorMOYz4weXDSrtQ6drf8
+	 8yV+Ly+OhyNaTNoUNeHO1x1GZdFp4T1SxG4kuVxy9Ajnnrhf6qefjW/D0bClOR2OR1
+	 4aJY/5/eFImt0iiYfHc7QshrdoLK3RCZ/1X54an3E7a9NjMIS5hZPgQOvD0/jfCBlo
+	 XwyT5b9lGGS4olD3fAVr6dAg09E4EJQ1ZObLEji9EKU7kp+JtUKUQsk+fodUUsEKws
+	 WA/q8ShCRzzjSDzCzsX+1DaLGgo3bk66yCo8VhZ2+hYm79EVoeFdVGP88U+9YBqa+J
+	 FAEAmb03bumdQ==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 688BGeejE3868315
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 8 Sep 2026 19:16:40 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 8 Sep 2026 19:16:40 +0800
+Received: from cn1dhc-k02 (172.21.252.101) by RTKEXHMBS05.realtek.com.tw
+ (10.21.1.55) with Microsoft SMTP Server id 15.2.2562.43 via Frontend
+ Transport; Tue, 8 Sep 2026 19:16:40 +0800
+From: Yu-Chun Lin <eleanor.lin@realtek.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+CC: <p.zabel@pengutronix.de>, <james.tai@realtek.com>, <cy.huang@realtek.com>,
+	<stanley_chang@realtek.com>, <eleanor.lin@realtek.com>,
+	<jyanchou@realtek.com>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 0/2] spi: realtek: Add support for RTD1625 SPI NOR Flash Controller
+Date: Tue, 8 Sep 2026 19:16:38 +0800
+Message-ID: <20260908111640.2032749-1-eleanor.lin@realtek.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260907-ultrarisc-dts-v2-6-5eb4c97477c5@ultrarisc.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Mon, Sep 07, 2026 at 05:54:45PM +0800, Jia Wang via B4 Relay wrote:
-> From: Jia Wang <wangjia@ultrarisc.com>
-> 
-> The DP1000 integrates four DesignWare APB I2C controllers. I2C1 supports
-> SMBus, while I2C0, I2C2, and I2C3 support standard I2C transfers. Each
-> controller has one register range and uses separate reference and APB
-> interface clocks.
-> 
-> Add the DP1000-specific compatible string with the generic one as a
-> fallback.
-> 
-> Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+Hi all,
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+This patch series introduces support for the Realtek RTD1625 SPI NOR Flash
+controller.
+
+Thansk,
+Yu-Chun
+---
+Changes in v3:
+General:
+- Specify "NOR" in the commit message and descriptions to avoid future
+conflicts with SPI NAND or GSPI.
+
+Patch 1:
+- Add Conor's acked-by tag.
+
+Patch 2:
+- Add Yu-Chun's last name.
+- Make SPDX license and copyright notice headers in C++ style.
+- Drop driver-internal polling (rtk_spi_read_status()), leaving the status
+polling and timeout handling to framework.
+- Track the 4-byte addressing state and properly restore it in rtk_spi_init()
+to prevent state loss during runtime PM suspend/resume.
+- Add hardware cleanup in rtk_spi_dma_transfer() to explicitly trigger a
+graceful stop of the DMA engine if a timeout occurs.
+- Replace RUNTIME_PM_OPS() + SYSTEM_SLEEP_PM_OPS() with
+DEFINE_RUNTIME_DEV_PM_OPS().
+
+v2: https://lore.kernel.org/lkml/20260906145755.1230079-1-eleanor.lin@realtek.com/
+v1: https://lore.kernel.org/lkml/20260904031252.244280-1-eleanor.lin@realtek.com/
+---
+Jyan Chou (2):
+  dt-bindings: spi: Add Realtek RTD1625 SPI support
+  spi: spi-mem: Add Realtek SPI NOR flash controller driver
+
+ .../bindings/spi/realtek,rtd1625-nor.yaml     |  65 ++
+ MAINTAINERS                                   |   6 +
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-rtk-nor.c                     | 620 ++++++++++++++++++
+ 5 files changed, 702 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
+ create mode 100644 drivers/spi/spi-rtk-nor.c
+
+-- 
+2.43.0
+

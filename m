@@ -1,59 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577633A7F7E
-	for <linux-spi@vger.kernel.org>; Wed,  9 Sep 2026 15:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C50F569F0F;
+	Wed,  9 Sep 2026 16:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788969557; cv=none; b=KnehzudRvJSqDYRic9MI1EGHFB0m1F/p5BKYrEKjAWFLPtUCWaFiCaj7n2y3y3JnE3zC4Jk5naBJ4Nb8doFz8jWL6+395aUT2hvJz1NBD9MqMfgeOtTc41H4XuVkxgoJkyGRVP9E/edqZZ36ZZ+OI9g0ETfZi3Ht4+V2aZNyaR0=
+	t=1788972903; cv=none; b=UEMQFoDXINjrdoOrsfIGT4FinSuMqHQlaYGy4/rJewv5tYZFAlUU7N5z7yBv8FdYua2MYA97bbMgIbpVJ/t9xJc+pHzFInf2YjMreUIzDQrh48gaMgLJ0SHh94Qgwot1G8sfSl6K2At4M26tEfDQJ/4cNLTmHXLpA/Sxr14xvaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788969557; c=relaxed/simple;
-	bh=DmtqE/TpA2xQuofxhScJK8WJNGMXHSnxcWf2ViphxP0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=K3EpDKMqO/YIaHxC3ZdHcjkpSkK1nN+b3F4GO7VJLuRWXvOcJ+xchhaotGz/RD1TzbvPjDmGqHPYdUYoG/544D1fUWJdYweLVGwZzyeWni3AZyu/AZjnkBt9cg6LkuDCdRFpcK+T7037mlpkUNIexWQDbRfJ4ukavEoD74Jze2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UammtDEx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788972903; c=relaxed/simple;
+	bh=nqpDu2o3hK3qr20tvru4ckpxujP1K23ZlO4JGYYlMdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RIhpdVXVOigigZueeAtQIkG5Gh7rOerz/pW+bnQC+VrXGiUZwo76nK0Vq+3O2hy3rzJU5HHwuOX31bBAeiA0jmVQ2vqWC4rAxkjDTst1Cb4nQdimQ3rSkS2Tw/ePcC7tN7RX8lflVZzEn7kGgeqwNMRR/Kz8gG/QBBcjQuFUQRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jBayZFm0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UammtDEx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F6F1F00A3D;
-	Wed,  9 Sep 2026 15:59:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jBayZFm0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C401F000FF;
+	Wed,  9 Sep 2026 16:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788969555;
-	bh=BatqUq2dai2WxBkdLolFy3T/3ru47K4qeO7hWv2eVh0=;
-	h=Subject:From:Date:To;
-	b=UammtDExrumgb97ecfcgfzwBPbYDCgSMzRGwKdGNc9tmMKNWaPF6fL74kUKPbm2kL
-	 LUBD+ySAjh7mmeo51npt4i4OKCSKLJ2Lu2u2DtYftEBIyJSyrODvohbY6dpxVOERDA
-	 HZ5AMUlF+dQh8Fx6uBSYl0xBGf1Wny3nRtRGRhQ4P6ghJHZmZZ36ppf0WcgsWvciYC
-	 XAevEDFr4i/lMQOijP9ajE7lD8QV58CGRBp8W15tklZxQm9qDJ91Xlk0hMqOgEL7ek
-	 przLU/bie019mZo8P93eCvaB070+RnzjekbKEhhlM+5NrUO/tzS+kjo/Z7f+Wuy8Fr
-	 la4nWd0w7ItWQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19BFD380AA48;
-	Wed,  9 Sep 2026 15:58:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788972901;
+	bh=xrZiWkO/Cig928w3Hg0lcA4NQRdYMH+CxvejqzEbOxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jBayZFm0zOZtOV/v6V/j6XvGE/wtPFLdi3lhON81fWBU5akr3AmKRrbF+wFpvFRiN
+	 otWfZbXcUpKbpH8HJyQj2s1imtaqHlKCdXs38ur0R8US9enl32LAU4a0qPiWw/Tach
+	 HNqNB3KObm3DaMxItwekuERLPTFf6I1ViX5eni75KKQ2tevrSdH5CkSCAgG9Up4qrE
+	 X/uXCSH0sVRMNWIWAhH4uzv2+Y9H0+w2fNviIGzldWpiLDTGMw+RI4GzqiX0bIWrpq
+	 fg+tbFAf82bSYRVS+b+YF7JsD4vaYYnwpnzp4pJWfILi5jNFO1HfKCNi17jfxoQ5hq
+	 xTJpYrRVFYsTA==
+Date: Wed, 9 Sep 2026 18:54:54 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: wangjia@ultrarisc.com
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Samuel Holland <samuel.holland@sifive.com>, Anup Patel <anup@brainfault.org>, 
+	Mark Brown <broonie@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@sifive.com>, 
+	Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org, 
+	linux-i2c@vger.kernel.org, dmaengine@vger.kernel.org
+Subject: Re: [PATCH v2 06/10] dt-bindings: i2c: dw: Add compatible for
+ UltraRISC DP1000 SoC
+Message-ID: <aqGOXnv2meGnCKzh@zenone.zhora.eu>
+References: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
+ <20260907-ultrarisc-dts-v2-6-5eb4c97477c5@ultrarisc.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178896949374.923668.6284086368847935017.git-patchwork-housekeeping@kernel.org>
-Date: Wed, 09 Sep 2026 15:58:13 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907-ultrarisc-dts-v2-6-5eb4c97477c5@ultrarisc.com>
 
-Latest series: [v3] spi: dw: use threaded interrupt (2026-09-09T14:36:47)
-  Superseding: [v2] spi: dw: use threaded interrupt (2026-08-03T14:06:46):
-    [v2,1/3] spi: dw: use DW_SPI_ISR directly
-    [v2,2/3] spi: dw: use DW_SPI_INT_MASK instead of hardcoded 0xff
-    [v2,3/3] spi: dw: use threaded interrupt and optimize the threaded ISR
+Hi Jia,
 
-Checked 162 series in 5.11 seconds.
-This project currently has 16453 active patches.
+On Mon, Sep 07, 2026 at 05:54:45PM +0800, Jia Wang via B4 Relay wrote:
+> From: Jia Wang <wangjia@ultrarisc.com>
+> 
+> The DP1000 integrates four DesignWare APB I2C controllers. I2C1 supports
+> SMBus, while I2C0, I2C2, and I2C3 support standard I2C transfers. Each
+> controller has one register range and uses separate reference and APB
+> interface clocks.
+> 
+> Add the DP1000-specific compatible string with the generic one as a
+> fallback.
+> 
+> Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
 
+Just this patch, pushed to i2c/i2c.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks,
+Andi

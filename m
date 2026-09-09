@@ -1,84 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DEC563FC2;
-	Wed,  9 Sep 2026 12:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0491D54B1CB;
+	Wed,  9 Sep 2026 12:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788957674; cv=none; b=DRQgXceDKwc+AL7CnnRgOe+2LRzgOdecURWui6r8q6vGn12/gWYHkr1Jhsw6/CiZUV+luyDEeB+jrtr74+Rk4WAro8Kw7CIPRc46uC3ml/DLCwrZdiDWsgDgu8AYIPH9IWDCRumipgS40SrXe1XDN0pEiaj3MuB/53Ela88JlRg=
+	t=1788958638; cv=none; b=Q83sFp9GxjRQpuv5jS6AfTss4aGjZaNHGdwl7nMIByOPltD4y3faKf9iXkExvf9e1zgVB1BxNeOUCcxgvqVAJwVys+etZBJrxPX3KQ1J4S9vICfP3KLiYowrnHdCi8VthKf4WhS7y5RpnWfRhBxDavs61yE4ajrn0NLzQoCdKzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788957674; c=relaxed/simple;
-	bh=4lsaT0u9w8XeBJhgopqfdNtYcP8lp4cHeKsKtic3Co4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MYuxUWWcVra7dhh0ZHLOs71uxXQ1LEN5wDH4xnXA8+cxhfpP/0xpGHhI0C+KXdYjIy9OJtUF9I3f/oTMMfoHOJnIpj+YPdDXGjHyOL/Xk5hZo5yjQYezEua62zocY+sOck4Bx+6pWNroMiEN2a/8+2ugASCX1fMDQwXziE9IFM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFQ/xCjJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788958638; c=relaxed/simple;
+	bh=tdreiLwIS05AdMPP74uZG2hXsYGJW4b8eSocskwbFKw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qrQ7YGJdH0UPj7gOt1fXU3K9SQzfWPYFGqPqkso/DhQs1PyhRrh7svKTk8j9fUvw+xOJv1c5gLzf9i/sMxh0x9pQk8Sd/RJggtrSCF0SR0iL6VxE7IRnPU+gN4jVmaDLOsv511xqXlhBsMWWX8CVhvY3dd2jSLt/tdV7A8yvox0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=A3hpnu41; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFQ/xCjJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66621F00A3A;
-	Wed,  9 Sep 2026 12:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788957671;
-	bh=eea7Tw/rKYWMs597FSDSjSw6xQI7sFewc43KlItmITs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=QFQ/xCjJcZHynRxe3uihPCU1hGFQdaAEFbcn76EkIFlJFA8kVhhyoWdulJjY3IoFE
-	 xZ4jj/w7RbuvRbZLBkFw0/mRHkJXAoiuxVe/xDqE9KK4IN01NEotAbMFZKy4KAPAB0
-	 jrWnZrkPepUsSCHaSlHPheHmMPyGRQxX+uWchWNhcqjIT5IxekaSGKsfjUomRw3dFl
-	 24iGdCIz2T/Bs262dY6zyqolUxRwwzr0ocGqL/V5csNNCKucosPq0Ql8v2FVkYoa7x
-	 Z6OQaM2oFcFgEV7My2j5vrVyF5BPEaf5nR3i7tXqyoIbdlS/zcnBUa/ZG76gRBWBqn
-	 ozsJ5pYXnPSWQ==
-From: Vinod Koul <vkoul@kernel.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, 
- Samuel Holland <samuel.holland@sifive.com>, 
- Anup Patel <anup@brainfault.org>, Mark Brown <broonie@kernel.org>, 
- Andi Shyti <andi.shyti@kernel.org>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>, 
- Frank Li <Frank.Li@kernel.org>, Jia Wang <wangjia@ultrarisc.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@sifive.com>, Conor Dooley <conor@kernel.org>, 
- linux-riscv@lists.infradead.org, linux-spi@vger.kernel.org, 
- linux-i2c@vger.kernel.org, dmaengine@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>
-In-Reply-To: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
-References: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
-Subject: Re: (subset) [PATCH v2 00/10] riscv: Add device tree support for
- UltraRISC DP1000
-Message-Id: <178895766221.2174329.15770056766507822412.b4-ty@kernel.org>
-Date: Wed, 09 Sep 2026 18:11:02 +0530
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="A3hpnu41"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 689Cv1lE5624288, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1788958622; bh=t4CbWs9yYsovLZ4KQtJHg+cOy5SOzfflAszrgWwrXVg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=A3hpnu417eyXY2z5d7lcQj4A3JfyLtnj8qko7Ar5RSnG6coMpnMu4chrjLyXdso+Q
+	 lAutHmPXsHhAwaej+KytGWLtbTatlwyMWbCkijnybqAYs+oh/mTe8zCLOB+2kyFAUm
+	 EV5qKh5J1NCTI1U+p7hMw7MKhje/ZTBDdCiLqL8+DvRzSVZE+RKs1s0LCyLdTJTM9y
+	 pdgUm2O7J2N9fVbsNvj+vhsE3IUNKeM1dS67PRJtwbdzYVZhaXqVn+teG1y5H9ret5
+	 FEyhtY1znnh04cwBWJbwvlfjOSH/31z5l2fo3f+CdlU5Dj4sZLrWOvehlN9t/+BNyZ
+	 VeSkYE62v7/Rg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 689Cv1lE5624288
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 9 Sep 2026 20:57:02 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 9 Sep 2026 20:57:02 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 9 Sep 2026 20:57:02 +0800
+Received: from cn1dhc-k02 (172.21.252.101) by RTKEXHMBS03.realtek.com.tw
+ (10.21.1.53) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Wed, 9 Sep 2026 20:57:02 +0800
+From: Yu-Chun Lin <eleanor.lin@realtek.com>
+To: <broonie@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>
+CC: <p.zabel@pengutronix.de>, <james.tai@realtek.com>, <cy.huang@realtek.com>,
+	<stanley_chang@realtek.com>, <eleanor.lin@realtek.com>,
+	<jyanchou@realtek.com>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v4 0/2] spi: realtek: Add support for RTD1625 SPI NOR Flash Controller
+Date: Wed, 9 Sep 2026 20:56:59 +0800
+Message-ID: <20260909125701.273314-1-eleanor.lin@realtek.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
+Hi all,
 
-On Mon, 07 Sep 2026 17:54:39 +0800, Jia Wang wrote:
-> Add Devicetree support for the UltraRISC DP1000 RISC-V SoC and two
-> DP1000-based motherboards: Shenzhen Rongda M0 and Milk-V Titan.
-> 
-> DP1000 integrates eight UltraRISC CP100 CPU cores.  The SoC description
-> includes the CPU and cache topology, CLINT, PLIC, clock controller,
-> pinctrl, GPIO, four UARTs, two SPI controllers, four I2C controllers,
-> three PCIe root complexes, GMAC, and the DMA controller.
-> 
-> [...]
+This patch series introduces support for the Realtek RTD1625 SPI NOR Flash
+controller.
 
-Applied, thanks!
+Thansk,
+Yu-Chun
+---
+Changes since v2:
+General:
+- Specify "NOR" in the commit message and descriptions to avoid future
+conflicts with SPI NAND or GSPI.
 
-[07/10] dt-bindings: dma: snps,dw-axi-dmac: Add UltraRISC DP1000 compatible
-        commit: 09149a59a6aef7853a3750e4b303f20637cf7a8a
+Patch 1:
+- Add Conor's acked-by tag.
 
-Best regards,
+Patch 2:
+- Add Yu-Chun's last name.
+- Make SPDX license and copyright notice headers in C++-style.
+- Drop driver-internal polling (rtk_spi_read_status()), leaving the status
+polling and timeout handling to framework.
+- Track the 4-byte addressing state and properly restore it in rtk_spi_init()
+to prevent state loss during runtime PM suspend/resume.
+- Add hardware cleanup in rtk_spi_dma_transfer() to explicitly trigger a
+graceful stop of the DMA engine if a timeout occurs.
+- Check bounds against the direct mapping window (dirmap_size) in both PIO and
+DMA transfer paths.
+- Add reset_control_assert() in the probe error path and .remove().
+- Replace RUNTIME_PM_OPS() + SYSTEM_SLEEP_PM_OPS() with
+DEFINE_RUNTIME_DEV_PM_OPS().
+
+v3: https://lore.kernel.org/lkml/20260908111640.2032749-1-eleanor.lin@realtek.com/
+v2: https://lore.kernel.org/lkml/20260906145755.1230079-1-eleanor.lin@realtek.com/
+v1: https://lore.kernel.org/lkml/20260904031252.244280-1-eleanor.lin@realtek.com/
+
+Jyan Chou (2):
+  dt-bindings: spi: Add Realtek RTD1625 SPI NOR support
+  spi: spi-mem: Add Realtek SPI NOR flash controller driver
+
+ .../bindings/spi/realtek,rtd1625-nor.yaml     |  65 ++
+ MAINTAINERS                                   |   6 +
+ drivers/spi/Kconfig                           |  10 +
+ drivers/spi/Makefile                          |   1 +
+ drivers/spi/spi-rtk-nor.c                     | 623 ++++++++++++++++++
+ 5 files changed, 705 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/realtek,rtd1625-nor.yaml
+ create mode 100644 drivers/spi/spi-rtk-nor.c
+
 -- 
-~Vinod
-
+2.43.0
 

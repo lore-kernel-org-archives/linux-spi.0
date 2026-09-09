@@ -1,91 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A7D576EB8
-	for <linux-spi@vger.kernel.org>; Wed,  9 Sep 2026 15:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577633A7F7E
+	for <linux-spi@vger.kernel.org>; Wed,  9 Sep 2026 15:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788969228; cv=none; b=WNYrUAJgaHhIF64r23PtBftAoGCtcvHujh15aHxXqW55dXw5HZhXGxuQjvHxwQisKJfMM7M3421LZkbMxA+/RFflfFiFMqod/pfTthrwq3khlmVbTBMhp/i7WkTIbcJ3VFxKaqNGeDNrwovySmZhqOoKKsmHbLwmRTo88Rrc1NQ=
+	t=1788969557; cv=none; b=KnehzudRvJSqDYRic9MI1EGHFB0m1F/p5BKYrEKjAWFLPtUCWaFiCaj7n2y3y3JnE3zC4Jk5naBJ4Nb8doFz8jWL6+395aUT2hvJz1NBD9MqMfgeOtTc41H4XuVkxgoJkyGRVP9E/edqZZ36ZZ+OI9g0ETfZi3Ht4+V2aZNyaR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788969228; c=relaxed/simple;
-	bh=0ks4/8O+dv2VXA7aK1fFkmIoucROu9n6J7HpMlSjmNk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=V8TtmQbvmgqhsxCmF7ZlhL6IXS4sN/aR0BBGtozHaZ5u/z8PIzgT+PwVtAyI9cgr8zlogWfvjytH8ZnDNTnC99upfOGjCzb8qu+uDUMjbCUfOLxuklycfSIwdm3uXM2nAXd43PvhXByFF6ZFfHmeKhT3gMcT79UAsvMkwfp+cnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0kExflE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788969557; c=relaxed/simple;
+	bh=DmtqE/TpA2xQuofxhScJK8WJNGMXHSnxcWf2ViphxP0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=K3EpDKMqO/YIaHxC3ZdHcjkpSkK1nN+b3F4GO7VJLuRWXvOcJ+xchhaotGz/RD1TzbvPjDmGqHPYdUYoG/544D1fUWJdYweLVGwZzyeWni3AZyu/AZjnkBt9cg6LkuDCdRFpcK+T7037mlpkUNIexWQDbRfJ4ukavEoD74Jze2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UammtDEx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0kExflE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8956C1F00A3A;
-	Wed,  9 Sep 2026 15:53:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UammtDEx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F6F1F00A3D;
+	Wed,  9 Sep 2026 15:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788969226;
-	bh=5kdBOTMmU5DfSYZP8j6aAUyrVhoCyluz+UsdILKsiG8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=g0kExflE4cDskFAtzSYSAvtEjc57MjJRrxghfBADwQOYEJxtnpJXXsjSSqqlUymzS
-	 Glr0THm5T/LQuQvVkPx06QIaXpjZTmkay8Vtji414m6gOzakDovuLk5gmsQO7MjhZw
-	 H020EgY95cOqY9AO3S4s3UiBuZ3fJPEMWnUrXGS0dJZdmB18nVIZG+Gq5UtwJclLNr
-	 k2BSyiDolCBlFtZuqwoXXfuVgbtQXVku6hByFOEOsat3CMbOUncQ9xKfCIBPdtYoIV
-	 CpUp1Od67jVtQ3Co8yMPApplmy+Jc1wwp5zSE9vWOXkoD/j643JY6Hfm7hYyx38ao1
-	 3voh7CrazPc/Q==
-From: Mark Brown <broonie@kernel.org>
-To: sunny.luo@amlogic.com, xianwei.zhao@amlogic.com, 
- Li Youhong <dayou5941@163.com>
-Cc: linux-amlogic@lists.infradead.org, linux-spi@vger.kernel.org, 
- Li Youhong <liyouhong@kylinos.cn>
-In-Reply-To: <20260831094553.2247003-1-dayou5941@163.com>
-References: <20260831094553.2247003-1-dayou5941@163.com>
-Subject: Re: [PATCH] spi: amlogic-spisg: check clk_prepare_enable() return
- value
-Message-Id: <178896045987.87467.11120635075116589342.b4-ty@b4>
-Date: Wed, 09 Sep 2026 14:27:39 +0100
+	s=k20260515; t=1788969555;
+	bh=BatqUq2dai2WxBkdLolFy3T/3ru47K4qeO7hWv2eVh0=;
+	h=Subject:From:Date:To;
+	b=UammtDExrumgb97ecfcgfzwBPbYDCgSMzRGwKdGNc9tmMKNWaPF6fL74kUKPbm2kL
+	 LUBD+ySAjh7mmeo51npt4i4OKCSKLJ2Lu2u2DtYftEBIyJSyrODvohbY6dpxVOERDA
+	 HZ5AMUlF+dQh8Fx6uBSYl0xBGf1Wny3nRtRGRhQ4P6ghJHZmZZ36ppf0WcgsWvciYC
+	 XAevEDFr4i/lMQOijP9ajE7lD8QV58CGRBp8W15tklZxQm9qDJ91Xlk0hMqOgEL7ek
+	 przLU/bie019mZo8P93eCvaB070+RnzjekbKEhhlM+5NrUO/tzS+kjo/Z7f+Wuy8Fr
+	 la4nWd0w7ItWQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19BFD380AA48;
+	Wed,  9 Sep 2026 15:58:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1130; i=broonie@kernel.org;
- h=from:subject:message-id; bh=0ks4/8O+dv2VXA7aK1fFkmIoucROu9n6J7HpMlSjmNk=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqoYEHZkIrejUJDn83W7ET5BGkOofXAWW+Qgs+P
- w6vcX3bDxiJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqGBBwAKCRAk1otyXVSH
- 0Dx5B/9MNcQRfLJJ2QgfCdNMg2rd6KPW/lyBGzSsQ/KaIVcyhNWEz2RiXCzEOBFA/phpHdEekeD
- VkJTFdh9Ry6RJgMTlViRSOTBKV2SvgqJCJvA0lYI63h7Tl0tSTV5cpnv8nABa2wfIODWCT3kM7r
- v1bgzRgXGgnNLbCZGmmiswV7k13OhpQLWo3A9F3hYPOdqLQJQhiVfHFZx7/PAVmKdg6yncYFSIe
- v2B1hSL1mjRbd7t6P8JTxPhdxJRx09R8lNo2xCN0jzMITqqfc4J4FI6QmpFImy/X2TMJUETll/X
- 7KopJb7bQcBR0MwAAhAI4/XV5Lk1RphDRrSAyyhUwCluYPLq
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178896949374.923668.6284086368847935017.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 09 Sep 2026 15:58:13 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, 31 Aug 2026 17:45:53 +0800, Li Youhong wrote:
-> spi: amlogic-spisg: check clk_prepare_enable() return value
+Latest series: [v3] spi: dw: use threaded interrupt (2026-09-09T14:36:47)
+  Superseding: [v2] spi: dw: use threaded interrupt (2026-08-03T14:06:46):
+    [v2,1/3] spi: dw: use DW_SPI_ISR directly
+    [v2,2/3] spi: dw: use DW_SPI_INT_MASK instead of hardcoded 0xff
+    [v2,3/3] spi: dw: use threaded interrupt and optimize the threaded ISR
 
-Applied to
+Checked 162 series in 5.11 seconds.
+This project currently has 16453 active patches.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-Thanks!
-
-[1/1] spi: amlogic-spisg: check clk_prepare_enable() return value
-      https://git.kernel.org/broonie/spi/c/c595dcbce20f
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

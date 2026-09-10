@@ -1,129 +1,127 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD39A4718F3
-	for <linux-spi@vger.kernel.org>; Thu, 10 Sep 2026 21:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789076622; cv=pass; b=Z90d0aCb+V05Esx2wDtYiN2FS3h2HwUFVBUqpYfCenh22Nzou7H4Gz2SQLxudVRid80H8f87FtmOt/sJv0W3qgMRUdgVt/3Z/KaGjV3H5roUaDVhj+kqKYv3aXW9P3i78nL/GtM+HGFRvMnb2pMnlP3e+BOE50T444+rxr1Q6eo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789076622; c=relaxed/simple;
-	bh=K+M1hRC3J1lPZHVkwlbZglylwWv5qUa1oz6hH/E7ZNU=;
-	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=WnaQZ6GVz7Ga0zLHS8ynKc6gMISIISlUCxmDB4GKiNPXJSBV0ZPFKHUKko8C3igt2iTMPLOhW7vtnvF8Xs5WxZzMxgjD3xv/IS8MoTEwssoy7kXqcXit9WSVovoUGbrpNocWhtr9E8jZbAzgJJls+LiYPkjEpri27ZeYEGoTXSY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=AK5sON+n; arc=pass smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9DC49B5D0;
+	Thu, 10 Sep 2026 22:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789078630; cv=none; b=TKdrJYFyEklZ4Prr7ee8JDkF8fypYNF2oDTjFAohMkMCI2oRkh//8E8ZkTpAGZhH0im/CqYU6ClMxt2Ess/gvzqc0v2AKwP+znZTWTIVgxcRRweWG/72Snh722W+APGEWiJMjYrzDnqQS1rWIBwytuAi2wqkCm3tv6OhVOlzTPM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789078630; c=relaxed/simple;
+	bh=beq27RQOuBz3rmFCqPNVU5aWnBcD61l1tdD2FKrwUYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BsuE3lDB0V8KKIvicxG+yyQAXKiouVDyYWrbiOoD7FUifR0iaE+dUSSrtA/BjyTUPOwN7zgpSerOTuJuAG6iKTWTq2/yzfaUndpU7o4+qWVixArd0Zlm8p9pY2JiLLtUxUw4I43MlP3ZrdCJ6xywzEP8hFYDj4lpnFmCVfEA54I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhZ6GkK5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="AK5sON+n"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d9520b9155so1772045ad.3
-        for <linux-spi@vger.kernel.org>; Thu, 10 Sep 2026 14:43:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789076620; cv=none;
-        d=google.com; s=arc-20260327;
-        b=W3bU0MGugg3TDvDXEWLrSDGQLOQKsHLZmRoaP6UkAdbTvIc9EfRUTvR5rwvPzOy4fk
-         dnSDkNKc2gDAC7P/16byQ9K3XEgCY1ri3WiDqcf/RVU3bdhUS8GOsF/yu9AvZUyiTSr9
-         ez0FbgD54kd83HnLAgCQ0PmhFubV7XMuz9y+bUtMtZ70Zfq56kJwNnYBzJFwM3AilxOC
-         lK2pB8MxA7PuWMeLUJcxmJRcEvouONjhjkXPoOQ5o+DCVQPVjj4gd5sCyiKoZl/iqexq
-         SyR1s25Rq3cJ5S5k9hPPJQiJfRjnyatPcuiSK+Iu1gYg6ZfVjqvuys+KYEcxY8fftOZw
-         kHJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=3ni5Or1iizW0Oi2Q/TkK3TNnNcK6Qg+mAIz5hPJ11Q8=;
-        fh=VSQGERI0jjwNmQja2UIRbefdl76ZV47guo3lwS+Ymho=;
-        b=NWASv1cmHyE9247Ub3oYEFbAKer1H7zcEE9o8xtKGrs2MiZVAAViBF0MMuUAR4Y2zP
-         RhGp4d3Sw1+rjoA6rxG9CS7/10kxdP5ehQFhuk4Ua/M/mkvpraM8LYuNdDGHsuYqsZkG
-         iahxE+0C/cpUmldk9EuMZcSq142dWJCI58WYADm6uKUWnBavvHF01eNFx7hq1j6ZKdp0
-         pVQGX0CfUtDRscfdxOLO0J0f5Nq77OoJhCVL70F/+Nl5KepwIb7PTHkz6FVXZ+ABUpGw
-         JjKx+sSJrnZKKcBP0DCUshKPPAuN16k8vlo/MaJ4vJEcqVTBizKTMWxOS39AywOai6zG
-         071Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=berkeley.edu; s=google; t=1789076620; x=1789681420; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3ni5Or1iizW0Oi2Q/TkK3TNnNcK6Qg+mAIz5hPJ11Q8=;
-        b=AK5sON+njgSc5wcqjmSsmaUWKGg/uAstOFTNUh/RSnHI8SVH63uyIXRWrRrGBrl87s
-         ffUFhRZ8adL1cnF+p0ATOtOnOwWqWpL+rR956sVEbt/ordhNpq+esL3vXGMqmqzbPyj1
-         S/w2YCYrMIZha+AI5/XoSovJxfBmfI4Jsc2qQnv0CG0Rhj4aeDnVzasrGJa64tgW9Ge6
-         lejmGiEtOu3e6eSDIBvXUoMbBUsO+npFNgPD2CzGRoWujy/vLygBq9pEseUl6ay7aUyt
-         jzmuBlYPQbw/VuXiRXb1w47gDLVS17i2ALG12MkTCvTlaR9ZEtin6dQNyh+le0F+rX6j
-         AtIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789076620; x=1789681420;
-        h=content-type:cc:to:subject:message-id:date:mime-version:from
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=3ni5Or1iizW0Oi2Q/TkK3TNnNcK6Qg+mAIz5hPJ11Q8=;
-        b=s5iq0ET79eoAbN0RIODydcwWDipwA59TWf+UXaLZlBQbVnIIeM1exxu7lf7PDbCpUK
-         w4lBwY8fLCaLWRqMFUUZXuw7AWxKMiVJnhIofHg1jRrVufUkAxF/DjAxt/WyFXXixaqn
-         7l/2UN/9cLAv1ZCzuTo6e6U77gFh5MU9k/Ae664rlWv4eTdeCJBXTKxCuYRmGHDYM+HI
-         aU7toGAFz9W5f32MW/T2L2j7r1ELXgoTjnqb1KSBCtV1POSmSW+Lg4Vh6eZAyypbGiVW
-         J/xCWcCpEfPZ9Qk2BG3Ogjen+HuTJrpoQluA1qlA60CbbsHVaZ/zvDxWahKufb2AR79H
-         7ekw==
-X-Forwarded-Encrypted: i=1; AKwUvBxYXZp/wXlBzbjB3UzR44oPEJhduoccaNhKw5LXgkBhjWAc070+ReMYOfuAjl85HUhsi5f7K/GwFmg=@vger.kernel.org
-X-Gm-Message-State: AFuF++knsFo35e1X3ExAD5Qjxv+9Bumj2x13Ia+9qIt/eICZc++KswX/
-	XsuZsfFurbzjRDGLx04l/AO7AnvFWvj2DcULVFRKCk4r7192CdJLvDVdwbUZmlOoDGBqAF/05cj
-	Ogv5EKvqyCrC1Bj8PrSWE301OFWRSQjMrZ866nzg9
-X-Gm-Gg: AYBFou0/ELrl63ZASHArBWqFKHCaHYAUKJB8a3rzeAqHrSfgLtuQrpyMrcMJkhhT/nS
-	+FGl1RiNjPJWgFV8/AJe3NolNNBAgTIt8P5o1sCfnaWpMynHxEkPLypATWGk9thYKBKC9SV3AxT
-	OHkUN8zgPzBnJFeTxd0EOYQqWFjzO9k7OYlH9Ll/SIUkOhT8EeBwvGT5ZDTP0AlQuns1N2i0D7Q
-	plDt8yifvI/LioIJFkDJsp1Yp7L+tMM4dLVUNJqQ+tJMAldD7PVV1huv05JO/lS2e3k2omYImTq
-	VTLYFvvq4B8L1xVf0ccYl3HdS8m0giuwxYSy+nEZMO1N9W655ULcplbL0PkDaOu4Hhm0vGvevzi
-	KTsYnmkYFcdk/5YTZqEM2PG2fwYzmuBAbqdEFwl95Caw=
-X-Received: by 2002:a17:903:4b4b:b0:2d0:cc92:f7ae with SMTP id
- d9443c01a7336-2dd2a1c425fmr23721295ad.3.1789076619207; Thu, 10 Sep 2026
- 14:43:39 -0700 (PDT)
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 10 Sep 2026 21:43:38 +0000
-Received: from 474444807712 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 10 Sep 2026 21:43:38 +0000
-From: Farhad Alemi <farhad.alemi@berkeley.edu>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhZ6GkK5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D0C1F000FF;
+	Thu, 10 Sep 2026 22:17:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789078628;
+	bh=URxl+o12EE5hMsUw7PASgNl0kBa2m8/VC3cuEfTrfVU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QhZ6GkK5Fi+B92sXeqP2okF2KVRInAO6KAai3sgu99GWqIo4awuMhRcjdEwv2a7TR
+	 sSXFZHcpv2jryjIhMjqjS5CgU35POEjp9ptdzXZrr8Upd6T0xxPYarfmzP/5XGOnjg
+	 ArY8U37vevokDBDgXk+iKq4zokwlJZgLAAdU9TOLCSnig63pc3vf2qpdvwMQg8h54K
+	 GtiRXyt4KHR1bDemNlCRNc7wgrZCHgHmioJoTSgv6syeI9/UZ9/rLq+t6tzbD4x51A
+	 UaW0yW8iER2m/TKd4kfpMuwVWq64avcSJ4ah3LLBmVb6bCHoAwZk0IWah0Czu1k8KZ
+	 grDQAJ2/yeZog==
+Date: Thu, 10 Sep 2026 23:17:05 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] spi: dw: use threaded interrupt and optimize the
+ threaded ISR
+Message-ID: <8303de6e-20a6-482c-82bf-ec87034042f0@sirena.org.uk>
+References: <20260909143652.9234-1-jszhang@kernel.org>
+ <20260909143652.9234-6-jszhang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 10 Sep 2026 21:43:38 +0000
-X-Gm-Features: AcwNN1W35qNEJEtjTaS5E6l35yvlHx_w4ZWX3F9ageKJTtnwfUEo-YSxtu_pIPk
-Message-ID: <CA+0ovCivEREvoy=Z-D5TSddgTfFknhFrCBPON3a7QD2Kne=MTA@mail.gmail.com>
-Subject: [PATCH] spi: dln2: validate chip select count reported by the device
-To: Mark Brown <broonie@kernel.org>
-Cc: falemi@asu.edu, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="e6MNrUW3BJ/Ft3nO"
+Content-Disposition: inline
+In-Reply-To: <20260909143652.9234-6-jszhang@kernel.org>
+X-Cookie: Gravity brings me down.
 
-dln2_spi_get_cs_num() stores the chip select count reported by the device
-straight into host->num_chipselect, and dln2_spi_cs_enable_all() then
-evaluates GENMASK(num_chipselect - 1, 0), whose shift exponent is out of
-bounds whenever that count is zero or larger than BITS_PER_LONG. The
-resulting mask is handed back to the device in a u8 field, so any count
-outside 1..8 is invalid regardless. Reject such counts with -EPROTO in
-dln2_spi_get_cs_num(), where the value is first read.
 
-Closes: https://lore.kernel.org/all/CA+0ovCioY634b646jDcs2cFmg_1q2UMN4wuTQ1V26Gy+Dm_c+A@mail.gmail.com/
-Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
----
-The device was emulated.
+--e6MNrUW3BJ/Ft3nO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---- a/drivers/spi/spi-dln2.c
-+++ b/drivers/spi/spi-dln2.c
-@@ -71,6 +71,8 @@
- #define DLN2_SPI_GET_MAX_DELAY_BETWEEN_FRAMES	DLN2_SPI_CMD(0x4C)
+On Wed, Sep 09, 2026 at 10:36:52PM +0800, Jisheng Zhang wrote:
+> To avoid blocking for an excessive amount of time, eventually impacting
+> on system responsiveness, hard interrupt handlers should finish
+> executing in as little time as possible.
 
- #define DLN2_SPI_MAX_XFER_SIZE			256
-+/* The CS bitmask is carried in a u8 on the wire, so 8 lines is the ceiling. */
-+#define DLN2_SPI_MAX_CS				8
- #define DLN2_SPI_BUF_SIZE			(DLN2_SPI_MAX_XFER_SIZE + 16)
- #define DLN2_SPI_ATTR_LEAVE_SS_LOW		BIT(0)
- #define DLN2_TRANSFERS_WAIT_COMPLETE		1
-@@ -201,6 +203,8 @@ static int dln2_spi_get_cs_num(struct dln2_spi
-*dln2, u16 *cs_num)
- 		return -EPROTO;
+> +static irqreturn_t dw_spi_irq_thread_fn(int irq, void *dev_id)
+> +{
+> +	struct spi_controller *ctlr =3D dev_id;
+> +	struct dw_spi *dws =3D spi_controller_get_devdata(ctlr);
+> +	u32 rx, tx, imask, mask =3D 0;
+> +	bool finalize =3D false;
+> +
+> +	do {
 
- 	*cs_num = le16_to_cpu(rx.cs_count);
-+	if (*cs_num == 0 || *cs_num > DLN2_SPI_MAX_CS)
-+		return -EPROTO;
+=2E..
 
- 	dev_dbg(&dln2->pdev->dev, "cs_num = %d\n", *cs_num);
+> +	} while (rx !=3D 0 || tx !=3D 0);
+
+This will sit and drive the FIFOs for as long as we manage to push data
+through them.  Usually we should have DMA so any long transfers wouldn't
+be here but if there's systems with this controller wired up without DMA
+we could potentially end up doing very large transfers, that can trigger
+the hung task detector.  The simplistic solution is to use cond_resched()
+to give other things a chance to run.
+
+The hardirq handler would just do one round of FIFO operations and
+return, allowing other things to happen until the device interrupts
+again.
+
+> +static irqreturn_t dw_spi_host_handler(struct dw_spi *dws)
+> +{
+> +	if (dw_spi_check_status(dws, false)) {
+> +		spi_finalize_current_transfer(dws->ctlr);
+> +		return IRQ_HANDLED;
+> +	}
+> +
+> +	dw_spi_mask_intr(dws, 0xff);
+> +
+> +	return IRQ_WAKE_THREAD;
+> +}
+
+It feels like it might be good to do one round of FIFO in the hardirq
+handler before deferring for a longer transfer, that would avoid needing
+to schedule for very short transfers.  Essentially a copybreak like we'd
+use for choosing between PIO and DMA.  This is entirely based on vibes
+rather than having benchmarked anything, but all your numbers seem to be
+for larger transfers rather than a continual stream of short transfers.
+The people doing stuff like running CAN buses often run into trying to
+saturate the bus which means they are very concerned with the latency
+=66rom transaction initiation to completion, and from completion to
+initiating the next transfer.
+
+TBH along those lines with really short transfers (eg, read/write 16 bit
+registers) we might not want to bother with the interrupt at all and
+poll but that's a separate thing.
+
+--e6MNrUW3BJ/Ft3nO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqjLGAACgkQJNaLcl1U
+h9AHIQf+J74EtVYvLl9CcdiDt0gfsgKDRFSet8CgLa/bpWROMLnJe/AahN3aYTsL
+6uSISfkYeWk6zhnRyElAZLXRVoEJA5GwM9iau2Uw06ffAQAjpjR3DsWraFnsOKr6
+ln42pQc86nfnonzdWS+xH5oW+6SR4n/hhK6VQT8qSV+NLj7LOJDu5YDo8ZmCU222
+eU9mRVyX4JXs9TSGj9/AnGV2CQ12wT1QmNNKuovGISMEeP+dIU0Wobw2ZFqrmZ9s
+7mTAnVdiDtdWQvKsyQNnNbHwyU3TcPnzlMyxRNSRQNODVESUgar8AlfGgIdvHXjV
+IZ15Y23C1EfLsIaPwdkNobURLX65pg==
+=cT1g
+-----END PGP SIGNATURE-----
+
+--e6MNrUW3BJ/Ft3nO--

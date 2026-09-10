@@ -1,128 +1,82 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D80C373C1A;
-	Thu, 10 Sep 2026 06:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7783D1CC1;
+	Thu, 10 Sep 2026 06:36:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789021414; cv=none; b=FpsVIsRrSJGfUtDXh78bMfCjMiRNzaYSGvVOufmEzQ0sfqZz18KvpK7OPif3cK6zRRXrw1aDF+4af02WD3CDBUb1QWpv/kby3Y6NpHnbAA2/e6gSrNUS1xc6Udnj2+0ycacLY1TBdeUp5O9MKSAu2WqQPOdOQjQHIeZfR3hzhe4=
+	t=1789022207; cv=none; b=MG2QyTG40l8wgBs4OkZ+Cuhm/b4G84q9Kg/6gEgQvhgUmj9WPQr7+n+cpzmP1LC+oVi27qy3ZJhNJ551fGgECHdir1+bhyAEHQRpHZ1MsvGkWVo9bhlAijuA8v1hnMsvO/0QnsgIK/vezwXJEzVFZci5i1X+YkKtE2HE9kkxAc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789021414; c=relaxed/simple;
-	bh=aqNX+9tAjd2/jVm9O8DWI+lgMgxqRluvBk2uSuJJv/s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=taDO+ayM1XLkFAnCEJHqb5BKsBjXwJ8MUhc2TnMbZX98BJFq7X5e51P9EVJBCEeXLV2NptfCPUw093cuBJg3WqT/gGVX8/YQypPuP9fZMg0B/rMpHxbIjbEZJAq5f4lS8gN5oS6DVNnWdAmGH0w1ejsiNKcAAPktvysE8AAmRmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=y5gn1AHo; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1789022207; c=relaxed/simple;
+	bh=C9LrQvYbhcUmY3hnSwGy2ff+szzkheHG432q5h9iTx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZV6jfVZx52QXFKZH4EoOgu74LM/3NffjtBPIs0wAw4hY4kthU3RhHOE/01CLpK5zj80x89vjr4XixlPHfosYak+lbComKET28G1Nzs7KYXncVHBxdbvQpWXalHXkgu1oS7yjayvDsXSLrJl54rhrF3+a5VPbPdCsYgLqJNPSG2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b8dk8PAL; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="y5gn1AHo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=Nr+oq6PsKxcBle0H0lwiDVCL6Vp35iitzfLcmlTGscQ=; b=y5gn1AHogARHFoH8bdigWxHlqv
-	oS3og6i6V0pacOjdVHdKUUJKc9i7gAvLNrZtuCIauSn0y6DFcaYJuAfe8pwhsaMgwLtY/CrPcTd1T
-	BLGilI8k7TX/dIKzzb+jGTkUorL6NEb7caA38Lx2HWtndY8W73DO7/YrhIfKa5j/mGxT/5/hkZYSP
-	9GlE9FgOec4tHwo4jimppN1N4cHVGi7DGGI8dtn24109Iq4C4F4eEmfFWkd49qo6KmYWNt5LGWyJm
-	fk9XchVlfSziME2QlLO+bVLBaWgW4MMQbvCB1BZhEQkxWs73UO3yaZsv51aov+RGzom8+ZCGl5oVk
-	sykDuO3A==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4YBu-0000000DVWG-4AfW;
-	Thu, 10 Sep 2026 06:23:23 +0000
-Message-ID: <a29070be-02ff-49b6-b0dd-625a3371a780@infradead.org>
-Date: Wed, 9 Sep 2026 23:23:21 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b8dk8PAL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789022206; x=1820558206;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C9LrQvYbhcUmY3hnSwGy2ff+szzkheHG432q5h9iTx0=;
+  b=b8dk8PALsHHaWO/UzfxHf+d/RjfsjhjNAi8ks6hQWk2x+FUUkUmyOPO3
+   8m+WDD1P68mn/wrJpYJmqPKUyDqVxEtXvtcN+2nL05aUgg+cX7Kc3RtLT
+   OdP8djVn9zDjVT7KzcAMRtX9MZGjKU2jpwJGHSOlZGCIJFY0DFtdFoE8V
+   v0i1I20exjh2AGW9bdoKXbEv5f/u4ES3ts9l8xN5hxlAONL/03B0Zr/ij
+   2Jx8GqMhzi2c6y3xg+WSTbu3MSBUltN+jmMfzhgX+bjZekWFwI9xPTm2n
+   7su4ibaSk1LKQmMhgO+pkOm/Dr6eY4t87eOHTrNFsJ0slhGtHbvh0fGUB
+   Q==;
+X-CSE-ConnectionGUID: zxub2pOpSHC4xcCCCzwbOw==
+X-CSE-MsgGUID: VwnR04kmTNuQYm2ZlCJtrQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89494616"
+X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
+   d="scan'208";a="89494616"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 23:36:45 -0700
+X-CSE-ConnectionGUID: OKPQWoikQ2yzhCTvDPG/vQ==
+X-CSE-MsgGUID: oER9FrfQSm6jW3bind7wiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
+   d="scan'208";a="269771087"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.177])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 23:36:41 -0700
+Date: Thu, 10 Sep 2026 09:36:38 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Mark Brown <broonie@kernel.org>, Farhad Alemi <falemi@asu.edu>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [BUG] UBSAN: shift-out-of-bounds in dln2_spi_probe
+Message-ID: <aqJP9pVjpLCcp_XA@ashevche-desk.local>
+References: <CA+0ovCioY634b646jDcs2cFmg_1q2UMN4wuTQ1V26Gy+Dm_c+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: docs: Use the multi-lane mode constants in examples
-To: Karl Mehltretter <kmehltretter@gmail.com>, Mark Brown <broonie@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, linux-spi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, linux-doc@vger.kernel.org
-References: <20260910033219.15996-1-kmehltretter@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260910033219.15996-1-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+0ovCioY634b646jDcs2cFmg_1q2UMN4wuTQ1V26Gy+Dm_c+A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
+On Wed, Sep 09, 2026 at 05:33:20PM -0700, Farhad Alemi wrote:
 
+> We are reporting the following crash (reproducer and a proposed patch attached):
 
-On 9/9/26 8:32 PM, Karl Mehltretter wrote:
-> The multi-lane documentation names SPI_MULTI_BUS_MODE_* constants,
-> including in the transfer initializers. The interface introduced with
-> the document uses SPI_MULTI_LANE_MODE_*, so the examples refer to
-> undefined macros.
-> 
-> Use the interface's constants in the descriptions and examples.
-> 
-> Fixes: 05c3bd745bb0 ("spi: Documentation: add page on multi-lane support")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+Thank you.
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+Please, submit the patch as a formal fix. You can find the necessary steps in
+the Submitting Patches documentation.
 
-> ---
->  Documentation/spi/multiple-data-lanes.rst | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/spi/multiple-data-lanes.rst b/Documentation/spi/multiple-data-lanes.rst
-> index 69cb532d052f..802aece35d56 100644
-> --- a/Documentation/spi/multiple-data-lanes.rst
-> +++ b/Documentation/spi/multiple-data-lanes.rst
-> @@ -127,7 +127,7 @@ field to indicate which mode they want to use for a given transfer.
->  
->  The possible values for this field have the following semantics:
->  
-> -- :c:macro:`SPI_MULTI_BUS_MODE_SINGLE`: Only use the first lane. Other lanes are
-> +- :c:macro:`SPI_MULTI_LANE_MODE_SINGLE`: Only use the first lane. Other lanes are
->      ignored. This means that it is operating just like a conventional SPI
->      peripheral. This is the default, so it does not need to be explicitly set.
->  
-> @@ -149,7 +149,7 @@ The possible values for this field have the following semantics:
->          ----------   ----------------   ----------
->              SDO 0    0-0-0-1-0-0-0-1    SDI 0
->  
-> -- :c:macro:`SPI_MULTI_BUS_MODE_MIRROR`: Send a single data word over all of the
-> +- :c:macro:`SPI_MULTI_LANE_MODE_MIRROR`: Send a single data word over all of the
->      lanes at the same time. This only makes sense for writes and not
->      for reads.
->  
-> @@ -160,7 +160,7 @@ The possible values for this field have the following semantics:
->          struct spi_transfer xfer = {
->              .tx_buf = tx_buf,
->              .len = 1,
-> -            .multi_lane_mode = SPI_MULTI_BUS_MODE_MIRROR,
-> +            .multi_lane_mode = SPI_MULTI_LANE_MODE_MIRROR,
->          };
->  
->          spi_sync_transfer(spi, &xfer, 1);
-> @@ -172,7 +172,7 @@ The possible values for this field have the following semantics:
->              SDO 0    0-0-0-1-0-0-0-1    SDI 0
->              SDO 1    0-0-0-1-0-0-0-1    SDI 1
->  
-> -- :c:macro:`SPI_MULTI_BUS_MODE_STRIPE`: Send or receive two different data words
-> +- :c:macro:`SPI_MULTI_LANE_MODE_STRIPE`: Send or receive two different data words
->      at the same time, one on each lane. This means that the buffer needs to be
->      sized to hold data for all lanes. Data is interleaved in the buffer, with
->      the first word corresponding to lane 0, the second to lane 1, and so on.
-> @@ -185,7 +185,7 @@ The possible values for this field have the following semantics:
->          struct spi_transfer xfer = {
->              .rx_buf = rx_buf,
->              .len = 2,
-> -            .multi_lane_mode = SPI_MULTI_BUS_MODE_STRIPE,
-> +            .multi_lane_mode = SPI_MULTI_LANE_MODE_STRIPE,
->          };
->  
->          spi_sync_transfer(spi, &xfer, 1);
-> 
-> base-commit: 50d05c7c76c96b90462f24debacca971d2e86713
+> Linux version 7.3.0-rc2 50d05c7c76c96b90462f24debacca971d2e86713
+> Build Config: UpstreamAppArmorKASAN (KASAN + UBSAN, panic_on_warn=1)
 
 -- 
-~Randy
+With Best Regards,
+Andy Shevchenko
+
+

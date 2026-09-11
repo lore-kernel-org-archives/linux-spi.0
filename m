@@ -1,122 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-214.mta0.migadu.com [91.218.175.214])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5253F99F4;
-	Fri, 11 Sep 2026 07:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E670546D566
+	for <linux-spi@vger.kernel.org>; Fri, 11 Sep 2026 09:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789112396; cv=none; b=WLgKaykEdtbHA7CC+n11lCezXxdw9Pp/zkao8WzhtzdeZvO/2kGLnVORnVRyjV3yj5RwoyZoDGcZkJXBjnd8sYLB6GaX93RCputYpjm5CjQAliPhZGPyXbjxo1m1y2qO4UjTepZjLzJm3zvMyYBXXHGediUWraDSHQy66j3IvDg=
+	t=1789117832; cv=none; b=sSMRQXWj5rOyBTl2TMQTx/DGhoWo7KlXhkybZTaBbTd5WHljJ/B+kBG9PZrsHF5blVy62lBTfGYQI7L6y2MTMlrPCKnj81hPkb5+f28caP3bMz2MT5zhvMgKRiHAD4iwh4dza6fs70VBGQxaatRN8ur5ZfmrcwvJnExY/jL1SDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789112396; c=relaxed/simple;
-	bh=ZgYSd8aSl+pmQF6s/I8l4yrW1KO+BynqDj3sGwPHoJQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FqtiWalIE+qAKoNW7HQft0hxTfAPL3tzCaRWnaSJ9UWiphSuiUh+p2rZ8VmL5snb6X5skOFxQasFv/KGJjATzXsQt3KkDy4/MA9wKqO9JWlUjHcsZrWbN6IBmpb/anecNENmX45kMU9QQ6g0nR5xjWrDHJDWoXjRIRmGrhRzC2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeYohwzC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789117832; c=relaxed/simple;
+	bh=1UiFqdha0Je3xR9CoEQZhVfy8k5gYLDEkjsNuoazTlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BOJZKyC7Os19AmYw8qVGkJxPxD3Qk+kaL4ebRJSOQPFUA3+MLZlsmgmv9n+Qse5xQp+eb8dLy/cBAC/bMIRN6vJXKJjXg75ewqzwitPw2usBqPdLWBE4RK5U8OQQ5ybbMmIqfQPeC3VdlTIx9Pxn1GbC2IbhCvCKi7pwmSq9I/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jimenezcarrero.com; spf=pass smtp.mailfrom=jimenezcarrero.com; dkim=pass (2048-bit key) header.d=jimenezcarrero.com header.i=@jimenezcarrero.com header.b=NfcQZ8DX; arc=none smtp.client-ip=91.218.175.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jimenezcarrero.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jimenezcarrero.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeYohwzC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092AA1F000FF;
-	Fri, 11 Sep 2026 07:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789112395;
-	bh=cNDwBPzZ/WbyatJG45pDIM0SmtwpbVp9K9FOPow1htE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=GeYohwzCkm6RSLb0GGMVx5stnsk6b3KFERhiGSSY+NRAUG9+6mXVQXvjAqVARhG1e
-	 TOJnxECgW9tnbJEh8CPVcSxCk4wjDs8NLdK2444M3gvrvdbWv8apAixaPlMRAW5Hqy
-	 ZjKsL4lIi3KZ/tOLB8fY/dSvrMgAxc/L4zSnUEPRWL0Wo7OBrK7fcXiA9ehzEKg6HP
-	 uebPTgKglItE/cZNcJNS3OxVvebZljMMtmzNYUUjsgGslawR9OU+9+2SAuEn12WE4D
-	 dJAlEKier+7ktpVrKcquXQkj+pCqtc+Jc1c9o1Y29TDz66g4htMFPJ0572QNpNHI8U
-	 3b0Q/51yJH7ng==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 71440198005A;
-	Fri, 11 Sep 2026 03:39:52 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Fri, 11 Sep 2026 03:39:52 -0400
-X-ME-Sender: <xms:RbCjag87uT0jlqi4Yg_5Uvr0xQCHB0WIfCiPY_hbSp1OkUeusaKHnQ>
-    <xme:RbCjajhzUAJ2BpiN8lY97QX-nh7V1KgtItx7JUIFyU0uwPTpLpRr4c4JHHLq97tzv
-    oelFNqbJDRb4LQXySnE2CLtB5aKDcleSXspqzZ2ZPYT0jyeV4_RSsmx>
-X-ME-Proxy-Cause: dmFkZTFynU64fqS/kRaDpbVzG47K+DWiSiGqzNaN0xoei7kNlP/hyfePM3idLtl26nbYCY
-    qxB79LlrjrD5olCyJwCrVK3EUEvwHD1y+eKaJjZoijYFFjocQAMqBmaHKHipoSYd8nos42
-    kwij7BU96r7JBR08vRHwVth+HTURrxCdAU3TcaGftdk8fK08Nri/x1jLpdsEZAePwjXz0F
-    SzDP832JYOH1kMIc32nfKTPvEzHAKQeMEjDKNKBRmieAbytYYsrq1qANtigNQNTOdhQpjI
-    2EoBZhXpnf27gByyKA69izcYVy557KtgDnBAbk3DYDDUXMM3z+yT8eY53tmbjO92IveXSj
-    hyGg0Fo0cNpCUDFnFN+wwPpxFmIqPRJ0Z9nqC5fskcffWZ0lMUDoNS61F2wM1BzifelDRH
-    nhmHHrGmo0kID7W6ms2a/OvNKrJ33hMOYsS51j7ZC62o+pOPYxqA0nod/DByFZfr9P1zbR
-    /ZKYmtnHj8tq08mQ009/w+hVCGmSWIhwDio/N0B8044FoOPlAArcqgf/Caioy58J4CM8Ot
-    zybpOviMFtya+ZwkObt57s4M4NNqp6xtXDSFhDV8k6BlAMQXjyluSnzVA0OiDTCajQWuri
-    Eg3yXZX6CAixGhZOr7V9dg6ZJDsFnQQae7PKhOv44iSjnaNVgRbk7jsG/tHw
-X-ME-Proxy: <xmx:SLCjas32yZ2_wJwFZLSdILo6bKIUnO0U_leBnoa1JkoiBZ7lgQWPrA>
-    <xmx:SLCjauCgmQKixAx8zeL_t3ZcMLDMQgUR5kiLAuxIsa4uRhvK9yAvCQ>
-    <xmx:SLCjap8RYmKQ2UFtu2hpjGwHNYQ_jSBm704I1WnbZUClQw5dNJEyVQ>
-    <xmx:SLCjas-S4ET_vfiqzSXe77ot5ZB06BrN9nFh7DOpYy2lAL5ppTDg-w>
-    <xmx:SLCjap1wtwpruTTCqtF3mHdUWhx1HfT8KHxTMz0VWDD8u8u53sWMOlZT>
-Feedback-ID: i36794607:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 0058432A007B; Fri, 11 Sep 2026 03:39:48 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=jimenezcarrero.com header.i=@jimenezcarrero.com header.b="NfcQZ8DX"
+X-Envelope-To: linux-spi@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=1UiFqdha0Je3xR9CoEQZhVfy8k5gYLDEkjsNuoazTlU=;
+ c=simple/simple; d=jimenezcarrero.com;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789117826; v=1; x=1789722626;
+ b=NfcQZ8DX7jkgP757F3iNU2vI/J0SIjry/c1fsQ2Yl0z9QYKMzHnf/P33Z1xZ/vyENtoqBqJm
+ uyJHqFjk60RB2KyjlULGwkAblkXn3rjePW251YiqQekWcLI6+SDA8nHnECADEw2Tb38GSbBFYA1
+ pRfiTgWE2LgVyfU8pxVY4iuEYi0OXscScEeQkhdLCsrbUmp9RDOHJIlcwZYY+wU8ryuVpAtmtG8
+ d3sB48oLN+VJQ3jCd9MhT9O4Az1MmNAiMQ/8lMr0XgqXRu5TeQhGvwntvSUO8R+e2KrS3aly+vk
+ grU0laXQjP485SWT0pbWsbmDcIVndwmXxGzPcqNd9Cmzg==
+X-Envelope-To: linux-spi@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a8b86de78718f879;
+	Fri, 11 Sep 2026 09:10:23 +0000
+X-Mizu-Trace-ID: a8b86de78718f879
+X-Migadu-Flow: FLOW_OUT
+From: Juan Jimenez Carrero <juan@jimenezcarrero.com>
+To: rf@opensource.cirrus.com
+Cc: khalil@rentman.nl,
+	broonie@kernel.org,
+	hansg@kernel.org,
+	linux-spi@vger.kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org,
+	patches@opensource.cirrus.com,
+	khalilst@gmail.com,
+	daniel@zonque.org,
+	haojian.zhuang@gmail.com,
+	robert.jarzmik@free.fr,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] Fix CS35L56 amplifier on Intel LPSS SPI with broken ACPI cs-gpios
+Date: Fri, 11 Sep 2026 11:10:11 +0200
+Message-ID: <20260911091011.76333-1-juan@jimenezcarrero.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <dad5e839-4932-4ae3-86d8-a3c2f4ce07d7@opensource.cirrus.com>
+References: <dad5e839-4932-4ae3-86d8-a3c2f4ce07d7@opensource.cirrus.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A2FgseOyJyxV
-Date: Fri, 11 Sep 2026 09:39:08 +0200
-From: "Arnd Bergmann" <arnd@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>, "Greg Ungerer" <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>,
- "Shenwei Wang" <shenwei.wang@nxp.com>, imx@lists.linux.dev,
- Netdev <netdev@vger.kernel.org>, "Nicolas Pitre" <nico@fluxnic.net>,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
- "Vladimir Oltean" <olteanv@gmail.com>, andrew+netdev@lunn.ch,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Andrew Lunn" <andrew@lunn.ch>
-Message-Id: <2449d19c-42f3-4ad9-aece-87ce7c3079e3@app.fastmail.com>
-In-Reply-To: <20260910174210.0f8a4ad2@kernel.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <20260910174210.0f8a4ad2@kernel.org>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026, at 02:42, Jakub Kicinski wrote:
-> On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:
->> The FEC driver works today because the m68k architecture io.h has a
->> kludge in the definitions of the readl() and writel() functions for
->> ColdFire that allow big-endian access if the address of the register to
->> access is within the SoC's internal peripheral registers. This is being
->> fixed in the near future to define readl() and writel() correctly - with
->> no byte swapping. Thus the motivation for this fix here.
-
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-
-> What is the motivation for this cleanup? Is someone still making
-> new SKUs of Coldfire boards? Or (and please don't take this the wrong
-> way) it was a long standing TODO that was tempting to feed to an LLM?
+On 03/09/2026 10:21 am, Richard Fitzgerald wrote:
+> HP told us they have a BIOS with the cs-gpios fixed, and they can make
+> that available early if you post a support request for it.
 >
-> IMO keeping the hacks in m68k is a better choice. FEC was used on more
-> modern SoCs, definitely on PPC ones. So we'll be able to get rid of
-> m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
-> the FEC driver is backwards.
+> Can you test that new BIOS? It would avoid the messy SPI workarounds.
 
-Coldfire at the moment is weird because it defines the readl()/writel()
-helpers the opposite way from everything else. Greg has been working
-towards fixing this so we can avoid special hacks for it in other
-parts of the kernel and share the code with Arm and other SoCs using
-the same peripherals.
+I have affected hardware. I could raise a support request and
+test that BIOS, if a second machine doing so is useful:
 
-fec is an exception to this because it happened to rely on the
-unusual macros: all the Arm SoCs using this hardware have little-endian
-registers (regardless of whether the CPU runs as BE or LE), while
-all the coldfire chips use big-endian registers (and don't support
-LE kernels). The powerpc variant of fec also uses big-endian registers
-but has a separate copy of the driver that hardcodes this. Other
-Freescale drivers already have a runtime endianess detection that
-is needed because they built both BE and LE variants of the hardware
-on Arm SoCs that could run the same kernel.
+  HP EliteBook 8 G1i 14 inch, SKU D75TQET#ABE
+  BIOS X91 Ver. 01.05.02, 05/03/2026
+  Intel Core Ultra 5 238V (Lunar Lake-M)
+  SPI controller 8086:a827 (LPSS_CNL_SSP via tgl_spi_info)
+  Realtek ALC245, SSID 103c:8d8f
+  2x Cirrus Logic CS35L54 Rev B0 OTP4 fw:3.4.4, ACPI HID CSC3554
 
-I very much hope we can merge this bit.
+This is the CS35L54 variant rather than CS35L56, so it may be a useful
+extra data point either way. The DSDT defect is identical:
 
-       Arnd
+  Scope (_SB.PC00.SPI0)
+  {
+      Name (_DSD, Package (0x02)
+      {
+          ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+          Package (0x01)
+          {
+              Package (0x02) { "cs-gpios", Package (0x01) { Zero } }
+          }
+      })
+  }
+
+while GSPK._CRS declares SpiSerialBusV2 with DeviceSelection 0x0000 and
+0x0001, plus a GpioIo for the CS1 line.
+
+One difference from the cover letter's description: on this machine
+neither amplifier is instantiated on a stock kernel, not only the
+second. spi_add_device() rejects CS1 and serial-multi-instantiate then
+unwinds the whole set:
+
+  pxa2xx-spi pxa2xx-spi.3: cs1 >= max 1
+  spi_master spi1: error -EINVAL: failed to add SPI device CSC3554:00 from ACPI
+  Serial bus multi instantiate pseudo device driver CSC3554:00: probe with
+    driver Serial bus multi instantiate pseudo device driver failed with error -22
+
+For reference, the LPSS capability register on this board reads
+caps[0xfc] = 0x220, so CS_EN (bits 12:9) is 0x1 and ffz() yields
+num_chipselect = 1, while ACPI describes two chip selects. The TYPE
+field of the same register reads 2 (LPSS_DEV_SPI), so the read itself
+is valid. (Obtained with a dev_info() added to spi-pxa2xx.c; the
+register is not reachable from userspace with CONFIG_IO_STRICT_DEVMEM)
+
+I have run the earlier two-patch version from your gist
+(serial-multi-instantiate + spi-pxa2xx), built out-of-tree as a DKMS
+module against 7.1.9. With those applied both amplifiers probe, load
+firmware and calibration, and bind to the codec. Internal speakers work
+across a cold boot:
+
+  serial-multi-instantiate CSC3554:00: Increasing num_chipselect from 1 to 2 for CS1
+  serial-multi-instantiate CSC3554:00: Got CS GPIO for amp CS1
+  cs35l56-hda spi1-CSC3554:00-cs35l54-hda.0: DSP system name: '103C8D8F', amp name: 'AMP1'
+  cs35l56-hda spi1-CSC3554:00-cs35l54-hda.1: DSP system name: '103C8D8F', amp name: 'AMP2'
+  snd_hda_codec_alc269 ehdaudio0D0: bound spi1-CSC3554:00-cs35l54-hda.0
+  snd_hda_codec_alc269 ehdaudio0D0: bound spi1-CSC3554:00-cs35l54-hda.1
+  cs35l56-hda spi1-CSC3554:00-cs35l54-hda.0: Calibration applied
+  cs35l56-hda spi1-CSC3554:00-cs35l54-hda.1: Calibration applied
+
+I have not tested v3, so I am deliberately not offering a Tested-by for
+it. I can test v3, the new BIOS or both on this machine (whichever is
+more useful).
+
+Juan Jimenez Carrero

@@ -1,127 +1,92 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4431E5B88;
-	Mon, 14 Sep 2026 08:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC743BDB0;
+	Mon, 14 Sep 2026 09:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789373538; cv=none; b=osWmjWIFYb71SwzgtKBecNJAxJLIROyz2COvGxYHwL9Dcc2x4FsqqQh6zpe/Me2ZrDoGc96bwIHhp/09bZBWBd98ppCDb4rSiaoFZgD6RVw1o/craNId+5nTtN4awTGzCc4OkyRFwWr1LU2XlxswEN0e9LmDbjZDwjufVnhRCwY=
+	t=1789377871; cv=none; b=k2uSRaBdjq3UgmSqyyr/qPDrOoHh2HB7awTdnPvu92Bo9vui6bAY/N4ZMgGTL5BfHmx4J3J6WDACNVYUox+krItGwNIy9K01JmiXfWAifgpaw2Bz9Bi1W1EebXdA6FdTcP5z6priywHkB0tCIBDZk9U9qOB1cBJ6Pt03XBoeHjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789373538; c=relaxed/simple;
-	bh=1OQgv3CLoOAvRHFXo8obITZm5ME7dKxVV+fENPflSNs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M5wjr4FBrQWO3QIQJS8GgRynwtVj2xWQdtbRGImGetL4cZP6kaTjxtzzx6D0dv2CiCI97ybN5Z/LOBsqzrC1fnb928+N+dDwJ4dfKoatmYYXYnhvBbCl+2ywVGmePVBdP5smpHyDT6zDCIQoi0Vx83AArib405wqbm9qryYogGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XHeiFAea; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789377871; c=relaxed/simple;
+	bh=tC1wv+ImbckLAm8UQHUgklYq4/p7MVHG+v9h6nIK45o=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=aIGOKyWBneycMjvuM5NEcfY+BaaCIHUtR+8Sjo6sNl1qiQB/fZ3EfRsd8TcZqtl8644e6m6qIK6CXLQcV5reHXAvhyHd1FHsS9np2Y/IHThvhCi/E6Ry1kVAWmRxw6ljgB94COhYVs/mEyYt4NaLPvxAv/GywMAledVhWEAVVsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ldDV9Z9G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XHeiFAea"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789373537; x=1820909537;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=1OQgv3CLoOAvRHFXo8obITZm5ME7dKxVV+fENPflSNs=;
-  b=XHeiFAeaSByI4sh3XEnuRNpAKyoGkKknvT0NfSCT8k/E+r/ioWBAR9Sf
-   6jW6c/+0/Mls/ThsLk5rlUOZOS0V0f7iheOSfZoc4RzbafmhIKwtGlDvC
-   tmqZqv+p/0aJnUWqYQzRAefl8ciJvOE/mZTLHY1jpIn6QsuxPYm23Tzz5
-   jR2JZqtSll7JyX22nzbTUOu2hadwWLuuwNF8h0kWilrEPl4brTYqh/FcX
-   VUrfpV2YP5ruIw0CXSBo5iTFYfu3RM8c0W7sBARY0sKBcPXpIMRr7naiw
-   WQnDsclAUExYtFrEzHXEgoNGlrPCtqh998iKQZwoRHtL4fUiQUKuwq9MC
-   Q==;
-X-CSE-ConnectionGUID: lnn62VZWTRSmHi+VtrqtDg==
-X-CSE-MsgGUID: NMmViMFURRyVNgg3bEA2Iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="89930525"
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="89930525"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 01:12:16 -0700
-X-CSE-ConnectionGUID: Pk3tLVsuSq+B8gP2yd78ag==
-X-CSE-MsgGUID: j+X708W/Q1mtQ7SjumjlBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="269292406"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.29])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 01:12:11 -0700
-Date: Mon, 14 Sep 2026 11:12:09 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc: linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
-	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v4 08/10] ALSA: pcm_dmaengine: Use dma_slave_caps bus
- width helpers
-Message-ID: <aqesWfdIsiR31sql@ashevche-desk.local>
-References: <20260911-dmaengine-support-wider-dma-masks-v4-0-72b8fd4cc78e@analog.com>
- <20260911-dmaengine-support-wider-dma-masks-v4-8-72b8fd4cc78e@analog.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ldDV9Z9G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA11F00893;
+	Mon, 14 Sep 2026 09:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789377869;
+	bh=fvA8Ngq3Gqk0wIDatkanDU2CgeiyWG49GttXyXakQVo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=ldDV9Z9GuBg7OhLkcbiEzel9ikCFPA2YVD3Z7AiW52m4bP7oZzAABEqtBpJ3y7cUS
+	 NeIbEW5yUWiee3CFtwuPIGRDvFc6x7RHaA+bfKWBuI/YSzn0LDaPyy/lsk/DmxROeO
+	 cky3wrK2ZTWUC674SjjLQb4U7YoRXRnMI+UVFVvSJVHMHtC/A8N6gG+xEA6liRjq52
+	 BNYv7AvJmg6zBpR4jsRw6L8RrdlfAKPVrnZQyP4eT8AOiU74AQAXySY1ZV8Ent6dJT
+	 oHlvoyS2BhCZUt2YDzqd4OQUARCojoL+Ksq1/5OEJRsm1adY+vGWLIwuhfVZZfhxAt
+	 ut94i6qub4GsQ==
+From: Mark Brown <broonie@kernel.org>
+To: Md Sadre Alam <md.alam@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
+ Gabor Juhos <j4g8y7@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260909-qpic-snand-avoid-ebi2-reg-write-v1-1-9b1b1466cc75@gmail.com>
+References: <20260909-qpic-snand-avoid-ebi2-reg-write-v1-1-9b1b1466cc75@gmail.com>
+Subject: Re: [PATCH] spi: spi-qpic-snand: avoid writing
+ QPIC_EBI2_ECC_BUF_CFG register
+Message-Id: <178934302922.1239410.17729512737637087382.b4-ty@b4>
+Date: Mon, 14 Sep 2026 00:43:49 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260911-dmaengine-support-wider-dma-masks-v4-8-72b8fd4cc78e@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1143; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=tC1wv+ImbckLAm8UQHUgklYq4/p7MVHG+v9h6nIK45o=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqp71JiJQxr1afYE6gItX+nzDjbEs/qDIUIioqk
+ ze9GTLfsYmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqe9SQAKCRAk1otyXVSH
+ 0GHCB/0XoC63Tc5STf2bxhr96uO673rgVUg5m4dl8GEdxy+u0p4sDm6fFFciK1HZer6wi6NtlRL
+ AxMFona9vD9bDknUoiY8cpblw866dVw+abClBMWlOD0Q1QoH6EDoSgwS+zdJK4teAW0SIq9tfTG
+ lFCvamM35dwDWMSgcPTvMuZu11rCtAtWmh3ecRK5lgWlmKSPOIMNUmiyQ5EVl9fW210eGluovYP
+ VauuiPuOYWKzYlWZdGPgMdCin2W2jxOkSjH8g3s7buGUGVYaDDdcTTGqXvHBc1sVL3uL981Kco+
+ 9jThShR7dEXKDEnxoo7FRRPLHHuvGEcNAdOYKdV0L9aiS/KX
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, Sep 11, 2026 at 06:25:43PM +0100, Nuno Sá wrote:
-> Use the dma_slave_caps bus width helpers instead of reading the legacy
-> src_addr_widths and dst_addr_widths masks directly.
-> 
-> Keep the existing default assumption of 1, 2 and 4 byte widths when the
-> DMA channel does not report slave capabilities.
+On Wed, 09 Sep 2026 16:08:25 +0200, Gabor Juhos wrote:
+> spi: spi-qpic-snand: avoid writing QPIC_EBI2_ECC_BUF_CFG register
 
-...
+Applied to
 
-> int snd_dmaengine_pcm_refine_runtime_hwparams(
->  	struct snd_pcm_hardware *hw,
->  	struct dma_chan *chan)
->  {
-> +	enum dma_slave_buswidth default_widths[] = {
-> +		DMA_SLAVE_BUSWIDTH_1_BYTE,
-> +		DMA_SLAVE_BUSWIDTH_2_BYTES,
-> +		DMA_SLAVE_BUSWIDTH_4_BYTES,
-> +	};
->  	struct dma_slave_caps dma_caps;
-> -	u32 addr_widths = BIT(DMA_SLAVE_BUSWIDTH_1_BYTE) |
-> -			  BIT(DMA_SLAVE_BUSWIDTH_2_BYTES) |
-> -			  BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
 
-> +	dma_buswidth_mask_t bus_widths = {};
+Thanks!
 
-Do you really need the zeroing?
+[1/1] spi: spi-qpic-snand: avoid writing QPIC_EBI2_ECC_BUF_CFG register
+      https://git.kernel.org/broonie/spi/c/930a7312c946
 
->  	snd_pcm_format_t i;
->  	int ret = 0;
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
->  	if (!hw || !chan || !dma_data)
->  		return -EINVAL;
->  
-> +	ret = dma_bus_width_set_many(bus_widths, default_widths,
-> +				     ARRAY_SIZE(default_widths));
-> +	if (ret)
-> +		return ret;
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-I assume that if ret == 0, bus_widths should be set accordingly.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
+Thanks,
+Mark
 

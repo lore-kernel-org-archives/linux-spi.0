@@ -1,62 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD5A47ECCF
-	for <linux-spi@vger.kernel.org>; Mon, 14 Sep 2026 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1520C480324;
+	Mon, 14 Sep 2026 17:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789401564; cv=none; b=LWn1lyhuXMvotW0j2tcHeuW/DFwSkC+AOYIwSg5416mxxElO/pXnu2pghZ70Ta71gQXoaqULD7UmSpCJVIdC7oNqezevra7kFifnpcwfZdd/Fu2J/x2inFu//H5MI+PomoOzA2Kqvihj3sOweJtQRpsJFMU0LQkLbH4G7BW6W0w=
+	t=1789405450; cv=none; b=JbmPABuxyYrmsUcvWCvtShiahuihs3O8UB/ebjNWLf7B9MSLKCj7cwQIJkUss+CgieL5iHK4WZgu29MVeyDoiLm+WGgOQYTPFBeqmGI3QrYIpffgXq/yiUGlqNUFLlZpeZx4jSU6xZ+cEfFjAbleB10CtWu3Bqer3lGV/SS2V6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789401564; c=relaxed/simple;
-	bh=RIbFmW0LRGZEMvKLxNyH72wW7QIwOTwMXbiE+rcTYVk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=e7LPNX+cpKjiyokIfUx0q5cXRW79Ct9UeyLfQD5taeiZT1Erq1Uv5eztCLAs3rPRP4gzgSLJxagbV76bCyUO8HFgggioAazV7UY/w03RBBVDFsSqu5VLVavL/te44X4uha+eAsUymHGcUtGP0IDtkBXWFehKH6ZKw3Rt7Ty2Zj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+Ug5rep; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789405450; c=relaxed/simple;
+	bh=LX2HRALeP6kVWwMqDVM8FbZJpWRL31ZVmPATsUffHUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fnDVybF3LcPu0PosFH9sXCZtkgymX4oTJ+21IdTjqIvuEa9vWMq8E69hHcSE8irY1ivMFJ1Ycu3SP+fB86UYq4kIRNw79CA9H4r2h/PNIuTHMVFhXCiWF6xJxeOwe3kROMy+V4Po09lzR30X/oe7clPo9sQlzG454leJEiRzcVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahHGnnW8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+Ug5rep"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0921F000FF;
-	Mon, 14 Sep 2026 15:59:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahHGnnW8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339571F000FF;
+	Mon, 14 Sep 2026 17:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789401563;
-	bh=w65joEC1FMozzBwfE/iiQduXdEp7egKPmq8ge3DdLnM=;
-	h=Subject:From:Date:To;
-	b=X+Ug5rep1K9048bqdk3UFu8i82iQi5yXtWjNt7WvBRgvVi+tnRPEKLH/xUibJ4d4b
-	 jJ4PZp9KKheVwCyCgpTDzmJsFvRZIhppaP/AxEDjJpomeTQenhNVvL4KWHg6QbUSY7
-	 LOlCOB+an/UXYfcRYVWsOajX87bTlyU195GEOkrZiYZcWzWviJJJVeaVpuDpzInNzk
-	 GswCzmeAZfkpVHdjPg+4OZycgTJhtyY/uFXXGTe9Zu7E7TuRuy1LxeBaOyWskOGgYi
-	 PqlyUNEEVgf876gKz8vzMratRivQu9F2Z6d11nSh8SvsQLi4Z2rKlaSw+tcydpBsQG
-	 1FhsDFfsA0EpA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5695E3924FC6;
-	Mon, 14 Sep 2026 15:58:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789405448;
+	bh=D11SiCjARZmfLjydnAFDDsk3oc5AvfRR5D6EpS16Rsg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ahHGnnW8WTlzySGsM42JuacN6EaH4Xz7vQbs2Ii1UKG4szi7DjCIE18Mcr8CyoM23
+	 z0xXjB2caW07nxnkxYSDsB7VnUZd4b7hM2q2WLJi4M4vNmXWu1Ml7LnV+ETtpm6PD/
+	 zETlal3U6BtedJUM5yTcVINo5w7mL1HeSRqp/plVKaAP5Gl/Zi8uOnivCk4pNxgaQS
+	 7Wj3QnZ7xCo4n5umW0GgPmYFNLtgjNnyKcMXj6Q+azUzFZYcuekKPRhwQhX81P2a2Y
+	 UBs5prO4Zt2+xoe8N8obCiATu7oApz2/DXiTuozGPkqAr83MDXRqzKZGIJrw58r+3S
+	 0NtkuCP5CIKhA==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id 6B9FCFD9F85; Mon, 14 Sep 2026 18:03:51 +0100 (BST)
+Date: Mon, 14 Sep 2026 18:03:51 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de
+Subject: Re: [PATCH 2/7] spi: spidev_test: add compare mode
+Message-ID: <aqgo93bzXQgMciTS@sirena.org.uk>
+References: <20260914-spi-sun4i-spidev_test-v1-0-72d6a3b38cee@pengutronix.de>
+ <20260914-spi-sun4i-spidev_test-v1-2-72d6a3b38cee@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178940149789.659126.6235187883731565263.git-patchwork-housekeeping@kernel.org>
-Date: Mon, 14 Sep 2026 15:58:17 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
-
-Latest series: [v3] spi: spi-sun4i: assorted fixes (2026-09-14T15:35:55)
-  Superseding: [v2] spi: spi-sun4i: assorted fixes (2026-09-07T15:31:40):
-    [v2,1/6] spi: spi-sun4i: sun4i_spi_transfer_one(): fix transfers for SUN4I_FIFO_DEPTH
-    [v2,2/6] spi: spi-sun4i: sun4i_spi_fill_fifo(): always apply A10 FIFO fill level workaround
-    [v2,3/6] spi: spi-sun4i: sun4i_spi_transfer_one(): fix setting of clock rate
-    [v2,4/6] spi: spi-sun4i: sun4i_spi_handler(): fix race condition between transfer completion and RX FIFO interrupt
-    [v2,5/6] spi: spi-sun4i: sun4i_spi_transfer_one(): add error handling at clock setup
-    [v2,6/6] spi: spi-sun4i: sun4i_spi_transfer_one(): report effectively used speed_hz of transfer
-
-Checked 160 series in 2.55 seconds.
-This project currently has 16482 active patches.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VojHOG5x6Q3UbjP4"
+Content-Disposition: inline
+In-Reply-To: <20260914-spi-sun4i-spidev_test-v1-2-72d6a3b38cee@pengutronix.de>
+X-Cookie: Orders subject to approval.
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+--VojHOG5x6Q3UbjP4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Sep 14, 2026 at 04:50:41PM +0200, Jonas Rebmann wrote:
+> From: Marc Kleine-Budde <mkl@pengutronix.de>
+>=20
+> Check whether the received data correspond to the transferred data but
+> without enabling loopback mode in the controller.
+
+> -	printf("Usage: %s [-2348CDFHILMNORSZbdilopsvw]\n", prog);
+> +	printf("Usage: %s [-2348CDFHILMNORSZbdilcopsvw]\n", prog);
+
+This is sorted alphabetically currently.
+
+--VojHOG5x6Q3UbjP4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqoKOMACgkQJNaLcl1U
+h9DZAgf+KRoKZrLT1YlJvDuErHYMC0bvyns2ifvXYOBZFswCeTX1eBNEvwoz8aUJ
+sE5uKmjsdnNe1ZUpp845IrgnT9X+YUbBeVZjwqv/e15lnslmukLahcg1nicNg2zs
+i/HBWzMOkGy8hthQi8MGxFprqjtz97uzRLaRVFKpBx2vOWEFHXdLKLJ7idTo67tJ
+W0NN2odtDIGPCoCt49cgXZBboPZbsUlnePwqm5eSU+DI0HLg18Nt5OnQqgWuBE0D
+K12c2kTxW2UDH4cy9RPyATvIgWL1mHs3NGN48LYoKxZuY7j71zDwTxkLOh4548Oa
+PmW3aeX7Yv3N/azUCKmvp8xP0BXr5w==
+=4jOr
+-----END PGP SIGNATURE-----
+
+--VojHOG5x6Q3UbjP4--

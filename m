@@ -1,118 +1,121 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525973438BE
-	for <linux-spi@vger.kernel.org>; Sun, 13 Sep 2026 20:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789331523; cv=pass; b=cOW5exi5Xq4j3XrbMRgYFWSZuAUP+U0FKm9e4L3yavIOS5oiodKMIGzxI0IlKgMY6+c5YnylPSs9JWRoW3b/CD5le4O1bdaV5xO43EWhOgcwaBjpSozpF23SsV59dTY/mrPRr2R1IT9w75i4lruFYQ0Xwbib2ss8eIsRiOpTJAQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789331523; c=relaxed/simple;
-	bh=YqPuY8bjxg2PMPBTTRCR7VVhfztLYnhGPDT7UUbH0mI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WOLRwE7rYzgaCyK4gYdGM8hNLJ5m5CAieWbqN4p/nsmsmMtI/oeccYi1oJ7Q3Iv3VrNVlVSrbnAhFMoCZFo48VkDlDENy0ORUuLmYXkFZbcgBFRjkI+tRbTwjvUudYIYSO8BXmjxK2ngCJAPCPl9xY7QILX2gfre63/Or+DIk1g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XlEsPGDk; arc=pass smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C0C38F253;
+	Mon, 14 Sep 2026 08:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789373110; cv=none; b=jsoDRGDI5hIyyJR+3p8Bv/SsmU9SM0jWRA1HnApsNCRhF2RbVGKRSi7fJPhDoadr4/tmUmR5rs53isMUTpw7j98+UojrqdyMoh8cDugfOIYo1x8jWTuZk6EDICRWxVh+0ea5/N+pyB6j/dKEWkvkJkGCLW9v/r51BH2NYPuDcTw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789373110; c=relaxed/simple;
+	bh=ms02h7CsujbREPeLnaUOThPK+64TwYCRPpUsizrNp/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rnGNlW1v5nKWiG9oIxbLs2+fzcbuIuDo4RE8pBHfpdcorErVYExgciucLIfSKXvAZ5MQuGG1HXCIt/cAOX6rqaHzbsYmvipP/LSXZY/OzO3K7hswKolkXxfZs55yaToP4LfUeCNZUlTl1JQvSyWIKNP7SqjmDqwdFp4/UFNSfgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2TP4zHL; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XlEsPGDk"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c2949ed8cc3so430192766b.2
-        for <linux-spi@vger.kernel.org>; Sun, 13 Sep 2026 13:31:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789331516; cv=none;
-        d=google.com; s=arc-20260327;
-        b=I2d/3plF/EhkkPb2t9tX7yzsvy8IHGYP1DnZyiRk97J1DUFGKqugQJaBoj+5NgoYM+
-         gVwJWrSmlGcF7xNeLPJqP18eNkVCcqz24GwIQhaDUJrqWAIrcuksQEupuu2lZGcmlvkb
-         5VYDXzZfrF0IiRHxeUr9i+q9OJKOPtdyv+0XQdtIPp19f4Jb/eiLKnWm5DxoWLu8lDjm
-         htw49fmtQA0riZomjhO2aZlgrOYsy/BNjl81lCaxdp4tU5izp9VKD48t1+faQcfvIPBs
-         FZ/UJbJFWfzW6Gk4v4J/a4G7gsHMytolAFGUbM9S7lP0OejJuFDFSb1xxNzEmuhg4DcR
-         ju4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YqPuY8bjxg2PMPBTTRCR7VVhfztLYnhGPDT7UUbH0mI=;
-        fh=VetNZ39ibfUvvtKhnHwzerzhrVGC80Xae8wfhvuBqCw=;
-        b=mAei3sF/STs4ETLwiEkJifMkoiGBs2Qq94MJHZY8JGihDGaLksIHBnLkSZP7lzB8mW
-         2etaK5m7bScYZde2Hh6zgGK4A89m2dJjgriirZzM9tGJlYZRIxNxthkK383M+Rgx9WeP
-         4mhxKqbMnGZfxERhRnQGjAV1MaE0kyHM/y3ZAs1wOoOsm6Ij3VUOrZEy2Uthf8gLDzy1
-         /bcXq9r1NXW7Mq3wczjJx/X1BKrGE0ETLmKwkWKcoMQufxRzbsnnTW8/NuB8xZ7eeqg+
-         Z/+sGlP2CUhJvoSWH5XCzil/g//Wlfk7xnI0IMbIJSzwWBmZs/Mh35v8UoVYi7+flUWV
-         cg2A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789331516; x=1789936316; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YqPuY8bjxg2PMPBTTRCR7VVhfztLYnhGPDT7UUbH0mI=;
-        b=XlEsPGDkX+T0oZxerVgd3xTeyvFY5JPlqU7qEx6dUbN1pUtnDbM0tIZI76TsIkalim
-         wirEo2SANyM09D1pFvZwwmX3Iqc7Tqprqf0zRcn68v+9UXrqFNqAyMAfxfdAFoABOpvd
-         KDYEVN1lkxbNKLom25bT2plJ2K5E3B0l7SUsFVOD0jE6mRyHK+a5VJOgPSnXCnQ9fak8
-         yKEcHIrByb6An66FgSubzpQ/Nww0o/p4g75ioD2/CKAtSJOn0KcXUCrvi1Qwc6eLW7Pj
-         8Bw8LAQi9W+ronKyYApcPP7Q9m5XCJ23coKT/OzSEdL2kPUcjkhAiogSoG/TJilUeZjX
-         Txew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789331516; x=1789936316;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YqPuY8bjxg2PMPBTTRCR7VVhfztLYnhGPDT7UUbH0mI=;
-        b=AIhXkjmqMpj0E4QLR+idZ+SdOUgOLnVMR7YH/CQLmmGAndCU+NQmI0sxt6lOygEgZ3
-         yXayFYdAvtx1lgR5Q9SB2ZX1DMP62NwKeN29z92/CkxgyBhC6AobvGuGNYkcfxsGNd1t
-         lG7FHaJyLos14Xf7AYY+jW8OqK2iJN/3fwsN+c1tTglaAxoJC2RSn+B6N0k4iOAJO9lj
-         aRs4kjhTiF/zd8JZzyTsHDbV9Sf3YU5V6DzHIfy6b+t2EP5o5beo6y0HSxQtK+Pz1MYE
-         FLWNeW+gDlxIyB9qPgML0g2jBbsatFhIlA4fBAWfkTeBw36dfVJl64jHd6W1QaUjFDuP
-         0SJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxaTlCfvh95hj3CO/DS2AJox8gMxFw5QdOMkaO6UmTFWus+G1AjU1bRgeJek4p72UhRrdBEUVUAYLs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nFfN0Xf5F78VEjM0Uz0gstg9klAX7FMvACay36sPYLhJLMHEyB
-	Za2NnZALg9mJnc9pG1HwZloRaPEvdx0SL5FkYC7fDmZ1HR0nl2HilEy8H88gaPgR7jatetNcOfq
-	JxpBlmE4VKRVKa3oDm6tenerhWbcHeA==
-X-Gm-Gg: AYBFou2t80WSfUWCjrOf7cfz7iMsBHbnBwD7K+JMEufxjV2J1E0ScdWyJOOaXh8383+
-	aN9BYeizuV0qBzfLOW0pff69p6jbBpE+E0qLDOWaZhg2G3WIwHuhxUwKMFD9OUQzeaEhw9rU7jz
-	RJwbTWwY1IsmEWK35Q8uk8VcwieY7PbM+L7eCBKBZMMeUofP9L2AomqAZYiFadafwNskZJuTSCu
-	t3SQHt6/ZeG0Ts5b4dgawCQdnBfgobH/y//zAt0YfZDTk5IRFzMb1ZkNKQVGiUxEycZFI1UduW6
-	hnZZSEDzkN75jlPpSsOU5AssmvBAETUrQoiRtLtZ1Ewol2lsXLGYGZasrODfDtduZ8FR8h4zBiP
-	d9ADJeClOVUkWEbR1tRGjEEfvmhq2xHuzNIRqcBPtxMwI8jJuHRmXkwyXdMYQKmxB9w==
-X-Received: by 2002:a17:906:c143:b0:c29:4204:8dbf with SMTP id
- a640c23a62f3a-c2966559aadmr741799066b.7.1789331515865; Sun, 13 Sep 2026
- 13:31:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2TP4zHL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789373109; x=1820909109;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ms02h7CsujbREPeLnaUOThPK+64TwYCRPpUsizrNp/I=;
+  b=L2TP4zHLHvmazl7NahMd9Yw7qC90RXeB5i+JSeOEeD4YBc32yljScTye
+   D7x4rC2lOcSEuOm+AxvP4xMEQcmv/zm3ExsM8YgOsJmWYFQlsz0ghZ469
+   kZSHPwoM7PwK6nyxaHMfKcem4Xn7IVUqtvDhFfv9676RQmEVCC3oE1vJr
+   k0WmcWla3L6p/Hy+N4hxzu47KFUfucbB4waiES6zpFstEp8KZdegFfC65
+   gpnQ8f99wRFmgA7DhgV8k2TBdsXORWDylpbtXlMq+y/AK7JJIhh8x7laT
+   cMdfV0+ee3Xc+8Haja2Y06OR9ObIkmSPrullglNnQxvBMw7O+Pt506r12
+   Q==;
+X-CSE-ConnectionGUID: Nu5+r8EcQuasyIvQcB+Iww==
+X-CSE-MsgGUID: XSXvpDGLSa27m3a+rnlYNA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="100317036"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="100317036"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 01:05:09 -0700
+X-CSE-ConnectionGUID: k/BGMQlsQ26pQ7qXoD2Low==
+X-CSE-MsgGUID: LyK3jnAQS4OvLkjyLJO+GQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="268897922"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.245.29])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 01:05:03 -0700
+Date: Mon, 14 Sep 2026 11:05:01 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc: linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 02/10] dmaengine: Support bus widths of 32 bytes and
+ above
+Message-ID: <aqeqrQU7Gtj9uGQx@ashevche-desk.local>
+References: <20260911-dmaengine-support-wider-dma-masks-v4-0-72b8fd4cc78e@analog.com>
+ <20260911-dmaengine-support-wider-dma-masks-v4-2-72b8fd4cc78e@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aqRM17TZ0-5pd6Y0@sirena.org.uk> <20260912190056.42192-1-mhun512@gmail.com>
- <aqaKPEFt7fQe8QQp@sirena.org.uk>
-In-Reply-To: <aqaKPEFt7fQe8QQp@sirena.org.uk>
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Sun, 13 Sep 2026 16:31:43 -0400
-X-Gm-Features: AcwNN1XzcLLgpV1RUYtG_pNLmmim_sFz6TTENWG2NHxxEf0dq49kcafrryEazGg
-Message-ID: <CAGEsz8Gy5=4msSzPjvRAS88EEbZ0eRvpocu6iHQWv8-48J0dkA@mail.gmail.com>
-Subject: Re: [PATCH v2] spi: rockchip-sfc: skip DMA cleanup in PIO mode
-To: Mark Brown <broonie@kernel.org>
-Cc: Heiko Stuebner <heiko@sntech.de>, linux-spi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Ijae Kim <ae878000@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260911-dmaengine-support-wider-dma-masks-v4-2-72b8fd4cc78e@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-Sorry about that. I'll send future revisions as new threads.
+On Fri, Sep 11, 2026 at 06:25:37PM +0100, Nuno Sá wrote:
+> The src_addr_widths and dst_addr_widths capability masks encode each
+> supported width as a bit whose position equals the corresponding
+> enum dma_slave_buswidth value (e.g. DMA_SLAVE_BUSWIDTH_4_BYTES sets bit
+> 4). As these masks are plain u32, widths of 32 bytes and above
+> (DMA_SLAVE_BUSWIDTH_32/64/128_BYTES map to bits 32, 64 and 128) cannot
+> be represented at all.
+> 
+> Introduce bitmap-based bus width capabilities that span the full enum
+> range, through a new dma_buswidth_mask_t type modeled after
+> dma_cap_mask_t. To allow DMA controller drivers to be converted
+> incrementally, the legacy dma_device u32 fields are kept alongside the
+> new masks and the core folds a legacy-only driver's u32 into the mask
+> when the device is registered, so consumers only ever have to look at
+> the mask.
+> 
+> The accessors live in a new include/linux/dma/engine/widthmask.h instead
+> of in linux/dmaengine.h, so that only their users pay for the
+> linux/bitmap.h include. They all take a dma_buswidth_mask_t, which means
+> the interface will not change once the legacy fields are dropped.
+> 
+> The fold is bidirectional while both representations coexist. A driver
+> that only fills in the legacy u32 gets its mask derived from it, so the
+> consumers already converted see it. A driver that only fills in the mask
+> gets its legacy u32 derived from the mask, so the consumers not
+> converted yet, which read the legacy dma_slave_caps fields, keep working.
+> 
+> On top of that, dma_get_slave_caps() derives the legacy dma_slave_caps
+> masks from the new ones when a device_caps() callback adjusted them, so
+> that a converted controller narrowing its per-channel capabilities is
+> still seen by the consumers not converted yet, while a driver adjusting
+> the legacy masks directly keeps working.
+
+Acked-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-2026=EB=85=84 9=EC=9B=94 13=EC=9D=BC (=EC=9D=BC) =EC=98=A4=EC=A0=84 7:34, M=
-ark Brown <broonie@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> On Sat, Sep 12, 2026 at 03:00:56PM -0400, Myeonghun Pak wrote:
-> > With rockchip,sfc-no-dma, probe skips allocating and mapping the transf=
-er
-> > buffer. However, controller registration failure and driver removal sti=
-ll
-> > call dma_unmap_single() for that nonexistent mapping.
->
-> Please don't send new patches in reply to old patches or serieses, this
-> makes it harder for both people and tools to understand what is going
-> on - it can bury things in mailboxes and make it difficult to keep track
-> of what current patches are, both for the new patches and the old ones.

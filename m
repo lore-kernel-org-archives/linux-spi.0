@@ -1,78 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06F6421255;
-	Mon, 14 Sep 2026 09:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F8541F379
+	for <linux-spi@vger.kernel.org>; Mon, 14 Sep 2026 09:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789379297; cv=none; b=J4vbsP1IeSNXypIl0FTBtDHqPKeY1ly52gixzC/5vcHMl6bomf7Yr7FbNW0LXq5IEthAl0JDt2R2kxwCA6+QKC/zCruJ/AkKrHzLz9O8vKplLD7bDH+D8zm/oirYun+kz2myqrMmTqVe0NTBgQ6ffGIh2qtJT8fctjgAEXdaSFM=
+	t=1789379480; cv=none; b=WnDoS0g/TKf7GU9JI+tSvVB5rQWrTXXy9KmxtSudlI6tjzw86wu04cAGZojLik5hdu9KPhtPH5ZJlfQ3lX2Mzn5gQbeHr9eYxEfuqkg47XFilTtgAqxR7VsM4DvLvjTE9y8KsJRK0aV2He/Agme8MZcHy8eooRiJm5UIJAh280Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789379297; c=relaxed/simple;
-	bh=347jpZ/9QMf533uLtDrXpTBaWmItzNDnMh9Tbe6MNIw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=bwyFyoD44WuMz+n+RdgQLlTyGe6pUa9pnzQKiIt1NoQQZin+3WdtqFPGeYDWaYLZ8Np24QoZmV+g/1xVWd47yhpnLGFCLY99/68DgzXp4/RQUTQ3B/wnpO5GJzsG2Kp9rIPMMPWuqXkfYPRbdVMX3xU7EGDhQphNwczRIPGomqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCq+nKxb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789379480; c=relaxed/simple;
+	bh=8OrSMJDxfVCXlPUCbvwuHBVAJuV8hOLJeTp92mOVEn4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=E+ro+X66ixsEvHf+f5zlH+S3Fzsln7wC4e19jovk37PV7qtlyd9Q2fwLvFJ7d9BcnSZRwvwKo9nXf1M8xd4sQKBIqgOps+OjC0ar+tILx1FxeJbU21sGMLEp+5sUuk+cbTVhMZiL1QgBBZZ/zQGYUFGmBQ9HMl3GIw7r5KQGtmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POnpvjci; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCq+nKxb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CDD1F00893;
-	Mon, 14 Sep 2026 09:48:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POnpvjci"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47AF1F000FF;
+	Mon, 14 Sep 2026 09:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789379295;
-	bh=0mYe4VizDGEwgBtzf4ANe51F0qCB0t3vyjf25fYmlDE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=cCq+nKxbkaTkvQhvQzvZGFjWyNw92AD5pCjEaF07rbuMIYuGwbUH1vgMuq0o82KFf
-	 d1c1RcWoIQx1UCJ8AjLsSyLTW23oASX1E7Ov3Rg4ThBLBt5B1OCT1Qlgq1HFQibYGH
-	 ccmQaqGHTGxr92xvW88V7r9JZR8a14j2Y/cNdo39K+ZbK6xmsj6TkSHGX7KePvHv6c
-	 ihtiLfbjko7S4s8soIoyAK3qxfQqWtVid7y+JPo9FQJ/ax6v1g2SN0iuMmfG2O7q+E
-	 KnPzfxsZPiLDYzQ/h9TYiGhEsWK8LzV9tlozPFuAD6FvL3BQdibXk/Hu+8H2lJFNU7
-	 ruhgGE0Svpa3A==
-From: Mark Brown <broonie@kernel.org>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260908-qpic-snand-unnecessary-cast-v1-1-26df1cdd4bb6@gmail.com>
-References: <20260908-qpic-snand-unnecessary-cast-v1-1-26df1cdd4bb6@gmail.com>
-Subject: Re: [PATCH] spi: spi-qpic-snand: remove unnecessary cast to
- '__le32 *'
-Message-Id: <178934236523.1239410.314374999041718654.b4-ty@b4>
-Date: Mon, 14 Sep 2026 00:32:45 +0100
+	s=k20260515; t=1789379478;
+	bh=AOC/6J4EFp55aoC4VkgIOy9YBzdCr84wUzi6svMspYc=;
+	h=Subject:From:Date:To;
+	b=POnpvjciIsRsU2RkL9lB2oUJ/dEqbz3X/bCujca00alcAAJok48nLvOJdvUW8hB9D
+	 4ZPdzi6gc2c6LVXaDfhcwTndWgTv6fQ9izwLiR5EZm8JlLjLNWU9f+l2BdvRtF1GTr
+	 NSwWPWaW0YPgRJ2vik35StC8lfr32NcCbkdaaGcFKDG29u1weS4tF3hqNJQNuV0WEC
+	 aW+shQOKyf9CmhwxIADbABsYQ7wQoCi2rqRg2nMMUgtBDrFmsaO9aPFpcdz7HTkEp8
+	 Ei/py6IHOM/jVN5WLih6tRbdtLnYg4YKRY+p62Yl8VAnz4gWhInjqNQ/LPIp5gR+RB
+	 NQZ9W5vU75EvQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 59231380CEDD;
+	Mon, 14 Sep 2026 09:50:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178937941381.445884.17113488994377516567.git-patchwork-summary@kernel.org>
+Date: Mon, 14 Sep 2026 09:50:13 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Tue, 08 Sep 2026 21:53:16 +0200, Gabor Juhos wrote:
-> spi: spi-qpic-snand: remove unnecessary cast to '__le32 *'
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+Patch: spi: docs: Use the multi-lane mode constants in examples
+  Submitter: Karl Mehltretter <kmehltretter@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1161746/
+  Lore link: https://lore.kernel.org/r/20260910033219.15996-1-kmehltretter@gmail.com
 
-Thanks!
+Patch: spi: spi-qpic-snand: remove unnecessary cast to '__le32 *'
+  Submitter: Gabor Juhos <j4g8y7@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1160798/
+  Lore link: https://lore.kernel.org/r/20260908-qpic-snand-unnecessary-cast-v1-1-26df1cdd4bb6@gmail.com
 
-[1/1] spi: spi-qpic-snand: remove unnecessary cast to '__le32 *'
-      https://git.kernel.org/broonie/spi/c/4b258adc049d
+Patch: spi: spi-qpic-snand: avoid writing QPIC_EBI2_ECC_BUF_CFG register
+  Submitter: Gabor Juhos <j4g8y7@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1161386/
+  Lore link: https://lore.kernel.org/r/20260909-qpic-snand-avoid-ebi2-reg-write-v1-1-9b1b1466cc75@gmail.com
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Patch: spi: Fix the return value in spi_new_ancillary_device() kernel-doc
+  Submitter: Karl Mehltretter <kmehltretter@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1163301/
+  Lore link: https://lore.kernel.org/r/20260911230211.11755-1-kmehltretter@gmail.com
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Total patches: 4
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Mark
 

@@ -1,90 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9BA48E0F5;
-	Mon, 14 Sep 2026 18:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966E244238A;
+	Tue, 15 Sep 2026 07:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789409254; cv=none; b=gZWek3BvgST5C1NGyJKJkE4Ui0s0BElNaIgFkAPr3IH+ptTJia3xhVo3ygBoA55bCcGGpILv3cU/1INel4S/lsPyT5NeGd1oqf5400Ae8YNRUvZdVjRsYEd9QF0+BE7fgEZo2dyqqQe7GRTH9NcplzadLxFV/HmiaU6ckxYsJ/8=
+	t=1789457354; cv=none; b=SO7uzzf7pVnIn17vO0YQ6SYgeBKeltVfV/sZPdJL8fG5mSvGG84qcAQo1DehWxAd4NFeh4MZNr9rxl4tkzUAGKJOAxbxagum18yxDc3BojEfvOuv6PEuVhgB3Pb/9oKxT3G/fNfxL861z07zGFtsMViOeYAi2C8rQmfdIDyC090=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789409254; c=relaxed/simple;
-	bh=WjgZ5sS7PFASU41GAEyepQvJrellvUJD+vnbo/dZmmQ=;
+	s=arc-20240116; t=1789457354; c=relaxed/simple;
+	bh=lblm+duqrIKOSpchtCRVtTa6szJIWB3TTaSd5w1skBE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BrMT1JNRXQHpF0zzeif5PHDJHwEvWUtCxKoRrbiif7T0mesKgsOWSyKVRrBDHr8d1/Nkhmih5aXEi9UWc7ewEkLGYYm/f2WuD2L3zljwxGnhu7a2zVeCwpRLacIFXbN+SQzx8tdOF6QIcqHQv6PcKefnyc9guYyV0Cvid++pQ1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTvZIFwu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=CHdyBW8RlozvSC6YHQqThh/Bvcj2zrLIHPEvqbnZK+m9AS5A7EoFkYb8MjYE6dptUDwpsQWMiHD3f9Tiu/lu8LpiOkyA+pCJn/GruzDxWZ2cDiYyLJNrV2o7k75AFkGkhz2HpKJgV8VHzZwEebwVKdsCSfSXhFF44EJZ+XfAHnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g9b3RUUS; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTvZIFwu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618471F000FF;
-	Mon, 14 Sep 2026 18:07:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789409252;
-	bh=+2LqkH1uelDs/ssC7yXt/q0DB4WBtY2PlWd9WPboDTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LTvZIFwuX2Xzox6j58mLWKAdBM5qeYZWak7HtTaWkY3vIfdixphs4/8EU+acLzCB9
-	 IlXsfT1dm+Goam+SFnWwyN7kWSLuYUZYLPr7GfO1Ybkf+b/HIySkbn5RayiUX2VDY1
-	 bgpt9flKd8gJOWuI6I5QSrKluZncd3t5ZBdq8xVakk6Owcc+FIL81WVgTQuruHx5DN
-	 2j7DuThPKpBzowwalGCAsnZGfLTUyg+28NMIsUZwjdKcbggdkRj1TgrAXh29bq2vJ7
-	 JCJLRat0lZbTjXE4JB+kzTzsuzIaQm4512VDxXQF+FWL33SwOysBdHSp/uhvghGrRS
-	 7HCLabECSPwSQ==
-Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
-	id 76B4EFDA6E9; Mon, 14 Sep 2026 19:07:17 +0100 (BST)
-Date: Mon, 14 Sep 2026 19:07:17 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Jonas Rebmann <jre@pengutronix.de>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de
-Subject: Re: [PATCH 7/7] spi: spidev_test: print TX on error
-Message-ID: <aqg31UHQ1nkNPNWJ@sirena.org.uk>
-References: <20260914-spi-sun4i-spidev_test-v1-0-72d6a3b38cee@pengutronix.de>
- <20260914-spi-sun4i-spidev_test-v1-7-72d6a3b38cee@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g9b3RUUS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789457353; x=1820993353;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=lblm+duqrIKOSpchtCRVtTa6szJIWB3TTaSd5w1skBE=;
+  b=g9b3RUUStmHmGD0ATybemfTeI9EXELlGGeo4Xm/FMsHZGX5fn/EjC57H
+   LXoEc6TGH5LpS8P1YWMUzWLF0CfQwss/w5WrMp2DwOX5LLq6+YMHlDRSP
+   vHtZLOA+Aq4bCeyjfhjlixLlGWzYmOsg647PWYDJ7xJK6KfKLmG5jKLMZ
+   m/FO2YMgmKG/eTQCMF+if0ZXPxBwYAangi2kLndfe4RwDn408Mr0Xm5fD
+   u/faiVWXCqkNUtFn3bHpBiHcmqjDtVKvfH//B1S+y5a79yR6SLCRvFTXQ
+   zBbdSpPgfV8ot/H0TVEIXCTh3IoBayPKKpeVTBOo+Ez4bQs+uFsMn7fFb
+   A==;
+X-CSE-ConnectionGUID: ipyUg877QC6PkwMBijGxSA==
+X-CSE-MsgGUID: Dah45PrASTK2d0g5+j2F+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="88949050"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="88949050"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:29:11 -0700
+X-CSE-ConnectionGUID: PDk0ELz7ScSPdw85lzMxbA==
+X-CSE-MsgGUID: 3YeBiet9Q3mnjwAAhfSuvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="271061383"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.203])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 00:29:06 -0700
+Date: Tue, 15 Sep 2026 10:29:03 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+	Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 01/10] dmaengine: Move enum dma_slave_buswidth to a
+ new header
+Message-ID: <aqjzvxI4ecoFvRLT@ashevche-desk.local>
+References: <20260911-dmaengine-support-wider-dma-masks-v4-0-72b8fd4cc78e@analog.com>
+ <20260911-dmaengine-support-wider-dma-masks-v4-1-72b8fd4cc78e@analog.com>
+ <aqgCQvRw9fns__0d@SMW015318>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dxKiEFZji3VOi5kA"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260914-spi-sun4i-spidev_test-v1-7-72d6a3b38cee@pengutronix.de>
-X-Cookie: Orders subject to approval.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aqgCQvRw9fns__0d@SMW015318>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+
+On Mon, Sep 14, 2026 at 09:18:42AM -0500, Frank Li wrote:
+> On Fri, Sep 11, 2026 at 06:25:36PM +0100, Nuno Sá wrote:
+> > In preparation for the bitmap based bus width capabilities, move
+> > enum dma_slave_buswidth out of linux/dmaengine.h into a new
+> > include/linux/dma/engine/types.h.
+> >
+> > linux/dmaengine.h is included nearly everywhere, so growing it with the
+> > new interface would make every one of its users pay for it. Keeping the
+> > basic types in a separate header lets the new interface live next to it
+> > without that cost. linux/dmaengine.h includes the new header, so its
+> > users are unaffected.
+> >
+> > While at it, add the missing kernel-doc for the enum members. The block
+> > already opened with /**, so kernel-doc expected every member to be
+> > described and warned about each one of them. Describe the UNDEFINED case
+> > in particular, as its meaning depends on where the value is used.
+
+...
+
+> >  include/linux/dmaengine.h        | 20 +++-----------------
+> 
+> I think it is good to split dmengine consumer and provider header files to
+> hidden dmaengine's detail.
+
+It's indeed desirable change. but isn't it a bit out of scope of the series?
+I suggest to do one step at a time. Would it work for you?
+
+> suggest name
+> 	dma/engine.h
+> 
+> so we can start move more API to this files.
+> 
+> after all user include this consumer header file,  old
+> include/linux/dmaengine.h rename to include/linux/dmaengine-provider.h,
+> which only include by dmaengine drivers.
+
+Traditional naming would be
+dma/engine/provider.h
+dma/engine/consumer.h
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---dxKiEFZji3VOi5kA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Sep 14, 2026 at 04:50:46PM +0200, Jonas Rebmann wrote:
-> From: Marc Kleine-Budde <mkl@pengutronix.de>
->=20
-> If sending an spi message fails, dump it to the console.
-
-It could be very large...  possibly gate on verbosity, or limit the
-length?
-
-> -	if (ret < 1)
-> +	if (ret < 1) {
-> +		if (tx)
-> +			hex_dump(tx, len, 32, "TX");
->  		pabort("can't send spi message");
-> +	}
-
-Writing to the console could overwrite errno here.
-
---dxKiEFZji3VOi5kA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqoN9QACgkQJNaLcl1U
-h9A78Qf/dRoMP3vRYh+vGCDaDg6hwPv9i44v37xPSAP1FO+X8poksK/JCUshlsxN
-/9EO0c4sWg/c0XDPqBjKertZrxFLP/H3hqrmjiYd0HLn5TD9bOt/Xd6DT9OaaDnK
-dDobnGONKo8Jufbnabp4Hq+cI9aiQTr0R/po7xg0qOTv2FTAHnn4LkJqAEv2iYDi
-AwYK1jpfcYa7G5EEjAwyE2J68JP3oFwv6BQTbpZpMZtd10FssAssaifmcF/sh7gR
-UaNNnhZxgfAPX5wmFdy2RU2uN1S60Ci2mujYCHgRhhdMuTGsTCursN6LQzi2m3CA
-dO9fs+rlvwSw2t7CAuv1ZIYGqyMdQA==
-=mZYT
------END PGP SIGNATURE-----
-
---dxKiEFZji3VOi5kA--

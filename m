@@ -1,34 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1BA4BA1DA
-	for <linux-spi@vger.kernel.org>; Wed, 16 Sep 2026 10:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4F283FC4;
+	Wed, 16 Sep 2026 15:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789554090; cv=none; b=Ywp6tTAnQeoyM0kfY9TlpOt2RqQVm10LgbvLJMR5+vXSUXqOBqOMNGM9uE7LUjJMsK8oaProYuQ1uIArWJ6QsBvv6BYHKynCUfT2ZCQnMWa8CnfFeU1rS0tzFf73hEVaAiBcCsCG2HVfbXLPMPPdhCZ7qFTHccUsmjYifbZCFPA=
+	t=1789571920; cv=none; b=YZNNxRB7Mk0dQhw9Yoo7Bvb5KJF9m7UHfzSYMZd7yXdCv81YZgjGOJ+Cnq7QtQs6ja9x8nAGgjYxRffI7zl/PWSW36mMm04C0e9ZO+n0qQTmOeJyig9k2S92WiYMZkeN0OSjHZNK+u0e5vx7E1bMIMLzDJe5Dm5CPqv9sFGW5mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789554090; c=relaxed/simple;
-	bh=+TDJa5qy+rye2CZuH3+5Uj+LEYmaLPS4d3ugYj8J8J0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=RfW0ad6wi1qqwRzxijXbN+leSiT8mBwDHIf3owreyfIFjpgDKjR3eP91i0sa/mVplzmIurA5sN5A8PCphwTo9cmCnOUPpr8ypmm5wbu/Ebpe6QtSCTEepOOQKqMagZnAgqUe4TPL72vHTxVkSoRpUReEGt9CZQI59RBY1+RM/Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0mc1LC0; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0mc1LC0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5031F0089E;
-	Wed, 16 Sep 2026 10:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789554071;
-	bh=mqHq7EKI4c7kivHq9yjFM+ftsFQigNrgJa1HE3SHy9M=;
-	h=Subject:From:Date:To;
-	b=C0mc1LC0d87mJmATU8AZVYGsowpdE2JZIYNmvL6iCtLwDmoizFYn6kAgmGAS/2WH9
-	 +9cMvlwBVl7OAZLO2fjRrWQawqWfTTdNr9Co32LxHiULqzya+XKMj6Jy8qQz7CsS8a
-	 Gt6yxAb4+IHjNm0eCIW547I9XbtNuTIgHJQ6H+zR4CxyeElz/uaaMjmsweIAkUuRJ4
-	 q24BE4UbWMshiCA67czgQu4SCX7XJkSwVxcx1rF0CTXnFcRWb0fwP+coIwDFfYOGw3
-	 bPjxeimOlZFShsgYy+OMdaixXcVTJxBZYBmLXTKj9F2aVj49uNpekv0Rz2rHnxM8Wp
-	 DjaiuWVNfNX+Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 58F4539D5FE8;
-	Wed, 16 Sep 2026 10:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1789571920; c=relaxed/simple;
+	bh=pIhB0hUzlXDg0rfPxRZUv+O2ySpwgJgBpyS0m3KcfMk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DsCutsJOBBVl9NKejn/4xB1UhTJVz47pWkxi5h8bPZhVeH2dCSryeCL+je1AuIkpPywww2lcRTuMHZcLOJW+0OdP+Kg/ZlHf0UV3dTOQ7Ig1i4jR6RPkf32dhbnuvz/7//IcdJewxKlpDSGyIoEV7ok5mDbWegWBJ1tayo3MdPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428A71F000FF;
+	Wed, 16 Sep 2026 15:18:35 +0000 (UTC)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] spi: dt-bindings: Relax node name suffixes again
+Date: Wed, 16 Sep 2026 17:18:27 +0200
+Message-ID: <60988ce9c4913014e255ecbe127e93374f6a2295.1789570538.git.geert@linux-m68k.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -36,29 +35,48 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <178955400497.2542028.9934046195129524982.git-patchwork-summary@kernel.org>
-Date: Wed, 16 Sep 2026 10:20:04 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+An SPI bus node name can have either a unit address, or a suffix.
+Commit c4fb6880edc15866 ("spi: dt-bindings: restrict node name
+suffixes") restricted these suffixes to decimal numbers.
+However, SPI bus node names with suffixes are typically used for
+board-level bit-banged SPI busses ("spi-gpio"), which live at the root
+of the device tree.  Limiting their node names to numbers is prone to
+conflicts, and may cause silent overwrites, especially when a stack of
+sub-boards or expansion boards is involved.
 
-Patch: spi: virtio: Use the per-transfer bits per word
-  Submitter: Hao-Qun Huang <alvinhuang0603@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1163597/
-  Lore link: https://lore.kernel.org/r/20260913032049.11209.alvinhuang0603@gmail.com
+Hence relax node name suffixes to alphanumerical characters, so users
+can write more descriptive SPI bus names, which are less prone to
+conflicts.
 
+While at it, reject empty unit addresses.
 
-Total patches: 1
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202609150228.Nh4nZzbQ-lkp@intel.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+Other subsystems (regulator, i2c) had similar issues, and numbered
+regulators caused conflicts before, see e.g. commit 45f5d5a9e34d3fe4
+("arm64: dts: renesas: r8a77995: draak: Fix backlight regulator name").
+---
+ Documentation/devicetree/bindings/spi/spi-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/spi-controller.yaml b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+index 3b8e990e30c4789a..4d817f9e23a5e0b5 100644
+--- a/Documentation/devicetree/bindings/spi/spi-controller.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-controller.yaml
+@@ -17,7 +17,7 @@ description: |
+ 
+ properties:
+   $nodename:
+-    pattern: "^spi(@.*|-([0-9]|[1-9][0-9]+))?$"
++    pattern: "^spi(@.+|-[0-9a-z-]+)?$"
+ 
+   "#address-cells":
+     enum: [0, 1]
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 

@@ -1,16 +1,16 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6534DAF87;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1644DAF8B;
 	Wed, 16 Sep 2026 17:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789580504; cv=none; b=VCqQ5d/z1CsuT8ti/Yt0OuOZmXWcV/H3aJk5uNSNax8izEu5tQjCQTNqy/Y+t9SdCWdn1jl3+j5M9co098gttsjM0da3e9lGCgo+ad2hfF+FASLFk0YkaV1715Bxxr0nzj55FelbrZ252y6fAX/0O5HExHsoJ8UrY9g425Zdni4=
+	t=1789580510; cv=none; b=CWB4Xtal5jht3tQXBTEkdXcANZzpZQ6a0X07QF+DTmSFz2AYCEFZTr6YYJyBMIBDLXFBLE64V3VG7a2LST2TltFztRHC8hfexijmNM/j5pGyCyBm9GN0e2WDnToo4vULZQsxsOmdvl+QBO/hOnUBLoLeVovfDCbiHKxsQeWl7Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789580504; c=relaxed/simple;
-	bh=AD1URK+HnrOJEzAB2nmAHcQI6H62TNiIISUuQGItQUQ=;
+	s=arc-20240116; t=1789580510; c=relaxed/simple;
+	bh=JNy5Yx6yMWs5muypVNFnb3t95l2rqfGz1sk3N5YG4jw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q+L3Jl0Zd7lH9gaRIJ1QjzinmRfydw79lNQ6mcYROFygqD8yVNzZWcph1rL2y8j3cecfIeRdN67SnUJ+vyE/dGQamPJulMN3N97xVJkhsHmZWai8hyM6mm4TCyHz8gcJkwqvybUsDZcGK+XW2K9nXkb6J8DGdcHtqn7XAWDKUV0=
+	 In-Reply-To:To:Cc; b=Nfv6t4LxA+7TuzoEdZfVAgN5P3WaUpwdlnCU33pAqGOMobsP0UBaVd8d3V5RiqZumkLekgVGU4wa/QuiMyxiy7iJM6JgziQZLSo40kACzuLchgNBwxeLqT6Fg8rdw0Z7c0l7JibxoImJCKwQjsfQWLSC5d5k3J0FUlstmDHG0SU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -22,16 +22,16 @@ X-PTX-Original-Recipient: mkl@pengutronix.de
 X-PTX-Original-Recipient: kernel@pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 91051200A7A;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 99B162020F4;
 	Wed, 16 Sep 2026 19:41:29 +0200 (CEST)
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <jre@pengutronix.de>)
-	id 1x6tdR-001Gol-1Z;
+	id 1x6tdR-001Gol-1h;
 	Wed, 16 Sep 2026 19:41:29 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 16 Sep 2026 19:41:19 +0200
-Subject: [PATCH v2 1/8] spi: spidev_test: include tools/include
+Date: Wed, 16 Sep 2026 19:41:20 +0200
+Subject: [PATCH v2 2/8] spi: spidev_test: add compare mode
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,7 +40,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-spi-sun4i-spidev_test-v2-1-e7d25bf96e4e@pengutronix.de>
+Message-Id: <20260916-spi-sun4i-spidev_test-v2-2-e7d25bf96e4e@pengutronix.de>
 References: <20260916-spi-sun4i-spidev_test-v2-0-e7d25bf96e4e@pengutronix.de>
 In-Reply-To: <20260916-spi-sun4i-spidev_test-v2-0-e7d25bf96e4e@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
@@ -48,53 +48,104 @@ Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
  Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1266; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=AD1URK+HnrOJEzAB2nmAHcQI6H62TNiIISUuQGItQUQ=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshadeXopK0iroFvJmpoPcq8s+anR5DZvECPPycbpufeU
- JwhYHqbpaOUhUGMi0FWTJElVk1OQcjY/7pZpV0szBxWJpAhDFycAjCRrfWMDJsVLpSGp27ozDSp
- OjxP0y/O5LrN/rdHZq//H/0n8In5h05GhmUP/6oHL7owyW6/0n5/TfF7Eb2L2W6mftHUFH7ropZ
- ewwcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3130; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=ZounDEadQtVHLQGrV4KbDawt+D1nnNjTZAyAwrk6gl8=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshadeWYnEgwz9nQu4W7ROR2119Y5jFh4vYr9R3+K/7pt
+ vxbd0TjbEcpC4MYF4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAiwV4M/6P2ZNbH/E7Pr5ux
+ R577rbSu7bMqfWZvm3nxyRWbNk1U/8nIcM7qzvmaLjYHicMbtq7515HtJHrtwKtvUxXDcqy6DvE
+ JMgIA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 
-Add tools/include to include paths to allow using macro helpers.
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-Use ARRAY_SIZE() from tools/include/linux/kernel.h instead of
-maintaining a copy.
+Check whether the received data correspond to the transferred data but
+without enabling loopback mode in the controller.
 
+This is for testing with TX physically bridged to RX which is useful if
+a loopback mode is unavailable or insufficient.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- tools/spi/Makefile      | 2 +-
- tools/spi/spidev_test.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ tools/spi/spidev_test.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/tools/spi/Makefile b/tools/spi/Makefile
-index 7fccd245a535..8cf21ff8cd03 100644
---- a/tools/spi/Makefile
-+++ b/tools/spi/Makefile
-@@ -12,7 +12,7 @@ endif
- # (this improves performance and avoids hard-to-debug behaviour);
- MAKEFLAGS += -r
- 
--CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include
-+CFLAGS += -O2 -Wall -g -D_GNU_SOURCE -I$(OUTPUT)include -I$(srctree)/tools/include
- 
- ALL_TARGETS := spidev_test spidev_fdx
- ALL_PROGRAMS := $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS))
 diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index f2135d619a0b..8058a7830b50 100644
+index 8058a7830b50..6ff103bdea5c 100644
 --- a/tools/spi/spidev_test.c
 +++ b/tools/spi/spidev_test.c
-@@ -22,8 +22,7 @@
- #include <sys/stat.h>
- #include <linux/types.h>
- #include <linux/spi/spidev.h>
--
--#define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
-+#include <linux/kernel.h>
+@@ -46,6 +46,7 @@ static int verbose;
+ static int transfer_size;
+ static int iterations;
+ static int interval = 5; /* interval in seconds for showing transfer rate */
++static int compare;
  
- static void pabort(const char *s)
+ static uint8_t default_tx[] = {
+ 	0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+@@ -173,13 +174,14 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
+ 
+ static void print_usage(const char *prog)
  {
+-	printf("Usage: %s [-2348CDFHILMNORSZbdilopsvw]\n", prog);
++	printf("Usage: %s [-2348CDFHILMNORSZbcdilopsvw]\n", prog);
+ 	puts("general device settings:\n"
+ 		 "  -D --device         device to use (default /dev/spidev1.1)\n"
+ 		 "  -s --speed          max speed (Hz)\n"
+ 		 "  -d --delay          delay (usec)\n"
+ 		 "  -w --word-delay     word delay (usec)\n"
+ 		 "  -l --loop           loopback\n"
++		 "  -c --compare        compare RX'ed and TX'ed data\n"
+ 		 "spi mode:\n"
+ 		 "  -H --cpha           clock phase\n"
+ 		 "  -O --cpol           clock polarity\n"
+@@ -217,6 +219,7 @@ static void parse_opts(int argc, char *argv[])
+ 			{ "delay",         1, 0, 'd' },
+ 			{ "word-delay",    1, 0, 'w' },
+ 			{ "loop",          0, 0, 'l' },
++			{ "compare",       0, 0, 'c' },
+ 			{ "cpha",          0, 0, 'H' },
+ 			{ "cpol",          0, 0, 'O' },
+ 			{ "rx-cpha-flip",  0, 0, 'F' },
+@@ -240,7 +243,7 @@ static void parse_opts(int argc, char *argv[])
+ 		};
+ 		int c;
+ 
+-		c = getopt_long(argc, argv, "D:s:d:w:b:i:o:lHOLC3ZFMNR248p:vS:I:",
++		c = getopt_long(argc, argv, "D:s:d:w:b:i:o:lcHOLC3ZFMNR248p:vS:I:",
+ 				lopts, NULL);
+ 
+ 		if (c == -1)
+@@ -270,6 +273,10 @@ static void parse_opts(int argc, char *argv[])
+ 			break;
+ 		case 'l':
+ 			mode |= SPI_LOOP;
++			compare = 1;
++			break;
++		case 'c':
++			compare = 1;
+ 			break;
+ 		case 'H':
+ 			mode |= SPI_CPHA;
+@@ -427,7 +434,7 @@ static void transfer_buf(int fd, int len)
+ 	_write_count += len;
+ 	_read_count += len;
+ 
+-	if (mode & SPI_LOOP) {
++	if (compare) {
+ 		if (memcmp(tx, rx, len)) {
+ 			fprintf(stderr, "transfer error !\n");
+ 			hex_dump(tx, len, 32, "TX");
+@@ -451,6 +458,9 @@ int main(int argc, char *argv[])
+ 	if (input_tx && input_file)
+ 		pabort("only one of -p and --input may be selected");
+ 
++	if (compare & (SPI_TX_OCTAL | SPI_TX_QUAD | SPI_TX_DUAL))
++		pabort("-c (--compare) conflicts with -2 (--dual), -4 (--quad) or -8 (--octal)");
++
+ 	fd = open(device, O_RDWR);
+ 	if (fd < 0)
+ 		pabort("can't open device");
 
 -- 
 2.56.0.rc0.108.gf0ef1b96a0

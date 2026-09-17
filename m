@@ -1,46 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA944A7CA7;
-	Thu, 17 Sep 2026 22:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB874A1E19;
+	Thu, 17 Sep 2026 22:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789683799; cv=none; b=PiMNh25PQE6K/j9nX/XPL28Lk1D5+z5b8sKgDK3XMa8JMyga3etGeo0hQ3T1SOUR2guuZkY2Jv4EwB6gBiIVnonriJrxVxxtK+1NmqfqvO5Z1BAzh/sWgxY9sq8Z03aBT7kUSghg59SW5I+xSxSl3U8KjzS2+d38MQmP9MEopl8=
+	t=1789683846; cv=none; b=hV2gX+gfPN3gaBbqm1lrs6DIMoaGJDA4LVCjLHMuDS6/Obu8UHBQ91SCyVFaT6OBu6cf/Z6lu9wlbkixHklfXyE67QEcTpVwdBR4Hx9he3mSvnx0Y0Dfo7fvvLe17ix8WqKgDFHovGM4/kAHR8eg/OdRoO9GnaYlPTkFassIaiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789683799; c=relaxed/simple;
-	bh=OAHJa1o17312CYNFiD4zfuhqKr9lbf9t3naSNm1O3t0=;
+	s=arc-20240116; t=1789683846; c=relaxed/simple;
+	bh=DngOUU3PrpW3GHcTycPXn35MuZ0jXd3DuXkkv2n28Ss=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H3a7hjRITQwu6QT7PCfHm5EfOWeBhAlbq53jITZfyO2USbtnE4WAXJHOHvGBa/dQ3i/zwfehY7KPQzxmkIbJMzu1GxZf2c/ehJCR3s5/Ep/mj5XNMhaGJgmUz5S0zWyhyR/qvtb5l8A2x6jcJpy7GAZBZD/plSr2QxRrwzp/XH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlyyiYMl; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=lu7DNlWzcX6ZFR9L9BnSb6ip2qnbehZxcgQcMGxEj91k/eWKpx//ktZDECoASz3/c4jZ9lyKhRR4ISrgB3iD4e0s6R8Mr/gqRoMiBLq3U6WJiWtTna6Ky9ktuPO4xea0HjFeAOmF88GiRj/YfXARqmfTqmaM4hMMTODvCCSmJUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5Rp/lhg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlyyiYMl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6AC1F000FF;
-	Thu, 17 Sep 2026 22:23:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5Rp/lhg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619271F000FF;
+	Thu, 17 Sep 2026 22:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789683798;
-	bh=OAHJa1o17312CYNFiD4zfuhqKr9lbf9t3naSNm1O3t0=;
+	s=k20260515; t=1789683844;
+	bh=DngOUU3PrpW3GHcTycPXn35MuZ0jXd3DuXkkv2n28Ss=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XlyyiYMlXm1DOvsqF2YQKjQL1SAZCKR8onNHWACRb49iwLZ9ZY8bJwbE0TdtC3VLA
-	 uX0bBeIjSzR2VgQviYNFbAg62zND8jCpps5Deu00rOM0g5RezqBDnR3ONR/XbPXZiy
-	 nweATYb/lQdJ3eMmAg36C2bND5G/vLEsea4CvXuLIAz8q8ruRjgtIuFyi4wR4/emVm
-	 AGCkd8hO6LKj1Ov4M/NNa+IV0JfWN/xS4sH3Ah/dDR6CPybHnEOubENOE95T1QhEx3
-	 nhgQCSZvvVLWO2G/jhk/CyX/XWY/eOuvO2FK5nKK4BPe5l1t0PiuuFwQ1wFBvfEW7b
-	 fK4OSpt/+C2Lw==
-Date: Thu, 17 Sep 2026 23:23:13 +0100
+	b=K5Rp/lhgLcEVaZt3CCRwiyw1e3ah3cPvX7BX8gLC6Aer0eMbtZBTIvVki66+sP69o
+	 tQhfkrPCTGH8FqMfcd1aC7a3GpalCRCQMt95YcQbmBklFQjpIunAEQEqjWLIEJl+Av
+	 DUuIm73i6GB9tdHv/zG85LtXxoYvY7jVvqSPUSlnJW93po4B8dFLeHBCTF9YH20LEW
+	 vVDjzIwFPcC1AUOX6aW7JQDBCqHvC4NnhwYG3CYZEel4ms86+p9xja+NQ4EfmoyR7+
+	 Ir8kJrQyUCq2WGvAAxgTCHZAhnp8n4B0caNuooNJ+LAaSmhPYDg/TWuilC4JUdHsid
+	 m3NiAR6OuzfUA==
+Date: Thu, 17 Sep 2026 23:24:00 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Frieder Schrempf <frieder@fris.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Frieder Schrempf <frieder.schrempf@kontron.de>
-Subject: Re: [PATCH 1/3] dt-bindings: spi: Clarify what rx-sample-delay-ns
- describes
-Message-ID: <c0c4645b-a51c-409f-82a3-a6e6bbd7962b@sirena.org.uk>
-References: <20260917-spi-sample-delay-cleanup-v1-0-0e4eddbfb1ce@kontron.de>
- <20260917-spi-sample-delay-cleanup-v1-1-0e4eddbfb1ce@kontron.de>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: hansg@kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, sbinding@opensource.cirrus.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: fix controller reference leak in
+ acpi_spi_device_alloc()
+Message-ID: <01e2065b-8ebe-4cd3-b80a-bbb6e7719873@sirena.org.uk>
+References: <20260917154826.2160933-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -48,42 +43,39 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="L0y9QomAYqKB4qGL"
+	protocol="application/pgp-signature"; boundary="oXuJvBPixL6sPYYC"
 Content-Disposition: inline
-In-Reply-To: <20260917-spi-sample-delay-cleanup-v1-1-0e4eddbfb1ce@kontron.de>
+In-Reply-To: <20260917154826.2160933-1-vulab@iscas.ac.cn>
 X-Cookie: Whip it, whip it good!
 
 
---L0y9QomAYqKB4qGL
+--oXuJvBPixL6sPYYC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 05:37:35PM +0200, Frieder Schrempf wrote:
-> From: Frieder Schrempf <frieder.schrempf@kontron.de>
->=20
-> The property is documented as an offset from the controller's default
-> sampling time. That says what the value does, but not what it is meant to
+On Thu, Sep 17, 2026 at 03:48:26PM +0000, Wentao Liang wrote:
+> acpi_spi_add_resource() stores the controller returned by
+> acpi_spi_find_controller_by_adev() in lookup->ctlr. That lookup takes a
+> reference via class_find_device(), which acpi_spi_device_alloc() never
+> releases, leaking it on the error paths and on the success path too,
+> where spi_alloc_device() takes its own reference. Drop the lookup
+> reference when the caller did not pass a controller.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+This doesn't apply against current code, please check and resend.
 
---L0y9QomAYqKB4qGL
+--oXuJvBPixL6sPYYC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqsaFAACgkQJNaLcl1U
-h9DFQAf/YiZIXR/nWBD844AeGm4hNeuzDP06VgDHz/DZQv5Mt9rgoj/KVDgdXr5Q
-XED0luFopb2JIiZ3kGlptpsJE/0b97GXeo6pSEXR9Q+wK5G2PpxIFxdrEq6GK7UM
-bDTbtFaUA3TZ2esXyIeVl8rkr99aGsTy18baJr7U9PoX9YiPLm28BHnMSs09m+B0
-oto/aP502j9+RT9V1CGLRAZ2akHfbWYmybSPSUS3tIJ/v7KlSO0QPLKQuc2KYBmZ
-WM5nfYy5VLqGvJ9fYmIWUAwzb75oYs+bttATEU2qdtzU0huqntr9MBC752AqOBWH
-jF1ANLwoRK3TuxJqPQ/He64Z0oOgNg==
-=iAiR
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqsaIAACgkQJNaLcl1U
+h9D/Lwf+OTtUmiNxcWSVu+1PsZRS/ZISuDSrS2QSxPLZKRGC78Huru9il2pqqVIa
+K5HinymltkO0gMOZdW/zcwBsOobg8JnCssx5m6Tgl7EhByhrVuMGYQNotjj+FcBU
+h7JlzhJcJJ+613c1HXHcukTCIIlyUv7fDrVyalkg2yNgA6gWDiTSVj6VVLzy1jO8
+0Q7JWqcO1TnUpSco/AsXvsjibWu+8jUVpBWTJSvNvPdKS9+GPe439sW9a0+hRjzU
+PfbROJkJ5Z8ltuIm+aRiwiO2mLyuEtn9gD7Gw2EB9qjP/+NxPsZU8DwYlgNrZB9t
+h7up/mu7yr+J4e9PlMOHKbAVFon5Vw==
+=cUqX
 -----END PGP SIGNATURE-----
 
---L0y9QomAYqKB4qGL--
+--oXuJvBPixL6sPYYC--

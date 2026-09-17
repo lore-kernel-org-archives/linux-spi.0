@@ -1,92 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442354EDCD2;
-	Thu, 17 Sep 2026 20:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D284EDCC0;
+	Thu, 17 Sep 2026 20:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789676346; cv=none; b=TDx4vYi2+QyPxd1lq07SKc+lknwkHsjXx2U85y2H2soIsKQNc2Vazn03qOXSYw7rpqi9qyDkyzj2hPI/ztR6ggJD2UQTifltF8he/SAhEddIFAOOs8pd3hXf40Nkrqx8Hnu78ev20YTRCM4vUBtzzvbAaVI1t53cD6gAdJKIGJQ=
+	t=1789677499; cv=none; b=RsTw353De1bzIdwRj3LzmwZaPaDG8Apw6+F6/RCKl1A6OrPQ7E12Ed+rIIHWxQ3lULOXB7L/K7kze9+69ThOg+zyvxttsmuZjxNe1UwbVHDGCn0vdWMZS4H/XxJmvz1RAKdGRi1sQzDrLin6ydywb11k5NA7tMMsoVFMcOXijUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789676346; c=relaxed/simple;
-	bh=1jD9l88UysJOW4QXtC9rJ7BTDu3h+25PTPjbHKaOD5U=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UFSNUwV5RVjlaBpS2Sqq003qXUB0QGNrkwppqerb7Q/HMraxNu5W0tkDxO8ZqM3laPPZTEan4UD+leUMtExGkA5azeME6mu1wCWkyLyKlq47k4VCTsteJaWMF/5jDWDQ/tlivtZDF3MyEz/3Iz0WDsEaze+3eh02j7sl5QWj3nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cB54TKf6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789677499; c=relaxed/simple;
+	bh=JfPygrq/9UL/43uIzokrxsWa31TuxaNmx0RdKo083jc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2M+3C1g/nzBv0blrLjLql7A2hU6DCKaXLmvqQmQxFOZBOalSIzQH/7X+qSoorcWe9mwjxjGZh35xrB7/ArKNBXtGW0wzFfEvus9Batb1gwmBTY2SJJaeuTHSzCrkKSdrSHBVIkX3jqrpzzSp8EwtThxkh/Nprae9og27jJ3aNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrJlVaar; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cB54TKf6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F6B1F000FF;
-	Thu, 17 Sep 2026 20:19:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrJlVaar"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6F51F000FF;
+	Thu, 17 Sep 2026 20:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789676344;
-	bh=IKXo5yabTUWdhBjpPbiBNR1U6f4LrOuF0hESsdk9420=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=cB54TKf6WHRUIdMnPiTi/biotMG39LWDwVYubNRGRTYjy3O9qM/vIVqwPiLUbFP4C
-	 hq73aU0F0wcyATXkFNirOd04SgKh8eHL5M/l54ZATzwkHggk+djlK6V/gf57PDajII
-	 AxPjGgi3PD0O+EBySCYncbrimfGZjXs3pffgpPhCSqNdWcgMsWkYNxnHlsXBtxM3Yw
-	 nEWA5nUg019ipYHQ7IyHOK2RUesEgSgJwHPC+MXwJWdad9RH/AtdETmjGeD0nT+e4X
-	 1h8Izxd78WNYy/MeNuov2SwpTfjGQmLcScCC3kBOy3NXTmb00UOPVo8ozaXcaQnIxs
-	 xVD9fkG+ZUPQg==
+	s=k20260515; t=1789677498;
+	bh=SWUtFnbkl/ANEyOP/8G3mNVn9Z4HzwhIEpWFM6p/Mpw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lrJlVaarsGQ9on1c4U+EiFHGWSuEkMFksogd8968E1TcdHD1h63wrM6oaNnxxUga7
+	 xRrpcfdqZu5+aCWeB1iVE4UlyQ3KZParHmH4VVeOXAxY46q0MVQBO7S+DKl4/77++2
+	 2n3JXuA9UGbxyILLQZ8bcbJ7TfbCmpYqm7kHwCMc4ArrmwY5447xg++3NRrpBRyinZ
+	 jOorI8sUXDohbPSLgei2CN+ZDiEcskkdCkPUmZdpwMcAxKTmIOrMHFHSpmCP0noUTn
+	 A96L/XsdpugluNUI2Jm1wR5iomN26rqlAzqDced6aq+ywk2ci4nivmNWJ4BqlANSSW
+	 iZxIgK7kUadrA==
+Date: Thu, 17 Sep 2026 21:38:12 +0100
 From: Mark Brown <broonie@kernel.org>
-To: Han Xu <han.xu@nxp.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
- Frieder Schrempf <frieder@fris.de>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- Frieder Schrempf <frieder.schrempf@kontron.de>, stable@vger.kernel.org
-In-Reply-To: <20260917-fsl-qspi-freq-op-fix-v1-1-5fbe6b02f738@kontron.de>
-References: <20260917-fsl-qspi-freq-op-fix-v1-1-5fbe6b02f738@kontron.de>
-Subject: Re: [PATCH] spi: fsl-qspi: Reprogram the clock rate when the
- operation frequency changes
-Message-Id: <178967118348.285745.5749858167489960674.b4-ty@b4>
-Date: Thu, 17 Sep 2026 19:53:03 +0100
+To: Han Gao <gaohan@iscas.ac.cn>
+Cc: Longbin Li <looong.bin@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Chen Wang <chen.wang@linux.dev>,
+	Inochi Amaoto <inochiama@gmail.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Han Gao <rabenda.cn@gmail.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 2/4] spi: sg2044-nor: Honor SPI clock limits
+Message-ID: <fd3dad9f-7997-47ce-875d-db43901002f3@sirena.org.uk>
+References: <20260917-fix-sg204xspi-v1-0-5c95dac429a8@iscas.ac.cn>
+ <20260917-fix-sg204xspi-v1-2-5c95dac429a8@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1170; i=broonie@kernel.org;
- h=from:subject:message-id; bh=1jD9l88UysJOW4QXtC9rJ7BTDu3h+25PTPjbHKaOD5U=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqrEs0rKueolVC/E8/0BKAmXXRPhCgzcjkjYpU7
- 6C6abxQqyaJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqxLNAAKCRAk1otyXVSH
- 0LdRB/9RkRnqXku/IcRxJKxmrhN6Ygpzlg3+iQDVokZLquHU9yYT6RtHaVx8A4nqasMpG+IZIIu
- u8P9P7Bbabim0msIZyq9lQb40etlU0cdh9mxcL4DRoN69zfgrumjNgnf3ExK1j2m77NrzBvOTod
- DWx4CySHMK9Dhqb845FMnxfaXjEnGxNiz0IpqqDDBgTo9bvjdnffokz+HH8FtXmO1HPvN7mu+gc
- x5nHOIYtSTgNx8MWX7H7WUUVW16LSpzblmZsH1LvfaQHjkjuZE2PoeaZhABP4KHZ26rAn+E7dDd
- Y+dM54t6aEbHbXkOjt996C1eu4TXhcTO+Jx02/7BU7xnaPr6
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gzg0WQ0iyDkhretZ"
+Content-Disposition: inline
+In-Reply-To: <20260917-fix-sg204xspi-v1-2-5c95dac429a8@iscas.ac.cn>
+X-Cookie: Whip it, whip it good!
 
-On Thu, 17 Sep 2026 16:10:15 +0200, Frieder Schrempf wrote:
-> spi: fsl-qspi: Reprogram the clock rate when the operation frequency changes
 
-Applied to
+--gzg0WQ0iyDkhretZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+On Thu, Sep 17, 2026 at 10:29:20PM +0800, Han Gao wrote:
+> The fixed divider ignores device and operation clock limits. Calculate
+> the divider before each transfer so SCK does not exceed either limit.
 
-Thanks!
+> +static int sg2044_spifmc_set_speed(struct sg2044_spifmc *spifmc,
+> +				   unsigned int speed_hz)
+> +{
+> +	unsigned long rate = clk_get_rate(spifmc->clk);
+> +	u64 div;
+> +	u32 reg;
+> +
+> +	if (!rate || !speed_hz)
+> +		return -EINVAL;
 
-[1/1] spi: fsl-qspi: Reprogram the clock rate when the operation frequency changes
-      https://git.kernel.org/broonie/spi/c/3d743adf090c
+Specifying a maximum speed is optional so we might have a currently
+working setup with one omitted.  The driver should just go with the
+maximum speed it supports in that case.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--gzg0WQ0iyDkhretZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqsT7MACgkQJNaLcl1U
+h9ChUgf/eAoO1JBRrehh23WNTyeoLDYUC/+Qaxj77qoslz/vc36kBzcN/xwqSFV6
+MyrZmHaWzdra3c2Z76l4MjssxvP6tN5UOldDyINacKYDE5WGU72XyJGbxXXFgzNV
+xcsWAueHF6glcg2QqqA9Gp0b5ZOtHLZegCiPfJmmjOyR0dJUWlcoZSWcZNVjBcpI
+fe2zAwHAMGN0RAcXg9nbnmCdATkfo8FruPDx8A2904TRZJjORB8cDHS5Gk997KhU
+feb4PhizTGUINbvbpombQ9ZKuKMBo4cTwNA3A9OP869Gv7puQ3P3Y2aDlCBnLIqp
+F5Ph65rtr70KpqBotgdbaKIZ0utdHw==
+=4TGH
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--gzg0WQ0iyDkhretZ--

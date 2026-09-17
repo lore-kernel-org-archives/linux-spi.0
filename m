@@ -1,25 +1,25 @@
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA4D59480B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78385947FD;
 	Thu, 17 Sep 2026 14:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789655383; cv=none; b=JKuAD3w6vGREKzey9AMfx+RV6E8PEFJgYoTvD/w+QhLYyV/V9C+G9BxXzJB4OvD2R7ibEWMJYhQrm6RjjklKbJZD5KZNEeCidRmgd4LacpLGCvObcoyFR3eDkyFXTOPmJivGh70TyE2A+4m7fE7TrqEEFSWc8VHvUVGU/snbQ2o=
+	t=1789655384; cv=none; b=Q1LzfGSYxUOIQ5j/ZH/8K1FSzRqFDrQKuXwe12gDyM7FNrFoVLinwZrM0X5gc9hxg/Jv/grUkdzmI+oHUGkG59/15QMPhav/Opi4ALehIR7j0HLPgG0+2NuwUfwV5YOpQ6tVBmwoi9HxPW1TxQiXNH7OwhBJsQLRCB6zKd4Vris=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789655383; c=relaxed/simple;
-	bh=0iLC8BIgKk5AA9uzN6MMajbopvNsghfdMp9lC5YR7M4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YIG1nmzLlmolWriOZjn6Q/ZSf8npxpaZ3iAUksdASwTpfjtOOt5I+jfPLJzanXfKE2Ba/QHiEsX4IJjHQOrDTxCur+C0EXZf81PjmHtRl0RViOPL7F2Spm/1TiqloLxJzx8uxDCJfNoUG9UiwbIDrCye3aI/mjBDya6zws6K2ug=
+	s=arc-20240116; t=1789655384; c=relaxed/simple;
+	bh=pqi4GC9Nj6hhPcqPXeWCSwqxD+5oWHRCT236VBj+1vk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JTYxoBOHCTpVhxGhyG3xRTHOBVpJt2GRwhFSC1U+gE9wPiLI3Bggy6u4bsrscKxkoG3fFjLg/H55UJV0y2W9RcuJBPoqux6qBn09IewyZiySMZ+ra74UDMBSnc4msjmwv4fydYDdYuu4x3E9tDYTtEZ2ki9a2g5G/Bbt54/MB8M=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [127.0.1.1] (unknown [223.166.93.127])
-	by APP-05 (Coremail) with SMTP id zQCowABHtD5A+atqNnqCCA--.4692S6;
-	Thu, 17 Sep 2026 22:29:27 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowABHtD5A+atqNnqCCA--.4692S2;
+	Thu, 17 Sep 2026 22:29:25 +0800 (CST)
 From: Han Gao <gaohan@iscas.ac.cn>
-Date: Thu, 17 Sep 2026 22:29:22 +0800
-Subject: [PATCH 4/4] riscv: dts: sophgo: Limit SG2042 SPI NOR to 12.5 MHz
+Subject: [PATCH 0/4] spi: sophgo: Fix SPI NOR errors and clock limits
+Date: Thu, 17 Sep 2026 22:29:18 +0800
+Message-Id: <20260917-fix-sg204xspi-v1-0-5c95dac429a8@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -28,9 +28,10 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-fix-sg204xspi-v1-4-5c95dac429a8@iscas.ac.cn>
-References: <20260917-fix-sg204xspi-v1-0-5c95dac429a8@iscas.ac.cn>
-In-Reply-To: <20260917-fix-sg204xspi-v1-0-5c95dac429a8@iscas.ac.cn>
+X-B4-Tracking: v=1; b=H4sIAD75q2oC/x2MQQqAIBAAvxJ7TtAlKvtKdDDdai8mLoQg/T3pO
+ DAzFYQyk8DSVcj0sPAdG5i+A3+5eJLi0BhQ46itmdTBRcmJeiiSWAUXcB4tzrvx0JqUqQn/b93
+ e9wMVhb6AXwAAAA==
+X-Change-ID: 20260917-fix-sg204xspi-dad286928b1c
 To: Mark Brown <broonie@kernel.org>, Longbin Li <looong.bin@gmail.com>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Chen Wang <chen.wang@linux.dev>, 
@@ -40,97 +41,60 @@ To: Mark Brown <broonie@kernel.org>, Longbin Li <looong.bin@gmail.com>,
 Cc: Han Gao <rabenda.cn@gmail.com>, linux-spi@vger.kernel.org, 
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
- Han Gao <gaohan@iscas.ac.cn>
+ Han Gao <gaohan@iscas.ac.cn>, Hangfan Li <lihangfan@iscas.ac.cn>
 X-Mailer: b4 0.14.2
-X-CM-TRANSID:zQCowABHtD5A+atqNnqCCA--.4692S6
-X-Coremail-Antispam: 1UD129KBjvJXoWxZF48XrWkWw4UArykZF4fZrb_yoW5GF48pa
-	n5urW3CaySgrnYyay3tFyFgr43JrW8u3W7Kr1rC34UJw4kZayDt3y7Xw13Jr17Za1Yq393
-	Wrn5G3s5Gr1aqaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmI14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
-	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
-	IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4U
-	M4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2
-	kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkE
-	bVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67
-	AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI
-	42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCw
-	CI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnI
-	WIevJa73UjIFyTuYvjTRRyxRDUUUU
-X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiDAQNDGqr9nAGugAAsy
+X-CM-TRANSID:zQCowABHtD5A+atqNnqCCA--.4692S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1xGF4DKFW3WrWkur17Wrg_yoW8Gr43pF
+	4xCanxtr1xGFyfAaySq3yIgF93Gr95GFW5Gr13Ww4ruw4qvryxGr92kF1xWF9rXr4rJ34v
+	krnxJFyrGw42vFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0pRiSdgUUUUU=
+X-CM-SenderInfo: xjdrxt3q6l2u1dvotugofq/1tbiDAMNDGqr9nAGrAAAsj
 
-Use 12.5 MHz on the SG2042 EVBs and Milk-V Pioneer to match the vendor
-kernel. The existing 50 MHz limit raises SCK once the driver starts
-honoring spi-max-frequency.
+The SG204x SPI NOR driver ignores transfer errors and clock limits.
+Fix both, enable SPI NOR on SRD3-10, and use 12.5 MHz on SRD3-10 and
+SG2042 to match EDK2 and the vendor kernel, respectively.
+
+Tested on SRD3-12 at 12.5 MHz: both flashes identify correctly, SFDP
+reads succeed, and two full 64 MiB reads per flash match.
+
+The SRD3-10 patch supersedes the earlier submission [1]. Please disregard
+that version, which used a 133 MHz flash clock limit.
+
+[1] https://lore.kernel.org/all/20260902-sg2044-dts-v1-1-aa1fd1a4ec0d@iscas.ac.cn/
 
 Signed-off-by: Han Gao <gaohan@iscas.ac.cn>
 ---
- arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts        | 4 ++--
- arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts        | 2 +-
- arch/riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+Han Gao (3):
+      spi: sg2044-nor: Return transfer errors
+      spi: sg2044-nor: Honor SPI clock limits
+      riscv: dts: sophgo: Limit SG2042 SPI NOR to 12.5 MHz
 
-diff --git a/arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts b/arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts
-index b116dfa904cd982dc41c8cffdc770d4d0f81e0a7..9f403e564694eae14913f6ab23080a6333df15ae 100644
---- a/arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts
-+++ b/arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts
-@@ -256,7 +256,7 @@ &spifmc0 {
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <50000000>;
-+		spi-max-frequency = <12500000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <1>;
- 	};
-@@ -268,7 +268,7 @@ &spifmc1 {
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <50000000>;
-+		spi-max-frequency = <12500000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <1>;
- 	};
-diff --git a/arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts b/arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts
-index b2ceae2d8829ec16c99c2ea2b040c433b819093e..d8c5814f22581076e6b5114f762d4fd090681b80 100644
---- a/arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts
-+++ b/arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts
-@@ -244,7 +244,7 @@ &spifmc1 {
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <50000000>;
-+		spi-max-frequency = <12500000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <1>;
- 	};
-diff --git a/arch/riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts b/arch/riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts
-index ecf8c1e290792c3a27651040eae3c603741cd0c7..4f39eb56b364894f17b97d482b6d9d867a32ad2e 100644
---- a/arch/riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts
-+++ b/arch/riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts
-@@ -177,7 +177,7 @@ &spifmc0 {
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <50000000>;
-+		spi-max-frequency = <12500000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <1>;
- 	};
-@@ -189,7 +189,7 @@ &spifmc1 {
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
- 		reg = <0>;
--		spi-max-frequency = <50000000>;
-+		spi-max-frequency = <12500000>;
- 		spi-tx-bus-width = <1>;
- 		spi-rx-bus-width = <1>;
- 	};
+Hangfan Li (1):
+      riscv: dts: sophgo: Enable SPI NOR on SRD3-10
 
+ arch/riscv/boot/dts/sophgo/sg2042-evb-v1.dts       |  4 +-
+ arch/riscv/boot/dts/sophgo/sg2042-evb-v2.dts       |  2 +-
+ .../riscv/boot/dts/sophgo/sg2042-milkv-pioneer.dts |  4 +-
+ .../boot/dts/sophgo/sg2044-sophgo-srd3-10.dts      | 24 ++++++++++
+ drivers/spi/spi-sg2044-nor.c                       | 52 ++++++++++++++++++----
+ 5 files changed, 73 insertions(+), 13 deletions(-)
+---
+base-commit: fd73f4a6659897191fa0d40695fe370925dd3780
+change-id: 20260917-fix-sg204xspi-dad286928b1c
+
+Best regards,
 -- 
-2.47.3
+Han Gao <gaohan@iscas.ac.cn>
 

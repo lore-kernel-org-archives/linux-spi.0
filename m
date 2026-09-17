@@ -1,70 +1,121 @@
-Received: from mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7EC3D9DD7
-	for <linux-spi@vger.kernel.org>; Wed, 16 Sep 2026 21:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9D5478E2B
+	for <linux-spi@vger.kernel.org>; Thu, 17 Sep 2026 07:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789593925; cv=none; b=BvaE3fBpeNfwGNGyB/rm247IRVd5GrUo85qDhw9efzowYdoztpHkKWCz/VBUmKoqYQohtoPHDeiMgHuUktgjUUbcqNPJF2zHd0Nqxm4kc9Q00/Dky9bw6Cvabex5opKDcCJkiFsPl/HN/fudrjAlvJFTzoq6wkpRePcvYv7j/9I=
+	t=1789629434; cv=none; b=C4ETh/lZvaND1icVSc5jayYGbqwTEF+PSC2gBhBZBF1q1VvUgw9016rSnrHQVE7VH8YdZO0T2Rzg1tGwUMN8KX39sKEazUM82y059gOCgIj7SOBjo4LAUnxJum+j4eajOPvRphrQkJ8bHhhQnoPr8eOEVqzSEYc55yP+zKTnu4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789593925; c=relaxed/simple;
-	bh=hmKfVCLen13baZ+o0Le6d7BN5zcAvr0TjZzOdGbyQ1o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnHpqUPfA6D3fZn09wD1skSLSfU7dic1EE9JoicTX97z3/Fc7+8T2/y/tN2nPkPA6bhGLm6nYlTJxJyo0ZTkWqjGzBcdRPH9+FFvjCDvLmCmhjMkaYLMm9wfqdjR+wgslcmpYxv5loaHw5iCQ+sbBEwem04sQcaEEavSw1R1z9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jimenezcarrero.com; spf=pass smtp.mailfrom=jimenezcarrero.com; dkim=pass (2048-bit key) header.d=jimenezcarrero.com header.i=@jimenezcarrero.com header.b=KOnT0/gU; arc=none smtp.client-ip=91.218.175.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jimenezcarrero.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jimenezcarrero.com
+	s=arc-20240116; t=1789629434; c=relaxed/simple;
+	bh=gbriEj1Y6woab39WAV/2YSR43SgslkII3LkrcHz7PIE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XPVn7MlppL0mkEVyMQUa4jPgwY+4nr10X/phTON0cBpD+91wBpmEXYb8SfYmKzNgV0Oeo+8mTCt5ViCQB3Q1bG3D3VTNbOi+oNV1rARSocck5VMsEAJqcpUxNovf/wcSgkc3edVXPuAB8W8hmxXpRPFSeOdxviAhoSGNQ0twk0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gx8qIRON; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jimenezcarrero.com header.i=@jimenezcarrero.com header.b="KOnT0/gU"
-X-Envelope-To: linux-spi@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=hmKfVCLen13baZ+o0Le6d7BN5zcAvr0TjZzOdGbyQ1o=;
- c=simple/simple; d=jimenezcarrero.com;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789593917; v=1; x=1790198717;
- b=KOnT0/gU98JSnvnA855IUEQ9iqQafxrHbA/uLbGbck5GKZFKeL6YKO89padINqo6OzWA3VDz
- zXRJj+86vLsqp7rrMLBdWPuaxbu0bh1kHgl7ckjxsYTFBTm9ntiaBQBjK6wFKMRf10bDbRDwMQP
- UYwAVdjhcWyt73WNYnfArrFK2b8iJ0zsJ4yNmay93HUebrhH1muKqJg3SA1cBjhxTIYv41mT2Ee
- fgxGsyQKElysYvBidYQA4m5wc3TvqG+BtiR3r6I1HUvOWLMLyjCc2JdBQzhSn5Q7AmNp68TLgeZ
- 9NhDVnOPAt0jWiVaX/zzEEg+CArfk4j/1338fejI0L0Gw==
-X-Envelope-To: linux-spi@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 3a560847db53b00c;
-	Wed, 16 Sep 2026 21:25:17 +0000
-X-Mizu-Trace-ID: 3a560847db53b00c
-X-Migadu-Flow: FLOW_OUT
-From: Juan Jimenez Carrero <juan@jimenezcarrero.com>
-To: khalilst@gmail.com
-Cc: khalil@rentman.nl,
-	rf@opensource.cirrus.com,
-	broonie@kernel.org,
-	hansg@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	patches@opensource.cirrus.com,
-	linux-spi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	daniel@zonque.org,
-	haojian.zhuang@gmail.com,
-	robert.jarzmik@free.fr
-Subject: Re: [PATCH v3 3/3] spi: pxa2xx: Handle clock gating for GPIO chip select devices
-Date: Wed, 16 Sep 2026 23:24:28 +0200
-Message-ID: <20260916212428.7293-1-juan@jimenezcarrero.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260901192625.1497791-4-khalil@rentman.nl>
-References: <20260901192625.1497791-4-khalil@rentman.nl>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gx8qIRON"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e620fa473so2738805e9.1
+        for <linux-spi@vger.kernel.org>; Thu, 17 Sep 2026 00:17:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789629431; x=1790234231; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6sjRq5JwkomwjePlQI1kfNhFczaltRdPXNsYjKkX5UM=;
+        b=Gx8qIRONf1BkHfTUtSJYYSQDiccQNhmUGB8h3LIbYXB+lnl8/h6ubjVOXCjJKpzOmD
+         7gHZux9SbCqq/7rZSRLdWGq9Xx+uDkUTU5ySdrLOH2JfjV8aT/E0Vu06QuLSTot/ikpg
+         A1SZ9yQ79EULxdpXfMVOHcxAUyVSIzH5zGpOOrkO70rR0lbdfTBmgDMRii/6nMmwV4zB
+         0zQc+wFKYGbGsYtepNIIdNXY5e26TK83AbR7KrNiNoKUFVe4oZ9FHhPuraOUYBQNh2x6
+         UZgqIs8AxUBYIIB5DDBqGY7+UHC3bAz8Op+W51bdTAFCriIuM+8VVi529CvCJIXfDuIl
+         LBpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789629431; x=1790234231;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6sjRq5JwkomwjePlQI1kfNhFczaltRdPXNsYjKkX5UM=;
+        b=RcW8uknTPwO+08Te13QfPKJ5AcusFvOPAU2PxS7Kigb7/661nMSmTU3zgYMThrHsm/
+         n7YxK4dkooF4RM8PzDGS8v7fajm24qV95k+kyNiLiBgB7Q6AVVebPtr07bkx/SdxPxh2
+         S0+P6mpRgv1H7fWUcoae02mrPCputOMt1iXfwZASfqMLG2HnACH2bp/tjpZm4kdvsZ1n
+         b6cNu1CGLtZSH4/Xq6PWXwcBMcqAGQOWO2WpaE0CoYC7oIaWJGRq0/U2yw0pGm7dGURQ
+         ENT4FKi6QaaiL+ZPGlSrw4pA56DpahqMJw1SvudzQG7PEaKklLIX/sHT3mVfFkNsk8Go
+         m6XQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzBeSDdRUTEy6ARhCTNBreQEZj4Cts6vfoAgiZCczlefwkTD35tyJTl9ryl+4T5G/MQVzL0l56Y07U=@vger.kernel.org
+X-Gm-Message-State: AFuF++kjj3iTdiO+vvzzoF9iRX6Y0Txhu8JtQee3sSQkKvrq2R1Mzsv8
+	7Xkgk231St4RBnM2P0fT6CPYTFtFHX566GC/TP4nrOIrsi0CsknQIJ9W
+X-Gm-Gg: AYBFou1sPfizHKSxUoBKOIHl265Cc6zvSQf9AYGxmMTk8H6eyi3P/9SVAqQ7gf11XlG
+	VboES8Ut/8JBCZnLyQ0wpDi+FgmGZWOJt1rRFUvAoq0LPUqU/ot5TCaE0xJS90WfxIeSbQhfv6A
+	DFolPCYPdyd75ejgoDqJEBWCjF9Lt4yt2styjOI957eqHyn+9C8Blp9ClfGmoughJ0GEGWvu3f1
+	fX3++kYU7UnTqr8r5Cta1aOuDWeaBu9F5Rm0H/3cOHGaHfT1nSf53aTFzFsUOs0mMqMSpbx7pDU
+	i1+DOV2H1ic3CSqwpj8aOiggaM5m+y4MdhahIPBegJp+yMhXaxQKrBI7yLoNeEloDqZPoth7uiQ
+	UX1u3abJKdrH8yN0Ap8w7jtEBDaiPmjATckrlQuGI3iM9DkrM4ZNYxlDRxTSyAMrTyyJOSi8tcH
+	Yioi6ZuCPXa4N8XuCfOXMmJWCyNhdf273/iPAk+GJhGQd0pZHQxurlg+x9wiHrG3iCLHvf9pkzI
+	31EkVh5wEwQ3pxuwQU6ZkLrZgyYZLd3ga0ozTc=
+X-Received: by 2002:a05:600c:4ec6:b0:49c:fea3:8633 with SMTP id 5b1f17b1804b1-49eb732aec0mr62000005e9.24.1789629430773;
+        Thu, 17 Sep 2026 00:17:10 -0700 (PDT)
+Received: from [192.168.20.170] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd1ce79csm59310085e9.0.2026.09.17.00.17.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 00:17:10 -0700 (PDT)
+Message-ID: <70d620e5-b03a-48ff-9b56-e787d03b4aed@gmail.com>
+Date: Thu, 17 Sep 2026 09:17:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] spi: spi-qpic-snand: drop the redundant ECC
+ context handling
+To: Johan Alvarado <contact@c127.dev>, broonie@kernel.org,
+ md.alam@oss.qualcomm.com
+Cc: konradybcio@kernel.org, pengpeng@iscas.ac.cn, miquel.raynal@bootlin.com,
+ quic_varada@quicinc.com, quic_srichara@quicinc.com,
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260911184416.109790-1-contact@c127.dev>
+ <20260911184416.109790-3-contact@c127.dev>
+Content-Language: hu
+From: Gabor Juhos <j4g8y7@gmail.com>
+In-Reply-To: <20260911184416.109790-3-contact@c127.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Tue, 1 Sep 2026 21:26:25 +0200, Khalil wrote:
-> On Intel LPSS SPI controllers (Cannon Lake and later) with dynamic
+2026. 09. 11. 20:44 keltezéssel, Johan Alvarado írta:
+> qcom_spi_ecc_init_ctx_pipelined() now publishes the ECC context to
+> snandc->qspi->ecc, so the assignment in
+> qcom_spi_ecc_prepare_io_req_pipelined() repeats what the pointer already
+> holds, and the zeroed struct qpic_ecc that qcom_spi_probe() allocates is
+> never read.
+> 
+> The pointer is non-NULL only between context creation and destruction,
+> and every reader runs inside that window. The ooblayout callbacks are
+> installed by init_ctx. The page read, write and program helpers run only
+> when prepare_io_req has set page_rw or oob_rw. qcom_spi_block_erase()
+> runs only while the mtd is registered, which happens after init_ctx and
+> ends before cleanup_ctx. The controller drives a single chip select, so
+> the per-controller pointer and the per-chip context cannot disagree.
+> 
+> Remove both. No functional change.
+> 
+> Suggested-by: Gabor Juhos <j4g8y7@gmail.com>
+> Signed-off-by: Johan Alvarado <contact@c127.dev>
+> ---
+> Tested on a Mercusys MR80X (IPQ5018, ESMT F50D1G41LB) with both patches
+> backported to 6.18.44. Five boots, rootfs mounted every time, mtd
+> reported 0 ECC failures and 0 corrected bits, and a 4 MiB file on the
+> UBIFS overlay kept its sha256 across the reboots. Overlay churn raised
+> the UBI maximum erase counter from 13 to 15, so qcom_spi_block_erase()
+> ran repeatedly. Build-tested on this base with W=1 and sparse, no
+> warnings, patch 1 alone and both patches applied.
 
-Tested on an HP EliteBook 8 G1i 14 inch (DMI board 8D8A) with 2x
-CS35L54, together with 2/3 and without 1/3. Details in my reply to the
-cover letter.
+Tested on Tp-Link Archer AX55 v1 built on top of 98100d83adc8 ("Merge
+remote-tracking branch 'spi/for-7.4' into spi-next"). No regressions observed.
 
-Tested-by: Juan Jimenez Carrero <juan@jimenezcarrero.com>
+Tested-by: Gabor Juhos <j4g8y7@gmail.com>
+

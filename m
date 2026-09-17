@@ -1,90 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2201361966;
-	Thu, 17 Sep 2026 10:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621349B441
+	for <linux-spi@vger.kernel.org>; Thu, 17 Sep 2026 10:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789640353; cv=none; b=bw3XolZFJM9n1GuOspYz8x9xsFf0aVwMf0RNUrhsbCMNmFh7W3VE/kyRGEIW7cU9GvjOUyjcnSPUpuoriQCNxT7uNwUqItgEZTsmSzqHXYWcKdbtKa4qEERV+7vupl7JWOJC9Uw5SHY23w/G74ZzILCsk3Dnm6DmpV0YWIRAtbI=
+	t=1789640473; cv=none; b=lW5QTISMT1SOsxDUlL6aIVa4H73LDvFXEY0pG7UXs6HhjzW4BRe+t6vUH1/B2sqDG3Sqws3VJzqhfWMU9fl59AxFRYOF84c4l0mo7lajQOC9R3n77cvkSVHRRfRQ5k9P2Pxyv1Pra/JVlE7n/Sn3oTKnPb93ElnJdOKGKxiVK4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789640353; c=relaxed/simple;
-	bh=sYOBPCQZCZz6ppPtm4bDuvKorzgrYBsny7NWNCPiBkw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=a3VkAKl4MAII7gWp2nRUJpSjnYMN2abt3/Pz+5/NHq40dGeN0VHs3ei9UnYcx+oZsn2J6Udl8PceYCJDPDv4OmNLMcoDqT6aUhX/79MUH9GtG4EzBWXRHpi0PiTkL3CK7GW50/r/C6Aiyw1Nh4DI+9Fnj6icKcHGb2qTizDe4SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjTpgD3T; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789640473; c=relaxed/simple;
+	bh=fttMrIaJsS2fYQJnBoAdNw/pSRHj+3392yJc0PvCYxo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=XqxjGkosJHL22RrtqKQibWOuiHbg2vNuuu2vtBw+vtZmt778Nlkiv5NHQ1ooLJWsc36WTxO+FoGXIO6IUYAkgLfh/Yl/uPvK1QBLq5NkMPlk40Fle4DNtMOLk5BrPbPGq3AAwiL+t0ZmOhO3z0/6f6gl1epX3TZ1CnGwXYoKG5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3dl9oef; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjTpgD3T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152A51F000FF;
-	Thu, 17 Sep 2026 10:19:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3dl9oef"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3E11F000FF;
+	Thu, 17 Sep 2026 10:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789640352;
-	bh=uDXtF86VK1gu27NEV85R0MtRyEx8CrnTliqhkEYUPmM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=OjTpgD3TK3YALyveSRIcZAuTFmzjC4x4yu0+yJKGV1QTvERP2/ksnYAQhcHB7xhI1
-	 bM6pgBptqq+635wj35ZiQY2a+d/d9Jhrab884NXyPYVAQQwJ/BzB+RJgvwFr41fxtR
-	 kAg5LNXdtcHodwUVKbFWcxoLOvVoeyi5JHbOynw4pr8kEl+c1jeVmUHSC1XKv2vFjg
-	 1j0CbZCcZADxy5HnOnvtprq6gDqguuW5aSAFnojR/wDVtF5GQh/Fpv1UEmNU6j3SWF
-	 vXUc+kSkOfBXLOcUMQTGMMw5VJAhtStindIACkMj16wjBioGcb4qtsKyrR22KlVCwO
-	 nFeRPG9YXCGKQ==
-From: Mark Brown <broonie@kernel.org>
-To: Itai Handler <itai.handler@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-spi@vger.kernel.org, michal.simek@amd.com, stable@vger.kernel.org
-In-Reply-To: <20260910174832.873352-1-itai.handler@gmail.com>
-References: <20260910174832.873352-1-itai.handler@gmail.com>
-Subject: Re: [PATCH v2] spi: spi-zynqmp-gqspi: stop the controller on
- shutdown
-Message-Id: <178957983642.100121.2784046911009039548.b4-ty@b4>
-Date: Wed, 16 Sep 2026 18:30:36 +0100
+	s=k20260515; t=1789640469;
+	bh=z1MWLTmQmxywPqQjRHRjKhTMHrCVR/I5FjaWiuIvf5k=;
+	h=Subject:From:Date:To;
+	b=c3dl9oef8auMnyGIYxvJxmjoJiwenuOCbLhNQXVgdGM6BMRs45OyNdkpg+Yzzb61a
+	 E/ph98zzqiBH2guDKodylfumidUJTlr1GYEl16UpS4jZqV/VdOIxHHkDolfKRUb4Si
+	 3P3+hjJGkdyprZgwzuXlR9MchVqMo42LM/AXjZMW3pKDOFzpZ6QzJON7d0QT1xANMv
+	 6v7taIN2nAsIxUpJycQpwHUOdXuOIbAhsKHfc1QdcK2KTEN/qa+tVAUGrbWnD2Q50b
+	 8JbaXCfPO/GCe4j5XI6zXPFt/dFFMFgcsOF8rdQa8jtlZx5ZY7N9ws82rXVx8e76F5
+	 IZlAM3X5x1iXQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 960E2380DBDA;
+	Thu, 17 Sep 2026 10:20:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=broonie@kernel.org;
- h=from:subject:message-id; bh=sYOBPCQZCZz6ppPtm4bDuvKorzgrYBsny7NWNCPiBkw=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqq76c3YimaI4GlY4gTxTHdyj0qP0RsZYlS2kuA
- K2/+wEMG6qJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaqu+nAAKCRAk1otyXVSH
- 0MtAB/9xDXzGPp+XGSGH3Re/gsQvAACubZO5NHSS8ey5YdEa1OW4Pj5RU7pN+fbOUW/Zqq+lQa1
- JwDAf27dyCeANWu6+QIkjQgCUHEThXGYHlC/724BN26tgLaY1oXv1dIM54F9A1fuCaDXEmhUNkG
- 6gaNT6Xp0MmWWLGzySuav6+pthg6SSsjCAAiMa3gVlWP0+1V9DI6Ru/q9Gy1zmC9YwOPWmTfngf
- w9bZsbdxbGGxqYv5whRTHuIS8TNgb2jJC5sAjuIL/fLFlaPg6SjIzfQffpBw3/DOZxN1iMTAOn8
- tEoZFW+BMe2fwlsG9zj9vhI2hm/Gs93yMfvwDXraNascwWHh
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178964040329.3552644.10695021022195280380.git-patchwork-summary@kernel.org>
+Date: Thu, 17 Sep 2026 10:20:03 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Thu, 10 Sep 2026 20:48:32 +0300, Itai Handler wrote:
-> spi: spi-zynqmp-gqspi: stop the controller on shutdown
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.3
+Patch: [v2] spi: spi-zynqmp-gqspi: stop the controller on shutdown
+  Submitter: Itai Handler <itai.handler@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1162280/
+  Lore link: https://lore.kernel.org/r/20260910174832.873352-1-itai.handler@gmail.com
 
-Thanks!
 
-[1/1] spi: spi-zynqmp-gqspi: stop the controller on shutdown
-      https://git.kernel.org/broonie/spi/c/e922bad8b2d5
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

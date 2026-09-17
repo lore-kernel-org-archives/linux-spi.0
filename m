@@ -1,113 +1,126 @@
-Received: from mail.fris.de (mail.fris.de [116.203.77.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3D94848A3;
-	Thu, 17 Sep 2026 15:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F914EFFA1;
+	Thu, 17 Sep 2026 15:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789659526; cv=none; b=bLqqs2Wd51K2kYNNTTdfmaLHqPUVdRJUlVc4SbvWgJL1RQqliuuSzKrlLg13HCGZrMSbBaHRbRAjyuL17WHzpvX0je7VMPlOB6Ctw7x3U1B4iisOlYjg8AZylK9T5XnBdCgOm814RoP2/uRcgh6iSE4vUIWbFGnJh7ADMaWOFU8=
+	t=1789660124; cv=none; b=XTx91IcNFgDnZi5CA26TNyYN2+3HadwV4qzto/LKudgLCexj9o5IQppekOCqlkcvCzLbUKeNZ20dQ9wIg+GpcP9eR1dC4Qz01a2zlLf0HMDNsfSazSOXi+LikkaORjqVWd88fDmG5BcPDQ0FFuTl7BRIFguzKzp/3wyA/EIcX+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789659526; c=relaxed/simple;
-	bh=JqILw5+znBbGw5CVGtBPKKBSQx9ykwRrOqYgKUsFV2k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PptJ8gER6uNi/a1RhA4nRoaM4WwZf692y9G8Fo9g2QES+A00hGdk72uCOdr4TeDIhZnFymmrD3ZBXMNYRDTZX/iIuqT+49Me1GLyJUCp+fpNIPEx+4AmeHt2/e2p+siMe+7u58t+FEMH5Zz76Uq6boenJ7/0qzk7cZgAZhY0RG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=yTWxLlYw; arc=none smtp.client-ip=116.203.77.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="yTWxLlYw"
-From: Frieder Schrempf <frieder@fris.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1789659510;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ZwHurz3qFcCVqb+Po4Y9Ihna8FWaKNv9CmUUvvsfgU=;
-	b=yTWxLlYw1KqUHOP5FcIkQPRUYyLClpMooyMYFjHeTr9ZApu9jZrr2J4LkSH2rIWiGugFZc
-	s58U4d/dTKkB0uANlthpON4LpCTf65fAdV3oLnZ68EQpGJCbzB35zXjK/lYwnVivhJztns
-	FiQemcCx89E9Z7u9y8L5bI2L+PWyaNMM3vzX8ZXhD5+nKmfrIZFVf5OiREhYfyi0VoG8V5
-	KMlLkGczxO5ldu2OPhgG6AynJ6ucozkcPIkpwRMqZ9c8whqwPDy5JdHYPfRoUcL00iuTL0
-	2jUZdB497MXZwjqjy3YzLxNj0HQxY2oswi+QvxAcIOybihZHGE1T+ztutmx0lQ==
-Date: Thu, 17 Sep 2026 17:37:37 +0200
-Subject: [PATCH 3/3] spi: dw: Use the rx-sample-delay-ns value parsed by
- the core
+	s=arc-20240116; t=1789660124; c=relaxed/simple;
+	bh=juEdvFFejEpjtb9f+mNgNWOTen1oLaNthwpOc6c6CgQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JceXS3WsYkkLT/BYYJZDx5qqLfYBweCn1ujZ+a3OZNFY2JC3aNTb34Ai0uCvZSostgODX7x6+jkT4YilMlHSAB3NqTmAVanIRwWrJ1wMt4gE82QPoVjc+/wZ5SdnA/dYkpyQC4TkFMBErpzTtjkT6OaErXudMhP+ue5LuuXRiTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowACXATzKC6xqaNeDCA--.46541S2;
+	Thu, 17 Sep 2026 23:48:26 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: broonie@kernel.org
+Cc: hansg@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	sbinding@opensource.cirrus.com,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] spi: fix controller reference leak in acpi_spi_device_alloc()
+Date: Thu, 17 Sep 2026 15:48:26 +0000
+Message-Id: <20260917154826.2160933-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-spi-sample-delay-cleanup-v1-3-0e4eddbfb1ce@kontron.de>
-References: <20260917-spi-sample-delay-cleanup-v1-0-0e4eddbfb1ce@kontron.de>
-In-Reply-To: <20260917-spi-sample-delay-cleanup-v1-0-0e4eddbfb1ce@kontron.de>
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, 
- Frieder Schrempf <frieder.schrempf@kontron.de>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1983;
- i=frieder.schrempf@kontron.de; h=from:subject:message-id;
- bh=dNE9qYNVl7I4xsD6/HfPBsDDqC3FezGj/mUMdwpPGY0=;
- b=owGbwMvMwCWWWSatKlDTJMZ4Wi2JIWsNZ2n38cNpBqmnf871Cvpyc+LkRdM0tEI1V/7dt/Nrz
- YTo2jv6HaUsDGJcDLJiiixS/Bavbc1ifeSPVUfBzGFlAhnCwMUpABMJNWH4n/jzkvLpB5Zqr6w/
- K7fE702Rle0XZ5pnmP0n4+mfQ07zZRgZjocbPvq0dSF/julNJZdDFblbuK06knonCSzdmrOwwVG
- LFQA=
-X-Developer-Key: i=frieder.schrempf@kontron.de; a=openpgp;
- fpr=1A0F38EB3D365D4C1FC67B5A69761B25107C8216
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowACXATzKC6xqaNeDCA--.46541S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFWfCF1ruryUuF48Wr43Awb_yoW8KryxpF
+	W7JFW3tF95JF45Ka1rtw4UCF13Wa1Ivw45G39rJr1fuw4S934rGFy7Gr1Fqry5AFZ7tF42
+	vFW2qF18CF1UZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB0b7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+	AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+	6r4j6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1lc7Cj
+	xVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr
+	1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4UJVWxJr1lIxAIcVC2z280aVCY1x
+	0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuYvjxUDZ2-DUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwgNA2qr9tgxOwAAsk
 
-From: Frieder Schrempf <frieder.schrempf@kontron.de>
+acpi_spi_add_resource() stores the controller returned by
+acpi_spi_find_controller_by_adev() in lookup->ctlr. That lookup takes a
+reference via class_find_device(), which acpi_spi_device_alloc() never
+releases, leaking it on the error paths and on the success path too,
+where spi_alloc_device() takes its own reference. Drop the lookup
+reference when the caller did not pass a controller.
 
-The core now parses the "rx-sample-delay-ns" peripheral property into
-spi_device.rx_sample_delay_ns, so drop the private copy of that parsing.
-
-The controller-wide default is deliberately left alone. It is read from
-the *controller* node into dws->def_rx_sample_dly_ns, which is a
-different node and none of the core's business when it parses properties
-of a peripheral.
-
-One corner case changes: the peripheral value is now treated as unset
-when it is zero, whereas before an absent property could be told apart
-from an explicit "rx-sample-delay-ns = <0>", the latter overriding a
-non-zero controller default with no delay at all. There are two users of
-the property in the whole tree and neither does this, and zero means the
-same as unset for every other user of the new field.
-
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Fixes: 87e59b36e5e2 ("spi: Support selection of the index of the ACPI Spi Resource before alloc")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/spi/spi-dw-core.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/spi/spi.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 206d3f9dd83d..b86b607cc817 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -1104,12 +1104,13 @@ static int dw_spi_setup(struct spi_device *spi)
- 		if (!chip)
- 			return -ENOMEM;
- 		spi_set_ctldata(spi, chip);
--		/* Get specific / default rx-sample-delay */
--		if (device_property_read_u32(&spi->dev,
--					     "rx-sample-delay-ns",
--					     &rx_sample_dly_ns) != 0)
--			/* Use default controller value */
--			rx_sample_dly_ns = dws->def_rx_sample_dly_ns;
-+		/*
-+		 * Use the per-device value the core parsed from the peripheral
-+		 * node, and fall back to the controller-wide default when the
-+		 * device does not ask for a delay of its own.
-+		 */
-+		rx_sample_dly_ns = spi->rx_sample_delay_ns ?:
-+				   dws->def_rx_sample_dly_ns;
- 		chip->rx_sample_dly = DIV_ROUND_CLOSEST(rx_sample_dly_ns,
- 							NSEC_PER_SEC /
- 							dws->max_freq);
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 104279858f56..fb5e17d55801 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2979,9 +2979,12 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 				     acpi_spi_add_resource, &lookup);
+ 	acpi_dev_free_resource_list(&resource_list);
+ 
+-	if (ret < 0)
++	if (ret < 0) {
+ 		/* Found SPI in _CRS but it points to another controller */
++		if (!ctlr)
++			spi_controller_put(lookup.ctlr);
+ 		return ERR_PTR(ret);
++	}
+ 
+ 	if (!lookup.max_speed_hz &&
+ 	    ACPI_SUCCESS(acpi_get_parent(adev->handle, &parent_handle)) &&
+@@ -2990,13 +2993,18 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 		acpi_spi_parse_apple_properties(adev, &lookup);
+ 	}
+ 
+-	if (!lookup.max_speed_hz)
++	if (!lookup.max_speed_hz) {
++		if (!ctlr)
++			spi_controller_put(lookup.ctlr);
+ 		return ERR_PTR(-ENODEV);
++	}
+ 
+ 	spi = spi_alloc_device(lookup.ctlr);
+ 	if (!spi) {
+ 		dev_err(&lookup.ctlr->dev, "failed to allocate SPI device for %s\n",
+ 			dev_name(&adev->dev));
++		if (!ctlr)
++			spi_controller_put(lookup.ctlr);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+@@ -3013,6 +3021,14 @@ struct spi_device *acpi_spi_device_alloc(struct spi_controller *ctlr,
+ 	 */
+ 	spi->cs_index_mask	= BIT(0);
+ 
++	/*
++	 * If the controller was looked up from the ACPI resource, release the
++	 * reference taken by acpi_spi_find_controller_by_adev(). The new SPI
++	 * device holds the reference taken by spi_alloc_device() instead.
++	 */
++	if (!ctlr)
++		spi_controller_put(lookup.ctlr);
++
+ 	return spi;
+ }
+ EXPORT_SYMBOL_GPL(acpi_spi_device_alloc);
 -- 
-2.55.0
+2.34.1
 

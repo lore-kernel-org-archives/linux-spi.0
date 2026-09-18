@@ -1,91 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217ED2C21FD;
-	Fri, 18 Sep 2026 20:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B863CF209
+	for <linux-spi@vger.kernel.org>; Fri, 18 Sep 2026 21:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789761637; cv=none; b=R8b+0P+cTcaU5eW4cVvmpZb/pKuleLB17alYLrMYHKUrEu7m7izM3XIHKtW1mSv/+I21p9GWqCrjq+TFOI71iaC8b4uK+M6YoRvq0ysJxRzuU5awALAKN1BEyh5WTHdgHKtqmIE+UEkxmSg4yvQf2ptV5GiWbTZqdV0HKC8RRmw=
+	t=1789765876; cv=none; b=dGJoyW8Q6Fm7Rcsr1iSt/ZUE3sN2OiQR7dCL5wxupW8jzofPW1WerfPWSxrWHEOht+/UKhJ5Ycw1BtaYYG8tV39uybJecX56xufL80e3YIQBcdxTzetbd7wB3Id/e80Jm82/E3Ts+uA0e364PSSY8dgkzENAeoIRPRb5iYEOhaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789761637; c=relaxed/simple;
-	bh=4TzoEpfHRdH7xCT//qpK8wJr7qb0NkkYV7wvZfAGVO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VVdSCl+gv6SjmF+OMitqX6SHQ4rOCydusnrM6N3oA8RBe2o1mpVUdhue0FBJcddoWokK7K2IigfsclXaUE5uhsO2yCBeoHguHrQ1D3VrsSeQ2dbvp5F1PUN99t/XAvyyP5C5PoNtrBS7mwOeZyW3ri2h6Mr5nwwS/sXTNvTSwWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jpn5n0zi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789765876; c=relaxed/simple;
+	bh=Ixo24aAT96KxTsEtvGa7ALtJ0hlRVDR2qXNZkrMYbFg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=CNfyZlqfz226Vp+DZ3avNZbFoHcerk8eAACHcK9pqz/KxYTTp3A1ub88FRGxTnjep2qdxdBVkNfbhYzJn9NGtGVr0HKZHFu6H4JyfPNb5GaFwEydgsQgrEXUmUthGpKo2haku7OFCC66IasFurvcDqRrK4r3yG/SEv4pKau+WYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRu4Z8P+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jpn5n0zi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844491F00898;
-	Fri, 18 Sep 2026 20:00:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRu4Z8P+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D6E1F000FF;
+	Fri, 18 Sep 2026 21:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789761635;
-	bh=OsEpDB9UCJuLpaU3+bqZ1MTcVZYu+7Pxx8NDDG4f60Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jpn5n0zi7D/eHOm0AMqqerqvuIxBgyPrCcGty/49OY9O+kJLzGV1WKcxvAAT42mzv
-	 69Cb1NQfGn6RW2MhgaJoKePHUOhjoKIlupzn58+FvrxmVwOiH0zi3+Ot2j1B2jOqUd
-	 YBLsDfpodoqPUYqXXekWL+ZBUESnwubHyLvKsiueJNVqEtlogz/Rr8zvTVuqU8+/bP
-	 cPWD7Z42W7q0Y4OSiFIXA4V8CnQycALYuu8V+juyYaKzZeqSo64O76MkJ3PMbwEXM7
-	 6vEPD+HcnAA1ICD/jFhLxgwLOTdgIEn1DpAlwwonoKAFRP5sDm453v6rkyFwki2SOu
-	 1jtST1+Kpq2cw==
-Date: Fri, 18 Sep 2026 15:00:33 -0500
-From: Rob Herring <robh@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marek Vasut <marek.vasut+renesas@mailbox.org>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] spi: dt-bindings: Relax node name suffixes again
-Message-ID: <20260918200033.GA1667835-robh@kernel.org>
-References: <60988ce9c4913014e255ecbe127e93374f6a2295.1789570538.git.geert@linux-m68k.org>
+	s=k20260515; t=1789765875;
+	bh=lafGOctlppZO/fzmVtRPwVd8uhiR3V8yk2O0sB/s/5Y=;
+	h=Subject:From:Date:To;
+	b=nRu4Z8P+WnxcvLEn7QDGTPIAz9ifrtrYnzP0EVB2q7XixpmQ33NGxT2P9iZWIhU2W
+	 xrV+CtfIGI+NqNUR4C30ZoNeBVO6Lg4MXX38Sgt9cYRXMj1z/zlrFb1a97te9uW4iG
+	 iO3WJgxjDsPgChCVPKF1MWuYulF3Z7dk3aWPsNNvCVcR/9Vjkyd966T8QGE5koaj1W
+	 WNfqczj5BcNtBuNTuC8o7Y2hCwpsDZV2d1ck6vYYcx9Qc4ty8R6Xhq48Pqx7qNX+ZX
+	 YSp5ww8/c7TAVgAsWvHBWipU9Om4DoGTKqH4woAPEt93MqS8XEay5c5ZNfCl3dnd+b
+	 WU7/F41MbIG2Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5937638111DB;
+	Fri, 18 Sep 2026 21:10:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60988ce9c4913014e255ecbe127e93374f6a2295.1789570538.git.geert@linux-m68k.org>
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <178976580790.1147855.7103390533551597308.git-patchwork-summary@kernel.org>
+Date: Fri, 18 Sep 2026 21:10:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Wed, Sep 16, 2026 at 05:18:27PM +0200, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@glider.be>
-> 
-> An SPI bus node name can have either a unit address, or a suffix.
-> Commit c4fb6880edc15866 ("spi: dt-bindings: restrict node name
-> suffixes") restricted these suffixes to decimal numbers.
-> However, SPI bus node names with suffixes are typically used for
-> board-level bit-banged SPI busses ("spi-gpio"), which live at the root
-> of the device tree.  Limiting their node names to numbers is prone to
-> conflicts, and may cause silent overwrites, especially when a stack of
-> sub-boards or expansion boards is involved.
+Hello:
 
-How is that commit an issue 3 years later?
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-I've commented on the case which I guess prompted this patch.
+Patch: spi: mxic: fix ps_clk leak in runtime resume
+  Submitter: Felix Gu <ustc.gu@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1156261/
+  Lore link: https://lore.kernel.org/r/20260902-mxic-v1-1-76806325826d@gmail.com
 
-BTW, "spi-gpio" or "i2c-gpio" are not good names because you can have 
-more than 1 instance.
 
-> 
-> Hence relax node name suffixes to alphanumerical characters, so users
-> can write more descriptive SPI bus names, which are less prone to
-> conflicts.
-> 
-> While at it, reject empty unit addresses.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202609150228.Nh4nZzbQ-lkp@intel.com
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Other subsystems (regulator, i2c) had similar issues, and numbered
-> regulators caused conflicts before, see e.g. commit 45f5d5a9e34d3fe4
-> ("arm64: dts: renesas: r8a77995: draak: Fix backlight regulator name").
+Total patches: 1
 
-I2C was a case of "too many to fix". Maybe time to revisit that. 
-Regulator binding is a unicorn and not a bus. I really want standard 
-names for buses given that's the only way to identify them generically.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Rob
+

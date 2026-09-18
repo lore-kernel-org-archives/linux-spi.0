@@ -1,40 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CDB3128CC;
-	Fri, 18 Sep 2026 22:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CA233B6F4;
+	Sat, 19 Sep 2026 09:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789769500; cv=none; b=lD9DOUFjuPd34bnYUZa37Lv1a620qOI2fXmyH1aVmX2E8c2A3132vMAvUp8VEN3DqA9GPOKFn4EU2mdJaUqV1OQVzDIqiQUy1I8LL9fY94AWLqAvGTLU/AyyQox8NxoJA//GVdCPp+ZJ4lvFYL7F73dWTb6+YCy3KEaiYS52EYs=
+	t=1789808650; cv=none; b=S7bh2PL18Osn2u7HTybchRCXLPTLITH2w5xzQduFy0dghBwC/WnkwdzQ/1EO1X6UIa+M47DIv+lXSAHbrVIZpbadHMhbb3KMBMrPFbrv7kVZmvcQmDQrJEOGx0njLpCdG7MB8IU6aiXVzyDPRoTlEp31QjWFPDdy6OIyRGleqcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789769500; c=relaxed/simple;
-	bh=7kxXDaDEQZmUvt4br+G/yqf8kHQq75vJKnHcpEfiD7Y=;
+	s=arc-20240116; t=1789808650; c=relaxed/simple;
+	bh=07mMyxMsaP6e9rVOkNiufgr3Dwg5HIHOcIaZCo5Ccuo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HbU0o55ZBcqimoFW/+zkRyT/fokd/hXUbLN7ntdiVpGnONZPcyPNFqFoXdjAycQ+M7L4QaUvR1xrNQWbfTHylt+5U2O0uzNUXXzroUVUEgjo1V05M4EnHLMw0Oz2WJ0KxW01bggG4DRZTQYTrPEZWWSA2MWAXYIijyUjihizqbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/lhkJl4; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PfXWDTEdUmNZyg235uK6P5ffW6G2yXX3TVNE0nZ16o5OlJvownmlh11CyDE6fE4To9pW2Kh6qOtQaTRfB4OmyYNG0ChOBXDcr3FJhvMr+v8GVJSFpJsNvurm2CuFOFU5cXJgnO+JE0iIi2VHfJtEPrXTBky2nfb/3AfCP6FsaUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gtY9+36Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/lhkJl4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB011F000FF;
-	Fri, 18 Sep 2026 22:11:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gtY9+36Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EA21F000FF;
+	Sat, 19 Sep 2026 09:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789769499;
-	bh=W1Bk/s7i2e23Sgy/3SD02POTTRVtctg17RCEIcoufPo=;
+	s=k20260515; t=1789808648;
+	bh=BBnavKyXduBDgDup2hJbOMSKrWBCyILhm4SU8REE7oQ=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=f/lhkJl44olVyTCOWDbwpFX/ZQRQS7jW0yuCMiRxUllrxrXLh+sWYyDitr8khPbVl
-	 5pOIf47Z+MUcv0hwfx+SnfFbkxSGSqGyhRtdnP7ZVnEM/DQ/s64pAbmFWM1Xii1bPg
-	 YoCjIrYJq7Dft1QbmxVtdsmlLr2LeGyBRTTEZgDUqkcJnV8f9EqdH9T1nYaKuWgyYK
-	 x2DlSpvNW8bNlUSTQ5au8B1vQbf3at9F3fv5di2fNW7ZxJlhYKqQ54r9QdOIg5KDVr
-	 CvlS7CWQIqOvONHdiAGnNh3Ocgf28HQsSNf4SQE+hVe2N0MRtqgbUlZtUqZ57FHDT/
-	 YtqTxgdAzcZNQ==
+	b=gtY9+36QQDLOAjld+dnCg2da7Sh9sWyFs4r67/H0RiQLIeaozrHAoxUgjK4bNHK/b
+	 WHUY279yatJ16otcvxSYTH3X9vF7qie7F1Jz4ooSeCRggZjL620zpTWftDGIJ9vLY0
+	 Z4a9mQfh9XjTtzwOG8xjbYjamL6yHzuS1wq/fwE1+qZfWpbYm7ZrcSCm/XBNN4I0gx
+	 7iGzdI8Cgee7Yx9zVGoMiok/dqno+gP/API9OwzaBctQAlJj//BYgEGpA/52W7iT6D
+	 IusCUOcKAhks32oGIV7CwmgEkyo/hj2ICPUdx3EV707q8UzIa2RCpiGbma05VZKETk
+	 FAKcq0x9hhtYw==
 From: Mark Brown <broonie@kernel.org>
-To: Boris Brezillon <bbrezillon@kernel.org>, 
- Mason Yang <masonccyang@mxic.com.tw>, Felix Gu <ustc.gu@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260902-mxic-v1-1-76806325826d@gmail.com>
-References: <20260902-mxic-v1-1-76806325826d@gmail.com>
-Subject: Re: [PATCH] spi: mxic: fix ps_clk leak in runtime resume
-Message-Id: <178975478399.1812520.7433537791322074523.b4-ty@b4>
-Date: Fri, 18 Sep 2026 19:06:23 +0100
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Md Sadre Alam <md.alam@oss.qualcomm.com>, linux-spi@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260918-qpic-snand-config_page_read-v1-1-a686c4657857@gmail.com>
+References: <20260918-qpic-snand-config_page_read-v1-1-a686c4657857@gmail.com>
+Subject: Re: [PATCH] spi: spi-qpic-snand: add qcom_spi_config_page_read()
+ helper
+Message-Id: <178976719898.1863384.8556438564232843245.b4-ty@b4>
+Date: Fri, 18 Sep 2026 23:33:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,20 +49,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=broonie@kernel.org;
- h=from:subject:message-id; bh=7kxXDaDEQZmUvt4br+G/yqf8kHQq75vJKnHcpEfiD7Y=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqrbcXQVHLtB2QB1/lM2Hll+F52MAbF8RMsLKNV
- mEX2MOU6Y2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaq23FwAKCRAk1otyXVSH
- 0JNrB/4taduKNnR+nmCjRhU6IXPQ7/HG+WbaSLJ0SkHusw7w8Z6odr7bYI96V+JiUDvWPfp9qOK
- 7Vvm0H7dxH7OspyX5TsNjUyYRfoDQoBnTQfhV+bDdL1SUF7Clw//n0tp4O+3bW3ta2teRaYHj8/
- 4XxxJ+ey2toxuSi98prDptpupxZn9ctvnGqooo0XThkOHvK1pNjCQzbcm3ST3p4vGcPNmaem3kB
- Uk0Nno2rAK+zgid9J/Zv1Xk/WZi4B7fsi5BWrm6pQXtkBIm3jM6lmPRp9cGI601/LYb3QTbtNrW
- 8d4MJ0xYLc1wiQ0I0ZQ68NpoyHtvrnYkmV0LZM90dYqCI8kl
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1131; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=07mMyxMsaP6e9rVOkNiufgr3Dwg5HIHOcIaZCo5Ccuo=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqrlAECYDY8bpS7oTqenf0plXibSOVh5r1YS6tJ
+ sdPOdx2ek6JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaq5QBAAKCRAk1otyXVSH
+ 0MXOCACGtIGO3qeCu0E8ocf6s0p8J5odLs/IVePHyKBnpef5RXVxGqvDE/HFGV92BLthlnT36JZ
+ tQGvsD3bzMl+T81bEinbr8pU3e4PxStdW+odHzGfM0C0u3kh41OTQ9t7EPHp7/gnurNN1SlaoIi
+ 0kGNTCBAC1Q9D+memFbzOq60THq72YkABcg4z15Zin26WGc/BiPaN3QnukH9jQtEJduN4dsOM+A
+ 5YEMNCuYkONxc3JjXt25ZOvrS/FKzBbMFgpMrRWB0sBIzu3lEqie3JrMYijDMRUHegzduPihmyX
+ baJ/XEZsTRbCNzE+5XUBGEsdY9t4lilkVkizdasm3qrn409u
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 02 Sep 2026 22:48:09 +0800, Felix Gu wrote:
-> spi: mxic: fix ps_clk leak in runtime resume
+On Fri, 18 Sep 2026 21:53:08 +0200, Gabor Juhos wrote:
+> spi: spi-qpic-snand: add qcom_spi_config_page_read() helper
 
 Applied to
 
@@ -65,8 +70,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: mxic: fix ps_clk leak in runtime resume
-      https://git.kernel.org/broonie/spi/c/648e3c436032
+[1/1] spi: spi-qpic-snand: add qcom_spi_config_page_read() helper
+      https://git.kernel.org/broonie/spi/c/001cdc434aa8
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

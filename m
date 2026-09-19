@@ -1,41 +1,68 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ED4358367;
-	Sat, 19 Sep 2026 17:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD33815D9
+	for <linux-spi@vger.kernel.org>; Sat, 19 Sep 2026 18:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789837351; cv=none; b=sTiuGcHBZz/Ejl/G0oLekzQAgtFceLMPbeEKfLtjxSOaPp1842n9wPJYiykZuXgDTcoaKy5bkfe34OEc1J961mA4C7RmWcSRFMvAVvp2r8AsQl6RHfCXEjTl6T6/l+dxeEBIlFtbqdBs9jUzK9D52xqBn7D+pGpAGU6cFch1vs4=
+	t=1789843371; cv=none; b=PDZ+a7gvfWteWNfKMaAyxewF2gjS7P6H/RC6Jo+Qc0PyRtSEdwDlfHouudRxJTfajwxFTxBt8eAgiTY+29TeQiHZHvLjd5dc4H/dHnT+tJhfan0qjG3HroD1Sa4B4dH7s+XigCHt1HJRMoRry1yKK6b13nQLPV6lOKVgAVrquC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789837351; c=relaxed/simple;
-	bh=3e2azH+DoBq+36Da4VBKD14uza4GZ9oThp3l566SIk0=;
+	s=arc-20240116; t=1789843371; c=relaxed/simple;
+	bh=L0cJg8bEa3JcDAFMwgJ+PXyC/ThA9AhiO5G7soyuk4Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gvuYxPgh/h3afJIpl5wi9C4uvT+sPxp+1piuBwJwY6RM+tM8Bz+Zu4qkz1zfCquKwYFBFnasUAXwH1ZmxiuQIyNZd0C/HOcY4kWpNBM+kIBaoNUAnC5fOSfPTRLI9eVF/EqO9FW0TLyTMEB2eRvY8UB5xYJQQ1WLGbO+c9WeF68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de; spf=pass smtp.mailfrom=jonasjelonek.de; dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b=CmKkWRuW; arc=none smtp.client-ip=212.227.17.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
+	 In-Reply-To:Content-Type; b=GJHlBK6gmrBfOE8dh2aZeJ2iOxeRZq+5rJIAYUqOJ0NJ/6y7miG9bkMnFeZehNr6qkK193cH6lpo1JY53bBovIGRKfnomK59DWxIZ+vaN0BeVODfnpa+k051R30SQKF5ObII5pYAhP3Ixfr7U/q4knh3nWjYHlqESacbRXoEsG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+rhnWa9; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b="CmKkWRuW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
-	s=s1-ionos; t=1789837328; x=1790442128; i=jonas@jonasjelonek.de;
-	bh=U4SmXvV172swQGHXPqsVPSYVArKHf0OZgMVFWw/18jE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=CmKkWRuW1/JZR8nVF/hgui5hysfrE1M30OsnUqPmbD6tT/OftNCKq6DK2XkU4SUy
-	 Txw87D4X2NWA7C3zMMytymZsp/ywTENNAGw3BKBrfZVfiENl2jHbmkBQE69IxlXo4
-	 A+nRWbe+j0KbHWIED0heYrkP7rXbuP4U5OVg15B/olofx70sNdIKgSCJiAgN4UKrs
-	 6+KaolXjbj4OrYHMTuE8zN1Z+Iu5HwfNDuP9EEKEYCjUhFnUgdG7DJoXlkRPesD+4
-	 r4seu9CGpzCyfRryOu3JxtOLdyA66WmlcVJjQQZ6wcCK408XoflRZ8PKB46U29X6U
-	 rBiBvT08id/GpltYRw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue107
- [213.165.67.113]) with ESMTPSA (Nemesis) id 1N8GAQ-1wlp0h3dMO-00tSJl; Sat, 19
- Sep 2026 19:02:07 +0200
-Message-ID: <027f8dea-2661-4ece-b4f0-d772e81cc6e5@jonasjelonek.de>
-Date: Sat, 19 Sep 2026 19:02:07 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+rhnWa9"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so9337905e9.2
+        for <linux-spi@vger.kernel.org>; Sat, 19 Sep 2026 11:42:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789843368; x=1790448168; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EUaG58XyyXj2IYGxruqsBjrWu0FDpmLYKW3X9EM+9DM=;
+        b=L+rhnWa9nQG2h6Uso3aXhrUb1+pFdsXRFDMx5XcAo69q9fXnDxwpUAnp67jjx05WOh
+         UlHlMf0RCkzMdqFJJyX15kVA7PDcV2cDKzmhkkO3id15YNJF8a3BVbLTlGsK/XPtQM29
+         065odsPEekw6UhF8ik+AQ9gQfRZ/kObO4TrxSbY5+hcsn2cCh3iA11HoNAznCt3ea5HY
+         Fv82E4PjgXTB/1vEy1hauB5j7z+9KyIHJvrA0aEP3zEcl69oTsyDYBZWrNnz+Ggvb/th
+         SYtRL3+ZnGtvfXPzXi81+71BDGhMs0KnxACyG2QGoegKiUDa6P+tUSBBVGabEodUxRWn
+         D/lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789843368; x=1790448168;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EUaG58XyyXj2IYGxruqsBjrWu0FDpmLYKW3X9EM+9DM=;
+        b=gVyqgbBAN8vlLjw7UP68LklmQMvtBEV7hN1ofBJkajZ7i11QDXc9ejKu1LRrZoLmKP
+         VPdy0t8uJx/E/fPMKEk8crPCXOxC33hAgj+crtVrZImEvFh270rWguy+OgTSV33Rio/D
+         CsvhfIyu3arDm+/XVqMH9n5Qx1ULxUKLP8NmWcbkW6u4VleOPgcajtp3mo1ijlGE+BOe
+         b28He6sHS+ZoO0eS7GJCsCqHyEoEvtxzHj952fdFopWB7f4NXTFmIy3ajIfAumibKNp4
+         338W5EY1UyqPIjDTVHNF+ZJ86mgSLzM9QqycOlq8EUgMa/MzyVgFc+F/U5SUOEl/+hoK
+         Gdtg==
+X-Forwarded-Encrypted: i=1; AKwUvBzZCEJDQsF5+T4xf+E3Yj9gqOeSlY9bu+iJwMwzZ+C6tGma1Pp/DINJG0mehoRbMrWy12EAn3e/U6g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mgbkGzHMl9PWMop1s64LOaG10XCKUmlSHKUQUWr6F1Zfqf9sTM
+	2B0MHJ1+uCq2FFDNbcL+v6tVrWrIAdnmg4+OWSJ04PimwiFoBhLKF4w8
+X-Gm-Gg: AYBFou11z78FHqlVJf1xNRU9UOw70r3W3WcmxBnr7soiXmLIbsV0ts4V7rki7TiNRsb
+	mG9dukqct/jhvhS1xVxNYRlSENvYo+I4wDP1oW7voqdK5UJzGNoLxvIC5eH97Gbg2CPTsJ3pPyk
+	1HUZKdhBuatAjl0tp89AUb/vzM53Rsi+YAPlvesyxeOXxzsOULBD21qduG0zbevcQivcaUi4roN
+	CIlMYIfb+eJE6Vs4c8cGRS7TJhc6FWUcAgUBw6qEttP/IDoLP2grpsIY6sg9yPOBUHnngTjJd5Z
+	7pgOR3Iied/S2wzy9dFLj89wGC1NU6POpR32g6gINN/cveY1jIh73AHiiDV3qO0V+veEKfHye65
+	lexVKiGvrUE53Z2pU5qAedeuav+WVKZKCBZZM0Yv1NKZU3+WywqzFj/57I80VY4KZQgwdBJU/uh
+	Rcdvki3/9FWQfEtv1eeYAUmnEBIQKV1c0WmYRuhvjW7VR1pEkH8CEBS7+FhIYPzBbBjyc7ONbME
+	1cuHD3QLOK45YDikFoWUzNopZ3v
+X-Received: by 2002:a05:600c:4505:b0:49a:a101:4157 with SMTP id 5b1f17b1804b1-49fc56db92fmr86686385e9.7.1789843367901;
+        Sat, 19 Sep 2026 11:42:47 -0700 (PDT)
+Received: from [192.168.1.13] ([185.69.144.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd07cca6sm91087395e9.11.2026.09.19.11.42.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 19 Sep 2026 11:42:47 -0700 (PDT)
+Message-ID: <8427de42-2cdf-4acb-a439-d7c99cd249ca@gmail.com>
+Date: Sat, 19 Sep 2026 19:42:43 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -43,81 +70,81 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: realtek-rtl: add support for second CS
+Subject: Re: [PATCH v4 00/11] Add spi-hid transport driver
+To: fQwQf <fqwqf@fqwqf.xyz>, jingyliang@chromium.org, jikos@kernel.org,
+ bentiss@kernel.org, corbet@lwn.net, broonie@kernel.org, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ dmitry.torokhov@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org
+Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ hbarnor@chromium.org, tfiga@chromium.org, jaschultz@microsoft.com,
+ dmanti@microsoft.com, acz@semihalf.com
+References: <20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org>
+ <010601a0b3ff1cf6-944e2ad5-0ad1-49d4-9e89-c8ab03bbc62c-000000@ap-northeast-1.amazonses.com>
 Content-Language: en-US
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260918214740.3963349-1-jonas@jonasjelonek.de>
- <aq68SNTdUKzIm0K5@sirena.org.uk>
-From: Jonas Jelonek <jonas@jonasjelonek.de>
-In-Reply-To: <aq68SNTdUKzIm0K5@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:PrQKRlp3fAOg8/gDDk9yfjyrBEzFu9UzR0dsWCGLlORGNXuWRsN
- +bi05vs3il+lzqVkWAcuyhH9TuzTnj1EoQgqjn6xMUhhSJ+5zNsrhuyEEi05bog59gHiOi+
- NJe2me/CXUQQ1T+I7QmdD6tBLeDBClVYEsUNVwVQxLBKe2ZMbEeBZZydBlU5It+/Ru/qql/
- OSB9WkczYUoLT4+YfI9yg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2emmWZEc5gY=;IDHloUwQijANXdJPz83pFshWlEO
- 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
+From: Dale Whinham <daleyo@gmail.com>
+In-Reply-To: <010601a0b3ff1cf6-944e2ad5-0ad1-49d4-9e89-c8ab03bbc62c-000000@ap-northeast-1.amazonses.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
+On 18/09/2026 11:10, fQwQf wrote:
+> Hi Jingyuan,
+> 
+> 
+>> This series picks up the spi-hid driver work originally started by
+>> Microsoft. The patch breakdown has been modified and the implementation
+>> has been refactored to address upstream feedback and testing issues. We
+>> are submitting this as a new series while keeping the original sign-off
+>> chain to reflect the history.
+> 
+> 
+> I am working on Linux support for the Surface Laptop 7 (13.8-inch, Snapdragon X series), whose touchpad is a HID-over-SPI device behind a Qualcomm GENI QSPI controller. I noticed that v4 (June 9) is the
+> latest revision of this series and has so far only seen automated review feedback, so I would like to coordinate before preparing any upstream submission of my own.
+> 
+> Current state on my side:
+> 
+> - I have a working touchpad using a downstream Qualcomm GENI QSPI +  spi-hid stack (originally from scuggo's x1e-nixos work, imported  via ELLX-Kernel). My local adaptations move the transport to spi-mem and add framing, response matching, and DMA/error-path  hardening.
+> - Normal touchpad use works on my machine. The latest hardening currently has only build and software-test coverage; I have not validated s.
+> 2. The SL7 adds a different transport requirement (quad-SPI via GENI, through spi-mem) on topuspend/resume, and I have not yet run your v4 series on this hardware.
+> 
+> I believe our work may complement each other in two ways:
+> 
+> 1. The automated review of the series raised DMA cacheline-alignment concerns for SPI transfer buffers and unchecked reset return values in the init/resume paths. Both overlap with the hardening I have been doing downstream, and I would be glad to contribute fixes there.
+> 2. The SL7 adds a different transport requirement (quad-SPI via GENI, through spi-mem) on top of the same HID-over-SPI protocol, which looks like a natural fit for your generic driver rather than a standalone one.
+> 
+> Questions:
+> 
+> - What tree or series do you recommend working against? Is v4 still your current baseline, or do you have a newer development branch?
+> - Would adding the SL7 quad-SPI transport requirements to your generic driver be the preferred upstream approach? Is anyone already working on this?
+> - Are you waiting on maintainer review before a v5? A second hardware platform may help move things along, and I am happy to provide testing on SL7.
+> 
+> I am also tracing the downstream provenance of the Qualcomm QSPI code with the original authors to ensure a clean sign-off chain; I appreciate that this series handles its own history the same way.
+> 
+> Happy to share technical details or a preliminary diff if useful.
+> 
+> I'm not subscribed to the lists; please keep me in CC.
+> 
+> Best regards,
+> Jizhou Tong
 
-On 19.09.26 18:46, Mark Brown wrote:
-> On Fri, Sep 18, 2026 at 09:47:40PM +0000, Jonas Jelonek wrote:
->> The initial driver assumed that the controller's second chip select was
->> vestigial because none of the devices examined at the time used it. This
->> does not hold for all hardware: there are devices with a peripheral
->> connected to CS1. Since the controller only advertises one chip select
->> and keeps CS1 permanently deasserted, those peripherals cannot be used.
->> +	/* CSB0/CSB1 are active low: deassert both. */
->>  	value = __raw_readl(REG(RTL_SPI_SFCSR));
->> -	/* Permanently disable CS1, since it's never used */
->> -	value |= RTL_SPI_SFCSR_CSB1;
->> -	/* Select CS0 for use */
->> -	value &= RTL_SPI_SFCSR_CS;
->> +	value |= RTL_SPI_SFCSR_CSB0 | RTL_SPI_SFCSR_CSB1;
->>  	__raw_writel(value, REG(RTL_SPI_SFCSR));
-> The original code would ensure that all bits in the register are
-> initialised to known values, the new code sets some bits and leaves the
-> rest with whatever value they happened to have previously.  Probably we
-> still want the initialisation of the other bits.
+Hi Jizhou, Jingyuan,
 
-Yes, you're right. Thanks for pointing that out. Indeed, bits setting the
-data length and the I/O mode sit in this register too. Zero is required to
-have one byte data length and single I/O. I'll fix this in a v2.
+I am working on Surface Pro 11 aka. Denali, Snapdragon X1E80100.
 
-Best,
-Jonas
+This series (v4) has enabled successful bringup of touchscreen and pen 
+on the SP11, which also uses QSPI via GENI.
+
+There is some updated SL7 QSPI 'glue' code at 
+https://github.com/orvitpng/nix1e that reworked the original scuggo nix 
+flake code to work on top of Jingyuan's updated spi-hid series.
+
+With that + some extra pieces to wire it into the Denali devicetree, 
+this series is working well here.
+
+I'm keen to help move things along as the tablet functionality is a key 
+feature of the Surface Pro - please feel free to CC me on further 
+discussions.
+
+Tested-by: Dale Whinham <daleyo@gmail.com>

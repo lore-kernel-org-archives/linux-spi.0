@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA31393DE0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB063E075F;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789892014; cv=none; b=G6bqAxF4j9sykcGaQ3ZavTs7nrGjBuDN9jTcIkMS6QC9GJkkk5yuJ0FJ96AYzaoxRBMERRsdn2PfHIY4ZKWVoEdYUzxLVPtDalKXkLiY47CE5zkJs8xZp+AIe4zqGCOM8nWCQbacHPxW9F+J5AmM7Xe8Eqci/O62kqU6cagUWjw=
+	t=1789892014; cv=none; b=sSBxMu/Gre4ztVlTsORRFUuLkUR3bSFv9Cgcps2jabBvrUOLQnS7Gz9bMuSJaRWrqKh0+zeGjYTviC+NCeBC8pHNBey6dsR4Fsf8iZiBU/+9ESViXcqmW92SlMUnJeRRBYQeUp6B/W1wRn5+CBNOrgLk2VQoc9x7/sT/sonfjzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789892014; c=relaxed/simple;
-	bh=A7pJRhG7NpywLWWaoMaC1pUfWSZ7AsdAS4qYr97/LYU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PKd3MzoC+Ss6i6FhS1swIuvwOUjSIROkSq26DpJo02yR+dZRmwoHSKuQ+SrrlwF2evbbN013xIMn8ayhkMSzMl94C472/dnbXjrdNGtGSD88oqOGcOjRHrqX/ImtvStZyuUOp3RN11iEk4cBFuPD8CtHvssnAAEzxZd0SGwaG+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKuN9OfJ; arc=none smtp.client-ip=10.30.226.201
+	bh=j5RR68P3oFMU6xBWGop7jkyP1ilGJ5YpBYsz7PL+Ntg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DXrusgLl4FO74xXMVC5otnKoFti0+iTut9m5irk6U2MhLkf2VDn2FkucikEQtVoOabcQl/rf4iPfo2Z3FugDy241ixdQ65C/rV0MgbUrHoq7qj2SlhcE9tLkFGzWoOnOSMpEXC32rsbEWxkOqUpUhNvbetZSBcNhv2Tsg0EGGYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrpYUCpv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKuN9OfJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A3D2C2BCC7;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrpYUCpv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F068C2BCB3;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789892014;
-	bh=A7pJRhG7NpywLWWaoMaC1pUfWSZ7AsdAS4qYr97/LYU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RKuN9OfJVAus+x3GncSlKwUHl9Jtko/fukCDXJ+70KNll5EXk00FkE2C20JnVbxw+
-	 wMcffUT9/jByMBDcOBNcvWYq2kW+AbkgU120JuRSrAaVqiwlO7SOXv3peHPcruxlKT
-	 0IORh6+QxIx/PVer5OYX5XVlTI+xY/tlM2q/7s6h9OUQLIgysUziOpTwQFB4qCq69g
-	 bHrB9rVevcfe8CQSgpjWQhjRgDZr3V8N/VAP2MUbiGT5jyQF+oMFTafM5bhcH7ixGo
-	 UGX9kgt9HcpkhHcbqrvB3OHfMXFD5tlFcZm+94ocOBa+VzmMNuR2KGh6LtMgsOH4Ht
-	 S2Zh7iyctz67Q==
+	bh=j5RR68P3oFMU6xBWGop7jkyP1ilGJ5YpBYsz7PL+Ntg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YrpYUCpvA10GfQ1OkHQ82+oxc5qD46QVdJl4WizLcFtCpG7xs0v4lMOHt2a71ssyg
+	 9YfA+g7mcYEflCxz8aGZXr0IxQyrsgBk6CBDTuyaEMig7pE19nqXAUrIQriCqFWA20
+	 AErusxh07oup4Pkxe1U+jC2/HzBjYIfCJhEpDzIFU1l69Mx+psncfBRtNOwIU6oMm8
+	 pUqEejk2ArBTWlMRhqcXcbvzonSpiJbiHtyY/DfoDZuC5HlPJWzx4ehFKonQXX750k
+	 T04qL94d5yzA+LyuKBWx8jonWOerz/pv8IyjEoZTjdPnePrRivpZMgwEF2x/GE6Y5u
+	 LJV6drbosWgpg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A1A2C982D0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19365C982DA;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 From: Xianwei Zhao via B4 Relay <devnull+xianwei.zhao.amlogic.com@kernel.org>
-Date: Sun, 20 Sep 2026 08:13:28 +0000
-Subject: [PATCH 1/3] spi: dt-bindings: amlogic,meson-gx-spicc: add T7
- compatible
+Subject: [PATCH 0/3] t7: add some nodes for Amlogc t7.
+Date: Sun, 20 Sep 2026 08:13:27 +0000
+Message-Id: <20260920-t7-node-new-v1-0-e6e0840c1b0b@amlogic.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -41,9 +40,10 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-t7-node-new-v1-1-e6e0840c1b0b@amlogic.com>
-References: <20260920-t7-node-new-v1-0-e6e0840c1b0b@amlogic.com>
-In-Reply-To: <20260920-t7-node-new-v1-0-e6e0840c1b0b@amlogic.com>
+X-B4-Tracking: v=1; b=H4sIAKiVr2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDSyMD3RJz3bz8lFTdvNRyXWMLwxTD5DTTFAsDcyWgjoKi1LTMCrBp0bG
+ 1tQBYuqvEXQAAAA==
+X-Change-ID: 20260920-t7-node-new-381d1cf5d807
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
@@ -58,11 +58,11 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789892012; l=1575;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789892012; l=971;
  i=xianwei.zhao@amlogic.com; s=20251216; h=from:subject:message-id;
- bh=Cr+H2n7PINWdLBG8TQcHVSgRz7Rd2HsUY6kC9/oqBVw=;
- b=tvbgHwq2gJbM4TNfbjMX2pQyDPUy7YneptKtaRKwB+1ToDgPQfn2smAZdxJQlQTmvbLiyZ26l
- 5k6PyShz8JiAVIWTe2aD7LDqHucFpEQa9OIFmg0XQui91Nck4YQpAmm
+ bh=j5RR68P3oFMU6xBWGop7jkyP1ilGJ5YpBYsz7PL+Ntg=;
+ b=w/B0pT+84delXXSkn73CrIlYgv9pNMM2ZLKx7STy3fQOX9ZHtHllLscpI1b9THGtFvvaggdmA
+ WcW6BtbcpH9ChVWWGPP7xbV8p7rJR0+SleXRefz+oQLdAP4bmA7bW90
 X-Developer-Key: i=xianwei.zhao@amlogic.com; a=ed25519;
  pk=dWwxtWCxC6FHRurOmxEtr34SuBYU+WJowV/ZmRJ7H+k=
 X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
@@ -70,45 +70,30 @@ X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
 X-Original-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 Reply-To: xianwei.zhao@amlogic.com
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Add device tree descriptions for the peripherals on the Amlogic T7
+SoC and the T7 A311D2 AN400 board.
 
-Add the Amlogic T7 SPICC compatible to the device tree binding.
-
-The T7 controller is compatible with the existing G12A SPICC
-implementation, so require amlogic,meson-g12a-spicc as a fallback
-compatible for T7 devices.
+Add the Amlogic T7 SPICC compatible to the device tree binding. 
+Add the T7 compatible to the Meson DWMAC binding
 
 Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
 ---
- .../devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml     | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+Xianwei Zhao (3):
+      spi: dt-bindings: amlogic,meson-gx-spicc: add T7 compatible
+      dt-bindings: net: meson-dwmac: add T7 support
+      arm64: dts: amlogic: add T7 peripheral nodes
 
-diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-index 4e28e6e9d8e0..f0ba15402a4c 100644
---- a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-+++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
-@@ -16,10 +16,15 @@ description: |
- 
- properties:
-   compatible:
--    enum:
--      - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
--      - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
--      - amlogic,meson-g12a-spicc # SPICC controller on Amlogic G12A and compatible SoCs
-+    oneOf:
-+      - items:
-+          - enum:
-+              - amlogic,t7-spicc
-+          - const: amlogic,meson-g12a-spicc
-+      - enum:
-+          - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
-+          - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
-+          - amlogic,meson-g12a-spicc # SPICC controller on Amlogic G12A and compatible SoCs
- 
-   interrupts:
-     maxItems: 1
+ .../bindings/net/amlogic,meson-dwmac.yaml          |  14 +
+ .../bindings/spi/amlogic,meson-gx-spicc.yaml       |  13 +-
+ .../boot/dts/amlogic/amlogic-t7-a311d2-an400.dts   | 155 +++++++
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi        | 452 +++++++++++++++++++++
+ 4 files changed, 630 insertions(+), 4 deletions(-)
+---
+base-commit: a2530c83c458a503e55219966217dfd1c36a385e
+change-id: 20260920-t7-node-new-381d1cf5d807
 
+Best regards,
 -- 
-2.52.0
+Xianwei Zhao <xianwei.zhao@amlogic.com>
 
 

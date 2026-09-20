@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA99F33E36A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA31393DE0;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789892014; cv=none; b=iYTY92CxDvTo2lBMWk8COPE2fYXBhggIC6sLsAHH9F4JxgzSk+WkxrJHOneJUNDiGjY0M/IIMC3DPWyg0u0fuF33z53Da84+Zb8YHj0Sqi9UdpviTvzkKBsi8kkFzwyzmjoMYdsHQ6obX8R07709Hv09/esXR+JGB75w+rC+OEs=
+	t=1789892014; cv=none; b=G6bqAxF4j9sykcGaQ3ZavTs7nrGjBuDN9jTcIkMS6QC9GJkkk5yuJ0FJ96AYzaoxRBMERRsdn2PfHIY4ZKWVoEdYUzxLVPtDalKXkLiY47CE5zkJs8xZp+AIe4zqGCOM8nWCQbacHPxW9F+J5AmM7Xe8Eqci/O62kqU6cagUWjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789892014; c=relaxed/simple;
-	bh=zJ4Kq0ilfuKS6ulNMZMQIAYed/md/A689VodwX/hPzc=;
+	bh=A7pJRhG7NpywLWWaoMaC1pUfWSZ7AsdAS4qYr97/LYU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Cwh6Mg0ejf7DZMou/ZPDh5KErPN/Mp677jogJsqqzcLp/wm576IDKviw5eqkMgUn1v6zM+GUhIpaaxEFG1oxIYdSOO9Ub3Ik9ealr0FDNNCJSsV33/XHNCY6HxCt+xzASdLXArpTSci924bejrlPALXshaYpmbuxTfnFrSxGoWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M6SyDQS8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=PKd3MzoC+Ss6i6FhS1swIuvwOUjSIROkSq26DpJo02yR+dZRmwoHSKuQ+SrrlwF2evbbN013xIMn8ayhkMSzMl94C472/dnbXjrdNGtGSD88oqOGcOjRHrqX/ImtvStZyuUOp3RN11iEk4cBFuPD8CtHvssnAAEzxZd0SGwaG+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKuN9OfJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M6SyDQS8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 58B79C2BCFB;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKuN9OfJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A3D2C2BCC7;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1789892014;
-	bh=zJ4Kq0ilfuKS6ulNMZMQIAYed/md/A689VodwX/hPzc=;
+	bh=A7pJRhG7NpywLWWaoMaC1pUfWSZ7AsdAS4qYr97/LYU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=M6SyDQS8Snru8vjucK4v7O4WRsM1gD300q/JYXyIsM2gcOm/OvKd53Jr8juTiZsrD
-	 WBPVVmkqopihFl9v1BhYpeOu7nFtvo0XuWFYE0oImf5SgaYwPqTiFNQmcFeuXo/j8a
-	 +NbByStJZ4R7gw0Cj6dBi9e7RWxD6iNhSVUMG0TpIsJ9PC2Q7cws4pVzbp0QSEiOtk
-	 vCoNondtGjtuXxfs1TZeAwHtdzPDOD12slhjruifvY0gqOAPh18xxYpACW6VKN4Ymy
-	 MZTQ3nPkba1mOwwC3sn6u3yplZCrfiIcKDkCJPl/PILi3TQ5qUStWABw57gjRzha/v
-	 GCp3wwoZtNitQ==
+	b=RKuN9OfJVAus+x3GncSlKwUHl9Jtko/fukCDXJ+70KNll5EXk00FkE2C20JnVbxw+
+	 wMcffUT9/jByMBDcOBNcvWYq2kW+AbkgU120JuRSrAaVqiwlO7SOXv3peHPcruxlKT
+	 0IORh6+QxIx/PVer5OYX5XVlTI+xY/tlM2q/7s6h9OUQLIgysUziOpTwQFB4qCq69g
+	 bHrB9rVevcfe8CQSgpjWQhjRgDZr3V8N/VAP2MUbiGT5jyQF+oMFTafM5bhcH7ixGo
+	 UGX9kgt9HcpkhHcbqrvB3OHfMXFD5tlFcZm+94ocOBa+VzmMNuR2KGh6LtMgsOH4Ht
+	 S2Zh7iyctz67Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3ABEBC982E6;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A1A2C982D0;
 	Sun, 20 Sep 2026 08:13:34 +0000 (UTC)
 From: Xianwei Zhao via B4 Relay <devnull+xianwei.zhao.amlogic.com@kernel.org>
-Date: Sun, 20 Sep 2026 08:13:29 +0000
-Subject: [PATCH 2/3] dt-bindings: net: meson-dwmac: add T7 support
+Date: Sun, 20 Sep 2026 08:13:28 +0000
+Subject: [PATCH 1/3] spi: dt-bindings: amlogic,meson-gx-spicc: add T7
+ compatible
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -40,7 +41,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260920-t7-node-new-v1-2-e6e0840c1b0b@amlogic.com>
+Message-Id: <20260920-t7-node-new-v1-1-e6e0840c1b0b@amlogic.com>
 References: <20260920-t7-node-new-v1-0-e6e0840c1b0b@amlogic.com>
 In-Reply-To: <20260920-t7-node-new-v1-0-e6e0840c1b0b@amlogic.com>
 To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -57,11 +58,11 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  Xianwei Zhao <xianwei.zhao@amlogic.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789892012; l=1537;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789892012; l=1575;
  i=xianwei.zhao@amlogic.com; s=20251216; h=from:subject:message-id;
- bh=abTtflC0UcLD+x5kKzaRfULETMk7wpSe7VhzrgrkyKk=;
- b=Xcjkq4cXvlSWwCECEchY3frjVxn0apaxGFXF2H1YZnqGdeP0qtqcPy2fGBF3YbMQaLZhc1VPM
- 75XgH1ade34C1T7656apcYR9pzp5XdTv6rBpsQq5G0yHbxF0IiyuR3m
+ bh=Cr+H2n7PINWdLBG8TQcHVSgRz7Rd2HsUY6kC9/oqBVw=;
+ b=tvbgHwq2gJbM4TNfbjMX2pQyDPUy7YneptKtaRKwB+1ToDgPQfn2smAZdxJQlQTmvbLiyZ26l
+ 5k6PyShz8JiAVIWTe2aD7LDqHucFpEQa9OIFmg0XQui91Nck4YQpAmm
 X-Developer-Key: i=xianwei.zhao@amlogic.com; a=ed25519;
  pk=dWwxtWCxC6FHRurOmxEtr34SuBYU+WJowV/ZmRJ7H+k=
 X-Endpoint-Received: by B4 Relay for xianwei.zhao@amlogic.com/20251216 with
@@ -71,56 +72,41 @@ Reply-To: xianwei.zhao@amlogic.com
 
 From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-Add the T7 compatible to the Meson DWMAC binding.
+Add the Amlogic T7 SPICC compatible to the device tree binding.
 
-The T7 DWMAC controller requires the following compatible combination:
-
-amlogic,t7-dwmac
-amlogic,meson-axg-dwmac
-snps,dwmac-4.00
-
-Add a conditional schema check to enforce this compatible combination
-when amlogic,t7-dwmac is used.
+The T7 controller is compatible with the existing G12A SPICC
+implementation, so require amlogic,meson-g12a-spicc as a fallback
+compatible for T7 devices.
 
 Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
 ---
- .../devicetree/bindings/net/amlogic,meson-dwmac.yaml       | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ .../devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml     | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-index 5c91716d1f21..f75a275e2d75 100644
---- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-@@ -28,6 +28,18 @@ select:
+diff --git a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+index 4e28e6e9d8e0..f0ba15402a4c 100644
+--- a/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
++++ b/Documentation/devicetree/bindings/spi/amlogic,meson-gx-spicc.yaml
+@@ -16,10 +16,15 @@ description: |
  
- allOf:
-   - $ref: snps,dwmac.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: amlogic,t7-dwmac
-+    then:
-+      properties:
-+        compatible:
-+          items:
-+            - const: amlogic,t7-dwmac
-+            - const: amlogic,meson-axg-dwmac
-+            - const: snps,dwmac-4.00
-   - if:
-       properties:
-         compatible:
-@@ -139,8 +151,10 @@ properties:
-           - amlogic,meson-gxbb-dwmac
-           - amlogic,meson-axg-dwmac
-           - amlogic,meson-g12a-dwmac
-+          - amlogic,t7-dwmac
-     contains:
-       enum:
-+        - snps,dwmac-4.00
-         - snps,dwmac-3.70a
-         - snps,dwmac
+ properties:
+   compatible:
+-    enum:
+-      - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
+-      - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
+-      - amlogic,meson-g12a-spicc # SPICC controller on Amlogic G12A and compatible SoCs
++    oneOf:
++      - items:
++          - enum:
++              - amlogic,t7-spicc
++          - const: amlogic,meson-g12a-spicc
++      - enum:
++          - amlogic,meson-gx-spicc # SPICC controller on Amlogic GX and compatible SoCs
++          - amlogic,meson-axg-spicc # SPICC controller on Amlogic AXG and compatible SoCs
++          - amlogic,meson-g12a-spicc # SPICC controller on Amlogic G12A and compatible SoCs
  
+   interrupts:
+     maxItems: 1
 
 -- 
 2.52.0

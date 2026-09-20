@@ -1,150 +1,65 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BD33815D9
-	for <linux-spi@vger.kernel.org>; Sat, 19 Sep 2026 18:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EECA2BEFEB;
+	Sun, 20 Sep 2026 03:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789843371; cv=none; b=PDZ+a7gvfWteWNfKMaAyxewF2gjS7P6H/RC6Jo+Qc0PyRtSEdwDlfHouudRxJTfajwxFTxBt8eAgiTY+29TeQiHZHvLjd5dc4H/dHnT+tJhfan0qjG3HroD1Sa4B4dH7s+XigCHt1HJRMoRry1yKK6b13nQLPV6lOKVgAVrquC4=
+	t=1789873685; cv=none; b=gqJQKIuzT1QeLRrFtGDCE44rvY/W2pfQGnlDR88HFYBToOOZAqjADZ6NrrBhwBNQyJ3QVxNQbQvBsqs4vk2bPpru1BTf2Re0qz0cnuZcFIBCc1V5HJ4prlNmP0kFUJUMmVzsZ1np4MKnX1bOj2KH9Ud0u6aH4JD7PiIzRHAGSLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789843371; c=relaxed/simple;
-	bh=L0cJg8bEa3JcDAFMwgJ+PXyC/ThA9AhiO5G7soyuk4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GJHlBK6gmrBfOE8dh2aZeJ2iOxeRZq+5rJIAYUqOJ0NJ/6y7miG9bkMnFeZehNr6qkK193cH6lpo1JY53bBovIGRKfnomK59DWxIZ+vaN0BeVODfnpa+k051R30SQKF5ObII5pYAhP3Ixfr7U/q4knh3nWjYHlqESacbRXoEsG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+rhnWa9; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789873685; c=relaxed/simple;
+	bh=GbbStNisx5MN/XpaV/2yCe9bX3eW2oO41P/jpQ6XAq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KuEYbAqJcdFmzaLUF9F3o8fOXfX+gXtODCpGOfHpoRkJZ3MVe5VCki3WCwHT8/yKSGCC7aNN8fiYvfejzUBXjQOG9pyxMwnYgt9e4ykh4oUJ/42CAQUTjzcefjJYMEKLlElhRKQhFUtd4lNBc+PMChxZhrcAcuHk/A2PGXKt3c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Cxy9D7rN; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+rhnWa9"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so9337905e9.2
-        for <linux-spi@vger.kernel.org>; Sat, 19 Sep 2026 11:42:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789843368; x=1790448168; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EUaG58XyyXj2IYGxruqsBjrWu0FDpmLYKW3X9EM+9DM=;
-        b=L+rhnWa9nQG2h6Uso3aXhrUb1+pFdsXRFDMx5XcAo69q9fXnDxwpUAnp67jjx05WOh
-         UlHlMf0RCkzMdqFJJyX15kVA7PDcV2cDKzmhkkO3id15YNJF8a3BVbLTlGsK/XPtQM29
-         065odsPEekw6UhF8ik+AQ9gQfRZ/kObO4TrxSbY5+hcsn2cCh3iA11HoNAznCt3ea5HY
-         Fv82E4PjgXTB/1vEy1hauB5j7z+9KyIHJvrA0aEP3zEcl69oTsyDYBZWrNnz+Ggvb/th
-         SYtRL3+ZnGtvfXPzXi81+71BDGhMs0KnxACyG2QGoegKiUDa6P+tUSBBVGabEodUxRWn
-         D/lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789843368; x=1790448168;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=EUaG58XyyXj2IYGxruqsBjrWu0FDpmLYKW3X9EM+9DM=;
-        b=gVyqgbBAN8vlLjw7UP68LklmQMvtBEV7hN1ofBJkajZ7i11QDXc9ejKu1LRrZoLmKP
-         VPdy0t8uJx/E/fPMKEk8crPCXOxC33hAgj+crtVrZImEvFh270rWguy+OgTSV33Rio/D
-         CsvhfIyu3arDm+/XVqMH9n5Qx1ULxUKLP8NmWcbkW6u4VleOPgcajtp3mo1ijlGE+BOe
-         b28He6sHS+ZoO0eS7GJCsCqHyEoEvtxzHj952fdFopWB7f4NXTFmIy3ajIfAumibKNp4
-         338W5EY1UyqPIjDTVHNF+ZJ86mgSLzM9QqycOlq8EUgMa/MzyVgFc+F/U5SUOEl/+hoK
-         Gdtg==
-X-Forwarded-Encrypted: i=1; AKwUvBzZCEJDQsF5+T4xf+E3Yj9gqOeSlY9bu+iJwMwzZ+C6tGma1Pp/DINJG0mehoRbMrWy12EAn3e/U6g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mgbkGzHMl9PWMop1s64LOaG10XCKUmlSHKUQUWr6F1Zfqf9sTM
-	2B0MHJ1+uCq2FFDNbcL+v6tVrWrIAdnmg4+OWSJ04PimwiFoBhLKF4w8
-X-Gm-Gg: AYBFou11z78FHqlVJf1xNRU9UOw70r3W3WcmxBnr7soiXmLIbsV0ts4V7rki7TiNRsb
-	mG9dukqct/jhvhS1xVxNYRlSENvYo+I4wDP1oW7voqdK5UJzGNoLxvIC5eH97Gbg2CPTsJ3pPyk
-	1HUZKdhBuatAjl0tp89AUb/vzM53Rsi+YAPlvesyxeOXxzsOULBD21qduG0zbevcQivcaUi4roN
-	CIlMYIfb+eJE6Vs4c8cGRS7TJhc6FWUcAgUBw6qEttP/IDoLP2grpsIY6sg9yPOBUHnngTjJd5Z
-	7pgOR3Iied/S2wzy9dFLj89wGC1NU6POpR32g6gINN/cveY1jIh73AHiiDV3qO0V+veEKfHye65
-	lexVKiGvrUE53Z2pU5qAedeuav+WVKZKCBZZM0Yv1NKZU3+WywqzFj/57I80VY4KZQgwdBJU/uh
-	Rcdvki3/9FWQfEtv1eeYAUmnEBIQKV1c0WmYRuhvjW7VR1pEkH8CEBS7+FhIYPzBbBjyc7ONbME
-	1cuHD3QLOK45YDikFoWUzNopZ3v
-X-Received: by 2002:a05:600c:4505:b0:49a:a101:4157 with SMTP id 5b1f17b1804b1-49fc56db92fmr86686385e9.7.1789843367901;
-        Sat, 19 Sep 2026 11:42:47 -0700 (PDT)
-Received: from [192.168.1.13] ([185.69.144.71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd07cca6sm91087395e9.11.2026.09.19.11.42.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 19 Sep 2026 11:42:47 -0700 (PDT)
-Message-ID: <8427de42-2cdf-4acb-a439-d7c99cd249ca@gmail.com>
-Date: Sat, 19 Sep 2026 19:42:43 +0100
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Cxy9D7rN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Gb
+	bStNisx5MN/XpaV/2yCe9bX3eW2oO41P/jpQ6XAq0=; b=Cxy9D7rNiycPplCBYl
+	zWekRSO2xDBX9OfDvrQAk47PhhvS6fsfJ5kG+jONTAyc5CKxUEMTxb00ya+wdezO
+	D/9j/niS5HfSNajujDDxuOGjJvbjL6Mw5Fo7gqIAjVvd2Q2Ag3DOmmKwlXgEyNmt
+	g024BAsMw6Lr0ygQfP+KgH+0w=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgD3n40ATq9qZYxrAQ--.5143S2;
+	Sun, 20 Sep 2026 11:07:45 +0800 (CST)
+From: Pengpeng Hou <hppiscas@163.com>
+To: geert@linux-m68k.org
+Cc: broonie@kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hppiscas@163.com
+Subject: Re: [PATCH] spi: sh-msiof: propagate setup runtime-PM errors
+Date: Sun, 20 Sep 2026 11:07:42 +0800
+Message-ID: <20260920030742.97089-1-hppiscas@163.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CAMuHMdWaf7hYoQPCUBJmyErujLMth-_FAwPqZ=2dF9wkN5kc4w@mail.gmail.com>
+References: <CAMuHMdWaf7hYoQPCUBJmyErujLMth-_FAwPqZ=2dF9wkN5kc4w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/11] Add spi-hid transport driver
-To: fQwQf <fqwqf@fqwqf.xyz>, jingyliang@chromium.org, jikos@kernel.org,
- bentiss@kernel.org, corbet@lwn.net, broonie@kernel.org, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- dmitry.torokhov@gmail.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org
-Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- hbarnor@chromium.org, tfiga@chromium.org, jaschultz@microsoft.com,
- dmanti@microsoft.com, acz@semihalf.com
-References: <20260609-send-upstream-v4-0-b843d5e6ced3@chromium.org>
- <010601a0b3ff1cf6-944e2ad5-0ad1-49d4-9e89-c8ab03bbc62c-000000@ap-northeast-1.amazonses.com>
-Content-Language: en-US
-From: Dale Whinham <daleyo@gmail.com>
-In-Reply-To: <010601a0b3ff1cf6-944e2ad5-0ad1-49d4-9e89-c8ab03bbc62c-000000@ap-northeast-1.amazonses.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgD3n40ATq9qZYxrAQ--.5143S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRFoGBUUUUU
+X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbC7QEa4mqvTgHxvgAA3R
 
-On 18/09/2026 11:10, fQwQf wrote:
-> Hi Jingyuan,
-> 
-> 
->> This series picks up the spi-hid driver work originally started by
->> Microsoft. The patch breakdown has been modified and the implementation
->> has been refactored to address upstream feedback and testing issues. We
->> are submitting this as a new series while keeping the original sign-off
->> chain to reflect the history.
-> 
-> 
-> I am working on Linux support for the Surface Laptop 7 (13.8-inch, Snapdragon X series), whose touchpad is a HID-over-SPI device behind a Qualcomm GENI QSPI controller. I noticed that v4 (June 9) is the
-> latest revision of this series and has so far only seen automated review feedback, so I would like to coordinate before preparing any upstream submission of my own.
-> 
-> Current state on my side:
-> 
-> - I have a working touchpad using a downstream Qualcomm GENI QSPI +  spi-hid stack (originally from scuggo's x1e-nixos work, imported  via ELLX-Kernel). My local adaptations move the transport to spi-mem and add framing, response matching, and DMA/error-path  hardening.
-> - Normal touchpad use works on my machine. The latest hardening currently has only build and software-test coverage; I have not validated s.
-> 2. The SL7 adds a different transport requirement (quad-SPI via GENI, through spi-mem) on topuspend/resume, and I have not yet run your v4 series on this hardware.
-> 
-> I believe our work may complement each other in two ways:
-> 
-> 1. The automated review of the series raised DMA cacheline-alignment concerns for SPI transfer buffers and unchecked reset return values in the init/resume paths. Both overlap with the hardening I have been doing downstream, and I would be glad to contribute fixes there.
-> 2. The SL7 adds a different transport requirement (quad-SPI via GENI, through spi-mem) on top of the same HID-over-SPI protocol, which looks like a natural fit for your generic driver rather than a standalone one.
-> 
-> Questions:
-> 
-> - What tree or series do you recommend working against? Is v4 still your current baseline, or do you have a newer development branch?
-> - Would adding the SL7 quad-SPI transport requirements to your generic driver be the preferred upstream approach? Is anyone already working on this?
-> - Are you waiting on maintainer review before a v5? A second hardware platform may help move things along, and I am happy to provide testing on SL7.
-> 
-> I am also tracing the downstream provenance of the Qualcomm QSPI code with the original authors to ensure a clean sign-off chain; I appreciate that this series handles its own history the same way.
-> 
-> Happy to share technical details or a preliminary diff if useful.
-> 
-> I'm not subscribed to the lists; please keep me in CC.
-> 
-> Best regards,
-> Jizhou Tong
+Hi Geert, Mark,
 
-Hi Jizhou, Jingyuan,
+Following the code before the move confirms that the unchecked runtime-PM
+get was introduced by:
 
-I am working on Surface Pro 11 aka. Denali, Snapdragon X1E80100.
+Fixes: 015760563ec7 ("spi: sh-msiof: Add runtime PM lock in initializing")
 
-This series (v4) has enabled successful bringup of touchscreen and pen 
-on the SP11, which also uses QSPI via GENI.
+7ff0b53c4051 moved that operation rather than introducing it. Please use
+the tag above for the applied fix if the metadata has not already been
+corrected.
 
-There is some updated SL7 QSPI 'glue' code at 
-https://github.com/orvitpng/nix1e that reworked the original scuggo nix 
-flake code to work on top of Jingyuan's updated spi-hid series.
+Thanks,
+Pengpeng
 
-With that + some extra pieces to wire it into the Denali devicetree, 
-this series is working well here.
-
-I'm keen to help move things along as the tablet functionality is a key 
-feature of the Surface Pro - please feel free to CC me on further 
-discussions.
-
-Tested-by: Dale Whinham <daleyo@gmail.com>

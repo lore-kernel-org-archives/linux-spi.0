@@ -1,971 +1,154 @@
-Received: from spam01.horizon.auto (spam01.horizon.auto [42.62.85.75])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022085.outbound.protection.outlook.com [52.101.66.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D9C44E67D;
-	Mon, 21 Sep 2026 10:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.75
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789986519; cv=none; b=Or52pFa3QXBzqCY7lwaAljHMx1tV+KECIScu1pFzvJXKXHUlWWvO5FSTIs2v58KlAjzCoDGShgq4I9vjEK/VNX6K16l4fUCimD3/1CN0NE0hlZkhaHU33e7oJAT7YilWbkt0NIdyAf53PglA/wJqaoFjfjlyVlcKspTMebgK1y4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789986519; c=relaxed/simple;
-	bh=eRpuG3W7qZFzhSkX/5BP7UEKPvkv71oaz0w6dmJR4I0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FnsCkceUNxzZxVjTY3yr5kvsRR9Gu4MW7pSJqbMGUO12+CXQqco9KFr2+LZ4oeuFGGb8rIUvwdjKHzZY44HaW9pMSXNc9kRzRQ3Py0ess6i0H4BlLoF67xyls4Xim8nemk+V/dJ7rUt3Jzs9bmVfF5hp0pAZ0+CI4mkUAxuht2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=fail (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=JBwRuUxU reason="signature verification failed"; arc=none smtp.client-ip=42.62.85.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129582E739C;
+	Mon, 21 Sep 2026 10:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789987858; cv=fail; b=ENSr+rhxFV13IY3Q9zUFmYPjAjTk7/+mbXhkRsY81WpCrqnz48LhLU6lReR3gBqvHXWO3yEROgqKxxijrUjcLl84BZKhMgPgGfZNlUF66FUc9dUGaDeHGBtZaKwd1afzOUwozH+bWYw6YQt5zRqrLT+R8dEzB6SdNZ9PWLNkDpY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789987858; c=relaxed/simple;
+	bh=jM6iBeJw8ya9IK2YQfpt/7ZZS95cLGeqdx74NA0BxiU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TcCNABT9aSpgRbFFOQOK+L9H0yu4JHVj5M1NWz9F/aElGRom3HALEHGJBQM+39mWl78Yqa/5Hv76MVdxtcBBbrEUgcioPWObI2tjgNd0kliAikpebm3HHygNndJoe8JO/LaKVbjHGCawD5HPCyT6bTlnDlAeYyxkNKC1oSrFwWE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de; spf=pass smtp.mailfrom=kontron.de; dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b=xVFKQ1hB; arc=fail smtp.client-ip=52.101.66.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kontron.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kontron.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="JBwRuUxU"
-Received: from spam01.horizon.auto (localhost [127.0.0.2] (may be forged))
-	by spam01.horizon.auto with ESMTP id 68L9ct8l069415;
-	Mon, 21 Sep 2026 17:38:55 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from spam01.horizon.auto (exchange003.hobot.cc [10.69.1.10])
-	by spam01.horizon.auto with ESMTPS id 68L9c2QT068824
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO);
-	Mon, 21 Sep 2026 17:38:02 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from server227.horizon.auto (10.9.0.252) by exchange003.hobot.cc
- (10.69.1.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.27; Mon, 21 Sep 2026
- 17:38:01 +0800
-From: Fei Xie <fei.xie@horizon.auto>
-To: Mark Brown <broonie@kernel.org>
-CC: Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger
-	<richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Parshuram Thombare <pthombar@cadence.com>, <linux-spi@vger.kernel.org>,
-        <linux-mtd@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, "fei.xie"
-	<fei.xie@horizon.auto>
-Subject: [RFC PATCH 2/4] spi: cadence-xspi: add ACMD support for SPI NAND
-Date: Mon, 21 Sep 2026 17:36:59 +0800
-Message-ID: <20260921093701.1341766-3-fei.xie@horizon.auto>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260921093701.1341766-1-fei.xie@horizon.auto>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto>
+	dkim=pass (2048-bit key) header.d=kontron.de header.i=@kontron.de header.b="xVFKQ1hB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BAApaB17+Eme5QVQhh4BanFgvIH7YoZ63MvGZng2KhJ2a3mJpLVPazCW6FJJS/UCa95MCQnSS8kgguEItus7gnNSKzdlb93Zg0fWqoTM9jN1KwBdVM4vSWGBhGuLNmdS8AcLEmdLeAv03sw2g8A2l/1kh7rssMs/x4Xf2svPTkaTx+qUM42uqdS9RDws23NVwydeSJ7x5MPiKmAPOn9a1p3On2jeHZGRm1+/h++mqTRy+dnubxXI+LyXY9kMT8egkMAQdlh6mLKN9zvvV/HBOxRpsNpjNnWkPIvhf/ZgjjcTMS1zH9BBLEz0XboD5lim0Y0IKFw3Hlj0f16Tsv6reA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Fm1CbCcffzTt+zV3VZmiW/pBuGEHaStk9jwweHUwyxI=;
+ b=F/QYsSL2tB0jLY0I4xDa0e2OJ2wldowmV4FfDIsw+9IOrCcuStSqlKOeOFSxBHqSST+S5PHavf1MhP8pgMZuiyBd4wIBLTAX5BHvpn4+LPv5EZFQCjoYJfgR4qGtQzzKb6fY3smsgJwTG8x/cUMVMeRoJIenc0GR0PLgEkUsIOc2Bi+CrFaKRUmZw5SBG35KACPg01ovemXfbf+S23FsbieTcXO7U3Hhi5roDpzGYIETKKRa7p8m3n86zIbp6JPUIjVXcek3rPEhZ2P93WUfP1LIoI7k1yzyb/o/89feWt0p9Naxl97m6w+aFSTj+1mNS8F7QG6BIH/4vfgHlh5bSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kontron.de; dmarc=pass action=none header.from=kontron.de;
+ dkim=pass header.d=kontron.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kontron.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Fm1CbCcffzTt+zV3VZmiW/pBuGEHaStk9jwweHUwyxI=;
+ b=xVFKQ1hBFq1ZtgxdmFM3dmhTIg3wmA+Oq74xwJd19556Kshjadu4cHhM9ZEuvckfN+9RXpZFZnJseaz285an1kRx1Mh3AnQafC9yE3dJ34y3F5xZgIHWrbq11ok9S4XcGnasWP5TRfI7AbK1f7oRry1VOQfpEtTBFV23LEsD6og7uSb5ElofIPTZsFb/Skl1E3LmXF/Z4a3jJqSaOZmMbfV56DrKZ4DPGf8Huyr6cqCcbl01TBAL/dL4qIxKpMj8I5LVUxj/bvltTM1JTLj1oG3ZwoIETQ3WDeD5/Mm5Qz0HQ8bU6TO4zd+apSPnXVhFZ4UuhqN5jJzVc1watoaiKA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kontron.de;
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:1fb::23)
+ by AM0PR10MB306277.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:7fe::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
+ 2026 10:50:53 +0000
+Received: from AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22]) by AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ ([fe80::a276:4ad7:962:da22%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 10:50:53 +0000
+Message-ID: <3b23d050-07f4-40de-ae2c-608da69e0ebb@kontron.de>
+Date: Mon, 21 Sep 2026 12:50:52 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: spi: Clarify what rx-sample-delay-ns
+ describes
+To: Mark Brown <broonie@kernel.org>, Frieder Schrempf <frieder@fris.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+ linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org
+References: <20260917-spi-sample-delay-cleanup-v1-0-0e4eddbfb1ce@kontron.de>
+ <20260917-spi-sample-delay-cleanup-v1-1-0e4eddbfb1ce@kontron.de>
+ <c0c4645b-a51c-409f-82a3-a6e6bbd7962b@sirena.org.uk>
+Content-Language: en-US, de-DE
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <c0c4645b-a51c-409f-82a3-a6e6bbd7962b@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0164.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::11) To AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:1fb::23)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: exchange004.hobot.cc (10.9.15.112) To exchange003.hobot.cc
- (10.69.1.10)
-X-DKIM-Results: exchange003.hobot.cc; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:spam01.horizon.auto 68L9ct8l069415
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horizon.auto;
-	s=auto; t=1789983493;
-	bh=Fe0svDoY4P+wByAso92+l+8cbApwumiXGixK8icWVUY=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=JBwRuUxUKJ30tWCNVe1uvJw8PVqFJPA9sjNasbW0Uva8p1Jf1sIIpjuPLbBfAnSHs
-	 vNhAsUj6jd+Q2/LZfk9a0NAq4g7tI2ioau0S5D+J6YOuoUnYSzBfmT9nps+lmV5GZQ
-	 61Gc3wBeibQIuYcUzVMn7ZR+fWSEihZTvoeHi8C+ckLk2zSSpooWR/IY5rJywxtU2q
-	 RApgkfqDCbYwzLdZYKNO5RfEAu2PByqcyHY0MWzA4QS3sEuHmAkScgEvN/tDW0zgge
-	 iE5Qt3z+eXkQNCQ2wGHbhbQAjhwgIXR1EN3gPOg3HedKaaD88KaHo+UMGzBrbbdKIH
-	 K2rJAlfiRo5wQ==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR10MB4277:EE_|AM0PR10MB306277:EE_
+X-MS-Office365-Filtering-Correlation-Id: e95a5cf8-87ea-4dd9-5635-08df17ce3517
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|10067099003|56012099006|18002099003|22082099003|4143699003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	uwSNntvyuiCTUtHyaFYuxFu2v3lJ2fyPOzjTi4nTzCrNEAq0hxBalt/Z3YBVrY9vINlNyHvykkJejdx/BzoqoelzbySXvUltK9ty34JAV6TIxdaLDMtBq4/IfObnzPbNL4TZteKVoxDpskirSfgbuXLswZ6aeONaX7RMYBlenDZpQNROIwO8Ot6ugXgRXoEmWQImhPLlw3X94SHUlp2llzGvxG6MbVDODFNCen2nIYmWkCBQREB6f7eDHt10d/rYp3Of4xku7J5r6MJzgyw5ClHSwRHsWHZuIxsvJZsfztOw2j82LlCC4aUivjNziZEyNnQMscxxiwkqjsl3fyxWDGTtqpuTy7Hr/htRgYONr7H9nwSI70J5FY+jpXUi9MWiWP2NwDjSi/9OjUJUECYiBaIGJAUkmOk6K+CECZu+4DzjM0NyYk2/N87PZ2EGpM2Qj88EFI7zkfDFWHjSlVjrPTeP2MnuEmGAedMKoPrxWdzQq6fUDOvvfxHTjO4wBw+6U0m+6WpSvVOz1HaTaJiczVu3JjRKccYffwdS/ewYoZKFLyYnQouBZuk81q3h3qAsys8J3yemJCcsxlYlGVWCS80yioWQQ4OUhpbIMAC0CObitFVab5gQWEFh9cB/l2QEcKEYxwzVVdIE7LgTrXUQxlH9iTY5WS/gSnfr7Arv+10=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(10067099003)(56012099006)(18002099003)(22082099003)(4143699003)(11063799006);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MEVkWnFSZXVEdzRqTkpYajB0NFR2eU1MVzk1WThkQXhNMHdUcXZ0SWlkT0VF?=
+ =?utf-8?B?NUNtTE54NWVURVdSUUdNRVZjdXI5Uk5GYUt3Lzh2OWl4MlRzMjBYTml5YU15?=
+ =?utf-8?B?czZGZDhveVQ5NDFYelQzV0pYRzNRUTNpZnVGL0xydFliWDRGWWlBcEdySHBt?=
+ =?utf-8?B?UkxPRmJlRnM5L3g4UDFlTkxrNmZSQUovQzRDT1NDWXRteHlCbmlRMzg5R25D?=
+ =?utf-8?B?WnNCTjhDQVJiMEJuUm1mTVFiM0JGc1B2MllxUTFMbm1lVEo4Q0RMc2pQQWhN?=
+ =?utf-8?B?cThtLzN2WTNGTjlBTWJPeDBxK0lLQTFFT1lhYVZNVDZJOFN0c1BwQ1RLRW0x?=
+ =?utf-8?B?NEVJUDhEV1Zzb3N4WGk3N3pxUFZTV2pQMXFLN1pJWnBpU2crdHZRMVhyWGpU?=
+ =?utf-8?B?bkt5ZVBENFdBZXlDcm9OajBCMUcxYy9ZVFBDakRNd09BS2lJdTFTRngrU3lP?=
+ =?utf-8?B?RkhoMTNBNmRPM1JOQTJ4bVhlUkZVa3BrRC9lZ1o1M0NNQUl1anRYQ3MvVWd6?=
+ =?utf-8?B?dE5GSlUvbVhRa3o0RzRKNklESmp1TFQ5YXNIOHhyRWUyaWVQNUM1cVhjdk1z?=
+ =?utf-8?B?TkJTNjN5cU82Ui9OVzVVOVNTSmpzdi9JMUwyZXRTN1BhY2tJQU4xNjgwYmtn?=
+ =?utf-8?B?Q1U2N0xMd0FXemVxZktRZUhod2s4eHFITGlWcE42Wks3eHRWVG02NDJqcjVx?=
+ =?utf-8?B?UGlybGwyODBQeW9mNmFyNC9PbWVGMUNNaG8vNFRtdlZkRjU4cm9Xd2U3ZVJk?=
+ =?utf-8?B?MjZFREUvODJpRTEzanNDdWVOSFZWR1ovNVdhRTR1VzF4ZmxkbHBYR21FeVVQ?=
+ =?utf-8?B?VDdseCtwbDdjVDlHTTd0QjNvZ1ZKQUNsWW5jcjVXb3lsYnRGaW1QK2tpRWVh?=
+ =?utf-8?B?NGhCUUI0ZnlZQWluRTl4Z2J3M3k5dHhuTVV1UHZFYzBMY2hCR0kvZUdmMEFp?=
+ =?utf-8?B?bmJmdHhKZTA3c1BGSENYYkJVMWl5TStvaTFWQ1A2alNQc3htYkJrVVJUd0Iv?=
+ =?utf-8?B?RXl1eU5IcmFZUHUwRGZ5WVByeDZVZVVPcmtpVitrWXJFNEZnVEtPVjZRWTJB?=
+ =?utf-8?B?S2p3STFKa2FMc3VlZDRIQjdScEhKQ1NPOUgwcUpQeGFvR1QxUTRpdS90UW1D?=
+ =?utf-8?B?bVNSN1M0aFdHVUdWSytJdDBkcnNrMVBkbCtyVGhOU2MySzE3Zld0d2pPcjNo?=
+ =?utf-8?B?V1RsTWJHL1UvYkg5L2pxWXFRTVl5d2RvYmxDOHI5QW5mSFN2MklkSjQxRTFO?=
+ =?utf-8?B?NUYycDJKUDdlSzFNSXRPR0pCUmFhUjFtVHl6QnliTFgybDdVK1NteVZFV1lD?=
+ =?utf-8?B?WmZFYU5KRTlPdnJ3Rk9nU2RGdG5lc3c3WWhWQlQ1SG5tVWJIWjRjMkRGZ25X?=
+ =?utf-8?B?N25GTGovSCtDU2N1b200TjE1VGJVc2VkaFlpS1Q0V0h6STgzU1B4aTJLZnpu?=
+ =?utf-8?B?TW96QldiMXpCK1BFMUNJYzNnRkhDUkFYWjA4d21FUFVwUE9kL29QQi9SQUpZ?=
+ =?utf-8?B?UTVSWTNiRU1sV2lVVTMwSzNRYzJFOCt3WEEzQWoyZkR3d2N3RTFnMXN0cWdn?=
+ =?utf-8?B?WTRPeENObG93Yitjbi85TTEvVXRVbEVyL3lRK251TDNEWHZUWm5zdHM5UDE2?=
+ =?utf-8?B?K3U0V3Z3U01nSWxDZ3NzeVplWVhkZFVYYWlCYjl4R2xHWVRyM3RScFhMOXFW?=
+ =?utf-8?B?a0loUEdtZmNzazlId2Y2K2V6TEszNnhwS0ZWaFJyN0h4U2JvSGdnVis4U3NY?=
+ =?utf-8?B?cHFFQjZBbk9yY0t0ek9BNGpNYklLeGhaRFg3V2tpYVVOakNIZlhOQVl6aFUy?=
+ =?utf-8?B?cnZicnh5NDJKK1JlRnpKY2dic3lkcE5ic3VsbVhzMXhCVU9GcHJoOVIrRkxy?=
+ =?utf-8?B?UEplQjk0eExXUzJDbUdOMzc5dFVoL3A2K3BsMk5wTGxFTklBcDhOZDlvT3V1?=
+ =?utf-8?B?b2NYTkNMaEluUUxYM0x3ZWFoT0dDN3RMdmZHU3hEWGk4dEtJRk9hNUxsRDJH?=
+ =?utf-8?B?ekgvb0xjM2NXMTYvTUlTRmxEN3NKdjZ2R3c3ZW9tMitjZ3NrazhWRWI1aVFF?=
+ =?utf-8?B?QlN4VitSV2ZQV0szRm1xSGJmTXVTV3NwcmpSTXNkMlpkdGFPdU1jVk4rQmNV?=
+ =?utf-8?B?QXdCVnJEOFF6Tk1QOUN6THhqbDVubi92d3BrMFRnMWxZeHIyTUwzeVVBdGxV?=
+ =?utf-8?B?SlI1K0I5dFJ0VzVpWEFIcE44Nk5oeWNnKzRJMm9YKzA3R3l2YWIxaDB3Ynhs?=
+ =?utf-8?B?aEFkbGduNG1BMDZkR25SVGZ6SnhxTE1JK3NBY0F1TXdzYzgzWnhERjZNeHhx?=
+ =?utf-8?B?U2RlL1FKeW1SWVc4aWJSbnllVElRKzlUcFRsVmFUNGRvUzVyWkxZa0ZZZGZH?=
+ =?utf-8?Q?Vp2fncoOzB6NkTQY=3D?=
+X-OriginatorOrg: kontron.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: e95a5cf8-87ea-4dd9-5635-08df17ce3517
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR10MB4277.EURPRD10.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 10:50:53.3247
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8c9d3c97-3fd9-41c8-a2b1-646f3942daf1
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AriXi8qAwgqwKSTFp8Bd77Ptk8kcjwy8ezUtAwjfy47YVwPHyPrTXo999SoEFjUInM1xDOWh627pCR0UKPDl6YzPWzUlTGW/k/+xR/4uUEQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB306277
 
-From: "fei.xie" <fei.xie@horizon.auto>
+On 18.09.26 00:23, Mark Brown wrote:
+> On Thu, Sep 17, 2026 at 05:37:35PM +0200, Frieder Schrempf wrote:
+>> From: Frieder Schrempf <frieder.schrempf@kontron.de>
+>>
+>> The property is documented as an offset from the controller's default
+>> sampling time. That says what the value does, but not what it is meant to
+> 
+> Please submit patches using subject lines reflecting the style for the
+> subsystem, this makes it easier for people to identify relevant patches.
+> Look at what existing commits in the area you're changing are doing and
+> make sure your subject lines visually resemble what they're doing.
+> There's no need to resubmit to fix this alone.
 
-Add PIO master-DMA support for the controller auto-command mode.
-Configure the SPI NAND read, program, erase, status and reset
-sequences, retaining STIG for operations not consumed by ACMD.
-
-Signed-off-by: fei.xie <fei.xie@horizon.auto>
----
- drivers/spi/spi-cadence-xspi.c | 782 +++++++++++++++++++++++++++++++++
- 1 file changed, 782 insertions(+)
-
-diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 39c868a5b171c..0fedf6cd6a590 100644
---- a/drivers/spi/spi-cadence-xspi.c
-+++ b/drivers/spi/spi-cadence-xspi.c
-@@ -4,6 +4,7 @@
- 
- #include <linux/completion.h>
- #include <linux/delay.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/errno.h>
- #include <linux/interrupt.h>
-@@ -11,6 +12,8 @@
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/mtd/spinand.h>
-+#include <linux/overflow.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/property.h>
-@@ -54,7 +57,33 @@
- #define CDNS_XSPI_CMD_REG_4			0x0010
- #define CDNS_XSPI_CMD_REG_5			0x0014
- 
-+/* Auto command fields in command register 0 */
-+#define CDNS_XSPI_ACMD_MODE			GENMASK(31, 30)
-+#define CDNS_XSPI_ACMD_TRD_NUM			GENMASK(26, 24)
-+#define CDNS_XSPI_ACMD_BANK_NUM			GENMASK(22, 20)
-+#define CDNS_XSPI_ACMD_DMA_SEL			BIT(19)
-+#define CDNS_XSPI_ACMD_INT_EN			BIT(18)
-+#define CDNS_XSPI_ACMD_CMD_TYPE			GENMASK(15, 0)
-+
-+#define CDNS_XSPI_ACMD_READ_OP			0x2200
-+#define CDNS_XSPI_ACMD_PROG_OP			0x2100
-+#define CDNS_XSPI_ACMD_ERASE_OP			0x1000
-+#define CDNS_XSPI_ACMD_RESET_OP			0x1100
-+#define CDNS_XSPI_ACMD_DATA_THREAD		7
-+#define CDNS_XSPI_ACMD_ERASE_THREAD		5
-+#define CDNS_XSPI_ACMD_TIMEOUT_MS		1000
-+#define CDNS_XSPI_ACMD_MODE_PIO			1
-+
-+#define CDNS_XSPI_NAND_OP_GET_FEATURE		0x0f
-+#define CDNS_XSPI_NAND_OP_WRITE_ENABLE		0x06
-+#define CDNS_XSPI_NAND_OP_PROGRAM_EXECUTE	0x10
-+#define CDNS_XSPI_NAND_OP_PAGE_READ		0x13
-+#define CDNS_XSPI_NAND_OP_BLOCK_ERASE		0xd8
-+#define CDNS_XSPI_NAND_OP_RESET			0xff
-+#define CDNS_XSPI_NAND_STATUS_REG		0xc0
-+
- /* Command status registers */
-+#define CDNS_XSPI_CMD_STATUS_PTR_REG	0x0040
- #define CDNS_XSPI_CMD_STATUS_REG		0x0044
- 
- /* Controller status register */
-@@ -143,10 +172,126 @@
- #define CDNS_XSPI_CMD_STATUS_CRC_ERROR		BIT(2)
- #define CDNS_XSPI_CMD_STATUS_BUS_ERROR		BIT(1)
- #define CDNS_XSPI_CMD_STATUS_INV_SEQ_ERROR	BIT(0)
-+/* Reset sequence config register */
-+#define CDNS_XSPI_RST_SEQ_CFG_0			0x0400
-+#define CDNS_XSPI_RST_SEQ_P1_CMD1_VAL		GENMASK(15, 8)
-+
-+/* Erase sequence config registers */
-+#define CDNS_XSPI_ERSS_SEQ_CFG_0			0x0410
-+#define CDNS_XSPI_ERSS_SEQ_P1_CMD_VAL		GENMASK(7, 0)
-+#define CDNS_XSPI_ERSS_SEQ_P1_CMD_IOS		GENMASK(9, 8)
-+#define CDNS_XSPI_ERSS_SEQ_P1_CMD_EDGE		BIT(11)
-+#define CDNS_XSPI_ERSS_SEQ_P1_ADDR_CNT		GENMASK(14, 12)
-+#define CDNS_XSPI_ERSS_SEQ_P1_CMD_EXT_EN	BIT(15)
-+#define CDNS_XSPI_ERSS_SEQ_P1_CMD_EXT_VAL	GENMASK(23, 16)
-+#define CDNS_XSPI_ERSS_SEQ_P1_ADDR_IOS		GENMASK(25, 24)
-+#define CDNS_XSPI_ERSS_SEQ_P1_ADDR_EDGE		BIT(28)
-+
-+#define CDNS_XSPI_ERSS_SEQ_CFG_1			0x0414
-+#define CDNS_XSPI_ERSS_SEQ_P1_SECT_SIZE		GENMASK(4, 0)
-+
-+#define CDNS_XSPI_ERSS_SEQ_CFG_2			0x0418
-+
-+/* Program sequence config registers */
-+#define CDNS_XSPI_PROG_SEQ_CFG_0			0x0420
-+#define CDNS_XSPI_PROG_SEQ_P1_CMD_VAL		GENMASK(7, 0)
-+#define CDNS_XSPI_PROG_SEQ_P1_CMD_IOS		GENMASK(9, 8)
-+#define CDNS_XSPI_PROG_SEQ_P1_CMD_EDGE		BIT(11)
-+#define CDNS_XSPI_PROG_SEQ_P1_ADDR_CNT		GENMASK(14, 12)
-+#define CDNS_XSPI_PROG_SEQ_P1_ADDR_IOS		GENMASK(17, 16)
-+#define CDNS_XSPI_PROG_SEQ_P1_ADDR_EDGE		BIT(19)
-+#define CDNS_XSPI_PROG_SEQ_P1_DATA_IOS		GENMASK(21, 20)
-+#define CDNS_XSPI_PROG_SEQ_P1_DATA_EDGE		BIT(23)
-+#define CDNS_XSPI_PROG_SEQ_P1_DUMMY_CNT		GENMASK(29, 24)
-+
-+#define CDNS_XSPI_PROG_SEQ_CFG_1			0x0424
-+#define CDNS_XSPI_PROG_SEQ_P1_CMD_EXT_EN		BIT(0)
-+#define CDNS_XSPI_PROG_SEQ_P1_CMD_EXT_VAL		GENMASK(15, 8)
-+
-+#define CDNS_XSPI_PROG_SEQ_CFG_2			0x0428
-+
-+/* Read sequence config registers */
-+#define CDNS_XSPI_READ_SEQ_CFG_0			0x0430
-+#define CDNS_XSPI_READ_SEQ_P1_CMD_VAL		GENMASK(7, 0)
-+#define CDNS_XSPI_READ_SEQ_P1_CMD_IOS		GENMASK(9, 8)
-+#define CDNS_XSPI_READ_SEQ_P1_CMD_EDGE		BIT(11)
-+#define CDNS_XSPI_READ_SEQ_P1_ADDR_CNT		GENMASK(14, 12)
-+#define CDNS_XSPI_READ_SEQ_P1_ADDR_IOS		GENMASK(17, 16)
-+#define CDNS_XSPI_READ_SEQ_P1_ADDR_EDGE		BIT(19)
-+#define CDNS_XSPI_READ_SEQ_P1_DATA_IOS		GENMASK(21, 20)
-+#define CDNS_XSPI_READ_SEQ_P1_DATA_EDGE		BIT(23)
-+#define CDNS_XSPI_READ_SEQ_P1_DUMMY_CNT		GENMASK(29, 24)
-+
-+#define CDNS_XSPI_READ_SEQ_CFG_1			0x0434
-+#define CDNS_XSPI_READ_SEQ_P1_CMD_EXT_EN		BIT(0)
-+#define CDNS_XSPI_READ_SEQ_P1_CACHE_RANDOM_READ_EN	BIT(4)
-+#define CDNS_XSPI_READ_SEQ_CFG_2			0x0438
-+
-+/* Write enable sequence config register */
-+#define CDNS_XSPI_WE_SEQ_CFG_0			0x0440
-+#define CDNS_XSPI_WE_SEQ_P1_CMD_VAL		GENMASK(7, 0)
-+#define CDNS_XSPI_WE_SEQ_P1_CMD_IOS		GENMASK(9, 8)
-+#define CDNS_XSPI_WE_SEQ_P1_CMD_EDGE		BIT(11)
-+#define CDNS_XSPI_WE_SEQ_P1_EN			BIT(24)
-+
-+/* Status sequence config registers */
-+#define CDNS_XSPI_STAT_SEQ_CFG_0			0x0450
-+#define CDNS_XSPI_STAT_SEQ_P1_ADDR_CNT			GENMASK(9, 8)
-+#define CDNS_XSPI_STAT_SEQ_CFG_1			0x0454
-+#define CDNS_XSPI_P1_DEV_RDY_ADDR_EN		BIT(6)
-+#define CDNS_XSPI_P1_PROG_FAIL_ADDR_EN		BIT(22)
-+#define CDNS_XSPI_P1_ERS_FAIL_ADDR_EN		BIT(30)
-+
-+#define CDNS_XSPI_STAT_SEQ_CFG_2			0x0458
-+#define CDNS_XSPI_STAT_SEQ_P1_DEV_RDY_CMD_VAL	GENMASK(7, 0)
-+#define CDNS_XSPI_STAT_SEQ_P1_ERS_FAIL_CMD_VAL	GENMASK(15, 8)
-+#define CDNS_XSPI_STAT_SEQ_P1_PROG_FAIL_CMD_VAL	GENMASK(31, 24)
-+
-+#define CDNS_XSPI_STAT_SEQ_CFG_3			0x045c
-+#define CDNS_XSPI_STAT_SEQ_CFG_4			0x0460
-+#define CDNS_XSPI_STAT_SEQ_CFG_5			0x0464
-+#define CDNS_XSPI_STAT_SEQ_DEV_RDY_IDX		GENMASK(3, 0)
-+#define CDNS_XSPI_STAT_SEQ_DEV_RDY_EN		BIT(6)
-+#define CDNS_XSPI_STAT_SEQ_ERS_FAIL_IDX		GENMASK(11, 8)
-+#define CDNS_XSPI_STAT_SEQ_ERS_FAIL_VAL		BIT(12)
-+#define CDNS_XSPI_STAT_SEQ_ERS_FAIL_EN		BIT(14)
-+#define CDNS_XSPI_STAT_SEQ_PROG_FAIL_IDX		GENMASK(27, 24)
-+#define CDNS_XSPI_STAT_SEQ_PROG_FAIL_VAL		BIT(28)
-+#define CDNS_XSPI_STAT_SEQ_PROG_FAIL_EN			BIT(30)
-+
-+#define CDNS_XSPI_STAT_SEQ_CFG_7			0x046c
-+#define CDNS_XSPI_STAT_SEQ_CFG_8			0x0470
-+#define CDNS_XSPI_STAT_SEQ_CFG_9			0x0474
-+
-+#define CDNS_XSPI_STAT_SEQ_CFG_10		0x0478
-+#define CDNS_XSPI_STAT_SEQ_ECC_FAIL_EN		BIT(31)
-+#define CDNS_XSPI_STAT_SEQ_CRDY_VAL		BIT(27)
-+#define CDNS_XSPI_STAT_SEQ_CRDY_IDX		GENMASK(26, 24)
-+#define CDNS_XSPI_STAT_SEQ_ECC_CORR_VAL		GENMASK(23, 16)
-+#define CDNS_XSPI_STAT_SEQ_ECC_FAIL_VAL		GENMASK(15, 8)
-+#define CDNS_XSPI_STAT_SEQ_ECC_FAIL_MASK		GENMASK(7, 0)
- 
- #define CDNS_XSPI_STIG_DONE_FLAG		BIT(0)
- #define CDNS_XSPI_TRD_STATUS			0x0104
- 
-+#define CDNS_XSPI_FLASH_TYPE_NOR		0
-+#define CDNS_XSPI_FLASH_TYPE_NAND		1
-+
-+#define CDNS_XSPI_GLOBAL_SEQ_CFG			0x0390
-+#define CDNS_XSPI_SEQ_TYPE			GENMASK(24, 23)
-+#define CDNS_XSPI_SEQ_PAGE_SIZE_PGM		GENMASK(7, 4)
-+#define CDNS_XSPI_SEQ_PAGE_SIZE_RD		GENMASK(3, 0)
-+#define CDNS_XSPI_SEQ_SPI_NAND			3
-+
-+#define CDNS_XSPI_GLOBAL_SEQ_CFG_1		0x0394
-+#define CDNS_XSPI_SEQ_PLANE_CNT			GENMASK(29, 28)
-+#define CDNS_XSPI_SEQ_PAGE_PER_BLOCK		GENMASK(26, 24)
-+#define CDNS_XSPI_SEQ_PAGE_CA_SIZE		BIT(16)
-+#define CDNS_XSPI_SEQ_PAGE_SIZE_EXT		GENMASK(8, 0)
-+
-+#define CDNS_XSPI_XIP_MODE_CFG			0x0388
-+#define CDNS_XSPI_XIP_EN			BIT(0)
-+
- #define MODE_NO_OF_BYTES			GENMASK(25, 24)
- #define MODEBYTES_COUNT			1
- 
-@@ -305,6 +450,7 @@ enum cdns_xspi_stig_cmd_dir {
- 
- struct cdns_xspi_driver_data {
- 	bool mrvl_hw_overlay;
-+	bool use_acmd;
- 	u32 dll_phy_ctrl;
- 	u32 ctb_rfile_phy_ctrl;
- 	u32 rfile_phy_tsel;
-@@ -313,12 +459,26 @@ struct cdns_xspi_driver_data {
- 	u32 rfile_phy_gate_lpbk_ctrl;
- 	u32 rfile_phy_dll_master_ctrl;
- 	u32 rfile_phy_dll_slave_ctrl;
-+	u8 flash_type;
- };
- 
- static struct cdns_xspi_driver_data cdns_driver_data = {
- 	.mrvl_hw_overlay = false,
- };
- 
-+static struct cdns_xspi_driver_data cdns_nand_driver_data = {
-+	.mrvl_hw_overlay = false,
-+	.use_acmd = true,
-+	.flash_type = CDNS_XSPI_FLASH_TYPE_NAND,
-+};
-+
-+struct cdns_xspi_acmd_info {
-+	u64 row_addr;
-+	u64 column_addr;
-+	size_t data_nbytes;
-+	bool row_addr_valid;
-+	bool initialized;
-+};
- struct cdns_xspi_dev {
- 	struct platform_device *pdev;
- 	struct spi_controller *host;
-@@ -351,6 +511,13 @@ struct cdns_xspi_dev {
- 
- 	bool xfer_in_progress;
- 	int current_xfer_qword;
-+	u32 work_mode;
-+	u8 flash_type;
-+
-+	struct cdns_xspi_acmd_info acmd_info;
-+	void *dma_buf;
-+	dma_addr_t dma_addr;
-+	u32 dma_buf_len;
- };
- 
- static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns_xspi)
-@@ -425,6 +592,268 @@ static void cdns_xspi_set_interrupts(struct cdns_xspi_dev *cdns_xspi,
- 	writel(intr_enable, cdns_xspi->iobase + CDNS_XSPI_INTR_ENABLE_REG);
- }
- 
-+static void cdns_xspi_nand_cfg_seq_init(struct cdns_xspi_dev *cdns_xspi,
-+					struct spinand_device *spinand)
-+{
-+	u32 seq_cfg, seq_cfg1;
-+
-+	seq_cfg = readl(cdns_xspi->iobase + CDNS_XSPI_GLOBAL_SEQ_CFG);
-+	seq_cfg1 = readl(cdns_xspi->iobase + CDNS_XSPI_GLOBAL_SEQ_CFG_1);
-+	seq_cfg = u32_replace_bits(seq_cfg, CDNS_XSPI_SEQ_SPI_NAND,
-+				   CDNS_XSPI_SEQ_TYPE);
-+	seq_cfg = u32_replace_bits(seq_cfg,
-+				   ilog2(spinand->base.memorg.pagesize),
-+				   CDNS_XSPI_SEQ_PAGE_SIZE_PGM);
-+	seq_cfg = u32_replace_bits(seq_cfg,
-+				   ilog2(spinand->base.memorg.pagesize),
-+				   CDNS_XSPI_SEQ_PAGE_SIZE_RD);
-+	seq_cfg1 = u32_replace_bits(seq_cfg1,
-+				    ilog2(spinand->base.memorg.planes_per_lun),
-+				    CDNS_XSPI_SEQ_PLANE_CNT);
-+	seq_cfg1 = u32_replace_bits(seq_cfg1,
-+				    ilog2(spinand->base.memorg.pages_per_eraseblock),
-+				    CDNS_XSPI_SEQ_PAGE_PER_BLOCK);
-+	seq_cfg1 = u32_replace_bits(seq_cfg1,
-+				    !!(spinand->base.memorg.pagesize & BIT(12)),
-+				    CDNS_XSPI_SEQ_PAGE_CA_SIZE);
-+	seq_cfg1 = u32_replace_bits(seq_cfg1, spinand->base.memorg.oobsize,
-+				    CDNS_XSPI_SEQ_PAGE_SIZE_EXT);
-+
-+	writel(seq_cfg, cdns_xspi->iobase + CDNS_XSPI_GLOBAL_SEQ_CFG);
-+	writel(seq_cfg1, cdns_xspi->iobase + CDNS_XSPI_GLOBAL_SEQ_CFG_1);
-+}
-+
-+static void cdns_xspi_nand_read_seq_init(struct cdns_xspi_dev *cdns_xspi,
-+					 struct spinand_device *spinand)
-+{
-+	const struct spi_mem_op *op = spinand->op_templates->read_cache;
-+	u32 dummy_cycles = 0;
-+	u32 read_seq_cfg0;
-+	u32 read_seq_cfg1;
-+
-+	if (op->dummy.nbytes && op->dummy.buswidth)
-+		dummy_cycles = op->dummy.nbytes * BITS_PER_BYTE /
-+			       (op->dummy.buswidth * (op->dummy.dtr + 1));
-+
-+	read_seq_cfg0 =
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_CMD_VAL, op->cmd.opcode) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_CMD_IOS,
-+			   ilog2(op->cmd.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_CMD_EDGE, op->cmd.dtr) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_ADDR_CNT,
-+			   op->addr.nbytes) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_ADDR_IOS,
-+			   ilog2(op->addr.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_ADDR_EDGE, op->addr.dtr) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_DATA_IOS,
-+			   ilog2(op->data.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_DATA_EDGE, op->data.dtr) |
-+		FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_DUMMY_CNT, dummy_cycles);
-+	read_seq_cfg1 = FIELD_PREP(CDNS_XSPI_READ_SEQ_P1_CMD_EXT_EN,
-+				   op->cmd.nbytes > 1) |
-+		CDNS_XSPI_READ_SEQ_P1_CACHE_RANDOM_READ_EN;
-+
-+	writel(read_seq_cfg0, cdns_xspi->iobase + CDNS_XSPI_READ_SEQ_CFG_0);
-+	writel(read_seq_cfg1, cdns_xspi->iobase + CDNS_XSPI_READ_SEQ_CFG_1);
-+	writel(0, cdns_xspi->iobase + CDNS_XSPI_READ_SEQ_CFG_2);
-+
-+	dev_dbg(cdns_xspi->dev,
-+		"ACMD read: op=%02x %u-%u-%u%s addr=%u dummy=%u cfg=%08x/%08x\n",
-+		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
-+		op->data.buswidth, op->data.dtr ? " DTR" : " SDR",
-+		op->addr.nbytes, dummy_cycles, read_seq_cfg0, read_seq_cfg1);
-+}
-+
-+static void cdns_xspi_nand_write_seq_init(struct cdns_xspi_dev *cdns_xspi,
-+					  struct spinand_device *spinand)
-+{
-+	const struct spi_mem_op *op = spinand->op_templates->write_cache;
-+	u32 dummy_cycles = 0;
-+	u32 write_seq_cfg0;
-+	u32 write_seq_cfg1;
-+
-+	if (op->dummy.nbytes && op->dummy.buswidth)
-+		dummy_cycles = op->dummy.nbytes * BITS_PER_BYTE /
-+			       (op->dummy.buswidth * (op->dummy.dtr + 1));
-+
-+	write_seq_cfg0 =
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_CMD_VAL, op->cmd.opcode) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_CMD_IOS,
-+			   ilog2(op->cmd.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_CMD_EDGE, op->cmd.dtr) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_ADDR_CNT,
-+			   op->addr.nbytes) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_ADDR_IOS,
-+			   ilog2(op->addr.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_ADDR_EDGE, op->addr.dtr) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_DATA_IOS,
-+			   ilog2(op->data.buswidth)) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_DATA_EDGE, op->data.dtr) |
-+		FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_DUMMY_CNT, dummy_cycles);
-+	write_seq_cfg1 = FIELD_PREP(CDNS_XSPI_PROG_SEQ_P1_CMD_EXT_EN,
-+				    op->cmd.nbytes > 1);
-+
-+	writel(write_seq_cfg0, cdns_xspi->iobase + CDNS_XSPI_PROG_SEQ_CFG_0);
-+	writel(write_seq_cfg1, cdns_xspi->iobase + CDNS_XSPI_PROG_SEQ_CFG_1);
-+	writel(0, cdns_xspi->iobase + CDNS_XSPI_PROG_SEQ_CFG_2);
-+
-+	dev_dbg(cdns_xspi->dev,
-+		"ACMD program: op=%02x %u-%u-%u%s addr=%u dummy=%u cfg=%08x/%08x\n",
-+		op->cmd.opcode, op->cmd.buswidth, op->addr.buswidth,
-+		op->data.buswidth, op->data.dtr ? " DTR" : " SDR",
-+		op->addr.nbytes, dummy_cycles, write_seq_cfg0, write_seq_cfg1);
-+}
-+
-+static void cdns_xspi_nand_erase_seq_init(struct cdns_xspi_dev *cdns_xspi,
-+					  struct spinand_device *spinand)
-+{
-+	u32 erase_seq_cfg0;
-+	u32 erase_seq_cfg1;
-+
-+	/* SPI-NAND block erase is always D8h with a 3-byte row address. */
-+	erase_seq_cfg0 =
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_VAL, 0xd8) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_IOS, 0) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_EDGE, 0) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_ADDR_CNT, 3) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_EXT_EN, 0) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_EXT_VAL, 0) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_ADDR_IOS, 0) |
-+		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_ADDR_EDGE, 0);
-+	erase_seq_cfg1 = FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_SECT_SIZE,
-+				    ilog2(nanddev_eraseblock_size(&spinand->base)));
-+
-+	writel(erase_seq_cfg0,
-+	       cdns_xspi->iobase + CDNS_XSPI_ERSS_SEQ_CFG_0);
-+	writel(erase_seq_cfg1,
-+	       cdns_xspi->iobase + CDNS_XSPI_ERSS_SEQ_CFG_1);
-+	writel(0, cdns_xspi->iobase + CDNS_XSPI_ERSS_SEQ_CFG_2);
-+
-+	dev_dbg(cdns_xspi->dev,
-+		"ACMD erase sequence: cfg0=%08x cfg1=%08x\n",
-+		erase_seq_cfg0, erase_seq_cfg1);
-+}
-+
-+static void cdns_xspi_nand_status_seq_init(struct cdns_xspi_dev *cdns_xspi)
-+{
-+	u32 stat_seq_cfg1;
-+	u32 stat_seq_cfg2;
-+	u32 stat_seq_cfg5;
-+
-+	writel(FIELD_PREP(CDNS_XSPI_STAT_SEQ_P1_ADDR_CNT, 0),
-+	       cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_0);
-+
-+	stat_seq_cfg1 = CDNS_XSPI_P1_DEV_RDY_ADDR_EN |
-+			CDNS_XSPI_P1_PROG_FAIL_ADDR_EN |
-+			CDNS_XSPI_P1_ERS_FAIL_ADDR_EN;
-+	writel(stat_seq_cfg1, cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_1);
-+
-+	stat_seq_cfg2 = FIELD_PREP(CDNS_XSPI_STAT_SEQ_P1_DEV_RDY_CMD_VAL,
-+				   CDNS_XSPI_NAND_OP_GET_FEATURE) |
-+		FIELD_PREP(CDNS_XSPI_STAT_SEQ_P1_PROG_FAIL_CMD_VAL,
-+			   CDNS_XSPI_NAND_OP_GET_FEATURE) |
-+		FIELD_PREP(CDNS_XSPI_STAT_SEQ_P1_ERS_FAIL_CMD_VAL,
-+			   CDNS_XSPI_NAND_OP_GET_FEATURE);
-+	writel(stat_seq_cfg2, cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_2);
-+	writel(0, cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_3);
-+	writel(0, cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_4);
-+
-+	stat_seq_cfg5 =
-+		FIELD_PREP(CDNS_XSPI_STAT_SEQ_DEV_RDY_IDX,
-+			   __ffs(STATUS_BUSY)) |
-+		CDNS_XSPI_STAT_SEQ_DEV_RDY_EN |
-+		FIELD_PREP(CDNS_XSPI_STAT_SEQ_ERS_FAIL_IDX,
-+			   __ffs(STATUS_ERASE_FAILED)) |
-+		CDNS_XSPI_STAT_SEQ_ERS_FAIL_VAL |
-+		CDNS_XSPI_STAT_SEQ_ERS_FAIL_EN |
-+		FIELD_PREP(CDNS_XSPI_STAT_SEQ_PROG_FAIL_IDX,
-+			   __ffs(STATUS_PROG_FAILED)) |
-+		CDNS_XSPI_STAT_SEQ_PROG_FAIL_VAL |
-+		CDNS_XSPI_STAT_SEQ_PROG_FAIL_EN;
-+	writel(stat_seq_cfg5, cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_5);
-+	writel(CDNS_XSPI_NAND_STATUS_REG,
-+	       cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_7);
-+	writel(CDNS_XSPI_NAND_STATUS_REG,
-+	       cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_8);
-+	writel(CDNS_XSPI_NAND_STATUS_REG,
-+	       cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_9);
-+
-+	writel(CDNS_XSPI_STAT_SEQ_ECC_FAIL_EN |
-+	       FIELD_PREP(CDNS_XSPI_STAT_SEQ_CRDY_IDX, __ffs(STATUS_BUSY)) |
-+	       FIELD_PREP(CDNS_XSPI_STAT_SEQ_CRDY_VAL, 0) |
-+	       FIELD_PREP(CDNS_XSPI_STAT_SEQ_ECC_CORR_VAL,
-+			  STATUS_ECC_HAS_BITFLIPS) |
-+	       FIELD_PREP(CDNS_XSPI_STAT_SEQ_ECC_FAIL_VAL,
-+			  STATUS_ECC_UNCOR_ERROR) |
-+	       FIELD_PREP(CDNS_XSPI_STAT_SEQ_ECC_FAIL_MASK,
-+			  STATUS_ECC_MASK),
-+	       cdns_xspi->iobase + CDNS_XSPI_STAT_SEQ_CFG_10);
-+}
-+
-+static void cdns_xspi_nand_write_enable_seq_init(struct cdns_xspi_dev *cdns_xspi)
-+{
-+	u32 cfg;
-+
-+	cfg = readl(cdns_xspi->iobase + CDNS_XSPI_WE_SEQ_CFG_0);
-+	cfg = u32_replace_bits(cfg, 1, CDNS_XSPI_WE_SEQ_P1_EN);
-+	cfg = u32_replace_bits(cfg, CDNS_XSPI_NAND_OP_WRITE_ENABLE,
-+			       CDNS_XSPI_WE_SEQ_P1_CMD_VAL);
-+	cfg = u32_replace_bits(cfg, 0, CDNS_XSPI_WE_SEQ_P1_CMD_IOS);
-+	cfg = u32_replace_bits(cfg, 0, CDNS_XSPI_WE_SEQ_P1_CMD_EDGE);
-+	writel(cfg, cdns_xspi->iobase + CDNS_XSPI_WE_SEQ_CFG_0);
-+}
-+
-+static void cdns_xspi_set_mode_acmd(struct cdns_xspi_dev *cdns_xspi)
-+{
-+	u32 reg_val;
-+
-+	reg_val = readl(cdns_xspi->iobase + CDNS_XSPI_CTRL_CONFIG_REG);
-+	reg_val = u32_replace_bits(reg_val, CDNS_XSPI_WORK_MODE_ACMD,
-+				   CDNS_XSPI_CTRL_WORK_MODE);
-+	writel(reg_val, cdns_xspi->iobase + CDNS_XSPI_CTRL_CONFIG_REG);
-+}
-+
-+static void cdns_xspi_nand_reset_seq_init(struct cdns_xspi_dev *cdns_xspi)
-+{
-+	u32 cfg;
-+
-+	cfg = FIELD_PREP(CDNS_XSPI_RST_SEQ_P1_CMD1_VAL,
-+			 CDNS_XSPI_NAND_OP_RESET);
-+	writel(cfg, cdns_xspi->iobase + CDNS_XSPI_RST_SEQ_CFG_0);
-+}
-+
-+static int cdns_xspi_nand_init(struct cdns_xspi_dev *cdns_xspi,
-+			       struct spinand_device *spinand)
-+{
-+	u32 reg_val;
-+
-+	cdns_xspi_nand_cfg_seq_init(cdns_xspi, spinand);
-+	cdns_xspi_nand_read_seq_init(cdns_xspi, spinand);
-+	cdns_xspi_nand_reset_seq_init(cdns_xspi);
-+	cdns_xspi_nand_write_seq_init(cdns_xspi, spinand);
-+	cdns_xspi_nand_write_enable_seq_init(cdns_xspi);
-+	cdns_xspi_nand_status_seq_init(cdns_xspi);
-+	cdns_xspi_nand_erase_seq_init(cdns_xspi, spinand);
-+
-+	reg_val = readl(cdns_xspi->iobase + CDNS_XSPI_XIP_MODE_CFG);
-+	if (reg_val & CDNS_XSPI_XIP_EN) {
-+		reg_val &= ~CDNS_XSPI_XIP_EN;
-+		writel(reg_val, cdns_xspi->iobase + CDNS_XSPI_XIP_MODE_CFG);
-+	}
-+	cdns_xspi->dma_buf_len = spinand->base.memorg.pagesize +
-+				 spinand->base.memorg.oobsize;
-+	cdns_xspi->dma_buf = dmam_alloc_coherent(cdns_xspi->dev,
-+						 cdns_xspi->dma_buf_len,
-+						 &cdns_xspi->dma_addr,
-+						 GFP_KERNEL);
-+	if (!cdns_xspi->dma_buf)
-+		return -ENOMEM;
-+
-+	cdns_xspi->acmd_info.initialized = true;
-+
-+	return 0;
-+}
-+
- static int cdns_xspi_controller_init(struct cdns_xspi_dev *cdns_xspi)
- {
- 	u32 ctrl_ver;
-@@ -580,6 +1009,349 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	return 0;
- }
- 
-+static int cdns_xspi_acmd_get_thread_status(struct cdns_xspi_dev *cdns_xspi,
-+					    u32 thread)
-+{
-+	writel(thread, cdns_xspi->iobase + CDNS_XSPI_CMD_STATUS_PTR_REG);
-+
-+	return cdns_xspi_check_command_status(cdns_xspi);
-+}
-+
-+static int cdns_xspi_acmd_run(struct cdns_xspi_dev *cdns_xspi, u32 cmd_regs[6],
-+			      u32 thread)
-+{
-+	unsigned long timeout;
-+	int ret;
-+
-+	cdns_xspi_set_mode_acmd(cdns_xspi);
-+	reinit_completion(&cdns_xspi->auto_cmd_complete);
-+	cdns_xspi_set_interrupts(cdns_xspi, true);
-+	cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
-+
-+	timeout = msecs_to_jiffies(CDNS_XSPI_ACMD_TIMEOUT_MS);
-+	if (!wait_for_completion_timeout(&cdns_xspi->auto_cmd_complete,
-+					 timeout)) {
-+		dev_err(cdns_xspi->dev, "ACMD command timed out\n");
-+		ret = -ETIMEDOUT;
-+	} else {
-+		ret = cdns_xspi_acmd_get_thread_status(cdns_xspi, thread);
-+	}
-+
-+	cdns_xspi_set_interrupts(cdns_xspi, false);
-+
-+	return ret;
-+}
-+
-+static int cdns_xspi_nand_addr(struct spinand_device *spinand, u64 row,
-+			       u64 column, u64 *xspi_addr)
-+{
-+	const struct nand_memory_organization *memorg = &spinand->base.memorg;
-+	u64 column_limit, page_stride;
-+
-+	page_stride = roundup_pow_of_two(memorg->pagesize + memorg->oobsize);
-+	if (check_mul_overflow(page_stride, memorg->planes_per_lun,
-+			       &column_limit) ||
-+	    column >= column_limit ||
-+	    check_mul_overflow(row, page_stride, xspi_addr) ||
-+	    check_add_overflow(*xspi_addr, column, xspi_addr))
-+		return -ERANGE;
-+
-+	return 0;
-+}
-+
-+static u32 cdns_xspi_acmd_cmd(struct cdns_xspi_dev *cdns_xspi, u32 type,
-+			      u32 thread, bool use_dma)
-+{
-+	return FIELD_PREP(CDNS_XSPI_ACMD_MODE, CDNS_XSPI_ACMD_MODE_PIO) |
-+	       FIELD_PREP(CDNS_XSPI_ACMD_TRD_NUM, thread) |
-+	       FIELD_PREP(CDNS_XSPI_ACMD_BANK_NUM, cdns_xspi->cur_cs) |
-+	       (use_dma ? CDNS_XSPI_ACMD_DMA_SEL : 0) |
-+	       CDNS_XSPI_ACMD_INT_EN |
-+	       FIELD_PREP(CDNS_XSPI_ACMD_CMD_TYPE, type);
-+}
-+
-+static int cdns_xspi_pio_mdma_erase(struct cdns_xspi_dev *cdns_xspi,
-+				    struct spinand_device *spinand,
-+				    const struct spi_mem_op *op)
-+{
-+	u32 cmd_regs[6] = { 0 };
-+	u64 xspi_addr;
-+	int ret;
-+
-+	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
-+	if (ret) {
-+		dev_err(cdns_xspi->dev,
-+			"controller did not become idle before erase\n");
-+		return ret;
-+	}
-+
-+	ret = cdns_xspi_nand_addr(spinand, op->addr.val, 0, &xspi_addr);
-+	if (ret)
-+		return ret;
-+
-+	if (upper_32_bits(xspi_addr)) {
-+		dev_err(cdns_xspi->dev,
-+			"erase address 0x%llx exceeds the ACMD PIO range\n",
-+			xspi_addr);
-+		return -ERANGE;
-+	}
-+
-+	cmd_regs[1] = lower_32_bits(xspi_addr);
-+	cmd_regs[0] = cdns_xspi_acmd_cmd(cdns_xspi,
-+					 CDNS_XSPI_ACMD_ERASE_OP,
-+					 CDNS_XSPI_ACMD_ERASE_THREAD, false);
-+
-+	ret = cdns_xspi_acmd_run(cdns_xspi, cmd_regs,
-+				 CDNS_XSPI_ACMD_ERASE_THREAD);
-+	if (ret)
-+		dev_err(cdns_xspi->dev, "ACMD erase failed: %d\n", ret);
-+
-+	return ret;
-+}
-+
-+static int cdns_xspi_pio_reset(struct cdns_xspi_dev *cdns_xspi)
-+{
-+	u32 cmd_regs[6] = { 0 };
-+	int ret;
-+
-+	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
-+	if (ret) {
-+		dev_err(cdns_xspi->dev,
-+			"controller did not become idle before reset\n");
-+		return ret;
-+	}
-+	cmd_regs[0] = cdns_xspi_acmd_cmd(cdns_xspi,
-+					 CDNS_XSPI_ACMD_RESET_OP,
-+					 CDNS_XSPI_ACMD_DATA_THREAD, false);
-+	ret = cdns_xspi_acmd_run(cdns_xspi, cmd_regs,
-+				 CDNS_XSPI_ACMD_DATA_THREAD);
-+	if (ret)
-+		return ret;
-+
-+	cdns_xspi->acmd_info.row_addr_valid = false;
-+	cdns_xspi->acmd_info.column_addr = 0;
-+	cdns_xspi->acmd_info.data_nbytes = 0;
-+	cdns_xspi->out_buffer = NULL;
-+
-+	return 0;
-+}
-+
-+static int cdns_xspi_pio_mdma_program(struct cdns_xspi_dev *cdns_xspi,
-+				      struct spinand_device *spinand,
-+				      const struct spi_mem_op *op)
-+{
-+	u32 cmd_regs[6] = { 0 };
-+	u64 xspi_addr;
-+	int ret;
-+
-+	if (!cdns_xspi->out_buffer || !cdns_xspi->acmd_info.data_nbytes) {
-+		dev_err(cdns_xspi->dev, "missing program-load data\n");
-+		ret = -EINVAL;
-+		goto out_clear_program_state;
-+	}
-+
-+	if (cdns_xspi->acmd_info.data_nbytes > cdns_xspi->dma_buf_len) {
-+		ret = -EMSGSIZE;
-+		goto out_clear_program_state;
-+	}
-+
-+	memcpy(cdns_xspi->dma_buf, cdns_xspi->out_buffer,
-+	       cdns_xspi->acmd_info.data_nbytes);
-+
-+	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
-+	if (ret) {
-+		dev_err(cdns_xspi->dev,
-+			"controller did not become idle before program\n");
-+		goto out_clear_program_state;
-+	}
-+
-+	ret = cdns_xspi_nand_addr(spinand, op->addr.val,
-+				  cdns_xspi->acmd_info.column_addr,
-+				  &xspi_addr);
-+	if (ret)
-+		goto out_clear_program_state;
-+
-+	if (upper_32_bits(xspi_addr)) {
-+		dev_err(cdns_xspi->dev,
-+			"program address 0x%llx exceeds the ACMD PIO range\n",
-+			xspi_addr);
-+		ret = -ERANGE;
-+		goto out_clear_program_state;
-+	}
-+
-+	cmd_regs[1] = lower_32_bits(xspi_addr);
-+	cmd_regs[2] = lower_32_bits(cdns_xspi->dma_addr);
-+	cmd_regs[3] = upper_32_bits(cdns_xspi->dma_addr);
-+	cmd_regs[4] = cdns_xspi->acmd_info.data_nbytes - 1;
-+	cmd_regs[0] = cdns_xspi_acmd_cmd(cdns_xspi,
-+					 CDNS_XSPI_ACMD_PROG_OP,
-+					 CDNS_XSPI_ACMD_DATA_THREAD, true);
-+
-+	ret = cdns_xspi_acmd_run(cdns_xspi, cmd_regs,
-+				 CDNS_XSPI_ACMD_DATA_THREAD);
-+
-+out_clear_program_state:
-+	cdns_xspi->acmd_info.column_addr = 0;
-+	cdns_xspi->acmd_info.data_nbytes = 0;
-+	cdns_xspi->out_buffer = NULL;
-+	return ret;
-+}
-+
-+static int cdns_xspi_pio_mdma_read(struct cdns_xspi_dev *cdns_xspi,
-+				   struct spinand_device *spinand,
-+				   const struct spi_mem_op *op)
-+{
-+	u32 cmd_regs[6] = { 0 };
-+	u64 xspi_addr;
-+	int ret;
-+
-+	if (!cdns_xspi->acmd_info.row_addr_valid) {
-+		dev_err(cdns_xspi->dev,
-+			"read cache command without a pending page read\n");
-+		return -EINVAL;
-+	}
-+
-+	if (op->data.dir != SPI_MEM_DATA_IN || !op->data.nbytes ||
-+	    !op->data.buf.in) {
-+		ret = -EINVAL;
-+		goto out_clear_read_state;
-+	}
-+
-+	if (op->data.nbytes > cdns_xspi->dma_buf_len) {
-+		ret = -EMSGSIZE;
-+		goto out_clear_read_state;
-+	}
-+
-+	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
-+	if (ret) {
-+		dev_err(cdns_xspi->dev,
-+			"controller did not become idle before read\n");
-+		goto out_clear_read_state;
-+	}
-+
-+	ret = cdns_xspi_nand_addr(spinand,
-+				  cdns_xspi->acmd_info.row_addr,
-+				  op->addr.val, &xspi_addr);
-+	if (ret)
-+		goto out_clear_read_state;
-+
-+	if (upper_32_bits(xspi_addr)) {
-+		dev_err(cdns_xspi->dev,
-+			"read address 0x%llx exceeds the ACMD PIO range\n",
-+			xspi_addr);
-+		ret = -ERANGE;
-+		goto out_clear_read_state;
-+	}
-+
-+	cmd_regs[1] = lower_32_bits(xspi_addr);
-+	cmd_regs[2] = lower_32_bits(cdns_xspi->dma_addr);
-+	cmd_regs[3] = upper_32_bits(cdns_xspi->dma_addr);
-+	cmd_regs[4] = op->data.nbytes - 1;
-+	cmd_regs[0] = cdns_xspi_acmd_cmd(cdns_xspi,
-+					 CDNS_XSPI_ACMD_READ_OP,
-+					 CDNS_XSPI_ACMD_DATA_THREAD, true);
-+
-+	ret = cdns_xspi_acmd_run(cdns_xspi, cmd_regs,
-+				 CDNS_XSPI_ACMD_DATA_THREAD);
-+	if (ret) {
-+		dev_err(cdns_xspi->dev, "ACMD read failed: %d\n", ret);
-+		goto out_clear_read_state;
-+	}
-+
-+	memcpy(op->data.buf.in, cdns_xspi->dma_buf, op->data.nbytes);
-+
-+out_clear_read_state:
-+	cdns_xspi->acmd_info.row_addr_valid = false;
-+	cdns_xspi->acmd_info.row_addr = 0;
-+	return ret;
-+}
-+
-+static int cdns_xspi_send_pio_command(struct cdns_xspi_dev *cdns_xspi,
-+				      struct spi_mem *mem,
-+				      const struct spi_mem_op *op)
-+{
-+	struct spinand_device *spinand;
-+	const struct spi_mem_op *read_cache;
-+	const struct spi_mem_op *write_cache;
-+	const struct spi_mem_op *update_cache;
-+	int ret;
-+
-+	if (cdns_xspi->flash_type != CDNS_XSPI_FLASH_TYPE_NAND)
-+		goto use_stig;
-+
-+	spinand = spi_mem_get_drvdata(mem);
-+	if (!spinand || !spinand->op_templates ||
-+	    !spinand->op_templates->read_cache ||
-+	    !spinand->op_templates->write_cache ||
-+	    !spinand->op_templates->update_cache)
-+		goto use_stig;
-+
-+	if (!cdns_xspi->acmd_info.initialized) {
-+		ret = cdns_xspi_nand_init(cdns_xspi, spinand);
-+		if (ret) {
-+			dev_err(cdns_xspi->dev,
-+				"failed to initialize ACMD: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	read_cache = spinand->op_templates->read_cache;
-+	write_cache = spinand->op_templates->write_cache;
-+	update_cache = spinand->op_templates->update_cache;
-+
-+	if ((write_cache && op->cmd.opcode == write_cache->cmd.opcode) ||
-+	    (update_cache && op->cmd.opcode == update_cache->cmd.opcode)) {
-+		if (op->data.dir != SPI_MEM_DATA_OUT || !op->data.nbytes ||
-+		    !op->data.buf.out)
-+			return -EINVAL;
-+
-+		cdns_xspi_nand_write_enable_seq_init(cdns_xspi);
-+		cdns_xspi->out_buffer = op->data.buf.out;
-+		cdns_xspi->acmd_info.column_addr = op->addr.val;
-+		cdns_xspi->acmd_info.data_nbytes = op->data.nbytes;
-+		return 0;
-+	}
-+
-+	switch (op->cmd.opcode) {
-+	case CDNS_XSPI_NAND_OP_PAGE_READ:
-+		cdns_xspi->acmd_info.row_addr = op->addr.val;
-+		cdns_xspi->acmd_info.row_addr_valid = true;
-+		return 0;
-+
-+	case CDNS_XSPI_NAND_OP_GET_FEATURE:
-+		if (op->addr.val != CDNS_XSPI_NAND_STATUS_REG ||
-+		    !cdns_xspi->acmd_info.row_addr_valid)
-+			break;
-+
-+		if (op->data.dir != SPI_MEM_DATA_IN || !op->data.nbytes ||
-+		    !op->data.buf.in)
-+			return -EINVAL;
-+
-+		memset(op->data.buf.in, 0, op->data.nbytes);
-+		return 0;
-+
-+	case CDNS_XSPI_NAND_OP_RESET:
-+		return cdns_xspi_pio_reset(cdns_xspi);
-+
-+	case CDNS_XSPI_NAND_OP_BLOCK_ERASE:
-+		return cdns_xspi_pio_mdma_erase(cdns_xspi, spinand, op);
-+
-+	case CDNS_XSPI_NAND_OP_PROGRAM_EXECUTE:
-+		return cdns_xspi_pio_mdma_program(cdns_xspi, spinand, op);
-+
-+	default:
-+		break;
-+	}
-+
-+	if (read_cache && op->cmd.opcode == read_cache->cmd.opcode)
-+		return cdns_xspi_pio_mdma_read(cdns_xspi, spinand, op);
-+
-+use_stig:
-+	/* ACMD does not consume this operation; execute it through STIG. */
-+	return cdns_xspi_send_stig_command(cdns_xspi, op,
-+					   op->data.dir != SPI_MEM_NO_DATA);
-+}
-+
- static int cdns_xspi_mem_op(struct cdns_xspi_dev *cdns_xspi,
- 			    struct spi_mem *mem,
- 			    const struct spi_mem_op *op)
-@@ -589,6 +1361,9 @@ static int cdns_xspi_mem_op(struct cdns_xspi_dev *cdns_xspi,
- 	if (cdns_xspi->cur_cs != spi_get_chipselect(mem->spi, 0))
- 		cdns_xspi->cur_cs = spi_get_chipselect(mem->spi, 0);
- 
-+	if (cdns_xspi->work_mode == CDNS_XSPI_WORK_MODE_ACMD)
-+		return cdns_xspi_send_pio_command(cdns_xspi, mem, op);
-+
- 	return cdns_xspi_send_stig_command(cdns_xspi, op,
- 					   (dir != SPI_MEM_NO_DATA));
- }
-@@ -1217,6 +1992,9 @@ static int cdns_xspi_probe(struct platform_device *pdev)
- 	cdns_xspi->host = host;
- 	cdns_xspi->dev = &pdev->dev;
- 	cdns_xspi->cur_cs = 0;
-+	cdns_xspi->flash_type = cdns_xspi->driver_data->flash_type;
-+	cdns_xspi->work_mode = cdns_xspi->driver_data->use_acmd ?
-+		CDNS_XSPI_WORK_MODE_ACMD : CDNS_XSPI_WORK_MODE_STIG;
- 
- 	init_completion(&cdns_xspi->cmd_complete);
- 	init_completion(&cdns_xspi->auto_cmd_complete);
-@@ -1344,6 +2122,10 @@ static const struct of_device_id cdns_xspi_of_match[] = {
- 		.data = &marvell_driver_data,
- 	},
- #endif
-+	{
-+		.compatible = "cdns,xspi-nand",
-+		.data = &cdns_nand_driver_data,
-+	},
- 	{ /* end of table */}
- };
- MODULE_DEVICE_TABLE(of, cdns_xspi_of_match);
--- 
-2.34.1
-
+Sorry, fixed in v2. But I have to mention that this mix of "dt-bindings:
+subsystem:" vs. "subsystem: dt-bindings:" across subsystems is somewhat
+annoying for contributors. Has anyone ever thought about aligning this
+across subsystems?

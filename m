@@ -1,210 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0472DC783;
-	Mon, 21 Sep 2026 14:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12724AB1B6;
+	Mon, 21 Sep 2026 14:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790002326; cv=none; b=ZJBksMoa7p4+w+IebOkWyfaAu84AC4IUkkQGL8mKJbOUcNTBx5v/YHCwlaDhnQahVCak38hxb2S0KMvnBmWRQlyC4ul6/oDmCNRUkIbP83hpKLs2rB86+Fek4ji2jfViDwtxHe4kBmY3r+1a+iUBpVR5QMwgQYIEbHZGno1KQMk=
+	t=1790002567; cv=none; b=O/pUIqfR4k5VYf5p2oqgR9Z7mW4BwcYzAdrxFu2V3asbD/0fG0msTkswJWRpuxDBlDrDC7WSmfsYgf7TKW6OpeDn+T7Fc6gAGAtkz3hGNFEQUIPi6pu5Bu8EfWhvDAeOxOiu9X+r4EgIOvjMHeldGqf4oCqUvQZz5KvnX3HewGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790002326; c=relaxed/simple;
-	bh=Lv0rCi1IVYqOe6nHWc43dTnfrHk4bD7+ZA8Q8tANp3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rHHVXR4qhx0+w09FHGXVjBkQdQLCLntHYDBAF8RWtfmu7t6fKuKRgW5XJDTWMlMbJCPE6CrcqqPr/nhbzXe5IKRN1A95WUPSMBfUg3ML9MZiWkKRI2ym0whLasVxQsO83OIdWwALoNkHM+bnjq8KE8898NaGRBxI2pxIXxsptOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTIaEWTO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790002567; c=relaxed/simple;
+	bh=pKq1NgtVeldVrlvWVVY7UHgOPOxgx1kIDbjZRKrz/DU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=T8UFjZBmYFRpK9yAz2JYnBIQRbrV1NNTnPXio1FJNDFnuCuDQ5NvuV71zxdTU/xuBFXfogms2sdoJPtrz/jGJxoJklhRef3m+iCEsaKohyjmlZ0T2nYECQh84TbKEap0qrhJrO7CrD+i17zcPCcFFmAuJRoOcx9CwaNRawGvEKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UU3YerWU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTIaEWTO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16451F000FF;
-	Mon, 21 Sep 2026 14:52:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UU3YerWU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77B81F00899;
+	Mon, 21 Sep 2026 14:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790002324;
-	bh=iBzaDTFhCv8gByiggXKs3p0z6UUKmnCA/sXWzByV9wk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nTIaEWTOjTNWT59X5i/DxMipgg1LluTThVc0M6j+BJ+Li+8rHMbYlh9jdUVTttRU1
-	 fCRV4VKl1H9rZf4Iz7x0jKN7jMx8sfKR4bZhRmexU6t5d5LsYTEfQFoT0809QntJod
-	 HMOsTmd+58OOp4TcHZBt0Vpat1oD/ZnO3zoYv+aqRohnXDPa+FRAd2psKG/6QR3Ij7
-	 AVO4xQIGWG7uEO/1Z98/nYGtBCO1Qe0bLbziRCyrETYnuug1KULsguhszERDmNJJtU
-	 82ICOcgrOtwZdFgfrR784D4liSnYh/GfztC+IsrAUPZ6UDPMChzc8mK3bIOhlzGRe7
-	 f2x858rK/gEhA==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 7836D1AC55A7; Mon, 21 Sep 2026 15:51:59 +0100 (BST)
-Date: Mon, 21 Sep 2026 16:51:59 +0200
+	s=k20260515; t=1790002557;
+	bh=2KhcIYvD4WU6B8VL8pQJEB5vtrhrYx58gIS42TGhKjM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=UU3YerWUSa6hmScKk/28hmb2rL6bdiUV8dr+TUZpRAUN0kKluqK3zDyOeOKP0uw95
+	 FyREyKV3Bp+mWGw2/c5tu+oxTCujP/JXpSzmUK3WvdWqhm5NtPE6MEbdgYtgElBUN4
+	 KTiamfhM1RSwoD9sBmcTSAEIqlZqNMKdZYCMFxN3VzVpZBE0Xw0m9GFeUlVTtFl37b
+	 fB9yKLdYBdgrSd9dxw52MjJ+0BMBXf/88re6WZ6l3eACWJMd1Ppj2B/KPkhjRNkRRL
+	 B+AY6WBxqT8vmjOHqg0JbxI1b1ae8AXM+LEl+Vie8Ugvl477NAI21r7aOMk9/LpC+H
+	 Ta9aVer+u0b5Q==
 From: Mark Brown <broonie@kernel.org>
-To: Fei Xie <fei.xie@horizon.auto>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Parshuram Thombare <pthombar@cadence.com>,
-	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/4] spi: cadence-xspi: add ACMD support for SPI NAND
-Message-ID: <arFEjzkHGMbecWWV@sirena.co.uk>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto>
- <20260921093701.1341766-3-fei.xie@horizon.auto>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+ Frieder Schrempf <frieder@fris.de>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, 
+ Frieder Schrempf <frieder.schrempf@kontron.de>
+In-Reply-To: <20260921-spi-sample-delay-cleanup-v2-0-b460d572fd32@kontron.de>
+References: <20260921-spi-sample-delay-cleanup-v2-0-b460d572fd32@kontron.de>
+Subject: Re: [PATCH v2 0/3] spi: Better specification for
+ rx-sample-delay-ns and core parsing
+Message-Id: <178999301827.228132.5384836256951345086.b4-ty@b4>
+Date: Mon, 21 Sep 2026 14:16:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8lF6WnBuWqq8JydY"
-Content-Disposition: inline
-In-Reply-To: <20260921093701.1341766-3-fei.xie@horizon.auto>
-X-Cookie: Too clever is dumb.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2005; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=pKq1NgtVeldVrlvWVVY7UHgOPOxgx1kIDbjZRKrz/DU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqsUV3MiUE11vmndVK7J13KVtlCYMO6NgAfa8yk
+ F1ISGGHfSWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarFFdwAKCRAk1otyXVSH
+ 0PyjB/9O6wWNQDpTjCinYKeGqr3AaavS6lrNfvoE1jf9IvhzytejOAz5D2vohF+GD/sw/93pxpy
+ N8FCMQsROVBBJ/g+jY4cxDGWIoGw1XmrmH+eXVa5Puwa8u4fqNh8d8MRYd/sPNZIzdCHVqdx0nj
+ 0bhXpxNOtSeQ68mB7L367kAy9kib6CLtWwYU09gJaOoUBEZFwSxjrN7qriCGL1a3WF3gj57mdyr
+ zhYNeLLy6e9p4K7fxAU7o5tFqc44Kkn/fClLHEvy6JePtYtDzeJBOpE52hj3L3/bSkrLeFfQf+Y
+ y8Gku6XXyc1yOnG1BIscBr7d8JG9Drv6iikWxwtpAmvtUiLt
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Mon, 21 Sep 2026 12:16:43 +0200, Frieder Schrempf wrote:
+> spi: Better specification for rx-sample-delay-ns and core parsing
+> 
+> "rx-sample-delay-ns" has been a generic SPI peripheral property since it
+> was moved to spi-peripheral-props.yaml, but the core has never looked at
+> it, and what it is meant to describe has become blurred along the way.
+> 
+> It was introduced in 2015 for Rockchip, to compensate "boards with
+> high-capacitance SPI lines". The wording now in the generic schema came
+> later, from a description of a DesignWare register, and lost its
+> controller-specific qualifier on the way. It says what the value does to
+> the controller, but not what a board should measure to arrive at it.
+> 
+> [...]
 
---8lF6WnBuWqq8JydY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Applied to
 
-On Mon, Sep 21, 2026 at 05:36:59PM +0800, Fei Xie wrote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-> Add PIO master-DMA support for the controller auto-command mode.
-> Configure the SPI NAND read, program, erase, status and reset
-> sequences, retaining STIG for operations not consumed by ACMD.
+Thanks!
 
-> +struct cdns_xspi_acmd_info {
-> +	u64 row_addr;
-> +	u64 column_addr;
-> +	size_t data_nbytes;
-> +	bool row_addr_valid;
-> +	bool initialized;
-> +};
->  struct cdns_xspi_dev {
+[1/3] spi: dt-bindings: Clarify what rx-sample-delay-ns describes
+      https://git.kernel.org/broonie/spi/c/2c68b2403acd
+[2/3] spi: Parse the rx-sample-delay-ns peripheral property in the core
+      https://git.kernel.org/broonie/spi/c/631a56336381
+[3/3] spi: dw: Use the rx-sample-delay-ns value parsed by the core
+      https://git.kernel.org/broonie/spi/c/38d4b42e4a2a
 
-Missing blank line.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> +static void cdns_xspi_nand_erase_seq_init(struct cdns_xspi_dev *cdns_xspi,
-> +					  struct spinand_device *spinand)
-> +{
-> +	u32 erase_seq_cfg0;
-> +	u32 erase_seq_cfg1;
-> +
-> +	/* SPI-NAND block erase is always D8h with a 3-byte row address. */
-> +	erase_seq_cfg0 =
-> +		FIELD_PREP(CDNS_XSPI_ERSS_SEQ_P1_CMD_VAL, 0xd8) |
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-CDNS_XSPI_NAND_OP_BLOCK_ERASE.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-> +static int cdns_xspi_nand_init(struct cdns_xspi_dev *cdns_xspi,
-> +			       struct spinand_device *spinand)
-> +{
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-How much of this initialisation is parameters based on the specific
-flash passed in - what if there are two different flashes attached to
-the same controller for some reason?
+Thanks,
+Mark
 
-> +	cdns_xspi->dma_buf_len = spinand->base.memorg.pagesize +
-> +				 spinand->base.memorg.oobsize;
-> +	cdns_xspi->dma_buf = dmam_alloc_coherent(cdns_xspi->dev,
-> +						 cdns_xspi->dma_buf_len,
-> +						 &cdns_xspi->dma_addr,
-> +						 GFP_KERNEL);
-> +	if (!cdns_xspi->dma_buf)
-> +		return -ENOMEM;
-
-Why do we need the DMA buffer, I'd expect whatever reaches the driver to
-already be DMA safe?
-
-> +static int cdns_xspi_acmd_run(struct cdns_xspi_dev *cdns_xspi, u32 cmd_regs[6],
-> +			      u32 thread)
-> +{
-> +	unsigned long timeout;
-> +	int ret;
-> +
-> +	cdns_xspi_set_mode_acmd(cdns_xspi);
-> +	reinit_completion(&cdns_xspi->auto_cmd_complete);
-> +	cdns_xspi_set_interrupts(cdns_xspi, true);
-
-We have the set_interrupts() operation.
-
-> +	cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
-> +
-> +	timeout = msecs_to_jiffies(CDNS_XSPI_ACMD_TIMEOUT_MS);
-> +	if (!wait_for_completion_timeout(&cdns_xspi->auto_cmd_complete,
-> +					 timeout)) {
-> +		dev_err(cdns_xspi->dev, "ACMD command timed out\n");
-> +		ret = -ETIMEDOUT;
-
-Don't we need to clean up the hardware if this times out?
-
-> +	} else {
-> +		ret = cdns_xspi_acmd_get_thread_status(cdns_xspi, thread);
-> +	}
-
-Does this need any updates to cover more error types?
-
-> +static int cdns_xspi_pio_mdma_read(struct cdns_xspi_dev *cdns_xspi,
-> +				   struct spinand_device *spinand,
-> +				   const struct spi_mem_op *op)
-> +{
-
-> +	ret = cdns_xspi_acmd_run(cdns_xspi, cmd_regs,
-> +				 CDNS_XSPI_ACMD_DATA_THREAD);
-> +	if (ret) {
-> +		dev_err(cdns_xspi->dev, "ACMD read failed: %d\n", ret);
-> +		goto out_clear_read_state;
-> +	}
-> +
-> +	memcpy(op->data.buf.in, cdns_xspi->dma_buf, op->data.nbytes);
-> +
-> +out_clear_read_state:
-> +	cdns_xspi->acmd_info.row_addr_valid = false;
-> +	cdns_xspi->acmd_info.row_addr = 0;
-> +	return ret;
-> +}
-
-Does this do the right thing for short reads?
-
-> +static int cdns_xspi_send_pio_command(struct cdns_xspi_dev *cdns_xspi,
-> +				      struct spi_mem *mem,
-> +				      const struct spi_mem_op *op)
-> +{
-> +	struct spinand_device *spinand;
-> +	const struct spi_mem_op *read_cache;
-> +	const struct spi_mem_op *write_cache;
-> +	const struct spi_mem_op *update_cache;
-> +	int ret;
-> +
-> +	if (cdns_xspi->flash_type != CDNS_XSPI_FLASH_TYPE_NAND)
-> +		goto use_stig;
-> +
-> +	spinand = spi_mem_get_drvdata(mem);
-
-This appears to be peering into the child's driver data without any
-checking that the child is what we expect, this could go horribly wrong.
-
-> +	case CDNS_XSPI_NAND_OP_GET_FEATURE:
-> +		if (op->addr.val != CDNS_XSPI_NAND_STATUS_REG ||
-> +		    !cdns_xspi->acmd_info.row_addr_valid)
-> +			break;
-> +
-> +		if (op->data.dir != SPI_MEM_DATA_IN || !op->data.nbytes ||
-> +		    !op->data.buf.in)
-> +			return -EINVAL;
-> +
-> +		memset(op->data.buf.in, 0, op->data.nbytes);
-> +		return 0;
-
-Are you sure the zeroing makes sense here, for example with ECC?
-
---8lF6WnBuWqq8JydY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqxRI4ACgkQJNaLcl1U
-h9B9kQgAgexg4UroYbNqfnTx77dWvyfvZfAkOgGsSxorVl+++uS5zUEC4KFHAcv8
-nkJ+48LXafFUvcS296w9kMf9fYlUgGnOis3kaVXPnjAmJQpf0ESIFMKWc/++sLNT
-aDJxu/DmvkttnSswRXN87rtxXInLpPPXRSXHAc66nPGaa3aq9Uq0iZ9+N9wQfsP9
-yfWJOixMNrFRApiIEMTqvasq+M7YLwTSjbu/aQDQsAflsw0mSqkKuJ6OrqAlJ6EA
-bc7+75b0oBYOr6fiMqUvqlTGV3t1hPVRw1VkavKiRlBz3W9WqX0E4CTy2PEvPyAX
-FrTYRxC4hJK8kkYTmvxPlBNeHszLAw==
-=Mpw7
------END PGP SIGNATURE-----
-
---8lF6WnBuWqq8JydY--

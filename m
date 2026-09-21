@@ -1,227 +1,193 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010030.outbound.protection.outlook.com [52.101.228.30])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C933938C;
-	Mon, 21 Sep 2026 20:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790020820; cv=fail; b=oAhiJBQDPc6FHhZfNhAhBiTt1PqB5tl9be5ZK5fwleP/i50ukoTvlPqpH5FLzr2t7Pm37yyzMHkI0wfiWl3DNsWta2FXzU77+GaM9qv7dflSn9ic7Bt1SzAOmV0NBBYfv6WUNtNeGtkUh1C71U92ng6rPE1Ffk5hgVARTT7quW0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790020820; c=relaxed/simple;
-	bh=5GPqOXxCeI/zH4cwUI6xGOw2jePXAIOYNSJ98ea4QTo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ls1rM3s0UQytjb7uupq0E6KeVPTpu2olHe+CMSFGHbMFVmSFRO24v/m8nTeO3y3wc14GVKJB+GhG4JvPcfdUswVT+Y8no6I954g4zkNbJP/WCdbJ0clEL2AnACMWKpgaXG6s+Q8cY4/zkg+02UBOY1lByx5IaJ86Cf0xJr+j9mY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=hu+3qFBG; arc=fail smtp.client-ip=52.101.228.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE7C498927;
+	Mon, 21 Sep 2026 21:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790026320; cv=none; b=KS833S29mLXN2YGwInGq5/JsOzSBcmOx/R2GEu3cXabjkYsWdyiYbPo4X+ekcY7qIUFen2d9PiOlt8G3cMYlsOnDAgTGm3w3alkU+Djgg+CoQxrs678yJBcUGvuWYgbcxVJ0x3NhQNaJvHnKOjGwufz+DKonppG0+Yzbayx+i2U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790026320; c=relaxed/simple;
+	bh=4/7ifftO7BtFre91KUtvd6K52EbnXHCwS+kv1JN4BWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gVFbsRRH6l1jAYtmATimBbUpv0hAcv5iNzxu7Nepvl296uzD4hdewSWu2m76q5eVenzeBjnApaNmgFMxkPtRfeV5032ol2fd87P6rwW3fYRBpzaM7W/Zr11zPBUynWD7HMfeerKAJw6TPIG86I87vX777bf/S0LhTMHmQ2vg97k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de; spf=pass smtp.mailfrom=jonasjelonek.de; dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b=JhAeewR1; arc=none smtp.client-ip=212.227.17.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="hu+3qFBG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fKtnMQswjFLVW5sgIT5EtAYm0WjkwSxr5sf8RaXxsHiHqZuimD2l0OIMru4FV02A5v0Bhx+AkI7isrAjxTDA8KYzUmkzixd57lUWYNrOsgAOjLBP97qxWfZ3Oj3YggrDrbg86jqC4ERv7x5Iyp1e3JdQcri0XBQAo77wsyfkerSD+LcxuCruCjQGS64m4WpMEkypBaaO06RylEXYTq+mOewBkUoc36bga8qUpuvT6k2j6eWb7dzRpkR3dJR8I7VpYZwg+9lHPegg+xonZ2fXqMJc1W6x+ZtvZM+XJXG3bRCDGd2kYysEKbssWlnTw/ZQN4pWvWwZ19MRPZSQrQgA8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WYlqVV0PbzEKRmEPeFUO/QKN7aJnxBLOSZLmwT57Lo8=;
- b=yx8oSKTQzyg0SiP9BkK8FSaRFn1pGnPv8IzIvdIZn0sq5542U9kHHpQ/QwNIEN3FMEG9A47kSUdJXtfMSzWKChpYTM3emUHqhv76UnOn3Vy+M1K/fPdJbi1pJxCCWN6dM0xzrRjMV3GFYY5H4GS49b4UHuMgdwS5NZjths2jr+M0n5pOUqEiDRFHz85m39Hbqp++qusbiTt9gnVvur+3zecQApiPSDIlGqA93Z1KsqbTsCtNex7KjrvxoHcTQGStkpJeHhLAM6evAI5cLmzN8wpgB7g5Ag+9eOew1ikDfw85PwXlyfQuVYAlXFo2CIJgh3+ZR2RPEBzrpdaAJKozzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 8.62.32.50) smtp.rcpttodomain=glider.be smtp.mailfrom=renesas.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=renesas.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WYlqVV0PbzEKRmEPeFUO/QKN7aJnxBLOSZLmwT57Lo8=;
- b=hu+3qFBGgRTGb07Y8vWPl8I00f1Y7nFJ/NWwV9Azan3zflRBSLmitZIkcDtA2n8wqLWwDrJHM2AVIqJf4HiF38SgyifpDe8v/9xgx0NyxAuW+tcQC/ZPCL6iwpi0FWcGmz3kFCr3CNhKEvzP0zAhu2yph8TlxEpp0V3T1m+sRgA=
-Received: from TYCP286CA0092.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2b4::10)
- by TY3PR01MB11528.jpnprd01.prod.outlook.com (2603:1096:400:375::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 20:00:08 +0000
-Received: from TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:2b4:cafe::44) by TYCP286CA0092.outlook.office365.com
- (2603:1096:400:2b4::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Mon,
- 21 Sep 2026 20:00:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
- smtp.mailfrom=renesas.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=renesas.com;
-Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
- 8.62.32.50 as permitted sender) receiver=protection.outlook.com;
- client-ip=8.62.32.50; helo=ejcrelay004p.adwin.renesas.com; pr=E
-Received: from ejcrelay004p.adwin.renesas.com (8.62.32.50) by
- TYO1EPF0000501F.mail.protection.outlook.com (10.167.240.4) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.8
- via Frontend Transport; Mon, 21 Sep 2026 20:00:07 +0000
-Received: from vm01.adwin.renesas.com (DEU-5CG20946WF.adwin.renesas.com [10.226.92.26])
-	by ejcrelay004p.adwin.renesas.com (Postfix) with ESMTP id C0EAA3000240;
-	Tue, 22 Sep 2026 05:00:05 +0900 (JST)
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-To: broonie@kernel.org,
-	geert+renesas@glider.be
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Subject: [PATCH] spi: rspi: Fix DMA mode when the DMA controller is built as a module
-Date: Mon, 21 Sep 2026 19:59:43 +0000
-Message-ID: <20260921195943.107247-1-ovidiu.panait.rb@renesas.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b="JhAeewR1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
+	s=s1-ionos; t=1790026309; x=1790631109; i=jonas@jonasjelonek.de;
+	bh=4GMPeFnbewgPf6tJvZkZFc6PNc1xlPW1ttSPBRO8m4o=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=JhAeewR1L1MqFD7VMo+g2yYzsJo0zEeO2E5f5h6yMk84PYuuK0CE3VtuGZSQRfBq
+	 3WwC2ows5/iN7oMb2VjNljg5wSQYYHDmgMoTwXJSBMHyuOCef/BSwR4BxQdv+Tq9H
+	 91THS55/MlZvcfP5zo+mB51pzDKVlt6CWs4o/cnQVmDgTTruykgk/StQhhzf04cam
+	 8CaVlawsu5RMwWycaOEGmU8ndKghivZfYGJrf6d07o4NAtJ1uXCp8b8inEr2CcwFA
+	 MR9uZa+nrSHwOxEqArESBqEGfOSU3bZdjrUWZmRINy4gjKY5xOGxYcNHFF1Giwm6k
+	 pK3M1YQs8nenYWlW6g==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue109
+ [213.165.67.113]) with ESMTPSA (Nemesis) id 1MwQKp-1wrviS2MMf-017mFr; Mon, 21
+ Sep 2026 23:31:49 +0200
+From: Jonas Jelonek <jonas@jonasjelonek.de>
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonas Jelonek <jonas@jonasjelonek.de>
+Subject: [PATCH v2] spi: realtek-rtl: add support for second CS
+Date: Mon, 21 Sep 2026 21:31:45 +0000
+Message-ID: <20260921213145.671282-1-jonas@jonasjelonek.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYO1EPF0000501F:EE_|TY3PR01MB11528:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 7d00e4e9-e5f0-43e4-7597-08df181aef87
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|23010399003|376014|11063799006|56012099006|10067099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	Em2dwfz9Poxj7kOCj8avPvfFFpO/fQCeCkd6Jb/EoCzZs9mFqz6O5CXC9f0zlH5M28fzwvVr2rNPN7Feu9xWC51HV/YwD+DjI1g47NTxyBBji1NdJ9Thz570DH4N49o8E6n23uI75O231g44hRVUDkivAeOcLQxKz+MLDKo6uGD6R39xC5AolfU8eZM8rG+B7o910mR767/4O1IoRmJ6pip9jjTMxhuxc95KgNso8Seea6lIj3TJGxem1ETR5T593KJWETIUj89ezWKp3N0gR/d7KfneQ5bwCpfpz5Dx/xkQ37maVXqCT8O6P5BsiCJ+O2JumO2etjhRIURGSuLLlzg55MM6+XaPbUcadH5ejbeh8jeqyhQfp5Mq2uQkES5u+9dLjapxc5BmjFclSefrvJ2e6pCUOi0iURL0HfCsBitvBUaZTdOoFqGV43cdsJFXhYHXTNc98xAj0MzlwY/95hBk7rXnqqEWyRM9vCVg8/OnwFmqEsuBp01LyuH6/5rFqyjvumw2TXMK4ciKYO4T3UpJq4wduFv7NvrRT9Q1JuXk5mQEOuKk9xUMSR3gDZm0v2+0JcygvRURaDrjIxpn/WmST6x/pJeU9aPwInnJ8MS7kMGmHWQI7sHUbB+8xLAow01Tg3VqYcmrPfH/XtGasI3nmP+JlHxALy9OwQj/F4vroUjrQnUj8eAGtybvp9PHC05axDpiS8WGMTWZ/6SWaQ==
-X-Forefront-Antispam-Report:
-	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay004p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(23010399003)(376014)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	d2Dy7M2Dy7WKrgF1ISVEyImLLjVZCThoc8YPlA5y8yPaZrFCH2oRTO2o75jne85WOEFvDJCm8fUmGHBmaECxVObA5HQfdAEvyJywZPs5e/t4VLECphtq1ottoKA6fcB8ytxSRudQFaRdb2mpXXnudKXyelhazC8IJum9p/ED8juyWSFNywvdfw7/wgzZBCaFNocWCDpuzr/JE5ilG/f++Udoghu71L+K3vNAE38XVuNxwlOb5/DC3n24tmX72JgbVHbEE2Z/eYoRKRN2/wOK2PyMIRQnxMi8eh96E1kk8YDCm5jFaJ2PAOXa1NGtWFDI/rVv3OcXrE8X927sDqtzOOKbJKRlduWfmeWb7AwPGGTlUAAL1de7ZMXX66bEI0YvHjyYn8cv2r6fue8p4BiTMLoZMvIFZvpTgl5ZV09lAr0Cgd1wvHLf9FsSPxlBnZVi
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 20:00:07.6259
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d00e4e9-e5f0-43e4-7597-08df181aef87
-X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay004p.adwin.renesas.com]
-X-MS-Exchange-CrossTenant-AuthSource: TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11528
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:m5sBGLQVZKWrtbJouOAIGYDd1adOEiXSPimKYni4hKF+yRxoN9E
+ V8/GdUr/owE6Ih0mmxrrs9gmubbR/hlFYwuGk2XfKCk2ZQPFcPBEr0oK79a36PL0e5cAv1G
+ o/I8o1pzuCnJqw6h40xBr8UaKwF5J0GjFN2OqhmdB+X4PhxDMIchqp48cAD6yC14q3saTiy
+ /4ogKHKvLWHd8xwVNr4bA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dMdk5XjD+As=;dMhPeYyV7wy3sw+BlBAmRSZcODn
+ F/bSztEcrUrZd3blRe083omDWZvuIOS5ldvSfKMngT13MNWEdxzy63iAEbtmfXx9iY8eqF0Ye
+ cI76S1F3Fu7O0T/Cbzx0EamNj43iLh+vFztK24Uo+NXsqv/rWDrceMFiNajkzYyjMzMDgdQUw
+ NKCC8SlWyMouwh1qOHBtOJ3ZvpWfQP2DMS3vpIkSm4p5ZjCHKeQbxFx2YqS/xr5yujG1PNJjy
+ DtB4kPE+zrS5PykK8irEU3zrP5OZKRdhCVJP/3BplmPEHZPxk1pcT6SMBFlTz6xc7BD1gdHfq
+ pet+F+sGF1H05J2edBgxqiOMIRunfSo+7zMEoPK/2OBFv7JIzS0EnlqDHYF+7GFhlIL9LDbgJ
+ SAl8k45gnmitt482qLXnlkQfk6WRK4+DJs6CVbBmRBaZakmi58SoRQs7uukFkol0HD0kY9keO
+ 1rpjGiAm2SrT3x7aPfcArzWUekVRJHOmJiJ/4XrLQnCnhx8VncSQTnYsXW0g3HDbOI6H5fCHj
+ vvLO18QKRD4Uz6SXJCKtkMMQAZq8sjoVWdsw6Kl+kba5RwVkeQ5HMDmrwNOdfzIU4Kys3Oppx
+ +yIFFxHv9lBtv2I8h3xvtAEQKFi2G+v0F4nmXmJSNKnAGv/wh1rgPUb+swsGNWxn5RC+en7G2
+ 7F+ZmGcU6Ay9Gs6TCQWPFTz4DrOzwCN3maatdJMYgqzekMjZW6hYf3NwVveIxxmCQQO5Lj42z
+ D34fCyvSCTbwVyZKDt3zNKN23k4Bw3825ZRoOCoGnSKR+p+dBJ8y5hg10yf0UOrGHXkTFeElj
+ /+gm63Qkbkjen4QNCxzX137/YmbqTy3SSM4WlzWDr6zi2iGJocJoyQyYKsNc5vdMnVC1IHvhJ
+ urtHbd2Yi+nSxqPrZZrG67GpMPuUUJ86+YiqbAsIV1KlmqwUSBpbbilcOdl1wWlsiMy0VsfiG
+ 1hnzm9Mow9t60Tl+e5TlBUancpvIRFkHp7m+JXCKZ9EgnDXQcDj8karXwNbtn+e7ekAl15S4X
+ As+NEv833m8wLs7xlQkzkmozqiceNADGYMt8EnCRIUO2KiSOodjVA4CvCSIWISKo9Q1AvVs6f
+ yEPDasQqYUegdLchP2ero5nz0hMnrhu/AydS/P4OYbSBLWwV/DQZZ8UQcFPpm93Mw7nPto1kd
+ kyr+Q+N5+6botdh1WssRKjGw6dGtwyfBE5ibRw172PLRz2plz/LAzjmL5kHxl324vcnl/Kwk5
+ krkBaru2XdniJO+dhuGsUCByWHiVx1mdmc38EUpPKh+d8jYk/C1ecSKTRRWKlOM8y/rlytvYO
+ aAJ24FutMARvN8k9FBC/BzYp2UTZLmOELA62rPdp340iGHyyxMno9VzL6LQl94APwrFV2c5Bn
+ AFWWksNEcrWaGioDQ+zdzxTj4jdgX991weUAUuLTI4MRTpM41yaKC6NCQIfaHZN+MXM64g7RF
+ jMSUGdWTQddGchYSd0l6m1+K8L6TUEADoY9mJcysAXwmbOU7Icx1XXJQnBH0bMGMc4/Lwkfw9
+ hZWvTCNPw6dhayUlAwVZ/7wHRqob6PtmLpnEW5XVpuwGTGIUwC4t0pWGUBGMda58mpxftUXJA
+ 9/IQNhWR6WYv4tbyO/hFUMEYsMtopKdnjo1jKPj1SbY5XhxLIE7/MJ7Ze+nahsfH+3L7NxO6+
+ mlyLKbxxkpfUBylSjagGK/Tut2McQc9JRozfmbRT7DFlhsjNwF0EQuV29f6K2LMEonbA9aTtp
+ HkhSulbHbZbVKlsfZQEBPLgS9pLW5tiVX9dd+7zCJjxBkMcKAhDcNmDFqHxeZdMsRj1b5jmoI
+ QlJ92M9VUKbd9LkbG9rle/QvLGqe0ooZ+ZTgY9BpVZCor1r9E04gOc9TKMA+vaLEVJYg/dSpv
+ e3nm5iQY1o9YhG6hzUqiC/A37Dmk+Vg4puoY/rZ/AbN/e7kcNU5Nrb65/fBl5WjTLnXbsiG9R
+ tFJwbYX218WIUQlLNedJe3/FTiFpnUOchbJWwwh1naYnwhwOuGja1xw+JVSyhD/AxA7BywsAs
+ HdKrovRpwj+eZCoWAozNSvHIiGOdhZYphwpnwC88Mm15Mz0HiHN0+reoO9vzd78fDk4NDaXGV
+ 5DEiG1jL+pWoNKmEWABE6p8byD2Bf9opXiXP9HT0lak27Qdrp17uTyQeTj6tno6ZCtvPfrOon
+ z4BowsIpIaon3PgxBE7+bDPbEU0NJlsnSxjFsur3GgOIdH+VGWfWixPiksGxs8xvVp5iE/LW4
+ w5LtxzVvO/gaHF0r212BhtC7fJXE9bea2p6yQMJjUa3dVCsvS0RdjzZGAEPgLFXI7dPcdgOml
+ iU7kFriQYeXCcrbE64BCOf94VeAhcfx92yfq0/5RybNDyN3U=
 
-On the Renesas RZ/G2L platform, the RSPI driver falls back to PIO mode
-instead of using DMA when the DMA controller driver is built as a module
-(CONFIG_RZ_DMAC=m):
+The initial driver assumed that the controller's second chip select was
+vestigial because none of the devices examined at the time used it. This
+does not hold for all hardware: there are devices with a peripheral
+connected to CS1. Since the controller only advertises one chip select
+and keeps CS1 permanently deasserted, those peripherals cannot be used.
 
-    renesas_spi 1004b000.spi: dma_request_slave_channel_compat failed
-    renesas_spi 1004b000.spi: DMA not available, using PIO
+Advertise both native chip selects and select the appropriate CSBx bit in
+->set_cs(). Build the initial SFCSR control value from zero. The
+datasheet specifies CHIP_SEL for MMIO mode only, so keep it clear for
+this PIO driver and set only the two active-low CSB bits to leave both
+lines deasserted.
 
-The driver requests DMA channels through dma_request_slave_channel_compat()
-which returns either a valid pointer or NULL and cannot handle
--EPROBE_DEFER. If the DMA controller has not probed yet, the driver falls
-back to PIO directly.
+Rename the callback argument from "active" to "level" while touching this
+code. ->set_cs() receives the physical line level, not a logical assertion
+state: after applying SPI_CS_HIGH, the core passes false to drive the line
+low and true to drive it high. The CSBx bits directly encode that level,
+and the native outputs are active-low, so clear the selected bit for a
+low/asserted line and set it for a high/deasserted line.
 
-Fix this by replacing the dma_request_slave_channel_compat() call with a
-regular dma_request_chan() call. dma_request_slave_channel_compat() is
-always passed a NULL fn_param in all code paths, so it actually behaves
-like a plain dma_request_chan() call.
+Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
+=2D--
+ drivers/spi/spi-realtek-rtl.c | 36 +++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
-Fixes: e825b8dd2b36 ("spi: rspi: Add DT support to DMA setup")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
----
- drivers/spi/spi-rspi.c | 49 ++++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 38df676774ee..c61edd1c1353 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -22,7 +22,6 @@
- #include <linux/of.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
--#include <linux/sh_dma.h>
- #include <linux/spi/spi.h>
- #include <linux/spinlock.h>
- 
-@@ -1091,24 +1090,15 @@ static irqreturn_t rspi_irq_tx(int irq, void *_sr)
- 
- static struct dma_chan *rspi_request_dma_chan(struct device *dev,
- 					      enum dma_transfer_direction dir,
--					      unsigned int id,
- 					      dma_addr_t port_addr)
+diff --git a/drivers/spi/spi-realtek-rtl.c b/drivers/spi/spi-realtek-rtl.c
+index e1c40ff2e49d..7b250b447abf 100644
+=2D-- a/drivers/spi/spi-realtek-rtl.c
++++ b/drivers/spi/spi-realtek-rtl.c
+@@ -18,7 +18,6 @@ struct rtspi {
+ #define RTL_SPI_SFCSR_CSB0		BIT(31)
+ #define RTL_SPI_SFCSR_CSB1		BIT(30)
+ #define RTL_SPI_SFCSR_RDY		BIT(27)
+-#define RTL_SPI_SFCSR_CS		BIT(24)
+ #define RTL_SPI_SFCSR_LEN_MASK		~(0x03 << 28)
+ #define RTL_SPI_SFCSR_LEN1		(0x00 << 28)
+ #define RTL_SPI_SFCSR_LEN4		(0x03 << 28)
+@@ -29,17 +28,31 @@ struct rtspi {
+ #define REG(x)		(rtspi->base + x)
+=20
+=20
+-static void rt_set_cs(struct spi_device *spi, bool active)
++static void rt_set_cs(struct spi_device *spi, bool level)
  {
--	dma_cap_mask_t mask;
- 	struct dma_chan *chan;
- 	struct dma_slave_config cfg;
- 	int ret;
- 
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
--
--	chan = dma_request_slave_channel_compat(mask, shdma_chan_filter,
--				(void *)(unsigned long)id, dev,
--				dir == DMA_MEM_TO_DEV ? "tx" : "rx");
--	if (!chan) {
--		dev_warn(dev, "dma_request_slave_channel_compat failed\n");
--		return NULL;
--	}
-+	chan = dma_request_chan(dev, dir == DMA_MEM_TO_DEV ? "tx" : "rx");
-+	if (IS_ERR(chan))
-+		return chan;
- 
- 	memset(&cfg, 0, sizeof(cfg));
- 	cfg.dst_addr = port_addr + RSPI_SPDR;
-@@ -1121,7 +1111,7 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
- 	if (ret) {
- 		dev_warn(dev, "dmaengine_slave_config failed %d\n", ret);
- 		dma_release_channel(chan);
--		return NULL;
-+		return ERR_PTR(ret);
- 	}
- 
- 	return chan;
-@@ -1130,29 +1120,23 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
- static int rspi_request_dma(struct device *dev, struct spi_controller *ctlr,
- 			    const struct resource *res)
- {
--	unsigned int dma_tx_id, dma_rx_id;
-+	struct dma_chan *chan;
- 
--	if (dev->of_node) {
--		/* In the OF case we will get the slave IDs from the DT */
--		dma_tx_id = 0;
--		dma_rx_id = 0;
--	} else {
--		/* The driver assumes no error. */
-+	if (!dev->of_node)
- 		return 0;
--	}
- 
--	ctlr->dma_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV, dma_tx_id,
--					     res->start);
--	if (!ctlr->dma_tx)
--		return -ENODEV;
-+	chan = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV, res->start);
-+	if (IS_ERR(chan))
-+		return PTR_ERR(chan);
-+	ctlr->dma_tx = chan;
- 
--	ctlr->dma_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM, dma_rx_id,
--					     res->start);
--	if (!ctlr->dma_rx) {
-+	chan = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM, res->start);
-+	if (IS_ERR(chan)) {
- 		dma_release_channel(ctlr->dma_tx);
- 		ctlr->dma_tx = NULL;
--		return -ENODEV;
-+		return PTR_ERR(chan);
- 	}
-+	ctlr->dma_rx = chan;
- 
- 	ctlr->can_dma = rspi_can_dma;
- 	dev_info(dev, "DMA available");
-@@ -1355,6 +1339,11 @@ static int rspi_probe(struct platform_device *pdev)
- 	}
- 
- 	ret = rspi_request_dma(&pdev->dev, ctlr, res);
-+	if (ret == -EPROBE_DEFER) {
-+		dev_err_probe(&pdev->dev, ret,
-+			      "failed to request DMA channels\n");
-+		goto error2;
+ 	struct rtspi *rtspi =3D spi_controller_get_devdata(spi->controller);
+-	u32 value;
++	unsigned int cs =3D spi_get_chipselect(spi, 0);
++	u32 cs_mask, value;
++
++	switch (cs) {
++	case 0:
++		cs_mask =3D RTL_SPI_SFCSR_CSB0;
++		break;
++	case 1:
++		cs_mask =3D RTL_SPI_SFCSR_CSB1;
++		break;
++	default:
++		return;
 +	}
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
- 
--- 
-2.34.1
+=20
+-	/* CS0 bit is active low */
+ 	value =3D __raw_readl(REG(RTL_SPI_SFCSR));
+-	if (active)
+-		value |=3D RTL_SPI_SFCSR_CSB0;
++
++	/* CSBx is active low */
++	if (level)
++		value |=3D cs_mask;
+ 	else
+-		value &=3D ~RTL_SPI_SFCSR_CSB0;
++		value &=3D ~cs_mask;
++
+ 	__raw_writel(value, REG(RTL_SPI_SFCSR));
+ }
+=20
+@@ -138,11 +151,9 @@ static void init_hw(struct rtspi *rtspi)
+ 	value |=3D RTL_SPI_SFCR_RBO | RTL_SPI_SFCR_WBO;
+ 	__raw_writel(value, REG(RTL_SPI_SFCR));
+=20
+-	value =3D __raw_readl(REG(RTL_SPI_SFCSR));
+-	/* Permanently disable CS1, since it's never used */
+-	value |=3D RTL_SPI_SFCSR_CSB1;
+-	/* Select CS0 for use */
+-	value &=3D RTL_SPI_SFCSR_CS;
++	/* CHIP_SEL is only used in MMIO mode; CSB0/CSB1 are active low. */
++	value =3D 0;
++	value |=3D RTL_SPI_SFCSR_CSB0 | RTL_SPI_SFCSR_CSB1;
+ 	__raw_writel(value, REG(RTL_SPI_SFCSR));
+ }
+=20
+@@ -171,6 +182,7 @@ static int realtek_rtl_spi_probe(struct platform_devic=
+e *pdev)
+ 	ctrl->flags =3D SPI_CONTROLLER_HALF_DUPLEX;
+ 	ctrl->set_cs =3D rt_set_cs;
+ 	ctrl->transfer_one =3D transfer_one;
++	ctrl->num_chipselect =3D 2;
+=20
+ 	err =3D devm_spi_register_controller(&pdev->dev, ctrl);
+ 	if (err) {
+
+base-commit: 531c719eaeff3ee12af85ccd259f60846214074c
+=2D-=20
+2.53.0
 

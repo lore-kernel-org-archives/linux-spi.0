@@ -1,227 +1,227 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013026.outbound.protection.outlook.com [52.101.72.26])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010030.outbound.protection.outlook.com [52.101.228.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317E4238C16;
-	Mon, 21 Sep 2026 16:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C933938C;
+	Mon, 21 Sep 2026 20:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790007170; cv=fail; b=QFi8NGBDiDXYQi9zm6PbP03hxy4mzFJwLvV2cEb0uyJOE4vFKyWFRPQzsPrQKMbrhyOg2lxmymXtI7vb1JM8puRvodgBi5ORrb1zHwWLTV/5Y7JDzWWpVJUS3Oy14CC36v0BilrvW5YgLP9U1HQq7CJSAelUBpZfzMaRMdcUiVY=
+	t=1790020820; cv=fail; b=oAhiJBQDPc6FHhZfNhAhBiTt1PqB5tl9be5ZK5fwleP/i50ukoTvlPqpH5FLzr2t7Pm37yyzMHkI0wfiWl3DNsWta2FXzU77+GaM9qv7dflSn9ic7Bt1SzAOmV0NBBYfv6WUNtNeGtkUh1C71U92ng6rPE1Ffk5hgVARTT7quW0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790007170; c=relaxed/simple;
-	bh=vbWOugetJqIk0KvA7v0JKmV5fdp/VvcsfKbik1LxNik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AWTE4jkvq2WSmyVJ5vbw5nQFm4rnwyAFRphjA0g+N2C4LUQTFao9nK156bMt1iHXIVO4onn7oYQKFVmKEHHUcyA1OSyDm/OwUZW6MHCE9hGQb8uRcw+/voup9a9l9emxLt+cujHTuCEfZkp0nEkq0DzEuY1G0FVZl7br3ZRU2hM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=fail (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=S2Y1uQAk reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1790020820; c=relaxed/simple;
+	bh=5GPqOXxCeI/zH4cwUI6xGOw2jePXAIOYNSJ98ea4QTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ls1rM3s0UQytjb7uupq0E6KeVPTpu2olHe+CMSFGHbMFVmSFRO24v/m8nTeO3y3wc14GVKJB+GhG4JvPcfdUswVT+Y8no6I954g4zkNbJP/WCdbJ0clEL2AnACMWKpgaXG6s+Q8cY4/zkg+02UBOY1lByx5IaJ86Cf0xJr+j9mY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=hu+3qFBG; arc=fail smtp.client-ip=52.101.228.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="S2Y1uQAk"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="hu+3qFBG"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g6cjvh48FC/MnJWb3ONk4a9nLKN6sSnP3DZKXYNNDPWyeTDEDkSTsSXXx7CN9praCgX3nmgfm/eFHYi7kT7jag8ZeLC/0ohisBpi0/SpDaHyf0OHmlt3jRdeN0ni3SXQDBQizTspRq7d1FOegrWEXe1bqdn/m+JhxwLJK0qgCQkU0L00mD7OY+MGd5OxoFia/lBj4jeb/TRLokvy021ZnT7dsddMRj6mLwVnFSPHqeE4Hl6T/dPp5rJhh841HbdE5B5MVzG8QH6qMHFNvAdENy1PFoT2FjK1sAckM6qn9EUJ7VPdHst/7r+EMJr0d3r6jZacFKaqqyDmj/xklmyMdQ==
+ b=fKtnMQswjFLVW5sgIT5EtAYm0WjkwSxr5sf8RaXxsHiHqZuimD2l0OIMru4FV02A5v0Bhx+AkI7isrAjxTDA8KYzUmkzixd57lUWYNrOsgAOjLBP97qxWfZ3Oj3YggrDrbg86jqC4ERv7x5Iyp1e3JdQcri0XBQAo77wsyfkerSD+LcxuCruCjQGS64m4WpMEkypBaaO06RylEXYTq+mOewBkUoc36bga8qUpuvT6k2j6eWb7dzRpkR3dJR8I7VpYZwg+9lHPegg+xonZ2fXqMJc1W6x+ZtvZM+XJXG3bRCDGd2kYysEKbssWlnTw/ZQN4pWvWwZ19MRPZSQrQgA8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q9+xnx6EtfJ8oLlhNZnAg8LxHBXlWFsK5ue5T4aGatE=;
- b=pzvjFEI3CiUkd1/2CsUW6A2M5yJIW3dLe2RLvGYt2P5vloP3wc2bkH6y/qK/Y4hV6U9ezzc4HuNvb5nGCFkIHTzpuqsA/Z3mgUytzu4kXl78cBp38PvEA48D2S2ln1oLNlb65m2LyOfB0KDliV16LItDu6n2C3vocSKfC5NSTpZZsXA8of+U6PhLXzfCXDbuYCVryS8R2McIzi526tgGAKD8IhKozTPuHfik0UmFTkUS91cqKKBubzOzaIZh1GaHqWQzkd6eIsvAxJz3hAxg2i6TxRjMTKsQLgZ/9ml1V0/OcQpdD6mH8TOIo4ZXMuM/croSKHk/t2//EeoiS4oIIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ bh=WYlqVV0PbzEKRmEPeFUO/QKN7aJnxBLOSZLmwT57Lo8=;
+ b=yx8oSKTQzyg0SiP9BkK8FSaRFn1pGnPv8IzIvdIZn0sq5542U9kHHpQ/QwNIEN3FMEG9A47kSUdJXtfMSzWKChpYTM3emUHqhv76UnOn3Vy+M1K/fPdJbi1pJxCCWN6dM0xzrRjMV3GFYY5H4GS49b4UHuMgdwS5NZjths2jr+M0n5pOUqEiDRFHz85m39Hbqp++qusbiTt9gnVvur+3zecQApiPSDIlGqA93Z1KsqbTsCtNex7KjrvxoHcTQGStkpJeHhLAM6evAI5cLmzN8wpgB7g5Ag+9eOew1ikDfw85PwXlyfQuVYAlXFo2CIJgh3+ZR2RPEBzrpdaAJKozzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 8.62.32.50) smtp.rcpttodomain=glider.be smtp.mailfrom=renesas.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=renesas.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q9+xnx6EtfJ8oLlhNZnAg8LxHBXlWFsK5ue5T4aGatE=;
- b=S2Y1uQAkFmkf4vTtWizpQSiN4fiVkYfhZ7l/bxZEOPnli/kRFEhPHLerV8R/yWYifYxQ8ja7tfJSdqa6JDku8pKtxbhu8zhHUNnZMqZ0kp2aFJgF/GVLbWPZxd51Am9BAFxeRjJFck5mmfYReC69vCtotaqyd2WzNXW5diOOlQPdkqpQsruFeiCWPecrm2dn9HGXRMwTqiYYmuUMPWPjf1P7bzjEFzx//WIa4Vh9RPLWx09gazVUlEMRYW7xzZmWtN0DPfpu5sM7lgmtDkI4VRN2t1G90MeXXZwn1Tz9XocwNFqn17DGij5yeyBLR/sJWOvu1heCekb2531Xlj4h4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
- by DUYPR04MB12668.eurprd04.prod.outlook.com (2603:10a6:10:660::22) with
+ bh=WYlqVV0PbzEKRmEPeFUO/QKN7aJnxBLOSZLmwT57Lo8=;
+ b=hu+3qFBGgRTGb07Y8vWPl8I00f1Y7nFJ/NWwV9Azan3zflRBSLmitZIkcDtA2n8wqLWwDrJHM2AVIqJf4HiF38SgyifpDe8v/9xgx0NyxAuW+tcQC/ZPCL6iwpi0FWcGmz3kFCr3CNhKEvzP0zAhu2yph8TlxEpp0V3T1m+sRgA=
+Received: from TYCP286CA0092.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2b4::10)
+ by TY3PR01MB11528.jpnprd01.prod.outlook.com (2603:1096:400:375::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 16:12:46 +0000
-Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
- ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 16:12:46 +0000
-Date: Mon, 21 Sep 2026 11:12:35 -0500
-From: Frank Li <Frank.li@oss.nxp.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
-	Frank Li <Frank.Li@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
-	=?iso-8859-1?Q?Am=E9lie?= Delaunay <amelie.delaunay@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 01/10] dmaengine: Move enum dma_slave_buswidth to a
- new header
-Message-ID: <arFXc0LqEpgWSS6m@SMW015318>
-References: <20260911-dmaengine-support-wider-dma-masks-v4-1-72b8fd4cc78e@analog.com>
- <aqgCQvRw9fns__0d@SMW015318>
- <aqjzvxI4ecoFvRLT@ashevche-desk.local>
- <aqlpoBJJXfZgsMxT@parshuram>
- <aqlwRkNcs_UqKjWs@parshuram>
- <aql6u3T0nnSVr-FC@SMW015318>
- <aqws8pN2rfS9-dCC@parshuram>
- <aqz1-OzFobOROuBw@nsa>
- <aq18_TMNs4EJzgZO@parshuram>
- <arDtEB0na9DxDWAS@nsa>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arDtEB0na9DxDWAS@nsa>
-X-ClientProxiedBy: CY5P221CA0154.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:930:6a::22) To GV2PR04MB11799.eurprd04.prod.outlook.com
- (2603:10a6:150:2cf::9)
+ 2026 20:00:08 +0000
+Received: from TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4:cafe::44) by TYCP286CA0092.outlook.office365.com
+ (2603:1096:400:2b4::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.16 via Frontend Transport; Mon,
+ 21 Sep 2026 20:00:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 8.62.32.50)
+ smtp.mailfrom=renesas.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=renesas.com;
+Received-SPF: Pass (protection.outlook.com: domain of renesas.com designates
+ 8.62.32.50 as permitted sender) receiver=protection.outlook.com;
+ client-ip=8.62.32.50; helo=ejcrelay004p.adwin.renesas.com; pr=E
+Received: from ejcrelay004p.adwin.renesas.com (8.62.32.50) by
+ TYO1EPF0000501F.mail.protection.outlook.com (10.167.240.4) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.8
+ via Frontend Transport; Mon, 21 Sep 2026 20:00:07 +0000
+Received: from vm01.adwin.renesas.com (DEU-5CG20946WF.adwin.renesas.com [10.226.92.26])
+	by ejcrelay004p.adwin.renesas.com (Postfix) with ESMTP id C0EAA3000240;
+	Tue, 22 Sep 2026 05:00:05 +0900 (JST)
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+To: broonie@kernel.org,
+	geert+renesas@glider.be
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Subject: [PATCH] spi: rspi: Fix DMA mode when the DMA controller is built as a module
+Date: Mon, 21 Sep 2026 19:59:43 +0000
+Message-ID: <20260921195943.107247-1-ovidiu.panait.rb@renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DUYPR04MB12668:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d7d4457-2777-45ac-9b30-08df17fb2c7c
+X-MS-TrafficTypeDiagnostic: TYO1EPF0000501F:EE_|TY3PR01MB11528:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 7d00e4e9-e5f0-43e4-7597-08df181aef87
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|23010399003|376014|7416014|366016|10067099003|56012099006|4143699003|11063799006|18002099003|22082099003;
+	BCL:0;ARA:13230040|36860700016|1800799024|82310400026|23010399003|376014|11063799006|56012099006|10067099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	ashmVz3oRXQG1gXgFr5GSqtAYYEJe1XHiR/ifyT3rcrg1Lplw5Wo8JW3nt5cBxpgsFhYYxRR0q7A0XNhYgQEZSMRzDauYJfITJllertuIjwyNn+Uwgu5+mus5GfrYfd+MF2o+3F8AGJbZDTtBCxVBZJyVeIJwOeaMFk2Ri0fmJGhz9qYWOEb29YzeEEY9AapuDIaEd95WkWwt7JZqkLuo3VlOHOkF28EJ9pHuK/ATQkh7Otf+nlF5+tWxjpjftbNDnzLrXpe1uCaKu0L6s0zWFfGDuk/dpa7YVyoW5m5pa5KPTtCeVoVOq7fLvw0v08DmB4BMZOFLu7LuqRPP4C44SXstAhyQAP+zyDW5G3R7/WR5COzc2kxOUBR1hO9l5iFZK0EmEJcbHQKth2qcUm598YJOAbCsSanV2Dyxzq05wE4YiSQ5SyGxeLZnIQL0LaciMchDqtTzD6VAT+zyIYF3jYUF0XfY2ZeH+wU9Hi8BLSN11NnSSoC99fQFNzaI3kMGwE811CAyeMF0JkQAXYhHXyW3a5H1P8PRWYbSGOdEz3GgCPqFBctHpRkv7/cRhlXsNH99b2jRcE1ZV1T/s9EQbhvGRx/5fh7aSs7Bb8Cx9BbAOte4EpUBUm1mKhxRoRxdDh8gPGCckfwsCnfBY49OnwAWkWeFIuA6ukqL9blico=
+	Em2dwfz9Poxj7kOCj8avPvfFFpO/fQCeCkd6Jb/EoCzZs9mFqz6O5CXC9f0zlH5M28fzwvVr2rNPN7Feu9xWC51HV/YwD+DjI1g47NTxyBBji1NdJ9Thz570DH4N49o8E6n23uI75O231g44hRVUDkivAeOcLQxKz+MLDKo6uGD6R39xC5AolfU8eZM8rG+B7o910mR767/4O1IoRmJ6pip9jjTMxhuxc95KgNso8Seea6lIj3TJGxem1ETR5T593KJWETIUj89ezWKp3N0gR/d7KfneQ5bwCpfpz5Dx/xkQ37maVXqCT8O6P5BsiCJ+O2JumO2etjhRIURGSuLLlzg55MM6+XaPbUcadH5ejbeh8jeqyhQfp5Mq2uQkES5u+9dLjapxc5BmjFclSefrvJ2e6pCUOi0iURL0HfCsBitvBUaZTdOoFqGV43cdsJFXhYHXTNc98xAj0MzlwY/95hBk7rXnqqEWyRM9vCVg8/OnwFmqEsuBp01LyuH6/5rFqyjvumw2TXMK4ciKYO4T3UpJq4wduFv7NvrRT9Q1JuXk5mQEOuKk9xUMSR3gDZm0v2+0JcygvRURaDrjIxpn/WmST6x/pJeU9aPwInnJ8MS7kMGmHWQI7sHUbB+8xLAow01Tg3VqYcmrPfH/XtGasI3nmP+JlHxALy9OwQj/F4vroUjrQnUj8eAGtybvp9PHC05axDpiS8WGMTWZ/6SWaQ==
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(23010399003)(376014)(7416014)(366016)(10067099003)(56012099006)(4143699003)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:8.62.32.50;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ejcrelay004p.adwin.renesas.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(82310400026)(23010399003)(376014)(11063799006)(56012099006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?9y482wELgf+nbdkx45cytNSv6V/WDEv6kB7HOMw8klEzCWXAOUaAxp58dt?=
- =?iso-8859-1?Q?mx6+puNVN+vsC/PqZltCpKw7Isn+NTrHozVJgm9cX+p0q0XHP9FH5hkUdj?=
- =?iso-8859-1?Q?D402QAtr7cNIDKjGNdHsyI0chuxxX8vBFea/1r0x5bg2bF5LnaQa2OeW8J?=
- =?iso-8859-1?Q?zv4vUGaHVPKmJ0CPbcYniDDDtfZeljjdI08fLE8FnqGZ0wbWgcmVXIzVZJ?=
- =?iso-8859-1?Q?qOdiI2v6uIH0pLQKkBRSFci7g2GADh5nhhK/HwtBwn/VQH/ButxbB0oAuv?=
- =?iso-8859-1?Q?e8Q5wBHe9k+BHkRWQpTodIknEhVoQy/y9W7O9/MQDjKCs+bCL24e3+fEeM?=
- =?iso-8859-1?Q?bosGqqyxT0C+shbIVAt9z2WkYlC7TZ6KPkQVAd786hwwS/l85XqXObDrk+?=
- =?iso-8859-1?Q?XHjjN47Eer//sZx1aTM9wjCYfaBwGcy7v79IJMMvwB0P5ZYikjtGoGyokX?=
- =?iso-8859-1?Q?n1vQVz1pCFFJyGiFNmbtVKyataFV8VLOjQ0aQdi8b9RzDR2ukwna+aAzr4?=
- =?iso-8859-1?Q?78mgGiN8QfTC5XcruZ4+HE8RmhmFzcXE3QC8iC1xCLUUhRBxXknZe78e16?=
- =?iso-8859-1?Q?jCHTrd72mP6MKzodbNPJZwGru9cPCSnL6Lyc5bbPi6jA92VemTq7X2uH4X?=
- =?iso-8859-1?Q?TIehTh+tWjX/vsU0IFlCBgJamUgwOo3oWCZI4X9gi/JFG4YZEui5aNkaEZ?=
- =?iso-8859-1?Q?0J9Pp1To+7m7srmuVbPNItGvcaSAlPFmAr2p+xvdYwrc4kH+dnz3vZAuIC?=
- =?iso-8859-1?Q?l57blHngFcis+KA0dLRQyb0nFE6j4kNlU1IPoWWlQ60zzdbPkHCmcN2QOG?=
- =?iso-8859-1?Q?0F5HqRqvWjQ4fjE/2xhvdwFab2Y3Q4MuKcC6G6KB4+5aGjan0dMwSydUZd?=
- =?iso-8859-1?Q?lgR98ha+hLA3JbTmeMJgRtC5vBttQnMUNJqPwVJFlTlvnmX+mN4HcjyOge?=
- =?iso-8859-1?Q?FlBFjQNcBTM/fvQeje1nCU4o0RKZsZPFIYH8gxfP6qCFzzYIKw8lSSNKa1?=
- =?iso-8859-1?Q?e+Xn3VFY+DopCwf66D92LtnvyK2S/bwkg9kBxcvfYXetkMonUCX/NuH1YA?=
- =?iso-8859-1?Q?I2HgppI7jMROuyK+w0fmfZRs5ZeHB2G/UzJX5U5aT6qm9oUYM5ZR2iW3lu?=
- =?iso-8859-1?Q?AkqCeJ5ir2S7zMPytPDvpnJI/AJviFFFsrP8x3t9l4p4PL7m2rete0qr06?=
- =?iso-8859-1?Q?Q5ZORDYespVsKPSa5Zh9NVEj9xD5NCRn3YueHbawh9WNOQSRroUMpVs9Xi?=
- =?iso-8859-1?Q?SbZzvn2BzePyvzs4IwSW55OueHiA3rU/F6nqLKvGEMCiC048R5imQKB1NP?=
- =?iso-8859-1?Q?uo6sZ9tih1TNBzqzGGrCDIYX2xJKpVbwj9kAeudsbWuZV3gOWfmBm/uYsh?=
- =?iso-8859-1?Q?gIIAoZjSHGJe7kw7yRaHviUC8m5MCM6Z2BH9BmvUyquxj+pRiaDXLpu3JZ?=
- =?iso-8859-1?Q?ftdvlgpqg6XjxZv5XIYaN/CRX4q/iZ81aIQzRZHaV2pJz2h2f7DeVvE+2c?=
- =?iso-8859-1?Q?iAs6GxG8ARomw7IbpLcxM4wL2tb8X8X7wQBxCKGnaPsklG0Fsr00/nyE+v?=
- =?iso-8859-1?Q?M1MsVhESG48D6dXBhD/OtRu6Y/PCHqgO2Bs0SWhPc/mqPzJsMZ3wWjjVdx?=
- =?iso-8859-1?Q?R9lAhOUbpq9pVt+9PJw9E0M4upUVZcPDWUb81rM2evpnAs0jy69zVfwJoZ?=
- =?iso-8859-1?Q?3PII12ROrwbz1y1j0DuMSj1rNBC/3YVFtfxJR2fxZtcFXe0et7RieoVDtz?=
- =?iso-8859-1?Q?SR5M+KRrUmDiVNLeecNGoyFRfnDIeNrk4ctkebWRImaKN+783vID5z1waQ?=
- =?iso-8859-1?Q?bXRFuDaQPOPHcJYABqLGk4LoJbU7O3lx82l2DgZ3cg6HZJJUoMqa?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d7d4457-2777-45ac-9b30-08df17fb2c7c
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 16:12:46.2501
+	d2Dy7M2Dy7WKrgF1ISVEyImLLjVZCThoc8YPlA5y8yPaZrFCH2oRTO2o75jne85WOEFvDJCm8fUmGHBmaECxVObA5HQfdAEvyJywZPs5e/t4VLECphtq1ottoKA6fcB8ytxSRudQFaRdb2mpXXnudKXyelhazC8IJum9p/ED8juyWSFNywvdfw7/wgzZBCaFNocWCDpuzr/JE5ilG/f++Udoghu71L+K3vNAE38XVuNxwlOb5/DC3n24tmX72JgbVHbEE2Z/eYoRKRN2/wOK2PyMIRQnxMi8eh96E1kk8YDCm5jFaJ2PAOXa1NGtWFDI/rVv3OcXrE8X927sDqtzOOKbJKRlduWfmeWb7AwPGGTlUAAL1de7ZMXX66bEI0YvHjyYn8cv2r6fue8p4BiTMLoZMvIFZvpTgl5ZV09lAr0Cgd1wvHLf9FsSPxlBnZVi
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 20:00:07.6259
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NaCDyAo0rlBl2FAsPVSHwEtn2E3ubXAlh4TicmiRpijEIpMWwI62pI8htOHed001BjntkjZiectcX17iiFfqRqiC92w6uHwiw4YT78r1CVh0mj4SQyCfbE9hFxZjiHxp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUYPR04MB12668
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d00e4e9-e5f0-43e4-7597-08df181aef87
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=53d82571-da19-47e4-9cb4-625a166a4a2a;Ip=[8.62.32.50];Helo=[ejcrelay004p.adwin.renesas.com]
+X-MS-Exchange-CrossTenant-AuthSource: TYO1EPF0000501F.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11528
 
-On Mon, Sep 21, 2026 at 09:53:49AM +0100, Nuno Sá wrote:
-> On Fri, Sep 18, 2026 at 11:33:41PM +0530, Vinod Koul wrote:
-> > On 18-09-26, 09:39, Nuno Sá wrote:
-> > > On Thu, Sep 17, 2026 at 11:39:54PM +0530, Vinod Koul wrote:
-> > > > On 15-09-26, 12:04, Frank Li wrote:
-> > > > > On Tue, Sep 15, 2026 at 09:50:22PM +0530, Vinod Koul wrote:
-> > > > > > On 15-09-26, 21:22, Vinod Koul wrote:
-> > > >
-> > > > > > > > Traditional naming would be
-> > > > > > > > dma/engine/provider.h
-> > > > > > > > dma/engine/consumer.h
-> > > > > > >
-> > > > > > > consumer and provider and good names.. I would retain the full dmaengine
-> > > > > > > everywhere please. dma causes confusion already!
-> > > > > >
-> > > > > > Thinking about it again, drivers/dma/dmaengine.h should be the provider
-> > > > >
-> > > > > There some dmaengine code outside drivers/dma directory, like
-> > > > > drivers/crypto/ccp/ccp-dmaengine.c
-> > > >
-> > > > They chose to be outside, their choice... They need to be updated as
-> > > > well to point to ../../dma/dmaengine.h :-)
-> > >
-> > > I tend to agree with Andy but anyways. I feel this is going a bit out of
-> > > scope now. So what we have now in the series is:
-> > >
-> > >
-> > > - include/linux/dmaengine.h (without enum dma_slave_buswidth)
-> > > - include/linux/dma/types.h (with enum dma_slave_buswidth and new
-> > >   dma_buswidth_t type) - A future one would be dma_cap_mask_t and we could
-> > >   drop bitmap.h from dmaengine.h
-> > > - include/linux/dma/widthmask.h - The new bitmap based API for bus_width
-> > >
-> > > I kind like the separation (and the whole point was to avoid bitmap.h in
-> > > the main dmaengine.h API) but tbh I'm not sure if a consumer driver
-> > > will ever use dma/widthmask.h without needing the consumer API. But
-> > > to sum things up, what do you suggest for vÛE?
-> > >
-> > > * include/linux/dmaengine.h as the consumer API and includes the new
-> > > the widthmask API
-> > > * provider/private goes to drivers/dma/dmaengine.h and just includes
-> > > include/linux/dmaengine.h as the starting point?
-> > >
-> > > Let me know how do you want things for v5
-> >
-> > Yes lets talk about dma_slave_buswidth, it is client type. This is
-> > configured by users to set the width of peripheral.
-> > So this needs to be in the include/linux/dmaengine.h
-> >
->
-> Agreed! But providers also need to set the allowed bus mask. And I'm
-> just not sure they need to include/consume all of the consumer API.
-> Also, it's common to allow the provider API to be widely used throughout
-> the kernel (but I agree that could be even harder to get done - if we
-> want to make some stuff really private - but I guess that could be done
-> in a second step or more incrementally). We do also have some subfolders
-> in `drivers/dma` which means we'll need the odd "../dmaengine.h" relative
-> include which I do not love tbh (on top of the crypto stuff).
->
-> I really think something like the below would be more appropriate (if we
-> just want the provider/consumer API without further splitting like the
-> types.h and widthmak.h in this version):
->
-> include/linux/dmaengine.h - provider API (as of today)
-> include/linux/dmaengine-consumer.h
->
-> But anyways, if you or Frank do not object in the next few days, I'll
-> take the above approach suggested by Vinod:
->
-> drivers/dma/dmaengine.h - provider
-> include/linux/dmaengine.h - consumer
+On the Renesas RZ/G2L platform, the RSPI driver falls back to PIO mode
+instead of using DMA when the DMA controller driver is built as a module
+(CONFIG_RZ_DMAC=m):
 
-It think it is fine.
+    renesas_spi 1004b000.spi: dma_request_slave_channel_compat failed
+    renesas_spi 1004b000.spi: DMA not available, using PIO
 
-Frank
+The driver requests DMA channels through dma_request_slave_channel_compat()
+which returns either a valid pointer or NULL and cannot handle
+-EPROBE_DEFER. If the DMA controller has not probed yet, the driver falls
+back to PIO directly.
 
->
-> - Nuno Sá
->
-> > --
-> > ~Vinod
+Fix this by replacing the dma_request_slave_channel_compat() call with a
+regular dma_request_chan() call. dma_request_slave_channel_compat() is
+always passed a NULL fn_param in all code paths, so it actually behaves
+like a plain dma_request_chan() call.
+
+Fixes: e825b8dd2b36 ("spi: rspi: Add DT support to DMA setup")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+---
+ drivers/spi/spi-rspi.c | 49 ++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 38df676774ee..c61edd1c1353 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -22,7 +22,6 @@
+ #include <linux/of.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+-#include <linux/sh_dma.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spinlock.h>
+ 
+@@ -1091,24 +1090,15 @@ static irqreturn_t rspi_irq_tx(int irq, void *_sr)
+ 
+ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
+ 					      enum dma_transfer_direction dir,
+-					      unsigned int id,
+ 					      dma_addr_t port_addr)
+ {
+-	dma_cap_mask_t mask;
+ 	struct dma_chan *chan;
+ 	struct dma_slave_config cfg;
+ 	int ret;
+ 
+-	dma_cap_zero(mask);
+-	dma_cap_set(DMA_SLAVE, mask);
+-
+-	chan = dma_request_slave_channel_compat(mask, shdma_chan_filter,
+-				(void *)(unsigned long)id, dev,
+-				dir == DMA_MEM_TO_DEV ? "tx" : "rx");
+-	if (!chan) {
+-		dev_warn(dev, "dma_request_slave_channel_compat failed\n");
+-		return NULL;
+-	}
++	chan = dma_request_chan(dev, dir == DMA_MEM_TO_DEV ? "tx" : "rx");
++	if (IS_ERR(chan))
++		return chan;
+ 
+ 	memset(&cfg, 0, sizeof(cfg));
+ 	cfg.dst_addr = port_addr + RSPI_SPDR;
+@@ -1121,7 +1111,7 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
+ 	if (ret) {
+ 		dev_warn(dev, "dmaengine_slave_config failed %d\n", ret);
+ 		dma_release_channel(chan);
+-		return NULL;
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	return chan;
+@@ -1130,29 +1120,23 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
+ static int rspi_request_dma(struct device *dev, struct spi_controller *ctlr,
+ 			    const struct resource *res)
+ {
+-	unsigned int dma_tx_id, dma_rx_id;
++	struct dma_chan *chan;
+ 
+-	if (dev->of_node) {
+-		/* In the OF case we will get the slave IDs from the DT */
+-		dma_tx_id = 0;
+-		dma_rx_id = 0;
+-	} else {
+-		/* The driver assumes no error. */
++	if (!dev->of_node)
+ 		return 0;
+-	}
+ 
+-	ctlr->dma_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV, dma_tx_id,
+-					     res->start);
+-	if (!ctlr->dma_tx)
+-		return -ENODEV;
++	chan = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV, res->start);
++	if (IS_ERR(chan))
++		return PTR_ERR(chan);
++	ctlr->dma_tx = chan;
+ 
+-	ctlr->dma_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM, dma_rx_id,
+-					     res->start);
+-	if (!ctlr->dma_rx) {
++	chan = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM, res->start);
++	if (IS_ERR(chan)) {
+ 		dma_release_channel(ctlr->dma_tx);
+ 		ctlr->dma_tx = NULL;
+-		return -ENODEV;
++		return PTR_ERR(chan);
+ 	}
++	ctlr->dma_rx = chan;
+ 
+ 	ctlr->can_dma = rspi_can_dma;
+ 	dev_info(dev, "DMA available");
+@@ -1355,6 +1339,11 @@ static int rspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = rspi_request_dma(&pdev->dev, ctlr, res);
++	if (ret == -EPROBE_DEFER) {
++		dev_err_probe(&pdev->dev, ret,
++			      "failed to request DMA channels\n");
++		goto error2;
++	}
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
+ 
+-- 
+2.34.1
+

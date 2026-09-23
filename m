@@ -1,112 +1,127 @@
-Received: from mail-vs2-f43.google.com (mail-vs2-f43.google.com [74.125.227.43])
+Received: from mail-vs2-f41.google.com (mail-vs2-f41.google.com [74.125.227.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1FA33ADBA
-	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 14:40:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7DB4078E5
+	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 18:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790174457; cv=none; b=bODdxzxbIkLuvv9hVpNTuMzi40tlPdlaI64ekrxH+9KkRoxfaDB9XSPLZHOgq2r7WzXPhP+Pma3AXjTbpjw52wMfxY/6Ti76pu5qzcxWlt2D6FwEEL3jOy7PtKML6CluTDa2PA6e+5kawiaLBrgvcEG5qGF9IhSDEgAQ27TKMto=
+	t=1790189137; cv=none; b=nfb3KGQqMcyRm+5WprQemtJAltm0PInONMolgSOVFKToeD0fWDtOCzuhc+gzWR8yO/sDfFZ0HOUDW9KGOsxgszAnJwGtWbjBg2ULeBIG23L/91WXxe/AdS9Dd1d59/uI44bXK4wWdbP7Gs6SsNMHJR/awhHniv0yzGVWEYE/FOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790174457; c=relaxed/simple;
-	bh=HAiG2uKeueum3NwR1fOOATsx3Nfb/2XuIB0lowPT5AE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JJDbYLoXbMkSmsQJHzmChfs0UwvI4Q3/wCd6ZG3pk+ORpZenEZfz6sgSsUZqIzNPGdXYQfGUwqmEVqAFIna5V4zw5RZkpu517lDFK6K3HeO+7MiRJNpMYRs/p5UxxQJsxixwCrMWZJwpqTSO3mBHPjXtAmsc84h3Oiw5mrFKLrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.227.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1790189137; c=relaxed/simple;
+	bh=nvNnLjE/d1Qmm+m3sMt3041G93z8fEvRmrRp8AFTuEA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BguQsnq+95GY0IdP05QZvG3yXYw2gCE6nEXYlvSn+JgraW4eOalONMJSgKfX0V5ZtzVMVaoaDBbiGO/huyeLbX5kBq8s2AfjohnO84FRlcj4kLklzEUCVUQTQE41/GvHo6eYMhTHm+eru9nWHogb2ppH1Y8pnZyoG8Pn59txtwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oJXOke6I; arc=none smtp.client-ip=74.125.227.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs2-f43.google.com with SMTP id ada2fe7eead31-78564319a92so317074137.1
-        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 07:40:55 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oJXOke6I"
+Received: by mail-vs2-f41.google.com with SMTP id ada2fe7eead31-78564313adaso484381137.3
+        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 11:45:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790189125; x=1790793925; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BOfeQ15b3E2+kaWVk7ZQ6pHBUpc05XcoB8FmwWmuDUo=;
+        b=oJXOke6It21Apnsw7bHMRlYyLhcKdXBdGDXgj7hfvAya8ZFFO/TS0Our0vtQBqQmRZ
+         MLAosUp9FISNDFVi0zU4EnbkN93K4FZqs1IvhmcWISpZCcHiwFW8ET9tWdt+U/dDAykr
+         O9y0lc6bqSL2gw4n1mvVQFLFWh7FSBgZuEK0623xAd9VqsgEImepJE49gz5f7PvcrUBq
+         EfqUCqzfydv7QU5eo7Bez+Xws9Qnj8W/2+NXF7dr3dRabjDTn7rAo/iyWwsPTg1O5c32
+         A+gzHHqsCSo2UVXFLvMRPh7wCeiQyOsO2COKYPkNqr1bLimtj3wUi/BCn54G0fO57lan
+         mKLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790174454; x=1790779254;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=3QXVYin3gKtafVdGEnWDbswOTPSZ/Xq4fs9pj7jQGAU=;
-        b=SL3Dr5oHr7g6U2ssWTQjYRj4NjjfOt9axLzZqsz2/YI4bZuIBalkZPWe5ZZXKgMNC4
-         KRS71gEMGNZ1IG5o3NxEnIGMdryrHLZvJFp72QTQ7/X4D3TiqN5TkpkL1p3C0D+0SumX
-         bpe56ORSkkCjoITRoC1vcFPUf6CzTIRsHQAhYMNUXZT0b/A5bzVz83DMD2dPGNQ9Fqfq
-         pC6y+C+BMQTHei1B0eKcMp5jJVjwiNXKXhL+lMwPPWecFoMFHmMfDSOqQjtSSm43CICX
-         p8olk2GZvdqEGYslhokGDxIVD/XwGdeywTIO64QMGQ9sp7xhxhMCKbUw+MJtwoToNOlr
-         Ldvw==
-X-Forwarded-Encrypted: i=1; AKwUvBxU3EB6E1SKijNOmxNxSw10xMBcuGPmTPLcKRpgBPcG0xo3TaZpTDopyGCTEZ6ylAEd7ElRVJQ5p6o=@vger.kernel.org
-X-Gm-Message-State: AFuF++kD0ugxg21fjEVTIIHQvlxYaCU7+t0fs6csMGN+SEIUx4uh++Tr
-	Fh0yqJZRxg3pBo+JiHmSCnaC1r4mDgkA+jArNqAWa6h7SwAE2O+ddpJOkN8lRkJiNtE=
-X-Gm-Gg: AYBFou1xVveFPSnZ6o9n4OxuoSiLbNUEl2LYfn6qHl9vyka54YmpkqWMmAJiwZhVxr3
-	MNddLsGb4eH/2ojMby6q+Z4Hr3P7YvzaKkWGgQjGssbC5qUcsrMg4gtZwVzBAR5Rl5YWLCG6xte
-	XrBroBVI9hd7NPIwq6jKocJBNJXwLAk0GMSGWotswoEzVdncrHJ6ReWoxEfmd/Lt2T4RP8Y072N
-	eQxiAI0YJloRvJMtTeXgt9bx3PVS+KdEY2UA8jPLwVm1/5od06NqDBH0jpCenO4T24dpaBJR8q2
-	qF8EwIrkVuiOCsaSZJ2mm7wrOzKQMFAFXnKw635e/+VNKR+nhylMBAfM4NhZoR3lCMVU/PpX7+G
-	ATTMWVxdS72AOn6rYXSp31qGwlwT9OlmPhoWyAgxk4ia3xWYv0iDeSVEezYPzgWRTEG1oCTaH6v
-	MakYm7YdynrxuuGjMYubmqqgL6YAnUwIJJM16721VRZ8nqIGfR70T0szCw8+CfWaPyw2EQyLCiI
-	hdounjy29PuyeUpuPvwpLnfJh/Bn806jT/BpVqJV6tGe8fr9w==
-X-Received: by 2002:a05:6102:5607:b0:7a6:f970:27d6 with SMTP id ada2fe7eead31-7ac1d2db5dfmr2199160137.20.1790174454370;
-        Wed, 23 Sep 2026 07:40:54 -0700 (PDT)
-Received: from mail-ua2-f43.google.com (mail-ua2-f43.google.com. [74.125.226.235])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9851a07144dsm2869607241.9.2026.09.23.07.40.53
-        for <linux-spi@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 07:40:53 -0700 (PDT)
-Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-97e7c62dde2so341120241.2
-        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 07:40:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzKSj3wYLcelvrxslLBslG7T8kLxx26060OsflgaDU7vjzjscGDCHNPNykRXSSciW1YTAz6bYiCBRE=@vger.kernel.org
-X-Received: by 2002:a05:6102:3711:b0:785:c643:a415 with SMTP id
- ada2fe7eead31-7ac1bb45468mr2431267137.12.1790174453060; Wed, 23 Sep 2026
- 07:40:53 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790189125; x=1790793925;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BOfeQ15b3E2+kaWVk7ZQ6pHBUpc05XcoB8FmwWmuDUo=;
+        b=q3O3wDDCJIl38I/k3sMUKPAukHyGROVg/1Q0ODzpz33fix2Kr109VR/ACRxx+l1nFQ
+         enE5MHsCm6mF2+j9Pgd3aPZ++sXUfFl5z4//vyoFrJi8EGgtHz4I8Owb+Y64LCIv/siI
+         8GArG8zi807igRBaEgauDamaOegYqFAukHvWX92KfzJPrM+WvD23qpEP9yEf7YmOMlgT
+         L3gupEiFqeW7zYvVRS6pPBW6Y9QJYpwx215wm8wrzppf2xITZm3apbZRCtsTdJ5XCImd
+         HCAb9jphb5NsmsgKIDftd0ecrijTBcF0o+WcNJWovMAk7Sp+LTgrp6XgBc+bL9TNLZos
+         gTig==
+X-Forwarded-Encrypted: i=1; AKwUvByEVN5A6lY7a7umm6qi89DHjUmNPwBkX6x456fBhNSaNAEDiEjMG+AovwSyhuCHKbwiNhHf9TTnLhU=@vger.kernel.org
+X-Gm-Message-State: AFuF++niqoaJu5euYkz4AIMC+7qqsFjroKp8bLSUNZ46KrciZ7wyjHEJ
+	we7m4Y23cdOffcKme9cPnnVyVAu/9i6NJSJIe31fRNjfZydSDoDVCRZQLV+s4h4z
+X-Gm-Gg: AYBFou1/Y72Iy5tbcQbV+m++PNsFiG4w3HHCmOL0hCszOnXh5n3YLdSwwtgLzGWKcCG
+	53KbOsagqhuMHpaufEOqco46qCthqlUgoKIbXztvp4RI6ZBm9hxetMNmBXABU0/qdisQU9i09qp
+	c7Vyh3JWjmVPWpkNedC/fbA/2Z6chRH/zc3+WcnY1zLJnPW+7u5vMfEHJuL/OUbjKg4YsK86rai
+	LSi8C93IqsIraLUuRstAu8/07zZVP4O8G5nr7UBZ//wxzR9VnS7InKwq9sLj7Z9ysJOjl/hc42p
+	UppwvhTVpw1rvz2w21sxZaZjtKnQQn408cEVvufeaEWzSH34rituOMJjj1rvfIi85HBA0tgLRac
+	fEl0j+DeMwMgwcQ/vfv3gTNCfeWNJWnHwzvzOvTDf9htJxsThHvrMIQEa4elWz9rbQXzlA0adEq
+	hco1AJRbo2gNgFa6VIW/9S0ckWYvKclFGGCPPX5f4QFwUd1CNjAW9dxS+DFK1lmZ19mSm6Zx/fG
+	JRu69Y2+QUwtp2jbXnXLhVGNnxea3rQIGp1mityFQ4OXloW/mJRGWEpQO0dcFlgoHmVTmfLtthj
+	ui1ZejR/LlvjmQeOaFR8TZlpVFEgrUF/6qJLNQfE5T2S7JXdh4EmJkQt
+X-Received: by 2002:a05:6102:41a9:b0:7a8:3fba:361a with SMTP id ada2fe7eead31-7af1f3f6a52mr75793137.37.1790189125139;
+        Wed, 23 Sep 2026 11:45:25 -0700 (PDT)
+Received: from ututo.. ([2803:9810:87dd:de10:d33a:69d6:aa79:a5ec])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c9f0582b6bsm4303825e0c.18.2026.09.23.11.45.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 11:45:24 -0700 (PDT)
+From: Lucas Costa <2000.costalucas@gmail.com>
+To: Mark Brown <broonie@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>
+Cc: Bartosz Golaszewski <brgl@kernel.org>,
+	bcm-kernel-feedback-list@broadcom.com,
+	linux-spi@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Lucas Costa <2000.costalucas@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
+Date: Wed, 23 Sep 2026 15:44:50 -0300
+Message-ID: <20260923184450.135601-1-2000.costalucas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260907134037.1855408-1-gerg@linux-m68k.org> <20260907134037.1855408-2-gerg@linux-m68k.org>
- <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org> <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
- <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org> <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-In-Reply-To: <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 23 Sep 2026 16:40:40 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWrRmvaEVjs4Whncybn-zVCKStC4gOpvwsnT+XRtm9Hbg@mail.gmail.com>
-X-Gm-Features: AclHuK8JOpxbtBL9eo2JZ21xOlmZ2HJ-Q_I8grURwALj-s_IRRLbJXlaWaj0iq8
-Message-ID: <CAMuHMdWrRmvaEVjs4Whncybn-zVCKStC4gOpvwsnT+XRtm9Hbg@mail.gmail.com>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Greg Ungerer <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org, 
-	linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com, 
-	frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev, 
-	netdev@vger.kernel.org, nico@fluxnic.net, linux-can@vger.kernel.org, 
-	linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Andrew,
+of_find_compatible_node() returns a device_node with its reference count
+incremented, but the function bcm2835_spi_setup() uses the ret value
+in the loop to check a condition and never releases it.
 
-On Wed, 23 Sept 2026 at 16:16, Andrew Lunn <andrew@lunn.ch> wrote:
-> > The driver will always need to support big and little endian hardware, so I
-> > am not sure how to avoid some abstraction like this.
->
-> I was wondering if there is a linux standard set of macros which is
-> supposed to handle this big/little difference, the macro knows the
-> architecture and does the correct thing?
+Store the returned node and drop it with of_node_put() before breaking
+out of the loop.
 
-Unfortunately not.
+Fixes: e19c1272c80a ("spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
+---
+ drivers/spi/spi-bcm2835.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Quoting Arnd:
-   "fec is an exception to this because it happened to rely on the
-    unusual macros: all the Arm SoCs using this hardware have little-endian
-    registers (regardless of whether the CPU runs as BE or LE), while
-    all the coldfire chips use big-endian registers (and don't support
-    LE kernels). The powerpc variant of fec also uses big-endian registers
-    but has a separate copy of the driver that hardcodes this. Other
-    Freescale drivers already have a runtime endianess detection that
-    is needed because they built both BE and LE variants of the hardware
-    on Arm SoCs that could run the same kernel."
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 8f8715809c7c..8909757c94e3 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -1226,6 +1226,7 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
+ 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
+ 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
++	struct device_node *np;
+ 	static const char * const pinctrl_compats[] = {
+ 		"brcm,bcm2835-gpio",
+ 		"brcm,bcm2711-gpio",
+@@ -1297,8 +1298,11 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
+-		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
++		np = of_find_compatible_node(NULL, NULL, pinctrl_compats[i]);
++		if (np) {
++			of_node_put(np);
+ 			break;
++		}
+ 	}
+ 
+ 	if (i == ARRAY_SIZE(pinctrl_compats))
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.43.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

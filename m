@@ -1,33 +1,21 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A783FFF94;
-	Wed, 23 Sep 2026 12:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB0D329E55;
+	Wed, 23 Sep 2026 13:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790168064; cv=none; b=CKjXRjGfvkVuxRPnDjWw7IwI7cNHEBQ8M/5GFFysazQ95j0FkyS7pn26kQk/FBvoa71f0vgThiNc+EYqpNJe7hWbun9rGaMYdXr0JJIiNOtf1EYmnWVPC2gUwnpoxneNAIj5M36oliXIt21kdxBsg/EhXsda//TeY1KwEGbq60Q=
+	t=1790168704; cv=none; b=feZkd9xgXIZSBbRDefgg9yjketmS4QAbk24gJ8Adu6+Nk9b7HnaFy0Ds14PlnZXsZyRYLkY5Dn4xZUeorpHO9EgI0o8ufcRnCN+rifVDskhwaAeiPyuW6T24j6l79exKiVbh2i3TqfI3+p9n60F614Kh5VfuePsizLrrAovqqJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790168064; c=relaxed/simple;
-	bh=2J1h7MUp3bkY4g6NYXbBCpkjvuchfgG7QfNUnxKTW0s=;
+	s=arc-20240116; t=1790168704; c=relaxed/simple;
+	bh=67wEQ7r51IZwvsp1c+FEGfwvwxQPejOaeTD8NC+uv0o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a9XOK75f7E4jQGXdaF7uzb8dpanGGqo3ck6IjTkq7oH3m3LKTcrv8ST4UQoCPqu/3abzisoP/j7GQ90CbmGN2QouMhOjRFoSm1MTPQrKEKE9WoOB+MFE127/GkNA55/cRWQ5EavaXiRm5Sr9yKmtvhuE/0geXh69KqxREAAyBFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJ8AxRfE; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJ8AxRfE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDE51F00893;
-	Wed, 23 Sep 2026 12:54:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790168054;
-	bh=uQKW24Y6OW3CY3XYxdWBUmR7dEKdphWdgIXboMFRnOk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XJ8AxRfEoOz5HKfBwxGt9+R/RLJZTF8WXeIzsEcONozH8IEVu9HP2tBIY4LNkFhh3
-	 vT2otMJhXGGtSO5NQq47YMSP6MeCudVUzSOrm3JvEdZoPBkkQfAJjLB+XOBYWl4CbY
-	 puJIXy6O8Q1iV0ra2h2aKMY18JHXU4UFN9NLp0lYp3jsOCSi849jZwXqUqF3LcCrsY
-	 5mQPTeaV+94o9HmUmwHFqGadJHqiS4GgO/bMGxJ7lvXvMaRZVBpJ3Z3n50vAHSPyTf
-	 nqB7N0xyR1P1RtnUmMpNkeaiJvD8VW5OvJfSNxtuJXfT45LRBQwh+jlIUxcG7RyoFv
-	 0giJWU9Hcm9mA==
-Message-ID: <ccf61e53-3bf0-47d3-92ef-46eaf756e339@kernel.org>
-Date: Wed, 23 Sep 2026 14:54:05 +0200
+	 In-Reply-To:Content-Type; b=bM/dkhAA/DDXso4XDTg00kIXre+oGtfpVQENqpAUol1At06ozgw7tx8Bj3ymA2IYn9uhrPJReOKOLN9pAxSkO4Fl5ZPA0ONHXdPjMWnMtm7Ev74VpkD/dZ2C2WCmFnBDDh1+5xaj3heMimWBzXK67BR8/CQi66kr7fAgQL2vNxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE52D1F00893;
+	Wed, 23 Sep 2026 13:04:58 +0000 (UTC)
+Message-ID: <6fa8c6f6-64cd-4204-a9db-6a33f5e23117@linux-m68k.org>
+Date: Wed, 23 Sep 2026 23:04:56 +1000
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,83 +23,83 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/4] dt-bindings: spi: cdns,xspi: add SPI NAND
- compatible
-To: Fei Xie <fei.xie@horizon.auto>, Mark Brown <broonie@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Parshuram Thombare
- <pthombar@cadence.com>, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260921093701.1341766-1-fei.xie@horizon.auto>
- <20260921093701.1341766-2-fei.xie@horizon.auto>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCHv3 2/3] net: smc91x: do not use readw()/writew() on
+ ColdFire platforms
+To: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, arnd@kernel.org, wei.fang@nxp.com,
+ frank.li@nxp.com, shenwei.wang@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, nico@fluxnic.net, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, olteanv@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-3-gerg@linux-m68k.org>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260921093701.1341766-2-fei.xie@horizon.auto>
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20260907134037.1855408-3-gerg@linux-m68k.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 21/09/2026 11:36, Fei Xie wrote:
-> From: "fei.xie" <fei.xie@horizon.auto>
+Ping...
+
+On 7/9/26 23:37, Greg Ungerer wrote:
+> Modify the access macros and functions used to access the smsc hardware
+> registers when used on ColdFire SoC platforms so they do not use readw()
+> or writew(), or derived functions like ioread16be() and iowrite16be().
 > 
-> Document the Cadence XSPI controller compatible used with SPI NAND.
-
-Some more explanation would be useful here, how different it is
-comparing to NOR variant.
-
+> The current set of readX()/writeX() access methods for ColdFire have
+> historically been non-standard, in that they mostly access memory
+> big-endian instead of the expected little-endian. Before fixing the
+> ColdFire readX() and writeX() supporting code to properly work with
+> little-endian data existing driver uses need to be fixed. Convert the
+> smsc driver ColdFire uses of these to use the raw access macros - which
+> are well defined to be (native) big-endian on ColdFire. This change
+> requires some byte swapping at time of access to retain existing correct
+> behavior.
 > 
-> Signed-off-by: fei.xie <fei.xie@horizon.auto>
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+> ---
+> v2: changed from RFC to PATCH
+> v3: no change
+> 
+> Resending with expanded CC list as per get_maintainers.pl, hoping to get
+> this picked up.
+> 
+>  drivers/net/ethernet/smsc/smc91x.h | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/smsc/smc91x.h b/drivers/net/ethernet/smsc/smc91x.h
+> index 38aa4374e813..1290335629c1 100644
+> --- a/drivers/net/ethernet/smsc/smc91x.h
+> +++ b/drivers/net/ethernet/smsc/smc91x.h
+> @@ -142,22 +142,26 @@ static inline void _SMC_outw_align4(u16 val, void __iomem *ioaddr, int reg,
+>  #define SMC_CAN_USE_32BIT	0
+>  #define SMC_NOWAIT		1
+>  
+> +/*
+> + * Access SMSC device registers using raw IO access primitives. Byte
+> + * swap as required for device registers, but not data.
+> + */
+>  static inline void mcf_insw(void __iomem *a, unsigned char *p, int l)
+>  {
+>  	u16 *wp = (u16 *) p;
+>  	while (l-- > 0)
+> -		*wp++ = readw(a);
+> +		*wp++ = __raw_readw(a);
+>  }
+>  
+>  static inline void mcf_outsw(void __iomem *a, unsigned char *p, int l)
+>  {
+>  	u16 *wp = (u16 *) p;
+>  	while (l-- > 0)
+> -		writew(*wp++, a);
+> +		__raw_writew(*wp++, a);
+>  }
+>  
+> -#define SMC_inw(a, r)		ioread16be((a) + (r))
+> -#define SMC_outw(lp, v, a, r)	iowrite16be(v, (a) + (r))
+> +#define SMC_inw(a, r)		swab16(__raw_readw((a) + (r)))
+> +#define SMC_outw(lp, v, a, r)	__raw_writew(swab16(v), (a) + (r))
+>  #define SMC_insw(a, r, p, l)	mcf_insw(a + r, p, l)
+>  #define SMC_outsw(a, r, p, l)	mcf_outsw(a + r, p, l)
+>  
 
-It seems you might have used login as full name. Please configure Git
-correctly to properly attribute the work (see submitting patches and DCO).
-
-
-
-
-Best regards,
-Krzysztof

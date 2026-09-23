@@ -1,65 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2BD35AC11
-	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 21:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B352E42589D
+	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 21:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790197293; cv=none; b=t0wbkLUbD7Vu1K39Ag86RrJm6xOupOHt8zvMAcm+YlshIQROgxUNq05er6/16J2aXQGhG6vhag8eJvchzStiUqus5Uq4D5i2XJKv+2Alsq2Fuvf5gVkJpf+FLwl5M3E8T2q3ncEFh9jJJcI8S/aLVTOTDOngSsJ4pTy/Zrx043Q=
+	t=1790199113; cv=none; b=Ls5RLo+T2IYc8rKCa5O/B/0nFVVB4fRbxU7IUbvjsmSxC1qav+7y3ZJd+vG5zzEhzHC+eVL25+Hro/bW7PXdDUEi0HX/KmYnzVUReR/OZwIW8A1DfUZ0IypfbkUMXJ4Sk0YIR8fm2oOu8h577sX9UlYlfSgGImxpRQb7YW6TT0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790197293; c=relaxed/simple;
-	bh=EZFvMMNk3d/ZY3/uvaDLHvR0oC/Sdc3LfxfqXVclvdA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=MIAAFDzWvjUFNn+2qQJzrn9ZUmY/dPJSvv41TcufmwOunoSFK5w7yOzt89SdJ2kM6X1UEsccBlkVK9xZwxPq+kn3K12az/xvwrA2zGicOPZRruRyr4r7htEK3JGG2d8SS39nU3um7YwBTPcGK8gTJntPzSZn2Z15WjEYd+mX/Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YyNPuLjV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790199113; c=relaxed/simple;
+	bh=5SAVxGmg7GnelrcPsgVtt3W2kFmCd8Tt9b2GZLTh4zY=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Q0UJX2NrWDnzaj3B+PX5dJrweuAHZisuRKm58VEIZFGFJgMHtocZ945qy2H0KklP3/mTvP1IrAKpWXqWseRreL9VvhfjDvKr3W1QXnZt/aFmOqNnq4WpSRmPwZ+YgOu2wM13kKfUGouxgUgHdrvjjiHs1N6PQfEdLADIHzaJ+Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SPpwm0xb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YyNPuLjV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E491F000FF;
-	Wed, 23 Sep 2026 21:01:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SPpwm0xb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31A41F00898;
+	Wed, 23 Sep 2026 21:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790197285;
-	bh=OJ5CanADDLRBq3YIHsyI2LiiWqEqCY7s2sp28WzJEqo=;
-	h=Subject:From:Date:To;
-	b=YyNPuLjVQZtjTiJlcCyS0+kSUroOC4TdeaedBb7FGdjuXIfi+ljzuUPLzUmKLymm8
-	 8uL7X0XN7zI5iEnoidX8pApQOtBjSVUcHttT4agXMz8u3Bah8RwxDjv228URbqaZbM
-	 Z62a8R+MooSznCGWuRs0G7xgnN4En2i/uhIuWzKQSiI0EaaxoM0AIE19437V5Z7rTX
-	 TybJv3VCIz9SvQ+5NMC0AtdK3ssS7ywrOGZO5FsMZ3R9WZlfHzVKJwo2st15tOSjT9
-	 yRkUg4A5kJ2fvPdx7p1WRSXxE0ltsqjoCHDfVsh81Zhwl8WhF+pXOh8HvMb3lU6DI5
-	 yeaArfMnHoHAQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9532739E8A76;
-	Wed, 23 Sep 2026 21:00:16 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790199112;
+	bh=5SAVxGmg7GnelrcPsgVtt3W2kFmCd8Tt9b2GZLTh4zY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=SPpwm0xb1OFWXZbgT1XqZpP8hPRLAULNnQ8bMxSm6KAoIrb+QlMTHBH5t98nnyItY
+	 7mmpjOBFsdT8laCJ9ODbhaenJ/pkU17XGxfFo8obpIhpdh8e8yeTN/WK/KAF/M8RWt
+	 MxxZN4QP52uVFhJcz18fZpwHbeGeMOA1LZ6qGkLAu3M+jVxM5TC0RZRoE650xSzhjO
+	 4vPsRNK9d3a+PkvxalyPnx+eAlRrQQnl7IsMGlmDAc0NCdHY5ofUGYDcCIY96NtLnQ
+	 9ktlakXwjvOivb9/29XT9Fw1pyWWyYa6N/f2ZplvpqShsJzuI6Ijvq20kWL9mNihHU
+	 WSbAYSkDQcpXA==
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 18D991980059;
+	Wed, 23 Sep 2026 17:31:50 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Wed, 23 Sep 2026 17:31:50 -0400
+X-ME-Sender: <xms:Q0W0aqgh93mvqMIz3Y4uAkRvcFCMlSrZJvQLJNS7bPVxk3BwqtGw6Q>
+    <xme:Q0W0al0Y5YiwqMZgHtmMwm84QKmHbvGj-nO-rK_go5KYC5df5DmtZZPq6X2YcRPsp
+    ETeCwEl9OTwP4CNXkEpyJX1Obt0gdOG2A3OBjnagcgh1jFZMAsG0ujt>
+X-ME-Proxy-Cause: dmFkZTGpc2w2ufMjmJ0kap8IYjs9DfPrMkSQFlAOzp0sPrwE/vrB6G6LACcNgsecPhcLyl
+    /g20MmAILQDVu0ZlSW7Lo9cigxl3519OTOgyM8UAyR1qlsSJMvP2OLuBuCYEy8vwV9/bNQ
+    WQh7FLbGr62pkxIMcPm4sXkf+skT0hS8S8/4fyusGJg9XxMo6tfZoxf/yeVuvn1UVSKtK+
+    yjpDxHjNgfv6GXN8E2hYbkrxiDycjOFqxFyHgKgVwyw2yLOS7dg0qc1A0/3PCZ0TVcW9qF
+    a8vS5CuOnbW9yqpETq/JNukDtE0dez70dGFdfo8YR4EcapOfSiMdt0JJhH/CoQYunZXEkx
+    4y7dbz0FO1BNf2ZSmwjaC1o72nLr4BOeYMmL5fn/EJxQkBS8ykwEjFHn3vNe6FqNtH7zih
+    4Qo6NHaODC5piVE+bwEL1bQ/GGvg5rPtcRTTRPeIGoCiRmmv4LJIk6tRJVtMquknDVezHJ
+    vWQbLQgtDaQvlrTFNM2YyIStqkeNju5IKd4OSczUWM7kL87z7nG7Z+zbUwMIv7rlagqy1v
+    /jnU8At4jogCsmDlfPrvmrtUXUie/We54VcYHwH0jNEnOLdUNAej1KTGMPyThdfDPqpXE9
+    L6tBNGaVbNgPTadl+LKcwDhKPMUp35itFGnikWAMDTXsn5WTXQrxO+n6zalA
+X-ME-Proxy: <xmx:RkW0atFaMfzn3umDR1s9bs-Kk3MkgaNPoyM6LolyQEp-hCjgS5FgNA>
+    <xmx:RkW0arEMcEzOzSkta4DLZ7mtyUwSqEAIzP5_zYGHmpBP5xNdZhf89Q>
+    <xmx:RkW0at2M57JbrSZQWBwlJEfJ3-I2xW3WcKTqGPE7WInrBOK5vBEe-g>
+    <xmx:RkW0alcf_Bhjxlov46iFTQW11wgGbri_oCK0uu0iVIKNEl4uzXKfgQ>
+    <xmx:RkW0anJBbBkol_rpPInw8zj5v303xcyAaRVcunZlrAoMOBChhJT4Rxg4>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id 3BD3932A0087; Wed, 23 Sep 2026 17:31:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179019721526.702272.7728635294762083695.git-patchwork-housekeeping@kernel.org>
-Date: Wed, 23 Sep 2026 21:00:15 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+X-ThreadId: AZl98to-mMhc
+Date: Wed, 23 Sep 2026 23:31:25 +0200
+From: "Arnd Bergmann" <arnd@kernel.org>
+To: "Greg Ungerer" <gerg@linux-m68k.org>, linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org, "Wei Fang" <wei.fang@nxp.com>,
+ "Frank Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>,
+ imx@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ "Nicolas Pitre" <nico@fluxnic.net>, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, "Vladimir Oltean" <olteanv@gmail.com>,
+ andrew+netdev@lunn.ch, "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>
+Message-Id: <b6135a85-1f05-4ec4-a283-60e8dbcf0437@app.fastmail.com>
+In-Reply-To: <20260907134037.1855408-3-gerg@linux-m68k.org>
+References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+ <20260907134037.1855408-3-gerg@linux-m68k.org>
+Subject: Re: [PATCHv3 2/3] net: smc91x: do not use readw()/writew() on ColdFire
+ platforms
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Latest series: [v5] spi: spidev_test: new features (2026-09-23T20:10:00)
-  Superseding: [v4] spi: spidev_test: new features (2026-09-18T15:22:48):
-    [v4,1/9] spi: spidev_test: include tools/include
-    [v4,2/9] spi: spidev_test: clarify help text for --size
-    [v4,3/9] spi: spidev_test: add compare mode
-    [v4,4/9] spi: spidev_test: allow disabling rx or tx buffers
-    [v4,5/9] spi: spidev_test: don't send 0x0 or 0xff
-    [v4,6/9] spi: spidev_test: send predictable data
-    [v4,7/9] spi: spidev_test: add option to split message into multiple transfers
-    [v4,8/9] spi: spidev_test: print TX on error
-    [v4,9/9] spi: spidev_test: rewrite unescape() to stay in bounds
+On Mon, Sep 7, 2026, at 15:37, Greg Ungerer wrote:
+> Modify the access macros and functions used to access the smsc hardware
+> registers when used on ColdFire SoC platforms so they do not use readw()
+> or writew(), or derived functions like ioread16be() and iowrite16be().
+>
+> The current set of readX()/writeX() access methods for ColdFire have
+> historically been non-standard, in that they mostly access memory
+> big-endian instead of the expected little-endian. Before fixing the
+> ColdFire readX() and writeX() supporting code to properly work with
+> little-endian data existing driver uses need to be fixed. Convert the
+> smsc driver ColdFire uses of these to use the raw access macros - which
+> are well defined to be (native) big-endian on ColdFire. This change
+> requires some byte swapping at time of access to retain existing correct
+> behavior.
+>
+> Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
 
-Checked 172 series in 4.96 seconds.
-This project currently has 16560 active patches.
-
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>

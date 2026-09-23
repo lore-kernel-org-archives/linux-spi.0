@@ -1,47 +1,34 @@
-Received: from spam01.horizon.auto (spam01.horizon.auto [42.62.85.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3BA331ED7;
-	Wed, 23 Sep 2026 06:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F892311946
+	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 08:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790144143; cv=none; b=X5lKjzAADxGnaO62flqzfasfSyF2G5EZWbBRZKp+YKKmHR0b4cNeNA2/gRwFL28/GUPXMFfmYIFr13cNycoqE8LrkgAhdmxSe4vGyqGoKYmn0zoz3bAVIJhUCVf5/vI6A7XidIRWEbrT1uG4/UDXyJqvNBiMfwTUXbRyhJOqe3g=
+	t=1790151675; cv=none; b=OKWlPX9G2IRjsbE0JXAgZc+DHls73goMxUS7iPAmLzk7nyAo367J0dvbKxoxoAOX50WxfYLgnxjX7+A9OIJlVsN5QdNtGnIDa1S3G0+wKyr/7ZYn75BmmXKyyhUXY5cnKIldKdrlR4n595i6v4CbMPe8ZYrJyrrluGVnoONeOsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790144143; c=relaxed/simple;
-	bh=bCUCYlEaXgZNmby4tA1+BtoGfMqjNJTX72dC0mvaqRg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cY+mhuMSelG1XvKzlW9dAyOLPFOrx/PoRiqmKTOpwP7qCalFgwbw8cV3AouQl1fhteA/GQC+rWkZwEoIxkm3rYDzhEHVamITo8rtDH9TY3qwdduJFkwqNuQJAySUZG7e6hDEja8vg452FUimTjn7H7NElXYdeNP8l+FOJh78eEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=hKfO3SBG; arc=none smtp.client-ip=42.62.85.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
+	s=arc-20240116; t=1790151675; c=relaxed/simple;
+	bh=knPBLneu8xtWi6jOtwgqJSsgEFt9nCtLnroF1tVSgxQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=R45VYqRS80xNfpuaz0OLeA1oThkrUeNmcOgvNXCF3rbE9u3htd9xI9SdmPBm1iGjljkSApCXSlwWVZCfW0XuuLbO+EEL6wcS2zNPIKZhsU3Bg8xa5iEF3vtTjlWD9Kx9cKPqrsmhcKDj6/xnLTB31QdRpYxBqFC9acK+34p5A6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mf41yo51; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="hKfO3SBG"
-Received: from spam01.horizon.auto (bogon [10.9.15.211] (may be forged))
-	by spam01.horizon.auto with ESMTPS id 68N6CHuS018985
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-	Wed, 23 Sep 2026 14:12:17 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from server227.horizon.auto (10.9.0.252) by robotics002.hobot.cc
- (10.9.15.211) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.8; Wed, 23 Sep
- 2026 14:12:17 +0800
-From: Fei Xie <fei.xie@horizon.auto>
-To: Mark Brown <broonie@kernel.org>
-CC: Fei Xie <fei.xie@horizon.auto>, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Parshuram Thombare
-	<pthombar@cadence.com>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 2/4] spi: cadence-xspi: add ACMD support for SPI NAND
-Date: Wed, 23 Sep 2026 14:12:11 +0800
-Message-ID: <20260923061211.1608907-1-fei.xie@horizon.auto>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <arFEjzkHGMbecWWV@sirena.co.uk>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto> <20260921093701.1341766-3-fei.xie@horizon.auto> <arFEjzkHGMbecWWV@sirena.co.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mf41yo51"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323F31F00893;
+	Wed, 23 Sep 2026 08:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790151674;
+	bh=3Ho8UIG7o5WoZEI6Rnu2Tw8GNPVI50Wae4tX8rtxTmY=;
+	h=Subject:From:Date:To;
+	b=Mf41yo515z5zmPYKvT/HftONCcVOGi8ubG5h8oQIytT1ezoiRb0rXuLBWuIwguDvY
+	 zFI1CTHJX1B/BxNE3VTgl3TNdz6e+/gzf/F7VUBeQb7o7X3fV094lAlcNB4w2QblhR
+	 HH3udeZ6KyrMhg3rIX/pXcwQ0YomIVsjzTn6z6nWNhdCXq2m3zffmvvTST/t5Qd+hn
+	 CAjfkAIpCSO3YnpNiVFAGOInlxOG/XKQc3GpJKSoai8DKVrnNF4nC4jNtLi9/ybtI7
+	 dSTLUdHJiRAEXAR3a1AaUz6uVE/gQwd98YbBZo/w/Hn1m0SbXEssxHi1suP8XSPVgv
+	 AQM4hFuiARsNw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9670D39253CD;
+	Wed, 23 Sep 2026 08:20:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -49,50 +36,37 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: exchange005.hobot.cc (10.9.15.212) To robotics002.hobot.cc
- (10.9.15.211)
-X-DKIM-Results: [10.9.15.211]; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:spam01.horizon.auto 68N6CHuS018985
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horizon.auto;
-	s=auto; t=1790143945;
-	bh=bCUCYlEaXgZNmby4tA1+BtoGfMqjNJTX72dC0mvaqRg=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=hKfO3SBG9GrxjrtfmIdjL5LUpvxoUXI5EsGIi8+DYl8pG6726oYNJM8/DGN4CS1kD
-	 d7qE7ybuzlPB7QLjwADTC1OtF4C6bBR8swpP2Bv7Ke8VZMd43sV4Kvhs1w8wi2ojoW
-	 ephl0kfugh3Tzye10h/1hTNFWMUpAiD5gXqEVAejLKP3lMYf2QCmi74MP+yHd4nfur
-	 n4jvfBI+tDDi06dkbZpfr3qEnjpWmp3haVmRkyhmdoeBdU9UWToDTfvJqgaMYWAzqH
-	 H54AfukLW11jDPBlb2egDfkI/eXVnFieXgjA1rEwQblOD+DZiTVCq7pxdiuQfPnIQv
-	 aLPOkLFD2EtOQ==
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179015160421.308215.12458913051210961452.git-patchwork-summary@kernel.org>
+Date: Wed, 23 Sep 2026 08:20:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hi Mark,
+Hello:
 
-Thanks for the review.
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-I agree that the controller should not interpret the child driver's
-private data and that this dependency should be removed.
+Patch: [v2] spi: realtek-rtl: add support for second CS
+  Submitter: Jonas Jelonek <jonas@jonasjelonek.de>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1170728/
+  Lore link: https://lore.kernel.org/r/20260921213145.671282-1-jonas@jonasjelonek.de
 
-The difficulty is that the hardware ACMD sequencer needs the complete
-multi-operation sequence to be described before it is started. For
-example, the SPI NAND core currently submits PAGE READ, status polling
-and READ CACHE as separate spi_mem_exec_op() calls. The STIG path can
-execute those operations individually, while the ACMD hardware combines
-them into one programmed sequence.
+Series: spi: sh-msiof: Add support for R-Car X5H
+  Submitter: Geert Uytterhoeven <geert+renesas@glider.be>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1171110/
+  Lore link: https://lore.kernel.org/r/cover.1790065451.git.geert+renesas@glider.be
+    Patches: [1/2] dt-bindings: spi: renesas,sh-msiof: Add support for R-Car X5H
+             [2/2] spi: sh-msiof: Add support for R-Car Gen5
 
-Would an SPI-mem operation-sequence interface be a reasonable direction
-to explore? The NAND core could describe the ordered operations and
-polling condition, and the controller could either execute the sequence
-in hardware or fall back to the existing individual operations. This
-would keep NAND-specific knowledge out of the controller driver.
 
-I would appreciate your guidance on the interface direction before
-reworking the implementation for v2.
+Total patches: 3
 
-The implementation issues you identified, including use of the interrupt
-callback, timeout cleanup, DMA handling and short transfers, will also be
-addressed in the next revision.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Fei
+

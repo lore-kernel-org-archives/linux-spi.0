@@ -1,67 +1,68 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0558D5678F1;
-	Wed, 23 Sep 2026 20:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3842B583AD6;
+	Wed, 23 Sep 2026 20:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790194534; cv=pass; b=D9w2+0Qb7sJAbV8KITujSuV0aeCPtlDOvGSIo6/APaIseL5I5+dOZuTGrEugDnTFZ281pTRR2QFG4NaI35r2yevCaUfK9DuC1ohxWhUxGrgUE8XizWT9jcVhhPr7VqeJkgCCELMbcMT3SgrZt5LcRgIQ1xrvw6ZAHMeTte01Zps=
+	t=1790194541; cv=pass; b=M/RB0Yro9GaF/bqosQZ4y5mJGgBIvge9Arx8nokw3zqWNwE5W49So946s4lVAi84pjYPwYY+2Zl5F+DDIwkJQ/BM20+qXFOZOWRzD+gGKDaVT+5l/ETYYsWTHj4eb/Sy8fVSj6hK5sWnDbcpvSVuYZPK+JadR0Qn52qMamCuhtg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790194534; c=relaxed/simple;
-	bh=4qdD4jbz/LyLufcNQOhcZl+57WSq5cvo7q3Igr3BkXQ=;
+	s=arc-20240116; t=1790194541; c=relaxed/simple;
+	bh=F6iuSlRBHUPpEkzHoyAb63btQbaFk4ykHXlzVsIJeTM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g7bwJnl2v+zQLHQyO9laX/Xmv2muM0sIakJrKyYGkXUi0tHwFAkz2O5HKo8Ep3ooVg13CtX69cgg4Gvm52go5aF4lw4xbrQv0Dv/xgRAM7T1Ch1w07g7mr6Ud85Z7PXQSRVAxisnlyrnZKtrTSdfi/Zzj6JoDzAhnCcHuqxBayo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=SIBcGzgW; arc=pass smtp.client-ip=185.203.200.13
+	 In-Reply-To:To:Cc; b=lfVFcbGIirU5G3CLoRZWhRZvvDqbacT511N4OHo82iPmNrf1d553MFv/q1/Ft+smDmsgTfrudwjauJenEfefC/Xgo+k6XmemCpaBrssJ/icR1IhkQGi3KhZOq5i7Tua90BbMAiAxH/o63OmoC4jhwGBN2xPFGFO++dfue09KkKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=NoX57OTU; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="SIBcGzgW"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="NoX57OTU"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B024620200E;
-	Wed, 23 Sep 2026 22:15:19 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2FAA32001BD;
+	Wed, 23 Sep 2026 22:15:28 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790194519;
+	s=20260414; t=1790194528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iOTFH6Gb1kpjuq9poq6S2LaSZyLKcNyrqGl6ITny74A=;
-	b=SIBcGzgWwve7NXdR+Gx1LFR/PWMq6Ksw3cj7I0XNo63mNcI6uROXmGTlPUucdzv+kqa5oh
-	kXNGhZyde5iy3sKPrsofn21k+jUf1P1IjYnLbNwKoqRSSvczvPnDM4jUjxAewV0qt8cQ3a
-	WJDx/dkalrGoosQ88PzZo2gm0f++KnjuMy79qPszupxJicFwwVMYcWeQMZijqnOOz50cbX
-	ToMgybzHsUToWWGUACdHFrUUDhxolEJIFvY6EjHpvFHr1dug6bFTb5T9PZhZ8ndTrCdaw6
-	e+yLVB6L7U37huw4mw9fzZJCzPIXByCoDlG39Zfty7sJCA2U7t3c8gO3mhudXw==
+	bh=Mz3gekaE2Dtt1mrgsQJUUQGDaLI+/G728euVd05MQ1A=;
+	b=NoX57OTUHw3ywTG1SfiFKa/C0W0tDK8exOHapGFsOFLRaoODZl/T+KEHm6A67BGpjnQYix
+	UxVSOgCZSsSA9aH02zxzkdAO/jXRYh4FCOtzcI/8G+Rcf+3sBn1PHIrB6Fyycprzy15mV6
+	Z0LoBO0EOln/a1owhWj267EPZbxTni4eWDTZvrMcEl9AS2kVvINNb6HmwTA6NPBT/IjUy0
+	uZYhKnCU7xk8v1XXhk6O+EOcX1oZpsgx8QKHihHvmczwk567ntnRbz3iF79wpUpRYl1jYq
+	vbHJzfGCnZxmTS29wwqj+FoWbmiApD1TXvRTCuI4mlw5ntZoA88JdXnjM7upUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790194519;
+	s=20260414; t=1790194528;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iOTFH6Gb1kpjuq9poq6S2LaSZyLKcNyrqGl6ITny74A=;
-	b=LWwJNLuND/yzt2+4uMByAAf+cxdrMcZ3fM7v9R0LVP+3tlKTAh3e++W+prgxAn5zcYX+JE
-	zOyfu0lEyNBNsLpFgDTK72NOa+yVjWSjpMXpEVx327yb2jsVwbMk1oTLgif4L3riSS9odk
-	27jRx+jdf5SCVhr8T5rGclTxqs1Q1f85lwWlhBAa2dNPfDamYFASuYJVJ82wr2aCDsHMft
-	qMD+92nRiRs36k7exAsa/ZpVxL/pp35EjvourPbPxyPQFRKB/wIhQP3CerhWvg7tmx4mXQ
-	i/VeUOS9CQvo2bnv2mCOlUXQFT0YL5Bbve611pLi+Exiw8pyS4B3hDmyaIzyEw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790194519; a=rsa-sha256;
+	bh=Mz3gekaE2Dtt1mrgsQJUUQGDaLI+/G728euVd05MQ1A=;
+	b=bl+5wqrhWWwIsFXtlM2YLY0qM7BmuIYEYYmB2otP4V5a9kzfE1K3mlFc2LBHyjAaWVfCVM
+	BE4a0i3FuNNALzHLZm/HWRaAfuOwRgjfAG6fM0yFC692GF+TV+BiS3mJRUMs4WH6KsGUe6
+	6C6XONJiTBAttZMY6tmts8fDjs18FRyvRvJt06SLpkWrEXkI9RlsG25+BNkPNmUibpE/Op
+	BVnYFQ8C3cAvWePHSGbhzE7qDbsDC7chLyu9gcji9FcAqMZnfXD3SS1gRllKpGLurVHd2c
+	tgEpP2/n9N0DULCjh4oAobIdUt7PBVgWErrC8vGxLFlxlNHxn+gTHkPKVsoncw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790194528; a=rsa-sha256;
 	cv=none;
-	b=G8+bi+CkD1u3+0bk/F9k/o/zQPWyu7aiF9g6tZCjD0XlksGz/mnbxo5Ju4lhIIwTsJa8Zy
-	tUX6Mbs7Xtm1G9FjRhGwfwL/XgMhbfM0PoCKYynfHWj4KvbXWM1U25fLsRyu9ZvT3wfD8O
-	lptqnTgW+sL3eOvADWv6lPECkGV+IcLJGyRFwsZekR1j80lduWCf980icoz9DdTgpKkz8Q
-	9m/do4cCPBp6E9W0pnvRtWZZfpHWGdK6ehWJxt8/kXxsNpO77LjOwjoGV+jcnXIBTW6rZP
-	ouTX6h+MEiYmEy1C/w/fU9EeUZ0rmEttVuVBg1zYHaYcCxwVBRwr2PvIE6JjEA==
+	b=YY4u+WLkONjS76qQE1UBka0s/y3u5GZCyz+GZyXOUS4txbUVQQ94DhvqBYpTWxa29l/xKY
+	hfu0mjta3xCl1/bsw4WByCeNaXWRz0Cp8H7/Cdcnf5g8MwZLygcsL4Cr7CJjkRl5V+wJzq
+	T2XcvD9vFB4A9+tF2OQIU0nEHa/vHOAaWqdunXgtrj8bm7mYO2Ux/+c8D+GRuyX2lrNfM6
+	vP9AH1AjRyVTtqSwWJDcFseo6ad8n7uMS2pkRxYCPLd7I5UWlljVuFIrblonIqI0N+HnFz
+	ePNGg+ZR+UKdNh4V49baRCoCjgccOZgMUVax2kAR/1jRhLSri6Nz/Sj+B3DZHw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=jre@pengutronix.de
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <jre@pengutronix.de>)
-	id 1x9TI7-002SC3-2a;
+	id 1x9TI7-002SC3-2z;
 	Wed, 23 Sep 2026 22:10:07 +0200
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Wed, 23 Sep 2026 22:10:05 +0200
-Subject: [PATCH v5 10/13] spi: spidev_test: send predictable data
+Date: Wed, 23 Sep 2026 22:10:08 +0200
+Subject: [PATCH v5 13/13] spi: spidev_test: rewrite unescape() to stay in
+ bounds
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -70,7 +71,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-spi-sun4i-spidev_test-v5-10-25861c17426d@pengutronix.de>
+Message-Id: <20260923-spi-sun4i-spidev_test-v5-13-25861c17426d@pengutronix.de>
 References: <20260923-spi-sun4i-spidev_test-v5-0-25861c17426d@pengutronix.de>
 In-Reply-To: <20260923-spi-sun4i-spidev_test-v5-0-25861c17426d@pengutronix.de>
 To: Mark Brown <broonie@kernel.org>
@@ -78,132 +79,97 @@ Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
  Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de, 
  Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4443; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=4qdD4jbz/LyLufcNQOhcZl+57WSq5cvo7q3Igr3BkXQ=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjaYiQrtTS47wY795npJf45DfdWsFqdU5EQbpQ6XTbr0
- 72CoIPWHaUsDGJcDLJiiiyxanIKQsb+180q7WJh5rAygQxh4OIUgInob2NkWNd5ZF/RHPumSDvn
- kpP/X581tuY30HZdpmP+5XCn0pW6NEaG5VwTtc8/kSpaayx/rN3v18yljP873wrNq+le2VN6Z9V
- LRgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2400; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=F6iuSlRBHUPpEkzHoyAb63btQbaFk4ykHXlzVsIJeTM=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjaYiTnt4pr1y6vayVL1Vm/lM2b47Ngaq7XGs3r39c8D
+ 5q5we4Af0cpC4MYF4OsmCJLrJqcgpCx/3WzSrtYmDmsTCBDGLg4BWAi4pMY/ilpvfioGvin4886
+ 7YmyCxbHV4pws2y7WXnlZOM1g5XThSwY/qeLzu22+2aZbjv9quSsb7/2H9wp/DPlYfOJ9TJxnZu
+ el3ADAA==
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 
-Introduce a flag to test on a predictable byte sequence instead of
-random bytes. This is useful when comparing multiple runs with the same
-option set e.g. with an oscilloscope.
+unescape() could read the source buffer out of bounds for inputs like
+"\\x" and could write the destination buffer out of bounds due to lack
+of checking against the len parameter.
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+For better readability and consistency, rewrite it as a simplified
+version of unescape_string() in string_helpers.h. This includes
+rearranging src and dst parameters.
+
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- tools/spi/spidev_test.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ tools/spi/spidev_test.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
 diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
-index e7ee7d5a701e..56b71b842fb5 100644
+index 6f9e04acee9c..68fe583c3f7c 100644
 --- a/tools/spi/spidev_test.c
 +++ b/tools/spi/spidev_test.c
-@@ -48,6 +48,7 @@ static int compare;
- static int nonzero;
- static int do_tx = 1, do_rx = 1;
- static int random_input;
-+static int predictable;
- static int input_choices;
- 
- static uint8_t default_tx[] = {
-@@ -188,7 +189,7 @@ static void transfer(int fd, uint8_t const *tx, uint8_t const *rx, size_t len)
- 
- static void print_usage(const char *prog)
+@@ -11,6 +11,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <ctype.h>
+ #include <errno.h>
+ #include <getopt.h>
+ #include <fcntl.h>
+@@ -96,28 +97,31 @@ static void hex_dump(const void *src, size_t length, size_t line_size,
+  *  Unescape - process hexadecimal escape character
+  *      converts shell input "\x23" -> 0x23
+  */
+-static int unescape(char *_dst, char *_src, size_t len)
++static int unescape(char *src, char *dst, size_t size)
  {
--	printf("Usage: %s [-2348CDFHILMNORSZbcdiloprstvwz]\n", prog);
-+	printf("Usage: %s [-2348CDFHILMNOPRSZbcdiloprstvwz]\n", prog);
- 	puts("general device settings:\n"
- 		 "  -D --device         device to use (default /dev/spidev1.1)\n"
- 		 "  -s --speed          max speed (Hz)\n"
-@@ -213,6 +214,7 @@ static void print_usage(const char *prog)
- 		 "  -o --output         output data to a file (e.g. \"results.bin\")\n"
- 		 "  -p                  send data (e.g. \"1234\\xde\\xad\")\n"
- 		 "  -z --nonzero        don't send 0x00 or 0xff bytes\n"
-+		 "  -P --predictable    transfer the given number of sequential bytes\n"
- 		 "  -S --size           transfer the given number of random bytes\n"
- 		 "  -I --iter           iterations\n"
- 		 "additional parameters:\n"
-@@ -258,12 +260,13 @@ static void parse_opts(int argc, char *argv[])
- 			{ "no-cs",         0, 0, 'N' },
- 			{ "ready",         0, 0, 'R' },
- 			{ "mosi-idle-low", 0, 0, 'M' },
-+			{ "predictable",   0, 0, 'P' },
- 			{ "verbose",       0, 0, 'v' },
- 			{ NULL, 0, 0, 0 },
- 		};
- 		int c;
+-	int ret = 0;
+-	int match;
+-	char *src = _src;
+-	char *dst = _dst;
++	char *out = dst;
+ 	unsigned int ch;
  
--		c = getopt_long(argc, argv, "D:s:d:w:b:i:o:lctrHOLC3ZFMNR248p:vS:zI:",
-+		c = getopt_long(argc, argv, "D:s:d:w:b:i:o:lctrHOLC3ZFMNR248p:P:vS:zI:",
- 				lopts, NULL);
- 
- 		if (c == -1)
-@@ -341,6 +344,11 @@ static void parse_opts(int argc, char *argv[])
- 			input_tx = optarg;
- 			input_choices++;
- 			break;
-+		case 'P':
-+			transfer_size = atoi(optarg);
-+			predictable = 1;
-+			input_choices++;
-+			break;
- 		case '2':
- 			mode |= SPI_TX_DUAL;
- 			break;
-@@ -461,9 +469,17 @@ static void transfer_buf(int fd, int len)
- 		if (!tx)
- 			pabort("can't allocate tx buffer");
- 		for (i = 0; i < len; i++) {
--			do
--				tx[i] = random();
--			while (nonzero && (tx[i] == 0x0 || tx[i] == 0xff));
-+			if (predictable) {
-+				int v = i - iterations;
+-	while (*src) {
+-		if (*src == '\\' && *(src+1) == 'x') {
+-			match = sscanf(src + 2, "%2x", &ch);
+-			if (!match)
+-				pabort("malformed input string");
++	while (*src && size--) {
++		if (src[0] == '\\' && src[1] != '\0') {
++			src++;
 +
-+				if (nonzero)
-+					v = ((v % 254) + 254) % 254 + 1;
-+				tx[i] = (char)v;
-+			} else {
-+				do {
-+					tx[i] = random();
-+				} while (nonzero && (tx[i] == 0x0 || tx[i] == 0xff));
++			if (src[0] == 'x' &&
++			    isxdigit((unsigned char)src[1]) &&
++			    isxdigit((unsigned char)src[2]) &&
++			    sscanf(&src[1], "%2x", &ch)) {
++				*out++ = (unsigned char)ch;
++				src += 3;
++				continue;
 +			}
+ 
+-			src += 4;
+-			*dst++ = (unsigned char)ch;
+-		} else {
+-			*dst++ = *src++;
++			*out++ = '\\';
++			if (!size--)
++				break;
  		}
+-		ret++;
++		*out++ = *src++;
+ 	}
+-	return ret;
++	return out - dst;
+ }
+ 
+ static void transfer(int fd, uint8_t const * const tx, uint8_t const * const rx, size_t len)
+@@ -439,7 +443,7 @@ static void transfer_escaped_string(int fd, char *str)
+ 			pabort("can't allocate rx buffer");
  	}
  
-@@ -492,16 +508,16 @@ int main(int argc, char *argv[])
- 	parse_opts(argc, argv);
- 
- 	if (input_choices > 1)
--		pabort("only one of -S (--size), -p, -i (--input) may be selected");
-+		pabort("only one of -S (--size), -p, -i (--input), -P (--predictable) may be selected");
- 
--	if (random_input && !transfer_size)
--		pabort("a nonzero size argument is mandatory for -S (--size)");
-+	if ((random_input || predictable) && !transfer_size)
-+		pabort("a nonzero size argument is mandatory for -S (--size) and -P (--predictable)");
- 
- 	if (iterations && !transfer_size)
- 		pabort("-I (--iter) is only implemented for -S (--size)");
- 
- 	if (nonzero && !transfer_size)
--		pabort("-z (--nonzero) is only implemented for -S (--size)");
-+		pabort("-z (--nonzero) is only implemented for -S (--size) and -P (--predictable)");
- 
- 	if (compare && (!do_tx || !do_rx))
- 		pabort("-c (--compare) conflicts with -t (--no-tx) or -r (--no-rx)");
-@@ -510,7 +526,7 @@ int main(int argc, char *argv[])
- 		pabort("-r (--no-rx) conflicts with -o (--output)");
- 
- 	if (!do_tx && !transfer_size)
--		pabort("-t (--no-tx) is only implemented for -S (--size)");
-+		pabort("-t (--no-tx) is only implemented for -S (--size) and -P (--predictable)");
- 
- 	if (compare && mode & (SPI_TX_OCTAL | SPI_TX_QUAD | SPI_TX_DUAL))
- 		pabort("-c (--compare) conflicts with -2 (--dual), -4 (--quad) or -8 (--octal)");
+-	size = unescape((char *)tx, str, size);
++	size = unescape(str, (char *)tx, size);
+ 	transfer(fd, tx, rx, size);
+ 	free(rx);
+ 	free(tx);
 
 -- 
 2.56.0.rc0.108.gf0ef1b96a0

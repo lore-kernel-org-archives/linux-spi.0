@@ -1,127 +1,117 @@
-Received: from mail-vs2-f41.google.com (mail-vs2-f41.google.com [74.125.227.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7DB4078E5
-	for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 18:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790189137; cv=none; b=nfb3KGQqMcyRm+5WprQemtJAltm0PInONMolgSOVFKToeD0fWDtOCzuhc+gzWR8yO/sDfFZ0HOUDW9KGOsxgszAnJwGtWbjBg2ULeBIG23L/91WXxe/AdS9Dd1d59/uI44bXK4wWdbP7Gs6SsNMHJR/awhHniv0yzGVWEYE/FOs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790189137; c=relaxed/simple;
-	bh=nvNnLjE/d1Qmm+m3sMt3041G93z8fEvRmrRp8AFTuEA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BguQsnq+95GY0IdP05QZvG3yXYw2gCE6nEXYlvSn+JgraW4eOalONMJSgKfX0V5ZtzVMVaoaDBbiGO/huyeLbX5kBq8s2AfjohnO84FRlcj4kLklzEUCVUQTQE41/GvHo6eYMhTHm+eru9nWHogb2ppH1Y8pnZyoG8Pn59txtwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oJXOke6I; arc=none smtp.client-ip=74.125.227.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041B357982F;
+	Wed, 23 Sep 2026 20:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790194218; cv=pass; b=lqzxtvMXbyPzDGtYPmrdZVk+j/amH8nbqlGPJoUKeuNH20JlwG3V3VEvfHZ3vGg90WQzEvdkTs7WRT8auydeC9TOFTXymXCu3xNA2IiiqghxplnaFvCQPkVfCpXNr3wiZ2W3IKTXmkPe/csOIF9UUDys9qgvWmVU29ck3yQ7D6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790194218; c=relaxed/simple;
+	bh=NqupNA8l2xmS1cpwOfwWWtJLLwFj1BSCT0Q7IYhmOjw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PB1MWN0T251POnM8d/h60afnuIuxVkGp+wwkn1UMW7bWUIoGV1eLXSA6zqrDTNfQjb717O3dUUCf9LX1XNM4iAngbNzvgJhAtMyzKI5E4vKOi8mB9xyoL2aJLNEy6N68kozD+xQXbV9mC4nA6d7sLCR54hbK55TLUx/cYEWAnIE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=Mygvy0/b; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oJXOke6I"
-Received: by mail-vs2-f41.google.com with SMTP id ada2fe7eead31-78564313adaso484381137.3
-        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 11:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790189125; x=1790793925; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BOfeQ15b3E2+kaWVk7ZQ6pHBUpc05XcoB8FmwWmuDUo=;
-        b=oJXOke6It21Apnsw7bHMRlYyLhcKdXBdGDXgj7hfvAya8ZFFO/TS0Our0vtQBqQmRZ
-         MLAosUp9FISNDFVi0zU4EnbkN93K4FZqs1IvhmcWISpZCcHiwFW8ET9tWdt+U/dDAykr
-         O9y0lc6bqSL2gw4n1mvVQFLFWh7FSBgZuEK0623xAd9VqsgEImepJE49gz5f7PvcrUBq
-         EfqUCqzfydv7QU5eo7Bez+Xws9Qnj8W/2+NXF7dr3dRabjDTn7rAo/iyWwsPTg1O5c32
-         A+gzHHqsCSo2UVXFLvMRPh7wCeiQyOsO2COKYPkNqr1bLimtj3wUi/BCn54G0fO57lan
-         mKLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790189125; x=1790793925;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BOfeQ15b3E2+kaWVk7ZQ6pHBUpc05XcoB8FmwWmuDUo=;
-        b=q3O3wDDCJIl38I/k3sMUKPAukHyGROVg/1Q0ODzpz33fix2Kr109VR/ACRxx+l1nFQ
-         enE5MHsCm6mF2+j9Pgd3aPZ++sXUfFl5z4//vyoFrJi8EGgtHz4I8Owb+Y64LCIv/siI
-         8GArG8zi807igRBaEgauDamaOegYqFAukHvWX92KfzJPrM+WvD23qpEP9yEf7YmOMlgT
-         L3gupEiFqeW7zYvVRS6pPBW6Y9QJYpwx215wm8wrzppf2xITZm3apbZRCtsTdJ5XCImd
-         HCAb9jphb5NsmsgKIDftd0ecrijTBcF0o+WcNJWovMAk7Sp+LTgrp6XgBc+bL9TNLZos
-         gTig==
-X-Forwarded-Encrypted: i=1; AKwUvByEVN5A6lY7a7umm6qi89DHjUmNPwBkX6x456fBhNSaNAEDiEjMG+AovwSyhuCHKbwiNhHf9TTnLhU=@vger.kernel.org
-X-Gm-Message-State: AFuF++niqoaJu5euYkz4AIMC+7qqsFjroKp8bLSUNZ46KrciZ7wyjHEJ
-	we7m4Y23cdOffcKme9cPnnVyVAu/9i6NJSJIe31fRNjfZydSDoDVCRZQLV+s4h4z
-X-Gm-Gg: AYBFou1/Y72Iy5tbcQbV+m++PNsFiG4w3HHCmOL0hCszOnXh5n3YLdSwwtgLzGWKcCG
-	53KbOsagqhuMHpaufEOqco46qCthqlUgoKIbXztvp4RI6ZBm9hxetMNmBXABU0/qdisQU9i09qp
-	c7Vyh3JWjmVPWpkNedC/fbA/2Z6chRH/zc3+WcnY1zLJnPW+7u5vMfEHJuL/OUbjKg4YsK86rai
-	LSi8C93IqsIraLUuRstAu8/07zZVP4O8G5nr7UBZ//wxzR9VnS7InKwq9sLj7Z9ysJOjl/hc42p
-	UppwvhTVpw1rvz2w21sxZaZjtKnQQn408cEVvufeaEWzSH34rituOMJjj1rvfIi85HBA0tgLRac
-	fEl0j+DeMwMgwcQ/vfv3gTNCfeWNJWnHwzvzOvTDf9htJxsThHvrMIQEa4elWz9rbQXzlA0adEq
-	hco1AJRbo2gNgFa6VIW/9S0ckWYvKclFGGCPPX5f4QFwUd1CNjAW9dxS+DFK1lmZ19mSm6Zx/fG
-	JRu69Y2+QUwtp2jbXnXLhVGNnxea3rQIGp1mityFQ4OXloW/mJRGWEpQO0dcFlgoHmVTmfLtthj
-	ui1ZejR/LlvjmQeOaFR8TZlpVFEgrUF/6qJLNQfE5T2S7JXdh4EmJkQt
-X-Received: by 2002:a05:6102:41a9:b0:7a8:3fba:361a with SMTP id ada2fe7eead31-7af1f3f6a52mr75793137.37.1790189125139;
-        Wed, 23 Sep 2026 11:45:25 -0700 (PDT)
-Received: from ututo.. ([2803:9810:87dd:de10:d33a:69d6:aa79:a5ec])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c9f0582b6bsm4303825e0c.18.2026.09.23.11.45.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 11:45:24 -0700 (PDT)
-From: Lucas Costa <2000.costalucas@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-spi@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lucas Costa <2000.costalucas@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
-Date: Wed, 23 Sep 2026 15:44:50 -0300
-Message-ID: <20260923184450.135601-1-2000.costalucas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="Mygvy0/b"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A0D9720203A;
+	Wed, 23 Sep 2026 22:10:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1790194207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9dbKnINREIm0XXUOBxcc6md77cUF0gCRPeKqFRl95zQ=;
+	b=Mygvy0/bZ/8+t5WiV+6sw7R3g+m2jfbNvvGdJ+nrL151u4FFqa9PICOMWxkglH3t+hZL0a
+	4t7WFAKY/gxHctotc7vRHofQpqPGye310/8WZxQICqEtJQyi+ayRrln59R0pW2vzg/THPT
+	9uMkoLf+dtROH/QXsM3r9b8u5Jf79DlClFyDwzZISmra9ag9DdZBwTqKentaiBrxmskbfP
+	HhzfaCkEhJJmtPgXdMH1NeU9zJaFfcWkXwqg3/RQUFWE9HK5O9Ih9079D/3gJsNA5Y/Yh+
+	BSOLDVTpBMol2EdDp/0ydaVWqO8qPPn7yHPdgnyfqgoK9pUeWGcbNfAO3Z0RZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1790194207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9dbKnINREIm0XXUOBxcc6md77cUF0gCRPeKqFRl95zQ=;
+	b=aU5vEQ1BylAF0QgrGkSjpgB6J4eDeRmHklRVqFrGt5jr5D2Ys8/HeIQ0eFw71FUE+cLJBL
+	krTxqFe60JpHXu7PC5hqcsZKwUecFIhZERUkNa8ndCncwr9aSglcFTcbbcl6YtN2FmQE1x
+	kIRRGp5I+Wns7wmLF+Xtu50OcWp3d6R66VXdfD790yi1mDGdX06uQIldL/4HV645dVG0J/
+	PMiV/iGshwKAFJrZpZMI1BHWUZc22IduWJlmUvkSeqqvlNtEorj2jjn/JdltSMPN+1ckMn
+	AKzP74Vc2cKVjvOMWZPihxL9qs6Dw/C3lIaoTiI4g4kx+U8rX7QN1Rvr9rpmTQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790194207; a=rsa-sha256;
+	cv=none;
+	b=Gzd7v0zeCfxHy1tzj0/TxuNkPGbVBWHKKfkFqCCpqCP2A1BqZY1DSPHsBcucQtS/aJT89B
+	Qqez50Bs/umRmI+DH93DEMWa0XfO4I+IAW8AsnOdOrEyp+XKdKqYWyu+TiP5O2v0AG3hV0
+	vZn7QgDHIdGxRPFqAAJYZqcKxWFsJZvXhuv9DSCnSzmPfyYCwL+bhpF3gfSkBrBr9sR+X0
+	MzGh9KlYYDqcmLDRvpP2SLL4RKistdbttI4ns0PihqBgcCWzIRcwq0vCBvscBJOWtdDZ5k
+	DJPef5BH5Jg35Xi5dSWReBeVGerOF3x9y5vF1zVj+x6isaT5StBHT6T0IOTN5g==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=jre@pengutronix.de
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <jre@pengutronix.de>)
+	id 1x9TI7-002SC3-1q;
+	Wed, 23 Sep 2026 22:10:07 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Wed, 23 Sep 2026 22:10:00 +0200
+Subject: [PATCH v5 05/13] spi: spidev_test: abort when -I is selected
+ without -S
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260923-spi-sun4i-spidev_test-v5-5-25861c17426d@pengutronix.de>
+References: <20260923-spi-sun4i-spidev_test-v5-0-25861c17426d@pengutronix.de>
+In-Reply-To: <20260923-spi-sun4i-spidev_test-v5-0-25861c17426d@pengutronix.de>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=882; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=NqupNA8l2xmS1cpwOfwWWtJLLwFj1BSCT0Q7IYhmOjw=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjaYiR1OtnPdXIwl+7RNF7h/EcGr/evEYq+Zii058QWd
+ bOH007e6yhlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAExkMhsjw+TV7906GvLU3dl9
+ 5z5PDWq1vff//T2e1YnVTyt5rD3jzRn+ly37Hfbl2MFZV68lP7nCOWfRw1eM2yTY6/foVmilmfc
+ fYAIA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 
-of_find_compatible_node() returns a device_node with its reference count
-incremented, but the function bcm2835_spi_setup() uses the ret value
-in the loop to check a condition and never releases it.
+-I (--iter) for transferring multiple iterations of the selected input
+currently only has an effect when transferring random data using -S
+(--size). Error out if -I is used without -S to avoid confusion.
 
-Store the returned node and drop it with of_node_put() before breaking
-out of the loop.
-
-Fixes: e19c1272c80a ("spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- drivers/spi/spi-bcm2835.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/spi/spidev_test.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 8f8715809c7c..8909757c94e3 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1226,6 +1226,7 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
- 	struct bcm2835_spidev *target = spi_get_ctldata(spi);
- 	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
-+	struct device_node *np;
- 	static const char * const pinctrl_compats[] = {
- 		"brcm,bcm2835-gpio",
- 		"brcm,bcm2711-gpio",
-@@ -1297,8 +1298,11 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	}
+diff --git a/tools/spi/spidev_test.c b/tools/spi/spidev_test.c
+index 49d40aa6d0ec..45c2b691bffe 100644
+--- a/tools/spi/spidev_test.c
++++ b/tools/spi/spidev_test.c
+@@ -461,6 +461,9 @@ int main(int argc, char *argv[])
+ 	if (random_input && !transfer_size)
+ 		pabort("a nonzero size argument is mandatory for -S (--size)");
  
- 	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
--		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
-+		np = of_find_compatible_node(NULL, NULL, pinctrl_compats[i]);
-+		if (np) {
-+			of_node_put(np);
- 			break;
-+		}
- 	}
- 
- 	if (i == ARRAY_SIZE(pinctrl_compats))
++	if (iterations && !transfer_size)
++		pabort("-I (--iter) is only implemented for -S (--size)");
++
+ 	fd = open(device, O_RDWR);
+ 	if (fd < 0)
+ 		pabort("can't open device");
+
 -- 
-2.43.0
+2.56.0.rc0.108.gf0ef1b96a0
 

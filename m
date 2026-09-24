@@ -1,119 +1,238 @@
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from courrier.aliel.fr (courrier.aliel.fr [65.21.61.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2915630C345
-	for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 11:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CEB479893;
+	Thu, 24 Sep 2026 11:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249037; cv=none; b=tfbQpJ7K5iQf60i39Cd8TcDf6BXFtnqI/koKE/IMiYSJ2cRkNNeFt2VcbwrHmS8Hi+/xwXet4UYU0m71I+yX/pmGONMbVY597RiIuk8Aez/IRZ0RBvNPFk6MQ79nhpBHgyVLofEcwdOOsYSM6qV+JFLsi3aRAooWB8/b8QyaWtw=
+	t=1790249676; cv=none; b=UdfyhGSOU4ImaAGS5euix7rccKpfyTMOTamJGdO181L/bUdVsvuaWBvuCIGGNJCTOUZJNnJSTpl/WYaPNWT5OELquDDfbadRrebdqIEMp8fx7jHTNz4oygavcH30/45pDNc1+3qmr0HwuhVO/eugpmFblEJKgCAyLVKHi/xJllI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249037; c=relaxed/simple;
-	bh=2QTwZeicuBqIZnQxI5R11SHQxg2Y25iPU5VryuEgcEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8mvn+0KjcVGrWxdSYjehrNbcZ98o6iuJHZiogYWj/K9zaV+0/PCCv3LbngYLc5UzD2ovVpyiEawGvKNhurMqmKKsk8hA9wpLHvNS8fvsgijfS9x/K4tOLSCO8hJh525kUrZcHO2Do1yfISLsHXFhoBDNaPQmTfWQDXxE9s73Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bdZ0htTZ; arc=none smtp.client-ip=74.125.227.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790249676; c=relaxed/simple;
+	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C8AEjFELmZj6PC7nBgnQ6X8Ji1MQFv1Ky5YDevHf2lSOullmZbU3gfqQ0SqvVcYIhBAaHwQkG33TZQkp7KushqwRMby2/x+EsRGXW1Gc9KDQyj7iQOjZ1LAEX3qDWpbRS0kFjAcQfQS6rvK7cXjkiIov9vNNiKVGfBoA1Dq6yTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=E247WkLQ; arc=none smtp.client-ip=65.21.61.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bdZ0htTZ"
-Received: by mail-pj2-f42.google.com with SMTP id d9443c01a7336-2df8818fe1eso633315ad.1
-        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 04:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790249035; x=1790853835; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VVZyQuOx10W8AoQP9MzIvUBAsru1Ry+CJZYSEvVQ+/k=;
-        b=bdZ0htTZvsWq2yazoRE5OL2ovDW26/fh8EMsDOQN0sFMAmU9v8/jp5ievSONSQmj19
-         tyWUZFS/g8MheffHdG3y6lekfts76YhdAHsi+wT2WVn4SbbH+oElH/yxq3nx1M7RjaeL
-         VFWuIXUmqHvIU6u423ZL8HWnlnP/hk+PmFrtowDa05J3tnzSu2IYU/Bl88HmllB0fsH3
-         TTzYgGddLCXxRBkPEGhEMCRvOf2r+Szby7pE8QB9hFkcvOgoBc89XXuHElnKwUHDDv5x
-         tQwiJq7t2nGe3fh8ZsG72tN7sSIshpaJE41WbOuOPjc7fzuGxjN4mVGpSMHc1MiW4vEA
-         EH7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790249035; x=1790853835;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VVZyQuOx10W8AoQP9MzIvUBAsru1Ry+CJZYSEvVQ+/k=;
-        b=w5mSsUPeKWtI6zhwE4mxST4MqqoPbJUyV9j+1/kAVjpAKE6X8sF0dzsDuqndWW5GDE
-         FmdeA+Q/71YOjO3K47itElEmAcQNI6s5apPe1/m0omykWs+9gDw/DZXfIV6WtTjOQf5J
-         UyC/f+f7+g3JYV6BRuP3RPG+bZNdtZn9egULvXtVRKDdc0mPVYKV6TcTOC77BdaJ7fEB
-         a4dG6wiRnS6nq5DpOoX+AEStGY/sGl8I6+iHXSoNRw7zpCb8ZXYAPmyGzVLyac4+hMaK
-         VYaVT0w3TumE6l+n8pe7L0pqT5U/jWq3u5CDKAsf/t3w6Lwlzh9baMvPz4qLNdBKl/Jw
-         qqCA==
-X-Gm-Message-State: AFuF++no7H6fNrZedmNEQkoJtwPUrJ8WbW7dKo0ZEPu7cVLEsCOyoGpw
-	pHrFuq56lPx/2lTF2fVb1iHSlf22bjjISQt1vnA2Mh+4ZX8A48jiEKbOXofWeZZmf5rSsg==
-X-Gm-Gg: AYBFou1JxC79y/n6xN3DaqEX0SQDgqo7WdQGC52cKdJq9x089jC7uuT+BM0ZOIKKxGB
-	/2PEycWXVlap9SNtWtVIQJTWoX6I60VPzF/ejDjWNmOp2G8AOteNNJ4x/8IhD50DFLBgRcdH4Fi
-	U5uvwR1bzU3anK/3PFmcjukwzkqencD2Z7CfC5nl10jFiuElR/Ug6G1LiUkjcgTg2Z7Fhh+rPf/
-	oKoFxKaLFkqlCapRS6RbD8A6y1aFEiDFoPu9ldfqAkgCSAe4j0rtxHls5Y12kYn9hBZU9ITR5IC
-	BCwHDIANxa52krZzz8Wn19QYyThHrHGaGid48IMdCgbwrq1+621HkM2R9hNKiL1sxO8/QCS5Sg1
-	msFNpBdWevpfbwVgh0BZcD54swgrS8Z0MieJzZAJYHPeHY6c2s1W+KQKAEzf9FFroG0odCCiSQ0
-	1OKsWA6a7wA5y9jGyCRM2a1nYRv+x8EH+cOGqR8LnJdZ5mb0ACX4U/PQ==
-X-Received: by 2002:a17:90b:1a82:b0:3a0:8050:2ecf with SMTP id 98e67ed59e1d1-3a098ac556cmr1232198a91.25.1790249035317;
-        Thu, 24 Sep 2026 04:23:55 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0813318c1sm3586800a91.4.2026.09.24.04.23.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 04:23:54 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: broonie@kernel.org,
-	heiko@sntech.de,
-	william.zhang@broadcom.com,
-	kursad.oney@broadcom.com,
-	jonas.gorski@gmail.com
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linusw@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	jon.lin@rock-chips.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	noltari@gmail.com,
-	lgs201920130244@gmail.com
-Subject: [PATCH 3/3] spi: bcm63xx-hsspi: Disable runtime PM on remove
-Date: Thu, 24 Sep 2026 19:23:29 +0800
-Message-ID: <20260924112329.1566051-4-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260924112329.1566051-1-lgs201920130244@gmail.com>
-References: <20260924112329.1566051-1-lgs201920130244@gmail.com>
+	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="E247WkLQ"
+Message-ID: <a2eea40a-fe81-4aac-85f9-d0a85bb99e26@aliel.fr>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
+	s=courrier-s1; t=1790249661;
+	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=E247WkLQcQMT1igSWXHSdp3PgpUdBFM1eDSBfaK622ZJKF3cTs8fO8jx4CdLLp6V3
+	 GiS5z+d1P2mJLTbU2236srkwHxQjnoyU2iX6leRaEDPITHlZz+5wi/H9OKeBvqm15j
+	 JqjKaLKFLPiP1YsDgJf9RG0iiGiS0i/sKwz8PuPE=
+Date: Thu, 24 Sep 2026 13:33:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 3/3] arm64: dts: amlogic: add T7 peripheral nodes
+To: xianwei.zhao@amlogic.com
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
+ <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
+Content-Language: en-US
+From: Ronald Claveau <linux-kernel-dev@aliel.fr>
+In-Reply-To: <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-bcm63xx_hsspi_probe() enables runtime PM before creating the sysfs
- group, but bcm63xx_hsspi_remove() does not perform the matching
-pm_runtime_disable() after a successful probe.
+On 9/24/26 7:51 AM, Xianwei Zhao via B4 Relay wrote:
+> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+> 
+> Add device tree descriptions for the peripherals on the Amlogic T7
+> SoC and the T7 A311D2 AN400 board.
+> 
+> Add support for the T7 Ethernet controller, SPI controllers, I2C
+> controllers, UARTs, pinctrl groups, regulators, and reserved memory.
+> Also enable the Ethernet controller on the AN400 board.
+> 
+> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+> ---
+>  .../boot/dts/amlogic/amlogic-t7-a311d2-an400.dts   | 153 +++++++
+>  arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi        | 462 +++++++++++++++++++++
+>  2 files changed, 615 insertions(+)
+>
 
-The probe error paths already disable runtime PM when sysfs group
-creation or controller registration fails.
+ --snip--
 
-Add pm_runtime_disable() to the remove path after removing the sysfs
-group to balance pm_runtime_enable() from bcm63xx_hsspi_probe().
+> +
+>  				pwm_a_pins: pwm-a {
+>  					mux {
+>  						groups = "pwm_a";
+> @@ -622,6 +848,51 @@ uart_a: serial@78000 {
+>  				status = "disabled";
+>  			};
+>  
+> +			uart_b: serial@7a000 {
+> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+> +				reg = <0x0 0x7a000 0x0 0x18>;
+> +				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_B>, <&xtal>;
+> +				clock-names = "xtal", "pclk", "baud";
+> +				status = "disabled";
+> +			};
+> +
+> +			uart_c: serial@7c000 {
+> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+> +				reg = <0x0 0x7c000 0x0 0x18>;
+> +				interrupts = <GIC_SPI 170 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_C>, <&xtal>;
+> +				clock-names = "xtal", "pclk", "baud";
+> +				status = "disabled";
+> +			};
+> +
+> +			uart_d: serial@7e000 {
+> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+> +				reg = <0x0 0x7e000 0x0 0x18>;
+> +				interrupts = <GIC_SPI 171 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_D>, <&xtal>;
+> +				clock-names = "xtal", "pclk", "baud";
+> +				status = "disabled";
+> +			};
+> +
+> +			uart_e: serial@80000 {
+> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+> +				reg = <0x0 0x80000 0x0 0x18>;
+> +				interrupts = <GIC_SPI 172 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_E>, <&xtal>;
+> +				clock-names = "xtal", "pclk", "baud";
+> +				status = "disabled";
+> +			};
+> +
+> +			uart_f: serial@82000 {
+> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
+> +				reg = <0x0 0x82000 0x0 0x18>;
+> +				interrupts = <GIC_SPI 173 IRQ_TYPE_EDGE_RISING>;
+> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_F>, <&xtal>;
+> +				clock-names = "xtal", "pclk", "baud";
+> +				status = "disabled";
+> +			};
+> +
 
-Fixes: fb8695e3749e ("spi: bcm63xx-hsspi: fix pm_runtime")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/spi/spi-bcm63xx-hsspi.c | 1 +
- 1 file changed, 1 insertion(+)
+Thank you for this change Xianwei.
+Can you please move the UARTs in the right place between i2c_ao_a and
+i2c_ao_b ?
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 25f169a2a81d..80bf02bc324a 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -882,6 +882,7 @@ static void bcm63xx_hsspi_remove(struct platform_device *pdev)
- 	/* reset the hardware and block queue progress */
- 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
- 	sysfs_remove_group(&pdev->dev.kobj, &bcm63xx_hsspi_group);
-+	pm_runtime_disable(&pdev->dev);
- }
- 
- static int bcm63xx_hsspi_suspend(struct device *dev)
+>  			gp0: clock-controller@8080 {
+>  				compatible = "amlogic,t7-gp0-pll";
+>  				reg = <0x0 0x8080 0x0 0x20>;
+> @@ -688,6 +959,39 @@ sec_ao: ao-secure@10220 {
+>  				amlogic,has-chip-id;
+>  			};
+>  
+
+--snip--
+
+>  			pwm_ab: pwm@58000 {
+>  				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
+>  				reg = <0x0 0x58000 0x0 0x24>;
+> @@ -756,6 +1138,86 @@ pwm_ao_cd: pwm@60000 {
+>  				status = "disabled";
+>  			};
+>  
+> +			i2c0: i2c@66000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x66000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 160 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_A>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c1: i2c@68000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x68000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 161 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_B>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c2: i2c@6a000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x6a000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 162 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_C>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c3: i2c@6c000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x6c000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 163 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_D>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c4: i2c@6e000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x6e000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 164 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_E>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c5: i2c@70000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x070000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 165 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_F>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c_ao_a: i2c@76000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x076000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 330 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_A>;
+> +				status = "disabled";
+> +			};
+> +
+> +			i2c_ao_b: i2c@86000 {
+> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
+> +				reg = <0x0 0x086000 0x0 0x48>;
+> +				interrupts = <GIC_SPI 331 IRQ_TYPE_EDGE_RISING>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_B>;
+> +				status = "disabled";
+> +			};
+> +
+>  			sd_emmc_a: mmc@88000 {
+>  				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
+>  				reg = <0x0 0x88000 0x0 0x800>;
+> 
+
+
 -- 
-2.43.0
-
+Best regards,
+Ronald

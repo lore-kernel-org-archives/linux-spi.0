@@ -1,117 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from 0001.3ffe.de (0001.3ffe.de [159.69.201.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B1E4252B1
-	for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 07:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE2740BCDA;
+	Thu, 24 Sep 2026 10:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.201.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790236115; cv=none; b=YAbbO34aO3+hKGhJjJfGkr3dU6u5mT82et2sm5Mu3iXrqPlklPvgPrHzbe+ahgr98KVMlk6vP3EwVjY4G8NNdlynMLswoItvo5JnM7RZ+uoYZXyzp5btXG6k9xhchN2zVphSelf03Z76v18KNB8wfS+p/qXcp2MSSuED1c7BeXI=
+	t=1790244476; cv=none; b=Qr/bf13DZGhUBsCAwUkeSksHfkHDU2zd0PJrq7eiTkXdBD18qj8ni+4lKL2YQDNdyEcRsrZn/P8S5ZtjoSgRsKTPk1LcsI8X2lS2sTSiZhX3lORzM/9AOqa3kKeXQBPiNjbl51dqULCeQILGWTRovkEQdrjKpChUu0tZ8pCiSrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790236115; c=relaxed/simple;
-	bh=A8WTWhNhNuSxB623cTRdYNlcFkXQibSEnzVrW6erpAI=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sV8+01iIHfdpRVia4gji8kPPpSW/s7C1gFiKhBE0Kkkujhxtru2GbasiQ0W6nNVxSBFroMSGvxIRwU4X/kP6UsBTsPCU8I06xR9tIBG5jA2m0RP8ETR6rRAnk8wwzJfCbqFooLepww4JZPs6PFzvJ2zhj2cnO4AQSbJfYh/DGZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5HvV/cp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790244476; c=relaxed/simple;
+	bh=8JvwrieSguXCPZtU7OI6cAyL16PbOL4YUvLwGEC48G0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
+	 References:In-Reply-To; b=Vfk6GAxyZLvoBBImmsDr4jZqL9Txeyi34UnyX9263fe4g7jQ5Pk3rV60GVmoQs4Ij0TfJF8peKcym9w1W8dUmyXhSFM3/uizEpXhFFUeriKRQkDQxhxGdhmsSBPpZHgr9acuoEEwplRTW08onzRPotlNH72Bd4uYt96wR4pHWA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=walle.cc; spf=pass smtp.mailfrom=walle.cc; dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b=GOKVsOjn; arc=none smtp.client-ip=159.69.201.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=walle.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walle.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5HvV/cp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DE11F0089D
-	for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 07:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790236113;
-	bh=fy0+KiYRcsZU/ymaImEymSgtU/XBNCGbs6mGpoeZE6k=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc;
-	b=V5HvV/cppc8WVHeYIUCIXT0ZwvIwN5DV+RLZY47pD8guzaGDfj/dnMoFxRzTTHB0n
-	 /38S30rCAnpbGCsd4ksLMB4e2lKDjbDv0+M/tFkBlxKX7dsniGIUsVOYXXUV3WIwXE
-	 ZOgalRrjGdyy7odLe9kgx9Xb+uVpOMw+fNPt9s7q70KWLEvPZMRPseT6iYC8meocf7
-	 TRAECxi49YbEyKyau2RPZ8iRxs3TXum6k6LuN9Cwo/PsYAUoxYSJeCRgYr4tW1smvl
-	 A2qEwYhLCC1/82PR2F5GaoUW5uN9z+0RsK++iwmmyB3d7v9Ut6rUJA77I6tavwLCyg
-	 C1mOLaiU65JFg==
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76668f4ddso603119e87.1
-        for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 00:48:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBybCaMqFyABN/8hEIeBcHy+fKg+YAIq66Irc2bIFhXu0HsxyBKu58Qx7Khw3zF5lP2G5bISpc5o1T0=@vger.kernel.org
-X-Gm-Message-State: AFuF++l0AeBHxTnMN2HbfLL1tHZ4EUYLiCieIvHR2rQnTzBJSNROzALx
-	Y8Jb5w4PkcMCFoQ4WIR8aSogwA22TWIlVTYImgJNVSlXNed+R8FwLDhJWAEV4o+esYHj78W1GHn
-	b+NzcEHl3Pv3lG2M+mSBx/7Rb1UzEyTRiZsRJ8bUvIw==
-X-Received: by 2002:ac2:4112:0:b0:5b6:10bc:b86a with SMTP id
- 2adb3069b0e04-5b8df0e31cfmr327732e87.24.1790236111912; Thu, 24 Sep 2026
- 00:48:31 -0700 (PDT)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 00:48:29 -0700
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 24 Sep 2026 00:48:29 -0700
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260923184450.135601-1-2000.costalucas@gmail.com>
+	dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b="GOKVsOjn"
+Received: from localhost (unknown [213.135.10.150])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 1C4282C9;
+	Thu, 24 Sep 2026 12:07:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
+	t=1790244454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p0EErLq3sMzuJYoFXE6V3970B7/j9JzXaV0n1ty6ddI=;
+	b=GOKVsOjn6Pvxn5u39cuXn+/nAIpc9ljcWltO80iPGNEJsOThDO2o0r+IkHQIB1ROnM8wvD
+	yrLldPVTC6VSVsEsXwGXLRQFT01K8qSvTqJg7XjTNU5RehY65HkaW5hMp45YUHP17KvY1/
+	E02Jr5KW7GUlRAz8kUtOjzLcMhOC6tz2wvPPrWqsooFD1QJkJOMJzgDIDkFIe9x2fl1psu
+	wHJrEpkIV4WKWEzXCDSYl5Zv+PgPTo07AxG6ll6Hqtk/25zdGp3JD1yqVWofmjjO3ZhC8r
+	9aY0YPjB282SXMVYQuAJ6mWNsA+DZYc8KuMFxzAZFS2CykzepT6zHuhTyJTOhw==
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260923184450.135601-1-2000.costalucas@gmail.com>
-Date: Thu, 24 Sep 2026 00:48:29 -0700
-X-Gmail-Original-Message-ID: <CAMRc=MeqkCM=QP_mUcGg130UrjnB58S9j636zZqriEqEVdGGXQ@mail.gmail.com>
-X-Gm-Features: AclHuK-Z4kbLfsNuY9cD-lwa9fSqwcZM3BY76R7SUB6NbTYvyq7es4e_Zfoq3eY
-Message-ID: <CAMRc=MeqkCM=QP_mUcGg130UrjnB58S9j636zZqriEqEVdGGXQ@mail.gmail.com>
-Subject: Re: [PATCH] spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
-To: Lucas Costa <2000.costalucas@gmail.com>
-Cc: Bartosz Golaszewski <brgl@kernel.org>, bcm-kernel-feedback-list@broadcom.com, 
-	linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=0d7cb4d557e05dd47fa38394d5771c8becb400c5916a7003912143d41284;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Thu, 24 Sep 2026 12:07:31 +0200
+Message-Id: <DLNGOZHD5KI6.26QUK1IZB7UJY@walle.cc>
+Subject: Re: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
+ reconfiguring MCR0 and DLL
+Cc: <linux-spi@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, "Haibo Chen" <haibo.chen@nxp.com>
+From: "Michael Walle" <michael@walle.cc>
+To: <haibo.chen@oss.nxp.com>, "Han Xu" <han.xu@nxp.com>, "Yogesh Gaur"
+ <yogeshgaur.83@gmail.com>, "Mark Brown" <broonie@kernel.org>
+X-Mailer: aerc 0.20.0
+References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
+ <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
+In-Reply-To: <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
 
-On Wed, 23 Sep 2026 20:44:50 +0200, Lucas Costa
-<2000.costalucas@gmail.com> said:
-> of_find_compatible_node() returns a device_node with its reference count
-> incremented, but the function bcm2835_spi_setup() uses the ret value
-> in the loop to check a condition and never releases it.
+--0d7cb4d557e05dd47fa38394d5771c8becb400c5916a7003912143d41284
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+On Tue Jul 28, 2026 at 12:18 PM CEST, haibo.chen wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
 >
-> Store the returned node and drop it with of_node_put() before breaking
-> out of the loop.
+> In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
+> and the DLL control registers (DLLxCR) are reconfigured while the
+> FlexSPI module is still enabled. According to the FlexSPI reference
+> manual initialization sequence, MCR0 and the DLL control registers
+> should be programmed while the module is in stop mode, i.e. with
+> MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] =3D 0)
+> afterwards.
 >
-> Fixes: e19c1272c80a ("spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
+> Wrap the RX sample clock source selection and the DLL calibration/
+> override reconfiguration in a stop-mode window to align with the RM
+> and avoid reconfiguring timing-critical registers while the module is
+> active.
+>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+
+This will actually cause the following error on an i.MX 95 19x19 EVK
+(imx95-19x19-evk.dts):
+
+  nxp-fspi 425e0000.spi: DLL lock failed, please fix it!
+
+Any ideas what causes this? I'm running the latest linux-next
+kernel.
+
+-michael
+
 > ---
->  drivers/spi/spi-bcm2835.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 >
-> diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-> index 8f8715809c7c..8909757c94e3 100644
-> --- a/drivers/spi/spi-bcm2835.c
-> +++ b/drivers/spi/spi-bcm2835.c
-> @@ -1226,6 +1226,7 @@ static int bcm2835_spi_setup(struct spi_device *spi)
->  	struct bcm2835_spi *bs = spi_controller_get_devdata(ctlr);
->  	struct bcm2835_spidev *target = spi_get_ctldata(spi);
->  	struct gpiod_lookup_table *lookup __free(kfree) = NULL;
-> +	struct device_node *np;
->  	static const char * const pinctrl_compats[] = {
->  		"brcm,bcm2835-gpio",
->  		"brcm,bcm2711-gpio",
-> @@ -1297,8 +1298,11 @@ static int bcm2835_spi_setup(struct spi_device *spi)
->  	}
->
->  	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
-> -		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
-> +		np = of_find_compatible_node(NULL, NULL, pinctrl_compats[i]);
-> +		if (np) {
-> +			of_node_put(np);
->  			break;
-> +		}
->  	}
->
->  	if (i == ARRAY_SIZE(pinctrl_compats))
-> --
-> 2.43.0
->
->
+> diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+> index 6de6d432cdcb2ee383a02d72f20000045903e176..a426b8d92193a4e303f411cd1=
+7c16cb31c3f3873 100644
+> --- a/drivers/spi/spi-nxp-fspi.c
+> +++ b/drivers/spi/spi-nxp-fspi.c
+> @@ -867,6 +867,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, s=
+truct spi_device *spi,
+>  	unsigned long rate =3D op->max_freq;
+>  	int ret;
+>  	uint64_t size_kb;
+> +	u32 reg;
+> =20
+>  	/*
+>  	 * Return when following condition all meet,
+> @@ -896,6 +897,15 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, =
+struct spi_device *spi,
+> =20
+>  	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(=
+spi, 0));
+> =20
+> +	/*
+> +	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
+> +	 * the DLL control registers should be configured while the module is i=
+n
+> +	 * stop mode (MCR0[MDIS] =3D 1). Enter stop mode before reconfiguring t=
+he
+> +	 * RX sample clock source and the DLL, then exit stop mode afterwards.
+> +	 */
+> +	reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
+> +	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> +
+>  	nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
+>  	rate =3D min(f->max_rate, op->max_freq);
+> =20
+> @@ -928,6 +938,10 @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, =
+struct spi_device *spi,
+>  	else
+>  		nxp_fspi_dll_override(f);
+> =20
+> +	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
+> +	reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
+> +	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+> +
+>  	f->pre_op_rate =3D op->max_freq;
+> =20
+>  	f->selected =3D spi_get_chipselect(spi, 0);
 
-Just use cleanup.h like so:
 
-	struct device_node *np __free(device_node) = of_find_compatible_node(...);
+--0d7cb4d557e05dd47fa38394d5771c8becb400c5916a7003912143d41284
+Content-Type: application/pgp-signature; name="signature.asc"
 
-It's a oneliner this way.
+-----BEGIN PGP SIGNATURE-----
 
-Bart
+iKcEABMJAC8WIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCarT2ZBEcbWljaGFlbEB3
+YWxsZS5jYwAKCRASJzzuPgIf+I1DAYDgQn7Pr5KtAX2vXKAD3RkFpvSvC9mQaqMV
+zC4Q7HsSu7+z8niOd7Yl8eLUMEwFWZoBf3pfPpomxj7kHKbpgp6UdOmHnEsJxDHJ
+qT7pb9ChKagSC3LezJF1ounEOM9SCu/a/Q==
+=14J4
+-----END PGP SIGNATURE-----
+
+--0d7cb4d557e05dd47fa38394d5771c8becb400c5916a7003912143d41284--

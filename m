@@ -1,116 +1,133 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FAB368277
-	for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 02:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEF03750C9
+	for <linux-spi@vger.kernel.org>; Thu, 24 Sep 2026 03:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790217194; cv=none; b=XoCgkAGZ9g4j8+RWnabSqjUK3nv3ejW8uWR7rATB4dwh5dUJsBpVsPM8B+9T4Pg9FQeUJ/Ha3AteX2A1qJ1hiXVtDUfyKAC4Zom+qsANCHAEqJ3Wsyo69kUparPV3JaBY8WvugXNeF7fZSblLjrBfGbHJtToHJpl4L6nJoNITS4=
+	t=1790219035; cv=none; b=b6j8ACteIHaQ4sPUUNQDk1mI5X/Ma7H5MK8PxI+ATtzhCcQFPiswGKkTT5ivxjn27ysW1CDHY7K54BK9d/wF0qaq+GGxe7vyhccbOXHCg3joi8ZbF5O9B542xl7rZ5nOHJvHchSrD9woIKe3JJ+j993WEA1ffnUGRa9K73Tyrqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790217194; c=relaxed/simple;
-	bh=0jewx94Aol1IKcOojWLEYdfUZw5SFvsaq76oQocjly4=;
-	h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=H8+QuWAhdWhOz2ey/KQjsZR1iUBF1fl0TPshDFtbkTSi7Ut50B4U9ksd+z2yL2Gwq1zrPm6Zxh+oO9/bKAkw7vnsq/IBRrWejh80ugguHd+R8BL3dVWHI79YJ6D5umqcgnDvp1yJUT2QjY5JO1TfLB31w96WWJfbK8XVflbn4dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pEPM2v4H; arc=none smtp.client-ip=74.125.228.42
+	s=arc-20240116; t=1790219035; c=relaxed/simple;
+	bh=EaSyvjvgS188EtX7hWuGpx7JU9522ewQuDCxU65EkxI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NjVIws2d8j9pDwe3WjqLjLxvWk1FgywBpVAeCahL9+VlniUaPWl4B5dTJXMPRilb2/HDiNc6Sm7T8GQ66wqY++KTwDoK7zeoz0JXXrVK/U12R18QgTm1V5hEXcTF/lO8gq5ecQlw7DHSaJLBlvMqYTB+VL+tGXWhzxmvDAqu4ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TG/gx+Mo; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pEPM2v4H"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1cea4c79fso526050a12.0
-        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 19:33:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TG/gx+Mo"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b31b4281eso1172397a91.2
+        for <linux-spi@vger.kernel.org>; Wed, 23 Sep 2026 20:03:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790217192; x=1790821992; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:mime-version
-         :user-agent:date:message-id:from:cc:references:to:subject:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=z/L1hXpzWJJQOqyHxMdxo06cE7DFt8m14lGkwmdYDss=;
-        b=pEPM2v4HmYnCBdcjLhRfQthAUgIznDDSAb/yJkPUGOfEQjiFnEDwh8JEiXlb61EipG
-         PGRLTSSYptj3quZrjdgtm54YnpmuMi+dxy3IPrQeStvlGoKMqYPWs7e9fNLRJqA51Pmi
-         toE9TVa3Xy40yuFhjq80dI+kM3x6B6r8mAc80Wx/1lAIPgWlvB8Cw3amxz1si0NBl1Hs
-         Jis2/P9TuAC5bAUa/89PWkNXHcN88hTwc+cTe0S7k5XYofc4GTKy8hCdD6OVKHdTM0A+
-         21uMyWPvENaZFaCH84M+GoAzVmqV2b0UiCAfpMDx0M5gxt2NHp6Z+DpwSeqtQLLCG5iy
-         nqDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790217192; x=1790821992;
-        h=content-transfer-encoding:content-type:in-reply-to:mime-version
-         :user-agent:date:message-id:from:cc:references:to:subject:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1790219033; x=1790823833; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=z/L1hXpzWJJQOqyHxMdxo06cE7DFt8m14lGkwmdYDss=;
-        b=YoZHGetIwJQMGw03XWWX23jb/6Qj6d8aK28oSEqON2o7jRTjL+xCk8viDEJ6j2x1Q4
-         DMUsKVh8A5m0XnRUhNMzUaBF1vdg+u1OdVlaXOcLgf/K1OvoCA9//UQ3YaUJ64ROB0Ym
-         w4nBjhRHazkCpLKjQOB0ZTdvKoBRqIchmsNm2vKTgEyvBfk/DSIr9Yz6pCutqajFJx6B
-         jYFq6tZiBlmng3GuF9ynZFdhevhiZXfFWbJDRam/j7Nc5po6F2f+K6cm/xpEE5wfRkkl
-         mgeHAD+6LdleyyYqDgctraFLsl9hjeZsRzcpPR7keSRqufN0pLw7rO+JRxD5VxFwkudI
-         3fCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBytFF1OMX1rCmqeIHrTANH1QJAQzu8xaskbi4l7yrT194S3Uee9QtBT7LmaOAaYSZ9/2xGkdqZnGOI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kdPUv7gBIzWx1hgiZB8wXAPOXcB+L8wPULGjBJZSgNqWSJG6Wz
-	+tAJ0xHoxZ8PCt0unsvZT3OL2IyHdZ4YAPLu3iFQZ4O32pvWaNs6yN27
-X-Gm-Gg: AYBFou3EltDEmNNunDCPliwgDgx9zDGCWegxgs444U4Ne3H1zrCiD+BWIb7PpP9ptkN
-	bj/yxBehYUKHYvSB3Z1FUOSWG44/U5L2DnsKtgz0N8cTw1kw+8InwHc68eRAXMJosh+JlF45n84
-	E/xHvlYlrNtSEgHFBrRwy5ZQHadheEo3grJ2Qw4hGKZe+bujaMQyflDD2/zp5wYjdRBfahH8GsG
-	XvbuYcIAWT8uqpBqK6ryE+QHRA4OGqy9jI2v+UrQXdwdKMVntHB/RFGW7CreREpA1ee1SR7L4rZ
-	nC73Yq0lvjFYCIjZF/TLgwMx50ZcMkaqSfWlL6mZtlLF0hztams06uyOrxxlpGwvVr6aORqyJ0G
-	DJTB6pr8mbpC26GHkcKnpt0SLWUz7QZ+0iebMKjm0zXlEdZqcR4B1oYlvOtkqFlYdNn5vUDt0NA
-	dN6+yGRmv+C/PKMZjGRrQgzHGJD8u4vno1PgPIZZo2cyZXBggSByXXe5sQuOLUKBqqrF/oWT/jG
-	KKKavIGgdDoRM/BKYIYR/2UkZo76NlKkhCGOUDz
-X-Received: by 2002:a05:6300:68c1:20b0:3de:1526:4602 with SMTP id adf61e73a8af0-3de15264efamr5628637.59.1790217192226;
-        Wed, 23 Sep 2026 19:33:12 -0700 (PDT)
-Received: from [10.1.1.24] (122-59-250-182-adsl.sparkbb.co.nz. [122.59.250.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87d1dad4e06sm2075342b3a.41.2026.09.23.19.32.58
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 23 Sep 2026 19:33:11 -0700 (PDT)
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-To: Andrew Lunn <andrew@lunn.ch>, Greg Ungerer <gerg@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
- <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
- <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
- <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-From: Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <3cc86de9-9007-42af-7291-70e52f6b0dd7@gmail.com>
-Date: Thu, 24 Sep 2026 14:32:54 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        bh=hSJK5l1XEbWtgCR1VGoo0OE9b5AL7+ONChxVba323TI=;
+        b=TG/gx+MobDDw6jqqr4MJKOxtykO8z0BzPWVVoNVpIdq/WXJmI+aqL4NgGs6lTQ9rUb
+         iHO+OR/bw8XEMo/mlilaUTMhkzccL67ubLpPG01Cg1L2DvIgcat0HBLMjUXfwdMZVvGA
+         EeVl4SmQOiwcaDL4ZWZbOVWngtthGaWsP2EqvVQ6kqc2TSAPSjfnNEGyqbEYU8HvHakg
+         XDiWfgQ360As9ScoZNVr7Wj5Oz3gPwDgW/QsfbhzMdwcWOQVizgQEJAmdicbh84CwCUg
+         jYs1FAKXvHAmsl42xiY81odnWSoTbPee0HL9ttVJK6/DMe5l2ORVeJaT224Nifm5BaLz
+         3lbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790219033; x=1790823833;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hSJK5l1XEbWtgCR1VGoo0OE9b5AL7+ONChxVba323TI=;
+        b=FiA6PCiFcTUHNJE361tJmLOfCEAK48W+ccDYRYhFeOFw+ruKIaZFNlgl0/gSjX/tnq
+         SCR+GUhGx146l2dGD0wGuQjVfN5dhTR/cH5SWGP972QaDYOe2yCwcvzXQadLBDJDDIWf
+         7Xmxx7rZxwRrtaPfuU/W0/CSlUjxfqo30352Kw0PwhGeRaePITVH0k4i3/x5RyP/pjVZ
+         MPn5pO4YOFWcPN8czqx7/23Wt7liEs/Sc+ePiaUeNO+GUWYlKgmq/dahA0EcPR15PxFQ
+         HnOBKSg2EsXmQzr7DczWkzXmnrFtJnvkkjSo4vgqFpgOc1psdZ1upSWROJJw85HEZUSN
+         eUNw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJ+7F1crJsWoKLK9U46PZ6s40QaC06h1tS50GYSvrRBCLKL0Xjp9BvLVq1mMd3FpMQJqLopM6xrdA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lY7D0q7tI9NPqYXz9fj7pttNMfvsdOqxgxDRi9NgqHScD71hyw
+	Zt3CvRAGy0vY3o7W3PDTI79TlgZ1f0dzArbCDzVfR+WO1M6j/+a/eMND
+X-Gm-Gg: AYBFou1LGvzH+vJlIZeo+lFKOvmuJx6ze16k7Eq41s31yZTBqMo3i2YgvhKt6m5GA02
+	MRKtgek89foFlyR7dgmpjRAkhDaoScAl7SDHuE9RwLtkUTEw2d+1c+6TIl8qvYJDJOafG050Yw9
+	m+msjMG/Cavfc3VaWelqepRAy9ouJ2++oM4tOAVHbJluFDobyX4EvFwAaQgC9yXDphmoQDBzStz
+	VRtxaPzQRpDUn2e6QKuXAx8Cv0FC7YK1wh6lS3kLVpjkLL+yyHifjwrESxItZaxX7weuYRcbl1n
+	KzZysX88SZdaDzif+R49ZBLtkG6j254fENreINdcX1+mY8F7/s4ndyb+4sU2bLINj6Hdv9aN0Za
+	Hs75CxLlyV4fQTUURnRPrNpbX1L7Z111ve64gu52IxQ7t7IY+fOHovzNEDXoc2uzv3MiXplq7sH
+	xD9Owi3vkn8ZNQD9fLRbpckw/ovVO5eacs+y6sy7gP8jrbMdg0nzNEgLZqpfSqifRbekAtRug17
+	tzzrndVJct0IGfckyn0eIXlPqU1RNPIeLOH67eQOKwrGWcsIQ==
+X-Received: by 2002:a17:90b:51c1:b0:39e:6c68:c77b with SMTP id 98e67ed59e1d1-3a098e078b8mr910792a91.49.1790219033463;
+        Wed, 23 Sep 2026 20:03:53 -0700 (PDT)
+Received: from [172.19.1.42] (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a09738f98asm2082693a91.15.2026.09.23.20.03.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2026 20:03:53 -0700 (PDT)
+Message-ID: <d53cc934-965a-4ae8-a6cf-298c5a587e5d@gmail.com>
+Date: Thu, 24 Sep 2026 11:03:51 +0800
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: spi: nuvoton,ma35d1-spi: Add Nuvoton
+ MA35D1 SPI controller
+To: Krzysztof Kozlowski <krzk@kernel.org>, broonie@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, cwweng@nuvoton.com
+References: <20260923041926.425551-1-cwweng.linux@gmail.com>
+ <20260923041926.425551-2-cwweng.linux@gmail.com>
+ <005e8cd7-811f-4304-bac3-e0c531958922@kernel.org>
+Content-Language: en-US
+From: Chi-Wen Weng <cwweng.linux@gmail.com>
+In-Reply-To: <005e8cd7-811f-4304-bac3-e0c531958922@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Andrew,
 
-Am 24.09.2026 um 02:15 schrieb Andrew Lunn:
->> The driver will always need to support big and little endian hardware, so I
->> am not sure how to avoid some abstraction like this.
->
-> I was wondering if there is a linux standard set of macros which is
-> supposed to handle this big/little difference, the macro knows the
-> architecture and does the correct thing?
 
-Knowing the architecture may not be enough - there may be multiple 
-platforms within one architecture that need different address 
-translation, different endianness, access quirks, the lot.
+Krzysztof Kozlowski 於 2026/9/23 下午 08:35 寫道:
+> On 23/09/2026 06:19, Chi-Wen Weng wrote:
+>> From: Chi-Wen Weng <cwweng@nuvoton.com>
+>>
+>> Add a Devicetree binding for the SPI controller found in the
+>> Nuvoton MA35D1 SoC.
+> 
+> I could swear I saw it last days... I did check and indeed. There is
+> qspi which is almost the same binding. Why this cannot be in the same
+> file? What are the differences justifying duplicating files?
+> 
+> 
+> 
+> Best regards,
+> Krzysztof
 
-We'd need a 'bus' parameter in all these macros to avoid what's in 
-current use in arch specific code (take a look at 
-arch/m68k/include/asm/io_mm.h for what may be the worst case example. 
-Don't do that on an empty stomach though...).
+Hi Krzysztof,
 
-Like, use arch supplied functions if needed, fall through to the 
-standard macros if no special handling required.
+Thanks for pointing this out.
 
-Cheers,
+The MA35D1 SPI and QSPI controllers are separate hardware IPs. QSPI
+additionally supports dual/quad/DTR transfers and a target-mode timeout
+function, while the SPI controller does not.
 
-	Michael
+However, these differences do not require different Devicetree
+properties. The register resource, clock, reset, interrupt and native
+chip-select descriptions are otherwise the same, so I agree that they
+should share one binding.
+
+There is currently one driver-related difference: the existing QSPI
+driver does not yet support GPIO chip selects, while the new SPI driver
+does. I will therefore keep the QSPI cs-gpios restriction in the shared
+schema for now using a compatible-specific conditional.
+
+We also plan to add GPIO chip-select support to the QSPI driver in a
+follow-up patch. Once that support is added, the QSPI-specific
+cs-gpios restriction can be removed and both compatibles can use the
+same schema constraints.
+
+I will merge the SPI and QSPI bindings in v2.
+
+Thanks,
+Chi-Wen
+

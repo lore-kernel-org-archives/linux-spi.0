@@ -1,238 +1,88 @@
-Received: from courrier.aliel.fr (courrier.aliel.fr [65.21.61.41])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CEB479893;
-	Thu, 24 Sep 2026 11:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.61.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0DF391517;
+	Thu, 24 Sep 2026 12:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790249676; cv=none; b=UdfyhGSOU4ImaAGS5euix7rccKpfyTMOTamJGdO181L/bUdVsvuaWBvuCIGGNJCTOUZJNnJSTpl/WYaPNWT5OELquDDfbadRrebdqIEMp8fx7jHTNz4oygavcH30/45pDNc1+3qmr0HwuhVO/eugpmFblEJKgCAyLVKHi/xJllI=
+	t=1790252262; cv=none; b=N+DOGu0c8aJeQ0BgUSc/6erFhLXRZEmDpMnbcYyV+Xi0fArgGn+PcRmPGm1shY81b7/zjcmXDs0+pUnMuQuv+7Y41aQ09w1lRvGahga8ZxPU8FNE0xPPzcQGOWShYfR/bhacVMJJWceNYoCINUaLkfgcB+mCVLqVRBKkzE/VjYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790249676; c=relaxed/simple;
-	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C8AEjFELmZj6PC7nBgnQ6X8Ji1MQFv1Ky5YDevHf2lSOullmZbU3gfqQ0SqvVcYIhBAaHwQkG33TZQkp7KushqwRMby2/x+EsRGXW1Gc9KDQyj7iQOjZ1LAEX3qDWpbRS0kFjAcQfQS6rvK7cXjkiIov9vNNiKVGfBoA1Dq6yTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr; spf=pass smtp.mailfrom=aliel.fr; dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b=E247WkLQ; arc=none smtp.client-ip=65.21.61.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aliel.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliel.fr
+	s=arc-20240116; t=1790252262; c=relaxed/simple;
+	bh=cPST8MJ8TSeF9sY6hxKTYUf6ipTLK8bGEw9EmCQ4rxc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMP4A0zqD7KSsl+cDNlDtrMCZRREHBfl4Y5Kh/8b6kDmfIJ0kq4RoPZMUoP2102zp6yoPmDoDRxP4odQLElRAg/tBfK/nIS/2n2j+N5DuXoo6FboyEBge5+hpTAWsvYZMpah6zTLhpHn4lh7Ki0BmppROxZcaV2ESu7P7MFvguE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMA8Cxqw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliel.fr header.i=@aliel.fr header.b="E247WkLQ"
-Message-ID: <a2eea40a-fe81-4aac-85f9-d0a85bb99e26@aliel.fr>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aliel.fr;
-	s=courrier-s1; t=1790249661;
-	bh=U/5jxIvqAMJSzYIFoerpkjY38kslGt38ihMa4APLokI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=E247WkLQcQMT1igSWXHSdp3PgpUdBFM1eDSBfaK622ZJKF3cTs8fO8jx4CdLLp6V3
-	 GiS5z+d1P2mJLTbU2236srkwHxQjnoyU2iX6leRaEDPITHlZz+5wi/H9OKeBvqm15j
-	 JqjKaLKFLPiP1YsDgJf9RG0iiGiS0i/sKwz8PuPE=
-Date: Thu, 24 Sep 2026 13:33:04 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMA8Cxqw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CE51F000FF;
+	Thu, 24 Sep 2026 12:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790252261;
+	bh=cPST8MJ8TSeF9sY6hxKTYUf6ipTLK8bGEw9EmCQ4rxc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=fMA8CxqwudWuPG0E5ZdCROfZrhpZq/XSp9/Lt9Q1RaCjs5rQaJ7KDPucalqvCr1cV
+	 ECYVS2CL3hGU8ncfQZwdWRNcHxlAMY+Ep6JstbwXixQLa6+bT0t2DX+C7j4kxDRC4K
+	 OZVjaIxhCC2+i5ViQagcWtrA4cfs7diqgwcFyH22rFyhyZUWgD4lS5sMZ4q5H7jmZy
+	 E1atClSu+dtDj4hS3nqNQ8yET1UoQJxIqdr1iHUAWBdRVzva+PEYcARIWBWrdPK5yd
+	 Wf/j63ZYMCOyd6KuI3xxGX46bXUl9S5LJaqL1Fj4s1cXfbcJOpnY3efdP2K7joxlAR
+	 T4yS97EycaYNA==
+Date: Thu, 24 Sep 2026 13:17:36 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Tim Kuo <Tim.Kuo@mediatek.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Steven Liu <Steven.Liu@mediatek.com>,
+	Sky Huang <Skylake.Huang@mediatek.com>
+Subject: Re: [PATCH 1/2] dt-bindings: spi: mediatek: add mediatek,spi-ipm-v59
+ compatible
+Message-ID: <44a113b8-1ce0-4a17-bc07-b22f15665ef2@sirena.org.uk>
+References: <20260924031211.2199921-1-Tim.Kuo@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 3/3] arm64: dts: amlogic: add T7 peripheral nodes
-To: xianwei.zhao@amlogic.com
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
- <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
-Content-Language: en-US
-From: Ronald Claveau <linux-kernel-dev@aliel.fr>
-In-Reply-To: <20260924-t7-node-new-v2-3-319d3c19b4b2@amlogic.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 9/24/26 7:51 AM, Xianwei Zhao via B4 Relay wrote:
-> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
-> 
-> Add device tree descriptions for the peripherals on the Amlogic T7
-> SoC and the T7 A311D2 AN400 board.
-> 
-> Add support for the T7 Ethernet controller, SPI controllers, I2C
-> controllers, UARTs, pinctrl groups, regulators, and reserved memory.
-> Also enable the Ethernet controller on the AN400 board.
-> 
-> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-> ---
->  .../boot/dts/amlogic/amlogic-t7-a311d2-an400.dts   | 153 +++++++
->  arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi        | 462 +++++++++++++++++++++
->  2 files changed, 615 insertions(+)
->
-
- --snip--
-
-> +
->  				pwm_a_pins: pwm-a {
->  					mux {
->  						groups = "pwm_a";
-> @@ -622,6 +848,51 @@ uart_a: serial@78000 {
->  				status = "disabled";
->  			};
->  
-> +			uart_b: serial@7a000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7a000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_B>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_c: serial@7c000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7c000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 170 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_C>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_d: serial@7e000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x7e000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 171 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_D>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_e: serial@80000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x80000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 172 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_E>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-> +			uart_f: serial@82000 {
-> +				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
-> +				reg = <0x0 0x82000 0x0 0x18>;
-> +				interrupts = <GIC_SPI 173 IRQ_TYPE_EDGE_RISING>;
-> +				clocks = <&xtal>, <&clkc_periphs CLKID_SYS_UART_F>, <&xtal>;
-> +				clock-names = "xtal", "pclk", "baud";
-> +				status = "disabled";
-> +			};
-> +
-
-Thank you for this change Xianwei.
-Can you please move the UARTs in the right place between i2c_ao_a and
-i2c_ao_b ?
-
->  			gp0: clock-controller@8080 {
->  				compatible = "amlogic,t7-gp0-pll";
->  				reg = <0x0 0x8080 0x0 0x20>;
-> @@ -688,6 +959,39 @@ sec_ao: ao-secure@10220 {
->  				amlogic,has-chip-id;
->  			};
->  
-
---snip--
-
->  			pwm_ab: pwm@58000 {
->  				compatible = "amlogic,t7-pwm", "amlogic,meson-s4-pwm";
->  				reg = <0x0 0x58000 0x0 0x24>;
-> @@ -756,6 +1138,86 @@ pwm_ao_cd: pwm@60000 {
->  				status = "disabled";
->  			};
->  
-> +			i2c0: i2c@66000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x66000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 160 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_A>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c1: i2c@68000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x68000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 161 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_B>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c2: i2c@6a000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6a000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 162 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_C>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c3: i2c@6c000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6c000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 163 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_D>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c4: i2c@6e000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x6e000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 164 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_E>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c5: i2c@70000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x070000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 165 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_M_F>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c_ao_a: i2c@76000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x076000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 330 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_A>;
-> +				status = "disabled";
-> +			};
-> +
-> +			i2c_ao_b: i2c@86000 {
-> +				compatible = "amlogic,t7-i2c", "amlogic,meson-axg-i2c";
-> +				reg = <0x0 0x086000 0x0 0x48>;
-> +				interrupts = <GIC_SPI 331 IRQ_TYPE_EDGE_RISING>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +				clocks = <&clkc_periphs CLKID_SYS_I2C_AO_B>;
-> +				status = "disabled";
-> +			};
-> +
->  			sd_emmc_a: mmc@88000 {
->  				compatible = "amlogic,t7-mmc", "amlogic,meson-axg-mmc";
->  				reg = <0x0 0x88000 0x0 0x800>;
-> 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tI8QpB5ulHks/lh1"
+Content-Disposition: inline
+In-Reply-To: <20260924031211.2199921-1-Tim.Kuo@mediatek.com>
+X-Cookie: Oh, so there you are!
 
 
--- 
-Best regards,
-Ronald
+--tI8QpB5ulHks/lh1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Sep 24, 2026 at 11:12:10AM +0800, Tim Kuo wrote:
+> The IPM v59 SPI IP differs from earlier IPM designs, most visibly in the
+> tick delay field of SPI_CMD_REG, so it needs its own fallback compatible
+> rather than reusing "mediatek,spi-ipm".
+
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
+
+--tI8QpB5ulHks/lh1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq1FN8ACgkQJNaLcl1U
+h9Dkxwf+JLiki44QczCJPdR7+T+U9+ImnKHa4QgCTBVGtu3Eyic2dwfep5sTkxd+
+slZAs0royqIPXTRPtZmJnSrT2THSkvnSJ2YKQ6Oe5i/JbHDDIYxBoA5jqrX0hqUJ
+wAID5faIFg1aNzFABtragm00EcLB+tD4j3J/uDQQfm+52mFNW89HCIaSAYT3SvZB
+0tJGgE9qxYFTscyEpluvYGy+T6zl1zwWxd4ejiLBslNDW9rkfMycAcP43DL18TzE
+Kp5PX+i+djEYoo/j/e+w/bA0yxdRmvflbCsAFPFFvgWfK5PUtBcm3mS6t7JTCbvf
+AmTWpvf0CKPjopPgQv+uvXJZHePGzQ==
+=Mwwx
+-----END PGP SIGNATURE-----
+
+--tI8QpB5ulHks/lh1--

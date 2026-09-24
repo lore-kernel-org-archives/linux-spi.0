@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7FA48822A;
-	Fri, 25 Sep 2026 10:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001DF423E9E;
+	Fri, 25 Sep 2026 10:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790331359; cv=none; b=vAI+Ka1L8sO9bzw7Y0WK8W+CfwBeUMmtmurXw5+hp5VScgt1kFyIeKSj8L2sl3+eYBTxQLNxD4W9mlBEVyoucqaZPujf6G4LXt84muzn1uGtC52uDEv2iTdP8lmqGCdxlh/sre6yUkNIUW4mXtnWOlV0kYu2GQLInpKa255MnOM=
+	t=1790331365; cv=none; b=ZnqH4gfw9jg1xxxWzUUD3pARPlDzo/oFmQ/UvcfB884kvUqWL3CFVXrVw16CIzaQ2scUS3nHtu2WcAwpIiPifBwJQPs9LavCww+hB5c5ITjbDqbE7s/7sXPo6KO2DcrEKhIXqR86RLnS/BBJj1ZMsAUyw+sqcyrRLzlzXO/GLSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790331359; c=relaxed/simple;
-	bh=wfWF/fWfj4VLQeGJC9cBpsgoFz0LSWS3oauYzKEDVIk=;
+	s=arc-20240116; t=1790331365; c=relaxed/simple;
+	bh=DOCogC8VZUdOUXFgbMaseVq7Jwe2YN8FRQBo1oKxJys=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=et3F5Eb8TCYiCH6H3d1f0nl2v5rBetYBsfPQTgMV3A4kxHFMoE6M/kEIVxAHpxAd/O54a61y4B0VYZV51AIdJY8xesFt5MUytBgLZ0AY+p0iwxJauVvKGOb19aRf8RD4Wt/ysacSHON6ZgdEkxs+JVEL7Y1mdkyiut1/y+zhkY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N04T8Cij; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=MZLEcsoMycWFwoEDRLKtyiRqEFzY4CBLSXqosasFDt6uCHHkM6Zi3Kjwp1BBxzsYNxTZpXDXa6vkx4g4HdFhtg6Gng4HlrmBFZXGHj3RuuM59At/FQkAGqnvzd3C2cadj8Mrp/GwxLxL+CEB2f9fcUvNQB6cKBhM5+Vih+IXeAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXDCreTL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N04T8Cij"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEB81F0089B;
-	Fri, 25 Sep 2026 10:15:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXDCreTL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888451F00893;
+	Fri, 25 Sep 2026 10:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790331358;
-	bh=I6jF7DMRmKQ/9R1R/h/vfgHtGZOOmh5tgfoLmvW1jjc=;
+	s=k20260515; t=1790331363;
+	bh=UNP7bFWNDrSQfBLNaeNOpZUuBT3HZBThto/XhQC3kz8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=N04T8CijZOTbBo/fEkKVK5JuOg7RIn6YE0e4GXsIyXSae1LU6EjE9o9wEluzcB6dS
-	 kJuyd/qxnVZ0uIVZW2tLoYz2riDofL202+ixFG/kyExZpLz0T4xh11+LsgwWcz0U/T
-	 OiVYNJCrNhhr8Gj7HeYbqNtpHelZldl+RNcqRBqxX4E8jOmFwSEg1iw34ASkGhNGAT
-	 qDKKh9vk9S1iFTU+k0NH/STfuB3VnIJR3yEdJjQSKXBqDQCeJje394D9P/0k1jzmdY
-	 npugJMIYCprrgMMcvYM7yoVTIF5YleHMEzbErcbVhn7xi+ycTKNwEF9FRWQAUDj5rd
-	 thwQgw5+aYusg==
+	b=DXDCreTLckDkGW3CBUxEBoHL/5PbNIDht0pd/REMXss727Qg6oPsrRd7yZxpky5R3
+	 MRsl5eVW1nuhSyj+If+tEawNhCWxmWRAdxJ4hEJmKQDAoEKLxb3Y55LNRPH64LLGeZ
+	 7/BQvXywTnb43MRtB5ki6EEBAvv6ELYb0E6osEyj4awRhY8/jEZIv9Ob1frCYgG/n8
+	 6Z96Ib7LwWXK6bYdxzuX2s6IN0zvVLrN8C/ca9TQlJevF0drindUqgQjmJIF0b+iF6
+	 Ys7oIbnl7BDAa9BUgNAi+5ReWjINcVi4eVHtfDpmePkVxDNg/gDK5m7OPo3+3ARwMA
+	 qt4euS+4xvbyA==
 From: Mark Brown <broonie@kernel.org>
-To: quic_mdalam@quicinc.com, Ziyang Huang <hzyitc@outlook.com>
-Cc: j4g8y7@gmail.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <SEYPR01MB5882463D860A9670617D5834C9A72@SEYPR01MB5882.apcprd01.prod.exchangelabs.com>
-References: <SEYPR01MB5882463D860A9670617D5834C9A72@SEYPR01MB5882.apcprd01.prod.exchangelabs.com>
-Subject: Re: [PATCH v2] spi: spi-qpic-snand: reject when no enough OOB
- space
-Message-Id: <179029043927.149798.9171868174419782866.b4-ty@b4>
-Date: Thu, 24 Sep 2026 23:53:59 +0100
+To: Jonas Rebmann <jre@pengutronix.de>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, kernel@pengutronix.de
+In-Reply-To: <20260924-spi-sun4i-spidev_test-v7-0-126e31a07fdc@pengutronix.de>
+References: <20260924-spi-sun4i-spidev_test-v7-0-126e31a07fdc@pengutronix.de>
+Subject: Re: [PATCH v7 00/13] spi: spidev_test: new features
+Message-Id: <179028361909.149798.4722443728698354015.b4-ty@b4>
+Date: Thu, 24 Sep 2026 22:00:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,20 +44,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1118; i=broonie@kernel.org;
- h=from:subject:message-id; bh=wfWF/fWfj4VLQeGJC9cBpsgoFz0LSWS3oauYzKEDVIk=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqtkna77L9DogncmSXl1hts7gzPSyjUj+KuWqwa
- lzXT/6iICGJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarZJ2gAKCRAk1otyXVSH
- 0M++CACEsbbj/ZtA+RYrXAo6GqGgmsrY/gJl0cCCgAviLtcv6t4pY29lcgHtRaCr8BcjAP+g+ZN
- utHF3KGIV8eTvUj7zs9LvK7Z2oAHkIcwDWKtCC0Qv14Ibq+lN+Y8T82Vk+KJ8ObMgWda4C6m3VD
- p0QZdhTGOBQFuXm9RLskl9RUobI97PXsbMvKWJWKw2wJfwu3HoaTimYFhXt5waPCKd1sce44/e/
- VJpsC8BHbJQeXxTjw1ERIs9rUA98rh9aQHOPRhH55mJ0HPzUxidEdUGT47w3iL7u0jgQqwQgDf3
- 5/gFH6Pb0QBmqu0v2+a9g7XqquZbuAvbPP35B1iz5Mcxkxn5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2753; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=DOCogC8VZUdOUXFgbMaseVq7Jwe2YN8FRQBo1oKxJys=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqtkngY2ZW1gvAdC7r31iYK6B/Vdi6yGoyruDMD
+ df1qeZg+46JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarZJ4AAKCRAk1otyXVSH
+ 0BihB/sElioqMTCgaaPUWoYEeO+in8A/OIwvRWi/1u5fb68QylVVetojNzTXdgGbKx+HxnMmBCC
+ 8oshk4T8sieFLHHapWkmYBdIROFlSGvPY4dBEDJB8/VIBKKIcweKqqRqlXQ02FBGIRi8a5JcCiU
+ 9bQA+dcJZ7DhWX/Ko10U1b6/F3iJFZueMGOal7l2UevKvNHxMKT7Cbrxk8cT7gAUHopdDDtAgGu
+ 64miP4eh09oZ5o+oywO1bsX3Ko+gxFI3O0kLIA2mkzENm6GaA7Wys8mPUsCngzfynH2eJQ/HnS4
+ ky4CYh2fPGMzgorRweLFDxO2lWLFpzvwwWVQxtM3UxCiXfNm
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 17 Aug 2026 23:15:02 +0800, Ziyang Huang wrote:
-> spi: spi-qpic-snand: reject when no enough OOB space
+On Thu, 24 Sep 2026 15:43:50 +0200, Jonas Rebmann wrote:
+> spi: spidev_test: new features
+> 
+> A collection of new features for spidev_test which have collected during
+> testing/development of spi drivers.
+> 
+> Patch 1 is a small preparatory commit to share macro definitions with
+> the rest of the tools tree instead of keeping local copies.
+> 
+> [...]
 
 Applied to
 
@@ -66,8 +73,32 @@ Applied to
 
 Thanks!
 
-[1/1] spi: spi-qpic-snand: reject when no enough OOB space
-      https://git.kernel.org/broonie/spi/c/2a252105e034
+[01/13] spi: spidev_test: include tools/include
+        https://git.kernel.org/broonie/spi/c/88ca7a587f73
+[02/13] spi: spidev_test: clarify usage for --size
+        https://git.kernel.org/broonie/spi/c/a9e74a4c9911
+[03/13] spi: spidev_test: make size argument mandatory for --size
+        https://git.kernel.org/broonie/spi/c/df79e49bd7d7
+[04/13] spi: spidev_test: allow zero-length transfers
+        https://git.kernel.org/broonie/spi/c/bd511c42d290
+[05/13] spi: spidev_test: abort when -I is selected without -S
+        https://git.kernel.org/broonie/spi/c/683d7fac9b0f
+[06/13] spi: spidev_test: always compare loopback data
+        https://git.kernel.org/broonie/spi/c/2d736e05dbcd
+[07/13] spi: spidev_test: add compare mode
+        https://git.kernel.org/broonie/spi/c/a47226866b8a
+[08/13] spi: spidev_test: allow disabling rx or tx buffers
+        https://git.kernel.org/broonie/spi/c/d2b908c75a81
+[09/13] spi: spidev_test: don't send 0x0 or 0xff
+        https://git.kernel.org/broonie/spi/c/951a60af6c0b
+[10/13] spi: spidev_test: send predictable data
+        https://git.kernel.org/broonie/spi/c/c807c71d21eb
+[11/13] spi: spidev_test: add option to split message into multiple transfers
+        https://git.kernel.org/broonie/spi/c/31ce698070aa
+[12/13] spi: spidev_test: print TX on error
+        https://git.kernel.org/broonie/spi/c/a73c71e1f25a
+[13/13] spi: spidev_test: rewrite unescape() to stay in bounds
+        https://git.kernel.org/broonie/spi/c/c79bbeadabc0
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

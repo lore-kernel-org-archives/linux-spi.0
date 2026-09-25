@@ -1,129 +1,86 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E738409285
-	for <linux-spi@vger.kernel.org>; Fri, 25 Sep 2026 19:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C864E80D2;
+	Fri, 25 Sep 2026 19:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790364671; cv=none; b=jP6ier3Kr0WF8uRSgXmPqi4uT6MsEPSTU0m07POKAuDF3mWkZJ6lyDM2PtU7A+miVUV8Qfz3SunIGtaoJqhl2SDPF1S/9+7cy4YI8EoMusTTrsNTjKqhUwhBPPe2hmIN8SFF7QyNODSoscIpMwS6hIQ6RWHsTfZHnFjTMdr9Gks=
+	t=1790365363; cv=none; b=VM2ldgTXI+G01DKcWK6TSBu1Jd/5wnX71//Udx7UYW1GZeZM4cYKHwZiIU1Q6rBBtXYtRjZ/O/qJiVOTX6HzhNPfda7r+6Io5M7+IBuJZPFbN7L8Rzerd7jzkG5jWhYIz9AL5M8zF4bhrYXa2EIwVYg2AEEEWl15o91+uQPz6vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790364671; c=relaxed/simple;
-	bh=dcxM9nciXFXskGhLl3NfboI6U82tcnMqomfNizhspnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oqqBoJdNL0n4GpICcJD9/kgWjRVl328h2oXje13zPOSyb/wMwSiwBbgOWPaiaCxP9KQqk3lnlj+PBVkAhzNIxK9vbCCk8t/V/bD9ZSL+m5JWRnzUFEIf+fzEEQn7wmwwbTLt0hP4jwqgC1IKNjSVQEnccTEhDftVoyFcQRr9MFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kI3BXM7H; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790365363; c=relaxed/simple;
+	bh=aMNWTWyCqUsOG4orvXSkh6kcO43dY8xamvLY6SlMSqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M49BeitjYXAteAvczAli7MMehxH/tn0T7o08L7cylR5hbKjnwl14rJkKUVATHQJSt2zvrffpjdITfHsO7lMIWKEiSMGdST0SxBEK+b0/odkSatWJ1/tGdC4zKbIIVceDpOmFxGmiQZLSz7vbfTmXsUPHOb0n1K4ymFu4RWg7rcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/8huc7l; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kI3BXM7H"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-144f79153f5so951259c88.0
-        for <linux-spi@vger.kernel.org>; Fri, 25 Sep 2026 12:31:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790364668; x=1790969468; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/PfC+JKXiHR2gOczjEvFYMX7OwerkeM8UAQevJLjnNs=;
-        b=kI3BXM7HmkiDuG2//zoA2nI+Ol8UU2sJHIknc7ZIovdBOntXpnInQ490DZNBYydjyW
-         xebUnG7anUkarGF0Ob4YdsN09hsUyJJy/0cMT3WYef0l3LcaO2gE0cElySZ26kIjIe4Q
-         wXp2xjpaU/9Prtv0Gl05FPGbkhMzkg93IP8fmpnp1qlKJM9ZqOcgnjPWmQDxyaXTuMo7
-         uik7gL3HnVmnwy3truAy++2fTHENsVvsfZkbj51r2hyvRVcL5IOHyGfMDVXEGYRrmEMR
-         tNDXXwKPyVxKVc776pGpstlU4gJkTdFr6m18kg9zBA9wb+aGVnRG2lLOBVOlkqrtFlsn
-         PfPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790364668; x=1790969468;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/PfC+JKXiHR2gOczjEvFYMX7OwerkeM8UAQevJLjnNs=;
-        b=fZ6TCKF7h24SX4yV/9ubyrH2dpN8y5pREqfHJXFtfhk29oFb17/0VuUI2Da7073mUk
-         ENu7VDpZ5bCZuZPiujcNH4QuHFay7PQJ72KlUcZgJijGBq95XNUakT9XAQ79/3RNDgoJ
-         5o11oizaMuPVXFHzsSnm3AmkCHGc8xxsupnzncun0vrdgsjPbQZcCcRIW4u3dS+1MOsV
-         NcQ+ACEq2uWVvBqQIRn79k21kR+YLWMBfSCUQ3iDhZjgfzrbUqhXpdb4kDPCvTxasF1E
-         KWV52/pmmevEuP8atlLA9qB1R6iLm24fsuT/19DVVHSmcH9MTtpkQ8LBFtcvKwkVJzKp
-         Y/Lw==
-X-Forwarded-Encrypted: i=1; AKwUvBx85j9sVbk86Xsz0oYWn3bA1vhSKWed4Bgq8PnUlb7gKoVKkDeymnGTWOGwT5xs7wgrNrqtkHLaAOk=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5kFh6EbQfNwSIsB6D7yLIUmvqxPxVxXgH7mbYwss2PixofELe
-	eJEgh9C5EX/sb9GKbx92SJMvSSTmb2hdw+SxFp1RqUcDKuG+Xl7HmnhK
-X-Gm-Gg: AYBFou0BgeuC1OAHAE6om8pz2zpa6yH6LzKFdv4Dt3hSovFu3HR119tFAfVomu6D3Cs
-	hCdEb8jL5SdmjrArmwrWovEzBi+gVCrysfgl1OVjyKQluO1cNa3oFH1pZGsI1q/azKOQw9o/PrL
-	1tH0lW2trYzBfWDe3987Y93wNJcnHI0NKIpeoaeSeDKnunjPS2daVdZxAwnq2ogCZa8x9dkFdTd
-	nk6vGi/HWqbqROSdAawtBCcY6C8rcM7DSSUEo2byWhFZ+QaqEJiA53aqxdC0mKmLqkh0Rw0zhUs
-	j1RhZiEI3xZdyQ83/DdJI7KxQ6TMKzWCxvYUOXhwnDWPWfNrBHGKEbNttlbgKHPC5KPuihIYug+
-	Npup60K8g2KRhcPj7ie2XH4LjgDPNTOzbFsQtllOOWlgRlYZw0XwPuZYyFhnC8vyQ9NwbCdb+no
-	TxxSunlm93H4n24pAURyuWaE8F4A7reKT+FHWXCnOBg65xUzq00xm61G1flGwYmgdHP0RhdxTkB
-	b3hxe9BGfEyXI9PTeoaTeMRrNoBPcjo15I8dRsoeDUzzW0U/8EmDOcWuR0/Wv4Tu7v5eUQ5r5J8
-	n8LdmPJ0v97dNKmHmPl8DtiOd/yBiV0kXe6sgsiHRUrxrA==
-X-Received: by 2002:a05:7022:1584:b0:13b:32f4:e826 with SMTP id a92af1059eb24-146ce968c47mr1007700c88.11.1790364668278;
-        Fri, 25 Sep 2026 12:31:08 -0700 (PDT)
-Received: from ututo.. ([2803:9810:87dd:de10:161:9095:8001:15fb])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145acc47ab8sm7886956c88.6.2026.09.25.12.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 12:31:07 -0700 (PDT)
-From: Lucas Costa <2000.costalucas@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Scott Branden <sbranden@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	linux-spi@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/8huc7l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6063A1F000FF;
+	Fri, 25 Sep 2026 19:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790365358;
+	bh=aMNWTWyCqUsOG4orvXSkh6kcO43dY8xamvLY6SlMSqI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=B/8huc7lVai+g37VoD897gWW6n7zUWJIrF/g478Lqoqss0UMsjQ+ljSqgoCTaNcaJ
+	 d48fZqp/wcrzoQB04i7zGsRRJV63M9+P3IWL3ZzpsW0aWz9Hp3SE3yBlyBpgbnJh2a
+	 aAkHmDIuShZGMWFCxNaxarm4h6zPPfXAqmLbd+0ILF3PrMJrUgV051omcUSeWREIGR
+	 7vRDPIB2YYgttssXvWe13/8npFrqKx9HbSN4VfXc+2gvnvn4eeftxXZ0/EkYOvPU5a
+	 E2FYZJVL1UQnBh1MX8RzQj+bFI3xQKn3tMYg7eM8Bgme0zsEadW8dZbKSRa7caiOX/
+	 Bvwwd43ywlc+A==
+Date: Fri, 25 Sep 2026 20:42:33 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Lucas Costa <2000.costalucas@gmail.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Bartosz Golaszewski <brgl@kernel.org>, linux-spi@vger.kernel.org,
 	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Lucas Costa <2000.costalucas@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
-Date: Fri, 25 Sep 2026 16:30:08 -0300
-Message-ID: <20260925193008.127314-1-2000.costalucas@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260923184450.135601-1-2000.costalucas@gmail.com>
+Subject: Re: [PATCH v2] spi: bcm2835: fix device_node reference leak in
+ bcm2835_spi_setup()
+Message-ID: <ce711fbc-71a1-460f-bde7-9e2cefd96db4@sirena.org.uk>
 References: <20260923184450.135601-1-2000.costalucas@gmail.com>
+ <20260925193008.127314-1-2000.costalucas@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/SVPUL7HbZZHdKNN"
+Content-Disposition: inline
+In-Reply-To: <20260925193008.127314-1-2000.costalucas@gmail.com>
+X-Cookie: Love America -- or give it back.
 
-of_find_compatible_node() returns a device_node with its reference count
-incremented, but bcm2835_spi_setup() only uses the return value to test
-for a matching node in the loop and never releases it.
 
-Declare the node with a scope-based __free(device_node) cleanup so the
-reference is dropped automatically when leaving the loop body, matching
-the existing __free(kfree) usage in the same function.
+--/SVPUL7HbZZHdKNN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: e19c1272c80a ("spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
----
-Changes in v2:
-- Use a scope-based __free(device_node) cleanup instead of an explicit
-  of_node_put(), as suggested by the reviewer.
-- v1: https://lore.kernel.org/all/20260923184450.135601-1-2000.costalucas@gmail.com/
+On Fri, Sep 25, 2026 at 04:30:08PM -0300, Lucas Costa wrote:
+> of_find_compatible_node() returns a device_node with its reference count
+> incremented, but bcm2835_spi_setup() only uses the return value to test
+> for a matching node in the loop and never releases it.
 
- drivers/spi/spi-bcm2835.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Please don't send new patches in reply to old patches or serieses, this
+makes it harder for both people and tools to understand what is going
+on - it can bury things in mailboxes and make it difficult to keep track
+of what current patches are, both for the new patches and the old ones.
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 8f8715809c7c..23606967f7d1 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -1297,7 +1297,9 @@ static int bcm2835_spi_setup(struct spi_device *spi)
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(pinctrl_compats); i++) {
--		if (of_find_compatible_node(NULL, NULL, pinctrl_compats[i]))
-+		struct device_node *np __free(device_node) =
-+			of_find_compatible_node(NULL, NULL, pinctrl_compats[i]);
-+		if (np)
- 			break;
- 	}
- 
+--/SVPUL7HbZZHdKNN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-base-commit: fe2ec83746e501645709761605c2464a44fd2929
--- 
-2.43.0
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq2zqkACgkQJNaLcl1U
+h9CRqwf+Ik/gAzOMcIALAuD9d3R0DPLClvHRDU3PpVBp13v3tTe9cBHSY1Xm9It2
+weYQOM7tmlg9uWyXweim8tkdgUGWnfn5IoPHFk8uBCIxuJUmd3maBfkOAaVe17Bi
+2QRsjVNvKL4c7S7YBmmPWLI0ojlxgQaL/Rh05I4T78VGlz1zTDsWiDDLtx6BimsE
+hziLeR53ycJqjI+PsDSkcbEwx0uAipzmDhs+klidb6mGuV9KRsnFlnr3DkOSheqV
+pSWU6uNS5C13gCzgsklJDctcRyLJZCg3osEQhNVLH+XbasmzsbyckYhqVsDTvr7k
++/FKmYJ+J+FaazSQSwJjlf3CFXUOrg==
+=hogG
+-----END PGP SIGNATURE-----
+
+--/SVPUL7HbZZHdKNN--

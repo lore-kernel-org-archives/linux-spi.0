@@ -1,83 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F848A2A1
-	for <linux-spi@vger.kernel.org>; Fri, 25 Sep 2026 10:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99E948F84A;
+	Fri, 25 Sep 2026 10:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790331685; cv=none; b=X/rBWVF7SNrYstOmoE3MvdJySoAYjjlNTRWakbcDJPTIfaP66IbBGnejTmBEFOKEg8dfNKk6dfl9H8cokPF4utVwy1fBqbgdZLLA1yd2fh93Qb9qdWGysruLCCAOSC/xoCWtyiS+pJmgh7A+6b84fEsWutBKgdbkYIcmTdoLroQ=
+	t=1790331815; cv=none; b=qhSXlG6+ApaZyAT9dMxdzF7amngUYq44cSXusKFW2la1YWpaxLy7OL/q0h/0CPmM4Cry5lpTb+CrIu59h0Og43BvA6upsrffU1eYQPk3i0ZoFBQs2MF4irIwBtlpFwoW1AK2HXY4MnXWX4IGf10CLNitfYg4H2UekybDaxUeX5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790331685; c=relaxed/simple;
-	bh=pp+KoDJKu8cfVcYIWyFsvio5fwP0dyM5X0zt8uhCdHo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=MoxfYJegilfD/0YuWSV3TJJs17UODKMXU5IcvWHTaqzLS71dgUHv9aHajzwbMPzzX+jDUh5hYf8ybs8i44ictMhdR+7SiM3ic1d8RDQJ4llzqeQXf9BNJw9VlkRIHgJKdoW+bcmZN613BXhJ+6B+of10DdmbXp6fwckmMubHoD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ntEHNsTg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790331815; c=relaxed/simple;
+	bh=W3ofDq4a6rYUY4Czd8wCezviz7X0eedZ6demP0APXwg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=exN10YAKc4lpRMY3HqHJDNuuOdQGBtrZ0Taj0hOqHxh8oaBki+xdIiD2kppPwZ7Ok99IorPv8l3yM9qUnJPdcK7pa9kFKihAW+UlO2rMl8emtdfPb0V3T9qRvAkQQTLO3CwYBKh5clmRtNSejlHa/5JGYdXPBMFIocQBTJ9FGF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XXkwearN; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ntEHNsTg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5821F000FF;
-	Fri, 25 Sep 2026 10:21:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790331683;
-	bh=a76bQGqL+6IcmGrirOf1fXtBQSGD/sdeBFmjyOIMgZ0=;
-	h=Subject:From:Date:To;
-	b=ntEHNsTgrFDAvVEpiW6FuQsqZK6Jc7lv2EwpxT+dcNfOrQgtg6sJW8eRBx/yL0LHq
-	 wbalZFIQrBdiyg4g8ZNz/itbtAY/5+MQ2sSf2bBl/bthXZG6IY28iKeN5heR6l0U0l
-	 4PHPwt5leRpzclgdhDVAP+NQux0LjONg9zECJxrYD7ZLZo9YUG9+I6JGO4DtpH9SnK
-	 n36nH7aDZoF9AToGYfUk4Lv6Ib1kiaYhtOTriJs7TnUmxSorbvgB60ERmIKdpIbeiN
-	 C2m0ib/z8+pAnnI2a6fbcwYOPfHQpTFHqF+RuZ+OpfOjxJnnNNSCtkOy5athONgnz7
-	 w8aI2y3gXU/3Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1C0153AA6A42;
-	Fri, 25 Sep 2026 10:20:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XXkwearN"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0D2F04E4106E;
+	Fri, 25 Sep 2026 10:23:32 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CE92C6073B;
+	Fri, 25 Sep 2026 10:23:31 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0AC4B1032959D;
+	Fri, 25 Sep 2026 12:23:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790331810; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=3szgY9zm9EvPd+IGHLd9mHO0PhxaT/u5j83BrGfC9yY=;
+	b=XXkwearNrO2Owi+No8Tkk9ZXP4+olA6HVlP1/rb1tHjpkYrQ1/5BiHvnB+0CPIHRG+jC/A
+	lgYLxJycCtmWfqCGYflng9l+RIv5XfeuZoXcD/+PSKU0/YeS7gXiB/r+nh0D9k0YOxsF7H
+	218DJz2HgLAjCJXBx77gf0i+VvaqXjX8fwmETvMb0SYJYGpBuu/IgJOqg5gUZgfsye4c2E
+	++enOXuvW8m5c/0aicGbSJqncQoInSu6Xu+f54BTxOkP5uWQ0HJ6P1D51IASgRjvXvZWx4
+	MNnRUaE21cw88nGzD44wFF7QNXQLBsYTmSkLq2oLx+2lBcjQUfISPLUYJGKWWA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Nuno =?utf-8?Q?S=C3=A1?= <nuno.sa@analog.com>
+Cc: Mark Brown <broonie@kernel.org>,  Fei Xie <fei.xie@horizon.auto>,
+  Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Parshuram
+ Thombare <pthombar@cadence.com>,  linux-spi@vger.kernel.org,
+  linux-mtd@lists.infradead.org,  devicetree@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 2/4] spi: cadence-xspi: add ACMD support for SPI NAND
+In-Reply-To: <arZHjbzUEFhydnHt@nsa> ("Nuno =?utf-8?Q?S=C3=A1=22's?= message
+ of "Fri, 25 Sep 2026
+	11:14:01 +0100")
+References: <20260921093701.1341766-1-fei.xie@horizon.auto>
+	<20260921093701.1341766-3-fei.xie@horizon.auto>
+	<arFEjzkHGMbecWWV@sirena.co.uk>
+	<20260923061211.1608907-1-fei.xie@horizon.auto>
+	<67f4e1a4-fc0e-4b2b-b41e-8dbb33227302@sirena.org.uk>
+	<87pky1ll4g.fsf@bootlin.com> <arZHjbzUEFhydnHt@nsa>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 25 Sep 2026 12:23:21 +0200
+Message-ID: <87ecehljdy.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179033161176.2436202.8188772519635984217.git-patchwork-summary@kernel.org>
-Date: Fri, 25 Sep 2026 10:20:11 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+Hello,
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+>> > I think that makes sense, that mirrors some ideas people have had for
+>> > optimising SPI mesages in general - submit the sequence to the driver =
+to
+>> > see if it can do it in one, falling back to just running individual
+>> > operations if that doesn't work.  See spi_optimize_message().
+>>=20
+>> The spi-mem operation-sequence interface seems very complex to handle
+>> correctly IMHO. I fear such a solution would also require major rewrites
+>> of the core. It is always hard to make fit hardware in code bases not
+>> thought for them. Most of the time being spent in I/Os and wait states,
+>> I am wondering how much would be saved by packing the commands. Do you
+>> have benchmarks?
+>
+> You can see my replies for a more verbose thing, but the TLDR for me was
+> that the gains in performance did not really payed off (vs the
+> complexity we would be adding).
 
-Series: spi: spidev_test: new features
-  Submitter: Jonas Rebmann <jre@pengutronix.de>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1173156/
-  Lore link: https://lore.kernel.org/r/20260924-spi-sun4i-spidev_test-v7-0-126e31a07fdc@pengutronix.de
-    Patches: [v7,01/13] spi: spidev_test: include tools/include
-             [v7,02/13] spi: spidev_test: clarify usage for --size
-             [v7,03/13] spi: spidev_test: make size argument mandatory for --size
-             [v7,04/13] spi: spidev_test: allow zero-length transfers
-             [v7,05/13] spi: spidev_test: abort when -I is selected without -S
-             [v7,06/13] spi: spidev_test: always compare loopback data
-             [v7,07/13] spi: spidev_test: add compare mode
-             [v7,08/13] spi: spidev_test: allow disabling rx or tx buffers
-             [v7,09/13] spi: spidev_test: don't send 0x0 or 0xff
-             [v7,10/13] spi: spidev_test: send predictable data
-             [v7,11/13] spi: spidev_test: add option to split message into multiple transfers
-             [v7,12/13] spi: spidev_test: print TX on error
-             [v7,13/13] spi: spidev_test: rewrite unescape() to stay in bounds
+That's precisely what I was expecting.
 
-Patch: [v2] spi: spi-qpic-snand: reject when no enough OOB space
-  Submitter: Ziyang Huang <hzyitc@outlook.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1147281/
-  Lore link: https://lore.kernel.org/r/SEYPR01MB5882463D860A9670617D5834C9A72@SEYPR01MB5882.apcprd01.prod.exchangelabs.com
+> The real gains
+> for me came by using the nand continuous mode so that using ACMD (and
+> DMA) so that we can actually ready chunks > page size. Of course this wor=
+ks
+> for nand chips supporting cont mode (which hopefully newer ones all do).
 
+I am very happy to see this feature being used! It already caused quite
+a bit of churn in the core :-)
 
-Total patches: 14
+> As for PROGRAM and ERASE commands I really did not saw any added
+> value.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Yes, most of the time is spent in the wait_ready, which is not getting
+faster with hardware automation.
 
+> So below is my version of this:
+>
+> https://github.com/analogdevicesinc/linux/pull/3478/changes/477e609550854=
+6552071b825a66522cf697c27c2
+>
+> I pretty much treat NOR and NAND the same thing. Only when you want to
+> do thing like having the controller sending commands itself (or walking
+> pages), then knowing about the chip geometry becomes necessary.
 
+Thanks,
+Miqu=C3=A8l

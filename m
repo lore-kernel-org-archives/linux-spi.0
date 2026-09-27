@@ -1,88 +1,66 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC083371056
-	for <linux-spi@vger.kernel.org>; Sat, 26 Sep 2026 19:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE2248880
+	for <linux-spi@vger.kernel.org>; Sun, 27 Sep 2026 14:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790452620; cv=none; b=OiHogv9pNckMUC5SxxUcDK7fEDjygvXWB2KD4hWP3+SkPuWvW8nx1pKrn2GbaAMdQs3a4pUdwrFAJ+b0smt+zTmZUXvpNP47tH/E9QJpFah2u8zT6mTMDUtj+HnnlZXTumVFgkwOfUX3rMM4Xg/QcNONp5jzr1gjaDj3Z8+yMjc=
+	t=1790518295; cv=none; b=hDiX3JWhUQ0BdFZB6uCpxFYVA5wYRKf17TRvGWOLNPj6UEUmmlMkfUhfeEgN5UxkCEKgvpTtc2wQDj7bbq8Je4moKC532lFUgOib8FtZXsVR7EOZ0OpMgJFTnnuqj3jXeGwPk3wePaOIhbQgLRsPkKXL+Tv/lJgg5AH2+CU2n7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790452620; c=relaxed/simple;
-	bh=LYsTZYTFw77y4vhzBNm5ZfPLRJ3QTOdjYnl4iGPDAfU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fg2jrlEWSLXS3lqucTv4m6jRzOAWey1MBsd+EkBCrMi4SUlVxiKzn4zhe9QAudbVzLCi+nkGDlt16L6j4DSeX0CXng2A7guVKg7rs3dJTV398D0KFsBJ1NW+ET29xYZokYsyMWoYfpmeBC5gaYHlfsMVLxiXRuO9nvx6QGGzpgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IVTubUNd; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=TPcbZm3F; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790518295; c=relaxed/simple;
+	bh=Jo6hKbGHkm66l37ZDevFtAWN03dbYRZ9E9ZLUdKNAog=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TGpP+c9iBbW1pYjQOOvKi1mjg2svtlRW80YyzXic7VfqmSC3AoWeKg7kE9hLgHXlXYyk1O1rlxn+7MSI5nbhyXq25gstzfgFyRtdaaKD5uRkfDn8r3TpBMStKiHgAYosunEohu8SiXkSgBaB1MU70pU22nRzvuLO0MO3v0A+5ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AHX6xW1G; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IVTubUNd";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="TPcbZm3F"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68QGxtj3500337
-	for <linux-spi@vger.kernel.org>; Sat, 26 Sep 2026 19:56:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hI5C4U1EW+2wjdrpG7VIcsYRtJ0qa1gaLwmcQGCX2QI=; b=IVTubUNdmJqrKIJH
-	Ac86WJRsz6Uu5Aozp5R4VwQB3XldecJZYVqX0nDaqJIdPqVWOmRR9zIGnKdcO7K9
-	h2+IMEV4uJLvtgSQHs09X1B80lneXccRL3iShrSn9zxTiW13rcS7p17ETbNhEGxg
-	feODvC8moIP2JjYSoh0b1VbKybFuQZ250RbQ3QYCqeH07xeT33DBWngikyEXB71b
-	dunMAYdK/LQcmEnilfUVa86Q9479j3U0OW51Zq4QDuPVgtwa2/LCNwe9wPb0DHI7
-	gokRM4v7S9F/r7FxiILVG3wmOF9c02kQOzAfdyBubtBgofxSpywh+Em4dNEEtdD6
-	SijxDA==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gx64ussf5-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Sat, 26 Sep 2026 19:56:57 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-313d1015161so6884659eec.1
-        for <linux-spi@vger.kernel.org>; Sat, 26 Sep 2026 12:56:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AHX6xW1G"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843f22dc83so1861716f8f.1
+        for <linux-spi@vger.kernel.org>; Sun, 27 Sep 2026 07:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790452616; x=1791057416; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hI5C4U1EW+2wjdrpG7VIcsYRtJ0qa1gaLwmcQGCX2QI=;
-        b=TPcbZm3FK37VuCl7kIk1O3esAnIsKDj9dSlOonKcEajRw+J4/llgkr2sCYh/yBauNV
-         EyHJK/UM4d84Mz4zYm9G+uGzozhd4oi2bNuAo6QZNOg+LHMuMwqB6b0nWwBJ9pIoKr5M
-         3hHBJIzqok3//QM+p4sYHKhghgKcvxcDL8LEfmRCo/eQq9+EbArGfaIprPb4iEvV3/8C
-         pQXo9d3qN8ju9moisgn42b2hQZabpisHrpnwj3JH+ZHWSnnRnM4EGc+1baPThPM3t+FB
-         GZW3194v6bSxiBNcP7e80b2fXaAoLA7wkua5euoGHLnIPS3fjf0eOVsh8hTTQaE6yULG
-         36Sg==
+        d=gmail.com; s=20251104; t=1790518293; x=1791123093; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=q66d7dJ6XGqTvsuFbKIhtLnO/AdCHdZe6HhcW+GVCsU=;
+        b=AHX6xW1GJFcUR0ZznYXj7c09CUXwD41fA3/GddGck6fusgizAsJvlWTkuUC9FE8LMk
+         SypbjSRKP94OLftWTouKgkGx5ytIvMTiOsgWy9Eq4w+XtXnUtuSA1aYnyH22a4nWbwB5
+         OnDqVctmxEdVWYde7VUrqTwjvunsHRYAGEGYLSDDv23LBPg7ck4l3othzLSHnbc/RykD
+         LOQdk9FIfUpqyQqs4uZreiGcAocWrQKVzgSozFq/tdblJuXew1T5EErkwFDIIs+g8QHg
+         16+IrtAxgCy/UOVgJxm2KwQACdE0MyIVZPY7ma47dqbpcArYxUZXimwHKtAJ6SXPFDKf
+         URTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790452616; x=1791057416;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hI5C4U1EW+2wjdrpG7VIcsYRtJ0qa1gaLwmcQGCX2QI=;
-        b=piN3tNHIcX20tcWV9c2PQLTaHa8SyxEfYu6xY3SMr/6so9OWGeO9+zCK/kfKza4onU
-         01XEpZcQ1/noJWCXpTTdkfMkTbUKIeXryQRIduhAdmNmx3EaCT2cEgR16kGjgo9Gy/0T
-         RjCk49mzzCToYC8JNNBqM7+kfyHFnJNl8G/twJI+CLpfLG8o2nEAImgU17NXJ19Hk9ay
-         pa3ErWx/PpP2Gq3yVVTfeWiNf+S27oniiqv7m5t6hRRsw8j/Mh86DtBPzJ/Vdh0/13yr
-         TQxGnljfAZi8fgzhx0/4ENh2KJKLSFeoqd9xeGqeBXO8a+SPTJdX+n7HCE91IInYjtWI
-         n1ZA==
-X-Forwarded-Encrypted: i=1; AKwUvBxnpmp1JNbLqpdFgQJ8NTxCHAfhlQIkrd1dgAGtFPwt90uPU8tpBIANAFE1u+4+BiEQsoC/YcqD9/M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1ZX+KPRv0tsfUmvWhDgHWWxNplKgdWsNop/upTSByFNXWblht
-	IAygzgN1HQUwRhvL1r9YAbGsrHqxS85CMWYbZ/ciH8B4d+HfuYskxpnAvO2kNxldRzK0HHHQ4sI
-	XECa8xGpQ25Cwk0yYHOEwDk/anMHzgqhMrqnwO3RM3qhYHQnmJ1rtsHmHiWoliOY=
-X-Gm-Gg: AYBFou2V6KGDvAbIIArqL4wApJyIpPa3rbzw/a2S1U12h/8En9P0CKITDnkeiwoqWsi
-	1z31cDFLpfvz1tfwMoOApCn2J7ZmehhTqsKE0ID0CGHwkJd44I54+jAmBRcRIArC/4BwYX26+TP
-	YtPb/SwSW/HrDBtLwQ4h0QNrOLzm4PhvELNOI4WDPXjl5GxkoP4KmjrBXE/6Azou4sRVXv01Sgm
-	Zc4hvwcykTHGAFd2W/PHUnTUBhzsYB7BOIMppOIwioQyVECiH3ldJknrJL3xFASRlVgTvXVdUpw
-	fPSY0z3kiwZJ/W2uLbgZEbWPBVEdFMH1sMbzOECvlrOdb7jVTwf8P1vLuWhJF0z7HVVcaaH1IK3
-	x5LmtWXNwMHqJyt0EEi5XEGS4+OQKpdFL
-X-Received: by 2002:a05:7300:de0b:b0:342:cbae:b1f7 with SMTP id 5a478bee46e88-342cbbdff28mr3273234eec.27.1790452616055;
-        Sat, 26 Sep 2026 12:56:56 -0700 (PDT)
-X-Received: by 2002:a05:7300:de0b:b0:342:cbae:b1f7 with SMTP id 5a478bee46e88-342cbbdff28mr3273214eec.27.1790452615533;
-        Sat, 26 Sep 2026 12:56:55 -0700 (PDT)
-Received: from hu-ptalari-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3414407ea69sm17179025eec.7.2026.09.26.12.56.51
+        d=1e100.net; s=20260707; t=1790518293; x=1791123093;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=q66d7dJ6XGqTvsuFbKIhtLnO/AdCHdZe6HhcW+GVCsU=;
+        b=ciPdzxTzWQ0Lgrc0EMKboC4CJ3UTwK3D6icqaoduIVWMEi6i5cRoPwVacLIV6q8UD0
+         Q+hCR12S1qG5FDsAQ+Vfj3urfPXr6ZxF8RzB5MeQZl/+YqKSkwa+Zm92bhhfVjNK39Q7
+         4fWxdm6DBuHXA06gjuxBrNRTOdmylJppNURbJmoUp+Kld5n3BvEPctrr8yt0s+lVtKaJ
+         01uR7f5V+pL8xzovkgmH/ropqtFk4699uFDJRgGhBDaDijp932CWFq+MGN4ldIhzN3L5
+         q5u8fI0azra5W5h35aZ3OUhY0dGe/kBXfpGfgjY6HA5weif6Crw6LZdxwQDbUTaegSOL
+         Yviw==
+X-Forwarded-Encrypted: i=1; AKwUvBxeBHkfUWgH4sg6SM5prLGFnx7TvhArH6bUxfzNQDbhJMrtEQCdb7szI40kAVX2wro3kjzI/voS5uQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVo5OUf5EXQieUJqqO1HbhRPJ7IhRLw63mV47sQRVWGtbTxKI/
+	R4iJRoXgnCDjRb4w1A82BjFBYTugdCe2QHeYPPurkaKTb5jsAMawqJ9T
+X-Gm-Gg: AYBFou0sm5Xd6C+Gwv+e1rG5QtME2Nny7BiyQtiGtJcQfylJ8Mh6W6a9pR+4QFvioXc
+	ll2TVu+gSN/ep4x2fxSweizILvrxoUtoz7FRVUJ7TPzKNLeu8fhm1q8QT7XJJ4RbzOmiKmVGOTc
+	rfL8drCTL+L8+gcU/CdJzhPn0TxwZF9jKlvXmCZwfNhbWVNo/EXN9tczIXZm24WglNED5N9PzWc
+	qmNzUll/aHvNN17IRjcJeZhRxMkvEHJXpdwtLu71e39T+vszu3dxfr/GJH0bhIosFttYazfGuup
+	qBgtsBU9DWhDub+REvFABwjKc5uE2LRuZpiO05kMrhb1R7Fk6RvtURd5m0xC6Msu0WZewQWeIRd
+	VGgv7+FeTsNrHpyUw7UGAAC9mL3vGfGTB6/0fLtq33h+4RRyI/fOiUH65WyhpvjPEEYqnM/lye3
+	b/XQDnnxQ/IbM450vrdIyTGBXJqmnRD7tzRlLpgoircarGlVZlRYKOXjH+//YtYNvkHFrCT4jr6
+	lefdlSDJsSN3huXhRwWknMR5V6h391DlL3ejg==
+X-Received: by 2002:a05:6000:4703:b0:487:242a:c020 with SMTP id ffacd0b85a97d-48872a5cdb4mr19193713f8f.6.1790518292615;
+        Sun, 27 Sep 2026 07:11:32 -0700 (PDT)
+Received: from [192.168.0.253] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4887a640df9sm19930964f8f.24.2026.09.27.07.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 12:56:55 -0700 (PDT)
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Date: Sun, 27 Sep 2026 01:26:34 +0530
-Subject: [PATCH v5 2/2] spi: qcom-geni: Use GPIO to notify master of SPI
- target activity
+        Sun, 27 Sep 2026 07:11:32 -0700 (PDT)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Sun, 27 Sep 2026 16:11:22 +0200
+Subject: [PATCH] spi: spi-qpic-snand: drop ecceng_to_qspi() macro
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -91,146 +69,59 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260927-use_gpio_to_notify_master_of_spi_target_activity-v5-2-9b973623080f@oss.qualcomm.com>
-References: <20260927-use_gpio_to_notify_master_of_spi_target_activity-v5-0-9b973623080f@oss.qualcomm.com>
-In-Reply-To: <20260927-use_gpio_to_notify_master_of_spi_target_activity-v5-0-9b973623080f@oss.qualcomm.com>
-To: konrad.dybcio@oss.qualcomm.com, Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc: chandana.chiluveru@oss.qualcomm.com, Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Praveen Talari <praveen.talari@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790452601; l=3505;
- i=praveen.talari@oss.qualcomm.com; s=20251114; h=from:subject:message-id;
- bh=LYsTZYTFw77y4vhzBNm5ZfPLRJ3QTOdjYnl4iGPDAfU=;
- b=/Zd1tifboPqeD+SVtk/DxTxt97fWniJHlp5apQ72MRM0D7UCU1gc3YItV5drMn8dXo+BDmkpe
- nFEJyhMZN0QC1Wsf5bzwzUPlBVPEWgOQcOp1cL/piPkC0IuM9uYI/I9
-X-Developer-Key: i=praveen.talari@oss.qualcomm.com; a=ed25519;
- pk=NGK/88fjyHXgfhIKwag7+uIytOmyOypvZ/hDFaYPEss=
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI2MDA3OSBTYWx0ZWRfX5rMiF03UW+bf
- n/MIA2HyyyakG9ESmzg3EE7zRrwYs3njYEl1Je3caI1gfQT7EZlyyON5pVr96PxDi2PJ/AfUyQH
- Hfy1hpz8dt46DB8CF8IthDCZtlA/ezo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI2MDA3OSBTYWx0ZWRfXz2CRv52PLNh5
- XsGU4lw9Up1ajjZE5mbekufo0uAZt62BjXTLv+4yByq8EihvWGKhEmdOHBzn0oKfPWQ9daAajq1
- AyPLwFYAEQ0yWEwen9dY18aVBIanix9xrSmz88rLKROepGGWQn/OdPW9qiKlNt1lOd9ER3A1MVc
- 3Huijy6OY0eChdUt/LqT/j204oC6tjQm4sPEdhPJiNrIlDqop5CGJ0LXIz6RErLxew6XsEcEn57
- Gd5bsqUpf3ppd2K3mI8wARD2PH/U0h0CYf0WlYhlMaK9YDYyL9IcpjF5XTb4xOIozfwtl2fpGef
- vxiqwSDd2KEs5oIsucv/yStvtYGAcjg6ztwUTQ1htKERh0N+CIaJpXoplRciZICRtetlpdFWGyV
- gsr0sC8a5cTmCWyd4o8gyHRArZljelWXnGP0oZKXSjlizj7AbqMfNwDK802+qpSwf7LZflVK1s6
- Nlwob4vIDu8SSJwXPww==
-X-Proofpoint-ORIG-GUID: DVitKvVNMybLAwqnq-siyXtRvGf-56-W
-X-Authority-Analysis: v=2.4 cv=E6xYNqdl c=1 sm=1 tr=0 ts=6ab82389 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=HWq8w0C2B1yOpf0TK-AA:9 a=QEXdDO2ut3YA:10
- a=6Ab_bkdmUrQuMsNx7PHu:22
-X-Proofpoint-GUID: DVitKvVNMybLAwqnq-siyXtRvGf-56-W
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-26_05,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 impostorscore=0
- malwarescore=0 adultscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609260079
+Message-Id: <20260927-qpic-snand-drop-ecceng_to_qspi-v1-1-993e9ec1c2d4@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NQQqEMAxA0atI1ga04gzjVUSkptHJJq2NDAPi3
+ S0u3+b/E4yzsMFQnZD5JyZRC9q6Avp63RglFINr3Kv5uDfuSQhNvQYMOSZkItZtPuK8WxLkfl1
+ at/TUdR5KJGVe5f8Mxum6bt5mwiFwAAAA
+X-Change-ID: 20260927-qpic-snand-drop-ecceng_to_qspi-e5fb12b5c33a
+To: Mark Brown <broonie@kernel.org>
+Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
+ linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.3
 
-When operating in SPI target mode, the GENI controller relies on an
-external GPIO to notify the SPI master about the target's active state.
+The ecceng_to_qspi() macro is only used within the nand_to_qcom_snand()
+function. Drop the macro and use the respective container_of() macro call
+directly in the function instead to simplify the code.
 
-Add support for an optional ready GPIO that is asserted when a target
-transfer begins and deasserted when the transfer completes, is aborted,
-or hits a timeout. This allows the target to explicitly signal its
-availability to the master and ensures the GPIO is released in all error
-and completion paths, preventing the master from observing a stale or
-incorrect target-ready indication.
+No functional changes.
 
-The ready GPIO is intentionally made optional and is requested only
-when target mode is enabled. This preserves existing behaviour for
-systems that do not require the signal and avoids regressions on
-deployed platforms where the GPIO is already controlled from userspace.
-Targets without a ready GPIO continue to operate unchanged by using
-devm_gpiod_get_optional().
-
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
 ---
- drivers/spi/spi-geni-qcom.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ drivers/spi/spi-qpic-snand.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index bced6279a062..91e75e213f92 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -10,6 +10,7 @@
- #include <linux/dmaengine.h>
- #include <linux/dma-mapping.h>
- #include <linux/dma/qcom-gpi-dma.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -118,6 +119,7 @@ struct spi_geni_master {
- 	int cur_xfer_mode;
- 	const struct geni_spi_desc *dev_data;
- 	struct notifier_block panic_nb;
-+	struct gpio_desc *ready_gpio;
- };
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index 9d626cee3d17..40ec6a3769bc 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -63,7 +63,6 @@
+ #define ACC_FEATURE			0xe
+ #define BAD_BLOCK_MARKER_SIZE		0x2
+ #define OOB_BUF_SIZE			128
+-#define ecceng_to_qspi(eng)		container_of(eng, struct qpic_spi_nand, ecc_eng)
  
- static void spi_slv_setup(struct spi_geni_master *mas)
-@@ -176,6 +178,9 @@ static void handle_se_timeout(struct spi_controller *spi)
- 	xfer = mas->cur_xfer;
- 	mas->cur_xfer = NULL;
+ struct snandc_read_status {
+ 	__le32 snandc_flash;
+@@ -168,8 +167,9 @@ static void qcom_spi_set_read_loc_last(struct qcom_nand_controller *snandc,
+ static struct qcom_nand_controller *nand_to_qcom_snand(struct nand_device *nand)
+ {
+ 	struct nand_ecc_engine *eng = nand->ecc.engine;
+-	struct qpic_spi_nand *qspi = ecceng_to_qspi(eng);
++	struct qpic_spi_nand *qspi;
  
-+	if (spi->target)
-+		gpiod_set_value(mas->ready_gpio, 0);
-+
- 	/* The controller doesn't support the Cancel commnand in target mode */
- 	if (!spi->target) {
- 		reinit_completion(&mas->cancel_done);
-@@ -936,8 +941,12 @@ static int spi_geni_transfer_one(struct spi_controller *spi,
- 	if (mas->cur_xfer_mode == GENI_SE_FIFO || mas->cur_xfer_mode == GENI_SE_DMA) {
- 		ret = setup_se_xfer(xfer, mas, slv->mode, spi);
- 		/* SPI framework expects +ve ret code to wait for transfer complete */
--		if (!ret)
-+		if (!ret) {
-+			if (spi->target)
-+				gpiod_set_value(mas->ready_gpio, 1);
- 			ret = 1;
-+		}
-+
- 		return ret;
- 	}
- 	return setup_gsi_xfer(xfer, mas, slv, spi);
-@@ -1023,6 +1032,8 @@ static irqreturn_t geni_spi_isr(int irq, void *data)
- 		if (dma_rx_status & RX_RESET_DONE)
- 			complete(&mas->rx_reset_done);
- 		if (!mas->tx_rem_bytes && !mas->rx_rem_bytes && xfer) {
-+			if (spi->target)
-+				gpiod_set_value(mas->ready_gpio, 0);
- 			spi_finalize_current_transfer(spi);
- 			mas->cur_xfer = NULL;
- 		}
-@@ -1192,8 +1203,14 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	init_completion(&mas->rx_reset_done);
- 	spin_lock_init(&mas->lock);
++	qspi = container_of(eng, struct qpic_spi_nand, ecc_eng);
+ 	return qspi->snandc;
+ }
  
--	if (spi->target)
-+	if (spi->target) {
- 		spi->target_abort = spi_geni_target_abort;
-+		mas->ready_gpio = devm_gpiod_get_optional(dev, "ready",
-+							  GPIOD_OUT_LOW);
-+		if (IS_ERR(mas->ready_gpio))
-+			return dev_err_probe(dev, PTR_ERR(mas->ready_gpio),
-+					      "Failed to request GPIO\n");
-+	}
- 
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
 
+---
+base-commit: 926f9c44a76fe9e722180d0804c607c6cf1ebbb4
+change-id: 20260927-qpic-snand-drop-ecceng_to_qspi-e5fb12b5c33a
+
+Best regards,
 -- 
-2.34.1
+Gabor Juhos <j4g8y7@gmail.com>
 

@@ -1,324 +1,227 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010056.outbound.protection.outlook.com [52.101.84.56])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013013.outbound.protection.outlook.com [52.101.83.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5251378D8C;
-	Mon, 28 Sep 2026 10:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2007A4B44BB;
+	Mon, 28 Sep 2026 11:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790592139; cv=fail; b=ehwU6OFaSi2R1NhgUUpDTCWd1XmIg/CFdwYTg61mPWrRUppVjvyUlUO21M97CPHPvpRV/8Iu3Vk38TMp8CJOQWbsLXKduhM2PvZ6ccNDrjIHoJ5ctwfhcNdTGgOz8DjNEfA2kcIyUYkL8nMJAppEInUwEgYhEjGTfzkN/hXSmg8=
+	t=1790596147; cv=fail; b=VRWQ1jVpi6VpLARAY27mJo0fnyLj0H26Y49mVXWDWxQNPAReVQAyj4CPSlWD0xKJNN2Qe7eSiQ9uAt2+MsqRvh95vw+gRpkfyPh0BMil9W2lig9rUSzArDsO93NdoahVL08yHwIUlol4GstYr6mMJS1URk5WSoWwwmdteNj95Ew=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790592139; c=relaxed/simple;
-	bh=1WDHeJD214VRBBAXvHvhUCEKpIKXFRUqad3QrrfFtzE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ig7tbuPEevnkv5JHzojTXaSNEqrrKx/oeuSol9HBFVm/BrjNB1J5PUOAsPhyMRij8ZEJ/6FqrnOL40jODS+KO38B3gFjwC2JtJ6VHg4ZLrKghsCUft3oUDzaStNNtN9Yd7QM+baw1PYEYe0GVilBYxJwTNstWy7YgIf6W2agenQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=rR2T3q+R; arc=fail smtp.client-ip=52.101.84.56
+	s=arc-20240116; t=1790596147; c=relaxed/simple;
+	bh=34UgFuUHxIwc0EcEr1RIAR5ZvYXh3YSB6axI3SVN3Ho=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=WBG903vCQD/16rOfXCrOHHK9/Alw4wJanmKx2b4KIosO+WROxRn+SMBehI4A4HlVW+lImdoRiU0h2gdnkAMtBf6fWJuXxkPSvNOH3/Ln7HO2QnOsAq3gbyS9DX6lRy3QqTmKAJYPRR0b9mcgIt2cOritUj+VeVuBVi3T+YqenyY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=o+p+4jxR; arc=fail smtp.client-ip=52.101.83.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="rR2T3q+R"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="o+p+4jxR"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iHd6glVRCNC3Rhd5RscKE2olQS9Gg7EaLV3dFNjjeKYTdJrydFzOnSxbut5+DbqhZg9UMKZuc60SZsPV9FKgD0pJffWChuP/ln2/H+EgHeovxD+guhCYb4t2vq6TnKqXjwA48vylm55O7lKIOIxeUcIlEws6V0I6MH24hlv80lG+sxBdeXiPwBEDzba2TgG8jox+/WzaBbBFGoOfkko7p9nMb4KppX4G51Hd32nX2rx2oQ7PEXtVFyFVI8rlKDQu6a7pAReIdoa21exOWVG9vxDJ03rKm4tXT+Gze1otKMHUtPHL1ya1MUyoRsllpsfwlaMhp2QAPwpC6ePU53016A==
+ b=khGiMqr/GbOWFIM5gU+qmUW8ZVLCaU1690sPNG++siGSdEFdG/GNu/3hgfG0dJarKMQ6flGNBzs/H10zzEST0hTXdqDNfw2XJdHXkQQAmDQwrC9oNIVV4wE28HyHbDYgMipFBTMA88FidvbZsZQ1ojJlwubMc5EkNFZFnFGDn62dbpM5FBxkFMzB+Z9laQlFZBNYro5H6eZq+ISXocCQuVhljTlG71qHPl0EeSfcyxo32E/B7b/WkM3V8ZEoavZv+wUjY1fu73UDeFH4hO1sBk5HBYrePw/1hcMZMDCi79C1AOoD39aISQ32PMYR+LPkJoCzW9FGrcOxeDCVs/uF0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PQeBeKSHAbushvMp+X1gKHzNUl+EgWFB1mpjfj1DYKY=;
- b=UOswNyvsGTzBZwmZ4vQEOMYQh607gdslvIKf95FEUXxGw7jHxC6kHORCCrnjA3ClprGP9Nc+NaD+Lv621Zd8sXFihP//F8odBZbAIMZ79JLBhNEbbgZrc22aDD8dk5Q/no8QoM4zrPvUsn48PwANdDdUWxhrRv3ZLehhSnKtoh1CI5Aa89dpga9uCM86zby9QM476tTq4AhA2Md6D7DqP0mYUBkYafiPCffLGRe+//TO1btMeU+V0uZPWZncY3y1F8aq0wsJVVog37n+/IoND9o5i2pl61BmCvceEBmLAzje4zS9d9xGN9Q1sL8LGtYnmrPhq8acY06yqwW3gcJRLA==
+ bh=YXtuzYt/Hcb2RQYuJ5uIvJEIBHplX7EnZm5Y6FYm3ek=;
+ b=To/ZXH5axreaKqgMepkxsvYkT2oh2vxPEr9b7SxiePMTFw8tnc2YtlNt/f45PLoBKu9Sm3c3fXzYCyxe/DhdJMBCOpq43QZBbllxNJue16GI9d+pAwBQNxesslw/HDp9itJLjFjQdqz0M52MELEd5MBZgXW4D8kW1EuJ3AhSj+PU+bb+wj+pR8bm3HaRE78ma9qBARrsIoLzXx1touvdqcgUfPFsp3XDKwFHc0stc0OW03WnggHBRKJrYCJae44ev+JqwJFnPb3sqDL9V0fhbbAhgq8ST7h01RdB+fUYRukNYHKJWCO27yI41jQgYPzYMp8bl291ZklPS5ixLL/LSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PQeBeKSHAbushvMp+X1gKHzNUl+EgWFB1mpjfj1DYKY=;
- b=rR2T3q+RHOihGXf+ZPQAb2r8aJMYr6WJX9TB15j2j41qls0BIQG7aS1xQY0Nl3E3aW2N1jdrgi1JpispJmMQIvx4H4N0zPjB97Vuf6dmQgu7q50ZQX6O+hJTOUJEp+naXi26g8exat3JEZF8Y+zP8AQHhLToTyL6BTxBpZ19+eIdEAaZFv57PFXeE7pt+vrtP2Hnlg6t+3cKyuDxi5fUc5FV5ysjhmddUP2RLmm6aIt9+ub3wmzE2l1C0H3qI6xdvNQjC0Tbz6rm5NS4kcCKI4wbqmytog+zxy+WOOo1qVw38EEm530RtV0Dq5F5vJ0JvjkN7VkNHPwazvgEeJVy8g==
-Received: from AS8PR04MB8820.eurprd04.prod.outlook.com (2603:10a6:20b:42f::13)
- by DU6PR04MB11207.eurprd04.prod.outlook.com (2603:10a6:10:5c2::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
- 2026 10:42:13 +0000
-Received: from AS8PR04MB8820.eurprd04.prod.outlook.com
- ([fe80::35d2:bfbc:a06e:fcb]) by AS8PR04MB8820.eurprd04.prod.outlook.com
- ([fe80::35d2:bfbc:a06e:fcb%7]) with mapi id 15.21.0451.014; Mon, 28 Sep 2026
- 10:42:13 +0000
-From: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>
-To: "Bough Chen (OSS)" <haibo.chen@oss.nxp.com>, Michael Walle
-	<michael@walle.cc>, Han Xu <han.xu@nxp.com>, Yogesh Gaur
-	<yogeshgaur.83@gmail.com>, Mark Brown <broonie@kernel.org>
-CC: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Bough Chen <haibo.chen@nxp.com>
-Subject: RE: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
- reconfiguring MCR0 and DLL
-Thread-Topic: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
- reconfiguring MCR0 and DLL
-Thread-Index: AQHdHnn8mtV/xpfGAUqE7UZWq2EG2rbd3BGAgAAE/gCABk4EAA==
-Date: Mon, 28 Sep 2026 10:42:13 +0000
-Message-ID:
- <AS8PR04MB88204E3900A3A9639911E178908D2@AS8PR04MB8820.eurprd04.prod.outlook.com>
-References: <20260728-fspi-clock-v2-0-dbe786a4a6eb@nxp.com>
- <20260728-fspi-clock-v2-2-dbe786a4a6eb@nxp.com>
- <DLNGOZHD5KI6.26QUK1IZB7UJY@walle.cc>
- <AS8PR04MB8820ABF469B46AD6AD36AD2490812@AS8PR04MB8820.eurprd04.prod.outlook.com>
-In-Reply-To:
- <AS8PR04MB8820ABF469B46AD6AD36AD2490812@AS8PR04MB8820.eurprd04.prod.outlook.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ bh=YXtuzYt/Hcb2RQYuJ5uIvJEIBHplX7EnZm5Y6FYm3ek=;
+ b=o+p+4jxR36kE2e75y4TGuxnss8oBZkC8bXVBNJ7ZpyXM+/fo/ruRpYv1dRx+Q/RnTqMcvyfHLqbu2PKWi7kSgygmfWpH1Bkw9dOJcsb8XU6WtgJVz44tl4zl6VspsZpTKfaWsN86tWfjd6/EcJD7aMdEB5kcZ2m197gT1zH8/rcL1Fif3o+xIYKvawUOqyuxa2sLw1a4W5fuyikYzHSAifOTY1JQidu/pscRa6EDSv3Kilh+nXqVMh5f4gi9YL2sRpKpcmFu1vGdH1lKseFNlZFt1Cq7MCsgPRRLuUTDKL9mHGoYEqxlV4kWtV3IHO+5aI0KxcNwGu7zcENnzKNnAg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AS8PR04MB8820:EE_|DU6PR04MB11207:EE_
-x-ms-office365-filtering-correlation-id: 2055d108-792b-47c7-0af4-08df1d4d286a
-x-ms-exchange-sharedmailbox-routingagent-processed: True
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|19092799006|38070700021|4143699003|10067099003|6133799003|11063799006|56012099006|22082099003|18002099003|3023799007;
-x-microsoft-antispam-message-info:
- 7TJx3Y+Ov6tWpC0Dv4ET9lxmzHk1VEk40dbcBrXQIOuUR//eYAeQPavhIO0UTqufBMd0B0bL1g5BUzqElFuC//SDCR91K9K8MOgKCBD7XYDJgN1hFTZZY/6blhIdN3lxQpFD3RuQjFYeEUDwCll+S7YQ03i3iyaPxR6H0TIJvauIDNiOrTrP58pO6jIbRIhG8jt67FT2hx45AcuPkLMjruyXzr32QS9H0pL+pIcz7k+k+Kj05ygDyxZyEA6YY+ytfTSSLbNC/zWrnhq+kK5NASl9Dkn1I4JHU48HCKUXhepzbiZm+JQ5vhD5sJ+UMAnu6Un9DDSFCIpCyGpH4yT9kZwu07ap2wtPJw9OirVbnu55bjmZMwnc1byWl9WoOUO/X7nBvTrkEBmqCcFpAWk6g252Qci1Xws53soZR0qyfhQBgPhK0b68JVD4rojzHTu9xAS/Xt94qstSsva9UfoVUV00M1ldALTbu0bgFsJAzVmD+IFIj1zlZJ3k6YBYeuj1L6+/u4LOUHQNtNhwaZ3gWZ/QHeijArZ9ng71FMTDG9KxEq4tSCTkv0JY7qEQ6uMVI43eJy73nT2p5yvQhmCtM9DJmoEwwUIHfrQf1CbtLrMRzRJ5gwsGdZ8P3tGGJYS2zjiBNH5PDNCV/eK/T7qsCiI0W3Ox4slT2YL+ZPvLuS8QJoEn+C/ZgsczARN6j/EacQ7COEC1K3dJYOuOA0sZW0etaHPU5Ivyp4X6FSmQN7g=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8820.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(19092799006)(38070700021)(4143699003)(10067099003)(6133799003)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-2022-jp?B?WmJnUE9udmliKzNwMXd6b1lRaGgyUFNwZmVkSG5xNVJvK1NDTHdJeDV2?=
- =?iso-2022-jp?B?RlVNSzFzVXBwR3FXUCtoWEwzTm9LQnFCVzlSb0dNdU9yTjVVbytYSnA0?=
- =?iso-2022-jp?B?alQ5TTRxWmViV1lPdG9USVV6d25wV3E1VzhTbTk1Rk9nMVFmaEFidFYz?=
- =?iso-2022-jp?B?QytpM0o1ZGhWZzNFYWRJM3Z0OVB5NWlINjY4VWtJNmhyTGpDUEk4VDY3?=
- =?iso-2022-jp?B?UUNHeGR5UXRnL0dydDJHQzhwdS9zdWNDRjZQb2NJaHR0dnRJSE9PbmZW?=
- =?iso-2022-jp?B?K2hiaU1kOTU0ZkRlQmhFQ2p6MGZwUW4xNjkzbENCbXhhSnJtWU9iWk9J?=
- =?iso-2022-jp?B?amJ5dzkyRG4yS0h3akFSdjczUjNhRFBVRHZsUGRGVFVJSEdxblE3MW9p?=
- =?iso-2022-jp?B?NFhreVFWTmgxSXZsbWZPbnJDd25SUHd5Z0JXY3JiK0RxVEJCbWpGcWls?=
- =?iso-2022-jp?B?UWF3MDVJTER4WllLT0VJQkFZZG5YMmJVRXpZYWJXWUd2WTYrSm9JenlH?=
- =?iso-2022-jp?B?bWppcGVUWG5mU3VoeDg4R0FPTFl1SWdCZGFiMW5tY1dManBBY3l0M3JG?=
- =?iso-2022-jp?B?blMwUS9NZzhuZXYrWVlDQlowWVYvRENFRCs4eWVLdnN5S2NTNmttL2tL?=
- =?iso-2022-jp?B?WXdjY2hRR3NqaDNIQTJsZmNSSTF0SE44bVRVeDQ5SEJXNjE5RUVVa3Vi?=
- =?iso-2022-jp?B?ZzhpUDNzWjdWclBPL204dkh2dnZRZmYraHZZY2huZFo5clUyNXhBM1NY?=
- =?iso-2022-jp?B?dkZHQms4ditQTUtYWWhyM0hLUEd5NVJESnBrQnpYa0tqaHQwTUQwQlNG?=
- =?iso-2022-jp?B?VUlNY1F4eDRMT05aVGk3TUoxMUlYcEhSMzIwUWRDMm9LRzduSzZyYkYz?=
- =?iso-2022-jp?B?c29vR3NjSTRGU3dXT2tyOEZacE5qaW01dDRpNURDZzQ5NHBqT1lDVTNw?=
- =?iso-2022-jp?B?dSt0UHp5UlExMmlaNmxVNTdzT3NTaFZoanZQZHNqSnd5RzV1YXBnNTB3?=
- =?iso-2022-jp?B?NGw3LzJ2TFN6Y1B5OTBIWG9zSDVtb3YzU1lraHdFZEFya2xIWEszWWhp?=
- =?iso-2022-jp?B?bHNqV0s4Z2pad0ViL0hnaG9Kc3BETllMdDhEOWhnajR1a0ZPNFZha1lX?=
- =?iso-2022-jp?B?QlMzYVE4TERJTGxMblQ0OC8rRGp5SVJJcDRMbXpGYkl1ZCtwSzVIT1hz?=
- =?iso-2022-jp?B?TUZMU01YdGRYZ2JYT3dobVV4NWgxc1hjdExDcko4Mk5IcFNoQ1M5TkR4?=
- =?iso-2022-jp?B?TFBtVCs0ejhXTENqck9PUTJ2RkpxNnZhVFpFUlJ0NDFOTEIxTWw1UlZT?=
- =?iso-2022-jp?B?YXRVZ1JSQ0w5VFBTbXg2cFE3Rm9HS1dXTzVXRGM5SHJWRVRqOFcydS9T?=
- =?iso-2022-jp?B?WVVLMGtCWHQ0bjFRMVBhanljejk0TmQyd1lCN01QV1loMXBoSm40ZDlL?=
- =?iso-2022-jp?B?SUxjcHJBYkhMSmRwTHZNSHI1RFBkZlJtTXE5Tk5hakdxdFJ5enhuamJm?=
- =?iso-2022-jp?B?ZFc5K1lUaG5KNW1IRVVISi9BNDhGeTkvTkJvRXdpRUNxeDVpYjFhK3dD?=
- =?iso-2022-jp?B?c0RDU1BhUzNtR2EyckNRN2U1RWxnSUlkYkZYczVZeHI1M2hPNzZWRzdz?=
- =?iso-2022-jp?B?S3pPOHNoK1YxUUFPV3Q3ektvT1JxRVFvbGRtTWdzaFpXVWN3a0hUSHQx?=
- =?iso-2022-jp?B?Sk9IRzcrNGt3S0lrWFBvaHoxMW8zZFArQ2VjNU1kQXF3OUpPMjM3N1BC?=
- =?iso-2022-jp?B?dGlpSDFGUFF3MXJJbGZBVG1rYzZvam01Q3Z6c3FYUENFb29PWkdvL2ll?=
- =?iso-2022-jp?B?ZDhLdjV0d0pkK3UxZE9wUWl2VW90QytQVnJHbHo0SFpRRWwram50dUhN?=
- =?iso-2022-jp?B?RmhseU9TR0doVFpOUkpFWkNyQmJ3cE05VHVuajNwQ0NDZHluRklzVzAv?=
- =?iso-2022-jp?B?aVlUYXNvdGVFbCt3Q0dsVjFNdER0b0dsditEV1Z4WW8rY0FtU0x5d3Er?=
- =?iso-2022-jp?B?MFVBbFZUaEIwQk9nNDRRSUVDU04xQ3hrbGcyVmRtcWZjK0F3REJacnNT?=
- =?iso-2022-jp?B?UzZIamxGRDFLMi9RTXVIQUh2NmI0dzB5RzgrQysyblJKUmtZdzVjTkFn?=
- =?iso-2022-jp?B?TkliaCt5QmFqbDIwR1A4M3llSUdLbVBqb2RzSndnNHJ0VTA0RDNKdDFD?=
- =?iso-2022-jp?B?QWNVK1ZPODFLS3JYcHhSN2g5VWQwU2hsem9NQ2s0MTJKM0c3ZkJKTHVo?=
- =?iso-2022-jp?B?SnlBUnNKdEI4b3JrTWM0bGVQWkhUTVBUemF3aUFLOEl5Q2FiajZIMkR3?=
- =?iso-2022-jp?B?aGtDY0hxYi9JYVNRZkVLeDVTU3VrYnJSNmdMcnZleTBlbFVrT2Y2SnE1?=
- =?iso-2022-jp?B?WmVNem81bU1zUFlzbE5qMGhxMXJqbE14bEV1bndYaHhQZHNOeG1XQmNL?=
- =?iso-2022-jp?B?eExyZWM4ck1hU2d3QnBGeTFhTlJzYVdKRms3aWd3blN0UFBqYUxYSXVr?=
- =?iso-2022-jp?B?R1hzVGk0?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22) by MMZPR04MB729243.eurprd04.prod.outlook.com
+ (2603:10a6:190:32::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Mon, 28 Sep
+ 2026 11:49:02 +0000
+Received: from PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2]) by PA6PR04MB11909.eurprd04.prod.outlook.com
+ ([fe80::a4b:fa4e:7fe7:e6a2%7]) with mapi id 15.21.0451.022; Mon, 28 Sep 2026
+ 11:49:01 +0000
+From: haibo.chen@oss.nxp.com
+Date: Mon, 28 Sep 2026 19:53:11 +0800
+Subject: [PATCH] spi: spi-nxp-fspi: exit stop mode before waiting for DLL
+ lock
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260928-fspi-fix-v1-1-a0f9288cd5c8@nxp.com>
+X-B4-Tracking: v=1; b=H4sIACZVumoC/x2MQQqAIBAAvyJ7bkGXEOsr0SFqt/ZiohCB+Pek4
+ wzDVCiclQvMpkLmR4vesYMbDOzXFk9GPToDWfJ2ooBSkqLoiyLiHXEgCSP0PGXu+l8ta2sfa/W
+ OPVoAAAA=
+X-Change-ID: 20260928-fspi-fix-fff612e82f84
+To: Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
+ Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, michael@walle.cc, 
+ Haibo Chen <haibo.chen@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790596406; l=3875;
+ i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
+ bh=JSyls9Pu9DOkXGyKOHLs3XsvDwVwu/zmwYD7l0g+80k=;
+ b=H52H1DsCt0dV7Lg6r1Sb0vrNXjrAYSC46egGzHu2gM1unspL/wg40Wk8YsmLAOtea8bqj5zoI
+ 7K5kjK+AfMIBZPhe8QuPxNWNJXM8K3xyjwbd5DBQPq72BG/modySPPV
+X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
+ pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
+X-ClientProxiedBy: MA5P287CA0285.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:221::8) To PA6PR04MB11909.eurprd04.prod.outlook.com
+ (2603:10a6:102:51c::22)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA6PR04MB11909:EE_|MMZPR04MB729243:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe3b0435-1462-4f49-2362-08df1d567d44
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|19092799006|1800799024|11063799006|6133799003|10067099003|56012099006|18002099003|18092099006|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	W/LlYwV1F0vAW8Olqe3+IW/1ES/CieMAaFe/npmfVSl/R0/O6j1dmgjX1s6m6g7cytkIcVgWkEk/f8NomfZGCiiu1Sb3N0j8JTsRS+L1trtlV0aMxbJ55PfbHhajTq4NXw1DrM+vzfwOJuONqH7/eX1qKhrO65Mqblulfp+kmfT3vMl51Vip0kUExMM1KCbJy5O3+N4Fy0e86pT8+ZN45z8ULZAH25iJob3LPVm6jZWLzR+guUoZIDhuYWX//iLSSHO+oHLSdQG8SQGli3AWFqw6QericEnOTgETEsEfy2REq7CT1u65tmIz1YHYSlsRZOFCm9xuFLXaw/W1yfV+NgzxVscSiKjZMSV3PK4XAUP2iVDjbUHYtEQaiA9Iz/UtZuAKsK69MLiw0XCmdH1vfKhNLfTkDhdJq5Cdbi5wiEZr/2EhszAXyLXvlv50wPs6dTbeIXN4uX7z+bTxgABP59wvVKORcqJgfq3XgEmM3eDIKMWVyXRJOEuGgnwSPoXOR5bw6DzELsrQ5FkyZ4GJAlFdaGkD6AR9t3GdR4UIBBpUZy37gXRuUf6jq5h7MOdg44NqcXl31XVvz/TA/EfnooZBKGXmP293pl22IdDkGKO9KOlX9I/F3tMmKU3TXK2B6CGdD9wWWL715WHYtAx26dAayry6NeAsJUVOokqnhtE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA6PR04MB11909.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(19092799006)(1800799024)(11063799006)(6133799003)(10067099003)(56012099006)(18002099003)(18092099006)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K1pIVmJ1NGpKWFNXdEd6WHh3aGo2ZHZ6RXJKUTBqNzRVek9Kc0RJYitwVGdU?=
+ =?utf-8?B?VGF1Ui9BN3pEWXA4TWhBZTNKcXMzemRoNHJ0TW5CM055VjUvSkZzN1l0RmJJ?=
+ =?utf-8?B?R1UrZkEvY2ovNkxPS0ZZRjFRQnFvdkFiaEdJT0ZtNHhndmp4dDlDclBVaTZt?=
+ =?utf-8?B?a0VpRTk4WDVJcTAzWGxqVmZuY1ovQmRCZlFGOFdhV0VmRzV6Y2Z6bWdCQk10?=
+ =?utf-8?B?TlR5cTJvQTJRblhSeWlLaHlQVy90STZDbllZVFV0bUpBTkxUZURYRmt0RUFn?=
+ =?utf-8?B?eThmejJCc3VHck9hUEpnaFFTZXlhTUpUWG12OFBmdHNRRHZhUDg1T0t0RU45?=
+ =?utf-8?B?ODlmdkltcE1QbTVGcEJ1NnJwdlI4K3A5SThtcG9XdVBNdkR1QWFRL0ptV2dj?=
+ =?utf-8?B?bUVINXlaYk1ZSDFGdWxGQnJSRzJrMzV1cGR0cGw4Q1BwdWl0QzZGKzFZVnZu?=
+ =?utf-8?B?enA2QTE1SDlVdENzZ0tpdlJocGJaRFB5SWRlQ3BRMm5SbmVIaU9kSmtJUUNj?=
+ =?utf-8?B?SHhqaVN5Vm5vWHFCWW5KWFlyWWVPVUtoa1BxUmV1bVJ5V1JBcWp3K1RsMU93?=
+ =?utf-8?B?Wi8zOFNRV2FKSVVORnJ4cHJyUy9oMDRSazJ4b21XR2hFVVBDUkZkOXRQRUgr?=
+ =?utf-8?B?cEJXd3ZUaFN6QWh6RHlETzFuNzQxWnBqZVBhRUdIajhjVXgraDJ5UlNPYU1P?=
+ =?utf-8?B?WmtXRlNYNGgzNFdjc0RFZUgvZGF2WGR5NEowYzFROXJGSmg2TnZyNy8vSHpF?=
+ =?utf-8?B?QWdGLzUwOVZHOS9kaE9PMzJmVHZGR1lEdHBhb25XbFFaWDZ3c2FCc25DYXFS?=
+ =?utf-8?B?K1RCSXBrTkZQUE1DNUV3dTEybWFQK1VvaGNUZVAzZXdTb0dnVVFlZ0ovZ3Iz?=
+ =?utf-8?B?K041NGM0NGhsN1J4dk1PQ1FOVHg5R2ltUkdKdENUeG5RMGE3UXMwcWJ4ZEZF?=
+ =?utf-8?B?NFAyMEE0Rnh4OHdIRHo4RVhUWW1IZG1ZaTA5U2xnS1l4TXZ4emh0N1ZVT2c3?=
+ =?utf-8?B?RDhyNEZXOGdtVklsYXJCYVhtdFhhRVNSclhRM0NPVlNGSFlvSFRkbzVsU0Zw?=
+ =?utf-8?B?QWVacVR1TGNYNGtVMU0yVnpSQzdEU2gzcmEweFp6S0JCRGVRL3diL2FWY2lE?=
+ =?utf-8?B?ZkJPNFRtS3J3L2poT0xWTDZESGdoQmtwV081WEo5MW9QV2djaTNHd3ByRjVE?=
+ =?utf-8?B?SlBwTGw1OENGM1JlNE53TThmOHpCZlM4a2JGeFJ2SGpjdzBNUUV4T3hKMVo3?=
+ =?utf-8?B?MHcyMzdjK2hSOUpIWlJDN21aSXB3LzR2RnVQRE1jbTRvR3lBR3R3QjA5OUZX?=
+ =?utf-8?B?dlA3dVhZeG5HMVJYTDQ2amJWZlVmeno3TDZpUXFuMnZtRHg2UGN6Zk9waFdo?=
+ =?utf-8?B?b2pDRnl0dm1qUVFLREpuTDVRRDhQK3pFT05WWXYrOEU5L29RbFdXUmMvb0Rr?=
+ =?utf-8?B?bFZyYWxRVHQwUXpCSHRPTkoyUlUxVXBYbDI0cWRsM1kvc001STBGckpCN3By?=
+ =?utf-8?B?Y0dPTkZ5ZjhUTDBwajVMekUzQm9rWVJnQkVqUi91a2RRMVFNM1FVSE1rMGdG?=
+ =?utf-8?B?VWI4T25IWUxMMVFXb2lWTDFiaTBuZk9aYUN5dksrYUlYakVIck9vZmM5UVFy?=
+ =?utf-8?B?MFhCaWFNQWcwNjNPVGlLN1RRQkFZNXZkbnNOdXBlT0V4Y2RpeEJrNkxLeml4?=
+ =?utf-8?B?ODhUYkxVUHh3QlpBRzFuZ3RKUTZTdWdqOFJxVG5qLzhtZlh1OVk4TWZKSC9M?=
+ =?utf-8?B?WDdObDVQRXdJYlRRcjJDWDcvVnQ4S1o3MDhYbkRFSTRMU3VCcnVUQWNESG45?=
+ =?utf-8?B?dE9PVnFhOEl5Njk2UlFvNFh1OTJ0UUN1VGgyWUV5UnFsb1NBZVdlSi9RWk1w?=
+ =?utf-8?B?d2RSVUZkKzlZQ0l4TDRxanhGU1ZrVTgrUkdoTUtleUp3SDJqNUtUSWtSbldF?=
+ =?utf-8?B?ZFlLZXl3MDdJNXFROUQ4bFNrdG1FT3M1dTd0bzRwRDZNL2REWG13bzJlWkZy?=
+ =?utf-8?B?SWxIazVMZ0NUUDB1TTZhWTZDT1lLdkF4REk0cW9nc1hneUZFZTJhaUVvNVpI?=
+ =?utf-8?B?WDR0WkYyRjB0em1vZnd6Z2Y2ZURJd2FpSFRSc2JPUVEybE0yVjduMWt0U1h0?=
+ =?utf-8?B?QTdQcVY1azVRbzkxcy96TDhqa2VXTmtyS28wV1JnT2x6TUNoUUFWam1Qakps?=
+ =?utf-8?B?Vkc2TllCNHpVUURPOTg1WTZZUGFmMTdqQUpHOVhBQnk5QTJ5Smt0MVBHdmNI?=
+ =?utf-8?B?K0x4ckFyWi90b01nbVNLczcxWEJNTkpZRUZ1V1ZSaDA1UkdZNFV1ZXN5cGhL?=
+ =?utf-8?B?NG5KWHgxWXhvaTZhaWxTdEEzdXFoNlppSUxEdGwvVVJ4WDNFeml1OWx2bk9P?=
+ =?utf-8?Q?np7A3a+9C1KNArrIwtokrrokwNIZsyM5C90TX?=
 X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe3b0435-1462-4f49-2362-08df1d567d44
+X-MS-Exchange-CrossTenant-AuthSource: PA6PR04MB11909.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8820.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2055d108-792b-47c7-0af4-08df1d4d286a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2026 10:42:13.7080
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 11:49:01.9040
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s345em3NM4aCNBI1j/bIPYQ8VcharD9JD2C5QHhTM6E8VS0DaK5RDODplzbwQ7X1BwbBu86phjuV9fxgTj+XgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11207
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eNPyOfiO6JKRRN9u29EuUgwo3AqaQb343Y7k79KhM9AQP5KcC/nZEC7aH+glTHU3tXiMfc9URzx99twnkiaa45zmB5h5Fdb24LkCV7xO1lN1pyy0lJX34HSLY4BTXHjK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB729243
 
-> -----Original Message-----
-> From: Bough Chen (OSS) <haibo.chen@oss.nxp.com>
-> Sent: Thursday, September 24, 2026 6:25 PM
-> To: Michael Walle <michael@walle.cc>; Bough Chen (OSS)
-> <haibo.chen@oss.nxp.com>; Han Xu <han.xu@nxp.com>; Yogesh Gaur
-> <yogeshgaur.83@gmail.com>; Mark Brown <broonie@kernel.org>
-> Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-
-> kernel@vger.kernel.org; Bough Chen <haibo.chen@nxp.com>
-> Subject: RE: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
-> reconfiguring MCR0 and DLL
->=20
->=20
-> > -----Original Message-----
-> > From: Michael Walle <michael@walle.cc>
-> > Sent: Thursday, September 24, 2026 6:08 PM
-> > To: Bough Chen (OSS) <haibo.chen@oss.nxp.com>; Han Xu
-> > <han.xu@nxp.com>; Yogesh Gaur <yogeshgaur.83@gmail.com>; Mark
-> Brown
-> > <broonie@kernel.org>
-> > Cc: linux-spi@vger.kernel.org; imx@lists.linux.dev; linux-
-> > kernel@vger.kernel.org; Bough Chen <haibo.chen@nxp.com>
-> > Subject: Re: [PATCH v2 2/3] spi: spi-nxp-fspi: enter stop mode before
-> > reconfiguring MCR0 and DLL
-> >
-> > On Tue Jul 28, 2026 at 12:18 PM CEST, haibo.chen wrote:
-> > > From: Haibo Chen <haibo.chen@nxp.com>
-> > >
-> > > In nxp_fspi_select_mem() the RX sample clock source (MCR0[RXCLKSRC])
-> > > and the DLL control registers (DLLxCR) are reconfigured while the
-> > > FlexSPI module is still enabled. According to the FlexSPI reference
-> > > manual initialization sequence, MCR0 and the DLL control registers
-> > > should be programmed while the module is in stop mode, i.e. with
-> > > MCR0[MDIS] set to 1, and the module re-enabled (MCR0[MDIS] =3D 0)
-> > > afterwards.
-> > >
-> > > Wrap the RX sample clock source selection and the DLL calibration/
-> > > override reconfiguration in a stop-mode window to align with the RM
-> > > and avoid reconfiguring timing-critical registers while the module
-> > > is active.
-> > >
-> > > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> >
-> > This will actually cause the following error on an i.MX 95 19x19 EVK
-> > (imx95-19x19-evk.dts):
-> >
-> >   nxp-fspi 425e0000.spi: DLL lock failed, please fix it!
-> >
-> > Any ideas what causes this? I'm running the latest linux-next kernel.
->=20
-> Hi Michael, thanks for report this issue.
->=20
-> I can reproduce this issue on my side also, will look into it. I'll get b=
-ack to you if
-> I find anything.
+From: Haibo Chen <haibo.chen@nxp.com>
 
-Hi Michael,
+For 8D-8D-8D (octal DTR) mode the FlexSPI samples read data using
+MCR0[RXCLKSRC] = 3 (flash-memory-provided read strobe on the DQS pad),
+which requires the DLL to be locked. Per the i.MX95 Reference Manual
+(FlexSPI chapter, "DLL configuration for sampling"), when the serial
+root clock is above 100 MHz the DLL is enabled (DLLxCR[DLLEN] = 1,
+OVRDEN = 0) and software must then wait for STS2[xREFLOCK] and
+STS2[xSLVLOCK] to be asserted before starting a read or write. This DLL
+lock is relative to the serial root clock.
 
-I find the root cause. There are 2 issues here.
+While the module is in stop mode (MCR0[MDIS] = 1) the AHB and serial
+clocks are gated off internally, so the serial root clock the DLL locks
+against is not running. nxp_fspi_dll_calibration() both programs DLLxCR
+and then polls STS2 for lock. When it runs entirely in stop mode the
+STS2 REF/SLV lock bits never assert (observed as "DLL lock failed" with
+STS2 = 0).
 
-1, for the log:  nxp-fspi 425e0000.spi: DLL lock failed, please fix it!
-    Yes, it is really involved by this patch, For DLL calibration, need to =
-be done when module enable (MCR0[MDIS] =3D 0), otherwise, DLL will not lock=
-.
-    I will do more test on other platforms like imx8ulp/imx8m/imx91.  Will =
-send one patch to fix it.
+The MCR0 bit fields (RXCLKSRC) and the serial root clock rate still have
+to be reconfigured in stop mode, so keep entering stop mode around that.
+Only move the exit from stop mode (clearing MCR0[MDIS]) ahead of the DLL
+calibration/override step, so that the serial root clock is running when
+the DLL is calibrated and STS2 can report lock.
 
-2. for the dump log: WARNING: drivers/spi/spi-nxp-fspi.c:1079 at nxp_fspi_e=
-xec_op+0xd88/0xe3c, CPU#1: kworker/u24:4/64
-    After debug, I find even DLL do not lock in 8D-8D-8D mode, the first tw=
-o command also done successfully, but the third command always trigger the =
-WARN_ON(ret).
-    Here is the command information when I dump the LUT.
-[    1.887237] nxp-fspi 425e0000.spi: CMD[9f9f] lutval[0:879f879f 1:a700b31=
-0 2:00000000 3:00000000], size: 0x00000006
-[    1.897633] nxp-fspi 425e0000.spi: CMD[505] lutval[0:87058705 1:a700b310=
- 2:00000000 3:00000000], size: 0x00000002
-[    1.907950] nxp-fspi 425e0000.spi: CMD[3535] lutval[0:87358735 1:a700b31=
-0 2:00000000 3:00000000], size: 0x00000002
-  =20
-CMD[9f9f] (RDID)=1B$B!"=1B(BCMD[505] (RDSR) can be done normally=1B$B!$=1B(=
-Bonly CMD[3535] (RDSR2)  trigger the timeout.
-the spi-nor on imx95-19x19-evk board is mt35xu512aba, and it do not support=
- RDSR2. I add the following change then issue gone:
+Fixes: b4bde5cfff8e ("spi: spi-nxp-fspi: enter stop mode before reconfiguring MCR0 and DLL")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+---
+ drivers/spi/spi-nxp-fspi.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-s=
-t.c
-index f97f2dead8c2..35bf386bb66a 100644
---- a/drivers/mtd/spi-nor/micron-st.c
-+++ b/drivers/mtd/spi-nor/micron-st.c
-@@ -180,7 +180,8 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor =
-*nor)
-        nor->params->cmd_ext_type =3D SPI_NOR_EXT_REPEAT;
-        nor->params->rdsr_dummy =3D 8;
-        nor->params->rdsr_addr_nbytes =3D 0;
--
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 67d991dd249d283e5a7b777c3ef4a70a9af3f065..66cb58f95fdb1ce5dcd0288bbf0d473de7f9f371 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -898,10 +898,10 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	dev_dbg(f->dev, "Target device [CS:%x] selected\n", spi_get_chipselect(spi, 0));
+ 
+ 	/*
+-	 * Per the FlexSPI reference manual (initialization sequence), MCR0 and
+-	 * the DLL control registers should be configured while the module is in
+-	 * stop mode (MCR0[MDIS] = 1). Enter stop mode before reconfiguring the
+-	 * RX sample clock source and the DLL, then exit stop mode afterwards.
++	 * Per the FlexSPI reference manual (initialization sequence), MCR0
++	 * should be configured while the module is in stop mode (MCR0[MDIS] = 1).
++	 * Enter stop mode before reconfiguring the RX sample clock source, then
++	 * exit stop mode afterwards.
+ 	 */
+ 	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
+ 	fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+@@ -936,6 +936,16 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * Exit stop mode before running the DLL calibration. The DLL
++	 * reference clock is derived from the module clock domain, which is
++	 * gated while MCR0[MDIS] = 1. Calibrating the DLL in stop mode leaves
++	 * the STS2 lock bits stuck at 0 (the DLL never runs), so clear MDIS
++	 * first and let the module and reference clock run.
++	 */
++	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
++	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
 +
-+       nor->params->opcodes.read_sr2 =3D 0;
-        /*
-         * The BFPT quad enable field is set to a reserved value so the qua=
-d
-         * enable function is ignored by spi_nor_parse_bfpt(). Make sure we
+ 	/*
+ 	 * If clock rate > 100MHz, then switch from DLL override mode to
+ 	 * DLL calibration mode.
+@@ -945,10 +955,6 @@ static int nxp_fspi_select_mem(struct nxp_fspi *f, struct spi_device *spi,
+ 	else
+ 		nxp_fspi_dll_override(f);
+ 
+-	/* Exit stop mode now that MCR0 and the DLL have been reconfigured. */
+-	reg = fspi_readl(f, f->iobase + FSPI_MCR0);
+-	fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
+-
+ 	f->pre_op_rate = op->max_freq;
+ 
+ 	f->selected = spi_get_chipselect(spi, 0);
 
-This is involved by commit 63489002d397 ("mtd: spi-nor: Refactor Read Statu=
-s/Write Status support"), seems not only micron-st is impacted, I will find=
- a correct method and send patch to fix it.
+---
+base-commit: ba52b770f89bd2f3771b98edb92c4fde68ca8cc4
+change-id: 20260928-fspi-fix-fff612e82f84
 
-Regards
-Haibo Chen
-
-
->=20
-> Regards
-> Haibo Chen
-> >
-> > -michael
-> >
-> > > ---
-> > >  drivers/spi/spi-nxp-fspi.c | 14 ++++++++++++++
-> > >  1 file changed, 14 insertions(+)
-> > >
-> > > diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-> > > index
-> > >
-> >
-> 6de6d432cdcb2ee383a02d72f20000045903e176..a426b8d92193a4e303f4
-> > 11cd17c1
-> > > 6cb31c3f3873 100644
-> > > --- a/drivers/spi/spi-nxp-fspi.c
-> > > +++ b/drivers/spi/spi-nxp-fspi.c
-> > > @@ -867,6 +867,7 @@ static void nxp_fspi_select_mem(struct nxp_fspi
-> > > *f,
-> > struct spi_device *spi,
-> > >     unsigned long rate =3D op->max_freq;
-> > >     int ret;
-> > >     uint64_t size_kb;
-> > > +   u32 reg;
-> > >
-> > >     /*
-> > >      * Return when following condition all meet, @@ -896,6 +897,15
-> > > @@ static void nxp_fspi_select_mem(struct nxp_fspi *f, struct
-> > > spi_device *spi,
-> > >
-> > >     dev_dbg(f->dev, "Target device [CS:%x] selected\n",
-> > > spi_get_chipselect(spi, 0));
-> > >
-> > > +   /*
-> > > +    * Per the FlexSPI reference manual (initialization sequence), MC=
-R0 and
-> > > +    * the DLL control registers should be configured while the modul=
-e is in
-> > > +    * stop mode (MCR0[MDIS] =3D 1). Enter stop mode before
-> > reconfiguring the
-> > > +    * RX sample clock source and the DLL, then exit stop mode
-> > afterwards.
-> > > +    */
-> > > +   reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
-> > > +   fspi_writel(f, reg | FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-> > > +
-> > >     nxp_fspi_select_rx_sample_clk_source(f, op_is_dtr);
-> > >     rate =3D min(f->max_rate, op->max_freq);
-> > >
-> > > @@ -928,6 +938,10 @@ static void nxp_fspi_select_mem(struct nxp_fspi
-> > > *f,
-> > struct spi_device *spi,
-> > >     else
-> > >             nxp_fspi_dll_override(f);
-> > >
-> > > +   /* Exit stop mode now that MCR0 and the DLL have been
-> > reconfigured. */
-> > > +   reg =3D fspi_readl(f, f->iobase + FSPI_MCR0);
-> > > +   fspi_writel(f, reg & ~FSPI_MCR0_MDIS, f->iobase + FSPI_MCR0);
-> > > +
-> > >     f->pre_op_rate =3D op->max_freq;
-> > >
-> > >     f->selected =3D spi_get_chipselect(spi, 0);
->=20
+Best regards,
+-- 
+Haibo Chen <haibo.chen@nxp.com>
 

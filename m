@@ -1,92 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4868E3D9DAC;
-	Mon, 28 Sep 2026 13:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B654CA768;
+	Mon, 28 Sep 2026 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790600415; cv=none; b=E+ppWebzkiqvzJttTz86KFiV05e5imhqdYwRtubUd3d6jy7u+EAsqMl7TPGOqA43CnJzcuyeXI0Ubec3tPRwzxjdW/j9+b2gGe5LOH9UG0yg5kwgEVc7+VJyi8jVdfvWJMPP1fuQ+/i9xmUXRypdrDHUrpyafbA/f/Sq7RoYedQ=
+	t=1790602948; cv=none; b=J15mBjypS0M0m/O/6V0LVWYRrU14q5MpAmacD+l0jSK86Ml5+GMqouQItUx7QZ62FhsZX7lCm9W73lxUOQV478m9BDAQAqjNsEi81RrnNHYjXSu96fCnHf2MVilcnNFxWTajU4MKaET6Bf19L5XM1UNV06z0w3PdwjJqCgcr3mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790600415; c=relaxed/simple;
-	bh=l/HPGKTm7HZ1KJE7OckzDeL7ku9p0tV9zaTdTNuKpKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iQ/6METmKz9bS/n9LyYxfTpaY7JXqEa3zNZhzv46Tk64Moajmyc5sXgrd5iGpmZYewtLvt87CAk9LRZ5sboF3JiTYUUVMH04O25scuZPsyO3wJmfEXz+Romi7rBJq4Koa4/An8xDflpSED8k2xHvzObDTOqwXhnSYEATkuAb82Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224A01F00893;
-	Mon, 28 Sep 2026 13:00:09 +0000 (UTC)
-Message-ID: <b9a686cf-0d28-4feb-b971-f1bf2264964f@linux-m68k.org>
-Date: Mon, 28 Sep 2026 22:59:52 +1000
+	s=arc-20240116; t=1790602948; c=relaxed/simple;
+	bh=aeGCqMUDP3oNAAQc9bTywwvL6D83v18n4o79xTDcXzs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Gz9CntQcoIpusoc6+l+z4/fdfjzRnmT7F19F02OfXZgAUUJn08f93bpyRK4s/BSkhkCgoNy024qqVrlZ89iPefptNPROMrzOovmlEuidzFxYNZY8K0b76LWtlGwYMo5L+Er04jWLlQEz6REJ+2lpnmJy7JWakhy+J9Q4hZVqe+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=clZ/kzEw; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="clZ/kzEw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C821F000FF;
+	Mon, 28 Sep 2026 13:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790602947;
+	bh=JdEW84ERB+bc3D3EIHSALQure5xXKlxtujZk9wWEbfo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=clZ/kzEwbE/b8TLTTq1RIKUACRkpNgUzHdesSwD1jR7ERrvw9Hs0EhmXWMDqPjW44
+	 sF6LTS4klrqthuoPDhY6VQd+tonKRpXDpAARa7meXQwBq8zUAINscUgLXaID+aujAX
+	 JSPJV7JscCfcq3Q9bdvqrQDnLD2R53NmmZexTbUXVxLWTQJFKCbIhhezxmVmDNu07t
+	 vfXCRcbjAuTc9sqYgWFONiGi548zZypDmpFwECiwCQagX++m97+8VvZy/KAoUNcybd
+	 ia4788TBNY1nagxsCFwMGuysrbqzvfR4CrBLwwUOiVN7I2YLOwQ9Tqq6SA08l7OxeN
+	 OzP20ZaR8c6AQ==
+From: Mark Brown <broonie@kernel.org>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
+ linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260927-qpic-snand-drop-ecceng_to_qspi-v1-1-993e9ec1c2d4@gmail.com>
+References: <20260927-qpic-snand-drop-ecceng_to_qspi-v1-1-993e9ec1c2d4@gmail.com>
+Subject: Re: [PATCH] spi: spi-qpic-snand: drop ecceng_to_qspi() macro
+Message-Id: <179059873581.139547.13768185687130659285.b4-ty@b4>
+Date: Mon, 28 Sep 2026 13:32:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <42ad1525-fceb-43d6-aa03-d17e844a9ad9@linux-m68k.org>
- <eb987eb9-f368-4d28-bdd0-c289c3039c3b@lunn.ch>
- <46246a5b-3e95-4ecb-bc52-e374dc136514@linux-m68k.org>
- <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Content-Language: en-US
-From: Greg Ungerer <gerg@linux-m68k.org>
-In-Reply-To: <fe8a632a-80a8-45da-ba64-31158af7c987@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1109; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=aeGCqMUDP3oNAAQc9bTywwvL6D83v18n4o79xTDcXzs=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqum6+erYzbYKe7AQ3v5A6jaiPJqYRXbn5HLr+Y
+ Sp1qJ/m66OJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCarpuvgAKCRAk1otyXVSH
+ 0LnsB/4gL5GTZlU+lgkraiysmj1vzCX+8Jn4f5GPc2VxtrLfpIX6Vy694sz0Q24E+df0gqCCHEk
+ OWEaaugUhzotcfkadWjJzKzS23TfOl/lVjUQplY00hE+tlo603hbyRVCMF92hXe++WX4Bucs+ck
+ uSNwM3rUGTDC+LLFZCl1twpO52sPzYi2LNEW6Rp39W+dUAvtyah66ER5MDf4ytpFnnAbqKhqBsl
+ hbh+lLnUTHTfQ2ewpeNESrLk6QLeaIXiLukptSkrxxrifo0xkaTI9Ef14MtL3JcujEq4TlUjg93
+ yoFZ0wMD9T9zCr0JYu83mWzLuT0RGLucWkyXXVVcDwUMhJg6
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+On Sun, 27 Sep 2026 16:11:22 +0200, Gabor Juhos wrote:
+> spi: spi-qpic-snand: drop ecceng_to_qspi() macro
 
-On 24/9/26 00:15, Andrew Lunn wrote:
->> The driver will always need to support big and little endian hardware, so I
->> am not sure how to avoid some abstraction like this.
-> 
-> I was wondering if there is a linux standard set of macros which is
-> supposed to handle this big/little difference, the macro knows the
-> architecture and does the correct thing?
+Applied to
 
-There is regmap, but that is way more than just access macros.
-At least one driver shared across big and little endian architectures
-does use that - the freescale dspi driver (drivers/spi/spi-fsl-dspi.c).
-There is probably others.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-If the issue is more to do with code churn then a simpler approach here
-might be to just essentially keep the same work around but move it locally
-into fec.h. Something like the patch below.
+Thanks!
 
-This could be cleaned up to use ioread32be()/iowrite32be() after the final
-readl()/writel() changes have been applied.
+[1/1] spi: spi-qpic-snand: drop ecceng_to_qspi() macro
+      https://git.kernel.org/broonie/spi/c/7f7400bd60c3
 
-Regards
-Greg
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 7176803146f3..317e4e44d313 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -701,5 +701,16 @@ int fec_ptp_set(struct net_device *ndev, struct kernel_hwtstamp_config *config,
- 		struct netlink_ext_ack *extack);
- void fec_ptp_get(struct net_device *ndev, struct kernel_hwtstamp_config *config);
- 
-+/*
-+ * ColdFire SoC peripheral blocks are big-endian, so use the raw IO access
-+ * functions for them to access in correct byte order.
-+ */
-+#ifdef CONFIG_COLDFIRE
-+#undef readl
-+#define readl __raw_readl
-+#undef writel
-+#define writel __raw_writel
-+#endif
-+
- /****************************************************************************/
- #endif /* FEC_H */
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

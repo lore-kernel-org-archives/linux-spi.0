@@ -1,119 +1,84 @@
-Received: from spam01.horizon.auto (spam01.horizon.auto [42.62.85.75])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A113E3178
-	for <linux-spi@vger.kernel.org>; Mon, 28 Sep 2026 05:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D02E2F7F02
+	for <linux-spi@vger.kernel.org>; Mon, 28 Sep 2026 08:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790574686; cv=none; b=Y4NeCcipvbOEQD9wkKpaxgDvFCFmWaehYAb65Qg2S+IYjGbaFH0W6RbiFRsVOvl0Kby9XIFKL81ZZN9j2JD7tmFZKQALHALTDrqdcplFhoSiG06pbBwmOyUdTmlGHKwRlhnHqpw7KYmWE/RirmZR4VNtsAb/w5Q8VgX/Kon5cuQ=
+	t=1790584292; cv=none; b=KAfoH59csSOdwpvTLQvsKUTJv6s4TUxILcLpVtL6nTHIqQ1vhlIk0G9c9mtUllk0xveygu7SKI4wjrCh64SrtH6wHlCqimF7xZBNr/pZjfX6ae4ZzZdjzfXMDi63bHtPB4MglH5M9j14ndWFzHJPSdWhpS30OgnHebzsIcjujUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790574686; c=relaxed/simple;
-	bh=hRlz6w3/VqfPNmsmwuYQe/GUMBab926L4DYFAD8ftGY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j6sgQSuPRq2/3z5NbSKT2B0NpyxfkPBgdknvMHgctc03RQg9WQxdWfDjbzhbxB+7dS4KoQWXafvMA9npaDevKaBArU6bNfE3aTbVWbU0JqkNIXZao0Nym9H7/ZbeFzDq05wQhpfrAKfzkaUHFyZDqzUmZtdSuagTkYGZ8v2dgiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=maD3LBli; arc=none smtp.client-ip=42.62.85.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
+	s=arc-20240116; t=1790584292; c=relaxed/simple;
+	bh=MuqpoHduVduL/y0wnBWdGHkHHicM70MFPxT5bKmE1Us=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kzHuzyOUXyX4ULr/d5lFV8JJLbQLMOKDTCbyY5Y1m/nFmBQPyz0YzyYBpWPtgC1RacKVu9B7OFX/35RUXB5XhKYQ4x7h59ynJ3yW4yi80MiMsHOLS4wPrXxqkHIKkozeAd5uWQLAi9vkUumUJZPS1CrnexbsE/+C0iiLyIA1xlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdOItFxA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="maD3LBli"
-Received: from spam01.horizon.auto ([10.9.15.211])
-	by spam01.horizon.auto with ESMTPS id 68S5oAf0090129
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
-	Mon, 28 Sep 2026 13:50:10 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from server227.horizon.auto (10.9.0.252) by robotics002.hobot.cc
- (10.9.15.211) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.8; Mon, 28 Sep
- 2026 13:50:10 +0800
-From: Fei Xie <fei.xie@horizon.auto>
-To: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Miquel Raynal
-	<miquel.raynal@bootlin.com>
-CC: Fei Xie <fei.xie@horizon.auto>, Mark Brown <broonie@kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>
-Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for NAND and NOR
-Date: Mon, 28 Sep 2026 13:50:05 +0800
-Message-ID: <20260928055005.3987624-1-fei.xie@horizon.auto>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <arOwdePAmoghlakj@nsa>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto> <arOwdePAmoghlakj@nsa>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdOItFxA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E89B1F008A3
+	for <linux-spi@vger.kernel.org>; Mon, 28 Sep 2026 08:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790584291;
+	bh=MuqpoHduVduL/y0wnBWdGHkHHicM70MFPxT5bKmE1Us=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc;
+	b=WdOItFxAVAnzGluXvaDDPCqN97XLfPMl6A4YDyzTSNHzz1xZ0O9nipQg6bqWldVC/
+	 bL5P14/A+KpZRX6/6d7cfBu+8IQFHbklBnqpXAhUhYWlJ4eIq3TLtRtOeuTktBrmdN
+	 aFOKcRw4xro1MwdgAj8WWPyzfjwtc6k87zPYO3UJOKiEYK4kNkcaiBMTIitBS5Fut1
+	 NebZzxCskzK8/PUepB1K4qmKLNbteeJzIedfndeLsC2nKSc7m9PkIj0IMaCwAs9yVU
+	 Ta2Pu0+eLOSVAFCdkb180/qey6U3G3M3sTybDecgX7XFbT4p0f3+BSR5cvMZ1Lr4Vq
+	 z8fkqXxbr90Lw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b8f69a0af6so788287e87.1
+        for <linux-spi@vger.kernel.org>; Mon, 28 Sep 2026 01:31:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBykSWpi4M1IGuTB3NT6LS3aGj4YMMs0VyCL3I3fwEvxadUWQspWcLZ3JM/V5ZE/xB5PhL261J8R4C4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+QjR6dNQyZo2FYg6IDwKusdcQ/5q8LUs18XwVu2HeDarfGLNc
+	cf4fksGaDdtTIn7Od0c1OySoZeEO6ojGX8LBAAY7aIj0AC+h0IxV631XuZ6zQ9GAqOpM2KAgNuV
+	hrm6TUtZCqDHTzjYxtyTrUtBjXAgpw3LBXPnJpn1qMQ==
+X-Received: by 2002:a05:6512:3046:b0:5b8:c311:88e8 with SMTP id
+ 2adb3069b0e04-5b8df1e6cf2mr3720055e87.26.1790584289662; Mon, 28 Sep 2026
+ 01:31:29 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 28 Sep 2026 01:31:28 -0700
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 28 Sep 2026 01:31:28 -0700
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260925193008.127314-1-2000.costalucas@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: exchange001.hobot.cc (10.9.15.110) To robotics002.hobot.cc
- (10.9.15.211)
-X-DKIM-Results: [10.9.15.211]; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:spam01.horizon.auto 68S5oAf0090129
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horizon.auto;
-	s=auto; t=1790574614;
-	bh=5Hoqqmkb0npLMGhnM+q6H7DxLsjwFU5C3AZVJPESqsk=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=maD3LBlizP14NBSrWGWQr49QsMF7TzOayZW3CuQvoQoPJIXX6aJOJaQCfhuIDDexG
-	 VpEPCAWFCaODxySYaohdtgCo/zGjD2db2gUp8CeBoFdZmGrwhuqh0ph2m0FgpVSkiM
-	 Xjm/zJwqgBD3spfzjUsn8b2KC+9vWvs0+2G5vgKxTZwHSNknteSXEWu3OLnHUUZRzk
-	 9xCvI4qZ+PoZgJRUuD3Mw73ZY9GbMfZndeLPgI/ot3GHYJYI7OWElhBe1PUyXeviMH
-	 I6BzpmVKDhaxXGC2Ej3apvknmV1idV8tQFtZkjhGq0iD1xW0vdI4VqTPjGCXCj5sqQ
-	 CqgFgcANhhaDQ==
+References: <20260923184450.135601-1-2000.costalucas@gmail.com> <20260925193008.127314-1-2000.costalucas@gmail.com>
+Date: Mon, 28 Sep 2026 01:31:28 -0700
+X-Gmail-Original-Message-ID: <CAMRc=Me3iGe9bxAM2Ph=kBU8PAvRZxq16NHk3FSKsp3EafhbdQ@mail.gmail.com>
+X-Gm-Features: AclHuK80sCVvVAPH0hKzq8SMRPB_tS6-QZBjVGjDspI-Uie2oIgZKXJbO_KiA9A
+Message-ID: <CAMRc=Me3iGe9bxAM2Ph=kBU8PAvRZxq16NHk3FSKsp3EafhbdQ@mail.gmail.com>
+Subject: Re: [PATCH v2] spi: bcm2835: fix device_node reference leak in bcm2835_spi_setup()
+To: Lucas Costa <2000.costalucas@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-spi@vger.kernel.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Mark Brown <broonie@kernel.org>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Nuno, Miquel,
+On Fri, 25 Sep 2026 21:30:08 +0200, Lucas Costa
+<2000.costalucas@gmail.com> said:
+> of_find_compatible_node() returns a device_node with its reference count
+> incremented, but bcm2835_spi_setup() only uses the return value to test
+> for a matching node in the loop and never releases it.
+>
+> Declare the node with a scope-based __free(device_node) cleanup so the
+> reference is dropped automatically when leaving the loop body, matching
+> the existing __free(kfree) usage in the same function.
+>
+> Fixes: e19c1272c80a ("spi: bcm2835: Restore native CS probing when pinctrl-bcm2835 is absent")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lucas Costa <2000.costalucas@gmail.com>
+> ---
 
-Thanks for asking for benchmarks. I backported the 32/64-bit STIG SDMA
-transfer changes from the patch Nuno pointed to [1] to our vendor 6.1
-kernel, and compared that STIG path against the ACMD SPI NAND path from
-this RFC. I have not applied Nuno's separate ACMD read implementation;
-the figures below are for the implementation in this RFC.
+As Mark said: don't send new versions in response to older versions.
 
-The device is a GD5F4GM8RE SPI NAND (2 KiB pages, 128 KiB eraseblocks)
-on a Horizon J6B board, running at 80 MHz in quad SDR mode. Both paths
-used the same board PHY configuration. STIG needed one additional dummy
-clock for the EBh read-cache command on this board to return correct
-data at 80 MHz. This is a local test adjustment, not part of the posted
-RFC or [1]; I excluded the incorrect STIG reads from the comparison.
+In any case:
 
-I ran flash_speed -c 5 -d /dev/mtd18 three times with each mode. The
-numbers below are the arithmetic means, in KiB/s:
-
-                               STIG      ACMD PIO
-  eraseblock write speed      3685          3555
-  eraseblock read speed      12468         14222
-  page write speed            3671          3510
-  page read speed            11931         13716
-  erase speed                40000         37647
-
-For a separate sequential-read test, I erased and programmed the first
-64 MiB with known random data, then checked that each mode read back
-the complete area byte-for-byte. Both SHA-256 hashes matched the source;
-the reported ECC failure counts were zero. I then ran:
-
-  /var/busybox/time -f 'real=%e user=%U sys=%S cpu=%P' \
-    dd if=/dev/mtd18 of=/dev/null bs=1M count=64
-
-                          STIG              ACMD PIO
-  elapsed (three runs)    5.30/5.28/5.26 s  4.66/4.65/4.65 s
-  mean throughput         12.12 MiB/s       13.75 MiB/s
-  mean system time        3.55 s            1.06 s
-  process CPU usage       67%               22%
-
-On this NAND, ACMD improves the 64 MiB read throughput by about 13.5%
-and reduces the reading process's CPU usage by 45 percentage points.
-The flash_speed results show a similar gain for reads, including
-single-page reads. I do not see a program or erase throughput benefit:
-ACMD is slightly slower for both in this setup. These are SPI NAND
-results only; I have not benchmarked the NOR path on this board.
-
-This is hardware validation of a 6.1 backport, not a claim that the RFC
-was tested on a current upstream kernel. I agree the read and CPU gains
-need to be weighed against the controller/MTD layering concerns raised
-in review.
-
-Thanks,
-Fei
-
-[1] https://lore.kernel.org/linux-spi/178056886874.53724.4850286391745939707.b4-ty@b4/
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>

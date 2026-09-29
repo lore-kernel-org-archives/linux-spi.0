@@ -1,93 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8815111AE;
-	Tue, 29 Sep 2026 12:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB9F524AF5;
+	Tue, 29 Sep 2026 12:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790685430; cv=none; b=pQgOS3SZMpn4FfHx3jl1o0WhgT5ELJ2qtVgBqByJMJK+rrscJtqJu513JZlosz7MNZQuQIP7boU22S2IJT7aXuWBU34X8StGYgUhMx1eMeQB21utcMpdiAe215BQWWGF2X6xqki/d3o2pdGzcRo2Ub8Bs6+aIZ1bcyuKS6wzlWc=
+	t=1790685493; cv=none; b=Etn1bAgEqd4m55ve2wji+6OVK1C50SnAMnRS/8hK6LNkoVeifovzvA+bjiFwo73aTCSV00vgLKPkKM+BHtOfMvdw1eMvQcxsKnYrx0yjFY95VjYjqkTWwYhu7obZpor5a010C3HTX+fQctCkVpdlBHyQUp4uekjayVjXTcqILwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790685430; c=relaxed/simple;
-	bh=+r26wpA4P8dpYkJJg5U2bzHvUaibn2zioBBwg1ndoug=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=iOUnxfTFrDs9hjCk+M9RGzx2uIcKPdzX2BQ5+lcf+PawdwR+G8Blner90O2UCnV5RwVHy+8g3lyKIxFaSJvrglNXDJuKISdzfKllSQooCvEAvxWxdtgN+uHbcvTpEPVFqEsChuQIjTO2OpiAmrqdyX1bBx0gPMdLHb7vYUBLwD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SI5hCyBx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790685493; c=relaxed/simple;
+	bh=Kpc3sC/4TREv49W5nqI9ecz1Fy8d/aDCXs5E5pAqF/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PT1Zu5Nxea/83xvdDUhNvLLSlmk54ErA9lbjuWOcK3z4YRC8XEJt3PtL+m1Wi59+ttsJpF/CToRHxyrcg4cMaoFsvAlx3kdN9jV56NP2i9ZCy8ruw1kwh9XGuoGEQ4zk4mkVMY7VOo7GqnUnPd+crdy//EJX5++Le1Ydn5vrWsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEi+OM49; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SI5hCyBx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9760B1F000FF;
-	Tue, 29 Sep 2026 12:37:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEi+OM49"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E301F000FF;
+	Tue, 29 Sep 2026 12:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790685429;
-	bh=0QGuLOj+qfCT9MeLPF6Bs9UcGV8S4px66Fx6N5h4OwU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=SI5hCyBxXD75oO5/nJotFR6aqc2H3Vld8OAQHT0WrxlaJEmRlBU7FLF3Afe9h03Sa
-	 e7LmhI8soyJd/YETyJvMirpH0/Yv7NbVESVaciPWtiDIy8ZMBbK7wcnR0PP4y3ItEt
-	 vCuZd8EQ/n72URmBMWbLz10KWiZCFr3K/1b+51VTkExkexnUhseDAFWWrLJHqqBO1L
-	 fSomSTpvMqWwf4VaOgrzYj8gaplAQ8mDzE8wkK/oTggBCLh6+i2lqxSRxPXVuKCGxv
-	 qHtR8H/pL6tRWXVPuwXG6BTgjbR7qdl3Ne56rFgHm5FeQ28Jf7J/mz/7elv08X/gM3
-	 IjdpdGwksMgtg==
-From: Mark Brown <broonie@kernel.org>
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
- linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260929-qpic-snand-drop-ecc_buf_cfg-v1-1-c9de93142815@gmail.com>
-References: <20260929-qpic-snand-drop-ecc_buf_cfg-v1-1-c9de93142815@gmail.com>
-Subject: Re: [PATCH] spi: spi-qpic-snand: remove 'ecc_buf_cfg' member of
- struct 'qpic_ecc'
-Message-Id: <179068160040.115027.11339777816056138235.b4-ty@b4>
-Date: Tue, 29 Sep 2026 12:33:20 +0100
+	s=k20260515; t=1790685491;
+	bh=HsjWXbih28MXj0uDK4HiYVRVFUWcSXViXx0P7LNF0kE=;
+	h=From:To:Cc:Subject:Date;
+	b=CEi+OM49YKHqBmg4MFzIgT+DGEzxA8x9q7VwMbkHtdSqUKo/NttOTOHfCeIk9U6zQ
+	 klDvMz9Dd1RPtla6+a2N1Ts+HYXQ+uE1nwE1MRT/k5MjeR3xWzVVlGpkrG7J0dhrcq
+	 EgYiJJLvrOJKirFK5mHyWvlEVciEBO2Knc3saBfUx1RQavURHFyDzZ0/nca9lIKYLq
+	 eRq6J/jf/VF39kHK9ytldM8YGLXzrzobEnjDolTIw+eCyuUAtgU7RzkuXiDksdw3rg
+	 y3U4FC+B7nRTSGZ2LE5hVQiEN2F73DDOGlyic8HRCADy51kwV/kaR06Ub0cgpr2gfu
+	 ohRV5GuTU8cHA==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Joseph Steel <recv.jo@gmail.com>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/5] spi: dw: use threaded interrupt
+Date: Tue, 29 Sep 2026 20:18:12 +0800
+Message-ID: <20260929121817.20896-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1151; i=broonie@kernel.org;
- h=from:subject:message-id; bh=+r26wpA4P8dpYkJJg5U2bzHvUaibn2zioBBwg1ndoug=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqu7DxcVUd8Gt+fX+EAAKOxEC/rwVnAnwsjuCgo
- zGZyxycIZqJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaruw8QAKCRAk1otyXVSH
- 0KP7B/9UrVJTPvmWOsMdy6fn6IjljnT+NNlr6OUWX/Yvq4ewVOnfqOpbX9NbEXeDX1S5VthSd4v
- rv+Ay4/jObW03uaxR51RuRYhdDKAOnfw13eJhWTJp+cnQ6J8rsfueckkbQ0lpq92baq1eDezjRa
- m3uphKoAUyxzo3uGMZhVPZqwZgCZlWOeuF4C7WzUT6NBEbWhU8eKWikfdzvqmxOZ4vKcUAzGryg
- XsLFbeGer5z6C1Tebh6plCVqclagKI1F9kjZ3s1zEsZGjUL50qau7Hhy141oJMk/n00MTxC09c/
- nLarhD5SnbvsfdU3ya+CaD/pLEhQSEaW9a74Riyomwh2ju3Z
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Tue, 29 Sep 2026 13:04:00 +0200, Gabor Juhos wrote:
-> spi: spi-qpic-snand: remove 'ecc_buf_cfg' member of struct 'qpic_ecc'
+To avoid blocking for an excessive amount of time, eventually impacting
+on system responsiveness, hard interrupt handlers should finish
+executing in as little time as possible.
 
-Applied to
+Use threaded interrupt and move the SPI transfer handling to an
+interrupt thread when non-native CS and host only.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+After that, since the dw_reader() and dw_writer() are called in
+threaded ISR now, so we can delay the unmasking interrupts until no
+rx and tx action is taken, thus reduce the interrupt numbers further.
 
-Thanks!
+Tested with below two cmds
+./spidev_test -D /dev/spidev1.3 -s 30000000 -S 327680 -I 1
 
-[1/1] spi: spi-qpic-snand: remove 'ecc_buf_cfg' member of struct 'qpic_ecc'
-      https://git.kernel.org/broonie/spi/c/1f07c6fecb38
+./spidev_test -D /dev/spidev1.3 -s 30000000 -S 327680 -I 1000
+./rtla timerlat top -q -k -P f:95
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+The first cmd is to check the interrupt numbers optmizaion result, the
+2nd cmd group is to check the threaded interrupt improvement.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Before the patch:
+each 320KB spi spidev_test transfer triggers 33118 interrupts
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+spidev_test reports ~22090 kbps
+and rtla reports:
+                                     Timer Latency
+  0 00:00:37   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+  0 #9958      |        1         0        67    103394 |        6         4      2198    105031
+  1 #36902     |        1         0         1        18 |        5         4         5        29
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+After the patch:
+each 320KB spi spidev_test transfer only triggers 1 interrupts
+spidev_test reports ~23520 kbps
+and now rtla reports:
+                                    Timer Latency
+  0 00:00:58   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+  0 #58362     |        1         0         0        29 |        6         3         4        56
+  1 #58363     |        1         0         1        23 |        6         4         5        68
 
-Thanks,
-Mark
+In summary:
+before the patch	after the patch
+33118 interrutps	1 interrupts		reduced by 33117 times!
+103394 us max latency	29 us max latency	reduced by 3564 times!
+22090 kbps rate		23520 kbps rate		improved by 6.5%
+
+Since v3:
+  - If native cs, don't use threaded interrupt
+  - do one round of FIFO in the hardirq
+  - add cond_resched in dw_spi_irq_thread_fn
+
+Since v2:
+  - rebase against latest version
+  - remove the "spi: dw: use DW_SPI_INT_MASK instead of hardcoded 0xff"
+  - add three more patches to clean up irq code introduced by recent "enhanced
+    spi" support
+  - Don't use threaded interrupt for target mode and the enhanced spi
+
+Since v1:
+  - rebase against latest version
+  - drop two patches which have been merged
+  - correct some performance numbers
+  - don't move request irq code block so no changes for err handling code path
+  - move spi_finalize_current_transfer to the end of threaded irq fn
+  - don't rely on irq status in threaded fn, but try rx and tx as much
+    as possible in the loop
+
+
+Jisheng Zhang (5):
+  spi: dw: use DW_SPI_ISR directly
+  spi: dw: remove useless dws->transfer_handler check
+  spi: dw: remove duplicated "!rx_len && !tx_len" handling from
+    dw_spi_irq
+  spi: dw: restore previous irq handling behavior when !ctlr->cur_msg
+  spi: dw: use threaded interrupt and optimize the threaded ISR
+
+ drivers/spi/spi-dw-core.c | 78 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 64 insertions(+), 14 deletions(-)
+
+-- 
+2.53.0
 

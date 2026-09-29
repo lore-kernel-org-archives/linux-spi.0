@@ -1,208 +1,163 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.2])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013002.outbound.protection.outlook.com [40.107.162.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EEE49C4C4;
-	Tue, 29 Sep 2026 17:01:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16EF3EC810;
+	Tue, 29 Sep 2026 19:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790701281; cv=pass; b=MESb6fUmCdV/7gdVro+gRAcWxPFe5hjiTEH5UvexmURqSr5usTdxzqGHrCiPlUxXxYJh4cDtFW5HAa0/O1VHuTNtwJ8jkdo/cQW4KYUB3SxX/Y2lPfG5Nv7puqDO8tN59NQQc4uVeVzvp7X3GVuSLAb4P58jPSRxPg/6bO1/8SE=
+	t=1790708795; cv=fail; b=h7Cqp/w6H/zC4bPje5T+sf79cTUit+vhJ5oHww+OSbmBbjRs+Ptc2rM7IqkUEraExrHtHDKMxwhRaomXEAptrWMgohx1fxePXL/YY3X6XiHloUCDO57niMpIkeG20RJ/c3qPkjORokR6nKvGA1jDsOmld1eWVE7HWQNk+1kbIZA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790701281; c=relaxed/simple;
-	bh=NEO6eN6wS0lPN8V/79gLlvdQ8qhVcM1fQpGV/gBb6rU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kWURECP5NID/Sqrf5fRqhkQ2zbYuX9oMbrBxm8FEpGd+Nvu9RMbXCcZquEoxf6BwtyF6LzhOZPj66fQUiTBqlUBx+eSi72r1wCmOsCdgTADvdJDJlD9onKiW1zsTVIThXy5VH/D05E6lslW/k/zYHZ0abA54nFbm4oqs9YJ8DFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=P0ZLNd9/; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=C0OvlziK; arc=pass smtp.client-ip=185.56.87.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	s=arc-20240116; t=1790708795; c=relaxed/simple;
+	bh=vGWpjITqs2C8W/ZzwZ7Cb8s4vFOT7Nlzj9xKnet5m5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jN4qU2A+BpFRoOtv+zHk0eqLQ+d5W0S9j9U4t/SFFdQubobokXtO7dUxZ4ZiAip78IpgK9Mp6NOBQNrtoSPRp/n3OTwxJI9Lw4EwNcBuPv36ecUFRm/b1H2wPEdDXNkYSN+MNkrAXqVu3dsNHEFdwyhym9u8d8vYiEa9bG1wQ3Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=iicsQZvp; arc=fail smtp.client-ip=40.107.162.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="P0ZLNd9/";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="C0OvlziK"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-ccx6.prod.antispam.mailspamprotection.com; s=arckey; t=1790701279;
-	 b=aQhPKFRdwnffR+4bXq4Byw6oWOV+BmDVjJoM8GC8BKvLuHRu0UHfB88k/maxQ18jGCECX33s43
-	  w7cS9X9x3CNuWYDu6dR9/RmPF39nQbO9llx136/hnh6v+IUMWn21hkURQ1KmXC9YjefGDSApwi
-	  YDUOdk87VctQ+p9pX+GS0We1Jgx50RWjOydNwbYZL2p8RBZX6JaKt+1sftsFk+Pp66w2hj02t+
-	  yhPMJ8ujGxty6v0kdNS1ZYsilLYYrMxG59oy2PsKhVj6vyLzXY/gBynYibNM0R0xwdxMwmUsGU
-	  qwfQznw0MPhrVI6YF8+nlaUSR7jJb+o8EjNB5GsOuZgPfQ==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-ccx6.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-ccx6.prod.antispam.mailspamprotection.com; s=arckey; t=1790701279;
-	bh=NEO6eN6wS0lPN8V/79gLlvdQ8qhVcM1fQpGV/gBb6rU=;
-	h=Cc:To:In-Reply-To:References:Message-ID:Content-Transfer-Encoding:
-	  Content-Type:MIME-Version:Subject:Date:From:DKIM-Signature:DKIM-Signature;
-	b=XEXfVzo8OItxVAM8vUKuFXcf09sz9685vLOjZ0noHcH8Jqb6n4qfQCwHU2f6/dZ/i7B+RMpF/t
-	  F/DCHuKA2Zy7t9/rPKcU9HCGKltPXOLqNxS8Xrr0Alrua6LmM49l9yZjuyaIidJbOqNvPXFnKA
-	  JiDrNhu472VRoRI8/b4SAByTfoVNXEtXRBZ36gNzgTzWWkBoptCVSFiYhNJZEojTW5WdYTvXxZ
-	  Zv8Xcdy/RC5oCcibEd+awJYtlSFLKxwQzUxN1bvQASrS9JicxLuqbA3DRPEaPlvZPUdhDGPsfS
-	  WvPns2WDMN/zNJV34WNWCLBj9wU/uvk/lH5lbqUMQ2SXmg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
-	:Date:From:Reply-To:List-Unsubscribe;
-	bh=GZnRLTX8nqK922cINDfyYF7LUeobLxPNi6zQddqL96w=; b=P0ZLNd9/8y2pIT/cfU5U5JKR6B
-	6oQF3+bdhHdjyZBpTy2YmHCa6swnA9gZkVkYo0nxS8VlEwFkcXvz08T6pgmEoHMDnFSYi5+WfWZHx
-	uDCcTQJ2nk5KxUlXLA5FzakTC/CVUDQxR2PXynSDK9RMakwcYVoDwxdrTGCQ0C/zcHIs=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-ccx6.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xBauh-00000000RGz-2mp0;
-	Tue, 29 Sep 2026 16:42:44 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=GZnRLTX8nqK922cINDfyYF7LUeobLxPNi6zQddqL96w=; b=C0OvlziK0x75uMAV1h1PiXonjd
-	Fr4GQnyaJ/Xvvngq4KrpN2iJ+e0qsrS6+0dJTtHLjZDGjc9hgfRtOU4m3tx6AN9j1Xu1dcaIrcq+B
-	UR+qb0cCBVT4mhk5Cjtkk4D+cJvMjxHjcN14Y8ZuQ9mzohVP9ycaL3SE6by/b8N/82Dk=;
-Received: from [87.14.44.235] (port=61710 helo=[192.168.178.175])
-	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <francesco@valla.it>)
-	id 1xBauc-0000000058o-2w5Z;
-	Tue, 29 Sep 2026 16:42:38 +0000
-From: Francesco Valla <francesco@valla.it>
-Date: Tue, 29 Sep 2026 18:41:55 +0200
-Subject: [PATCH 1/2] dt-bindings: spi: add bindings for spi-virtio
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="iicsQZvp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=W/mjatK7nqp0Uh7TmyR7e/Mv0hRd4cGoOi+RmV8u4N2RJEtA2W0YUey5QLpKV53LXfgLocPr7J7nsyC1vNk0+y2UzTCWtsR3m+yEE0yf8/Wv3XpmOYJdcLhtSD6PGi3+QJPNyLzbslS7y7fuzuDZClI/YwzN147dvCqXWHpBgYiE5EthNkV8DFJnrZCjpvFkcYbwUKxDpuHwbnMpDbePgk4LInN19Ww76bj+wRxRdXH+kUfBEm9Uy7nbnWlr6D4XFOl2jfIxzdx46XwKLLQ4IXZxCiUVEx4tI3S4T0aXlJpYUQ04LzxsSDK7lfWKQwB05M8qh6xGCpz3y3HgIyVVFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mm/DPr5DI4y/jSLn57lnko90SrK3FzpDqB0pYM2SGPQ=;
+ b=Mb2OZGN6XcYo6D3nJiAHjI+icx4CSdwAr8o8BOZcPDPkkVJoRigdbENjGzuODBuJEf8z0eiPLObTxKhYuvFCZA8yI5yH7kRCEyHJqSVIdZ49MEFSexOt1xXXoeSCQ09rumC2krKyW4yQUVLvlaYPRIc7vGvOqGvuoqVym5COkk/3NwCHQoazK0bpD7j5dYXFztfvEa/M4deKBQUaVGzR6TzqE3b23Pmips+jgPm+6Q3Vhje5jAVssGUp3LUaE9+//16JMPogKA9YJHsjZPHbHGqec1HiIkENzfFDN3TibAwn4zfKNyXXAqPiEXLMYMn7naqmnUXc9riFsPpXCv+mhg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mm/DPr5DI4y/jSLn57lnko90SrK3FzpDqB0pYM2SGPQ=;
+ b=iicsQZvpPO/b6Yl+Oz+bOVxa0b8YclHnhef8fWJUNnNluiGJrTMiGmntQXzR9QYV4AeiLtbG2VXRBLWnmHMO2ychuZTCbm4BsVKqJSJ/vVBI0a+9SXHPWMb8UGqPggWG0qTKswERIXCGl6XfVcQK2+3hb5a4du72k7Q5M7DkEYV0PbsKdBbiVtXakyvRDfxWcj2DthPNnFDOmel72okMcqBc/YbQZALluR/eLmsYIU+csEqiqojX0zAM7IvC6kGqjvvfr/FsjnXklbgqOG2CusY+ACPrvg2o4LyjDjtvmLBESY5Nc0OVlBQN3SpyFX09npjT4GQ8r/Irnt0uVv9aEQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by AS4PR04MB9363.eurprd04.prod.outlook.com (2603:10a6:20b:4e8::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 19:06:27 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 19:06:27 +0000
+From: Frank.Li@oss.nxp.com
+To: Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 1/1] spi: ingenic: remove dmaengine_desc_free()
+Date: Tue, 29 Sep 2026 15:06:20 -0400
+Message-ID: <20260929190621.3516424-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CY5PR22CA0027.namprd22.prod.outlook.com
+ (2603:10b6:930:16::8) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-spi-virtio-bindings-v1-1-6a0eef3213b3@valla.it>
-References: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
-In-Reply-To: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>, 
- Jason Wang <jasowangio@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
- Francesco Valla <francesco@valla.it>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2447; i=francesco@valla.it;
- h=from:subject:message-id; bh=NEO6eN6wS0lPN8V/79gLlvdQ8qhVcM1fQpGV/gBb6rU=;
- b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFm7X1XPNfFK/nbpun+WSs3a8kjnrQm103iMXF28l2xY8
- X+zu+vxjlIWBjEuBlkxRZaQdTfu7Zlr/i1tA+MjmDmsTCBDGLg4BWAii18xMiyt0eIJ8BUx4Wdh
- r33ummq75pGY9Unf9XJ5NprPE/8kfGNk2NsZxTzv4aPJIobZvacFUu+1SBf+99RoWJL24OiXvr5
- jjAA=
-X-Developer-Key: i=francesco@valla.it; a=openpgp;
- fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 132c8cd9f1c7a1454edd65c9008c4892
-X-AntiAbuse: ID - 132c8cd9f1c7a1454edd65c9008c4892
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xBauh-00000000RGz-2mp0-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-ccx6.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|AS4PR04MB9363:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1270e555-8378-4395-dd96-08df1e5cc364
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|19092799006|23010399003|10067099003|11063799006|56012099006|5023799004|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+juSzncbM9lmNr0oX6O9ZTdxa1cNBDVoBZA1vUCwqkmVpZyPK7QZMUIH9v3zCOsxBdY9CYiF/19KA5EN4SGpRlR7MRzCZ5JR/hB1QO6fTdvj01sclwCDC8C4Ew3YQRB2ns456COhI8Chefx/F3dRpgQTmiehRURHQbzrQvBCIKN/WTpQxi2V6x5H1ltd9JKQUbnQxknCYjESxk6KDCe5q3wuUflMvP1weIWcOxNI/AzgyXXWuBDfgfZ203lcsIWBUIdPQZ6kM18+lgkDGCSRip64gVoJaD2u+jUykL+5m/tEPDc/gd8jZus6x9KCIWRkQPmgog1dxXXW3o8cvv7M6s73mxhsMuTiU127ID6yx6mbz97s02O0mCslmc2EW2dvptVSsYYQSGsqp4bbm0ALOIAiFST3/0W0NRVWcZgfnZBe8LQM7w/BccMTUsO26Y1mwPgXyKRcHgOqu3ftpHaVKmq1u9og/Srg59XUwVkRdRW2cbwy/uEIbVlGxhSWoTs0k8IdZmaH7keM9E7nO4kkmBUQO97boioMSvCst8bRk/RfWciJYbrQhMEq9CJgNoPRfJ/h7Ver7FqCdsQazRQvTF1inxlUDeIbvs+G7WNv+gBFJke6HSXq6+kr3YEx7CzTm2GjODwnY/QD7mX1xGXQyzrcmcaL0vrtvLyQEcc4e3c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(19092799006)(23010399003)(10067099003)(11063799006)(56012099006)(5023799004)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tvMJIzWf4+H5v+oKlPk20tBvfUI5T7Tm5ZT/GlsSv7xYZLKg4Q1A3vilFXZp?=
+ =?us-ascii?Q?AeTAbDmSjgCm+sLuePzBQewTAozXW9RTbEMMC5TURuV16ca0oXB4fWZiJFS4?=
+ =?us-ascii?Q?QSYAgL1v1D4PwIzb9SXsHCGTxu4NMD89CGM5IcIDZlCjgp8mHUGoH4mqHUEH?=
+ =?us-ascii?Q?cfs1o66DF2+Wto1AkidnbOghxcsW50TEDUQ4bD8fXx4JTVGlZ4r+NjBiqvLb?=
+ =?us-ascii?Q?ECc8Ic4CAuEVF4l1YdtQlX9bN+ge8H/wZUxJ1LCVbzoIft1VUU60aBzuMV23?=
+ =?us-ascii?Q?pJs5FbA4vlgkVXhipUG86QHvJfPnBSJL9Tugfw3ZMlCIEF+AuMYtvpIFqE2l?=
+ =?us-ascii?Q?AKJ066og63Zyi2ss10SKwDdL+MnRNATGgPZUHq/9v6wuV0yV0vPOskXAFbl8?=
+ =?us-ascii?Q?iDJfZNaFZmWEpCu2D2NcKzoph9Rx1H9V9f3i1rNYkpz04Ngjrn2ppYb2vL+B?=
+ =?us-ascii?Q?xhn1i/URWYR70Sjt17u0Ty0G84/V4IRDjdM/gWmGMEkTZiFIa1eSb/C3G/S+?=
+ =?us-ascii?Q?93JyHL0d7qQtZ+2Rtg/PzBUEEloglgEucs0zglG7vAwpDsh9/oB7+MjI9PTF?=
+ =?us-ascii?Q?SZtm8a5vrOWLgXQgY/S4TtMGA5UHc9Ot8sa1ry6bnaScmJDH07oVD7rzCwUU?=
+ =?us-ascii?Q?RZ9WzEW3SWSpXP3mCCQluketwOiyZUNegbXGdWu0IEGP+TiCJ1xOLCbRL6AT?=
+ =?us-ascii?Q?GHda94VoueJSCqV0B0e9ndwsQc00e0YGcwQ9rtJ0yiDvqajsnVp+iOzfwE6g?=
+ =?us-ascii?Q?Sv92+3OH2clnDdIJ7N1NlJ8KK0zjfyAdMBKzh/OJvYYEuNzJ8wCTOu2hXhH+?=
+ =?us-ascii?Q?TnCA2tQ8/MNcOQXQVHrJpyHkLVD/eP/03ppcgnKLMcMvAru1aTlPQ1PFQaG/?=
+ =?us-ascii?Q?Knr3l8sUowDZiT5bWAr2Pjp6kYQZTCdQ+zHFjOd5W/X0QsdF17AWEmfoAqjP?=
+ =?us-ascii?Q?8gkC+1qeWvrpwbU0Op+RmZMQusvq5JSxuuZnGYcwweIK9wq98MwduNndeWQh?=
+ =?us-ascii?Q?5u68Oa85fTumIvWwfRv0gdWP4EasLwchkYoAyAe1LlqilgP2HGfFi3Tvw2p4?=
+ =?us-ascii?Q?XLTsoZJ18dvfA4jopkn80KdkTejMVAns/cH/iTyrph2Vg34r46TSwlIIyULt?=
+ =?us-ascii?Q?7bSvJnk2RmKWJS81sHVoDvyLWIi7S1oJZMIfvJQMTd+wQlWLqeLoUdl6FwDE?=
+ =?us-ascii?Q?/8NZODqXCKjzkKaGzXt2V32Xd61Um7RnaFjxb6x/sGeP77KwW8DF7bu3XYP4?=
+ =?us-ascii?Q?W9taGBpVxz96atp3ddiPwjPf5K49Mc5f0TPh0LXWz1vYK3o6mpq+ZcnlOqbE?=
+ =?us-ascii?Q?Vi+3kCKlTpqk1Vf22AaKwB3GMSUX3wyo4R86wr9IGEP4c+Of6nrqWxISTC4J?=
+ =?us-ascii?Q?QE1HfAh5A8PdVX3aTKotaGV0nwX9l0rS7avo39+4GT3i+QDLEMwlzv0cGmBs?=
+ =?us-ascii?Q?e3ViC8ugfyBCO5c/oDvoLLqvxQGCLEfKAiLe3Im8tcLMBuadvjG1XxALMl7L?=
+ =?us-ascii?Q?HNGWsel90cT56m7/MC64kt9z95fMRBAbOeun2osi7oGV2k6bGlGLRt+0ERPs?=
+ =?us-ascii?Q?YeYxPAJDoUlVlbx2R4XXtB6i6ygxb+4OgJU1hI1T6LDCnd0Lu1HmRRoPrSUs?=
+ =?us-ascii?Q?q4q85HFnYlHZdPwGhn9CzA89oTvJzoPz2ggmiREeijzzQ+Qlgcgw8OTdkmQi?=
+ =?us-ascii?Q?8JBWzyaDQzU+P5FZz7KNeHzEgY40ykL+tYzeGiXElH+bsNW+//XwolUgOl4F?=
+ =?us-ascii?Q?R/2gBM1tGLSbEUpaPsp8T6G6ww5lXMOWF+du5qAYiVrozEgCxj7A?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1270e555-8378-4395-dd96-08df1e5cc364
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 19:06:27.5350
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0gbonAI70PUTS074fE2xiQwfssLsBHtnh744jeMyxrOsZDO6fByRSfeaISXlFJ+e6vDO3Rw71ZTNRwUr4bO5DMQ5zDw8kbHRQ5htbwbZUTZFvSEirP9X6EY3qa+F59h5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9363
 
-Add bindings for spi-virtio based on virtio-device, reflecting what
-already exists for gpio-virtio and i2c-virtio. A node using the bindings
-is not used to instantiate the device, which is registered by the
-transport (e.g.: virtio-mmio), but to define its properties and
-establish dependencies with other nodes.
+From: Frank Li <Frank.Li@nxp.com>
 
-Add the new bindings inside the MAINTAINERS file.
+dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
+is not set, dmaengine_desc_free() will return -EPERM.
 
-Signed-off-by: Francesco Valla <francesco@valla.it>
+	if (!dmaengine_desc_test_reuse(desc))
+		return -EPERM;
+
+So calling dmaengine_desc_free() does nothing.
+dmaengine_terminate_(a)sync() will free all already allocated descriptors.
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../devicetree/bindings/spi/spi-virtio.yaml        | 53 ++++++++++++++++++++++
- MAINTAINERS                                        |  1 +
- 2 files changed, 54 insertions(+)
+ drivers/spi/spi-ingenic.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-virtio.yaml b/Documentation/devicetree/bindings/spi/spi-virtio.yaml
-new file mode 100644
-index 000000000000..5b8639dd2e1f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-virtio.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/spi-virtio.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Virtio SPI controller device
-+
-+maintainers:
-+  - Francesco Valla <francesco@valla.it>
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-controller.yaml#
-+  - $ref: /schemas/virtio/virtio-device.yaml#
-+
-+description:
-+  Virtio SPI controller device, see /schemas/virtio/virtio-device.yaml for
-+  more details.
-+
-+properties:
-+  $nodename:
-+    const: spi
-+
-+  compatible:
-+    const: virtio,device2d
-+
-+required:
-+  - compatible
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    virtio@3000 {
-+        compatible = "virtio,mmio";
-+        reg = <0x3000 0x100>;
-+        interrupts = <41>;
-+
-+        spi {
-+            compatible = "virtio,device2d";
-+
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            sram@0 {
-+                compatible = "microchip,mchp23k256";
-+                reg = <0>;
-+                spi-max-frequency = <20000000>;
-+            };
-+        };
-+    };
-+
-+...
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 360977678f70..f91340fc6e7f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29062,6 +29062,7 @@ VIRTIO SPI DRIVER
- M:	Haixu Cui <quic_haixcui@quicinc.com>
- L:	virtualization@lists.linux.dev
- S:	Maintained
-+F:	Documentation/devicetree/bindings/spi/spi-virtio.yaml
- F:	drivers/spi/spi-virtio.c
- F:	include/uapi/linux/virtio_spi.h
+diff --git a/drivers/spi/spi-ingenic.c b/drivers/spi/spi-ingenic.c
+index 7ce4fe965cac1..a0a047510611e 100644
+--- a/drivers/spi/spi-ingenic.c
++++ b/drivers/spi/spi-ingenic.c
+@@ -164,10 +164,8 @@ spi_ingenic_prepare_dma(struct spi_controller *ctlr, struct dma_chan *chan,
+ 	cookie = dmaengine_submit(desc);
  
-
+ 	ret = dma_submit_error(cookie);
+-	if (ret) {
+-		dmaengine_desc_free(desc);
++	if (ret)
+ 		return ERR_PTR(ret);
+-	}
+ 
+ 	return desc;
+ }
+@@ -186,7 +184,6 @@ static int spi_ingenic_dma_tx(struct spi_controller *ctlr,
+ 					  &xfer->tx_sg, DMA_MEM_TO_DEV, bits);
+ 	if (IS_ERR(tx_desc)) {
+ 		dmaengine_terminate_async(ctlr->dma_rx);
+-		dmaengine_desc_free(rx_desc);
+ 		return PTR_ERR(tx_desc);
+ 	}
+ 
 -- 
-2.55.0
+2.43.0
 

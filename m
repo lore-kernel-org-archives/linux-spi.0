@@ -1,70 +1,70 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.6])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB7C535FD9;
-	Tue, 29 Sep 2026 16:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7211F4631;
+	Tue, 29 Sep 2026 16:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790700175; cv=pass; b=MpBkJDMvtOVSglIXuAh3wz2v8F4jtEbnfLMFkYhzJiYbcZwV0i62rH06NAzQm9SY0z290WChrUb9NZ6gnW3UEQ488e82idgIyj7qrRIxVIllETt9/PeROZtmZMCNo9zoCV7GhW8f05vWQu+P3r2OKoFbfzetD46ffNcI3f/Srbg=
+	t=1790700175; cv=pass; b=HdDpcKZRw8DWsqkLsupCN2wj6AgsvXTrlq8aPt+pqqDwrPsKk3o/RjiMDWnDeDHfaFK1ob5bwtWBozzgezQbU5Hh+0CZeTx4hxP6nNzhzsyOrGQ+G7rJ2Et2wy2hePNxaKeT06Jb7xlemb5AxRIht7lBOoamKBIXy20n7Ck7oOs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790700175; c=relaxed/simple;
-	bh=EckoOMfTbo+h8H7It7LEYNw5MBDIUSyKAGdzDWnsooE=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sut7D773ADg/KDjarbRKdni0xrt2BSnkAqQeDxyqZAxbM/qxLBy1lY12NosUx4QgSHwdPK8T9/olusuF+WUSjjI8SVb1Z1eE1KZaCa+fJ6Ls24E4IkXqlW9gqj7f+6vDI9FZkCtmQDctOXSJmcXVUUYqNQ70Fl9I2+7jLDOlUh8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=S6Gp3pNv; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=HUjV3nHc; arc=pass smtp.client-ip=185.56.87.6
+	bh=KHXHFsSo9+fBYmQYu9qSDHjgM9semQS+PzLf/NCjDeA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=YGi0mhvluooPf7HpoMxjZ3y6zkcEugoJz7flV6O6+aXXCwLGgW2tMLuG+5XxaMvoKJxXHZNCX3AxTOl0Y1aZ2Zr0UKSU1yHsFC5vebFjc3/keRiSmjsN1ZQDLTNqP6VRT+miVXBiyU5LYfoiDGSSCt4sNWD/AIiGfDy172W4oME=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=ONexZbeh; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=WsH+tNti; arc=pass smtp.client-ip=185.56.87.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="S6Gp3pNv";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="HUjV3nHc"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-ll88.prod.antispam.mailspamprotection.com; s=arckey; t=1790700172;
-	 b=MkLIEvrhQev+MMpS7cpYAmkhxLG/WdoKB3Dzx32nG/l0tsz7NCyYmpiDvIjuD7ghHNyKBPT2wl
-	  nLnb4aVoXlFbTAecz0rbJNtdogGKXH4wijeF6Bc4av3JwOf7SB+rC24Gx/PAo24AQnX2xSZsk/
-	  vltFDVGoD6L+4rMT1fsLUB4Qo73MuejFDsV+5Eof6tdBe2kFKirSJarMubFasxu/5SID/urFoC
-	  IutQN/RKWAxFkh7eHMzPrNrvcN2ilu3Sp33Rj7WLIHjzYrJyIts1RmNb2/3YrgYa7T4sHMIWo+
-	  pamVkuq4H4z1uE3gzoYd7tow22SSGjmTqYP2IdlkFHf+yg==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-ll88.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="ONexZbeh";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="WsH+tNti"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-4cc0.prod.antispam.mailspamprotection.com; s=arckey; t=1790700173;
+	 b=U3MlT4RHVX8nA15yoF5dODiMovnEvziKwwsYL0FyWKS9SAzC4hNuPlWioFrpDDmJtgQwFyBH1P
+	  rvVgdziplanv1z5Qbaq8tM/8EpqMwBzwe8kDu99LEz+igj9K5PdLFyo/8NIfGy53lo2ng+aacL
+	  VqSMy5C/ywai3oE/XKi4BoX/62VWbrqCDjYVaZIYbBOr9Esj0jBUa7dhNxnlNEy41X+gISL1ui
+	  CC+8rt8TZ8ZtTcsSArjOQBfs54JTsj+TmVNrmdnVi2F8M5P8Hu6i5oZgq8nTs+wV7B9Vf6N6qT
+	  2G/h/YXiJY9XIbpv1bRV+9MOFLlmLQnA+Ms6rXZ9E8h8lQ==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-4cc0.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-ll88.prod.antispam.mailspamprotection.com; s=arckey; t=1790700172;
-	bh=EckoOMfTbo+h8H7It7LEYNw5MBDIUSyKAGdzDWnsooE=;
-	h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:
-	  Subject:From:DKIM-Signature:DKIM-Signature;
-	b=OjtiNksoBZQRfazjFTPdrZ3NsFXErN3FG2etOxAjmNVPCFVqwIkrUVh0vbyOqhAdzYz9tvgblv
-	  YA8iT4zqeUNYeNjs//zbZa/5JZtLT0c7FKG0xORUafbd6Qc9x6kGCA2ybpoL0+MyuK//cmyLQE
-	  KZQEBV9M2o7uLuOVP5Y5SWuSEkqiAcPx/Da3+YwpvPPzcU9Uc6iLHakwiA1YzVn62e68RdPIwK
-	  2RrDAR0iJmxZhDhhul2cne/3zHznmydbRGjlr7C/pg37ep9mRXOa/mJhS9TRmgTEIdlLpHYdQn
-	  Q9XGZAiemURCTJGkzg1BPyysN9OqLwiM0JMzPrbC+7SJcA==;
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-4cc0.prod.antispam.mailspamprotection.com; s=arckey; t=1790700173;
+	bh=KHXHFsSo9+fBYmQYu9qSDHjgM9semQS+PzLf/NCjDeA=;
+	h=Cc:To:In-Reply-To:References:Message-ID:Content-Transfer-Encoding:
+	  Content-Type:MIME-Version:Subject:Date:From:DKIM-Signature:DKIM-Signature;
+	b=fWdOsv6DhCUxR97WxfD6I37iLHWgGPrw6grMhL+H3AaDHBlIyVhNsRWtMcSuxZqheKZ+NVZEo5
+	  0ZmgBuRYfXbpheCzrkKb3wjapbI9VXLI6QJnJTQnrTgxeX6I06oO0MU7K8lUlDYPd9eFGPseYr
+	  nT7HnyOAj4/6xPt9njFSih5gJ5rc1d+O7OmSTK3mo4IvN723eHbvN6NkfZpOrVwQQVQiaHCeJe
+	  /+6dHj2ELFGurVN2fX6pZ4xDaEa70ep9dnwd0CbrVaZftAVcs1IjIV5lqdeZ2EE7UrPgKQtdkx
+	  9IbcXmPgR5ypuYkPUwmpqgxYL7DqAtEWBv3It8eVZa2crA==;
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:
-	Subject:From:Reply-To:List-Unsubscribe;
-	bh=Hn3f4GZyBeZmtOL1lDhIw8XMvaXDDH0yeUbxeoHAods=; b=S6Gp3pNvbAlsuohSYGbz+f9vrf
-	mmMfR9rLEFRfxMHgHFBy0SQ4ruAphCRVwTx7SElZxm+JvlzDWhSGFD9oc0r+oXu2iwbs9kKjUT/GF
-	OUTRergmelfYkT2qEGWol431zQVvFLZIqAJwgl529lXWoY2WaxNjbamcR/F5XiLa0juk=;
+	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
+	:Date:From:Reply-To:List-Unsubscribe;
+	bh=OqVG4Putd/h8cvO7RMuJK3aCSwZhVie8fm2yjbsDtQ8=; b=ONexZbeh1pMJb1jwElTZhHOvQ7
+	t2V7iulWGD6jcMTAEn1zTd7eKn6TYq5dyqNtuTVdjxFruj11yKvru6HBrz0GvU4L7PXKg5fPrmHB3
+	FWoxq/bqRa23R+QmYDQjDqKiY05dXC+xq0c577O84kv2DdRDkkTZwv00vU0dKHHMUrgQ=;
 Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-ll88.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	by instance-europe-west4-4cc0.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <francesco@valla.it>)
-	id 1xBauh-00000007vQp-1bAD;
-	Tue, 29 Sep 2026 16:42:44 +0000
+	id 1xBauj-00000000N7B-1dEd;
+	Tue, 29 Sep 2026 16:42:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Cc:To:Date:Subject:From:list-help:list-unsubscribe:
+	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
 	list-subscribe:list-post:list-owner:list-archive;
-	bh=Hn3f4GZyBeZmtOL1lDhIw8XMvaXDDH0yeUbxeoHAods=; b=HUjV3nHccZ3Ev+QiwiN8YPHXN1
-	rcNXstiT82cqR64CVAzLVffwF8etrTxsXjPXWMoIXD+0DCSIHHrvA0ir25cCaptslbKOFNdMbsqMy
-	RxPtiuEI8N8mDQrWyX6pmk4lPQhKdRAh6+hC0JFgK54cHfsybcBjVQTY5ExRz3UVTqNI=;
+	bh=OqVG4Putd/h8cvO7RMuJK3aCSwZhVie8fm2yjbsDtQ8=; b=WsH+tNtiVB94RP2yhRT96NGkgG
+	acBqAr3MHWCIoaVMvFYXRsas0EU5jtMy9TywqOFOoAADe85AX0cDj2nmAiPEBFw44l77YsI9xMdNO
+	V2fKkDGTmeLXVHQyVKDsLQy7KaMpC36psDt+RglUUJkQhxnkuGmzFDyV+e5KRlYGOf9Y=;
 Received: from [87.14.44.235] (port=61710 helo=[192.168.178.175])
 	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.100.1)
 	(envelope-from <francesco@valla.it>)
-	id 1xBaua-0000000058o-3ju8;
-	Tue, 29 Sep 2026 16:42:37 +0000
+	id 1xBaue-0000000058o-12Ne;
+	Tue, 29 Sep 2026 16:42:40 +0000
 From: Francesco Valla <francesco@valla.it>
-Subject: [PATCH 0/2] Add devicetree bindings for spi-virtio
-Date: Tue, 29 Sep 2026 18:41:54 +0200
-Message-Id: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
+Date: Tue, 29 Sep 2026 18:41:56 +0200
+Subject: [PATCH 2/2] MAINTAINERS: add Francesco as spi-virtio reviewer
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -72,11 +72,10 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBG4avIrDsQY63oVUoXRkf7u4iSUSkE7
- 26sy2/xXiSVAFFqskhBdihmn5A/Muq+rR+F0SeTNfZlaluxLuAdYcXMDr6HH5WHpxSlcbYydUu
- pXIIM+P2v789t3dwk3Xqt6DhOiuZZH3cAAAA=
-X-Change-ID: 20260927-spi-virtio-bindings-f4e350b2709a
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260929-spi-virtio-bindings-v1-2-6a0eef3213b3@valla.it>
+References: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
+In-Reply-To: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
 To: "Michael S. Tsirkin" <mst@redhat.com>, Mark Brown <broonie@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>, 
@@ -88,12 +87,12 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
  linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
  Francesco Valla <francesco@valla.it>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1791; i=francesco@valla.it;
- h=from:subject:message-id; bh=EckoOMfTbo+h8H7It7LEYNw5MBDIUSyKAGdzDWnsooE=;
- b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFm7XyWvv3D5ddFs+TVKQjztQblBR1wVVNU7U75p7LHl9
- Syzu2DQUcrCIMbFICumyBKy7sa9PXPNv6VtYHwEM4eVCWQIAxenAEzkiyrD/4h7kwP3pRWllr3/
- XueVdKwvovFakR7zceVnHhzTTxY53WP4X1gX9Meyf/Hjm8kbLPY3dO5Y/nbO6xcvDrxxWCQYGj5
- 7DRcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=613; i=francesco@valla.it;
+ h=from:subject:message-id; bh=KHXHFsSo9+fBYmQYu9qSDHjgM9semQS+PzLf/NCjDeA=;
+ b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFm7X1UHLZD5tMT6fOaeb7zfYmfeWj53W0tKSc/di6t09
+ x5S+M/6rqOUhUGMi0FWTJElZN2Ne3vmmn9L28D4CGYOKxPIEAYuTgGYSMoXRoYb9z5m/c6au1Dj
+ hqNeQk6zstmhetNNC3dUMS1VMV14I/s3I8Mpz4dLCtSyFI50br65NeNql2HOmYvqEVIzZk21MM6
+ 4ZsALAA==
 X-Developer-Key: i=francesco@valla.it; a=openpgp;
  fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -104,70 +103,41 @@ X-AntiAbuse: Sender Address Domain - valla.it
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-SGantispam-id: b74756d4bc259a85fd59d4959431850b
-X-AntiAbuse: ID - b74756d4bc259a85fd59d4959431850b
+X-SGantispam-id: 3c9f59348f2847f002dbdb8b64998213
+X-AntiAbuse: ID - 3c9f59348f2847f002dbdb8b64998213
 AntiSpam-DLS: false
 AntiSpam-DLSP: 
 AntiSpam-DLSRS: 
 AntiSpam-TS: 1.0
 CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1xBauh-00000007vQp-1bAD-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-ll88.prod.antispam.mailspamprotection.com;
+CFBL-Feedback-ID: 1xBauj-00000000N7B-1dEd-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-4cc0.prod.antispam.mailspamprotection.com;
 	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
 	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
 	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
 	arc=none
 
-Add bindings for spi-virtio, like the ones that already exists for
-gpio-virtio and i2c-virtio. A node using these would not be used to
-probe the device, which is registered by the virtio transport
-(e.g.: virtio-mmio) but to declare properties and/or child nodes.
+Add myself as reviewer for spi-virtio, following the introduction of the
+devicetree bindings for it.
 
-This was tested both with virtio-mmio using qemu-system-aarch64 and with
-remoteproc-virtio with a Zephyr backend.
-
----
-I added myself as reviewer for the spi-virtio driver to be CC'd on any
-patch involving the new bindings.
-
-As a side note: mails addressed to the spi-virtio driver maintainer
-(Haixu Cui) gets bounced back by the Qualcomm postmaster; I added them
-here nevertheless.
-
-Thank you!
-
-Regards,
-Francesco
-
-To: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
-To: Mark Brown <broonie@kernel.org>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Haixu Cui <quic_haixcui@quicinc.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: Eugenio Pérez <eperezma@redhat.com>
-Cc: linux-spi@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: virtualization@lists.linux.dev
 Signed-off-by: Francesco Valla <francesco@valla.it>
-
 ---
-Francesco Valla (2):
-      dt-bindings: spi: add bindings for spi-virtio
-      MAINTAINERS: add Francesco as spi-virtio reviewer
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../devicetree/bindings/spi/spi-virtio.yaml        | 53 ++++++++++++++++++++++
- MAINTAINERS                                        |  2 +
- 2 files changed, 55 insertions(+)
----
-base-commit: 6f8319e3e9a44dd537d17f41565a8453c560a581
-change-id: 20260927-spi-virtio-bindings-f4e350b2709a
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f91340fc6e7f..ff70479e99c3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -29060,6 +29060,7 @@ F:	sound/virtio/*
+ 
+ VIRTIO SPI DRIVER
+ M:	Haixu Cui <quic_haixcui@quicinc.com>
++R:	Francesco Valla <francesco@valla.it>
+ L:	virtualization@lists.linux.dev
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/spi/spi-virtio.yaml
 
-Best regards,
---  
-Francesco Valla <francesco@valla.it>
+-- 
+2.55.0
 

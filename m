@@ -1,128 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C89511180;
-	Wed, 30 Sep 2026 16:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E2951588E;
+	Wed, 30 Sep 2026 16:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790786117; cv=none; b=Fx7HCkKf0LYrv8Baje2M4x+he6nBWND6KA86PGxW2+YAy7vREycQkQQgZ2us38SNP5u+n37WU8C3yhb5cyAiPkMsGeuBoaNh3+NAGLj11Dhi89HGZ/zSoXZc3W1vOBhOPO6v7TzOpGsqIi2Q3fJ1jfYE/rcNLuCUM2e+me7IZIw=
+	t=1790786827; cv=none; b=jFVfLTZA8D2WH81++MEDTkRTZFIwQIHKzpelSbjabchr2Ke+pkgEQqnqq0wCn5A+Y0gU878I1sSCCfpbhoomXDlqrGJ1iNQoPN2rSy69ZDmz4Ml37R1w1+J8/dZdeQv0oGJ/JwasUw5a5+PQftT5VGIAIQTb88awazEMSEkV0J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790786117; c=relaxed/simple;
-	bh=IotFDljTrZjJVOHJs5Jb8Ssuv+icr3IseWCLlR0xMJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TsJvaAoZGsnzwlD3Xz4jwP/pUcYljix36WWzOIXzcJ6+fwlVojvS/jPR0aLe7pK35UQYUL6yDLdpj+fbm8XaKZgDx1m5982iCE6D6jXI+w17OSORn2nBvEZ03IpJ8Q0XcyqZd5mBgJBszNVZ/2ENyCtohcie3QKknD8EYJYsdOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqkbTaeE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790786827; c=relaxed/simple;
+	bh=DMvz7z/AODsKbzvIxQkpfFFObOl7FJLT2PDw2Kuh8zc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=EJq3KuOAYvoIc41EH0dVUic23yrjoeXbzUza8QfvzJHH8NuBQcAE92HBAQ1ObUZFNeS8heoQYLRwkHNfW3TFf2UJPKqwCWS65Ce8cEmRrc6gfVh8B+YzZppb//Lk9gES20tcagdX00MQm5QOMVrrADmCerYEzqvSu/Xd55tAF40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2PJIK/E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqkbTaeE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FCA1F00893;
-	Wed, 30 Sep 2026 16:35:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2PJIK/E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D931F00899;
+	Wed, 30 Sep 2026 16:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790786116;
-	bh=IotFDljTrZjJVOHJs5Jb8Ssuv+icr3IseWCLlR0xMJ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BqkbTaeEJGPn65JzBCPQabvkfi4q3suZsUonrQ3JIYiiyBzhY/r9JNQUUwQ4lEnDf
-	 UHIK5MS3srRqxbW56VkqD3p70BI2Y0c6OKFlj6G4gltrPwBGrgKdbY408ULgmc4Tm0
-	 Ztg7yaeTGTz9GRlUb3PsnbV39dgYKKXEQJsjbdmo0RgLhWDe00VmQ+JF0ITPnrBbHF
-	 9szCsNcsoKrnCD6vV9vh4wvdr2bSD3+XSqIb5sGXvL/J2w291GLOEWYhZkQ2L7TsXM
-	 xDS79Vy3/jO+IhE+uyNP7JEPXozepUeV4VPYvK7sJgvoA4nYxECPu4SXOKrFPEXz95
-	 +aGYtEz7XxSYQ==
-Date: Wed, 30 Sep 2026 17:35:09 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-i3c@lists.infradead.org, mfd@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 00/20] arm64: add Synaptics SL261X SoCs and RDK boards
-Message-ID: <20260930-consoling-scouting-e60864374d04@spud>
-References: <20260929061417.20733-1-jszhang@kernel.org>
- <20260929-smoked-laurel-087d5a3523a3@spud>
- <ar0da71zOeeYxURQ@xhacker>
+	s=k20260515; t=1790786825;
+	bh=kDczaQbTj7R4ecjz+VJCbU9haOq48yaYR/msBZn6IsI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=K2PJIK/E7UbhSr1KPwCNNV7PhN/uClVgzAdn8b2d87fs5U6mtgZl8qoFaS24XVuQP
+	 0Zmj5pQIfNzgR/hF8LG6k6HyzPSWvr3k+RSaFnqsCCy7aHxYvHKd3I/sDzou0Qtlv3
+	 m3giQZBeAHXtStTJhEoxQbNu6VD6gbbuFEZtdO5D5nYywpbYXDwz3NWu6IGeUK9rV4
+	 lV/p05fIISgJ+yMj7smcPf8aLTfBXGfv8uvMdB4l9fanFKOLzT3dCSqMPmWLFch4DI
+	 xyK/gsY69E9HlOx/YRMF2qMesbbMW+UqGcKiI4ZE/hfmhtkhDX6k0t8A3exLEL9KTM
+	 zKLl4xcnndymg==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Frank.Li@oss.nxp.com
+Cc: vkoul@kernel.org, imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20260929190621.3516424-1-Frank.Li@oss.nxp.com>
+References: <20260929190621.3516424-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] spi: ingenic: remove dmaengine_desc_free()
+Message-Id: <179072046512.463415.9364914013392491468.b4-ty@b4>
+Date: Tue, 29 Sep 2026 23:21:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0aKKosY+SZkBUlIw"
-Content-Disposition: inline
-In-Reply-To: <ar0da71zOeeYxURQ@xhacker>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1106; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=DMvz7z/AODsKbzvIxQkpfFFObOl7FJLT2PDw2Kuh8zc=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqvT0GLIPwk7W5ZpGQaq03o/qkbCjAJYe7yDdEc
+ pxT7L+gjYOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCar09BgAKCRAk1otyXVSH
+ 0BntB/42mWRRsNx+N7h/VMeOY0Yl9ZgV0XFsHAEtV5nYVAq3SHWCYbvhmOsx88WNv6RXbkv28SL
+ t2JZTcDfUs6nCnYlQSYjvgV8zq6X/lKo2Iebh4NC+OISZjQolcwAxvLHLj3W3TuQuxVvW/TM9+N
+ WjeES46tyF/dSdHp0qboG0wI2SdUAcqQjwH/HrOWqcTylaT6iy1C9D0UL3z24CI/xqeuupihwM/
+ 8ruukgy6S5IzJMDoiJnQmqwVvA8hF2X09F6wio6J5p4HtHzIwtKPqFtlltlxl6sHKFxrgb9EWG4
+ QPN8Y0ZLOaitAzwBufu8SlToz5x8la64PqueUx1gra3lv9sL
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
---0aKKosY+SZkBUlIw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 29 Sep 2026 15:06:20 -0400, Frank.Li@oss.nxp.com wrote:
+> spi: ingenic: remove dmaengine_desc_free()
 
-On Wed, Sep 30, 2026 at 10:32:11PM +0800, Jisheng Zhang wrote:
-> On Tue, Sep 29, 2026 at 08:38:52PM +0100, Conor Dooley wrote:
-> > On Tue, Sep 29, 2026 at 02:13:57PM +0800, Jisheng Zhang wrote:
-> > > Add initial support for the Synaptics SL261X SoCs and corresponding
-> > > RDK boards.
-> > >=20
-> > > The SL261X SoCs include five pin-to-pin compatible SoCs: SL2611, SL26=
-13,
-> > > SL2615, SL2617, and SL2619.
-> > >=20
-> > > Only reset, pinctrl, clk/pll, uart, gpio, i2c, spi, i3c are included =
-in
-> > > this series. The support for Ethernet, USB, SDHCI, CAN, DMAC, XSPI wi=
-ll
-> > > be submitted after this series is merged.
-> >=20
-> > This series is filled with wildcard compatibles, which we don't permit
-> > typically. The only case for SoCs that I've seen them accepted is when
-> > the devices covered are actually just different binnings of the same
-> > device. I took a look at the docs for this device, but it wasn't clear
-> > to me if these are actually binnings or if there are different
-> > integrations here. If they're binnings, I'd rather you used 0 as the
-> > final digit, rather than x, since that matches the synaptics
-> > documentation for the family. If they're not binnings, there's no
-> > guarantee that they share the same errata etc, and must have different
-> > compatibles.
->=20
-> BTW: May I query a qustion?
-> After searching the maillist archieves, it seems now maintainers prefer
-> spiliting this kind of SoC initial support series into separate patches
-> for different subsystems, e.g uart, i2c, i3c, spi and so on, then the
-> SoC pinctrl, clk, reset and dtsi/dts files, but AIUI, there will be
-> dtb check failures with the SoC dts(i) files patch(es), what's
-> the normal solution then?
+Applied to
 
-Depends on the type of failure, but yes it can be okay. If the failure is
-some missing schema causing validation to fail, that's fine as long as it
-passes in linux-next (same as when you add a new driver and binding, but
-the dts goes to a different branch). What's not acceptable is breaking the
-build because some header that provides clock defines is missing in the dts
-branch or in the driver branch. In that case, either send all that stuff in
-one "New SoC" PR to the soc tree, or put the binding headers in a shared
-tag that is the basis for your PR to the relevant maintainers (typically
-clock) and the dts PR to the soc tree.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
---0aKKosY+SZkBUlIw
-Content-Type: application/pgp-signature; name=signature.asc
+Thanks!
 
------BEGIN PGP SIGNATURE-----
+[1/1] spi: ingenic: remove dmaengine_desc_free()
+      https://git.kernel.org/broonie/spi/c/69338914b1d9
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCar06PAAKCRB4tDGHoIJi
-0hpkAP0blrEbmogoZD0AKnwhpfLwMnReZOlvZF7i9+6g8f+4VAEAnxRjQq9YWWJf
-7AVUGg191KqlxkjCS4xQdsNuVaTiiQw=
-=6gkk
------END PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---0aKKosY+SZkBUlIw--
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

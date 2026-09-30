@@ -1,119 +1,178 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9374D4870
-	for <linux-spi@vger.kernel.org>; Wed, 30 Sep 2026 13:51:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790776308; cv=none; b=DDiL5AlQqbEEHmaEj/gwSFcU1JhafIz3UJmmM9eIGTyFDSLwT0kvklPMY/gyiVkb1kDY5Z+GY1Qo6CDCPzBs3615TpXJptDh8kU9fNhAQYGldM1r3mg5yw8KFhl/brGKZwRQChpzF88qgx5P9tHPjSHcp56oTVR2GgM9OYJAyAg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790776308; c=relaxed/simple;
-	bh=+IoKX1KNbarkITcQFvbLMQ1gUQCVJ7Te+5R39GBUc8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X8iNu/XEuQF4R0ncWpXJq0nb0YAQEZxPha0EpZ+l77PKOH4aAJGxil2bOVHxkbdyrRxk7NhmP2O1FIPQqfX9blBkCg2xt9seIEi42eDfZR3WKQ9Db5MBNG1VkoK6Nozi3P2OB1HVBiacKEqEOuLT2QkNg5RXLfGImoK6TzoAj5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UEpnlQWU; arc=none smtp.client-ip=74.125.228.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B986492E27;
+	Wed, 30 Sep 2026 14:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790777006; cv=fail; b=I2JpDFq5Q+oFHejNHM3vdnuWkZcWVa5GKcwBS76vEHDgKMN3JRwAoxIhuX6GoClvcGtpkCNvyfxM4SXtEqZ895SbOid8+3M5reagE0sK7swP9JJBlZu1lzrSlW8M53idNwAlRmBvHqisc/xZ1yjq9/c99JPTEkoNZvMpjsjulhA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790777006; c=relaxed/simple;
+	bh=sp+9kYVvvPZXWp+MUp78lROE43PFnlHnIboADn/KbO0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=k1eBwifc5ngw79kB10oj0OgSfnA4Cn8NT1DfPSMsD/kNJhNXrKKIDFlc+1d/MZn9EaQ1gEJ1Dd6/B2NwJnHnDC2bUsx+c77cNJEMJLe7+44d5yMT1aMaOZ8rgTMywsoXuJ1bmEegd2TU/6K+wCzZu2MXgBu4BN9J8d7u3Ve7ji4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jhcfHjrq; arc=fail smtp.client-ip=52.101.70.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UEpnlQWU"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e30a06b59so20135066b.3
-        for <linux-spi@vger.kernel.org>; Wed, 30 Sep 2026 06:51:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790776289; x=1791381089; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+IoKX1KNbarkITcQFvbLMQ1gUQCVJ7Te+5R39GBUc8M=;
-        b=UEpnlQWU19HF2YQ6+h1Givg34TXiGLbOzW1X5TAsNO+qgXzB6nlp2+YxTAQxC6ARu4
-         mb6qF1MNsm+V+GYxSluqFvxyUHo8eu0yNKt73JIXRIOMkZ+EB2uYThMEFDlFO61lcsAo
-         pJ44SFDQjoW6QEJIXDVzQcoTuEcupC6oRSSxbpLjvt/a9+yZbBeIL0UzzdI+TxB2FxnN
-         Jem0kiPwC1pjSEjmXkgPlwKJjR8ZpCy6rVAgP+fz6TzeIOimk4wqkPq4ouXLeoVLvxa/
-         SujQkiAwU+FFBJICduj0DBRHMCZ+7PP6kKnVISR4/4cTNeFgQ6bSmCeXDfS+wZZxBYXr
-         BuEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790776289; x=1791381089;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+IoKX1KNbarkITcQFvbLMQ1gUQCVJ7Te+5R39GBUc8M=;
-        b=up0J4zYAa4ee4lbr/1nc7Ls9xO7sjhXnJBP8JDALrnLBRDGMgIHRmL9xSQEO9C7XmS
-         muGjfGpseYiCtFlA2tUPLErcAj5ZZmv6vu/AFRxEJuzQpOofXduqKK/glSDFn2zHwwZy
-         AmnoTWLGcf19aJ/Fg/7tx2zlpwuox8MJtWhOoCKolok6Ar/GzW0i4Box0d+6BjEExl5F
-         tFowzpqyMSK91UPUVVLTs/Q5Lz6YTJBsHNUTHZl96cY8iPYJhlamFOHbk3Xpk9GWtmza
-         NoiFxes/KrscAG0K/COGAbLtZWZwJ4b+RTAo2wSHDzlqzRgEJPwuRf3OEIBCIbxYaPji
-         TIQA==
-X-Forwarded-Encrypted: i=1; AKwUvBzHzTkeQuZ3FhYx+fD6tvpxF8NWT4rWSFCNbD4yfG+OtPAROwgxjjdxCotYNGd6GpIxTAcoZpdc4k4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lIJkOIMd744sV38hVWaGs9k8q3Bv/OtlSQYfnTn/X95EvSSIEp
-	H6R1EPjyhqUOXviidizOxYNxKYzlrpvqixJzqIiwAwPDsNh0Lw+a8Bvi
-X-Gm-Gg: AYBFou3x8RSumBeuoD1p2IrJgD7SHA9ZSXsRErZLJtCqKaCFXCXpkanvpjQgfDUXAEF
-	o1hJ0lZhXXMHbdnB0QBYvcOzBynAO4Wvlz7jz4rlYgqcbmrHVfrpvnzumn/0xhvkgOdq759C6Kx
-	VlfoGxiKx3TCeySpo0/CvhtbCmKWu3EvR7HCH4c5xAIFyCa9gHMSe9QnegA6KvSYArUONitb1As
-	zyp4EXi8QTe0kxCzgsK9cEEbhJVu8K8/DZkfao9Ex76lPHWtd7TL5wsbzVJ3b9zI9A9K4FQvtW2
-	su95FukwegKiviQ//mQNeWHZCHUT5hBPtA+mqY9V+YSKiCj+p3rhZhQsAp10gDSppY/xPoUR54a
-	kQzqaW6J7hmoFUzUYkyXka55CWFEIAJHJjBCPZt4XjWbk/W2X3oeCjKv1ff8Ehc6yJ+3bmLaoUo
-	pZqWE2Y8uhuVXbOlLLPFxPdCf9rHzlyRwZBpQr1Vd+oMShtL8bvFvrZ7e6m+Ds4/moWS9Gz8vzJ
-	M6dbjHEi5f2HwjXrvl/36VXE+r5e9HWVFw=
-X-Received: by 2002:a17:907:3f95:b0:c26:1648:a06c with SMTP id a640c23a62f3a-c2e23de0396mr133226666b.39.1790776289360;
-        Wed, 30 Sep 2026 06:51:29 -0700 (PDT)
-Received: from [172.24.138.145] ([137.71.226.102])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31d867ffsm5456466b.59.2026.09.30.06.51.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Sep 2026 06:51:28 -0700 (PDT)
-Message-ID: <a57399f0-4c47-4b32-bf6a-7761d9b57320@gmail.com>
-Date: Wed, 30 Sep 2026 15:51:26 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jhcfHjrq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=voBE4/8hkoa+jiaO+HM5GMwVVT4pdm5wrJgxEvTGpuA7QNYu5QvMQI+SPkxWYCIlJkOP4RQrvFD7rSusnPUgIDaFYjCvQpRKwftd2ctcOBjKH2MlDpk9M5/ZaMG1OGUeYYfGXBPa0fWBI7AXRq2pcxwt09H0VXshoGuuk2Ehu/GKAXjK03v72x+uPBWO3agnWu2j7l+5Vk94v6LImp82qlxVzqIb9xmaR0syNoqcNr8PChz6CH/1KSPgkn0dF8dk3XOoZ3Ce+/h9oITtyUfF1ZvRMHCYaj3ClDOjqKCByrAYqlZ6vgeHjg1y1yrDoMLYX42nFa0Cyo6lkkuZEjnSsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
+ b=TBoqXYTaJxjJr1m+7QXb/j5KRvBd6IfyHMsD8RR2Oi2IJeBERW14p1eJr3tyAPGc0tlUXDUEmPIC8fWuMzZasbbM+v+G6BOC2uSYzR4e0mgJPOZPCwhFF7Q9HbKrGLIgY/tS88X3P3rAB34a1CDCcU8ez2krPYOpynYuNMsNM2kGy+pgg+84F018fvq8k4YeXJ3lnUL7d7vg/jMze8wsjUj8kfsyDVshj8Mg9WvBEbqYgCVOaOo7tkj+wQ0fNr1plMo/ga4GaExyr5bhO0dGHmabXY8Ns0MqdYY5FvYKIod7M5Ye+Cy6giq0FFKxqb6CEjbLdu8MuuNV3AF1mGvzQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
+ b=jhcfHjrq2tqKw0glAdIAdTzZB/1s+M5+pL8jXxOUp3uFIvmkk1/zBzVgqdjyzFlCIvEnvzvLv2T0Uk62DnwliMA6jLQ4mmuyfNo63+F0Mha1TCSDZWjh5chVhi+ZTPlOM4mmlYet4facz9bRCT1xnDGjlBPpRDgTZh9G1o+BmZnX7eRGS3pN/SEC1dtYarzkfs79Wn2x5JMQQe1jA74ePYmwvYoTwVWh2nIjseAgDpfl/gmZzFdKRNimQVb9JZSSEF5D4gZgrU3PtsdHxNx9fo9UCsBnaD6N0WNn2JDocqXKZ4L5q9dhbwrh+KKIcxvtEKtNXJI86FIPk54VEEC5Ew==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by MMZPR04MB319484.eurprd04.prod.outlook.com (2603:10a6:190:3c::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Wed, 30 Sep
+ 2026 14:03:05 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 14:03:04 +0000
+From: Frank.Li@oss.nxp.com
+To: Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	linux-spi@vger.kernel.org (open list:MICROCHIP AT91 USART SPI DRIVER),
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Microchip (AT91) SoC support),
+	linux-kernel@vger.kernel.org (open list)
+Cc: vkoul@kernel.org,
+	imx@lists.linux.dev,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v2 1/2] spi: use dmaengine public API instead of raw ops
+Date: Wed, 30 Sep 2026 10:02:54 -0400
+Message-ID: <20260930140257.490019-1-Frank.Li@oss.nxp.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH0PR07CA0099.namprd07.prod.outlook.com
+ (2603:10b6:510:4::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/5] iio: dac: Add AD5529R DAC driver support
-To: Andy Shevchenko <andriy.shevchenko@intel.com>,
- Janani Sunil <janani.sunil@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Mark Brown <broonie@kernel.org>,
- Marius Cristea <marius.cristea@microchip.com>,
- Marcus Folkesson <marcus.folkesson@gmail.com>,
- Kent Gustavsson <kent@minoris.se>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
- Kent Gustavsson <nedo80@gmail.com>
-References: <20260715-ad5529r-driver-v6-0-cfdf8b9f5ee3@analog.com>
- <20260715-ad5529r-driver-v6-5-cfdf8b9f5ee3@analog.com>
- <arzTnOTaL97GudZM@ashevche-desk.local>
-Content-Language: en-US
-From: Janani Sunil <jan.sun97@gmail.com>
-In-Reply-To: <arzTnOTaL97GudZM@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MMZPR04MB319484:EE_
+X-MS-Office365-Filtering-Correlation-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|18002099003|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	9JVjECCsO+w2hppAZB9nhLPfW04HdJEM3pPeFMDi8N8Y+TZ0Fi2fgCVN9hGH23b6+Sduw/GivymUx1Ym59IvfD4asTaXa0Lpc68zjMSljDbVBFQaVkfOmyc9q6DfYhSx0mZYIAA7zyTvQGjTiCjZ8F+ZOEpBqNkmQE24Vi8k3xi+0z6pGnDU4DO6oqYMbgjDfGYvd1Q5r4YLhBXHOJvbS2hpsnjicgxn65YPf1q6YMWC/BSVf72eGdGCLRBLL1aq8E+QaLgElXAw1wvZk71vf3beME34qmDDIIfQoe74k3Hzeobv9fWG2qe/9SleMP3NopPwFi0o2720iAnadzIOKn6TNSr62vUccRgfcvDCwDZoir5Zh02Uoc8pbkiYSq3OkvlFx4EENSa0wadbg+c3DNatkqtuS+H3IJaqo2fAkv2yJ+qgBaxGpspg3mXnhNX1edYIPwpIutAM5VIp9GtRhYbt4YUcoyp7O3k1j3g5lcqqaA3JkpZt0PDWCMgiE29hR+Pu5Ckrt9e5DcLZchrM6/upVpkVCjraomF8Mf0AjsW9Qcw4kPevZx3odzD9XQ0T/kO3h7WJUDc/Gg54JDZ/dYunV0ZDjxcA6NOcmLv+S9nkzRHn8/1V+g4Kp53G5xkHOWPU+kX5fQ/Sq7qm38b1pEYA0ahtioELixg6xTQ0K28=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(18002099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Bz/EvKesdqV/cNhWWKuL71NsR18nWfSf7enCWnSMZA2A/goHBIt1luvQry8/?=
+ =?us-ascii?Q?rj3kW5XMhVrtgw37FNJyrlx58HEQSnPQx6a7Jzvo3wzCglECFNJJTY4Ws914?=
+ =?us-ascii?Q?ySmJWFdPW3HUC1oBHuSjyM5hyocABpD1+ma4smJgcmGg8eBP6QE4RnI1pDom?=
+ =?us-ascii?Q?hFTSy2XoKexy1dzMYG2Enha8CLgYoYR3o14MPEuIyf5oi6NKfNS3y3hbf2aw?=
+ =?us-ascii?Q?8F0y/ijYewQS6MlEVRyIjUrClmGztPu15uYbbUyO6KBIJT3dG5QttTbyxsix?=
+ =?us-ascii?Q?Ps4ihM2B4avBl6UYMQuxpcZSjfo44BptW5vLQGCQ0Y2f5C2C1TA3CgZedIc7?=
+ =?us-ascii?Q?KJJ4HWAgoKd2CuhKJY3mjxUyhx0f1ZF1tpybh3w4b23UQHHr4x7OJ3GPzAuh?=
+ =?us-ascii?Q?7Dz8NWjvp7kom8/5f0JdUd0wQeY2KXdpwTJU1hhkMa3WPX7ZhmE078awtfKc?=
+ =?us-ascii?Q?9Y6PJXjKn0RC6raT7D+cPlFi7ps33Gz8/vOq6Kpa04iJou/qBePPIvrHkR7K?=
+ =?us-ascii?Q?0ZiEww4DHmaH2KMHfaDdz+TPKA74bB2ruU2MjoxDgwmbYqMPryJQBzoON4ZK?=
+ =?us-ascii?Q?HEF9sx9DaK+v//AcJU80yKrw0RTblE872OT08qwkH8NDQdnsVjnJw17RGHkv?=
+ =?us-ascii?Q?mPyc3NvvLZRPOJo3NYlE8kXwOEbsTGJtBAfpB7Je91hn51Oxud+dShpkH1mQ?=
+ =?us-ascii?Q?bwyJ3RSyq4TDsSevAplQ3cKO3ynIGFMWOPQgNhTBdOZdQktim7DGGJJT/otV?=
+ =?us-ascii?Q?VKFQ1+HDI8HKa7Vdc8cCle27QY4cgPmI45W7c4AszXdGz0sQ6pyjWT8ojKoA?=
+ =?us-ascii?Q?IwQh8cOCFN/cIGmk+LnNrCZT8HWtip0qpbBjZzaDsUZf5l+zN4Hm+5gZRW72?=
+ =?us-ascii?Q?HKu7zaJ49rODGheShEaWJIrh9EMMdQInyuotgTBqo4g2yHy/TbYSlJJ5cAcn?=
+ =?us-ascii?Q?szdVX4Yo5Q9aVJb7bdB2OJoBuZcqt8u9Qm0iN1tyhPpupHu6LuQzAf14RIpY?=
+ =?us-ascii?Q?BUG4pXEphh1YiuZNFBzF57DpFmrFDybcpC4ce8hbot5loZFs4Sld8BmaHxeA?=
+ =?us-ascii?Q?sWr7z8HQgGS9btHrhaofcnOJYHZUZIsP0qkNXktJoyF+Sp1G01gO7iGnB0AG?=
+ =?us-ascii?Q?6pDP5N6MT8ueIGokAVE4Ss3MQzeQLU3uNJxFPX8CZIbgQATRvgA+svlhl312?=
+ =?us-ascii?Q?HNnTYTnNg/r01K+anuiO9wRVqpxEUWpIK8nPZ342vOEA3XBJQlFlJxCON4/w?=
+ =?us-ascii?Q?r0p8nfreuwV4Ka+PsKUozZF/ZF2+J6fY1SjbvXJLMM94vT2dsWeV/PJ7PS7Y?=
+ =?us-ascii?Q?R05//HK+LgnuTVQqNWmBqSkVYxAhTexelGWNYnsG/ldg/H2BSHa5cCVCfco4?=
+ =?us-ascii?Q?UJQ9uDOZ/vWwMxmLO4P8KN3TlwZUNmv2+EVGiz0koyY8jw66i9PnyUZtm0n2?=
+ =?us-ascii?Q?VN2K1YrT338TFMW8YQ/fZ8FCEv0+6ADN1ihzalKb4PUFezfbTxtYmwh9xc7a?=
+ =?us-ascii?Q?42k8QowTg0xNJuDLcDhJc2RzBRZiDQHjDvZ+gjpkAQJPVKIFLmSr2gaVYwbH?=
+ =?us-ascii?Q?hwdO6cgjO4ueH25ELnO10qZ9HaPEsyGDASInhsssoWAF3Q+TII+Fd1sXrh4A?=
+ =?us-ascii?Q?tBs68jqfBmBXhqsLd6nx5c9VG6R83rtpws6643qgbXlvak+TAFl2J/Vh/9VU?=
+ =?us-ascii?Q?rai/QaHxEDixCHIjGsGLv1z0dl2wRUVjlMGnDCQmKPIqGuI1b4x5Ark5pzX4?=
+ =?us-ascii?Q?WEQjzRlp2SWTgAfrNDGoRMvzoP1HVMU=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:03:04.5972
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ENrJ38R4lq8bNV/yMxzDaSO15BAKqlEUtgf0QZeeO74yBlOdkm4z5w/Vyzw47dWPOA08N6oXUSePHtDpQ4saBSU8LWKt7zFXYh+D5B73HU3KH4He1ACVZqPcwUdYfhYn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB319484
 
+From: Frank Li <Frank.Li@nxp.com>
 
-On 9/30/26 11:17, Andy Shevchenko wrote:
-> On Wed, Jul 15, 2026 at 01:41:08PM +0200, Janani Sunil wrote:
->> Add support for AD5529R 16-channel, 12/16 bit Digital to Analog Converter
->> from Analog Devices.
->>
->> The device communicates over SPI and supports per-channel output range
->> configuration. An optional external 4.096V reference can be used in
->> place of the internal reference.
-> You haven't added a given tag, why?
->
-> In any case I have noticed that there are a number of (not so critical) issues
-> are still exists, so I have to withdraw my tag. But please, answer the above Q.
+Replace direct calls to the internal DMA device ops
+device->device_issue_pending() with the proper public DMA engine wrappers:
+dma_async_issue_pending().
 
-I intentionally did not carry the Reviewed-by tag from V5, because V6 included substantial driver updates. I should have mentioned this in the cover letter, but I missed doing so.
-Some of the points mentioned here have already been addressed in later revisions and are now present in Jonathan's testing branch. I will send a follow up patch for the reset of the items.
+Drivers must not call device ops directly; the wrappers provide locking,
+debug checks, and a stable interface that hides internal implementation
+details of the DMA controller driver.
 
-Best Regards,
-Jan
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v2
+- none
+---
+ drivers/spi/spi-at91-usart.c | 4 ++--
+ drivers/spi/spi-atmel.c      | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
+index 804f6194c830f..cdc771350db93 100644
+--- a/drivers/spi/spi-at91-usart.c
++++ b/drivers/spi/spi-at91-usart.c
+@@ -239,8 +239,8 @@ static int at91_usart_spi_dma_transfer(struct spi_controller *ctlr,
+ 	if (dma_submit_error(cookie))
+ 		goto at91_usart_spi_err_dma;
+ 
+-	rxchan->device->device_issue_pending(rxchan);
+-	txchan->device->device_issue_pending(txchan);
++	dma_async_issue_pending(rxchan);
++	dma_async_issue_pending(txchan);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index c8012c82c3a78..c04113ce17f70 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -877,8 +877,8 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_controller *host,
+ 	cookie = txdesc->tx_submit(txdesc);
+ 	if (dma_submit_error(cookie))
+ 		goto err_dma;
+-	rxchan->device->device_issue_pending(rxchan);
+-	txchan->device->device_issue_pending(txchan);
++	dma_async_issue_pending(rxchan);
++	dma_async_issue_pending(txchan);
+ 
+ 	return 0;
+ 
+-- 
+2.43.0
 

@@ -1,43 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E441951C067;
-	Wed, 30 Sep 2026 18:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3A651FCA4;
+	Wed, 30 Sep 2026 18:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790792852; cv=none; b=B/OE59D13+ZSsChwNATysgh25RVJ4GAHx2DOnbrK6nawnB9PAbEHj7d66LOYcGdX1uFfd1hZdnWL5YMJkKHI778dBn0ZByWdz6/ePF44m4ZvhAuSTtHRC60V2LRo/oWi1I/X4Dg6xU6iRg/hLFgzujrVROd4unF+R47zzuvbaD0=
+	t=1790792856; cv=none; b=VglZ1RSh69sEt5Zf+tvNYRyqu59GuX9bS/E/QtB+LhBUoT/cK3Rf9IFYIkcHWsI4Kf4BXZrIMBRclXPbmJKxUA9AS5orV5vmAyuPXxdeNaB4+kdrbVbQwErBIOFzsR5XnROTWs1mJ9hx1f0B3Z6FU0zlAqe+frDTKGv+pzZH6bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790792852; c=relaxed/simple;
-	bh=WLjiOlD+dy9bJpuWvU5QCszfL7QR4gR3WwC3h0YTH7E=;
+	s=arc-20240116; t=1790792856; c=relaxed/simple;
+	bh=HvduEqLXXmVtvaxrl9fZQ8D354YowTFSpMsbD9lAeMk=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VmLUt+rHKRuVWXYzyYrCP1EKPaDmA3OC6GM8bfRwSYd8CHOzeYTP+lk6aEYMmnINQ/ziNCD55vEBSLBfQldohYN8E51GWbwwyXFfcMnSuKsubA+9637sAdCACPrS4WrqN9vJkW5CJIWm6pU1qe6BsttzSPBGr0F85cUlN91L9hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sxa972NF; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Mpf+Bc5IhsHeTO1ri9m2ZYxC49rPKWyPhvTMmsUm1iDRbXdrwwj08t9q9h/ONs2NJJQQhGSIBFlCZ+6RJt+ufDAN1IVOFekVNObsUMc+tslBD7vKvaMivKhr4ElmoiSVg3jOTMssddJnlybUmUoUcJt63xRbLoEFfuGHU1rUwZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YKnz22A/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sxa972NF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F71F00898;
-	Wed, 30 Sep 2026 18:27:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YKnz22A/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5335B1F00898;
+	Wed, 30 Sep 2026 18:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790792850;
-	bh=mWBQYEdITnJ3bd7uXTE9n2wMp9LpxBphVpb1y8WkIyA=;
+	s=k20260515; t=1790792855;
+	bh=H7kA4KMmXH/19k4ioQ1Vh9hgbpfy7iW0Z3HjzxATkHg=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Sxa972NFSAFlpJ9wrQwad0K7xg4KzEbVIPL5pfXMOZ5GHDl97MME/x0BMb0wES9vs
-	 seY982E5hycZFkAi7aX0VBbjyyrMZtxoUXxYrKQXIvIIr1LPQSo5Tzfoxxe5KYFVaF
-	 Oty8NAP9+5fkhrTUDrCJg8iUZZbHAI/iEZK/YsM/QdptWb5f7DnQCPUhEmfw6Oxyo0
-	 GVvcurDA8eqpI0GRKtjHPvQlSHLIWGBakQSrT+AiUD2NyFvXx6GEfZqG5+nuEVs7kJ
-	 5MV1EksPMyVmXAEJYRqnjkwWl7vyN0bRD0/fzWS3wAYyNqdszvvK4U78hW1Vr8dB9F
-	 LmWkwZi59FySg==
+	b=YKnz22A/mM/fBlGjaRgtGqQtDuq70I8Z8kWX+nqGSOTUthIaj4HhlKowvTXPSmB3s
+	 jRqaYrAHNrePHdQYTPf8tyfuG+c6nu/mGhhG6E/tk8Ojll4C84uksiy2K4H1xbarQx
+	 mGMyoAk9YJnzOP9YxHZ0LwzEYcTZUPrxIF83nhe1cEYSXYnNLr4iFEbmr1fFDBJ0/Y
+	 3mdY1pp7schpifKJY5gPNfsMfQAuePF4uWES7TzUhVWpiAS4mbxZcoHxJZt2o9R8OV
+	 8H/EKp3VSr4h/xcoGHwzTqg9qaiCW5C0yo5z48m/z5RnJ+hieykQ8SKt2DIf8WO7RG
+	 OZoeAr8GPrMqg==
 From: Mark Brown <broonie@kernel.org>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
- Yu-Chun Lin <eleanor.lin@realtek.com>
-Cc: p.zabel@pengutronix.de, james.tai@realtek.com, cy.huang@realtek.com, 
- stanley_chang@realtek.com, jyanchou@realtek.com, linux-spi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260930065945.88008-1-eleanor.lin@realtek.com>
-References: <20260930065945.88008-1-eleanor.lin@realtek.com>
-Subject: Re: [PATCH v5 0/2] spi: realtek: Add support for RTD1625 SPI NOR
- Flash Controller
-Message-Id: <179078200215.116826.7101545069790986903.b4-ty@b4>
-Date: Wed, 30 Sep 2026 16:26:42 +0100
+To: Changhuang Liang <changhuang.liang@starfivetech.com>
+Cc: Serge Semin <fancer.lancer@gmail.com>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260930071535.7947-1-changhuang.liang@starfivetech.com>
+References: <20260930071535.7947-1-changhuang.liang@starfivetech.com>
+Subject: Re: [PATCH v2 0/3] Add enhance SPI DMA support for JHB100 SFC
+Message-Id: <179078651849.116826.6994353806705253612.b4-ty@b4>
+Date: Wed, 30 Sep 2026 17:41:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -47,25 +44,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1375; i=broonie@kernel.org;
- h=from:subject:message-id; bh=WLjiOlD+dy9bJpuWvU5QCszfL7QR4gR3WwC3h0YTH7E=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqvVSOeQvRltv0WLoCl0l39BAsqEbjDVtK/eqnf
- Dnr2zmKHc2JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCar1UjgAKCRAk1otyXVSH
- 0Ej+B/wNEBilThpqX2K/igElQEvjsU4gCVDkfWrgszuxpz0m6BwNVRxjUJTnhhM0ffMiU7NTuLG
- A/gCJZmwH3XLnv8/wYDoqDnULIMSv7xfPQu50K2WKmDLGaeefVZuCnwUJYqtUBTndsLsuUevkyr
- wrbfdvECUNBz1fZhjx1NF36+NYDdOhwarYCmiPf5k35y3w3GjK8RSLqbbXcjffHdazWHDshoFbS
- 8FyeLwzS+zWfab9I/1KH6CIj/aVA83c3yJteOkAiW2wbqMB9VmCFLJD8Hxm48J5LNI8SSUM4IOH
- 11MmHp9ehecSFkM/G36HH8MJfWrmDPMing0Sphg1tP1bEGLT
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1694; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=HvduEqLXXmVtvaxrl9fZQ8D354YowTFSpMsbD9lAeMk=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqvVSTu8tO47LPmPnLYnmBzopEaVI76c8riUuPx
+ 5DYnsMTpxeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCar1UkwAKCRAk1otyXVSH
+ 0PPcCACCKlL1UhzWDY40VUC1GNL8HxDkt6JdVnvhaYeqi14adOXWt7R3uSm7mftbM2YliWUnkVW
+ eSzn705vyKIMUgsuKUm8LQAZHM3P3duUyhioGxQd9QDRuLjjWUacYNDot9jLjDDWxAwa2fyYikI
+ xMG5no7LTdBaCOcjPSf5AvSqopb+teB2kBel/COWNO5qIUjjzcvt4BjwSvOZMSghuf4acVrqzB0
+ ys1y7YPcQO19bJ/LmCa1nIcyMX/tlkAv2ijfEqqKq5K4GGrM+UdkymnuTgBbNVgT3UhUO182HZr
+ uzI6El+DzScB2IdO3X1grQrOwRJOnFEzKfeY+L94HB4FHmO/
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 30 Sep 2026 14:59:43 +0800, Yu-Chun Lin wrote:
-> spi: realtek: Add support for RTD1625 SPI NOR Flash Controller
+On Wed, 30 Sep 2026 00:15:32 -0700, Changhuang Liang wrote:
+> Add enhance SPI DMA support for JHB100 SFC
 > 
-> Hi all,
-> 
-> This patch series introduces support for the Realtek RTD1625 SPI NOR Flash
-> controller.
+> On the JHB100, there is only one channel available for DMA transfer.
+> In flash access scenarios, it operates in half-duplex mode, so we
+> can request this DMA channel for the direction that transfers a
+> larger amount of data. Different transfer directions need to share
+> a single DMA channel in a time-multiplexed manner.
 > 
 > [...]
 
@@ -75,10 +73,12 @@ Applied to
 
 Thanks!
 
-[1/2] dt-bindings: spi: Add Realtek RTD1625 SPI NOR support
-      https://git.kernel.org/broonie/spi/c/cf0f217a52d0
-[2/2] spi: spi-mem: Add Realtek SPI NOR flash controller driver
-      https://git.kernel.org/broonie/spi/c/aca8cbecdd2e
+[1/3] spi: dw: Convert the Tx done delay from SCK cycles to time
+      https://git.kernel.org/broonie/spi/c/5c99cb15169d
+[2/3] spi: dw: Support DMA with a single channel
+      https://git.kernel.org/broonie/spi/c/929b82c85fc1
+[3/3] spi: dw: Add DMA support for enhanced memory operations
+      https://git.kernel.org/broonie/spi/c/8cc7be24bc5e
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

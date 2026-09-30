@@ -1,26 +1,26 @@
 Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2138.outbound.protection.partner.outlook.cn [139.219.17.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECED4582E8;
-	Wed, 30 Sep 2026 07:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059A0466B58;
+	Wed, 30 Sep 2026 07:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.138
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790752569; cv=fail; b=idZ9oJOWmwNvuR/JRq2z5c99wSKkBEHm2m4BmPUTXHzYxRPo+alTp0+cg3ESWk5/ZTr8T9z6py16VWfZa9vCFOQ44CzV3MYmM8Jo6ilPe7R/MN5Qu0GB+Ixndh6kyOSN9NZ8J9pmlhyFlkJoJ/Hpm/Zs80gbr0fd+Wu7rHYYMnY=
+	t=1790752572; cv=fail; b=j+bmRj9m/BtQA2azSF4woDSMhY/2TM6NnmPmNulg8HgsLvc9xl6guMd3Kqw1oApvuuh3jX6KJDh7hi1/76mHMIsN0qg6py4ve20DsEZz+8tg+8K6Tvl7H4V0T3HizW0uC8gIsWT7y26XIDdp+hyQnBX6hxYE4yKfXuenKXw500c=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790752569; c=relaxed/simple;
-	bh=BLj+3mdxPQDdwpqYJmE0e0ZxDaMrnGYjfyoxg9zx8YE=;
+	s=arc-20240116; t=1790752572; c=relaxed/simple;
+	bh=oSwyAzQ2jAo6cblZqLEdkZPOfSBn1cTLMrmbM+1gX0c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y10mJvPj8d8bVC2aPekT9qgpnwBdOpgHQGcRR3yTL/YT3MMtBBM/kmH002GSWi1jsazr461NCcpIpCN8qJyCKMA2h3rjY9kE4+Ce9LDFIcRgKARsjcxLJp59BDzqg42FkQNV/EIJBo62KQMD2WZux1sZqaZ1WHrv0LMxk1SDY3M=
+	 Content-Type:MIME-Version; b=T+Zrf4u9hLrDDgVITNqiYdjK0sm0cn0ClBl3ClmCtC3DAC1fTSacHLK5ZhGrh8TBvG9qMOaPdCXrwQUJdQDVRK1Zdgsnrk+h/ylBEnHzlugE+xAwe/1LxzyMinjqTcnE2s9VGuAkBESVBmr9bdphYFjXVZ3ZSfCmJLJyJ+rWdY8=
 ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BFH5DC/uJXnxosSEw2VRUu15CBbwiQ+ttVACWoQpnb1z9C7mGKQLmXM/AmYIM6icdY28556Xmlh8Wrnut/qWL55zNL25VjjX8LUgPKa0OAv91ac0v3aaElk6V1igEZO7K54HwIPak/Al1GMv9TaaSdw+pb4B3FiRTch6wsU/pzhIT4YYuL1FZo8tzT1E7C4LwC/qgt+N1uhWqiKTTw07mH+DXC+fQaJm9dxuOit7rr/ARnQtztBuQvi0zQVWrK9cWFCPCXx7Dich3AnaTU76pIm4aYNFxz4taFioC2PuO5zFwPSOu/zEvlpgAFb/NGj8hp6Qvxh+DwdIf6JZM1QJTw==
+ b=Jrj+RAq3zYSeiQxQ9ehfj2+MHBKusKgQoYBM52Q25ExT8YOnNl7TosaVZ9RQTF4Re0lscKihLAP1OOes3HBnmzMumirYlyicvH0B4mqwyvlvUkb97pomDd67CidWBbWVeP5ooZ0akczZWdcfzNfBsDObmC8wIEVFXrwNPSM7P9zSbtVT9vnogkzeR6i8xXKP52UNVK8nlWbINYNlQidLtSMFVZOwvu8OM+unvpHXrkUigd0t1QgEHhnu89iNVykdtXjPE11EMu/lLy/ENUhnZ8pyndpTjXVGbAzShbIHB4z5EgoQTmsrjVl3wE2vU9T9QdbRBGF4/NRK+y8wX13xOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SqA9wOO6hs7zaaMiagh5n6yq45PZfzRyQeabnZ5CFqA=;
- b=n39XbE16fytDML1eeMo0/MHU6Cd6+kQw55YxbbVI4k3nrfrzwSWQPm67bpisdH8ez+4I9U/82nfpH7lU5rSRJ2+QCro9SMQTG6jLL641dLCVfol1+U/QeEjNRcCOO2kvkqihdq6WWyb4RMB0GrxUar4m9g9MfanoBS4dlrapP9LM22DYkpNizBQKtYVHZlOayXsQumkZ5Dim1DgIHYDFFZovgsEz21RKD+q7H7g5i8RSYuhNJCwehAhpUd9IE1BXGJygZIpVMjGbCs9Q6pyc3faet7aTvUBUql9FF6+az1u29ebk+/1Aj4W8itJtBtkTLGhElzUfv0Plzn55BBUttQ==
+ bh=YDe76KR6FlFVfWA0i8dpExkuCPxebWaZxofRcS6qWQk=;
+ b=Fl0iLnGoDj/hEMFiNZuyYKmgyfkDKkzeX3XIpXti1jWWpudHIufWAlOGhHADHOKL4XsW9Wp4ekjwrYxzciFjhZhO14Rdgh46QRl4ZJuebRrhJZLT5NYOLoMh3VvPh31DHu5y9hxVmLyXsScqC9Dl7OBKO50eOlkAAx8x8gyg14P/+U3ySo24xRsm2/bBk/FTOeT/GnqMrMCbR2SzreuQ1RxlbgpGmCb8j06R6mhBeh4gxXXZhRSeMYEyMU1r26bIVKHv8OeLiKTuu9FEjftyWoT5z/tdo8TefU4llJW1RmbJnVGzi/OE9ONlOAapC2jPCXxHepA+u0fs385tJ7GbAw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=starfivetech.com; dmarc=pass action=none
  header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
@@ -41,9 +41,9 @@ Cc: Serge Semin <fancer.lancer@gmail.com>,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v2 2/3] spi: dw: Support DMA with a single channel
-Date: Wed, 30 Sep 2026 00:15:34 -0700
-Message-Id: <20260930071535.7947-3-changhuang.liang@starfivetech.com>
+Subject: [PATCH v2 3/3] spi: dw: Add DMA support for enhanced memory operations
+Date: Wed, 30 Sep 2026 00:15:35 -0700
+Message-Id: <20260930071535.7947-4-changhuang.liang@starfivetech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260930071535.7947-1-changhuang.liang@starfivetech.com>
 References: <20260930071535.7947-1-changhuang.liang@starfivetech.com>
@@ -60,253 +60,468 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1201:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09576af1-d49a-43cd-a609-08df1ec2a62c
+X-MS-Office365-Filtering-Correlation-Id: b3663ca2-bd88-4e4e-3ef2-08df1ec2a68a
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|376014|23010399003|1800799024|10067099003|56012099006|22082099003|18002099003|38350700014;
+	BCL:0;ARA:13230040|52116014|366016|376014|23010399003|1800799024|10067099003|56012099006|6133799003|22082099003|18002099003|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	7c1fEpks6aW6xj2wUCalxWsuA9qAlMwQMBiSeuxFQE+4mTX3QckVzCu+PbCU7ChAPpH79Dlbj+gatkl/sgLq5lS2pIN/o5aWF9EFbLQytflvyCMg+iq5lLn2+bRe2hiMLE3SE+SP6yU241VDCyKZHFtrvOw9sbB2+zuHF0gsJmJthXbMB/9FTP64tp877zMVw7t8B31Mg/eaBKbSuwU/XKBugieoQohEZhud8/4pzkvJIRa3Tzd/4ctsUxy0xnqzr9tbGI6pHoK7KxthSKlsATntQlYZnue+IK0dXcP8lCC0h1azi+kJrPYa/EpymYxhObtIssaRgp/KxBrd/DIYo+ko4+y4suApN/5cr8N9vP8tHRsuSKP7zeLI28Gr+3tPde0XI+3A5I50mNbceJc0Oi9nV87VmD9dSuWKT73dBHf+cpSr4yn/ED3pXn4j2myGF1L2HKHEZREaIVPWpiZrRmxO5AumQ0NpSUAan0Z9qBC/uBqjdlFixtLZD4kZGs69cJHXBa6t3Nv+E/S16Bmw76q5cRwcatp6zXiJCSQZzIazARuRZaUwiQzhbHBD7pCi
+	+OUT0NZDkKHtZeF05ld8yKM3oyaw1P9umYa6iORIAQs+YMzBdouEXmHRFNaR570FHdqYnD8bIdaYg2cQEXciDj/gIIM/ATxymDhBqcThM6Res5nrJ6wxCytMnWiQSnOco2Hdmwy4tDY2JpeyN8mRKuI2To0nrJmxeesLtkmn+2OfxZ0QEvCFas0T2goV8XZ6Ruy5huJa47tjdw/lnzpiqjMFh0FYtQhn+1TfBv98N9DF7wWHsSH2XtSmXPTJONH6hjgsWXCHVNq9VsjDkoip4BfykjcRRZQVZqhcXX83tbgu8pI4Ac7srMic7xoD4uvGBhnBjx2worE23y2a1y9Jng2XVKXz+8IjHlhD3sxWix/ELkeVjnhbZnKRy7pS7aH0aYU/7KzhFBlWVINx2+9mw+FdXMLY4RNztbmyLz7QujAU0w8cbTPW5af8oNI0UJsnoYCind95P8Fe5Kx7Xb/+UtuUGWXJ1D9KXrFTW7Ozqrsps+vSHhRnDpqpXwsvZ/nXVtVmoE1XHtLKWl1zHw7P4ttBkqTlqYl5ebPeVHLtnLJtpygK3g2qYOSmEfJzmJJs
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(23010399003)(1800799024)(10067099003)(56012099006)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(376014)(23010399003)(1800799024)(10067099003)(56012099006)(6133799003)(22082099003)(18002099003)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3awbEfFcR/z/ApQIikXZS0MFbzLF2TChipHb5P1IFgjRcL23Yb9Z1guXG7/9?=
- =?us-ascii?Q?fNixzEUZxKlVqRT8DSsF/X5qftXHwokCCdtKMbkhPxXZAIQOxKlMkawMIKWE?=
- =?us-ascii?Q?ztfeZ1m9ZiggInpgJ4S3XS5XRwX1/cuXgQhWwQJQ0hx6ctNrKSmHI/r2ZgOV?=
- =?us-ascii?Q?WVRIAw51g2R14w9GsqrW5XKEYQSjCGbfo8hUDf0RWZsw6woK5t1VxTU4D+pK?=
- =?us-ascii?Q?gdX0y1+cKtnY//h3+R/e45+DztkUHfq2O3qh4s/Cw+7Ak4NoiSnpI5EPOhWR?=
- =?us-ascii?Q?kXxLfNUVyAjrsAHJx21RU74CvpzGgSjH7HSjkQb8thtr5WuGzP1M2QbUO12S?=
- =?us-ascii?Q?hV/ziesMB16XQWSOv5daHlfTJHLMQuyeDJPU/ocYK200djk5kjlXF3rAvfEh?=
- =?us-ascii?Q?1vMDFZ3Xvaxs4ULt+WHZj4EkrTsG5tcd698hlGSBgQR7po329xkpGRHuTDKL?=
- =?us-ascii?Q?FL0cJd8GM+JdaTwQLL9I10lud63moEpYMSDfpdlviFrWRlD4TsTONtbbmEJy?=
- =?us-ascii?Q?fTKaBcvM04PmdaWhRxMoKK+1byBYhx0wwJ4CWnoMe4Xvcf6oMh+Q8oLjLJRl?=
- =?us-ascii?Q?XPGraTzEK0naSRE3lf/RF3D8aMTJWq2VaZpGTBBUrnWGaAWFGodRZLe3jSQV?=
- =?us-ascii?Q?yEnu39aR6kgzoZXfZATjESrLQL4szBWp6EyeB9newStheDBlQQ3qXsxDZTsD?=
- =?us-ascii?Q?cswPENDeO2M6XlSQo8BnwQGzUgOj2Yf3nnFVQsbU5Kjsecm1ueWmR0WT/Fek?=
- =?us-ascii?Q?oMe4lKBXp6TLk+yHSVxXDERm7VRQRm6AX4Yc6O4rdHsCIx3cpltAQSMOusVE?=
- =?us-ascii?Q?uNu83EJ/4E7Is7v4HTtjwnVXQlBn7MhJcbvD2t7BmjIIxw7Ohh78lKqtAqYr?=
- =?us-ascii?Q?v/pxXR+xcOtVRObIxqKL3yGDIkXdDx7DlyGqLkkF0KyuqVQHUKirixHdljeI?=
- =?us-ascii?Q?OMdmyo2GsEJhXxS7qenx5622Xuqr8gULd8S0bb7qvHDVwzKJBisC1iJ9ryLS?=
- =?us-ascii?Q?VXrRWAlbuQDrQMzGGk+GDMgn1r2/7DgSEGFfcK4R2uaB6sUbIcZpteJ5feu3?=
- =?us-ascii?Q?9IDJoPCE2ayug9IlFwEtkHjip1ssU+K6SBQVgLI++2GHOHUmXvTDIHBRgp/0?=
- =?us-ascii?Q?olaNHbbDabCPEdQKehOKOcvOxJcYXNAutxBVOmKqWLcOCVpBZ2N8V3/qJnTO?=
- =?us-ascii?Q?QiNSnQrUz0K4oJHIdxabI22UQrZyKXQru+G9xh0lZqyDo+eEK6S8FMtJaVS0?=
- =?us-ascii?Q?5H/lIRufLLKZ0CnXqP0vrHzAEERUJHOMMS7gJR+g07eIZwCufCAIRsEiI7jt?=
- =?us-ascii?Q?kvNu/+NBLHetjvQxcmF2+YAZnwHwQiLyToeKeY/JHpsYq/6MD8sp7NJUZn+B?=
- =?us-ascii?Q?hLnee9eQParQ4T9VANeWxTlPY07ybg5jA0YxKQ+ERA4hgjtrLFINMaePLAYv?=
- =?us-ascii?Q?ybiSsUH6FclGQ5zNfuC+/tBMhff20KBZ4vApQAjDYa+cfR+7VOwbEdvuh18d?=
- =?us-ascii?Q?1mt7PUROO3eUQfqncgRZyDdwriwejLwvanP0psVCl+/Bs/olgL2FFhqEcoX3?=
- =?us-ascii?Q?0meg04NsCWvKVRDiBaHNRcXw2kBpbaTJ7RLLDeVls8ZWRyQJtpdq/rElr5Ss?=
- =?us-ascii?Q?mxiE236hOBWTX1JiT8A0qDlaOhS+u6oQr6iHSW5+ijFEycltBISIWCFafQ9w?=
- =?us-ascii?Q?0ESj3bYu/MKbmddq47Hc33U9XEMRHKz+tzSMXhhhHw/er6krUMmj48uI8PaR?=
- =?us-ascii?Q?3bPgkzXG8l1eU7XR06KKIN84WWU+wWj+1cdTr+0Tpq7xD5MkMfOh?=
+	=?us-ascii?Q?fvzZeGBV3K1WD+FjdIJutm1vvm5YEgJCXg+ykqEc2g9I4V79hhZccA0QmvIL?=
+ =?us-ascii?Q?bOToGafXfl4ZY4uVcyobV3701/fBTSgOddvTthkFgiVocTmmY9TVl6gb2Gvh?=
+ =?us-ascii?Q?S8nJtt436pqRbXBHods89kgNyN4pY3RGMWL2AA7gnadP86V4PS8hQau+JAz3?=
+ =?us-ascii?Q?ZJRVRfRoGku6y6kFjQhsJPT+bHQMLAcHVhCFwF8XA5HY2pOFFKSl1BUKF2Ra?=
+ =?us-ascii?Q?apooYUIW9VsIwv3htdZaZBik96FQKwH5USsVEhRF5rUq0UPh7SogvE00+TLz?=
+ =?us-ascii?Q?KqeCkL+hhlG6cdZqbwMIqAMjiEyzwhEue3xIMU+kybxLteKwy/ttkMajDuV6?=
+ =?us-ascii?Q?VsQQqJhuAOQf1kEqWuFoMqpjEnvOF1D3lmhP12qVI5aPmWvXq92b4Yp8sOt4?=
+ =?us-ascii?Q?Ts7Jsf65HyHnpHrdPBdKSxBZdES1Zio7DgDVvxYG1z3SiP6Dbh5bLL5L5yQ6?=
+ =?us-ascii?Q?v1j94GAgiPtNgSzJp7BEPgVIKvfVg5Rp4gTyMU53Vf8q8peMxQuuXTrMKRg5?=
+ =?us-ascii?Q?GLF2dhSTan2MmiF7bQn6cYEreZrzIFnVVAiCn5jYNDiLNiQIZu0vbWPUh0zp?=
+ =?us-ascii?Q?4rTjPq3JN2vI9p2p7joS5PUDxzvN4hyUnaEY2iIWDBT7Z6ekxj9PaueaAx+g?=
+ =?us-ascii?Q?TLUvJjV4pj91XncDVmlOxlSnVvMsqUIid3dwlGU3p/6l59vfYcZz72TVmAls?=
+ =?us-ascii?Q?sZZfhRByhmoNBFBqDz9jxz7XnPIQLuxfVTl3uCz0fLPSp0+4m4MaJCZNIZqS?=
+ =?us-ascii?Q?gDFXnzmmuFYq6BswK7LJJnO4ajq4XzupggbsXTVBl7rJOXBzC7yf4wfuZDpS?=
+ =?us-ascii?Q?+R8G0Qcjk3Ztu6rJNoEr/CN+TYPqjDsUFzWGnZq0J/NiJwAhoSQOq/mETq+l?=
+ =?us-ascii?Q?9DkIXLh/uRGOxalR73VbT9w5wdGnNn0dHyKH2E2QqDWjJSUayXUobo0PYIFi?=
+ =?us-ascii?Q?TA890EH3NnqFBini5+JulyHalgo/I7cMQkSyUVYXYsALGpdMQFkzDacV2zex?=
+ =?us-ascii?Q?3A0dQ4KuM8IbY803vH851tZ13M1CxMeB8yzG8F5X9WUvEY+COhwg4RHZ4PUQ?=
+ =?us-ascii?Q?5fyMo3vqHLpg08rLHazH2TaS3bRb0uuhQeI1V93n/uCHESF2N8NzXGOABesw?=
+ =?us-ascii?Q?5FhbnpWRK4yV8Rha8C68/zSbn1+IqJ2SJevIONB+gfx6/uEMy4LxiXAgbI9X?=
+ =?us-ascii?Q?54yUgLEJYgpv4F9KR5PNN0oC2BQPBLeK/M8OxEwrcL8zc/o1YWV9CrocyZcJ?=
+ =?us-ascii?Q?dunEkv5EQ6slBBc5cUTRUE2C+R+sIgXPbkXaIVNNgzrnQ+nBtKFeDe6K2WBQ?=
+ =?us-ascii?Q?hnwr2Ty1RKyCGMKWRyqDA5R/TVB6riJ/wZ3K9jiOQW2+ULaVrN5Kna3wp/Hl?=
+ =?us-ascii?Q?Tsmvx9BDVJDrmM8j12aqqbX9Cwu1CK02IXszBlDq95bsGjzzjIRFnIYCK24n?=
+ =?us-ascii?Q?jcnHLSpHaPDQY6a1jMqWHYM+46bB6CuWTkQ2q9Tl4oMfTAtsv/ZeBAOY0ll3?=
+ =?us-ascii?Q?Fcd0wM65dMg8scY5P/glKTqfgJr+pewcbK3RdnQvW4T4ineSiNSvLrJeEnQI?=
+ =?us-ascii?Q?BWGRAGS85s6vJtWGAAzbWkDZ+Hov3IKuqip8Ix2PMHvK0VQ4v1R3JoPuZTsi?=
+ =?us-ascii?Q?hvvqqDRzM5v7SdBzqGqRh0K1tGqSNoe/KkUnBPc2ww9Yz2bNbCRmeJquZ7RJ?=
+ =?us-ascii?Q?gW3qU89794RnnLHP3Y7H9IymuIDiJjGD4TNEMbpde5iAarYRCMagxxJ4gQvU?=
+ =?us-ascii?Q?83RYsZw8IWaI7j0U17JiRF3QMEDfdfE/yFnf4Dl+nt44DDGbP9nN?=
 X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09576af1-d49a-43cd-a609-08df1ec2a62c
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3663ca2-bd88-4e4e-3ef2-08df1ec2a68a
 X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 07:15:47.1524
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 07:15:47.7581
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6qeqBZmBFoYyaamjquQhrMPoe+gK5ihvBk3JdUPMRWdfejB0hjZpRbj5mjLqWwphBRp3FCofKkyY6skzx243+c6SWDODlBoDamqtn1BUbVT8iwfkM6aP5Ij6h7m7NZ0L
+X-MS-Exchange-CrossTenant-UserPrincipalName: MULtDyEKO7iae8xER03hDvc2vgorwJxmibpgV1/LJBa/El6qwbq7AQIzdfmxC8AVSx5TPVFOkNyPc7jFuq5/3FVmmESkQYykJcQb8xWTP0r0GOxkmFppbSWrPqYL6f4N
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1201
 
-Some platforms, such as StarFive JHB100, provide only one DMA channel
-for the DW SPI controller. dw_spi_dma_init_generic() requires both the
-Tx and Rx channels, so DMA is disabled entirely on such platforms.
+Implement DMA support for enhanced SPI memory operations. These
+operations are half-duplex, so they work with either one or two DMA
+channels.
 
-Request both channels at probe time and decide what is usable from the
-return values. If the first (Rx) channel request fails, fall back to
-non-DMA transfers as before. If only the second (Tx) channel request
-fails, keep the Rx channel. Each successfully requested channel is
-counted in dws->dma_nr_chans. -EPROBE_DEFER on the second channel is
-still propagated.
+Add enhanced memory DMA callbacks (get_chan, setup, can_dma, transfer)
+to struct dw_spi_dma_ops and hook them into the generic DMA operations.
+They reuse the existing channel configuration, submission and wait
+helpers.
 
-Full-duplex standard SPI transfers need both channels, so only set
-ctlr->can_dma and SPI_CONTROLLER_MUST_TX when two channels are
-available. A single channel can still serve half-duplex transfers,
-which will be used by the enhanced SPI memory operations in a
-follow-up patch.
+With two channels, both are requested at probe time and kept for the
+lifetime of the controller. With a single channel, as on JHB100, the
+channel is bound to one direction by its "tx"/"rx" DMA specifier. The
+channel currently held (dws->txchan or dws->rxchan) records which
+direction it serves. It is reused as long as the direction stays the
+same, and only released and requested for the other direction when
+the transfer direction changes.
 
-Make dw_spi_dma_caps_init() and dw_spi_dma_maxburst_init() cope with a
-missing channel, and set ctlr->dma_tx/dma_rx only after the capability
-check has passed so that they never point to a released channel.
+In dw_spi_exec_enh_mem_op(), record the direction in dws->tx_dir and
+use the DMA path when a channel is available for that direction,
+can_dma_enh_mem() accepts the transfer, and the transfer exceeds the
+FIFO length; otherwise fall back to the interrupt path.
+
+Also move the udelay(5) workaround into dw_spi_enh_write_cmd_addr() so
+it applies to both paths, and enable the generic DMA setup in
+dw_spi_jhb100_init().
 
 Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 ---
- drivers/spi/spi-dw-core.c |  3 ++
- drivers/spi/spi-dw-dma.c  | 88 ++++++++++++++++++++++++++++-----------
- drivers/spi/spi-dw.h      |  1 +
- 3 files changed, 67 insertions(+), 25 deletions(-)
+ drivers/spi/spi-dw-core.c | 100 +++++++++++++--------
+ drivers/spi/spi-dw-dma.c  | 182 ++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi-dw-mmio.c |   2 +
+ drivers/spi/spi-dw.h      |   7 ++
+ 4 files changed, 255 insertions(+), 36 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 206d3f9dd83d..6889f4446ecb 100644
+index 6889f4446ecb..892b3a8787eb 100644
 --- a/drivers/spi/spi-dw-core.c
 +++ b/drivers/spi/spi-dw-core.c
-@@ -1360,6 +1360,9 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
- 			goto err_free_irq;
- 		} else if (ret) {
- 			dev_warn(dev, "DMA init failed\n");
-+		} else if (dws->dma_nr_chans == 1) {
-+			/* Full-duplex DMA transfers need both channels */
-+			dev_info(dev, "Single DMA channel, full-duplex DMA disabled\n");
- 		} else {
- 			ctlr->can_dma = dws->dma_ops->can_dma;
- 			ctlr->flags |= SPI_CONTROLLER_MUST_TX;
+@@ -937,6 +937,15 @@ static void dw_spi_enh_write_cmd_addr(struct dw_spi *dws, const struct spi_mem_o
+ 
+ 		dw_spi_set_cs(mem->spi, false);
+ 	}
++
++	/*
++	 * FIXME: The exact reason for this delay is not fully understood,
++	 * but empirical testing shows it significantly improves the stability
++	 * of read/write operations. Without this delay, occasional transfer
++	 * errors or timeouts may occur under certain conditions.
++	 * Keeping it as a safeguard based on practical validation.
++	 */
++	udelay(5);
+ }
+ 
+ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
+@@ -948,6 +957,8 @@ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *
+ 	unsigned long long ms;
+ 	int ret;
+ 
++	dws->dma_mapped = false;
++
+ 	switch (op->data.buswidth) {
+ 	case 0:
+ 	case 1:
+@@ -971,10 +982,13 @@ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *
+ 	cfg.dfs = 8;
+ 	cfg.freq = clamp(op->max_freq, 0U, dws->max_mem_freq);
+ 	cfg.ndf = op->data.nbytes;
+-	if (op->data.dir == SPI_MEM_DATA_IN)
++	if (op->data.dir == SPI_MEM_DATA_IN) {
+ 		cfg.tmode = DW_SPI_CTRLR0_TMOD_RO;
+-	else
++		dws->tx_dir = false;
++	} else {
+ 		cfg.tmode = DW_SPI_CTRLR0_TMOD_TO;
++		dws->tx_dir = true;
++	}
+ 
+ 	if (op->data.buswidth == op->addr.buswidth &&
+ 	    op->data.buswidth == op->cmd.buswidth)
+@@ -1010,47 +1024,61 @@ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *
+ 		}
+ 	}
+ 
+-	dw_spi_enh_write_cmd_addr(dws, op, mem);
++	if (dws->dma_nr_chans && dws->dma_ops->dma_enh_mem_get_chan &&
++	    op->data.nbytes > dws->fifo_len) {
++		ret = dws->dma_ops->dma_enh_mem_get_chan(ctlr->dev.parent, dws);
++		if (ret) {
++			/* fall back to the PIO/IRQ path */
++			dev_dbg(&ctlr->dev, "DMA enh mem channel unavailable (%d)\n", ret);
++		} else if (dws->dma_ops->can_dma_enh_mem(ctlr)) {
++			ret = dws->dma_ops->dma_enh_mem_setup(dws);
++			if (ret)
++				dev_err(&ctlr->dev, "DMA enh mem setup failed (%d)\n", ret);
++			else
++				dws->dma_mapped = true;
++		}
++	}
+ 
+-	/*
+-	 * FIXME: The exact reason for this delay is not fully understood,
+-	 * but empirical testing shows it significantly improves the stability
+-	 * of read/write operations. Without this delay, occasional transfer
+-	 * errors or timeouts may occur under certain conditions.
+-	 * Keeping it as a safeguard based on practical validation.
+-	 */
+-	udelay(5);
++	if (dws->dma_mapped) {
++		dw_spi_enh_write_cmd_addr(dws, op, mem);
+ 
+-	dw_spi_enh_irq_setup(dws);
++		ret = dws->dma_ops->dma_enh_mem_transfer(mem, op);
+ 
+-	/* Use timeout calculation from spi_transfer_wait() */
+-	ms = 8LL * MSEC_PER_SEC * (dws->rx_len ? dws->rx_len : dws->tx_len);
+-	do_div(ms, dws->current_freq);
++		dw_spi_stop_mem_op(dws, mem->spi);
++	} else {
++		dw_spi_enh_write_cmd_addr(dws, op, mem);
+ 
+-	/*
+-	 * Increase it twice and add 200 ms tolerance, use
+-	 * predefined maximum in case of overflow.
+-	 */
+-	ms += ms + 200;
+-	if (ms > UINT_MAX)
+-		ms = UINT_MAX;
++		dw_spi_enh_irq_setup(dws);
+ 
+-	ms = wait_for_completion_timeout(&ctlr->xfer_completion,
+-					 msecs_to_jiffies(ms));
+-	if (ms == 0) {
+-		dw_spi_mask_intr(dws, 0xff);
+-		synchronize_irq(dws->irq);
+-		dws->rx = NULL;
+-		dws->tx = NULL;
+-		dws->rx_len = 0;
+-		dws->tx_len = 0;
+-		dw_spi_stop_mem_op(dws, mem->spi);
+-		return -EIO;
+-	}
++		/* Use timeout calculation from spi_transfer_wait() */
++		ms = 8LL * MSEC_PER_SEC * (dws->rx_len ? dws->rx_len : dws->tx_len);
++		do_div(ms, dws->current_freq);
++
++		/*
++		 * Increase it twice and add 200 ms tolerance, use
++		 * predefined maximum in case of overflow.
++		 */
++		ms += ms + 200;
++		if (ms > UINT_MAX)
++			ms = UINT_MAX;
++
++		ms = wait_for_completion_timeout(&ctlr->xfer_completion,
++						 msecs_to_jiffies(ms));
++		if (ms == 0) {
++			dw_spi_mask_intr(dws, 0xff);
++			synchronize_irq(dws->irq);
++			dws->rx = NULL;
++			dws->tx = NULL;
++			dws->rx_len = 0;
++			dws->tx_len = 0;
++			dw_spi_stop_mem_op(dws, mem->spi);
++			return -EIO;
++		}
+ 
+-	ret = dw_spi_wait_mem_op_done(dws);
++		ret = dw_spi_wait_mem_op_done(dws);
+ 
+-	dw_spi_stop_mem_op(dws, mem->spi);
++		dw_spi_stop_mem_op(dws, mem->spi);
++	}
+ 
+ 	return ret;
+ }
 diff --git a/drivers/spi/spi-dw-dma.c b/drivers/spi/spi-dw-dma.c
-index d0b1a03682e6..76d7814f0dcf 100644
+index 76d7814f0dcf..a86039057988 100644
 --- a/drivers/spi/spi-dw-dma.c
 +++ b/drivers/spi/spi-dw-dma.c
-@@ -42,14 +42,19 @@ static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
- 
- 	def_burst = dws->fifo_len / 2;
- 
--	ret = dma_get_slave_caps(dws->rxchan, &caps);
--	if (!ret && caps.max_burst)
--		max_burst = caps.max_burst;
--	else
--		max_burst = DW_SPI_RX_BURST_LEVEL;
-+	if (dws->rxchan) {
-+		ret = dma_get_slave_caps(dws->rxchan, &caps);
-+		if (!ret && caps.max_burst)
-+			max_burst = caps.max_burst;
-+		else
-+			max_burst = DW_SPI_RX_BURST_LEVEL;
-+
-+		dws->rxburst = min(max_burst, def_burst);
-+		dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
-+	}
- 
--	dws->rxburst = min(max_burst, def_burst);
--	dw_writel(dws, DW_SPI_DMARDLR, dws->rxburst - 1);
-+	if (!dws->txchan)
-+		return;
- 
- 	ret = dma_get_slave_caps(dws->txchan, &caps);
- 	if (!ret && caps.max_burst)
-@@ -74,20 +79,39 @@ static void dw_spi_dma_maxburst_init(struct dw_spi *dws)
- 
- static int dw_spi_dma_caps_init(struct dw_spi *dws)
- {
--	struct dma_slave_caps tx, rx;
-+	struct dma_slave_caps tx = {}, rx = {};
- 	int ret;
- 
--	ret = dma_get_slave_caps(dws->txchan, &tx);
--	if (ret)
--		return ret;
-+	if (dws->txchan) {
-+		ret = dma_get_slave_caps(dws->txchan, &tx);
-+		if (ret)
-+			return ret;
- 
--	ret = dma_get_slave_caps(dws->rxchan, &rx);
--	if (ret)
--		return ret;
-+		if (!(tx.directions & BIT(DMA_MEM_TO_DEV)))
-+			return -ENXIO;
-+	}
-+
-+	if (dws->rxchan) {
-+		ret = dma_get_slave_caps(dws->rxchan, &rx);
-+		if (ret)
-+			return ret;
-+
-+		if (!(rx.directions & BIT(DMA_DEV_TO_MEM)))
-+			return -ENXIO;
-+	}
- 
--	if (!(tx.directions & BIT(DMA_MEM_TO_DEV) &&
--	      rx.directions & BIT(DMA_DEV_TO_MEM)))
--		return -ENXIO;
-+	/* With a single channel only one direction is available at a time */
-+	if (!dws->rxchan) {
-+		dws->dma_sg_burst = tx.max_sg_burst;
-+		dws->dma_addr_widths = tx.dst_addr_widths;
-+		return 0;
-+	}
-+
-+	if (!dws->txchan) {
-+		dws->dma_sg_burst = rx.max_sg_burst;
-+		dws->dma_addr_widths = rx.src_addr_widths;
-+		return 0;
-+	}
- 
- 	if (tx.max_sg_burst > 0 && rx.max_sg_burst > 0)
- 		dws->dma_sg_burst = min(tx.max_sg_burst, rx.max_sg_burst);
-@@ -169,40 +193,54 @@ static int dw_spi_dma_init_generic(struct device *dev, struct dw_spi *dws)
- {
- 	int ret;
- 
-+	dws->dma_nr_chans = 0;
-+
- 	dws->rxchan = dma_request_chan(dev, "rx");
- 	if (IS_ERR(dws->rxchan)) {
- 		ret = PTR_ERR(dws->rxchan);
- 		dws->rxchan = NULL;
- 		goto err_exit;
+@@ -728,6 +728,183 @@ static void dw_spi_dma_stop(struct dw_spi *dws)
  	}
-+	dws->dma_nr_chans++;
+ }
  
-+	/*
-+	 * Some platforms have only one DMA channel for the controller. Keep
-+	 * the Rx channel in that case, it can still serve half-duplex
-+	 * transfers.
-+	 */
- 	dws->txchan = dma_request_chan(dev, "tx");
- 	if (IS_ERR(dws->txchan)) {
- 		ret = PTR_ERR(dws->txchan);
- 		dws->txchan = NULL;
--		goto free_rxchan;
-+		if (ret == -EPROBE_DEFER)
-+			goto free_rxchan;
++/*
++ * The enhanced SPI memory operations are half-duplex, so a single DMA channel
++ * is enough for them. On a platform with only one channel, the channel is
++ * bound to a direction by its "tx"/"rx" DMA specifier, and whichever channel
++ * is currently held tells which direction it serves. Keep it across
++ * operations and swap it only when the transfer direction changes.
++ */
++static int dw_spi_enh_mem_dma_get_chan(struct device *dev, struct dw_spi *dws)
++{
++	struct dma_chan **chan, **other;
++	const char *name;
++	int ret;
++
++	if (dws->dma_nr_chans == 2)
++		return 0;
++
++	if (dws->tx_dir) {
++		chan = &dws->txchan;
++		other = &dws->rxchan;
++		name = "tx";
 +	} else {
-+		dws->dma_nr_chans++;
- 	}
- 
--	dws->ctlr->dma_rx = dws->rxchan;
--	dws->ctlr->dma_tx = dws->txchan;
--
--	init_completion(&dws->dma_completion);
--
- 	ret = dw_spi_dma_caps_init(dws);
- 	if (ret)
- 		goto free_txchan;
- 
- 	dw_spi_dma_maxburst_init(dws);
- 
-+	init_completion(&dws->dma_completion);
++		chan = &dws->rxchan;
++		other = &dws->txchan;
++		name = "rx";
++	}
 +
-+	dws->ctlr->dma_rx = dws->rxchan;
++	if (*chan)
++		return 0;
++
++	dws->ctlr->dma_tx = NULL;
++	dws->ctlr->dma_rx = NULL;
++
++	/*
++	 * With a single physical channel, the held channel must be released
++	 * before it can be requested again with the handshake of the other
++	 * direction. On failure both stay NULL, and the next operation
++	 * retries the request and falls back to PIO meanwhile.
++	 */
++
++	if (*other) {
++		dma_release_channel(*other);
++		*other = NULL;
++	}
++
++	*chan = dma_request_chan(dev, name);
++	if (IS_ERR(*chan)) {
++		ret = PTR_ERR(*chan);
++		*chan = NULL;
++		return ret;
++	}
++
++	ret = dw_spi_dma_caps_init(dws);
++	if (ret) {
++		dma_release_channel(*chan);
++		*chan = NULL;
++		return ret;
++	}
++
++	dw_spi_dma_maxburst_init(dws);
++
 +	dws->ctlr->dma_tx = dws->txchan;
++	dws->ctlr->dma_rx = dws->rxchan;
++
++	return 0;
++}
++
++static int dw_spi_enh_mem_dma_setup(struct dw_spi *dws)
++{
++	u16 dma_ctrl, level;
++	int ret;
++
++	/* Setup DMA channels */
++	if (dws->tx_dir) {
++		ret = dw_spi_dma_config_tx(dws);
++		if (ret)
++			return ret;
++
++		dma_ctrl = DW_SPI_DMACR_TDMAE;
++	} else {
++		ret = dw_spi_dma_config_rx(dws);
++		if (ret)
++			return ret;
++
++		dma_ctrl = DW_SPI_DMACR_RDMAE;
++	}
++
++	dw_writel(dws, DW_SPI_DMACR, dma_ctrl);
++
++	/* Clear stale error status, it is checked after the transfer */
++	dw_readl(dws, DW_SPI_ICR);
++
++	reinit_completion(&dws->dma_completion);
++
++	level = min_t(unsigned int, dws->fifo_len / 2, dws->tx_len);
++	dw_writel(dws, DW_SPI_TXFTLR, level);
++
++	level = min_t(unsigned int, dws->fifo_len / 2, dws->rx_len);
++	dw_writel(dws, DW_SPI_RXFTLR, level ? level - 1 : 0);
++
++	return 0;
++}
++
++static bool dw_spi_enh_mem_can_dma(struct spi_controller *ctlr)
++{
++	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
++	unsigned int len = dws->tx_dir ? dws->tx_len : dws->rx_len;
++	enum dma_slave_buswidth dma_bus_width;
++
++	if (len <= dws->fifo_len)
++		return false;
++
++	dma_bus_width = dw_spi_dma_convert_width(dws->n_bytes);
++
++	return dws->dma_addr_widths & BIT(dma_bus_width);
++}
++
++static void dw_spi_enh_mem_dma_stop(struct dw_spi *dws)
++{
++	if (dws->tx_dir) {
++		if (test_bit(DW_SPI_TX_BUSY, &dws->dma_chan_busy)) {
++			dmaengine_terminate_sync(dws->txchan);
++			clear_bit(DW_SPI_TX_BUSY, &dws->dma_chan_busy);
++		}
++	} else {
++		if (test_bit(DW_SPI_RX_BUSY, &dws->dma_chan_busy)) {
++			dmaengine_terminate_sync(dws->rxchan);
++			clear_bit(DW_SPI_RX_BUSY, &dws->dma_chan_busy);
++		}
++	}
++}
++
++static int dw_spi_enh_mem_dma_transfer(struct spi_mem *mem, const struct spi_mem_op *op)
++{
++	struct spi_controller *ctlr = mem->spi->controller;
++	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
++	struct sg_table sgt;
++	int ret;
++
++	ret = spi_controller_dma_map_mem_op_data(ctlr, op, &sgt);
++	if (ret)
++		goto out_clear_dmac;
++
++	if (dws->tx_dir) {
++		ret = dw_spi_dma_submit_tx(dws, sgt.sgl, sgt.nents);
++		if (ret)
++			goto out_unmap;
++
++		dma_async_issue_pending(dws->txchan);
++
++		ret = dw_spi_dma_wait(dws, dws->tx_len, dws->current_freq);
++		if (!ret)
++			ret = dw_spi_dma_wait_tx_done(dws, dws->current_freq);
++	} else {
++		ret = dw_spi_dma_submit_rx(dws, sgt.sgl, sgt.nents);
++		if (ret)
++			goto out_unmap;
++
++		dma_async_issue_pending(dws->rxchan);
++
++		ret = dw_spi_dma_wait(dws, dws->rx_len, dws->current_freq);
++		if (!ret)
++			ret = dw_spi_dma_wait_rx_done(dws);
++	}
++
++	if (ret)
++		dw_spi_enh_mem_dma_stop(dws);
++	else
++		ret = dw_spi_check_status(dws, true);
++
++out_unmap:
++	spi_controller_dma_unmap_mem_op_data(ctlr, op, &sgt);
++out_clear_dmac:
++	dw_writel(dws, DW_SPI_DMACR, 0);
++
++	return ret;
++}
++
+ static const struct dw_spi_dma_ops dw_spi_dma_mfld_ops = {
+ 	.dma_init	= dw_spi_dma_init_mfld,
+ 	.dma_exit	= dw_spi_dma_exit,
+@@ -750,6 +927,11 @@ static const struct dw_spi_dma_ops dw_spi_dma_generic_ops = {
+ 	.can_dma	= dw_spi_can_dma,
+ 	.dma_transfer	= dw_spi_dma_transfer,
+ 	.dma_stop	= dw_spi_dma_stop,
++
++	.dma_enh_mem_get_chan	= dw_spi_enh_mem_dma_get_chan,
++	.dma_enh_mem_setup	= dw_spi_enh_mem_dma_setup,
++	.can_dma_enh_mem	= dw_spi_enh_mem_can_dma,
++	.dma_enh_mem_transfer	= dw_spi_enh_mem_dma_transfer,
+ };
+ 
+ void dw_spi_dma_setup_generic(struct dw_spi *dws)
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 8cdb0351605b..9c70947c969c 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -363,6 +363,8 @@ static int dw_spi_jhb100_init(struct platform_device *pdev,
+ 
+ 	dw_spi_jhb100_mask_intr(&dwsmmio->dws, 0xff);
+ 
++	dw_spi_dma_setup_generic(&dwsmmio->dws);
 +
  	return 0;
- 
- free_txchan:
--	dma_release_channel(dws->txchan);
--	dws->txchan = NULL;
-+	if (dws->txchan) {
-+		dma_release_channel(dws->txchan);
-+		dws->txchan = NULL;
-+	}
- free_rxchan:
- 	dma_release_channel(dws->rxchan);
- 	dws->rxchan = NULL;
- err_exit:
-+	dws->dma_nr_chans = 0;
- 	return ret;
  }
  
 diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index e62f919f1188..01eb24ae7fe0 100644
+index 01eb24ae7fe0..bfdf371bcacb 100644
 --- a/drivers/spi/spi-dw.h
 +++ b/drivers/spi/spi-dw.h
-@@ -227,6 +227,7 @@ struct dw_spi {
- 	u32			txburst;
+@@ -183,6 +183,12 @@ struct dw_spi_dma_ops {
+ 			struct spi_transfer *xfer);
+ 	int (*dma_transfer)(struct dw_spi *dws, struct spi_transfer *xfer);
+ 	void (*dma_stop)(struct dw_spi *dws);
++
++	/* enh mem dma ops */
++	int (*dma_enh_mem_get_chan)(struct device *dev, struct dw_spi *dws);
++	int (*dma_enh_mem_setup)(struct dw_spi *dws);
++	bool (*can_dma_enh_mem)(struct spi_controller *ctlr);
++	int (*dma_enh_mem_transfer)(struct spi_mem *mem, const struct spi_mem_op *op);
+ };
+ 
+ struct dw_spi {
+@@ -228,6 +234,7 @@ struct dw_spi {
  	struct dma_chan		*rxchan;
  	u32			rxburst;
-+	unsigned int		dma_nr_chans;
+ 	unsigned int		dma_nr_chans;
++	bool			tx_dir;
  	u32			dma_sg_burst;
  	u32			dma_addr_widths;
  	unsigned long		dma_chan_busy;

@@ -1,60 +1,66 @@
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878731D5160;
-	Wed, 30 Sep 2026 02:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4677F547059;
+	Wed, 30 Sep 2026 02:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790734677; cv=none; b=E60WiT7C1wOqpZiWZqcq7vU1f4isJGGFpn3kDs7U7IZxYXWCp3giwmIVZxNGfQP3N9GczYlevHEwEL6tTAqrrczj1gvpk49NHyTYdHO5kKHmYNr4SNHzs1F7z2zSudsylsU06TqBhPrNIxIEMV1VWw8PYEhl8Ye2FxIfw5zYHyk=
+	t=1790734702; cv=none; b=DQJA9H/QyxTSZeVkfJvgWJLzAQ+DBwJzBD7q6DF633lO0c7yV3HI+Zx2gtYoN2Y68q8ksWPKZa4c8v+zmX2MTJ4nbXuWkhQ1TH77VojqqUM+XAEo5NMJjOBjp3TF0aEZdC4CGK2j+HKvFER52Dfq/jlSqYkLp4lNFs2ECaR9OyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790734677; c=relaxed/simple;
-	bh=sAraZ2t6Zs7ParQAYz8Z5WshAjBQcO2mEbUNgKbd3ls=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iL2aSsjGpy4oT+7/GchgoK0JQklRbVowF6FgUSOHQmELxbxtMfob2MH86WQ0yf4O4K260UeZqkX7DwQdxIzIWdZnXbZNC3YMOtP7sc9IToSWPhzPUAzAzMC0ZwUZs/AXsI925S46slA6/EXAZrbShLcKE/jmiLCjaYU1V6oC5js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CyJTxQfh; arc=none smtp.client-ip=148.163.135.77
+	s=arc-20240116; t=1790734702; c=relaxed/simple;
+	bh=j89VJ9sI/MVdU9xvASnbZoJ72wKsCVsOKGOXCKDcyAw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=btqCVuzW+Rdh/XS6QuZP6FWSZ8sqmbiCbrbTdm+2XuUgM9v0VfkFhyB0xUzZKq76/i9MZCuiBnORgk5ER2n1Y94jWJSMzn0OpDGG1Chjhpk9jDt9vJynfWZY613vIsEcGVtNgFZWTj5SO+TmnSfqS9naw6NqSap/klXT0MKw7K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=hbSyciSN; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CyJTxQfh"
-Received: from pps.filterd (m0516787.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68U1Xc2K057587;
-	Tue, 29 Sep 2026 22:17:50 -0400
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="hbSyciSN"
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68U2FZH22836384;
+	Tue, 29 Sep 2026 22:18:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=a4/XZ90NyURzAvNorJZPopYSwbH
-	CnIRTgCSX/1nlaP4=; b=CyJTxQfhOzn6U6WLsYISqEmjKzowLBgBCddCi9dmPLt
-	T+fPc13AMhvpJ22v0fawLqYEbKMkL5E3dxzhXosUWvDTvJn5SCkrudL13Dx4Wv/n
-	/xeyA3K19uweq6dtdRrKL/BiJ6oenenUR3oUxy8hDQup+GLUHiHMUuHIBrU2yhGT
-	66/rJOhkUXuurj/sMkPDn78yCNDnGD93VwFMfflEtrN2SLgkqAk+exST+Riy6a/R
-	I4GsvIzMXZTzppElK5B80/3AI2ud4/nbtaPgRw/Gbzy5Xv/IgAkbPHDYS4J8Uyd8
-	Vbm3JAegf3plA+dj85gunAmj2oz4Wjnsaz00rd3YUBQ==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=eJqcP
+	xUg3IO1VhUzYlRekknXmaJSHARRakY6FSo+opg=; b=hbSyciSNax3otshQ78+/4
+	neraBiJP5jgxoTNnPCSKCoPSGEqncKt3vyBNOSzWCoSa6p2slW9dHuBgGjYyMiyV
+	VejIWHfJoF1lqHHGZsWE25kVZPmBjzUWYpo8GqP5/UgjxvuGb0Eq6kkGo0AIe+Mz
+	Y+/EFSGa/Ju4XwLGxCItn2SV+49AXzOh4wiGko+/L7BYlhlc1sbDAeCqdCgdFjhT
+	lZ+BOi+AeSozMirzdFev4udHHUFI79YXSWrzQwJf9fik4okxu3XBvtdiTGlvgRcr
+	E57wPt3I/iVqddsk7hTDQZi18Wf1cvPZgoGX8iYCRpI76Q3H//vQ5Dcy3xs+1Q2s
+	g==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4h0rvc08et-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4gyugbsx7q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 29 Sep 2026 22:17:50 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 68U2Hn4k047880
+	Tue, 29 Sep 2026 22:18:10 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 68U2I9D1047941
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 29 Sep 2026 22:17:49 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 29 Sep 2026 22:18:09 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.37; Tue, 29 Sep
- 2026 22:17:49 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
- Transport; Tue, 29 Sep 2026 22:17:49 -0400
+ 2026 22:18:09 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.1748.37 via Frontend
+ Transport; Tue, 29 Sep 2026 22:18:09 -0400
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 68U2HaZT015845;
-	Tue, 29 Sep 2026 22:17:38 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 68U2Hq0h015851;
+	Tue, 29 Sep 2026 22:17:55 -0400
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
 CC: Jonathan Santos <Jonathan.Santos@analog.com>, <dlechner@baylibre.com>,
         <broonie@kernel.org>, <nuno.sa@analog.com>,
         <michael.hennerich@analog.com>, <jonath4nns@gmail.com>,
-        <andriy.shevchenko@intel.com>
-Subject: [PATCH v2 0/2] spi: axi-spi-engine: fix stale SYNC IRQ pending
-Date: Tue, 29 Sep 2026 23:17:06 -0300
-Message-ID: <cover.1790731588.git.Jonathan.Santos@analog.com>
+        <andriy.shevchenko@intel.com>,
+        Dennis Heinzel
+	<dennis.heinzel@irs.systems>
+Subject: [PATCH v2 1/2] spi: axi-spi-engine: fix stale SYNC IRQ pending
+Date: Tue, 29 Sep 2026 23:17:23 -0300
+Message-ID: <a577a888c21ce4ea383dfb91b79eff719416272a.1790731588.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1790731588.git.Jonathan.Santos@analog.com>
+References: <cover.1790731588.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -64,59 +70,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 2T73B6cPByNweAye4_FlrdfWaB0dzh21
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDAwOCBTYWx0ZWRfX5lIDyX+gApCz
- 1GNgiSY6gOpJllJBkaW4QwpbfCXKR4b71GOPdUSpxZ+4LXjHHJGlN2NY/QlxtgLoxjssLlMJ/N8
- vm4kChOhQl1lydrGyc77gZXQHH5fWc9g5OK2mZDwma70zN3VmH6Y
-X-Authority-Analysis: v=2.4 cv=VJlIDNPX c=1 sm=1 tr=0 ts=6abc714e cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDAwOCBTYWx0ZWRfXxbV7rM5SZstd
+ jQPGVD0Q0kcqnRR7FwPRn2n9A0JhG/U0EDb+gmhf7etjdHJVbeFB6qidPZldMfF494JebWQFtM6
+ 7hQZXdQeAEzVTWwncD7NW78CzG/KLo6M16nwT8kcBNhpKxezyavZ7GgOLMhpMqJcbV7/4HM7sE5
+ Crgq7SZ3sa9UmbL+Rcn050Zj3WISRPvo84IZlZC276/JfmCqjQhLi/4DXC9w1Ea3rDH6Agw5OMO
+ XALIQDvylKqOsE+DTr2uPke30wBGJBieMbEhSUhBzWYErAKUMmKDtRvcWx5DZHS/gtSrs1xzARo
+ NYJo67CjelTsda0heo5qD9A95GEoRhDlKZbgpInep5uA1fiNM+pfFmKi/X068jSFQOEmFIi0fN3
+ KBe0xQ5R4uJGSSZSJtwKCwWtWbt4O16GZ0cU3HMUdCdPA7FFcslf/3X9Xu6PwFOzRtZEIMXG/7L
+ 6zZNYiqR/qUlzT1fGUg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTMwMDAwOCBTYWx0ZWRfX9i3ievBWv4FW
+ 0MmOuMHN4QAkh+loQHM6w7OjkTSx/Q5p4qWkNw+4sndMdjrkr1hZFleNQqKGRZku7V6RJQy2BAx
+ HSwEQKC4eKA4fuJrsRStYtOcVer+Yyt3eOG3yFuzpzAlXOUkJ3gp
+X-Proofpoint-GUID: fWInXBAqYo-RNio-sAfDHmSiwlXacc0U
+X-Proofpoint-ORIG-GUID: fWInXBAqYo-RNio-sAfDHmSiwlXacc0U
+X-Authority-Analysis: v=2.4 cv=Eexd0/mC c=1 sm=1 tr=0 ts=6abc7162 cx=c_pps
  a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17
  a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22
- a=OmVn7CZJonkx5R5zMQLL:22 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8
- a=3EvmjnR45BohH-wPFtUA:9
-X-Proofpoint-GUID: 2T73B6cPByNweAye4_FlrdfWaB0dzh21
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTMwMDAwOCBTYWx0ZWRfX3p5vF26ZZR2s
- sbbBqIVZL0+r1mKJwzD5r3sGNMmsrh3JX7/c6TJuW9SQw1Ats9Ulv/yzp1iyR4lBUBYe8S07xZI
- fSl+hlEiLgXdRvbnzbP8f2v3khirq/tBhbw3iTgdra41LHExGLgcMAfO1FbTN1rydeL7aDwTytl
- xvRvo8iBUwJHLDB95O8N7GIHNENa/oXog/A3SB2GqGX1HE2eBGVibbT4tH0vF+mJOrAC5EEwTAT
- byIsq04Y2UfvIGWB8zV/CbRNCNArmWDb7+0aCE+yb6lRugFSANDVWC7qumTCGJWkQlL7FQPp+6L
- 8j9fSswNO8aTAGtJBL1x995Xp9lEF+CTaqhI0YTvxe1lRWFcDbdLzfWRBqyxVS4tJBi1JzKKJwX
- wexn+Z17pDXpmLUZ8CVER/psR/VF/fPz41njnFCsvF79fuYg07ZNnzuNO9aYrruGhJZR9O4Tv5X
- XwxHgUYZ4wHa6iMIsvw==
+ a=N--XFCr6TIEc_64PeIT2:22 a=gAnH3GRIAAAA:8 a=0GyDL0XGWyQrYU0KOQkA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-29_05,2026-09-21_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ adultscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 malwarescore=0 spamscore=0 clxscore=1015
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
  definitions=main-2609300008
 
-Both spi_engine_setup() and spi_engine_trigger_enable() send a SYNC(1)
-command and poll SYNC_ID, but never clear INT_PENDING[SYNC] afterward.
-This leaves a stale pending bit that fires spuriously when INT_SYNC is
-enabled later by some driver, causing premature transfer completion at
-low SPI clock frequencies (more likely). Fix both functions by clearing
-the pending bit after polling.
+spi_engine_setup() sends a SYNC(1) command and polls SYNC_ID to confirm
+it was parsed by the FPGA, but never clears the corresponding interrupt
+pending bit (INT_PENDING[SYNC]). When the first real SPI transfer starts
+and INT_SYNC is enabled, that stale pending bit fires immediately, causing
+the IRQ handler to see the leftover SYNC_ID from setup, match it against
+the current transfer's ID, and prematurely signal completion before the
+hardware finishes.
 
-v2 summary:
-* Replaced "Link" tag for "Closes" tag.
-* Included "Fixes" tag.
-* Added new patch applying similar fix for the spi_engine_trigger_enable(),
-  as pointed out by David.
-* While at it, replaced plain "1000" by "1 * USEC_PER_MSEC" for better
-  clarity.
-* Link to v1: https://lore.kernel.org/linux-spi/04d51e99b8cddce51113db933d806e83848f04f5.1788313558.git.Jonathan.Santos@analog.com/T/#t
+This race manifests at low SPI clock frequencies (~2-3 MHz), where the
+FPGA takes long enough to execute the transfer that handler is parsed
+before it finishes. At higher SCLK rates the transfer completes fast
+enough that the issue is masked.
 
-Jonathan Santos (2):
-  spi: axi-spi-engine: fix stale SYNC IRQ pending
-  spi: axi-spi-engine: fix stale SYNC IRQ pending in trigger_enable
+Fix this by clearing INT_PENDING[SYNC] after the polled SYNC, ensuring no
+stale interrupt is left pending.
 
- drivers/spi/spi-axi-spi-engine.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Reported-by: Dennis Heinzel <dennis.heinzel@irs.systems>
+Closes: https://ez.analog.com/linux-software-drivers/f/q-a/604145/axi-spi-engine-stale-sync-pending-can-complete-first-transfer-early-at-low-spi-clock-2-3-mhz
+Fixes: 1d0ee0c9df31 ("spi: axi-spi-engine: wait for completion in setup")
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+---
+ drivers/spi/spi-axi-spi-engine.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-
-base-commit: a3b3580713f3ac5a32dc2874ee546828977a1d68
+diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+index 02bbc5d0cfc5..0de3af5c429c 100644
+--- a/drivers/spi/spi-axi-spi-engine.c
++++ b/drivers/spi/spi-axi-spi-engine.c
+@@ -887,6 +887,7 @@ static int spi_engine_setup(struct spi_device *device)
+ 	struct spi_controller *host = device->controller;
+ 	struct spi_engine *spi_engine = spi_controller_get_devdata(host);
+ 	unsigned int reg;
++	int ret;
+ 
+ 	if (device->mode & SPI_CS_HIGH)
+ 		spi_engine->cs_inv |= BIT(spi_get_chipselect(device, 0));
+@@ -922,8 +923,13 @@ static int spi_engine_setup(struct spi_device *device)
+ 	writel_relaxed(SPI_ENGINE_CMD_SYNC(1),
+ 		       spi_engine->base + SPI_ENGINE_REG_CMD_FIFO);
+ 
+-	return readl_relaxed_poll_timeout(spi_engine->base + SPI_ENGINE_REG_SYNC_ID,
+-					  reg, reg == 1, 1, 1000);
++	ret = readl_relaxed_poll_timeout(spi_engine->base + SPI_ENGINE_REG_SYNC_ID,
++					 reg, reg == 1, 1, 1 * USEC_PER_MSEC);
++
++	/* Clear the stale SYNC pending bit so it doesn't fire when the IRQ is later enabled */
++	writel_relaxed(SPI_ENGINE_INT_SYNC, spi_engine->base + SPI_ENGINE_REG_INT_PENDING);
++
++	return ret;
+ }
+ 
+ static int spi_engine_transfer_one_message(struct spi_controller *host,
 -- 
 2.34.1
 

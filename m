@@ -1,67 +1,78 @@
 Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011053.outbound.protection.outlook.com [52.101.70.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B986492E27;
-	Wed, 30 Sep 2026 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F5450AC31;
+	Wed, 30 Sep 2026 14:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790777006; cv=fail; b=I2JpDFq5Q+oFHejNHM3vdnuWkZcWVa5GKcwBS76vEHDgKMN3JRwAoxIhuX6GoClvcGtpkCNvyfxM4SXtEqZ895SbOid8+3M5reagE0sK7swP9JJBlZu1lzrSlW8M53idNwAlRmBvHqisc/xZ1yjq9/c99JPTEkoNZvMpjsjulhA=
+	t=1790777013; cv=fail; b=IY6+CN3YszN9Hk9mHxhVjmd8VJBd1WO2KI43Xz7X2JhLhQJyqfMqV5NbzXs/EcmEFYsym+K3CeUFmAkkW29f/wPm0s/vt5Ak0zw248ynhWTzIjPYdh5oaxDa+geyzcWfz9YG0+UvUQxdBJ4GjGVZ5qb7LiRUU1csI4swui+B82Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790777006; c=relaxed/simple;
-	bh=sp+9kYVvvPZXWp+MUp78lROE43PFnlHnIboADn/KbO0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=k1eBwifc5ngw79kB10oj0OgSfnA4Cn8NT1DfPSMsD/kNJhNXrKKIDFlc+1d/MZn9EaQ1gEJ1Dd6/B2NwJnHnDC2bUsx+c77cNJEMJLe7+44d5yMT1aMaOZ8rgTMywsoXuJ1bmEegd2TU/6K+wCzZu2MXgBu4BN9J8d7u3Ve7ji4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=jhcfHjrq; arc=fail smtp.client-ip=52.101.70.53
+	s=arc-20240116; t=1790777013; c=relaxed/simple;
+	bh=K4bYe0TNgPwlUTy3l9oqK+1vTIZp6Ym/l51X59AFKL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=m2t8o+yY7ybDwq/YaeygQXdmwtN0W+BfNlzIGt06kDPScICA1lUBHA8UqEtnaoKSz0UsCnzvr22/qkpEqY+OK15oDhhK3kSk4CrQjB8S8hV6tK3PFqKKzsvdrUiPJIEVTzsvR3E2ndg7pzkTayDeFXwvZ3L+1BhcGWv+tO8XGNw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=QTcjBEPH; arc=fail smtp.client-ip=52.101.70.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="jhcfHjrq"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="QTcjBEPH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=voBE4/8hkoa+jiaO+HM5GMwVVT4pdm5wrJgxEvTGpuA7QNYu5QvMQI+SPkxWYCIlJkOP4RQrvFD7rSusnPUgIDaFYjCvQpRKwftd2ctcOBjKH2MlDpk9M5/ZaMG1OGUeYYfGXBPa0fWBI7AXRq2pcxwt09H0VXshoGuuk2Ehu/GKAXjK03v72x+uPBWO3agnWu2j7l+5Vk94v6LImp82qlxVzqIb9xmaR0syNoqcNr8PChz6CH/1KSPgkn0dF8dk3XOoZ3Ce+/h9oITtyUfF1ZvRMHCYaj3ClDOjqKCByrAYqlZ6vgeHjg1y1yrDoMLYX42nFa0Cyo6lkkuZEjnSsw==
+ b=DTJmeekX0fa+1QSho4NQlrQWIRFwhQ1TPWrNCMgDk43sezeJlTxQzEriYYCrUVqvbRVH48CQJmkpxbacgL2PmYgCrlRedJJITQNBq/Urx/b2EHfVluAXPkwGjqirD25gVukcHlJyMyTCAkqM50hYVn8YXuFoaxpBi3OAx4BvOhwSjt9jch8+Gt89bN9xyAp3efd4vWT8llx2nEOYoyJ/n9Vfzp8BudLuyrh4tkRN5p2cIbC9qU7YsDoNKqQr8PWAt1wd7U4lSznnC98ZQUcD/ut0YyOlri6N70ZoJ2G0azV1XuRPPHiNAz2EbnyEDt+LNSymDwjAb6yyTLTSPRXwrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
- b=TBoqXYTaJxjJr1m+7QXb/j5KRvBd6IfyHMsD8RR2Oi2IJeBERW14p1eJr3tyAPGc0tlUXDUEmPIC8fWuMzZasbbM+v+G6BOC2uSYzR4e0mgJPOZPCwhFF7Q9HbKrGLIgY/tS88X3P3rAB34a1CDCcU8ez2krPYOpynYuNMsNM2kGy+pgg+84F018fvq8k4YeXJ3lnUL7d7vg/jMze8wsjUj8kfsyDVshj8Mg9WvBEbqYgCVOaOo7tkj+wQ0fNr1plMo/ga4GaExyr5bhO0dGHmabXY8Ns0MqdYY5FvYKIod7M5Ye+Cy6giq0FFKxqb6CEjbLdu8MuuNV3AF1mGvzQw==
+ bh=6PFMk4MD3busBzpBTbKKT073xZwWJWJZ/I4B9p03M5Y=;
+ b=xjFs7cGEFDoKoqGyrk45a5mUKBu7QMTbJ+OskgU5EtKTb9tXXLT4vzJNuiylZO2muog4UOpPJ7CCyAWI1O663Ohvx4OItFj7VaKDJqUA9h+5r0LxD0aEEi2VeY/szIb4EbTQyAIEqe7VJSt1nelNJApxlUjiGGhjZ3fGbEDKOeGPbwrw3VPZHEKH92KIRZOS//hpHxUx4rE6sBVwWETtNtk2Ru3Ou0x8FJB5uUd3jOVA5IeIsXHn9CC2AbWbykRHxAaRk9zC23LR6Hv0SiMSZHaO7gXIyEosZwR5uyI3HqvjszqUKP1DCRXBhsrbzmh0EMciM6zAmiqNChDLhftaMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1tqabshKn/2TTUfeeKFoMhEj238tIJRTeMERGIypjpo=;
- b=jhcfHjrq2tqKw0glAdIAdTzZB/1s+M5+pL8jXxOUp3uFIvmkk1/zBzVgqdjyzFlCIvEnvzvLv2T0Uk62DnwliMA6jLQ4mmuyfNo63+F0Mha1TCSDZWjh5chVhi+ZTPlOM4mmlYet4facz9bRCT1xnDGjlBPpRDgTZh9G1o+BmZnX7eRGS3pN/SEC1dtYarzkfs79Wn2x5JMQQe1jA74ePYmwvYoTwVWh2nIjseAgDpfl/gmZzFdKRNimQVb9JZSSEF5D4gZgrU3PtsdHxNx9fo9UCsBnaD6N0WNn2JDocqXKZ4L5q9dhbwrh+KKIcxvtEKtNXJI86FIPk54VEEC5Ew==
+ bh=6PFMk4MD3busBzpBTbKKT073xZwWJWJZ/I4B9p03M5Y=;
+ b=QTcjBEPHAF/rAQpb47cup8AXCu6zYu8yGyzP5LbYzkBrrVOguXp4F8NqTCYfuXdGEEFO4JdNH+Vif9pyMewSJkBoWnjUWVQCeaxxyH3iBmZRCYHponxLPwxcueS7pPEoeKE8FD8PetdR6HhedzH09Q2at3YsBeHTJBjI20CGUdFHRgPTGCAig4gJBov2/rpfGrPNylLxc5GTYMNrJrZgRkU9d3V/iCAFHHOub4Ag1GvffSF+J3S+hqvg2tg0lXLkRGFEXINj8B5nJMZvuVvZjvrcHMwaqva4zZOLFGwncnooNHsLIPViI7YDYr+EXXLhOagw2MN6y5V7AG4hY83NKw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by MMZPR04MB319484.eurprd04.prod.outlook.com (2603:10a6:190:3c::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Wed, 30 Sep
- 2026 14:03:05 +0000
+ 2026 14:03:12 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 14:03:04 +0000
+ 14:03:12 +0000
 From: Frank.Li@oss.nxp.com
-To: Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	Mark Brown <broonie@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	linux-spi@vger.kernel.org (open list:MICROCHIP AT91 USART SPI DRIVER),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/Microchip (AT91) SoC support),
-	linux-kernel@vger.kernel.org (open list)
+To: Mark Brown <broonie@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Linus Walleij <linusw@kernel.org>,
+	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+	linux-rpi-kernel@lists.infradead.org (moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE),
+	linux-arm-kernel@lists.infradead.org (moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list),
+	imx@lists.linux.dev (open list:FREESCALE DSPI DRIVER)
 Cc: vkoul@kernel.org,
-	imx@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v2 1/2] spi: use dmaengine public API instead of raw ops
-Date: Wed, 30 Sep 2026 10:02:54 -0400
-Message-ID: <20260930140257.490019-1-Frank.Li@oss.nxp.com>
+	imx@lists.linux.dev
+Subject: [PATCH v2 2/2] spi: use dmaengine_get_dma_device() instead of chan->device->dev
+Date: Wed, 30 Sep 2026 10:02:55 -0400
+Message-ID: <20260930140257.490019-2-Frank.Li@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260930140257.490019-1-Frank.Li@oss.nxp.com>
+References: <20260930140257.490019-1-Frank.Li@oss.nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: PH0PR07CA0099.namprd07.prod.outlook.com
- (2603:10b6:510:4::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+X-ClientProxiedBy: PH0PR07CA0004.namprd07.prod.outlook.com
+ (2603:10b6:510:5::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -71,108 +82,518 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|MMZPR04MB319484:EE_
-X-MS-Office365-Filtering-Correlation-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Office365-Filtering-Correlation-Id: b8204cd7-bbc2-449a-3935-08df1efb90ce
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|18002099003|10067099003|56012099006|11063799006;
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|7416014|376014|23010399003|6133799003|18002099003|22082099003|921020|10067099003|56012099006|11063799006|5023799004;
 X-Microsoft-Antispam-Message-Info:
-	9JVjECCsO+w2hppAZB9nhLPfW04HdJEM3pPeFMDi8N8Y+TZ0Fi2fgCVN9hGH23b6+Sduw/GivymUx1Ym59IvfD4asTaXa0Lpc68zjMSljDbVBFQaVkfOmyc9q6DfYhSx0mZYIAA7zyTvQGjTiCjZ8F+ZOEpBqNkmQE24Vi8k3xi+0z6pGnDU4DO6oqYMbgjDfGYvd1Q5r4YLhBXHOJvbS2hpsnjicgxn65YPf1q6YMWC/BSVf72eGdGCLRBLL1aq8E+QaLgElXAw1wvZk71vf3beME34qmDDIIfQoe74k3Hzeobv9fWG2qe/9SleMP3NopPwFi0o2720iAnadzIOKn6TNSr62vUccRgfcvDCwDZoir5Zh02Uoc8pbkiYSq3OkvlFx4EENSa0wadbg+c3DNatkqtuS+H3IJaqo2fAkv2yJ+qgBaxGpspg3mXnhNX1edYIPwpIutAM5VIp9GtRhYbt4YUcoyp7O3k1j3g5lcqqaA3JkpZt0PDWCMgiE29hR+Pu5Ckrt9e5DcLZchrM6/upVpkVCjraomF8Mf0AjsW9Qcw4kPevZx3odzD9XQ0T/kO3h7WJUDc/Gg54JDZ/dYunV0ZDjxcA6NOcmLv+S9nkzRHn8/1V+g4Kp53G5xkHOWPU+kX5fQ/Sq7qm38b1pEYA0ahtioELixg6xTQ0K28=
+	yvP8q4bS3j99ZlrMwQE5qdivCP9lCyiWTTeupOEtsGTYmKOfEFSS4XTLymEhvC2PEteZDveei0YZTvVBDFIkrjKyqolfLg3WbV3C1qs46nBhfHDAdHP47c/XUiCtQyUoMi5KcrFJ7gRhb3V3UC1P6XXvWUQuFB66CbsW5lTpFjODSr5P7x7to8TkaZbbQG9dbaRR+ZlzpVXo2zcJjceXIimTJHWsovhX7kikxFjs5UpdTka1CMkGQHu7RqN/yirr0w13419x5mpmL3B1kROu++GezjVWuio67rQajCdmeA1p9j0Pd0WbVgl2CLQ06QKafKU8tjQ5FT2BiK65UlElC5E35JQ4hgVGqJtnKbarfKvdOPcBDShBh2MbAqisSYPztuMqt+zgFrDaoPRRVtv6gddkyqC0CJIec5IR2ZiHlY1oX/qbaV8rCvwu6kiZS3PmaX4pLPsMrl9TSg4Qv6Qjvxb0/4JrWdG+wpS4SE+pPNUBbUpmX0HGitSymqsKGNOuZz2zQH63uAdb8Up+Mn0ODT7x+pWPrLXkjX96nOrwLibIN5ESo/ht2uIWqG6eWKVeIdC8Lcz+KF1DGpkCMk6FhMVGxZxj0P1ZguC0fCaGTfeQPfrhk1vTN9VGgrk38wPQQzOGST6OrpS/xOmB68lME5bo+57Iut2OYnyk1LPcc2s=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(18002099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(7416014)(376014)(23010399003)(6133799003)(18002099003)(22082099003)(921020)(10067099003)(56012099006)(11063799006)(5023799004);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Bz/EvKesdqV/cNhWWKuL71NsR18nWfSf7enCWnSMZA2A/goHBIt1luvQry8/?=
- =?us-ascii?Q?rj3kW5XMhVrtgw37FNJyrlx58HEQSnPQx6a7Jzvo3wzCglECFNJJTY4Ws914?=
- =?us-ascii?Q?ySmJWFdPW3HUC1oBHuSjyM5hyocABpD1+ma4smJgcmGg8eBP6QE4RnI1pDom?=
- =?us-ascii?Q?hFTSy2XoKexy1dzMYG2Enha8CLgYoYR3o14MPEuIyf5oi6NKfNS3y3hbf2aw?=
- =?us-ascii?Q?8F0y/ijYewQS6MlEVRyIjUrClmGztPu15uYbbUyO6KBIJT3dG5QttTbyxsix?=
- =?us-ascii?Q?Ps4ihM2B4avBl6UYMQuxpcZSjfo44BptW5vLQGCQ0Y2f5C2C1TA3CgZedIc7?=
- =?us-ascii?Q?KJJ4HWAgoKd2CuhKJY3mjxUyhx0f1ZF1tpybh3w4b23UQHHr4x7OJ3GPzAuh?=
- =?us-ascii?Q?7Dz8NWjvp7kom8/5f0JdUd0wQeY2KXdpwTJU1hhkMa3WPX7ZhmE078awtfKc?=
- =?us-ascii?Q?9Y6PJXjKn0RC6raT7D+cPlFi7ps33Gz8/vOq6Kpa04iJou/qBePPIvrHkR7K?=
- =?us-ascii?Q?0ZiEww4DHmaH2KMHfaDdz+TPKA74bB2ruU2MjoxDgwmbYqMPryJQBzoON4ZK?=
- =?us-ascii?Q?HEF9sx9DaK+v//AcJU80yKrw0RTblE872OT08qwkH8NDQdnsVjnJw17RGHkv?=
- =?us-ascii?Q?mPyc3NvvLZRPOJo3NYlE8kXwOEbsTGJtBAfpB7Je91hn51Oxud+dShpkH1mQ?=
- =?us-ascii?Q?bwyJ3RSyq4TDsSevAplQ3cKO3ynIGFMWOPQgNhTBdOZdQktim7DGGJJT/otV?=
- =?us-ascii?Q?VKFQ1+HDI8HKa7Vdc8cCle27QY4cgPmI45W7c4AszXdGz0sQ6pyjWT8ojKoA?=
- =?us-ascii?Q?IwQh8cOCFN/cIGmk+LnNrCZT8HWtip0qpbBjZzaDsUZf5l+zN4Hm+5gZRW72?=
- =?us-ascii?Q?HKu7zaJ49rODGheShEaWJIrh9EMMdQInyuotgTBqo4g2yHy/TbYSlJJ5cAcn?=
- =?us-ascii?Q?szdVX4Yo5Q9aVJb7bdB2OJoBuZcqt8u9Qm0iN1tyhPpupHu6LuQzAf14RIpY?=
- =?us-ascii?Q?BUG4pXEphh1YiuZNFBzF57DpFmrFDybcpC4ce8hbot5loZFs4Sld8BmaHxeA?=
- =?us-ascii?Q?sWr7z8HQgGS9btHrhaofcnOJYHZUZIsP0qkNXktJoyF+Sp1G01gO7iGnB0AG?=
- =?us-ascii?Q?6pDP5N6MT8ueIGokAVE4Ss3MQzeQLU3uNJxFPX8CZIbgQATRvgA+svlhl312?=
- =?us-ascii?Q?HNnTYTnNg/r01K+anuiO9wRVqpxEUWpIK8nPZ342vOEA3XBJQlFlJxCON4/w?=
- =?us-ascii?Q?r0p8nfreuwV4Ka+PsKUozZF/ZF2+J6fY1SjbvXJLMM94vT2dsWeV/PJ7PS7Y?=
- =?us-ascii?Q?R05//HK+LgnuTVQqNWmBqSkVYxAhTexelGWNYnsG/ldg/H2BSHa5cCVCfco4?=
- =?us-ascii?Q?UJQ9uDOZ/vWwMxmLO4P8KN3TlwZUNmv2+EVGiz0koyY8jw66i9PnyUZtm0n2?=
- =?us-ascii?Q?VN2K1YrT338TFMW8YQ/fZ8FCEv0+6ADN1ihzalKb4PUFezfbTxtYmwh9xc7a?=
- =?us-ascii?Q?42k8QowTg0xNJuDLcDhJc2RzBRZiDQHjDvZ+gjpkAQJPVKIFLmSr2gaVYwbH?=
- =?us-ascii?Q?hwdO6cgjO4ueH25ELnO10qZ9HaPEsyGDASInhsssoWAF3Q+TII+Fd1sXrh4A?=
- =?us-ascii?Q?tBs68jqfBmBXhqsLd6nx5c9VG6R83rtpws6643qgbXlvak+TAFl2J/Vh/9VU?=
- =?us-ascii?Q?rai/QaHxEDixCHIjGsGLv1z0dl2wRUVjlMGnDCQmKPIqGuI1b4x5Ark5pzX4?=
- =?us-ascii?Q?WEQjzRlp2SWTgAfrNDGoRMvzoP1HVMU=3D?=
+	=?us-ascii?Q?VgO8yH0MmhqReffznDGFyMU3hmxDgv3QHfp0DBPw40DUmza+2LIOW8N30hYZ?=
+ =?us-ascii?Q?lk8CR9A9CRGP3g6+/UFxfFYVNbmmCkkkG1My7uAEDbm+a2LI8Pcvq8A2CGlT?=
+ =?us-ascii?Q?Wz4Ms/DyZywELcE28YVcHrb04uHCxAaH+lU87I8xgd4oVCz9aPdcpPua44ks?=
+ =?us-ascii?Q?vrvXN+b4fGF6qqsjRfbNcDxfoREguzgwuWMG22YfElbuFjbhCzvXX38606u7?=
+ =?us-ascii?Q?nhL7V2fI5vSU5TKHYKOMUkp93LKt1QOoJPIGiD9Hn/WQHYGlbl7ZnZGt6mb+?=
+ =?us-ascii?Q?xuX9/lKSpEFbmfBUoOif06FEPXsyNPe7UXdWXDxTAjzYuWi1nPIhdRRyPh9O?=
+ =?us-ascii?Q?GCpeMEovVLOclJ0kquwtmSpFRygnQydBF2k3NrRByv3TXaXPaw6IKm68Ti+H?=
+ =?us-ascii?Q?tJm8nIDrE62bLRJ5xjA9Ab4XHYWo8qn4vuDbld3sOHUt5ww+kVahpoOchRoW?=
+ =?us-ascii?Q?Y0p0Urp3QIGwG9uYpBaVW5zL6fqMxiV/DjuRmxNeGShteI7c0xknrdPv4sSn?=
+ =?us-ascii?Q?twpyil0JNPwXQfGx2OXoYBwtMUiYmZ2PuVkiktR07l+ZomxeHvVFO+41wGMK?=
+ =?us-ascii?Q?7PfS6BV8+1HpRWE6ekrtFk9f7xBiF7ryKYeUTf43l++y64pNJeSOlwf6mWs+?=
+ =?us-ascii?Q?pXpoDnS7hmwIWTHl5jDatxW+Bhekcoqh7dZPTRwD3oNwvoz6/HDeM5fYHO88?=
+ =?us-ascii?Q?Wjn8icgsx4qw0c+ANdEmcQ7aQgAULf2+gQ/97wqjMKoFgyg8szyHNna1+dQL?=
+ =?us-ascii?Q?N0yHcdyrjFAYHcCSa8tlwV3EBKEsqhqJXp41WZ9gPKfXy/KcSY578hJkN5UE?=
+ =?us-ascii?Q?qJItDX79o4H5YJFG4tNgau0TvcGKd4tiTEOwyAZSV3B6DPQtQnX6w0sQ2fTf?=
+ =?us-ascii?Q?BXgU/HllISYx8FHGoasChexsvPqd006VklFTUI1YiLK90QZ/TOXHbhXGhH5T?=
+ =?us-ascii?Q?B2rFqf3J8sRpm23Tr4ATknExeK8DcTTZITsxC8Yesk0txv2vq0vKiv4Chre2?=
+ =?us-ascii?Q?BGskfzzo9NHwgEXTlhmu/vovinG7pAGz8w7TIS2Ozlluh5TVSLUmNiAqf7aP?=
+ =?us-ascii?Q?A14pnmqP6CK9VKH5MKT+jZI7F4GcY1hYtcNOnTBYFi4j2KkeeFm4sAsQ/Lgc?=
+ =?us-ascii?Q?qnZe6f7PqHxbGkb39zyHTpLhBhNIbNLNPtIc3H3eQrIZvxsBLJRFs2FVZt9t?=
+ =?us-ascii?Q?xgC8T9mCLIzwzK5NoYT4+7ar1JTNDlbISlXwOegbpF60JeSbTLjP2UdR0mhl?=
+ =?us-ascii?Q?5XsWNCQN4oifTsWo5+ExNrd0pUkPkcCvg2Tn0VZFra0qUyLQwpv9gCOYVBlN?=
+ =?us-ascii?Q?pBfKIKyHIkdWnPtj9D2yElI/0wm+hsUJ68Es11sNbSHe5OSatQafID5kmeSG?=
+ =?us-ascii?Q?CQ+JXKrNNYJm0yhuUy6ohupQZslT9xfTHyatLQYX/R9BFT3P4SJ0jad9e8pf?=
+ =?us-ascii?Q?2qqSXM6u/838/FVJIQsNtur1GPGXkUPM/yBoNIweESwpcpnNpxlnXMan15Eq?=
+ =?us-ascii?Q?FO0D7B/RVFeCMD+DkYiBCwuG0Vp+0cMAd8+R9VGplgaNk4pL3qsa3PmIzXl1?=
+ =?us-ascii?Q?TN7xBa0LSqZRk9ZcDkfSft9s4+JMzlgv9/n11woVGtATTgYPZ5QA6i6alUll?=
+ =?us-ascii?Q?KxGGD+ZP4fpQlHhbQLLWuJ4Hg7+Z0xoLK3HV7Hmy9ZTi5YAGlJlmWRz2xIBD?=
+ =?us-ascii?Q?5iD0O6bLwcsLC7DZUdsy0cDnfprpMjhTRNNMZjSqVY1vgwC5gij2gkTjlmtW?=
+ =?us-ascii?Q?2oZC0u/SfQzm9Hg9Lp+Ji0DII14pProyF3Zs14jwJz98zjMFaRcc?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e775f8ea-9ee4-43b9-c1d9-08df1efb8bec
+X-MS-Exchange-CrossTenant-Network-Message-Id: b8204cd7-bbc2-449a-3935-08df1efb90ce
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:03:04.5972
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 14:03:12.8234
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ENrJ38R4lq8bNV/yMxzDaSO15BAKqlEUtgf0QZeeO74yBlOdkm4z5w/Vyzw47dWPOA08N6oXUSePHtDpQ4saBSU8LWKt7zFXYh+D5B73HU3KH4He1ACVZqPcwUdYfhYn
+X-MS-Exchange-CrossTenant-UserPrincipalName: zdwcU0956iX9DwQVP+h40i5shXmx8LBPaqUEd7xU7hmm6iuKMWXQoEXRSJfxDkxNGvIM8p7gEGh5plhBpThQunU0m2XL1MOApaKdcvlXR6HsVTHy7AZKm2wCXzJo18cX
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MMZPR04MB319484
 
 From: Frank Li <Frank.Li@nxp.com>
 
-Replace direct calls to the internal DMA device ops
-device->device_issue_pending() with the proper public DMA engine wrappers:
-dma_async_issue_pending().
+Replace direct dma_chan::device::dev access with the proper
+dmaengine_get_dma_device() for consumer API
 
-Drivers must not call device ops directly; the wrappers provide locking,
-debug checks, and a stable interface that hides internal implementation
-details of the DMA controller driver.
+chan->device->dev is not always the device used for DMA mapping. Some DMA
+engines support per-channel IOMMU mappings, so different channels may use
+different DMA devices. dmaengine_get_dma_device() returns the correct
+device for each channel.
 
+This also prepares for making the DMA engine provider data structures
+private. DMA consumers should not access DMA engine internals directly.
+
+Assisted-by: LLM
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
 Change in v2
-- none
----
- drivers/spi/spi-at91-usart.c | 4 ++--
- drivers/spi/spi-atmel.c      | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+- move dmaengine_get_dma_device() after check dma_chan available. (Mark brown)
 
-diff --git a/drivers/spi/spi-at91-usart.c b/drivers/spi/spi-at91-usart.c
-index 804f6194c830f..cdc771350db93 100644
---- a/drivers/spi/spi-at91-usart.c
-+++ b/drivers/spi/spi-at91-usart.c
-@@ -239,8 +239,8 @@ static int at91_usart_spi_dma_transfer(struct spi_controller *ctlr,
- 	if (dma_submit_error(cookie))
- 		goto at91_usart_spi_err_dma;
+Check all unders driver/spi/ by rename device to _device in dma_chan struct
+with all yes config.
+
+Still few left, one for copy_align access, which need new API. some filter
+DMA channel, need new API to get provider devices.
+
+In https://lore.kernel.org/imx/67966b47-22cb-4b07-80c7-2044f557dbcb@app.fastmail.com/
+There are better idea to move map singe/sg into dma prep functions.
+
+But it takes more times, not straightforward works. Let replace this firstly,
+---
+ drivers/spi/spi-bcm2835.c         | 25 ++++++++++++----------
+ drivers/spi/spi-cadence-quadspi.c |  2 +-
+ drivers/spi/spi-ep93xx.c          |  8 ++++---
+ drivers/spi/spi-fsl-dspi.c        | 35 ++++++++++++++++++-------------
+ drivers/spi/spi-imx.c             | 10 ++++-----
+ drivers/spi/spi-nxp-xspi.c        | 16 +++++++-------
+ drivers/spi/spi-pl022.c           | 19 ++++++++++-------
+ drivers/spi/spi-sh-msiof.c        | 12 +++++------
+ 8 files changed, 69 insertions(+), 58 deletions(-)
+
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 8f8715809c7ce..884941f2e9b9a 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -527,7 +527,7 @@ static void bcm2835_spi_transfer_prologue(struct spi_controller *ctlr,
+ 						  | BCM2835_SPI_CS_CLEAR_TX
+ 						  | BCM2835_SPI_CS_DONE);
  
--	rxchan->device->device_issue_pending(rxchan);
--	txchan->device->device_issue_pending(txchan);
-+	dma_async_issue_pending(rxchan);
-+	dma_async_issue_pending(txchan);
+-		dma_sync_single_for_device(ctlr->dma_rx->device->dev,
++		dma_sync_single_for_device(dmaengine_get_dma_device(ctlr->dma_rx),
+ 					   sg_dma_address(&tfr->rx_sg.sgl[0]),
+ 					   bs->rx_prologue, DMA_FROM_DEVICE);
  
+@@ -871,7 +871,7 @@ static void bcm2835_dma_release(struct spi_controller *ctlr,
+ 			dmaengine_desc_free(bs->fill_tx_desc);
+ 
+ 		if (bs->fill_tx_addr)
+-			dma_unmap_page_attrs(ctlr->dma_tx->device->dev,
++			dma_unmap_page_attrs(dmaengine_get_dma_device(ctlr->dma_tx),
+ 					     bs->fill_tx_addr, sizeof(u32),
+ 					     DMA_TO_DEVICE,
+ 					     DMA_ATTR_SKIP_CPU_SYNC);
+@@ -891,6 +891,7 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+ 			    struct bcm2835_spi *bs)
+ {
+ 	struct dma_slave_config slave_config;
++	struct device *tx_dma_dev;
+ 	const __be32 *addr;
+ 	dma_addr_t dma_reg_base;
+ 	int ret;
+@@ -932,11 +933,13 @@ static int bcm2835_dma_init(struct spi_controller *ctlr, struct device *dev,
+ 	if (ret)
+ 		goto err_config;
+ 
+-	bs->fill_tx_addr = dma_map_page_attrs(ctlr->dma_tx->device->dev,
++	tx_dma_dev = dmaengine_get_dma_device(ctlr->dma_tx);
++
++	bs->fill_tx_addr = dma_map_page_attrs(tx_dma_dev,
+ 					      ZERO_PAGE(0), 0, sizeof(u32),
+ 					      DMA_TO_DEVICE,
+ 					      DMA_ATTR_SKIP_CPU_SYNC);
+-	if (dma_mapping_error(ctlr->dma_tx->device->dev, bs->fill_tx_addr)) {
++	if (dma_mapping_error(tx_dma_dev, bs->fill_tx_addr)) {
+ 		dev_err(dev, "cannot map zero page - not using DMA mode\n");
+ 		bs->fill_tx_addr = 0;
+ 		ret = -ENOMEM;
+@@ -1157,7 +1160,7 @@ static void bcm2835_spi_cleanup(struct spi_device *spi)
+ 		dmaengine_desc_free(target->clear_rx_desc);
+ 
+ 	if (target->clear_rx_addr)
+-		dma_unmap_single(ctlr->dma_rx->device->dev,
++		dma_unmap_single(dmaengine_get_dma_device(ctlr->dma_rx),
+ 				 target->clear_rx_addr,
+ 				 sizeof(u32),
+ 				 DMA_TO_DEVICE);
+@@ -1174,16 +1177,16 @@ static int bcm2835_spi_setup_dma(struct spi_controller *ctlr,
+ 				 struct bcm2835_spi *bs,
+ 				 struct bcm2835_spidev *target)
+ {
++	struct device *rx_dev;
+ 	int ret;
+ 
+ 	if (!ctlr->dma_rx)
+ 		return 0;
+ 
+-	target->clear_rx_addr = dma_map_single(ctlr->dma_rx->device->dev,
+-					       &target->clear_rx_cs,
+-					       sizeof(u32),
+-					       DMA_TO_DEVICE);
+-	if (dma_mapping_error(ctlr->dma_rx->device->dev, target->clear_rx_addr)) {
++	rx_dev = dmaengine_get_dma_device(ctlr->dma_rx);
++	target->clear_rx_addr = dma_map_single(rx_dev, &target->clear_rx_cs,
++					       sizeof(u32), DMA_TO_DEVICE);
++	if (dma_mapping_error(rx_dev, target->clear_rx_addr)) {
+ 		dev_err(&spi->dev, "cannot map clear_rx_cs\n");
+ 		target->clear_rx_addr = 0;
+ 		return -ENOMEM;
+@@ -1268,7 +1271,7 @@ static int bcm2835_spi_setup(struct spi_device *spi)
+ 		target->clear_rx_cs = cs | BCM2835_SPI_CS_TA |
+ 					BCM2835_SPI_CS_DMAEN |
+ 					BCM2835_SPI_CS_CLEAR_RX;
+-		dma_sync_single_for_device(ctlr->dma_rx->device->dev,
++		dma_sync_single_for_device(dmaengine_get_dma_device(ctlr->dma_rx),
+ 					   target->clear_rx_addr,
+ 					   sizeof(u32),
+ 					   DMA_TO_DEVICE);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index ecb0be3946965..fe5b094f0b6b3 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1382,7 +1382,7 @@ static int cqspi_direct_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		return 0;
+ 	}
+ 
+-	ddev = cqspi->rx_chan->device->dev;
++	ddev = dmaengine_get_dma_device(cqspi->rx_chan);
+ 	dma_dst = dma_map_single(ddev, buf, len, DMA_FROM_DEVICE);
+ 	if (dma_mapping_error(ddev, dma_dst)) {
+ 		dev_err(dev, "dma mapping failed\n");
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index bf389d7590d35..d8f4aa38685f5 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -273,6 +273,7 @@ ep93xx_spi_dma_prepare(struct spi_controller *host,
+ 	struct dma_async_tx_descriptor *txd;
+ 	enum dma_slave_buswidth buswidth;
+ 	struct dma_slave_config conf;
++	struct device *dma_dev;
+ 	struct scatterlist *sg;
+ 	struct sg_table *sgt;
+ 	struct dma_chan *chan;
+@@ -348,14 +349,15 @@ ep93xx_spi_dma_prepare(struct spi_controller *host,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	nents = dma_map_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
++	dma_dev = dmaengine_get_dma_device(chan);
++	nents = dma_map_sg(dma_dev, sgt->sgl, sgt->nents, dir);
+ 	if (!nents)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	txd = dmaengine_prep_slave_sg(chan, sgt->sgl, nents, conf.direction,
+ 				      DMA_CTRL_ACK);
+ 	if (!txd) {
+-		dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
++		dma_unmap_sg(dma_dev, sgt->sgl, sgt->nents, dir);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 	return txd;
+@@ -384,7 +386,7 @@ static void ep93xx_spi_dma_finish(struct spi_controller *host,
+ 		sgt = &espi->tx_sgt;
+ 	}
+ 
+-	dma_unmap_sg(chan->device->dev, sgt->sgl, sgt->nents, dir);
++	dma_unmap_sg(dmaengine_get_dma_device(chan), sgt->sgl, sgt->nents, dir);
+ }
+ 
+ static void ep93xx_spi_dma_callback(void *callback_param)
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 23e6bc5f202e2..f03488870d024 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -670,6 +670,7 @@ static void dspi_dma_xfer(struct fsl_dspi *dspi)
+ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ {
+ 	struct device *dev = &dspi->pdev->dev;
++	struct device *tx_dev, *rx_dev;
+ 	struct dma_slave_config cfg;
+ 	struct fsl_dspi_dma *dma;
+ 	int ret;
+@@ -688,20 +689,23 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 		goto err_tx_channel;
+ 	}
+ 
++	tx_dev = dmaengine_get_dma_device(dma->chan_tx);
++	rx_dev = dmaengine_get_dma_device(dma->chan_rx);
++
+ 	if (spi_controller_is_target(dspi->ctlr)) {
+ 		/*
+ 		 * In target mode we have to be ready to receive the maximum
+ 		 * that can possibly be transferred at once by EDMA without any
+ 		 * FIFO underflows.
+ 		 */
+-		dma->bufsize = min(dma_get_max_seg_size(dma->chan_rx->device->dev),
+-				   dma_get_max_seg_size(dma->chan_tx->device->dev)) *
++		dma->bufsize = min(dma_get_max_seg_size(rx_dev),
++				   dma_get_max_seg_size(tx_dev)) *
+ 			       DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	} else {
+ 		dma->bufsize = PAGE_SIZE;
+ 	}
+ 
+-	dma->tx_dma_buf = dma_alloc_noncoherent(dma->chan_tx->device->dev,
++	dma->tx_dma_buf = dma_alloc_noncoherent(tx_dev,
+ 						dma->bufsize, &dma->tx_dma_phys,
+ 						DMA_TO_DEVICE, GFP_KERNEL);
+ 	if (!dma->tx_dma_buf) {
+@@ -709,7 +713,7 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
+ 		goto err_tx_dma_buf;
+ 	}
+ 
+-	dma->rx_dma_buf = dma_alloc_noncoherent(dma->chan_rx->device->dev,
++	dma->rx_dma_buf = dma_alloc_noncoherent(rx_dev,
+ 						dma->bufsize, &dma->rx_dma_phys,
+ 						DMA_FROM_DEVICE, GFP_KERNEL);
+ 	if (!dma->rx_dma_buf) {
+@@ -746,12 +750,11 @@ static int dspi_request_dma(struct fsl_dspi *dspi, phys_addr_t phy_addr)
  	return 0;
  
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index c8012c82c3a78..c04113ce17f70 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -877,8 +877,8 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_controller *host,
- 	cookie = txdesc->tx_submit(txdesc);
- 	if (dma_submit_error(cookie))
- 		goto err_dma;
--	rxchan->device->device_issue_pending(rxchan);
--	txchan->device->device_issue_pending(txchan);
-+	dma_async_issue_pending(rxchan);
-+	dma_async_issue_pending(txchan);
+ err_slave_config:
+-	dma_free_noncoherent(dma->chan_rx->device->dev, dma->bufsize,
+-			     dma->rx_dma_buf, dma->rx_dma_phys,
+-			     DMA_FROM_DEVICE);
++	dma_free_noncoherent(rx_dev, dma->bufsize, dma->rx_dma_buf,
++			     dma->rx_dma_phys, DMA_FROM_DEVICE);
+ err_rx_dma_buf:
+-	dma_free_noncoherent(dma->chan_tx->device->dev, dma->bufsize,
+-			     dma->tx_dma_buf, dma->tx_dma_phys, DMA_TO_DEVICE);
++	dma_free_noncoherent(tx_dev, dma->bufsize, dma->tx_dma_buf,
++			     dma->tx_dma_phys, DMA_TO_DEVICE);
+ err_tx_dma_buf:
+ 	dma_release_channel(dma->chan_tx);
+ err_tx_channel:
+@@ -771,16 +774,18 @@ static void dspi_release_dma(struct fsl_dspi *dspi)
+ 		return;
+ 
+ 	if (dma->chan_tx) {
+-		dma_free_noncoherent(dma->chan_tx->device->dev, dma->bufsize,
+-				     dma->tx_dma_buf, dma->tx_dma_phys,
+-				     DMA_TO_DEVICE);
++		struct device *tx_dev = dmaengine_get_dma_device(dma->chan_tx);
++
++		dma_free_noncoherent(tx_dev, dma->bufsize, dma->tx_dma_buf,
++				     dma->tx_dma_phys, DMA_TO_DEVICE);
+ 		dma_release_channel(dma->chan_tx);
+ 	}
+ 
+ 	if (dma->chan_rx) {
+-		dma_free_noncoherent(dma->chan_rx->device->dev, dma->bufsize,
+-				     dma->rx_dma_buf, dma->rx_dma_phys,
+-				     DMA_FROM_DEVICE);
++		struct device *rx_dev = dmaengine_get_dma_device(dma->chan_rx);
++
++		dma_free_noncoherent(rx_dev, dma->bufsize, dma->rx_dma_buf,
++				     dma->rx_dma_phys, DMA_FROM_DEVICE);
+ 		dma_release_channel(dma->chan_rx);
+ 	}
+ }
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 6f9686df0486e..868f963e61371 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1467,8 +1467,8 @@ static int spi_imx_calculate_timeout(struct spi_imx_data *spi_imx, int size)
+ static void spi_imx_dma_unmap(struct spi_imx_data *spi_imx,
+ 			      struct dma_data_package *dma_data)
+ {
+-	struct device *tx_dev = spi_imx->controller->dma_tx->device->dev;
+-	struct device *rx_dev = spi_imx->controller->dma_rx->device->dev;
++	struct device *tx_dev = dmaengine_get_dma_device(spi_imx->controller->dma_tx);
++	struct device *rx_dev = dmaengine_get_dma_device(spi_imx->controller->dma_rx);
+ 
+ 	dma_unmap_single(tx_dev, dma_data->dma_tx_addr,
+ 			 DMA_CACHE_ALIGNED_LEN(dma_data->dma_len),
+@@ -1526,8 +1526,8 @@ static int spi_imx_dma_map(struct spi_imx_data *spi_imx,
+ 			   struct dma_data_package *dma_data)
+ {
+ 	struct spi_controller *controller = spi_imx->controller;
+-	struct device *tx_dev = controller->dma_tx->device->dev;
+-	struct device *rx_dev = controller->dma_rx->device->dev;
++	struct device *tx_dev = dmaengine_get_dma_device(controller->dma_tx);
++	struct device *rx_dev = dmaengine_get_dma_device(controller->dma_rx);
+ 	int ret;
+ 
+ 	dma_data->dma_tx_addr = dma_map_single(tx_dev, dma_data->dma_tx_buf,
+@@ -1919,7 +1919,7 @@ static int spi_imx_dma_package_transfer(struct spi_imx_data *spi_imx,
+ 		return ret;
+ 
+ 	/* Trim the DMA RX buffer and copy the actual data to rx_buf */
+-	dma_sync_single_for_cpu(controller->dma_rx->device->dev, dma_data->dma_rx_addr,
++	dma_sync_single_for_cpu(dmaengine_get_dma_device(controller->dma_rx), dma_data->dma_rx_addr,
+ 				dma_data->dma_len, DMA_FROM_DEVICE);
+ 	spi_imx_dma_rx_data_handle(spi_imx, dma_data, transfer->rx_buf + spi_imx->rx_offset,
+ 				   word_delay);
+diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+index 70cbc3ef658b6..38c8d6269aadd 100644
+--- a/drivers/spi/spi-nxp-xspi.c
++++ b/drivers/spi/spi-nxp-xspi.c
+@@ -841,23 +841,23 @@ static int nxp_xspi_ahb_dma_read(struct nxp_xspi *xspi,
+ {
+ 	struct dma_async_tx_descriptor *desc;
+ 	struct dma_chan *chan = xspi->dma_rx;
++	struct device *dma_dev = dmaengine_get_dma_device(chan);
+ 	unsigned long timeout;
+ 	dma_addr_t src_addr, dst_addr;
+ 	int ret = 0;
+ 
+-	dst_addr = dma_map_single(chan->device->dev,
+-				  op->data.buf.in, op->data.nbytes,
++	dst_addr = dma_map_single(dma_dev, op->data.buf.in, op->data.nbytes,
+ 				  DMA_FROM_DEVICE);
+-	if (dma_mapping_error(chan->device->dev, dst_addr)) {
++	if (dma_mapping_error(dma_dev, dst_addr)) {
+ 		dev_err(xspi->dev, "failed to map DMA dst buffer\n");
+ 		return -ENOMEM;
+ 	}
+ 
+-	src_addr = dma_map_resource(chan->device->dev,
++	src_addr = dma_map_resource(dma_dev,
+ 				    (phys_addr_t)xspi->memmap_phy + op->addr.val,
+ 				    op->data.nbytes,
+ 				    DMA_TO_DEVICE, 0);
+-	if (dma_mapping_error(chan->device->dev, src_addr)) {
++	if (dma_mapping_error(dma_dev, src_addr)) {
+ 		dev_err(xspi->dev, "failed to map DMA src resource\n");
+ 		ret = -ENOMEM;
+ 		goto err_unmap_dst;
+@@ -886,12 +886,10 @@ static int nxp_xspi_ahb_dma_read(struct nxp_xspi *xspi,
+ 	}
+ 
+ err_unmap_src:
+-	dma_unmap_resource(chan->device->dev, src_addr,
+-		op->data.nbytes, DMA_TO_DEVICE, 0);
++	dma_unmap_resource(dma_dev, src_addr, op->data.nbytes, DMA_TO_DEVICE, 0);
+ 
+ err_unmap_dst:
+-	dma_unmap_single(chan->device->dev, dst_addr,
+-			 op->data.nbytes, DMA_FROM_DEVICE);
++	dma_unmap_single(dma_dev, dst_addr, op->data.nbytes, DMA_FROM_DEVICE);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 4877ab909c51b..3ff30486b2892 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -684,9 +684,9 @@ static void readwriter(struct pl022 *pl022)
+ static void unmap_free_dma_scatter(struct pl022 *pl022)
+ {
+ 	/* Unmap and free the SG tables */
+-	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
++	dma_unmap_sg(dmaengine_get_dma_device(pl022->dma_tx_channel), pl022->sgt_tx.sgl,
+ 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+-	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
++	dma_unmap_sg(dmaengine_get_dma_device(pl022->dma_rx_channel), pl022->sgt_rx.sgl,
+ 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+ 	sg_free_table(&pl022->sgt_rx);
+ 	sg_free_table(&pl022->sgt_tx);
+@@ -811,6 +811,7 @@ static int configure_dma(struct pl022 *pl022)
+ 	struct dma_chan *txchan = pl022->dma_tx_channel;
+ 	struct dma_async_tx_descriptor *rxdesc;
+ 	struct dma_async_tx_descriptor *txdesc;
++	struct device *rx_dev, *tx_dev;
+ 
+ 	/* Check that the channels are available */
+ 	if (!rxchan || !txchan)
+@@ -924,14 +925,16 @@ static int configure_dma(struct pl022 *pl022)
+ 	setup_dma_scatter(pl022, pl022->tx,
+ 			  pl022->cur_transfer->len, &pl022->sgt_tx);
+ 
++	rx_dev = dmaengine_get_dma_device(rxchan);
+ 	/* Map DMA buffers */
+-	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+-			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++	rx_sglen = dma_map_sg(rx_dev, pl022->sgt_rx.sgl,
++			      pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+ 	if (!rx_sglen)
+ 		goto err_rx_sgmap;
+ 
+-	tx_sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+-			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
++	tx_dev = dmaengine_get_dma_device(txchan);
++	tx_sglen = dma_map_sg(tx_dev, pl022->sgt_tx.sgl,
++			      pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	if (!tx_sglen)
+ 		goto err_tx_sgmap;
+ 
+@@ -969,10 +972,10 @@ static int configure_dma(struct pl022 *pl022)
+ 	dmaengine_terminate_all(txchan);
+ err_rxdesc:
+ 	dmaengine_terminate_all(rxchan);
+-	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
++	dma_unmap_sg(tx_dev, pl022->sgt_tx.sgl,
+ 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ err_tx_sgmap:
+-	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
++	dma_unmap_sg(rx_dev, pl022->sgt_rx.sgl,
+ 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+ err_rx_sgmap:
+ 	sg_free_table(&pl022->sgt_tx);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 90a671e9de70e..89fbdde46cfe9 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -674,7 +674,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 
+ 	if (tx) {
+ 		ier_bits |= SIIER_TDREQE | SIIER_TDMAE;
+-		dma_sync_single_for_device(p->ctlr->dma_tx->device->dev,
++		dma_sync_single_for_device(dmaengine_get_dma_device(p->ctlr->dma_tx),
+ 					   p->tx_dma_addr, len, DMA_TO_DEVICE);
+ 		desc_tx = dmaengine_prep_slave_single(p->ctlr->dma_tx,
+ 					p->tx_dma_addr, len, DMA_MEM_TO_DEV,
+@@ -754,7 +754,7 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 	}
+ 
+ 	if (rx)
+-		dma_sync_single_for_cpu(p->ctlr->dma_rx->device->dev,
++		dma_sync_single_for_cpu(dmaengine_get_dma_device(p->ctlr->dma_rx),
+ 					p->rx_dma_addr, len, DMA_FROM_DEVICE);
  
  	return 0;
+@@ -1142,13 +1142,13 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+ 	if (!p->rx_dma_page)
+ 		goto free_tx_page;
  
+-	tx_dev = ctlr->dma_tx->device->dev;
++	tx_dev = dmaengine_get_dma_device(ctlr->dma_tx);
+ 	p->tx_dma_addr = dma_map_single(tx_dev, p->tx_dma_page, PAGE_SIZE,
+ 					DMA_TO_DEVICE);
+ 	if (dma_mapping_error(tx_dev, p->tx_dma_addr))
+ 		goto free_rx_page;
+ 
+-	rx_dev = ctlr->dma_rx->device->dev;
++	rx_dev = dmaengine_get_dma_device(ctlr->dma_rx);
+ 	p->rx_dma_addr = dma_map_single(rx_dev, p->rx_dma_page, PAGE_SIZE,
+ 					DMA_FROM_DEVICE);
+ 	if (dma_mapping_error(rx_dev, p->rx_dma_addr))
+@@ -1178,9 +1178,9 @@ static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
+ 	if (!ctlr->dma_tx)
+ 		return;
+ 
+-	dma_unmap_single(ctlr->dma_rx->device->dev, p->rx_dma_addr, PAGE_SIZE,
++	dma_unmap_single(dmaengine_get_dma_device(ctlr->dma_rx), p->rx_dma_addr, PAGE_SIZE,
+ 			 DMA_FROM_DEVICE);
+-	dma_unmap_single(ctlr->dma_tx->device->dev, p->tx_dma_addr, PAGE_SIZE,
++	dma_unmap_single(dmaengine_get_dma_device(ctlr->dma_tx), p->tx_dma_addr, PAGE_SIZE,
+ 			 DMA_TO_DEVICE);
+ 	free_page((unsigned long)p->rx_dma_page);
+ 	free_page((unsigned long)p->tx_dma_page);
 -- 
 2.43.0
 

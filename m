@@ -1,245 +1,197 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F4050B41B;
-	Wed, 30 Sep 2026 16:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790784442; cv=none; b=hpIu0qEFrOPrGEhRl4p7Xdr+6dB7pxu6TuK1r61KsU3tY0VaemFX9yyMdE3pqvcSyslKOJoO3Bt1EbZxlNJgQ7SIFPSjI5ZWUgtOrOhhtbmzzGwItsYS9CXwdSPRswkd/IbHgq9LIWLG1SBsragPu2FfVHD4fT4ge86eSXWpksQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790784442; c=relaxed/simple;
-	bh=xK7tamjrNwFBAZwGxvC2tPl1f4cIk4BUdLuOctFvLtE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qy+htdiJYSE/d5K+aCZF2+1RacxdSPf7oaYhju/tg/gw/oq4qqVKcVNmotx+kg+MOnhtkdqSIsoc3xdCpe9hsqwHlZP65mkWRusuOIqV+98ofc2A+6hZzp63D+j60qhXwGn1XKMvEvAGZZTpK9hnwD+uMgUfCriGVOl4mlc5DNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=RY+5H+Dn; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EDB4FECE8;
+	Wed, 30 Sep 2026 16:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790785357; cv=pass; b=Lpw/fmJQM8nvC/MXgWpM0IQYtLSAZuXrwFBAfoGlqIM7TxbosXNQB72iKEz1Q54q47ENqugPnV7U5vslv0J0yPVCOXkp0EylvbLq73++y4fS0aUJmE9jNHpL0xd1PbHt59Iik/3Ic9AvYWGGsVd0xEakC8zEyDH5tW36+VKPZPg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790785357; c=relaxed/simple;
+	bh=XG+XEXFoE7m3XUnzJGwtjUCRx6qhsjftZVKQZqjmcl4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QD8AimubGKIQVbnHodX4LPO2lb10P7P+vvn63qrArqGDPOvD+Yddf91ZsifQGQ4ybxN+z/BXbLm5mUmvchoTMao4zs3KiWVCdVv55hof5Aec8B4iAo+HHROrdsZ6pUmJ1NpITMNMhnVTS5rD9lD9e6tPOYGj/OdT4ZtHTE31SdU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=biD8AyrY; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=q7m5FpCS; arc=pass smtp.client-ip=185.56.87.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="RY+5H+Dn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=LYgeF6EE4HK9y1FXGURsNGn2Dslu8jTlzME3jbPfcO8=; b=RY+5H+Dn9k7UAguo5mXsvQYEDF
-	A5fTwAhuFTqU4ZWVhmcCtwiJpRLbLqmzOKudlid0KufnhzZzy4nOm4Ogb/oXG869cquE868TEWxTv
-	4YRf1QBcvUqrL19byRYGzcfJIBI/hg6zfvZBNMeLbKVX/vWRUzgAYWYOPVoKmq2I6chLSnQ/mAlZz
-	8ViPfdUvJ/YaN5JZqgLP5SA5zdBaEScjqSyLyAWjg1EGHGrdH0iTweSiq8Qxso5phW0Zm4s5vvJhP
-	5+LyEp5mIE398vkGDv4OsUrelhnSZhtKWXYjm4bdwpYUwf6fQza81Odft/pZyigJs3BTxqUd25sNP
-	ci+54k0Q==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <fourdollars@debian.org>)
-	id 1xBwpo-009IoV-0j;
-	Wed, 30 Sep 2026 16:07:08 +0000
-From: Shih-Yuan Lee <fourdollars@debian.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v17 6/6] spi: pxa2xx-pci: disable DMA and runtime autosuspend for Apple MacBook8,1
-Date: Thu,  1 Oct 2026 00:06:29 +0800
-Message-Id: <20260930160629.1822-7-fourdollars@debian.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260930160629.1822-1-fourdollars@debian.org>
-References: <20260930160629.1822-1-fourdollars@debian.org>
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="biD8AyrY";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="q7m5FpCS"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; s=arckey; t=1790785351;
+	 b=Qkfdtg0WIAFqO19jgbvFc59APwU87cgGECeUvrSoAtEY6hNRBFu3Ldz4nXR65O6DORgpFmdIjE
+	  YS5g8bCRuljzlF1hhvxeVZw6Fo1dMn8iVFEiUsohhP681WSytIxUX17iclS3otHZjW67IZ9p4w
+	  NPbvRHSNRupHwUjQ5EQFVudA+b0chnPOaerNealrRXWzGmyuc8V+i9y7cgIcr0FenJQFe9WxbJ
+	  3nl26mx3dqq1ABpPpUZwxmj/HzHeRiEwS448hhns98wBURyN/9mMVO2RdKGpEa1bzxOFcdM+ns
+	  +S1HLjtIzc9Ygm5z6ZTuOR4LOGqQcnVfIhL/YN3hwSXyyg==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com; s=arckey; t=1790785351;
+	bh=XG+XEXFoE7m3XUnzJGwtjUCRx6qhsjftZVKQZqjmcl4=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=YlRVXW6aHGFOTGpHPzicWN4eiIbrwzRcXxYpNoG7L/z8BDU6UgvZHJs50S0iX0dXKr33zpHz7g
+	  P1XZe+ozESMTFfhtVJV7RfIskiYGC/wJIW80StTQgLlz+KEgq8+Qtbumi3vBQUG1HjfJTeqd5X
+	  LQ/2I1p2YJo9qMQinn0Os1HCPkzgjg/bnXi6OcNPBIqw4NFNfoZQA5ZPm0WcIwAOOWtJ29JrCt
+	  yWGS4wuEj2OXr7zaelnlHhTny9wLZALXVjPs9q7euzXeVnRvg9nSbONVWUEl5lILc/RwxuBdNF
+	  1LSK/mgYGTyBX7YYchUo+FLzwkSNSXhgj9XKirevhSXMRQ==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=6t7GnASuY8iu8DCfqMcvSr3pNVQGJGkV48AosuqHfVo=; b=biD8AyrY1z+3G3lbutdp3etctQ
+	2k462YxSawe11xDTbzXWNkeC8aqr3suc3C5FuSAsUMUTVbxYuBZDDikj5CqGgUm8nYM2J4LJnGJZE
+	dxFcrWvl58fxOmLnTk49COTZ1s03MV4pYgAgsp5Nhxl7JOGzTlprgvyvR3tedeOyY98g=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-c54f.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xBx4a-00000004PEM-277H;
+	Wed, 30 Sep 2026 16:22:25 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=6t7GnASuY8iu8DCfqMcvSr3pNVQGJGkV48AosuqHfVo=; b=q7m5FpCSf0KtWKBUFio0+C5svc
+	B43jcg/vGa6IV6vn0X4Ni476MudeYiILU4tCXZOaT5M8XS6vuYP8aPocatBzRjQnFAoz7hKcIPVys
+	lVU0XVLKK5209DViqfD0nvLsBMKPeaycXLk8ojgY0QVwgyUIISyKtndZqb3UEsNZ04Yk=;
+Received: from [87.14.44.235] (port=60776 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xBx4H-00000000GOS-3C3X;
+	Wed, 30 Sep 2026 16:22:05 +0000
+Date: Wed, 30 Sep 2026 18:22:03 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>, 
+	Jason Wang <jasowangio@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH 1/2] dt-bindings: spi: add bindings for spi-virtio
+Message-ID: <ar0yXZotiVZmNJQw@bywater>
+References: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
+ <20260929-spi-virtio-bindings-v1-1-6a0eef3213b3@valla.it>
+ <20260930-arcane-pheasant-of-infinity-ecff83@quoll>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Debian-User: fourdollars
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930-arcane-pheasant-of-infinity-ecff83@quoll>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 70bd9ea3b80416f81ac2f5224697ac6f
+X-AntiAbuse: ID - 70bd9ea3b80416f81ac2f5224697ac6f
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1xBx4a-00000004PEM-277H-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-c54f.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-On MacBook8,1 (early 2015 12" MacBook), the LPSS SPI controller at
-00:15.4 (PCI ID 8086:9ce6, PCI_DEVICE_ID_INTEL_LPT1_1) registers and
-allocates DMA channels successfully. However, during actual SPI
-transfers, the DMA handshake synchronization fails.
+Hello Krzysztof,
 
-This leads to continuous transfer timeouts and locks up the driver
-queue, making the connected keyboard and touchpad completely dead:
+On Wed, Sep 30, 2026 at 02:03:17PM +0200, Krzysztof Kozlowski wrote:
+> On Tue, Sep 29, 2026 at 06:41:55PM +0200, Francesco Valla wrote:
+> > Add bindings for spi-virtio based on virtio-device, reflecting what
+> > already exists for gpio-virtio and i2c-virtio. A node using the bindings
+> 
+> Existing code is not a reason to add more code. Existing bugs are not a
+> reason to add more bugs. Please provide proper rationale why this suits
+> DT.
+> 
 
-[ 1582.050494] spi_master spi1: failed to transfer one message from queue
-[ 1582.258387] applespi spi-APP000D:00: SPI transfer timed out
-[ 1582.258498] applespi spi-APP000D:00: Error reading from device: -110
+When a non-discoverable bus (SPI in this case, but that's true also for
+e.g. the I2C and GPIO cases I mentioned) made available by a virtio
+transport is registered, the devicetree can be used to declare its child
+devices (if any) and/or other properties (say,i GPIOs tied to CS lines
+for the SPI usecase).
 
-Empirical hardware register inspection reveals that the companion LPSS
-DMA controller at 00:15.0 has its LPSS Private Reset Register (BAR0 +
-0x204) left strictly at 0x00000000 by the EFI firmware. Even after
-deasserting this reset and overriding ACPI _PRT to assign shared IRQ 21,
-the DMA interrupt counter remains strictly at 0, confirming that DMA
-completion interrupts are not delivered on this platform. Furthermore,
-the SPI controller driver at 00:15.4 cannot safely reach across the PCI
-bus to manipulate private registers of the separate DMAC function at
-00:15.0 without violating driver layering.
+The virtio framework already searches for a node with a suitable
+compatible when registering a device [1]; this binding is thus not
+introducing a new functionality, but allowing proper validation of
+nodes tied to spi-virtio devices.
 
-Reverse engineering of the official OS drivers on the same hardware
-corroborates that DMA is deliberately bypassed:
+> > is not used to instantiate the device, which is registered by the
+> > transport (e.g.: virtio-mmio), but to define its properties and
+> > establish dependencies with other nodes.
+> > 
+> > Add the new bindings inside the MAINTAINERS file.
+> > 
+> > Signed-off-by: Francesco Valla <francesco@valla.it>
+> > ---
+> >  .../devicetree/bindings/spi/spi-virtio.yaml        | 53 ++++++++++++++++++++++
+> >  MAINTAINERS                                        |  1 +
+> >  2 files changed, 54 insertions(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-virtio.yaml b/Documentation/devicetree/bindings/spi/spi-virtio.yaml
+> > new file mode 100644
+> > index 000000000000..5b8639dd2e1f
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/spi-virtio.yaml
+> > @@ -0,0 +1,53 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/spi/spi-virtio.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Virtio SPI controller device
+> > +
+> > +maintainers:
+> > +  - Francesco Valla <francesco@valla.it>
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-controller.yaml#
+> > +  - $ref: /schemas/virtio/virtio-device.yaml#
+> > +
+> > +description:
+> > +  Virtio SPI controller device, see /schemas/virtio/virtio-device.yaml for
+> > +  more details.
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    const: spi
+> > +
+> > +  compatible:
+> > +    const: virtio,device2d
+> 
+> From where does the compatible come from?
+>
 
-  1. On macOS (Big Sur), IOKit registry shows that while the LPSS DMAC
-     driver (AppleIntelLpssDmac) is loaded, the allocated channel count
-     (AppleIntelLpssDmacChannel) is 0 when the SPI device driver
-     (AppleHSSPIHIDDriver) is active.
-  2. On Windows 10 (Boot Camp), dynamic MMIO monitoring of BAR1 shows
-     that the LPSS DMA control registers (offset 0x800+) remain
-     inactive (all zeros) during active keyboard and touchpad
-     transactions, and transfers are handled solely via the FIFO data
-     registers at the beginning of BAR1.
-  3. Logic board schematics confirm that a dedicated out-of-band GPIO
-     interrupt line (TPAD_SPI_INT_L) is routed directly to the PCH for
-     input events.
+This is the compatible the virtio framework is expecting [1]; '2d' is the
+hexadecimal representation of 45, which is the virtio identifier for a
+SPI device [2].
 
-Additionally, when operating in PIO mode servicing high-frequency
-keyboard and touchpad input streams operating at 60-125 Hz, the default
-50 ms autosuspend delay causes the controller to repeatedly transition
-between D0 and D3hot between bursts of user input. These runtime resume
-transitions introduce latency spikes that drop key presses and cause
-erratic touchpad motion.
+> Best regards,
+> Krzysztof
+>
 
-Implement the forced PIO mode and runtime autosuspend lockout DMI quirk
-in spi-pxa2xx-pci.c (the LPSS host controller PCI glue driver) scoped
-strictly to MacBook8,1:
-1. Include <linux/dmi.h> in alphabetical order for DMI system matching.
-2. Add 'quirks' field in struct pxa2xx_spi_pci_config and define
-   PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND.
-3. Add pxa2xx_spi_pci_dmi_table matching Apple MacBook8,1 and query it
-   once in lpss_spi_setup() scoped to PCI_DEVICE_ID_INTEL_LPT1_1
-   (0x9ce6). When matched, log the system ident with pci_info(), set
-   enable_dma = 0 as a workaround, cache PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND
-   in cfg->quirks, and return immediately to skip unused DMA channel
-   setup.
-4. In pxa2xx_spi_pci_probe(), configure autosuspend with a 50 ms delay
-   for all devices, but conditionally skip pm_runtime_allow() when
-   PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND is set. This keeps the controller in
-   D0 by default (as initialized by PCI core pci_pm_init()) while bound,
-   eliminating D3hot resume latency spikes, while ensuring that if
-   userspace explicitly enables autosuspend via sysfs, the safe 50 ms
-   delay is preserved rather than defaulting to 0. Standard system
-   sleep (S3) remains fully operational via pm_runtime_force_suspend().
+Thank you
 
-Assisted-by: Antigravity:gemini-3.8-flash sparse
-Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
----
- drivers/spi/spi-pxa2xx-pci.c | 61 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
+Regards,
+Francesco
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index f8d71362e840..f12a8ef12b17 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -7,6 +7,7 @@
-  */
- #include <linux/clk-provider.h>
- #include <linux/device.h>
-+#include <linux/dmi.h>
- #include <linux/err.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-@@ -40,6 +41,8 @@
- #define LPSS_PRIV_RESETS_IDMA			BIT(2)
- #define LPSS_PRIV_REG_COUNT			9
- 
-+#define PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND		BIT(0)
-+
- struct pxa_spi_info {
- 	int (*setup)(struct pci_dev *pdev, struct pxa2xx_spi_controller *c);
- };
-@@ -47,6 +50,7 @@ struct pxa_spi_info {
- struct pxa2xx_spi_pci_config {
- 	struct pxa2xx_spi_controller pdata;
- 	u32 lpss_priv_ctx[LPSS_PRIV_REG_COUNT];
-+	u8 quirks;
- 	bool is_lpt;
- };
- 
-@@ -106,8 +110,53 @@ static void lpss_dma_put_device(void *dma_dev)
- 	pci_dev_put(dma_dev);
- }
- 
-+/*
-+ * Apple MacBook8,1 (early 2015 12" MacBook):
-+ *
-+ * The LPSS SPI controller at 00:15.4 connects to the internal SPI keyboard
-+ * and touchpad (applespi). When DMA mode is enabled, DMA transfers consistently
-+ * time out (-110) because DMA completion interrupts are never delivered.
-+ *
-+ * Empirical hardware inspection and OS analysis show that:
-+ * 1. Hardware/firmware configuration: EFI leaves companion LPSS DMA (00:15.0)
-+ *    held in reset (LPSS_PRIV_RESETS == 0x0 / BAR0 + 0x204). Even after
-+ *    deasserting the reset and overriding ACPI _PRT to assign shared IRQ 21,
-+ *    the DMA interrupt counter remains strictly 0, confirming that DMA
-+ *    completion interrupts are not delivered on this platform.
-+ * 2. Operating system parity: Both macOS (AppleIntelLpssDmac channel count
-+ *    is 0) and Windows 10 Boot Camp bypass DMA and handle keyboard/touchpad
-+ *    transactions strictly in PIO mode via FIFO registers.
-+ * 3. Layering: The SPI controller driver (00:15.4) cannot safely reconfigure
-+ *    the private registers of the separate DMAC PCI function (00:15.0).
-+ * 4. Runtime autosuspend: In PIO mode servicing 60-125 Hz input events, the
-+ *    default 50 ms autosuspend delay introduces D3hot <-> D0 transition
-+ *    latency spikes that drop key presses and cause erratic touchpad motion.
-+ *
-+ * Therefore, as a workaround, disable DMA channel allocation to force PIO mode
-+ * and keep the device in D0 without enabling runtime autosuspend.
-+ */
-+static const struct dmi_system_id pxa2xx_spi_pci_dmi_table[] = {
-+	{
-+		.ident = "Apple MacBook8,1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "MacBook8,1"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static const struct dmi_system_id *pxa2xx_spi_pci_get_dmi_id(struct pci_dev *dev)
-+{
-+	if (dev->device == PCI_DEVICE_ID_INTEL_LPT1_1)
-+		return dmi_first_match(pxa2xx_spi_pci_dmi_table);
-+
-+	return NULL;
-+}
-+
- static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
- {
-+	const struct dmi_system_id *dmi_id;
- 	struct pxa2xx_spi_pci_config *cfg = container_of(c, struct pxa2xx_spi_pci_config, pdata);
- 	struct ssp_device *ssp = &c->ssp;
- 	struct dw_dma_slave *tx, *rx;
-@@ -165,6 +214,14 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
- 	if (ret)
- 		return ret;
- 
-+	dmi_id = pxa2xx_spi_pci_get_dmi_id(dev);
-+	if (dmi_id) {
-+		pci_info(dev, "%s detected: disabling DMA to force PIO mode\n", dmi_id->ident);
-+		c->enable_dma = 0;
-+		cfg->quirks |= PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND;
-+		return 0;
-+	}
-+
- 	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
- 	ret = devm_add_action_or_reset(&dev->dev, lpss_dma_put_device, dma_dev);
- 	if (ret)
-@@ -446,7 +503,9 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	pm_runtime_set_autosuspend_delay(&dev->dev, 50);
- 	pm_runtime_use_autosuspend(&dev->dev);
- 	pm_runtime_put_autosuspend(&dev->dev);
--	pm_runtime_allow(&dev->dev);
-+
-+	if (!(cfg->quirks & PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND))
-+		pm_runtime_allow(&dev->dev);
- 
- 	return 0;
- }
--- 
-2.39.5
+[1] https://elixir.bootlin.com/linux/v7.2.8/source/drivers/virtio/virtio.c#L488
+[2] https://docs.oasis-open.org/virtio/virtio/v1.4/virtio-v1.4.html @ 5.21.1
+
 

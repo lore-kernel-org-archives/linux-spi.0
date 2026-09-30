@@ -1,37 +1,37 @@
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA86E4BE423;
-	Wed, 30 Sep 2026 16:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F4050B41B;
+	Wed, 30 Sep 2026 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790784438; cv=none; b=Xwi863gxT2PxkU59FfZNzOmPcgDUVdfUaVNRcpqpUK1dHnMQYtojWOKrl+lzWT1c5onQTDRwxj5afhx9Ch+evaRxZ0BTD7mRscapyyijeJg6o4Q9Joy8cNVCw3uvHP88ZBSlajs7T0TZ2etjDh8qkRJ0iCLw9niBvh+IM9+wqMY=
+	t=1790784442; cv=none; b=hpIu0qEFrOPrGEhRl4p7Xdr+6dB7pxu6TuK1r61KsU3tY0VaemFX9yyMdE3pqvcSyslKOJoO3Bt1EbZxlNJgQ7SIFPSjI5ZWUgtOrOhhtbmzzGwItsYS9CXwdSPRswkd/IbHgq9LIWLG1SBsragPu2FfVHD4fT4ge86eSXWpksQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790784438; c=relaxed/simple;
-	bh=iTqyrLIN3yXwavfZApP0Z9+2WOSSqcQRMQeiHO2zAxQ=;
+	s=arc-20240116; t=1790784442; c=relaxed/simple;
+	bh=xK7tamjrNwFBAZwGxvC2tPl1f4cIk4BUdLuOctFvLtE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oVXAwKdJUNLwk4uYoOyTi6QiWoSZoOELngmyN7fEAi0SNe13UZJUUU0R+P+nsohhW3e4AL0c3wqxFszyao3nK1Pc57yN1oH1CD5HqP63b33VZzyrWFXHs7a/P8voliUMUonRHjTHXHng7wWYDF/IkKJ37OAWUPvJ5a5+dLN4V5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=QRy4gjYA; arc=none smtp.client-ip=82.195.75.108
+	 MIME-Version; b=Qy+htdiJYSE/d5K+aCZF2+1RacxdSPf7oaYhju/tg/gw/oq4qqVKcVNmotx+kg+MOnhtkdqSIsoc3xdCpe9hsqwHlZP65mkWRusuOIqV+98ofc2A+6hZzp63D+j60qhXwGn1XKMvEvAGZZTpK9hnwD+uMgUfCriGVOl4mlc5DNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=RY+5H+Dn; arc=none smtp.client-ip=82.195.75.108
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="QRy4gjYA"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="RY+5H+Dn"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=VgFvgtep6pV4jOhS6T6V7f+YjEM/TwU2OLrH6PudRcE=; b=QRy4gjYAIyPebTmoSJz/DoEG3z
-	LWc/cfhYZ/dU0421ek7DlJaHZ7F+Iyld33tYrU7Y12D+i0Ilh7BQB0CD8zDpwFiKaGHR9qQMkNe9O
-	IhyNlYjCTeyl836jH7NCGo2eMzEJrlEmFvwq8Zvp7NZzsd3U8DVJh+FekH6NUTTWXAaKM1btSt+sE
-	8AaQzSC/R3a8F/OL+pcrfecJb2PHmFPdmXbIVEJDmz1NMWYwZH1Bq6Lyc+lZDReBM/lvKO4N4uk5s
-	yJMJ4xXAo/V7pDAXxDTUMLi2lDUkWL9jbvuZsnCq8yZAAv2vBQ8Tz8SPrdjETkJFCHavFPETlzBci
-	UfCB0PMg==;
+	bh=LYgeF6EE4HK9y1FXGURsNGn2Dslu8jTlzME3jbPfcO8=; b=RY+5H+Dn9k7UAguo5mXsvQYEDF
+	A5fTwAhuFTqU4ZWVhmcCtwiJpRLbLqmzOKudlid0KufnhzZzy4nOm4Ogb/oXG869cquE868TEWxTv
+	4YRf1QBcvUqrL19byRYGzcfJIBI/hg6zfvZBNMeLbKVX/vWRUzgAYWYOPVoKmq2I6chLSnQ/mAlZz
+	8ViPfdUvJ/YaN5JZqgLP5SA5zdBaEScjqSyLyAWjg1EGHGrdH0iTweSiq8Qxso5phW0Zm4s5vvJhP
+	5+LyEp5mIE398vkGDv4OsUrelhnSZhtKWXYjm4bdwpYUwf6fQza81Odft/pZyigJs3BTxqUd25sNP
+	ci+54k0Q==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <fourdollars@debian.org>)
-	id 1xBwpk-009IoV-1o;
-	Wed, 30 Sep 2026 16:07:05 +0000
+	id 1xBwpo-009IoV-0j;
+	Wed, 30 Sep 2026 16:07:08 +0000
 From: Shih-Yuan Lee <fourdollars@debian.org>
 To: Mark Brown <broonie@kernel.org>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -44,9 +44,9 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	Shih-Yuan Lee <fourdollars@debian.org>
-Subject: [PATCH v17 5/6] spi: pxa2xx-pci: restore LPSS private register state across S3 resume
-Date: Thu,  1 Oct 2026 00:06:28 +0800
-Message-Id: <20260930160629.1822-6-fourdollars@debian.org>
+Subject: [PATCH v17 6/6] spi: pxa2xx-pci: disable DMA and runtime autosuspend for Apple MacBook8,1
+Date: Thu,  1 Oct 2026 00:06:29 +0800
+Message-Id: <20260930160629.1822-7-fourdollars@debian.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260930160629.1822-1-fourdollars@debian.org>
 References: <20260930160629.1822-1-fourdollars@debian.org>
@@ -59,346 +59,187 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Debian-User: fourdollars
 
-On platforms where Intel LPSS SPI is enumerated as a bare PCI device
-(such as the Apple MacBook8,1 on Lynxpoint-LP), the LPSS power island
-loses power during system sleep and powers up with the controller held
-in reset. Because the device lacks ACPI companion objects or MFD
-binding, neither drivers/acpi/x86/lpss.c nor drivers/mfd/intel-lpss.c
-restore the private register context across S3 resume.
+On MacBook8,1 (early 2015 12" MacBook), the LPSS SPI controller at
+00:15.4 (PCI ID 8086:9ce6, PCI_DEVICE_ID_INTEL_LPT1_1) registers and
+allocates DMA channels successfully. However, during actual SPI
+transfers, the DMA handshake synchronization fails.
 
-This causes memory-mapped I/O reads on resume to return ~0, resulting
-in PCIe Completion Timeouts, missing interrupts, and dead
-keyboard/touchpad.
+This leads to continuous transfer timeouts and locks up the driver
+queue, making the connected keyboard and touchpad completely dead:
 
-Restore LPSS private registers and deassert functional, APB, and iDMA
-resets in the PCI glue layer:
-1. In suspend, quiesce the controller queue via spi_controller_suspend()
-   so no transfers remain in flight and chip select is deasserted.
-   Then save the LPSS private registers (LPSS_PRIV_REG_COUNT 9 covering
-   up to offset 0x20 including reg_cs_ctrl at 0x18). Ensure the clock is
-   active for reading MMIO registers using pm_runtime_resume_and_get(),
-   balanced by pm_runtime_put_noidle(), before calling
-   pm_runtime_force_suspend().
-2. In resume, restore LPSS private registers and deassert functional,
-   APB, and iDMA resets via pxa2xx_spi_pci_lpss_restore_ctx() before
-   calling pm_runtime_force_resume(). Because the controller clock
-   remains gated (clk_enabled is false) during this restoration, any
-   interrupt arriving on a shared line bails out early in ssp_int()
-   without accessing registers on a controller held in reset. Once
-   resets are deasserted and private registers are restored, call
-   pm_runtime_force_resume() to enable the clock and mark the device
-   active, and restart the queue with spi_controller_resume().
-3. In probe, call pci_d3cold_disable() for Lynxpoint-LP (is_lpt) to
-   ensure the PCI device cannot enter D3cold during runtime PM,
-   guaranteeing that LPSS private registers are retained during S0 idle
-   periods and only require restoration across S3 system sleep. Set
-   DPM_FLAG_NO_DIRECT_COMPLETE to prevent PCI subsystem direct-complete
-   bypassing system sleep callbacks.
-4. Scope LPSS context restoration specifically to Lynxpoint-LP
-   (PCI_DEVICE_ID_INTEL_LPT*) devices to avoid perturbing other LPSS
-   PCI platforms (BYT, BSW) or non-LPSS platforms.
+[ 1582.050494] spi_master spi1: failed to transfer one message from queue
+[ 1582.258387] applespi spi-APP000D:00: SPI transfer timed out
+[ 1582.258498] applespi spi-APP000D:00: Error reading from device: -110
 
-Export lpss_ssp_setup() and core runtime PM ops so the PCI glue layer
-can invoke them around private register restoration.
+Empirical hardware register inspection reveals that the companion LPSS
+DMA controller at 00:15.0 has its LPSS Private Reset Register (BAR0 +
+0x204) left strictly at 0x00000000 by the EFI firmware. Even after
+deasserting this reset and overriding ACPI _PRT to assign shared IRQ 21,
+the DMA interrupt counter remains strictly at 0, confirming that DMA
+completion interrupts are not delivered on this platform. Furthermore,
+the SPI controller driver at 00:15.4 cannot safely reach across the PCI
+bus to manipulate private registers of the separate DMAC function at
+00:15.0 without violating driver layering.
+
+Reverse engineering of the official OS drivers on the same hardware
+corroborates that DMA is deliberately bypassed:
+
+  1. On macOS (Big Sur), IOKit registry shows that while the LPSS DMAC
+     driver (AppleIntelLpssDmac) is loaded, the allocated channel count
+     (AppleIntelLpssDmacChannel) is 0 when the SPI device driver
+     (AppleHSSPIHIDDriver) is active.
+  2. On Windows 10 (Boot Camp), dynamic MMIO monitoring of BAR1 shows
+     that the LPSS DMA control registers (offset 0x800+) remain
+     inactive (all zeros) during active keyboard and touchpad
+     transactions, and transfers are handled solely via the FIFO data
+     registers at the beginning of BAR1.
+  3. Logic board schematics confirm that a dedicated out-of-band GPIO
+     interrupt line (TPAD_SPI_INT_L) is routed directly to the PCH for
+     input events.
+
+Additionally, when operating in PIO mode servicing high-frequency
+keyboard and touchpad input streams operating at 60-125 Hz, the default
+50 ms autosuspend delay causes the controller to repeatedly transition
+between D0 and D3hot between bursts of user input. These runtime resume
+transitions introduce latency spikes that drop key presses and cause
+erratic touchpad motion.
+
+Implement the forced PIO mode and runtime autosuspend lockout DMI quirk
+in spi-pxa2xx-pci.c (the LPSS host controller PCI glue driver) scoped
+strictly to MacBook8,1:
+1. Include <linux/dmi.h> in alphabetical order for DMI system matching.
+2. Add 'quirks' field in struct pxa2xx_spi_pci_config and define
+   PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND.
+3. Add pxa2xx_spi_pci_dmi_table matching Apple MacBook8,1 and query it
+   once in lpss_spi_setup() scoped to PCI_DEVICE_ID_INTEL_LPT1_1
+   (0x9ce6). When matched, log the system ident with pci_info(), set
+   enable_dma = 0 as a workaround, cache PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND
+   in cfg->quirks, and return immediately to skip unused DMA channel
+   setup.
+4. In pxa2xx_spi_pci_probe(), configure autosuspend with a 50 ms delay
+   for all devices, but conditionally skip pm_runtime_allow() when
+   PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND is set. This keeps the controller in
+   D0 by default (as initialized by PCI core pci_pm_init()) while bound,
+   eliminating D3hot resume latency spikes, while ensuring that if
+   userspace explicitly enables autosuspend via sysfs, the safe 50 ms
+   delay is preserved rather than defaulting to 0. Standard system
+   sleep (S3) remains fully operational via pm_runtime_force_suspend().
 
 Assisted-by: Antigravity:gemini-3.8-flash sparse
 Signed-off-by: Shih-Yuan Lee <fourdollars@debian.org>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 151 ++++++++++++++++++++++++++++++++++-
- drivers/spi/spi-pxa2xx.c     |   9 ++-
- drivers/spi/spi-pxa2xx.h     |   4 +
- 3 files changed, 157 insertions(+), 7 deletions(-)
+ drivers/spi/spi-pxa2xx-pci.c | 61 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index cae77ac18520..f8d71362e840 100644
+index f8d71362e840..f12a8ef12b17 100644
 --- a/drivers/spi/spi-pxa2xx-pci.c
 +++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -12,6 +12,7 @@
+@@ -7,6 +7,7 @@
+  */
+ #include <linux/clk-provider.h>
+ #include <linux/device.h>
++#include <linux/dmi.h>
+ #include <linux/err.h>
+ #include <linux/module.h>
  #include <linux/pci.h>
- #include <linux/pm.h>
- #include <linux/pm_runtime.h>
-+#include <linux/spi/spi.h>
- #include <linux/sprintf.h>
- #include <linux/string.h>
- #include <linux/types.h>
-@@ -33,10 +34,22 @@
- #define PCI_DEVICE_ID_INTEL_LPT1_0		0x9ce5
- #define PCI_DEVICE_ID_INTEL_LPT1_1		0x9ce6
+@@ -40,6 +41,8 @@
+ #define LPSS_PRIV_RESETS_IDMA			BIT(2)
+ #define LPSS_PRIV_REG_COUNT			9
  
-+#define LPSS_PRIV_RESETS			0x04
-+#define LPSS_PRIV_RESETS_FUNC			BIT(0)
-+#define LPSS_PRIV_RESETS_APB			BIT(1)
-+#define LPSS_PRIV_RESETS_IDMA			BIT(2)
-+#define LPSS_PRIV_REG_COUNT			9
++#define PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND		BIT(0)
 +
  struct pxa_spi_info {
  	int (*setup)(struct pci_dev *pdev, struct pxa2xx_spi_controller *c);
  };
- 
-+struct pxa2xx_spi_pci_config {
-+	struct pxa2xx_spi_controller pdata;
-+	u32 lpss_priv_ctx[LPSS_PRIV_REG_COUNT];
-+	bool is_lpt;
-+};
-+
- static struct dw_dma_slave byt_tx_param = { .dst_id = 0 };
- static struct dw_dma_slave byt_rx_param = { .src_id = 1 };
- 
-@@ -95,6 +108,7 @@ static void lpss_dma_put_device(void *dma_dev)
- 
- static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
- {
-+	struct pxa2xx_spi_pci_config *cfg = container_of(c, struct pxa2xx_spi_pci_config, pdata);
- 	struct ssp_device *ssp = &c->ssp;
- 	struct dw_dma_slave *tx, *rx;
- 	struct pci_dev *dma_dev;
-@@ -131,6 +145,7 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
- 		ssp->port_id = 0;
- 		c->tx_param = &lpt0_tx_param;
- 		c->rx_param = &lpt0_rx_param;
-+		cfg->is_lpt = true;
- 		break;
- 	case PCI_DEVICE_ID_INTEL_LPT0_1:
- 	case PCI_DEVICE_ID_INTEL_LPT1_1:
-@@ -138,6 +153,7 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
- 		ssp->port_id = 1;
- 		c->tx_param = &lpt1_tx_param;
- 		c->rx_param = &lpt1_rx_param;
-+		cfg->is_lpt = true;
- 		break;
- 	default:
- 		return -ENODEV;
-@@ -261,22 +277,143 @@ static const struct pxa_spi_info qrk_info_config = {
- 	.setup = qrk_spi_setup,
+@@ -47,6 +50,7 @@ struct pxa_spi_info {
+ struct pxa2xx_spi_pci_config {
+ 	struct pxa2xx_spi_controller pdata;
+ 	u32 lpss_priv_ctx[LPSS_PRIV_REG_COUNT];
++	u8 quirks;
+ 	bool is_lpt;
  };
  
-+static void pxa2xx_spi_pci_lpss_save_ctx(struct device *dev)
-+{
-+	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	struct pxa2xx_spi_pci_config *cfg;
-+	unsigned int i;
-+
-+	if (!drv_data || !drv_data->controller_info)
-+		return;
-+
-+	cfg = container_of(drv_data->controller_info,
-+			   struct pxa2xx_spi_pci_config, pdata);
-+
-+	if (cfg->is_lpt && drv_data->lpss_base) {
-+		for (i = 0; i < LPSS_PRIV_REG_COUNT; i++)
-+			cfg->lpss_priv_ctx[i] = readl(drv_data->lpss_base + i * 4);
-+	}
-+}
-+
-+static void pxa2xx_spi_pci_lpss_restore_ctx(struct device *dev)
-+{
-+	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	struct pxa2xx_spi_pci_config *cfg;
-+	unsigned int i;
-+	u32 resets;
-+
-+	if (!drv_data || !drv_data->controller_info)
-+		return;
-+
-+	cfg = container_of(drv_data->controller_info,
-+			   struct pxa2xx_spi_pci_config, pdata);
-+
-+	if (cfg->is_lpt && drv_data->lpss_base) {
-+		/*
-+		 * Deassert functional, APB, and iDMA resets, preserving any
-+		 * platform-specific bits in LPSS_PRIV_RESETS.
-+		 */
-+		resets = cfg->lpss_priv_ctx[LPSS_PRIV_RESETS / 4] |
-+			 LPSS_PRIV_RESETS_FUNC | LPSS_PRIV_RESETS_APB |
-+			 LPSS_PRIV_RESETS_IDMA;
-+		writel(resets, drv_data->lpss_base + LPSS_PRIV_RESETS);
-+
-+		for (i = 0; i < LPSS_PRIV_REG_COUNT; i++) {
-+			if (i == LPSS_PRIV_RESETS / 4)
-+				continue;
-+			writel(cfg->lpss_priv_ctx[i], drv_data->lpss_base + i * 4);
-+		}
-+
-+		/*
-+		 * Program chip select to deasserted state before resuming the
-+		 * controller queue, preventing races with the message pump kthread.
-+		 */
-+		lpss_ssp_setup(drv_data);
-+	}
-+}
-+
-+static int pxa2xx_spi_pci_suspend(struct device *dev)
-+{
-+	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	struct pxa2xx_spi_pci_config *cfg;
-+	int ret;
-+
-+	if (!drv_data || !drv_data->controller_info)
-+		return 0;
-+
-+	cfg = container_of(drv_data->controller_info,
-+			   struct pxa2xx_spi_pci_config, pdata);
-+
-+	ret = spi_controller_suspend(drv_data->controller);
-+	if (ret)
-+		return ret;
-+
-+	if (cfg->is_lpt) {
-+		ret = pm_runtime_resume_and_get(dev);
-+		if (ret < 0) {
-+			spi_controller_resume(drv_data->controller);
-+			return ret;
-+		}
-+
-+		pxa2xx_spi_pci_lpss_save_ctx(dev);
-+		pm_runtime_put_noidle(dev);
-+	}
-+
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret) {
-+		spi_controller_resume(drv_data->controller);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int pxa2xx_spi_pci_resume(struct device *dev)
-+{
-+	struct driver_data *drv_data = dev_get_drvdata(dev);
-+	struct pxa2xx_spi_pci_config *cfg;
-+	int ret;
-+
-+	if (!drv_data || !drv_data->controller_info)
-+		return 0;
-+
-+	cfg = container_of(drv_data->controller_info,
-+			   struct pxa2xx_spi_pci_config, pdata);
-+
-+	if (cfg->is_lpt)
-+		pxa2xx_spi_pci_lpss_restore_ctx(dev);
-+
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
-+	return spi_controller_resume(drv_data->controller);
-+}
-+
-+static const struct dev_pm_ops pxa2xx_spi_pci_pm_ops = {
-+	SYSTEM_SLEEP_PM_OPS(pxa2xx_spi_pci_suspend, pxa2xx_spi_pci_resume)
-+	RUNTIME_PM_OPS(pxa2xx_spi_runtime_suspend, pxa2xx_spi_runtime_resume, NULL)
+@@ -106,8 +110,53 @@ static void lpss_dma_put_device(void *dma_dev)
+ 	pci_dev_put(dma_dev);
+ }
+ 
++/*
++ * Apple MacBook8,1 (early 2015 12" MacBook):
++ *
++ * The LPSS SPI controller at 00:15.4 connects to the internal SPI keyboard
++ * and touchpad (applespi). When DMA mode is enabled, DMA transfers consistently
++ * time out (-110) because DMA completion interrupts are never delivered.
++ *
++ * Empirical hardware inspection and OS analysis show that:
++ * 1. Hardware/firmware configuration: EFI leaves companion LPSS DMA (00:15.0)
++ *    held in reset (LPSS_PRIV_RESETS == 0x0 / BAR0 + 0x204). Even after
++ *    deasserting the reset and overriding ACPI _PRT to assign shared IRQ 21,
++ *    the DMA interrupt counter remains strictly 0, confirming that DMA
++ *    completion interrupts are not delivered on this platform.
++ * 2. Operating system parity: Both macOS (AppleIntelLpssDmac channel count
++ *    is 0) and Windows 10 Boot Camp bypass DMA and handle keyboard/touchpad
++ *    transactions strictly in PIO mode via FIFO registers.
++ * 3. Layering: The SPI controller driver (00:15.4) cannot safely reconfigure
++ *    the private registers of the separate DMAC PCI function (00:15.0).
++ * 4. Runtime autosuspend: In PIO mode servicing 60-125 Hz input events, the
++ *    default 50 ms autosuspend delay introduces D3hot <-> D0 transition
++ *    latency spikes that drop key presses and cause erratic touchpad motion.
++ *
++ * Therefore, as a workaround, disable DMA channel allocation to force PIO mode
++ * and keep the device in D0 without enabling runtime autosuspend.
++ */
++static const struct dmi_system_id pxa2xx_spi_pci_dmi_table[] = {
++	{
++		.ident = "Apple MacBook8,1",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "MacBook8,1"),
++		},
++	},
++	{ }
 +};
 +
- static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 		const struct pci_device_id *ent)
- {
- 	const struct pxa_spi_info *info;
--	int ret;
-+	struct pxa2xx_spi_pci_config *cfg;
- 	struct pxa2xx_spi_controller *pdata;
- 	struct ssp_device *ssp;
-+	int ret;
- 
- 	ret = pcim_enable_device(dev);
- 	if (ret)
- 		return ret;
- 
--	pdata = devm_kzalloc(&dev->dev, sizeof(*pdata), GFP_KERNEL);
--	if (!pdata)
-+	cfg = devm_kzalloc(&dev->dev, sizeof(*cfg), GFP_KERNEL);
-+	if (!cfg)
- 		return -ENOMEM;
- 
-+	pdata = &cfg->pdata;
++static const struct dmi_system_id *pxa2xx_spi_pci_get_dmi_id(struct pci_dev *dev)
++{
++	if (dev->device == PCI_DEVICE_ID_INTEL_LPT1_1)
++		return dmi_first_match(pxa2xx_spi_pci_dmi_table);
 +
- 	ssp = &pdata->ssp;
- 	ssp->dev = &dev->dev;
- 	ssp->phys_base = pci_resource_start(dev, 0);
-@@ -300,6 +437,12 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
++	return NULL;
++}
++
+ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	struct pxa2xx_spi_pci_config *cfg = container_of(c, struct pxa2xx_spi_pci_config, pdata);
+ 	struct ssp_device *ssp = &c->ssp;
+ 	struct dw_dma_slave *tx, *rx;
+@@ -165,6 +214,14 @@ static int lpss_spi_setup(struct pci_dev *dev, struct pxa2xx_spi_controller *c)
  	if (ret)
  		return ret;
  
-+	if (cfg->is_lpt) {
-+		pci_d3cold_disable(dev);
-+		dev_pm_set_driver_flags(&dev->dev, DPM_FLAG_NO_DIRECT_COMPLETE);
-+		pxa2xx_spi_pci_lpss_save_ctx(&dev->dev);
++	dmi_id = pxa2xx_spi_pci_get_dmi_id(dev);
++	if (dmi_id) {
++		pci_info(dev, "%s detected: disabling DMA to force PIO mode\n", dmi_id->ident);
++		c->enable_dma = 0;
++		cfg->quirks |= PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND;
++		return 0;
 +	}
 +
+ 	dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
+ 	ret = devm_add_action_or_reset(&dev->dev, lpss_dma_put_device, dma_dev);
+ 	if (ret)
+@@ -446,7 +503,9 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
  	pm_runtime_set_autosuspend_delay(&dev->dev, 50);
  	pm_runtime_use_autosuspend(&dev->dev);
  	pm_runtime_put_autosuspend(&dev->dev);
-@@ -336,7 +479,7 @@ static struct pci_driver pxa2xx_spi_pci_driver = {
- 	.name           = "pxa2xx_spi_pci",
- 	.id_table       = pxa2xx_spi_pci_devices,
- 	.driver = {
--		.pm	= pm_ptr(&pxa2xx_spi_pm_ops),
-+		.pm	= pm_ptr(&pxa2xx_spi_pci_pm_ops),
- 	},
- 	.probe          = pxa2xx_spi_pci_probe,
- 	.remove         = pxa2xx_spi_pci_remove,
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 2a3fa9ca7213..56ddfa67708e 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -343,7 +343,7 @@ static bool __lpss_ssp_update_priv(struct driver_data *drv_data, unsigned int of
-  * Perform LPSS SSP specific setup. This function must be called first if
-  * one is going to use LPSS SSP private registers.
-  */
--static void lpss_ssp_setup(struct driver_data *drv_data)
-+void lpss_ssp_setup(struct driver_data *drv_data)
- {
- 	const struct lpss_config *config;
- 	u32 value;
-@@ -365,6 +365,7 @@ static void lpss_ssp_setup(struct driver_data *drv_data)
- 		}
- 	}
- }
-+EXPORT_SYMBOL_NS_GPL(lpss_ssp_setup, "SPI_PXA2xx");
+-	pm_runtime_allow(&dev->dev);
++
++	if (!(cfg->quirks & PXA2XX_SPI_QUIRK_NO_AUTOSUSPEND))
++		pm_runtime_allow(&dev->dev);
  
- static void lpss_ssp_select_cs(struct spi_device *spi,
- 			       const struct lpss_config *config)
-@@ -1563,7 +1564,7 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	return spi_controller_resume(drv_data->controller);
- }
- 
--static int pxa2xx_spi_runtime_suspend(struct device *dev)
-+int pxa2xx_spi_runtime_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 
-@@ -1579,13 +1580,15 @@ static int pxa2xx_spi_runtime_suspend(struct device *dev)
- 	}
  	return 0;
  }
-+EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_runtime_suspend, "SPI_PXA2xx");
- 
--static int pxa2xx_spi_runtime_resume(struct device *dev)
-+int pxa2xx_spi_runtime_resume(struct device *dev)
- {
- 	struct driver_data *drv_data = dev_get_drvdata(dev);
- 
- 	return pxa2xx_spi_clk_enable(drv_data);
- }
-+EXPORT_SYMBOL_NS_GPL(pxa2xx_spi_runtime_resume, "SPI_PXA2xx");
- 
- EXPORT_NS_GPL_DEV_PM_OPS(pxa2xx_spi_pm_ops, SPI_PXA2xx) = {
- 	SYSTEM_SLEEP_PM_OPS(pxa2xx_spi_suspend, pxa2xx_spi_resume)
-diff --git a/drivers/spi/spi-pxa2xx.h b/drivers/spi/spi-pxa2xx.h
-index 3352239f74a0..a31022256202 100644
---- a/drivers/spi/spi-pxa2xx.h
-+++ b/drivers/spi/spi-pxa2xx.h
-@@ -138,6 +138,10 @@ int pxa2xx_spi_probe(struct device *dev, struct ssp_device *ssp,
- 		     struct pxa2xx_spi_controller *platform_info);
- void pxa2xx_spi_remove(struct device *dev);
- 
-+void lpss_ssp_setup(struct driver_data *drv_data);
-+int pxa2xx_spi_runtime_suspend(struct device *dev);
-+int pxa2xx_spi_runtime_resume(struct device *dev);
-+
- extern const struct dev_pm_ops pxa2xx_spi_pm_ops;
- 
- #endif /* SPI_PXA2XX_H */
 -- 
 2.39.5
 

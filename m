@@ -1,257 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0D251119E;
-	Wed, 30 Sep 2026 15:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790782568; cv=none; b=YsvTtq1lo6lLczygwSJI+nfWmKUOEol1zP+cA3iHW6RPowYVhch6bPkbZkjvzSCLcxJdHBdVxLymUvBbWhXf2NboeI+vklgYMG7tsi7/sTfi6CzyXQAVFGje7HbvGieRzndZXkLMl2vDyDhJyu7qqKW+HqTnIU8klLpUa69JdV4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790782568; c=relaxed/simple;
-	bh=0wDVpf8cWsXR2u3nRe2LLt52zHxl8zQ3Obk1jlWxk3o=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A4A4F30C4;
+	Wed, 30 Sep 2026 16:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790784116; cv=pass; b=LFmsSkhipHBzE+U7rLimhrHCiC77F/B3nDQnSV0HLfWGBqLhr4iPehFiDeE79lBraGafO7FNSZgWFh49N2kq2akYey1Yg5VT8gScOVXUd4IUQicOfMHch9Kg/lJ2++5zf7swg6NhJwPKsOcfi1Kau4/KqQCzVUNOS0Qap8w4ZDA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790784116; c=relaxed/simple;
+	bh=uSh6Ndk8HHsadtIVQXx7nQmrmgTpDlhjRHbrdndeFDg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UXTOwKHMq/O8F+M8oSEvJ1k6vdiXusH7drzGmzKCKPQ3qROPhJY/9WYAzJMUQKeLidlK3rQrt44cgtB0qKYMp72vn+obF+Bdf1L7TwN0kMduN5ELucM7yyK2RueUGXMWW7OhMp/80xNgeOGlDZVLM8l+ckrbpNz5xF+7XLbbE7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENsxnJqm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=igjuGESIdnoGVGQC6qRCI8tlgb7UnGXhp3P20X2PVExUOUO4S9D6sXo1yCuBq1cFjBe/VfgBu4LGhzSIh3KQCcdxvH7aqeggJSoIDsCBygc3nMR47RwF+I1HwXw1YsSvESv8ntuDhu/moypTdReyOXThBdrxuvNAbMv6VPoELB4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=Urgn5Ebo; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=KL9852F5; arc=pass smtp.client-ip=185.56.87.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENsxnJqm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F6C1F0089B;
-	Wed, 30 Sep 2026 15:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790782551;
-	bh=wS4LjSmeazs7ipEDl8K4WoxVwnKJqPAAcY7mjsKl19I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ENsxnJqmKcCzQZ8LtzXYoty9iQBgyMbQ5ouiTwV+pPSNRRJa/HzE3uVwu9gdjL2Qu
-	 cCcprq6/VuytjCI2cRuOnwFqzy1pvxOZRSh41CRX5PzT/drKE5NCvDjy/p3sTUpM6t
-	 dOQ4QNR7D+dfaHgZ7jHN5N8niUKBGd8uSADoEm7ByRsKdm4v1vChc59Q12OrriwIjt
-	 o7rJpNBR2QMSvHDhF/XgZqzMQUnDdVx9ThN7t3o+mTjRM8TsengaDQDexOQKMckmES
-	 VGYiJRAbQIWfUbpgF2CXcgKYyvvOiD+8IwoTjZfbgAc28SA04z8OYLlOyQQ3kHb12G
-	 BMKs34GfPoovg==
-Date: Wed, 30 Sep 2026 23:15:48 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-i3c@lists.infradead.org, mfd@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 08/20] dt-bindings: reset: add Synaptics SL261X SoCs
-Message-ID: <ar0npPCHX1P5Gjzx@xhacker>
-References: <20260929061417.20733-1-jszhang@kernel.org>
- <20260929061417.20733-9-jszhang@kernel.org>
- <20260929-sprang-stir-af07a907ccb2@spud>
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="Urgn5Ebo";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="KL9852F5"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-8qcp.prod.antispam.mailspamprotection.com; s=arckey; t=1790784112;
+	 b=O3x2bNZEjIgCjhXbVztrE5tk3WDNcP/rHoIfM7o0OjZ0b9c+DPt4613WLP0PES0Was2EWltbyJ
+	  jVBl3CFTbN52d5ohk1gvvodQ2NkS4ckvlR3DgDVX5i7hFcY1KtZRFhpwEa2naxiKW3hP4gkRc4
+	  Xv+vkA4jCFfxo071hUp0FT5ffQfh5KvkKASBe0jSTtkir2k1htpxiDU4btq9ElehDOEQ3RMcc9
+	  SJ0ytFII9xa37V5CXp03FcdfH6s3BmfDPMMmrQrXADmFfyd4x8Dg2ok5z/TdKFlNQVaghPH5r+
+	  X8y3TVZpwFHQXy6s97bd0zp0sf+CawM5bMmPGKBBho1r7Q==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-8qcp.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-8qcp.prod.antispam.mailspamprotection.com; s=arckey; t=1790784112;
+	bh=uSh6Ndk8HHsadtIVQXx7nQmrmgTpDlhjRHbrdndeFDg=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=K0j1cZZJo7iR0h4N9N04hmCZTUXGMeSEdnOWv58PsmyduBHNaDrKlbwrtyXRpiyrnO9gqcQUF5
+	  /HB+9eWz9dTShqNXTkOj8sghXDZznEpAitXFdMdAENwrAfQe5Ah3/j/eMv3OdKg0pmWkhpafx0
+	  AaR4sO8irK+wf3KFvwgtosNQvgrRmdvMGh+LXzmmibrR3q4O8Q4ol23SLz913DrWW46gh65SBT
+	  t7yedilcReQx6hDT/Y9vqGBoJU0dAnW9CciIwBDRYPwK2xQfQ7QqBzzT94ZG0nxsdQs5AxDlx1
+	  GzTgRUAvp0UOBYRI7n1lRSC/oMQexnB9kA5TtwXt6eaqVg==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=dP3jA4xLY1vRZxU2Q34betBGbV5S3gISyd5gwp53GhY=; b=Urgn5Ebor3MJfdfHougbauXTJ5
+	B3BXCZR8Wd/yxgEz48v2M/LOdkHisZzfSoSbzuFN/u8xsih+nXEBqooAWD4LFMTcQTMHrM4f80m4x
+	pDZp+WayDRx+Me1nS+0fSVok0NFJ1R4/SIfURRSqHmNd79+xUycgduD5xHVdu/lgFc3I=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-8qcp.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xBwkX-000000030ki-2WmB;
+	Wed, 30 Sep 2026 16:01:42 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=dP3jA4xLY1vRZxU2Q34betBGbV5S3gISyd5gwp53GhY=; b=KL9852F57TwOirk5hpKe/6AAas
+	Ch7amGbhS2pdRcxtmR8nhoAnhQQveQpq29lAnx1yzEUt937S2L0yqYqrNoWrBiW1o6NWcGwwa5bs5
+	qLhD2LlArvXL8SV44ZifN31KEXb6txZ5lJ2z8o652qGHEPo97y3+XqWH+b8JTTfd9ELQ=;
+Received: from [87.14.44.235] (port=62882 helo=bywater)
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xBwkE-000000004sz-36Mg;
+	Wed, 30 Sep 2026 16:01:22 +0000
+Date: Wed, 30 Sep 2026 18:01:20 +0200
+From: Francesco Valla <francesco@valla.it>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>, 
+	Jason Wang <jasowangio@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH 0/2] Add devicetree bindings for spi-virtio
+Message-ID: <ar0wnqVFn10MISod@bywater>
+References: <20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it>
+ <20260930-neon-automatic-rooster-e2eec5@quoll>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260929-sprang-stir-af07a907ccb2@spud>
+In-Reply-To: <20260930-neon-automatic-rooster-e2eec5@quoll>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 3a4e81398d2970218aaee88026770dec
+X-AntiAbuse: ID - 3a4e81398d2970218aaee88026770dec
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1xBwkX-000000030ki-2WmB-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-8qcp.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-On Tue, Sep 29, 2026 at 08:44:13PM +0100, Conor Dooley wrote:
-> On Tue, Sep 29, 2026 at 02:14:05PM +0800, Jisheng Zhang wrote:
-> > Add device tree bindings for the resets on Synaptics SL261X SoCs.
-> > 
-> > Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-> > ---
-> >  .../bindings/reset/syna,sl261x-reset.yaml     | 40 ++++++++++
-> >  include/dt-bindings/reset/syna,sl261x-reset.h | 80 +++++++++++++++++++
-> >  2 files changed, 120 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/reset/syna,sl261x-reset.yaml
-> >  create mode 100644 include/dt-bindings/reset/syna,sl261x-reset.h
-> > 
-> > diff --git a/Documentation/devicetree/bindings/reset/syna,sl261x-reset.yaml b/Documentation/devicetree/bindings/reset/syna,sl261x-reset.yaml
-> > new file mode 100644
-> > index 000000000000..8cfec17df800
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/reset/syna,sl261x-reset.yaml
-> > @@ -0,0 +1,40 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +# Copyright (C) 2026 Synaptics Incorporated
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/reset/syna,sl261x-reset.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Synaptics SL261X reset controller
-> > +
-> > +maintainers:
-> > +  - Jisheng Zhang <jszhang@kernel.org>
-> > +
-> > +description: The reset controller node must be a sub-node of the chip
-> > +  controller node on SL261X SoCs.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - syna,sl261x-soc-reset
-> > +      - syna,sl261x-system-reset
-> > +
-> > +  "#reset-cells":
-> > +    const: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - "#reset-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    chip: chip-control@f7e10000 {
-> > +        reg = <0xf7e10000 0x1000>;
-> > +
-> > +        chip_rst: reset {
-> > +            compatible = "syna,sl261x-soc-reset";
-> > +            #reset-cells = <1>;
-> > +        };
+Hello Krzysztof,
+
+On Wed, Sep 30, 2026 at 01:58:38PM +0200, Krzysztof Kozlowski wrote:
+> On Tue, Sep 29, 2026 at 06:41:54PM +0200, Francesco Valla wrote:
+> > Add bindings for spi-virtio, like the ones that already exists for
+> > gpio-virtio and i2c-virtio. A node using these would not be used to
+> > probe the device, which is registered by the virtio transport
+> > (e.g.: virtio-mmio) but to declare properties and/or child nodes.
 > 
-> Why can't this just be part of the parent node?
-
-Good question! IMHO, the reasons are:
-
-1. the so called Gbls(Gbl means global) such as mcuGbl and
-chip control Gbl contain not only reset, pinctrl and clk/plls
-but also some other registers for different purposes, e.g in the
-chip control gbl, there are some registers to control eth phy sel(RMII
-or RGMII), and TXC 90 degree selection etc. These registers will
-be used by the Ethernet driver;
-
-While there's no pinctrl regs in avioGbl and vppGbl. In the vppgbl,
-there are some registers for DPHYTX etc.
-
-As can been, in different Gbls, there maybe different purposes registers, no
-obvious patterns.
-
-So the question here is why not split the gbl into different register
-spaces, and abstract each space for each function group? Two blocking
-points make this impossible and ugly: different reg space may not be
-aligned at 4KB boundary, e.g reset: 0x350 ~ 0x37c; eth phy sel:0xa18;
-some registers which belong to similar functionality, e.g clks, may not be
-adjacent.
-
-So the best way is to abstract these GBLs via. "syscon", "simple-mfd", and
-put necessary subnodes such as reset, pinctrl and clks under the GBL
-node. If the registers in GBL is misc control, pass the syscon phandle
-to the main driver, e.g I planed to pass the syscon phandle to GMAC
-driver to control the RMII/RGMII selection.
-
-2.follow current bg2 and bg2q style
-e.g arch/arm/boot/dts/synaptics/berlin2q.dtsi
-
-IMHO, why bg2 and bg2q dtsi files are implemented as current
-style is due to the above point 1.
-
-Kindly let me know if there's a better solution.
-
-> From a quick check of the dts, the node with this subnode didn't also
-> have a system-reset node too, so there's no conflict or anything of that
-> nature.
+> Keep proper versioning of your work and DO NOT IGNORE previous
+> discussions. This was discussed before, no?
 > 
-> > +    };
-> > diff --git a/include/dt-bindings/reset/syna,sl261x-reset.h b/include/dt-bindings/reset/syna,sl261x-reset.h
-> > new file mode 100644
-> > index 000000000000..7034f58aae5b
-> > --- /dev/null
-> > +++ b/include/dt-bindings/reset/syna,sl261x-reset.h
-> > @@ -0,0 +1,80 @@
-> > +/* SPDX-License-Identifier: (GPL-2.0 OR MIT) */
-> > +/*
-> > + * Copyright (C) 2026 Synaptics Incorporated
-> > + *
-> > + * Author: Jisheng Zhang <jszhang@kernel.org>
-> > + */
-> > +
-> > +#ifndef _DT_BINDINGS_SL261X_RESET_H
-> > +#define _DT_BINDINGS_SL261X_RESET_H
-> > +
-> > +/* ACPU subsystem */
-> > +#define RST_SOC_SDIO0		0
-> > +#define RST_SOC_USB0		1
-> > +#define RST_SOC_EMMC		2
-> > +#define RST_SOC_GETH0		3
-> > +#define RST_SOC_SDIO1		4
-> > +#define RST_SOC_USB1		5
-> > +#define RST_SOC_GETH1		6
-> > +#define RST_SOC_USB0PHY		7
-> > +#define RST_SOC_USB0CORE	8
-> > +#define RST_SOC_USB0MAHB	9
-> > +#define RST_SOC_USB1PHY		10
-> > +#define RST_SOC_USB1CORE	11
-> > +#define RST_SOC_USB1MAHB	12
-> > +#define RST_SOC_UART0		13
-> > +#define RST_SOC_UART1		14
-> > +#define RST_SOC_UART2		15
-> > +#define RST_SOC_UART3		16
-> > +#define RST_SOC_I2C0		17
-> > +#define RST_SOC_I2C1		18
-> > +#define RST_SOC_SPI0		19
-> > +#define RST_SOC_SPI1		20
-> > +#define RST_SOC_SPI2		21
-> > +#define RST_SOC_SPI3		22
-> > +#define RST_SOC_APBTIMERS	23
-> > +#define RST_SOC_APBSYSCNT	24
-> > +#define RST_SOC_APBWDT		25
-> > +#define RST_SOC_APBGPIO		26
-> > +#define RST_SOC_APBDMA		27
-> > +#define RST_SOC_GPUCORE		28
-> > +#define RST_SOC_NPUCORE		29
-> > +#define RST_SOC_AVIOAIOG	30
-> > +#define RST_SOC_AVIOVPPG	31
-> > +#define RST_SOC_AVIOVIPG	32
-> > +
-> > +/* system subsystem */
-> > +#define RST_SM_ADCCORE		0
-> > +#define RST_SM_ADCPRST		1
-> > +#define RST_SM_CAN0PRST		2
-> > +#define RST_SM_CAN0SRST		3
-> > +#define RST_SM_CAN1PRST		4
-> > +#define RST_SM_CAN1SRST		5
-> > +#define RST_SM_GPIOPRST		6
-> > +#define RST_SM_GPIOSRST		7
-> > +#define RST_SM_I2CM0PRST	8
-> > +#define RST_SM_I2CM0SRST	9
-> > +#define RST_SM_I2CM1PRST	10
-> > +#define RST_SM_I2CM1SRST	11
-> > +#define RST_SM_I3CPRST		12
-> > +#define RST_SM_I3CSRST		13
-> > +#define RST_SM_PDMPRST		14
-> > +#define RST_SM_PDMSRST		15
-> > +#define RST_SM_PVTHSRST		16
-> > +#define RST_SM_PVTPRST		17
-> > +#define RST_SM_PWMPERIRST	18
-> > +#define RST_SM_PWMPRST		19
-> > +#define RST_SM_SPIMPRST		20
-> > +#define RST_SM_SPIMSRST		21
-> > +#define RST_SM_SPISPRST		22
-> > +#define RST_SM_SPISSRST		23
-> > +#define RST_SM_UART0PRST	24
-> > +#define RST_SM_UART0SRST	25
-> > +#define RST_SM_UART1PRST	26
-> > +#define RST_SM_UART1SRST	27
-> > +#define RST_SM_UART2PRST	28
-> > +#define RST_SM_UART2SRST	29
-> > +#define RST_SM_UART3PRST	30
-> > +#define RST_SM_UART3SRST	31
-> > +
-> > +#endif /* _DT_BINDINGS_SL261X_RESET_H */
-> > -- 
-> > 2.53.0
-> > 
+> https://lore.kernel.org/all/20260916-remoteproc_virtio_map-v1-7-dac8c5eb4aa9@valla.it/
+>
 
+This is correct, the first patch was an accesssory part of a RFC series I
+sent some days ago. I decided to drop it from that series as it was
+outside its particular scope, as Mathieu noted [1], after picking up a
+copy-paste error signalled by sashiko.
+
+I should definitely have mentioned that in the cover letter.
+
+However, I believe this to be independent of that particular series.
+
+> b4 solves the first problem for you.
+>
+> Best regards,
+> Krzysztof
+> 
+
+Thank you!
+
+
+Regards,
+Francesco
+
+
+
+[1] https://lore.kernel.org/all/CANLsYkzC5DU8j_QJLkuUcV2tYb=G86L_G4yiBZTePKSqiRdd6w@mail.gmail.com/
 

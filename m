@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63B451C041
-	for <linux-spi@vger.kernel.org>; Wed, 30 Sep 2026 18:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E4E344D9D
+	for <linux-spi@vger.kernel.org>; Wed, 30 Sep 2026 18:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790793047; cv=none; b=c2CanSiZiMaMeI4E6pX06+Wyitv5RjulNuL4XsRl/YUvtM5WlcTDyQAVmiwUDnmseAeFMh3QvmFnV3BagpdN4mgSWuu+NmMv75po/5sMEzJ0zVBYshAJb/b8kYmfZIhDmMSOYt4SXuQLvfZukKvsk6d9K1hBMw7I0QO2bf0o+uc=
+	t=1790794789; cv=none; b=fl6ll9WhCXahSlIGvOTsoSgTdgLt0G6tnp28UvUh7r8+k6cwMmsIio5nkVlxnPejrJdfVQHFRHkqIe3yiostVy1QQfasRNYKYBFXoZ0Y1dzRMFBoCdosTPHyhnCJk70BhVC4xDn+trE0qoUFhT3oJU9EejlD9Zu3woHwytefzJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790793047; c=relaxed/simple;
-	bh=o5pKwS03WlK5v17APDxO+Z3W9UDc7wbIzVGdKIlHSiI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=Xcx/Rm+sz+4K9joZdxGIUbwxTeqXNFW3FlToV/hI5d9G1qbmIKKZp8vMno4VN9881MxZkzMle1Ddew/s6OmGWqno2cCKcQclpU/o1NLraSyprVzy4xNAUqp73l+3AD6D0gcP8aU0akO6d/GxsmPz8ltFFIa/FwerlS1iqIXokQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VW1Jxpal; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790794789; c=relaxed/simple;
+	bh=fzzVj/mh/Yef5/Y9PPcDKxbWMuxueHH3U8B43NsWlHw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=RphrL9yT48cUYopniWs1cX/fNBtj9HXRkyl5BnkOZYdV3N3zk81GStzGI6VOcYAfXgerkN4VM33mhwdb0FR2OyyIPzdkBj0xm3Bl3lN5mu5t8qv9aafzvjPM84OUp+zkm99+Ynh5cKEanIxNWDg1D7Vk5K4bhmhuRmc3HZvpYIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSKHhAH4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VW1Jxpal"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD671F0089A;
-	Wed, 30 Sep 2026 18:30:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSKHhAH4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CFA1F00898;
+	Wed, 30 Sep 2026 18:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790793045;
-	bh=VRP8lVqfrPyPoOj/i99pSBstq1Vr/ES4NHDbjYlLcZE=;
+	s=k20260515; t=1790794788;
+	bh=VcHyJ2UEYaUCzVmJXAt8N6eeX7rv2VdvxB4XoZp0N+Q=;
 	h=Subject:From:Date:To;
-	b=VW1Jxpal2DT6fKgpnHKTAdXElofpfn9JFP5+uC7iNQLV95jBLwFmf8BiQW470PILU
-	 KGOd5jXCxY5nbNZ9pdaCwCfBHZTT4ofHoYAjZJQbYLOsUqoYHAS8aywEzTYZgz1h+g
-	 qdkKly6+ZAogrvFeZgpK/9wOWuasetbesel69bBHB7og1L6ybiXPokMeTTIUwFBFjw
-	 QRJ/P5JAuleM2/wVy6XyAmbY7SBHAt+qMQt1o85IaDmWrQww+HTNUgmF0KRl0s5Ydv
-	 wOWWRmbX4ZWkTV4NfVGCouWtccLKWMEnDmrwk8HrQ1qToYdXIGvAs/S2UEsDokzmEp
-	 NE7LZihLzwPrg==
+	b=nSKHhAH4I4ADKxGheondBaykFHez45+6yTrfywq/jeUu7logZIgmMFZGtfTaiTvk2
+	 tnFiceUU1poRD0VltIylcBh1S/ZQXncOCjBj17FBq5eGAeIovkIEvcDml9mRaNgEba
+	 XnP68QGbRj+u6THmJsi1+edOO6FcIRjemnah63uTUARDweNTZXT6te6a5te9aqyYEl
+	 vUnb9bwZp+YJjELf1NOKdj0wParLTX6hcGO6zsUZjt80qsalv1i8KVndKKXMRqU9TJ
+	 RlBuss3gMnH8Kf0ozpgjAdgQfOAMhmwbAyqr68I8TouyBOqd2rUWsvGLpkh9VzI/u5
+	 RgqHaG5Wh3uag==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F41C43A56765;
-	Wed, 30 Sep 2026 18:30:44 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 779213A5676C;
+	Wed, 30 Sep 2026 18:59:48 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -36,46 +36,25 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
+Subject: Patchwork housekeeping for: spi-devel-general
 From: patchwork-bot+spi-devel-general@kernel.org
 Message-Id: 
- <179079304361.2074608.17054545828850061880.git-patchwork-summary@kernel.org>
-Date: Wed, 30 Sep 2026 18:30:43 +0000
+ <179079478699.2085443.16417008173830112836.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 30 Sep 2026 18:59:46 +0000
 To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+Latest series: [v2] spi: sophgo: Fix SPI NOR errors and clock limits (2026-09-30T18:22:51)
+  Superseding: [v1] spi: sophgo: Fix SPI NOR errors and clock limits (2026-09-17T14:29:19):
+    [1/4] spi: sg2044-nor: Return transfer errors
+    [2/4] spi: sg2044-nor: Honor SPI clock limits
+    [3/4] riscv: dts: sophgo: Enable SPI NOR on SRD3-10
+    [4/4] riscv: dts: sophgo: Limit SG2042 SPI NOR to 12.5 MHz
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Checked 185 series in 5.20 seconds.
+This project currently has 16672 active patches.
 
-Series: spi: realtek: Add support for RTD1625 SPI NOR Flash Controller
-  Submitter: Yu-Chun Lin <eleanor.lin@realtek.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1176598/
-  Lore link: https://lore.kernel.org/r/20260930065945.88008-1-eleanor.lin@realtek.com
-    Patches: [v5,1/2] dt-bindings: spi: Add Realtek RTD1625 SPI NOR support
-             [v5,2/2] spi: spi-mem: Add Realtek SPI NOR flash controller driver
-
-Series: Add enhance SPI DMA support for JHB100 SFC
-  Submitter: Changhuang Liang <changhuang.liang@starfivetech.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1176618/
-  Lore link: https://lore.kernel.org/r/20260930071535.7947-1-changhuang.liang@starfivetech.com
-    Patches: [v2,1/3] spi: dw: Convert the Tx done delay from SCK cycles to time
-             [v2,2/3] spi: dw: Support DMA with a single channel
-             [v2,3/3] spi: dw: Add DMA support for enhanced memory operations
-
-Patch: spi: spi-qpic-snand: set 'qpic_version2' flag
-  Submitter: Gabor Juhos <j4g8y7@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1173304/
-  Lore link: https://lore.kernel.org/r/20260924-qpic-snand-set-qpic_version2-v1-1-a0a9a3e0d06a@gmail.com
-
-
-Total patches: 6
 
 -- 
 Deet-doot-dot, I am a bot.
 https://korg.docs.kernel.org/patchwork/pwbot.html
-
 

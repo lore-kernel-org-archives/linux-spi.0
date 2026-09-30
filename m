@@ -1,40 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA75444E67E;
-	Wed, 30 Sep 2026 16:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C89511180;
+	Wed, 30 Sep 2026 16:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790785746; cv=none; b=Y7GWgA/gkwSnZ5SYvIbSNGGn2PPABv08D18FSc19kUDpkgDC+WJWNNE+mFy76pCosRZgdlsKv7FA4rwZxBKoK0JB5XaQFmPQ4oiRbAZ09hDplBAtgxIyvFUzuAN3l70LpQgrRDjJovrJJCrsDp+Gg8QLSb3eN8DDz2CMzl/DQRA=
+	t=1790786117; cv=none; b=Fx7HCkKf0LYrv8Baje2M4x+he6nBWND6KA86PGxW2+YAy7vREycQkQQgZ2us38SNP5u+n37WU8C3yhb5cyAiPkMsGeuBoaNh3+NAGLj11Dhi89HGZ/zSoXZc3W1vOBhOPO6v7TzOpGsqIi2Q3fJ1jfYE/rcNLuCUM2e+me7IZIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790785746; c=relaxed/simple;
-	bh=7dPOwcn08xKftLDiabiUL5TvBC+ChKAXXf3g7J4S1vM=;
+	s=arc-20240116; t=1790786117; c=relaxed/simple;
+	bh=IotFDljTrZjJVOHJs5Jb8Ssuv+icr3IseWCLlR0xMJ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mtKU/J/G2j8rSFC/4Cpyc9T2ByCK5qdV5B963KZu65ynXsxRJdBtvRffTdklZiZ+Pg7WdCBjxIHeHZQBFben09ZKlOc//1IVP9g6BwkuKn8XOn3u1lApm1DyivTYGFIA5vmM/a3AjuIlvH1oekykVhjXBfoObASLr6dmWjtHHl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6U42VbG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=TsJvaAoZGsnzwlD3Xz4jwP/pUcYljix36WWzOIXzcJ6+fwlVojvS/jPR0aLe7pK35UQYUL6yDLdpj+fbm8XaKZgDx1m5982iCE6D6jXI+w17OSORn2nBvEZ03IpJ8Q0XcyqZd5mBgJBszNVZ/2ENyCtohcie3QKknD8EYJYsdOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqkbTaeE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6U42VbG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822B21F00893;
-	Wed, 30 Sep 2026 16:29:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqkbTaeE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FCA1F00893;
+	Wed, 30 Sep 2026 16:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790785744;
-	bh=tJxxP9Mz08omtl33BnTGCPIgimt+h93qx9sFDqGs2lo=;
+	s=k20260515; t=1790786116;
+	bh=IotFDljTrZjJVOHJs5Jb8Ssuv+icr3IseWCLlR0xMJ0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=k6U42VbGraokNxUOhSkS4gX5vXFSCDJILoH8/dMkod28LL7e3+4fVnpPqfiVcpWST
-	 mMSFpPKEVxLg+QeefBt84uDQn8PUHND666AhDCFMckYdXYNYeI/pyydVm1ri+ZGuL6
-	 ad1w1rSDgnKnfDkat51n1hY6J2MexUFw183ARPWWw8plt3Li0e07N6pkgWXAnqfsSb
-	 v/k2Jl6dzsYZ4NNmjCGEV6dmZ0McRfE91nrJt3Wa9DRwZe6qpmFzdiqQ90d6ip00AA
-	 2gucWkRtsgjmw94hvomW7cuGuLrbCnnFsPhZ8sBJAGYkK6Yt0SIdPFGUCn9URA8MKy
-	 VWNdXHIqGbBrQ==
-Date: Wed, 30 Sep 2026 17:29:00 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Changhuang Liang <changhuang.liang@starfivetech.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] spi: dw: Add DMA support for enhanced memory
- operations
-Message-ID: <90a93f76-049a-4200-9626-7c3f4e934f45@sirena.org.uk>
-References: <20260930071535.7947-1-changhuang.liang@starfivetech.com>
- <20260930071535.7947-4-changhuang.liang@starfivetech.com>
+	b=BqkbTaeEJGPn65JzBCPQabvkfi4q3suZsUonrQ3JIYiiyBzhY/r9JNQUUwQ4lEnDf
+	 UHIK5MS3srRqxbW56VkqD3p70BI2Y0c6OKFlj6G4gltrPwBGrgKdbY408ULgmc4Tm0
+	 Ztg7yaeTGTz9GRlUb3PsnbV39dgYKKXEQJsjbdmo0RgLhWDe00VmQ+JF0ITPnrBbHF
+	 9szCsNcsoKrnCD6vV9vh4wvdr2bSD3+XSqIb5sGXvL/J2w291GLOEWYhZkQ2L7TsXM
+	 xDS79Vy3/jO+IhE+uyNP7JEPXozepUeV4VPYvK7sJgvoA4nYxECPu4SXOKrFPEXz95
+	 +aGYtEz7XxSYQ==
+Date: Wed, 30 Sep 2026 17:35:09 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	Brian Masney <bmasney+clk@redhat.com>,
+	Jerome Brunet <jbrunet+clk@baylibre.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-i3c@lists.infradead.org, mfd@lists.linux.dev,
+	linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 00/20] arm64: add Synaptics SL261X SoCs and RDK boards
+Message-ID: <20260930-consoling-scouting-e60864374d04@spud>
+References: <20260929061417.20733-1-jszhang@kernel.org>
+ <20260929-smoked-laurel-087d5a3523a3@spud>
+ <ar0da71zOeeYxURQ@xhacker>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -42,56 +60,69 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8bVQLXZkJ1Ogvdo3"
+	protocol="application/pgp-signature"; boundary="0aKKosY+SZkBUlIw"
 Content-Disposition: inline
-In-Reply-To: <20260930071535.7947-4-changhuang.liang@starfivetech.com>
-X-Cookie: (null cookie
+In-Reply-To: <ar0da71zOeeYxURQ@xhacker>
 
-
---8bVQLXZkJ1Ogvdo3
+--0aKKosY+SZkBUlIw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 12:15:35AM -0700, Changhuang Liang wrote:
+On Wed, Sep 30, 2026 at 10:32:11PM +0800, Jisheng Zhang wrote:
+> On Tue, Sep 29, 2026 at 08:38:52PM +0100, Conor Dooley wrote:
+> > On Tue, Sep 29, 2026 at 02:13:57PM +0800, Jisheng Zhang wrote:
+> > > Add initial support for the Synaptics SL261X SoCs and corresponding
+> > > RDK boards.
+> > >=20
+> > > The SL261X SoCs include five pin-to-pin compatible SoCs: SL2611, SL26=
+13,
+> > > SL2615, SL2617, and SL2619.
+> > >=20
+> > > Only reset, pinctrl, clk/pll, uart, gpio, i2c, spi, i3c are included =
+in
+> > > this series. The support for Ethernet, USB, SDHCI, CAN, DMAC, XSPI wi=
+ll
+> > > be submitted after this series is merged.
+> >=20
+> > This series is filled with wildcard compatibles, which we don't permit
+> > typically. The only case for SoCs that I've seen them accepted is when
+> > the devices covered are actually just different binnings of the same
+> > device. I took a look at the docs for this device, but it wasn't clear
+> > to me if these are actually binnings or if there are different
+> > integrations here. If they're binnings, I'd rather you used 0 as the
+> > final digit, rather than x, since that matches the synaptics
+> > documentation for the family. If they're not binnings, there's no
+> > guarantee that they share the same errata etc, and must have different
+> > compatibles.
+>=20
+> BTW: May I query a qustion?
+> After searching the maillist archieves, it seems now maintainers prefer
+> spiliting this kind of SoC initial support series into separate patches
+> for different subsystems, e.g uart, i2c, i3c, spi and so on, then the
+> SoC pinctrl, clk, reset and dtsi/dts files, but AIUI, there will be
+> dtb check failures with the SoC dts(i) files patch(es), what's
+> the normal solution then?
 
-> Implement DMA support for enhanced SPI memory operations. These
-> operations are half-duplex, so they work with either one or two DMA
-> channels.
+Depends on the type of failure, but yes it can be okay. If the failure is
+some missing schema causing validation to fail, that's fine as long as it
+passes in linux-next (same as when you add a new driver and binding, but
+the dts goes to a different branch). What's not acceptable is breaking the
+build because some header that provides clock defines is missing in the dts
+branch or in the driver branch. In that case, either send all that stuff in
+one "New SoC" PR to the soc tree, or put the binding headers in a shared
+tag that is the basis for your PR to the relevant maintainers (typically
+clock) and the dts PR to the soc tree.
 
-> +static void dw_spi_enh_mem_dma_stop(struct dw_spi *dws)
-> +{
-> +	if (dws->tx_dir) {
-> +		if (test_bit(DW_SPI_TX_BUSY, &dws->dma_chan_busy)) {
-> +			dmaengine_terminate_sync(dws->txchan);
-> +			clear_bit(DW_SPI_TX_BUSY, &dws->dma_chan_busy);
-> +		}
-> +	} else {
-> +		if (test_bit(DW_SPI_RX_BUSY, &dws->dma_chan_busy)) {
-> +			dmaengine_terminate_sync(dws->rxchan);
-> +			clear_bit(DW_SPI_RX_BUSY, &dws->dma_chan_busy);
-> +		}
-> +	}
-> +}
-
-It would probably be safer to unconditionally stop the DMA and clear the
-busy bit, we're only doing this in error cases so we shouldn't rely on
-everything being in a joined up state.  Equally, I see the same pattern
-in the existing code so if we're going to fix it we could fix both at
-once.
-
---8bVQLXZkJ1Ogvdo3
-Content-Type: application/pgp-signature; name="signature.asc"
+--0aKKosY+SZkBUlIw
+Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq9OMsACgkQJNaLcl1U
-h9Dc5Qf9FoEwIGKBh/svxPs91ooCPAFQTLkbh6CfKWNtfDaLcTiPGlhoE+LxSClZ
-XUVLtpeC3ELfbOgU4wGAG1aDxGGL4C/a4sdXSgzVbhRBGD3xTqjMja0RjrB3TzP7
-PSbT3Wh/FfStflA9msLLfMtyUzfZatZUmcFG0ULarXsIi9dzGZM0xll4PCt913dv
-HsYaxOe1XxEEaAw0gaHGmQSM5bd6K0fDSSvZRjCf4qDs2zkgJwDaycRQGIWOmvoc
-OnSO7UKwQFf/3AML0291ueWvw//deQsWhtXYmQlkBGL62q+7/WuPPTMsR3kj/2kF
-+GdcqgeBZTbHglMov29rORY+ZmXgjw==
-=4aJB
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCar06PAAKCRB4tDGHoIJi
+0hpkAP0blrEbmogoZD0AKnwhpfLwMnReZOlvZF7i9+6g8f+4VAEAnxRjQq9YWWJf
+7AVUGg191KqlxkjCS4xQdsNuVaTiiQw=
+=6gkk
 -----END PGP SIGNATURE-----
 
---8bVQLXZkJ1Ogvdo3--
+--0aKKosY+SZkBUlIw--

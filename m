@@ -1,92 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540D420898;
-	Fri,  2 Oct 2026 12:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450064A49A3
+	for <linux-spi@vger.kernel.org>; Fri,  2 Oct 2026 13:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790945934; cv=none; b=Dq1DATWiFIvdaPvST0T+1rqxVTxmzIyG0aRTPx5c+xQhIwsbH2XAmRSJyONk8k+1fLDv7USo2tthjo5LBrmUKKJdnYuZuqixxfNf6Wnl8D794pUl0ty33u+76LBNk34BqwUpGOe4XUuTWFgGzuzlaGOPuSNAZhEAfTwzoGeu18c=
+	t=1790947255; cv=none; b=o4Gq8RJyiinhYKKdngWg5Ch3i0fHytMEy6YvtSYuQH48q1qnWniDxNUYUTzvreiIpyg1Ys8GXX0JJ6kLaFxiUdq4cnSzoP+3sciSYNUZFKZ0YfME5OMSSVbj2TY+3f+mekEvBPTDpJVRr7lePCFYSqestgtKz8pF6TqqZ01LK6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790945934; c=relaxed/simple;
-	bh=ZZog2DmzD6JYHzIOPkxymMrGPQfxhMFEozr7PgktX+M=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CdwoScDkT251BYzLJQzq4A4wk62l6uLX++bXP8aBn+dy584nbfJoXynDPgfJtXY2Mf3tQ67Vh4D2FlD3cMA7YqyGD2qNsq5sblHw8pW8nWCCgUo5L5OQcNCRixDDxXNTkSoL31QSoiZX8bM2a9HEsJegsFh/cmICmh0j6xhHjks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E9fle4+S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790947255; c=relaxed/simple;
+	bh=QQHMnrbHAllQ1PVxxzpZB612BRuLDZabVOOMwjxOk4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QgaBlcmiLjHhjPNX2wMNb1+oWFthUHn/Z0phrXqGTPdp+EevThGkC9djd35U3ffxIFAAHm9yx2x36Llx4RtqLNE4KXklxyzDg82plzpFglx5PbM2WqDG1KVbbVUDt3dD5/Nabz60lC+RPwfgmvfBRkEkZXPjjfLUBa9j7GCTg4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iqOzefhH; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E9fle4+S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373C51F000FF;
-	Fri,  2 Oct 2026 12:58:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790945932;
-	bh=+2V7CaCvNrpvmbbJwh1WNIboZ7/7dvdjBHWJRak6y1Y=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=E9fle4+ShkEJyX93P+zCxQYNpaiuneKl3cDuESA0qdhga/zr0Ff9pWRe2/xTdmvjB
-	 AEbEc4auXu8VPovNsWl5nIOEtRIM5wkOzM6GdyK/QSDaT2gNyJItsXcLCARk3Hsb6j
-	 +GbRVebu96DSgkaQ3+mOmF2lTpnyPpBBtlehuvJz9ASppldg3jTh1AyfDtmGxOZTYA
-	 J9eHakUB9H0dbNy1OIjXT4OCUGJVbHs4EoFCMrnXVA8Ka+LO8qgj6mMMG1UZ98hBkJ
-	 zjFWDJblHXXQ6Dc9QZsiPF95hn9nOqfcxjokndQLJRkOyhxJgrSVhhsRIyfgU430bk
-	 Tk1hl2Acsveqw==
-From: Mark Brown <broonie@kernel.org>
-To: corbet@lwn.net, Jesse Jeronimus <jesse.jeronimus@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org, 
- dlechner@baylibre.com, skhan@linuxfoundation.org, rdunlap@infradead.org, 
- linux-spi@vger.kernel.org, linux-doc@vger.kernel.org, 
- driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20261002110752.89529-1-jesse.jeronimus@gmail.com>
-References: <20261002110752.89529-1-jesse.jeronimus@gmail.com>
-Subject: Re: [PATCH] Documentation: devres: Remove non-existent SPI
- register helpers
-Message-Id: <179094140888.83544.16333779168176030027.b4-ty@b4>
-Date: Fri, 02 Oct 2026 12:43:28 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iqOzefhH"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ff9621c5dso48751475e9.0
+        for <linux-spi@vger.kernel.org>; Fri, 02 Oct 2026 06:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790947252; x=1791552052; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kRit+4DkJJMFIXTVgztzfNO5zcFZy88SGjfrumMDB4A=;
+        b=iqOzefhH2QhhdFm2z5xIvBRZd1nPUXza26UaFXPquL9/AuMc1loIfFlYnInBDSNgkO
+         7L8m7LufHzQZAHOFsYyL/wah9EXROeHHNCSi8Tnocga8geUXJg/td6A5nPchZGIO0m9B
+         vY97L8FKWOACBLIspXOY78EU6tOfBaL5OANSVl2qDKGe/bxLGreYwHMx3IMOH9fw2yre
+         YmRecXEPD3V38iWXm/6sAABEl/v3unPZz5/KGO/OMIO34WltI7q1f9IRQeWxOhrvqh1g
+         Eopt2flpGaCgW8IGIkwLjPkCwxBBJqjP5ezsuuFm5JnXl0/eNs1cFFEdewBR4qCrY1sG
+         sc2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790947252; x=1791552052;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kRit+4DkJJMFIXTVgztzfNO5zcFZy88SGjfrumMDB4A=;
+        b=cUTEO6q9cEb7I0LfadMEVqWnZQNV7g9ckkvtgn3sSGE1f5obqOoprMIRELk0rv3Rno
+         jI1/sFk+MiOXCH5Y8I0VQZ4TEeVIzST5Gk8XzaiJ40EhV+tXm8rdkCGeDdOh6XGA1X41
+         TKEKGY0OCHVWuHej6FNgTIuzHEOu7iekp0qlPxk5qBuK7XqsIRYAHSKCG0nKA3TtZ9WG
+         Bq1paPtt2bRvMHPWCWxZY3WR2j97Sbq6WpZoYOqKAi7/lL5J6N4BRBX2kwEKIQbKN4oB
+         WPuoDzqP3lfuhq18wU7Lr4iSFam1cJi5m9xQLF/UIusVC18L5rSK+ZESFEKcZq764+kl
+         EH5Q==
+X-Forwarded-Encrypted: i=1; AKwUvByWM0PYzNFgbUmx5spJFNPneVw2qgu/3ix4VuwYbaUru3N3B5P+EDxpR49owEBOcTPPjKXH6ZaMtEI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nPfZi54cWHaAKTrM5fT/CFfymAN/LwEyQVyaiOLuAJf/WtNYHu
+	U8AnRP6JIfO2cTIpdzn5Kx0lHKqSRFSNF/12Oh2Um6whN1mrobVMX8yj
+X-Gm-Gg: AYBFou2so+wzwyUm1njkFoI9PGNy37r7O1RFBRe+qfIHm3evvYZApu5CWz6rqo097TD
+	GyfHSQbNVFynX5wubpuJgGJFYXI7k6ByhlAZZqxwJGhppF8z/OTuMxgzIFY0+CooNRf1WpFpxSM
+	j1Yzzh4TkoletS2j5sGgE9URQ9v/F9uM4sqisE2hqgXL8S/bz4uzV19/ScIInPzqRjStjrug/yw
+	feD7jFcvvPvDaxVBLdekJkIghnthZP/G7+gS9WFET35oCct8YcN0NrfVha5hIiopuZdCUCIjx9u
+	Mb6sPviFZ85OuEc+U0ifo4sZmJXH9kU9p8D+sTXqXuodCzxqcyF9cwMAEHhOHg3OsWDyE6atRpq
+	yJLtIAGzR0P+y8qhH68VHbxwpRgooTU5rEElAIZQ49YKOtQ6Tut1Mki+mVaLiHsI3z04HNN3qKv
+	xnFiB4LrbbGf7UZf80c59QDKdq/9poYNRXVlBGfM02Wv5sUcWQM4OISqNZtDIHeGADbVk=
+X-Received: by 2002:a05:600c:3501:b0:49c:fc6e:8cbb with SMTP id 5b1f17b1804b1-4a02758ed05mr53703585e9.31.1790947252094;
+        Fri, 02 Oct 2026 06:20:52 -0700 (PDT)
+Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0a6e894a4sm61225895e9.5.2026.10.02.06.20.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 06:20:51 -0700 (PDT)
+Date: Fri, 2 Oct 2026 16:20:47 +0300
+From: Dan Carpenter <error27@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	p.zabel@pengutronix.de, james.tai@realtek.com, cy.huang@realtek.com,
+	stanley_chang@realtek.com, eleanor.lin@realtek.com,
+	jyanchou@realtek.com, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] spi: spi-mem: Add Realtek SPI NOR flash
+ controller driver
+Message-ID: <ar-vr51U-Gxpix_s@stanley.mountain>
+References: <20260930065945.88008-1-eleanor.lin@realtek.com>
+ <20260930065945.88008-3-eleanor.lin@realtek.com>
+ <70788248-798e-4c10-8f92-cb3670df4c9d@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1143; i=broonie@kernel.org;
- h=from:subject:message-id; bh=ZZog2DmzD6JYHzIOPkxymMrGPQfxhMFEozr7PgktX+M=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqv6qHzcBcA5vqVY30uOJacgpKRb5KhxuteVUaF
- O9UU4iPNHSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCar+qhwAKCRAk1otyXVSH
- 0J9+CACApkMvr45KcscqprNr05WFgzHatE5NaDuGAQfG3KTKeaqP/9A4Go4QB+/L8Q795h/BS1v
- V9DUWAEn7XLRhXUt5yE7UkJwVpxmobyBFlPsfDa28YkaK9ENi0R9d1lCj4kOOJjcNbJxsx2q8+h
- 94Z7+c3mlClSGd1ZQC2SH+UyM4/l6W/S/fxgtGtGJKqxU2+LQp5S8J/5Bsp6bLI95m7xnyIp6XP
- Pyu9f+Z7a5CjxUP/QF6yYvnytfWWTfa1AfAn8yyv0X+Fj/3g+TWqMsUV0T9VaYqLi6AzYaxuGD4
- 2/4bt2kdyRkjAyay7ew410tzzUZf/BZuVkVAK7fiOEQii9jx
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <70788248-798e-4c10-8f92-cb3670df4c9d@sirena.org.uk>
 
-On Fri, 02 Oct 2026 13:06:46 +0200, Jesse Jeronimus wrote:
-> Documentation: devres: Remove non-existent SPI register helpers
+On Fri, Oct 02, 2026 at 01:40:34PM +0100, Mark Brown wrote:
+> On Fri, Oct 02, 2026 at 02:12:38PM +0300, Dan Carpenter wrote:
+> > Commit aca8cbecdd2e ("spi: spi-mem: Add Realtek SPI NOR flash
+> > controller driver") from Sep 30, 2026 (linux-next), leads to the
+> > following Smatch static checker warning:
+> 
+> You've not copied me on the rest of the series so I don't know what's
+> going on with dependencies.  When sending a patch series it is important
+> to ensure that all the various maintainers understand what the
+> relationship between the patches as the expecation is that there will be
+> interdependencies.  Either copy everyone on the whole series or at least
+> copy them on the cover letter and explain what's going on.  If there are
+> no strong interdependencies then it's generally simplest to just send
+> the patches separately to avoid any possible confusion.
 
-Applied to
+Ah, Sorry Mark.  I told AI to reformat my bug reports and it screwed it
+up pretty badly.  I'll fix that again.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+Plus, when I run b4 on this, then lore doesn't have my email.
+Also sashiko-bot already complained about the bug that Smatch flagged.
 
-Thanks!
-
-[1/1] Documentation: devres: Remove non-existent SPI register helpers
-      https://git.kernel.org/broonie/spi/c/d220c9443db6
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+regards,
+dan carpenter
 

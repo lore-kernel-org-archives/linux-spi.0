@@ -1,48 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2FB4CCDCB;
-	Mon,  5 Oct 2026 16:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FEE2D249B;
+	Mon,  5 Oct 2026 16:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791216228; cv=none; b=YS9YB1tuqQ3/vtuhxTuGt+peUziE5E5B7d57LHx8OYlZdflVi46G0H91LLaAUn4J2iJRh2JrdGO4Y42/gsVNRhphmFdTFsrrmoCD62+NTTFNI/fcD3OxIprtHTb+Xg2WM6pOM5ei07z/w5Vq985feVs+o6stdX0UyJGYaaFYUQk=
+	t=1791216234; cv=none; b=A8fh7c2waIaPpARUKE6SpqXzVcW4SEhsFjfjeTS7dsYLn85s/yoW+P/BA+Bu4QxUFmMlqjEHA0+iX0lY/GGsreANVH3e69t/XgwepIRK0zMTD6W1UBSlcqA4yEbfcwTIOqzh0X6oCqbeopve6MTm8RLTe8onxYbPUEIz8OTaTgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791216228; c=relaxed/simple;
-	bh=TwCApKgSzLwszhlYokP7yH9qXvdd7jTgvIMJN1h2+3Y=;
+	s=arc-20240116; t=1791216234; c=relaxed/simple;
+	bh=3wivVijZ6QtEHqNiTFkYR+pzGLpET6cGzfTLooWvoV8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sIZNF8nTlaT1Rz2zGTX4orv1dXeYsHqu9wKcIGZCkT96twvoxFIam1evmaTR4OJg+eUkmcLpI77+S2ZOwZfT8vdb7cf6vLYPVpCvcHK+wrPeo+Jk3lyUcDTlDG30M9MHq4g+Tll9BprkIFpopvsAwlGvBlDBvIsFEwlLUrQMNwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=naR0LI81; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Em2Lo3zctUeJS0/T75PIjaZNPglS56pxqWwCXNimGCUGyIX5FRbGaEWv6yNtMrOL9aZdT0ONIyYTJAkRHoVJdFe437u7fsCB01yy/hK1KXYsx4f3u/+sCE57xA80NIu7hJRtmFyVatCb39vLtUvSXOob4W8S90SfJjWUBTe75kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/SmWcsf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naR0LI81"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDCD1F0089A;
-	Mon,  5 Oct 2026 16:03:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/SmWcsf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8691F000FF;
+	Mon,  5 Oct 2026 16:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791216227;
-	bh=j+VillOJtWalaw/jSDZBznfL15QfMpYdQSSXIanytqE=;
+	s=k20260515; t=1791216233;
+	bh=3I7X7qg8cSReFfZUwo1DCcvj2OWKH+QnOqcW/ywr3q4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=naR0LI81YLfOeNm6VeqBbtgI34qRJ+qxJqz/URSBK+YBKRkKjx39zGrqBDH2VouEs
-	 WeM8EwGR6PytDADsMbgQmlK2xcQu6ZJPVZwcYXvt5hHQ/6tXzmcpUHEJAv+PW9Mq6H
-	 YvqCRphUFPLDmxw6A6lt6QL90zj2tTs4L5rQrmZdKemLB9Tcq5rYiwElECAk/aj1dQ
-	 8oogT0JUKKeqMCAkoBJj/1X9zyhqcB6B6jZ2v4n0KhGx9Y5iD8wcE1UNPSSO8PdcXV
-	 gSUbsJrNIChqoidCIGTsengCDZWtrixfnS3FFqANX6Gmxf6PcidvU6vR7mCwT6y/ZH
-	 Sgkg8a8FWiPeQ==
+	b=U/SmWcsf8jXHE5CV0SDWMPFna0NN2MEFTIq5U3iTQf1Gy4Ij/T6NSqJZLj4hieS5I
+	 Xs15m1dTilQ91A5uI7PTsiZGGcSEcbcA4iQzEo87pjEGZPLvA9MSlcuMow4vIPPrNt
+	 7bTqbPWX06XLwNVtH7tcaMmC6e29O68ijt5cTdWy2Ee2qyE86SpwSir53+zhCX3qx5
+	 7ucJyM82TnB3Vrrbik6xFCYwvWiJGLiDZ4OmogJnMJIlG+gMMalq/L/aRwpjoI4SrL
+	 1ufKaGzYEY/PSDiaQ4gbjPa7DnqzKyNp2zR8bESaI+5HisWOePbeVGHzsiztlMKLI/
+	 ywCrONRMbIojA==
 From: Mark Brown <broonie@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Varshini Rajendran <varshini.rajendran@microchip.com>, 
- =?utf-8?q?Bence_Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>, 
- Robert Marko <robert.marko@sartura.hr>, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Sashiko <sashiko-bot@kernel.org>
-In-Reply-To: <20260923012950.15651-1-kmehltretter@gmail.com>
-References: <20260923012950.15651-1-kmehltretter@gmail.com>
-Subject: Re: [PATCH] spi: atmel-quadspi: balance runtime PM and pclk across
- system sleep
-Message-Id: <179114276714.150114.17193721637289577017.b4-ty@b4>
-Date: Sun, 04 Oct 2026 21:39:27 +0200
+To: linux-spi@vger.kernel.org, Alban Bedel <alban.bedel@lht.dlh.de>
+Cc: linux-kernel@vger.kernel.org
+In-Reply-To: <20261001153507.2011806-1-alban.bedel@lht.dlh.de>
+References: <20261001153507.2011806-1-alban.bedel@lht.dlh.de>
+Subject: Re: [PATCH] spi: Fix ACPI SPI resources using relative path
+Message-Id: <179114905426.150114.11326796595038562001.b4-ty@b4>
+Date: Sun, 04 Oct 2026 23:24:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -52,20 +43,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1152; i=broonie@kernel.org;
- h=from:subject:message-id; bh=TwCApKgSzLwszhlYokP7yH9qXvdd7jTgvIMJN1h2+3Y=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqw8pcv5EFqGPBUU7JDV4g11HA0yZJRIt92YJam
- aJoPX64gE+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCasPKXAAKCRAk1otyXVSH
- 0JRzB/49fPpvqUSexwJD8TEcmWyAxxlv4A9Stb2Lnm6F+I56hcwNbR8X1wVPIiKubVfH2KXaV8Y
- 2/VSWIQAziCxSJ0vnIvPI+S1Z1nmvM1dQpy6XxWY5tilmd2RM/J4jrYwj0akzwemrVVbNF7LWD8
- FgH2UWkLXXtAWB1cPX8egTQMjmkl2eMUMPEVg0EWgwenfORN7OIhSTjNzh0fn4C6qcou4yDqJ0N
- zj31DD3WLPB9QB7VbsvcEsF2p6C2at43skxh6VKSkP7hCvLc1Qv5hxu/FV/UYQN6cCHhPzVxPof
- Q2/PoU0Tz6i21AlITv5uYchIPCY/ZjmVf5claccgF3geCtP4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1107; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=3wivVijZ6QtEHqNiTFkYR+pzGLpET6cGzfTLooWvoV8=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqw8pjPOut0UkwLdhtfVVF4hsr3GLIXVHFrLST3
+ e7xJFl7fDWJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCasPKYwAKCRAk1otyXVSH
+ 0Ca+B/4uaTOFUja+2muzlYGZajUdJyaKMadfVBNnQ8K9PuO9DWrcaG/Pmq3WiCIDAckN4OG5e0W
+ j2uZwsN9fGhseUWXIYmRz3MOoj/zFyLu/N+jDyY80yLu18LguYGwBa1YZhHVEfMc912FUTfyvbu
+ 07lZnGEB5vmepR02cBtE2dB3g4HUPgNxHRku/GZ5eRZYjNOTZ9uW/r3TXkZBL9UdlJ0YPEILqBs
+ wZsYt1Qi+WLkMbfU5dugTq1Oknskui9koMfYkAbYlQScLaPrMyfmUQKWMMvn4UjSEJuEk0RSoEH
+ RE72vMwOAyjjZxYi1HgA3ktSeNhDJSGACtDUqpAVEWh9ENEk
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 23 Sep 2026 03:29:50 +0200, Karl Mehltretter wrote:
-> spi: atmel-quadspi: balance runtime PM and pclk across system sleep
+On Thu, 01 Oct 2026 17:35:07 +0200, Alban Bedel wrote:
+> spi: Fix ACPI SPI resources using relative path
 
 Applied to
 
@@ -73,8 +64,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: atmel-quadspi: balance runtime PM and pclk across system sleep
-      https://git.kernel.org/broonie/spi/c/717e45f97246
+[1/1] spi: Fix ACPI SPI resources using relative path
+      https://git.kernel.org/broonie/spi/c/4825287f6d23
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

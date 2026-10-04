@@ -1,211 +1,178 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B5C39EB47
-	for <linux-spi@vger.kernel.org>; Sun,  4 Oct 2026 14:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7FD1CAA6D
+	for <linux-spi@vger.kernel.org>; Sun,  4 Oct 2026 14:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791122808; cv=none; b=LBd5hL0GWmcJg84rACzcBO5srYU6c5Fm8mD3wt7yPcxjzMlsZcW1R1j9mjIfF9yFUe8K8nA6tGgPO48/WKveR8Rq/++0YAa4I+JjzgotYfdA3BKELUlBwr+8dNgD3L3XoKmxSEChKUzB5XXt3QNhwCx9FCNH49Z169CfaLNAXzQ=
+	t=1791124689; cv=none; b=ZULghajXXJJky2qQ12e7IvTEIPRV9H8ax2WT7KVQUwcFsWyILa+NYzneH/ICInphmebK5qJYNJ/m6WsQ7iNpEklJHaur/9DX9expV/J085QAa+7ZG8KHYNYUWGNolJJ6V4jiUBnkOwIk+OblwGy+RZaj8rBe32hlomfXfdqZrMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791122808; c=relaxed/simple;
-	bh=Eta09yHf0y9K2CX42Ddir6PtPan1JHP91SRbMGkdqe4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I4Wyrx5MSkk3YMBRtofbJd9Qf2xc5kozzhVkoFaNOz4Q64nazxbjkKnJvt3MQ0i35GfNURHDh6V75GX9VElUEl53PXGHhN1jjS2OKfGAfWWLcBjEmo6uVxNq8F7LO9iaWhfA1/RIMnu6g6abIlJhMR9NPP3wGOzI1AMr1ei3LB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a1706a2b24so1680995e9.1
-        for <linux-spi@vger.kernel.org>; Sun, 04 Oct 2026 07:06:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791122805; x=1791727605;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VUXvy50bECQ2jjyhstzsZVcApJzJFF/Z6zq/JzULuvY=;
-        b=g9oOHAk73BevgwkBPB59t10kygJ3PBrNtYzgtIX3APvFu8fcaDnQjp2wLc+pB9/zYR
-         NL3QcZObblkadeuiTA7rDxaON219BLfIBaLxTb2eeYsPx5aguEOC8uVUGRfr4ooPgshO
-         jzF9BHBg8aJuX/ybSi1QfTYIpBFKF2hGlZ9uvqGWL+LwWS4ZKktmNHvn3RlTKHjtdMr/
-         rC5Fot6H0kQnd5zLavJDJncspPwkZ+ee/7a/P37GYxntI03gtLT3fz4nhNIw7GCYN36n
-         HfJ4MaZjJZIA/qi+A1XQvWVkT4nkhCGhUuVr+hqLsJ9r0RRCHMjLrvl+uleAeHB4Uk9T
-         jOPA==
-X-Forwarded-Encrypted: i=1; AKwUvBz8yg3AqhSUFPy/yr5NM9Sb2RtUzpoxZc6pigu4RZaqwN2E4EeIQtCNq++58RWdJE5DtNfRstn7D04=@vger.kernel.org
-X-Gm-Message-State: AFuF++nWK9zaIM4/sNT8G2iB/u3lBU8galspX0UgR1UKw5AwZwL6EYCK
-	k2PKV33870/shI/e39VPQQBuL0nQK5aYxLRULoCHQ+pSA/E8FD+4Q/Q1
-X-Gm-Gg: AYBFou2f+jRM2lBycCgt7+NX8J2EoE73ioWG2M8bXw4GGuVLBxiGL2R52ElpZQLjt2s
-	s4XQ6Px3P8m2Vh2OCYlnqJc8dMbUfw0vnopp+oKv7MSxhdNbb2LFw27PhgeEeR0uu92f5M/2cie
-	K8xzi8DCjVxfPkFFTjcaGHfFy3Hyp+zZU4u+GKhKaGbIk98uSYDH/eMQPBjU04A1y1E8xlg1iCd
-	7BfpAh0rtoV6fr6F32PxejT2TZ09sa88OlAL/LX9k6GkjFdg8q7pVMIEZtC6PZ5kW6GIcMrz8ok
-	2IP52sIeHvzQM+fk2qn72s0Vkzjx/Agg1sLzJDNctHP58Ceh7u/qu9j4EPWzye0QH9847SfmbPL
-	HRJ5H4Y1u/gZRN3ucL/2Tva5jrARw64Sf3eWtt0X2D/gGrxVdx/i4nPMn9feuU6Xp3M62Vm8w0q
-	s+D9KD0Rz9qyna/b3ezMQVV4/B/YzFQ/CeXq3O8FplzN9Gw8DCGJmasxJ6q4QIya6iiYG9f+TMb
-	LPiGAmThhAphPhRpFgAglxVZKdu
-X-Received: by 2002:a05:600c:6212:b0:49f:e701:51c8 with SMTP id 5b1f17b1804b1-4a0275432f7mr127957445e9.9.1791122804538;
-        Sun, 04 Oct 2026 07:06:44 -0700 (PDT)
-Received: from [192.168.1.135] ([84.68.183.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17125adfesm30902405e9.15.2026.10.04.07.06.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 07:06:44 -0700 (PDT)
-Message-ID: <4460ec4a-1a28-4481-a33e-3fe72f68bf58@linux.com>
-Date: Sun, 4 Oct 2026 15:06:43 +0100
+	s=arc-20240116; t=1791124689; c=relaxed/simple;
+	bh=gWrLRD7rS/BYWAF/ov3E2y05f2PSszqoyhfJCicIzhU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c/d+c6mKPUltH1vZFVpv+LYAXiPLglOkLa/me0rQjqm/VdHWsu5uM7cCu+XZdoY9VVmXVJ0Da4XUL82Z/1GkLHeDmVatvgdMCyfAIhnwxdfpRrgtTHzziB0T0IJIiTFo7hvoqRWz/B3WyHp0lzDwwpHWCpWRH/No/+86N0hoCnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JZM+rjRO; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JZM+rjRO"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id ED87C1A1129;
+	Sun,  4 Oct 2026 14:38:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B5402604FE;
+	Sun,  4 Oct 2026 14:38:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75E021032817F;
+	Sun,  4 Oct 2026 16:37:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791124682; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gWGKeo6pOGt3hazUh/+qK3zmUNIFITs6zZqKEmgF+vs=;
+	b=JZM+rjRORI2FonbVaYOerFxqQdonnI4TilW1UDgsMyXlJTdsWlo+zk8EtBh3XJoG0AsAnc
+	qauYLkikuHLcViv6wkNKbhCaQmuaofS1otivvEyVhnY6JZhGJyj3x10IYZuVoWYsOpA9ar
+	r7ZOiApzlb/UKD9uQsILyw7NPDVu8K7GoemztqvEKc3IMlUNws6t6YqW09TAh4TZW3APgy
+	3d5hbwPbtJHrDx0vPb5FqYpkRhMM3ikMdACbFIjbW6tVnPVyQodgFtaXEQuP3lec8uhEXD
+	ZWyx9wLV0VelXS5jagudm2t3EBH+eOL+UwONv+8QFRII/nDJJzKm8nqn8zXz7w==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Nuno =?utf-8?Q?S=C3=A1?= <nuno.sa@analog.com>
+Cc: Fei Xie <fei.xie@horizon.auto>,  Mark Brown <broonie@kernel.org>,
+  linux-spi@vger.kernel.org,  linux-mtd@lists.infradead.org
+Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for
+ NAND and NOR
+In-Reply-To: <arp-E1MDFLfV1ASq@nsa> ("Nuno =?utf-8?Q?S=C3=A1=22's?= message
+ of "Mon, 28 Sep 2026
+	16:02:27 +0100")
+References: <20260921093701.1341766-1-fei.xie@horizon.auto>
+	<arOwdePAmoghlakj@nsa> <20260928055005.3987624-1-fei.xie@horizon.auto>
+	<arp-E1MDFLfV1ASq@nsa>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Sun, 04 Oct 2026 16:37:51 +0200
+Message-ID: <87bj99lef4.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: net: meson-dwmac: add T7 support
-To: Conor Dooley <conor@kernel.org>, xianwei.zhao@amlogic.com
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
- <20260924-t7-node-new-v2-2-319d3c19b4b2@amlogic.com>
- <20260924-stinger-stoplight-7c327c3225fa@spud>
-Content-Language: en-US
-From: Lucas Tanure <tanure@linux.com>
-In-Reply-To: <20260924-stinger-stoplight-7c327c3225fa@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 24/09/2026 18:21, Conor Dooley wrote:
-> On Thu, Sep 24, 2026 at 05:51:09AM +0000, Xianwei Zhao via B4 Relay wrote:
->> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
->>
->> Add the T7 compatible to the Meson DWMAC binding.
->>
->> The T7 DWMAC controller requires the following compatible combination:
->>
->> amlogic,t7-dwmac
->> amlogic,meson-axg-dwmac
->> snps,dwmac-4.00
->>
->> Add a conditional schema check to enforce this compatible combination
->> when amlogic,t7-dwmac is used.
->>
->> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
->> ---
->>   .../devicetree/bindings/net/amlogic,meson-dwmac.yaml    | 17 +++++++++++++++++
->>   1 file changed, 17 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> index 5c91716d1f21..b529ca5577a9 100644
->> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->> @@ -23,11 +23,24 @@ select:
->>             - amlogic,meson-gxbb-dwmac
->>             - amlogic,meson-axg-dwmac
->>             - amlogic,meson-g12a-dwmac
->> +          - amlogic,t7-dwmac
->>     required:
->>       - compatible
->>   
->>   allOf:
->>     - $ref: snps,dwmac.yaml#
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            const: amlogic,t7-dwmac
->> +    then:
->> +      properties:
->> +        compatible:
->> +          items:
->> +            - const: amlogic,t7-dwmac
->> +            - const: amlogic,meson-axg-dwmac
->> +            - const: snps,dwmac-4.00
-> 
-> This is not how fallback compatibles are described.
-> 
-> Instead of doing this, which affects all other compatibles in the file
-> by allowing dwmac-4.00 for all devices, please do this the normal way.
-> dwmac isn't special, it's just this binding that's weird!
-> Can whats currently in the binding (before this patch) be largely
-> replaced by just doing:
->    compatible:
->      oneOf:
->        - items:
->            - enum:
->                - amlogic,meson8b-dwmac
->                - amlogic,meson-gxbb-dwmac
->                - amlogic,meson-axg-dwmac
->                - amlogic,meson-g12a-dwmac
->            - const: snps,dwmac-3.70a
->            - const: snps,dwmac
->        - items:
->            - enum:
->                - amlogic,meson6-dwmac
->                - amlogic,meson8m2-dwmac
->            - const: snps,dwmac
-> 
-> You'll have to check this yourself against the amlogic devicetrees and
-> see if this is correct, but with this you should be able to add your new
-> device without doing anything special.
+Hello,
 
-I have the same patch in my T7 work and checked it against the amlogic 
-device trees: meson6 and meson8m2 use the two entry form, the rest add 
-snps,dwmac-3.70a. dt_binding_check and dtbs_check are clean. The example 
-needs fixing.
+On 28/09/2026 at 16:02:27 +01, Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-Xianwei, from my VIM4: the MAC reports Synopsys ID 0x51, DWMAC_CORE_5_10
-in common.h, so the core is 5.10a, not 4.00. And the controller reaches
-DRAM through a pipeline stage. Nothing claims its gate, sys_ampipe_eth,
-so clk_disable_unused switches it off. My node lists it as a fourth
-clock. Does the AN400 differ?
+> On Mon, Sep 28, 2026 at 01:50:05PM +0800, Fei Xie wrote:
+>
+> Hi Fei,
+>
+>> Hi Nuno, Miquel,
+>>=20
+>> Thanks for asking for benchmarks. I backported the 32/64-bit STIG SDMA
+>> transfer changes from the patch Nuno pointed to [1] to our vendor 6.1
+>> kernel, and compared that STIG path against the ACMD SPI NAND path from
+>> this RFC. I have not applied Nuno's separate ACMD read implementation;
+>> the figures below are for the implementation in this RFC.
+>>=20
+>> The device is a GD5F4GM8RE SPI NAND (2 KiB pages, 128 KiB eraseblocks)
+>> on a Horizon J6B board, running at 80 MHz in quad SDR mode. Both paths
+>> used the same board PHY configuration. STIG needed one additional dummy
+>> clock for the EBh read-cache command on this board to return correct
+>> data at 80 MHz. This is a local test adjustment, not part of the posted
+>> RFC or [1]; I excluded the incorrect STIG reads from the comparison.
+>>=20
+>> I ran flash_speed -c 5 -d /dev/mtd18 three times with each mode. The
+>> numbers below are the arithmetic means, in KiB/s:
+>>=20
+>>                                STIG      ACMD PIO
+>>   eraseblock write speed      3685          3555
+>>   eraseblock read speed      12468         14222
+>>   page write speed            3671          3510
+>>   page read speed            11931         13716
+>>   erase speed                40000         37647
+>
+> So this goes along with my expectations. I think we can all agree that
+> PROGRAM + ERASE is not worth the trouble? We even loose performance...
 
-I will send my series today so the code is on the list. Not a race: I
-will drop or rebase whatever overlaps once you tell me.
+Yeah.
+
+>> For a separate sequential-read test, I erased and programmed the first
+>> 64 MiB with known random data, then checked that each mode read back
+>> the complete area byte-for-byte. Both SHA-256 hashes matched the source;
+>> the reported ECC failure counts were zero. I then ran:
+>
+> What do you mean by sequential read? Does your flash supports continuous
+> rads (or buffered mode I think). If so, I would expect much better
+> number for the ACMD case. But that can be the issue of having both the
+> controller and the chip trying to walk pages.
+
+Sequential, continuous and buffered should mean the same in the NAND
+context.
+
+>>   /var/busybox/time -f 'real=3D%e user=3D%U sys=3D%S cpu=3D%P' \
+>>     dd if=3D/dev/mtd18 of=3D/dev/null bs=3D1M count=3D64
+>>=20
+>>                           STIG              ACMD PIO
+>>   elapsed (three runs)    5.30/5.28/5.26 s  4.66/4.65/4.65 s
+>>   mean throughput         12.12 MiB/s       13.75 MiB/s
+>>   mean system time        3.55 s            1.06 s
+>>   process CPU usage       67%               22%
+>>=20
+>> On this NAND, ACMD improves the 64 MiB read throughput by about 13.5%
+>> and reduces the reading process's CPU usage by 45 percentage points.
+>> The flash_speed results show a similar gain for reads, including
+>> single-page reads.
+
+FYI, if you pull a recent version of mtd-utils, flash_speed can
+benchmark continuous read improvements with the -C option.
+
+>> I do not see a program or erase throughput benefit:
+>> ACMD is slightly slower for both in this setup. These are SPI NAND
+>> results only; I have not benchmarked the NOR path on this board.
+>
+> So CPU results are the bing thing here. I guess we need to decide if
+> it's worth the amount of complexity it requires for the whole thing to
+> work. As I mentioned, if the chip has continuous mode and we try to
+> read anything bigger than page size we should let the nand chip to
+> walk the pages and that means the behavior we have today (IMHO of
+> course):
+>
+> 0x13 (STIG) + wait + read from cache (ACMD)
+>
+> If we're only reading a single page then the logic in this series would
+> payoff (slight performance gain + significant drop in cpu load). One simp=
+le
+> way for doing this as a starting point would be:
+>
+> * Nand has cont mode -> xspi controller does nothing special
+> * Nand has no cont mode -> Aggregate the xfers together.
+
+I'm fine with static decisions like that, but my understanding of the
+above is that ACMD mode is useful for all reads. so I don't get why you
+would no use it for all. Maybe because it would break continuous reads?
+(sorry I lost a bit of the context already).
+
+For writes and erases however, it seems like we could keep the STIG path.
+
+> Doing something dynamic would be much more complex I guess. With the
+> above reasoning, having some mem_info() kind of spi_mem callback to tell
+> us things like geometry, continuous mode support, etc would be enough to
+> handle the above I think. The reasoning is that reading a nand page is
+> always like spinand_load_page_op() (opcode 0x13) + spinand_wait() +
+> spinand_read_from_cache_op() so we could probably aggregate everything
+> in the last call on the controller side without complicating the nand core
+> logic.
+
+In general, drivers making assumptions has been a disaster in the raw
+NAND world. This was the main reason for the ->exec_op() introduction
+there: giving the whole operation to the controller so it can decide
+what to do without guessing. But we thinking at the operation boundary,
+not at the "set of operations" level. Since ->exec_op() in the SPI NAND
+subsystem has been written following the same philosophy, I fear we're
+going to try make rounds fit inside squares. One of the possible
+approach would be to mimic what we've done for the some limited
+controllers: pack everything in one single op (see the _monolithic
+suffix in drivers/mtd/nand/raw/). That's just one idea.
 
 Thanks,
-Lucas
-
-> 
-> pw-bot: changes-requested
-> 
-> Thanks,
-> Conor.
-> 
->>     - if:
->>         properties:
->>           compatible:
->> @@ -38,6 +51,7 @@ allOf:
->>                 - amlogic,meson-gxbb-dwmac
->>                 - amlogic,meson-axg-dwmac
->>                 - amlogic,meson-g12a-dwmac
->> +              - amlogic,t7-dwmac
->>   
->>       then:
->>         properties:
->> @@ -93,6 +107,7 @@ allOf:
->>                 - amlogic,meson8m2-dwmac
->>                 - amlogic,meson-gxbb-dwmac
->>                 - amlogic,meson-axg-dwmac
->> +              - amlogic,t7-dwmac
->>       then:
->>         properties:
->>           rx-internal-delay-ps:
->> @@ -139,8 +154,10 @@ properties:
->>             - amlogic,meson-gxbb-dwmac
->>             - amlogic,meson-axg-dwmac
->>             - amlogic,meson-g12a-dwmac
->> +          - amlogic,t7-dwmac
->>       contains:
->>         enum:
->> +        - snps,dwmac-4.00
->>           - snps,dwmac-3.70a
->>           - snps,dwmac
->>   
->>
->> -- 
->> 2.52.0
->>
->>
+Miqu=C3=A8l

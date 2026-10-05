@@ -1,142 +1,203 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E4A3839A0;
-	Mon,  5 Oct 2026 08:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2970F31578E;
+	Mon,  5 Oct 2026 08:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791188654; cv=none; b=nTyBWaZAMGmbKqxHui0iyOBr3YZRL0SZsvsiDXygq586qcWKA6AyT5LffsG0Lnyk825fVYHB+hWOzWViaSKvkqrf8QCaH1sW6NRU/B9n/dY096tDIUmE5ZLDEQE1fUq9fkw8GfYw7KxMWx88+B5bfEaiFT2frVeXxrmy+jGdKwE=
+	t=1791188796; cv=none; b=fTGM/OxZVvgLCiEyr+pn1MzvbkEcoORsMg8+pRvdkVhI+GJObuspFiFHmq2goyvu5dnhy9VXr6DFOJtHvjEdqU9unXgfyOSOrQI3yr4fnHrpbTp47xRXXx5OWo5Vt8WUEcfMVKvYmkHlE/MLYtZ1z7mqTcHGlL6mD/duCwTYbp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791188654; c=relaxed/simple;
-	bh=zBX/WOwlmT5IkklqpKt11Xi4EPSm9YxxqALdTG5NVyM=;
+	s=arc-20240116; t=1791188796; c=relaxed/simple;
+	bh=Sn3eYayrOBPCyjo2eZpCtuKeZxDukyJIWkj/nzdogTw=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jG2ATNrhOdSZMxkRsrWMlmBbN96H57Iv58Nn6i6RFVPfjQZHRARnvKmOf46ih9+UiME+IK2MQTNZCsm5dvmLQV3ecq6KS4/a8J0avOq+5ANvJx0c0XwkByTzpYKfYjWBkqdBs989NipK7U/Fz92YnBWN1P+ogyK6eBt8VWDTU0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXI5hjXW; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=H9qPnLvP/lLhPT6ALZR67rlGeWfRhP3kb7WV7ZI2ENwaiF+SpYHtruqjc0zDypBvIeaaNxkcZUAufZ/Yd2MHJt+G2QdalGsfdTwf0xD39Auo13CzZfGHXjHD2zjVr0gIJOoAi9u2I7Koagqpm3cVlv6rccH19nrFrIYqB4at7oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiBcFX9X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXI5hjXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262381F000FF;
-	Mon,  5 Oct 2026 08:24:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiBcFX9X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B581F000FF;
+	Mon,  5 Oct 2026 08:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791188652;
-	bh=Ir06SkW2fBmZ6iTU9J+gZxFmECKR9OLomFBtlF9+75g=;
+	s=k20260515; t=1791188794;
+	bh=xqk28xZRdSDRZtA317ls6P+30aviR4Fq7ab529tSLFY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JXI5hjXW7zk4XGtV1VNQJ7mFCNkHrQPKAdvP7Y78uOnoExbpFahvFBxsJ1UiGRTJB
-	 IEwmLCDgMc/ZKDCwP2OMpthPXoBywhxDyFCJ8EwuCDj6dQYgKf6acVBGUPq4fC6Sgb
-	 QfvbNA4eeHz3UpQtBLRxPj64HwCC/U4+k58yMYidb0kfQzEvGzoX0B4xUsyPEZ+jVN
-	 RO5t5C38T7EDhJbyPyYEr6VkFW+6KzNdQWSV4FyzjlfiVUR0oL4hzdmzo8VC4A1/sz
-	 CyfNCsn48fTpERD+x41/kbx8mjPJdfuhSGIRNr7h/+q1KTMQTxUNHE4GqUv/d9QiIO
-	 1/F6KBy1hHEew==
+	b=YiBcFX9XxA1jw2BijSs+c8QvPx4VTAqYHyWThLI0JjYs7Ab/4CDFB4FrpVqOpKfwN
+	 JrRZMXlMKsm2rXxJMQxjVeNAwvSX4tlDTDJV0L78OrlCu7lwwJ3tZEuU2osE1fjigx
+	 JOFBRUPH4a6R0fvrNEg29YsF85/xR4RpYhXu4QuSMHEhVo/CRsnRZUlZyH3jyEz5LS
+	 IcA6AG2/RuXWeNmsbrSyVjTYQ/+COWWxXUN9ckN/VG1EzPxUIaSAaAojJdG3xDcxXc
+	 Fpr0JZlJrvFevgSLTfcKFOF/k2TsdUV0S/K6AGYdVc+oXZ79GIyOuK+9UypeS5I938
+	 Fl6HQQSX0zqvA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/5] spi: spi-mem: Add support for panic mem writes
+Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add support for panic writes
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pratyush Yadav" <pratyush@kernel.org>, "Michael Walle" <mwalle@kernel.org>, "Richard
- Weinberger" <richard@nod.at>, "Paul Cercueil" <paul.cercueil@bootlin.com>, "Takahiro
- Kuwano" <takahiro.kuwano@infineon.com>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Mark
- Brown" <broonie@kernel.org>, "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Miquel
- Raynal" <miquel.raynal@bootlin.com>
-Cc: "Tanmay Jagdale" <tanmay@marvell.com>, "Tony Luck" <tony.luck@intel.com>, "Guilherme
- G . Piccoli" <gpiccoli@igalia.com>, "Kees Cook" <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org
-In-Reply-To: <20261005081141.33688-2-paul.cercueil@bootlin.com>
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Vignesh Raghavendra" <vigneshr@ti.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Michael Walle" <mwalle@kernel.org>, "Takahiro
+ Kuwano" <takahiro.kuwano@infineon.com>, "Richard Weinberger" <richard@nod.at>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Mark Brown" <broonie@kernel.org>, "Paul
+ Cercueil" <paul.cercueil@bootlin.com>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, "Guilherme G .
+ Piccoli" <gpiccoli@igalia.com>, "Tony Luck" <tony.luck@intel.com>, "Tanmay
+ Jagdale" <tanmay@marvell.com>, linux-mtd@lists.infradead.org, "Kees Cook" <kees@kernel.org>
+In-Reply-To: <20261005081141.33688-6-paul.cercueil@bootlin.com>
 References: <20261005081141.33688-1-paul.cercueil@bootlin.com>
- <20261005081141.33688-2-paul.cercueil@bootlin.com>
+ <20261005081141.33688-6-paul.cercueil@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 05 Oct 2026 08:24:11 +0000
-Message-Id: <20261005082412.262381F000FF@smtp.kernel.org>
+Date: Mon, 05 Oct 2026 08:26:33 +0000
+Message-Id: <20261005082633.F1B581F000FF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] spi: spi-mem: panic write deadlocks system by calling spi_mem_acce=
-ss_start
+- [High] spi: cadence-xspi: missing PHY wakeup in panic write path
+- [High] spi: cadence-xspi: deadlock in panic write via ktime_get()
+- [High] spi: cadence-xspi: unmasked interrupts leak in polling mode
 --
 
-commit be9ac542fea508a1fa056661e5ddb8e23cf4a7c4
+commit 61aacaab4ca9e95d9f29e2f99754ac08cf18616e
 Author: Tanmay Jagdale <tanmay@marvell.com>
 
-spi: spi-mem: Add support for panic mem writes
+spi: cadence-xspi: Add support for panic writes
+   =20
+This commit adds support for panic writes to the Cadence XSPI driver by
+checking the panic flag on memory operations. When a panic write is request=
+ed,
+the driver operates without relying on interrupts or sleeping.
 
-Add a panic_write flag to the controller capabilities. When set, this
-indicates the SPI controller can send commands to a connected NOR or NAND
-memory in the context of a kernel panic, without sleeping or relying on IRQ=
-s.
-
-> diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-> index b94680b60af95..89710f9f555ed 100644
-> --- a/drivers/spi/spi-mem.c
-> +++ b/drivers/spi/spi-mem.c
-> @@ -398,6 +398,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struc=
-t spi_mem_op *op)
->  	u8 *tmpbuf;
->  	int ret;
+> diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xsp=
+i.c
+> index 09ed2afbd4af3..0b7162740940f 100644
+> --- a/drivers/spi/spi-cadence-xspi.c
+> +++ b/drivers/spi/spi-cadence-xspi.c
+> @@ -350,10 +350,11 @@ struct cdns_xspi_dev {
+>  	void (*set_interrupts_handler)(struct cdns_xspi_dev *cdns_xspi, bool en=
+abled);
 > =20
-> +	if (op->panic_write) {
-> +		if (!spi_mem_controller_is_capable(ctlr, panic_write))
-> +			return -EOPNOTSUPP;
-> +
-> +		/*
-> +		 * Only support panic writes if we'll go through .exec_op().
-> +		 * The regular SPI path (spi_sync(), etc.) explicitly mentions
-> +		 * that it can only be used from a context that may sleep, which
-> +		 * is not the case on a kernel panic.
-> +		 * If this changes in the future, this could be reworked, but
-> +		 * for now this will have to do.
-> +		 */
-> +		if (WARN_ON_ONCE(!ctlr->mem_ops || !ctlr->mem_ops->exec_op))
-> +			return -EOPNOTSUPP;
-> +
-> +		if (spi_get_csgpiod(mem->spi, 0))
-> +			return -EPERM;
-> +
-> +		/* On panic IRQs are disabled so we cannot wait on locks */
-> +		if (mutex_is_locked(&ctlr->bus_lock_mutex) ||
-> +		    mutex_is_locked(&ctlr->io_mutex)) {
-> +			return -EPERM;
-> +		}
-> +	}
+>  	bool xfer_in_progress;
+> +	bool panic_write;
+>  	int current_xfer_qword;
+>  };
+> =20
+> -static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns=
+_xspi)
+> +static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns=
+_xspi, bool sleep)
+>  {
+>  	u32 ctrl_stat;
+> =20
+> @@ -362,7 +363,7 @@ static int cdns_xspi_wait_for_controller_idle(struct =
+cdns_xspi_dev *cdns_xspi)
+>  					  ctrl_stat,
+>  					  ((ctrl_stat &
+>  					    CDNS_XSPI_CTRL_BUSY) =3D=3D 0),
+> -					  100, 1000);
+> +					  sleep ? 100 : 0, 1000);
 
 [Severity: High]
-Does this unconditionally invoke sleepable operations during a panic write?
+Does this code cause a deadlock during a kernel panic?
 
-If the mutexes are currently unlocked when op->panic_write is true,
-spi_mem_exec_op() proceeds and calls spi_mem_access_start():
+readl_relaxed_poll_timeout() expands to read_poll_timeout(), which evaluates
+ktime_get() to enforce the timeout, even when the delay is 0. If another CPU
+was halted by an NMI or IPI while holding the write lock for the timekeeping
+sequence lock (tk_core.seq) during the panic, calling ktime_get() will hang
+the system.
 
-drivers/spi/spi-mem.c:spi_mem_exec_op() {
-    ...
-    if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->sp=
-i, 0)) {
-        ret =3D spi_mem_access_start(mem);
-    ...
-}
+Should this use readl_relaxed_poll_timeout_atomic() instead to avoid
+timekeeping functions during a panic?
 
-spi_mem_access_start() explicitly calls mutex_lock(), which violates atomic
-constraints and triggers might_sleep() warnings, and calls
-pm_runtime_resume_and_get(), which may sleep.
+[ ... ]
+> @@ -586,23 +587,23 @@ static int cdns_xspi_send_stig_command(struct cdns_=
+xspi_dev *cdns_xspi,
+> =20
+>  		cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
+> =20
+> -		if (cdns_xspi->irq >=3D 0) {
+> +		if (cdns_xspi->irq >=3D 0 && !op->panic_write) {
+>  			wait_for_completion(&cdns_xspi->sdma_complete);
+>  			if (cdns_xspi->sdma_error) {
+>  				cdns_xspi->set_interrupts_handler(cdns_xspi, false);
+>  				return -EIO;
+>  			}
+> -		} else if (!cdns_xspi_is_sdma_ready(cdns_xspi, true)) {
+> +		} else if (!cdns_xspi_is_sdma_ready(cdns_xspi, !op->panic_write)) {
+>  			return -EIO;
+>  		}
+> =20
+>  		cdns_xspi->sdma_handler(cdns_xspi);
+>  	}
+> =20
+> -	if (cdns_xspi->irq >=3D 0) {
+> +	if (cdns_xspi->irq >=3D 0 && !op->panic_write) {
+>  		wait_for_completion(&cdns_xspi->cmd_complete);
+>  		cdns_xspi->set_interrupts_handler(cdns_xspi, false);
+> -	} else if (!cdns_xspi_is_stig_ready(cdns_xspi, true)) {
+> +	} else if (!cdns_xspi_is_stig_ready(cdns_xspi, !op->panic_write)) {
+>  		return -EIO;
+>  	}
 
-Additionally, spi_mem_access_start() unconditionally calls spi_flush_queue(=
-).
-If the SPI message queue is not empty (for example, from an async transfer
-queued via spi_async() right before the panic), spi_flush_queue() dequeues
-and executes pending regular SPI transfers using the driver standard
-callback:
+[Severity: High]
+Does this leak unmasked interrupts in polling mode?
 
-spi_mem_access_start() ->
-    spi_flush_queue() ->
-        __spi_pump_messages() ->
-            .transfer_one_message()
+Earlier in cdns_xspi_send_stig_command(), interrupts are unconditionally
+enabled:
 
-For cadence-xspi (the driver supporting panic writes here), the callback
-invokes usleep_range() for polling delays.
+    cdns_xspi->set_interrupts_handler(cdns_xspi, true);
 
-Executing usleep_range() or other sleepable wait mechanisms in a panic
-context where interrupts and preemption are disabled will result in a
-system deadlock, preventing the crash dump or panic logging from
-completing.
+If the controller is in polling mode (irq < 0), this code takes the else-if
+branch. Whether cdns_xspi_is_stig_ready() succeeds or fails, the function
+returns without calling cdns_xspi->set_interrupts_handler(cdns_xspi, false).
+
+Will this cause an unhandled interrupt storm if the hardware IRQ line
+is physically shared with other devices?
+
+[ ... ]
+> @@ -622,6 +623,8 @@ static int cdns_xspi_mem_op(struct cdns_xspi_dev *cdn=
+s_xspi,
+>  	if (cdns_xspi->cur_cs !=3D spi_get_chipselect(mem->spi, 0))
+>  		cdns_xspi->cur_cs =3D spi_get_chipselect(mem->spi, 0);
+> =20
+> +	cdns_xspi->panic_write =3D op->panic_write;
+> +
+>  	return cdns_xspi_send_stig_command(cdns_xspi, op,
+>  					   (dir !=3D SPI_MEM_NO_DATA));
+>  }
+
+[Severity: High]
+Does this entry point fail to wake up the PHY from suspend during a panic
+write?
+
+If the system panics while the device is suspended, the controller will
+attempt to execute STIG commands while the PHY is still suspended, which
+could lead to bus faults or hardware lockups.
+
+Should this path call cdns_xspi_configure_phy() to wake up the PHY before
+sending commands during a panic write?
+
+[ ... ]
+> @@ -831,9 +834,11 @@ static bool cdns_xspi_is_dll_locked(struct cdns_xspi=
+_dev *cdns_xspi)
+>  {
+>  	u32 dll_lock;
+> =20
+> +	/* Busy-wait in case we wake up the PHY from suspend to do a panic writ=
+e */
+>  	return !readl_relaxed_poll_timeout(cdns_xspi->iobase +
+>  		CDNS_XSPI_INTR_STATUS_REG,
+> -		dll_lock, ((dll_lock & CDNS_XSPI_DLL_LOCK) =3D=3D 1), 10, 10000);
+> +		dll_lock, ((dll_lock & CDNS_XSPI_DLL_LOCK) =3D=3D 1),
+> +		cdns_xspi->panic_write ? 0 : 10, 10000);
+>  }
+
+[Severity: High]
+Is this code reachable during a panic write?
+
+The comment indicates this handles waking up the PHY during a panic write.
+However, this function is only called from cdns_xspi_configure_phy(), which
+is entirely omitted from the cdns_xspi_mem_op() panic write execution path.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261005081141.3368=
-8-1-paul.cercueil@bootlin.com?part=3D1
+8-1-paul.cercueil@bootlin.com?part=3D5

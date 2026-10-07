@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D653AEF22;
-	Thu,  8 Oct 2026 07:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B333D9DD4;
+	Thu,  8 Oct 2026 07:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791443677; cv=none; b=AT+5V0Har0kBkd5Hx6aC42UVv8PKWVeWCH1mLE5BNFqsi4XSfy6MdyLImmXszekbw1tINSf0R3iO4bkBg/lTyIey/ioGgIvQ/IOZllrNj3+8O4xR36L8cUeHc1Iwx3tL3YDCblulBYT+yFKwRzbZeDKFuux2en/3Y3XZ7nUw0rY=
+	t=1791443960; cv=none; b=uwIo6F9tjFWVeOwFhYUDKJaanT+2fa7gj9TepX012A5eBx/hHDXgB4gTX2mBX61kMguRzf9OC1rve18uG9R3gRcKlzwgEfTDr2lwObmsLkVRdJb6Rr45PPzAVc6UmtAM50UuvkUY6zdoYaXhGsjP/BQzsiw25riB9vFN5QCbZ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791443677; c=relaxed/simple;
-	bh=Al8+VIKGWcxGhYyRaeMpCro0EDWhQL2GdHl//h0s4MQ=;
+	s=arc-20240116; t=1791443960; c=relaxed/simple;
+	bh=8RaKJJa88G/U43Om9GWKyuM7R61X/xlktmHdGJHrtew=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CzJzzphrHzstPxS3wm5ouWP7l5q31ofMTqQ1ZVnRgQNMk/pnJFZ9sOYn47m9GinjtyRehCaYSJuLpI24YNjlz0WAdzXacVZXuAd6wBpohcLM1FkKipxd366FWe8ibv33FZWeVXr6GhKrH8Dg5OtYsSt5lOpmWlUGJCKvFGEefxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hhbNkvpu; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Q3OcAoCrSLsW/sFogqn1ZfMn+25LvgtvNZ1PsUoPQE4AH9xyXx5KpzEI7zFQ4xZ037KGDoDlXeC7pzAci2B0gOe7TLsxBeb6MlIowZTS4Pn2bdhsbSE0z8VsoFXj2mPcC2hX1V42WHv9dtJMy1O2sKJTbwah29NkT3zkKBuWC0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LQsfXGtd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hhbNkvpu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8D41F000FF;
-	Thu,  8 Oct 2026 07:14:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LQsfXGtd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F241F00893;
+	Thu,  8 Oct 2026 07:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791443676;
-	bh=fYftf/Su62EUrYUf6blYPGhehrDzs/z2OLT9geCyA8k=;
+	s=k20260515; t=1791443952;
+	bh=LSxPZEPR5SziIXhK2HrZDL72qyLOyeEGstZGusBKpNM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=hhbNkvpuOPygjgYsFStv9E0RgIjhNCYJwUEu/8GYXgVNf1UPp+cxBC5dJ6Mc09LAh
-	 l27Uzx3XKns+0nsbuOK6mPS2q2iGcile21+ki9LTGc3zDrJU74cQB8CTYlFXQ1bZLL
-	 SsRhF2LcLCA+RTm7WKGvLW5Kxv9xeLB2FNLf/f2Sy0O0C590W0nZUMAtFJpkIsPHxi
-	 HPYFMqCK6ku4aaq3NJvsvaWF3CZV8LhAQjfMV3Tuy53hJSB4FVDtGsdJ7ePODzrdyM
-	 6Nb038rtu4ahglDWK72ExH9XnIq1J2rzKSxiKU/bVx/MVjZbhaKPHY++gcqiJOEX0S
-	 /7xqm1nBJiRuw==
+	b=LQsfXGtdDAq5hxoRYFNW5Bc7NQI+wkUEG7tOAvMv450ED0QbJr+NjFOIOEW0tqXCg
+	 0JFra5nKNM5H+TIHlvq0la45Xz/b8+3jCWG6mvZZp9QcYX/zCYhD20jHfcC36J/4KH
+	 Rvn1vvl3UwijR664CP0qb0Z/wlAdkgd6lrDEP2wi3wNubzBNZzfYb/mwRYgk7XVT1c
+	 x+9/O6+fzwKtxkw7NMV49CBCUS+YGoGmnl39/KsFBRyO/9Xpp4GGUGJOqJdnZtHwy8
+	 SlCE3MO+FMBUjLy5X6Bnzhc9MU3biOun1q7E4QKy7JEz/5OSKvJjTsFs2AqcUfNV1v
+	 YBk27Mf8I7bRA==
 From: Mark Brown <broonie@kernel.org>
-To: Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>, 
- Alexandru Gagniuc <mr.nuke.me@gmail.com>, 
- Olliver Schinagl <o.schinagl@ultimaker.com>, 
- Jonas Rebmann <jre@pengutronix.de>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- kernel@pengutronix.de, Marc Kleine-Budde <mkl@pengutronix.de>, 
- Tobias Schramm <t.schramm@manjaro.org>
-In-Reply-To: <20260914-spi-sun4i-fixes-v3-0-9fe919d5cecf@pengutronix.de>
-References: <20260914-spi-sun4i-fixes-v3-0-9fe919d5cecf@pengutronix.de>
-Subject: Re: [PATCH v3 0/6] spi: spi-sun4i: assorted fixes
-Message-Id: <179130066333.150114.1591753111573299755.b4-ty@b4>
-Date: Tue, 06 Oct 2026 17:31:03 +0200
+To: Alain Volmat <alain.volmat@foss.st.com>, 
+ Pin-Hao Chen <billy920225@gmail.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>, 
+ linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20261005220528.7199-1-billy920225@gmail.com>
+References: <20261005220528.7199-1-billy920225@gmail.com>
+Subject: Re: [PATCH] spi: stm32: fix double free of SRAM buffer on MDMA
+ fallback
+Message-Id: <179138619954.2423942.17574965828667602495.b4-ty@b4>
+Date: Wed, 07 Oct 2026 17:16:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -51,28 +50,20 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2091; i=broonie@kernel.org;
- h=from:subject:message-id; bh=Al8+VIKGWcxGhYyRaeMpCro0EDWhQL2GdHl//h0s4MQ=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqx0LUIXMhyrvOstkVy0FxPa1zNc8ZuG7T2x7tb
- 1y74cN4wp+JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCasdC1AAKCRAk1otyXVSH
- 0M35B/4kUlR7nD0lYrEwWvVkYsWDVwvaKgRLOc2ITC8JrxazDJ86Vtclvy/EIT6tBMMdiAQcAeE
- PgrkLGNeICYjJw6j2kw3hvAthfGmpslblAEcWtpPc1KIS687D6HzL5C6vJf7hAJ2k84iXyunNN9
- jH/3CwFRvxPzqpp3h7wOUhaCgEfE2wQlM7szs2yJ/jm46v9ZlICntQuSJKuSUTsb6D3/QF3h8rw
- g0NsyYZHZ6ZWf3KfBD4sfVOYuWsNHaB0CFxfQUx8miVE8hegvWg4q4az80NTt09bVa/ofbvIoXh
- SeGUE3nWL8cGNm1i97WrLnTZ3TVh/yc7koKpVkZrPUr2d9JR
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=8RaKJJa88G/U43Om9GWKyuM7R61X/xlktmHdGJHrtew=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBqx0PqnniUR/n8Cc0GizO4cmryq7XxHYvsVWhR2
+ Isr9QXQfHmJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCasdD6gAKCRAk1otyXVSH
+ 0PEMB/9jChwCIe3aM1b6h8T/3EjY6c0rCpzb8LBIjBXSH+I3C5muPF31tDmpJbZlA2rInp3S+54
+ rrA2HswRABIZY0iAnIXZVh5efFl219B4cVRO7IuAfbKdl81A/do86DIal7ucBKyojoKV8w9CX77
+ F4EvzTeWzGD+N4pqlHYl5lOzdOeSmBuuw4QZAaEV/Y7gXuYKAio9Dd5xS5VHUP1ZrsuF0hQOfHI
+ rdyALx0PiErmOjBiUuqIXk9eDY1EvWzkjSExiKNZDlAnYbULFwnb3KYa5UrnSaVtPoIC4tgCyOr
+ cdsb7teB6Dzj8b5TqPgDmJ23v8//S2LQLYeHBHxtiyIVuYMK
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 14 Sep 2026 17:35:54 +0200, Jonas Rebmann wrote:
-> spi: spi-sun4i: assorted fixes
-> 
-> This is a series of patches for the spi-sun4i driver, some of which have
-> been sitting around for a while.
-> 
-> 1-4 are fixes and 5 is a small patch that introduces reporting of the
-> effective SPI speed.
-> 
-> [...]
+On Tue, 06 Oct 2026 06:05:28 +0800, Pin-Hao Chen wrote:
+> spi: stm32: fix double free of SRAM buffer on MDMA fallback
 
 Applied to
 
@@ -80,18 +71,8 @@ Applied to
 
 Thanks!
 
-[1/6] spi: spi-sun4i: sun4i_spi_transfer_one(): fix transfers for SUN4I_FIFO_DEPTH
-      https://git.kernel.org/broonie/spi/c/f3ce7a3ca82b
-[2/6] spi: spi-sun4i: sun4i_spi_fill_fifo(): always apply A10 FIFO fill level workaround
-      https://git.kernel.org/broonie/spi/c/ee109e2bbea0
-[3/6] spi: spi-sun4i: sun4i_spi_transfer_one(): fix setting of clock rate
-      https://git.kernel.org/broonie/spi/c/672ba6d88324
-[4/6] spi: spi-sun4i: sun4i_spi_handler(): fix race condition between transfer completion and RX FIFO interrupt
-      https://git.kernel.org/broonie/spi/c/b8f09251da78
-[5/6] spi: spi-sun4i: sun4i_spi_transfer_one(): add error handling at clock setup
-      https://git.kernel.org/broonie/spi/c/a3df049084c7
-[6/6] spi: spi-sun4i: sun4i_spi_transfer_one(): report effectively used speed_hz of transfer
-      https://git.kernel.org/broonie/spi/c/b42ff8dc7e54
+[1/1] spi: stm32: fix double free of SRAM buffer on MDMA fallback
+      https://git.kernel.org/broonie/spi/c/0c5b0c3eb1d6
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

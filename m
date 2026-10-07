@@ -1,319 +1,187 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C78B3D3314
-	for <linux-spi@vger.kernel.org>; Wed,  7 Oct 2026 06:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35F3403138
+	for <linux-spi@vger.kernel.org>; Wed,  7 Oct 2026 07:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791353495; cv=none; b=HHG8nmos0QDRBwKXp8bysaVWYB4xFzgQcSxmEH1qZQvaF/N6igfUkKAWYr8JmI0bLddNDCXDRdvRnTssgY3Dr07cxCzvly2CqTRfjDN8kTHFeWe+K7tlf1jAhFAbyfSbCLC11ykcTOs7VI0QKpAxbhpbxqiu3YYhNDG/Dc9+HJQ=
+	t=1791357892; cv=none; b=R+5Jp9NBQopsf7DqExLRXzaY25cxVH9SyV1bdxGK0U7YKpewb42q4MSjlP5d/U4mQpb0zin4rIeVS9eUjyQZt0wxccxGftAx4/T3SbirDuXfcDYmIGStlXMANTwPqaQpu0S8JfE9IC8uSz0bG5s1ic8uZSn6rKhCDGVfMNaneRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791353495; c=relaxed/simple;
-	bh=vCVqv3zqss70uKOdyCuiJtU+zwuXKOXJXwtTH7wskzU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aadhWcvy0d8yOIWuZCZTxXObYcimwXb0rhbhtIEpRV8v9k3l77yiVottTVQefrw5aUzft5FJoeoQ2qVrxS4kXvT7QXUfXXvGSWOBeKliXrHqb04JqAktouibZy74ltiy6rZPxQH8KIHsmrN+TU7KGZNHF18rzViVzVJBYUmJSBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fErPtDiW; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791357892; c=relaxed/simple;
+	bh=UxZ50NqwJpLV70DqujYJ8OxnuapLGbpMQOZeIC/fP8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZCy3siZ1pqKDoLxoXlX4Zr8R3W6QQhAf3njo736Wpi6TRoeyH0yY/LDTup6gZsuQaQNoP4SqGEritUy8+PAFN/fIPUIFJ53nRA9fkElrKXqgoozWdrlndM+rYkVpadWgIGDFzaXARBCn2PwyVCkpqc98R/P4WwTVDweCHyN7ovg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=NWfS0D0e; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ORt288W5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fErPtDiW"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so41045445e9.0
-        for <linux-spi@vger.kernel.org>; Tue, 06 Oct 2026 23:11:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="NWfS0D0e";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ORt288W5"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6974U2PB2295029
+	for <linux-spi@vger.kernel.org>; Wed, 7 Oct 2026 07:24:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AVpUwU22uEKD7W4M4o2CONa/iooL55EIQZsHgPp6kK0=; b=NWfS0D0eVGD8Ok+a
+	ItVMICbFmN4Pa8s0NHvUUl+KV7E4pFyLF8xMcW5GyJuzewPKBPrg34y/X9dB4Vox
+	6LjMoR1/CZxdK7XNeIJ/Q9wyIfLfqkDQ4BzVfJElSE441HhIhQfEq5/AT8FBFKe1
+	VkUrztA0mujGiZ7CW2EipTQtypQ2sIWyt9rye4od28rD43d4pkC/BszGocZtyXGN
+	z9o3QKZgX71bCK5MfynKya07QL366faaCEVHSAdm5O0xJeKj2IAw3w+LtvdKHGZO
+	M+Te//uEWi7n6ScQO74BAKIP7G6gHPiMdXCLWMWD9UXvR9Vqhr8vd/Je8FUZysMs
+	g7wpLg==
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h5c1s1354-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Wed, 07 Oct 2026 07:24:50 +0000 (GMT)
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-ccca9481fb6so2444458a12.3
+        for <linux-spi@vger.kernel.org>; Wed, 07 Oct 2026 00:24:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791353492; x=1791958292; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=vCVqv3zqss70uKOdyCuiJtU+zwuXKOXJXwtTH7wskzU=;
-        b=fErPtDiWpoyuJ45GoUWZYVBpMXCvTmuHzH6duF6yzhsI6dvPIhrQTqSUzZCIs/1Lhg
-         U+sf9R3VUlp6O1iFqDWljOPFUlLV3niIFuFxOhptBPxTqInivD5expZN6fRKnNAlpPd0
-         wedcf4chkj/twBMa8SqI8IyqVvfYdu17SQuWsx3E3Hk2eJUIz02TVMcz79Airy2w6nS3
-         /38P0cFgNPjkE7p2MH/dxUbkHUIkey7Le+GNyuMGOZxED71T1PBvVBCdEL2x981o7G2S
-         929q/wy4YC47y+EHBksSrxOnKqJYdf6gfw8aMzMhyJit4j6uK6mJLQMYR7+WMJXFjemt
-         1Vew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791353492; x=1791958292;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=oss.qualcomm.com; s=google; t=1791357889; x=1791962689; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vCVqv3zqss70uKOdyCuiJtU+zwuXKOXJXwtTH7wskzU=;
-        b=AK1F0V4wrCvTYYkpBbktZmhwRLnVSCL/dBPvYaW8AVDcttguoj3KrylmHnazN+zJrB
-         gEyXhuonxtkR7Ll1XWF6pw+DOLrybRVT3r6EkMSKxCjYi/+uxvYoSZqsvY5nsrP6dyWB
-         D44/ZWRJ1R4Q6xj6CnOpBtQw0znLHURl1ySXM+LOjbQIVMV6iv2l9AfmsMo4E/NPmVkL
-         uura6kfLqz/7GMBiNbF48VzFkshug0Dp5/4TZLrOVUGOxRCny922Kcft+6XXvrH0L5SH
-         RSwAHuDSHd7BsusELtp01j8/PpuUNSOtRTq1WK3vw0iWxIEZupB///m0QQCv1ZcxAu3C
-         p+Eg==
-X-Forwarded-Encrypted: i=1; AKwUvBzxphtal9E6iLvMV8BPzOHsa6MxfAuxq+jc7hVtkZ4vuEa+oiZ/ePrlz52crwBXcpHO1v14tgPwzXo=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZEtUP6w6zO1llAiZANwOxsSE7yAeDsdI9mnVvN1ruZ0Z49eFN
-	eekUKTeTNJLnLi+jsk6x/K5fqFJQ91vhvQHgqE5Qea7K0TV/ieIPdm/JY+k3Lw==
-X-Gm-Gg: AYBFou2XgI/80vls0b7k5OcHjMqRYKt4ttIIJtowogZqPm0Nx4Noh0OSTffP50k6zRa
-	d0Ja8Itlh/1r3zRS3ikw1XRzWnsRd9vQO5elwLa2JN9gHd8txNAZXDFRN5NQJ+bEzp+iQ1bK7IN
-	x4q5vNshHMAoEqKCgZ6+FaX1RTB24w1ytq/tXcfy/9meHAEq4ogBTdF/WAoVjJX5tf0m7uyb8fx
-	SZ+SnqvM2eKUcA3PyQgZtjl3EyMSxnznpbvNkBx/LTDrQDdPoi2RCA/9bvrmgm8/IibtvESg9nv
-	Sp5hMtKRRHIpW6Aqc/1+Lyk2M5KpmKs8yORqWfHb5iLOocUACnCHiINC+iyNKDR4LPLNkkhFat4
-	o7FKtmyLtX66//afSUWYmDeBkNJ7vdGMV8VpzQD+NO/6WNfGM7z9/9AgaNYsoRYsCD0nEGJIZeM
-	uMQr5kBqHKloZ7f+oa1wUDuSHEIBIW4+uH9SLnsGEhzUqujMg23+kBfLVVRRvXA6qSAA1wOBjmC
-	fLynv3ccTUCai7ZnFK+FO/LhU/TIaHkxh8SudBLThSov9FYuF93Z9D1J9OSGLh47WiP2g==
-X-Received: by 2002:a05:600c:609a:b0:4a0:2540:b46 with SMTP id 5b1f17b1804b1-4a18031130emr15222165e9.12.1791353491497;
-        Tue, 06 Oct 2026 23:11:31 -0700 (PDT)
-Received: from [192.168.1.67] (225.217.137.78.rev.vodafone.pt. [78.137.217.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a178a17ac9sm123244485e9.1.2026.10.06.23.11.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 23:11:31 -0700 (PDT)
-Message-ID: <dde19ed4315a58bb7f109486a05277f40c2a2842.camel@gmail.com>
-Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for
- NAND and NOR
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>, Nuno =?ISO-8859-1?Q?S=E1?=	
- <nuno.sa@analog.com>, Fei Xie <fei.xie@horizon.auto>, Mark Brown	
- <broonie@kernel.org>, linux-spi@vger.kernel.org,
- linux-mtd@lists.infradead.org
-Date: Wed, 07 Oct 2026 07:12:57 +0100
-In-Reply-To: <asXPFxphyuGXxsfH@xhacker>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto>
-	 <arOwdePAmoghlakj@nsa> <20260928055005.3987624-1-fei.xie@horizon.auto>
-	 <arp-E1MDFLfV1ASq@nsa> <87bj99lef4.fsf@bootlin.com>
-	 <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
-	 <asXPFxphyuGXxsfH@xhacker>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+        bh=AVpUwU22uEKD7W4M4o2CONa/iooL55EIQZsHgPp6kK0=;
+        b=ORt288W5txFAVGIPTBAYNcoPc9UUcFsnbYVJd8iXxNpFb9nGMfgMOUt2h6oFxAdG3u
+         TVXNFx99A7zt8eGQ8m2ZWVkDLNBjQcP9lepbiMt0X+g6tuoIT5jxq7Jy9Cem2/YPJ3EN
+         ICHf8h85v4nLzNCa/WHQ2kVVxIIy54pAyPleNH6nMfh+xX87H0Ve5D5iyerV28zAcODO
+         ocnzfB1+MarZ3KehaCW7bk526mo6UwXFiKPJmY72QppiWvYbmvrOnojiDgFocoukDkFK
+         J3sEczSZj9AKoMMybQJZMQ31WUVNzlLlbrXPkuPmWAK5vt0jiRyArrtE9OTpdbsj/kyE
+         oBsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791357889; x=1791962689;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AVpUwU22uEKD7W4M4o2CONa/iooL55EIQZsHgPp6kK0=;
+        b=1pWB7fgU6bfi/DNrjBv9U5gfmZmJoJ4jtyT4jYqjRQjIMEGIBzDErZMeb5pT0Djppw
+         qTO7Cpqe6qSmIUYCpEBllPsgJ1Yf/El9dlc5MG/x/uYhqjak4zOpQHKlvanqmcl0KQ0z
+         1oIbeBS3oIE+WtdK6uyKsxqyMvUptht1f5uhBAjvgY/KipW1FRYrjDht1hMoaHQFeFXS
+         KLAnXuAZ++740SJUOYBgNxfgKc3F0bsCmopKIhR/DMUQTQTbyBSEPTDJoXlf74k1jHX3
+         wUR+X0CCo7Ut0RrD4JhFd89ZmSqdDIf9DUFP4O9gwqaWMV4EwWdYmobapYeB/m8E1sdh
+         1nug==
+X-Forwarded-Encrypted: i=1; AKwUvBza+WszyDImin16+EH3XexTc1eSJOt8dNoqx2taVckXK/XlzBsWEIEF56BVhCQ+Iubh1om/AqtendI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nA40uv/nKb4KS5Yzh4EF/k+314rsmL6Qn1JQygMqeaWC+jnH5q
+	1SUEu13vv+9Dc1WzomOACMRopkXLhMzG6rbn43NHJAUYQB9ycZdpOHUiEiYXZxokYQM0P8Nu7DW
+	0UDnoxTuSB0z1Jpq6ElDbhkFye6YZuZOhTYhPxVGNDJMc7XGAqc0FptD/slN0ous=
+X-Gm-Gg: AYBFou0ZpJ5a8Ykrz/VL5ZoqdRnvmEA+g7CDFahBfG7rg7L37a6xyxsk+zDu9OlcySd
+	FKsCJm+kVuSy55NdDHugVXsYyQuwgbQAApcxuVQ8vwjkSYr3+ULFArwdHsVweKECXYu2Ej0BiCs
+	lK9OpQcYmYTXuRdaOFjXxOMxSieTp99fMi1DUB7lkIqwv977lZfgr7MACBcOZ4fVWSdJJEydK8W
+	heNAoWezIIBt7RQuDNk2NDiFb4ylJRCXlnAo4QWPNW7ChC9wqFWj223J4NX5FYOPP3sVaZjg558
+	0aFDCcINEYoasDi1JfO6MSwrcVrX0AvdA5TQHQlj0S4Pwzt7tMJYF8EzbQUoCrxg1OgANRIUdNZ
+	9ZC5IwBnWcs+tLlOWEvg9xmi0iY7Ygy9OXw==
+X-Received: by 2002:a05:6a20:918b:b0:3dd:85a8:4c56 with SMTP id adf61e73a8af0-3e134051f3amr990997637.29.1791357889581;
+        Wed, 07 Oct 2026 00:24:49 -0700 (PDT)
+X-Received: by 2002:a05:6a20:918b:b0:3dd:85a8:4c56 with SMTP id adf61e73a8af0-3e134051f3amr990973637.29.1791357889108;
+        Wed, 07 Oct 2026 00:24:49 -0700 (PDT)
+Received: from [10.217.219.98] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89188a0d6d7sm954172b3a.12.2026.10.07.00.24.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Oct 2026 00:24:48 -0700 (PDT)
+Message-ID: <0f113c6e-b868-4540-9f57-75b3530181f1@oss.qualcomm.com>
+Date: Wed, 7 Oct 2026 12:54:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/9] soc: qcom: geni-se: Populate clk_perf_tbl with SE
+ source clock frequencies from perf OPP table
+To: Praveen Talari <praveen.talari@oss.qualcomm.com>,
+        konrad.dybcio@oss.qualcomm.com, Sudeep Holla <sudeep.holla@kernel.org>,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Ulf Hansson <ulfh@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>,
+        Andi Shyti <andi.shyti@kernel.org>
+Cc: chandana.chiluveru@oss.qualcomm.com, arm-scmi@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+References: <20260827-derive_clk_perf_tbl_from_perf_domain_opp_table-v2-0-091697dbeb02@oss.qualcomm.com>
+ <20260827-derive_clk_perf_tbl_from_perf_domain_opp_table-v2-2-091697dbeb02@oss.qualcomm.com>
+Content-Language: en-US
+From: Mukesh Savaliya <mukesh.savaliya@oss.qualcomm.com>
+In-Reply-To: <20260827-derive_clk_perf_tbl_from_perf_domain_opp_table-v2-2-091697dbeb02@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: 07JXFuCaRy6D1g-7T2laY6w4v3W-0vcy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA3MDAyOCBTYWx0ZWRfX8IqGlzwwwQ8V
+ ZRBy4gIkIUsAvF0Z/CBOaJLSBlDsWxFsldkzsoBTOJ6L1SyfzI9rGEdJHjTJWMFtEHKNPzKaAYU
+ axTrD/BlkBSPO25Ib8s2DFl/g/wATiZPgrnhEyVn9fAZM/e15hgOu1e49dvgb47IQv/uy988Gpv
+ 8GZh6z3cRcKkCSymDeWyjEjO0FErVUBWceuhZI/JM9+ExguvqNztFvPkGcl/rYi+1FHagtFft8T
+ oCStZO0Cxh0XQk9k/WvxGbMpD5hQOMxHQUAHlLB9qlSJ7xB4XI+7G1h2mFaj94DJJ7w5TXCkMoX
+ /oHaZFy8c0U+SHmZ841KqRtSXbqKqBw9wg6tRQmb7c73PqDygDsC5WodsFrKdH8AyhPCFZS4tdv
+ 3QseeSwapbzk8bj3SCvwNiAfEvVzfdonwM63O5vn9pQc6Qfjup8nBAVa2Mbp2Sa6HN34EYDPylv
+ 9D+IQ7XbPMQIVaY+XeQ==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA3MDAyOCBTYWx0ZWRfXzi5gjw4vTqlZ
+ sbvuT/qsOUM5pbOgg+EouC4FOI8f37uIFIdnOHDJmBF56eRBnqDvf9dBwZTm05RIzic4DrHD332
+ FGbRMSmareNajYux6qdsILYloeUOI3A=
+X-Proofpoint-GUID: 07JXFuCaRy6D1g-7T2laY6w4v3W-0vcy
+X-Authority-Analysis: v=2.4 cv=NatzRGD4 c=1 sm=1 tr=0 ts=6ac5f3c2 cx=c_pps
+ a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=Kq5vhQSCjsUw4Kr_5AcA:9 a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-07_02,2026-10-06_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610070028
 
-On Wed, 2026-10-07 at 12:48 +0800, Jisheng Zhang wrote:
-> On Tue, Oct 06, 2026 at 07:50:44AM +0100, Nuno S=C3=A1 wrote:
-> > On Sun, 2026-10-04 at 16:37 +0200, Miquel Raynal wrote:
-> > > Hello,
-> > >=20
-> > > On 28/09/2026 at 16:02:27 +01, Nuno S=C3=A1 <nuno.sa@analog.com> wrot=
-e:
-> > >=20
-> > > > On Mon, Sep 28, 2026 at 01:50:05PM +0800, Fei Xie wrote:
-> > > >=20
-> > > > Hi Fei,
-> > > >=20
-> > > > > Hi Nuno, Miquel,
-> > > > >=20
-> > > > > Thanks for asking for benchmarks. I backported the 32/64-bit STIG=
- SDMA
-> > > > > transfer changes from the patch Nuno pointed to [1] to our vendor=
- 6.1
-> > > > > kernel, and compared that STIG path against the ACMD SPI NAND pat=
-h from
-> > > > > this RFC. I have not applied Nuno's separate ACMD read implementa=
-tion;
-> > > > > the figures below are for the implementation in this RFC.
-> > > > >=20
-> > > > > The device is a GD5F4GM8RE SPI NAND (2 KiB pages, 128 KiB erasebl=
-ocks)
-> > > > > on a Horizon J6B board, running at 80 MHz in quad SDR mode. Both =
-paths
-> > > > > used the same board PHY configuration. STIG needed one additional=
- dummy
-> > > > > clock for the EBh read-cache command on this board to return corr=
-ect
-> > > > > data at 80 MHz. This is a local test adjustment, not part of the =
-posted
-> > > > > RFC or [1]; I excluded the incorrect STIG reads from the comparis=
-on.
-> > > > >=20
-> > > > > I ran flash_speed -c 5 -d /dev/mtd18 three times with each mode. =
-The
-> > > > > numbers below are the arithmetic means, in KiB/s:
-> > > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 STIG=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ACMD PIO
-> > > > > =C2=A0 eraseblock write speed=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 3685=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 3555
-> > > > > =C2=A0 eraseblock read speed=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 12468=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 14222
-> > > > > =C2=A0 page write speed=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 3671=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 3510
-> > > > > =C2=A0 page read speed=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 11931=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 13716
-> > > > > =C2=A0 erase speed=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 40000=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 37647
-> > > >=20
-> > > > So this goes along with my expectations. I think we can all agree t=
-hat
-> > > > PROGRAM + ERASE is not worth the trouble? We even loose performance=
-...
-> > >=20
-> > > Yeah.
-> > >=20
-> > > > > For a separate sequential-read test, I erased and programmed the =
-first
-> > > > > 64 MiB with known random data, then checked that each mode read b=
-ack
-> > > > > the complete area byte-for-byte. Both SHA-256 hashes matched the =
-source;
-> > > > > the reported ECC failure counts were zero. I then ran:
-> > > >=20
-> > > > What do you mean by sequential read? Does your flash supports conti=
-nuous
-> > > > rads (or buffered mode I think). If so, I would expect much better
-> > > > number for the ACMD case. But that can be the issue of having both =
-the
-> > > > controller and the chip trying to walk pages.
-> > >=20
-> > > Sequential, continuous and buffered should mean the same in the NAND
-> > > context.
-> > >=20
-> > > > > =C2=A0 /var/busybox/time -f 'real=3D%e user=3D%U sys=3D%S cpu=3D%=
-P' \
-> > > > > =C2=A0=C2=A0=C2=A0 dd if=3D/dev/mtd18 of=3D/dev/null bs=3D1M coun=
-t=3D64
-> > > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 STIG=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 ACMD PIO
-> > > > > =C2=A0 elapsed (three runs)=C2=A0=C2=A0=C2=A0 5.30/5.28/5.26 s=C2=
-=A0 4.66/4.65/4.65 s
-> > > > > =C2=A0 mean throughput=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 12.12 MiB/s=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 13.75 MiB/s
-> > > > > =C2=A0 mean system time=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- 3.55 s=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1=
-.06 s
-> > > > > =C2=A0 process CPU usage=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 67%=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 22%
-> > > > >=20
-> > > > > On this NAND, ACMD improves the 64 MiB read throughput by about 1=
-3.5%
-> > > > > and reduces the reading process's CPU usage by 45 percentage poin=
-ts.
-> > > > > The flash_speed results show a similar gain for reads, including
-> > > > > single-page reads.
-> > >=20
-> > > FYI, if you pull a recent version of mtd-utils, flash_speed can
-> > > benchmark continuous read improvements with the -C option.
-> > >=20
-> > > > > I do not see a program or erase throughput benefit:
-> > > > > ACMD is slightly slower for both in this setup. These are SPI NAN=
-D
-> > > > > results only; I have not benchmarked the NOR path on this board.
-> > > >=20
-> > > > So CPU results are the bing thing here. I guess we need to decide i=
-f
-> > > > it's worth the amount of complexity it requires for the whole thing=
- to
-> > > > work. As I mentioned, if the chip has continuous mode and we try to
-> > > > read anything bigger than page size we should let the nand chip to
-> > > > walk the pages and that means the behavior we have today (IMHO of
-> > > > course):
-> > > >=20
-> > > > 0x13 (STIG) + wait + read from cache (ACMD)
-> > > >=20
-> > > > If we're only reading a single page then the logic in this series w=
-ould
-> > > > payoff (slight performance gain + significant drop in cpu load). On=
-e simple
-> > > > way for doing this as a starting point would be:
-> > > >=20
-> > > > * Nand has cont mode -> xspi controller does nothing special
-> > > > * Nand has no cont mode -> Aggregate the xfers together.
-> > >=20
-> > > I'm fine with static decisions like that, but my understanding of the
-> > > above is that ACMD mode is useful for all reads. so I don't get why y=
-ou
-> > > would no use it for all. Maybe because it would break continuous read=
-s?
-> > > (sorry I lost a bit of the context already).
-> >=20
-> > Exactly. In ACMD, is also capable of "walking pages" for reads bigger t=
-han page
-> > size
-> > (hence the need to know the flash geometry) and IIRC, that does not rea=
-lly work
-> > well
-> > when the flash is also doing it.
-> >=20
-> > >=20
-> > > For writes and erases however, it seems like we could keep the STIG p=
-ath.
-> > >=20
-> > > > Doing something dynamic would be much more complex I guess. With th=
-e
-> > > > above reasoning, having some mem_info() kind of spi_mem callback to=
- tell
-> > > > us things like geometry, continuous mode support, etc would be enou=
-gh to
-> > > > handle the above I think. The reasoning is that reading a nand page=
- is
-> > > > always like spinand_load_page_op() (opcode 0x13) + spinand_wait() +
-> > > > spinand_read_from_cache_op() so we could probably aggregate everyth=
-ing
-> > > > in the last call on the controller side without complicating the na=
-nd core
-> > > > logic.
-> > >=20
-> > > In general, drivers making assumptions has been a disaster in the raw
-> > > NAND world. This was the main reason for the ->exec_op() introduction
-> > > there: giving the whole operation to the controller so it can decide
-> > > what to do without guessing. But we thinking at the operation boundar=
-y,
-> > > not at the "set of operations" level. Since ->exec_op() in the SPI NA=
-ND
-> > > subsystem has been written following the same philosophy, I fear we'r=
-e
-> > > going to try make rounds fit inside squares. One of the possible
-> >=20
-> > Fair enough! Agreed
-> >=20
-> > > approach would be to mimic what we've done for the some limited
-> > > controllers: pack everything in one single op (see the _monolithic
-> > > suffix in drivers/mtd/nand/raw/). That's just one idea.
-> > >=20
-> >=20
-> > I can take a look mostly for curiosity as my intention is not to "steal=
-" this
-> > work
-> > from Fei. If everyone agrees (specially Fei), what I can do is to send =
-my simpler
-> > patches that just support ACMD (without any special distinction between=
- Nand and
-> > Nor)
-> > For Nands, I have a mix of STIG and ACMD, where big gains come from Nan=
-ds with
-> > cont
-> > mode.
-> >=20
-> > Then we can build on top of it in order to improve Nand support (mostly=
- on CPU
-> > load).
->=20
-> I'm also interested in this driver's performance. A bit off the subject
-> but related question: Usually, the Soc may connect the xspi to dma
-> engine, I'm curious what would be the benefit of adding dma engine
-> support instead of ACMD? Is dma engine support simpler and
-> is the gain(performance + cpu load) more?
->=20
 
-I'm not familiar with that approach tbh. But I would assume performance to =
-be pretty
-much similar to what I have given that ACMD uses the IP internal DMA engine=
-. But not
-using ACMD means not having the cpu gains at least for the smaller transfer=
-s as we
-would not be able to aggregate transfers. FWIW, given that you might not ha=
-ve looked
-at the whole thread, this is what I have:
 
-https://github.com/analogdevicesinc/linux/pull/3478/changes/477e60955085465=
-52071b825a66522cf697c27c2
+On 8/27/2026 11:29 PM, Praveen Talari wrote:
 
-- Nuno S=C3=A1
+[...]
 
-> Regards
+> @@ -1175,6 +1181,31 @@ int geni_se_domain_attach(struct geni_se *se)
+>   	else if (ret < 0)
+>   		return ret;
+>   
+> +	perf_dev = se->pd_list->pd_devs[DOMAIN_IDX_PERF];
+> +
+> +	num_opps = dev_pm_opp_get_opp_count(perf_dev);
+> +	if (num_opps < 0)
+> +		return num_opps;
+> +	if (num_opps == 0)
+> +		return -ENODEV;
+> +
+Let's combine both in a line.
+if (num_opps <= 0)
+	return num_opps ? num_opps: -ENODEV;
+
+
+> +	se->clk_perf_tbl = devm_kcalloc(se->dev, num_opps,
+> +					sizeof(*se->clk_perf_tbl),
+> +					GFP_KERNEL);
+> +	if (!se->clk_perf_tbl)
+> +		return -ENOMEM;
+> +
+Non functional to Simplify, keep level = 0 outside and increment level 
+within loop> +	for (i = 0, level = 0; i < num_opps; i++, level++) {
+> +		opp = dev_pm_opp_find_level_ceil(perf_dev, &level);
+> +		if (IS_ERR(opp))
+> +			return PTR_ERR(opp);
+> +
+> +		se->clk_perf_tbl[i] = level;
+> +		dev_pm_opp_put(opp);
+> +	}
+> +	se->num_clk_levels = num_opps;
+> +	se->has_opp = true;
+> +
+level++;>   	return 0;
+>   }
+>   EXPORT_SYMBOL_GPL(geni_se_domain_attach);
+> 
+

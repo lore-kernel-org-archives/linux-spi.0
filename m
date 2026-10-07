@@ -1,127 +1,196 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6429D4E06E1
-	for <linux-spi@vger.kernel.org>; Tue,  6 Oct 2026 23:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D6736B909
+	for <linux-spi@vger.kernel.org>; Wed,  7 Oct 2026 05:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791328820; cv=none; b=KL1j5qtQAMaka8PWvhHFZ3WICKLsvZ8JYyCqqub1HnbK+WE2Uk9Fx9mI2vlqsBi8Ate9HWzRHEyzUMscOYRZyyGbkxnNUGnu0CBKvhgzi7+zwtsl/emB+HsopM68qYUjwgDs512NXDGSInxwhQ1VZc3quGb4AdW1CN1grEWmVxs=
+	t=1791349704; cv=none; b=mvl9o1yg2dS1VqP6v0Y+LOEcuFMKxviGxc/S4MNxY3+iBctxjq2EZjBsb68naTg9DFurMbjtFijCY/nXBTi3IRqwPOavEmMbMAkgCckvoSR8Z5Fu16kIlYP9Q0at4UBf+PlKb2vin8prQMjwlxNLtcWEPuPgHRe84R7R7AvnpAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791328820; c=relaxed/simple;
-	bh=sjuSJIbwK+9pC3HVLoTkORP6Bqh+nlExjwmlTCp9g3o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWpfBQO8B8dSlDJnrTHr0bmaAzVUVZyvGU/dCT1NneXa5nWDXn4KoEvQMjP0TiVkWw4RyuOa8gR2igtWRb3liwI+B6f74dztvB9EVUjeAqze30oSdVWr20O65Ek/Elz/boqGgX3/RzZNxqkqXTIofAejSJXlSs5j0/iR3IcXls8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=D3J9qWW6; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1791349704; c=relaxed/simple;
+	bh=IMcuezOAJIagl0wAT8pemYJAj2doNVkltePfV/o0DTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QTb8EWeMzuMmsnCn3D16yOEg/cv2luMfkKqrErs7CCiIZknhfN7wlRYOEOCeElUBoFaxh/CvZtSW00fa0/z+FJRcFcEL7VCTzqT9BEYkO7ZqQi1JkoQiBRftl4itR2TgoYJZkp6pBEvT3p/w5XuF8YE4J9ymSY57VAJLzhaHWXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kDhheC9H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="D3J9qWW6"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3115c4451c8so2692972eec.1
-        for <linux-spi@vger.kernel.org>; Tue, 06 Oct 2026 16:20:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791328799; x=1791933599; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5PkD2yI0m8nq8ghTI9DLQE4m/ducagwKY3yX77vxrJc=;
-        b=D3J9qWW6k+EMdpdUFWd+4UaHlG69QX5j64a0EX1YcFvTrpStVTCkmrY4Ui11aMHXU5
-         oqOix2+E6SqQoZtIp0V7sBFw/FDJfBHiHcq2PpMVbphJxmT6AC36ftec5TH/xUv9gWil
-         Eej9Z5HITI5GZiGU6AZp+Uq6m4MjuIyLmzQvI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791328799; x=1791933599;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5PkD2yI0m8nq8ghTI9DLQE4m/ducagwKY3yX77vxrJc=;
-        b=AdV7LLKH23+iILAZSh/XB7PI2EutpRC+FyAPzc6LzezDLKMnE6hragGjVMtJ7GEig1
-         3pJoc/ECryK/v0J0E1vsUOnZcK3jmQLsgtriY+vmEcVlXHcLJuTMyERKmCrHk5p4qzSY
-         2NTK6ZW3XtRNufOrzkaMEvm7Ex40etvn7MWeKfIsg8qjN8cD5aZ8z4+kTL6FDfJ2m+rr
-         s6pZc4C2c66roN1B1V0STO230GqiQ3ZsNE2x1zW6i2sQCJwScSKb3TyYHC7e6eHQ9wVm
-         dBBsi/TgiadEbA9XM33ugeruFNQPz2LAPuXQH0v6GanKH4njxusKktVTV70vWwqzCynh
-         gNow==
-X-Forwarded-Encrypted: i=1; AKwUvBxy7evt4pssHkADCeZM5JmoozHVamWnBHfWTlrqrrKOb76KUeNWimDgaFgHhXjkIQeVCxqCa/WtFCA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3dX+PV52X0diGVb5EuNqEGEQobSONive1Ypzh0WIOfjJl0/ka
-	fV4iPxV9PBSK1K/IxuFBI2Py7Ugby9527CW+qLQTywuUsllFb5d4BPlpdk2Qg/9f0YmD5DvOhAP
-	t92g=
-X-Gm-Gg: AYBFou1Cn8AjjaKwaJ2NFURBGM3pnPCBTQhFGZZY3u2rSNPTVw9OTk+hWjpXSNUkeAk
-	YpRj16rTi3GjLHT6AXmmoPvbqzXSRlWY67uxMqvU4K5+XCtP+zz72AWrXuLKtdisBckjpdnHLku
-	1Jqa+KH++dSO5PgsTiBEYWSvz8S1pd+XAg9qWRO1Oa3d1Zk+85SdjJVBK6rhpjrYv85nkY+IWUb
-	++/Shz6T4ZwbpG/b1Mp3E0hPdQKCDUGyHzUDQNpphTxl1DQh5cYnwbhS7MTLxheKoT0ntmbK0PP
-	6ERHXmaun4vPEqia1AAiReIeJnvLMgXVIe4hDrwywRdetFOegv8a4YTur1Xu7Cj8i1PNVTOjpin
-	IZM34EzQa966fgSpnYDhbgBoYjtsVIV2QivMkxEOz+k4F99kiLKt6GTBRXu28IuU2F/n7XNQdmb
-	WFdXio+mcAXANkbq4K/bPTmtfrxD7x53zmoZYP/ADOxuhhKfgvxhB+4Hm5BXlhol2Nd6tCLrwEb
-	xb9oYHuAWeJ+WTgVlMMcsSGK3xK4/scBKOWFQ==
-X-Received: by 2002:a05:693c:839b:10b0:351:4708:9b61 with SMTP id 5a478bee46e88-35147089d49mr4409223eec.19.1791328799286;
-        Tue, 06 Oct 2026 16:19:59 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e7c:8:63eb:e7f9:1d47:7d47])
-        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-3515af511a5sm1977457eec.15.2026.10.06.16.19.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Oct 2026 16:19:58 -0700 (PDT)
-From: Brian Norris <briannorris@chromium.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-pm@vger.kernel.org,
-	Ulf Hansson <ulfh@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH 06/13] spi: ti-qspi: Discard pm_runtime_put_autosuspend() return value
-Date: Tue,  6 Oct 2026 16:13:34 -0700
-Message-ID: <20261006161337.6.Ia678a25bddd5942c7f3e11ff0eb807754d7e2aa2@changeid>
-X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
-In-Reply-To: <20261006231900.3230373-1-briannorris@chromium.org>
-References: <20261006231900.3230373-1-briannorris@chromium.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kDhheC9H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED6361F0089B;
+	Wed,  7 Oct 2026 05:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791349702;
+	bh=5xmZMxNq8rMLy1po9NswGEXLpopsW3LVxZ4uoMW6ci4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kDhheC9Hs5aftzZLj5jhtzuLzmkiFq10pbqrhpjtJJMgv3X0B7B9xzLoHAsK8Duzj
+	 Jc8GUy617+//2nxAm+ZwDTjM/K3ggWB5ERjTTxgqhUMfB1lTnnHX5Z0vj/NT7BM+0d
+	 BIVv9Mr1kKG3QIczZzha9XtFOSfIF35K/e38oHRf8NWMZaoOFTyDkXf8uEt1A38TbP
+	 z2EjS1WLKV0TZJMJHkuxu0+CdRKRLHuRQsPIKJ1CeeCZqGio8dfM8XFzMnxHqak90F
+	 J1e7fIRXYxE8EqN0IUlqjU/6Q1fTqEufT8G0VNZZJFz4r8i+wK0KE0pPOoyBEVWW+C
+	 OxarnPvJ6cg/A==
+Date: Wed, 7 Oct 2026 12:48:23 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+	Fei Xie <fei.xie@horizon.auto>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
+Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for NAND
+ and NOR
+Message-ID: <asXPFxphyuGXxsfH@xhacker>
+References: <20260921093701.1341766-1-fei.xie@horizon.auto>
+ <arOwdePAmoghlakj@nsa>
+ <20260928055005.3987624-1-fei.xie@horizon.auto>
+ <arp-E1MDFLfV1ASq@nsa>
+ <87bj99lef4.fsf@bootlin.com>
+ <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
 
-Failing SPI setup due to pm_runtime_put_autosuspend() returning a
-negative value is not particularly useful.
+On Tue, Oct 06, 2026 at 07:50:44AM +0100, Nuno Sá wrote:
+> On Sun, 2026-10-04 at 16:37 +0200, Miquel Raynal wrote:
+> > Hello,
+> > 
+> > On 28/09/2026 at 16:02:27 +01, Nuno Sá <nuno.sa@analog.com> wrote:
+> > 
+> > > On Mon, Sep 28, 2026 at 01:50:05PM +0800, Fei Xie wrote:
+> > > 
+> > > Hi Fei,
+> > > 
+> > > > Hi Nuno, Miquel,
+> > > > 
+> > > > Thanks for asking for benchmarks. I backported the 32/64-bit STIG SDMA
+> > > > transfer changes from the patch Nuno pointed to [1] to our vendor 6.1
+> > > > kernel, and compared that STIG path against the ACMD SPI NAND path from
+> > > > this RFC. I have not applied Nuno's separate ACMD read implementation;
+> > > > the figures below are for the implementation in this RFC.
+> > > > 
+> > > > The device is a GD5F4GM8RE SPI NAND (2 KiB pages, 128 KiB eraseblocks)
+> > > > on a Horizon J6B board, running at 80 MHz in quad SDR mode. Both paths
+> > > > used the same board PHY configuration. STIG needed one additional dummy
+> > > > clock for the EBh read-cache command on this board to return correct
+> > > > data at 80 MHz. This is a local test adjustment, not part of the posted
+> > > > RFC or [1]; I excluded the incorrect STIG reads from the comparison.
+> > > > 
+> > > > I ran flash_speed -c 5 -d /dev/mtd18 three times with each mode. The
+> > > > numbers below are the arithmetic means, in KiB/s:
+> > > > 
+> > > >                                STIG      ACMD PIO
+> > > >   eraseblock write speed      3685          3555
+> > > >   eraseblock read speed      12468         14222
+> > > >   page write speed            3671          3510
+> > > >   page read speed            11931         13716
+> > > >   erase speed                40000         37647
+> > > 
+> > > So this goes along with my expectations. I think we can all agree that
+> > > PROGRAM + ERASE is not worth the trouble? We even loose performance...
+> > 
+> > Yeah.
+> > 
+> > > > For a separate sequential-read test, I erased and programmed the first
+> > > > 64 MiB with known random data, then checked that each mode read back
+> > > > the complete area byte-for-byte. Both SHA-256 hashes matched the source;
+> > > > the reported ECC failure counts were zero. I then ran:
+> > > 
+> > > What do you mean by sequential read? Does your flash supports continuous
+> > > rads (or buffered mode I think). If so, I would expect much better
+> > > number for the ACMD case. But that can be the issue of having both the
+> > > controller and the chip trying to walk pages.
+> > 
+> > Sequential, continuous and buffered should mean the same in the NAND
+> > context.
+> > 
+> > > >   /var/busybox/time -f 'real=%e user=%U sys=%S cpu=%P' \
+> > > >     dd if=/dev/mtd18 of=/dev/null bs=1M count=64
+> > > > 
+> > > >                           STIG              ACMD PIO
+> > > >   elapsed (three runs)    5.30/5.28/5.26 s  4.66/4.65/4.65 s
+> > > >   mean throughput         12.12 MiB/s       13.75 MiB/s
+> > > >   mean system time        3.55 s            1.06 s
+> > > >   process CPU usage       67%               22%
+> > > > 
+> > > > On this NAND, ACMD improves the 64 MiB read throughput by about 13.5%
+> > > > and reduces the reading process's CPU usage by 45 percentage points.
+> > > > The flash_speed results show a similar gain for reads, including
+> > > > single-page reads.
+> > 
+> > FYI, if you pull a recent version of mtd-utils, flash_speed can
+> > benchmark continuous read improvements with the -C option.
+> > 
+> > > > I do not see a program or erase throughput benefit:
+> > > > ACMD is slightly slower for both in this setup. These are SPI NAND
+> > > > results only; I have not benchmarked the NOR path on this board.
+> > > 
+> > > So CPU results are the bing thing here. I guess we need to decide if
+> > > it's worth the amount of complexity it requires for the whole thing to
+> > > work. As I mentioned, if the chip has continuous mode and we try to
+> > > read anything bigger than page size we should let the nand chip to
+> > > walk the pages and that means the behavior we have today (IMHO of
+> > > course):
+> > > 
+> > > 0x13 (STIG) + wait + read from cache (ACMD)
+> > > 
+> > > If we're only reading a single page then the logic in this series would
+> > > payoff (slight performance gain + significant drop in cpu load). One simple
+> > > way for doing this as a starting point would be:
+> > > 
+> > > * Nand has cont mode -> xspi controller does nothing special
+> > > * Nand has no cont mode -> Aggregate the xfers together.
+> > 
+> > I'm fine with static decisions like that, but my understanding of the
+> > above is that ACMD mode is useful for all reads. so I don't get why you
+> > would no use it for all. Maybe because it would break continuous reads?
+> > (sorry I lost a bit of the context already).
+> 
+> Exactly. In ACMD, is also capable of "walking pages" for reads bigger than page size
+> (hence the need to know the flash geometry) and IIRC, that does not really work well
+> when the flash is also doing it.
+> 
+> > 
+> > For writes and erases however, it seems like we could keep the STIG path.
+> > 
+> > > Doing something dynamic would be much more complex I guess. With the
+> > > above reasoning, having some mem_info() kind of spi_mem callback to tell
+> > > us things like geometry, continuous mode support, etc would be enough to
+> > > handle the above I think. The reasoning is that reading a nand page is
+> > > always like spinand_load_page_op() (opcode 0x13) + spinand_wait() +
+> > > spinand_read_from_cache_op() so we could probably aggregate everything
+> > > in the last call on the controller side without complicating the nand core
+> > > logic.
+> > 
+> > In general, drivers making assumptions has been a disaster in the raw
+> > NAND world. This was the main reason for the ->exec_op() introduction
+> > there: giving the whole operation to the controller so it can decide
+> > what to do without guessing. But we thinking at the operation boundary,
+> > not at the "set of operations" level. Since ->exec_op() in the SPI NAND
+> > subsystem has been written following the same philosophy, I fear we're
+> > going to try make rounds fit inside squares. One of the possible
+> 
+> Fair enough! Agreed
+> 
+> > approach would be to mimic what we've done for the some limited
+> > controllers: pack everything in one single op (see the _monolithic
+> > suffix in drivers/mtd/nand/raw/). That's just one idea.
+> > 
+> 
+> I can take a look mostly for curiosity as my intention is not to "steal" this work
+> from Fei. If everyone agrees (specially Fei), what I can do is to send my simpler
+> patches that just support ACMD (without any special distinction between Nand and Nor)
+> For Nands, I have a mix of STIG and ACMD, where big gains come from Nands with cont
+> mode.
+> 
+> Then we can build on top of it in order to improve Nand support (mostly on CPU load).
 
-Returning an error code from pm_runtime_put_autosuspend() merely means
-that it has not queued up a timer or work item to check whether or not
-the device can be suspended and there are many perfectly valid
-situations in which that can happen, like after writing "on" to the
-device's runtime PM "control" attribute in sysfs for one example.
+I'm also interested in this driver's performance. A bit off the subject
+but related question: Usually, the Soc may connect the xspi to dma
+engine, I'm curious what would be the benefit of adding dma engine
+support instead of ACMD? Is dma engine support simpler and
+is the gain(performance + cpu load) more?
 
-Accordingly, update ti_qspi_setup() to simply discard the return value
-of pm_runtime_put_autosuspend().
-
-This will facilitate a planned change of the
-pm_runtime_put_autosuspend() return type to void in the future, similar
-to commit 3afd8df02433 ("PM: runtime: Change pm_runtime_put() return
-type to void").
-
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
-This patch is independent of the rest of the series, except for the end
-(changing the return type). I expect it can be applied by individual
-maintainers, and we pick up the end once the dust is settled.
-
- drivers/spi/spi-ti-qspi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 34b154922ff2..63b9098ec8a2 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -158,11 +158,7 @@ static int ti_qspi_setup(struct spi_device *spi)
- 		return ret;
- 	}
- 
--	ret = pm_runtime_put_autosuspend(qspi->dev);
--	if (ret < 0) {
--		dev_err(qspi->dev, "pm_runtime_put_autosuspend() failed\n");
--		return ret;
--	}
-+	pm_runtime_put_autosuspend(qspi->dev);
- 
- 	return 0;
- }
--- 
-2.56.0.360.g66cac248cb-goog
-
+Regards

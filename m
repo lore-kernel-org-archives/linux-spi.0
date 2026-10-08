@@ -1,85 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0222C3EC830;
-	Thu,  8 Oct 2026 08:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA8B46EC76;
+	Thu,  8 Oct 2026 08:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791448608; cv=none; b=H7eeP8zLif7VSPk3JN35x0P5KMvf63EvVfR1TAScFAPh4M7JoZkbNJ7d+fLiPZXpUJVhSVj/ewgulPzvQWC6AJy2tZoLjlAStwsvRlTzcFAFJKsaaZe4tIkuzUeISdQXWGMxGYvZs/LmGZgxG1wDt/ClOMLdv6Xx7aHoEa2QA+A=
+	t=1791449625; cv=none; b=tmy01JHUnXiZS1BvtxPHadxA1K1oL1H9La4czys6N/s4zbaHSEkY1ect+XPktvLLXX/sfAXKihfM4vjGmfqP5O4/967cM3GFps2s/9T6/pnqD0WNDw8L1m/Q2rjesWICN5XDMrMOjZztxPFCInT0RJF/Rnd2x7SCcqxrPII24rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791448608; c=relaxed/simple;
-	bh=2CnL9zUWhVoDK+CrhOc4XAGFdTLKxKk4z4dtrk7xVJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTYnN0Sfn0yq0ydy1cRdY1j/Rtltrbhq/L/LZILSIgfAzksbkYGm2A+hkuUAxOhYM+/7rP9W2RGzNIP5u819f0drOyGehqIQU4l6MTWvbJsm8+01tNrYvW8ZbQ+187UI+G4Vgv4+WJnWm1wsXpQrNxqCjUipAnn0k+eV5VGnVLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hl9HS+hY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791449625; c=relaxed/simple;
+	bh=dHd2aiHDSy5ciOTqdqus6Sopj4jw+dCUM1H5t2+Arwc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KWbQ73jPv4kzRKYiU9ss3I51mEaLt/eZLfZmC6ZbatF2vm1v80EsKIFlqBsPOZaEsIx6/WZvDeGSAz1xlKyhCkJ5pn4jzNrtPSRHABg3fNJxBsXjbbqWhJun1RkOWrwuIuPwBSQypwEN9tkWcLAxpqsxFMmXADqdQPCTpMY/R68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=NGljQqcP; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hl9HS+hY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E871F000FF;
-	Thu,  8 Oct 2026 08:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791448607;
-	bh=2CnL9zUWhVoDK+CrhOc4XAGFdTLKxKk4z4dtrk7xVJY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Hl9HS+hYhcUaWZQ+m2rEEM+ITObU/vWUZx1BDy/OoEKXA3sZ+PhMmaWMATUSBxoKv
-	 W1DdoJdfwS3W653HZNJfR1197VkjVc6ojEBzR8ZKG5FTibA20i0ZjdcBJEMHwBBFeY
-	 ZKuTtXtRHAcdJvb96vgeBV9W7frxYHWslkBYQJXCVplu+mNW1SUyQr7DHlK96M1p/B
-	 5ih7PtYZL+gWPzUW9WV+mSbsby2DqzHXMNfB7nf02XU8/HahcuDdRWM7Ezdeq9vPH9
-	 5yx81leof3+gjaE9tcuV/Hfk12dOlvOsJYvJCaCKEp0KYFTKy0t1LQy+uv//7rVNmi
-	 XwaoyCADJY86g==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 3F9531AC57CE; Thu, 08 Oct 2026 09:36:45 +0100 (BST)
-Date: Thu, 8 Oct 2026 10:36:45 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Tanmay Jagdale <tanmay@marvell.com>
-Subject: Re: [PATCH 3/5] spi: cadence-xspi: Add irq-less support
-Message-ID: <asdWHQGNfEeGop2M@sirena.co.uk>
-References: <20261005081141.33688-1-paul.cercueil@bootlin.com>
- <20261005081141.33688-4-paul.cercueil@bootlin.com>
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="NGljQqcP"
+X-UUID: bed66716c2f511f1b1788b6acf885367-20261008
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=8NRFf+dUUvJa3wu2zpI7GqfOZRfD8a7WGeUeQy4/QVA=;
+	b=NGljQqcPivh7a9HM3sveLUpa45f45rGLK8C2p8UJSMb2nrT52CUkllt/iGzD2o5CaCRrwFzFEJTcc0AduSDoB28qwwwCzIXjGGdi8qkTunHFIAzjKo4T1izLC5tvEfUxsIeWk5MA6AWDTs5q/LMfW2IRRCgqsT2rCfmjQEVriT8=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.20,REQID:58aa6548-e4c8-4a4b-a475-d057597ff577,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:291e20b,CLOUDID:4bb31a20-2f17-48f6-b8a0-2bb5971c52b4,B
+	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
+	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: bed66716c2f511f1b1788b6acf885367-20261008
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+	(envelope-from <tim.kuo@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1748741106; Thu, 08 Oct 2026 16:53:34 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 8 Oct 2026 16:53:33 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Thu, 8 Oct 2026 16:53:33 +0800
+From: Tim Kuo <Tim.Kuo@mediatek.com>
+To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias
+ Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>
+CC: <linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>, Steven Liu <Steven.Liu@mediatek.com>,
+	Sky Huang <Skylake.Huang@mediatek.com>, Sam Shih <Sam.Shih@mediatek.com>, Tim
+ Kuo <Tim.Kuo@mediatek.com>
+Subject: [PATCH v3 1/2] spi: dt-bindings: mediatek,spi-mt65xx: add MT7987/MT7989 compatibles
+Date: Thu, 8 Oct 2026 16:53:31 +0800
+Message-ID: <20261008085332.802898-1-Tim.Kuo@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wJo3xw8ck7BgNLyf"
-Content-Disposition: inline
-In-Reply-To: <20261005081141.33688-4-paul.cercueil@bootlin.com>
-X-Cookie: You will forget that you ever knew me.
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
+The MT7987 and MT7989 SPI IPs are IPM designs, so they keep
+"mediatek,spi-ipm" as their fallback compatible, but they widen the tick
+delay field of SPI_CMD_REG and therefore need compatibles of their own.
 
---wJo3xw8ck7BgNLyf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Tim Kuo <Tim.Kuo@mediatek.com>
+---
+v2: Add mt7987 and mt7989 real device compatible
+v3:
+ - Drop "mediatek,spi-ipm-v59" 
+ - Move compatible of mt7987 and mt7989 to group of spi-ipm fallback
 
-On Mon, Oct 05, 2026 at 10:11:38AM +0200, Paul Cercueil wrote:
-> From: Tanmay Jagdale <tanmay@marvell.com>
->=20
-> Make the interrupt line optional. If not provided, the driver will
-> instead resort to polling registers.
+ Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This needs a binding update to make the interrupts property optional.
+diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+index 3bf3eb1f8728..63b23928c734 100644
+--- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
++++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
+@@ -35,8 +35,10 @@ properties:
+           - enum:
+               - mediatek,mt7981-spi-ipm
+               - mediatek,mt7986-spi-ipm
++              - mediatek,mt7987-spi
+               - mediatek,mt7988-spi-quad
+               - mediatek,mt7988-spi-single
++              - mediatek,mt7989-spi
+               - mediatek,mt8188-spi-ipm
+           - const: mediatek,spi-ipm
+       - items:
 
---wJo3xw8ck7BgNLyf
-Content-Type: application/pgp-signature; name="signature.asc"
+base-commit: 0d9d0dbf2fddcff5859d623e90ca73c4054276e1
+-- 
+2.45.2
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCasdWHQAKCRAv73Ows9A4
-iWUOAQDv4d3so/X+bhkXiwXbiv6FktJQd3kLoft2zuG5ZbHvWQEAmrSz/6cIYlHX
-JE35pttFWPJJ0Vqr4e5t5xZuFSZ4sws=
-=sI7R
------END PGP SIGNATURE-----
-
---wJo3xw8ck7BgNLyf--

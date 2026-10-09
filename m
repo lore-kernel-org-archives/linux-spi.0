@@ -1,56 +1,56 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FFF4DF4AC
-	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 13:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870B83F3289
+	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 13:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791552278; cv=none; b=OI7Awmg6yc+WzssyQxEMg62qTmhEnJYRaZalF2BTDaNKAv6n1xdB29ZhhH5e/VMds9hrML6hZbJxr3XoVY1JcGmgnJkrmKs9bNWQc1O0aGcb0U6AxMTE0PUp6xCccFbKZl3Ipilvyp54v96kkjVjQOh54/eoFx9zwmA7Y+Mybjo=
+	t=1791552281; cv=none; b=Kp1RQC4OZLyBUU/+fapBboEX9b5X3liEvxCJUo7wAjCtaYZwSPpTX+bKTazkYSto2dyMA9o7nQC487e84NzEVvVbbp1jgxl5vkA8fyu9tNVxMwG/i7g4l+KwZYdHqmZ6+Gv2MlBozteIFQSul5/buxrkrLWoeDuRv1cBQRnFRAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791552278; c=relaxed/simple;
-	bh=WbSQqnSb6lfEmKq3flLhSVPofVRAn/XOqGi36l4ja2w=;
+	s=arc-20240116; t=1791552281; c=relaxed/simple;
+	bh=OP0lTXPApvGeiuwxg7E80kgKy/RRWWFcy+KfpyqNzRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrxmR1VceEoe3zBQLPfA2upCwkCJcFqaqn9oNiVciCOLu226ljwTy4LAfcOWtgU+fROPfFez0mdV0vArmar8LXKoPwj2n/0mzU3rGeEPiPyIgPHVltuOkM8aiVKRAzMGw8sk7oiBkR9YO8PnErz770qNbjNgwLaQCkE8L5ccP8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=pkkxUoFYIQiIB7wVXouT/+1mPb+Y+VSk8aqDYDwaKz1fNr5C8R+yMWv8fLlxVsuQLu/NclHR9w2UhYbDVKEfhsEPMRhge6Bm81Wp6DdvDs0YZsThGuH6nwxwiSFsZQYkyACKUu/am4o9tL5Rti+pHBdDXrxeu+0dU4Id/u2y0Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2dfa54c8ccfso10221925ad.0
-        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 06:24:35 -0700 (PDT)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d032846c95so34023545ad.1
+        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 06:24:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791552275; x=1792157075;
+        d=1e100.net; s=20260707; t=1791552280; x=1792157080;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gMJKAweeucpfGaBYlo2vZBKtZgQvSoidwZpt6NP6zwY=;
-        b=LMeDzxKz6j6TTVexWSc4qTrjgdIkn8saUwVZ7j5Qif+btZBqCjaGr3eglmC7YX4sNQ
-         8fbhqCcg3b11VGCCRJq7TM9iEN8bD9dinRJO6mYZ6hBiL9/TE3cXvXmQeNsFjjHv3iFf
-         T7R3pgJ5apHpv3/U0wg9ZhpXRpKwaU1z+ycJ11flxqJmXOnKN491fKvm3/1hy4Z/45JO
-         8Ea4UPKpQ/rM4Uh5zulgse7HwKQGfhkJV82HRyiF3uPWbYflmVzGC5tiu2Ef9rBn51Xm
-         bNbGVKPXUHWi6sCsRrS+STUSv9yB7Okr55XxqQUWZIX9qABzspWblx9o3la0+LmZky2t
-         vlQw==
-X-Gm-Message-State: AFq9FYJ26+D/XtXEx8+IgFYdkcIOoyzWl5n+FBg4QQ5i9XTkdyfL06EW
-	AjVH+yZJEgfP47qL79R7BqKzipmr+N1uqD6CUYls/pDabWTGt+62w04xXQJeoEOjfm0=
-X-Gm-Gg: AYBFou3xtrkCI+m/mLp3C7V4XivRbxK9oKybiRnv50k6uL6BqJWueV3eiNyi78lBIG/
-	jMRpTeqp18OAK3gfI1IuhnGOJvQpdTq41t31CADPpkWElFESNCDu3gu7FQ7kbLqyQi5gra+rT3c
-	gBvVThYLrIKWCTZjlzMlaUfNJSXF41SWE6M9rYDPHc6VS14ZjwcFB2KnvErT8c+ZY8iOKuj2kSg
-	V5kp2oRhQyj035etyW3k5kTxHbfWK9HCJ7hVtCscsoa+zMYgt0GoSGhF3uCJ6f1RQqEwKiHg4be
-	uuOVxU4iHNXAl6g9IYyh4WN6B1uafOjez2CraWglVetSGB6PeqpjWNZmJzt+8uzz7wLme4I85u9
-	9Kfq/7ipUf5E89E8DhTiRobzCxT7BDVLsUCKYN3iFNq747W5aOGzsFl2VRB3rIOxb3Id//44jl7
-	Sz4Y/dHi++dwoEEjZBhQFZH8mCvFwmaod9sUl5i085JDMap8qeMVv8loLvue27zepjU5PWvA==
-X-Received: by 2002:a17:902:e543:b0:2df:98a1:d0a7 with SMTP id d9443c01a7336-2e84053c728mr16407305ad.33.1791552275311;
-        Fri, 09 Oct 2026 06:24:35 -0700 (PDT)
+        bh=CXHf/FKh3ncskGhCp75YJz0EIF61+XX7rivRqa49b40=;
+        b=wv9izMtrRKalLkHScgwD7Sq3uVLABbRdE97hQqlXLYRNi7wD3uDBapfl0hsWieL9Qm
+         c6DsDdu5VcELjy1o21ht/7IUDGOugFSzsPO1sn1n5HuVCHw8qJsRdplyH05JOLa0wV/U
+         lRpDaQ3H2135u0CvKiq5x/VdeyshCm1ut86N8+ZMbYUn/5e4yOSQhmLtLOMLQY52rs59
+         jubZUYADr/TiApM4MrHQPRMYyYlb3cF/D8A+vFgr1H62eM9kEir/RGblna3T/hmEyg8D
+         paRdmrrwKA9+arJVZW/3qJmh5764/pXRyRFphCny0EqhxPiSg7N+pSXf7tzDoXAdOly+
+         S7Ig==
+X-Gm-Message-State: AFq9FYIupH+AQh2QMCXpv1FOZQ20YB1L9WgACdFkPGjibAr+iAVr5Vb6
+	0EUqGivYYB/UzZxTlDfMHyWRRC4dh4uschtfpGRp4PscBe4XNY3RUqDBkMet653Xg+Y=
+X-Gm-Gg: AYBFou1rFtuyXA2Wpa0Z2Dgmw8O1GK6HRMDsCeaouvG/Qfz1mmdSrQIIqfHRLk263d5
+	dg4Ewick3+IAAeUyYYoFr4awm8roUsjrisWy3rmBAUN1sfPLfQaXhVlKyGQbxqZLKKlBBsXwicQ
+	dj8njyKOTs7mMlPYgztP0aN4QBmK516leTQIF8C+02LkGq9pFCieQe9DKKFMQvxQFlJgiQkl1eB
+	972RVDVERS7IM0W+npfZMXhMNrpcqnOHGDS8neu+n9MFUTB1jgZPy40SK4udwBwHQIsV3lnoLdy
+	P33kgIXTYJoScxmblzlEd1xdfGfxiNw2u8YjCiaEyU6Gfb99xBqLROcB7FYYVThNfLpJDL3p96z
+	9TMqiExRVaYiaDo5/EK3qFcSA9/ry0eeglWOcbJYTga0O0MCIlOlSvABtGE00xkhjdTQUj0DTrQ
+	i4D9oLrZTGKoFr6k5PznMsRpZaWsWEOzmaRufNFZZnYkNnpPv3Kbr+GRmW+rM=
+X-Received: by 2002:a17:902:cec2:b0:2e3:1bb4:611d with SMTP id d9443c01a7336-2e842ceddbamr17685635ad.49.1791552279907;
+        Fri, 09 Oct 2026 06:24:39 -0700 (PDT)
 Received: from linmach ([182.156.30.23])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422e2570sm9327705ad.79.2026.10.09.06.24.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422e2570sm9327705ad.79.2026.10.09.06.24.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 06:24:35 -0700 (PDT)
+        Fri, 09 Oct 2026 06:24:39 -0700 (PDT)
 From: Aayush Kumar <code@aayushk.dev>
 To: broonie@kernel.org
 Cc: linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Aayush Kumar <code@aayushk.dev>
-Subject: [PATCH 1/2] spi: sh-hspi: Use devm_platform_ioremap_resource()
-Date: Fri,  9 Oct 2026 18:54:20 +0530
-Message-ID: <20261009132421.557758-2-code@aayushk.dev>
+Subject: [PATCH 2/2] spi: jcore: Use devm_platform_ioremap_resource()
+Date: Fri,  9 Oct 2026 18:54:21 +0530
+Message-ID: <20261009132421.557758-3-code@aayushk.dev>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261009132421.557758-1-code@aayushk.dev>
 References: <20261009132421.557758-1-code@aayushk.dev>
@@ -63,51 +63,46 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Use the devm_platform_ioremap_resource() helper instead of calling
-platform_get_resource() and devm_ioremap() separately.
+platform_get_resource(), devm_request_mem_region() and devm_ioremap()
+separately.
 
 Signed-off-by: Aayush Kumar <code@aayushk.dev>
 ---
- drivers/spi/spi-sh-hspi.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/spi/spi-jcore.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index f840467cf..56df076b6 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -211,19 +211,11 @@ static int hspi_transfer_one_message(struct spi_controller *ctlr,
- 
- static int hspi_probe(struct platform_device *pdev)
- {
+diff --git a/drivers/spi/spi-jcore.c b/drivers/spi/spi-jcore.c
+index a75cd61ec..df82e8adb 100644
+--- a/drivers/spi/spi-jcore.c
++++ b/drivers/spi/spi-jcore.c
+@@ -143,7 +143,6 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 	struct jcore_spi *hw;
+ 	struct spi_controller *host;
 -	struct resource *res;
- 	struct spi_controller *ctlr;
- 	struct hspi_priv *hspi;
+ 	u32 clock_freq;
  	struct clk *clk;
- 	int ret;
  
--	/* get base addr */
+@@ -164,16 +163,9 @@ static int jcore_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, hw);
+ 
+ 	/* Find and map our resources */
 -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "invalid resource\n");
--		return -EINVAL;
--	}
--
- 	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(*hspi));
- 	if (!ctlr)
- 		return -ENOMEM;
-@@ -241,10 +233,9 @@ static int hspi_probe(struct platform_device *pdev)
- 	hspi->ctlr	= ctlr;
- 	hspi->dev	= &pdev->dev;
- 	hspi->clk	= clk;
--	hspi->addr	= devm_ioremap(hspi->dev,
--				       res->start, resource_size(res));
--	if (!hspi->addr) {
--		ret = -ENOMEM;
-+	hspi->addr = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(hspi->addr)) {
-+		ret = PTR_ERR(hspi->addr);
- 		goto error1;
- 	}
+-	if (!res)
+-		return -EBUSY;
+-	if (!devm_request_mem_region(&pdev->dev, res->start,
+-				     resource_size(res), pdev->name))
+-		return -EBUSY;
+-	hw->base = devm_ioremap(&pdev->dev, res->start,
+-					resource_size(res));
+-	if (!hw->base)
+-		return -EBUSY;
++	hw->base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(hw->base))
++		return PTR_ERR(hw->base);
  
+ 	/*
+ 	 * The SPI clock rate controlled via a configurable clock divider
 -- 
 2.56.0
 

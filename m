@@ -1,89 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75168457E73;
-	Fri,  9 Oct 2026 10:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791541088; cv=none; b=u8cPul5hRa0nGT1dkUPL+jpjeOJtSvu+hXe9foNGuYKaTV5q/whEBHh3WRXpBaJ5LMqk/1BfSgGNY9gqJtZRZGbMtAtf7BkbGz0x3+aKNIoPF1aowXJ9L5yfR6/TVonYoh3ALA5pszoTFKe4iHx6RWSBbKN6VUhIkq2u+UNWDkw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791541088; c=relaxed/simple;
-	bh=+DNKmuouHw3F2sUn7rERptXulQELLgYCH592z3UCDWQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=erJhTaC72LtU990G8ZeBMmOTS69eCKyEfoaVgBAt8jRfl/7gAqS1MLDwtkOdB509Bgud8vVSy+F0tvx7PgUGkEr/Z1sKfElRHNS6fUbCkjwi4HTzP13EX8mzWp8+9ZIm8899Pg43j5DXSqYxaMIwdbcEPVOSvBCQ9y8Dgik459c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIDk5/IU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0264C8C50;
+	Fri,  9 Oct 2026 11:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791544580; cv=pass; b=M642z5tcuwtfxS/BX2qwjKhpvmu1aoQgRs0p7DSp/socUPmXh1lGe1b/MyH2b19q5cdUQGEXS4axFd0gizhx9CoAha7exOWmx12gY4j9LIbEXJzJ5mVWV/dRXzLlKJjH3AUMZ48XFiU0EYMHhFFLPNlo2onRRyyDo52I0Sy2gHg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791544580; c=relaxed/simple;
+	bh=T3ACDfbvQpsVVVLYQgg6TWpBSQG+DtK6HDDd+DKT4GY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=T9U7klDDTRS1t18TUaniQqTsnYELWp+I5300kqk4omerg+8jnJeBfcz3mu4t885NXJOjLMZjMkGhg4AFGomlE84Dor2kOBp4ryRLSjljpRQ+QLp+I628318fXBOWgvaOXVVhDPQscUmI0MM0AxZlU6YyZKM1A3iDlEewxQzFYA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=CBerIp8d; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIDk5/IU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE501F000FF;
-	Fri,  9 Oct 2026 10:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791541087;
-	bh=2IK08WvoWJC1h6DlgEI7ITQrkIpsRhrwFymhPxbueT8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MIDk5/IU6tP3YARpKWHfyeeG7ABschktkAyCEp43D1TgmMbNhOnbWuBEzKUe9lWMR
-	 /CeFpSIl8ufe90s/Wj6YSXA790NYrCVsD/XaiFPrAXIUoy5zv077JDbwfOGfBHnyE/
-	 sYHwIJ6/3zjaaO/jmSOCGbNfKnCqX4PMK8LZEGaoxVzmJ0SWiD3f9xAnAAu3gdQZsl
-	 rP020XSgCfBZJozzUCXHBjZlzD9pHyfe1LVKQZcyQU+wwfTu4KrSPWEs2Tv7/4Jpv5
-	 hsvQXwOCt7ynkBKCapGo5icvAj5mPENhu6iEZFYuyLRzhlSD6Chd9NXO7gQtP/ABb1
-	 3FJyzVLyxAj7A==
-Date: Fri, 9 Oct 2026 12:18:03 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Tim Kuo <Tim.Kuo@mediatek.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, Steven Liu <Steven.Liu@mediatek.com>, 
-	Sky Huang <Skylake.Huang@mediatek.com>, Sam Shih <Sam.Shih@mediatek.com>
-Subject: Re: [PATCH v3 1/2] spi: dt-bindings: mediatek,spi-mt65xx: add
- MT7987/MT7989 compatibles
-Message-ID: <20261009-tricky-fine-aardwolf-cca31a@quoll>
-References: <20261008085332.802898-1-Tim.Kuo@mediatek.com>
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="CBerIp8d"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id EF5E5202603;
+	Fri, 09 Oct 2026 13:16:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791544562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pZhgQZMcCK8iwoM7B5lUWQ/ev59BhqT2j3HB6CW70Ps=;
+	b=CBerIp8dyDVW16GYdn7XotlAyfFv6VEebEIilK0q9DCblkAz3JIHBj5rpbesy4edXPVb/D
+	5kBK+Qc6PfNkmk19mT2jg/l85DvxIUMk0axbEk03/TCljfDXgrRQ08xTSc3bypQ4MvRdtT
+	eOMlnUxcZp/kDxth0THr0HiN1w1SyMrFuO6UpT534nhzvQucTZ2ZlOh/Hl+x/notKjr8px
+	CiOJ1K7l4Sr8l77WwzRcp0p5gJv7d6a6ro1SZyKZW5EdktreLplkpgxl3jyiOUXeuJIcjg
+	mC4k5AT316LmQmqt/7tJUSWJNvnEnSpTUtDJHxR1y2f5wlyzD2C2WNd4v4Zmqg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791544562; a=rsa-sha256;
+	cv=none;
+	b=g5XJXXb8JH33Frzm6sOvH/g1BFKvIXKjubdZno9quSsJVMR5ysw9yC/x6+xgriociVmTTX
+	X3tJWN+w/7bgW5LNsLTuMYK1DCPdVqFCsFfisN53Sp19l2E+/YADjim6qNZ8nsH9Mg6Ryf
+	DBdVWhYIQdgN9F5epDkflPxE4CIyZgL6adHm2kZRlKh3IQ0IislkafAqEC2Wl1UaaYpOPP
+	IcQTKmn+6W+2fphOU8oHDrscbjRpT0WHCPgCVtXAdv63ccP6EUO7jYXc9m7fgcpEsyYxc3
+	4wZ0L7OcNzsO4jV1kGtG9xK49kfpNH84J3BYStRmPgpfIc8tXsSW2KgVheTJwg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791544562;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pZhgQZMcCK8iwoM7B5lUWQ/ev59BhqT2j3HB6CW70Ps=;
+	b=cgzNBXu7PisZvbgl39j3u4c7rILXHwqAdmG6S0c5gg5M0EL+95bX8365nkxFYqvIY85nui
+	t+SGuHlz8XY4MvzMdelniTVfGtCwCbtpS4wbE462H1QOw2GLuTSMJYNk9K5f3l5j2gNukT
+	2p+vxx5UyDhZa7knC70O5TWqp+rYRCbQflNARpWLYRuWk6kSqxLDryWz1gO2567RlkahDa
+	8rGl4eZQJWw3j543aB01YvL5trPf3KsCPk9XChXcx50y2aVKbNM9srcXT9G3A3U15iBeds
+	BOi6DDcvLL7xkrQRI33Tlzq47cXmprG550dpxifZHaEsp3VDr+c06k2z9qi+EA==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xF8a2-0052MH-2p;
+	Fri, 09 Oct 2026 13:16:02 +0200
+Received: from hardanger.blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id EAEC95BD5D7;
+	Fri, 09 Oct 2026 10:16:41 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH spi-next 0/3] spi: spi-fsl-lpspi: various cleanup and
+ enhancement patches - part 2
+Date: Fri, 09 Oct 2026 12:16:34 +0200
+Message-Id: <20261009-spi-fsl-lpspi-more-cleanups-v1-0-2d4549d5205e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261008085332.802898-1-Tim.Kuo@mediatek.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDMBBFryKz7oCJRbFXKV3EONaRGENGRRDvb
+ tLu/uM/3glCkUngVZwQaWfhxSdQjwLsaPyXkPvEoEtdl62qUQLjIA5dyGteIqF1ZPwWBHtt2+p
+ pqkYbBakQIg18/OpvyLqnY4XP/5Gtm8iuOQ7XdQN+MwRLiQAAAA==
+X-Change-ID: 20260916-spi-fsl-lpspi-more-cleanups-d2c934a372a1
+To: Frank Li <Frank.Li@nxp.com>, Mark Brown <broonie@kernel.org>
+Cc: kernel@pengutronix.de, linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=723; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=T3ACDfbvQpsVVVLYQgg6TWpBSQG+DtK6HDDd+DKT4GY=;
+ b=owGbwMvMwCV2xirl17qZay8xnlZLYsg6sZ+F5dqmtZ/2lxnyrJ4kkTatI3uxgeKe2q9RDg+z6
+ 18tDfyq3VHKwiDGxSArpsiy9McJRYFAh9LelwmTYOawMoEMYeDiFICJ7N3B8D/pvdv0n1v22N75
+ 7sa1cM+erR2xHG8Sbp1Tj4/5Ivz+NZ8Kw/9gkfra47v7tNVfN+QUKpd0tJyMyn50qnQ3z18v6V/
+ fS7kB
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 
-On Thu, Oct 08, 2026 at 04:53:31PM +0800, Tim Kuo wrote:
-> The MT7987 and MT7989 SPI IPs are IPM designs, so they keep
-> "mediatek,spi-ipm" as their fallback compatible, but they widen the tick
-> delay field of SPI_CMD_REG and therefore need compatibles of their own.
-> 
-> Signed-off-by: Tim Kuo <Tim.Kuo@mediatek.com>
-> ---
-> v2: Add mt7987 and mt7989 real device compatible
-> v3:
->  - Drop "mediatek,spi-ipm-v59" 
->  - Move compatible of mt7987 and mt7989 to group of spi-ipm fallback
-> 
->  Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-> index 3bf3eb1f8728..63b23928c734 100644
-> --- a/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-> +++ b/Documentation/devicetree/bindings/spi/mediatek,spi-mt65xx.yaml
-> @@ -35,8 +35,10 @@ properties:
->            - enum:
->                - mediatek,mt7981-spi-ipm
->                - mediatek,mt7986-spi-ipm
-> +              - mediatek,mt7987-spi
->                - mediatek,mt7988-spi-quad
->                - mediatek,mt7988-spi-single
-> +              - mediatek,mt7989-spi
->                - mediatek,mt8188-spi-ipm
->            - const: mediatek,spi-ipm
+While optimizing the spi-fsl-lpspi driver, I created some cleanup and
+enhacement patches.
 
-Nope. How is this a specific compatible?
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+Marc Kleine-Budde (3):
+      spi: spi-fsl-lpspi: pass struct fsl_lpspi_data instead of struct spi_controller if possible
+      spi: spi-fsl-lpspi: fsl_lpspi_transfer_one(): directly return ret
+      spi: spi-fsl-lpspi: cache content of Interrupt Enable Register (IER)
 
-Look at git or even read the REST of this file.
+ drivers/spi/spi-fsl-lpspi.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
+---
+base-commit: 85b0e19de168d82cbd879a4c8e13fabad5ef4dd8
+change-id: 20260916-spi-fsl-lpspi-more-cleanups-d2c934a372a1
 
 Best regards,
-Krzysztof
+--  
+Marc Kleine-Budde <mkl@pengutronix.de>
 

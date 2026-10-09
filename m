@@ -1,66 +1,65 @@
 Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B914509EEE
-	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 22:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C8509F15
+	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 22:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791584811; cv=none; b=AVHz7u42dc284yGkaAKqi+etWMvKGRu928zGNDWdKcFi98nX6Fv614oeXRs86TXsAu35p/pw/okESXr0N7NcmWd/tiKYoPPgK4DatZ0G920lZ8Rn0x1FF0szZ8QFuQ6cf8krQMrqUDKrDxgiioRpsDlT28WCYNpbwpkAtGi/WOc=
+	t=1791584813; cv=none; b=CT/HWxLEKf2iPS4IeHE2d2OBHtP30CfIEuGOXqa4p5cL1uqVW5tZxDfJMpwF74RWgkmWzC+cibI399NJ9EeUtwMLzPPZpSCatjXT+FztCIr+WKEWy7I5KtUwaYzrubd9xKcl2vd/eN982Tx6uG61t/rgKZSyr95wRUGqwphY+Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791584811; c=relaxed/simple;
-	bh=LJj6K1G7nIg4RUpnBzs9tUCxlDRH5sE1C6GzE4JA8zA=;
+	s=arc-20240116; t=1791584813; c=relaxed/simple;
+	bh=qE6cJD4P0KiNMIEIyVSFklglPlAzpZg71iGLy71/KPY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XdcypQqA+dwy1DkBP/n+xC9bCCnORVQUKuVUf4YbMyPUROmxA6y2pb4O9zVTCm5wBQlOeqcwv4MJAhvjx6+nNZZPSOo8FSc8U33+DDJpQ41xJaGHRIzjr+Psy76mB2OGCcyp+YgbaBhqYCHIN3DuIKZNRmj9iP9AoG6bYrqeMrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=aowRUttk; arc=none smtp.client-ip=209.85.214.173
+	 In-Reply-To:To:Cc; b=F+FYo+5JwXL9EVD1qdk3nB0ZfGFF+9V4djByzeTrgrgzHfxVHCWFi0iDaA967UW/wzdx0yEnrzq+Qey6NgunieOml3QsOAQ4yNk3loOUh/rksWwwtz2FvLs13yJGIjSI0LiIE+G/cFlj7gQXnoPIGcrnzAYwYwj8xnOiFv3xI+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=GZosuyqz; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="aowRUttk"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e5378b281aso1054585ad.2
-        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 15:26:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="GZosuyqz"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8455755f3so1070765ad.0
+        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 15:26:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791584804; x=1792189604; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1791584806; x=1792189606; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TiDXJETLiBuBer69iWP6U6KIqCZWH0VNC8FWsxXPDiM=;
-        b=aowRUttk/3xc/0wvwvv+zJ+BugnUNlbjpFt1E47iSy4S80XvDJy2hNTpi2G6Law+pW
-         01TcgJWyHJ0WJL74LJTy3vh+RKPvjVj0D+s23OKLKjrRlw0kkuHXX7eDkDe27DcUnk3j
-         mJuyLDNSEwkeboezjrYLjF8GF31V4z72vPRus=
+        bh=jU4MRympScJg6dbqwUcuL13gZ3w5UsJs8tfynwm+AWo=;
+        b=GZosuyqzZ8ICANckkoHEwhJhE32WE5tthi1wMT5GfqAlDBu87icEbfuJ9Xg40RqIlj
+         Hb8dltzQUYzxJpHhJCV+NzLB+U9uF6OuSl6nlVUE01R810XRF8EdUpIdxBMXt2ZphCUI
+         1jdgdyJGcYRxADh3XMTyt2OYpFZtrKNeEykGY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791584804; x=1792189604;
+        d=1e100.net; s=20260707; t=1791584806; x=1792189606;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TiDXJETLiBuBer69iWP6U6KIqCZWH0VNC8FWsxXPDiM=;
-        b=nOOzo7AiKynULbIQ3rzPajjJQDOcYp6edrGapf9tRJbG9kF5STkh2dj+3A0N5Y/AeS
-         7Qwi7ngwFoMxEnYVwzsQS/sbD3LHWapMhJ0vZ//w6bh6GO75FgLnPCfARzmQw7yEh5zY
-         QrPnRPcd+SEwDWDOObqfej5xsD+xcD6A2A37utVF38f70RGSsh9xK26uby8jfp2LqL/z
-         v8tKCfI3yUD2Lk/aaNFNvAnd9oAuLZFKSk9RWlWQG3y0RMLkWiAJ7zC6wPJrfbwPi2Ax
-         sUa5CUzHQH7mANUVBspiAD/gWZiuK2sMRLBBGSWM4cLXNNTyX/z07gPwDQLijmOzZHuH
-         lr5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw9qqNDZ7dfMtMxCl0HYk/43J7O/J3hJZSgjhg8/B2euFkpzUNRil4Axz65iRtszDTwWIoD0zG2mS0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKuqLaP+ULQpKNlt7Ef5yU9IXwR3gRia/zhWItgNSJ4Mk+3XOft
-	UHihyT67FmpAk5U1Pj/eOuELpSWRwVHkjs+V9R5IHgl/8n3YIWxQ9RdKEtdPJy50Lg==
-X-Gm-Gg: AYBFou2xVrfXiJ0J+5pFDys5L4M7cEm1U4wrLdByimRjdWYxGebfnRGFHZDT1vgh0VT
-	fsK28xSVp4WDYM1zNuMISM7Ztne/PxIUtiiUIfR3EYVdsFTatDew8RoObmyZsg7j1mORZjc7FzR
-	8sm8tdZt9iEd8gilfhT8volnpnfERVkvoHlSQObWgTgiIi3Fdn1mCfM4eS0EyNq8FDNOdQ5XFvb
-	ZRDXHGOIBk5RjbTD66RY9qQnkDPErsmKXGbaFWsoPjA/kwG5sLWlWTqEsQSAZu9y+BjKJjRXE66
-	11/Kv4r9f7VqQN1xUbesfEwVIiMZ8rxVxRhNmbjg2aOBBK6wgBMaSX9h0Q/RHyesdd5GVHkuYP0
-	0tWRTzvSCJRVMR0JBNhfWhsqB69QKNZCdjhGWPlzveiLoUM1EG/KyTiL7RXSeZiXTQ9fk7tCJIN
-	ixtKPNve9cBioHcJ7Gg/x6PVMFt8uhxUqUtoecgu/YwVEDHeORX1kzXUEKq0+MESgtbcR4cZed+
-	sstQSzvc9WskuDoaPuZ7NhY6+6TSv9+C4hHIG4Zd9xYCHni3t2KJxSIye4kNDVFP8Loe9hsKf0S
-X-Received: by 2002:a17:903:2449:b0:2e2:b624:54b7 with SMTP id d9443c01a7336-2e842ab655amr30881845ad.17.1791584804323;
-        Fri, 09 Oct 2026 15:26:44 -0700 (PDT)
+        bh=jU4MRympScJg6dbqwUcuL13gZ3w5UsJs8tfynwm+AWo=;
+        b=nlUinI8CFi9Q3EtoM4DR9lWTigU46XLkL+UJtR+0bbOc/jhVK4QmjsPuNEDK3YSsna
+         PafLdw1zEbFxsmcKMUVYV1RRmkFp3t1toxtGsQD5A8wZfMamJhQbHQ5HkAWzoxkTwozX
+         z2lsrmblVn07OgTaU+Z9JJNbOVpBMqR8vZOZF7xZaBeL6aOn7iGyLpYaER0NsUl2M8nm
+         U9XH+PXyj+dCwplh6noobamzwp2Y1ArYmHJpQkyuxhwTzQWGQLUMyCJYb/b1JkpfgOCZ
+         2naMB4DOBD+DGygv68TPVWfHoOlUcqkyCoNueBQmXCtqtIm0Yoq57L5f0P0RXUmw+Kd4
+         UeMw==
+X-Forwarded-Encrypted: i=1; AKwUvBww8gSnZ4pu/Y4ZW46uGY4AHz73RA3o7i7Ky8WKu45NEshHtSTrqUP06Usw3l54SKpwDDbMTxaoLI0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLT7Ow92OsqRAqL1fQeXgcOlcLxfGa86o9FHgNlCwvVUGphdGEm
+	ZyftsK4cBKMbsq3Av6geCwZRjQjo55TrcTxhrT6JMRdOpDScverlBMh9+9xjjzdxFw==
+X-Gm-Gg: AYBFou3D+hixZL/j+tdLHREdcHY7HHFFg5g4JEvosCaxo0XHm7CqXAG8/YrQngkDBSc
+	ApbZDw2zH0ThQORHtE94Akn3nTIJKDNiz27HY1pUsbiqH8HdQC+nuhcKNdXPCeg4JeSrv1TK489
+	PLSUaGa80AXYTF4EeADR8OkKCGkDUf9qQ8uxBDXhFwQWLQkGDpT9y3l9bdQG8rCkyhAtje59Opu
+	UqyTwRflcQFwpicwocDI0iVrJFdWABEXnzT8O5+nFsuQnQt3E8MCArtQZemvrG6ZWEBdZWmcCwt
+	Ty6xd7jzyCMs3RTlN/WnMqggFlhG4I+Kz8TuCBi4/SWMnyeatxWVI9TMdG0+Ub3nFo5EviCOm+G
+	B2EbU0rq9yXDF5DYh3ApZ/HxtKDQEKYGtM1J9OhJLMyviDIokUt0P3gVjjrEcg7zsBPq+MnL2+o
+	p+a0KNdPl5G2BxsmL8+sghbF5dcSSaVxyC657/k7/MIBlp8u/2R50FAbA0qe3UTPj+08DnXW59N
+	7TO/X8IYbzYp3GaXWpj7fWL2inSm08j7lvTNJEjgxOAyBK6XSIPBOI/srD24L/qYbu4ZvWh0uCZ
+X-Received: by 2002:a17:903:b0d:b0:2dd:b6e7:ac1b with SMTP id d9443c01a7336-2e84280afafmr30388055ad.2.1791584805669;
+        Fri, 09 Oct 2026 15:26:45 -0700 (PDT)
 Received: from jingyliang-input-linux.c.googlers.com (35.152.82.34.bc.googleusercontent.com. [34.82.152.35])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219e503sm16660725ad.17.2026.10.09.15.26.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219e503sm16660725ad.17.2026.10.09.15.26.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 15:26:43 -0700 (PDT)
+        Fri, 09 Oct 2026 15:26:45 -0700 (PDT)
 From: Jingyuan Liang <jingyliang@chromium.org>
-Date: Fri, 09 Oct 2026 22:25:33 +0000
-Subject: [PATCH v5 08/11] HID: spi-hid: add device tree support for HID
- over SPI
+Date: Fri, 09 Oct 2026 22:25:35 +0000
+Subject: [PATCH v5 10/11] HID: spi-hid: add power management implementation
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -69,7 +68,7 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-send-upstream-v5-8-384af01da3ee@chromium.org>
+Message-Id: <20261009-send-upstream-v5-10-384af01da3ee@chromium.org>
 References: <20261009-send-upstream-v5-0-384af01da3ee@chromium.org>
 In-Reply-To: <20261009-send-upstream-v5-0-384af01da3ee@chromium.org>
 To: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
@@ -84,314 +83,328 @@ Cc: linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
  linux-trace-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  hbarnor@chromium.org, tfiga@chromium.org, fqwqf@fqwqf.xyz, daleyo@gmail.com, 
- Jingyuan Liang <jingyliang@chromium.org>, 
- Jarrett Schultz <jaschultz@microsoft.com>, 
- Dmitry Antipov <dmanti@microsoft.com>
+ Jingyuan Liang <jingyliang@chromium.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791584797; l=8839;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791584797; l=10211;
  i=jingyliang@chromium.org; s=20260213; h=from:subject:message-id;
- bh=WJ2nncs4s7Vr34l/kiuI+CgdhV71c08a4zP7a3A7Ha4=;
- b=H2ur9bO5JtxjncaGlW7l7M0K4HiPmlmzLGgUgGwjjuRS9Urn0Qhon3CqWNoDfJ3uqvQXW2JxN
- 0Gplh/rTOrxD2g1kSwLMGzZt+Mw4Nlt6onqz8fhiyQwe1tUgdc/0+Rq
+ bh=qE6cJD4P0KiNMIEIyVSFklglPlAzpZg71iGLy71/KPY=;
+ b=iE15o4t4sbspF7KZNYCnQr60i/NY3GW77oJ77nfcgEjEaZo74FQs9uQZBCY62fNjS8uWbKY74
+ G5C+Wc4UI8dBAbPU981hCMsoqBrwWtkAgMj8AuHOathluZn34wjfpp2
 X-Developer-Key: i=jingyliang@chromium.org; a=ed25519;
  pk=VTYSdqslTtYOjWWoIGgYoWupGWqNSidrggReKMgfPo4=
 
-From: Jarrett Schultz <jaschultz@microsoft.com>
+Implement HID over SPI driver power management callbacks.
 
-Detect SPI HID devices described in Device Tree.
-
-Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
 Tested-by: Dale Whinham <daleyo@gmail.com>
 Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
 ---
- drivers/hid/spi-hid/Kconfig      |  15 +++
- drivers/hid/spi-hid/Makefile     |   1 +
- drivers/hid/spi-hid/spi-hid-of.c | 242 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 258 insertions(+)
+ drivers/hid/spi-hid/spi-hid-acpi.c |   1 +
+ drivers/hid/spi-hid/spi-hid-core.c | 185 +++++++++++++++++++++++++++++++++++++
+ drivers/hid/spi-hid/spi-hid-core.h |   2 +
+ drivers/hid/spi-hid/spi-hid-of.c   |   1 +
+ drivers/hid/spi-hid/spi-hid.h      |   1 +
+ 5 files changed, 190 insertions(+)
 
-diff --git a/drivers/hid/spi-hid/Kconfig b/drivers/hid/spi-hid/Kconfig
-index 303ada03a1bf..63f202975ac3 100644
---- a/drivers/hid/spi-hid/Kconfig
-+++ b/drivers/hid/spi-hid/Kconfig
-@@ -26,6 +26,21 @@ config SPI_HID_ACPI
- 	  will be called spi-hid-acpi. It will also build/depend on the
- 	  module spi-hid.
+diff --git a/drivers/hid/spi-hid/spi-hid-acpi.c b/drivers/hid/spi-hid/spi-hid-acpi.c
+index 31ca3fa336cd..a52cafe86c05 100644
+--- a/drivers/hid/spi-hid/spi-hid-acpi.c
++++ b/drivers/hid/spi-hid/spi-hid-acpi.c
+@@ -246,6 +246,7 @@ static struct spi_driver spi_hid_acpi_driver = {
+ 	.driver = {
+ 		.name	= "spi_hid_acpi",
+ 		.owner	= THIS_MODULE,
++		.pm	= &spi_hid_core_pm,
+ 		.acpi_match_table = spi_hid_acpi_match,
+ 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 		.dev_groups = spi_hid_groups,
+diff --git a/drivers/hid/spi-hid/spi-hid-core.c b/drivers/hid/spi-hid/spi-hid-core.c
+index f4e9b4e1294e..66bfc251bd91 100644
+--- a/drivers/hid/spi-hid/spi-hid-core.c
++++ b/drivers/hid/spi-hid/spi-hid-core.c
+@@ -36,6 +36,8 @@
+ #include <linux/list.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/pm.h>
++#include <linux/pm_wakeirq.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/string.h>
+@@ -60,6 +62,7 @@
  
-+config SPI_HID_OF
-+	tristate "HID over SPI transport layer Open Firmware driver"
-+	depends on OF
-+	select SPI_HID_CORE
-+	help
-+	  Say Y here if you use a keyboard, a touchpad, a touchscreen, or any
-+	  other HID based devices which are connected to your computer via SPI.
-+	  This driver supports Open Firmware (Device Tree)-based systems.
-+
-+	  If unsure, say N.
-+
-+	  This support is also available as a module.  If so, the module
-+	  will be called spi-hid-of. It will also build/depend on the
-+	  module spi-hid.
-+
- config SPI_HID_CORE
- 	tristate
- endif
-diff --git a/drivers/hid/spi-hid/Makefile b/drivers/hid/spi-hid/Makefile
-index 3ca326602643..31192e71edae 100644
---- a/drivers/hid/spi-hid/Makefile
-+++ b/drivers/hid/spi-hid/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_SPI_HID_CORE)	+= spi-hid.o
- spi-hid-objs 			= spi-hid-core.o
- CFLAGS_spi-hid-core.o 		:= -I$(src)
- obj-$(CONFIG_SPI_HID_ACPI)	+= spi-hid-acpi.o
-+obj-$(CONFIG_SPI_HID_OF)	+= spi-hid-of.o
-diff --git a/drivers/hid/spi-hid/spi-hid-of.c b/drivers/hid/spi-hid/spi-hid-of.c
-new file mode 100644
-index 000000000000..78d0530d2473
---- /dev/null
-+++ b/drivers/hid/spi-hid/spi-hid-of.c
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: GPL-2.0
+ #define SPI_HID_MAX_RESET_ATTEMPTS	3
+ #define SPI_HID_RESP_TIMEOUT		1000
++#define SPI_HID_RESET_TIMEOUT		1000
+ 
+ /* Protocol message size constants */
+ #define SPI_HID_READ_APPROVAL_LEN		5
+@@ -91,6 +94,11 @@
+  * ll_close. Input reports are only forwarded while this flag is set.
+  */
+ #define SPI_HID_STARTED	6
 +/*
-+ * HID over SPI protocol, Open Firmware related code
-+ *
-+ * Copyright (c) 2021 Microsoft Corporation
-+ *
-+ * This code was forked out of the HID over SPI core code, which is partially
-+ * based on "HID over I2C protocol implementation:
-+ *
-+ * Copyright (c) 2012 Benjamin Tissoires <benjamin.tissoires@gmail.com>
-+ * Copyright (c) 2012 Ecole Nationale de l'Aviation Civile, France
-+ * Copyright (c) 2012 Red Hat, Inc
-+ *
-+ * which in turn is partially based on "USB HID support for Linux":
-+ *
-+ * Copyright (c) 1999 Andreas Gal
-+ * Copyright (c) 2000-2005 Vojtech Pavlik <vojtech@suse.cz>
-+ * Copyright (c) 2005 Michael Haboustak <mike-@cinci.rr.com> for Concept2, Inc
-+ * Copyright (c) 2007-2008 Oliver Neukum
-+ * Copyright (c) 2006-2010 Jiri Kosina
++ * dead indicates that the device was powered off after too many failed
++ * resets. It stays off until the driver is rebound, even across resume.
 + */
++#define SPI_HID_DEAD	7
+ 
+ /* Processed data from input report header */
+ struct spi_hid_input_header {
+@@ -242,6 +250,148 @@ static const char *spi_hid_power_mode_string(enum hidspi_power_state power_state
+ 	}
+ }
+ 
++/*
++ * Wait for the device descriptor response after reset; the device then takes
++ * requests. Set READY here: the report descriptor check that normally sets it
++ * needs power_lock, which callers hold.
++ */
++static void spi_hid_wait_for_reset(struct spi_hid *shid)
++{
++	unsigned long timeout = msecs_to_jiffies(SPI_HID_RESET_TIMEOUT +
++						 SPI_HID_RESP_TIMEOUT);
 +
-+#include <linux/container_of.h>
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/property.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
++	if (!wait_for_completion_timeout(&shid->reset_done, timeout)) {
++		dev_warn(&shid->spi->dev,
++			 "Device descriptor not received after reset\n");
++		return;
++	}
 +
-+#include "spi-hid.h"
++	set_bit(SPI_HID_READY, &shid->flags);
++}
 +
-+struct spi_hid_timing_data {
-+	u32 post_power_on_delay_ms;
-+	u32 minimal_reset_delay_ms;
-+};
-+
-+/* Config structure is filled with data from Device Tree */
-+struct spi_hid_of_config {
-+	struct spihid_ops ops;
-+
-+	struct spi_hid_conf property_conf;
-+	const struct spi_hid_timing_data *timing_data;
-+
-+	struct gpio_desc *reset_gpio;
-+	struct regulator *supply;
-+	bool supply_enabled;
-+};
-+
-+static const struct spi_hid_timing_data timing_data = {
-+	.post_power_on_delay_ms = 10,
-+	.minimal_reset_delay_ms = 100,
-+};
-+
-+static int spi_hid_of_populate_config(struct spi_hid_of_config *conf,
-+				      struct device *dev)
++static int spi_hid_suspend(struct spi_hid *shid)
 +{
 +	int error;
-+	u32 val;
++	struct device *dev = &shid->spi->dev;
 +
-+	error = device_property_read_u32(dev, "input-report-header-address",
-+					 &val);
-+	if (error) {
-+		dev_err(dev, "Input report header address not provided\n");
-+		return -ENODEV;
-+	}
-+	conf->property_conf.input_report_header_address = val;
-+
-+	error = device_property_read_u32(dev, "input-report-body-address", &val);
-+	if (error) {
-+		dev_err(dev, "Input report body address not provided\n");
-+		return -ENODEV;
-+	}
-+	conf->property_conf.input_report_body_address = val;
-+
-+	error = device_property_read_u32(dev, "output-report-address", &val);
-+	if (error) {
-+		dev_err(dev, "Output report address not provided\n");
-+		return -ENODEV;
-+	}
-+	conf->property_conf.output_report_address = val;
-+
-+	error = device_property_read_u8(dev, "read-opcode",
-+					&conf->property_conf.read_opcode);
-+	if (error) {
-+		dev_err(dev, "Read opcode not provided\n");
-+		return -ENODEV;
++	/* HID driver suspend may talk to the device; responses need the IRQ. */
++	scoped_guard(mutex, &shid->power_lock) {
++		if (shid->power_state != HIDSPI_OFF && shid->hid) {
++			error = hid_driver_suspend(shid->hid, PMSG_SUSPEND);
++			if (error) {
++				dev_err(dev, "%s failed to suspend hid driver: %d\n",
++					__func__, error);
++				return error;
++			}
++		}
 +	}
 +
-+	error = device_property_read_u8(dev, "write-opcode",
-+					&conf->property_conf.write_opcode);
-+	if (error) {
-+		dev_err(dev, "Write opcode not provided\n");
-+		return -ENODEV;
++	/*
++	 * disable_irq() waits for a running IRQ thread, so no new reset_work
++	 * can be queued after it returns. Then wait for any queued or running
++	 * instance. Must not hold power_lock here: reset_work takes it.
++	 */
++	disable_irq(shid->spi->irq);
++	cancel_work_sync(&shid->reset_work);
++
++	guard(mutex)(&shid->power_lock);
++	if (!device_may_wakeup(dev)) {
++		if (shid->power_state != HIDSPI_OFF) {
++			/* Device is fully reset on resume; drop stale state. */
++			clear_bit(SPI_HID_READY, &shid->flags);
++			clear_bit(SPI_HID_RESET_RESPONSE, &shid->flags);
++			clear_bit(SPI_HID_CREATE_DEVICE, &shid->flags);
++			clear_bit(SPI_HID_ERROR, &shid->flags);
++			set_bit(SPI_HID_RESET_PENDING, &shid->flags);
++
++			shid->ops->assert_reset(shid->ops);
++
++			error = shid->ops->power_down(shid->ops);
++			if (error) {
++				dev_err(dev, "%s: could not power down\n", __func__);
++				shid->regulator_error_count++;
++				shid->regulator_last_error = error;
++				/*
++				 * Undo partial suspend before returning error.
++				 * Complete the reset; RESET_PENDING stays set
++				 * until the device sends its reset response.
++				 */
++				shid->ops->sleep_minimal_reset_delay(shid->ops);
++				reinit_completion(&shid->reset_done);
++				shid->ops->deassert_reset(shid->ops);
++				enable_irq(shid->spi->irq);
++				if (shid->hid) {
++					spi_hid_wait_for_reset(shid);
++					hid_driver_reset_resume(shid->hid);
++				}
++				return error;
++			}
++
++			shid->power_state = HIDSPI_OFF;
++		}
 +	}
-+
-+	conf->supply = devm_regulator_get(dev, "vdd");
-+	if (IS_ERR(conf->supply))
-+		return dev_err_probe(dev, PTR_ERR(conf->supply),
-+				     "Failed to get regulator\n");
-+	conf->supply_enabled = false;
-+
-+	conf->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(conf->reset_gpio))
-+		return dev_err_probe(dev, PTR_ERR(conf->reset_gpio),
-+				     "Failed to get reset GPIO\n");
-+
 +	return 0;
 +}
 +
-+static int spi_hid_of_power_down(struct spihid_ops *ops)
++static int spi_hid_resume(struct spi_hid *shid)
 +{
-+	struct spi_hid_of_config *conf = container_of(ops,
-+						      struct spi_hid_of_config,
-+						      ops);
 +	int error;
++	struct device *dev = &shid->spi->dev;
++	bool was_reset = false;
 +
-+	if (!conf->supply_enabled)
++	guard(mutex)(&shid->power_lock);
++	if (test_bit(SPI_HID_DEAD, &shid->flags)) {
++		/* Stay off; only balance disable_irq() in suspend. */
++		enable_irq(shid->spi->irq);
 +		return 0;
-+
-+	error = regulator_disable(conf->supply);
-+	if (error == 0)
-+		conf->supply_enabled = false;
-+
-+	return error;
-+}
-+
-+static int spi_hid_of_power_up(struct spihid_ops *ops)
-+{
-+	struct spi_hid_of_config *conf = container_of(ops,
-+						      struct spi_hid_of_config,
-+						      ops);
-+	int error;
-+
-+	if (conf->supply_enabled)
-+		return 0;
-+
-+	error = regulator_enable(conf->supply);
-+
-+	if (error == 0) {
-+		conf->supply_enabled = true;
-+		fsleep(1000 * conf->timing_data->post_power_on_delay_ms);
 +	}
 +
-+	return error;
-+}
++	if (!device_may_wakeup(dev)) {
++		if (shid->power_state == HIDSPI_OFF) {
++			shid->ops->assert_reset(shid->ops);
 +
-+static int spi_hid_of_assert_reset(struct spihid_ops *ops)
-+{
-+	struct spi_hid_of_config *conf = container_of(ops,
-+						      struct spi_hid_of_config,
-+						      ops);
++			shid->ops->sleep_minimal_reset_delay(shid->ops);
 +
-+	return gpiod_set_value_cansleep(conf->reset_gpio, 1);
-+}
++			error = shid->ops->power_up(shid->ops);
++			if (error) {
++				dev_err(dev, "%s: could not power up\n", __func__);
++				shid->regulator_error_count++;
++				shid->regulator_last_error = error;
++				/* Suspend runs next even if resume fails. */
++				enable_irq(shid->spi->irq);
++				return error;
++			}
++			shid->power_state = HIDSPI_ON;
++			reinit_completion(&shid->reset_done);
++			shid->ops->deassert_reset(shid->ops);
++			was_reset = true;
++		}
++	}
 +
-+static int spi_hid_of_deassert_reset(struct spihid_ops *ops)
-+{
-+	struct spi_hid_of_config *conf = container_of(ops,
-+						      struct spi_hid_of_config,
-+						      ops);
-+
-+	return gpiod_set_value_cansleep(conf->reset_gpio, 0);
-+}
-+
-+static void spi_hid_of_sleep_minimal_reset_delay(struct spihid_ops *ops)
-+{
-+	struct spi_hid_of_config *conf = container_of(ops,
-+						      struct spi_hid_of_config,
-+						      ops);
-+	fsleep(1000 * conf->timing_data->minimal_reset_delay_ms);
-+}
-+
-+static int spi_hid_of_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct spi_hid_of_config *config;
-+	int error;
-+
-+	config = devm_kzalloc(dev, sizeof(struct spi_hid_of_config),
-+			      GFP_KERNEL);
-+	if (!config)
-+		return -ENOMEM;
-+
-+	config->ops.power_up = spi_hid_of_power_up;
-+	config->ops.power_down = spi_hid_of_power_down;
-+	config->ops.assert_reset = spi_hid_of_assert_reset;
-+	config->ops.deassert_reset = spi_hid_of_deassert_reset;
-+	config->ops.sleep_minimal_reset_delay =
-+		spi_hid_of_sleep_minimal_reset_delay;
-+
-+	config->timing_data = device_get_match_data(dev);
-+	if (!config->timing_data)
-+		config->timing_data = &timing_data;
++	enable_irq(shid->spi->irq);
 +
 +	/*
-+	 * FIXME: multi-SPI not supported. Once it is, derive the
-+	 * HID-over-SPI flags from spi->mode.
++	 * For devices that may wake up, process work that was pending when
++	 * suspend cancelled reset_work. Otherwise suspend already dropped it.
 +	 */
++	if (test_bit(SPI_HID_RESET_RESPONSE, &shid->flags) ||
++	    test_bit(SPI_HID_CREATE_DEVICE, &shid->flags) ||
++	    test_bit(SPI_HID_ERROR, &shid->flags))
++		schedule_work(&shid->reset_work);
 +
-+	error = spi_hid_of_populate_config(config, dev);
-+	if (error)
-+		return dev_err_probe(dev, error, "Unable to populate config data\n");
-+
-+	return spi_hid_core_probe(spi, &config->ops, &config->property_conf);
++	if (shid->hid) {
++		if (was_reset)
++			spi_hid_wait_for_reset(shid);
++		error = hid_driver_reset_resume(shid->hid);
++		if (error) {
++			dev_err(dev, "%s: failed to reset resume hid driver: %d\n",
++				__func__, error);
++			return error;
++		}
++	}
++	return 0;
 +}
 +
-+static const struct of_device_id spi_hid_of_match[] = {
-+	{ .compatible = "hid-over-spi", .data = &timing_data },
-+	{}
+ static void spi_hid_stop_hid(struct spi_hid *shid)
+ {
+ 	struct hid_device *hid;
+@@ -280,6 +430,7 @@ static void spi_hid_error_handler(struct spi_hid *shid)
+ 			shid->regulator_last_error = error;
+ 		}
+ 		shid->power_state = HIDSPI_OFF;
++		set_bit(SPI_HID_DEAD, &shid->flags);
+ 		/* Dead device: leave the IRQ permanently disabled. */
+ 		return;
+ 	}
+@@ -561,6 +712,8 @@ static int spi_hid_dev_desc_response(struct spi_hid *shid,
+ 	shid->reset_attempts = 0;
+ 	set_bit(SPI_HID_CREATE_DEVICE, &shid->flags);
+ 	schedule_work(&shid->reset_work);
++	/* The device can take requests now; see spi_hid_wait_for_reset(). */
++	complete(&shid->reset_done);
+ 
+ 	return 0;
+ }
+@@ -1378,6 +1531,7 @@ int spi_hid_core_probe(struct spi_device *spi, struct spihid_ops *ops,
+ 	mutex_init(&shid->power_lock);
+ 	mutex_init(&shid->io_lock);
+ 	init_completion(&shid->output_done);
++	init_completion(&shid->reset_done);
+ 
+ 	INIT_WORK(&shid->reset_work, spi_hid_reset_work);
+ 
+@@ -1411,6 +1565,18 @@ int spi_hid_core_probe(struct spi_device *spi, struct spihid_ops *ops,
+ 		return error;
+ 	}
+ 
++	/*
++	 * Use device_can_wakeup(), not device_may_wakeup(): power/wakeup can
++	 * change after probe, and the PM core checks it at suspend time.
++	 */
++	if (device_can_wakeup(dev)) {
++		error = devm_pm_set_wake_irq(dev, spi->irq);
++		if (error) {
++			dev_err(dev, "%s: failed to set wake IRQ\n", __func__);
++			return error;
++		}
++	}
++
+ 	error = shid->ops->power_up(shid->ops);
+ 	if (error) {
+ 		dev_err(dev, "%s: could not power up\n", __func__);
+@@ -1451,6 +1617,25 @@ void spi_hid_core_remove(struct spi_device *spi)
+ }
+ EXPORT_SYMBOL_GPL(spi_hid_core_remove);
+ 
++static int spi_hid_core_pm_suspend(struct device *dev)
++{
++	struct spi_hid *shid = dev_get_drvdata(dev);
++
++	return spi_hid_suspend(shid);
++}
++
++static int spi_hid_core_pm_resume(struct device *dev)
++{
++	struct spi_hid *shid = dev_get_drvdata(dev);
++
++	return spi_hid_resume(shid);
++}
++
++const struct dev_pm_ops spi_hid_core_pm = {
++	SYSTEM_SLEEP_PM_OPS(spi_hid_core_pm_suspend, spi_hid_core_pm_resume)
 +};
-+MODULE_DEVICE_TABLE(of, spi_hid_of_match);
++EXPORT_SYMBOL_GPL(spi_hid_core_pm);
 +
-+static const struct spi_device_id spi_hid_of_id_table[] = {
-+	{ "hid", 0 },
-+	{ "hid-over-spi", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, spi_hid_of_id_table);
-+
-+static struct spi_driver spi_hid_of_driver = {
-+	.driver = {
-+		.name	= "spi_hid_of",
-+		.owner	= THIS_MODULE,
-+		.of_match_table = spi_hid_of_match,
-+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
-+		.dev_groups = spi_hid_groups,
-+	},
-+	.probe		= spi_hid_of_probe,
-+	.remove		= spi_hid_core_remove,
-+	.id_table	= spi_hid_of_id_table,
-+};
-+
-+module_spi_driver(spi_hid_of_driver);
-+
-+MODULE_DESCRIPTION("HID over SPI OF transport driver");
-+MODULE_AUTHOR("Dmitry Antipov <dmanti@microsoft.com>");
-+MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("HID over SPI transport driver");
+ MODULE_AUTHOR("Dmitry Antipov <dmanti@microsoft.com>");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/hid/spi-hid/spi-hid-core.h b/drivers/hid/spi-hid/spi-hid-core.h
+index 1d8356f787f3..0b3248aedfce 100644
+--- a/drivers/hid/spi-hid/spi-hid-core.h
++++ b/drivers/hid/spi-hid/spi-hid-core.h
+@@ -92,6 +92,8 @@ struct spi_hid {
+ 	struct mutex io_lock;
+ 
+ 	struct completion output_done;
++	/* Completed once the device descriptor is received after a reset. */
++	struct completion reset_done;
+ 
+ 	u32 report_descriptor_crc32;	/* HID report descriptor crc32 checksum. */
+ 
+diff --git a/drivers/hid/spi-hid/spi-hid-of.c b/drivers/hid/spi-hid/spi-hid-of.c
+index 78d0530d2473..605edecc4f7e 100644
+--- a/drivers/hid/spi-hid/spi-hid-of.c
++++ b/drivers/hid/spi-hid/spi-hid-of.c
+@@ -226,6 +226,7 @@ static struct spi_driver spi_hid_of_driver = {
+ 	.driver = {
+ 		.name	= "spi_hid_of",
+ 		.owner	= THIS_MODULE,
++		.pm	= &spi_hid_core_pm,
+ 		.of_match_table = spi_hid_of_match,
+ 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ 		.dev_groups = spi_hid_groups,
+diff --git a/drivers/hid/spi-hid/spi-hid.h b/drivers/hid/spi-hid/spi-hid.h
+index f5a5f4d54beb..17b2fdf192ed 100644
+--- a/drivers/hid/spi-hid/spi-hid.h
++++ b/drivers/hid/spi-hid/spi-hid.h
+@@ -41,5 +41,6 @@ int spi_hid_core_probe(struct spi_device *spi, struct spihid_ops *ops,
+ void spi_hid_core_remove(struct spi_device *spi);
+ 
+ extern const struct attribute_group *spi_hid_groups[];
++extern const struct dev_pm_ops spi_hid_core_pm;
+ 
+ #endif /* SPI_HID_H */
 
 -- 
 2.56.0.385.gd3acb90ef8-goog

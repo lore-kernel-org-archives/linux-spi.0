@@ -1,93 +1,117 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272C24E4300
-	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 13:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC214E535C
+	for <linux-spi@vger.kernel.org>; Fri,  9 Oct 2026 14:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553010; cv=none; b=MLl4HG6t+uV+GcVpoepMX5BTtLarNA87+kTg3EiqYhSLdPQOra/2O76qP1yXUd6Rwa8Qro7IwkrCnlvIY/G1UxFs+J91cT/3FE55Ex9wm50be5q5b3PrEMi4UWmUDWW8u+zEssSXTv04GKNDiX3+yY8/Zzsk7ajIoY6C9s4m0AU=
+	t=1791556117; cv=none; b=B6eftUtpjWbFG3bCsKOi+WWLsBKcSfEvS5Ry7SdN9GgKd+uxnc4lQCgE3ac8lVf/lkSenD0r8C40x6i3yAIFCvEMA4IgixwG2uwU/7skU5oAHWbf/NGMtEZQCjkExQoKVq6A+7R5Vp+whVWTKBh8YyJJw7pld7v2e1En7oKHCqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791553010; c=relaxed/simple;
-	bh=C7/YgkaQNK/zcq0qIsUTnbAeXOmVfs5H3Xn4Tb3ZKts=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbJyEQCTZCOpTsnWr54T2sF0wAsCqt7bly+DItwLa+KlruN78GP8hR9853E6B53vjkDFIYmkdYFKmAORXHVDW9u4RfglPjObjEGKA5a+wSVSGh0JgG9zwy6ziFGLM2LrVpLPMkyM9fN8X76ui7OI7qqoNQ3bhUJbdhq1LfqZ+t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev
+	s=arc-20240116; t=1791556117; c=relaxed/simple;
+	bh=tDcbReMlKW/aCLdUiODYX5ZlEgDafGJC8uBweSeMXLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rxCEbKsxroZxg99/lAXgDZJVf+iwYvuU+tbHHI0Kx13KlmC7T9QkxlBIgMWvgXUozRU66k7RrBGChkDet+p7c3cRY5UTzkcI1UGX2Kbs+bEosFTU8hPAq2MO8TuN1+InJdRabOpaL1mzgPb2x2d2bwMv1EGLU8J9cX1EHB75dXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JU7GTSP8; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2e7006bbf77so14407215ad.0
-        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 06:36:46 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JU7GTSP8"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48afbd2c386so3129612f8f.3
+        for <linux-spi@vger.kernel.org>; Fri, 09 Oct 2026 07:28:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791556114; x=1792160914; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=J5qnGlwWK60nEqwsDNVA3SkC4N92/UygWdRusOcCHyQ=;
+        b=JU7GTSP8xop3SqnyIFvKon6nTenhStCqzoyMXw2xiF6QRS0ZuSRz1UPkTXFAGWGWY8
+         MTei0n/UkCHnfu3l92bwfHovO0n3dZBGhWavcM0CjXOzfTktKza6WEG7516OLJACyocS
+         f91VExSEC3Y6ov/Xa50bPTJ0GHprXGi1e9y3IJJYpDVnnEUTc7lBz9gcR/kk/98frZuQ
+         hZGo0YoLhRIp4IbFE3ymDjG32Z+Kd0wAJNsaVf+k+O4IVtrI0eMgW0lpa//BffvFi6gp
+         EgxsIhj8zJfPOLrclaz7m+xjKlmAs9sQiaBnSWeu5+WoSzHyQ+66LMLEvWGtBGxnwNd3
+         pDTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791553006; x=1792157806;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xu9qlzISdqBsfG/KDIT6cAt4DBaAq+fPmh/ka5nGnIg=;
-        b=tOgNSK8hx1FpTQlysBuerduVjzMVS3faETLfkuYlIHiyo6Dd3UWVvcSFn3Emkhm1hZ
-         nXQJ7fOdNhmQEq1PefE3GJhZKrlI3j4jBWUDAflfsV9XrmgnO5GvL9iJHgpAuZighhnr
-         G6WxKhqgsszZnM6feW+0CZOgM5ElzsYqyt4nQScUneOu39tzVLW5YAni5eA94NPgOWjw
-         cvVtKVcSgkQt3Km4nbKSBvp5UCSnidRbN2WOt7IFm+N2NkKNwfOv86HxM+fSFOvU6w5H
-         YDQ6dLOhDtU3rNEGxaBaw/fGzXqDON/uuzbq0ObelWy8B1pLRbqu/+L3AKcPotNKIpQD
-         n2IQ==
-X-Forwarded-Encrypted: i=1; AKwUvByHklABuXs3IOO8rPh+iZaTQ2kXZU2rnEKULnHLbtY3sTrlRdkkRGeIX5qFtKjkQHXs6+6R26/Y9Kg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJSjsMNABLJKjXqzz2DC9uNpQyHX1n+0SVGEhhUx9Nbzgj0oESI
-	5YpRvS1DF0BhSL0OYcgVRyg4/WEQslde7qd/jloUGa/0WNRRwtPjAQAi
-X-Gm-Gg: AYBFou3p6VEdMGWrLsaNLuA3Sg/CklCTPasytsTgaa4yjW3hHlKDwo+AJiDnAsiR8u9
-	vfkgheN92panjAcgJNJ+hnF5uwOMGlYo8Y3yK7uB9KFY5RqcV+JuPZggQSD38YZMIzUf9cXdXNC
-	s4XRbvvgriR9V4kEcFHEycmNKvFqMinI4MIArzt9WqiZLBZFIBtTjWYwbbM048nbIqNchbJPvDQ
-	pu/Ruc05xiYUG+Hgh4a1hG+C6HTNPPdxoEI9POfov1yZW36u2M0iVscWIEEeoDwWy6lunedFIT1
-	p4Lcc50mHUUiIikH7MF/9YaPntJV7TJQtEQeKaa7tZJLROsUjp0sdhlF7P4kZaTs38TDVg2odjg
-	moNtpXk9jVrUzvi5CVHbjyqvkmUXnZfU/i/npu6rJr8IG7GceAqXH+Iv9jtoyAuMd1qIak3k4al
-	X2rni82k9vHjB8jQKH3YaLSpVrFvkWR80luWuVYo7VtDinwSGwu9pahgYDnnc=
-X-Received: by 2002:a17:902:d54f:b0:2e6:1a6c:abd3 with SMTP id d9443c01a7336-2e8427f0cb1mr17510535ad.6.1791553006254;
-        Fri, 09 Oct 2026 06:36:46 -0700 (PDT)
-Received: from linmach ([182.156.30.23])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a05f70sm9260455ad.7.2026.10.09.06.36.42
+        d=1e100.net; s=20260707; t=1791556114; x=1792160914;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=J5qnGlwWK60nEqwsDNVA3SkC4N92/UygWdRusOcCHyQ=;
+        b=j5bBcJXLgA+qjoVNq2911FagvmGiPzW2g12EyErIInfU1Q64a0mvl6lN9HrtHa7WHo
+         v02Ic1ic5yiMK0ddOs503nZHVhbXT4MVmsi4byeEJe3PdSJ84TxHiTrlJ16h0gQ40UYf
+         hu8miuOCbWku3jcz7L+DmBttmwTARHc2rSDtdx9hrkZVMbpdglj3OVI87fuZwSmFssSd
+         BCn5ernDvpA3syZRbCxaubVn2melnOCdIHAemRyEAXp/ReLTBwvQlXRkte2LixXVKDD9
+         73JnDWGUgHvdSRSXc0alZyTyCYw0Tyjt6sJE7NNgxlmw+JKd68/vm5r7ndGwu/0lebX+
+         hX4g==
+X-Forwarded-Encrypted: i=1; AKwUvBz70hCtQIVR1+qAT1tpTD5pQkLx1M5Vw9rS08Xd5dattLeWIWsLEv3ChKZJtdHg7oe1s0GVKiyGnag=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI6DuFbkiQAM2URQkwEE1XqDp7VTG3BD8GcIDRztO0PET4Dktuc
+	B3xm81Cz/cSS3qSRYBNOHkDvFTOqteri90lsjpki/ivGh2jS1Delkgv0mJ+8/Cur
+X-Gm-Gg: AYBFou1j4RT4B8XdewR2/4QALriHB1Cfxfn8bTt8EUA9ZHBM1+e+5njWhkA9pav86OK
+	ilPJehKjQT4jNzrcG1nQkkH1YRwLqDSWG4RTMotTCmfDo4QMiP2gSvv8EpxQh6GNgHHCHlMcSDC
+	E3AW+XdEgWXsH+k1rrSMIq5oB2/OozP6NhgvNkXgQUvlVO2YhxuPzpHZXorkI6WkWwkRiVPLIrZ
+	zggBl16Z9X6svllDIu0m6Eqexx269Ns9SX9touohBBf94Q/6k7aBjfSJ9lW25D7+qTnSMGE/+Gu
+	voFm6UjOS6LOX49/yK5dpYW+NDZAh66d1zCQFQKFCuYRZdINRpD4upMy87Tts18lvs9AlwwvawH
+	wLQVvw07uIGgD2hx79ntunmwCe3FULzFNXEZvDldbZqSxczlYG7XDChmK3Y926Y6gAV79sZRYuw
+	JNCGr2dCREnMqytp03kMYFWGV3xocqrTu4mQX+pgE5fINg7uDW3wL+YZl/MPAsfPcqdeWtUP+sI
+	R2DJpyO94pG+haUnKF9R8EFcbLr77zxgZ/y
+X-Received: by 2002:a05:6000:2303:b0:48b:58e:6cd9 with SMTP id ffacd0b85a97d-48dbacea01fmr4433922f8f.14.1791556113857;
+        Fri, 09 Oct 2026 07:28:33 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dbae37509sm3456323f8f.7.2026.10.09.07.28.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 06:36:45 -0700 (PDT)
-From: Aayush Kumar <code@aayushk.dev>
-To: broonie@kernel.org
-Cc: william.zhang@broadcom.com,
-	kursad.oney@broadcom.com,
-	jonas.gorski@gmail.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aayush Kumar <code@aayushk.dev>
-Subject: [PATCH 2/2] spi: bcmbca-hsspi: Use sysfs_emit() instead of sprintf()
-Date: Fri,  9 Oct 2026 19:06:31 +0530
-Message-ID: <20261009133631.579644-3-code@aayushk.dev>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261009133631.579644-1-code@aayushk.dev>
-References: <20261009133631.579644-1-code@aayushk.dev>
+        Fri, 09 Oct 2026 07:28:33 -0700 (PDT)
+Date: Fri, 9 Oct 2026 15:28:32 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Aayush Kumar <code@aayushk.dev>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] spi: lm70llp: Use strscpy() instead of strcpy()
+Message-ID: <20261009152832.4dd56def@pumpkin>
+In-Reply-To: <20261009133609.579046-3-code@aayushk.dev>
+References: <20261009133609.579046-1-code@aayushk.dev>
+	<20261009133609.579046-3-code@aayushk.dev>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-show() should only use sysfs_emit() or sysfs_emit_at() when formatting
-the value to be returned to user space.
+On Fri,  9 Oct 2026 19:06:06 +0530
+Aayush Kumar <code@aayushk.dev> wrote:
 
-Signed-off-by: Aayush Kumar <code@aayushk.dev>
----
- drivers/spi/spi-bcmbca-hsspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Use a safer function strscpy() instead of strcpy() for copying to
+> arrays. Only idiomatic code replacement, and no functional changes.
+> 
+> Signed-off-by: Aayush Kumar <code@aayushk.dev>
+> ---
+>  drivers/spi/spi-lm70llp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-lm70llp.c b/drivers/spi/spi-lm70llp.c
+> index e61e89b41..bd8028892 100644
+> --- a/drivers/spi/spi-lm70llp.c
+> +++ b/drivers/spi/spi-lm70llp.c
+> @@ -252,7 +252,7 @@ static void spi_lm70llp_attach(struct parport *p)
+>  	 * We are binding to the generic drivers/hwmon/lm70.c device
+>  	 * driver.
+>  	 */
+> -	strcpy(pp->info.modalias, "lm70");
+> +	strscpy(pp->info.modalias, "lm70", sizeof(pp->info.modalias));
 
-diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
-index 5dc9e0f21..8c0147588 100644
---- a/drivers/spi/spi-bcmbca-hsspi.c
-+++ b/drivers/spi/spi-bcmbca-hsspi.c
-@@ -129,7 +129,7 @@ static ssize_t wait_mode_show(struct device *dev, struct device_attribute *attr,
- 	struct spi_controller *ctrl = dev_get_drvdata(dev);
- 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(ctrl);
- 
--	return sprintf(buf, "%d\n", bs->wait_mode);
-+	return sysfs_emit(buf, "%d\n", bs->wait_mode);
- }
- 
- static ssize_t wait_mode_store(struct device *dev, struct device_attribute *attr,
--- 
-2.56.0
+Come on, if you are going to do that use the two argument form.
+Or just don't bother at all.
+Do the test compiles - if the literal string is too long you'll
+get a compile error for strcpy(), but strscpy() truncates and returns
+an error.
+So strcpy() is arguably better.
+
+David
+
+>  	pp->info.max_speed_hz = 6 * 1000 * 1000;
+>  	pp->info.chip_select = 0;
+>  	pp->info.mode = SPI_3WIRE | SPI_MODE_0;
 

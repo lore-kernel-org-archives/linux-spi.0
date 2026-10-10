@@ -1,193 +1,139 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18623B841F
-	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDABC3B5318;
+	Sat, 10 Oct 2026 15:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621778; cv=none; b=sIaQwOINKMLTi9HSQtVqb3+qWAnfYZTOJE+LgKzWQIrredCmpps4aI+ZMMuyCq4i2cnxQxbtgrcGQdKjKYz3zZN9IWzl8ecXoRu0TmdDMOIotncDZ1wN8ia+/3LqqpU+v2owFS4eVqxYA9c/z7Vwb+kAoMAls/8lWX6kg4YCbLc=
+	t=1791646501; cv=none; b=AJLArDXhdhKzo+OFQwi1e+Re6oMU4eZrVkmavVZeI54rjbh3+fePG10NItyurJkkrxiV5bJF0k8RESkpNZk3cDGS4/E2MKprWuWzjCDltRY69q+hEhAqgQSFUNyNgJkIrF12rJhCkPttknDOuORJRLdQoZujRA5hTnG6Gau4j4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621778; c=relaxed/simple;
-	bh=T0cHhk3sVg14STn5ch68EKKiVtS63d3OH+IINR9SoUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BLBx0RTM9qzbbynwkvwTHBEoCHG/oJR7aKNBJLffXwwBnQRiVkkE42C1yJyF8hnZZIp6cTIq2oqyccQKboGNBxAdu9I1YTxSXZ9ZSiSX/LJ3W0s52MI4xMunwsV+Y3G6xn1vPQh6V5Db5qxB0LFuOnIApJ7Pil0KEq9WNaNfwYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Fo5lzCKR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U60NLG4u; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1791646501; c=relaxed/simple;
+	bh=nUgAQ8LBy1l6/sNie+HqiU6j1TZZ6qrG3pWv7UuQOvA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p2i81JPyxxIjzo7Y4l+cVwDx6UjLFW3E0WAMh1pThKa5EhOp/DlqqYOGB1WqcQb/mL1RKBfOrrCtQ98LRugJX39f+4ACmQ3nGuXVAV3M8CJE/YJWGskv0hKPisXgZttmJ6Stx7+EgOVyu5nc/h/KtVwZdl8SmXggzENZkE/C6HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFLw97Nv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Fo5lzCKR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U60NLG4u"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69A2pteK4150918
-	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=; b=Fo5lzCKR6ouvQqMF
-	AfXvk7qHNy+UGr0uB/I75FzhO/oHguIgOagvJ50C1NXQUikQfyJk79H9vjFIlnjB
-	bgTjhV8vSzS4dPkTiu8g6i4oO5GZS5Hbva9CkwhMzsCPgcJ3se2tzthEO1U0YM/h
-	qqKO+KNKfG+Bwtqnb1VFRRoze4vVy6qBoY+WTKXije/fNbbTy3NigBrpI1x3+A0r
-	uIlAHrfVf71v/5ji4yntBkpw+jq2Bhy0bKyGz9N8eUDWvzrEPHJpKe+wvJJZUPau
-	BceKIvfkXsLXb5ZCrcR4QKdS/cROb9qNkdQ3r4GI9dt4fqy1ey8vUMAPPuUjd38K
-	cYoPsA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h7cxxgp1c-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:52 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93cb7f9bb86so80388185a.2
-        for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 01:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791621772; x=1792226572; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=;
-        b=U60NLG4u3jcimbiOPlvSarsUzmhvlmXgWTlCnjWhoSzx88fR7emY9fIESym/zdGUq9
-         TNqkL1VvcZpcVAOR2d75f+VHusG0uKzayhYghy0XhqAtPCcUVqxqlegihXsG0HXI6xyp
-         qSW8SyjefBsBO27P6SuVQQuDa+hrf5kWcfDK+2AtBQVgNJzbFVqK050FmZ96UD5WkbZp
-         Ml0T1i/PBshz87SgQX8AC6OWBuRoAaJRucuP+cLWifmRn0lagzyOrl/uufGfCP4uejlj
-         3DWhGJt3gJfXxk2HiHSGYABaNDXmUoutJyX3nS99GpYu8bL3Mjb9AFmlXt+5QOAqh06n
-         bVkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791621772; x=1792226572;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=;
-        b=jIFWXIOXcWS6sHfcBlr0X1W0ysFCuT4Ac8CTIs8g42X6AjMfbGsgLlOsgJrotw3GRo
-         DOX1vgKHn2qAONlmm2rjw+zQABRUNFFqDfeI1pCVieXmrdXYQ2BLzj4iP42TMNCF6CI8
-         6sBiqBO1Gur8Kp9HjIGqLdRWYc9iscpH2m/I/gpLug2XpGK6uFT9jGKRZMDYldPkYx13
-         vZ7rQUadOYaxYObCqAdzBP7wQWCFOrKp6cAvo5/3XSYG55fbgeHA50ixZ/smT3sFVSMg
-         CKsMOGG6IUEWghxAnCjmiWVp/7AAcjbH144lm3iozfSrg3B4LdGbswWzcibxIZzD7QnS
-         Fg7g==
-X-Forwarded-Encrypted: i=1; AKwUvBzta3c4AmVHvCNbbJ3tENF+y9WZcJwnGNXJbWOuUM8UrcMImDj388Mxo0GuP2+t96cKhbDKu9owgQg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLhKMIH3SPONmLOPG+P1wb4d98b1RRerokLAfO36vOelnJB3RDi
-	zP+MgVa+2RxCGgpUnvScTpv5UPY36fBIGugdF5PQI9qKojhS/td2VTchfmP2ME9bOdYQbUp4zCo
-	OgXSi5CQ5c7h2GRdpTKLRBH96H9v5HSUTOru9qYYPtWiyHdPAUmsBv8xNo+UFDaw=
-X-Gm-Gg: AYBFou3tqIsBHSlV99wCec7raKy0u+TQHLlfOXJjeFl+2O7Twe+swYPhCF1mEs21uFN
-	o0DaVn89HqHb5j9hW4i1AfowCaqvxEYhgTZrJGnrywq2ufWxBgr6YeqTjGJWHjT6pZLnj6ZFoZx
-	CbbCYTHKQ3uEv6B1gv0rUmTlbDL+XravpCTDpD+Z2HTAniCTqd5MGUnegHF2L74RNrKUHM8Q1k+
-	OyTg1t3mcbkv+8YiFPflWChy5SQBr8G92tMsMBxKx8ZEmcw2NriVe+QkMCdk2t7vO9p53GNq+u/
-	QI4AUXm8R5X6XQ9poLP3S6npKnP2oy8j/QUI9MINRS2/Nhbb9Go81h2KmCHdUI13/80djL8Iq5j
-	9fzsGb4zqMi8pWTGiwGb6FBGaL86+2NOngYH65dBCIn2lVPfd0sI=
-X-Received: by 2002:a05:620a:4146:b0:93e:5929:f012 with SMTP id af79cd13be357-93ebd1bb215mr668129985a.18.1791621771784;
-        Sat, 10 Oct 2026 01:42:51 -0700 (PDT)
-X-Received: by 2002:a05:620a:4146:b0:93e:5929:f012 with SMTP id af79cd13be357-93ebd1bb215mr668125985a.18.1791621771276;
-        Sat, 10 Oct 2026 01:42:51 -0700 (PDT)
-Received: from brgl-qcom.local (126.171.88.92.rev.sfr.net. [92.88.171.126])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a192d3efb6sm49065585e9.1.2026.10.10.01.42.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 01:42:50 -0700 (PDT)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Brian Norris <briannorris@chromium.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        linux-pm@vger.kernel.org, Ulf Hansson <ulfh@kernel.org>,
-        linux-kernel@vger.kernel.org, Bryan O'Donoghue <bod@kernel.org>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Alex Elder <elder@kernel.org>, Andy Shevchenko <andy@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        David Lechner <dlechner@baylibre.com>,
-        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hadar Gat <hadar.gat@arm.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Johan Hovold <johan@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-        Jyri Sarha <jyri.sarha@iki.fi>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Linus Walleij <linusw@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Mark Brown <broonie@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>, Melissa Wen <mwen@igalia.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Olivia Mackall <olivia@selenic.com>,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Srinivas Kandagatla <srini@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
-        dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
-        linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-staging@lists.linux.dev, sound-open-firmware@alsa-project.org
-Subject: Re: (subset) [PATCH 00/13] PM: runtime: Convert pm_runtime_put_autosuspend() and friends to a void function
-Date: Sat, 10 Oct 2026 10:42:36 +0200
-Message-ID: <179162175231.5836.15015381844446264252.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261006231900.3230373-1-briannorris@chromium.org>
-References: <20261006231900.3230373-1-briannorris@chromium.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFLw97Nv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914801F000FF;
+	Sat, 10 Oct 2026 15:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791646500;
+	bh=8tRhGPyi9t9cMaCia6L3xeLTu0sJut6Ylg8NHyYufH0=;
+	h=From:To:Cc:Subject:Date;
+	b=nFLw97NvKN2WC2GF5toaKHDIx2wvbSfEyARbFHOH8xithuKEIv2cSFOZGe/sfuuyO
+	 d8kijw1GZeI3scQDtMPFbQ+WEwp6fWEjwa51cAIwPMLgUOQ3JZSP7U2ZhYXcdshUMr
+	 HfPZKsQCvpyLYr4Vs5SqqXlu2s/sAvekJfCe6HrrR0CnaPrvW/puQtXFIKUjR6p8Z7
+	 4lzJBfOvzqIudThSaM9AQ4Pip037heI03zP2/UaOmxzabbyC9bn85XEq25FU1UKTwy
+	 Z0jf0zphzSb/ffcFgC7yesfOR8VvZUQdgRjuY14t94c9UpvlNkhVasGgKhGrykfZqB
+	 Md+oCeGlRna5A==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] spi: dw: Make dw_spi_update_config()
+Date: Sat, 10 Oct 2026 23:14:59 +0800
+Message-ID: <20261010151459.30560-1-jszhang@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: u3UjsJr6c2Ct4dTqPrKJtX-E0JBb3zw3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEwMDAzNCBTYWx0ZWRfX+HifkbX26o3x
- KKT2kbxIY0MeK5elioqlTyd5zztFmLjRdbbS4QWnR3flTK4vFCZyVI2LNwAplcqbacTfMjErQsk
- QMRsrOodGqmqCdXaqGyHiabkXHOpKBY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEwMDAzNCBTYWx0ZWRfX/K4XxDI3HdC7
- uQ5cIlGVpPVi5cskSk+h5CMg/GDW6spqCn3SFmPQAu21DJzp+Ws5vbkuxeJEdLayvDWpPts3jg7
- 2g4ZbGwiv+0WqC9eWFLu4hCvy5s7nARzrK05/BrUAK0Ynm8iX4Vbw1GIH3Gj1PAIj+7j72gzCKH
- Bo48SrmkN1ISHfEDpgNdiujzPuGJQe+DdvAjMnyPKjzPne0R/i5VyQC14RYpPcrH10/twUwJQh5
- jDo0yDS65+V3PKJK1n8VfDFv1miBXvCoWVKG0NBIVTrYpad+388CgST8V0IhIJPX24stygdKVpG
- eCFbvTOtO+g7QZykSxPg3Hz1mOfoJpfYoB35TmRxdzZplctrNlDs/q9KT8C+DP23SHJcNi01Rzf
- 0k87rR6dk9AYwskP4WCwCLV7TfWIqUtwbGZLX4LSruQvMO9eoH4PK68xAtTD1ja59oI4n1buLVW
- ZITm4g9SkPz+Cjv4T0w==
-X-Authority-Analysis: v=2.4 cv=AsJ7T+9P c=1 sm=1 tr=0 ts=6ac9fa8c cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=3oaWUOhNWTYPA9BJS75j6A==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=rmSHi3-zQwwJBmM97rsA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-GUID: u3UjsJr6c2Ct4dTqPrKJtX-E0JBb3zw3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-10_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
- adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610100034
 
+After commit da0a672268b3 ("spi: dw: Remove not-going-to-be-supported
+code for Baikal SoC"), no users of dw_spi_update_config() any more.
+Unexport it and make it static. We can also move two structure
+definitions to spi-dw-core.c at the same time.
 
-On Tue, 06 Oct 2026 16:13:28 -0700, Brian Norris wrote:
-> Similar to this effort:
-> 
->   Subject: [PATCH v1 00/23] PM: runtime: Convert pm_runtime_put() to a void function
->   https://lore.kernel.org/all/6245770.lOV4Wx5bFT@rafael.j.wysocki/
-> 
-> i.e., commit 3afd8df02433 ("PM: runtime: Change pm_runtime_put() return
-> type to void") and friends.
-> 
-> [...]
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+---
+ drivers/spi/spi-dw-core.c | 21 ++++++++++++++++++---
+ drivers/spi/spi-dw.h      | 18 ------------------
+ 2 files changed, 18 insertions(+), 21 deletions(-)
 
-Applied, thanks!
-
-[05/13] pinctrl: qcom: lpass-lpi: Discard pm_runtime_put_autosuspend() return values
-        https://git.kernel.org/brgl/c/9bcd1725b0cc7954525e3d0d02fecaec7c7aab33
-
-Best regards,
+diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
+index 1f0e93800908..2d671e31413e 100644
+--- a/drivers/spi/spi-dw-core.c
++++ b/drivers/spi/spi-dw-core.c
+@@ -32,6 +32,22 @@ struct dw_spi_chip_data {
+ 	u32 rx_sample_dly;	/* RX sample delay */
+ };
+ 
++/* Slave spi_transfer/spi_mem_op related */
++struct dw_spi_cfg {
++	u8 tmode;
++	u8 dfs;
++	u32 ndf;
++	u32 freq;
++	u8 spi_frf;
++};
++
++struct dw_spi_enh_cfg {
++	u8 wait_c;
++	u8 inst_l;
++	u8 addr_l;
++	u8 trans_t;
++};
++
+ #ifdef CONFIG_DEBUG_FS
+ 
+ #define DW_SPI_DBGFS_REG(_name, _off)	\
+@@ -342,8 +358,8 @@ static u32 dw_spi_prepare_cr0(struct dw_spi *dws, struct spi_device *spi)
+ 	return cr0;
+ }
+ 
+-void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+-			  struct dw_spi_cfg *cfg, struct dw_spi_enh_cfg *enh_cfg)
++static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
++				 struct dw_spi_cfg *cfg, struct dw_spi_enh_cfg *enh_cfg)
+ {
+ 	struct dw_spi_chip_data *chip = spi_get_ctldata(spi);
+ 	u32 cr0 = chip->cr0;
+@@ -406,7 +422,6 @@ void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+ 		dw_writel(dws, DW_SPI_SPI_CTRLR0, cr0);
+ 	}
+ }
+-EXPORT_SYMBOL_NS_GPL(dw_spi_update_config, "SPI_DW_CORE");
+ 
+ static void dw_spi_irq_setup(struct dw_spi *dws)
+ {
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index bfdf371bcacb..c16225c5c887 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -158,22 +158,6 @@
+ #define DW_SPI_GET_BYTE(_val, _idx) \
+ 	((_val) >> (BITS_PER_BYTE * (_idx)) & 0xff)
+ 
+-/* Slave spi_transfer/spi_mem_op related */
+-struct dw_spi_cfg {
+-	u8 tmode;
+-	u8 dfs;
+-	u32 ndf;
+-	u32 freq;
+-	u8 spi_frf;
+-};
+-
+-struct dw_spi_enh_cfg {
+-	u8 wait_c;
+-	u8 inst_l;
+-	u8 addr_l;
+-	u8 trans_t;
+-};
+-
+ struct dw_spi;
+ struct dw_spi_dma_ops {
+ 	int (*dma_init)(struct device *dev, struct dw_spi *dws);
+@@ -345,8 +329,6 @@ static inline void dw_spi_shutdown_chip(struct dw_spi *dws)
+ }
+ 
+ extern void dw_spi_set_cs(struct spi_device *spi, bool enable);
+-extern void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
+-				 struct dw_spi_cfg *cfg, struct dw_spi_enh_cfg *enh_cfg);
+ extern int dw_spi_check_status(struct dw_spi *dws, bool raw);
+ extern int dw_spi_add_controller(struct device *dev, struct dw_spi *dws);
+ extern void dw_spi_remove_controller(struct dw_spi *dws);
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+2.53.0
+

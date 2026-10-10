@@ -1,93 +1,193 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C2E3750CF
-	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18623B841F
+	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621322; cv=none; b=VBtEGHlndz6H+dpL5rDsangnK4O6I0I0dT/UgYJEpf2TwSrHflTEgpaphOedPZmk9UDN0vThh+qvUXaNQJSXtER368k3pxAkTxHPIUcxZU29TV433sUtuamzQ44O9VsXcxSVeLoNiuLs4tH61JfN9eVb7FMgUxOCItZYZdDu7Ac=
+	t=1791621778; cv=none; b=sIaQwOINKMLTi9HSQtVqb3+qWAnfYZTOJE+LgKzWQIrredCmpps4aI+ZMMuyCq4i2cnxQxbtgrcGQdKjKYz3zZN9IWzl8ecXoRu0TmdDMOIotncDZ1wN8ia+/3LqqpU+v2owFS4eVqxYA9c/z7Vwb+kAoMAls/8lWX6kg4YCbLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621322; c=relaxed/simple;
-	bh=5mdUzxIr2uleWa+kpKhc7DCtFAC4LuwwFGfpuLa97ZE=;
+	s=arc-20240116; t=1791621778; c=relaxed/simple;
+	bh=T0cHhk3sVg14STn5ch68EKKiVtS63d3OH+IINR9SoUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFWzZ0lwzsFL7Enf4mpYtRTENFjEe9BGmdPli169Ayz2h/OK56FiiInQ2n9x4hPiRPnjOJVvIltmNXN9G8jrZDcKOy7KBcj/aIopPlW9/bu5fygJBU5GOdo962ikxpOCSuXSrO7+B4wGpzcL7R/nf2MRN5BOkAOwsYZErF7tsfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=aayushk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-35829219da8so368723eec.0
-        for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 01:35:21 -0700 (PDT)
+	 MIME-Version:Content-Type; b=BLBx0RTM9qzbbynwkvwTHBEoCHG/oJR7aKNBJLffXwwBnQRiVkkE42C1yJyF8hnZZIp6cTIq2oqyccQKboGNBxAdu9I1YTxSXZ9ZSiSX/LJ3W0s52MI4xMunwsV+Y3G6xn1vPQh6V5Db5qxB0LFuOnIApJ7Pil0KEq9WNaNfwYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Fo5lzCKR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=U60NLG4u; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Fo5lzCKR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="U60NLG4u"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69A2pteK4150918
+	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=; b=Fo5lzCKR6ouvQqMF
+	AfXvk7qHNy+UGr0uB/I75FzhO/oHguIgOagvJ50C1NXQUikQfyJk79H9vjFIlnjB
+	bgTjhV8vSzS4dPkTiu8g6i4oO5GZS5Hbva9CkwhMzsCPgcJ3se2tzthEO1U0YM/h
+	qqKO+KNKfG+Bwtqnb1VFRRoze4vVy6qBoY+WTKXije/fNbbTy3NigBrpI1x3+A0r
+	uIlAHrfVf71v/5ji4yntBkpw+jq2Bhy0bKyGz9N8eUDWvzrEPHJpKe+wvJJZUPau
+	BceKIvfkXsLXb5ZCrcR4QKdS/cROb9qNkdQ3r4GI9dt4fqy1ey8vUMAPPuUjd38K
+	cYoPsA==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h7cxxgp1c-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 08:42:52 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93cb7f9bb86so80388185a.2
+        for <linux-spi@vger.kernel.org>; Sat, 10 Oct 2026 01:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1791621772; x=1792226572; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=;
+        b=U60NLG4u3jcimbiOPlvSarsUzmhvlmXgWTlCnjWhoSzx88fR7emY9fIESym/zdGUq9
+         TNqkL1VvcZpcVAOR2d75f+VHusG0uKzayhYghy0XhqAtPCcUVqxqlegihXsG0HXI6xyp
+         qSW8SyjefBsBO27P6SuVQQuDa+hrf5kWcfDK+2AtBQVgNJzbFVqK050FmZ96UD5WkbZp
+         Ml0T1i/PBshz87SgQX8AC6OWBuRoAaJRucuP+cLWifmRn0lagzyOrl/uufGfCP4uejlj
+         3DWhGJt3gJfXxk2HiHSGYABaNDXmUoutJyX3nS99GpYu8bL3Mjb9AFmlXt+5QOAqh06n
+         bVkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791621320; x=1792226120;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=njAznGdYasKrT1/VCSuQJgMHPzKgYQg5CyE2w0aynkE=;
-        b=So0HFTC5VyKEYu/ZTKkmLYC3Cg50W1k0D7FSlc/XQwHUH8xvYLU7Tz/Ure4rlXUTOO
-         iw14/pU3J6pBUbx7lVfklgRrEqA7wapbviITOFq5BRVrkVVrIoUx/VpvFXe6ubex50eJ
-         I90LAYB7EfnDleWpmO+TI3oEzR8J/ZaYyFeZZ/obWwYWHfKwZhDN1sVKU1EGvMO8Ntpe
-         13O0t2JSimV9nsZotf9E7mxPbwY1/3TeJTwMeMRrY44b6K+kKJVOWxruVi2Q/6JkAnsq
-         yjUOm1XOxQn7l3v96V1UbvRBwy8ZhM3qnUGSl+BvJqP48+V/xQI5Bvj2DJyejojKdI5J
-         ZUrA==
-X-Forwarded-Encrypted: i=1; AKwUvBxH/+aMTg38uw3CvED7tEQa7FYATpxgvQyVZ6kN6Gwi/4jEWDnrh17hEj1zux89guIdNRm0NK4Bv6Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKYqO1amN7+pfIZqTVuSK8xUuryV+07sQTqLFA6Y4Ex//MIepri
-	Fk06UyatSF32vk5il1l6Cbx2yNgTooEk2IjgUViQADxcZYfjd81iNFzZ
-X-Gm-Gg: AYBFou16ILCS2xTAOCRtgUTrfAzFvgd8Gpl9mDkJdEw8Mplhjov3E1KVNMNM+Vl/f5l
-	qpQUIvxDa5393BB8BxryEmKjcKySatRUKtcCVcw7t6kgvrVDZp1WQfG/Zzs/DPpnAFz79+CFqrx
-	oMuM1Y0NGz0jJEYSrTrFWCrPPGOR/hFFSrCRU9nH9ZFJ4HRsnDc/qZTMLS0x9C4FDiyFKBWjycv
-	6rI93QdwYGCCNt0xrtrXLL/Rw4TKFB86sT0pcp7PPld0GP/Li+/YKLiT69f2C1vAB4O4UiWIo/h
-	iMoJlpTUO5Wyo+UHPxoLnevszsb2+wDWgGxd5S3K05e/962etiyZjc1o7oLr2RnJSUwC2BdTFUp
-	0vwxGaw7Qxxy7ABRFjQAcDpvAV644aEox74pT8ERuzzZD0zxf7PBSdu4xyZQlYtTwDfkG9YK5fQ
-	RAxNlI0+dsAN4oPySxDl6o9QZpmU1tv598DOO8Tl5ChqZUBzFM96CdsDbc+x7t
-X-Received: by 2002:a05:693c:87cd:20b0:353:5d7a:cabe with SMTP id 5a478bee46e88-3536c53930dmr6687600eec.13.1791621320473;
-        Sat, 10 Oct 2026 01:35:20 -0700 (PDT)
-Received: from linmach ([182.156.30.23])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537c841579sm12689858eec.4.2026.10.10.01.35.18
+        d=1e100.net; s=20260707; t=1791621772; x=1792226572;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IqymoQ2HDibV8WA0yhfluVKdlQdB/7YbmVl1gD2ORD8=;
+        b=jIFWXIOXcWS6sHfcBlr0X1W0ysFCuT4Ac8CTIs8g42X6AjMfbGsgLlOsgJrotw3GRo
+         DOX1vgKHn2qAONlmm2rjw+zQABRUNFFqDfeI1pCVieXmrdXYQ2BLzj4iP42TMNCF6CI8
+         6sBiqBO1Gur8Kp9HjIGqLdRWYc9iscpH2m/I/gpLug2XpGK6uFT9jGKRZMDYldPkYx13
+         vZ7rQUadOYaxYObCqAdzBP7wQWCFOrKp6cAvo5/3XSYG55fbgeHA50ixZ/smT3sFVSMg
+         CKsMOGG6IUEWghxAnCjmiWVp/7AAcjbH144lm3iozfSrg3B4LdGbswWzcibxIZzD7QnS
+         Fg7g==
+X-Forwarded-Encrypted: i=1; AKwUvBzta3c4AmVHvCNbbJ3tENF+y9WZcJwnGNXJbWOuUM8UrcMImDj388Mxo0GuP2+t96cKhbDKu9owgQg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLhKMIH3SPONmLOPG+P1wb4d98b1RRerokLAfO36vOelnJB3RDi
+	zP+MgVa+2RxCGgpUnvScTpv5UPY36fBIGugdF5PQI9qKojhS/td2VTchfmP2ME9bOdYQbUp4zCo
+	OgXSi5CQ5c7h2GRdpTKLRBH96H9v5HSUTOru9qYYPtWiyHdPAUmsBv8xNo+UFDaw=
+X-Gm-Gg: AYBFou3tqIsBHSlV99wCec7raKy0u+TQHLlfOXJjeFl+2O7Twe+swYPhCF1mEs21uFN
+	o0DaVn89HqHb5j9hW4i1AfowCaqvxEYhgTZrJGnrywq2ufWxBgr6YeqTjGJWHjT6pZLnj6ZFoZx
+	CbbCYTHKQ3uEv6B1gv0rUmTlbDL+XravpCTDpD+Z2HTAniCTqd5MGUnegHF2L74RNrKUHM8Q1k+
+	OyTg1t3mcbkv+8YiFPflWChy5SQBr8G92tMsMBxKx8ZEmcw2NriVe+QkMCdk2t7vO9p53GNq+u/
+	QI4AUXm8R5X6XQ9poLP3S6npKnP2oy8j/QUI9MINRS2/Nhbb9Go81h2KmCHdUI13/80djL8Iq5j
+	9fzsGb4zqMi8pWTGiwGb6FBGaL86+2NOngYH65dBCIn2lVPfd0sI=
+X-Received: by 2002:a05:620a:4146:b0:93e:5929:f012 with SMTP id af79cd13be357-93ebd1bb215mr668129985a.18.1791621771784;
+        Sat, 10 Oct 2026 01:42:51 -0700 (PDT)
+X-Received: by 2002:a05:620a:4146:b0:93e:5929:f012 with SMTP id af79cd13be357-93ebd1bb215mr668125985a.18.1791621771276;
+        Sat, 10 Oct 2026 01:42:51 -0700 (PDT)
+Received: from brgl-qcom.local (126.171.88.92.rev.sfr.net. [92.88.171.126])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a192d3efb6sm49065585e9.1.2026.10.10.01.42.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 01:35:20 -0700 (PDT)
-From: Aayush Kumar <code@aayushk.dev>
-To: Mark Brown <broonie@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aayush Kumar <aayushkmx@gmail.com>
-Subject: [PATCH v2 3/3] spi: s3c64xx: Use snprintf() instead of sprintf()
-Date: Sat, 10 Oct 2026 14:05:04 +0530
-Message-ID: <20261010083504.26261-4-code@aayushk.dev>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261010083504.26261-1-code@aayushk.dev>
-References: <20261010083504.26261-1-code@aayushk.dev>
+        Sat, 10 Oct 2026 01:42:50 -0700 (PDT)
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+        Brian Norris <briannorris@chromium.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+        linux-pm@vger.kernel.org, Ulf Hansson <ulfh@kernel.org>,
+        linux-kernel@vger.kernel.org, Bryan O'Donoghue <bod@kernel.org>,
+        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Alex Elder <elder@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Bartosz Golaszewski <brgl@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        David Lechner <dlechner@baylibre.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hadar Gat <hadar.gat@arm.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Johan Hovold <johan@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+        Jyri Sarha <jyri.sarha@iki.fi>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Linus Walleij <linusw@kernel.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Marek Vasut <marek.vasut+renesas@mailbox.org>,
+        Mark Brown <broonie@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>, Melissa Wen <mwen@igalia.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Olivia Mackall <olivia@selenic.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Srinivas Kandagatla <srini@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        dri-devel@lists.freedesktop.org, greybus-dev@lists.linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-staging@lists.linux.dev, sound-open-firmware@alsa-project.org
+Subject: Re: (subset) [PATCH 00/13] PM: runtime: Convert pm_runtime_put_autosuspend() and friends to a void function
+Date: Sat, 10 Oct 2026 10:42:36 +0200
+Message-ID: <179162175231.5836.15015381844446264252.b4-ty@oss.qualcomm.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261006231900.3230373-1-briannorris@chromium.org>
+References: <20261006231900.3230373-1-briannorris@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: u3UjsJr6c2Ct4dTqPrKJtX-E0JBb3zw3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEwMDAzNCBTYWx0ZWRfX+HifkbX26o3x
+ KKT2kbxIY0MeK5elioqlTyd5zztFmLjRdbbS4QWnR3flTK4vFCZyVI2LNwAplcqbacTfMjErQsk
+ QMRsrOodGqmqCdXaqGyHiabkXHOpKBY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEwMDAzNCBTYWx0ZWRfX/K4XxDI3HdC7
+ uQ5cIlGVpPVi5cskSk+h5CMg/GDW6spqCn3SFmPQAu21DJzp+Ws5vbkuxeJEdLayvDWpPts3jg7
+ 2g4ZbGwiv+0WqC9eWFLu4hCvy5s7nARzrK05/BrUAK0Ynm8iX4Vbw1GIH3Gj1PAIj+7j72gzCKH
+ Bo48SrmkN1ISHfEDpgNdiujzPuGJQe+DdvAjMnyPKjzPne0R/i5VyQC14RYpPcrH10/twUwJQh5
+ jDo0yDS65+V3PKJK1n8VfDFv1miBXvCoWVKG0NBIVTrYpad+388CgST8V0IhIJPX24stygdKVpG
+ eCFbvTOtO+g7QZykSxPg3Hz1mOfoJpfYoB35TmRxdzZplctrNlDs/q9KT8C+DP23SHJcNi01Rzf
+ 0k87rR6dk9AYwskP4WCwCLV7TfWIqUtwbGZLX4LSruQvMO9eoH4PK68xAtTD1ja59oI4n1buLVW
+ ZITm4g9SkPz+Cjv4T0w==
+X-Authority-Analysis: v=2.4 cv=AsJ7T+9P c=1 sm=1 tr=0 ts=6ac9fa8c cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=3oaWUOhNWTYPA9BJS75j6A==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=rmSHi3-zQwwJBmM97rsA:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: u3UjsJr6c2Ct4dTqPrKJtX-E0JBb3zw3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-10_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0
+ adultscore=0 priorityscore=1501 clxscore=1011 bulkscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610100034
 
-From: Aayush Kumar <aayushkmx@gmail.com>
 
-Use snprintf() instead of sprintf() to avoid potential buffer
-overflows when formatting the clock name.
+On Tue, 06 Oct 2026 16:13:28 -0700, Brian Norris wrote:
+> Similar to this effort:
+> 
+>   Subject: [PATCH v1 00/23] PM: runtime: Convert pm_runtime_put() to a void function
+>   https://lore.kernel.org/all/6245770.lOV4Wx5bFT@rafael.j.wysocki/
+> 
+> i.e., commit 3afd8df02433 ("PM: runtime: Change pm_runtime_put() return
+> type to void") and friends.
+> 
+> [...]
 
-Signed-off-by: Aayush Kumar <aayushkmx@gmail.com>
----
- drivers/spi/spi-s3c64xx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 8d4120cf9..8195bf376 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1331,7 +1331,8 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(sdd->clk),
- 				     "Unable to acquire clock 'spi'\n");
- 
--	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
-+	snprintf(clk_name, sizeof(clk_name), "spi_busclk%d",
-+		 sci->src_clk_nr);
- 	sdd->src_clk = devm_clk_get_enabled(&pdev->dev, clk_name);
- 	if (IS_ERR(sdd->src_clk))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(sdd->src_clk),
+[05/13] pinctrl: qcom: lpass-lpi: Discard pm_runtime_put_autosuspend() return values
+        https://git.kernel.org/brgl/c/9bcd1725b0cc7954525e3d0d02fecaec7c7aab33
+
+Best regards,
 -- 
-2.56.0
-
+Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>

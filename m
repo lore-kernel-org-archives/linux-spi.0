@@ -1,42 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7BE4E7802;
-	Tue, 13 Oct 2026 13:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F84FDA77;
+	Tue, 13 Oct 2026 13:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791896513; cv=none; b=lNFI4MepOl1vDuPmw2TxVrewMRRwC2VZOL7MeF+w5iWLC7cHE84ByLYQLts0oMvBkCv/LpbWAqiR5Qb2ITX1waAhLacQnS4gtmqshBGRmNZseL6ex2bc98HPc6Z/ECvFA2fSXjUa/nFRiHSLYW9lGGlhtRWeFnhdLHjj/5mjIXg=
+	t=1791896516; cv=none; b=tZxc7HzlX9/BZscADWGlbpOEkdbtiYLSBnymdQDo0T4/wAlkmczTzAiQJwIkdMa9buENVWR8jzwT1lV8mMRgEYuS3UEFgk2Qf9vFsoPfm2m89vm9qiz09cUz3xNPA++6pEoKd4x2vFV8tGnHKJqViJhW4qt3BPjzYFFq69RP0ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791896513; c=relaxed/simple;
-	bh=NuOh7wBIhZd1RHO4Rus6m4rMR/l7DagzeucNd2UIMtc=;
+	s=arc-20240116; t=1791896516; c=relaxed/simple;
+	bh=dKD1DuP7nA/1WCRMaM4SY6DfPzfhdDIgSp+12Z9T5Dw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=dkGVEmQYplwS89SvHKzJqhFWckfyVjtMmZzYSIRJCbd0LdMjsAojdpQsgJEDGM2VVFKmmZlWJ2oQ+s4RMjtXp5xCKUnCdXGpBoG/rfBwtllh+xfSD2C4OyO929dAsFRDCnbJEl11iG8vFERJih9mqhoffMRDrazEHVVSaw6n1Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaL1sXz0; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Gp1tUDLBaAJ+yP+SXskK7ta6WkfcMKVZTPYgrK4e4RgMq6V3Yw2ZZpcvy9tE6U6BW/spPFntZZb1VjbxXcGQkfT/j2LssSXK/DwRR987mQ9ikyhfCz/6oTIUaWGq8Kq41OvHw08WtwC5T9CtGSCiwSk4h3XycRB/CBB8Gz+9Qyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVH55j1F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaL1sXz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44A31F000FF;
-	Tue, 13 Oct 2026 13:01:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVH55j1F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AAF1F00893;
+	Tue, 13 Oct 2026 13:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791896512;
-	bh=+2KWlNH/dKYBZGhB27/EiZHrWU4ncrZivuoz8zhAMVo=;
+	s=k20260515; t=1791896515;
+	bh=p3fEwqzdUyFVtP8SKxeyVGJSaBF86wuEMEEclRWWWrU=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=BaL1sXz0vei7p6io5bpoMKh777p7eGxXtlIiQrInX2k5dI5BZndHFs0qsIaqZZv0p
-	 MqZNWGXcP9t1yss93KiUNlRBBQcTEC4+O9EuW4Aos4RR8BhG/3njS+X/sImJDELrB5
-	 hHSsnWmU4zU8HzmBm5estxyDdathjH7adDK1fVaedQxtIKeh0CtFA4i7Jz+mPHk6uX
-	 BJ192zm8pWENI9OvExCLW1w5PrS0sPBhB1yE3Qv8DPlv/1oSOnbHn+GZmdfULFTXyS
-	 mt3X2VhKDyaTvEt4D5HqIa65lxkIAA4/19G1uSHjXB8H68nL5yhalPzEk576yQn7ay
-	 uMmFbVrbqPIFQ==
+	b=VVH55j1FwfD0QvYKJktncUMhTL9APb84DAbqwCmgB4/+mWN8nInsUEk7KHNn5isSW
+	 zQRODWqDhikzEy64HoZ3qsgGyvi3+tL4LOrze6AbXlSzS6h+3zcovKJUllc5JV8t2/
+	 N4eBQ6/Q04Wnq/ZvOdmie5V6eR1hF4QM3wcpKFWyamSpboPooSohB0sTThsbGPwCOj
+	 vLXONXIqamuM1jIGjsZMhR8qbPpUUrI/u/sRJy8s6E7cpY4BMbbdEJ/gGq65LS2JpP
+	 UYabKxSisQ1+gCAFiMN31UrJGV+7w7Wa00y2GVA/UstjLt5UbbcT8Fw+czXXMx4HFv
+	 SiqkIWH8O94wg==
 From: Mark Brown <broonie@kernel.org>
-To: Aayush Kumar <code@aayushk.dev>
-Cc: william.zhang@broadcom.com, kursad.oney@broadcom.com, 
- jonas.gorski@gmail.com, bcm-kernel-feedback-list@broadcom.com, 
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261009133631.579644-1-code@aayushk.dev>
-References: <20261009133631.579644-1-code@aayushk.dev>
-Subject: Re: [PATCH 0/2] spi: use sysfs_emit() in bcm63xx-hsspi and
- bcmbca-hsspi
-Message-Id: <179184447901.390394.5153297919246175143.b4-ty@b4>
-Date: Mon, 12 Oct 2026 23:34:39 +0100
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261010151459.30560-1-jszhang@kernel.org>
+References: <20261010151459.30560-1-jszhang@kernel.org>
+Subject: Re: [PATCH] spi: dw: Make dw_spi_update_config()
+Message-Id: <179184404859.390394.13085559188873655966.b4-ty@b4>
+Date: Mon, 12 Oct 2026 23:27:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -46,26 +43,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1499; i=broonie@kernel.org;
- h=from:subject:message-id; bh=NuOh7wBIhZd1RHO4Rus6m4rMR/l7DagzeucNd2UIMtc=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLOae+dtaBzmfr3M5x2d4Nyr/ZWv82RfmToKLetVmB22
- zGJxOfRHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZjIAW6G/0X5c3kyZ4vcnjX7
- 4MmwmOop7AfWfzry8enehpfRuvf0eH4x/DP2PNS7eTbrhl8PJ31o/sk4fePk6Qm6Lrall5lnaT5
- 3a+MGAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1088; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=dKD1DuP7nA/1WCRMaM4SY6DfPzfhdDIgSp+12Z9T5Dw=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLOaR/4rX+n+lzgq7SJxU0c5aESJcqSvXnSgbPT/CUiF
+ 0o/yGnpKGVhEONikBVTZInL4n5ZX/J6Dd/BhW0wc1iZQIYwcHEKwEQOiTEyfLkiOrdUY4fAQo3X
+ 2VNvfam5InpldYOlyakqs3lv56Ys52f4p33wfMDCtaEXZyaE7HP9Zac6aZv49n6G31v+znvXYyr
+ xjA0A
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, 09 Oct 2026 19:06:29 +0530, Aayush Kumar wrote:
-> spi: use sysfs_emit() in bcm63xx-hsspi and bcmbca-hsspi
-> 
-> Convert the sysfs show() functions to use sysfs_emit() instead of
-> sprintf().
-> 
-> Aayush Kumar (2):
->   spi: bcm63xx-hsspi: Use sysfs_emit() instead of sprintf()
->   spi: bcmbca-hsspi: Use sysfs_emit() instead of sprintf()
-> 
-> [...]
+On Sat, 10 Oct 2026 23:14:59 +0800, Jisheng Zhang wrote:
+> spi: dw: Make dw_spi_update_config()
 
 Applied to
 
@@ -73,10 +61,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: bcm63xx-hsspi: Use sysfs_emit() instead of sprintf()
-      https://git.kernel.org/broonie/misc/c/516d487c6037
-[2/2] spi: bcmbca-hsspi: Use sysfs_emit() instead of sprintf()
-      https://git.kernel.org/broonie/misc/c/2bc876264259
+[1/1] spi: dw: Make dw_spi_update_config()
+      https://git.kernel.org/broonie/misc/c/306439eed9ea
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

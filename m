@@ -1,96 +1,100 @@
 Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B5F451991
-	for <linux-spi@vger.kernel.org>; Mon, 12 Oct 2026 10:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B616340406;
+	Mon, 12 Oct 2026 10:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791800005; cv=fail; b=o1Wy4o+L4gSRxG7xUI8xGtvBD4FmNEjQrUH84jTHv0/bnfLjMbZFJuUAVvoSrmr2r/XBYhnsqqJminC7+6oHrYjEU0m6q9ZYEVkkb3+ZIO8LwamsyqNWg8Y1HBpymBzK5nCT+6s9drMZ7lTx6hHV8HV6czu/Lr0R7GjvaV+xnAU=
+	t=1791801259; cv=fail; b=BuJMQmnI2Rpd4rPksM3MJAKtEIFHXYBxGC5dvivnhWCpr22WPK8ZajeB+9RiBEVjME7OPz+wl04j+2tvHgFBCynbjDtc0U3Pgk+bkfFSzPOl/YSiWvkPgdjqZk16JvSeuZV73opeS7EZpsZc9LeQ3qkn2/Qly8meJJuPDYXIUC4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791800005; c=relaxed/simple;
-	bh=q8Jo+NpYxh6eZwIJjy/HYaME5B96iu0iG/w8VR1I/e8=;
+	s=arc-20240116; t=1791801259; c=relaxed/simple;
+	bh=6wp+nmi+yxfBC9GfEpz/UCH1BhUt856/6YdCBwlFP0c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=S+YNjySSb1Iu4i7pgCr2IM5P7shbu2ZXcEXM3pRn0MRS97W0VHZAmUZrbQJag1iA+M3GeijoBT1AO/WJJD1EjxQMFotTSeLlm9eqFS0sGKXqdv/eHwG+7IBsp8ChrmuJItIv/KJHxF8hHw+6ENDdH47BaRMOXBrHbvzNmgM3Oqw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.b=iyC4JFNC; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=J/Oqz7Hq; arc=fail smtp.client-ip=148.163.139.77
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F03siPDh92PYG+6Rkcdh4QDeTtqlBJukyUQ5pHOrB7BAkySBCx7i9J2+SCwy9c84DjSE1aO+udgVlZVmYJd/XVslYkyBnkbWOVIcYaTz9Zn1Pju0kByjPjXork0F6bv2depA33wW82XLQ4oom2OWcKaoAE1+zfl5XKXKH1hcMC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.b=e/9DGzfA; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=1oBDmGMC; arc=fail smtp.client-ip=148.163.139.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.b="iyC4JFNC";
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="J/Oqz7Hq"
-Received: from pps.filterd (m0375854.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8LpSZ1680000;
-	Mon, 12 Oct 2026 06:12:34 -0400
+	dkim=pass (2048-bit key) header.d=vtelectron.com header.i=@vtelectron.com header.b="e/9DGzfA";
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="1oBDmGMC"
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8angn1711698;
+	Mon, 12 Oct 2026 06:32:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vtelectron.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	DKIM; bh=oYejRjcAf7sE4/zNCC992h3eneWbwoSu/i/N+vgbzJA=; b=iyC4JFN
-	C8x+jnSm/a9/fY03y+OCoZ7xO+doz/+J0Fx2DgXzeNHxtTZKJdqbag8tPGXsKwqH
-	7oYHb5/S3N88YogFcB2h/aFZZj9QnvDOjP8hGPoR0bmAdnZVbNc2gZg7mNTEDPV9
-	kFkLdKq9WfZAOUdFM8IPvi7bLJEVTTvXchEhyf8odBS8gl6c1KYh+dIZNKnyEz+I
-	hcRAhiVgucvAY0w8dL45C4H0mRcXEHqXNybeZFYlKe/9ohtMB1oGPJQmRlGRjM7b
-	paiXsmn6HZi5f4oR0WbM1AiwwqznKHA1amuZ16RCuCm0Fq5xwH+NOetw6/IHJWxl
-	uFDR6hXfNFDF/MA==
+	DKIM; bh=bqxsWz+j/RlRHxrxQaM5c1vr7E7TSlRLFjZpXoJSNuY=; b=e/9DGzf
+	AMYFVOS7f8lBuYfBlffGNhqkdmVnW75L8NUcFLHA+TNFkLSti9jN/17mped2ZjOj
+	ezlykGF4feVtPLXQW1dCaoqA3HnnrQJr1IIgj4/w785W/wXe6MMSk6TMuoE7q1Xe
+	rbHfFO5laB1ILDlcUHZQlJ5bKJg9gODIj4CuJ0qbaxgw4+407smS8sILy28TUXLy
+	oKtZ5OclTlP1aGthwoldtK25VQTCS3uYmQTwXWWtX8zqT+KPLGIEwQMYJqWw1Xmq
+	8TInXQkFpPjDZ6ZAFSB+cnBSdvTDyBk4KeacCL7/h10QeUOowC+L0I4DfFMO+QWk
+	c2dW677vKH78eUA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=oYejR
-	jcAf7sE4/zNCC992h3eneWbwoSu/i/N+vgbzJA=; b=J/Oqz7HqPTYD9dj4UuHz3
-	VNYghGTPAP88a3QAxRuqc/65//6T3/oPvBE5b2vHf8DRwVEENqCk56F78imxETOu
-	P0NdUQqAFWc/0GfRajCVdHD+LSI/3xYKIQETg8dQZvYvz4JjuD4N1B5aPHRDKtLH
-	jkRo4Q7BF4BWwRagLKEqfu5aES5oTORGnGUSmcoVRCLdricfKR8ZQg3vYdDm9hPJ
-	SBz94e92Y+GC+wSU3+T/Ict2wAK69YcVAm6m0Psp5ZEVmJdYNc4/61ATg4x5QF/o
-	9hZLVNaaevae9mx0Ys9/3c7u7iW/ZxYsMKC2kbnrVKTRleQfN7y17D3yguWayYsm
-	Q==
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011030.outbound.protection.outlook.com [40.93.194.30])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4h87dgn5a8-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=bqxsW
+	z+j/RlRHxrxQaM5c1vr7E7TSlRLFjZpXoJSNuY=; b=1oBDmGMC9JsE3pXbsc7mQ
+	lVlbb5RwZQ4gUk0mZnBJhV6HOc1/gAb23JTo8G5IfA+2E/Gh4gHOZtnr1DuVjJe8
+	FB/HQxfDEYriLD12ZsT0b5DdVV+ARTMV+4NIj/0HK+bctfJyalzQVqBXKoRNTv4Y
+	H/X18Qr2DN2ZvyUQgYXfHcmXl5VoZNmwF9GOozSXuPu7OQT41QKbBzTnTb0LhKyo
+	W9mNviRBmb+vNwPl90VW1x4MaxqC5gyT6i8E7Qi4DenrqHOE3+tOLcdRy6vpNNXv
+	bEdEJMGlkcO2HYQOangIpTAn/IBFwk09YsQDBFCytjmKon39oRW9p2pDP4gK1k5K
+	w==
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010030.outbound.protection.outlook.com [52.101.85.30])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4h8peca1mv-2
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 12 Oct 2026 06:12:33 -0400 (EDT)
+	Mon, 12 Oct 2026 06:32:28 -0400 (EDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vVZlBZ+Sg60Gctr4ylpPaG7fj29yDiuhivaqp4LKZtgm2ItUL0MvF+8QAHHizwu07xrdEtHvc1nGz7sMxhcyuVA0l33SFBL5vHknLKBYETXzf1KlxWv7NBeV8Z5x4a02B0sOU8FkUdvMcoycDgiTdL3w9ZuVolTQR58VJBd9Ws6D8EoR3tS5mweoi8taOqSukhDBu8oQgGw/vZvqRNfNnANCkLJXjgiJtpjolU1WfaNtEkfBKmGIaFSIb1SJ5POjPO97RyDZVwco4ykOboW1fBxCxfYOTFRTH2uCubDfLuJWuTrgZi7bL+ghReplzdIYt+0oxOGI51gwEXxIzq3c3g==
+ b=RfgD/J7q4r8jtD6iuM+LZXazJFOZlzlbCJPjAau5UOhtVC+FvWd126Yuj8AaSWLLS3iAQFR0E+ci3RBTaogE8HRFhgo4WwCV/UKPNvvbauIbvrzeKS/OGmG0f6zi35WO6Uk0EE3xf8vCA/VEDcnYOzF2Ra/Cn84TxlEU1iTeD4nwoxB1vZwI99WclHAdbB7L6ubJHx0qNHA0bdcNmbl3GDAU++rc43h5qD/S/K2/bfKld0anUfeMGy+eA3Wc8586RCWZMpoKzV9L33ilQbM9PsqVD6IdNCClBBBeueA53MNd0OQ8qZtGnBKc570KycRjFFIH5KmoylkgdlbZdwYa/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oYejRjcAf7sE4/zNCC992h3eneWbwoSu/i/N+vgbzJA=;
- b=eFubkgBHcyGHqADRI7O6PE2bJJwtU1pZRZkuchpsHSj1NMxn3K93/O5yrGfLoXIOxH+AsWMkUBvWC73s6mUe2wmMtF64H67D01phz5ZA2eYkEOtTDfxhCefClRahGGkNGOnSLBVa3yNjdMFKHN5HdsHUpaO3LiMc08JKBfKvBjxsGQiwiOWnN01Q4sCRRj5keEAdLoZW87MsK4D0gAZR1kbFjP4rahoRckiqEt66c3SrkvC6jvNZkPBeZVEJmr5ixAd7VXILl5pb31j6ouL5xez8bBKlFuYWAIx+Hu1Mv0DRVIyoBjg9UFatvXrL3FsqQfEjajwSm1Theq9TZYACtw==
+ bh=bqxsWz+j/RlRHxrxQaM5c1vr7E7TSlRLFjZpXoJSNuY=;
+ b=ZlIXjzrVQ85y7J4GWwbbb0aPwrpWYaL5w48zM/FV3kx+neySTcYVWys4Qg1LCIWb47VLlqMzEyto3rzQQM0ujTZuOYGy0gbeVytbR14egcmsjdk7nYODQmxEkwEW9aXSkXbrzmQwsyniPlfhW6NlBxdfTTX3df4kt37dkExvt5NW3Ozc2vP7y3hGVdIp35LCqlH4t9O/dPWcuQoYZsdnyTBo1uAgpkEyS3GSC4X01QnHecjEF7Uqbhg4z1Z7bZFEN3vm5RwhsdiTC4r/AOC77zKaw+mMEmcLXKsSNgdS+ZvfphLifRTtpR1L4DZAyC8bD4TG74nCWDScCTlTjkSHdw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=analog.com;
 Received: from SJ0PR03MB5469.namprd03.prod.outlook.com (2603:10b6:a03:28a::17)
- by DM6PR03MB5194.namprd03.prod.outlook.com (2603:10b6:5:24c::9) with
+ by BL4PR03MB8040.namprd03.prod.outlook.com (2603:10b6:208:58e::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 12 Oct
- 2026 10:12:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.19; Mon, 12 Oct
+ 2026 10:32:24 +0000
 Received: from SJ0PR03MB5469.namprd03.prod.outlook.com
  ([fe80::2a19:76b2:e731:8c5a]) by SJ0PR03MB5469.namprd03.prod.outlook.com
  ([fe80::2a19:76b2:e731:8c5a%6]) with mapi id 15.21.0496.015; Mon, 12 Oct 2026
- 10:12:31 +0000
-Date: Mon, 12 Oct 2026 11:13:46 +0100
+ 10:32:23 +0000
+Date: Mon, 12 Oct 2026 11:33:45 +0100
 From: Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Fei Xie <fei.xie@horizon.auto>, Mark Brown <broonie@kernel.org>,
-        linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
-Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for NAND
- and NOR
-Message-ID: <asyi_TZWMFTL1xSq@nsa>
-References: <20260928055005.3987624-1-fei.xie@horizon.auto>
- <arp-E1MDFLfV1ASq@nsa>
- <87bj99lef4.fsf@bootlin.com>
- <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
- <asXPFxphyuGXxsfH@xhacker>
- <dde19ed4315a58bb7f109486a05277f40c2a2842.camel@gmail.com>
- <asegz79z-SNqphVs@xhacker>
- <asht8pnVDV80zNXw@xhacker>
- <c747a7e7b0c0ed8157fed2443a40b9ef896d1b1d.camel@gmail.com>
- <asl5H2kE2OR0UCZe@xhacker>
+To: Frank Li <Frank.li@oss.nxp.com>
+Cc: linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+        Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.Li@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Eugeniy Paltsev <Eugeniy.Paltsev@synopsys.com>,
+        =?utf-8?Q?Am=C3=A9lie?= Delaunay <amelie.delaunay@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        David Lechner <dlechner@baylibre.com>,
+        Andy Shevchenko <andy@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v5 1/9] dmaengine: Support bus widths of 32 bytes and
+ above
+Message-ID: <asy3V8Y94kx0WDOK@nsa>
+References: <20261009-dmaengine-support-wider-dma-masks-v5-0-4c4e63a7a1af@analog.com>
+ <20261009-dmaengine-support-wider-dma-masks-v5-1-4c4e63a7a1af@analog.com>
+ <aslBdT8XqNW3L_WO@SMW015318>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <asl5H2kE2OR0UCZe@xhacker>
-X-ClientProxiedBy: MR1P264CA0154.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:54::20) To SJ0PR03MB5469.namprd03.prod.outlook.com
+In-Reply-To: <aslBdT8XqNW3L_WO@SMW015318>
+X-ClientProxiedBy: MA3P292CA0030.ESPP292.PROD.OUTLOOK.COM
+ (2603:10a6:250:46::13) To SJ0PR03MB5469.namprd03.prod.outlook.com
  (2603:10b6:a03:28a::17)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
@@ -99,335 +103,193 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR03MB5469:EE_|DM6PR03MB5194:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7d684c1-285b-4de1-c7ec-08df284953b8
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB5469:EE_|BL4PR03MB8040:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6fa9221b-fb94-47df-29bc-08df284c1a64
+X-LD-Processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|56012099006|11063799006|10067099003|5023799004|4143699003|22082099003|18002099003|6133799003|261009223027099003;
+ BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|6133799003|22082099003|10067099003|18002099003|3023799007|261009223027099003|11063799006|4143699003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	udVVLqLNofqz24s5aS1EvaaXNXI9oPI1kw6vaErGujHNRlgAXjpxh6Owt1YUZWs4oEFqsScHBylRI+hdsDhZAiy4afR2w2WjS5Yc2D3jFaTO4yIxg+fd1bqEz21xHT1BTYnu/4Qtz6iiSahO69O1MrZdn3/cIIIDoVZWY0XzFAHqymYwqa1glKiQdJNeIE4T/IsHzkVNN+Hgi5Zn8aYOvK6cHIvFmnt/GA7Ig9Z9JcRVZAysU+MvkiWx0q0zNb+QlEJTTkIzOQTZmjS8nr5iD8DLkDqZOZTfqycOLIr7RveQLJZQiOrdV3pE+MRJ5oBhRM/ZYYTkqas2fbIByUU3GJG575omqrjyq6wzAb2lFHTYKUknVCzL53jqpmYH2IoUPlf2WQq7rpBxwEfZdIUFjhdOpgutu7b8BYbZGtLkR+IdyZ5cZJ/HIiUpC5z9HNgCCK5uW0z1hFzUnoEmmeAF7kHv7YPY7SUHMqlLq/yPFd79R+4AyyuAgHPinr84Ma8OBcL4ci3/Tchm2IpXCV6EO2OA/eyAzFfTVmazsj8whltAh9daBg5+Y8e4ogLRjCmmb0MJZkD4jy1ZWCGuNKzQcPuDWkEeYrJ+mB8dOovR+azPIvL9p+Tso30XJqayZi2mmpJYYVDC+lqNdzKAJ5inVfxVg0+bi/7PsIMCi1sdJmw=
+ 0aj0M3nYmXLmM8y9Ifk8hEUsHgpd6CaMaYp+9mvE8GN2j4YMzLsd0Vkzb9uTITgVp6MaitAD/Xt4kDjKHypO35Gp7gtplZunPcse3hAwkka36tdN7asLj1p7iuMTSG561ODyBwUjXIhTGYpRT7rAmwnVVFR4ePwgFx9psPk62eXAxQJ9GiUMhTmMVcs2Zgsdr05SaGlbf0tiygfiS5NuzjcrjZjZFdqSJvtZE8CyX+Nf8TMQ4d662WVBHN7uU66B29lbE9Z0ME0PkAmO+25yUN/JRAl/vZQ7stsX1Hnm6ulpn0g+dVNAVp5BIfY/4MCuNB1oNMYYHN7RCly5WFrsdUI54+fwpkP2/ATNTbMxGfImm2HrmYpKA/WjXECv62ZB4I/onswbEna5QjgkfngTa/r51D2Qh3Y+hhl/gSDqW8Keo3BflLkAENa6NUkhyO+rQRE9wsQ1M1LhqCc3MratIwTkZWoeWOXA/pw8rWpnlORSU0baCY6vDMjpx5nu20i/4FSSjUnWafZhkn70b4QGVyD4sZB/uLuNCmV2ax6qNXAs429PtRsqq2XPKAflnp0H4Vv6/K1MBn6hyuc1MMel6qQrsIQOkDz7wKRAYyluISUOzRUu1KG1zHUCfDUbj/sWAaR2jK9YC8C5OGpSPbw6Uekgp9b6ndjEI6FK+7io/iw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB5469.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(56012099006)(11063799006)(10067099003)(5023799004)(4143699003)(22082099003)(18002099003)(6133799003)(261009223027099003);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB5469.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(6133799003)(22082099003)(10067099003)(18002099003)(3023799007)(261009223027099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RGhCaGMrMllWYWNSamZoeTVXTUVWN0pEdXVNYVdXWS9PeDE3dzhrNWtvZHI5?=
- =?utf-8?B?RE5sSm1FRUM3NE5PUm05bWVuZ2dCcUY5T3pxcm10bnhpVis0N3Z1ZEs4NGJX?=
- =?utf-8?B?RGI5Kzg4TVBRZjhURE5wZVRHS0FnbzUvdkthbjBZTTFrYnNrMjJwQm9RdnRy?=
- =?utf-8?B?eW5WTloxOHUxY1FhaVZ5cGlFdEFQL2VrUGo1bmVSYmxob0drbEFuTWFGdmZE?=
- =?utf-8?B?ZXdYZTU2elRzWElVdXptdjJVQVFmT1RmbkRXMEFvcGQzZkIxQ1dnL3NDeDVC?=
- =?utf-8?B?QjEvL3hMZlpMRDVzTUt6dDFaUlhCYmFFdm5xYm1tN2VndElJNWRNbW1OZFBo?=
- =?utf-8?B?bVJ6S0toNVhzbU43VHdkWFpYQWEzcWFnYWdkYUFnczFGaTZCRFk2TWc0MmMx?=
- =?utf-8?B?WXI5UGVJejlQbDlUTHpMTXZOaVd0MUF5ZGdCcndEa0k0Y1I3emtJNTVDOXNM?=
- =?utf-8?B?eFo0aXVsVzRtRGRLd3hQc0VYWEdMMWVuUytUZFRJUEYvVjloRnlUdG1UQSsz?=
- =?utf-8?B?OEdIMkFZTTJrc2t6YkFpaUo2aDFDTHh2MGdBQ1p6K3hBVkJPUkg3N2ZVb2Yv?=
- =?utf-8?B?RndCQlBqR1JXZkk1dmlRSXBiaDdtQmxkZzZBWE5VbzdFSnhmaERPZER0cEVQ?=
- =?utf-8?B?MDNtK2R5VElIcmNBZ1V1Yis1UU9kbVRQRURhSGNvZ0JQamk0SDZpY1phUUlt?=
- =?utf-8?B?a011Mm1zZ2laelRDTForT09Vdy9KZzlrRmFNMmZRWm1MV2dYdUxMUUN2dXNm?=
- =?utf-8?B?MVZldVo0Rm0rQVFjMS9aT3E0QnovcEtvQmpmMFVXbW5hSUpQTVo3Uk8rNExj?=
- =?utf-8?B?K0VISm5xOGFwUTRjb0p5VFhMeFVxS0VOeDhTZWowZ1c3K3QrZVJkTzNyakpq?=
- =?utf-8?B?VGpQV2IvVHRvK0wwN2c1UVBLL0hLL3lXYld1ckhrUEhGY0tNbHF0TlA5WXUr?=
- =?utf-8?B?YWpEV3FDZDMvbzVrd2dkNXpmcHFtcDU1aUdoQkpLdXJjdnBLTXJSTk5IQUtZ?=
- =?utf-8?B?QkNPWFUyR2ZZSzhxVHFuSXVobWsrUlN5OWhwWFY3YjJvcXdWYVc2cHRBNEta?=
- =?utf-8?B?TFdpOTZJd0F4cXZaVllBUkE3VThBdW1MQVBSTTZxaWRmbEJFSW9YYlZ6NmZN?=
- =?utf-8?B?YVE3SmxVVFdIaFJVUUdHS3JFald1aXFLaHk5SklDQ01pTU1NS05uRTVkNndW?=
- =?utf-8?B?WnVBaVh5N25hNXBSQ3gyTHg4OEw0Y296eElNWGtiSlJqZUh3VmJiYjl1MzJE?=
- =?utf-8?B?ZXlSYW9qTW5xbVMwSzYrMm90dDdXU1BySE9DV0UvUWhrMHhabUdSOXorVXlW?=
- =?utf-8?B?RUlxM2hkQVI4cWZaWGVBekNpMTM1dEFTVjBSU0YyU0p2ZWEzYm9WbmZrckRR?=
- =?utf-8?B?SFU3RXV1YVpnV0d6c1NiNHFxN1NMSnRSMTdhK2tFMnd1NXUvTW9ab3hjQmFB?=
- =?utf-8?B?MTlpQXViZ29jSXFxU1kzOENTYlRFOFpTeU1NZGs3L1pZMHpOMThwWFpyNW04?=
- =?utf-8?B?K3FYSmZpMnZlVmMwSEpwcWRDVHAxemJTZnpYTWltT1RIZnVjcEN5aHBFV3pp?=
- =?utf-8?B?bmo3T3IydUplblJ6dFFVd3VCY1diN1RDQjdIL1JwRDJaTTVoZGxMRVg4eEx0?=
- =?utf-8?B?bVBSUnNoa3J4dHFDZHVmSnJkZzFZT3JTUXNaY2F1SjJiR1RPczJ1RXUrMlQ3?=
- =?utf-8?B?b0sxOHBES1loRmlxUWVjZVRqOENqUTVtVWhVRjc0UDFmdkhPVlFSV3VTUEpL?=
- =?utf-8?B?YTJieVJQN2FTSGR2ZjNwSnB1WWZ0ekdtdG1sRUEra3hSd0FIa0ZENGdvV1VE?=
- =?utf-8?B?aS9iUFVDM2FoT0dQSkdMSDducFFadW95VUc3SWlqN3RMRDhQNDlDS0RVT0Vu?=
- =?utf-8?B?Y0d2M0c0ZWhHUStHa3luUlc3LzVPUEpHcW9PRUNPcFA1SDNZUUxtdnFRUWhW?=
- =?utf-8?B?R3VRQzY1SDRiOWdlWGJSSVpyU1NHNlhrdG9GQm8zWXVOTmhTR3hNaDFEcEtl?=
- =?utf-8?B?V3hNdzE5eVBkaFJjTkRRTEVVV3F4dTFROFlLV04zY3J6ZXEzcW0wUHBiZGhs?=
- =?utf-8?B?UHR1NkZYdDQwRGU4ZkJjRDUwNTMzVlZEWmZhai9pNURjbStWbVFra0hOUGRn?=
- =?utf-8?B?Vkc0RlZmamJnMFVBZk1BUFJwdFkxbkNmQlJtZURWY2ltTWlEQ0pLbzNhanpu?=
- =?utf-8?B?ZWx4TlptTUFXa1pNZUhzZVJvVm8wVk5NeTQwZzN0MWxOWFQ0THRZdVdrSVBE?=
- =?utf-8?B?NXNXZldLU1dIUVcyQk4xOGZZSHdaNnRFOEdTTUdORzBFd0lkY1YvZ1dQaERs?=
- =?utf-8?B?cS80TnIwUVZkYVJzM05yQzBjTURtVHF1a00rUEdGc3FXa2I5eitwdz09?=
+ =?utf-8?B?NFpjZGFHUy82TjBMSFJER2hnVWFWbEdJMUlUeDBzaUhZNjJLdTFlc0JqOUx3?=
+ =?utf-8?B?WjZ2QS96UGptZWZzMjl1Z2JOK3RXbW5qdkZDbTkwZkNza0xXZ3NDdE9DZ1N1?=
+ =?utf-8?B?eTNLaFZ4T01zaUdpbzlPREZNaGdGVEt6b1FEM1V2bWZHNnJtNVVqdlVQaDkz?=
+ =?utf-8?B?SHhoOWs0S2pFTzY0QUFvV2dZZG1XeXlxa2tmWmpZNi9JdHlmMG15cnJNejlU?=
+ =?utf-8?B?emlyWlJUNXdyWHJBRXJhWEY2Z1N5WFdKdkx4WU5JV3RwUENpVnY3YWpacHU0?=
+ =?utf-8?B?anBuMGJHL0tiSVpyTUVvaWx1VVdramdmWUlKL0tnSTNCODR0NFRaYU5Wdldh?=
+ =?utf-8?B?QStRT2VidjJUSTdLQUIwczl2eTMzYUxYTVptTk9sRXhXUVNHSnpxdlhzNDhm?=
+ =?utf-8?B?Z010ajVmQmRXanF5Y1psNXErVlJKMm9YbHlhWC9qU3RZQ1hVYjZKZFVYT0RQ?=
+ =?utf-8?B?aktkYWVYaEUvNzhhVzdEdlFZbmVxZ3VlYlRuWFZjcWFSZW1JUUU5dWpBWGpI?=
+ =?utf-8?B?ak5ITkVadVBlUnd0K0ZhaXpSVGl3cWRBWG1sNDFMTFc4b3F2Ly9wMXBtSVZL?=
+ =?utf-8?B?NzNBclZ2OTdPcjNFcWF1dWVvenZaUFFnY0ZVcW1CU1E1RndSVi9jM0RSRlNl?=
+ =?utf-8?B?ZG5JL3pMcnh1bzdRS2NoRXRCWHB1ai8yMWJ1eXNBKzMyS29ZK3hHM0UvNkhG?=
+ =?utf-8?B?aGNkQmhaNlFCZG14NVVMSnljcVFGMnM4Yk1Qcy9iMkd4YnV6enJkVktRVWlq?=
+ =?utf-8?B?UFNyUEVEOWJOK0hhYVpTUTdxN2ZJNmU5d0dEUzRGckY5L2I3WTM3Y3NPd0xl?=
+ =?utf-8?B?RFlvTXJSdi9KUlN3ZnkzRURmNGRxK2RFanJMeFk2VDNLZFYveXVXMWxnZ3dR?=
+ =?utf-8?B?b1NXMERCb3I2ZGM4MmlNU2tqb21YTnhGd2dPOVZBR0ZDWWcvQSs4bjVhSlkr?=
+ =?utf-8?B?b1NnYU5CVUdsTzdLL283dTY2WHI5WU1hTm84TmhqU3NoZ05Yai9CTlNJOFZY?=
+ =?utf-8?B?UG9PQlE2SFZQa05Hcm5iaktPOXFMdzlmM2RuR1V1dDRWc3hoczlQVEE3OHhz?=
+ =?utf-8?B?M2xLUDdWdlh6dHFGUlU2RndLSG1nZHQrRFF1YVNHS25rSnl5aTJDelZoa2Jx?=
+ =?utf-8?B?T2l3T0VpczEwTlNKN080UmR4bjBWbEVaRTB3SjBLS2kwRmpjc2RHWmZVaGxT?=
+ =?utf-8?B?V3o4L1JZMDhkN0hpZlJ5dnFPV3VwWWEyaGduZnpveTB3NzFQeFM0VC9mTnZH?=
+ =?utf-8?B?TXA2T1hoWUt1NUdpeGtiQXpHeithOWxYdzhOMDRRa1pVc04vbzhVS3EyNTNZ?=
+ =?utf-8?B?YnVTVEpMSUNvQ0QyS0xYUGlFWEJkTHhHT1NrekExblZLNm1OMWhydDNGcEx3?=
+ =?utf-8?B?WFozWTdQdm1IQ0tFcmhEOFYvSVlUYnZjV0d6VXlMNTNUUEFJUnlLZmw1cC9o?=
+ =?utf-8?B?UEV4ellWYlVISDk5a2xwa2FTbVk5MUxhQnVZak1KVk5YbnlZZDRCVTYrZGl6?=
+ =?utf-8?B?VUptSjhSU0FONnlzZ3RTOHBRU2dPN3VEL0lMY2dkYytnSndJamtqV0toTVdP?=
+ =?utf-8?B?eHBweVFsZitEOEJWaWFOR2pFTStWbTRHa0VYa014K1hPVDhGZEgrUFRjbVZn?=
+ =?utf-8?B?TUtLM0FoVG13QkVMSTBoT093Q1lUbG5QTEk1d2l2Nlp0WTJrZkhYc0c3b2RG?=
+ =?utf-8?B?Y0JROEs5UDBDRUNUUUdUTVhSc1ptamxGK2sraDMzRmtmWDVWNU1zcnVZMFdq?=
+ =?utf-8?B?ZmthYmVreUI1QjlIK0REZXdrOHZ5WWZCM3VDRktVVVM3SUlMeGtlT0YrVjhK?=
+ =?utf-8?B?VUk1aTJLTHZwWU1oQ1kxcEI0NW9RMndMaUpjU3hNRXVHaGhjclZTNEVKSEJ2?=
+ =?utf-8?B?OEFuYkZaR04zbGtXamtMQjBYRXhZaHFqNDVuTVRDbkJia3BYeHVMNGMzTS9m?=
+ =?utf-8?B?L3AyRGRTNWZxcU0xSUlRcWdpamJrcXNGeEtKVWRLNnc3bVRCOWtyUmN5VW9E?=
+ =?utf-8?B?dkVteXJ5eHVRZVpBTTRnT2syMTNGYnltUXhESVh1VlBIcE5pR0ZNMTdYL2E5?=
+ =?utf-8?B?YWh1MTIwcUhSZmM0bDR2ckxjUEhkRWdTNStSaS91R1E2aFJYdmxnMml6WXRh?=
+ =?utf-8?B?UDVSUHFJSGxPOE1tTWtwWDVyU293bHBhWXBPZnpoUzdkZ0NMNm41czV5V3Er?=
+ =?utf-8?B?MnhUMjNLc1BXMCtFeFoxeG1HaDJtcmgzZXczajhzSjhxTWY1QWdpVEJIWDdQ?=
+ =?utf-8?B?aGo1cU1qQThLNk5mTDFKNFlaeUdLREZoWTFBVWNqVGZEMUMrZ2ZWVitPY0Nx?=
+ =?utf-8?B?OFI2d05jSEFxRDN1WFNPWGhQOS96NnN1OUJwSFJCK2xyby9LQllrdz09?=
 X-Exchange-RoutingPolicyChecked:
-	faG5sTnikQGSL+42FobRYnIDk8Mzyu4C0ks/it+tyEzRrzjdcN9UPbe90pyERupqnMnPADha9DjymtU81D5+6sx/cGeXQRKKcgJboHHvaYepemKlKkybmAPWVVpXYMHPGWTTpD+w1zDlFCbQ5nqTrAcRVOGCgHwXfUNm4UYVAxCduNxa7Y33N0SfoUAJ7uFisaD6tzz9qanLkFxykdFtGKor3cpS6YfE4OEMIvYgX79xk2a0WYIZgjwe+kfCKYoZ/PZSaV2rbN9PAJpjrMOaaM21e3V89sFKYMrDsPbfEPxX8cubste4sbOwVVGgbe7OainjgtTJdTJ6s2VPsAY68g==
+	IclGVlnqpCuNzHC+gyCNlFbnvG4HDoOb0sTj4OKnt+11NgEIdDRHga/rHkA6gq76GVUQuyIAZ7cySgZaDSxDidqfV6geOZMyBKdWIFgDYzRIv+/h62aqIa/HgrNvnMm4o/iiiE3b81uvUplR/xDLzlf6U1eR3adAJ0qMhTuOnDCeAXma30oN4l6RepIBHk2myXPnR2eVPfr1CvQ/gJk6iZviPMzrNysk3UsJ1NZOAr/X1Dif9YXYjQKEXvTsKn8f+Sa7WhfKTzasWAlb7arsvNiiEKe/Uiqv40EDqSxI7LnMvlB5ghJho914yCIC5y+rXq+4hKj0sVwfUQpNb+3Lvg==
 X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7d684c1-285b-4de1-c7ec-08df284953b8
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fa9221b-fb94-47df-29bc-08df284c1a64
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB5469.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 10:12:31.5106
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 10:32:23.6426
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LfP9kabWA4/f6Jr6Gm/2ePDygObjeuYskdl0dTcwca//lHoFOglFblWVHouEGYnZxgwwFkRm8TwCcLE7RGK+Vg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR03MB5194
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA0MCBTYWx0ZWRfXxoIvWhpNgOit
- 83QBo4bcbOp6OhoVHTLZ/V01PAVmv00H6cX2PZ/hiJziwgCYKMxGGv64cgdgop4Gs3gq0XzZf9X
- 7UaQZa/I1q6pgfl+M+ZAZecsydPHf1/i1Xlcr+TaRMPQfYOiDJECGgKURK7oKPbXnNPp4kkyrIB
- NCUS/RSTXDtDID9ztmPamkLcc1D0nC7YAx/X0HclA7d3qkzX7+cyBXGH/DLv8J95CqieV0ClcXG
- WipEPnE9q0hcTgjjvYTjltMm0LyvdHoU+IAALm1q3ZTZkIu2wXcklf9/L4EENNXutUAanEFeLaL
- o8vlD6A0XVYt4QweO6xTrxY6RpccFUvxR4mKQU0efVGw8bgFhM4ZQ8TThgcRHuMtba+R5y5MmES
- ahuTj8QrEt7/zOzZVVv2WBwWNJuMjpo97inRCEvbO2tQI5dgoj+MpQbOBB3Op0Uu5fHChRkcQzY
- aLUXkJB0z3LkNtDi6Jg==
-X-Proofpoint-ORIG-GUID: FFjKZuOnvFeqnnp5pxFe6SoIvo2n8TPI
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA0MCBTYWx0ZWRfXyxmycGZWDM2G
- +fXWkjZMsEUz0jTpxLNhQZ4VAvydEbhAqjVP5NYHBbVlHenMj/xrnREsRLj94mZbPm3tB0zfJAE
- 8upcXHvnOouQYowhWMDrwYQdrcuRY3h0Pmrapo46MqWr12naYl+T
-X-Proofpoint-GUID: FFjKZuOnvFeqnnp5pxFe6SoIvo2n8TPI
-X-Authority-Analysis: v=2.4 cv=Ea5d0/mC c=1 sm=1 tr=0 ts=6accb291 cx=c_pps
- a=e/sPstj0vE6DIEdYTBOJlw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-MS-Exchange-CrossTenant-UserPrincipalName: LD4l60lZYSiGs0LNTBzr2C48FXe86DcrlgzYeX7t+IxnED1ugnId/f4mf5Z71CzvCkI4Mw3qZjx0V46YY1rpmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR03MB8040
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA0MSBTYWx0ZWRfXyIsgW7LZIPEk
+ cAict3ovqSnRBDviPGSLRsEVTRsZ5kXM91gI49OqvGXKUIkqeFfhmhlLo7PSAf9WN8gqRgm8Tox
+ B+KI6b67Tewm1LKEfG6v1hOCBOG+ymnBouSXx9eN6LJkKQbwedMs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA0MSBTYWx0ZWRfXwRD6jBmCnIsL
+ olD6nZoS2tM09pwg/fM9dvK8tJrbUEu/G7u+SJ7rEYyQTgt37LkcKaSEphDH8uxacIbqO5ySsOI
+ YTv5CRY+WZ2PoHCbRSgVqIBj4tC2BkeifKAGtf0j1VBplxHuXXFZaN8GWsZXtjabZ+3Gp5vYWFx
+ 9oVvZh4rCoL/9jB0tYYcyJj9ppiuzChFd2ni6J5g7kicA8uaLigrB+lDRojEq2FaefgpzRDfG67
+ +8x+yq7iSZiYx9HQRumcQiUKd18ET7eVyFemE7p42GLLrtGfH8G2dJE+C2nvFkCuG6KhIKyp5k+
+ 0zQuvAM8LmQ332XipCdlwo92jWZ9UPQMj8+FcntYQ17eYBQx1CrWaWeJKmEbXffVTkp7OQyrZ4O
+ MIm62GmXxt6PlhCBmnfrxJd1XSBqgM7BkwkxI1uHI3ZRr06wUfGDDRswVKCnsWbOOVNB1KZBge6
+ jqX3BOj4uxQA4vyverw==
+X-Authority-Analysis: v=2.4 cv=AMeVrcbb c=1 sm=1 tr=0 ts=6accb73c cx=c_pps
+ a=jDwMdcx0fGNsu9pFyB9b3w==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=M51BFTxLslgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=iZSIUCweCk2Oy3QsdGPA:22
- a=gAnH3GRIAAAA:8 a=Yiv1tTK3WQUpY4BrbpoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=0sLvza09kfJOxVLZPwjg:22 a=ugNRTJOwpmtT476g4l8T:22
+ a=gAnH3GRIAAAA:8 a=QYabyLya7rksitipNSUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: _RsPAqeDpx1ToLTb2puBSqdMBvgJ-BGG
+X-Proofpoint-ORIG-GUID: _RsPAqeDpx1ToLTb2puBSqdMBvgJ-BGG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-12_03,2026-10-09_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0 suspectscore=0
- bulkscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120040
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120041
 
-On Sat, Oct 10, 2026 at 07:30:39AM +0800, Jisheng Zhang wrote:
-> On Fri, Oct 09, 2026 at 07:17:35AM +0100, Nuno Sá wrote:
-> > On Fri, 2026-10-09 at 12:30 +0800, Jisheng Zhang wrote:
-> > > On Thu, Oct 08, 2026 at 09:55:27PM +0800, Jisheng Zhang wrote:
-> > > > On Wed, Oct 07, 2026 at 07:12:57AM +0100, Nuno Sá wrote:
-> > > > > On Wed, 2026-10-07 at 12:48 +0800, Jisheng Zhang wrote:
-> > > > > > On Tue, Oct 06, 2026 at 07:50:44AM +0100, Nuno Sá wrote:
-> > > > > > > On Sun, 2026-10-04 at 16:37 +0200, Miquel Raynal wrote:
-> > > > > > > > Hello,
-> > > > > > > > 
-> > > > > > > > On 28/09/2026 at 16:02:27 +01, Nuno Sá <nuno.sa@analog.com> wrote:
-> > > > > > > > 
-> > > > > > > > > On Mon, Sep 28, 2026 at 01:50:05PM +0800, Fei Xie wrote:
-> > > > > > > > > 
-> > > > > > > > > Hi Fei,
-> > > > > > > > > 
-> > > > > > > > > > Hi Nuno, Miquel,
-> > > > > > > > > > 
-> > > > > > > > > > Thanks for asking for benchmarks. I backported the 32/64-bit STIG
-> > > > > > > > > > SDMA
-> > > > > > > > > > transfer changes from the patch Nuno pointed to [1] to our vendor 6.1
-> > > > > > > > > > kernel, and compared that STIG path against the ACMD SPI NAND path
-> > > > > > > > > > from
-> > > > > > > > > > this RFC. I have not applied Nuno's separate ACMD read
-> > > > > > > > > > implementation;
-> > > > > > > > > > the figures below are for the implementation in this RFC.
-> > > > > > > > > > 
-> > > > > > > > > > The device is a GD5F4GM8RE SPI NAND (2 KiB pages, 128 KiB
-> > > > > > > > > > eraseblocks)
-> > > > > > > > > > on a Horizon J6B board, running at 80 MHz in quad SDR mode. Both
-> > > > > > > > > > paths
-> > > > > > > > > > used the same board PHY configuration. STIG needed one additional
-> > > > > > > > > > dummy
-> > > > > > > > > > clock for the EBh read-cache command on this board to return correct
-> > > > > > > > > > data at 80 MHz. This is a local test adjustment, not part of the
-> > > > > > > > > > posted
-> > > > > > > > > > RFC or [1]; I excluded the incorrect STIG reads from the comparison.
-> > > > > > > > > > 
-> > > > > > > > > > I ran flash_speed -c 5 -d /dev/mtd18 three times with each mode. The
-> > > > > > > > > > numbers below are the arithmetic means, in KiB/s:
-> > > > > > > > > > 
-> > > > > > > > > >                                STIG      ACMD PIO
-> > > > > > > > > >   eraseblock write speed      3685          3555
-> > > > > > > > > >   eraseblock read speed      12468         14222
-> > > > > > > > > >   page write speed            3671          3510
-> > > > > > > > > >   page read speed            11931         13716
-> > > > > > > > > >   erase speed                40000         37647
-> > > > > > > > > 
-> > > > > > > > > So this goes along with my expectations. I think we can all agree that
-> > > > > > > > > PROGRAM + ERASE is not worth the trouble? We even loose performance...
-> > > > > > > > 
-> > > > > > > > Yeah.
-> > > > > > > > 
-> > > > > > > > > > For a separate sequential-read test, I erased and programmed the
-> > > > > > > > > > first
-> > > > > > > > > > 64 MiB with known random data, then checked that each mode read back
-> > > > > > > > > > the complete area byte-for-byte. Both SHA-256 hashes matched the
-> > > > > > > > > > source;
-> > > > > > > > > > the reported ECC failure counts were zero. I then ran:
-> > > > > > > > > 
-> > > > > > > > > What do you mean by sequential read? Does your flash supports
-> > > > > > > > > continuous
-> > > > > > > > > rads (or buffered mode I think). If so, I would expect much better
-> > > > > > > > > number for the ACMD case. But that can be the issue of having both the
-> > > > > > > > > controller and the chip trying to walk pages.
-> > > > > > > > 
-> > > > > > > > Sequential, continuous and buffered should mean the same in the NAND
-> > > > > > > > context.
-> > > > > > > > 
-> > > > > > > > > >   /var/busybox/time -f 'real=%e user=%U sys=%S cpu=%P' \
-> > > > > > > > > >     dd if=/dev/mtd18 of=/dev/null bs=1M count=64
-> > > > > > > > > > 
-> > > > > > > > > >                           STIG              ACMD PIO
-> > > > > > > > > >   elapsed (three runs)    5.30/5.28/5.26 s  4.66/4.65/4.65 s
-> > > > > > > > > >   mean throughput         12.12 MiB/s       13.75 MiB/s
-> > > > > > > > > >   mean system time        3.55 s            1.06 s
-> > > > > > > > > >   process CPU usage       67%               22%
-> > > > > > > > > > 
-> > > > > > > > > > On this NAND, ACMD improves the 64 MiB read throughput by about 13.5%
-> > > > > > > > > > and reduces the reading process's CPU usage by 45 percentage points.
-> > > > > > > > > > The flash_speed results show a similar gain for reads, including
-> > > > > > > > > > single-page reads.
-> > > > > > > > 
-> > > > > > > > FYI, if you pull a recent version of mtd-utils, flash_speed can
-> > > > > > > > benchmark continuous read improvements with the -C option.
-> > > > > > > > 
-> > > > > > > > > > I do not see a program or erase throughput benefit:
-> > > > > > > > > > ACMD is slightly slower for both in this setup. These are SPI NAND
-> > > > > > > > > > results only; I have not benchmarked the NOR path on this board.
-> > > > > > > > > 
-> > > > > > > > > So CPU results are the bing thing here. I guess we need to decide if
-> > > > > > > > > it's worth the amount of complexity it requires for the whole thing to
-> > > > > > > > > work. As I mentioned, if the chip has continuous mode and we try to
-> > > > > > > > > read anything bigger than page size we should let the nand chip to
-> > > > > > > > > walk the pages and that means the behavior we have today (IMHO of
-> > > > > > > > > course):
-> > > > > > > > > 
-> > > > > > > > > 0x13 (STIG) + wait + read from cache (ACMD)
-> > > > > > > > > 
-> > > > > > > > > If we're only reading a single page then the logic in this series would
-> > > > > > > > > payoff (slight performance gain + significant drop in cpu load). One
-> > > > > > > > > simple
-> > > > > > > > > way for doing this as a starting point would be:
-> > > > > > > > > 
-> > > > > > > > > * Nand has cont mode -> xspi controller does nothing special
-> > > > > > > > > * Nand has no cont mode -> Aggregate the xfers together.
-> > > > > > > > 
-> > > > > > > > I'm fine with static decisions like that, but my understanding of the
-> > > > > > > > above is that ACMD mode is useful for all reads. so I don't get why you
-> > > > > > > > would no use it for all. Maybe because it would break continuous reads?
-> > > > > > > > (sorry I lost a bit of the context already).
-> > > > > > > 
-> > > > > > > Exactly. In ACMD, is also capable of "walking pages" for reads bigger than
-> > > > > > > page
-> > > > > > > size
-> > > > > > > (hence the need to know the flash geometry) and IIRC, that does not really
-> > > > > > > work
-> > > > > > > well
-> > > > > > > when the flash is also doing it.
-> > > > > > > 
-> > > > > > > > 
-> > > > > > > > For writes and erases however, it seems like we could keep the STIG path.
-> > > > > > > > 
-> > > > > > > > > Doing something dynamic would be much more complex I guess. With the
-> > > > > > > > > above reasoning, having some mem_info() kind of spi_mem callback to
-> > > > > > > > > tell
-> > > > > > > > > us things like geometry, continuous mode support, etc would be enough
-> > > > > > > > > to
-> > > > > > > > > handle the above I think. The reasoning is that reading a nand page is
-> > > > > > > > > always like spinand_load_page_op() (opcode 0x13) + spinand_wait() +
-> > > > > > > > > spinand_read_from_cache_op() so we could probably aggregate everything
-> > > > > > > > > in the last call on the controller side without complicating the nand
-> > > > > > > > > core
-> > > > > > > > > logic.
-> > > > > > > > 
-> > > > > > > > In general, drivers making assumptions has been a disaster in the raw
-> > > > > > > > NAND world. This was the main reason for the ->exec_op() introduction
-> > > > > > > > there: giving the whole operation to the controller so it can decide
-> > > > > > > > what to do without guessing. But we thinking at the operation boundary,
-> > > > > > > > not at the "set of operations" level. Since ->exec_op() in the SPI NAND
-> > > > > > > > subsystem has been written following the same philosophy, I fear we're
-> > > > > > > > going to try make rounds fit inside squares. One of the possible
-> > > > > > > 
-> > > > > > > Fair enough! Agreed
-> > > > > > > 
-> > > > > > > > approach would be to mimic what we've done for the some limited
-> > > > > > > > controllers: pack everything in one single op (see the _monolithic
-> > > > > > > > suffix in drivers/mtd/nand/raw/). That's just one idea.
-> > > > > > > > 
-> > > > > > > 
-> > > > > > > I can take a look mostly for curiosity as my intention is not to "steal"
-> > > > > > > this
-> > > > > > > work
-> > > > > > > from Fei. If everyone agrees (specially Fei), what I can do is to send my
-> > > > > > > simpler
-> > > > > > > patches that just support ACMD (without any special distinction between
-> > > > > > > Nand and
-> > > > > > > Nor)
-> > > > > > > For Nands, I have a mix of STIG and ACMD, where big gains come from Nands
-> > > > > > > with
-> > > > > > > cont
-> > > > > > > mode.
-> > > > > > > 
-> > > > > > > Then we can build on top of it in order to improve Nand support (mostly on
-> > > > > > > CPU
-> > > > > > > load).
-> > > > > > 
-> > > > > > I'm also interested in this driver's performance. A bit off the subject
-> > > > > > but related question: Usually, the Soc may connect the xspi to dma
-> > > > > > engine, I'm curious what would be the benefit of adding dma engine
-> > > > > > support instead of ACMD? Is dma engine support simpler and
-> > > > > > is the gain(performance + cpu load) more?
-> > > > > > 
-> > > > > 
-> > > > > I'm not familiar with that approach tbh. But I would assume performance to be
-> > > > > pretty
-> > > > > much similar to what I have given that ACMD uses the IP internal DMA engine.
-> > > > > But not
-> > > > > using ACMD means not having the cpu gains at least for the smaller transfers as
-> > > > > we
-> > > > > would not be able to aggregate transfers. FWIW, given that you might not have
-> > > > > looked
-> > > > 
-> > > > Hmm, my platforms connect two dmaengine channels to the xspi controller,
-> > > > but I haven't added the dma-engine support to the driver yet. If the
-> > > > ACMD is enough, why HW connects dma-engine then? Just curious, there
-> > > > must be performance gain I guess. But I'm not sure and I don't have
-> > > > performance numbers.
-> > > 
-> > 
-> > SO the IP has an internal DMA engine capable of acting as controller and driving the
-> > bus AFAIU. So we do not really need any external dma_chan. Just need to use the dma
-> > mapping API,
-> > 
-> > > Aha, my platforms don't enable the ACMD support, instead, connect the
-> > > xspi with dmac.
-> > > 
-> > > So when upstreaming ACMD support, the driver needs to detect the ACMD
-> > > support either dynamically or via. DT. Unfortunately, I didn't find
-> > > any register can export the ACMD availability. DT is the only way?
-> > > Or issue a simple ACMD and check SDMA error?
-> > 
-> > I'm really not sure on your usecase. ACMD starts to payoff really when the transfers
-> > start to be big enough. For example for my usecase, Im only using ACMD for reads
-> > bigger than > 2KiB. That number is fixed but I suspect it's not that simple given
-> > that It might depend on number of lanes and clock speeds.
-> > 
-> > If I'm not missing anything, the easiest way to handle things would be to detect
-> > dma_chan from DT and if available use it instead of ACMD.
+On Fri, Oct 09, 2026 at 02:33:09PM -0500, Frank Li wrote:
+> On Fri, Oct 09, 2026 at 04:52:53PM +0100, Nuno Sá wrote:
+> > The src_addr_widths and dst_addr_widths capability masks encode each
+> > supported width as a bit whose position equals the corresponding
+> > enum dma_slave_buswidth value (e.g. DMA_SLAVE_BUSWIDTH_4_BYTES sets bit
+> > 4). As these masks are plain u32, widths of 32 bytes and above
+> > (DMA_SLAVE_BUSWIDTH_32/64/128_BYTES map to bits 32, 64 and 128) cannot
+> > be represented at all.
+> >
+> > Introduce bitmap-based bus width capabilities that span the full enum
+> > range, through a new dma_buswidth_mask_t type modeled after
+> > dma_cap_mask_t. To allow DMA controller drivers to be converted
+> > incrementally, the legacy dma_device u32 fields are kept alongside the
+> > new masks and the core folds a legacy-only driver's u32 into the mask
+> > when the device is registered, so consumers only ever have to look at
+> > the mask.
+> >
+> > The fold is bidirectional while both representations coexist. A driver
+> > that only fills in the legacy u32 gets its mask derived from it, so the
+> > consumers already converted see it. A driver that only fills in the mask
+> > gets its legacy u32 derived from the mask, so the consumers not
+> > converted yet, which read the legacy dma_slave_caps fields, keep working.
+> >
+> > On top of that, dma_get_slave_caps() derives the legacy dma_slave_caps
+> > masks from the new ones when a device_caps() callback adjusted them, so
+> > that a converted controller narrowing its per-channel capabilities is
+> > still seen by the consumers not converted yet, while a driver adjusting
+> > the legacy masks directly keeps working.
+> >
+> > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> >
+> > ---
+> >
+> > Andy, did not take your tag given that you're the one asking for the
+> > split and since we ended up not doing it, not sure if the tag is
+> > to be kept :)
+> > ---
+> >  drivers/dma/dmaengine.c   |  51 +++++++++++-
+> >  include/linux/dmaengine.h | 208 +++++++++++++++++++++++++++++++++++++++++++---
+> >  2 files changed, 246 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> > index c5fef57b5adf..4ba9d6c7448a 100644
+> > --- a/drivers/dma/dmaengine.c
+> > +++ b/drivers/dma/dmaengine.c
+> > @@ -33,6 +33,7 @@
+> >
+> >  #include <linux/acpi.h>
+> >  #include <linux/acpi_dma.h>
+> > +#include <linux/bitmap.h>
+> >  #include <linux/device.h>
+> >  #include <linux/dma-mapping.h>
+> >  #include <linux/dmaengine.h>
+> > @@ -592,8 +593,11 @@ int dma_get_slave_caps(struct dma_chan *chan, struct dma_slave_caps *caps)
+> >  	if (!device->directions)
+> >  		return -ENXIO;
+> >
+> > +	dma_bus_width_copy(caps->src_bus_widths, device->src_bus_widths);
+> > +	dma_bus_width_copy(caps->dst_bus_widths, device->dst_bus_widths);
+> >  	caps->src_addr_widths = device->src_addr_widths;
+> >  	caps->dst_addr_widths = device->dst_addr_widths;
+> > +
 > 
-> The ACMD needs an external SRAM, dmac needs an external dmac controller.
-> So Below case is also valid: no dmac,ie no dma-chan from DT, and no ACMD
-> support either. Especially, lowend SoCs would choose this combination.
+> Remove this empty change.
+
+ack
+
 > 
-> It seems something like "cdns,acmd" bool property is expected, but
-> we need to ask for DT maintainer's suggestion.
+> >  	caps->directions = device->directions;
+> >  	caps->min_burst = device->min_burst;
+> >  	caps->max_burst = device->max_burst;
+> > @@ -611,9 +615,31 @@ int dma_get_slave_caps(struct dma_chan *chan, struct dma_slave_caps *caps)
+> >  	 * callback to override the generic capabilities with
+> >  	 * channel-specific ones.
+> >  	 */
+> > -	if (device->device_caps)
+> > +	if (device->device_caps) {
+> >  		device->device_caps(chan, caps);
+> ...
+> > + * Return: 0 on success, -EINVAL if @widths contains an invalid bus width. Note
+> > + * that the bus widths validated before the failing one are still set.
+> > + */
+> > +#define dma_bus_width_set_many(mask, widths, n_widths) \
+> > +	__dma_bus_width_set_many(&(mask), (widths), (n_widths))
+> 
+> This is not good to get first argument pointer here, which will cause
+> confused. check others.
+> 
+> #define dma_bus_width_set_many(mask, widths, n_widths) \
+> 	 __dma_bus_width_set_many((mask), (widths), (n_widths))
+>
 
-Hmm in my implementation, not really sure the external SRAM is needed.
-Might be wrong, but seems to be only needed for command/descriptor
-buffering (which indeed is needed for this patch). Nevertheless, the axi
-requester port needs to be connected to be able to act as DMA controller
-on the bus (or else your usecase).
-
-So, it seems to me that DT is a sensible choice as ACMD does depend on
-how the IP is integrated in SoC. For example, on the platform I'm
-working on (sc846) the DMA port is connected on the A55 side but not
-for the SHARC cores.
-
-So to keep it simple a "cdns,acmd" would say that we can use this mode.
-Then, having dma_chan on DT would decide on whether we use external or
-or internal DMA.
-
-> But if issuing simple, no-side-effect ACMD then check SDMA error
-> during probe also works, then it's better than DT property IMHO.
-
-All of what we've discussed seems fit a DT property so I wonder if the
-added handling/complexity is worth it.
+Sure, but FWIW, I just followed the same style of the dma_caps macros.
 
 - Nuno Sá
 
+> Frank

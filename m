@@ -1,79 +1,79 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331754146B
-	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 22:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB9F5293F7
+	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 22:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791930377; cv=pass; b=G/ez+3wJ/qfK7M+1yk1WNAvieKUToy3HdgPVeuCju2nqzF6AJ5vGbJXuxhRkSs4gXHU3UUE4nH4lj+tRieyVow6VNKMOcWvh/q5RjjAb/cWJWJhnWqpmDqpc6HYhsgzuSSj5i7TSyV5abk7nneiLxGmHhDl9MKeOrNci6bWS4gc=
+	t=1791930516; cv=pass; b=GL+LbOPEZFg+bOEBA0wGFtK12NGEJSXnHR03kM9qUZ/4pFav7YiQz7M6/YHJcidpoxkfhzjrJvaBy7IJMz8ATWHDl7JuIJ1Zkd8e5Gsn+vwupQXYzJ+AWLwIwm/UbP523eyKqVU+Gm0nZBYxxVTR31dae9W6YLq75y+SdMxkC1A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791930377; c=relaxed/simple;
-	bh=LHKyaN6WUugoUSp5MeLqyUxtlolwPgBXkaD5KlRFm9s=;
+	s=arc-20240116; t=1791930516; c=relaxed/simple;
+	bh=LbWPDwQYb1MNttmrZiIyG9Roqv9R3ER6b8JaxbDgP4I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FCtWwfPgcnl/vGY24fIOhLPR9KoBULnqMNVleS6qdcbW4cTMAPgZXxEaPvLgSPPXeCC3hL2LPV8lpFVrF3L60VIUbwqCOIYphkxnzG3udc8AmQrrIJBZIvuxFBX1gzdnP+ur5E++wpN9BE+6jrxiTPrG1L/TGb0jdztQRuIm5iw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=C4/6EXUW; arc=pass smtp.client-ip=209.85.128.179
+	 To:Cc:Content-Type; b=OpxJJvz/39tlH4ZwVP3w0Dq9I3mH9+l/cGSXx72TRS3Yxg183pszQGVZPFomCBfhO2S3wzWWBobsLbwDjvzwA3pUvd3LmRcY25dDPhiiOFYhIKE33UQoCNScjyo9/LOJSDx0F4MiZAiyVF6rFsbP2N0Xo5l0EPFS4ZqQteuoGdE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DUSXHq6a; arc=pass smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="C4/6EXUW"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b0a36f1c95so4535797b3.2
-        for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 15:26:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791930374; cv=none;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DUSXHq6a"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-677d35fd1d2so3425169d50.1
+        for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 15:28:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791930513; cv=none;
         d=google.com; s=arc-20260327;
-        b=df1kBceXTVls/8xezEzitH0XSAeHxntY0OdkdIbSHvxdNkEAxBOhnOzz7D1SB38Wwu
-         2jEj9T5WBEW8gc8U8fI9zd9CG0989rnkewI0+Fn1LW93ZbLoRW+pTFkoOoG6KddBvXkm
-         ou+z1qTa3aCkxBKZjYRm3RDEStYsEuXxnRZsTsFyYxBboKH6V6X+aaoFC6PX8FpMeFSu
-         CzfbywIdTcREYMJ4mB105vkYn6Nb6rBPoTc1m7kcBWenPEkenYWEHZLcspzy3tj3jnrV
-         xGrUS4S5QvaxP+9Q6Scob1TNMkOEQ/kTjhdQPoKcyx03T7HaKHlaHCMKvkzaA2nWQ3zV
-         9fLQ==
+        b=WoQI11xYBGPDEgJO7UOu6qGoWSWIG3gu7KhGRrFvuc9CpVbI05cAV+5QFbhggsGJXj
+         xtcBBtv1wBr8wkx1MRQVkfQVKVyIitDGJxwCKnz1ICty4ToIPjAHz5PQr/1arKrscPZl
+         5IbEdP0226GnAlpY2J2ObUCFMbrG0/T0wHZmLgLunuyhk3yNfux29DXbFTx0gFgtVaXH
+         EHfFL4QcPNJd+j6amzAP82nKqLyvkH8NOdpZ8/teA9vggZBCkenWnjfz5mEtI4EMRF+B
+         OfmdYPoWq6j0U9fPfGr7Ak3YafQf5yAukQE/FxTYaGfsl4eroIifnyhW5+XFCcq7sPa2
+         jFuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=JGIvE55pEcxzd83xA7rFdHteLp03z04heYvMOT2YxDg=;
-        fh=iY8ZCMGzMujTHNiNRAAAckc2aH18h1az4RQAIGyFuMQ=;
-        b=SgpsjFl20eVQ8pGO131Yp7cbf+xugO82zEzLLBQv/sJs6JAL6Vj7vHUPsnQqky7dgU
-         JZ9qyCFpo4bgbkG+Tsp54Z0FCbhMb9XcBV+tBcUVsPSltuShuEC2L+NvFUYVNVTN5Fra
-         6eJXTf/iPG9ZdSEJ6wsv0PT9ZSkAtgjTNkYCYgYhtvG5fh3MD42V3UHjOb+DlxK1Q8C9
-         Z6Hradjf7v3a3YdysEKDAXzOxb2MSgGoeVagUiFI+CRXhg9LKRBUPQbk8YmKICeDZuXf
-         zlL8b/BLMuu7gztjr5NlnlRXcR1QA7B36VBYFZ8GtdSa+IZyqzGu9Dq//IMxX8IQo61L
-         t8nw==;
+        bh=LbWPDwQYb1MNttmrZiIyG9Roqv9R3ER6b8JaxbDgP4I=;
+        fh=5eimt3R4de4XDsIAp95J2w2Z01ylhlTOSa0TpS8UKKI=;
+        b=SaYLjUQN6kpfWrSUWxNF9HOCzvvnkRgr/qFbZl8IpJuLgQXoLvsaTxRiDZeSVTv+tW
+         utsrdfecKIqm7/Ujqc1uEDnJJvIybeaV9cTIC+k9zrhsYQu/ch8pF6jduaEXROH5iFe0
+         tyWSaH6xEkZsyIuaPJXXm7xadB3q+trybmFbcRLqImPp8ej2gPFJ5HSHTdK77mS29kUU
+         4iQ2LrFD9ueT1jGDzykeBG6GFuBgMwsR2SRdQo6Gxgc4Dv3VWspiSMbWkTxsfpNWz0bE
+         t+a4YLNked8Qk/OR2c/Kn9mxGBMq3Wr6FWqxt5xAR253l1EL1wcFRTa335mYXKtkWOuB
+         2B/g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1791930374; x=1792535174; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1791930513; x=1792535313; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=JGIvE55pEcxzd83xA7rFdHteLp03z04heYvMOT2YxDg=;
-        b=C4/6EXUWLqwBThAGo1onKkHW2BxZrd15xJmVGIULHYLY1nPFF5hv2mrrYcUkuA7RR8
-         IhUjXjBsCxcolz6CV0dg8XhSVmMve/TAn8Iev1d7tXkENPi2R8sDAr89/T1YBI130YKh
-         IcS6Ly+tY/cTuvFj2Cbai7MhyVANyndbphs84=
+        bh=LbWPDwQYb1MNttmrZiIyG9Roqv9R3ER6b8JaxbDgP4I=;
+        b=DUSXHq6awOXCzmeM9lLEMtkMS1ys4ectWQNADf/Wr89M6R/5Ao9JRiZUqGyXDjy5T2
+         JOT088ik4rp9/uXTDrLqf6AkzM5NhYBRpFSq6CIRt5rO/4hPnJUQfk3MHN3eJIe9KuAR
+         U8PSiCTpeTfIdCGG8YfydaxD3paJQX36Q3vqo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791930374; x=1792535174;
+        d=1e100.net; s=20260707; t=1791930513; x=1792535313;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JGIvE55pEcxzd83xA7rFdHteLp03z04heYvMOT2YxDg=;
-        b=I8+vO71c6bEYfOHfFkk7omiEZEqZykA/pbfi098qvinAPlFuMMD4chCxaJACeJj1N8
-         9roce6qHBojRbi7hukJpFJjjRvGV36wRgajL6Wb+lCe585gBwpX8ofhfjNZeCB6iZawm
-         pCmSp5jKH1EwOZ+BMjF60I83QlR9OxpSPCIwKESBB/mSrljtKmP6qU1ckvw0L9q7kK6m
-         CahN76i5IDuQd7tlFJUWo8jkyukscweg9uZXuj6jixMPCD7i3LxnzEiWhkWyv8aabk+5
-         5WRf+QHG85NEhoVFDkdXwfaJJVkcw71iE3O8JfwRV1CwkYBUpH2TFD7c0adf1W6EvXs5
-         nlvg==
-X-Forwarded-Encrypted: i=1; AKwUvBxGdeDZgmUWzEZAhzQXQpmeTX0VS1so4uKQoH5fAddVXLFNJq9vSooki++t/H7Vntua6laywf+jCWk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLTEjyYlFDdRWswsPsNNEvUdLW0qKajehRGxghVpcuPVHc8Ql4K
-	gI5FUg3EXcg1TWU3R14LY7N3d/4hhselHMTjCSNERDCSajZKVgsnQy4HoSrLH9MfwWoMK/qmIt5
-	RFXAS13MWXrgVEo8dpXEAX9T+K1gEuiIA5h4TpsKs
-X-Gm-Gg: AYBFou3XYGyck8d5KIuRJ6RNZkICgh+BPcHCRtjSSBZv3wSXiogviewBmY2/TMpAkFn
-	KZfEdIxbDT/yvVq8aQzot66NJU2CL6PBDM5OeU1wErRTBEz9ke6ztUUMQG/Hg3+a2WXaJ/XtosH
-	Euh9xTcW/b/t+c1jC5eTsUueOt5JPdPCEw/zjH2+dLFvEbGvUdjikUFXlVl9VBcpcXTqXYg4Ob+
-	IBcf90OJASK811f0d0yW9a4ceqDqH8deIdkun9A7h66ctV0/q7jajbgVW16RqLXeFeA88SEMBOl
-	X2RnRZx+RIvwon2YYA5bhw/QcW2qMtQXcgkMByrc05YjowcS4HEVoIPSXoaCU7F/DkfXUf7XEGG
-	VD6yqZF+RfA==
-X-Received: by 2002:a05:690c:39a:b0:8ae:8877:9ef6 with SMTP id
- 00721157ae682-8b07edcf6f8mr55863427b3.10.1791930374515; Tue, 13 Oct 2026
- 15:26:14 -0700 (PDT)
+        bh=LbWPDwQYb1MNttmrZiIyG9Roqv9R3ER6b8JaxbDgP4I=;
+        b=bXOSx2ASLVS5e1B/D3odoXhz6XetwAN8iLhcAD5gN1A+JY3DbfZrLsiR0D325qZ9H7
+         AdR7t7VDA13X/EjUvhlQz07lQ2x6rIgwmf8Up1XYDsmkWiQ2EOaiFkHay7SwsX9DIEMI
+         eoAk0F8BWrxPUYNk449P0h5waCspbUWxibtX75gXVGcvdLCwu/3iQrEIbLyAdo+bWeco
+         xBMmVybsLZNTA1pvaQ180+yT0eo/gO4yJriOdmDA6G8ynfw2SuGUgI7tdosaNRhRPqJD
+         +TUZSv7CGXGMx++CtwMqtnRYT2/MC0pvqEE9S9xfau9nfWrw1a3WlL3wp4ZWtDUG7/cq
+         C3/g==
+X-Forwarded-Encrypted: i=1; AKwUvByeirbB243JmQySjNwaJRUQlBE/Mf+h5UMpBf59aIyrPcmnU2ygI9Rn34cMkOpt+scHwD+biRlHl8Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKj/Cwf9U88IVkTRT+36jgQ/tIRG4O+aw0ILahd2+WS11Aw1YMY
+	/excEU+0PF1gBFKCWep5tJpOirZN0gskiSdYab+Jdws1qg/n+uQH37SShK1dbDsuTT/D6R/LEmL
+	ILxKALFnlfRNplF2Pz3Hxq6jtYuLk7ZX2P/69WB4v
+X-Gm-Gg: AYBFou27gxMYCp/mAdp09AQlqo5PqBMPgErrphq4A3DXFq/hviu5F7uzxr4C7/HagmK
+	wB1IKvfour8of1GkqgLiu45GzZiCUCXg1VVj0mWUZvoobiBvLawhpPuaKdST5auxchHjYKXHRat
+	7/MzdIU83owHA55NpwKBXbQMVIqZvK+nBPRCXTWnifR924vgXdRz7aIwGwgn4JEt8ktKjfoK3MO
+	Ub8LngyEbkIAAT7d0QDIlD9vWMo11uTAA+f8Fkg4PlB5bCt/unfGki7aZGhkJw9Cn5yARkr0ezF
+	xgqFPjYIL4TzEEVmFfpnVGPYxyBq9YoSkq10dNv78EqKUMJKT7qEBJyL7swU9mqLV6+zIHKIhXI
+	Q/8YUHZE89gwnv2zOZqbk
+X-Received: by 2002:a05:690c:6603:b0:8a5:1570:a298 with SMTP id
+ 00721157ae682-8b07edfeff1mr40474577b3.50.1791930513249; Tue, 13 Oct 2026
+ 15:28:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -81,15 +81,14 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20261009-send-upstream-v5-0-384af01da3ee@chromium.org>
- <20261009-send-upstream-v5-8-384af01da3ee@chromium.org> <aszWnnc6RR9d5SYw@monoceros>
-In-Reply-To: <aszWnnc6RR9d5SYw@monoceros>
+ <20261009-send-upstream-v5-9-384af01da3ee@chromium.org> <998a8c7b-82e3-4370-b0f4-765deccdb348@kernel.org>
+In-Reply-To: <998a8c7b-82e3-4370-b0f4-765deccdb348@kernel.org>
 From: Jingyuan Liang <jingyliang@chromium.org>
-Date: Tue, 13 Oct 2026 15:26:03 -0700
-X-Gm-Features: AclHuK_tyUehVA205WXB_Og5y1P8AMIMPFMlhjQ2Y9FOhmh_U9e-FbL8LEin36M
-Message-ID: <CAEe3GZHB_mDcdz3gcoAzOu6mO7ua3muESOJcaZi6Z45Q8J77rQ@mail.gmail.com>
-Subject: Re: [PATCH v5 08/11] HID: spi-hid: add device tree support for HID
- over SPI
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Date: Tue, 13 Oct 2026 15:28:22 -0700
+X-Gm-Features: AclHuK9UE5fFXMlu7KAnmwYM6JrldO8UdUyYtEVe8VXlPWtvlfdV-v2OaGNZ5vI
+Message-ID: <CAEe3GZEuB+i2XS-GnGsmHaaULzThPL2wKT4j6QdMYbCCz47q8w@mail.gmail.com>
+Subject: Re: [PATCH v5 09/11] dt-bindings: input: Document hid-over-spi DT schema
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
 	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
 	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
@@ -99,72 +98,29 @@ Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
 	devicetree@vger.kernel.org, hbarnor@chromium.org, tfiga@chromium.org, 
-	fqwqf@fqwqf.xyz, daleyo@gmail.com, Jarrett Schultz <jaschultz@microsoft.com>, 
-	Dmitry Antipov <dmanti@microsoft.com>
+	fqwqf@fqwqf.xyz, daleyo@gmail.com, Dmitry Antipov <dmanti@microsoft.com>, 
+	Jarrett Schultz <jaschultz@microsoft.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 5:49=E2=80=AFAM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
+On Sun, Oct 11, 2026 at 11:05=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
 >
-> Hello,
+> On 10/10/2026 00:25, Jingyuan Liang wrote:
+> > Documentation describes the required and optional properties for
+> > implementing Device Tree for a Microsoft G6 Touch Digitizer that
+> > supports HID over SPI Protocol 1.0 specification.
+> >
+> > The properties are common to HID over SPI.
+> >
+> > Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+> > Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
+> > Tested-by: Dale Whinham <daleyo@gmail.com>
 >
-> On Fri, Oct 09, 2026 at 10:25:33PM +0000, Jingyuan Liang wrote:
-> > +#include <linux/mod_devicetable.h>
-> > [...]
-> > +#include <linux/spi/spi.h>
->
-> Drop <linux/mod_devicetable.h>, the spi header already provides the
-> needed *_device_id with less dependencies.
+> No, fake test.
 
-Thank you. I will drop it in v6.
-
->
-> > +static const struct of_device_id spi_hid_of_match[] =3D {
-> > +     { .compatible =3D "hid-over-spi", .data =3D &timing_data },
-> > +     {}
->
-> { } please
-
-Will fix it in v6.
+Will drop the tested-by tag in v6, thanks.
 
 >
-> > +};
-> > +MODULE_DEVICE_TABLE(of, spi_hid_of_match);
-> > +
-> > +static const struct spi_device_id spi_hid_of_id_table[] =3D {
-> > +     { "hid", 0 },
-> > +     { "hid-over-spi", 0 },
-> > +     { }
-> > +};
->
-> Please use named initializers and drop the unused zeros.
-
-Thank you. Will fix it in v6.
-
->
-> > +MODULE_DEVICE_TABLE(spi, spi_hid_of_id_table);
-> > +
-> > +static struct spi_driver spi_hid_of_driver =3D {
-> > +     .driver =3D {
-> > +             .name   =3D "spi_hid_of",
-> > +             .owner  =3D THIS_MODULE,
-> > +             .of_match_table =3D spi_hid_of_match,
-> > +             .probe_type =3D PROBE_PREFER_ASYNCHRONOUS,
-> > +             .dev_groups =3D spi_hid_groups,
-> > +     },
-> > +     .probe          =3D spi_hid_of_probe,
-> > +     .remove         =3D spi_hid_core_remove,
-> > +     .id_table       =3D spi_hid_of_id_table,
->
-> Very inconsistent alignment of =3D, if you ask me, just use a single spac=
-e
-> before a =3D.
-
-Will do in v6, thanks.
-
->
-> > +};
->
-> Best regards
-> Uwe
+> Best regards,
+> Krzysztof

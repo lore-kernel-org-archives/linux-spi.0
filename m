@@ -1,133 +1,96 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08032379EE7;
-	Tue, 13 Oct 2026 08:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEA43A0E97;
+	Tue, 13 Oct 2026 10:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791881316; cv=none; b=heCn3FhyVEkOKRXrF9K1Z2BzClLgoXy9vWXKMV0q3YOxNfFUnjyV2Df2K+DxHWu32+xzQXKTbwDj/4rzn3psJQzIuA7mItkYIHGcdyRwqN7J6S+WAoNXiXx9JQ6JrCwKtTmmEZazRcqvRlOSb2mFyNIiNX0dGJtZXEyUtD7ZycE=
+	t=1791888167; cv=none; b=jBCZBubUg/YR9rKB6u3ybpFv6mxd/iE26kIJZkOyA8wBe7aU6jo0v+27tI1fyQzypX3fJbCX/PWqM+OuWNaidsgwdZ/PjSZUyouaV80ckCbM6rzr71268UEKJzV3brWWQYTNATVYYb7elncz9frl+XFqm6+Lx4FG0TH+2DA2dHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791881316; c=relaxed/simple;
-	bh=+TvaR7gubco9J3s6x2/p7MTMosFiu1zs2Ea1Sh+j73w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ci12Ert/70rYdfaaFVOkhhcLzpkcOAPVLNBEncSSVQhLmvXm69S/Y33MmZ9nL32xqdXaisbvPJUK0KS0oAcA0l7J8UjrllzFtIvk6iGOJV6JvlE1kTgRSBMHN//MLxoYTYnrwR1Z03PeUa/y4bWaxhgz5L6w8sZ86uRKMmHHEFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Lv+DzNHg; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791888167; c=relaxed/simple;
+	bh=rUT6K7AY5D2DVy8ivjBEMxKwOA16dGMElIUDHmpKhoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fsfC4R7aEh2BsX/H0nPCl5gp32c8IBAf0wBn9rZyoEr0YlDci8PmDTeAj9veyW48Zi7EQV8BZw9TnHNQLaiej1SQlyMdiWqMVpyVAv6p1TKf3POTO6Gy+1nqmTaZ8TNfnd6dQ9iL9h1CioEDF6bhi10jQjOLLjv0plNGvV35CwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNXfKFA0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Lv+DzNHg"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4B4B64E41206;
-	Tue, 13 Oct 2026 08:48:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 181EA60362;
-	Tue, 13 Oct 2026 08:48:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C672711D70DB5;
-	Tue, 13 Oct 2026 10:48:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791881310; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=OhT44PlVEOFxx/Urz74a4tJMDTePj5JjWblo67Df0Eg=;
-	b=Lv+DzNHgur1CsfADLNUBDSzYO1Kh1Eh0cOqqwK2omkinCgrkYWdS5snKxVxrkgJ8Hxxf9J
-	JbjXDHFBZ+SVPeUIDTVYUukXfjU3AY9j8PZV6MWtI0YUaU9Qj3+sMC1iANNNp2tx5l3F7S
-	rJdFtqKPQOmx95oUbcX5idb8i8St3FNk6TWED4R96yrz/Ux5r1vhrdaXn7tb/1pw2+0EwN
-	RFVk+vC/2aulHMvCbSibATW9wBgkuua2sB4IpDB4OU5vyP4Hs4Uph3o6lAQ8+B0Sz8VYBk
-	+JBpv3OrpNp+l4pF/PDcGgxQ4HtLeEVSRjmkA+z2ssPfpiHKVyaw61Xj2AGmiQ==
-Message-ID: <60d100d6207660535e0dec5a9ae2a15555c2e181.camel@bootlin.com>
-Subject: Re: [PATCH 1/5] spi: spi-mem: Add support for panic mem writes
-From: Paul Cercueil <paul.cercueil@bootlin.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
- Michael Walle <mwalle@kernel.org>, Takahiro Kuwano
- <takahiro.kuwano@infineon.com>, Richard Weinberger	 <richard@nod.at>,
- Vignesh Raghavendra <vigneshr@ti.com>, Thomas Petazzoni	
- <thomas.petazzoni@bootlin.com>, Kees Cook <kees@kernel.org>, Tony Luck	
- <tony.luck@intel.com>, "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNXfKFA0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A621F000FF;
+	Tue, 13 Oct 2026 10:42:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791888166;
+	bh=FLoSrQhPeG9d2sAUZV2WghRPf9g8Vd0+KKpGYtfoJ8k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZNXfKFA0ehUZk2802jnLM7KmyXkqxYpf4ZkwhwrvnJOYdPqWUzBVh3OsCGtS0d/Lr
+	 +tO72X2EnCthHmkKMEZiEhpgjjzT0tfaBI438ud3mNswBO7y92IBi5DyDZe7w9dpwM
+	 dN145mmeBSs1TOYXa5wKT416dCZDCV4H6gOEf/N5m+ZfxWaEs6+945LYlearv6jfTB
+	 aELnkmOWh1XRC1liALSQ1YOU22eM+Z5Yjflplxjj4cNfewO6koVLQ6dMsRsmccSfYb
+	 23fi+MH1/VdigrjOUktQRpVBYMLyEZjhpgZ3ldrdLeaiO2LtDQVdcIkyi/PC3XQ6sn
+	 HCxdoNQEIPeqA==
+Date: Tue, 13 Oct 2026 11:42:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Paul Cercueil <paul.cercueil@bootlin.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
+	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-spi@vger.kernel.org, Tanmay Jagdale <tanmay@marvell.com>
-Date: Tue, 13 Oct 2026 10:48:22 +0200
-In-Reply-To: <87y0c2vvul.fsf@bootlin.com>
+Subject: Re: [PATCH 1/5] spi: spi-mem: Add support for panic mem writes
+Message-ID: <eb16cf0a-6b7e-4ea3-89c5-61ba0729492d@sirena.org.uk>
 References: <20261005081141.33688-1-paul.cercueil@bootlin.com>
-		<20261005081141.33688-2-paul.cercueil@bootlin.com>
-		<asdVM883VTQy7WvH@sirena.co.uk>
-		<5c94b88bf7123e5a32d5c4bd77217e6a40683c83.camel@bootlin.com>
-	 <87y0c2vvul.fsf@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+ <20261005081141.33688-2-paul.cercueil@bootlin.com>
+ <asdVM883VTQy7WvH@sirena.co.uk>
+ <5c94b88bf7123e5a32d5c4bd77217e6a40683c83.camel@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wVYvEWtD/Zuy0eL6"
+Content-Disposition: inline
+In-Reply-To: <5c94b88bf7123e5a32d5c4bd77217e6a40683c83.camel@bootlin.com>
+X-Cookie: Some equipment shown is optional.
 
-Hi Miqu=C3=A8l,
 
-Le mardi 13 octobre 2026 =C3=A0 10:38 +0200, Miquel Raynal a =C3=A9crit=C2=
-=A0:
-> On 13/10/2026 at 10:25:07 +02, Paul Cercueil <paul.cercueil@bootlin.com>
-> wrote:
->=20
-> > Hi Mark,
-> >=20
-> > Le jeudi 08 octobre 2026 =C3=A0 10:32 +0200, Mark Brown a =C3=A9crit=C2=
-=A0:
-> > > On Mon, Oct 05, 2026 at 10:11:36AM +0200, Paul Cercueil wrote:
-> > > > From: Tanmay Jagdale <tanmay@marvell.com>
-> > > >=20
-> > > > Add a 'panic_write' flag to the controller's capabilities struct.
-> > > > When set, the SPI controller indicates that it will be able to send
-> > > > commands to a connected NOR or NAND memory in the context of a kern=
-el
-> > > > panic, which means without sleeping and without relying on IRQs.
-> > >=20
-> > > > --- a/drivers/spi/spi-mem.c
-> > > > +++ b/drivers/spi/spi-mem.c
-> > > > @@ -398,6 +398,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const
-> > > > struct
-> > > > spi_mem_op *op)
-> > > > =C2=A0	u8 *tmpbuf;
-> > > > =C2=A0	int ret;
-> > > > =C2=A0
-> > > > +	if (op->panic_write) {
-> > > > +		if (!spi_mem_controller_is_capable(ctlr, panic_write))
-> > > > +			return -EOPNOTSUPP;
-> > > > +		/*
-> > > > +		 * Only support panic writes if we'll go through
-> > > > .exec_op().
-> > > > +		 * The regular SPI path (spi_sync(), etc.) explicitly
-> > > > mentions
-> > > > +		 * that it can only be used from a context that may
-> > > > sleep,
-> > > > which
-> > > > +		 * is not the case on a kernel panic.
-> > > > +		 * If this changes in the future, this could be
-> > > > reworked,
-> > > > but
-> > > > +		 * for now this will have to do.
-> > > > +		 */
-> > >=20
-> > > This also needs to ensure that the queue is idle - we'll still execut=
-e
-> > > spi_mem_access_start() which flushes the queue, and we've got runtime=
- PM
-> > > operations there which might be a bit challenging in a panic situatio=
-n.
-> >=20
-> > Does it though? The kernel is panicking so the queue won't be processed
-> > anymore,
-> > it should be fine to just ignore it.
-> >=20
-> > ACK for the PM - I think in the V2 I'll just bail if the controller has
-> > auto-
-> > runtime-PM on.
->=20
-> Maybe pm_runtime_get_if_active()? If already active it returns 1 and
-> you can proceed.
+--wVYvEWtD/Zuy0eL6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yes, good idea.
+On Tue, Oct 13, 2026 at 10:25:07AM +0200, Paul Cercueil wrote:
+> Le jeudi 08 octobre 2026 =E0 10:32 +0200, Mark Brown a =E9crit=A0:
 
-Cheers,
--Paul
+> > This also needs to ensure that the queue is idle - we'll still execute
+> > spi_mem_access_start() which flushes the queue, and we've got runtime PM
+> > operations there which might be a bit challenging in a panic situation.
+
+> Does it though? The kernel is panicking so the queue won't be processed a=
+nymore,
+> it should be fine to just ignore it.
+
+Do the other CPUs know they're panicing yet, and what state is the
+hardware in?  I'm a bit nervous about assuming panic got things into a
+good state.
+
+--wVYvEWtD/Zuy0eL6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrOCyAACgkQJNaLcl1U
+h9BbGwf/fEtwrUNGtObi0G+lPINw3irgjq4aUPmA1lkFzhV/7zmAOBtXjCy4/pp/
+mx3qbP/STKN47G8E/m1e7qhkOOXfEVt7ckY0ZNg4zUeRMi7w7ok1gQHm49bgy+eD
+7Eq/n2UBWtgSIz+CGU0+RxW1BLmz2rnHnJd08g0LlGFsHn7rxmBBQOJ8nnIUqirj
+2B019P3McvROJvYBGgWY9jHdqAQbiro5QE1qBVKZMYjXNTonO/9RrFvVATDOi+CK
+m/TKGKWt3ynbkpCSrBBN3dwc7W1s7Mk/q3gPdXJymZXsOJOT0Zlrv1ByjTX1hwMw
+sbsRiuv17q4Iae/oAdeCliHjjOmOJQ==
+=RxOc
+-----END PGP SIGNATURE-----
+
+--wVYvEWtD/Zuy0eL6--

@@ -1,97 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E0F3EA967;
-	Tue, 13 Oct 2026 13:58:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E242314A9E;
+	Tue, 13 Oct 2026 14:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791899924; cv=none; b=XYGZxIajPIvvWO48XUmb0lBAv+fGpWNG7mhit/JcCXV43or/EI3ljrL25cmICnkizrb7XJkUEBjMJ4Cub7VQOUBj4B+y+ltsUBwrCnwM4o5NxRYMhJGJsC7FK5vr7uP+2t98p1PbUZHmWTp3VyM3Zu/F/Cr6O6pF4ZJEGTWF+4w=
+	t=1791900870; cv=none; b=svt808AWQ56KOsmXH8ZkwRzpPKFZ2hz0gc4BzpN+hnXU+x8Ud6Y49z6sp4jJTxPNyp0Be4xahN3nVbml4tcCNEhttMBPwtQkwO9dCboJL5kMYSiZeZS9Jp5MvJXBNdl3xHIpekZsp/PtnIf66MHkAj0PuDcKtirwAhtwCmYMNGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791899924; c=relaxed/simple;
-	bh=4Hzefgt0QwOsJW3KIKz0Kv5ifgXEDkmy3mH+8kS7ZjI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kqNf7Rbssoyayb8uAMsi8XJo3KhJVeRip2GJ3PCSFKqUrQ7GKwuWDwWCJS+lgdzv4USJhS1I/FRZo05Y/jI6Ene+jyQ5pXXoj+DVGKYNjhiiX6uiLzJ9MMHNWAteP2ZF4zHEWSqzNYFJVI4NVz1eu09QM4oZduAnOfhLDuK2sfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvoh9BW4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791900870; c=relaxed/simple;
+	bh=rk39nM05IcvfwZSF/mNztAqyIfZs0lEJ0j23nxyeI3k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qhrVKYbWqEwmXSLMIrP5w9nsZQq2r6PYjhJAkcQ16BkRRtEStR/dFF29JEtn517x+oFNKbnJ8KR24/35TQDwOuKTfBL7aUXJ9Vk5H1a7TrNbjOCEt+shHeFKDxOyMjlMKp8757I4sRjva2NOc8jnesvuYPcgfk0clSsEZgFdf/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zMARofIf; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvoh9BW4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECC11F000FF;
-	Tue, 13 Oct 2026 13:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791899923;
-	bh=iCpsBwF9GyU0jqv8hk9fSnDQ7AiQXk7U+I5K3vYYrms=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=lvoh9BW4dbZsqCzxmYA9CQJpS6BnOWjFg61TH/MBeo3x5VXs24FH1m3cNEP6P7z0n
-	 uyyAFlgp1hrnAeVUnJWjW3dSxxzvP4FK+dgZQBFAm0hsEb7P1HDole9hzqIWH+CCRn
-	 q79vEDCameNckeD8ORZdlh8CfnwTSkoFXJOUrKbIQ8CtLd6P09YR3wb/ffpcI02Vs6
-	 ig+3HLBrwSgGoGC2qFnpRZsqDjp3e+TaWgAzRZqq4uao9R0/6Qm8bab2XdQepbANph
-	 4R474jAEai6Nem97XeoWBKIc9j0dVZ8D6FvnTO3IrzqadNwR/DszuNALsRSHvIqpRg
-	 a/rw7kENLGbMg==
-From: Mark Brown <broonie@kernel.org>
-To: Aayush Kumar <code@aayushk.dev>
-Cc: David Laight <david.laight.linux@gmail.com>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Aayush Kumar <aayushkmx@gmail.com>
-In-Reply-To: <20261010083504.26261-1-code@aayushk.dev>
-References: <20261010083504.26261-1-code@aayushk.dev>
-Subject: Re: [PATCH v2 0/3] spi: use kstrtoul() and snprintf()
-Message-Id: <179184723839.1099724.14865584632017804553.b4-ty@b4>
-Date: Tue, 13 Oct 2026 00:20:38 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zMARofIf"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id DFFD44E41209;
+	Tue, 13 Oct 2026 14:14:27 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B164E60362;
+	Tue, 13 Oct 2026 14:14:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 57A9F11D71685;
+	Tue, 13 Oct 2026 16:14:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791900861; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=M7v3OFxHD5HFJWdU0x370CW7QUMAdlkfUri/wCjcHM4=;
+	b=zMARofIf6k6WEWO/oIkTaOA/apZzy1x5XguuWVQqZ0qBf1XjstgNfeCRed2uT9kqGMN7JU
+	MN2vIRYBxV5wNZ/EqDNRbLovAeLFQi+om0v2PuT1xyAQyCeFBHqY9Cl1iwrWS/SffHQH1P
+	L42dOP3EHhNxjEjOBpd0fpn3s01MDtcpyRcnJJyRSCfjE5v6iS3h1DS7ifYzFdttyutjBe
+	zCYwV2naDwgqQuNYCIeNmBiRva0rTp1Qj5VFvcBwvIV3MRrpmbW+r9guIRQhX5vLCyviVE
+	KOG1XZZRrKhKZMpDrNCidJE4lfn7hR2lGHRS630wuQ08h8nQ/12ZNv4bgp1zsw==
+From: Paul Cercueil <paul.cercueil@bootlin.com>
+To: Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <mwalle@kernel.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
+	linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	Tanmay Jagdale <tanmay@marvell.com>,
+	Paul Cercueil <paul.cercueil@bootlin.com>
+Subject: [PATCH v2 0/7] spi: Add support for panic mem writes
+Date: Tue, 13 Oct 2026 16:13:43 +0200
+Message-ID: <20261013141350.189996-1-paul.cercueil@bootlin.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1503; i=broonie@kernel.org;
- h=from:subject:message-id; bh=4Hzefgt0QwOsJW3KIKz0Kv5ifgXEDkmy3mH+8kS7ZjI=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLOWQooG/nMXflfpGbZ2iuL2V64zHSLmN+u/Hf2vZOVk
- +wbtUPmdZSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAi+nmMDJ2dhzcc5tWaOn36
- hrqjt/8fTZBLry6cv6pfz7lC0EN7siIjQ9MD8a1BF7LrmKyOaPYJB3/5MpMz0iP4oci8z48rQlN
- U2AE=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sat, 10 Oct 2026 14:05:01 +0530, Aayush Kumar wrote:
-> spi: use kstrtoul() and snprintf()
-> 
-> From: Aayush Kumar <aayushkmx@gmail.com>
-> 
-> Replace simple_strtoul() with kstrtoul() and sprintf() with snprintf()
-> in three SPI drivers.
-> 
-> [...]
+Hi,
 
-Applied to
+Here is the v2 of my patchset that updates the MTD spi-nor code as well
+as the spi-mem code, to add support for panic mem writes to a memory
+partition configured as pstore.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+Changelog:
 
-Thanks!
+ - Old patch [4/5] ("spi: cadence-xspi: Don't use infinite timeout in
+   register poll") was dropped. The V2's [6/7] updates that code so
+   there was little point in keeping the patch, especially since it
+   was fixing a never-taken code path.
 
-[1/3] spi: tle62x0: Use kstrtoul() instead of simple_strtoul()
-      https://git.kernel.org/broonie/misc/c/54f4db17f9d3
-[2/3] spi: omap2-mcspi: Use snprintf() instead of sprintf()
-      https://git.kernel.org/broonie/misc/c/9efc388655e4
-[3/3] spi: s3c64xx: Use snprintf() instead of sprintf()
-      https://git.kernel.org/broonie/misc/c/506fbac9274c
+ - [1/7]: 
+        - Don't call spi_mem_access_start/end on panic. We don't need to
+          flush the SPI queue at that point, and we don't need to lock the
+          mutexes.
+        - Check that the SPI controller's PM status is active, and bail out
+          otherwise.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+ - [2/7]: New patch.
+          Updates the spi-nor code to use the iopoll macros, to make it
+	  easier to convert it to atomic-context polling later.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+ - [3/7]: (was v1's [2/5])
+        - Update spi_nor_wait_till_ready_with_timeout() to use
+          poll_timeout_us_atomic() on panic
+        - Alloc temp buffer with GFP_ATOMIC in spi_nor_octal_dtr_write()
+          on panic
+        - Bail out if nor->rww.ongoing_pe is set in spi_nor_panic_write()
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+ - [4/7]: New patch.
+          Address an issue found by Sashiko, where we poll for a bit in
+          the IRQ status register but never clear the bit back to 0.
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+ - [5/7]: (was v1's [3/5])
+        - Make sure we only enable interrupts if not using polling mode
 
-Thanks,
-Mark
+ - [6/7]:
+        - Don't enable interrupts if doing a panic write
+        - Use a new cdns_readl_poll() macro that will resolve to calling
+          readl_relaxed_poll_timeout_atomic() when doing a panic write, or
+          readl_relaxed_poll_timeout() otherwise.
+        - Drop cdns_xspi->panic_write. We don't actually need to check it
+	  in cdns_xspi_is_dll_locked(), because this code is never called
+	  in the kernel panic path.
+
+ - [4/7]: New patch.
+          Update the dt-bindings to make the IRQ line optional.
+
+Cheers,
+-Paul
+
+Tanmay Jagdale (7):
+  spi: spi-mem: Add support for panic mem writes
+  mtd: spi-nor: Wait for NOR ready with poll_timeout_us()
+  mtd: spi-nor: Add support for panic writes
+  spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
+  spi: cadence-xspi: Add irq-less support
+  spi: cadence-xspi: Add support for panic writes
+  spi: dt-bindings: cadence: Make XSPI's IRQ line optional
+
+ .../devicetree/bindings/spi/cdns,xspi.yaml    |   1 -
+ drivers/mtd/spi-nor/core.c                    | 111 +++++++++++++----
+ drivers/spi/spi-cadence-xspi.c                | 116 +++++++++++-------
+ drivers/spi/spi-mem.c                         |  35 +++++-
+ include/linux/spi/spi-mem.h                   |   5 +
+ 5 files changed, 194 insertions(+), 74 deletions(-)
+
+-- 
+2.47.3
 

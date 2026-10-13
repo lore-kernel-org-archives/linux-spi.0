@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF67314A9E
-	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 14:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53C73C2B80;
+	Tue, 13 Oct 2026 14:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791900877; cv=none; b=hEcDjpDTpmdfmvE9Zy64NFp9Au7QEAS72geSW/sj9lIYNblsTSzhgVaNM6xZOuCFR8ixSiswQmetowmjbHRtApySaZmXRL+CaVttShXdFqS6L4L2tldWjcS2bD7pt/d9iM5QdWWCEo9/R4E1RiE2Mw99crHD3DfLiy1iXHSg0is=
+	t=1791900885; cv=none; b=UNooRdZysFxJOUQ+AnPVaXmogat92pnOmSQO2Mb7xiqZQfDFkBRdeIxoVCE/Y90xD9V5UCGO7bWAmxc0OtZF9U3d1b2Sj9qqpJOZgc2tgZz6ldttAfiHuOEezs9kkiaTEwTyZqf//mcJcqmlu+tIwHCXkmciXBhsL6I4MVi0cUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791900877; c=relaxed/simple;
-	bh=nH6jYVOksBPD8uC4fP2Cgr0v+i667iKCmZZHX/50iwk=;
+	s=arc-20240116; t=1791900885; c=relaxed/simple;
+	bh=kpi4OqmK9zYQD8EfRtqF50euuZmKm4ovebnl2K4Bvo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/mWUTyNyz9PCZq5JtR8ib9ecKqgjPRgU4ZWTNmCdX8ZiZcUInYpqVdPcazC11kc5Z14irNo+KJHkcZ7+j5kYYQ4jydamV736xbK3XzWYlxsopg9oUD3zKQnckG11hXKfThwwFd65k1F2MK3SCBNecfdrXdMEPJTwp0H4Diw424=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vPYtz7qV; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=Vg7QPS5hqYCVsufJyBR6mauJg6FWcLYnjiwiNhJG28MVYQ8XADcMqISRUoJesryLoHFTF/hkYsKiOviSx542K6lwrirQlzl01asb1jch6dWlBrMTAd0rRq0jeX/W8AHo9drY+/mNPtUJG6nBzr0IF4td3gU3sgphRsJPynhe6E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dIfI6zYR; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vPYtz7qV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dIfI6zYR"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E41CA1A11FE;
-	Tue, 13 Oct 2026 14:14:34 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 402E84E41209;
+	Tue, 13 Oct 2026 14:14:42 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B8D4C60362;
-	Tue, 13 Oct 2026 14:14:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C5AA811D714ED;
-	Tue, 13 Oct 2026 16:14:26 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 14C7C60362;
+	Tue, 13 Oct 2026 14:14:42 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3AABC11D71027;
+	Tue, 13 Oct 2026 16:14:34 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791900869; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1791900877; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=OLsy6HHrd9OhlTf5ijFBqojW+83puKqwZQgSDTxalnY=;
-	b=vPYtz7qVmDHNllXMQyumytOH7h1TmGBxMcPaIQ0IksGaa8t3qHFOHqCno5BCR50M/caxan
-	lSMbKm3vXxJH+CqZDrz3g48zipOuZPGz24vFZtYK4O0saPXp6G6ZBLFW72zDvyzndcxnhT
-	X7nKoIZRX/6IRmYBWFM7tLL4y7PaZF1oYMKAFQpSVPQ8B77XssAo3qfIr9BTYz5cZU2MVZ
-	2dn2jj2F8a6nUbR9iXmIqCDbW+w68Pl9O1ZVi1wElFd5GhTYKr0DCbQfcBd8C8zICVKArm
-	0ZC0ggq8tXrPnQrV4EU5n+Kx27M4ehRVG+ptQgdCtbh1fFTW07/W6e63nvq7SA==
+	bh=LT6bzH7ij2G7iHBsS599MfmBcz4/Mb03S3bgNvQVnBc=;
+	b=dIfI6zYRJRaiFANLMckonG3G2cKjzZfwbEjyFjxFpw+XLuDKqycktDUHuZLYdUOw/xj6Su
+	2m0XvMOf7b982RCQECaxwaoyxL8nGj0nzeOGh3utsEMIQSjVt4a5t3Ew/xXYEt1HOYIRgJ
+	CDSOEeZqiwWje+jzBX4gpX/XzrNZEp0wAm6s/ejC647ggEjJJo0wOv50+pqcI+XhmCRy9w
+	ViJ2I/hR8fiEX3pv/kEtUeFpwaAS12clz422LFCezMrp3tj6XKMJjD5rRHM7pq9LZQBWQV
+	k9ocVuKftSuXs1/JG8XfqppYq2iAhkF6enAZw1diuk4nSbnzEIBAUS1FIZw9bA==
 From: Paul Cercueil <paul.cercueil@bootlin.com>
 To: Pratyush Yadav <pratyush@kernel.org>,
 	Michael Walle <mwalle@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
 	Tanmay Jagdale <tanmay@marvell.com>,
 	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v2 1/7] spi: spi-mem: Add support for panic mem writes
-Date: Tue, 13 Oct 2026 16:13:44 +0200
-Message-ID: <20261013141350.189996-2-paul.cercueil@bootlin.com>
+Subject: [PATCH v2 2/7] mtd: spi-nor: Wait for NOR ready with poll_timeout_us()
+Date: Tue, 13 Oct 2026 16:13:45 +0200
+Message-ID: <20261013141350.189996-3-paul.cercueil@bootlin.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261013141350.189996-1-paul.cercueil@bootlin.com>
 References: <20261013141350.189996-1-paul.cercueil@bootlin.com>
@@ -69,13 +69,12 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Tanmay Jagdale <tanmay@marvell.com>
 
-Add a 'panic_write' flag to the controller's capabilities struct.
-When set, the SPI controller indicates that it will be able to send
-commands to a connected NOR or NAND memory in the context of a kernel
-panic, which means without sleeping and without relying on IRQs.
+Instead of polling for the spi_nor_ready() with a custom loop, use
+poll_timeout_us(). The sleep period between two polls is set to 100 us
+which I think should be fine.
 
-Whether or not a given memory operation is a panic mem write is given by
-the spi_mem_op.panic_write flag.
+This will make it simpler to support waiting for the SPI NOR in atomic
+context later.
 
 Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
 Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
@@ -83,113 +82,99 @@ Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
 ---
 
 Notes:
-    v2: - Don't call spi_mem_access_start/end on panic. We don't need to
-          flush the SPI queue at that point, and we don't need to lock the
-          mutexes.
-        - Check that the SPI controller's PM status is active, and bail out
-          otherwise.
+    v2: New patch
 
- drivers/spi/spi-mem.c       | 35 +++++++++++++++++++++++++++++++++--
- include/linux/spi/spi-mem.h |  5 +++++
- 2 files changed, 38 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/core.c | 39 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index b94680b60af9..3b6fa44e4550 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -398,6 +398,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	u8 *tmpbuf;
- 	int ret;
- 
-+	if (op->panic_write) {
-+		if (!spi_mem_controller_is_capable(ctlr, panic_write))
-+			return -EOPNOTSUPP;
-+
-+		/*
-+		 * Only support panic writes if we'll go through .exec_op().
-+		 * The regular SPI path (spi_sync(), etc.) explicitly mentions
-+		 * that it can only be used from a context that may sleep, which
-+		 * is not the case on a kernel panic.
-+		 * If this changes in the future, this could be reworked, but
-+		 * for now this will have to do.
-+		 */
-+		if (WARN_ON_ONCE(!ctlr->mem_ops || !ctlr->mem_ops->exec_op))
-+			return -EOPNOTSUPP;
-+
-+		if (spi_get_csgpiod(mem->spi, 0))
-+			return -EPERM;
-+
-+		/* On panic IRQs are disabled so we cannot wait on locks */
-+		if (mutex_is_locked(&ctlr->bus_lock_mutex) ||
-+		    mutex_is_locked(&ctlr->io_mutex)) {
-+			return -EPERM;
-+		}
-+	}
-+
- 	/* Make sure the operation frequency is correct before going futher */
- 	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
- 
-@@ -420,7 +445,10 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		return -EOPNOTSUPP;
- 
- 	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, 0)) {
--		ret = spi_mem_access_start(mem);
-+		if (!op->panic_write)
-+			ret = spi_mem_access_start(mem);
-+		else if (ctlr->auto_runtime_pm)
-+			ret = pm_runtime_get_if_active(ctlr->dev.parent);
- 		if (ret)
- 			return ret;
- 
-@@ -428,7 +456,10 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		ret = ctlr->mem_ops->exec_op(mem, op);
- 		trace_spi_mem_stop_op(mem, op);
- 
--		spi_mem_access_end(mem);
-+		if (!op->panic_write)
-+			spi_mem_access_end(mem);
-+		else if (ctlr->auto_runtime_pm)
-+			pm_runtime_put_noidle(ctlr->dev.parent);
- 
- 		/*
- 		 * Some controllers only optimize specific paths (typically the
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 0cce6b57242a..2633307bfad5 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -169,6 +169,7 @@ enum spi_mem_data_dir {
-  *		 operation does not involve transferring data
-  * @data.buf.in: input buffer (must be DMA-able)
-  * @data.buf.out: output buffer (must be DMA-able)
-+ * @panic_write: The command is executed in the context of a kernel panic
-  * @max_freq: frequency limitation wrt this operation. 0 means there is no
-  *	      specific constraint and the highest achievable frequency can be
-  *	      attempted.
-@@ -211,6 +212,7 @@ struct spi_mem_op {
- 		} buf;
- 	} data;
- 
-+	bool panic_write;
- 	unsigned int max_freq;
- };
- 
-@@ -392,6 +394,8 @@ struct spi_controller_mem_ops {
-  *                   is a pause in the transfer (eg. internal bus contention or
-  *                   DMA arbitration on an interconnect). Features such as NAND
-  *                   continuous reads shall not be leveraged.
-+ * @panic_write: Set to true if the controller driver supports writing to a
-+ *               connected NAND/NOR memory in a kernel panic context
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 8bc117b46e02..2509fb983d4f 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -12,6 +12,7 @@
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
++#include <linux/iopoll.h>
+ #include <linux/math64.h>
+ #include <linux/module.h>
+ #include <linux/mtd/mtd.h>
+@@ -32,13 +33,13 @@
+  * For everything but full-chip erase; probably could be much smaller, but kept
+  * around for safety for now
   */
- struct spi_controller_mem_caps {
- 	bool dtr;
-@@ -400,6 +404,7 @@ struct spi_controller_mem_caps {
- 	bool per_op_freq;
- 	bool secondary_op_tmpl;
- 	bool no_cs_assertion;
-+	bool panic_write;
- };
+-#define DEFAULT_READY_WAIT_JIFFIES		(40UL * HZ)
++#define DEFAULT_READY_TIMEOUT_MS		40000UL
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
+ /*
+  * For full-chip erase, calibrated to a 2MB flash (M25P16); should be scaled up
+  * for larger flash
+  */
+-#define CHIP_ERASE_2MB_READY_WAIT_JIFFIES	(40UL * HZ)
++#define CHIP_ERASE_2MB_READY_TIMEOUT_MS		40000UL
+ 
+ #define SPI_NOR_MAX_ADDR_NBYTES	4
+ 
+@@ -712,29 +713,21 @@ static int spi_nor_ready(struct spi_nor *nor)
+  * Return: 0 on success, -errno otherwise.
+  */
+ static int spi_nor_wait_till_ready_with_timeout(struct spi_nor *nor,
+-						unsigned long timeout_jiffies)
++						unsigned long timeout_ms)
+ {
+-	unsigned long deadline;
+-	int timeout = 0, ret;
++	int ret, status;
+ 
+-	deadline = jiffies + timeout_jiffies;
+-
+-	while (!timeout) {
+-		if (time_after_eq(jiffies, deadline))
+-			timeout = 1;
+-
+-		ret = spi_nor_ready(nor);
+-		if (ret < 0)
+-			return ret;
+-		if (ret)
+-			return 0;
+-
+-		cond_resched();
++	ret = poll_timeout_us(status = spi_nor_ready(nor), status,
++			      100, timeout_ms * 1000, false);
++	if (ret < 0) {
++		dev_dbg(nor->dev, "flash operation timed out\n");
++		return ret;
+ 	}
+ 
+-	dev_dbg(nor->dev, "flash operation timed out\n");
++	if (status < 0)
++		return status;
+ 
+-	return -ETIMEDOUT;
++	return 0;
+ }
+ 
+ /**
+@@ -747,7 +740,7 @@ static int spi_nor_wait_till_ready_with_timeout(struct spi_nor *nor,
+ int spi_nor_wait_till_ready(struct spi_nor *nor)
+ {
+ 	return spi_nor_wait_till_ready_with_timeout(nor,
+-						    DEFAULT_READY_WAIT_JIFFIES);
++						    DEFAULT_READY_TIMEOUT_MS);
+ }
+ 
+ /**
+@@ -1781,8 +1774,8 @@ static int spi_nor_erase_dice(struct spi_nor *nor, loff_t addr,
+ 	 * pull these from CFI/SFDP, but these values should be good
+ 	 * enough for now.
+ 	 */
+-	timeout = max(CHIP_ERASE_2MB_READY_WAIT_JIFFIES,
+-		      CHIP_ERASE_2MB_READY_WAIT_JIFFIES *
++	timeout = max(CHIP_ERASE_2MB_READY_TIMEOUT_MS,
++		      CHIP_ERASE_2MB_READY_TIMEOUT_MS *
+ 		      (unsigned long)(nor->mtd.size / SZ_2M));
+ 
+ 	do {
 -- 
 2.47.3
 

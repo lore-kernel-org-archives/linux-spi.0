@@ -1,98 +1,153 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33034E5337;
-	Tue, 13 Oct 2026 11:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F9D4EDCD6;
+	Tue, 13 Oct 2026 11:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889272; cv=none; b=pQ2bygVWtZlwcadKHDY+Z6x0lh1Atnrvoj/ASMtKYz+abCCh+UjODHT+1ys04lLbVVkVlhaU3UNckfpqWopgF3H/sJnwqmxwvSQrH9sQwTIaeD3V50jVODBboTlUuaCGIZhy8Gqmz+WJmMjPI7Nm5ZnhQz6T9BkYHhuxRa2HndE=
+	t=1791891428; cv=none; b=HjXBTp4lGmtjWNKdx0YF8oaewpzBJbsq7cyDjLEiuDFv8KauFMuCn5IKKD7FriePIw8J8ezYA08skqI6y8TE4IKtejhIBkpcdhBwTO6M2KQCOOBY37TBQV/0aXIw/9+jB5PBxbrWKx70u+p/+4Ek6Clv9EG2h6pD6RrYSDkThuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889272; c=relaxed/simple;
-	bh=pRsd0+ITU/DhENFNJeUWb5wGX0cdOh0IA/UVGxrV/7w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M3+OdJyRRLIQWxQAzfUVMGhdndtvQTxv1jGuWP0gRELfp4VX38bezTciy5qIXnImCkjZBG8ccrhXjdpXyAuFO380Zaj5VAQplouXr9E8HA+sHrysoZS3DM1amNi1+gt3PBOIzelgkdpXA96t1oEWddpLQIIifavcV9GG5YRXOB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pa6q+aFW; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791891428; c=relaxed/simple;
+	bh=3WUSLzebOr2ySv4J/w7atqPmxuF+kPawmJ81BsoAz3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBd8qirXq+EntcSo+vVSbp9jc+x+LevvswNNJHjTxS6gQMOuc84Ybt6iLuNt/O0SPAEA//bRdd8uVhtBRcmMV73GO31f90b7DctHUhiFSx1HqoS0ecrXDgifMnhN8d/6DNfm03+ujovoCDDMR8mqlR8XW+Jr1lhNcNGe/G75W24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7jZhXyZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pa6q+aFW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 17FE04E4120A;
-	Tue, 13 Oct 2026 11:01:06 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CBD8E60362;
-	Tue, 13 Oct 2026 11:01:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AF66D11D70DB0;
-	Tue, 13 Oct 2026 13:00:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791889259; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pRsd0+ITU/DhENFNJeUWb5wGX0cdOh0IA/UVGxrV/7w=;
-	b=pa6q+aFWWBhpNbm91Cl8fTXViS2r51JQPutE+sx/neqqdCtEyFAs4GgOssai/IU8VWqWZ1
-	t4tSjUnFkSTzrR0tLAu22j5TN1aQrzF7MEe+mx21XPeGFwVYhEWXoHCPUmD5yvP2whUG2A
-	kOtRXPhSsx0fsmvskVnGBbVRGIGGx1UKGS4MbqhmYIqKYyrfEpSAHu6OLC4ORq2QK6v4i4
-	rQpAOq/lyFJJxtm8L4vepYNp/VAchjDNCCXV6DeRldcbbLw0m3zIF6x58iMtwdMVPUTbqH
-	ulUYuAkDJhGApzlQLsmS7dSVkqGfM3YLYTXF9J7cF+LlcddIQQWf1DcMGe0AyQ==
-Message-ID: <0d2f1d4149cd136ace8c1f08dc48ea7f25c5975c.camel@bootlin.com>
-Subject: Re: [PATCH 1/5] spi: spi-mem: Add support for panic mem writes
-From: Paul Cercueil <paul.cercueil@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-  Takahiro Kuwano <takahiro.kuwano@infineon.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger	 <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Thomas Petazzoni	
- <thomas.petazzoni@bootlin.com>, Kees Cook <kees@kernel.org>, Tony Luck	
- <tony.luck@intel.com>, "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-spi@vger.kernel.org, Tanmay Jagdale <tanmay@marvell.com>
-Date: Tue, 13 Oct 2026 13:00:50 +0200
-In-Reply-To: <eb16cf0a-6b7e-4ea3-89c5-61ba0729492d@sirena.org.uk>
-References: <20261005081141.33688-1-paul.cercueil@bootlin.com>
-	 <20261005081141.33688-2-paul.cercueil@bootlin.com>
-	 <asdVM883VTQy7WvH@sirena.co.uk>
-	 <5c94b88bf7123e5a32d5c4bd77217e6a40683c83.camel@bootlin.com>
-	 <eb16cf0a-6b7e-4ea3-89c5-61ba0729492d@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7jZhXyZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11B01F000FF;
+	Tue, 13 Oct 2026 11:37:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1791891426;
+	bh=whuCXrASEjiOa53ahdPLNNDh/L/dZAaNEwT+F9NvgAM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=b7jZhXyZnbu6aYvE/wYID94SUUXIfeqUui/Keow3vDwWhhFGxKEZw+81dvRUz2clf
+	 3c6sv/uoWd4npQsr8kWdIc6DEpyMo5bMIGxKJSWiBEp5uq1324fWzqmyHBPAid4W1e
+	 /nlvLJfO2Xe9hyUP2HJ0/IIGkOQ/VBYAPaoZFdIc=
+Date: Tue, 13 Oct 2026 13:37:11 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
+Cc: Donald Shannon <donalds@nvidia.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>, Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+	Corey Minyard <corey@minyard.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>, Lixu Zhang <lixu.zhang@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>, Johan Hovold <johan@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	linux-acpi@vger.kernel.org, linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/11] Add NVIDIA LSTP USB adapter drivers
+Message-ID: <2026101355-species-glance-9ff8@gregkh>
+References: <20261012-lstp-usb-adapter-v1-0-aambrozewicz@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012-lstp-usb-adapter-v1-0-aambrozewicz@nvidia.com>
 
-Le mardi 13 octobre 2026 =C3=A0 11:42 +0100, Mark Brown a =C3=A9crit=C2=A0:
-> On Tue, Oct 13, 2026 at 10:25:07AM +0200, Paul Cercueil wrote:
-> > Le jeudi 08 octobre 2026 =C3=A0 10:32 +0200, Mark Brown a =C3=A9crit=C2=
-=A0:
->=20
-> > > This also needs to ensure that the queue is idle - we'll still execut=
-e
-> > > spi_mem_access_start() which flushes the queue, and we've got runtime=
- PM
-> > > operations there which might be a bit challenging in a panic situatio=
-n.
->=20
-> > Does it though? The kernel is panicking so the queue won't be processed
-> > anymore,
-> > it should be fine to just ignore it.
->=20
-> Do the other CPUs know they're panicing yet, and what state is the
-> hardware in?=C2=A0 I'm a bit nervous about assuming panic got things into=
- a
-> good state.
+On Mon, Oct 12, 2026 at 08:35:58PM +0300, Adrian Ambrozewicz wrote:
+> This series adds drivers for the NVIDIA LSTP USB adapter: a USB core
+> driver and GPIO, LED, I2C, SPI, UART and BMC-side IPMI function drivers,
+> with their device tree bindings, an ACPI description document and the
+> sysfs ABI.
 
-The other CPUs are stopped, yes. At that point there's no SMP, no preemptio=
-n, no
-IRQs, no time accounting.
+Why would a USB device have anything to do with device tree?
 
-The hardware is supposed to be in idle state, and the way we ensure that is=
- by
-checking that the controller's io_mutex / bus_lock_mutex are unlocked. If t=
-he
-SPI driver was busy when the panic occured, we just bail.
+> What LSTP is
+> ------------
+> 
+> LSTP (Low-Speed Transport Protocol or Low-Speed Tunnelling Protocol) is
+> a vendor-specific USB interface (class 0xff, subclass 0x3f) that
+> multiplexes several low-speed "channels" over one pair of bulk
+> endpoints. It is implemented by NVIDIA's SMA, an MCU (0955:cf11), and
+> by other vendors' parts: two hub/bridge chips have it built in
+> (0424:4940, 174c:2214). Boards use it to
+> reach SPI flash, I2C sensors, GPIOs and LEDs, a UART and a host-to-BMC
+> IPMI path, on both BMCs and host systems.
 
-Cheers,
--Paul
+Cute, but that's a total abuse of the USB standard.  Why wasn't this
+implemented by the proper "each channel is a USB interface" model
+instead?  Have the firmware engineers there not read the USB spec?
+
+> The channel types are SPI host, I2C host, GPIO (with interrupts and LED
+> pins), UART, IPMI and MMIO. Channel 0 is the control channel: at probe
+> the driver reads the channel table from it, which gives each channel's
+> ID, type and configuration. The set of channels is decided by the
+> firmware, so the same VID:PID carries different channels on different
+> boards. No firmware description is needed for the channels to work.
+
+Again cute, but that's not how USB devices are supposed to work, why
+would we want to do this at all?
+
+> Series layout
+> -------------
+> 
+>    1  dt-bindings: gpio: Add NVIDIA LSTP GPIO
+>    2  dt-bindings: i2c: Add NVIDIA LSTP I2C
+>    3  dt-bindings: spi: Add NVIDIA LSTP SPI
+>    4  dt-bindings: usb: Add NVIDIA LSTP USB adapter
+
+USB devices do not have DT bindings.  It's a dynamic bus, with
+self-describing devices, don't make the mistake of thinking this is
+giong to work.
+
+>    5  usb: misc: Add NVIDIA LSTP USB adapter driver
+>    6  gpio: Add NVIDIA LSTP GPIO driver
+>    7  leds: Add NVIDIA LSTP LED driver
+>    8  i2c: Add NVIDIA LSTP I2C driver
+>    9  spi: Add NVIDIA LSTP SPI driver
+>   10  tty: Add NVIDIA LSTP UART driver
+>   11  ipmi: Add NVIDIA LSTP IPMI BMC driver
+
+So you have a custom "bus" for a single USB device/interface?  Ick,
+again, why?  Please do this the "proper" way in your firmware and do
+this one-device-per-usb-interface like the rest of the world does
+please.
+
+Doing it that way will not cost any more hardware pins at all, it's all
+handled in firmware, and as you all have complete control over the
+firmware, you can fix this up now to do things properly.
+
+> Patch 4 $refs the schemas from patches 1-3, so it comes last among the
+> bindings; it also defines the serial@N and ipmi@N channel nodes inline.
+> The MAINTAINERS entry starts in patch 1 and gains each later patch's
+> files. Patch 5 carries:
+> - the core in drivers/usb/misc/;
+> - include/linux/usb/lstp.h for the function drivers;
+> - the sysfs ABI file;
+> - Documentation/driver-api/usb/lstp.rst;
+> - Documentation/firmware-guide/acpi/lstp.rst.
+> 
+> Patches 6 and 8-11 each depend only on patch 5; patch 7 (LEDs) also
+> needs patch 6, whose GPIO driver hands the LED pins to it.
+> 
+> Why the auxiliary bus, and why not MFD
+> --------------------------------------
+
+Neither is ok for USB devices, that's not an argument either way.
+
+Please go talk to some people with USB spec experience on how to make a
+multi-function device correctly.  This way sure does not look like it at
+all.
+
+thanks,
+
+greg k-h

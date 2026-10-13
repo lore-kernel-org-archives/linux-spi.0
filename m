@@ -1,98 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2B64EA38C;
-	Tue, 13 Oct 2026 18:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791915076; cv=none; b=frmNsOTvBk0TBol3Z5ft/qN/3hpow8++YjuKxO/k296Ln16jVl/ssOa+IrDDlfPj3BFCIzWP+HuPizJr8SKsTxJ9I3aiHN76EN+QbkYYmQjt6/1nNcFFCQbbB+aSK/69gytD0LbiWdlMV4dfOBhhqZGelAdlG7ta44JdI3KrjEA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791915076; c=relaxed/simple;
-	bh=xUeRDGRReejpEc6wjvmHvxGvsww5/e7RU/2/PhK257I=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=k1X8U/NNH9bcVuGEO3dABw00MqGomGkOtW73UMbpnTnvvcG17DrImQ2go9DWpcFdRd3GYwYo3gZTi6jaQ9D7TZoLR6IzgddZ5fHQe2WotYaXnCSv8ao5qe6M6shchKUWAzuxcfCuRwGgV+D7K1ztnGkyrCHVNDFsEPHW45UjYto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P308r+Gc; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C769379EF7
+	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 20:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924564; cv=pass; b=ox13x2nnQT0UOmf7SxZEXgaqf9BWPzSuNfDERIdSXhQAqhdMyClXdak4v7D0httdqhRftbf9OisskPpUFicxN1EawyhrVdAeKCeXvL7quWsts2vIn0Ge31sFaWeG+YncFlY4jwJEV/s6wUIwYXV6WM1bJrbkxgswP9rGN4cdROA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791924564; c=relaxed/simple;
+	bh=VCb03VA6LjpMHOfUp8pvf/EGXGe3r0X2vnJKPUWICB0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eVOPgPlKofGes9MCFnfsAl9PcfLRZ1M9BVocBcZkY5B5iCukkCVh3dFmRZIojEgFFZnVCKzsHuIRMemq9TvkjFSJwDOk7lJf2hALuofxQo2pAeYIbNklFKIhGnYLmilPNi9d+33E5MZXDCRWoY/r1/Qq5AeuMfPFSKWzoY9BLgI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hq0WLQJE; arc=pass smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P308r+Gc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CAC1F000FF;
-	Tue, 13 Oct 2026 18:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791915075;
-	bh=V//pp1TrrLbWS21zUIc73cPPrcsSLo+5tVDgFNkrt9s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=P308r+GcJvBVfX1Wi50HCc3v1tIe6128Iq5PP26/HL6P4uGnud2PzVfH7e5W+XP+D
-	 gbD9MhgIMjbMv3bqfk1ABUwbZsN3zbTz2NaqWCfFs9+4EhdNAvB5l9oR5yveMAd+WX
-	 0pyiY/h+B5TAOtPJfsoYqj6KoiJTfbuQZigzMKwiy453aMrZCEzHrm6EIC/mZTrKGC
-	 jcOwfcun9OYAearGKgXP9PcCSRcQ8IsOb2PUzZwV64ljxU9sPZ5k1Dp9amnIPabitL
-	 fECyCaK80jlHQT+qohWXB+04HBfW4OqvXxoGl9sshaHgpkG4jNqLC9X08vvR3L6lQa
-	 IWNByNSvMYYoA==
-From: Mark Brown <broonie@kernel.org>
-To: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
- Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: dlechner@baylibre.com, nuno.sa@analog.com, michael.hennerich@analog.com, 
- jonath4nns@gmail.com, andriy.shevchenko@intel.comls
-In-Reply-To: <cover.1791361360.git.Jonathan.Santos@analog.com>
-References: <cover.1791361360.git.Jonathan.Santos@analog.com>
-Subject: Re: [PATCH v3 0/2] spi: axi-spi-engine: fix stale SYNC IRQ pending
-Message-Id: <179191506652.42298.2745024231338016590.b4-ty@b4>
-Date: Tue, 13 Oct 2026 19:11:06 +0100
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hq0WLQJE"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8b09e07e149so3790417b3.1
+        for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 13:49:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791924562; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WBDFXKhi9F5yVHVsh99q1G7lPnw4rhU8xbeGuWrpQojx2+FxGrnrMXlm8MDD8sF/Z8
+         OCJL4tYCebQrt/a3QEp7zPBgiODoendIB2hQQ7llHegYregLe8UUsAFrVumPL6mnivwQ
+         Fzcn6LOzNH+pnGykwQbn8/OUzW8TitqDH9cIbkmGt0AhqoyT3ulmk8ijBmWDqJivurjk
+         CwY+wzG4oBaza1/RjDlLQEcODqOfreH1vxRZuF+D9sbWu1Fw0JnhFPI8/scB471/vNI7
+         k6IBnTaYuINRdGpGTHXTiKNQ2C443u3UPKUECvrGOGVOz5h/nfHAI2FNOTsA3tc9lO+1
+         ptqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VCb03VA6LjpMHOfUp8pvf/EGXGe3r0X2vnJKPUWICB0=;
+        fh=j/H2I+Va8zbZSwFlhPmBTbl9fyOPhwXt3iVBL8H7D+0=;
+        b=hEcy1deFKZyJ0/TtKoYkVpVTAZSMOs+PGqV5ZyogFxio94UkJ0y+Nu4K8RXy60r09F
+         uHnUyBYplx0wrFPgV4H/r8JJu7MgyZLu961PKtkVWnQjk/FDQiizVtD7x8hLcmO8SJX0
+         6S1OwilXVxP6P5ywY8wNdw4Un2dRFgKg9EieGixutD36rZvpFGd2UvHWwrWOXOCWHs6f
+         F/AvuLB6e23fg9K00iriNbSRCEuqhAWY9HiLeE48iXhEMtQm9kz89xOa7+0icsGFor41
+         qAA6lPHZiaWW4h5cxKLM/Q1TS4bGwQOoIKp4HIbSIQATXfFoHpEFx/KGFPV9j1tZkLrR
+         LTQA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1791924562; x=1792529362; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VCb03VA6LjpMHOfUp8pvf/EGXGe3r0X2vnJKPUWICB0=;
+        b=hq0WLQJEF6QP73pmJ6c8FJeMVwrlj6kQptWIXaj1nw7k4uKBOCtdqhFa4ZEx1U9iI5
+         2noQBoKQenrv5zmZJK06HyjM7oJBoTx6T6GOFZDkIBKYzCTH4eq2ThweRjcfkv9OdK9g
+         gmGNRBbxuOwIzL99EqhlmFKi50HlDL2A7kFw0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791924562; x=1792529362;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VCb03VA6LjpMHOfUp8pvf/EGXGe3r0X2vnJKPUWICB0=;
+        b=S4lzivy4pIv7aB0mWA31wnczgZBm6s1lBckzWtoK9CcB8vo+J2pAEi23HTMWIkNQ2G
+         Fza8aBRt+jIE0DZ5tbbYYw8WiYrPcLGNINljFKwvYkGFwWoEyaOZu8RKodwMyLRqx/Vs
+         v93n1GeQrrbeJSSGou1Y2A+Q8DFZMMG75t1eOIDGFdiR0MeXGlsddaY8Oz4E+kfVfEvn
+         XMourvc/YcGNXgMU72ead7wpknvtZ5WjXZLPtkt9O8z9jYa62iJIFsig148Y6m5iyJcU
+         Fxfp+faLu2jmCiU313qDGBq4sPlGqzu3T7oD+VAM3L58X/mnAT1i1Qpq6RSw2baRqQjA
+         Vp9w==
+X-Forwarded-Encrypted: i=1; AKwUvBxWgLkITdpsLufr0zJfHueCEPQSkUwudFFPTO7i+F2LmH7Xe2v2SGBDlttyrtbJwuIzY321NdOfx4k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJdiVA6L93VIK/+431BGo1Ly3H02KLq8yNxdfYERJOa4GohXCop
+	6qzptHOu63B67ZNz6SfwgaUonpMpUpPDMecy7mApjWV6H8vj51jd2MmZNXV0ekt/X8JjKjJSGGZ
+	vRhINjVYGAw1Whu06IfjflKsefI+01Ks4Qlvjv5vc
+X-Gm-Gg: AYBFou0QIsTd05NaueTM7SsWuggDXReneqRtc5FKA4YoBTL3bBbBZo5U/n6jlr708DI
+	94K5G0h4OHqUlMec3RP+SdbvuUDdtEduGyC5cEE5hjQE5sXotC/66a8knSFTn8dORvYuSNnJJO/
+	eBf5dpTm1cx6pI62RkY4epG17IkC2eReRleem4/ks3OxJzNdfIv3tzpfmkzTQK4hOpsyKhWA5Ha
+	50yA0vIlzlf6Bnjx2LJYJhILAfdsLl2o3fegn0PTJZaYv8RzhMgP/zJGnB3InRxKAg9ePEmWM7N
+	2TwKOk3nJ0xUKJPBs43hy+xZ4tgP8VNtb93CJELVqcbuPgnwH8G4XUI3OskHzdKcT0El4ot1RBb
+	eB16i4eRFRw==
+X-Received: by 2002:a05:690c:3346:b0:89a:63da:fab2 with SMTP id
+ 00721157ae682-8b07ee2c80emr43041947b3.109.1791924561531; Tue, 13 Oct 2026
+ 13:49:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1665; i=broonie@kernel.org;
- h=from:subject:message-id; bh=xUeRDGRReejpEc6wjvmHvxGvsww5/e7RU/2/PhK257I=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLOldi/tVq096NozzL7pdv8DS/wbtowSVInfb1XOPNSw
- ycTdZredZSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAifyIYGWYeDXDbo5oxrdB/
- /2TZ2twEz7X7j1vHTVXMWhiRs6pyvzYjw5z47y4qh7m2hJ5q2DXhuVrG8uvrm6vnMHFrz3696qf
- icw4A
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+References: <20261009-send-upstream-v5-0-384af01da3ee@chromium.org>
+ <20261009-send-upstream-v5-1-384af01da3ee@chromium.org> <be3f853e-8b37-4b41-a998-94de1cb552f3@kernel.org>
+In-Reply-To: <be3f853e-8b37-4b41-a998-94de1cb552f3@kernel.org>
+From: Jingyuan Liang <jingyliang@chromium.org>
+Date: Tue, 13 Oct 2026 13:49:10 -0700
+X-Gm-Features: AclHuK9ox7K2COGXrl-FRR9cM2pKj2PME_s-ad7oALLfV1KkNB6t3-cZk6Vgeos
+Message-ID: <CAEe3GZE-3rCTw-2L-dzXqim5qHxLs1BKjpbmo9aT85ZBLWm5_A@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] Documentation: Correction in HID output_report
+ callback description.
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, hbarnor@chromium.org, tfiga@chromium.org, 
+	fqwqf@fqwqf.xyz, daleyo@gmail.com, Jarrett Schultz <jaschultz@microsoft.com>, 
+	Dmitry Antipov <dmanti@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 07 Oct 2026 05:52:05 -0300, Jonathan Santos wrote:
-> spi: axi-spi-engine: fix stale SYNC IRQ pending
-> 
-> Both spi_engine_setup() and spi_engine_trigger_enable() send a SYNC(1)
-> command and poll SYNC_ID, but never clear INT_PENDING[SYNC] afterward.
-> This leaves a stale pending bit that fires spuriously when INT_SYNC is
-> enabled later by some driver, causing premature transfer completion at
-> low SPI clock frequencies (more likely). Fix both functions by clearing
-> the pending bit after polling.
-> 
-> [...]
+On Sun, Oct 11, 2026 at 11:04=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
+>
+> On 10/10/2026 00:25, Jingyuan Liang wrote:
+> > From: Jarrett Schultz <jaschultz@microsoft.com>
+> >
+> > Originally output_report callback was described as must-be asynchronous=
+,
+> > but that is not the case in some implementations, namely i2c-hid.
+> > Correct the documentation to say that it may be asynchronous.
+> >
+> > Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+> > Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> > Tested-by: Dale Whinham <daleyo@gmail.com>
+>
+> No, you cannot test documentation. Do not add fake tags when they simply
+> do not apply.
+>
+>
+>
+> Best regards,
+> Krzysztof
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
-
-Thanks!
-
-[1/2] spi: axi-spi-engine: fix stale SYNC IRQ pending
-      https://git.kernel.org/broonie/misc/c/ea29c686f96a
-[2/2] spi: axi-spi-engine: fix stale SYNC IRQ pending in trigger_enable
-      https://git.kernel.org/broonie/misc/c/18febc10a353
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Thank you. I will drop the tested-by tag in v6.

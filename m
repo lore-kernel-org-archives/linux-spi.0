@@ -1,61 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F091404BE9
-	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E97351AEE2;
+	Tue, 13 Oct 2026 15:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791903478; cv=none; b=S7zvUMeMiG78+NqYuF4g6Ms3Ud8xMNYej0QyqXZ0KMl0sgACsKiiMpXxXJAFUX1ELVdBsZmbVS1FUwJRnvimrkmfQKi/GgL7tcu5iy5QWjp5ni5wKk6Kyf2dRCxg4suH5RCPw46ry/SyX/h/nRFgb4RDZO8z6pz+BVTFdO1+NDM=
+	t=1791906027; cv=none; b=T9BTz72QLATTyOK2T/YmJpMaS5zSRFimjgICyzdfWDw4qiS02brSA2N5FDxJvZE47Cc08ttRKFFn8gmZUiLv8d00SDO3kLpzhMoBaWWTinyT3m0PKzYuIwYnAiAQXwl9Gz0Snc+xva60QcbPyUihKQpZg2D7F9mwcUEg1dbvkNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791903478; c=relaxed/simple;
-	bh=bD9I/uC9JZAk74XZwpxfOOqefzws3BQVQP3VlERFI84=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=nMZI8ZPXtm/Wsh3v6AvEgMxMSzeTf28XRwfCgTrWnWqp4SN7/wWGb/GtIB4NJqNvQBw6BkBHYwO4OFJVtR1D2pPSeb4PrBEerg85OF7/5NI7ql5KD6EqXKmtSgB/BHO1OB6uZjY+8+Qnx/RoOyFjIUns6Hd25uiZLuKYxULXMCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T7a5xyDA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791906027; c=relaxed/simple;
+	bh=aePh6U74khONlchJMqoCW7bzUBKnKhlb8hEUHQbTKnU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxPvRCKiX/9x8ZnTlZNR9RmlgnMpZ7DDPUrcR1Yo3h6qSsaWyBYKeggOsvMQYoCz7rg3+MHRjeFE36o/PWBo5p7V/3VBZ89CLKz7QACaDQd4f7THnjUTYtIf6MdLvSX8s3OelFlSHFIYCh47WRPwsht9DTRV+7pSWWMh982qXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVUu7flc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T7a5xyDA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE901F000FF;
-	Tue, 13 Oct 2026 14:57:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVUu7flc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DED21F00898;
+	Tue, 13 Oct 2026 15:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791903476;
-	bh=3RoQb9nOwUjig5Lhmoqa2dE0YkCaPEB1NhoM2Gn6xoM=;
-	h=Subject:From:Date:To;
-	b=T7a5xyDANKjomCsc+EFnFlhxiG42PtKMigK8aUeOZsQWjqN7dU5RgR8GF/298dX1g
-	 cvDW38F3mpT2LToWCxmeQDAr9h2R+rIKeq5z+8tJ5pjQyz/4sgG0F3xNfD7/+zi+AS
-	 UZRDl/4CZjjcFmul3XZ338/N3xlPXK/Zx2lKYUpL4ayaAh6NslppYFPr181s6T6PzM
-	 kz3Nqq6lL97yBKPlXXkPytEnbwzM2TgeOphGd0Rq5MKU+egrj1Iq1LGgY7lvT0f0w/
-	 KGbuMohMeYchjsWBpwRUY7dwLTvA4VCsdKef6WyjDYFDWHtfjNtNlCVJGI6Ysd9DUt
-	 y/eFi8yqGnjMQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B447739D2678;
-	Tue, 13 Oct 2026 14:57:56 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1791906026;
+	bh=NJfxrBBuE+qmr3EtyxVuFFbz+aCw8+gpkG0ib2QwahE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DVUu7flcNuGSas4GgqlFBqwDfapW7WYVrzgU2QBvOdMTKwVHiWl2zVe4pBXSFt3Vq
+	 0DR2c8kulFhKYU/Pl8JJQLBYn0xc7c6nS3sClSGi2Q7zTqD2aoczDI/aodtY+Nmpf+
+	 JC4P0lUJOq1NdQGRSf6Pcg3H4vdDvdtFpDH+BtDfkEy9nEPRUCZfO6AqvKzQTVgCS1
+	 TfC3vREgH/t0tOJuCIgqY9nNU84bzcQHHmJ4Y1tb0CnsH9Sjx2BfIJfHtNJOkjc6SZ
+	 64ygftEDo8SFqpS0Dnngitsu34Cjv2l6Rkd4/MamTY4yC44SAnv4CSO6c0t92eSTnI
+	 g8ZRkXVyN8oTg==
+Date: Tue, 13 Oct 2026 16:40:22 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: omap2-mcspi: handle DMA setup failures
+Message-ID: <4a20222b-7d60-4763-9833-bc453d26ade8@sirena.org.uk>
+References: <20261013142004.1729849-1-sahaj123.sc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179190347536.359677.13783753975971858065.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 13 Oct 2026 14:57:55 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
-
-Latest series: [v2] spi: Add support for panic mem writes (2026-10-13T14:13:43)
-  Superseding: [v1] spi: Add support for panic mem writes (2026-10-05T08:11:35):
-    [1/5] spi: spi-mem: Add support for panic mem writes
-    [2/5] mtd: spi-nor: Add support for panic writes
-    [3/5] spi: cadence-xspi: Add irq-less support
-    [4/5] spi: cadence-xspi: Don't use infinite timeout in register poll
-    [5/5] spi: cadence-xspi: Add support for panic writes
-
-Checked 201 series in 3.36 seconds.
-This project currently has 16755 active patches.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8iTOAyz0EiYcRMdX"
+Content-Disposition: inline
+In-Reply-To: <20261013142004.1729849-1-sahaj123.sc@gmail.com>
+X-Cookie: Some equipment shown is optional.
 
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+--8iTOAyz0EiYcRMdX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 13, 2026 at 07:50:04PM +0530, Sahaj Chaudhari wrote:
+> The DMA paths ignore failures from dmaengine_slave_config(), descriptor
+> preparation and dmaengine_submit(), and carry FIXME comments about
+> falling back to PIO. A failed setup can leave a half-started transfer
+> or wait for a completion that never arrives.
+
+> @@ -1227,10 +1300,27 @@ static int omap2_mcspi_transfer_one(struct spi_co=
+ntroller *ctlr,
+>  					+ OMAP2_MCSPI_TX0);
+> =20
+>  		if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
+> -		    spi_xfer_is_dma_mapped(ctlr, spi, t))
+> -			count =3D omap2_mcspi_txrx_dma(spi, t);
+> -		else
+> +		    spi_xfer_is_dma_mapped(ctlr, spi, t)) {
+> +			ret =3D omap2_mcspi_txrx_dma(spi, t, &count,
+> +						   &pio_fallback);
+> +			if (ret) {
+> +				bool is_target =3D spi_controller_is_target(ctlr);
+> +				bool fallback;
+> +
+> +				fallback =3D omap2_mcspi_can_pio_fallback(pio_fallback, t,
+> +									is_target);
+> +				if (!fallback) {
+> +					status =3D ret;
+> +					goto out;
+> +				}
+> +
+> +				dev_warn(&spi->dev,
+> +					 "DMA setup failed, falling back to PIO\n");
+> +				count =3D omap2_mcspi_txrx_pio(spi, t);
+
+Do we need to turn off the FIFO here before doing PIO? =20
+
+> +			}
+> +		} else {
+>  			count =3D omap2_mcspi_txrx_pio(spi, t);
+> +		}
+> =20
+>  		if (count !=3D t->len) {
+>  			status =3D -EIO;
+> @@ -1246,8 +1336,12 @@ static int omap2_mcspi_transfer_one(struct spi_con=
+troller *ctlr,
+>  out:
+>  	/* Restore defaults if they were overriden */
+>  	if (par_override) {
+> +		int restore_status;
+> +
+>  		par_override =3D 0;
+> -		status =3D omap2_mcspi_setup_transfer(spi, NULL);
+> +		restore_status =3D omap2_mcspi_setup_transfer(spi, NULL);
+> +		if (!status)
+> +			status =3D restore_status;
+>  	}
+> =20
+>  	omap2_mcspi_set_enable(spi, 0);
+> --=20
+> 2.43.0
+>=20
+
+--8iTOAyz0EiYcRMdX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrOUOUACgkQJNaLcl1U
+h9CflAf9FxnOkGW3I+4O6FGCNKhHWwZvviAk4+Owdo7QhfwRyFjEjpmXpT+5MPnw
+VFzLl9xNzw1dN/sQ0kV06es5pdgcobY9Bh+pKPHhDJZQVnLtgx2xJlf1YMMfasQc
+x28CA5WwC6A5mOg+3ul/urrqRorum79xSh4Qqjydyy0Hp4f9eXF80q8rzeAJT1/g
+o470mtVZZZAty7aaMaFWJ+5+6Aka4zAQt83e2T1lJ8C11NfNAjz4Cgqjs02JyOF6
+KJOPK3kw+aJt9VUwyYZGKJEwgGjchcMeAmwQov7xdL+vo0BWyTWaRivcOShadEo9
+pGSx8FakDQ9oAlDzuo7APBY94g6dXg==
+=HfFf
+-----END PGP SIGNATURE-----
+
+--8iTOAyz0EiYcRMdX--

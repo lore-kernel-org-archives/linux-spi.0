@@ -1,94 +1,81 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C724A207C
-	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 08:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7882D450415;
+	Wed, 14 Oct 2026 10:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791968108; cv=none; b=ok3HPPwUxmg1JpAhYOl79oIg47Sd+2Y1/q5KhBzlOwU2ZBOvNYelT3BcZKuDlDzM+yUwMbKkcwrvSsVBqDvA/aQSrUafILEzJzHyYuI3qcUP+kq4WWDPXl3G0r87wX4e+V9H3uCwIkkX7J4dqTbprrgytW2ccUFRU1zapvS49D4=
+	t=1791974179; cv=none; b=nj54r1s2Y80sj9g1maAU3aiQlPvBfhU1MO0dgLLq85zyw8OEzLS8gQDCSyGiOhXKpLgtEr/91jTwhrpRxxrcTKEvbOUIZsd9xKURdGcSB0N8YuA3YY1/b5No0lM7bnBaTuNLcJ4Qr2zc1Av72iQrAzrcAKMrHG7NAP2KQWfM5+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791968108; c=relaxed/simple;
-	bh=p1ESfnGJs632WJQwDweeEKBejwXJXmPDIvvHT8ekolo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kGrIFJ0fOfoE8raFYW0hN76tRTFREON7/FyPCZn3C2ZN6dpTbq1wFDpCOLX2nYhpY+EVwc1GCk8dl4hB4gYnUYNic+aBoKZHXDukDP8irVyEkJUGJDFWZRzyjSf/DgFj8mhIG1VDxbYZGVI9X1iyCEQKgNEnNS4NxhX4wvOZWsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qoM3nBbU; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791974179; c=relaxed/simple;
+	bh=zaQSMUxzF8erB51E9B66BKCDfM8HNwtde8IZGP/vAnA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sfIDIrcpjDVYvzEd4e1Cn08KJw/xJBHX24aV75rbdrbHz5kR8nwMiCu+9aNAAJQHlML6qJTAMLRiF7dIq9O5aZBnBu8NdnXWPUuptr7LlYIus2Y2ygNOghpDKyRpXSa8iwEOnTr2QROwCqF94XwTBNcCQzj+5+OqMYoi+o0q8Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLLfULh5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qoM3nBbU"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C9CEB4E4120B;
-	Wed, 14 Oct 2026 08:55:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 907C660368;
-	Wed, 14 Oct 2026 08:55:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A5E78103286A7;
-	Wed, 14 Oct 2026 10:54:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791968104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=p1ESfnGJs632WJQwDweeEKBejwXJXmPDIvvHT8ekolo=;
-	b=qoM3nBbU7T4hs5LrPD56Yg1Uidle/RVUP5cbW/a7PJaA/jWSyc/z7YKUWKWt3fQOv3ylNJ
-	auQl7PxshL80uMOhPny71WP06UzMVP7OQcgCSTwD1yU+n9Fi27Z5ZgLoeXdn7VqTF5vk2+
-	FygxKKNluMWd3wOEYeb6lhQFt9vaVgzNtPKhHVY1AMPdnjoeVqExQ+MflejRCiSEB6WRoI
-	kUpWs9RNjd2F/eMl+xgDJ2s4rpfZmhpnW1npRj1zRO0VvOmuppfpf7Gjyz0aLkz12mGnSb
-	q6udCSuHkCKUPy3B/meWQxZcLSCu8cO5dspyR1wT5MAJRz7i4k6ZM42eDD0+Xg==
-Message-ID: <74b2030cb64f8c25f95d51894d3296f180a34e01.camel@bootlin.com>
-Subject: Re: [PATCH 1/5] spi: spi-mem: Add support for panic mem writes
-From: Paul Cercueil <paul.cercueil@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-  Takahiro Kuwano <takahiro.kuwano@infineon.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger	 <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Thomas Petazzoni	
- <thomas.petazzoni@bootlin.com>, Kees Cook <kees@kernel.org>, Tony Luck	
- <tony.luck@intel.com>, "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-spi@vger.kernel.org, Tanmay Jagdale <tanmay@marvell.com>
-Date: Wed, 14 Oct 2026 10:54:56 +0200
-In-Reply-To: <629a4f32-2efe-4212-ac1f-f64c487caa63@sirena.org.uk>
-References: <20261005081141.33688-1-paul.cercueil@bootlin.com>
-	 <20261005081141.33688-2-paul.cercueil@bootlin.com>
-	 <asdVM883VTQy7WvH@sirena.co.uk>
-	 <5c94b88bf7123e5a32d5c4bd77217e6a40683c83.camel@bootlin.com>
-	 <eb16cf0a-6b7e-4ea3-89c5-61ba0729492d@sirena.org.uk>
-	 <0d2f1d4149cd136ace8c1f08dc48ea7f25c5975c.camel@bootlin.com>
-	 <629a4f32-2efe-4212-ac1f-f64c487caa63@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLLfULh5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A2E1F000FF;
+	Wed, 14 Oct 2026 10:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791974178;
+	bh=TXXuj797oe2SL7aI8xCKis3dp6zlE0u01lBVd5p3BeY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=nLLfULh5HXfWA+zpIhC5YkMeZDoSYN3TPLKZJy2Y+OXzEuIpry0v9Sgr5BD1lNwtD
+	 X815c/oPNgwaG0Wrrg3xWOGZ064NgNO/s6E+nrV4k4PduHqM60eOFYVgXhk4n8Zwih
+	 ZdzLhe6FjW4I/3INDZ4mtHV/YIovE4lwTAEKGzrafhkArWnCuWH3YILXjtxU3/JsPd
+	 qEcnjP3TFzGBUMbVdnEfTKAUPGqhrzQj+6nPfmnrgvze3C+AwptnTjJZUOKbu2Xme1
+	 leq+MxRs2ONyq8XxiJA1aQe53s8US3r3NGQQqdCM+T0P82An3FCpNe/FzSlOOEXH9H
+	 TH4FP4TvtRoIQ==
+From: Mark Brown <broonie@kernel.org>
+To: Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Md Sadre Alam <md.alam@oss.qualcomm.com>, Gabor Juhos <j4g8y7@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20261005-qpic-snand-skip-bbm-copy-v1-1-04f6aeda4044@gmail.com>
+References: <20261005-qpic-snand-skip-bbm-copy-v1-1-04f6aeda4044@gmail.com>
+Subject: Re: [PATCH] spi: spi-qpic-snand: skip BBM copy on regular raw
+ reads
+Message-Id: <179191209569.42298.16799303691069144788.b4-ty@b4>
+Date: Tue, 13 Oct 2026 18:21:35 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
 
-Hi Mark,
+On Mon, 05 Oct 2026 19:18:50 +0200, Gabor Juhos wrote:
+> spi: spi-qpic-snand: skip BBM copy on regular raw reads
 
-Le mardi 13 octobre 2026 =C3=A0 17:00 +0100, Mark Brown a =C3=A9crit=C2=A0:
-> On Tue, Oct 13, 2026 at 01:00:50PM +0200, Paul Cercueil wrote:
-> > Le mardi 13 octobre 2026 =C3=A0 11:42 +0100, Mark Brown a =C3=A9crit=C2=
-=A0:
->=20
-> > > Do the other CPUs know they're panicing yet, and what state is the
-> > > hardware in?=C2=A0 I'm a bit nervous about assuming panic got things =
-into a
-> > > good state.
->=20
-> > The other CPUs are stopped, yes. At that point there's no SMP, no
-> > preemption, no
-> > IRQs, no time accounting.
->=20
-> My worry is what happens if we didn't actually manage to stop the other
-> CPUs - in theory we've shut everything down, but I've been burned by the
-> bug being IPIs breaking.=C2=A0 Perhaps it's just not worth worrying about=
-.
+Applied to
 
-My understanding is that the panic handlers are written with the assumption=
- that
-everything is stopped, it's up to the calling code to ensure that it is tru=
-e.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
--Paul
+Thanks!
+
+[1/1] spi: spi-qpic-snand: skip BBM copy on regular raw reads
+      https://git.kernel.org/broonie/misc/c/2da46f1e9b98
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

@@ -1,42 +1,34 @@
-Received: from out28-148.mail.aliyun.com (out28-148.mail.aliyun.com [115.124.28.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C99D48641C;
-	Tue, 13 Oct 2026 05:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C8623ED6A
+	for <linux-spi@vger.kernel.org>; Tue, 13 Oct 2026 05:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791870232; cv=none; b=G5Lb4vtQIRilv9XvEgCYNO1RMMGt1ZPq/+wOl7mx+Dvkt9J3kGLaR9FWLr2WxmtZRITcc+c7UdgmBlletJ0GaQ/8Dd+qBWx0UUrsUopW82/3zNnutmzGAGEACeM7cmQ7KCP3htCt9f7vzbMh10yZY80H43lm/GAXuznZH/SJxDU=
+	t=1791871070; cv=none; b=rOldRshMOQBrz+c5AzwUyKcmaxSkAsC25AFpihwDdiPdzLMemeM+EN/URjR4PChSqhRufjDxsUamv3DDK/7flv+gDE6mxtE84cECR8QQS/g1KzM+aM2HVSRafPMT6SW3w9i3IQKpj6MvCw9nDgAGCu7rm1l/+BLcGO3T5Dd4ztM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791870232; c=relaxed/simple;
-	bh=6bJS+k1/gc2Tsyv/9juJug8u4fHJ03qelOvsCrch6NE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wtsj+qeOuBWcaXPHVolpruVPWYGuJTHSILRGLyQVjc9v5wfUkMy26sYdMWUVfI2hrRM0q5+pzc3n4lL6kLYQF+HNIOEAp3qDikHgUFnmy0EnPoQf29yqMOHd9eDDs3kHknqMbdym0N84nVC56BmlRsbHpao9496bMrgE5m+Nx38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=L5fqdPHc; arc=none smtp.client-ip=115.124.28.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1791871070; c=relaxed/simple;
+	bh=y+weBupnAsTQO8dvtXUWk1QB83QFbAKcxYkBrrNA80w=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:To; b=d+9l7V458Ul5jSpjdTv3ww/agGi38ewVvu9Ztj0POgFbQAmn0bcP380VgMIgqVwBqyQnnUPDELO1WXfmQt7NDLPi8fV2kTPflas4uoFgbKn86pTZWi7jlKC/BVaShO3u3Mkh9AIFgQRbAq3qzOaRarA1hBoY1L2wblRUbMq2vkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfaokGtq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="L5fqdPHc"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1791870221; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=hm7RovbDj9xZoiFp6sWkbbpUg8po/7TsN/jrvQ43fJg=;
-	b=L5fqdPHc3Iw0ozGlTsFE9bN0R4bg0ZJk0vd9W9McktwmSrNlhSYbJ94/nJpt2+y6PiDMDrhj+EOj7nUEvI/sdGAxtTwJamf1qHDJ4WoUls4uAcPNkUfkCx1cGhnN5JHM+UMfwtHw2qduuMrsjp3frcBCLFAHjhXLJ1+cvle3lcM=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07899456|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00511588-0.000218161-0.994666;FP=10013908775060655552|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=liuwb@xiaopeng.com;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.jb7aQWV_1791870219;
-Received: from localhost(mailfrom:liuwb@xiaopeng.com fp:SMTPD_---.jb7aQWV_1791870219 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 13 Oct 2026 13:43:40 +0800
-From: Weibin Liu <liuwb@xiaopeng.com>
-To: broonie@kernel.org
-Cc: jth@kernel.org,
-	linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] spi: ch341: handle transfers without a TX or RX buffer
-Date: Tue, 13 Oct 2026 13:43:39 +0800
-Message-ID: <20261013054339.77477-1-liuwb@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260929081152.41753-1-liuwb@xiaopeng.com>
-References: <20260929081152.41753-1-liuwb@xiaopeng.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfaokGtq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0894C1F000FF;
+	Tue, 13 Oct 2026 05:57:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791871069;
+	bh=NDjJoYBIx4d47D7qw6VH9S2ptUUYG1VqQ0Hykwz0Y5w=;
+	h=Subject:From:Date:To;
+	b=PfaokGtq/tR8M4SnWzwXMZ+5JTtdyA2S67Aewyr/h824QzXIlNTVqp6+9MwcqEUjD
+	 ca4E+LHnKzA/xW+h84lou4jExHmtMoAHhoLO2wCoxWCUn+eOcLMMYo9P1+5oBC8IEK
+	 nofPzgYQdr8ZyJFdGl3s1cgVFSIiiwWvZVHnlm26xjy4+jFCJgx53YYyBfVMnV0S55
+	 iM3V/b0tXNuFdxxxOfoMGw/BbcLOdLSFE8BIHpZ0lLX9xc/aVDCWWp5X7aqWRzQhJZ
+	 GAyL/2sTSqTLXzOEmekoTlkK1neF2l9v7LGeXv0R3shpaph1FMsQew0TaYqa/Vj1ih
+	 FPddScLK5iv3g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15B03926257;
+	Tue, 13 Oct 2026 05:57:48 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -44,51 +36,22 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179187106747.65790.9476247947087847139.git-patchwork-housekeeping@kernel.org>
+Date: Tue, 13 Oct 2026 05:57:47 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-ch341_transfer_one() unconditionally copies from trans->tx_buf into the
-TX packet and hands trans->rx_buf to usb_bulk_msg() for the readback.
+Latest series: [v2] spi: ch341: handle transfers without a TX or RX buffer (2026-10-13T05:43:39)
+  Superseding: [v1] spi: ch341: handle transfers without a TX or RX buffer (2026-09-29T08:11:52):
+    spi: ch341: handle transfers without a TX or RX buffer
 
-The SPI core allows half-duplex transfers where either of the buffers
-is NULL, so a transfer without TX data crashes the kernel on the memcpy
-and a transfer without RX data makes usb_bulk_msg() store the received
-data at address 0.
+Checked 201 series in 2.97 seconds.
+This project currently has 16747 active patches.
 
-The CH341A clocks data in both directions on every transfer; there is
-no mode to disable a direction. Set SPI_CONTROLLER_MUST_TX and
-SPI_CONTROLLER_MUST_RX so the SPI core fills in dummy buffers for
-half-duplex transfers.
 
-Fixes: 8846739f52af ("spi: add ch341a usb2spi driver")
-Cc: stable@vger.kernel.org # 6.11+
-Signed-off-by: Weibin Liu <liuwb@xiaopeng.com>
----
-Changes in v2:
-
-- Set SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX instead of
-  handling NULL buffers in the driver (Mark Brown).
----
- drivers/spi/spi-ch341.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/spi/spi-ch341.c b/drivers/spi/spi-ch341.c
-index 6448a44a8..56a5caa59 100644
---- a/drivers/spi/spi-ch341.c
-+++ b/drivers/spi/spi-ch341.c
-@@ -189,6 +189,12 @@ static int ch341_probe(struct usb_interface *intf,
- 	ctrl->transfer_one = ch341_transfer_one;
- 	ctrl->set_cs = ch341_set_cs;
- 	ctrl->auto_runtime_pm = false;
-+	/*
-+	 * The CH341A SPI_STREAM command clocks data in both directions on
-+	 * every transfer, so the driver always needs a TX and an RX buffer;
-+	 * let the SPI core supply dummy buffers for half-duplex transfers.
-+	 */
-+	ctrl->flags = SPI_CONTROLLER_MUST_TX | SPI_CONTROLLER_MUST_RX;
- 
- 	usb_set_intfdata(intf, ch341);
- 
-
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

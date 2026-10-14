@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8203C55D86E
-	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 15:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD16854CF53;
+	Wed, 14 Oct 2026 15:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791992674; cv=none; b=fkyQssi0jab18/mvcOqyb7J/M3XGh92dlY2doWFau3UTsC6G1MBRZTC6Vnn+PrfchfckAx9a+rQtPkpKJLT+l6GSSJZdqnhFMWXS5qHWimnZ/WzccIB+NPCR9Cez8gmyr2Kv23P466gmkEztIKxDvYbw/SHbW+BzsNxwUeF3KfU=
+	t=1791992683; cv=none; b=XVzaZSS7HPiHmJXfBzS83pK2BQ5ooDSRAJJhQ5CRtLzSW8HV67KShW6RMBpdCqZu0fA50guqq4/5LP4JpGWP4mYhtG5U5/vxkK63d60q1Ibi3fQB5YMaP3DB4+x/xVyJvfAu57WdPeUh9ZF+dodp2Vw+ntwYdamFbejBJahSJsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791992674; c=relaxed/simple;
-	bh=2GD9iQ0q0Ryk0Y1hCEDYuwqq89P1KQU2qBZF2vslX5I=;
+	s=arc-20240116; t=1791992683; c=relaxed/simple;
+	bh=ee3HOAFL0P0jox8iP9bxIKxiNhmxLqoULAoki9pz+kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFfCu0PVUHaxepoAW6pQHUBq/LKiwOiYx9rqdS63pVzCe2mpPrVz6GHILJw8fbhXnTHa6GmQejAU+Eh3/tddcRnf7+Na8Dvw0RK54ceQs8O9r56upkh27a7pL6G2SPuvuFs+knEq7pfq6R3+g7BcLXaQ4iFP/pH8xDcSFRyzlQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=uD8v375y; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=O7HOvql8241uA45Oc8Z4s4lldGBuAXnMC7JR35bYqKqR7w2hH+oMSFsKVmKxKalCBejssPbSUvv/KXSsI0pqaGZWjeUtcia73h8VzWhOLAlquxbzqTLUoyn+6HwETrDI4qiGq/ZEOho2WVtqtfBKjYn+8Wl0sBxC/uqX9VfHN0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yKdCKilB; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="uD8v375y"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yKdCKilB"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C3D361A1230;
-	Wed, 14 Oct 2026 15:44:30 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D09E1C6344E;
+	Wed, 14 Oct 2026 15:45:33 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 92FF060368;
-	Wed, 14 Oct 2026 15:44:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 53AA7103289BC;
-	Wed, 14 Oct 2026 17:44:22 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A93FA60368;
+	Wed, 14 Oct 2026 15:44:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AFF37103288F3;
+	Wed, 14 Oct 2026 17:44:29 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791992664; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1791992672; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=O3NL8fkErfRFwG+o5fUs2LgXhRTFrJyf5hL+wJ8c3N4=;
-	b=uD8v375ySJi4m+wyAhOk0tJZFCAYruYKj/FsKzKi4F7ppiPZTV5dDp6qRjlrM/GLxBpD6i
-	WKvEbv4Bl4ss6zp9zIGPq72ZZJbzbP422igRxDSa5BHI695w/pY6JnUIu0IeUnonGJYPi4
-	joRr4S4AilFoYNQEtxPF65hAxkI+h1OBsYyNVT8JgTL8LwwW9+b8ROQCNLHdJdIRDxbJ2E
-	QoAzocpf8kphIehTu6Rm+EQ5q9pfm2DWyTruE8tptwK6c9HWJbIeqA0ucqdd3kY1HORQs4
-	b3QDYZ2VSqEEgBqllA+LjKX9DPjOxSQAdzQG7+UGoS1uKg6Y/n7zVs+oU9m/wQ==
+	bh=VBfHMzzjsF2QZ2WH+O6Wg6esVJdcuEzWNofUfba/9bk=;
+	b=yKdCKilBwcGKPO1ahATh2ZQaF0NYodtOU0mFP+pnw1LY+K9xDVbRBeBV47SNZkgtA/eBUX
+	djmo1Zj36UY+nLRirIQjp/QHuo1tVU6sX/xs2C5XLVoe3D3Dq016eUv9/Mgb9Z4pK7VFt5
+	6ECZqOMqXCtnnMJK8bQA7aD7qfXY2ckzrvDV04kqKhTPou2HdBznRdBs+J59t8ApV+6RVo
+	27hStNFTR92d4LJvkpa3w/3x4/izuzXjT2bjmMy/ooKq2WCQYpJIBQuvwuykoojtW1yVZe
+	kEPNLd2wsoEKnnXVVHTxE8vsNprGs0+c3jn0Hv3zGWMPh355/j3ShshxQs2ZBw==
 From: Paul Cercueil <paul.cercueil@bootlin.com>
 To: Pratyush Yadav <pratyush@kernel.org>,
 	Michael Walle <mwalle@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
 	Tanmay Jagdale <tanmay@marvell.com>,
 	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v3 5/7] spi: cadence-xspi: Add irq-less support
-Date: Wed, 14 Oct 2026 17:42:59 +0200
-Message-ID: <20261014154301.157755-6-paul.cercueil@bootlin.com>
+Subject: [PATCH v3 6/7] spi: cadence-xspi: Add support for panic writes
+Date: Wed, 14 Oct 2026 17:43:00 +0200
+Message-ID: <20261014154301.157755-7-paul.cercueil@bootlin.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261014154301.157755-1-paul.cercueil@bootlin.com>
 References: <20261014154301.157755-1-paul.cercueil@bootlin.com>
@@ -69,15 +69,9 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Tanmay Jagdale <tanmay@marvell.com>
 
-Make the interrupt line optional. If not provided, the driver will
-instead resort to polling registers.
-
-This can be useful in itself, but will be used later to support write on
-kernel panic.
-
-Note the cdns_xspi_is_{sdma,stig}_ready() seem to have moved for no
-reason; they were actually moved out of a conditional compilation block
-(#ifdef CONFIG_64BIT), as they are needed in conf-independent paths now.
+Advertise support for panic writes. When a memory op is received with
+the 'panic' flag set, the driver will then work without relying on
+interrupts and without sleeping.
 
 Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
 Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
@@ -85,162 +79,151 @@ Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
 ---
 
 Notes:
-    v2: Make sure we only enable interrupts if not using polling mode
+    v2: - Don't enable interrupts if doing a panic write
+        - Use a new cdns_readl_poll() macro that will resolve to calling
+          readl_relaxed_poll_timeout_atomic() when doing a panic write, or
+          readl_relaxed_poll_timeout() otherwise.
+        - Drop cdns_xspi->panic_write. We don't actually need to check it in
+          cdns_xspi_is_dll_locked(), because this code is never called in
+          the kernel panic path.
     
     v3: No change
 
- drivers/spi/spi-cadence-xspi.c | 104 ++++++++++++++++++---------------
- 1 file changed, 58 insertions(+), 46 deletions(-)
+ drivers/spi/spi-cadence-xspi.c | 52 ++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-index 095bf640b379..2a2a40bf0a4c 100644
+index 2a2a40bf0a4c..a7fd715c45d5 100644
 --- a/drivers/spi/spi-cadence-xspi.c
 +++ b/drivers/spi/spi-cadence-xspi.c
-@@ -365,6 +365,38 @@ static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns_xspi)
- 					  100, 1000);
- }
+@@ -287,6 +287,10 @@
+ #define GENERIC_CMD_REG_3_NEEDED(len)		(len > 7)
+ #define GENERIC_CMD_REG_2_NEEDED(len)		(len > 3)
  
-+static bool cdns_xspi_is_stig_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
-+{
-+	u32 ctrl_stat;
++#define cdns_readl_poll(addr, val, cond, delay_us, timeout_us, can_sleep) \
++	((can_sleep) ? readl_relaxed_poll_timeout(addr, val, cond, delay_us, timeout_us) \
++		     : readl_relaxed_poll_timeout_atomic(addr, val, cond, delay_us, timeout_us))
 +
-+	return !readl_relaxed_poll_timeout
-+		(cdns_xspi->iobase + CDNS_XSPI_CTRL_STATUS_REG,
-+		ctrl_stat,
-+		((ctrl_stat & BIT(3)) == 0),
-+		sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
-+		sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0);
-+}
-+
-+static bool cdns_xspi_is_sdma_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
-+{
-+	u32 ctrl_stat;
-+
-+	if (readl_relaxed_poll_timeout
-+	    (cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG,
-+	     ctrl_stat,
-+	     (ctrl_stat & CDNS_XSPI_SDMA_TRIGGER),
-+	     sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
-+	     sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0)) {
-+		return false;
-+	}
-+
-+	/* Clear the flag */
-+	writel(CDNS_XSPI_SDMA_TRIGGER,
-+	       cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
-+
-+	return true;
-+}
-+
- static void cdns_xspi_trigger_command(struct cdns_xspi_dev *cdns_xspi,
- 				      u32 cmd_regs[6])
+ enum cdns_xspi_stig_instr_type {
+ 	CDNS_XSPI_STIG_INSTR_TYPE_0,
+ 	CDNS_XSPI_STIG_INSTR_TYPE_1,
+@@ -353,40 +357,33 @@ struct cdns_xspi_dev {
+ 	int current_xfer_qword;
+ };
+ 
+-static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns_xspi)
++static int cdns_xspi_wait_for_controller_idle(struct cdns_xspi_dev *cdns_xspi, bool sleep)
  {
-@@ -532,7 +564,8 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 	writel(FIELD_PREP(CDNS_XSPI_CTRL_WORK_MODE, CDNS_XSPI_WORK_MODE_STIG),
- 	       cdns_xspi->iobase + CDNS_XSPI_CTRL_CONFIG_REG);
+ 	u32 ctrl_stat;
  
--	cdns_xspi->set_interrupts_handler(cdns_xspi, true);
-+	if (cdns_xspi->irq >= 0)
-+		cdns_xspi->set_interrupts_handler(cdns_xspi, true);
- 	cdns_xspi->sdma_error = false;
- 
- 	memset(cmd_regs, 0, sizeof(cmd_regs));
-@@ -562,16 +595,25 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
- 
- 		cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
- 
--		wait_for_completion(&cdns_xspi->sdma_complete);
--		if (cdns_xspi->sdma_error) {
--			cdns_xspi->set_interrupts_handler(cdns_xspi, false);
-+		if (cdns_xspi->irq >= 0) {
-+			wait_for_completion(&cdns_xspi->sdma_complete);
-+			if (cdns_xspi->sdma_error) {
-+				cdns_xspi->set_interrupts_handler(cdns_xspi, false);
-+				return -EIO;
-+			}
-+		} else if (!cdns_xspi_is_sdma_ready(cdns_xspi, true)) {
- 			return -EIO;
- 		}
-+
- 		cdns_xspi->sdma_handler(cdns_xspi);
- 	}
- 
--	wait_for_completion(&cdns_xspi->cmd_complete);
--	cdns_xspi->set_interrupts_handler(cdns_xspi, false);
-+	if (cdns_xspi->irq >= 0) {
-+		wait_for_completion(&cdns_xspi->cmd_complete);
-+		cdns_xspi->set_interrupts_handler(cdns_xspi, false);
-+	} else if (!cdns_xspi_is_stig_ready(cdns_xspi, true)) {
-+		return -EIO;
-+	}
- 
- 	cmd_status = cdns_xspi_check_command_status(cdns_xspi);
- 	if (cmd_status)
-@@ -1052,38 +1094,6 @@ static int cdns_xspi_prepare_transfer(int cs, int dir, int len, u32 *cmd_regs)
- 	return 0;
+-	return readl_relaxed_poll_timeout(cdns_xspi->iobase +
+-					  CDNS_XSPI_CTRL_STATUS_REG,
+-					  ctrl_stat,
+-					  ((ctrl_stat &
+-					    CDNS_XSPI_CTRL_BUSY) == 0),
+-					  100, 1000);
++	return cdns_readl_poll(cdns_xspi->iobase + CDNS_XSPI_CTRL_STATUS_REG,
++			       ctrl_stat, !(ctrl_stat & CDNS_XSPI_CTRL_BUSY),
++			       100, 1000, sleep);
  }
  
--static bool cdns_xspi_is_stig_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
--{
--	u32 ctrl_stat;
--
+ static bool cdns_xspi_is_stig_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
+ {
+ 	u32 ctrl_stat;
+ 
 -	return !readl_relaxed_poll_timeout
 -		(cdns_xspi->iobase + CDNS_XSPI_CTRL_STATUS_REG,
 -		ctrl_stat,
 -		((ctrl_stat & BIT(3)) == 0),
 -		sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
 -		sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0);
--}
--
--static bool cdns_xspi_is_sdma_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
--{
--	u32 ctrl_stat;
--
++	return !cdns_readl_poll(cdns_xspi->iobase + CDNS_XSPI_CTRL_STATUS_REG,
++				ctrl_stat, !(ctrl_stat & BIT(3)),
++				MRVL_XSPI_POLL_DELAY_US,
++				MRVL_XSPI_POLL_TIMEOUT_US, sleep);
+ }
+ 
+ static bool cdns_xspi_is_sdma_ready(struct cdns_xspi_dev *cdns_xspi, bool sleep)
+ {
+ 	u32 ctrl_stat;
+ 
 -	if (readl_relaxed_poll_timeout
 -	    (cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG,
 -	     ctrl_stat,
 -	     (ctrl_stat & CDNS_XSPI_SDMA_TRIGGER),
 -	     sleep ? MRVL_XSPI_POLL_DELAY_US : 0,
 -	     sleep ? MRVL_XSPI_POLL_TIMEOUT_US : 0)) {
--		return false;
--	}
--
--	/* Clear the flag */
--	writel(CDNS_XSPI_SDMA_TRIGGER,
--	       cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG);
--
--	return true;
--}
--
- static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
- 					   struct spi_message *m)
- {
-@@ -1276,15 +1286,17 @@ static int cdns_xspi_probe(struct platform_device *pdev)
++	if (cdns_readl_poll(cdns_xspi->iobase + CDNS_XSPI_INTR_STATUS_REG,
++			    ctrl_stat, (ctrl_stat & CDNS_XSPI_SDMA_TRIGGER),
++			    MRVL_XSPI_POLL_DELAY_US, MRVL_XSPI_POLL_TIMEOUT_US,
++			    sleep)) {
+ 		return false;
  	}
+ 
+@@ -557,14 +554,14 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 	int ret;
+ 	int dummybytes = op->dummy.nbytes;
+ 
+-	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi);
++	ret = cdns_xspi_wait_for_controller_idle(cdns_xspi, !op->panic_write);
+ 	if (ret < 0)
+ 		return -EIO;
+ 
+ 	writel(FIELD_PREP(CDNS_XSPI_CTRL_WORK_MODE, CDNS_XSPI_WORK_MODE_STIG),
+ 	       cdns_xspi->iobase + CDNS_XSPI_CTRL_CONFIG_REG);
+ 
+-	if (cdns_xspi->irq >= 0)
++	if (cdns_xspi->irq >= 0 && !op->panic_write)
+ 		cdns_xspi->set_interrupts_handler(cdns_xspi, true);
+ 	cdns_xspi->sdma_error = false;
+ 
+@@ -595,23 +592,23 @@ static int cdns_xspi_send_stig_command(struct cdns_xspi_dev *cdns_xspi,
+ 
+ 		cdns_xspi_trigger_command(cdns_xspi, cmd_regs);
+ 
+-		if (cdns_xspi->irq >= 0) {
++		if (cdns_xspi->irq >= 0 && !op->panic_write) {
+ 			wait_for_completion(&cdns_xspi->sdma_complete);
+ 			if (cdns_xspi->sdma_error) {
+ 				cdns_xspi->set_interrupts_handler(cdns_xspi, false);
+ 				return -EIO;
+ 			}
+-		} else if (!cdns_xspi_is_sdma_ready(cdns_xspi, true)) {
++		} else if (!cdns_xspi_is_sdma_ready(cdns_xspi, !op->panic_write)) {
+ 			return -EIO;
+ 		}
+ 
+ 		cdns_xspi->sdma_handler(cdns_xspi);
+ 	}
+ 
+-	if (cdns_xspi->irq >= 0) {
++	if (cdns_xspi->irq >= 0 && !op->panic_write) {
+ 		wait_for_completion(&cdns_xspi->cmd_complete);
+ 		cdns_xspi->set_interrupts_handler(cdns_xspi, false);
+-	} else if (!cdns_xspi_is_stig_ready(cdns_xspi, true)) {
++	} else if (!cdns_xspi_is_stig_ready(cdns_xspi, !op->panic_write)) {
+ 		return -EIO;
+ 	}
+ 
+@@ -1195,6 +1192,10 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
+ }
  #endif
  
--	cdns_xspi->irq = platform_get_irq(pdev, 0);
--	if (cdns_xspi->irq < 0)
--		return -ENXIO;
-+	cdns_xspi->irq = platform_get_irq_optional(pdev, 0);
-+	if (cdns_xspi->irq < 0 && cdns_xspi->irq != -ENXIO)
-+		return cdns_xspi->irq;
- 
--	ret = devm_request_irq(dev, cdns_xspi->irq, cdns_xspi_irq_handler,
--			       IRQF_SHARED, pdev->name, cdns_xspi);
--	if (ret) {
--		dev_err(dev, "Failed to request IRQ: %d\n", cdns_xspi->irq);
--		return ret;
-+	if (cdns_xspi->irq >= 0) {
-+		ret = devm_request_irq(dev, cdns_xspi->irq, cdns_xspi_irq_handler,
-+				       IRQF_SHARED, pdev->name, cdns_xspi);
-+		if (ret) {
-+			dev_err(dev, "Failed to request IRQ: %d\n", cdns_xspi->irq);
-+			return ret;
-+		}
++static const struct spi_controller_mem_caps cdns_xspi_mem_caps = {
++	.panic_write = true,
++};
++
+ static int cdns_xspi_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -1315,6 +1316,7 @@ static int cdns_xspi_probe(struct platform_device *pdev)
  	}
  
- #ifdef CONFIG_64BIT
+ 	host->num_chipselect = 1 << cdns_xspi->hw_num_banks;
++	host->mem_caps = &cdns_xspi_mem_caps;
+ 
+ 	ret = devm_spi_register_controller(dev, host);
+ 	if (ret) {
 -- 
 2.47.3
 

@@ -1,94 +1,127 @@
-Received: from spam01.horizon.auto (spam01.horizon.auto [42.62.85.75])
+Received: from out28-172.mail.aliyun.com (out28-172.mail.aliyun.com [115.124.28.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1994E73A2
-	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 12:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C714A8402;
+	Wed, 14 Oct 2026 12:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981675; cv=none; b=Ze6ODL2/VhBdFRHW444CGZHb0+59UOW8VzFcEVxgrxKe8wgRN6OIWbeo5F6U/PnWHUKGyO2gjvE5Q+jcOZGUT1S820ze/m5hCfIGm8mCfWJ+M3gEgHyInk7UP5hcGnttW3FGPXCA98P7N+/VXyjZAS/67K7mIgN2UdK7WvWI/VQ=
+	t=1791981887; cv=none; b=uHfvfcnkjs+pD5tKFXBWfiOIExML41UEySBfrwhGeoUILgbut5n8duBit0LHSmZXwjG1KsCs2sNL//tNr0PEDsENyxIjViDTxc2oAGhLRJuZDNl8QE+4t0iBPjwdMuIHdl9k1/pfOg+fOmaHTgVFxcw3uJ2YaLkHW+MsY8WU/r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981675; c=relaxed/simple;
-	bh=lK8wRYJ+AYqo2LGH0BO63nJiMWgl09XhIwZHu37kNNc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=puw26nTIKwqK6CbLaGjx/e4SpB2FVMsVZqr3ITYnuf53vHWyqUtJQqdN8Gwa7wsc9jb37qvqEr16kmN3pjZIzSl7aBa7iyx/JlVIfSKi483LOAyQYpPrwiFuBr7XyM8h83yTXiVCp+2NIyMCj4wQSxKJAdDv2e6NY/azLF9TrXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=KBet5xZ+; arc=none smtp.client-ip=42.62.85.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
+	s=arc-20240116; t=1791981887; c=relaxed/simple;
+	bh=mDdHTf516IGdoumw3MzJZu24tCIn8a+7Bldy2FJU7ww=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=acmVPuDQRQcy4jz52c4+YD6x0ei8R0tFIPyt8ud2IfH2sNEc7mIOsV4P4kkB+CqSBbzOy81436O3uGQ3fqRmJ7iZ2vcVM6HiPllc/9+V4Xn9Uybiz8WIks/k7x8SXacO/eRVI/KfLqcBubiWnG/Rx4yzEphBAC/NWsB7m4iHYEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=OShhyR3D; arc=none smtp.client-ip=115.124.28.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="KBet5xZ+"
-Received: from spam01.horizon.auto (localhost [127.0.0.2] (may be forged))
-	by spam01.horizon.auto with ESMTP id 69E9aIm1021205
-	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 17:36:18 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from spam01.horizon.auto ([10.9.15.111])
-	by spam01.horizon.auto with ESMTPS id 69E9Z8cC019411
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO);
-	Wed, 14 Oct 2026 17:35:08 +0800 (+08)
-	(envelope-from fei.xie@horizon.auto)
-Received: from server227.horizon.auto (10.9.0.252) by exchange002.hobot.cc
- (10.9.15.111) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.27; Wed, 14 Oct 2026
- 17:35:09 +0800
-From: Fei Xie <fei.xie@horizon.auto>
-To: =?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>
-CC: <nuno.sa@analog.com>, <miquel.raynal@bootlin.com>, <broonie@kernel.org>,
-        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>
-Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for NAND and NOR
-Date: Wed, 14 Oct 2026 17:34:53 +0800
-Message-ID: <20261014093453.688565-1-fei.xie@horizon.auto>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
-References: <20260921093701.1341766-1-fei.xie@horizon.auto> <arOwdePAmoghlakj@nsa> <20260928055005.3987624-1-fei.xie@horizon.auto> <arp-E1MDFLfV1ASq@nsa> <87bj99lef4.fsf@bootlin.com> <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="OShhyR3D"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1791981876; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	bh=TeiDUz19S3tq4icMyyjsdQWJGtyrb+93Ex4WAelrBbE=;
+	b=OShhyR3DvQeHP93XIfBnvCKlhz1BCprZ+9qw52CmHKHMrcG0/LdpSylyj/e3he6IN4Dp3O5SyG7hhQWvWhSxU0fdfhkBhrsndaWtTZ4Uf0v6CJgJmS78I3lxquhLusnr78e8hal+RlN0DIV/ceLcEYcRaaLPH842L+FoT2FuH1k=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436308|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0135348-0.00108863-0.985377;FP=11192971816904312030|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=liuwb@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jdAkDg1_1791981553;
+Received: from 127.0.0.1(mailfrom:liuwb@xiaopeng.com fp:SMTPD_---.jdAkDg1_1791981553 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Oct 2026 20:39:14 +0800
+From: Weibin Liu <liuwb@xiaopeng.com>
+Date: Wed, 14 Oct 2026 20:39:13 +0800
+Subject: [PATCH] spi: amd: fix len==0 underflow and FIFO overflow
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: exchange001.hobot.cc (10.9.15.110) To exchange002.hobot.cc
- (10.9.15.111)
-X-DKIM-Results: [10.9.15.111]; dkim=none;
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL:spam01.horizon.auto 69E9aIm1021205
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horizon.auto;
-	s=auto; t=1791970518;
-	bh=lK8wRYJ+AYqo2LGH0BO63nJiMWgl09XhIwZHu37kNNc=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=KBet5xZ+SYMzcjpDMyHl1AZPMN/KLJHChUmaUEuu1/Ezo0XCz2TmtEE4ePiF4gUcs
-	 H5tD6dspkAN2Olc0Yy0vF3Max9ZR2BDZv5SXeZx4iuWnFoja0YwkuTRlvMg54/5yfd
-	 /qjKMj5HK9A4gOS/6WCnvuGFJaUif2RiYz8SSmLtaypDMPz9nvvdPtcj6yJNEbA5No
-	 J/v/P934KzMetQ2ZQyAFYy/3kcUakKjNOfXIqrvPE3HDkZwGCjHJ+gkZa9E04s/Dxw
-	 OKEHcANxkH3ElCBBRqIBLJez8E+jglfVtr3csoN7gZOVRclug9oZmEqlCCaCvJ+UsU
-	 cLIRFrw32HElg==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-spi-amd-fifo-fix-v1-1-9fec9ab753e8@xiaopeng.com>
+X-B4-Tracking: v=1; b=H4sIAPB3z2oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDA0MT3eKCTN3E3BTdtMy0fCBRoWtsnphskppmYJqUZqYE1FZQlAoUBhs
+ ZHVtbCwAw1hV3YgAAAA==
+X-Change-ID: 20261014-spi-amd-fifo-fix-37ac4ef05bf6
+To: linux-spi@vger.kernel.org, broonie@kernel.org, Raju.Rangoju@amd.com, 
+ krishnamoorthi.m@amd.com
+Cc: linux-kernel@vger.kernel.org, sanju.mehta@amd.com, 
+ stable@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>, 
+ Weibin Liu <liuwb@xiaopeng.com>
+X-Mailer: b4 0.14.3
 
-Hi Nuno,
+amd_spi_fifo_xfer() unconditionally decrements xfer->len when a tx_buf
+is present. The SPI core does not reject zero-length transfers, so a
+transfer submitted through the SPI_IOC_MESSAGE ioctl with len == 0 and
+a tx_buf makes the u32 len wrap to 0xFFFFFFFF, and the following
+per-byte loop writes far past the FIFO window.
 
-Thanks for proposing this. I agree that starting with your simpler ACMD
-support makes sense. Please go ahead with that approach. I would be happy
-to help test it on our Horizon J6B board.
+The driver also never checks the cumulative FIFO offset against
+AMD_SPI_FIFO_SIZE. The core splits each transfer down to the
+controller's max transfer size but does not bound the total message
+length, so a message of several transfers whose total exceeds the FIFO
+overflows it with out-of-bounds MMIO writes (tx) and reads (rx).
 
-To clarify my earlier benchmarks, "sequential read" referred to reading
-consecutive addresses from /dev/mtd18 using dd, not the NAND device's
-continuous-read mode. Our GD5F4GM8RE datasheet describes page-based reads
-with cache output wrapping within the current page, and its SPI-NAND
-driver entry does not advertise continuous-read support.
+Skip zero-length transfers and reject any transfer that would run past
+the end of the FIFO window.
 
-Could you point me to the version you would recommend testing? I can
-compare it against the optimized STIG path and our combined NAND
-read-sequence implementation under the same conditions, checking data
-integrity, throughput and CPU usage.
+Tested with a user-space replica of the fifo_xfer length arithmetic
+(ASAN build): a zero-length transfer with tx_buf makes len-- wrap to
+0xffffffff, and skipping zero-length transfers avoids the wrap. No AMD
+SPI hardware was available, so the FIFO bound check was verified by
+inspection against AMD_SPI_FIFO_SIZE.
 
-That should help establish whether combining page-read, ready-poll and
-read-cache operations provides enough additional benefit on this device
-to justify further interface changes. We can then use those results to
-decide what, if anything, should be built on top of the simpler ACMD
-support.
+Fixes: bbb336f39efc ("spi: spi-amd: Add AMD SPI controller driver support")
+Cc: stable@vger.kernel.org # 5.8+
+Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+Signed-off-by: Weibin Liu <liuwb@xiaopeng.com>
+---
+ drivers/spi/spi-amd.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-I also agree that program and erase can remain on the STIG path, given
-our results.
+diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
+index 71a6e5c475b0..ddf89e5353c5 100644
+--- a/drivers/spi/spi-amd.c
++++ b/drivers/spi/spi-amd.c
+@@ -322,11 +322,22 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
+ 
+ 	list_for_each_entry(xfer, &message->transfers,
+ 			    transfer_list) {
++		/* Skip zero-length transfers to avoid len underflow below */
++		if (!xfer->len)
++			continue;
++
+ 		if (xfer->speed_hz)
+ 			amd_set_spi_freq(amd_spi, xfer->speed_hz);
+ 		else
+ 			amd_set_spi_freq(amd_spi, spi->max_speed_hz);
+ 
++		/* Reject transfers that would overflow the FIFO window */
++		if (fifo_pos + xfer->len >
++		    AMD_SPI_FIFO_BASE + AMD_SPI_FIFO_SIZE) {
++			message->status = -EMSGSIZE;
++			goto fin_msg;
++		}
++
+ 		if (xfer->tx_buf) {
+ 			buf = (u8 *)xfer->tx_buf;
+ 			if (!tx_len) {
+@@ -369,6 +380,12 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
+ 
+ 		list_for_each_entry(xfer, &message->transfers, transfer_list)
+ 			if (xfer->rx_buf) {
++				/* Reject transfers that would overflow the FIFO window */
++				if (fifo_pos + xfer->len >
++				    AMD_SPI_FIFO_BASE + AMD_SPI_FIFO_SIZE) {
++					message->status = -EMSGSIZE;
++					goto fin_msg;
++				}
+ 				buf = (u8 *)xfer->rx_buf;
+ 				/* Read data from FIFO to receive buffer */
+ 				for (i = 0; i < xfer->len; i++)
 
-Thanks,
-Fei
+---
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+change-id: 20261014-spi-amd-fifo-fix-37ac4ef05bf6
+
+Best regards,
+-- 
+Weibin Liu <liuwb@xiaopeng.com>
+

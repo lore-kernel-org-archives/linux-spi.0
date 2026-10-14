@@ -1,81 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from spam01.horizon.auto (spam01.horizon.auto [42.62.85.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7882D450415;
-	Wed, 14 Oct 2026 10:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1994E73A2
+	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 12:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.62.85.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791974179; cv=none; b=nj54r1s2Y80sj9g1maAU3aiQlPvBfhU1MO0dgLLq85zyw8OEzLS8gQDCSyGiOhXKpLgtEr/91jTwhrpRxxrcTKEvbOUIZsd9xKURdGcSB0N8YuA3YY1/b5No0lM7bnBaTuNLcJ4Qr2zc1Av72iQrAzrcAKMrHG7NAP2KQWfM5+M=
+	t=1791981675; cv=none; b=Ze6ODL2/VhBdFRHW444CGZHb0+59UOW8VzFcEVxgrxKe8wgRN6OIWbeo5F6U/PnWHUKGyO2gjvE5Q+jcOZGUT1S820ze/m5hCfIGm8mCfWJ+M3gEgHyInk7UP5hcGnttW3FGPXCA98P7N+/VXyjZAS/67K7mIgN2UdK7WvWI/VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791974179; c=relaxed/simple;
-	bh=zaQSMUxzF8erB51E9B66BKCDfM8HNwtde8IZGP/vAnA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sfIDIrcpjDVYvzEd4e1Cn08KJw/xJBHX24aV75rbdrbHz5kR8nwMiCu+9aNAAJQHlML6qJTAMLRiF7dIq9O5aZBnBu8NdnXWPUuptr7LlYIus2Y2ygNOghpDKyRpXSa8iwEOnTr2QROwCqF94XwTBNcCQzj+5+OqMYoi+o0q8Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLLfULh5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791981675; c=relaxed/simple;
+	bh=lK8wRYJ+AYqo2LGH0BO63nJiMWgl09XhIwZHu37kNNc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=puw26nTIKwqK6CbLaGjx/e4SpB2FVMsVZqr3ITYnuf53vHWyqUtJQqdN8Gwa7wsc9jb37qvqEr16kmN3pjZIzSl7aBa7iyx/JlVIfSKi483LOAyQYpPrwiFuBr7XyM8h83yTXiVCp+2NIyMCj4wQSxKJAdDv2e6NY/azLF9TrXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto; spf=pass smtp.mailfrom=horizon.auto; dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b=KBet5xZ+; arc=none smtp.client-ip=42.62.85.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=horizon.auto
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=horizon.auto
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLLfULh5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A2E1F000FF;
-	Wed, 14 Oct 2026 10:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791974178;
-	bh=TXXuj797oe2SL7aI8xCKis3dp6zlE0u01lBVd5p3BeY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=nLLfULh5HXfWA+zpIhC5YkMeZDoSYN3TPLKZJy2Y+OXzEuIpry0v9Sgr5BD1lNwtD
-	 X815c/oPNgwaG0Wrrg3xWOGZ064NgNO/s6E+nrV4k4PduHqM60eOFYVgXhk4n8Zwih
-	 ZdzLhe6FjW4I/3INDZ4mtHV/YIovE4lwTAEKGzrafhkArWnCuWH3YILXjtxU3/JsPd
-	 qEcnjP3TFzGBUMbVdnEfTKAUPGqhrzQj+6nPfmnrgvze3C+AwptnTjJZUOKbu2Xme1
-	 leq+MxRs2ONyq8XxiJA1aQe53s8US3r3NGQQqdCM+T0P82An3FCpNe/FzSlOOEXH9H
-	 TH4FP4TvtRoIQ==
-From: Mark Brown <broonie@kernel.org>
-To: Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Md Sadre Alam <md.alam@oss.qualcomm.com>, Gabor Juhos <j4g8y7@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261005-qpic-snand-skip-bbm-copy-v1-1-04f6aeda4044@gmail.com>
-References: <20261005-qpic-snand-skip-bbm-copy-v1-1-04f6aeda4044@gmail.com>
-Subject: Re: [PATCH] spi: spi-qpic-snand: skip BBM copy on regular raw
- reads
-Message-Id: <179191209569.42298.16799303691069144788.b4-ty@b4>
-Date: Tue, 13 Oct 2026 18:21:35 +0100
+	dkim=pass (2048-bit key) header.d=horizon.auto header.i=@horizon.auto header.b="KBet5xZ+"
+Received: from spam01.horizon.auto (localhost [127.0.0.2] (may be forged))
+	by spam01.horizon.auto with ESMTP id 69E9aIm1021205
+	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 17:36:18 +0800 (+08)
+	(envelope-from fei.xie@horizon.auto)
+Received: from spam01.horizon.auto ([10.9.15.111])
+	by spam01.horizon.auto with ESMTPS id 69E9Z8cC019411
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NO);
+	Wed, 14 Oct 2026 17:35:08 +0800 (+08)
+	(envelope-from fei.xie@horizon.auto)
+Received: from server227.horizon.auto (10.9.0.252) by exchange002.hobot.cc
+ (10.9.15.111) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.27; Wed, 14 Oct 2026
+ 17:35:09 +0800
+From: Fei Xie <fei.xie@horizon.auto>
+To: =?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>
+CC: <nuno.sa@analog.com>, <miquel.raynal@bootlin.com>, <broonie@kernel.org>,
+        <linux-spi@vger.kernel.org>, <linux-mtd@lists.infradead.org>
+Subject: Re: [RFC PATCH 0/4] spi: cadence-xspi: add ACMD PIO support for NAND and NOR
+Date: Wed, 14 Oct 2026 17:34:53 +0800
+Message-ID: <20261014093453.688565-1-fei.xie@horizon.auto>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
+References: <20260921093701.1341766-1-fei.xie@horizon.auto> <arOwdePAmoghlakj@nsa> <20260928055005.3987624-1-fei.xie@horizon.auto> <arp-E1MDFLfV1ASq@nsa> <87bj99lef4.fsf@bootlin.com> <c79f5f39a5656fa838e424ad2ca72fe74a1d31a8.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: exchange001.hobot.cc (10.9.15.110) To exchange002.hobot.cc
+ (10.9.15.111)
+X-DKIM-Results: [10.9.15.111]; dkim=none;
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:spam01.horizon.auto 69E9aIm1021205
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horizon.auto;
+	s=auto; t=1791970518;
+	bh=lK8wRYJ+AYqo2LGH0BO63nJiMWgl09XhIwZHu37kNNc=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=KBet5xZ+SYMzcjpDMyHl1AZPMN/KLJHChUmaUEuu1/Ezo0XCz2TmtEE4ePiF4gUcs
+	 H5tD6dspkAN2Olc0Yy0vF3Max9ZR2BDZv5SXeZx4iuWnFoja0YwkuTRlvMg54/5yfd
+	 /qjKMj5HK9A4gOS/6WCnvuGFJaUif2RiYz8SSmLtaypDMPz9nvvdPtcj6yJNEbA5No
+	 J/v/P934KzMetQ2ZQyAFYy/3kcUakKjNOfXIqrvPE3HDkZwGCjHJ+gkZa9E04s/Dxw
+	 OKEHcANxkH3ElCBBRqIBLJez8E+jglfVtr3csoN7gZOVRclug9oZmEqlCCaCvJ+UsU
+	 cLIRFrw32HElg==
 
-On Mon, 05 Oct 2026 19:18:50 +0200, Gabor Juhos wrote:
-> spi: spi-qpic-snand: skip BBM copy on regular raw reads
+Hi Nuno,
 
-Applied to
+Thanks for proposing this. I agree that starting with your simpler ACMD
+support makes sense. Please go ahead with that approach. I would be happy
+to help test it on our Horizon J6B board.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+To clarify my earlier benchmarks, "sequential read" referred to reading
+consecutive addresses from /dev/mtd18 using dd, not the NAND device's
+continuous-read mode. Our GD5F4GM8RE datasheet describes page-based reads
+with cache output wrapping within the current page, and its SPI-NAND
+driver entry does not advertise continuous-read support.
 
-Thanks!
+Could you point me to the version you would recommend testing? I can
+compare it against the optimized STIG path and our combined NAND
+read-sequence implementation under the same conditions, checking data
+integrity, throughput and CPU usage.
 
-[1/1] spi: spi-qpic-snand: skip BBM copy on regular raw reads
-      https://git.kernel.org/broonie/misc/c/2da46f1e9b98
+That should help establish whether combining page-read, ready-poll and
+read-cache operations provides enough additional benefit on this device
+to justify further interface changes. We can then use those results to
+decide what, if anything, should be built on top of the simpler ACMD
+support.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I also agree that program and erase can remain on the STIG path, given
+our results.
 
 Thanks,
-Mark
-
+Fei

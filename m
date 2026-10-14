@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03CD551982
-	for <linux-spi@vger.kernel.org>; Wed, 14 Oct 2026 15:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2028A55C1D1;
+	Wed, 14 Oct 2026 15:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791992655; cv=none; b=hz1P/iCo4BX+fVev8XUbhTiYdQpIyJdRoBrbGZvOKrVyZKxEhDCMTcq+oA1fkzNCY4lfbgEmGFiOvh6gIo2vP+eF1dJ9rkJefFI6vsRTCIKhODQ0jPJTq3S4tuIuWGmCDdK3xk3m9s8l3N9o63Za4TDnOcnfAYo36zNPIWquBPM=
+	t=1791992660; cv=none; b=KMK8AtjpNpdMyfFkUkwdWxThtGFELzrN/DXNbrG1LgUJtus9MhENugW+SaTacvlHrs5n+nNtrhsnK1ORk+U7HRsoMzOthsh03P1VKWp92hjt5SvALQSiI/t5xStwWfK8eW6NhSztyVTLR0AHoMfOKxa01F5bOFPjMQASziF+TSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791992655; c=relaxed/simple;
-	bh=fg/qTT82sxZvI7NiMI5++vT/FYdMPITw36On0xFjk8Y=;
+	s=arc-20240116; t=1791992660; c=relaxed/simple;
+	bh=MpI8cVINFk8sKQl2GVuP4cMWS6VYVImIAtfIp1Xdn6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+DUhvkeL145otPVBe/TenDj/cTcN5Bnfv7b+dTzD95qJeZbz+mW0Hqq9e5eCrcZjFPLurMGG1+C8vIl0WW6r7ToO8FhGWBXqAnKqhHhr1vVHGj6UUGnrKexWjNKcaI1e/XBwCR3hlA2wiDLGLbnzvq9e2q3LUg0golgh/at/eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0cUawt3i; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=JnugNbxx+nxXRMMyOJFvwRjk7TYCfDdn8MEWkZnPXDGSMHNIIX/yf9aaDr6EHY+IYAYShsEVb7ABofIBfGHRwL4GPOaNhTzuUmVnzeeblpju27cRL2db4hUmCpj8sFfOxaDCtvTL0eBIcUzJL1aiov3MMGiS7YwOwFtHxOj9D9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=P307xOW/; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0cUawt3i"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="P307xOW/"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id AC7C1C6344F;
-	Wed, 14 Oct 2026 15:45:06 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 839EB4E411FA;
+	Wed, 14 Oct 2026 15:44:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AE05D60368;
-	Wed, 14 Oct 2026 15:44:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 092A01032831F;
-	Wed, 14 Oct 2026 17:44:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 57D6660368;
+	Wed, 14 Oct 2026 15:44:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0E3021032806C;
+	Wed, 14 Oct 2026 17:44:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791992649; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1791992655; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=GcId23e25YWV3EkaB1LBizu2mjqjYuhu3m5VaPrgCe4=;
-	b=0cUawt3iZB94ERJcV1Vcq0RhnLC91bvctwhwNptVZfctIksLxQgu6izYrdzeuZvVKdAxuY
-	56I7trDUwKvR8BBFP8lH7eqDffjVEifoXV2yb8GOOKyCr7XbHJAicDg/Da4Fwebapw84Pj
-	1p7r/AVjgnqtzPbAJAckcK+blIYQ9BzXr33aE2TICETXi38zpuoMVu59fvw7Jdyg3UCzGb
-	VxmYQu0VO94Vip1IwNd6bIOOK058OL8zCrEbR8dUf3vBR8hkmtNfK56W4Vt0LJIynQ7ynb
-	qe+Y6pmmQwkkxzytt0ML7XHmkv94NFttxOV+eFeX1mq1ebry73pv0c6FbTEscA==
+	bh=f7vNixx4mKIVQLOjHEuwK6vkCQ2Iq2EaTsl5ZHvnbLk=;
+	b=P307xOW/tOd9UdKQE/cuxD76pmc61gSS2bUtdE8Z8Rj7nK2i26/RYvGsHfMj9ZnXJn/ixg
+	FhJlTGsS0YeLqCpNz2sqfm8SBSIQCtcXbyF6Nvdqm4pjVCkz6lmkbnqV/Dv/yF8PiFP2L5
+	O1QFx35nJIdHvUSXsgQw5PaNeekSwMDjPpVylTFy+OW3/pXrvgT0jHmL3IuKtXBxxiUtte
+	YL5fdqKwI/A/8t6JsWP8KAZRugyUHj921M8mJfG43J7CFs0d+4/UOscZ11lNLRPmdeecyP
+	CeLqEQ+309ncndz6JR+1SbTWfQ8vJGxGzsFT0GAUbM69wYQXIBVH5D3vjwfJHA==
 From: Paul Cercueil <paul.cercueil@bootlin.com>
 To: Pratyush Yadav <pratyush@kernel.org>,
 	Michael Walle <mwalle@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
 	Tanmay Jagdale <tanmay@marvell.com>,
 	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v3 1/7] spi: spi-mem: Add support for panic mem writes
-Date: Wed, 14 Oct 2026 17:42:55 +0200
-Message-ID: <20261014154301.157755-2-paul.cercueil@bootlin.com>
+Subject: [PATCH v3 3/7] mtd: spi-nor: Add support for panic writes
+Date: Wed, 14 Oct 2026 17:42:57 +0200
+Message-ID: <20261014154301.157755-4-paul.cercueil@bootlin.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261014154301.157755-1-paul.cercueil@bootlin.com>
 References: <20261014154301.157755-1-paul.cercueil@bootlin.com>
@@ -69,13 +69,17 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 From: Tanmay Jagdale <tanmay@marvell.com>
 
-Add a 'panic_write' flag to the controller's capabilities struct.
-When set, the SPI controller indicates that it will be able to send
-commands to a connected NOR or NAND memory in the context of a kernel
-panic, which means without sleeping and without relying on IRQs.
+If the SPI controller supports it, provide the functionality of doing a
+panic write.
 
-Whether or not a given memory operation is a panic mem write is given by
-the spi_mem_op.panic_write flag.
+Update the spi-nor core code and controllers to make sure they won't try
+to grab locked mutexes or sleep when doing a panic write, as preemption
+and IRQs are disabled.
+
+The information is carried down to the SPI controller driver through the
+spi_mem_op structure. If the corresponding flag is set there, and the
+SPI driver does support panic writes, it then has to respect the same
+rules.
 
 Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
 Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
@@ -83,129 +87,209 @@ Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
 ---
 
 Notes:
-    v2: - Don't call spi_mem_access_start/end on panic. We don't need to
-          flush the SPI queue at that point, and we don't need to lock the
-          mutexes.
-        - Check that the SPI controller's PM status is active, and bail out
-          otherwise.
+    v2: - Update spi_nor_wait_till_ready_with_timeout() to use
+          poll_timeout_us_atomic() on panic
+        - Alloc temp buffer with GFP_ATOMIC in spi_nor_octal_dtr_write()
+          on panic
+        - Bail out if nor->rww.ongoing_pe is set in spi_nor_panic_write()
     
-    v3: - Use pm_runtime_active() instead of pm_runtime_get_if_active(). The
-          latter cannot be used in a panic context.
-        - Forbid fallback to regular SPI on panic
+    v3: Use GFP_KERNEL xor GFP_ATOMIC
 
- drivers/spi/spi-mem.c       | 42 +++++++++++++++++++++++++++++++++----
- include/linux/spi/spi-mem.h |  5 +++++
- 2 files changed, 43 insertions(+), 4 deletions(-)
+ drivers/mtd/spi-nor/core.c | 75 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 70 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index b94680b60af9..9ad42dd9de70 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -398,6 +398,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 	u8 *tmpbuf;
- 	int ret;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 58257cc21c68..d5e572287bb7 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -97,6 +97,9 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
+ 	if (op->data.nbytes)
+ 		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
  
-+	if (op->panic_write) {
-+		if (!spi_mem_controller_is_capable(ctlr, panic_write))
-+			return -EOPNOTSUPP;
++	if (nor->mtd.oops_panic_write)
++		op->panic_write = true;
 +
-+		/*
-+		 * Only support panic writes if we'll go through .exec_op().
-+		 * The regular SPI path (spi_sync(), etc.) explicitly mentions
-+		 * that it can only be used from a context that may sleep, which
-+		 * is not the case on a kernel panic.
-+		 * If this changes in the future, this could be reworked, but
-+		 * for now this will have to do.
-+		 */
-+		if (WARN_ON_ONCE(!ctlr->mem_ops || !ctlr->mem_ops->exec_op))
-+			return -EOPNOTSUPP;
+ 	if (spi_nor_protocol_is_dtr(proto)) {
+ 		/*
+ 		 * SPIMEM supports mixed DTR modes, but right now we can only
+@@ -282,7 +285,7 @@ static ssize_t spi_nor_spimem_write_data(struct spi_nor *nor, loff_t to,
+ 	if (spi_nor_spimem_bounce(nor, &op))
+ 		memcpy(nor->bouncebuf, buf, op.data.nbytes);
+ 
+-	if (nor->dirmap.wdesc) {
++	if (nor->dirmap.wdesc && !nor->mtd.oops_panic_write) {
+ 		nbytes = spi_mem_dirmap_write(nor->dirmap.wdesc, op.addr.val,
+ 					      op.data.nbytes, op.data.buf.out);
+ 	} else {
+@@ -665,6 +668,9 @@ static void spi_nor_rww_end_rdst(struct spi_nor *nor)
+ 
+ static int spi_nor_lock_rdst(struct spi_nor *nor)
+ {
++	if (nor->mtd.oops_panic_write)
++		return 0;
 +
-+		if (spi_get_csgpiod(mem->spi, 0))
-+			return -EPERM;
+ 	if (spi_nor_use_parallel_locking(nor))
+ 		return spi_nor_rww_start_rdst(nor);
+ 
+@@ -673,6 +679,9 @@ static int spi_nor_lock_rdst(struct spi_nor *nor)
+ 
+ static void spi_nor_unlock_rdst(struct spi_nor *nor)
+ {
++	if (nor->mtd.oops_panic_write)
++		return;
 +
-+		/* On panic IRQs are disabled so we cannot wait on locks */
-+		if (mutex_is_locked(&ctlr->bus_lock_mutex) ||
-+		    mutex_is_locked(&ctlr->io_mutex)) {
-+			return -EPERM;
-+		}
+ 	if (spi_nor_use_parallel_locking(nor)) {
+ 		spi_nor_rww_end_rdst(nor);
+ 		wake_up(&nor->rww.wait);
+@@ -716,8 +725,14 @@ static int spi_nor_wait_till_ready_with_timeout(struct spi_nor *nor, u64 timeout
+ {
+ 	int ret, status;
+ 
+-	ret = poll_timeout_us(status = spi_nor_ready(nor), status,
+-			      100, timeout_ms * 1000, false);
++	if (nor->mtd.oops_panic_write) {
++		ret = poll_timeout_us_atomic(status = spi_nor_ready(nor), status,
++					     100, timeout_ms * 1000, false);
++	} else {
++		ret = poll_timeout_us(status = spi_nor_ready(nor), status,
++				      100, timeout_ms * 1000, false);
 +	}
 +
- 	/* Make sure the operation frequency is correct before going futher */
- 	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
+ 	if (ret < 0) {
+ 		dev_dbg(nor->dev, "flash operation timed out\n");
+ 		return ret;
+@@ -1283,6 +1298,9 @@ static void spi_nor_rww_end_io(struct spi_nor *nor)
  
-@@ -420,15 +445,20 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 		return -EOPNOTSUPP;
- 
- 	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, 0)) {
--		ret = spi_mem_access_start(mem);
--		if (ret)
--			return ret;
-+		if (!op->panic_write) {
-+			ret = spi_mem_access_start(mem);
-+			if (ret)
-+				return ret;
-+		} else if (!pm_runtime_active(ctlr->dev.parent)) {
-+			return -EPERM;
-+		}
- 
- 		trace_spi_mem_start_op(mem, op);
- 		ret = ctlr->mem_ops->exec_op(mem, op);
- 		trace_spi_mem_stop_op(mem, op);
- 
--		spi_mem_access_end(mem);
-+		if (!op->panic_write)
-+			spi_mem_access_end(mem);
- 
- 		/*
- 		 * Some controllers only optimize specific paths (typically the
-@@ -441,6 +471,10 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
- 
- 			return ret;
- 		}
+ static int spi_nor_lock_device(struct spi_nor *nor)
+ {
++	if (nor->mtd.oops_panic_write)
++		return 0;
 +
-+		/* On panic write we can't fall back to the fallback SPI path */
-+		if (op->panic_write)
-+			return ret;
- 	}
+ 	if (!spi_nor_use_parallel_locking(nor))
+ 		return 0;
  
- 	tmpbufsize = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
-diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
-index 0cce6b57242a..2633307bfad5 100644
---- a/include/linux/spi/spi-mem.h
-+++ b/include/linux/spi/spi-mem.h
-@@ -169,6 +169,7 @@ enum spi_mem_data_dir {
-  *		 operation does not involve transferring data
-  * @data.buf.in: input buffer (must be DMA-able)
-  * @data.buf.out: output buffer (must be DMA-able)
-+ * @panic_write: The command is executed in the context of a kernel panic
-  * @max_freq: frequency limitation wrt this operation. 0 means there is no
-  *	      specific constraint and the highest achievable frequency can be
-  *	      attempted.
-@@ -211,6 +212,7 @@ struct spi_mem_op {
- 		} buf;
- 	} data;
+@@ -1291,6 +1309,9 @@ static int spi_nor_lock_device(struct spi_nor *nor)
  
-+	bool panic_write;
- 	unsigned int max_freq;
- };
+ static void spi_nor_unlock_device(struct spi_nor *nor)
+ {
++	if (nor->mtd.oops_panic_write)
++		return;
++
+ 	if (spi_nor_use_parallel_locking(nor)) {
+ 		spi_nor_rww_end_io(nor);
+ 		wake_up(&nor->rww.wait);
+@@ -1328,6 +1349,9 @@ int spi_nor_prep_and_lock(struct spi_nor *nor)
+ {
+ 	int ret;
  
-@@ -392,6 +394,8 @@ struct spi_controller_mem_ops {
-  *                   is a pause in the transfer (eg. internal bus contention or
-  *                   DMA arbitration on an interconnect). Features such as NAND
-  *                   continuous reads shall not be leveraged.
-+ * @panic_write: Set to true if the controller driver supports writing to a
-+ *               connected NAND/NOR memory in a kernel panic context
-  */
- struct spi_controller_mem_caps {
- 	bool dtr;
-@@ -400,6 +404,7 @@ struct spi_controller_mem_caps {
- 	bool per_op_freq;
- 	bool secondary_op_tmpl;
- 	bool no_cs_assertion;
-+	bool panic_write;
- };
++	if (nor->mtd.oops_panic_write)
++		return 0;
++
+ 	ret = spi_nor_prep(nor);
+ 	if (ret)
+ 		return ret;
+@@ -1343,6 +1367,9 @@ int spi_nor_prep_and_lock(struct spi_nor *nor)
  
- #define spi_mem_controller_is_capable(ctlr, cap)	\
+ void spi_nor_unlock_and_unprep(struct spi_nor *nor)
+ {
++	if (nor->mtd.oops_panic_write)
++		return;
++
+ 	if (!spi_nor_use_parallel_locking(nor)) {
+ 		mutex_unlock(&nor->lock);
+ 	} else {
+@@ -1399,6 +1426,9 @@ static int spi_nor_prep_and_lock_pe(struct spi_nor *nor, loff_t start, size_t le
+ {
+ 	int ret;
+ 
++	if (nor->mtd.oops_panic_write)
++		return 0;
++
+ 	ret = spi_nor_prep(nor);
+ 	if (ret)
+ 		return ret;
+@@ -1414,6 +1444,9 @@ static int spi_nor_prep_and_lock_pe(struct spi_nor *nor, loff_t start, size_t le
+ 
+ static void spi_nor_unlock_and_unprep_pe(struct spi_nor *nor, loff_t start, size_t len)
+ {
++	if (nor->mtd.oops_panic_write)
++		return;
++
+ 	if (!spi_nor_use_parallel_locking(nor)) {
+ 		mutex_unlock(&nor->lock);
+ 	} else {
+@@ -1472,6 +1505,9 @@ static int spi_nor_prep_and_lock_rd(struct spi_nor *nor, loff_t start, size_t le
+ {
+ 	int ret;
+ 
++	if (nor->mtd.oops_panic_write)
++		return 0;
++
+ 	ret = spi_nor_prep(nor);
+ 	if (ret)
+ 		return ret;
+@@ -1487,6 +1523,9 @@ static int spi_nor_prep_and_lock_rd(struct spi_nor *nor, loff_t start, size_t le
+ 
+ static void spi_nor_unlock_and_unprep_rd(struct spi_nor *nor, loff_t start, size_t len)
+ {
++	if (nor->mtd.oops_panic_write)
++		return;
++
+ 	if (!spi_nor_use_parallel_locking(nor)) {
+ 		mutex_unlock(&nor->lock);
+ 	} else {
+@@ -2203,7 +2242,8 @@ static int spi_nor_octal_dtr_write(struct spi_nor *nor, loff_t to, size_t len,
+ 	if (IS_ALIGNED(to, 2) && IS_ALIGNED(len, 2))
+ 		return spi_nor_write_data(nor, to, len, buf);
+ 
+-	tmp_buf = kmalloc(nor->params->page_size, GFP_KERNEL);
++	tmp_buf = kmalloc(nor->params->page_size,
++			  nor->mtd.oops_panic_write ? GFP_ATOMIC : GFP_KERNEL);
+ 	if (!tmp_buf)
+ 		return -ENOMEM;
+ 
+@@ -3385,6 +3425,26 @@ static void spi_nor_soft_reset(struct spi_nor *nor)
+ 	usleep_range(SPI_NOR_SRST_SLEEP_MIN, SPI_NOR_SRST_SLEEP_MAX);
+ }
+ 
++static int spi_nor_panic_write(struct mtd_info *mtd, loff_t to, size_t len,
++			       size_t *retlen, const u_char *buf)
++{
++	struct spi_nor *nor = mtd_to_spi_nor(mtd);
++
++	/*
++	 * At this point preemption and local interrupts are disabled, so we
++	 * can't get the lock if it's taken.
++	 */
++	if (mutex_is_locked(&nor->lock))
++		return -EPERM;
++
++	if (spi_nor_use_parallel_locking(nor) &&
++	    (nor->rww.ongoing_io || nor->rww.ongoing_rd || nor->rww.ongoing_pe)) {
++		return -EPERM;
++	}
++
++	return spi_nor_write(mtd, to, len, retlen, buf);
++}
++
+ /* mtd suspend handler */
+ static int spi_nor_suspend(struct mtd_info *mtd)
+ {
+@@ -3588,8 +3648,13 @@ static int spi_nor_set_mtd_info(struct spi_nor *nor)
+ 	mtd->size = nor->params->size;
+ 	mtd->_read = spi_nor_read;
+ 	/* Might be already set by some SST flashes. */
+-	if (!mtd->_write)
++	if (!mtd->_write) {
+ 		mtd->_write = spi_nor_write;
++		if (nor->spimem &&
++		    spi_mem_controller_is_capable(nor->spimem->spi->controller, panic_write)) {
++			mtd->_panic_write = spi_nor_panic_write;
++		}
++	}
+ 	mtd->_suspend = spi_nor_suspend;
+ 	mtd->_resume = spi_nor_resume;
+ 	mtd->_get_device = spi_nor_get_device;
 -- 
 2.47.3
 

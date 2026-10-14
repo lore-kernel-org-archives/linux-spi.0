@@ -1,80 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-97.mail.aliyun.com (out28-97.mail.aliyun.com [115.124.28.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E102F309EF9;
-	Wed, 14 Oct 2026 13:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023153C3C9;
+	Wed, 14 Oct 2026 14:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791982875; cv=none; b=DjYbLOLRDXNfj8rIBO+SFjTRLEpVYAkthjoA98xnUlU+nOZZJ/zLmJEEWFwtWe7ypDfRt4+lByFJ4quyDL+booss+ZFYAOAS7C/o9ReF3dL5oA7JcDmxlc0s5c03vqGVUP7jW9XD8TOKQCBie1byOnvxu1CMfhfS8EN8uvQ0S1c=
+	t=1791986456; cv=none; b=WDhdC0R2M3ZyZx1xREX7jCIckb2Qv7b9jyEG1ZrAZKZQzxIeA7G5BxM1ycjf/5n2M/AjwTlXJgGnSSlOEuGUxvbIgQOOwgzvMmafTfAkg/epOpdE8ruU/aIOA5nkd4rLRoMYaxNvoLI4rwh2br4V/7EeoZNg1iRXn6d8KpH/qaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791982875; c=relaxed/simple;
-	bh=KblVDuTQeYbUES5nsnWY78N75QXn5LURXzxd616++nQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tw9ROGnjWNFOEmrDbQ47ucS32FTHs5Tok083xfTaAeFqNHpTcm3LE8VoRvKLU81+I+5EqYPrLKCJecmFEJO0BTbf7FUYOQ72ywT5/vTnyD/1ekBZ4IcdwRdUA6OUaQzUYfwQyuUHMIbTVzCODQrbJ029vxsTJIYEI8vJk+rbzPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0Qg+IKq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791986456; c=relaxed/simple;
+	bh=M1HtyX/GuabzKa6KGI9dunJ3SHo1m4BPFa4/a7e3Gjw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NultIivQAsduGk+ph8T214B/lfebq3a7u+Y6lJPxQ/V7YqOweLPubM9niSe4dtVuclCOiT5MebW+M2s1E7N4tWNjmo9fR7U+y+D/toptzJFHQ6zAqj1k0Njz7IcEAGrVbdTKq3zuW346+n5CUSshYhkgoJaM7zN/L9RF5a3lbWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=NuQF+m6z; arc=none smtp.client-ip=115.124.28.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0Qg+IKq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89081F000FF;
-	Wed, 14 Oct 2026 13:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791982869;
-	bh=KblVDuTQeYbUES5nsnWY78N75QXn5LURXzxd616++nQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R0Qg+IKqH6u0qWy2cRWMgkVRaAAeMvczDznDEAQJrKaBQUMbq3VEi6Fpa/Z6AQwSu
-	 wtBP4XbKFX1Hts1f0aLZSAju+lojPcRY8FHec6YbkMfuAbdQ1BF3hXZhhsGSH2pak5
-	 9O6+4f5FmBWdN/3kIVEjA+s3mh2kdnb+ica61TL24HcK7Ebj3gU3ljU2m4OVqVZECu
-	 BPJV7BHcNDsvU6k1iv0FGNNY/OmdFYszJyxPK8CGoZ942QCKM9p1BCW8M15X8c21fj
-	 U6cZ69eFw+VJbVuRi8gtfNHfXq8Q6xar0FYCHQzT3hA1/ndrU9B6WupnIjcjoGuKcu
-	 kSedJwdXlG9Lg==
-Date: Wed, 14 Oct 2026 14:01:05 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Linus Walleij <linusw@kernel.org>
-Subject: Re: [PATCH v2] spi: omap2-mcspi: handle DMA setup failures
-Message-ID: <eadae021-6d1f-4b40-a100-2d04503e5c1c@sirena.org.uk>
-References: <20261014045617.2894886-1-sahaj123.sc@gmail.com>
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="NuQF+m6z"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1791986439; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	bh=KXmjObW56wqK+XYVm3fO7eIclnO2pl8ldM8jZcDkjD0=;
+	b=NuQF+m6z+MD7trOtwVJ9GG5M3KiH8BOXtlsiNYdMFMfynkbe29N8pHd7YNZol+Jeef1ExEzcgnkwBudyRr+8JBuglcAHx42zHf5VXPIxaFGk3ye8E89Xwt7kie7CNbW4CfSjOj/ivJ7xXormlcUDqwfJwV9ExPsfUQdHEYUzAl4=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07471394|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00871135-0.00179765-0.989491;FP=12889925095836494970|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037031241;MF=liuwb@xiaopeng.com;NM=1;PH=DS;RN=9;RT=9;SR=0;TI=SMTPD_---.jdJOS1l_1791986437;
+Received: from 127.0.0.1(mailfrom:liuwb@xiaopeng.com fp:SMTPD_---.jdJOS1l_1791986437 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Oct 2026 22:00:38 +0800
+From: Weibin Liu <liuwb@xiaopeng.com>
+Date: Wed, 14 Oct 2026 22:00:38 +0800
+Subject: [PATCH] spi: sprd-adi: reject transfers shorter than 4 bytes
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="vjFsnozWQasCpqyJ"
-Content-Disposition: inline
-In-Reply-To: <20261014045617.2894886-1-sahaj123.sc@gmail.com>
-X-Cookie: Live free or die.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-spi-sprd-adi-minlen-v1-1-77fee7e64259@xiaopeng.com>
+X-B4-Tracking: v=1; b=H4sIAAWLz2oC/x2MQQqAIBAAvyJ7bkElLftKdIhca6EsFCII/550m
+ MMcZl7IlJgyDOKFRDdnPmMV1QhYtjmuhOyrg5baKqlazBdXksfZMx4cd4qoe2NlcOQ7Z6CWV6L
+ Az38dp1I+zDK7rWUAAAA=
+X-Change-ID: 20261014-spi-sprd-adi-minlen-28560f9ed795
+To: zhang.lyra@gmail.com, broonie@kernel.org, linux-spi@vger.kernel.org, 
+ baolin.wang@linux.alibaba.com, orsonzhai@gmail.com
+Cc: linux-kernel@vger.kernel.org, Liu Chao <liuc63@xiaopeng.com>, 
+ stable@vger.kernel.org, Weibin Liu <liuwb@xiaopeng.com>
+X-Mailer: b4 0.14.3
 
+sprd_adi_transfer_one() dereferences t->rx_buf and t->tx_buf as u32
+without validating t->len. The SPI core does not enforce a 4-byte
+minimum, so a transfer of 1..3 bytes (e.g. via spidev) makes the
+driver read 4 bytes through (u32 *)t->rx_buf and store the result
+back, and on the write path read two consecutive u32 values from
+t->tx_buf. With a buffer allocated for fewer bytes this runs off the
+end of it: the read path reads and writes up to 3 bytes past the
+allocation and the write path reads up to 7 bytes past it, corrupting
+adjacent heap objects.
 
---vjFsnozWQasCpqyJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The ADI protocol only supports 4-byte register accesses, so reject any
+transfer shorter than 4 bytes with -EINVAL before touching the buffers.
 
-On Wed, Oct 14, 2026 at 10:26:17AM +0530, Sahaj Chaudhari wrote:
-> The DMA paths ignore failures from dmaengine_slave_config(), descriptor
-> preparation and dmaengine_submit(), and carry FIXME comments about
-> falling back to PIO. A failed setup can leave a half-started transfer
-> or wait for a completion that never arrives.
+Reproduced with a user-space replica (ASAN build): a 4-byte u32 access
+from a 3-byte buffer triggers a stack-buffer-overflow READ of size 4.
+No Spreadtrum hardware was available, so the -EINVAL rejection itself
+was verified by inspection.
 
-This doesn't apply against current code (spi for-7.4), please check and
-resend.
+Reviewed-by: Liu Chao <liuc63@xiaopeng.com>
+Fixes: 7e2903cb91df ("spi: Add ADI driver for Spreadtrum platform")
+Cc: stable@vger.kernel.org # 4.15+
+Signed-off-by: Weibin Liu <liuwb@xiaopeng.com>
+---
+ drivers/spi/spi-sprd-adi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---vjFsnozWQasCpqyJ
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index a6baaf02b3c8..24ece07ab5e6 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -338,6 +338,12 @@ static int sprd_adi_transfer_one(struct spi_controller *ctlr,
+ 	u32 reg, val;
+ 	int ret;
+ 
++	/* ADI only supports 4-byte register accesses */
++	if (t->len < 4) {
++		dev_err(sadi->dev, "invalid transfer length %u\n", t->len);
++		return -EINVAL;
++	}
++
+ 	if (t->rx_buf) {
+ 		reg = *(u32 *)t->rx_buf;
+ 		ret = sprd_adi_read(sadi, reg, &val);
 
------BEGIN PGP SIGNATURE-----
+---
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+change-id: 20261014-spi-sprd-adi-minlen-28560f9ed795
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrPfRAACgkQJNaLcl1U
-h9DgcAf/YNBmN9JuMH8TOhyF7NTQFuLFQ1Lwj0lSg8t8GUor5sOXkT6zADNlpn0k
-cM/D8YwTFwdglPGVOjjcz9DvptvxRwNKdxpOMBLLYNOaGs6ooT8Kt9SvDfGi4aRM
-gP209L1X+mM4zIc13r7sWrLMjt000iscKg2UO9G7m2Kcd8j3D7f+8bxyF2I9jq6G
-HBKtP1Fb6BcMm7XVr+i25r9NWTI09oO3QMJs+/5meEQ3KjTOE+CizUsHcfsQDhjG
-pQaZlyQohnnjMEvRUMaj6qfBlTC+eqZs9M+IM+Ga16bbq73hS1HBzT07ewavJZJD
-+Jx+SpcyKIMrDJzOTXVxDqthy1U1tQ==
-=nk6y
------END PGP SIGNATURE-----
+Best regards,
+-- 
+Weibin Liu <liuwb@xiaopeng.com>
 
---vjFsnozWQasCpqyJ--

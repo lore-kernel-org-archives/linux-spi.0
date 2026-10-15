@@ -1,80 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74F4518154;
-	Thu, 15 Oct 2026 10:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777154EBAC6;
+	Thu, 15 Oct 2026 11:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792060633; cv=none; b=ptBH8hYilohMCTBDvFQjmiiLehXGSOeKbIpOuAk9sO+ZfoL8CSOWUV/a4VQB0nrV1JF72Ggodq2qwRa9XbDmE3lf9P5AO6A7O1Ibxcm1lngXbFdjA1NJQula4u5dnW0cSgybYkUylSbGslPoUQQgpHu0HDL1Zucw3j29RaTzhog=
+	t=1792063693; cv=none; b=WMwIVvRqWr7PTIvWkGGOSQy0B/0erddXWtUlV5crAdtvZV2wGyoNJ8Ny0py13RiCSnRYcejYMLO0oo8+BX8YSTZfpTIzjJ0MXdcvKvXdNSUxrjLeqYrkW+YrqOw29vQl/RwdRMOfABA6c+n4MUVnaZkVIer6DCXfJrOZFeSzEhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792060633; c=relaxed/simple;
-	bh=Wnh+yTn5VRy80ooHJ0Y7kTfmQJ5mxLAND5fcKjWoTyg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=revlSeV/umH1orhmxjIcz9GErBiAzin1uyp0nRoAKoRHsELoCDZM6L8hfdi1rEelcRyUocVmyCxlbk0FzKpW4Q+rdcXu9mRNwha9WCC4BZMcT+B6Sm07WHPxS2yYQgcp/lFdB7+A9QLulJUiDBwyIqxjj3kPfriAZ4tPShE05g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBoXkmcU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792063693; c=relaxed/simple;
+	bh=vN8crsMLeMURqPwrucsHxLo2CIhLz3ZK0+yNKV6oupQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jq1qV0NTrdJzf68RmAxDosVUnUXTAFnzdnJWCFt5xoMJsK+mz0KNThij7iFhUFwnUEQJO09LR7Iz/Pi8/hU44N5T15GCVTT9tHpSypNwKelDirND9wa0ENfIcGEvy3kRjzhCrplMagNyeEua0o3JT7+YVcE2XgMdTdEre+EwP3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqRUzdfg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBoXkmcU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C9C1F000C4;
-	Thu, 15 Oct 2026 10:37:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqRUzdfg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C51C1F000C4;
+	Thu, 15 Oct 2026 11:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792060632;
-	bh=SdEwhG5OKUH7Q2rjmi2sUS/ilNjd+DIPkUBQAZWnV/o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=MBoXkmcUcYZPsdPqkss45qaOGT+Qaaj1gmN3mfW5IeHSoGGAECQ8tVLtdqs/u/sh8
-	 I7bypE/kc82IK7H+E1uR7BxOzOsCXk+9m/CiTsZ3rQ4O8Q9oDqK5yvBYryI6QzONb9
-	 5eYYXZOsZVumxOF/i81zXhq0TZ5uwzTtDVQHRrtyLiTcqLuwISpHqxQcnCoL5Rq4L/
-	 s1UnQxKOxDx1Vym8dYryGEWRtVde6fU+fDJIDhoM+kVlYXQbcsty/beBnasFOvtbSN
-	 E8DBXem7kK6NWjGo5QUekSDyfPlQAbxfSsWZHBf4VxPwu26eZUlMYzx/nwjdCcBOt1
-	 BhQlpg1OntERQ==
+	s=k20260515; t=1792063690;
+	bh=u2QYkuWc9e9/YKClMJHSyEAYi24qLkOSIRtRLWYuFx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hqRUzdfgZvZBaBWVqhsAJ8qZmt35+6a3x133Ifa8+nXXp9ANkqme7QADYpe5pCO9q
+	 t23pWjxwzhVXgD3/sjfqtuCEAaYcnD2Ag7IVLcIbh/bHx7y6efj/wghtt/63StEy+a
+	 TvzwB1dV785FmgzvuYdhDThAWvihK+WFETYDLEgb0bPL2QgbbS0XcuRw/sAMlPZN6D
+	 VIkx32hzk36pUyA+e+oXqgCrilfH5l6cg5y+jImjXr29L3bRPMTM2h7JBJV/p2okjq
+	 5fu6+n2ur4NB7S/nE9Iqc/jZP5DIismkq3jw0ziqhnnPPVe0bDKM3sdtXEwlgt1ohn
+	 ObJHJodOVQahw==
+Date: Thu, 15 Oct 2026 12:28:05 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Weibin Liu <liuwb@xiaopeng.com>
-Cc: wentong.wu@intel.com, lixu.zhang@intel.com, 
- sakari.ailus@linux.intel.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20261013031717.3933277-1-liuwb@xiaopeng.com>
-References: <20261013031717.3933277-1-liuwb@xiaopeng.com>
-Subject: Re: [PATCH v2] spi: ljca: validate the response length before
- copying the data
-Message-Id: <179192081341.1606900.18392588969047801645.b4-ty@b4>
-Date: Tue, 13 Oct 2026 20:46:53 +0100
+Cc: ldewangan@nvidia.com, linux-spi@vger.kernel.org,
+	thierry.reding@kernel.org, jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org, swarren@nvidia.com,
+	linux-tegra@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] spi: tegra20-slink: bound copies to t->len
+Message-ID: <e81a1b15-cc89-4db3-97bd-315e6d5bf3ca@sirena.org.uk>
+References: <20261014-spi-tegra20-slink-copylen-v1-1-0ec779a6357e@xiaopeng.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dgfhA1QFRLLUhNsN"
+Content-Disposition: inline
+In-Reply-To: <20261014-spi-tegra20-slink-copylen-v1-1-0ec779a6357e@xiaopeng.com>
+X-Cookie: Tax and title extra.
 
-On Tue, 13 Oct 2026 11:17:17 +0800, Weibin Liu wrote:
-> spi: ljca: validate the response length before copying the data
 
-Applied to
+--dgfhA1QFRLLUhNsN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
+On Wed, Oct 14, 2026 at 10:18:16PM +0800, Weibin Liu wrote:
 
-Thanks!
+> +		if (nbytes > t->len - tspi->cur_tx_pos)
+> +			nbytes = t->len - tspi->cur_tx_pos;
 
-[1/1] spi: ljca: validate the response length before copying the data
-      https://git.kernel.org/broonie/spi/c/0fe4573c822c
+spi_bpw_to_bytes() - 24 bit words can have padding.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--dgfhA1QFRLLUhNsN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrQuMUACgkQJNaLcl1U
+h9B4Qgf/Z2ll+eWiEnYdFjH2tp3iKcGa0d9Gdo6GKXCWrelStsrUiHGT+KqSnTy1
+s0y5kTCdmgR2NRxh8XLgD36ttHv3eok5KLGCKGzze4MIEHBHJSpxXzuLc4CbJHdA
+0zWaDa2G/uFbuEPb28jl6/h9O66I+arG22nzJKAUiRq+dQDDxTwbdBhUEF4OL/NE
+SKbQ+8kS0EjQ/8nOT0dBpY3XTHtYlXPYsGPIQibq/5dYbmkWoBv5Bfn3Grdvaw1S
+moOiuV1qPNEWO2WYyLEA2bl3IP0xnegq5efvZDhKZQ/BrQwYEPwLCbTaLKdDR2Cz
+LWFio3r8eE6UR5JIW7Ft2nHfX28WMw==
+=w8m4
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--dgfhA1QFRLLUhNsN--

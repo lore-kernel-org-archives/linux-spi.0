@@ -1,90 +1,87 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0325E2D3A7C
-	for <linux-spi@vger.kernel.org>; Fri, 16 Oct 2026 09:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2B33B19DB;
+	Fri, 16 Oct 2026 09:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792141400; cv=none; b=Jk9NtaqKp3hNxG8h0bb5QhtnkpFALubAKNA6efy4e/DfL15N75zWkCdTQrmr7bEQMq7cHIjt4up4utR7jRpiK13rCL/SBGwuzgluhP/xDlzxH0q5qI5PoMlXgreph9Wq2+mW9J8r+FCv79wk5x+vTDBTYP/APy55ZKcSdxOaduc=
+	t=1792142863; cv=none; b=YBFT1zjWo3zaBobnkbW1xbCB58SHb240SVddrSOt83IBsE6Qvq2GyHOeWgJoMuNM0YNJf3TQ9t/o4ejmvIT2I5iDQISUN3Si9s/tu4FA/4t0a9RPNtB2GNYnHSvpqObVsI7HR+h7S801SI7mp8hJ/282OHLiQxLa79ixnn7ZNGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792141400; c=relaxed/simple;
-	bh=ZT/sWpmVZ48A0UV1NDljoImwkaY+rB5RM0fdLed9wk8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WJUjxVWoSh7kwPq8+pubWcBtPjgmBgGFRSbvB13HfHYDnSf9BjhyjTivnnyS0HolzuECInxK5/AK/rNUX8GnHK5UYc2XN8n2RK3D+/lp4bEfXiCAjnxdJZU2Vr4YH6yjoHeIedJ8xbZ9uAUYcyJ+VX3WZTHCm6Z4EYiuFuIc7jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BEtx/5et; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792142863; c=relaxed/simple;
+	bh=2GcCkbDtjmJmTyvjuqfSQkMp+rO2qm9Cayw7Zd8Iny8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZEj3qbC6MKizdGnthkcBST/EkOjsmxVVWAAgw7qPTCcsBl18m38e8CPPLziThEbUSK5nxU5N1fVVtAETelSAUJwLcxx1XC2uyMv2h4f1Lkld2tvFpLtZt0ggKNbhepRUWNK0yHyB/7Q9Zzf6yF3+Y7csh3CgjBIcyGooi2MJGg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpW2MS1I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BEtx/5et"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 554BA4E4124C;
-	Fri, 16 Oct 2026 08:55:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 29A726075D;
-	Fri, 16 Oct 2026 08:55:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB4AD10328B9B;
-	Fri, 16 Oct 2026 10:55:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792140952; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ZT/sWpmVZ48A0UV1NDljoImwkaY+rB5RM0fdLed9wk8=;
-	b=BEtx/5etcejUtTY5MTUNcRWY/zuaQF4HOE5w+eoWKzFGhMri+rIsxGQ35KauvM5TCdNPVN
-	/x/Dl3eKK8stSz3LgVTC9F7xZpXMorpV0A7D8sI9WkcdYFJwoi1nAo0hWB4LJwudLVXZ6c
-	gSm1jgBmzRa+kGJBBrtctfPA0ZNOaHRYfcXMqoikgSqNWwHTwzq1EnD6WPTEYKy8Hd14tk
-	EgXMwfRxsvSkABA9bKuQovl5JNXQCHTOqyYseDyQ9WGAum5Dc47hfqOBB+lltQuqTzjxrP
-	Uts1BaA7t8hXpzD8qenXED+qUsaBUeuzHkWC/3mtvQwnbi+F4xspo7mx9muBXw==
-Message-ID: <d6490c5d09075a152909c2be00c2a6f23256c61d.camel@bootlin.com>
-Subject: Re: [PATCH v3 6/7] spi: cadence-xspi: Add support for panic writes
-From: Paul Cercueil <paul.cercueil@bootlin.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-  Takahiro Kuwano <takahiro.kuwano@infineon.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger	 <richard@nod.at>, Vignesh
- Raghavendra <vigneshr@ti.com>, Thomas Petazzoni	
- <thomas.petazzoni@bootlin.com>, Kees Cook <kees@kernel.org>, Tony Luck	
- <tony.luck@intel.com>, "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-spi@vger.kernel.org, Bharat Bhushan <bbhushan2@marvell.com>, Sunil
- Kovvuri Goutham <sgoutham@marvell.com>, Tanmay Jagdale <tanmay@marvell.com>
-Date: Fri, 16 Oct 2026 10:55:43 +0200
-In-Reply-To: <f6008943-c4cb-43ae-a791-31965f374ffd@sirena.org.uk>
-References: <20261014154301.157755-1-paul.cercueil@bootlin.com>
-	 <20261014154301.157755-7-paul.cercueil@bootlin.com>
-	 <f6008943-c4cb-43ae-a791-31965f374ffd@sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpW2MS1I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F4E1F000C4;
+	Fri, 16 Oct 2026 09:27:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792142862;
+	bh=t5j0CRAvq/NI8o02TRYMRZeQXMG1lexbhlVmNwP3IlM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=WpW2MS1IcYZ812L9mpZpxlHfW6ezLfsP2Gb8pSVDWkVBvyVDA/cYBPsRHK/dq71BU
+	 f3TMS3sVjgZVdyFp1iii22SxQOAom3PGpdsxPAYMOdFiMQzVlYW3D3DK6OP7AP3Odr
+	 FzdEoSB06pXt829WYvAALEFED1R4o8goCoqJLAUPPEUmOFiYqqB0ICmPqePt3BzlQk
+	 dHqpk+Nf77kESB8zJAwXTJa0vNDCNKindUftyL8MgdJuJOUr4GMlisqMArSSrG0p2M
+	 Nv79EhWMaJ4Gqf6wypEWuCmGdQV3dRH5CKB4PJ4c7W5pN6qOqnZg/QZrqbY855dvgJ
+	 PZSU1ZE8EGeDQ==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Raju.Rangoju@amd.com, 
+ krishnamoorthi.m@amd.com, Weibin Liu <liuwb@xiaopeng.com>
+Cc: linux-kernel@vger.kernel.org, sanju.mehta@amd.com, 
+ stable@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>
+In-Reply-To: <20261014-spi-amd-fifo-fix-v1-1-9fec9ab753e8@xiaopeng.com>
+References: <20261014-spi-amd-fifo-fix-v1-1-9fec9ab753e8@xiaopeng.com>
+Subject: Re: [PATCH] spi: amd: fix len==0 underflow and FIFO overflow
+Message-Id: <179210311701.134795.14035717437104935583.b4-ty@b4>
+Date: Thu, 15 Oct 2026 23:25:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=2GcCkbDtjmJmTyvjuqfSQkMp+rO2qm9Cayw7Zd8Iny8=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIuvuNmZYq80CJ2PyPk+N1HF5SN/eVb9HLi1Ewcjvd6C
+ MVMVz/ZUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgIm8z2H4xfT2p76oBWN3xQIe
+ hmC5aL2Cqx3PJZzZetaEqfrumu14n5HhdW7rTpNdjjZ2Cebtsk8TzLWPfqtgmsiS0b+/sut/yDt
+ uAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi Mark,
+On Wed, 14 Oct 2026 20:39:13 +0800, Weibin Liu wrote:
+> spi: amd: fix len==0 underflow and FIFO overflow
 
-Le jeudi 15 octobre 2026 =C3=A0 13:09 +0100, Mark Brown a =C3=A9crit=C2=A0:
-> On Wed, Oct 14, 2026 at 05:43:00PM +0200, Paul Cercueil wrote:
-> > From: Tanmay Jagdale <tanmay@marvell.com>
-> >=20
-> > Advertise support for panic writes. When a memory op is received with
-> > the 'panic' flag set, the driver will then work without relying on
-> > interrupts and without sleeping.
->=20
-> We check device properties in cdns_xspi_supports_op() if the kernel is
-> built with ACPI support, that ends up using of_find_property() which
-> takes the devtree lock which means there's a possibility that we might
-> deadlock (eg, if we took a NMI or the CPU fell over at the wrong
-> moment).=C2=A0 This is probably thin enough it's not worth stopping the
-> entire series over, it could be fixed incrementally by storing the
-> values during probe.
+Applied to
 
-ACK.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-I have an extra set of cleanups in my queue for spi-cadence-xspi so I'll ch=
-ange
-it there.
+Thanks!
 
-Cheers,
--Paul
+[1/1] spi: amd: fix len==0 underflow and FIFO overflow
+      https://git.kernel.org/broonie/spi/c/e2f4edfc061e
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

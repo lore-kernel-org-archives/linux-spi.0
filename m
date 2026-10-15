@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2084E312836;
-	Thu, 15 Oct 2026 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA14E312836;
+	Thu, 15 Oct 2026 14:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792075984; cv=none; b=ArYUTOK0dxOTcrZJln4dlGC8y709r3xWT8uDomNNgC5gTrFyFGPMLmAwsxteWX3xf53p6EYVNKbgD3s3Tbagu+PFS5D5X3wDh2hnVP4CSHlu+6VDyG/ZI7uDCSrhCVYo/PJs245+J+n+Vmp5JNVag+26xxSmOpEL0Zn1sGKRwkE=
+	t=1792075987; cv=none; b=STkRWc6THcHurZoX1v99QQ3MvdM1P4niltanZe1Tzbs8VVFVZVbeuZ2IlmNUx3JdBV2E8xFQi5e6e968YFeELcw+JIHhFabwLppsd6YwDoH3aL9SOVhLqdByCfzLKye/aXbQZOqfGIqDWs7pRDWt88c3t3SayyjJvcHajdr/bqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792075984; c=relaxed/simple;
-	bh=FDgQwQDx9X6hfNwWrS6YouXRNLOlFWf+sGEb3qmKyOg=;
+	s=arc-20240116; t=1792075987; c=relaxed/simple;
+	bh=35mXqBcuE5GomJwmzKoRWgHZFcoCWDqyJw5PKYOby4g=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=S+RPqXEfloH7be+L7JF44JTpF6pPmTv5kLnT3zsa5Mxhcs+4xdhNgnKJZNsBRF4Sb5PbilBr2VzgSIaSiUZc7vMfaRuxIL9ZjAyX0ozbmk2bNQ8LnJ2bKuYwiQpNG6nQxK6dCYO1mqMVHWMDlUUZjVXkSOu+NPeFHPB9nKoAO+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nlm4MbwY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=GPE9Rm7A0ksY16dEjhik3uRZO0g9Bw7plfOGcyT2YAjexscrXsEj+e9RsiPvAL+jjCsjJ4rASZuqbfOb+5IeKbc6oxRBsLfheWHIRp1XC6pMwfjhTmyrK9IuttnBORmDHW27WU3hDoP7d/QQWyuWlaW/K+PIR0qYLundgC8yQeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWKRi3m1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nlm4MbwY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826EC1F000C4;
-	Thu, 15 Oct 2026 14:53:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWKRi3m1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA3B1F000C6;
+	Thu, 15 Oct 2026 14:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792075982;
-	bh=d4y6q7zwRfmUR8ctlN1+xywNu0uVLilrBEtFSc91IVs=;
+	s=k20260515; t=1792075986;
+	bh=BFMsNwhl5g/LXITxR1CeDhEUZkJmgOtKJDrUg0J8/Xo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Nlm4MbwY0tmgK7J6My0jedEXE/lp65C5M7H8OC0DVTjcHvgabrDjZwscRq2Q8N7Uw
-	 Z/aEGutci3h/M7Hhxc19qvpeJQrLo1Ov623FzEGOtbYM/WW06id38kKBq99rrAzfyR
-	 w7mI0eWvAigsfrV8XnlTQSiittaNRn0NDPDCTvtGpPNrVDLbk6EAI9G+v4RTljBzh/
-	 jaBZP1jCEXEpNFg4YIisRkWyc7URMwqKJmbg/1e/CckrnHe4snOgGb6Ts6o6D5+HQk
-	 JftCVqB7DsZFv6oJstTeV6GE6ZQ2cR0Lb1BxXWoDQR4YvRYRj78z7Q5UPRfY/QnEHf
-	 aC4jEtIOH8kRQ==
+	b=kWKRi3m1m+xol4xdFKFSe8vOAFiQEU3yLTY1rco2Gl9CGDOIB/Qh+/RhU5/6Qj406
+	 qAVzaDuXPU6hMSp/Ac77Xx77dUReQSDb4Ycnivas7XByaA6iukpG2G4ZBA35crjcQc
+	 bDHtgg57z3/I9oX9J4V8RPC153yh+aXI0aT20CO7xk3bToIWD/bQyumhBiLmQaCHQH
+	 zav0oilz83Putf6XuH6ffAIriOu8l9lSmtLtGglhdYlgiKPv1I5lGy8KW4uCQQI5Kn
+	 VJZVAaz5s17YuCW4TbyD85A3l+y6JOXbHtJt3WivNtsFBKCI7Do4YxLB7vdWg0D53m
+	 TZEFFpM5kh/sw==
 From: Mark Brown <broonie@kernel.org>
-To: Weibin Liu <liuwb@xiaopeng.com>
-Cc: pthombar@cadence.com, wsadowski@marvell.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260929081146.41041-1-liuwb@xiaopeng.com>
-References: <20260929081146.41041-1-liuwb@xiaopeng.com>
-Subject: Re: [PATCH 0/2] spi: cadence-xspi: two memory-safety fixes in the
- slave-DMA paths
-Message-Id: <179199270795.228143.15856421072994575885.b4-ty@b4>
-Date: Wed, 14 Oct 2026 16:45:07 +0100
+To: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Linus Walleij <linusw@kernel.org>, Grant Likely <grant.likely@secretlab.ca>, 
+ Russell King <linux@armlinux.org.uk>
+In-Reply-To: <20261015064341.1100422-1-sahaj123.sc@gmail.com>
+References: <20261015064341.1100422-1-sahaj123.sc@gmail.com>
+Subject: Re: [PATCH v3] spi: omap2-mcspi: handle DMA setup failures
+Message-Id: <179206934638.134795.11861483536300675539.b4-ty@b4>
+Date: Thu, 15 Oct 2026 14:02:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -45,28 +45,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1733; i=broonie@kernel.org;
- h=from:subject:message-id; bh=FDgQwQDx9X6hfNwWrS6YouXRNLOlFWf+sGEb3qmKyOg=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIuvDg91+tHYdml9eqn9P69+j3n8qG72Rt3HS2Um6ewQ
- +RqxfJIxY5SFgYxLgZZMUWWuCzul/Ulr9fwHVzYBjOHlQlkCAMXpwBM5PYsRoY1h3UquFYc4PJc
- obdwkuaLq0EFM5i/vQsvyzjYy/bRZmsew/9KYf/Ss+EV/pP7Np7V6jBr+C9xObe+bMGc7u3eG7f
- dusgAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1103; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=35mXqBcuE5GomJwmzKoRWgHZFcoCWDqyJw5PKYOby4g=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIuvDjv35ljfSv1wZ+CpQICvMtMfBz3nbkXb2mg5R675
+ qjq67sfOkpZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRV4WMDH8ZxUq/mblqbmRR
+ s7x47zDXw6/bujKamRL5r1twns8u1WX4nzj7K58U42IZzf9cbeuvyv9/7XXM77os45GgZ6Jv0/x
+ kOQE=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 29 Sep 2026 16:11:43 +0800, Weibin Liu wrote:
-> spi: cadence-xspi: two memory-safety fixes in the slave-DMA paths
-> 
-> While reviewing the slave-DMA handling of the Cadence XSPI driver I
-> found two ways in which memory the SPI core handed to the driver can be
-> overrun:
-> 
->   1/2 both SDMA handlers copy the byte count reported by SDMA_SIZE_REG
->       without checking it against the requested transfer length; a
->       device reporting more bytes than were programmed makes the
->       handlers walk past the end of the transfer buffers
-> 
-> [...]
+On Thu, 15 Oct 2026 12:13:41 +0530, Sahaj Chaudhari wrote:
+> spi: omap2-mcspi: handle DMA setup failures
 
 Applied to
 
@@ -74,10 +63,8 @@ Applied to
 
 Thanks!
 
-[1/2] spi: cadence-xspi: reject SDMA transfers larger than the requested length
-      https://git.kernel.org/broonie/spi/c/ea9854a169e9
-[2/2] spi: cadence-xspi: fix stack buffer overflow in the Marvell b0 path
-      https://git.kernel.org/broonie/spi/c/ef9690269999
+[1/1] spi: omap2-mcspi: handle DMA setup failures
+      https://git.kernel.org/broonie/spi/c/c126e07bde21
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

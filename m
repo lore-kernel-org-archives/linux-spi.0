@@ -1,33 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1235B47D44D;
-	Thu, 15 Oct 2026 20:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CF047D460;
+	Thu, 15 Oct 2026 21:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792097894; cv=none; b=QDofEFCSi80ZW/jkcWDaHk2jxKFc+uSXZnt51AIUZ5WkkAacLcjhcEk0qMOJT3TaKtlUrvqEGEsii5v9Dn8wLjfdhE770T2rYQxRoXl14FZBd1wLsxVjPhl/71UG5aTdPP7ZA/yIPlxwR9jYEJ42wU2uC8nAnOvV3WhEC+3rYek=
+	t=1792098133; cv=none; b=tgeRCkR0YCS+cAlNKs7w8NWy6qmAJpxWNsH1zwpDG7fEFgYRiR6pNTQWq8LDZ4hBkU0ec2QqN5A19I0sV3VLDOA7jRteLMvp5iWUcs+UwTSrxI/Hj7tloPrqGUB3USB6ZqDGgSc0S3h8kUR3FfUm8BIdzKsi2UQPv9ub0/9kKb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792097894; c=relaxed/simple;
-	bh=faqGfWDw1le1ZOU408v3r7oVHq96hylhJ7Q53F2VifA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=idm39qkrLVyAU8T+Fpoe24s7kknJhHIYKPydxZYJ8QXrQc3HC/TPCnyIhAKp+2h9Ste2DrAvUFeQxDgtAYv2tkkZRfoMnBdzMx+ItyFpa9ESgCXV4OqSRU4vmJZOXSaxNW6yfeIPll7WneRl9uivjbWQYahuM2BCFV6I9Hmpncs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=zhLOcywC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1792098133; c=relaxed/simple;
+	bh=QLz5+m0qx50nRJesAsedHdVkPnldEk1J4MYUE7uVWr0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Zfd9dlPCJZferL9YgUpyfrP+03yyPZTeMQD79q4mLiYjLR4nhLLN1R9KQGR+BdBZ4UihS39qggi5z870VJBYpJQiLnYEowFO6jfHZp48qMXMxpCNjUtIa7cU6TE+BB0P6JK2Ast4f68mkUm/9Kqvn3Z9EJt72zSJKbcW2ISOaK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmrxjvKQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="zhLOcywC"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 76D00C2BCF4;
-	Thu, 15 Oct 2026 20:58:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux.dev; s=korg;
-	t=1792097893; bh=faqGfWDw1le1ZOU408v3r7oVHq96hylhJ7Q53F2VifA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=zhLOcywChmpS8yO0V4WjFwh4fkPmyAxj1CR9ExcC+J+0NPbFumE4g1xAYpTDhxZUj
-	 DIAFRX8CAo/0XFqp4y0c1Wc4OqQbhNvboFuxtr3Fo3BL2RfeMsCGmrCT/on95CPCuf
-	 Qh2c3HUeY/YJsUcC+1ecWTNU8qt/9DDTHubQ6nZk=
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 54D96CCA465;
-	Thu, 15 Oct 2026 20:58:13 +0000 (UTC)
-From: Richard Leitner <richard.leitner@linux.dev>
-Date: Thu, 15 Oct 2026 22:58:00 +0200
-Subject: [PATCH] spi: imx: fix slab corruption from undersized DMA bounce
- buffers
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmrxjvKQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023521F000C4;
+	Thu, 15 Oct 2026 21:02:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792098127;
+	bh=j13WVM4d3/Jfut4N1phRloOMBTVGMmXlWcaLm5rqJMY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=gmrxjvKQaPdYqW84TIKUoC009UfTpM2XyWpx8xdbEaN5uJjGRWkKx63fpwHPPLluK
+	 ThiW5igQ7E1nS6GQzTHgSuhg6hxTc1SifvwzdZfWfnR1sKcfon3M4EkHrGe2ai+9sF
+	 TO2rztwCiZH1xxQPbMTiqk/gsXb1wvEF45Cd3qYHi0OvuFX5i5EO22Pv9JHwti9WXH
+	 DGXG4yzxzqGRuZsjNYIqCdX1vbKpJlsXX3d1Jt/h7KJ8J3+XD5BpeCfXqAsKXAb7mD
+	 OFlsh5xVB9pJ9mINu6a76URIG4BLz2vE6nOdXl2cszjaV7vxidRw89VCdn/TEBfHZg
+	 M3pLjZJQe2GwQ==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, kamal.dasu@broadcom.com, 
+ Weibin Liu <liuwb@xiaopeng.com>
+Cc: bbrezillon@kernel.org, bcm-kernel-feedback-list@broadcom.com, 
+ linux-kernel@vger.kernel.org, Guanglei Zhu <zhugl3@xiaopeng.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20261015-bcm-qspi-dummy-bytes-v1-1-c319da3c2497@xiaopeng.com>
+References: <20261015-bcm-qspi-dummy-bytes-v1-1-c319da3c2497@xiaopeng.com>
+Subject: Re: [PATCH] spi: bcm-qspi: reject oversized dummy bytes in mspi
+ exec_mem_op
+Message-Id: <179208827476.134795.4412525352268497198.b4-ty@b4>
+Date: Thu, 15 Oct 2026 19:17:54 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -35,108 +45,45 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261015-fix-spi-imx-dma-v1-1-e28259671392@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM3QpAQBCG4VvRHJuy/sKtyMEug1F+2kFbcu8Wh
- 09933uBkGUSqIILLJ0svC4eKgygHfUyEHLnDXEU5ypSGfbsUDZGnh12s0ZltCkz0mmRJ+BfmyU
- /+Yp181sOM1G7vxm47wcaJxsXcwAAAA==
-X-Change-ID: 20261015-fix-spi-imx-dma-1bab95ea4863
-To: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Carlos Song <carlos.song@nxp.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Richard Leitner <richard.leitner@linux.dev>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792097892; l=3405;
- i=richard.leitner@linux.dev; s=20250225; h=from:subject:message-id;
- bh=faqGfWDw1le1ZOU408v3r7oVHq96hylhJ7Q53F2VifA=;
- b=NWW3P6cYmkePPMpWsRHkUTk0deQKAZHw/C7ZSe4zPOPl/GT8QhdCPeKwGIQVg4uSFnyxUsCmw
- 15j25uuYY3ICHQ3aqc/WSXW+2Q+ftGF8NhRirhOYUu2ePFIEg9S9Vyc
-X-Developer-Key: i=richard.leitner@linux.dev; a=ed25519;
- pk=8hZNyyyQFqZ5ruVJsSGBSPIrmJpfDm5HwHU4QVOP1Pk=
-X-Endpoint-Received: by B4 Relay for richard.leitner@linux.dev/20250225
- with auth_id=350
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1138; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=QLz5+m0qx50nRJesAsedHdVkPnldEk1J4MYUE7uVWr0=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIu2nt/5zmque3c7nV7FOXevshtviTP8OPmNH7XdYf/b
+ glIKhRM7yhhYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBE3n5kZDjlxFJY5njqbuQX
+ E+99q998td7wmcGiWU37cJimgOSXwvMMP9ZrfZ375eabBe6Xv22xdI1/+eOs3kXnblMNozsREoX
+ 3WAE=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Since commit faa8e404ad8e ("spi: imx: support dynamic burst length for
-ECSPI DMA mode"), the driver allocates its private DMA TX/RX buffers
-with kzalloc(dma_len), where dma_len is only rounded up to 4 bytes, but
-maps, syncs and unmaps them with DMA_CACHE_ALIGNED_LEN(dma_len), i.e.
-rounded up to the cache line size. As a result, the DMA API operates on
-memory beyond the end of the allocation.
+On Thu, 15 Oct 2026 10:16:12 +0800, Weibin Liu wrote:
+> spi: bcm-qspi: reject oversized dummy bytes in mspi exec_mem_op
 
-This was observed on a custom i.MX8MP platform with an mcp251xfd CAN
-controller under heavy RPMSG load, as a series of refcount_t warnings
-triggered from rpmsg_recv_done() in virtio_rpmsg_bus:
+Applied to
 
-  refcount_t: addition on 0; use-after-free.
-  refcount_t: underflow; use-after-free.
-  refcount_t: saturated; leaking memory.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-Leading finally to an "Unable to handle kernel paging request" oops.
-Reproducing this problem took between 30 minutes and roughly 30 hours
-under the same workload.
+Thanks!
 
-Hardware watchpoints on the refcount of a struct rpmsg_endpoint showed
-it was overwritten from 2 to 1 by __pi_memcpy_generic() in the
-irq/155-spi2.0 thread. Additionally it was found that a "normal"
-rpmsg_recv_done() took 11µs +/-2µs from its kref_get to kref_put. In
-the error case the same sequence took about 215µs +/-10µs. Based on
-this, an LLM was used to identify the size mismatch fixed here.
+[1/1] spi: bcm-qspi: reject oversized dummy bytes in mspi exec_mem_op
+      https://git.kernel.org/broonie/spi/c/9e44f0df3fff
 
-Allocate the buffers with DMA_CACHE_ALIGNED_LEN(dma_len) so they cover
-the full mapped length, and use the same length for
-dma_sync_single_for_cpu() to stay consistent with map and unmap.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-With this patch applied, the same workload ran for more than 200 hours
-without the problem reproducing.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Assisted-by: LLM
-Fixes: faa8e404ad8e ("spi: imx: support dynamic burst length for ECSPI DMA mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Richard Leitner <richard.leitner@linux.dev>
----
- drivers/spi/spi-imx.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 79a6c1a60b0a0..3851c50dbe314 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1578,11 +1578,13 @@ static int spi_imx_dma_tx_data_handle(struct spi_imx_data *spi_imx,
- 		dma_data->dma_len = ALIGN(dma_data->data_len, BYTES_PER_32BITS_WORD);
- 	}
- 
--	dma_data->dma_tx_buf = kzalloc(dma_data->dma_len, GFP_KERNEL);
-+	dma_data->dma_tx_buf = kzalloc(DMA_CACHE_ALIGNED_LEN(dma_data->dma_len),
-+				       GFP_KERNEL);
- 	if (!dma_data->dma_tx_buf)
- 		return -ENOMEM;
- 
--	dma_data->dma_rx_buf = kzalloc(dma_data->dma_len, GFP_KERNEL);
-+	dma_data->dma_rx_buf = kzalloc(DMA_CACHE_ALIGNED_LEN(dma_data->dma_len),
-+				       GFP_KERNEL);
- 	if (!dma_data->dma_rx_buf) {
- 		kfree(dma_data->dma_tx_buf);
- 		return -ENOMEM;
-@@ -1920,7 +1922,8 @@ static int spi_imx_dma_package_transfer(struct spi_imx_data *spi_imx,
- 
- 	/* Trim the DMA RX buffer and copy the actual data to rx_buf */
- 	dma_sync_single_for_cpu(controller->dma_rx->device->dev, dma_data->dma_rx_addr,
--				dma_data->dma_len, DMA_FROM_DEVICE);
-+				DMA_CACHE_ALIGNED_LEN(dma_data->dma_len),
-+				DMA_FROM_DEVICE);
- 	spi_imx_dma_rx_data_handle(spi_imx, dma_data, transfer->rx_buf + spi_imx->rx_offset,
- 				   word_delay);
- 	spi_imx->rx_offset += dma_data->data_len;
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
----
-base-commit: 62f482ff73bf3ae88b0c899115527752cf9cbf13
-change-id: 20261015-fix-spi-imx-dma-1bab95ea4863
-
-Best regards,
---  
-Richard Leitner <richard.leitner@linux.dev>
-
+Thanks,
+Mark
 

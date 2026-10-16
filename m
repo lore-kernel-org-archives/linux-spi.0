@@ -1,87 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3101E32D6;
-	Fri, 16 Oct 2026 14:23:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435DF30C177;
+	Fri, 16 Oct 2026 14:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792160585; cv=none; b=nBWBag4l02XoWL2FAWIFgRqb6HoPSeMMYG7EL0Bp0V/0swKdqc9Yi6H92/LBlPkh977kVK5WmCEjMmQqXkmoQpBUntsWCySPJDA9ifJ5OJUrFv7liz3VWgqTTROdk9a76Hcao9pZ8lA3DMSiwsKCQPF4rEgsGNUa2IFXUekoZfc=
+	t=1792161913; cv=none; b=uSByOVa2zRnX5Fnsh0UNlfk3BY+sT97gmjoyCuzAlSen6vjK6S0TGZ85RJZDMLoVerZXQfuR3wJvwPrBzkIl6rFGcB8cUMNJlxaOeeJKRLdizp8dEl2dHhpbcMNQ3+jmlhivSMOZywrWzg4uiEAeUXLuklg48xzTp2AH0DvdwLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792160585; c=relaxed/simple;
-	bh=MI8w3JMby05eixNSvlAabSy8bwZ/Z9wHQHiE8BSaMO8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=sdiW1dkDEC7/vGSh7sNNBxIOsx/BwzyMNiALIWNzTycSv5wPkp7agtFn2VsOi525PeSyu/EHQ9fOVoR8C0MNVxEIHwqJydkoihCS6IhsF7ek1QlDu3xwHAu/avMzqy5HDXFGesLgnf7iuNEbX6aDYJGqFFkitLqTro9f4EL5N5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElHWCZVB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792161913; c=relaxed/simple;
+	bh=jmELZitEhSIOY9RUMcUUOIX86AhbCbcUO1hmW/FdI1Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KULFdffCSwwqBtDIldBtM9GsGnFKC0m1WirssaGpp9HUKerVI+1bI0NzU8KT/Poiu8QLSr1extCc/SVTkEt+G1TM8a8gBhtfNg/OZSglfMUNpVucHMEpzWbrG/zQMJ/3Ym4AfpHsx6vUyD4WXhojiPfacg83e59Jc4VwSGlCbjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=VOxKw9Mw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElHWCZVB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194571F000C4;
-	Fri, 16 Oct 2026 14:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792160584;
-	bh=aWRXMefw28eUVj+w8KBDJb0x2SzoK17sUyM30M4GBUA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=ElHWCZVBnzLBtvDRTLlzU1YYcYeabZPt6MvVikKzY72S5Y+cwpugGvtBXSoeKCZHF
-	 Ti98ZCsMvshGBvqULHi+Ox08peAvw63Qr9MCfPrdGYynaDE+XdTKvlCYzOrDzykB9Z
-	 yH+C3h6jORxrQ/qrwH9CFR5cECC7xoXb6YdemWrMaQH690WzWU3X4eMSnKS0qeYDue
-	 eGZgt2eVRinQ9b8RFuEjiM1FajsNkTGrVnesM3jGjJGmxjcUT7SCjzkjmc7jtI8Eoq
-	 8k7gg6OOmYDDg0M9hxXY4G9+okRGKshLKoTOwVayFL/6yBG9GThD5cITRNQ/CePAa7
-	 5jIns0UOt3hgw==
-From: Mark Brown <broonie@kernel.org>
-To: Weibin Liu <liuwb@xiaopeng.com>
-Cc: thangaraj.s@microchip.com, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20261016020036.1333548-1-liuwb@xiaopeng.com>
-References: <20261016020036.1333548-1-liuwb@xiaopeng.com>
-Subject: Re: [PATCH v2] spi: spi-pci1xxxx: quiesce DMA engines on transfer
- timeout
-Message-Id: <179214977843.134795.8288039955291409864.b4-ty@b4>
-Date: Fri, 16 Oct 2026 12:22:58 +0100
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="VOxKw9Mw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8OuZaPA2GtRZhh15wzhLlS2yNX+s76kDLb857HbaDKs=; b=VOxKw9Mwh3OYzZETVAfSxiDEjT
+	3Djfk7WxPHHYQCaqrSIYEAaaZegQYCovwOkRZV+5t5e2w+25t6GESpc4GdivPP0oBckZt4XrE1NMt
+	muXerQV5nfRhfylHTS+maonMGnYYTwbUuIvAtP345n1G0rdRFOXbt8wRqGAgfL/6wJTy/ngq5ymxx
+	FhnXlmMBvmxI+4eIV0jqHgM8NyZiY4mJYLtt7vfYrM81mVeFOUOGLn4e+gYPc0nMiQtfCxaTlXUCG
+	5mDun7Twjmb8rbq6CJadk7mNRwzo1T33Erq0+Pu6kAXr7QiPgzZaWjFWM/JANcT0AII078t/jueat
+	k6EFIP6g==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xHjBC-0062Vp-0A;
+	Fri, 16 Oct 2026 14:45:06 +0000
+Date: Fri, 16 Oct 2026 07:45:01 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Vishwaroop A <va@nvidia.com>
+Cc: Thierry Reding <thierry.reding@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Mark Brown <broonie@kernel.org>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Laxman Dewangan <ldewangan@nvidia.com>, 
+	Aaron Kling <webgeek1234@gmail.com>, Carol Soto <csoto@nvidia.com>, 
+	Suresh Mangipudi <smangipudi@nvidia.com>, linux-tegra@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] spi: tegra210-quad: don't overwrite refreshed status
+ with lost-IRQ snapshot
+Message-ID: <atI4VjOnSgBaYy67@gmail.com>
+References: <20261016132520.3723412-1-va@nvidia.com>
+ <20261016132520.3723412-2-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1128; i=broonie@kernel.org;
- h=from:subject:message-id; bh=MI8w3JMby05eixNSvlAabSy8bwZ/Z9wHQHiE8BSaMO8=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLIuGbs69D41P7tj+n7Na9+0RTLCRSxmKTXcu3jaNfbx1
- DV7vk227ShlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBEeCIZ/gqJ2F0U1egIOrbv
- tdMkZZ39dkGda7XO/vl6wepX/uxzOVwMfwXaJtumrl82QS8lm2NLT6WsQ/eCih07Fbdffd6re/L
- oAR4A
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261016132520.3723412-2-va@nvidia.com>
+X-Debian-User: leitao
 
-On Fri, 16 Oct 2026 10:00:36 +0800, Weibin Liu wrote:
-> spi: spi-pci1xxxx: quiesce DMA engines on transfer timeout
+On Fri, Oct 16, 2026 at 01:25:19PM +0000, Vishwaroop A wrote:
+> tegra_qspi_handle_timeout() captures a "lost IRQ" FIFO status snapshot
+> when the ISR cache is empty on entry but QSPI_TRANS_STATUS shows the
+> transfer completed. After masking the controller IRQ and draining the
+> workqueue with cancel_work_sync(), it re-loads the ISR cache with
+> smp_load_acquire(): if the drain observed a real ISR completion, the
+> refreshed cache holds ISR-published status_reg, tx_status and rx_status
+> that reflect the true hardware error state at IRQ time.
+> 
+> However, when both cache and snapshot are set, the code keeps the
+> refreshed value in the local status variable but then unconditionally
+> publishes the pre-drain lost_fifo_status / lost_tx_status /
+> lost_rx_status snapshot into tqspi->status_reg / tx_status / rx_status
+> via the lost_irq_snapshot branch. That snapshot is racy: if the ISR
+> fires on another CPU between our live QSPI_TRANS_STATUS read and our
+> live QSPI_FIFO_STATUS snapshot, the ISR W1Cs the hardware error bits
+> before we sample them, so the snapshot may contain zeroed error
+> fields. Overwriting the ISR-published values with these zeros makes
+> the manual completion handler downstream silently accept a transfer
+> that actually reported a FIFO error.
+> 
+> Clear lost_irq_snapshot when the refreshed cache is non-zero, so the
+> ISR-published status wins over the pre-drain snapshot in that case.
+> The lost-IRQ path (refreshed == 0 && live QSPI_RDY set) is unaffected.
+> 
+> Fixes: 1ff82c13ea94 ("spi: tegra210-quad: Cache TRANS_STATUS in ISR for timeout handler")
+> Reported-by: Carol Soto <csoto@nvidia.com>
+> Link: https://github.com/NVIDIA/NV-Kernels/pull/579
+> Signed-off-by: Vishwaroop A <va@nvidia.com>
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
-
-Thanks!
-
-[1/1] spi: spi-pci1xxxx: quiesce DMA engines on transfer timeout
-      https://git.kernel.org/broonie/spi/c/0b591332a2bd
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Reviewed-by: Breno Leitao <leitao@debian.org>

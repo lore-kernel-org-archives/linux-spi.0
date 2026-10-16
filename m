@@ -1,154 +1,173 @@
-Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010050.outbound.protection.outlook.com [52.101.46.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3F8495AF5
-	for <linux-spi@vger.kernel.org>; Fri, 16 Oct 2026 13:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.138
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792156101; cv=none; b=pBz8HQ8Ace0gbpGRR9mvXxK6xhd1s4zFi/quqITcAdE6yhenUnLpt6u+VE7wdPkpSFS8vFYbWCeeWTNkPsEoM3IYzV9BFeIoWbTs6MM9pZl/07CCOh721MdBKvxQDaJcdai6u7MkG453bbawDhRpUEuDDH7w9FDPMuOAaUp2rdo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792156101; c=relaxed/simple;
-	bh=Z9vuHvIs5djMkOSj7qyB+HFnspgEuOMY5kkZwLyT16k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uug+UlHVGm9slBdYDE18kLZbWLGnmfges7THvc/bHc94f6Jr9uzBlAnlJzqezXLOetCTZVUyyutZCXCh3VxeygIv4ExuP9D7zvhB17McXR64R2ffwqJNpyDulVVN/rJuoscu0+Ug/dbHZKKBSj07l9JYrVKQjaVw4mfu2uast/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQ+kTy8S; arc=none smtp.client-ip=74.125.227.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E4E4C77A3;
+	Fri, 16 Oct 2026 13:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792157157; cv=fail; b=k3I5ENSQlNNQkrgX8JRGUyn4L9PHAI+7rN1OzHlWaJgB3d2ejbLHmDD+HVi26SAqeAzOamF8inUW7lTVxg5meqQyJHoVmHACW+9T7H9BC2ZrdawjlyQVICYfCsxkFkAtt+wcyvHvFnpcg0TcSdsH8hsoSFrPWzid6r2kH0jv0xA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792157157; c=relaxed/simple;
+	bh=hPZA9qi36brLVpPKP3NK4juP3U7yLqdr6HNI0TGrNuw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p0OJPXhj3JBbMZLvn30Pu7VQKr2QSSwiczYUmoX2SVpjsVlQ4BnmPVGCfaISoeUFxXAojk6ag0/+JWjtv//D4XbK3zSUzCWOwIaAitmnbN7vh7NUFPCgAtylwx002nWqwU2xFrfBgKwUXE7zFI5WWoOe+rbO4N46ygPRxXLv3OY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YMJ685i9; arc=fail smtp.client-ip=52.101.46.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQ+kTy8S"
-Received: by mail-pj2-f10.google.com with SMTP id 98e67ed59e1d1-3ac144119e4so2327905a91.0
-        for <linux-spi@vger.kernel.org>; Fri, 16 Oct 2026 06:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792156100; x=1792760900; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=m8EDc8rZac4RsFY8nAVqxYalOxuPA5SriPQpdHsNWSs=;
-        b=mQ+kTy8S9dNAksavMLkACgVHGhTePoX8YJcJTFHY1LeEQD0letI3IBBSbRZXPn5yHA
-         RZzUS8WltPxCOpLYFjdK5cE+NluuQefe4XPLeexGUkvztcKul3ByFKm7kBWYqiUAEji5
-         xGpzrrSYez4Lswj0dAcq/6vOKeFYvyjn6LpLDdh3JVMtb5FlwHrH/TJgZdyEXV6j8H/z
-         yrYL/PVbCWfhN2lCjATYSoRc6TbFzEixs/arvdylK9oHrilOyLeQwQEouqzklSn22mly
-         pJ7McIaRbfECCoTz73yqDaYQ3N93t5he+hBQBp0To0J5tw8Tx0zzXAbdfgR6MvNmxhMJ
-         jG0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792156100; x=1792760900;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m8EDc8rZac4RsFY8nAVqxYalOxuPA5SriPQpdHsNWSs=;
-        b=JzbGCBkI+MrqvLxV6N8QDn6+7ndVnK+WFjUdMsh/LsUGZODLQb7UnKLHn18vVJStve
-         mDv4aXazpm5AdmSUtuXr4/BXVwmGNDhIlHmegFpVH9R3dzYLfH8i/DVB9oxl+Qm0tQ6t
-         ASbFqvlzthfwV5tciiynsI0TquL1aWCV9U5rRyzo90/ZMP+a0EyesUCCBre42oIdNBgj
-         WwHs0xm4MQscpBApSid1luw0IWGJ9okuVgvfoduTFoFq875ixU41L3QictI7nfNT5edX
-         BzMhCAXZq2VvtkER2tbO6d4VcFmYfSB3JlJIssJtkV4C+oY8tul0cFakA+A8vZOzVfOf
-         jgsw==
-X-Forwarded-Encrypted: i=1; AKwUvBz4PKCFedey2fGFZ0xUMqYS9ZHQn/I2qRXT5ncETyeatUr1HVsu6o/zIt34UyHEjBYYNCug6l/e/as=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJ3D00g09jAjEluAG4bk9ZhZC2dXQr8vdzcNUeGy7d8hW3LBSM
-	9lo9HQ9zDIWjMkDmWSU8P3ukQXtSZUSxGMMDhP4lMhsSCAJyhzMEsTdA
-X-Gm-Gg: AYBFou1NcRbznsMT8fdnDBxq/bJXMY6mQegVfjNOlyFjf3H453LMfl3BY0q+qSUHSv5
-	3Z/sMMNzBPwycgtBwCpNdb87AQwfgJ66binTRAv0WJJ6tO1azhjeEQbKBaiADYAyt9fLT4+fO3y
-	+QcrZWiijE7LZl5xl1qpz9EmPjhSsmrkXfrLoI1sbsIwhbJtrQk/CRfjHVJ5D/7fgHbQxJh+/JM
-	GDn8OSJtkDUg2lCnOCYMpWpLvfVih1NlPHRbbSPlgvPbQMqWjkcS2X/9j6kq1phZYIzMNsCHFua
-	AHM43DsqCBtrS++/oGlV5oO+Lf2VMOwFp09WVzb9JsNRlIAfYbehC/n2Azfj3zEDRWBj10Bmkxj
-	1rV/0EScQ9064fbjhLVAUvmO/p1COB9JkJYVEyA6M5fgACEETeFC6L76lPqAYeBnZ7GqNJP6IVK
-	F+x/Ua7dqsjVPl5pHkVXPoPt0W1heh2ev9uRGz+wB0DlcHa5I2P3eFdQ8iRp9rj0A0eDWxeIDnR
-	gQR+bJHWV4bQqdXNggM
-X-Received: by 2002:a17:90b:258f:b0:3a6:dc51:cce9 with SMTP id 98e67ed59e1d1-3ab3a96634dmr18516390a91.57.1792156099489;
-        Fri, 16 Oct 2026 06:08:19 -0700 (PDT)
-Received: from AERO17.taila7786d.ts.net ([156.231.115.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3acc46ee274sm4190467a91.4.2026.10.16.06.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Oct 2026 06:08:18 -0700 (PDT)
-From: Pufan Jin <cyan2254650260@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	Michal Simek <michal.simek@amd.com>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] spi: zynq-qspi: fix address buffer corruption and support 4-byte address
-Date: Fri, 16 Oct 2026 21:08:12 +0800
-Message-ID: <20261016130812.282624-1-cyan2254650260@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YMJ685i9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kl+pwvu+7IJWJUMZyQ7W0Wd4mNqkq3msyvggKmc4weJmSoaw6iTPv2HWUrzXs+4t6kICLDciAhRAS4pjA1KBTAUgAcDQx6qip6r5C2pZCPgnJBORB/ZdeJuQanXDKXA0+zKL1zOCzTxK6Snapr+Zyp+hkGJfz2Mzn+edyGkdb//XwahyZBCMCPC8mMUTGvTDcCVqdU1EugeSTUV385tMD3wEdjKjbhoBHUGE/NQJu+q3DOU4epOnFlwr/QrnV4JmEYz/XusudycyXWZxFLAqXXUHZcncOAO8026fn7Xk/HrHdL3JuziQGiMMXNIjPrBfD9FOcJ6NEkB3mcYa/W/6wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SyAsyGG/jlVKXj46dmIfsmWbii62IxqvRaDwRZ4zHNY=;
+ b=m6nSvADtGJC/pmu6U2uiVujhg6nH+Dt1FWI0Q6vZ0SuOFZ4vteQhlZaK1VCyK9ZuQytqeaQ1HEzx3MYxRipnNSmOoS+8KlhKWFEX18VgeBcRwbC1Cam3hIzh33ASQjRYD2x8lV8XlTMzSaB8fxDikXysutRnY+OhPw9B7XngWfZeRRSYm+m1SAmjsfjHdBtDtkgFTYAABlOrLvlqkNLEyiX7uhngQAAN6lOEcI2n84bZc83wnPkQwzZZUnLEaRBEw/+oR6mb0vu53S4mQ/NqdBH2ktrnLLKiSOAB3ppqXM8gLTQFzQs9m4xjCzcrmgWOKzYbVZW9bWTEfrb/Ft2rSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SyAsyGG/jlVKXj46dmIfsmWbii62IxqvRaDwRZ4zHNY=;
+ b=YMJ685i92utwQwcwW6++C8DOYKgnjxRuTRroJtYI+gCMj6UZZdxo1CT7mWKJZmFrhlnwRac42PpAG4GFetxcijPuWVLbgbN1b9DsP/twtFPqp1TGzuOxOzzODJLjCx6y+CUoKJfiM+Ouf8fs0YIsIwdT4g2/4GZ0/HiADdqruRaOK5QZYfOWjVpXivMrM7jO2e33GaXback7ysDqkLdk6MrWVfbDC1Mkg7x1oiKsZhA93KMxjsSskE1gfO4y/xEpyyec/Cvzb6TgbM5Glalclh4UJAQdJjHCZ6NCLg43f7y7CFk9hLOYU+tnSHz3dZhyzySjgLhcYXD01MMmuQEFBA==
+Received: from CH0P223CA0020.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::10)
+ by PH7PR12MB6737.namprd12.prod.outlook.com (2603:10b6:510:1a8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Fri, 16 Oct
+ 2026 13:25:48 +0000
+Received: from CH3PEPF0002457A.namprd04.prod.outlook.com
+ (2603:10b6:610:116:cafe::4) by CH0P223CA0020.outlook.office365.com
+ (2603:10b6:610:116::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Fri, 16
+ Oct 2026 13:25:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH3PEPF0002457A.mail.protection.outlook.com (10.167.252.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Fri, 16 Oct 2026 13:25:48 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 16 Oct
+ 2026 06:25:21 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 16 Oct
+ 2026 06:25:20 -0700
+Received: from build-va-bionic-20260204.nvidia.com (10.127.8.12) by
+ mail.nvidia.com (10.129.68.7) with Microsoft SMTP Server id 15.2.2562.49 via
+ Frontend Transport; Fri, 16 Oct 2026 06:25:20 -0700
+From: Vishwaroop A <va@nvidia.com>
+To: Thierry Reding <thierry.reding@kernel.org>, Jonathan Hunter
+	<jonathanh@nvidia.com>, Mark Brown <broonie@kernel.org>
+CC: Sowjanya Komatineni <skomatineni@nvidia.com>, Laxman Dewangan
+	<ldewangan@nvidia.com>, Breno Leitao <leitao@debian.org>, Aaron Kling
+	<webgeek1234@gmail.com>, Carol Soto <csoto@nvidia.com>, Suresh Mangipudi
+	<smangipudi@nvidia.com>, Vishwaroop A <va@nvidia.com>,
+	<linux-tegra@vger.kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/2] spi: tegra210-quad: don't overwrite refreshed status with lost-IRQ snapshot
+Date: Fri, 16 Oct 2026 13:25:19 +0000
+Message-ID: <20261016132520.3723412-2-va@nvidia.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20261016132520.3723412-1-va@nvidia.com>
+References: <20261016132520.3723412-1-va@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0002457A:EE_|PH7PR12MB6737:EE_
+X-MS-Office365-Filtering-Correlation-Id: 005cce58-6823-48d1-2419-08df2b88fde5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|82310400026|1800799024|376014|18002099003|22082099003|10067099003|13003099007|11063799006|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	9UQn+zVkXGAo2nP9almQb0rPivMUVEZv8x7vN4sYl7m/RK9vqak1a0OFMFt6Vela+9N5er1ezWhDLQpIrOMVGBfGEL1q9kUOwU6EOkBOS42DNi2/YVx9Ex1a64alY0J2WnkdmAVCm0X+ZwJoBzUbTWWAwF1Lt6jBLo4PBGoKhvxHMQ/UssfaWkrRVg8oS3jZ7uWRLJK7XNPNABKpK4Yy0NeliNPJLR+tgKiCHQ1RHjDJtvlL54xCh97UOTWn+9uot4FxipNx8ICK1gVmKs6f4PJY7y3rrR/ySeKDRMWuaDFod8+4/q2S6S2PR7s/75SGtE0tYLwtuzuKn6lGChdFLocp6isUQX+RXqiKcyNVl19Sk+K/kSFVIdJTQca1zYyBY3aqYTkCggaxxcuRP6b3yX1HTi7lVQodWfeuV2nhgpEsuMgcS8rVF8p0JNcfpvPP9VtDQ/v+7cfjZUongqizwYxYoyoCiTfo/sJ+e9KSrcAHpyH5HBOhUzMCeFIAjH1nzcyR+zXDcYMFzk+v4hzl0rbZwcaLHOKj9h5+59UcoiG/WR/16eCBOe2CJJzqZo2jJFRYFAjS0O5YFaXOoQF6B2p7WTLrjqv6fnwAEyiTn8lKy/tIenrR/UZ7c0Y6Qfr2tX7mcfA7sToFKN96V5sBA2JZ7IH9TETDX2aaLx1+alIm6vX4CCcW52LJUWOt4qhQuWRjHQu1NAlhSgG//bulfg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(376014)(18002099003)(22082099003)(10067099003)(13003099007)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	zu4zriHt8TYN0zfe6Y/vbFaT40IqIAWeNQXyb+vKVmng0cj+3Ux7EtUiET/90DxgKUu0koilaagkzH6OSHCJV1YkZfvZMQqI1w74jAO7hYwsY0N6JvvWllAI97Y+/5tj+AdR3XIJfSgcoJIs1A9xUgQxkBfnEw7g0NF+pfYAxZH1CAv/EWAoL1svHa8roYhifbg1F1bvhUIgCdEAARNNEBTzr0HWIu/YhgOlXtQoou+fcR3QqvKpbUNkfFFIYpk7bnD13cb02tbkHi9OOlhP9FLzQUhYx+eKGKCJ7D+hsmlxJJKf+Z9DQod3l1t9lDxvWpNKUeLHHc7AkREPxPsaUaB5VuMoSLTneYkOagDZeNAgocOwHJSnP4BjBSbYqvZ1INGjvP9noGzgwCAeRExjyT8ZxSbh6R4rsMBmerjqZ5I0jnIUwLXxiJ0wncAl4d+N
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 13:25:48.3489
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 005cce58-6823-48d1-2419-08df2b88fde5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0002457A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6737
 
-In zynq_qspi_exec_mem_op(), when transmitting address bytes, the driver
-iterates over op->addr.nbytes and populates xqspi->txbuf[i]. However,
-xqspi->txbuf is never re-assigned before populating the address, meaning
-it still points to (u8 *)&op->cmd.opcode from the command phase.
+tegra_qspi_handle_timeout() captures a "lost IRQ" FIFO status snapshot
+when the ISR cache is empty on entry but QSPI_TRANS_STATUS shows the
+transfer completed. After masking the controller IRQ and draining the
+workqueue with cancel_work_sync(), it re-loads the ISR cache with
+smp_load_acquire(): if the drain observed a real ISR completion, the
+refreshed cache holds ISR-published status_reg, tx_status and rx_status
+that reflect the true hardware error state at IRQ time.
 
-This causes two severe issues:
-1. Memory corruption: Writing into xqspi->txbuf writes past the opcode
-   buffer on the stack (which was passed as const struct spi_mem_op *).
-   If opcode is zero, xqspi->txbuf is uninitialized.
-2. In zynq_qspi_supports_op(), operations with op->addr.nbytes > 3 are
-   rejected. When paired with SPI NOR flashes larger than 16MB (such as
-   Winbond W25Q256), spi_nor_spimem_check_read_pp_op() tests 4-byte address
-   support, which fails and causes spi_nor_select_read() to drop all read
-   capabilities, failing probe with -EINVAL (-22).
+However, when both cache and snapshot are set, the code keeps the
+refreshed value in the local status variable but then unconditionally
+publishes the pre-drain lost_fifo_status / lost_tx_status /
+lost_rx_status snapshot into tqspi->status_reg / tx_status / rx_status
+via the lost_irq_snapshot branch. That snapshot is racy: if the ISR
+fires on another CPU between our live QSPI_TRANS_STATUS read and our
+live QSPI_FIFO_STATUS snapshot, the ISR W1Cs the hardware error bits
+before we sample them, so the snapshot may contain zeroed error
+fields. Overwriting the ISR-published values with these zeros makes
+the manual completion handler downstream silently accept a transfer
+that actually reported a FIFO error.
 
-The Zynq-7000 QSPI controller hardware in manual I/O mode natively supports
-transmitting 1 to 4 address bytes via its TXD FIFO registers
-(ZYNQ_QSPI_TXD_00_00_OFFSET).
+Clear lost_irq_snapshot when the refreshed cache is non-zero, so the
+ISR-published status wins over the pre-drain snapshot in that case.
+The lost-IRQ path (refreshed == 0 && live QSPI_RDY set) is unaffected.
 
-Fix this by introducing a local opaddr[4] buffer in zynq_qspi_exec_mem_op()
-and explicitly setting xqspi->txbuf = opaddr before populating address
-bytes. Also allow up to 4 address bytes in zynq_qspi_supports_op().
-
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pufan Jin <cyan2254650260@gmail.com>
+Fixes: 1ff82c13ea94 ("spi: tegra210-quad: Cache TRANS_STATUS in ISR for timeout handler")
+Reported-by: Carol Soto <csoto@nvidia.com>
+Link: https://github.com/NVIDIA/NV-Kernels/pull/579
+Signed-off-by: Vishwaroop A <va@nvidia.com>
 ---
- drivers/spi/spi-zynq-qspi.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index d762aaf45..bfcbcfe85 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -229,11 +229,10 @@ static bool zynq_qspi_supports_op(struct spi_mem *mem,
- 		return false;
- 
- 	/*
--	 * The number of address bytes should be equal to or less than 3 bytes.
-+	 * The number of address bytes should be equal to or less than 4 bytes.
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index d8cca3aa276b..4a5933d8112c 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1260,8 +1260,17 @@ static int tegra_qspi_handle_timeout(struct tegra_qspi *tqspi)
+ 	 * loaded the cache but before we masked).
  	 */
--	if (op->addr.nbytes > 3)
-+	if (op->addr.nbytes > 4)
- 		return false;
--
- 	return true;
- }
+ 	refreshed = smp_load_acquire(&tqspi->trans_status);
+-	if (refreshed)
++	if (refreshed) {
+ 		status = refreshed;
++		/*
++		 * The drain observed a real ISR completion. Prefer the
++		 * ISR-published status_reg / tx_status / rx_status over
++		 * the pre-drain lost-IRQ snapshot, which may have been
++		 * taken after the ISR W1C-ed the hardware error bits and
++		 * therefore holds cleared values.
++		 */
++		lost_irq_snapshot = false;
++	}
  
-@@ -526,6 +525,7 @@ static int zynq_qspi_exec_mem_op(struct spi_mem *mem,
- 				 const struct spi_mem_op *op)
- {
- 	struct zynq_qspi *xqspi = spi_controller_get_devdata(mem->spi->controller);
-+	u8 opaddr[4] __aligned(4);
- 	int err = 0, i;
- 	u8 *tmpbuf;
- 
-@@ -547,12 +547,13 @@ static int zynq_qspi_exec_mem_op(struct spi_mem *mem,
- 	}
- 
- 	if (op->addr.nbytes) {
--		for (i = 0; i < op->addr.nbytes; i++) {
--			xqspi->txbuf[i] = op->addr.val >>
-+		for (i = 0; i < op->addr.nbytes; i++)
-+			opaddr[i] = op->addr.val >>
- 					(8 * (op->addr.nbytes - i - 1));
--		}
- 
- 		reinit_completion(&xqspi->data_completion);
-+		xqspi->txbuf = opaddr;
-+
- 		xqspi->rxbuf = NULL;
- 		xqspi->tx_bytes = op->addr.nbytes;
- 		xqspi->rx_bytes = op->addr.nbytes;
+ 	if (!(status & QSPI_RDY)) {
+ 		retval = -ETIMEDOUT;
 -- 
-2.56.0
+2.17.1
 

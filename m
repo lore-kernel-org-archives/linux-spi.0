@@ -1,36 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4121466B08;
-	Fri, 16 Oct 2026 10:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7DF3C3428
+	for <linux-spi@vger.kernel.org>; Fri, 16 Oct 2026 10:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792146600; cv=none; b=PjtRoByzre1lzpopoTfeQj6LsQ5lFIYOLiREiru8goOIeOuHB1LySI19CIi9F7xDw4PenTdiktUmFzSQ2VMRGq/eyxaHku/Fnz83HYr5VSaY+xw+aJd1BH3OlflZx5w+HxzWlxqXTO+96fxQyyaqEpKpig4gacX50niBPtDixno=
+	t=1792146602; cv=none; b=m9sWJ09UW8E0EdC7M7CnEz1++Lsz8eUSQ0B03eNvOeX4BKWV/dowxKQfr0yeyu1q4fTEkVdEziUxjvCD6NPyK5wihn3cSoThnZVSYsFwGF3E9+5xZ9/CyidKV7pVI5Ndzgnj4tVNFfFM8tKHBN05Wa3YXO04RUyA9Sqoz+CQd+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792146600; c=relaxed/simple;
-	bh=LmNVKal/87PaP4vDAoIL61Tc3xXRyyeCao0wfOThjxA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gx4SfTxN36sdRqths2qq+zAM/7sfCmL2z8LBHTekCYnIT+2x/CTRfU+eR2mjOB7RJe6PVcl9V9nElYih29vgStTrp/p87RmkIcvbMDboE8VMOvSErr0RN6PRRcAZrn/m4IRIAw/ohfJNpqFosz2kGU/fWDwKKOhZ0g7wup53Z/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OcMHITjU; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1792146602; c=relaxed/simple;
+	bh=TstkVh3FAYPSK27J/RlY0l/vdVVjDus5dkNLSh3w6GE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aDbXi8fYSZVCtlt70XW4i2HyV+i/jkaHL7ZD3eqX9uhrVmIAR9+RJbWz0EGorbCCMsj/wf0lBYO+c5SzfPVKbkwi/9xeVCi9Go55RcD+1GyyMNMXES/AoIP5AgKnvfNyj7nkts/AlO+jHOECEo90bR+IWccy96xwtuOLsUEqeqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=s/141fC0; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OcMHITjU"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="s/141fC0"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D03384E41248;
-	Fri, 16 Oct 2026 10:29:53 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9AF91C6220F;
+	Fri, 16 Oct 2026 10:30:53 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9AD276075D;
-	Fri, 16 Oct 2026 10:29:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BAE510328BE6;
-	Fri, 16 Oct 2026 12:29:44 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D64736075D;
+	Fri, 16 Oct 2026 10:29:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 02FE7103284D3;
+	Fri, 16 Oct 2026 12:29:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792146592; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=AnONk402nSGH39bSlb7WuXw5UGd8Kv5D12l+z58J9pE=;
-	b=OcMHITjUB8VCMoR1QyeRahsOpar2RSGvrYL3SG51c3aDKhjF+9tWxtMw0g+Cx1p2ygnyoY
-	fBY4M9gOc5OrsC54TtUe0wZxs2ipTKJShDNs6jUdLEv0tWFpkacWRTTvOvAcahhcaxAUtY
-	KjyI6Oebe9aY1AvZpYblnquVP2b8jRpndMDvjMc75N/Ena3S2dwljkHMDUj02pXdRd3jbb
-	Zj3LVytxitBdFIX3YK7ldDgR77vGiihjhHvU25nkhWmtpDL4Wj5K1hgrUHb8zP771A+hnm
-	6y036Rx5Imw4cg4kfFTpRg/l2Ykg6bVdPgM/AZjbHsoTygD20c7U7HvLN+A1NA==
+	t=1792146595; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=lUpahHMzEtwV8QSMlGfrMAjK/Eml289xKqSP8jhGAd0=;
+	b=s/141fC0UvOeYTAPBUdPtZ89vY+EKnLE+l/DySPGpAoMFiZf8DfWsGwOJJp9WkccZfiU+d
+	/U2TYfPleHQkwmD5ZBIn+Fvc4xSATtBrk9PX8tUpFnZIUwthFLJgcCIglQlj59/8gcZa/b
+	ObUpFlvteTw1aVV+rDFqUm0IjMFw0phd8/RcJTnYzDTk+DM+owhkem7CNEmjwSEZLkFDQr
+	luIBcNwE7pZ56tvO5YxW2WKElWVIfpVGt5AzmpXrJrA7x7NiRME4e2LsYHUur1Xzz/s0oy
+	mBFr73l3gwos7LfWgdI5WXXpxFCeoYhyCT5HOYOeyulxl63cTQpyzaRAANvQuA==
 From: Paul Cercueil <paul.cercueil@bootlin.com>
 To: Pratyush Yadav <pratyush@kernel.org>,
 	Michael Walle <mwalle@kernel.org>,
@@ -50,10 +52,12 @@ Cc: Kees Cook <kees@kernel.org>,
 	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
 	Tanmay Jagdale <tanmay@marvell.com>,
 	Paul Cercueil <paul.cercueil@bootlin.com>
-Subject: [PATCH v4 0/7] spi: Add support for panic mem writes
-Date: Fri, 16 Oct 2026 12:29:10 +0200
-Message-ID: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+Subject: [PATCH v4 1/7] spi: spi-mem: Add support for panic mem writes
+Date: Fri, 16 Oct 2026 12:29:11 +0200
+Message-ID: <20261016102917.171095-2-paul.cercueil@bootlin.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -63,44 +67,147 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+From: Tanmay Jagdale <tanmay@marvell.com>
 
-Here is the v4 of my patchset that updates the MTD spi-nor code as well
-as the spi-mem code, to add support for panic mem writes to a memory
-partition configured as pstore.
+Add a 'panic_write' flag to the controller's capabilities struct.
+When set, the SPI controller indicates that it will be able to send
+commands to a connected NOR or NAND memory in the context of a kernel
+panic, which means without sleeping and without relying on IRQs.
 
-This revision adds a workaround in mtd/spi-nor to avoid a call to
-kmalloc(), and fixes a kernel doc mismatch.
+Whether or not a given memory operation is a panic mem write is given by
+the spi_mem_op.panic_write flag.
 
-Changelog:
+Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
+Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
+Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
+---
 
- - [2/7]:
-        - Also update kernel doc for new 'timeout_ms' parameter
+Notes:
+    v2: - Don't call spi_mem_access_start/end on panic. We don't need to
+          flush the SPI queue at that point, and we don't need to lock the
+          mutexes.
+        - Check that the SPI controller's PM status is active, and bail out
+          otherwise.
+    
+    v3: - Use pm_runtime_active() instead of pm_runtime_get_if_active(). The
+          latter cannot be used in a panic context.
+        - Forbid fallback to regular SPI on panic
+    
+    v4: No change
 
- - [3/7]:
-        - kmalloc() is not safe in panic context; reuse boucebuf instead
+ drivers/spi/spi-mem.c       | 42 +++++++++++++++++++++++++++++++++----
+ include/linux/spi/spi-mem.h |  5 +++++
+ 2 files changed, 43 insertions(+), 4 deletions(-)
 
- - Patch [1/7] and 4->7 unchanged since v3.
-
-Cheers,
--Paul
-
-Tanmay Jagdale (7):
-  spi: spi-mem: Add support for panic mem writes
-  mtd: spi-nor: Wait for NOR ready with poll_timeout_us()
-  mtd: spi-nor: Add support for panic writes
-  spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
-  spi: cadence-xspi: Add irq-less support
-  spi: cadence-xspi: Add support for panic writes
-  spi: dt-bindings: cadence: Make XSPI's IRQ line optional
-
- .../devicetree/bindings/spi/cdns,xspi.yaml    |   1 -
- drivers/mtd/spi-nor/core.c                    | 128 ++++++++++++++----
- drivers/spi/spi-cadence-xspi.c                | 114 +++++++++-------
- drivers/spi/spi-mem.c                         |  42 +++++-
- include/linux/spi/spi-mem.h                   |   5 +
- 5 files changed, 209 insertions(+), 81 deletions(-)
-
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index b94680b60af9..9ad42dd9de70 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -398,6 +398,31 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	u8 *tmpbuf;
+ 	int ret;
+ 
++	if (op->panic_write) {
++		if (!spi_mem_controller_is_capable(ctlr, panic_write))
++			return -EOPNOTSUPP;
++
++		/*
++		 * Only support panic writes if we'll go through .exec_op().
++		 * The regular SPI path (spi_sync(), etc.) explicitly mentions
++		 * that it can only be used from a context that may sleep, which
++		 * is not the case on a kernel panic.
++		 * If this changes in the future, this could be reworked, but
++		 * for now this will have to do.
++		 */
++		if (WARN_ON_ONCE(!ctlr->mem_ops || !ctlr->mem_ops->exec_op))
++			return -EOPNOTSUPP;
++
++		if (spi_get_csgpiod(mem->spi, 0))
++			return -EPERM;
++
++		/* On panic IRQs are disabled so we cannot wait on locks */
++		if (mutex_is_locked(&ctlr->bus_lock_mutex) ||
++		    mutex_is_locked(&ctlr->io_mutex)) {
++			return -EPERM;
++		}
++	}
++
+ 	/* Make sure the operation frequency is correct before going futher */
+ 	spi_mem_adjust_op_freq(mem, (struct spi_mem_op *)op);
+ 
+@@ -420,15 +445,20 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (ctlr->mem_ops && ctlr->mem_ops->exec_op && !spi_get_csgpiod(mem->spi, 0)) {
+-		ret = spi_mem_access_start(mem);
+-		if (ret)
+-			return ret;
++		if (!op->panic_write) {
++			ret = spi_mem_access_start(mem);
++			if (ret)
++				return ret;
++		} else if (!pm_runtime_active(ctlr->dev.parent)) {
++			return -EPERM;
++		}
+ 
+ 		trace_spi_mem_start_op(mem, op);
+ 		ret = ctlr->mem_ops->exec_op(mem, op);
+ 		trace_spi_mem_stop_op(mem, op);
+ 
+-		spi_mem_access_end(mem);
++		if (!op->panic_write)
++			spi_mem_access_end(mem);
+ 
+ 		/*
+ 		 * Some controllers only optimize specific paths (typically the
+@@ -441,6 +471,10 @@ int spi_mem_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 
+ 			return ret;
+ 		}
++
++		/* On panic write we can't fall back to the fallback SPI path */
++		if (op->panic_write)
++			return ret;
+ 	}
+ 
+ 	tmpbufsize = op->cmd.nbytes + op->addr.nbytes + op->dummy.nbytes;
+diff --git a/include/linux/spi/spi-mem.h b/include/linux/spi/spi-mem.h
+index 0cce6b57242a..2633307bfad5 100644
+--- a/include/linux/spi/spi-mem.h
++++ b/include/linux/spi/spi-mem.h
+@@ -169,6 +169,7 @@ enum spi_mem_data_dir {
+  *		 operation does not involve transferring data
+  * @data.buf.in: input buffer (must be DMA-able)
+  * @data.buf.out: output buffer (must be DMA-able)
++ * @panic_write: The command is executed in the context of a kernel panic
+  * @max_freq: frequency limitation wrt this operation. 0 means there is no
+  *	      specific constraint and the highest achievable frequency can be
+  *	      attempted.
+@@ -211,6 +212,7 @@ struct spi_mem_op {
+ 		} buf;
+ 	} data;
+ 
++	bool panic_write;
+ 	unsigned int max_freq;
+ };
+ 
+@@ -392,6 +394,8 @@ struct spi_controller_mem_ops {
+  *                   is a pause in the transfer (eg. internal bus contention or
+  *                   DMA arbitration on an interconnect). Features such as NAND
+  *                   continuous reads shall not be leveraged.
++ * @panic_write: Set to true if the controller driver supports writing to a
++ *               connected NAND/NOR memory in a kernel panic context
+  */
+ struct spi_controller_mem_caps {
+ 	bool dtr;
+@@ -400,6 +404,7 @@ struct spi_controller_mem_caps {
+ 	bool per_op_freq;
+ 	bool secondary_op_tmpl;
+ 	bool no_cs_assertion;
++	bool panic_write;
+ };
+ 
+ #define spi_mem_controller_is_capable(ctlr, cap)	\
 -- 
 2.47.3
 

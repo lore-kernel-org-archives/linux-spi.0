@@ -1,151 +1,106 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568F136215F;
-	Fri, 16 Oct 2026 22:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF323C3C19;
+	Sat, 17 Oct 2026 07:56:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792188131; cv=none; b=UfMZLtqrzq3gHC+N0+cjH9iszRmIhyjjeNIXHEi6ibDzu49aeQ7d2YeHWJN0VWIiQkxuud7m92PVn3iONU6Ak7S21sS+Bd7e6vTFbCssCzdWUoZu+27o/KuRFECCDlwrpIhAjbaiQ+hYnAaVrQoGz/yc+E2tWuHESTTW25Haiks=
+	t=1792223805; cv=none; b=DIl0T+odGey2i5JqDTthyxpaDBY/aFpdoCXySy9A8B3MfeB74E2FXfMCaR23uoMUIRHu8AUqflgE211xMnwXb8SV/puQp5RP8fN4yOp4baMJs/06FvitELE03shlSrZY+Tz43coHZSrk/JJumEkHjf5EGnzZ7Xd5e8sfLulEOlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792188131; c=relaxed/simple;
-	bh=VI5dCAsatWzoRzLT1eMR8XekoLKZftli9MyIrQXdlss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bgofnrLV47Sxb0t991yGjB5gkMXan9pmzAuwukuxTyHzT/sfQ15MhvAlM6cycTuXuDN5LsEkKa/qhUTSFk49wBP1s8Er6+BJa2viPzqjnkvWuGJMFyE1t3lXpu82Tu8qp8grTVyRNurapTzBqDJB1v4y8qHbP0w9Gj83bc/j6zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=AME6LfYr; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="AME6LfYr"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DEC0D106052;
-	Sat, 17 Oct 2026 00:01:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1792188123;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=bWnUf4jwakYkYIidTWKbDn//BfJM3tm/DiHDz5Kf5tg=;
-	b=AME6LfYri7zVQmP6TAydlVYRrZ8Fux7U5wGhInUacI/fYgIQkQwhL4qjmB4slW1ROXVMxQ
-	q2uhH5shCEljmEXA0hduc2d0rdAjPwxHbDTYM2Bictwfljrg+dU8ZiG2nwLmsCrbDSAfik
-	/jao6qBl8BXVlucf7hB1ITdIGz3T36fIp+LadazCVG9BDG0LvV2lAgJytCkMZQbLWmF1NB
-	ZdV0QrtGU0DvABR6gIi/tXgrCcoVas9EE15gZ8DktP5dN9frhtdSu08ZbLC9Bu2ayxEEx+
-	Gw/2m1d7xzLrK/n9Gq+ICLqCSPl/1ctHZz3rd2UIbj03umdr2PC7h42GEW1ShQ==
-Message-ID: <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
-Date: Sat, 17 Oct 2026 00:01:55 +0200
+	s=arc-20240116; t=1792223805; c=relaxed/simple;
+	bh=k61wgDs7T9sK5hYRjTQ0xOh9CdEGiEhFv1LBY+S4epg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NIbCGGwzdguDVC8sV1NZvnXdH7Xqtd48hUO/BXQDFkN9NJ7MEvF2f7suqF0hQMVdtcGNB2a4mcYaDZTUAu1rJkLqbG+qJ4/efAm42xLWJt7DArQIYn6FljNMq8lZqMKx071oSDVU48t5tsiYNn8LtE/9yLKWHuVa/bD9IuQY6NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn; spf=pass smtp.mailfrom=kylinsec.com.cn; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinsec.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinsec.com.cn
+X-QQ-mid: zesmtpgz3t1792223749td9b57055
+X-QQ-Originating-IP: nS5SmDb7r7zDI7MsP68STATtfd3mkBZmpPrULitq8Rk=
+Received: from localhost.localdomain ( [111.8.45.130])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 17 Oct 2026 15:55:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 17322942487440971034
+EX-QQ-RecipientCnt: 5
+From: Hongjian Dai <daihongjian@kylinsec.com.cn>
+To: broonie@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	purna.mandal@microchip.com,
+	Hongjian Dai <daihongjian@kylinsec.com.cn>
+Subject: [PATCH] spi: pic32-sqi: fail transfer when the BD ring is exhausted
+Date: Sat, 17 Oct 2026 15:55:45 +0800
+Message-ID: <F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-To: Frank.Li@oss.nxp.com,
- Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Cc: imx@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
- Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
- Frank Li <Frank.Li@nxp.com>, Ashish Yadav <ashish.yadav@infineon.com>,
- Colin Huang <u8813345@gmail.com>, Sanman Pradhan <psanman@juniper.net>,
- Thorsten Blum <blum@kernel.org>, Troy Mitchell <troy.mitchell@linux.dev>,
- Eddie James <eajames@linux.ibm.com>,
- Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
- "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "open list:DH ELECTRONICS DHSOM SOM AND BOARD SUPPORT"
- <kernel@dh-electronics.com>, open list <linux-kernel@vger.kernel.org>,
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:kylinsec.com.cn:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: OUC5DGN0mB58GH4wSbD7cnOVw0/m49be2gOBmrQX/weH8FIrE+mIYusu
+	/owZm1m9jhsMicrUFCUWrGZS5Co9dB4vobJP/gSg/zMqxcdZ3Aq2Nxk9srr4IFDtL6xqt3B
+	XlWpF3RAdkSSR6O2K1NK6uCDJKanGXThNUArXegQiIVT7zzHU7b3dyDFttCsspO6Ch+0ZUk
+	F1chX/xnhKEjQ0m1zTiLreH6NDRnxglxwDhZplPlOiPQiafebcG69Sj4gFVY4Y/+SMK7m+e
+	2auU6PnFOpjy+k6TULQb7FJ2Dy/36Rxw+9bIQZjq6SD7zem8mxmEt5trgPKcUsHw9f08ttD
+	NH2+/dCOnpgJuVJenLPMyXudsEZoOoHta9iviq3WXBE7ElBPTYe6sDrHId9ePXNwHSz4X98
+	fhDkyE+kR17XRFLlyQCoVzfs4Lzf6a6/TQ+g6eIg6KRIG9BIs9jCtUD8XdsAJ8LomzcbqRX
+	2sAudwEyzfSEkeplUkQ/opLAJE4oLHWrrBopHtQD1N3tKenIonAwCBlGVTzJs/iHgy+efoO
+	YKxMr9ea8wlAzt7SW0tEt2Cn7n8EWbGDhQpWITKsohegzuPFIx2B09NyA3PLENcJITY/iIT
+	27u0sl+On8jeVWEMrCwhG6A/K2MhJHxzofNbFK0Ce64ERgYndHCTbbBlygVsfAX+pG3SXAb
+	+zEVQcHmp3PQnWkXetGn2yoj2RBrF3lJ+x+Dwuu6BZEUX1hOr900HG/tRTbPBdbTK/OUYNj
+	r5G6x7TzNF4ocRXtyAnRHtRQ7ml7HLh0EKy+OQ6OvUQjYBiEDsC1bSdbHjXhsUf37yJGive
+	KKnaS8b7ZJ/DZzIYsbie+l7V0YI+GsjbyItcHaZNbpbj7pAaBHG5BsHYi8iLV/inuzolEGz
+	QV8ibPDU1mXQuoJKleUe2bC9wKHcYeVntJLJHzYJRKCjOqRiDofyo0f6eCtkY9+MrriKV10
+	O+BcLIdrbKB+hdFntdlm/mCN3g5+8kLVyD14OOk+eKuFEHUmsZeYIj6/fGx7k1SncsZ5WXj
+	f2UBqgqgXkbODjb12c
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-On 10/16/26 10:57 PM, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
-> 
-> The dh,dhcom-board SPI device uses spi-cpha and spi-cpol properties,
-> which are not permitted by the trivial-devices schema. Move it to a
-> dedicated binding file that references spi-peripheral-props.yaml and
-> explicitly allows those SPI mode properties.
-> 
-> Fixes below CHECK_DTBS warnings:
->    arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dtb: spidev@0 (dh,dhcom-board): 'spi-cpha', 'spi-cpol' do not match any of the regexes: '^pinctrl-[0-9]+$'
->          from schema $id: http://devicetree.org/schemas/trivial-devices.yaml
+pic32_sqi_one_transfer() silently stopped programming buffer descriptors
+when ring_desc_get() returned NULL and still returned success. The caller
+then marked the last programmed descriptor as the end of the list and
+started the DMA engine, so the hardware transferred only a prefix of the
+requested data while the message completed with status 0.
 
-How come this did not trigger until now ?
+The ring holds PESQI_BD_COUNT (256) descriptors of at most
+PESQI_BD_BUF_LEN_MAX (256) bytes each, so messages larger than 64 KiB (or
+with enough SG entries) can exhaust it. Since the driver sets no
+max_message_size/max_transfer_size, the SPI core does not prevent this.
 
-> Assisted-by: LLM
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->   .../bindings/spi/dh,dhcom-board.yaml          | 46 +++++++++++++++++++
->   .../devicetree/bindings/trivial-devices.yaml  |  2 -
->   2 files changed, 46 insertions(+), 2 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> new file mode 100644
-> index 0000000000000..ed213cbe9b04c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: DH electronics GmbH on-board CPLD trivial SPI device
+Return -ENOMEM instead, and set msg->status so the failure reaches the
+caller rather than being silently truncated.
 
-This does not look quite right, since compatible this is used only on:
+Fixes: 3270ac230f66 ("spi: pic32-sqi: add SPI driver for PIC32 SQI controller.")
+Signed-off-by: Hongjian Dai <daihongjian@kylinsec.com.cn>
+---
+ drivers/spi/spi-pic32-sqi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-arch/arm/boot/dts/imx6ull-dhcor-maveo-box.dts
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 5d3921e29461..35f0c60a31d6 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -297,7 +297,7 @@ static int pic32_sqi_one_transfer(struct pic32_sqi *sqi,
+ 		/* get ring descriptor */
+ 		rdesc = ring_desc_get(sqi);
+ 		if (!rdesc)
+-			break;
++			return -ENOMEM;
+ 
+ 		bd = rdesc->bd;
+ 
+@@ -387,6 +387,7 @@ static int pic32_sqi_one_message(struct spi_controller *host,
+ 		ret = pic32_sqi_one_transfer(sqi, msg, xfer);
+ 		if (ret) {
+ 			dev_err(&spi->dev, "xfer %p err\n", xfer);
++			msg->status = ret;
+ 			goto xfer_out;
+ 		}
+ 	}
+-- 
+2.43.0
 
-        model = "DH electronics i.MX6ULL DHCOR on maveo box";
-        compatible = "marantec,imx6ull-dhcor-maveo-box", 
-"dh,imx6ull-dhcor-som",
-
-So the whole
-
-        spidev@0 {
-                compatible = "dh,dhcom-board";
-                reg = <0>;
-                spi-cpha;
-                spi-cpol;
-                spi-max-frequency = <54000000>;
-        };
-
-Should probably use a different compatible.
-
-Christoph, what device is this on this board ?
-
-(and this change should only be applied with RB from Christoph, I do not 
-have the hardware so I cannot tell what it really is)
-
-> +maintainers:
-> +  - Marek Vasut <marex@denx.de>
-
-@nabladev.com
-
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +allOf:
-> +  - $ref: spi-peripheral-props.yaml
-> +
-> +properties:
-> +  compatible:
-> +    const: dh,dhcom-board
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-cpha: true
-> +
-> +  spi-cpol: true
-
-Wouldn't it make more sense to allow those properties for trivial SPI 
-devices in general ?
-
-[...]

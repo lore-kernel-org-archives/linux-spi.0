@@ -1,177 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A2437FF4B;
-	Sun, 18 Oct 2026 19:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606CD43B4BC;
+	Sun, 18 Oct 2026 20:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792352257; cv=none; b=NKphgHzASe347MZOc/Ol5dk1dBetJjtaXgxOKsQ3VJ9sjm1t92VrM+SBU6PtoUSGLJzKL/OeboebgBeg5oga223tn0ddpkerF9IHDoZZw4LYt3CqdvyUqZWdcgVGkBpeVDOat6mvaRG9QEZKKtMFzXOoSlWWLcVTqO/QiF5CXu0=
+	t=1792356094; cv=none; b=pJsoe9WgfWIJEPMPowRutgu9UPao18Dmr41eLi9jqjtB403k4biEEFJpBDgKmUYXvaKDlHyDjhPU8DjKVKk5Rzmuh1d8BlJCuAVgwtuDLKT89AnGQdeNsdDs+q1wKCf8ZONMgdbp3ouKlOFt4xypBippLH1zozE5KqvNXP/zkos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792352257; c=relaxed/simple;
-	bh=hWyphUOg7VVggGN5ibCi2ZgClSKjeBRDFRq58pI8Pf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l8ZClOY1+OXRTr9ah2/CA7ik4CiTbHIF9zV6h5i5jSGdjsRaFbC014JLsK14GwN/lBIwgQduHkX04xqnMR6YGNgMr3U81xu6mjwW6Suh7sapne4LlrnV5naqrCL0IDo/2Ezi5xKcIq8jqHDH8+4/vBPDJcebF2JatTe+Mjw0Wuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyukweSz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792356094; c=relaxed/simple;
+	bh=puRJF6b4XSquydSVBlYDP3nIomGvJq/gteOjU5paHDw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=lTvIW8dOEn2eO3JfD2rFo3i6pAqo6d4IhZdK0mFZC19S0j3aL8l3DMMYaaqt7yGRaArd1ZLQE26Ev3OWzWL8+HCczOjVtEYha7I7MtuIh3QNKLaETGCbV9x3AhyDVYG7HOAMAUxwktV2vpe3NnL2f21qasdmsyqWFMOl8r8raQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+Iq1pBt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyukweSz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FEB1F000C4;
-	Sun, 18 Oct 2026 19:37:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+Iq1pBt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04A21F000C4;
+	Sun, 18 Oct 2026 20:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792352255;
-	bh=7aBv2cTg3vXrmEzBIKjR3qBMNhNd7G9cJp9HXCweTFE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TyukweSzzfyf9aI4t4fo11YGVI2ZIoKTyZ3JKHqQ9u6Kwy5kTulnA/xdw57Zg9J5D
-	 MXd+YGf/SsHw8qo+/0P4Xpn1eYWSXqRgLvGDaAXJCE2RpitzMrklDqxzbjkZGnG5OI
-	 QAGeyRjsPYUMj8Qz2+oaPaYZ8yJ3T/dRBNhZaA2Oiy9qGKJ4ZU/4qyuHDl2hzsJpqS
-	 nxaoIPftINW8QaogkcsxfRYk1Qb06IU89BazfdhGEu8+6uTUg8lNcqEbDdpCpnKiAZ
-	 ck7eP3hFOYsokKEbrevZWic3MNYRaIeKvHnV5FHq2EnlEDX8fYe+yeyNBh4qJhmNml
-	 fDcl3e3XkyNZA==
-Date: Sun, 18 Oct 2026 20:37:29 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marek Vasut <marex@nabladev.com>
-Cc: Frank.Li@oss.nxp.com,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	imx@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jonathan.cameron@oss.qualcomm.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ashish Yadav <ashish.yadav@infineon.com>,
-	Colin Huang <u8813345@gmail.com>,
-	Sanman Pradhan <psanman@juniper.net>,
-	Thorsten Blum <blum@kernel.org>,
-	Troy Mitchell <troy.mitchell@linux.dev>,
-	Eddie James <eajames@linux.ibm.com>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:DH ELECTRONICS DHSOM SOM AND BOARD SUPPORT" <kernel@dh-electronics.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-Message-ID: <20261018-freeway-twitch-e813208aa9af@spud>
-References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
- <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
+	s=k20260515; t=1792356093;
+	bh=KZl1E7ojGN4UcuQl+IdP+UtPm4+3Dzwnc6HOFL1y8LU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=T+Iq1pBtHwyque6J9oxwUmCpSdytj3Ee9KHh2R2JfnacRVOaHb9vfVX6xlH8vLh9K
+	 sfpn6ZfkIli/NCGK1hhAQ0i+6f75kO713KyLgZTOadD9wXcAXW1RivzHKE8dFmJHeR
+	 ijg5G3+bzbNVAvI+ScKXS16+gkyod22KBcQePHfagmPy1KXraHoB5iIjSuLBCrrLvI
+	 nGJNqlivzcZA31JBlw/7hddeW5yH+I6BxtmQuhOZ6GjBfsv/+GgDaZeW5jeRqZxUAI
+	 sdjvRgFNRU6p51ddQFa+E5JYLMWJ4fF0KB7YWwy4iNBtgq2Lfj0l/SrkjHtz+3Pbvb
+	 az5gF6M9q6Yfg==
+From: Mark Brown <broonie@kernel.org>
+To: Weibin Liu <liuwb@xiaopeng.com>
+Cc: jth@kernel.org, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20261013054339.77477-1-liuwb@xiaopeng.com>
+References: <20261013054339.77477-1-liuwb@xiaopeng.com>
+Subject: Re: [PATCH v2] spi: ch341: handle transfers without a TX or RX
+ buffer
+Message-Id: <179232568178.3162228.6393530462413113880.b4-ty@b4>
+Date: Sun, 18 Oct 2026 13:14:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0TlYiEQJktn+9mNR"
-Content-Disposition: inline
-In-Reply-To: <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=puRJF6b4XSquydSVBlYDP3nIomGvJq/gteOjU5paHDw=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLKu6n3WP7y2bdLSeKlfZ1l3mGqmfyldFWQieP75oW8m7
+ hm1FYc4OkpZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRLCOG/7kbfnBxeex30Jnk
+ bPYp4fPLkD2p4s2FtccF/8u2vG7w1mH4p5A5+Z2J9ZVD/Gmrmronh36fuMk4vi/9SM/zuric0us
+ 5LAA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
---0TlYiEQJktn+9mNR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 13 Oct 2026 13:43:39 +0800, Weibin Liu wrote:
+> spi: ch341: handle transfers without a TX or RX buffer
 
-On Sat, Oct 17, 2026 at 12:01:55AM +0200, Marek Vasut wrote:
-> On 10/16/26 10:57 PM, Frank.Li@oss.nxp.com wrote:
-> > From: Frank Li <Frank.Li@nxp.com>
-> >=20
-> > The dh,dhcom-board SPI device uses spi-cpha and spi-cpol properties,
-> > which are not permitted by the trivial-devices schema. Move it to a
-> > dedicated binding file that references spi-peripheral-props.yaml and
-> > explicitly allows those SPI mode properties.
-> >=20
-> > Fixes below CHECK_DTBS warnings:
-> >    arch/arm/boot/dts/nxp/imx/imx6ull-dhcor-maveo-box.dtb: spidev@0 (dh,=
-dhcom-board): 'spi-cpha', 'spi-cpol' do not match any of the regexes: '^pin=
-ctrl-[0-9]+$'
-> >          from schema $id: http://devicetree.org/schemas/trivial-devices=
-=2Eyaml
->=20
-> How come this did not trigger until now ?
->=20
-> > Assisted-by: LLM
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >   .../bindings/spi/dh,dhcom-board.yaml          | 46 +++++++++++++++++++
-> >   .../devicetree/bindings/trivial-devices.yaml  |  2 -
-> >   2 files changed, 46 insertions(+), 2 deletions(-)
-> >   create mode 100644 Documentation/devicetree/bindings/spi/dh,dhcom-boa=
-rd.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml =
-b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> > new file mode 100644
-> > index 0000000000000..ed213cbe9b04c
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/spi/dh,dhcom-board.yaml
-> > @@ -0,0 +1,46 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/spi/dh,dhcom-board.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: DH electronics GmbH on-board CPLD trivial SPI device
->=20
-> This does not look quite right, since compatible this is used only on:
->=20
-> arch/arm/boot/dts/imx6ull-dhcor-maveo-box.dts
->=20
->        model =3D "DH electronics i.MX6ULL DHCOR on maveo box";
->        compatible =3D "marantec,imx6ull-dhcor-maveo-box",
-> "dh,imx6ull-dhcor-som",
->=20
-> So the whole
->=20
->        spidev@0 {
->                compatible =3D "dh,dhcom-board";
->                reg =3D <0>;
->                spi-cpha;
->                spi-cpol;
->                spi-max-frequency =3D <54000000>;
->        };
->=20
-> Should probably use a different compatible.
->=20
-> Christoph, what device is this on this board ?
->=20
-> (and this change should only be applied with RB from Christoph, I do not
-> have the hardware so I cannot tell what it really is)
->=20
-> > +maintainers:
-> > +  - Marek Vasut <marex@denx.de>
->=20
-> @nabladev.com
->=20
-> > +  - Frank Li <Frank.Li@nxp.com>
-> > +
-> > +allOf:
-> > +  - $ref: spi-peripheral-props.yaml
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: dh,dhcom-board
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  spi-cpha: true
-> > +
-> > +  spi-cpol: true
->=20
-> Wouldn't it make more sense to allow those properties for trivial SPI
-> devices in general ?
+Applied to
 
-If the device requires them (which it probably does?), then standalone
-makes sense to actually set that requirement.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
---0TlYiEQJktn+9mNR
-Content-Type: application/pgp-signature; name=signature.asc
+Thanks!
 
------BEGIN PGP SIGNATURE-----
+[1/1] spi: ch341: handle transfers without a TX or RX buffer
+      https://git.kernel.org/broonie/spi/c/84182c48999f
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCatUf+QAKCRB4tDGHoIJi
-0otLAQDjNTrB0QcnnZX13hltR1wjzbb9ogEMJ8vbEfN8MshylQEAjmdZh9cncbbJ
-5jdU+CjQgPrg1LVfGQA7dr49Xv0gCgQ=
-=xCky
------END PGP SIGNATURE-----
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---0TlYiEQJktn+9mNR--
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

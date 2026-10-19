@@ -1,48 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792434613;
-	b=HzI0/GrFQPtUhXpDcioGzZF7X3zZ6WkJGTRTivFDneBKVa0qRbDrO/fxvm7QdAALIH/I
-	 tzcE3kodPjzr0+R/LDei4VEDqMtC2d5q4dAUG2uhE5cLBdHVRoS6dN68grITu5XKlDVVj
-	 yWdtgWvOh2pjDLsjy7PQ6NxYAs0iJhE7DvLPRGOqedQK/Nkc9WOjAgWtM5fpNm2XzEokl
-	 Y1z2sXtvh17TkRG97vXrdi6Fmg/+/WyfWi/lfr7bY0YtjMrO0mG6Lz0bgO2fsFo9+64dj
-	 kwsvtDzJzWcA9vu5CHW4FaxnnaZ7MFp1OxGEQreUfNnTOAB4uKgNC3Zr8Rml3SKfy3w==
+	t=1792436408;
+	b=XVS+PXcDJnVdamc1rD9BWT+U2Z76R1mlDize2/QZk9Smw1chg53BVp8TVqRo2dsApBwA
+	 dkQuF77rJbgzCpV15vFXeFKhB45izCx7IjbCIB1lDs7aEAGeCsKihrKH0vbvtAecxIE8k
+	 4UmDzOX/jyXcznrh6oZWNaG787yXqg9f7KqrHolhu0Q1yJ1KpRYFy4Q7bBJbJImscZHwM
+	 c3hh4UI79d5qxHR9snPHy7eqeNQqRFGK/0U7Hr08xAeV603c+esl0AIXs2jNwm7GfED8t
+	 o9iXoRS9Jef5QHaj0dV0aavFgKP5vv5Ot695Adn0KXWaq7gIcH6AHL2Kuf4UKjEYdeQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792434613;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=clP0TuBeUe0fenY8A06JZ3d+7Ra5kmfh43fdpq4OpVc=;
-	b=o+2AMNuSi6qKbh5LxoMb97721/5MRP6OYnIFnazX/Q28GnFddR/0EZfkstimXmPkuh7I
-	 H96sR1X0s6DZljGSdIKfaiGZd/ON5Mnd2k8ij8EUmSwWVo+3tM4k3FTb3QNJKkKmt+INm
-	 tY4FAYYvQNTtKrwdglYlQkluidVtzm2G4fbhfQXlvuOVMr9bXdwtM8ozVnoxic/AlI3GU
-	 FGdjhSLTzjx/n+r43WJ9gcxh4yQcrlib1fmlGqamwF76GuB1v5K4BKC2bbB5aDXiP0Jil
-	 LUPIB/EmfJEVQybzDr4cvZHD+FYCE+WQ3YMGCVR7z5jxCzkDK5art4fpZw1r4I26S+A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792436408;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type;
+	bh=+Bpag77kmspJPEOoTU0jcXIfdYDy3+L/uaEPHFY9Zf8=;
+	b=oaQouGEoZvCH225Yj26KcglhUiD+Wv22ulfmR4S+RjKC2llKucWmPB0FlS+JLI+K0O/k
+	 iKrjQqnU51Emk19yNRjn9FOE28nh5ZAXfSVxeX2McR3kvcqdi6t19ze8twdxvKvcLNJOC
+	 T2GnO7hsVaW2KDQzZiT8td/qMhzrsb8Tm8yeeTqv1kZQLXth3TUh8jvCRoh8DWh+VqiEu
+	 h9HuydiXlYO9EybcvMcgXh07FmSJWcbfSgf7PD5MkaEL5Ob1gzPEDdrQAeZLs3D9JCzKs
+	 KYUKLY7sv6rnpr+1BrIPDCrEm8p5TACQnhuEdo2hyiBamCa2Nqyve/WDYMQ4yMOtfJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWgMLcw1;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ghx3NeJg;
+	arc=none smtp.remote-ip=209.85.221.45
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0914F606A321
-	for <linux-spi@vger.kernel.org>; Mon, 19 Oct 2026 18:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56846606A31C
+	for <linux-spi@vger.kernel.org>; Mon, 19 Oct 2026 19:00:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 56846606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWgMLcw1
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19191F000C4;
-	Mon, 19 Oct 2026 18:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792434612;
-	bh=clP0TuBeUe0fenY8A06JZ3d+7Ra5kmfh43fdpq4OpVc=;
-	h=Subject:From:Date:To;
-	b=TWgMLcw1PvP0+Vn1tQqoAO/8giB7Lh/SKGCvN0jWW96+olZwfqIEqw8LYc9Lf/9es
-	 /sI/O2CE/e5Dh/ftriyLQwAg5/9njD3TX8aCECXJyqnBQ8NWg80sAbmv8dciM4+tuR
-	 1siqANce+ZFihUcYumLa10EKG7pqCHQjR8g2erUEYz3UPJIXtrRuyX5RkWfSvl1OpD
-	 mZwwEyQ3gmRcrA6zV47zu6ec7hNaXL38kBVwBJKTYX+y26TUP28QhxBspOZMrhhaDc
-	 Dyt/kt/exWHSLqvJewILRQSJQndRzGHW9TdnkPVj/st+9SMIcoJ0M0qCymZkiYdDRO
-	 1WOshSquJTDBA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 79D32392447A;
-	Mon, 19 Oct 2026 18:30:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=Ghx3NeJg
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48dfb76b304so302601f8f.2
+        for <linux-spi@vger.kernel.org>; Mon, 19 Oct 2026 12:00:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792436407; x=1793041207; darn=vger.kernel.org;
+        h=content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Bpag77kmspJPEOoTU0jcXIfdYDy3+L/uaEPHFY9Zf8=;
+        b=Ghx3NeJgA0f9sK3SAealcFQayGTaGWIhTT5ukcVaMKNFnDexa6L+nD/FOj9DrfoorV
+         YFuafn89/swpLSIJsHolc7jSvjYEH7s//AihEF1MfjtAsMg5ImnoPzN96su3SFJrXleC
+         8kdBt4GxscCMBb8wgtPW/qwnOfRCtE3I8IusRUbCi22tAdpMYuJ6+0Pnl11JveZPzM1J
+         bFbJ8lgWKgGFvVhYYPQzEYFfRYAqATwgyR9iJmaD3GV+lqSX2UgSx5ZVSaSKiJvKaXLJ
+         WU/7+MMq/ZzOteAHGXwu+zvL/dfpI/TtcOi1kVGLJbsQdegvzuDj2BIU9I2al2g+LfC/
+         Zvsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792436407; x=1793041207;
+        h=content-type:mime-version:references:in-reply-to:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+Bpag77kmspJPEOoTU0jcXIfdYDy3+L/uaEPHFY9Zf8=;
+        b=lN92kjVmsgBL4HOVmH/hTUNiybZJwqUj0+l63o1uywSqRvsoYvJ/1xTGSqsL+oBPQW
+         FRHP3WYeCBb9Jv08MYS1mgnhUzfSn9AyhOr5eSIMS0Vty5YwblT0U2Lcr32zUfzOti2n
+         qck2M+LROuzDufsyJG8Ie91qJL1h659XUeiRDxuKyGcQ5W3IA+qLytuj0V7EeGJ0ijkK
+         02H71anotmr8Cvn+5euP0qX3TtxwHNB6d619dzLgHTB7foviDYPqNjFbDZL1faSm7Pc8
+         56DgoH+iCCXh2nV348RV0dIwnHaVOhSBKRJr8KIk32R+spNGYAce6wy0QYFb0jR0l57n
+         Iaxg==
+X-Forwarded-Encrypted: i=1; AKwUvByL4r+zTUO2+7Ahg57ibqAwUmedQZH1vfLYqWlMOnohe81jZls7z/JFmezlZqgSnGTBv7V1NplpNpQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKZv+TFzeubRdsg8v3aumda9WLkJFLzzR82Y73DH4M1fo72iFVZ
+	u64yiENNSlZBb0MFIJAGrPxeILOhSJ8s300nD4YIlTRvXambpanDj/YX
+X-Gm-Gg: AYBFou1z7o5AeUSoh8P/FugAfpgPKXjmldog12B+H/ucxT5QfoC7Npnq9k3cjtm+NLu
+	jzdT/c7Goi0AyYCWy/3q3nHwDotFwDf1DUZBafP5LAgeXdGSwE+DW77aeX06tvuLWt2KuLjmZEO
+	zZ9AFVsj+dHA5DfSZVqwO2dV5kutJ4d2qcUt3hi1KK9rTBEz6bvzTvlraU3iJWDgcE5v5jHcWbv
+	xbnCLOJQ+iUDxnxi4V5xEcpxgnNmGwt7wIvCjsbQsoGneRYxFmaehwKMjY3jzv0s02bo3E+J3jC
+	9fl9u4wUFd1pTsfEeCuVfTvHg0QgMDo+61rDb5NRpoz7bmQfODay4os0EbGqhQlMsBIZHmvLVmK
+	/XSuKL7emk8j1x1CacNbUO9PW1VvpZck5KfvGpt3hfq6B/hZH7ah/BYXvQzoUT+jhMlHAeZ0k95
+	Kw2igYGVjUAnSyZXjW6IovTYd1eSaK9josSzoyEu+CR7JYlQ3XdftzJuyZwaw2CgTvxrADNnmFf
+	gbAsDQ7p/GZKnKfXuV0BXiVUw==
+X-Received: by 2002:a05:6000:5c7:b0:48e:2ac:de30 with SMTP id ffacd0b85a97d-48e07fa6035mr18871744f8f.33.1792436406338;
+        Mon, 19 Oct 2026 12:00:06 -0700 (PDT)
+Received: from silicon.doe.home ([148.69.129.235])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e1d818237sm702781f8f.27.2026.10.19.12.00.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Oct 2026 12:00:04 -0700 (PDT)
+From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefandoesinger@gmail.com>
+To: linux-arm-kernel@lists.infradead.org,
+ Navid Ghahremani <ghahramani.navid@gmail.com>
+Cc: arnd@arndb.de, krzk@kernel.org,
+ Navid Ghahremani <ghahramani.navid@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+Subject:
+ Re: [PATCH v2 20/24] spi: zx: Add ZTE ZX family SPI flash controller driver
+Date: Mon, 19 Oct 2026 14:15:30 +0200
+Message-ID: <jjb8MyAPSXaXqHtedDkkwQ@gmail.com>
+In-Reply-To: <20261014072109.1759502-21-ghahramani.navid@gmail.com>
+References:
+ <20261014072109.1759502-1-ghahramani.navid@gmail.com>
+ <20261014072109.1759502-21-ghahramani.navid@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,170 +101,116 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179243461093.2802112.12319789885680768668.git-patchwork-summary@kernel.org>
-Date: Mon, 19 Oct 2026 18:30:10 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: multipart/signed; boundary="nextPartw_T8zL-ZTluB82Us-2CIWw";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
 
-Hello:
+--nextPartw_T8zL-ZTluB82Us-2CIWw
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefandoesinger@gmail.com>
+Date: Mon, 19 Oct 2026 14:15:30 +0200
+Message-ID: <jjb8MyAPSXaXqHtedDkkwQ@gmail.com>
+In-Reply-To: <20261014072109.1759502-21-ghahramani.navid@gmail.com>
+MIME-Version: 1.0
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Hi Navid,
 
-Patch: spi: amd: fix len==0 underflow and FIFO overflow
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1185568/
-  Lore link: https://lore.kernel.org/r/20261014-spi-amd-fifo-fix-v1-1-9fec9ab753e8@xiaopeng.com
+I had some time to review the changes you made to my SPI driver.
 
-Series: spi: axi-spi-engine: fix stale SYNC IRQ pending
-  Submitter: Jonathan Santos <Jonathan.Santos@analog.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1180849/
-  Lore link: https://lore.kernel.org/r/cover.1791361360.git.Jonathan.Santos@analog.com
-    Patches: [v3,1/2] spi: axi-spi-engine: fix stale SYNC IRQ pending
-             [v3,2/2] spi: axi-spi-engine: fix stale SYNC IRQ pending in trigger_enable
+I'll grab the code style changes, they seem in line with kernel guidelines.=
+ Of=20
+course it'll only live in my gitlab repo for the time being.
 
-Series: spi: replace strcpy(), sprintf() and simple_strtoul() with strscpy(), snprintf() and kstrtoul()
-  Submitter: Aayush Kumar <code@aayushk.dev>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1182465/
-  Lore link: https://lore.kernel.org/r/20261009133609.579046-1-code@aayushk.dev
-    Patches: [1/5] spi: butterfly: Use strscpy() instead of strcpy()
-             [2/5] spi: lm70llp: Use strscpy() instead of strcpy()
-             [3/5] spi: tle62x0: Use kstrtoul() instead of simple_strtoul()
-             [4/5] spi: omap2-mcspi: Use snprintf() instead of sprintf()
-             [5/5] spi: s3c64xx: Use snprintf() instead of sprintf()
+Am Mittwoch, 14. Oktober 2026, 09:21:00 Mitteleurop=C3=A4ische Sommerzeit s=
+chrieb=20
+Navid Ghahremani:
+> +static int zx_qspi_set_speed(struct zx_qspi *qspi, unsigned int max_hz)
+> +{
+> +	unsigned long rate;
+> +	long rounded;
+> +	int ret;
+> +
+> +	if (!max_hz)
+> +		return -EINVAL;
+> +	if (qspi->speed_hz =3D=3D max_hz)
+> +		return 0;
+> +
+> +	rounded =3D clk_round_rate(qspi->wclk, max_hz);
+> +	if (rounded < 0)
+> +		return rounded;
+> +	if (!rounded || rounded > max_hz)
+> +		return -EINVAL;
+> +
+> +	ret =3D clk_set_rate(qspi->wclk, rounded);
+> +	if (ret)
+> +		return ret;
+> +	rate =3D clk_get_rate(qspi->wclk);
+> +	if (!rate || rate > max_hz)
+> +		return -EINVAL;
+> +	qspi->speed_hz =3D rate;
+> +
+> +	return 0;
+> +}
 
-Series: spi: use kstrtoul() and snprintf()
-  Submitter: Aayush Kumar <code@aayushk.dev>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1182875/
-  Lore link: https://lore.kernel.org/r/20261010083504.26261-1-code@aayushk.dev
-    Patches: [v2,1/3] spi: tle62x0: Use kstrtoul() instead of simple_strtoul()
-             [v2,2/3] spi: omap2-mcspi: Use snprintf() instead of sprintf()
-             [v2,3/3] spi: s3c64xx: Use snprintf() instead of sprintf()
+I think the idea of op->max_freq is that it is the SPI bus clock, not the=20
+controller clock. Existing drivers aren't quite consistent on it though (or=
+=20
+there's HW without a divider register). spi-ma35d1-qspi.c for example sets =
+the=20
+controller's clock divider rather than the clock.
 
-Series: spi: dw: use threaded interrupt
-  Submitter: Jisheng Zhang <jszhang@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1179738/
-  Lore link: https://lore.kernel.org/r/20261005151739.25233-1-jszhang@kernel.org
-    Patches: [v5,1/4] spi: dw: remove useless dws->transfer_handler check
-             [v5,2/4] spi: dw: remove duplicated "!rx_len && !tx_len" handling from dw_spi_irq
-             [v5,3/4] spi: dw: restore previous irq handling behavior when !ctlr->cur_msg
-             [v5,4/4] spi: dw: use threaded interrupt and optimize the threaded ISR
+So IOW, this function should primarily configure ZX_QSPI_TIMING_REG. If the=
+=20
+target clock can't be achieved with the controller input clock (e.g. divide=
+r=20
+is larger than ZX_QSPI_TIMING_REG supports or clock rate is lower than=20
+requested SPI speed), then a change to the wclk is in order.=20
 
-Patch: spi: dt-bindings: spi-qpic-snand: Add IPQ9650 compatible
-  Submitter: Kathiravan Thirumoorthy <kathiravan.thirumoorthy@oss.qualcomm.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1187039/
-  Lore link: https://lore.kernel.org/r/20261016-ipq9650_spi_nand-v1-1-d341a76559b1@oss.qualcomm.com
+> +	ctrl->min_speed_hz =3D clk_round_rate(qspi->wclk, 1);
+> +	ctrl->max_speed_hz =3D 50000000;
 
-Patch: spi: jcore: fix divide-by-zero when speed_hz is zero
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1185658/
-  Lore link: https://lore.kernel.org/r/20261014-spi-jcore-divzero-v1-1-a8205d30f2d1@xiaopeng.com
+This looks wrong - the max speed is probably the highest possible wclk rate=
+,=20
+the lowest speed the lowest possible wclk rate divided by the highest possi=
+ble=20
+divider.
 
-Series: spi: use sysfs_emit() in bcm63xx-hsspi and bcmbca-hsspi
-  Submitter: Aayush Kumar <code@aayushk.dev>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1182466/
-  Lore link: https://lore.kernel.org/r/20261009133631.579644-1-code@aayushk.dev
-    Patches: [1/2] spi: bcm63xx-hsspi: Use sysfs_emit() instead of sprintf()
-             [2/2] spi: bcmbca-hsspi: Use sysfs_emit() instead of sprintf()
+> +	/* Ensure proper data sampling point */
+> +	reg =3D readl_relaxed(qspi->io_base + ZX_QSPI_TIMING_REG);
+> +	if (!FIELD_GET(GENMASK(17, 16), reg)) {
+> +		reg |=3D FIELD_PREP(GENMASK(17, 16), 1);
+> +		writel_relaxed(reg, qspi->io_base + ZX_QSPI_TIMING_REG);
+> +	}
 
-Patch: [v3] spi: omap2-mcspi: handle DMA setup failures
-  Submitter: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1186159/
-  Lore link: https://lore.kernel.org/r/20261015064341.1100422-1-sahaj123.sc@gmail.com
+I don't know what this is doing. Can you elaborate?
 
-Patch: spi: npcm-fiu: limit UMA data_size to the 16-byte staging buffer
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1186047/
-  Lore link: https://lore.kernel.org/r/20261015-npcm-fiu-uma-datasize-v1-1-7dee91cadee6@xiaopeng.com
+Cheers,
+Stefan
 
-Patch: spi: spi-qpic-snand: skip BBM copy on regular raw reads
-  Submitter: Gabor Juhos <j4g8y7@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1179796/
-  Lore link: https://lore.kernel.org/r/20261005-qpic-snand-skip-bbm-copy-v1-1-04f6aeda4044@gmail.com
+--nextPartw_T8zL-ZTluB82Us-2CIWw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
-Series: spi: cadence-xspi: two memory-safety fixes in the slave-DMA paths
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1175875/
-  Lore link: https://lore.kernel.org/r/20260929081146.41041-1-liuwb@xiaopeng.com
-    Patches: [1/2] spi: cadence-xspi: reject SDMA transfers larger than the requested length
-             [2/2] spi: cadence-xspi: fix stack buffer overflow in the Marvell b0 path
+-----BEGIN PGP SIGNATURE-----
 
-Patch: [v2] spi: ch341: handle transfers without a TX or RX buffer
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1184386/
-  Lore link: https://lore.kernel.org/r/20261013054339.77477-1-liuwb@xiaopeng.com
+iQJPBAABCAA5FiEEQxb0tqoFWyeVMl1sPRO8yFRPGiIFAmrWCeIbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMywyAAoJED0TvMhUTxoijXkP/32Re4QchJqG2fSsDvgO
+TLqGuFK4iM6eS1lxCZWBPQJSAk/bvub0FqnXzMPlGtcHj1wfg8BJCXs0yofwg+Lp
+JFgYu/TU6QYBX+qtnwl90wAyPL4Hs22SrDuUbiPbFw7jkmXqxyDfucsgrlsHSrMr
+wvny6/MopUMSNgCMwPjpRYaBmfR5FYtl43J1zxgxIcgGUlioEKdilb8FL0QEUvKe
+5eQw+itIq9+SMiO6p04eFvwWeGcdO6FKti/XrUu6U0/pAJ2wYLFeGSOh5olR3i03
+GgXIl+g+8RdxFF0hBuX31LhgTO6AriXSVXW39Jx8oKdRac28CxLhfQB3l0XURZ05
++c71wQBpYDUYUdPZzwYGaAyyaaKz8ldui8Jh7+wAK+J9ib4bvR762iAqgLXV+s0T
+hl3A2d1NzNhT+lM6NdynCArkKiQNpOn3C6KHCDopiIaeUebmdWLFUb5bRJ75OMM4
+BDT9iGbsflZ8PUhgZaIdyTqAFygRB4ABwdSV2p5IkBjilf5lH+hQ5w3Xc5eUmMev
+jVvqVtKBW/4f9AVUoCPMyig5zqAtI7LZvlrgF+Ed4t98hWwYDcLtTRAh/R8I8sNh
+sg5QwgVW6r3DxNEpksJiVtL0acXeXejWvVdF7jIvAOv6OCrsT0T0b2JhdJfesqW2
+DLps6w2pKD7uEgXjorZZo5Xt
+=eb9e
+-----END PGP SIGNATURE-----
 
-Patch: [v2] spi: cadence-qspi: Prevent SPI NAND continuous reads
-  Submitter: Miquel Raynal <miquel.raynal@bootlin.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1177851/
-  Lore link: https://lore.kernel.org/r/20261001-winbond-v7-0-rc1-cadence-cont-read-v2-1-703e040b2d07@bootlin.com
+--nextPartw_T8zL-ZTluB82Us-2CIWw--
 
-Patch: [v4] spi: tegra114: initialize native chip selects inactive
-  Submitter: Abraham Zukor <abe@maticrobots.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1183099/
-  Lore link: https://lore.kernel.org/r/20261010195503.623287-1-abe@maticrobots.com
-
-Patch: [v2] spi: spi-pci1xxxx: quiesce DMA engines on transfer timeout
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1186850/
-  Lore link: https://lore.kernel.org/r/20261016020036.1333548-1-liuwb@xiaopeng.com
-
-Patch: spi: meson-spicc: fix invalid DMA unmap on mapping failure
-  Submitter: Hongjian Dai <daihongjian@kylinsec.com.cn>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1181623/
-  Lore link: https://lore.kernel.org/r/35143466F2F5166F+20261008124704.87708-1-daihongjian@kylinsec.com.cn
-
-Patch: [v2] spi: ljca: validate the response length before copying the data
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1184326/
-  Lore link: https://lore.kernel.org/r/20261013031717.3933277-1-liuwb@xiaopeng.com
-
-Series: spi: use devm_platform_ioremap_resource() in sh-hspi and jcore
-  Submitter: Aayush Kumar <code@aayushk.dev>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1182458/
-  Lore link: https://lore.kernel.org/r/20261009132421.557758-1-code@aayushk.dev
-    Patches: [1/2] spi: sh-hspi: Use devm_platform_ioremap_resource()
-             [2/2] spi: jcore: Use devm_platform_ioremap_resource()
-
-Patch: spi: dw: Make dw_spi_update_config()
-  Submitter: Jisheng Zhang <jszhang@kernel.org>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1183024/
-  Lore link: https://lore.kernel.org/r/20261010151459.30560-1-jszhang@kernel.org
-
-Patch: spi: bcm-qspi: reject oversized dummy bytes in mspi exec_mem_op
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1186051/
-  Lore link: https://lore.kernel.org/r/20261015-bcm-qspi-dummy-bytes-v1-1-c319da3c2497@xiaopeng.com
-
-
-Total patches: 34
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
 
 

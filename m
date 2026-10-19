@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E6D55C9ED;
-	Mon, 19 Oct 2026 14:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512325E0E41;
+	Mon, 19 Oct 2026 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418542; cv=none; b=XkFL7oiM1k1w9XpnYKytGufPA2VDwR2bAP+hOsS9gILN+4Sl4Q4Yuv/QFLmpqEvWw5m/XEeNW/vhYc/IM/AhoThGezodfeRWI6I61pghLK5EFmjCptGVEYe+jqPWvuv7r4rjroZ+bVQC3woC4t3UgG0ARuoX3jzW2vql9GanfFQ=
+	t=1792418546; cv=none; b=mTIyZUmHlGP6g42rAcVtNzn32Cieq/BEHLT8wNjMOeQ3zSqL6esaqBbyNo2xuvchIUYfxNmWdH7oKCaU9fDHZdJOcNrCsF6OP7s73GlnkpJL4K0FNLbtLDcs8MlV/IpflQBwtK1j2JyCxY+Kep8UEV8wM5D54CPSUjBRpQG4rys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418542; c=relaxed/simple;
-	bh=mBnFuEmR5M6hh2W7Mvg2qJy5zsN47fRlz1J+n0UnHyg=;
+	s=arc-20240116; t=1792418546; c=relaxed/simple;
+	bh=uVUBf5y86ozP98jwAO+Z6HEpVjq0Nyj+KC1UFavyYBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e/RNxc2o3NJ6jkVE832M8clw2XL39E15H6kMUZOLPD00Nobe6e9K9TeD3pxlx7UXUsrWOlDzZhRCzCWiVH+o42S42gt8smo9/9gFumS1NeNjBCxe1tCuirPzJhjD6AMgRLdL7PqXTSZO3ARQADpdPNk1BnfN/RSue7Y/ED6rxfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRTl4aWl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=JVKJys3HK/M6QCdR12aMxn8NOEG7rw2jhuLrd4rU98CSmLHekSDKp35TsogAm5CKFPHixNE6V8a1qrQK9Ov/xzWJVpNcsMJuayr5G9vCxRiAhG8JxMGiXVvn4/RKiprY4JT2zFBYiNNqm+lBFwHz2Zje2moSRRw3FaH/Q/I20Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOnMEagv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRTl4aWl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682A51F000C8;
-	Mon, 19 Oct 2026 14:02:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOnMEagv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C0E1F000C6;
+	Mon, 19 Oct 2026 14:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418539;
-	bh=wJanyPYzwia2YgvpTrDGiPJGpcwS4lC4ifSQzdR5SHA=;
+	s=k20260515; t=1792418543;
+	bh=0M7zuchmywfdUImy6+SRCax1nzOIJYIdgMIg780jPMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HRTl4aWlONJurGA/9b0VRcMR4JjqtttSTmjkohkdYIilm7mCInBvDOtiOHa0fl7HU
-	 PVYf0ZsoGqrMRjoV6hrWORT0Knu84VPpd7t2k8xAq77bZRPRH85fdyGjbOY6fx3nSr
-	 kQJSqYOcO7LehP893by7/+VuMACn2OUtkyEq6/Dd0uoUi414jYIi3JYORwfwDOhdOI
-	 zAH+17OCh7W88dr1pjqpkvYdb9ktMUd/YjdSJxB2A4BD71dpqF1Yk+774eujnB5nQ/
-	 Hdyd51u7l0g00ayHz6IeCzgmA0EorHDJcKB7FAS4YbOr/NdEr5oZgh8DU6cPWDpg2I
-	 uMCk4xQ7oBrbQ==
+	b=eOnMEagviYDDhz5364wQ17abpwlgPx4BlqY++42N0gxLSBmPWqngRS4o4XU74+m7k
+	 7ErmMALKeCqpj/ST1wNXLdQ+afF5V8f6LRGq21XGoTxFOyKsoWKl8VgNWRGg6+vCwj
+	 ns2jadL87hx5vjRCUvR7JVcYqTkt/25N4fg2pZPuqAs+lfE4skeX2PWlfXLaPFAnkk
+	 gYz6QemySRg1vKBKjAu6NM4sry1NA5BlZkRZxe4B2ZcQB/RaVRkvKtX3TPnkdcjxWb
+	 /HPkBlc/nhhwCkw0qTVQdIEJ5QQy7Ti60FnUX+yzq7icBdnCHC+oXhVk4Dzv8hK/g0
+	 XI7aB8lew/fUg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jiawen Liu <1298662399@qq.com>,
+Cc: Li Jun <lijun01@kylinos.cn>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jonas.gorski@gmail.com,
+	zhuyinbo@loongson.cn,
 	linux-spi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.6] spi: bcm63xx: return error from failed controller suspend
-Date: Mon, 19 Oct 2026 09:50:11 -0400
-Message-ID: <20261019135441.1420968-320-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] spi: loongson: pm: add .freeze .poweroff .thaw .restore
+Date: Mon, 19 Oct 2026 09:50:14 -0400
+Message-ID: <20261019135441.1420968-323-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -53,258 +53,371 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jiawen Liu <1298662399@qq.com>
+From: Li Jun <lijun01@kylinos.cn>
 
-[ Upstream commit bbbc1ef5b35341c5122418a14f8924688a4bb954 ]
+[ Upstream commit a9c2f0d401fd1e11ce59e4243946a59bd818e8c5 ]
 
-spi_controller_suspend() can fail if the SPI core cannot stop the
-controller. bcm63xx_spi_suspend() ignored that error, disabled the
-controller clock, and returned success.
+after execute s4, the spi error,
+[ 1104.754246][ 4] [    T1] tpm_tis_spi spi-SMO0768:00: SPI transfer failed: -110
+[ 1104.761503][ 4] [    T1] spi_master spi1: failed to transfer one message from queue
+[ 1104.769201][ 4] [    T1] spi_master spi1: noqueue transfer failed
+[ 1104.776344][ 4] [    T1] tpm_tis_spi spi-SMO0768:00: SPI transfer failed: -110
+[ 1104.783609][ 4] [    T1] spi_master spi1: failed to transfer one message from queue
+[ 1104.791308][ 4] [    T1] spi_master spi1: noqueue transfer failed
+[ 1104.797446][ 4] [    T1] gttadd tpm_chip_start1 ret = -110
+and in s4 the loongson_spi_resume&suspend are not
+called at all. use DEFINE_SIMPLE_DEV_PM_OPS() add .freeze .poweroff
+.thaw .restore, after s4 the spi communication is normal.
 
-Return the suspend error before tearing down the clock.
-
-Signed-off-by: Jiawen Liu <1298662399@qq.com>
-Link: https://patch.msgid.link/tencent_0BD7D4091B90EC17A8B2BA5EBA8803725905@qq.com
+Signed-off-by: Li Jun <lijun01@kylinos.cn>
+Link: https://patch.msgid.link/20260820092351.101605-1-lijun01@kylinos.cn
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-The tree is **6.18.53** (`v6.18.53`, Makefile `VERSION=6 PATCHLEVEL=18
-SUBLEVEL=53`). The buggy suspend path is in this checkout; the upstream
-fix is not in `v6.18.53`. Verdict is for this tree only.
+The local tree is **6.12.111** (`pending-6.12`). The buggy PM ops are
+present here; the candidate is not. The rest of the write-up is the full
+nine-phase review for this tree only.
 
 ===============================================================
 PHASE 1: COMMIT MESSAGE FORENSICS
 ===============================================================
 
 **Step 1.1: PARSE THE SUBJECT LINE**
-Record: `[spi: bcm63xx:]` `[return]` Return error from failed
-`spi_controller_suspend()` instead of ignoring it and disabling the
-clock.
+
+Record: **[spi: loongson: pm] [add] [hibernation callbacks
+.freeze/.poweroff/.thaw/.restore]**
+
+The verb is “add”, but the body is a hibernation bug report (S4 SPI
+timeout), not a feature.
 
 **Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
+
 Record:
-- `Signed-off-by: Jiawen Liu <1298662399@qq.com>` (author)
-- `Link: https://patch.msgid.link/tencent_0BD7D4091B90EC17A8B2BA5EBA8803
-  725905@qq.com`
-- `Signed-off-by: Mark Brown <broonie@kernel.org>` (SPI maintainer)
-- No `Fixes:`, `Reported-by:`, `Tested-by:`, `Reviewed-by:`, `Acked-
-  by:`, or `Cc: stable` (absence expected for this review)
-- Author SOB only besides Mark Brown (Sasha Levin SOB ignored per rules)
+- **Fixes:** none (expected for this review)
+- **Reported-by:** none
+- **Tested-by:** none (author states it was tested after S4)
+- **Reviewed-by:** none on the committed message
+- **Acked-by:** none
+- **Link:**
+  https://patch.msgid.link/20260820092351.101605-1-lijun01@kylinos.cn
+- **Cc: stable:** none (expected)
+- **Signed-off-by:** Li Jun \<lijun01@kylinos.cn\> (author); Mark Brown
+  \<broonie@kernel.org\> (SPI maintainer)
+- **Ignored pipeline tags:** none present in the provided message beyond
+  the usual evaluation context
+
+Notable: SPI maintainer SOB; mailing-list Link; no syzbot.
 
 **Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+
 Record:
-- [Bug] `bcm63xx_spi_suspend()` ignores `spi_controller_suspend()`
-  failure, then `clk_disable_unprepare()` and returns 0.
-- [Symptom] Suspend reported success with the controller clock already
-  torn down after a failed queue stop.
-- [Version info] None in the message. Code has been this way since the
-  driver was added.
-- [Root cause] `spi_controller_suspend()` can return `-EBUSY` when
-  `spi_stop_queue()` cannot drain the queue; the driver treated that as
-  success.
+- **Bug:** After S4 (hibernate), Loongson SPI transfers fail with **-110
+  (`ETIMEDOUT`)**. `tpm_tis_spi` device `spi-SMO0768:00` cannot talk to
+  the controller; `tpm_chip_start` returns -110.
+- **Symptom:** SPI master `spi1` “failed to transfer one message from
+  queue” / “noqueue transfer failed”.
+- **Root cause (author):** `loongson_spi_suspend`/`loongson_spi_resume`
+  are **not called at all during S4**, because only `.suspend`/`.resume`
+  were registered.
+- **Fix:** `DEFINE_SIMPLE_DEV_PM_OPS()` so the same save/restore path is
+  also used for `.freeze`, `.poweroff`, `.thaw`, `.restore`.
+- **Version info:** none in the message; dmesg is a real hibernate-
+  resume failure.
+- **Author test:** “after s4 the spi communication is normal.”
 
 **Step 1.4: DETECT HIDDEN BUG FIXES**
-Record: Not hidden. It is an explicit error-propagation / PM correctness
-fix (clock must not be gated if the core could not stop the controller).
+
+Record: **Not hidden.** It is a real hibernation PM bug. “add …
+callbacks” is the usual wording for filling missing `dev_pm_ops` slots;
+it is not a new API or new driver.
 
 ===============================================================
 PHASE 2: DIFF ANALYSIS - LINE BY LINE
 ===============================================================
 
 **Step 2.1: INVENTORY THE CHANGES**
+
 Record:
-- File: `drivers/spi/spi-bcm63xx.c` (+4 / -1)
-- Function: `bcm63xx_spi_suspend()`
-- Scope: single-file surgical PM error-path fix
+- **File:** `drivers/spi/spi-loongson-core.c`
+- **Scope:** ~2 insertions, ~4 deletions (single struct rewrite)
+- **Functions:** `loongson_spi_suspend` / `loongson_spi_resume`
+  unchanged; only `loongson_spi_dev_pm_ops` definition changes
+- **Classification:** single-file surgical fix
 
 **Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
-Record: Before: call `spi_controller_suspend(host)` and ignore the
-result, then always `clk_disable_unprepare(bs->clk)` and `return 0`.
-After: capture `ret`; if non-zero, return it immediately and leave the
-clock enabled.
+
+Record:
+- **Before:** `dev_pm_ops` has only `.suspend` and `.resume`. Kernel
+  hibernation uses `.freeze`/`.thaw`/`.poweroff`/`.restore`
+  (`include/linux/pm.h`). Those were NULL, so S4 never saved/restored
+  SPI registers or called
+  `spi_controller_suspend`/`spi_controller_resume`.
+- **After:** `DEFINE_SIMPLE_DEV_PM_OPS` → `SYSTEM_SLEEP_PM_OPS`, which
+  sets all six sleep callbacks to the existing suspend/resume pair via
+  `pm_sleep_ptr()`.
+- **Path affected:** system hibernation (S4) and poweroff-after-image.
+  S3 still uses the same functions.
 
 **Step 2.3: IDENTIFY THE BUG MECHANISM**
-Record: [Logic / PM error handling] The SPI core can fail to stop the
-queued pump (`spi_stop_queue()` polls ~5s then returns `-EBUSY`).
-Continuing to ungated-clock teardown and reporting success leaves the
-kthread able to touch the controller with the clock off (hang /
-imprecise abort) and lets system suspend proceed with an active/busy SPI
-block.
+
+Record:
+- **Category:** logic/correctness in PM ops (missing hibernation
+  callbacks); hardware state not restored after S4
+- **Mechanism:** After hibernate, SPI controller registers are not
+  rewritten (`SPCR`/`SPER`/`SPSR`/`PARA`/`SFCS`/`TIMI`). Transfers time
+  out. TPM on that bus (`SMO0768`) fails.
+- **Not** UAF/leak/race/overflow.
 
 **Step 2.4: ASSESS THE FIX QUALITY**
-Record: Obviously correct and matches the long-standing pattern in other
-in-tree SPI drivers (`spi-atmel`, `spi-rockchip`, `spi-bcm63xx-hsspi`,
-etc.). Minimal. Regression risk is low: on failure, suspend aborts and
-the clock stays on. Residual SPI-core quirk: `spi_controller_suspend()`
-still calls `__spi_mark_suspended()` even on `spi_stop_queue()` failure
-(pre-existing; not introduced here).
+
+Record:
+- **Quality:** Obviously correct. Same pattern as `SYSTEM_SLEEP_PM_OPS`
+  / `SET_SYSTEM_SLEEP_PM_OPS` used across `drivers/spi/` (e.g. `spi-
+  sifive.c`, `spi-bcm63xx.c`, many `SET_SYSTEM_SLEEP_PM_OPS` users).
+- **Minimal:** no unrelated edits.
+- **Regression risk:** Low. S3 still uses the same two functions.
+  Hibernation now runs the save/restore that S3 already used.
+  `RUNTIME_PM_OPS(NULL,NULL,NULL)` matches the old struct (no runtime
+  PM).
+- **Style note (not a blocker):** `include/linux/pm.h` prefers
+  `EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS` when the symbol is exported.
+  Mainline kept `DEFINE_SIMPLE_DEV_PM_OPS` + existing
+  `EXPORT_SYMBOL_NS_GPL`. Functionally equivalent on this tree: the
+  macro is non-static `const struct dev_pm_ops`.
 
 ===============================================================
 PHASE 3: GIT HISTORY INVESTIGATION
 ===============================================================
 
 **Step 3.1: BLAME THE CHANGED LINES**
-Record: Ignore-and-disable-clock dates to `b42dfed83d95a3` (“spi: add
-Broadcom BCM63xx SPI controller driver”, 2012-03-09). Present in this
-tree. `spi_controller_suspend()` has returned `spi_stop_queue()` errors
-and marked `SPI_CONTROLLER_SUSPENDED` since `bef4a48f4ef798`
-(2023-11-10, already in `v6.18.53`).
+
+Record:
+- Buggy ops introduced in **`6c7a864007b66`** (“spi: loongson: add bus
+  driver for the loongson spi controller”, Yinbo Zhu, 2023-06-13;
+  committed 2023-07-31).
+- **`git merge-base --is-ancestor 6c7a864007b66 HEAD`** succeeded.
+- Present since **v6.6** (`v6.5` does not contain it; `v6.6` does).
+  Unchanged since then (`git blame` on lines 232–276 is entirely that
+  commit).
 
 **Step 3.2: FOLLOW THE FIXES: TAG**
-Record: No `Fixes:` tag. Not applicable. The behavioral gap exists
-because the driver never checked a return value that can fail.
+
+Record: No `Fixes:` tag. The introducing commit is the original driver,
+and it **is** in this tree.
 
 **Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
-Record: Related in this tree: `0acbfd61aee18` (“spi: bcm63xx: disable
-clock on resume failure”) is already in `v6.18.53` (explicit `Cc:
-stable`). Same author’s series: `spi-bcm63xx-hsspi` and `spi-bcm-qspi`
-get the same suspend check; each patch is per-driver and standalone.
-This is patch 1/3, self-contained.
+
+Record:
+- `git log --oneline -- drivers/spi/spi-loongson-core.c` shows **only**
+  `6c7a864007b66`.
+- No later refactor of these PM ops in this tree.
+- Standalone; subject is `[PATCH v3]`, not `X/Y`.
 
 **Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-Record: Jiawen Liu is not the driver maintainer; Jonas Gorski is listed
-as Odd Fixes. Mark Brown applied the series. Author also sent the
-sibling Broadcom SPI suspend checks.
+
+Record:
+- Author Li Jun (Kylinos) has **no** other commits under `drivers/spi/`
+  in this checkout.
+- Original driver author is Yinbo Zhu (Loongson). Maintainer who applied
+  the fix is Mark Brown.
 
 **Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-Record: None. Uses existing `spi_controller_suspend()` /
-`clk_disable_unprepare()`. Dry-run apply of this hunk onto
-`v6.18.53:drivers/spi/spi-bcm63xx.c` succeeded (`rc 0`).
+
+Record:
+- Needs `DEFINE_SIMPLE_DEV_PM_OPS` — present at `include/linux/pm.h:418`
+  in this tree.
+- Needs existing `loongson_spi_suspend`/`loongson_spi_resume` — present.
+- **Standalone.** No new helpers.
 
 ===============================================================
 PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 ===============================================================
 
 **Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
+
 Record:
-- `b4 dig -c bbbc1ef5b35341c5122418a14f8924688a4bb954` → https://patch.m
-  sgid.link/tencent_0BD7D4091B90EC17A8B2BA5EBA8803725905@qq.com
-- `-a`: v1 only, `[PATCH 1/3]`
-- Thread: submission + Mark Brown “Applied to for-7.3” (no NAK, no
-  requested respin, no reviewer `Cc: stable`)
+- **v1:** https://lore.kernel.org/linux-
+  spi/20260818104241.850042-1-lijun01@kylinos.cn/ — manually added four
+  callback pointers.
+- **v2:** https://lore.kernel.org/linux-
+  spi/20260819014552.1986077-1-lijun01@kylinos.cn/ —
+  `SIMPLE_DEV_PM_OPS()` after review.
+- **v3 (committed):** https://lore.kernel.org/linux-
+  spi/20260820092351.101605-1-lijun01@kylinos.cn/ —
+  `DEFINE_SIMPLE_DEV_PM_OPS()` (non-deprecated helper).
+- **`b4 mbox -c`** on v3: no newer revision.
+- **Reviewer:** Mark Brown on v1: “This could be done using
+  SIMPLE_DEV_PM_OPS().” No NAK. He applied v3 to `broonie/spi.git
+  for-7.3` (`a9c2f0d401fd`).
+- No `Cc: stable` in review (not a negative signal).
 
 **Step 4.2: CHECK WHO REVIEWED THE PATCH**
-Record (`b4 dig -w`): `broonie@kernel.org`, `linux-spi@vger.kernel.org`,
-Broadcom list, `jonas.gorski@gmail.com`, Broadcom SPI contacts.
-Maintainer applied it.
+
+Record:
+- **To/Cc:** Li Jun, Yinbo Zhu (original driver author), Mark Brown,
+  linux-spi.
+- SPI maintainer reviewed and applied. Original driver author was CCed;
+  no objection in the threads retrieved.
 
 **Step 4.3: SEARCH FOR THE BUG REPORT**
-Record: No `Reported-by`, syzbot, or bugzilla. Code-inspection fix. No
-evidence of a field crash report.
+
+Record:
+- No bugzilla/syzbot. Evidence is the author’s dmesg plus “after s4 …
+  normal.”
+- ACPI id **SMO0768** is in this tree:
+  `drivers/char/tpm/tpm_tis_spi_main.c` (`acpi_tis_spi_match`). `-110`
+  is `ETIMEDOUT` (`include/uapi/asm-generic/errno.h`).
 
 **Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-Record: Series is three independent driver patches (bcm63xx, bcm63xx-
-hsspi, bcm-qspi). This one does not need the others. Resume-side
-counterpart (`spi: bcm63xx: disable clock on resume failure`) already
-landed in `v6.18.53`.
+
+Record: Three revisions of **one** patch. v3 is the applied form. No
+other patches in the series.
 
 **Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-Record: No stable-list discussion found for this subject.
-lore.kernel.org WebFetch returned 403; thread recovered via `b4 dig -m`.
-UNVERIFIED: exhaustive lore.kernel.org/stable search via HTTP.
+
+Record: lore.kernel.org/stable search for “loongson spi freeze” returned
+only unrelated “freeze” hits in stable review series. **No dedicated
+stable discussion** of this bug (search via lore `?q=` HTML, HTTP 200).
 
 ===============================================================
 PHASE 5: CODE SEMANTIC ANALYSIS
 ===============================================================
 
-**Step 5.1: IDENTIFY KEY FUNCTIONS**
-Record: `bcm63xx_spi_suspend()`; callees `spi_controller_suspend()`,
-`clk_disable_unprepare()`.
+**Step 5.1: IDENTIFY KEY FUNCTIONS IN THE DIFF**
+
+Record: Symbol `loongson_spi_dev_pm_ops` only. Call targets
+`loongson_spi_suspend` and `loongson_spi_resume` are unchanged.
 
 **Step 5.2: TRACE CALLERS**
-Record: Only wired through `DEFINE_SIMPLE_DEV_PM_OPS(bcm63xx_spi_pm_ops,
-...)` → platform driver `.pm`. System-sleep path, not a syscall.
-Triggered on suspend/hibernate of BCM63xx/BMIPS boards with this
-controller.
+
+Record:
+- `drivers/spi/spi-loongson-plat.c`: platform `.driver.pm =
+  &loongson_spi_dev_pm_ops`
+- `drivers/spi/spi-loongson-pci.c`: PCI `.driver.pm =
+  &loongson_spi_dev_pm_ops`
+- Invoked by the PM core on system sleep/hibernation, not from a syscall
+  directly.
 
 **Step 5.3: TRACE CALLEES**
-Record: `spi_controller_suspend()` (`drivers/spi/spi.c`): if
-`ctlr->queued`, `spi_stop_queue()`; always `__spi_mark_suspended()`;
-returns `-EBUSY` on timeout. `spi_stop_queue()` waits up to 500 × ~10
-ms.
+
+Record (`loongson_spi_suspend`/`resume` in this tree):
+- Suspend: `spi_controller_suspend()`, then read 6 controller registers
+  into `struct loongson_spi`.
+- Resume: write those 6 registers back, then `spi_controller_resume()`.
+- `spi_controller_suspend` (`drivers/spi/spi.c`) stops a queued
+  controller and sets `SPI_CONTROLLER_SUSPENDED`.
 
 **Step 5.4: FOLLOW THE CALL CHAIN**
-Record: `bcm63xx` sets `host->transfer_one_message` and does not set
-`host->transfer`, so `spi_register_controller()` calls
-`spi_controller_initialize_queue()` and `ctlr->queued = true`. The
-failure path is reachable. Userspace can keep the queue busy (SPI flash,
-sensors); a stuck IRQ/transfer makes `-EBUSY` realistic.
+
+Record:
+- Userspace (typically root): `echo disk > /sys/power/state` or distro
+  hibernate.
+- PM core → driver `.freeze`/`.poweroff`/`.restore` → save/restore SPI
+  HW → later `tpm_tis_spi` transfers.
+- **Reachable** on Loongson machines that hibernate with this controller
+  and an SPI TPM (or any SPI child).
 
 **Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-Record: Same ignore-then-ungate bug was fixed in sibling Broadcom SPI
-drivers. Many other SPI hosts already check and return
-`spi_controller_suspend()` errors.
+
+Record: In this tree, almost every other SPI driver uses
+`SET_SYSTEM_SLEEP_PM_OPS` or `DEFINE_SIMPLE_DEV_PM_OPS`. Loongson was an
+outlier with only `.suspend`/`.resume`. That matches the S4-only
+failure.
 
 ===============================================================
 PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 ===============================================================
 
 **Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-Record: Yes, at `v6.18.53` in `bcm63xx_spi_suspend()`:
+
+Record: **Yes.** `drivers/spi/spi-loongson-core.c` lines 272–275:
 
 ```c
-spi_controller_suspend(host);
-clk_disable_unprepare(bs->clk);
-return 0;
+const struct dev_pm_ops loongson_spi_dev_pm_ops = {
+        .suspend = loongson_spi_suspend,
+        .resume = loongson_spi_resume,
+};
 ```
 
-`git merge-base --is-ancestor bbbc1ef5b35341c5122418a14f8924688a4bb954
-v6.18.53` → not an ancestor. Bug present since 2012; fail-able
-`spi_controller_suspend()` since 2023 (in this tree).
+Bug since driver addition (**v6.6**). This tree is **6.12.111**.
+Candidate not in HEAD (`git log --grep='add .freeze' -- drivers/spi/spi-
+loongson-core.c` empty).
 
 **Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-Record: Clean apply. Surrounding `bcm63xx_spi_resume()` already matches
-current mainline (resume error path already backported).
+
+Record: **Minor context, clean functional apply.**
+- This tree still has `__maybe_unused` on suspend/resume; the upstream
+  hunk context dropped it.
+- This tree exports `SPI_LOONGSON_CORE` unquoted; upstream uses
+  `"SPI_LOONGSON_CORE"`.
+- **`git apply --check` of the verbatim upstream hunk failed.**
+- An adapted hunk using local context **applied cleanly** (`git apply
+  --check` exit 0).
+- `DEFINE_SIMPLE_DEV_PM_OPS` exists here.
 
 **Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-Record: Resume-side clock rollback is already in `v6.18.53`. No earlier
-version of this suspend check.
+
+Record: No other loongson SPI PM/hibernation fix in this file’s history.
 
 ===============================================================
 PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 ===============================================================
 
 **Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
-Record: `drivers/spi/` Broadcom BCM6348/BCM6358 controller. Criticality:
-PERIPHERAL (SoC-specific), but real OpenWrt/BMIPS users.
-`CONFIG_SPI_BCM63XX` depends on `BCM63XX || BMIPS_GENERIC ||
-COMPILE_TEST`. Maintainer status: Odd Fixes.
+
+Record:
+- **Subsystem:** SPI controller driver (`drivers/spi/`),
+  Loongson/LoongArch.
+- **Criticality:** **PERIPHERAL** for the kernel as a whole,
+  **IMPORTANT** for Loongson users (SPI TPM after hibernate).
+- Kconfig: `SPI_LOONGSON_CORE` / `_PCI` / `_PLATFORM`, `depends on
+  LOONGARCH || COMPILE_TEST`.
 
 **Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
-Record: File still gets real fixes in 6.18.y (shared reset, CS,
-deregistration, resume clock). Mature driver, not staging.
+
+Record: This driver is **mature/quiet** in 6.12 (single commit). The bug
+is long-standing, not a new-subsystem race.
 
 ===============================================================
 PHASE 8: IMPACT AND RISK ASSESSMENT
 ===============================================================
 
 **Step 8.1: DETERMINE WHO IS AFFECTED**
-Record: Driver-specific / config-specific: BCM63xx and BMIPS platforms
-using this SPI host, on system suspend.
+
+Record: **Platform-specific / driver-specific:** LoongArch systems with
+Loongson SPI (`loongson,ls2k1000-spi` or PCI 0x7a0b/0x7a1b) that
+hibernate. Reporter path includes Infineon SPI TPM ACPI `SMO0768`. Not
+universal.
 
 **Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
-Record: System suspend while the SPI message pump is still busy after
-~5s. Not every boot; can be hit if a transfer is stuck or the queue
-cannot drain. Unprivileged users can keep SPI busy; they cannot directly
-call the PM callback (needs suspend permission).
+
+Record:
+- Trigger: **hibernate (S4)**, then resume. Not every boot; every
+  successful S4 on this hardware.
+- Unprivileged users cannot normally hibernate (needs CAP_SYS_BOOT /
+  root). Not a local-DoS from unprivileged userspace.
+- Not a timing race; deterministic missing callbacks.
 
 **Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
-Record: Clock gated while the queued pump may still run → MMIO with
-clock off, possible bus hang, incomplete in-flight SPI (flash). PM
-reports success, so the system continues suspend. Severity: HIGH (hang /
-possible device corruption on a rare path). Not a universal panic.
+
+Record:
+- **Failure:** SPI I/O timeouts; TPM start fails (`tpm_chip_start`
+  -110). Controller left unrestored after image restore.
+- **Severity: HIGH** (not a panic, but broken SPI/TPM after hibernate is
+  a serious PM regression). TPM unusable can break measured boot / TPM-
+  backed secrets after S4.
 
 **Step 8.4: CALCULATE RISK-BENEFIT RATIO**
-Record: Benefit: high for affected boards (do not sleep with SPI still
-active and clock off). Risk: very low (4 insertions, error return only).
-Residual: on failure the core still sets `SPI_CONTROLLER_SUSPENDED` and
-PM skips resume for this device (`is_suspended` stays false), so SPI may
-stay `-ESHUTDOWN` until a later successful suspend/resume. That core
-behavior already exists; other hosts already return the error the same
-way. Ratio: favor backport.
+
+Record:
+- **Benefit: high** for affected Loongson/S4 users (restores SPI after
+  hibernate).
+- **Risk: very low** (~2-line helper swap, standard PM pattern, S3 path
+  unchanged).
+- **Ratio:** strongly favors backport.
 
 ===============================================================
 PHASE 9: FINAL SYNTHESIS
@@ -312,112 +425,115 @@ PHASE 9: FINAL SYNTHESIS
 
 **Step 9.1: COMPILE THE EVIDENCE**
 
-FOR:
-- Real PM bug: ignore failure, ungated clock, return success
-- Failure mode is hang / in-flight SPI with clock off, not cosmetic
-- Driver is queued, so `spi_controller_suspend()` can return `-EBUSY`
-- 5-line, obviously correct, same pattern as other SPI hosts and the
-  sibling series
-- SPI maintainer applied it; driver maintainer was CCed
-- Buggy code is in `v6.18.53`; patch applies cleanly; no prerequisites
-- Resume-side analogue already taken for this stable tree
+**FOR:**
+- Real S4 failure with dmesg; author confirmed fix.
+- Buggy incomplete `dev_pm_ops` present in this 6.12 tree since v6.6.
+- Tiny, standard `DEFINE_SIMPLE_DEV_PM_OPS` change; SPI maintainer
+  requested the helper and applied v3.
+- TPM (`SMO0768`) is a real child device in-tree.
+- `DEFINE_SIMPLE_DEV_PM_OPS` exists here; adapted patch applies.
 
-AGAINST:
-- No user/syzbot report; inspection-only
-- Trigger is uncommon (queue-stop timeout)
-- Peripheral SoC driver, Odd Fixes
-- Sent to for-7.3 merge window, not as an urgent -rc fix
-- SPI core still marks suspended on failure (pre-existing)
+**AGAINST:**
+- LoongArch/Loongson-only; hibernate-only (not every boot).
+- Subject says “add”; no `Fixes:`/`Cc: stable` (not used as a no).
+- Verbatim upstream hunk needs a one-line context tweak (namespace
+  quotes / `__maybe_unused`).
+- Could have used `EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS` (style only).
 
-UNRESOLVED:
-- HTTP fetch of lore.kernel.org/stable returned 403 (thread obtained via
-  `b4`)
+**UNRESOLVED:** Could not open lore via WebFetch (403); threads were
+retrieved with `b4 mbox` and lore HTML search instead. Exact mainline
+SHA of the evaluation candidate was not in this checkout (`a9c2f0d401fd`
+is Mark’s spi.git apply of v3).
 
 **Step 9.2: APPLY THE STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — mechanical return-value
-   check; maintainer applied v1 with no NAK
-2. Fixes a real bug that affects users? **PASS** — clock off + fake
-   success on failed controller stop
-3. Important issue? **PASS** — hang / inconsistent hardware on suspend,
-   not a new feature
-4. Small and contained? **PASS** — +4/-1, one function
-5. No new features or APIs? **PASS**
-6. Can apply to the local tree? **PASS** — dry-run clean on `v6.18.53`
+
+1. Obviously correct and tested? **PASS** — standard helper; author
+   tested S4; maintainer applied.
+2. Fixes a real bug that affects users? **PASS** — SPI/TPM broken after
+   hibernate.
+3. Important issue? **PASS** — HIGH: I/O failure and TPM unusable after
+   S4 (not a panic, still production-breaking PM).
+4. Small and contained? **PASS** — one struct, one file.
+5. No new features or APIs? **PASS** — missing hibernation ops, not a
+   new API.
+6. Can apply to the local tree? **PASS** — with trivial context
+   adjustment; macros and driver exist.
 
 **Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
-Record: None (not an ID/quirk/DT/build/docs exception). Qualifies as a
-normal small bugfix.
 
-**Step 9.4: DECISION**
-Backport. The bug exists on this 6.18.53 tree, the fix is surgical, and
-leaving suspend success + clock off after a failed queue stop is worse
-than aborting suspend.
+Record: Not a device-ID/quirk/DT/build/docs exception. It is a normal
+small PM bugfix.
 
-------------------------------------------------
-What the commit solves for this tree
-`bcm63xx_spi_suspend()` must not disable the controller clock or report
-success if `spi_controller_suspend()` failed. On BCM63xx this host is
-queued, so that call can return `-EBUSY`. Continuing would let the pump
-access the block with the clock off and let system suspend proceed
-anyway.
+**Step 9.4: MAKE YOUR DECISION**
 
-Stable rules
-Meets all six criteria: small, obviously correct, no new API, real PM
-bug, applies cleanly here.
+This should be backported to **this 6.12 tree**. The driver has only
+`.suspend`/`.resume`, so hibernation never restores the controller; that
+matches the S4 TPM timeouts. The fix is the usual
+`DEFINE_SIMPLE_DEV_PM_OPS` mapping, already used by other SPI drivers
+here, with very low regression risk.
 
-Risk vs benefit
-Benefit is avoiding a hang/inconsistent SPI across suspend on these
-SoCs. Risk is a 4-line error return that matches the rest of the SPI
-stack.
-
-Concerns
-No field report; rare trigger; Odd Fixes driver. None of that outweighs
-a clean, standard PM error-path fix whose resume counterpart is already
-in this tree.
+The problem for 6.12 users is that Loongson SPI (and the SPI TPM on that
+bus) stays dead after hibernate because hibernation callbacks were never
+wired. That is a real, tested, important PM bug. It meets the stable
+rules: small, obviously correct, no new API, and it applies here with a
+trivial context tweak.
 
 Verification:
-- [Phase 1] Subject/tags parsed from the supplied message and `git show
-  df107c1912ab6` / upstream `bbbc1ef5b353`
-- [Phase 2] Diff is +4/-1 in `bcm63xx_spi_suspend()` only
-- [Phase 3] `git blame` / `git show b42dfed83d95a3`: ignore-clock-off
-  since 2012; `bef4a48f4ef798` in `v6.18.53`
-- [Phase 3] `git merge-base --is-ancestor bbbc1ef5… v6.18.53` → not
-  present; buggy code confirmed via `git show v6.18.53:drivers/spi/spi-
-  bcm63xx.c`
-- [Phase 3] `0acbfd61aee18` resume fix already in `v6.18.53`
-- [Phase 4] `b4 dig -c/-a/-w/-m`: v1 1/3, Mark Brown applied, no NAK;
-  lore HTTP 403
-- [Phase 5] `spi_register_controller()` queues this driver;
-  `spi_stop_queue()` can return `-EBUSY`
-- [Phase 6] `patch --dry-run` of this commit onto `v6.18.53` file: rc 0
-- [Phase 6] `git describe HEAD` / `make kernelversion`: 6.18.53
-- [Phase 7] MAINTAINERS: Odd Fixes, Jonas Gorski; Kconfig `SPI_BCM63XX`
-- [Phase 8] PM core: failed suspend does not set `is_suspended`, so this
-  device’s resume is skipped — pre-existing core mark-suspended-on-error
-- UNVERIFIED: exhaustive lore.kernel.org/stable HTTP search (403)
+- [Phase 1] Parsed subject/tags/body from the provided commit and v1–v3
+  mboxes; no Fixes/Reported-by/Cc:stable; Link msgid
+  `20260820092351.101605-1-lijun01@kylinos.cn`
+- [Phase 2] Diff: replace 4-line `dev_pm_ops` with
+  `DEFINE_SIMPLE_DEV_PM_OPS`; functions unchanged
+- [Phase 2] Confirmed `SYSTEM_SLEEP_PM_OPS` sets
+  suspend/resume/freeze/thaw/poweroff/restore
+  (`include/linux/pm.h:312-318`); `-110` is `ETIMEDOUT`
+- [Phase 3] `git blame` lines 232–276 → `6c7a864007b66`; `git merge-base
+  --is-ancestor 6c7a864007b66 HEAD` true; `v6.5` no, `v6.6` yes
+- [Phase 3] `git log --oneline -- drivers/spi/spi-loongson*.c` only the
+  original driver commit
+- [Phase 4] `b4 mbox` v1/v2/v3; Mark Brown asked for
+  `SIMPLE_DEV_PM_OPS()` on v1; v3 uses `DEFINE_SIMPLE_DEV_PM_OPS`; `b4
+  mbox -c` no newer rev
+- [Phase 4] lore.kernel.org/stable `?q=loongson+spi+freeze` HTTP 200, no
+  dedicated thread
+- [Phase 5] Callers: `spi-loongson-plat.c:39`, `spi-loongson-pci.c:48`;
+  ACPI `SMO0768` in `tpm_tis_spi_main.c:342`
+- [Phase 6] `git describe HEAD` → `p-6.12-3-gc504cf0baa3d8`; `make
+  kernelversion` → `6.12.111`; buggy ops at `spi-loongson-
+  core.c:272-275`
+- [Phase 6] Original hunk `git apply --check` failed; adapted hunk
+  (unquoted ns + `__maybe_unused` context) succeeded
+- [Phase 7] Kconfig `SPI_LOONGSON_*` depends on `LOONGARCH ||
+  COMPILE_TEST`
+- [Phase 8] Failure: SPI timeout / TPM start -110 after S4; severity
+  HIGH; risk very low
+- UNVERIFIED: WebFetch to lore/git.kernel.org returned 403; used `b4`
+  and curl HTML instead
+- UNVERIFIED: Did not boot-test hibernate on Loongson hardware; relied
+  on author’s dmesg and code
 
 **YES**
 
- drivers/spi/spi-bcm63xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-loongson-core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 8d152e906daac..f73dc14533dcc 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -643,8 +643,11 @@ static int bcm63xx_spi_suspend(struct device *dev)
- {
- 	struct spi_controller *host = dev_get_drvdata(dev);
- 	struct bcm63xx_spi *bs = spi_controller_get_devdata(host);
-+	int ret;
+diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-core.c
+index b46f072a0387b..f07ee432f96b5 100644
+--- a/drivers/spi/spi-loongson-core.c
++++ b/drivers/spi/spi-loongson-core.c
+@@ -270,10 +270,8 @@ static int __maybe_unused loongson_spi_resume(struct device *dev)
+ 	return 0;
+ }
  
--	spi_controller_suspend(host);
-+	ret = spi_controller_suspend(host);
-+	if (ret)
-+		return ret;
+-const struct dev_pm_ops loongson_spi_dev_pm_ops = {
+-	.suspend = loongson_spi_suspend,
+-	.resume = loongson_spi_resume,
+-};
++DEFINE_SIMPLE_DEV_PM_OPS(loongson_spi_dev_pm_ops, loongson_spi_suspend, loongson_spi_resume);
++
+ EXPORT_SYMBOL_NS_GPL(loongson_spi_dev_pm_ops, "SPI_LOONGSON_CORE");
  
- 	clk_disable_unprepare(bs->clk);
- 
+ MODULE_DESCRIPTION("Loongson SPI core driver");
 -- 
 2.53.0
 

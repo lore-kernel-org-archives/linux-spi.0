@@ -1,42 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E4B63139D;
-	Mon, 19 Oct 2026 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C5D54079F;
+	Mon, 19 Oct 2026 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792418733; cv=none; b=SdAEftSRR/zkhIp0E30Tu/70UnlvWd5AM/pzEbTtGcQ48If223UEL7Tz3YXFrFwpivILzXXt7nAitag0B6pVAGjhOrjue6vX5ud0nLtSb61W//U/OgO38Q9nyYPtq+FsBebYCc8GODkudEzEEVYTnfenaW8Z+CGoExPbGSuNMdY=
+	t=1792418736; cv=none; b=BCE2vczQKui/SUdZg6FiEERlYoGmgHvj1AvVQVTZUpWLt6aiw8szhHXAa4H+cCgoNSyVdNrnOikmYhwePPiRHRQOclwxMgNCzSbsZ8fd89VnjonNd7/8soxGVbaDwQwle9kAAFtcCIBmX1WWiSSAGvmrh9QhvZf3h28qPRWQMYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792418733; c=relaxed/simple;
-	bh=MOmZKezusvd3+rl8lQj3gb0nThfx7DNqvGBVftOEahM=;
+	s=arc-20240116; t=1792418736; c=relaxed/simple;
+	bh=eHb84UA0PUho8tRWxIs/nLkY+kqzYbVhfC90duWTyNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XgMnn45byX3MLGCIgSSsUnASFe2HMuSCrwvZvod1E1+Q5EZiEYF6o4hpaEEnsmzoNEtnKwOT+DabvRKScWeEcqaFeR3Km9JY1QzT2aZpGoQ4eRBYeBKntnt7Onq4u9rwR8LXXc7U5svWVG9nSwpgC7l7xjpb52DpsiNzYajnLo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AkufR0Z5; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=oZZAaB5mlwroOxS+07ufI2QsOqaVAGVg6i3pwnQ+F4V3z8JjOji+N305fWKWdwX/ITIbaTjmcF81bVBzyQckDemRTamWi5UeXATuv4GPsNnBV4zodVnN+F3LWdyY2Whky30Io1a1Kxvdm3wwMWh6FrnLGmWVgniF0J7Tjllr+yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMZMZqmZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AkufR0Z5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD6D1F000C7;
-	Mon, 19 Oct 2026 14:05:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMZMZqmZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B142A1F000C4;
+	Mon, 19 Oct 2026 14:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792418729;
-	bh=5rmeK0G0kCVmt28KfnVlKueuTOC+BkuMm7WRfsXUmzo=;
+	s=k20260515; t=1792418733;
+	bh=oYI5T8O+AAnnizZIZ7eRm4bWkb3nui5PR4a81p/JJF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AkufR0Z5b4oz2hz/dGdUIbuyKwd0fC6OswogWOg9hS8AUxx7cGQBbauFVxh7cePNP
-	 R8ku+RrnI8xX6v63Q5JDR+cawPc6c4AjFiv3T/Pt2DZR6/O+E4QbeB/MsSYWZkyUBT
-	 OIrIhVbLah/S8bF7R8imo+sPft+l1sIiahR3w+YbBGJEGd/PxJWKzZCjRrETTg1cAf
-	 cjpdfl1YgLBapQ5FnG9NhPkdQSavDxdZKIMXqW5aMb8+5gdWV55a54+yPyooTUlwWE
-	 9VMti4Se7ZhzaIoU18ypRogwfGK4xNJOVqnzCe4Q1Wr/plSwVtahjH1V27hk1LNgJy
-	 vSeE3pvX6Qi+Q==
+	b=PMZMZqmZedOF8b9GGtHKTDijHwxZw08NTe+x0xvgt6x9P4na1RSVPwX2SmaFDRiOk
+	 FAHJZFOeRbuD4Sv0YxoQUkzEXZTPgQCf9SGBDVRls13Xj/kxG9I1xH0ss6nvG9EHeT
+	 oflJkew7NlAkzMkyyIgp+XFhg+SMkJmf6HdU7q1abpg0z0Ez9u0aRVgePebN+FkKdA
+	 p+0d7TwgG9hccWheUaSzIHbSfh2PPci+zIApOSgvuO+361t/tGPx0DTsrQI5MpM0x8
+	 ZHt0Jbo7f6GP8W7Xqkk/ooEK1fZPxS0nZhdk5WlTl2N6xTLaRV7aD1scmjGyyolvCA
+	 wF9jSzKC+zlxw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Jiawen Liu <1298662399@qq.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	william.zhang@broadcom.com,
+	kursad.oney@broadcom.com,
+	jonas.gorski@gmail.com,
+	anand.gore@broadcom.com,
+	florian.fainelli@broadcom.com,
+	rafal@milecki.pl,
 	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.15] spi: cadence-qspi: Fix status polling with octal DTR chips
-Date: Mon, 19 Oct 2026 09:52:26 -0400
-Message-ID: <20261019135441.1420968-455-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18-6.6] spi: bcmbca-hsspi: return error from failed controller suspend
+Date: Mon, 19 Oct 2026 09:52:28 -0400
+Message-ID: <20261019135441.1420968-457-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261019135441.1420968-1-sashal@kernel.org>
 References: <20261019135441.1420968-1-sashal@kernel.org>
@@ -52,468 +59,482 @@ X-stable-base: Linux 6.18.57
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jiawen Liu <1298662399@qq.com>
 
-[ Upstream commit fd99864b0ac936e870c7ae28354c5cd3dad5efd0 ]
+[ Upstream commit faa878d4805ca375738294bc52eae310eb287b16 ]
 
-Most SPI NOR chips today use 0x05 as ReaD Status Register (RDSR)
-opcode. After almost every transaction, the core will wait for the said
-transation to be digested by the chip by polling its status
-register. This mechanism has been automated by certain chips, such as
-the Cadence QSPI controller. Unfortunately, the feature has been
-disabled for various (relevant) reasons. Disabling this feature has been
-done by setting WRITE_COMPLETION_CTRL_REG.DISABLE_POLLING_FLD, keeping
-the rest of the register intact. In this same register, there is also a
-field named WRITE_COMPLETION_CTRL_REG.OPCODE_FLD, which by default also
-contains 0x05, as primary RDSR opcode.
+spi_controller_suspend() can fail if pending transfers cannot stop.
+bcmbca_hsspi_suspend() ignored the error and still disabled the
+PLL and core clocks.
 
-As a result, both the SPI NOR and SPI NAND cores, primary users through
-spi-mem of the spi_mem_ops interface, do send their own RDSR. In this
-driver, such command goes through one of the fifth possible data path
-specifically crafted for short register-like commands, named STIG. In
-STIG mode, the opcode of the operation is written to
-OSPI_FLASH_CMD_CTRL_REG. This means that the opcode field of STIG
-configuration and the opcode field of the automatic polling
-configuration contain the same value.
+Return the error before disabling the clocks.
 
-Unfortunately, the TRM explains in two different places that this
-configuration is forbidden, without explaining why it is problematic:
-
-$12.4.2.4.11 OSPI Software-Triggered Instruction Generator (STIG)
-```
-OSPI_FLASH_CMD_CTRL_REG[31-24] CMD_OPCODE_FLD bits should be set
-different than OSPI_DEV_INSTR_RD_CONFIG_REG[7-0] RD_OPCODE_NON_XIP_FLD
-and OSPI_DEV_INSTR_WR_CONFIG_REG[7-0] WR_OPCODE_FLD.
-```
-
-and
-
-$12.4.2.5.2 Configuring the OSPI Controller for Optimal Use
-```
-When using the OSPI Controller, the opcodes in
-OSPI_DEV_INSTR_RD_CONFIG_REG[7-0] RD_OPCODE_NON_XIP_FLD,
-OSPI_DEV_INSTR_WR_CONFIG_REG[7-0] WR_OPCODE_FLD and
-OSPI_WRITE_COMPLETION_CTRL_REG[7-0] OPCODE_FLD bit fields shall not
-match the opcode in the OSPI_FLASH_CMD_CTRL_REG[31-24] CMD_OPCODE_FLD
-bit field.
-```
-
-For some reasons, this is only unveiled now when testing in ODTR
-mode. Plain SDR modes work flawlessly with the same chips. One possible
-reason for this, is that the internal data path in ODTR mode is
-very different due to the extra opcode extension/repetition which may be
-interpreted differently (this is a wild guess). For sure there is an
-interference, as even the TRM states that there is some magic happening:
-
-$12.4.2.4.13 OSPI Command Translation
-```
-The WREN and the RDSR device instructions are the only ones that are
-sent by the controller under the hood.
-```
-
-I cannot probe the bus when the problem arises, so I don't know exactly
-what is sent on the bus. Practically speaking, the chip was driving the
-lines low (reading all 0s), which is not the usual default state when
-the chip is not driving the lines (all 1s). Other people on the mailing
-list claimed successfully using ODTR chips with this controller. My take
-here is that either they were using a variant of the IP without write
-completion at all (there is a quirk for it), or they were using chips
-slightly more flexible about their opcode sequency or maybe with
-different addr/dummy requirements.
-
-Clearing the WRITE_COMPLETION_CTRL_REG.OPCODE_FLD while disabling write
-completion polling entirely seems the best compromise.
-
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20261001-winbond-spi-next-cadence-rdsr-fix-v1-1-ec5ff594ba5d@bootlin.com
+Signed-off-by: Jiawen Liu <1298662399@qq.com>
+Link: https://patch.msgid.link/tencent_54F5634545908FBA724E758054BF03953808@qq.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This tree is **6.18.57**. The candidate is a 3-line Cadence QSPI
-programming fix: stop leaving the default RDSR opcode in
-`WRITE_COMPLETION_CTRL` after auto-poll is disabled, which the TRM
-forbids and which breaks octal DTR status polling.
+The local tree is **6.18.53** (`v6.18.53-5049-g0f0bdc2b0dffb`, branch
+`autosel`). The verdict is only about this checkout: the buggy suspend
+path is in `v6.18.53`, and the patch applies cleanly to it.
 
 ---
 
 ## PHASE 1: COMMIT MESSAGE FORENSICS
 
 **Step 1.1: PARSE THE SUBJECT LINE**
-Record: **[spi: cadence-qspi:] [Fix] [status polling fails with octal
-DTR chips because WRITE_COMPLETION_CTRL.OPCODE_FLD still holds 0x05]**
+
+Record: **[spi / bcmbca-hsspi] [return] [propagate
+`spi_controller_suspend()` failure instead of disabling clocks and
+reporting success]**
 
 **Step 1.2: PARSE ALL COMMIT MESSAGE TAGS**
+
 Record:
-- **Fixes:** none (expected)
-- **Reported-by:** none
-- **Tested-by:** none
-- **Reviewed-by:** none
-- **Acked-by:** none
-- **Link:** https://patch.msgid.link/20261001-winbond-spi-next-cadence-
-  rdsr-fix-v1-1-ec5ff594ba5d@bootlin.com
-- **Cc: stable:** none (expected)
-- **Signed-off-by:** Miquel Raynal (author; MTD/NAND maintainer); Mark
-  Brown (SPI maintainer, applied the patch)
-- Ignore: `[ Upstream commit fd99864b0ac936e870c7ae28354c5cd3dad5efd0 ]`
-  and `Signed-off-by: Sasha Levin` (pipeline)
+- **Fixes:** none (expected for this review pipeline)
+- **Reported-by / Tested-by / Reviewed-by / Acked-by:** none on this
+  specific patch (sibling Broadcom patches in the same author’s work had
+  Acked-by/Reviewed-by from Broadcom)
+- **Link:** https://patch.msgid.link/tencent_54F5634545908FBA724E758054B
+  F03953808@qq.com
+- **Cc: stable:** absent (not a negative signal)
+- **Signed-off-by:** Jiawen Liu (author); Mark Brown (SPI maintainer).
+  Ignore Sasha Levin SOB (pipeline).
+- **[Upstream commit faa878d4805c…]** / pipeline markers: ignored per
+  instructions
 
 **Step 1.3: ANALYZE THE COMMIT BODY TEXT**
+
 Record:
-- **Bug:** Auto-HW write-completion polling was disabled by OR-ing
-  `DISABLE_POLLING_FLD` into `WRITE_COMPLETION_CTRL`, which **kept the
-  reset-default OPCODE_FLD = 0x05 (RDSR)**. SPI NOR/NAND then issue
-  their own RDSR via STIG (`OSPI_FLASH_CMD_CTRL_REG`), so STIG opcode
-  and completion-opcode both become 0x05.
-- **TRM:** Cadence OSPI TRM §12.4.2.4.11 and §12.4.2.5.2 forbid STIG
-  `CMD_OPCODE_FLD` matching `WRITE_COMPLETION_CTRL.OPCODE_FLD` (and the
-  read/write instruction opcodes).
-- **Symptom:** In **octal DTR**, the flash drives the bus low (reads as
-  all 0s). SDR with the same chips works. Status 0 means WIP=0, so
-  software can treat a still-busy flash as ready.
-- **Root cause (author):** controller still has “under the hood”
-  WREN/RDSR translation; ODTR’s extra opcode extension/repetition likely
-  makes the illegal opcode collision actually fire.
-- **Versions:** none named. Introduced by the 2021 auto-poll disable,
-  not by new 7.x code.
+- **Bug:** `spi_controller_suspend()` can fail when pending transfers
+  cannot be stopped; `bcmbca_hsspi_suspend()` ignored that and still
+  disabled PLL and core clocks, then returned 0.
+- **Symptom:** system suspend is reported successful while SPI clocks
+  are gated with the queue possibly still active → MMIO to unclocked
+  hardware, incomplete SPI transactions.
+- **Version info:** none in the message. Driver added in v6.3; bug
+  present from introduction.
+- **Root cause:** missing return-value check before clock teardown.
 
 **Step 1.4: DETECT HIDDEN BUG FIXES**
-Record: **Not hidden.** Subject and body describe a real hardware-
-programming bug. Not cleanup/refactor.
+
+Record: Not disguised. It is an explicit PM error-path fix: “Handle X
+properly” / missing error check. Real bug, not style.
 
 ---
 
 ## PHASE 2: DIFF ANALYSIS
 
 **Step 2.1: INVENTORY THE CHANGES**
+
 Record:
-- File: `drivers/spi/spi-cadence-quadspi.c` (**+1 / −2**)
-- Function: `cqspi_write_setup()`
+- File: `drivers/spi/spi-bcmbca-hsspi.c` — **+5 / −1**
+- Function: `bcmbca_hsspi_suspend()`
 - Scope: **single-file surgical fix**
 
+Upstream/context in the provided snippet also shows `remove()`/`#ifdef
+CONFIG_PM_SLEEP` around it; the change that actually lands on this tree
+is only the suspend return check (parent of `072b287a97bf3` matches
+`v6.18.53` for this file, 0-line diff).
+
 **Step 2.2: UNDERSTAND THE CODE FLOW CHANGE**
+
 Record:
-- **Before:** `reg = readl(WR_COMPLETION_CTRL); reg |=
-  DISABLE_AUTO_POLL; writel(...)` — RMW preserves OPCODE_FLD=0x05 and
-  poll-count/delay/bit fields.
-- **After:** `reg = CQSPI_REG_WR_DISABLE_AUTO_POLL; writel(...)` —
-  writes only BIT(14), so OPCODE_FLD becomes 0 (and other poll fields
-  0).
-- Path: **write setup** for every spi-mem data write when
-  `cqspi->wr_completion` is true (default). Direct-mode writes stay
-  disabled, unchanged.
+- **Before:** `spi_controller_suspend(host)` return ignored →
+  `clk_disable_unprepare(pll)` + `clk_disable_unprepare(clk)` → `return
+  0`.
+- **After:** if `spi_controller_suspend()` fails, return that error
+  immediately; clocks stay enabled.
+- Path: **system-sleep suspend error path**, not probe/init.
 
 **Step 2.3: IDENTIFY THE BUG MECHANISM**
+
 Record:
-- **Category:** hardware workaround / logic correctness (illegal
-  controller opcode collision)
-- **Mechanism:** disabled auto-poll still advertised RDSR 0x05; STIG
-  RDSR used the same opcode; TRM-forbidden config; ODTR status reads
-  return 0
-- **Fix:** clear OPCODE_FLD while keeping poll disabled, so STIG 0x05 no
-  longer matches
+- **Category:** logic / PM error-path correctness (resource teardown
+  while transfers may still be running).
+- **Mechanism:** this driver sets `host->transfer_one_message`, so
+  registration calls `spi_controller_initialize_queue()` and
+  `ctlr->queued = true`. `spi_controller_suspend()` then calls
+  `spi_stop_queue()`, which polls up to 500 × ~10 ms (~5 s) and returns
+  **`-EBUSY`** if the queue/busy bit never clears. The driver used to
+  power down clocks anyway.
 
 **Step 2.4: ASSESS THE FIX QUALITY**
+
 Record:
-- **Quality:** minimal and aligned with the TRM. Polling was already
-  disabled; remaining fields only matter when polling is on.
-  `CQSPI_NO_SUPPORT_WR_COMPLETION` platforms (SoCFPGA, Mobileye) never
-  write this register.
-- **Regression risk:** **low**. SDR already worked with poll disabled;
-  changing opcode from 0x05 to 0 while poll is off is what the TRM
-  wants. Slightly broader than clearing only bits [7:0], but with
-  `DISABLE_POLLING` set that is harmless.
-- No API/data-structure/locking changes.
+- Obviously correct and matches the usual SPI driver pattern (e.g.
+  `rockchip_spi_suspend()` in this tree).
+- Minimal; no API/data-structure changes.
+- Regression risk is low. An automated review (sashiko-bot) noted that
+  `spi_controller_suspend()` still sets `SPI_CONTROLLER_SUSPENDED` on
+  failure, and a failed device suspend does not get `resume()`. That is
+  a **pre-existing SPI core quirk** shared by most drivers that already
+  check this return. The old path is worse: same flag is set **and**
+  clocks are gated. Mark Brown applied the series without requesting an
+  unwind.
 
 ---
 
 ## PHASE 3: GIT HISTORY INVESTIGATION
 
 **Step 3.1: BLAME THE CHANGED LINES**
+
 Record:
-- Auto-poll disable + RMW: **`9cb2ff11171264`** (“spi: cadence-quadspi:
-  Disable Auto-HW polling”, Apurva Nandan, 2021-07-13) — present since
-  ~v5.15
-- `if (cqspi->wr_completion)` gate: **`98d948eb833104`** (2021-11)
-- DTR support: **`f453f293979fb`** (2021-01-06)
-- The RMW was already used for DTR-only in `f453f293979fb`;
-  `9cb2ff11171264` extended it to all writes. Bug is years old in this
-  tree.
+- Ignored `spi_controller_suspend()` + clock disable introduced in
+  **`a38a2233f23b5`** (“spi: bcmbca-hsspi: Add driver for newer HSSPI
+  controller”, William Zhang, 2023-02-09).
+- First appeared: **`v6.3-rc1`**. Present for the entire life of this
+  driver, including 6.18.y.
 
-**Step 3.2: FOLLOW THE FIXES: TAG**
-Record: **No Fixes: tag.** Buggy pattern comes from `9cb2ff11171264`,
-which **is** in this tree (`git merge-base --is-ancestor` succeeded).
+**Step 3.2: FOLLOW THE FIXES TAG**
 
-**Step 3.3: CHECK FILE HISTORY FOR RELATED CHANGES**
-Record: Recent cadence-qspi work is clocks, PM, DMA, DT parse —
-unrelated. Independent of later ODTR opcode-filter commit `bee085476d27`
-and its revert (neither is in this tree). **Standalone.**
+Record: No Fixes tag. Buggy code is the original driver, not a later
+regression.
 
-**Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS**
-Record: Miquel Raynal maintains MTD/NAND/SPI-NAND and contributes
-regularly to spi-mem/cadence-qspi. Nearby work is DTR/spi-mem, not a
-hidden multi-patch dependency. This submission is **[1/1]**.
+**Step 3.3: CHECK FILE HISTORY**
+
+Record (this file, newest first):
+- `2b580ac54f40f` — modern PM macros (later autosel candidate; **not** a
+  prerequisite)
+- `072b287a97bf3` — **this** commit
+- `148a3f03aec89` — resume-side clock cleanup (**already in v6.18.53**,
+  had Fixes + Cc: stable)
+- Driver-original suspend path otherwise unchanged since v6.3
+
+Standalone. Cover letter: *“The patches are independent and only touch
+the local error paths in each driver.”*
+
+**Step 3.4: CHECK THE AUTHOR’S OTHER COMMITS**
+
+Record: Jiawen Liu submitted a 4-patch SPI PM error-handling series
+(atcspi200, **bcmbca-hsspi**, fsl-dspi, nxp-fspi). Additional similar
+Broadcom fixes exist for bcm63xx / bcm63xx-hsspi / bcm-qspi. Author is a
+regular contributor, not the SPI maintainer. Maintainer **Mark Brown**
+applied all 4.
 
 **Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS**
-Record: Uses only `CQSPI_REG_WR_DISABLE_AUTO_POLL`,
-`cqspi->wr_completion`, and `cqspi_write_setup()` — all present at
-**v6.18.57**. `git diff v6.18.57 a1536ec7381c3^ -- drivers/spi/spi-
-cadence-quadspi.c` is **empty**: the hunk applies cleanly to this
-series.
+
+Record: None. Uses existing `spi_controller_suspend()`. Applies
+standalone. Series 2/4 is independent.
 
 ---
 
 ## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
 
 **Step 4.1: FIND THE ORIGINAL PATCH DISCUSSION**
+
 Record:
-- `b4 dig -c fd99864b0ac9`: https://patch.msgid.link/20261001-winbond-
-  spi-next-cadence-rdsr-fix-v1-1-ec5ff594ba5d@bootlin.com
-- `b4 dig -a`: **v1 only**, single patch `[PATCH]` / Mark Brown `[1/1]`
-- Thread: author cover + Mark Brown “Applied to spi.git **for-7.3**”
-- **No NAK, no review objections, no reviewer Cc: stable**
-- Cover note: issue is subtle; explanation is long on purpose
+- `b4 dig -c faa878d4805c`: **[PATCH 2/4] spi: bcmbca-hsspi: return
+  error from failed controller suspend**
+- Thread: https://patch.msgid.link/tencent_54F5634545908FBA724E758054BF0
+  3953808@qq.com
+- Cover: **[PATCH 0/4] spi: fix PM error handling in several drivers**
+  (2026-06-20)
+- `b4 dig -a`: **v1 only**; committed version is that v1.
+- Human review: no NAK. Mark Brown applied to `spi/for-7.3`
+  (git.kernel.org/broonie/spi/c/faa878d4805c).
+- sashiko-bot: “permanently wedged in a suspended state” if error is
+  propagated (SPI core marks suspended even on `-EBUSY`). No maintainer
+  follow-up; patch still applied.
 
 **Step 4.2: CHECK WHO REVIEWED THE PATCH**
-Record (`b4 dig -w`): Mark Brown (applied), Thomas Petazzoni, Santhosh
-Kumar K / Vignesh Raghavendra (TI, cadence-qspi), Steam Lin (Winbond),
-linux-spi. Maintainer-applied; no extra Reviewed-by.
+
+Record (`b4 dig -w`): To Mark Brown; Cc William Zhang, Kursad Oney,
+Jonas Gorski, bcm-kernel-feedback-list, Florian Fainelli, linux-spi,
+linux-arm-kernel, etc. Right maintainers/lists. No Acked-by on this hunk
+(unlike some sibling Broadcom patches).
 
 **Step 4.3: SEARCH FOR THE BUG REPORT**
-Record: No syzbot/bugzilla. Author reproduced on real ODTR hardware (bus
-stuck low / reads 0). Winbond engineer CC’d. Others on-list said ODTR
-worked — author attributes that to IP without write-completion (quirk)
-or more tolerant chips.
+
+Record: No syzbot, bugzilla, or user crash report. Bug is from code
+inspection of the ignored return. The same driver’s **resume**
+counterpart (`148a3f03aec89`) was user/author-driven with
+Fixes+Cc:stable and is already in this tree.
 
 **Step 4.4: CHECK FOR RELATED PATCHES AND SERIES**
-Record: Series name `winbond-spi-next-cadence-rdsr-fix` is **one
-patch**. Not 2/3 of a stack. Later opcode-filter revert is a different
-bug and not required here.
+
+Record: Independent 2/4. Sibling Broadcom suspend-return patches are the
+same class, not build/runtime dependencies. Resume clock-disable-on-
+failure is already in 6.18.53; this is the suspend-side counterpart.
 
 **Step 4.5: CHECK STABLE MAILING LIST HISTORY**
-Record: WebSearch of lore.kernel.org/stable for this subject found
-**no** stable discussion (and no documented reason to skip it).
+
+Record: lore.kernel.org returned 403; WebSearch of
+`lore.kernel.org/stable` for this subject found **no** stable-specific
+discussion. UNVERIFIED that anyone requested or rejected it on stable@;
+no evidence of a known reason to skip it.
 
 ---
 
 ## PHASE 5: CODE SEMANTIC ANALYSIS
 
-semcode MCP is **not available**; used grep/read.
-
 **Step 5.1: KEY FUNCTIONS**
-Record: **`cqspi_write_setup()`** only.
+
+Record: `bcmbca_hsspi_suspend()` (modified). Callees of interest:
+`spi_controller_suspend()`, `spi_stop_queue()`,
+`clk_disable_unprepare()`.
 
 **Step 5.2: TRACE CALLERS**
-Record:
-- `cqspi_write_setup` ← `cqspi_write` ← `cqspi_mem_process` ←
-  `cqspi_exec_mem_op` (`spi_controller_mem_ops.exec_op`)
-- After a data write, spi-nor/spi-nand poll RDSR via
-  **`cqspi_command_read()` (STIG)** when the op has no address or is a
-  small register read (`nbytes <= STIG max`).
-- Context: process context, MTD/spi-mem, not IRQ.
+
+Record: Wired via `DEFINE_SIMPLE_DEV_PM_OPS(bcmbca_hsspi_pm_ops, …)` /
+`.pm` on the platform driver. Called from the PM core on **system
+sleep**, not from syscalls directly. Reachable on BCMBCA boards that
+suspend with `CONFIG_SPI_BCMBCA_HSSPI` and `CONFIG_PM_SLEEP`.
 
 **Step 5.3: TRACE CALLEES**
-Record: `cqspi_enable_dtr`, `writel` of WR/RD_INSTR and
-WR_COMPLETION_CTRL, then size register. No alloc/locks.
+
+Record:
+- `spi_controller_suspend()` → `spi_stop_queue()` if queued; always
+  `__spi_mark_suspended()`.
+- Then (success only, after this patch) clock disable.
 
 **Step 5.4: FOLLOW THE CALL CHAIN**
-Record: Userspace/MTD write/erase → spi-nor `spi_nor_octal_dtr_write` /
-page program → exec_op write → `cqspi_write_setup` programs
-WR_COMPLETION_CTRL → `spi_nor_read_sr()` issues RDSR (0x05; in 8-8-8 DTR
-also dummy/addr and 2 data bytes) → STIG. **Reachable on every flash
-write** on Cadence OSPI with wr_completion. Not a syscall UAF, but
-boot/rootfs-on-OSPI is a common embedded path.
+
+Record:
+`pm_suspend` → `dpm_suspend` → `bcmbca_hsspi_suspend` →
+`spi_controller_suspend` → `spi_stop_queue`.
+
+In-flight work is `bcmbca_hsspi_transfer_one` → `bcmbca_hsspi_do_txrx`
+doing `__raw_readl`/`__raw_writel` on `bs->regs`. Yanking clocks while
+that runs is a hang/abort/corruption path. Userspace can keep the queue
+busy (SPI flash, sensors) across a suspend request.
 
 **Step 5.5: SEARCH FOR SIMILAR PATTERNS**
-Record: `WR_COMPLETION_CTRL` is only written here. Platforms with
-`CQSPI_NO_SUPPORT_WR_COMPLETION` skip it (SoCFPGA, Mobileye EyeQ5).
+
+Record: Most SPI drivers in this tree already check
+`spi_controller_suspend()` (dw, tegra, rockchip, qup, pxa2xx, atmel, …).
+This driver was an outlier. Same author’s bcm63xx/bcm-qspi patches fix
+the same pattern.
 
 ---
 
 ## PHASE 6: CROSS-REFERENCING AGAINST THE LOCAL TREE
 
 **Step 6.1: DOES THE BUGGY CODE EXIST IN THIS TREE?**
-Record: **Yes.** At **v6.18.57** `cqspi_write_setup()` still does the
-RMW. Tree: `git describe HEAD` = **v6.18.57-155-gcdf239ca885b2**, `make
-kernelversion` = **6.18.57**. DTR (`cqspi_mem_caps.dtr = true`,
-`cqspi_enable_dtr`) and octal (`CQSPI_SUPPORTS_OCTAL` on TI AM654 and
-Versal) are here. spi-nor has `SNOR_PROTO_8_8_8_DTR` and
-`spi_nor_read_sr()` DTR RDSR.
+
+Record: **Yes.** `v6.18.53:drivers/spi/spi-bcmbca-hsspi.c` still has:
+
+```c
+spi_controller_suspend(host);
+clk_disable_unprepare(bs->pll_clk);
+clk_disable_unprepare(bs->clk);
+return 0;
+```
+
+`git merge-base --is-ancestor 072b287a97bf3 v6.18.53` → **not an
+ancestor**. Bug introduced in v6.3, still in 6.18.53.
 
 **Step 6.2: CHECK FOR BACKPORT COMPLICATIONS**
-Record: **Clean apply** to v6.18.57. Surrounding function matches the
-hunk exactly.
+
+Record: **Clean apply.** `git diff v6.18.53 072b287a97bf3^ --
+drivers/spi/spi-bcmbca-hsspi.c` is empty. No rework needed. Later
+“modern PM macros” commit is unrelated and not required.
 
 **Step 6.3: CHECK IF RELATED FIXES ARE ALREADY HERE**
-Record: No other commit in this tree fixes OPCODE_FLD vs STIG. This
-candidate is the first.
+
+Record: Resume-side `148a3f03aec89` **is** in v6.18.53. No other
+suspend-error check for this function. This is the missing counterpart,
+not a duplicate.
 
 ---
 
 ## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
 
-**Step 7.1: IDENTIFY THE SUBSYSTEM AND ITS CRITICALITY**
-Record: **drivers/spi** Cadence Quad SPI (`CONFIG_SPI_CADENCE_QUADSPI`).
-**IMPORTANT** for embedded: TI K3 OSPI (`ti,am654-ospi`), AMD/Xilinx
-Versal OSPI, plus JH7110, Intel LGM, etc. Often **boot/root filesystem
-flash**. Not core mm/VFS, not staging.
+**Step 7.1: SUBSYSTEM AND CRITICALITY**
 
-**Step 7.2: ASSESS SUBSYSTEM ACTIVITY**
-Record: Actively maintained (PM, clocks, DMA) but this programming
-sequence has been stable since 2021.
+Record: **drivers/spi** — Broadcom BCMBCA HSSPI
+(`CONFIG_SPI_BCMBCA_HSSPI`, `depends on ARCH_BCMBCA || COMPILE_TEST`).
+**PERIPHERAL / platform-specific**, but SPI NOR on those SoCs is often
+boot/config flash, so a bad suspend is not cosmetic.
+
+**Step 7.2: SUBSYSTEM ACTIVITY**
+
+Record: SPI core is mature; this driver is small and not heavily
+churned. Bug is long-standing (since v6.3), not a brand-new feature.
 
 ---
 
 ## PHASE 8: IMPACT AND RISK ASSESSMENT
 
-**Step 8.1: DETERMINE WHO IS AFFECTED**
-Record: **Driver-specific**, especially **octal DTR** on controllers
-that **have** write-completion (TI AM654/K3 OSPI, Versal OSPI).
-SoCFPGA/Mobileye skip the register. SDR of the same chips is reported
-working.
+**Step 8.1: WHO IS AFFECTED**
 
-**Step 8.2: DETERMINE THE TRIGGER CONDITIONS**
-Record: Flash write/erase then software RDSR poll in **8-8-8 DTR**.
-Needs octal-capable controller + ODTR NOR/NAND. Not unprivileged-attack
-surface; typically MTD from kernel/root. Timing-independent once ODTR is
-on — author reproduced it.
+Record: **Platform-specific** — Broadcom BCMBCA (ARM/ARM64 broadband
+SoCs: gateways/routers). Only if the HSSPI driver and system sleep are
+enabled.
 
-**Step 8.3: DETERMINE THE FAILURE MODE SEVERITY**
+**Step 8.2: TRIGGER CONDITIONS**
+
+Record: System suspend while the SPI queue stays busy for ~5 seconds
+(`spi_stop_queue` limit). Uncommon, but exactly the dangerous case
+(stuck or long transfer). Not a syzbot syscall crash; can be induced by
+userspace SPI activity plus suspend. Unprivileged trigger depends on who
+can open the SPI device and who can suspend (typically privileged).
+
+**Step 8.3: FAILURE MODE SEVERITY**
+
 Record:
-- **Failure:** RDSR returns 0 (lines held low). WIP=0 can look like “not
-  busy” while a program/erase is still running → **failed writes or
-  flash corruption**. Or ops just fail.
-- **Severity: HIGH** (flash integrity on OSPI-boot systems). Not a KASAN
-  crash, but real storage failure.
+- Clocks gated while the pump may still MMIO → bus hang, imprecise
+  abort, or torn SPI NOR write.
+- PM core is told suspend succeeded, so the machine continues into sleep
+  with live SPI I/O unclocked.
+- **Severity: HIGH** when it hits (corruption/hang); trigger is
+  uncommon.
 
-**Step 8.4: CALCULATE RISK-BENEFIT RATIO**
+**Step 8.4: RISK-BENEFIT RATIO**
+
 Record:
-- **Benefit: high** for ODTR-on-Cadence-QSPI users (TI K3, Versal, …)
-- **Risk: very low** (1–3 lines, poll already off, quirk skips broken
-  IP)
-- **Ratio: strongly favors backport**
+- **Benefit:** medium-high for BCMBCA devices that suspend; prevents
+  clock-off during active SPI. Completes PM error handling already fixed
+  on resume in this tree.
+- **Risk:** very low (5 lines, standard pattern). Residual:
+  `SPI_CONTROLLER_SUSPENDED` can stick if suspend fails (SPI core). That
+  already exists for the majority of SPI drivers here; old code still
+  set the flag **and** cut clocks.
+- **Ratio:** benefit outweighs risk.
 
 ---
 
 ## PHASE 9: FINAL SYNTHESIS
 
-**Step 9.1: COMPILE THE EVIDENCE**
+**Step 9.1: EVIDENCE**
 
-**FOR:**
-- Real, reproduced bug: ODTR status poll returns all 0s
-- TRM forbids this opcode collision
-- Possible **write-completion mis-detect / flash corruption**
-- 3-line, obviously correct, no new API
-- Code has been wrong in this tree since 2021; DTR/octal already exist
-- Applies cleanly to v6.18.57
-- Author is MTD maintainer; SPI maintainer applied it
-- Hardware-programming workaround (stable exception class)
+**For backporting:**
+- Real PM bug: ignored `-EBUSY` from `spi_controller_suspend()`, then
+  clock disable + `return 0`.
+- Can unclock MMIO and corrupt in-flight SPI (including flash).
+- 5-line, obviously correct, maintainer-applied (Mark Brown).
+- Driver and buggy code exist in **this** 6.18.53 tree since v6.3.
+- Applies cleanly; no prerequisites.
+- Same class as the resume fix already in 6.18.53.
+- Aligns this outlier with the rest of the SPI subsystem.
 
-**AGAINST:**
-- No Fixes:/Cc: stable (not a negative per rules)
-- No extra reviewers; applied to **for-7.3** not as an -rc hotfix
-- Author is not 100% sure of the internal ODTR datapath (“wild guess”)
-- Hits ODTR more than SDR; fewer machines than a core-mm bug
-- Writes the whole register, not only OPCODE_FLD (still safe with poll
-  disabled)
+**Against:**
+- No user/syzbot report; error path is uncommon (~5 s busy).
+- Platform-specific (not all machines).
+- Incomplete vs an unwind via `spi_controller_resume()` (SPI core marks
+  suspended on failure).
+- No Fixes/Cc:stable (expected here; not a reason to reject).
 
-**UNRESOLVED:** Exact on-wire ODTR sequence (author could not probe). No
-stable-list thread. Unverified whether every Cypress Semper setup
-already failed the same way (Winbond exposed it; TRM still applies).
+**Unresolved:**
+- Could not fetch lore.kernel.org (403). Thread recovered via `b4 dig`
+  mbox + LKML/openwall. No stable@ discussion found.
 
-**Step 9.2: APPLY THE STABLE RULES CHECKLIST**
-1. Obviously correct and tested? **PASS** — TRM + reproduced ODTR
-   failure; maintainer applied
-2. Fixes a real bug that affects users? **PASS** — OSPI flash status
-   poll broken in ODTR
-3. Important issue? **PASS** — HIGH: failed program/erase or false
-   “ready” (corruption risk)
-4. Small and contained? **PASS** — +1/−2, one function
+**Step 9.2: STABLE RULES CHECKLIST**
+
+1. Obviously correct and tested? **PASS** — applied by SPI maintainer;
+   pattern used across `drivers/spi`.
+2. Fixes a real bug that affects users? **PASS** — ignored suspend
+   failure + clock teardown.
+3. Important issue? **PASS** — hang/abort/data corruption on active SPI
+   during suspend, not a style tweak.
+4. Small and contained? **PASS** — +5/−1, one function.
 5. No new features or APIs? **PASS**
-6. Can apply to the local tree? **PASS** — v6.18.57 has the RMW; empty
-   diff vs parent file
+6. Can apply to the local tree? **PASS** — clean on v6.18.53.
 
-**Step 9.3: CHECK FOR EXCEPTION CATEGORIES**
-Record: **Hardware workaround** for Cadence OSPI write-completion vs
-STIG RDSR. Not a new driver/API.
+**Step 9.3: EXCEPTION CATEGORIES**
 
-**Step 9.4: MAKE YOUR DECISION**
-This belongs on 6.18.y: the buggy RMW is in this tree, octal DTR is
-supported, the fix is tiny, and the failure is flash status polling — a
-data-integrity problem on platforms that boot from OSPI.
+Record: Not a device-ID/quirk/DT/build/doc exception. Ordinary small
+bugfix.
+
+**Step 9.4: DECISION**
+
+This belongs in this 6.18.y tree. The bug is in the tree, the fix is
+surgical, and leaving clocks on when the queue cannot stop is the
+correct hardware behavior.
 
 ---
 
-### Problem and why it matters here
-`cqspi_write_setup()` disables controller auto-poll but left
-`WRITE_COMPLETION_CTRL.OPCODE_FLD` at the reset default **0x05**.
-Software RDSR also uses 0x05 in STIG. The Cadence TRM forbids that
-match. In octal DTR, status reads come back 0, so WIP can look clear
-while the chip is still busy. On TI AM654/K3 and Versal OSPI that is
-boot/storage flash, not a niche sysfs knob.
+### Problem for stable users
+
+On Broadcom BCMBCA HSSPI, suspend called `spi_controller_suspend()`
+(which can return `-EBUSY` after ~5 s if transfers will not stop) and
+then **always** disabled PLL/core clocks and returned success. That can
+cut clocks under a live transfer (`bcmbca_hsspi_do_txrx` MMIO). This
+tree already fixed the matching resume error path; suspend was still
+wrong.
 
 ### Stable rules / risk
-Surgical, no new ABI, applies to **this** 6.18.57 tree without
-prerequisites. Benefit (correct ODTR status, avoid bad write completion)
-dwarfs the risk of writing BIT(14) instead of RMW.
 
-### Verification
-- **[Phase 1]** Tags: Link to msgid `20261001-winbond-spi-next-cadence-
-  rdsr-fix-v1-1-…`; SOB Miquel Raynal + Mark Brown; no Fixes/Reported-
-  by/Cc: stable
-- **[Phase 2]** Diff: `cqspi_write_setup()` RMW → `reg =
-  CQSPI_REG_WR_DISABLE_AUTO_POLL` (+1/−2)
-- **[Phase 3]** blame: RMW from `9cb2ff11171264` (2021); wr_completion
-  gate `98d948eb833104`; DTR `f453f293979fb`; all ancestors of HEAD
-- **[Phase 3]** `git merge-base --is-ancestor 9cb2ff11171264 HEAD` → yes
-- **[Phase 3]** `git diff v6.18.57 a1536ec7381c3^ -- drivers/spi/spi-
-  cadence-quadspi.c` → 0 lines (clean apply)
-- **[Phase 4]** `b4 dig -c fd99864b0ac9`: lore/patch.msgid.link match;
-  `-a` v1 only; `-w` Broonie/TI/Winbond/linux-spi; mbox: Applied
-  **for-7.3**, no NAK
-- **[Phase 4]** lore.kernel.org WebFetch → 403; recovered via `b4 -m` +
-  patchew
-- **[Phase 4]** stable lore search: no hits
-- **[Phase 5]** callers: `cqspi_write` → `cqspi_mem_process` →
-  `cqspi_exec_mem_op`; RDSR via `cqspi_command_read` STIG;
-  `spi_nor_read_sr()` DTR path in `drivers/mtd/spi-nor/core.c`
-- **[Phase 6]** `git describe HEAD` = v6.18.57-155-gcdf239ca885b2; `make
-  kernelversion` = 6.18.57; v6.18.57 still has the RMW
-- **[Phase 6]** octal platdata: `am654_ospi`, `versal_ospi`,
-  `versal2_ospi` have `CQSPI_SUPPORTS_OCTAL` and wr_completion;
-  SoCFPGA/Mobileye set `CQSPI_NO_SUPPORT_WR_COMPLETION`
-- **[Phase 7]** `CONFIG_SPI_CADENCE_QUADSPI`; compatibles include
-  `ti,am654-ospi`, `xlnx,versal-ospi-1.0`
-- **[Phase 8]** Failure: ODTR RDSR all 0s → false ready / failed flash
-  ops; severity HIGH
-- **UNVERIFIED:** on-wire ODTR collision (author could not probe);
-  whether every Cypress Semper board already failed identically
-- **semcode:** namespace not available
+Meets the rules: real bug, small, no new API, clean apply to 6.18.53.
+Risk is a few lines in one PM callback. Benefit is avoiding unclocked
+SPI and false-successful suspend.
 
-The patch is a small, correct hardware programming fix for a real flash-
-status bug that exists in this 6.18.y tree.
+### Concerns
+
+No extra commits needed. Sashiko’s “stuck SUSPENDED flag” note is a SPI-
+core limitation already shared by most drivers; it does not make the old
+“disable clocks anyway” path acceptable.
+
+---
+
+Verification:
+- [Phase 1] Parsed subject/tags/body from `git show 072b287a97bf3` /
+  upstream `faa878d4805c`; no Fixes/Reported-by; Link to msgid; Mark
+  Brown SOB
+- [Phase 2] Diff: +5/−1 in `bcmbca_hsspi_suspend()`; ignore →
+  check/return
+- [Phase 2] `spi_controller_suspend()` / `spi_stop_queue()` in
+  `drivers/spi/spi.c`: queued controllers can return `-EBUSY`;
+  `__spi_mark_suspended()` always runs
+- [Phase 2] Driver sets `transfer_one_message`;
+  `spi_register_controller()` initializes the queue (`ctlr->queued =
+  true`)
+- [Phase 3] `git blame 072b287a97bf3^`: buggy lines from `a38a2233f23b5`
+  (v6.3-rc1)
+- [Phase 3] `git log --oneline -- drivers/spi/spi-bcmbca-hsspi.c`:
+  resume fix `148a3f03aec89` already in v6.18.53; this commit not in
+  v6.18.53
+- [Phase 3] `git merge-base --is-ancestor 072b287a97bf3 v6.18.53` → no;
+  `git diff v6.18.53 072b287a97bf3^ -- drivers/spi/spi-bcmbca-hsspi.c` →
+  0 lines
+- [Phase 3] Author series via `git log --author="Jiawen Liu" --
+  drivers/spi/`
+- [Phase 4] `b4 dig -c faa878d4805c` / `-a` / `-w` / `-m`: v1 2/4,
+  independent series, applied by Mark Brown 2026-06-30; Broadcom/SPI
+  lists on Cc
+- [Phase 4] Cover letter from lkml.iu.edu: patches independent
+- [Phase 4] sashiko-bot mbox msg: SUSPENDED-flag concern; no NAK from
+  maintainer
+- [Phase 4] lore.kernel.org WebFetch 403; stable@ search found nothing
+  relevant — UNVERIFIED no stable@ thread
+- [Phase 5] Callers: PM ops only; callees: `spi_controller_suspend`,
+  `clk_disable_unprepare`; transfer path uses MMIO
+- [Phase 5] Similar pattern already in `spi-rockchip.c` and many other
+  SPI drivers
+- [Phase 6] `git describe HEAD` → `v6.18.53-5049-g0f0bdc2b0dffb`; `make
+  kernelversion` → 6.18.53; buggy suspend in `v6.18.53` file
+- [Phase 7] `CONFIG_SPI_BCMBCA_HSSPI` depends on `ARCH_BCMBCA`
+- [Phase 8] Failure mode: unclocked SPI MMIO / possible flash
+  corruption; trigger = suspend with busy queue for ~5 s
+- UNVERIFIED: live user reports of this suspend path; full
+  lore.kernel.org HTML (403)
 
 **YES**
 
- drivers/spi/spi-cadence-quadspi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-bcmbca-hsspi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 0a32e28eefd51..441426bc232ef 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1058,8 +1058,7 @@ static int cqspi_write_setup(struct cqspi_flash_pdata *f_pdata,
- 	 * care of polling the status register.
- 	 */
- 	if (cqspi->wr_completion) {
--		reg = readl(reg_base + CQSPI_REG_WR_COMPLETION_CTRL);
--		reg |= CQSPI_REG_WR_DISABLE_AUTO_POLL;
-+		reg = CQSPI_REG_WR_DISABLE_AUTO_POLL;
- 		writel(reg, reg_base + CQSPI_REG_WR_COMPLETION_CTRL);
- 		/*
- 		 * DAC mode require auto polling as flash needs to be polled
+diff --git a/drivers/spi/spi-bcmbca-hsspi.c b/drivers/spi/spi-bcmbca-hsspi.c
+index a1ff33f6dc095..50beb8443ea90 100644
+--- a/drivers/spi/spi-bcmbca-hsspi.c
++++ b/drivers/spi/spi-bcmbca-hsspi.c
+@@ -586,8 +586,12 @@ static int bcmbca_hsspi_suspend(struct device *dev)
+ {
+ 	struct spi_controller *host = dev_get_drvdata(dev);
+ 	struct bcmbca_hsspi *bs = spi_controller_get_devdata(host);
++	int ret;
++
++	ret = spi_controller_suspend(host);
++	if (ret)
++		return ret;
+ 
+-	spi_controller_suspend(host);
+ 	clk_disable_unprepare(bs->pll_clk);
+ 	clk_disable_unprepare(bs->clk);
+ 
 -- 
 2.53.0
 

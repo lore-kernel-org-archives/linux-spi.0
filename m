@@ -1,72 +1,54 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792518457;
-	b=zjWm7fuQeyRzhzxwvPXwyPyK7sZYGDnWa+i3XbhMJOuvHgYv6/Y17D2fYEdyH+FqxAMe
-	 kRytRTh+3eLJKIwQsgKiadn2sGurjd7FEGBlyfC1DNZGqkdWl5+/vz5DjnIt0f/ELk8GP
-	 6TIKAq1tAxRi3UqU9sKN5P7UrjmMY7EmVkE4GRF9SRx0KnDqt2EM+MVM8PuKOb5B2c2xM
-	 luwnoIL3dJ3BBaoDX1Dl9FMqrZMKhHU2vY1FzciY+w1P2SQZFKir2hbKtWnCGyahXn3Ux
-	 PtUEnRAkI+rKCvJ6YtBBaYCLXVTN9QYv+1S9iGh/0b/j/qsVngF8cR3zZ7RkCtPCn8Q==
+	t=1792519040;
+	b=FogTSuEcfYkMl3fZd+xwUyXg+ngzDxGVvWLh9RZpVmAoCWQrQQvoR6G7hPXkcrc5f3hJ
+	 JqZJzAko6+mwZWmpvzoROLHdA3vKpxFFfEO9xK/p+XD65+0rKDa2B4vUp9/FiI3dcWHGM
+	 UIhS7ZcvUCXACMLSrug8OpvXioW/UMYpAtLxba1IBa2lXekpfodJ9BGeOXDZ5/ItyBqbz
+	 JHB5350kka7s/zDoDo4EuK1z/JdtjDn1CjIAURyFMvDGLPLwfEnjXYkmbrh0dS0rybp0U
+	 R5YSnWJvs/ABUEo7VxbHkwf/++KbbNN8WrIIpTQVo5t+hLVYSxMj2rUooECFOV+/2yg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792518457;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=HAHTPseBysoQyjFWdWhxEUoIlAFSx4P0uFPxuTZC58E=;
-	b=smb4Jc+a5a1XM2LYKVQf6zWxcFgrMlenHB9wkPpYAESb50liPqL6LRws3ZYYSQOTWKlU
-	 c2zFYqTQx2zJZsoGmy1eLU2Wvayix28rKuDpwQkfaybD3Tvdr4ZycAHLeJVdSw1NibCkF
-	 cZbnEt9Kcu813TMJtHhvuLE3+I/7SYvDPIZpHvj3a6zmkrcSM1rMuyXNSG8pCn/4RXT/R
-	 jgwHuA1/5BJ7NT+4xsQxLn4wL+5Sqjrv/DkkkugT8HceCaN4/WDq4lu1ngy1gd9CPLt/Q
-	 IqM3iYEKjutzoNBnnVE3G24intJoc9rQQKJlCJPisOqgHuVwO7y//obe6sL/e/MbbWg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792519040;
+	h=Received:Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To;
+	bh=qqjC+9vmR2qBmvg53MTaGTLKHl+DN6yRypiyKqm8GmQ=;
+	b=ngqiqLjZbEd0hucJ2plArf1xMozRN3GO7n8Ri5hVaXBmESUwbJvLK/a/YpYwmrCC/DbL
+	 h5KMkgpkaCPOyeGHdtty0BaeQ+1eawYzAjscYnhTcIYaWBIuzAOcTYAMflUhGvXQShIea
+	 aOo4/HN8Iz/x6rRl6wpG8qqtbgLLM5G5pvAzNsDjXNjI+A+0ZdkdDZ/wflNixfz4uH3GR
+	 LGDN9B8Y0DMC7d/1BKRxU8X2JRK/XIpT7BCCWqMqPyGuNgnOgYgseErci06M+tg4yTTu0
+	 AfnWdBZw1BMbYSMzSMbKXjGuqVkhpKxt7iWOm5LB/DtucthfuG3omtXg5m6jnq1Vxug==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T5klA8w8;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14390606A319;
-	Tue, 20 Oct 2026 17:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T5klA8w8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C7C1F000C9;
-	Tue, 20 Oct 2026 17:47:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792518456;
-	bh=HAHTPseBysoQyjFWdWhxEUoIlAFSx4P0uFPxuTZC58E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T5klA8w8ldhaGXex5p2C1vk2XmCWEI5ePLrDsiyhXLVFchdZEn+v5/j//jHND7keT
-	 Meqe1HYRaPtXccMkRp824RMlBY/ggOISFpPO91xfQXQlxRa2BEF/hHxRG/jK8L1CgQ
-	 9muVPdNXFcV74oJ2Dgz4HaRViQo1tQbIdaPr+01vyY4wLmybDhkP+Vl1I+bioV+Ygq
-	 uCkDYDCq983KX1BvcP2HAwIVds8N7k+Rqtsxjca0Ovu269GytYQIsu/QGvdh3m3Bcg
-	 UwXzztQF8VoJ3nyz6bU2aIRxqOIpInSrUm2TtfG3URLEtNoUiddkCE0GL6sKdGKVFJ
-	 c6nOo9rgiy+pg==
-Date: Tue, 20 Oct 2026 18:47:29 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9103606A319;
+	Tue, 20 Oct 2026 17:57:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1A81F000CA;
+	Tue, 20 Oct 2026 17:57:14 +0000 (UTC)
+Date: Tue, 20 Oct 2026 18:57:12 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+To: Jingyuan Liang <jingyliang@chromium.org>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
-	Brian Masney <bmasney+clk@redhat.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-i3c@lists.infradead.org, mfd@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 04/20] dt-bindings: i3c: dw: support up to two reset lines
-Message-ID: <20261020-endocrine-crown-c6d3c83cf436@spud>
-References: <20260929061417.20733-1-jszhang@kernel.org>
- <20260929061417.20733-5-jszhang@kernel.org>
- <80b084d130b7dc7406ae23e54a77706a4f42b606.camel@pengutronix.de>
- <ata--JFFUzSoMock@xhacker>
+	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, hbarnor@chromium.org,
+	tfiga@chromium.org, fqwqf@fqwqf.xyz, daleyo@gmail.com,
+	Dmitry Antipov <dmanti@microsoft.com>,
+	Jarrett Schultz <jaschultz@microsoft.com>
+Subject: Re: [PATCH v6 08/11] dt-bindings: input: Document hid-over-spi DT
+ schema
+Message-ID: <20261020-breach-aim-4a497c0089e6@spud>
+References: <20261019-send-upstream-v6-0-cb9ba4b3d6fa@chromium.org>
+ <20261019-send-upstream-v6-8-cb9ba4b3d6fa@chromium.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -77,47 +59,211 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PF0S8SXN4APeQtUF"
+	protocol="application/pgp-signature"; boundary="jkzaY7ASZ64whAJj"
 Content-Disposition: inline
-In-Reply-To: <ata--JFFUzSoMock@xhacker>
+In-Reply-To: <20261019-send-upstream-v6-8-cb9ba4b3d6fa@chromium.org>
 
---PF0S8SXN4APeQtUF
+--jkzaY7ASZ64whAJj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2026 at 09:08:08AM +0800, Jisheng Zhang wrote:
-> On Mon, Oct 19, 2026 at 02:55:14PM +0200, Philipp Zabel wrote:
-> > On Di, 2026-09-29 at 14:14 +0800, Jisheng Zhang wrote:
-> > > The Synopsys DesignWare I3C master controller can have multiple reset
-> > > lines, such as core reset, apb reset, and dma reset.
-> > >=20
-> > > Update the DT binding documentation to increase maxItems for the rese=
-ts
-> > > property to 2.
-> >=20
-> > The last sentence just listed three reset lines. Why increase to 2?
+On Mon, Oct 19, 2026 at 07:01:20PM +0000, Jingyuan Liang wrote:
+> Documentation describes the required and optional properties for
+> implementing Device Tree for a Microsoft G6 Touch Digitizer that
+> supports HID over SPI Protocol 1.0 specification.
 >=20
-> Per the doc, the last one is dma reset, currently dw I3C driver doesn't s=
-upport dma.
-> And increasing it to 3 is still dt compatible. Maybe I misunderstood
-> something. what's more, I don't have platforms with all 3 resets to test =
-and verify.
+> The properties are common to HID over SPI.
 >=20
-> If dt maintainers prefer 3 in one step, I will sent out a follow-up patch.
+> Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+> Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
+> Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
 
-I think you can increase it to 3 globally, then restrict to 1 for the
-altera device and 2 for your new one.
+Signoff chain is not right, since the nominal patch author is the last
+signoff.
 
---PF0S8SXN4APeQtUF
+> ---
+>  .../devicetree/bindings/input/hid-over-spi.yaml    | 130 +++++++++++++++=
+++++++
+>  1 file changed, 130 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yaml b/=
+Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> new file mode 100644
+> index 000000000000..2a5fa0868a09
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> @@ -0,0 +1,130 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/hid-over-spi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: HID over SPI Devices
+> +
+> +maintainers:
+> +  - Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> +  - Jiri Kosina <jkosina@suse.cz>
+> +  - Jingyuan Liang <jingyliang@chromium.org>
+> +
+> +description: |+
+> +  HID over SPI provides support for various Human Interface Devices over=
+ the
+> +  SPI bus. These devices can be for example touchpads, keyboards, touch =
+screens
+> +  or sensors.
+> +
+> +  The specification has been written by Microsoft and is currently avail=
+able
+> +  here: https://www.microsoft.com/en-us/download/details.aspx?id=3D103325
+> +
+> +  The HID over SPI specification does not define fixed values for the
+> +  read/write opcodes and the input/output report addresses. The host
+> +  retrieves them from platform firmware (ACPI _DSM), and they differ
+> +  between devices. These properties provide the same values on Device
+> +  Tree systems, so devices that fully comply with the specification work
+> +  with the "hid-over-spi" fallback compatible.
+> +
+> +allOf:
+> +  - $ref: /schemas/input/touchscreen/touchscreen.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - microsoft,g6-touch-digitizer
+> +      - const: hid-over-spi
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description:
+> +      GPIO specifier for the device's reset line. The HID over SPI
+> +      specification requires a dedicated, host-driven, active-low reset
+> +      line. The line must be flagged with GPIO_ACTIVE_LOW.
+> +
+> +  vdd-supply:
+> +    description:
+> +      Regulator for the VDD supply voltage.
+> +
+> +  input-report-header-address:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 0
+> +    maximum: 0xffffff
+> +    description:
+> +      A value to be included in the Read Approval packet, listing an add=
+ress of
+> +      the input report header to be put on the SPI bus. This address has=
+ 24
+> +      bits.
+> +
+> +  input-report-body-address:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 0
+> +    maximum: 0xffffff
+> +    description:
+> +      A value to be included in the Read Approval packet, listing an add=
+ress of
+> +      the input report body to be put on the SPI bus. This address has 2=
+4 bits.
+> +
+> +  output-report-address:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 0
+> +    maximum: 0xffffff
+> +    description:
+> +      A value to be included in the Output Report sent by the host, list=
+ing an
+> +      address where the output report on the SPI bus is to be written to=
+=2E This
+> +      address has 24 bits.
+> +
+> +  read-opcode:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    description:
+> +      Value to be used in Read Approval packets. 1 byte.
+> +
+> +  write-opcode:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    description:
+> +      Value to be used in Output Report packets. 1 byte.
+
+I still dunno why any of these properties exist, especially when there's
+a patch in my queue for another microsoft touch device on top of
+this series that does not use any of them.
+
+The commit message really needs to explain why these exist and why
+compatibles cannot be used to determine these things - as is done for
+the microsoft,romulus13-touchpad. If the very next device that appears
+seems to require a specific compatible and cannot use these properties
+to get across what's needed to the kernel it calls into question why
+the binding is designed like this.
+
+pw-bot: changes-requested
+
+Thanks,
+Conor.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - reset-gpios
+> +  - vdd-supply
+> +  - input-report-header-address
+> +  - input-report-body-address
+> +  - output-report-address
+> +  - read-opcode
+> +  - write-opcode
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      hid@0 {
+> +        compatible =3D "microsoft,g6-touch-digitizer", "hid-over-spi";
+> +        reg =3D <0x0>;
+> +        interrupts-extended =3D <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
+> +        reset-gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
+> +        vdd-supply =3D <&pm8350c_l3>;
+> +        pinctrl-names =3D "default";
+> +        pinctrl-0 =3D <&ts_d6_int_bias>;
+> +        input-report-header-address =3D <0x1000>;
+> +        input-report-body-address =3D <0x1004>;
+> +        output-report-address =3D <0x2000>;
+> +        read-opcode =3D /bits/ 8 <0x0b>;
+> +        write-opcode =3D /bits/ 8 <0x02>;
+> +      };
+> +    };
+>=20
+> --=20
+> 2.56.0.212.g129ede20d9-goog
+>=20
+
+--jkzaY7ASZ64whAJj
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCatepLgAKCRB4tDGHoIJi
-0nTbAP41tIofP+UpvSN0IwKJvT76VMbRwSrA7SIYBjKeyCaPgwEA7iCZGXK59MXH
-F8eKb5c+ngwawXhmX7aqW4NflYqjyAY=
-=Yxu4
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCatereAAKCRB4tDGHoIJi
+0kWEAP9dgTuujf71BJq09846TgyNaj2epPE0o1kSGsd+fzTndAEA9nnH5FZ9TH7F
+cn2fMuPCManlEJTNSGD9qNKV2OnJMQs=
+=RKkd
 -----END PGP SIGNATURE-----
 
---PF0S8SXN4APeQtUF--
+--jkzaY7ASZ64whAJj--

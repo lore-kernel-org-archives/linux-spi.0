@@ -1,97 +1,44 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792669887;
-	b=YFAQ338BEXuf3Sc2okbrAqa3Z8eI9X9BIchK3k8WHENsQTG9xq9KbNasrp0zGVAvHvVI
-	 Tyb0uTARE65cxs8gA9C6Oa+gRtIKUvGqhSjpXUeZBTJ3GIL+DyC7bLAFr3IluFhRK4eaK
-	 2WRrrvYENp5ijgPg/vM2fYscA5fTYhyMbObpwyib7nKwC0HF8cttkd4AJ7/k7qWn/UpCB
-	 +WcecbacZwa5dnQzrsO9sqggPqvoODQlNLyY3EqE1A/IGio2elKcM5rr+YAjP/nMamN/K
-	 aP2RcZmyZoZ3O9Q0FQfV4kL6RIrh3woT/Q4QSbl1I63hl4jQujGsGi9y/Y5t+Qa/bEQ==
+	t=1792671572;
+	b=AK7n5G1GdZY2vT1q7FLhKgbII1nxyFuIa3u90svfAe/ZkntmypJVlRkt3Iz9S0f19dv2
+	 wX4S5rzEg/pMizSUqQyv+YCQ/m79mokbzsvX9/Sf3+y7Z3Nn8CjsmLkKHpTWJXGEzPRvr
+	 FM6ihpaFJ1/c+DODvKzhnrL1DQ+oCkRAXTfUc/AJO+tMlfJGHPs70KGe7tQq82CbN+FjW
+	 Ff9MPNmtim+E3Nbjm81JYdDltf2GPSCWdVWgN+oEanYSvq0vm0Bva8VRH7ZTvECvIyDl/
+	 JTV66bjQn/g8UjCFk3ox9vCs4pEQbcTHDay3X4mIkPa9KcwsSRRUgMaKX4oPgq7jh2A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792669887;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:X-Mailer:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding;
-	bh=/TXd5dPmQW/FdjoYQcFG1PodSXgdJZsvkRdQUDNsOjE=;
-	b=kEwXvLFgAU/9EXv9BR6pWpxIs001tFaz+Kx3jqE5vi5aqWbN8TmioQsKq26qhonWgOHA
-	 fxGKQB/zUIbpabjKF1jDxX30qRMseOE63uRemTUfe4QqqOUxiAeqw44W3RRl9uGH6O7dJ
-	 GRNXj7DU39gf3bQRDS/cxBr5IbsVOh8lbOqCKlveF+lF7naKtsrkNkc3+mg47lTYJUg4h
-	 j6YtY+Govf+PUM8PE819XoX+VSMX5GZaHeDC72tKDx8DhD/AN0UWFXfwTCeM61wPKjibJ
-	 hnmQ0ckpNeY4krkvDxRDQKnePtWL/aDPFoM7TxIipRprY4g+GYmtJVc0xXTkwCOmsTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792671572;
+	h=Received:DKIM-Signature:Mime-Version:Content-Type:Date:Message-Id:
+	 Subject:Cc:From:To:X-Mailer:References:In-Reply-To;
+	bh=OklgHJFN1eZ/51mpY2UmRhLUFr3RqxZaXQXuRRPUEdE=;
+	b=c1fj6Hjzw7VR5/xVDyCYoQwq0187ySBu2aY7eHxY7n2QWuslUCNNnyr81xzuFyIN3aiQ
+	 hxU54KbpT5/CFe6ReWD9wy292d4mQiF3QSL98nreLvPe551I9QjSBaFOhOOTcm1SH9nMH
+	 xCQ7qIbk7HfbAsrpQ6Fx+P4yXmJHf56Ly9HRpik6oAOuiqAN8JdEjVLTd6awqy6Y6Nmx6
+	 hR3TAtPlCVrJtWl6Lxau2NajlrXBaUyvlHkv0Sju3WI2RzAf1K1OcKCoyxjtY4yu86g++
+	 urpKwgYk4gzPVlQjUIPMJx3HgwayyAM4vgErfRxdjUYuot5d2GqIjaHni1ttf7UUhXg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BJmlrutD;
-	arc=none smtp.remote-ip=209.85.221.49
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldMZPbdg;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987A0606A31D
-	for <linux-spi@vger.kernel.org>; Thu, 22 Oct 2026 11:51:26 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 987A0606A31D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 3A72A606A319;
+	Thu, 22 Oct 2026 12:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=BJmlrutD
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48b0584ad71so1248002f8f.0
-        for <linux-spi@vger.kernel.org>; Thu, 22 Oct 2026 04:51:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792669885; x=1793274685; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/TXd5dPmQW/FdjoYQcFG1PodSXgdJZsvkRdQUDNsOjE=;
-        b=BJmlrutDH4Bepk7izBYBkebrA6NRUkSljExzOxyO8LnJ8w1p5tZ/d7vrJfg3j6wYya
-         aIZWmsN7pjuxCtE9/vZl+JP63R7r0rb0nJei3kg7hxz5ZokW9vVFmH9F4W7JamDZ4M81
-         bmxt5BS+nxEOg3pt0M5Z2fpxz1/v/cfkklfwh97m147uoqKNbkXLploXRuXOjUj5SyWl
-         iYS/zLnqzQD7YU6zKDdkHhRTBKm0jPExk7u5BrJYJEXrvujlD9e3stcRjs9MSiaXXtMN
-         Kt2FuXgqnlQ/Re/s1FTHxT+/nxPUJAeJrBeOiJeOb52JRywBqQNVlI0xpWqmc0S9BCsF
-         wI9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792669885; x=1793274685;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/TXd5dPmQW/FdjoYQcFG1PodSXgdJZsvkRdQUDNsOjE=;
-        b=guSyE3L/z0xWbMPJ9UImrOURnTW1xE1lzNdJbFkM2bwx5qJOorMQqMC4e/j5+WD7kO
-         YOpPg4jKV8Xe8zIasPAxiLUSlpLr3E6z6e2/RWhwcKzC+tiifZ77lEKn1SGbomWn+eAy
-         HHeGO4M+OeNZbgU662iUyohTCmy56lalyEN37bPBVINlt79yzQBTecj1qUfcsgswQPz4
-         WH2++kYxIa9xnxMXOjA97iZ59kUxsd8UfoZqX6QxNNatT2nVPfx/gI/89HYjJ/RvHT8w
-         v/iafyZiFBhdvuv0DholRw3wsGAxSPWn8u6QbfL89DFoKoc33nA59vQTyo3MyHcUFM1a
-         Ej/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwxuf4kcveVRply1S2ckR4FXkiYvY7cWO+6S/3WcRauFncJh6WSZYGIdpgA8n2ErLbf9DvVXWKGpsY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIr15i6cldEw22AUxoyJ12mq1NdghMaWZB4jUgn95NfhB08OtYr
-	W8Tp51pSL18GV8Osvu94vkthHnjp82fCVw8YwN4lVI5TJ75/1rFjOJDj
-X-Gm-Gg: AYBFou3SJzZ1dWWhbHYmD1JZqi2DqeaGJAfSzJXzxL9aIjSUYfd7SZJxN9RAH9K+MrC
-	geatqdYHhImlsceCMy2xKoRMs7Pnlrfo0IwmZ3Ke5wyFJYzvttdOgwID8z1fyD98WEIo88IbFTh
-	HgqiGUuVSW2TfMbqCG5nQXiRBwmTd6r2p6EfGbzhKO16+PZXJ0YwezVVG3ks2CbVassitgRL0vq
-	Mp0lXVw9DJH5WnaU9uvtBWref5RMBt50KpJoe5DfBCV2kOa6WIJvw6Z0zkf5q2XXq05pFu5Z3ar
-	eiSlusWF5y97iVJjCBvzF9dbh4ukFDPm39T9ZQdSs4QzJE7uJQ81UYxFyhfENpqK+vd1BDt/ixI
-	CtYPfUMjBOKXDMBP0i+D3AfmPVDn/6mztxaGRf5LvRUEiJt0N7NHF9v6ldnNfEFE6QZpTnIdzhu
-	ki4+iBfti7lxhOxnlI1I1w7of1Jo6Ww7r4drAUyJyQYKSFaHoMgUq2svWkW72QjcH31xhZmIbm3
-	58WTYfNX78GJ1DjognCWfeM/YuVBclS7iQqRK3vmdM/XBJiVD2cYcbDV0MLP+APmhMsdugKAE5f
-	hgXPRjVZSG8MfTHk
-X-Received: by 2002:a05:6000:1864:b0:48d:f4b2:b29d with SMTP id ffacd0b85a97d-48e264e8a10mr10554202f8f.53.1792669884742;
-        Thu, 22 Oct 2026 04:51:24 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e254f0bc2sm11722358f8f.1.2026.10.22.04.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Oct 2026 04:51:24 -0700 (PDT)
-Date: Thu, 22 Oct 2026 12:51:22 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ninad Naik <ninadnaik07@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: mtk-snfi: use min() in mtk_snand_read_page_cache()
-Message-ID: <20261022125122.75a0d528@pumpkin>
-In-Reply-To: <20261022102020.107609-1-ninadnaik07@gmail.com>
-References: <20261022102020.107609-1-ninadnaik07@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ldMZPbdg
+Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 48AFD1F000C1;
+	Thu, 22 Oct 2026 12:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792671571;
+	bh=OklgHJFN1eZ/51mpY2UmRhLUFr3RqxZaXQXuRRPUEdE=;
+	h=Date:Subject:Cc:From:To:References:In-Reply-To;
+	b=ldMZPbdgvKK5TQGrow84FHcVSYxlGmDyeiIQuBFLg5bI1wAPBMyMt5GrmwLVAd/92
+	 OoR2kIydDv87gReRoqk7W4bThCR70RlAFnssNmYrtP4fWRFwkTI6ZyQBcsEv9fMxbu
+	 W+fHQdzMznqJjW+h7JPJmD/+LLqLR/9ClTJG2tgHkakd7qfO01GvKfKa1q1pC0hU7F
+	 efAGnEEdBGYmpjQaTTmmPbk/JObpx0HWlGFsYWoZVw3WS3baSVcNnfi+E9B2fg5Wod
+	 uqTrMJrCUcTqpk635IxObpTjqzCSDUbshuPlo1sw9F2fy+KKlU4zb4zJi6nf9hU0dA
+	 ddFNluFgcPDug==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -100,39 +47,159 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=1af248fcc003f2e9190f10866a1810a2857490b1df2b79d3d9fd96a2faf7;
+ micalg=pgp-sha384; protocol="application/pgp-signature"
+Date: Thu, 22 Oct 2026 14:19:27 +0200
+Message-Id: <DMBD190498R4.3PX7VO4SXKU3C@kernel.org>
+Subject: Re: [PATCH v1 2/4] mtd: spi-nor: Support mixed 1S-xD-xD DTR
+ protocols in spi_nor_spimem_setup_op()
+Cc: "Pratyush Yadav" <pratyush@kernel.org>, "Takahiro Kuwano"
+ <takahiro.kuwano@infineon.com>, "Mark Brown" <broonie@kernel.org>, "Richard
+ Weinberger" <richard@nod.at>, "Vignesh Raghavendra" <vigneshr@ti.com>,
+ <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-mtd@lists.infradead.org>
+From: "Michael Walle" <mwalle@kernel.org>
+To: "Miquel Raynal" <miquel.raynal@bootlin.com>, "Changhuang Liang"
+ <changhuang.liang@starfivetech.com>
+X-Mailer: aerc 0.20.0
+References: <20261022102614.75696-1-changhuang.liang@starfivetech.com>
+ <20261022102614.75696-3-changhuang.liang@starfivetech.com>
+ <875wyuqaj4.fsf@bootlin.com>
+In-Reply-To: <875wyuqaj4.fsf@bootlin.com>
 
-On Thu, 22 Oct 2026 15:50:20 +0530
-Ninad Naik <ninadnaik07@gmail.com> wrote:
+--1af248fcc003f2e9190f10866a1810a2857490b1df2b79d3d9fd96a2faf7
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-> Replace the ternary case with min() to pick the smaller of cap_len and
-> req_left.
-> No functional change intended. Compile tested only.
-> Found using Coccinelle.
-> 
-> Signed-off-by: Ninad Naik <ninadnaik07@gmail.com>
-> ---
->  drivers/spi/spi-mtk-snfi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-mtk-snfi.c b/drivers/spi/spi-mtk-snfi.c
-> index 6e96e50fedad..bbb65a21a684 100644
-> --- a/drivers/spi/spi-mtk-snfi.c
-> +++ b/drivers/spi/spi-mtk-snfi.c
-> @@ -1017,7 +1017,7 @@ static int mtk_snand_read_page_cache(struct mtk_snand *snf,
->  			if (req_left)
->  				memcpy(op->data.buf.in + snf->nfi_cfg.page_size,
->  				       buf_fdm,
-> -				       cap_len < req_left ? cap_len : req_left);
-> +				       min(cap_len, req_left));
+On Thu Oct 22, 2026 at 12:45 PM CEST, Miquel Raynal wrote:
+> On 22/10/2026 at 03:26:12 -07, Changhuang Liang <changhuang.liang@starfiv=
+etech.com> wrote:
+>
+>> Currently spi_nor_spimem_setup_op() sets all four phases (cmd, addr,
+>> dummy, data) to DTR whenever spi_nor_protocol_is_dtr(proto) is true.
+>> This is too coarse: the 1S-xD-xD DTR protocols (1_1_1_DTR, 1_2_2_DTR,
+>> 1_4_4_DTR, 1_8_8_DTR) send the command phase in STR on a single line,
+>> and only the address, dummy and data phases in DTR. SPIMEM supports
+>> such mixed DTR modes.
+>>
+>> Split the handling:
+>>
+>>   - For SNOR_PROTO_8_8_8_DTR, keep the existing behavior: set all
+>>     phases to DTR and use a 2-byte opcode (opcode + extension).
+>>
+>>   - For the other DTR protocols, set the command phase to STR and only
+>>     the address, dummy and data phases to DTR. Double op->dummy.nbytes
+>>     since DTR transfers 2 bytes per clock cycle, matching how the dummy
+>>     cycle count is specified for these protocols.
+>>
+>> No in-tree flash currently declares SNOR_HWCAPS_READ_1_x_x_DTR, so
+>> this is not a bug fix but preparation for enabling these protocols.
+>> A follow-up patch will enable 1S-4D-4D for the MX66L1G45G. The
+>> 8D-8D-8D path is unchanged.
+>>
+>> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+>> ---
+>>  drivers/mtd/spi-nor/core.c | 21 ++++++++++++++-------
+>>  1 file changed, 14 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+>> index 90524c58602e..43e506e728ab 100644
+>> --- a/drivers/mtd/spi-nor/core.c
+>> +++ b/drivers/mtd/spi-nor/core.c
+>> @@ -97,13 +97,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *no=
+r,
+>>  	if (op->data.nbytes)
+>>  		op->data.buswidth =3D spi_nor_get_protocol_data_nbits(proto);
+>> =20
+>> -	if (spi_nor_protocol_is_dtr(proto)) {
+>> -		/*
+>> -		 * SPIMEM supports mixed DTR modes, but right now we can only
+>> -		 * have all phases either DTR or STR. IOW, SPIMEM can have
+>> -		 * something like 4S-4D-4D, but SPI NOR can't. So, set all 4
+>> -		 * phases to either DTR or STR.
+>> -		 */
+>> +	if (proto =3D=3D SNOR_PROTO_8_8_8_DTR) {
+>>  		op->cmd.dtr =3D true;
+>>  		op->addr.dtr =3D true;
+>>  		op->dummy.dtr =3D true;
+>> @@ -115,6 +109,19 @@ void spi_nor_spimem_setup_op(const struct spi_nor *=
+nor,
+>>  		ext =3D spi_nor_get_cmd_ext(nor, op);
+>>  		op->cmd.opcode =3D (op->cmd.opcode << 8) | ext;
+>>  		op->cmd.nbytes =3D 2;
+>> +	} else if (spi_nor_protocol_is_dtr(proto)) {
+>> +		/*
+>> +		 * 1S-xD-xD protocols: the opcode is sent in STR on a single
+>> +		 * line, only the address, dummy and data phases are DTR. The
+>> +		 * opcode stays 1 byte (no command extension).
+>> +		 */
+>> +		op->cmd.dtr =3D false;
+>> +		op->addr.dtr =3D true;
+>> +		op->dummy.dtr =3D true;
+>> +		op->data.dtr =3D true;
+>
+> Still to coarse IMHO.
+>
+> What about xS-xS-xD?
 
-If you are going to do that then join the lines.
+Is this a thing? Are there any NOR flashes which support the address
+being SDR? That doesn't make much sense, does it? The command being
+SDR makes sense because you don't have to switch modes and thus
+you're stateless.
 
-David
+Also spi-nor.h only defines 1S-nD-nD (for n=3D2,4,8) for DTR. IIRC the
+original DTR code was just for 8D-8D-8D because that is actually
+backed by the xSPI standard.
 
->  		} else if (rd_offset < snf->buf_len) {
->  			u32 cap_len = snf->buf_len - rd_offset;
->  
+Anyway, can we just have something like:
 
+
+if (spi_nor_protocol_is_dtr(proto)) {
+		/* we only support 1SnDnD or 8D8D8D */
+		op->addr.dtr =3D true;
+		op->dummy.dtr =3D true;
+		op->data.dtr =3D true;
+
+		/* 2 bytes per clock cycle in DTR mode. */
+		op->dummy.nbytes *=3D 2;
+
+		if (SNOR_PROTO_8_8_8_DTR) {
+			op->cmd.dtr =3D true;
+			ext =3D spi_nor_get_cmd_ext(nor, op);
+			op->cmd.opcode =3D (op->cmd.opcode << 8) | ext;
+			op->cmd.nbytes =3D 2;
+		}
+}
+
+Also you missed the support for SNOR_F_SWAP16.
+
+-michael
+
+> As mentioned in the spi controller patch you must make sure these are
+> refused if they are not supported by your controller because SPI NAND at
+> least allow them (and I believe SPI NOR might as well)?.
+>
+>> +
+>> +		/* 2 bytes per clock cycle in DTR mode. */
+>> +		op->dummy.nbytes *=3D 2;
+>>  	}
+>> =20
+>>  	if (proto =3D=3D SNOR_PROTO_8_8_8_DTR && params->flags & SNOR_F_SWAP16=
+)
+
+
+--1af248fcc003f2e9190f10866a1810a2857490b1df2b79d3d9fd96a2faf7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCatn/TxIcbXdhbGxlQGtl
+cm5lbC5vcmcACgkQEic87j4CH/gJUQF/eZexncx5GXCJ+FOCrW+m7fpS3XzSqDKU
+AcWfX3qMUm2aBpDKs6ws8cyGLgs4SdOjAX4tS2EbAC7wDX8WqrUP/vrGB51OL+WB
+vO4L1XOHK1vIOgc8v/f4uVVCz7f93KsxKSA=
+=1d5h
+-----END PGP SIGNATURE-----
+
+--1af248fcc003f2e9190f10866a1810a2857490b1df2b79d3d9fd96a2faf7--

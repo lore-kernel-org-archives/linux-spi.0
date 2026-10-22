@@ -1,18 +1,19 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.122
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.7
 ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1792664797;
-	b=FTbKr5CG4/ZM8oja8NZFr0XG7/JdWXtWRPzaWkd93XqwKea415fAaK0qdak3yZP0sAY9
-	 gBFXdehcpJyovKveGIf4cqvMA6LtvPK4EeK6MJMhpX5DjrXnkEANNNejXxkpyaLUQsZaX
-	 1fbA7JIBT04Ux5YR78UuI4kP4jmfNxYn6/JnHk9rwkD8FKKNmPO7ujiOHRo2H8ZHCr0MG
-	 o+xyiEB1C+2+URJoV0VE9czue4aVfQUfooYRu4bsED570/thFd1lqDKeiWxl/jUzJ6Gwo
-	 mFY6ETVLMCfQNTNJx/0ZvQjvm4lXJUjXcVQHFqcrhm01j3C8U4dfWg5s5QRGMOUSsaw==
+	t=1792665637;
+	b=pqdPDwrUvN8rBoLcT0ZCozdsth6YFT2u1JhNvZFvlT+BkhUzvOBBKsNQ1CYHcGkSAxJz
+	 nObMRFvfAD/h2yMoECSiQNNfQS+91+dhd34f0pQ1joiB19P7+IdhFEW7zNLrgW39lpS7n
+	 h3cGC3m0TVplKYgY+7ee1crTT/Nq2qxaDKSse19tC3Y9xUHQyU+1N7NJ2OGpAvuuIfFIU
+	 5p7xoku6N+g4FAUuvkszf6YHlVpJ66TAwH1id/a4/TivPUSqMdc2IzB3cX7HvReO3uH/5
+	 S/dkcVMpD5A7jzHPCwgM4TFmVrYS6LCE+85SYK5i0YtCWNNCEKWAmGoJTGkm3xraWkQ==
 ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792664797;
-	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-Id:
-	 X-Mailer:In-Reply-To:References:Content-Transfer-Encoding:
-	 Content-Type:X-ClientProxiedBy:MIME-Version:X-MS-PublicTrafficType:
-	 X-MS-TrafficTypeDiagnostic:X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-Microsoft-Antispam:
+	a=rsa-sha256; c=relaxed/relaxed; t=1792665637;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:From:To:Cc:Subject:
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:Content-Type:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
+	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
 	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
 	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
 	 X-MS-Exchange-AntiSpam-MessageData-0:X-OriginatorOrg:
@@ -23,67 +24,104 @@ ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
 	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
 	 X-MS-Exchange-CrossTenant-UserPrincipalName:
 	 X-MS-Exchange-Transport-CrossTenantHeadersStamped;
-	bh=nBTiET3Et7AEazEA7AvaNZq9/jKOprtqxBU4xnIfKNU=;
-	b=Z3M7ExVWHr3I8+uMrg+btiAvLZe4QiAYfpd7cxPVHiP0UorTBtGRwLO7v9u5kJ0mRT3o
-	 1D3c92rvYwN0F5m5bn8Prc2nMo30pSGhkNeSPqXxUQHrGlmvyzcXJRRKLOUFVpOYFCX/M
-	 cDnpdWdk1eu4lpLm43ZTKCBvCNeqobH1dA/MEnRFybRcI8ShBrT9cakdJ1ev/CjbESPtO
-	 +HTKB0OAgy6RrdS1nxTAZnqruA7lvhLjP/p/DWhL915VBZwV6JXjiOp6LkXSqnxrnorEp
-	 55A4b8ugPONMfPRxQlC/5V+BICvNhLuO6OsP6ZsN/cHt1nbUm+q7H7NcYcrV13NRSrw==
+	bh=kboHgt19Dz1TK6Pl0RY67RPVWyrBDrK2fm2eftb+nXQ=;
+	b=cEZzoSCZ8WAQij0SKZcFUDeYx1LXNP864n5hJPgRJyfTPEcoGrJRUwtSQY5tDxLEULkS
+	 CTRcLfkFWai9ChOi22sWPJ2G30UVOP6eESM1pX7wYPQR1ESexO/ko2+4TDX5YPlXg4pOG
+	 HjI+3BG/QM0s7FwjTIQRpFS86wuQE4mvK7BKbH2DSDYC/Zx2IKTmnI8q2D7w90eADvLhg
+	 /ARKIbB0u9/5X1iV3XmEhKjvQz0iw/fXMBZrEuOy4dGLtAiYTYkmrUAwc/NnL/JulPxiD
+	 YmQT9+Zdu2cxm1j1ipWkxxYRNrBMSGxSaoqrYEoo2QXedkNmLGamzU/kobIPzljcuMg==
 ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=starfivetech.com;
-	spf=pass smtp.mailfrom=starfivetech.com;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=139.219.17.122
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2122.outbound.protection.partner.outlook.cn [139.219.17.122])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=nvidia.com;
+	spf=fail smtp.mailfrom=nvidia.com;
+	dkim=pass header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pfJe5FLa;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=52.101.193.7
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010007.outbound.protection.outlook.com [52.101.193.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8092606A322;
-	Thu, 22 Oct 2026 10:26:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8092606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hMWdb88kCQONDciPa/GGRFerZvKdqNQk7vEI3/Xv2mVfranQeGaHFcNGtWXdUr7/xAvQ28CXUey2qpYwgqARV8d+EtCcDJEL7UEVjGFWB5yZmwnTIhOiRNKJr4zpEX2FFR7Vv3dbEZ7GAqbNBoLeG+CWCyAllUEDar8kRgnXzA8ZignfFa7LKc0Xx1ObFvo4jxMIf1SfW5SaE1uHEQ4jQdd/A8YXoc/Sx6e9r0ccmL6E3TfAD7lb+MM5qFLpd4WfJ3BzVBnaM7up/Q2eEWT1LLMopU/OuF/sCffAyIqc7mBpubfNT4up7uqt2g7GBvgF72Gu/twuhrcxLz6X5EvInA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7326B606A319;
+	Thu, 22 Oct 2026 10:40:36 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7326B606A319
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pfJe5FLa
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cCp5t3GM2v2uPmKoOGUHKtsHWMMgGMRTz8b4AGmOykXPzxMXj/Y2D+Lu9cO/krumh7BGfOGG9QhMmaS69yVTmhYcybN7hOikcG3aE2kUWOi1kzY3jOBZgck7kXZfejavYZ/miAp+2oX7pIwy+xpLxVmcjZI1PuEJKQ8si2nclfpPbKybn0xH+W0xcL3fwCQVXLKceC3xkRtp6Hb/Mh7vxuuCvYbc7ddeN6/Utg8FmM2VJdlkEgTxFAWHQKN5Hh6xKdBY5hJWXMvXYK6NwIprTSd9h6I7wu/O0pDXSr2Yp7iJpPuF8PPIojOH+xlig45c3CX2a8nus17IsHd3xJb62w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
+ s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nBTiET3Et7AEazEA7AvaNZq9/jKOprtqxBU4xnIfKNU=;
- b=kuoU3XcPJcVfeDG+zc3pXjoQW0KGMxOPq5MKpX6uvii3mTf8oZQMHSF8H/8Gxsd0AQvwvzQ0eENXR88Xvy4V4BGNUuCqU3NgNUrikwcFEKd5vAZ6msGnK3EtkoTM3mLOUz0tBiSmTB5FRWkmTpANgjJBrjyA+8uaC1lt2of0PbvwHwmVtp1l2vFzR2+rv9b8au1y9VbQMGHVKF525O5bxQSIYy/7+58GeEyjf4pO10B8JfbQkLSF1hU+ceHeq39OuSA08BtLZjaLKlol+MWFNGpaNaxX4tpDRtxnONVXl9zlGFHtxRAgaQd/FwTet8TqXUJn1+IBQV3YT/+VahCerw==
+ bh=kboHgt19Dz1TK6Pl0RY67RPVWyrBDrK2fm2eftb+nXQ=;
+ b=R4sqdSdiDw5X9jJpB6lWJO+7e5C7p0QYFT90g1FlvAcCliQRpPqX3RjudXmcmpu/DPL5SKnCFwtrA5feIk4VarLn+4AS4PclJ1/M5MfLR4FAW7FxtV8b6JBPemeFfYKZSEhj0wG/4X6s9yvjLGbmIKzwRyWgJRS9DdfpLmWRcTGIUc7B0tt8PkrbrZjWkv18Zm8GN3FG8T/JPsenzNsWIVJWp0pDlGZxZNlyz030IyFFyG6JfuGAT+6J+7PDMZCIliOCux9yeGOW164vXb5a96pT1Gn21c1VYid4/z59KEw594U4JmQhB82jzCadNLu0WNhvsO2v3GFl0UQ9UQ1VDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kboHgt19Dz1TK6Pl0RY67RPVWyrBDrK2fm2eftb+nXQ=;
+ b=pfJe5FLakhkUWA+yf6vlQpMVWMKzlYC/+qCSP5+L7UBphGYUKDSOam46D3mgMspLFmrfxVfeWXrBNodzZREhLWBfaE2RHl3PIGhjwixxr/M/Da9ngyjmApv5CZsKAAXOAIRQkRpoOgUDTXhzpewxB7T5EkmbbqzHpgpVAeCa5YDwJSDv//lJZxOjGklvwryCvVRTB2RwuxkS+S3o1qIoUBtuHfyc/OfTbVKiaqpHlV6ZsHF6Ad7X1QF9LaCJueNqqQBUxWOF6911PLg5Tom0Pn0yPu3mOtUr6ln+OKEFjHJv/6GTyEXbqa4rdrXP2j6Hc/HcOsq2sMXxwaf2Vwk5Qw==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn (10.2.3.102) by
- ZQ4PR01MB1298.CHNPR01.prod.partner.outlook.cn (10.2.3.110) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.546.16; Thu, 22 Oct 2026 10:26:22 +0000
-Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- ([fe80::e7d4:256c:b066:850d]) by
- ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
- with mapi id 15.21.0546.016; Thu, 22 Oct 2026 10:26:22 +0000
-From: Changhuang Liang <changhuang.liang@starfivetech.com>
-To: Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5974.namprd12.prod.outlook.com (2603:10b6:510:1d9::19)
+ by MW4PR12MB6756.namprd12.prod.outlook.com (2603:10b6:303:1e9::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
+ 2026 10:40:30 +0000
+Received: from PH7PR12MB5974.namprd12.prod.outlook.com
+ ([fe80::f5a5:bbc3:e9da:f8a0]) by PH7PR12MB5974.namprd12.prod.outlook.com
+ ([fe80::f5a5:bbc3:e9da:f8a0%3]) with mapi id 15.21.0546.016; Thu, 22 Oct 2026
+ 10:40:30 +0000
+From: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Donald Shannon <donalds@nvidia.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org,
-	Changhuang Liang <changhuang.liang@starfivetech.com>
-Subject: [PATCH v1 1/4] spi: dw: Add DDR (Dual Data-Rate) support for enhanced SPI mode
-Date: Thu, 22 Oct 2026 03:26:11 -0700
-Message-Id: <20261022102614.75696-2-changhuang.liang@starfivetech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261022102614.75696-1-changhuang.liang@starfivetech.com>
-References: <20261022102614.75696-1-changhuang.liang@starfivetech.com>
+	Jiri Slaby <jirislaby@kernel.org>,
+	Corey Minyard <corey@minyard.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Lixu Zhang <lixu.zhang@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	linux-acpi@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/11] Add NVIDIA LSTP USB adapter drivers
+Date: Thu, 22 Oct 2026 13:40:26 +0300
+Message-ID: <20261022104025.3956402-3-aambrozewicz@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2026101355-species-glance-9ff8@gregkh>
+References: <20261012-lstp-usb-adapter-v1-0-aambrozewicz@nvidia.com> <2026101355-species-glance-9ff8@gregkh>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: ZQ0PR01CA0009.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:5::23) To ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c550:17::6)
+X-ClientProxiedBy: FR2P281CA0143.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:98::16) To PH7PR12MB5974.namprd12.prod.outlook.com
+ (2603:10b6:510:1d9::19)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -94,233 +132,87 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1298:EE_
-X-MS-Office365-Filtering-Correlation-Id: c372d93e-3898-4ab3-800e-08df3026eb79
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5974:EE_|MW4PR12MB6756:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3f1465f-9a94-45e1-e61d-08df3028e4a3
 X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|52116014|1800799024|22082099003|18002099003|3023799007|38350700014|261009223027099003|10067099003|261021123027099003|261021121427099003|56012099006;
+	BCL:0;ARA:13230040|376014|23010399003|1800799024|7416014|366016|10067099003|18002099003|22082099003|261021123027099003|261009223027099003|4143699003|11063799006|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	Cry/F72O2PTjiN5gJ0GK/Jfj4zm3j1ZfMgPozMN0tGb42cL8Ew8hT74rVebLiu8E6gHa4VGCSk0GDHaATmNSnY1BJu5I8wp209Ru4TEZ09twZ/yN2vE6gqjHpUlFLyvRjw+Vi8AG3bMNAiqrjhiOzCx2zyXGvj9ShTegd23OrcVWboAjWcxnXRHQFETXzwXNwD4HNMpW1FQghVk3oSLstinvJYNemIVO5Mc3seaTmQajiRv03x8FdvlbGU+3pgCFFSCjNMl6tb8p4nffHZlcSY5mtBWAReG8HwEu58R5qb8Ikclv7zC8oeQ0jzg9QDuPg5WNtLdpEDTg68L2NVRIkBFwPvfbdOqJVINUn2ULjFmynMq+fu7dTm/HoOOGNE8uH0NO1xftXdVO9CF4CoD5TwLaRe25TMn1AfFOyBM2MrHWXlwSu/yYlhFEDo1B+dRxZ/Wm6XyUFlCpPxTFJXEcyAb3KVIc53av+C39mUG1N7Ca4w8bEYrU6pWdZ6i1GHyOjzBF7CYkHczJ+b2T4PVFp8NrwcY5pvXYlDGyktWiox1LOWqiHnMETv2Lovn4aX+D
+	+OnPK/ZkKADamwuB/xW7WSQqdzcrb/H0j5vW+0COGwU6r3VdZcZF91SL8N9riWodjFYbEWrxGHL/u2er0vCr2xaVWb+dJMP2l+L0AvzRcP+iolS5oqaiWgUXrLbncFoY+MB4NB4GiDCD9liRmUyp95whTvJGfMwezF94eu5GM1ch9pG4tGLVpnINM38sDV8BE8/4OhXa4YaeLr6iDe6luItBZbNzrVNFboZVIAWwWv2uxmAoh/hAf/VOydGVKDBRiD7+oEj9pY6I4b0fACqY4j9dbQwxgsr0tJaYCpMFZHkyb6FgqXDlYhNUmY3+smUAOjFUSwXp3zB0Miq/4kMwC3C+q6dZZ3GtYOdE3oUaMwe0ym9xQ+rgwOdKFJfRthaBf1B3hyov5VyywkrkiGsg1nqmTUWrVFLLAup7zcJhYDPISILKskt7IskHsnXj2PKdp4Oy3d8JC2hKVJ8a3oI0pCEWiKDmiWT/snYaoXjUUOZqwkQiq1jOF3cwHD0wpqm/AND7kbA7t7Z5aytRKrh8tBT5C2NLbJnAqSC+vIZWiTCnjYK4oBWvbAdOpiKXyKiNGDdb2+AD56sYfn0X0U071YszKun2mgTBOJSa52cibGx93cYeFhoTrUxoQFbsjJLGrf99W1/MyVsoW9iQXlyaxkZA9YyqBHlsjlZThM/bStQ=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(52116014)(1800799024)(22082099003)(18002099003)(3023799007)(38350700014)(261009223027099003)(10067099003)(261021123027099003)(261021121427099003)(56012099006);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5974.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(7416014)(366016)(10067099003)(18002099003)(22082099003)(261021123027099003)(261009223027099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L/MEIF+eVBRCvzv6a53mlBjb4DBWiKJVmtx56kFvn1oNirxOuGFgPfiRjTjg?=
- =?us-ascii?Q?hRFgEqu3tpn2k92VG7i3MvzOwxXVlNLJ6n2wPsjSwDtvnJrPLXG1D49B6GJy?=
- =?us-ascii?Q?gDESRFEDyItwrVlTmIlZKp68cJyOjlU1TIJhJ7kaXfZI8V38maPbpByQGoij?=
- =?us-ascii?Q?StAnGSC9ehGRDltrXM7BbNacBLzFnvj1v7UidlxF/1UCay0t0JavJAGjl46G?=
- =?us-ascii?Q?rLlBT3O64BItaR9BbpPk7Y9LmyeNIbAIQOxRYxw7YYo8IiflniuZ/lFim4rR?=
- =?us-ascii?Q?lxet7ER128q19FaaX+3ySj1AKzPmZKwvObOyJcIXnXPdCMMX4mPkjCa/4mlu?=
- =?us-ascii?Q?n70slMuqvCFtKr/S0BjkuYwT/qKLpUfgZgJGHZa6JjydRwRLddKU0vifWdP0?=
- =?us-ascii?Q?bfCPWZcO05eTu4cnfTUsmWOTtvah6pAonQv2Dc1CuKb2BGbA6p2VU7ggBR7Z?=
- =?us-ascii?Q?+peG38MjWLfo4DOHmINMqfX+l+KVYnbOWYxkYxN/6YZdz8HqfxG5/CyXdx08?=
- =?us-ascii?Q?pAOgM1AuqtKIfRCWUEZF+2gxqw8HCc2GLdwXqqUNeLxhyLWEUT/VdmuFszQY?=
- =?us-ascii?Q?DVVcPns/S6wLHAEc2h0IAFcEuA+3ZdZbm9+J+YMECzeCWfziFUsSSy5qR/VR?=
- =?us-ascii?Q?nr+76kbwMNEUF45n65fvSIGdYRTtxyEZpU47qo9a74CAhmb7NYAEu1qC6HPT?=
- =?us-ascii?Q?5+9OCVuDdJ9ttB+vaq/mYinNxStT6TgCKfdyhFKTf09ttiyK06j4B4eEVLDs?=
- =?us-ascii?Q?ipMGBrPKgUo4ggvAf3U4gXCAcwIMj7H+/tkGEXaVw/ZZLcJNrIc4iZQspTpP?=
- =?us-ascii?Q?b/e7ahwywnLiLJHDEeWJmr+YpOWIO5BFL8KTzvd98FzwX7lU4OzGnoJQYURO?=
- =?us-ascii?Q?c3XFzupLf0nFQtxC9bs+EOgNsGth6DRmK+ZzRuwOXhWh07Z2NfC68Rvdmybm?=
- =?us-ascii?Q?Rr5Y2K2eMxO4WgTjK22LEFCgH//W8T7H94DYYiln1PaIo/z41xZVwv2Uifj3?=
- =?us-ascii?Q?j0Mqb6IIT5zXD2xv+MzwNt3dI4iGVlNuKowHjYrnige7lMcswO1FQZP0aB7L?=
- =?us-ascii?Q?kCo7OgG4cgq2OyO/LukWo7HULE9CfEsdne7G5hO+n0yZjkSt94+BWVotE+CL?=
- =?us-ascii?Q?A+/mI6pbreofJ7AxhEMAPHnMXXUo22/jpsYoBxFlRez2asaXFMcSy8gc7gkj?=
- =?us-ascii?Q?MksGYGMwtq0OmRpGuD+U78/G/iP2Hf84p4jiC3XoNGtjMM/PwxusgQpEISu0?=
- =?us-ascii?Q?OR07ym/vdGB+ZgASTaRqn0/naay3X2BYBF335VFuC8QoxYnx7iQmgbTsnCt0?=
- =?us-ascii?Q?KrgWJchIq/X9M5TXt9hq8BBxhPcToB9jtxFCvp23cT9pUCNp/zq65K9iZ2Uy?=
- =?us-ascii?Q?B07FU8mbWA78UAECwqamwH7SYTK/KB45mD1iWn4/uEOOL1jIbd1e2Y+z3xwI?=
- =?us-ascii?Q?Uq0S+VrOxCRy4hl8Smkf+L1fquq5Ayl3kvHA9qF8mGjYlJslB7G/w4DOo4H8?=
- =?us-ascii?Q?tgUNqq1NFb0T6BkMDGfbsuvZugk8WRNBBa2vyA5i7B+ZbylN7ETP6eU9Htlj?=
- =?us-ascii?Q?8LHZ12xiVkhLFetmkjtRi5Z8Zw1ic6gThRCVujKIxvwXhL4OnT5/CBgcvdR4?=
- =?us-ascii?Q?xZMG6lAvJWZ4Gv7gqaH2Wft2/NMEBwxY1KYgrY2eLQSSwdyFM2N5facTa/01?=
- =?us-ascii?Q?2xXL1kyyC+YqaiQFPxkPNVVH0Z6SBwB0iqbxDDDA1vkN2wUGEl8nuYfBx1Qx?=
- =?us-ascii?Q?GTT0X9mZCYm1WbrSMznG5LawMTiqFa1lQHnbLjsV1iPny6bNbllo?=
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c372d93e-3898-4ab3-800e-08df3026eb79
-X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+	=?us-ascii?Q?gVYd9T3606e6+ZUoYrgJQDFtt74E1gp+2mZ1QyAEiz6aOuf9oJYPSfBAO1y1?=
+ =?us-ascii?Q?3upxoEvhNE/6rCiNNJIH+H9Ma9a0jpIuZS88v2B9lltVZhkoAVyFkzHFQ6Fz?=
+ =?us-ascii?Q?TqPD1B5ZmexGR3NhaJw6w8ntDnCB5x11LFIKHzjCvfXxp3u3Grh8HoY5oa/S?=
+ =?us-ascii?Q?aDDXqkxAdvIKdjR96Su0QliIrQ4O7UWX5/xhiuwXPF8tZqpVZh46K56YygqW?=
+ =?us-ascii?Q?L7Am0rZkf+Ff0Yb/VomPai+Mn1lLPCpGTwybGhHh/oAqa176IZvtxTWkquCa?=
+ =?us-ascii?Q?Aua9ajpwWlay5GVfRLZdIJ6gAUWL7yGAIRNaWd42LoYuFsBwKCs3ui1n//xU?=
+ =?us-ascii?Q?JLHfCQbBWTPLMcSkKD71Nrv2Imy3jAnFaRqafPrevvbaXsslA57uTx7H5rvb?=
+ =?us-ascii?Q?nhPBRmoG/Yf+nwMAg42W/g99Gw/RKAJdLc8ILerP1lS+8ZjGUhT8M6Dh35Dk?=
+ =?us-ascii?Q?53p4AM8fNVsmN9jiIYzuJbq3Uql8mEapfVc0o2K4NfpnID1HZa6Qd0yssKno?=
+ =?us-ascii?Q?s1eU8hunxc2gDofOwLuvVl/YLzfBQbX1jH2E4dvIfUqpYBDCJTQ4SBGQq0aq?=
+ =?us-ascii?Q?iSbV3MQk7nuIUn/CZRePksIQOgr4pYrIx2qnNzv7s6TjSEW00dWFHLdngzm1?=
+ =?us-ascii?Q?5iDvMtYjsufgevTklSgokourIfqpos3YqOebqyPgeuiPre3AJ/qwZCzcBttI?=
+ =?us-ascii?Q?EmE+FB9qMR33Alote3Qgfi87mieYWyR8A23ZFnmFB874SITanrNUAiqoMzGI?=
+ =?us-ascii?Q?1SO9oJiPZKTodv7mam0tqWxgkXN4SGalVH72WWfkgUt3ZhC9A9taYid/H6p5?=
+ =?us-ascii?Q?w0zdrOSeJqUKDxV+QPq0nzMcxrcQXC/2B+20HoFdyEN3G+/dpxUsoTAzeC4m?=
+ =?us-ascii?Q?+0YEMrTUEaY9ou6XjDdohOma2LQpbFtdE1bRckcnAGVz53BfxZiOSSttpPGW?=
+ =?us-ascii?Q?w1YAzadBtfajXb8APTz7cIxv1sLWSiUZUHzxNq2v/PhC/BJYL2NhChplgIfh?=
+ =?us-ascii?Q?QFDZwBPlbOOiX+gCadzZlzo6Qshew/NZ77bH/Ff2xOJXha6Qk2oYnZClIj/6?=
+ =?us-ascii?Q?pYVvzyyFqY9+jak3D1iQlYc1GDCctZ7ccNBCjRk0/blY7nIog3hxvuFlPrzN?=
+ =?us-ascii?Q?COXjpEZCBeElncg/ALwwqTtOV7h3QNjG1DCIHzQ5DWIeMlOVahPG0oyTIb3X?=
+ =?us-ascii?Q?mVvBxh7DeVEdlu0TlBkgWH8YPbXC/PhMyhyIFKWu7XQUypQ7XYURTQQcw0sp?=
+ =?us-ascii?Q?6gzbXifnTJgGG51PPduAeNt2zFyTDOMRmJMLBZm2RhWnRRZY4Gnzl/mfhqSC?=
+ =?us-ascii?Q?VGmGWHILAF04HyV95WTPtj9RnvV9vqWxBLnyaSy1e5Lsu5bB3HwixnkftWfc?=
+ =?us-ascii?Q?A0NoJyNFL0g30ucOhTy+uuphxDAk8iTybi84J6FUFZiFJlfWRW0k2O2qDHCO?=
+ =?us-ascii?Q?WzB5zf91qFw3QCqV1IC6VJgM8oYnph0MsFSGLWVum9MY7qCK/xxgNPvqABbG?=
+ =?us-ascii?Q?2nIf50IZP+/Mewx2rEFqiUi5REUyZzN4mq7GMWeOkDOko+0KF517ydg2QIvj?=
+ =?us-ascii?Q?I7iowG1MnrkVj3ilwiAWZsUhvxwMwSecIoAI1zV5SjsjNRT4rPLRBcjF14qT?=
+ =?us-ascii?Q?2AQ23Xzq99k/ENcKkMF7W/8sWyABdD/OeWu+nRv2TTBBzbmsXv9O9KBr3yo1?=
+ =?us-ascii?Q?Uzlw6snIBKQZ0ck8XBTaM5w3fZlqPvc1GBTkTPo7gdfzniyMF/DbOef3GAJ1?=
+ =?us-ascii?Q?lVV3jxI6Lg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3f1465f-9a94-45e1-e61d-08df3028e4a3
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5974.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 10:26:22.8652
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 10:40:30.5211
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TjpEB9LHnVp4jewB2CiauDeMM0z/DqLULwUqQhMV0RBKD2ylNHzCvJtDCXkWpfB3gxEEO9vktxmBxy7paqI2+BuuEOIuzG4OF+UFbwVQ1K971dEaZd2oZVIPSDIkGzhi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1298
+X-MS-Exchange-CrossTenant-UserPrincipalName: ryGnCtbVz5eGlNgsfw9MqyG4REoD0G8hTFbkwRbDISxH2zP0uHTAXYLzNUr5LuKEovHbvR9LkB7iipUPee8ghQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6756
 
-Add support for DDR (Dual Data-Rate) transfers in the enhanced SPI
-mode of the DW SPI controller.
+On Tue, Oct 13, 2026 at 01:37:11PM +0200, Greg Kroah-Hartman wrote:
+> > Why the auxiliary bus, and why not MFD
+> > --------------------------------------
+>
+> Neither is ok for USB devices, that's not an argument either way.
 
-The enhanced SPI control register (SPI_CTRLR0) has dedicated fields to
-enable DDR mode for the instruction phase (INST_DDR_EN) and for the
-address/dummy/data phases (SPI_DDR_EN). Populate these from the
-corresponding dtr flags of the spi_mem_op.
+Here USB only carries the traffic. The I2C, SPI and GPIO channels are
+ordinary controllers on the board, and their drivers register with
+those subsystems; hosts describe what is wired to them with ACPI, BMCs
+with device tree [1].
 
-For DDR transfers, the dummy phase consumes two bits per clock per
-line, so the computed wait cycles must be halved. Factor the wait cycle
-calculation into a helper, dw_spi_enh_wait_cycles(), so that both the
-supports check and the exec path use the same value.
+usb-ljca is a recent driver for a very similar device, so we modelled
+the core on it: one interface carries GPIO, I2C and SPI, and the core
+creates an auxiliary device per function and attaches its ACPI node.
+LSTP extends that model to device tree.
 
-When SPI DDR is enabled, program the DDR_DRIVE_EDGE register. The
-recommended TDE value is clk_div / 4, clamped to clk_div / 2 - 1 and to
-the field width.
+Whether the next version stays LSTP or becomes a set of divergences
+from an OBMF-ICP driver, as Jeremy suggested, the need is the same: a
+device behind a tunnelled channel is described like one wired straight
+to the BMC, so a board can move between the two without rewriting its
+description.
 
-Finally, advertise DTR support to the SPI memory layer through a
-dedicated dw_spi_enh_mem_caps, selected when the controller has
-DW_SPI_CAP_EMODE, so that spi-mem may issue DDR operations.
+We don't see an architecture that fits better. If you would rather see
+this done differently, what would you suggest? One function per
+interface I'll answer separately.
 
-Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
----
- drivers/spi/spi-dw-core.c | 52 +++++++++++++++++++++++++++++++++------
- drivers/spi/spi-dw.h      |  6 +++++
- 2 files changed, 51 insertions(+), 7 deletions(-)
+[1] https://lore.kernel.org/r/20261016084443.1972351-1-aambrozewicz@nvidia.com
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 47434fa78e4b..6ff142c8a6bd 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -46,6 +46,8 @@ struct dw_spi_enh_cfg {
- 	u8 inst_l;
- 	u8 addr_l;
- 	u8 trans_t;
-+	bool inst_ddr;
-+	bool spi_ddr;
- };
-
- #ifdef CONFIG_DEBUG_FS
-@@ -418,6 +420,7 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
- 	u32 cr0 = chip->cr0;
- 	u32 speed_hz;
- 	u16 clk_div;
-+	u32 tde = 0;
-
- 	/* CTRLR0[ 4/3: 0] or CTRLR0[ 20: 16] Data Frame Size */
- 	cr0 |= (cfg->dfs - 1) << dws->dfs_offset;
-@@ -468,11 +471,26 @@ static void dw_spi_update_config(struct dw_spi *dws, struct spi_device *spi,
-
- 	if (enh_cfg) {
- 		cr0 = DW_SPI_ENH_CTRLR0_CLK_STRETCH_EN;
-+		if (enh_cfg->inst_ddr)
-+			cr0 |= DW_SPI_ENH_CTRLR0_INST_DDR_EN;
-+		if (enh_cfg->spi_ddr)
-+			cr0 |= DW_SPI_ENH_CTRLR0_SPI_DDR_EN;
- 		cr0 |= FIELD_PREP(DW_SPI_ENH_CTRLR0_WAIT_CYCLE_MASK, enh_cfg->wait_c);
- 		cr0 |= FIELD_PREP(DW_SPI_ENH_CTRLR0_INST_L_MASK, enh_cfg->inst_l);
- 		cr0 |= FIELD_PREP(DW_SPI_ENH_CTRLR0_ADDR_L_MASK, enh_cfg->addr_l);
- 		cr0 |= FIELD_PREP(DW_SPI_ENH_CTRLR0_TRANS_TYPE_MASK, enh_cfg->trans_t);
- 		dw_writel(dws, DW_SPI_SPI_CTRLR0, cr0);
-+
-+		/*
-+		 * The recommended value of TDE is clk_div / 4, and it must not exceed
-+		 * SCKDV / 2 - 1
-+		 */
-+		if (enh_cfg->spi_ddr)
-+			tde = min3(clk_div / 4U, clk_div / 2U - 1,
-+				   FIELD_MAX(DW_SPI_DDR_DRIVE_EDGE_TDE_MASK));
-+
-+		dw_writel(dws, DW_SPI_DDR_DRIVE_EDGE,
-+			  FIELD_PREP(DW_SPI_DDR_DRIVE_EDGE_TDE_MASK, tde));
- 	}
- }
-
-@@ -656,6 +674,21 @@ static int dw_spi_adjust_mem_op_size(struct spi_mem *mem, struct spi_mem_op *op)
- 	return 0;
- }
-
-+static u32 dw_spi_enh_wait_cycles(const struct spi_mem_op *op)
-+{
-+	u32 wait_c;
-+
-+	if (!op->dummy.nbytes || !op->dummy.buswidth)
-+		return 0;
-+
-+	wait_c = op->dummy.nbytes * BITS_PER_BYTE / op->dummy.buswidth;
-+	/* DTR transfers two bits per clock on each line. */
-+	if (op->dummy.dtr)
-+		wait_c >>= 1;
-+
-+	return wait_c;
-+}
-+
- static bool dw_spi_supports_enh_mem_op(struct spi_mem *mem,
- 				       const struct spi_mem_op *op)
- {
-@@ -678,10 +711,7 @@ static bool dw_spi_supports_enh_mem_op(struct spi_mem *mem,
- 	if (op->dummy.nbytes != 0 && op->data.dir == SPI_MEM_DATA_OUT)
- 		return false;
-
--	/* WAIT_CYCLES is a 5-bit field in SPI_CTRLR0 */
--	if (op->dummy.nbytes != 0 &&
--	    op->dummy.nbytes * BITS_PER_BYTE / op->dummy.buswidth >
--	    FIELD_MAX(DW_SPI_ENH_CTRLR0_WAIT_CYCLE_MASK))
-+	if (dw_spi_enh_wait_cycles(op) > FIELD_MAX(DW_SPI_ENH_CTRLR0_WAIT_CYCLE_MASK))
- 		return false;
-
- 	if ((dws->quirk_flags & DW_SPI_QUIRK_JHB100) && op->addr.nbytes &&
-@@ -1074,8 +1104,10 @@ static int dw_spi_exec_enh_mem_op(struct spi_mem *mem, const struct spi_mem_op *
- 	else
- 		enh_cfg.inst_l = DW_SPI_ENH_CTRLR0_INST_L_INST_L0;
-
--	if (op->dummy.buswidth)
--		enh_cfg.wait_c = op->dummy.nbytes * BITS_PER_BYTE / op->dummy.buswidth;
-+	enh_cfg.wait_c = dw_spi_enh_wait_cycles(op);
-+
-+	enh_cfg.inst_ddr = op->cmd.dtr;
-+	enh_cfg.spi_ddr = op->addr.dtr || op->dummy.dtr || op->data.dtr;
-
- 	dw_spi_enable_chip(dws, 0);
-
-@@ -1383,6 +1415,11 @@ static const struct spi_controller_mem_caps dw_spi_mem_caps = {
- 	.per_op_freq = true,
- };
-
-+static const struct spi_controller_mem_caps dw_spi_enh_mem_caps = {
-+	.per_op_freq = true,
-+	.dtr = true,
-+};
-+
- int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
- {
- 	struct spi_controller *ctlr;
-@@ -1439,7 +1476,8 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
- 			ctlr->set_cs = dw_spi_set_cs;
- 		if (dws->mem_ops.exec_op) {
- 			ctlr->mem_ops = &dws->mem_ops;
--			ctlr->mem_caps = &dw_spi_mem_caps;
-+			ctlr->mem_caps = (dws->caps & DW_SPI_CAP_EMODE) ?
-+					 &dw_spi_enh_mem_caps : &dw_spi_mem_caps;
- 		}
- 		ctlr->max_speed_hz = dws->max_freq;
- 		ctlr->flags = SPI_CONTROLLER_GPIO_SS;
-diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
-index c16225c5c887..67b4e0098ac3 100644
---- a/drivers/spi/spi-dw.h
-+++ b/drivers/spi/spi-dw.h
-@@ -66,6 +66,7 @@
- #define DW_SPI_RX_SAMPLE_DLY		0xf0
- #define DW_SPI_SPI_CTRLR0		0xf4
- #define DW_SPI_CS_OVERRIDE		0xf4
-+#define DW_SPI_DDR_DRIVE_EDGE		0xf8
-
- /* Register offsets (StarFive JHB100 DWC SSI IP-cores) */
- #define DW_SPI_JHB100_INST		0x1000
-@@ -139,6 +140,8 @@
-
- /* Bit fields in SPI_CTRLR0 */
- #define DW_SPI_ENH_CTRLR0_CLK_STRETCH_EN	BIT(30)
-+#define DW_SPI_ENH_CTRLR0_INST_DDR_EN		BIT(17)
-+#define DW_SPI_ENH_CTRLR0_SPI_DDR_EN		BIT(16)
- #define DW_SPI_ENH_CTRLR0_WAIT_CYCLE_MASK	GENMASK(15, 11)
- #define DW_SPI_ENH_CTRLR0_INST_L_MASK		GENMASK(9, 8)
- #define DW_SPI_ENH_CTRLR0_INST_L_INST_L0	0x0
-@@ -150,6 +153,9 @@
- #define DW_SPI_ENH_CTRLR0_TRANS_TYPE_TT2	0x2
- #define DW_SPI_ENH_CTRLR0_TRANS_TYPE_MASK	GENMASK(1, 0)
-
-+/* Bit fields in DDR_DRIVE_EDGE */
-+#define DW_SPI_DDR_DRIVE_EDGE_TDE_MASK		GENMASK(7, 0)
-+
- /* Mem/DMA operations helpers */
- #define DW_SPI_WAIT_RETRIES			5
- #define DW_SPI_BUF_SIZE \
---
-2.25.1
+Thanks,
+Adrian

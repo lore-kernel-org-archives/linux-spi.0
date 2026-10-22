@@ -1,54 +1,56 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792665970;
-	b=fyY4y71MLcpRcFqusiUT1NItMdaqm5jGVKET1qF8AkIg/DGTHDcG/TVyKU/TJXEMQGAB
-	 fzC3+N7Y/Z7sTWqK67xCFDgiizDxbW3lt3nrTBOjbYqPUzbmnek6Bz30QeBz3ByChn5/7
-	 lvP178Y9DjP3UpEQm2Yl9AZkqrinClT0oW4fL6yYMBBIQpDtj94J46hBLsN/cbx6C1Qzx
-	 Sckx50gUB5amk5842VkgQx4CiVIhR/88rQkwOqjxZ3l/jEk2U4HHze67mDVFtWpUV27Z5
-	 vhpak6xYx2a7QIHsboMIEenHr5mEVEITN0NjBMJ3w3IuPiGIrA5fo+QxslWmb+D3TLg==
+	t=1792666075;
+	b=jhYDuvhBkyz6WkVvGGlSYlDhVJJzl8OFjMteMnyzLN/Sxu8oRaFmUun6vfJz1zdNvIxg
+	 vJXwIM9qdz8lu2Rf0a/znbi1RCkaHdUzppUANGqRrZ3vJDnkG5Z6ltwR5GQiSfd0mYCUI
+	 lyndo0oZFsv5ZrJLAwyYDAZPot1ul+m5IS51tRtuY4wxI4Xz4o1t8WyEf2xyt+tCSzRQz
+	 fKIbowiHKnEO/m7vG4Crwh6ImVeHstipztmYYEwvbsO+ED0DOIwL7eXzhKTxmU/kr91SC
+	 8ja0F4d68ZiL6Pf0F2mRQe+TYcfyagIZWzbdqlJmL0hWaiohzwEwNYR+TTqRSkAiLxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792665970;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792666075;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
 	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
-	bh=uytOd5S7nxvQrfDc9PxXqBZPkguyREFdfHpWXeT+neo=;
-	b=n4PnhmFaPnV87iLwSYlHFN/i73T+33NGH+DA2Y8anTDS0IDSPZ4AFf/XPqsuIEagnNaK
-	 FhlpXDO3xwr0KJk3u+fpBhFbNU1VuVjSpSF8jxqvvwixDF9J7ZiUekK8H9YruKf73xKRt
-	 5z9bImR+QzgqapBHp2waOKigxgAuHdB/+fS+rdlG2wo6UNauO2iJmu+41ZXGA/A5UuDWh
-	 xK0pjzfGPeSqXD5O7DfFmEo3SyTWDCTonzH9biKoLgeZseBSRolDn5J6bOcy7+a+Z+lS8
-	 VkF4BDhG21x0+beyegVcD8neHgpcQ9m3B3EqmAl/5QxyyxjbcscXQjgZFwrWiXV2TJg==
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Last-TLS-Session-Version;
+	bh=gvdAk8PUxpYgSiS/h7dzJZtjfb09gWIuT4zPW30I1Fc=;
+	b=TmoFNFgi16WkfWVtqhY8yzJjEyDt3g72cKR7SISj5yvOnAyAXqOxf8hK4vxI5eGbZwkV
+	 OhD+o90xjeBFzqkJFo3zy6+OO5z0BaQSMCRyhyC2huXGa+LX3YqpJCWVDjw1fjC/AVve/
+	 eyZ3gmumB2zNScC209/5oAVu7v4Rggz1yjc5RdGw3e9uwiX1iiG1/S7ZEBsy5LWkaTkqy
+	 K/KgEzWdkhXY/471+eAiq9e3wPLR9dn40x+aWwlaXKol2exEVN/tM+LbRaf1BZ5sQ6Wgu
+	 TL6nefDxpj6r58IRp8gfwEz4v2ERTZIjADFJwA66IjEzP5Zxu6t96cYOcHqmiDKs7xg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=znPTKa0j;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QArawM2v;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD0A606A31F;
-	Thu, 22 Oct 2026 10:46:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org EAD0A606A31F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0455C606A31B
+	for <linux-spi@vger.kernel.org>; Thu, 22 Oct 2026 10:47:54 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 0455C606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=znPTKa0j
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=QArawM2v
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 573854E4125B;
-	Thu, 22 Oct 2026 10:46:08 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D8246C58472;
+	Thu, 22 Oct 2026 10:48:52 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 284A760360;
-	Thu, 22 Oct 2026 10:46:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0417C10328E3D;
-	Thu, 22 Oct 2026 12:46:05 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 62E1060360;
+	Thu, 22 Oct 2026 10:47:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 760F110328D6E;
+	Thu, 22 Oct 2026 12:47:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792665967; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=uytOd5S7nxvQrfDc9PxXqBZPkguyREFdfHpWXeT+neo=;
-	b=znPTKa0ji9r2gpzA1zBt4X1noMCjJRu2rGiZZEfrJnY+MhfXEfRNJWuM6iZDg4Aol2mJG5
-	5QenYglDrfA88d47VcyVjX7bXG5tjomZvhtJLk7OAoCgJ+UMbmFxiCWYehDlXopYX+pV5p
-	twlz4wmmHQ2hSCa/C0hHcndpuJxtKU3rZculMgWu99JJvmdPJCJm+4/G5Ksc/alM9Ce1HH
-	UA0kNvNs3u+pqoi0Lz3AnRM7DX5V2MK7yGLj/2mIwrFABvNQc1EwYfzck0fbfn4jRfGPAJ
-	iB+A00oLsB59U4o+VzPJSXeQWtkE938SmMwXfquuQNtXeNAktofetqLVVg9bFw==
+	t=1792666072; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=gvdAk8PUxpYgSiS/h7dzJZtjfb09gWIuT4zPW30I1Fc=;
+	b=QArawM2vEriQuM5fvOOjuZ0qXrN0OQ/7B1ExbBQX5m97I75QAOaVU7998qvsxTolWnLV2+
+	o8UqVfqhjWNLVr18Qglx2xQ9wAVNxW5HZfW1tl7j0ZGb/LZYWAqUAuCs10NvZpSazi2/nu
+	WqAepilraqT8lEyh4IT3vIPoMMlXxJFpKE00yrfn/X7RIj5iyoN4bBFY/tuh0EakFJkEf+
+	N60uf7CWzw97Rm2tn77AYei+UXZCFCMN5ZRy/e3lmt3EhwLujISZ8ltTHzi4nsHe58O7uI
+	vcpnxupji6uCkfMToVU7eIV2EpzB5tWWfXo6Ec1ePLH5giPphlgbSqWHNOi08A==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Changhuang Liang <changhuang.liang@starfivetech.com>
 Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
@@ -56,15 +58,15 @@ Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
   Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
   Vignesh Raghavendra <vigneshr@ti.com>,  linux-spi@vger.kernel.org,
   linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v1 3/4] mtd: spi-nor: debugfs: Correct DTR protocol
- names for 1S-xD-xD modes
-In-Reply-To: <20261022102614.75696-4-changhuang.liang@starfivetech.com>
-	(Changhuang Liang's message of "Thu, 22 Oct 2026 03:26:13 -0700")
+Subject: Re: [PATCH v1 4/4] mtd: spi-nor: macronix: Add 1-4-4 DTR read
+ support for MX66L1G45G
+In-Reply-To: <20261022102614.75696-5-changhuang.liang@starfivetech.com>
+	(Changhuang Liang's message of "Thu, 22 Oct 2026 03:26:14 -0700")
 References: <20261022102614.75696-1-changhuang.liang@starfivetech.com>
-	<20261022102614.75696-4-changhuang.liang@starfivetech.com>
+	<20261022102614.75696-5-changhuang.liang@starfivetech.com>
 User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Thu, 22 Oct 2026 12:46:05 +0200
-Message-ID: <87zew6ovwy.fsf@bootlin.com>
+Date: Thu, 22 Oct 2026 12:47:45 +0200
+Message-ID: <87tsmeovu6.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -74,28 +76,41 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Last-TLS-Session-Version: TLSv1.3
 
-On 22/10/2026 at 03:26:13 -07, Changhuang Liang <changhuang.liang@starfivetech.com> wrote:
+On 22/10/2026 at 03:26:14 -07, Changhuang Liang <changhuang.liang@starfivet=
+ech.com> wrote:
 
-> The debugfs protocol names for the mixed DTR modes (1-1-1, 1-2-2,
-> 1-4-4, 1-8-8) currently print the command phase as "1D", i.e. dual
-> transfer on a single line.  That does not match the protocol
-> definition: these modes issue the opcode on a single line in single
-> data rate (S), and only the address, dummy and data phases use DTR
-> (D).  The "1D" prefix is therefore wrong.
+> The MX66L1G45G supports the 1-4-4 DTR read mode. This flash uses 6
+> dummy cycles by default in 1-4-4 DTR mode, but the kernel's SFDP
+> parser does not derive any SNOR_HWCAPS_READ_1_4_4_DTR capability from
+> the BFPT table, and 4BAIT only filters already-known capabilities.
+> The exact number of dummy cycles is also not directly given in the
+> SFDP tables.
 >
-> Rename them to "1S-xD-xD" so the names reflect that the first phase
-> is single-data-rate on one line, consistent with the "8D-8D-8D"
-> naming for SNOR_PROTO_8_8_8_DTR.
+> Therefore, implement late_init to initialize support for this opcode,
+> configuring the read settings with the default 6 dummy cycles. When a
+> 4BAIT table is present, SFDP parsing has already converted all read
+> opcodes to their 4-byte variants and spi_nor_set_4byte_opcodes() is
+> skipped later on, so select the 4-byte opcode in that case.
 >
-> This only changes the strings printed by debugfs; no functional
-> behavior is affected.
+> The part also supports the 4-byte opcode set but its SFDP does not
+> expose a 4BAIT table, so set SPI_NOR_4B_OPCODES like MX66L51235F
+> (0xc2 0x20 0x1a) to let spi_nor_set_4byte_opcodes() pick the 4-byte
+> variants, including 0xEE for 1-4-4 DTR.
+>
+> Add a dedicated fixup for the part (SNOR_ID 0xc2, 0x20, 0x1b) that
+> keeps the existing QPP 4-byte post-SFDP fixup and additionally
+> advertises the 1-4-4 DTR read capability in late_init.
 >
 > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-> ---
-
-That's likely correct.
 
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Maybe in your v2 you can add (as hinted in the documentation) traces of
+a test run with the SFDP tables, proof that it works in this mode, etc.
+
+Thanks,
+Miqu=C3=A8l

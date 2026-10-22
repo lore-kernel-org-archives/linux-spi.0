@@ -1,87 +1,72 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=188.68.39.254
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792675481;
-	b=Y+fBsaO+cEScx2GIXH77oqBdOhSH/rkUPZiOprvLdO7pp8H6++bfCX3jpF9XobOMq0OT
-	 9O39qLianzdbexX1Ly9GdSpoJ7kgL4btGvJDyciOmQ+kCI68F2iZ20Hc5dwZ1JK2tCrS1
-	 ggZzwWJuh1mr9RpJrxwN6EP/Q55BJrwd4KXDDqxcAGYG+I/aajB8o8iHRAeZvuUIqhsyU
-	 LUKIRQ42fBWM6GIqMiV+iBrIHgoVhKikSAeDEfjXgCs0oWN9+PjYW7gdroh7ZRfphpxXw
-	 DM+4qH3RYPIv2nmxctsia0GNxBohBctAxtOaH4pB56FspXgMXretLtfJYjoMsVMJXJg==
+	t=1792675678;
+	b=lbYm62Ze/LVxSi8MOD1g+1/nBJ51bDokM/uCvPTKlp2fHhsuvPofDXUvUPl82wzamFqI
+	 jpoyiYxqWbYiElswQhfxuBhbiIAyUb7m4uuTe7WjMlqcpa2RrPsLYc1F6vtAV374gUjaK
+	 fvAUvd/JW0QHq5q7u7Ery+YOwBIhpsEm/bxzTLiRG9gqC1qUP345SjewlhF3D/5V+ujo4
+	 PlrWk9V6u913Zamb4wIgT5F+Po5KEZQF2D7epBqLp6v53ZnFKT2i1qKq0IIFgqhnDy6+N
+	 Uw5CIgx7IvbNKfIWWvkDo4CusToCr9uzOZJnQAjtmJKBlIRlcZU3ypUgZGQV2+dRvQA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792675481;
-	h=DMARC-Filter:DKIM-Signature:X-secureTransport-forwarded:From:
-	 Complaints-To:To:CC:Subject:Thread-Topic:Thread-Index:Date:Message-ID:
-	 References:In-Reply-To:Accept-Language:Content-Language:
-	 X-MS-Has-Attach:X-MS-TNEF-Correlator:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	bh=v05ZIqnku0GHaJKR3tI3adEDyHJ/1SXZvwlQME+SFNs=;
-	b=lNhbPQsFoDeU3wzAu2y/YKwwjAHdtOJMb4+xqF57tNrpVDEkR4cNjdW/S1R/QqjExv6R
-	 TJahUqYHz1oNFeI8MtHQvM2BBBwmA9fDWA2hIKqACWTB5vEupvM+QFTtbBd2WOB/A1V1z
-	 AaKtdnHu6JvEDwl/3TSxsSngL0W5DmJC2tMR6a55doTPqVI05ZCbkus5reiQjZCoJJfHV
-	 F3PQ91YkNREZXItD65p1sW8uvV/DLunOktvYzA6W0U49P5ujR47/V6Nkh8pPTcRHQjF9p
-	 kB8XwQQlskzIyh1lfyntlgz5gVQK8inebE2uqKEKLXbSM5EbQjgRwuAAgjzoHjkU4xw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1792675678;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
+	bh=/RgtJAwfFxMYwKRHR6ym49yRh7I5Fuz2Xy5zLf91xb0=;
+	b=FRdEE27z78b+FJmxORTgVG2Z08n0cyp1mGQ1l37sVWJOTfNwWWmMtWWXC9OM4IWcgA1k
+	 smdNfsZNErq+AMXLfx5oEX4TlRcgtbnv12CrP5tPd1WBm+n8gCD4IV7RivT/ujAtfow7O
+	 RY3RvyaHm0URDGUbAS+WfoI0a7xHACRs+uJQVghRefee9z8YQZo/YCEHl8Hkjq3h5wpWb
+	 YGl2wx3HuJMS0VtlTkBer+m6yRbwEcULgtTgi6Qt/AbnKayZ/+2+UXWvJbvevd/KvpFSV
+	 8zW/3wLtrtCam1PmAj41Li/rzw+DKTfYfrwYuaUNgjzfIJDa0Guj71972D9BBCaK6Vg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=dh-electronics.com;
-	spf=pass smtp.mailfrom=dh-electronics.com;
-	dkim=pass header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b="ryxfwYS/";
-	arc=none smtp.remote-ip=188.68.39.254
-Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ru3JWSa4;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A619606A329;
-	Thu, 22 Oct 2026 13:24:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6A619606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23C3606A31D
+	for <linux-spi@vger.kernel.org>; Thu, 22 Oct 2026 13:27:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C23C3606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=dh-electronics.com header.i=@dh-electronics.com header.a=rsa-sha256 header.s=dhelectronicscom header.b=ryxfwYS/
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
-	s=dhelectronicscom; t=1792675417;
-	bh=v05ZIqnku0GHaJKR3tI3adEDyHJ/1SXZvwlQME+SFNs=;
-	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
-	b=ryxfwYS/s+YzRNbUCr9JFnLUeC8x41M3pWi67C0Vp0cm2O7zhIaS0RY+oAdd/77lf
-	 U7I+R8aVhAn2Q/qDqPT6EIl3AXfpgTKJmTnCx3et5aJpcamWV82UEN02Bjs3edcBXa
-	 ZVMKm/SAyIPxBpH6B80fWQ0v7PxLYzMZROoSUl532EYH/Q6cAZbBQpNRbac2CRlHNC
-	 CEyYS/ZoGsqFaE7xtEKRiphJF5t4Y/JOGjtJWA7nTqJ+wH/o/7Hxr2g2wZdeT5kL5D
-	 bhkEauN0ElHtdyTzM43r77nQBs0RrCQlArdTI5iFXC3aiCpguH9UTmMfM6l6IfBKW9
-	 MbpBuyPSSYBdw==
-X-secureTransport-forwarded: yes
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Complaints-To: abuse@cubewerk.de
-To: Marek Vasut <marex@nabladev.com>, Conor Dooley <conor@kernel.org>
-CC: "Frank.Li@oss.nxp.com" <Frank.Li@oss.nxp.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron
-	<jonathan.cameron@oss.qualcomm.com>, Frank Li <Frank.Li@nxp.com>, "Ashish
- Yadav" <ashish.yadav@infineon.com>, Colin Huang <u8813345@gmail.com>, "Sanman
- Pradhan" <psanman@juniper.net>, Thorsten Blum <blum@kernel.org>, Troy
- Mitchell <troy.mitchell@linux.dev>, Eddie James <eajames@linux.ibm.com>,
-	Rodrigo Gobbi <rodrigo.gobbi.7@gmail.com>, "open list:SPI SUBSYSTEM"
-	<linux-spi@vger.kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE
- TREE BINDINGS" <devicetree@vger.kernel.org>, kernel
-	<kernel@dh-electronics.com>, open list <linux-kernel@vger.kernel.org>, "Mark
- Brown" <broonie@kernel.org>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Subject: RE: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-Thread-Topic: [PATCH 1/1] dt-bindings: spi: Add separate binding for
- dh,dhcom-board
-Thread-Index: AQHdXhJ4wetEp3c+RUWeUdg1WJlLHbcAlj2AgAL8T4CAACG3gIABW++AgAFa0RD///l1AIADLsHg
-Date: Thu, 22 Oct 2026 13:23:33 +0000
-Message-ID: <420d783dcdf44abf81d09931bd514b3f@dh-electronics.com>
-References: <20261016205718.877668-1-Frank.Li@oss.nxp.com>
- <e7095176-44b8-4838-8443-2e515d34cb25@nabladev.com>
- <20261018-freeway-twitch-e813208aa9af@spud>
- <fd15f846-94d4-44d8-a42d-5f13a7b18794@nabladev.com>
- <20261019-cycling-unnatural-c1adbfb5c9d9@spud>
- <05e66d8f57a44c9aa87cac1c35e82184@dh-electronics.com>
- <087bdc09-cf57-444e-aa29-f977998b0024@nabladev.com>
-In-Reply-To: <087bdc09-cf57-444e-aa29-f977998b0024@nabladev.com>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=Ru3JWSa4
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 260881A12C5;
+	Thu, 22 Oct 2026 13:27:55 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E186660360;
+	Thu, 22 Oct 2026 13:27:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 09DEF10328E5A;
+	Thu, 22 Oct 2026 15:27:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1792675674; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=/RgtJAwfFxMYwKRHR6ym49yRh7I5Fuz2Xy5zLf91xb0=;
+	b=Ru3JWSa450e+Pfh7Wr17MJeuBSndDLoX6yuq1Glk2pUuKCdE1g4SjrOYTy2wcqGbi8Im44
+	6FBKurVqPmB8fnoWsPyKf6mZnMyI86GP8R4S12gtVfD54xLKf0sHmb9+uxtHlFGRtUzQ5/
+	qYaXjWHsbgHVJvd5OdKM6JPqrqFw+griRskl1Hn0N478/R7oIdsLavPNBmZLY/cnQon8qg
+	2WrJpEFPRLkpUVnXPP3SHARlEXMdHbuiDioYFO0apGaJPyp6EIKek8VimAaDejD8vyT2jo
+	KdJIrleI4voqKPvz0C47SBNgZLW646ZZnceeyj4p9E2dhJHkW5aMMbhORDQUYg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: "Michael Walle" <mwalle@kernel.org>
+Cc: "Changhuang Liang" <changhuang.liang@starfivetech.com>,  "Pratyush
+ Yadav" <pratyush@kernel.org>,  "Takahiro Kuwano"
+ <takahiro.kuwano@infineon.com>,  "Mark Brown" <broonie@kernel.org>,
+  "Richard Weinberger" <richard@nod.at>,  "Vignesh Raghavendra"
+ <vigneshr@ti.com>,  <linux-spi@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-mtd@lists.infradead.org>
+Subject: Re: [PATCH v1 2/4] mtd: spi-nor: Support mixed 1S-xD-xD DTR
+ protocols in spi_nor_spimem_setup_op()
+In-Reply-To: <DMBD190498R4.3PX7VO4SXKU3C@kernel.org> (Michael Walle's message
+	of "Thu, 22 Oct 2026 14:19:27 +0200")
+References: <20261022102614.75696-1-changhuang.liang@starfivetech.com>
+	<20261022102614.75696-3-changhuang.liang@starfivetech.com>
+	<875wyuqaj4.fsf@bootlin.com> <DMBD190498R4.3PX7VO4SXKU3C@kernel.org>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Thu, 22 Oct 2026 15:27:42 +0200
+Message-ID: <87ik2tq301.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -91,52 +76,86 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
-RnJvbTogTWFyZWsgVmFzdXQgPG1hcmV4QG5hYmxhZGV2LmNvbT4NClNlbnQ6IFR1ZXNkYXksIE9j
-dG9iZXIgMjAsIDIwMjYgNDo0MSBQTQ0KPj4+Pj4+PiArKysgYi9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3Mvc3BpL2RoLGRoY29tLWJvYXJkLnlhbWwNCj4+Pj4+Pj4gQEAgLTAsMCAr
-MSw0NiBAQA0KPj4+Pj4+PiArIyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vbmx5
-IE9SIEJTRC0yLUNsYXVzZQ0KPj4+Pj4+PiArJVlBTUwgMS4yDQo+Pj4+Pj4+ICstLS0NCj4+Pj4+
-Pj4gKyRpZDogaHR0cDovL2RldmljZXRyZWUub3JnL3NjaGVtYXMvc3BpL2RoLGRoY29tLWJvYXJk
-LnlhbWwjDQo+Pj4+Pj4+ICskc2NoZW1hOiBodHRwOi8vZGV2aWNldHJlZS5vcmcvbWV0YS1zY2hl
-bWFzL2NvcmUueWFtbCMNCj4+Pj4+Pj4gKw0KPj4+Pj4+PiArdGl0bGU6IERIIGVsZWN0cm9uaWNz
-IEdtYkggb24tYm9hcmQgQ1BMRCB0cml2aWFsIFNQSSBkZXZpY2UNCj4+Pj4+Pg0KPj4+Pj4+IFRo
-aXMgZG9lcyBub3QgbG9vayBxdWl0ZSByaWdodCwgc2luY2UgY29tcGF0aWJsZSB0aGlzIGlzIHVz
-ZWQgb25seSBvbjoNCj4+Pj4+Pg0KPj4+Pj4+IGFyY2gvYXJtL2Jvb3QvZHRzL2lteDZ1bGwtZGhj
-b3ItbWF2ZW8tYm94LmR0cw0KPj4+Pj4+DQo+Pj4+Pj4gICAgICAgICAgbW9kZWwgPSAiREggZWxl
-Y3Ryb25pY3MgaS5NWDZVTEwgREhDT1Igb24gbWF2ZW8gYm94IjsNCj4+Pj4+PiAgICAgICAgICBj
-b21wYXRpYmxlID0gIm1hcmFudGVjLGlteDZ1bGwtZGhjb3ItbWF2ZW8tYm94IiwNCj4+Pj4+PiAi
-ZGgsaW14NnVsbC1kaGNvci1zb20iLA0KPj4+Pj4+DQo+Pj4+Pj4gU28gdGhlIHdob2xlDQo+Pj4+
-Pj4NCj4+Pj4+PiAgICAgICAgICBzcGlkZXZAMCB7DQo+Pj4+Pj4gICAgICAgICAgICAgICAgICBj
-b21wYXRpYmxlID0gImRoLGRoY29tLWJvYXJkIjsNCj4+Pj4+PiAgICAgICAgICAgICAgICAgIHJl
-ZyA9IDwwPjsNCj4+Pj4+PiAgICAgICAgICAgICAgICAgIHNwaS1jcGhhOw0KPj4+Pj4+ICAgICAg
-ICAgICAgICAgICAgc3BpLWNwb2w7DQo+Pj4+Pj4gICAgICAgICAgICAgICAgICBzcGktbWF4LWZy
-ZXF1ZW5jeSA9IDw1NDAwMDAwMD47DQo+Pj4+Pj4gICAgICAgICAgfTsNCj4+Pj4+Pg0KPj4+Pj4+
-IFNob3VsZCBwcm9iYWJseSB1c2UgYSBkaWZmZXJlbnQgY29tcGF0aWJsZS4NCj4+Pj4+Pg0KPj4+
-Pj4+IENocmlzdG9waCwgd2hhdCBkZXZpY2UgaXMgdGhpcyBvbiB0aGlzIGJvYXJkID8NCj4+DQo+
-PiBUaGVyZSBpcyBubyBkZXZpY2UgY29ubmVjdGVkIHRvIHRoZXNlIHBpbnMsIG9ubHkgYW4gZXh0
-ZW5zaW9uIGNvbm5lY3Rvci4NCj4+IFRoZSAiZGgsZGhjb20tYm9hcmQiIGRldmljZSB3YXMgdXNl
-ZCBvbmx5IHRvIHRlc3QgdGhlIGhhcmR3YXJlIGFuZCB3YXMNCj4+IHVuZm9ydHVuYXRlbHkgZm9y
-Z290dGVuIHRvIGJlIHJlbW92ZWQuIEluIHRoZSBwcm9kdWN0aW9uIHZlcnNpb24sIG5vDQo+PiBk
-ZXZpY2UgaXMgY29ubmVjdGVkIHRvIHRoaXMgaW50ZXJmYWNlLiBJdCBzaG91bGQgYWN0dWFsbHkg
-YmUgcmVtb3ZlZC4NCj4+IFNob3VsZCBJIGNyZWF0ZSBhIHBhdGNoIGZvciB0aGlzPw0KPiANCj4g
-SW4gdGhhdCBjYXNlLCBJIHdvdWxkIHN1Z2dlc3QgdG8gcmVtb3ZlIHRoaXMgd2hvbGUgc3BpZGV2
-QDAgZnJvbSB0aGlzIERUDQo+IHdpdGggcHJvcGVyIEZpeGVzOiB0YWcgLg0KPiANCj4gWy4uLl0N
-Cj4gDQo+ID4+PiBCdXQgaW4gYW55IGNhc2UsIHRoZSBjb21wYXRpYmxlIHN0cmluZyBzaG91bGQg
-bGlrZWx5IGJlIGZpeGVkIGhlcmUsIHRoaXMNCj4gPj4+IGRvZXMgbm90IHNlZW0gcmlnaHQuIFRo
-ZSBkaCxkaGNvbS1ib2FyZCB3YXMgZGVzY3JpYmluZyBzb21lIENQTEQvRlBHQSBvbiBvbmUNCj4g
-Pj4+IG9mIHRoZSBldmFsYm9hcmRzLg0KPiA+Pg0KPiA+PiBZZSBJIGRvbid0IGRpc2FncmVlIHRo
-ZXJlLiAiZGhjb20tYm9hcmQiIHNlZW1zIG5vdCBuZWFybHkgc3BlY2lmaWMNCj4gPj4gZW5vdWdo
-IGFib3V0IHdoYXQgdGhlIGRldmljZSBpcy4NCj4gPg0KPiA+IFRoZXJlIGlzbid0IGFjdHVhbGx5
-IGEgdXNlciBmb3IgdGhpcyBkZXZpY2UsIHNlZSBhYm92ZS4gSXQncyBvbmx5IHVzZWQgZG93bnN0
-cmVhbQ0KPiA+IGF0IERIIGVsZWN0cm9uaWNzIGZvciBhIGNvbm5lY3Rpb24gdG8gYSBQU29DIGNo
-aXAuIEJ1dCBldmVuIGZvciB0aGlzIHB1cnBvc2UsIGl0J3MNCj4gPiBub3QgYmVpbmcgdXNlZCBj
-b3JyZWN0bHkuIFdoYXQgc2hvdWxkIHdlIGRvIG5vdz8NCj4gSSB0aGluayB0aGlzIHBhdGNoIGNh
-biBhbHNvIGJlIGRyb3BwZWQsIHRoZSBkaCxkaGNvbS1ib2FyZCB3b3VsZCBiZSBsZWZ0DQo+IGFz
-IGEgbGVnYWN5IGNvbXBhdGlibGUgZm9yIHRoZSBDUExEL0ZQR0Egb24gdGhlIERIQ09NIFBESzIg
-Ym9hcmQgKHdoZXJlDQo+IGl0IGlzIG5vdCBkZXNjcmliZWQgeWV0LCBidXQgc2hvdWxkIGJlKSAs
-IGFuZCB0aGUgZGgtZGhjb20tYm9hcmQgc2hvdWxkDQo+IHJlbWFpbiBhIHRyaXZpYWwgZGV2aWNl
-LCBzaW5jZSB0aGUgQ1BMRC9GUEdBIGlzIGNvbm5lY3RlZCB2aWEgc29tZQ0KPiBwYXJhbGxlbCBi
-dXMgaWYgSSByZWNhbGwgaXQgcmlnaHQgPw0KDQpZZXMsIG9uIHRoZSBQREsyIHRoZSBDUExEL0ZQ
-R0EgaXMgY29ubmVjdGVkIHZpYSBhIHBhcmFsbGVsIGJ1cy4NCg0KUmVnYXJkcw0KQ2hyaXN0b3Bo
-DQo=
+On 22/10/2026 at 14:19:27 +02, "Michael Walle" <mwalle@kernel.org> wrote:
+
+> On Thu Oct 22, 2026 at 12:45 PM CEST, Miquel Raynal wrote:
+>> On 22/10/2026 at 03:26:12 -07, Changhuang Liang <changhuang.liang@starfivetech.com> wrote:
+>>
+>>> Currently spi_nor_spimem_setup_op() sets all four phases (cmd, addr,
+>>> dummy, data) to DTR whenever spi_nor_protocol_is_dtr(proto) is true.
+>>> This is too coarse: the 1S-xD-xD DTR protocols (1_1_1_DTR, 1_2_2_DTR,
+>>> 1_4_4_DTR, 1_8_8_DTR) send the command phase in STR on a single line,
+>>> and only the address, dummy and data phases in DTR. SPIMEM supports
+>>> such mixed DTR modes.
+>>>
+>>> Split the handling:
+>>>
+>>>   - For SNOR_PROTO_8_8_8_DTR, keep the existing behavior: set all
+>>>     phases to DTR and use a 2-byte opcode (opcode + extension).
+>>>
+>>>   - For the other DTR protocols, set the command phase to STR and only
+>>>     the address, dummy and data phases to DTR. Double op->dummy.nbytes
+>>>     since DTR transfers 2 bytes per clock cycle, matching how the dummy
+>>>     cycle count is specified for these protocols.
+>>>
+>>> No in-tree flash currently declares SNOR_HWCAPS_READ_1_x_x_DTR, so
+>>> this is not a bug fix but preparation for enabling these protocols.
+>>> A follow-up patch will enable 1S-4D-4D for the MX66L1G45G. The
+>>> 8D-8D-8D path is unchanged.
+>>>
+>>> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+>>> ---
+>>>  drivers/mtd/spi-nor/core.c | 21 ++++++++++++++-------
+>>>  1 file changed, 14 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+>>> index 90524c58602e..43e506e728ab 100644
+>>> --- a/drivers/mtd/spi-nor/core.c
+>>> +++ b/drivers/mtd/spi-nor/core.c
+>>> @@ -97,13 +97,7 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
+>>>  	if (op->data.nbytes)
+>>>  		op->data.buswidth = spi_nor_get_protocol_data_nbits(proto);
+>>>  
+>>> -	if (spi_nor_protocol_is_dtr(proto)) {
+>>> -		/*
+>>> -		 * SPIMEM supports mixed DTR modes, but right now we can only
+>>> -		 * have all phases either DTR or STR. IOW, SPIMEM can have
+>>> -		 * something like 4S-4D-4D, but SPI NOR can't. So, set all 4
+>>> -		 * phases to either DTR or STR.
+>>> -		 */
+>>> +	if (proto == SNOR_PROTO_8_8_8_DTR) {
+>>>  		op->cmd.dtr = true;
+>>>  		op->addr.dtr = true;
+>>>  		op->dummy.dtr = true;
+>>> @@ -115,6 +109,19 @@ void spi_nor_spimem_setup_op(const struct spi_nor *nor,
+>>>  		ext = spi_nor_get_cmd_ext(nor, op);
+>>>  		op->cmd.opcode = (op->cmd.opcode << 8) | ext;
+>>>  		op->cmd.nbytes = 2;
+>>> +	} else if (spi_nor_protocol_is_dtr(proto)) {
+>>> +		/*
+>>> +		 * 1S-xD-xD protocols: the opcode is sent in STR on a single
+>>> +		 * line, only the address, dummy and data phases are DTR. The
+>>> +		 * opcode stays 1 byte (no command extension).
+>>> +		 */
+>>> +		op->cmd.dtr = false;
+>>> +		op->addr.dtr = true;
+>>> +		op->dummy.dtr = true;
+>>> +		op->data.dtr = true;
+>>
+>> Still to coarse IMHO.
+
+too*
+
+>> What about xS-xS-xD?
+>
+> Is this a thing? Are there any NOR flashes which support the address
+> being SDR? That doesn't make much sense, does it? The command being
+> SDR makes sense because you don't have to switch modes and thus
+> you're stateless.
+
+I honnestly don't know if it's actually a thing today in SPI NOR, but it
+is in SPI NAND. Just rising the flag.
+

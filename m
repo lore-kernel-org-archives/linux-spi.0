@@ -1,120 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.152.168
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793007920;
-	b=RCbrIrw/sVCxzDomOPKLefJ1K7VdfxargyATtbVBYbRHpXyPAVkw9QJRU6JTNRWMmlkO
-	 AumLvsouiQO+n0gXlN47tocGJQjer79ONJf/4K1RPM7SBqg8OYjL3Sl+lzbwveWLTH7JF
-	 qm5nfbDo6js0JDvZwTReyFulK2iZVUuEtR5s3On4G9AFuvljrPCnkTssbhIl71MQ3nRie
-	 b620as4rpOHbu5fkMBZf4eqLSciNbZNfxugaBr50sBhbyqeXfTh0uoJaKqtYGfECtQ4x0
-	 FmKDA7Ybt5MoXMTVRqT0XrlnPdALtJlD+DrQip0PfGmOSWYH2becn6WSP9FXPqYdaFQ==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793007920;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:DKIM-Signature:
-	 Received:Received:X-MS-Exchange-Authentication-Results:Received-SPF:
-	 Received:Received:Received:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:Content-Language:From:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:X-MS-Exchange-SenderADCheck:
-	 X-MS-Exchange-AntiSpam-Relay:X-Microsoft-Antispam:
-	 X-Microsoft-Antispam-Message-Info:X-Forefront-Antispam-Report:
-	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
-	 X-MS-Exchange-AntiSpam-MessageData-0:X-Exchange-RoutingPolicyChecked:
-	 X-OriginatorOrg:X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthAs:X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
-	 X-Proofpoint-Spam-Info:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID:
-	 X-Proofpoint-Spam-Reason;
-	bh=dSYIyePOQLTOBaq9TJBK79iJPGdfEwU1Cth37U9pCZI=;
-	b=ipQG8zHk1C5puviZ3LyQ8Kjoupjxz0swfHreX6J6vmclp2WPtX+uUigTKpOPswbyNGm8
-	 uJ4uGze389Bf7PtSUZg7ibQhnGysaju2TCQamJPqGFUvOtgb01+GsE138lISAudQxcreu
-	 J7jC6ua0NABV1SabVnD7+NiH9dL23J+fBz1EkXTR06gSgl2NZOkobctBJoJ71e+JYsijE
-	 qRyJl/q8wz8z04BuYKr0al9ClOF/u7lKZa19yWj3+8PTm+XsxvSKycb/IFRo7pYOF4y/R
-	 5a2iZ4SNGIOXV3NiD6ffkRWmWEFpCKebXbiJcXChbMx8RG35zWTFqTB5x6YHi2IAhqQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=opensource.cirrus.com;
-	spf=pass smtp.mailfrom=opensource.cirrus.com;
-	dkim=pass header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=LvcEFl6A;
-	dkim=pass header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-cirrus4-onmicrosoft-com header.b=wUvl4C3F;
-	arc=pass header.oldest-pass=0 smtp.remote-ip=67.231.152.168
-Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=162.62.57.87
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793009879;
+	b=C0OBuEu3ZS+xlM42abRNBBE4p8xTXSGQqGFT/nBLGWHEJ+Xsnn5y/8M6fXxULDjkdAPo
+	 +RnYtUOTz9LdMmR08oXTNEPCU70AZS2dse3Cu2NnBNQ8huLR8pLRsqz2tJMpM7sS6/kHM
+	 cAT4M5D+suylQSwMHKePuqZK1hgzHeQKoGrKOqa4K7ra7LIs4l9zPmbU5KN/yANY0Jbjy
+	 lrqSemyX1F+DmbPX6xYvqq9JnHwOsc00OrRjsfZpJjrl5gHNQWkj2rZayJdRTI8uLdjCX
+	 Pt9P3rKEc3rYctb5jpGS3O6nvGiavRc80lDvLR05eLUm3nWTOZEqN0jIqkucuwqzF0w==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793009879;
+	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
+	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
+	 X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=+vQqFjBignZRT8XMhvdZi2Ne9dp7Awmm/kWjKmOpBRM=;
+	b=vl0Um0CK1y202sCg/5y+o9AvTU3ke5A20ZTe8FzjReDAoRH/XZXAiyOr0CkH+vBnk5J0
+	 H3Xjv1OegEoSzxgiPBYB8xsnbXwl2kDbMMhuFo7/CwPc6gXTNSDlIwvNkgdD64WVm38kZ
+	 wWTPfcQ4bbVpRft1I4OL0Tf6tZWxzOwhCY+mt9mkZJ1mcSGUIMkcmd2SM/iCPUGV/+nMf
+	 zBpTQXQmH89jlM+91QHAUweHHnyxfYDvA37LOIw/G98StzUWqSNRebDoXM896mbP3mTla
+	 ec0978vjxjCtiaf747+mifb7VaAi8ypTv61eau/b3mqtj46QO6hdy1XUzTOEy32oT+w==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=qq.com;
+	spf=pass smtp.mailfrom=qq.com;
+	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=bupA3k6D;
+	arc=none smtp.remote-ip=162.62.57.87
+Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC77260A260D;
-	Mon, 26 Oct 2026 09:45:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BC77260A260D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ABD606A31A;
+	Mon, 26 Oct 2026 10:17:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C3ABD606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=cirrus.com header.i=@cirrus.com header.a=rsa-sha256 header.s=PODMain02222019 header.b=LvcEFl6A;
-	dkim=pass (1024-bit key, unprotected) header.d=cirrus4.onmicrosoft.com header.i=@cirrus4.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-cirrus4-onmicrosoft-com header.b=wUvl4C3F
-Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
-	by mx0b-001ae601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69Q4KFq01595820;
-	Mon, 26 Oct 2026 04:45:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	PODMain02222019; bh=dSYIyePOQLTOBaq9TJBK79iJPGdfEwU1Cth37U9pCZI=; b=
-	LvcEFl6A4tBjn0lkZ/zyKLuXZaI0t+MlDaykpl0xyAZP/7IpVXVkNNf9yHL14NHC
-	V8lDLFWixFp9dI/7XJRCRdVcDaHryikCQW0/94JC9gckcpODt2ShT136Lmo1usla
-	Vl9GJy6R+aivazj3acxw0vtAonS4jxGHjN0tXQi/c6p7AqHW/KlAZEDTeskb+VzU
-	svrbgDDOvhEwZbi5z7tS0ZORHz05WWM8Z6Kn0mwVlA8o0Mp2ewT0qCve6f0Iw4ze
-	UdkwJ9dFPBcV0bSAyUd3v2yr/zMiqcGyogV+cIjDTxgF/jta9rEg+5NnRpQswOmA
-	M5Md7k0sugrNM0qI7Yeu5g==
-Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11023104.outbound.protection.outlook.com [40.93.201.104])
-	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 4hgs3j9w11-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 26 Oct 2026 04:45:04 -0500 (CDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wy2n6TQeKt70gds1dkcIH0u92HeY+UvIgg0eYW9BUEyuZ7arPKXoR9fDciPnsiLU0OjQt3Cs6+geBVEOM/N2wzQFJZ3MavRopVVr0PKOJnovXlLZJLHt6Et1/9RpzFX9C9usdxJWVJ1JNsPxATgmnhu9ORUWPA7rEo+gD9Op9wrgvK77Zk8G84/mIVRMjMd/7oLt6TXpu1zqKTDKJ//HhMDVGshaW5vWH4GwSRMKSx++47RiCUTwBVOPJ7fiEyTX/Eg6Io7QaKPCjpVepM5oe530crmFeIRnXJjlcrJzt1DK9kmjf5nQVNAxZMOHI1KW0JIRcHdBnrF8NGI0srWwdA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dSYIyePOQLTOBaq9TJBK79iJPGdfEwU1Cth37U9pCZI=;
- b=nN1Kc/fzG3ztPEvADluPBFW5PvY/IlqGuh54yYU06AeDCG3fbuAkRNqkW+eutKYi5YAhaO02C35YYpeewhJO9wT4LnXc6ExdExj+O8H8LXxd7uaXGnWplMNniQWRRccPlC2Y26G9LZd0WzXAh2/EDeV7hiBYsqq1KrOa7HgqSVuNT9RprEe2u/3FocHkxhdLv8srUUUL7ILYb9E/81ov9Q5s1wO+YFB1xxEFXeGfF9/yYbNrZWxlY0h2JCn39mpbmy/+QO9lIp4SrFrzs9N0PD5+XWULcnI+1Lj1qemCm+nqhvBVGyo9pj4oqCwOY4H+Q7nm4J8efZsPRuvau8zp3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 84.19.233.75) smtp.rcpttodomain=cirrus.com
- smtp.mailfrom=opensource.cirrus.com; dmarc=fail (p=reject sp=reject pct=100)
- action=oreject header.from=opensource.cirrus.com; dkim=none (message not
- signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cirrus4.onmicrosoft.com; s=selector2-cirrus4-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dSYIyePOQLTOBaq9TJBK79iJPGdfEwU1Cth37U9pCZI=;
- b=wUvl4C3Fm2cz0+vyxkv5hfVldZLAgWtlGXLZYfVEbi92KLuyU+GFwgVmzQ0u8Y1KgrjAnqO8eRzx7r+ut/VWNUqhRugOzzM/4znFayBo0/2ISfqss7PCHivygUJ74R+HkZ/GyQlNOJWgQxM4sa4UwSGwLrTDdsb0QhtuVhg2hrA=
-Received: from CY5PR19CA0005.namprd19.prod.outlook.com (2603:10b6:930:15::27)
- by IA0PR19MB7289.namprd19.prod.outlook.com (2603:10b6:208:439::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 09:45:00 +0000
-Received: from CY4PEPF000392DA.namprd03.prod.outlook.com
- (2603:10b6:930:15:cafe::5e) by CY5PR19CA0005.outlook.office365.com
- (2603:10b6:930:15::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.546.22 via Frontend Transport; Mon,
- 26 Oct 2026 09:44:59 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=softfail (sender
- IP is 84.19.233.75) smtp.mailfrom=opensource.cirrus.com; dkim=none (message
- not signed) header.d=none;dmarc=fail action=oreject
- header.from=opensource.cirrus.com;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- opensource.cirrus.com discourages use of 84.19.233.75 as permitted sender)
-Received: from edirelay1.ad.cirrus.com (84.19.233.75) by
- CY4PEPF000392DA.mail.protection.outlook.com (10.167.247.120) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.4
- via Frontend Transport; Mon, 26 Oct 2026 09:44:57 +0000
-Received: from ediswmail9.ad.cirrus.com (ediswmail9.ad.cirrus.com [198.61.86.93])
-	by edirelay1.ad.cirrus.com (Postfix) with ESMTPS id 55780406540;
-	Mon, 26 Oct 2026 09:44:56 +0000 (UTC)
-Received: from [198.90.208.11] (ediswws06.ad.cirrus.com [198.90.208.11])
-	by ediswmail9.ad.cirrus.com (Postfix) with ESMTPSA id 343B8822556;
-	Mon, 26 Oct 2026 09:44:56 +0000 (UTC)
-Message-ID: <83c01495-7c7e-421f-81ec-4b09ed56f8d7@opensource.cirrus.com>
-Date: Mon, 26 Oct 2026 09:44:55 +0000
+	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=bupA3k6D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1793009872; bh=+vQqFjBignZRT8XMhvdZi2Ne9dp7Awmm/kWjKmOpBRM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=bupA3k6DCECkrOjWSHttIXmngApt+vDhSYQXzR+m67ABSM5I1yIo0hGDMvv/SQCfM
+	 HrVzoMV4OlEdaKue+dRR5SJFaT4d+K1/O/+bW7mNu5sWV6Hb4Pp/EzU1XZnkTmD/dj
+	 eHbryo53p62qHsBI0NeN/1rIJHY3LITbGPd+81tI=
+Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id 46F8F47C; Mon, 26 Oct 2026 18:17:47 +0800
+X-QQ-mid: xmsmtpt1793009870tps30lbfd
+Message-ID: <tencent_9F56130CEE9798D5C4A13B897412CBA6FC06@qq.com>
+X-QQ-XMAILINFO: MRMtjO3A6C9XbXZ2D+oNSNFnYsB2eXDqJLQf313vnrwb2TIeb6sDOKeR9xPgzB
+	 Jefh+y22rQNvIraKSagnDdrTX5O2c9DEV7qcUqDCp1ewzdgSI+KIiQnUTNV0gMR0wWh9s5Ge5u8a
+	 BQyW2Xsi3wBfhIvesbmT/0m1VKkah9jmSI2eU6Z2KWK0l6vzut9q/VNlCrgyYh0juqzjj6uEpS/W
+	 Ll1qAQzo0i01FYndxB4hVZdQU4njZu+fM7IujCF5wPvnbYKgbqvPpqfdjIrrN8lPLwWfnvWuyWCl
+	 APlemUKAYAEwLXJe11N6oqi26VOjDI8qTYd1K2VkszDn4eIi8sEZldhyunaj4ScJh9j9eLpXTmFD
+	 L6Wi/nvgtdi8mFz9cHhXedgvE5AXqiqIoncTniJ2QfhwvJ54V7sc3Ift3E7CYNn4TRBKeNT7RBEe
+	 Savq1Ai/whqVgd0oRujsaqLyDZKycfaMGpPuChOVLQdvJ/gHaBS3Ucnbdt6wZdn/mO8zjIwIWk9S
+	 oVMV2V9bAInZkM3O1A4la24TeCXw1eRBdtai4uFF/ppjTxmeI4vaBlISvwwqMBjRRM4bt/utTnnO
+	 tfDdt5bjzjBxcj3O3ErH5lgKydF6qckLHyqQ7Aoul4bsWym4jU+2kRNE+uAt6+cWqV977MIosJhW
+	 R662EIfvISmj+HW5vIyofBmE007skEzm37cH9ItNnjUVkJieED8XamXFNFNzsCLhKHI4LxLocGNy
+	 1fQCISauIIxUkR/x7ogZCAidq7fOTEXUE/XVwTHxuwgd+IOWsxk0ZHRiAC2cxZwkkDvaqJA1Qc8M
+	 pOrzb4PSWW3s1iKDmmv0LCoSsGVWV5UkE0wntBQmv+qsHrbK7YmS1EScz5R/u1CIsqO2MjiYgrau
+	 /tD8cLvjzRuLitdlDKUN8iAycZx/dm/at/EMoF1PLSt58V/oLF9ud4DEcxNZhyto5t+1nR7s6M0M
+	 CmIxZv03Iz43iJi/ZnicVT8jb0pPEyCQDsZJ6aKTcl+iDzp0HkbasBKGRV+RN1gQVpSTYDfQMxex
+	 bSDsNahLyA8++4vN95rlu3VQfDlD9mS4B/vZQ7GPezgIPS26RFOBj+4bU/3CVou2l3F4RMGmDCxI
+	 bNoM+oqfJ4EOa2tV8=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+From: Shuai Liu <847807867@qq.com>
+To: linux-spi@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Cc: broonie@kernel.org,
+	ojeda@kernel.org,
+	dakr@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Shuai Liu <847807867@qq.com>
+Subject: [PATCH v2 2/3] rust: spi: add SPI driver abstractions
+Date: Mon, 26 Oct 2026 18:17:46 +0800
+X-OQ-MSGID: <20261026101747.126903-3-847807867@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261026101747.126903-1-847807867@qq.com>
+References: <20261026101747.126903-1-847807867@qq.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -124,100 +84,641 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: cs42l43: Add speaker ID quirk for Dell XPS 13
- DX13260 SKU 0E54
-To: =?UTF-8?B?SsOpcsOpbWllIFJvZG9u?= <jeremie.rodon@gmail.com>,
-        broonie@kernel.org, david.rhodes@cirrus.com
-Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-        linux-spi@vger.kernel.org
-References: <20261025095037.18891-1-jeremie.rodon@gmail.com>
-Content-Language: en-GB
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
-In-Reply-To: <20261025095037.18891-1-jeremie.rodon@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF000392DA:EE_|IA0PR19MB7289:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b2a49a1-d70b-4955-55a2-08df3345cc30
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|61400799027|36860700016|82310400026|56012099006|11063799006|261009223027099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|10067099003|16102099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	gpeG6/FvQFlTcuSqZqhHMKGOMs/yBww7Yi0P82dqtpY/DAHCfD7VNbvRhc8VyugPx2rdAhCzmWeaU38wmPMwnXGqEAhhb2KbvVxy61e4HUXeR7oqy/5nbyXPHWEAQYCJ1UQDreWznpX/6NQbN2quGhs/DZZH3sV4xSSRWtNjLkDJ3nUf3U24cL/1tKcVdHd0vWaDKpyDJla+jDUAkdgMbnIZo+agjfLcqi5Ma1/bCSym/WLGPiw0ySzwZO+DigQcvSs4BNsJRCeD5iUR6GoHfYkjMXKrzsCH76nlis3EYG439guuxzk58z2nIFzNFf6g5AKrqKW7B55Q4NVNba8djN77NOiMOCtORJ54XnDTG53Ag+zTFsMMrX7k/LJLUubpaQykCRPFOl3TY9dTyI6iHcYMlTy8/HxtzNkDGQJFrmKZaS8N61swZLV0/36CHR8xrRsdXgu4N7mTLh5ra1ZP3Jpa33dAynoQ5Arxn35yt2a8qr+ct+YRCLzE4iy6dp1tfuE6YfW/3YbVVZ5m08xO9cxvm46W5vjhbH7+ElTI5cgMs1r+DxW4CwKBkCSUTNt/YiulHUq9henIBwFXKfA/9evAAtpd+8f9H+W3E0jlO0rhRZn8K0tK0H0B6TbC1KKutlH8bwZvLsw+gc3R4lF5mJyDik2r3CcF+uh200PKhUQujsyknqrj4pEIegUGQkZnQf39ad+lhhPw3MqlR1yU6Q==
-X-Forefront-Antispam-Report:
-	CIP:84.19.233.75;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:edirelay1.ad.cirrus.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(376014)(61400799027)(36860700016)(82310400026)(56012099006)(11063799006)(261009223027099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(10067099003)(16102099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	oxAqfaXlhGbUGUseWoU36pdqMaoMnlij5QmmENZdA64FNQ2/mw2yCk+e7foDSYv0ird9MQo8JpeuI5kDlU9FojjOziXy923lwMLS1PgSPm6VFakUPTKx1v++am/hD6LNZiu3HKNh4OlTiebQv5p5afpI2fnRVuuIvheDaEiXUTrEguJuGI/js8x+Aytv+tFghyLfWChyZOH8KJVjySWtt42ByikNJT6NRDFIvymMrjU2kDQlfV38eBATgFmZxHt6c+2L7Z1+yxqcEc0GdMeQ3G7Gqyf0K0ZAdgczgiGkNwByr0TS8M+p1PcacwbmU/NE4lwsSMQ+JwhQz+x7kZrNiFvv2gjONf/DxxiOgGr1iz38sesuczAs9fpfk0u37RsfKi0BINSjnGqVIgxfkYxJvSB5hStfT0kJTcx8jLZCf+VV3U1ezADYDTQbmjwF7/iP
-X-Exchange-RoutingPolicyChecked:
-	VzleuXponIb8GcyJMts9RLQ/QboHnm+hGgXHhJLzxBzRx8gMO0gm9MZNy28h2TkgEVKCd5J7hjDl3oMw2ifopysAVAId1dsUq4NWroCNtZwtP1SS9zjAFI98DytwLmZwn2xCsMrCjcw68iCLKjyQI1z9TkNMIRp6Gu0CpNzFk/uLIn42+CtyiuYCl1oUYX5Cbwv6FCTx3WP2ME+ySUISDSTQlwmvTNysqogekILgjx+6r83SzRXQa2LRP5q2ySFuAuyCOFCIdgNPe1IZTeWMP5vqbkucQB+FpAP7tnNTS5LJddf0i2IigUGG7Y858lPsp1ds17W+oCTXBGgaO0O3jA==
-X-OriginatorOrg: opensource.cirrus.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 09:44:57.8432
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b2a49a1-d70b-4955-55a2-08df3345cc30
-X-MS-Exchange-CrossTenant-Id: bec09025-e5bc-40d1-a355-8e955c307de8
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=bec09025-e5bc-40d1-a355-8e955c307de8;Ip=[84.19.233.75];Helo=[edirelay1.ad.cirrus.com]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CY4PEPF000392DA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR19MB7289
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI2MDAzOCBTYWx0ZWRfX3YxnzfBW8FKB
- rWYObkSH2ktIF0GQb63P6vSMjsJfyYYf16sdw9lqsZf9n5BF7IjWI8MBk9ET4MBZiW9HUYR3acx
- VKZHgC6GdsVIDvKCHZMbm2f0g+VXvnM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI2MDAzOCBTYWx0ZWRfX6Cna0IQjv5gu
- 0Osa48CLZih8rsZEJadkBEkjuv4eXsp+QS3/Lx+1PRSEFwrVR8n4kNUznq+n8Rzpx1fSnbelG6v
- I75gpyd0FcA66BDVyDEIqUIwr+qpX+3YeVRcdtk+9RuPIj+VDpJEXG2Bft/XF55r9iwYwjJas8x
- 3cEKTjsYW48Y0/zlG23GEtcWT1j+3kXgJZKlTR+lsbm8ag9fya8e+7jDV8rESl0zJIlstM2z3yF
- d7fhnLcS0k0NFf8W6H/bmxznQQOl38KRj6PzxL0A0CjddDd0KhfmDwwmuFCEgDv9Dww4laI+cS2
- 0PpY2xNIb16BVNCSqpNrdH5taz5XvYHp2jhnFrJ9r6iBuUgASQLRl2GDEvz6PuLfmxFtawrKALA
- JSDeXNAKiXbw2OUfViVuK3psKUKcN/FyVA21keQr7lzhbVCNPREPwYjg/GIeumyEWyiPTwuAIwg
- ytnvEh4FedMCl9RScWw==
-X-Authority-Analysis: v=2.4 cv=dbIVTnXe c=1 sm=1 tr=0 ts=6adf2120 cx=c_pps
- a=0zbhqlog1HYD7RdPDvTXcw==:117 a=h1hSm8JtM9GN1ddwPAif2w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s63m1ICgrNkA:10 a=RWc_ulEos4gA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=iX4cTi3TZMoOKdANLEfx:22 a=KfkQE9S9VqCBgivYGm0O:22
- a=pGLkceISAAAA:8 a=w1d2syhTAAAA:8 a=CHSkyznvRQZZaynByEwA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: D6o0HNCGxFjB0UCJ4Qh_hnjD76dgoaJh
-X-Proofpoint-ORIG-GUID: D6o0HNCGxFjB0UCJ4Qh_hnjD76dgoaJh
-X-Proofpoint-Spam-Reason: safe
 
-On 25/10/2026 9:50 am, Jérémie Rodon wrote:
-> The Dell XPS 13 DX13260 is also sold with SKU 0E54, which has the same
-> ACPI speaker ID layout as SKU 0E53: two pins in one GpioIo() while the
-> spk-id-gpios _DSD property references only the first. Without the quirk
-> the speaker ID is wrong (0), so there is no speaker audio and no amp
-> firmware is loaded.
-> 
-> Add a DMI entry for SKU 0E54 using the same handler.
-> 
-> Fixes: cad16d850e37 ("spi: cs42l43: Workaround for wrong speaker ID on Dell XPS 13 DX13260")
-> Signed-off-by: Jérémie Rodon <jeremie.rodon@gmail.com>
-> ---
->   drivers/spi/spi-cs42l43.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-> index 6772abb483dd..46eeb44130dd 100644
-> --- a/drivers/spi/spi-cs42l43.c
-> +++ b/drivers/spi/spi-cs42l43.c
-> @@ -301,6 +301,14 @@ static const struct dmi_system_id cs42l43_spk_id_quirks[] = {
->   		},
->   		.driver_data = cs42l43_get_2bit_speaker_id_from_one_gpioio,
->   	},
-> +	{
-> +		.ident = "Dell XPS 13 DX13260",
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc"),
-> +			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0E54"),
-> +		},
-> +		.driver_data = cs42l43_get_2bit_speaker_id_from_one_gpioio,
-> +	},
->   	{ }
->   };
->   
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Add the Rust abstractions for the SPI driver subsystem, allowing SPI
+drivers to be written in Rust.
+
+This adds the following abstractions:
+- `spi::DeviceId`: a driver-side device id.
+- `spi::Adapter`: the registration of SPI drivers, implementing
+  `driver::DriverLayout` and `driver::RegistrationOps`.
+- `spi::Driver`: the trait that SPI drivers implement, with `probe()`,
+  `shutdown()` and `unbind()` callbacks.
+- `spi::SpiDevice`: a representation of `struct spi_device`, providing
+  device configuration accessors and the `setup()`, `write()`, `read()`
+  and `write_then_read()` operations.
+- `module_spi_driver!` and `spi_device_table!` macros.
+
+The module is only built when CONFIG_SPI is enabled, since the SPI core
+functions it uses are not available otherwise.
+
+The I/O methods copy the data into DMA-safe bounce buffers before
+transferring, as the SPI core requires transfer buffers to be DMA-safe
+and the caller-provided slices may be located anywhere (e.g. on the
+stack).
+
+Match data lookup follows the same order as the C core's
+spi_get_device_match_data(): first the OF/ACPI match data, then the SPI
+id table.
+
+Signed-off-by: Shuai Liu <847807867@qq.com>
+---
+ rust/kernel/Kconfig.test |  11 +
+ rust/kernel/lib.rs       |   2 +
+ rust/kernel/spi.rs       | 558 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 571 insertions(+)
+ create mode 100644 rust/kernel/spi.rs
+
+diff --git a/rust/kernel/Kconfig.test b/rust/kernel/Kconfig.test
+index 3bf4194f28c7..bda70dcc7793 100644
+--- a/rust/kernel/Kconfig.test
++++ b/rust/kernel/Kconfig.test
+@@ -94,6 +94,17 @@ config RUST_BUG_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config RUST_SPI_KUNIT_TEST
++	bool "KUnit tests for the Rust SPI driver abstractions" if !KUNIT_ALL_TESTS
++	depends on SPI=y
++	default KUNIT_ALL_TESTS
++	help
++	  This option enables KUnit tests for the Rust SPI driver
++	  abstractions. These are only for development and testing, not
++	  for regular kernel use cases.
++
++	  If unsure, say N.
++
+ config RUST_TIME_KUNIT_TEST
+ 	bool "KUnit tests for the Rust time API" if !KUNIT_ALL_TESTS
+ 	default KUNIT_ALL_TESTS
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index a4747f75b163..cbe5a4ed825d 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -133,6 +133,8 @@
+ pub mod sizes;
+ #[cfg(CONFIG_SOC_BUS)]
+ pub mod soc;
++#[cfg(CONFIG_SPI)]
++pub mod spi;
+ #[doc(hidden)]
+ pub mod std_vendor;
+ pub mod str;
+diff --git a/rust/kernel/spi.rs b/rust/kernel/spi.rs
+new file mode 100644
+index 000000000000..ad13225c74fe
+--- /dev/null
++++ b/rust/kernel/spi.rs
+@@ -0,0 +1,558 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! SPI Driver subsystem
++//!
++//! This module adds abstractions for the SPI driver subsystem, allowing drivers to be
++//! written in Rust for SPI devices.
++
++// SPI Driver abstractions.
++use crate::{
++    acpi,
++    device,
++    device_id::{
++        RawDeviceId,
++        RawDeviceIdIndex, //
++    },
++    driver,
++    error::*,
++    of,
++    prelude::*,
++    sync::aref::AlwaysRefCounted,
++    types::Opaque, //
++};
++
++use core::{
++    marker::PhantomData,
++    mem::offset_of,
++    ptr::NonNull, //
++};
++
++/// An SPI device id table.
++#[repr(transparent)]
++#[derive(Clone, Copy)]
++pub struct DeviceId(bindings::spi_device_id);
++
++impl DeviceId {
++    const SPI_NAME_SIZE: usize = 32;
++
++    /// Create a new device id from an SPI 'id' string.
++    #[inline(always)]
++    pub const fn new(id: &'static CStr) -> Self {
++        let src = id.to_bytes_with_nul();
++        build_assert!(src.len() <= Self::SPI_NAME_SIZE, "ID exceeds 32 bytes");
++        let mut spi: bindings::spi_device_id = pin_init::zeroed();
++        let mut i = 0;
++        while i < src.len() {
++            spi.name[i] = src[i];
++            i += 1;
++        }
++
++        Self(spi)
++    }
++}
++
++// SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `spi_device_id` and does not add
++// additional invariants, so it's safe to transmute to `RawType`.
++unsafe impl RawDeviceId for DeviceId {
++    type RawType = bindings::spi_device_id;
++}
++
++// SAFETY: `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
++unsafe impl RawDeviceIdIndex for DeviceId {
++    const DRIVER_DATA_OFFSET: usize = core::mem::offset_of!(bindings::spi_device_id, driver_data);
++}
++
++/// IdTable type for SPI
++pub type IdTable<T> = &'static dyn kernel::device_id::IdTable<DeviceId, T>;
++
++/// Create a SPI `IdTable` with its alias for modpost.
++#[macro_export]
++macro_rules! spi_device_table {
++    ($($tt:tt)*) => {
++        $crate::module_device_table!("spi", $crate::spi::DeviceId, $($tt)*);
++    };
++}
++
++/// An adapter for the registration of SPI drivers.
++pub struct Adapter<T: Driver>(T);
++
++// SAFETY:
++// - `bindings::spi_driver` is a C type declared as `repr(C)`.
++// - `T::Data` is the type of the driver's device private data.
++// - `struct spi_driver` embeds a `struct device_driver`.
++// - `DEVICE_DRIVER_OFFSET` is the correct byte offset to the embedded `struct device_driver`.
++unsafe impl<T: Driver> driver::DriverLayout for Adapter<T> {
++    type DriverType = bindings::spi_driver;
++    type DriverData<'bound> = T::Data<'bound>;
++    const DEVICE_DRIVER_OFFSET: usize = core::mem::offset_of!(Self::DriverType, driver);
++}
++
++// SAFETY: A call to `unregister` for a given instance of `DriverType` is guaranteed to be valid if
++// a preceding call to `register` has been successful.
++unsafe impl<T: Driver> driver::RegistrationOps for Adapter<T> {
++    unsafe fn register(
++        sdrv: &Opaque<Self::DriverType>,
++        name: &'static CStr,
++        module: &'static ThisModule,
++    ) -> Result {
++        build_assert!(
++            T::ACPI_ID_TABLE.is_some() || T::OF_ID_TABLE.is_some() || T::SPI_ID_TABLE.is_some(),
++            "At least one of ACPI/OF/Legacy tables must be present when registering an spi driver"
++        );
++
++        let spi_table = match T::SPI_ID_TABLE {
++            Some(table) => table.as_ptr(),
++            None => core::ptr::null(),
++        };
++
++        let of_table = match T::OF_ID_TABLE {
++            Some(table) => table.as_ptr(),
++            None => core::ptr::null(),
++        };
++
++        let acpi_table = match T::ACPI_ID_TABLE {
++            Some(table) => table.as_ptr(),
++            None => core::ptr::null(),
++        };
++
++        // SAFETY: It's safe to set the fields of `struct spi_driver` on initialization.
++        unsafe {
++            (*sdrv.get()).driver.name = name.as_char_ptr();
++            (*sdrv.get()).probe = Some(Self::probe_callback);
++            (*sdrv.get()).remove = Some(Self::remove_callback);
++            (*sdrv.get()).shutdown = Some(Self::shutdown_callback);
++            (*sdrv.get()).id_table = spi_table;
++            (*sdrv.get()).driver.of_match_table = of_table;
++            (*sdrv.get()).driver.acpi_match_table = acpi_table;
++        }
++
++        // SAFETY: `sdrv` is guaranteed to be a valid `DriverType`.
++        to_result(unsafe { bindings::__spi_register_driver(module.as_ptr(), sdrv.get()) })
++    }
++
++    unsafe fn unregister(sdrv: &Opaque<Self::DriverType>) {
++        // SAFETY: `sdrv` is guaranteed to be a valid `DriverType`.
++        unsafe { bindings::spi_unregister_driver(sdrv.get()) }
++    }
++}
++
++impl<T: Driver> Adapter<T> {
++    extern "C" fn probe_callback(sdev: *mut bindings::spi_device) -> kernel::ffi::c_int {
++        // SAFETY: The SPI bus only ever calls the probe callback with a valid pointer to a
++        // `struct spi_device`.
++        //
++        // INVARIANT: `sdev` is valid for the duration of `probe_callback()`.
++        let sdev = unsafe { &*sdev.cast::<SpiDevice<device::CoreInternal<'_>>>() };
++
++        // Match the lookup order of the C core's `spi_get_device_match_data()`: first the
++        // OF/ACPI match data, then the SPI id table.
++        //
++        // SAFETY: `sdev` matched data is of type `Self::IdInfo`.
++        let info = unsafe { <Self as driver::Adapter>::id_info(sdev.as_ref()) }
++            .or_else(|| Self::spi_id_info(sdev));
++
++        from_result(|| {
++            let data = T::probe(sdev, info);
++
++            sdev.as_ref().set_drvdata(data)?;
++            Ok(0)
++        })
++    }
++
++    extern "C" fn remove_callback(sdev: *mut bindings::spi_device) {
++        // SAFETY: `sdev` is a valid pointer to a `struct spi_device`.
++        let sdev = unsafe { &*sdev.cast::<SpiDevice<device::CoreInternal<'_>>>() };
++
++        // SAFETY: `remove_callback` is only ever called after a successful call to
++        // `probe_callback`, hence it's guaranteed that `SpiDevice::set_drvdata()` has been called
++        // and stored a `Pin<KBox<T::Data<'_>>>`.
++        let data = unsafe { sdev.as_ref().drvdata_borrow::<T::Data<'_>>() };
++
++        T::unbind(sdev, data);
++    }
++
++    extern "C" fn shutdown_callback(sdev: *mut bindings::spi_device) {
++        // SAFETY: `shutdown_callback` is only ever called for a valid `sdev`
++        let sdev = unsafe { &*sdev.cast::<SpiDevice<device::CoreInternal<'_>>>() };
++
++        // SAFETY: `shutdown_callback` is only ever called after a successful call to
++        // `probe_callback`, hence it's guaranteed that `SpiDevice::set_drvdata()` has been called
++        // and stored a `Pin<KBox<T::Data<'_>>>`.
++        let data = unsafe { sdev.as_ref().drvdata_borrow::<T::Data<'_>>() };
++
++        T::shutdown(sdev, data);
++    }
++
++    /// Returns the driver's private data from the matching entry in the [`spi::IdTable`], if any.
++    ///
++    /// If this returns `None`, it means there is no match with an entry in the [`spi::IdTable`].
++    fn spi_id_info(dev: &SpiDevice) -> Option<&'static <Self as driver::Adapter>::IdInfo> {
++        // Ensure the driver has an SPI id table: the entries matched by `spi_get_device_id()`
++        // below come from the table registered in `register()`, i.e. `T::SPI_ID_TABLE`, which
++        // guarantees that every `driver_data` field is a valid `T::IdInfo`.
++        T::SPI_ID_TABLE.as_ref()?;
++
++        // SAFETY:
++        // - `dev` is guaranteed to be valid while it's alive, and so is `dev.as_raw()`.
++        //
++        // `spi_get_device_id()` looks up the registered driver id table using the device's
++        // modalias and returns either a pointer to a matching entry or `NULL`.
++        let raw_id = unsafe { bindings::spi_get_device_id(dev.as_raw()) };
++
++        if raw_id.is_null() {
++            return None;
++        }
++
++        // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct spi_device_id` and
++        // does not add additional invariants, so it's safe to transmute.
++        let id = unsafe { &*raw_id.cast::<DeviceId>() };
++
++        // SAFETY: `id` comes from `table` which is of type `IdArray<_, Self::IdInfo>`.
++        Some(unsafe { id.info_unchecked::<T::IdInfo>() })
++    }
++}
++
++impl<T: Driver> driver::Adapter for Adapter<T> {
++    type IdInfo = T::IdInfo;
++
++    fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
++        T::OF_ID_TABLE
++    }
++
++    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
++        T::ACPI_ID_TABLE
++    }
++}
++
++/// Declares a kernel module that exposes a single spi driver.
++///
++/// # Examples
++///
++/// ```ignore
++/// kernel::module_spi_driver! {
++///     type: MyDriver,
++///     name: "Module name",
++///     authors: ["Author name"],
++///     description: "Description",
++///     license: "GPL v2",
++/// }
++/// ```
++#[macro_export]
++macro_rules! module_spi_driver {
++    ($($f:tt)*) => {
++        $crate::module_driver!(<T>, $crate::spi::Adapter<T>, { $($f)* });
++    };
++}
++
++/// The spi driver trait.
++///
++/// Drivers must implement this trait in order to get a spi driver registered.
++///
++/// # Example
++///
++///```
++/// # use kernel::{device::Core, spi, of};
++///
++/// struct MyDriver;
++///
++/// kernel::spi_device_table!(
++///     SPI_TABLE,
++///     <MyDriver as spi::Driver>::IdInfo,
++///     [
++///          (spi::DeviceId::new(c"rust_driver_spi"), ())
++///     ]
++/// );
++///
++/// kernel::of_device_table!(
++///     OF_TABLE,
++///     <MyDriver as spi::Driver>::IdInfo,
++///     [
++///         (of::DeviceId::new(c"test,device"), ())
++///     ]
++/// );
++///
++/// impl spi::Driver for MyDriver {
++///     type IdInfo = ();
++///     type Data<'bound> = Self;
++///     const SPI_ID_TABLE: Option<spi::IdTable<Self::IdInfo>> = Some(&SPI_TABLE);
++///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
++///
++///     fn probe<'bound>(
++///         _sdev: &'bound spi::SpiDevice<Core<'_>>,
++///         _id_info: Option<&'bound Self::IdInfo>,
++///     ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound {
++///         Err(ENODEV)
++///     }
++///
++///     fn shutdown<'bound>(
++///         _sdev: &'bound spi::SpiDevice<Core<'_>>,
++///         this: Pin<&Self::Data<'bound>>,
++///     ) {
++///     }
++/// }
++///```
++pub trait Driver {
++    /// The type holding information about each device id supported by the driver.
++    // TODO: Use `associated_type_defaults` once stabilized:
++    //
++    // ```
++    // type IdInfo: 'static = ();
++    // ```
++    type IdInfo: 'static;
++
++    /// The type of the driver's bus device private data.
++    type Data<'bound>: Send + 'bound;
++
++    /// The table of device ids supported by the driver.
++    const SPI_ID_TABLE: Option<IdTable<Self::IdInfo>> = None;
++
++    /// The table of OF device ids supported by the driver.
++    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
++
++    /// The table of ACPI device ids supported by the driver.
++    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
++
++    /// SPI driver probe.
++    ///
++    /// Called when a new spi device is added or discovered.
++    /// Implementers should attempt to initialize the device here.
++    fn probe<'bound>(
++        dev: &'bound SpiDevice<device::Core<'_>>,
++        id_info: Option<&'bound Self::IdInfo>,
++    ) -> impl PinInit<Self::Data<'bound>, Error> + 'bound;
++
++    /// SPI driver shutdown.
++    ///
++    /// Called by the kernel during system reboot or power-off to allow the [`Driver`] to bring the
++    /// [`SpiDevice`] into a safe state. Implementing this callback is optional.
++    ///
++    /// Typical actions include stopping transfers, disabling interrupts, or resetting the hardware
++    /// to prevent undesired behavior during shutdown.
++    ///
++    /// This callback is distinct from final resource cleanup, as the driver instance remains valid
++    /// after it returns. Any deallocation or teardown of driver-owned resources should instead be
++    /// handled in `Drop`.
++    fn shutdown<'bound>(dev: &'bound SpiDevice<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
++        let _ = (dev, this);
++    }
++
++    /// SPI driver unbind.
++    ///
++    /// Called when the [`SpiDevice`] is unbound from its bound [`Driver`]. Implementing this
++    /// callback is optional.
++    ///
++    /// This callback serves as a place for drivers to perform teardown operations that require a
++    /// `&Device<Core>` or `&Device<Bound>` reference. For instance, drivers may try to perform I/O
++    /// operations to gracefully tear down the device.
++    ///
++    /// Otherwise, release operations for driver resources should be performed in `Drop`.
++    fn unbind<'bound>(dev: &'bound SpiDevice<device::Core<'_>>, this: Pin<&Self::Data<'bound>>) {
++        let _ = (dev, this);
++    }
++}
++
++/// The spi device representation.
++///
++/// This structure represents the Rust abstraction for a C `struct spi_device`. The
++/// implementation abstracts the usage of an existing C `struct spi_device` that
++/// gets passed from the C side.
++///
++/// # Invariants
++///
++/// A [`SpiDevice`] instance represents a valid `struct spi_device` created by the C portion of
++/// the kernel.
++#[repr(transparent)]
++pub struct SpiDevice<Ctx: device::DeviceContext = device::Normal>(
++    Opaque<bindings::spi_device>,
++    PhantomData<Ctx>,
++);
++
++impl<Ctx: device::DeviceContext> SpiDevice<Ctx> {
++    fn as_raw(&self) -> *mut bindings::spi_device {
++        self.0.get()
++    }
++
++    /// Returns the maximum speed of the SPI device.
++    #[inline]
++    pub fn max_speed_hz(&self) -> u32 {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`.
++        unsafe { (*self.as_raw()).max_speed_hz }
++    }
++
++    /// Returns the number of bits per word of the SPI device.
++    #[inline]
++    pub fn bits_per_word(&self) -> u8 {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`.
++        unsafe { (*self.as_raw()).bits_per_word }
++    }
++
++    /// Returns the mode flags of the SPI device.
++    #[inline]
++    pub fn mode(&self) -> u32 {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`.
++        unsafe { (*self.as_raw()).mode }
++    }
++
++    /// Configures the SPI device with the settings currently stored in it.
++    #[inline]
++    pub fn setup(&self) -> Result {
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`.
++        to_result(unsafe { bindings::spi_setup(self.as_raw()) })
++    }
++
++    /// Writes the data from `buf` to the SPI device.
++    ///
++    /// The data is copied into a DMA-safe bounce buffer before the transfer, since the
++    /// slice may be located anywhere (e.g. on the stack).
++    #[inline]
++    pub fn write(&self, buf: &[u8]) -> Result {
++        let mut bounce = KVec::with_capacity(buf.len(), GFP_KERNEL)?;
++        bounce.extend_from_slice(buf, GFP_KERNEL)?;
++
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`. `bounce` is valid for reads of length `bounce.len()` for the
++        // duration of the call, which SPI core guarantees not to outlive.
++        to_result(unsafe {
++            bindings::spi_write(self.as_raw(), bounce.as_ptr().cast(), bounce.len())
++        })
++    }
++
++    /// Reads data from the SPI device into `buf`.
++    ///
++    /// The received data is collected in a DMA-safe bounce buffer and then copied into
++    /// `buf`, since the slice may be located anywhere (e.g. on the stack).
++    #[inline]
++    pub fn read(&self, buf: &mut [u8]) -> Result {
++        let mut bounce = KVec::with_capacity(buf.len(), GFP_KERNEL)?;
++        bounce.resize(buf.len(), 0, GFP_KERNEL)?;
++
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`. `bounce` is valid for writes of length `bounce.len()` for
++        // the duration of the call, which SPI core guarantees not to outlive.
++        to_result(unsafe {
++            bindings::spi_read(self.as_raw(), bounce.as_mut_ptr().cast(), bounce.len())
++        })?;
++
++        buf.copy_from_slice(&bounce);
++        Ok(())
++    }
++
++    /// Writes the data from `write_buf` to the SPI device, then reads data from the SPI device
++    /// into `read_buf`.
++    ///
++    /// Both buffers are copied into DMA-safe bounce buffers before the transfer, since
++    /// the slices may be located anywhere (e.g. on the stack).
++    #[inline]
++    pub fn write_then_read(&self, write_buf: &[u8], read_buf: &mut [u8]) -> Result {
++        let n_tx = u32::try_from(write_buf.len())?;
++        let n_rx = u32::try_from(read_buf.len())?;
++
++        let mut tx = KVec::with_capacity(write_buf.len(), GFP_KERNEL)?;
++        tx.extend_from_slice(write_buf, GFP_KERNEL)?;
++
++        let mut rx = KVec::with_capacity(read_buf.len(), GFP_KERNEL)?;
++        rx.resize(read_buf.len(), 0, GFP_KERNEL)?;
++
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a valid pointer to a
++        // `struct spi_device`. `tx` is valid for reads of length `tx.len()` and `rx` is
++        // valid for writes of length `rx.len()` for the duration of the call, which SPI
++        // core guarantees not to outlive.
++        to_result(unsafe {
++            bindings::spi_write_then_read(
++                self.as_raw(),
++                tx.as_ptr().cast(),
++                n_tx,
++                rx.as_mut_ptr().cast(),
++                n_rx,
++            )
++        })?;
++
++        read_buf.copy_from_slice(&rx);
++        Ok(())
++    }
++}
++
++// SAFETY: `SpiDevice` is a transparent wrapper of `struct spi_device`.
++// The offset is guaranteed to point to a valid device field inside `SpiDevice`.
++unsafe impl<Ctx: device::DeviceContext> device::AsBusDevice<Ctx> for SpiDevice<Ctx> {
++    const OFFSET: usize = offset_of!(bindings::spi_device, dev);
++}
++
++// SAFETY: `SpiDevice` is a transparent wrapper of a type that doesn't depend on
++// `SpiDevice`'s generic argument.
++kernel::impl_device_context_deref!(unsafe { SpiDevice });
++kernel::impl_device_context_into_aref!(SpiDevice);
++
++// SAFETY: Instances of `SpiDevice` are always reference-counted.
++unsafe impl AlwaysRefCounted for SpiDevice {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::get_device(self.as_ref().as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::put_device(&raw mut (*obj.as_ref().as_raw()).dev) }
++    }
++}
++
++impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for SpiDevice<Ctx> {
++    fn as_ref(&self) -> &device::Device<Ctx> {
++        let raw = self.as_raw();
++        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a pointer to a valid
++        // `struct spi_device`.
++        let dev = unsafe { &raw mut (*raw).dev };
++
++        // SAFETY: `dev` points to a valid `struct device`.
++        unsafe { device::Device::from_raw(dev) }
++    }
++}
++
++// SAFETY: A `SpiDevice` is always reference-counted and can be released from any thread.
++unsafe impl Send for SpiDevice {}
++
++// SAFETY: `SpiDevice` can be shared among threads because all methods of `SpiDevice`
++// (i.e. `SpiDevice<Normal>) are thread safe.
++unsafe impl Sync for SpiDevice {}
++
++#[cfg(CONFIG_RUST_SPI_KUNIT_TEST)]
++#[kunit_tests(rust_kernel_spi)]
++mod tests {
++    use super::*;
++
++    #[test]
++    fn device_id_name_size() {
++        assert_eq!(DeviceId::SPI_NAME_SIZE, bindings::SPI_NAME_SIZE as usize);
++    }
++
++    #[test]
++    fn device_id_new_short_name() {
++        let id = DeviceId::new(c"rust_driver_spi");
++
++        let expected: &[u8] = b"rust_driver_spi\0";
++        assert_eq!(&id.0.name[..expected.len()], expected);
++
++        // The remaining bytes must be zeroed.
++        assert!(id.0.name[expected.len()..].iter().all(|&byte| byte == 0));
++    }
++
++    #[test]
++    fn device_id_new_empty_name() {
++        let id = DeviceId::new(c"");
++
++        assert!(id.0.name.iter().all(|&byte| byte == 0));
++    }
++
++    #[test]
++    fn device_id_new_max_length_name() {
++        // 31 bytes plus the NUL terminator is the maximum accepted name length.
++        let id = DeviceId::new(c"abcdefghijklmnopqrstuvwxyz01234");
++
++        let expected: &[u8] = b"abcdefghijklmnopqrstuvwxyz01234\0";
++        assert_eq!(&id.0.name[..], expected);
++    }
++}
+-- 
+2.43.0
+

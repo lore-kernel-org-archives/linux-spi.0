@@ -1,48 +1,62 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793016046;
-	b=mlW6aZUG6EXY2ag8VVHj984saAC7UfW3zwkInnRElVKVFZxn3dJ5zVSNuCwlbRMqgVOz
-	 gipxZyrp+6vHM2fyTmHuF7DP96dMRZib5XdNbIggoPvmFgU4s8p7GPdZn102wglAZvBPC
-	 eF5f7gVD0jeh4wwAidiVBgVlOZLb3GIVKEq1CsUcXub+TL9CqhiL4CoiDaCYRNXJmP5fB
-	 R7KgISNl3zZKiOnQyiQW0D4xF5USEzAnZNZqvOPH4ZOPsbuiplV/A6bRnavzJt7RtEr3V
-	 BtZrB3wquUtWxRK1YURIbm5R4zNltlvex/eBwEuNyWZ8WHLJknKD3L2ixrmWrWyJ/sw==
+	t=1793020912;
+	b=dH5avFpAAqOpJnMGBF34RVdubyXP4kMq7p3DJpVh9TUdmS19szkDeu8JXDzD+xVydDkK
+	 ISxegRP1NuzJ1H+5CaFslNKwbBsW5nWCm37yzbHneze21Yp8BRWMeBf1TO09N5vaLcueo
+	 HAbFMB/0GfZwLnsLOQBhw4ew5ItU4Hdj2Jhu0N/rlsNahQ82a+AdB208CuSeiewQH+scy
+	 OFFW83WcxZVuToBASyzmbvDSpJbp6rJo6SfdEupDRxpOwJSM/U/YGRqk3EK+1IWMoRv2K
+	 vyv/fhlweuNL5mxcOfDLLUCK4N74v2AHzVIZXu3rNeM3Wg/ytk/XvDiEWfpaCyzTPSw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793016046;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=8SnXv0dp1Z3xNYSOFmb1/ySVNOu4onZXlEaQqZsu5aM=;
-	b=KLjopDwDAPwjVhsy/i5Ga5Sw8w4Uccy6BgQ1j4T5vu2ZOLsc94Gt93tOaiGRJQx+OfZi
-	 J2Mc6874XqxZARy2pBQ8OZ4iWnhpcRp/+sJaBBqc5OGWH7LuJPqBv/zX02KT7CGLfj8gp
-	 vr31ao74jtt5crZk03BRdqmJJNSG7SkD8Mz+4fHhTVKrRciTpy8huHvAao4jZOO/ZjR3q
-	 ibu/X/AvPhpCAo7gzmw8fiEgLgZg+Iw5HMr6NxgSo8QY5cql7iWh7IzN/hk7Iku4Jjw8h
-	 62wnj/VH/lfxc0zyneIur5MlNXJMOFPdK9C8uklnfZKdOv44+tIT9Tpqip7W67SoBkg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793020912;
+	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
+	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=JudSgXLcJ6+6LonVY2e4IdR3mh1sh7zUR10EIzFcThs=;
+	b=DXUmuh1QDcRM6uKU3MCcullUXRcjZ1gh/Ji2HMIQD55uDFtH3NdPK/LjZ8WIE3D5DOTl
+	 4aI6o4tVflzaTSScARJvTiZzybFrHe7XFWqE7MPVyf69JSqhG8sNxRKmIpnd1rGdjMsoN
+	 ZC6PiCPkj8gdZlkNv8+zdWYGPyI2Km3XpN3JDlmn6T60nWu6dlWDAfxKRl1T/jlEj+iJR
+	 kDqX2pWwRbm7lanqCbh79H71uG5f/l+AR+XEr0GJC0IcSMEBRLmJEC1QB/QrTtnZix9Op
+	 3xvwKYcvSx+G6JZVEobFywIAidaW/pXVmZ41geIX+YNSRXQDV3fiTDpHyIAC5HlKycg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l49rbiQc;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=none header.from=xiaopeng.com;
+	spf=pass smtp.mailfrom=xiaopeng.com;
+	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=rL+LFenj;
+	arc=none smtp.remote-ip=115.124.28.169
+Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E623606A31A
-	for <linux-spi@vger.kernel.org>; Mon, 26 Oct 2026 12:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E34606A31A;
+	Mon, 26 Oct 2026 13:21:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 53E34606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l49rbiQc
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953C81F01825;
-	Mon, 26 Oct 2026 12:00:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793016045;
-	bh=8SnXv0dp1Z3xNYSOFmb1/ySVNOu4onZXlEaQqZsu5aM=;
-	h=Subject:From:Date:To;
-	b=l49rbiQca4KM6w065kzJJCjBhJlJYT9j0OIFWYE9ZfzNZ2kqcX4q3arqc138OC1h9
-	 SiGgvOdXwlmr9rkdke9qeKz92XQX0P5471GGHcOJjuGNnlx3aTVtWx+GxCShuIoxo5
-	 AGrkAvBh5daASDghy6IzNp0hy6fN8tIUfh0kBA3WFGxakin5cxmiI+E/KK3a4qcvCv
-	 YB1ren+yAEWsGv0MPuYyHsekRinlm9DX/uu7wrYFsARqDnZl7YoL5Z3hcKLV9rTNjn
-	 3+B0z8f2+QJAnW6wk+YeFzir1CKJJ/yiC5CU1PImS4vj+3eXtkAt6vkJyEkGRd9Jtt
-	 nD/a9xNubYtWA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 83DFA3AA58A5;
-	Mon, 26 Oct 2026 12:00:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=rL+LFenj
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1793020908; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=JudSgXLcJ6+6LonVY2e4IdR3mh1sh7zUR10EIzFcThs=;
+	b=rL+LFenjxlNw1X3GFOWGZxAoSvxuru+takJI9cskKx8/X2T0k53vz4GmYYui65+faJ7y6OHl0Ra0krnrismulhA2YQ+f+ePHFzTrTgLqSHWjb56dRC912dwLT6js3jOpSsVNX3Moqq44dxmowGTJigBiC4VkUkBB6/zcx5QqwVU=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07575639|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00077706-5.23839e-05-0.999171;FP=14943764304330181682|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045166233;MF=liuwb@xiaopeng.com;NM=1;PH=DS;RN=10;RT=10;SR=0;TI=SMTPD_---.jpwPFyQ_1793020906;
+Received: from localhost(mailfrom:liuwb@xiaopeng.com fp:SMTPD_---.jpwPFyQ_1793020906 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 26 Oct 2026 21:21:47 +0800
+From: Weibin Liu <liuwb@xiaopeng.com>
+To: ldewangan@nvidia.com,
+	linux-spi@vger.kernel.org,
+	broonie@kernel.org
+Cc: thierry.reding@kernel.org,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	swarren@nvidia.com,
+	linux-tegra@vger.kernel.org,
+	zhugl3@xiaopeng.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] spi: tegra20-slink: size words with spi_bpw_to_bytes()
+Date: Mon, 26 Oct 2026 21:21:46 +0800
+Message-ID: <20261026132146.3806906-1-liuwb@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,27 +67,67 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179301604409.2668412.9671082608886928530.git-patchwork-housekeeping@kernel.org>
-Date: Mon, 26 Oct 2026 12:00:44 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Latest series: [v2] spi: tegra210-quad: Fix timeout path status handling and DMA leak (2026-10-26T11:14:10)
-  Superseding: [v1] spi: tegra210-quad: Fix timeout path status handling and DMA leak (2026-10-16T13:25:19):
-    [1/2] spi: tegra210-quad: don't overwrite refreshed status with lost-IRQ snapshot
-    [2/2] spi: tegra210-quad: Unmap DMA buffers on transfer timeout
+tegra_slink_calculate_curr_xfer_param() derives bytes_per_word with
+DIV_ROUND_UP(bits_per_word, 8), but the SPI core sizes words with
+spi_bpw_to_bytes(), i.e. roundup_pow_of_two(BITS_TO_BYTES()), and
+__spi_validate() only accepts lengths that are a multiple of that
+power-of-two word size.  For bits_per_word of 17..24 the two differ
+(3 vs 4 bytes): a length like 8 passes core validation yet is measured
+as three 3-byte words, so the copy helpers touch one byte past the
+buffer, and cur_tx_pos/cur_rx_pos advance in multiples of 3 and never
+land on the equality check cur_pos == t->len.  The ISR then recomputes
+remain_len = t->len - cur_pos, which wraps, and the driver keeps
+copying 4096-word blocks past the client buffers until the transfer
+times out.
 
-Latest series: [v2] spi: mtk-snfi: use min() in mtk_snand_read_page_cache() (2026-10-26T11:20:33)
-  Superseding: [v1] spi: mtk-snfi: use min() in mtk_snand_read_page_cache() (2026-10-22T10:20:20):
-    spi: mtk-snfi: use min() in mtk_snand_read_page_cache()
+Use spi_bpw_to_bytes() for bytes_per_word: 24 bit words can have
+padding.  The word count then divides the transfer length exactly, the
+copies stay within t->len, the position counters land on t->len, and
+the wire carries the words the caller asked for.  For power-of-two
+word sizes spi_bpw_to_bytes() returns the same value as
+DIV_ROUND_UP(), so only bits_per_word of 17..24 change behaviour.  The
+non-packed setup already used the 4-byte configuration
+(SLINK_PACK_SIZE_32) that bits_per_word = 32 has always used, TX
+padding stays in the upper byte that the hardware does not shift out,
+and the RX paths already mask the padding.
 
-Checked 198 series in 8.37 seconds.
-This project currently has 16826 active patches.
+Verified with a userspace replica of the transfer arithmetic covering
+all core-legal lengths for bits_per_word 8/16/24/32 in both
+directions: the shipped driver and v1 overrun the buffers and never
+complete for bits_per_word of 17..24 with lengths not divisible by 3,
+while with this change no copy exceeds t->len and every transfer
+completes.  Compile-tested only; no Tegra SLINK hardware was
+available.
 
+Suggested-by: Mark Brown <broonie@kernel.org>
+Fixes: dc4dc3605639 ("spi: tegra: add spi driver for SLINK controller")
+Cc: stable@vger.kernel.org # 3.8+
+Signed-off-by: Weibin Liu <liuwb@xiaopeng.com>
+---
+Changes in v2:
+- v1 clamped the four copy loops to t->len.  As Mark Brown pointed out,
+  the compact word size itself is the problem: 24 bit words can have
+  padding, so the core only guarantees lengths that are multiples of
+  spi_bpw_to_bytes().  Size words with spi_bpw_to_bytes() instead,
+  which also drops the clamps and lets the position counters land on
+  the equality completion test.
 
+ drivers/spi/spi-tegra20-slink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index ed1fcf57dd30..3f507176b0c8 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -261,7 +261,7 @@ static unsigned tegra_slink_calculate_curr_xfer_param(
+ 	unsigned total_fifo_words;
+ 
+ 	bits_per_word = t->bits_per_word;
+-	tspi->bytes_per_word = DIV_ROUND_UP(bits_per_word, 8);
++	tspi->bytes_per_word = spi_bpw_to_bytes(bits_per_word);
+ 
+ 	if (bits_per_word == 8 || bits_per_word == 16) {
+ 		tspi->is_packed = true;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.50.1

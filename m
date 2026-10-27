@@ -1,58 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=115.124.28.101
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793067231;
-	b=JRNpmXyJzeCwYwW6rQ9baYhsM0Xx983cbrHp2eoX11aBFcmW+N7i6DISrsDjxUXc+X86
-	 ruLDDWYkDIJgAIu1n5vI0FdfrxdnYCtGmXfq7ZiojrGFPPRv5K4yUVJs4K44HeUaAhf2r
-	 MBhtCXlfhG0f0MV8rjYRerR0gxecSoEdS8p/MzlQc65vgxp0gFUoRclDIAopDW7e05Eyk
-	 YpFCCzUjCCd0ZMrbvQXXaMSGI80Yye94YRSj5moYB62fwtIgMZ9oy5EP3gKDb6i66iXRd
-	 34FAFgYmgB9w21RyO7y+WFzg4/3dnHlttlv23yMt0syq1B89bIqtf/B+c8wZjCw0y4A==
+	t=1793070032;
+	b=K8CcWjEsBQayQ2cniLxTfz0VERHvVl4vQXXHkYjZ3/wpdWo0LXaRey47kxbLQ4IyvIbs
+	 kYiG6rWclMo9l3xKQecjsMeE2qnZcbfn4AkXza4Kcn2GOyT17d9zm5zdqyeb/6Xh6DL5L
+	 /iLUMXZygn+haVxSYiT+W6A+XdBpF2qPGvqD+7Yn2/ATeGGttM0fVDEnTODDN3ZazAjdX
+	 z+bsO26UlPgW42b0p3B5nhsmgRQILuneX2bY92c2+PY+UsvszlVQcrk8bhyS+Eso/3Mbo
+	 kWHzyAPP93DloTNgMWSyisvLFJX0TDrNw3elNFP23fuLX8bhH74yrllFrm6Jcu7ELYQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793067231;
-	h=DMARC-Filter:DKIM-Signature:X-Alimail-AntiSpam:Received:From:To:Cc:
-	 Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=+QqJ3MP87LH56I8e79plHZFvlGY9nfaKMQuxuVHnt5s=;
-	b=L+YV04/4TNfaC1/Io0OvzCRbqa8TSZJXkCac+tNk4MV8UBZTFrOP2mV5oaJQ9R8bKSX7
-	 AJWzlJFsJJISCTgxWCseciYzNxi/XgRaHIvckWxfz8aLCBkqWMu6UqONYkCQIymYNYBml
-	 wkdFvHNGBq4K/W0pftAXijav479Iq7zFcSROPdfkOARzHs2PC+P5qwItsZaPfHf2n0qgw
-	 QfJjoZezyHbAVXra5luV6bhObXpcpLRAzKeStttRJ0c1mrfLldLZZvtEEhLhh6jUg1D0V
-	 qsERoRsuVpTqqpBWC23pzgjdfMWxmbwTzpzZIBhGIJ+HUJ5JLw/HGEDFtDJkykxjThA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793070032;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=IEDxmNlVQL9k7b27ovei/n168L5CRUJBcAliyjmI5hI=;
+	b=PaKVs2L0qW05jVyZbtlK4lSK/U6zf8dF1V/IyHrkBsUibkc+vw/qVr89Uh4OSspFoRxI
+	 qDaOW7n0x/MJJk4p2PmTPQBSDu2Wp+3q5bkKiDeMSHuo7SaiH1xi532dk7Y0ck/QbsMRd
+	 iRMUxh/C+NJ5dx51nejaLgBUOGNoDa4kGJ3o+i2pgqia7UHXQHtReyroXWhMfDf+Xv5bz
+	 6QUSgzT/DJdc6ek/nspr3ZuTfESmoO6olWlLYY8UyEbi5ao7WS++Pn1kxxQFrLEEvHT2d
+	 m6uhcqJkFp7t4DORhxlVo47bMKbtwHAe3sHRXOK9NpsEIHkYpqgEoVTCKmon5GWI+ng==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=xiaopeng.com;
-	spf=pass smtp.mailfrom=xiaopeng.com;
-	dkim=pass header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=iNn7ouVv;
-	arc=none smtp.remote-ip=115.124.28.101
-Received: from out28-101.mail.aliyun.com (out28-101.mail.aliyun.com [115.124.28.101])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfNlhNcG;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8AF606A330;
-	Tue, 27 Oct 2026 02:13:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org CD8AF606A330
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F29A606A31A
+	for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 03:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=xiaopeng.com header.i=@xiaopeng.com header.a=rsa-sha256 header.s=default header.b=iNn7ouVv
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1793067221; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=+QqJ3MP87LH56I8e79plHZFvlGY9nfaKMQuxuVHnt5s=;
-	b=iNn7ouVv7Q/LpXQjwurckJmOcakluKelqe05lloZIcZf8aML2Evai14sxJfnj0GnGYogB/jz3l8I5I7hHW59p76Fff9mTULw0FFT2NeiGwh0VXQysx/vc4Iw+YDtduZgX6VR605dleSlAt4Z+/raIXWwr1FedbL/hOawk5oUBFs=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436354|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0107003-0.00186829-0.987431;FP=11119641135974073566|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045166233;MF=liuwb@xiaopeng.com;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.jqHVwuv_1793067220;
-Received: from localhost(mailfrom:liuwb@xiaopeng.com fp:SMTPD_---.jqHVwuv_1793067220 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 27 Oct 2026 10:13:40 +0800
-From: Weibin Liu <liuwb@xiaopeng.com>
-To: Raju.Rangoju@amd.com,
-	krishnamoorthi.m@amd.com,
-	broonie@kernel.org,
-	linux-spi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	zhugl3@xiaopeng.com
-Subject: [PATCH] spi: amd: validate FIFO usage before executing message
-Date: Tue, 27 Oct 2026 10:13:40 +0800
-Message-ID: <20261027021340.914399-1-liuwb@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WfNlhNcG
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1156E1F01825;
+	Tue, 27 Oct 2026 03:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793070032;
+	bh=IEDxmNlVQL9k7b27ovei/n168L5CRUJBcAliyjmI5hI=;
+	h=Subject:From:Date:To;
+	b=WfNlhNcGEUcdhPvU4sgLMHWGjxMg2Ed3Pje76ElVWUxQuYNjESGMWSftSKKPu/fDN
+	 0A7UmivRVS0VKmfoUwogfgfXOdqH492r+egjlCna6R2N6BXn4HyCSygGWurErn+mFe
+	 1FS7paVJ6uT087PFZ/5Iy5ieJ4Ut9KwVw/fvVeKxArMw1PPvRY7uB++vaCcnO1qbvV
+	 VH2Xyk+Pcc2ouWc0/2drJUWgfJLelJ/eeLvFm5PONGz8BfaAwdB4ipuyMpMYZwFuc3
+	 IQmjfnfdyx/EjIPXbj8s6mk9yPKfxyefiFdTwX3r2LkvU2yHkAV4Xgcfdwwy1H+jBg
+	 /vQIXRusi76bw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 076343AA80F1;
+	Tue, 27 Oct 2026 03:00:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,87 +53,24 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179307003067.3531867.10837427317241635064.git-patchwork-housekeeping@kernel.org>
+Date: Tue, 27 Oct 2026 03:00:30 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-The RX FIFO bound is checked in the drain loop, after
-amd_spi_execute_opcode(). A message whose cumulative RX length exceeds
-AMD_SPI_FIFO_SIZE can therefore issue an SPI transaction before being
-rejected.
+Latest series: [v4] rust: helpers: add SPI helpers (2026-10-27T02:13:30)
+  Superseding: [v3] rust: helpers: add SPI helpers (2026-10-27T00:20:06):
+    [v3,1/3] rust: helpers: add SPI helpers
+    [v3,2/3] rust: spi: add SPI driver abstractions
+    [v3,3/3] samples: rust: add SPI driver sample
 
-Check tx_len + rx_len while walking the message and drop the drain-loop
-check. This validates the complete message before executing the command.
+Checked 199 series in 4.81 seconds.
+This project currently has 16836 active patches.
 
-Tested with a user-space replica covering TX, RX and mixed messages at
-the 70/71-byte boundary. Oversized split-RX messages are now rejected
-without executing the command. No AMD SPI hardware was available.
 
-Assisted-by: LLM
-Suggested-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
-Fixes: e2f4edfc061e ("spi: amd: fix len==0 underflow and FIFO overflow")
-Reviewed-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-Signed-off-by: Weibin Liu <liuwb@xiaopeng.com>
----
- drivers/spi/spi-amd.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/spi/spi-amd.c b/drivers/spi/spi-amd.c
-index ddf89e5353c5..d3953de255be 100644
---- a/drivers/spi/spi-amd.c
-+++ b/drivers/spi/spi-amd.c
-@@ -331,13 +331,6 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
- 		else
- 			amd_set_spi_freq(amd_spi, spi->max_speed_hz);
- 
--		/* Reject transfers that would overflow the FIFO window */
--		if (fifo_pos + xfer->len >
--		    AMD_SPI_FIFO_BASE + AMD_SPI_FIFO_SIZE) {
--			message->status = -EMSGSIZE;
--			goto fin_msg;
--		}
--
- 		if (xfer->tx_buf) {
- 			buf = (u8 *)xfer->tx_buf;
- 			if (!tx_len) {
-@@ -346,6 +339,10 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
- 				xfer->len--;
- 			}
- 			tx_len += xfer->len;
-+			if (tx_len + rx_len > AMD_SPI_FIFO_SIZE) {
-+				message->status = -EMSGSIZE;
-+				goto fin_msg;
-+			}
- 
- 			/* Write data into the FIFO. */
- 			for (i = 0; i < xfer->len; i++)
-@@ -355,8 +352,13 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
- 		}
- 
- 		/* Store no. of bytes to be received from FIFO */
--		if (xfer->rx_buf)
-+		if (xfer->rx_buf) {
- 			rx_len += xfer->len;
-+			if (tx_len + rx_len > AMD_SPI_FIFO_SIZE) {
-+				message->status = -EMSGSIZE;
-+				goto fin_msg;
-+			}
-+		}
- 	}
- 
- 	if (!buf) {
-@@ -380,12 +382,6 @@ static inline int amd_spi_fifo_xfer(struct amd_spi *amd_spi,
- 
- 		list_for_each_entry(xfer, &message->transfers, transfer_list)
- 			if (xfer->rx_buf) {
--				/* Reject transfers that would overflow the FIFO window */
--				if (fifo_pos + xfer->len >
--				    AMD_SPI_FIFO_BASE + AMD_SPI_FIFO_SIZE) {
--					message->status = -EMSGSIZE;
--					goto fin_msg;
--				}
- 				buf = (u8 *)xfer->rx_buf;
- 				/* Read data from FIFO to receive buffer */
- 				for (i = 0; i < xfer->len; i++)
-
-base-commit: dc5ca34f5e8dc10c566ef39aa3b1a201a17ca734
 -- 
-2.50.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 

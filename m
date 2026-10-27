@@ -1,81 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=43.163.128.50
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.53
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793070255;
-	b=DW7xSe4ecYu2HYF0h1x5qGP2tGZBgR6BDLo6PIRG4Lyg6ZQiV4svl4Ucq197NVl7Qi6l
-	 NerTVa3VWtEJ9zehZEVfugwt9wlxCNFmAgVW2w5ExNTmgGMtYY+dQbTCuv5cLOWX4yZNz
-	 8oCVDQBri6BcsxDTxIf5SNabb7s4xgDJo3scJmhcqE6g2drqYzFf7E2efQ5tVXetRNIqz
-	 /QtqjrNZjncdLlkbyO/oc9gotHwL6ZETyzgnoLxmYMXAWTU842L7y27iU0vwdSd3idPAb
-	 Bp9NjujMbATOKSXGrLDjvrXhYpsIbYnFKnnrsn40+Zk1umgZKVRFTdO3VmJgF3pI4PQ==
+	t=1793072208;
+	b=3Lrft+3V31LihqfjWN0T+RslA6eiA1HHHTqQXY6rTECgrCvP7LOXA3wXGn4tty4VNESb
+	 f0B7UKSmon1IzxXV79Fu0QkB8RUG8eLIzHXYR8mg4JzDOxTZMDenwB07tOYgsRBPOyn2k
+	 2jKVOgxz1y796NKz0eKShDih0DxkH/Pr2fjUt5cNU59ta1lx19Vn6YlID+fnr/zmc4ace
+	 RNeN6/5T1VGJgasNvba4MJXCFbXfOBczAxf/iNEbGch2HnJe+6qGEuLcFDITYPKo8WMGW
+	 hlna83COodW2iCalEVQwZcvEF+5S6BDSE9aeKrNrOnAWK29N0cH5JmqlCaHN1TdEObg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793070255;
-	h=DMARC-Filter:DKIM-Signature:Received:X-QQ-mid:Message-ID:
-	 X-QQ-XMAILINFO:X-QQ-XMRINFO:From:To:Cc:Subject:Date:X-OQ-MSGID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=nIdwAIsQM59LO76nrCGAWzZXk8En7EoY7C0IHrefwTE=;
-	b=0Sh48YgcNaEM3FXa4tWTN1iwRU5z+ZaP8K4e9Eo1SSzIUS6iA0sGheGe7pxyNp7ytCNm
-	 tjxrL5BHPmHSF9EK/6/yFnHYGazmkBk8zEKHRsbXB9umPomUv4mQRTrkYQmk0p3Z012f1
-	 Qv9r9rct1QldBeaMsLoK8nXdpRgP0B8++8TB+RyeCgR4H4/BhCG11e8wJiNdmTMUKNuds
-	 WGbQTi/BVdn13W6/ikwl2DaJriTZ62sMeMEDmkrKtBaJ4jMk8MGbD4cGofJdwHB3uMUAi
-	 mB5+qWXGpi+Dt+J90UhePleU6Jx1OgTbepQZQuRhtK5q5Odx483qJPzeWx+nx1gLw5g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793072208;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
+	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding;
+	bh=6c7PKsG38+tOfTfvUEgpG6Qz3gpdcpa+17ieiPJrhz0=;
+	b=lctotSGT/oAyGaj2r8/mYBdX9MRLuIQ6LzdScsheCWoCIFkxVXAO+XBdFoUZAVPv/QBx
+	 IBWhMBuxvAn/Qu/ZdEON0y+VUaitxIAJTfhBgN29qYZSoI7CfKSO3W7MXLIq0mKg7e7ZB
+	 N7sNaIp6iMgNfw/9NCVbYXHDgdxHdc3T15d0Nl2FXgWDdjH9ekXzebEhuCNcLIVED3L1t
+	 o/fClLPZidt01TnGoHJacjfQftgL9ADepHf9yr664TPNw5rkRiQnM0WWommYYu9AwmLal
+	 uFTtOxTyo569NMD3BMpXHVrOlXTBnVh3S3Kf83km8TElZsug8KK2KHc7JjSYhf7FIJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=qq.com;
-	spf=pass smtp.mailfrom=qq.com;
-	dkim=pass header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ZO0M6QWC;
-	arc=none smtp.remote-ip=43.163.128.50
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.50])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MRjOpxl+;
+	arc=none smtp.remote-ip=209.85.221.53
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB11D60A2608;
-	Tue, 27 Oct 2026 03:04:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DB11D60A2608
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8474E606A31D
+	for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 03:36:48 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8474E606A31D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=ZO0M6QWC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1793070236; bh=nIdwAIsQM59LO76nrCGAWzZXk8En7EoY7C0IHrefwTE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZO0M6QWCIMvDOKjxOJ20+5WqDNKuQPX4C04h9NdE9QVrdkpZxx8SFiErIyCR6NgBb
-	 oiRWBNQu/UXAPIEM0/XevynCx7h0Jx4dhJCvKNwmyiauQBtG9KCTgbhFX7ZrJUT85S
-	 xJK9X5RanmrtxInotfNugdUGw2h0DsLJL7VtFLKc=
-Received: from shuai-VMware-Virtual-Platform.. ([117.158.156.199])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id F43C6C8; Tue, 27 Oct 2026 11:03:52 +0800
-X-QQ-mid: xmsmtpt1793070234t5xqaxmqb
-Message-ID: <tencent_CAA9A4F95858E52B9A2070A9C41426E2DD09@qq.com>
-X-QQ-XMAILINFO: OIJV+wUmQOUA7KqhjeEkmWe6bPED102VKBON/w6cTqeEuOSiND54oD6eTQfc+3
-	 XTJlzS08WIM/lo0kJvTCx0RkCsGb/ALEjfcIIcWyZyLimjvcpYfKD3lMiqY6AnscuPvvO1RTWExd
-	 Rx5EeufjnKBrtej1Ude8wFWatXpbAy6XMUjQIDjfMFxQJGVEwK1oyu7IZZEiJpbs/syOd6IHywoT
-	 +VhHs1IbaoP31LzpBWs2GU8o6MS4zi3Y1FCl0hypH0YuiuovSbfep4AsqHyVz+izIwXuXpR+G6et
-	 /Pp/Y6VP2YBfSqWUJCx1vrXwrR0I+FnKoCBXej7resNxIW1e8G+aKe8fYTCMVCnILD6iXZ45U1/f
-	 mhbNtzWEgeR34RPiblThVZh+YSHYuxUjrDtlU/bEDyqjBf6reW0zKfSaTl3M8z6rwPqmkh2PJsA8
-	 7rK1mAnBgbQAncrihXdwS1JL/zt3+7lWtu7544ER1zibJF7ErbBWch0lU9q/rrxn6QlfOnZMVirO
-	 gGGxAeckkvKdM4a1rq2J/Ru5d0jFnhW2rnmOsN9n2rHU31X7YCnzWh+p92uAv/v5m1K1g3t8II6s
-	 2pCbZF5vftXJWPYIrC8+BaKCQ7YyxOB0kd8uRZ8GGDBGNdMOl0XSPe6O0mb04m/GR6VPEvE1jVgR
-	 3qmhD5lNDGQ13UVvg8CeSBAdq1p/yHhqFOMjb+IwFrl27q4Q3ynHo4ft/HL6DVVTWklzl9nVdSR0
-	 7C2dU2acM1F0VS+WFYwSf7vlFiQPasKFwGTwTOjkPpfdNdRkczmgi+AF6/zBKQegtl5O/AEH7I/J
-	 O8In7NioYiqMdBNteKcjlg72ubhvYoPNRF/VMHb2wn8f2nZibVOq8EZk7o5JDHxpvOms09birdqx
-	 LBItEavPJGkz3L1kZIWwigzUnDtM30P5ZXSgmCGkT9LEiR73zJuPdibSa9+F7m+bm3YWOdeRdBUh
-	 MjfXZgNpE5UFfS5x/C/E87SnRn+6MgRN+GYWuoBiY37MTAbO2qSIdMYbcYXcOW4OrInajyzX2bR/
-	 NFGgNwVm+b/cOzbQS93wJmfyE3Rz6uTtXVVQoAQSKfqyL4GCdofRue+f8gu5TYBejdlTK8zJxv9f
-	 FKN/4WeHrzfcKVjrEPtdjS6incHmOqxzF/WgQrUTZXGbWyh/jSOZZ4TUYRVnNPb3V3zaHTODT6+5
-	 1klVg=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-From: Shuai Liu <847807867@qq.com>
-To: linux-spi@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: broonie@kernel.org,
-	ojeda@kernel.org,
-	dakr@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Shuai Liu <847807867@qq.com>
-Subject: [PATCH v5 1/3] rust: helpers: add SPI helpers
-Date: Tue, 27 Oct 2026 11:03:50 +0800
-X-OQ-MSGID: <20261027030352.615926-2-847807867@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261027030352.615926-1-847807867@qq.com>
-References: <20261027030352.615926-1-847807867@qq.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=MRjOpxl+
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48afbd2c386so2216027f8f.3
+        for <linux-spi@vger.kernel.org>; Mon, 26 Oct 2026 20:36:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1793072207; x=1793677007; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6c7PKsG38+tOfTfvUEgpG6Qz3gpdcpa+17ieiPJrhz0=;
+        b=MRjOpxl+8GGg1ztN8ltrKhRXrV7iJjTqadrmooRNsM27ZIJ/xqV2fYpzyT2XflNm3Q
+         ozVNLb2fIDRVTO4Rv76j55QenRfaX9SC62L55NNTTlfZnH4aR72dupaG+Pmz0fEkMTfC
+         VafkbS+bxJ7pJjb50JKYUWAU+NHgP3lQHOe4mLqgrn8yoBFPAJ5T531ckfGWRWHBQquM
+         60OCmE+UYDwlP47vPduh1/64QZO3rBvDpeB/NqdYbKTctZv9lpzovkgP0pKcN9/p/9Y9
+         U4wNgOg/Y+xgPl1AK1KBrUUaoZSKl+t0j2ORpry9qBzK7KxLix/9PWv4wgI3cEJw0Xzc
+         cL4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793072207; x=1793677007;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6c7PKsG38+tOfTfvUEgpG6Qz3gpdcpa+17ieiPJrhz0=;
+        b=s0UHD7emymbRDGXg7dGceW3iVmOQubLmYYbwToDbec2Ms07RcFeqvSET7FGB8hQCh5
+         FZxQjOWnHph/RVwYkmH7G6QUdnLQKQte8LXYE/5DcAQxOUhieHB5BqPt68rS942WpKHF
+         UIc4aXKaN72s26OhSRbG4wLAMbIQ5Uqq0IH7+5EuF8vzv04mAcVZtcQbOjAOLt84qtSy
+         mlPos5LTzsbigjHxeVfr5gmChSgAlI7+JMvucsQMF6LNUMSegg7yQNub16o9Gv4ZMLdn
+         JhMnimH4Pj36+HT79oL5Ln2x78iTHukgvicX954LnfDZYTB13dTA5uZlwndzM+z5PGKD
+         JfRA==
+X-Forwarded-Encrypted: i=1; AKwUvBwQbfvbohfYwPn+jpPKW+BUR2KGjbRaaHWe8s6dbc0AVTgkqO2OKOgFuNmgNt+dQ3LT4KUk8CEa07Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI4NOImEAy3FUhdx06/ATIEBg9L3FwATrfC2WnsyquAeDfntdgP
+	5Z3q3NtwE97izp1P0+Fp8WaWPiiSZweBk6GppN55DvZ/YoXkoPWXoTjf
+X-Gm-Gg: AYBFou3qE35C1ovyity7m0maa58T4NmAJn4Ik2JpZ/q8L5uphi8ox612kPssKxR7/vo
+	Vr+6wZZwhRHWgGlb2NjvTOeS5IOYugo53jas3zuo2xCPHSSOZX4U97suOawcHaD6yDE1dWSYpbt
+	McKHQUeT5T2av/0qkW03WmSGnfL1oJUxRVSxDFJCAPW7RT7dQzp72ZJqtLOfrbwumVNkzMjoFH6
+	gO/E1equmfkT7LxwgCJfqB/oFPYwYAKBOU5q6KVo2yq2n5CGRw0KayazXm8MMxl4/m6jRnB7fWg
+	zxEDWLsl8qgmZGUK1nyFLJtd77dODh3Ngtoz2UqjD1I+3zVSXOjjn9NKQDKOw7+/ti5KXlZldfj
+	UEYqOhWv3CzlnY3YLGwNZXL5niUIcBPxuFAdtyEMsBQ2hq3j5axu15S0r6Ns709X/JxMjplDW9A
+	A8FDf5SBg3xKA/TECPMRSpmpjVKMZIiKk9JnW1mxgjojSlSjXQqarwBO9/qNbRn/7r22BXovJit
+	/t2X/sBpleU1XR64VT28ONT6zpuOcrLnZyGJa5As6bU1C83xMWPqp+upGntr2jpB/GUKM0IJ/5+
+	DrgnbHY2QkjBQa7PRdJPRqkqYI+tc4b767I8dlV3hIO5ZLHRyl2suM0Lbd2DM8QuvKAh78u2l0A
+	Ze9wfmknxnACuB5vkK9zZ3W9MPkjEdXfXRG7Ai5IZG5IymKxmWkKUgvsOdtrC5FUKXa23p7uxtk
+	teungdelj4lOBJMQ1UCl4xIgKR
+X-Received: by 2002:adf:eb4e:0:b0:48d:ef7d:4b4c with SMTP id ffacd0b85a97d-48e3eb936e5mr10274220f8f.44.1793072206749;
+        Mon, 26 Oct 2026 20:36:46 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b2ac-9b01-6900-1f92-d182-4435.310.pool.telefonica.de. [2a02:3100:b2ac:9b01:6900:1f92:d182:4435])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd39a9sm20409291f8f.46.2026.10.26.20.36.45
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 26 Oct 2026 20:36:45 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Shuai Liu <847807867@qq.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	linux-spi@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] rust: spi: add SPI driver abstractions
+Date: Tue, 27 Oct 2026 04:36:32 +0100
+Message-Id: <20261027033632.77840-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <tencent_66EE264CDD33A4355946E42D9ACA7019C409@qq.com>
+References: <20261027030352.615926-1-847807867@qq.com> <tencent_66EE264CDD33A4355946E42D9ACA7019C409@qq.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -85,81 +105,37 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add C helpers for the SPI functions that are `static inline` in C and
-therefore cannot be accessed from Rust directly: spi_unregister_driver(),
-spi_write() and spi_read().
+> +    pub fn write_then_read(&self, write_buf: &[u8], read_buf: &mut [u8]) -> Result {
+> +        let n_tx = u32::try_from(write_buf.len())?;
+> +        let n_rx = u32::try_from(read_buf.len())?;
 
-The helpers are guarded by CONFIG_SPI, since the SPI core functions they
-call are not available when SPI support is disabled.
+Could we check n_tx.checked_add(n_rx) here? spi_write_then_read() adds
+these as unsigned int when sizing its bounce buffer. The individual
+conversions don't prevent the sum from wrapping.
 
-Also include <linux/spi/spi.h> in the bindgen bindings helper, so that
-the Rust side can access the SPI data types.
+On a 64-bit kernel, VVec can provide two disjoint 2 GiB slices. It uses
+vmalloc, so the kmalloc limit doesn't bound the inputs. With a bound
+device and a successful 4 GiB allocation:
 
-Signed-off-by: Shuai Liu <847807867@qq.com>
----
- rust/bindings/bindings_helper.h |  1 +
- rust/helpers/helpers.c          |  1 +
- rust/helpers/spi.c              | 25 +++++++++++++++++++++++++
- 3 files changed, 27 insertions(+)
- create mode 100644 rust/helpers/spi.c
+    use kernel::alloc::{flags::GFP_KERNEL, VVec};
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index c706dda5b5ca..c9062aae959a 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -88,6 +88,7 @@
- #include <linux/security.h>
- #include <linux/serdev.h>
- #include <linux/slab.h>
-+#include <linux/spi/spi.h>
- #include <linux/sys_soc.h>
- #include <linux/task_work.h>
- #include <linux/tracepoint.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 9bb850294a2f..6b0f50c12f9c 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -96,6 +96,7 @@
- #include "serdev.c"
- #include "signal.c"
- #include "slab.c"
-+#include "spi.c"
- #include "spinlock.c"
- #include "string.c"
- #include "srcu.c"
-diff --git a/rust/helpers/spi.c b/rust/helpers/spi.c
-new file mode 100644
-index 000000000000..8609d54962c0
---- /dev/null
-+++ b/rust/helpers/spi.c
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/spi/spi.h>
-+
-+#ifdef CONFIG_SPI
-+
-+__rust_helper
-+void rust_helper_spi_unregister_driver(struct spi_driver *sdrv)
-+{
-+	spi_unregister_driver(sdrv);
-+}
-+
-+__rust_helper
-+int rust_helper_spi_write(struct spi_device *spi, const void *buf, size_t len)
-+{
-+	return spi_write(spi, buf, len);
-+}
-+
-+__rust_helper
-+int rust_helper_spi_read(struct spi_device *spi, void *buf, size_t len)
-+{
-+	return spi_read(spi, buf, len);
-+}
-+
-+#endif
--- 
-2.43.0
+    let mut storage = VVec::<u8>::zeroed(1usize << 32, GFP_KERNEL)?;
+    let (tx, rx) = storage.split_at_mut(1usize << 31);
+    dev.write_then_read(tx, rx)?;
 
+Both lengths fit in u32, but their sum wraps to zero. C then selects
+or allocates only SPI_BUFSIZ bytes and attempts to copy 2 GiB into it.
+The allocation size has already wrapped before kmalloc sees it.
+
+The C helper is intended for small transfers, but this safe wrapper
+accepts arbitrary slices. Bound doesn't constrain their lengths.
+
+Found during source review with AI assistance. I haven't compiled or
+run this example, and I don't know of an in-tree caller passing such
+large buffers.
+
+Thanks,
+Karl

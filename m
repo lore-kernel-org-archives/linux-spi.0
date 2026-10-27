@@ -1,48 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793087955;
-	b=b53WwRF0gSLxHjXa3XseHk+t9iB1K9v6xKLgR6zf3is+DwcK2Hgp1nZ43FOoCdvEetba
-	 aCKgw/dimPoTWquitqYofEKRF78TYF4G917eTPm1Qv1cgKnN6I3nj2QgB2P5W3qa81UT0
-	 tqbu0ZuDi0FYPGZNhlBgBeIgEsddlqHYdbsVm3kTpbiPwdfbMEPc+B0hZLFW6KC4YHIF/
-	 QFZE4dD2c93YS75ugMmSNleZ4YQ8kSL0blfwtb+6dUUkLkTvEGtIne587p0LlZaeYpZ/6
-	 NTBycc1imeq4v5L60xYzF1HPMgq2eTf55/wBdpjFD+jq4/EkVQYqcryvYX31MHq+2ng==
+	t=1793092315;
+	b=tJQxvVEkHtC6wL/QfoMI9KjBNkgDugxnoBsGhBTvs1OY6pG59bZB3KIzPTbx8vjOmCBF
+	 fU5YJ0t1r5npChxPdGSu8nLLkVbAOP07vvGWFbMekmZmNeLaZxzc8y2ockEpJic4zEQXb
+	 kdVRRz6Dv/04Jt/d2jQ50CZhwiVsUuWC5UaoupqqH46cDW6+Ov1S14ZDG1n4qtIvCJV07
+	 du6jp3jkJ5aREb6q85YY6GTmqbJreV7aumiv/H3o+2tOUjIws3y7msCeohm1QGjfBbCtG
+	 kCLLNtotswyl/aTfppfk4RNUysPPWcveK/6tU6shrT203KBpx6jAJEvhOa+lnZjR76Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793087955;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=Kyd95cnAqbaCHYEWjuiNU5nUq0XoGqV7qjXydNBnKAU=;
-	b=GjbnJlbqMFMtWpsroNAcMkyqjmlZVm67H8OVkPhqfqK2cQDU1dbqImnbPF8F+My6nOkX
-	 Kb500cjsuV5Em/3CWJsZvfjSZZCu55rB20YHQFMy0rbn48pUnSswU7t0Tmgv8AMZch06G
-	 Qa5Xs4AZEBBHNbsr1Lzh7pz7SfNsDGJeAzu+gN+8t44Bv5ZohqQpVrEnGDwCdZJKp0C9/
-	 IJyObVsIo6U760JRKWZ0l/FQoQHLzZ3e854V5dPX+XMVnHkPcFs0SZSV6LMkuElYrw8eI
-	 K4S41ytfkBgDsSu5xppilqVHttNm8PA+Juu9HfB9H6J1TaRFpsVSBUQDSCwq94KXOww==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793092315;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Date:MIME-Version:User-Agent:Subject:To:Cc:References:
+	 Content-Language:From:Organization:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-Last-TLS-Session-Version;
+	bh=T79Dr75s1wvEXUoDZaE7cn4PwcHACPes5COGJi8oy7U=;
+	b=fHO//l8NMM3WclOyYZlOr7/JIEl9jiTNFtRlM1Ok0k4SP5pc5LdHJiTf3iUbESvTZLVW
+	 KqUwhpqe2niXGSiUSZBygp9wPd5L5Kyo/kphFqFRjq2G77uAQI1IK5+Hp/fBYzZAJe/b1
+	 OZOkc0QBqeZH6RWkOKHi0/GXVb96x4M6+bEdD/NI/jZPZasqXqvkbTT/UXUcKrkhJ1lZ6
+	 pjVWqRP9qrgC8KYJRHoOuVZ38c/kGxgHLLMH2ZpseMW3/ZrTZCNhABwe4ZpZtlOmFCVmq
+	 YkogBkyHUfbcslRCvUDQxsrRT0FoAWCMAh5yTXIze6HyOdFotKke/AWMBcjFuqEdpQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iOhjTIHW;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b="UuR7/ceK";
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8D6606A31A
-	for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 07:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0C606A31E;
+	Tue, 27 Oct 2026 09:11:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1FD0C606A31E
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iOhjTIHW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1431F01825;
-	Tue, 27 Oct 2026 07:59:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793087954;
-	bh=Kyd95cnAqbaCHYEWjuiNU5nUq0XoGqV7qjXydNBnKAU=;
-	h=Subject:From:Date:To;
-	b=iOhjTIHWQovctY95h9JBMVm9FARwB8sbRcf63lnBIGwrrVAITVJ5rA7JI3JT3YO+g
-	 RhVi3/ZeQQUf8XENdyS8SEV2vUpglaAP888TyoXpO6fSW1n6IoINu10j9E9xGhJ5Xv
-	 SB1Gesn8DYw1PUa1KiSyJ3YFu2/HPgJpQ/CCJDflX32m2g0J0yd/EHx/iYBQCfPYeH
-	 5wlJkZksq3oNrbrxTJpdb0dA3xObAGWBbZxFgyng3d0RR/5VscKcZRl5lsra1uSPII
-	 dmOtjgGjXPXVrqRz6cjAeX6NuFr6jZ+eMZWiFlVQhJXGrLqpiqYy3JFzdWjFWv1UGX
-	 mvf05QNBIPldA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4482E3AA8FD1;
-	Tue, 27 Oct 2026 07:59:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=UuR7/ceK
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id AE9BCC5846F;
+	Tue, 27 Oct 2026 09:12:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2E838603BD;
+	Tue, 27 Oct 2026 09:11:51 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C36211032904F;
+	Tue, 27 Oct 2026 10:11:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793092309; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=T79Dr75s1wvEXUoDZaE7cn4PwcHACPes5COGJi8oy7U=;
+	b=UuR7/ceKR3WvRHfZBPIedxhdV4OfAZXNIaXp3g8W7wt1efy1uoDsg0DMZTk5cRNDiNtala
+	Omvkg8mIONIePJs1AXs12/YATeNT0fD5h/EXQZicnjbXevpQ2CpHVhz/8haGqX0ZlIo+JA
+	EG6OC5DHxEGXP9hOB3ylx3BkmW4u5czjzb4XHEq4dL9KXjgmT9wjq8veuW4iAgbI/Q6kOE
+	Tq92N6JhK2VGV1QVFyN8UjliNVqXShOUtGsP3SZLgsFopKDji/FB71MDawONogQloIyLEt
+	h9rUVj8ZpDSYFZlyEq+sOxwNupUnHhkapAE3hbDZlc4ft2t38vmFeyK1r2tU1Q==
+Message-ID: <42d26a0b-c517-4fc5-8d19-e0b7c4506cbf@bootlin.com>
+Date: Tue, 27 Oct 2026 10:11:37 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,24 +62,85 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/20] dt-bindings: pinctrl: berlin: Support Synaptics
+ SL261X SoCs
+To: Jisheng Zhang <jszhang@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+ Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Andi Shyti
+ <andi.shyti@kernel.org>, Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>,
+ Linus Walleij <linusw@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-i3c@lists.infradead.org, mfd@lists.linux.dev,
+ linux-gpio@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <20260929061417.20733-1-jszhang@kernel.org>
+ <20260929061417.20733-14-jszhang@kernel.org>
+Content-Language: en-US, fr
+From: Richard GENOUD <richard.genoud@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20260929061417.20733-14-jszhang@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork housekeeping for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179308795290.3636688.7079448345477958317.git-patchwork-housekeeping@kernel.org>
-Date: Tue, 27 Oct 2026 07:59:12 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+X-Last-TLS-Session-Version: TLSv1.3
 
-Latest series: [v2] Add devicetree bindings for spi-virtio (2026-10-27T07:26:32)
-  Superseding: [v1] Add devicetree bindings for spi-virtio (2026-09-29T16:41:54):
-    [1/2] dt-bindings: spi: add bindings for spi-virtio
-    [2/2] MAINTAINERS: add Francesco as spi-virtio reviewer
+Le 29/09/2026 à 08:14, Jisheng Zhang a écrit :
+> Document the dt-bindings for pinctrl in Synaptics SL261X SoCs.
+> 
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> ---
+>   .../bindings/pinctrl/marvell,berlin2-soc-pinctrl.yaml  | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pinctrl/marvell,berlin2-soc-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/marvell,berlin2-soc-pinctrl.yaml
+> index 6ace3bf5433b..fb60a310a24e 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/marvell,berlin2-soc-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/marvell,berlin2-soc-pinctrl.yaml
+> @@ -37,6 +37,8 @@ properties:
+>             - marvell,berlin4ct-soc-pinctrl
+>             - marvell,berlin4ct-system-pinctrl
+>             - syna,as370-soc-pinctrl
+> +          - syna,sl261x-soc-pinctrl
+> +          - syna,sl261x-system-pinctrl
+>   
+>     reg:
+>       maxItems: 1
+> @@ -44,8 +46,10 @@ properties:
+>   additionalProperties:
+>     description: Pin group configuration subnodes.
+>     type: object
+> -  $ref: /schemas/pinctrl/pinmux-node.yaml#
+> -  additionalProperties: false
+> +
+> +  allOf:
+> +    - $ref: /schemas/pinctrl/pinmux-node.yaml#
+> +    - $ref: /schemas/pinctrl/pincfg-node.yaml#
 
-Checked 198 series in 17.62 seconds.
-This project currently has 16844 active patches.
+The special value bias-pull-up=2 is handled has a strong pull-up in the 
+code, maybe that's something that needs a documentation in the binding
+(or the strong pull up value is really 2 Ohms, and in this case, 
+everything is ok)
 
+>   
+>     properties:
+>       groups:
+> @@ -60,6 +64,8 @@ additionalProperties:
+>       - groups
+>       - function
+>   
+> +  unevaluatedProperties: false
+> +
+>   allOf:
+>     - if:
+>         properties:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Regards,
+Richard

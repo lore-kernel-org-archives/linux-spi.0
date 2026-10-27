@@ -1,107 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793106479;
-	b=WgqEqVoeBC3+flKQzDL4Ya65sAK0XibUrhKl4MuQfndVC9EEHSi81yoPM0F1GpwZxyin
-	 CMjmPTjKdQWEGt0F5529G7gDTJlP6n6mm4708E6e+R3eRHewqWRL4FwhgoHJL0imB8SjI
-	 v4hkZtPKposQheqxhUkp3e2947ye+RygbIl3Bgg9cf28CHYYMHLWyDMiL6Ddcj93s+ik1
-	 1I7v/XEoeMGktQpvSbhKAmTD3ofdcPFAzMvtA3aVycyc6e8NjHqGitfNI9qv/UdnVMPLu
-	 Tv9f2yWDifQB9hgeqsUlyBQ8ilUk/OMr7zbUfrQ3jf0dZbb349StOEHB5JiX52VHTTg==
+	t=1793125076;
+	b=iNvxSoFsjjq4R6tzklBWmuEzx6GJt8Q/N5dG0bXhSwfc1ss9/GdbsEB8BVtSNF6uvTyn
+	 R9uuObc+fH+9alI2MfmTDNj5Yk+QulgouvdqmcEp//wK9IOcZHTN+BKR84JALSRg3+Y+0
+	 LvdZ6WL5oaEGOEBuijFSR3IG7xppX4IR5R4nhlcTNjcr4ErR6SyR/zhEV3DlLIMUlgSE3
+	 Dw/egDzRajzqBTVjjtFOMpIXb2ZIfBQFPSJ8L/cZEhHBECCWZzq3wkt6fYLISVo12D2zI
+	 +Mpym2B9H3pym86aX+lGoj3MpdMiX2Qdtn4BI3nnfL6FzV3efiYC7fPXVduSaHI4H6g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793106479;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=ATvxORBZny1s5fn8dz62jBylTwd8vo+fNFXQREv2wUs=;
-	b=FQmPtHmmhMIyws6hXmxPquyayaWaArrZXKVIJUI+Wn2ez9IgZR8FzfMgV7P9cmxXWucP
-	 TdhQsPn+mGrfUeG8518RpwNuTSMgCv/d6bpMB2ooaqPrypsecUNq2TyRD4EhrIxns2s/S
-	 0BIy2tQWI0umqDioR66ldphTKiNGKPxG7ZRNDupcuVa/OeCaE+xY+jRQlB0zN+dmvnLjL
-	 hhlzg4E4I/kwUP4+NFDslcEC7azyB3IotU6xD8IOqNGSw7FVBmCJC11Cav5zEQ/RCKwQV
-	 qUjeFg72ruCfopnXCRlKsQ+6c1sj70BlqKrrPtWJzI3XqMQtXm+sl/1uwNgzyQRAyMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793125076;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=nfV/S6ZwmWtNZwuWmh/T74T1NcuFLfcIht1ObLXQeHw=;
+	b=FRPu1C0OylQU3H4qTrCzTbuSSx8wSluEhWiUv27yajNG2yIr5/Dr+4wzGJTfcMoEsQLz
+	 MRr3w49DSyg4SiF/5H0/PAPoMsqEb0jegWUTgLVmzlTWLth/Y9W/+AZ17QgKV2Ih+u4Dm
+	 Q9Diz6u7o2bMivFA04Xub2pOIv8AVmivltq4gYmwbK1ZLvIZixX8HXBAnqoC/cfwUi9yv
+	 YLeF5Scpz7rIenbAqZpno+7yBJe3cdiOgTS87dEMW1G6K0nteUX2b+g1nh83J/cU27fbh
+	 98tcR9Sxs+7iLQU1x6tUWeMYcIyi4GP4l990KDy0NsEkX7Vf8Uzm6Ag+nj80RylwYTw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ditaDXmi;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCH1OTqA;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A26606A32F
-	for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 13:07:59 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 40A26606A32F
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D98606A31D;
+	Tue, 27 Oct 2026 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ditaDXmi
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793106478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ATvxORBZny1s5fn8dz62jBylTwd8vo+fNFXQREv2wUs=;
-	b=ditaDXmiYnUUIUrC6/Q2QgT1gBwgH9eVmbExIB87SCG7Llnn31o3D5MALKs9b12MCdeoCP
-	WVomGraWql+pFKLRKs4MFW2pzQJia7YPQSTWaR1kXVenlO+aMmkgiLlZHG11TKLUkSP5gh
-	co6xhlwHSkP3NKW+sgcIM9+Zun44vdE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459-33JQeiLeMBiP6GFKC6DZTg-1; Tue, 27 Oct 2026 09:07:55 -0400
-X-MC-Unique: 33JQeiLeMBiP6GFKC6DZTg-1
-X-Mimecast-MFC-AGG-ID: 33JQeiLeMBiP6GFKC6DZTg_1793106474
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a204f135ffso24827815e9.1
-        for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 06:07:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793106474; x=1793711274;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ATvxORBZny1s5fn8dz62jBylTwd8vo+fNFXQREv2wUs=;
-        b=Q+CCXi+1syKH+lZePv2evC/Qac1vU6OePXm+B3MxVYjUqlmwprclt63656YAxxvNGP
-         9NynAQXggvN5Qj0sbpGmcu2wPcIuuC8H1tUoSHzcTWlQaRxfnEY+ARqRcs4Hh1SM2K0c
-         csyyoVPBLR/cpvgLajB7kKY+5qPFjFxMZ2dANtzlxzvskUPxXIzUMRVdbfwnaisSjj1n
-         VtYn/6cM7dTsWXv4f9jfTNXeJnp+NX21Gs0hhO4Yc1eS16U7JlwV+Jrt760xwBevD5UG
-         fL6lE/PWjSK/dB1cnzFRHZZrC14PwCZdoAmeeivilfz+nf7TnH2Yu6Cq8bJtIr5cjF+B
-         cnlA==
-X-Forwarded-Encrypted: i=1; AKwUvByAUh9j0bP4uyQqg8CDysC7Z28k/95YW21VPbHxVbWWB72h9KHAes/7W3i3VPvxP+aFndncWJdvjfs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKkeKNSNftkwuiiB/IAbdPKTEX129UnvUxEpPyn5EZgbtE2q21T
-	eHhPZ1COIXiwvG+RzD6PBOMM8OSudYMQ21h9NUNM1r0pQ/gbZpqdwLVbl2+dCMqNYbZYCmi/xXb
-	3ydN5rEkABX0C4a9KfolqrYyFMPh5TYZdb9qnacJ48oAe7WFAcBPuMoK4/j8ueQ==
-X-Gm-Gg: AYBFou2b4uxbcdWPJSZLA2PPwx2WsQ/Q0tE5nqqyFewLghhJshOD9zsCJf75BzroyCr
-	ZLGoAgtK4eh/Dk6EzMwKH+R89T+jDAqunH9wOnAEhFmaW7Q9Z7ZRWGyaUgrn/PY8K0hP6Tk2jfh
-	hueTlUwDiScgHwq1eWS9Y2+E2g1e9mubvsrPuK9owx0kGDofKJDnRWd5xUMXxC/ey0uOF4KdM9P
-	m1ZhjLR3X3lff0OmRxK+/637gWoWmM9S9YmAPoyhqb2vc0M10QqnGCAnMXtq9WbI+3EA8BTrNrn
-	LAsCvO87K5qEE4agtg+GcMUM+j2+DDa2DEhry+caQ/YxNd+wRL1QksdesTV30wS1zVY=
-X-Received: by 2002:a05:600c:6388:b0:4a1:e9c2:6c84 with SMTP id 5b1f17b1804b1-4a35acaed66mr171606515e9.18.1793106473519;
-        Tue, 27 Oct 2026 06:07:53 -0700 (PDT)
-X-Received: by 2002:a05:600c:6388:b0:4a1:e9c2:6c84 with SMTP id 5b1f17b1804b1-4a35acaed66mr171605725e9.18.1793106472915;
-        Tue, 27 Oct 2026 06:07:52 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1536:fc00:b838:383:1c7:6e81])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a04ad39sm691723785e9.1.2026.10.27.06.07.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Oct 2026 06:07:51 -0700 (PDT)
-Date: Tue, 27 Oct 2026 09:07:47 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Francesco Valla <francesco@valla.it>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bCH1OTqA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C15A1F031E2;
+	Tue, 27 Oct 2026 18:17:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793125075;
+	bh=nfV/S6ZwmWtNZwuWmh/T74T1NcuFLfcIht1ObLXQeHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bCH1OTqAzL9dmzm6I8uZ52UowYU2/3TVuL06jub41yZWTF8PwHko1pmJX6VeLxJJo
+	 0mrjVn0kShRShtVp7ShvjN9qHL4wC4igbKQAD/fAl6aVZoHXKudwZL/3bsW3tXilVG
+	 dQH80Fsc3wd/Fnx/HYSCKDMWxM7W1D0WzcTYbz6348UvytYMDPqyXLA9IAqG+ugB1p
+	 thpxznbkMj4i6VuDSYvRAQZ3omCVXumSmrlZuGHIo9a9Nr6B7Qaa1qlJKY1lToMpxy
+	 RH1FPRcnMxu42QD3oWDHu/27k46rbWVHXYoPdfWuPZca0fipWVhWuKSR5eBLMZu7jG
+	 BukhMhiuO8XaQ==
+Date: Tue, 27 Oct 2026 18:17:49 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jingyuan Liang <jingyliang@chromium.org>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Mark Brown <broonie@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Haixu Cui <quic_haixcui@quicinc.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH v2 0/2] Add devicetree bindings for spi-virtio
-Message-ID: <20261027090324-mutt-send-email-mst@kernel.org>
-References: <20261027-spi-virtio-bindings-v2-0-67927b24b9d4@valla.it>
- <20261027065001-mutt-send-email-mst@kernel.org>
- <auCb8_ROuyXdTkQ4@bywater>
+	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, hbarnor@chromium.org,
+	tfiga@chromium.org, fqwqf@fqwqf.xyz, daleyo@gmail.com,
+	Dmitry Antipov <dmanti@microsoft.com>,
+	Jarrett Schultz <jaschultz@microsoft.com>
+Subject: Re: [PATCH v7 08/11] dt-bindings: input: Document hid-over-spi DT
+ schema
+Message-ID: <20261027-silicon-unvented-a0c8dc394e87@spud>
+References: <20261024-send-upstream-v7-0-abad13174b43@chromium.org>
+ <20261024-send-upstream-v7-8-abad13174b43@chromium.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -111,110 +71,151 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <auCb8_ROuyXdTkQ4@bywater>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: t69L2euf1ZEhcqHHkk7liTb1TVaU8g-YskMYazA8MiU_1793106474
-X-Mimecast-Originator: redhat.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8sC1crqEc4kNm6ti"
+Content-Disposition: inline
+In-Reply-To: <20261024-send-upstream-v7-8-abad13174b43@chromium.org>
+
+--8sC1crqEc4kNm6ti
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 27, 2026 at 01:46:35PM +0100, Francesco Valla wrote:
-> Hello Michael,
-> 
-> On Tue, Oct 27, 2026 at 06:50:51AM -0400, Michael S. Tsirkin wrote:
-> > On Tue, Oct 27, 2026 at 08:26:32AM +0100, Francesco Valla wrote:
-> > > When a virtio transport exposes a non-discoverable bus, the devicetree
-> > > can be used to declare its child devices (if any) and/or other
-> > > properties. To allow for that, the virtio framework searches for a node
-> > > with a suitable compatible in virtio_device_of_init() when registering
-> > > a device [1]; such compatible takes the form "virtio,deviceXX", where
-> > > XX is the hexadecimal representation of the virtio device ID as defined
-> > > by the virtio specification.
-> > > 
-> > > This patchset thus does not introduce a new functionality, but allows
-> > > proper validation of nodes tied to spi-virtio devices, aligning SPI to
-> > > what is already being done for e.g. I2C and GPIO virtio devices.
-> > > It was sent initially as part of a different patchset [2], but since it
-> > > complements a functionality that is de-facto already there and is useful
-> > > beyond that specific use case it was sent separately (also following the
-> > > maintainer's feedback there to separate it from remoteproc-specific
-> > > changes).
-> > > 
-> > > This was tested both with virtio-mmio using qemu-system-aarch64 and with
-> > > remoteproc-virtio with a Zephyr backend (with relevant remoteproc-virtio
-> > > parts still not not upstreamed - see [2]).
-> > > 
-> > > I added myself as reviewer for the spi-virtio driver to be CC'd on any
-> > > patch involving the new bindings.
-> > > 
-> > > Thank you!
-> > > 
-> > > Regards,
-> > > Francesco
-> > > 
-> > > [1] https://elixir.bootlin.com/linux/v7.2.8/source/drivers/virtio/virtio.c#L488
-> > > [2] https://lore.kernel.org/linux-remoteproc/20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it/
-> > > 
-> > > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > > ---
-> > 
-> > I hope this can be merged through the devicetree maintainers,
-> > I have no idea.
-> > MAINTAINERS changes needs an ack from existing maintainers, of
-> > course.
-> > 
-> 
-> This might prove... difficult. My e-mails to the maintainer (Haixu Cui
-> @quicinc.com) continue to be bounced back by the Qualcomm postmaster
-> with a RecipientNotFound error. Maybe someone from Qualcomm can give me
-> a lead on how to contact them?
+On Sat, Oct 24, 2026 at 12:51:42AM +0000, Jingyuan Liang wrote:
+> From: Dmitry Antipov <dmanti@microsoft.com>
+>=20
+> Documentation describes the required and optional properties for
+> implementing Device Tree for a Microsoft G6 Touch Digitizer that
+> supports HID over SPI Protocol 1.0 specification.
+>=20
+> Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
+> Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
+> Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
 
-Indeed, so it did for me.  Oh that's no good at all.
+Personally I prefer how this is done now, but definitely worth those who
+approved the previous iteration taking a look at this because it has
+changed significantly and no longer contains any of the properties that
+cover the timings etc anymore.
 
-Mark, what's your take? The maintainer is MIA but we have a volunteer
-maintainer here.
+Worth noting that this changed since the previous version after I
+pointed out that the second hid-over-spi device did not make use of them
+at all and needed specific handling in the driver.
 
-As far as I'm concerned
+> ---
+>  .../devicetree/bindings/input/hid-over-spi.yaml    | 75 ++++++++++++++++=
+++++++
+>  1 file changed, 75 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yaml b/=
+Documentation/devicetree/bindings/input/hid-over-spi.yaml
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Typically this would need to match a compatible, but I think this is okay
+provided other hid-over-spi devices actually get added here - the series
+adding the second hid-over-spi device didn't do so but should be able to
+I think?
 
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
+Thanks,
+Conor.
 
+> new file mode 100644
+> index 000000000000..bed0746f004c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> @@ -0,0 +1,75 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/hid-over-spi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: HID over SPI Devices
+> +
+> +maintainers:
+> +  - Benjamin Tissoires <bentiss@kernel.org>
+> +  - Jiri Kosina <jikos@kernel.org>
+> +  - Jingyuan Liang <jingyliang@chromium.org>
+> +
+> +description: |+
+> +  HID over SPI provides support for various Human Interface Devices over=
+ the
+> +  SPI bus. These devices can be for example touchpads, keyboards, touch =
+screens
+> +  or sensors.
+> +
+> +  The specification has been written by Microsoft and is currently avail=
+able
+> +  here: https://www.microsoft.com/en-us/download/details.aspx?id=3D103325
+> +
+> +allOf:
+> +  - $ref: /schemas/input/touchscreen/touchscreen.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - microsoft,g6-touch-digitizer
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description:
+> +      GPIO specifier for the device's reset line. The HID over SPI
+> +      specification requires a dedicated, host-driven, active-low reset
+> +      line. The line must be flagged with GPIO_ACTIVE_LOW.
+> +
+> +  vdd-supply:
+> +    description:
+> +      Regulator for the VDD supply voltage.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - reset-gpios
+> +  - vdd-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      hid@0 {
+> +        compatible =3D "microsoft,g6-touch-digitizer";
+> +        reg =3D <0x0>;
+> +        interrupts-extended =3D <&gpio 42 IRQ_TYPE_EDGE_FALLING>;
+> +        reset-gpios =3D <&gpio 27 GPIO_ACTIVE_LOW>;
+> +        vdd-supply =3D <&pm8350c_l3>;
+> +        pinctrl-names =3D "default";
+> +        pinctrl-0 =3D <&ts_d6_int_bias>;
+> +      };
+> +    };
+>=20
+> --=20
+> 2.56.0.257.gf7497c7d27-goog
+>=20
 
-> > > Changes in v2:
-> > > - Expanded the commit message to better explain the functionality and
-> > >   the chosen compatible.
-> > > - Redundant pieces dropped from bindings.
-> > > - Link to v1: https://patch.msgid.link/20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it
-> > > 
-> > > To: Haixu Cui <quic_haixcui@quicinc.com>
-> > > To: Francesco Valla <francesco@valla.it>
-> > > To: Mark Brown <broonie@kernel.org>
-> > > To: Rob Herring <robh@kernel.org>
-> > > To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> > > To: Conor Dooley <conor+dt@kernel.org>
-> > > Cc: virtualization@lists.linux.dev
-> > > Cc: linux-spi@vger.kernel.org
-> > > Cc: devicetree@vger.kernel.org
-> > > Cc: linux-kernel@vger.kernel.org
-> > > 
-> > > ---
-> > > Francesco Valla (2):
-> > >       dt-bindings: spi: add spi-virtio
-> > >       MAINTAINERS: add Francesco as spi-virtio reviewer
-> > > 
-> > >  .../devicetree/bindings/spi/spi-virtio.yaml        | 46 ++++++++++++++++++++++
-> > >  MAINTAINERS                                        |  2 +
-> > >  2 files changed, 48 insertions(+)
-> > > ---
-> > > base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
-> > > change-id: 20260927-spi-virtio-bindings-f4e350b2709a
-> > > 
-> > > Best regards,
-> > > --  
-> > > Francesco Valla <francesco@valla.it>
-> > 
-> 
-> Regards,
-> Francesco
+--8sC1crqEc4kNm6ti
+Content-Type: application/pgp-signature; name=signature.asc
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauDqzQAKCRB4tDGHoIJi
+0purAQCYkv7CUzklUUDgE+JeGoIkAHm0JC3f3mTJttH7XxBzAQEA7mawrnCg1cIq
+AdfoN1FM3DllFm3RVC+pmpw1NcGdYQA=
+=3dUb
+-----END PGP SIGNATURE-----
+
+--8sC1crqEc4kNm6ti--

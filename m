@@ -1,68 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793128226;
-	b=nU65268qeRV9R56JbMnwqMycFj7TtXMCoSuc+vUQ/OsmnT9ATFicARZuMR60ljN2UZPZ
-	 UDIksZONWxSoV2ri/fy+CMIFkf9NbAT35/2EPt4lASou+6pPTjMF8mTfPY61W2RKKPQyg
-	 L7NUhAG3BIga752pPMeGBjZjJmt56E/bcb9qDASDlTBa/IqlCUMNLNtX9gtFHYGWSItSf
-	 r+hdOECBigGZ3wfrKEtZqCxO9y0j5MuC2rCHDWhF7N0Lu6xLwiFDKj3OoJNPCsnZg02kp
-	 SG6rIQJL5eTDBLkwhmpsZ0DYFazmtP6a2McCbsRArNFbyPkzRsqfPIFahBCZnkjbR5w==
+	t=1793133786;
+	b=vad87G1Z64d+YGaePVg4OBaxgXRLzp4OdP1y+KTKO3qep9Ojy7hMh3e6QPTVpG5XQiDE
+	 SnJyM/EmAOe/tVhHrWba+YTSyI6+6P39DAwzB35nQfAk2PNy0W8x/W90oEuCyFnjsCmEu
+	 EVEnOUrQYzrRtLSE7g+Wb0Q4eJzKVXfbE2UmrRhq6JSai9006X0a5DbXHAoK9x93M5ntB
+	 +Hvfq54zCfq8zAia5ScmfRGfAvuXYmtWRMEugnj8+2lL0y/Wjk5cA7XSl9aySlH/YlZPt
+	 ARAbmAKIzwUfnaPTWRD9DGZXuA5qWp5dxPQEnAwd3wzxUzvVnZM/yFuJmW/FCfIwo7A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793128226;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793133786;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=PHHlnaE71uDkSJbdNjjoQnzFUdj0q4+PexykW0Xofho=;
-	b=tRGW4WHeQenm26ppMUq+5+cO0J5GCBwXwHf5yvHFIsBfI2QQElXH0zcp7F6hHpSmE0Zy
-	 WPD4AL3uMqqQiU0WXKjASvW9C1givkXBxEPx47uB8DvkcpSTLYONp1CMX7T6LA5EYdhAL
-	 qbTghgfJ3MJ2Vt9EcLFhbRlox7t4fGzspwZ8th7s/lOOVyi6nVhR9Kijss1zrV6ze/U3r
-	 VHYD8atOySR6A4lDCjeG45bkMItjpUzbtDCH6taCk/3SjbYmwN0Bbh3RaY7lpLJVbH9+6
-	 PJla51dnkdx/gqcW7DIIMbvd6SMT4DmbP5K1q7EbracgQdhoQVn56Z+nnqvohu8FwOA==
+	bh=f+BR3OM0F+HKfZEptGCURxUQqOvEQP7ahROv0C46Za4=;
+	b=tL4cpQfnEm/G55k2ILWg4Y+VKeHYHb8MlxIvP7qD/NvF8W+/DxunNUOFUtlBTCbiHVDo
+	 myJg/Ql2Cfc5VbG37piNTtRAJwDofnqSofgzCFsmAaqZJmK+LQRmceyMhMk9hkasL7nMw
+	 CfuEwhmBXKJKu5pBaSRvuosDNBLP+UxDXRd9iU4kzsRp2hxlLl8zEuvuxowL4OS0z1WCV
+	 qZer+y6+jD1ccQ/EaoN0oa4Kn2ri3V1u7jKkX/lRcKfFEnPnUyM0s4beXTaxVcxA1bUpk
+	 Z8qMXC7be1Y0zdtXUZlcUSrzSSip2WDmOnJtL9aOj/e6IdhnGhLOJgMefpb4P8jhFBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SO4REfyw;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VlwwTbvw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9670606A31A;
-	Tue, 27 Oct 2026 19:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC31606A31E;
+	Tue, 27 Oct 2026 20:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SO4REfyw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BE71F01825;
-	Tue, 27 Oct 2026 19:10:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VlwwTbvw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DCF1F01825;
+	Tue, 27 Oct 2026 20:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793128225;
-	bh=PHHlnaE71uDkSJbdNjjoQnzFUdj0q4+PexykW0Xofho=;
+	s=k20260515; t=1793133785;
+	bh=f+BR3OM0F+HKfZEptGCURxUQqOvEQP7ahROv0C46Za4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SO4REfywt12WSKclnbAIOhE6AQ8lvo+A9B2uRjAfuicmCaxA6o6al811KyCDZzkoX
-	 tLWA5CVAhfEdJrvVyJTjoTqXD239BN0ryf2QLX2Wnclr7GA7ZTl6y+/5CHkk0nd0sm
-	 ZY3OuvdXF4F7EVej9jp46B5ZlpEwwkxC/dx9HwuWtoJCjzSbOUq0uUQKPlauXsrNrS
-	 tDD1CgT7B3IZleyeRl8+5Fb2RtDXhoffPkX7pBN/bHXhU+UE/gCb8ERTsyVY0nT83A
-	 cLZnwKVZ+SFSBm7urnj6NU59pdweQql21I5lLiDYXc0sNZNcZu89hcQMS24xMQt3TL
-	 kl6ClgDSNxjOA==
-Date: Tue, 27 Oct 2026 14:10:21 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jingyuan Liang <jingyliang@chromium.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, tfiga@chromium.org,
-	Mark Brown <broonie@kernel.org>, daleyo@gmail.com,
-	Jiri Kosina <jikos@kernel.org>,
-	Dmitry Antipov <dmanti@microsoft.com>, linux-spi@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jarrett Schultz <jaschultz@microsoft.com>,
-	linux-doc@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	hbarnor@chromium.org, Steven Rostedt <rostedt@goodmis.org>,
-	devicetree@vger.kernel.org, Benjamin Tissoires <bentiss@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	fqwqf@fqwqf.xyz
-Subject: Re: [PATCH v7 08/11] dt-bindings: input: Document hid-over-spi DT
- schema
-Message-ID: <179312822066.314502.1597443859216398220.robh@kernel.org>
-References: <20261024-send-upstream-v7-0-abad13174b43@chromium.org>
- <20261024-send-upstream-v7-8-abad13174b43@chromium.org>
+	b=VlwwTbvwhxRU0UFrnu3m/RTRfm6xYnQQ9H2mIUFOMvIfBtk2gJBKkcABTFJub/8FM
+	 ZGe/3h1D0UkVAj+qwRU/ATs2TE9A7CeTGxqxF/hdSBhNTWj7pNEbQ7sv4H/5ATipB3
+	 D8EjN+A+mvfxX8wshDWMmSaOPTemRbUfOSXtm37rh0+W4wFP5xZJl9EtqQ7sbGxfR3
+	 e7vmEY1yrG3oUbZ23c00sV0jXembhzsFixqU9q8U5L1til6ecfrtZ4rSMbEQKlaCBw
+	 qMcY97lQnCpGncGwt83BG7D7L8qYGWSUvINZxrO8ZnRJRzS60czEtG7VTawhjgsATK
+	 WTljcChfNdWhA==
+Date: Tue, 27 Oct 2026 20:43:00 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux@analog.com, broonie@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	Michael.Hennerich@analog.com, nuno.sa@analog.com,
+	dlechner@baylibre.com, andriy.shevchenko@intel.com
+Subject: Re: [PATCH v4 1/9] spi: dt-bindings: Add spi-cs-composite property
+Message-ID: <20261027-colonize-primer-f994b88171a6@spud>
+References: <cover.1792435248.git.Jonathan.Santos@analog.com>
+ <e9308680e7b45ecf9ef2b6b2a752ffdd4d23b80c.1792435248.git.Jonathan.Santos@analog.com>
+ <20261026020003.3f3fbe86@jic23-hlaptop>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -72,25 +62,133 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8RvJR8qKFINmKJHV"
+Content-Disposition: inline
+In-Reply-To: <20261026020003.3f3fbe86@jic23-hlaptop>
+
+--8RvJR8qKFINmKJHV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261024-send-upstream-v7-8-abad13174b43@chromium.org>
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Oct 26, 2026 at 02:00:03AM +0000, Jonathan Cameron wrote:
+> On Tue, 20 Oct 2026 22:56:41 -0300
+> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+>=20
+> > Some setups combine several SPI devices into one logical device, with
+> > each chip on its own CS line. All of those CS lines must be asserted at
+> > the same time, so that one transfer reaches every chip.
+> >=20
+> > Add the 'spi-cs-composite' boolean property. When it is set, every chip
+> > select listed in 'reg' is asserted together on each transfer.
+>=20
+> To me it feels inevitable that we will see a device / combination of
+> devices that want groups of CS lines together and others independent.
+>=20
+> Seems less likely we'll see more than one set of composite entrees.
+> Maybe this should be an array of values that match with specific
+> entrees in reg?
+>=20
+> I'm not sure though.  Conor, Kryzsztof or Rob, any thoughts on this
+> or similar things that have arisen elsewhere?
 
-On Sat, 24 Oct 2026 00:51:42 +0000, Jingyuan Liang wrote:
-> From: Dmitry Antipov <dmanti@microsoft.com>
-> 
-> Documentation describes the required and optional properties for
-> implementing Device Tree for a Microsoft G6 Touch Digitizer that
-> supports HID over SPI Protocol 1.0 specification.
-> 
-> Signed-off-by: Dmitry Antipov <dmanti@microsoft.com>
-> Signed-off-by: Jarrett Schultz <jaschultz@microsoft.com>
-> Signed-off-by: Jingyuan Liang <jingyliang@chromium.org>
-> ---
->  .../devicetree/bindings/input/hid-over-spi.yaml    | 75 ++++++++++++++++++++++
->  1 file changed, 75 insertions(+)
-> 
+Why does the property actually exist in the first place? Does the device
+driver not know how each CS should be treated?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+>=20
+> The most general case would (subject to it not working) smell like
+>=20
+> reg =3D < <0x1 0x4 0x5> <0x2> >
+>=20
+> Where intent is that 1 4 and 5 are meant to switch together and
+> 2 is separate.
 
+I would expect that for this kind of device, the driver should know that
+the first 3 CS are switched together and the 4th is not. I'm not really
+sure what the internal representation should be, because if someone can
+make a device like this, they could surely also make a device where (to
+borrow your format) it behaves like
+
+| reg =3D < <0x1 0x4> <0x5 0x2> >
+
+and so on. But if those devices don't actually exist at the moment, and
+everything is either all together or all seperate, the API for this
+stuff in the SPI core doesn't have to solve that until a device actually
+shows up.
+
+Worst case is something where there's a variable grouping of chip
+selects, e.g.
+
+| reg =3D < <0x1 0x4 0x5> <0x2> >
+
+or
+
+| reg =3D < <0x1 0x4> <0x2> >
+
+but maybe if that happens the thing to do is permit reg-names for that
+device, and again store the relationships in the driver rather than
+try to convey it via DT.
+
+Cheers,
+Conor.
+
+>=20
+> How to do lookup on something like this is another question.
+>=20
+> Jonathan
+>=20
+>=20
+> >=20
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---
+> > Changes in v4:
+> > * New patch. This has been included because without an explicit propert=
+y,
+> >   every device with more than one 'reg' entry would have all its chip
+> >   selects asserted together. That breaks devices that use ancillary
+> >   devices for the extra CS lines, so the composite behavior is now opt-=
+in.
+> > ---
+> >  .../devicetree/bindings/spi/spi-peripheral-props.yaml     | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props=
+=2Eyaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > index 4894196c8f9c..456cb9095632 100644
+> > --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
+> > @@ -60,6 +60,14 @@ properties:
+> >        Delay in nanoseconds to be introduced by the controller after CS=
+ is
+> >        de-asserted.
+> > =20
+> > +  spi-cs-composite:
+> > +    description: Some SPI devices can be aggregated into a single logi=
+cal
+> > +      device by asserting all their chip selects simultaneously. When =
+this
+> > +      property is present, all chip selects listed in the 'reg' proper=
+ty are
+> > +      asserted together on every transfer, treating the group as one c=
+omposite
+> > +      device.
+> > +    type: boolean
+> > +
+> >    spi-rx-bus-width:
+> >      description:
+> >        Bus width to the SPI bus used for read transfers.
+>=20
+
+--8RvJR8qKFINmKJHV
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauEM1AAKCRB4tDGHoIJi
+0taJAQDxWUdJTEyrBBQwwB+5pQJE1sGp/SQvIm4Rog0nramvvQD7Bl95EY8505PG
+qnhSurVHW18xxr9nxFNb2pEmo9W7uAA=
+=TzEb
+-----END PGP SIGNATURE-----
+
+--8RvJR8qKFINmKJHV--

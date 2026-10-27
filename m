@@ -1,105 +1,93 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.54
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793084258;
-	b=aRjf3hrWeZJ/tE2O0SJg2GLr/pf/58cyFgmE1NBlMUUFL3HCEa+BpRgDHfSSuWHt6J94
-	 K5N4T4Ea2PEN0Vv34QMiSUrPkoB41Wxie94mGQYCWGUBWpVDTzPpZXIcSX6mRDHjOhSwV
-	 B4DWSlBiRmjyuwdSJGYl354frN/le2VrfUT9sAXEMjxFdQiOzATfGPfIvFV2+ltPhOIAv
-	 JMY6cKskSWs2uNACIc5ZB38V2uNN8bsPE4uj1MA9Xv+UdUK/ehJFm+vuke19kW3EfrNOK
-	 DyKhsvY/o0oA9x8SDOymqBqewjWHUbPubho0L+e7eSMgdfispghpVh7mLXNwvih+Nkg==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793084258;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=sA/soCd+jAxyVyCbYpE8ZxQ51mVTYvjC6BPEoSaY6Pc=;
-	b=v3DN8twyUEJhF9OfslUpdj76jWfej+Nx1BlU0qOAExW0B+Yt6y069DrdfKvX041IpOBG
-	 8kzn8PzSR0reNZw58rJXxC0iEOXWO478vwSlXH+Wda7NFkpNjj7I5/cfjCPIEllHoHXZW
-	 c2vCWU36yRMqWIP+lFxJVXaxkvtnGj1jb/ckFfYRpEn2wlQQgrEWuHz5al12fMkuUZSyl
-	 RCba1YnUmwRX6GLL6XFwwRcxV+Ri5wIwaU0FmoVvWrwl/Yhu2zbJDjB6ouIwYl2i28Uv7
-	 K7y742pEJjDwibU6uHPpUHDCX4Lyy+CCACsiCRD4o3NF4EduDW6+39Y3UHbZRhMI2uA==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UWuJ9Lit;
-	arc=none smtp.remote-ip=209.85.128.54
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.remote-ip=185.56.87.6
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=fail;
+	t=1793086022;
+	b=ZRxjR9Eldfk81DseNmTeIWKpGJ4m7AuyuL3VKOr5aK9e1b3OfBbGiSt1IWugA0Q7r0Y7
+	 b4d9A5Fnbww+bKM4yv0mXNwo+4XKO4JYijdz/0m3hDfNGFKKpC60U+EKCtXkbZpL81Pq3
+	 k+GWtjS/+aHoNNWxl1VpknvT39nQxvKqCDwssm+EHTSy/fhr0h3CKw1H+Ag94NdHaopsc
+	 BP2m0Ax1qbNH+KpPNrhr7IqKqZc4xmEvebiuMR24Fo1dzVLi0ayF2cWc5R9hNn8/FDrvJ
+	 Zces+NhPh2DlzAZ3r58STXf+EYhx5+l362+SHpigzdvTKy70BxHP/RqKeHi9jPoqa2A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793086022;
+	h=DMARC-Filter:DKIM-Signature:Received:DKIM-Signature:Received:From:
+	 Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-AntiAbuse:X-AntiAbuse:
+	 X-AntiAbuse:X-AntiAbuse:X-AntiAbuse:X-Source:X-Source-Args:
+	 X-Source-Dir:X-SGantispam-id:X-AntiAbuse:AntiSpam-DLS:AntiSpam-DLSP:
+	 AntiSpam-DLSRS:AntiSpam-TS:CFBL-Address:CFBL-Feedback-ID;
+	bh=YvrNepu80f9cFpozwNcGaYtrGlqF8wlvl1fpjkfzFEY=;
+	b=q3zIg2qkBrB+DesF0eZhJJtfrFjIyTTqIlQHoPk+/Xa5KlgUQ431YhaZ3TrKU3vKEL5g
+	 xUNk+bRGN9AYFL1Ig/0WgMmVYNZcT/oN+9tsofXmOR2iqJL/VbCDYzgG+T4L5II1Pmfm1
+	 P6/6obi8j5l0xB3iEWJr0fLVXmdfqEN6/dAGnZqQ+tL74EZ2Bb4Sfs55IXl3rW2i+YpZI
+	 Tl1rX+NMfh/FZ+J8PbdLYTUubi3T+7y067WYmcO0z3DnP7YfJktfN472L2KDvpUXML/bg
+	 l1OD4fwfXe5/4mOun2T90jpnkGcvjZ7sXAl8PSnaikvmWozzApSQrQaT86x4s7Q0awQ==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=valla.it;
+	spf=pass smtp.mailfrom=valla.it;
+	dkim=pass header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=Lg97Q3Hs;
+	dkim=pass header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=THd7U1e8;
+	arc=fail smtp.remote-ip=185.56.87.6
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88884606A321
-	for <linux-spi@vger.kernel.org>; Tue, 27 Oct 2026 06:57:38 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 88884606A321
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87298606A31A;
+	Tue, 27 Oct 2026 07:27:00 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 87298606A31A
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=UWuJ9Lit
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a2d6d01ecbso18511055e9.0
-        for <linux-spi@vger.kernel.org>; Mon, 26 Oct 2026 23:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1793084257; x=1793689057; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sA/soCd+jAxyVyCbYpE8ZxQ51mVTYvjC6BPEoSaY6Pc=;
-        b=UWuJ9LitCKkGTEaaIUGD/Wghisf6auEQWKjaR9IxA8JMPvQ2KKQuG4HUqYD9j+3VD+
-         rjFQMVOw+k5S1ZQcw5QE8SjBC3mETwLhM5bih+1WI4y4EoTKsJvYvelUDtThKY8qYneg
-         /V72cKKSdPk6XPP+RzrYGJpKkzMrHr0z6rs/PBe+WSuRVXRc8/KasiTjlKIrNCwS9xhR
-         nnZaTdNS7VUM4PaSMfgqLTrCAE4EU/8lmCy0IlsbcweyoZ77CwOOl2yv8RDH9V5srMZp
-         ghmT153AfKK6H+jbHeFRZv6/Aj0EQT2xNW+PAeDzEoFfuqWxk7K+kse2XsIS2gZk3182
-         J8dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793084257; x=1793689057;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sA/soCd+jAxyVyCbYpE8ZxQ51mVTYvjC6BPEoSaY6Pc=;
-        b=ZS7b6kxO0NKaMpmOlYHZ6+TOkm/Cfw6mOeFF4iamWvp1VHUa7r2LevASG1XdvsPoK6
-         Dsi52A2hVGR+eYz/4x0r7P4ANjbhOiTw0aFsUcOT3Dq64HfttII3uhmzG01kmPfn+IG2
-         NyaGkNgODx42II9ht7Pn6uGM/xc5Brw0jJeh1c3deB/sIIauTxLoqgkxpljeCelCa/mQ
-         XcgyOM5ehXC96PA7xVMJfdsyHxd39Nb1RS6sjSaraX4DPWc3nMH1rhN/w+6CtklZS+mX
-         dRjN5VYQVZcuPzAJTnIDvC2hnmQpGvxcjKlEy01SFnrrq++o1YlEytC/tfnMK+wlnHuZ
-         Y4fQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzwL5Q1T4eTaPGMNlJmPL88SjIGM7yeQL4HnHELsCkLVRFb+1W1y+mXufJykjofsra2bE/BOSieSMU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKsIXERC9PC6uIgsX+giX3TvKRzuY9YDmuvXRD5xd+k5zuwcpWi
-	szqlr0kOOWWeGq1VAWTE7pPSb2eexSratAlgKsrPxqku/+fMpb0Y17Jd
-X-Gm-Gg: AYBFou3h13XGYpOQEQxQ8boalVkjRsOQQx53QCabFLof1RT3oWSCi3mfJcEBcz3UZa5
-	ARixCuFgDq50xZk31UDzaUKS8ZUZnBSGpInidL79jR/IEapBV1nCbqo1/dVoUwNfd2FpKgKALt3
-	v7mn1kqphoEeyIcPGwod5A27lxkhcwNRLIKiF+EKlfmAbriiI95Dp9EMh2s6F0hvE4ubG24lE54
-	mh53No0i4iKNonurVQLXKq0z0z6bbUuJxLDlm5XlrZ9bDJgL+n2iwiYyqi9OmNR/0opCYWwHlPQ
-	ZccIOp01d5c0qAPp9PxS20SkkvzuqLqbShpblLWRCNnrEB5n96PdxK7cuoYJ1guJjbXZd7bH9mi
-	epUtKPdVMhDe1afPIf866B7WxuhreNzlHuafKv1OSNNDJOKEbxzieeXPjSatpOzFoKuouNREWhc
-	Bgt90E9196vgCj0qjB6HC5MjNjrO87ngBQG0q4+RDX5+NbRxzKgadLYaBJx6Fsy03b6K1fH88/A
-	ScejrzRDEhTZNLl/6eL6YLRjqLxsVwwlRnlQgfcL9MxepBpqUM+VMAZOjwgJd6TxUuJk2SvmrJq
-	dHk8J7vFkD98S4ZGGAlRHpRnsjvCe3A240RgM7I2e7caiHn+o4dgnqzLKag8pNZZTI6EhAir6a0
-	07Rab8Pbm8QByyna91USUn4Y97S+uZziJaqXIMznSPxJd4IFhwRO5E8tEIpI3JRTH3E6dpayw8u
-	8eFx07
-X-Received: by 2002:a05:600c:474a:b0:49f:e772:6ddf with SMTP id 5b1f17b1804b1-4a35ace28e0mr174280915e9.32.1793084256726;
-        Mon, 26 Oct 2026 23:57:36 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-b2ac-9b01-6900-1f92-d182-4435.310.pool.telefonica.de. [2a02:3100:b2ac:9b01:6900:1f92:d182:4435])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a35a2c0458sm243490115e9.11.2026.10.26.23.57.35
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 26 Oct 2026 23:57:36 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Vishwaroop A <va@nvidia.com>,
-	Krishna Yarlagadda <kyarlagadda@nvidia.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Rhyland Klein <rklein@nvidia.com>,
-	Suresh Mangipudi <smangipudi@nvidia.com>,
-	linux-spi@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/5] spi: tegra114: chip-select fixes and PIO-only probe
-Date: Tue, 27 Oct 2026 07:57:26 +0100
-Message-Id: <20261027065726.98396-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <179258895296.403962.3492255118456900623@nvidia.com>
-References: <179258895296.403962.3492255118456900623@nvidia.com>
+	dkim=pass (1024-bit key, unprotected) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.a=rsa-sha256 header.s=default header.b=Lg97Q3Hs;
+	dkim=pass (1024-bit key, unprotected) header.d=valla.it header.i=@valla.it header.a=rsa-sha256 header.s=default header.b=THd7U1e8
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-l70q.prod.antispam.mailspamprotection.com; s=arckey; t=1793086020;
+	 b=C1cik91F0FfZV8CNUfhhaBz3fhKiP5ZhWANElFQxbdnYlJUY3yH5hXSYY5yAMsyRPywWN2diKl
+	  qeBPzWlAS5/ID3RlHkS3zMgvIIAe+BAXemT9kYanDOPdL7NZyEh9KzlgGyIVmy9UxEJrjoz9nS
+	  Uxak1YAg3r7HEPDXgBcDWKl6fwtNRpK/cqRPCpHbx7oWsxOq5M7Io4LTIjwGqzZiiaN8WUHg1F
+	  BfomrCF66GkemB0dYO5ZXn33fLc5rU0iFZ3YtRrassYQeaJka2pBQlO1wzQKzFd/VmOLAHrHCZ
+	  tQTUEcr8QSd/bL5G7kGwQgofTEr7qDPSCL+sazydoTK+YQ==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-l70q.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-l70q.prod.antispam.mailspamprotection.com; s=arckey; t=1793086020;
+	bh=QTK7KrPu2P6hFh9JC7pq1+BhiXAD6x7kBDIU1gAKmDw=;
+	h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:Date:
+	  Subject:From:DKIM-Signature:DKIM-Signature;
+	b=VhHnxZ38G2mcyrZcjPYhlFtVtbd0+br56LpTXKzWzp+Ei5J/TazmMLXd1ffAGrReiTKmYpjsho
+	  qUObh411XtEBhIpF+oM5sjmgbFfyO/1qChmAWJW21K8CuiTDBDMni/fTqSfR4QdKOoFFURz+V0
+	  ce2PCsIHOea7mbFd3GqZ390tAxhj/iRFktkVtchJiDOT9I/+zRlOhFbQ7NImpWStasOJT1AIhe
+	  e/eIFwQ9bOie+cTKyT3csQf891tn1aqPjSN2vmbQP/BLtxME2clAmfhEd8VC/HDc6zc+50oXYz
+	  twg5dVCET626kVDcfKza0QXZbf8nL3FNOlu9fNGn/CorIg==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:
+	Subject:From:Reply-To:List-Unsubscribe;
+	bh=YvrNepu80f9cFpozwNcGaYtrGlqF8wlvl1fpjkfzFEY=; b=Lg97Q3HsE3qpRwFiQvoCmw3Kgg
+	7+zBuU3qELG1tskBq2+4Myzj2esl7fXKEWz1NwS7yjUh7psRwdHjYBBPQuLOK3AEVlhxMB08h0ioL
+	VjUvvHkfTbM4iTZdrO9GLVpPOvzc2hMFvTMoc9DujOrkrRCbsBTqJMLUf/szURgWxSuE=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-l70q.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xLbaD-00000006vEO-47s2;
+	Tue, 27 Oct 2026 07:26:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Cc:To:Date:Subject:From:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=YvrNepu80f9cFpozwNcGaYtrGlqF8wlvl1fpjkfzFEY=; b=THd7U1e8Ot2Xu0BT3NaiWJ9PWg
+	UGZKiEexHkquhH0KeMCA9TAHTvwte8KXijbw3h6xSZHrK4mCBS0ZTu4wtm1rq7eZqfdJlK66DHHvc
+	39ZBnCfc/fXUxzYV2atTaoEksrwFCtdMamVEaGMYyx+YZCjCp11IuQtLG950fyG1chbY=;
+Received: from [87.16.26.129] (port=61474 helo=[192.168.178.158])
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <francesco@valla.it>)
+	id 1xLba4-00000000J9d-1J1C;
+	Tue, 27 Oct 2026 07:26:48 +0000
+From: Francesco Valla <francesco@valla.it>
+Subject: [PATCH v2 0/2] Add devicetree bindings for spi-virtio
+Date: Tue, 27 Oct 2026 08:26:32 +0100
+Message-Id: <20261027-spi-virtio-bindings-v2-0-67927b24b9d4@valla.it>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -109,52 +97,118 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22NQQ6CMBBFr2Jm7ZjSKgRX3sOwaGGAMaSQTm00h
+ LsLGHcuX/L/ezMIBSaB62GGQImFR7+CPh6g7q3vCLlZGbTSuSp1gTIxJg6RR3TsG/adYHsmc1F
+ OF6q0sD6nQC2/duu9+rI83YPquKm2Rc8Sx/Desynbdr9C+beQMlSYW0XUGp0ZZ27JDoM9cYRqW
+ ZYPXbeTfccAAAA=
+X-Change-ID: 20260927-spi-virtio-bindings-f4e350b2709a
+To: "Michael S. Tsirkin" <mst@redhat.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>, 
+ Jason Wang <jasowangio@gmail.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ virtualization@lists.linux.dev, Francesco Valla <francesco@valla.it>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2664; i=francesco@valla.it;
+ h=from:subject:message-id; bh=QTK7KrPu2P6hFh9JC7pq1+BhiXAD6x7kBDIU1gAKmDw=;
+ b=owGbwMvMwCX2aH1OUIzHTgbG02pJDFkPgrSOzmX4rOs6b6ukbtJFO4EHPVt3Nci9XLJsQ4UU8
+ +bnrUJJHaUsDGJcDLJiiiwh627c2zPX/FvaBsZHMHNYmUCGMHBxCsBE8mIZGU7npT3O3XY98IVi
+ 6PEDe1k89bb++dnV9Oma6PonzSKPbGcxMjSsv8M7uVni8vWF5/fw71uQeNh4A9s0GZE9DkkCtpc
+ 7P3IDAA==
+X-Developer-Key: i=francesco@valla.it; a=openpgp;
+ fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: 1f2d376749ba976fb255cf91fd782c98
+X-AntiAbuse: ID - 1f2d376749ba976fb255cf91fd782c98
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1xLbaD-00000006vEO-47s2-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-l70q.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-On Wed, Oct 21, 2026 at 10:14:06AM +0000, Vishwaroop A wrote:
-> The delay runs after CS is dropped. A mid-message cs_change drops CS
-> and never drives it active again. When the last transfer holds CS,
-> the next message can turn hardware CS back on and drop the line.
-> TIS-SPI under spi_bus_lock() needs CS held across those messages.
-> Multi-transfer messages already use software CS; patch 4 only moves
-> that choice so patch 5 can keep it.
->
-> Patch 1 is separate. A missing "dmas" property fails probe even
-> though PIO works, so fall back to PIO.
+When a virtio transport exposes a non-discoverable bus, the devicetree
+can be used to declare its child devices (if any) and/or other
+properties. To allow for that, the virtio framework searches for a node
+with a suitable compatible in virtio_device_of_init() when registering
+a device [1]; such compatible takes the form "virtio,deviceXX", where
+XX is the hexadecimal representation of the virtio device ID as defined
+by the virtio specification.
 
-Tested on Jetson Nano (Tegra210) on v7.3-rc2 (5b0764a53235) with
-7000d400.spi (DMA enabled) and 7000d600.spi ("dmas" omitted from DT):
+This patchset thus does not introduce a new functionality, but allows
+proper validation of nodes tied to spi-virtio devices, aligning SPI to
+what is already being done for e.g. I2C and GPIO virtio devices.
+It was sent initially as part of a different patchset [2], but since it
+complements a functionality that is de-facto already there and is useful
+beyond that specific use case it was sent separately (also following the
+maintainer's feedback there to separate it from remoteproc-specific
+changes).
 
-1. PIO fallback (patch 1/5):
-   - Unpatched: 7000d600.spi fails probe with:
-     spi-tegra114 7000d600.spi: error -19: Dma channel is not available
-   - With series: 7000d600.spi logs:
-     spi-tegra114 7000d600.spi: 'dmas' is required by the binding, falling back to PIO
-     and completes 128-byte PIO transfers on /dev/spidev1.0.
+This was tested both with virtio-mmio using qemu-system-aarch64 and with
+remoteproc-virtio with a Zephyr backend (with relevant remoteproc-virtio
+parts still not not upstreamed - see [2]).
 
-2. Mid-message cs_change reassertion (patch 3/5):
-   - Two-transfer SPI_IOC_MESSAGE(2) on 7000d400.spi (SPI_MODE_0,
-     active-low CS0) with cs_change = 1 on both transfers:
-   - Unpatched: SPI_COMMAND1 (0x7000d400) after the message is
-     0x40701827 (SPI_CS_SW_HW = 1, SPI_CS_SW_VAL = 1), leaving CS
-     deasserted high during the second transfer.
-   - With series: SPI_COMMAND1 is 0x40601827 (SPI_CS_SW_HW = 1,
-     SPI_CS_SW_VAL = 0, CS reasserted low before the second transfer).
+I added myself as reviewer for the spi-virtio driver to be CC'd on any
+patch involving the new bindings.
 
-3. Per-transfer delay order and keeping software CS across messages
-   (patches 2/5, 4/5 and 5/5):
-   - Immediately following the cs_change = 1 message above, a
-     single-transfer SPI_IOC_MESSAGE(1) with cs_change = 0 and
-     delay_usecs = 40000 was submitted while sampling SPI_COMMAND1 at
-     15 ms into the 40 ms delay window:
-   - Unpatched: SPI_COMMAND1 at 15 ms is already reset to 0x40400000
-     (SPI_CS_SW_HW = 0) because tegra_spi_transfer_end() ran before
-     spi_transfer_delay_exec() and the transfer switched to hardware CS.
-   - With series: SPI_COMMAND1 at 15 ms is 0x40601827 (SPI_CS_SW_HW = 1,
-     SPI_CS_SW_VAL = 0), holding software CS active during delay_usecs,
-     and returns to 0x40400000 after delay_usecs completes.
+Thank you!
 
-Tested-by: Karl Mehltretter <kmehltretter@gmail.com>
+Regards,
+Francesco
 
-Thanks,
-Karl
+[1] https://elixir.bootlin.com/linux/v7.2.8/source/drivers/virtio/virtio.c#L488
+[2] https://lore.kernel.org/linux-remoteproc/20260916-remoteproc_virtio_map-v1-0-dac8c5eb4aa9@valla.it/
+
+Signed-off-by: Francesco Valla <francesco@valla.it>
+---
+Changes in v2:
+- Expanded the commit message to better explain the functionality and
+  the chosen compatible.
+- Redundant pieces dropped from bindings.
+- Link to v1: https://patch.msgid.link/20260929-spi-virtio-bindings-v1-0-6a0eef3213b3@valla.it
+
+To: Haixu Cui <quic_haixcui@quicinc.com>
+To: Francesco Valla <francesco@valla.it>
+To: Mark Brown <broonie@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: virtualization@lists.linux.dev
+Cc: linux-spi@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+---
+Francesco Valla (2):
+      dt-bindings: spi: add spi-virtio
+      MAINTAINERS: add Francesco as spi-virtio reviewer
+
+ .../devicetree/bindings/spi/spi-virtio.yaml        | 46 ++++++++++++++++++++++
+ MAINTAINERS                                        |  2 +
+ 2 files changed, 48 insertions(+)
+---
+base-commit: d135ab453a7400a34930bdda1ef4bdc8acfac80e
+change-id: 20260927-spi-virtio-bindings-f4e350b2709a
+
+Best regards,
+--  
+Francesco Valla <francesco@valla.it>
+

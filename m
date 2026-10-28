@@ -1,70 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793205589;
-	b=gC2ccy6FbL24e9Sh5NhJMTAN3PV2Ob9fbWELH3IOAaCtKsr4KQ7fquzTtqlfWsDbqKyk
-	 wvWFHkMt6r5lSrYcrbkKlljUxSdo9AOTNJPy1Xm/aOuLqnSLhcOSXmsqoI8RZAnqlQ9bI
-	 tdekPm3inndgP12Y6zfk6Z2aGdGGpoSZVT+jzrmb+QozmqILYO9M+O+UjrHee3VxdZhBC
-	 0CmVvVqiInqE9QVHAWP3krYZCUw/LzRW55/JgwjphB7QxAgRMTknjnIA0GzLBSngVXPxU
-	 6OQ0JbTl9o20qdjGcxWjyAgpJIFe1F+EYf8QQRlQ4EapIbS5uOwVsnJIRTZ8zz+KbJQ==
+	t=1793210316;
+	b=r4XqMFScPwy6WuSlC7hbfSZnC8BKq1Xpze0i2TKMAOwtMSQwVq1iFbnyiRi0Qoc9Sm6B
+	 1gHGatexLLo/DgamH+fAF8hpfGnacLAb3wdS0PcYn3whRMlZvFZ5DD2JLHPjTInBZNYsq
+	 reWCyhhbNUzOo9q/YRspc9fdnrTi391W2f9MlYyC79pitkeqfliWAa90JXPdM5Pd0aOAW
+	 MCBnSC3sVlGaVnS8IXPMM8Piuz43qb4nZNiRPgov/Ihd+pl78u2AKbiAdQGUtDtZwDnrK
+	 0qwJAkya/4/tq3lLpN/hnN7ztYiAC3JVRpl9VACePMKln6Hc8Ce3joa0vh+kTb05cYA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793205589;
-	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
-	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
-	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
-	bh=d047tn7ZyUAE4CZJF6OwqmbdpCg4ZRFaWnDJv2Xlu+8=;
-	b=GpvfjNrzWJwMoY0BaD53rP38nYFMTs7vWXxtHT3iGwLyUiTD8vaWqJJ90oCCx0CQTVRK
-	 9+6Nkyg1TaMdECoxht7Ak16993uXHJhKMVgD2lNSNg6xrBdLXktFzUT1JXJPNGE7PevxW
-	 c4v6s7Xu2Zo8TmhiH2Nx+11+WZw/4zMwOiyF/ZAzE5wlXJVjU+fhGvEFN2lbhA7RiP5/G
-	 sNCrInB1O5nrMK5ecVVc6exM1pj2fc5B0TkedW1LyTrdeg6XdZ3qxS+Gr3NB2R4vKyt8S
-	 VdXseuS7meXKNqah4knm9o1q5mpGFKQ2TclbK8nnt6rSNIUcix1KXm6harI0/NBow0A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793210316;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=aTi7FDhFISZO7kWpmimT2aO+ec4D8z/GbW3BUuiE/d0=;
+	b=g6E5G78AX0bmnINznLOxJcXoLaPUAXksvwaWDIESgQNhAZ9AHpx3UWbqsW/pwE4TdEWX
+	 3Q+IZ6D3219NkvQMfQVe4RQPuTfH253HnurzqUqXLIXqe6y6Hnybal644HtaFV1TUctYi
+	 UiTstS5iUFAJ6h702nF5McJ+959C2ZwWiRiHQEfQe1+Ovq9SW5QprmMZ7uxNYaQUsrsk/
+	 FUOwUG93c5Nh+JDJbR3B94euCfInWSym8dzkwfuNMyJ1i57kz6w+VHevs7X6J7Ou32m9P
+	 pUCUrw2Qd5yFlvV2txssH3Ig+ANhVF7l8ruUQgYQ/BlWS6i6Kxsnm0xP82q4BdtN20A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=bootlin.com;
-	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=qCMpHgry;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKAxA7FP;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25937606A32D
-	for <linux-spi@vger.kernel.org>; Wed, 28 Oct 2026 16:39:47 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25937606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE70606A321;
+	Wed, 28 Oct 2026 17:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=qCMpHgry
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 63874C4FED5;
-	Wed, 28 Oct 2026 16:40:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 54A7E60769;
-	Wed, 28 Oct 2026 16:39:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4ABD103290D5;
-	Wed, 28 Oct 2026 17:39:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793205580; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=d047tn7ZyUAE4CZJF6OwqmbdpCg4ZRFaWnDJv2Xlu+8=;
-	b=qCMpHgryog1vBCpYw2HnRskue6gsLgB9uoaHyNvM0YNItQkxRCo1T8oI+12cGb5oxg6MgS
-	EKhcVHkSpJmnXgfq03mwJGrHU6ylLbZNOshuzLyT1eTX31bfoylyj6RjFTeTa91PVNX3uA
-	CFDxOIL63kdYVpkQfQtYyg/55KilXBl/VU1++SiVbKEjHIqY3qphAdZqMYGB+2bC8GGbl/
-	4MOIDH9pwJEfT7Vdg+fVsuEpQIAxgZ3O10KHXWyo4M32AwlQ2xslc/Y1AAmDKDqMFHMV4q
-	LTGC39X7sUZYIBe9gi1HS29LySxXbrl1x144YQZPz+lqRxwlrLlStqOmUUvgtQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Changhuang Liang <changhuang.liang@starfivetech.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
- <mwalle@kernel.org>,  Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-  Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  linux-spi@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 2/5] spi: dw: Add DDR (Dual Data-Rate) support for
- enhanced SPI mode
-In-Reply-To: <20261028121100.79667-3-changhuang.liang@starfivetech.com>
-	(Changhuang Liang's message of "Wed, 28 Oct 2026 05:10:57 -0700")
-References: <20261028121100.79667-1-changhuang.liang@starfivetech.com>
-	<20261028121100.79667-3-changhuang.liang@starfivetech.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Wed, 28 Oct 2026 17:39:32 +0100
-Message-ID: <87a4nxg4or.fsf@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PKAxA7FP
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF3BE1F01828;
+	Wed, 28 Oct 2026 17:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793210315;
+	bh=aTi7FDhFISZO7kWpmimT2aO+ec4D8z/GbW3BUuiE/d0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PKAxA7FP/bS9zHJa7Nuo3TsAvflHkO0kcRDdTUa08+ni+bekxF2nqRW42OAE1ui/l
+	 uGmJ6p5+tGIrVNkDjg4AKy165bpFXEg+nRW249Ay3w1e6NmS3wHqoemXmAFbFco2jH
+	 KhAwFYUa7yhuGAPA+wBQmSfUmkCOCmyInDEL7vaU4dEtaFsJfezypQ79JJck/paM0c
+	 H9t46lptF3NUA3ZTsaMjo7kvshK3oX6KcYcjA5sLFt4LHKRgVKUSRSfgG06MMF5+Pa
+	 XX/IecWnMpshy3zMs1Z79uMFye+c+eeXb5VZnT4ceN6ug4KZeB20hSbXIqUoBIK2Zw
+	 18GfyGUuukSZw==
+Date: Wed, 28 Oct 2026 17:58:30 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jizhou Tong <fqwqf@fqwqf.xyz>
+Cc: Jingyuan Liang <jingyliang@chromium.org>, jikos@kernel.org,
+	bentiss@kernel.org, dmitry.torokhov@gmail.com,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daleyo@gmail.com, broonie@kernel.org, u.kleine-koenig@baylibre.com,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [RFC PATCH v2 4/6] dt-bindings: input: describe the Romulus13
+ QSPI touchpad
+Message-ID: <20261028-punctured-flagpole-c7ec4cfc4609@spud>
+References: <010601a1334094a9-1f793e14-c414-4780-98ff-f5acdac353a2-000000@ap-northeast-1.amazonses.com>
+ <010601a1334e2298-73816c42-ca83-40fe-9c7a-e771c466a4e6-000000@ap-northeast-1.amazonses.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -74,37 +62,154 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cgu1zTNp/hBa/EJJ"
+Content-Disposition: inline
+In-Reply-To: <010601a1334e2298-73816c42-ca83-40fe-9c7a-e771c466a4e6-000000@ap-northeast-1.amazonses.com>
 
-On 28/10/2026 at 05:10:57 -07, Changhuang Liang <changhuang.liang@starfivetech.com> wrote:
+--cgu1zTNp/hBa/EJJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> Add support for 1S-xD-xD DDR transfers in the enhanced SPI mode of the
-> DW SPI controller, on controllers that have DW_SPI_CAP_DDR.
->
-> SPI_CTRLR0.SPI_DDR_EN switches the address, dummy and data phases to
-> DDR all together, and it only applies to the Dual/Quad/Octal frame
-> formats. So in supports_op() only accept DTR operations where the
-> command is sent in STR on one line, the data phase uses two lines or
-> more, and the address and dummy phases are DTR on the data lines.
-> DDR instruction phase (8D-8D-8D) is not supported for now.
->
-> For DDR transfers the dummy phase takes two bits per clock on each
-> line, so the wait cycles must be halved. Factor the wait cycle
-> calculation into dw_spi_enh_wait_cycles(), so that supports_op() and
-> exec_op() use the same value, and refuse dummy phases that are not a
-> whole number of clock cycles.
->
-> When DDR is enabled, program the DDR_DRIVE_EDGE register. The
-> recommended TDE value is SCKDV / 4, clamped to SCKDV / 2 - 1 and to
-> the field width. The register is only written when the controller
-> supports DDR.
->
-> Finally, advertise DTR to the spi-mem layer through a dedicated
-> dw_spi_ddr_mem_caps when the controller has DW_SPI_CAP_DDR.
->
-> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+On Tue, Oct 13, 2026 at 03:28:41AM +0000, Jizhou Tong wrote:
+> Describe the fixed-address HID-over-SPI touchpad on Surface Laptop 7
+> 13.8-inch, with quad address/data transfers, an active-low reset and a 5
+> V supply.
+>=20
+> Signed-off-by: Jizhou Tong <fqwqf@fqwqf.xyz>
 
-Looks correct to me.
+With the changes to the hid-over-spi series that this is based on, can
+this device now go into hid-over-spi.yaml?
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>  .../input/microsoft,romulus13-touchpad.yaml   | 86 +++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/microsoft,rom=
+ulus13-touchpad.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/microsoft,romulus13-=
+touchpad.yaml b/Documentation/devicetree/bindings/input/microsoft,romulus13=
+-touchpad.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..88e4664c56e7fb1c3f9f5949a=
+3ded2f9d7070604
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/microsoft,romulus13-touchpa=
+d.yaml
+> @@ -0,0 +1,86 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/microsoft,romulus13-touchpad.ya=
+ml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Microsoft Surface Laptop 7 13.8-inch QSPI touchpad
+> +
+> +maintainers:
+> +  - Jizhou Tong <fqwqf@fqwqf.xyz>
+> +
+> +description:
+> +  The touchpad on the 13.8-inch Surface Laptop 7 uses the HID SPI v3
+> +  protocol over a quad SPI connection. Its supply and board reset states
+> +  must be controlled during initialization and recovery.
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: microsoft,romulus13-touchpad
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vdd-supply:
+> +    description: Touchpad 5 V supply.
+> +
+> +  spi-max-frequency:
+> +    maximum: 20000000
+> +
+> +  spi-rx-bus-width:
+> +    items:
+> +      - const: 4
+> +
+> +  spi-tx-bus-width:
+> +    items:
+> +      - const: 4
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description: Active-low touchpad reset.
+> +
+
+> +  pinctrl-0: true
+> +
+> +  pinctrl-names:
+> +    items:
+> +      - const: default
+
+Are these even something that needs to be added? I am pretty sure pinctrl
+stuff is allowed in all nodes without being cited explicitly.
+
+Looks okay to me other than these two things.
+
+pw-bot: changes-requested
+
+Thanks,
+Conor.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - vdd-supply
+> +  - spi-rx-bus-width
+> +  - spi-tx-bus-width
+> +  - reset-gpios
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        touchpad@0 {
+> +            compatible =3D "microsoft,romulus13-touchpad";
+> +            reg =3D <0>;
+> +            spi-max-frequency =3D <20000000>;
+> +            spi-rx-bus-width =3D <4>;
+> +            spi-tx-bus-width =3D <4>;
+> +            interrupts-extended =3D <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
+> +            vdd-supply =3D <&vreg_ts_5p0>;
+> +            reset-gpios =3D <&tlmm 120 GPIO_ACTIVE_LOW>;
+> +            pinctrl-0 =3D <&touchpad_reset>;
+> +            pinctrl-names =3D "default";
+> +        };
+> +    };
+> --=20
+> 2.53.0
+>=20
+
+--cgu1zTNp/hBa/EJJ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauI3xgAKCRB4tDGHoIJi
+0htEAQCI6Uy3blZKIhslyzl+1gFTR66W5gqqsXBEaG9nFxFuyQD/a4SHdavDd6H7
+W/++p34eqViyZ+CmO4dV2R3tbHOxOgs=
+=cS+N
+-----END PGP SIGNATURE-----
+
+--cgu1zTNp/hBa/EJJ--

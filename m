@@ -1,68 +1,70 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793198106;
-	b=DZjrS9hlfGJUFOHdS1NTRe62viC77z0MXIL9z9dGcAtAVqYZqRMJQ4OKHp2g0C4aSZAH
-	 VGEMNPCMDYhpkZHE+o9+r3BaynlVjgYM4x81m3QTrEsFaJKUKqbYCinu1qUDpeoNuc1Me
-	 lQRgt0TOR2EOkKs9fmC6qo+v4P9E64oa5wUoW4aPAxYa8HvpbCqn/BZunWne8sijvBc+R
-	 FaM6CVH/owOZkl4cEX6gamABFPFV4RYmU5k8F83RCqPjhRHW+856YWEON64NPv3lu8w/J
-	 ubRwxWci93QQksX4v9N20kufPs9oIdrO6q9HVReiMR6bX0v4cwujuqAw9bP/nYCmvcQ==
+	t=1793205589;
+	b=gC2ccy6FbL24e9Sh5NhJMTAN3PV2Ob9fbWELH3IOAaCtKsr4KQ7fquzTtqlfWsDbqKyk
+	 wvWFHkMt6r5lSrYcrbkKlljUxSdo9AOTNJPy1Xm/aOuLqnSLhcOSXmsqoI8RZAnqlQ9bI
+	 tdekPm3inndgP12Y6zfk6Z2aGdGGpoSZVT+jzrmb+QozmqILYO9M+O+UjrHee3VxdZhBC
+	 0CmVvVqiInqE9QVHAWP3krYZCUw/LzRW55/JgwjphB7QxAgRMTknjnIA0GzLBSngVXPxU
+	 6OQ0JbTl9o20qdjGcxWjyAgpJIFe1F+EYf8QQRlQ4EapIbS5uOwVsnJIRTZ8zz+KbJQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793198106;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=bnNJbpqduWQXQiwHAnkGgrFtEfEJIJp2I+OMZwtwzic=;
-	b=h1TVEpNbtTeCUQl4m2/vGTKA5UQ21qfkcv5vU1LLLM6qV8fJy9816e8DDdYerhiYIiDP
-	 xBO1BQkLMgZxSfCMQ+10eYu8+lzE6a2jQ9RRSvS6ibtQ6OIsFTfjp1hfNKVx/NqqFQucX
-	 pEYz2YGVCjdrqLtDfR/Y17H0xY/UKoUKhRiJqtxBfsWRXShwuJMrWOEFoD+/TfB4U8YgJ
-	 9txqoEyeukgcNDyyx6s8qVHmAvaB+6KVlWCA2l2WJ3znsvGo4vyXe2GblPo6XRA8yDypH
-	 15yCfxHbrhY7o4zXhs1/MkcX/7pDNwEBgC+6UIwnnuUDQ0Su4AnFj6h+SArlogZMSlg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793205589;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:To:Cc:
+	 Subject:In-Reply-To:References:User-Agent:Date:Message-ID:
+	 MIME-Version:Content-Type:X-Last-TLS-Session-Version;
+	bh=d047tn7ZyUAE4CZJF6OwqmbdpCg4ZRFaWnDJv2Xlu+8=;
+	b=GpvfjNrzWJwMoY0BaD53rP38nYFMTs7vWXxtHT3iGwLyUiTD8vaWqJJ90oCCx0CQTVRK
+	 9+6Nkyg1TaMdECoxht7Ak16993uXHJhKMVgD2lNSNg6xrBdLXktFzUT1JXJPNGE7PevxW
+	 c4v6s7Xu2Zo8TmhiH2Nx+11+WZw/4zMwOiyF/ZAzE5wlXJVjU+fhGvEFN2lbhA7RiP5/G
+	 sNCrInB1O5nrMK5ecVVc6exM1pj2fc5B0TkedW1LyTrdeg6XdZ3qxS+Gr3NB2R4vKyt8S
+	 VdXseuS7meXKNqah4knm9o1q5mpGFKQ2TclbK8nnt6rSNIUcix1KXm6harI0/NBow0A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T0YgkuBs;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=qCMpHgry;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB92606A31A;
-	Wed, 28 Oct 2026 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25937606A32D
+	for <linux-spi@vger.kernel.org>; Wed, 28 Oct 2026 16:39:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 25937606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T0YgkuBs
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8817C1F01829;
-	Wed, 28 Oct 2026 14:35:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793198105;
-	bh=bnNJbpqduWQXQiwHAnkGgrFtEfEJIJp2I+OMZwtwzic=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T0YgkuBsdR804jUsWJpj2B/zsCd9n3tZvgdKCNt5UYd9zgMDJ8c0FqB4w27Z+AKP1
-	 rtVTs2lw0z1WnDGaNJRAZ1zRS0LT38h2XwJka46b2ciG/oNWTJDeZWP8jQ4DFWh6zQ
-	 1OFyb+c3OR1cg6moqRPExet86ph3aqIGacSBvtini3BuxgEIV9hyFgQAGYV2J40d/9
-	 A6pFzAToEh4Q7m5QXiBhlaB590ccPrcLdf8O/ScvtwkbPVGXHH0gBUfZ7x6UbAXidD
-	 yqbyXIhEsBxLJfWvG6LbrBxiEdvnaQxJynAWWG0RCYvS/u40CF43TJdS3MY5mQvhZk
-	 eDxqJIIpWecgQ==
-Date: Wed, 28 Oct 2026 14:34:59 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, Kees Cook <kees@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>
-Subject: Re: [PATCH v4 0/7] spi: Add support for panic mem writes
-Message-ID: <15640a01-ac6e-499e-a5f4-37860c701f49@sirena.org.uk>
-References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
- <fdc79c99e3045635841f68c89fec3b9d9e2f7233.camel@bootlin.com>
- <8979e4ad-5209-4fb0-bd3e-95919849d2fa@sirena.org.uk>
- <cf96edf1cba37b775817d4df5f759b10e71c73da.camel@bootlin.com>
- <8c8cf14d-954f-4b33-a0e7-8524b1596845@sirena.org.uk>
- <7f27a8b7624ddbd0f7d32c27fe3f58df48a08c0d.camel@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=qCMpHgry
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 63874C4FED5;
+	Wed, 28 Oct 2026 16:40:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 54A7E60769;
+	Wed, 28 Oct 2026 16:39:45 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C4ABD103290D5;
+	Wed, 28 Oct 2026 17:39:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793205580; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=d047tn7ZyUAE4CZJF6OwqmbdpCg4ZRFaWnDJv2Xlu+8=;
+	b=qCMpHgryog1vBCpYw2HnRskue6gsLgB9uoaHyNvM0YNItQkxRCo1T8oI+12cGb5oxg6MgS
+	EKhcVHkSpJmnXgfq03mwJGrHU6ylLbZNOshuzLyT1eTX31bfoylyj6RjFTeTa91PVNX3uA
+	CFDxOIL63kdYVpkQfQtYyg/55KilXBl/VU1++SiVbKEjHIqY3qphAdZqMYGB+2bC8GGbl/
+	4MOIDH9pwJEfT7Vdg+fVsuEpQIAxgZ3O10KHXWyo4M32AwlQ2xslc/Y1AAmDKDqMFHMV4q
+	LTGC39X7sUZYIBe9gi1HS29LySxXbrl1x144YQZPz+lqRxwlrLlStqOmUUvgtQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Changhuang Liang <changhuang.liang@starfivetech.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Michael Walle
+ <mwalle@kernel.org>,  Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+  Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
+  Vignesh Raghavendra <vigneshr@ti.com>,  linux-spi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 2/5] spi: dw: Add DDR (Dual Data-Rate) support for
+ enhanced SPI mode
+In-Reply-To: <20261028121100.79667-3-changhuang.liang@starfivetech.com>
+	(Changhuang Liang's message of "Wed, 28 Oct 2026 05:10:57 -0700")
+References: <20261028121100.79667-1-changhuang.liang@starfivetech.com>
+	<20261028121100.79667-3-changhuang.liang@starfivetech.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Wed, 28 Oct 2026 17:39:32 +0100
+Message-ID: <87a4nxg4or.fsf@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -72,46 +74,37 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7NfKPAq3m99Mfz6P"
-Content-Disposition: inline
-In-Reply-To: <7f27a8b7624ddbd0f7d32c27fe3f58df48a08c0d.camel@bootlin.com>
-X-Cookie: Pushing 30 is exercise enough.
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
+On 28/10/2026 at 05:10:57 -07, Changhuang Liang <changhuang.liang@starfivetech.com> wrote:
 
---7NfKPAq3m99Mfz6P
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Add support for 1S-xD-xD DDR transfers in the enhanced SPI mode of the
+> DW SPI controller, on controllers that have DW_SPI_CAP_DDR.
+>
+> SPI_CTRLR0.SPI_DDR_EN switches the address, dummy and data phases to
+> DDR all together, and it only applies to the Dual/Quad/Octal frame
+> formats. So in supports_op() only accept DTR operations where the
+> command is sent in STR on one line, the data phase uses two lines or
+> more, and the address and dummy phases are DTR on the data lines.
+> DDR instruction phase (8D-8D-8D) is not supported for now.
+>
+> For DDR transfers the dummy phase takes two bits per clock on each
+> line, so the wait cycles must be halved. Factor the wait cycle
+> calculation into dw_spi_enh_wait_cycles(), so that supports_op() and
+> exec_op() use the same value, and refuse dummy phases that are not a
+> whole number of clock cycles.
+>
+> When DDR is enabled, program the DDR_DRIVE_EDGE register. The
+> recommended TDE value is SCKDV / 4, clamped to SCKDV / 2 - 1 and to
+> the field width. The register is only written when the controller
+> supports DDR.
+>
+> Finally, advertise DTR to the spi-mem layer through a dedicated
+> dw_spi_ddr_mem_caps when the controller has DW_SPI_CAP_DDR.
+>
+> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 
-On Wed, Oct 28, 2026 at 02:59:03PM +0100, Paul Cercueil wrote:
-> Le mercredi 28 octobre 2026 =E0 13:25 +0000, Mark Brown a =E9crit=A0:
-> > On Wed, Oct 28, 2026 at 02:15:00PM +0100, Paul Cercueil wrote:
+Looks correct to me.
 
-> > > Your name is not Mark? Or where did I misspell it?
-
-> > You added a random @ to it.
-
-> I do that when addressing people in emails, I thought it was universally
-> understood. I'll refrain from doing that from now on.
-
-That's not a thing with email, it's something that some services use to
-format usernames.  It just makes it harder to read due to the
-misspelling.
-
---7NfKPAq3m99Mfz6P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmriCBMACgkQJNaLcl1U
-h9BK6gf8DMFrIAc6ZaxY5bDWI3hF9E+0urLGgv3mbK0FYpZDofbv+dUr89BC74zv
-vdbtYfCaUxYNEVwkhZwUZIDiVDuII6d1LQtzMPOBz1OyBNTzaZRHN/UAeRXskMFw
-FeGZ5fxTjlBLQY22jQsJrG9RnoUj89Zf+gqHQMKW5qwo8Ryu+8ES/93C6TmVxdvt
-7IT2FzX/miZxFQ11GFG7cKNBsLUJ5F1oiRUE90KyoMv1B7NsKu9mj+ruoxvDWE1r
-/jx4zQ5p8EM4GeWR3v9LXVjEKxIuJ2psj2wYiIJXdtL9AZrfgNUtoHfTbmB0htDA
-2fuPw3hXq1tep0hGX/m8LicZTqGCtw==
-=rvPu
------END PGP SIGNATURE-----
-
---7NfKPAq3m99Mfz6P--
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>

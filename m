@@ -1,64 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793192368;
-	b=V1FIdIiX1dIS6B03HphKM5ZTGOXcxBM0SLTTWSEXmz/dLH7w+i4dgeCbJctr7wFpplAU
-	 MLuOpqCluKT+TF0RB82pTSbjK+fKDrkJpEleHfF7pUWy1Yb3zwupARdpzr6hiWP7eykgX
-	 PXafEr0gQsnPKRlZ3AjJmi+Nx+rBHKmAqkXO+4OJGlKeVrswdnpB5XgXaABaePOm4FB5r
-	 nQ8Ezj1/ygf66avdCwY1jzG4MazSVI2ydfuKT5sLT275+9zaABo6PrA6Iv7r3pHgehrkJ
-	 f3Hz/HuTEB1vpkh8829PnRpbr00DO/JjNSRoiFKz0RJ9fw480sSAQHRw6PdnL3ZKoxA==
+	t=1793192423;
+	b=xzOXpWHMQvKfRTgo/+kW/zdMwJFc52mqdayPFT40+qOmZxT6JQCR/+8fWW3Bx9SRbrGo
+	 T7NjEle5IjP/2gsguSzFnT712piCg16MvqMf1MQ29oEP4hcH8OmflmS9uLnAGitSbzvFw
+	 V5eeeReoLFjQ1rc/CuUtwbaJ+xMSPJoGVYSRqoEV3F7bRisuwfVVcoPEvRPsy5DksmOIZ
+	 9EvOnvXCYTCciGM5GDLR+Y6qYeNRjQXaF8a16m2DoblrXa6R9KUbohrLYbGu0NEzUXIDK
+	 WJyaUc3e62cHZ0byATAYytbBCXq7onMbPB4/u0sGTKeO6VOfn57rNV5tcadgZpEbcGw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793192368;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=7Ukhz+foZbHEWrgGjP8lji/Ry9Af0ETpCcrE+aHg+Uw=;
-	b=bAtI8oUFmJFLt59A8tvOwVmroZ+OIMI6AU1e9dzBWcv/k/iA1QhBmJm8iYME397LNaFT
-	 sxRirSk1gbmnh61gb7SmswDJi33Yi0b2vpn4WDFvvGDSn3wNJhS0tKXu/ySL48trALYxJ
-	 Kn+kZLH80wMtfYIdQqsaEp+gqETIJhqq4Sx6FzbOezzzch8QKAc6UmOuslOtbwm/qtAHi
-	 LUUglz85EDTdarJwmqARfZykichvY2LV/F93bZ4qFqMC2LdrT0jlNoRssZFbGPJfgRAjt
-	 lHT9Jo64PDn++8czhMgYMhD2M9gTzf1h1WFdyTa6yPjT2TRuemJGRjwm9ZCiGrKXeGg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793192423;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=MnorBW/YgblNELByi/047/IKshLNueNEhRtnYlXwDU8=;
+	b=HfC7RN6zUrstmbM8HSTs9X6przaQMAick4aStp/wS47ASKBrP/YWnwsyTEje5Pp6+oNv
+	 UVbdBMzK3DMk/s5g7xtgrzW2gM7UxaRtsD74LuQgdlFjJXGvljdCb72xMSQP9eIk9em3X
+	 42cbAxLO39SrDS8yAQxgrTdcAflt87uRuWeEv0NGlwq/rMx9MaXGeKxvIneyygMVTFSir
+	 p5uGqqc+hyu9yT/TeH0J7vvzNs1Z3cjKJYJVGnUTx26hjEBolnuXXmuEO4DCWtwDi/5jF
+	 LDB/ze/bANOwmz5gMfDMLilOixQd5Mc4PA4dD2h9tmCPWbzldfL7ZrKUlAN8f7xqQyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="hod/CvcS";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F4diZIrw;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B15D606A320;
-	Wed, 28 Oct 2026 12:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CFB606A322
+	for <linux-spi@vger.kernel.org>; Wed, 28 Oct 2026 13:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hod/CvcS
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDF41F01828;
-	Wed, 28 Oct 2026 12:59:24 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F4diZIrw
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B121F031E5;
+	Wed, 28 Oct 2026 13:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793192367;
-	bh=7Ukhz+foZbHEWrgGjP8lji/Ry9Af0ETpCcrE+aHg+Uw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hod/CvcSGKGYWD7DlrMUfQbAQ5i6F6ec+swq+EgZt0PCWFrl4yOFUwI4CfFCfSYvq
-	 IIhwCOrBRQisOzfUtWt6dLP540Hyk0zhrmjZQrlbl2kd+9u5IRXCOsXg9IqNVVZQYb
-	 9UupWr6FNl+VjykdMdaqZJIh9SYeuJaDNaUWIuFNuDxxNPXsb2lGf5DhAschHBmaeT
-	 WSHwEWM8FZ0EO5nDLbFq1anGvhZOOi9wqy4jM2TReYqNXUwrPSjC6SK6B0AfbPq8yI
-	 MqHAKBVFnCQWWu+ka1ynionzWB6+5i9nDvyVA8YFx6nzc3agIlsFiMxWgFC2icaRyR
-	 SQbnl+kt4pWVw==
-Date: Wed, 28 Oct 2026 12:59:21 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, Kees Cook <kees@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>
-Subject: Re: [PATCH v4 0/7] spi: Add support for panic mem writes
-Message-ID: <8979e4ad-5209-4fb0-bd3e-95919849d2fa@sirena.org.uk>
-References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
- <fdc79c99e3045635841f68c89fec3b9d9e2f7233.camel@bootlin.com>
+	s=k20260515; t=1793192423;
+	bh=MnorBW/YgblNELByi/047/IKshLNueNEhRtnYlXwDU8=;
+	h=Subject:From:Date:To;
+	b=F4diZIrwvfT8HkqglNc3YK7jdBqRZ9zz2kw9ISANMh1ivUpwcrL/TKR0W6PtdVq56
+	 6pCi1xAyTfOUNg9KmvYLH61HPYWYc0pYksZnmIQkn9l5VugaLw7FeRZA+s7L/gY/YG
+	 hNMFnQAomAm9ayBSL+K5s4LIQ20VTgZjM3MQssTggANJHozgeNOSNaXbDPD2q11r4v
+	 tW3QCvfg2WrIUXFmJf3DWZbsASa9c/CVOE8di6MzY1i7PW7obuyRALrP36DtUEMxcy
+	 17tDhSBu1oVRZW5w+xaRY/kNuTdf7LxXMauRZ0IeZSQi4xE+1gRYr8stisnyl8aPXM
+	 nb16IhJHV281A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0747B3AAA6E2;
+	Wed, 28 Oct 2026 13:00:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -68,52 +52,26 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="OsA/JmV6B8s4J2aS"
-Content-Disposition: inline
-In-Reply-To: <fdc79c99e3045635841f68c89fec3b9d9e2f7233.camel@bootlin.com>
-X-Cookie: Pushing 30 is exercise enough.
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork housekeeping for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179319242164.704905.10010245070474287034.git-patchwork-housekeeping@kernel.org>
+Date: Wed, 28 Oct 2026 13:00:21 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
+
+Latest series: [v2] Add DDR (Dual Data-Rate) support for DW SPI controller (2026-10-28T12:10:55)
+  Superseding: [v1] Add DDR (Dual Data-Rate) support for DW SPI controller (2026-10-22T10:26:14):
+    [v1,1/4] spi: dw: Add DDR (Dual Data-Rate) support for enhanced SPI mode
+    [v1,2/4] mtd: spi-nor: Support mixed 1S-xD-xD DTR protocols in spi_nor_spimem_setup_op()
+    [v1,3/4] mtd: spi-nor: debugfs: Correct DTR protocol names for 1S-xD-xD modes
+    [v1,4/4] mtd: spi-nor: macronix: Add 1-4-4 DTR read support for MX66L1G45G
+
+Checked 197 series in 25.20 seconds.
+This project currently has 16849 active patches.
 
 
---OsA/JmV6B8s4J2aS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-On Wed, Oct 28, 2026 at 11:42:33AM +0100, Paul Cercueil wrote:
->=20
-> I have a second patchset for spi-cadence-xspi pending (unrelated to this =
-one)
-> that happens to have some Fixes: tags, and those fixes conflict slightly =
-with
-> the changes here.
-
-> I'm thinking that in order to make it easier to backport those fixes to o=
-lder
-> kernels, my other patchset should be merged first. So I guess I'll v5 thi=
-s one
-> with a rebase once the other one is in.
-
-I have no idea what that other patch set is, sorry.
-
-> @Mark, do you want me to wait for -rc1 to send it to you?
-
-Please resend any new feature work after -rc1.  Please also do not
-misspell my name.
-
---OsA/JmV6B8s4J2aS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrh8agACgkQJNaLcl1U
-h9Ag0Af+J7jCK4vlB9pOTozhxgQrWlUhmjH9P6zCrUmUF1SImas2es1OELwnFMfK
-kDvcvJKBdWMSZACbwCjP8+EBWY7bV9axlwuxMDx2DIuBQd4dDW7tHpIZgFqVeo0Z
-RPkv0RS/kuOOb7upFxyYo4psGACYAS2GjGvbqTFysbG/gag9bEUb+utfUeWlX0xL
-k5a+RzFVAtJi6wq+sk0t6pRlAWPugAJcMe084lDmKgFfMCGUDV8B6fL8Pw1tF7c6
-/kWfzjPva9EJeKBedhraTEpZvIc45pdAfit0jKZoJDNPUPtOi9W8B+8HjPbfzF0+
-6SNPZd4HkQV8rXHNVy/+C5JziS82Dg==
-=IIp6
------END PGP SIGNATURE-----
-
---OsA/JmV6B8s4J2aS--

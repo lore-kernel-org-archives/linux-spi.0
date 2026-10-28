@@ -1,58 +1,75 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793133786;
-	b=vad87G1Z64d+YGaePVg4OBaxgXRLzp4OdP1y+KTKO3qep9Ojy7hMh3e6QPTVpG5XQiDE
-	 SnJyM/EmAOe/tVhHrWba+YTSyI6+6P39DAwzB35nQfAk2PNy0W8x/W90oEuCyFnjsCmEu
-	 EVEnOUrQYzrRtLSE7g+Wb0Q4eJzKVXfbE2UmrRhq6JSai9006X0a5DbXHAoK9x93M5ntB
-	 +Hvfq54zCfq8zAia5ScmfRGfAvuXYmtWRMEugnj8+2lL0y/Wjk5cA7XSl9aySlH/YlZPt
-	 ARAbmAKIzwUfnaPTWRD9DGZXuA5qWp5dxPQEnAwd3wzxUzvVnZM/yFuJmW/FCfIwo7A==
+	t=1793184168;
+	b=iXlLsU6eon0Ud3cVOGtLZI2YBq7PZP3LljGrTGDFnTHMKVuiOh+Pp1Tj3REnPD2HOHS+
+	 MyrpckpNku7WWalc1oLOqv2undWuzXxpns93M6dI3df9uhYdttUqmyFqhCuHsMzP2YM99
+	 zXHovue4duWkq/crU96n6DDZQdRsLnLFmPzD8Vb7tSxTD26BsIqwFjlgFEjOKwV86GzT6
+	 MtB159kzXl7ohM8cZw2Yju9e5tr9vV0hhVSTnU/TDae/5360vrKWIjzLGdqK2Ya0sPlFD
+	 6y/l6MsKa7UiYEDYQ+mpargQJqJB3KCIseXn1lnHOMzWt2xnHHXvxIZNS8Uljo6xHdw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793133786;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=f+BR3OM0F+HKfZEptGCURxUQqOvEQP7ahROv0C46Za4=;
-	b=tL4cpQfnEm/G55k2ILWg4Y+VKeHYHb8MlxIvP7qD/NvF8W+/DxunNUOFUtlBTCbiHVDo
-	 myJg/Ql2Cfc5VbG37piNTtRAJwDofnqSofgzCFsmAaqZJmK+LQRmceyMhMk9hkasL7nMw
-	 CfuEwhmBXKJKu5pBaSRvuosDNBLP+UxDXRd9iU4kzsRp2hxlLl8zEuvuxowL4OS0z1WCV
-	 qZer+y6+jD1ccQ/EaoN0oa4Kn2ri3V1u7jKkX/lRcKfFEnPnUyM0s4beXTaxVcxA1bUpk
-	 Z8qMXC7be1Y0zdtXUZlcUSrzSSip2WDmOnJtL9aOj/e6IdhnGhLOJgMefpb4P8jhFBA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793184168;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:Message-ID:
+	 Subject:From:To:Cc:Date:In-Reply-To:References:Content-Type:
+	 Content-Transfer-Encoding:User-Agent:MIME-Version:
+	 X-Last-TLS-Session-Version;
+	bh=G7SGsnjmO2AtGa1YhQju9ah0Ewiw5mAJClKeUYxhBsU=;
+	b=bfeMWEqx050mykSlAu/zzWK8Vl3NOoRZd0hiJ61Nh96SkQv9tZKOWha618wUXVHLfCCL
+	 x78hDUTWoWBRzKgwg6N10uzgKKLbGPNb3A+m363Z8VueBcBHwXaOa4iEsKHTfZ0k7sDwY
+	 p/2XR/qBei/XIlzOInm3F9w3Q/15pAkwaEoRC36T+FU/dHhHe617eWKwx2EMbPjHq0L3L
+	 PZxBjDYnsXgEKe6SokMxx7ODvZfw6ALCeAyns4tSROBjy9q4pnoWr/SfGOTgtSAx/rBK4
+	 h9UX0MbOuHVY7B8iGeoNqsJKso8Ne2kbxBSIbcH3guMbQVBxU9rVzBI2UzCJvecPT1w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VlwwTbvw;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f4gB9JfG;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC31606A31E;
-	Tue, 27 Oct 2026 20:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F87606A325;
+	Wed, 28 Oct 2026 10:42:45 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D8F87606A325
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VlwwTbvw
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DCF1F01825;
-	Tue, 27 Oct 2026 20:43:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793133785;
-	bh=f+BR3OM0F+HKfZEptGCURxUQqOvEQP7ahROv0C46Za4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VlwwTbvwhxRU0UFrnu3m/RTRfm6xYnQQ9H2mIUFOMvIfBtk2gJBKkcABTFJub/8FM
-	 ZGe/3h1D0UkVAj+qwRU/ATs2TE9A7CeTGxqxF/hdSBhNTWj7pNEbQ7sv4H/5ATipB3
-	 D8EjN+A+mvfxX8wshDWMmSaOPTemRbUfOSXtm37rh0+W4wFP5xZJl9EtqQ7sbGxfR3
-	 e7vmEY1yrG3oUbZ23c00sV0jXembhzsFixqU9q8U5L1til6ecfrtZ4rSMbEQKlaCBw
-	 qMcY97lQnCpGncGwt83BG7D7L8qYGWSUvINZxrO8ZnRJRzS60czEtG7VTawhjgsATK
-	 WTljcChfNdWhA==
-Date: Tue, 27 Oct 2026 20:43:00 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux@analog.com, broonie@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	Michael.Hennerich@analog.com, nuno.sa@analog.com,
-	dlechner@baylibre.com, andriy.shevchenko@intel.com
-Subject: Re: [PATCH v4 1/9] spi: dt-bindings: Add spi-cs-composite property
-Message-ID: <20261027-colonize-primer-f994b88171a6@spud>
-References: <cover.1792435248.git.Jonathan.Santos@analog.com>
- <e9308680e7b45ecf9ef2b6b2a752ffdd4d23b80c.1792435248.git.Jonathan.Santos@analog.com>
- <20261026020003.3f3fbe86@jic23-hlaptop>
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=f4gB9JfG
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 277B84E412DD;
+	Wed, 28 Oct 2026 10:42:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D854560769;
+	Wed, 28 Oct 2026 10:42:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4BB39103290AC;
+	Wed, 28 Oct 2026 11:42:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793184162; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=G7SGsnjmO2AtGa1YhQju9ah0Ewiw5mAJClKeUYxhBsU=;
+	b=f4gB9JfGl2MsxLy3brpGXg+G5YiC8friNAVRIR/pW0cXoVvzpMz9F+2Mx75zlxUblt3kwR
+	RILbkCBaOb/DYo01a7OLZZXjoaFBgDpZhvhVAhwAcdF4lGFadI4Wcsg6VynphzAgQRYCE+
+	52aiaEBTHrRUtFV3mA0CueMUb90PvOPX4Yt2Cm0rq0w9T6bx5RIe7zzPGyZ49rRK8laPJ5
+	15ejyqmkRsTG0uLEKPqlNSRil6lZpLtF2kMzPfIX+Haj4Z7VKdPrKpQ89H1WJWVzCuHX2d
+	aSDX8mxdhwJ0tjURlxDwH3CDLJv8UzO3SKgywCOdeOHrR9hJUXgv4KktJcFK0Q==
+Message-ID: <fdc79c99e3045635841f68c89fec3b9d9e2f7233.camel@bootlin.com>
+Subject: Re: [PATCH v4 0/7] spi: Add support for panic mem writes
+From: Paul Cercueil <paul.cercueil@bootlin.com>
+To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>,
+  Takahiro Kuwano <takahiro.kuwano@infineon.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Richard Weinberger	 <richard@nod.at>, Vignesh
+ Raghavendra <vigneshr@ti.com>, Mark Brown	 <broonie@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, "Guilherme
+ G . Piccoli" <gpiccoli@igalia.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, 	linux-mtd@lists.infradead.org,
+ linux-kernel@vger.kernel.org, 	linux-spi@vger.kernel.org, Bharat Bhushan
+ <bbhushan2@marvell.com>, Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+ Tanmay Jagdale <tanmay@marvell.com>
+Date: Wed, 28 Oct 2026 11:42:33 +0100
+In-Reply-To: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -62,133 +79,74 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8RvJR8qKFINmKJHV"
-Content-Disposition: inline
-In-Reply-To: <20261026020003.3f3fbe86@jic23-hlaptop>
+X-Last-TLS-Session-Version: TLSv1.3
 
---8RvJR8qKFINmKJHV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Mon, Oct 26, 2026 at 02:00:03AM +0000, Jonathan Cameron wrote:
-> On Tue, 20 Oct 2026 22:56:41 -0300
-> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
->=20
-> > Some setups combine several SPI devices into one logical device, with
-> > each chip on its own CS line. All of those CS lines must be asserted at
-> > the same time, so that one transfer reaches every chip.
-> >=20
-> > Add the 'spi-cs-composite' boolean property. When it is set, every chip
-> > select listed in 'reg' is asserted together on each transfer.
->=20
-> To me it feels inevitable that we will see a device / combination of
-> devices that want groups of CS lines together and others independent.
->=20
-> Seems less likely we'll see more than one set of composite entrees.
-> Maybe this should be an array of values that match with specific
-> entrees in reg?
->=20
-> I'm not sure though.  Conor, Kryzsztof or Rob, any thoughts on this
-> or similar things that have arisen elsewhere?
+I have a second patchset for spi-cadence-xspi pending (unrelated to this on=
+e)
+that happens to have some Fixes: tags, and those fixes conflict slightly wi=
+th
+the changes here.
 
-Why does the property actually exist in the first place? Does the device
-driver not know how each CS should be treated?
+I'm thinking that in order to make it easier to backport those fixes to old=
+er
+kernels, my other patchset should be merged first. So I guess I'll v5 this =
+one
+with a rebase once the other one is in.
 
->=20
-> The most general case would (subject to it not working) smell like
->=20
-> reg =3D < <0x1 0x4 0x5> <0x2> >
->=20
-> Where intent is that 1 4 and 5 are meant to switch together and
-> 2 is separate.
-
-I would expect that for this kind of device, the driver should know that
-the first 3 CS are switched together and the 4th is not. I'm not really
-sure what the internal representation should be, because if someone can
-make a device like this, they could surely also make a device where (to
-borrow your format) it behaves like
-
-| reg =3D < <0x1 0x4> <0x5 0x2> >
-
-and so on. But if those devices don't actually exist at the moment, and
-everything is either all together or all seperate, the API for this
-stuff in the SPI core doesn't have to solve that until a device actually
-shows up.
-
-Worst case is something where there's a variable grouping of chip
-selects, e.g.
-
-| reg =3D < <0x1 0x4 0x5> <0x2> >
-
-or
-
-| reg =3D < <0x1 0x4> <0x2> >
-
-but maybe if that happens the thing to do is permit reg-names for that
-device, and again store the relationships in the driver rather than
-try to convey it via DT.
+@Mark, do you want me to wait for -rc1 to send it to you?
 
 Cheers,
-Conor.
+-Paul
 
+Le vendredi 16 octobre 2026 =C3=A0 12:29 +0200, Paul Cercueil a =C3=A9crit=
+=C2=A0:
+> Hi,
 >=20
-> How to do lookup on something like this is another question.
+> Here is the v4 of my patchset that updates the MTD spi-nor code as well
+> as the spi-mem code, to add support for panic mem writes to a memory
+> partition configured as pstore.
 >=20
-> Jonathan
+> This revision adds a workaround in mtd/spi-nor to avoid a call to
+> kmalloc(), and fixes a kernel doc mismatch.
 >=20
+> Changelog:
 >=20
-> >=20
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---
-> > Changes in v4:
-> > * New patch. This has been included because without an explicit propert=
-y,
-> >   every device with more than one 'reg' entry would have all its chip
-> >   selects asserted together. That breaks devices that use ancillary
-> >   devices for the extra CS lines, so the composite behavior is now opt-=
-in.
-> > ---
-> >  .../devicetree/bindings/spi/spi-peripheral-props.yaml     | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props=
-=2Eyaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > index 4894196c8f9c..456cb9095632 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > @@ -60,6 +60,14 @@ properties:
-> >        Delay in nanoseconds to be introduced by the controller after CS=
- is
-> >        de-asserted.
-> > =20
-> > +  spi-cs-composite:
-> > +    description: Some SPI devices can be aggregated into a single logi=
-cal
-> > +      device by asserting all their chip selects simultaneously. When =
-this
-> > +      property is present, all chip selects listed in the 'reg' proper=
-ty are
-> > +      asserted together on every transfer, treating the group as one c=
-omposite
-> > +      device.
-> > +    type: boolean
-> > +
-> >    spi-rx-bus-width:
-> >      description:
-> >        Bus width to the SPI bus used for read transfers.
+> =C2=A0- [2/7]:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - Also update kernel doc for n=
+ew 'timeout_ms' parameter
 >=20
-
---8RvJR8qKFINmKJHV
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauEM1AAKCRB4tDGHoIJi
-0taJAQDxWUdJTEyrBBQwwB+5pQJE1sGp/SQvIm4Rog0nramvvQD7Bl95EY8505PG
-qnhSurVHW18xxr9nxFNb2pEmo9W7uAA=
-=TzEb
------END PGP SIGNATURE-----
-
---8RvJR8qKFINmKJHV--
+> =C2=A0- [3/7]:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - kmalloc() is not safe in pan=
+ic context; reuse boucebuf instead
+>=20
+> =C2=A0- Patch [1/7] and 4->7 unchanged since v3.
+>=20
+> Cheers,
+> -Paul
+>=20
+> Tanmay Jagdale (7):
+> =C2=A0 spi: spi-mem: Add support for panic mem writes
+> =C2=A0 mtd: spi-nor: Wait for NOR ready with poll_timeout_us()
+> =C2=A0 mtd: spi-nor: Add support for panic writes
+> =C2=A0 spi: cadence-xspi: Clear "SDMA ready" IRQ flag after polling
+> =C2=A0 spi: cadence-xspi: Add irq-less support
+> =C2=A0 spi: cadence-xspi: Add support for panic writes
+> =C2=A0 spi: dt-bindings: cadence: Make XSPI's IRQ line optional
+>=20
+> =C2=A0.../devicetree/bindings/spi/cdns,xspi.yaml=C2=A0=C2=A0=C2=A0 |=C2=
+=A0=C2=A0 1 -
+> =C2=A0drivers/mtd/spi-nor/core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 128 ++++++++++++++----
+> =C2=A0drivers/spi/spi-cadence-xspi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 114 +++++++++-----=
+--
+> =C2=A0drivers/spi/spi-mem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 42 +++++-
+> =C2=A0include/linux/spi/spi-mem.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0=C2=A0 5 +
+> =C2=A05 files changed, 209 insertions(+), 81 deletions(-)

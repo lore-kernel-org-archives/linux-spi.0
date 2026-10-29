@@ -1,93 +1,50 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793268801;
-	b=u7ReTCepkQ9BqnYFzzyJyCbgzrAT5ACumsOYtwey0QQaZoyocWwMLd2uCzrrQl3e2N2s
-	 g8qjfxlbyp/qDdUUPhcT3I9A2v9nO8FX0M5sMTLiPBqDN7jEaccFzVFIU1WC76ji8E5Hk
-	 zv+OFrH34AjuX7nDsojPJ8iRpWf9uGZzH1jguG4EgeGoGMPsmACWYIeU4UePeGWKgnJze
-	 afZ2bJdXw+0dQqDKrHb1sO72Umx2umTAtfTegRnhDex+zjtcYlbyUEgKAZB0gMbG1NhPp
-	 hICZXfaCwc56zKkapfxfqg2ClM0wAe0om4VmaBuo0yHC9SwUlLXMqL8HZtbvY17p0bA==
+	t=1793271235;
+	b=nwZg59mCCQYC9JiwXvUo9NNW2bzxLwhjk4aXt+QTg/nNvahg7FJU9HxsSXsiRYrpoBrr
+	 sdU9eiuai9qWy0zbuX7qEVl+TXGeWjo4ZHIMdAQ9i68HhRyObXPmzuCHj6myjRxEH0WAW
+	 YbG2WkVZo+n2wo2H74MoG8T1b/ywJjt9ymoDSaxxj0Ww5kpsc7ePcqvlxFuIAApP79aQk
+	 rAA6SEBC3UCGy2ME/iZZe1iEtur8ioZ/qduzHkmwdJgjrwe8WTuiSFDGcrgKHifGzemK8
+	 iOjpIfdeL9I4Abrs5p87QzP9WMmVCzNDVNZc04nTMZ0LdhCVGTV0zvAqVbObz4aEAuQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793268801;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:X-Mimecast-Spam-Score:X-Mimecast-MFC-PROC-ID:
-	 X-Mimecast-Originator:Content-Type:Content-Disposition;
-	bh=0F6MwB09+OApBTQzzcClsM6qT4Lh0F0TCX0d9TCv1AI=;
-	b=10qx8DpHUHKe70AFWwLG3g3x1aO4l53BIcNztzVXOHmLsVRlZjTBHOE2LU1Fb8dQ1xMt
-	 ZkDs+vvNDzpwn/LngL8324yIOhEqMYZDTIC6LbGjMYdkeSfq3H7Jjz58W1irUi0CAUvTI
-	 DlEPeQOh1osCetjGTGTYrb6GJRmSpJdLfvg/B2BqALHzhElUC3WdgHjYxFUZD8J//6LOs
-	 9YRjpVBxCOyGWAj3Umbur9pVV4nlNkcdiUhvZZ29zgbe536M33XEDXKAvULhFu3jpgJ2J
-	 WJwA3Dfki/1S15mv5+xZ+BUaXMjGaAJlZ1tpIz9LcIm9uXyvBgDl0o6/P//nvjAp9HA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793271235;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=65gOLGKNSzKKaUZM7WsX+Cz3ZVYsko2nYRWUmyLDTv4=;
+	b=JFTx35ytK34g5oxyCB2oSTO5OeuFpdzlqg3avgteAxcLp+MiU8O5Ui3p9CPFy48j/lBM
+	 UhM2f2b+pQKGQEikddyt3linEm7oyPc7/l9TMW89OUulitykrwF62DcXzBzG5N6Za5ox3
+	 7rF9oqZpvMkNExdQfxaqYfmtYKaHaSscvfiWQuRTjubFpyCLQHbVmr6m+s+EnIJfLF1aT
+	 xHoPRXL4hIM63xLlzp2ayUbwPelpy/aGYqzeyjQh1I0uDzIbuVFgtJDDMSCX3Unej+tIJ
+	 m3tQaAM2NHc0GekVDDZrfeY2R6zx2uPMUkXjX6R6mdO+kUmAP1V27yVBfgJXfkhqF5w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b="G/XQfEtB";
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmAM52+O;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A768606A322
-	for <linux-spi@vger.kernel.org>; Thu, 29 Oct 2026 10:13:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A768606A322
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFED606A31C;
+	Thu, 29 Oct 2026 10:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=G/XQfEtB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793268799;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0F6MwB09+OApBTQzzcClsM6qT4Lh0F0TCX0d9TCv1AI=;
-	b=G/XQfEtBXkndTUnk0epYFPFVwqNLSE5e5gBKnovUGus0JxgrbOoElfR1NenERKnqGOe94W
-	yr/YZEo9CiPkZNDfnaQq5qrMpp5Oa6p6M0hwIEvKaXZ5ksLlZZTH+zYKKucZrvibuBkXSO
-	5aXESFOquZyuVSTSSS1Ym2POBXfik/w=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-A_bnDYVLNqiHGv6dQ2u2Kw-1; Thu, 29 Oct 2026 06:13:18 -0400
-X-MC-Unique: A_bnDYVLNqiHGv6dQ2u2Kw-1
-X-Mimecast-MFC-AGG-ID: A_bnDYVLNqiHGv6dQ2u2Kw_1793268797
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b027578a4so1537589f8f.3
-        for <linux-spi@vger.kernel.org>; Thu, 29 Oct 2026 03:13:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793268797; x=1793873597;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0F6MwB09+OApBTQzzcClsM6qT4Lh0F0TCX0d9TCv1AI=;
-        b=F2E2pHrotevTcy22iQXBEBZXaf7WVHKar3Akrdwpa/GO+YOfW36CpuUYJre7GP2+Vr
-         ZfguplSRPN7VaMkJG4xjeQLkZ9FQGeDeJf6XCUh/090Uzb1btZCJgJRGOCP3gppHf7rh
-         F8Ua7QYD6AzTHkFG2rHkNHRlNkbdtK5y+SqOZ3ZmLQG9yHNibUExBq2ID34RHE4l8i8G
-         u7dz+3tMcObg9R61gW4s9Oe+9fRwCPJZGFQQaTFHBewmTwyRKvtYha0BpFQS/OffRhee
-         4Y/R8BulFaZv4knU5wKzH7KtG2yF0YaqTO8jCTMbgZ1FEkVsIhjWImqukxItBleNof3k
-         1iKQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxeUstv4zeFPKC6/EbDOUGo43lUbn9V4CZ+ENJMaFzV830WkDdSA8cAvWjMkdrj0G1IqxsHDDBW1GE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLW4RA/OoIuTK9oOONnsMqcxGhEc+ks4qAPHttOjAFwQDAfhLwN
-	fITJvHEBvihyskp/uyLrR162i1rIrFORYJMPVlrAE8eKDDKwyOTTA4EhH/NzslnjpRktijBQSPg
-	fHO0rLwRi1uxkrJ/FGY2QT+fTRW69g8xYAOIYj+htnYC3ETHfWzZeekG/2xpdcw==
-X-Gm-Gg: AYBFou2SyV2UzlUKOksOPckovqDg4hdoJOZa/Oka6687NHlocFoLoYseJ30ZvzPUNEG
-	msctTx9RfZcGKkcgdIF5lhBrWtaD4H9RTYoIqfQotfKobn0sTrUL1YRyuPbXOnS4XzrHtpz+Rez
-	OzVeZYADxHQAMk4WbvJnSkMmp+1J4hKsF4vwXr9jeJC9GAiwlWA1gKDOcVTsu2pQzl6vT/XAGJY
-	vZADfDjhqbeWJFVO9yidYJg4FJaAW+xacCy505hmiCN5Ag3L3Qn0kdm9NcPBitS390uydFD7P1d
-	56TyFEdJaNrovzEsVaWUk5J3CJPM2ccoHEXgyrQ1t3+bej1QmeE+IR3bpU3S+NxUqMoDR74GeiL
-	EoqPwHHv3EttxPlEdUl0TG56/69dT9Ci3ZuUmEqvk4yI=
-X-Received: by 2002:a5d:64ee:0:b0:48e:6309:cefd with SMTP id ffacd0b85a97d-48e6309d0fbmr6302493f8f.46.1793268796694;
-        Thu, 29 Oct 2026 03:13:16 -0700 (PDT)
-X-Received: by 2002:a5d:64ee:0:b0:48e:6309:cefd with SMTP id ffacd0b85a97d-48e6309d0fbmr6302426f8f.46.1793268795997;
-        Thu, 29 Oct 2026 03:13:15 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:1501:b100:9ea2:fd21:b361:8dab])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48e3ecd3555sm33021365f8f.42.2026.10.29.03.13.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Oct 2026 03:13:15 -0700 (PDT)
-Date: Thu, 29 Oct 2026 06:13:12 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nmAM52+O
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D341F01825;
+	Thu, 29 Oct 2026 10:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793271235;
+	bh=65gOLGKNSzKKaUZM7WsX+Cz3ZVYsko2nYRWUmyLDTv4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nmAM52+O+/DQvV6qkfMbnKqpeCbeloN1B45BYEcdPqP7r9ogRIwIyh9HC2n4g9Ee5
+	 yPguFhqMfcBmrxl8dw7Jg/gvwVDhauqd5rbALrjOwJIcaJWrxSnCLYgk5YSmjDxz8k
+	 aTi1RJIJ7d3c8lYZ4n2YeWBvXg+mQZhRDVb+ci8r6l1guuDZPc0isEef1eAv5rr3cp
+	 hhb1lB5OrfW18sjIwrVLRvxgyr86gyaJnTcRNc6ZKeCYXAys0ee9ecKSYl7/nEhfuc
+	 q4Z+Z8yE1HsJGaLXyfc5xYsKiUgnvFQEfTgBNASSokl+KIx5DHn0yxBYo/3THswq1g
+	 Xrd1j4oukU63g==
+Date: Thu, 29 Oct 2026 10:53:49 +0000
+From: Mark Brown <broonie@kernel.org>
 To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Francesco Valla <francesco@valla.it>, Mark Brown <broonie@kernel.org>,
+Cc: Francesco Valla <francesco@valla.it>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -99,11 +56,11 @@ Cc: Francesco Valla <francesco@valla.it>, Mark Brown <broonie@kernel.org>,
 	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] MAINTAINERS: add Francesco as spi-virtio reviewer
-Message-ID: <20261029061258-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: spi: add spi-virtio
+Message-ID: <1449d4cf-9e9d-4fe4-a904-15d51ba9448d@sirena.org.uk>
 References: <20261027-spi-virtio-bindings-v2-0-67927b24b9d4@valla.it>
- <20261027-spi-virtio-bindings-v2-2-67927b24b9d4@valla.it>
- <20261029-lucky-vanilla-spider-f9cefd@quoll>
+ <20261027-spi-virtio-bindings-v2-1-67927b24b9d4@valla.it>
+ <20261029-enigmatic-honeybee-of-dignity-bee01f@quoll>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -113,38 +70,37 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20261029-lucky-vanilla-spider-f9cefd@quoll>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GDWubpf0OPwyB_p-i8cawJgtWor3zLnYtnUscow2Jd0_1793268797
-X-Mimecast-Originator: redhat.com
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xh4GpOXgVUQqvuT8"
+Content-Disposition: inline
+In-Reply-To: <20261029-enigmatic-honeybee-of-dignity-bee01f@quoll>
+X-Cookie: I have a TINY BOWL in my HEAD
+
+
+--xh4GpOXgVUQqvuT8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Oct 29, 2026 at 09:26:00AM +0100, Krzysztof Kozlowski wrote:
-> On Tue, Oct 27, 2026 at 08:26:34AM +0100, Francesco Valla wrote:
-> > Add myself as reviewer for spi-virtio, following the introduction of the
-> > devicetree bindings for it.
-> > 
-> > Signed-off-by: Francesco Valla <francesco@valla.it>
-> > ---
-> >  MAINTAINERS | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 5724645bf703..45a29ad08096 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -29673,6 +29673,7 @@ F:	sound/virtio/*
-> >  
-> >  VIRTIO SPI DRIVER
-> >  M:	Haixu Cui <quic_haixcui@quicinc.com>
-> 
-> Please drop this email with reasoning:
-> Email bounces and maintainer did not update it after changing
-> employerment.
-> 
-> Best regards,
-> Krzysztof
+On Thu, Oct 29, 2026 at 09:29:56AM +0100, Krzysztof Kozlowski wrote:
 
-Makes sense, ack that.
+> I guess everything should go via DT tree, but Francesco, please update
+> the maintainers file if that's fine with Michael.
 
+I'd been expecting to pull it into spi since that's where the driver is.
+
+--xh4GpOXgVUQqvuT8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrjJbwACgkQJNaLcl1U
+h9Bl+Af/SRb9q/27ELXx9ZEZ40ZQK8PgoXa2g2rWIlRdsiD/UePNNfSG/AijrSds
+fZg9z/sbyOZ8mkW3F6Ud/Vy/bom/GOhmCGGVqdwBQ/NfcGnqh6tB139C5TyoQI7N
+q7mpYVj7cDX6tlf1sk4JbYh64e+QiWuUZusup3yuwaAl4eNrXZaOQJIAIuZZXQTJ
+kfha8B3SwBio6kWELiBvtbS6lYcMZ8iBvd0fautLZkdBWKLkbgEwgkSmC0lPttSz
+i5iNWEk++Qed8g4VCkMXxMBrqQ118tPQcj7oX5LEFR/Er/TJMw8WVj4yEqB5zLYe
+IcUgvpqYfwriH96isKQQZbdAs0K6HQ==
+=5bhi
+-----END PGP SIGNATURE-----
+
+--xh4GpOXgVUQqvuT8--

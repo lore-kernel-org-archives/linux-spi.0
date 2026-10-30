@@ -1,64 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793385356;
-	b=ruXE3gUl/TOCoJhfjHM9SgaeMnOa9YNakuLV4c+xTSrv88p72dTNs3E8ycyOPAfOaZuX
-	 0TajqY0CuHGjkfJMgxgiPLjKZ+8nD7B8h2UmZ5OQyXL2uwVCnSa+3k570zUR1XviP/KVq
-	 vnzbTw4G2cooZqIrgxJeuy0Kg6bc2iBtHoMcoBG35VAi3O4JpPqnj++MqgYUXRC76Dk2O
-	 vUoVlUoVfYMSMxbe7jbFKMm8DZpcXzmpOlo0vmpzTA1VZB23/OiL+yilU0JYyvaU0Zjzw
-	 nlUcuJh2+yrTgrgpHJlVMxCmhYxDntuWTPrXnUrG+JCg+s+OUwYW3FCtbJLUZrnTpRQ==
+	t=1793385634;
+	b=yvcEnKu+ud/4YArHGF0gVE9ny+hcK1lkvw+XqS4t58g6STchgIGF8eb6+wKv/mV1l8G9
+	 SsdBpFpc8K1Po2ktlp5FxH/2NMZCRavMr+wmpyeKoreLvE1iWhedPNNJZkeIOMxlxGryM
+	 mdgxabCK0W/XgSVgRu7dXL+tvYasYb54YdPDO03ooyoe05a3vTHG7PzLduw6hvhNjnaLM
+	 WvZGiE6vviwkvyu29JrcR13iP2hjds74R+jbvgP/InPpy3GzVT5hDDHPreKIORKS5IFuD
+	 2703/Y9eZsiKNXgrW/77gcgssXwXzEmh/sbXL/F9SEkaumOfrotAqJ30PJdbkw/7wHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793385356;
-	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
-	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
-	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
-	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
-	bh=TLrNhV1mHR/Hf+PB+ygRUyNXpRfugNyOeP/SgeOvbMY=;
-	b=z7UKdMyEiU+JrkgIEl2d3krkWDvemUqZDXo23ngVKYQN9+0OnW5klkfUK5VsFBVtBGfx
-	 0dq5kM6B3fIlFnKxmB12/XleqT26z+5G0TJQfOXUDMTyy+eOTmbhxQu06HlDBlVALreMd
-	 ne6YifaLgI8YNY2FoIGOeGu7Oi87j7FdAp++I//oTADlRKnrcZjfEJNTDB9ouuO+O569a
-	 LzP7Mto2546ohWRoKwVRbieCmifxQskoRqSWFTna5sDPyz1nGX/Jdv4/8bcbMg3PS10AH
-	 TfbpMPFkGvwrFd39k/CNiSMQQoiL23IOjSa7vQmn+O1iMuNsIjYnP1yBlFWUVuExRaA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793385634;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=ONEeQ2vVVqIFiv9OWZJtBKE+yPwMBA+oc/DtB3fqHGs=;
+	b=00YTZmlwog5cef71sqDGEctZI2qjlEB6hgk1XtFTv45ROnibediBx0BIn6UBpHzHpBw5
+	 zA7y3K1ynqDmtc5EQq0APxWpp68yJ4RvzOP9FPLwLs0VoBHFXZwkX8qAsG4o3e1d7pSht
+	 080XWZ/I98qVzOgkyANpTemiwHkk6kb8AX5RzMKRaz+CDcgKfnftd12SryL1Yx1TpiCL9
+	 vePr26HEeMloaoH5FjcoUSHeHvP4v0FgoM11G3HrH2h3QxQiZkSs4b9oZmMDR+TjL59+G
+	 5AtIml3sAY7mvpdNM9px9r8z7Xr5DL2wREfNPWNSiiL1i/9PJmt+WOThtk7Uw8yRpEw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFGyie4+;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g4GYmdGR;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F1606A325;
-	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D365606A31A;
+	Fri, 30 Oct 2026 18:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFGyie4+
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4171F0093A;
-	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g4GYmdGR
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621061F000C1;
+	Fri, 30 Oct 2026 18:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793385356;
-	bh=TLrNhV1mHR/Hf+PB+ygRUyNXpRfugNyOeP/SgeOvbMY=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=iFGyie4+y9aYlFslzX3/OyHBqY+JtA4mZj+WKYlS7tjjRKP29LhcunygGY8g9jT8N
-	 06OjqHzDHqIt7EtXophL+vHy1sIFu/SvMMgkxOyiAVN0hlcAnPCZCXmKwQyOv4nByf
-	 FE5Kk6+yPYvWqFTnFAaUE+krGU+XbXFLcj8SrsYKOtIRYte2k2MTUALxbNIBxwMgow
-	 zg+ojakBupNiQDuC+y6hMrSPHL+H9dozmI5KmXXaDVoWIPVEMZqp1Kzo710bk8x3Of
-	 9Cfvl4pmctPs6tVjvhz1Mimi4+IKu4I8BbUVCZz1ajVrf/AWHDpXK2ZOpmDstNquOu
-	 85Bdh0nCRLu4w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 030EE3800473;
-	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
-Subject: Re: [GIT PULL] SPI fixes for v7.4-merge-window
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
-References: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-merge-window
-X-PR-Tracked-Commit-Id: 7da2aca123754c0e06092bbe179d58078b58d8d4
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: abf8c33470f78e2226ee3dcdc69004660020ab47
-Message-Id: <179338535448.1709878.1347548445939407628.pr-tracker-bot@kernel.org>
-Date: Fri, 30 Oct 2026 18:35:54 +0000
-To: Mark Brown <broonie@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+	s=k20260515; t=1793385633;
+	bh=ONEeQ2vVVqIFiv9OWZJtBKE+yPwMBA+oc/DtB3fqHGs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=g4GYmdGRkrRa9rr1VZVy16lj8F7kgfSQFGNgoaP0NQc8yP5kbP70jPZxywO4Bg/c3
+	 0bp9S6utH3XwVCus1FmdKTDHHkT7M2J+p1gz4z9VIYq0FySAg5uOA7blfLpVnroHsw
+	 dMTSwwZ8t4TvmoCdyVFjPqRZzQFTImfBNZxdJlaAQPI92QNCJTSlsw9ej0jH1UrcK4
+	 7WiWF3KyoSbtauBy+YUR6qKEssQewAcKArXpsE1aVOwltBrk02tK+XmfGiXBXMOHGa
+	 jduXrrKsBNmKTPIZda8Q4l0FzrR/p2plS32rzVHPIcO3eTQ14qLS0q9S3ylYC74gig
+	 +aNhTk9rZ129w==
+Date: Fri, 30 Oct 2026 18:40:29 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Parshuram Thombare <pthombar@cadence.com>,
+	devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>, Fei Xie <fei.xie@horizon.auto>
+Subject: Re: [PATCH 3/3] spi: cadence-xspi: add ACMD mode support
+Message-ID: <20261030-register-coauthor-4de5eb324954@spud>
+References: <20261029-xspi-cadence-add-acmd-v1-0-53cd44690e04@analog.com>
+ <20261029-xspi-cadence-add-acmd-v1-3-53cd44690e04@analog.com>
+ <179329269255.62540.11497211982924609522.b4-review@b4>
+ <auRqTXctbxuuEfLL@nsa>
+ <e9d40994-ef33-4f0c-9319-4efaef3d8711@sirena.org.uk>
+ <auS-tFYUCIvMg-hH@nsa>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,16 +65,81 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="A49ffsBr1vgzFZ1u"
+Content-Disposition: inline
+In-Reply-To: <auS-tFYUCIvMg-hH@nsa>
 
-The pull request you sent on Fri, 30 Oct 2026 17:10:40 +0000:
+--A49ffsBr1vgzFZ1u
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-merge-window
+On Fri, Oct 30, 2026 at 04:00:46PM +0000, Nuno S=E1 wrote:
+> On Fri, Oct 30, 2026 at 11:03:07AM +0000, Mark Brown wrote:
+> > On Fri, Oct 30, 2026 at 10:16:00AM +0000, Nuno S=E1 wrote:
+> > > On Thu, Oct 29, 2026 at 04:51:32PM +0000, Mark Brown wrote:
+> >=20
+> > > > We need some suspend/resume handling to invalidate the configuration
+> > > > when the IP power goes so we set everything up again.  I'm not seei=
+ng
+> > > > anything here.
+> >=20
+> > > Yeah, I did saw sashiko complain (and my local LLM also raised it
+> > > actually) but I do wonder how can that happen? So we need to assume t=
+hat
+> > > in suspend we might lose power (maybe because it's regulator powers d=
+own)
+> > > and need to do redo all the important initialization bits?
+> >=20
+> > Yes, might not even be regulators - some SoCs have good internal power
+> > domains and can gate parts of themselves very effectively.
+> >=20
+> > > > > +	if (cdns_xspi_acmd_can_read(cdns_xspi, op))
+> > > > > +		return 0;
+> >=20
+> > > > That function has a minimum size but not a maximum size...
+> >=20
+> > > > > +
+> > > > >  	op->data.nbytes =3D clamp_val(op->data.nbytes, 0, cdns_xspi->sd=
+masize);
+> >=20
+> > > > ...which we have here?
+> >=20
+> > > For ACMD, in theory we can just configure UINT32_MAX on the register =
+so
+> > > not sure if it makes sense to clamp to that?
+> >=20
+> > No, if that really is the limit it's fine.
+> >=20
+> > > Conor is pushing against the new bindings and that it should be infer=
+red
+> > > from the compatible. I tested this on [1] which is not an upstream
+> > > platform so I wonder if it's ok to add support for the complete
+> > > integration even if the SoC is not upstream?
+> >=20
+> > So long as it's an actual SoC that exists rather than some random FPGA
+> > configuration or whatever upstreaming just the SPI driver is totally
+> > fine, that's one less piece that needs doing whenever the rest of it is
+> > handled.
+>=20
+> Nice! Then v2 will bring the work for the SoC integration! Yes, real
+> SoC with two A55 cores and a shark DSP.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/abf8c33470f78e2226ee3dcdc69004660020ab47
+You gotta start somewhere, often that is clock drivers and that kind of
+thing because that's what's needed for bare minimum bootable systems,
+but if it's spi, that's fine too.
 
-Thank you!
+--A49ffsBr1vgzFZ1u
+Content-Type: application/pgp-signature; name=signature.asc
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCauTknAAKCRB4tDGHoIJi
+0pw6AQCXjgEUAx75vhUjxljYkfoZmeHx7ucvvi9fDXli4WmXBQD9F9udcW65GFzs
+u1P926tHP3gmBS1JkpdeA9aHs6GqEwg=
+=vU1b
+-----END PGP SIGNATURE-----
+
+--A49ffsBr1vgzFZ1u--

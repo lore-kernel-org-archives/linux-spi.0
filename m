@@ -1,111 +1,47 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793367070;
-	b=zs2DZg8QBnVODbbKK32UJgXItyWBEZLrtZVRmoj2KbYBYIwbdt0Er7yrgnHH8j5kD/Cf
-	 Jwm594yl8yUwJo3ccaf1PNxYbaQ7Zch+8kDeB9+8tSCgvuPVc/NKEouHDTjPIm97y25e7
-	 mLng19j0Dav2NRMkaCNTcCdxe1JZMf6zoBwrTKte2bd3vWfd+X6BXbUjYw2KikPoI3IDW
-	 vd+phF0u1QiNOgZYfxFmvJe7USvJf4P6VScjmeZMbUX2OQj86jZTy6EzcHRRsbNGl0kkE
-	 /bjd2sQBqusPtkMYfFLrVQDW/cInyArHbOgk3W8Rzt/52o9tUsVm6ae2AAXqgJt0RgA==
+	t=1793367391;
+	b=RXigKXXjoB4+Bzz9TYgC6woGJK/1HqBx9uuWb+iBg79W/pLU3wL6+uRa4VkvtT+r00ZM
+	 m46Al5V0ZkdAbAb39jmJ0TnhVLtRJUSWjNQoCY2x8Zjpslihnx3/aZEF3sTBrCX6/NCpL
+	 2Yyd7RagmQ6ZW5q614RbKhzBjygIEafD+jYsc9J5Oo62GdAjd9++mSobOpZ5kX4b00lVA
+	 ofDu+3yjiZHBpaUNSFOzR7IhG+/iq3Pu85a9jXnrlmg5t4Lz0OT3DDmxfal5yPpb8hJNs
+	 4FVGyp8Q3M1hUWM5hIyG4dfgKgLt9bZ5lICkjaDL/1rVJvAbAgE0Dzs1+DzES5bQiRg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793367070;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
-	 DKIM-Signature:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Spam-Details-Enc:
-	 X-Authority-Analysis:X-Proofpoint-Spam-Info:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details;
-	bh=UR4JTI9VQzJqFZB8kjqpLUWsRrNaJNk6gTj/t7aYhsA=;
-	b=gezJaA+LENoyLQA2BRBUltlgXfQAuBEBDr354eUjs7HR8SWiX9okhBJmYyVHCm18LL+n
-	 Mj6AkBwjiz1xW+VM/pToMjzhbQv9EJPvOzZ8nhVJSIudY+LD6WN9hjmYTBTLJdzQSYyMb
-	 FcQVXq8UE5PLmu5MTSCz+cjKP9iw3hxAa9x6w7RQAB01mB9Xa8ec7klk+8qb5e46ntUKk
-	 mRK/wCiMStDlICjDIeQ2d/UGMyBekfgy13S+Pid1j2NdsPBh3l7Naou8fr+3BTpKJXnLO
-	 aRqIGvwct/7qlU+H4vhvE9e82+9qAodtTjDgniS1i+fMkgG8LPuGpEtqP5/sushLMUg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793367391;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=bDw/seaI0N+rrlS6TXD0Zx/J/W0wD25HCs9aCm/Vs80=;
+	b=e24cmkKYi0RX3k0oNaFILUaEaeC5fCEJ47FJHS0Lp8rI6BuQoDHGRiKXLxdSZXdkQTOC
+	 HJX+Zn4miPlPWZQvLWpO9u9nhKCUXUwzeoDQ/vU07zfxwhvh48vxY5RVnsT/oYozrLtRw
+	 +Ek/0iPeHNNCsnqBRBCgGikZ9uvzNFjLciGQ04HsMkrq3JDooaFmNHPXGeFNRZC2Z8b5V
+	 98+Ep2EsMDc30gqNbyA9HrNJ9U4N7iPkJvl+viI8wOfpqOMQ0GoBnx9mWhJ2mObkfOztY
+	 shvhjCHbcK9c2UHTMey7lC/3QRZ/b9DIsQbaerO+R+PU+xH2G3Je2bBWbaI1mb4HiJQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=oss.qualcomm.com;
-	spf=pass smtp.mailfrom=oss.qualcomm.com;
-	dkim=pass header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=g0lSEniW;
-	dkim=pass header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=NZfdTYHH;
-	arc=none smtp.remote-ip=205.220.180.131
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kfnwA6ex;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41FB606A32D
-	for <linux-spi@vger.kernel.org>; Fri, 30 Oct 2026 13:31:09 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C41FB606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84CC606A31D;
+	Fri, 30 Oct 2026 13:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=g0lSEniW;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=NZfdTYHH
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69UBGCfl3719680
-	for <linux-spi@vger.kernel.org>; Fri, 30 Oct 2026 13:31:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=UR4JTI9VQzJqFZB8kjqpLU
-	WsRrNaJNk6gTj/t7aYhsA=; b=g0lSEniW6gquVXXpfOAY99DJUHOYnH1CQYc7zh
-	7ilDpSevP4ENGSyIVmlBECy21yYDFq7A9G7Qcl49gOVULsUTr+YHadkD9VoRYO+M
-	3vfc2d5QUPcH7S98ssSfvj9YmVChDGDA9Mzsp+1bifsNK2YtrpfvjnwzI1EIZZfB
-	pePZ4gquLrsuJ2iHnUDS/gf4ExMnB+l+K17XeVQuFq3HmiYRmwq0RPGlwt4WuvIA
-	HDDtPDyhLGxk0t+uJ69g9+o95/DHx76/Y2lPFbS47bysv5cedWtIPjDQgEEbZkcn
-	AJzyYwYYbBqdI5dGDOe7W5qWI5aS/LtocNHY5yLjOmquEqLw==
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6qu6sx-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-spi@vger.kernel.org>; Fri, 30 Oct 2026 13:31:08 +0000 (GMT)
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4fb73e868aaso1183069b6e.0
-        for <linux-spi@vger.kernel.org>; Fri, 30 Oct 2026 06:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1793367068; x=1793971868; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UR4JTI9VQzJqFZB8kjqpLUWsRrNaJNk6gTj/t7aYhsA=;
-        b=NZfdTYHHo++kcIg1CIZrhJu4GdWHAkcrYE5m1l1Sm4jsLFY5Vr72g66usSEpzPVANz
-         vK+KN/w0ILE/UzukYp2fKviplcxhye9Bt15LZHlogHy7Xe/DnjHzQVGzhpvQ3vu5++JS
-         BBgKZrNQPOjuGTtwM1z0MA6CX617lbQ14XWMqJA76GbWUUxQvARBeOQyGxkhWpRNHeg3
-         YbjFoATf91JBPwMjO19cd+nB4Fzn6zAKxJwIg35KbUoCp3ludATs/qpxjJ7lpULTlo3q
-         PNd7vksGlb1CgeDR8DgoQrlUWTz+WmO/snjyvWFRpDLn2jpIH/A+rdGvMMYip3DlmP4m
-         wlNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793367068; x=1793971868;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=UR4JTI9VQzJqFZB8kjqpLUWsRrNaJNk6gTj/t7aYhsA=;
-        b=TB70Sc0Mnm4BIALL53OMlWPsJILISHS0YjsmaCZ4saiIHWzrVQOJU62j9bYiXYz/qf
-         jlRAuFKvlU1MqPQS2LkFkNaLIXUMZzHiKx8+XJLVvLPAwdGvzEgoKyOSGBtFalzUPvn+
-         w1p9lIdldArXFFgttiV6xfOfB7nWWzfq+OV5k2QGSonkAi7YERS8aXi7GeY973Z0jsya
-         UjI15cDg8hPjUP1y5J/GHNzfWvylca6eRTn53Q7QZ+I/pgOVKb+m4w0jRXqhCKFwcCgX
-         IzJINTT2MDRkPfiMIMp6Rvsyy32RGsC0Wqx5Od7XojJ44f5i1ekokFJTNgXEHYOC3MtE
-         txaw==
-X-Forwarded-Encrypted: i=1; AKwUvByNm3X1ai5b39Xo1jzTtKm6pHTs7uloIJ9bIOy78tPJ9fxz7RyiXcOg5411Vxh15dZsHVvsdhwZvzw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKUYe4XCnSj7bPPY/9Itw1BtOqPnw/9R0k/sAj0upAR8s06Z+uI
-	LQUMuj2pRm4TDQ3ImtcgmA0FbGTIYNxNP7MIapYDA8CG26ENHn7t6mQzKvgyZfDEMbyq+KYs8Hc
-	ziMfeDNUzcKWohMaL2O+kRyNxybUa+AY9LVv3WJcdmku3GN5ukBWlFiB0saaA7CU=
-X-Gm-Gg: AYBFou2UtNHNcb+rk7r+GYL7Jj4/IIoEWZ+taQz+7BaXXFNOYFDwCbnvYNAhTzScxmr
-	eQNk8HQBXf5pi1jDDn1oTx3ptVaZHsAOI97C5iUke/IKRqOzF/5LRJaAmh3NI9ibJ4JZqWrJEy0
-	urW7Wkg9kW7dSIwIAzZBZcaMqRiFIi/DFibbLFNOba9/kfqAz9+SkIkYsfCD2u1ZZAGhcvBx6PY
-	baRQSP5Mq3ntkiBIRJT5wSTuAAO8lpoYBKxxEPxPbfrEmrhQHZjvFLskKqIpZpG23RpCQpT4/LF
-	1SceA2O0rPmtZwmXQA4wWQ+p+ZAJWDlO1X1B6AsTajIBdHWUq5tM9OZa9QAKVRQsVXarGC2UMOZ
-	YRaJlkJAUdw8PebS09M0zooLH7Qulbnn23VWLw4H2wliy8nLWYzGQK+6couqc+MiQjtmUHvqGs2
-	wNWu28oX/c
-X-Received: by 2002:a05:6808:2512:b0:4ea:18f:64b0 with SMTP id 5614622812f47-5640decc459mr1809523b6e.67.1793367067540;
-        Fri, 30 Oct 2026 06:31:07 -0700 (PDT)
-X-Received: by 2002:a05:6808:2512:b0:4ea:18f:64b0 with SMTP id 5614622812f47-5640decc459mr1809490b6e.67.1793367067074;
-        Fri, 30 Oct 2026 06:31:07 -0700 (PDT)
-Received: from hu-jseerapu-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-5640fc49880sm1590884b6e.2.2026.10.30.06.31.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2026 06:31:05 -0700 (PDT)
-From: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
-Date: Fri, 30 Oct 2026 19:00:42 +0530
-Subject: [PATCH] dt-bindings: spi: qcom,spi-geni-qcom: Document QSPI
- support
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kfnwA6ex
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884971F00A16;
+	Fri, 30 Oct 2026 13:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793367390;
+	bh=bDw/seaI0N+rrlS6TXD0Zx/J/W0wD25HCs9aCm/Vs80=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kfnwA6exaXecOku2Q6ROHnNqmyEoUwg6tUDjh5jtDWyFplS/0GdpjgNtnrDmlUT4C
+	 LB4unvXILyfbx8m5Rc/bYxZlNDP4D5AZsjV3pxKh4nS1tFBBc509NOsafAl+tcPncK
+	 czGuEyv03P7FXeDBCb4EEg32AGmZaSNL2en5XKNysaDn1wxxsyvFP1C26QqMtM/nlO
+	 mhsQRlRBdN/jQ3rbe3LFjcfoNDC4j07udZSxsl/vpUOI6k9StdKq0U9HNJI5d5Dd5q
+	 Scq/lcQXo6YB09hZ1yUxKlnG27/vTfqgA6xJzQiXt9iY4x7TcyWfgAoXwNtyUWZsuU
+	 GgbAfSydfwsFA==
+Message-ID: <f71369ca-5963-41c7-9103-dd39a7369e38@kernel.org>
+Date: Fri, 30 Oct 2026 14:36:23 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -115,103 +51,77 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: spi: qcom,spi-geni-qcom: Document QSPI
+ support
+To: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261030-qspi_dt_binding-v1-1-5249111cf870@oss.qualcomm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261030-qspi_dt_binding-v1-1-5249111cf870@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-qspi_dt_binding-v1-1-5249111cf870@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAGc5GoC/3WNQQqDMBREryJ/3YixxWhX3qOIxCTqLzXRfJUW8
- e6Ndt3NwIOZNxuQ8WgI7tEG3qxI6GwAfolA9dJ2hqEODGmSZknBMzbRiLWe6watRtuxXHLVCJk
- LkRoIq9GbFt+n8VH9mJbmadR8aI5GjzQ7/zkvV370/ttXzji7qTbLteDFVerSEcXTIl/KDUMcA
- qp937/TUFWbxwAAAA==
-X-Change-ID: 20260916-qspi_dt_binding-8a1cb7a8772e
-To: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793367061; l=1839;
- i=jyothi.seerapu@oss.qualcomm.com; h=from:subject:message-id;
- bh=6+euTVf3GCpORG+HjlXn9bEmx+HYlFRWqNiglrEVYlw=;
- b=mva44UfZGpfgrUarHZzaC7Pu9cJNQKZyiCLNo3tQeYQENvV6cTkzLY9rBi0xaV1uq10Gvtwi6
- 9w++rqbasXbD/ZJpziP/1CkivrzIGzMDZy5LMokToF7uFxtSLiuu4b1
-X-Developer-Key: i=jyothi.seerapu@oss.qualcomm.com; a=ed25519;
- pk=9vafyYsia0OnBKWSEwhmWe3hPVQfI2T1xOs5dPaFvEo=
-X-Proofpoint-GUID: zZr0gL9McyznihdwFmDJyPqiK5Wlwv59
-X-Proofpoint-ORIG-GUID: zZr0gL9McyznihdwFmDJyPqiK5Wlwv59
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDA1MyBTYWx0ZWRfX2lMDM5HljOet
- pPco2aJQDDPV7NXTqwx6I0LQ0X9kxarky0lNv5sgBZd1s7c8NwnJctMzSUhDCtf+UAm2a+C/ZI4
- 3jj70pD3iBdIjmtUcHWywl/Uq2dsed/HtKm9Zsp9tAZwawkHJskzv/Y7S6dHNg+MUXd32YS6tYC
- h5YSFU67IU72wOCa6+Sm8adDZpuApubUkI5mSexpOZdijdoD7YuY0da+8JrGxIUd02sewc7RD5F
- jDda6c5EcEdSEfucDvOQU6+8MdqoWJxNVqF+c6Ifx3uZc+UdWPQ1EMmIhGL+ys632BoY1Jc+z89
- Lkdil9eqNhzKin4Q8aEJlNlE4Y8zyA68IJaDQLjQ312kv2o9S+B0PxMU0Vk36dGWKS2V8LEboXX
- sYttt6Vksh1EM4RCGY0XiRb2xgEiStkBd5MAMteCOEjJGinAe0qwRydMhANLWleVkzfn8TAHbQt
- zHLLNiEyN0ErD2h79iA==
-X-Authority-Analysis: v=2.4 cv=dPgzC+Zb c=1 sm=1 tr=0 ts=6ae49c1c cx=c_pps
- a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=KUikZgbwDMKjgD0mul4A:9 a=QEXdDO2ut3YA:10
- a=pF_qn-MSjDawc0seGVz6:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDA1MyBTYWx0ZWRfX4SiN3UVje1aM
- 9Hd8i9QqTrDCPBRU9RDiGa2jkmVmUAtE0ivcuy31JDdcfoMphs0m1ZETBkneHX/719/ZozjylfD
- +4GZZQbXniiriaS/IheYAbiUmCMxC3w=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_04,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 impostorscore=0 spamscore=0 malwarescore=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610190000 definitions=main-2610300053
 
-Add the "qcom,geni-qspi" compatible to identify GENI Serial Engine
-instances configured for QSPI operation.
+On 30/10/2026 14:30, Jyothi Kumar Seerapu wrote:
+> Add the "qcom,geni-qspi" compatible to identify GENI Serial Engine
+> instances configured for QSPI operation.
+> 
+> The compatible also allows the driver to select the appropriate protocol
+> firmware when the Serial Engine is unconfigured (GENI_SE_INVALID_PROTO),
+> distinguishing between SPI and QSPI firmware.
+> 
+> Signed-off-by: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
 
-The compatible also allows the driver to select the appropriate protocol
-firmware when the Serial Engine is unconfigured (GENI_SE_INVALID_PROTO),
-distinguishing between SPI and QSPI firmware.
-
-Signed-off-by: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
----
----
- Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-index edf399681d7a..e568b67d077e 100644
---- a/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml
-@@ -19,6 +19,10 @@ description:
-   SPI in master mode supports up to 50MHz, up to four chip selects,
-   programmable data path from 4 bits to 32 bits and numerous protocol variants.
- 
-+  The "qcom,geni-qspi" compatible string identifies GENI serial engine
-+  instances configured for QSPI operation. QSPI supports transfers over
-+  multiple data lines for higher throughput than standard SPI.
-+
-   SPI Controller nodes must be child of GENI based Qualcomm Universal
-   Peripharal. Please refer GENI based QUP wrapper controller node bindings
-   described in Documentation/devicetree/bindings/soc/qcom/qcom,geni-se.yaml.
-@@ -29,7 +33,9 @@ allOf:
- 
- properties:
-   compatible:
--    const: qcom,geni-spi
-+    enum:
-+      - qcom,geni-spi
-+      - qcom,geni-qspi
- 
-   clocks:
-     maxItems: 1
-
----
-base-commit: 7079a12d7506b07fb53b54a664bfad5fa9b16d70
-change-id: 20260916-qspi_dt_binding-8a1cb7a8772e
+Where is any user of this? You speak about driver, but there is no driver.
 
 Best regards,
---  
-Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
-
+Krzysztof

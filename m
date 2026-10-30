@@ -1,49 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793380279;
-	b=zVWCdEM9NKXwDi70J72Mi5MM4qR4BENr688CKxrPST1vLMW7YXP6HUPatfCYxKFLMlJ2
-	 Y0KcrdWMgL/fzU9o3W8vBeEkrEKYgJbKJg63l6sDDIguVq4I3+3Dmq81KGqkuCYtxr872
-	 R0HDB4TKQ4jvWPNSkkZTGe3H1VG7joJ8kgcqpAHBNBx8wCqlMBwdY7N3SYv60JnrE6+ji
-	 4IDHJv8vPvcbrQIaprJl2BBgBCBt63mBO53yZD1J2Dfwj+IqUDXOcqvAAV5oFXad6hYjH
-	 s1FrelBvxztWfpBZxECQgWhQp/KA5KTl/Lc0sNKLrDgh45SrClli3UHTvt1hQdycSgw==
+	t=1793385356;
+	b=ruXE3gUl/TOCoJhfjHM9SgaeMnOa9YNakuLV4c+xTSrv88p72dTNs3E8ycyOPAfOaZuX
+	 0TajqY0CuHGjkfJMgxgiPLjKZ+8nD7B8h2UmZ5OQyXL2uwVCnSa+3k570zUR1XviP/KVq
+	 vnzbTw4G2cooZqIrgxJeuy0Kg6bc2iBtHoMcoBG35VAi3O4JpPqnj++MqgYUXRC76Dk2O
+	 vUoVlUoVfYMSMxbe7jbFKMm8DZpcXzmpOlo0vmpzTA1VZB23/OiL+yilU0JYyvaU0Zjzw
+	 nlUcuJh2+yrTgrgpHJlVMxCmhYxDntuWTPrXnUrG+JCg+s+OUwYW3FCtbJLUZrnTpRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793380279;
-	h=Received:DKIM-Signature:Message-ID:From:To:Cc:Subject:Date;
-	bh=IR331jw7mCWAedop4Aj+lmIIBJ2tTwsVqV6KYgr6nFo=;
-	b=PpZ7QDu+CHP91DLsrF/0wemO+5Q2P04GL+FWOI+wunG3S35cY0QzmHULLxXRZrFzricB
-	 wjROxyHza8tphC+zN/pPKtE2ZSQF792rSfQIBC5UTNlgvFfAtU83uwnz6OLPeW+Zp0Pcd
-	 9tj4ahhz82Cd73XauZHyQIDc8OsLGrW4/x3WiJ9/4WLN0NfhjnHijR4siC0xx31Eu+8oH
-	 hSwx5iRyxNCcDf+vdCYb8K/UzNYP6aqr+KmJhPYBSdxmaurqHWZAvNrREaTLleOjlnh67
-	 1wpdFRT0RGXHUdwjLuks1+v2vWMLYy0Qni8Ia3+R4cidlafcwPC0Th8oH/u5K+pPfhQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793385356;
+	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
+	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
+	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
+	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
+	bh=TLrNhV1mHR/Hf+PB+ygRUyNXpRfugNyOeP/SgeOvbMY=;
+	b=z7UKdMyEiU+JrkgIEl2d3krkWDvemUqZDXo23ngVKYQN9+0OnW5klkfUK5VsFBVtBGfx
+	 0dq5kM6B3fIlFnKxmB12/XleqT26z+5G0TJQfOXUDMTyy+eOTmbhxQu06HlDBlVALreMd
+	 ne6YifaLgI8YNY2FoIGOeGu7Oi87j7FdAp++I//oTADlRKnrcZjfEJNTDB9ouuO+O569a
+	 LzP7Mto2546ohWRoKwVRbieCmifxQskoRqSWFTna5sDPyz1nGX/Jdv4/8bcbMg3PS10AH
+	 TfbpMPFkGvwrFd39k/CNiSMQQoiL23IOjSa7vQmn+O1iMuNsIjYnP1yBlFWUVuExRaA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FUvsxMrq;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFGyie4+;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with UTF8SMTPS id 13130606A31D;
-	Fri, 30 Oct 2026 17:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F1606A325;
+	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FUvsxMrq
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 317991F000C1;
-	Fri, 30 Oct 2026 17:11:18 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFGyie4+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4171F0093A;
+	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793380278;
-	bh=IR331jw7mCWAedop4Aj+lmIIBJ2tTwsVqV6KYgr6nFo=;
-	h=From:To:Cc:Subject:Date;
-	b=FUvsxMrqjiokR0N8sbzn9eirFng8knI6IJI/ViCnyMwPp3y1zePugkv3HNkNVoDJo
-	 mFwY+Di3enGZBE1CveTWfWBcsWfNGvKt0HfOdxLAbkDhO2KtaC4GPqbQjduWPIQjY2
-	 naTcgMJRT+cSwzU8tCMIM7UT96KOj/R9N+woxPQut/YvureJ5b+7i4BRewckxFR84X
-	 sN2NUtVY/BPwtRI9eUCfJ0zJ77DFB19PhFdm6ZYbGy2lFxCei4vlBwoTO4utv2i8pO
-	 FzO6pYk/D24dkghA4N98vYzC4xW2i8BnX8kO7FyNrDOeTQOwWBwHD4+NtiWDg5tj42
-	 VVcis1s5b7sJQ==
-Message-ID: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.4-merge-window
-Date: Fri, 30 Oct 2026 17:10:40 +0000
+	s=k20260515; t=1793385356;
+	bh=TLrNhV1mHR/Hf+PB+ygRUyNXpRfugNyOeP/SgeOvbMY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=iFGyie4+y9aYlFslzX3/OyHBqY+JtA4mZj+WKYlS7tjjRKP29LhcunygGY8g9jT8N
+	 06OjqHzDHqIt7EtXophL+vHy1sIFu/SvMMgkxOyiAVN0hlcAnPCZCXmKwQyOv4nByf
+	 FE5Kk6+yPYvWqFTnFAaUE+krGU+XbXFLcj8SrsYKOtIRYte2k2MTUALxbNIBxwMgow
+	 zg+ojakBupNiQDuC+y6hMrSPHL+H9dozmI5KmXXaDVoWIPVEMZqp1Kzo710bk8x3Of
+	 9Cfvl4pmctPs6tVjvhz1Mimi4+IKu4I8BbUVCZz1ajVrf/AWHDpXK2ZOpmDstNquOu
+	 85Bdh0nCRLu4w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 030EE3800473;
+	Fri, 30 Oct 2026 18:35:56 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.4-merge-window
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
+References: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <5e5b62bd58db33070504988e42e31d6c@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-merge-window
+X-PR-Tracked-Commit-Id: 7da2aca123754c0e06092bbe179d58078b58d8d4
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: abf8c33470f78e2226ee3dcdc69004660020ab47
+Message-Id: <179338535448.1709878.1347548445939407628.pr-tracker-bot@kernel.org>
+Date: Fri, 30 Oct 2026 18:35:54 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,31 +68,15 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 
-The following changes since commit d5acef12e819c1627c8bf6a0325845ab39d8c99d:
+The pull request you sent on Fri, 30 Oct 2026 17:10:40 +0000:
 
-  spi: Merge up fixes (2026-10-19 18:00:23 +0100)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-merge-window
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/abf8c33470f78e2226ee3dcdc69004660020ab47
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-merge-window
+Thank you!
 
-for you to fetch changes up to 7da2aca123754c0e06092bbe179d58078b58d8d4:
-
-  spi: cs42l43: Add speaker ID quirk for Dell XPS 13 DX13260 SKU 0E54 (2026-10-26 18:26:59 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v7.4
-
-Two patches here, one a straightforward device quirk and the other a fix
-for a potentially nasty data corruption bug in the zynq-qspi driver.
-
-----------------------------------------------------------------
-Jérémie Rodon (1):
-      spi: cs42l43: Add speaker ID quirk for Dell XPS 13 DX13260 SKU 0E54
-
-Pufan Jin (1):
-      spi: zynq-qspi: fix address buffer corruption and support 4-byte address
-
- drivers/spi/spi-cs42l43.c   |  8 ++++++++
- drivers/spi/spi-zynq-qspi.c | 13 +++++++------
- 2 files changed, 15 insertions(+), 6 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

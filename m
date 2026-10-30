@@ -1,47 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.160.72
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793301789;
-	b=KWTvQMcKNmeZwKut+Dxyq8i8PDxNuSLjihaimn8uLLFCYc6BTSECYQe1VmNIpXOO83P3
-	 Vcc/jq0LxGKhcPPQGNld3fU25VFE1yGQdlmz74FJCtOyIaFQEbe+q735fsVC23b/KOwhT
-	 n8MoB9zUM5Jcs12PBZoLkR8uCLigucRopinfLu1DgegkNI7I90GepfzW4aNvWRoEl0bfV
-	 yDhavrXnkVz3y5uJnGLYOTgYpFl1eJ4On4PHRGlKseY0GQ1sztYuGyz0tD8LvA/RF78Lr
-	 biDnnz7IFZhFbIHZ3tuME4x/L7GHD2Oah4gQD3362LFB/GYSUiT1CNvk4D/R/Jnn5CQ==
+	t=1793327804;
+	b=Ny8SryEYLVkQkFo1X/jIBxzNzGddhYKVApyoHNn1P/0RS+PFvhEn25TS24P5s+cGN3J/
+	 tolDNJLYQEfVPVM2sNIS5bcVe0m+MTyb4DkVzaXsoQcylK0RjgaVlEAY5Wg176zqcUHLB
+	 ulLwdBSrUyC0yZQVIWeWXZRDwmHX9EUV/2sdDP4x0k3nJkBEoqYw8Zs4nJG2CBFpxT0Wn
+	 f5hYMzwInqqiaa7603SFGqpnjvqjjfSXOMFspjw/hBg6ru3+RGbpNyhlMLwkRVaeesfwt
+	 0Z6GeCttU+uUwxf8cMPVQo5JTvaTKnh0rWomKMyB+uYLNXe/KTGqa/N0abRMgWXWScw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793301789;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=BediT4PcptZXXjb04P2IllmU/nn4QJPHgAtGfvsaYto=;
-	b=n7iAIadTSld53UUFVLL6E7JZPe28WVgzlYW5/Rz0sufng4n7OAKJEQcB5Uj8JwCcQ3Ek
-	 Rg5pWMcPTVZqQCyhmKfAbB3Bh+Xr59ZzrZ5yH0qqmni2RPdqfX217cKGTUEWvpdRq1KGW
-	 KByy8J8+0lxeh+AgTYD04OCVSUDbMMRdGt/QPgTEFSdP+e+qBdxJfFkL/Mi9wu0XOfjuC
-	 Bk6gBEncTNvIdfkpsgMz3/W5/ZQ5mUkIXAGaM262/KVtHyBRufRCtUMk63DgULLVVB6NX
-	 uJkAnau27ZkIZJ9pA4etwR79xb2gUpkQOHZy0V2hBCKCF5PZ6sc1BEpW0pv//G1G5Yw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793327804;
+	h=DMARC-Filter:Received:X-Google-DKIM-Signature:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:MIME-Version:X-Received:Date:
+	 X-Google-Appengine-App-Id:X-Google-Appengine-App-Id-Alias:Message-ID:
+	 Subject:From:To:Content-Type;
+	bh=V/lnB9MH/HLYg6xkfRQbx6bEKxiHrzo85vIOCGxcRf0=;
+	b=a4T2RqfAdgo9XLal3u76oCAwAJiQZ4D2HB3wW2U0G/vc60fY+P8+j26UFF3hUBw93R0H
+	 CGC+zQ7bMoDHDcE0nrdlVYn7FcSy2DqjtZpdQfVD53c1Mqm9Vxw5LlWh7vGBudZnkmEnU
+	 t57KxSuVfjki9hKdV2kKBwnY+yIfpRqAqccJqee9YIU5J+Z6Kb3fydBDbxIjqnZL44OuM
+	 5dTnx6CtII7WLqzUX3QZwkADRUVHSX830lcEDgr20YAMrprRpYJ8pRPDbec58aa1J/IWW
+	 rBfR/1ybs8WFXrKrVqUMzMIg/2tR2CnnI242h3V09r3NoEgiN0dhSJookUa3RDIGncw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKl50AlX;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=fail header.from=syzkaller.appspotmail.com;
+	spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	arc=none smtp.remote-ip=209.85.160.72
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com [209.85.160.72])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCC6606A31A;
-	Thu, 29 Oct 2026 19:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kKl50AlX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F371D1F01816;
-	Thu, 29 Oct 2026 19:23:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793301788;
-	bh=BediT4PcptZXXjb04P2IllmU/nn4QJPHgAtGfvsaYto=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kKl50AlX4uHkZFBmOjUONZDq8kb7XY2ztA+I9Zr/Xy7pUY2FCXp/uuTstOERBjon4
-	 kWOefD4ZsirR04s6ycOpz0G0ec9KJyljxqr56TKz4UAE/UjzGyt7lgQMYV2wff+Hw5
-	 3q7h2LuKG0WGu+11akuBXSsdtlpyjydNMDyEc5fBsRzOFoUSXd8izIlEkxDqFjLJyI
-	 SQiGOr4Q72Gpc6DiqmJzcE5Oq+WVgBPNDBUbiGJlqzj7O83uRHBj5yMtFG5aWy2uXU
-	 pkzcbplAm5OrhjJmiIhJ2UciRWdRGGzLDWctgf7X/N0LqU37R25OWFAa732EfO1suB
-	 f9FoLj+AzMQEA==
-Message-ID: <93908298-13d1-409c-a7e9-cf61aa931889@kernel.org>
-Date: Thu, 29 Oct 2026 20:23:00 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D7606A31C
+	for <linux-spi@vger.kernel.org>; Fri, 30 Oct 2026 02:36:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DF4D7606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f72.google.com with SMTP id 586e51a60fabf-482966c4f4fso2400688fac.1
+        for <linux-spi@vger.kernel.org>; Thu, 29 Oct 2026 19:36:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793327803; x=1793932603;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V/lnB9MH/HLYg6xkfRQbx6bEKxiHrzo85vIOCGxcRf0=;
+        b=yE6U4coSz3nXPzXFSAde6x5jySUqMGlRLkAnr+SxUUw+ZT7G0sywWzCQ/qp4A8l58w
+         XcwfultWugmKmiuMn2ef8ZilTSEiB7LFGH1disfwGr5/aNuAr+kCYP/jdFQGFtlcZ/xd
+         xCCu/9hqcAI7S0JSA4+EZjax9On7i316ToM/FvtVKn8k7pIJw2Tmcl8/fnwnw4+B/rtM
+         6IMOve+zstSLCDgHEqA79xKjApy+ng3lFyi0xmOUR+tjguYYO+O0qaU+OJWamL5w2Zun
+         rV99XFAtuiDy2uw3rBaT1CPDJbd5JpKScGQqe+UtJNZoH47f8QdV3TffMZQKGGvXK5kD
+         3yRg==
+X-Forwarded-Encrypted: i=1; AKwUvBycGiVh/6DrAwbJ7vR5hFMTpF1kVfMQCw+h7WnjX75V5TwdrHuvgEodyy5SMGtulTQAr5XT+QYvyFw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJtBoghlJztONgkTXkIlSnWUeXQ97pPNb86a3buSZW4LKqDXtdE
+	BdVUS6yFhiAIQ3NvAKnGd7a2UEEmMnKnj0cC2f++M7O/pL+YxkA6LIRoSou7dN2TA86W+usHmhf
+	VUb16Ws+tyYhDSjBKrTNhZG12YSCoL4kcOAnpg07G7npsBiLF9GmVSrPydDw=
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -51,80 +58,144 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] MAINTAINERS: replace spi-virtio maintainer
-To: Francesco Valla <francesco@valla.it>, "Michael S. Tsirkin"
- <mst@redhat.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Haixu Cui <quic_haixcui@quicinc.com>,
- Jason Wang <jasowangio@gmail.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Mathieu Poirier <mathieu.poirier@linaro.org>,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-References: <20261029-spi-virtio-bindings-v3-0-ef30217abefd@valla.it>
- <20261029-spi-virtio-bindings-v3-2-ef30217abefd@valla.it>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20261029-spi-virtio-bindings-v3-2-ef30217abefd@valla.it>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6808:1687:b0:4f1:5068:b93b with SMTP id
+ 5614622812f47-563ef93de1cmr2489055b6e.14.1793327802984; Thu, 29 Oct 2026
+ 19:36:42 -0700 (PDT)
+Date: Thu, 29 Oct 2026 19:36:42 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ae402ba.0c1d3ab6.e3d48.006b.GAE@google.com>
+Subject: [syzbot] [spi?] [usb?] WARNING in spi_register_controller (2)
+From: syzbot <syzbot+41172204e7323356ecdb@syzkaller.appspotmail.com>
+To: broonie@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 29/10/2026 17:27, Francesco Valla wrote:
-> The e-mail address of the current spi-virtio driver maintainer bounces,
-> since the owner (Haixu Cui) did not update it after changing employment.
-> Take over maintainership of the driver, which I am already working on
-> with the introduction of its devicetree bindings.
-> 
-> Signed-off-by: Francesco Valla <francesco@valla.it>
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
+Hello,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+syzbot found the following issue on:
 
-Best regards,
-Krzysztof
+HEAD commit:    c339f4010dea Merge tag 'platform-drivers-x86-v7.4-1' of gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17d07259580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4a49f7c2815c8df7
+dashboard link: https://syzkaller.appspot.com/bug?extid=41172204e7323356ecdb
+compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1420a1a5580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1271cef1580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-c339f401.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/2aba9a3fc60c/vmlinux-c339f401.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a3c085a78213/bzImage-c339f401.xz
+
+AI-generated root cause summary:
+In spi_controller_id_alloc() (drivers/spi/spi.c), idr_alloc() can return -ENOMEM
+when radix tree memory allocation fails under memory pressure or fault
+injection. The function inappropriately invokes WARN(id < 0, "couldn't get idr")
+on any failure rather than handling expected runtime allocation errors silently.
+In production builds without panic_on_warn, execution continues, locks are
+properly released, and the error is cleanly propagated and handled by callers
+without causing denial of service or memory corruption.
+
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=41172204e7323356ecdb
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+41172204e7323356ecdb@syzkaller.appspotmail.com
+
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007fe4d0225fac R14: 00007fe4d0225fa0 R15: 00007fe4d0225fa0
+ </TASK>
+------------[ cut here ]------------
+couldn't get idr
+WARNING: drivers/spi/spi.c:3634 at spi_controller_id_alloc drivers/spi/spi.c:3634 [inline], CPU#0: syz.0.17/5588
+WARNING: drivers/spi/spi.c:3634 at spi_register_controller+0x1261/0x1670 drivers/spi/spi.c:3697, CPU#0: syz.0.17/5588
+Modules linked in:
+CPU: 0 UID: 0 PID: 5588 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:spi_controller_id_alloc drivers/spi/spi.c:3634 [inline]
+RIP: 0010:spi_register_controller+0x1261/0x1670 drivers/spi/spi.c:3697
+Code: 8c e8 33 d5 79 fa e9 1e ff ff ff e8 a9 a6 16 fb 48 8d 3d 72 3f 18 0b 67 48 0f b9 3a eb 11 e8 96 a6 16 fb 48 8d 3d 6f 3f 18 0b <67> 48 0f b9 3a bf e4 ff ff ff 44 89 f6 e8 8d ab 16 fb 41 83 fe e4
+RSP: 0018:ffffc90004de7878 EFLAGS: 00010293
+RAX: ffffffff86b27e5a RBX: ffff888050e4a000 RCX: ffff888034fc4b00
+RDX: 0000000000000000 RSI: 00000000fffffff4 RDI: ffffffff91cabdd0
+RBP: 0000000000000000 R08: ffffc90004de7807 R09: 1ffff920009bcf00
+R10: dffffc0000000000 R11: fffff520009bcf01 R12: 1ffff1100a1c9408
+R13: dffffc0000000000 R14: 00000000fffffff4 R15: ffff888050e4a4d8
+FS:  000055558743d500(0000) GS:ffff88808aa10000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbfc3e0ca90 CR3: 0000000040ab8000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ msi2500_probe+0x4c6/0x9e0 drivers/media/usb/msi2500/msi2500.c:1249
+ usb_probe_interface+0x751/0xe00 drivers/usb/core/driver.c:399
+ call_driver_probe drivers/base/dd.c:-1 [inline]
+ really_probe+0x254/0xae0 drivers/base/dd.c:707
+ __driver_probe_device+0x1e8/0x360 drivers/base/dd.c:869
+ driver_probe_device+0x4f/0x240 drivers/base/dd.c:899
+ __device_attach_driver+0x270/0x410 drivers/base/dd.c:1027
+ bus_for_each_drv+0x258/0x2f0 drivers/base/bus.c:503
+ __device_attach+0x2bd/0x430 drivers/base/dd.c:1131
+ proc_ioctl+0x409/0x660 drivers/usb/core/devio.c:2370
+ proc_ioctl_default+0xc4/0x110 drivers/usb/core/devio.c:2405
+ usbdev_do_ioctl drivers/usb/core/devio.c:2769 [inline]
+ usbdev_ioctl+0x139d/0x21a0 drivers/usb/core/devio.c:2829
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe4cff9f559
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc6b706298 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fe4d0225fa0 RCX: 00007fe4cff9f559
+RDX: 0000200000000900 RSI: 00000000c0105512 RDI: 0000000000000004
+RBP: 00007ffc6b706300 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000002
+R13: 00007fe4d0225fac R14: 00007fe4d0225fa0 R15: 00007fe4d0225fa0
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	8c e8                	mov    %gs,%eax
+   2:	33 d5                	xor    %ebp,%edx
+   4:	79 fa                	jns    0x0
+   6:	e9 1e ff ff ff       	jmp    0xffffff29
+   b:	e8 a9 a6 16 fb       	call   0xfb16a6b9
+  10:	48 8d 3d 72 3f 18 0b 	lea    0xb183f72(%rip),%rdi        # 0xb183f89
+  17:	67 48 0f b9 3a       	ud1    (%edx),%rdi
+  1c:	eb 11                	jmp    0x2f
+  1e:	e8 96 a6 16 fb       	call   0xfb16a6b9
+  23:	48 8d 3d 6f 3f 18 0b 	lea    0xb183f6f(%rip),%rdi        # 0xb183f99
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	bf e4 ff ff ff       	mov    $0xffffffe4,%edi
+  34:	44 89 f6             	mov    %r14d,%esi
+  37:	e8 8d ab 16 fb       	call   0xfb16abc9
+  3c:	41 83 fe e4          	cmp    $0xffffffe4,%r14d
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup

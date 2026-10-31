@@ -1,101 +1,99 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.182
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.177
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793464204;
-	b=lNbFfB0mknI0H0LNV33C/B/J7VR1sfBi7fUyBMw/UAkpRJ7BTUS5BhBx1H0TJVFQ4p8l
-	 /RypnELZBnpenK4q8fM6iZavSNf5PJwMFvdR7k8fojiYshSJUAQJJ8YNWre90GvFwIkoM
-	 FRDQ5ahVxY8jryQbMyyQUEFW+amHIXEj+2sBZkSpZDkMZepGdQr4Sp+GoxYBR50Fa8ABn
-	 EC1k3R6NTtcCGujNTBbB80KVCwTnW2A/M63UdsFIEAVxjEqM9euCiR+ByE10gQbvC1HWx
-	 vETJgCxT4D0Zvd07LP8ed2zuqFG2CNNxWiPl4jZhKDTHdLce74flcCekKVvmYzvv6IA==
+	t=1793464629;
+	b=o799H1KK5v0+YpWHl2VGCJVRsqmafg5CgOpabIN0q8ypFfS+o+9dRwGtVlpgMhW1qZpD
+	 8GEAvA0cSNV6n2Ynx/lMro2U11lurn5nQiw48+UlZq7/zY6rRXFNP0DXITFlOL2hqpYi0
+	 AWXoaAfD5bXcGkpBX65dptYBmTfSoYyC4MWlbdB3QskhxXDJO6YpMBgFjyicSt7VSndLH
+	 IO59Oq77TSDlziWjxS+IiMqmlN+qNobvPOQgW+qI/ys04BScb0MUkC+AhheESJOZCM2RK
+	 YPxZYdDIo+Zh+W4KejaKhu83vjxUmblhRzdx9LHi1kp8o8WHOnzClLRdRqNZat7RUqA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793464204;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793464629;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To;
-	bh=EgmEJPMkjbYM4FRPkppwPSirxq+mxfkqTc2AOCI0TeY=;
-	b=XqqgOUgnGnattuBfsjj04Bjgqg1s3/ZkwRHR1XB9XQT3JdwSI/mXl3d0/QOjsyyE+aLn
-	 qNqw59NohVBtxNsQawku24/SuCLXj891bHLB7QV/hYzER08dDIrqGy/GIeKRHsf/1ro3A
-	 l/7cZQfHIyOIy4Nm76aOsb8boVhOAqAAxf6ZjnaF1x45ZE5U8/ADwARJrS+GcZ8W3RPSj
-	 6Rz1Wfzcmacu5iD70OaHgq2O5KJ0AHohVYbnuWdS46BSVZEnHY2sTd6PzWzco5jBOau6j
-	 9Yz0ud/hpLXoTmfnv3ewESJfPVI0w5lH75eMy42fjudjW2vD5Ff/S12PvjpyVwGQ/OA==
+	bh=hog/LSraSSmnGVZ4/pHBjOKsX6XesCbb7trG3Vy1+fM=;
+	b=vA225vJ+xyVu+rgc+h13N6yRfL8wayPB9Sp9620uxuyfJMeBqMytrtw8aLjFZBSrRhX4
+	 FEEVlfJhyKV92/DbRWENptaLq+xX5A7VMRx37ezCsBlW+evLHNAbOrik/275ZA8R8sBO6
+	 4XJ5HrZRJeCjWrTSL5z+N8Ifrd6zYenlPxq0UgxjYFau7OizZKM66i/IGo7yHtGqgAc+M
+	 OyT0D7mPs20Po89YghrfQ1PVQ7ARwhGXR3CeWcblgJAM4sSXicatYUAPcde3bH6ck/4TG
+	 oXy48ykxUL6pJLp+Ei2ewNu8kqFW2IlwM4sJPhh4KbnMKdNhTFSA2Q/9LjtEGh1vWrA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NaCaOq1I;
-	arc=none smtp.remote-ip=209.85.221.182
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ryQtlJXu;
+	arc=none smtp.remote-ip=209.85.221.177
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382EB606A31D
-	for <linux-spi@vger.kernel.org>; Sat, 31 Oct 2026 16:30:04 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 382EB606A31D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197D6606A31D
+	for <linux-spi@vger.kernel.org>; Sat, 31 Oct 2026 16:37:08 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 197D6606A31D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NaCaOq1I
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5eac49ec2f5so124712e0c.3
-        for <linux-spi@vger.kernel.org>; Sat, 31 Oct 2026 09:30:04 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ryQtlJXu
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5eab979d6easo88669e0c.3
+        for <linux-spi@vger.kernel.org>; Sat, 31 Oct 2026 09:37:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793464203; x=1794069003; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793464628; x=1794069428; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EgmEJPMkjbYM4FRPkppwPSirxq+mxfkqTc2AOCI0TeY=;
-        b=NaCaOq1IS4vwEHlRWQvnbsS9HsMF9dwaaD0vhkRKTrgIcVBZDkggWXU8/3tG46OTdm
-         cpg6OM1czuebilGZOLupqWhc2EKGo3X/Gis5gz7rTdzJVzbdJIeV2LCJv1TWzJL5DEWN
-         JxQeHBTv4vFWePfOxdUvRpDpzpHzgd+hrOSG3YEOlcvtJZa782VtaK0deY2K8j3uFQnW
-         1XwmOXkCjWyWeI2h+QC3wE//RKwy9MhnGX1cOGQoLEfUxemm/XvK58do89hhvf6zn/eO
-         gV/Uz0ZyhF7uGHPzptjbevWf6qPBT0ntpJg9jgGW0q1RNqoRMh4R/8+p5hkxDnnIkfuv
-         8LHQ==
+        bh=hog/LSraSSmnGVZ4/pHBjOKsX6XesCbb7trG3Vy1+fM=;
+        b=ryQtlJXuGOLY277F7JKl/5lVPrcSb4rXBnbEpO3itGx+1xjXisTz3mTMXT9bkdFlkv
+         hLI9uz8ndz8i3smEGsFroNxgiT+XanUm0Ph1IlH67k5Ue1KuQRwS7EXQgAbJJa+np22k
+         q0rrP9zbSxB29xD8T/+chHxZuU8uTRjYnEiQVjPLACCI38+RoawfwzpfVuQwad2+Cksk
+         fi3I4k3ipvbnxAS0FehI70nvEIjGfWMatOQQieM+oioIcQYcrkwkX9JmyE7xij6W6G0N
+         RB2OSw8PZzskWvAgY2IngyouO75X26t6vU4Gv6ggyPMQeY6wVgllKZD8Def5hxf3eLIR
+         jq6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793464203; x=1794069003;
+        d=1e100.net; s=20260707; t=1793464628; x=1794069428;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EgmEJPMkjbYM4FRPkppwPSirxq+mxfkqTc2AOCI0TeY=;
-        b=ildpDfEknNOE+IHc+X9m6Bn7T3FOjCwjSOn0wXA+Ca+mjzOGgcE5nyg0qDHAwIoOEb
-         gVAP/6S30Kek2p4afieCx3BrByBPwdlDWOx1r+Q954XibE/EMQVAl0JPiKRZV3/RBoKI
-         azRNTGc7ANNosWn24WuPx/Ks9q7RskaUCI0Smmx+DgVGsvFPMp+CTlVYQ4T+LcF6Au9k
-         YZrLR9b2zOasju9wiiAOtFyGJNyDf91QMFmpr763VF2o70kntzBopGDLgJ3QDDzGjPTn
-         0M/FLBZPrlUUEN/Z/VSTjGPyuIkiLSc3rC2a0TIDda4ei5Bld8HmG4V/lx3MUjYqpJg3
-         B7/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw8GvngNnz710Ami7SbUIFfTZDrXYG7rw44WpVmbWlKCb2XDqW57Md1v8/HDRj2LpCKWswqiCtgEZY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK7AgDn9oLjFo12HC93Vywm4cGn8V9NALDqj6F+NwUFpTEwAobj
-	oHaDGgnqmiF/9VkUMi9EBEv+v+5TDnhQj+F+izW0Rf4mQLQgxQfOpwKD
-X-Gm-Gg: AYBFou2WqAC+F88kxftqmN7KCD6A/a1xWZwtR2B49UN5GwrldNTo57xxjiQPP6Bafuc
-	MnjSkcmz1zR6C3n+OQ0j1YewZJkWrkZeCh7IDD8nsg8tngGOw4xKkCC7VXekTwMiANulrF9s6xt
-	UzZd28774aVEf0tpidAmmZe5x1N28KlpCd9JVdJZQA2tbe/6+j2OMBzxKbDsAVX4s7gsZ6WWv/C
-	x27LWpUs3CJHiyYPRuDlZcsSbjtM5vxwoStr0/xfYOJ75tA+aLMrFD0yJGVrYgxenFTe9OALnkf
-	ikY3bWNObcyRnFuxfkIqYfRpfMWY5AzTdMBF3+R316aCAQZG3462vKMzGeajCzA5DEi7gyTWZxV
-	lKt7ZYjMSEn4i2iJoy9cvvzAichQy7Da0svNwBGU2rOFv5R7CjlLqLOxT4xlgMbOi5hnKFFL9WI
-	Xgec7dWEu8CdkpKY/gjI71LnvAZJB80g/gwhTDmPIcZVwL6sHgtu7SzbJbgZs8DDXYjcLBWn/tm
-	uJVX5X9Iq6Pns7N9iSZtzDJh/19lrD4FA3y4t9XFYuZ5E4AUkz4ETljLpgv9w5oGPD9d7mGoEZS
-	bntoFPY7sceaF/V5X4sbq2rPdPSzs9oVvZN/dGOazN33WTXL5dSxyG/RQZCEYK3KYmfgsyCT
-X-Received: by 2002:a05:6122:12b4:b0:5e9:2e3c:2f5 with SMTP id 71dfb90a1353d-5ec685631b9mr2836551e0c.2.1793464203129;
-        Sat, 31 Oct 2026 09:30:03 -0700 (PDT)
+        bh=hog/LSraSSmnGVZ4/pHBjOKsX6XesCbb7trG3Vy1+fM=;
+        b=2eIa40UVbHPtnccBUFZaIj0SOYw9ttR8bz+1IBKojOGJz2NhT3OZh7rgee5NgsxCoB
+         9bRyVcuNdd6K8bapmnhqEaL26mvh6bALcPrQYFEIg5S4vNuJxZSRiwc+98lveS/BKt+k
+         9amWfoUmSCeoWZCk4ai8+r1AZDBmuebnU/Ubi74bfRiR5haAsph83StnUeaEn8SGQDaB
+         kQMObRbMz+H9y9fM7PJ2bJteSg6UDUEvBNySZ0WPPdC0IxTrkEvGxZlAN5r/rud4UHSL
+         zIdViw5SVyk2Eq1dsHCB4p0A9aEEhhI4gJk84klMPlTukKYGaSaFMDL4YI+/02ylePK+
+         9fNw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/0aXAoFaX2idY95JU+HnoV9LwTxLQpD4yxbx4ep3KMGbuACjL17j1OliSoRMz0Ktk/f9XTWUyV0g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKuPrLCA8/QEAJqp4vLeVLPw6WoM+8/P9npPi51vCl4TErLmxZc
+	N4n/mLXc5W3e5bzN5lYKXN8SctDoV5xe3ZtFKTNdAGIicFIf/FOm6xDv
+X-Gm-Gg: AYBFou3Cp+d1X6Ag1YqrPBn9qT9rR4GyfNea7bS65h8CKvBgDK4pIgPcAkipbd0xGcz
+	DwSME+pETQX/PrSdcpAjv7/hQkWhoRp7yEjapZxxy77uE6GMDuxst7JiKB0MM493JH17yA9/yfA
+	yOIOrH9tazwEhr8exmNwbyCuQ0MNv1IM2xVOkBYlhxyX3j3pXoQulpKyCP6oSUrbab8sgpZicPc
+	ZVT/hqil3dPqH6hqYwbCfYhOsaWRkWrUcb2aSUdLg4/wVqzyBYSuDQ0e2sCIxkyP5VvS4kV89Dv
+	UXCKJ2LA/ev8L1SWK4bm1leILODAUaOlUzjLubIod/lVz2yWm0CmPFMq5m1Ttkj56JtmZ6ySG5z
+	+XsesPEaZuWKXRze/iZkgH7j9w6WkBZGLr/Xjl4XUo7L05HDw11A09Uk74JKWzpg3DHBLsh+HN6
+	2w7UkzrhgbbEEJdDFkDlBvJlOaTMfhOBU1WeiYAhPDqYgesUvA66SYjwcecymMtmV4qYNKLTwGy
+	IzllYjKV5X0d/V18/jcd5lnqpLuLACQvX9KY3dkvdjJemFfciG/QoH7a+9GE4/jdC+9jF10GGMr
+	BU7HWVT2DVjiV2grHuHn00n0EB3ceEwWdTDrjBh590vbvfd53w7Y7LZ57TVoVOCLNwRj7g==
+X-Received: by 2002:a05:6122:2b16:b0:5e0:2ba:5a06 with SMTP id 71dfb90a1353d-5ec6896981emr2989151e0c.4.1793464627977;
+        Sat, 31 Oct 2026 09:37:07 -0700 (PDT)
 Received: from JSANTO12-L01.ad.analog.com ([177.112.152.97])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69caeccdsm6020716e0c.16.2026.10.31.09.29.58
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ec69bf220esm5989015e0c.7.2026.10.31.09.37.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Oct 2026 09:30:02 -0700 (PDT)
-Date: Sat, 31 Oct 2026 03:20:26 -0300
+        Sat, 31 Oct 2026 09:37:06 -0700 (PDT)
+Date: Sat, 31 Oct 2026 03:28:06 -0300
 From: Jonathan Santos <jonath4nns@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Santos <Jonathan.Santos@analog.com>,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux@analog.com, broonie@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org,
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux@analog.com, broonie@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
 	Michael.Hennerich@analog.com, nuno.sa@analog.com,
 	dlechner@baylibre.com, andriy.shevchenko@intel.com
-Subject: Re: [PATCH v4 1/9] spi: dt-bindings: Add spi-cs-composite property
-Message-ID: <auWIqpIaegH+AWV4@JSANTO12-L01.ad.analog.com>
+Subject: Re: [PATCH v4 2/9] dt-bindings: iio: adc: ad7768-1: Document
+ multidevice support
+Message-ID: <auWKdiIzL1Gykxkk@JSANTO12-L01.ad.analog.com>
 References: <cover.1792435248.git.Jonathan.Santos@analog.com>
- <e9308680e7b45ecf9ef2b6b2a752ffdd4d23b80c.1792435248.git.Jonathan.Santos@analog.com>
- <20261026020003.3f3fbe86@jic23-hlaptop>
- <20261027-colonize-primer-f994b88171a6@spud>
+ <6e2176d5547c59c39bb692e9768d7ac079b40f71.1792435248.git.Jonathan.Santos@analog.com>
+ <20261026020500.6c13c0e6@jic23-hlaptop>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -107,154 +105,162 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261027-colonize-primer-f994b88171a6@spud>
+In-Reply-To: <20261026020500.6c13c0e6@jic23-hlaptop>
 
-On 10/27, Conor Dooley wrote:
-> On Mon, Oct 26, 2026 at 02:00:03AM +0000, Jonathan Cameron wrote:
-> > On Tue, 20 Oct 2026 22:56:41 -0300
-> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> > 
-> > > Some setups combine several SPI devices into one logical device, with
-> > > each chip on its own CS line. All of those CS lines must be asserted at
-> > > the same time, so that one transfer reaches every chip.
-> > > 
-> > > Add the 'spi-cs-composite' boolean property. When it is set, every chip
-> > > select listed in 'reg' is asserted together on each transfer.
-> > 
-> > To me it feels inevitable that we will see a device / combination of
-> > devices that want groups of CS lines together and others independent.
-> > 
-> > Seems less likely we'll see more than one set of composite entrees.
-> > Maybe this should be an array of values that match with specific
-> > entrees in reg?
-> > 
-> > I'm not sure though.  Conor, Kryzsztof or Rob, any thoughts on this
-> > or similar things that have arisen elsewhere?
+On 10/26, Jonathan Cameron wrote:
+> On Tue, 20 Oct 2026 22:56:56 -0300
+> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 > 
-> Why does the property actually exist in the first place? Does the device
-> driver not know how each CS should be treated?
->
-
-Hi Conor, Jonathan,
-
-Thanks for the feedback.
-
-The problem we are addressing now: today the SPI core gives a driver very 
-little control over chip selects. The main spi_device only drives the first
-'reg' entry and the only way a driver can use the other CS lines is through
-ancillary devices, but for individual access only. For aggregated chips 
-(AD7768-1 in this case) we need all CS lines asserted at the same time, and 
-nothing in the core lets the driver ask for that AFAIK.
-
-In v1 I added a CS mask to struct spi_transfer, but that also needed a
-lane mask to work, and after the feedback we agreed it was too flexible
-and too easy to get wrong. In v2 and v3 I switched to ancillary devices
-(each with a lane attached) for single-CS access. That covered
-individual access, but there was still no way to assert all the CS lines
-at once. The spi-cs-composite property in v4 was my way around that, 
-letting the main device be the aggregator and using the ancillaries for
-single access.
-
-David also suggested two alternatives before that don't need any DT changes:
-
- a) Add a CS description to struct spi_transfer or spi_message, e.g.
-    passing the ancillary devices whose CS should be asserted. This also
-    allows dynamic CS selection within the main device. And since the
-    ancillary devices are already bound to a lane, this is less prone to
-    errors than the approach on v1.
-
- b) Add a new "composite" spi device, so a driver would have the main
-    device, ancillaries for individual access, and a composite device
-    for simultaneous access. The issue I saw is that the ancillary and
-    composite devices are siblings and their CS lines would conflict in
-    the core's CS check, so only one kind could exist for a given
-    device, not both (without some more complex logic in the spi cs check).
-
-I like the (b) approach, but we would have to bypass that sibling problem.
-The (a) looks less harmful to existing projects, if everyone agrees I can
-implement it on v5. Also with (a) I think we can drop the spi device
-name for now (or not?).
-
-Best regards,
-Jonathan Santos
-
+> > The AD7768-1 family supports aggregating up to four devices on a single
+> > SPI controller, with each device occupying a dedicated CS line and a
+> > single data lane.
 > > 
-> > The most general case would (subject to it not working) smell like
+> > Extend the `reg` property to accept up to 4 entries (one per device).
 > > 
-> > reg = < <0x1 0x4 0x5> <0x2> >
+> > Add `spi-rx-bus-width` property to declare the per-device lane count.
+> > Since each lane is bound to one CS, the number of entries must match
+> > `reg`. Make it required when `reg` has more than one entry, along with
+> > `spi-cs-composite` property.
 > > 
-> > Where intent is that 1 4 and 5 are meant to switch together and
-> > 2 is separate.
+> > Add an example for a four ADAQ7768-1 aggregation, with shared DRDY and
+> > SYNC_IN pin.
+> > 
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---
 > 
-> I would expect that for this kind of device, the driver should know that
-> the first 3 CS are switched together and the 4th is not. I'm not really
-> sure what the internal representation should be, because if someone can
-> make a device like this, they could surely also make a device where (to
-> borrow your format) it behaves like
-> 
-> | reg = < <0x1 0x4> <0x5 0x2> >
-> 
-> and so on. But if those devices don't actually exist at the moment, and
-> everything is either all together or all seperate, the API for this
-> stuff in the SPI core doesn't have to solve that until a device actually
-> shows up.
+> I'd suggest some asci art might make it more obvious what you mean here.
 > 
 
-Yes, this is a bit out of the scope and kind of complex.
+Ok! in the commit message, right?
 
-> Worst case is something where there's a variable grouping of chip
-> selects, e.g.
-> 
-> | reg = < <0x1 0x4 0x5> <0x2> >
-> 
-> or
-> 
-> | reg = < <0x1 0x4> <0x2> >
-> 
-> but maybe if that happens the thing to do is permit reg-names for that
-> device, and again store the relationships in the driver rather than
-> try to convey it via DT.
-> 
-> Cheers,
-> Conor.
-> 
+> > Changes in v4:
+> > * Include spi-cs-composite property to the bindings. The reason for going
+> >   this route is stated in the cover letter.
+> > * We decided to keep the spi-rx-bus-width property because assuming 1-lane
+> >   per CS would break controllers that don't support multiple lanes.
 > > 
-> > How to do lookup on something like this is another question.
+> > Changes in v3:
+> > * New patch.
+> > ---
+> >  .../bindings/iio/adc/adi,ad7768-1.yaml        | 80 ++++++++++++++++++-
+> >  1 file changed, 79 insertions(+), 1 deletion(-)
 > > 
-> > Jonathan
-> > 
-> > 
-> > > 
-> > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > > ---
-> > > Changes in v4:
-> > > * New patch. This has been included because without an explicit property,
-> > >   every device with more than one 'reg' entry would have all its chip
-> > >   selects asserted together. That breaks devices that use ancillary
-> > >   devices for the extra CS lines, so the composite behavior is now opt-in.
-> > > ---
-> > >  .../devicetree/bindings/spi/spi-peripheral-props.yaml     | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > > index 4894196c8f9c..456cb9095632 100644
-> > > --- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > > +++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-> > > @@ -60,6 +60,14 @@ properties:
-> > >        Delay in nanoseconds to be introduced by the controller after CS is
-> > >        de-asserted.
-> > >  
-> > > +  spi-cs-composite:
-> > > +    description: Some SPI devices can be aggregated into a single logical
-> > > +      device by asserting all their chip selects simultaneously. When this
-> > > +      property is present, all chip selects listed in the 'reg' property are
-> > > +      asserted together on every transfer, treating the group as one composite
-> > > +      device.
-> > > +    type: boolean
-> > > +
-> > >    spi-rx-bus-width:
-> > >      description:
-> > >        Bus width to the SPI bus used for read transfers.
-> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > index 7b72d14e104c..64c1cbeaa576 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > @@ -26,7 +26,10 @@ properties:
+> >        - adi,adaq7769-1
+> >  
+> >    reg:
+> > -    maxItems: 1
+> > +    minItems: 1
+> > +    maxItems: 4
+> > +    description:
+> > +      Chip select number. For multi-device setups, one entry per device.
+> >  
+> >    clocks:
+> >      maxItems: 1
+> > @@ -109,6 +112,12 @@ properties:
+> >    reset-gpios:
+> >      maxItems: 1
+> >  
+> > +  spi-rx-bus-width:
+> > +    description:
+> > +      Bus width per CS. For multi-device setups (multiple reg entries), one
+> > +      entry per device must be provided. Required when reg has more than
+> > +      one entry.
+> > +
+> >    spi-cpol: true
+> >  
+> >    spi-cpha: true
+> > @@ -203,6 +212,16 @@ allOf:
+> >        properties:
+> >          pga-gpios: false
+> >  
+> > +  # Required properties for multi-device setups
+> > +  - if:
+> > +      properties:
+> > +        reg:
+> > +          minItems: 2
+> > +    then:
+> > +      required:
+> > +        - spi-rx-bus-width
+> > +        - spi-cs-composite
+> > +
+> >  unevaluatedProperties: false
+> >  
+> >  examples:
+> > @@ -244,4 +263,63 @@ examples:
+> >              };
+> >          };
+> >      };
+> > +  - |
+> > +    #include <dt-bindings/interrupt-controller/irq.h>
+> > +    #include <dt-bindings/gpio/gpio.h>
+> > +    #include <dt-bindings/iio/adc/adi,ad7768-1.h>
+> > +    /*
+> > +     * Four ADAQ7768-1 devices aggregated on a single SPI controller.
+> > +     * Each device occupies one CS and one data lane; DRDY and SYNC_IN
+> > +     * pins are wired together across all four devices.
+> 
+> For DRDY, wired together how?   I assume that only gets set when
+> they are all ready?
+> 
 
+They are combined through an AND gate, so yes, it only gets set when
+they are all ready. We make sure by using the SYNC_IN to synchronize
+them.
 
+> > +     */
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        adc@0 {
+> > +            compatible = "adi,adaq7768-1";
+> > +            reg = <0>, <1>, <2>, <3>;
+> > +            spi-rx-bus-width = <1>, <1>, <1>, <1>;
+> > +            spi-cs-composite;
+> > +            spi-max-frequency = <2000000>;
+> > +            spi-cpol;
+> > +            spi-cpha;
+> > +            vref-supply = <&adc_vref>;
+> > +            pga-gpios = <&gpio 10 GPIO_ACTIVE_HIGH>,
+> > +                        <&gpio 11 GPIO_ACTIVE_HIGH>,
+> > +                        <&gpio 12 GPIO_ACTIVE_HIGH>;
+> > +            interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+> > +            interrupt-parent = <&gpio>;
+> > +            #trigger-source-cells = <1>;
+> > +            adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
+> > +            reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
+> > +            clocks = <&ad7768_mclk>;
+> > +            clock-names = "mclk";
+> > +            gpio-controller;
+> > +            #gpio-cells = <2>;
+> > +            #io-channel-cells = <1>;
+> > +            #address-cells = <1>;
+> > +            #size-cells = <0>;
+> > +
+> > +            channel@0 {
+> > +                reg = <0>;
+> > +                label = "channel_0";
+> > +            };
+> > +
+> > +            channel@1 {
+> > +                reg = <1>;
+> > +                label = "channel_1";
+> > +            };
+> > +
+> > +            channel@2 {
+> > +                reg = <2>;
+> > +                label = "channel_2";
+> > +            };
+> > +
+> > +            channel@3 {
+> > +                reg = <3>;
+> > +                label = "channel_3";
+> > +            };
+> > +        };
+> > +    };
+> >  ...

@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793571415;
-	b=2PQGZuyVL0gNItwxQIK6CTXYw0+MryyPL+YGOPBAGNmewga9BEr7ndLWgi+ij0+O2SCR
-	 eJSx2CJ9UfShBqLLs6WyLJcftHRnCXq3BEXuhjBg5uposw+/J6gPdcjI05xb7KrB2nHnt
-	 uAQ350rlSQBJCEzVxBoPIFsOurHwnRHm0CkD/m5P5eHpHJyALgA/SGAdhBNbOUlV4upVQ
-	 nPrvfl3g1llxRdlTWNjrSQwJ2CFVXZIX52JqxwqPsaZkngkGQrkzhG/wVpJgjC0VW14xh
-	 Ppjqp+SgisfxVf8PlDaFQMrmsWaIHDYJSz8xV5cE2pULJjNvwkRT9xyvlMGe8YwtExw==
+	t=1793571412;
+	b=wR7eoXvyvxCaL9OW9kB7G1q3W9rl6Rfnm+1knrrvhpiouRIr/qUzlM0P0u+G5QNCj9L3
+	 pecIkjy3mWTcXOuQsUx3yKYGpK0iphELos0wqEU1ifwaXPUqP9ZZ/F3nIXID/joJxF4d0
+	 bLj6fNgcmP22c2453o6zi1MGHm72J0qc6iY27E0Ps1MeoQY4+kr2vfL0VsxCs+SEhJkMO
+	 IEpOGlzS5aUnOaUfdJggRR4FlJcynvCG1O+VSXs3tzZf731bj3t43zd+rgLmVncGMCpbc
+	 KxvZr7zaBn+5UOLfZexK5KuFDgf2+zC8XnXPFUb1+CtxMSK9c8CySzGcKpigrv3QXUQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793571415;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793571412;
 	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
 	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
 	 In-Reply-To:To:Cc;
-	bh=HltbMUNV2mL7CmzUNbC48/jDW0dqtweL2/SgQbNH2V0=;
-	b=Cmt5OoIthRbEx7XnF+GpVJx+77kjPMSilsyAqBvhiEUCfUsx7KWyQx9rPiv8IpkDSC3D
-	 oGZbS5Q2yMRMbeBp7BfNGuj3qKwJJJgo0vKPu5ywiWXRlMhIWKzfSEyBaTlU+NxX+AXLt
-	 TN6O1mxSR5gTwQbEgsoX18CH2eqoBqdd5I8aAVtD3EPpMrZbx2VJkQptVfK46mVU/p5bk
-	 +Hhnw1fGZ6SpiUSIHh9xP7tsXZkF4Q5ab/izdN95gDKUcOsPIojsROGp4M8Hy74k0iIbA
-	 gl0mHEdWcRlQ/99MroKi2Q6YQUoaVPfGPcGf34rsD2OwdL4RcHxI5VtLmzLTa45fkHQ==
+	bh=1M18UEoj2fkXVA3N5MwFODgLvNc8kgHEtwNhvCdbEts=;
+	b=0JfBMMg6S6ShaxwX8G+W1hWmkQUzEGejqJx5tHKZmrCk9Zw9s6/7lqhMCixtz3sFCeQ7
+	 OalrBa48/AbYweicuTlrYP1fSkZbv/5k+T3BzWXzdjRskM8R+SeJEYGJnIApIe0cLGoaj
+	 QLIcZiSgEhfIJ5/M5GNxYrppWYQ6uinYgpLPArzqMeTV0zeHSAvEoifRprhEmrWMcLzir
+	 sladll9yEVUU3k7obWdVo7aD7FOy3itlzifNdJPht6pZ47T/RVqNhxNlmltupftYDzvZ/
+	 /tobGmAMOQf9QDkoxHRJrAP8915RkJzY0bcu19W8UDp3X0ey1ZV8Iwyl/6PrDjGBo+A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sw2wvSa9;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4ZsiFDt;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D406072B07;
-	Sun,  1 Nov 2026 22:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5A607214C;
+	Sun,  1 Nov 2026 22:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Sw2wvSa9
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BBD1F00A1A;
-	Sun,  1 Nov 2026 22:16:54 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4ZsiFDt
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59771F00919;
+	Sun,  1 Nov 2026 22:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793571414;
-	bh=HltbMUNV2mL7CmzUNbC48/jDW0dqtweL2/SgQbNH2V0=;
+	s=k20260515; t=1793571411;
+	bh=1M18UEoj2fkXVA3N5MwFODgLvNc8kgHEtwNhvCdbEts=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Sw2wvSa9SHk+5nIAcZtroRIwKn3V8PzpfgbTLlVEV2B7Xsn//R4odyY0lpJuvkfxl
-	 NUZRIwvOhsHBhiPm4aKwcK/KKj3SJoyTiRkThQXKWOCyMxiNH0czjnItiMBrcqFga7
-	 uuczREcVU5lBB+gyieVoJQUbYjoYHae2v3rLcILiOpCvWoFXuRaWQn0K5Q/kHvzBTZ
-	 7pABNP2hcIomqaTsjurf04sAXjbEbAJtS5ik2OrgzBtbk8OsoUZ/jXIyzmR7cCJIyQ
-	 383vUSbItJnXYvFwIhgBanuA94ScjhOdY/FSt2V66ReLpmbDYJ9lM4+t4c4cA36L5q
-	 FvbztgSLAHKsQ==
+	b=G4ZsiFDtZ62yw/+PrdD8L5Da6gB7BqqsvG701dZBR1txA7fSnfvZerKJe/hPf9qvZ
+	 4dhfa7sn+SvyWYLr7JPbMzZROg2ndHcu7yFY9M8ejckEQk4zQGTsveX3hMKIkIAR/h
+	 PEOoFYc5ThbkMFFjiIdoT8PETipkrDFzVTx+1f+O/+qNRcnzOuAxDSUC01qJCR5DHV
+	 IwXAm8U8f+iDeO4dcnr2aFpB55Po8yP/uLgPpGwbX+WgwBeS9CZ3V717KQuYvMjhJQ
+	 epfyR6Fge8m1DNcfsWd/uIU03aC59pi4rQI3NJu/wm3NOxeMOZXb84fp+XODxAaIA3
+	 sDGSj81m6UQ2w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA53838003B8;
-	Sun,  1 Nov 2026 22:16:54 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA28A38003B8;
+	Sun,  1 Nov 2026 22:16:51 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,63 +54,46 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 00/10] riscv: Add device tree support for UltraRISC
- DP1000
+Subject: Re: [PATCH v2 0/4] spi: sophgo: Fix SPI NOR errors and clock limits
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <179357141329.2624073.10814218023350815293.git-patchwork-notify@kernel.org>
-Date: Sun, 01 Nov 2026 22:16:53 +0000
-References: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
-In-Reply-To: <20260907-ultrarisc-dts-v2-0-5eb4c97477c5@ultrarisc.com>
-To: Jia Wang <wangjia@ultrarisc.com>
-Cc: linux-riscv@lists.infradead.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, daniel.lezcano@kernel.org,
- tglx@kernel.org, samuel.holland@sifive.com, anup@brainfault.org,
- broonie@kernel.org, andi.shyti@kernel.org, mika.westerberg@linux.intel.com,
- Eugeniy.Paltsev@synopsys.com, vkoul@kernel.org, Frank.Li@kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- paul.walmsley@sifive.com, palmer@sifive.com, conor@kernel.org,
- linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
- dmaengine@vger.kernel.org, conor.dooley@microchip.com
+ <179357141023.2624073.834055517039065391.git-patchwork-notify@kernel.org>
+Date: Sun, 01 Nov 2026 22:16:50 +0000
+References: <20261001-fix-sg204xspi-v2-0-014dbaf22b5e@iscas.ac.cn>
+In-Reply-To: <20261001-fix-sg204xspi-v2-0-014dbaf22b5e@iscas.ac.cn>
+To: Han Gao <gaohan@iscas.ac.cn>
+Cc: linux-riscv@lists.infradead.org, broonie@kernel.org, looong.bin@gmail.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ chen.wang@linux.dev, inochiama@gmail.com, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, rabenda.cn@gmail.com,
+ lihangfan@iscas.ac.cn, linux-spi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ sophgo@lists.linux.dev
 
 Hello:
 
 This series was applied to riscv/linux.git (fixes)
-by Vinod Koul <vkoul@kernel.org>:
+by Inochi Amaoto <inochiama@gmail.com>:
 
-On Mon, 07 Sep 2026 17:54:39 +0800 you wrote:
-> Add Devicetree support for the UltraRISC DP1000 RISC-V SoC and two
-> DP1000-based motherboards: Shenzhen Rongda M0 and Milk-V Titan.
+On Thu, 01 Oct 2026 02:22:49 +0800 you wrote:
+> The SG204x SPI NOR driver ignores transfer errors and clock limits.
+> Fix both, enable SPI NOR on SRD3-10, and use 12.5 MHz on SRD3-10 and
+> SG2042 to match EDK2 and the vendor kernel, respectively.
 > 
-> DP1000 integrates eight UltraRISC CP100 CPU cores.  The SoC description
-> includes the CPU and cache topology, CLINT, PLIC, clock controller,
-> pinctrl, GPIO, four UARTs, two SPI controllers, four I2C controllers,
-> three PCIe root complexes, GMAC, and the DMA controller.
+> Tested on SRD3-12 at 12.5 MHz: both flashes identify correctly, SFDP
+> reads succeed, and two full 64 MiB reads per flash match.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,01/10] dt-bindings: vendor-prefixes: Add shenrongda
+  - [v2,1/4] spi: sg2044-nor: Return transfer errors
     (no matching commit)
-  - [v2,02/10] dt-bindings: riscv: cpus: Add UltraRISC CP100 compatible
+  - [v2,2/4] spi: sg2044-nor: Honor SPI clock limits
     (no matching commit)
-  - [v2,03/10] dt-bindings: riscv: Add UltraRISC DP1000 board compatibles
-    (no matching commit)
-  - [v2,04/10] dt-bindings: timer: Add UltraRISC DP1000 CLINT
-    (no matching commit)
-  - [v2,05/10] spi: dt-bindings: snps,dw-apb-ssi: Add compatible for UltraRISC DP1000 SoC
-    (no matching commit)
-  - [v2,06/10] dt-bindings: i2c: dw: Add compatible for UltraRISC DP1000 SoC
-    https://git.kernel.org/riscv/c/3d067add1281
-  - [v2,07/10] dt-bindings: dma: snps,dw-axi-dmac: Add UltraRISC DP1000 compatible
-    https://git.kernel.org/riscv/c/58a66a560aa1
-  - [v2,08/10] riscv: dts: ultrarisc: Add initial device tree for UltraRISC DP1000
-    (no matching commit)
-  - [v2,09/10] riscv: dts: ultrarisc: Add Shenzhen Rongda M0 board device tree
-    (no matching commit)
-  - [v2,10/10] riscv: dts: ultrarisc: Add Milk-V Titan board device tree
-    (no matching commit)
+  - [v2,3/4] riscv: dts: sophgo: Enable SPI NOR on SRD3-10
+    https://git.kernel.org/riscv/c/0fe449e8ff7b
+  - [v2,4/4] riscv: dts: sophgo: Limit SG2042 SPI NOR to 12.5 MHz
+    https://git.kernel.org/riscv/c/a3a8c25c59f8
 
 You are awesome, thank you!
 -- 

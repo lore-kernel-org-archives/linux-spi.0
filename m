@@ -1,85 +1,85 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.172
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793637234;
-	b=A0G6ieMgJJlyz6UOfeCx9Wi/lZB5L4r1m20KqjbnC3cHi0ayCFabhmvghTFnkcy9PH7q
-	 WlET8plquCwBOQ72ZAbafeVXY4VfowXbAy5/oFDvZKcCy+f0sYmt6WIi29nygRmZZ8EF8
-	 fLfX9+81gTl5Y6u9zSWXD5rfDwoZbEPibOhW/PBdmCLmyz63FhXSiz73qrsSzZJ+kNZ3Q
-	 cr1qe57MW5C2Q2quWlb86vO2mYZWI7tzKUe6UlskdeM5r7Trb9grjGEYZeEk4vq7V+B7c
-	 /43cIPXFT8uJKYVSy4wvjv5wO+AhhUEMNYM9JhtmIpvtCof+vgv/B+lL1gFQkQyHMaw==
+	t=1793637235;
+	b=w02UFX6MTnyorAbhWhbXJYiCNxWwWZ38o1pH+bGi4GOeSa0ittXBbLDnzukRb8dWoKVv
+	 IZbvqwLItChKw7kxmWqz99FZkR33Lh9dvNLuQfHvEtHUyjdvXRwOVM+LYChv+jJU3ErGp
+	 WwRsuHn9TvNAlVnm9GNDmU2cuUPn6ACWD3XiuycDy1gtWG24tWeTYtoL7upGrif73dIyz
+	 Dka+xz/l/A4MqmY/1CS5pwlucxt2fOjxEMkxis1izVGJ/bSQlXJZG9JFElQFNmgVpMWsE
+	 GayscMXAlenVysnlGQ3y6hf2l/NsOxUR7nA/bnriEm8Djl4GyBcAVkUAvmAZhEs0rlQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793637234;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793637235;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
 	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=7A5LOz0c2QL4S1/kVnCWpIWEscMv5GfBU745tHtcqZY=;
-	b=RxIjwQHz4/vzFW5vKwaYwJ24w16H8ywCYFrdUT6YINz7An8BT9s18p85OGI8tfcvjvSV
-	 rSHPtdirftCpWmiH9mV1eVUub0tnPNKx7oACHX+qVX3y23pwFIg4D77Wnqt0dQD/q0gbM
-	 1ryRyWdQf2HA1rrz1SBOHFpoSNHe2oERKWm4NKHd766kAhWW6yBcjBd9yR2o0BwGdC2Lh
-	 QmOdnT3bHbWZRaiZoAwNUF4Uh1qYc4VtBsJ4J5YQTjiBopR1B4UNBirEwBxxo5G7HTqHd
-	 aCCb4cn3Qc0D/nfEvL9ApAdYPmgHuFZPlVOYx0BoLFzSX+PL7ykCnXwtNMEZDu0xkTw==
+	bh=4Jui1jwEZ6v5nU3mpOAiFTjiS0PcXBHZtIqyyHsg9zQ=;
+	b=sTNdV0LdbOQAUVccsTTvmGhR5q+BYfb4SufdNmybXWM3fLn7bkOOCxYwVdizA4N+wXwY
+	 HQLUM09wQlweTqqSWignoCe6B8WBbYjcPtUjA6KH0T83gX2OfPXOjyAmXyAGCFEZST4+l
+	 QQEtyGgL+qxd70Ik4eonlabsBN1LS6AXXYXiXBoPaX9S1JiLe8RoW3L81BZWrzzEKdv4u
+	 1/fF0CnPAtUUFPUagnp8hB8j5UidKfF0NEwkolPzs7knrsLmGSxTQrHwM/gz3AOdjI8mS
+	 btcI7ky6rtjyxUM/LC6GX2DrgMJFzaaVys0dE/erCULoaINgGj/1mekysmWj/IzBbMA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JrvaC8PV;
-	arc=none smtp.remote-ip=209.85.210.176
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=My7gCCvP;
+	arc=none smtp.remote-ip=209.85.210.172
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6820A608B068
-	for <linux-spi@vger.kernel.org>; Mon,  2 Nov 2026 16:33:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6820A608B068
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8833C60A0C8E
+	for <linux-spi@vger.kernel.org>; Mon,  2 Nov 2026 16:33:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8833C60A0C8E
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=JrvaC8PV
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8a064fac8cbso2166335b3a.1
-        for <linux-spi@vger.kernel.org>; Mon, 02 Nov 2026 08:33:54 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=My7gCCvP
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a070755c8cso1454178b3a.0
+        for <linux-spi@vger.kernel.org>; Mon, 02 Nov 2026 08:33:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793637234; x=1794242034; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793637235; x=1794242035; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7A5LOz0c2QL4S1/kVnCWpIWEscMv5GfBU745tHtcqZY=;
-        b=JrvaC8PV3yKZNIM7YzvffeBEM1S7IiL6Ll1G+tV8UOL9CjYBI7FQYGbPXUV7+bRdZ4
-         TTXSFKBmuXgHw0r9HQJ7eCjdUqPXgiWXBoL4VTBMiykDJfLYdGCZlBGbe6LYUxg8BI/j
-         zryPaqQMOKW/beJVrVtLflaYtEqOuO8RR8yeUpOOb6m17kz04bGo6YBp+spKAsjPbzqi
-         0vmm2tz8MNWHB408s72/R/3YXQ7qFXHZfIiln7TBW0kTGS3WXMe+zIbn/1Xwc6wi6GRZ
-         gqzApzEFuF1ljcjodFItDZNUYXydMJePxUJFWS10F7SYnOf4mNNqkNdRpXLFhWUr2+zc
-         kLZQ==
+        bh=4Jui1jwEZ6v5nU3mpOAiFTjiS0PcXBHZtIqyyHsg9zQ=;
+        b=My7gCCvPocIPthUt3ekAhWaXFRB8P7rEuCRKQwOpiR22UXo/BFlfh6n0ARpMz3/7I7
+         K97F9n05CWTAhk+0+A7OeVNxz2grnCFrYf0VcbgfslRZIf/WG0dFhGUzdUYiMRXAR4S7
+         /WKgfX/mxLfJoDk86tLA+6IMdCGGl5BXSLyzex/0ZQKFj/LZIvHEMEZHsdrJ9ckzVpE5
+         7QdPs1srKUg7sYBMOAKrV1Ziym1KZvIxvFgaii16kr2Z6WkaS7qhlOb5kpMDsvF2qmji
+         VkVfQhEZKRcuJH9tgFvJtnZl61I4LhPnB8yOIVtkkNyQj+qi1O4RCdHmmXpk6jVOGidR
+         v0wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793637234; x=1794242034;
+        d=1e100.net; s=20260707; t=1793637235; x=1794242035;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7A5LOz0c2QL4S1/kVnCWpIWEscMv5GfBU745tHtcqZY=;
-        b=fISImZTQYywhQbgZWj7BVG6WSiJhlQiVJl0VNHa7cBMbf7ZXvFRIusX/7J4iHx9u4u
-         pwtwwOiEPv18hQru5/MLcPs2FT/oCxforesOw81Xx7rqP39wkY3fnCr8ZPvuBODw3Cm2
-         K3/uYmwirOCdvGR2B36H/pt7tKKKwue/7juJXezQcrGbvZdkabo7YgykvVs3dfml+CxO
-         sfP9YEaLlkYMbCuTdHbWq1FSR4H9BAw76uVPKBigd2ZMmJyB2REjkAGwHcrD8SqJg2zE
-         eGKLN4E1GcyVFk7/Ghq2RNg7fFFzIBwU6wtUZYDqO6HsKuUY1/S2prDingehsPTKted0
-         GmHg==
-X-Forwarded-Encrypted: i=1; AKwUvBzHN3QvmfxlzJCeqKvD+YzmzSd5WkQ1m5uqlLRiOFKRxsnxiwpsMjvVtypwUOw0VP1TDz2ybzBwvOU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL/aMuKkSxlyOSqvXPi6fn95jMT0yPKKCSFN3Tnq1Z2AoMrbaY9
-	MidKwaONTgPtCHbn4C6oBVQOrODSdABFXHGQl6K9CYgkZm3ynMjNxeB8
-X-Gm-Gg: AYBFou2AM2btQP38GyEuFb1E/rzpfOIo70qpUAXwg6KCK1pgyNquTHRE0wqmg9C5eAJ
-	MK/JuT2jM0MaPgnmvOm67AaTH600hWhOrji5chvLLD01qND6yyGrWhWd9djViF/sjdbFFADnkbi
-	cArblGQJaL0nlqimgDwEQWnC748n4Kma3VXEuciXoqDWrvw8PpE6NQzNW9+GUp0AD3cM3vJtWaY
-	QDZqlWtNfVwPF6XBTPDMMBNGsLCyjSjmMPQ4UWCpSRQosdxKfvlnglUgpviy48We82GUHM5Gkbg
-	TuEySrT0HvIuHwgK5d4mghYAWieo8u+0jWoULq5BsUFbPdDZ756qUucJEzWt++QHpBGbqYnZcLE
-	m2sNZfc0hkgbiaumHjPa8BKHiYr69/ZWb/BHtiGRBNeUIlyXOd1U2DRPxLEO8LEcqkcYo0hzeau
-	jTLlv6S8G147qqiFQEqMpr3ImIGbrgy+I9eYQdcQ7m9mRSsWEZo7Yq3FNQJcQw9q2rcyzReLJbC
-	rT8NLG0Z1brBDrxBXoPueTZZN6NQXIMKW2Ldw7TJOYDUZUf4cDMT8zlUhVSfJx/KZdqu8R4OX7M
-	11xancRsq9HO9mT0gddZFPmC9bdBs89ysW0taZAGeQ6795DUwwmm0iMmEwWo8AMJAg4gIkMBTb0
-	8oKnbwW/vK3dmOJdNw5VxxIvWMPhfe3K9QTqsUZOQAi7kcu0cMHO7FFWxzwc02RUVKCYD2B9O12
-	G3rmoPgoUR+m5iEmkxJaSoJXnVnGmgrg==
-X-Received: by 2002:a05:6a21:a96:b0:3e1:370e:f233 with SMTP id adf61e73a8af0-3e928abd43dmr9176791637.69.1793637233860;
-        Mon, 02 Nov 2026 08:33:53 -0800 (PST)
+        bh=4Jui1jwEZ6v5nU3mpOAiFTjiS0PcXBHZtIqyyHsg9zQ=;
+        b=2PSHSes1f3tAGT+xy6zLoTZVGyiUa+09/5McZpEUnXX808uDP7XeUdyQinATxCG9gG
+         RC6AizKsMCUp0tMlYtil3YuLN1IWBLdO6vbBV27HcYoOZvS+JDIYBOzuzUn46/2DIN/Y
+         XiZ00mUjb5sZlU2iAq3jp53QJO3uB+BYe55H6FXH19BbJ/J1MjXUiyacTJvJEdY1nLM4
+         f1PV7l2jG7x3pt49J80n7XrJEjBIoVgcbc2MKgNYtISHdFms3sz3wKQV9IpzIAZE1VKU
+         1pnUtQ6P+TX0ChTejFS2KiwnQC9TJFxk5YTPLkYWsmFMoHthNX0UKBjzxwd2d8uFtf3r
+         /zYw==
+X-Forwarded-Encrypted: i=1; AKwUvBxEJmdQzPrD4WMORD+JI6253NvRmM1XndbQ6zZIt65/xOfK6fHFPJvQ7hdv4EyJiCLZvOsqjR/V8Os=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIejEoiZ6xg1dqdLHyevHxh/SajhB7vCoYpjX1zp0jHrGrZKpcz
+	CsKmG2JFL5Urz0wb9WtTCyBTSj5QvFH8n2siM5dHogF+EjHk9h5PHNo6
+X-Gm-Gg: AYBFou0tCkpwwF5o5E7DdGiPpN4wJrcShBJM/D+HWTsl2BeZt2gNEVdjyrAq8dAxb4G
+	UF9PwwORM6s3ZYW7qmZjn39jgd/V0FU+akgA4u3D7EvE5CIOa5mQC6LcJAwToIJyzpZqmjLzTsU
+	ZfQAxOPTk6fH68s/SFT3MtMaMtPLDzsPpOVyAo3J/E/WqskEUACMtRWPa0YBkQ2HUtTE5dWKqT2
+	MQ6R+6UNXWvaB4YnBn/FZbIN7C+P2zt9ft4XTW62MRHzC52z/HJp5Gq9ZDFAGlHzrDs/7lyT4x5
+	jiPbRthK7Wo5MbdvfgfrVfckPyiipNcuYF5Efpr/K0mXeOn8wFIfkYxTftCjDZhAylUIATScbyD
+	MalNG5QrYJhmo6IwaCCr6UKMtxy9gVpvW+19crSYiEOG56t+wS1R+JfDQ/xnP2P7Rx4WcilKwgq
+	CILqM3BHwT92XkYkc/FdTEUqyaB/jDQWpGNBwRzWKmAPN7kE9HAHjaDKtjk1lX8RJg0aANwg84k
+	EOaF5p0tI/3xgr7QME/9kJNiN/LI1/Aw4ONXtpUaB83h8LcyzOcz/BpolTSBjGQaMt+UDDkiEkp
+	jiincn9tac7fDNS20CLHJb0biKt94pNTzqtzlxvwxqtap/9hrf+Fm4zVqtbV/iNRQyjBlcic1iS
+	3FVAKUbbvERbujmueu/pw9JIzeRwocYuZcHgRILVW1VgscbN1LORNmSHUuZQ7CVsoDaBWeNwUhk
+	tGapCHGlw1BhP3oeBvwLYnOCldQL9/HgdYk4N8JfWQCPJGUOR+N7A=
+X-Received: by 2002:a05:6a21:6190:b0:3e2:4162:f1e4 with SMTP id adf61e73a8af0-3e928dfb0eemr9573750637.61.1793637234800;
+        Mon, 02 Nov 2026 08:33:54 -0800 (PST)
 Received: from josephctchan-96c-1t.c.googlers.com.com (95.100.125.34.bc.googleusercontent.com. [34.125.100.95])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada3d4092sm2184549b3a.41.2026.11.02.08.33.52
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8aada3d4092sm2184549b3a.41.2026.11.02.08.33.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Nov 2026 08:33:53 -0800 (PST)
+        Mon, 02 Nov 2026 08:33:54 -0800 (PST)
 From: Joseph CT Chan <jctchan@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: Bart Van Assche <bvanassche@acm.org>,
@@ -88,9 +88,9 @@ Cc: Bart Van Assche <bvanassche@acm.org>,
 	linux-spi@vger.kernel.org,
 	Joseph CT Chan <josephctchan@google.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 04/14] spi: spi-mux: finalize message when forwarding fails
-Date: Mon,  2 Nov 2026 16:30:13 +0000
-Message-ID: <20261102163023.2574632-5-jctchan@gmail.com>
+Subject: [PATCH 05/14] spi: spi-ti-qspi: finalize message on transfer error
+Date: Mon,  2 Nov 2026 16:30:14 +0000
+Message-ID: <20261102163023.2574632-6-jctchan@gmail.com>
 X-Mailer: git-send-email 2.56.0.317.g454f8302e1-goog
 In-Reply-To: <20261102163023.2574632-1-jctchan@gmail.com>
 References: <20261102163023.2574632-1-jctchan@gmail.com>
@@ -107,105 +107,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Joseph CT Chan <josephctchan@google.com>
 
-spi_mux_transfer_one_message() forwards a child's message to the parent
-controller. When spi_mux_select() or spi_async() on the parent fails,
-it returns the error without finalizing the message. The SPI core then
-logs "failed to transfer one message from queue" and does not finalize
-it either, so the child's completion callback never runs and spi_sync()
-on the child waits forever. After a spi_async() failure the mux also
-stays locked, so the next message on any child of the mux blocks the
-spi-mux message pump in mux_control_select(), and the message keeps the
-spi-mux device and callback in place of the child's.
+When ti_qspi_start_transfer_one() hits an error in qspi_transfer_msg(),
+such as a transfer timeout (-ETIMEDOUT), it unlocks qspi->list_lock and
+returns ret directly without writing QSPI_INVAL to QSPI_SPI_CMD_REG,
+setting m->status, or calling spi_finalize_current_message(host).
+Because the message is never finalized, spi_sync() or the spi_async()
+callback waits forever on queued transfers. If spi_sync() took the
+no-queue path, it returns -EINPROGRESS instead of the error, and the
+message's optimize state is never released. The frame is also left
+open, because the QSPI_INVAL write that ends it is skipped.
 
-This is easy to hit: spi_async() on the parent returns -EBUSY whenever
-another device on the parent bus holds spi_bus_lock(), which mmc_spi
-does for every request. It also returns an error when the parent
-rejects the message, for example a transfer with 16-bit words and an
-odd length, which spi-mux does not validate because it defers message
-optimization to the parent.
+Set status to the transfer error and leave the transfer loop, so the
+error goes through the existing tail: unlock list_lock, write
+QSPI_INVAL, set m->status, and finalize the message. This fixes both
+paths, and the caller now gets the error from qspi_transfer_msg()
+instead of -EINVAL or -EINPROGRESS.
 
-On select failure, set the message status and finalize it; there is
-nothing to restore yet and, with patch 2 of this series ("spi: spi-mux:
-release mux when parent setup fails"), spi_mux_select() has already
-released the mux. On spi_async() failure, set the status and call
-spi_mux_complete_cb(), which restores the child's pointers, finalizes
-the message and releases the mux, in the same order as a successful
-transfer. In both cases return 0: the message is already finalized
-with m->status set, so the error reaches the caller through the
-message, and the core does not wait for it. Returning the error would
-only make the core log "failed to transfer one message from queue"
-once per -EBUSY while another device holds the bus lock.
-
-Behavior change: a device behind spi-mux now gets -EBUSY while another
-device holds spi_bus_lock() on the parent, instead of hanging. A device
-wired directly to the parent would instead wait in spi_sync(), because
-spi_sync() takes the bus_lock_mutex that spi_bus_lock() holds
-(drivers/spi/spi.c spi_sync() and spi_bus_lock()); spi-mux forwards
-with spi_async(), which returns -EBUSY while the bus is locked. Making
-spi-mux wait for the bus lock needs a core helper and is left for a
-follow-up.
-
-This depends on patch 1 of this series ("spi: unoptimize message when
-queuing it fails"): spi_async() on the parent optimizes the message
-for the parent, and without patch 1 a failed spi_async() leaves it in
-that state when it is handed back to the child.
-
-Tested with KUnit (spi_mux: spi_mux_error_test, added later in this
-series) on ARCH=um; before this patch they time out with the message
-never finalized. Builds with W=1 on x86_64. Not tested on hardware.
+Tested at runtime with KUnit (spi_ti_qspi, ti_qspi_test, added later in
+this series) by injecting a QSPI_SPI_STATUS_REG WC poll timeout
+(-ETIMEDOUT) via logic_iomem emulated MMIO on ARCH=um.
 
 Assisted-by: Claude, Gemini
-Fixes: e9e40543ad5b ("spi: Add generic SPI multiplexer")
+Fixes: 505a14954e2d ("spi/qspi: Add qspi flash controller")
 Cc: stable@vger.kernel.org
 Signed-off-by: Joseph CT Chan <josephctchan@google.com>
 ---
- drivers/spi/spi-mux.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/spi/spi-ti-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
-index a7ea6585b374..0e770137b5bb 100644
---- a/drivers/spi/spi-mux.c
-+++ b/drivers/spi/spi-mux.c
-@@ -117,8 +117,12 @@ static int spi_mux_transfer_one_message(struct spi_controller *ctlr,
- 	int ret;
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 091a8b8842f5..7360ee6bd122 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -708,8 +708,8 @@ static int ti_qspi_start_transfer_one(struct spi_controller *host,
+ 		ret = qspi_transfer_msg(qspi, t, transfer_len_words * wlen);
+ 		if (ret) {
+ 			dev_dbg(qspi->dev, "transfer message failed\n");
+-			mutex_unlock(&qspi->list_lock);
+-			return -EINVAL;
++			status = ret;
++			break;
+ 		}
  
- 	ret = spi_mux_select(spi);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		/* spi_mux_select() released the mux on failure */
-+		m->status = ret;
-+		spi_finalize_current_message(ctlr);
-+		return 0;
-+	}
- 
- 	/*
- 	 * Replace the complete callback, context and spi_device with our own
-@@ -133,7 +137,23 @@ static int spi_mux_transfer_one_message(struct spi_controller *ctlr,
- 	m->spi = priv->spi;
- 
- 	/* do the transfer */
--	return spi_async(priv->spi, m);
-+	ret = spi_async(priv->spi, m);
-+	if (ret) {
-+		/*
-+		 * The parent did not take the message, so it will not call
-+		 * spi_mux_complete_cb(). Call it here to restore the child's
-+		 * pointers, finalize the message and release the mux.
-+		 */
-+		m->status = ret;
-+		spi_mux_complete_cb(priv);
-+	}
-+
-+	/*
-+	 * On error the message is already finalized with m->status set, so
-+	 * the error reaches the caller; returning it would only make the core
-+	 * log it once more.
-+	 */
-+	return 0;
- }
- 
- static int spi_mux_probe(struct spi_device *spi)
+ 		m->actual_length += transfer_len_words * wlen;
 -- 
 2.56.0.317.g454f8302e1-goog
 

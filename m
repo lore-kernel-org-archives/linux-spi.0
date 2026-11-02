@@ -1,63 +1,86 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=203.29.241.158
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793575728;
-	b=tJhZSkFtEw6CL7sK3MzB9f+iobA/31COI13tli7nysC/p/7bBzBDumcGW+oG9VnzHmsX
-	 8W1l6uxsU5WDLD0V9lEjGSS9WaaJBydFvF06pTbSAsFwFEQT6prfyjEv1G4Lqlvb283NN
-	 pJiA6z8AO4O+VFowQ+D22Oya8D7Y2H4PA0anXga/Picfb3Uc9zBjSoGTVD3bxSa8psdpq
-	 Fe0UpJJstJNyypAttUyMJm42f/vb3jltVSiTH3eOwQI2rMIX6rRA8HDtwr9v2eQS7Nvm8
-	 FlNDZYaToS5y9bbkxiZgcAEgnt37PdxerEPXD3jG/i2Gt8GsCA3rAU/CYxVcni5ErAw==
+	t=1793598962;
+	b=YavxbU5EMo1ezAd4Cj3l8VBm4jRbc+w+2nJCDUqF7BApcpVMNppvjcDvKpAzBb++nwsq
+	 mvjJxwP7e/4xrt1U4luzeAZYrYzB9eSNnlMGKmP8krumpu8sW/DU548stjQNUX5rz9hrh
+	 fbadN7rbs9zW7nyU+zDORh6K6ryHrOFAFteAvE7i2W5XPny9JwF6c103OlRFwIO514rIe
+	 zE0Jl0+00iYELKUbxHgJAISJuIRKFeCYEuJQiJtwMJzkZeDX+brt6LfAElaL3bsVKw292
+	 ITomeniGyHb+1veNHQtPWWQeSRrDwWRicjVQ4tfzaCM0WMaMZNWIYL2fCAkh37M/wVQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793575728;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=MN5KK8jKhXjnMlMrzDOYdQ79mkQ5D28TMuJpUxh2iNI=;
-	b=h6obTaMXx2/zx21mvx2UYUi/+urfLVf6O84rIgS+3RPDdI++PEJ3DATWw3uC1JxK43+I
-	 N633wn4fiQhiw8oBUszR79HsJHfIqXjbOkVdrJrxw1qaGHAmhZYzOjeYxgsYDlvR1hIGV
-	 KuJdTqTCL+LGycngmoywIRT0McASP5rFKHv5gCCI8tNtqCOWVmO3M1KhpMzBCKYSPUh6n
-	 1Fj9a2aq7UcA05VvJQwyH/Cw3X0O6exjmUcCO5BcS5IWPNdpiGFHObnErellrW+pNA38Z
-	 M1Lr7gaqQ2UyRw1xCNDsrjha01hnKIDrRWBBMnia0KkHL/PxG289EQHC6TM+oBz0h/A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793598962;
+	h=DMARC-Filter:DKIM-Signature:Received:Message-ID:Subject:From:To:Cc:
+	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
+	 User-Agent:MIME-Version;
+	bh=galmyEn4LbKSLuawhs4ZGQeiueItg3W/HcKq5KP6Bgs=;
+	b=vzkMZdVvmgQyjU5YcZ01n0KmtEVBlLrTtZxF/afaprf07O57UsshoN1T6bqH2ts4/O8T
+	 8W/ZYio3AKMohrNDA0hYdgrNeMaUEiwYpugTCmrsR+q2YWnGSIPwD9Rnh2SGhncQCskjA
+	 srrm+R+RgmsBCnYDpRHJwnzUhavayJH7fB7tiHBOrYyplbILYR9neHQ/3dmi3gIWsTXXr
+	 i+VO1Uxq6+j9mP5hGNo5sWhjGLU15L6acyRnoypPfAWoetXc3Gz0Y63n5b57j3nu5cGNy
+	 royho+hP6GnIcuF3apjkTT+ddD4DzsQ7RalOC7qu6KgBGmp14uYqsTF+3A6oWypWcYQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2Du5A77;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=codeconstruct.com.au;
+	spf=pass smtp.mailfrom=codeconstruct.com.au;
+	dkim=pass header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=joEgN+t6;
+	arc=none smtp.remote-ip=203.29.241.158
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D6260A2608;
-	Sun,  1 Nov 2026 23:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCA3606A326;
+	Mon,  2 Nov 2026 05:56:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 8BCA3606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T2Du5A77
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D8A1F00919;
-	Sun,  1 Nov 2026 23:28:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793575727;
-	bh=MN5KK8jKhXjnMlMrzDOYdQ79mkQ5D28TMuJpUxh2iNI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T2Du5A77vmFi2vkzBAegqF0X+Anh40oBzhQ+W3kXA5Djg7Z2Bj8Uph5upHMudHGJ5
-	 ZM/O9Lik6L1xDr5Po5oHMzjuuxsAnnjJVgQnFAyz0bQz01/O1kM6EtNeb9o0yuglwr
-	 PPB1lIBall+uvvtESGKyTH05QpGlrq4G+R45PTWgkVoD0AEbSv0tlEeXHitXUkybOy
-	 7alHKphaAfW5xTdAmntNydPIssxqppT4czF5dq5bVLlsy7f2gsVfCNfrft3F+t4Pxj
-	 gjtxDtaBm6olsJHdsObTP/1T1V7lr2Yb26o1ky1y/a/AueBszvL0P/2jDkuj28QFgl
-	 JQY7UFbW3vseA==
-Date: Sun, 1 Nov 2026 23:28:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-spi@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux@analog.com, broonie@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- Michael.Hennerich@analog.com, nuno.sa@analog.com, dlechner@baylibre.com,
- andriy.shevchenko@intel.com
-Subject: Re: [PATCH v4 2/9] dt-bindings: iio: adc: ad7768-1: Document
- multidevice support
-Message-ID: <20261101232838.591e2dd9@jic23-hlaptop>
-In-Reply-To: <auWKdiIzL1Gykxkk@JSANTO12-L01.ad.analog.com>
-References: <cover.1792435248.git.Jonathan.Santos@analog.com>
-	<6e2176d5547c59c39bb692e9768d7ac079b40f71.1792435248.git.Jonathan.Santos@analog.com>
-	<20261026020500.6c13c0e6@jic23-hlaptop>
-	<auWKdiIzL1Gykxkk@JSANTO12-L01.ad.analog.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key, unprotected) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.a=rsa-sha256 header.s=2022a header.b=joEgN+t6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1793598959;
+	bh=galmyEn4LbKSLuawhs4ZGQeiueItg3W/HcKq5KP6Bgs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=joEgN+t6NvoovW7oKCyZDr2eqdix+/duqp4PMFPCW3+RRwMNBkk04YEGTrQqXFBfa
+	 tCJu2UBAyLCb6xV2/OxjkIAgqYEwt8p4FKq7NIXZ8waf1xyRvl97ugJ8Az60PQtVde
+	 NvMCCJ2xvX1Y80yfKQIMFQPgliXk6vJBrQiVp8GlhsxUBGqyqXyFYipUEdra2x9jW6
+	 7tbTiIxaXd9V6tZX11NmuzG84SPnnozNpGRH4UM+InMJfNnB/aLnlIf/7VxlhdH9xn
+	 720JtOYjZ6d7n7DjPBBG7Dva9h3DRuPJgRgoxCI6V889anGcx67nbuYl1n0zXg5WFV
+	 FmmJo+qfQ9KKA==
+Received: from [192.168.72.161] (210-10-213-150.per.static-ipl.aapt.com.au [210.10.213.150])
+	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 6A55B648DC;
+	Mon,  2 Nov 2026 13:55:57 +0800 (AWST)
+Message-ID: <06e25064f8a5455c12b47033a1a62b94100e7590.camel@codeconstruct.com.au>
+Subject: Re: [PATCH 00/11] Add NVIDIA LSTP USB adapter drivers
+From: Jeremy Kerr <jk@codeconstruct.com.au>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Adrian Ambrozewicz <aambrozewicz@nvidia.com>, Donald Shannon	
+ <donalds@nvidia.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Linus Walleij	
+ <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Lee Jones	
+ <lee@kernel.org>, Pavel Machek <pavel@kernel.org>, Andi Shyti	
+ <andi.shyti@kernel.org>, Mark Brown <broonie@kernel.org>, Jiri Slaby	
+ <jirislaby@kernel.org>, Corey Minyard <corey@minyard.net>, "Rafael J.
+ Wysocki"	 <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Jonathan Corbet
+ <corbet@lwn.net>,  Ilpo =?ISO-8859-1?Q?J=E4rvinen?=	
+ <ilpo.jarvinen@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>,  Hans de Goede <hansg@kernel.org>, Lixu
+ Zhang <lixu.zhang@intel.com>, Danilo Krummrich <dakr@kernel.org>,  Johan
+ Hovold <johan@kernel.org>, Oliver Neukum <oneukum@suse.com>, Quan Nguyen
+ <quan@os.amperecomputing.com>,  Andrew Jeffery
+ <andrew@codeconstruct.com.au>, linux-usb@vger.kernel.org,
+ devicetree@vger.kernel.org, 	linux-gpio@vger.kernel.org,
+ linux-leds@vger.kernel.org, 	linux-i2c@vger.kernel.org,
+ linux-spi@vger.kernel.org, 	linux-serial@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, 	linux-acpi@vger.kernel.org,
+ linux-doc@vger.kernel.org, 	driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Bart Van Assche	 <bvanassche@google.com>
+Date: Mon, 02 Nov 2026 13:55:56 +0800
+In-Reply-To: <2026103015-stained-shudder-1582@gregkh>
+References: <20261012-lstp-usb-adapter-v1-0-aambrozewicz@nvidia.com>
+	 <2026101310-scuttle-unison-d4c3@gregkh>
+	 <c569c912141e9da7530121b8b2fc81527e0518a4.camel@codeconstruct.com.au>
+	 <f3f305a0f3195948bd25ca7eea4348113f998ee2.camel@codeconstruct.com.au>
+	 <2026103015-stained-shudder-1582@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,37 +90,38 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Sat, 31 Oct 2026 03:28:06 -0300
-Jonathan Santos <jonath4nns@gmail.com> wrote:
+Hi Greg,
 
-> On 10/26, Jonathan Cameron wrote:
-> > On Tue, 20 Oct 2026 22:56:56 -0300
-> > Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> >   
-> > > The AD7768-1 family supports aggregating up to four devices on a single
-> > > SPI controller, with each device occupying a dedicated CS line and a
-> > > single data lane.
-> > > 
-> > > Extend the `reg` property to accept up to 4 entries (one per device).
-> > > 
-> > > Add `spi-rx-bus-width` property to declare the per-device lane count.
-> > > Since each lane is bound to one CS, the number of entries must match
-> > > `reg`. Make it required when `reg` has more than one entry, along with
-> > > `spi-cs-composite` property.
-> > > 
-> > > Add an example for a four ADAQ7768-1 aggregation, with shared DRDY and
-> > > SYNC_IN pin.
-> > > 
-> > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > > ---  
-> > 
-> > I'd suggest some asci art might make it more obvious what you mean here.
-> >   
-> 
-> Ok! in the commit message, right?
+> I haven't read all of OBMF, as obviously that isn't what is being
+> proposed here, I was just complaining about the madness of attempting to
+> create a device tree representation for a single USB device that wanted
+> to be carved up into different virtual devices because no one decided to
+> learn from history.
+>=20
+> I have other objections about OBMF-ICP, but that's not what this thread
+> is about, sorry.=C2=A0 Please propose your own patch series for that and =
+I'll
+> be glad to criticize it there.
 
-Probably. If it feels too much under the cut, --- with a lighter description
-in the actual message may work too.
+OK, fair enough - I'll defer this for an OBMF-ICP submission, rather
+than piling it on to this LSTP thread.
+=20
+> > With OBMF-ICP's super-minimal core protocol, and the use-case
+> > appropriate channels, seems like a suitable approach to me.
+> >=20
+> > The USB-IF has a class ID allocated for OBMF-ICP interface descriptors,
+> > with the intention that we have multiple vendor implementations of the
+> > common protocol; we would like Linux to be one of those.
+>=20
+> It's always fun to make a new spec and protocol,
+
+We seem to have different definitions of "fun" :D
+
+Thanks for the discussion so far, I'll follow up again when we have a
+series to propose. That shouldn't be too long.
+
+Cheers,
+
+
+Jeremy

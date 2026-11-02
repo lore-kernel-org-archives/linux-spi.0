@@ -1,61 +1,59 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623387;
-	b=3336PGuA6CuSB1JeYMGwgU5ONSGpPxPWw33CuI0TsfzCD9EyZQlsSYToRK9y5L/sDCMK
-	 X4TaygZ1/j1ojfxybjnSTr54PvwS1g9GTSI1qr9PTL3ZfexbGwdNko1HD2iPPnDxoh090
-	 LZPZeRvKdab1j+U6Z3ByB4PpWFW/TnYAu4Hfc8gLiKMDevbS+iFlJ57mOgr3AQ6CZ2pxZ
-	 CBlxog97W7jeNwMHeWKZ63QyP13KVq1Z3jRObY13IVSToYZNMN9oSUCycSwdFphIFT8e0
-	 PalVQ9w8lP/x1w/yTJxR7WxMXnmSn9anPJ+LhcyUoGDPNzHznw1xqeDS0T7u3pZ2ifw==
+	t=1793623385;
+	b=M0pio+fwadsGmtaZVmY2bXvc5VDZEOLQGEn9JM3955nokR+buayjhSDI8lwYFqlBcXj/
+	 pFkiR6dXjcapT8LwAjqpiUNmnbvLQNxxlC8YG5IrSG2vdG9cVgcvlcsaCsZIlG6KdPiVi
+	 gQhmMLlscJB7a4scdXld6ZoDZaCK9zN0pcG+Xu8+jtjcLX5onRXrQr/oRFEUPFrkH8Jnn
+	 H1nAX2v+Q2ru7dKTRXsTjO+39lADuL0r2f+nCMfomAO8UMbmvrlft/8MpvHNOe0X02SUw
+	 3HyrJQRFkceZBOWoZR6Q1XhtZi82jcZ99ItwZBkozalaycdseem0z3we1vcDENWtqCg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623387;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623385;
 	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
 	 Subject:Message-Id:Date:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=Fvicyg8Fd06ea9xOp3734mK6H6xlGiXlw0uR3rAzBzs=;
-	b=m6YNSSbJ1O0nauvK7jWT9+O539uaAynVGbVzPDZf7Sq7o6YbfEQwdNxT7K6GT7H2MNId
-	 gEhhuL4u2CUeLguoFXhVGeIiJIoouFLERelf04F/4Sw8X3DUIRLVAXvAjIBBNrUkWpYS2
-	 kHHqFyzr7FqPRU5Z/eC1DaRZNZQlSJCDIQ+cTiYh/FJX19K3J6NKQl7VSXfliTvNX/f6U
-	 j9pfOBgvDf8uzA6NDnXgHllSC1CetLmYxXw+Ws2fKn6yoNgxwQySkcRBVtzaNr+1vZk2a
-	 GGyDD1xvhiZrl9nyk6cGAJnmMGw53F3O9Ht4wGa44b2+I7KmRzXmcu9erFy7HTv/pBA==
+	bh=SkXyzh8uT2n1jzJIe19qHbcn5tH31EHYHMtwETTViV8=;
+	b=LoT3uLtpaCA+h07VNbFbl3jeNgItM6doJiyWIWJbanOpQK32RHc6PaTh3sdWUcMGu7LE
+	 PIKaqJ7e6Go77V9qJ7lzJuhkUMT2xyYsOAyzTFsAAa8fCNvLPxp4VX+oQ/6CdbdAi0Yp7
+	 Nnvc4BrMQTSOQKNazXvzjUJmcK6zTtQsforjYQUKOgJJu6Fp2ef117zYtpeRoqpxplIt5
+	 60/w9DnC5aeG7t5Awevl2/DRi8n+JKUeJtpSdd0+WuRxcca03z9eyeEk84SV+/d9RrvZ4
+	 zy2OlwFAUqI7pg/LSOpMrWTIBCr9Qrm6PXpHojeM/CAKTwFjongkd/BvaAbKPjHsu6w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oh1sbX6U;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dygrx1KQ;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E65660A2638;
-	Mon,  2 Nov 2026 12:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8618C60A2628;
+	Mon,  2 Nov 2026 12:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oh1sbX6U
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15C91F00A17;
-	Mon,  2 Nov 2026 12:43:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dygrx1KQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ABA1F00A16;
+	Mon,  2 Nov 2026 12:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623386;
-	bh=Fvicyg8Fd06ea9xOp3734mK6H6xlGiXlw0uR3rAzBzs=;
+	s=k20260515; t=1793623385;
+	bh=SkXyzh8uT2n1jzJIe19qHbcn5tH31EHYHMtwETTViV8=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=oh1sbX6UxViCVjK652yjM3GQIfeNiU+flMgKM1OPDapbm0ytnUs0+VOt5++gcUkLy
-	 znS3tBmZN1fzIl5llI5sqP5X25MhjNnlpufpHqIE2POVXnc0IzOQvFezmenf/03XJy
-	 +hSZN5BY43sRw42IEZiW2NhIoKfVj3iKh3wA10OhH1iIuCugRvuLf4Dz7yzM+m4Gya
-	 Vt5ZLtz3RNOFOJRhsoV0NeZt+GYG3e+PIwX4A7Ps5k+vPXBW0UkI7D2Iz3zW1QgyCg
-	 3dodCtGVKSbm8GrtTs4X/9SdjAqNIaaKS5i70wKet/Sn5Z3MBxQUCpL5fQL8OBLTtR
-	 8hvRqSWwTDzXw==
+	b=Dygrx1KQGHKITDdGJ6ho8goP6He7C298oqfMEJDT2hEHEdUoAMLdwtE0MJRUDRkrl
+	 oCIVEG+HH0iRMoNxe4KGYLjV6eWbNLYDPYjCQICYYwUmAeSJYVA2BBbNlyFQMh9uUc
+	 l98sE02TyvhejTuAkj5QCu251DsoDls4ZCkE+qx7ERrqTweQsl+diyMvTZxCXYbE3Z
+	 ikSKNqo9tCui5MzndA8MWQ9N2sBxMrWfbkcWIcl82HwRkvi+GQNEUSloc6PjgyJlFc
+	 /verUi14EBJppjTd0paUJKMuVtMlS/6Q30o0FpwZPz7+085AYAbj/djQd0XzetDVnt
+	 Ku/POgBGGRLqQ==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 1947D2310542;
-	Mon, 02 Nov 2026 12:43:05 +0000 (GMT)
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 5C3722310529;
+	Mon, 02 Nov 2026 12:43:03 +0000 (GMT)
 From: Mark Brown <broonie@kernel.org>
-To: Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Ninad Naik <ninadnaik07@gmail.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261026112033.36310-1-ninadnaik07@gmail.com>
-References: <20261026112033.36310-1-ninadnaik07@gmail.com>
-Subject: Re: [PATCH v2] spi: mtk-snfi: use min() in
- mtk_snand_read_page_cache()
-Message-Id: <179357935036.1716893.15135482750759884888.b4-ty@b4>
-Date: Mon, 02 Nov 2026 00:29:10 +0000
+To: Hongjian Dai <daihongjian@kylinsec.com.cn>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ purna.mandal@microchip.com
+In-Reply-To: <F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn>
+References: <F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn>
+Subject: Re: [PATCH] spi: pic32-sqi: fail transfer when the BD ring is
+ exhausted
+Message-Id: <179357807106.1716893.15775820389064671168.b4-ty@b4>
+Date: Mon, 02 Nov 2026 00:07:51 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -68,26 +66,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1122; i=broonie@kernel.org;
- h=from:subject:message-id; bh=czJJa5KVgAzY89jIsO/TrpW8iHAFY+XUjsaRbcZfipc=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJetEbY7pjec3rKvBq/5lN2QdeE53fNk+bdvrLB4Htfg
- 3H88RKHjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEykeS7D/3Jm7phmE69wWY9o
- fe2vGe8D5a6fm57vXpQXsXZhxUXrJYwMD2NL3vjdvu3w9YS4oqNneusy1krv5jd1as/1VerKK24
- yAwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=8D+Gi3HVmMsBqdAbOX6/jRrCsq3dejvg01M4u2eXuOE=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJetIbPakl1mM/yzf9e0JsZ1yv6Nh3v6D3nEa6nuLa0R
+ PPBinl3OkpZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRl3MZGda3COlZPNnCtiHj
+ 62R2PxM/y6enJh7PEf05YftBtiWWBycz/M+qOdj28/Kss/edPn/p++yYfjko0Ciua+OcJiftp9o
+ S3bwA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 26 Oct 2026 16:50:33 +0530, Ninad Naik wrote:
-> spi: mtk-snfi: use min() in mtk_snand_read_page_cache()
+On Sat, 17 Oct 2026 15:55:45 +0800, Hongjian Dai wrote:
+> spi: pic32-sqi: fail transfer when the BD ring is exhausted
 
 Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
 Thanks!
 
-[1/1] spi: mtk-snfi: use min() in mtk_snand_read_page_cache()
-      https://git.kernel.org/broonie/spi/c/44e7659f4618
+[1/1] spi: pic32-sqi: fail transfer when the BD ring is exhausted
+      https://git.kernel.org/broonie/spi/c/2066970324a1
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

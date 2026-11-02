@@ -1,48 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623812;
-	b=Bz4sLUf4tw8ZgUGJBKUHOcY2Sd9UfPFnYiSt8ZRXx3vKiwu/qwhSLUL/LTqP3rZSI37p
-	 JVeI0BxqY22VdGV7fALk23okyxjlwUayi4FvnZ9U/b11t98f1zzzDi3uHqPoLvpzGFoO0
-	 prfP5w9Nfo04bga1d6/jCf6PH9uQm0YIELBgewx58dXtDbGUqgWJqfbkyZeZjg/p+a85Q
-	 XHKEtccZdF/KaYeTW8kj2PXq/FiGNpXydSHBRazykxgmLIL1NSL8zsUc7bU8bu3NOGpRv
-	 CKGX6NankBzy1gqcOq9KEOb1NOWOaQFnuZtVvfFSAW5n6qFrVLuwluQKVqW+6yWSb4g==
+	t=1793633633;
+	b=vIQFRYuKCefyt00U6eJrjyyvqYhXnXpiJwn8KG4l6Zr7OpmLVURxg914YJzlVb125JsD
+	 mTITQ8inQuPzbqxZ6yBXI9IgiOgXbhYRBKEb9L0pQ5UyHAbS4nTh7PbPuHjqNmZ4MidlC
+	 wJgUuGLplF+qytYkdCYeDeQ3JWZHMdxqIR4CXSVIXaMU7qxOeOuZSxqlpDHL7rpRTgPeR
+	 SiQimsPk/Dat8H7ou1ab8tgvMxjYf4vHQvA0TnjwF0n1F26Ry9O8iQNJuROT9wrjloBEP
+	 AveUIp6VxmlKJjCPCtHDFTl4DWoHz3swwsyecJDjvR7f4Jl/hFYa037d2LqX5QYPLXw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623812;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=4eQgb73Q3+NDXYB13GelTPBtYDDAYl5kHgbpf+sUJJ4=;
-	b=bXj3MvkVR9gAxb8j8sEuy+tHgIZ4ZschGbxu+bdv0NFPHWjdP7Dha+iORUpeWXmv7Oha
-	 Lu3EZcGiyM5IUkN9HLPE6IYqOgl2uCa8iyWsE/Ws9X4/8J1Dzu2eIgSBgMfobMmzCzUtZ
-	 RKOwx3uQuxWlGcRWJnhFGrZYD2LKnhPgcf73U9G7SedwfO5ndHGShIDchYFxOqC9KnEla
-	 VzhRQDpYpMICNtXovhLQQlw3uS3mXGn51qZ8ljGrHLX5iuh/HSfwQqb56Us6loGkckUBL
-	 PXYV/4noCogQ4dvg6B3pHKiQl5sTn0W/VWmLhKjXjJk/IPWAKN4Je+pYsJ+Zv+fbslw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793633633;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=oyiH8KxW4iXXTpuxCrw2DNTT9U7UsOP1QJQuaLjnOsk=;
+	b=MsoQObMEmymvAl675YhGllpPaBRSgUFCDEghVn+4rFwbCz0T1m25J99qr9buHV+k1Ntj
+	 QUIwu8Cmhy5vUbhfzbOUaa0giBzJMsBOTstCLwEopjo5HOSNMfkXsohgIKN4Tbah1HD1v
+	 k+ttnFUlrTprLUx+zbeBFid1Wfgf5CuqQ5QkHuyaPI3tRAOFjaTl7sRgGtyeq2oR87LV5
+	 04gMKYGaAmozQxKN2wS7gD6y7iuWixJuylJGn8NA376G64/b5xfmsmsJvuYpgouqCA6X2
+	 fh8yJAp+N/WptCaa8PDGVHdzYi4qpr9wHNW+18kbJoyjzwbOHw6qULI5oR7F+yK4QJA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K86MCPXu;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+2JJMp6;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C906760A2605
-	for <linux-spi@vger.kernel.org>; Mon,  2 Nov 2026 12:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBA06072EEA;
+	Mon,  2 Nov 2026 15:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K86MCPXu
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7C31F00A1E;
-	Mon,  2 Nov 2026 12:50:11 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k+2JJMp6
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF9E1F00A22;
+	Mon,  2 Nov 2026 15:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623811;
-	bh=4eQgb73Q3+NDXYB13GelTPBtYDDAYl5kHgbpf+sUJJ4=;
-	h=Subject:From:Date:To;
-	b=K86MCPXurZEBayVIr7JNmE8PTJnZRhjCBEFQD9+4y0Y6GLtOkLN2HLe+jfYtyn9wT
-	 JSeDicLTQR9Tk9JnZAGWM3CuiEBSE7mIPWRbcRVLMJN5GcNbZi3KebpsGWFSeqxzIR
-	 4WM8OgmQdjB6EddT9FJzB9YrnyaUNYDQCvqkXoDzRwYFlLJ/LjaT3mMWcmbfyEOCDA
-	 7G0tht2FOLhBXmyROGyzwJkVuktiG/8k/Ie97n+5vb6/WqXynhKoZ6WI3p6L26+Gax
-	 SoKNPNMT2lFXjRz/Ui9MZD/xhLgXt4phrvlxJ5s0+0tfaR8+3zgeXTdDIGw/BdSZrA
-	 PXSzCLvQ6O9VQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 42CBC380821F;
-	Mon,  2 Nov 2026 12:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1793633632;
+	bh=oyiH8KxW4iXXTpuxCrw2DNTT9U7UsOP1QJQuaLjnOsk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=k+2JJMp6uZY/bpveREdKtKY8CADb7bq88SXxQuMoaXUQvF8wIbmsNzwb7pFmbe7NV
+	 V75AWJzgaXjeEg+p/gyxbbiT1dCnl+s3+phFK43ai9MfmAsirRF/R4Lij77BYL1XMz
+	 p+8VOjEc8LQYikjnOu6oX7OxLWMFf1wm20/feMqZHJsQHSt5SRKqV7yqEAnk5swoes
+	 2WsBxB3TWK2fzSNcQOt6D2R8RYrjanqwfUO4Y6GALEZN+60nI/dX2Q+kD6LgWdpEz8
+	 53jogXFUq+BxELKOqXhmQkwCRXt6o3q4HZApHP+J/qPYcQryUVy3Gb4VVrPYY923cB
+	 X0WECcdvM5roA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Itai Handler <itai.handler@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	Marek Vasut <marex@nabladev.com>,
+	Marek Vasut <marex@denx.de>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-spi@vger.kernel.org
+Subject: Re: [PATCH 5.10.y v2 0/4] spi: spi-zynqmp-gqspi: fix runtime PM, then stop on shutdown
+Date: Mon,  2 Nov 2026 10:33:37 -0500
+Message-ID: <2026-11-02-1-daily-reply-0011-spi-zynqmp-gqspi-5-10-v2-hold@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261101163154.2274099-1-itai.handler@gmail.com>
+References: <20261101163154.2274099-1-itai.handler@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,71 +65,18 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179362380985.4011165.8155326725781390403.git-patchwork-summary@kernel.org>
-Date: Mon, 02 Nov 2026 12:50:09 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-Hello:
+> Marek, do you remember which platform it was and how it failed? If it
+> is still around, could you give this series a try?
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+1/4 and 2/4 are the code that 5.10.199 reverted in 1ceaf0d3a883 ("Revert "spi:
+spi-zynqmp-gqspi: Fix runtime PM imbalance in zynqmp_qspi_probe"") and
+649237ccf440 ("Revert "spi: zynqmp-gqspi: fix clock imbalance on probe
+failure""), and nobody found out what broke.
 
-Patch: spi: topcliff-pch: clamp DMA bpw_len by bytes not words
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1185647/
-  Lore link: https://lore.kernel.org/r/20261014-spi-pch-bpw-clamp-v1-1-3e04b3ac5106@xiaopeng.com
-
-Patch: [v2] spi: mtk-snfi: use min() in mtk_snand_read_page_cache()
-  Submitter: Ninad Naik <ninadnaik07@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1193650/
-  Lore link: https://lore.kernel.org/r/20261026112033.36310-1-ninadnaik07@gmail.com
-
-Patch: spi: core: do not WARN on OOM spi_controller_id_alloc
-  Submitter: Gowtham S Bhushan <gowtham398gs@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1197584/
-  Lore link: https://lore.kernel.org/r/20261031023942.591298-1-gowtham398gs@gmail.com
-
-Patch: [v2] spi: fix zero-length scatterlist entries for vmalloc buffers
-  Submitter: Chunfa Zhang <zcf1810@163.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1196919/
-  Lore link: https://lore.kernel.org/r/179334613930.227576.16591083055909656623@163.com
-
-Patch: spi: rtk-nor: Limit exec_op writes to one byte per operation
-  Submitter: David Carlier <devnexen@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1197237/
-  Lore link: https://lore.kernel.org/r/20261030145909.285144-1-devnexen@gmail.com
-
-Patch: spi: amd: validate FIFO usage before executing message
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1194191/
-  Lore link: https://lore.kernel.org/r/20261027021340.914399-1-liuwb@xiaopeng.com
-
-Patch: spi: pic32-sqi: fail transfer when the BD ring is exhausted
-  Submitter: Hongjian Dai <daihongjian@kylinsec.com.cn>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1187860/
-  Lore link: https://lore.kernel.org/r/F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn
-
-Patch: spi: acpi: only look up the IRQ of confirmed SPI devices
-  Submitter: Rosen Penev <rosenp@gmail.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1198264/
-  Lore link: https://lore.kernel.org/r/20261101200155.15740-1-rosenp@gmail.com
-
-
-Total patches: 8
+Marek, Michal: can either of you test or ack v2? I'll queue it once one of you
+has.
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha

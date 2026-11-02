@@ -1,59 +1,60 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793623385;
-	b=M0pio+fwadsGmtaZVmY2bXvc5VDZEOLQGEn9JM3955nokR+buayjhSDI8lwYFqlBcXj/
-	 pFkiR6dXjcapT8LwAjqpiUNmnbvLQNxxlC8YG5IrSG2vdG9cVgcvlcsaCsZIlG6KdPiVi
-	 gQhmMLlscJB7a4scdXld6ZoDZaCK9zN0pcG+Xu8+jtjcLX5onRXrQr/oRFEUPFrkH8Jnn
-	 H1nAX2v+Q2ru7dKTRXsTjO+39lADuL0r2f+nCMfomAO8UMbmvrlft/8MpvHNOe0X02SUw
-	 3HyrJQRFkceZBOWoZR6Q1XhtZi82jcZ99ItwZBkozalaycdseem0z3we1vcDENWtqCg==
+	t=1793623391;
+	b=W20Z0F4DYgzi/9xjp4eAgRcHd+SWzs2LdNJpMDWi1HP4bSGN3vJEbdzyFyBrlHGatJpw
+	 TUOj9x3Xwdru2aDTTaS7+Kc/TmQxtofq/QUp2/LlVjAyL3EAzfFpdPMhVtMapwdrhd4OD
+	 4eAZerdH5tMVmRB2PfXodDzNO/lNzyXm6Ma3FSIiOLpZckIiphrfYrv3BBYBDOgn7aHZI
+	 e01TCm8cFbCOXu9aZaNzKNs+W3RdhX/H+e/GX27hn6kaGMGvamDAt8XOcneyeqIW68OTm
+	 HSuLcxpnF1FB9uJlDV90xoFIDg4qW6Wn092UtBLd/6U+xaUQLgWXPNh1nfcMdBjhJdA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793623385;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793623391;
 	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
 	 Subject:Message-Id:Date:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=SkXyzh8uT2n1jzJIe19qHbcn5tH31EHYHMtwETTViV8=;
-	b=LoT3uLtpaCA+h07VNbFbl3jeNgItM6doJiyWIWJbanOpQK32RHc6PaTh3sdWUcMGu7LE
-	 PIKaqJ7e6Go77V9qJ7lzJuhkUMT2xyYsOAyzTFsAAa8fCNvLPxp4VX+oQ/6CdbdAi0Yp7
-	 Nnvc4BrMQTSOQKNazXvzjUJmcK6zTtQsforjYQUKOgJJu6Fp2ef117zYtpeRoqpxplIt5
-	 60/w9DnC5aeG7t5Awevl2/DRi8n+JKUeJtpSdd0+WuRxcca03z9eyeEk84SV+/d9RrvZ4
-	 zy2OlwFAUqI7pg/LSOpMrWTIBCr9Qrm6PXpHojeM/CAKTwFjongkd/BvaAbKPjHsu6w==
+	bh=47gPGwQDcpWQVb0oOB9vJD1DBbnS1YYcP6qZGFfC+AU=;
+	b=3sHzCji1XvhdzMfr4uVwp1twA+K6iqIxrYYbTiGjJ38eWNDHN8yjz5IRJM0g+DG3hzPr
+	 xaN/Y09E2mEFQWo+BGZ57YbiW6nwJwDR38uuMRlkeVlqAyND9PnqraSFQgAkb/dB23tca
+	 IV+/oOnB3pRYCXZ0QdyWmJ+B6MSXGAnQqoWfS6m1Yim2BwhOCIQ7VEDR4YfCbLRTsiqpA
+	 KN9HnyZJFNmyEU1L9rRP41t5itC19F3eCOux4c9Hj4P875mU22TjW6bQSHM6eVRHcaUv7
+	 jun2AL8vqbi0sHUzqv2xtnKe7nLCq+wyET4BeMg0irRA/lEHh3L17QaKAeV4H9NUj7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dygrx1KQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ij5HJGTD;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8618C60A2628;
-	Mon,  2 Nov 2026 12:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639A760A381C;
+	Mon,  2 Nov 2026 12:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dygrx1KQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ABA1F00A16;
-	Mon,  2 Nov 2026 12:43:05 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ij5HJGTD
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD71E1F00A1A;
+	Mon,  2 Nov 2026 12:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793623385;
-	bh=SkXyzh8uT2n1jzJIe19qHbcn5tH31EHYHMtwETTViV8=;
+	s=k20260515; t=1793623391;
+	bh=47gPGwQDcpWQVb0oOB9vJD1DBbnS1YYcP6qZGFfC+AU=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Dygrx1KQGHKITDdGJ6ho8goP6He7C298oqfMEJDT2hEHEdUoAMLdwtE0MJRUDRkrl
-	 oCIVEG+HH0iRMoNxe4KGYLjV6eWbNLYDPYjCQICYYwUmAeSJYVA2BBbNlyFQMh9uUc
-	 l98sE02TyvhejTuAkj5QCu251DsoDls4ZCkE+qx7ERrqTweQsl+diyMvTZxCXYbE3Z
-	 ikSKNqo9tCui5MzndA8MWQ9N2sBxMrWfbkcWIcl82HwRkvi+GQNEUSloc6PjgyJlFc
-	 /verUi14EBJppjTd0paUJKMuVtMlS/6Q30o0FpwZPz7+085AYAbj/djQd0XzetDVnt
-	 Ku/POgBGGRLqQ==
+	b=Ij5HJGTDOeolTEdQC/crYdYRTVEBfDqTDg08/th/xWIwQT4+tEsSKn3W0dJaoGl15
+	 +XHpT4tY2tjk3WOWKtNRoNwZOeEw96LQx6tTTu8V2EecF6xB60tiRN7GMFdXLkkjHM
+	 YRhHlYS8RNZ7xIbKJLoWKnOF9Lu0NWVnggyTFzvBoHoSWloY1HbsovGDlmVQdqYX65
+	 5H2a5ZabTiTXYgFIUfow4UF5beihn42xs5fH88DnMMdXAYbYWd6g6QvcjQ+7X1+IuT
+	 zTAoaFZtTwj6+wFav9ev+wnSonVFBQX7y3FIXW/MoPqmqu+KzSHFYZd3tLIQQ2RWvy
+	 kEvYKHASCM0DQ==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 5C3722310529;
-	Mon, 02 Nov 2026 12:43:03 +0000 (GMT)
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 35B142310559;
+	Mon, 02 Nov 2026 12:43:09 +0000 (GMT)
 From: Mark Brown <broonie@kernel.org>
-To: Hongjian Dai <daihongjian@kylinsec.com.cn>
+To: Jyan Chou <jyanchou@realtek.com>, Yu-Chun Lin <eleanor.lin@realtek.com>, 
+ David Carlier <devnexen@gmail.com>
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- purna.mandal@microchip.com
-In-Reply-To: <F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn>
-References: <F5276982A630220B+20261017075545.95854-1-daihongjian@kylinsec.com.cn>
-Subject: Re: [PATCH] spi: pic32-sqi: fail transfer when the BD ring is
- exhausted
-Message-Id: <179357807106.1716893.15775820389064671168.b4-ty@b4>
-Date: Mon, 02 Nov 2026 00:07:51 +0000
+ Sashiko <sashiko-bot@kernel.org>
+In-Reply-To: <20261030145909.285144-1-devnexen@gmail.com>
+References: <20261030145909.285144-1-devnexen@gmail.com>
+Subject: Re: [PATCH] spi: rtk-nor: Limit exec_op writes to one byte per
+ operation
+Message-Id: <179357771350.1716893.12371926655363855543.b4-ty@b4>
+Date: Mon, 02 Nov 2026 00:01:53 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,17 +67,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1132; i=broonie@kernel.org;
- h=from:subject:message-id; bh=8D+Gi3HVmMsBqdAbOX6/jRrCsq3dejvg01M4u2eXuOE=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJetIbPakl1mM/yzf9e0JsZ1yv6Nh3v6D3nEa6nuLa0R
- PPBinl3OkpZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCRl3MZGda3COlZPNnCtiHj
- 62R2PxM/y6enJh7PEf05YftBtiWWBycz/M+qOdj28/Kss/edPn/p++yYfjko0Ciua+OcJiftp9o
- S3bwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1135; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=lrDIIr+Eg+99x731KjiM0ZvZdyWC+t1qUZHVn99o8oA=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJetMae3cXfXhd8NZgtIfCQyK5Hr62815QeUFnete3y4
+ sflS1pPdpSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAie7Yz/NPovT+3I0/a7NSP
+ w5Y9b0I22auun/zpUXzyk7QpX1q7w5QYGQ4w91jkcT44tTQwjq275Nn6jZU6J/7PzQnJ4JN3sWM
+ zZQAA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Sat, 17 Oct 2026 15:55:45 +0800, Hongjian Dai wrote:
-> spi: pic32-sqi: fail transfer when the BD ring is exhausted
+On Fri, 30 Oct 2026 14:59:06 +0000, David Carlier wrote:
+> spi: rtk-nor: Limit exec_op writes to one byte per operation
 
 Applied to
 
@@ -84,8 +85,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: pic32-sqi: fail transfer when the BD ring is exhausted
-      https://git.kernel.org/broonie/spi/c/2066970324a1
+[1/1] spi: rtk-nor: Limit exec_op writes to one byte per operation
+      https://git.kernel.org/broonie/spi/c/30421d2469d3
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

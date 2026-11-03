@@ -1,92 +1,97 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793746413;
-	b=XZNYl9z5t1MGOpSS05dInJQW80kI4G6iC/9I1At6L/uNQcEAoSWilUZiyixsQkD8hUOW
-	 4KCyBG9LVHJkgJfSoP5y5S/WL6tlp6yO61mhImrekk03QEBVaYehillcgZJi+jrjKtrmU
-	 eMFIxO9M/EjnFxp4EWhLtbXBSkdFHWwvG94R028L6KC9sILQtxCqI6OarTOMpk6340p0q
-	 EEvZnp4Kzjai9meRzvH6cndHX/Bt0H4zbQKCOuRsjMYjMLYz2laPa2Ab4d1d0weEhldj0
-	 85ngPj5zxQJcxiT4MFkkoCnwmZLlZCoeRukcivfr+cnWUkDuKV6HQwvwGHvQRFtXKHw==
+	t=1793746414;
+	b=JPDRCNzCnZVoRXIf/+aVQU1Ig/uGztDFEjFQE/STRVjmWJM2jkzhl7jNLeJ4TZh9/i7F
+	 whKbpmTXF4ymdQ+g0hAC0Z8HZMpZm/WUR9fpSjcNXEIyXQvR/pYvO7g22FvMPQXs2kAg6
+	 owM+xfCFZg2yxv3yiiNkA0WrT8MRV9xZ/kMl13euGSfcQeId9UXg/UwSWm8jrUJxTNIqt
+	 hjudd6M12omihMO+apqbBhwI5bz4MOG25Kgpwxy9yInY2TEBZLmIcj808lCQranpMulRG
+	 S9CJzyJ9stCvkMYeToLy0SthKOidhnl1IKkaWTulaNUY5n0s28t5kIPC4ZLwq1usxag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793746413;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793746414;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=rPcCFLlBGbIieXIJcYJhfutQkzo582k8Qo1pmtx/upc=;
-	b=uv5+k/fQXbhMDeVZPqh6i07PEKGMDg3PHASxXMNWFLcrLd+LZhXlDV4tXtypntxaal98
-	 +veUEdBAm5/G1ceXrmGqX2I31iduZfcFaUBiirshT5zJAbMWWAWa0LPR/aktuu9JvdT9b
-	 CMB2PHpOwW5CaMFhXUMN4ervSUEw5Z7Fpqgi+Bxj5TETTer7j47EBiBTEdFezRk6vZOfG
-	 FJ1UNOFGU249T55LeK1yDZZRPVhGqYujA3w9qs/sCnjSvoUR5zOEWQyxDylt7Y9iOKIfC
-	 UAZvikSAvR3OkVu5dv3bkYRLeOwGJMTn+pYp8JTbcPRzhSbpqGj+Qba8hbFWgOcQmcw==
+	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding;
+	bh=/ej9wHg+NEebYYZRQ8OvgGc8M4xhsrwyP622zhe9cFc=;
+	b=j2WeQdgwhbCiEXl9/Q49XJHNBmZg//85RfyQoDlaUN10C/h9d0pjiXUF5rDR2IzDY6hs
+	 FOpvIUXlrLShEw8D9+A4ujiMZFLSo1yXeT93aShNvxqKoo5Fv2ARug7cetmXixMPJogHV
+	 8tFNZKjfcmjcKhtDcHp2Z5Unk8CoejqMbP4AZrLHF1ARrQ9R00vNuoqc4tUD0t5XqKm9/
+	 Lu3BYxNFntOgxmYcIRLkw9gnK2RvSJpcMw469h7xV5n5hdMMU6zg4wl+NiE9Jj13g9qJA
+	 TkuuLyeJVY+/uI6xfJgkCPEGd4001XUmzcZ14actx/XwQKGIrhIMyXyig6Bj49ezXWw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CTMm1Evr;
-	arc=none smtp.remote-ip=209.85.216.54
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SKAN8CYv;
+	arc=none smtp.remote-ip=209.85.216.44
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A277606A328
-	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 22:53:33 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7A277606A328
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A05606A31B
+	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 22:53:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 62A05606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CTMm1Evr
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ae691283ecso8283a91.0
-        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 14:53:33 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SKAN8CYv
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so93613a91.1
+        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 14:53:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793746413; x=1794351213; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rPcCFLlBGbIieXIJcYJhfutQkzo582k8Qo1pmtx/upc=;
-        b=CTMm1EvrSn0jLBeSUEP/0bgJLPqr31ESaTh6B5jwmpiExr6089nQjWFxiveIJlI4xt
-         0pijXrqY5QzLNSo9XZzi4nLeMmXJIrDlewL+5/OgsmTx/Ee/0+YZ5DSr1bUCOfp5NlZC
-         HJ7vRLEUvpwizzz3X6xSQsfJSkyMKsVuco7oIf7Q5sRYvyBmdN4LvvR/eLZnJrM8zmGo
-         QxLDtd36aJBseBCRPQ9Vut5TqohoUfg5azaE5MNmRaHKLLLzmV0GAmDm8QSCYu9YIz+W
-         GOtU0jThESMR2rNlwIUKIWjkHj7AqT8MksisrMuL72FQevAxWJ00hdxKCa/iIMvhPLCE
-         qzxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793746413; x=1794351213;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793746414; x=1794351214; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rPcCFLlBGbIieXIJcYJhfutQkzo582k8Qo1pmtx/upc=;
-        b=ZEsepM2hfGvFp7dgs1D19Cgp7Stzyx5KpbHEIyCWXSRecZRFS/qQ/psHxx11g98L5B
-         i5Fxs1Y1ah2BdOzEvqdl9po075T0nR00I66sDtIJop2IMpqHV4W7sh+HIcn7PUIAA5E5
-         EEOFTc2aHBU++LdvaPclTzMjXcsYvQjAEBAloVUmsrv1YkLgVY+/eV2jCxC5J4gWJHcM
-         sNBr4H1RTT8oxU2wsLz1hYWdHtB65PmMnr/wVki4vfO1htL/HDBTjLlIYvz+b4qXvRQY
-         0ZTd6vyM4w2dRFMuiZXauWioqpqlUoC5pQ8NXr+N/VV8jbT/Agfb/eqLgXPecfDr2FwI
-         y+yg==
-X-Gm-Message-State: APuU4Z+jo8C78VHsJmKYWha22FIn4y87OVnlKIuzZXAtQYWHbPIp2T9i
-	iecFx/lxUS3TGAHrVjyiohl0R9cEqWXBNL+gzIvCL3pxvpd6pGQUPMky
-X-Gm-Gg: AYBFou1KNnMUkwj8dO3YHCkS2CEx0vsRLFALwM34Nw8VczYX0WuSmN3O5nghnvxGiyX
-	zWKLY7w0opRwO4ZwM3xjIMhksv7gdC85pGNat1N5BKaYYuGuUQRTfhVGeVmLQtdQ3yuR/yu6xR4
-	E9CIjqYF3GcjGUOia1Uc/jIkgD62JfuSMmtkIrDDmCi5QyeKEwyFsfY7Q/DnOojuiDUNxSvrzVb
-	4j/Dhrntr5JQb07qvsTdrcGYBNNJ1dT7mtF/5aUn5IhQnTnW+nzFzbbreXvSz8Y0RYdJiwU8rnJ
-	thBapOS755T/jCaFxrjk10q/cfN8cnUAyrso6rUUcXqKE7FnN4QnscbJfqYB7C8YSWSxl1VSc7E
-	n9gECosGN/tTr+aKOTjnDn4I6w/XSoBbAyLAujKL2PJaLxDMgI5y9TdsGCm2RAPTXIfBTGNUTXS
-	pkzhkLx/ATApNEuO/Q8DbJEM6r0JSkKBslq/LIGd8QEB9zcsdbDCTS1fxkhgxn7UBf/Uek82O1s
-	/A/GtnRn2m5U+nz3YzctWbK+7QxipPPFO0Pcn8YTmj5FFWB6ldQaA2JGEiV6fD9y8KZOY/nb05n
-	VEPOpAn+CADyp7kJPMxW3KDQC1rWoHfkTOAJfzDJxPGSVDPEkJmkbHtH3xh0bvv2oB90XU6D1HS
-	HYFx5FThtLuJb/pCmNWWvPzOkEWLdIxE2ecWmKsfWk64unO2ASHevh0ZYPukXROh4cKG6i2CPMg
-	GBMYAfj5lV5wPxkWe533ZW7E232c8bSjrzFInOmIB+F3f+2z34bvKdRf9YxKY5oKKGUg==
-X-Received: by 2002:a17:90b:2b47:b0:3ac:860e:1af9 with SMTP id 98e67ed59e1d1-3ae897cfe6dmr8408218a91.41.1793746412902;
-        Tue, 03 Nov 2026 14:53:32 -0800 (PST)
+        bh=/ej9wHg+NEebYYZRQ8OvgGc8M4xhsrwyP622zhe9cFc=;
+        b=SKAN8CYvRpttpa1v1rBN1XEJypbWTH712BPffEjYu9OF9gKHQ9VySqtWKFCkrw3bUc
+         I6cdLEx5K4WNxgXljiL4R7SGZwb1nOCvgO5DDC+TuX1wnbJgVF1+5otmFdj6JZltIMrt
+         AD4/KJYIL0zRoBDdSSlCXoep7GT6ALAAyYXyJ7InOug+UbTxRA/TXJ7ist/0BmsB678g
+         q2Cj8jsUBB8EYGxSF1ffaceetTrmIzFQkOYMXyeOe2IhBLefEgdZ3uG4glrgG49qOqvk
+         15o4fWEsyXCWh1NLWbvWNo1GAvR3vx4eRHDXireHPyozd77fbx8r3wnnKQItj2OZcqJs
+         QfcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793746414; x=1794351214;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/ej9wHg+NEebYYZRQ8OvgGc8M4xhsrwyP622zhe9cFc=;
+        b=z9JU4RCw57E/Kip7Bb00jmG+8gnS7wNoieI40F59TL39miPid7qXO6yuqNtpcmypq4
+         EUcjeGHpbC7UEHxF/mJbtCsvSZ4f/CqZbGaENxP4O3/Ne474Al8k27KTg8xR9Kq+1PLK
+         nK7O7c7igb54Jo7givqL4DZjxx6D7vsX3i43/NOI7biLoOiXu/gbPLyFulyCZjp1e3R0
+         fsNKt6PnkbP19+4iQrfFX2bW1QSiKmbXQzAJn6tC//rcjQDgWjLyqkHdAMJxZwxeuJbg
+         pJt6GvuCeP1Q/1NziO3jKKSZ46NOEg33MTFKmFuDwToKbcBYgcHYccqd3tWXCbDs6NnX
+         ABrw==
+X-Gm-Message-State: APuU4Z8EUq53xODsJk+xTUcVtN/Y0kHRLFLvRHPzNfUIVEI3szlfbdT5
+	uTo25qxp1jY+z0zsrVbdw71lRWFb7nvgkhFNosg8yUFZIvCIz6OIYX5w
+X-Gm-Gg: AYBFou1pFsfhn6kAK4iZaOR0makO4ixxlLcGUQvBUZxys/dZx0+L6PGK/qGuUUGW2ce
+	LvzXcxhLEENO5mBKNwujBvqrsERtSe4IZNj1Tlp0QAA8yDvWFEvingmn9Pp6f7XO+Iw1nSbO+ox
+	5tDSEjWkMVIpzSApGYf7y7q5Y91THB9q7/5HEW1zvQQxy+fAj8+EiOBf4t/BlDccpJFPWNFdors
+	iOh7uakMxQkhYRu4oLW/GSVYbg2ik5EKXdEliCIdqLIHvlBneSIlhyx4Ug98Iccncf4VRVHIXVk
+	CbEWtQ5ZKoK0uEDY6GUbMpORrGET4X9jsvUumK7/dd6sHGwEtfMVBuEEKxTz64sEdAm/SrsbZSV
+	n6ZigsriKqLMBFb5tC6y6Kv44FcYYJ7JKZDCN8kPC4J/r4/FKijkFRci5MnZjOyLq5LeRJ7OK17
+	m585+iFW3uPYZ6eylGXEGCqlx5mi70LKFMrbYBJ3y1nWRrTBu1kvDcPmw4WNICmQIKxthMkzOhK
+	sjZAtfpoBTmCfNpzLAl/BRBiVWX9EC/cJ19pK+Jumw6tOqZ5Sjc51MkvMe7yw83x5C9yWXQRMDW
+	XsXPmtOlUSpkRgKs6MVbg5Ia5b3EnLGU+Vu2xVY1rXIpdxGsZMAlEG0uxgqo5m2JeqNdmS0Pjde
+	jFGroEj+7aM6dBQj838C8g5jRrTvmMmcfQpks3MkiiT2JjFXDV2rUoKHZ2nw0B/Q+BWd5NAyS0k
+	9ZN5ljMTtQn5HzJh/lGTzVsibjFDSoQFuAz0f1CCrR+GYQYnRZiFFDfaZ50wepdnI7Qg==
+X-Received: by 2002:a17:90b:4c08:b0:3ac:8741:e2e8 with SMTP id 98e67ed59e1d1-3ae8957cb02mr12193950a91.8.1793746413635;
+        Tue, 03 Nov 2026 14:53:33 -0800 (PST)
 Received: from josephctchan-96c-1t.c.googlers.com.com (95.100.125.34.bc.googleusercontent.com. [34.125.100.95])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c896cc6sm6096249a91.9.2026.11.03.14.53.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c896cc6sm6096249a91.9.2026.11.03.14.53.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:53:32 -0800 (PST)
+        Tue, 03 Nov 2026 14:53:33 -0800 (PST)
 From: Joseph CT Chan <jctchan@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Bart Van Assche <bvanassche@acm.org>,
-	Joseph CT Chan <josephctchan@google.com>
-Subject: [PATCH v2 0/5] spi: spi-mux: error handling and delay fixes
-Date: Tue,  3 Nov 2026 22:53:03 +0000
-Message-ID: <20261103225308.3633046-1-jctchan@gmail.com>
+	Joseph CT Chan <josephctchan@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/5] spi: spi-mux: release mux when parent setup fails
+Date: Tue,  3 Nov 2026 22:53:04 +0000
+Message-ID: <20261103225308.3633046-2-jctchan@gmail.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
+In-Reply-To: <20261103225308.3633046-1-jctchan@gmail.com>
+References: <20261103225308.3633046-1-jctchan@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -100,70 +105,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Joseph CT Chan <josephctchan@google.com>
 
-Hi Mark,
+When spi_mux_select() switches to a different child, it locks the mux
+with mux_control_select(), copies the child's settings into the spi-mux
+device and calls spi_setup() on the parent controller. If spi_setup()
+fails, spi_mux_select() returns the error without calling
+mux_control_deselect(), so the mux stays locked. The next message on
+any child of this mux then blocks forever in mux_control_select(), and
+so does every other user of the same mux control.
 
-This series fixes four problems in spi-mux:
-- If spi_setup() on the parent fails, the mux stays locked and every
-  later message on that mux blocks.
-- When the selected child changes its settings and calls spi_setup(),
-  the new settings never reach the parent.
-- If selecting the mux or spi_async() on the parent fails, the message
-  is never finalized and spi_sync() on the child waits forever. -EBUSY
-  while mmc_spi holds the parent bus lock is one easy way to hit this.
-- The child's CS setup, hold, inactive and word delays are not passed
-  to the parent.
-Patch 5 adds KUnit tests for all four. Tested with KUnit on ARCH=um:
-the 9 spi_mux cases pass with patches 1-4 and fail without them. Not
-tested on hardware.
+spi_mux_select() also records the new chip select in current_cs before
+spi_setup() runs. After a failure, the next message for the same child
+skips the copy and spi_setup(), and is sent with a parent that was
+never set up for it.
 
-Changes in v2:
-- Split out of the v1 14-patch series, as David suggested.
-- Patches 3 and 4: updated the patch references in the commit messages.
-- Patch 5: designated initializers, trimmed the comments.
-- Moved the AI assistance note from an Assisted-by tag into the commit message.
+On spi_setup() failure, set current_cs to SPI_MUX_NO_CS, so the next
+message sets up the parent again, and release the mux. Record the new
+chip select only after spi_setup() succeeds.
 
-v1: https://lore.kernel.org/all/20261102163023.2574632-1-jctchan@gmail.com/
+Tested with KUnit (spi_mux: spi_mux_error_test, added later in this
+series) on ARCH=um; that case also needs "spi: spi-mux: finalize
+message when forwarding fails" to see the error status. Builds with
+W=1 on x86_64. Not tested on hardware.
 
-This series depends on the SPI core series v2: without "spi: unoptimize
-message when queuing it fails", a failed spi_async() on the parent
-leaves the message optimized. It is also based on the spi-ti-qspi series
-v2, because both add lines at the end of the same KUnit Makefile and
-.kunitconfig. Patches 1-4 apply on their own.
+Developed with help from the Claude and Gemini AI assistants.
 
-SPI core series v2: https://lore.kernel.org/linux-spi/20261103224753.3610049-1-jctchan@gmail.com/
-spi-ti-qspi series v2: https://lore.kernel.org/linux-spi/20261103225116.3624270-1-jctchan@gmail.com/
+Fixes: 5a5fc308418a ("spi: spi-mux: Fix coverity issue, unchecked return value")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joseph CT Chan <josephctchan@google.com>
+---
+ drivers/spi/spi-mux.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-Walkthrough: https://gist.github.com/joectchan/9a14b5e6facb75058ebc5a6ff1757131
-
-Please consider this patch series for the next merge window.
-
-Thanks,
-Joseph
-
-Joseph CT Chan (5):
-  spi: spi-mux: release mux when parent setup fails
-  spi: spi-mux: re-apply settings after child calls spi_setup()
-  spi: spi-mux: finalize message when forwarding fails
-  spi: spi-mux: pass child CS and word delays to the parent
-  spi: spi-mux: add KUnit tests for forwarding errors and settings
-
- drivers/spi/Kconfig                  |  14 +
- drivers/spi/Makefile                 |   1 +
- drivers/spi/spi-mux.c                | 124 ++++++-
- drivers/spi/tests/.kunitconfig       |   4 +
- drivers/spi/tests/Makefile           |   2 +
- drivers/spi/tests/kunit_spi_mux.dtso |  42 +++
- drivers/spi/tests/spi-mux-kunit.c    | 506 +++++++++++++++++++++++++++
- 7 files changed, 689 insertions(+), 4 deletions(-)
- create mode 100644 drivers/spi/tests/kunit_spi_mux.dtso
- create mode 100644 drivers/spi/tests/spi-mux-kunit.c
-
-
-base-commit: c339f4010dea8b0d754f84ace70cd1b089878ef8
-prerequisite-patch-id: 6999a3baa2d32de8fa42f2626a845fe3cb63b0b2
-prerequisite-patch-id: 686a62b9223209bf1e83740a0874e20d7607f69a
-prerequisite-patch-id: 616b18b757805a6f1520177e1a3e572ac95be582
-prerequisite-patch-id: 0d46943b5bec4900701286d93b8b3e975701fb3d
+diff --git a/drivers/spi/spi-mux.c b/drivers/spi/spi-mux.c
+index 08fe1fa32dea..28d7718138a5 100644
+--- a/drivers/spi/spi-mux.c
++++ b/drivers/spi/spi-mux.c
+@@ -66,9 +66,16 @@ static int spi_mux_select(struct spi_device *spi)
+ 	priv->spi->mode = spi->mode;
+ 	priv->spi->bits_per_word = spi->bits_per_word;
+ 
++	ret = spi_setup(priv->spi);
++	if (ret) {
++		priv->current_cs = SPI_MUX_NO_CS;
++		mux_control_deselect(priv->mux);
++		return ret;
++	}
++
+ 	priv->current_cs = spi_get_chipselect(spi, 0);
+ 
+-	return spi_setup(priv->spi);
++	return 0;
+ }
+ 
+ static int spi_mux_setup(struct spi_device *spi)
 -- 
 2.56.0.385.gac671c819a-goog
 

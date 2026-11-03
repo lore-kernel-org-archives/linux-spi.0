@@ -1,84 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.181
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1793746549;
-	b=x4zyZkW3wYYwlasePA+C/MwzLF+y9HcXmBM/BIgS1I5UobZpzmIoCnJFTjtJLru0AhSi
-	 B8evcAfZyR+wpuj2VcZkdbrxvJCfz6oqkunXSTbsqxwwCew6JztZrR4gyUsM9+ZZUPxNb
-	 Fx/xf6M8etPUOL42Eg7+vhQmFjlp+iJ/lyho/XIQvvnv+QjrZCMZQ3r/hFySSpnv2OwKk
-	 kAN54poq5juEQgX/gCeCrriPCo3VqPy2hLxgtb2dLEISsG1TEPALk3zJZLwlrb9zbqHkM
-	 4wPLJDBlcFqm+wlvJI69kXAQ4xh7MkE7irermQEQiiKB22awZESw7qralzbKDFY1KqA==
+	b=DHBttX18e9t6Zy74WN9SNrn/aF1FM5e71+MMEp4cfG3mjn7D/KNu8axxzSiHte4g2bdM
+	 vPtGmr/yT94YyucvZHQKayFNL2Fwn07SBLhA/5T5ZHzqk0fEAygkkZy2MpDc8NsixUq/K
+	 m9T0ZNXoNxtTKDn0ExwlKScE0C/6qPWFSIJwqgZW6n3lI2caVNwRREuJmjYg8UxtopHhG
+	 /2ZCrV5SiKxSgfJGS4pOPEMs+ob6QnC+oJwVdoj0PUnRQeL1sNBYmOwIqNOlX4aXl32+v
+	 C0UwczygiUQy0wL0MuXY8sTd+T+Op3rhFh9WxMB3G0Dl1fPb3cf3lOVzenppmggY9Kw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1793746549;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
 	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=gpT5lQ6dNlkLqYuyqv1dJpFV1XqL12FmHoo5lKvfcMI=;
-	b=gzUrgB6Tr8VZ6Hd3NsLjMTyl6xGrwLtai8REzJPjsNkTGi0gMw5spIwxWKoJuURhtx3E
-	 l9IFwI0h4wuEChNg7PM4FiK0Hzbm5Ht7NT8+dwQ1iIiGJoaD64li54k20hWJpFtkdCx5c
-	 eZQoFHn4h9IJDYjGNLfVYfNsmulEcg9vq9sIDw6SJv34OTicETerIGiWJLLeyq5mrpktF
-	 t+AkNeEweHat+5NchyH6t+O441H/dHvE1vM0z50CijmoOIXDhERV0KE4+cmLkmMJYYsp/
-	 gpUPXDG5H+eboEvLNU1MUeTpDNlifUCAgLZD8tgGcpvadCUbRRyQIN65pTBFz5T68IA==
+	bh=Qt5gSewQUowbcK90nU+Vht4pAMDA/5T//zXpVT3JcNg=;
+	b=QfeuGd5oKaraMOQgKZuxYE+4Nfl/vg5xjaM4UwygMya4kWg5v/58F2QgmGgEvOA1nAzo
+	 l8ymIr1/+HQFRTrkSYM4bLPu1F6HlBUGZ34b616fmQIxwqbSuA2fhnrOA2rbl/X5rWScQ
+	 GKIytcafEYKiSFK75bjVaNk9QHlEDMQclAKekyKrA/z205NFFgNCGFMeJwFED3dQk9U4T
+	 clSeF8B8v4es2bb6BMypOVyjGKYgCIZE9uKkZLlWpBkX5RzPB0cKitktgrOCKTr2jcYqR
+	 77C491fUJ/BsJiH9aiI5CAE+5zkvWkQNGmeBVFNLR11V58/Zt+ErxyurV6bD9EYSnMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b="SSdeG/R9";
-	arc=none smtp.remote-ip=209.85.210.180
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tPqcHaUW;
+	arc=none smtp.remote-ip=209.85.215.181
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D53606A324
-	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 22:55:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A2D53606A324
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E316606A324
+	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 22:55:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E316606A324
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=SSdeG/R9
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8a06ca6e8f4so115848b3a.1
-        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 14:55:48 -0800 (PST)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tPqcHaUW
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cdb2893531bso75498a12.1
+        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 14:55:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793746548; x=1794351348; darn=vger.kernel.org;
+        d=gmail.com; s=20260707; t=1793746549; x=1794351349; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=gpT5lQ6dNlkLqYuyqv1dJpFV1XqL12FmHoo5lKvfcMI=;
-        b=SSdeG/R91QDdK4B8lVjuCRzYC72qJKGsqtn4tqYMBYHu4cB9vxnL+Fu+32MisK5Yz/
-         CGHkJngzgptLWvjUq3E+pUClaulB2VPk/cErt0fNRpvK4iIhJdCnZ+LgNPhgSPBo1IKa
-         LKOtbONYHXZWE6QczEa9IJ+ni1FZ26tF4vR9T7JEHzcYiDOkJzI/M6qnyFhOCIQ6z7kd
-         V5HapuDrWXGnKPm5cnyYQHz9j24sjrYa11I5fv6WlLC6ldWm7zr29lmO5/90JgFoOlUK
-         tVZA7zj6AKLkC386UbsbGWSb/yQEfkVFaUdCaUJr8qIGiN5v+iKDd5ImTZyNKfcZLCxB
-         Jy8g==
+        bh=Qt5gSewQUowbcK90nU+Vht4pAMDA/5T//zXpVT3JcNg=;
+        b=tPqcHaUW+/PZC1w1zMBOzgw2EKsR4sQJmzu00S4oJjm50iPt9vWkWVv85JLHYfWl2k
+         QCp3w6fBErmBA0ULjvEw+Sm8wiOpDKWaGuXnm9T+56ReEUCieT7Uv6v8+veVg7YpGqW6
+         Lsh29F7/2iksBXNVAedfJ/MxEy7lsTPwaXClV+q9OR53XCrM0xyOfHQ5luysuYZ9GzER
+         V/yQp/y3pH2y0CPotv3qFzJS/w3bdA9knZUYAdMNuIOhrgPWt1VjwKFePOkIOvYddlQl
+         PHZ+2m8KtSyQCXc4xLZjaUbarOHYzCjl+oTKpdJqWMNwBtJdGAqa3tZDf3SlpCPDPLBp
+         NrEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793746548; x=1794351348;
+        d=1e100.net; s=20260707; t=1793746549; x=1794351349;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gpT5lQ6dNlkLqYuyqv1dJpFV1XqL12FmHoo5lKvfcMI=;
-        b=cAfBX4VYglpbVBMeI/shezL2FSkDVngLj4Bkyt3IhGMJ16APFPgBOR9zIel7q2wifB
-         OGyCv0YaCZn6qdoVOl/rXs+SdhWKRdwctnfW7mKw+h0whLqx/0oZgK4VvJWTvWvUTOTu
-         HYNDaCmAl5GpUvf5kfMhYUN3YHN7D99pKpjWSUi8YacZFUHAwlLw/ZBgN+yK91KaJlxg
-         sJFdvQQ8j5uGINREwfz6+7m98FfidxejLNXxlYryLGm5xcwCJXPPAB4yB5LL3i1adZmq
-         MC7cBxY4KWzzJdxwi5XhouMzU7uTAWROow0rzRQh4vv2dVDYBx0rLs9LISqoSO0UpQi0
-         pL4g==
-X-Gm-Message-State: APuU4Z9KXm5vZkscdCCl7VHgjJM5HptzRTm1QFCXqEQ5o0/jnKzKj6wC
-	Whm8zARmMbJBoARdW9ZWxZA2pWY9v4ITr2BK4c5a57Q/eDZbXFFfHp29
-X-Gm-Gg: AYBFou3wneVm6FJAsC3DXNvntqQgnr3pHnD41IXfG6ejXPSsv+mes2sEc3gVvQq+9Hg
-	lUOMDoJ8JSAYr7JwQKGrhXazdMfQE+/9MYJaNEwGQsOkjYLaP6wp6i1HxSGVu1M7q0rBLc3n/5g
-	Za5ZYUCsrAHXcc8yU+BCiMmdxkWExvU1UHRFQVurzex0UebX2Vtrjul8GBSPk84rWOG9BDMT2AF
-	j0+o78fPhWITDFgNvt/lwNsYh/mJJLKoGKsFcn4n6JqP0lfZsH2czWX3LpDZbiL4gwd7NvPeWaw
-	PY8Sflny0Ia8G8nS1ibPM5aH8M1dnzDr6JFVE6SYPh0LtSDOgqn2X+HzYQrKtTfFUz6BDNGrrxN
-	Q0j7gwfzakc5+yYrSLQc6UYIDTYmW9pGW+tSVXPW36PBntRHjiNH8y6ZMR+XHIUY5V6hsrYCgaF
-	QbP7HHWWiX9pg09r4w3c86mApqOQwbp0mNS8P0SmmmEMupK52sk0BwM0Kwrwt5ZS+ZqnSKyg/5l
-	eeGvX682WwxqcQ12dZX33mgv9F5jgPLfpLjJfZmNi7vxWkqUyEMn9HMjA0e0igHlBYm9RQ0qVp/
-	GyNcTY9sjvg/8DUtpgmvy1mInkhrUbU+22lW34wuz715h4ILYQL9mFL4Zrqenl6fHw/dB4j1S4E
-	1KT5w3gHIIlprxXyFdsj7oBkD0I3Gzj7IlsbWKhICFwy9NB4freIK07CWrsmLJhAC2LxdSTmuaV
-	yptbgppzY7elxlERZAw8SpiUwM2NZ6hki14wziMsZpagZOSmJwRAkOT7gZpTCKQOGCuyKv
-X-Received: by 2002:a05:6a21:e0a7:b0:3e2:97d7:bf2e with SMTP id adf61e73a8af0-3e928ccea08mr13543078637.29.1793746547968;
-        Tue, 03 Nov 2026 14:55:47 -0800 (PST)
+        bh=Qt5gSewQUowbcK90nU+Vht4pAMDA/5T//zXpVT3JcNg=;
+        b=N3+kecBWlV/NnYSBtU97kfa2IA53FQvFzLOcYtmbBNEj0y0JW+uLhaEEW66VdgBtl1
+         aznbv8yTUCvaOjkahlHJUPrLu2mlZCv9OXSoR1gb3oBBwSL1HQC1oP7MC9OoSFYqF5L3
+         SVDk13ilevT5OGSBlIMiRoKc+hGgxWkYFZVcHRyRgz6QTica5zu7/IYSzrs4D28Wdepx
+         vLGvu3yGxD8iRq/NyvJF2aCaUU6xk92EiA0RkGb0GX4jw6z2YeDmXKNeRVamIkf5m28p
+         FAtOkaBC2MVZY2vL3VnBBbiooqbMb9Bov6yUKpQB5zc8jm/+FS5fnLKdTZ13zAmNjsBL
+         SrpQ==
+X-Gm-Message-State: APuU4Z9e3uV7U3aCiCmA33Uuc6KRJueMRY4PnjLlpuJ+rFFPPZwnpiXq
+	XOo8Y7XaQg1OELFr7jJ4x9+A589Cq0BstwAm2XbTACsxhoJKe4D1tHzj
+X-Gm-Gg: AYBFou1ubxuET0z2rtj3g4iLKhBZ+veI8NXWN9i63MsROxDCKz1hZtL6Qj6qoGy1vQx
+	MOy0+WN4ESobpCHwR9PVxoQ+FOulkieCuQmE91J4L31b9gHy01bQcl3+TPhE2uuMcdFY+iiLebq
+	zOx3Gz6AQdD6pwbbqTx4+a8Ep+JcjPHuxtrqGvLqq8tdXDHpj/UucoSnfuSNYHuTGjueabQmWTz
+	xNPwG4mP2SQLJY0gEW4mrchjBudZUFRlbbEhYaanyRecSHUSeNmQ376J6/9olmFD9VEyZ2/AZdY
+	hGK9E0DwwL8w/GpAe4WRWz66Mik9JmC30m0GQ9KkRIoJfMR8l+uyZmiZ2eKzRUt1JUtbxNQoxDQ
+	TyfvIBsOinNq0DWnyW5qOvzFKJS/E/ak7fNgFu4yJA0kyxVcUdM0ifSBX33bF4+/JHzVdWf/KOP
+	E95w8BDh9WXVsaVqVhcwJm12lHC0j+wy0flkq2uINS8UrP7u5WBsA5D+uvHDLIqQgXmGhJ03oOr
+	EMO915WfbIZp/selA99G0naFgM5gS+NzMU705H/340Px3ZYERIo519IzbMEYyU8fYfRUFKYZUA9
+	LyEbtQjPy1Ct81KElFUtDXdFLzT3uP1HBHhwgcAUzJHb2IN+C2tON3Ap+gDjbfZuXCuoxTCt5pq
+	rMLWHPbeMP/2QUUwM1m8EvzFcyXD9vsgTMfRBF1iDaY3TLzTHCVmkhzGHQgXLZow8jx1Xe8S33H
+	EILbuA7v+XOq1fNJ4QgpjtSKpFBy9XU/c2ZqXhNacu7YZcMkCyYW68CbljhUSiBIAVmQ==
+X-Received: by 2002:a05:6300:614a:b0:3e2:b561:2b23 with SMTP id adf61e73a8af0-3e92890c18dmr12082651637.18.1793746548961;
+        Tue, 03 Nov 2026 14:55:48 -0800 (PST)
 Received: from josephctchan-96c-1t.c.googlers.com.com (95.100.125.34.bc.googleusercontent.com. [34.125.100.95])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb467f6668sm272976a12.8.2026.11.03.14.55.46
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb467f6668sm272976a12.8.2026.11.03.14.55.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 14:55:47 -0800 (PST)
+        Tue, 03 Nov 2026 14:55:48 -0800 (PST)
 From: Joseph CT Chan <jctchan@gmail.com>
 To: Mark Brown <broonie@kernel.org>
 Cc: linux-spi@vger.kernel.org,
@@ -86,9 +86,9 @@ Cc: linux-spi@vger.kernel.org,
 	Bart Van Assche <bvanassche@acm.org>,
 	Conor Dooley <conor.dooley@microchip.com>,
 	Joseph CT Chan <josephctchan@google.com>
-Subject: [PATCH v2 2/5] spi: Add lock context annotations for bus_lock_mutex
-Date: Tue,  3 Nov 2026 22:55:19 +0000
-Message-ID: <20261103225522.3643901-3-jctchan@gmail.com>
+Subject: [PATCH v2 3/5] spi: spi-mem: Add lock context annotations
+Date: Tue,  3 Nov 2026 22:55:20 +0000
+Message-ID: <20261103225522.3643901-4-jctchan@gmail.com>
 X-Mailer: git-send-email 2.56.0.385.gac671c819a-goog
 In-Reply-To: <20261103225522.3643901-1-jctchan@gmail.com>
 References: <20261103225522.3643901-1-jctchan@gmail.com>
@@ -105,87 +105,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Bart Van Assche <bvanassche@acm.org>
 
-Annotate spi_bus_lock() with __acquires(), spi_bus_unlock() with
-__releases(), spi_sync_locked() and __spi_sync() with __must_hold(), and
-spi_sync() with __must_not_hold() for bus_lock_mutex in
-include/linux/spi/spi.h and drivers/spi/spi.c. Document exclusive SPI
-bus lock ownership and enable static context analysis to verify locking
-invariants across callers and the SPI core.
+Annotate spi_mem_access_start() with __cond_acquires() and
+spi_mem_access_end() with __releases() for both bus_lock_mutex and
+io_mutex in drivers/spi/spi-mem.c. Enable static context analysis to
+track controller lock ownership across SPI memory operations without
+false positive lock imbalance warnings.
 
 Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Joseph CT Chan <josephctchan@google.com>
 ---
- drivers/spi/spi.c       |  5 +++++
- include/linux/spi/spi.h | 12 ++++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mem.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 85089b0ebf4b..01dfc25c1376 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4959,6 +4959,7 @@ static void spi_complete(void *arg)
+diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
+index b94680b60af9..f115ef6bf53b 100644
+--- a/drivers/spi/spi-mem.c
++++ b/drivers/spi/spi-mem.c
+@@ -297,6 +297,8 @@ bool spi_mem_supports_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ EXPORT_SYMBOL_GPL(spi_mem_supports_op);
+ 
+ static int spi_mem_access_start(struct spi_mem *mem)
++	__cond_acquires(0, &mem->spi->controller->bus_lock_mutex)
++	__cond_acquires(0, &mem->spi->controller->io_mutex)
+ {
+ 	struct spi_controller *ctlr = mem->spi->controller;
+ 
+@@ -324,6 +326,8 @@ static int spi_mem_access_start(struct spi_mem *mem)
  }
  
- static int __spi_sync(struct spi_device *spi, struct spi_message *message)
-+	__must_hold(&spi->controller->bus_lock_mutex)
+ static void spi_mem_access_end(struct spi_mem *mem)
++	__releases(&mem->spi->controller->io_mutex)
++	__releases(&mem->spi->controller->bus_lock_mutex)
  {
- 	DECLARE_COMPLETION_ONSTACK(done);
- 	unsigned long flags;
-@@ -5045,6 +5046,7 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
-  * Return: zero on success, else a negative error code.
-  */
- int spi_sync(struct spi_device *spi, struct spi_message *message)
-+	__must_not_hold(&spi->controller->bus_lock_mutex)
- {
- 	int ret;
+ 	struct spi_controller *ctlr = mem->spi->controller;
  
-@@ -5073,6 +5075,7 @@ EXPORT_SYMBOL_GPL(spi_sync);
-  * Return: zero on success, else a negative error code.
-  */
- int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
-+	__must_hold(&spi->controller->bus_lock_mutex)
- {
- 	return __spi_sync(spi, message);
- }
-@@ -5094,6 +5097,7 @@ EXPORT_SYMBOL_GPL(spi_sync_locked);
-  * Return: always zero.
-  */
- int spi_bus_lock(struct spi_controller *ctlr)
-+	__acquires(&ctlr->bus_lock_mutex)
- {
- 	unsigned long flags;
- 
-@@ -5123,6 +5127,7 @@ EXPORT_SYMBOL_GPL(spi_bus_lock);
-  * Return: always zero.
-  */
- int spi_bus_unlock(struct spi_controller *ctlr)
-+	__releases(&ctlr->bus_lock_mutex)
- {
- 	ctlr->bus_lock_flag = 0;
- 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index fb4baa0d3398..553c32987c97 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1497,10 +1497,14 @@ extern int spi_split_transfers_maxwords(struct spi_controller *ctlr,
-  * they will sleep uninterruptibly until the async transfer completes.
-  */
- 
--extern int spi_sync(struct spi_device *spi, struct spi_message *message);
--extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message);
--extern int spi_bus_lock(struct spi_controller *ctlr);
--extern int spi_bus_unlock(struct spi_controller *ctlr);
-+extern int spi_sync(struct spi_device *spi, struct spi_message *message)
-+	__must_not_hold(&spi->controller->bus_lock_mutex);
-+extern int spi_sync_locked(struct spi_device *spi, struct spi_message *message)
-+	__must_hold(&spi->controller->bus_lock_mutex);
-+extern int spi_bus_lock(struct spi_controller *ctlr)
-+	__acquires(&ctlr->bus_lock_mutex);
-+extern int spi_bus_unlock(struct spi_controller *ctlr)
-+	__releases(&ctlr->bus_lock_mutex);
- 
- /**
-  * spi_sync_transfer - synchronous SPI data transfer
 -- 
 2.56.0.385.gac671c819a-goog
 

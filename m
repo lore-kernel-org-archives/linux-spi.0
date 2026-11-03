@@ -1,60 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793706996;
-	b=fkiov60AePa0aMTqZ9GRCEuaEDUAnui/OKu0WmfdPbtpyOxm/p/wotTd8R9MzxG591k8
-	 DORHv5ytjduhUZeM78hnN+eg5vZhu6lkNRNWklu4pe5VSyGF+OnyoVDKPEaFgwVNPC/zM
-	 Eii9qSC8/FmncVcQcP1Q1xXZiJUyPuQ1E67bSXpRRoraiVKWawuPh0u0L46vua/3PrOEX
-	 cc/tzu7zfcz9ABqbvCLqzRCan6yXmX08hdC7cNuXQEW0VySeFaDh5/bh3gJJaD9ILBBz2
-	 gjH3LKpcSYN24J5WhLoD4CV+/7x70vfRMTbJNiaBr7cVuSDYHDgC7KqEq1n0PTUCFUA==
+	t=1793707206;
+	b=WtY6kenBrmz/t7wmVodkrr6oq5h0/tyynKLsdqb8SmupRQvN+TGwJo9ARGgbNUemeSIz
+	 XEYDMmuom/0TP9Jn9VTdp6s5P0JjzGQQSk2sgeZa2I1hfg6Xo3S8TM1mCLamdO4Vk9K5V
+	 XcIVXf3FN323G6b8my84je1xTa1ibTWv15wz26aBYjN2rF1Mg0ckQ2djQITSDdVznlSvq
+	 E9CHIQPMdOoA+RWJguzMn5glvhNXF8ZvCzHcl7u6R+HN7wHzkDzD3fK5bQ96ptOnIeb48
+	 F3fkbKYDsk/MC4lqQ/1RgBFd0wKxlCqc83o7bVpwqu5AFm2UeA8PPz/Yh54IlIoQKtg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793706996;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer;
-	bh=jIxAGmi/bgc1YwjeYYPC92LW6SDaXY3wvvNSqHMVOzo=;
-	b=5kbYsFvEQTxgnFdsJkMj77OLlNBJ8DkhZNlP4gqD/0F51lj7GmmbZIGHjWk2Jl2FBfeo
-	 s60E5noW9CGcWsVu1fp36ZPFJiAyXZTkBuJ9DI7xS8vIDv4jAqxbDuMbf+IEEg3wapB5c
-	 3Pub/haUI1koY2z4A++SOybL0UEvBEpbehWbeM0L5clBYVYuyFMV/zmuqhfQn0bjz7YHL
-	 eAHohytyLkGC6nMUyzvGCUhT2dEs83MRLqqZppDqGCc4Bglj+B6SaNpfPLkIX8YMeYs2n
-	 pFAmcP8I2XikI/bJkvF+32jMXhQdE2O2CRNYo01CWE35n70p2+KP9zbj6Ax5f6UeWlw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793707206;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=RjuJnmITiV8iEK4prZUZ9zOHjKYiJY43HLd7TO1NMN0=;
+	b=ctNgfieIoO217CezP0pZqPQ0GwW4PGMZQeQqSpXCKnOXRgKhgaUbFSvdsbT41lGNPCB9
+	 8omdG2Ul+wJUwIjV5VyCK3K084PPA+n3pzj+bpVKmEoW43ZjUTkWqLSLvrq/t4ypU5Kda
+	 9Mx1L8R1y73Xl82pAT34XizesGB8DLAyr8Co2cA7DpFr/bKfkucZDlwcJ/QtDu+luW35Z
+	 FFEs/6pH0Im86KkUDEFLaPZ7KzeLjG80OIG+EYYN++0S7wBb+4MPGcdRMx6KXjMw5nE+q
+	 GvI4wcSlek5TiErDe96TlVFQ+ML1rtk3sb0fipguvQRhlxWnKjN2TzH4uNRvZDZb2kg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=beiGC7cT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4scrPB5;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0218606A326;
-	Tue,  3 Nov 2026 11:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66EB606A329
+	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 12:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=beiGC7cT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259C11F000C1;
-	Tue,  3 Nov 2026 11:56:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=G4scrPB5
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6F31F00919;
+	Tue,  3 Nov 2026 12:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793706996;
-	bh=jIxAGmi/bgc1YwjeYYPC92LW6SDaXY3wvvNSqHMVOzo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=beiGC7cTr4lU3Q7w6zlSeY0xJntwgWJsFPmvv061El7XYesdH4hNmWlXfgEBuaxR1
-	 /3wy1vmHwS1+qakvR4rUETDJ6HlORLHb+V5yC+hrPAsQ8+do9pGo9kNLHSKgXsreP9
-	 Es8OPmwoSlMXLGyXLwXjyR3YTz8lMdltfWBDdbgYsaUsPDH6caoxk6QMC061jKjohd
-	 nYpUUOZsnvxNKqBqmPfAfZ/ivQC/XKPn7R/IKjgeCrHsHReigB+OsRPCQiVdDYdI4y
-	 ejm8gMOF10K1g+GP5kbqkq77GCZtTju5UHIuQdVbZ4A/Ij7c7PUt6Tfc7U7t37K3Bw
-	 A8DlBZfKO0QMg==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 59166253B042;
-	Tue, 03 Nov 2026 11:56:34 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Sunny Luo <sunny.luo@amlogic.com>, 
- Xianwei Zhao <xianwei.zhao@amlogic.com>, Myeonghun Pak <mhun512@gmail.com>
-Cc: Li Youhong <liyouhong@kylinos.cn>, linux-spi@vger.kernel.org, 
- linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
-In-Reply-To: <20260913043745.35022-1-mhun512@gmail.com>
-References: <20260913043745.35022-1-mhun512@gmail.com>
-Subject: Re: [PATCH] spi: amlogic-spisg: Balance runtime PM and clock
- cleanup
-Message-Id: <179366146354.2186205.11571999677156537831.b4-ty@b4>
-Date: Mon, 02 Nov 2026 23:17:43 +0000
+	s=k20260515; t=1793707205;
+	bh=RjuJnmITiV8iEK4prZUZ9zOHjKYiJY43HLd7TO1NMN0=;
+	h=Subject:From:Date:To;
+	b=G4scrPB5MAwZ0T5upsBbtshn26gezY6QZcRM9InEg3YlDuHcqcIM7QDAWbSgv9r8r
+	 j9mVYlhNxDrXAz44CrFG0tfWTGT3nEV3Ght2DQ2y3hdDjNarvm0iL5bniADErN+sx7
+	 RshQtM/S7xMDbKccppJAau6OdTJwDdS0D8yH4NTjKl2OMET/i9MTtqIgo83+ca0E8s
+	 59Bz0fIlQWQyGhAVis2sfgxm2tjR6KcH0obWUJTbNVteDVLXjyP0ue3xy9yRUgVHwj
+	 nUaplDxWoHNse5EVZpCqh1F0veJ3MhzDp99tQifbvLbkDN/pf6WtLLsOwHp0WcAAw9
+	 JTcTTZuT+90Nw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D2F03805CDD;
+	Tue,  3 Nov 2026 12:00:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -64,38 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179370720413.1083709.10616252917491036548.git-patchwork-summary@kernel.org>
+Date: Tue, 03 Nov 2026 12:00:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Sun, 13 Sep 2026 00:37:45 -0400, Myeonghun Pak wrote:
-> spi: amlogic-spisg: Balance runtime PM and clock cleanup
+Hello:
 
-Applied to
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+Patch: spi: amlogic-spisg: Balance runtime PM and clock cleanup
+  Submitter: Myeonghun Pak <mhun512@gmail.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1163690/
+  Lore link: https://lore.kernel.org/r/20260913043745.35022-1-mhun512@gmail.com
 
-Thanks!
 
-[1/1] spi: amlogic-spisg: Balance runtime PM and clock cleanup
-      https://git.kernel.org/broonie/spi/c/67e3d31893ab
+Total patches: 1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
 

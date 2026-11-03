@@ -1,55 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793696666;
-	b=RePEXMmwNAEbM4BID7fAZ5jOdrSiS01ZrU0GiotxJpQNFiJuNISeJwq9vZXcSquscaRJ
-	 ihVF5wiXEFhsSy/kllPShA1XLbSuAOlX5yCDjRqWR2bWJFKRvQdWvf5T5FKhJqiaPIV9B
-	 OWzy5ZafKgudb8CQZlHBGso044gUKP0ilIn28pyIt/UfEVgQ7DGX45PL77VJfV+jbhQvC
-	 5ulgnElonq178tDFYHcakjn9+44FaHO/cc6p1oPMHwF4UoHvbGQiwKPVr23pT/OrUKLJU
-	 Vq7EWQp9vZHTm3VXNoQN5gK30iYx7YkFOpCorFJdB+fFk/0qCBYHDFmziPSa3mzrAPw==
+	t=1793706606;
+	b=XqI9HSgCuZkFccibbhuIjt9Z27p9Thv2MgVQz8IL2y4Cn7x8YDXC3Z2VLN3SviZl+7G5
+	 CYsTULi1VuxLkMe/NDHL8jPGEqRtcv/OMtPBjMCd+XOclVGmdOrnTNsvGpiMJTMBpY4hE
+	 mbcj7judUOp6eY4FYQY0BwPHG2d9kkSKoh7SYaL5BoPVKMaIt/2q2bBgIKL+7+hV4LXLr
+	 9e5HHFc6FGAKMcG6b2mWmAjeZw1LTNIEUQ+M/zNKVNcI4097rTu9A81o1sBImiw5Vpoub
+	 FVGfLqIGrW2teOhALg5Mq3CCp/Gq9r4nXrIvfzJQQPnFKC4JOFNn3cM1aP2m5IGET7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793696666;
-	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
-	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
-	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
-	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
-	bh=oqcwif+o3u40FPToGAPLvgMZ6cthmDqENUhGefULOww=;
-	b=OzegxzfN9R+aIydve5m7AcixBkasLuzVVbCVxTvEriJgwkPhm1xjwPOcGIVu/TbeqoFQ
-	 aHAt5KcrZe8GqGR8ILyK4E8UZ71C526E7x2yQD2T0U/ycjUjgLJ9wVqtBL/6c4oghc35C
-	 yQIAoP37WVElkGw0uOnoI3TdFiUvB+MKiInl84L4a9yxmFkfrWtMww0SGmNGbpJR3UuDh
-	 VF1FNGMtxqqSHWtkcblQDSlbYaRLl0kWwfSq2UNEcTUmguhNbl9xvIXX5ThuH12NW63J0
-	 aK1e3Z5PnRWElRFQXSFgH4tvVdi2vUzJLR1aCdgVseJN8oka4r5lveZks/uMBaS+LMQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793706606;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=moZ+ztRSsmKwEicCscSpemaCNWpPPtZATd0erH9Y+rU=;
+	b=jBBkMpK9UsdwPZt1zWKr9PgtgLqKcEiFMa8UxtuzhurC7rM4IWl78/J2qIz80vGf7lNt
+	 sQyJbEFnOwQgqDZc6lqxPxAiOnmnBS8Qw5dyZGNMH3+gl8xW5KpFPUIltQURHQGndMKZs
+	 xRcwqYi45DtypIX7iCIHIkvNuM9P24vUjVGlCfzIjIBTZIPDpDgy+i4K+ZWyEL7lDY0DU
+	 m2qIGOfYTJbrIitMMTDLhEXlGFTE2aIs21+X+QUymfLBVT4BH/ic95yYajGXs8P82irxz
+	 /6zg1ZSfmPDfMsf1nUdeyF0JnYWVDOT2PfmWlD76qfZ7lyilUQ0gHHfz4DnsRCIWZQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h1xKU2tT;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D91zp5rl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A0F606A332
-	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 09:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CE6606D80E
+	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 11:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h1xKU2tT
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2BB1F00A15
-	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 09:04:25 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D91zp5rl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDB51F00A1E;
+	Tue,  3 Nov 2026 11:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793696665;
-	bh=oqcwif+o3u40FPToGAPLvgMZ6cthmDqENUhGefULOww=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=h1xKU2tThc+PCjMmTSQl98ISc5OnxMMDKFMUPOC9vnlb9lQ4xXhBteZ2gpKXpRt7I
-	 w9lfHpMOf3jD7ltyrds0TP7N7c/b/Jj6B+osimdzSS0PSO++Rw2BGlJCslQ8ZoGQrh
-	 s035XhlTsRnNeYdvANd09qtbbDad5FtIteTxYMMEyv2lCo+HSmzUARhSS9QlY0zjzV
-	 N4+Kg7jXHxMi3kiA9ATievIktcA60E+48pt0/InTqwfA0sOKN1kO3xUiAcccV8xDT+
-	 +8Vutoj+WhzleMS5uiq6PG8imke4kD2NTobGiKFljbN6hq0teze7QLoDKWlRhqdiy5
-	 celxtNibeT47g==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3ab27e45e7cso31694421fa.3
-        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 01:04:25 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBz/4iSLNIHW3PH2ocWOHeHT2uNIHqMvfZYkgvqjC8B4ldYWw5jf4EtzCCh0AkW5fhdINN5BpLm+d7A=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+c619aavMMxw0s1lXS39qEUFQrTAH2qpATAEyHAuHybiCBbrTS
-	jWAeVZZF/qd+1yYXzXbeFKcC1gjLH+elpCcrSWLuuiS3sViMTcd7G3oJ008zwfVxKnO1PeEF9rZ
-	pJGK/0UlxD/izXRh8jwpfmuku0abxGhs=
-X-Received: by 2002:a05:651c:198e:b0:3ac:4da3:864f with SMTP id
- 38308e7fff4ca-3acb7a9e0f3mr31016591fa.4.1793696664148; Tue, 03 Nov 2026
- 01:04:24 -0800 (PST)
+	s=k20260515; t=1793706606;
+	bh=moZ+ztRSsmKwEicCscSpemaCNWpPPtZATd0erH9Y+rU=;
+	h=Subject:From:Date:To;
+	b=D91zp5rlPszl1bUxUZSA9IKUb0bvpVnePEd114JCIRE0eLTuaC+GjF6x49Wd53NIy
+	 2sz6rTIuUpkqI9IxIvVdkuOcjh0/z/yXEDONNfANdgkzr21w06VcE7sbQII7KBD3la
+	 6wukCVea1HCrF6HFkNziBWPBkhJ0wmtBzu6X7F8pUeLTzEvsEqLWaibyF2FPtj1f/m
+	 aBdEbRncsreE6Kg/mHN7S7hhpyzA9GyAnKoNSdaZG1aUYHCzGHV5WAG53K2kFa4lOm
+	 bXbuCEIw7bY00s8Jjz1v3WBiHXQef9aQmF5CZP1JLaeKcgdKG1DgpD5pVbxceqCt+N
+	 UpMZhd0/1r84g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 05EB13805CDD;
+	Tue,  3 Nov 2026 11:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -59,69 +52,32 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 3 Nov 2026 10:04:10 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmoy=--GE4MScaTOa=x9+HAuvhHC7ixA_GYVme2vrcgZQ@mail.gmail.com>
-X-Gm-Features: AclHuK8feuY0PnTZqOb4xpNbcV0UYLP8c4l3kas742sFixN6cKUvbMAmIcJa7DE
-Message-ID: <CAD++jLmoy=--GE4MScaTOa=x9+HAuvhHC7ixA_GYVme2vrcgZQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] spi: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com
-Cc: Mark Brown <broonie@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>, 
-	Ryan Wanner <ryan.wanner@microchip.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean <olteanv@gmail.com>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>, 
-	Haibo Chen <haibo.chen@nxp.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>, 
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Peter Griffin <peter.griffin@linaro.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Yixun Lan <dlan@kernel.org>, Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Laxman Dewangan <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>, 
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>, 
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>, 
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>, 
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>, 
-	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>, 
-	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>, 
-	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>, 
-	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>, 
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, 
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, vkoul@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179370660459.1076381.14031369451845145163.git-patchwork-summary@kernel.org>
+Date: Tue, 03 Nov 2026 11:50:04 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Mon, Nov 2, 2026 at 6:40=E2=80=AFPM <Frank.Li@oss.nxp.com> wrote:
+Hello:
 
-> From: Frank Li <Frank.Li@nxp.com>
->
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across SPI bus drivers.
->
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-Makes sense.
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Series: spi: handle runtime resume failures
+  Submitter: Jiale Yao <yaojiale02@163.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1188695/
+  Lore link: https://lore.kernel.org/r/20261019084443.1824122-1-yaojiale02@163.com
+    Patches: [1/2] spi: stm32-ospi: handle runtime resume failure in remove
+             [2/2] spi: ti-qspi: handle setup clock runtime resume failure
 
-Yours,
-Linus Walleij
+
+Total patches: 2
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

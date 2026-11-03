@@ -1,55 +1,90 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.215.180
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793689726;
-	b=kCDBLvfG18TrG683wSvSU2ZiaDsT8mSr2dz9B5YYkBxf9BS/Wwdtxd6MHNlxT3J0Irqg
-	 saeM9yA0bT5SQHM/LGe+QNvr44s4PdKdRc1vEHV3nlbcQDqqAdlQ9pTEWlt8ivIHvuip9
-	 7+Q3ngqQLopkKnpMz+WcaNvecMTGrmaEDz+bN8/qyYSJc9pSR8vJPH3bJ2TqzpJkaazh+
-	 mi78wwyH6yYCxkUDT6pa0G+iYr2Q3j2Mhy9vM3BQNu1CmgIs9lnbSTphfc6iIOJ3cTXtg
-	 1Hr/TCZ9ZWmg8n2w1EwkqzBatlMJNk4qColN8hrJ9rpgKz4Q5vqmdTlEYVY+SDr9D/g==
+	t=1793695635;
+	b=vpgxoW+LtYkJyvevDeAjTHRWFJ/Yh/PWDTb3rtUamQ9aObMoN9K88yDRP4pKD9pTBuJ7
+	 9mPWiGoiIEwAPef3jpevQEAdzgfU7u2zdqwaw5PrvOnYvrtXo26KbKU+rwNFyDAtsOEO5
+	 57M6XmbZjO+GFIj7C+HMf6ExIrBGvC8rpx7wwLBqesFIhg3ia1blY00xE2cWPxE4xEtBK
+	 wb0NoBxNewQWrTpWxBjWJqWXDdfGGaVdJ2pvPBdmlYMVtAUDtUQk059/TNEEA2DKZAzXt
+	 0Q0TnzRGNFEZlp5hRjuimLI2/5K1ED3CQpsJYgezASYlhXY4uuTsvMZldcqIZc+g4SQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793689726;
-	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-CM-TRANSID:X-CM-SenderInfo:
-	 X-Coremail-Antispam;
-	bh=aPDawzzUJ3BMu2Y0nfrQKxuDR6FzacUrMvCo2u/+SFU=;
-	b=ml1tmWAQSp3hhTGBNrbx+Pc0wLjWySM7517LuFVqyD+G41YXDzfZKD5sUMZm7sKmoNHO
-	 txgPOIQNyxQGxxLphvC8xA8tP68B1xcFvYK1Ueuks+jTCgsVLmokIc8eorwSle1dCqrrq
-	 M4Dol6ep3br7disRfgrgcHiOalOHcKEhOLE9l3L2mc6zTESlRP5eJG2lzwuy6LJ12Pjbt
-	 /myHrcX1VRWgVfr9jipbDBIebPWdLsrirR0cmzo5HPowcWhgxpm5JwhTUmYqXqkQxVRrI
-	 mAaN1CAP1GtY5zW7U6kubeCcT+YEwM91YQvtrkruWzmaHK3PgPErU/ToRsyCdklyv7w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793695635;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
+	 Date:Message-Id:X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=aKHO6s+vDpsbcy/6pYNvSAfUraC/MEbz6EzD41uF6vs=;
+	b=rJ29Q4bLLEyQ5wmyq2/qvXjHdXJuVKunlt2DWijxoopdgpTBPLAioiHyv284FvuSw1xp
+	 RbY4WlQETQhPvMR0+uWPxA3YxB3lWWhi4imsGHBSv+fpVNhkzKGIo5+mYZT9F6L044ypQ
+	 YV42Eu1AMG3B9dqmoU9FwMVeFJPqCeijgaI1q8dLMlFKZDLJBuu0vy1tVato1OInPquyX
+	 GAbiUIb6aXGvHS0ppdzPoHfEi8JhfFfLNDwjUZlbPM7BJ0zt1BfWLr78NseWEWWkap3Ex
+	 rim0bW+pM+KzFW6ITpW+IMZUUEdj7KliF1gCm5XLBg7v7Ak6D9ERCIT860Ik0au7d2g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=loongson.cn;
-	spf=pass smtp.mailfrom=loongson.cn;
-	arc=none smtp.remote-ip=114.242.206.163
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E0B606A324
-	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 07:08:45 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E1E0B606A324
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.69.17])
-	by gateway (Coremail) with SMTP id _____8CxKvB6iOlqz9wbAA--.14830S3;
-	Tue, 03 Nov 2026 15:08:42 +0800 (CST)
-Received: from kernelserver (unknown [223.64.69.17])
-	by front1 (Coremail) with SMTP id qMiowJCxtMx5iOlq7BQyAA--.11183S2;
-	Tue, 03 Nov 2026 15:08:42 +0800 (CST)
-From: Binbin Zhou <zhoubinbin@loongson.cn>
-To: Binbin Zhou <zhoubb.aaron@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Mark Brown <broonie@kernel.org>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	loongarch@lists.linux.dev,
-	linux-spi@vger.kernel.org,
-	Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH 8/8] spi: loongson: Add interrupt support for SPI controller
-Date: Tue,  3 Nov 2026 15:08:35 +0800
-Message-ID: <7258e7e16b8a563e60b7129946c292f70aeee1d5.1793689461.git.zhoubinbin@loongson.cn>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1793689461.git.zhoubinbin@loongson.cn>
-References: <cover.1793689461.git.zhoubinbin@loongson.cn>
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AnxVS1J8;
+	arc=none smtp.remote-ip=209.85.215.180
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC87606A326
+	for <linux-spi@vger.kernel.org>; Tue,  3 Nov 2026 08:47:15 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7BC87606A326
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AnxVS1J8
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cdab8873d9dso1414793a12.1
+        for <linux-spi@vger.kernel.org>; Tue, 03 Nov 2026 00:47:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793695635; x=1794300435; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aKHO6s+vDpsbcy/6pYNvSAfUraC/MEbz6EzD41uF6vs=;
+        b=AnxVS1J80qJcvRAlxIaGjp7cDqrd1lbtGAUeTDA8+MYBkQJy0p4Rp1MtGhb7pefD+h
+         1Cy6S/h4hh+dvemHj4UysWtOVHQ+P4Xz7KtZCBbqw70TkxUGylPv/EZKBMZ+RFd5lsra
+         fZRz+DO507tSsxL9TsYtjTM7gDA6kJEt4oSytJM0+bOO36Mu0cKTb+UK8M3xCmhIEjSE
+         7YQNKNHd6wh2wyMsmZORNyLz1UIeH5Xipg6iSvUl3NWzH4iOkaswTOyOuholg25XgtQR
+         ukuVhQNWvj18SVFF2bBDrELhW6SrmWYZAioH6OtqWZdLZTSZi21dx0cbD3P73oOEYEGt
+         rZNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793695635; x=1794300435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aKHO6s+vDpsbcy/6pYNvSAfUraC/MEbz6EzD41uF6vs=;
+        b=EaNAzkCBQGKP7bTN7eqLXwVrzTh9s5OQ0OxGxQiU5jJGTrIHND+DC/4tkv410mPAcb
+         unBB0OQOgm6VvVHjWqJu4jxkFhbJxlRv4QVPB7V08wX8TlvRKddlGbzx92Rhv6hRCNps
+         2BniCNmyGx4QBdZOKV6fXaSlcdyqDfkHXeqQL1mz3sOj1ugpb/1OpHMiWs69xxokgeQN
+         bOjfvFoHnoSYwGD/Zkw28a4A5HAAtPCeCrPnTGOz+Pgn7nvaRNGMnm7ls1D9bHjvsJsG
+         GZQr/JmYAPHJgUEOPsjCEr9ivxBGY4a24hfNVSyXcy2M2Wv/jq6yLgRFYoa43aDVhs/5
+         gXUQ==
+X-Gm-Message-State: APuU4Z+MeVZigFmBb+T08v7Dpix+USOeXHaPVaSEu9uT4tyny3PigIUR
+	xsDDzLL0KlcnG162dguaek3wKEi/SXQFrOh1tQHMjY//6PfoiIvlK0Zl
+X-Gm-Gg: AYBFou3CJlpNoiBBFoNMMJqEllTWDn64Pv2z09UjBdhGKYNQ1ebzjoC5o1ZCekXC6uC
+	S/1mcG/2WzMopJ3I9+7PPn/FypT7NfsgpWAkQ89B4PGbNa4IQ1mivV7A2QcosxgBCSIx1BgO17H
+	x7JXnNHh55ZJ4aqcMLhOaQwxVzDC5HS0If39xISEJ8MN4VfZ5sBmBmKEXgiFIW1CPzykpNqDScS
+	AJuA0QM1ncmpfNcLqXdaonCMOVCkG+nQVpBVRlki1kiY2V+z4mN1+nY5IlOGaQkann1NsU5wwN3
+	FbIvhdTbtcHdi10JUDK+hYKx3sZpDM/vdLPOxx110C6E4fPRKpGm1uwLXpvMcN9l6oaolEwA+Wh
+	2aGh2KIMir98QcXbWl4nEG9dL/uNRilyaSja3KAkI0X8+xnFdRnxirEXg9V+QSnyAN4d8+C0kbg
+	jlCnE+JiZmu6rbMJ7fjiAWUE46U3KgA0Spe1xmpvWFjY0HjfNUjompKFplRfo9G44g0zMhXzu8E
+	4bSRSyRzA3hIBLop2Aa3TEe5Hg7HtReOPYyVcQFvf5XViN4vOAd4fuygrJABf35JAUflxgQpFdi
+	wYmGoeXctnFepN7t9NmegsDYduin2U+8sjOqkALmNT354vIl
+X-Received: by 2002:a17:90b:3e83:b0:3aa:f875:3385 with SMTP id 98e67ed59e1d1-3ae8973162emr10835468a91.26.1793695634691;
+        Tue, 03 Nov 2026 00:47:14 -0800 (PST)
+Received: from spiderman.taila3fd8c.ts.net ([202.112.47.77])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c627193sm3537031a91.6.2026.11.03.00.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 00:47:14 -0800 (PST)
+From: Li Ximo <lixicaicai@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wang Haoran <haoranwangsec@gmail.com>,
+	Li Ximo <lixicaicai@gmail.com>
+Subject: [PATCH v2] spi: pic32-sqi: guard against empty BD list in pic32_sqi_one_message()
+Date: Tue,  3 Nov 2026 16:47:07 +0800
+Message-Id: <20261103084707.1582675-1-lixicaicai@gmail.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -60,359 +95,62 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxtMx5iOlq7BQyAA--.11183S2
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/1tbiAQEACGrpQPoEmAAAst
-X-Coremail-Antispam: 1Uk129KBj93XoW3KFWrAryftrykGrWUCrWDJrc_yoWkXw15pF
-	W5Zay5Kr4SyF4F9rn8KrWDGF1Yy34fGasrGa9rtw42grnFvw15XFy5KFyfAFWrAFWDXFW3
-	uFWkCF48Ca1DZwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUk2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26rWY6Fy7McIj6I8E87Iv
-	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Ar0_tr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUsdb1UUUUU
 
-The Loongson SPI controller can generate an interrupt on byte
-completion.  Add an interrupt-driven transfer path and use it when an
-IRQ is available, while keeping the existing polling path as a fallback.
+From: Wang Haoran <haoranwangsec@gmail.com>
 
-The PCI and platform glue drivers now pass the IRQ number to
-loongson_spi_init_controller().  If no IRQ is available, the driver
-keeps using polling and emits an informational message.
+list_first_entry()/list_last_entry() do not return NULL on an empty
+list; they return the container_of() of the list head, i.e. a wild
+pointer.
 
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+The SPI core rejects a message with no transfers, but it accepts a
+transfer that has neither tx_buf nor rx_buf. For such transfers
+pic32_sqi_one_transfer() iterates an empty scatterlist, queues no
+buffer descriptor and still returns success, so a message made up only
+of buffer-less transfers leaves sqi->bd_list_used empty. The subsequent
+list_last_entry() then returns a wild pointer through which the driver
+sets BD_LAST/BD_CS_DEASSERT, and list_first_entry() returns another one
+whose bd_dma is programmed as the DMA base address, corrupting memory.
+
+Bail out with -EINVAL when the BD list is empty, setting msg->status
+the same way the timeout path below does. The xfer_out cleanup path
+tolerates an empty list, and normal messages are unaffected.
+
+This issue was found by static analysis.
+
+Reported-by: Wang Haoran <haoranwangsec@gmail.com>
+Reported-by: Li Ximo <lixicaicai@gmail.com>
+Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
 ---
- drivers/spi/spi-loongson-core.c | 169 ++++++++++++++++++++++++++++++--
- drivers/spi/spi-loongson-pci.c  |   8 +-
- drivers/spi/spi-loongson-plat.c |   8 +-
- drivers/spi/spi-loongson.h      |   2 +-
- 4 files changed, 175 insertions(+), 12 deletions(-)
+v1: https://lore.kernel.org/r/20261026115219.3528114-1-lixicaicai@gmail.com
+v2: set msg->status on the error path as the timeout path does, and
+correct the description of how the empty list is reached (the core
+rejects transfer-less messages but accepts buffer-less transfers), per
+Mark Brown's review.
 
-diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-core.c
-index 5ad781471cef..2e56b3399657 100644
---- a/drivers/spi/spi-loongson-core.c
-+++ b/drivers/spi/spi-loongson-core.c
-@@ -2,6 +2,13 @@
- //
- // Loongson SPI Controller driver
- //
-+// - Host-only controller with up to 4 chip selects.
-+// - Double-buffered Tx/Rx FIFO, 8-bit wide.
-+// - Supports booting the SoC from SPI flash.
-+// - Both a polling mode and a per-byte interrupt mode are supported;
-+//   the driver automatically falls back to polling if no IRQ is
-+//   available.
-+//
- // Copyright (C) 2023-2026 Loongson Technology Corporation Limited
+ drivers/spi/spi-pic32-sqi.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/spi/spi-pic32-sqi.c b/drivers/spi/spi-pic32-sqi.c
+index 5d3921e29..ce8d60497 100644
+--- a/drivers/spi/spi-pic32-sqi.c
++++ b/drivers/spi/spi-pic32-sqi.c
+@@ -391,6 +391,17 @@ static int pic32_sqi_one_message(struct spi_controller *host,
+ 		}
+ 	}
  
- #include <linux/bitfield.h>
-@@ -10,6 +17,7 @@
- #include <linux/err.h>
- #include <linux/export.h>
- #include <linux/init.h>
-+#include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
-@@ -66,12 +74,20 @@
- 
- #define LOONGSON_SPI_NUM_CS		4
- 
-+/* Maximum bytes per individual spi_transfer (further reduced for slow links) */
-+#define LOONGSON_SPI_MAX_XFER_SIZE	(64 * 1024)
-+
- struct loongson_spi_priv {
- 	struct spi_controller	*controller;
- 	struct regmap		*regmap;
- 	unsigned int		hz;
- 	unsigned int		mode;
- 	u64			clk_rate;
-+	bool			use_irq;
-+	const unsigned char	*tx_ptr;
-+	unsigned char		*rx_ptr;
-+	unsigned int		count;
-+	unsigned int		total;
- };
- 
- static const struct {
-@@ -252,9 +268,119 @@ static int loongson_spi_write_read(struct spi_device *spi, struct spi_transfer *
- 	return ret;
- }
- 
-+static irqreturn_t loongson_spi_irq(int irq, void *dev_id)
-+{
-+	struct loongson_spi_priv *priv = dev_id;
-+	unsigned int status, data = 0;
-+	int ret;
-+
-+	ret = regmap_read(priv->regmap, LOONGSON_SPI_SPSR_REG, &status);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	if (!(status & (LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR_WCOL)))
-+		return IRQ_NONE;
-+
-+	/* Clear WCOL if it happens to be set */
-+	if (status & LOONGSON_SPI_SPSR_WCOL)
-+		regmap_write(priv->regmap, LOONGSON_SPI_SPSR_REG,
-+			     LOONGSON_SPI_SPSR_WCOL);
-+
-+	if (!(status & LOONGSON_SPI_SPSR_SPIF))
-+		return IRQ_HANDLED;
-+
-+	/* Clear the SPIF flag (write 1 to clear) */
-+	regmap_write(priv->regmap, LOONGSON_SPI_SPSR_REG,
-+		     LOONGSON_SPI_SPSR_SPIF);
-+
-+	/* Read out the byte that was clocked in */
-+	regmap_read(priv->regmap, LOONGSON_SPI_FIFO_REG, &data);
-+	if (priv->rx_ptr)
-+		priv->rx_ptr[priv->count] = (u8)data;
-+
-+	priv->count++;
-+
-+	if (priv->count >= priv->total) {
-+		/* Transfer complete: disable the byte interrupt and finalize */
-+		regmap_update_bits(priv->regmap, LOONGSON_SPI_SPCR_REG,
-+				   LOONGSON_SPI_SPCR_SPIE, 0);
-+		spi_finalize_current_transfer(priv->controller);
-+		return IRQ_HANDLED;
-+	}
-+
-+	/* Kick off the next byte */
-+	if (priv->tx_ptr)
-+		data = priv->tx_ptr[priv->count];
-+	else
-+		data = 0;
-+
-+	regmap_write(priv->regmap, LOONGSON_SPI_FIFO_REG, data);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int loongson_spi_transfer_one_irq(struct spi_controller *host,
-+					 struct spi_device *spi,
-+					 struct spi_transfer *xfer)
-+{
-+	struct loongson_spi_priv *priv = spi_controller_get_devdata(host);
-+	unsigned int data = 0;
-+
-+	priv->tx_ptr = xfer->tx_buf;
-+	priv->rx_ptr = xfer->rx_buf;
-+	priv->count = 0;
-+	priv->total = xfer->len;
-+
-+	/* Clear any stale status before enabling the interrupt */
-+	regmap_write(priv->regmap, LOONGSON_SPI_SPSR_REG,
-+		     LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR_WCOL);
-+
-+	/* Enable the byte-completion interrupt */
-+	regmap_update_bits(priv->regmap, LOONGSON_SPI_SPCR_REG,
-+			   LOONGSON_SPI_SPCR_SPIE, LOONGSON_SPI_SPCR_SPIE);
-+
-+	/* Send the first byte to start the transfer */
-+	if (priv->tx_ptr)
-+		data = priv->tx_ptr[0];
-+	regmap_write(priv->regmap, LOONGSON_SPI_FIFO_REG, data);
-+
 +	/*
-+	 * Return 1 so the SPI core knows the transfer will be
-+	 * finalized asynchronously from the IRQ handler.
++	 * A message whose transfers all have neither tx_buf nor rx_buf
++	 * leaves the BD list empty. Fail the message like the timeout
++	 * path does, before chaining the BDs.
 +	 */
-+	return 1;
-+}
-+
-+/*
-+ * Hardware limit on a single spi_transfer. Called by the SPI core via
-+ * spi_max_transfer_size() to determine the effective upper bound.
-+ */
-+static size_t loongson_spi_max_transfer_size(struct spi_device *spi)
-+{
-+	return LOONGSON_SPI_MAX_XFER_SIZE;
-+}
-+
- static int loongson_spi_prepare_message(struct spi_controller *host, struct spi_message *m)
- {
- 	struct loongson_spi_priv *priv = spi_controller_get_devdata(host);
-+	size_t hw_max = spi_max_transfer_size(m->spi);
-+	unsigned int speed_hz;
-+	size_t maxsize;
-+	int ret;
-+
-+	/*
-+	 * Split large transfers so that each individual spi_transfer
-+	 * completes well within the SPI core's completion timeout.
-+	 * We allow roughly one second of data per chunk, capped by
-+	 * the controller's hardware maximum transfer size.
-+	 */
-+	speed_hz = m->spi->max_speed_hz ? m->spi->max_speed_hz : host->max_speed_hz;
-+	maxsize = min_t(size_t, hw_max, (size_t)speed_hz / 8);
-+	maxsize = max_t(size_t, maxsize, 64);
-+
-+	ret = spi_split_transfers_maxsize(host, m, maxsize);
-+	if (ret)
-+		return ret;
- 
- 	regmap_update_bits(priv->regmap, LOONGSON_SPI_PARA_REG, LOONGSON_SPI_PARA_MEM_EN, 0);
- 
-@@ -271,10 +397,13 @@ static int loongson_spi_transfer_one(struct spi_controller *host, struct spi_dev
- 	if (ret)
- 		return ret;
- 
--	if (xfer->len)
--		return loongson_spi_write_read(spi, xfer);
-+	if (!xfer->len)
-+		return 0;
- 
--	return 0;
-+	if (priv->use_irq)
-+		return loongson_spi_transfer_one_irq(host, spi, xfer);
-+
-+	return loongson_spi_write_read(spi, xfer);
- }
- 
- static int loongson_spi_unprepare_message(struct spi_controller *host, struct spi_message *m)
-@@ -290,14 +419,15 @@ static int loongson_spi_unprepare_message(struct spi_controller *host, struct sp
- 
- static void loongson_spi_reginit(struct loongson_spi_priv *priv)
- {
--	/* Disable SPI */
--	regmap_update_bits(priv->regmap, LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPE, 0);
-+	/* Disable SPI and its interrupt */
-+	regmap_update_bits(priv->regmap, LOONGSON_SPI_SPCR_REG,
-+			   LOONGSON_SPI_SPCR_SPE | LOONGSON_SPI_SPCR_SPIE, 0);
- 
- 	/* Clear status flags (write 1 to clear) */
- 	regmap_write(priv->regmap, LOONGSON_SPI_SPSR_REG,
- 		     LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR_WCOL);
- 
--	/* Enable SPI */
-+	/* Enable SPI (interrupt remains disabled until a transfer starts) */
- 	regmap_update_bits(priv->regmap, LOONGSON_SPI_SPCR_REG,
- 			   LOONGSON_SPI_SPCR_SPE, LOONGSON_SPI_SPCR_SPE);
- }
-@@ -323,7 +453,26 @@ static int loongson_spi_get_clk_rate(struct device *dev, u64 *clk_rate)
- 	return 0;
- }
- 
--int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
-+static void loongson_spi_irqinit(struct loongson_spi_priv *priv, struct device *dev, int irq)
-+{
-+	int ret;
-+
-+	if (irq <= 0) {
-+		priv->use_irq = false;
-+		return;
++	if (list_empty(&sqi->bd_list_used)) {
++		ret = -EINVAL;
++		msg->status = ret;
++		goto xfer_out;
 +	}
 +
-+	ret = devm_request_irq(dev, irq, loongson_spi_irq, 0, "loongson-spi", priv);
-+	if (ret) {
-+		priv->use_irq = false;
-+		dev_warn(dev, "failed to request IRQ %d with %d, using polling", irq, ret);
-+		return;
-+	}
-+
-+	priv->use_irq = true;
-+}
-+
-+int loongson_spi_init_controller(struct device *dev, void __iomem *regs, int irq)
- {
- 	struct loongson_spi_priv *priv;
- 	struct spi_controller *host;
-@@ -338,6 +487,7 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
- 	host->prepare_message = loongson_spi_prepare_message;
- 	host->transfer_one = loongson_spi_transfer_one;
- 	host->unprepare_message = loongson_spi_unprepare_message;
-+	host->max_transfer_size = loongson_spi_max_transfer_size;
- 	host->set_cs = loongson_spi_set_cs;
- 	host->num_chipselect = LOONGSON_SPI_NUM_CS;
- 	dev_set_drvdata(dev, host);
-@@ -353,9 +503,14 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "unable to get clock rate");
- 
-+	/* Expose controller capabilities to the SPI core */
-+	host->max_speed_hz = priv->clk_rate / LOONGSON_SPI_DIV_MIN;
-+
- 	loongson_spi_reginit(priv);
- 	priv->mode = 0;
- 
-+	loongson_spi_irqinit(priv, dev, irq);
-+
- 	return devm_spi_register_controller(dev, host);
- }
- EXPORT_SYMBOL_NS_GPL(loongson_spi_init_controller, "SPI_LOONGSON_CORE");
-diff --git a/drivers/spi/spi-loongson-pci.c b/drivers/spi/spi-loongson-pci.c
-index ad90be956e1e..582f8aa10470 100644
---- a/drivers/spi/spi-loongson-pci.c
-+++ b/drivers/spi/spi-loongson-pci.c
-@@ -11,8 +11,8 @@
- static int loongson_spi_pci_register(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	struct device *dev = &pdev->dev;
-+	int pci_bar = 0, ret, irq;
- 	void __iomem *reg_base;
--	int pci_bar = 0, ret;
- 
- 	ret = pcim_enable_device(pdev);
- 	if (ret < 0)
-@@ -23,7 +23,11 @@ static int loongson_spi_pci_register(struct pci_dev *pdev, const struct pci_devi
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to request and remap memory");
- 
--	ret = loongson_spi_init_controller(dev, reg_base);
-+	irq = pci_irq_vector(pdev, 0);
-+	if (irq < 0)
-+		dev_info(dev, "no IRQ available, will use PIO mode");
-+
-+	ret = loongson_spi_init_controller(dev, reg_base, irq);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to initialize controller");
- 
-diff --git a/drivers/spi/spi-loongson-plat.c b/drivers/spi/spi-loongson-plat.c
-index dcfbdd50e996..d4d37748c3c2 100644
---- a/drivers/spi/spi-loongson-plat.c
-+++ b/drivers/spi/spi-loongson-plat.c
-@@ -13,13 +13,17 @@ static int loongson_spi_platform_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	void __iomem *reg_base;
--	int ret;
-+	int ret, irq;
- 
- 	reg_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(reg_base))
- 		return PTR_ERR(reg_base);
- 
--	ret = loongson_spi_init_controller(dev, reg_base);
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		dev_info(dev, "no IRQ specified, will use PIO mode");
-+
-+	ret = loongson_spi_init_controller(dev, reg_base, irq);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to initialize controller");
- 
-diff --git a/drivers/spi/spi-loongson.h b/drivers/spi/spi-loongson.h
-index c8b722bc5fb5..b60619b02ec3 100644
---- a/drivers/spi/spi-loongson.h
-+++ b/drivers/spi/spi-loongson.h
-@@ -7,7 +7,7 @@
- #ifndef __LINUX_SPI_LOONGSON_H
- #define __LINUX_SPI_LOONGSON_H
- 
--int loongson_spi_init_controller(struct device *dev, void __iomem *reg);
-+int loongson_spi_init_controller(struct device *dev, void __iomem *reg, int irq);
- extern const struct dev_pm_ops loongson_spi_dev_pm_ops;
- 
- #endif /* __LINUX_SPI_LOONGSON_H */
+ 	/* BDs are prepared and chained. Now mark LAST_BD, CS_DEASSERT at last
+ 	 * element of the list.
+ 	 */
 -- 
-2.52.0
-
+2.30.2

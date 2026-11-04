@@ -1,80 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793781969;
-	b=Yik99PYMkEoub17kAS7ChXtZzLfPD1BYyXEtbnX4O1EtiFcMBNGCvSdxC/1JZ4zRhJWp
-	 UMoUGDO16IVXi3UqOsHmIeyEk/meTvb3YW4/R+2Vc3p/QXQt1maZFN6qmlBC67NoF2Gur
-	 Iks+HmX3CY4+v0bjAsL9ygxwFWoAJAGeqWnShAIdVMs5TxL6LkZEvUSk/3FW10/+ww090
-	 Agss9a67ZBmYmkGcW5I90jt5mO3Q/XT2f6MdyhUunA6o0NhUXl7YmS+4r1hKEGGvYcExh
-	 aNAFu5Bhd7QVWYS5Ht8Ro7kOjhRfaFLQQWojILEKwGzHBXeoXSE9NcYb5qD37cdj7nA==
+	t=1793786567;
+	b=xm7hvlLT8uGd2DQ6AZa8BBH2KWtcOh7cgqV+qLTk0CTSkF+mPNpdOCI4OV08UzSBR67m
+	 GKqPl8mb0y1EFJ1MGKJB8mCAiom9ASZZeumc7Hy76s4BZk+UakbGyeF9c5k/17Bqx55N8
+	 Tw6L7x8/kQ+/gs8K/nErwRoT6hTHkfZ7HB7yAvYhzhl+yqJmYbffAVyzXF02U2btZvfP7
+	 ouAyE6PwmVYgBsTlnZYscD52dxPr5oTP1IZOfWrlOW/kztTNHcsy+kWblmKn0/20Q2dhG
+	 rDJuudmdEyf3G2873pzFqXmPe28IDuaDBdY8a77b410QmM3xIue7I9YpB8K22tR2wHA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793781969;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=rPktWRiI/JgjZXOK0VV9UihgCUHb9+RZLQKrRxQgIkQ=;
-	b=m15pkzCsB09CfQEQ8w14KSg8j+PZls5jz/KtmEvGZoWD3M9NZzei0ekkKuBzBhS6QmCp
-	 LAIKWkCg4+Eo8F0HA5P/nibf0pZN5ps71yRiS8nxaQeknDqGb8g4rNV8x0xJCivL6TZkf
-	 fm9QYJ6Z22goga/bAKJb/9bT4HBjT4pm+4ZphGfisNs0j2BOe3IS9dm6H7NCTF2dxiGlN
-	 CFMbsg5S6SmPXgZhX00fKyBCTLDidGfa9qxyGCPtUXR5B4PdNaT2ZCZ2rPI5agrsn77Zo
-	 PqBCQkTz+ivaZML3PAgnHRsPetcpOQi/2md8EzuTUlvHyjKgNsqb2glq7rD29oCb7PA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793786567;
+	h=Received:DKIM-Signature:Received:X-Forwarded-Encrypted:
+	 X-Gm-Message-State:X-Received:MIME-Version:References:In-Reply-To:
+	 From:Date:X-Gmail-Original-Message-ID:X-Gm-Features:Message-ID:
+	 Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=OsbxJZpAZx1h36y2vzu/iL+NpozhILVCBKZvXimWDaY=;
+	b=kB8WsnJU61PTsf1WMqgS90OCM6+vvdQQ3Uk4dxuc4g53eNmi+Ze3NPVTn8eiYWlNL8f6
+	 U7TaM7oJXAIySbqCj1cWTj4hvonsOg12jfmFIFSkiVp6WhMhvwB0otFV3+PG2+rs8MlVH
+	 sRvz4NArCwh0gC50eQBH1R0th8JlqHNb4LK49Gxuw8dinEjUxrilOxaACotljPq1fFAwM
+	 ZDAl0sjGM0BXoyr48oPrEWj62Ia4Ywsyi0TD5Fr1OtguEYU9uQIfibe3mjLIjcwx0N8vQ
+	 PJKExcmxiWroDPoNGBDH0LgdY/LRuxyq37qLu7dtwPsO8egaqyW/djgjEgvl53dzSyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iWWgRzl+;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dK0tn36H;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C727606A332;
-	Wed,  4 Nov 2026 08:46:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 3C727606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F765606A31B
+	for <linux-spi@vger.kernel.org>; Wed,  4 Nov 2026 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iWWgRzl+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793781968; x=1825317968;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fyw4gM5AV8XJVm/D6q+MVFyu67HewixU8i9L8I15X1c=;
-  b=iWWgRzl+G9UGeLaaOSMKwUkTg0tPIFathBLyox5WuC67tvWB9dNBLxpj
-   /gb+oeiLV300/eeoiT/9u4jsjoAbme2qzeCFw33Pa71aDXVtAqglZxZqM
-   p1yHNgYCRe3eIJzBAKml6LQbe0OVBa/B+HbsW5NKVLfwN3tFzU961whgp
-   eZtLBinlkQCN25xlHz7D0B3WmK4ZqOXriNDgJdcvO9q8rgpOCUBjxiVej
-   k8SvJLa5GCbApCgIy1T3NXo1zDyCGI+9MLOTq8iQCWxRe3ADMfEtBjWs5
-   exd7+80viJXd+9picluUNdgWY3Ju2X0oTzWETCfURR626wr3BM4o0z1ba
-   w==;
-X-CSE-ConnectionGUID: Xry16HfISnaoFYx3QuBkLg==
-X-CSE-MsgGUID: N5kkojMZR7OlZGMY4e04wg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2623322"
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2623322"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 00:46:08 -0800
-X-CSE-ConnectionGUID: DY0+xHzSQB+42gN643B25Q==
-X-CSE-MsgGUID: /SZ9wx83SOqE5CZm7dzfJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="7219588"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.24])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2026 00:46:05 -0800
-Date: Wed, 4 Nov 2026 10:46:02 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Frank.Li@oss.nxp.com
-Cc: Mark Brown <broonie@kernel.org>, Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:PXA2xx/PXA3xx SUPPORT" <linux-arm-kernel@lists.infradead.org>,
-	imx@lists.linux.dev, vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] spi: replace chan->device->dev with
- dmaengine_get_provider_device()
-Message-ID: <aurwylnNpkKi_Bx-@ashevche-desk.local>
-References: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dK0tn36H
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E981F00A1B
+	for <linux-spi@vger.kernel.org>; Wed,  4 Nov 2026 10:02:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793786566;
+	bh=OsbxJZpAZx1h36y2vzu/iL+NpozhILVCBKZvXimWDaY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=dK0tn36HQB0FgFCOs6lMaQtn970fqm1+UitCSCe5sQFvw/9ooxnBe19Q1qR7HsHJC
+	 OLm3g6zAwih81SeU+hnHL7nbWR9Ex7v1pEteOBwcebvEY0XGrZcEWjCdqLIGRl8qbA
+	 i+/+s0xMytH1ixwQLsAsNsP5ZQP3I93geQQYzg+Qkaz1y244jf7B9RaC3jOKssqtDt
+	 GvKt+ew57koXKm6puSxc5idn62dN6hdwyTaPN9VS155FKzWIXKg79itjkIjHxxXib7
+	 Z5WXPJnpxSF2iOT5eyC0+CKMbG7YGXvh7xyO0r8GM+hoEz8ID7p2YX1vlDWQaxDo6A
+	 gaGzPhuoYMdJA==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c3f8d72d7ceso90012166b.3
+        for <linux-spi@vger.kernel.org>; Wed, 04 Nov 2026 02:02:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBx8DYq+zqLukkZFo1WSxDuZT0RRN3qwekX2oTMEErkDwGScyNdxmaDMgQ3yFiCsqPuKuHpbCWOnYHU=@vger.kernel.org
+X-Gm-Message-State: APuU4Z/f/zzbqM64/+5N+ABVS/lH75zdIQ13z67nK+QlyHaw5u1kebyP
+	Le74X1eAep72lFItSeom/vKMUzIuOEYJteNJu40Sivccy1M+hWJx/90eLFQXKM/Scbl1IcCzBvh
+	Sy+dJnGp7jJ6J2FYiRyM0szmmzqIrsI0=
+X-Received: by 2002:a17:906:7309:b0:c41:c718:f5c5 with SMTP id
+ a640c23a62f3a-c4ca7a15633mr1378905866b.13.1793786565446; Wed, 04 Nov 2026
+ 02:02:45 -0800 (PST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -84,49 +59,285 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <cover.1793689461.git.zhoubinbin@loongson.cn> <ba943ed040b1c6a04a88612c1a62c04fefe876ba.1793689461.git.zhoubinbin@loongson.cn>
+In-Reply-To: <ba943ed040b1c6a04a88612c1a62c04fefe876ba.1793689461.git.zhoubinbin@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 4 Nov 2026 18:02:31 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7FL1oc0sS_Dm8kcSg0dTX5G8ZfQfQvfWEr_gXQWGAqfg@mail.gmail.com>
+X-Gm-Features: AclHuK_CDla3dRoNl3MCe3qp5KneL316zHPQCTZkiJ1u0xoSfIQ3io3-O827cno
+Message-ID: <CAAhV-H7FL1oc0sS_Dm8kcSg0dTX5G8ZfQfQvfWEr_gXQWGAqfg@mail.gmail.com>
+Subject: Re: [PATCH 3/8] spi: loongson: Make suspend/resume registers PM-specific
+To: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, Huacai Chen <chenhuacai@loongson.cn>, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Mark Brown <broonie@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 03, 2026 at 04:58:23PM -0500, Frank.Li@oss.nxp.com wrote:
+Hi, Binbin,
 
-> Use the dmaengine_get_provider_device() API instead of directly
-> accessing chan->device->dev to get the DMA provider device.
-> 
-> No functional change. Prepare make to struct dma_device private to the DMA
-> engine.
-
-...
-
->  	struct dw_dma_slave *s = param;
->  
-> -	if (s->dma_dev != chan->device->dev)
-> +	if (s->dma_dev != dmaengine_get_provider_device(chan))
->  		return false;
-
-It's obvious that we need another helper to match.
-
-// void * and EXPORT to be able to use as filter function
-bool dmaengine_match_provider_device(struct dma_chan *chan, void *dma_dev)
-{
-	return dmaengine_get_provider_device(chan) == dma_dev;
-}
-EXPORT_SYMBOL_GPL(dmaengine_match_provider_device);
-
-...
-
->  static bool pxa2xx_spi_idma_filter(struct dma_chan *chan, void *param)
+On Tue, Nov 3, 2026 at 3:08=E2=80=AFPM Binbin Zhou <zhoubinbin@loongson.cn>=
+ wrote:
+>
+> Currently, the driver reuses fields like spcr, sper, spsr, and para
+> within struct loongson_spi for multiple purposes (runtime setup,
+> polling, and PM state). This state overloading makes the code fragile.
+> For example, set_clk() modifies spcr/sper during normal operations,
+> which can corrupt the saved state right before a suspend.
+>
+> To fix this, move these register caches into a dedicated struct
+> loongson_spi_suspend_store (lss) so they are exclusively used by the
+> PM callbacks. Other functions (set_clk, write_read_8bit, message
+> handling) are updated to use local variables instead of mutating the
+> global PM state.
+>
+> Fixes: 6c7a864007b6 ("spi: loongson: add bus driver for the loongson spi =
+controller")
+> Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> ---
+>  drivers/spi/spi-loongson-core.c | 80 ++++++++++++++++++---------------
+>  drivers/spi/spi-loongson.h      | 14 +++---
+>  2 files changed, 52 insertions(+), 42 deletions(-)
+>
+> diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-c=
+ore.c
+> index deda754e214d..9f3acf583984 100644
+> --- a/drivers/spi/spi-loongson-core.c
+> +++ b/drivers/spi/spi-loongson-core.c
+> @@ -40,22 +40,23 @@ static void loongson_spi_set_cs(struct spi_device *sp=
+i, bool en)
+>
+>  static void loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsi=
+gned int hz)
 >  {
-> -	return param == chan->device->dev;
-> +	return param == dmaengine_get_provider_device(chan);
+> -       unsigned char val;
+> -       unsigned int div, div_tmp;
+>         static const char rdiv[12] =3D {0, 1, 4, 2, 3, 5, 6, 7, 8, 9, 10,=
+ 11};
+> +       unsigned char val, spr, spre;
+> +       unsigned int div, div_tmp;
+>
+>         div =3D clamp_val(DIV_ROUND_UP_ULL(loongson_spi->clk_rate, hz), 2=
+, 4096);
+>         div_tmp =3D rdiv[fls(div - 1)];
+> -       loongson_spi->spcr =3D (div_tmp & GENMASK(1, 0)) >> 0;
+> -       loongson_spi->sper =3D (div_tmp & GENMASK(3, 2)) >> 2;
+> +
+> +       spr =3D (div_tmp & GENMASK(1, 0)) >> 0;
+>         val =3D loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG=
+);
+>         val &=3D ~GENMASK(1, 0);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, val |
+> -                              loongson_spi->spcr);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, val |=
+ spr);
+> +
+> +       spre =3D (div_tmp & GENMASK(3, 2)) >> 2;
+>         val =3D loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPER_REG=
+);
+>         val &=3D ~GENMASK(1, 0);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, val |
+> -                              loongson_spi->sper);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, val |=
+ spre);
+> +
+>         loongson_spi->hz =3D hz;
 >  }
+>
+> @@ -107,8 +108,9 @@ static int loongson_spi_setup(struct spi_device *spi)
+>  static int loongson_spi_write_read_8bit(struct spi_device *spi, const u8=
+ **tx_buf,
+>                                         u8 **rx_buf, unsigned int num)
+>  {
+> -       int ret;
+>         struct loongson_spi *loongson_spi =3D spi_controller_get_devdata(=
+spi->controller);
+> +       unsigned char status;
+> +       int ret;
+>
+>         if (tx_buf && *tx_buf)
+>                 loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_RE=
+G, *((*tx_buf)++));
+> @@ -116,8 +118,8 @@ static int loongson_spi_write_read_8bit(struct spi_de=
+vice *spi, const u8 **tx_bu
+>                 loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_RE=
+G, 0);
+>
+>         ret =3D readb_poll_timeout(loongson_spi->base + LOONGSON_SPI_SPSR=
+_REG,
+> -                                loongson_spi->spsr, (loongson_spi->spsr =
+&
+> -                                LOONGSON_SPI_SPSR_RFEMPTY) !=3D LOONGSON=
+_SPI_SPSR_RFEMPTY,
+> +                                status,
+> +                                !(status & LOONGSON_SPI_SPSR_RFEMPTY),
+>                                  1, USEC_PER_MSEC);
+>
+>         if (rx_buf && *rx_buf)
+> @@ -148,10 +150,11 @@ static int loongson_spi_write_read(struct spi_devic=
+e *spi, struct spi_transfer *
+>  static int loongson_spi_prepare_message(struct spi_controller *ctlr, str=
+uct spi_message *m)
+>  {
+>         struct loongson_spi *loongson_spi =3D spi_controller_get_devdata(=
+ctlr);
+> +       unsigned char para;
+>
+> -       loongson_spi->para =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_PARA_REG);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loong=
+son_spi->para &
+> -                              ~LOONGSON_SPI_PARA_MEM_EN);
+> +       para =3D loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_RE=
+G);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG,
+> +                              para & ~LOONGSON_SPI_PARA_MEM_EN);
+>
+>         return 0;
+>  }
+> @@ -171,8 +174,12 @@ static int loongson_spi_transfer_one(struct spi_cont=
+roller *ctrl, struct spi_dev
+>  static int loongson_spi_unprepare_message(struct spi_controller *ctrl, s=
+truct spi_message *m)
+>  {
+>         struct loongson_spi *loongson_spi =3D spi_controller_get_devdata(=
+ctrl);
+> +       unsigned char para;
+>
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loong=
+son_spi->para);
+> +       /* Restore the hardware SPI Flash read path */
+> +       para =3D loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_RE=
+G);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG,
+> +                              para | LOONGSON_SPI_PARA_MEM_EN);
+>
+>         return 0;
+>  }
+> @@ -231,38 +238,37 @@ EXPORT_SYMBOL_NS_GPL(loongson_spi_init_controller, =
+"SPI_LOONGSON_CORE");
+>
+>  static int loongson_spi_suspend(struct device *dev)
+>  {
+> -       struct loongson_spi *loongson_spi;
+> -       struct spi_controller *controller;
+> -
+> -       controller =3D dev_get_drvdata(dev);
+> -       spi_controller_suspend(controller);
+> +       struct spi_controller *controller =3D dev_get_drvdata(dev);
+> +       struct loongson_spi *loongson_spi =3D spi_controller_get_devdata(=
+controller);
+> +       int ret;
+>
+> -       loongson_spi =3D spi_controller_get_devdata(controller);
+> +       ret =3D spi_controller_suspend(controller);
+> +       if (ret)
+> +               return ret;
+>
+> -       loongson_spi->spcr =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_SPCR_REG);
+> -       loongson_spi->sper =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_SPER_REG);
+> -       loongson_spi->spsr =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_SPSR_REG);
+> -       loongson_spi->para =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_PARA_REG);
+> -       loongson_spi->sfcs =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_SFCS_REG);
+> -       loongson_spi->timi =3D loongson_spi_read_reg(loongson_spi, LOONGS=
+ON_SPI_TIMI_REG);
+> +       loongson_spi->lss.spcr =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_SPCR_REG);
+> +       loongson_spi->lss.sper =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_SPER_REG);
+> +       loongson_spi->lss.spsr =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_SPSR_REG);
+> +       loongson_spi->lss.para =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_PARA_REG);
+> +       loongson_spi->lss.sfcs =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_SFCS_REG);
+> +       loongson_spi->lss.timi =3D loongson_spi_read_reg(loongson_spi, LO=
+ONGSON_SPI_TIMI_REG);
+>
+>         return 0;
+>  }
+>
+>  static int loongson_spi_resume(struct device *dev)
+>  {
+> -       struct loongson_spi *loongson_spi;
+> -       struct spi_controller *controller;
+> +       struct spi_controller *controller =3D dev_get_drvdata(dev);
+> +       struct loongson_spi *loongson_spi =3D spi_controller_get_devdata(=
+controller);
+>
+> -       controller =3D dev_get_drvdata(dev);
+> -       loongson_spi =3D spi_controller_get_devdata(controller);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, loong=
+son_spi->lss.spcr);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, loong=
+son_spi->lss.sper);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loong=
+son_spi->lss.para);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SFCS_REG, loong=
+son_spi->lss.sfcs);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_TIMI_REG, loong=
+son_spi->lss.timi);
+>
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, loong=
+son_spi->spcr);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG, loong=
+son_spi->sper);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPSR_REG, loong=
+son_spi->spsr);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG, loong=
+son_spi->para);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SFCS_REG, loong=
+son_spi->sfcs);
+> -       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_TIMI_REG, loong=
+son_spi->timi);
+> +       loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPSR_REG,
+> +                              LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR=
+_WCOL);
+>
+>         spi_controller_resume(controller);
+>
+> diff --git a/drivers/spi/spi-loongson.h b/drivers/spi/spi-loongson.h
+> index 35f95b161842..b2e73fa12420 100644
+> --- a/drivers/spi/spi-loongson.h
+> +++ b/drivers/spi/spi-loongson.h
+> @@ -29,19 +29,23 @@
+>  struct device;
+>  struct spi_controller;
+>
+> -struct loongson_spi {
+> -       struct  spi_controller  *controller;
+> -       void __iomem            *base;
+> -       int                     cs_active;
+> -       unsigned int            hz;
+> +struct loongson_spi_suspend_store {
+Maybe loongson_spi_pm_state is a better name.
 
-With that being done this function is gone.
+Huacai
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+>         unsigned char           spcr;
+>         unsigned char           sper;
+>         unsigned char           spsr;
+>         unsigned char           para;
+>         unsigned char           sfcs;
+>         unsigned char           timi;
+> +};
+> +
+> +struct loongson_spi {
+> +       struct  spi_controller  *controller;
+> +       void __iomem            *base;
+> +       int                     cs_active;
+> +       unsigned int            hz;
+>         unsigned int            mode;
+>         u64                     clk_rate;
+> +       struct loongson_spi_suspend_store lss;
+>  };
+>
+>  int loongson_spi_init_controller(struct device *dev, void __iomem *reg);
+> --
+> 2.52.0
+>

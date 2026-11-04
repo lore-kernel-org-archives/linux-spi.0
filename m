@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793813155;
-	b=GOZ0WjJ/m5NfWm6KqVy3URE/rFqGtKso0A+FF6tiXPLNWIdFIvA+W3PO2KDGRbwDdHYd
-	 OeJ96L+/8AmfmPinIeFmOXakGUnOFmNufmr4ORzCMmW/G0jbV18fgbLd+N/KQD8ytt0Gl
-	 HOplemdP4U/BqsxcVgFX1dtxH7AymZeIfXTBHfsrepQBUh4vs2Mlx/R0b/zpa3ZE2RNwy
-	 006N6EFBzM5vbkCWRCJ5YYozwnGHsmZXm3eZW/vvnXUxmYchE+SdYELQhl9i6qq+0ZVpB
-	 NQ5ywS7CajOXAheIC8hDpp3TD0YuNaop7tc0/JReCarcyVIEq7uxZho+h+sBuis7sGw==
+	t=1793813281;
+	b=ODqOQjPoC/zWF19i9RDNirXMaFDe1EY02Pbm0Qjj8dNsY8ccu63dVRoL8fRvnNCNBobN
+	 YXogTedwjN3po93nPD+gmWHEslmCTmBfdbFMttv4y+BNG/kjfHRuK5yF6/hLPEVJDvHwG
+	 5LOFJai1QcXaPOqt9HzwIrFv+nUXZf7MUCrKf1py0Blw3U/dyrXsUphP0BwjrZsnmax3T
+	 s8wDSnhgxleBv69t2u1VnZbUfPfxcZoYNMwyBSVLO9HakMPoE/bo2cZimlFh19Fev3yB0
+	 3Ke1jTgPZfugDouubCfgs5i7YGXkdbzFNYUYFGyEWikdacY8Q53lS/C+Zl0hdAaVfZg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793813155;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793813281;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=jUACR3WdNvp+1mq8YkWwlDzJHU0/aXZ2xaR7a5aW9T4=;
-	b=xoAI7sMWyLsz4hK/I3HcKLOf6M1MOSJiF+z+BHZKYNkmPZGI5xC45pIjmCHzBh5WFAUc
-	 0eWT7y1+VHlCSaC5OHLHeBABQsPUyEZkb8iSGdI3Jz1LXwH3qV3vwDl3IabqE9C7LjoeZ
-	 rbg3Hn2t7aDm/A9vwCvZK9d+bEJVREht9oOuARQUQMkt2U+ZzhLKQKiGxBdlm6snZ1BCG
-	 47ajGqQL8zuXF80JY0F1KbgbFscvWT8j/ch4X+nm4N2nygZIZj8HR95ulNVHgykGeDOwm
-	 QkUUyNB05unEbJohI3dmfQNbdYro2a8rMCGtdh37oN1lP6h+jPnDxgAlCTgr6M3MfBw==
+	bh=l/mNIUYbMxLCGw0NLoaMA4f3zkyRJADVSFkdtq4toFM=;
+	b=rUCePuE0UiS/d07nAbXAC2M8Xqn37X1d1XoOeIK39afWc75G0wBdZ6j55GYwfMsX6wa/
+	 nOCsZPxc8BGBKpEkvbBShm6a2e7c46EaX0QcgHTK7za0JAKH66++XtF8IBSO0qxFawB4D
+	 5Zc0ZTlJfNBakD5ij9XJ4Xa1RMFDMXjVydEsJNXlqleZAXdMexdo4GOjHRX2dbm3Wbffr
+	 ne5xpbN8OvStem0x8mDaM3XZe6xtYQlPR3ku2TG4IxYtowX4JTx+p81yU5ifHFR0LOHf6
+	 EBK9b1fhL7cCjXid5WJl4LCsvWLJ7zuq5CCpmSHN88GYR4zIE334J4t7PcsFo3aWMUg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DfAzDDAp;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LkqsVoPl;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A70606A328;
-	Wed,  4 Nov 2026 17:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA8606A31B;
+	Wed,  4 Nov 2026 17:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DfAzDDAp
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9981F0093A;
-	Wed,  4 Nov 2026 17:25:36 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LkqsVoPl
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A521F000C1;
+	Wed,  4 Nov 2026 17:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813154;
-	bh=jUACR3WdNvp+1mq8YkWwlDzJHU0/aXZ2xaR7a5aW9T4=;
+	s=k20260515; t=1793813280;
+	bh=l/mNIUYbMxLCGw0NLoaMA4f3zkyRJADVSFkdtq4toFM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DfAzDDApnZkst84u7igt5Tzo7p4bRP0TTyZOpD01uW9oDYaPqSC4UwI5YnnoJr0sL
-	 4ST/bkJo4aKiNSk3I0lRgaJOcFJLtsdyGWg65cQQgNA1oi5jxGTkpEzsjutDWwevEx
-	 yAFw0fwRhfwtEX8uaY8A85xDppxBOCrlg7wuQsk8m5Xz6nwM09YNMO3+eBvmSCpSsP
-	 cOc2yJg3Ut1tMjuZ4UfR2K8YEfsaeKcjH9LemW6vRrRWpfg2EJj7swGN17IQ1WZ5hX
-	 Sevn9M5IVKfYR8JxofvDqRGg7w58C2sVKXpEPQNvbvrQ7z6MNIk+msfVAQNFAoXFSP
-	 Qeqahu2f8xWmA==
-Message-ID: <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
-Date: Wed, 4 Nov 2026 18:25:32 +0100
+	b=LkqsVoPlMxnL8hn5zvggg6Mk5g6BwJ3Yt83USTc/eHUB9qseTp86cnNuAormA9cIA
+	 GXPp0lI/PgoNLT/nN5QL7Pv9RsKf/estDLFbDCpOMawQ8gaL3Ft580F5yejIrzOo7P
+	 SIPiLSFSqdfhyg7upul+KIwH2t0K0EIBBhv+t1G//73EioWqslBR14ukkjlsHruOIm
+	 n3fnEGZZ5tEigyUflMnKa617NRYomjanPVWDmiJ23OQHfhZohjiynMee+IuwZnXEca
+	 1bNASyC2jRHnlc6OLAIoywhCH4Txi/AupoYn2hDywxkjNkonXjXYJ4qw1faKAwMZsF
+	 zslmXuwVosIMg==
+Message-ID: <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
+Date: Wed, 4 Nov 2026 18:27:40 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,7 +53,8 @@ Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-To: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
  Nicolas Ferre <nicolas.ferre@microchip.com>,
  Alexandre Belloni <alexandre.belloni@bootlin.com>,
  Claudiu Beznea <claudiu.beznea@tuxon.dev>,
@@ -68,7 +69,6 @@ To: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
  Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
  Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
  Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>,
  Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
@@ -103,11 +103,15 @@ To: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
  "moderated list:ARM/STM32 ARCHITECTURE"
  <linux-stm32@st-md-mailman.stormreply.com>,
  "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>
-Cc: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+ "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+ Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
  Wolfram Sang <wsa+renesas@sang-engineering.com>,
  Thierry Reding <treding@nvidia.com>
 References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+ <autj6pr_bPaul3w0@ashevche-desk.local>
+ <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+ <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+ <autqC143h7Qf1R9H@ashevche-desk.local>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -153,92 +157,74 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <autqC143h7Qf1R9H@ashevche-desk.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/11/2026 16:22, Frank.Li@oss.nxp.com wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On 04/11/2026 18:23, Andy Shevchenko wrote:
+> On Wed, Nov 04, 2026 at 06:08:39PM +0100, Krzysztof Kozlowski wrote:
+>> On 04/11/2026 18:02, Krzysztof Kozlowski wrote:
+>>> On 04/11/2026 17:57, Andy Shevchenko wrote:
+>>>> On Wed, Nov 04, 2026 at 10:22:45AM -0500, Frank.Li@oss.nxp.com wrote:
+>>>>>
+>>>>> Replace open-coded assignments to callback and callback_param fields
+>>>>> of struct dma_async_tx_descriptor with calls to the
+>>>>> dmaengine_desc_set_callback() helper across SPI bus drivers.
+>>>>>
+>>>>> No functional change intended. Prepare make to struct
+>>>>> dma_async_tx_descriptor private to the DMA engine.
+>>>>
+>>>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw, pxa2xx, topcliff-pch
+>>>>
+>>>> (Note, you forgot to add the list of the drivers to the Rb trailers of other reviewers)
+>>>
+>>> These should be acks. RB creates false impression entire commit was
+>>> reviewed. Our docs also clearly state entire commit:
+>>>
+>>> "Reviewed-by:, instead, indicates that the patch has been reviewed and
+>>> found acceptable according to the Reviewer's Statemen"
+>>>
+>>> (not patch or part of patch)
+>>>
+>>> "By offering my Reviewed-by: tag, I state that
+>>> I have carried out a technical review of this patch to
+>>> "
+>>>
+>>> (not patch or part of patch)
+>>>
+>>> When you accept only part of this code, you basically Ack. I really
+>>> dislike these half-done reviews, which later appear in logs and tell you
+>>> nothing. You could have clear security bug here, but 10 review tags. How
+>>> useful tags...
+>>
+>> And let me even bring a better example. Imagine a patch, doing massive
+>> refactoring of core SPI stuff, 1000 lines of code, complex locking and
+>> also simultaneously updates drivers to new API changed in this core.
+>>
+>> Reviewing that 1000 lines of code in core SPI with complex locking takes
+>> someone 30 minutes. He gives Rb tag, gets credit.
+>>
+>> Now you come, look at SINGLE line in a driver and give Rb tag. For 10
+>> seconds job of looking at one changed call in one driver.
+>>
+>> You just Acked, you did not review "the patch" (quoting submitting patches).
 > 
-> Replace open-coded assignments to callback and callback_param fields
-> of struct dma_async_tx_descriptor with calls to the
-> dmaengine_desc_set_callback() helper across SPI bus drivers.
+> Your example is doubtful because the patch is combined from independent pieces.
+> The Rb fits very well the listed drivers. The problem is that some of the
+> people combine changes into a bundle (and not proper per-driver series).
 > 
-> No functional change intended. Prepare make to struct
-> dma_async_tx_descriptor private to the DMA engine.
-> 
-> Reviewed-by: Linus Walleij <linusw@kernel.org>
-> Reviewed-by: Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>
-> Acked-by: Alain Volmat <alain.volmat@foss.st.com>
-> Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> Reviewed-by: Troy Mitchell <troy.mitchell@linux.spacemit.com>
-> Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-> Acked-by: Thierry Reding <treding@nvidia.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
-> - add missed set_callback in rspi_dma_transfer() (sashiko
-> - collect review by tags
-> - drop void *
-> ---
->  drivers/spi/atmel-quadspi.c       | 3 +--
->  drivers/spi/spi-at91-usart.c      | 3 +--
->  drivers/spi/spi-atcspi200.c       | 3 +--
->  drivers/spi/spi-atmel.c           | 3 +--
->  drivers/spi/spi-bcm2835.c         | 6 ++----
->  drivers/spi/spi-cadence-quadspi.c | 3 +--
->  drivers/spi/spi-davinci.c         | 6 ++----
->  drivers/spi/spi-dw-dma.c          | 6 ++----
->  drivers/spi/spi-ep93xx.c          | 3 +--
->  drivers/spi/spi-fsl-dspi.c        | 6 ++----
->  drivers/spi/spi-fsl-lpspi.c       | 6 ++----
->  drivers/spi/spi-geni-qcom.c       | 3 +--
->  drivers/spi/spi-img-spfi.c        | 6 ++----
->  drivers/spi/spi-imx.c             | 6 ++----
->  drivers/spi/spi-ingenic.c         | 3 +--
->  drivers/spi/spi-mxs.c             | 3 +--
->  drivers/spi/spi-nxp-xspi.c        | 3 +--
->  drivers/spi/spi-omap2-mcspi.c     | 6 ++----
->  drivers/spi/spi-pic32.c           | 3 +--
->  drivers/spi/spi-pl022.c           | 3 +--
->  drivers/spi/spi-pxa2xx-dma.c      | 3 +--
->  drivers/spi/spi-qup.c             | 3 +--
->  drivers/spi/spi-rockchip.c        | 6 ++----
->  drivers/spi/spi-rspi.c            | 8 +++-----
->  drivers/spi/spi-rzv2h-rspi.c      | 3 +--
->  drivers/spi/spi-s3c64xx.c         | 3 +--
->  drivers/spi/spi-sh-msiof.c        | 6 ++----
->  drivers/spi/spi-spacemit-k1.c     | 3 +--
->  drivers/spi/spi-stm32-ospi.c      | 3 +--
->  drivers/spi/spi-stm32-qspi.c      | 3 +--
->  drivers/spi/spi-stm32.c           | 9 +++------
->  drivers/spi/spi-sun6i.c           | 3 +--
->  drivers/spi/spi-tegra114.c        | 6 ++----
->  drivers/spi/spi-tegra20-slink.c   | 6 ++----
->  drivers/spi/spi-tegra210-quad.c   | 6 ++----
->  drivers/spi/spi-ti-qspi.c         | 3 +--
->  drivers/spi/spi-topcliff-pch.c    | 6 ++----
->  drivers/spi/spi-uniphier.c        | 6 ++----
->  38 files changed, 57 insertions(+), 113 deletions(-)
-> 
-> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> index 762a3fb0fca81..de205e04a8600 100644
-> --- a/drivers/spi/atmel-quadspi.c
-> +++ b/drivers/spi/atmel-quadspi.c
-> @@ -790,8 +790,7 @@ static int atmel_qspi_dma_xfer(struct atmel_qspi *aq, struct dma_chan *chan,
->  	}
->  
->  	reinit_completion(&aq->dma_completion);
-> -	tx->callback = atmel_qspi_dma_callback;
-> -	tx->callback_param = aq;
-> +	dmaengine_desc_set_callback(tx, atmel_qspi_dma_callback, NULL, aq);
 
-Andy,
-These three lines look correct.
+The example is actually real. There are many patches changing some core
+subsystem API stuff + many drivers, and they are done correct as one patch.
 
-LGTM:
+Looking at two lines out of 50, 100 or 1000 (here is 740!!!) is not
+reviewing "this patch". Is acking it.
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+All of the Rbs here are half baked, meaning they did not review "this
+patch" (quoting submitting patches document).
+
+But sure, if we want to play such numbers game, I will be sending
+reviews for single lines.
 
 Best regards,
 Krzysztof

@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793811747;
-	b=Wey9tgZLd5CAEpLL2UfYe07egr3MKMuAug8cprkxSktI7gwLrc9VBKy7lX4GS5RaYNBu
-	 nXLRHJuoUxk+Me+2bsI8NXB2NmiCFr2S/SfxfA7iG1OO8hc1pnMAgWgm+ZdmKzUrXmUTQ
-	 loGDyN6XxF9+KNweDOyqXJ09Lof+GUugJ7DxM502FVW1Lgmx3wtZx+tKp2P72/RPgs9rw
-	 C59cSfg9YW1f5r+g/YCaosoS60Zu8o+pIRAwYzLA/qXy6iOHE1hoHOJ9SPi7XUXy8IRlL
-	 hKWLhHPl60fp4n3SCO8HdmEF91j4bBYoLeRP4lH7Cv+JfA906Nxm5JJBu8pJGQeRxFg==
+	t=1793812142;
+	b=2xzQH3m8XJMeFw8gDajDhPp+wsGkrWM8M3HzP9C+LCOzgFHJ5j12Id+1daLI06uDBCGf
+	 W7HBBCfz5nM4shcuq3BdqZ8MqlWw1CyMjms+K3VK1Ig1NnC3zHhVoUv1O7wiM++z5QhK7
+	 pKelgcBmwZejIAio71FzbsDl1Pn2ZWWdMvyzEzo3n3e0t7Ch9lyNxIkdxMadyTlTDey6p
+	 /elqYF3DcKhPr1GB9IdKzoesdKUfvHY9CcgbUpgHOhHZNPksLls8gJX+B9SE25w5bZrAx
+	 1MleI7ejA4P5D5xoPjTqRujZkkRR+iQcWJW2Z0fuyCZn7/dS/mBWbzb3MgpeKXsRiSg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793811747;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793812142;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Subject:From:To:Cc:References:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=ARdxYTQbPD+XkwuZEHGWJxQFTGvS5jllFLFq3PQ90d4=;
-	b=4+0tvMSGQ0sQHANNjqToa7uZqsmi33cdyPHN31LGC5kS5Rt/myOE9PuOIUd1jatsia4a
-	 KKNUolOm1eKfqe1D9dV0Qgod6IyoEI3T+dIMRVuKnUzWJtxoF8/uXfKao57/SNfZinMRw
-	 GpCtUwFEQJu5Mn+lX9zWMO3BneAnfPuEoH10xq0sOVRgi/Do/RPeWCmdkC8/eI+HJd7er
-	 SNNdLVq4D0wfJ1/AJ2QY7zdDNwGgGnZf5Ge/cjAlSMf+/vYDLVEgKeDKCx719R2Yirryq
-	 vo7fvyx056qBn9NRttyBdnKgJeMObdAOmPMeDNaUB4LhiTXn3LBizEtk3ojkJp63VxA==
+	bh=l/KAmDRtOoMoDq2gG1YpbrEXelFzd6hjViwAy8SPt2Y=;
+	b=gjFaj6lZCOFlzIIhkOSvbuRfNPGXYf44vDapNciK5yjDurGAdO0KNMcWVcSTUYDPYJoA
+	 COQgBnHzjxaawxqdy+6+nYjVJeGtMC4V0NVAXnQsy2xvdFcEMHfrJAk51Fc2984TzyiZl
+	 L7CnLtREcL/AQIzcxx3wv1I/ILZdkdkbwnmTLdAQjeS8xqwQq+XtJ5v7S2hFePA4spnXv
+	 WWTd1g0LdwFdiDsCAlytJBPxmUD+nen54XTsf5Z3gkRDUeyYg8eYoyoFfU8u/qqf0HktS
+	 r3Py5/se+IQ2YKJJfmOW/26Hifgsemwk/8hyP4L+Tio+fABtmE+WX9OXyX8SnoXLjyQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQvoql1j;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxcVIJ4K;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984C7606A31B;
-	Wed,  4 Nov 2026 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD188606A328;
+	Wed,  4 Nov 2026 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fQvoql1j
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E8F1F00A16;
-	Wed,  4 Nov 2026 17:02:07 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GxcVIJ4K
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687DF1F000C1;
+	Wed,  4 Nov 2026 17:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811746;
-	bh=ARdxYTQbPD+XkwuZEHGWJxQFTGvS5jllFLFq3PQ90d4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fQvoql1j3bRRUqwZtw26La5wq7WfXYZIEkg/yGjqHi4ArGgiV9DpaFbYm9LkNfqrW
-	 ANkD6LQrd3t9ZK2AyZGxBWZOqP3GCCT8rGbJ+Ek3r8JxWKhe+f6BYFCj7JkDxtT5h0
-	 gNFtBmz3NAo8Jf0Vor2ysuSD9sKYdyXa0+XhMehbzQGpkdvgFhh/pFKvHqgMeqh/5D
-	 0w6cHe/vPt13UkC1sI3hlzCMBnEGhdrpqiMkL3RPw6AT/F0CzDc9hm+IH6DwSk0veQ
-	 /j+bS6knBh0WbKrR+9skCxKgQe2iKPfbMRlZvJmxrAhnOrXiEI2iTD+O+zuULy/nQI
-	 Zex6KpwpKi+0w==
-Message-ID: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
-Date: Wed, 4 Nov 2026 18:02:04 +0100
+	s=k20260515; t=1793812141;
+	bh=l/KAmDRtOoMoDq2gG1YpbrEXelFzd6hjViwAy8SPt2Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=GxcVIJ4KkfHdjV4p36lasomP9lVOIWjuYpOAHfC43DN09/q/MMmQ51NvwyQ2y2pXn
+	 R9YgZfVnq43PewitoD5MfbjJmmQHONsNoipRY+lVE+UJHqa5pwn0kQO13BQ+FjP/eQ
+	 FLn8kxqZA1xl0QwUui9HpL+mH1r/IKmo83wjtLmCckLb4pmgmDA8suznN48BX4/4qQ
+	 TMnWmZqidscFIBWmF92PBY3QohWBJe1ncJDzaYtKbIgCx4v48cCDnxO5O5lrwkFj5v
+	 VKQ+XFGw9GmARsT/N8Sx8W/LrpqHxb6A1aWOKpu08YFPFekKQj+gKGz+MNR6wv+RPH
+	 zY15jVrl2HSIw==
+Message-ID: <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
+Date: Wed, 4 Nov 2026 18:08:39 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -53,6 +53,7 @@ Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Frank.Li@oss.nxp.com
 Cc: Mark Brown <broonie@kernel.org>,
  Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -109,7 +110,7 @@ Cc: Mark Brown <broonie@kernel.org>,
  Thierry Reding <treding@nvidia.com>
 References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
  <autj6pr_bPaul3w0@ashevche-desk.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -154,43 +155,55 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <autj6pr_bPaul3w0@ashevche-desk.local>
+In-Reply-To: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/11/2026 17:57, Andy Shevchenko wrote:
-> On Wed, Nov 04, 2026 at 10:22:45AM -0500, Frank.Li@oss.nxp.com wrote:
+On 04/11/2026 18:02, Krzysztof Kozlowski wrote:
+> On 04/11/2026 17:57, Andy Shevchenko wrote:
+>> On Wed, Nov 04, 2026 at 10:22:45AM -0500, Frank.Li@oss.nxp.com wrote:
+>>>
+>>> Replace open-coded assignments to callback and callback_param fields
+>>> of struct dma_async_tx_descriptor with calls to the
+>>> dmaengine_desc_set_callback() helper across SPI bus drivers.
+>>>
+>>> No functional change intended. Prepare make to struct
+>>> dma_async_tx_descriptor private to the DMA engine.
 >>
->> Replace open-coded assignments to callback and callback_param fields
->> of struct dma_async_tx_descriptor with calls to the
->> dmaengine_desc_set_callback() helper across SPI bus drivers.
+>> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw, pxa2xx, topcliff-pch
 >>
->> No functional change intended. Prepare make to struct
->> dma_async_tx_descriptor private to the DMA engine.
+>> (Note, you forgot to add the list of the drivers to the Rb trailers of other reviewers)
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> # dw, pxa2xx, topcliff-pch
+> These should be acks. RB creates false impression entire commit was
+> reviewed. Our docs also clearly state entire commit:
 > 
-> (Note, you forgot to add the list of the drivers to the Rb trailers of other reviewers)
+> "Reviewed-by:, instead, indicates that the patch has been reviewed and
+> found acceptable according to the Reviewer's Statemen"
+> 
+> (not patch or part of patch)
+> 
+> "By offering my Reviewed-by: tag, I state that
+> I have carried out a technical review of this patch to
+> "
+> 
+> (not patch or part of patch)
+> 
+> When you accept only part of this code, you basically Ack. I really
+> dislike these half-done reviews, which later appear in logs and tell you
+> nothing. You could have clear security bug here, but 10 review tags. How
+> useful tags...
 
-These should be acks. RB creates false impression entire commit was
-reviewed. Our docs also clearly state entire commit:
+And let me even bring a better example. Imagine a patch, doing massive
+refactoring of core SPI stuff, 1000 lines of code, complex locking and
+also simultaneously updates drivers to new API changed in this core.
 
-"Reviewed-by:, instead, indicates that the patch has been reviewed and
-found acceptable according to the Reviewer's Statemen"
+Reviewing that 1000 lines of code in core SPI with complex locking takes
+someone 30 minutes. He gives Rb tag, gets credit.
 
-(not patch or part of patch)
+Now you come, look at SINGLE line in a driver and give Rb tag. For 10
+seconds job of looking at one changed call in one driver.
 
-"By offering my Reviewed-by: tag, I state that
-I have carried out a technical review of this patch to
-"
-
-(not patch or part of patch)
-
-When you accept only part of this code, you basically Ack. I really
-dislike these half-done reviews, which later appear in logs and tell you
-nothing. You could have clear security bug here, but 10 review tags. How
-useful tags...
-
+You just Acked, you did not review "the patch" (quoting submitting patches).
 
 Best regards,
 Krzysztof

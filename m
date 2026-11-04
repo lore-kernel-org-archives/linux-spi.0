@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793832919;
-	b=KNY0IRV3BgQuiucMfFBt0GRgls9eWEsNGHphdpkDVB7DVnHXfSAb353vHL38U0qkpI+C
-	 y43KoIM4zNR8lW8PbxKgEGPW0eOazkqNbfAFWjJ8O7s2MvAYMkg/2fs+vU7qJAtqiuZDo
-	 +2QBwG6DlN5juRyYv8BCfAz2akcClg4P+ZGqbLcsDIHDlT9uw2vKwR8ncN3V9tq8K1G3g
-	 6/y6tTo72E+oqHQEA9U79vHLsrPoFtjBrZohbyh8UtjjN4H8w1UwPyGCFUV07ka2zUCuy
-	 w4M2JBOd5YPX7BQmmDGIxa26FJcSSWXpAqRISeju2clAWF/Y7atRv9aUTxbEJ9NmTAw==
+	t=1793833362;
+	b=TSH/p1JVJ88AB8MpHboUF0ZBdQ0dSL4HN8KDh7hjVRaIS/UqvBmHx/ZUJdQELVE5zbPw
+	 4rsu7brwfBkAMEB4UPwuIlHLd90uNItx7gQS4AatvXDz4pz4tOLR5Hl8z+nMPFEuVj2i5
+	 Jw6MnmjV7KwOSGVNoIrEigz7+A+C0XSLXA6NzalnXOllNQ/gxYT7ho8lDLIFFhqTp8AKo
+	 6WCDkdhB2JyUyPfM3gP2EBWiFPsC/OLuiuyXIjrgl3kSg9s1ETewdJRUGtFxLCbVS4Rms
+	 LWLBF+InWsX4wafs18GyUZ7UCgOEsISllxe5Z0m2wANf+0YxAna/Htyqxic2zdXgDow==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793832919;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793833362;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=mnDJw6GAIrvgHGIFoXKuODYKqpGo1OAyqHDyDG0Xkfs=;
-	b=f458BODXP8JNbM9oCeMKC9cp7xExvVZ7wyNNUb79ATjikGS8WoX2GRWU9iWIQbxXde+3
-	 cxIFuLtYYkqnSnLfzhGQduNhgK0jMhVQw4xPOtgYEY6VkPv2ZjzZn7gHm9ZWFFysjbwLM
-	 nLR3vZ6fGh1ekYUkoKYzsBXrX4zZNginjS+8tnajhCz8ehj7K3yX4A5wnq+x9ImwjVxeG
-	 vZ4B9IqCD/5niFJ+Ep+gUARhYGW0plSS2EQ3dutU7nw112Xp6bC8hkkNKbL9stQvS6Yf4
-	 IjrVJ3Sg3MpzVtfjzA936rBJ7Qs6+jCWuuZPIQ2yDYFvVMi3U1UENXUgAO2U18FNVBA==
+	bh=faVYG+5p25QPZ5jO9MjUiu/Ltiks8UpOg4pXnPN3sY4=;
+	b=llFxx4Utk0W+ZNQGgogqD38jZJIdMF5Bup9tRe2aHw3PFPyJMRqEIyxJltpebMgn9OAY
+	 jTtO+L8IljRTYSeH4oqiDgl9OgMhnxNIJAlgVgwpjVxXQHd3eAFAbdO++HSZJ81BAerUn
+	 P2KxwK/Rw+L1jg+OzeNRMmf+O5H0gmt8eRCY9wo1OFXsFommLCUNBSSu0q1eUdVTD76Mm
+	 AhGnJCSq6FcroLnZ5nZJvXjRuoIoDVpwOtJ6R7xylzbm9Zi8JJmfSFGH+n0OE0VcsU9Pe
+	 U5aW/8ZOuXVnhQfTepIkF7RjpIFYPSSP+3WQ/iviym3ypJaQOV6Crxldmv4ZpqJJzMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="IJOJe1/i";
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AffaDmK1;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1857F606D806;
-	Wed,  4 Nov 2026 22:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA909606D831;
+	Wed,  4 Nov 2026 23:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IJOJe1/i
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3DC1F000C1;
-	Wed,  4 Nov 2026 22:54:59 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AffaDmK1
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCD91F00A18;
+	Wed,  4 Nov 2026 23:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793832918;
-	bh=mnDJw6GAIrvgHGIFoXKuODYKqpGo1OAyqHDyDG0Xkfs=;
+	s=k20260515; t=1793833361;
+	bh=faVYG+5p25QPZ5jO9MjUiu/Ltiks8UpOg4pXnPN3sY4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IJOJe1/ilgJHQLkVgZLjG8WTnd31bid7aYmQtlGoWDjGUJ6M5+DR5+rcRicIImoks
-	 i/yAZCI4AGUGWVmhQnYkfxmd75gKnSiKCoBwAEbwDRf0e1IEeit8xHV5Dt8ipao8dU
-	 jwZiinU2gw3IV8dMd1Vu3F2bGiWzVhhKzoYi2C8RYCgqPjYr/0ILxk0FbjxpotE5AK
-	 9ZmTccHWAxa4eQMkVvnPODuuez8gUXgnGm+sE6hPmI+qwCKeaIPZmdB2iwFYR6QvSK
-	 rRemK4IDg8mOiZwV+sShIuCyqG1xz8wht2UaLvAJbRbueE1EosP9CZswPj5wEIU0Fq
-	 7KnVdclfzHwsQ==
-Message-ID: <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
-Date: Wed, 4 Nov 2026 23:54:56 +0100
+	b=AffaDmK1nAJFIZOcKFXhI7ch/PjsnP05KdrAgKQZEp0GZxvC8P8mAoNxhBYDNJjgU
+	 nCAIj5t25AYXI9KGygKBLo5baE4wkhhsoEha81JuexT/xyEi2Zr++TchPgoCymcDef
+	 r3ZZBRICCyliFRdQW/gb90PWic3BEY1oQQr7xnQqhaFHMccTlCBhFJcSbMeieg7HW9
+	 rk8I8oAhTJS7C6RFfg5PrRSiDryhmpg4zNj1rs6IbOuwVLoj/CSHbkdY+4dccrv5ti
+	 SeaN5K5vRzV5lM4KNj4VXdDQKev+Wqm+CphEC4lmHL3H+WC0SN/q5UFVSJBoIGqEPj
+	 WRW4500FxKHNg==
+Message-ID: <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org>
+Date: Thu, 5 Nov 2026 00:02:21 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -108,12 +108,8 @@ Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
  Wolfram Sang <wsa+renesas@sang-engineering.com>,
  Thierry Reding <treding@nvidia.com>
 References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <autj6pr_bPaul3w0@ashevche-desk.local>
- <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
- <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
- <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
+ <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
+ <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -159,24 +155,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <auuYcS7-YqJKcUbE@ashevche-desk.local>
+In-Reply-To: <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/11/2026 21:41, Andy Shevchenko wrote:
+On 04/11/2026 21:44, Andy Shevchenko wrote:
+>> Andy,
+>> These three lines look correct.
 >>
->> But sure, if we want to play such numbers game, I will be sending
->> reviews for single lines.
+>> LGTM:
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 > 
-> I'm not playing anything. The problem is that the patch unites the files that
-> have distinct maintainers and unrelated to each other code. That's why in the
-> subsystems I maintain, I almost always require to split on per-driver basis.
-> Yes, exceptions are possible, but has to be quite rare.
+> As
+> 
+>   Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+> 
+> Note, it's in your power to ask the author to split out what you maintain
+> to a separate change. So, it's your choice what to do, Ack the full patch,
+> give a partial Rb, ask for a split, ignore reviewing (often means silent
+> agreement when maintainer just applies that kind of a patch)
 
-That's independent problem. Patch could be split, but it was not. Since
-it was not, receiving end should act accordingly, e.g. when performing
-incomplete review of only part of the patch, do not call that entire
-patch was reviewed by giving the Rb tag, but give Ack tag.
+The "# note" after the tag solves the problem partially, if people were
+actually using it. Solves people looking at the Git commit and being
+mislead by partial review applying to entire commit. Does not solve
+credits, because Rb for three lines is not the same as for 100.
+
+From v1 of this patch, four people (Alain, Lab, Troy, Kunihiko) did not
+use it even though reviewing only part. Only Wolfram, so 20% of partial
+reviews, used that syntax. Without that syntax, b4 will pick up Rb tag
+like it was for entire commit.
+
+So I do repeat - if one does not want to use that syntax, then just Ack,
+instead of creating false impression of reviewing everything.
 
 Best regards,
 Krzysztof

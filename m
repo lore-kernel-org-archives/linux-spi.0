@@ -1,64 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793886285;
-	b=j8yZpVtu+Z/eSp7AH3aid/zEhjRTI4wG6paSmT50BFsaILNfbHtRM1qrUOWF0TPq2Pf/
-	 L7CSVEXtKPNPiAgltaWxJAvLVvQN4payoswvpSEey4xX8alAE0nrzxFKZqR+vGgczu4m+
-	 0Anp+PvQIjp5fdzJ4rT6crlEsrZCo7IZSdwQ/UbdUklYGqiQOU7CWi2Cco13zfy5pOelQ
-	 F9UcJhRhnp+LiNtN7fCsD1WYzRQSl7X7pi2sS6tpGFbuUVLOdTIfufkP3GymSbj/Zf+J6
-	 gTJVWEfGF0o2DO6zJC1eG7kTT6fud05w/LepinzaOUR4jSRXSq7q+avb6Fb52hPNnLw==
+	t=1793896920;
+	b=D6byKhQJ2zpldf4/pZ/afOsVsQd16IvahksjgACYgt71YE2gxY2OMwe3ktEcu/TXBgAG
+	 jLnUeZ75Yhyuv/FKKs2m8+DQKnKH9bIZQ/1SE6c28l1Qmq/631je/atVSbaIke+Vcs1Z/
+	 6EmrOZN+ymGp/sAO7pkPuzlMh3u/ScKN/g2n/EhM0dUo4cg5PjJVT9FYaZ6kSSR/17Qgf
+	 t41CWYraHXV7+sPciBXteqNejuF1fOfcXBE6kNCvbJh71eAdRXY3iM+n+ZVF8LvJU8SU3
+	 TX3jq4Fxa9Go23PPYEfrE3M8TUoRU3Ul7mTADHwiYnvpYvIp+BYglfdkky/zcs7sciQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793886285;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=2dnaL6lMjO0vksrMo624Wl9ctTHzxve0dQKHCnrkYWc=;
-	b=o5A+nPDUm/fvftkNtwv6cWvRtcXY9wYYQXpD2FXxuAaW3iVFcruciF7Q3NVEsetw+iMZ
-	 A46qkBZagqAMywKGwXPiqBfPXwKZTEMr7Q+P+gIHZYULBYtgXRI1M87U9UokEp1Pq4AVz
-	 vRMRpy0qGWYwSHkcaovfTqRlHG73hjMY3mlG2haubI1vUoqZwr9Kn36two0SfZ/hwt0Wl
-	 Rd+G7AsxSSeKj4EWa5KoNJtNyGAnXFLY8ajNc+i4yEXJeUaR6U+lqH8c0IJa7V44EncIt
-	 30CUBKjRBibl5tTBgxZRvWdpFXBrAqpqCvSq4VumzlE2fjfY58/nQz3TZi4wxRYl36g==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793896920;
+	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
+	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding;
+	bh=hsr2BExTjVN6kFMut7DQ/MQ40pCbdd25UZGMKxUI80g=;
+	b=YIFJShKs3gx+olsv1EVSzMnf3cj3gT7NMmnhUzsHTzZ65ezdIMHd7Fmwio4BdL/ZS/uI
+	 8T9N+CVNbpIWUgd71o3P/IVEZgI+DVqPj6RQpSdGzcaVwhere9rkyycTcuoJofwYchFr2
+	 lF8kYKIjq2s12MxiQ69SsmweR5kNPi7OxtaDRUppBxXqgm6WT13NRtfRmb5+1MLBKH0Yx
+	 A+rTP7Kl/AMiwS0LbgdSB6j5e19De+xcCKG8gmg2fmW92jaYj3wjam2uQs0YnVowU3RiZ
+	 CJYQY7a4crndAG9KBGisXYPz6yXQFxap/3uHCdi46wzfbHB5piSVHWg9GOL6+VFJI7w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=alblbtWH;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDZGjgOK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F690606D808;
-	Thu,  5 Nov 2026 13:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7B606A328;
+	Thu,  5 Nov 2026 16:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=alblbtWH
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF99B1F0093A;
-	Thu,  5 Nov 2026 13:44:44 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDZGjgOK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2289D1F0093A;
+	Thu,  5 Nov 2026 16:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793886285;
-	bh=2dnaL6lMjO0vksrMo624Wl9ctTHzxve0dQKHCnrkYWc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=alblbtWHKnV2SiK9/IkQ1dbjudC/7QWnEEz6G5QSKvbPj7Zm4qG1XdTdLyyeSgTud
-	 49X9fzFizPRjeFp8UIphDu0YcObv2xI2oXqmNlANpP8EFGy+Ynr65bC3+aDmKBIeeL
-	 ClPk7/Ie9LYeOObnCl+0VfVKFvyPis/4LDB+Z8VPvcp3hVOENi9FlFdxlofoATeKAN
-	 kMPMfx05TrZ9vvzIIjBJKyle0aTe374FImhpz+ephr6jOUygUJt/98Bubu4ZwPGmYD
-	 4iCUHtMu97tbut0Iay4SheEHBdwhzbyM3Mo8AsWMR6L4SwSg3gWyYZ1PHkZoFloAJJ
-	 t8/MBkwupzelQ==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id D5D292762835;
-	Thu, 05 Nov 2026 13:44:42 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Vishwaroop A <va@nvidia.com>
-Cc: Laxman Dewangan <ldewangan@nvidia.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Rhyland Klein <rklein@nvidia.com>, Suresh Mangipudi <smangipudi@nvidia.com>, 
- Krishna Yarlagadda <kyarlagadda@nvidia.com>, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <179258895296.403962.3492255118456900623@nvidia.com>
-References: <179258895296.403962.3492255118456900623@nvidia.com>
-Subject: Re: [PATCH 0/5] spi: tegra114: chip-select fixes and PIO-only
- probe
-Message-Id: <179383886509.2186205.16728641594593011636.b4-ty@b4>
-Date: Thu, 05 Nov 2026 00:34:25 +0000
+	s=k20260515; t=1793896919;
+	bh=hsr2BExTjVN6kFMut7DQ/MQ40pCbdd25UZGMKxUI80g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RDZGjgOKEoJz2HySG7SipgNVDjdCNZ7ynnV2fAfQ7h1VIOiWVlBzHdHAHGccUWSLZ
+	 fgxrD9GbdWwoorykWcKl0Pi0qr0vGuFd6JuM+kB5DxRD7HAT1mVDgGEtwBXCS0A5fF
+	 2kjlvTbx04e4/sxscugvGst9cqtOweD8E2FQTwqtCmHLdwoMtOsGsdx7NbnXW/PpdS
+	 VtPFMo12aTLXCyXPB75ULl3Kdm4yK1zb18MkfviGm8dLDpNEgwbBHfGtdat+qMohTQ
+	 ARAf+Gyhxici1Gg2uVXYIxrSrbD1V+IEAKolPOZZ8mIXD0mQGcA5Ubuw0Qp9Gk7q8G
+	 aBdKgFhZJ8YGw==
+Message-ID: <303eec47-bd2b-4ce2-b28f-aedbda21f91a@kernel.org>
+Date: Thu, 5 Nov 2026 17:41:51 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -68,61 +51,85 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 01/19] spi: dt-bindings: add
+ spi-max-post-config-frequency-hz property
+To: Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, miquel.raynal@bootlin.com,
+ richard@nod.at, vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
+ takahiro.kuwano@infineon.com
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+ praneeth@ti.com, sebin.francis@ti.com, u-kumar1@ti.com,
+ srikanth.boyapally@amd.com, m-shah@ti.com,
+ Conor Dooley <conor.dooley@microchip.com>
+References: <20261105105832.2134313-1-s-k6@ti.com>
+ <20261105105832.2134313-2-s-k6@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20261105105832.2134313-2-s-k6@ti.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1872; i=broonie@kernel.org;
- h=from:subject:message-id; bh=iYtn6PIJnMh8R7kkukJ0M7rCvDl6KUNklngTZ8kJGSE=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLedHg99S/+ETVxouDPtXPO7S3K1H907ZBx+EzuU5Onq
- irtCtgT1lHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJ7PzF8N9rY0KVfmGgnGi0
- YXJ/SN7PyQdDRP5cntUeLu/MVcDIOpeRYbX4DC41FqnCvz+OyXGosTWl6lfkCO2Tuyp7Nfkg84H
- n/AA=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Wed, 21 Oct 2026 10:14:06 +0000, Vishwaroop A wrote:
-> spi: tegra114: chip-select fixes and PIO-only probe
+On 05/11/2026 11:58, Santhosh Kumar K wrote:
+> Add spi-max-post-config-frequency-hz, a generic property for SPI
+> peripherals that operate at two distinct clock rates: a conservative
+> rate always reachable without controller configuration, and a higher
+> rate achievable only after controller-side configuration.
 > 
-> Tegra114 SPI sends each transfer as its own packet, and hardware CS
-> follows that packet. The driver implements transfer_one_message(), so
-> it has to do the per-transfer delay and cs_change itself. It gets
-> both wrong.
+> When both properties are present, spi-max-frequency gives the
+> conservative pre-configuration rate and spi-max-post-config-frequency-hz
+> gives the higher post-configuration target.
 > 
-> [...]
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Tested-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
+> Tested-by: Moteen Shah <m-shah@ti.com>
 
-Applied to
+Drop tags, this did not happen. Please do not add blindly tags which are
+obviously not applicable.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
-
-Thanks!
-
-[1/5] spi: tegra114: Allow PIO fallback when DMA is unavailable
-      https://git.kernel.org/broonie/spi/c/04eebd439d91
-[2/5] spi: tegra114: Run per-transfer delay before ending the transfer
-      https://git.kernel.org/broonie/spi/c/5b4ed7580ece
-[3/5] spi: tegra114: Assert CS between transfers when cs_change is set
-      https://git.kernel.org/broonie/spi/c/679565d314db
-[4/5] spi: tegra114: Decide the chip-select mode once per message
-      https://git.kernel.org/broonie/spi/c/d9dfcbf274d5
-[5/5] spi: tegra114: Keep software CS across bus-locked messages
-      https://git.kernel.org/broonie/spi/c/881e4ef23286
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Best regards,
+Krzysztof

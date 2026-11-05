@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793896920;
-	b=D6byKhQJ2zpldf4/pZ/afOsVsQd16IvahksjgACYgt71YE2gxY2OMwe3ktEcu/TXBgAG
-	 jLnUeZ75Yhyuv/FKKs2m8+DQKnKH9bIZQ/1SE6c28l1Qmq/631je/atVSbaIke+Vcs1Z/
-	 6EmrOZN+ymGp/sAO7pkPuzlMh3u/ScKN/g2n/EhM0dUo4cg5PjJVT9FYaZ6kSSR/17Qgf
-	 t41CWYraHXV7+sPciBXteqNejuF1fOfcXBE6kNCvbJh71eAdRXY3iM+n+ZVF8LvJU8SU3
-	 TX3jq4Fxa9Go23PPYEfrE3M8TUoRU3Ul7mTADHwiYnvpYvIp+BYglfdkky/zcs7sciQ==
+	t=1793896937;
+	b=TIEkcK3exsQfV8HBmZUe0tLcK9tJ0eEjDdhF4OObMHBRyUa8oEEwsZLToEI80cYXBL9p
+	 4aEFjCxmqOm0W9nED2qRGbx1otPmnwzughe892jU7K6UH5BSuoBpZAYmqlhrP0K4TVUZc
+	 vKZQg0ZECmwIC2XDTEHb/cCog8d2n9JcpQ8phE5isdbjwYF/4PLNL6YaKITpPgbAjjjzi
+	 uy9+fGQku/+VeRkTOBlfSn21JvA6m6kfWLz5Ks1NoZyJyEsxm+u1N7DEV1+5Yq6GlJgsR
+	 QLbjIxwxtrLNEDWVn67revk5q2rw7SBPyR9o4edkzxIM37mel0V6U85CY/TVZOXyy5Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793896920;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793896937;
 	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
 	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
 	 Content-Type:Content-Transfer-Encoding;
-	bh=hsr2BExTjVN6kFMut7DQ/MQ40pCbdd25UZGMKxUI80g=;
-	b=YIFJShKs3gx+olsv1EVSzMnf3cj3gT7NMmnhUzsHTzZ65ezdIMHd7Fmwio4BdL/ZS/uI
-	 8T9N+CVNbpIWUgd71o3P/IVEZgI+DVqPj6RQpSdGzcaVwhere9rkyycTcuoJofwYchFr2
-	 lF8kYKIjq2s12MxiQ69SsmweR5kNPi7OxtaDRUppBxXqgm6WT13NRtfRmb5+1MLBKH0Yx
-	 A+rTP7Kl/AMiwS0LbgdSB6j5e19De+xcCKG8gmg2fmW92jaYj3wjam2uQs0YnVowU3RiZ
-	 CJYQY7a4crndAG9KBGisXYPz6yXQFxap/3uHCdi46wzfbHB5piSVHWg9GOL6+VFJI7w==
+	bh=lRT1DmkMSM3hst3LQvw8oZU4aI/GpY2uYCcqHvaIJes=;
+	b=ZdyxgbMKxv8FF3Zshbchs3i/bpItwokkuE1uiUrQsVwIf1Sr5aAOKL2z0QeaM9ri7XpR
+	 9mvn6opY2sRjIf9Mwg0y46hW1ziobZGqvvQvfOoYiF+SIvOK8+TQjJi16FwP+Sxld0MRq
+	 LeSTJ8K7AlSxy1AZVEP3c/VnF2Sp4nvRiQwCjxoYzgyEDEQaiworABmHLV//1B3Up5gDO
+	 LzP+n9HOfPFAxBuaGD+G7YyEYipD9W1P6h9yTOZKyT6V470+ahl2lAFakIJ8fIR0VVkVw
+	 n4GUEXkC8iaeZ2MMmxwrY81O80C+kr7+v6jqkI0XBPYakY7yGKEL4epxlutKSN0TyOA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDZGjgOK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=klnMq719;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7B606A328;
-	Thu,  5 Nov 2026 16:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3E8606A90F;
+	Thu,  5 Nov 2026 16:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RDZGjgOK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2289D1F0093A;
-	Thu,  5 Nov 2026 16:41:53 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=klnMq719
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855421F00A1E;
+	Thu,  5 Nov 2026 16:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793896919;
-	bh=hsr2BExTjVN6kFMut7DQ/MQ40pCbdd25UZGMKxUI80g=;
+	s=k20260515; t=1793896936;
+	bh=lRT1DmkMSM3hst3LQvw8oZU4aI/GpY2uYCcqHvaIJes=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RDZGjgOKEoJz2HySG7SipgNVDjdCNZ7ynnV2fAfQ7h1VIOiWVlBzHdHAHGccUWSLZ
-	 fgxrD9GbdWwoorykWcKl0Pi0qr0vGuFd6JuM+kB5DxRD7HAT1mVDgGEtwBXCS0A5fF
-	 2kjlvTbx04e4/sxscugvGst9cqtOweD8E2FQTwqtCmHLdwoMtOsGsdx7NbnXW/PpdS
-	 VtPFMo12aTLXCyXPB75ULl3Kdm4yK1zb18MkfviGm8dLDpNEgwbBHfGtdat+qMohTQ
-	 ARAf+Gyhxici1Gg2uVXYIxrSrbD1V+IEAKolPOZZ8mIXD0mQGcA5Ubuw0Qp9Gk7q8G
-	 aBdKgFhZJ8YGw==
-Message-ID: <303eec47-bd2b-4ce2-b28f-aedbda21f91a@kernel.org>
-Date: Thu, 5 Nov 2026 17:41:51 +0100
+	b=klnMq719xbNKVjbQABAQBjABmdQ0AiMN6iSTOu2nj4JCJMcSuqYmnBXbRfbItO2cW
+	 JUAROwFenOruUXQAn0L3qzENgivbZr+xW28Zo/sL/pZQqS+dClhYmIZST/XpKYUHuP
+	 Nv/5rfUL8aQideRIVUdDJ9H4hq+zVjyDST+0oi1Hhmh1omMlDg4DeOpqL8BRKPZmnf
+	 wsx/tLxDWZC31yXAtI5sVYjcN+zs1T6bvVPLvJpZw34nlskwcKXhLhqj5aHjQMp4V1
+	 2PmjkXCkHV86qleN2XmB7hcy+dHQUuwQSgyoyBsgXNe4moU/UMJTEyl+Mg9WnQclCz
+	 uIW5XHShrklFQ==
+Message-ID: <46fe4b63-71af-4df7-8f64-fdf19fd77f1f@kernel.org>
+Date: Thu, 5 Nov 2026 17:42:08 +0100
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,8 +52,8 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 01/19] spi: dt-bindings: add
- spi-max-post-config-frequency-hz property
+Subject: Re: [PATCH v11 02/19] spi: dt-bindings: add spi-phy-pattern-partition
+ property
 To: Santhosh Kumar K <s-k6@ti.com>, broonie@kernel.org, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org, miquel.raynal@bootlin.com,
  richard@nod.at, vigneshr@ti.com, pratyush@kernel.org, mwalle@kernel.org,
@@ -62,9 +62,9 @@ Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
  praneeth@ti.com, sebin.francis@ti.com, u-kumar1@ti.com,
  srikanth.boyapally@amd.com, m-shah@ti.com,
- Conor Dooley <conor.dooley@microchip.com>
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 References: <20261105105832.2134313-1-s-k6@ti.com>
- <20261105105832.2134313-2-s-k6@ti.com>
+ <20261105105832.2134313-3-s-k6@ti.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,21 +110,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
  n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
  qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <20261105105832.2134313-2-s-k6@ti.com>
+In-Reply-To: <20261105105832.2134313-3-s-k6@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/11/2026 11:58, Santhosh Kumar K wrote:
-> Add spi-max-post-config-frequency-hz, a generic property for SPI
-> peripherals that operate at two distinct clock rates: a conservative
-> rate always reachable without controller configuration, and a higher
-> rate achievable only after controller-side configuration.
+> Add spi-phy-pattern-partition, a per-device phandle property on the
+> flash sub-node that allows the DT author to directly reference the
+> partition holding the SPI PHY tuning pattern. Used to locate the
+> pattern data during PHY tuning when the device cannot load the
+> pattern dynamically.
 > 
-> When both properties are present, spi-max-frequency gives the
-> conservative pre-configuration rate and spi-max-post-config-frequency-hz
-> gives the higher post-configuration target.
+> PHY tuning works by reading a known data pattern from the device
+> repeatedly while sweeping controller delay parameters until the
+> capture window is stable. For SPI NAND, the driver loads the pattern
+> into the page cache once using write-to-cache opcodes, then reads it
+> during the sweep. SPI NOR devices have no equivalent opcode, so the
+> pattern must be pre-programmed in a dedicated flash partition. One
+> partition per device is required to keep the procedure unambiguous
+> when multiple devices share a bus.
 > 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
 > Tested-by: Srikanth Boyapally <srikanth.boyapally@amd.com>
 > Tested-by: Moteen Shah <m-shah@ti.com>
 

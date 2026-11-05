@@ -1,69 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871395;
-	b=Japir2uKetNtfnm/QS6Llug69ZoaxTBBVVbL2Zxp8bdu9hwmVSsnuRBzQtVcJsvJT70t
-	 xXPLbrsbIdVYAjxj4OC1IMIq1GKliQkSX+p5Qa3HUMKfzxHUp5luGpCWGi/FHJpZRFl8U
-	 vJ5gihwiKIvN4mI0Oa19VnhzfAnliz+FVUdat+yU97ecnk2WpSyUNht24KFm8WWgvKZap
-	 3ToMtEyT60Xrw5YG8DS8xFY0WdEfaLUwwPXY0Qc58k6JKiB4gtBARNcVWefF8tLqFT66/
-	 Z78kCtUeB1Wn8TDmTClSdallGNkA2mzFijIsxMPGlO8IszKb1BZTfW6KUmn5BEmAN7g==
+	t=1793871963;
+	b=tJmCKeqQvmhkwS4m03D6LTI+4cg6XU4lVUHxf+8AZ/PWfNSbXHZWAusqM4JaVwyTGd1f
+	 huU4UOBUp+VAnrz5q+DJO3s9qOwgEU79p/80xYMt8qcf2a3e4TMHHrZvq2GGL8R8X/AqM
+	 ilPB4iyDn/29k8jZVjF1RMkxXFXXfbU15et5iMpGyHu78FGxCIUxYSkVONM+1gFag8OWP
+	 ++hsokSs6Ea6IX08mXEJ/jWVHRCzlwadGjdYu6I4mQ8H3naxrpiONrl2tvrNu9rFcxD/r
+	 0Vn0TybiJFAGCNYjdGmNDXzmXQqWc4i/QmCarAD3Rc9x1eo1tqsv3J00YYAkpS8wwjA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871395;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=amOrn2BM3j3WAFT6zEbS3mm8c/xDQuLIHsYgmvBaKeM=;
-	b=OgBbk6OE47DuQLxpIEx9x0gdWqRdpe02uNC/1V8yxo7jz6VuFdP+nhGIL2/dCkBiT5uV
-	 LSxnr5Q/Ogr+wSV2zvazAJlDR3+L0gCsOWaVTTITV82UD6/L8UCSUBC5RucIi3mJEY7d7
-	 4R6B1V8TkSLWRHsbXiew8bi/S45dTUChA8WiBm0on5DbL8LzZdu93sNRNo94XtWOr4Zoh
-	 rSmoTIcmwrKp7pNaUG8ocwE2OXCsE6oyjzpwAfisrjt0FyKOtH5OtyVU+s9ZeqxjltBnP
-	 p7Gk17CIG1jDG0wIydOKUaqbUP81FBr/os2Q2Xjroqhn4CsrKJPPNUL3jY52HREFjrw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871963;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:X-UD-Smtp-Session:Date:
+	 From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To;
+	bh=UGJviNUom/9cmp2FuiSup9JFaRpjsLnal6a9UIzq0Iw=;
+	b=CJTP2svzXHyj66vmR9T1JZWh3fZyFe+PbY3TjMkXb4VoPD4FAUv8yvXy+l8PIQ+5aXnM
+	 y4QgQLKpAes4gZbVkYqN6Zx0m6+lcRtENiXXZysDjhm5G4qPiJYZfCzbvkzj2oQ7aBjol
+	 PhTKPS+5k4W6lnAEJDj4ddh8oHXvJK0RF0IhJvqDBHR7+27TqFYZ0w1xfBN3pyayifTAt
+	 r9b8tztHEQMBYSm/s4fiTueKaBBm79zg/Est3uXQVdLaRMJ07ZVKhBrb8p3JWk9uC7wEk
+	 STdrc4Hp9dtfT3jHqs9KoP6hYcL2WYQlzP4ozEZoSjMm7G7NnhjgBOLrLLdbMnY9wCw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kz93Il83;
-	arc=none smtp.remote-ip=198.175.65.21
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dmarc=none header.from=sang-engineering.com;
+	spf=pass smtp.mailfrom=sang-engineering.com;
+	dkim=pass header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=dVQn1+33;
+	arc=none smtp.remote-ip=194.117.254.33
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC4606A337;
-	Thu,  5 Nov 2026 09:36:34 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06EC4606A337
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E3C606A328
+	for <linux-spi@vger.kernel.org>; Thu,  5 Nov 2026 09:46:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78E3C606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kz93Il83
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793871395; x=1825407395;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XPy64qOWUbAHoiyLGCzNor5MK4R9RiDPJM0T594C8kU=;
-  b=Kz93Il83Tv+ryM75PKs53ZyYw8+eSX/36mjsJNOzbzmWnD/BpEWdC/wA
-   OVnculX7A7sV6ztBl1Od1D0Zou+u661GWC75eDR+dVqSLdOp7qwXGTQDf
-   ypK2etKTira+bfcDEE6wK1nSopsEKGjzZBa3vMnyI+iCDm2FFVYUYJsBL
-   wSVbczfgApVtbXIJYkuXBQo4t01dMkTX0aF7uowdKdSFVC/3PnJ3RI8aH
-   cHadGxRyW470JHSfo1rwrONdtwtQuBag+hMrJWVq4eUWZ+STtuG1gz7TQ
-   bIFNSVxVnV7T6OiYtSpbi5WY/WgXxJqJAW9xp5zIntAZqttYGbMJiQLfv
-   w==;
-X-CSE-ConnectionGUID: PwUg2k9NS6uPTEiQJpG9pw==
-X-CSE-MsgGUID: x4M8oy/CRyKc/i87G8BviQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2745425"
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2745425"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:36:34 -0800
-X-CSE-ConnectionGUID: JeSjlIADSz2CkG3b626siA==
-X-CSE-MsgGUID: q1LawZWwT3eXus4rDYzo+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7120392"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:36:22 -0800
-Date: Thu, 5 Nov 2026 11:36:20 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+	dkim=pass (2048-bit key, unprotected) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=dVQn1+33
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=UGJv
+	iNUom/9cmp2FuiSup9JFaRpjsLnal6a9UIzq0Iw=; b=dVQn1+33DAVyF+Mmc8wl
+	nZX74cBnZtcOaNxqwX+f2EN35vIuvwcCBbs5Y4Uif6xNJ6UewE1QVIpTltPVup50
+	MlRiuhMLiINXNw9vKnwwB0a1f/U65VvmL+iaby9q20fLvGJPiOfZ+xoYgRcT9/W9
+	d/g3k34Y1x5VkozWd1TK+b3NMoy//cW6D20URGPVMrKYNItPGgXDmf9IECVFTWMq
+	umAJwe4RBh71+/BSasOo1K7nwQ2OIVJXYAxg+XM2NraSzagEOqBo8lznHsahbQ4c
+	gdRePSo1a6sFJIyTdvhIEQ1S403xaUtPpDJZPJOWG87m0rLe4ikq13/1eQDnBRom
+	Ig==
+Received: (qmail 1094124 invoked from network); 5 Nov 2026 10:45:56 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 5 Nov 2026 10:45:56 +0100
+X-UD-Smtp-Session: l3s3148p1@k0qyXIRfQJzAwtcC
+Date: Thu, 5 Nov 2026 11:45:55 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
 	Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -119,9 +104,8 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
 	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
 	Thierry Reding <treding@nvidia.com>
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auxOFGTRAKb5bLXD@ashevche-desk.local>
-References: <autj6pr_bPaul3w0@ashevche-desk.local>
- <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
+Message-ID: <auxQU_PU4bwLJUch@shikoro>
+References: <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
  <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
  <autqC143h7Qf1R9H@ashevche-desk.local>
  <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
@@ -130,6 +114,7 @@ References: <autj6pr_bPaul3w0@ashevche-desk.local>
  <auxGom0XR-Hax9b3@ashevche-desk.local>
  <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
  <auxH_WzaOLsQ4-go@shikoro>
+ <auxOFGTRAKb5bLXD@ashevche-desk.local>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -141,24 +126,11 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auxH_WzaOLsQ4-go@shikoro>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <auxOFGTRAKb5bLXD@ashevche-desk.local>
 
-On Thu, Nov 05, 2026 at 11:10:21AM +0200, Wolfram Sang wrote:
-> 
-> > > No, (partial) Rb != Ack.
-> > 
-> > It is, because there is no partial Rb tag.
-> 
-> Heh, just what I wrote a minute ago in the workflows-thread. The clean
-> solution is to introduce one. I'd vote for it.
 
-Then I MUST started REQUIRING to split the patches in such cases to actually
-review them?
+> Then I MUST started REQUIRING to split the patches in such cases to actually
+> review them?
 
--- 
-With Best Regards,
-Andy Shevchenko
-
+Okay, this is a solution, too. Or requiring "# subparts"
 

@@ -1,70 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.21
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793871272;
-	b=jDO0mXDjoQib1sMgBPfHH9KoQkEH3ooedTxioSG9X3aNrrkk6+tr2HpXTFdB5LyUI+GX
-	 DBe6ALQ4CtAXfQRhSiJIvj9QP9iEfaZonWbZ8aNNSNCQS2fbj5utvv5kklLaFUfIOEDKr
-	 CDsX9f2lYqCDhjKRbnWUVjJEnO0HszYSgnOHEiErHhb3vjvcchbGV3GK01yYahiQ03qct
-	 niFPvAmFXPLxQmMFtY78aJfHIwKX3XcuUJMhPt79PWLKWgQJVERASUZ9fR2FhbnOMBdE/
-	 SjYQhOHRIZcIs7GI+zPjDn/JIZ1k0A80PKYo25f6HLu5PhEA2QQRkc5A6cktntaceig==
+	t=1793871395;
+	b=Japir2uKetNtfnm/QS6Llug69ZoaxTBBVVbL2Zxp8bdu9hwmVSsnuRBzQtVcJsvJT70t
+	 xXPLbrsbIdVYAjxj4OC1IMIq1GKliQkSX+p5Qa3HUMKfzxHUp5luGpCWGi/FHJpZRFl8U
+	 vJ5gihwiKIvN4mI0Oa19VnhzfAnliz+FVUdat+yU97ecnk2WpSyUNht24KFm8WWgvKZap
+	 3ToMtEyT60Xrw5YG8DS8xFY0WdEfaLUwwPXY0Qc58k6JKiB4gtBARNcVWefF8tLqFT66/
+	 Z78kCtUeB1Wn8TDmTClSdallGNkA2mzFijIsxMPGlO8IszKb1BZTfW6KUmn5BEmAN7g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793871272;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793871395;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=FHZJ9UZXx1w1S9lh8ts36Xc7WZ/XCgLmeoJLBVEnO0Q=;
-	b=Yk5dRevc1JvbY1u6ictg0TvvBH9X91dC7PSBv44naPgjYKdhSVBTomwg0YWfOU5npOVS
-	 P97naAe6AvzStke+hvgRoxwfJmsowF1tblQUY7OL8LXw+PsknEq5SInpwkbQdzARqYp/7
-	 F+gB6v3DVRLzcFS+J0BNqAwm1j9bFAjFhCqKNqpnZw4wE4djTy2m03k5y4yLRa9DkAUpQ
-	 3XT9FwAerCrd3FwbrO4bAPT6TTxyTlysSEX16zhIcVE7TiIKAw40SZ/piWKO/JCyTgtRw
-	 HMl4yxK47NwzXqZgXPv72OmyueEvF965+1jOI29WhxPHq8ACfAi+m/k1H8CHSzBzVVQ==
+	bh=amOrn2BM3j3WAFT6zEbS3mm8c/xDQuLIHsYgmvBaKeM=;
+	b=OgBbk6OE47DuQLxpIEx9x0gdWqRdpe02uNC/1V8yxo7jz6VuFdP+nhGIL2/dCkBiT5uV
+	 LSxnr5Q/Ogr+wSV2zvazAJlDR3+L0gCsOWaVTTITV82UD6/L8UCSUBC5RucIi3mJEY7d7
+	 4R6B1V8TkSLWRHsbXiew8bi/S45dTUChA8WiBm0on5DbL8LzZdu93sNRNo94XtWOr4Zoh
+	 rSmoTIcmwrKp7pNaUG8ocwE2OXCsE6oyjzpwAfisrjt0FyKOtH5OtyVU+s9ZeqxjltBnP
+	 p7Gk17CIG1jDG0wIydOKUaqbUP81FBr/os2Q2Xjroqhn4CsrKJPPNUL3jY52HREFjrw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b="G/LAUnN7";
-	arc=none smtp.remote-ip=192.198.163.11
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kz93Il83;
+	arc=none smtp.remote-ip=198.175.65.21
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09AE606A329;
-	Thu,  5 Nov 2026 09:34:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org F09AE606A329
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC4606A337;
+	Thu,  5 Nov 2026 09:36:34 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 06EC4606A337
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G/LAUnN7
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kz93Il83
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793871272; x=1825407272;
+  t=1793871395; x=1825407395;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=4LUR2vLgdtbMkV4yJV6wiaAwpAfjeOibn9D0PFxVDWA=;
-  b=G/LAUnN7uJFb4Hw9zdpTNgm87wYSbL4U1h5+3oEgVEfVl87F4KgFyKsq
-   cbcIlGJ41lQyowDIbdu1ddXwRZOJ59miMMGXZ9i42vc13wP6Yuw9Izjhh
-   lgkkSQFrOGnSRW555FjJ0qaXBuzJPtwVAqIH/c6CceDC5FdyBK3yoIKRU
-   6IMLdKShGWpQYIZeh+Nl5Swx/WIewH9PnJFklFHRHjOqabEyX7QeIn8bV
-   gfMIHGFgAEwm2K3gpqJVO2JPZOKYIaDTrWM1hbTKJQ9qeNqVQNaOVTn/R
-   pIRExOWdBFa87Yxo6U1pQWI8BhI7znuZGU+w/7LqMuHvLDajmyeMhc6BN
-   Q==;
-X-CSE-ConnectionGUID: f62k/7XOQJmedKqJWrv5Vg==
-X-CSE-MsgGUID: wn0gviFXQFeo+rCPwiwgKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2558357"
+  bh=XPy64qOWUbAHoiyLGCzNor5MK4R9RiDPJM0T594C8kU=;
+  b=Kz93Il83Tv+ryM75PKs53ZyYw8+eSX/36mjsJNOzbzmWnD/BpEWdC/wA
+   OVnculX7A7sV6ztBl1Od1D0Zou+u661GWC75eDR+dVqSLdOp7qwXGTQDf
+   ypK2etKTira+bfcDEE6wK1nSopsEKGjzZBa3vMnyI+iCDm2FFVYUYJsBL
+   wSVbczfgApVtbXIJYkuXBQo4t01dMkTX0aF7uowdKdSFVC/3PnJ3RI8aH
+   cHadGxRyW470JHSfo1rwrONdtwtQuBag+hMrJWVq4eUWZ+STtuG1gz7TQ
+   bIFNSVxVnV7T6OiYtSpbi5WY/WgXxJqJAW9xp5zIntAZqttYGbMJiQLfv
+   w==;
+X-CSE-ConnectionGUID: PwUg2k9NS6uPTEiQJpG9pw==
+X-CSE-MsgGUID: x4M8oy/CRyKc/i87G8BviQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2745425"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2558357"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:34:30 -0800
-X-CSE-ConnectionGUID: nlTZtjm4QSWKV5TFLHXZjw==
-X-CSE-MsgGUID: 6+CUyE26TrGO0R2loVaiPg==
+   d="scan'208";a="2745425"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:36:34 -0800
+X-CSE-ConnectionGUID: JeSjlIADSz2CkG3b626siA==
+X-CSE-MsgGUID: q1LawZWwT3eXus4rDYzo+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="6795038"
+   d="scan'208";a="7120392"
 Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:34:19 -0800
-Date: Thu, 5 Nov 2026 11:34:16 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:36:22 -0800
+Date: Thu, 5 Nov 2026 11:36:20 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
+	Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
@@ -116,12 +117,10 @@ Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
 	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
 	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
 	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Thierry Reding <treding@nvidia.com>
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auxNmE8yZVP-wL2e@ashevche-desk.local>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <autj6pr_bPaul3w0@ashevche-desk.local>
+Message-ID: <auxOFGTRAKb5bLXD@ashevche-desk.local>
+References: <autj6pr_bPaul3w0@ashevche-desk.local>
  <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
  <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
  <autqC143h7Qf1R9H@ashevche-desk.local>
@@ -130,6 +129,7 @@ References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
  <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
  <auxGom0XR-Hax9b3@ashevche-desk.local>
  <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+ <auxH_WzaOLsQ4-go@shikoro>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -141,63 +141,21 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
+In-Reply-To: <auxH_WzaOLsQ4-go@shikoro>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 05, 2026 at 10:07:30AM +0100, Krzysztof Kozlowski wrote:
-> On 05/11/2026 10:04, Andy Shevchenko wrote:
-> > On Wed, Nov 04, 2026 at 11:54:56PM +0100, Krzysztof Kozlowski wrote:
-> >> On 04/11/2026 21:41, Andy Shevchenko wrote:
-> >>>>
-> >>>> But sure, if we want to play such numbers game, I will be sending
-> >>>> reviews for single lines.
-> >>>
-> >>> I'm not playing anything. The problem is that the patch unites the files that
-> >>> have distinct maintainers and unrelated to each other code. That's why in the
-> >>> subsystems I maintain, I almost always require to split on per-driver basis.
-> >>> Yes, exceptions are possible, but has to be quite rare.
-> >>
-> >> That's independent problem. Patch could be split, but it was not. Since
-> >> it was not, receiving end should act accordingly, e.g. when performing
-> >> incomplete review of only part of the patch, do not call that entire
-> >> patch was reviewed by giving the Rb tag, but give Ack tag.
+On Thu, Nov 05, 2026 at 11:10:21AM +0200, Wolfram Sang wrote:
+> 
+> > > No, (partial) Rb != Ack.
 > > 
-> > No, (partial) Rb != Ack.
+> > It is, because there is no partial Rb tag.
 > 
-> It is, because there is no partial Rb tag.
-> 
-> There is partial review, but not partial Rb tag, please see exactly
-> submitting patches. It repeats the same in three separate places:
-> 
-> "Acked-by.... user may not have carried out a technical review of the
-> patch,yet they may be satisfied ..."
-> 
-> "Reviewed-by:, instead, indicates that the patch has been reviewed and
-> found acceptable according to the Reviewer's Statement:"
-> 
-> Above important: "THE PATCH"
-> 
-> It is not "the patch or its parts"
-> 
-> Further:
-> 
-> "I state that:
-> (a) I have carried out a technical review of *this* patch to evaluate
-> its appropriateness and readiness for inclusion into  the mainline kernel."
-> 
-> And further:
-> 
-> "A Reviewed-by tag is a statement of opinion that *the patch* is an"
-> 
-> In three places it is THIS or THE patch. Complete (exhaustive) list of
-> options what can be reviewed to get the credit and give statement of
-> oversight.
-> 
-> Statement of oversight DOES NOT include "part of the patch".
+> Heh, just what I wrote a minute ago in the workflows-thread. The clean
+> solution is to introduce one. I'd vote for it.
 
-So, it means I MUST from now on REQUIRE a split before reviewing.
-Right?
+Then I MUST started REQUIRING to split the patches in such cases to actually
+review them?
 
 -- 
 With Best Regards,

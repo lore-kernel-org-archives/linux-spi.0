@@ -1,71 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.12
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793873191;
-	b=EY5kUVRPzvi44jiBoZYoOjp5SKpS5Qj+4Kq2POf3P5knszuAtFcDa46RmYcElgYcbURk
-	 YD+03e5ClBHV3vNzh/+BfEYZhUkfd5ix3Rmig+BTIB6v1J8ROqSq/OwrQUcAZGZFiFxio
-	 9UK7TUpJ+2oygDlwvedyJV8fCWQCORKDO3N+nEG4Jw7rIZ8u1jmDufZzqhvTe0ux9RSH3
-	 6ymTG90BQ6ImX845CUFuA5tPxnSNV1RqmJsxwUyiAjzydSMq4+FVOIuPRFfc1VUEBPUP6
-	 xFndck9cOByg4QoZZ7vzY1gRPYYxeWnQXX/N8Y2E6P/pwdEv1shwyGgZqAOq4uqxpVA==
+	t=1793875087;
+	b=ZJDq1HRefb8fV0S07iyL2n098fUnCBqagm0nMshFub3zMae5kvgXQ4htzQMauGKQ2wAt
+	 WoWhowP4GMv4Ur0/GkaRmxL49qLq7RFTAbXEZS76pMseUrXQ8a29lRodiLiqIKegFA6Hb
+	 wr7triD3vlZCMG/U4DBTytsnmztThK4u0al6Rsap1Om2ED48Yi6SDoHuT/0OXmbPkShox
+	 ZDSDwK6qrNqO4sDp/+KsWrDZpjZjgdtHswIOS7bqyiDwX9qlmfcMXcfTirNDQzObDW3FT
+	 Y99z7gu4JVV9TcNzh8E1xvZ/lIz8u7WmrxIixYIlWCPzLbdeXNKg2DMeSVfuuWTWrZw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793873191;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793875087;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=9eN0QkSa1ecIUgCfCf76DF+V7dyFmgHFBWvD0/9mpfY=;
-	b=CtPwae2fLC6TQvCcaSYed9ohVu9I+mRbF46B1u2qUDDsPckI+tLJDj4XG87nP72Suv/S
-	 WMUUgMSSLyz0LtY3KoMdsrCwT8hbgVJ1vGA/NOdzuqjzNeRo22wTPwLY9EI4WjTXePSA0
-	 vt8ywNTTQpXwXn6wNH8U/miWb2k3F3Hs/u6CZf2BMhkPhIKyctF3SKuD88GUZxLD8QMjB
-	 AU2Z2WfU1vHuL1xrxUbN4Ex9R1fYqkJYFYJMQ4ECqoyDoID+kIp359d+P+qbtOV1BXv+8
-	 swq2Cm27tiFsI+hJUMuvTA61HLlyD59El/zv1Jf0PqS7NUIiF+/WRO6PtUIlPQo+euw==
+	 Content-Disposition:Content-Transfer-Encoding:In-Reply-To:
+	 Organization;
+	bh=Kb0CzJzsHsZ+UWHQAp2uA/S+bpBIx9myNk0nvO3EvbQ=;
+	b=SiziMTp/xXZFAqLWyYjoKVeKiLPBcOc1RgBmDqxqUJMmt+wFXQ4ENiFUc8xV2AA5p/hV
+	 5ZbuqVeHlNM+Fz9p2f89OvJ3QyNXxsdPhyjLUKyEYZQNhkCb2mWrsFYblx+DNJBTkBtwv
+	 aGUVK3LeScZ1gQGgB9KuTmO+4cb2M6kuvua9zp5kxJQ+RgvoV/wP4m0YC+M/OIT0P8LEa
+	 /EEUSqS5fCImEtjObR+0eg/7sLOPDFxTNJbs2GC1tweqcnzjPgsYiSGQ229YWvrxhDsbc
+	 qeA/1zwJ5CyyzACFK4XsunPvvfTfqJcXjZYZOStgNibJ9OENk/KLygvVG2OoNnDOvxw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=feqhTnqA;
-	arc=none smtp.remote-ip=198.175.65.19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A4rKjlRB;
+	arc=none smtp.remote-ip=192.198.163.12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4846360A3801;
-	Thu,  5 Nov 2026 10:06:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4846360A3801
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B4606A326;
+	Thu,  5 Nov 2026 10:38:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D77B4606A326
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=feqhTnqA
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A4rKjlRB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793873191; x=1825409191;
+  t=1793875087; x=1825411087;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sHuju/foWw79h0Lx9lDW6+4gtj0ksiGlzl0r5P+LOfY=;
-  b=feqhTnqAld3zblKxUXhQOyJueNaYdf1WbWXxLWEQGOanoNg86qs1ukYs
-   h5GjyCPw3MuRrXcgEjmRHkP7yQfNij+nLQ3t2PR+DcklbFF2TsZco4oy7
-   z7dPm79yevji8bqDhwZpilDPGgimjrTj4jc3IREBc0WATAo3CHtbHjWTc
-   5D5NupCC73u7kMIEtzj0r5MeAxXmX+Nr/Mq9wngoDKgvPzY672sI4xeSV
-   FfDVmGPq5+tRz12S6MuEi/ViALyJQZep9ZP2PG5znTC549WGo8NJzYcNz
-   0xFW2ijjFlwqLz+ImwoOuDAPhnsO57UZ2+rZc5z/1vTbEtL+swQ58/NO0
-   w==;
-X-CSE-ConnectionGUID: 7Dy8RvAdT/yy9wfmNMmTkg==
-X-CSE-MsgGUID: YJXwZCJGQeq9aI/X2X8PDQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2687014"
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=eqO4A+ClsqjEqfXPQ0TFlIOZ+1UsCC9oIYRbbnK4e7s=;
+  b=A4rKjlRBVFVKIEQC4EavgCR17/xSyjTrOEB2Tb84HNkL6B9y4XJRT1QM
+   iUwkaAxPJL3QUyzkBOA2luwvYVxfQEtYxAZEW+GgljOK2viemRDECySII
+   WP7y3aEe+2a85svsfCglP2dbIrcCrEpO3+UJsHfe9yqiygMRa6YlwWPEW
+   SH/E8Be2sTsitocPTdbj6RjtMQXjuD7nznitbEIfRXlPNJPABOF93RqS8
+   OPhcFvq5cMM3UjilmzE5ltY/OlPLJqNBytdS6Dli+9Pk356d8cgqYZwW5
+   whsC1IhkOREAn7phf37f1DlJwQbvCLs1O+8Yiwt+HbJIKiDSNPAN1i8lB
+   g==;
+X-CSE-ConnectionGUID: B8xcpbARSGSwQZmhBQ2uSA==
+X-CSE-MsgGUID: WkGLZSL4SyOFx13P6djZZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2560338"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2687014"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 02:06:29 -0800
-X-CSE-ConnectionGUID: 96Aad4J6Td2JN0y4EunOKw==
-X-CSE-MsgGUID: fNrhP6vdSb+xZdaYz36idw==
+   d="scan'208";a="2560338"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 02:38:06 -0800
+X-CSE-ConnectionGUID: xIegnpX+Sr+k5gjNuD4pbQ==
+X-CSE-MsgGUID: Wcy7neyfQa2lUKLW6Cyinw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="8733180"
+   d="scan'208";a="7281977"
 Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 02:06:17 -0800
-Date: Thu, 5 Nov 2026 12:06:14 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 02:37:54 -0800
+Date: Thu, 5 Nov 2026 12:37:51 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
-	Mark Brown <broonie@kernel.org>,
+To: Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+Cc: Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
@@ -83,10 +83,10 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
 	Daniel Mack <daniel@zonque.org>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Heiko Stuebner <heiko@sntech.de>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Peter Griffin <peter.griffin@linaro.org>,
 	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
 	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
@@ -116,20 +116,11 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, Frank.Li@oss.nxp.com,
 	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
 	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
 	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auxVFt8_vZKzYniK@ashevche-desk.local>
-References: <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
- <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
- <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
- <auxGom0XR-Hax9b3@ashevche-desk.local>
- <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
- <auxH_WzaOLsQ4-go@shikoro>
- <auxOFGTRAKb5bLXD@ashevche-desk.local>
- <auxQU_PU4bwLJUch@shikoro>
+	Frank.Li@oss.nxp.com, vkoul@kernel.org
+Subject: Re: [PATCH 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <auxcf206A1yMnHkX@ashevche-desk.local>
+References: <20261102174005.3933649-1-Frank.Li@oss.nxp.com>
+ <2154003.0S5aU1g85B@diego>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -139,22 +130,55 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <auxQU_PU4bwLJUch@shikoro>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2154003.0S5aU1g85B@diego>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 05, 2026 at 11:45:55AM +0200, Wolfram Sang wrote:
-> 
-> > Then I MUST started REQUIRING to split the patches in such cases to actually
-> > review them?
-> 
-> Okay, this is a solution, too. Or requiring "# subparts"
+On Thu, Nov 05, 2026 at 10:52:38AM +0100, Heiko Stübner wrote:
+> Am Montag, 2. November 2026, 18:39:58 Mitteleuropäische Normalzeit schrieb Frank.Li@oss.nxp.com:
+> > 
+> > Replace open-coded assignments to callback and callback_param fields
+> > of struct dma_async_tx_descriptor with calls to the
+> > dmaengine_desc_set_callback() helper across SPI bus drivers.
+> > 
+> > No functional change intended. Prepare make to struct
+> > dma_async_tx_descriptor private to the DMA engine.
 
-TBH, I am flexible to both. Depending on the situation. I don't want to blame
-the author or require additional work when it's not really required. But on
-my side I still want to *review* the piece. So, "# subparts" is fine to me.
+[...]
+
+> > diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+> > index 1a81fd94b4396..f8d6cea2f3dad 100644
+> > --- a/drivers/spi/spi-rockchip.c
+> > +++ b/drivers/spi/spi-rockchip.c
+> > @@ -475,8 +475,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+> >  		if (!rxdesc)
+> >  			return -EINVAL;
+> >  
+> > -		rxdesc->callback = rockchip_spi_dma_rxcb;
+> > -		rxdesc->callback_param = ctlr;
+> > +		dmaengine_desc_set_callback(rxdesc, rockchip_spi_dma_rxcb, NULL, ctlr);
+> >  	}
+> >  
+> >  	txdesc = NULL;
+> > @@ -500,8 +499,7 @@ static int rockchip_spi_prepare_dma(struct rockchip_spi *rs,
+> >  			return -EINVAL;
+> >  		}
+> >  
+> > -		txdesc->callback = rockchip_spi_dma_txcb;
+> > -		txdesc->callback_param = ctlr;
+> > +		dmaengine_desc_set_callback(txdesc, rockchip_spi_dma_txcb, NULL, ctlr);
+> >  	}
+> >  
+> >  	/* rx must be started before tx due to spi instinct */
+> 
+> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+
+Please, use "# subpart(s)" syntax with this tag
+
+   Reviewed-by: Heiko Stuebner <heiko@sntech.de> # rockchip
 
 -- 
 With Best Regards,

@@ -1,97 +1,130 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793851394;
-	b=Zmkw5R5zXkEG9/44kODth7i2u4k1aSIm+KZcsIndA7yeq6cnGribeETi80yKTHcpJfLi
-	 NkOdVAscEkDgEQXUcMSpdmrMLUm3xcV/jomvidlWhY/Fwy+6CQ5oTU9Az5UdhE2bz0oas
-	 bAqgr4tZ616XmSUJUoQvzTIu75rvXi8QRmza6t55ZaVWE791XlyUaDEyKUO72Hx4PEZpT
-	 rGdk44paS8qMufgJDCMEf3TgBvMgQXIg/j0TDsprhFV2/pbaTNmf6giLBEFb4/SAhqpu5
-	 cNEnvMYS+jAIb8YC7G/52EMUVQTOfxszr3osnxJPwnyyUEhJY9dzD8WETU6jZJM/40g==
+	t=1793869318;
+	b=cgD/iKS7kwv9nb8ixROHv22BN2BKWqbmbcUkviqPGbPYSTtLJXJgfIbGhcfKdhRItbob
+	 hK964BYB28NgV8ekO328qk2ehmLkBDU2yypmurP7nBtUbKqPuS/SfuUkd0AKyOPpjZf/W
+	 kur5BabWnJq1AhT/+1+OKCaYpYmYqwwPSo3i5/iyOMZyIAJ7NRy44so7sV4wUNh6/gL9W
+	 F543W28PSG9R6C4VPEMqQWtp4BuALuqyBNyQXfPsZiY1NpTgNHg8U8xPpDo+BGcvlxcuu
+	 zze59DqLkvAzyMY4SeE+ioYwOVmAE5/38r7kOgPRxR4Un1IAXiJ/blZorRWBLyYGI+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793851394;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=QwoTZmoFmjS0P0Cnon0RS+YrqhFNVA2Z7mOMJXSbqhA=;
-	b=eORWu7YO4TVwng//4FqvbPUAQnLGa3++HdLQ3rXtO6fAw1Bnk6p9IG/0ghCylZE6cHXv
-	 VOBaqXw5cAg7+UttiEWT5aT8XANIS1jDOTxJU5KPr3pSun00+DHNvpkP+zkSMrGKym7jj
-	 uNmOSoIYRBqx3bqTgsFv8qbkvDczSpJtxNlBi/+cmH7b0BLm3F164E5OUaUQIZn2EA9g3
-	 Hq8DYTgWM8UkeyDJ7YpNa8GJ7ttL71WLIC7HrJrhCHjfdoXZBK1KLxZMlii4KTWmuu9rC
-	 okLxpe85HXu4288/+bVJ8hvvqp7tqnQfMZTFRm6JBJf4nYkVVactT3/L+4HIUDMtDlQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793869318;
+	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
+	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
+	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Organization;
+	bh=MOT/eVT47O4WVQDSlL8Tk9BW5VeaSSIH+swxSEeZrwY=;
+	b=mqr2er90CUKQYDqi6nNIx2aH0+cURbVWO/f0rRd5yBPe6xox2mfA5oZIPutKvBiDd14w
+	 APzbDT/WQqCQsm2TWjF77Xv6vPC6NzmVuhXOqGDVrm98AhgN1mBRjTKuXUqMafVBPAgID
+	 uNMDh9d5QhSV7opDUMoJm+iua4DAUQcolI7wQ9uKXwpAuEbglxiBWQnlSS6C4ejvDbpkU
+	 4jEIHzQ8JhEfnI2xCG0yt9YnivSlwLk+wuKdgMH6SsFnVsgqbHd8YJaernpd0Px8doa0W
+	 NcY3AiqQrNIc+lnXy3+RsEgQ8OzgmKwPzD3SQ6zjgYnr+m4k7P1e2LEl6Sghyqjj3MQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uvgNXBhX;
-	arc=none smtp.remote-ip=209.85.216.49
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dmarc=pass header.from=linux.intel.com;
+	spf=pass smtp.mailfrom=linux.intel.com;
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dYbcBbgV;
+	arc=none smtp.remote-ip=198.175.65.9
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D4606A31B
-	for <linux-spi@vger.kernel.org>; Thu,  5 Nov 2026 04:03:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 586D4606A31B
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423AA606A31B;
+	Thu,  5 Nov 2026 09:01:57 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 423AA606A31B
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uvgNXBhX
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3b0960fdde9so788768a91.0
-        for <linux-spi@vger.kernel.org>; Wed, 04 Nov 2026 20:03:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793851394; x=1794456194; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QwoTZmoFmjS0P0Cnon0RS+YrqhFNVA2Z7mOMJXSbqhA=;
-        b=uvgNXBhXiHB/9Xud7deheburxbmyHYTAtjSrot+KzvWJd8e6qQo7H3q2MDv0HxMBlb
-         dfVS9Sd0Kvxv5a5UqtPIxAVIYQ3mRoRyqwXICyVKyU40Guai2Uy6t+IiCYk4h8M05Xwy
-         vkVmYZPtPKMhafASzsXJ4pLP9fki3TFTLHJcX85HwC4xJvujMQlE86sTsn+ax/GEOK5p
-         CEiNQt4yyc9sjouxNIZ3fyNeELrl5DtKR5YN1i7znZTxfi9NQ3L4buhp1+mvbNbNoLjd
-         rxMd/lsMapLoU1xu9byI1VRQD1qWBBRVwLRqXpbtSzxP2c84fVxj6kt7pYuORGAiEfr0
-         Ga7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793851394; x=1794456194;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QwoTZmoFmjS0P0Cnon0RS+YrqhFNVA2Z7mOMJXSbqhA=;
-        b=aOYKqB87o+g5ScW35xRvR6ElN2Gp/PFrJVw9zTtVDyRwl0xyS4+3UMSkLUZR+XvuFS
-         rgp48ce9EdhtJqX8RzhpWO9Z5yhiZCdgEw9B+3FeHpqWkRcud59Hw6690ppiNhOBbfiq
-         J8e/pxlQvkYc806DrW3t7IJGTGGIpKmJyGwAqrvavC9GgOHbX6D5LEReUgRnswg15x0Z
-         5X2rJP8D0Cr0IJgyKYb2Cus20zDGjfqbjckX4VoxERCIX2hONBV1MVtCaOmDCBYm1o4/
-         XUl4OwLS7lEzvZMqOBJlFaj9kjjoumyHQtOv6vy3WRc8aOaAgQJkKueNanE+MahUUb7U
-         cpwQ==
-X-Gm-Message-State: APuU4Z8No9h0NprxN+D5KDI3tUldW+XZEpj7lPxLWgBnDwwztPo5+P9E
-	8bwzkPAqZpxEzgbYs90ivecCgzBb+DcU4vhze9q2XJSIbeqgN5nb/igp
-X-Gm-Gg: AYBFou018ksPCUGaOUi/Tm4Y7YKLw96TbSXcMhNRD2y1DbaRV932gDAFUi2SsceJK6j
-	EgHV/5dgXZmlZBceaXcyTrc+jwz4QT5nZ1SSoFLC0b5IcNTx+AuxTUpaaZFiiBoGIaU/cU0ENon
-	XA3l1KWFnoIG1NEEM95HSFJ6oPLuz8hDI6HCm7oqyVzzSWZRhWSxjtcar4m66NpNZWCVCgYSHG6
-	8miNVazBwar3SnFikFLaAx9zfJ2hUF+TYybybk0TUbisnIu9cKvnMElObKPbjAqOlk0lfiUgTUC
-	qxXPkfPxjOnqs+dGlUdniq5nW6HJADsY2LyvPAGXef/jhrG0KFueGLK58tr2oziVqNpVtsD3jRj
-	JOT/1gjNDOyljZS2XBRcZYaqeHmhPZZ8pGqWqxgl1/kzWprNCIfeVTnacIm1FJNBaGm4nBqrD8P
-	lJkKSwBKeb2G+ThwVDlFR2mGWTBzCvjmP9XqdOv6ASUy69ldOtLiCEb5ec/ioZgUlNeNlFK2iRb
-	+rAAaGJ8ROavf5/UAYefrLatekYAUCkTIYpWSBuzCu2px5OJ7Ymu4zpVYZxYQytepzSrHRfIGUE
-	EzDrRfd3sRNVhD0J4XyNUbSeRoKIqF8tmhh2ilvr1jIex5gun6oBPzRERBjMi/WMTZ7aBUJmpH4
-	lTMNabhqNl05zDjpt52OBVRFkIucaWCofRZZBlzQsWeBtae0dVbCJPalybIna5WLIgXK3bh8Oqt
-	7eEhmwkWjUGnIzo6umEIRgco4odZHtD6ZyTR+nbdHgivoo5gqEc53UaMJKAIh9w4duB8At
-X-Received: by 2002:a17:90b:5748:b0:3b0:a04f:939b with SMTP id 98e67ed59e1d1-3b0a04fa025mr2545628a91.64.1793851393578;
-        Wed, 04 Nov 2026 20:03:13 -0800 (PST)
-Received: from josephctchan-96c-1t.c.googlers.com.com (145.247.125.34.bc.googleusercontent.com. [34.125.247.145])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0944eb1d1sm3639685a91.0.2026.11.04.20.03.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 20:03:13 -0800 (PST)
-From: Joseph CT Chan <jctchan@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-spi@vger.kernel.org,
-	David Lechner <dlechner@baylibre.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Joseph CT Chan <josephctchan@google.com>
-Subject: Re: [PATCH v2 0/5] spi: lock context annotations
-Date: Thu,  5 Nov 2026 04:03:09 +0000
-Message-ID: <20261105040309.1550444-1-jctchan@gmail.com>
-X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
-In-Reply-To: <fbdbb9e6-40f5-45bd-bf96-acbb90acdc40@sirena.org.uk>
-References: <20261103225522.3643901-1-jctchan@gmail.com> <fbdbb9e6-40f5-45bd-bf96-acbb90acdc40@sirena.org.uk>
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dYbcBbgV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1793869317; x=1825405317;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HsF2OB4+TAKcLaK6X2CbxWBe2H+bJw89o7MCcGnPEhE=;
+  b=dYbcBbgVOlUSBxnyE/4Gn0ptbmxEULSOiQnRKhRdhR1dNwvkZEAGcBuW
+   jMGs9M8e2KtibZ9mqnsLuDgF2TnXPMSyoYpOjhE5TQuw/Ph6XPqm7v/Un
+   vW6ZLA1Qbxu4GLPOQProELEU9WMw/GIN9X7kmrpLHqk2swWjomMmvWaDn
+   rBA39dBwuBWaFYeYb3YYXhvyjAtbelrh0EUophzQqLJGqvju6z1pp0XBU
+   Ab+GSP2w84Khkqk1Kvv1wvK9D6JlP7+ZtdY3PdZcbHqya2uczXHsrgC09
+   wsL95xS41h36OPsA44P9Kf6dj1AoU+znKlJjpx+6j+H/bBkcxqHTS+N45
+   A==;
+X-CSE-ConnectionGUID: mWzUxRhiQdWvO5I7z4uI2w==
+X-CSE-MsgGUID: Iw37O7BMRHakcvb72FXWTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2547930"
+X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
+   d="scan'208";a="2547930"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:01:56 -0800
+X-CSE-ConnectionGUID: 73i/m+mbScKfalk02iBJcQ==
+X-CSE-MsgGUID: 7N01rw1qQ3OIr7PEIb3JjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
+   d="scan'208";a="7121379"
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:01:43 -0800
+Date: Thu, 5 Nov 2026 11:01:41 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+	Konstantin Ryabitsev <mricon@kernel.org>
+Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Radu Pirea <radu_nicolae.pirea@upb.ro>,
+	CL Wang <cl634@andestech.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
+	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
+	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
+	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
+	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
+	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
+	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
+Message-ID: <auxF9RT5aljXkfh7@ashevche-desk.local>
+References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
+ <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
+ <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
+ <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -101,13 +134,51 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Wed, Nov 04, 2026 at 02:46:56PM +0000, Mark Brown wrote:
-> This doesn't apply against current code, please check and resend.
+On Thu, Nov 05, 2026 at 12:02:21AM +0100, Krzysztof Kozlowski wrote:
+> On 04/11/2026 21:44, Andy Shevchenko wrote:
+> >> Andy,
+> >> These three lines look correct.
+> >>
+> >> LGTM:
+> >>
+> >> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > 
+> > As
+> > 
+> >   Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+> > 
+> > Note, it's in your power to ask the author to split out what you maintain
+> > to a separate change. So, it's your choice what to do, Ack the full patch,
+> > give a partial Rb, ask for a split, ignore reviewing (often means silent
+> > agreement when maintainer just applies that kind of a patch)
+> 
+> The "# note" after the tag solves the problem partially, if people were
+> actually using it. Solves people looking at the Git commit and being
+> mislead by partial review applying to entire commit. Does not solve
+> credits, because Rb for three lines is not the same as for 100.
+> 
+> From v1 of this patch, four people (Alain, Lab, Troy, Kunihiko) did not
+> use it even though reviewing only part. Only Wolfram, so 20% of partial
+> reviews, used that syntax. Without that syntax, b4 will pick up Rb tag
+> like it was for entire commit.
+> 
+> So I do repeat - if one does not want to use that syntax, then just Ack,
+> instead of creating false impression of reviewing everything.
 
-Sorry, this one depends on the SPI core series too. I will resend it on
-its own once that is applied.
++Konstantin, then we need to teach `b4` not to break that or convert it to
+something like
 
-Thanks,
-Joseph
+  [FirstName: reviewed only ...]
+  Reviewed-by: FirstName LastName <...>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

@@ -1,112 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
-	t=1793959482;
-	b=3aQg7/ds0eM2C5mrrF9aJ9HJisJWdf4/zuhDGT5SRfVXvJ/kIYVQgDD6LWyl5WGUJaxR
-	 tOiufaB0izJ4FchvTeeHeqrlRh1n72rht2ammLXV/69XKj05MkjcGTdEJBl10GW2AIKhl
-	 9oBOgJ9xT02XgeUrZseZkPQaybEN/kMmx+LE/+pWQl8QW9ueskS7tidwRtXEgcXKHTB9N
-	 nbIguRa6oYaIYwYzRTPKF2RbHElgpH4FQMFV/+XE1E/qPapGpD6kRvWmTYylU5YYvBJt+
-	 lEX0LVXAj3kvfambbkohAScxyuSlNg5kc6jEjKLm+taTEn0wdgUyuWITdt7OWrvdFNw==
-ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793959482;
-	h=DMARC-Filter:Received:DKIM-Signature:Message-ID:Subject:From:To:Cc:
-	 Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:
-	 User-Agent:MIME-Version;
-	bh=E30LKCk16cx9qTN9HOhUZe7RDTiEawi3RYRVo2ca6qc=;
-	b=qTrjqoX4gqGU0/BwLKVPzaVanuJrAaJwvjN5SYBo7vze2zqn1oAiOhUSgIdcYjQDX2ph
-	 GVN0M9BU7RX5iRS1ksTSgUPzq09KjB1Eoney2tHr+DJlx3aJ/n22pe6joqbWQCALzN5eo
-	 QGcesrJ7QM0xxXzG2DJBN/08KZxxAea7z7D9S8/bju3bNbfM4qYnDy+JS+kHe6PAffk2j
-	 iizvqzsEasVLRpIziZLD+DuQ295XvScfFGQCSGrRTqrF1eHr8s/sQB5AkQa4BpVUjzsoQ
-	 nMJBxB/3XJPMx4R1qlWnXNr7N/Y632BlhCwZuUAYMj/k5ujeTNp/Vg5m+BrC514fXMQ==
-ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
-	dmarc=none header.from=pengutronix.de;
-	spf=pass smtp.mailfrom=pengutronix.de;
-	dkim=pass header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b="H9OK/dkj";
-	arc=pass header.oldest-pass=0 smtp.remote-ip=185.203.200.13
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
+	t=1793963381;
+	b=DuDqBjzKzOCc7Dsci515R0GKTM/mBlYfjtEs/nLxBtyxVHVBM74gYv1FuWrHJCHG7vMZ
+	 ALQNdDnwmsnu5otxny8oTAFC6vycYUzy7k2jHygiAz6kvtdJ7QiJbDufAnFsjp3m6e0PP
+	 sDHPRS7zKJeV6cyRnYDcC8Uhxitp9fRWqHaFs1y7JYznuPupXDU2IehzabIR4NO9FJF7n
+	 nI1Qi7Zg6V7/f4PRVQi5Thf24tiEiDaw9wTOY3LebrnIdi/ViUcdJ4MQhbhh6kI7Wohgf
+	 e2Q8+sI3+I0EX3re1l5sNxzw2lU+Vqek4snQYjMk3hUr0yzWpQsXvxqKC+Ark6PT7Gw==
+ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793963381;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=BbgI/fg5Vv6TpV5LNbbTNKOCgVgDnfLxy/DdQCF/Nt0=;
+	b=I/QRl9xJH1uRbngtg8qyfOxKy0j3OZeFyT/+paNO8EFOFz/jD8kSgN1rd5zTrahczhAp
+	 RB1cv5fthjYPDqPv6377+zn/lJXdkJD3JEW3RaCx/KKo/4vnk0JkVli9U2Q0evW3JAH7L
+	 XWtfmmr1bNG8kAN8gmIMeswvafJe+VZOT8sdd9zsenliGIpfakSR8mEUnLSQto2HoRhyk
+	 RLZaV/3wOcyYxiBjzxeVb0arNyTHEcuE1wE4u2uh/bd3IcJf9JZwlypgzrgVw1UUhorgW
+	 zVCbj9Bhty7Pp2Z4EtEwTKbLjVIo74DgAfYSYFCncoAZDF8YsBddSQOhMYVu/iNjy9A==
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQlq67op;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BAC606A329;
-	Fri,  6 Nov 2026 10:04:40 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org A1BAC606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58641606A330;
+	Fri,  6 Nov 2026 11:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=pengutronix.de header.i=@pengutronix.de header.a=rsa-sha256 header.s=20260414 header.b=H9OK/dkj
-Received: from [IPv6:2a0a:edc0:0:900:1d::4e] (lupine.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::4e])
-	(Authenticated sender: pza@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 60E23200B4C;
-	Fri, 06 Nov 2026 11:04:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793959478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E30LKCk16cx9qTN9HOhUZe7RDTiEawi3RYRVo2ca6qc=;
-	b=H9OK/dkjxwsZIZIcV+Hn9L5EPukiz/UuPQboeBcOiGsnIgm8EU8hlNH8ZEfC8eT890B9do
-	t/rVb6rpXkjXoACppi+7N/n7cVqNJSdPp8aqJEDW+PSEkbyYieVNpk7IxfAhDwiTKAo4xL
-	ado3BN8BtQG2+jWeulvtNUN0sRI8hMB6TUrLMnMdIaBwnpvCOnLQNSnfJG05+Fg8G6ekNx
-	wTLI3RyrFamrS95tpbWjU2DpyH0pHRLvdlYDV9INwKl9ANlUtS0gMOEillr9PYvhf0nAci
-	tlHTWlWPibrPVmhg/UBeAtmwpkx0cSwSe2O4flM5/za76ilVe0iFc5wMSZZi8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793959478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E30LKCk16cx9qTN9HOhUZe7RDTiEawi3RYRVo2ca6qc=;
-	b=U0A/V3EsJYIkir8OlEXILK/QpaaTBcw+TopekKMn/NBDo9BnMSPBGSaMxFf7b71vee5BSS
-	XdsZo+oUKVHpOooM1bntAsnxElc4F0668OOL40DTxMbvJhD664+xzqWfSLGVl/6yrJlpx0
-	q6jwNN8j5amCXX0YZPdqg8yCJpxmx8gZ0zcLYdUQD4ZzO+eqHr1xXCcj6TkRFQkYP14un5
-	NbxmfHk72rsHovLcFS2Nqw/AjUPwzpyKA0petrgLmfqsG2bX2hmmJ+c7u9U2IfnGGJrnlv
-	NI3igvN4DvRU3w2u+mblG4zqDHeDvwYjSEx41O+1t10D9V0xDChRkvNIBYFzYQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=pza@pengutronix.de smtp.mailfrom=p.zabel@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793959478; a=rsa-sha256;
-	cv=none;
-	b=E5AANVgEXfZ4XGSE7OrvMeYfjW72YCl7fwTT5Jh29NZsLDpdrZf+uFVSoGpiOmSlCUZeWI
-	qzmWBNW9eUwtEarw1v4VhuAZbtXsakr1HiWvDX0mmQkT9A2VS580i4WJJjGhrxQkm1zBks
-	vHvLQtN6ncJiArAuBrEnY5UkDDuuPUSy/OrFmA9WSiQRSmhdDeb88zX3PJPg/E3SBAAda/
-	W2onN0t6PpOhdrPi6TixFlrTdDmqz9nHhtC0jkwPXdhg2YK5BUqySwvQfwouIwdO9W7Bdd
-	3T2Ve0hH3P0NvEOdJOUpeSZdH4rtKXSrVPZxoL0qEmcKBThow//f+ymqktcRGg==
-Message-ID: <35d9bc34110d1663af947189bc74f4ba758612cf.camel@pengutronix.de>
-Subject: Re: [PATCH 24/25] riscv: add Metanoia MT2824 SoC and MT5824 EVB
- support
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: =?ISO-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>, Rob Herring	
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
- <conor+dt@kernel.org>, Jun Chang <jun.chang@metanoia-comm.com>, Paul
- Walmsley	 <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou	
- <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Sebastian Reichel
-	 <sre@kernel.org>, Vinod Koul <vkoul@kernel.org>, Neil Armstrong	
- <neil.armstrong@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, Conor
- Dooley <conor@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Lad
- Prabhakar	 <prabhakar.mahadev-lad.rj@bp.renesas.com>, Thomas Gleixner
- <tglx@kernel.org>,  Radu Rendec <radu@rendec.net>, Samuel Holland
- <samuel.holland@sifive.com>, Ben Zong-You Xie	 <ben717@andestech.com>,
- Daniel Lezcano <daniel.lezcano@kernel.org>, Ulf Hansson	 <ulfh@kernel.org>,
- Jisheng Zhang <jszhang@kernel.org>, CL Wang	 <cl634@andestech.com>, Mark
- Brown <broonie@kernel.org>, Greg Kroah-Hartman	
- <gregkh@linuxfoundation.org>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
- Guenter Roeck <linux@roeck-us.net>, Adrian Hunter
- <adrian.hunter@intel.com>, Minas Harutyunyan	 <hminas@synopsys.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Randolph Sheng-Kai
- =?UTF-8?Q?Lin=28=E6=9E=97=E8=81=96=E5=87=B1=29?=
-	 <randolph@andestech.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-pm@vger.kernel.org, linux-phy@lists.infradead.org, Paul Walmsley
-	 <paul.walmsley@sifive.com>, linux-mmc@vger.kernel.org, 
-	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org
-Date: Fri, 06 Nov 2026 11:04:38 +0100
-In-Reply-To: <20261106-mt2824-v1-24-86087eaf5af4@bootlin.com>
-References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
-	 <20261106-mt2824-v1-24-86087eaf5af4@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQlq67op
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BF21F008A1;
+	Fri,  6 Nov 2026 11:09:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793963381;
+	bh=BbgI/fg5Vv6TpV5LNbbTNKOCgVgDnfLxy/DdQCF/Nt0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=WQlq67opXPqkif8MNGGSCwjy7SciDVJagjdlSWNRZuM4ylEbyBBDwxBGGk5POOxKy
+	 7Dokl1dRtARuYheK7fwSEMyZQCiA+98Pe2iefyJzGPg9zppFx9InTAJM1oGD4eZIr0
+	 UHdLUOkGChewbSEkTTQgJMjYuJPItVOh0Fdgsz8qNU2cUq6W4NpmvkdLzVCle80dMS
+	 IouHDFBpdM8agJaqF0pN8ZLfwbq7mz6d+DYTqiJDmDeZLpGAgu5G6a5DIf+wzFLiGY
+	 DBlGNho33XG9rwxxHiNrqwJV2K3bi2ocljTdzs4ZrNl5yFQnN3RLdHYha3goru9yVH
+	 6oVk7S6LbgJ0w==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 985D627E8440;
+	Fri, 06 Nov 2026 11:09:29 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
+ Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Paul Cercueil <paul.cercueil@bootlin.com>
+Cc: Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-spi@vger.kernel.org, Bharat Bhushan <bbhushan2@marvell.com>, 
+ Sunil Kovvuri Goutham <sgoutham@marvell.com>, 
+ Tanmay Jagdale <tanmay@marvell.com>
+In-Reply-To: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
+Subject: Re: (subset) [PATCH v4 0/7] spi: Add support for panic mem writes
+Message-Id: <179389951044.3073895.8929573229341803829.b4-ty@b4>
+Date: Thu, 05 Nov 2026 17:25:10 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -116,63 +71,54 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=z5DoyuXWSXWF8C2OUkElOyX4o16/3/SLC3dohqCg9mA=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLebs0s2xu6SUPRbnGxcpn6s9fnv9bzWjtz9SyOeum4z
+ CRqxq4jHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZiIGifD/yzWTRUmRe5CPJt2
+ a8T9kItRmHjXrmzuoeL1iq1HL24yz2VkOG9osDjdZ93Z+n5j6R1Fmo+6WznX6lXNWXPo6cYZSQ8
+ 9mQE=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fr, 2026-11-06 at 10:30 +0100, Beno=C3=AEt Monin wrote:
-> Add the device tree for the Metanoia MT2824, a dual-core Andes
-> AX45MP-based SoC, and for the MT5824 evaluation board.
->=20
-> The SoC device tree describes the CPUs and their L2 cache, the PLIC,
-> PLICSW and PLMT, the reset controller, the reboot controller, the
-> watchdog, two UARTs, the QSPI and eight SPI controllers, the DWC
-> MSHC MMC controller, and the USB2 controller.
->=20
-> The MT5824 EVB enables the watchdog, the two UARTs, the MMC
-> controller, the QSPI port with its SPI-NOR flash, the first three SPI
-> controllers, and the USB controller.
->=20
-> Originally-by: Jun Chang <jun.chang@metanoia-comm.com>
-> Signed-off-by: Beno=C3=AEt Monin <benoit.monin@bootlin.com>
-> ---
->  arch/riscv/boot/dts/Makefile                |   1 +
->  arch/riscv/boot/dts/metanoia/Makefile       |   2 +
->  arch/riscv/boot/dts/metanoia/mt2824.dtsi    | 330 ++++++++++++++++++++++=
-++++++
->  arch/riscv/boot/dts/metanoia/mt5824-evb.dts |  81 +++++++
->  4 files changed, 414 insertions(+)
->=20
-[...]
-> diff --git a/arch/riscv/boot/dts/metanoia/mt2824.dtsi b/arch/riscv/boot/d=
-ts/metanoia/mt2824.dtsi
-> new file mode 100644
-> index 000000000000..5f73c6d3760b
-> --- /dev/null
-> +++ b/arch/riscv/boot/dts/metanoia/mt2824.dtsi
-> @@ -0,0 +1,330 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright (C) 2026 Metanoia Communications Inc.. All rights reserved.
-> + */
-> +
-> +#include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +/ {
-[...]
-> +	soc: soc {
-[...]
-> +
-> +		reboot: reboot@10000004 {
-> +			compatible =3D "metanoia,mt2824-reboot";
-> +			reg =3D <0x0 0x10000004 0x0 0x08>;
-> +		};
-> +
-> +		rst: reset-controller@1000000c {
-> +			#reset-cells =3D <1>;
-> +			compatible =3D "metanoia,mt2824-reset";
-> +			reg =3D <0x0 0x1000000c 0x0 0x04>;
-> +		};
+On Fri, 16 Oct 2026 12:29:10 +0200, Paul Cercueil wrote:
+> spi: Add support for panic mem writes
+> 
+> Hi,
+> 
+> Here is the v4 of my patchset that updates the MTD spi-nor code as well
+> as the spi-mem code, to add support for panic mem writes to a memory
+> partition configured as pstore.
+> 
+> [...]
 
-This looks unusual. Are you sure these are not both part of a single
-device @10000000 ?
+Applied to
 
-regards
-Philipp=20
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
+
+Thanks!
+
+[1/7] spi: spi-mem: Add support for panic mem writes
+      https://git.kernel.org/broonie/sound/c/20f1752b9241
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

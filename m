@@ -1,70 +1,71 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=192.198.163.15
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793869318;
-	b=cgD/iKS7kwv9nb8ixROHv22BN2BKWqbmbcUkviqPGbPYSTtLJXJgfIbGhcfKdhRItbob
-	 hK964BYB28NgV8ekO328qk2ehmLkBDU2yypmurP7nBtUbKqPuS/SfuUkd0AKyOPpjZf/W
-	 kur5BabWnJq1AhT/+1+OKCaYpYmYqwwPSo3i5/iyOMZyIAJ7NRy44so7sV4wUNh6/gL9W
-	 F543W28PSG9R6C4VPEMqQWtp4BuALuqyBNyQXfPsZiY1NpTgNHg8U8xPpDo+BGcvlxcuu
-	 zze59DqLkvAzyMY4SeE+ioYwOVmAE5/38r7kOgPRxR4Un1IAXiJ/blZorRWBLyYGI+g==
+	t=1793869445;
+	b=yX0dGwPPoMauWkrBB2N7gP5nzM3ufQRS6Lc8H+J7/kiv0Op2+iKuufsPmsASfZA32MOk
+	 lBkwx9eUGTm2dRxBQFSbdMf12F78SvswQiiIFzZUFln7uxBLNY8E9ckNvo3q2ovoy0CEV
+	 lZstx5SnXZHBtTO84qp/weWUEVUMU+g3eNYd+xn/1bcnXCHVxYFsB0xH8TcdWUwGPzjm2
+	 6SXdbAe1paG8wyAFM6BjBTrKggXyXrB/lNmGM3ZSdZCIRqug+7GRSHKw2CWybhBaP52BR
+	 SBBUh0zMDXKsWklZWt8m11tHJx9nfBccaux6Obq8zpt3eJ0ZGvRfjwn44N/k4VExO4Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793869318;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793869445;
 	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
 	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
 	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
 	 Subject:Message-ID:References:MIME-Version:Content-Type:
 	 Content-Disposition:In-Reply-To:Organization;
-	bh=MOT/eVT47O4WVQDSlL8Tk9BW5VeaSSIH+swxSEeZrwY=;
-	b=mqr2er90CUKQYDqi6nNIx2aH0+cURbVWO/f0rRd5yBPe6xox2mfA5oZIPutKvBiDd14w
-	 APzbDT/WQqCQsm2TWjF77Xv6vPC6NzmVuhXOqGDVrm98AhgN1mBRjTKuXUqMafVBPAgID
-	 uNMDh9d5QhSV7opDUMoJm+iua4DAUQcolI7wQ9uKXwpAuEbglxiBWQnlSS6C4ejvDbpkU
-	 4jEIHzQ8JhEfnI2xCG0yt9YnivSlwLk+wuKdgMH6SsFnVsgqbHd8YJaernpd0Px8doa0W
-	 NcY3AiqQrNIc+lnXy3+RsEgQ8OzgmKwPzD3SQ6zjgYnr+m4k7P1e2LEl6Sghyqjj3MQ==
+	bh=NTpZSYuqCJ8aVO/byr8U2ibpc76743xlphGgFkLrMEk=;
+	b=EYPHaEoPTrYSPkRyypv0Z6K5hOzyWA7GA33RjrpmNQv10g/bLBnulf6J6cPiFFEZuS2U
+	 S3qJ1dakqKMKz7lPOp+9sy6AuB65LLGuKbKtNP6RbNeAGBfzvxlOn0I4dhx760sbM6J0I
+	 ocr097C3E3JSw95d/Sh3A1fYKAXj+OGRtV695fFDmEEgvWVtLoIDo/cMuRt41oheZ29Pc
+	 woVF/MmmPC78cUVJKhmc+kbQh1YGGt/lgdfwFDyZlb8ar6Y7W7bjcKlBWsKiFLG5XBKLC
+	 Ank4LHg9BcXSD5pMNIf7PRI0ssU0wrydHJqrORyVQ/xxQpe3yfyULfZtrQW0Z7lZpQQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=linux.intel.com;
 	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dYbcBbgV;
-	arc=none smtp.remote-ip=198.175.65.9
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cR8BGVKd;
+	arc=none smtp.remote-ip=192.198.163.15
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423AA606A31B;
-	Thu,  5 Nov 2026 09:01:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 423AA606A31B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184A6606A31B;
+	Thu,  5 Nov 2026 09:04:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 184A6606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dYbcBbgV
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cR8BGVKd
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793869317; x=1825405317;
+  t=1793869445; x=1825405445;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HsF2OB4+TAKcLaK6X2CbxWBe2H+bJw89o7MCcGnPEhE=;
-  b=dYbcBbgVOlUSBxnyE/4Gn0ptbmxEULSOiQnRKhRdhR1dNwvkZEAGcBuW
-   jMGs9M8e2KtibZ9mqnsLuDgF2TnXPMSyoYpOjhE5TQuw/Ph6XPqm7v/Un
-   vW6ZLA1Qbxu4GLPOQProELEU9WMw/GIN9X7kmrpLHqk2swWjomMmvWaDn
-   rBA39dBwuBWaFYeYb3YYXhvyjAtbelrh0EUophzQqLJGqvju6z1pp0XBU
-   Ab+GSP2w84Khkqk1Kvv1wvK9D6JlP7+ZtdY3PdZcbHqya2uczXHsrgC09
-   wsL95xS41h36OPsA44P9Kf6dj1AoU+znKlJjpx+6j+H/bBkcxqHTS+N45
-   A==;
-X-CSE-ConnectionGUID: mWzUxRhiQdWvO5I7z4uI2w==
-X-CSE-MsgGUID: Iw37O7BMRHakcvb72FXWTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2547930"
+  bh=e5Tih3iECPzUwOzRgFBLbWPwtT2A2aI6VTXhUtB9sIw=;
+  b=cR8BGVKdHLgNpAYi9bmUES7Im6zpiQO1bedq5eNcGT7l7smkWYvU3gii
+   TWWEnDsOMkJsqswwrEiZnOn0MlzdL0NQHw1O9XYICS75ZPy2drO2UDlzw
+   4A+t0xWGKJTGNoVFY06kow5ZP2iqiZrLd07o0Z1uazv1HuC8T775TGGNw
+   vD4TbwWAjVJCPRFsayMdBzX0ZEg7WsbiTcf2+8gIlJXpSjT33q4ro8KOY
+   ZYkP8MEtI4IlBoN0R7Fm91DDHLcksXdYLB2ePWRzj3aV2iOWUjTEuPbZj
+   Da6XIW/noLcEDOYFL9bEgJgiYgELDKpxHhXR4pFvST0MXY5vGLrN+HCZd
+   w==;
+X-CSE-ConnectionGUID: XTh2eTpVRwO7ALaXDtQDwg==
+X-CSE-MsgGUID: lj9/sOBZSn+JzZMy1GzN0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2642988"
 X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="2547930"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:01:56 -0800
-X-CSE-ConnectionGUID: 73i/m+mbScKfalk02iBJcQ==
-X-CSE-MsgGUID: 7N01rw1qQ3OIr7PEIb3JjA==
+   d="scan'208";a="2642988"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:04:04 -0800
+X-CSE-ConnectionGUID: Yp/KC++fSmu4/jDprqD36g==
+X-CSE-MsgGUID: M7NuvQevTYKghPgW2RQ7fQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="7121379"
+   d="scan'208";a="7366179"
 Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:01:43 -0800
-Date: Thu, 5 Nov 2026 11:01:41 +0200
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 01:03:51 -0800
+Date: Thu, 5 Nov 2026 11:03:49 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Krzysztof Kozlowski <krzk@kernel.org>,
-	Konstantin Ryabitsev <mricon@kernel.org>
+	Konstantin Ryabitsev <mricon@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
 Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -120,11 +121,12 @@ Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Thierry Reding <treding@nvidia.com>
 Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <auxF9RT5aljXkfh7@ashevche-desk.local>
+Message-ID: <auxGdYgJvjq9EBu6@ashevche-desk.local>
 References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
  <b656861c-a087-4087-952e-91fd15fadd52@kernel.org>
  <auuZHTvr5UI9Q9Q4@ashevche-desk.local>
  <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org>
+ <auxF9RT5aljXkfh7@ashevche-desk.local>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -136,46 +138,52 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fbcb650d-0f60-468d-b1cc-255ea8a93db3@kernel.org>
+In-Reply-To: <auxF9RT5aljXkfh7@ashevche-desk.local>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
  krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Nov 05, 2026 at 12:02:21AM +0100, Krzysztof Kozlowski wrote:
-> On 04/11/2026 21:44, Andy Shevchenko wrote:
-> >> Andy,
-> >> These three lines look correct.
-> >>
-> >> LGTM:
-> >>
-> >> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+On Thu, Nov 05, 2026 at 11:01:55AM +0200, Andy Shevchenko wrote:
+> On Thu, Nov 05, 2026 at 12:02:21AM +0100, Krzysztof Kozlowski wrote:
+> > On 04/11/2026 21:44, Andy Shevchenko wrote:
+> > >> Andy,
+> > >> These three lines look correct.
+> > >>
+> > >> LGTM:
+> > >>
+> > >> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+> > > 
+> > > As
+> > > 
+> > >   Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+> > > 
+> > > Note, it's in your power to ask the author to split out what you maintain
+> > > to a separate change. So, it's your choice what to do, Ack the full patch,
+> > > give a partial Rb, ask for a split, ignore reviewing (often means silent
+> > > agreement when maintainer just applies that kind of a patch)
 > > 
-> > As
+> > The "# note" after the tag solves the problem partially, if people were
+> > actually using it. Solves people looking at the Git commit and being
+> > mislead by partial review applying to entire commit. Does not solve
+> > credits, because Rb for three lines is not the same as for 100.
 > > 
-> >   Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org> # atmel-quadspi
+> > From v1 of this patch, four people (Alain, Lab, Troy, Kunihiko) did not
+> > use it even though reviewing only part. Only Wolfram, so 20% of partial
+> > reviews, used that syntax. Without that syntax, b4 will pick up Rb tag
+> > like it was for entire commit.
 > > 
-> > Note, it's in your power to ask the author to split out what you maintain
-> > to a separate change. So, it's your choice what to do, Ack the full patch,
-> > give a partial Rb, ask for a split, ignore reviewing (often means silent
-> > agreement when maintainer just applies that kind of a patch)
+> > So I do repeat - if one does not want to use that syntax, then just Ack,
+> > instead of creating false impression of reviewing everything.
 > 
-> The "# note" after the tag solves the problem partially, if people were
-> actually using it. Solves people looking at the Git commit and being
-> mislead by partial review applying to entire commit. Does not solve
-> credits, because Rb for three lines is not the same as for 100.
+> +Konstantin, then we need to teach `b4` not to break that or convert it to
+> something like
 > 
-> From v1 of this patch, four people (Alain, Lab, Troy, Kunihiko) did not
-> use it even though reviewing only part. Only Wolfram, so 20% of partial
-> reviews, used that syntax. Without that syntax, b4 will pick up Rb tag
-> like it was for entire commit.
-> 
-> So I do repeat - if one does not want to use that syntax, then just Ack,
-> instead of creating false impression of reviewing everything.
+>   [FirstName: reviewed only ...]
+>   Reviewed-by: FirstName LastName <...>
 
-+Konstantin, then we need to teach `b4` not to break that or convert it to
-something like
+And Ack is not the same as Rb, when I *reviewed* patch, I have *reviewed* it,
+even if it was partial one.
 
-  [FirstName: reviewed only ...]
-  Reviewed-by: FirstName LastName <...>
+Also Jon Corbet might share his opinion from documentation point of view.
 
 -- 
 With Best Regards,

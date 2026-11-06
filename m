@@ -1,47 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793949657;
-	b=5lfroE6E7YPHsmLre9NCQxZffmGUCH1C6tmquw3UM049ARQ6xdEHK/saFQRFFaYy1rGP
-	 6PDH9RmAvUdlxbn2BPGef3+M7wV+yI2SPOTWSLSWfTFcT3DfvsF1SSed1tO4zVb6B1b96
-	 VjiDZlLKiJcapkrFDaX2l4StZiMgoI5OnmMMtm8UZdZpOqsHq+z8XDS53nlKNWNJdK7pe
-	 1sUW0ThxlEFPQMUJWOaOEdt1fl8GZ3Nx9tKr1Dcjv+cCqM0zBMabYt6wAz6x1sFH26DYY
-	 526r1GbjZdyRhfg6A3gSRnjm/lpv9g7VMEkRnj3cVfv0yIKaupMJFiRcCymayK3JpdA==
+	t=1793957447;
+	b=aWCjEDqEeL6jF7GCz6P3M8DNc3P4Bz8z0VLDjnw5+OtvWMoSXSD33AzqVGfQp3BP8Ppp
+	 hwDNkUNj+YqbaABkbpktMWqg5OLh/f3W3+anYkFLaXXok8ne90XEf8hRGI1Km7LCYDwxO
+	 IT5OdfWkv6XGQpP9T5A0aFGG/Vop+YB/vYsCfyelhD7fyifiBd0SBXtwnjpb76MptvtKY
+	 /ar5EHBGhPWWkCjzYqUXPHsRAokTr/LFxq731PLbsf2iPy0nmN/HOAAE0qsYq18Oenr7I
+	 eXup5AL+9oWGtgjOpC0m/c4NqkM8FKa6XpHmtxmWE3l0ED2O3OccjHISSe4k6Zjyyog==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793949657;
-	h=Received:DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:
-	 Subject:To:Cc:References:From:Content-Language:Autocrypt:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding;
-	bh=TLxQ030grPqVQKle1I3f5ZVMbm7DkmL6NggJPeFwZYM=;
-	b=xxyAXaRa7kcWUMjQ8EcbAdeurJ4ZqJeCQM7otjot1ZL4x/LUDcfkdnbSwq1viY8PrkWS
-	 Of2aum2CUzxIx2W6JO0u3Tddz3eyBofqWnlykme4qKV8K3MAnZ0htLYyEN4gyr9UUhQol
-	 X01iLYqyX0ELR1uZbyHqlcmzHKvromwOIIcHQb7F13ptuTG1Y/0Zi/Tdy3ACs/Q5s4wqc
-	 FFhTy/7l4EyaUdDviK9R64Wzrhshvv+jTI1XK8zKpolCnBE4zJoNMjyFtW+mMuzAom1HC
-	 JGoNeDl1bX9Lf/xtes8lz2OtZUt8K9eUj/s8GoqDgeVJFwE408nRxufFxaM5lBdosoQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793957447;
+	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Subject:
+	 Date:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Last-TLS-Session-Version;
+	bh=sS9SQlly2RwS/6KrN94iJowJBr0dXwkGaUXpEOiPodI=;
+	b=plsmtiNI4OLfHDV/YdyEWm2mixm3idX+onG0WKsTSdkeAs7SWWmNLzOaw2AM17oewuWh
+	 Dl+/A1LVSnGhBr025zUypPJ/N4h67EnJSoVn9gXqZ8ZsgoeZxHsrsW4weHYsxf3V9p7NE
+	 Q04HKnjfmOvxUkLJBOxh8sLH/vLpSr20t8J5qFzTo98o6FGxhVrGEVg2gns18Es+vxNCm
+	 SFDD5DWe6M612kUuP+gQC/M24GDBxfinkOoMlk8LMB2vL71NcFrVY3upqIuw7PKGzLmQO
+	 r9dUk3BdhtNEEJzVHBeK/NkZGbrG740oeHeCdIFGO5UjuBIRPM+dToslLHc1AHMW37A==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnKlm1fk;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=bootlin.com;
+	spf=pass smtp.mailfrom=bootlin.com;
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=FYjIfABk;
+	arc=none smtp.remote-ip=185.246.85.4
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E37606A326;
-	Fri,  6 Nov 2026 07:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F1E606A328;
+	Fri,  6 Nov 2026 09:30:43 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 02F1E606A328
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnKlm1fk
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1602D1F008A2;
-	Fri,  6 Nov 2026 07:20:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793949656;
-	bh=TLxQ030grPqVQKle1I3f5ZVMbm7DkmL6NggJPeFwZYM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HnKlm1fkWjrAd2obKBMx53zoZMhRB3reJtxSd9V8FiZ/qDbdBzew2qjqngXJWZodg
-	 ZrxL8hStLfApH9H911w7FToDUA1GpmMVoJkSsONj2M5bbysX+NtQIgHJzHcmaJAb9X
-	 g1AUmg/C5Qef9/gyECHRfnnZmqsa5alBldf4udVebxyN6XSFeWyQWwwSKBVFk9ezLU
-	 KYRd3em7KfwseIV6ZRtKI+zbb2t+4xk5CqnB2gFndThakx0XYJem3QIalRRGq2ziHl
-	 YTKDZLh6nQm00mY5EiNKU+gleL4bQZnec55Jt3mBu+cYrc+ImpggHYwgOOpIC2k5xG
-	 LMIFjqElzryXg==
-Message-ID: <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
-Date: Fri, 6 Nov 2026 08:20:33 +0100
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=FYjIfABk
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 18B4B4E413E9;
+	Fri,  6 Nov 2026 09:30:42 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BB4D25FFBC;
+	Fri,  6 Nov 2026 09:30:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12D0910329258;
+	Fri,  6 Nov 2026 10:30:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1793957438; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=sS9SQlly2RwS/6KrN94iJowJBr0dXwkGaUXpEOiPodI=;
+	b=FYjIfABkowisjeRn+CSvLUTjWLuxx+3kviyjc/anqGF9q9GxCZTgw0wpsJ8FJ8ti6FhDe0
+	L/4Js4Usj3Twoh8hMFsbgA2n+iE1ZjjULyXLoUYhOm6r4EYOFHaFPwRWhTMoUIMXkoASI6
+	WAtAjtqt4nozRJVg5mQLbG1Rfu4vRJj87hVCTTSHic8EROes+yJaPkLLHiQcJB5zjSIJF9
+	s8LPfcfr0EIoXu5LjAaihMo4jqU/8/3yM01epv48Yq8rIYgIH648tUnK7J77TfsUi+L4Y1
+	VxGozQieYhe0nmIyWgS+OpgjlDIKTSbs3oztQTFJsFrXy6HYjVT/GK4JwNdv8g==
+From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+Subject: [PATCH 00/25] riscv: add support for the Metanoia MT2824 SoC and
+ MT5824 EVB
+Date: Fri, 06 Nov 2026 10:29:57 +0100
+Message-Id: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -51,185 +63,160 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Radu Pirea <radu_nicolae.pirea@upb.ro>, CL Wang <cl634@andestech.com>,
- Ryan Wanner <ryan.wanner@microchip.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Vladimir Oltean
- <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>, Heiko Stuebner <heiko@sntech.de>,
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Andi Shyti <andi.shyti@kernel.org>, Tudor Ambarus
- <tudor.ambarus@linaro.org>, Peter Griffin <peter.griffin@linaro.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
- Troy Mitchell <troy.mitchell@linux.spacemit.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alain Volmat <alain.volmat@foss.st.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Laxman Dewangan
- <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- "open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
- "moderated list:ARM/Microchip (AT91) SoC support"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE"
- <linux-rpi-kernel@lists.infradead.org>,
- "open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
- "open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
- "open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
- "open list:RENESAS RZ/V2H(P) RSPI DRIVER"
- <linux-renesas-soc@vger.kernel.org>,
- "open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
- "open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
- "open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
- Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Thierry Reding <treding@nvidia.com>
-References: <20261104152253.3279052-1-Frank.Li@oss.nxp.com>
- <autj6pr_bPaul3w0@ashevche-desk.local>
- <7f96599b-681d-4963-bdda-1274371ac84f@kernel.org>
- <f1fa853d-1703-411d-b2d2-0fb0b176c2fa@kernel.org>
- <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
- <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
- <auxGom0XR-Hax9b3@ashevche-desk.local>
- <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
- <auxNmE8yZVP-wL2e@ashevche-desk.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <auxNmE8yZVP-wL2e@ashevche-desk.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABae7WoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDA0Mz3dwSIwsjE11jo0Rz80QjE0NzSwsloOKCotS0zAqwQdGxEH5xaVJ
+ WanIJSLdSbS0ArD81RGoAAAA=
+X-Change-ID: 20261016-mt2824-32a77a241798
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jun Chang <jun.chang@metanoia-comm.com>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Sebastian Reichel <sre@kernel.org>, 
+ Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Conor Dooley <conor@kernel.org>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Ben Zong-You Xie <ben717@andestech.com>, 
+ Daniel Lezcano <daniel.lezcano@kernel.org>, Ulf Hansson <ulfh@kernel.org>, 
+ Jisheng Zhang <jszhang@kernel.org>, CL Wang <cl634@andestech.com>, 
+ Mark Brown <broonie@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Adrian Hunter <adrian.hunter@intel.com>, 
+ Minas Harutyunyan <hminas@synopsys.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Randolph_Sheng-Kai_Lin=28=E6=9E=97=E8=81=96=E5=87=B1=29?= <randolph@andestech.com>, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org, 
+ linux-phy@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, 
+ linux-mmc@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 05/11/2026 10:34, Andy Shevchenko wrote:
-> On Thu, Nov 05, 2026 at 10:07:30AM +0100, Krzysztof Kozlowski wrote:
->> On 05/11/2026 10:04, Andy Shevchenko wrote:
->>> On Wed, Nov 04, 2026 at 11:54:56PM +0100, Krzysztof Kozlowski wrote:
->>>> On 04/11/2026 21:41, Andy Shevchenko wrote:
->>>>>>
->>>>>> But sure, if we want to play such numbers game, I will be sending
->>>>>> reviews for single lines.
->>>>>
->>>>> I'm not playing anything. The problem is that the patch unites the files that
->>>>> have distinct maintainers and unrelated to each other code. That's why in the
->>>>> subsystems I maintain, I almost always require to split on per-driver basis.
->>>>> Yes, exceptions are possible, but has to be quite rare.
->>>>
->>>> That's independent problem. Patch could be split, but it was not. Since
->>>> it was not, receiving end should act accordingly, e.g. when performing
->>>> incomplete review of only part of the patch, do not call that entire
->>>> patch was reviewed by giving the Rb tag, but give Ack tag.
->>>
->>> No, (partial) Rb != Ack.
->>
->> It is, because there is no partial Rb tag.
->>
->> There is partial review, but not partial Rb tag, please see exactly
->> submitting patches. It repeats the same in three separate places:
->>
->> "Acked-by.... user may not have carried out a technical review of the
->> patch,yet they may be satisfied ..."
->>
->> "Reviewed-by:, instead, indicates that the patch has been reviewed and
->> found acceptable according to the Reviewer's Statement:"
->>
->> Above important: "THE PATCH"
->>
->> It is not "the patch or its parts"
->>
->> Further:
->>
->> "I state that:
->> (a) I have carried out a technical review of *this* patch to evaluate
->> its appropriateness and readiness for inclusion into  the mainline kernel."
->>
->> And further:
->>
->> "A Reviewed-by tag is a statement of opinion that *the patch* is an"
->>
->> In three places it is THIS or THE patch. Complete (exhaustive) list of
->> options what can be reviewed to get the credit and give statement of
->> oversight.
->>
->> Statement of oversight DOES NOT include "part of the patch".
-> 
-> So, it means I MUST from now on REQUIRE a split before reviewing.
-> Right?
+Hi all,
 
-Why "from now on"? The reviewer's statement of oversight is worded like
-that since beginning? Also nothing stops you from reviewing parts. We
-discuss the statement of oversight and its result: giving Rb tag. The Rb
-tag is not output of some review, but agreement with statement of
-oversight and performing what is stated there.
+This series adds initial upstream support for the Metanoia MT2824 SoC
+and its MT5824 evaluation board.
 
-You can review parts, but you do not provide Rb tag.
+The MT2824 is a dual-core RISC-V SoC built on Andes AX45MP cores. It
+integrates two 8250-compatible UARTs, the Andes PLIC/PLICSW/PLMT interrupt
+and timer blocks, the AX45MP L2 cache controller, a simple reset controller
+and a system reboot controller, the ATCWDT200 watchdog, one QSPI and eight
+ATCSPI200 SPI controllers, a Synopsys DWC MSHC 2.00a eMMC/SD controller,
+and a Synopsys DWC2 USB2 host controller with a reset-only USB2 PHY.
 
+The series is organised as:
+
+- patches 1-14 add the device tree bindings, the Metanoia vendor prefix,
+  the RISC-V board schema and the SoC block compatibles
+- patch 15 adds ARCH_METANOIA and selects the AX45MP errata
+- patches 16-23 add the reset, SPI, watchdog, MMC, PHY and USB changes
+  needed to build and probe on this SoC
+- patch 24 adds the MT2824 SoC and MT5824 EVB device trees
+- patch 25 adds the MAINTAINERS entry
+
+The ATCSPI200 driver gains optional interrupt support for PIO transfers:
+when the controller IRQ is wired, the FIFOs and the end of transfer
+are serviced from the handler, with a fallback to polling when no IRQ
+is available.
+
+The DWC MSHC controller on the evaluation board is wired to either an
+SD slot or an eMMC through a board jumper that the SoC cannot read. In
+the absence of a fixed card type in the device tree, the driver probes
+the eMMC first at 1.8 V and falls back to the SD slot at 3.3 V. The
+controller also needs custom tuning and HS400 PHY DLL handling, which
+is why it has its own sdhci_ops.
+
+The MT2824 SoC contains other controllers not yet exposed (I2C, GPIO,
+pinctrl, Ethernet, DSP, ...). This first series allows accessing the
+evaluation board via its serial console, and all its storage options
+(SPI-NOR, eMMC, SD card). The watchdog and the USB port are also
+available.
+
+The driver changes do not depend on the DTS at build time and are gated
+on the new compatible strings. For merge ordering, the DTS depends on the
+ARCH_METANOIA Kconfig entry (patch 15) and on the binding compatibles
+being accepted. The patches can therefore go through their respective
+subsystem trees, with the Kconfig, DTS and MAINTAINERS patches going
+through the RISC-V tree once the driver and binding patches have landed.
+
+The series is based on v7.4-rc1.
+
+Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
+---
+Benoît Monin (25):
+      dt-bindings: vendor-prefixes: add Metanoia Communications
+      dt-bindings: riscv: add Metanoia SoC-based boards
+      dt-bindings: reset: add Metanoia MT2824
+      dt-bindings: power: reset: add Metanoia MT2824 reboot
+      dt-bindings: phy: add Metanoia USB2 PHY
+      dt-bindings: cache: andestech,ax45mp-cache: add MT2824 compatible
+      dt-bindings: interrupt-controller: sifive,plic-1.0.0: add Metanoia MT2824
+      dt-bindings: interrupt-controller: andestech,plicsw: add Metanoia MT2824
+      dt-bindings: timer: andestech,plmt0: add Metanoia MT2824
+      dt-bindings: mmc: snps,dwcmshc-sdhci: add Metanoia MT2824
+      dt-bindings: spi: andestech,ae350-spi: make DMA and interrupts optional
+      dt-bindings: spi: andestech,ae350-spi: add Metanoia MT2824
+      dt-bindings: usb: dwc2: add Metanoia MT2824
+      dt-bindings: watchdog: andestech,ae350-wdt: add Metanoia MT2824
+      riscv: add ARCH_METANOIA Kconfig entry
+      reset: simple: add Metanoia MT2824 support
+      spi: atcspi200: add optional interrupt support
+      spi: atcspi200: allow building for Metanoia SoCs
+      watchdog: atcwdt200: allow building for Metanoia SoCs
+      mmc: sdhci-of-dwcmshc: add MT2824 support
+      mmc: sdhci-of-dwcmshc: add MT2824 tuning and HS400 support
+      phy: metanoia: add USB2 PHY driver
+      usb: dwc2: add support for Metanoia MT2824
+      riscv: add Metanoia MT2824 SoC and MT5824 EVB support
+      MAINTAINERS: add RISC-V Metanoia SoC support
+
+ .../bindings/cache/andestech,ax45mp-cache.yaml     |   1 +
+ .../interrupt-controller/andestech,plicsw.yaml     |   1 +
+ .../interrupt-controller/sifive,plic-1.0.0.yaml    |   1 +
+ .../bindings/mmc/snps,dwcmshc-sdhci.yaml           |   1 +
+ .../devicetree/bindings/phy/metanoia,usb2-phy.yaml |  43 ++
+ .../bindings/power/reset/metanoia,reboot.yaml      |  34 +
+ .../devicetree/bindings/reset/metanoia,reset.yaml  |  40 ++
+ .../devicetree/bindings/riscv/metanoia.yaml        |  25 +
+ .../bindings/spi/andestech,ae350-spi.yaml          |   9 +-
+ .../devicetree/bindings/timer/andestech,plmt0.yaml |   1 +
+ Documentation/devicetree/bindings/usb/dwc2.yaml    |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ .../bindings/watchdog/andestech,ae350-wdt.yaml     |   1 +
+ MAINTAINERS                                        |  11 +
+ arch/riscv/Kconfig.socs                            |   8 +
+ arch/riscv/boot/dts/Makefile                       |   1 +
+ arch/riscv/boot/dts/metanoia/Makefile              |   2 +
+ arch/riscv/boot/dts/metanoia/mt2824.dtsi           | 330 ++++++++++
+ arch/riscv/boot/dts/metanoia/mt5824-evb.dts        |  81 +++
+ drivers/mmc/host/Kconfig                           |   1 +
+ drivers/mmc/host/sdhci-of-dwcmshc.c                | 704 +++++++++++++++++++++
+ drivers/phy/Kconfig                                |   1 +
+ drivers/phy/Makefile                               |   1 +
+ drivers/phy/metanoia/Kconfig                       |  16 +
+ drivers/phy/metanoia/Makefile                      |   3 +
+ drivers/phy/metanoia/phy-usb2.c                    |  88 +++
+ drivers/reset/Kconfig                              |   2 +-
+ drivers/reset/reset-simple.c                       |   1 +
+ drivers/spi/Kconfig                                |   2 +-
+ drivers/spi/spi-atcspi200.c                        | 255 +++++++-
+ drivers/usb/dwc2/params.c                          |  13 +
+ drivers/watchdog/Kconfig                           |   2 +-
+ 32 files changed, 1667 insertions(+), 15 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261016-mt2824-32a77a241798
 
 Best regards,
-Krzysztof
+--  
+Benoît Monin, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+

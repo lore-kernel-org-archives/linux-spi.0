@@ -1,81 +1,87 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793990771;
-	b=woGVF7rY+VUyIPn1j9SpewmShDsIYC45fblmDipRT2mFoJCx+DBmQgM1rTwUilZ+L1Gr
-	 rU5tksvVyc0LS956LA/sy3ZbM+LlC44JlblUFCXsuzGnbtElybNzoLNatUP6CzUje+VNI
-	 Log9+XuN9VY5MvRFcnoBhiYzAy9J15Z0hj5/MQMompUnb/YYAHsDo1a3V37bFTRdpdl6w
-	 o+Lw6Ye3MEKUDvhtu/5KboVYeOiBX8AQcnUvu1E/9paz9wPc5OKDxWhgxblmvdiojCizY
-	 5ql3el2YdlR78ZhuvememeZtxcHyZcFQZXYXhMB5HzCn2VvE+5fMqRcA4su/3T83iCw==
+	t=1793991808;
+	b=e5GBNYgIA88kz5hC60fGn2XRdtcyrezmIVKfO81wmAAXQ3wpGASbHAO4Zyi4AOF4hoc+
+	 DP5lyKtoini77Tsbzz5bg5RgRylk+KaK0GPj8ori4q7W+67HR9MoOD66mGt8KIcsXEkXS
+	 MRIlvf9zk8Z7P8nWs0C4iZFjhqYHgJ2SkE1rvpEPEkjmcP6uZ13FRIbxXlyLltBHTNepN
+	 cSBVZlBX41IeqbcFywhJXOtJD1au6inAfNLgF/ZCQQpYK/hBgCbgR28shqb3ZzGRMQraP
+	 fctZ2KBGhMn5NdNj79V6D7yhkJIJuzkHhJ2GZPUHTUYTz/36KW0Zs0K1gCqZaQr8OCQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793990771;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=6TYaT587yULVEsFdUlV21e0IlEIkrM/S8nTlyyj5duE=;
-	b=INVmNIV1jmM7AtGG51HlofAW7mmgs22h9X4OieZJVOT5ngbKoXpLLijOYtdcu/z2ZuzD
-	 0q4fhLQB8drxX73XrInQ/tx+VgA683rjLefewNbuSu7K6qS+YMyNKnCQcwbctUUxIQjni
-	 j+BBrs76SvU/12R4q2MPOkwKCDWacRq5i1xNOWUIHh+4LUyqWXeZOIVx0iBipyDgeAgAE
-	 TxHa3nxz7sr3xNjkZr/RCnD84feWOjPxuPANeQuHTI8NOhAauWiPCKe+6E/Md5uh6RLn+
-	 k9s52Rd4zdr+l/cDJ/ATzEhSTn1OXIX6lES9XjV9YcJzg5Ja7/YXz7Jgzesktv4YhAQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793991808;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
+	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
+	bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
+	b=CullWx4q/RLVtNN2SVvNhr6osBk6dcMlWjrYeF9OeXoYI6UwSl7+E8QD8zefhwf/lKhZ
+	 JRBED/lXoCROULkW2GIHdwVw1MZDxorcwe2hgGfo4rJmP+CC0X9MJATCqWDtzcYuumLwY
+	 XA2aEN6bvf0e0royDXEKWVInYUO4ZuXm7BhFYb44nijQx3394hhf3LkAnzxWaWTSWX6My
+	 TrEADKUaNKYA1oS9dhe6zOviUgDXpx65i0ij+mbncoXqcbkGosK1y9NTHnniCk78GROmb
+	 3oAxFV9M9R6tGlRj+9Bop8OW9MBJp4dbd5BX1MV+IxrZ6q9kIGn51sGiM7CYDgP+rjA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ag0eQnT6;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	dmarc=pass header.from=gmail.com;
+	spf=pass smtp.mailfrom=gmail.com;
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=emcxuYq3;
+	arc=none smtp.remote-ip=209.85.128.43
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D457606A329;
-	Fri,  6 Nov 2026 18:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFDB606A329
+	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 19:03:27 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EFDB606A329
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ag0eQnT6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74ED11F0089F;
-	Fri,  6 Nov 2026 18:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793990770;
-	bh=6TYaT587yULVEsFdUlV21e0IlEIkrM/S8nTlyyj5duE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ag0eQnT68Qn48+lD/gKwyNvXHdwktPEYZRXu+mkFQY9vzL7wiMhYgWeuG+JY3KsEF
-	 gI3XCn0aWsviJENdO79ADtBJ4wfZIqOpW7bHvPyXu5Yx7OAaI64goY95XQoscGuga3
-	 RiRZJJ+z/HCAmj4OreqwgRKM+/JYt0+pMQU8Vi4xBe9mSgJSOH8KtXW9Mw/WQ3o4OY
-	 mrux7OQRSU/obswR+R8vfPypl/xQz/SLtQ2oRx1EySjeD+3V+DGTpGrrAHC+sqD+48
-	 zU0B/50JD3C7b1U4wU/hmZFCOReDSKirjZePi9z/7MbizoMhTqfACiM30W+Y2YprUi
-	 C/pdfJQ6qj/LQ==
-Date: Fri, 6 Nov 2026 18:46:01 +0000
-From: Conor Dooley <conor@kernel.org>
-To: =?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jun Chang <jun.chang@metanoia-comm.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sebastian Reichel <sre@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Ben Zong-You Xie <ben717@andestech.com>,
-	Daniel Lezcano <daniel.lezcano@kernel.org>,
-	Ulf Hansson <ulfh@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
-	CL Wang <cl634@andestech.com>, Mark Brown <broonie@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Randolph Sheng-Kai =?utf-8?B?TGluKOael+iBluWHsSk=?= <randolph@andestech.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>, linux-mmc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-watchdog@vger.kernel.org
-Subject: Re: [PATCH 00/25] riscv: add support for the Metanoia MT2824 SoC and
- MT5824 EVB
-Message-ID: <20261106-annotate-roundup-3cdf03205a91@spud>
-References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=emcxuYq3
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so8443485e9.3
+        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 11:03:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793991806; x=1794596606; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
+        b=emcxuYq3c/RZcZ41az/ZF1XcFdIxhiuhFsnxtHxbY+j+qByR+FlmXP79e57+oBkz99
+         TSGPlX7YXkZD+Q8I+61BD8vtNd5m2vaf00VOqViCcjheFUoKLvhrfinNOwWO8ej73L4g
+         O7VcOjbcqth7e5CRkrEB3Hijgx93FXLoDMmNtHH8LYfCppnH7hp1ekn1O2Rw5F/YRzBu
+         rV2dEs7yEht92ByaUkGUfRZT8OjE6rpy1t8WtAVJEsqfFMdHbK1aG8uSw+FTJjBN5FJu
+         aV8LR9TicW4swgJZKdbU/cZiijxZwjvd3jdFoP+qh0+FB7n1JL8DMjKbJrgextb9TocW
+         Y7gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793991806; x=1794596606;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
+        b=zob5GgQdzrRtAAG2b24G3tFMiH6FM5gcsqm7uUQPGuZT09CI7ljwLqVTbR9guxCl/r
+         27kwqou+eMjiWSHk+B21M2CYt/VqdWR0li77UD6mzPGg5Tc03B0vvllUeqI0ZCLkRQu4
+         VEY4p1EqRTsJy0uYFoejej/i9gU1be50L2TedvqRChUClSFeee6d235H/UPwzwm03UIr
+         RdFFRzn9dflTe/eV2c4ZJwTRzornWnbcX5MMMicCDqtn1B+w5EIUmjjQHvvVBAC6c3D/
+         GRR5d3rFg4QtFdMnNqBzO76lDO9YPbd6DiQum7GPftc3I78CxIlP9ux8AVJ2hZ3UBbiH
+         So9Q==
+X-Gm-Message-State: APuU4Z/6CdSzi3wMYxlppk+WatxdQS4RfKLxi/wDeKfu5VrVlXIHxE8B
+	f1UVTt77rCQ8seTqH2EhmUEqraWo2NP6TV6WoHuO/N2CUg/pT/yTcchM
+X-Gm-Gg: AYBFou11qG77XkLrUVYNMTh8x+54R73oNFkwpxHDNfPCmj2auePGuXz3D6aQvYghzkq
+	MpksjzVQDXrLcSwx7+wTOY8/IeCZ5QGxNeLz4mLn+Tl6bgZdr8+/Ul0EzDXoeHyQ8+r6ILMH6yU
+	P29GkKaAuuT9Hxg9clvNCEt55kDzJ111S26x/Bmp3g/2TPISsrFBX6gPxw3zwrNq3rnWpIcUpD6
+	SmvnMf0Eh7RP4UX3Uy8jeB0u5eLmho/oZgv4VLPflupKt4+2xWCRhMCQTl7E22RqFo70oQV2xRN
+	HUIIzGVTxVqQjknJA8GmHIBOYua+YAOiVUT5XnzHQnh+ijC0eiT89JF4+6sXRPQYSwJ2V2b9WAa
+	uKbb0bI8pn3dKOHhrXEDsh7lQywjHLas88K79EjAV8SMJPa8KZXWbudq8zJPPp5KWGuxqkJipjN
+	o6v4KxM5/zsRwMMyl7ddDHlG76Q9w8qn4sm16qBKan2APs8ynNhNKSPMdGoIo8ojEmCn0vV/pDZ
+	v3iOQv2Y/VWW32eyAuJFr9y1u+DV0GC8+JJgiJKbDaIxhj3U4yXw0b6pmAaHVG2oFf5/iL8RuCu
+	jHgO0UKxTsLWpk5DRLWhlDQVIf4FhKeUE0BvSU+yxUnLOyZUqLWT7KOry8gLH2MZXt/l1FL/IsT
+	nkNA=
+X-Received: by 2002:a05:600c:529a:b0:4a1:d675:b031 with SMTP id 5b1f17b1804b1-4b6ddee3235mr55014455e9.6.1793991805836;
+        Fri, 06 Nov 2026 11:03:25 -0800 (PST)
+Received: from [192.168.0.253] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b7e327a6d8sm977005e9.9.2026.11.06.11.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 11:03:25 -0800 (PST)
+From: Gabor Juhos <j4g8y7@gmail.com>
+Date: Fri, 06 Nov 2026 20:01:54 +0100
+Subject: [PATCH v2] spi: spi-qpic-snand: fix various errors in
+ qcom_spi_config_single_cw_page_read()
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -85,130 +91,86 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="O+KStvozO2m15yOI"
-Content-Disposition: inline
-In-Reply-To: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261106-qpic-snand-fix-singlecw-readloc-v2-1-18de8226fe15@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0K6dgwtlYAr72FY1OkUJoEWWoMaw
+ t2tnMDl+/l5bxOJIlMS12ITkVZOHHwGdSoEDsb3BGwzC1WqumyVgmVmhOSNt+D4DYl9PxK+IJK
+ xY0BAjU370FXduovIljlS/h2Fe5d54PQM8XMEV/lb/3evEiRo6WxTaSNLR7d+MjyeMUyi2/f9C
+ yW6ggfOAAAA
+X-Change-ID: 20260922-qpic-snand-fix-singlecw-readloc-c4c89b4369f5
+To: Mark Brown <broonie@kernel.org>, 
+ Md Sadre Alam <md.alam@oss.qualcomm.com>, 
+ Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
+ Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Gabor Juhos <j4g8y7@gmail.com>
+X-Mailer: b4 0.14.3
 
---O+KStvozO2m15yOI
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The qcom_spi_config_single_cw_page_read() function has several errors.
 
-On Fri, Nov 06, 2026 at 10:29:57AM +0100, Beno=EEt Monin wrote:
-> Hi all,
->=20
-> This series adds initial upstream support for the Metanoia MT2824 SoC
-> and its MT5824 evaluation board.
->=20
-> The MT2824 is a dual-core RISC-V SoC built on Andes AX45MP cores. It
-> integrates two 8250-compatible UARTs, the Andes PLIC/PLICSW/PLMT interrupt
-> and timer blocks, the AX45MP L2 cache controller, a simple reset controll=
-er
-> and a system reboot controller, the ATCWDT200 watchdog, one QSPI and eight
-> ATCSPI200 SPI controllers, a Synopsys DWC MSHC 2.00a eMMC/SD controller,
-> and a Synopsys DWC2 USB2 host controller with a reset-only USB2 PHY.
->=20
-> The series is organised as:
->=20
-> - patches 1-14 add the device tree bindings, the Metanoia vendor prefix,
->   the RISC-V board schema and the SoC block compatibles
-> - patch 15 adds ARCH_METANOIA and selects the AX45MP errata
-> - patches 16-23 add the reset, SPI, watchdog, MMC, PHY and USB changes
->   needed to build and probe on this SoC
-> - patch 24 adds the MT2824 SoC and MT5824 EVB device trees
-> - patch 25 adds the MAINTAINERS entry
->=20
-> The ATCSPI200 driver gains optional interrupt support for PIO transfers:
-> when the controller IRQ is wired, the FIFOs and the end of transfer
-> are serviced from the handler, with a fallback to polling when no IRQ
-> is available.
->=20
-> The DWC MSHC controller on the evaluation board is wired to either an
-> SD slot or an eMMC through a board jumper that the SoC cannot read. In
-> the absence of a fixed card type in the device tree, the driver probes
-> the eMMC first at 1.8 V and falls back to the SD slot at 3.3 V. The
-> controller also needs custom tuning and HS400 PHY DLL handling, which
-> is why it has its own sdhci_ops.
->=20
-> The MT2824 SoC contains other controllers not yet exposed (I2C, GPIO,
-> pinctrl, Ethernet, DSP, ...). This first series allows accessing the
-> evaluation board via its serial console, and all its storage options
-> (SPI-NOR, eMMC, SD card). The watchdog and the USB port are also
-> available.
->=20
-> The driver changes do not depend on the DTS at build time and are gated
-> on the new compatible strings. For merge ordering, the DTS depends on the
-> ARCH_METANOIA Kconfig entry (patch 15) and on the binding compatibles
-> being accepted. The patches can therefore go through their respective
-> subsystem trees, with the Kconfig, DTS and MAINTAINERS patches going
-> through the RISC-V tree once the driver and binding patches have landed.
+  * When the cw parameter equals with the last codeword, the function
+    configures the read location last registers. However it completely
+    misses configuring the regular read location registers for other
+    codewords.
 
-I kinda pointed it out elsewhere, but that's not actually the path for
-the Kconfig, dts and MAINTAINERS bits. They go via the soc tree, after
-being applied by a metanoia specific maintainer.
+  * The 'use_ecc' parameter of the function is not handled in the code
+    at all.
 
->=20
-> The series is based on v7.4-rc1.
->=20
-> Signed-off-by: Beno=EEt Monin <benoit.monin@bootlin.com>
-> ---
-> Beno=EEt Monin (25):
->       dt-bindings: vendor-prefixes: add Metanoia Communications
->       dt-bindings: riscv: add Metanoia SoC-based boards
->       dt-bindings: reset: add Metanoia MT2824
->       dt-bindings: power: reset: add Metanoia MT2824 reboot
->       dt-bindings: phy: add Metanoia USB2 PHY
->       dt-bindings: cache: andestech,ax45mp-cache: add MT2824 compatible
->       dt-bindings: interrupt-controller: sifive,plic-1.0.0: add Metanoia =
-MT2824
->       dt-bindings: interrupt-controller: andestech,plicsw: add Metanoia M=
-T2824
->       dt-bindings: timer: andestech,plmt0: add Metanoia MT2824
->       dt-bindings: mmc: snps,dwcmshc-sdhci: add Metanoia MT2824
->       dt-bindings: spi: andestech,ae350-spi: make DMA and interrupts opti=
-onal
->       dt-bindings: spi: andestech,ae350-spi: add Metanoia MT2824
->       dt-bindings: usb: dwc2: add Metanoia MT2824
->       dt-bindings: watchdog: andestech,ae350-wdt: add Metanoia MT2824
+  * The last qcom_read_reg_dma() call which is supposed to read the
+    NAND_FLASH_STATUS register does not use the NAND_BAM_NEXT_SGL flag.
+    Due to this, the respective command element never sent to the hardware
+    so it never executes the read of the NAND_FLASH_STATUS register.
 
-Other than the tag issues in most of these, riscv and dt wise this looks
-mostly fine. The reset/reboot stuff and probably missing clock support
-are the only real problems.
+After fixing these issues we would end up with an open coded
+version of the qcom_spi_config_cw_read() function, so drop the
+current code and call the existing function instead.
 
-Probably, I would split this series up into multiple smaller
-submissions. spi, mmc, phy, usb, watchdog at least should be their own
-mini series. clock/reset should probably be another, presumably also
-with the reboot thing. What's left (interrupts, timer, cache I think)
-can stay part of the dts series and probably go through the soc tree
-together. For interrupts and timer, the maintainers are usually not
-super responsive in terms of binding only series which is why they may
-go via soc.
+Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+---
+Changes in v2:
+  - Rebase on tip of spi/for-7.5
+  - Improve the patch to also fix two concerns raised by Sashiko in the
+	review of the previous version [1].
+  - Rephrase subject and commit message according to the changes
+  - Link: https://sashiko.dev/#/map/177852 # [1]
+  - Link to v1: https://lore.kernel.org/r/20260922-qpic-snand-fix-singlecw-readloc-v1-1-41fd834a10fe@gmail.com
+---
+ drivers/spi/spi-qpic-snand.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-Cheers,
-Conor.
+diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
+index c90c2001ee8d..41685a286e38 100644
+--- a/drivers/spi/spi-qpic-snand.c
++++ b/drivers/spi/spi-qpic-snand.c
+@@ -588,19 +588,8 @@ static int qcom_spi_block_erase(struct qcom_nand_controller *snandc)
+ static void qcom_spi_config_single_cw_page_read(struct qcom_nand_controller *snandc,
+ 						bool use_ecc, int cw)
+ {
+-	__le32 *reg = &snandc->regs->read_location0;
+-	int num_cw = snandc->qspi->num_cw;
+-
+ 	qcom_spi_config_page_read(snandc);
+-
+-	if (cw == (num_cw - 1)) {
+-		reg = &snandc->regs->read_location_last0;
+-		qcom_write_reg_dma(snandc, reg, NAND_READ_LOCATION_LAST_CW_0, 4, NAND_BAM_NEXT_SGL);
+-	}
+-	qcom_write_reg_dma(snandc, &snandc->regs->cmd, NAND_FLASH_CMD, 1, NAND_BAM_NEXT_SGL);
+-	qcom_write_reg_dma(snandc, &snandc->regs->exec, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
+-
+-	qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 1, 0);
++	qcom_spi_config_cw_read(snandc, use_ecc, cw);
+ }
+ 
+ static int qcom_spi_check_raw_flash_errors(struct qcom_nand_controller *snandc, int cw_cnt)
 
->       riscv: add ARCH_METANOIA Kconfig entry
->       reset: simple: add Metanoia MT2824 support
->       spi: atcspi200: add optional interrupt support
->       spi: atcspi200: allow building for Metanoia SoCs
->       watchdog: atcwdt200: allow building for Metanoia SoCs
->       mmc: sdhci-of-dwcmshc: add MT2824 support
->       mmc: sdhci-of-dwcmshc: add MT2824 tuning and HS400 support
->       phy: metanoia: add USB2 PHY driver
->       usb: dwc2: add support for Metanoia MT2824
->       riscv: add Metanoia MT2824 SoC and MT5824 EVB support
->       MAINTAINERS: add RISC-V Metanoia SoC support
+---
+base-commit: 4a8faaea975be15cb636646c0d4c6ff1c2110baa
+change-id: 20260922-qpic-snand-fix-singlecw-readloc-c4c89b4369f5
 
---O+KStvozO2m15yOI
-Content-Type: application/pgp-signature; name=signature.asc
+Best regards,
+-- 
+Gabor Juhos <j4g8y7@gmail.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCau4gaQAKCRB4tDGHoIJi
-0nenAQDXOOACr5dTLojlsekDLPEmerVvDKLX9MTt2AL32IK7ugD+NliqmV6l2V/K
-f/dhIRRWsafkCoQptXJ5wafLha8CkAM=
-=fT+J
------END PGP SIGNATURE-----
-
---O+KStvozO2m15yOI--

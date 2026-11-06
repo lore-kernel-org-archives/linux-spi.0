@@ -1,58 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793986998;
-	b=UvxhSCKbDISlLmpIUS5y3nfP8aW/+T2FX64zsArLDpW9cfqbIpxFjx7WgUJHqdMVV+ir
-	 497vk9SbF0bk28H8MGA6R/Mo9oKFZljNt7LVUUcTVMdzz6TEMvlUL5JWaCpjERUsfda8+
-	 qhFqV9Y597jjCvlbDk2okfqL4zEfx+rsOKyo1mXJgYdKUu7LPe9sYVBwtj/UZBibl0uG2
-	 oae8M+zunf9AlHAnp3+O2RTScSRxxvFzMkt0aMJkkMQWotAmxbJ2WAJet0cv52QwD4e91
-	 upf3GEGwYI/9eiq23D3PAENIlFLb2mRx70rP371IstB+EFhzEbGC+RkeonbihzTHcLw==
+	t=1793989112;
+	b=kb0gZdMM68kqSI1Q/Ymj+6/zDdhQvZ70qbxegTC3XDhdVfwEZFZOZKw9nV/MNDoZmOQJ
+	 b+JFOZmsG3p7AMmCCK/gM9LjaIHU8X56ACjAcxKTzmXptMhNdJt9gFQI1SY5uSlxVLfvG
+	 mMSXmd6NxD9onV4Tc0Er3GkMHO9UFPCu9NZsHUbnzBq2LzMRQSlvZWSR03+98+EbgDyvL
+	 8nj+ADzYfGJXWGFwcbbM0o6kC/HiSxqGkMvpbWnCnDnej6CnGlKZK0SCnTeqC5csAbMVj
+	 nCE7nPLSp8d4mzLcOV8Ke1rRXgtwMsonTCZDCe7FLd14YGMqc9VC3+J5TZKPD62O36g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793986998;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=2bsl3HcOpokhw2h9bHTtGtU5dNcR70Nby9xgUtQM0tU=;
-	b=i68+r7iAhPde61qBxpd47WBHn+aELHdh/vOFWHefMQ8F2z67pBRep7loAaeKC1Uq0Ivv
-	 syfrMyZ4e8odvUe/mpaUyZ1HqORJo57Gf1N99yzgF3nIp5tHmMQ5Ju9AafvWsOd41bmvU
-	 /jQ+1QgQcHJdRXUReE6fCAjGiH1cTkZa/+iW3Le0y4+N33HBbgmQ5p7N7Zvx57kGO4jwj
-	 syPL6MUhglMUlznf0eHMtxgeozQwS7SiOwI4wGSUOA+GSnkhbsvLqXF2I6qLBWihqPz1C
-	 Kmd0+yYlZKxvsap6FMn8QC1UiAas00hacM4qwmJUSt9uMATpu4e0hazwsOkYYZIxAhg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793989112;
+	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:Content-Transfer-Encoding;
+	bh=UQa4GKXrA9X+wr7u/zsOdyF9bjrxFeMq7idC2deAia8=;
+	b=bE96qfWn5vUg8jwu2SlpqJnR8kOkKRX2CzSipE33L8HL1qkhA1HpiOWn/Kb7QVl4u4C+
+	 hCNBDe2G2VULc74NM0GUzVZxU/xhSzBmIbdhuGFNv0PpYAZG4wLBSEWU1TCLlzMt2dHpW
+	 xudWBXWy+TZZ/Lm9KuneFbRNeSKcBAZDdm8ZavS0sSOg35ob4Nfnm3tfX1/n8gQepc986
+	 gSYJbWX2oCEyTL+ioQktJXlnSLCyHyKNPBvG6iV9MUEsFqbCS5RWkF11p30Vk6x1smL5K
+	 XH5kQCjbi5YDmU5q6aGkiyJ50kL8aoJQUxxyIR40z1QBtPq/l1ppHEphc9FQAQSzL/Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GlrNzNss;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=sntech.de;
+	spf=pass smtp.mailfrom=sntech.de;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=jRTSBGkB;
+	arc=none smtp.remote-ip=185.11.138.130
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D73B606A32D;
-	Fri,  6 Nov 2026 17:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2FE606A32C
+	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 18:18:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E2FE606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GlrNzNss
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43ADA1F0089F;
-	Fri,  6 Nov 2026 17:43:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793986998;
-	bh=2bsl3HcOpokhw2h9bHTtGtU5dNcR70Nby9xgUtQM0tU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GlrNzNssHuihwsxdlP0L8AFour+ufncj/OZQhTh5SH4VFffQ9idD3Uohkk5jxPHqy
-	 tdQg6xSmWPwil3VxUW0/yYMllrJfhR4BiIBar2Y9UtnJcJH3ObsmEpRet+5LadeC4X
-	 i9yriBhlE3vD7Z4WZl/wM5IXeqdfsxdAjUbr1NvPjMiJmlgpWToMYMAqqBFZimZ3Nd
-	 d+3t4YL7iVAx2Wn3XHPi5jW8Og4mBZtUZ6NvxgTxMwxaVlqlk1wqjCWWPb64yAEuzH
-	 T+T30p2iMWHlPoUCR6z6HxjGFDrrRPy7q7/c+YEzFCtoB4G8yEGtW1G98ZmeNPUPm/
-	 0BzqrRTyDJhCg==
-Date: Fri, 6 Nov 2026 17:43:13 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jizhou Tong <fqwqf@fqwqf.xyz>
-Cc: Jingyuan Liang <jingyliang@chromium.org>, jikos@kernel.org,
-	bentiss@kernel.org, dmitry.torokhov@gmail.com,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	daleyo@gmail.com, broonie@kernel.org, u.kleine-koenig@baylibre.com,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [RFC PATCH v3 4/5] dt-bindings: input: hid-over-spi: add the
- Surface Laptop 7 touchpad
-Message-ID: <20261106-provoke-capably-b7de457b9710@spud>
-References: <010601a1ad274a9c-ca2fc8f5-d3fb-435d-8572-c0d3eb701649-000000@ap-northeast-1.amazonses.com>
- <010601a1ad2a2dba-85a8b4dd-f21b-4dbf-afae-9a40b533338d-000000@ap-northeast-1.amazonses.com>
+	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=jRTSBGkB
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
+	Subject:Cc:To:From:Reply-To:Content-Type:In-Reply-To:References;
+	bh=UQa4GKXrA9X+wr7u/zsOdyF9bjrxFeMq7idC2deAia8=; b=jRTSBGkBNHrkqdFy+yA8aopz4F
+	e1Rnt9GPp24aSyLnAYmdzF56oK0syYCaEO5zC9Tp0E8iAaAKgO2rurmQzx+ffo8CsFetrNhNNZB2b
+	/D4zRarhpxgjcQf0TidPSrN0Wjsbim7c14wwvqCzNX8ZQqQy3uj6OG4+Xs9yobGjLvHX6OzB7xus0
+	3aa/eAWlJr2cU85x+di3oNWrmAOsf2I61I+nVs5j4GZ/CeFg/ugmxUffg8/UR54gA0h96bTMVKFS2
+	oYfir7sEh40zfJyLEL67FtuOILzkVYiOVTmV13nbHr4XUkwwwdUcwL5gyvGVbtt3J6i9XccbDuYkj
+	pImTOMSg==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: broonie@kernel.org
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	quentin.schulz@cherry.de,
+	Lee Jones <lee@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 0/2] spi: Implement a atomic transfer as a last resort
+Date: Fri,  6 Nov 2026 19:18:21 +0100
+Message-ID: <20261106181824.1361235-1-heiko@sntech.de>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -62,107 +63,75 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wftLhdEoMcbIPuoZ"
-Content-Disposition: inline
-In-Reply-To: <010601a1ad2a2dba-85a8b4dd-f21b-4dbf-afae-9a40b533338d-000000@ap-northeast-1.amazonses.com>
+Content-Transfer-Encoding: 8bit
 
---wftLhdEoMcbIPuoZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+SPI devices at times are used as PMICs including a power-controller
+functionality that should turn off a system.
 
-On Thu, Nov 05, 2026 at 07:23:05PM +0000, Jizhou Tong wrote:
-> The Surface Laptop 7 13.8-inch (Romulus13) touchpad uses HID-over-SPI
-> with quad address/data transfers. Add its compatible to the common
-> binding, with both bus widths fixed to four and a 20 MHz clock limit.
-> The existing supply and active-low reset properties cover this device.
->=20
-> Keep the G6 digitizer constraints unchanged. Pinctrl properties are
-> already permitted by the common schemas and need no local definitions.
->=20
-> Signed-off-by: Jizhou Tong <fqwqf@fqwqf.xyz>
-> ---
->  .../bindings/input/hid-over-spi.yaml          | 40 +++++++++++++++++++
->  1 file changed, 40 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yaml b/=
-Documentation/devicetree/bindings/input/hid-over-spi.yaml
-> index bed0746f00..ec8c72493d 100644
-> --- a/Documentation/devicetree/bindings/input/hid-over-spi.yaml
-> +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
-> @@ -22,11 +22,30 @@ description: |+
->  allOf:
->    - $ref: /schemas/input/touchscreen/touchscreen.yaml#
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: microsoft,romulus13-touchpad
-> +    then:
-> +      properties:
-> +        spi-max-frequency:
-> +          maximum: 20000000
-> +        spi-rx-bus-width:
-> +          items:
-> +            - const: 4
+This happens in an atomic context very late during the shutdown, where
+no interrupts are available anymore and conflicts with the asynchronous
+nature of the SPI subsystem.
 
-Should this not just be "const: 4", since the property is not an array?
 
-Cheers,
-Conor.
+====== History ======
+For the RK806 spi-connected PMIC this has already caused interesting
+artifacts.
 
-> +        spi-tx-bus-width:
-> +          items:
-> +            - const: 4
-> +      required:
-> +        - spi-rx-bus-width
-> +        - spi-tx-bus-width
-> =20
->  properties:
->    compatible:
->      enum:
->        - microsoft,g6-touch-digitizer
-> +      - microsoft,romulus13-touchpad
-> =20
->    reg:
->      maxItems: 1
-> @@ -73,3 +92,24 @@ examples:
->          pinctrl-0 =3D <&ts_d6_int_bias>;
->        };
->      };
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    spi {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +
-> +      touchpad@0 {
-> +        compatible =3D "microsoft,romulus13-touchpad";
-> +        reg =3D <0>;
-> +        spi-max-frequency =3D <20000000>;
-> +        spi-rx-bus-width =3D <4>;
-> +        spi-tx-bus-width =3D <4>;
-> +        interrupts-extended =3D <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
-> +        vdd-supply =3D <&vreg_ts_5p0>;
-> +        reset-gpios =3D <&tlmm 120 GPIO_ACTIVE_LOW>;
-> +        pinctrl-0 =3D <&touchpad_reset>;
-> +        pinctrl-names =3D "default";
-> +      };
-> +    };
+A first change, tried to "fix" the issue by using the
+SYS_OFF_MODE_POWER_OFF_PREPARE step of poweroff. While this hides the
+issue, on some devices this now turns the pmic off too early before
+other important steps are done.
 
---wftLhdEoMcbIPuoZ
-Content-Type: application/pgp-signature; name=signature.asc
+To mitigate that issue for "some" devices, a change [0] tried to use
+different poweroff phases for i2c and spi devices, where Lee rightfully
+said, that with this no proper solution would be done - and Lee was right,
+as that issue now is open since 2024.
 
------BEGIN PGP SIGNATURE-----
+The newest change is a simple revert back the old way [1] because of
+those issues caused on other devices, but that now breaks the SPI side
+again and also did not take into account that long history.
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCau4RsQAKCRB4tDGHoIJi
-0jZzAQDeKBGTodyokA8FFYhJM2LUflFK8kWeqNNxmlnbNRvLZAD6AoJYpapFagEN
-ggC7VYtemx7OuaGF3yM9r4KkPaGn4g8=
-=7zi0
------END PGP SIGNATURE-----
 
---wftLhdEoMcbIPuoZ--
+====== Now =======
+The I2C framework has an atomic transfer callback for exactly this late
+stage transfers since
+commit 63b96983a5dd ("i2c: core: introduce callbacks for atomic transfers")
+and during the discussion it was suggested implementing something like
+this for SPI too.
+
+
+As this did not seem to have happened yet, I thought I'd try my luck.
+
+Similar to I2C this is meant only for that latest stage so I stole the
+gating from there too.
+
+I assume I did not take some SPI specifics into account, but I guess
+having some code to discuss is a starting point at least :-)
+
+
+
+[0] https://lore.kernel.org/lkml/20240730180903.81688-1-sebastian.reichel@collabora.com/
+[1] https://lore.kernel.org/all/20260908-veyron-shutdown-v1-1-066ecb80f5f2@gmail.com/
+
+
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: linux-spi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-rockchip@lists.infradead.org
+Cc: quentin.schulz@cherry.de
+Cc: Lee Jones <lee@kernel.org>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+
+Heiko Stuebner (2):
+  spi: Add infrastructure for atomic sync transfers
+  spi: rockchip: add an atomic transfer function
+
+ drivers/spi/spi-rockchip.c | 88 ++++++++++++++++++++++++++++++++++++++
+ drivers/spi/spi.c          | 66 ++++++++++++++++++++++++++--
+ include/linux/spi/spi.h    | 11 +++++
+ 3 files changed, 161 insertions(+), 4 deletions(-)
+
+-- 
+2.47.3
+

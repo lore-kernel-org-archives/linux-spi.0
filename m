@@ -1,67 +1,58 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.251.234.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793982773;
-	b=fGuoDNdLJw0N/g/Gf3CxxaFCSkczDHRO9b/qfJhC/j1AshapmYmzxCIizPOJ8DonphWJ
-	 72DGVUIjwqGelSZA/shsHyiLAOl3dtiLFzRTLdPn/1+4DDnI4hCaPfb/HIfOJGUw566Xz
-	 gXT5lCDk6qIqhwscZOodSfPoPgFDqSn+dMI1uzq1dNxuEDAGjELM8lr8NJ4pF1JFeM+v2
-	 9c6eud6aF1g8941WZ4chqiuxhZbXt4LWscuURkAAfqUORjHoOVWdTzU8SZXdUDtue5nD7
-	 85+Z9lM3GhrhD71lRIiIEd5t7ceLkih5Tj+ZuK32dgDf6nlEvxM8GuUVHE6w82OEu+g==
+	t=1793986998;
+	b=UvxhSCKbDISlLmpIUS5y3nfP8aW/+T2FX64zsArLDpW9cfqbIpxFjx7WgUJHqdMVV+ir
+	 497vk9SbF0bk28H8MGA6R/Mo9oKFZljNt7LVUUcTVMdzz6TEMvlUL5JWaCpjERUsfda8+
+	 qhFqV9Y597jjCvlbDk2okfqL4zEfx+rsOKyo1mXJgYdKUu7LPe9sYVBwtj/UZBibl0uG2
+	 oae8M+zunf9AlHAnp3+O2RTScSRxxvFzMkt0aMJkkMQWotAmxbJ2WAJet0cv52QwD4e91
+	 upf3GEGwYI/9eiq23D3PAENIlFLb2mRx70rP371IstB+EFhzEbGC+RkeonbihzTHcLw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793982773;
-	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:In-Reply-To:References:
-	 X-Mailer:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:
-	 MIME-Version:Content-Type:Feedback-ID:X-SES-Outgoing;
-	bh=RWWfhSpd8qA/0y2M9vARy5V41qdGSPFp81t+GAu2VoM=;
-	b=oRCQUqf2RYUQLqy9R/BKULq5gNXxuI5ZJO8ycARirghKyM2+t3ipj2vdAlDXyWsU//Ud
-	 4offcYLBJyBl7czs/twlYGq9Z5tCnC68aPMzIjCzEJ3Zi3jOnozewQC6bLEOhxh+Nh0qd
-	 +d1BaLO3gO6E2hcGf+STCDnvXMBVAr5IQy3F/rxhKhqwBRmYqQZ25rOcVGVB6AtFRxYSg
-	 KVb4S/Lio71y1MydmwL3swk/jmPy/cVanEKOQX9D+Xxa+H/zB7M/cVN3jtPcww8B4pfDm
-	 R8TcIcNykLDdY1PTFG+nQMZU5BoILe17Fm/kocXN/AAVdhmjq85kQNKlBGDQelwrhfA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793986998;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=2bsl3HcOpokhw2h9bHTtGtU5dNcR70Nby9xgUtQM0tU=;
+	b=i68+r7iAhPde61qBxpd47WBHn+aELHdh/vOFWHefMQ8F2z67pBRep7loAaeKC1Uq0Ivv
+	 syfrMyZ4e8odvUe/mpaUyZ1HqORJo57Gf1N99yzgF3nIp5tHmMQ5Ju9AafvWsOd41bmvU
+	 /jQ+1QgQcHJdRXUReE6fCAjGiH1cTkZa/+iW3Le0y4+N33HBbgmQ5p7N7Zvx57kGO4jwj
+	 syPL6MUhglMUlznf0eHMtxgeozQwS7SiOwI4wGSUOA+GSnkhbsvLqXF2I6qLBWihqPz1C
+	 Kmd0+yYlZKxvsap6FMn8QC1UiAas00hacM4qwmJUSt9uMATpu4e0hazwsOkYYZIxAhg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=fqwqf.xyz;
-	spf=pass smtp.mailfrom=send.fqwqf.xyz;
-	dkim=pass header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b=gS7fmlJW;
-	dkim=pass header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=LGhIascM;
-	arc=none smtp.remote-ip=23.251.234.56
-Received: from e234-56.smtp-out.ap-northeast-1.amazonses.com (e234-56.smtp-out.ap-northeast-1.amazonses.com [23.251.234.56])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GlrNzNss;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8421606EE91;
-	Fri,  6 Nov 2026 16:32:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8421606EE91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fqwqf.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.fqwqf.xyz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D73B606A32D;
+	Fri,  6 Nov 2026 17:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b=gS7fmlJW;
-	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=LGhIascM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
-	d=fqwqf.xyz; t=1793982771;
-	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
-	bh=k2DtG2Ms2OYCMdXF/mo4RMf+MlrhGYphet6JR+lLl7c=;
-	b=gS7fmlJWP3YYLnpyi3msaKzzrKCpc7JN+u+qkFBA0D4pv1kLNzcI2K49k78/cGrO
-	2DvOdibpFUVeUVOcjYiyZVxaTIDYFjn5d4MazQF1zU23Kz5CSaiqpacdmrxVkdLSTqJ
-	floFYGrKy8lJ14rEtG/2zL7lW6EbglIwQ1s5htF4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=zh4gjftm6etwoq6afzugpky45synznly; d=amazonses.com; t=1793982771;
-	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
-	bh=k2DtG2Ms2OYCMdXF/mo4RMf+MlrhGYphet6JR+lLl7c=;
-	b=LGhIascMaBEzjXXNAvh+J5doGKFozUyY9bPnbbrH683BueCXEqnbETI/IZBi8MYW
-	vVrWiwvvUM1qnmlhqykbAobOeWs75oakFC8blME17E1q18ls/Irzw5TiFRlNp8/kTZ/
-	4cw1Ac2nN8oD4mXdTVwUN7RXgkl+wxnwshpqm9gg=
-In-Reply-To: <sashiko-outbox-199924@kernel.org>
-References: <sashiko-outbox-199924@kernel.org>
-X-Mailer: git-send-email 2.53.0
-From: Jizhou Tong <fqwqf@fqwqf.xyz>
-To: jingyliang@chromium.org, sashiko-bot@kernel.org
-Cc: jikos@kernel.org, bentiss@kernel.org, dmitry.torokhov@gmail.com, 
-	daleyo@gmail.com, linux-input@vger.kernel.org, 
-	linux-spi@vger.kernel.org
-Subject: Re: [RFC PATCH v3 1/5] HID: spi-hid: isolate DMA transfers from
- protocol buffers
-Message-ID: <010601a1b1b4affa-319434db-5e00-4bad-abde-7fb5400733de-000000@ap-northeast-1.amazonses.com>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 6 Nov 2026 16:32:51 +0000
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GlrNzNss
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43ADA1F0089F;
+	Fri,  6 Nov 2026 17:43:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793986998;
+	bh=2bsl3HcOpokhw2h9bHTtGtU5dNcR70Nby9xgUtQM0tU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GlrNzNssHuihwsxdlP0L8AFour+ufncj/OZQhTh5SH4VFffQ9idD3Uohkk5jxPHqy
+	 tdQg6xSmWPwil3VxUW0/yYMllrJfhR4BiIBar2Y9UtnJcJH3ObsmEpRet+5LadeC4X
+	 i9yriBhlE3vD7Z4WZl/wM5IXeqdfsxdAjUbr1NvPjMiJmlgpWToMYMAqqBFZimZ3Nd
+	 d+3t4YL7iVAx2Wn3XHPi5jW8Og4mBZtUZ6NvxgTxMwxaVlqlk1wqjCWWPb64yAEuzH
+	 T+T30p2iMWHlPoUCR6z6HxjGFDrrRPy7q7/c+YEzFCtoB4G8yEGtW1G98ZmeNPUPm/
+	 0BzqrRTyDJhCg==
+Date: Fri, 6 Nov 2026 17:43:13 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jizhou Tong <fqwqf@fqwqf.xyz>
+Cc: Jingyuan Liang <jingyliang@chromium.org>, jikos@kernel.org,
+	bentiss@kernel.org, dmitry.torokhov@gmail.com,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	daleyo@gmail.com, broonie@kernel.org, u.kleine-koenig@baylibre.com,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [RFC PATCH v3 4/5] dt-bindings: input: hid-over-spi: add the
+ Surface Laptop 7 touchpad
+Message-ID: <20261106-provoke-capably-b7de457b9710@spud>
+References: <010601a1ad274a9c-ca2fc8f5-d3fb-435d-8572-c0d3eb701649-000000@ap-northeast-1.amazonses.com>
+ <010601a1ad2a2dba-85a8b4dd-f21b-4dbf-afae-9a40b533338d-000000@ap-northeast-1.amazonses.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -71,82 +62,107 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Feedback-ID: :1.ap-northeast-1.6BGMgStFQE7EJYq5syaCRzdneEHVt/+DAaGDrqUmDs9QLO4/SllUBZ3fHvnZ8rcAX/3IjUyTRgi5JFZsWrikFHwlPJqCkqEMlxDFM4JXh+ycxH/J5Tudg5bGdz6h4331g1L1EFsGR8kuYNfGLsrxz4Nym4YXoPcZxeVkrHry4Zx21n8vEVLEjc7s+OCM8PU9:1.ap-northeast-1.DTXDV/V9GPBWozcllKo8innbNB2qs2O/3F8XZSzd9ZM=:AmazonSES
-X-SES-Outgoing: 2026.11.06-23.251.234.56
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="wftLhdEoMcbIPuoZ"
+Content-Disposition: inline
+In-Reply-To: <010601a1ad2a2dba-85a8b4dd-f21b-4dbf-afae-9a40b533338d-000000@ap-northeast-1.amazonses.com>
 
-Hi,
+--wftLhdEoMcbIPuoZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The overlap is real when ARCH_DMA_MINALIGN is smaller than the =
-five-byte
-read approval. I reproduced it with the actual input-transfer =
-function
-using alignment values of two and four. My earlier tests started =
-at
-eight and missed these cases.
+On Thu, Nov 05, 2026 at 07:23:05PM +0000, Jizhou Tong wrote:
+> The Surface Laptop 7 13.8-inch (Romulus13) touchpad uses HID-over-SPI
+> with quad address/data transfers. Add its compatible to the common
+> binding, with both bus widths fixed to four and a 20 MHz clock limit.
+> The existing supply and active-low reset properties cover this device.
+>=20
+> Keep the G6 digitizer constraints unchanged. Pinctrl properties are
+> already permitted by the common schemas and need no local definitions.
+>=20
+> Signed-off-by: Jizhou Tong <fqwqf@fqwqf.xyz>
+> ---
+>  .../bindings/input/hid-over-spi.yaml          | 40 +++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/hid-over-spi.yaml b/=
+Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> index bed0746f00..ec8c72493d 100644
+> --- a/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> +++ b/Documentation/devicetree/bindings/input/hid-over-spi.yaml
+> @@ -22,11 +22,30 @@ description: |+
+>  allOf:
+>    - $ref: /schemas/input/touchscreen/touchscreen.yaml#
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: microsoft,romulus13-touchpad
+> +    then:
+> +      properties:
+> +        spi-max-frequency:
+> +          maximum: 20000000
+> +        spi-rx-bus-width:
+> +          items:
+> +            - const: 4
 
-The correction below rounds the full =
-approval length up to the DMA
-alignment and uses that value for the RX =
-offset, bounds check and
-allocation. It is an incremental diff against v3. =
-I have also folded it
-into patch 1 of a local v4 draft and will collect =
-further review before
-resending the complete series.
+Should this not just be "const: 4", since the property is not an array?
 
-The actual allocator and single-lane/quad transfer functions now pass
-ASan/UBSan tests at alignments 2, 4, 8, 16, 32, 64, 128 and 256. These
-check non-overlap, exact RX capacity, allocation failures and rollback.
-The v3 allocator and transfer path fail the new small-alignment tests.
-The SPI-HID core, ACPI and OF modules build with W=3D1 on ARM64.
+Cheers,
+Conor.
 
-The 128-byte layout used on my SL7 is unchanged.
+> +        spi-tx-bus-width:
+> +          items:
+> +            - const: 4
+> +      required:
+> +        - spi-rx-bus-width
+> +        - spi-tx-bus-width
+> =20
+>  properties:
+>    compatible:
+>      enum:
+>        - microsoft,g6-touch-digitizer
+> +      - microsoft,romulus13-touchpad
+> =20
+>    reg:
+>      maxItems: 1
+> @@ -73,3 +92,24 @@ examples:
+>          pinctrl-0 =3D <&ts_d6_int_bias>;
+>        };
+>      };
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    spi {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      touchpad@0 {
+> +        compatible =3D "microsoft,romulus13-touchpad";
+> +        reg =3D <0>;
+> +        spi-max-frequency =3D <20000000>;
+> +        spi-rx-bus-width =3D <4>;
+> +        spi-tx-bus-width =3D <4>;
+> +        interrupts-extended =3D <&tlmm 3 IRQ_TYPE_LEVEL_LOW>;
+> +        vdd-supply =3D <&vreg_ts_5p0>;
+> +        reset-gpios =3D <&tlmm 120 GPIO_ACTIVE_LOW>;
+> +        pinctrl-0 =3D <&touchpad_reset>;
+> +        pinctrl-names =3D "default";
+> +      };
+> +    };
 
-Signed-off-by: Jizhou =
-Tong <fqwqf@fqwqf.xyz>
----
-diff --git a/drivers/hid/spi-hid/spi-hid-core.c =
-b/drivers/hid/spi-hid/spi-hid-core.c
-index 901c8d9ace..d0ef3e7106 100644
---- a/drivers/hid/spi-hid/spi-hid-core.c
-+++ b/drivers/hid/spi-hid/spi-hid-=
-core.c
-@@ -67,6 +67,7 @@
- /* Protocol message size constants */
- #define SPI_HID_READ_APPROVAL_LEN		5
- #define SPI_HID_OUTPUT_HEADER_LEN		8
-+#define SPI_HID_RX_OFFSET	ALIGN(SPI_HID_READ_APPROVAL_LEN, =
-ARCH_DMA_MINALIGN)
-=20
- /* flags */
- /*
-@@ -192,10 +193,10 @@ static void =
-spi_hid_populate_output_header(u8 *buf,
- static int =
-spi_hid_input_sync(struct spi_hid *shid, void *buf, u16 length,
- 			      bool is_header)
- {
--	u8 *rx =3D shid->xfer_buf + =
-ARCH_DMA_MINALIGN;
-+	u8 *rx =3D shid->xfer_buf + SPI_HID_RX_OFFSET;
- 	int error;
-=20
--	if (length > shid->xfer_size - ARCH_DMA_MINALIGN)
-+	if (length > shid->xfer_size - SPI_HID_RX_OFFSET)
- 		return -EMSGSIZE;
-=20
- 	memcpy(shid->xfer_buf, is_header ? shid->read_approval_header :
-@@ -1322,7 +1323,7 @@ static int spi_hid_alloc_buffers(struct spi_hid *shid=
-, size_t report_size)
-=20
- 	/* io_lock serializes the separate, DMA-aligned=
- TX and RX regions. */
- 	xfer_size =3D ALIGN(max(inbufsize, outbufsize), =
-ARCH_DMA_MINALIGN) +
--		    ARCH_DMA_MINALIGN;
-+		    SPI_HID_RX_OFFSET;
- 	/* Keep ownership separate from the explicitly aligned DMA view. */
- 	tmp =3D devm_krealloc(dev, shid->xfer_alloc,
- 			    xfer_size + =
-ARCH_DMA_MINALIGN - 1,
+--wftLhdEoMcbIPuoZ
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCau4RsQAKCRB4tDGHoIJi
+0jZzAQDeKBGTodyokA8FFYhJM2LUflFK8kWeqNNxmlnbNRvLZAD6AoJYpapFagEN
+ggC7VYtemx7OuaGF3yM9r4KkPaGn4g8=
+=7zi0
+-----END PGP SIGNATURE-----
+
+--wftLhdEoMcbIPuoZ--

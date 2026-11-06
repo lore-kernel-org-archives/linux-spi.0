@@ -1,23 +1,23 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=160.30.148.34
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793980088;
-	b=VUIAEWsd9NtCsEnWLmX2ADST+8H5hMQgz57/yFl/ZjzrxmSJ+Veh33tLQvniADwfDvYz
-	 I+w3D8MMzsuG8pC/2QecAo5705kQllrYrK2ArFASKNmdShPbgYw2MlXJfDzzZoh33UskM
-	 sJpbU21+S2iakvWHkiBM781WkSYyjoux8xJHYFiR1BoiTlRM2+cYLQUdgO0TuU+Qk3Er9
-	 6mEUVtqktSjt28vO3ZARQaVc+IeOeGJ6QH/UbLdU0P3urlzExUtkyUb6BRjgVXqS0ps+5
-	 XZhW9UeDxKFExLeT0s/Se1MyyBOtoUTjbzeT+XJiZQBc6CvBy4T6jdis69HPstXJs6g==
+	t=1793980083;
+	b=LwRmYkUl7MpZ+j9kY2//4VcugQOedOug1a8ysZ57E16uKbI3PFWiCMFx4T7QtIWVv/ms
+	 bfkwWFgr9Nrhd8BJYgICOD2kimnCkZL45y2tMywPNsUKZTOHiULSP/6nuaVpyO5Xfgu5x
+	 PttcMgU42y5fjZOZY1DuwnW9wzfBdr4ATlkFfHK6efNajGieav3fOwrdrp5VMmzHq2kkd
+	 w41vc9OBicvOhtTCWsDApr0GUJfiFS7R2sf3bJd1XNenV25ZFc5eBP6tQeyvQvzkMor4p
+	 oqxbt3YqBo5+oqRXwjxxwTAqH3s8Rg7qNN80ndRZHpkAn6B0gXRazdx1yOMxP6c1jkg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793980088;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793980083;
 	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:X-Mailer:
 	 Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
 	 Subject:Content-Type:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
 	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=ya7OB1mVqTIxqpI9rlmDOEIgR2N3ToDyqlFZeda2RZ0=;
-	b=cyJr+OslE/jqZSQldCmJgq/pR20AglUT2EiUB9u07D+i0xgiN9tjU/H1g/UiTjX6zcu0
-	 7qTEQwIq6f2W4OcWT/UpZ2QJWXF65U39PlXmrcl8G9lrWXN6u3loP4ZxCud5Sojt2bVYj
-	 31amSvbVPY11amIe9iwR6BzKN0eH73bKVaN8VSji3ua7ghhIzf31g0eZ0D7pYkHx+iWsY
-	 CpPjHlHirx2JfBGUI4trWnRasYydWkcK27v0QCoxp+ytAdX/NYwQz2nJtzHCpAn7Glsju
-	 I48CrzsiNo2DpPxrbnlwpxmUw9z2DEI3kP8CS51dDU9aollck6fj2pfER+DYBWdBOzg==
+	bh=BAgeKz0Vili1SlZs1hB8WmyCeJ9ALq7iJrhVHBw1A0Q=;
+	b=ML7Oep1rLJrwEmFATnZQT8P5H8SsJAQkHNDPEDuXH26cQhMwB+WKa68BxfhthIwSRdNv
+	 layvyUoStFbnemo/yQP6VG/od5wQq47siMtP64FTN5V0iQ8pEKfMxWXnI0p5t31KRVR/z
+	 gpkoIbNYESzxd9nuWdK4YZsGMbAw6PwefncIZvNPFkEyVoBb124OPtCN2KssROwpPWuSk
+	 HENs07u2a8nLux7k0IIWkiABDhb7C0G/Ov8gT/v5SlvX+t/4E3qVknG2TVZeKbB3UwKvZ
+	 2ZgY7E7GHZ0bFC09swsLdmA7URVGdAoV6I/Hk72gJF6BXIKNb2m7T4BN+Im2EWxa+Yg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=zte.com.cn;
 	spf=pass smtp.mailfrom=zte.com.cn;
@@ -26,30 +26,30 @@ Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF75606A32C;
-	Fri,  6 Nov 2026 15:48:06 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 1DF75606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F7E606A339;
+	Fri,  6 Nov 2026 15:48:02 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B8F7E606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jLk915xmBz5B12k;
-	Fri, 06 Nov 2026 23:48:05 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl1.zte.com.cn with SMTP id 6A6Flx8X080941;
-	Fri, 6 Nov 2026 23:47:59 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4jLk8x2sykz5B12j;
+	Fri, 06 Nov 2026 23:48:01 +0800 (CST)
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl1.zte.com.cn with SMTP id 6A6FlsdT080919;
+	Fri, 6 Nov 2026 23:47:54 +0800 (+08)
 	(envelope-from shao.mingyin@zte.com.cn)
 Received: from mapi (xaxapp02[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Fri, 6 Nov 2026 23:48:01 +0800 (CST)
-X-Zmail-TransId: 2afa6aedf6b18d4-a685b
+	Fri, 6 Nov 2026 23:47:58 +0800 (CST)
+X-Zmail-TransId: 2afa6aedf6ae7d9-a6760
 X-Mailer: Zmail v1.0
-Message-ID: <20261106234801838-FDh9tSFfnurdJmKLz1ay@zte.com.cn>
+Message-ID: <202611062347585864V0L-uDsz2x7pLLSJ623k@zte.com.cn>
 In-Reply-To: <20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn>
 References: 20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn
-Date: Fri, 6 Nov 2026 23:48:01 +0800 (CST)
+Date: Fri, 6 Nov 2026 23:47:58 +0800 (CST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -71,53 +71,47 @@ Cc: <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
         <asahi@lists.linux.dev>, <ryan.wanner@microchip.com>,
         <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
         <claudiu.beznea@tuxon.dev>
-Subject: =?UTF-8?B?W1BBVENIIDQvNV0gc3BpOiBhcHBsZTogZml4IGRpdmlzaW9uIGJ5IHplcm8gaW4gY2xvY2sgZGl2aXNvciBjYWxjdWxhdGlvbg==?=
+Subject: =?UTF-8?B?W1BBVENIIDIvNV0gc3BpOiBiY202M3h4LWhzc3BpOiBmaXggZGl2aXNpb24gYnkgemVybyBmb3IgZGV2aWNlcyB3aXRob3V0IGEgbWF4IHNwZWVk?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6A6Flx8X080941
+X-MAIL:mse-fl1.zte.com.cn 6A6FlsdT080919
 X-TLS: YES
 X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 06 Nov 2026 23:48:05 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Fri, 06 Nov 2026 23:48:01 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AEDF6B5.002/4jLk915xmBz5B12k
+X-Fangmail-MID-QID: 6AEDF6B1.000/4jLk8x2sykz5B12j
 
 From: Shao Mingyin <shao.mingyin@zte.com.cn>
 
-A SPI device without a valid speed (no spi-max-frequency property, or
-created through the spidev sysfs new_device interface without a speed)
-gets max_speed_hz == 0.  spi_setup() only clamps that to the controller
-limit when host->max_speed_hz is set, and this driver does not set it, so
-the zero reaches apple_spi_prep_transfer() and DIV_ROUND_UP() divides by
-it.
+A SPI device whose max_speed_hz is zero (no spi-max-frequency property,
+or created through the spidev sysfs new_device interface without a
+speed) leaves the transfer speed at zero.  spi_setup() would only clamp
+it if host->max_speed_hz was set, which this driver does not do, so
+bcm63xx_hsspi_set_clk() divides by zero in DIV_ROUND_UP().
 
-On arm64 the divide instruction returns zero instead of trapping, so
-CLKDIV is programmed as zero.  That selects the fastest clock and can
-exceed the rate the attached device supports.
+The division does not trap on MIPS or arm64.  The quotient is undefined
+or zero, so the clock control register is programmed with a meaningless
+value.
 
-Clamp the divisor to 1 Hz so the divider calculation is well defined.
+Clamp the requested rate to 1 Hz before computing the divider.
 
-Fixes: c36212b2610d ("spi: apple: Add driver for Apple SPI controller")
+Fixes: 142168eba9dc ("spi: bcm63xx-hsspi: add bcm63xx HSSPI driver")
 Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
 
 ---
 
-diff --git a/drivers/spi/spi-apple.c b/drivers/spi/spi-apple.c
-index 61eefb08d2a7..8dbf05936db1 100644
---- a/drivers/spi/spi-apple.c
-+++ b/drivers/spi/spi-apple.c
-@@ -196,9 +196,13 @@ static void apple_spi_set_cs(struct spi_device *device, bool is_high)
- static bool apple_spi_prep_transfer(struct apple_spi *spi, struct spi_transfer *t)
- {
- 	u32 cr, fifo_threshold;
-+	u32 speed_hz;
-+
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index abfbf97faf7b..319951fba387 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -469,6 +469,9 @@ static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
+ 	unsigned int profile = spi_get_chipselect(spi, 0);
+ 	u32 reg;
+ 
 +	/* A device with max_speed_hz == 0 must not divide by zero */
-+	speed_hz = max_t(u32, t->speed_hz, 1);
- 
- 	/* Calculate and program the clock rate */
--	cr = DIV_ROUND_UP(clk_get_rate(spi->clk), t->speed_hz);
-+	cr = DIV_ROUND_UP(clk_get_rate(spi->clk), speed_hz);
- 	reg_write(spi, APPLE_SPI_CLKDIV, min_t(u32, cr, APPLE_SPI_CLKDIV_MAX));
- 
- 	/* Update bits per word */
++	hz = max_t(int, hz, 1);
++
+ 	reg = DIV_ROUND_UP(2048, DIV_ROUND_UP(bs->speed_hz, hz));
+ 	__raw_writel(CLK_CTRL_ACCUM_RST_ON_LOOP | reg,
+ 		     bs->regs + HSSPI_PROFILE_CLK_CTRL_REG(profile));

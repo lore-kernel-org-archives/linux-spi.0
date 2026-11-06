@@ -1,59 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.84.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793957503;
-	b=nl4OZtClV+Q/cE4q71F7N5kBiipu0bE2ry/DG1waCsWhEwheyY07dBIjuuCFhwl6+rkS
-	 5kAT4vc7xizldDUU1AlxgerZHLS/iZQlPB4jbVteY351YqxFSbOyJD+OK67KJE+vYMV8q
-	 gZcv3WSXYQLS6fK8QEKnCRhxiTNexBUL+fEdZxNW9mXj7KYFJD2VI6hCgNlOWPKrRkiwy
-	 Y3E5BKPmfrrGcEs8m2jBgEsI9r/SohbWZCklWZY6+9relEhctxqVhih0pkcvPoKz9NzXR
-	 lrynCL5t6qiCfHrKoRYBzU0SzMzlX83DRamEbDWDTeembKAxAyczvV3HSpdgu2MXEHA==
+	t=1793957510;
+	b=ODp52sHxPFmKIBLa0U6PfYor6Ci1mTAUyXKnb7oh1IQCZwd7zC6qtKupX3PlkVqotF9e
+	 LrEtRrpt7kuzmJMN6MfblEmsg9mRhqIsV/g30GSWqLpbSz1zeEst4yeFp6jzX6VvlScfu
+	 O9J0gozP1NtM+G17GmRvucm7t0s4hHcA5JEDREMapbn73OZ+lVxtyJ+rSVfs7Fi0hVzuN
+	 zTwWG259yliEYrSOdMK+XRSxLS6HlQwybk1M739dfwHTGvjrUOuOin7wWBVQIPb59CI+G
+	 JUsOrx5WcG5xtIIjAMjzPIwF5EN64c6/nsIqkO3RWIb+SyBR6ACkjfXHmN7r0qqq7Aw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793957503;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793957510;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=2RPHFJlKoNUsrHhH8iiJsLuk3l1owV1sHk6Qha4yz5k=;
-	b=w0r9vIh2lRe+DrTtibEdCHW04JhDb+0YL3gAa0aucEwuMUkvIdK544kW97YkGZg/+oW0
-	 0/CpuQN9VAdY/X269vIA/qMWgxNCO+9nd1d/jqbw+yNbwlTaXnkcOTzGHnMi/c8o3JfKO
-	 Jj9jnVWKRq+cm7a8wfkq/BIEZ5PEKCH96CVBXaz2RnejpdDM6wbmzX0IFgJo0hV4RkntG
-	 EbvPdK09SUwcflyphw/datTvJnsGNu25fZF+G8R9MBUdcJdXdbix8K3Elq2Ehg/dN5bbF
-	 SIRo2FuyBsvDI+mTdEz/m+CkeB3fFO9CQNk8SlQ/vUcYwZRcqSctAlAs77WX9F3luwA==
+	bh=/f+A9Mb+Dr9AA8h+IGk0mm9hM1KIlwRpJwCcjc3IH3E=;
+	b=E/jU0QU+lmJLzdDrfLbGwLpqW0H7CbsqHtLeAkgsH9Q2FLeHl3rhXiuVdPnDTWCPwpO9
+	 0EMH8RoeXlmKWlJGp0nGWSvpFuMxvB2hUp1CRC/6zdjYyDbTQejob8xd9ux9tI8VzBe0N
+	 5iJDpO6UoG2Uufr1SNTYUDMGSBFdCwdYa9J6tNuSczePtozm7uSeU5YBI2xuJYu9E+wBo
+	 X5kelCe1syCGiDc+bZGruAdDMyyJwSqLHcX6VYhcW/zASYVj0/YInt1DVMwpR/gEfe880
+	 Whfjcq5IcZ0h+e4iE7FxvSpvPDs+gvnP+f4i76WzbU7Grp3H6vlp6uFrgQAIHtQO80Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=spH+nNJF;
-	arc=none smtp.remote-ip=185.171.202.116
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=X6vvRrWD;
+	arc=none smtp.remote-ip=185.246.84.56
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9C606A33A;
-	Fri,  6 Nov 2026 09:31:43 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 37F9C606A33A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72B3606D82D
+	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 09:31:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E72B3606D82D
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=spH+nNJF
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=X6vvRrWD
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 21045C69168;
-	Fri,  6 Nov 2026 09:31:41 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 9322A1A1350;
+	Fri,  6 Nov 2026 09:31:48 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8FF2F5FFBC;
-	Fri,  6 Nov 2026 09:31:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AFC16103292D3;
-	Fri,  6 Nov 2026 10:31:31 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A1B75FFBC;
+	Fri,  6 Nov 2026 09:31:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BF23910329258;
+	Fri,  6 Nov 2026 10:31:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793957498; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793957505; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=2RPHFJlKoNUsrHhH8iiJsLuk3l1owV1sHk6Qha4yz5k=;
-	b=spH+nNJFFWCk19pHQNFzeMXVYdz39HUw/xGPcL2RmGUcas8FWu/FrKGp1YJWp9pAkfBrTN
-	Xz/J0Wdrfh+ohhqZXFioP2ukCpe9BcRFbRmuHpvu1qgkN86CxlD3rlMZJF8aU7fKPOvlyX
-	+AlqvA2YrULh37P1M0A3dvotE5JfL1qA/b9gDf1ohphSrOV172IJGPq0AGQOfkj0I5E+6u
-	J8hwOYXy6k6/Up48ENjrEujiKWFOpQ9q52jFEQtxzwZ5Ap5g6WZq9JOFlRBeXNlv/PINvb
-	H5QhvvrS1vTNsBfbvuryQ7ZsEGN4hEgVNsbTxmz2AAzX/5OGCYVapPgZicX3nw==
+	bh=/f+A9Mb+Dr9AA8h+IGk0mm9hM1KIlwRpJwCcjc3IH3E=;
+	b=X6vvRrWDCBaEUkbIvoytSa35YPFuDIC8UF+uAHCLPrAdeiYysSLWa9DpcOc1UbsOI3f6xE
+	nAIdK7YzElV0hpqezo21aqyGgqH9RIy3DuWBwILOnYdjnpoke1PZ1wfSukm657h2Y7irik
+	A3EGcqQgODDTbQGvejpsfVNeIFuV9wkUEvZiCKa+Lf5r8LCfuDPM/nmdtyRsmTID9HAg8l
+	JJipIhMiUR1xrSgQvdIrn36NfvOk9/5OG9WXS1+WUwDyoT0prQegBOe3htG9kenjvf80RD
+	5gxrGzgN6wQM6Z0hm9Fab/I7GRxv7ybOWpN0JO0K2LCa/nabBakNbECFRAfong==
 From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Date: Fri, 06 Nov 2026 10:30:06 +0100
-Subject: [PATCH 09/25] dt-bindings: timer: andestech,plmt0: add Metanoia
+Date: Fri, 06 Nov 2026 10:30:07 +0100
+Subject: [PATCH 10/25] dt-bindings: mmc: snps,dwcmshc-sdhci: add Metanoia
  MT2824
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -66,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261106-mt2824-v1-9-86087eaf5af4@bootlin.com>
+Message-Id: <20261106-mt2824-v1-10-86087eaf5af4@bootlin.com>
 References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
 In-Reply-To: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -99,27 +99,27 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The Metanoia MT2824 integrates the Andes PLMT0 timer. Add its compatible
-string, with andestech,plmt0 as a fallback.
+The Metanoia MT2824 integrates the Synopsys DesignWare Mobile Storage
+Host Controller for eMMC/SD. Add its compatible string.
 
 Originally-by: Jun Chang <jun.chang@metanoia-comm.com>
 Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
 ---
- Documentation/devicetree/bindings/timer/andestech,plmt0.yaml | 1 +
+ Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/timer/andestech,plmt0.yaml b/Documentation/devicetree/bindings/timer/andestech,plmt0.yaml
-index 90b612096004..b33350cf43a5 100644
---- a/Documentation/devicetree/bindings/timer/andestech,plmt0.yaml
-+++ b/Documentation/devicetree/bindings/timer/andestech,plmt0.yaml
-@@ -21,6 +21,7 @@ properties:
-     items:
-       - enum:
-           - andestech,qilai-plmt
-+          - metanoia,mt2824-plmt
-       - const: andestech,plmt0
- 
-   reg:
+diff --git a/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
+index cd823a3ef213..0ebd0f9c1d62 100644
+--- a/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
++++ b/Documentation/devicetree/bindings/mmc/snps,dwcmshc-sdhci.yaml
+@@ -26,6 +26,7 @@ properties:
+           - canaan,k230-emmc
+           - canaan,k230-sdio
+           - hpe,gsc-dwcmshc
++          - metanoia,mt2824-dwcmshc
+           - rockchip,rk3568-dwcmshc
+           - rockchip,rk3588-dwcmshc
+           - snps,dwcmshc-sdhci
 
 -- 
 2.56.0

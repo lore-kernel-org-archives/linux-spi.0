@@ -1,60 +1,60 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.171.202.116
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793957518;
-	b=Yn+LLka0CbthsOvfJKg1zbGLZncelNBFRROu79HCe7E3nw/lNMBJzh1wsnU1vJm7ZUcm
-	 nmhB2JR4jp947AZ9paHFdcp6sGM3sZSyi9BawI07RqfxRkGfSBIfJ/NRCw5MqVxQ9Kev6
-	 HzILhSWNRzfQ5FHNc+lyRBpY7zoUe1OXhf4bymHZQn6pWN8GX0wpscYCYJHDhL8rbSdz0
-	 hG9In95W3eCiDtWIygqeoO3jvGlKrG7dXb3fIMgpWXfc23aT4mcn7/ZMRbHf59MVeh5g1
-	 bCjwWZO6Aagu/dN1+ylHBaVPGftznlBHoBNuU1dM+zrpYvE0pJHb479MM1oMQa1OMfw==
+	t=1793957525;
+	b=jwtj/ZaDmCFEwQEo5G9X+D7UXnIUa+rFhd6Tgzl6cNKOFpaxu0XvIZJvvRCuhw3dMgat
+	 zFqqVfmNTgoYrl+zWrzzfKzJH5curl9+0ZJnz35Dq2lcnlmq6iH06yjyJlhAO+sPIRmBE
+	 u0HAY3Yh8BpVyfIJ3LOqHQTd+5/16Ncm9LIwTsnfO5dttyQkYiUtUsW/e1fxeYvHSsctG
+	 vLe2lOac+65Q+JsOrnj5CgXpAWKhE7YqTElE5QTJcRRqd9N8kcGS6DBuoAZ/aoHZmd1Jv
+	 wm7tLTEbxlxHEXmMuhTJeVB15rT7Z9vpM++bDy7ceBe8giW1Bq0yGz5tujow1jecS7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793957518;
+	a=rsa-sha256; c=relaxed/relaxed; t=1793957525;
 	h=DMARC-Filter:Received:Received:Received:DKIM-Signature:From:Date:
 	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Last-TLS-Session-Version;
-	bh=CNZP50BWBrq5SlkS/TLDhwZqggqQ5ahbrtHLdVk2cSQ=;
-	b=1sMGOQ0/tzo49UsJ7KD+HC0RUCloayVz+2pJY9aX1Ms2vOy1nh7bhUWuO8ZTGvltBkWB
-	 RjGt1+Vv3qXPwouOfGoE3LFjeiJ3DJNlemD25xQ0iUooE7NxLx+stAgZeDJQVh0tR/QSG
-	 T75inN+1Q8fzgof+SZ810hQWWwAedAUhxc4vXhh8fF9PmQPqbmkIJ4dVR6MXqo72V6Ogs
-	 G7zzNQd1An2X38uAfXgiFN8CyfuVWnXxYvr0f0WuSrptzPUn35vAYsMqKg7IdP5Lz6x8I
-	 2C0soUNqCd7jETXNlYth2U5IxFf7IjSiBkR/0aiVgD8JDhJ4/GHB6gaOM/AIGRx1Cgg==
+	bh=6dIjK3KQyPYo7BGeihqe5v2Q2WzvnIFuvucFmY8UZiM=;
+	b=GiOh4dmvGAHTFwzf/PpC4fA0jJaJKlH2RDX/WCXtQc2z0Kp9ghau2cq5ItRdfhcYHqxI
+	 fUOzpgttKRzmX9WpWE5MoIZDQBKv2ZaUPsCuoUac8XWOhxPZ1zeB9oafn8At+3R+oXDhf
+	 MXFN05aepx2aRaAhflm83frN0RuAPMQ/NKmkk4oI8iGktQu63KGxItEUqx/EM0iL/aRdA
+	 E5QiyiD5cCldfEEJXwyEIXgUtTtEulQmb/I5bIx/Ye2E/QcW8xS372eOlsbfJiepvq4em
+	 jjpmG+kL3U+DhmZekhu9YLVg5ej+Pdzvq70edUk3Ni3CUp1SmaukX/KfQW5Ea8la6tA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=bootlin.com;
 	spf=pass smtp.mailfrom=bootlin.com;
-	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=R2gRVOsi;
-	arc=none smtp.remote-ip=185.246.85.4
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	dkim=pass header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wzk0AKUh;
+	arc=none smtp.remote-ip=185.171.202.116
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F4606A32C
-	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 09:31:57 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 909F4606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9C2606EE81;
+	Fri,  6 Nov 2026 09:32:04 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BB9C2606EE81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=R2gRVOsi
+	dkim=pass (2048-bit key, unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=dkim header.b=wzk0AKUh
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5459F4E413F4;
-	Fri,  6 Nov 2026 09:31:56 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9CB8DC69166;
+	Fri,  6 Nov 2026 09:32:02 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 266995FFBC;
-	Fri,  6 Nov 2026 09:31:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9597B103292D0;
-	Fri,  6 Nov 2026 10:31:45 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 207F95FFBC;
+	Fri,  6 Nov 2026 09:32:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AC820103292DF;
+	Fri,  6 Nov 2026 10:31:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1793957511; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1793957519; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=CNZP50BWBrq5SlkS/TLDhwZqggqQ5ahbrtHLdVk2cSQ=;
-	b=R2gRVOsiMPmv9CMSij+H31YRu4WRa7A6biLsMzbtMe2ekfOeuaQbidN1f1Pf8cOuGPOB31
-	IBwbP9S6vIEqkXmSxU6/Jjx8J7VZcJJUqRZC+2XxgG6RqC+lM/JSS4YmCmOS6BEl/vKk2N
-	Gk6T/f5/VwP1YbrUvc5ZdBJ8Q/70J9Qro56xY1tGbA+TaoSRKiJN3Hquuy6FJUszJQEDpe
-	lKG5xHA0ua0e5t+6BVnFkZ8T1AJOhaH7rInquLbulFrjCc7hiBBMZ293DhP8Dhd/8yIWV3
-	LBT65BpuviBCTuUnp5NTuVRQi0TlMJnIOiJsB3zT/C5eCrSH7zN3sA68V2DpFg==
+	bh=6dIjK3KQyPYo7BGeihqe5v2Q2WzvnIFuvucFmY8UZiM=;
+	b=wzk0AKUhHtXWvefoMAkphBOjTffVQzMnfddS4ZbG16AEUdu4SGMZCgxM1nEu40Kovb0ZbB
+	iiLRa03CunEJO+Gevda0SIEUaPwlx8z9towgjqw1NDpmIbPJZPdFIs6dpV/D0R2jjvZUsY
+	6sf+galb57+IV19d56T/C04vO/3WBIGf93TBBVoy1qHZAn57/yK8985rTav7wfm3pB4ew4
+	Tyb9hTHbz8Pgu8snCkrUXvWIhuir5xo/wPaNKJg9be66FdvG0Wc1+G9ltqQZ/YHxpb74Gr
+	8KVzL7vI6mKbgG14ahBCIhzqaxnuCA440p6LVcxQKW3fJ4nbA10u11XVAvcYlg==
 From: =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>
-Date: Fri, 06 Nov 2026 10:30:08 +0100
-Subject: [PATCH 11/25] dt-bindings: spi: andestech,ae350-spi: make DMA and
- interrupts optional
+Date: Fri, 06 Nov 2026 10:30:09 +0100
+Subject: [PATCH 12/25] dt-bindings: spi: andestech,ae350-spi: add Metanoia
+ MT2824
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,7 +66,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261106-mt2824-v1-11-86087eaf5af4@bootlin.com>
+Message-Id: <20261106-mt2824-v1-12-86087eaf5af4@bootlin.com>
 References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
 In-Reply-To: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -99,49 +99,26 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-The ATCSPI200 controller can be used in PIO mode, without DMA, and PIO
-transfers can optionally use the controller's interrupt. Make dmas,
-dma-names and interrupts optional, and require dma-names if dmas is
-specified.
+The Metanoia MT2824 integrates the Andes ATCSPI200 SPI controller. Add
+its compatible string, with andestech,ae350-spi as a fallback.
 
 Originally-by: Jun Chang <jun.chang@metanoia-comm.com>
 Signed-off-by: Benoît Monin <benoit.monin@bootlin.com>
 ---
- Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml b/Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml
-index 381042e07fd0..91e04f5d354a 100644
+index 91e04f5d354a..6e5dd8175aa9 100644
 --- a/Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml
 +++ b/Documentation/devicetree/bindings/spi/andestech,ae350-spi.yaml
-@@ -24,6 +24,9 @@ properties:
-   clocks:
-     maxItems: 1
- 
-+  interrupts:
-+    maxItems: 1
-+
-   dmas:
-     items:
-       - description: Transmit FIFO DMA channel
-@@ -34,6 +37,9 @@ properties:
-       - const: tx
-       - const: rx
- 
-+dependencies:
-+  dmas: [ dma-names ]
-+
- patternProperties:
-   "@[0-9a-f]+$":
-     type: object
-@@ -55,8 +61,6 @@ required:
-   - compatible
-   - reg
-   - clocks
--  - dmas
--  - dma-names
- 
- unevaluatedProperties: false
+@@ -15,6 +15,7 @@ properties:
+       - items:
+           - enum:
+               - andestech,qilai-spi
++              - metanoia,mt2824-spi
+           - const: andestech,ae350-spi
+       - const: andestech,ae350-spi
  
 
 -- 

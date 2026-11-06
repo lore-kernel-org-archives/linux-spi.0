@@ -1,67 +1,86 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793963381;
-	b=DuDqBjzKzOCc7Dsci515R0GKTM/mBlYfjtEs/nLxBtyxVHVBM74gYv1FuWrHJCHG7vMZ
-	 ALQNdDnwmsnu5otxny8oTAFC6vycYUzy7k2jHygiAz6kvtdJ7QiJbDufAnFsjp3m6e0PP
-	 sDHPRS7zKJeV6cyRnYDcC8Uhxitp9fRWqHaFs1y7JYznuPupXDU2IehzabIR4NO9FJF7n
-	 nI1Qi7Zg6V7/f4PRVQi5Thf24tiEiDaw9wTOY3LebrnIdi/ViUcdJ4MQhbhh6kI7Wohgf
-	 e2Q8+sI3+I0EX3re1l5sNxzw2lU+Vqek4snQYjMk3hUr0yzWpQsXvxqKC+Ark6PT7Gw==
+	t=1793963508;
+	b=U/T9jycgywyZ0g06MS+N8dBmvdUo4mDdVFRFEsrdSxvHPASYKacuBHGjYMuMvIcH6PjF
+	 44Z/YhFLE6MMMhlAmMMR6kSCJjMci0Y61t6fdgRieVPR2b6MI0GZNwH8Og4q7CyWGuzII
+	 4bmd8uNXErjhcdW3ousMcZs6IoTbfJBthCirlhxbk8WJw7ZQ/yYSRaKIBHclLwcE+UbuB
+	 dv+U1SCbNzQfA0x/72HjQMt2CGOWJ9zcWf2PLF4SVnRaIP670nQU6cA1s3qtB/H9c3Wrs
+	 vurWSngXaQJOZ43XLLV+lBGJhAmSpUO5WdrFv95zDboALllE/v9iss4S3g8FXs+ZXnw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793963381;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=BbgI/fg5Vv6TpV5LNbbTNKOCgVgDnfLxy/DdQCF/Nt0=;
-	b=I/QRl9xJH1uRbngtg8qyfOxKy0j3OZeFyT/+paNO8EFOFz/jD8kSgN1rd5zTrahczhAp
-	 RB1cv5fthjYPDqPv6377+zn/lJXdkJD3JEW3RaCx/KKo/4vnk0JkVli9U2Q0evW3JAH7L
-	 XWtfmmr1bNG8kAN8gmIMeswvafJe+VZOT8sdd9zsenliGIpfakSR8mEUnLSQto2HoRhyk
-	 RLZaV/3wOcyYxiBjzxeVb0arNyTHEcuE1wE4u2uh/bd3IcJf9JZwlypgzrgVw1UUhorgW
-	 zVCbj9Bhty7Pp2Z4EtEwTKbLjVIo74DgAfYSYFCncoAZDF8YsBddSQOhMYVu/iNjy9A==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793963508;
+	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=ymv0niTVnWnKS+pFTfZaMzhEe6bmcXaXyLur7KiR9IE=;
+	b=ICF3RCY6kzMYVgyaDiDeyVgwQS16YVDU/7ajyc/+R0icvRzQXS8mCCppTt11x8jcS2as
+	 mS/NfauKpueYZtwMYmUrJLVHNoi0DHMB4PmHBiU2kyOxn9YFcdFImGvlQL2yE9qIlHw58
+	 K6G1swYNelXFLhajtIecIToj7wz/6ZqCIcDS4iq49w6KdXSej04FFsjzmw+xGoG6hWwRo
+	 H2ZW1YjivqhJJDkuLizKUQHhZ6ArKdjH1iD6QpY9wm167GB8RPmGQH2oLqXayDWOSJR0r
+	 uMh39O2yEmjaMKQCMRuVr1Dv+sRGz6TeZEZTi9ut10ApZ6c49ZmGnf7RPFMm0exwJFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQlq67op;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIXfAf5Z;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58641606A330;
-	Fri,  6 Nov 2026 11:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6444606A33E;
+	Fri,  6 Nov 2026 11:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WQlq67op
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BF21F008A1;
-	Fri,  6 Nov 2026 11:09:40 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FIXfAf5Z
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63A01F008BF;
+	Fri,  6 Nov 2026 11:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793963381;
-	bh=BbgI/fg5Vv6TpV5LNbbTNKOCgVgDnfLxy/DdQCF/Nt0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=WQlq67opXPqkif8MNGGSCwjy7SciDVJagjdlSWNRZuM4ylEbyBBDwxBGGk5POOxKy
-	 7Dokl1dRtARuYheK7fwSEMyZQCiA+98Pe2iefyJzGPg9zppFx9InTAJM1oGD4eZIr0
-	 UHdLUOkGChewbSEkTTQgJMjYuJPItVOh0Fdgsz8qNU2cUq6W4NpmvkdLzVCle80dMS
-	 IouHDFBpdM8agJaqF0pN8ZLfwbq7mz6d+DYTqiJDmDeZLpGAgu5G6a5DIf+wzFLiGY
-	 DBlGNho33XG9rwxxHiNrqwJV2K3bi2ocljTdzs4ZrNl5yFQnN3RLdHYha3goru9yVH
-	 6oVk7S6LbgJ0w==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 985D627E8440;
-	Fri, 06 Nov 2026 11:09:29 +0000 (GMT)
+	s=k20260515; t=1793963507;
+	bh=ymv0niTVnWnKS+pFTfZaMzhEe6bmcXaXyLur7KiR9IE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FIXfAf5Zx37NfO5GLrcenTXjpTMp1DBfUo4/QUReR8rF6AxsQTqUTrgRF+0j5apXe
+	 ZB0NsHvsFvk6EgsiTAMagSpL6uWWpVkZUO8r/FNZUMbhYtYG0rYa3GIKwaKCAp0us4
+	 m2XYoIP+BmjiDtH1xsZMGNKvkY2v/tVzeIN38VtoPTkjn6lQDWYpeUDZFqAW6ehXrX
+	 HhmpmyJ6/r3j3guRCsDqPXblfup0LMrZj9h4WhEYnNGLQLKxw7j5zgX+we3FnKEQaP
+	 LG3OckjSOE1p+dVd5p/tLlaFcGxSYVQbSNoO3UAmI3q0tAj/tgY6QsE4dkqT1/b3An
+	 NzwCDdtReyohQ==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id 91F4627E8491; Fri, 06 Nov 2026 11:11:07 +0000 (GMT)
+Date: Fri, 6 Nov 2026 11:11:07 +0000
 From: Mark Brown <broonie@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Kees Cook <kees@kernel.org>, Tony Luck <tony.luck@intel.com>, 
- "Guilherme G . Piccoli" <gpiccoli@igalia.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-spi@vger.kernel.org, Bharat Bhushan <bbhushan2@marvell.com>, 
- Sunil Kovvuri Goutham <sgoutham@marvell.com>, 
- Tanmay Jagdale <tanmay@marvell.com>
-In-Reply-To: <20261016102917.171095-1-paul.cercueil@bootlin.com>
-References: <20261016102917.171095-1-paul.cercueil@bootlin.com>
-Subject: Re: (subset) [PATCH v4 0/7] spi: Add support for panic mem writes
-Message-Id: <179389951044.3073895.8929573229341803829.b4-ty@b4>
-Date: Thu, 05 Nov 2026 17:25:10 +0000
+To: =?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jun Chang <jun.chang@metanoia-comm.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sebastian Reichel <sre@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Ben Zong-You Xie <ben717@andestech.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Ulf Hansson <ulfh@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+	CL Wang <cl634@andestech.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Minas Harutyunyan <hminas@synopsys.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Randolph Sheng-Kai =?utf-8?B?TGluKOael+iBluWHsSk=?= <randolph@andestech.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>, linux-mmc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 11/25] dt-bindings: spi: andestech,ae350-spi: make DMA
+ and interrupts optional
+Message-ID: <07329076-00d4-49c6-a320-165910a364b9@sirena.org.uk>
+References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
+ <20261106-mt2824-v1-11-86087eaf5af4@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -71,54 +90,39 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=broonie@kernel.org;
- h=from:subject:message-id; bh=z5DoyuXWSXWF8C2OUkElOyX4o16/3/SLC3dohqCg9mA=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLebs0s2xu6SUPRbnGxcpn6s9fnv9bzWjtz9SyOeum4z
- CRqxq4jHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZiIGifD/yzWTRUmRe5CPJt2
- a8T9kItRmHjXrmzuoeL1iq1HL24yz2VkOG9osDjdZ93Z+n5j6R1Fmo+6WznX6lXNWXPo6cYZSQ8
- 9mQE=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="0rA9jbrCb+ammo71"
+Content-Disposition: inline
+In-Reply-To: <20261106-mt2824-v1-11-86087eaf5af4@bootlin.com>
+X-Cookie: Whoever dies with the most toys wins.
 
-On Fri, 16 Oct 2026 12:29:10 +0200, Paul Cercueil wrote:
-> spi: Add support for panic mem writes
-> 
-> Hi,
-> 
-> Here is the v4 of my patchset that updates the MTD spi-nor code as well
-> as the spi-mem code, to add support for panic mem writes to a memory
-> partition configured as pstore.
-> 
-> [...]
 
-Applied to
+--0rA9jbrCb+ammo71
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-7.4
+On Fri, Nov 06, 2026 at 10:30:08AM +0100, Beno=EEt Monin wrote:
+> The ATCSPI200 controller can be used in PIO mode, without DMA, and PIO
+> transfers can optionally use the controller's interrupt. Make dmas,
+> dma-names and interrupts optional, and require dma-names if dmas is
+> specified.
 
-Thanks!
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-[1/7] spi: spi-mem: Add support for panic mem writes
-      https://git.kernel.org/broonie/sound/c/20f1752b9241
+--0rA9jbrCb+ammo71
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+-----BEGIN PGP SIGNATURE-----
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCau21ywAKCRAv73Ows9A4
+iUbmAP9uPXjuvImN4DYj7yBA9yMQ34eBI4TfDanUysfyegnzFwEA41yLk793Adlv
+ceQ4scKXQENx1b01FUJT30h4t/rYaA8=
+=PoeG
+-----END PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--0rA9jbrCb+ammo71--

@@ -1,63 +1,84 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793989112;
-	b=BoWpeMZGyWmCjw6WLJ/U84TDEr2avh+SnlQdTQiO1PiUdAXPUViDsNzhQGuGRHmgQcEO
-	 R+kHrOjrdKSp1ISOO19vOLXaxdKKKHLu1QckDkVBFda+7s0aO/FXz6GWLP97QlnOCpsZF
-	 8ivSZ1Pno8Km7yDVtqQB29YYCdiWKYAo9eqBTEg4dsnGf2GddEX4tk2tY37ka2nLW1+In
-	 TfuXLZaXfk+9EuCbaKAz/sZ1xroNnYx9MQqaZJD+sxlNMLNvQVjEMX4bM1JoY9LxnUTT3
-	 6MT1b8giwsztxoXV4ck0W/KgAMerbnUgTRe26kwEsL8scXCm1V7W9k0NL0HgSsUm4/g==
+	t=1793989197;
+	b=n6y8l1AJhWdW+hlZmVGakcdGebilWA+o3qYYSHbwbnMQbRXjDFv16O71JM73fN8JCAHa
+	 qgjsfWP0WMQDOIb2TpCjk/R/uE+FDHaOMELiU6PnefMp5Pdvqo17Gdi4r2TZwAaKB3Aiw
+	 tCN/KC2u66QVns8FqJ8AHgrwmxUrUDWa7RGawSf5mPbtF0Y/2ucNhsNLPBT38+6t5bziZ
+	 en637b+G9S/DD55ID26AxLVOmZwrA2Sbrni7nOIOKO5il++hd3F7aEIaFPmDzxgRepNdG
+	 UXhvcb2VdjrorOUEG8d3Kt5yAlSumSFgwekqw3E/SBCzM+5k39NYtC05rxKz+yXVoQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793989112;
-	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=viGs+vwwaeijL9cDm80I/p7kjifrlWJt38UtKh73BZk=;
-	b=qJxlGm9UryGFlCTg32pj7f/w+ZmooGjpVqkqvkLixlAH4x/xAs2wOGckJm7X4HGB6skc
-	 AIS3786aqcQx1b1hRFxcHzYg0y49G83vKTQ/jVlbYBAeqfdRrP7S93eE7MKCZHZpDZD0l
-	 yH82HmfWusVQUuxPIiTKqLLriRrUbAghmU1weN137g87ewbW+LRbHbRtnpufGdFt9LsUU
-	 PTsyfuT4CGg8HozExDAiPHX2tYPLoVuAGaPcGVUpc0JdDbNE397jq19N4KDxFyVEOFt/K
-	 deTCQOSIVFAfy/J5CKUiDoL9lMaLczVlOq+4B1ysmIMEfSiQcohofnrcn3mEi1svQdQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793989197;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=c/20RGI5WiHKKkpDTceQl002Lfa1bhsWYphTb3UDQkg=;
+	b=mPZBs2TM14nLJc3wsov37lkZouzwbOeit0toNP8Q5HCgGxfEfKRBLCSKKt/oChnBC60K
+	 STvGA0LZgdQgLi7xL9g0fgngKi/mQANLWsP2795FxAlXZLFXt/HXp8NMVpEGqYN/Xy4MD
+	 kVG5kViWzeuzRgStwSUxiHQ3jAvQ+BG1Pbs1KVW66hX9qUVQ8+jkr93r9xf9daPJZXlaZ
+	 6g1H/kadTaFO+X5bgQ5Zx45fWGnXzlfubvEB39+bi9kDvsAqT7HfhlPGmB+hZeROSaPgw
+	 ldugFruwAUPwuq0968nYFDB5aQNIiXLa36oND3aa+lvGUzDd7FS9rnszpmquItS2emg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=sntech.de;
-	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=ELKGUAEL;
-	arc=none smtp.remote-ip=185.11.138.130
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrBSVpvJ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E31D606A32D
-	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 18:18:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7E31D606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D8E606A333;
+	Fri,  6 Nov 2026 18:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=ELKGUAEL
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=viGs+vwwaeijL9cDm80I/p7kjifrlWJt38UtKh73BZk=; b=ELKGUAELozpvtv/RXWTyPzn1zp
-	/4JMLLL8ebK3BK4gAKPmXQRcnIwTzyqfk4P7C57iJFNYkNOEBwME9Xa5vyUjG3GIn8CpMS7TMfjZ1
-	XrQ8wa7zEPXPY9K1VJoXm/WlprA+GDQtFq8JzHpOT8vc8RDfLGEAW7AoABZU0tYFz3YUoXStreDks
-	+/7g8ZtRV8F2I+s/HPLYSn3d63ze8VFvYGrZFonAEV/wIK4LmdL1++5RTlCbyAS6WoO7EZ0AjCwXP
-	6wPVqwEoBLNUEsbmsS1/erQQqz/LGTlTGsQoGJ652B9JJRzIQwjXz4NFgRHWDl3TsQzHMqfQh+c8S
-	KwOpjx2Q==;
-From: Heiko Stuebner <heiko@sntech.de>
-To: broonie@kernel.org
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	quentin.schulz@cherry.de,
-	Lee Jones <lee@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH 2/2] spi: rockchip: add an atomic transfer function
-Date: Fri,  6 Nov 2026 19:18:23 +0100
-Message-ID: <20261106181824.1361235-3-heiko@sntech.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261106181824.1361235-1-heiko@sntech.de>
-References: <20261106181824.1361235-1-heiko@sntech.de>
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KrBSVpvJ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC2E1F008A4;
+	Fri,  6 Nov 2026 18:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793989197;
+	bh=c/20RGI5WiHKKkpDTceQl002Lfa1bhsWYphTb3UDQkg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KrBSVpvJM7vkY1slHDjt9v9csvTLVw6DZE9OLBCH6kHBWwi/iB0GMO52uMbFZPMu2
+	 aoxCVUIO3CfvqbM4ApUWQqMUyq7T507tTjGYhdLv9cHq0mKkBdnJcKicl10MAbOTO6
+	 l2bPh4z/TPbXDyBRgQauffurjJJKfxnf8R5aSi4pzmXXl5IiGbbZX+1B8VF3IZ5rwr
+	 0g7Tt8zM/nxj3oEc1nE9jrxUZVpbFdLHlwshhP4A3v/UkkQpvvX+reUCCcU7KAJ91b
+	 dy37lW9arn8Wu6MQyOfyX701vpirgwBIQ4tvzJCyh+t3BrRDSXQUnDmZ8+xFdidOMf
+	 sRqoiBHWy1upA==
+Date: Fri, 6 Nov 2026 18:19:47 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: =?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jun Chang <jun.chang@metanoia-comm.com>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sebastian Reichel <sre@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Thomas Gleixner <tglx@kernel.org>, Radu Rendec <radu@rendec.net>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Ben Zong-You Xie <ben717@andestech.com>,
+	Daniel Lezcano <daniel.lezcano@kernel.org>,
+	Ulf Hansson <ulfh@kernel.org>, Jisheng Zhang <jszhang@kernel.org>,
+	CL Wang <cl634@andestech.com>, Mark Brown <broonie@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Minas Harutyunyan <hminas@synopsys.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Randolph Sheng-Kai =?utf-8?B?TGluKOael+iBluWHsSk=?= <randolph@andestech.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>, linux-mmc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH 25/25] MAINTAINERS: add RISC-V Metanoia SoC support
+Message-ID: <20261106-comic-cupid-a8a3c127307f@spud>
+References: <20261106-mt2824-v1-0-86087eaf5af4@bootlin.com>
+ <20261106-mt2824-v1-25-86087eaf5af4@bootlin.com>
+ <4f1e52d9-0788-4601-8f67-898256a776b4@kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,166 +88,59 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EI85CRMW6gBoUvVg"
+Content-Disposition: inline
+In-Reply-To: <4f1e52d9-0788-4601-8f67-898256a776b4@kernel.org>
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+--EI85CRMW6gBoUvVg
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Rockchip SPI controllers are often used to handle SPI connected PMICs that
-also handle system power-off events, like the RK806.
+On Fri, Nov 06, 2026 at 12:22:15PM +0100, Krzysztof Kozlowski wrote:
+> On 06/11/2026 10:30, Beno=EEt Monin wrote:
+> > Add a maintainer entry for the Metanoia MT2824 SoC, covering the
+> > SoC-specific DT bindings, the SoC and the evaluation board device trees,
+> > and the phy driver.
+> >=20
+> > Originally-by: Jun Chang <jun.chang@metanoia-comm.com>
+> > Signed-off-by: Beno=EEt Monin <benoit.monin@bootlin.com>
+> > ---
+> >  MAINTAINERS | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >=20
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 93abbb315065..310544f96204 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -24072,6 +24072,17 @@ T:	git git://git.kernel.org/pub/scm/linux/kern=
+el/git/iommu/linux.git
+> >  F:	Documentation/devicetree/bindings/iommu/riscv,iommu.yaml
+> >  F:	drivers/iommu/riscv/
+> > =20
+> > +RISC-V METANOIA SoC SUPPORT
+> > +M:	Jun Chang <jun.chang@metanoia-comm.com>
+>=20
+> So Jun will handle the patches? Can we get an Ack for this?
 
-When the kernel signals the power-off, all the interrupts are already
-disabled, so regular SPI with its mutexes and DMA transfers does not
-work anymore.
+There's no tree listed, so probably Jun is not handling any patches...
 
-Implement an atomic transfer function that does SPI transfers polling the
-controller in a loop without any DMA or IRQ.
+I /could/ apply patches for this platform alongside the other one that I
+manage, but I don't really want to and someone that actually cares for
+this platform should be the one applying patches for it.
 
-This can successfully handle the power-off command to RK806, but also
-read back the 2 chip-id registers just fine before that, as a test.
+Beno=EDt/Jun, please see Documentation/process/maintainer-soc.rst !
 
-Additionally, setting ctrl->transfer to this function also let it work
-just fine as the standard transfer function, so I'm hopefully not abusing
-the SPI framework too much.
+--EI85CRMW6gBoUvVg
+Content-Type: application/pgp-signature; name=signature.asc
 
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
----
- drivers/spi/spi-rockchip.c | 88 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 88 insertions(+)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 1a81fd94b439..96582c7d5c03 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/clk.h>
-+#include <linux/delay.h>
- #include <linux/dmaengine.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -13,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- #include <linux/pm_runtime.h>
-+#include <linux/reboot.h>
- #include <linux/scatterlist.h>
- 
- #define DRIVER_NAME "rockchip-spi"
-@@ -724,6 +726,74 @@ static bool rockchip_spi_can_dma(struct spi_controller *ctlr,
- 	return xfer->len / bytes_per_word >= rs->fifo_len;
- }
- 
-+static int rockchip_spi_transfer_atomic(struct spi_device *spi, struct spi_message *msg)
-+{
-+	struct spi_controller *ctlr = spi->controller;
-+	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
-+	bool cs_en = (spi->mode & SPI_CS_HIGH) ? 1 : 0;
-+	struct spi_transfer *xfer;
-+	int ret = 0;
-+
-+	pm_runtime_get_sync(rs->dev);
-+	rockchip_spi_set_cs(spi, cs_en);
-+
-+	/* make sure all interrupts are masked and status cleared */
-+	writel_relaxed(0, rs->regs + ROCKCHIP_SPI_IMR);
-+	writel_relaxed(0xffffffff, rs->regs + ROCKCHIP_SPI_ICR);
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		WARN_ON(readl_relaxed(rs->regs + ROCKCHIP_SPI_SSIENR) &&
-+			(readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY));
-+
-+		rs->n_bytes = xfer->bits_per_word <= 8 ? 1 : 2;
-+
-+		ret = rockchip_spi_config(rs, spi, xfer, false, false);
-+		if (ret < 0)
-+			goto out_disable;
-+
-+		writel_relaxed(0, rs->regs + ROCKCHIP_SPI_RXFTLR);
-+
-+		rs->tx = xfer->tx_buf;
-+		rs->rx = xfer->rx_buf;
-+		rs->tx_left = rs->tx ? xfer->len / rs->n_bytes : 0;
-+		rs->rx_left = xfer->len / rs->n_bytes;
-+
-+		spi_enable_chip(rs, true);
-+
-+		while (rs->tx_left || rs->rx_left) {
-+			u32 status = readl_relaxed(rs->regs + ROCKCHIP_SPI_SR);
-+
-+			if (rs->tx_left && !(status & SR_TF_FULL))
-+				rockchip_spi_pio_writer(rs);
-+
-+			if (rs->rx_left && !(status & SR_RF_EMPTY))
-+				rockchip_spi_pio_reader(rs);
-+		}
-+
-+		wait_for_tx_idle(rs, false);
-+
-+		spi_enable_chip(rs, false);
-+
-+		if (xfer->cs_change && !list_is_last(&xfer->transfer_list, &msg->transfers)) {
-+			rockchip_spi_set_cs(spi, !cs_en);
-+			ndelay(10 * NSEC_PER_USEC);
-+			rockchip_spi_set_cs(spi, cs_en);
-+		}
-+	}
-+
-+out_disable:
-+	rockchip_spi_set_cs(spi, !cs_en);
-+	ndelay(10 * NSEC_PER_USEC);
-+	msg->status = ret;
-+
-+	if (msg->complete)
-+		msg->complete(msg->context);
-+
-+	pm_runtime_put(rs->dev);
-+
-+	return ret;
-+}
-+
- static int rockchip_spi_setup(struct spi_device *spi)
- {
- 	struct rockchip_spi *rs = spi_controller_get_devdata(spi->controller);
-@@ -752,6 +822,14 @@ static int rockchip_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
-+static int rockchip_spi_power_off(struct sys_off_data *data)
-+{
-+	struct rockchip_spi *rs = data->cb_data;
-+
-+	/* enable controller for possible calls from shutdown handlers */
-+	return pm_runtime_get_sync(rs->dev);
-+}
-+
- static int rockchip_spi_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -832,6 +910,14 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
-+	ret = devm_register_sys_off_handler(&pdev->dev,
-+					    SYS_OFF_MODE_POWER_OFF_PREPARE,
-+					    SYS_OFF_PRIO_DEFAULT,
-+					    &rockchip_spi_power_off, rs);
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "failed to register poweroff handler\n");
-+
- 	ctlr->auto_runtime_pm = true;
- 	ctlr->bus_num = pdev->id;
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP | SPI_LSB_FIRST;
-@@ -860,6 +946,8 @@ static int rockchip_spi_probe(struct platform_device *pdev)
- 	ctlr->max_transfer_size = rockchip_spi_max_transfer_size;
- 	ctlr->handle_err = rockchip_spi_handle_err;
- 
-+	ctlr->transfer_atomic = rockchip_spi_transfer_atomic;
-+
- 	ctlr->dma_tx = dma_request_chan(rs->dev, "tx");
- 	if (IS_ERR(ctlr->dma_tx)) {
- 		/* Check tx to see if we need to defer driver probing */
--- 
-2.47.3
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCau4aQwAKCRB4tDGHoIJi
+0rbxAQDp+CX8P4FSxsxtp+sH+XOoVxSjimJET4S5CSWzGNHXFQD/b5cKyz3+v/zA
+eq6hyBYC7BQX3uGp2UiAkQX4EfPpDwQ=
+=dNYG
+-----END PGP SIGNATURE-----
 
+--EI85CRMW6gBoUvVg--

@@ -1,55 +1,67 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=23.251.234.56
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793980088;
-	b=HKbSukgbY72tBrNSHeuS7I9fRKIfsm7lbTOzRDRWLDnG1JFm/S9VJ7oizkzR8/SqzcXw
-	 x991Qiz45o1sHNXN4Nuo61yJRUGDnkQrQOSwBTrKv5WLtQUYowZz//mxYTbMunulB8ZUd
-	 EgjgOGFdUFRyCxp2X9W3FezDwcnoCM2i+AChxB2Iq4dhT4Pt2wN9DYtKVrT3XGwY/yh+X
-	 wG/dj+rcLsZ/DmQ75oX3dJ3bP9kzNvKoQ+EkxITb9vjCpr/nLQzATwPhBk/c/TVvoC2PJ
-	 mZUqo440t//WWZybN4512g5qTHq2PCqtYzdshlbP7H9E862j5uec75AwfsG6D3UiNoA==
+	t=1793982773;
+	b=fGuoDNdLJw0N/g/Gf3CxxaFCSkczDHRO9b/qfJhC/j1AshapmYmzxCIizPOJ8DonphWJ
+	 72DGVUIjwqGelSZA/shsHyiLAOl3dtiLFzRTLdPn/1+4DDnI4hCaPfb/HIfOJGUw566Xz
+	 gXT5lCDk6qIqhwscZOodSfPoPgFDqSn+dMI1uzq1dNxuEDAGjELM8lr8NJ4pF1JFeM+v2
+	 9c6eud6aF1g8941WZ4chqiuxhZbXt4LWscuURkAAfqUORjHoOVWdTzU8SZXdUDtue5nD7
+	 85+Z9lM3GhrhD71lRIiIEd5t7ceLkih5Tj+ZuK32dgDf6nlEvxM8GuUVHE6w82OEu+g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793980088;
-	h=DMARC-Filter:Received:Received:Received:X-Zmail-TransId:X-Mailer:
-	 Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
-	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=ilpDC+gzi5CuJSSukh2bRj7H/3/INvb8yWuqUosFK+U=;
-	b=4Pjx5C6jIlGPrfBWib2KAirSxI5okoDb1jHJQ47zEUtdbh+JZrKe+5zXSRKBVYrk/Yry
-	 kUwmEfboWfMzJauUEzRo1JUPJm0lF8z1ZfhHHqJxA+4boDi2VpYO/Ev8k3lPxRKB2DPs4
-	 I2C7fjOuzHCKk11GRFVUf2ZhbHidvWc4HnJpyH5JYDoP7AsjDUSp9WTnGfOrBSHLYftYH
-	 xNSm/D3+DgT4yZ8jmquKZk50K3vr9gtFA+TBCjaodm3XF4EyR0H5EGCZqTH9UeWua/YQM
-	 ogYE7RDd9qGleonNheDp0Zd4rhaxUkHbK7YhXMChS1bPCoyMwNQRuxMCOHim9ePtbeA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1793982773;
+	h=DMARC-Filter:DKIM-Signature:DKIM-Signature:In-Reply-To:References:
+	 X-Mailer:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:
+	 MIME-Version:Content-Type:Feedback-ID:X-SES-Outgoing;
+	bh=RWWfhSpd8qA/0y2M9vARy5V41qdGSPFp81t+GAu2VoM=;
+	b=oRCQUqf2RYUQLqy9R/BKULq5gNXxuI5ZJO8ycARirghKyM2+t3ipj2vdAlDXyWsU//Ud
+	 4offcYLBJyBl7czs/twlYGq9Z5tCnC68aPMzIjCzEJ3Zi3jOnozewQC6bLEOhxh+Nh0qd
+	 +d1BaLO3gO6E2hcGf+STCDnvXMBVAr5IQy3F/rxhKhqwBRmYqQZ25rOcVGVB6AtFRxYSg
+	 KVb4S/Lio71y1MydmwL3swk/jmPy/cVanEKOQX9D+Xxa+H/zB7M/cVN3jtPcww8B4pfDm
+	 R8TcIcNykLDdY1PTFG+nQMZU5BoILe17Fm/kocXN/AAVdhmjq85kQNKlBGDQelwrhfA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=zte.com.cn;
-	spf=pass smtp.mailfrom=zte.com.cn;
-	arc=none smtp.remote-ip=183.62.165.209
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	dmarc=pass header.from=fqwqf.xyz;
+	spf=pass smtp.mailfrom=send.fqwqf.xyz;
+	dkim=pass header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b=gS7fmlJW;
+	dkim=pass header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=LGhIascM;
+	arc=none smtp.remote-ip=23.251.234.56
+Received: from e234-56.smtp-out.ap-northeast-1.amazonses.com (e234-56.smtp-out.ap-northeast-1.amazonses.com [23.251.234.56])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A35606A331;
-	Fri,  6 Nov 2026 15:48:07 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 77A35606A331
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jLk8r3vDGz52RpX;
-	Fri, 06 Nov 2026 23:47:56 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 6A6FlreG080918;
-	Fri, 6 Nov 2026 23:47:53 +0800 (+08)
-	(envelope-from shao.mingyin@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 6 Nov 2026 23:47:56 +0800 (CST)
-X-Zmail-TransId: 2af96aedf6ac241-951d9
-X-Mailer: Zmail v1.0
-Message-ID: <20261106234756882V9wUQNCEZAYUGTAbexMSL@zte.com.cn>
-In-Reply-To: <20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn>
-References: 20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn
-Date: Fri, 6 Nov 2026 23:47:56 +0800 (CST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8421606EE91;
+	Fri,  6 Nov 2026 16:32:52 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org C8421606EE91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fqwqf.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=send.fqwqf.xyz
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=fqwqf.xyz header.i=@fqwqf.xyz header.a=rsa-sha256 header.s=resend header.b=gS7fmlJW;
+	dkim=pass (1024-bit key, unprotected) header.d=amazonses.com header.i=@amazonses.com header.a=rsa-sha256 header.s=zh4gjftm6etwoq6afzugpky45synznly header.b=LGhIascM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=fqwqf.xyz; t=1793982771;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type;
+	bh=k2DtG2Ms2OYCMdXF/mo4RMf+MlrhGYphet6JR+lLl7c=;
+	b=gS7fmlJWP3YYLnpyi3msaKzzrKCpc7JN+u+qkFBA0D4pv1kLNzcI2K49k78/cGrO
+	2DvOdibpFUVeUVOcjYiyZVxaTIDYFjn5d4MazQF1zU23Kz5CSaiqpacdmrxVkdLSTqJ
+	floFYGrKy8lJ14rEtG/2zL7lW6EbglIwQ1s5htF4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=zh4gjftm6etwoq6afzugpky45synznly; d=amazonses.com; t=1793982771;
+	h=In-Reply-To:References:From:To:Cc:Subject:Message-ID:Content-Transfer-Encoding:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=k2DtG2Ms2OYCMdXF/mo4RMf+MlrhGYphet6JR+lLl7c=;
+	b=LGhIascMaBEzjXXNAvh+J5doGKFozUyY9bPnbbrH683BueCXEqnbETI/IZBi8MYW
+	vVrWiwvvUM1qnmlhqykbAobOeWs75oakFC8blME17E1q18ls/Irzw5TiFRlNp8/kTZ/
+	4cw1Ac2nN8oD4mXdTVwUN7RXgkl+wxnwshpqm9gg=
+In-Reply-To: <sashiko-outbox-199924@kernel.org>
+References: <sashiko-outbox-199924@kernel.org>
+X-Mailer: git-send-email 2.53.0
+From: Jizhou Tong <fqwqf@fqwqf.xyz>
+To: jingyliang@chromium.org, sashiko-bot@kernel.org
+Cc: jikos@kernel.org, bentiss@kernel.org, dmitry.torokhov@gmail.com, 
+	daleyo@gmail.com, linux-input@vger.kernel.org, 
+	linux-spi@vger.kernel.org
+Subject: Re: [RFC PATCH v3 1/5] HID: spi-hid: isolate DMA transfers from
+ protocol buffers
+Message-ID: <010601a1b1b4affa-319434db-5e00-4bad-abde-7fb5400733de-000000@ap-northeast-1.amazonses.com>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 6 Nov 2026 16:32:51 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -58,66 +70,83 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-Mime-Version: 1.0
-From: <shao.mingyin@zte.com.cn>
-To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
-        <pjw@kernel.org>, <samuel.holland@sifive.com>,
-        <william.zhang@broadcom.com>, <kursad.oney@broadcom.com>,
-        <jonas.gorski@gmail.com>, <bcm-kernel-feedback-list@broadcom.com>,
-        <anand.gore@broadcom.com>, <florian.fainelli@broadcom.com>,
-        <rafal@milecki.pl>, <linux-arm-kernel@lists.infradead.org>,
-        <sven@kernel.org>, <j@jannau.net>, <neal@gompa.dev>,
-        <asahi@lists.linux.dev>, <ryan.wanner@microchip.com>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <claudiu.beznea@tuxon.dev>
-Subject: =?UTF-8?B?W1BBVENIIDEvNV0gc3BpOiBzaWZpdmU6IGZpeCBkaXZpc2lvbiBieSB6ZXJvIGluIGNsb2NrIGRpdmlzb3IgY2FsY3VsYXRpb24=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6A6FlreG080918
-X-TLS: YES
-X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 06 Nov 2026 23:47:56 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AEDF6AC.000/4jLk8r3vDGz52RpX
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Feedback-ID: :1.ap-northeast-1.6BGMgStFQE7EJYq5syaCRzdneEHVt/+DAaGDrqUmDs9QLO4/SllUBZ3fHvnZ8rcAX/3IjUyTRgi5JFZsWrikFHwlPJqCkqEMlxDFM4JXh+ycxH/J5Tudg5bGdz6h4331g1L1EFsGR8kuYNfGLsrxz4Nym4YXoPcZxeVkrHry4Zx21n8vEVLEjc7s+OCM8PU9:1.ap-northeast-1.DTXDV/V9GPBWozcllKo8innbNB2qs2O/3F8XZSzd9ZM=:AmazonSES
+X-SES-Outgoing: 2026.11.06-23.251.234.56
 
-From: Shao Mingyin <shao.mingyin@zte.com.cn>
+Hi,
 
-A SPI device without a valid speed (no spi-max-frequency property, or
-created through the spidev sysfs new_device interface without a speed)
-gets max_speed_hz == 0.  spi_setup() only clamps that to the controller
-limit when host->max_speed_hz is set, and this driver does not set it, so
-the zero reaches sifive_spi_prep_transfer() and DIV_ROUND_UP() divides
-by it.
+The overlap is real when ARCH_DMA_MINALIGN is smaller than the =
+five-byte
+read approval. I reproduced it with the actual input-transfer =
+function
+using alignment values of two and four. My earlier tests started =
+at
+eight and missed these cases.
 
-On RISC-V the divide instruction returns all ones instead of trapping,
-so the controller is programmed with a bogus clock divider rather than
-the rate the device asked for.
+The correction below rounds the full =
+approval length up to the DMA
+alignment and uses that value for the RX =
+offset, bounds check and
+allocation. It is an incremental diff against v3. =
+I have also folded it
+into patch 1 of a local v4 draft and will collect =
+further review before
+resending the complete series.
 
-Clamp the divisor to 1 Hz so the divider calculation is well defined.
+The actual allocator and single-lane/quad transfer functions now pass
+ASan/UBSan tests at alignments 2, 4, 8, 16, 32, 64, 128 and 256. These
+check non-overlap, exact RX capacity, allocation failures and rollback.
+The v3 allocator and transfer path fail the new small-alignment tests.
+The SPI-HID core, ACPI and OF modules build with W=3D1 on ARM64.
 
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
-Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+The 128-byte layout used on my SL7 is unchanged.
 
+Signed-off-by: Jizhou =
+Tong <fqwqf@fqwqf.xyz>
 ---
-
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index cee4d92e46f4..9c1f674f5921 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -168,10 +168,14 @@ sifive_spi_prep_transfer(struct sifive_spi *spi, struct spi_device *device,
- 			 struct spi_transfer *t)
+diff --git a/drivers/hid/spi-hid/spi-hid-core.c =
+b/drivers/hid/spi-hid/spi-hid-core.c
+index 901c8d9ace..d0ef3e7106 100644
+--- a/drivers/hid/spi-hid/spi-hid-core.c
++++ b/drivers/hid/spi-hid/spi-hid-=
+core.c
+@@ -67,6 +67,7 @@
+ /* Protocol message size constants */
+ #define SPI_HID_READ_APPROVAL_LEN		5
+ #define SPI_HID_OUTPUT_HEADER_LEN		8
++#define SPI_HID_RX_OFFSET	ALIGN(SPI_HID_READ_APPROVAL_LEN, =
+ARCH_DMA_MINALIGN)
+=20
+ /* flags */
+ /*
+@@ -192,10 +193,10 @@ static void =
+spi_hid_populate_output_header(u8 *buf,
+ static int =
+spi_hid_input_sync(struct spi_hid *shid, void *buf, u16 length,
+ 			      bool is_header)
  {
- 	u32 cr;
-+	u32 speed_hz;
- 	unsigned int mode;
- 
-+	/* A device with max_speed_hz == 0 must not divide by zero */
-+	speed_hz = max_t(u32, t->speed_hz, 1);
-+
- 	/* Calculate and program the clock rate */
--	cr = DIV_ROUND_UP(clk_get_rate(spi->clk) >> 1, t->speed_hz) - 1;
-+	cr = DIV_ROUND_UP(clk_get_rate(spi->clk) >> 1, speed_hz) - 1;
- 	cr &= SIFIVE_SPI_SCKDIV_DIV_MASK;
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_SCKDIV, cr);
+-	u8 *rx =3D shid->xfer_buf + =
+ARCH_DMA_MINALIGN;
++	u8 *rx =3D shid->xfer_buf + SPI_HID_RX_OFFSET;
+ 	int error;
+=20
+-	if (length > shid->xfer_size - ARCH_DMA_MINALIGN)
++	if (length > shid->xfer_size - SPI_HID_RX_OFFSET)
+ 		return -EMSGSIZE;
+=20
+ 	memcpy(shid->xfer_buf, is_header ? shid->read_approval_header :
+@@ -1322,7 +1323,7 @@ static int spi_hid_alloc_buffers(struct spi_hid *shid=
+, size_t report_size)
+=20
+ 	/* io_lock serializes the separate, DMA-aligned=
+ TX and RX regions. */
+ 	xfer_size =3D ALIGN(max(inbufsize, outbufsize), =
+ARCH_DMA_MINALIGN) +
+-		    ARCH_DMA_MINALIGN;
++		    SPI_HID_RX_OFFSET;
+ 	/* Keep ownership separate from the explicitly aligned DMA view. */
+ 	tmp =3D devm_krealloc(dev, shid->xfer_alloc,
+ 			    xfer_size + =
+ARCH_DMA_MINALIGN - 1,

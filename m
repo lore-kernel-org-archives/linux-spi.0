@@ -1,48 +1,64 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794075266;
-	b=honO5Gol6SXBEuO7+4Dj8QcgiPKsIiObExou14eyZ/Xu3yhkAVD04yR3FC4YtUSnV4HC
-	 NIIINPtGdtdRlwkNbO1o012g47Iq41PSn43lUZWnQMObLndOYmZI0M4/dQg/ji2R6oFNc
-	 6wDG0NbvT5MAyqW1UyAIrs1pjoDg2hAVQE8/JQEXc5A5i/MaXqa4YAdX0u+2LprtqPamu
-	 WaBKWQG2UPAp78ly/yRzxfC3uYLSvf/6wCDpMxNvHm6VPCC7ljzyo/qO8mX3Y6fh0L4R0
-	 GrlejEi57okpY/L3Hey/YSpZG5KpyyR99rxaRQfDBoS9iuKh+IyebJVSAxfV8HSU8fQ==
+	t=1794083133;
+	b=BDhf6CoBXzi5UqMFYsx2VB180qAbjVNTe7vnepGLWllpQZBekO5ccv5T0Cs71u8L4uK4
+	 EKxkDK98aoonqceJXTUElwP2NYAw6EBFnMQAVm3E3zg/q1G1ZaPRLmBRYoHLIcRT5ulOb
+	 iQ7DbpCsWuSw1EhOG9K0xYTIX981pi4dyKjZ0bPHiF6Lli05/C9tp19VelktC9CRnvnxD
+	 D11erBJ4zRWajb+iJB0Iii3l3oyeCssPD8QfWJ7OxVLukRBDEOnMtVwiOA49/1TaM3nPw
+	 AcpvOgZ10V90TuoLKQReXyK4RWdy5IVLZEVJBOiVAGyV6dqhjw2mRMQ7xgKQxzDwmag==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794075266;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer;
-	bh=BL+cmBoNPnGP1lSDwh9ujeU5GZ/Z/Eb6yaGi8Botz1Q=;
-	b=VM1RvkxVdJ34qDcLFvl4h1AILrCKiOc3PXE99i7ASyyy2CoHb57k66g8q74DtbCl9hLd
-	 X9itFg5NQg61WvDpqVVnl3k8iBHvTjX2+niAa8RgLf4+KRRGKpchG7Oe5DL9lWuFEvLUT
-	 iueKm0rmO40qCLsOH+opACzNf7hYDwlrrwnnOgPnbM4s2IWbSJ4SnW/8vrh8LH8SWjRF7
-	 UBS+hg9M42XlTWtJ63Bc+lfUWLsgLU4RzUjrVeOIRPzXYqC6ujnWy0imQpBK9kMYEIeA8
-	 O6OWSULnbSYY/RrItgLA0vBZht0tCygmkfloAZo8rxF5KZ7Ky7dwjf4ELa9LrKXuDmw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794083133;
+	h=Received:DKIM-Signature:Received:Subject:From:In-Reply-To:References:
+	 X-PR-Tracked-List-Id:X-PR-Tracked-Message-Id:X-PR-Tracked-Remote:
+	 X-PR-Tracked-Commit-Id:X-PR-Merge-Tree:X-PR-Merge-Refname:
+	 X-PR-Merge-Commit-Id:Message-Id:Date:To:Cc;
+	bh=pToYmMBphjVU3epzzYlrvFGEReJQn885wleEBDszcuc=;
+	b=m8jCanutgXs9V95v6R9VY5De4QEr/tD0LfAGO/hJVobJGVkE2X0xY6t7HC+uA9XVOEIZ
+	 JdH1lSj1fMjPjEtu186Q5/BOXraoWwK23YeXdbd55PWN5fmym1ppSCABhjc0DJGHGXzRN
+	 s3WkLNpgBbSBYIJxjzD34ibhV+0leRNeXXs9aqRqY4pOfX2uaoxx7mtoqfraOozzXuIMT
+	 TGNbnXFoBheqdfH/BKS32FQvo0XvvUpWZYIeIpOAvcpesKDobtXYOm96K5zyxRY2KOXbA
+	 65EYjPZ3Yz4CgDEKklMeNqbhUtGLDWESTOpcQysXmr1NT2JwkzpiyWbcHVZvyt7ZbUw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrBRAnuK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BsYJkR25;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB6A606A326;
-	Sat,  7 Nov 2026 18:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F072606D807;
+	Sat,  7 Nov 2026 20:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrBRAnuK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FAC1F0089F;
-	Sat,  7 Nov 2026 18:14:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BsYJkR25
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16771F0089F;
+	Sat,  7 Nov 2026 20:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794075265;
-	bh=BL+cmBoNPnGP1lSDwh9ujeU5GZ/Z/Eb6yaGi8Botz1Q=;
-	h=From:Date:Subject:To:Cc;
-	b=UrBRAnuKIGo7CiTkJ0Ax9lhqPR3tsDQWoDt5Ry5rBeZDhdw8sCxVlAS66ytd0pGfl
-	 TBD8Y1sjXAfPx47q9yeKuNBJfudEK8i+xH13c8+WE+77cI5TQdHaCfoQv/8VvON42q
-	 MQ5DXo4lXU29EmO3nXEGkzI7J16fsvr2IAo3ScQPhUsIZKVxrocMGSABCc6Iz8uw12
-	 lLjW+6v+7KeaTi47GrFWJGqBesxbAViXX2UH1jbQIpBmU/uu2zy92rRQdDKSByI1Ql
-	 TlpEwixFaF17J9O/SH4w6RzIngt4afCJ6EiN6fifhrg5Qle3uThlcQ7ISuBhAPMeCk
-	 GOS9ANndYDX+A==
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 07 Nov 2026 19:14:22 +0100
-Subject: [PATCH] dt-bindings: spi: pl022: Allow a power domain
+	s=k20260515; t=1794083132;
+	bh=pToYmMBphjVU3epzzYlrvFGEReJQn885wleEBDszcuc=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=BsYJkR25n5q5nz5xwXmNsUxEC6yQmFjAZOqRi2VRdh0plSLEfxsXHQkQj4ANHmLQ7
+	 S4bkvyjAlgELLIoOopkV50Oi50l964cmz+xXHRV08oEkCciEY1UqiC8aoj1Q25S7nP
+	 rMurRO5ieGZotiWh5yvufIqhLHe7DxzKbopMMJVId0Vtb6xqdaggLkuMMhOsAwf9pN
+	 62iqw7kYcv/VXGqrdWcl4CiZl/C9obBDMk/kOxXtzmM0FDWsz48RElE9ZVdzzgyMdO
+	 sq248ypgKlaIg5qmZFazqycZO7/7PnVanR4WYfqpAgeLfUhKQx8bZYeh8AXbwXHFAk
+	 8BC/xvYK9mKdA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D8180380821F;
+	Sat,  7 Nov 2026 20:25:32 +0000 (UTC)
+Subject: Re: [GIT PULL] SPI fixes for v7.4-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20261107113357.5BCDD28F332C@traversing.sirena.org.uk>
+References: <20261107113357.5BCDD28F332C@traversing.sirena.org.uk>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20261107113357.5BCDD28F332C@traversing.sirena.org.uk>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-rc1
+X-PR-Tracked-Commit-Id: 059518f775baecc9803fc97787bd0b17558f8047
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c1c70a8431be6df4ada55ed4930ea9bac9baab48
+Message-Id: <179408313163.1325067.12119711532236229290.pr-tracker-bot@kernel.org>
+Date: Sat, 07 Nov 2026 20:25:31 +0000
+To: Mark Brown <broonie@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -51,52 +67,16 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261107-ux500-pl022-power-domain-v1-1-d51913109afa@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3MUQqDMAwA0KuEfBtIA1PWqww/6ho1sLWlxU0Q7
- y74DvAObFpNG3o4sOrPmuWEHlwH+F5DWpQsogcUlt45HmjbH8xUPixCJf+1UszfYIlE+znK8Az
- TpNgBlqqz7Xf9Gs/zAgUE7hBqAAAA
-X-Change-ID: 20261107-ux500-pl022-power-domain-2e6fd279abbe
-To: devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
- Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-spi@vger.kernel.org
-X-Mailer: b4 0.16.0
 
-Ux500 PL022 instances sit in switchable EPODs. (Electric
-Power Domains.) Allow the single power domain used by these
-controllers. Found with CHECK_DTBS=1.
+The pull request you sent on Sat, 07 Nov 2026 11:33:18 +0000:
 
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
-Allow a single power domain for PL022 controllers on Ux500.
----
- Documentation/devicetree/bindings/spi/spi-pl022.yaml | 3 +++
- 1 file changed, 3 insertions(+)
+> https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-rc1
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-pl022.yaml b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-index 680fdfa184d0..9a61cb16e683 100644
---- a/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
-@@ -71,6 +71,9 @@ properties:
-       - const: rx
-       - const: tx
- 
-+  power-domains:
-+    maxItems: 1
-+
-   resets:
-     maxItems: 1
- 
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c1c70a8431be6df4ada55ed4930ea9bac9baab48
 
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261107-ux500-pl022-power-domain-2e6fd279abbe
+Thank you!
 
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

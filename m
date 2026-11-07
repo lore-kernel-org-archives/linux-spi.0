@@ -1,58 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794058887;
-	b=iMekVB7zO+LQ6UnHYYADX+zCPatf8DS9VyQkZYEC3+ZGejua81FsjWZZwws+LM8oI8SG
-	 /GliM3agUvgjhqS+TffYOsIeLe6CyqSbJi2htMMu+r/CQJ5z5q7QsceSMexDf0ZgIh9xH
-	 l0fD7TvNFx+ZbHCHnb6Knp6DSudH6TSciKMvn9CivkoI0J6D4xft4dqvkuJrbGDHIGO73
-	 4I6Ne/qMapkqFofCvkYiv9q4Zgv8X0Df2Mo97R2IHWPf7Yl+5YG0FnCy8oV2wOD2olgVj
-	 fqbG5TeO4bbEdF2ZvSnjoc3OkNsttdJEp1H7nBACNG9RU1L9NnVgJytqiFgJrkBRkFg==
+	t=1794062409;
+	b=bx6M6qUBNlOnCPUaVoGHbrAJPyECjSsIa3+GIuRJ5xSZSPTLTAfU3SlDvBYJQdyr2gJI
+	 53zjTkNt+VV+X+vPYBOrb2+dFVoFf+djxLZvRUK/tW8S+Ys2xXDFJRmAfdQizPyOPHi/F
+	 Ka0rkE6nyqNLGHoMdBzHvALJT4m1m9xLWgUtNTfiHLghfiLEcDbV+wSwGte/6GL57d5Is
+	 zbhJQrRVQIavTuORCpyZRuAf7Ca3YU5CS8S+G9GCgYYxytfqIPjQkRPH0utWMHZwRZuqL
+	 bN9OlUzhrw4TRIZ+iLfB4ziyNABeYhF8t5/dAfGAMkYiRWr34c5FewwVv72u8RgPHYg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794058887;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=sxlRFymConWQJ/LilUMf3Ms8/xKFLsDClNm0h78DigA=;
-	b=5RSgwzN8cLTGrV3mTXYmgF+XLdQCzHerfpFaap7U4DLoBqAnb9oypCC9lnw5T2PxDYSO
-	 kU1j8GNk5uiLi43/ZbY0TaygcZpzM1Vy7X7TWg20d89ZJhqX5Op2544xmuqx6qbM9W06g
-	 Zkz4UMH2stslg9mddiU7giRSL6olNylJAlr9z5eDQcU94xb21/dffs9EDHivI/DPCFzIK
-	 Rc0rdIoI4gpEUdZ5mG5aJPibCLnnyWgfdXH/gnyKb0DdEypyi6oawKP5c+4EI1yGmjfEr
-	 iU599NBTGK0l9T0YkJgttT1Y2xA1MG2rRG10xbzyQoktMXUcRXtVaYRlXrPYZsincCA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794062409;
+	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
+	bh=u8rarf8t3eUzmhOcq5q3dMjzeYju+Xd6LywiI+qeGtI=;
+	b=3p7kwC72hmasDM6OB4qOQ8ASynfFk6yjXyCuHRFDq3uhl5rJuWVrX9mse1F+mjxQAtrx
+	 9AjzXEpuZet4Y5JEb21rTFkJqBrHisW3wXiafHbZVW36kZaOj2oYq4Jnz3idt318v8EtV
+	 uS5U+r1s8fFpN0D+VD32EUJahbObzXEflDXtr7Zn0QpwNzwnTJGV2HLB20FJPRt8iDFTW
+	 nhDsUDdn86ctfL2apevpqxabyb7wcvwqvyWjlU7GuEOsrZgV6gLteT9wqu4ip5Vgfr6ZY
+	 zsI/Svf4pRBO+ZXFlIve4MBQPkcsCo+HE8KsSg/5/eDV60yrVoTA0JO6/6LXIlrPbWA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWUoIAFd;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQhx6Yf0;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35F8606D802;
-	Sat,  7 Nov 2026 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D17F606D82A
+	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 14:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWUoIAFd
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5831F008A3;
-	Sat,  7 Nov 2026 13:41:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQhx6Yf0
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EE01F0089F;
+	Sat,  7 Nov 2026 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794058886;
-	bh=sxlRFymConWQJ/LilUMf3Ms8/xKFLsDClNm0h78DigA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FWUoIAFd83ogdJ8oEKd/6J+7fQzXiMs95c+BmcnUnP5Y0KwMj7N0KhrwhZ5PP03Tz
-	 YSbOJIr1HvgrF11s74sVgaxjtjglWGXwSeHpvAmgtGVPE5GIyXg72mBldz1mRv1xcG
-	 GoBNIe2i6bgJ8GIykE+Ni1rpTbOCtTYbXV4hFOVlpORWvplkIA5ixjek1YXxAJk+C7
-	 MO4iBuxYoEF6GofN+P4C64tY/oBdL7rtTzobgwXTEe+4ZBTip0YP5Sk0/kGEA432lV
-	 Ivl+ilQwJYfGMMHJwbN5h//9FJ0PnKdCdQ/QXhVZUMmz/1h+KjT3RPIkWRIrbrw80y
-	 mjiCZ8Q7coMOg==
-Date: Sat, 7 Nov 2026 21:21:13 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>
-Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add workaround for old Marvell
- firmwares
-Message-ID: <au8lyXiMUSvcdPWx@xhacker>
-References: <20261104100643.162694-1-paul.cercueil@bootlin.com>
- <20261104100643.162694-6-paul.cercueil@bootlin.com>
+	s=k20260515; t=1794062408;
+	bh=u8rarf8t3eUzmhOcq5q3dMjzeYju+Xd6LywiI+qeGtI=;
+	h=Subject:From:Date:To;
+	b=MQhx6Yf0dHBx7KtdD68XJFEt0uLtN0bwhncuJ8b+9BXNl4/57aiOhSK+Os98v/CG6
+	 CTPe0nkvhmj/XyRJQLtOBo2t48gp3Z5vMGE0qxBfDCBhVv/YnIO2CZj51j3bWaXxA/
+	 biQ2uLz2RkknvR01Recd/pATH/MP+uZPyfGHClI06XopdqbFuJ7kzqlPTXp6nXcl9o
+	 jTc2FpRQ9fhe/5jZWJvauDttZFrA6buTqHHt4wSj0MzGxhQOpACd0rId7h4A5y5z99
+	 P5ejYyVYzjPx6mJx8qMsRTtE+HYxnVifKCNddakejICMobEUHJ/lWvBNN37OR5hcxe
+	 fGwz40NRIXEeQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9D9C9380821F;
+	Sat,  7 Nov 2026 14:40:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -62,70 +52,30 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261104100643.162694-6-paul.cercueil@bootlin.com>
+Content-Transfer-Encoding: 8bit
+Subject: Patchwork summary for: spi-devel-general
+From: patchwork-bot+spi-devel-general@kernel.org
+Message-Id: 
+ <179406240718.1202517.8062458441676875187.git-patchwork-summary@kernel.org>
+Date: Sat, 07 Nov 2026 14:40:07 +0000
+To: linux-spi@vger.kernel.org, broonie@kernel.org
 
-On Wed, Nov 04, 2026 at 11:06:43AM +0100, Paul Cercueil wrote:
-> From: Tanmay Jagdale <tanmay@marvell.com>
-> 
-> Older firmwares from Marvell used the cdns,xspi-nor compatible string
-> for the Marvell-specific xSPI IP, which is incompatible.
-> 
-> Add a workaround to support this by assuming that if the "xfer" resource
-> is found, it means that a Marvell IP is used.
-> S> 
-> Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
-> Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> ---
->  drivers/spi/spi-cadence-xspi.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-> index 48a109f3fcdb..d326589a6ca3 100644
-> --- a/drivers/spi/spi-cadence-xspi.c
-> +++ b/drivers/spi/spi-cadence-xspi.c
-> @@ -1301,11 +1301,21 @@ static int cdns_xspi_probe(struct platform_device *pdev)
->  	}
->  
->  #ifdef CONFIG_64BIT
-> -	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
-> -		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
-> -		if (!res)
-> -			res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
-> +	if (!res)
-> +		res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
+Hello:
 
-This moves the mrvl specific code to all users, so I believe this
-needs dt-binding update.
+The following patches were marked "accepted", because they were applied to
+broonie/spi.git (for-next):
 
-From another side, this assumes other users doesn't have 4th resource
-but what about if they have? they will get "Marvell-specific xfer
-resource passed, but ..." warning below, this confuse the users.
-I don't think this workaround can be added to all users.
+Patch: [v2] spi: tegra20-slink: size words with spi_bpw_to_bytes()
+  Submitter: Weibin Liu <liuwb@xiaopeng.com>
+  Committer: Mark Brown <broonie@kernel.org>
+  Patchwork: https://patchwork.kernel.org/series/1193775/
+  Lore link: https://lore.kernel.org/r/20261026132146.3806906-1-liuwb@xiaopeng.com
 
-Lastly, does the "firmware" mean dtb? But per my grep, I didn't
-find any mrvl dts(i) uses "cdns,xspi-nor" compatible string, so
-this means the dtb is outside upstream, then can the firmware
-be fixed instead?
 
-> +
-> +	if (res && !cdns_xspi->driver_data->mrvl_hw_overlay) {
-> +		/*
-> +		 * Handle old Marvell firmwares using the cdns,xspi-nor string
-> +		 * instead of the marvell,cn10-xspi-nor string.
-> +		 */
-> +		dev_warn(dev, "Marvell-specific xfer resource passed, but using the cdns,xspi-nor compatible string. Please fix firmware!\n");
->  
-> +		cdns_xspi->driver_data = &marvell_driver_data;
-> +	}
-> +
-> +	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
->  		cdns_xspi->xferbase = devm_ioremap_resource(dev, res);
->  		if (IS_ERR(cdns_xspi->xferbase)) {
->  			dev_info(dev, "XFER register base not found, set it\n");
-> -- 
-> 2.47.3
-> 
+Total patches: 1
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+

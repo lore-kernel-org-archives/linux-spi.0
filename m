@@ -1,48 +1,61 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794062409;
-	b=bx6M6qUBNlOnCPUaVoGHbrAJPyECjSsIa3+GIuRJ5xSZSPTLTAfU3SlDvBYJQdyr2gJI
-	 53zjTkNt+VV+X+vPYBOrb2+dFVoFf+djxLZvRUK/tW8S+Ys2xXDFJRmAfdQizPyOPHi/F
-	 Ka0rkE6nyqNLGHoMdBzHvALJT4m1m9xLWgUtNTfiHLghfiLEcDbV+wSwGte/6GL57d5Is
-	 zbhJQrRVQIavTuORCpyZRuAf7Ca3YU5CS8S+G9GCgYYxytfqIPjQkRPH0utWMHZwRZuqL
-	 bN9OlUzhrw4TRIZ+iLfB4ziyNABeYhF8t5/dAfGAMkYiRWr34c5FewwVv72u8RgPHYg==
+	t=1794064608;
+	b=wAIwHPlkStWDhuxEoFEzVfYSduTRbOWvYBi8qGLGdxjbWYBjQV/q6eX2dj8HB9osWc/L
+	 ItgUThidad+Qx567tCTfekiwqBqzU/TXPNxy5PDlDSWxbBVxn1+elY69wVHDVkC+j7AHX
+	 eA6o84IbDkSVK2Wwi4LLAGqYS17G6vA6AT4ddxdiFXRxD4mF3/ykpLyeNfiRc4ms4jQK3
+	 DxRAgtyo4ni4Ic2OFhwqVddAJJ88fNfSVATKDO7r66zw6kueIJqY+cs6PoHcZh34+zlV8
+	 tlcaJdksGdTGvIKUO2381p7qwxDAEZDh+yDnZFZqr2t79E/nUxpbt2d+6ft8V5wwe7Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794062409;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=u8rarf8t3eUzmhOcq5q3dMjzeYju+Xd6LywiI+qeGtI=;
-	b=3p7kwC72hmasDM6OB4qOQ8ASynfFk6yjXyCuHRFDq3uhl5rJuWVrX9mse1F+mjxQAtrx
-	 9AjzXEpuZet4Y5JEb21rTFkJqBrHisW3wXiafHbZVW36kZaOj2oYq4Jnz3idt318v8EtV
-	 uS5U+r1s8fFpN0D+VD32EUJahbObzXEflDXtr7Zn0QpwNzwnTJGV2HLB20FJPRt8iDFTW
-	 nhDsUDdn86ctfL2apevpqxabyb7wcvwqvyWjlU7GuEOsrZgV6gLteT9wqu4ip5Vgfr6ZY
-	 zsI/Svf4pRBO+ZXFlIve4MBQPkcsCo+HE8KsSg/5/eDV60yrVoTA0JO6/6LXIlrPbWA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794064608;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=WcuhQ3hFkrb8fQW7yfgUWsh40+d8FzchJmD0Z3lY1go=;
+	b=vM7I6AFLzBVe+cvtHSsf54U764xZnLukUoR2gfyEBr2of/x2COz5b+5J3jvrpCtFxYBY
+	 /9ZeFenpkj2f7KmVSUi6khy4CfrgduI935YahfNFcGF6JUd9gPr9nCc9vvbH08eqeAzoJ
+	 DB4smlYTX4FB9l/1jX2qHITojNrAH8sYHURx1HQVA/DjWPWwEBex2NjGdOROB6R1wsGbL
+	 JkWG/SYKEI5LuNBU1NKKZqumUhfxeYqI/c8YCUrj6hZtdetdEUqMp4uhNuTMBAgyS8q3d
+	 WwFTFW5Umr7w0u1+32oDDR2FeXWlqsGhf0AaJrzjZGDQrsuNBpbAV8JYUuFSWQ1u1hA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQhx6Yf0;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SEm2vt8I;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D17F606D82A
-	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 14:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C75606EE82;
+	Sat,  7 Nov 2026 15:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MQhx6Yf0
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EE01F0089F;
-	Sat,  7 Nov 2026 14:40:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SEm2vt8I
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556851F008A1;
+	Sat,  7 Nov 2026 15:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794062408;
-	bh=u8rarf8t3eUzmhOcq5q3dMjzeYju+Xd6LywiI+qeGtI=;
-	h=Subject:From:Date:To;
-	b=MQhx6Yf0dHBx7KtdD68XJFEt0uLtN0bwhncuJ8b+9BXNl4/57aiOhSK+Os98v/CG6
-	 CTPe0nkvhmj/XyRJQLtOBo2t48gp3Z5vMGE0qxBfDCBhVv/YnIO2CZj51j3bWaXxA/
-	 biQ2uLz2RkknvR01Recd/pATH/MP+uZPyfGHClI06XopdqbFuJ7kzqlPTXp6nXcl9o
-	 jTc2FpRQ9fhe/5jZWJvauDttZFrA6buTqHHt4wSj0MzGxhQOpACd0rId7h4A5y5z99
-	 P5ejYyVYzjPx6mJx8qMsRTtE+HYxnVifKCNddakejICMobEUHJ/lWvBNN37OR5hcxe
-	 fGwz40NRIXEeQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9D9C9380821F;
-	Sat,  7 Nov 2026 14:40:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794064607;
+	bh=WcuhQ3hFkrb8fQW7yfgUWsh40+d8FzchJmD0Z3lY1go=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=SEm2vt8I8KjX5pguj4Q5aJz9jX1eNs7x7V5O9ZQVk+YVFE19U/R7fV5rL0nsx2eK/
+	 bKgTe1ovA4ocWzOuyQVDNPE+xkYmpWvqgEi06f+UHvN9p3CRPkqkfh625BFSUoSCuy
+	 fIVWJw7OTF9MnSGV0OgDb+iUMkhQypncKbjbGweOHMQQIMBHkeMS1r4Fbz02hhHvI9
+	 gGY+CetZy3+4qa8h2SrIsm2lq/IV/XVdIBd3Qs+bfJM/Zkfbs8EVZgmjRI/4HWbBpF
+	 vpyYBoVj9sKVksFgqyrSSe7Tgzq1giBvOpUsBesFyTjIihdmeuOjIqtnHFDYzPZ7Pi
+	 JkzIrlDkQJPhg==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 2372B2AB30DE;
+	Sat, 07 Nov 2026 15:16:45 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: ldewangan@nvidia.com, linux-spi@vger.kernel.org, 
+ Weibin Liu <liuwb@xiaopeng.com>
+Cc: thierry.reding@kernel.org, jonathanh@nvidia.com, 
+ linux-kernel@vger.kernel.org, swarren@nvidia.com, 
+ linux-tegra@vger.kernel.org, zhugl3@xiaopeng.com, stable@vger.kernel.org
+In-Reply-To: <20261026132146.3806906-1-liuwb@xiaopeng.com>
+References: <20261026132146.3806906-1-liuwb@xiaopeng.com>
+Subject: Re: [PATCH v2] spi: tegra20-slink: size words with
+ spi_bpw_to_bytes()
+Message-Id: <179405581085.3424803.13259814176477205026.b4-ty@b4>
+Date: Sat, 07 Nov 2026 12:50:10 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,30 +65,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179406240718.1202517.8062458441676875187.git-patchwork-summary@kernel.org>
-Date: Sat, 07 Nov 2026 14:40:07 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=cHLJXGgW2xV+vqVUshhFt0YpDCp2IMvEvkL3bjmPUsw=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeO9yxTDMMijji+X+v3uYPn7qVbq7JYlxpcSqWQVmzn
+ 4t/yvXvHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZhIqgcjw3oV986U71pXxKJ7
+ Z6klyGn+a10Tflstze+e8UnWzTOLyxgZlnHUf7sb4N/zIyCDoy3CNu3vZ9se0zveeQurd7THnXT
+ jAQA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+On Mon, 26 Oct 2026 21:21:46 +0800, Weibin Liu wrote:
+> spi: tegra20-slink: size words with spi_bpw_to_bytes()
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+Applied to
 
-Patch: [v2] spi: tegra20-slink: size words with spi_bpw_to_bytes()
-  Submitter: Weibin Liu <liuwb@xiaopeng.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1193775/
-  Lore link: https://lore.kernel.org/r/20261026132146.3806906-1-liuwb@xiaopeng.com
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
+Thanks!
 
-Total patches: 1
+[1/1] spi: tegra20-slink: size words with spi_bpw_to_bytes()
+      https://git.kernel.org/broonie/spi/c/6a50b668331b
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

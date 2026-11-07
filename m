@@ -1,48 +1,58 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794056165;
-	b=aSnvV+PBHRL43QQCyQzd+rU0jBAmGtO6rDs1MiM7vmCA6ESDGKDits3vI3M5B7sbcDcP
-	 53VyHJjZyqwJvBsAbpksXEFzvhlF7KgSZujSzjMJv2LBYUjyNaybQCIcBvW+SzTYQvnRa
-	 jefBjLfNuchomOGy/QI7lfQ5ZL9BaC3Naq0gtU11Od5j7BzKdVlv40uTrp7KQEGmeHJmf
-	 ZLAVJgbqNl6pZL15BY7geNZvFmEDHBDX0WgNaUinTae2C9PAxauW066/QmvKPqX80QNxH
-	 EVKGIgC7IDzcCss7Z6sOEwrvlmoaBRe6XpRmb2Hzi04dF8MzRTc02nUFjFm0kTKM8sA==
+	t=1794058887;
+	b=iMekVB7zO+LQ6UnHYYADX+zCPatf8DS9VyQkZYEC3+ZGejua81FsjWZZwws+LM8oI8SG
+	 /GliM3agUvgjhqS+TffYOsIeLe6CyqSbJi2htMMu+r/CQJ5z5q7QsceSMexDf0ZgIh9xH
+	 l0fD7TvNFx+ZbHCHnb6Knp6DSudH6TSciKMvn9CivkoI0J6D4xft4dqvkuJrbGDHIGO73
+	 4I6Ne/qMapkqFofCvkYiv9q4Zgv8X0Df2Mo97R2IHWPf7Yl+5YG0FnCy8oV2wOD2olgVj
+	 fqbG5TeO4bbEdF2ZvSnjoc3OkNsttdJEp1H7nBACNG9RU1L9NnVgJytqiFgJrkBRkFg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794056165;
-	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=UCE3NbaID3E5C798LUsUaYaoCronIRnRlzf++jSypMo=;
-	b=nX0lbimlxzZXTOkBqHPb49jtwJpJ1oq5/ccqusVQlm/SgYFsEWK/gmRzzwWkHPbm/1YH
-	 HPVXqrGGC0rMxOcNhFFeIPkeSD+LzDUXwDVvcOTmUv/SP/FvCUYRoG9uVVr0spbOf0C83
-	 qjBJt3JbLFn5rxeHHzp2Ec1NISJErsZ7X+Py71GrUl2FDCyhK3Jw+aqAbbii4dNFrUGtz
-	 oCvVadXtq2j01bSxzRlv+qkqch3Qt9cDHSDoQ4m1eZV2NEqW/gksqAvQLeCRsTbZioHND
-	 viRD4Mns0WaFzjyO7ryFQZLkhhVxZbibGVkYrbq2KsFXDWJi8gK206EREbmt1DZnBzw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794058887;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=sxlRFymConWQJ/LilUMf3Ms8/xKFLsDClNm0h78DigA=;
+	b=5RSgwzN8cLTGrV3mTXYmgF+XLdQCzHerfpFaap7U4DLoBqAnb9oypCC9lnw5T2PxDYSO
+	 kU1j8GNk5uiLi43/ZbY0TaygcZpzM1Vy7X7TWg20d89ZJhqX5Op2544xmuqx6qbM9W06g
+	 Zkz4UMH2stslg9mddiU7giRSL6olNylJAlr9z5eDQcU94xb21/dffs9EDHivI/DPCFzIK
+	 Rc0rdIoI4gpEUdZ5mG5aJPibCLnnyWgfdXH/gnyKb0DdEypyi6oawKP5c+4EI1yGmjfEr
+	 iU599NBTGK0l9T0YkJgttT1Y2xA1MG2rRG10xbzyQoktMXUcRXtVaYRlXrPYZsincCA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NC+OQUPE;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWUoIAFd;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9238F606A326;
-	Sat,  7 Nov 2026 12:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35F8606D802;
+	Sat,  7 Nov 2026 13:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NC+OQUPE
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E32021F0089F;
-	Sat,  7 Nov 2026 12:56:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FWUoIAFd
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D5831F008A3;
+	Sat,  7 Nov 2026 13:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794056165;
-	bh=UCE3NbaID3E5C798LUsUaYaoCronIRnRlzf++jSypMo=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=NC+OQUPEUbDREDxaVQgMtnSYRSxbMOCOUEHTxIwXwojL+K4F60FAIKzlEfw9J0Vgp
-	 QK875kemnk6CgPCoIKmYK1sF/Ll1zZtVLNFSt3kc4TFfP5mtLlZw++mFqo8rIA1Qyg
-	 rMoVxGzhzs9ytKPPwhwmuKZAQkwOm3tQQodHRL8kbXIDcNXYt3VAMd3XRIBEzEKMhd
-	 MjyBl5fcwPWwRZVK/30kkOZjLN02DBuYkv70WdrZuJHi18WmbOQluBLdM0/DZ+4iM/
-	 /keY7LNOyJ48oCeROKbCe+QGo0AcblAtHQEQ21+VvpBaBzp3RpJT8clqKtDZGpFW2M
-	 Id1Ey2L/1zbfg==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 70619299A85C;
-	Sat, 07 Nov 2026 12:56:02 +0000 (GMT)
+	s=k20260515; t=1794058886;
+	bh=sxlRFymConWQJ/LilUMf3Ms8/xKFLsDClNm0h78DigA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FWUoIAFd83ogdJ8oEKd/6J+7fQzXiMs95c+BmcnUnP5Y0KwMj7N0KhrwhZ5PP03Tz
+	 YSbOJIr1HvgrF11s74sVgaxjtjglWGXwSeHpvAmgtGVPE5GIyXg72mBldz1mRv1xcG
+	 GoBNIe2i6bgJ8GIykE+Ni1rpTbOCtTYbXV4hFOVlpORWvplkIA5ixjek1YXxAJk+C7
+	 MO4iBuxYoEF6GofN+P4C64tY/oBdL7rtTzobgwXTEe+4ZBTip0YP5Sk0/kGEA432lV
+	 Ivl+ilQwJYfGMMHJwbN5h//9FJ0PnKdCdQ/QXhVZUMmz/1h+KjT3RPIkWRIrbrw80y
+	 mjiCZ8Q7coMOg==
+Date: Sat, 7 Nov 2026 21:21:13 +0800
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Paul Cercueil <paul.cercueil@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	Tanmay Jagdale <tanmay@marvell.com>
+Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add workaround for old Marvell
+ firmwares
+Message-ID: <au8lyXiMUSvcdPWx@xhacker>
+References: <20261104100643.162694-1-paul.cercueil@bootlin.com>
+ <20261104100643.162694-6-paul.cercueil@bootlin.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,56 +62,70 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] spi: pic32-sqi: guard against empty BD list in
- pic32_sqi_one_message()
-From: Mark Brown <broonie@kernel.org>
-To: Li Ximo <lixicaicai@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Wang Haoran <haoranwangsec@gmail.com>
-In-Reply-To: <20261103084707.1582675-1-lixicaicai@gmail.com>
-References: <20261103084707.1582675-1-lixicaicai@gmail.com>
-Date: Sat, 07 Nov 2026 12:56:01 +0000
-Message-Id: <179405616110.3424803.15364430590351990795.b4-review@b4>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1394; i=broonie@kernel.org;
- h=from:subject:message-id; bh=v+xm3DXBEMWN0zz8hpvA0YXrjsZ9eSJnSciEEYdjm5Y=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeyz+SfND9uDt9p9+Kztg5R5sfGR7JkzsqbV7mwOqvs
- eeJr/7BjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEwk5ijDH66lM7L0VLK43LWS
- ar6tkHCbHGdx4shf1eWGZad/mkq9ymP4zXbS//5rP69cj3fV9j7el6SEC498jf+3aJLNFeXyF/V
- XWAA=
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261104100643.162694-6-paul.cercueil@bootlin.com>
 
-> list_first_entry()/list_last_entry() do not return NULL on an empty
-> list; they return the container_of() of the list head, i.e. a wild
-> pointer.
+On Wed, Nov 04, 2026 at 11:06:43AM +0100, Paul Cercueil wrote:
+> From: Tanmay Jagdale <tanmay@marvell.com>
 > 
-> The SPI core rejects a message with no transfers, but it accepts a
-> transfer that has neither tx_buf nor rx_buf. For such transfers
-> pic32_sqi_one_transfer() iterates an empty scatterlist, queues no
-> buffer descriptor and still returns success, so a message made up only
-> of buffer-less transfers leaves sqi->bd_list_used empty. The subsequent
-> list_last_entry() then returns a wild pointer through which the driver
-> sets BD_LAST/BD_CS_DEASSERT, and list_first_entry() returns another one
-> whose bd_dma is programmed as the DMA base address, corrupting memory.
+> Older firmwares from Marvell used the cdns,xspi-nor compatible string
+> for the Marvell-specific xSPI IP, which is incompatible.
 > 
-> Bail out with -EINVAL when the BD list is empty, setting msg->status
-> the same way the timeout path below does. The xfer_out cleanup path
-> tolerates an empty list, and normal messages are unaffected.
-> 
-> This issue was found by static analysis.
-> 
-> Reported-by: Wang Haoran <haoranwangsec@gmail.com>
-> Reported-by: Li Ximo <lixicaicai@gmail.com>
-> Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
+> Add a workaround to support this by assuming that if the "xfer" resource
+> is found, it means that a Marvell IP is used.
+> S> 
+> Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
+> Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
+> Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
 > ---
+>  drivers/spi/spi-cadence-xspi.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
+> index 48a109f3fcdb..d326589a6ca3 100644
+> --- a/drivers/spi/spi-cadence-xspi.c
+> +++ b/drivers/spi/spi-cadence-xspi.c
+> @@ -1301,11 +1301,21 @@ static int cdns_xspi_probe(struct platform_device *pdev)
+>  	}
+>  
+>  #ifdef CONFIG_64BIT
+> -	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
+> -		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
+> -		if (!res)
+> -			res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
+> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
+> +	if (!res)
+> +		res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
 
+This moves the mrvl specific code to all users, so I believe this
+needs dt-binding update.
 
-You've not provided a Signed-off-by for this so I can't do anything with
-it, please see Documentation/process/submitting-patches.rst for details
-on what this is and why it's important.
+From another side, this assumes other users doesn't have 4th resource
+but what about if they have? they will get "Marvell-specific xfer
+resource passed, but ..." warning below, this confuse the users.
+I don't think this workaround can be added to all users.
 
--- 
-Mark Brown <broonie@kernel.org>
+Lastly, does the "firmware" mean dtb? But per my grep, I didn't
+find any mrvl dts(i) uses "cdns,xspi-nor" compatible string, so
+this means the dtb is outside upstream, then can the firmware
+be fixed instead?
+
+> +
+> +	if (res && !cdns_xspi->driver_data->mrvl_hw_overlay) {
+> +		/*
+> +		 * Handle old Marvell firmwares using the cdns,xspi-nor string
+> +		 * instead of the marvell,cn10-xspi-nor string.
+> +		 */
+> +		dev_warn(dev, "Marvell-specific xfer resource passed, but using the cdns,xspi-nor compatible string. Please fix firmware!\n");
+>  
+> +		cdns_xspi->driver_data = &marvell_driver_data;
+> +	}
+> +
+> +	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
+>  		cdns_xspi->xferbase = devm_ioremap_resource(dev, res);
+>  		if (IS_ERR(cdns_xspi->xferbase)) {
+>  			dev_info(dev, "XFER register base not found, set it\n");
+> -- 
+> 2.47.3
+> 

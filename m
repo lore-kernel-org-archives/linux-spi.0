@@ -1,94 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794011611;
-	b=VMTl50/CPengQVgisYTewoEbxhUsHZSqlDqUQMWRNl3NHFJNVZt5Vju5sp2FyUIOmIXy
-	 h2PybTeBhussXJGhangoVl+IpcraWNjcfG+rChHzrB51KRlvw71q2M/Snxkg8VUH0v0F7
-	 Ygd3S4aQ+wkV/EG1w5u9/TqiI6fShPlpRfH5qc84VOs4potd/zuEbNwj7bJ4IUUnVJjUf
-	 7DOWZMHN/9ZiFZJFxVM2jWrRSdc6K2+taHh4IryRVb2nbT/f3sjFJOzBDSqkG6mT3bShQ
-	 vUoZGCsqsim3vsir902GF0dGNO6VWHMZJHN8sRAvF5G/oVRX0yc3eiSDrZXfZyBwnpQ==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011611;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
-	 Subject:MIME-Version:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Transfer-Encoding;
-	bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
-	b=LaiMKEwdPOAvSIcAwyU3kSzvIGU1VbGDkWbLYpgcXK2HmT7NpXOR33aW3MIHof1mLffm
-	 4xt/ab85/hFcoLE7KFItL2PMxCOxpDV86lDRlms08PvnjGTE7PUNaeUoEEjKqlqz0dnWI
-	 T6Z6C2WX9lFfhlbXCavnjUiTmevTMg/0MN4wUZ5DA22hkUo0IrS8TPUP3PDwYY2lTp6FL
-	 qXLLjTlRUieQjLa0LbGTyA5N38jmIh1S6LDBPBqN2uZH4cJwmpqIQXICLn10uMAp7YcRs
-	 pn+DU0XTje1dL2AvbhZHXb2VYmcz6t33/PXu+1mDcpbQfyXvLD6uSaivNpyaMTyg9Rg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jq84orGE;
-	arc=none smtp.remote-ip=170.10.129.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794018967;
+	b=YGFsihPa0E7bJkJjgq8a9MiwTAq2IDEWKrqmGaWEH5D/LPkdiVLXPIhB6L95p9adnOZA
+	 QdJm5pla6+fmpSjstvDanB3UlA7MX5CIIkJJqkGRgGxJAxqaxxXAFR4yOTH1H0C42DDxB
+	 cB0njosXkBGAzw9XIyYyfDpao+jiYPKUXJZvUx6JB23jYHlwM8ugKu8ww9Wm4CEz7WnIT
+	 yN+bFdlxO9glw0i5zRcBEOmNBj9D3EpdPvjWlsnLncwh90zDLQp8Gy1I2bwZ3NxSN8rI5
+	 bn2vQI4PE7ACcG3vxKCbPrf1nytXsMgIffe1UrOLedNJOQ52xD7VBy1ptw17h3ZMkxQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794018967;
+	h=DMARC-Filter:DKIM-Signature:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-Zoho-Virus-Status:X-Zoho-AV-Stamp:
+	 X-ZohoMailClient;
+	bh=v712UGBT916bmhBnvp8NE4rFlnCTJxp0AJI2r2bH/p0=;
+	b=JHoTH4YK0lg+Qj8TblDRnqt9CwN5DzknFg1LcfobdVZkVxrkt/kuizoy6gLTF17jCLNt
+	 RwUkANXpMrw/pEeH2tZzQ4lbxAyibdJCsGGS2wuL1MrGuwZxaFHCr1yeF1BPULLrEKasu
+	 bh2TU4aBAn/S7D8iCKEm9zN1dN/EdMhdlmmIrPWP/q53R8yfaioM05gthYzvxMjmQdpuE
+	 s0v78sYT7qRgSB2hJJpf7RG60ZzE5qfgjEUSVl2qJCSd3V6ND9u5tpGV3ppXT/YPr6uRN
+	 wBWP5jugjEkz4PQqut3J5nbVglpC7JAbwFWKRPnlKlvy9QZPZE7bj/twqqMDtD9qWnA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=collabora.com;
+	spf=pass smtp.mailfrom=collabora.com;
+	dkim=pass header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ifU31Qgi;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=165.173.180.11
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com [165.173.180.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8E5606A339
-	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 00:33:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F8E5606A339
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4576606A32C
+	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 02:36:06 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E4576606A32C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jq84orGE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794011609;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
-	b=Jq84orGEbv5gemYodNaS/Zkp8XdpfsiR3DASh0ID9xN6e32GiapCeUe7Exlx5zpmP4z1Lu
-	qUByevFMA7FPHEBLZ8d4si6IiBXsoaIAdjX9xlOEup0ZQvjpH3h/L7WiQVKqMwGN4UulHx
-	Q9GyBcpRqoo+SIauS1CfuaqirdTVM3U=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-ZBM6wl9dNWioz_1MdBJyvQ-1; Fri, 06 Nov 2026 19:33:28 -0500
-X-MC-Unique: ZBM6wl9dNWioz_1MdBJyvQ-1
-X-Mimecast-MFC-AGG-ID: ZBM6wl9dNWioz_1MdBJyvQ_1794011608
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-53395d51187so20710261cf.1
-        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 16:33:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794011608; x=1794616408;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
-        b=G/U17h4TKi5YgSYBpxvBUuR8zwDlNxFp2JKLHOlCzUBrsYu/HsijqTj+3M2qwkMe7M
-         kMuulWlgPsRfQcftoopWjMuHhvoA5p/vreVP3ltmT+p4E7/u8BYS/v3p0IdkT+nzGhtz
-         4lWIRi4h/WsPcfT8ZH3ASVCdiBZMeLRL1MbIkksuiblzgpnMq7rBJUViGoHK9qkNJWHl
-         5khdJ1Uf2WYbFPtEJIbsPG2P+/p2xSr0lsAl0Bh+o6lCgtE9kRPjwUFcpuo0K+Wk5gIh
-         wPfHdIJgXRa3xwr8FjSKderamfQLq+fJhiWzr8MP1YW8az9WfgfUxAJ84yWmauzPq2S4
-         +CrQ==
-X-Gm-Message-State: APuU4Z/8igiyTNxI/kUhynlcOjl+5nsVg8D6mTiyCj2y2Q3B9NBnahKs
-	KKkh2iWem2CHhpdgBmOIomlFiVOIwDOyZgPQ0suhx9ExQI9KYnRtJkr7dH1A0apy+q9JCWunUao
-	3zKGOSkXK57gAXf7XdJF3730rjb/qVQqpH9cdZLuemgPZoWustYx/TbUdj0xE8Q==
-X-Gm-Gg: AYBFou0BVB2M/iuVko9oU0BcyU6VQ1WUpZUf1BL/41Q6zl7U8cFMFQGrlShLBYX3LvF
-	k70bcjgkpidyiwafv8DUgNnzMNbvc+CFYcOrOxXwS1l0ZWm0eSvpQCb6yurSVPXD7dHWFLL1b2L
-	ZxQ6rhbcWHwH67gMsOZrkASZX4GZAUCTPXpdBaZPXcsy05lpT8tWtknzwnFTHoKy0HPysnnYv3r
-	nYmyO1bCBcWyab5mN3boJgaTPaAy0ho6vWIHrWhXIhwN7mJCV445SKXKes4o/6t6xQLjM88WgnS
-	SEXxleWV/nHexpyN2y5XS9a5qsRUR3ZQtLu4HN2pdOO/DOIr+9o3He8Hvh+8eyh+GACrKQ2BRXw
-	5lWdXkJU6qmiSOuLTfq94unqJaEu0NM08TSi3HzR2v0fG1FBtHrCW2eHneWP84d4FyN36+INhTv
-	AQCwiY+TcxzpRDlQRP
-X-Received: by 2002:a05:622a:4c1a:b0:536:64c9:b1b0 with SMTP id d75a77b69052e-54e1496d927mr73578461cf.36.1794011607859;
-        Fri, 06 Nov 2026 16:33:27 -0800 (PST)
-X-Received: by 2002:a05:622a:4c1a:b0:536:64c9:b1b0 with SMTP id d75a77b69052e-54e1496d927mr73578081cf.36.1794011607417;
-        Fri, 06 Nov 2026 16:33:27 -0800 (PST)
-Received: from bmasney-x1.rmtuswv.csb ([69.43.42.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6a2c5d9sm32684126d6.10.2026.11.06.16.33.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 16:33:26 -0800 (PST)
-From: Brian Masney <bmasney@redhat.com>
-Date: Fri, 06 Nov 2026 19:33:09 -0500
-Subject: [PATCH 2/2] spi: pxa2xx: convert to subsys_platform_driver()
+	dkim=pass (1024-bit key, unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=ifU31Qgi
+ARC-Seal: i=1; a=rsa-sha256; t=1794018955; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MtPclBf6Oq00X7GJgLcyoqNjzMkXF+RPs8dNEViqwb3kWHkglMRvBofPGGVnH553GGDEry8yUQVJaPOy8Lr3gt2N10s5HENi0Bor1/yjz2gmNZKYAMzXCBoAUDhkotuPockGqdVgny2y4rQBZVjP+o5J6kJUKRmwZn3uo7NCI6k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1794018955; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=v712UGBT916bmhBnvp8NE4rFlnCTJxp0AJI2r2bH/p0=; 
+	b=AitNI4VBDs1jIkOAA+E/qaRLrI0+tdNbgiL8bPP22bdOmprcCLxfG/HbDTmRKhDQNExEh4lvr1MVgDXa1JRf1meBADEiKC90xtq6fm7BUik3oPViA8MSZlHAmx4/NpUu3ZVE1VVUvnDN8DuGsoEtOyNObpKE7i+3tfBtG/ZNBhI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: a=rsa-sha256; b=ifU31Qgix9ED1k9JqJjLhZtis7WD3n5gK5HApCN24ahGx/mA4YNN6WDAjw521c8HHdiWP5oOrjtrbdm+Uu22KBG//5Q/34Ys6d81jrEtr8qhXdRA8lkZVUObNDKxFkLy5KcFI4mKkYyi3C963KqDFSQDP9riezWXCmDadbpPObs=; c=relaxed/relaxed; s=zohomail; d=collabora.com; v=1; bh=v712UGBT916bmhBnvp8NE4rFlnCTJxp0AJI2r2bH/p0=; h=Content-Description:Content-ID:Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:List-Subscribe:List-Post:List-Owner:List-Id:List-Archive:List-Help:List-Unsubscribe:MIME-Version:Message-ID:Resent-Sender:Resent-Cc:Resent-Date:Resent-To:Reply-To:Resent-Message-ID:Resent-From:Sender:Subject:To:Date:From:Message-Id:Reply-To:Subject:To:Cc;
+Received: by smtp.zohomail.com with SMTPS id 1794018954405705.4847357899479;
+	Fri, 6 Nov 2026 18:35:54 -0800 (PST)
+Received: by venus (Postfix, from userid 1000)
+	id A49FF180312; Sat, 07 Nov 2026 03:35:51 +0100 (CET)
+Date: Sat, 7 Nov 2026 03:35:51 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>, 
+	linux-spi@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	Heiko Stuebner <heiko@sntech.de>
+Subject: Re: [PATCH] spi: rockchip: Fix runtime PM underflow on CS error paths
+Message-ID: <au6LMNctO1fx_Kcl@venus>
+References: <20260806191854.922530-1-eagle.alexander923@gmail.com>
+ <179397711825.3231166.14531785924256368148.b4-review@b4>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -98,75 +69,121 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Message-Id: <20261106-spi-subsys-v1-2-a51a08f21cf2@redhat.com>
-References: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
-In-Reply-To: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
-To: Mark Brown <broonie@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
- Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Brian Masney <bmasney@redhat.com>
-X-Mailer: b4 0.17-dev-d96cb
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1444; i=bmasney@redhat.com;
- s=20250903; h=from:subject:message-id;
- bh=g2ewlZkjpkqGNUKfIKVBhFWyd1ww0rgtdqdUZikqli0=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLLeFZ79Gnr8VqxV2xXlxut6DlN2X/yyUWh96xJGle9LF
- nbPUbA51VHKwiDGxSArpsiyJNeoICJ1le29O5osMHNYmUCGMHBxCsBErngyMjzPmXZdcsHZs9/2
- 3jzqOjmn+MO0M+ZTSl48PrLIZ6eQvqIdI8OJf/9t3lUfZ6iJl3m6zNZU8EJo/PFFj1fs3Xz9N4d
- mXiYHAA==
-X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
- fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: tzUMiUYh9p9rRzqSS_JURnOfBWFNIRZxa53DJaX8WXg_1794011608
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="loz7exf7kqwri6c5"
+Content-Disposition: inline
+In-Reply-To: <179397711825.3231166.14531785924256368148.b4-review@b4>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/293.995.13
+X-ZohoMailClient: External
 
-Reduce boilerplate code in this driver and convert it over to use
-the macro subsys_platform_driver().
 
-Note that this needs to rename the driver variable to pxa2xx_spi_driver
-to avoid a compilation error with the macro.
+--loz7exf7kqwri6c5
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] spi: rockchip: Fix runtime PM underflow on CS error paths
+MIME-Version: 1.0
 
-Signed-off-by: Brian Masney <bmasney@redhat.com>
+Hi,
+
+On Fri, Nov 06, 2026 at 02:58:38PM +0000, Mark Brown wrote:
+> > The Rockchip SPI driver manages runtime PM reference counting around
+> > chip select (CS) assertion: pm_runtime_get_sync() is called when CS is
+> > asserted, and pm_runtime_put() when deasserted. This balanced pair is
+> > expected.
+>=20
+> > @@ -256,6 +257,7 @@ static void rockchip_spi_set_cs(struct spi_device *=
+spi, bool enable)
+> >  	if (cs_asserted) {
+> >  		/* Keep things powered as long as CS is asserted */
+> >  		pm_runtime_get_sync(rs->dev);
+> > +		rs->cs_claimed =3D true;
+>=20
+> This sort of boolean tracking of reference counts is extremely error
+> prone, and note that there are two chip selects on the device.  This
+> should probably at least be per chip select.
+
+I ran into the same symptom while working on RK3588 system suspend
+and came up with a way different root cause.
+
+I haven't found the time to investigate more closely, check for a
+proper Fixes references e.t.c., hence it has not yet been send. So
+take this with a grain of salt, but it seems to be not Rockchip
+specific:
+
+-----
+
+=46rom: Sebastian Reichel <sebastian.reichel@collabora.com>
+Date: Sat, 5 Sep 2026 00:26:40 +0200
+Subject: [PATCH] spi: Fix runtime PM imbalance on pump transfer message err=
+or
+Cc: kernel@collabora.com
+
+The current SPI message pumping code may drop the runtime PM twice when
+an SPI message cannot be send:
+
+spi_master spi2: noqueue transfer failed
+rockchip-spi feb20000.spi: Runtime PM usage count underflow!
+
+Fix the problem by always keeping the runtime PM count increased when
+exiting __spi_pump_transfer_message(), as the caller handles decreasing
+it.
+
+Note, that the function already keeps the RPM usage counter increased
+for the error paths following after the prepare_transfer_hardware step.
+
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 ---
- drivers/spi/spi-pxa2xx-platform.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ drivers/spi/spi.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-platform.c b/drivers/spi/spi-pxa2xx-platform.c
-index 849a14cd0343..2151ed168e57 100644
---- a/drivers/spi/spi-pxa2xx-platform.c
-+++ b/drivers/spi/spi-pxa2xx-platform.c
-@@ -198,7 +198,7 @@ static const struct of_device_id pxa2xx_spi_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
- 
--static struct platform_driver driver = {
-+static struct platform_driver pxa2xx_spi_driver = {
- 	.driver = {
- 		.name	= "pxa2xx-spi",
- 		.pm	= pm_ptr(&pxa2xx_spi_pm_ops),
-@@ -209,17 +209,7 @@ static struct platform_driver driver = {
- 	.remove = pxa2xx_spi_platform_remove,
- };
- 
--static int __init pxa2xx_spi_init(void)
--{
--	return platform_driver_register(&driver);
--}
--subsys_initcall(pxa2xx_spi_init);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 40cda0037ea5..9cd1cabfa0b3 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1951,7 +1951,6 @@ static int __spi_pump_transfer_message(struct spi_con=
+troller *ctlr,
+ 	if (!was_busy && ctlr->auto_runtime_pm) {
+ 		ret =3D pm_runtime_get_sync(ctlr->dev.parent);
+ 		if (ret < 0) {
+-			pm_runtime_put_noidle(ctlr->dev.parent);
+ 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
+ 				ret);
+=20
+@@ -1972,9 +1971,6 @@ static int __spi_pump_transfer_message(struct spi_con=
+troller *ctlr,
+ 				"failed to prepare transfer hardware: %d\n",
+ 				ret);
+=20
+-			if (ctlr->auto_runtime_pm)
+-				pm_runtime_put(ctlr->dev.parent);
 -
--static void __exit pxa2xx_spi_exit(void)
--{
--	platform_driver_unregister(&driver);
--}
--module_exit(pxa2xx_spi_exit);
-+subsys_platform_driver(pxa2xx_spi_driver);
- 
- MODULE_AUTHOR("Stephen Street");
- MODULE_DESCRIPTION("PXA2xx SSP SPI Controller platform driver");
+ 			msg->status =3D ret;
+ 			spi_finalize_current_message(ctlr);
+=20
+--=20
+2.53.0
 
--- 
-2.56.0
 
+--loz7exf7kqwri6c5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmrujoMACgkQ2O7X88g7
++poXuw//e/AAKsrPGLc0TGTC0FEDRJWx2suSUGQbQhMTSKVm4mDU0ed3DHZU8lf4
+btu+nzbxqdX4I5Je2w3lbeLk5jJKj0zduPNG0qVKq4R8N9Z0qETKYxBPZjvHQBa6
+88Vbds8T25hRjOD3Icv3xjMhytvsAfhzkdRQeruzkUdCeiAxACPzeW2s38EPfklY
+BHW2UoufPdO/j2o93TQ+AMUMXS++7vcziulWt74nw64p3mbtv302rJG0lPKge2Xm
+SIvjZ03zYcUiLVALNOj3VvxRCbln7P0+WccawSdfS7mqZioKQ2eaHB6SGxz81gKb
+oTvgY2NufpbvYt/Q7AB5TFzhR1e6/rgtGesFSv8k+J03r59aZqzc0qU4A8xjP9mb
+VHUkDTroHdJSj0bdlOwezfNxJ568wDzEvUdOyIlrW3xcMSki3ODjEzZR7f8qAavD
+rahgjmg8JFnRyMi8xEERXQxHIFmbF0V7z0RtXpGMZpSvaDdBmkmIZqxcmNh8Ki8i
+ZDnQeoGJzoKh0PmMqrJdiHoLdSlVI4zUe9QDA4vEfapwXNHqXaoX/GXV40+GKNSQ
+hayP/UwHBRCrTJF4Af/R0VtGIDF/uSX3Ws/0j26TQj0hiUTXO757xLrzjZMiYtBq
+1aNpoFrnn/vHK4ETd9/3UP0rVZwfsuopY6scyn4LJnvIZDy9Y3Q=
+=Lhsf
+-----END PGP SIGNATURE-----
+
+--loz7exf7kqwri6c5--

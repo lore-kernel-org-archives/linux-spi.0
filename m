@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794053323;
-	b=n/6GPPOKk9dYJkglMHI36j7KYMG1PyFijnx1jyjhTDxtZNEquJVnLkQ/21ZjdMqUiBYA
-	 iTjMOUAzVlmX8XDUMk3L1F8cx/NfiJuJBsaLxDIuTPeaWawSCFqXojJQzakPH/ktj+ARh
-	 rL3PNucY8Nr11e4uN+Js+I+43oM8nDa6pkMJwa10uclL+elRo3ukK5A/cl4UvIFoM/d/c
-	 h/7xVjcP68p6zIqxdam2mVoC6QCITVAjeMAD6bisezrcecZclviwhlP2iE9TU14N51mtK
-	 MoboAeZV9S4f9I39Medv3qWuWA7NDiyDBwW9vdddjm2XAKBkMunROQAsuiUpJhrJJRQ==
+	b=ekilFSYO18OG7bNid2NygUhhPUijxzWPCXFn3H7uObEbtQ6ByO3bt0Kf141rTLwkADJw
+	 Oys8DobuJVjaSYZp5cZKp1KYzWFBCnT6tZJUPwdLSviFX8U+Vp5P8G9hsZs7W04+ogOq+
+	 C7CI5INK3Ne6WVAY+zAXWFKA0Ancewymkcb2uIdCI/NZ9ew16KoQhOz67kzsIiCnuralo
+	 0xebjXs9YZ2Wcm+X5CH5yv1rwXjuHzMQ+wolo56bZwltE11V8Gowzg1YLQRV04y4iStAW
+	 +WXe/hkvlCdyfWHmonU2lrCe/iRgeYIT2J4Zlp+HwIKRBVVs+8pCRVtJc2oYSCPdb/g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794053323;
 	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=5nSQkXmXfxxM7Nm4tDDJOggvKcwjPg2ZURcHL5eMDZU=;
-	b=XrYkWwvMQ562urcYcxrlTBQIuSXWy9nP4XWfWq0s90+5DBUKnPL9VnPv1ew+pSN98K3R
-	 Pwe5I0gGvSiwDtnapu12D/07eOT4BfoS5F4UQyDfK98iK+wmgIdAVLNrCYGygWhip+u2s
-	 yYruYBHUs53FSAKLqs73qBV5PYGYrpVgaFecELW1GZjJoZ+FBgJYzMjm99DElWYyjuban
-	 2jIo3HyxBgDnorurgDvVDN9RWhWpbbFV38YgCgdg2VaoWkLlH/2uqcGbfMduSz3L39iov
-	 gBI2cQC17IzA4BZJSC5WsFqnlyah+3rqL0x6mq/sRcao/0CHUUndQJIZYcFVeAqtFkA==
+	bh=KKOKH1RNBhgOxwIAjLKGZKKnrp47rIinB2DXJQ/zAaY=;
+	b=rxg9KtxvHm7Zjm6n7Ctyz23g7PwIOfn+1aMz6Z0TWfjovhk3xVAakP8gtvy8CWWH/I2Z
+	 S0RvZ3vxqSJUe82qTdA5BIOcD23H0kFrjNQPqdKeS/aFmPlJjjK5KH7IR3eEmB3LW0HiQ
+	 fCBbO7wN9ggTciBExnb8AImP5VKgcT6jW4WHunmgmh6iO6C9og2aGkJ7ds/zeIQVEL8cy
+	 ggX5ies+xIxBcLJseRnrh46qp6IO9NevHB3XJf2CU39FXVwEk80yIZO1fVu/J1AyAeZ9B
+	 OEus0n3b38O6aqOfxKMZ+icfp8rA6Im84bF5S+RuuC+YY8F0o8gpsE3SbiLo6CmIExA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kco8H4wW;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c6zZkezV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D323606A32E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D277606A32C;
 	Sat,  7 Nov 2026 12:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kco8H4wW
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A9D1F008A2;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c6zZkezV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD9D1F0089F;
 	Sat,  7 Nov 2026 12:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794053323;
-	bh=5nSQkXmXfxxM7Nm4tDDJOggvKcwjPg2ZURcHL5eMDZU=;
+	bh=KKOKH1RNBhgOxwIAjLKGZKKnrp47rIinB2DXJQ/zAaY=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=kco8H4wWuC5UfcMStDEe8y/qd36m13ItEovZCsCy8DPmg4eyzim2MWefgVAVCtsYF
-	 fC9qMVtsoHc0/LV9JccFeGX+1QEbLnC33tPHih3whiHLeR41/fbACtGFlW9JUOAYoX
-	 mFDy3qTFTjmFjvC9Jcj1f0FIdXDk76kI8ZZYZet2RAFG9FD5u3mWbIsmP15oWu2ClE
-	 iHk4iBF3wKdc2WMUa6f5e1wgBSganvWTjSiEjPpxdNXNIaf+C6Ya5Q8Ni1heBU1ShR
-	 JyTgk+aaPG4t8zXO7YDIFlRdM0nW43aA3DiPKVChV/7q39Jjlyb4X12YHfCZqSqNKW
-	 vbnSg+rkPptSw==
+	b=c6zZkezVLgrjRnr8N7TtqmjebF5ZBOCHOmVAwkg95mg7J41cEMRitRgDq+lr3RRJ9
+	 qNwQbWFXtSummRnC9isUzproAvHXEgdJemNKqjoJelh8BPv4kquq/v079seDQDqbiK
+	 xTiWqF2FXt/LKbuiWVbO2hNRBvMaaO9jH183fJfnEU5+c1jETWnSsdx/Gv9z+G8STp
+	 plgITm4qsVtpOw1B5ohRyiXAa7IKqNtSgzHyCFozWkADQREO4WM9onh47MmAB9EehW
+	 J6exTvdneWR5cAz8Y37uW1RvdDbATLO0hzxm6gRkp7FT1mSq63aMaxHz8DiQzfu1jN
+	 VMssqfUOK0hsA==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 62ACB28F342D;
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 55B1128F342B;
 	Sat, 07 Nov 2026 12:08:39 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,8 +54,8 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add workaround for old Marvell
- firmwares
+Subject: Re: [PATCH 1/5] spi: cadence-xspi: Reconfigure to STIG mode before
+ SPI message
 From: Mark Brown <broonie@kernel.org>
 To: Paul Cercueil <paul.cercueil@bootlin.com>
 Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
@@ -63,39 +63,41 @@ Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Bharat Bhushan <bbhushan2@marvell.com>, 
  Sunil Kovvuri Goutham <sgoutham@marvell.com>, 
- Tanmay Jagdale <tanmay@marvell.com>
-In-Reply-To: <20261104100643.162694-6-paul.cercueil@bootlin.com>
+ Tanmay Jagdale <tanmay@marvell.com>, stable@vger.kernel.org
+In-Reply-To: <20261104100643.162694-2-paul.cercueil@bootlin.com>
 References: <20261104100643.162694-1-paul.cercueil@bootlin.com>
- <20261104100643.162694-6-paul.cercueil@bootlin.com>
+ <20261104100643.162694-2-paul.cercueil@bootlin.com>
 Date: Sat, 07 Nov 2026 12:08:34 +0000
-Message-Id: <179405331443.3424803.17548465864948492414.b4-review@b4>
+Message-Id: <179405331442.3424803.15701905615212408804.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=814; i=broonie@kernel.org;
- h=from:subject:message-id; bh=4/sNqT1IMJMYOgXLlLBZ9E5WqJ86XdK7cwNGyKM8T2c=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeixyX26l799z0jLjVv5Im14mui18571vU7wNuCVN/y
- u9SspeZ3VHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJRL9j+CtdxlCgYWfZ4zKv
- zKqRVfz2l0oPd9ZU/m9CDxTt1LIXZDMyHPhYckr+4Uzm80r7Hju8esQWHpi03Mzr7cv1kcrKrl+
- TOAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=768; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=o7Hawe4BqoLvWAjz7558tRlzUn7bRYgFWjveFL9lrd8=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeixwWPeN1LmRGoPFK0S+b6iL4eCZxvBExDpC8Vu659
+ yDHCpv8jlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzEYxvDP3uP3OyvljtZt004
+ 4rY8OnR6dLPC5I7ezp11OgEz3G8nZTIybDu/VSIyU0JbdWbwy3yV2Vks0345L33efM5/91RtfWE
+ bPgA=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> Older firmwares from Marvell used the cdns,xspi-nor compatible string
-> for the Marvell-specific xSPI IP, which is incompatible.
+> The .transfer_one_message() function uses the STIG mode, therefore the
+> xSPI needs to be configured to STIG mode before starting any transfer.
 > 
-> Add a workaround to support this by assuming that if the "xfer" resource
-> is found, it means that a Marvell IP is used.
+> Without this, .transfer_one_message() simply won't work, at least on the
+> CN10K SoC.
 
-> +	if (res && !cdns_xspi->driver_data->mrvl_hw_overlay) {
-> +		/*
-> +		 * Handle old Marvell firmwares using the cdns,xspi-nor string
-> +		 * instead of the marvell,cn10-xspi-nor string.
-> +		 */
-> +		dev_warn(dev, "Marvell-specific xfer resource passed, but using the cdns,xspi-nor compatible string. Please fix firmware!\n");
->  
-> +		cdns_xspi->driver_data = &marvell_driver_data;
+> @@ -1112,6 +1123,11 @@ static int cdns_xspi_transfer_one_message_b0(struct spi_controller *controller,
+>  	int current_transfer_len;
+>  	int cs = spi_get_chipselect(spi, 0);
+>  	int cs_change = 0;
+> +	int ret;
+> +
+> +	ret = cdns_xspi_set_stig_mode(cdns_xspi);
+> +	if (ret)
+> +		return ret;
 
-A bunch of ops were already selected further up in the function, that
-probably needs to be moved after here too.
+If we return an error we need to also set m->status otherwise it'll be
+stuck at -EINPROGESS and we will get confused.  This is a preexisting
+bug in other bits of the function :/
 
 -- 
 Mark Brown <broonie@kernel.org>

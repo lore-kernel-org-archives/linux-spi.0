@@ -1,55 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794068391;
-	b=cFhVfRZUL0D9e23sbbY90obcimH38plUJ75JVFPi1FCdgvW+Xc5DOS2WWOcoBRog5/q1
-	 IcxI/KrgwuUdtHdJVGri3hUeNVtsqJgQ2POv8tEK9BS79ihV387U040VYwcyru8mp1sQ5
-	 jylAGW6V8BjyJ/BHmL8lR+pKHqPjRcERsyhTicRXDxyz3KGQDtqI6gs4l7Ah6T0iUYiiO
-	 ykK7TT2wgFkpRLXPZfYa3d103/kpGS49wpMuPhVh3v8/+6bmVG7Zzj5sxnoS3igf3uam5
-	 jMbZGmiW2KBEe+mEIDa2BPhPoAtnZ8wSVjeMdL8bOXiil4AzU7wctw9x6jJ6f+Cb6yg==
+	t=1794075266;
+	b=honO5Gol6SXBEuO7+4Dj8QcgiPKsIiObExou14eyZ/Xu3yhkAVD04yR3FC4YtUSnV4HC
+	 NIIINPtGdtdRlwkNbO1o012g47Iq41PSn43lUZWnQMObLndOYmZI0M4/dQg/ji2R6oFNc
+	 6wDG0NbvT5MAyqW1UyAIrs1pjoDg2hAVQE8/JQEXc5A5i/MaXqa4YAdX0u+2LprtqPamu
+	 WaBKWQG2UPAp78ly/yRzxfC3uYLSvf/6wCDpMxNvHm6VPCC7ljzyo/qO8mX3Y6fh0L4R0
+	 GrlejEi57okpY/L3Hey/YSpZG5KpyyR99rxaRQfDBoS9iuKh+IyebJVSAxfV8HSU8fQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794068391;
-	h=DMARC-Filter:Received:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-CM-TRANSID:X-Coremail-Antispam:X-Originating-IP:X-CM-SenderInfo;
-	bh=/72SgcPEMM3F/N2neV1OG/ke5AY/5EhppmI694uJEck=;
-	b=46u2MfmAEnnJTILqmtpetWeO0czE9nNFMR7MK+cTcnZdZo6SW7y1QeInKPValQF6ayx6
-	 1dd6fUG0oDEdSM48rNFvu1IKfqSn7MQXbiCGQvTvL8YQpVdjAQKxfEKp1d3nxLnfJSAo3
-	 NWpmtD2RW5rsRit6yMeAt4mkY+IsfXc0xyD+ig5jP/64fV0n4ZT5NPiMTsqcEZQZEOl5x
-	 0vMhqCOLY2BLM8+EEKG8qfvlEcIYi86PZjNnAxWjlXqTtyCq2tQYkbpDo4yLfGGSHt6cn
-	 12jDVgKHYy0e0J0FJvVbU30ZSxzsUNcJbYCKKRh0D4DC/lGJkFsPOxpsBMnm23lRDYQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794075266;
+	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:
+	 X-Mailer;
+	bh=BL+cmBoNPnGP1lSDwh9ujeU5GZ/Z/Eb6yaGi8Botz1Q=;
+	b=VM1RvkxVdJ34qDcLFvl4h1AILrCKiOc3PXE99i7ASyyy2CoHb57k66g8q74DtbCl9hLd
+	 X9itFg5NQg61WvDpqVVnl3k8iBHvTjX2+niAa8RgLf4+KRRGKpchG7Oe5DL9lWuFEvLUT
+	 iueKm0rmO40qCLsOH+opACzNf7hYDwlrrwnnOgPnbM4s2IWbSJ4SnW/8vrh8LH8SWjRF7
+	 UBS+hg9M42XlTWtJ63Bc+lfUWLsgLU4RzUjrVeOIRPzXYqC6ujnWy0imQpBK9kMYEIeA8
+	 O6OWSULnbSYY/RrItgLA0vBZht0tCygmkfloAZo8rxF5KZ7Ky7dwjf4ELa9LrKXuDmw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=none header.from=iscas.ac.cn;
-	spf=pass smtp.mailfrom=iscas.ac.cn;
-	arc=none smtp.remote-ip=159.226.251.81
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrBRAnuK;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3823606A326;
-	Sat,  7 Nov 2026 16:19:49 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org D3823606A326
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [172.100.0.8] (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAB3hJWfT+9qFauBAA--.25840S2;
-	Sun, 08 Nov 2026 00:19:43 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Mark Brown <broonie@kernel.org>
-Cc: Frank Li <Frank.li@oss.nxp.com>,
- Haibo Chen <haibo.chen@nxp.com>,
- Han Xu <han.xu@nxp.com>,
- imx@lists.linux.dev,
- linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org,
- yogeshgaur.83@gmail.com,
- vulab@iscas.ac.cn
-Subject: Re: [PATCH] spi: nxp-fspi: Fix runtime PM leak in nxp_fspi_probe()
-In-Reply-To: <a06cbf19-7b6f-449e-afc6-b9cd71c35d42@sirena.org.uk>
-References: <20260917153713.2160743-1-vulab@iscas.ac.cn>
- <aqwzyjKASxfxtxTT@SMW015318>
- <a06cbf19-7b6f-449e-afc6-b9cd71c35d42@sirena.org.uk>
-Date: Sat, 07 Nov 2026 16:18:54 +0000
-Message-ID: <1794068334887.2923426.58377675424543950314@iscas.ac.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB6A606A326;
+	Sat,  7 Nov 2026 18:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UrBRAnuK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FAC1F0089F;
+	Sat,  7 Nov 2026 18:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794075265;
+	bh=BL+cmBoNPnGP1lSDwh9ujeU5GZ/Z/Eb6yaGi8Botz1Q=;
+	h=From:Date:Subject:To:Cc;
+	b=UrBRAnuKIGo7CiTkJ0Ax9lhqPR3tsDQWoDt5Ry5rBeZDhdw8sCxVlAS66ytd0pGfl
+	 TBD8Y1sjXAfPx47q9yeKuNBJfudEK8i+xH13c8+WE+77cI5TQdHaCfoQv/8VvON42q
+	 MQ5DXo4lXU29EmO3nXEGkzI7J16fsvr2IAo3ScQPhUsIZKVxrocMGSABCc6Iz8uw12
+	 lLjW+6v+7KeaTi47GrFWJGqBesxbAViXX2UH1jbQIpBmU/uu2zy92rRQdDKSByI1Ql
+	 TlpEwixFaF17J9O/SH4w6RzIngt4afCJ6EiN6fifhrg5Qle3uThlcQ7ISuBhAPMeCk
+	 GOS9ANndYDX+A==
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 07 Nov 2026 19:14:22 +0100
+Subject: [PATCH] dt-bindings: spi: pl022: Allow a power domain
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -60,70 +53,50 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3hJWfT+9qFauBAA--.25840S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur45tryxtryxtry8ZFyftFb_yoW8WF47pF
-	ZaqF1rtryDXry0vwsFyw40qa4Sk398GFZrAF98GFyqvw15Jrs7tF4rG3Wjqa17urZxXa17
-	tay8tayfGa1Dta7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUva1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
-	87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcV
-	Aq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-	6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAK
-	I48JMxAIw28IcVCjz48v1sIEY20_Gr43Wr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2
-	IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v2
-	6r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2
-	IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv
-	67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyT
-	uYvjfU5byZUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRQEA2rvPcsZfwABsO
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261107-ux500-pl022-power-domain-v1-1-d51913109afa@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAA/x3MUQqDMAwA0KuEfBtIA1PWqww/6ho1sLWlxU0Q7
+ y74DvAObFpNG3o4sOrPmuWEHlwH+F5DWpQsogcUlt45HmjbH8xUPixCJf+1UszfYIlE+znK8Az
+ TpNgBlqqz7Xf9Gs/zAgUE7hBqAAAA
+X-Change-ID: 20261107-ux500-pl022-power-domain-2e6fd279abbe
+To: devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-spi@vger.kernel.org
+X-Mailer: b4 0.16.0
 
-Hi Mark, Frank,
+Ux500 PL022 instances sit in switchable EPODs. (Electric
+Power Domains.) Allow the single power domain used by these
+controllers. Found with CHECK_DTBS=1.
 
-I am sorry for the very late reply, and for the review time this patch
-cost you. It does not apply because it was generated against a tree that
-was already a couple of months out of date, and the change it makes had
-been merged in the meantime.
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Allow a single power domain for PL022 controllers on Ux500.
+---
+ Documentation/devicetree/bindings/spi/spi-pl022.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Frank, you were right that pm_runtime_resume_and_get() is the correct
-call here; that is what the merged code uses.
+diff --git a/Documentation/devicetree/bindings/spi/spi-pl022.yaml b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
+index 680fdfa184d0..9a61cb16e683 100644
+--- a/Documentation/devicetree/bindings/spi/spi-pl022.yaml
++++ b/Documentation/devicetree/bindings/spi/spi-pl022.yaml
+@@ -71,6 +71,9 @@ properties:
+       - const: rx
+       - const: tx
+ 
++  power-domains:
++    maxItems: 1
++
+   resets:
+     maxItems: 1
+ 
 
-I rebased on current mainline (v7.4-rc1) and the fix is already there:
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261107-ux500-pl022-power-domain-2e6fd279abbe
 
-  5d14285d60ba ("spi: nxp-fspi: disable runtime PM on probe failures")
-  Jiawen Liu, applied 2026-06-30, first released in v7.3
-
-It converts the initial clock enable to pm_runtime_resume_and_get() and
-routes the probe failure paths through err_disable_pm, so the unbalanced
-reference this patch was about is gone, together with three other failure
-paths that returned with runtime PM still enabled:
-
-        ret = pm_runtime_resume_and_get(f->dev);
-        if (ret < 0) {
-                ret = dev_err_probe(dev, ret, "Failed to enable clock");
-                goto err_disable_pm;
-        }
-        ...
-err_disable_pm:
-        pm_runtime_dont_use_autosuspend(dev);
-        pm_runtime_disable(dev);
-        return ret;
-
-So there is nothing left to resend: please drop the patch, I am not
-posting a v2. Checking against the current tree before sending is
-exactly the step I skipped, and it is now part of what I do before
-posting anything.
-
-The quoting point is taken as well; this reply quotes only what it
-answers.
-
-This is an important lesson for me. From now on I will go through the
-remaining review comments one by one myself and answer them, and I will
-not send patches in bulk again: the rate will be what I can personally
-review, test and answer.
-
-Thanks,
-Wentao
+Best regards,
+--  
+Linus Walleij <linusw@kernel.org>
 

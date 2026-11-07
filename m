@@ -1,52 +1,56 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794036447;
-	b=qWKzOiiOIU9EvMir59MmtBThyMNkHQzFGaZtReEIUxOzQ1j/fkuWJJj9ZU+NIyrkERcL
-	 3FuVjESJjc7oC89fjcl7iwE3h0XVHof3ew+Qbq9WzFwEyW4KM7T5o6jwO0ozRbZsotK3C
-	 yNUDQ+HsIP3PMebY0rahc1V9eNAN+QG4DREZ9+vU3zswbgRSD9233sq48ZOeWtWk5LZ6J
-	 IUFSHMl180V4CSy3g0tQrVG4b/WwTcEgqAjMQhWzz+91o9nl9gJaHe+8DdpZmCxBQEVa7
-	 KagubGepfL48UNSfJBmfoidfn7MpVsZpgvEuDTv+P2Eb+ZcKcNvl8Bh0Tsboz1fDrOA==
+	t=1794037256;
+	b=UakgnrM7Cw9GcbSot9M5axCj6YLs2kmTX7PNhQknX8By+Hl9+E/oVgnGhlAeD27NFcme
+	 eHpHcARaK6YnztJZatl5XeYuyICan1kQ7w+BWeobock+oE4FFVN0OGuR+xj/BwE3Hixez
+	 3qp0+r3hCQ8Jr8364lCrOiTJUFVP870L6CVkrktUp2UTUTRyfHyk77DEle6KM4CFcdoR8
+	 JC1OvPIyFEUhYmD+0CuiywKa+lNu75r6tVGi8DMZqUV8HzrnHHMhejEkfyRPV5bvL2Stx
+	 G6Nkv+kHv2MujsFs2mjQyou3F1cHhPorZd5uco1zefda0ce/E+VtwFsjtz/qfeyzbXA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794036447;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794037256;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:X-Mailer:
 	 MIME-Version:Content-Transfer-Encoding;
-	bh=VpkuHhPwzWbf6tDZsWXKj1gNOGLkMgtoPlDaCXACNQ8=;
-	b=Nan+gLv3Zxb6Fxk7/eBeMHMIcjJ038CDPbvCA132kh2QE+VMDQ3kBvq5cYqZZklPrYIj
-	 DsSjIwF2R9aCku0XjdXOx5myKoDWGuwg2uXphEBEGNH0x/n7LeBYZGDv8Cz8TvMumlUMl
-	 UbHMrezNsi3I5LJOUT2cobWBDQP3RZNlELb8WO1zX5NfEE+7wgospfb9776y/7eWQ2l+f
-	 9x5aMCTgsQsP9OA1MKwbAguIoqPGYP7OX91Tup3mnNS4IRlJOGoaUP8Rw7X5YqvBPKbRS
-	 yV5NDCm/HoUaee7tpllk5KW81txwAHKdIHM9/EDYnsMue6220PGbxsS8KVrRj5GZd7A==
+	bh=dCeBIUUXD1dNPw4xzoG7xVitiNMUeqmqk0TOjv3tV3w=;
+	b=VMJSfDInWSds6OZIAZA7Uis87YCZdYJhp1hdpQuCzr+hnQakC+9cw6wg/QxIPxhK9NfG
+	 c+mixH2+XiUxYTecPFEfvNeZKmOaVi65y003tyd9BX0JTmS5T6E4z8npDTv+dJRac2li/
+	 YZp4PAfEmLaLmibqKUVIHEJcbaz+v1YtBeVLBcaL3kVGdGxbfHXKWpaUo9H03dfSCjwcI
+	 rTFVivz2xW6ivL2cjxpzQ+vjDCiMCTKoJQDz9+tNy1ESPAYpFPLNmWHMsilvcob6PR+IF
+	 +/BuDorfmN3bh//m+3REfXE+xlbUgKBsC3GNGxWHz7yEGeKPggHo187wTae/W5ALnFg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dIqiDFLQ;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PkeuOKeV;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB086606A326;
-	Sat,  7 Nov 2026 07:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED07F606A32C;
+	Sat,  7 Nov 2026 07:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dIqiDFLQ
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4821F0089F;
-	Sat,  7 Nov 2026 07:27:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PkeuOKeV
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000711F0089F;
+	Sat,  7 Nov 2026 07:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794036446;
-	bh=VpkuHhPwzWbf6tDZsWXKj1gNOGLkMgtoPlDaCXACNQ8=;
+	s=k20260515; t=1794037255;
+	bh=dCeBIUUXD1dNPw4xzoG7xVitiNMUeqmqk0TOjv3tV3w=;
 	h=From:To:Cc:Subject:Date;
-	b=dIqiDFLQCUnwW5qjLQ7JXyfU/EUcf7RkwYjqfL+uRAaS3YySu9pRwdD3KjB9s597A
-	 Z979d35StLZZEyZlbYNqW/4hzWp7EplV0I90z8mzD+UB4Eputa9uTEsWMGHqnp7BOE
-	 3Vqr0fehOVPuRHBsW8/Jilm9y7f0JRwaD+s8+jmyXG0NvMTREGP4UY9DhG5WgKV29H
-	 17a7OFQcbFkJpu+AIHmQ2xQsDaqQWHVyPkdx0Q0F4xb8QGvgkCIpdlmjSX9a/cfIRm
-	 c5WcPe/mpskEL+fTo5rEUd7lVJXrTgdoDDrntNcQgY0dDDypL6ibGxoAAW7M48SyQ/
-	 8W6VLDRFQzXEA==
+	b=PkeuOKeV6xLK2OIBMgfqJr4Jjj36zNp4iOrGga/IRNfiHI/nqHJHHA+yy7Dk6s1Ur
+	 4H6F6wbCTMHdQbGyPoGi9ei8fNW7IF+rgxXyAbcWafZPkMcMVIrz8ZyhGKEB6Z5aL7
+	 sVoSmeYYEEwDOUNat0k1kWjtB3BQ082yUf58J8snH2U6MPeziXxs4nFxy4PaqbjI/I
+	 34otBZ8B75z2zTAEy0v8R0YV/PJo4A2ZkriNMGnPpWhhNVmIyOqK9bHlOjtxaDxav6
+	 ppJXiBpM/SgGLo61Ax+ZLVES1hjEZP8IoAybsxP7gyyB2fwPT/YBVNUUfwBNGijRV3
+	 LTsnuR3YJryrA==
 From: Jisheng Zhang <jszhang@kernel.org>
-To: Mark Brown <broonie@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
 Cc: linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Michael Drobot <michael.drobot@garmin.com>
-Subject: [PATCH] spi: dw: configure CPOL/CPHA for each message before sending
-Date: Sat,  7 Nov 2026 15:07:18 +0800
-Message-ID: <20261107070718.17395-1-jszhang@kernel.org>
+	devicetree@vger.kernel.org,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Fei Xie <fei.xie@horizon.auto>
+Subject: [PATCH 0/3] spi: cadence-xspi: add DMA support
+Date: Sat,  7 Nov 2026 15:20:41 +0800
+Message-ID: <20261107072044.17574-1-jszhang@kernel.org>
 X-Mailer: git-send-email 2.55.0
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -59,67 +63,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Michael Drobot <michael.drobot@garmin.com>
+This series tries to improve the cadence-xspi cpu usage and potential
+performance if the allocated dmaengine is powerful.
 
-Configure CPOL and CPHA in CTRLR0 before starting the message sending
-procedure. Without this preconfiguration step CPOL and CPHA will be set
-in dw_spi_update_config(), which runs after CS is asserted when using
-GPIO-controlled CS. This causes framing errors on any SPI mode other
-than 0.
+But no matter the dmaengine performance is powerful or not, the cpu
+usage is reduced a lot.
 
-Signed-off-by: Michael Drobot <michael.drobot@garmin.com>
-Co-authored-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
----
- drivers/spi/spi-dw-core.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+For example, on a dual CA55 platform, test with looping the following
+cmd:
+dd if=/dev/mtd0 of=/dev/null bs=8192
 
-diff --git a/drivers/spi/spi-dw-core.c b/drivers/spi/spi-dw-core.c
-index 90af2cc9e17d..2bd4ad0f13ad 100644
---- a/drivers/spi/spi-dw-core.c
-+++ b/drivers/spi/spi-dw-core.c
-@@ -507,6 +507,33 @@ static int dw_spi_poll_transfer(struct dw_spi *dws,
- 	return 0;
- }
- 
-+static int dw_spi_prepare_message(struct spi_controller *ctlr,
-+				  struct spi_message *msg)
-+{
-+	struct dw_spi *dws = spi_controller_get_devdata(ctlr);
-+	struct spi_device *spi = msg->spi;
-+	struct dw_spi_cfg cfg = {
-+		.tmode = DW_SPI_CTRLR0_TMOD_TR,
-+		.dfs = spi->bits_per_word,
-+		.freq = spi->max_speed_hz,
-+		.spi_frf = DW_SPI_CTRLR0_SPI_FRF_STD_SPI,
-+	};
-+
-+	/*
-+	 * For GPIO CS case, set CPOL/CPHA before the SPI core asserts GPIO CS.
-+	 * transfer_one() will configure any per-transfer word size or speed
-+	 * overrides.
-+	 */
-+	if (spi_is_csgpiod(spi)) {
-+		dw_spi_enable_chip(dws, 0);
-+		dw_spi_update_config(dws, spi, &cfg, NULL);
-+		dw_spi_mask_intr(dws, 0xff);
-+		dw_spi_enable_chip(dws, 1);
-+	}
-+
-+	return 0;
-+}
-+
- static int dw_spi_transfer_one(struct spi_controller *ctlr,
- 			       struct spi_device *spi,
- 			       struct spi_transfer *transfer)
-@@ -1382,6 +1409,7 @@ int dw_spi_add_controller(struct device *dev, struct dw_spi *dws)
- 
- 	if (!target) {
- 		ctlr->use_gpio_descriptors = true;
-+		ctlr->prepare_message = dw_spi_prepare_message;
- 		ctlr->mode_bits |= SPI_LOOP;
- 		if (dws->set_cs)
- 			ctlr->set_cs = dws->set_cs;
+Before the patch:
+cpu usage is nearly 50%, which means one CA55 is full loaded with
+the sdma io copy.
+
+After the patch:
+cpu usage is between 0 ~ 1%
+
+patch1 documents the dt-binding
+patch2 adds the memcpy dmaengine support 
+patch3 uses writel_relaxed for cmd regs.
+
+Jisheng Zhang (3):
+  spi: dt-bindings: cdns,xspi: Add DMA properties
+  spi: cadence-xspi: Support dmaengine for sdma io copy
+  spi: cadence-xspi: Use writel_relaxed() for cmd regs
+
+ .../devicetree/bindings/spi/cdns,xspi.yaml    |  13 ++
+ drivers/spi/spi-cadence-xspi.c                | 149 +++++++++++++++++-
+ 2 files changed, 155 insertions(+), 7 deletions(-)
+
 -- 
-2.53.0
+2.55.0
 

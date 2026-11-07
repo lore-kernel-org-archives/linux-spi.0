@@ -1,51 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794051240;
-	b=2xDmmt02S5PCclTEVgCv4rfAp0W1YAgrCWE/S2uzCKnVG48uyR7J+OPMs1j6xRwajrSj
-	 xmsHnISn9Ji3fVXL3mEXcQy0MaQj/01WB719L7PuV4iPPbQdRgILc0cA5JIVSZ0DRr+Wz
-	 JevnUHnurEjpfFmAiCfyLBX1GWi5ssAHAAM8QhSts3K/cODiMEUmvFRbaMt4VpusZ+wlU
-	 8IhMo9sY3mmePihZ4sWhPBlwwADP+zA8ysNHp+cHE3jQtJXMNinhL2H2zDJF3CdytC7mx
-	 7KY53MUY0EQGVjeo3M8MNzCta17Igujad36WczvR7WuA2n+My09BgC8DRUh7Ze6fppQ==
+	t=1794053323;
+	b=n/6GPPOKk9dYJkglMHI36j7KYMG1PyFijnx1jyjhTDxtZNEquJVnLkQ/21ZjdMqUiBYA
+	 iTjMOUAzVlmX8XDUMk3L1F8cx/NfiJuJBsaLxDIuTPeaWawSCFqXojJQzakPH/ktj+ARh
+	 rL3PNucY8Nr11e4uN+Js+I+43oM8nDa6pkMJwa10uclL+elRo3ukK5A/cl4UvIFoM/d/c
+	 h/7xVjcP68p6zIqxdam2mVoC6QCITVAjeMAD6bisezrcecZclviwhlP2iE9TU14N51mtK
+	 MoboAeZV9S4f9I39Medv3qWuWA7NDiyDBwW9vdddjm2XAKBkMunROQAsuiUpJhrJJRQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794051240;
-	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:Message-Id;
-	bh=h/zw5ns+k65npU9PUVLHDycr15odEsRHc1ruYXyJeOg=;
-	b=NR8mE8RH6cUJR/oC2RUMJQvkrUqUP86pnfXUgXSOYEhQ1DpQ3o8/DW/zsKQGipGe7ign
-	 U3pciYuxY1bFg3A9Ba0CHp/czt9FOKQMQ4t4HbaQwQhovYdax90Y7LwRfgbDj7inGU2Ve
-	 7kqhvaxt+PmMpy8jJKsazp3ODnLW+MwIJN3vF5tmc8IYKz5ObtYotjjRCz5IQAh56IJD5
-	 22OFNzfeixLCTcuxqdvZ/TSfTGSzFLBnC6b30T0Pw2YZFm/W89h/RHl/dio1MFI4I5pPA
-	 qXbGzAQZyYuq9VNBi4mAqU8+BMyen4Fdd8gdQ3olfSACXPF2YD/7S1fQ0BbG8rrIMTg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794053323;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=5nSQkXmXfxxM7Nm4tDDJOggvKcwjPg2ZURcHL5eMDZU=;
+	b=XrYkWwvMQ562urcYcxrlTBQIuSXWy9nP4XWfWq0s90+5DBUKnPL9VnPv1ew+pSN98K3R
+	 Pwe5I0gGvSiwDtnapu12D/07eOT4BfoS5F4UQyDfK98iK+wmgIdAVLNrCYGygWhip+u2s
+	 yYruYBHUs53FSAKLqs73qBV5PYGYrpVgaFecELW1GZjJoZ+FBgJYzMjm99DElWYyjuban
+	 2jIo3HyxBgDnorurgDvVDN9RWhWpbbFV38YgCgdg2VaoWkLlH/2uqcGbfMduSz3L39iov
+	 gBI2cQC17IzA4BZJSC5WsFqnlyah+3rqL0x6mq/sRcao/0CHUUndQJIZYcFVeAqtFkA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDuHqhX8;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kco8H4wW;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAB7606A326;
-	Sat,  7 Nov 2026 11:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D323606A32E;
+	Sat,  7 Nov 2026 12:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LDuHqhX8
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4C71F0089F;
-	Sat,  7 Nov 2026 11:33:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kco8H4wW
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A9D1F008A2;
+	Sat,  7 Nov 2026 12:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794051239;
-	bh=h/zw5ns+k65npU9PUVLHDycr15odEsRHc1ruYXyJeOg=;
-	h=From:To:Cc:Subject:Date;
-	b=LDuHqhX8lji0Hd9PlO+Ismr9tKqM4ipYv5VHnax34EHSRoKZ9FF2ICrNantDc1Gf/
-	 EQe+Ngpb79sd0LLyNXGCPBR/KpRma//tDXKRxr5HQ/ENxYLy+35v1xtFd7h1ACADXq
-	 3ZebpM5F5qf16gEvinEn7wAcf6W9HxseELg3hO8OQ9eB02SC8nFrj0fwZyW3rw2e6P
-	 A0W6jifmdvz0bCG3rt7n6/VRJj5ojVBtZL+WRbI3IafHiP65kqmmi1SzzNRPpSnp2S
-	 VdHS6oPHxyvFloETTdaU0BgPQote4DdK6AWL3f17eMgvlK7NG1U3xo/6iXTV44GE7b
-	 c+R+gb0uQNktg==
-Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
-	id 5BCDD28F332C; Sat, 07 Nov 2026 11:33:57 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI fixes for v7.4-rc1
-Date: Sat, 07 Nov 2026 11:33:18 +0000
-Message-Id: <20261107113357.5BCDD28F332C@traversing.sirena.org.uk>
+	s=k20260515; t=1794053323;
+	bh=5nSQkXmXfxxM7Nm4tDDJOggvKcwjPg2ZURcHL5eMDZU=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=kco8H4wWuC5UfcMStDEe8y/qd36m13ItEovZCsCy8DPmg4eyzim2MWefgVAVCtsYF
+	 fC9qMVtsoHc0/LV9JccFeGX+1QEbLnC33tPHih3whiHLeR41/fbACtGFlW9JUOAYoX
+	 mFDy3qTFTjmFjvC9Jcj1f0FIdXDk76kI8ZZYZet2RAFG9FD5u3mWbIsmP15oWu2ClE
+	 iHk4iBF3wKdc2WMUa6f5e1wgBSganvWTjSiEjPpxdNXNIaf+C6Ya5Q8Ni1heBU1ShR
+	 JyTgk+aaPG4t8zXO7YDIFlRdM0nW43aA3DiPKVChV/7q39Jjlyb4X12YHfCZqSqNKW
+	 vbnSg+rkPptSw==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 62ACB28F342D;
+	Sat, 07 Nov 2026 12:08:39 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -54,55 +51,51 @@ List-Subscribe: <mailto:linux-spi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add workaround for old Marvell
+ firmwares
+From: Mark Brown <broonie@kernel.org>
+To: Paul Cercueil <paul.cercueil@bootlin.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Bharat Bhushan <bbhushan2@marvell.com>, 
+ Sunil Kovvuri Goutham <sgoutham@marvell.com>, 
+ Tanmay Jagdale <tanmay@marvell.com>
+In-Reply-To: <20261104100643.162694-6-paul.cercueil@bootlin.com>
+References: <20261104100643.162694-1-paul.cercueil@bootlin.com>
+ <20261104100643.162694-6-paul.cercueil@bootlin.com>
+Date: Sat, 07 Nov 2026 12:08:34 +0000
+Message-Id: <179405331443.3424803.17548465864948492414.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=814; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4/sNqT1IMJMYOgXLlLBZ9E5WqJ86XdK7cwNGyKM8T2c=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeixyX26l799z0jLjVv5Im14mui18571vU7wNuCVN/y
+ u9SspeZ3VHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJRL9j+CtdxlCgYWfZ4zKv
+ zKqRVfz2l0oPd9ZU/m9CDxTt1LIXZDMyHPhYckr+4Uzm80r7Hju8esQWHpi03Mzr7cv1kcrKrl+
+ TOAA=
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The following changes since commit 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4:
+> Older firmwares from Marvell used the cdns,xspi-nor compatible string
+> for the Marvell-specific xSPI IP, which is incompatible.
+> 
+> Add a workaround to support this by assuming that if the "xfer" resource
+> is found, it means that a Marvell IP is used.
 
-  Linux 7.4-rc1 (2026-11-01 13:26:31 -0800)
+> +	if (res && !cdns_xspi->driver_data->mrvl_hw_overlay) {
+> +		/*
+> +		 * Handle old Marvell firmwares using the cdns,xspi-nor string
+> +		 * instead of the marvell,cn10-xspi-nor string.
+> +		 */
+> +		dev_warn(dev, "Marvell-specific xfer resource passed, but using the cdns,xspi-nor compatible string. Please fix firmware!\n");
+>  
+> +		cdns_xspi->driver_data = &marvell_driver_data;
 
-are available in the Git repository at:
+A bunch of ops were already selected further up in the function, that
+probably needs to be moved after here too.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-fix-v7.4-rc1
-
-for you to fetch changes up to 059518f775baecc9803fc97787bd0b17558f8047:
-
-  spi: cadence-quadspi: Fix race between DMA completion and transfer start (2026-11-04 23:00:32 +0000)
-
-----------------------------------------------------------------
-spi: Fixes for v7.4-rc1
-
-As well as a few driver specific fixes we have a couple of core fixes
-here.  One avoids requesting interrupts until we have validated that we
-have a SPI device, avoiding triggering warnings on boot.  The other
-avoids a request for a zero length scatterlist triggering a BUG_ON() in
-swiotlb on 64k page systems, this was due to using both DIV_ROUND_UP()
-and min() to compute lengths.
-
-----------------------------------------------------------------
-Arpith Alexander (1):
-      spi: ljca: Don't require data in write replies
-
-Chunfa Zhang (1):
-      spi: fix zero-length scatterlist entries for vmalloc buffers
-
-David Carlier (1):
-      spi: rtk-nor: Limit exec_op writes to one byte per operation
-
-Frederic Konrad (1):
-      spi: cadence-quadspi: Fix race between DMA completion and transfer start
-
-Hongjian Dai (1):
-      spi: pic32-sqi: fail transfer when the BD ring is exhausted
-
-Rosen Penev (1):
-      spi: acpi: only look up the IRQ of confirmed SPI devices
-
-Weibin Liu (1):
-      spi: amd: validate FIFO usage before executing message
-
- drivers/spi/spi-amd.c             | 24 +++++++----------
- drivers/spi/spi-cadence-quadspi.c |  4 +--
- drivers/spi/spi-ljca.c            |  5 ++--
- drivers/spi/spi-pic32-sqi.c       |  3 ++-
- drivers/spi/spi-rtk-nor.c         | 13 +++++++++
- drivers/spi/spi.c                 | 56 ++++++++++++++++++++++++++++++++-------
- 6 files changed, 76 insertions(+), 29 deletions(-)
+-- 
+Mark Brown <broonie@kernel.org>

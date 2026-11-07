@@ -1,61 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794064608;
-	b=wAIwHPlkStWDhuxEoFEzVfYSduTRbOWvYBi8qGLGdxjbWYBjQV/q6eX2dj8HB9osWc/L
-	 ItgUThidad+Qx567tCTfekiwqBqzU/TXPNxy5PDlDSWxbBVxn1+elY69wVHDVkC+j7AHX
-	 eA6o84IbDkSVK2Wwi4LLAGqYS17G6vA6AT4ddxdiFXRxD4mF3/ykpLyeNfiRc4ms4jQK3
-	 DxRAgtyo4ni4Ic2OFhwqVddAJJ88fNfSVATKDO7r66zw6kueIJqY+cs6PoHcZh34+zlV8
-	 tlcaJdksGdTGvIKUO2381p7qwxDAEZDh+yDnZFZqr2t79E/nUxpbt2d+6ft8V5wwe7Q==
+	t=1794064672;
+	b=TQ+VzTsZIA7T8KTam/MviB+ZF7pypwMkAVn+4fxwlGFiF0tYZXmkPdkL+zOj+PsBj4ck
+	 4SQN6JKfP/+fqm6utI2b+XwjdJgIYWFB55FF1NXhKrbNUGz0K6GxugNGTGQsvk98F6cC4
+	 bZ2dHNK30vFs+NB6ITxNolYoZBdcum0nglwubtLpzn0pNeBXv4KG3iq3P9sg7M8Kv+vIq
+	 TG47ip02IAYQhlXu6tXrTcy1aIxoCX/ej+qOP4Qeib6wLMD9rw+8K2HuNM/Txiap/QzR5
+	 U7X0HAzhkAcwmI9OREsmcmLu8bxXF7qNRg0vivbmaHhpODBd8veMuE79u+xDLR9nYxg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794064608;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=WcuhQ3hFkrb8fQW7yfgUWsh40+d8FzchJmD0Z3lY1go=;
-	b=vM7I6AFLzBVe+cvtHSsf54U764xZnLukUoR2gfyEBr2of/x2COz5b+5J3jvrpCtFxYBY
-	 /9ZeFenpkj2f7KmVSUi6khy4CfrgduI935YahfNFcGF6JUd9gPr9nCc9vvbH08eqeAzoJ
-	 DB4smlYTX4FB9l/1jX2qHITojNrAH8sYHURx1HQVA/DjWPWwEBex2NjGdOROB6R1wsGbL
-	 JkWG/SYKEI5LuNBU1NKKZqumUhfxeYqI/c8YCUrj6hZtdetdEUqMp4uhNuTMBAgyS8q3d
-	 WwFTFW5Umr7w0u1+32oDDR2FeXWlqsGhf0AaJrzjZGDQrsuNBpbAV8JYUuFSWQ1u1hA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794064672;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=IUb+651YdzCoQqSqdigH/XKlBS5eKbTWBJ1e/5wjJ2I=;
+	b=g/Tp3KD902sCQ4NBhM/IK50sAuKGS8Mc+DeMIOvq89fmMrWgh6JYNECCjOjnuHK1QSuW
+	 mxhRMqgIDcziFBK+4zeC5cv0t1+Il6Ad1N8SCMJgBZlAgvdxAkPSMWh8QOFUOvajJDbsY
+	 6pj0di6ksrGE7qdLikxy8iVSDlwimM70FfqpML1jTfzk4aetPrBq2niRRixCq+ZEXP8Uv
+	 DielGr9uGki1lyBFR9EdPeng4xCdznU0CEr7bBvYh7Fi3PlUIr2F20CG1JuknBBTakS3D
+	 WYtEcNPjGgaqbPVkg14nuWRxeXjzO35K7WjqoTHjV7mypyUFqBP6myhD/+nEgYktrRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SEm2vt8I;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k54bNoxr;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C75606EE82;
-	Sat,  7 Nov 2026 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE5606B890;
+	Sat,  7 Nov 2026 15:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SEm2vt8I
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556851F008A1;
-	Sat,  7 Nov 2026 15:16:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k54bNoxr
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765961F008A1;
+	Sat,  7 Nov 2026 15:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794064607;
-	bh=WcuhQ3hFkrb8fQW7yfgUWsh40+d8FzchJmD0Z3lY1go=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=SEm2vt8I8KjX5pguj4Q5aJz9jX1eNs7x7V5O9ZQVk+YVFE19U/R7fV5rL0nsx2eK/
-	 bKgTe1ovA4ocWzOuyQVDNPE+xkYmpWvqgEi06f+UHvN9p3CRPkqkfh625BFSUoSCuy
-	 fIVWJw7OTF9MnSGV0OgDb+iUMkhQypncKbjbGweOHMQQIMBHkeMS1r4Fbz02hhHvI9
-	 gGY+CetZy3+4qa8h2SrIsm2lq/IV/XVdIBd3Qs+bfJM/Zkfbs8EVZgmjRI/4HWbBpF
-	 vpyYBoVj9sKVksFgqyrSSe7Tgzq1giBvOpUsBesFyTjIihdmeuOjIqtnHFDYzPZ7Pi
-	 JkzIrlDkQJPhg==
+	s=k20260515; t=1794064671;
+	bh=IUb+651YdzCoQqSqdigH/XKlBS5eKbTWBJ1e/5wjJ2I=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=k54bNoxrhWAieKkADb9M15mFGlbftkOqB7BLaZEWQyJMCWt1Sy/SvtlfXDttH/mgo
+	 Rn8ni1PQVUlSKC7GO48I3WK2A+nqhoCieN0Sj0xb1QK676BeymattrobNZAQSAAJpB
+	 Vnm7covhdwjt7ISxVUZo+X+XY8Cf7LqBuV4nxy9uLKKeCyA7hAyBdGnb0IRiWLWx2W
+	 Db88j/4tKvtZGPKRHPtox2Y/D3NfxilU4GgvOyfJ8pfsW6pCoOwRjaQkEYcx7c1sIw
+	 bTG+sl/q9gaSjtju+2poozmqC3pSYh+s1wMTBkHcj7npiLFs/M98r+WoxtXZZ7BJ1o
+	 d96qJJ+NRVm/A==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 2372B2AB30DE;
-	Sat, 07 Nov 2026 15:16:45 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: ldewangan@nvidia.com, linux-spi@vger.kernel.org, 
- Weibin Liu <liuwb@xiaopeng.com>
-Cc: thierry.reding@kernel.org, jonathanh@nvidia.com, 
- linux-kernel@vger.kernel.org, swarren@nvidia.com, 
- linux-tegra@vger.kernel.org, zhugl3@xiaopeng.com, stable@vger.kernel.org
-In-Reply-To: <20261026132146.3806906-1-liuwb@xiaopeng.com>
-References: <20261026132146.3806906-1-liuwb@xiaopeng.com>
-Subject: Re: [PATCH v2] spi: tegra20-slink: size words with
- spi_bpw_to_bytes()
-Message-Id: <179405581085.3424803.13259814176477205026.b4-ty@b4>
-Date: Sat, 07 Nov 2026 12:50:10 +0000
+	by traversing.sirena.org.uk (Postfix) with ESMTP id BD75F2AB31C4;
+	Sat, 07 Nov 2026 15:17:49 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -67,44 +54,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 4/8] spi: loongson: Fix clock divider calculation with
+ explicit table
+From: Mark Brown <broonie@kernel.org>
+To: Binbin Zhou <zhoubinbin@loongson.cn>
+Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, 
+ Huacai Chen <chenhuacai@loongson.cn>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+ Mark Brown <broonie@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
+ Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, 
+ linux-spi@vger.kernel.org
+In-Reply-To: <4b36ba4220b30e5dcc1dccf4db3a49a57c65122a.1793689461.git.zhoubinbin@loongson.cn>
+References: <cover.1793689461.git.zhoubinbin@loongson.cn>
+ <4b36ba4220b30e5dcc1dccf4db3a49a57c65122a.1793689461.git.zhoubinbin@loongson.cn>
+Date: Sat, 07 Nov 2026 15:17:48 +0000
+Message-Id: <179406466807.3424803.15440704784819901040.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=broonie@kernel.org;
- h=from:subject:message-id; bh=cHLJXGgW2xV+vqVUshhFt0YpDCp2IMvEvkL3bjmPUsw=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeO9yxTDMMijji+X+v3uYPn7qVbq7JYlxpcSqWQVmzn
- 4t/yvXvHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZhIqgcjw3oV986U71pXxKJ7
- Z6klyGn+a10Tflstze+e8UnWzTOLyxgZlnHUf7sb4N/zIyCDoy3CNu3vZ9se0zveeQurd7THnXT
- jAQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=F7zgLPzOg3wBi9aOTA5eCNeKcsTLrFj4rC58A+YeHNg=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeO8oyfur89YR/397/zbJcDS6Ffga5jg8jGuSc1wpYN
+ eTV/nvWUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgIlsMWX4Z3v+zFw+i2revrat
+ Lya8kTE0ubfs1gLGT87vuy8Eal9bvI7hf9mLM7rz4rjKMj9deZpoLcC00v5kwvp5MW2KP4QW3Jx
+ 2kQsA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, 26 Oct 2026 21:21:46 +0800, Weibin Liu wrote:
-> spi: tegra20-slink: size words with spi_bpw_to_bytes()
+> loongson_spi_set_clk() previously converted the requested divider into
+> SPCR.SPR/SPER.SPRE using rdiv[] and fls(div - 1).  The rdiv[] mapping did
+> not match the actual divider encoding, so the programmed divider was
+> usually one step larger than requested, and the maximum divider could
+> index past the end of rdiv[].
 
-Applied to
+> -static void loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
+> +static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
+>  {
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
+> -	div = clamp_val(DIV_ROUND_UP_ULL(loongson_spi->clk_rate, hz), 2, 4096);
+> -	div_tmp = rdiv[fls(div - 1)];
+> +	if (!hz || !loongson_spi->clk_rate)
+> +		return -EINVAL;
 
-Thanks!
+Does this DTRT for ACPI systems without the rest of the series, where do
+we learn the clock rate from them?  This is tagged as a fix but not all
+of the series is.
 
-[1/1] spi: tegra20-slink: size words with spi_bpw_to_bytes()
-      https://git.kernel.org/broonie/spi/c/6a50b668331b
+> +	if (i == ARRAY_SIZE(loongson_spi_div_table))
+> +		return -EINVAL;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+The driver should really set a min_speed_hz so drivers know they can't
+lower the speed too much (though it's unlikely they'd want to).
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Mark Brown <broonie@kernel.org>

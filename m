@@ -1,93 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794011610;
-	b=riUf06Trr5CvGQQ5oYniSOZdKHy8htAiRnSyS7jo3GhM249yVfpEAZbA/d4i6RsQMFPC
-	 q54glYjnJQ6pJCzOQqyr0lxCa3ptGzxeSjLP30g24OdNG8LVwb5jKjKlusjC+/jlZ2UtJ
-	 cWK7SB/BQ/4fOW6f5zzneBvqqDNKYYR6+XHhZXgDGxzWeikbkZ9XMtAANDhe6TZU/b6RP
-	 RM7ye425bHBE0e9hJ8KYHBGtX7QYkO8E9Rji/OOhI75Mi+nJD+CUOAGt7kWQqvQGURDCW
-	 f3A7b3t5UYN3g/SCkwIVCphsZsnYzGdU1+9OwT7qOZN7T6N5on6N0D/kLVCfcog4PiQ==
+	t=1794011611;
+	b=VMTl50/CPengQVgisYTewoEbxhUsHZSqlDqUQMWRNl3NHFJNVZt5Vju5sp2FyUIOmIXy
+	 h2PybTeBhussXJGhangoVl+IpcraWNjcfG+rChHzrB51KRlvw71q2M/Snxkg8VUH0v0F7
+	 Ygd3S4aQ+wkV/EG1w5u9/TqiI6fShPlpRfH5qc84VOs4potd/zuEbNwj7bJ4IUUnVJjUf
+	 7DOWZMHN/9ZiFZJFxVM2jWrRSdc6K2+taHh4IryRVb2nbT/f3sjFJOzBDSqkG6mT3bShQ
+	 vUoZGCsqsim3vsir902GF0dGNO6VWHMZJHN8sRAvF5G/oVRX0yc3eiSDrZXfZyBwnpQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794011610;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011611;
 	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
 	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:
-	 Subject:Date:Message-Id:MIME-Version:X-B4-Tracking:X-Change-ID:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Mimecast-Spam-Score:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
+	 Subject:MIME-Version:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Mimecast-Spam-Score:
 	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
 	 Content-Transfer-Encoding;
-	bh=E3RVJFr6ZUPogzBkgGP2loWx7cvpSKnyKS/nkizj98k=;
-	b=5SUScd+Qt+Ics8VAG4Bw9yhvEoEY6ie4itHMkLTpaF0kb5w35zmIhzhEFYewWu4kGDgl
-	 sgQ68Dfu4cgYHLa3gvbQK5tf1eiXd0i0ny6BwkyJlJTCbaVfyMtzp30e3jUOEhiMtH8+h
-	 yFwCmg4ax4YHL4BF3URKMfG1ukAkONsKPmm6hEOxeDAA9SgxJiDgjmteRHJF/HVRkC5Ae
-	 cKt9C1sI2Y0MGKFTB6XLrisjZ53+REsLDqcLJHkGeZQ9DBW2vghTLYQ5x+Wh5nKcj76zu
-	 lkRyJ3X9EZ/4geGVUnEPL4WaRJ+BEUntTYLwyekpgDsa2oUiLFftCiE6xjoQJAHtObg==
+	bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
+	b=LaiMKEwdPOAvSIcAwyU3kSzvIGU1VbGDkWbLYpgcXK2HmT7NpXOR33aW3MIHof1mLffm
+	 4xt/ab85/hFcoLE7KFItL2PMxCOxpDV86lDRlms08PvnjGTE7PUNaeUoEEjKqlqz0dnWI
+	 T6Z6C2WX9lFfhlbXCavnjUiTmevTMg/0MN4wUZ5DA22hkUo0IrS8TPUP3PDwYY2lTp6FL
+	 qXLLjTlRUieQjLa0LbGTyA5N38jmIh1S6LDBPBqN2uZH4cJwmpqIQXICLn10uMAp7YcRs
+	 pn+DU0XTje1dL2AvbhZHXb2VYmcz6t33/PXu+1mDcpbQfyXvLD6uSaivNpyaMTyg9Rg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=redhat.com;
 	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DLUHulDf;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jq84orGE;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE421606A32C
-	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 00:33:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org BE421606A32C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8E5606A339
+	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 00:33:30 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7F8E5606A339
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DLUHulDf
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jq84orGE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794011608;
+	s=mimecast20190719; t=1794011609;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=E3RVJFr6ZUPogzBkgGP2loWx7cvpSKnyKS/nkizj98k=;
-	b=DLUHulDfyFrvBVANQqOBJ/wUgMFzLm3iVeM59vY9AnV7VgFcF9U+wqEccrNgRfDxlo0W9S
-	/EP4xzApRx21xkM6s/DXwzE2mG0uq5Ri3qylwZeNTvc0HLs++QS4mwXmkwexvAJEC+7pba
-	cMFoSRTD6FLTB61Mn7zLAQJD0LBEMoY=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
+	b=Jq84orGEbv5gemYodNaS/Zkp8XdpfsiR3DASh0ID9xN6e32GiapCeUe7Exlx5zpmP4z1Lu
+	qUByevFMA7FPHEBLZ8d4si6IiBXsoaIAdjX9xlOEup0ZQvjpH3h/L7WiQVKqMwGN4UulHx
+	Q9GyBcpRqoo+SIauS1CfuaqirdTVM3U=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-0oppzHqGOum117kiz4eayQ-1; Fri, 06 Nov 2026 19:33:25 -0500
-X-MC-Unique: 0oppzHqGOum117kiz4eayQ-1
-X-Mimecast-MFC-AGG-ID: 0oppzHqGOum117kiz4eayQ_1794011605
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93909014c85so279991785a.0
-        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 16:33:25 -0800 (PST)
+ us-mta-185-ZBM6wl9dNWioz_1MdBJyvQ-1; Fri, 06 Nov 2026 19:33:28 -0500
+X-MC-Unique: ZBM6wl9dNWioz_1MdBJyvQ-1
+X-Mimecast-MFC-AGG-ID: ZBM6wl9dNWioz_1MdBJyvQ_1794011608
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-53395d51187so20710261cf.1
+        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 16:33:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794011605; x=1794616405;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=E3RVJFr6ZUPogzBkgGP2loWx7cvpSKnyKS/nkizj98k=;
-        b=1NZjQrCPUGHnOuqug56V1Xy5K2BvGW6+XbVATkdXZE/gVhPHfq6y9o9ZQ8p+4gKM9l
-         TOh7hIhl9ULqaZtkGxPgcYgpwhd1Y0n89wq2XyYEQTQr/09MB5IW9vBiwdbmo4pYgpm4
-         krTZVmBVexQc3/CU4+0fD1gA5K/XN+vWPoq2oEtNfwgZF/GTbxvdLh+kv7zcDv0JwEyK
-         0Zu0V/YqZbxVg6q3nYFCBGnVOb4K42i7pCs6G3zgtxZhH/nzYsQXlw9hEi7BwLEHK0dM
-         xFyOPIVWDuNlraA7SwB8s27Y2ML6JwNHTmo2b9BTzk3HxPgHnKJJq2hDToVNz5dkh6g7
-         b5iQ==
-X-Gm-Message-State: APuU4Z/uU6QpBfMZFQZ+zimBG/8Yw/MnBjVfKzWbDmKiFrsR5dvPT/3x
-	zhKjc6Z95nLDX9AQaGc0akP/0JJUdGniUy/1FW5ztRzAzZ9B/Vcc4dT13VJ8ugvGsNQbfRAelAq
-	zjssSx4yKf6COXm/4Am+uCetAXqk06JM0Uot+QmY4FUulkUTEmPMNpsQfaV4fgg==
-X-Gm-Gg: AYBFou3xOpvmdNN8ZZ8DINFnogRll7Ato0TDKX9N4PfYjmrDnRtnSFdAqonHMvIp1X+
-	qKKwdyc5asD3Z1s14MJw2SJ1YuqdeH7pp+oZW3SAtVdLzKkuqz7msMdT3ycrrZsyXEs4Fx+dMCt
-	oghC6z7ehFYgx5vAPY/EC+vPXmVTfkawdus0ljR90xXocfjPz1Y52S180gson/DK7RCXTB7rgG0
-	wiXfkMnz/+QsSVgyzCnLQkqJlTjU15G1v1TYMTr0dLojsZWiMV5WuRamlPuyfQPQdHLPD3rNdpI
-	PqUGo8xaAfZwzmEc9Pa8InO/i85SajXiDJhoM1Ld2Su0PyiWeoK/v4wmUdDmmEwqIpb/BOhLq5d
-	fxovSZxB+uIfnOYj5F3E1ifxrwMf7zxkh56+yPymdqzamzPhuicjw9dYIF/5Pd3hdkpkc4jcK5g
-	CSKmtPRZ0ICsg+CvU5
-X-Received: by 2002:a05:620a:4541:b0:943:e135:525e with SMTP id af79cd13be357-945f35df6aemr679392585a.64.1794011605053;
-        Fri, 06 Nov 2026 16:33:25 -0800 (PST)
-X-Received: by 2002:a05:620a:4541:b0:943:e135:525e with SMTP id af79cd13be357-945f35df6aemr679386985a.64.1794011604452;
-        Fri, 06 Nov 2026 16:33:24 -0800 (PST)
+        d=1e100.net; s=20260707; t=1794011608; x=1794616408;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9EpZk2mArj9f3PAZHMhYhxIIajV8999GqCaFVZmGcaQ=;
+        b=G/U17h4TKi5YgSYBpxvBUuR8zwDlNxFp2JKLHOlCzUBrsYu/HsijqTj+3M2qwkMe7M
+         kMuulWlgPsRfQcftoopWjMuHhvoA5p/vreVP3ltmT+p4E7/u8BYS/v3p0IdkT+nzGhtz
+         4lWIRi4h/WsPcfT8ZH3ASVCdiBZMeLRL1MbIkksuiblzgpnMq7rBJUViGoHK9qkNJWHl
+         5khdJ1Uf2WYbFPtEJIbsPG2P+/p2xSr0lsAl0Bh+o6lCgtE9kRPjwUFcpuo0K+Wk5gIh
+         wPfHdIJgXRa3xwr8FjSKderamfQLq+fJhiWzr8MP1YW8az9WfgfUxAJ84yWmauzPq2S4
+         +CrQ==
+X-Gm-Message-State: APuU4Z/8igiyTNxI/kUhynlcOjl+5nsVg8D6mTiyCj2y2Q3B9NBnahKs
+	KKkh2iWem2CHhpdgBmOIomlFiVOIwDOyZgPQ0suhx9ExQI9KYnRtJkr7dH1A0apy+q9JCWunUao
+	3zKGOSkXK57gAXf7XdJF3730rjb/qVQqpH9cdZLuemgPZoWustYx/TbUdj0xE8Q==
+X-Gm-Gg: AYBFou0BVB2M/iuVko9oU0BcyU6VQ1WUpZUf1BL/41Q6zl7U8cFMFQGrlShLBYX3LvF
+	k70bcjgkpidyiwafv8DUgNnzMNbvc+CFYcOrOxXwS1l0ZWm0eSvpQCb6yurSVPXD7dHWFLL1b2L
+	ZxQ6rhbcWHwH67gMsOZrkASZX4GZAUCTPXpdBaZPXcsy05lpT8tWtknzwnFTHoKy0HPysnnYv3r
+	nYmyO1bCBcWyab5mN3boJgaTPaAy0ho6vWIHrWhXIhwN7mJCV445SKXKes4o/6t6xQLjM88WgnS
+	SEXxleWV/nHexpyN2y5XS9a5qsRUR3ZQtLu4HN2pdOO/DOIr+9o3He8Hvh+8eyh+GACrKQ2BRXw
+	5lWdXkJU6qmiSOuLTfq94unqJaEu0NM08TSi3HzR2v0fG1FBtHrCW2eHneWP84d4FyN36+INhTv
+	AQCwiY+TcxzpRDlQRP
+X-Received: by 2002:a05:622a:4c1a:b0:536:64c9:b1b0 with SMTP id d75a77b69052e-54e1496d927mr73578461cf.36.1794011607859;
+        Fri, 06 Nov 2026 16:33:27 -0800 (PST)
+X-Received: by 2002:a05:622a:4c1a:b0:536:64c9:b1b0 with SMTP id d75a77b69052e-54e1496d927mr73578081cf.36.1794011607417;
+        Fri, 06 Nov 2026 16:33:27 -0800 (PST)
 Received: from bmasney-x1.rmtuswv.csb ([69.43.42.202])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6a2c5d9sm32684126d6.10.2026.11.06.16.33.23
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6a2c5d9sm32684126d6.10.2026.11.06.16.33.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 16:33:23 -0800 (PST)
+        Fri, 06 Nov 2026 16:33:26 -0800 (PST)
 From: Brian Masney <bmasney@redhat.com>
-Subject: [PATCH 0/2] spi: convert to subsys_platform_driver()
-Date: Fri, 06 Nov 2026 19:33:07 -0500
-Message-Id: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
+Date: Fri, 06 Nov 2026 19:33:09 -0500
+Subject: [PATCH 2/2] spi: pxa2xx: convert to subsys_platform_driver()
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -97,10 +98,9 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBCF4as0s9akLRpxFbEoBmNB00GIuLti+
- SXv/RcwBkKGUlwQcCemZY7QiYB2dPOAkrpoMMpYrZWV7Eny1vDJMjU6t64rVKZSiAcfsKfji1X
- 177icsF3fAtz3A0/01BtuAAAA
-X-Change-ID: 20261106-spi-subsys-32156ad80403
+Message-Id: <20261106-spi-subsys-v1-2-a51a08f21cf2@redhat.com>
+References: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
+In-Reply-To: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
 To: Mark Brown <broonie@kernel.org>, 
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
  Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
@@ -108,39 +108,65 @@ To: Mark Brown <broonie@kernel.org>,
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-arm-kernel@lists.infradead.org, Brian Masney <bmasney@redhat.com>
 X-Mailer: b4 0.17-dev-d96cb
-X-Developer-Signature: v=1; a=openpgp-sha256; l=714; i=bmasney@redhat.com;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1444; i=bmasney@redhat.com;
  s=20250903; h=from:subject:message-id;
- bh=cIQXJAsIsjkJ34lMdb75pVRHd+pc+H4nZCxj/MzmMlk=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLLeFZ5qcOWcvczJwniSi3iPR8yiM3Uf8q/N3WDFesZar
- f6+qaNiRykLgxgXg6yYIsuSXKOCiNRVtvfuaLLAzGFlAhnCwMUpABM5acHIsEUhtY+b/+OxZQKx
- 76O+fbW+puK/avkau+k3A869usQrpMXwV36KfIX6uqAZTJHyU7sMI3qvfH511WPVr/fKLn4r6nn
- 9+AE=
+ bh=g2ewlZkjpkqGNUKfIKVBhFWyd1ww0rgtdqdUZikqli0=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLLeFZ79Gnr8VqxV2xXlxut6DlN2X/yyUWh96xJGle9LF
+ nbPUbA51VHKwiDGxSArpsiyJNeoICJ1le29O5osMHNYmUCGMHBxCsBErngyMjzPmXZdcsHZs9/2
+ 3jzqOjmn+MO0M+ZTSl48PrLIZ6eQvqIdI8OJf/9t3lUfZ6iJl3m6zNZU8EJo/PFFj1fs3Xz9N4d
+ mXiYHAA==
 X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
  fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: jXfQVDqPKqlNopJDGXzIFyFGvXXnAKNfAAk1KvFhpOg_1794011605
+X-Mimecast-MFC-PROC-ID: tzUMiUYh9p9rRzqSS_JURnOfBWFNIRZxa53DJaX8WXg_1794011608
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Reduce boilerplate code in these drivers and convert them over to use
+Reduce boilerplate code in this driver and convert it over to use
 the macro subsys_platform_driver().
+
+Note that this needs to rename the driver variable to pxa2xx_spi_driver
+to avoid a compilation error with the macro.
 
 Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
-Brian Masney (2):
-      spi: omap-uwire: convert to subsys_platform_driver()
-      spi: pxa2xx: convert to subsys_platform_driver()
-
- drivers/spi/spi-omap-uwire.c      | 14 +-------------
  drivers/spi/spi-pxa2xx-platform.c | 14 ++------------
- 2 files changed, 3 insertions(+), 25 deletions(-)
----
-base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b
-base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-change-id: 20261106-spi-subsys-32156ad80403
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-Best regards,
---  
-Brian Masney <bmasney@redhat.com>
+diff --git a/drivers/spi/spi-pxa2xx-platform.c b/drivers/spi/spi-pxa2xx-platform.c
+index 849a14cd0343..2151ed168e57 100644
+--- a/drivers/spi/spi-pxa2xx-platform.c
++++ b/drivers/spi/spi-pxa2xx-platform.c
+@@ -198,7 +198,7 @@ static const struct of_device_id pxa2xx_spi_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, pxa2xx_spi_of_match);
+ 
+-static struct platform_driver driver = {
++static struct platform_driver pxa2xx_spi_driver = {
+ 	.driver = {
+ 		.name	= "pxa2xx-spi",
+ 		.pm	= pm_ptr(&pxa2xx_spi_pm_ops),
+@@ -209,17 +209,7 @@ static struct platform_driver driver = {
+ 	.remove = pxa2xx_spi_platform_remove,
+ };
+ 
+-static int __init pxa2xx_spi_init(void)
+-{
+-	return platform_driver_register(&driver);
+-}
+-subsys_initcall(pxa2xx_spi_init);
+-
+-static void __exit pxa2xx_spi_exit(void)
+-{
+-	platform_driver_unregister(&driver);
+-}
+-module_exit(pxa2xx_spi_exit);
++subsys_platform_driver(pxa2xx_spi_driver);
+ 
+ MODULE_AUTHOR("Stephen Street");
+ MODULE_DESCRIPTION("PXA2xx SSP SPI Controller platform driver");
+
+-- 
+2.56.0
 

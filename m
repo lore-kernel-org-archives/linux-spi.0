@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794064672;
-	b=TQ+VzTsZIA7T8KTam/MviB+ZF7pypwMkAVn+4fxwlGFiF0tYZXmkPdkL+zOj+PsBj4ck
-	 4SQN6JKfP/+fqm6utI2b+XwjdJgIYWFB55FF1NXhKrbNUGz0K6GxugNGTGQsvk98F6cC4
-	 bZ2dHNK30vFs+NB6ITxNolYoZBdcum0nglwubtLpzn0pNeBXv4KG3iq3P9sg7M8Kv+vIq
-	 TG47ip02IAYQhlXu6tXrTcy1aIxoCX/ej+qOP4Qeib6wLMD9rw+8K2HuNM/Txiap/QzR5
-	 U7X0HAzhkAcwmI9OREsmcmLu8bxXF7qNRg0vivbmaHhpODBd8veMuE79u+xDLR9nYxg==
+	b=Z+XMxDFEHalz+j18zJEykFpWE73AKkUwYNm/nLN+/PvhW/fe+WICQx3zNSP2ncmgGyQ4
+	 JoTVra+EN1Gk9PfhhH8ga6KvKkFDi43K1s21pE/S+QA5+VR3qc1OTH/fsUMIOjpX9k0Jp
+	 TLSDQmufuc2vRLeOTa2ifq39e07WlYMaNCP9MfXPiKEIbRxOEz3qRX2/gwWqOtFmkrst2
+	 f9/CgArsTpmwf3RdRWDRjBGJp+tP2tf9yOpDIngjkUIbnSATrmMwMYSPOo2v/XL1909aD
+	 X1obLVw8uesUUqOxD+a/K1hectwvF3aiHYNMX6Azfgi/pgAOJTq8yzq+lFitmb9lQjg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794064672;
 	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=IUb+651YdzCoQqSqdigH/XKlBS5eKbTWBJ1e/5wjJ2I=;
-	b=g/Tp3KD902sCQ4NBhM/IK50sAuKGS8Mc+DeMIOvq89fmMrWgh6JYNECCjOjnuHK1QSuW
-	 mxhRMqgIDcziFBK+4zeC5cv0t1+Il6Ad1N8SCMJgBZlAgvdxAkPSMWh8QOFUOvajJDbsY
-	 6pj0di6ksrGE7qdLikxy8iVSDlwimM70FfqpML1jTfzk4aetPrBq2niRRixCq+ZEXP8Uv
-	 DielGr9uGki1lyBFR9EdPeng4xCdznU0CEr7bBvYh7Fi3PlUIr2F20CG1JuknBBTakS3D
-	 WYtEcNPjGgaqbPVkg14nuWRxeXjzO35K7WjqoTHjV7mypyUFqBP6myhD/+nEgYktrRw==
+	bh=OhFxZwzQqtm/lrAgCapRkytGCvCQaRQXFf/AFjtIkBk=;
+	b=ffrX1Q6rgGP2P3WVQuBkaOjfQWB2jpG45hVyH2owa6V4meSk2D3iN+M42dKcmV+4u5fp
+	 CO0gccHy0TcsIWXrL0q873kJFCTxr/lRQ9ZdwJ2gjRORghmdR/FkARR+C6rBZsdEsM93R
+	 BLTDSWzWZDhK/XogcMSRSbUeji+sCVEbdctqv7/6LN+9izG1F0Aay4M0y5Mm6lHFqkDve
+	 Hl/NlHkVOPqazXPX4J2oYpeP0NudfhNbKNVUS6es/qChIiVXumFz7Y8NwEa7IM/S+J1Li
+	 WtZy6l/XXOp++bpdbtXdjS+Ia7Rhp2iI7EwQ5GJdozic+IpxrEWWs/1/EK9Wd2N2gkw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k54bNoxr;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YTmkQR4o;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FE5606B890;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E229606B89C;
 	Sat,  7 Nov 2026 15:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k54bNoxr
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765961F008A1;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YTmkQR4o
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD9F1F008A5;
 	Sat,  7 Nov 2026 15:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794064671;
-	bh=IUb+651YdzCoQqSqdigH/XKlBS5eKbTWBJ1e/5wjJ2I=;
+	bh=OhFxZwzQqtm/lrAgCapRkytGCvCQaRQXFf/AFjtIkBk=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=k54bNoxrhWAieKkADb9M15mFGlbftkOqB7BLaZEWQyJMCWt1Sy/SvtlfXDttH/mgo
-	 Rn8ni1PQVUlSKC7GO48I3WK2A+nqhoCieN0Sj0xb1QK676BeymattrobNZAQSAAJpB
-	 Vnm7covhdwjt7ISxVUZo+X+XY8Cf7LqBuV4nxy9uLKKeCyA7hAyBdGnb0IRiWLWx2W
-	 Db88j/4tKvtZGPKRHPtox2Y/D3NfxilU4GgvOyfJ8pfsW6pCoOwRjaQkEYcx7c1sIw
-	 bTG+sl/q9gaSjtju+2poozmqC3pSYh+s1wMTBkHcj7npiLFs/M98r+WoxtXZZ7BJ1o
-	 d96qJJ+NRVm/A==
+	b=YTmkQR4oHq+L3iJ+b8IJnNxIC2llmEAOl9Jnjmlr2J2qlVQo63hgwcBaWiQEGTGy6
+	 xhXD2pUlYGJ+/zmrBwOUAIhtFQgRFlvZjdza2dA9+gJlVAyvNaxWkTAvCa84OfP039
+	 KuReYsX2Zz7GDwqwRSASdiqpUc8BI9IPsHIRE8JMZC+aQCbBcNX2J8wgdq8GCkPlzv
+	 5P5rCxEof8m2i6/Kfp0nvC7ugc8cGLqUxumZ+KEwYPUgBvCLOju5gwAMXwFyj5Lt34
+	 bt8CNT0iR7NdAQ1l+SupbZROHuV63hNYFqj4zRj9mlHx/lDbMSUO2tuQ8CvdOoCAOV
+	 lvmkQ8dOgq2kg==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id BD75F2AB31C4;
+	by traversing.sirena.org.uk (Postfix) with ESMTP id BF3E62AB31C5;
 	Sat, 07 Nov 2026 15:17:49 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,8 +54,8 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 4/8] spi: loongson: Fix clock divider calculation with
- explicit table
+Subject: Re: [PATCH 5/8] spi: loongson: Support ACPI clock-frequency and
+ add error handling
 From: Mark Brown <broonie@kernel.org>
 To: Binbin Zhou <zhoubinbin@loongson.cn>
 Cc: Binbin Zhou <zhoubb.aaron@gmail.com>, 
@@ -63,45 +63,26 @@ Cc: Binbin Zhou <zhoubb.aaron@gmail.com>,
  Mark Brown <broonie@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
  Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, 
  linux-spi@vger.kernel.org
-In-Reply-To: <4b36ba4220b30e5dcc1dccf4db3a49a57c65122a.1793689461.git.zhoubinbin@loongson.cn>
+In-Reply-To: <221190e4b561b9ea7aaf7eea98f22e943f4fa121.1793689461.git.zhoubinbin@loongson.cn>
 References: <cover.1793689461.git.zhoubinbin@loongson.cn>
- <4b36ba4220b30e5dcc1dccf4db3a49a57c65122a.1793689461.git.zhoubinbin@loongson.cn>
+ <221190e4b561b9ea7aaf7eea98f22e943f4fa121.1793689461.git.zhoubinbin@loongson.cn>
 Date: Sat, 07 Nov 2026 15:17:48 +0000
-Message-Id: <179406466807.3424803.15440704784819901040.b4-review@b4>
+Message-Id: <179406466807.3424803.16638788111721497594.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=broonie@kernel.org;
- h=from:subject:message-id; bh=F7zgLPzOg3wBi9aOTA5eCNeKcsTLrFj4rC58A+YeHNg=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeO8oyfur89YR/397/zbJcDS6Ffga5jg8jGuSc1wpYN
- eTV/nvWUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgIlsMWX4Z3v+zFw+i2revrat
- Lya8kTE0ubfs1gLGT87vuy8Eal9bvI7hf9mLM7rz4rjKMj9deZpoLcC00v5kwvp5MW2KP4QW3Jx
- 2kQsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=315; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=4TIxuFF4qXwmB1ucoIOsaK/Yo9YKZqa0T8kVfSD9n5U=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeO8rOPJlTXO6SIZuz1+Zy3vTCRU72YS8L7/aL+C0QS
+ 1joWqfdUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgIkktDP8YuYxet0y50q7guek
+ xfr5Hxur9j68ICiyRnPNqYK3H7MezGFkOK+fYnrPeCNjYk/Vlw1aCQYeW/zDdzp57fe4oeuiOYO
+ fCQA=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> loongson_spi_set_clk() previously converted the requested divider into
-> SPCR.SPR/SPER.SPRE using rdiv[] and fls(div - 1).  The rdiv[] mapping did
-> not match the actual divider encoding, so the programmed divider was
-> usually one step larger than requested, and the maximum divider could
-> index past the end of rdiv[].
+> On platforms using ACPI (e.g., certain Loongson-2K3000 boards), the clock
+> framework might not be available, or clk_get_rate() may return 0. This
+> causes the driver to calculate an incorrect clock divider.
 
-> -static void loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
-> +static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
->  {
-
-> -	div = clamp_val(DIV_ROUND_UP_ULL(loongson_spi->clk_rate, hz), 2, 4096);
-> -	div_tmp = rdiv[fls(div - 1)];
-> +	if (!hz || !loongson_spi->clk_rate)
-> +		return -EINVAL;
-
-Does this DTRT for ACPI systems without the rest of the series, where do
-we learn the clock rate from them?  This is tagged as a fix but not all
-of the series is.
-
-> +	if (i == ARRAY_SIZE(loongson_spi_div_table))
-> +		return -EINVAL;
-
-The driver should really set a min_speed_hz so drivers know they can't
-lower the speed too much (though it's unlikely they'd want to).
+This is what fixes the ACPI systems for the earlier patch.
 
 -- 
 Mark Brown <broonie@kernel.org>

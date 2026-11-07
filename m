@@ -1,87 +1,94 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.129.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1793991808;
-	b=e5GBNYgIA88kz5hC60fGn2XRdtcyrezmIVKfO81wmAAXQ3wpGASbHAO4Zyi4AOF4hoc+
-	 DP5lyKtoini77Tsbzz5bg5RgRylk+KaK0GPj8ori4q7W+67HR9MoOD66mGt8KIcsXEkXS
-	 MRIlvf9zk8Z7P8nWs0C4iZFjhqYHgJ2SkE1rvpEPEkjmcP6uZ13FRIbxXlyLltBHTNepN
-	 cSBVZlBX41IeqbcFywhJXOtJD1au6inAfNLgF/ZCQQpYK/hBgCbgR28shqb3ZzGRMQraP
-	 fctZ2KBGhMn5NdNj79V6D7yhkJIJuzkHhJ2GZPUHTUYTz/36KW0Zs0K1gCqZaQr8OCQ==
+	t=1794011609;
+	b=NV2KuDzHazffvD2e+3Ewh5kUpbWsaagmE3s40apSOryKB7ojJz+It8s26I+LZ8//TLGs
+	 faGdUUb8M8p8CeFrOsGoOZTNdJQQHPE9odFyQjQJIVa5CVIexqFk/LVPFH9y9QCEIfSp4
+	 Iy1JKKyVWgeu4YHQVqXAys8azrgbfLnCOVpuXX4Zbq3Gtk7+uvw1rjluc5afiGYeSDl3c
+	 RrusvqrKhsdDzxFCRUTsDU/A3pB7FwNgDTm741N6wgwCi2+U6LfTj4FDTFWLA+q6Pv35/
+	 SBKexEslFdKdau4HOGRHZCsDuKc+z3EFSrnos25RWnnVbgu5RY+f4DlXLoACsOsjkqQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1793991808;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer;
-	bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
-	b=CullWx4q/RLVtNN2SVvNhr6osBk6dcMlWjrYeF9OeXoYI6UwSl7+E8QD8zefhwf/lKhZ
-	 JRBED/lXoCROULkW2GIHdwVw1MZDxorcwe2hgGfo4rJmP+CC0X9MJATCqWDtzcYuumLwY
-	 XA2aEN6bvf0e0royDXEKWVInYUO4ZuXm7BhFYb44nijQx3394hhf3LkAnzxWaWTSWX6My
-	 TrEADKUaNKYA1oS9dhe6zOviUgDXpx65i0ij+mbncoXqcbkGosK1y9NTHnniCk78GROmb
-	 3oAxFV9M9R6tGlRj+9Bop8OW9MBJp4dbd5BX1MV+IxrZ6q9kIGn51sGiM7CYDgP+rjA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794011609;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:X-Received:Received:From:Date:
+	 Subject:MIME-Version:Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Mimecast-Spam-Score:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
+	 Content-Transfer-Encoding;
+	bh=WMUy4txGMl5roDNZhY9tu886qliNRol+/oxaNAbU7p0=;
+	b=lPuGjYINsfDw7l1eMlKqjiFYpMra0/rLAxPFqAVjJFSkDZLuh8XFYo4Zrm8PjmbTxGf0
+	 PKebhS1JYp7P5a9pMPW3NDmF2QsPc1qv3un5A0zRzZ1LilMrbpt+IInixg0CrRM+8DvA9
+	 0aBBXh6T1sMuZVsyGxlzjuR1cTeaCmDRkyirujUshZLnYgq8ukM0HU0NpxUup57Cpyld/
+	 p+HxSKejDp/hz3QDUq4oLfupecwig3Oz+h+b4s/rE1T27MeYLhS/E6zJEcyyFg/4v2w2s
+	 p3CuRvOLWCXMNZtQzeLN3YmvJ5xD/vKJUMh3esHZfuzso3MeOhTaVW6q0Na3WN6Q4dA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=emcxuYq3;
-	arc=none smtp.remote-ip=209.85.128.43
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GN0sAbdZ;
+	arc=none smtp.remote-ip=170.10.129.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFDB606A329
-	for <linux-spi@vger.kernel.org>; Fri,  6 Nov 2026 19:03:27 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9EFDB606A329
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9650A606A32D
+	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 00:33:28 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9650A606A32D
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=emcxuYq3
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a35db1f202so8443485e9.3
-        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 11:03:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793991806; x=1794596606; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
-        b=emcxuYq3c/RZcZ41az/ZF1XcFdIxhiuhFsnxtHxbY+j+qByR+FlmXP79e57+oBkz99
-         TSGPlX7YXkZD+Q8I+61BD8vtNd5m2vaf00VOqViCcjheFUoKLvhrfinNOwWO8ej73L4g
-         O7VcOjbcqth7e5CRkrEB3Hijgx93FXLoDMmNtHH8LYfCppnH7hp1ekn1O2Rw5F/YRzBu
-         rV2dEs7yEht92ByaUkGUfRZT8OjE6rpy1t8WtAVJEsqfFMdHbK1aG8uSw+FTJjBN5FJu
-         aV8LR9TicW4swgJZKdbU/cZiijxZwjvd3jdFoP+qh0+FB7n1JL8DMjKbJrgextb9TocW
-         Y7gg==
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GN0sAbdZ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794011607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WMUy4txGMl5roDNZhY9tu886qliNRol+/oxaNAbU7p0=;
+	b=GN0sAbdZIqC+bbQKS9wwujWeiiBWGUmhmG2GdeA+Mm7JS2231Z0LGnafs+Q3FxBfG/QDna
+	z+ZDrs8kYzCFPj5kaDbSenjQly0idF+GUWSxbrSOS+EoMLrrjWneuGLuIb+Z+zMZoY+5o5
+	59EntNS8MsR5Sz9Px6GEuziRzbM7ULc=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-Wc-m5XWbPKuF7Tcs9YfDDA-1; Fri, 06 Nov 2026 19:33:26 -0500
+X-MC-Unique: Wc-m5XWbPKuF7Tcs9YfDDA-1
+X-Mimecast-MFC-AGG-ID: Wc-m5XWbPKuF7Tcs9YfDDA_1794011606
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-5383d650f2dso19204701cf.0
+        for <linux-spi@vger.kernel.org>; Fri, 06 Nov 2026 16:33:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793991806; x=1794596606;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=KoIWhNtJmxZBVyIenQ/WCpX88ezjIaOb5DLauh7L2NM=;
-        b=zob5GgQdzrRtAAG2b24G3tFMiH6FM5gcsqm7uUQPGuZT09CI7ljwLqVTbR9guxCl/r
-         27kwqou+eMjiWSHk+B21M2CYt/VqdWR0li77UD6mzPGg5Tc03B0vvllUeqI0ZCLkRQu4
-         VEY4p1EqRTsJy0uYFoejej/i9gU1be50L2TedvqRChUClSFeee6d235H/UPwzwm03UIr
-         RdFFRzn9dflTe/eV2c4ZJwTRzornWnbcX5MMMicCDqtn1B+w5EIUmjjQHvvVBAC6c3D/
-         GRR5d3rFg4QtFdMnNqBzO76lDO9YPbd6DiQum7GPftc3I78CxIlP9ux8AVJ2hZ3UBbiH
-         So9Q==
-X-Gm-Message-State: APuU4Z/6CdSzi3wMYxlppk+WatxdQS4RfKLxi/wDeKfu5VrVlXIHxE8B
-	f1UVTt77rCQ8seTqH2EhmUEqraWo2NP6TV6WoHuO/N2CUg/pT/yTcchM
-X-Gm-Gg: AYBFou11qG77XkLrUVYNMTh8x+54R73oNFkwpxHDNfPCmj2auePGuXz3D6aQvYghzkq
-	MpksjzVQDXrLcSwx7+wTOY8/IeCZ5QGxNeLz4mLn+Tl6bgZdr8+/Ul0EzDXoeHyQ8+r6ILMH6yU
-	P29GkKaAuuT9Hxg9clvNCEt55kDzJ111S26x/Bmp3g/2TPISsrFBX6gPxw3zwrNq3rnWpIcUpD6
-	SmvnMf0Eh7RP4UX3Uy8jeB0u5eLmho/oZgv4VLPflupKt4+2xWCRhMCQTl7E22RqFo70oQV2xRN
-	HUIIzGVTxVqQjknJA8GmHIBOYua+YAOiVUT5XnzHQnh+ijC0eiT89JF4+6sXRPQYSwJ2V2b9WAa
-	uKbb0bI8pn3dKOHhrXEDsh7lQywjHLas88K79EjAV8SMJPa8KZXWbudq8zJPPp5KWGuxqkJipjN
-	o6v4KxM5/zsRwMMyl7ddDHlG76Q9w8qn4sm16qBKan2APs8ynNhNKSPMdGoIo8ojEmCn0vV/pDZ
-	v3iOQv2Y/VWW32eyAuJFr9y1u+DV0GC8+JJgiJKbDaIxhj3U4yXw0b6pmAaHVG2oFf5/iL8RuCu
-	jHgO0UKxTsLWpk5DRLWhlDQVIf4FhKeUE0BvSU+yxUnLOyZUqLWT7KOry8gLH2MZXt/l1FL/IsT
-	nkNA=
-X-Received: by 2002:a05:600c:529a:b0:4a1:d675:b031 with SMTP id 5b1f17b1804b1-4b6ddee3235mr55014455e9.6.1793991805836;
-        Fri, 06 Nov 2026 11:03:25 -0800 (PST)
-Received: from [192.168.0.253] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4b7e327a6d8sm977005e9.9.2026.11.06.11.03.24
+        d=1e100.net; s=20260707; t=1794011606; x=1794616406;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WMUy4txGMl5roDNZhY9tu886qliNRol+/oxaNAbU7p0=;
+        b=Uv1InwOMQtYBqo3tqvYQdE0PDelGH5Fi3dRynUNa9xHzbpNOsn5+rL8Sjmr2iU/1gK
+         tYzarvPA3PSmVRPoVBn8xyt0PAweHNmZQw4eqlwAcww4f4khwNifBhggyF124MXTAZmg
+         7C0M9kfyU5h7flFSmkzzwhRkU5o4+9545BG6OqdrQj70HfQ5YkBLPjcR4p0Fs02+2xg1
+         74g8MR2lS+O+vVI5G5azHEXjgCPX+UnthGvBt5gs6O4ipbAeu1RmeZ9LuXIjgEzaGUQi
+         uIg8DI9Mm+xebB33pQL3vxhfMhNIqrk49KC5/SMoBPzdLQ0hAeBZ5yOyaymdRAa7bjcE
+         Omew==
+X-Gm-Message-State: APuU4Z9wDuUbJrz2iZL0s8uXiZ+yffJXW43z4nrOdHqnsEyv0sznzOI/
+	CM7xlBvUorz9Qf03MWusH8rgQMnU9IkINc5LLcVBDtQn1ohnO/YU27Wk1rb1lBK2gF/MCCUZAcA
+	bBGgsXRHQHV/2/QyMx5YTr3G4WcU0dhoa+xWlGcbPvcZK1onVM8+erlUoTqrahw==
+X-Gm-Gg: AYBFou3yvkzI+e/XpV2iWGSYrUtVAk2p/YqfC2BsZ2csWq+oy9QlM6fqBgoAxxwFSP/
+	EuciWKUO2njA+c8dH1+sW1TdtNZq8ajC6xjKtFbI35zdzbvOJNNjUfLAE5LXoY6GMq+nrZAqYEv
+	o11VhwqLd1jIpiX/TQrvtFs7KWJA9p4Ies+BEysNWWfax/ehSADMlom2xI/BNIas6PckJPvmVqI
+	eqC9EBf3Y4DmTm5LHYpR7Uzscmslx7vr0MvPb/FwTayAGuGxflmZCqSX85a4sKQaq4Q584Z1wFt
+	8ZbYJiAMO5eqYUsX7jQpfLhVcekckT+/TITG7Mgoh2EOT+bZSibPVcqCvJiyYBG1NvKcZu5o8Ns
+	S/hNtJAOpkpCXkENbezDE+3Z6dCDZERp5QY7bRkSFcLMrPiTGI/ajMPRJ/InH+ihxkkAEe24fEq
+	Ho9N3pLyDZ21b/9WW9
+X-Received: by 2002:ac8:5fc8:0:b0:535:a5fb:6459 with SMTP id d75a77b69052e-54e1576c1f7mr69286671cf.68.1794011606002;
+        Fri, 06 Nov 2026 16:33:26 -0800 (PST)
+X-Received: by 2002:ac8:5fc8:0:b0:535:a5fb:6459 with SMTP id d75a77b69052e-54e1576c1f7mr69286361cf.68.1794011605554;
+        Fri, 06 Nov 2026 16:33:25 -0800 (PST)
+Received: from bmasney-x1.rmtuswv.csb ([69.43.42.202])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6a2c5d9sm32684126d6.10.2026.11.06.16.33.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 11:03:25 -0800 (PST)
-From: Gabor Juhos <j4g8y7@gmail.com>
-Date: Fri, 06 Nov 2026 20:01:54 +0100
-Subject: [PATCH v2] spi: spi-qpic-snand: fix various errors in
- qcom_spi_config_single_cw_page_read()
+        Fri, 06 Nov 2026 16:33:25 -0800 (PST)
+From: Brian Masney <bmasney@redhat.com>
+Date: Fri, 06 Nov 2026 19:33:08 -0500
+Subject: [PATCH 1/2] spi: omap-uwire: convert to subsys_platform_driver()
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -91,86 +98,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
+Message-Id: <20261106-spi-subsys-v1-1-a51a08f21cf2@redhat.com>
+References: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
+In-Reply-To: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
+To: Mark Brown <broonie@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Brian Masney <bmasney@redhat.com>
+X-Mailer: b4 0.17-dev-d96cb
+X-Developer-Signature: v=1; a=openpgp-sha256; l=971; i=bmasney@redhat.com;
+ s=20250903; h=from:subject:message-id;
+ bh=VXOL6bEGlUlQU4NkQQRQnkjQZinD42MMCclT0CLWHzM=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLLeFZ5+bJG4e+VlhwvSB85WtURMW2viyDrty4/6P8+Sg
+ 9OmW64621HKwiDGxSArpsiyJNeoICJ1le29O5osMHNYmUCGMHBxCsBE2uoZGVoF5vxjPHejLvBj
+ 6qVNy633+z41zZrMz9QpXS+7XfUzuxcjw7JDNiYOkfEuyipcEwMdnnlcfRJWav7r8IdFnKsKXNi
+ K2QE=
+X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
+ fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CYP4CfNfy1R7aMPD0JwV8vQWdxrQxCgg4JbR3DCSXPA_1794011606
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-qpic-snand-fix-singlecw-readloc-v2-1-18de8226fe15@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0K6dgwtlYAr72FY1OkUJoEWWoMaw
- t2tnMDl+/l5bxOJIlMS12ITkVZOHHwGdSoEDsb3BGwzC1WqumyVgmVmhOSNt+D4DYl9PxK+IJK
- xY0BAjU370FXduovIljlS/h2Fe5d54PQM8XMEV/lb/3evEiRo6WxTaSNLR7d+MjyeMUyi2/f9C
- yW6ggfOAAAA
-X-Change-ID: 20260922-qpic-snand-fix-singlecw-readloc-c4c89b4369f5
-To: Mark Brown <broonie@kernel.org>, 
- Md Sadre Alam <md.alam@oss.qualcomm.com>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gabor Juhos <j4g8y7@gmail.com>
-X-Mailer: b4 0.14.3
 
-The qcom_spi_config_single_cw_page_read() function has several errors.
+Reduce boilerplate code in this driver and convert it over to use
+the macro subsys_platform_driver().
 
-  * When the cw parameter equals with the last codeword, the function
-    configures the read location last registers. However it completely
-    misses configuring the regular read location registers for other
-    codewords.
-
-  * The 'use_ecc' parameter of the function is not handled in the code
-    at all.
-
-  * The last qcom_read_reg_dma() call which is supposed to read the
-    NAND_FLASH_STATUS register does not use the NAND_BAM_NEXT_SGL flag.
-    Due to this, the respective command element never sent to the hardware
-    so it never executes the read of the NAND_FLASH_STATUS register.
-
-After fixing these issues we would end up with an open coded
-version of the qcom_spi_config_cw_read() function, so drop the
-current code and call the existing function instead.
-
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Brian Masney <bmasney@redhat.com>
 ---
-Changes in v2:
-  - Rebase on tip of spi/for-7.5
-  - Improve the patch to also fix two concerns raised by Sashiko in the
-	review of the previous version [1].
-  - Rephrase subject and commit message according to the changes
-  - Link: https://sashiko.dev/#/map/177852 # [1]
-  - Link to v1: https://lore.kernel.org/r/20260922-qpic-snand-fix-singlecw-readloc-v1-1-41fd834a10fe@gmail.com
----
- drivers/spi/spi-qpic-snand.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ drivers/spi/spi-omap-uwire.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index c90c2001ee8d..41685a286e38 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -588,19 +588,8 @@ static int qcom_spi_block_erase(struct qcom_nand_controller *snandc)
- static void qcom_spi_config_single_cw_page_read(struct qcom_nand_controller *snandc,
- 						bool use_ecc, int cw)
- {
--	__le32 *reg = &snandc->regs->read_location0;
--	int num_cw = snandc->qspi->num_cw;
--
- 	qcom_spi_config_page_read(snandc);
--
--	if (cw == (num_cw - 1)) {
--		reg = &snandc->regs->read_location_last0;
--		qcom_write_reg_dma(snandc, reg, NAND_READ_LOCATION_LAST_CW_0, 4, NAND_BAM_NEXT_SGL);
--	}
--	qcom_write_reg_dma(snandc, &snandc->regs->cmd, NAND_FLASH_CMD, 1, NAND_BAM_NEXT_SGL);
--	qcom_write_reg_dma(snandc, &snandc->regs->exec, NAND_EXEC_CMD, 1, NAND_BAM_NEXT_SGL);
--
--	qcom_read_reg_dma(snandc, NAND_FLASH_STATUS, 1, 0);
-+	qcom_spi_config_cw_read(snandc, use_ecc, cw);
- }
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index 83e263eb6069..91bd733ca15d 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -528,19 +528,7 @@ static struct platform_driver uwire_driver = {
+ 	// resume ... use ck
+ };
  
- static int qcom_spi_check_raw_flash_errors(struct qcom_nand_controller *snandc, int cw_cnt)
+-static int __init omap_uwire_init(void)
+-{
+-	return platform_driver_register(&uwire_driver);
+-}
+-
+-static void __exit omap_uwire_exit(void)
+-{
+-	platform_driver_unregister(&uwire_driver);
+-}
+-
+-subsys_initcall(omap_uwire_init);
+-module_exit(omap_uwire_exit);
++subsys_platform_driver(uwire_driver);
+ 
+ MODULE_DESCRIPTION("MicroWire interface driver for OMAP");
+ MODULE_LICENSE("GPL");
+-
 
----
-base-commit: 4a8faaea975be15cb636646c0d4c6ff1c2110baa
-change-id: 20260922-qpic-snand-fix-singlecw-readloc-c4c89b4369f5
-
-Best regards,
 -- 
-Gabor Juhos <j4g8y7@gmail.com>
+2.56.0
 

@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794064806;
-	b=v9jxXNP8S+YLXwEO6RMQocUFsQ/zB8ZuhW6VV0gpKpbjlJRnWmj/wVOVRNpsR2nH2r/m
-	 /cKo3OJ/N8ZJZagXWNIAbzOQA/Tn7KqENzJk21aL7mVc6s0KVXK+ydAmsIb0EbcY2b6m0
-	 I95gNn/6XvEkENarj2Wt/lU+z/oFtuG3IawsWEYG9Lz6X4a06oWdjpyJTre1k0+1sPuFM
-	 9FcUIxdb/yro/5CLzp8UYsxhkUwnsSgpeC4UNlzL7OWanXpTW7W8lqBa1SdeHzH4gREJ2
-	 p/sX39ShzpNR4K2OTpxMPo841y3Q+Dr+tg3YgEopEuwAut0zzrFW/u0+OqhhHALSBuA==
+	t=1794066027;
+	b=YcBVJTMQQgf0WaDGzb7KMjo3mXRDloaY/whBeGkwhuw/nKHdRoYVb211EDJNcJ5CxopQ
+	 0/KkhR6nkryJmc2Y5AQcw0S8Rzqxx5b+DFdZrLiucBy+27w9YCbYJpblGmsmcGN1bmq56
+	 JULkAwH3UNu/1fiSmcWsx0OHCovFg5wLFcai/3wYTw7NBbab0cShM+03iQ7e+vpF4Tjhc
+	 3v39AGweh9Hp2HrnUoPWL3KCzYnOR73Wza9qfVwAgHjqmwvstbA7ruiwH5p3zSHHgsXpA
+	 whAl7Vk+1SY+/CxbafNTfA8wSD0Nf4sYGjQvPT+t98zfymjSgkEpJ3XJZsYVFIqlUuA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794064806;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:To;
-	bh=jLPQOvvWVVv/GK/LqcMoBI8D3MhWZ3+fMG3znT250Jk=;
-	b=2ODaP5lp6HctvdKnS8Eq2ivhOcX23UDbmFr5eQP9FJXM7zqBR0aFN4/4vZa7FgBhuEBI
-	 563b6HDw1x8VnmbHrf1XryXvK/XCRXQOmE42VaziSIpvLMzM4Bq+0DwHmm0QG6g4IRncC
-	 +wbQdKY8gADBmSRJAlm6DuKF9YZHixfNHwwybcjKKq30GzJerCya5EOQI0KyZi66ASrIX
-	 phvuBVbzv2ZcVsaM42L918t5j5G+jSsD4JWPK87y5N4rHPTmLN5fRDELgVURj+7o63+hk
-	 0bBxs1EES+4sRmsfbwR1GdjOJPtODlbWNyoIvXpy6wIXORk5xFo6DaYXN67AQmo8XKQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794066027;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=0855Lhy/dON8JVTqKZXNVM88rgbhtEry4bgMTQuUuV0=;
+	b=uRON332w14PwyJzGGSzwXWlUy3a226X0rOxW/CORj9qhc9JmgAKr3wBg3SvHTp18M//m
+	 +6WR4UxJ2LmmRpwbGCG0gHPgUdLCcX5T7u8WmfyXtFkRAtPiZ6XL4aKgQ8D7xe6bnFJa4
+	 fjix/tbvb++F3A+8zt9pahw/uOoblibvd/zMrgwTunC8Z/hmQe6qLX/uwWqlnJOQHnPDU
+	 ZsKO9/yv+XEbOf3YKRgENQaP3onHUcNQhsQDeHCY5DBD3PCE4SzHUAZG1roZIcei/Eky1
+	 QIGmjq4YFG3kLrxyR46zCq+/JLeY7O3vPTvnCxLFKMtZj331dP6AHSFs90ZTHO1Ii7Q==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIi+Lh6O;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c8TI1Sgc;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFCF606C02A
-	for <linux-spi@vger.kernel.org>; Sat,  7 Nov 2026 15:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A351B606A326;
+	Sat,  7 Nov 2026 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JIi+Lh6O
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542451F008A3;
-	Sat,  7 Nov 2026 15:20:06 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c8TI1Sgc
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D7221F008A2;
+	Sat,  7 Nov 2026 15:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794064806;
-	bh=jLPQOvvWVVv/GK/LqcMoBI8D3MhWZ3+fMG3znT250Jk=;
-	h=Subject:From:Date:To;
-	b=JIi+Lh6OemXmDPacHra4kHl6NkuFVbp6m7vZVpUVi1LldCr8uJTaaalCXFNQEz9HI
-	 ZQ/hVSx1969bdbskYNNrICbI73X5yYJQfoV6CkmPhPdbnm6l0EJpJrVtnyVt+EgiFE
-	 La3A1pxgFrQGuA7XwDY4UY8avtfLgQqRp+xb60H8HE4/0p9XUnpIdhy6X1mUZcc+0Q
-	 /Dt0nVr4nlN5PMbUaxNyxv0M4xnMMPxZeZ/1yO2N3OyKokZOtp2KF9hcYIR0Sdrcgm
-	 XWc/KrQqSBkpqR0sqlKTJw82nvaY7Ce7QGjHCM4/K3LjOpdpo0WpU4obwSknWO5d+R
-	 JKhi3CMJDQwQA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 2398C380821F;
-	Sat,  7 Nov 2026 15:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1794066027;
+	bh=0855Lhy/dON8JVTqKZXNVM88rgbhtEry4bgMTQuUuV0=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=c8TI1SgcR2UQaFEN+sXtm92nv3SKKB/Ab3Sw0w0Y2S/n5I01TTrS4jPLmIFgTPvfD
+	 2tF3BVTYeSP3uNddy8u1hWpVQZPaenQ+gLf8hgZ424VGuzkp9huPArXCEhHbtcF5rr
+	 vKMvKeJmvCre6ffh8fm8E0ZSIR1T433Se6NQ3m52Zsnxswh4l9USGIrRtPXIr/BxL+
+	 s3iiY6EMD4vsisXDuXeLlxcMEj1g9fPCLatw1hcyY5kSIpvOfD3BbCUwmg6tTItGfa
+	 vibEzB0nAn02i8d8zo5Cs/i1bQN+DnjMfuQ89cVDJA6500JZDyO9RT+IevtOz4J/wX
+	 pdK1kZzmUftIg==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 7D3DE2AB366B;
+	Sat, 07 Nov 2026 15:40:24 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,30 +52,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Patchwork summary for: spi-devel-general
-From: patchwork-bot+spi-devel-general@kernel.org
-Message-Id: 
- <179406480471.1216717.203841197637772403.git-patchwork-summary@kernel.org>
-Date: Sat, 07 Nov 2026 15:20:04 +0000
-To: linux-spi@vger.kernel.org, broonie@kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 4/9] spi: restrict CS logical values to a contiguous
+ sequence
+From: Mark Brown <broonie@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, linux@analog.com, 
+ broonie@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, Michael.Hennerich@analog.com, nuno.sa@analog.com, 
+ jic23@kernel.org, dlechner@baylibre.com, andriy.shevchenko@intel.com
+In-Reply-To: <dd50e45bff4b59ad656f94fffecca28a49f1d2d3.1792435248.git.Jonathan.Santos@analog.com>
+References: <cover.1792435248.git.Jonathan.Santos@analog.com>
+ <dd50e45bff4b59ad656f94fffecca28a49f1d2d3.1792435248.git.Jonathan.Santos@analog.com>
+Date: Sat, 07 Nov 2026 15:40:17 +0000
+Message-Id: <179406601716.3424803.6294014265604547763.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=535; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ZAf43SC5Wwsv9BlH9bz+p7xqTH/dS8B+Bfqtk7gFLeA=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLLeuyUeeZjrqiUyK/LlS0OVF0un/opf/UHAJP8dW5ax+
+ WxTzmW1HaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZiIqD7D/5CJi76LTHQ6v2I3
+ x+0pZ+czpa27ce5kSt7c7+8lbkvHKT9g+Cv08ZyxsPjDa1e2bitOj7/FoK74T3J7ZOXBmU3fpPi
+ uzGMFAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hello:
+> When a device uses more than one chip select, require the logical CS
+> numbers to be consecutive (for example 2, 3, 4). If they aren't,
+> __spi_add_device() now fails with -EINVAL and logs which CS breaks
+> the sequence.
 
-The following patches were marked "accepted", because they were applied to
-broonie/spi.git (for-next):
+> Changes in v4:
+> * New patch, suggested by Andy. I assume this might have impacts on
+>   existing users. Should we make something else to complement this?
 
-Patch: spi: Convert to subsys_platform_driver()
-  Submitter: Peng Fan (OSS) <peng.fan@oss.nxp.com>
-  Committer: Mark Brown <broonie@kernel.org>
-  Patchwork: https://patchwork.kernel.org/series/1201698/
-  Lore link: https://lore.kernel.org/r/20261104113405.1634275-1-peng.fan@oss.nxp.com
+Indeed, see ge,achc for imx53-ppd.
 
+> +			dev_err(dev, "cs%d is not consecutive with cs%d\n",
 
-Total patches: 1
+%u.
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Mark Brown <broonie@kernel.org>

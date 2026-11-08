@@ -1,48 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794140236;
-	b=eX/0J3jceUmerjlmQ1JdtQLLmNKgVuauT9GSssMShz0QnPsnIUFnyJ+UJToFPba7qKvw
-	 IoRO3vHJ7w3XczbaKPRxqxbPi477z4TgKWw7CWYbV9PYizVcFa5J9EJfOZdAV/OmJ2NQn
-	 oH6JXfrCo13oXxzv55BB69/RINJ5tQS26Iug9qoY2UQeY2b+U/8hGVtd+9u3mb1lEBlIg
-	 Cuhdz2ICha/s6p+c4dRFHQy//FBvu0dUTQkP5xRS9QaVAjrkIOsEzZod2euFBgKNJLLD7
-	 JWsYN82zEpUNGq2JwcWtW2Zh6C4x3Olm/6Mlecj5/iIX+TN/4di6ucdtAKWowLRbpqQ==
+	t=1794140243;
+	b=II27uUSPDXZk+O2qsQ7ZGT1YOg8P4DYF64i70HIgEiy7Oqi2XzsAniz8MLhwFsdOwQpL
+	 MJHGm7O7xj+6Mc9vpWybHITzoArov110IP7ESZ6a34eUWu2lvn1anS4XnaQb553Te8tKO
+	 27LVSYpDschzwNfACbIJS9ighsyyc3BGSniofim4e2S4rpdAzlntJna2xtsk34aR3A+Gj
+	 CnyrahZ1eun8qPTdJDF5NB8JuJxgUjChI/TMzcjGhRcci5pSnmo0drd9da+YTfXUTQxE7
+	 BtxzwGaYxr3Gx9ep5ZiqgsZZHYWBFGb7uOGqH0B7lrcKWNCvzSqbT07OI0MfY3jnMhA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794140236;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794140243;
 	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=t0HhTPj4bzTBaikkJltYtx6Hu1FRWN4PirZ6ZWFxmvo=;
-	b=AWKucsRvUS20auNtSa/YAtNxSyHnHH9wvkXqPLGoPeMVm6ySv/zohTxoy8p/qlb4hZ5R
-	 cCaLKn9mW+fR6ZmYKmqZA1WZ8/XCsnX4uY2DmzCdvYg79Dk/5W483j19snuLQKprXNSAb
-	 EpAEQprXW2tBztmmclDuN+JjJ2QsgP4QA0ZPRKD1G6lqP2WVytSiIkX6SokXXRWTmCfx7
-	 rVZMgnqDO3UC0mfvYlVn6EnzaJ/77MrjRJEy+1CzWZBD1r1XuGa0omY7tIXsXZGmDvMml
-	 YNW6FDO/yTTLPlrDwIsNjLE0kfy4onHfIKItO8Qbc1i3x82F9+4NfFqdZDzDA8BAmrQ==
+	bh=Pjfgr+3mC8cRFNZ057iwMxj7yEQh8CXyv0+tSF6NOcI=;
+	b=c2ypnt8Lo2EkyC0f9CWWmnHpoepQ1F0eeQdbdZBeTL/Xd+3JquzSk19zpnuuyZIRMuML
+	 LLqWSa/7NqZYCxAvv6b2IucFUpC7vyabs6tNj+LTKwQjRsodsCOmYFwwAwCxBfCInSOiT
+	 +SSLernb7vrqmfd+7G9lKGxltKIL7NJj6cSAQm9nVdoBZGmDSAwJag5hqzgOczJfrd1I7
+	 SIFQpO4L/2WdmwPDou60B/0XL6yz93QRYxt+WZdNMaRtldmMfUdf5i2L522FkQgQmNRHU
+	 +MKjVLR8zQiC4A52s//kgNkbbNuOLCGHKcrWHzTPI7Q9u3OOmcoYMVJdQvYICxLWJ/w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xt6D6o3w;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xfry27Ef;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF919606A334;
-	Sun,  8 Nov 2026 12:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98EC606A322;
+	Sun,  8 Nov 2026 12:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xt6D6o3w
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6762E1F008A2;
-	Sun,  8 Nov 2026 12:17:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xfry27Ef
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1380E1F0089F;
+	Sun,  8 Nov 2026 12:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794140235;
-	bh=t0HhTPj4bzTBaikkJltYtx6Hu1FRWN4PirZ6ZWFxmvo=;
+	s=k20260515; t=1794140242;
+	bh=Pjfgr+3mC8cRFNZ057iwMxj7yEQh8CXyv0+tSF6NOcI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Xt6D6o3wwRmLzN1HgqrLJFG+iw7lbY42O4ANyK6/MQUzGsGtAMnfARTq9wTW8gmWx
-	 rQ2EqDfMXU7i8S8Yddd3QBeEf3pN90lGN9W9PEUvfuWn0j3qB3qsSwwDatNjHLyPvz
-	 HzB5cBousC4t6KlOklo4xmThMQOSPJg3sD91RLl94qwVBAyc8cxpxEfxEUx1pwwwsO
-	 ysXUyuEe1XGfCTMGw2OoD1jMSDB6HlMp5NcCI5C198YzdAAik/gKYvIC3ADb2JYRiI
-	 UzpvIDDI/Jtf0krhU7ItMYAN5FXib7fWfidwt45NB6LdLEg1Pnf/BPdwRBoYKkAE7P
-	 vYudWIe4dDHVw==
+	b=Xfry27Ef/Ysol8bufUj6suzU5LrliMsuK88iHHmWrOdvrwTGNt4xppiDtr78HjCUi
+	 Y9348v86EpxcywsR531vKiFiAkXaU20rA8slHrZV1/ndmf83HqqJvRBWhCMB75doP7
+	 JpTFsh0cQ+hFhG5QZh5D/ZNjaY1x/Fta5r2TpkDtR9V9IPpiS76tMZwJW3K22sB8IN
+	 EAG8+g4Gm4j0pl1f+AVKPz1E6xGcWNRFb41wizKJAbfIF2HMxLv4s3WigJhivf4+kZ
+	 3OS5/BnuC014cUzCg608tCL4JhciovUdQm/5f5MRszqSieTe6CxeVbgF/rcrCDo+th
+	 Mw9IbW4mz3Z+w==
 From: Joshua Crofts <crofts@kernel.org>
-Date: Sun, 08 Nov 2026 13:16:49 +0100
-Subject: [PATCH 02/11] spi: cadence-quadspi: remove redundant
+Date: Sun, 08 Nov 2026 13:16:50 +0100
+Subject: [PATCH 03/11] spi: cadence: remove redundant
  pm_runtime_dont_use_autosuspend() calls
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -55,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-spi-dont-use-autosuspend-v1-2-3587b0183cbe@kernel.org>
+Message-Id: <20261108-spi-dont-use-autosuspend-v1-3-3587b0183cbe@kernel.org>
 References: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
 In-Reply-To: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
 To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
@@ -79,11 +79,11 @@ Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
  linux-tegra@vger.kernel.org, Joshua Crofts <crofts@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794140215; l=1162;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794140215; l=1076;
  i=crofts@kernel.org; s=20261015; h=from:subject:message-id;
- bh=uyKe4YBV0WQ4xjRxVeaEsXG0/WnAC3tiK57fwM2IAFg=;
- b=93g0ybMATTAxNpyewzVSnIR92o5FRQQxSwuay4wOjBW1FQjHkbqT39CYxeIHluV2ZLyEZNY2D
- SG1evYLXLYOD+B2LJyza+hd7pn1c0HFaiTfUHHvvDMNpDZ/Wc+rMECW
+ bh=7ryTaWhNi8ChUqf0oxEn4I8b8j6TXrR69Y5MVmBHIzo=;
+ b=XEy0GJpe6Ov4zqcALncuUT6jddNiwNeYVMZWThaB6PLrMi1hQwCv44EamxPFgI+3RNX1xg/dQ
+ /suNNKO2Ze+AkeDwK1UbE3FGGfZpJXzzzDMVUFDtNKzToWkpFllvtii
 X-Developer-Key: i=crofts@kernel.org; a=ed25519;
  pk=RTDOoVwgeL4oFdASj9U+cxJuIjXuXk73zkjnGOJKbEo=
 
@@ -95,29 +95,29 @@ Remove the redundant function calls.
 
 Signed-off-by: Joshua Crofts <crofts@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 2 --
+ drivers/spi/spi-cadence.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 73ea51c41f95..a276745095e4 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -2001,7 +2001,6 @@ static int cqspi_probe(struct platform_device *pdev)
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_suspended(dev);
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_dont_use_autosuspend(dev);
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index 50ef3a7871c2..ccab85a07d77 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -762,7 +762,6 @@ static int cdns_spi_probe(struct platform_device *pdev)
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_set_suspended(&pdev->dev);
+ 		pm_runtime_put_noidle(&pdev->dev);
+-		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	}
  
- 	cqspi_controller_enable(cqspi, 0);
- disable_clks:
-@@ -2037,7 +2036,6 @@ static void cqspi_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
--	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	return ret;
+@@ -794,7 +793,6 @@ static void cdns_spi_remove(struct platform_device *pdev)
+ 		pm_runtime_disable(&pdev->dev);
+ 		pm_runtime_set_suspended(&pdev->dev);
+ 		pm_runtime_put_noidle(&pdev->dev);
+-		pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	}
  }
  
- static int cqspi_runtime_suspend(struct device *dev)
 
 -- 
 2.56.0

@@ -1,49 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794140296;
-	b=w/lYR6uCUBFqT9jTR2Za8qU+JHzCyNII0SzC/MFVTvHv73c+QRo/U7nVfYpP1fAACK2A
-	 203kymAB0GBtMxVl6yj14sDC5CxbRNL1vXda6zlTCQaT1luFWhCDIwYM6LpjLRdFXixtR
-	 3hVlblsCTJKrJ5WdME8F1cPu3QivGwe+5Tsla/IRA1kyULO0sjjsQK2q16Bf1xAzBGbmY
-	 oelySyFknzP9heDVO5td1EtbEqYjDHnSjDzKKMITLcpQoRMUM/vzJDKNoYBa0C4oQrbCm
-	 VDOATuNa5Sl8yAXJGdZuohASIvD9fTbe8223OIqtLvEZvFz0k9ZYq/xgH7OK9uMb8uw==
+	t=1794140440;
+	b=MstQCsH6ip9V/yZ8e3k4aD/ub8g6+pijFmRBRDXi4qv31nnsj7nvk3ZpVdpBXU6z+1yH
+	 JeqejLNSJJSFSiXRfp/vo9U0e2VzMgh/6iVl3F6MZm+Zj0OcRb9lbxnrZFJKsizcUhkP8
+	 RA4asFftFdYRyH79rj8knidMD4/SVIesg5cneGDm8LLljRphVegm0ahTHNblplFqUeXZQ
+	 yWwBFMCx2P/hT6j+vu4bQ5bnMUcen7XNO8kVNF3z1k6+yHnz2faxgxH9H2S2sDOtBvicf
+	 1dpMAA7jAlexOu8aT5IJLpg9wTs+kmDz9LqEjBOmGlNjZDeZMY2Rm3eRW0bFlFRF9rw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794140296;
-	h=Received:DKIM-Signature:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=SckiUnu1S01rYyVBaocWKaUFwyjWG4UsjJW3tv/+z/0=;
-	b=pqHl8CYbluvRouRSB/ElDyxZj4ep2wRHx4EDspLFWJbTYf8jBGLWQmYHT5PU24vPz+uX
-	 MsGJXXk0VMYcEmopwv6/+mguplvsjDoXMy2VnPXwX66nzDK6DgeIPdatw/27neiuKpIL8
-	 q6HppLl8NLeUIXEATkH0Kk5dwq6ihgLz+6t4oaAHtdoT5lOkkoLoqS92D/eliPgw7w5Xa
-	 kVU3RqV/q7LotRFKioDNVSOs90jOqzu5sli+VYUDNfr/GV4IQ15E4XVHxD0zf7L35Ac6X
-	 ULcMEEW0eBcIzrafSTBGc9a/dqXWH7QEOw+QiiHOWYsvzE7jO8/wdPjZQNSF6cUNtMg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794140440;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=Z0y6eaBsxzUThfzx9UP13uc1XtIr/6AqzMc/qlXa2WE=;
+	b=puuJwLH4jAuEYH9N4RSUPUt5a9qkWzxgrMi4R8vmTDOP+srDbdV4fm0zNOy0lKXFQD00
+	 XGxwi1xNxx5y5rNlOVSqBgXM3rAHfxPo9+BnNb9lr6J5tU4UAzPxpghRn5oN44+F+x18k
+	 TTgSNgZhdjiozgcrQM2Vagw7HteipvPAtdACSyZGTChVmpwziEN6F6IRqvKmnwwFFpD4D
+	 afBFZCbYG2bpqMfA1GxVaXMSWdGl70iaZ7eV7v7O3pv+GabhwF/TfXnLH7SCPoCYjC2xP
+	 DTe7Xy2jtYqtz8bsb5kjU+rsvTYGZzMzfMnZtAxiqooBZMQZAn/oXRh8gf/fUWzNR0w==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2doajhm;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WXcXN9RA;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DA1606A31C;
-	Sun,  8 Nov 2026 12:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A706D606A31C;
+	Sun,  8 Nov 2026 12:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=K2doajhm
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E961F008A2;
-	Sun,  8 Nov 2026 12:18:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WXcXN9RA
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286321F0089F;
+	Sun,  8 Nov 2026 12:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794140295;
-	bh=SckiUnu1S01rYyVBaocWKaUFwyjWG4UsjJW3tv/+z/0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=K2doajhm7XDLnukMsitOSySzn74EXWrVk4AXgpXZxA6pD34xRObyuefxmA16/VM/i
-	 BHrQR9ZTvyOoTEEjxx9/9vGjgWcOwUnU9l+EzLE0/wejLqSP+qABrqkDwWjdbFwqDc
-	 QisspIbLRPc/TvxHUugJnZhl4UyDwynLIVr5j6A890uG8v3X+ria/xKcd/AQ5FExL3
-	 gRIsYuZbutKaiV3MF7ytEZHgbfhQ4idm6CC4uDNNIFdmyXd4BuYGw1OfgWNwjZulOs
-	 dTQaU0VsOa147go8rEZ9wHGiCns6N58J4bw6tvCeuq0XEElAkom0AnHx7bQ3cSvR2N
-	 +1Jy5qukSzC2g==
-From: Joshua Crofts <crofts@kernel.org>
-Date: Sun, 08 Nov 2026 13:16:58 +0100
-Subject: [PATCH 11/11] spi: tegra210-quad: remove redundant
- pm_runtime_dont_use_autosuspend() calls
+	s=k20260515; t=1794140440;
+	bh=Z0y6eaBsxzUThfzx9UP13uc1XtIr/6AqzMc/qlXa2WE=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=WXcXN9RAtzVke8mAk+NZ62s5rEXt0za8/W82KKoak73ZciYuzzw5+pDAT7UdtSRuN
+	 STz54XAdR8CsX2SZtv2jMvTu8aXUHaZAE5UQIk885OyloLtVBS4HDauEJXIUOT7nXY
+	 05ckNTPOTriPijyjbLdNzBQHCq/QdZgm5d6T31FKBLd1OCw387jXXNN8a5/cQ29cJF
+	 do4nLjJgiF6gBKSBtTF2RG6dXJux+2gogJC7I7ufZ5ptfwmXBG8wE/kWomOmXHVht4
+	 n280NRnEsVz05UhIJ7YGIrHwEXfzEPzCKdBWmCfbr49oyIyLDJPnF12FGGYYSiZRhW
+	 i3AOXngAfCeJQ==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 6C9CF2C2C473;
+	Sun, 08 Nov 2026 12:20:37 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -55,70 +54,54 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-spi-dont-use-autosuspend-v1-11-3587b0183cbe@kernel.org>
-References: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
-In-Reply-To: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
-To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
- Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
- Prasad Bolisetty <pbolisetty@axiado.com>, Mark Brown <broonie@kernel.org>, 
- Karthikeyan Mitran <kmitran@axiado.com>, 
- Alain Volmat <alain.volmat@foss.st.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Michal Simek <michal.simek@amd.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Heiko Stuebner <heiko@sntech.de>, Jyan Chou <jyanchou@realtek.com>, 
- Yu-Chun Lin <eleanor.lin@realtek.com>, 
- Laxman Dewangan <ldewangan@nvidia.com>, 
- Thierry Reding <thierry.reding@kernel.org>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-tegra@vger.kernel.org, Joshua Crofts <crofts@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794140215; l=1182;
- i=crofts@kernel.org; s=20261015; h=from:subject:message-id;
- bh=8JBQ4IcPEGwBD1QITLActHWZFpnabtrNZR/DykpAoss=;
- b=DwG+Igz5rwcKr2H2vQkzimZS8cgXmgDiMkHh4/f5yqxsMm/phmaTniGQH06bGPP7QMM/kq/WT
- BJKXCJ8NUw7DH0kns8hsHuGZwDqFvU0GN7mU+1NSSDUJ/14/p33mCf1
-X-Developer-Key: i=crofts@kernel.org; a=ed25519;
- pk=RTDOoVwgeL4oFdASj9U+cxJuIjXuXk73zkjnGOJKbEo=
+Subject: Re: [PATCH] spi: intel: only check locked opmenu for SW sequencer
+ operations
+From: Mark Brown <broonie@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Mauro Lima <mauro.lima@eclypsium.com>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, Lee Jones <lee@kernel.org>, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261101200313.16411-1-rosenp@gmail.com>
+References: <20261101200313.16411-1-rosenp@gmail.com>
+Date: Sun, 08 Nov 2026 12:20:21 +0000
+Message-Id: <179414042181.3630016.5337245544547078214.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1023; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=ffvScCYWLP1l8GMZTbXJdOrsNZ+RBwcDgIF/1Uc9frk=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+ZLJ/6RSbeci6Y0YSv3m5Q9ydtjmh9n5PBXjeHTy+r
+ aHk3Mm0jlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzkyy6G/47LzD9LB8soyt8t
+ vDRll0CNEPua9ENNSuu3fL+weNPO3AUMf7h89fldQy855yUzl86c/Sr/eFykA/Pd+6kihikNLJO
+ ecAIA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
-driver core is now responsible for undoing any
-pm_runtime_use_autosuspend() calls on driver exit.
+> On controllers that use the software sequencer for register access (LPT
+> and BYT), intel_spi_supports_mem_op() rejects any operation whose opcode
+> is not in the BIOS-locked OPMENU. However the check is applied to every
+> operation, including normal data reads and writes which are always
+> executed by the hardware sequencer and never consult the OPMENU.
 
-Remove the redundant function calls.
+> +static bool intel_spi_op_uses_swseq(const struct intel_spi *ispi,
+> +				    const struct intel_spi_mem_op *iop)
+> +{
+> +	if (iop->exec_op == intel_spi_read_reg ||
+> +	    iop->exec_op == intel_spi_write_reg)
+> +		return ispi->swseq_reg;
 
-Signed-off-by: Joshua Crofts <crofts@kernel.org>
----
- drivers/spi/spi-tegra210-quad.c | 2 --
- 1 file changed, 2 deletions(-)
+This will match for SPINOR_OP_WREN and SPINOR_OP_WRDI, should this be
+something like this:
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index d8cca3aa276b..5178cf7eca68 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -2185,7 +2185,6 @@ static int tegra_qspi_probe(struct platform_device *pdev)
- exit_destroy_wq:
- 	destroy_workqueue(tqspi->wq);
- exit_pm_disable:
--	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_force_suspend(&pdev->dev);
- 	tegra_qspi_deinit_dma(tqspi);
- 	return ret;
-@@ -2205,7 +2204,6 @@ static void tegra_qspi_remove(struct platform_device *pdev)
- 	spi_unregister_controller(host);
- 	free_irq(tqspi->irq, tqspi);
- 	destroy_workqueue(tqspi->wq);
--	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_force_suspend(&pdev->dev);
- 	tegra_qspi_deinit_dma(tqspi);
- }
+ 	if (iop->exec_op == intel_spi_write_reg &&
+ 	    (iop->mem_op.cmd.opcode == SPINOR_OP_WREN ||
+ 	     iop->mem_op.cmd.opcode == SPINOR_OP_WRDI))
+ 		return false;
+
+Sashiko has some analysis:
+
+   https://sashiko.dev/#/message/20261101200313.16411-1-rosenp@gmail.com
 
 -- 
-2.56.0
-
+Mark Brown <broonie@kernel.org>

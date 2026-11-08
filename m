@@ -1,62 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794148446;
-	b=tFeUz9mef3YqpGM+XTR4tl5yVltJQoItGJmX0rVvHU/+uaRfL0hCEaG0J69cqqIAoY9p
-	 kf0ba35NP2RbcHZrY63mL9ulJpzMN3juL2bn7w3kUOh7hptmSaEKF2xW9pbXZ9Eg0vJ6d
-	 6bEqWyxxuiVjDxdN6IIFeec1lXWx75HKB9P2ZYqu8zTLkxRVnA/paSFmF40Ywql9k9Uvu
-	 83L4TPDoNZ19xz5k96w6gPS/KvYK+bRPKgMNu5pWwbfBh6rLCSz5Z6e3CK2QGV9DxeLlY
-	 bEVC+lBbOz/kuZcElyg/6I93Rj8ZXjIwG9bfLltsQ1Z0VCf22VYC7sShxWaWWBJjEJQ==
+	t=1794149017;
+	b=IOJSa0hOq4Z+wWuYqKUj0kpWxoXtVNVjE9J9RMdsoq/hmNKQ7j/upN8ysKZvfWfJHuoD
+	 Tai/B+TaTC8+M0Hgzqfc3LnHtHYm4HE4Lw4kWz2avvLznfsHC7oe+Sgrbq9eEcQUNt7XV
+	 zmBtFotK4q/6rGpFUlMOtom1fSgcHCe9XWymeXeygU4hfSKxQ56YnM2LcIT39lTC4vOlU
+	 q7Eafx+bK/91MT4sFK5nPsGkTrRJUVFszTbrWjde5wCgSgRB8neSOgS7AODb8KdDmkWgu
+	 qfDIPB2jSOoCVS3VFlytMQD2TRUYOXNYxDL4JN1bxUIz/wVLxRLAeGeTaFb1bmKluHQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794148446;
-	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
-	 Subject:Message-Id:Date:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
-	 X-Developer-Key;
-	bh=1//uqtjICj44uy7P8QVwmNqhHAj9tnbXTw/EVuTChBo=;
-	b=ZOGeoiGj33lISIBY+lf7VxQZ7+0IeMVPtBqNPY+B00XzujF7wVB/JLj+boud7IzuGJwQ
-	 yHvhwiO0ebX/0mEcH0AfL90afJYlS1BJcLKw2yzfoJW3SSoyzK5iu9krEVdL54qRbb455
-	 yynpscAwC3wz/WrcpXiITF2+FqvfSAOJLsavhoBgr6I7y9CMPq3F4xxs35peTlNNTOu9t
-	 Q8OZz07vUOfKTtf567jvt604R9xMkyWYG5cK0IdIL/uWQVG3nuDL0uwfuS0H3Of3p529m
-	 elgQ2IGQb09fHLOJUngPwH+MOCXzt/mr+9a0k1zQdDyeLpgEgOUeLjz7mxq7CsJVKKg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794149017;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=+tm4BTgPIBAp6plHBDahXEWTBlRuFrOeb/xwJ8hxjCg=;
+	b=4E4PRyQQ1RIERow6/QTwiwtAK3xtYM1N96znIPM0VdjkBQiLliFY1e846e/dChpD5vLq
+	 D/b+MO0waiOczGQWujksn7zAVGrGJHJ4pCzd/RIxczaMzLLsWln4QqGJTpm8R+U/4l0wG
+	 d4KNVHIy6pqnpebwwj5BWqAPROn8Md+0LWbP3MdnwS25lAh+GJMXERnG18pP0FZxMFc5M
+	 z43uW0891Cr4Vo1E0sfgPLb7mRa4hxGeyN4AA/JPKu5e2Tb9pmWc+eTuA+Lom2Ob5XpBu
+	 1zwR0cp9c6CSqE2sJVAkrtJX2ecjtjP+sr+Q3Ew6PNPI9HESs5iGjnI1eNk2jK7iZ0g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPdw6PTY;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kGiSysfj;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7B8606A31C;
-	Sun,  8 Nov 2026 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBEB606A32A;
+	Sun,  8 Nov 2026 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OPdw6PTY
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6071F0089F;
-	Sun,  8 Nov 2026 14:34:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kGiSysfj
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4CD1F0089F;
+	Sun,  8 Nov 2026 14:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794148446;
-	bh=1//uqtjICj44uy7P8QVwmNqhHAj9tnbXTw/EVuTChBo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=OPdw6PTYjC/vej+V217u0ttIjMDcXqYAAyN/xnSVNFbGrzUKrAohfmnHQTHIaFnYW
-	 A81rXqrkwk+USIwXhm6DSxFNzEXSJ+nnsgQ4WWb7LbLUnWh+R8brP9MwJhXZr/VoiL
-	 E85dehNN/2m+sDjFygwRPFi2RzzUit8fHqRVlRi0ohNIT15fdFqZAB64OopONYDIFq
-	 GafPiNsCQvJBVJRwPeiATmj/AcROevTJ3yBlOIZpOJ3vW/+e1+fQsw5YGdcaOQw0wq
-	 gCw7ZmmXb+sBSe8XWE/YkAYPUldJD304Xf3BeRiacxT9MDV5QDWR7SWr4vOW2xrT6l
-	 DAn6IGdx4CM+w==
+	s=k20260515; t=1794149017;
+	bh=+tm4BTgPIBAp6plHBDahXEWTBlRuFrOeb/xwJ8hxjCg=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=kGiSysfj8kybVExITvIa+Rgny3CtFnYPEHPOMdnhj22NbAlhnmy6lZgGJbZeLuE68
+	 grHW2l5ETugYjbqt+olg0hmCxMet4DY9rcqoblhoGP5rQzdf5L4VSK9i79FxqtCYPh
+	 UvxBu/oPZejSjxcC7fp522TVbY2NiIyIply5YT3LqBn9MaRuKd/ws574umzmPm7Ete
+	 druprc/WJ+WFFWdzFWPokJ5MfMogoAy0Y4vbIkl+KRxYCRaC7h6uatklEB/W7IrY4s
+	 Z3ahnI2cJsA0vBb5645z1v1TlQO6UP60UIsO/Pctn//txxC90ubq6AOQsTIoehfBk+
+	 4ms8nbsz1ZQSA==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id E1B462C89DD1;
-	Sun, 08 Nov 2026 14:34:03 +0000 (GMT)
-From: Mark Brown <broonie@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
- Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Frank.Li@oss.nxp.com
-Cc: imx@lists.linux.dev, vkoul@kernel.org, Frank Li <Frank.Li@nxp.com>
-In-Reply-To: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
-References: <20261103215824.1823272-1-Frank.Li@oss.nxp.com>
-Subject: Re: [PATCH 1/1] spi: replace chan->device->dev with
- dmaengine_get_provider_device()
-Message-Id: <179414106233.3630016.17157846219971798429.b4-ty@b4>
-Date: Sun, 08 Nov 2026 12:31:02 +0000
+	by traversing.sirena.org.uk (Postfix) with ESMTP id AA0E22CCC443;
+	Sun, 08 Nov 2026 14:43:34 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -68,44 +54,32 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v1 0/2] spi: zynq-qspi: use a flash larger than 16 MiB
+From: Mark Brown <broonie@kernel.org>
+To: Mario Behn <mario.behn@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, Michal Simek <michal.simek@amd.com>, 
+ linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261105203734.979168-1-mario.behn@gmail.com>
+References: <20261105203734.979168-1-mario.behn@gmail.com>
+Date: Sun, 08 Nov 2026 14:43:32 +0000
+Message-Id: <179414901284.3711751.10991353733886072058.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1156; i=broonie@kernel.org;
- h=from:subject:message-id; bh=TN/StEkvmSxlu5HCIHF37V2V9EC9a6Yj6ifjtAqTSRk=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+dEQXNs1TObq3ademz713JpT0sTT2uEbtvKaw9ko5P
- yNPdoBcRykLgxgXg6yYIktcFvfL+pLXa/gOLmyDmcPKBDKEgYtTACZi/Zfhv9MzjiAD//4DtY2P
- cie9PlpsJOPzKlb3uv3Snjz78KwXbxkZpv1xEdmzmTPFxpaD577Stk12B4I/ZvflLVx2yM08/n0
- iFwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=364; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=pqc5RxFKFgQ0bMGkW74l/iVdEQnONDkkAA36niVKYPg=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+dE07pszyzk46L8Jkdm5wRuvue1+Uk/7ZNFXfKq92F
+ 1KQcDzWUcrCIMbFICumyBKXxf2yvuT1Gr6DC9tg5rAygQxh4OIUgImsamP4p7H4fkXu18t56z8c
+ adxxm1E4zr1AfnG4wd/2AqE5QSc53BgZ3v5xkpX3++v7sVm00zNCfUboleDsyds5Pz77xbW9LpG
+ fCQA=
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 03 Nov 2026 16:58:23 -0500, Frank.Li@oss.nxp.com wrote:
-> spi: replace chan->device->dev with dmaengine_get_provider_device()
+> The Zynq-7000 QSPI controller sends at most 3 address bytes. spi-nor
+> needs 4-byte addresses for a flash larger than 16 MiB, so on a board
+> with a 32 MiB W25Q256 (the ADALM-PLUTO+ has one) the probe fails with
+> -EINVAL and no mtd device appears.
 
-Applied to
+This doesn't apply against current code, please check and resend.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
-
-Thanks!
-
-[1/1] spi: replace chan->device->dev with dmaengine_get_provider_device()
-      https://git.kernel.org/broonie/spi/c/12acfe305495
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Mark Brown <broonie@kernel.org>

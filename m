@@ -1,103 +1,48 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794258615;
-	b=xJZT0RStsxqacdRHoqtG+1RY6sMkRHu3WMgp9C5k8ijonYI4gSdBu+bJ7vsZQiJXHdxf
-	 7r6U+mWRWpOlWl71Ymopilg/xAFRRxSaKrQr0U828rYeDbO9bNfV2tgYdnjiYE1l8fI/q
-	 ohfe+BSOqZxc5RLL5NI/f48Xrp8C8PNnImVgXtqCe5wpyaUgm1gfrAoAIzz5Obyf6ELcN
-	 CM/CMpanPwjFj2q+drQumExoN5/+TkZdubnYUwVYd8V8nv/kfsyRN+8V58D5W/7lm1WmZ
-	 AYzKPcVGzMl1KVyh2wrZxSHJ+8RtJGzymsBfPjr1qsltjotJfNGGGkUo+T8pWKR1R5w==
+	t=1794261793;
+	b=JXCF1QDdzr7sWNBVJDMrS1tY0hiTC5u5uvsVjbtoaKJ85XgluvjeVdAuKhpyJM5I+b7o
+	 +J/2WIhalf1wQUndxJCftcsIPrmWUugIUT4ksleXOF6bDN7fP7I6aUU12dNUV2ORFi23m
+	 5iTprM8E2ZzJXXnQDVZkH1waznt6JSIn+AbY6wb0oq8t2mng3IAL9k7OzM/NZYpoSnYA7
+	 9h+aG9nGEiSh0qp6KwlB0bx1zTGgn1C1gfnS/4CDKbUISrBKc+5CLR8VP057NMxw0a0OA
+	 e482dShehFjENKPlqvZ95WLhHXnghaS8VVYYzMJyxUdF8vrVwR+EmeZLQsKCvvSt/uQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794258615;
-	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
-	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
-	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:In-Reply-To:User-Agent:X-Mimecast-Spam-Score:
-	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
-	 Content-Disposition;
-	bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
-	b=C3oebfQ4hI8tSGkw2aJmvG4pkeq0gF18KWHcVonMvXqlDwS9zv7x5BwINt3WI/M3TbZn
-	 ilLqZtnd/A04jKLfbilz3oZH+OiOg1GiqhExPhGhBEaMN1HuNrdozvmmaEPm6JJ4NF6yD
-	 uhp1miaEq+MrfMyQsao7MKjZU4sd5CAB6Vipf4CLyMOiQP3TC5XFEiPy1dhdZ3Jvb2GW1
-	 Q1urRDGxBuMRJy4MuZexMEMkqAlKxbzhOZ+FOQgy2m6FB1RqkV6zTP3IcJCTiXFf3pSco
-	 Bn3itD3b4x5ZgLgUrmr0pZbd3cihAC1UR5HDdp+z02h0d3vjbMRWxPYQC2st/QaIDVA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794261793;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=CidRQbh2gFHizXgn/3nltDcqC87nf+9JADmfwJgFtmU=;
+	b=ZG9Zo+OmqY+6+0DmTJ6u7zkQ4e4DmllVyJjJdi1nsS5ujE7qQLW8xlA0CEDJH3xSRNwH
+	 K5cWsCcUU/y2XgYKgQ1eRnPatMrZE5avDF/7k0WU596tA6e1ideWh9C5SpjHHdnmWXQxK
+	 /4Siza0cXbxe8tVcIgKkhnQr1wtx2z5+NNXe56yV7CvQHGtcz3gsngkQi2hJ3z9x5z6fG
+	 NLuD1zEDQMb7UBNQYG9FeZQSYXz4nuvvtAcycjtTR1fXy/des/12R8cu8ODxL46rQXMjK
+	 1Y+RdwufzetTmcly1pipLVnSy79g9mzcENqv9IBcdDd4qpi+mj3+k4zau+iP/0DEkyw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=redhat.com;
-	spf=pass smtp.mailfrom=redhat.com;
-	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMuVRsUF;
-	arc=none smtp.remote-ip=170.10.133.124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAmfgtHb;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B252606A31C
-	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 21:10:14 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B252606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE463606A31C
+	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 22:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMuVRsUF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1794258613;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
-	b=JMuVRsUFNk9cuIX+zwtr3SP238wHdc6lW0O0zI+JHWiFPxYy/JLIkooU12IGJqP9iPmvdD
-	nejnXcenJ2TEG/QOtg7JBigtGQVw9ivQLRJbcO1MzGbR0SUQPsY/86fcPpgnBMgUB30/Ta
-	MWKAIQggif9ICAhuHo6AE6TIK1ruXZk=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-638-SAz94-siOnKYLJ3OpbhZiw-1; Mon, 09 Nov 2026 16:10:11 -0500
-X-MC-Unique: SAz94-siOnKYLJ3OpbhZiw-1
-X-Mimecast-MFC-AGG-ID: SAz94-siOnKYLJ3OpbhZiw_1794258611
-Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b304fbfa2fso13279667b3.0
-        for <linux-spi@vger.kernel.org>; Mon, 09 Nov 2026 13:10:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794258611; x=1794863411;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
-        b=N2c94Ci0uY2GBHCPDFMPRFcKlp+WVarTkWhZi68EtV+yaFuAUqi/bRF6WFkq5o71c8
-         55W6Bgs681Q4O+ya5+8fQdwHWxpMPNz8R6wqSK9ZYfRz+aFXEaFisHnUx6Eu7qNzBzre
-         dHpwBI9DaHvPeuy71QVvyOT7jcjj0X5GfyXEOF2QhmmAZPgcaVqF8/1r75AwN8xNeVL5
-         Cu4iwPpzO6Qz4uoOG8a7J7SE/WeajOcGyrRr74Hz2Z05F+Z5VVXrQ0jRhp4L6P3jnyfX
-         /FyDQ7WSs5EMqIrs+Mic36iM9nR+mfFj7OrvWLGGm/jGu1RZV4pd/IRSqAWAnHfeMykq
-         TaHw==
-X-Forwarded-Encrypted: i=1; AL+hErHLz6gpZgEFZ2yFeMWerW+8bE1cHlZ/pYTrhy3b7t2hxSo9qYpkvFN4KYU8OYQUrYTrVm3dB8cTndc=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+q84KR2EDKaPqVu7ReRdmMWHa6XH06AUJRlWWi7gzPlYOEZ9hF
-	+yOAvu04wcI4Jd8h6+NPodykxSnuCnlYp4fEZUmrd2LenqGPYfny0ark9kn28DN9hn7ASmEp3Yj
-	J13Y+GyYvlBlCtHnuOeI34fE4LpWh/y2X/J14JS9lcRLY0jqEARvvYYe5hTu0GkYK9dmiWA==
-X-Gm-Gg: AYBFou2nTT97NtdkFYt8EDtooT9I+hOs+9lKBzI+4zO3872flgm4NwXG+7c5WL7m6Kj
-	kuycUJcUVp39SOogXa4kkj6h8qZs0arata6NjhP7piFFyWvdJ2TbsCp2O8TcrrfDzpUScIdQdPR
-	BeyNxg0JWWSdHSk8rHAveIMLKQEQijYvwQp03353nX+GH/3Osbhn9SgWdvCQM1WBqq5j06yfVjM
-	3w3elno0YaphQnYX0xZtQn4L2/37BfsVQsLAm4uf9gor2TMdIPA+GXvwUkHBBkyvELAyTNhLF7R
-	85IubeJFLqevNKl90ZIlxyvnvBnkOMh1LFBD4qX5/SJQQqsNDDo1MHRDltbjyxuCCsfvHTKpSMU
-	QDQUUx44vCkWoonuKfHWxNEibBnOuu1riWikMwcZAadohE1HSgTJFx0Mk5q1SVivBrVtQ1Q7BNL
-	Te
-X-Received: by 2002:a05:690c:ec6:b0:8b3:361f:5d7a with SMTP id 00721157ae682-8b392aa0a33mr3430037b3.41.1794258611092;
-        Mon, 09 Nov 2026 13:10:11 -0800 (PST)
-X-Received: by 2002:a05:690c:ec6:b0:8b3:361f:5d7a with SMTP id 00721157ae682-8b392aa0a33mr3429887b3.41.1794258610682;
-        Mon, 09 Nov 2026 13:10:10 -0800 (PST)
-Received: from redhat.com ([2600:381:e227:64a:814:7bae:8aaa:cea9])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b393421a3esm3583157b3.32.2026.11.09.13.10.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 13:10:07 -0800 (PST)
-Date: Mon, 9 Nov 2026 16:10:05 -0500
-From: Brian Masney <bmasney@redhat.com>
-To: Mark Brown <broonie@kernel.org>, Peng Fan <peng.fan@nxp.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/2] spi: convert to subsys_platform_driver()
-Message-ID: <avI2rf-04L3FOfSv@redhat.com>
-References: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
- <e86963ef-6080-4aa2-ac80-e06d16d9b092@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAmfgtHb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2941F008A1;
+	Mon,  9 Nov 2026 22:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794261792;
+	bh=CidRQbh2gFHizXgn/3nltDcqC87nf+9JADmfwJgFtmU=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=IAmfgtHbahuGzrwt5S2CdtfDct24IdyI/F871t2gLdvbcQ+AEpi7VJeNnr2npNsnz
+	 aa5bmAB0UYBFCgenmJYp7R8/m2M9So96P5oiC77kQ/ismwwhBuNQBNjAx1YE3aQI7R
+	 BMnFCK+ZI/MwfeYcxrHrpQsrYvXgYvHILyE/ZCKiw0VAFE8eluxASb0iQ4t8a+cs4Y
+	 BMnB2wdQYvtW/k9bHw1I4+9LHwxt+dw53BWShkGQR2ncaSoBW3lakC6o5BVnpPHVXv
+	 lueCwILLcFZGlBbgz6qK44f8S0X9TsMZpXMUG66nZq+53aBvWY1FekSyBW5L3fZgye
+	 ZhXC+eK7zvyYA==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 58F803021CAB;
+	Mon, 09 Nov 2026 22:03:04 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -107,29 +52,65 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <e86963ef-6080-4aa2-ac80-e06d16d9b092@sirena.org.uk>
-User-Agent: Mutt/2.4.3 (2026-10-09)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ynAyjTutGS25P7B1tB-ksUbn35t-QJ9zEApeSVyM-5o_1794258611
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] spi: Add infrastructure for atomic sync transfers
+From: Mark Brown <broonie@kernel.org>
+To: Heiko Stuebner <heiko@sntech.de>
+Cc: broonie@kernel.org, linux-spi@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ quentin.schulz@cherry.de, Lee Jones <lee@kernel.org>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ Heiko Stuebner <heiko.stuebner@cherry.de>
+In-Reply-To: <20261106181824.1361235-2-heiko@sntech.de>
+References: <20261106181824.1361235-1-heiko@sntech.de>
+ <20261106181824.1361235-2-heiko@sntech.de>
+Date: Mon, 09 Nov 2026 22:02:46 +0000
+Message-Id: <179426176654.3711751.13650000545363860741.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1567; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=8xKsPk8JaGfgfmUb29t/RDu26Xy0LDupWmUhlaAY30w=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+ObNvfR+/817uz8PL1hzcrH1cv1/ocbNUVEu6iHWq3
+ oqNTRP7O0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAnCTrzH8lXD7pL/kaXrA0U8B
+ m6535QdI3HouG9gowKfs6lxWkTFdk5GhtbXsHcPV+J3HV99jKFv/Ji6krsziqWyz0zE3/r8+G30
+ 5AQ==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Hi Mark,
+> There are cases where SPI transfers are needed during times without
+> interrupts like shutdown when a PMIC should turn off the system.
 
-On Mon, Nov 09, 2026 at 07:14:33PM +0000, Mark Brown wrote:
-> On Fri, Nov 06, 2026 at 07:33:07PM -0500, Brian Masney wrote:
-> > Reduce boilerplate code in these drivers and convert them over to use
-> > the macro subsys_platform_driver().
-> 
-> This doesn't apply against current code, please check and resend.
+> I2C already has atomic transfers for exactly that case, so introduce a
+> similar concept for SPI. Similar to I2C, this is and should stay a
+> corner-case, so is only allowed during the shutdown stages of the kernel,
+> when interrupts are already turned off.
 
-I see that Peng Fan already beat me to this! There's nothing else to add
-from my series, so there will be no follow up from me.
+> So add a in-atomic check stolen from I2C and an optional transfer_atomic
+> callback drivers can implement to do immediate uninterrupted transfers
+> and let spi_sync() determine if the state is late enough to use it.
 
-Peng: Just a heads up that I posted patches across the tree Friday for
-this migrated. I think I changed everything that can be easily migrated.
-I suspect we may have collided in other subsystems.
+> spi_async() does not require a sleeping context for itself, so while it
+> could in theory also be included, its called waiting for the completion
+> can sleep, so would still cause the splat about it.
 
-Brian
+> +static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
+> +{
+> +	struct spi_controller *ctlr = spi->controller;
+> +	unsigned long flags;
+> +	int status;
+> +
+> +	if (!ctlr->transfer_atomic) {
 
+We do have some existing users that appear to rely on using spi_sync()
+to power off like SC27xx.  I suspect they are tolerating the splats, or
+just don't work, but either way we should try to preserve the current
+behaviour for them.
+
+> +	status = spi_maybe_optimize_message(spi, message);
+
+Message optimisation may try to do things like allocations that are a
+bad idea in atomic context - it seems safer to just use the message as
+is in this context.
+
+-- 
+Mark Brown <broonie@kernel.org>

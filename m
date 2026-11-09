@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794231868;
-	b=j9A82MCNbyVEox7A9XrJzfDiCdZ7qaC9Z9tcYbACRap+wahkOIEJwPowekrzaHYzSS8a
-	 DdqjfUrWnD6sWRNPVs4kRWzwYgnbhDPtTkZ+0LBKhUyCyKthRsGdzvGLUC2ySjLcuscuT
-	 K6CvRizpRReW7ayQlt1GN0vTw+Eyb0QCxlYQBuQrE7QIvq3mIu/ESnqGd8+7hTNa2siFM
-	 AkBkAeGktkmWOuDRYb48+NGxpcpLqLtuSbV5OtccBmw4Q22bfQ2zySI5nbv1ssDRNFthr
-	 X/xDOoMExl2wLiu6JbY9OvvRCmCxwPswB9haS/c0tl2wspSEM+a8oMG7pi9xTsFYFaw==
+	t=1794231991;
+	b=WxPH18GPFQVD1aE1Q89L3Iam5pxMMalTgxe+akiH7PxXEKrDG0DU2Il+Z4VJD8uL/N+T
+	 ocN8H018x26I+Pqj9xI5BgFaVdGb2d0TIt/jKnMf4ZkVOoTO8x7tI4Sbidfvf+6qWTmZf
+	 sz2SKY0G525M38P9oLPshE4PUTYb/1cZcFhJkzN8QsF+zsvg+jHQhVDl/ZnQFP30Vxx7U
+	 kNAzZy/uehsZ/OP7/QySxj1tA68a/ke3/yDBeH2dgYTrhnKP45d0DPIrsQRdx2A5V/3kQ
+	 2rw6BW7U0UU0OBMtlPg0iHpAKPAb4/5wzbhtTpilcsyTJvJCXw+xuIbSE3GxWtAOI+Q==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794231868;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794231991;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=WN1g6y6hSBMG7NkhvZAsIV8X9TkToGPJmfU42Pxk1aY=;
-	b=m37S0V4JxCp2UDYpY51/XspUBhXvDEIGgmXmNfu5LvM2rushvVqGU38UeSYDAL+vB1PM
-	 3uDzPOgKQJeZXitgmn7ygZGhYlB63zvcHTzzPjeZzZXFZLmedBrQRDwSqJagt6apQZSYM
-	 7PenDwR6esIvmHfx8pFzBgsvocH4pg67Zf9SPEMr7VDhatqIhEazmfZ0vZOqMh7Cv8Ujk
-	 CWyFc0bs5KZGY+YYNLtoBjfN53TlccGm8mX6jOqLRfEtw3ISs9nzBVb9A/MfuWGYPGVz1
-	 ykuG5FbhPghl0eSTO3lbgp7qxvtFN3sg1l2vJ8TL6vT6UfC4Yu7uNyBfr12KgjAZzLQ==
+	bh=Gn39k29UXUgZfrG5Ykm3UzP6Qg4ugMU7w2b74/C/nBU=;
+	b=n/MWTAzAK0rNinp8DV+7GaG8sUHElSqhb5piKXKpNEI5aOVr23zzPuUQrEkt9OMJyg8Z
+	 Iioukx6nbk+a09aFCpQnlUlgzgSDK7j/eFR6KUpYtD6Fd9iTOI1XeD4ZLK6C1nwKm8eOR
+	 QvTF/A7U5HzsLllBFX9zop4a5DaLNk3KyMFiQwQRA3g8b6pntDNBPGoUVwwPO4MRxjZwp
+	 FjROccwYCZgRJupB1kA/tDM7DMcqgbB9BxnsJ79+9QaO7Otnw981HDzslMAfqkrcn/6zA
+	 tw07hDCti4RfpdkrGdfyWn254Su9y4scL6c4m907rSMT4zdu1Fez0AyCuYxaijUIoEQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bGtazB+R;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Thbo0qWm;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF26606D822;
-	Mon,  9 Nov 2026 13:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FD0606A321;
+	Mon,  9 Nov 2026 13:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bGtazB+R
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7F51F008A3;
-	Mon,  9 Nov 2026 13:44:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Thbo0qWm
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCA91F0089F;
+	Mon,  9 Nov 2026 13:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794231867;
-	bh=WN1g6y6hSBMG7NkhvZAsIV8X9TkToGPJmfU42Pxk1aY=;
+	s=k20260515; t=1794231990;
+	bh=Gn39k29UXUgZfrG5Ykm3UzP6Qg4ugMU7w2b74/C/nBU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bGtazB+RE0s53RkUwhnDYqg5WEwfiYRenE3dzm9IYF77BmvGO7ukNrm05/TkiZAF+
-	 Q+EKAhYodYwX6BYji6/iC70rBTHmTdXByWFiPOGSyS6euNxs7Zm2hYnrT1bgkNQpjx
-	 VUpE17T3jeA2eec37tlymcTf3qoVI78+mHFY3TUOrHZTt4Hq/XsyaXnJHgCCHRVjpp
-	 GJ/cPkSZgkI3MrSGCzd7RVjT9K+BpLUuRvTWFqMx49FDQcLk5H9zJQYLLpvLwLfHeW
-	 Pf2PYvuTLf4E8TZJtmH5WpJYmPlouB4vrptk1D/hGEGbU6YKlKZ8OgE4hInMGoijM8
-	 JhGu0DaBdk1cg==
-Date: Mon, 9 Nov 2026 14:44:23 +0100
+	b=Thbo0qWmDoa+48YQg0JZkKyDsqRjFV5LQSlxtzpwPI3ljgfWlFSaqTgKMrd8bFwGB
+	 CgBTgVxFOilzX96bOTE7Qyk7BxzQ9Kx/jbttZ/Uv4meoWuUUFslqWMon//5Bs3PWcx
+	 3VEyQuZmAF6S59eGYulsEZJ+VTDR9qSjQXW6SQvUKtrwkIF3PjkqG+3wwdUBVU6eBt
+	 5J/vKz/JMmAprAFQC2iRSJgQehXi81OwTiCo1oaTskRKQEw7LUX719RpP0mI0MzCUD
+	 ChZH4Skw4z2AQLEj5qr9vuT0rUdGXt33VgpV+13Nk1kQpXfprQTuCOPexm3F/zHLT3
+	 b+5q+A8sNgjRA==
+Date: Mon, 9 Nov 2026 14:46:27 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
 Cc: Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
@@ -48,10 +48,11 @@ Cc: Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
 	Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konradybcio@kernel.org>, linux-arm-msm@vger.kernel.org, linux-spi@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/6] soc: qcom: geni-se: Define the QSPI firmware protocol
-Message-ID: <20261109-stimulating-oyster-of-respect-620b7b@quoll>
+Subject: Re: [PATCH 3/6] dt-bindings: spi: qcom,spi-geni-qcom: Document QSPI
+ support
+Message-ID: <20261109-vivacious-bronze-leech-a5de0b@quoll>
 References: <20261106-qspi_upstream_series-v1-0-21f43042dd60@oss.qualcomm.com>
- <20261106-qspi_upstream_series-v1-4-21f43042dd60@oss.qualcomm.com>
+ <20261106-qspi_upstream_series-v1-3-21f43042dd60@oss.qualcomm.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,37 +64,22 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261106-qspi_upstream_series-v1-4-21f43042dd60@oss.qualcomm.com>
+In-Reply-To: <20261106-qspi_upstream_series-v1-3-21f43042dd60@oss.qualcomm.com>
 
-On Fri, Nov 06, 2026 at 08:31:22PM +0530, Jyothi Kumar Seerapu wrote:
-> Add GENI_SE_QSPI with firmware protocol ID 9. The GENI SPI driver uses
-> this value to request QSPI firmware and validate the protocol running
-> on a serial engine.
+On Fri, Nov 06, 2026 at 08:31:21PM +0530, Jyothi Kumar Seerapu wrote:
+> Add the "qcom,geni-qspi" compatible to identify GENI Serial Engine
+> instances configured for QSPI operation.
 > 
-> Extend the firmware loader's protocol-name table to accept QSPI.
-> Reject unused protocol IDs in the sparse table before looking up
-> firmware.
+> The compatible also allows the driver to select the appropriate protocol
+> firmware when the Serial Engine is unconfigured (GENI_SE_INVALID_PROTO),
+> distinguishing between SPI and QSPI firmware.
 > 
 > Signed-off-by: Jyothi Kumar Seerapu <jyothi.seerapu@oss.qualcomm.com>
 > ---
->  drivers/soc/qcom/qcom-geni-se.c  | 7 +++++--
->  include/linux/soc/qcom/geni-se.h | 1 +
->  2 files changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-> index 873bfbd6b2b7..396f3d81d292 100644
-> --- a/drivers/soc/qcom/qcom-geni-se.c
-> +++ b/drivers/soc/qcom/qcom-geni-se.c
-> @@ -122,7 +122,10 @@ struct geni_se_desc {
->  static const char * const icc_path_names[] = {"qup-core", "qup-config",
->  						"qup-memory"};
->  
-> -static const char * const protocol_name[] = { "None", "SPI", "UART", "I2C", "I3C", "SPI SLAVE" };
-> +static const char * const protocol_name[] = {
-> +	"None", "SPI", "UART", "I2C", "I3C", "SPI SLAVE",
-> +	[GENI_SE_QSPI] = "QSPI",
+>  Documentation/devicetree/bindings/spi/qcom,spi-geni-qcom.yaml | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 
-Why are you creating holes in this array?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
 Best regards,
 Krzysztof

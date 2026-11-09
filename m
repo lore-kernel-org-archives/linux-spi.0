@@ -1,48 +1,103 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=170.10.133.124
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794256070;
-	b=MIKZH4kGtimTbZ7VDeBBOX1kiPqpB+jTXe7Uyx+lWyhzDaGVpsSYOIvW4NmSucm3qjFb
-	 TUAcW1XkK70mom+3myqzlQcyoCGpEfxrOuICUK1MWyc+RuyKA7TbPa8/gihvlcIZjR3Kv
-	 NMWR87V48V+QhhKae1tUFigzQ3q016o9vL3QufpAmgh1MBMx8okhWtG6JWOVcxQiUoHe7
-	 Cv7wbRW86c+ODqgdtGfoj48HunxPt1BkzFditNpzyprXTwxp30mdCoEq8/4rrfiNFOxN6
-	 Ql7exJMt/zWvuPJcNlPc/aQ1gMKCBUVzvZ7vs6UO7Om1+oUgiBVlyLpjOSS4rOHPrfg==
+	t=1794258615;
+	b=xJZT0RStsxqacdRHoqtG+1RY6sMkRHu3WMgp9C5k8ijonYI4gSdBu+bJ7vsZQiJXHdxf
+	 7r6U+mWRWpOlWl71Ymopilg/xAFRRxSaKrQr0U828rYeDbO9bNfV2tgYdnjiYE1l8fI/q
+	 ohfe+BSOqZxc5RLL5NI/f48Xrp8C8PNnImVgXtqCe5wpyaUgm1gfrAoAIzz5Obyf6ELcN
+	 CM/CMpanPwjFj2q+drQumExoN5/+TkZdubnYUwVYd8V8nv/kfsyRN+8V58D5W/7lm1WmZ
+	 AYzKPcVGzMl1KVyh2wrZxSHJ+8RtJGzymsBfPjr1qsltjotJfNGGGkUo+T8pWKR1R5w==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794256070;
-	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=uSmqEwTPBCw7yv/vu+RoTvS1k78wUQRDkeFSllXkLKI=;
-	b=TWoBjtrjfD3oxHZBq3z7WIGxzJElgpsKhvkgdEtKZVn4R1544M8LUmXvb+SqalzU3bCo
-	 /27qnv50wKQKO2iVGexRjSr2SDXU/oG89r1QX+Y4G+xz0reA4UBcRJhKvHOiY2+qBa7T/
-	 c9yWcqEJkXqAaY+yD9T92ohBhgaSZFjasCxl4GahbxgNuE/GH/x0+2OF6/0BDC3TY+GO0
-	 fPOolFR/yID7QE19zVYKbvmomIfqVuQNGyIHKGoFEmsKyRa4K1G2thkCFmC+qXtQA2odI
-	 2reWauTXJmbT/EflcelRwbM8aJKJtAjOUB0gMPKuhB2QMJWol/ixc8nQDpI8UUsHViQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794258615;
+	h=DMARC-Filter:DKIM-Signature:Received:X-MC-Unique:
+	 X-Mimecast-MFC-AGG-ID:Received:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 X-Received:Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:In-Reply-To:User-Agent:X-Mimecast-Spam-Score:
+	 X-Mimecast-MFC-PROC-ID:X-Mimecast-Originator:Content-Type:
+	 Content-Disposition;
+	bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
+	b=C3oebfQ4hI8tSGkw2aJmvG4pkeq0gF18KWHcVonMvXqlDwS9zv7x5BwINt3WI/M3TbZn
+	 ilLqZtnd/A04jKLfbilz3oZH+OiOg1GiqhExPhGhBEaMN1HuNrdozvmmaEPm6JJ4NF6yD
+	 uhp1miaEq+MrfMyQsao7MKjZU4sd5CAB6Vipf4CLyMOiQP3TC5XFEiPy1dhdZ3Jvb2GW1
+	 Q1urRDGxBuMRJy4MuZexMEMkqAlKxbzhOZ+FOQgy2m6FB1RqkV6zTP3IcJCTiXFf3pSco
+	 Bn3itD3b4x5ZgLgUrmr0pZbd3cihAC1UR5HDdp+z02h0d3vjbMRWxPYQC2st/QaIDVA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8FIBdKP;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	dmarc=pass header.from=redhat.com;
+	spf=pass smtp.mailfrom=redhat.com;
+	dkim=pass header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMuVRsUF;
+	arc=none smtp.remote-ip=170.10.133.124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53322606A31C;
-	Mon,  9 Nov 2026 20:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B252606A31C
+	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 21:10:14 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7B252606A31C
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A8FIBdKP
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7830A1F008A1;
-	Mon,  9 Nov 2026 20:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794256069;
-	bh=uSmqEwTPBCw7yv/vu+RoTvS1k78wUQRDkeFSllXkLKI=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=A8FIBdKPcoGsNZlhGhiZxSuNdfssvT5PPZ6PrGGJaBdnGlh1o1Uoc3D7idyPnLDiT
-	 opYuDkhI6iTo2Dkz+j/2fqI0v2JoKsTponThIl770h6qo0JswzOFpuPxvcoISfhMLO
-	 96j3RJ4LE5aydnXA6E3B6PD9yMVvYhuO+YDa7DOayKR1+meLwulbZPWOyrGw/Zy9XR
-	 15iPrvzzJn0jCEPLUw84HtOy53ejShG6QX23kJRYzSx+whednhH04vvje3HVr3t+Dm
-	 nW4yxHSm4PYTVRKI2m50h9lbf4d2syeJKmb9gnxqIi/Ac3TCjiT0EH0AYw5cSRm0nW
-	 MzROyVWkrB9Sw==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 7B1B130216A7;
-	Mon, 09 Nov 2026 20:27:04 +0000 (GMT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JMuVRsUF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1794258613;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
+	b=JMuVRsUFNk9cuIX+zwtr3SP238wHdc6lW0O0zI+JHWiFPxYy/JLIkooU12IGJqP9iPmvdD
+	nejnXcenJ2TEG/QOtg7JBigtGQVw9ivQLRJbcO1MzGbR0SUQPsY/86fcPpgnBMgUB30/Ta
+	MWKAIQggif9ICAhuHo6AE6TIK1ruXZk=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-638-SAz94-siOnKYLJ3OpbhZiw-1; Mon, 09 Nov 2026 16:10:11 -0500
+X-MC-Unique: SAz94-siOnKYLJ3OpbhZiw-1
+X-Mimecast-MFC-AGG-ID: SAz94-siOnKYLJ3OpbhZiw_1794258611
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-8b304fbfa2fso13279667b3.0
+        for <linux-spi@vger.kernel.org>; Mon, 09 Nov 2026 13:10:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794258611; x=1794863411;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1H7zaCpieKBLh84LxvwJhxxRE643HHbqTw00oHfOz4M=;
+        b=N2c94Ci0uY2GBHCPDFMPRFcKlp+WVarTkWhZi68EtV+yaFuAUqi/bRF6WFkq5o71c8
+         55W6Bgs681Q4O+ya5+8fQdwHWxpMPNz8R6wqSK9ZYfRz+aFXEaFisHnUx6Eu7qNzBzre
+         dHpwBI9DaHvPeuy71QVvyOT7jcjj0X5GfyXEOF2QhmmAZPgcaVqF8/1r75AwN8xNeVL5
+         Cu4iwPpzO6Qz4uoOG8a7J7SE/WeajOcGyrRr74Hz2Z05F+Z5VVXrQ0jRhp4L6P3jnyfX
+         /FyDQ7WSs5EMqIrs+Mic36iM9nR+mfFj7OrvWLGGm/jGu1RZV4pd/IRSqAWAnHfeMykq
+         TaHw==
+X-Forwarded-Encrypted: i=1; AL+hErHLz6gpZgEFZ2yFeMWerW+8bE1cHlZ/pYTrhy3b7t2hxSo9qYpkvFN4KYU8OYQUrYTrVm3dB8cTndc=@vger.kernel.org
+X-Gm-Message-State: APuU4Z+q84KR2EDKaPqVu7ReRdmMWHa6XH06AUJRlWWi7gzPlYOEZ9hF
+	+yOAvu04wcI4Jd8h6+NPodykxSnuCnlYp4fEZUmrd2LenqGPYfny0ark9kn28DN9hn7ASmEp3Yj
+	J13Y+GyYvlBlCtHnuOeI34fE4LpWh/y2X/J14JS9lcRLY0jqEARvvYYe5hTu0GkYK9dmiWA==
+X-Gm-Gg: AYBFou2nTT97NtdkFYt8EDtooT9I+hOs+9lKBzI+4zO3872flgm4NwXG+7c5WL7m6Kj
+	kuycUJcUVp39SOogXa4kkj6h8qZs0arata6NjhP7piFFyWvdJ2TbsCp2O8TcrrfDzpUScIdQdPR
+	BeyNxg0JWWSdHSk8rHAveIMLKQEQijYvwQp03353nX+GH/3Osbhn9SgWdvCQM1WBqq5j06yfVjM
+	3w3elno0YaphQnYX0xZtQn4L2/37BfsVQsLAm4uf9gor2TMdIPA+GXvwUkHBBkyvELAyTNhLF7R
+	85IubeJFLqevNKl90ZIlxyvnvBnkOMh1LFBD4qX5/SJQQqsNDDo1MHRDltbjyxuCCsfvHTKpSMU
+	QDQUUx44vCkWoonuKfHWxNEibBnOuu1riWikMwcZAadohE1HSgTJFx0Mk5q1SVivBrVtQ1Q7BNL
+	Te
+X-Received: by 2002:a05:690c:ec6:b0:8b3:361f:5d7a with SMTP id 00721157ae682-8b392aa0a33mr3430037b3.41.1794258611092;
+        Mon, 09 Nov 2026 13:10:11 -0800 (PST)
+X-Received: by 2002:a05:690c:ec6:b0:8b3:361f:5d7a with SMTP id 00721157ae682-8b392aa0a33mr3429887b3.41.1794258610682;
+        Mon, 09 Nov 2026 13:10:10 -0800 (PST)
+Received: from redhat.com ([2600:381:e227:64a:814:7bae:8aaa:cea9])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b393421a3esm3583157b3.32.2026.11.09.13.10.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 13:10:07 -0800 (PST)
+Date: Mon, 9 Nov 2026 16:10:05 -0500
+From: Brian Masney <bmasney@redhat.com>
+To: Mark Brown <broonie@kernel.org>, Peng Fan <peng.fan@nxp.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/2] spi: convert to subsys_platform_driver()
+Message-ID: <avI2rf-04L3FOfSv@redhat.com>
+References: <20261106-spi-subsys-v1-0-a51a08f21cf2@redhat.com>
+ <e86963ef-6080-4aa2-ac80-e06d16d9b092@sirena.org.uk>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,55 +107,29 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 5/5] spi: atmel: fix division by zero when transfer
- speed is zero
-From: Mark Brown <broonie@kernel.org>
-To: shao.mingyin@zte.com.cn
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- pjw@kernel.org, samuel.holland@sifive.com, william.zhang@broadcom.com, 
- kursad.oney@broadcom.com, jonas.gorski@gmail.com, 
- bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com, 
- florian.fainelli@broadcom.com, rafal@milecki.pl, 
- linux-arm-kernel@lists.infradead.org, sven@kernel.org, j@jannau.net, 
- neal@gompa.dev, asahi@lists.linux.dev, ryan.wanner@microchip.com, 
- nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
- claudiu.beznea@tuxon.dev
-In-Reply-To: <20261106234803459Z94udUX-Ai29-OfBFRND6@zte.com.cn>
-References: 20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn
- <20261106234803459Z94udUX-Ai29-OfBFRND6@zte.com.cn>
-Date: Mon, 09 Nov 2026 20:27:03 +0000
-Message-Id: <179425602307.3711751.7845465463671042950.b4-review@b4>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=913; i=broonie@kernel.org;
- h=from:subject:message-id; bh=5Ht5M+VjLA+M4Oeg4Wh7v9V7rBg4ioA0/PuJ6uvdihU=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+6cwo4GpdvnHDs+b2EqXGWWmFbOv3bLGv27Gy+iRXw
- +xl6+0CO0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjAR/XKG/+mKh+SPln9/OHVZ
- iTCL3Tnj7mVTVhZfq9utt/jr8s0KtXMY/udUHd3KsWHVo+SciZ4KfYlxvJ7TO/hbzxa9OPSEs/v
- IY04A
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+In-Reply-To: <e86963ef-6080-4aa2-ac80-e06d16d9b092@sirena.org.uk>
+User-Agent: Mutt/2.4.3 (2026-10-09)
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ynAyjTutGS25P7B1tB-ksUbn35t-QJ9zEApeSVyM-5o_1794258611
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> atmel_spi_one_transfer() calls atmel_spi_set_xfer_speed() for every
-> transfer.  A device whose max_speed_hz is zero (no spi-max-frequency
-> property, or created through the spidev sysfs new_device interface
-> without a speed) leaves the transfer speed at zero, and the divider
-> calculation divides by it.  spi_setup() would only clamp the speed if
-> host->max_speed_hz was set, which this driver does not do.
+Hi Mark,
 
-...
+On Mon, Nov 09, 2026 at 07:14:33PM +0000, Mark Brown wrote:
+> On Fri, Nov 06, 2026 at 07:33:07PM -0500, Brian Masney wrote:
+> > Reduce boilerplate code in these drivers and convert them over to use
+> > the macro subsys_platform_driver().
+> 
+> This doesn't apply against current code, please check and resend.
 
-> Clamp the divisor to 1 Hz so the zero never reaches the division.
+I see that Peng Fan already beat me to this! There's nothing else to add
+from my series, so there will be no follow up from me.
 
-> -	scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
-> +	scbr = DIV_ROUND_UP(bus_hz, max_t(u32, xfer->speed_hz, 1));
+Peng: Just a heads up that I posted patches across the tree Friday for
+this migrated. I think I changed everything that can be easily migrated.
+I suspect we may have collided in other subsystems.
 
-This has a similar issue with limiting, in this case even worse as we
-generate an invalid SCBR value and then validate it later in the
-function.  We should just set the maximum instead of bothering with the
-division if we're subsituting a default here.
+Brian
 
--- 
-Mark Brown <broonie@kernel.org>

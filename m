@@ -1,95 +1,100 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.44
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794170251;
-	b=CGcxDY210kVOaccFzGWRxPsIl/J5ESu6O4zxFEUnQcRgm0XnkcS7xwPltilvtniMl98u
-	 mBw2+LfKHuLYkR9Z9nXuZtYLLR7DRg+GveGH1EtXaKEpdYVnXKckCcKKDeZU2Lp7Nrk4E
-	 3BCWFkM3HU5IZaA/dBnckcbjSXO2nJDtu6bx6eVaNgBJ9w06BtOQxLIKSDptL1pIshDHF
-	 lJaMMzPUGnALZnnOoKxAszwzdcH3+qZE6H3OCn/71bXw749j7BNeR0HO+NgBF5lOcWSQD
-	 fbFuXnqyYQR8kvC7Bni2Hkdjw6uXLOvYL8B2fgo28ZU+i231AEizKS/CX3zlm+hSIqA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794170251;
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.44
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794189282;
+	b=n7xFLd/D+3l34kJFlWa2K+fAEuMQs1vCw4YjU0kR/yknEIn22pAtS7fSEjYpn/evSA8D
+	 Vdx1K7oHcbDfwh4IlCoHvhMmjWXJqKXRbS7JjrdBV4Xg95CA/FABjeNiS99Sq2Pu9Lb7h
+	 l+RFQI0Bsv7mgr00nmSi+Txl9AqcEpXzZu0F4z1pRFndPHA+fAnjU7g+ercBS7pT+iJqb
+	 022hndDpWJvzGHz+10JpL96fXcEo7YQdejsoNY94ycAjmDWsVmTLjX776HiXZh6CMc14r
+	 oK74NL2TpberkJwAHpMdrmUJgAd7dlOHjH5ljJaiPyQbvKvHH/cw5J8zkKaum6/t6+w==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794189282;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Transfer-Encoding;
-	bh=PKtqM0lKSDw1R6nZxeofGNfXJYXQE3Or9TXWomGfKyI=;
-	b=0TgokRaFOApjNpyisOEyIY/U4vfNTd+Ox+TSgrZwAM98ESIEpZEIZC7sI/Sq0KCg8R0d
-	 M0PmF/7jOx1mKXGf748hC12Fj+20I5i0ZiwJsSo44z2xypVu/50Dliz68FQVVU8i2dfdx
-	 qGYl5YaIRu/H7kLaPyyybRF9IrSAAWjfnYZqe4z0NAaGGe1xA+U8sGysG7Rj7lA/NQvAj
-	 rVMIfJf+6D5Pkzo4zAB/NRomYbQrycX54RMw8dZGWEgloA8lKX+rCAYNrzLe1nsZrMUJU
-	 GwdVva/UuRWtISTCpfuSUwmIrPAReFEGHewv0KkYKXnsUIRihJcVLvLR0tHuZz0hRDg==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=nEtIGyJBezdGLIxuour+D7woJTbOhHRcqzGvEkx1U0E=;
+	b=sSPl1nn+J26+msEA1yr7Sn+K7SzZx2TIXCYAqzPiuJ2xEIuAAws+axOTUM7C34yLvrBp
+	 AcB5uNS7KSUgL5hAOYQA4XBPUzxXhBmjYp3HvJxoJmy8wX8KlE0tEq3q5vqOLR/Jgw68A
+	 xHNy9E9OejAY888Bpd4B9tIiSbXV42Z2ej1rdhxdRIbbDrXuEj/f9PXEsCKJWvk3m7Izi
+	 XZU8Ra8T6kmFjTH27UJalwrUmD7S2LZ0y9tSPsDhnYH4YvHl51kSjJGk7p7Y+ZqSPY7K3
+	 K06ud+SBiGRyHWhpluik1rZU1MnaMlHiplRia7/lj9fASMvLjqm/jXN2AIiqPq/weIA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MWivARwK;
-	arc=none smtp.remote-ip=209.85.216.44
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BleiJHLV;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.218.44
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031F0606A9C2
-	for <linux-spi@vger.kernel.org>; Sun,  8 Nov 2026 20:37:30 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 031F0606A9C2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA003606A321
+	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 01:54:41 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AA003606A321
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MWivARwK
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ae7626d14aso94655a91.2
-        for <linux-spi@vger.kernel.org>; Sun, 08 Nov 2026 12:37:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BleiJHLV
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c4d473cfff6so49967666b.0
+        for <linux-spi@vger.kernel.org>; Sun, 08 Nov 2026 17:54:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794189280; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jsd5UfPpgCqms+UYPIh2T2imLb5etm8aVjlF5+9vdPPdpvAetND12CmIBE4zUyDaI7
+         MRSEJonpSWPcgbQml0R7bfjaAivvTDpQyha9fR9CH8ewDIr8uauW3aNp0ViGNEbJHCOI
+         CMrofKrqAGTRNGJDyZXAwsqZR9WaYeD3yALvKTflPdBoDGJLokAfQTfXu3j3Mq4Gfvua
+         kRfDDf2ZanatPkrJwdkZE0Vm2UfggX6P/cP4JutIXEle4u3vFpGPRD8mRgX1RA874ASB
+         a7Z75IwyplyXw4HK3WQslkEH6e9AHPtIXn2uGYEvtP2/xf5I389oxRE3TdiTnE3qNn+4
+         PM1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nEtIGyJBezdGLIxuour+D7woJTbOhHRcqzGvEkx1U0E=;
+        fh=OmuFzsSGNyHxbtls8Rts9CDPjgYCmvw8VLRCLhQ/AuQ=;
+        b=HWcYk91NH0lsh/WVGIzI+m8ucn701wmifHy9uT88GqnL+gbdP4jkRlDDp0l8qgy1tu
+         +bDQiO0LW6pr2g06CUnP6mVmOnd8qExN2DT5Ni7qTuz2y6LJVKxY6KfiE3tMkHgbDdYr
+         M1H2BVUZOzrYLWaDivHZd9FtM4uj+V711dlCG/SEsrblLmFFedHPa4rbIXksNg8r0TaX
+         47XAj2lWKL8RwuZosaZjenYQZY53FrrMadDmp9yypzpOZVzzCclm/J5H98dGI2VVqS1C
+         FOBFs4AAIBOwv04bqGLg/exCoUWCjSCY52MknLOSL6VwXOzXeedkpVJAtuYu21CcpwCp
+         GR3g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794170250; x=1794775050; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PKtqM0lKSDw1R6nZxeofGNfXJYXQE3Or9TXWomGfKyI=;
-        b=MWivARwKsNq+6QEsTWJ1HacIfAB9KHWf+dMnYRSHzE/YABHD2UzbcFhNnB1WPJW0sa
-         i+FIY7vKbCeBZzfTySGJHHfB0yWEbqpvGpnkGR2vacETy3l0NFlRKl0mhr1GIa/aVaqP
-         zt9OUip3pe3KrBNZR5uFkkVqHZnGioszvVgAQrkZVGCasNsgMRFNSoynUq5CgkdAXRVp
-         4q615C9b2PYeO+zLh1KWVrAtg+zDtUSHw+r7e4CPa7E+tQBoVdiNO5jzf1f38mpRXBVB
-         Va3vrPv6ScYyBPHnpdoE5pn8zsheYHmPghYhkAWwrb4AMDflVaGwmgBiOh1jszIPN816
-         tk2g==
+        d=gmail.com; s=20260707; t=1794189280; x=1794794080; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nEtIGyJBezdGLIxuour+D7woJTbOhHRcqzGvEkx1U0E=;
+        b=BleiJHLV/sQlhj5+TmJyJUCO6T2QtlMiSpyv93D7VNdYB1iQ+pgt9dtcaSXftom9AK
+         wcoLMhH01dLRky5aKgFSgtbD2bTmsSxd0spz/X8uSId/UZvUJbGw/oZJnNv9sVsFNgdg
+         msWM5WzDHWnUZ5MkzHuSV3oFIng3FW5lzpdqQeJ53kCjOx0gMb5AsKXqnA70fsAmAsA9
+         kbwG7i3geF18thOF9KONI82LVex0UVtNNPipZUsEByTGMCRhCu0IWLfGqGaa9FSMWIZm
+         hYo4Dus1E6O01SxF4FWc1q44F002WEw/xa+ZnzXqCcgPSNjZEgg+BaROTqvlyMeWG6Jz
+         rl0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794170250; x=1794775050;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PKtqM0lKSDw1R6nZxeofGNfXJYXQE3Or9TXWomGfKyI=;
-        b=ixQnF/hhcPvZQatZZ+L+TXmYZD1jq3gAnxC+8Fqb4pKMwm/fr+uAmVPpGgXKosZWQ5
-         MrIbJxkQlxW8ka3nhFL13QP+yJOXsQG9AZVyLc7Fu/Ubz27InvBAb2b5iBbr8tXsjnKz
-         ElYloZX6XUTWDFoKuTzPnjDI+88eYUL5BpWstyM39ljen6I9Wzifthi8fl+mKcV4ZQb3
-         w/wC4MXWFDnIalP2ZnGF0sdBu5ioUhZT5GiY3plPBKVFp+DHIFoJcyg9cOgvlCo7F4wp
-         YdbsRqnZzSC9Xztr7l5LxB5A/nmtmX31S+fpubtM8qIhW5j7J1vqWCgqz6J4zyqBqBSh
-         wzBQ==
-X-Gm-Message-State: APuU4Z/QMg1hmjeyR7EqCu8pf+F6/DmbAan3yTn8OOBMN0XQ0KRH2Wdm
-	On2ZEUDWElGTpso64SgfhZvddseH+Y9Aa9ckJzQLXljwnoyy55wenGyiVcePsg==
-X-Gm-Gg: AYBFou19qW/eo0ik8ZLaE1w0ymAlLftkLKsre+GVzLetqRb6KtgtDX7mY4VWI03zlqX
-	rI/AUdiCReujinQQK3C+jONqidNnv1gO42gpFZc6bTAJG7+ykI+YTCcL5SNhRjmlwUc0sIKLBhV
-	aKacYz8fJ6BuRWqrKvrKuihSJL+GY5zFaf7Y5sMn50n/9X92gei5IHyW9b6OD4RuLLORnBP5wBm
-	CPqWvtLxIO5LTqYVPLxiZIPYqo8xtkbEpD66Y6hVIp4J5qIOUFyWeVOQumbhOP5vD+cpwoUWYAo
-	6ys62jl9gJ0tVmHF54UO9zexGgYqgZQFtyFF62qoL0rLMlk94mTa9iA1m1Gqjv8RX8xywmwvg3D
-	alYue5ZdxQAZRPo4LnIN/53ju02hvxLwUBJaMHhVcOIv6d6f9C48/t6XXzVUH3HKl3XhfGjYZDT
-	iNqIJx9GYyKxLFXqVvmFLhi/8gFbcOs1JjSVxAed06pwM701Tz+BoK4mPyXCBWdb0K4wQeofXI+
-	3vjdv5PPg5T1IZdTxnGBlPJoO97d1BkJx58pkgq8gC/zA21U/Vzh9aKnWrfTYKT4Cai5U3ftfkF
-	7Armoe1zkb08YsWwLZYuZRlvDp6EoSyyxSIKKcDEmunEFZXR3zywm4WghPIVVTAM90NTo7eWXdh
-	gZ7rauZF/qa1C8W7Q7BuTiGY2f7pBva9J7CFdZoNEDte3UPaNnvVjt4GCZrv/clbWJ+CNKixHvF
-	RWsaolzQ8ZjD8y+5bBIWoHUw4=
-X-Received: by 2002:a17:90b:3890:b0:3b0:9f53:e8a8 with SMTP id 98e67ed59e1d1-3b12d5b4cbbmr1975130a91.52.1794170250281;
-        Sun, 08 Nov 2026 12:37:30 -0800 (PST)
-Received: from ryzen.lan ([2601:644:8000:37f::e34])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1278cb8d5sm4762368a91.10.2026.11.08.12.37.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Nov 2026 12:37:29 -0800 (PST)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-spi@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Mauro Lima <mauro.lima@eclypsium.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Pratyush Yadav <p.yadav@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2] spi: intel: only check locked opmenu for SW sequencer operations
-Date: Sun,  8 Nov 2026 12:37:28 -0800
-Message-ID: <20261108203728.25735-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.56.0
+        d=1e100.net; s=20260707; t=1794189280; x=1794794080;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nEtIGyJBezdGLIxuour+D7woJTbOhHRcqzGvEkx1U0E=;
+        b=fYMYL2fJ8QA1J53600iXR6AhWnkZnk5UNJSbSMsR93pksll2Y/7W20J+0fiF8n/Dr1
+         DbYDc83gFSA+bSOK2CAF/Ly6rl9N0i6KHhP0vIxepsftJasQkZkzgxXTiRSYp0Vz5IdH
+         3GixgRIbOBgHO5jQnxRcgHHyQtzhMuxl4o8ykmOdM6nNApJnB4O8PcB9vMP0SdW61rpW
+         7YA209lh9dhymjNs1wk67ejRPw43mgFGJ+3370XfPMOzNbA0aDKhAY/OHxR5tco36Wwd
+         Znql2Aw9ORJMqQyePPpGtdHr0bGfOaujg84vZFEuY1DaG0HDDrtlfcQg98khWMezcywt
+         6JRw==
+X-Forwarded-Encrypted: i=1; AL+hErH1U3zkNtB1LxKDgkEEqo4H9xRefUewUlEbuvd3ZOMc1rIoiKhdvATvcqyBnGqPVg63n75GNHcraR8=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8sgHnsIgqxCHZfABKdXvPGK3bZ4mOSB9W7YIwsZqQE742qYEtC
+	nwAeQ9EN7UGHKwQjAD1xOOSWfwKvlXbELnVZCvvNeoCQ5ArWa1U0itEY5RZpz/ep4vJPbR0bPKg
+	n4agnWt8atG45Me1KdoOiZ8zR5nybJvQ=
+X-Gm-Gg: AYBFou3HSUdNszO3UHhWi0PZEWAYWhiN03GxVXiSwg2XsThzSBcMvGlGZ54a1sOk9h5
+	CGnBpf4wIdyC0iFFXfArgTek1WiEhHMJ/Zfn9bWLNRT6SlvvFPPqXJnzazKXYGwBJAjAj05UOtw
+	bEtfaPRzGl2CyNKOYgmS+ygpcIyYXVwtwJ5ahUq8lgprAGAz2t6wT8ppZOk45KcU2+BRwP/XLsW
+	GaUn/Rw8kQfjC96vnMUjRxGoIvw1efSWbblacJGcmVOCXM4rfzwrDgmr0/xS07bbRZusGPi3eWv
+	5SkGG9kW11nFJm1bCmYKAae3s8C97z4p0WYCh958agpUB7F6uVjHfeCY1nHbGJm3su556l8wJXV
+	KB3NKsCmeXQQykVq2DTBnaPTYMzpk736ywHXpJg==
+X-Received: by 2002:a17:906:c106:b0:c2b:f3d5:2090 with SMTP id
+ a640c23a62f3a-c4d6db5e6a6mr158843666b.27.1794189279792; Sun, 08 Nov 2026
+ 17:54:39 -0800 (PST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -99,93 +104,73 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1793689461.git.zhoubinbin@loongson.cn> <4b36ba4220b30e5dcc1dccf4db3a49a57c65122a.1793689461.git.zhoubinbin@loongson.cn>
+ <179406466807.3424803.15440704784819901040.b4-review@b4>
+In-Reply-To: <179406466807.3424803.15440704784819901040.b4-review@b4>
+From: Binbin Zhou <zhoubb.aaron@gmail.com>
+Date: Mon, 9 Nov 2026 09:54:26 +0800
+X-Gm-Features: AclHuK9sQ15Njn9dcE238QYk0OOW35_g1OnBC1YFjlWFkhfF7av3tfo76_-1uxY
+Message-ID: <CAMpQs4Kj2HcECfgYuQzEg7UKsEMbe6BxY_g56YuLtGsa69F_uw@mail.gmail.com>
+Subject: Re: [PATCH 4/8] spi: loongson: Fix clock divider calculation with
+ explicit table
+To: Mark Brown <broonie@kernel.org>
+Cc: Binbin Zhou <zhoubinbin@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>, 
+	Yinbo Zhu <zhuyinbo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, loongarch@lists.linux.dev, linux-spi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On controllers that use the software sequencer for register access (LPT
-and BYT), intel_spi_supports_mem_op() rejects any operation whose opcode
-is not in the BIOS-locked OPMENU. However the check is applied to every
-operation, including normal data reads and writes which are always
-executed by the hardware sequencer and never consult the OPMENU.
+Hi Mark:
 
-On a Dell Precision M4800 (Lynx Point) the BIOS locks OPMENU to
-{02, 3b, 20, 05, 9f, 9f, 00, 00}, which lacks both READ (0x03) and
-FAST_READ (0x0b). As a result every read op is rejected and spi-nor
-fails to probe both flash components:
+Thanks for your review.
 
-  intel-spi intel-spi: 0x3 not supported
-  intel-spi intel-spi: 0xb not supported
-  spi-nor spi0.0: can't select read settings supported by both the SPI controller and memory.
-  spi-nor spi0.0: probe with driver spi-nor failed with error -22
+On Sat, Nov 7, 2026 at 11:17=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> > loongson_spi_set_clk() previously converted the requested divider into
+> > SPCR.SPR/SPER.SPRE using rdiv[] and fls(div - 1).  The rdiv[] mapping d=
+id
+> > not match the actual divider encoding, so the programmed divider was
+> > usually one step larger than requested, and the maximum divider could
+> > index past the end of rdiv[].
+>
+> > -static void loongson_spi_set_clk(struct loongson_spi *loongson_spi, un=
+signed int hz)
+> > +static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, uns=
+igned int hz)
+> >  {
+>
+> > -     div =3D clamp_val(DIV_ROUND_UP_ULL(loongson_spi->clk_rate, hz), 2=
+, 4096);
+> > -     div_tmp =3D rdiv[fls(div - 1)];
+> > +     if (!hz || !loongson_spi->clk_rate)
+> > +             return -EINVAL;
+>
+> Does this DTRT for ACPI systems without the rest of the series, where do
+> we learn the clock rate from them?  This is tagged as a fix but not all
+> of the series is.
 
-Only enforce the OPMENU check for operations that actually go through
-the software sequencer: register reads/writes when swseq_reg is set and
-erase when swseq_erase is set.
+It's true=E2=80=94as a more reasonable approach, I should have placed patch=
+-5
+before this patch and added the `fix` tag.
 
-Write Enable (0x06) and Write Disable (0x04) are excluded as well, even
-though they are register writes. WREN is never issued from the OPMENU:
-intel_spi_write_reg() verifies it is in PREOP_OPTYPE and uses it as the
-atomic preopcode of the next cycle. WRDI is not sent to the flash at
-all. Rejecting them whenever they are missing from the OPMENU, as on the
-M4800 where 0x06 is only in PREOP_OPTYPE, makes every program and erase
-fail with -EOPNOTSUPP.
+>
+> > +     if (i =3D=3D ARRAY_SIZE(loongson_spi_div_table))
+> > +             return -EINVAL;
+>
+> The driver should really set a min_speed_hz so drivers know they can't
+> lower the speed too much (though it's unlikely they'd want to).
 
-With this both flash chips (W25Q64 and W25Q32) probe and read back
-correctly.
+I think both `max_speed_hz` / `min_speed_hz` need to be added to `probe()`.
 
-Fixes: e23e5a05d1fd ("mtd: spi-nor: intel-spi: Convert to SPI MEM")
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v2: exclude SPINOR_OP_WREN and SPINOR_OP_WRDI
- drivers/spi/spi-intel.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+/* Expose controller capabilities to the SPI core */
+  controller->max_speed_hz =3D spi->clk_rate / LOONGSON_SPI_DIV_MIN;
+  controller->min_speed_hz =3D DIV_ROUND_UP_ULL(spi->clk_rate,
+LOONGSON_SPI_DIV_MAX);
+>
+> --
+> Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/spi/spi-intel.c b/drivers/spi/spi-intel.c
-index 7494b921a743..391e79fa4678 100644
---- a/drivers/spi/spi-intel.c
-+++ b/drivers/spi/spi-intel.c
-@@ -754,6 +754,28 @@ intel_spi_match_mem_op(struct intel_spi *ispi, const struct spi_mem_op *op)
- 	return NULL;
- }
- 
-+static bool intel_spi_op_uses_opmenu(const struct intel_spi *ispi,
-+				     const struct intel_spi_mem_op *iop,
-+				     const struct spi_mem_op *op)
-+{
-+	if (iop->exec_op == intel_spi_read_reg)
-+		return ispi->swseq_reg;
-+	if (iop->exec_op == intel_spi_write_reg) {
-+		/*
-+		 * WREN is issued through PREOP_OPTYPE as an atomic
-+		 * preopcode and WRDI is a no-op, so neither uses the opmenu.
-+		 */
-+		if (op->cmd.opcode == SPINOR_OP_WREN ||
-+		    op->cmd.opcode == SPINOR_OP_WRDI)
-+			return false;
-+		return ispi->swseq_reg;
-+	}
-+	if (iop->exec_op == intel_spi_erase)
-+		return ispi->swseq_erase;
-+	/* Data reads and writes always use the HW sequencer */
-+	return false;
-+}
-+
- static bool intel_spi_supports_mem_op(struct spi_mem *mem,
- 				      const struct spi_mem_op *op)
- {
-@@ -768,9 +790,11 @@ static bool intel_spi_supports_mem_op(struct spi_mem *mem,
- 
- 	/*
- 	 * For software sequencer check that the opcode is actually
--	 * present in the opmenu if it is locked.
-+	 * present in the opmenu if it is locked. Operations executed by
-+	 * the hardware sequencer, as well as WREN and WRDI, do not use the
-+	 * opmenu so skip the check for them.
- 	 */
--	if (ispi->swseq_reg && ispi->locked) {
-+	if (ispi->locked && intel_spi_op_uses_opmenu(ispi, iop, op)) {
- 		int i;
- 
- 		/* Check if it is in the locked opcodes list */
--- 
-2.56.0
-
+--
+Thanks.
+Binbin

@@ -1,135 +1,77 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794264090;
-	b=qJa3bGwUYZuG3TXwXCZT4j59xWjLYLVkVMFpvYGDu6zXDlsXjKFRz5+fiH0CZg9noXQJ
-	 h/WS8CDUr/vZjZV3XjDaoUo/N+gJBQkcTJlx0FE8/rqukoL5UfxR+semgxCYQoGc59/5d
-	 W1EcFaagYiRAU4Wuxc1hPsXIqCrTFI2itvGTY3hO/VIry/Ae62JG6sC67zuxqzXJVLR+y
-	 ZFTkotngGyxdYTnAmZ7h7Q11rjghWC9Uz0h5lJRKS3hLCb+PjvoT2+tixuuRdkjtyR964
-	 ZT8UTdeCmWQ+2Ty0SIg9GKnmC+c9WqqKFU9c+pPVVIPaIkd/lDlr7NIoKlF4siZMrEA==
+	t=1794264271;
+	b=x/jXpUKCf0C+sGBcWfro43JNX6CSGEPVQyGCSHUZf722PKj5EBycNGH9tDQuq8fL3Gy5
+	 88wq2LdP7MLqzRzv07Qvc8uecVQk/WZP113K0cxn4Tj92qy8oCBomCJt9ERvUpl9x4ruq
+	 IPmaqr/TgFruZlTMYNDcIG5xPCEi/VzobqNsqhbrgWOs0hP49GbaVl09SaTSc4WPzb083
+	 tX0YJH4tuYYmCkuJS3+zus+AwxHGcWfwvAmdkUkvk6+/LWfR/1BS5BSP3+q8O9vZEal8L
+	 adu7NmuviGXd4zYjoi7zVbyFeQ6lDsEnKr6Ialrw4YMVzqMTQE4znpKSaQjDmAg/Brw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794264090;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-IronPort-AV:Received:X-CSE-ConnectionGUID:
-	 X-CSE-MsgGUID:X-ExtLoop1:X-IronPort-AV:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Organization;
-	bh=vbe6nTsdDhg8Mlze/ClcUGDvjt9uDhFUXXWTuvVdSok=;
-	b=yuaDMYqFb8I/t2z+WxVzoKgqM57N+6r3kNFiWpZtfAxyfnyGKx9Qqvzo88dUXvD31jhU
-	 5ftV1/1BOx3Ja7LonVLgd1H2WJk9YnK5TL1PrgJlkNMWhn1S7PK4AkBenTh6zLMz9BSq+
-	 DLT+j7YO710s0JVuNBg+oymkw3aKRNmC2e+lfzTksIFvRfvigUHA34MvNpu96QTI7oBsc
-	 8zVPRFSikoIsHCiTv6biRiYNctKK/I/n/P94kHcj6DT6NIGcyaKa9FLsrv5q2JDKFwIfl
-	 wbZax3Z5QiRnZTr4eiT3HUhiSvnxQx+FsyH3k/cG3OIVTmp+w5Htu+iZwopwhDJHphQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794264271;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=lbmh/0Z0zwTEAIGZ8vw8plOMg7G98sTILva2sucTUcE=;
+	b=sI2ncTyFm1E9C1/Ww6yoUyeXD7Pk6YfyHLU56qbG8CVd4UH3gic42SSFX8ybxhDTX/tm
+	 oc533KzUqE/4pHEOvnfDkcuXAMOqmqTPb/tTfS7oOPvVj3VA/lWvlUKPH38CDABjl8QpV
+	 N9cNMCLBeVvwEK5vNFETkI96VhsXI9/qPj6/xbe3wtBNPUWXPsJ4SB53W4/Htjs73R8lZ
+	 Hn82VdWkuhdp7vn2yJN6iWXjSf8ToNux5pmKiehNtg6uTKTOo2VVEgW23XT457zgSq1Sn
+	 W9vmAPWVxyArNpq/8mO+n973lvwubt9ABiJ+oGcDWPJ91dLegjdUdxvm5qswuDVHSzg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=linux.intel.com;
-	spf=pass smtp.mailfrom=linux.intel.com;
-	dkim=pass header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rj0Rk2FE;
-	arc=none smtp.remote-ip=198.175.65.18
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YS340XH9;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6090C606A31C;
-	Mon,  9 Nov 2026 22:41:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 6090C606A31C
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AC606A326;
+	Mon,  9 Nov 2026 22:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rj0Rk2FE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794264090; x=1825800090;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=loGujMBTdlkfiQk5hWwMHTl07E+9259CEaRMomFVuEY=;
-  b=Rj0Rk2FE7T+NWrkWn326px4ZqLreSM+p93yD36ZR3CaYVpaLxPXFeour
-   y2eiuRXazbcjyLCun02quor2RULbeLyZ1aeraTrdb6K/nT1RvjJjrkC3I
-   duTukWNPQaksAkNBeXaPWF982oD19GHKymcaNdEjDoUxbhyu5hhB9f1E9
-   jjjjre5ptP8tSkT1LaqhXgTrhCafOs0RBQT715zqTlOnhqgwwbFBRoSpA
-   e9Gnc01Pnc16N1fuodfR1ZBduswE1Le0GrSxHj+N2MNaNyMlj6BGzjgUP
-   qIN9HRgizNypPLvyWtT+FNsSegTRYv4zT25jK/xJqzvP4xj5QC3Fb9Lux
-   A==;
-X-CSE-ConnectionGUID: LPR5BJtyTLOO201ZhtgoJg==
-X-CSE-MsgGUID: TrInIqIIR5qc74GJ54Z7oA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3012356"
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="3012356"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:41:29 -0800
-X-CSE-ConnectionGUID: WiiU066RQsK4uk0B5ylzZQ==
-X-CSE-MsgGUID: 0Xjwhd9LQHC9A95XLjHjGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="8169672"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.244.144])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2026 14:41:16 -0800
-Date: Tue, 10 Nov 2026 00:41:14 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Frank.Li@oss.nxp.com, Mark Brown <broonie@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu_nicolae.pirea@upb.ro>,
-	CL Wang <cl634@andestech.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Han Xu <han.xu@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>, Yixun Lan <dlan@kernel.org>,
-	Troy Mitchell <troy.mitchell@linux.spacemit.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Laxman Dewangan <ldewangan@nvidia.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Sowjanya Komatineni <skomatineni@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	"moderated list:ARM/Microchip (AT91) SoC support" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"moderated list:BROADCOM BCM2711/BCM2835 ARM ARCHITECTURE" <linux-rpi-kernel@lists.infradead.org>,
-	"open list:FREESCALE DSPI DRIVER" <imx@lists.linux.dev>,
-	"open list:ARM/QUALCOMM MAILING LIST" <linux-arm-msm@vger.kernel.org>,
-	"open list:ARM/Rockchip SoC support" <linux-rockchip@lists.infradead.org>,
-	"open list:RENESAS RZ/V2H(P) RSPI DRIVER" <linux-renesas-soc@vger.kernel.org>,
-	"open list:SAMSUNG SPI DRIVERS" <linux-samsung-soc@vger.kernel.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <linux-riscv@lists.infradead.org>,
-	"open list:RISC-V SPACEMIT SoC Support" <spacemit@lists.linux.dev>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	"open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>,
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Thierry Reding <treding@nvidia.com>
-Subject: Re: [PATCH v2 1/1] spi: use dmaengine_desc_set_callback()
-Message-ID: <avJMCrlbmV6uq9NK@ashevche-desk.local>
-References: <autqC143h7Qf1R9H@ashevche-desk.local>
- <9e39502a-dd17-4fa2-98a3-9019523cb5e8@kernel.org>
- <auuYcS7-YqJKcUbE@ashevche-desk.local>
- <63c24437-4261-4a51-be7e-31ac0759a095@kernel.org>
- <auxGom0XR-Hax9b3@ashevche-desk.local>
- <00390a20-7630-4066-9779-06c8f915a176@kernel.org>
- <auxNmE8yZVP-wL2e@ashevche-desk.local>
- <3dc7277e-2f6b-44a6-9085-2e33d989c1c9@kernel.org>
- <avIJhv7p2v30U8H9@ashevche-desk.local>
- <78833267-f204-4387-9f8c-c7e0d5df59a5@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YS340XH9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61871F0089F;
+	Mon,  9 Nov 2026 22:44:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794264271;
+	bh=lbmh/0Z0zwTEAIGZ8vw8plOMg7G98sTILva2sucTUcE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=YS340XH9AgYiYC0jmay2BOZ8psYLNTS9Zrj+ai1c0l0V3ody+zwIbLGKaNGAGBa4J
+	 d9aPJgiLauxuP8BmJQSc4iHfqQSdIMPFvqoZdhvllfDpSeXc3vutC6h9i9MK/xnRN9
+	 dIRg1N6rLkEd2ZBuRQl19ce7kHwCYP6jorqrFPJxo1LriWVol/DWOFmnbLH1HMilCc
+	 7Uj68OXXpLHznUZRlz7kcg6kTHT3s1XEMPq+7NHYItafxe7T66Oh3nx8NXaqJT/l7T
+	 dBvKnsrMMJzH/z0kiG9OTMLFTueglK0GqfYsdJKUEz8yrPmdhSIpTDARYW5sQLa6NL
+	 pdO/hDQ3kA+2g==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 351CF303EFF9;
+	Mon, 09 Nov 2026 22:44:27 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Vladimir Moravcevic <vmoravcevic@axiado.com>, 
+ Tzu-Hao Wei <twei@axiado.com>, Swark Yang <syang@axiado.com>, 
+ Prasad Bolisetty <pbolisetty@axiado.com>, 
+ Karthikeyan Mitran <kmitran@axiado.com>, 
+ Alain Volmat <alain.volmat@foss.st.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Michal Simek <michal.simek@amd.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Heiko Stuebner <heiko@sntech.de>, Jyan Chou <jyanchou@realtek.com>, 
+ Yu-Chun Lin <eleanor.lin@realtek.com>, 
+ Laxman Dewangan <ldewangan@nvidia.com>, 
+ Thierry Reding <thierry.reding@kernel.org>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Sowjanya Komatineni <skomatineni@nvidia.com>, 
+ Joshua Crofts <crofts@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-tegra@vger.kernel.org
+In-Reply-To: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
+References: <20261108-spi-dont-use-autosuspend-v1-0-3587b0183cbe@kernel.org>
+Subject: Re: [PATCH 00/11] spi: remove redundant
+ pm_runtime_dont_use_autosuspend() calls
+Message-Id: <179425512291.3711751.11313466595449863242.b4-ty@b4>
+Date: Mon, 09 Nov 2026 20:12:02 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -139,40 +81,74 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78833267-f204-4387-9f8c-c7e0d5df59a5@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2825; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=fGK1+6kBLTgLKjWD8aKdb74u71yNwRTJZfTglc1HBn0=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI++ZwODWpPPLn8k2Swd6BwZ+i06Lcex+7e3ZW06bQrL
+ 8vrE7O/dpSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAiHC2MDGc67Hb+5puz5IRx
+ GdsjBpnZF97yZonUlPO0X+D66L1UIZKR4au03ISGG6cDm2792q+lcTQvZNuXKQqR0/3a7jyzWrv
+ Sjx8A
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Mon, Nov 09, 2026 at 11:10:38PM +0100, Krzysztof Kozlowski wrote:
-> On 09/11/2026 18:57, Andy Shevchenko wrote:
-> > On Fri, Nov 06, 2026 at 08:20:33AM +0100, Krzysztof Kozlowski wrote:
-> >>>>
-> >>>> Statement of oversight DOES NOT include "part of the patch".
-> >>>
-> >>> So, it means I MUST from now on REQUIRE a split before reviewing.
-> >>> Right?
-> >>
-> >> Why "from now on"? The reviewer's statement of oversight is worded like
-> >> that since beginning? Also nothing stops you from reviewing parts. We
-> >> discuss the statement of oversight and its result: giving Rb tag. The Rb
-> >> tag is not output of some review, but agreement with statement of
-> >> oversight and performing what is stated there.
-> >>
-> >> You can review parts, but you do not provide Rb tag.
-> > 
-> > No, I'm not going to review something that I may not put Rb tag on.
-> > I can NAK or ignore (or Ack without viewing, but it equals to ignore to me).
+On Sun, 08 Nov 2026 13:16:47 +0100, Joshua Crofts wrote:
+> spi: remove redundant pm_runtime_dont_use_autosuspend() calls
 > 
-> That's your call, but you put it on yourself, so do not blame us for "I
-> MUST from now on REQUIRE"...
+> Since commit d1706f9da9f4 ("PM: runtime: call pm_runtime_dont_use_autosuspend() on reinit()"),
+> driver core is now responsible for undoing any
+> pm_runtime_use_autosuspend() calls on driver exit.
+> 
+> Remove the redundant function calls.
+> 
+> [...]
 
-No, I don't blame you. It's purely documentation and terminology issue in my
-opinion.
+Applied to
 
--- 
-With Best Regards,
-Andy Shevchenko
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
+Thanks!
+
+[01/11] spi: axiado: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/9c5ba93a5a13
+[02/11] spi: cadence-quadspi: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/4a1cab30f7e0
+[03/11] spi: cadence: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/e5187e13ce1f
+[04/11] spi: stm32: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/6d2a6ec8942d
+[05/11] spi: stm32-qspi: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/73f3bb4134f4
+[06/11] spi: zynqmp-gqspi: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/affeee16b705
+[07/11] spi: mtk-nor: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/634d73e929cb
+[08/11] spi: orion: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/ca8b81eca7f1
+[09/11] spi: rockchip-sfc: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/b90c9acd16cb
+[10/11] spi: rtk-nor: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/1fcfd0275515
+[11/11] spi: tegra210-quad: remove redundant pm_runtime_dont_use_autosuspend() calls
+        https://git.kernel.org/broonie/spi/c/ff3bd58298fc
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

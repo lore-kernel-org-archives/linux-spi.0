@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794261793;
-	b=JXCF1QDdzr7sWNBVJDMrS1tY0hiTC5u5uvsVjbtoaKJ85XgluvjeVdAuKhpyJM5I+b7o
-	 +J/2WIhalf1wQUndxJCftcsIPrmWUugIUT4ksleXOF6bDN7fP7I6aUU12dNUV2ORFi23m
-	 5iTprM8E2ZzJXXnQDVZkH1waznt6JSIn+AbY6wb0oq8t2mng3IAL9k7OzM/NZYpoSnYA7
-	 9h+aG9nGEiSh0qp6KwlB0bx1zTGgn1C1gfnS/4CDKbUISrBKc+5CLR8VP057NMxw0a0OA
-	 e482dShehFjENKPlqvZ95WLhHXnghaS8VVYYzMJyxUdF8vrVwR+EmeZLQsKCvvSt/uQ==
+	b=k693kt0V727wCOzIrADKpcJ5sYajE3ESUxAum5W4YoReHp63vRAspmjdTrhNYphE0iz9
+	 SlSiCtu312UpxLzzGqaz/NEw2Fu3j3CIb8FdA3+QlbQ76BXnOcU3GY5jsHm3dL74t9BlQ
+	 H4RwpXccQxPlBf+viGWtKJhfHsNT0xevnurw2j8zzOJkErZYO7RJAXZCuxjYRGh7KcG2Y
+	 JevpjF//0Zlqe3AEDGrjtu+2VE7y5mpxT5ReNBVw40Yu1PvrJ1olBecQsUwS7bMO3YAIC
+	 f+rj1vhenVJP96fFLVyZWT6TusAu7MkRSFakWrm551XcWIj/dvvdqZTO44XFngnnk2g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794261793;
 	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
 	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=CidRQbh2gFHizXgn/3nltDcqC87nf+9JADmfwJgFtmU=;
-	b=ZG9Zo+OmqY+6+0DmTJ6u7zkQ4e4DmllVyJjJdi1nsS5ujE7qQLW8xlA0CEDJH3xSRNwH
-	 K5cWsCcUU/y2XgYKgQ1eRnPatMrZE5avDF/7k0WU596tA6e1ideWh9C5SpjHHdnmWXQxK
-	 /4Siza0cXbxe8tVcIgKkhnQr1wtx2z5+NNXe56yV7CvQHGtcz3gsngkQi2hJ3z9x5z6fG
-	 NLuD1zEDQMb7UBNQYG9FeZQSYXz4nuvvtAcycjtTR1fXy/des/12R8cu8ODxL46rQXMjK
-	 1Y+RdwufzetTmcly1pipLVnSy79g9mzcENqv9IBcdDd4qpi+mj3+k4zau+iP/0DEkyw==
+	bh=5fhIsFIkZ4LdQ5n51OKo+Ec9EiIwq3J+ggnXRosBuV0=;
+	b=QVh5H/5+8ut6Cn+lJeU4DHELzsn03rwOxKTNmdaHjvpTgUFVBSPNYF1tbcHAFQqWfNo8
+	 is6EAnr4dA56PoD0+2H/kxJg9ufc/k8AzMJRAboZgZb/Ip8z23Zi/0H6dGDqK2C9jb5Xr
+	 FYUJPVtYLaXgmfVXX9AOF1q54FwJv4J+30MMcHJOzpD89Vw8c01hWgdCiDRD0SoMPyfCU
+	 24vFkJ3C7eZic4nG9ZXk7udP+7Wg2gi4puWHcC9iXY1zxpF5yKSJAx//Kfpt964KHq2nq
+	 ZXhQtg7aZyGpDk/vqSwDjB/ETLgrKKYXe1snkX7dRAg68CiQCoy+/LPh8+xsy27YVZg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAmfgtHb;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="M4XcDj/y";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE463606A31C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE52A606A325
 	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 22:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IAmfgtHb
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2941F008A1;
-	Mon,  9 Nov 2026 22:03:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4XcDj/y
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC961F0089F;
+	Mon,  9 Nov 2026 22:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794261792;
-	bh=CidRQbh2gFHizXgn/3nltDcqC87nf+9JADmfwJgFtmU=;
+	bh=5fhIsFIkZ4LdQ5n51OKo+Ec9EiIwq3J+ggnXRosBuV0=;
 	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=IAmfgtHbahuGzrwt5S2CdtfDct24IdyI/F871t2gLdvbcQ+AEpi7VJeNnr2npNsnz
-	 aa5bmAB0UYBFCgenmJYp7R8/m2M9So96P5oiC77kQ/ismwwhBuNQBNjAx1YE3aQI7R
-	 BMnFCK+ZI/MwfeYcxrHrpQsrYvXgYvHILyE/ZCKiw0VAFE8eluxASb0iQ4t8a+cs4Y
-	 BMnB2wdQYvtW/k9bHw1I4+9LHwxt+dw53BWShkGQR2ncaSoBW3lakC6o5BVnpPHVXv
-	 lueCwILLcFZGlBbgz6qK44f8S0X9TsMZpXMUG66nZq+53aBvWY1FekSyBW5L3fZgye
-	 ZhXC+eK7zvyYA==
+	b=M4XcDj/ySUy93StASaTwfHJCKkLzlAXG3gXwjwZyy8v9Q2+ByiEfj7UTrrSMq6yss
+	 ig73Vs9xRVrorca0tCIh13fQ0SqfMn5ajSZHQ2g9Ajp6PAjxKf2mZGRwr06xTfy+BX
+	 0LNdDN3ccKH8Eftn7HEY3b7WPIOU1RKDAts2Y+OQ6JwayWv2Js2b9Yx4LnBTJqiEUI
+	 twyhFzWSoSKEWliXejADbCeL9n3LrquRDii626pN8ZU+bsawOmJUWIjzFVUiM9U5Ji
+	 6JmnI6iJ5WYUlgb7/IqJ4kJuAAxuCopiqfSmWWELnsH/4rq3d/ijbPIRV2+e6iqHxo
+	 s4Mihtv3dprew==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 58F803021CAB;
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 605163021CAC;
 	Mon, 09 Nov 2026 22:03:04 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -54,7 +54,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] spi: Add infrastructure for atomic sync transfers
+Subject: Re: [PATCH 2/2] spi: rockchip: add an atomic transfer function
 From: Mark Brown <broonie@kernel.org>
 To: Heiko Stuebner <heiko@sntech.de>
 Cc: broonie@kernel.org, linux-spi@vger.kernel.org, 
@@ -62,55 +62,79 @@ Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
  quentin.schulz@cherry.de, Lee Jones <lee@kernel.org>, 
  Sebastian Reichel <sebastian.reichel@collabora.com>, 
  Heiko Stuebner <heiko.stuebner@cherry.de>
-In-Reply-To: <20261106181824.1361235-2-heiko@sntech.de>
+In-Reply-To: <20261106181824.1361235-3-heiko@sntech.de>
 References: <20261106181824.1361235-1-heiko@sntech.de>
- <20261106181824.1361235-2-heiko@sntech.de>
+ <20261106181824.1361235-3-heiko@sntech.de>
 Date: Mon, 09 Nov 2026 22:02:46 +0000
-Message-Id: <179426176654.3711751.13650000545363860741.b4-review@b4>
+Message-Id: <179426176656.3711751.13626253291583121519.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1567; i=broonie@kernel.org;
- h=from:subject:message-id; bh=8xKsPk8JaGfgfmUb29t/RDu26Xy0LDupWmUhlaAY30w=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+ObNvfR+/817uz8PL1hzcrH1cv1/ocbNUVEu6iHWq3
- oqNTRP7O0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAnCTrzH8lXD7pL/kaXrA0U8B
- m6535QdI3HouG9gowKfs6lxWkTFdk5GhtbXsHcPV+J3HV99jKFv/Ji6krsziqWyz0zE3/r8+G30
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2042; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=hIdjP33i7ScW9DXNN0xZU7V5Fza7A95kmMy3uYeIb18=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+OUvc4lNbkP3sc6jhaq/Fx8JWX9zW1DyhW/PrN5svN
+ osuaF9K6ShlYRDjYpAVU2SJy+J+WV/yeg3fwYVtMHNYmUCGMHBxCsBE3gowMlzjO79gTU6ohNQG
+ gXstlt9NDnAI33Rf1JmoOvnD/s7Cg/MZGWaEcD7IEPlb/vyUj/eJWd56PWcfGFSIVb6ybvQMYyu
+ Yxw0A
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> There are cases where SPI transfers are needed during times without
-> interrupts like shutdown when a PMIC should turn off the system.
+> Rockchip SPI controllers are often used to handle SPI connected PMICs that
+> also handle system power-off events, like the RK806.
 
-> I2C already has atomic transfers for exactly that case, so introduce a
-> similar concept for SPI. Similar to I2C, this is and should stay a
-> corner-case, so is only allowed during the shutdown stages of the kernel,
-> when interrupts are already turned off.
-
-> So add a in-atomic check stolen from I2C and an optional transfer_atomic
-> callback drivers can implement to do immediate uninterrupted transfers
-> and let spi_sync() determine if the state is late enough to use it.
-
-> spi_async() does not require a sleeping context for itself, so while it
-> could in theory also be included, its called waiting for the completion
-> can sleep, so would still cause the splat about it.
-
-> +static int __spi_sync_atomic(struct spi_device *spi, struct spi_message *message)
+> +static int rockchip_spi_transfer_atomic(struct spi_device *spi, struct spi_message *msg)
 > +{
 > +	struct spi_controller *ctlr = spi->controller;
-> +	unsigned long flags;
-> +	int status;
+> +	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
+> +	bool cs_en = (spi->mode & SPI_CS_HIGH) ? 1 : 0;
+> +	struct spi_transfer *xfer;
+> +	int ret = 0;
 > +
-> +	if (!ctlr->transfer_atomic) {
+> +	pm_runtime_get_sync(rs->dev);
 
-We do have some existing users that appear to rely on using spi_sync()
-to power off like SC27xx.  I suspect they are tolerating the splats, or
-just don't work, but either way we should try to preserve the current
-behaviour for them.
+The check in spi_in_atomic_sync_mode() is true for SYSTEM_RESTART and
+SYSTEM_SUSPEND which would get rather messy if something ends up with a
+device that tries to do something in there.  Not sure if that's worth
+worrying about or not.
 
-> +	status = spi_maybe_optimize_message(spi, message);
+> +	rockchip_spi_set_cs(spi, cs_en);
 
-Message optimisation may try to do things like allocations that are a
-bad idea in atomic context - it seems safer to just use the message as
-is in this context.
+This won't DTRT with GPIO chip selects, that's normally handled by the
+core.
+
+> +		while (rs->tx_left || rs->rx_left) {
+> +			u32 status = readl_relaxed(rs->regs + ROCKCHIP_SPI_SR);
+> +
+> +			if (rs->tx_left && !(status & SR_TF_FULL))
+> +				rockchip_spi_pio_writer(rs);
+> +
+> +			if (rs->rx_left && !(status & SR_RF_EMPTY))
+> +				rockchip_spi_pio_reader(rs);
+> +		}
+> +
+> +		wait_for_tx_idle(rs, false);
+
+This uses jiffies which don't advance in poweroff, and there's no
+overall timeout here.
+
+> +		if (xfer->cs_change && !list_is_last(&xfer->transfer_list, &msg->transfers)) {
+> +			rockchip_spi_set_cs(spi, !cs_en);
+> +			ndelay(10 * NSEC_PER_USEC);
+
+udelay().
+
+> +static int rockchip_spi_power_off(struct sys_off_data *data)
+> +{
+> +	struct rockchip_spi *rs = data->cb_data;
+> +
+> +	/* enable controller for possible calls from shutdown handlers */
+> +	return pm_runtime_get_sync(rs->dev);
+
+Would it not be safer to just eat the error here rather than refuse
+poweroff?  Also pm_runtime_resume_and_get() is the more modern thing.
+
+> +	ctlr->transfer_atomic = rockchip_spi_transfer_atomic;
+
+The driver supports target mode as well, probably best to only register
+this for host mode.
 
 -- 
 Mark Brown <broonie@kernel.org>

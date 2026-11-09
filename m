@@ -1,88 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794253282;
-	b=wATyrPpNBwuJBkz4AomEh6u/17vuLZllRm6EkMjXij5Yy5iWKIWKV9sfBpgw8FkOLMnu
-	 fcUHbSE3VgxI/YpMSRfiZqqKN9Yqpk54SWoF3/nWQxujcJcxiWZdOEm7mqWEFgohMzS2g
-	 IwecLPllP738agbjn1znLCr2VuMWpEKoUVp+iL54qNCHPOTaXutut2Q/uP8v+HXChj7SN
-	 9oGtCBfpMRfJy5pphBthZsq/fBsoH7u0ERggoD1ku7EgVI4fZj1ZSWdQdRZgKPtPgcJVn
-	 Il6WRLh0RzHYnyfzcg1J0tcy7ukCLqdyAqKAxbpVfyMsKREA8QN0T0gMxMYYqNLuzCQ==
+	t=1794253500;
+	b=RDlgWZuLam0AAVm5TP5TuKpGJdfLE9RRdWKB55UeEH6+ljhKvMXEPbt0Fa6xdwi0WepI
+	 Lhfg1D9u0UUkxUg26SdruTDM+GcwlzPusFmunrA4kaoMQV//YYo0QiocZumrxf1umEEox
+	 0YcAxv6v9gBP3KNUHsc8rvIoY8xP4NSzR6HjOzldAl/ShWHOtfeiNFTPRAW+HRlY298YQ
+	 pLW8zOVIbS/5z0X1JfrVt9zTrM9S1ELVILv5T08x2jEFCyK2iguG8e+wjy/wzss8CR7Fo
+	 wYZk7HR/QqmYk20RsCnz7XibHYKIFGACLVgshJAVUaHiVvs9ILMWYBB/zWhs3Dl2C1A==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794253282;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:Date:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer;
-	bh=CJBOrzmZfEeEjj8zj4QInIClRy264Xeumf7USqg34nY=;
-	b=By3G7InyuiLJrlnFLVHd/WCocpUmVkHHPSQVp1KeW+Wd9zFCaKBEM03e2Cydv9s9AwiI
-	 ZTcp00I4wK0nYiodeuWqwWS0bPixnDPC5cR0R+6KLxzLNBsqffRaQtBr18DAdqc8IK4sn
-	 z+Nf5w+zrUSee2fqD2FOJedPzM0LJDra8rQsnB86k47zY6C91LMkajboBDHclaxXDMFxV
-	 WfwqT/kQhCtJbur9yPH2mR/I36GBK2zyyyniOOEUez+37Xacg1Z5mW6/qfaIArOWD+VAv
-	 t7H42yudYWbxVtiP7oR8HXxie6y6k2WTwCBdPiSAzuDEeoJDPIRkSG0Tmpi1teLRw4w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794253500;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=kgAb/MNcPZqf2lj1SakxlPQAy6OL7xxuzBejbd0jhkg=;
+	b=rCZ4lIMwZXBkE9F4yfuf8Spvw3s3cnLSUzSUK/PJNy04Vngs1ACVaoO8c0I2eXTZ6Lv8
+	 Yn/Fooxh9VqEICHUK9fn+WEbtB/nnoeuAvRroK35a7gQX6G8j65MXM/iDzypmr4qwfOiz
+	 EeoU5mxaCUQpnw2qA37NeVkuwFKEweFcavGxXkKm6LmJfRzDDl2KLNahyH7EKjRXdabWU
+	 c1AY7+a81IAoupPKvWJh5VUFrAYoJgQRRy1sObbx+rgHmEo0e1xzjQQ5AMtEa+ObyzR/F
+	 csMxzs4GK6UE4BODLWemyeDJvQ9AfnIqSYfKP79vupGntiKFPhwbB2lAlJWdkFL+c5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Syl3R4er;
-	arc=none smtp.remote-ip=209.85.221.54
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaK4YXuS;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F4F60A263E
-	for <linux-spi@vger.kernel.org>; Mon,  9 Nov 2026 19:41:22 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 78F4F60A263E
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7581606A31C;
+	Mon,  9 Nov 2026 19:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Syl3R4er
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-492690dd5daso906780f8f.1
-        for <linux-spi@vger.kernel.org>; Mon, 09 Nov 2026 11:41:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794253281; x=1794858081; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CJBOrzmZfEeEjj8zj4QInIClRy264Xeumf7USqg34nY=;
-        b=Syl3R4erXBKjFGEeg3LRXecQao4OngqM9IZHhMFMkF/8J3JWGVTCRttp6jPM0xq/oN
-         IQM5EWR6YncRE04TcsU3BAfkd5IygbgQ7SIv5ezI/x5VzSo9ceB9+f2WqIwFb6SCg1BQ
-         wLRZUNkyEgYDUAQH8dEAaFgYWWvvNOfE92qh9+dHppwzFmcTFJcdyD+Hxag0tp8rWzFI
-         0eeJb5WjoJVpcn59cj2B91oDaZoqohxqGy22BeDaHEcRL6ZOaPrOoKyERnkMjKtWxTK7
-         N/1N4YFa+Zm60iIljr+7gwgP+k7X1YfoSb86jJ0EmLjhJIuXApgldJYa85sQKOmUrENJ
-         zm4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794253281; x=1794858081;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CJBOrzmZfEeEjj8zj4QInIClRy264Xeumf7USqg34nY=;
-        b=VD2i7CAla2R5AN7fRJvuaZ5DJIiD9U6YAXowFAmZ94x8mI6bs5xQeyVAd5wPy7Et9M
-         Qsv4mKAvdFpI0uawMCuVysnPNdEgQS0pwI4nWcWa1Ncsj2toGdNgcmIQT4YKnSabSUtI
-         REEvo3/UsFQ9ZNe9Im77Mr9tilCLCU6t+gQaKlyGgBdKLYTI269DGKha9HB4+obkNCjH
-         RPPdN54ps+XyG+5QWA4cPPtlOisSaadC9WU46l8IBYMXjwXHXyv2CmP1UnalNDbgoblW
-         E+EkqMmsZu0OZDQL6BTYCu/RvrFLnBxB3zX5G1GDBmM+/loEgRLy1v8++0i+RONqUnsd
-         IKcA==
-X-Forwarded-Encrypted: i=1; AL+hErHgPceb8eDvP/1SbFC0GsXv/dnh3lP1uJ84yAFYnM2A4gbT97SOatpy4qVdF0TDowu5ha29ie2lpFk=@vger.kernel.org
-X-Gm-Message-State: APuU4Z8hJVWcZUQ/6Wk621KaKmRhB+xx3jpzj4KqvGPStPAWnCYu9QuL
-	7zjOA5vznBuLOMLQPtnxk8t8guX6W7JT+OUFBAuIBl3JAzf5hyv7uIn8
-X-Gm-Gg: AYBFou0HwrWQQI80SUKq+bvRhqEA5vmqTOhhrux0ax1aGY9OTmlHXMPpl4jenApsPDe
-	KhLTtRXJqRQSnON2aD9QtPc/C6Kqw1tvRsvaVtbS9CMr1kPQmX0Bf5fZMEyYSzSidLj6+B3YhOt
-	2EYy01/SoIZ9MnIBOXXkRn4JLYT5GOMVMTniukqOb2FkKFcvyQPKXbQAR0DW130ciaj8+sCJ8T/
-	fgUYZBa7miYWwRfLUR1KGbZfB3jwYr8O455hCg7WuGz0Bb64RuVm+mYpXofo5BjuBuRDHT/fiI7
-	BwUIEd+rYb9S+wjulzWdG/dC4f+9sLMOu62xoQZEWU7PXy3SpLt5fudbW4O+abKfKiNtU5QTUzn
-	RtGzEPAEaJ4McPHUTO/pKsBA0lykXP4DVuZ2RUXp3bl4LFa2n1PVEiitXUrcUOs3uFckhyDHBra
-	65YsJABDgkzJlp8dhMe3mxmS9OX9RUMwk3lIMw4+2ZtgTqpsJhqLQ/jg32knSrBDEBgtHzO2jvh
-	/NIsGxWgiKAjyd8Wjo4w9aYlfDje4PRzC5DAPpVc2f1EPon05+yFkJreFKvGKF7p1fttOD9rqs1
-	eSlqcxA+HYAtFFe0vpdCMixqZfsY4lmwsUnjoAFgB9jzAIEngdhOS/tuTA==
-X-Received: by 2002:a05:6000:4283:b0:491:5b1:fa73 with SMTP id ffacd0b85a97d-49827cf2a91mr1085864f8f.0.1794253280640;
-        Mon, 09 Nov 2026 11:41:20 -0800 (PST)
-Received: from [192.168.0.253] (5403F394.catv.pool.telekom.hu. [84.3.243.148])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-49836b8eb11sm714822f8f.57.2026.11.09.11.41.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 11:41:20 -0800 (PST)
-From: Gabor Juhos <j4g8y7@gmail.com>
-Date: Mon, 09 Nov 2026 20:41:06 +0100
-Subject: [PATCH 5/7] spi: spi-qpic-snand: use the common
- qcom_nandc_set_read_loc_first() function
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iaK4YXuS
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9C51F0089F;
+	Mon,  9 Nov 2026 19:44:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794253499;
+	bh=kgAb/MNcPZqf2lj1SakxlPQAy6OL7xxuzBejbd0jhkg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=iaK4YXuS0PA2gcyJg5eFZZDYdKfVrqf2/p+q7pQC/0c8y9PEZN2amzvB5oA2175qw
+	 BUOJDl/6P89wiSWmSnRMxQilXg7X90t6+tc3p5jpEqagG7AAEYRRwoaSAq7LtLAVmJ
+	 Gcy4/twP+aaz9gUhIJg3aSmkSKJ+SK8+8srIfM7japIETKGSathZ5pT3F5kYFKIets
+	 Y2RUuwkVkdrKOHv7m3vMYfrRuBOPXJOwv2A/xKm61MPH5FTct6elR8nTQ5qrWd2GMZ
+	 8WBbrfcJCjjAq63fSA8N540rlCkdM6n/vHlk0RoKnNm5ciDs+6g/Z2peLiSbcJGvXR
+	 xt8P7ulfrd0Dg==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 81F762FC6BFC;
+	Mon, 09 Nov 2026 19:44:08 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>
+Cc: linux-spi@vger.kernel.org
+In-Reply-To: <20261107-ux500-pl022-power-domain-v1-1-d51913109afa@kernel.org>
+References: <20261107-ux500-pl022-power-domain-v1-1-d51913109afa@kernel.org>
+Subject: Re: [PATCH] dt-bindings: spi: pl022: Allow a power domain
+Message-Id: <179424278627.3711751.15633504831825974772.b4-ty@b4>
+Date: Mon, 09 Nov 2026 16:46:26 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -94,76 +65,44 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-qpic-snand-use-common-functions-v1-5-1e8601e2db84@gmail.com>
-References: <20261109-qpic-snand-use-common-functions-v1-0-1e8601e2db84@gmail.com>
-In-Reply-To: <20261109-qpic-snand-use-common-functions-v1-0-1e8601e2db84@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>, 
- linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
-X-Mailer: b4 0.14.3
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1105; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=1bZwAjmm8CNqGWsa18GQ35iJ87/hXThXLE9lj76dRK4=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+KXX81X+pM710eWj1CcVL708frnpk9/Z+GtPMdFdWP
+ edXAaxWHaUsDGJcDLJiiixxWdwv60ter+E7uLANZg4rE8gQBi5OAZjIyQpGhoXxzAdLrZkyt5o6
+ WDMunnTuZcf2Dx3L1/2Vr/fave6QrCMjw+2AyOyJL3aW6m6UWfRyaRzbJvFvfKVz/69pWP24eK1
+ wAyMA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The common function from the 'qpic_common' module provides the same
-functionality as the locally implemented counterpart.
+On Sat, 07 Nov 2026 19:14:22 +0100, Linus Walleij wrote:
+> dt-bindings: spi: pl022: Allow a power domain
 
-Use the common function and remove the local one in order to reduce
-code duplication.
+Applied to
 
-No functional changes intended.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.4
 
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
----
- drivers/spi/spi-qpic-snand.c | 27 ++++-----------------------
- 1 file changed, 4 insertions(+), 23 deletions(-)
+Thanks!
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index 6774a0a5db2a..ad91edd5f6df 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -122,27 +122,6 @@ struct qpic_spi_nand {
- 	bool quad_mode;
- };
- 
--static void qcom_spi_set_read_loc_first(struct qcom_nand_controller *snandc,
--					int reg, int cw_offset, int read_size,
--					int is_last_read_loc)
--{
--	__le32 locreg_val;
--	u32 val = FIELD_PREP(READ_LOCATION_OFFSET_MASK, cw_offset) |
--		  FIELD_PREP(READ_LOCATION_SIZE_MASK, read_size) |
--		  FIELD_PREP(READ_LOCATION_LAST_MASK, is_last_read_loc);
--
--	locreg_val = cpu_to_le32(val);
--
--	if (reg == NAND_READ_LOCATION_0)
--		snandc->regs->read_location0 = locreg_val;
--	else if (reg == NAND_READ_LOCATION_1)
--		snandc->regs->read_location1 = locreg_val;
--	else if (reg == NAND_READ_LOCATION_2)
--		snandc->regs->read_location2 = locreg_val;
--	else if (reg == NAND_READ_LOCATION_3)
--		snandc->regs->read_location3 = locreg_val;
--}
--
- static void qcom_spi_set_read_loc_last(struct qcom_nand_controller *snandc,
- 				       int reg, int cw_offset, int read_size,
- 				       int is_last_read_loc)
-@@ -514,8 +493,10 @@ static void qcom_spi_set_read_loc(struct qcom_nand_controller *snandc, int cw, i
- 		return qcom_spi_set_read_loc_last(snandc, reg_base, cw_offset,
- 						  read_size, is_last_read_loc);
- 	else
--		return qcom_spi_set_read_loc_first(snandc, reg_base, cw_offset,
--						   read_size, is_last_read_loc);
-+		return qcom_nandc_set_read_loc_first(snandc, reg_base,
-+						     cw_offset,
-+						     read_size,
-+						     is_last_read_loc);
- }
- 
- static void
+[1/1] dt-bindings: spi: pl022: Allow a power domain
+      https://git.kernel.org/broonie/spi/c/6c4c687d765d
 
--- 
-2.56.0
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

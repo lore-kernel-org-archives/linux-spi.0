@@ -1,55 +1,62 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794326650;
-	b=ePfQ1JIu7WP1BMPymK7vzJbLnWbDtPS5nQnq2MYLteKy5SH2JbNPrp3lGYQXWUmpl30B
-	 +vpSxVDUFrRgc7L+p3lj1z90YiBgGmX2FV5CIFlOt9XKhxqDVXbR+YTyp5Qvqp8lIIRxf
-	 ToztH51orK5etCl4B839lmOiUfhaPbzrClZ/RGi9jIjY7yBFFxTJmxyQXy1tu3TAALyqd
-	 HqE8qdusjatLZ8IUi10NsGKVQa6hY3BChtVXpQNoIV7Dr4cmsqASPkHeuH3jgynPBWHPn
-	 /BCJDkRwGX037/OynNepBrIllbYfcag6D/tr8WAcWxb3bvfy51j0fKq1YB56jmNMDwQ==
+	t=1794327268;
+	b=kJqtj9uzRIjxD30kcMO8f2W5r3iIKe9s3dFbWk6O3CPhcrd0TICUVaGyKf/u/QTSutfl
+	 QjpaohulqsB8yyzvw+tK24PFXkVOvMPs3G2JjRGAf8aYeghmGhoZqU6bqT2wgDBdzjYw/
+	 jNSwEfELCh+kcZ5vmk2lfZsxxeucQtC+gK3YLgjCkW4Nuo44NWXMelPFjUTUeEEUcrVsa
+	 rMR+XCnHZahMPKie1ALJUlW5jLWs7xtGJ7rcBlle2NooNhLPAP8shf208ce7dnY8rocmk
+	 B66oL6o4XzYPhPiZitmfhbbVhMMpStn+NiupXoRRYlJlV0PbLFtS1fWHjvK54wG9YQQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794326650;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794327268;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
 	 X-Cookie;
-	bh=xKekDk65ciGsHWTkKV1pMmbrXvFgDyBbXHhz+tAUJ3M=;
-	b=m9zcRaEXxrot7xir5LzZNGD/p/xWNDC5fLPvaZhDkutOOTXWekxLSJ97t60Yy+4iiH14
-	 d5CVH1/+Gnwaa6fdQyHdV2u9UP/4zRkKHRHDmx/bbANBt6n9PJi8u2qViSOQyff7bBtUw
-	 ThCdKGx/lTxt7xUfYZFDyj4vzNRm0A3jJUDA/P/I+iISa/J8ZCzvmPP724073aFi4nMXp
-	 1hMMPIZVBdNN+P/Hach0vfCdJe75kDJVdcBm09LV9zkg2wpatErpQcarZMeacZzp2Y0VU
-	 ak2xozPLE0RMtAv/fPrrrszR4zwl7EFbvEg7a1CKvpbv8KUS6iqvhmBGCbtpiCL8BCQ==
+	bh=VTwH4AZAnTqvqVIKDfDqEJbISyn1E7hgr1jsha5Pows=;
+	b=09WfACwKoGw/B4y7hopIBtpTAP/nesLxzcFeMADhbps1UJ+KUsSOqvU5oBn8msVCKYTp
+	 ugdOwL6Gst3rmTfhCXv2R5SsfatrugA6RIjD4kdyYDGg/uNERt2g+ULOSHdwGefXTPpTn
+	 4Al6VMT7LN33MywHPiGOClZuCyPWAoW5UEL6NKuC0ZpkiphBVb0kq42QYZiOkX8CRflgg
+	 WowZc5zRn9CfNleoDYvuTnJFI/Gf+wSZYUogeiOblsPlTuIlj0GU3O6Iw8UeJ7Xf7eMCq
+	 VrTQhp5OVXpS8Z7y2akYejPXisNOjrxqdtfsiPuAzcxf1nxLACZwz6qfY9b1rW5+cpQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIA++qQz;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cc341CzK;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54853606A323;
-	Tue, 10 Nov 2026 16:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294D606A323;
+	Tue, 10 Nov 2026 16:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AIA++qQz
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA32D1F0089F;
-	Tue, 10 Nov 2026 16:04:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cc341CzK
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69301F0089F;
+	Tue, 10 Nov 2026 16:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326650;
-	bh=xKekDk65ciGsHWTkKV1pMmbrXvFgDyBbXHhz+tAUJ3M=;
+	s=k20260515; t=1794327267;
+	bh=VTwH4AZAnTqvqVIKDfDqEJbISyn1E7hgr1jsha5Pows=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AIA++qQzu27iDtqtghDQXe3eEMEtfW0pUmP1pw87hOPcbha/du/cYArpw3l9qOsQr
-	 u6fuI8ol3G/cmTB7H0eq3cIZXkNRoak+psa1ttDOEBXrQ2XqbhBAzb6+Xi+xLPBqJ+
-	 vdq62d3xZ808Gpm3yT0qE39ickLYELwfVwHjod2sH/2WuJQj1Wmcb1zuVo5IpVsHpN
-	 fzsAA5EiJ77pKhwrDbnizdsWb2eW+bXCHwWYertEV0c1pCWX1KA4ZPVNfgsXCDcNmM
-	 YfPXVjPGubGdfRRQWNMfUcJmFhhL2khzvsZ/cpado/dtESG+T+jyf0Hf9KhV/VnCkK
-	 AHgdAarCDLtPw==
-Date: Tue, 10 Nov 2026 16:04:06 +0000
+	b=cc341CzKf3+9oxvcpT7QttZs9OydXOP4Mod0tAIw/DHQljIirxUE+rTD2YpumnkaM
+	 jJMGxPixCGODU590DVjqvZ72dFaySeRIVaZ3Micaj2z64YeRIWBkcZdu39xzcJA0QA
+	 VVsLfZGsDZt8Ieey7XfftMD0YygqNkWuDNSCIhGC4XRWIPLu3LbQuQTR5XXL/pbIHS
+	 qsp0s3OXm/yMxiBMzrTo/vUCbbWJiUFXcnARzEK5HuyVP1fO6rNEfrSI5FYhqRB0kU
+	 pYx0vZY0o/K5k8H18HmVh1d+8IEA2KOe91IKoYba3GJ6FecaF6KU1RS4WT9+Dg422w
+	 gPa/Xvea5ayJg==
+Date: Tue, 10 Nov 2026 16:14:21 +0000
 From: Mark Brown <broonie@kernel.org>
 To: shao.mingyin@zte.com.cn
 Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org, pjw@kernel.org,
-	samuel.holland@sifive.com
-Subject: Re: [PATCH v2] spi: sifive: clamp the clock divider to the register
- range
-Message-ID: <b3828c22-e7ea-4858-96b3-51ecdfee3a89@sirena.org.uk>
-References: <20261110225741763HzyrdGiR7ZOAU1NiFmCCZ@zte.com.cn>
+	samuel.holland@sifive.com, william.zhang@broadcom.com,
+	kursad.oney@broadcom.com, jonas.gorski@gmail.com,
+	bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com,
+	florian.fainelli@broadcom.com, rafal@milecki.pl,
+	linux-arm-kernel@lists.infradead.org, sven@kernel.org, j@jannau.net,
+	neal@gompa.dev, asahi@lists.linux.dev, ryan.wanner@microchip.com,
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev
+Subject: Re: [PATCH v2 0/5] spi: fix division by zero with a zero transfer
+ speed
+Message-ID: <b8b3dd8e-7d66-4d8f-87f8-c88148334ebf@sirena.org.uk>
+References: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -60,44 +67,40 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ris94nVe1DPqFLM3"
+	protocol="application/pgp-signature"; boundary="xGHggE/6XmtG49YC"
 Content-Disposition: inline
-In-Reply-To: <20261110225741763HzyrdGiR7ZOAU1NiFmCCZ@zte.com.cn>
+In-Reply-To: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
 X-Cookie: You can't take damsel here now.
 
 
---ris94nVe1DPqFLM3
+--xGHggE/6XmtG49YC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 10, 2026 at 10:57:41PM +0800, shao.mingyin@zte.com.cn wrote:
-> From: Shao Mingyin <shao.mingyin@zte.com.cn>
->=20
-> sifive_spi_prep_transfer() divides by t->speed_hz, which can remain
-> zero when neither the device nor the controller provides a maximum
-> speed. For a nonzero but very low speed, masking the divider to 12 bits
-> can also wrap it to a small value and program a much faster clock.
+On Tue, Nov 10, 2026 at 11:34:50PM +0800, shao.mingyin@zte.com.cn wrote:
 
-This was previously part of a series of five patches, I see you've
-resent two of them as independent patches when I was expecting the
-standard workflow which would be to revise the series.  This makes
-things difficult to track, I'd discarded the old version waiting for the
-new one.
+>   1/5 spi: sifive: clamp the clock divider to the register range
+>   2/5 spi: bcm63xx-hsspi: fix division by zero for devices without a max speed
+>   3/5 spi: bcmbca-hsspi: fix division by zero for devices without a max speed
+>   4/5 spi: apple: fix division by zero in clock divisor calculation
+>   5/5 spi: atmel: use the maximum divider for an unspecified speed
 
---ris94nVe1DPqFLM3
+Oh, I see you also sent those v2 patches as part of the series as
+normal.
+
+--xGHggE/6XmtG49YC
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzQHUACgkQJNaLcl1U
-h9B8tAf/WW4JG4AfkqK+sYp6AE8ZYaj60LYNZSkeWChcZGOTaQE/osIvlFkxcZ6W
-M+czT7towwaX009L5ftrxgXGY7174plvvZn00TiNaiCLFxN3DxehTVLZDR19P2Pm
-3imwmP5nt4B7k5HD4P/0DUnitMuFyKz8HxwNN25qieX94aYnfIdphFn0PGsZbtVY
-1FWhLrVfWUAZFzIy/AU97OWp+2I3PGQ1za5MJmEY83lsgf/yiFtYqqtReK5TkdU8
-JkPDTCDGpWsW8kw4mh6uwFTnimbyPNYXohW/4chQliouicGCnCo90RwS2rAnr5sS
-QBYzgJfkucGlInyzQS6qtHeeaWYL6Q==
-=aqqg
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzQtwACgkQJNaLcl1U
+h9DXEwf+Lv/vVmV6mzd36B8u7tH7Xnl2z3sklZVzt/pyPr3Z0ZfatrEJTwsQ7C2P
+t+VNfEkdZCLOKALR84LZ0k+GmDZp99DRg4mrpiml1GgGZnpPL9czK5e8o7gacKOW
+CTr4UVWZWB6P+C+LmAqpSRXYBzkFpJ1lMLJhTR4SLS6/xVybvmpjgoIJgrW2uSpp
+5WRciPMlEsQx0QeFcwgjifHCLt+6S0NC4WZUYxZDTA4xDU5kP3LFGse2J9smh0eo
+7tRfwP4T85kQcB48kihqz4Ujpawh0a5tX7tkESJyokEItNuEHoZ08eiMR8RiFx+5
+lsljqDlb64q8lH7sAy6dJdBh1e5OIw==
+=xMYN
 -----END PGP SIGNATURE-----
 
---ris94nVe1DPqFLM3--
+--xGHggE/6XmtG49YC--

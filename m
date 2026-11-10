@@ -1,66 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=183.62.165.209
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794322676;
-	b=cA21jOm2igFxcEykE7KoZd0MVuyApK/GJXk+YMoDe0BdP59gHF92QhFHa5HlYagPmGfe
-	 qnhL8tAYH8Mcojw5ea5mUd2DcehTDbjpyVrTmHmTTZL1EAR251yz0U7CeMQNojYnqQRaB
-	 tBFVnNt094XKIUT81JF9WIiMwMkzrQwIrQo7MAoRixFySI8DyeZ5iyCPYHVHpphFIE+l2
-	 Y5NasMN5DOnHIdGpNQ6yd4kv49Hr9f+1iEPLeFWjsESBcdaPGfGz2jZp4C/2OwMgL3NWb
-	 m+fS5qQfdkTsoSy9POtyYsZqggmggdHtUZGC43uPZVJT189mxrAdeBrbOPvcikMKgaQ==
+	t=1794324898;
+	b=Pv3w5TuBpDq0X9PKOzTEufT98myaOOqYeykDWg8vDTyiG0YlIhIxOLFbcRec7nYeU1bK
+	 1PCVj6tETjA0WOhmUUDQgSMk/i5RR/+nUoAkYiJLYrQfA9uh/quuCZS6P+/r7QvkYOcQ5
+	 OfC3UMJqUlEg47SiwkzA1CIuKr2FS64AHMkR/Fvo6cJL/OeBji876FKwAb5ESS6wqc9Kn
+	 0J3mFD8Bo4wsirglfO95ElCjNIAKo2vNk4Gu/rCHe7LxL6bJzGDyoCgu3t5vqgCKn47GE
+	 xhDFH/j5WKx5MjVvbv1+NCMYPWy/3tazaEF5ymN/n90JfCs1RYdyyGmG0QXxBLHPbGQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794322676;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794324898;
 	h=DMARC-Filter:Received:DKIM-Signature:Received:Received:
 	 X-Zmail-TransId:X-Mailer:Message-ID:Date:Mime-Version:From:To:Cc:
 	 Subject:Content-Type:X-MAIL:X-TLS:X-ENVELOPE-SENDER:X-SOURCE-IP:
 	 X-CLEAN:X-Fangmail-Anti-Spam-Filtered:X-Fangmail-MID-QID;
-	bh=Wnl3KD1B2sQrL3NWX/pTpwnXflH+rWTeS8tnM3XFXNg=;
-	b=ogp7mhiSNUMa27xI3jivT3tl5CZqwDUpvmUaR3OOTEGOO0GEKS8H4KHSwXxTns76G9T1
-	 NnwSNVRwEfFSw3r9y4Doqv1TDTj9WTFVlOAWFHsG3ebLRkYPDRzYAQHxtku0YjkjnPSQ/
-	 ojw3G7I8ipL8x1S9JiUskSEKusIONgwKwlQzWXUohiWXtSTWLuc34vTek32z61ZJGfBEI
-	 fwTpk4v2UcMnqOV/ipJNgclvcvtLkLrjlKVNjr/sBgRYyAQR5KxUJXjS9F2H1a0h2cdEn
-	 GcvmDhZILZ6DKhldVT2R+94HAxDIpMh5QarvwQFlXk/Nfam017uXru8SXzAMwF5xchw==
+	bh=7rcgps6MImfluxSSn2WTcOL0+DvrZaGtcuT3vAlOnOU=;
+	b=L0wBj+z55t/p8rJqgfgixFj9noMZzFgg0oYiVAIxFakbv2w+pJfF+5wSnSUNp6EOahRS
+	 fum8dWz3CgDHKYiA+FH6ZjC+sCGGnNIg8eUqyb7Jn5E87+DtVKob1891xEmJxwWhUOwe2
+	 Os6Jg6VgO3OVC9e98Ab/68QXEWkQZEiMKQexNPtP+8VXpLMha6vjOxouhYvD5h1RVCyap
+	 YziNoD3hnI0l+/QOSsXm1Mf3z5ECgMkw6qorFQtPxIeDuxS7/iswDme7w0nRpRKZzghYP
+	 CxPkSyEWo2jSpVWQw1h+MJaDzSlOfcyM2aj/6fmcv+2r9iTX69ZtwuYye5ZGM4i6RMg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=zte.com.cn;
 	spf=pass smtp.mailfrom=zte.com.cn;
-	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b="f4QB4h7/";
+	dkim=pass header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=guDkJoXd;
 	arc=none smtp.remote-ip=183.62.165.209
 Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E930660A2603;
-	Tue, 10 Nov 2026 14:57:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E930660A2603
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDAE606A33A;
+	Tue, 10 Nov 2026 15:34:56 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org AEDAE606A33A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=f4QB4h7/
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	dkim=pass (2048-bit key, unprotected) header.d=zte.com.cn header.i=@zte.com.cn header.a=rsa-sha256 header.s=z202610 header.b=guDkJoXd
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jP8s03SYJz57HS4;
-	Tue, 10 Nov 2026 22:57:40 +0800 (CST)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4jP9gs1vMxz57HS3;
+	Tue, 10 Nov 2026 23:34:49 +0800 (CST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=zte.com.cn;
-	s=z202610; t=1794322660;
-	bh=dqn1Jn0ErHB9uH7HxkRYY60ypmSrxKKbjunp47DpHy4=;
+	s=z202610; t=1794324889;
+	bh=HCWfuzAN+AMe0nrrXGOghlVGYDRgVDFTNAe2SncsUIs=;
 	h=Date:From:To:Cc:Subject;
-	b=f4QB4h7/bBxOaZXy4RRZ9CqpyvvG297hfMUEd/oG0oL1vR358k34wTwIkY5YAXvl2
-	 95sz63C/oli27FLOi57ErEIMrfZyavuJzXAYr+W8cdk42+omq0SP3nk3RHzuTDhwuA
-	 PmuGWqzKOZCXTxLgGTbdjueuWh6jWcPkYkXbDRsagnokloGzElRq5igCiNEGOgQ+II
-	 VtbCpJut6n3adQ/2IAnIGJbGPyTIb7dAximdvsTIDXCwNx8ZOifwcmM3klZoBIBijj
-	 HYdFDkKNqxAO1uldmxDUyupw918hnIx08HAa/Fg+KdpBJWKFq842niDJ+vhEgp3Tra
-	 Ywv/7xPxhsqog==
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl1.zte.com.cn with SMTP id 6AAEvcma005940;
-	Tue, 10 Nov 2026 22:57:38 +0800 (+08)
+	b=guDkJoXdJQvEWIe1CHP4KnQVolrmBcYfXSvRHr3Cekn82jHtDB1AQJYSD03Cttgbf
+	 tpPGK2eAtixqtLlANiOHc4KyygrMATpmh0SVfmjX+I1F/CHnWVW5GMb7esYE6TXv1U
+	 RAVqSjHsDPILBRbuHjlGSYVKe9b5Kxv6ybTwzTE7leRjE1N8+Ep19Wkwdnp3LP8F4o
+	 yStuzEI7pk0/40Fl6MyMsEY/fDGDd2SeUqJxf1D8JtLCG6cpIcMT+FYfeAZeYbz7M2
+	 sAe9l6h21VAKODQzZEkLYOPjNodP7Qdc9MPnykkSGVq8XU3z4iqHwb+fOAldP66rxv
+	 Ixl+GkKsYieJg==
+Received: from xaxapp04.zte.com.cn ([10.99.98.157])
+	by mse-fl2.zte.com.cn with SMTP id 6AAFYkPO047648;
+	Tue, 10 Nov 2026 23:34:46 +0800 (+08)
 	(envelope-from shao.mingyin@zte.com.cn)
-Received: from mapi (xaxapp01[null])
+Received: from mapi (xaxapp04[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Tue, 10 Nov 2026 22:57:41 +0800 (CST)
-X-Zmail-TransId: 2af96af330e5ccb-fc314
+	Tue, 10 Nov 2026 23:34:50 +0800 (CST)
+X-Zmail-TransId: 2afb6af3399a6e7-27d05
 X-Mailer: Zmail v1.0
-Message-ID: <20261110225741763HzyrdGiR7ZOAU1NiFmCCZ@zte.com.cn>
-Date: Tue, 10 Nov 2026 22:57:41 +0800 (CST)
+Message-ID: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
+Date: Tue, 10 Nov 2026 23:34:50 +0800 (CST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -73,73 +73,73 @@ Mime-Version: 1.0
 From: <shao.mingyin@zte.com.cn>
 To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>
 Cc: <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
-        <pjw@kernel.org>, <samuel.holland@sifive.com>
-Subject: =?UTF-8?B?W1BBVENIIHYyXSBzcGk6IHNpZml2ZTogY2xhbXAgdGhlIGNsb2NrIGRpdmlkZXIgdG8gdGhlIHJlZ2lzdGVyIHJhbmdl?=
+        <pjw@kernel.org>, <samuel.holland@sifive.com>,
+        <william.zhang@broadcom.com>, <kursad.oney@broadcom.com>,
+        <jonas.gorski@gmail.com>, <bcm-kernel-feedback-list@broadcom.com>,
+        <anand.gore@broadcom.com>, <florian.fainelli@broadcom.com>,
+        <rafal@milecki.pl>, <linux-arm-kernel@lists.infradead.org>,
+        <sven@kernel.org>, <j@jannau.net>, <neal@gompa.dev>,
+        <asahi@lists.linux.dev>, <ryan.wanner@microchip.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@tuxon.dev>
+Subject: =?UTF-8?B?W1BBVENIIHYyIDAvNV0gc3BpOiBmaXggZGl2aXNpb24gYnkgemVybyB3aXRoIGEgemVybyB0cmFuc2ZlciBzcGVlZA==?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6AAEvcma005940
+X-MAIL:mse-fl2.zte.com.cn 6AAFYkPO047648
 X-TLS: YES
 X-ENVELOPE-SENDER: shao.mingyin@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 10 Nov 2026 22:57:40 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Tue, 10 Nov 2026 23:34:49 +0800
 X-CLEAN: YES
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AF330E4.000/4jP8s03SYJz57HS4
+X-Fangmail-MID-QID: 6AF33999.000/4jP9gs1vMxz57HS3
 
-From: Shao Mingyin <shao.mingyin@zte.com.cn>
+Five SPI controller drivers compute a clock divider from the transfer
+speed without checking that it is non-zero.  A SPI device whose
+max_speed_hz is zero (a DT node without spi-max-frequency, or a device
+created through the spidev sysfs new_device interface without a speed)
+therefore reaches the division with speed_hz == 0.  The SPI core clamps
+such a device to the controller limit only when host->max_speed_hz is
+set, and none of these five drivers sets it.
 
-sifive_spi_prep_transfer() divides by t->speed_hz, which can remain
-zero when neither the device nor the controller provides a maximum
-speed. For a nonzero but very low speed, masking the divider to 12 bits
-can also wrap it to a small value and program a much faster clock.
+The series is organized by driver and is independent patch-by-patch;
+each patch can be applied and reviewed on its own, and taking a subset
+is fine:
 
-Use the maximum divider when no speed is supplied, and saturate an
-out-of-range divider to the same value. Keep the calculation in an
-unsigned long until it has been clamped, so it is not truncated to u32
-before the range check.
+  1/5 spi: sifive: clamp the clock divider to the register range
+  2/5 spi: bcm63xx-hsspi: fix division by zero for devices without a max speed
+  3/5 spi: bcmbca-hsspi: fix division by zero for devices without a max speed
+  4/5 spi: apple: fix division by zero in clock divisor calculation
+  5/5 spi: atmel: use the maximum divider for an unspecified speed
 
-Fixes: 484a9a68d669 ("spi: sifive: Add driver for the SiFive SPI controller")
-Suggested-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Shao Mingyin <shao.mingyin@zte.com.cn>
+1/5 and 5/5 program the slowest clock directly when no speed is supplied;
+2/5-4/5 clamp the requested rate to 1 Hz.  The division does not trap on
+the SoCs these drivers run on: depending on the architecture it produces
+a bogus divider, a zero quotient or an undefined value, so the patches
+remove undefined arithmetic rather than a crash.
+
+Changes in v2:
+- 1/5: use the maximum SCKDIV for a zero speed and saturate an excessive
+  divider instead of masking away the high bits (Mark Brown).
+- 5/5: select SCBR=255 directly for a zero speed instead of dividing a
+  substituted 1 Hz and then failing the range check (Mark Brown).
+- 2/5, 3/5 and 4/5: unchanged.
+- This series replaces the two standalone v2 patches posted on 10 Nov for
+  1/5 and 5/5.
+Link to v1: https://lore.kernel.org/all/20261106234751020Egf42VCVVlsSC_Msov4HO@zte.com.cn/
+
+Shao Mingyin (5):
+  spi: sifive: clamp the clock divider to the register range
+  spi: bcm63xx-hsspi: fix division by zero for devices without a max speed
+  spi: bcmbca-hsspi: fix division by zero for devices without a max speed
+  spi: apple: fix division by zero in clock divisor calculation
+  spi: atmel: use the maximum divider for an unspecified speed
+
+ drivers/spi/spi-apple.c         | 6 +++++-
+ drivers/spi/spi-atmel.c         | 5 ++++-
+ drivers/spi/spi-bcm63xx-hsspi.c | 3 +++
+ drivers/spi/spi-bcmbca-hsspi.c  | 3 +++
+ drivers/spi/spi-sifive.c        | 9 ++++++---
+ 5 files changed, 21 insertions(+), 5 deletions(-)
+
 ---
-This patch supersedes 1/5 of the v1 series; 2/5, 3/5 and 4/5 are
-unchanged, and 5/5 is posted separately.
-
-v2:
-  - use the maximum SCKDIV directly for a zero speed, and saturate an
-    excessive divider instead of masking away high bits (Mark Brown)
-  - keep the divider wide until after the range check
-v1: https://lore.kernel.org/all/20261106234756882V9wUQNCEZAYUGTAbexMSL@zte.com.cn/
-
-Validation on x86-64 with GCC 13 and UBSAN: the verbatim preparation
-function ran with clock/register stubs over all representable SCKDIV
-values and the first overflow. A zero speed bypassed division and
-programmed 0xfff. A 1 Hz request needing divider 4096 programmed 0xfff
-instead of wrapping to zero; a divider exceeding u32 also saturated.
-In-range requests retained their original register values.
-
- drivers/spi/spi-sifive.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-sifive.c b/drivers/spi/spi-sifive.c
-index cee4d92e46f437319fa40f6377e5511e692d12c7..ca7b04520a682c3fffb070169ab0e3c485e323de 100644
---- a/drivers/spi/spi-sifive.c
-+++ b/drivers/spi/spi-sifive.c
-@@ -167,12 +167,15 @@ static int
- sifive_spi_prep_transfer(struct sifive_spi *spi, struct spi_device *device,
- 			 struct spi_transfer *t)
- {
-+	unsigned long div = SIFIVE_SPI_SCKDIV_DIV_MASK;
- 	u32 cr;
- 	unsigned int mode;
- 
--	/* Calculate and program the clock rate */
--	cr = DIV_ROUND_UP(clk_get_rate(spi->clk) >> 1, t->speed_hz) - 1;
--	cr &= SIFIVE_SPI_SCKDIV_DIV_MASK;
-+	/* Use the slowest clock if no speed is specified. */
-+	if (t->speed_hz)
-+		div = DIV_ROUND_UP(clk_get_rate(spi->clk) >> 1,
-+				   t->speed_hz) - 1;
-+	cr = min_t(unsigned long, div, SIFIVE_SPI_SCKDIV_DIV_MASK);
- 	sifive_spi_write(spi, SIFIVE_SPI_REG_SCKDIV, cr);
- 
- 	mode = max_t(unsigned int, t->rx_nbits, t->tx_nbits);
+base-commit: ddfe51b0a0f5dc9e415cc2c8ad8db17532dd426b

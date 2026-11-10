@@ -1,79 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=34.2.82.16
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794346390;
-	b=I5gerxZxmqUPDUGMoDJGE/0ENxFcBv6NWkz0tpLjgf7NjsVZVKQa951bGru8HLl8x+IF
-	 /23R9c5Pv3AZZlY7viNLbMSZ3tLYg7uoeCYibmhdiVFvCVsf77+j2IBrQX7s37oIEGi7z
-	 ERpXm02yf5Hb25O99PO+AQWB+ArrdFkbP/xWTFWEpnohhwRLlK1ln8WaR5HsJWsIjVJ7/
-	 PK9hxEbx2uVk6WC3lreh6KBTbMcrtPcIAhqds7Q7Hlkoy196qodHMc1A86Vn0pN3/5VHq
-	 uBz4YbWmPTATGaaFYZgUGTySlyIzaa+os59l6xBPBKwoP9KfwAOhXwPf4XNXvmdCdCg==
+	t=1794354657;
+	b=NR+ASCiRwssoQZDBSUtoluZPwIdmMnyDUznNKsA2Ms3VRS8mR8JbT68WuSA8b/E/cZ9l
+	 0vzJd+QeQza4PsEtd1Q1//Nt5FGz6DtV/SJMJe550tHn1Ew7bxtfKWg2L7gf6bt+XX9cm
+	 UltS2mO9isUJOGNJz26QCoR9YasN9OrGBZgXjS6Rf4JVxq1FmCCeH34c30YwD2+2q0WPh
+	 TD+0p3O6f9ALwYKd2qRWwzzGKlXxIWWDzOCdEcdfphEoK38/XhySgMhmhePsGR8ZNN2ID
+	 cRddA397ciOPBGyBHIZG0mCA2gflXrkLkRIFrl1Zetqqp6dwI2ksgS6+XNrmcG/yuzg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794346390;
-	h=DMARC-Filter:DKIM-Signature:X-SONIC-DKIM-SIGN:X-YMail-OSG:X-Sonic-MF:
-	 X-Sonic-ID:Received:Received:From:Date:Subject:MIME-Version:
-	 Content-Type:Content-Transfer-Encoding:Message-Id:X-B4-Tracking:
-	 X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:X-Developer-Key:
-	 References;
-	bh=e3sukB2RZuy041Jain3ONjgs0JeDdnXnVzfL3HmKWPQ=;
-	b=vkzj5P1hXKM0+dzbbO/2Pu42FlIGbWe+l9AmLRXlHmTgMmCWT6MwZqJ2IEluXZh4XnPm
-	 n50/F6RETyCLjcC5TjSSGHyzWxXEKSdiRw6AyiGK3rEvJYkz8HOiFysvipYnDQaN262V5
-	 Jlk16jQSDZIR+vZ7Hwy4L0glME61q428DIq/5XpDNKhfYGbXkE2agDlj7hjzSP8H+wQHb
-	 CCnZneDPw2EUVfOOfnnDWAK1+7sVom1L08msMbo8iVSSY4KLuntdlIT9cBj+hOUL/jieG
-	 Ls/9ly53dD+0vdm8GPwOpX7K0KAp20xGNadkXrSKO4wOOJY/AZK9yFXLmd5eMwzdJbg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794354657;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=yTTKJg8z68gV29d9x1cVRTEkXytGiCw1QNZtUBLYJLI=;
+	b=LrWXH1Pdz0UzQxZ9uK3AFxbg/vBz+IxXss+PbAJpQy6P/1zJT1exx1pyO8Ru0Ltve1M1
+	 MuurgqYY5iaaK9QiN6Z0eJiDpbd4ZKn5QOFtCqf+SqWFcWzYjNY8JK2bXMKa7QowiOmL4
+	 ViHhV9O4BlDkhTD9uqlghDLjH2wHqSSGwMAnq/hRIXH/L7qd+Qbig6mY8UqVuOBoG1V4v
+	 Ne6evf+WhmVbegOPEcvxv8C/Wm52w21qbPEZdno8MhOC3IW3RjGqLRBHxSyFaoYqUh4dD
+	 P/Ppfu2GMyqmZIjYi8OIbzCnrXg0Rq3581OC+/ApR6R71EbhCZjSuE88QSnyS5h6ZMw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=yahoo.pl;
-	spf=pass smtp.mailfrom=yahoo.pl;
-	dkim=pass header.d=yahoo.pl header.i=@yahoo.pl header.a=rsa-sha256 header.s=s2048 header.b=ZhxF+7lf;
-	arc=none smtp.remote-ip=34.2.82.16
-Received: from sonic.asd.mail.yahoo.com (sonic-euwe1-0017.asd.mail.yahoo.com [34.2.82.16])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nJbekRne;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2E0606A327
-	for <linux-spi@vger.kernel.org>; Tue, 10 Nov 2026 21:33:08 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org DC2E0606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28883606A31C;
+	Tue, 10 Nov 2026 23:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=yahoo.pl header.i=@yahoo.pl header.a=rsa-sha256 header.s=s2048 header.b=ZhxF+7lf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1794346386; bh=e3sukB2RZuy041Jain3ONjgs0JeDdnXnVzfL3HmKWPQ=; h=From:Date:Subject:To:Cc:References:From:Subject:Reply-To; b=ZhxF+7lflqlnYWxsyQBtIObkuWTzfRj1tFMHhrKjku/OzJfcd+PUiWvbbQrgIGtWEI+ZGV9bpnxDgnbELdDl/HAWN0+iH+obGuPlyfOz9iD4z9XMOtePsVjQCytyHMn9pzRhKXy10l9Lw40SKIW5YaDMcRS4D1feajX72BjsXJNqHrg2QRT7p2TBPDr+pBidubSZmaBarB2DxdHERSvCwXpphb6epBGKf4a0+9rVs2Rp3vPQ7zzXpxs1NM79+ZpaRVjZfGZa6gsJpDr/eYlJWYzgdDsD5ZgjwxixW67PK9gXEIwTSuiBc48Yq5E+dR8LbSP/zqIYcz+MGUDdunA6uQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1794346386; bh=l21te4vnjdcxm+BrNmCEfh7Dv5mjCuNFx4ER4X+DtJG=; h=X-Sonic-MF:From:Date:Subject:To:From:Subject; b=j5FXDQWfEVmumMHBlYMKvknxBesOIQvwDJTfk/aCx69Z/pZCL2Tz8nTiE/yed9RZFV8lOhcwq04zdzBlTPxBxLc88oWsnsERaijRlUEYWSa7VgZHDiMVx7oNcrpF2KMk5TEECZ6mX11nKpYy5WU/mlsIXI30AIFt9yMbX5wfYcDwOR3jv0jlqnn1liRsnaoKFXl+0AksPsj/vXvmzJoo+fn6B6ET3WabdGYEJw23URVzB4cHd5xeg1OAw3Yn0nxztjZlQQt3OUxKJyZGhpW7UE+6RApnjsBzgF0MgLxyC+7MeNzjNl+CvHUkIfX6gkVc0N8Sl7QEkiJT3OPOc9Y9hA==
-X-YMail-OSG: ums8UF4VM1kpUin84ZgAz3DOu0IaeYMYRFDXRUcNecJIj62RFV7H0fkqiGEeFmV
- eTkrXqNr7.gegWTq5q9N.PwXu6z1uGCJ1_rsTfJOd1bQZRfIZQYw3tq6yw0eKNURekUp2zvCToEq
- 6VS_g1zo_pUwKC9f9U3Ow_PJQ1KQKousf8V_AmLTiN7EfZBNB4xXaTbRmH6j47Yo_ArRUd3ZFK6R
- YPHyqvvxNUe3JJjHr9TeYqffQjH46RgtTAJdZBDs1rrFkFmJMjgZVIpOL7kJ0KKknhhv2gwu09xE
- _4hUEFNP7oh1UOOghP4r9SpYQx3JlZXD5QvjcvdZiOy9A7wQgjHQK1dVbmbO6IOVQcUKgkvcJbIi
- _58yjQetX_9izUC4OURj5XWvof5g0FBkDwDUztp0Ii.E9YjwYeoP.l82pJyDBKaDU.G5fvcFzk9H
- 3EQII_KTmQ3hI6ztIJjaLgyg3wGvuk2Bk1cozenRlXOOqys.Y..UJjmJrR_TtkUSTpw46zoD9Nvn
- RMNsj_a.WCxMh_ANqwRcSf5.8R_XwjF606cIGhRlO8._wwI5caPWDfXSIpSL5zyk.6ZlQ5UbPITj
- WqvL4nNOOn_XopGLJQXKmmYtEQj2cwgyPhAzGBjaLNv4ZJHhUs11CjvWyUz20QuTUYL1UPWA.RgK
- hHtbM9.5pdfOlzjgQEXV9gIv4ayJsWDOVi5v5D6YgtTtQKvsAcyLlYk8bLOJAs7vrRLhSqvTIdOp
- fDr8yNr.8OFDxL93Um8v95nKiy5dJ9Kegyp4EhY9Bw4OT_0ZiTsh5XNCqqAVB4R3NpWsXREvrp4I
- 5dwmYYBqY.qd4B5lIYxtDE.WJoEyYHunKwrNqCqqj8HFbFCd4aTj2oSTfWW64m3DPR31cI8BkFwG
- tS02dFo.rBB2fNpE_dI3v5AelJw4isfT9l_r5f.sVQFndUbp1a2Kw0goV7W_smkGtT3M7BMQQomR
- P7PEhL.z29G0i1v9EbrpPAqnFolECqe0KDN6IF0jAzIlz3dXtHhsULgzTNbdFT2rdPQ7d6IuosKZ
- 6C93OXIvqfIIwT_B1AxKA1i_85D5rStgHvP4mPwFuDz.ngzofHseMc5MPmCF0O4Z1BXqijs1yuuq
- LCSdHB2wL_fa.vTVM4PQys5WGXF_75NUfPOwPN6G85YRimh9QurydgNxyFgFjGqZZzDCd66mlOof
- iAnNMKEWnp_qyJmDTE3Q0oOzMThonldb4tWAixGi0MZJGh1SSm_g1blqwToV4E.B1f6fCkKLovmd
- nzLdybp2fBQm2HqYe938oYfML5kuD_OCBkR9srx38mEUjg38dOjShU0MivQFKPMs4lsvdARbWwz3
- Za7HnYxGyhYHPac3tpQEQQEx4wg.SdmykDNI33VclqGYmjv7LUG4d0KytvtFpU_keymjPmptXq_O
- IYNFU8jW3ukntshwOWKDIxs45IaBn3FdGNveBDPI9upkfj8r4i1zcrMO2dmirJyfsFrAthahC8nc
- Lqt_D3kCtjp9s8496IeHMt5VkxA8zuvYcRje6S52UMEBHotNU8QM3mX4TkHiHS1ehw7Czwc5zvps
- A6S.w4McofXPUWCJJwzF4whp3lO5z7D5_Ga0Kv4W4Cl.MKD4lElYBsKJuHaCJ50gi3ihWsTP7VwC
- 2.BlaR1m2NB1sx9h7yuCgjBRtDZFnlglTH2RYknjGwbprpdKDTMPPPT6P40In9r8pZYbkU8iz1L3
- ckx7mMtU9XqQrV.HywkEvlPjkhwYflTW.mDwQM38ZmJbhNJn0o7SrWs3HbbCPYMdpHMjVu5ox0fa
- hxCBhMl1Qb8ewn3C_5CFiyHfVQIdFF9.eUDcTa7JMW2b7xHcjqL1y7BtP4wb85RgwgkKQB5PKR2S
- CRjkLySmRtkoR2Bjhd20Cc98iOaOZWFS8VWl0g7fDEILcOcYuot9m0xZq5aiPfZU_eJKTTlL0Jf9
- d30gJE3HfremZQB8k2E_WPu5YnTHzVArbLhv.kBIsiL6M4Ev3q0eMksRCxi.288gW.CmB6i5fstN
- _J8.N.Mqa0_FJbqao7bi89he0ghj0C4MKwNo49Wz3QgE-
-X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: 4d11689c-fb14-48b6-a504-8ae88bbff09d
-Received: from sonic.gate.mail.ne1.yahoo.com by mail-asdoutdeli-p-cin-euwe1-prod-sonicconsumer-svc-104 with HTTP; Tue, 10 Nov 2026 21:33:06 +0000
-Received: from dip46.lsn.ir2.yahoo.com ([87.248.99.55])
-          by hello (SMTP) with SMTP ID 652c0e1457d08e3a6c2674d732e5567c;
-          Tue, 10 Nov 2026 21:33:04 +0000 (UTC)
-From: Tomasz Unger <tomasz.unger@yahoo.pl>
-Date: Tue, 10 Nov 2026 22:33:02 +0100
-Subject: [PATCH] spi: bcm2835: Add missing kernel-doc Return sections
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nJbekRne
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FFD1F0093C;
+	Tue, 10 Nov 2026 23:50:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794354657;
+	bh=yTTKJg8z68gV29d9x1cVRTEkXytGiCw1QNZtUBLYJLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nJbekRneS88t8CG5CAQ7Wts5c9M/sx9MAHaUYsqaqMd3E1jCxFtp4ro3gX5ZCQ8rw
+	 ad06ETOBmFlfgaHLoyCxopwtyQbIW67vSLUf2V8tObtSij+z6BCLGrkWEra8Aqqa43
+	 uK7XlBt51x7oiYOIQ3ge1z5/47c7nmezr/fvTG5SsQBpR/j3JtzPaB3P3zlf8n3V+O
+	 UlxDgLJ8c95ZfS/gOeA/ierbAmiW+gfNYoWPWpGE3D31wyXneJ4RQbtbSWdu2g2qWC
+	 7HO+CYohaTqY3NlyCt33oGEg3RElAPAj0XUntPe5XzMX3b7Tt7IZbNYqi5u+K4GT1t
+	 nTTlVoRP31blA==
+Date: Tue, 10 Nov 2026 23:50:52 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>,
+	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] spi: spi-qpic-snand: use generic code from the
+ 'qpic_common' module
+Message-ID: <6c4dff3c-dd56-4cbe-b107-4db378c1b569@sirena.org.uk>
+References: <20261109-qpic-snand-use-common-functions-v1-0-1e8601e2db84@gmail.com>
+ <25dfb787-27ce-4d47-a619-e9600f4f7902@sirena.org.uk>
+ <f75c615e-0a92-4775-803a-8bc2aa3b4261@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -83,83 +63,52 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-spi-bcm2835-kdoc-return-v1-1-dffdfcc36233@yahoo.pl>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQrCMAyA4VcZORtoUjbEVxEPto0axW4kmwhj7
- 27V43f4/xVcTMXh0K1g8lLXsTbQroN8O9eroJZm4MADEQX0STHlJ+9jj48yZjSZF6s49MIlRE4
- xErR6Mrno+3c+nv72Jd0lz98dbNsH+Ktr7XsAAAA=
-X-Change-ID: 20261110-spi-bcm2835-kdoc-return-65e2d032b331
-To: Mark Brown <broonie@kernel.org>, 
- Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Tomasz Unger <tomasz.unger@yahoo.pl>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794346383; l=2216;
- i=tomasz.unger@yahoo.pl; s=20260311; h=from:subject:message-id;
- bh=4NSC/saUCRz8KXKyYCJXbVeWomSvFe+rreCZagXgyQ8=;
- b=qMXOG/iy83N1K4B/M1Psk1OjG1XoVgzqIqmJlTXqi7/4QHM2uvC/37WX+tt9h9YEhXkZPcir7
- 10iRLpsXXOkBvYPai6woeUCBJ51cC1LQnqpxiy/Z8lhBuB8T5St/AuZ
-X-Developer-Key: i=tomasz.unger@yahoo.pl; a=ed25519;
- pk=EPPsO91uz/0J2cTQ6ol+dgxYaieEc9dKSXWUb51n46c=
-References: <20261110-spi-bcm2835-kdoc-return-v1-1-dffdfcc36233.ref@yahoo.pl>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ZLBFIbqjBO6LCOGP"
+Content-Disposition: inline
+In-Reply-To: <f75c615e-0a92-4775-803a-8bc2aa3b4261@gmail.com>
+X-Cookie: You can't take damsel here now.
 
-scripts/kernel-doc -Wall reports two functions in this file with no
-description of their return value:
 
-  bcm2835_spi_prepare_sg()
-  bcm2835_spi_transfer_one_dma()
+--ZLBFIbqjBO6LCOGP
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-bcm2835_spi_prepare_sg() already describes its return value, but in a
-"Return 0 on success ..." sentence that kernel-doc does not recognize.
-Convert it to a "Return:" section.
+On Tue, Nov 10, 2026 at 10:18:11PM +0100, Gabor Juhos wrote:
+> 2026. 11. 10. 19:46 keltez=E9ssel, Mark Brown =EDrta:
+> > On Mon, Nov 09, 2026 at 08:41:01PM +0100, Gabor Juhos wrote:
 
-bcm2835_spi_transfer_one_dma() has no description at all. It returns 1
-once the DMA transfer has been started, which tells the SPI core that
-the transfer is still in progress and will be finalized later by
-spi_finalize_current_transfer() from the DMA completion callbacks, or a
-negative error number. Document that.
+> >> base-commit: 4a8faaea975be15cb636646c0d4c6ff1c2110baa
+> >> change-id: 20261028-qpic-snand-use-common-functions-12b18fc7a1e5
+> >> prerequisite-change-id: 20260922-qpic-snand-fix-singlecw-readloc-c4c89=
+b4369f5:v2
+> >> prerequisite-patch-id: 7f8a48bccb2e3c8de950bbddacfefe052cea50b8
 
-No functional change.
+> > I can't apply this to anything, please resend when it can be applied.
 
-Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
----
- drivers/spi/spi-bcm2835.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> I assumed that adding the prerequisite-change-id is enough to claim the
+> dependency. I will state the dependencies explicitly next time.
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index cc5748973281..8d4456bbe572 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -666,7 +666,8 @@ static void bcm2835_spi_dma_tx_done(void *data)
-  * @is_tx: whether to submit DMA descriptor for TX or RX sglist
-  *
-  * Prepare and submit a DMA descriptor for the TX or RX sglist of @tfr.
-- * Return 0 on success or a negative error number.
-+ *
-+ * Return: 0 on success or a negative error number.
-  */
- static int bcm2835_spi_prepare_sg(struct spi_controller *ctlr,
- 				  struct spi_transfer *tfr,
-@@ -766,6 +767,10 @@ static int bcm2835_spi_prepare_sg(struct spi_controller *ctlr,
-  * has finished, the DMA engine zero-fills the TX FIFO until it is half full.
-  * (Tuneable with the DC register.)  So up to 9 gratuitous bus accesses are
-  * performed at the end of an RX-only transfer.
-+ *
-+ * Return: 1 if the transfer was started and is still in progress, in which
-+ * case it is finalized from the DMA completion callbacks, or a negative error
-+ * number.
-  */
- static int bcm2835_spi_transfer_one_dma(struct spi_controller *ctlr,
- 					struct spi_transfer *tfr,
+My whole process for tracking and reviewing things depends on actually
+being able to apply them, and even with things tracked it's far too much
+work to follow random stacks of dependencies.  It's getting frustrating
+how common it is becoming for people to send out things that depend on
+multi-level stacks of random in flight patches.
 
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261110-spi-bcm2835-kdoc-return-65e2d032b331
+--ZLBFIbqjBO6LCOGP
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Best regards,
---  
-Tomasz Unger <tomasz.unger@yahoo.pl>
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzrdsACgkQJNaLcl1U
+h9C4Lgf/VFP38ay/rJdk4sWWrVuzUuXjVYS0FbWoEXavt5Ryu181yPQGySsXEFP2
+f+1SszvdLD4rq7DPDnegGJGqaOaTEpNBaaYkMywO7yLLBRmmmj7BUMRP8M3fczJD
+uGhmJr7/Iv5bs6D/bVFns8Yrq6UiZLLdiSbozaPFbpq5BkMSYsWfotCOQSoUpCof
+Ek58XwfbD8As8vxbeIZ6G/rkXgLVTXjia/bV2AjQIJoatfjcLBwYbq1qJ5dLYoMd
+Q9TDmBEvSv3l/2u2OhAHuHPFo9YvW3t43RiuzBA/vnfFfmLtOAZ0C9q0YtDdiFt2
+C5QWVV32PIgTMNBqJ4zmg/ZyXUEWEw==
+=ZIB8
+-----END PGP SIGNATURE-----
+
+--ZLBFIbqjBO6LCOGP--

@@ -1,61 +1,78 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794288479;
-	b=ipZ6im+ZyduPZ4jwgEj/wtnYayBa0MVP0ttRT8H2tdGgA6f79OqfH+LwiMvLiY4rPKeK
-	 U6nxDGYa928aNn3SbOUatuTc31vc+pXsQnW8e2R9ft03bzEYylfl3ErlDe/uIAF627U39
-	 4yPTRF6tS2oWOMmCp9cY5JmmQiS4Qxw4N/SPN+NZqacaN11OwdfFo1qWBGJT963llmEAT
-	 K3zD7KDPo9kZXszCKs6Y5PGiTEG6jcPz1/eczfVdaYK3OLJBedjGL/uVeIm3q36JJ+oa+
-	 m5n7//N+lGlhxUqkUxWZ0Il3UCUxsrX+s503BH6q+WS/CruMj8kpnCOU8mXvxpgcRaA==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794288479;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To;
-	bh=MULgIcdDa+23UjZouNXMgK61rNWvfTFsSz6rh34rJ5o=;
-	b=a5LFRaAP89FT/9X933Wy8SFRgThVFAtvKTiqgBo49/9funM7BtRmFajdmLcFmuze8aVa
-	 bWkGuxBT/IuCa00MqAlyLuZTPYHae+9nRweMojYLukPSPQuXvQNZ4NBr8XMEzYWGUrGEC
-	 O1+CXNfTSeEySPoPlbdrLXVvjqZ1RAupCO8+sRd770+hrFfnmqXIxLsfz38AmL0rAgXJi
-	 eC7q2SFbecfmcIkMkRGPeu4a/yDtEO3RDwMJHzFxzSJCc2fBR+B4PRHBPfBJfyCCSrzK9
-	 7ZBjwc9YrzIu9bpejkLEkBaKwdN+aT/H4rx6sGUAnAj8qQtAuSyZ1UAiOQm0HzSG70w==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QIlCbh+7;
-	arc=none smtp.remote-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794288868;
+	b=qsraUC5IyGouVtcYAyCJbW80JSzxCCqSA9Ji2KH/L4smKQCCft69/7agjhKu9KSvln9X
+	 Qd2bX64IG0+uHlCjHU+AIbRYSvuuq4Wp9QXbi49W0m7GhGxwdL+fdfigBxSTIj7bxgO6K
+	 jisclPvf7z/nZA0i0AxwLVJSFSkQpZxaEdgaFye2N7BykzF0NcpRe6V7SKgozcvVOD1kn
+	 jAMfQZlkzTeUWpD0+FiMU4W+Fl5ofpUk5ValncGRDibGqJMt5G7gCOnl916gZfelmZwWk
+	 5eQilI6M6zcahRCGJk4a0LP3hqi6q0/GL24Uk3ZiXQceat4c05NeFNlusvy4l4kGmfQ==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794288868;
+	h=Received:DKIM-Signature:Received:From:Date:Subject:MIME-Version:
+	 Content-Type:Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Eirx/uCHYo84G24R6PBVAV1asTOmor2BurhkMEaTGv0=;
+	b=bZ7jQXlHIBRIKn+boU3gor8xPmrz9rlqIw53IV7+RI+69BwYVkkznqxt0tnZhbJcgigg
+	 dM7VHGsEbyvuhQquq+dzokJpdIIXRy+D33vIE/Q5Rdgd5rQpoKCSDtGYD+a5QAL5AXzpX
+	 BEvh9E8+VPZVemGfz7umJ67TD7PRYAsB8SKeXgrkju0Lh8Pr4IzM1FKReAPciy9HRPRbe
+	 gXFjWKEh4CVP1iGNbMiOPj2SCVeQI7BTFoRweDtK/zjCfx7rZfrCmyB4J2CNOJQ2t2Xkb
+	 ga/WUe3eFi/vkFr7nncDXthFQsTZehFjHQ4rbybcbaRT4WNYuKDKFOEOiRsrh7aHqeA==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V3fTkIeY;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EB2606A321;
-	Tue, 10 Nov 2026 05:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AE260A3811;
+	Tue, 10 Nov 2026 05:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QIlCbh+7
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4401F0089F;
-	Tue, 10 Nov 2026 05:27:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V3fTkIeY
+Authentication-Results: smtp.kernel.org; arc=none smtp.remote-ip=100.80.115.77
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794288867;
+	b=TC66Sh0RjADDbybA91/229p6uvUJ0BX6BFxnlCKNEVU0FseVvBkaLigyn+kKWitH5pSZ
+	 m/u7iU+TSpma4DAxckPbDELLgF9em5sh15vs32hAu0ApyQWTx0yjW61YNFKcMmvYH3FAt
+	 emV2DLIquxL1SD4lt9vYf7tOhDDRsMt1Vfh8KI1DsBombVVYkyOAvmY0vmMsqwPSxz3M/
+	 dnNEP3A+VKgBPE9pbFXWRBx8xiOLK3wIXgcecPuWcqTU/b0pcjWuilLUxdsTfPXqIQtQd
+	 EXRBAGW6n5Y7shNVNdcyCsH1dE/9enpVZBj416MgwMr4DEn5+AYAZ71H1p3rUy+Sbpw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794288867;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=Eirx/uCHYo84G24R6PBVAV1asTOmor2BurhkMEaTGv0=;
+	b=iMn9CJrdBqSKERbOHjCsxR8/f6EXRFa06+yp3L/1qoKpF45UZEycjaUogWEtAh6EdU92
+	 CjlSO5mQLOHjQWLPjx4f+B1hBXOvceNMHQ9Yqi1cevh8VndT+SZiUAjLweyYLYfl16LPL
+	 L1SSOy3fSDClr+dGfM70z3xBgc/twu/SmTQokaSJS4tdxfggqhdEcdt64gMKUTN8d7Yg2
+	 i0/D6iyIRE0WZlU5HzbYVcK5OqNjs62fGKwdSz5cQfzekwiZz523wCSbYkFk415EeFrBL
+	 ouHq+VPMzPlJp57AS5Zu6fGCDIyZ4rXTBuWQVaP5Kzqdhyphyv+QIEZvkLL8FbBZ8Mw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id E5D011F00904;
+	Tue, 10 Nov 2026 05:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794288479;
-	bh=MULgIcdDa+23UjZouNXMgK61rNWvfTFsSz6rh34rJ5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QIlCbh+7m82chHKPR1qIbXi8+sJMQGUvKoISyrirsvBpGa3mKf5X7JL7gbHLqoX1J
-	 wmTnbnL/nWCVRXEqcWRmN1c/1HAOEZzFqIYixmbdi6ybjs66aXLmZr2NUPcLwQ4CY3
-	 l19OooSZBubyc5wq+SDXJVmKUffIueP8MQNx5xRzG9d+PJNCkIQ5MEP+A+H4pCMvIM
-	 ybmTkVp6ZaNZL1jn/gJwRNcnXzx4CX6OOTeUS/wlVZ1lfjhBHlgyf1L0DG4eGqJrIe
-	 6hPbBtd8tFd1mv3z8OyjPge2kb8dwUnhUTG1aDLMFw4KG2Q3KKDvF+8Xoz6Di2YbuI
-	 xmRF+sGIz4EQQ==
-Date: Tue, 10 Nov 2026 13:07:47 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Paul Cercueil <paul.cercueil@bootlin.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Tanmay Jagdale <tanmay@marvell.com>
-Subject: Re: [PATCH 5/5] spi: cadence-xspi: Add workaround for old Marvell
- firmwares
-Message-ID: <avKmo_zDj3DoUrJo@xhacker>
-References: <20261104100643.162694-1-paul.cercueil@bootlin.com>
- <20261104100643.162694-6-paul.cercueil@bootlin.com>
- <au8lyXiMUSvcdPWx@xhacker>
- <0260a1943c59cdda431bb216438d49c3955d93b0.camel@bootlin.com>
+	s=k20260515; t=1794288867;
+	bh=Eirx/uCHYo84G24R6PBVAV1asTOmor2BurhkMEaTGv0=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=V3fTkIeYU3AO543kr3tFqV9nxgH78M9EbGHwusSTxrhqvPWFAOYrrgqmBUEhgPvwa
+	 2AipVnG1pDKUZCJrTQbdGcyaL6PP8kXBjLXX39XUR9EuOSnAgPDz0DRFcWRaRYB+qv
+	 8rom2PcZ8CZ3zhAEMZcbebhPaoo3npamqDqvAFZXQ+cUzLXoWdAEbmnmAe1h/2JdQw
+	 lrMV94kFOe2NxeOjHxboTcNs+D1x00t5ZnrUab5ulFm6FyubGPti/M9MZT7CDNKtBe
+	 tlcE/gSp/jf/OAnzW84ebpd/hCw8p5mIIHi7qMMSsOpRA4S7zY+8m2g7BcbzdjUI/3
+	 UxIGwL6KdETDQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 625D54888D;
+	Tue, 10 Nov 2026 05:34:26 +0000 (UTC)
+From: Arun Iyengar via B4 Relay <devnull+aiyengar1990.gmail.com@kernel.org>
+Date: Tue, 10 Nov 2026 05:34:25 +0000
+Subject: [PATCH] spi: sun6i: Add dual read support for the H616
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,84 +82,94 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0260a1943c59cdda431bb216438d49c3955d93b0.camel@bootlin.com>
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261110-spi-sun6i-h616-dual-read-v1-1-59bea5a897d4@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQrCMAyA4VcZORto6oziq4iHro0uInU0qwhj7
+ 76qx+/w/wuYFBWDc7dAkbeavnID7TqIY8h3QU3N4J1nInJok6LVzIojE2Oq4YlFQsID+1O/H6J
+ 36Qgtn4rc9PNbX65/Wx0eEufvD9Z1A3MFpoh8AAAA
+X-Change-ID: 20261110-spi-sun6i-h616-dual-read-562843bc20d7
+To: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ Arun Iyengar <aiyengar1990@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794288866; l=2702;
+ i=aiyengar1990@gmail.com; s=20261110; h=from:subject:message-id;
+ bh=tZGT7ZjHdId9r6BpMj+RA8BeDisXnRX+tnPmmh0C0Bc=;
+ b=JQoe49yHNtyNnSQIFDzWoChjblFpYLtLOMljJsURSgpAJkp/VHvmdUU3GdI2MtVLx950u7Sv5
+ CUuT5ewN6PRCOmrX6+9aL9hk09MET/uGHpH3so2UnyRvdoLds2y82kP
+X-Developer-Key: i=aiyengar1990@gmail.com; a=ed25519;
+ pk=zXpRgUTrhaFe6jLyPqbBy3ccfkj04w0g2690Wv3mg+0=
+X-Endpoint-Received: by B4 Relay for aiyengar1990@gmail.com/20261110 with
+ auth_id=1480
+X-Original-From: Arun Iyengar <aiyengar1990@gmail.com>
+Reply-To: aiyengar1990@gmail.com
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 09, 2026 at 05:34:55PM +0100, Paul Cercueil wrote:
-> Hi Mark,
-> 
-> Le samedi 07 novembre 2026 à 21:21 +0800, Jisheng Zhang a écrit :
-> > On Wed, Nov 04, 2026 at 11:06:43AM +0100, Paul Cercueil wrote:
-> > > From: Tanmay Jagdale <tanmay@marvell.com>
-> > > 
-> > > Older firmwares from Marvell used the cdns,xspi-nor compatible string
-> > > for the Marvell-specific xSPI IP, which is incompatible.
-> > > 
-> > > Add a workaround to support this by assuming that if the "xfer" resource
-> > > is found, it means that a Marvell IP is used.
-> > > S> 
-> > > Signed-off-by: Tanmay Jagdale <tanmay@marvell.com>
-> > > Co-developed-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> > > Signed-off-by: Paul Cercueil <paul.cercueil@bootlin.com>
-> > > ---
-> > >  drivers/spi/spi-cadence-xspi.c | 18 ++++++++++++++----
-> > >  1 file changed, 14 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/spi/spi-cadence-xspi.c b/drivers/spi/spi-cadence-xspi.c
-> > > index 48a109f3fcdb..d326589a6ca3 100644
-> > > --- a/drivers/spi/spi-cadence-xspi.c
-> > > +++ b/drivers/spi/spi-cadence-xspi.c
-> > > @@ -1301,11 +1301,21 @@ static int cdns_xspi_probe(struct platform_device
-> > > *pdev)
-> > >  	}
-> > >  
-> > >  #ifdef CONFIG_64BIT
-> > > -	if (cdns_xspi->driver_data->mrvl_hw_overlay) {
-> > > -		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-> > > "xfer");
-> > > -		if (!res)
-> > > -			res = platform_get_resource(pdev, IORESOURCE_MEM,
-> > > 3);
-> > > +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "xfer");
-> > > +	if (!res)
-> > > +		res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
-> > 
-> > This moves the mrvl specific code to all users, so I believe this
-> > needs dt-binding update.
-> 
-> I actually disagree here. The binding says that "xfer" is only provided with
+From: Arun Iyengar <aiyengar1990@gmail.com>
 
-It's not only "xfer". The code falls back to 4th MEM resoure when "xfer"
-failed.
+The H616 SPI controllers are bound through the "allwinner,sun8i-h3-spi"
+fallback, whose configuration advertises no dual or quad modes. The
+H616 user manual (v1.0, SPI_BCC register at 0x38) documents the same
+dual read (DRM, bit 28) and quad (Quad_EN, bit 29) controls that the
+driver already programs for the R329, while the controller keeps the
+H3-style clock control register (SPI_CCR at 0x24).
 
-> Marvell-specific compatible strings, and that's correct. The fact that some
-> firmwares don't respect this spec is not a problem of the spec itself.
-> 
-> > From another side, this assumes other users doesn't have 4th resource
-> > but what about if they have? they will get "Marvell-specific xfer
-> > resource passed, but ..." warning below, this confuse the users.
-> > I don't think this workaround can be added to all users.
-> 
-> Yes, I thought about that and I can understand that you don't like it...
-> 
-> I originally thought that it was fine because the dt-binding states that the 4th
-> resource is only for Marvell compatibles; but the binding can change, so it's a
-> bit wobbly.
-> 
-> I will come up with a better mechanism in the v2.
-> 
-> > Lastly, does the "firmware" mean dtb? But per my grep, I didn't
-> > find any mrvl dts(i) uses "cdns,xspi-nor" compatible string, so
-> > this means the dtb is outside upstream, then can the firmware
-> > be fixed instead?
-> 
-> It is dtb and also ACPI. The firmware can and will be fixed, the idea here is to
-> make sure that the driver still works on older firmwares that haven't been
-> updated yet, because they are out there.
+Add an H616 configuration that combines the H3 clock control with dual
+reads, matched on the existing "allwinner,sun50i-h616-spi" compatible,
+so SPI NOR flashes can use 1-1-2 reads where the board wires both data
+lines. Only dual reads are advertised: dual writes and quad mode use the
+same register bits but have not been tested on the H616.
 
-If firmware is dtb, the dtb is out of tree, why mainline driver needs to
-workaroud its bug?
-If firmwre is acpi, the commit msg says "used the cdns,xspi-nor
-compatible string", I'm not sure how does ACPI use dt compatbile string? 
+Tested on an Orange Pi Zero2 with its 2 MiB Macronix SPI NOR and
+spi-rx-bus-width = <2> on the flash node: spi-nor reads with 1S-1S-2S
+(opcode 0x3b), reading the whole flash takes 0.30 s instead of 0.52 s,
+and repeated reads return identical data with a valid boot0 header.
+
+Signed-off-by: Arun Iyengar <aiyengar1990@gmail.com>
+---
+This patch was developed with Claude (Anthropic) as a coding assistant:
+it investigated the problem, wrote the code and the commit message. I
+reviewed it, and it was tested on an Orange Pi Zero2 (H616) as described
+above.
+---
+ drivers/spi/spi-sun6i.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index e9fce8618299..2798b9c198c6 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -777,6 +777,12 @@ static const struct sun6i_spi_cfg sun8i_h3_spi_cfg = {
+ 	.has_clk_ctl	= true,
+ };
+ 
++static const struct sun6i_spi_cfg sun50i_h616_spi_cfg = {
++	.fifo_depth	= SUN8I_FIFO_DEPTH,
++	.has_clk_ctl	= true,
++	.mode_bits	= SPI_RX_DUAL,
++};
++
+ static const struct sun6i_spi_cfg sun50i_r329_spi_cfg = {
+ 	.fifo_depth	= SUN8I_FIFO_DEPTH,
+ 	.mode_bits	= SPI_RX_DUAL | SPI_TX_DUAL | SPI_RX_QUAD | SPI_TX_QUAD,
+@@ -785,6 +791,7 @@ static const struct sun6i_spi_cfg sun50i_r329_spi_cfg = {
+ static const struct of_device_id sun6i_spi_match[] = {
+ 	{ .compatible = "allwinner,sun6i-a31-spi", .data = &sun6i_a31_spi_cfg },
+ 	{ .compatible = "allwinner,sun8i-h3-spi",  .data = &sun8i_h3_spi_cfg },
++	{ .compatible = "allwinner,sun50i-h616-spi", .data = &sun50i_h616_spi_cfg },
+ 	{ .compatible = "allwinner,sun50i-r329-spi", .data = &sun50i_r329_spi_cfg },
+ 	/*
+ 	 * A523's SPI controller has a combined RX buffer + FIFO counter
+
+---
+base-commit: 429c9a10b3811ca2581f88c05a58bb1fd23229a7
+change-id: 20261110-spi-sun6i-h616-dual-read-562843bc20d7
+
+Best regards,
+--  
+Arun Iyengar <aiyengar1990@gmail.com>
+
+

@@ -1,48 +1,57 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794329329;
-	b=vCejq2Uw5nkpswz2h45VJfXqbYqv6OPidTKCce5xKxIbFTk94YzMqzOWzuoDe5ORcqfu
-	 vGoT9VoPrLos/uHS7dv3MYPRpKTGY/4NtrEMJ86SqW53tV09UF/u9dJxUXMIDOAmfMORa
-	 Ur0IX9yAeFM84vFwqhcLgpiYHN3PuU819Yg1KGQiEiDuB1t/uQTnWq7WhLW02wAS6eW2Q
-	 NqutgVFaiurg5XDNAQY5T9sLWHHe6GMCbjFjeGR+TCKfedL5zi39SHwMGf44p0TQuS7hg
-	 ytYohV/cLuTGvaIJ6A883DpX9ZdcKxKVfzD0GDakKNpgdyKorLFBa5Yhr0UqgzpAd0g==
+	t=1794336377;
+	b=JACV0RScPCa2VZ9ovtNyt4SAej398ZHZ8CElK+chOstJ5BU1fy4bkPGipoUxp1OXRGxG
+	 XWlEZS2bCyDXSIM++5fMQfpKug1s0RpbKiAL/8P6HvBGIm3Ta9PJ4ASR6RmmcKnXDadKO
+	 L/mE14d2sWtUf40OvPLZst+Aity41pieVMw1xVejnbfL4MRBlHQeAp5hMJk/6HzLExHls
+	 W6k24HQSDk3+p7SZVBnOKi83fJxT5Z+GB241cWCH51Sf6H6z41EF2IsW8VBKcIqHIZNUQ
+	 fGl7Oj8zq1gH+fH7pak6MGmW1NprKCQS3HCkMDa/pcCR8WckQCEOJQxhMGUz8+6tMEA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794329329;
-	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=3Gji4PS1UYdloRcl1Lesx2IkWjrNwKmjW6/XXfpdVnc=;
-	b=kSVG9As17ZvJKlSVqbhQMg2IHnZpKuDmdK6gt85r7qd/nxiyEPmlxEcXUaOmqVAFFHRH
-	 KKzWQedB7RJgoBbT2fAjhhzxNBjM6E0f8hoWLGhXXJQm11IlGvXzV3RWhn96T9SfPTrcA
-	 n1OSvqHSh79BpNebuVrIJWqG5nL/l1cGmDC/PjivtYnR1+6LfBUFTg9/qdsgFq3YtmlZW
-	 HIuaCn877CpLvNml/RvWhzTQFNhywbVtcxUWLpGgRoenbNjV2ZjXF4inDJVPUz8zP9ySq
-	 n+kgnrTxfqqbAmAV5nitfltr/HpRvvc554B96XuDWYfiiCaX3ksHKbsApK1jZG96YRw==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794336377;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=IdYY2IXjfD8Nx/hXFd3DnmQig+okTC6FGAh+kYY8spA=;
+	b=LnQ9XZXWrVv8Tphai90GCy1y1vaD8N6kj70/kXvuDGUkR/jV0QOk1n7SlnlVzCqlPdZ0
+	 U7U4qiWM2I1R0sZp/nfoUIFhqQS6VCJ7Zkm9E45SjeF5XhpC/PFIiiWxZBc+rlaES2TJI
+	 3Gv9P05kZBpZIpyBvugfo7Rkcakz74cJ0QGkdaSRjLmHBoU+4i9rf7VqOIRZKh4xE1YIp
+	 WNbDUQvImgp1LJNRapyV87rMniWn+L4jqM7Y3rEPE/fL6hzdV0gM7CFvKRVRMhDuwWRtD
+	 e62oXdZg/2/grTdpTR2l6mjcndE/xuhjOVWuyS19ZKZSfe6aeB/bvltesuR4Wa4hLFA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dS1bV+xC;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YnsdK3M9;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F83A606A320;
-	Tue, 10 Nov 2026 16:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B23606A325;
+	Tue, 10 Nov 2026 18:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dS1bV+xC
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E631F0089F;
-	Tue, 10 Nov 2026 16:48:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YnsdK3M9
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8EE1F008A2;
+	Tue, 10 Nov 2026 18:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329329;
-	bh=3Gji4PS1UYdloRcl1Lesx2IkWjrNwKmjW6/XXfpdVnc=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=dS1bV+xCMJtvwKyRlLAcZ4Wq7v6lhi9eUD8QEcJfFZRzxBwMpoYhT9n/hSBR2U2ue
-	 fCHrN/6LEFH0LtDyfSrEYHQisXcYD9wuyIuFb2/sRY56SOx6eXzqKf7/7kWldHBSif
-	 s/u7qkZdPImqDqpBi0Eih5PQzJHHqvdZhCeiINDwwQK+Y8djyZUvY5/B9ZX1686FzS
-	 ytlraQ+r8OiP3kfStFnOdM+cO2H4axUJPu85yG2FKQFMToOoZET+cA8bXRLluQqvjO
-	 3iV9sM4RJMVXPd52lxnpGWk06w35DUWG99qDmF5uKIsV7eQ8rac1OYIDIKdyBrowFY
-	 UD4r0UMGhimPg==
-Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 41D913146CA2;
-	Tue, 10 Nov 2026 16:48:46 +0000 (GMT)
+	s=k20260515; t=1794336376;
+	bh=IdYY2IXjfD8Nx/hXFd3DnmQig+okTC6FGAh+kYY8spA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YnsdK3M9iXqkkN71f+AXsmF+nQiZ7hvK65psffwr3W3jdYeHyQwYaX5KccEQPzpjy
+	 qfQ22eDXMHBWBkkSDSHIh8TL/pWdSF+pEaDC1xYEjvE0CHeKOsTi9mlDywjNxIT21D
+	 b7aWWjSX0zNbDc6xGGJa9gk8wdFqVvKitw37O4CKlgFxH5pVoXa+BBhd0OssOg1fUQ
+	 DOVGkY09++hIbLP0AlnaOyWnnn9oY5v/eXfYDGKHZ+mOBBYLklQ6DGu5wQC8+ltK50
+	 R0f2h2vCO95BVksxbFNnRkPUzNiJzeRB5gRwY4SZpangQMl33kaGV6fKEcRVekh6wD
+	 f/a0Xp0IXOdLw==
+Date: Tue, 10 Nov 2026 18:46:10 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Md Sadre Alam <md.alam@oss.qualcomm.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	Varadarajan Narayanan <varadarajan.narayanan@oss.qualcomm.com>,
+	linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/7] spi: spi-qpic-snand: use generic code from the
+ 'qpic_common' module
+Message-ID: <25dfb787-27ce-4d47-a619-e9600f4f7902@sirena.org.uk>
+References: <20261109-qpic-snand-use-common-functions-v1-0-1e8601e2db84@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -52,56 +61,39 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] spi: sunplus-sp7021: fix clock prepare leak in system
- sleep suspend
-From: Mark Brown <broonie@kernel.org>
-To: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
-Cc: linux-spi@vger.kernel.org, broonie@kernel.org, lhjeff911@gmail.com, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20261109045314.1211-1-zhaofeng2@cmss.chinamobile.com>
-References: <20261109045314.1211-1-zhaofeng2@cmss.chinamobile.com>
-Date: Tue, 10 Nov 2026 16:48:45 +0000
-Message-Id: <179432932520.125181.17483707315108530090.b4-review@b4>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1269; i=broonie@kernel.org;
- h=from:subject:message-id; bh=a4fMI93CitiVOJA1Ih9hW5ZmQf7snG1q2WcKXZMg4dg=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+e73t5/zxT9travCrqnYXpuMca3iXl/MF+Xn/WGg9+
- +AWCyOdjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzEZCYjQ89PUf4XIefyviZE
- O9U/+rY/ir34lPeZzSY3d8z4069uzMjI8CrySOpVjrhtBgofXVzvXj65NaRimXfpy/zX/fk/6le
- c5AUA
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Q41XEbKkWRq2nBzx"
+Content-Disposition: inline
+In-Reply-To: <20261109-qpic-snand-use-common-functions-v1-0-1e8601e2db84@gmail.com>
+X-Cookie: You can't take damsel here now.
 
-> sp7021_spi_controller_resume() enables the controller clock with
-> clk_prepare_enable(), but the matching suspend callback
-> sp7021_spi_controller_suspend() only asserts the reset line and never
-> disables/unprepares the clock.  Every system sleep suspend/resume cycle
-> therefore leaks one clock prepare/enable reference, leaving the clock
-> usage count permanently unbalanced.
-> 
-> Add the missing clk_disable_unprepare() to the suspend callback, in
-> reverse order of the resume sequence.
 
-> @@ -508,6 +508,8 @@ static int sp7021_spi_controller_suspend(struct device *dev)
->  	struct spi_controller *ctlr = dev_get_drvdata(dev);
->  	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
->  
-> +	clk_disable_unprepare(pspim->spi_clk);
-> +
+--Q41XEbKkWRq2nBzx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This does mean that we're stopping the clock for the first time, I do
-hope this won't unconver other bugs...  Most likely not given that we
-also reset the IP.
+On Mon, Nov 09, 2026 at 08:41:01PM +0100, Gabor Juhos wrote:
 
->  	return reset_control_assert(pspim->rstc);
->  }
+> base-commit: 4a8faaea975be15cb636646c0d4c6ff1c2110baa
+> change-id: 20261028-qpic-snand-use-common-functions-12b18fc7a1e5
+> prerequisite-change-id: 20260922-qpic-snand-fix-singlecw-readloc-c4c89b4369f5:v2
+> prerequisite-patch-id: 7f8a48bccb2e3c8de950bbddacfefe052cea50b8
 
-We stop the clock with the IP out of reset, it might be safer to not
-have the IP live with the clock running - that's the order used in
-probe().  It's probably better to reorder things in resume rather than
-preserve the order there.
+I can't apply this to anything, please resend when it can be applied.
 
--- 
-Mark Brown <broonie@kernel.org>
+--Q41XEbKkWRq2nBzx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzZnEACgkQJNaLcl1U
+h9ASqQf8C5hHDQp5evAYSgoFu5THyO4LM52sY3PgAs2A2ksq7HL78wIqCuadEdS5
+wSWitIrodovDXkG984cuc4PzpCzuybzPwhEdJWq8lbr/Q8/R4R+3e/4b9EZ1ixy6
+OckOnmI3PCtSH+NJTJGTIRa495HfqSega0BxsywHURDFHfr8ntKKwh0mR5Yxp1cm
+i3rAKHNHnkRj2hicx/8yPjgrl6PRbEld6x6kS3BFW+fCsAjdMa4ZZv7TcI2vD8IQ
+SP3KzUoxyCUO8FGCsvijvQF/WcKvkTa1hpGrJJneclxlBgthb3B//ch5le0kZkJh
+KSb0AZbIkIoBsK6Rd8RSUaU6aGtV7w==
+=xKp8
+-----END PGP SIGNATURE-----
+
+--Q41XEbKkWRq2nBzx--

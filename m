@@ -1,62 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794327268;
-	b=kJqtj9uzRIjxD30kcMO8f2W5r3iIKe9s3dFbWk6O3CPhcrd0TICUVaGyKf/u/QTSutfl
-	 QjpaohulqsB8yyzvw+tK24PFXkVOvMPs3G2JjRGAf8aYeghmGhoZqU6bqT2wgDBdzjYw/
-	 jNSwEfELCh+kcZ5vmk2lfZsxxeucQtC+gK3YLgjCkW4Nuo44NWXMelPFjUTUeEEUcrVsa
-	 rMR+XCnHZahMPKie1ALJUlW5jLWs7xtGJ7rcBlle2NooNhLPAP8shf208ce7dnY8rocmk
-	 B66oL6o4XzYPhPiZitmfhbbVhMMpStn+NiupXoRRYlJlV0PbLFtS1fWHjvK54wG9YQQ==
+	t=1794329329;
+	b=vCejq2Uw5nkpswz2h45VJfXqbYqv6OPidTKCce5xKxIbFTk94YzMqzOWzuoDe5ORcqfu
+	 vGoT9VoPrLos/uHS7dv3MYPRpKTGY/4NtrEMJ86SqW53tV09UF/u9dJxUXMIDOAmfMORa
+	 Ur0IX9yAeFM84vFwqhcLgpiYHN3PuU819Yg1KGQiEiDuB1t/uQTnWq7WhLW02wAS6eW2Q
+	 NqutgVFaiurg5XDNAQY5T9sLWHHe6GMCbjFjeGR+TCKfedL5zi39SHwMGf44p0TQuS7hg
+	 ytYohV/cLuTGvaIJ6A883DpX9ZdcKxKVfzD0GDakKNpgdyKorLFBa5Yhr0UqgzpAd0g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794327268;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=VTwH4AZAnTqvqVIKDfDqEJbISyn1E7hgr1jsha5Pows=;
-	b=09WfACwKoGw/B4y7hopIBtpTAP/nesLxzcFeMADhbps1UJ+KUsSOqvU5oBn8msVCKYTp
-	 ugdOwL6Gst3rmTfhCXv2R5SsfatrugA6RIjD4kdyYDGg/uNERt2g+ULOSHdwGefXTPpTn
-	 4Al6VMT7LN33MywHPiGOClZuCyPWAoW5UEL6NKuC0ZpkiphBVb0kq42QYZiOkX8CRflgg
-	 WowZc5zRn9CfNleoDYvuTnJFI/Gf+wSZYUogeiOblsPlTuIlj0GU3O6Iw8UeJ7Xf7eMCq
-	 VrTQhp5OVXpS8Z7y2akYejPXisNOjrxqdtfsiPuAzcxf1nxLACZwz6qfY9b1rW5+cpQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794329329;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=3Gji4PS1UYdloRcl1Lesx2IkWjrNwKmjW6/XXfpdVnc=;
+	b=kSVG9As17ZvJKlSVqbhQMg2IHnZpKuDmdK6gt85r7qd/nxiyEPmlxEcXUaOmqVAFFHRH
+	 KKzWQedB7RJgoBbT2fAjhhzxNBjM6E0f8hoWLGhXXJQm11IlGvXzV3RWhn96T9SfPTrcA
+	 n1OSvqHSh79BpNebuVrIJWqG5nL/l1cGmDC/PjivtYnR1+6LfBUFTg9/qdsgFq3YtmlZW
+	 HIuaCn877CpLvNml/RvWhzTQFNhywbVtcxUWLpGgRoenbNjV2ZjXF4inDJVPUz8zP9ySq
+	 n+kgnrTxfqqbAmAV5nitfltr/HpRvvc554B96XuDWYfiiCaX3ksHKbsApK1jZG96YRw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cc341CzK;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dS1bV+xC;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294D606A323;
-	Tue, 10 Nov 2026 16:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F83A606A320;
+	Tue, 10 Nov 2026 16:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cc341CzK
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69301F0089F;
-	Tue, 10 Nov 2026 16:14:23 +0000 (UTC)
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dS1bV+xC
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E631F0089F;
+	Tue, 10 Nov 2026 16:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794327267;
-	bh=VTwH4AZAnTqvqVIKDfDqEJbISyn1E7hgr1jsha5Pows=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cc341CzKf3+9oxvcpT7QttZs9OydXOP4Mod0tAIw/DHQljIirxUE+rTD2YpumnkaM
-	 jJMGxPixCGODU590DVjqvZ72dFaySeRIVaZ3Micaj2z64YeRIWBkcZdu39xzcJA0QA
-	 VVsLfZGsDZt8Ieey7XfftMD0YygqNkWuDNSCIhGC4XRWIPLu3LbQuQTR5XXL/pbIHS
-	 qsp0s3OXm/yMxiBMzrTo/vUCbbWJiUFXcnARzEK5HuyVP1fO6rNEfrSI5FYhqRB0kU
-	 pYx0vZY0o/K5k8H18HmVh1d+8IEA2KOe91IKoYba3GJ6FecaF6KU1RS4WT9+Dg422w
-	 gPa/Xvea5ayJg==
-Date: Tue, 10 Nov 2026 16:14:21 +0000
-From: Mark Brown <broonie@kernel.org>
-To: shao.mingyin@zte.com.cn
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, pjw@kernel.org,
-	samuel.holland@sifive.com, william.zhang@broadcom.com,
-	kursad.oney@broadcom.com, jonas.gorski@gmail.com,
-	bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com,
-	florian.fainelli@broadcom.com, rafal@milecki.pl,
-	linux-arm-kernel@lists.infradead.org, sven@kernel.org, j@jannau.net,
-	neal@gompa.dev, asahi@lists.linux.dev, ryan.wanner@microchip.com,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev
-Subject: Re: [PATCH v2 0/5] spi: fix division by zero with a zero transfer
- speed
-Message-ID: <b8b3dd8e-7d66-4d8f-87f8-c88148334ebf@sirena.org.uk>
-References: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
+	s=k20260515; t=1794329329;
+	bh=3Gji4PS1UYdloRcl1Lesx2IkWjrNwKmjW6/XXfpdVnc=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=dS1bV+xCMJtvwKyRlLAcZ4Wq7v6lhi9eUD8QEcJfFZRzxBwMpoYhT9n/hSBR2U2ue
+	 fCHrN/6LEFH0LtDyfSrEYHQisXcYD9wuyIuFb2/sRY56SOx6eXzqKf7/7kWldHBSif
+	 s/u7qkZdPImqDqpBi0Eih5PQzJHHqvdZhCeiINDwwQK+Y8djyZUvY5/B9ZX1686FzS
+	 ytlraQ+r8OiP3kfStFnOdM+cO2H4axUJPu85yG2FKQFMToOoZET+cA8bXRLluQqvjO
+	 3iV9sM4RJMVXPd52lxnpGWk06w35DUWG99qDmF5uKIsV7eQ8rac1OYIDIKdyBrowFY
+	 UD4r0UMGhimPg==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 41D913146CA2;
+	Tue, 10 Nov 2026 16:48:46 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,41 +52,56 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xGHggE/6XmtG49YC"
-Content-Disposition: inline
-In-Reply-To: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
-X-Cookie: You can't take damsel here now.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] spi: sunplus-sp7021: fix clock prepare leak in system
+ sleep suspend
+From: Mark Brown <broonie@kernel.org>
+To: Zhao Feng <zhaofeng2@cmss.chinamobile.com>
+Cc: linux-spi@vger.kernel.org, broonie@kernel.org, lhjeff911@gmail.com, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20261109045314.1211-1-zhaofeng2@cmss.chinamobile.com>
+References: <20261109045314.1211-1-zhaofeng2@cmss.chinamobile.com>
+Date: Tue, 10 Nov 2026 16:48:45 +0000
+Message-Id: <179432932520.125181.17483707315108530090.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1269; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=a4fMI93CitiVOJA1Ih9hW5ZmQf7snG1q2WcKXZMg4dg=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLI+e73t5/zxT9travCrqnYXpuMca3iXl/MF+Xn/WGg9+
+ +AWCyOdjlIWBjEuBlkxRZa4LO6X9SWv1/AdXNgGM4eVCWQIAxenAEzEZCYjQ89PUf4XIefyviZE
+ O9U/+rY/ir34lPeZzSY3d8z4069uzMjI8CrySOpVjrhtBgofXVzvXj65NaRimXfpy/zX/fk/6le
+ c5AUA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+> sp7021_spi_controller_resume() enables the controller clock with
+> clk_prepare_enable(), but the matching suspend callback
+> sp7021_spi_controller_suspend() only asserts the reset line and never
+> disables/unprepares the clock.  Every system sleep suspend/resume cycle
+> therefore leaks one clock prepare/enable reference, leaving the clock
+> usage count permanently unbalanced.
+> 
+> Add the missing clk_disable_unprepare() to the suspend callback, in
+> reverse order of the resume sequence.
 
---xGHggE/6XmtG49YC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> @@ -508,6 +508,8 @@ static int sp7021_spi_controller_suspend(struct device *dev)
+>  	struct spi_controller *ctlr = dev_get_drvdata(dev);
+>  	struct sp7021_spi_ctlr *pspim = spi_controller_get_devdata(ctlr);
+>  
+> +	clk_disable_unprepare(pspim->spi_clk);
+> +
 
-On Tue, Nov 10, 2026 at 11:34:50PM +0800, shao.mingyin@zte.com.cn wrote:
+This does mean that we're stopping the clock for the first time, I do
+hope this won't unconver other bugs...  Most likely not given that we
+also reset the IP.
 
->   1/5 spi: sifive: clamp the clock divider to the register range
->   2/5 spi: bcm63xx-hsspi: fix division by zero for devices without a max speed
->   3/5 spi: bcmbca-hsspi: fix division by zero for devices without a max speed
->   4/5 spi: apple: fix division by zero in clock divisor calculation
->   5/5 spi: atmel: use the maximum divider for an unspecified speed
+>  	return reset_control_assert(pspim->rstc);
+>  }
 
-Oh, I see you also sent those v2 patches as part of the series as
-normal.
+We stop the clock with the IP out of reset, it might be safer to not
+have the IP live with the clock running - that's the order used in
+probe().  It's probably better to reorder things in resume rather than
+preserve the order there.
 
---xGHggE/6XmtG49YC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzQtwACgkQJNaLcl1U
-h9DXEwf+Lv/vVmV6mzd36B8u7tH7Xnl2z3sklZVzt/pyPr3Z0ZfatrEJTwsQ7C2P
-t+VNfEkdZCLOKALR84LZ0k+GmDZp99DRg4mrpiml1GgGZnpPL9czK5e8o7gacKOW
-CTr4UVWZWB6P+C+LmAqpSRXYBzkFpJ1lMLJhTR4SLS6/xVybvmpjgoIJgrW2uSpp
-5WRciPMlEsQx0QeFcwgjifHCLt+6S0NC4WZUYxZDTA4xDU5kP3LFGse2J9smh0eo
-7tRfwP4T85kQcB48kihqz4Ujpawh0a5tX7tkESJyokEItNuEHoZ08eiMR8RiFx+5
-lsljqDlb64q8lH7sAy6dJdBh1e5OIw==
-=xMYN
------END PGP SIGNATURE-----
-
---xGHggE/6XmtG49YC--
+-- 
+Mark Brown <broonie@kernel.org>

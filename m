@@ -1,62 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794419894;
-	b=Lv/CRrsiQqLFAsFtBlC72TZZ8WfSBOImNKCNGo5a8aqXBetJNMEQZjzy7giRjVxqN7Zu
-	 qrDhnpNEbmNtARt4ZxPbw3DncG61PwbGXkU3VFNJDi/PapqWC7FngpBvBwRhApeZLz+/v
-	 y4wQ0HQ0FBIwB9Ah/6yhSq5weOrupWaD1kNi+6bEWR4M8+CURdCTy+9eA1cbb66zEs8qq
-	 rQs7JCSNCcSRVRrTFcCfoJzZ+rJzuydJfMSMyPLSRRF40C/lMvhxleYeizgxviMpvc1at
-	 CXD244d3tDYRG66SW/9aBdJrxF1LWtwSfI9FsDrTCx2FgE8eexVIzxvjSK//LMJ8rCQ==
+	t=1794421443;
+	b=a0CPoyVHur77rcoty/DDuxzx9xpLtUBSmRH5sVh6JGjgUYnOkdhyyUP7sHeEVhvaG1ES
+	 VJ6Xkp58/Odl7YRu69zC11J7m+q7B/56o8I2UdoRsYn5LL/C8wstiorZk5CAuoPt6qrXA
+	 huSpThzTFeFeQvDtkckWMV9q2T/OFXqSHxtxj4VyZMwmQQD1iSlDqaRA425YrMoMrezpR
+	 1ULX9P5+GSHqNqyvBNPmUekRamgC8OtPQ8QRQP2irdikWbcLJm1ts/cvPr9uDYvbdqxbp
+	 M9AZrgS8FBxaUgbDxY01JvGY7vcFRnzm9QApwwhJa8J6sMmjcuOIERXwAiE57nI2ehw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794419894;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=8H4s3shsiQmwooHu/vEAttbU1FoXbJGGHBPwi9lUhVo=;
-	b=AJXgdKZ8JaVJR9oexR+q0OjjbGgjgwsT/tPZe7P1ybJOnO6zF0n5u0UidzLnTTltJ6bO
-	 tCV6pVmijw4K8CltFgRaAQM7Ea83j1sFnFw0bdSzttNQ/vTuwOXt18umgHFgWrUucXO49
-	 EGbEOY/5eNP96GPtf6tGk6/zHXKTyZnOMYJfa9KHI5YL7mjLChiHt8SwVj1fC8U83SyMH
-	 2b7B2RV7TRA7kcRDi6BXg3Y1WmwUjM+DbciTsl/0In+FGwRt8yLsLO1a4AWU4mnMUlehD
-	 RNZ6nfJgoa/okBeCLbiMo+5bxXnHP9pWRKKhc2lDebFCyIdkk/S6MN6IbJ4pxMmOJXg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794421443;
+	h=Received:DKIM-Signature:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=DqnDace4KJcCuvOqrBqkR9Xmsw4qa9ua7zCmO3by2dA=;
+	b=U/gjiXqEdT+kgRN2A+j6kkqm58jCnTZAi7Ge5M5oxaDtg4oaXY8N5KC5/wvanl3wz5sP
+	 +sAjmddePiXKjH1BiJQKbWdyjox8eHGSTLEUteQIJDRwKsqQnTnMn7YjcxQ2mFVk8dLcn
+	 aRmsvq4UwDVjhyH8pXI1kqspzXANxSPfGm6WDFGFwZvaKdS7SsktfFkl4q2C1tLJE846W
+	 EipgcNPID/luZOycvq2SAlPFp3ogwr0gLpTzog+f/MIq3sIPc8yCBUacuNVseGMVj/T+8
+	 tvus6vSga9w44dNEXRJFaqbP7S7qmOfe+sLUz+5CdB84KmujtBnycdk+9e6b0HEJsvg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FSa1eKa6;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aYYw+V5p;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BBF606A896;
-	Wed, 11 Nov 2026 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C19606A321;
+	Wed, 11 Nov 2026 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FSa1eKa6
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F541F00A05;
-	Wed, 11 Nov 2026 17:58:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aYYw+V5p
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527D51F00A05;
+	Wed, 11 Nov 2026 18:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794419893;
-	bh=8H4s3shsiQmwooHu/vEAttbU1FoXbJGGHBPwi9lUhVo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FSa1eKa6iK3Hr1wpC1pIzdf6eK88oMlzzrfqQaNODrMGRNl6Pa/H7/u2CMiXCBQGg
-	 6Oqzq3NSjNsUKdiEqvv9xfEIAL6o9FWD2UqBOV1DlDrdhea/dnYt3PBNjGK637NywH
-	 rPKOezfWv+bv1F0U+Wc7Rve6FVlovpOiPp3NXDzuz3WcC3SnvVpYm+CPobCnzLVbaf
-	 W6pS63PsSRiF2GAVr3VhssMoQVeAblAcza9/tJzYW5FEkL8aON6IiglF6TS2NuDLCe
-	 ITu0b4irQrCGvmV+KzE+G6QHOpY31fy+OFwKHN7HMxYjkbdlJQQBq6abDMMUhNPUq/
-	 EDhEIVE6a/0cQ==
-Date: Wed, 11 Nov 2026 17:58:09 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Jisheng Zhang <jszhang@kernel.org>, Fei Xie <fei.xie@horizon.auto>,
-	Pratyush Yadav <p.yadav@ti.com>,
-	Parshuram Thombare <pthombar@cadence.com>,
-	Konrad Kociolek <konrad@cadence.com>,
-	Mark Brown <broonie@kernel.org>, Jayshri Pawar <jpawar@cadence.com>
-Subject: Re: [PATCH v2 6/8] spi: dt-bindings: cdns,xspi: add ADI SC846
- compatible
-Message-ID: <20261111-entomb-backdrop-815e4dc81c7e@spud>
-References: <20261111-xspi-cadence-add-acmd-v2-0-d339046ada8b@analog.com>
- <20261111-xspi-cadence-add-acmd-v2-6-d339046ada8b@analog.com>
+	s=k20260515; t=1794421443;
+	bh=DqnDace4KJcCuvOqrBqkR9Xmsw4qa9ua7zCmO3by2dA=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=aYYw+V5p6svw24nsCqDdq3ChCGYgqzxmHa3gemCLZe/0PyvqWP+PUFf935h4nFm1w
+	 0kwbZlYcZd4kJUPtIkGBTzj0x2HCQQu/TJObOaaksPcv63wj8ap0l9RdNduoHM7N4v
+	 ajum9uyW2hlke0vU1hht7G1qi1TIcUoVLtDqne0bJkns9mK7vyLWBXTrGWPVZvIUHt
+	 66yJ14TucjfX92NU8O4XgEPblhgaUBGSxg8BehGt+x+Ct8zfRjT0Qv8faLDOykp8Zs
+	 kgDOUjV+4tLquBP+Cf3TwZouWVulHloj0u5hkBBXQhw8mfzctUjmUslA6PScIqGfuj
+	 pF3lc/32fmbPA==
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -66,78 +49,55 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="H10kgaQOr2Aztqer"
-Content-Disposition: inline
-In-Reply-To: <20261111-xspi-cadence-add-acmd-v2-6-d339046ada8b@analog.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] spi: pic32-sqi: guard against empty BD list in
+ pic32_sqi_one_message()
+From: Mark Brown <broonie@kernel.org>
+To: Li Ximo <lixicaicai@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Wang Haoran <haoranwangsec@gmail.com>
+In-Reply-To: <20261103084707.1582675-1-lixicaicai@gmail.com>
+References: <20261103084707.1582675-1-lixicaicai@gmail.com>
+Date: Wed, 11 Nov 2026 18:23:59 +0000
+Message-Id: <179442143994.484483.536971203389481819.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1392; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=pj5VJ1URBgauxKXGbwy/jkenlc5qzkwxuw3NPQVbu9k=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+bDowf0n7h1efT/NkeTqucNt3fJkOV3V/7ba6lJXz/
+ 9y84MaW1lHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJiLgw/JU+OdFQM2nZ6mPv
+ J80yv937eMXukzvUJwVu0mK99nYjU+Rmhv/l/Iw+Wa2eCo3X45ddUm5u6tzqa+dmFjCrzKDlot5
+ XZQYA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
---H10kgaQOr2Aztqer
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Nov 11, 2026 at 01:23:07PM +0000, Nuno S=E1 wrote:
-> The Analog Devices ADSP-SC846 SoC integrates the Cadence xSPI controller
-> with its own PHY timing configuration and with the support needed for
-> the auto command (ACMD) mode with the internal DMA, so it cannot be
-> described by the generic "cdns,xspi-nor" compatible. Add a SoC specific
-> compatible for it.
-
-I assume it's the phy timing that means the cdns,xspi-nor compatible
-cannot be used as a fallback?
-
->=20
-> On this SoC, the controller clock and reset are always wired, so make
-> them required.
->=20
-> Signed-off-by: Nuno S=E1 <nuno.sa@analog.com>
+> list_first_entry()/list_last_entry() do not return NULL on an empty
+> list; they return the container_of() of the list head, i.e. a wild
+> pointer.
+> 
+> The SPI core rejects a message with no transfers, but it accepts a
+> transfer that has neither tx_buf nor rx_buf. For such transfers
+> pic32_sqi_one_transfer() iterates an empty scatterlist, queues no
+> buffer descriptor and still returns success, so a message made up only
+> of buffer-less transfers leaves sqi->bd_list_used empty. The subsequent
+> list_last_entry() then returns a wild pointer through which the driver
+> sets BD_LAST/BD_CS_DEASSERT, and list_first_entry() returns another one
+> whose bd_dma is programmed as the DMA base address, corrupting memory.
+> 
+> Bail out with -EINVAL when the BD list is empty, setting msg->status
+> the same way the timeout path below does. The xfer_out cleanup path
+> tolerates an empty list, and normal messages are unaffected.
+> 
+> This issue was found by static analysis.
+> 
+> Reported-by: Wang Haoran <haoranwangsec@gmail.com>
+> Reported-by: Li Ximo <lixicaicai@gmail.com>
+> Signed-off-by: Wang Haoran <haoranwangsec@gmail.com>
 > ---
->  Documentation/devicetree/bindings/spi/cdns,xspi.yaml | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml b/Docum=
-entation/devicetree/bindings/spi/cdns,xspi.yaml
-> index 3cd7321319bb..d6ac05b2efb4 100644
-> --- a/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
-> +++ b/Documentation/devicetree/bindings/spi/cdns,xspi.yaml
-> @@ -18,6 +18,7 @@ description: |
->  properties:
->    compatible:
->      enum:
-> +      - adi,adsp-sc846-xspi
->        - cdns,xspi-nor
->        - marvell,cn10-xspi-nor
-> =20
-> @@ -53,6 +54,15 @@ required:
-> =20
->  allOf:
->    - $ref: spi-controller.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,adsp-sc846-xspi
-> +    then:
-> +      required:
-> +        - clocks
-> +        - resets
->    - if:
->        properties:
->          compatible:
->=20
-> --=20
-> 2.56.0
->=20
 
---H10kgaQOr2Aztqer
-Content-Type: application/pgp-signature; name=signature.asc
+You've not provided a Signed-off-by for this so I can't do anything with
+it, please see Documentation/process/submitting-patches.rst for details
+on what this is and why it's important.
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavSssQAKCRB4tDGHoIJi
-0iO5AQD9XtCG4DPZaY6jzh09TFrUBwyIR9QqELQuOAtjo51ldAD+LhfAwQyByyBd
-v3xIVxM/jOZKe283PHf9s+gfZEjApgg=
-=/LXf
------END PGP SIGNATURE-----
-
---H10kgaQOr2Aztqer--
+-- 
+Mark Brown <broonie@kernel.org>

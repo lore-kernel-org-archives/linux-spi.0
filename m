@@ -1,56 +1,55 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794482597;
-	b=OIEe4rEkHpoeuJ3x03Iim64vdX7+faQPIq4l/EKLxydm9UtxZ1VxB8wEd0WExbA9x6kD
-	 XYc8JlFdkzK7cpIVjGsnT4TTkvwGIekWRz+g92LIAC5kgwr/6EqmBi+y5UDow5iVDWJ88
-	 GP4P1OiMZwQbED990/hTklmScmDjqTnMtgkvUCmqUNK/b9ZHzdfOzIgGG81uzmY01iIpd
-	 KiFqdjDz+g9OGm0AvccA9FXCnhoTsAS76DgkflqSm1/g7qHnYwrsLv+T6mwXdy3B2GR0M
-	 fMY1gz5LA8NPYSg5fvGDb/ymPaCXYDNASLEbMBkVmDzwVFqZiVJrxRTKK/QFbp4VnXw==
+	t=1794483415;
+	b=cp5KvD6BGmIhEa/fuvmD7o0GAR5dtm7hXBDoeCUh355Vra9fhy8IzeGdT6eP66iYAzpC
+	 4uUS5KNHzKbmvJLWugBmvmdcgaCk6XX0kcB9Wav4npOQ7Em2sekQADu+/5t7/bmQLEj5q
+	 Z2bWu2BtipxoJh6r5OMymR1JF+BuBqUKDFJCYQAcArETqTceaFSU1VGgbLdzQPlGvCmbb
+	 xwHfVjG8gTolVvHN21A74zXu6Tj5HszOsog8MCRqV/G23+GDXHh/5i76Vzqh8vxvA/1SJ
+	 iucXW9D7b8+sx9UBz8eSr3QabkVyQ87xkKAraNk/ffuDAzJrTn7YitMHrFf5YbNh+cA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794482597;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794483415;
 	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
 	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=DZX7LrkkoITSV9q8/hf9tQANgdUAkilb9PapYVkP0Us=;
-	b=4GpXONGjYXSmWOFgsJbrI4EsV9cN7hx1dqvxeVtF/uR9WSVGnxeMI5M0FdN18vrhjmkk
-	 aBYZ/v5CXzXmLypxgVbg1ZLi09tpWDidL+ZgU1oWofi9vnR1wMz/4dFatUp7J2xAqsV/l
-	 ahnlR2H6WleVG/3viNJ2htYyW7bnJp/7cf1Pguxt5E9CjkuYQlxuxACs8WQ3TGS1IZBDc
-	 UY136zGV9OWCGQW0MsUhLpF6dxRGzqgho5jKeBFLD8dh+8h1SxXQ9zhmjaoxnK8oSAX4l
-	 8e8nNP5HkfGIvKJGsc8ipsZ60muNUhmRwG56lZeU/HoWNy3vjTSxKZjrH99+ZtOPurQ==
+	 X-Mailer;
+	bh=XJtNcCJMFDWQYwcUNbsbODBqgC368Pu1CnYyfVfGjQY=;
+	b=YdSFpwYodaUo8g/SIY4evj9ALYOB0irKrAk7BzJDRXDwDkObw4aVvRVho+dZNYpqlfle
+	 t+4m7WJMwj9MCpbWwK7lGfiAjNY7TD+OOhCC9NwyXtGBa5OHE4lyPrV/Fu+U03j61sntM
+	 NXZZtyh/PzyncqJi9EwQQ555Yp28lJuaDBH3PsDYlhkeVyhEjn11nulXlbdgb0vGfxLg8
+	 ZLfpx6pDbbaz8XzKqbfRq2xK8SS6/eL2qtaCg2pPou99UQPW27Rfe44n1/VJWoxrgeD66
+	 tJr2qDocwX9IDEjE0ushIXMubo1Op5GUCyhXC7K7yq4Es0w7+0rRubrLPgQzAcBmxnA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YqmAvoQX;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="JcUDWBH/";
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C3E606B5A7;
-	Thu, 12 Nov 2026 11:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C37B606A31C;
+	Thu, 12 Nov 2026 11:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YqmAvoQX
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84BA1F00A09;
-	Thu, 12 Nov 2026 11:23:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JcUDWBH/
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A461F00A05;
+	Thu, 12 Nov 2026 11:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794482597;
-	bh=DZX7LrkkoITSV9q8/hf9tQANgdUAkilb9PapYVkP0Us=;
+	s=k20260515; t=1794483415;
+	bh=XJtNcCJMFDWQYwcUNbsbODBqgC368Pu1CnYyfVfGjQY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=YqmAvoQX8W4N+wqZSyw9pDbbUpniRn45n7LV6ZTubKpQXfpqBlFX4JcoAfVoZAIlS
-	 OLASWhwS0rZjwY2tt6LsppgyHiLisBJgYxORqQGH8GydG3Od699tTjKm6x+Eqx9Fq9
-	 fqpBzyJB0pTPWq+WFptNg+vhtcaBcuVubPOQvrPyOFv74DaFluwQ/sV9GjXdENntVL
-	 uB7UZ5EQbZd014TkijwPVJ2BNPvwfAWcGtFR36y3jzwh6vbA4rTZOqn1rWfUpKKuqc
-	 ImWGVpkZJRNg1PLXnpN2SoYoEDEHYEg8uYQBD2BK/HMLr+h7zj+IWX8qCZEBOOicC5
-	 7fqJWGLRqDkjA==
+	b=JcUDWBH/LZPxwUzvHOtxhZv81slueft+P6MqFVWRmK+aIfNe90HvxpwRMXRsfN0hQ
+	 wxBWIy0ETMriNEbhbUWogS8f+tt9STvZPNKpk/jIUn9qgFsVt+RP/4WqsYQmByE6LG
+	 ISe5S06S0fgR1i7g2yUtQZN9bNT6iCzEBP9sgqIF9SzoXxRve/Taer25jP6TstlQrC
+	 lrL3Tx8mYDHRCJCduE2HuqMIwt6fFHLWOQ1thq49icgtlUUehIRfCnzSwc/UdY0+Ph
+	 5tVmJGZnnJO5AMlMaxz88EG9AJl+6CYqBLIcNcVD2blxYj0TXkWDabb/QTrkCH+vOi
+	 07dA1lMA3KacQ==
 From: Mark Brown <broonie@kernel.org>
-To: Florian Fainelli <florian.fainelli@broadcom.com>, 
- Tomasz Unger <tomasz.unger@yahoo.pl>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- linux-spi@vger.kernel.org, linux-rpi-kernel@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20261110-spi-bcm2835-kdoc-return-v1-1-dffdfcc36233@yahoo.pl>
-References: <20261110-spi-bcm2835-kdoc-return-v1-1-dffdfcc36233@yahoo.pl>
-Subject: Re: [PATCH] spi: bcm2835: Add missing kernel-doc Return sections
-Message-Id: <179441977679.393238.9199268057403171713.b4-ty@b4>
-Date: Wed, 11 Nov 2026 17:56:16 +0000
+To: linux-spi@vger.kernel.org, zhaofeng2 <zhaofeng2@cmss.chinamobile.com>
+Cc: Li-hao Kuo <lhjeff911@gmail.com>, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20261111024235.1542-1-zhaofeng2@cmss.chinamobile.com>
+References: <20261111024235.1542-1-zhaofeng2@cmss.chinamobile.com>
+Subject: Re: [PATCH v2] spi: sunplus-sp7021: fix clock prepare leak in
+ system sleep suspend
+Message-Id: <179442874822.513646.429223063588831846.b4-ty@b4>
+Date: Wed, 11 Nov 2026 20:25:48 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,17 +62,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1118; i=broonie@kernel.org;
- h=from:subject:message-id; bh=WxllxCixDuNeTCya0yxN5aR0r/TIzJI3BYcLFM2baPM=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+LlwUd+xWgOOCyIXfLpjOipJ/w7ysnbNxw59nZk+Cr
- T48CtvM3VHKwiDGxSArpsgSl8X9sr7k9Rq+gwvbYOawMoEMYeDiFICJvFNi+Kfn3XP5sNGtTO6a
- wN+MHOIqL49/nqJp2X0hVndH3JZd8xYx/A/fHLl0pdPcy9JSz92nn3k2WTmDObDrxcm3nU3T09t
- st/MBAA==
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Tue, 10 Nov 2026 22:33:02 +0100, Tomasz Unger wrote:
-> spi: bcm2835: Add missing kernel-doc Return sections
+On Wed, 11 Nov 2026 10:42:35 +0800, zhaofeng2 wrote:
+> spi: sunplus-sp7021: fix clock prepare leak in system sleep suspend
 
 Applied to
 
@@ -81,8 +72,8 @@ Applied to
 
 Thanks!
 
-[1/1] spi: bcm2835: Add missing kernel-doc Return sections
-      https://git.kernel.org/broonie/spi/c/2a28392d4b4c
+[1/1] spi: sunplus-sp7021: fix clock prepare leak in system sleep suspend
+      https://git.kernel.org/broonie/spi/c/2bc7eb398cd0
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during

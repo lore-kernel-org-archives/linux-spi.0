@@ -1,71 +1,65 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794498264;
-	b=jc5W7L/EBa1jScsK+N5vxY8fG+dMTfawL0mphSL7V/37y478NC4xwR+EVSfC1RUcmTHZ
-	 Yut9TGWV6NhbQF8ztoiqZEDvc4iZ7yNSHYVmrQGGie9TGwXMIWaMbkruvQQk78dmw9Ckq
-	 GY1IKWfOIX3kvnlqu/gZFuN0V+kGrK8JTB1cQHhWxXyQWVNqnzUxsJATPEwg7ehJ58YpR
-	 S1f9IxcjstgrCDxPHyWvqgwij2Pwa75DX9hFhXiPI1skb3KnSLesppC/Iz1L2c2h0l6Wt
-	 UokT06DW+OgHi73CS6VhIbBYesEFRBWuPTwfAkWK3ixrxBE5Ek/JTgCrf3ODfmdJ97A==
+	t=1794506981;
+	b=rZU8we/ZpjoBtsZEYpHJTzeXGTwqHZrIfoMrzxtAH7Y/O0ObZaoT5Jr5KBhIMUJdI7/p
+	 czTXep9lYD/HjNu+WXuhyG5zg/Me/hPDGYM+k7Q+ytl3jhMswxDW07pE16HuwgZZfV5Yo
+	 fc+Z9+u1wObCYDNYK8cWrUwqv3O0Kj07XhYFf2DEziQYtZ4X11tT+VHZ/3VK7rPmBrGRN
+	 WYwyBM6086vUYoJD67YfDNdCX2Ac09lL4TPaBAyCJSmFL6Qo9xpusYV68L3SrRnaDY3RY
+	 8nLz8YTOfpgA34yb3AcH6+LACS7b+bjY0XG10UVXvPWg1zCiTLVT6Klk1cEJJ8r64sw==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794498264;
-	h=DMARC-Filter:DKIM-Signature:X-CSE-ConnectionGUID:X-CSE-MsgGUID:
-	 X-IronPort-AV:X-Amp-Result:Received:Received:Received:From:Date:
-	 Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	 Message-ID:X-B4-Tracking:To:CC:X-Mailer;
-	bh=2jggDFXfiKjyjxfNyJQQxWRj7IWrl5y+P/gKpuovSl0=;
-	b=GuFA1iO/LobznPBK9XGeCHL6azXRtuWBf2dHtg59J3RsICkrWie90Tzh7ofkZ0a6U/BJ
-	 +PX/NpstuTpfSlIsqQQZt4EjXhHFDuxGqHrdqs3TsAlxHln/Lw3SSGk7/O9lpf1UTZ9yD
-	 zYMFVN1dEbcc3fOqkz+WDSqeVRn9QuKGIPRKe/T2bNI7+9p6IifbNewxGhGdWbOXUvkKD
-	 QSN6scI7U+4CPqLNObtc6+uM3La4gle0n2M2m+38UZZDlWh7H14oYWQjLYKFoYNnktoBm
-	 1THghNmDRJHiMxujJf8+Z75tObcLjHjuf1ZEePG9hgTTPEEqNRU6DprhSe9DdrHqASA==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794506981;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
+	bh=BaJY9G+O3FV1i4Zpgu7P0a7EUVdMBobV+mJJcOvaSzo=;
+	b=tau7XVm+jfzx9Y/jCMnclk8N8ZYzwhKfVLwbZWHbVj+UVBvd93xsdyL2D3ZHL0PBtaOj
+	 muPVNEbS1G72gx0CW4cw1uL+rPsPgVYep8hwnkjfU7S3tb3rKCGjk9ZJguY9/z3sD7C49
+	 lsACI8MMKafpLIS9cO+77H0kdZ9mSjU107JEVPRmtymoT1P5EWhv5WDu4cgh89JO/jGOo
+	 SZ1oXc4exSrdaT1EhJtpaut4J63VMp6/dlVzPk3lxFitq3n4/C6IPWfBpijo3j+4CfiCM
+	 Y3R1g1WU9vh4eHxnbZQxdJGqirHdTKPKaYF9AqFd9jWezvLo4Brsp0DoOlvFOWNPwIQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=microchip.com;
-	spf=pass smtp.mailfrom=microchip.com;
-	dkim=pass header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=sioSg+Wy;
-	arc=none smtp.remote-ip=68.232.153.233
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b="j3ysJ/Az";
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C264606A327;
-	Thu, 12 Nov 2026 15:44:23 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C264606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6D2606A31C;
+	Thu, 12 Nov 2026 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=sioSg+Wy
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1794498264; x=1826034264;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=HxgHa+ylojaHP6gqM1yhKD1ewdvIyZI+z1/zt8wg2Fk=;
-  b=sioSg+WyLRTLusM3eoYOdq/dVGiqqLver6U79of/vV9/8g43Jej2gTzl
-   gAr5AsNvOiwI1r9FS6LKzGxdA8JwVYrktSz7BnRFPhuzKnnat0bdeI4iE
-   5LLDYZdMlRAPC/t2ilmwdBmBFVovI2M2EIh89nmTHOVSEEo/XANF9F5/4
-   9wFdzzMZqm94pOcgzAGWzhXUU3vy4lB1CcjP00q8/kjm1ET+DLZSiVGmC
-   1xTelJSiDKvTPUBhBJJh3NSEnwqwo3osISKFV+U4wu5LtrbkZXNIYIv0a
-   engWfs0BHV02zeRw5/ooMYvsvvK5JeCxqyYfIbAdCkUjjntUuDFaPrQbr
-   g==;
-X-CSE-ConnectionGUID: hFPvcHixS26nUTs0b7YK8w==
-X-CSE-MsgGUID: bvlYCDkkQXWNbTmxtQ8J0w==
-X-IronPort-AV: E=Sophos;i="6.27,209,1787036400"; 
-   d="scan'208";a="66419760"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2026 08:44:17 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.56; Thu, 12 Nov 2026 08:44:16 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.58 via Frontend
- Transport; Thu, 12 Nov 2026 08:44:14 -0700
-From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-Date: Thu, 12 Nov 2026 16:43:58 +0100
-Subject: [PATCH] spi: atmel: poll short PIO transfers
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j3ysJ/Az
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E841F000C5;
+	Thu, 12 Nov 2026 18:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794506980;
+	bh=BaJY9G+O3FV1i4Zpgu7P0a7EUVdMBobV+mJJcOvaSzo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j3ysJ/AzR4MH4ikdO1YwwWaxii5G4sAtBGA6cMwZqjr0MixLbSbne7fyiCGMiq1Nm
+	 NPwKpU5w5Q+3g4vC9yB0mwBEmKfAhKhuz9JfQ1/st/eJXWm5raMg6NthedUntCrVQF
+	 xHuoWCx2h1QnUjuXlFG3nZfS5qJWqMsS+DvSoqIG4X8SJKIDDaNY7dJuUG4T3W9wmY
+	 fFPjqG9D4sfdmXo3sVKHEavtE2UdxHaS2WEU/Z/7F3u65rFdrsIviyvgyylKWo8OOj
+	 TFpxVAti0skO9O1Yv9sCNeIt0do5m6RDjGZUhYjCZZ1RvVB13KmLDmfFHUrBlY1H2h
+	 bKmr7x1CMyXUQ==
+Date: Thu, 12 Nov 2026 18:09:36 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jisheng Zhang <jszhang@kernel.org>, Fei Xie <fei.xie@horizon.auto>,
+	Pratyush Yadav <p.yadav@ti.com>,
+	Parshuram Thombare <pthombar@cadence.com>,
+	Konrad Kociolek <konrad@cadence.com>,
+	Mark Brown <broonie@kernel.org>, Jayshri Pawar <jpawar@cadence.com>
+Subject: Re: [PATCH v2 6/8] spi: dt-bindings: cdns,xspi: add ADI SC846
+ compatible
+Message-ID: <20261112-sincerity-snuff-9451330d3ed5@spud>
+References: <20261111-xspi-cadence-add-acmd-v2-0-d339046ada8b@analog.com>
+ <20261111-xspi-cadence-add-acmd-v2-6-d339046ada8b@analog.com>
+ <20261111-entomb-backdrop-815e4dc81c7e@spud>
+ <avWHJuW2Xj4BJ_cv@nsa>
+ <avWJrWwHe5ApSUbT@nsa>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -75,199 +69,55 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-ID: <20261112-spi-atmel-poll-short-pio-transfers-v1-1-240ccc868cc3@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAL3e9WoC/x3NMQrDMAxA0asEzRVUHkrSq5QOtiM3Atc2kimBk
- LvXZHzL/wcYq7DBczpA+ScmtQzQbYK4+fJhlHUY3N09iMihNUHfv5yx1ZzRtqodm1Ts6oslVsO
- wzimGJdISAoxQU06yX5PX+zz/IAezvnQAAAA=
-To: Ryan Wanner <ryan.wanner@microchip.com>, Mark Brown <broonie@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
-CC: <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-X-Mailer: b4 0.15-dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MquIn60EIiF6IsU4"
+Content-Disposition: inline
+In-Reply-To: <avWJrWwHe5ApSUbT@nsa>
 
-Every PIO transfer enables the controller interrupt and sleeps in
-wait_for_completion_timeout() until the interrupt handler has drained the
-receive data. For a transfer of a few bytes, the interrupt, the
-completion and the two context switches take several times longer than
-the transfer on the wire. Devices that do their register IO over SPI,
-such as SPI attached Ethernet switches, issue one message of a few short
-transfers per register access, so this overhead dominates their register
-access time.
+--MquIn60EIiF6IsU4
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Busy-wait on the status register instead of enabling the interrupt when
-the transfer is estimated to take less than polling_limit_us, 30 us by
-default, as spi-imx does. The estimate uses the effective clock rate and
-the word delay. Setting the module parameter to 0 disables polling.
+On Thu, Nov 12, 2026 at 09:41:17AM +0000, Nuno S=E1 wrote:
+> On Thu, Nov 12, 2026 at 09:32:36AM +0000, Nuno S=E1 wrote:
+> > On Wed, Nov 11, 2026 at 05:58:09PM +0000, Conor Dooley wrote:
+> > > On Wed, Nov 11, 2026 at 01:23:07PM +0000, Nuno S=E1 wrote:
+> > > > The Analog Devices ADSP-SC846 SoC integrates the Cadence xSPI contr=
+oller
+> > > > with its own PHY timing configuration and with the support needed f=
+or
+> > > > the auto command (ACMD) mode with the internal DMA, so it cannot be
+> > > > described by the generic "cdns,xspi-nor" compatible. Add a SoC spec=
+ific
+> > > > compatible for it.
+> > >=20
+> > > I assume it's the phy timing that means the cdns,xspi-nor compatible
+> > > cannot be used as a fallback?
+> >=20
+> > Exactly. Without proper phy settings we cannot probe the memory chips.
+> > There are some works being done to support phy tuning but even when
+> > that lands, not sure how generic it could be supported.
+> >=20
+> > Hmm, I guess you want the above mentioned in the commit right?=20
+>=20
+> Nevermind, it's already in there.
 
-Mask the receive and overrun interrupts before a polled transfer is
-started. An earlier interrupt driven transfer can leave them enabled:
-the overrun interrupt always stays enabled, and the receive interrupt
-also stays enabled after an overrun or a timeout. The interrupt handler
-would then consume the status the poll waits for. Like the interrupt
-handler, the poll only reads received data while bytes are outstanding.
+ye I just wanted to clarify, because it wasn't entirely clear that this
+made it incompatible since I'm not a domain expert.
 
-Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
----
- drivers/spi/spi-atmel.c | 80 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 78 insertions(+), 2 deletions(-)
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index ffc1292b08c1..25a0a3acfc4e 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -234,6 +234,11 @@
-  */
- #define DMA_MIN_BYTES	16
- 
-+static unsigned int polling_limit_us = 30;
-+module_param(polling_limit_us, uint, 0664);
-+MODULE_PARM_DESC(polling_limit_us,
-+		 "maximum time in us to run a transfer in polling mode");
-+
- #define AUTOSUSPEND_TIMEOUT	2000
- 
- struct atmel_spi_caps {
-@@ -274,6 +279,8 @@ struct atmel_spi {
- 
- 	bool			use_dma;
- 	bool			use_pdc;
-+	bool			poll;
-+	unsigned int		poll_limit_us;
- 
- 	bool			keep_cs;
- 
-@@ -688,6 +695,9 @@ static void atmel_spi_next_xfer_single(struct spi_controller *host,
- 
- 	dev_vdbg(host->dev.parent, "atmel_spi_next_xfer_pio\n");
- 
-+	if (as->poll)
-+		spi_writel(as, IDR, SPI_BIT(RDRF) | SPI_BIT(OVRES));
-+
- 	/* Make sure data is not remaining in RDR */
- 	spi_readl(as, RDR);
- 	while (spi_readl(as, SR) & SPI_BIT(RDRF)) {
-@@ -706,7 +716,8 @@ static void atmel_spi_next_xfer_single(struct spi_controller *host,
- 		xfer->bits_per_word);
- 
- 	/* Enable relevant interrupts */
--	spi_writel(as, IER, SPI_BIT(RDRF) | SPI_BIT(OVRES));
-+	if (!as->poll)
-+		spi_writel(as, IER, SPI_BIT(RDRF) | SPI_BIT(OVRES));
- }
- 
- /*
-@@ -725,6 +736,9 @@ static void atmel_spi_next_xfer_fifo(struct spi_controller *host,
- 
- 	dev_vdbg(host->dev.parent, "atmel_spi_next_xfer_fifo\n");
- 
-+	if (as->poll)
-+		spi_writel(as, IDR, SPI_BIT(RXFTHF) | SPI_BIT(OVRES));
-+
- 	/* Compute the number of data to transfer in the current iteration */
- 	current_remaining_data = ((xfer->bits_per_word > 8) ?
- 				  ((u32)as->current_remaining_bytes >> 1) :
-@@ -776,7 +790,8 @@ static void atmel_spi_next_xfer_fifo(struct spi_controller *host,
- 	 * Enable RX FIFO Threshold Flag interrupt to be notified about
- 	 * transfer completion.
- 	 */
--	spi_writel(as, IER, SPI_BIT(RXFTHF) | SPI_BIT(OVRES));
-+	if (!as->poll)
-+		spi_writel(as, IER, SPI_BIT(RXFTHF) | SPI_BIT(OVRES));
- }
- 
- /*
-@@ -1375,6 +1390,58 @@ static void atmel_spi_set_cs(struct spi_device *spi, bool enable)
- 
- }
- 
-+static bool atmel_spi_use_poll(struct atmel_spi *as,
-+			       struct spi_transfer *xfer)
-+{
-+	u32 hz = xfer->effective_speed_hz ?: xfer->speed_hz;
-+	unsigned int limit = as->poll_limit_us;
-+	int word_delay_ns;
-+	u32 words;
-+	u64 us;
-+
-+	if (!limit || as->use_pdc || atmel_spi_use_dma(as, xfer) || !hz)
-+		return false;
-+
-+	us = div_u64((u64)xfer->len * BITS_PER_BYTE * USEC_PER_SEC, hz);
-+
-+	word_delay_ns = spi_delay_to_ns(&xfer->word_delay, xfer);
-+	if (word_delay_ns > 0) {
-+		words = xfer->len / DIV_ROUND_UP(xfer->bits_per_word,
-+						 BITS_PER_BYTE);
-+		us += div_u64((u64)words * word_delay_ns, NSEC_PER_USEC);
-+	}
-+
-+	return us < limit;
-+}
-+
-+static int atmel_spi_poll_xfer(struct atmel_spi *as,
-+			       struct spi_transfer *xfer)
-+{
-+	u32 done = as->fifo_size ? SPI_BIT(RXFTHF) : SPI_BIT(RDRF);
-+	u32 status;
-+	int ret;
-+
-+	ret = readl_poll_timeout(as->regs + SPI_SR, status,
-+				 status & (done | SPI_BIT(OVRES)),
-+				 0, (u64)as->poll_limit_us * 10);
-+	if (ret) {
-+		dev_err(&as->pdev->dev, "spi transfer timeout\n");
-+		return -EIO;
-+	}
-+
-+	if (status & SPI_BIT(OVRES)) {
-+		dev_warn(&as->pdev->dev, "overrun\n");
-+		return -EIO;
-+	}
-+
-+	atmel_spi_lock(as);
-+	if (as->current_remaining_bytes)
-+		atmel_spi_pump_pio_data(as, xfer);
-+	atmel_spi_unlock(as);
-+
-+	return 0;
-+}
-+
- static int atmel_spi_one_transfer(struct spi_controller *host,
- 					struct spi_device *spi,
- 					struct spi_transfer *xfer)
-@@ -1412,6 +1479,8 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
- 	as->done_status = 0;
- 	as->current_transfer = xfer;
- 	as->current_remaining_bytes = xfer->len;
-+	as->poll_limit_us = READ_ONCE(polling_limit_us);
-+	as->poll = atmel_spi_use_poll(as, xfer);
- 	while (as->current_remaining_bytes) {
- 		reinit_completion(&as->xfer_completion);
- 
-@@ -1437,6 +1506,13 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
- 			atmel_spi_lock(as);
- 			atmel_spi_next_xfer_pio(host, xfer);
- 			atmel_spi_unlock(as);
-+
-+			if (as->poll) {
-+				as->done_status = atmel_spi_poll_xfer(as, xfer);
-+				if (as->done_status)
-+					break;
-+				continue;
-+			}
- 		}
- 
- 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
+--MquIn60EIiF6IsU4
+Content-Type: application/pgp-signature; name=signature.asc
 
----
-base-commit: 2bc7eb398cd0f89fd2331d5a1a8fe7ed17addd35
-change-id: 20261112-spi-atmel-poll-short-pio-transfers-bd8fcb9c19bb
+-----BEGIN PGP SIGNATURE-----
 
-Best regards,
--- 
-Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+iHQEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCavYA3wAKCRB4tDGHoIJi
+0kxGAQCp0V8BVgNuNxizBOeL5wbELjJPl/O+CR2lqdIyCmaMKAD3QeiT17bUF4+H
+HUIHcyK3Zx6GdijCvQ1WfbKEsBoMBA==
+=VG+/
+-----END PGP SIGNATURE-----
 
+--MquIn60EIiF6IsU4--

@@ -1,59 +1,101 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
-ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794516349;
-	b=3eFdxuf4A8p6Je9DgCa/gBFAumj0DoT83wHCOXzi3DCBcgJm9UW+wYj7szA/rkU55M8E
-	 Sx6mHZ+5apu7nsyovfpHnliKopfNr/haTRaOsgwgyjsKU1f8XX3saPhXSoWNjn0v9kja2
-	 LJ5UX121/EaCwvjfRpQGNNSqPj17HoO85eKskPjCN8fL9IuVWwIDw0TMxsqjxyZs8A4rO
-	 D+22Ab672tXedK3XvUV2viseHZZqeq2KjQIa+2nocRyIepCTMP4PLyVy8Cu2MDoT+A5P8
-	 SZQ/W6G8W6LNsvCLQOmRsN9EZu4EISz/qqV5JUoWMTIFfneQpRRaJ9VAGCNVXvez3Yw==
-ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794516349;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To;
-	bh=vExIF6BLPxilcEzmeQ44C3+EI0WD/Najy1w9BlH7ZrA=;
-	b=yXUnJY7rbpSrIkxvAFcAScLDAiK1QE3e+HbnCGjVcFmT+AfxtZlXZ8gaf9KNZdz28SmX
-	 g/gUiCXApmfBqAa75aq4rw4okfk3XDsGFqbFxoQlpmPd6y1szA69bw27H76OC3x3U/Ljp
-	 5zYOBojFgW/KHdAa6ZT43t2bIinS1DIwyx4QoorfeEOy5ayE25J4QnijUDmrFwZdrXwYg
-	 i2RREFj2ruNxaxQwS9EAXMM5o8DzCDK0Pv5uxxyRaElMM+X70zWd1nOGHrHC7g4Xs/itg
-	 epqZOf1R7Q6YPEm656tlKPnO3ssNpN/Gatnb8ABfV1B6EiO6VDWNfHUga4at1LB4QxQ==
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bnTlgR2z;
-	arc=none smtp.remote-ip=100.103.45.18
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1))
+Authentication-Results: smtp.subspace.kernel.org; arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.172
+ARC-Seal: i=2; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=pass;
+	t=1794525841;
+	b=EmYlhltU7KCxpMIjkMY3k2ZUuYYZZy2MeFVAo1hsRCFxfkQXesxIiTTLqvKNto/2H5Vn
+	 B6fODNkWwIJOaIQrahwuUhSYxpWmESi57vzD587f9GIPjKif8dkaEGGnPKubiGslPXKA0
+	 XxcCe8wRvkJ8wDu/3I6pOVwP8LJ0SB9NA1Xfts8zIZkCYokbsBEdCNlwupXa3GWrnVY6l
+	 AhmRksjTaKSGWRlTsdQTFtfBRUi7X9ceTbJtfV0luCDJrzK/qYrstqqJEH78uVMqi7p7F
+	 IzKD+A+4RXLcuHYMti3gO7YGDxBfVsIF0zXnAAhkNIgw2m9t95VAorP8NKXM0i4F73A==
+ARC-Message-Signature: i=2; d=subspace.kernel.org; s=arc20261015;
+	a=rsa-sha256; c=relaxed/relaxed; t=1794525841;
+	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:
+	 MIME-Version:References:In-Reply-To:From:Date:X-Gm-Features:
+	 Message-ID:Subject:To:Cc:Content-Type:Content-Transfer-Encoding;
+	bh=drls+PXlcGZoLfnoPObObwbc1/HPzgky5rGb/FCeY3w=;
+	b=Djlc7mw1gQtmVrxDmDvEB694RZORA9utJ/2HY4iDjNspDrlbohCe9d3dph5t/DZ9+inj
+	 uKt5fcMAfMucwbWbjK2ioofziJ0g4iDnSYSsc18V82M/6UbjIyQp2R0mAgU8RfKs2h1yP
+	 EYh38D6e8CcFM4LfGsGW7pLKw0OCmmjbOh5VCeqKhswajXZ5FxM56601KFBOzAlSVzqp4
+	 vpznCPQCaRrV0xLMqrNy+U0teCUhDpUC0GGaSZ1dbTsQA/QLkglPQ1515lGs55EQF/iTs
+	 OJqqozpYhVjvwcMrsexusY0hDIkMoqG0pKKRp60vMD0AhWSXYPwSP4ZXmdiKOjtba3w==
+ARC-Authentication-Results: i=2; smtp.subspace.kernel.org; 
+	dmarc=pass header.from=ausil.us;
+	spf=pass smtp.mailfrom=gilmore.net.au;
+	dkim=pass header.d=ausil.us header.i=@ausil.us header.a=rsa-sha256 header.s=google header.b=focqTQf7;
+	arc=pass header.oldest-pass=0 smtp.remote-ip=209.85.222.172
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D779660A2622;
-	Thu, 12 Nov 2026 20:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FAF606A323
+	for <linux-spi@vger.kernel.org>; Thu, 12 Nov 2026 23:24:01 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 39FAF606A323
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ausil.us
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gilmore.net.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bnTlgR2z
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F951F000C5;
-	Thu, 12 Nov 2026 20:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794516349;
-	bh=vExIF6BLPxilcEzmeQ44C3+EI0WD/Najy1w9BlH7ZrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bnTlgR2zNej1/jMfIJfET7Ftvcp5O+JbEvwTIwChPZ7SkRsHdUJD58A3YopMYrBR5
-	 3RmSFO7z9CLI/6CVeJasToJu2h0SYlnwUiHxwTq3pG17mSvsTcBw69kzs+EdqippEF
-	 qPgrYDTbUlic/c4NWH45S05EPBgVslRBBN9JBfa4iABnBtHQ5kMR6HbdkCp8j5FHPb
-	 ryKntZW2dO2BE5fyp5NexcrghC/k12C+XV1K3FWOUg+CwdZJMUcSu+Z/siXVOAIv0e
-	 3W3gOdiHREXzjNBqXIcJjB3tDoNjpBbFQaBhqaJQEppmuZGD9ZVcIoJAlMxYoKZpC5
-	 WmHSWNDLxlDCw==
-Date: Thu, 12 Nov 2026 12:45:49 -0800
-From: Kees Cook <kees@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Mark Brown <broonie@kernel.org>, Dennis Gilmore <dennis@ausil.us>,
-	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-	gustavoars@kernel.org, linux-sound@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	michael.hennerich@analog.com, nuno.sa@analog.com,
-	dlechner@baylibre.com, linux-spi@vger.kernel.org,
-	miriam.rachel.korenblit@intel.com, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] ASoC: soc-core: start rtd->num_components at zero
-Message-ID: <202611121234.8619E8D182@keescook>
-References: <20261112025252.71375-1-dennis@ausil.us>
- <179448342405.66517.5463730214277229760.b4-review@b4>
- <f55dddf1-d745-471a-8001-8f9e5768d97d@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=ausil.us header.i=@ausil.us header.a=rsa-sha256 header.s=google header.b=focqTQf7
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-94937a33cfbso47874485a.0
+        for <linux-spi@vger.kernel.org>; Thu, 12 Nov 2026 15:24:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794525840; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Pb4LKl0vYtZ8dlepvwsKOfLtac0t03CQSdGW2IGyT8U7v2euopr+2QlEgj/S5cXzdo
+         5X0QIEtDw/KltwIaYl4fdmm2QUBf9LTLnL4A38SJ8JTuBX1b42Bxab4ldglLHRhaD29/
+         oTiT7eBPbHN+hDX5pwlqyjvOnLZp+/RqjvIsXLbpGi7W9uIO3YlRBlPiGhUnFq8eTBfO
+         PWRClGCqTYEJKZ48XoB8Fl9upod5hqwTDm/2TWQqmq9z5jrUzm8UCxUIy/MT/cXXHE5h
+         P/AwJp13TK/Dq8ufSk49mrndY+Ol9ps+2d8g5+wfVBUTC5m72AtLlbQ9Xn2zH7cIeQcQ
+         tKKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=drls+PXlcGZoLfnoPObObwbc1/HPzgky5rGb/FCeY3w=;
+        fh=oT4w2wHlWJ0P40yhxsQqFY4vLZ15OlKQXn8phpV4wQ0=;
+        b=c8yp8kjan4ZDjQzPUkykID0JkkgS309Ll/BAHjrhLvsgnrx589jhgJbUXZJ7qkBzTn
+         pacFl4no7SCpTXoIt3KevB+3MbBFMev0PIxII6bDQMmDDqNPECNcXbwXMHYNPRL5zFAU
+         ynY8p9ZJNc/UzjIO4bpA6ehO0tL0OzlDYCS8oQFfKfWJ3qvVYQmWlGJYFgnBzqWXnylD
+         mMkeXsxvNWdn5NxUEpBOvCFq4hPyUZu/Q5uEZy3rWoSFKad4NepXC+hBc/2bFzLy5/go
+         Ma9peAPuQK1u1qPMktbNVDZRTZK57KLPgK05Crhvc1TNoT7W8o+cBXKAOyzPVRlwrz4V
+         MUzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ausil.us; s=google; t=1794525840; x=1795130640; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=drls+PXlcGZoLfnoPObObwbc1/HPzgky5rGb/FCeY3w=;
+        b=focqTQf7naFVCGV/My2d+xpcLS+yKtintmrypuRzht8YS8h99AlJDL/3AsFgqMzzSq
+         LiYGDn8kpDU+Vupp3Eklu4tet98WA+Gg98hsss9HKVRYsSKcuOWLgCqfGsfC9WtJjhFv
+         LVwgrg9eok9OlzpqlzH2V2tb6xEKnyNGK9EIbw7aYhPvoo9CRZELkbf0uLrIc2cGVhxU
+         6S4QL30WvyiEW8bbRF9PJYgUnokd8ZbLUVvW9iSO395H8jdjvkvbCelBuukjOeNCOIvm
+         Fgkyz48jdUU8emc2E0zd2TfHJq+ABdg8by9UYtuG/i481sA94eZ4XT8IFqFFLbKcla+Y
+         4srQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794525840; x=1795130640;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=drls+PXlcGZoLfnoPObObwbc1/HPzgky5rGb/FCeY3w=;
+        b=WKF01WTt0WVkufML2XWJaJDB0vTYGk0vUCC4gcO6x5dXuAThWRP1vBMfbaE2bjotuV
+         GK+6r4A31VANLW58XG0XZ3DBPchFgjGyKMAkMdHZky0iwhK/dW0eySuEFAe34Dc/YT5u
+         2AeNMNnuu6cuqnvB/JJnK61QHlT8VItW2M1D2SsNUh2lHfPsx6qt4LbMEja4PdISfQ0+
+         WbHZlErPnF4rX5nJg/s87C6Pw6f6DzMgoHe0rov2ThjTOCmKrc7iWfVF1iPyAEC0Wax8
+         QJBAMKs1qOZckQm2mjacZWVYfErdpCORxErbt4fsxzDeSHJxiBqjKClZw2LVNavrwuUU
+         Ih9Q==
+X-Forwarded-Encrypted: i=1; AL+hErFPOIvIztiHuF7TmWZODFG64C8b9HAABjEUjJM4CS0h6ZhI3OrOD95He3ru0ezb/OLsjednK9ZQV9s=@vger.kernel.org
+X-Gm-Message-State: APuU4Z8oRRS6HcMOucC1Z8oyALz8XlP0JuqtL6HKlPQEPLXI6Unwn6Lg
+	u7Mhi7TqdHPWOlhiuZsygBWO79zOW5tfgVZ/t7jJqG3194jWfggvIVifF64tR101eoP04M/BsfI
+	E5aIrGGlC73ICOAHu3vLM5GDzAZXqJw6qx5uMY7l3oQ==
+X-Gm-Gg: AYBFou2A/9RNefKxG0xX5O51yq5t7+Kxym+vgVsVQk1HRkS1fPsjma0D7xTnJZPoMnL
+	/h0DkSBUqoLw0+L2l1AJCNpqOz24wkCxVgH0lleTBEPJiVeq2bfD3ef05gC60yA9Z3AZSNgdJax
+	tY66GLtyN45S/aC0inzoseqE1Ro25j4nKiSYkDRF0NITdotYQQlTGlb4KKx+8XMdRvPWUENyNbk
+	ucQYTqMi+16Ts4aI8nYsOMZUqvlRq6W2zHQ0jSV8S+HicWhgVt+kcQibEMzCK5sQFOo+U0/Ro03
+	rNZbTYYA67/pOSuIHqPpj33XNdqCu/NwDsKXXo/HISnxWhbVDGFHPzWiNM4ekjDgrfQHcZU2Ey0
+	SfWcguNOHtBOJKUCHH8UD2xNxW4sNZg/Xm3Oy//AFdfew/aevcQwXzp6cbZqGHKR3r8Kt7PrEkS
+	eBOtNgqOTOwjlE7U8G8VtFBEFn
+X-Received: by 2002:a05:620a:371b:b0:93f:43a4:a48c with SMTP id
+ af79cd13be357-9494bc3a400mr175911185a.45.1794525840268; Thu, 12 Nov 2026
+ 15:24:00 -0800 (PST)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -63,45 +105,39 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f55dddf1-d745-471a-8001-8f9e5768d97d@oss.qualcomm.com>
+References: <20261112025252.71375-1-dennis@ausil.us> <179448342405.66517.5463730214277229760.b4-review@b4>
+In-Reply-To: <179448342405.66517.5463730214277229760.b4-review@b4>
+From: Dennis Gilmore <dennis@ausil.us>
+Date: Thu, 12 Nov 2026 17:23:47 -0600
+X-Gm-Features: AclHuK84GnsbCUnbGFWAfzcRIsf9sLCdYOCcLTFaLBRnNzS4e4KBe3sc65us-XE
+Message-ID: <CAABkxwsn9bkx37C1oEuMC1o+5Jtf+EnJgw5o7pso8hGxxJx34w@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: soc-core: start rtd->num_components at zero
+To: Mark Brown <broonie@kernel.org>
+Cc: lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, kees@kernel.org, 
+	gustavoars@kernel.org, linux-sound@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	michael.hennerich@analog.com, nuno.sa@analog.com, dlechner@baylibre.com, 
+	linux-spi@vger.kernel.org, miriam.rachel.korenblit@intel.com, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 12, 2026 at 02:34:17PM +0100, Hans de Goede wrote:
-> @Kees, have you seen Dennis' remark about the same problem with
-> devm_kzalloc_flex() changing the semantics with the num-components
-> counter now no longer being initialized to zero in at least 2 other
-> places? :
+On Thu, Nov 12, 2026 at 5:37=E2=80=AFAM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> > Since the conversion to devm_kzalloc_flex(), the allocator sets the
+> > __counted_by() counter num_components to the allocated length
+> > (num_cpus + num_codecs + num_platforms). This only happens when the
+> > compiler supports __builtin_counted_by_ref() (GCC 16 here). With
+> > older compilers the counter stays zero, as before.
+>
+> This doesn't apply against current code, I think this is an issue that
+> was already fixed.  Please check and resend if it's still needed.
 
-Eek, thank you. I will go look at these!
+Looks like it was already fixed in
+https://lore.kernel.org/all/20261109102536.357134-1-ghidoliemanuele@gmail.c=
+om/
+I missed that when looking.
 
-> 
-> """
-> Kees, the same pattern (a *_flex() allocation followed by code that uses
-> the counter as a fill index starting from zero) looks to be present in
-> two places converted by 69050f8d6d07 ("treewide: Replace kmalloc with
-> kmalloc_obj for non-scalar types"). I have only read the code for these.
-> I have no hardware for either and have not reproduced them, so please
-> treat them as possible issues rather than confirmed bugs:
-> 
->  - drivers/spi/spi-axi-spi-engine.c: spi_engine_optimize_message()
->    allocates p with kzalloc_flex(*p, instructions, p_dry.length + 1),
->    which presets p->length, and spi_engine_compile_message() then
->    appends with p->length++ through spi_engine_program_add_cmd().
-
-Oh, this was from before:
-69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
-
->  - drivers/net/wireless/intel/iwlwifi/mld/d3.c:
->    iwl_mld_process_netdetect_res() allocates netdetect_info with
->    kzalloc_flex(..., matches, n_matches), presetting n_matches, and
->    iwl_mld_set_netdetect_info() stores at matches[n_matches] and then
->    increments it. The per-match kzalloc_flex(..., channels, n_channels)
->    has the same issue with match->n_channels.
-
-Same.
-
-I'll send fixes.
-
--- 
-Kees Cook
+> --
+> Mark Brown <broonie@kernel.org>

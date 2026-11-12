@@ -1,90 +1,55 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794511429;
-	b=wsPBV+QvVb3iiCmM/1kpnl0xgO4zcK6pigLA5zl2pJmIDgq2IV0MgB6blAKzeoGEh7G3
-	 fPwH/uUi+/LiiZloNQOtO8k0/Q2sywc5s53Gj5pV2qEjW3KKUZ+YR4SCPqYeQDm3OUdVy
-	 UB5CJ43hKmq/PvwRVoU1+SqvL8D0o8uAlXTVZ2AHf3tiYU26wFeVnybMSol8rBlYry8fw
-	 C36Bpv1lLJg4YBvNaS/99KuLp7bZEPN75hHpqWgWGL4LMRxW6t6v2RSuU5i5OszyJsQQQ
-	 WhQBBq8yx0+kUMyAtiCQqhbVU1mW03Q7IOUmea59evzgsTwcyNYA6lilDEVT8RDLjng==
+	t=1794511804;
+	b=LEOcWgNYk+uEz/O88kauhYnSWhB1FqbgzEftbO5nxemqtCY/sjf3EULkKwINmriy58Yr
+	 Mrua/vr/P/Q3xoWtaTF1qpvhgAVJNxrGNJtLWHPbKhd/LRwbu/pGOmaZ2NeTZT6rW92DE
+	 wKF6iYEshdbMYPfmt35gDD97SGOFU2TVkWnreKQFaLFP4II9Q93NYVl6csuaIJyb1greP
+	 FSDjjYlcZMS2JF2EVzahZJ1YYbKjk2WG4SuCXGW8CzuOxNruTmx1lp3Bf+ty8T2CuMgsq
+	 vm/b/6lRosUVW8pTu4mfl+e4cT2XjW5k0PHUOPP6EwBC/K6/m8kqJ87PTyO3EhGrqPA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794511429;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:MIME-Version:
-	 Content-Transfer-Encoding;
-	bh=1/JyIzcdfP+G4sJFpml9e8PwacQNaxxoJDK/M4g8mt4=;
-	b=YfJMW4koZVgElaEzx9Wa2/Aaqk8EmLu4urIouMOI/wsWbFDyyoe00F7dTkkrI6gHgSO8
-	 WV+7aklUIv9yEGsXWCtgMAtFfUGxHR7gdpS8nHAaLhNdDISVXgjDew59YvoblG4S3bccI
-	 UkWp6isysfS1/O6v66NZguwninyb0sPW2EekeRwJ+pKb1CL4iFI8nFMPBPJGqqjWblQKs
-	 iF8MVDZwNWAhGnY6g8wWZ2Fcks3vk+HBp6Zvk/o8bnh/ou3hxcsMDjL1tIcyYoYdqGLjD
-	 JloFyNM3ERmKjMWwpe8UyiHl7kZS5QkrzGqyq707h5mcJfMgU4LLrDnt7Ny27yTUvfg==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794511804;
+	h=Received:DKIM-Signature:From:To:Cc:In-Reply-To:References:Subject:
+	 Message-Id:Date:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	 X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=//eTBsWqfWNkl1bREFM53BmMlq38CWVymr70pZjHbAM=;
+	b=RXTDxxBywCXjIt5gXgSqBdWhbzsURjF4cKhmlm/r+tlLydGU/tdccrUq4BaxKsK3O5XQ
+	 p3spi4R3s0nnoANm3gWPR79Hc7dgQ4A/CcmrrTycaNcJoJer0NVf2nNdiA67Ek85EvsMm
+	 9oo6aEEzTptudbQ+GJ4BhzyTR61c67H+i28XRFIZDyxuN6vV3Cx8RGCTVHVocEbFGJS8G
+	 mOuIrvzIvD84PGeajpufl3OdThg8nuv+Li2Z+GH7HWkS8VrqCh/nw56W8068cq5gvpKia
+	 B3Mc0RSxUK5t+k/3Puz/w5Tzud9LRzaxaA0oH/L/f6es4RdZIXZJiJb44Gi+ECwLsYg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=chromium.org;
-	spf=pass smtp.mailfrom=chromium.org;
-	dkim=pass header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dqtPs6UR;
-	arc=none smtp.remote-ip=74.125.82.181
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tqve0kr+;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32369606A32D
-	for <linux-spi@vger.kernel.org>; Thu, 12 Nov 2026 19:23:48 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 32369606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B8606A321;
+	Thu, 12 Nov 2026 19:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dqtPs6UR
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-36dbde64409so347736eec.0
-        for <linux-spi@vger.kernel.org>; Thu, 12 Nov 2026 11:23:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794511428; x=1795116228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1/JyIzcdfP+G4sJFpml9e8PwacQNaxxoJDK/M4g8mt4=;
-        b=dqtPs6URbnv/BkUff0yIwzy+M78+2+4alrPlun7JdSzYxaYQg+KTetix6xPwBoY5vJ
-         pROgF5njY2aqLKISsTNewn50Pp6o5elVHmfN4tWXoQHqRK98Mat6LWExDjDnWHMYmXnD
-         wska+KlMBH/+JQT1fB5GWa3gU5y0SVwYxQbDk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794511428; x=1795116228;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1/JyIzcdfP+G4sJFpml9e8PwacQNaxxoJDK/M4g8mt4=;
-        b=xShzHN14zMcnQumalcQXImyIN1iMa+HOyOv/B0gU94YK4eyW+g3eNIq52Yl+qPODtI
-         6xC1uYBvzPTylYkqpr8fZ0PHhPStshVHUbFFeplMv2ewL7e7c3e+JR/nt8S7QyCQ6KC5
-         ZqWsppwGj+LwO0JHhemTMSjwOvzuaU/waMxmVIghE8FlzG1iY3Sm08N6reGXE8dNi6AF
-         Rpduk6+kJ7FFUbnlFPy97xlsVgL6CXM/U5lxRbhymC7XuZpuQv/xgOV35H9ONbegI/S3
-         NdOQ+7amOg6ABhia1fdqhfz3bgqw/r2Wv4VWtKk9EzTtJbPA2ozVbF3Tsm8ppL0imNQj
-         IkcQ==
-X-Forwarded-Encrypted: i=1; AL+hErHA+OZyLj0/HHqDQoKP63PaVrD3lUixIOMAoiFQgkeTc57eNDUt+W2xOslgKNdPrfVik6R3uD0O68g=@vger.kernel.org
-X-Gm-Message-State: APuU4Z+SeCwoPYeGDYn8xRnPeONHgHqxTFYBnW/Tg1ax17euOrVV5vDZ
-	MTJQjWEzD75W8b0BZvQ3ybpLb5I+j+1MMeRto3TyKD1tu2wG7n0CEWeMgq1AS3yKJrRnmP2qlWG
-	kdvs=
-X-Gm-Gg: AYBFou2WisV4EV8aSc19WAw3NTH3iEXznulWlnGUj6s/Yow6rSdSX0QmnRrS+RC90bW
-	ODD1ZmAvosixT30vpu7p0RwsXVCWuJgTYalpFkQSy57qBLcVrw4y84SW3hgpGFGwMu0tGEnu0AK
-	wVVdX8bejYa9lk6P1TuyE9jhZdjrVbGDAIkAbTXbwvvFIAyiqv58OMkA6sMLQAwxd7vtnO41yqR
-	rPToWIxJTJZPUQDoM49D1L9m7yAqzPXhNEaIBzgWwVCIpx8qbBY7cGvwJSJdbzhd7/Ce1r1QHee
-	IEJh1ERNMY5viOTeLjvvEv1CPUd1WiKLgD7Z3HaIPzSsCfDMpELZaj45UiIrSNZM9jiaCfxfHVH
-	flVPjZ6UhIsOdSuiYYRh5QermnlqM4l4gR1GXUTzMnRLKGdjAy7Yj772xXN3e5POgWa5l0s69b0
-	0A5/7feR5KzCtE13X73W5muPW3QGXdexVvEu9zydo/AE1HM/jJhq8NVk9gyo9YSSqyXVj+pPwHo
-	RgefGelvO+IIHwA/sC4tK6kAqCi9mm0Ho+ywTmcS0CExOSk3Hs9Wp9RrOIFNIehi5EgGiUAewns
-	ChrBqSjDTi05vi1h8ehtjoDV95sD/h27KoXcDq1u94rT+TuEo71xgVpsMFaglWZRBGlBoVSGqs0
-	IYaEeASPJCFvwaA==
-X-Received: by 2002:a05:7300:fb8c:b0:376:a62b:ae09 with SMTP id 5a478bee46e88-3796676a1e8mr149029eec.16.1794511428235;
-        Thu, 12 Nov 2026 11:23:48 -0800 (PST)
-Received: from localhost ([2a00:79e0:2e7c:8:5446:563c:ac92:43a8])
-        by smtp.gmail.com with UTF8SMTPSA id 5a478bee46e88-3795591f4f8sm491585eec.13.2026.11.12.11.23.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Nov 2026 11:23:47 -0800 (PST)
-From: Brian Norris <briannorris@chromium.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Brian Norris <briannorris@chromium.org>,
-	linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [RESEND PATCH] spi: ti-qspi: Discard pm_runtime_put_autosuspend() return value
-Date: Thu, 12 Nov 2026 11:23:34 -0800
-Message-ID: <20261112112334.RESEND.1.Ia678a25bddd5942c7f3e11ff0eb807754d7e2aa2@changeid>
-X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tqve0kr+
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A4D1F000C5;
+	Thu, 12 Nov 2026 19:30:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794511803;
+	bh=//eTBsWqfWNkl1bREFM53BmMlq38CWVymr70pZjHbAM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Tqve0kr+Z3Ylzu9IgzKF7p0UWNUPkCyiD4F02dJaCfxa+K57HfI/qdt7iYRqGiosQ
+	 dNERW4jD2qz6W+FnA6C3NFXhNuYP5Wc9uTaTeCNc04szlUwS4n8hyIZr4x/FHtblko
+	 gAEbs3Sp9ver5q6LXuc1YCUM5U34gK5YtEh6lbjAumeMZTosBj6m8KBjMjj+UkmHXp
+	 5/NolueFfTu37ruRVbkD30JQDXdWbVSy9ZXurn1ZOJajqDyD4jBrzHy2K6IGIculWz
+	 9niEez2yNBwk+xdo/vc4xyBSkza/2en2du5dc7oW+SDA0dpkANo4ZzFRkf9M7k+Inj
+	 +9Lq2UoAzr0vg==
+From: Mark Brown <broonie@kernel.org>
+To: Han Xu <han.xu@nxp.com>, Haibo Chen <haibo.chen@nxp.com>, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Frank.Li@oss.nxp.com
+Cc: imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20261111202741.3866239-1-Frank.Li@oss.nxp.com>
+References: <20261111202741.3866239-1-Frank.Li@oss.nxp.com>
+Subject: Re: [PATCH 1/1] spi: nxp-xspi: use dmaengine_get_copy_align() API
+Message-Id: <179450592111.339049.13884238628105644116.b4-ty@b4>
+Date: Thu, 12 Nov 2026 17:52:01 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -94,53 +59,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1120; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=FH5kTmZfwj/aq4Ezd+f97Rjvto9LE3d0JY4k3/OC/W4=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+Ce+Y7PP3Z4a7+rqGvd9y9HfxSnGIdtfeenbz10Q+9
+ RsLNtlYdpSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAid0IZGc4sferjaPvVM9eh
+ +WjltueP34h2XPHVkdbMjd8Zkr7iehojw8pStbuey41U/1pdSvebPs/5BVM/K/eto7cC3bzs30q
+ s5AAA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-Failing SPI setup due to pm_runtime_put_autosuspend() returning a
-negative value is not particularly useful.
+On Wed, 11 Nov 2026 15:27:40 -0500, Frank.Li@oss.nxp.com wrote:
+> spi: nxp-xspi: use dmaengine_get_copy_align() API
 
-Returning an error code from pm_runtime_put_autosuspend() merely means
-that it has not queued up a timer or work item to check whether or not
-the device can be suspended and there are many perfectly valid
-situations in which that can happen, like after writing "on" to the
-device's runtime PM "control" attribute in sysfs for one example.
+Applied to
 
-Accordingly, update ti_qspi_setup() to simply discard the return value
-of pm_runtime_put_autosuspend().
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
-This will facilitate a planned change of the
-pm_runtime_put_autosuspend() return type to void in the future, similar
-to commit 3afd8df02433 ("PM: runtime: Change pm_runtime_put() return
-type to void").
+Thanks!
 
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
-This patch was originally sent as part of a larger series here:
-https://lore.kernel.org/all/20261006161337.6.Ia678a25bddd5942c7f3e11ff0eb807754d7e2aa2@changeid/
+[1/1] spi: nxp-xspi: use dmaengine_get_copy_align() API
+      https://git.kernel.org/broonie/spi/c/172b8b7eff22
 
-I expect it should be merged by subsystem maintainers, and we can make
-the return type change later.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
- drivers/spi/spi-ti-qspi.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 091a8b8842f5..c21b8adbbfc6 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -158,11 +158,7 @@ static int ti_qspi_setup(struct spi_device *spi)
- 		return ret;
- 	}
- 
--	ret = pm_runtime_put_autosuspend(qspi->dev);
--	if (ret < 0) {
--		dev_err(qspi->dev, "pm_runtime_put_autosuspend() failed\n");
--		return ret;
--	}
-+	pm_runtime_put_autosuspend(qspi->dev);
- 
- 	return 0;
- }
--- 
-2.56.0.611.g1030f0b940-goog
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

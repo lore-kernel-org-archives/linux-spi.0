@@ -1,97 +1,57 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794610832;
-	b=pZoJgfsazw4PAkeg0GpySHF7IVUCbtQm832zdsDzJx0vMMNE3UWxM0aLb+CrunPesUC7
-	 5sbRuyxhs/MXo4iYXRxaroagcCkK8EAXD0TmD0INgZRyYZrTUXegOHqGWjx3r9iS3WC25
-	 dFP11LiRYk/fP09ruBCduFCK9E8BBR9j02euvTdnec7gNcUgnqNN1FerKI/nmxsqPlMW1
-	 as5p51GwlQy4JEdXCaXXt+tyY0r/NDbugGjrCQUR43eNMfbxXl2cBqoZ+ihrY0gpMwIqK
-	 VeKPDYOzcFCUs2Hrun45aUPc5E9cTuDzbplVBNWZ+InSsw139t5uy5Xp4oBApyMcjXw==
+	t=1794611310;
+	b=oENTscpmy1UmVIT77MThrbXGfhvvqYmpi9wymz8/YGP8DoMsaurpB/1JPOIY39e6nO8d
+	 PiM+COMJcIQl23v8TBVxwMMMAP/NEbOKNXRb1jrTsdTN6TIEXBSBt64XngVfbSqAnDDTC
+	 F9l5hepEjXHReETq5HRZUDiQsia1PMnskhgWJ12DUTGxicKur+lPUByH9Ha1QwSvbyaJX
+	 YmgghBi3URb50HGWUt4GRGGXtGlkigQcHk9hNxGgkWgcqPPDiROB5gu2PCpz3AsUM1XDR
+	 q/YWOBGTwxAlr9BI3fSOuDGYbMyfod884t47uRUyhUUMSRK4LzFCjwzb6Enh91NAqfg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794610832;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Forwarded-Encrypted:X-Gm-Message-State:X-Gm-Gg:X-Received:Received:
-	 From:To:Cc:Subject:Date:Message-ID:X-Mailer:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding;
-	bh=bPGcYPCmwMihkBZLwcSUA+dmNXWkYkkH9KDah1Pc0QA=;
-	b=muXnr6ahQJCzhYvm7jE5SsOJ2u+7gpBwTVnZ0FJnh19/ZKN/d6wsg0tILlREDPLN6aY0
-	 mUwMw88IpssZCkeqgqSHw7nVMTjB21pRnwng+QCVumR6kXcsuh2iI7J42uPMJ3OGkqEOn
-	 NZR7M9wKWyik2QLNR3L4fOtb7BSaeZm4X+HczsGrMVJownXMKKMY8J+D9BiHtOv+Yo40d
-	 1H6IbjLpEPzGEGi5RulZK1koTu/3Gsyn1keUxv3pdtUOHAPzzek40qWoS6zqpie6hLEoW
-	 J9ceSPZ9rxop7fy7ZjI672NAE4XFGQdbnjeOuPlPpESsyTD6LxmCrjID6n0CytD1Z6w==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794611310;
+	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=3b7zwExtQ0SyEtoROKgKdBFl0prgGBD+99Xf4KbA/Cg=;
+	b=eqv0o7eqDSGIF3Z2FdWF5UCIDrSbijexqRCqxQOfeMN6740eJUWUcF4i2P2g8S871MLT
+	 6zqrimN6lM+hpJ3iZd+e/J4MFVZ5x70yhGvHJVgUNpFn/f2X7EsUV1wKjeACEFcmiKIri
+	 yO2WF3HkV9EAPFIV+riW1o6ClPme3EiAeEjU38M1Yt86m0MweqaLz+NzXQAsq3G1GRLE+
+	 DlFqCAEgY8RiPoZ2f3RLMDseCjrATIQx0fRoO3CmXPc46TpaZSHg6yOzMlPx9hw0/NUZh
+	 bc6NWSRQ3TgKm4sMUm8hkjUfax0kqxNfHpeMQrF+96Jy0pXw756osYGSnIMUGqy0W5g==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iu5BU8wH;
-	arc=none smtp.remote-ip=209.85.221.45
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMrIERFQ;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DCC606A327
-	for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 23:00:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 00DCC606A327
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4DB606A323;
+	Fri, 13 Nov 2026 23:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Iu5BU8wH
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-491971ac844so1643897f8f.2
-        for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 15:00:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794610830; x=1795215630; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bPGcYPCmwMihkBZLwcSUA+dmNXWkYkkH9KDah1Pc0QA=;
-        b=Iu5BU8wH5rngf8NWwij1f77dy1SDpt5FYOrmxsXxBeUnNkEz8auCMpZAlyUuIj+wH9
-         jaQcRuB9rhvsxDFaQoUu9LQM6GDVlpg7HvUpXCn0YTO61s9HJB/AaNRXvMUKQRaK7oHc
-         AvOsCUUpsCxTtyq6E4w5rp8Nddhwg9g4mZ7Jb51zceTUe9XwPGuUAQAwTqrnHGKb5QCN
-         Bl4Ok2WsLf6/r8a9CGEyEsL2kRJ3d+pgqVFj71MpaqMI5YEuoco7efLE0MlG4hZwQdGJ
-         gge8ub3AoCdgKWxXV59erZhZkOPM82i0QdIoGg84Any+7CLa7gwESUIiq2A06UCxrArG
-         4iCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794610830; x=1795215630;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bPGcYPCmwMihkBZLwcSUA+dmNXWkYkkH9KDah1Pc0QA=;
-        b=cKkdvo+lrdlevf1idRMiKx1T5IeKupMr7XBEErFIj3nHTkfEDQbSi3d7OLp8cEHuUL
-         LtWU5r1ORA/0d1vF4qXcoewrLO5BnvPHhNs9mf3sxC6CjMcNgrZBYk45DZjZGABDczBo
-         /3ARhQcXQa8ANm3mv+hAgn0XmX6iiNdbGr0Zi6xkhxC4fDR/QJG4nRaG3LlLwjW8iyfM
-         QaQQWOwVhiGeyFobUqKQnkjkMgS4iobbOtZ1lOFJs5n9yiLw1kbIqpQ/PhKrYXhM8O8W
-         Fdb7/dyMmgDRUdI9dO2WBbPtxVlEMvfzZZYBerWtJCMnjHKXeq2D73rPX+1L15OZH5jt
-         BK6g==
-X-Forwarded-Encrypted: i=1; AL+hErFzOYtO8tgEZUbD4ZxSyMB9LGn+6ylwUZAMwkRN/rC5m2ICMow4yFC2wuAA2Lx3tPeD+72FvRPNJUU=@vger.kernel.org
-X-Gm-Message-State: APuU4Z/F0wkhuiZGb/xTpoXETKCS2pDEhUQn4hJz5Y2r+lGpys08R6+/
-	pFa2wkatZth5mJRijumuToY3nujNWe47p9c+LEmOoKlgy2IPNg2zcWye
-X-Gm-Gg: AYBFou1mqnfSm8HnAy+SSiZeJ3atgVpx6oK4cK6HAnjnw2dQeXLCxEde5wbKza+fIJ9
-	xBSV52iK41i+JLI//c8DMUYydkGMFSIZ5mM67jy8ilQl9CYgnBFFEfHh1AnjeZGvHwDUGw+I2AE
-	gcO1L5lDqT2UCyXpN+0ZEqtbG+hu1S6zQ5k+GUWiqNOnqXLr8TElBmPxyonYqmEbIxTCbnDq/Ag
-	c5mk2+8ocApTlrLNRZ8SCSEL+3IbEy8A+RzPvNF24cYDRf9G0FI4D47mYqQxA3WyDQ9vpYkZbrN
-	mPqVUQAk8zMpSHwnHQF/sBGmOsHHeH4pqU9KUg7nUUJQpguNQjPvjKmw1AHbfS1FxZtSQw5+Wvq
-	rmWxEyGp+F16NNv5LRr5krhAF6ngwbfIoIC63oC2ptVSQxrwUc3YxfIro6XtMrU5AJuj6MWbZO4
-	xfV9AoSL8XFvFKPWTZ9kAqRNAHl9HudfrZymjPWTBfxDJpnr29miBiqHXuVmWGcrKUmRJ2ZhEXC
-	nApF0OJSCnnnU7t67mcSTiU3taD+9WW9nayQsb3F2Ko9NXwpWzmf/TCVkOXR44xHZNU4VBgmUUZ
-	QInEmfZgsntpNK2oPKQe0ZNlJB8c7fJ4PpxNhewgP08aFL71sEN4
-X-Received: by 2002:a05:6000:4688:b0:488:7d08:edbc with SMTP id ffacd0b85a97d-49c714a2a99mr5972225f8f.24.1794610830290;
-        Fri, 13 Nov 2026 15:00:30 -0800 (PST)
-Received: from angelo-Precision-7550 ([94.154.175.53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49c5f1c1797sm8617592f8f.11.2026.11.13.15.00.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2026 15:00:29 -0800 (PST)
-From: Angelo Compagnucci <angelo.compagnucci@gmail.com>
-To: Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org
-Cc: Ryan Wanner <ryan.wanner@microchip.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XMrIERFQ
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671C21F000C4;
+	Fri, 13 Nov 2026 23:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794611309;
+	bh=3b7zwExtQ0SyEtoROKgKdBFl0prgGBD+99Xf4KbA/Cg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=XMrIERFQ4LYqRD0M7ITDhWoh8pBH5iXi9VXsNrEQy+aL+guRPf41t8HGcqduPFRYF
+	 ZlotY3uuFo+i5rnYuIdXfVEPb2Y8esqsRfKPbbQcmBx4N8M9YpdZpC9XIhTQjwtZxi
+	 NtHj7kw+Z4vc4b7G+4MUHQ47J3ZAOiP0Bm6JPnWj70BTQLtipW7PZVqutN+QmfBExF
+	 ZE6BfzaXVjPioKtlYmwd05X2lvJrN0FM6ZrwGLEYlc66k4G63uwadJ44d94W6/xP2V
+	 HdYw6LtLoTMTrc9YVndtWqKMwXpcOXJfPZC0+kZLZGDlS4FW1Euxfc6O6KjFo2zPuV
+	 /dpDoa4XQjbDA==
+Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
+	id 27FFA328BDAC; Fri, 13 Nov 2026 23:08:25 +0000 (GMT)
+Date: Fri, 13 Nov 2026 23:08:25 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Cc: linux-spi@vger.kernel.org, Ryan Wanner <ryan.wanner@microchip.com>,
 	Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Radu Pirea <radu.pirea@microchip.com>,
-	Angelo Compagnucci <angelo.compagnucci@gmail.com>
-Subject: [PATCH v2 3/3] spi: atmel: allow changing bits_per_word between transfers
-Date: Sat, 14 Nov 2026 00:00:16 +0100
-Message-ID: <20261113230016.4144717-3-angelo.compagnucci@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261113230016.4144717-1-angelo.compagnucci@gmail.com>
+	Radu Pirea <radu.pirea@microchip.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] spi: atmel: keep DMA chunks to whole 16 bit words
+Message-ID: <80efd284-f13c-4efc-8384-5d46d7d5c65a@sirena.org.uk>
 References: <20261113230016.4144717-1-angelo.compagnucci@gmail.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
@@ -102,57 +62,36 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="LjV2J+a7LTFyhXlG"
+Content-Disposition: inline
+In-Reply-To: <20261113230016.4144717-1-angelo.compagnucci@gmail.com>
+X-Cookie: Earth is a beta site.
 
-The controller supports 8 to 16 bits per word, as its bits_per_word_mask
-says, but the word size is written in the chip select register only by
-setup(): a transfer with another word size fails with -ENOPROTOOPT
-("you can't yet change bits_per_word in transfers").
 
-The MIPI DBI panel drivers send commands in 8 bit words and pixels in 16
-bit words when the controller supports them, so no frame reaches an
-ILI9341 panel on an Arietta G25 (SAM9G25):
+--LjV2J+a7LTFyhXlG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-  ili9341 spi0.0: SPI transfer failed: -92
+On Sat, Nov 14, 2026 at 12:00:14AM +0100, Angelo Compagnucci wrote:
+> The PDC path cuts a long transfer into chunks of max_dma_len bytes, that
+> is SPI_MAX_DMA_XFER: 65535, an odd size. With more than 8 bits per word,
+> a chunk takes 65535 bytes off the remaining length, but programs the PDC
+> counters with 65535 / 2 = 32767 words, that is 65534 bytes. One byte is
+> lost at each chunk, and the next chunk starts in the middle of a word.
 
-The DMA and PIO paths already follow the word size of each transfer:
-when it differs from the configured one, update the BITS field of the
-chip select register instead of failing.
+Please supply cover letters for multi-patch serieses, it makes it much
+easier to keep track of what's going on for both people and tooling.
 
-Signed-off-by: Angelo Compagnucci <angelo.compagnucci@gmail.com>
----
-Changes v1 -> v2:
-  - Rebased on spi/for-next
+--LjV2J+a7LTFyhXlG
+Content-Type: application/pgp-signature; name="signature.asc"
 
- drivers/spi/spi-atmel.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 08075c9cc07b..0d28c08a85c3 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1402,9 +1402,18 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
- 	asd = spi->controller_state;
- 	bits = (asd->csr >> 4) & 0xf;
- 	if (bits != xfer->bits_per_word - 8) {
--		dev_dbg(&spi->dev,
--			"you can't yet change bits_per_word in transfers\n");
--		return -ENOPROTOOPT;
-+		int chip_select;
-+
-+		if (spi_get_csgpiod(spi, 0))
-+			chip_select = as->native_cs_for_gpio;
-+		else
-+			chip_select = spi_get_chipselect(spi, 0);
-+
-+		/* The chip select is active: only the word size changes */
-+		asd->csr = SPI_BFINS(BITS, xfer->bits_per_word - 8, asd->csr);
-+		spi_writel(as, CSR0 + 4 * chip_select, asd->csr);
-+		if (atmel_spi_is_v2(as))
-+			spi_writel(as, CSR0, asd->csr);
- 	}
- 
- 	/*
--- 
-2.53.0
+iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCaveYaAAKCRAv73Ows9A4
+ieTjAQDWqkdu7y4MSusxv8kW+zdN69QxsZH6WvPtJgN1/xwu6wD5AWEQ1gXERgTY
+6Nz7jN+wfuAUz7YLlSAIrhlr0H06Mwg=
+=s//O
+-----END PGP SIGNATURE-----
 
+--LjV2J+a7LTFyhXlG--

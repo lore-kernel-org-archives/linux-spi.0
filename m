@@ -1,61 +1,48 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794604184;
-	b=Ueful/gKqQYwUBEcdmC7zCYn8BIYgC5XALenAUonuHYJEWBjNX3HAwhed8W07df0ZLwY
-	 SLosy+AJRX4FLXirQRF0bzDq6tC5tVIVBNUiDNoLrjZGGkweePUg4AdxLNN8lXIpCrWlP
-	 psxzwLO2tQORAJpB9NjYD5yQAG9P3fWF2ZcuZ0nIentonMSOhdBzQi2T2q6MDcppNJrA3
-	 45mzjDrW4Fzwl0yMZZIO2851vLSS1zXv3fAaxDCogMOTklwSwGLI5Pu12pPh6bZNXAelI
-	 5aUOtLBNtC/0XWpeCo+oRGNBtTw/Q3PXpphpaJTusAwP+EsqZjQtzsQ92AhmyqqtEAA==
+	t=1794608265;
+	b=WxEnnLOlZckMkE4anVUbSehUkGGb5sgkHtcxfw/fJGpxlyG3DzQa6crYAhvo7g071bu4
+	 +2lTgt2VTtDmUbObh4VpaX7UIRFTSivXbTCvP1vRl7C1NL86ZhPSsYuIxBT2089r/L5TR
+	 ZQjWp+FURyDKVqpWvumMlYguTqwT38qjuKSOXym7X1RYg/9rwbVTxCHXSyxBhsbdjLGDG
+	 XKKWwtLL0AxUvb0/0cz9U83P4/sjC4fI04ZceDeJVKpRvgkmIvq0DCqwyKMRWfjYnNxet
+	 3VTYC10m0m/1XU2X4+lbkT4aCQMsDwbxj2o+Ef9fssUul05RjEYbwRjAPl1rRWMDoKg==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794604184;
-	h=Received:DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
-	 X-Cookie;
-	bh=6eOjhLOcX7Bv8sWhvREEGpmTmpCGHPEaE+aEgOt23XQ=;
-	b=Y18ggZnQsRpBOdP8W4kcCwdwytAAL1fNv9tNZ2Em2qnRvbIR4oVe7jw7Y2UVU30l3JU7
-	 7pUPQpgGSvKN5RASZoW18ItVQ2l26S+XD3dGIHwZ9GKX2VyTwbyI1n7cCcCd9vYLHvDh/
-	 aIKomku4tK9hr+s1GmurhLXpsnLB3w1z2oGdY5M1Ym+PpUfIvXhX0NAiRMj5E7xbPBNeL
-	 o9blVI05hdpbMuU5ga6BiNXHK/g9bZwlAGhnU9nWoP07RQOc4g/z1JFpxSEr82aXggSk3
-	 BGMONZhEvzAm+e06A4nQQP+IuYbUwPjROErILsC46oRjwzSX19JBz+nJSO7ZeGj/J1Q==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794608265;
+	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
+	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
+	bh=+FYlbmuLGJTM1hbgPeNeKHRfi8RnZORpiEHmn2s12IY=;
+	b=myBNCmPcx2Iq450Tw/osPJ4hO48+NkcsRRvUVxHpoEaAzUaSoT1Xvh99QJT0Nsuk5YHN
+	 cAQM5HIbhc2B7n6wiE4qenva2anevpMi2xU6nNXWCNdrFXiuGMz4UlnqA6y5my+9Dv6HP
+	 XcfIF+vezTbioEXDjSlINb/eZTD/2cECu3kY7eoGfgWSNfIUHn1S8JRdL6gmL/G/gM3wP
+	 cTZFNH0S1FqOHsPsVT1u+0Fw8TsKnadpmU8SCNe7OBv6Wmvb8i/xCLB8e7aTPImIzfo6H
+	 56qaXOka0kQNV+NIY9NnsnwvOE4aUHjwwIE7VscpLqOQy7x33SL8SoV+AzukYzJBhcg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nqCUiSpG;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X3xJiGDb;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4325760A383A;
-	Fri, 13 Nov 2026 21:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EF5606A323;
+	Fri, 13 Nov 2026 22:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nqCUiSpG
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3F01F01833;
-	Fri, 13 Nov 2026 21:09:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X3xJiGDb
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDB31F000C4;
+	Fri, 13 Nov 2026 22:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794604183;
-	bh=6eOjhLOcX7Bv8sWhvREEGpmTmpCGHPEaE+aEgOt23XQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nqCUiSpGxbHUSiczAUVv8s3WBnLLog8MtDYzaia8VJOSPs1A20eO0lDDUfbsw3AWG
-	 KYEgBs9ckxGaA2r7wdDrMlBeVrPq8X8eh3mkfs61wG9T01TUoB8IML3HaAfUPu/U3k
-	 FAnrErQXGEBL8xkVlROZnlvFQkdYChMO41TcTGCMHCPHq/fKU1H1xlL8Kmxb4eEHkl
-	 HdSlvnmJaAj5OVt6WG+k7bT0SUy4aaoGKXjQYww28Fyt5LaPslx+2mwZf8mctiUuT/
-	 SP9S9l9MPqo+fwbwwFoE+fjjMrnx9H+vPpkXv+JvcuDU1OrJIhMHq3nyhqfC2Qg7h2
-	 aKhgWMZc0M+qg==
-Received: by traversing.sirena.org.uk (Postfix, from userid 1000)
-	id D62E031BCD1C; Fri, 13 Nov 2026 21:09:38 +0000 (GMT)
-Date: Fri, 13 Nov 2026 21:09:38 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Navid Ghahremani <ghahramani.navid@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
-	stefandoesinger@gmail.com, krzk@kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 19/24] dt-bindings: spi: Add ZTE ZX family SPI flash
- controller binding
-Message-ID: <d21858d5-70c3-4c5c-afa5-ff0bd3e6afac@sirena.org.uk>
-References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
- <20261014072109.1759502-20-ghahramani.navid@gmail.com>
+	s=k20260515; t=1794608265;
+	bh=+FYlbmuLGJTM1hbgPeNeKHRfi8RnZORpiEHmn2s12IY=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=X3xJiGDbyJJIYwO8k1+QXLJ3XPJNSkHWx/IHVy8GrBUXicdw7s9Yaoqu6ByDIrMvd
+	 fM4TWDxtav+BNfn7gnPnMicW4RVxJW39LyiNwpp0LsMA7S7vUhUgMgxOTiu20wZ+B6
+	 al8XcIExUqBC83z7erv9E30rUgJVcgkl5HloiRVhx+o8m33cwIIGhBqs83aBHSg3Up
+	 nZ0H+K7M/wmyUVK8VZ/Zcu4TYFLPWEpryROA2qcJYRi6SZ491eHdFT77ZAuQ/hWzpK
+	 S8JryOUx1xv4NPT4LsYIxWIG0s2LtmaCUG/GME2z8SIXZJ2xVKrfvcyFpMIIAR5kYq
+	 LT2HciBuX9vHg==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 2FA70325F698;
+	Fri, 13 Nov 2026 22:17:36 +0000 (GMT)
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -65,42 +52,46 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RhwkDzC4iL2Rric6"
-Content-Disposition: inline
-In-Reply-To: <20261014072109.1759502-20-ghahramani.navid@gmail.com>
-X-Cookie: When in doubt, lead trump.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] spi: atmel: limit transfers to the bounce buffer
+ size
+From: Mark Brown <broonie@kernel.org>
+To: Angelo Compagnucci <angelo.compagnucci@gmail.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, 
+ Ryan Wanner <ryan.wanner@microchip.com>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, stable@vger.kernel.org
+In-Reply-To: <20261111154024.543546-1-angelo.compagnucci@gmail.com>
+References: <20261111154024.543546-1-angelo.compagnucci@gmail.com>
+Date: Fri, 13 Nov 2026 22:17:34 +0000
+Message-Id: <179460825499.448985.3170295057747053339.b4-review@b4>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=802; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=3lNillkmyVv6bRE4zL4+iIGLaUjQuqcV8seAnnxZngo=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+99Qf2O/IcW1+TF1GyZ8dlXslZ5+aopOqNv9z6Q/h3
+ Cd/fTLkO0pZGMS4GGTFFFnisrhf1pe8XsN3cGEbzBxWJpAhDFycAjCROn+GvzJeGkLXnsnWL/jZ
+ YBEjfmOt/zTnS+kuE2t517wou7jt421GhoVuS3uj/h17HhNc+bPNpvzHy3277j1y3PrA/XLuQw7
+ 2QjYA
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
+> On SAM9 SoCs (CONFIG_SOC_SAM_V4_V5) a DMA transfer from or to a vmalloc
+> buffer goes through bounce buffers of SPI_MAX_DMA_XFER bytes. The whole
+> transfer is copied in them though, whatever its length, and nothing
+> limits the length of a transfer: a longer one is copied past the end of
+> the buffer.
 
---RhwkDzC4iL2Rric6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> +/* Transfers from vmalloc buffers are copied in the bounce buffers */
+> +static size_t atmel_spi_max_transfer_size(struct spi_device *spi)
+> +{
+> +	return SPI_MAX_DMA_XFER;
 
-On Wed, Oct 14, 2026 at 08:20:59AM +0100, Navid Ghahremani wrote:
-> Add Device Tree binding for the ZTE ZX family SPI flash controller,
-> supporting both ZX29 and ZX279128S SoCs.
+This poorly namespaced driver specific constant is 65535 which is going
+to cause problems with 16 bit words, __spi_validate() will end up trying
+to split transfers into 65535 byte chunks which isn't going to go well.
+Picking an even number would avoid the issue.
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
-
-When submitting support for a new platform please make the base series
-for the platform a *minimal* series, then send additional drivers for
-the platform as separate serieses.  This makes things much easier to
-track, avoids confusion about how things will get merged and avoids
-DoSing people's inboxes.
-
---RhwkDzC4iL2Rric6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQReagvpf3TrrA7BoYYv73Ows9A4iQUCavd8kgAKCRAv73Ows9A4
-icX4AQDW7X4GJZGS91gcQnmi5cktf3ChuG4n1WJrZdXPKnjMNgEAls22Dv2oXK1s
-xI0aJ5KhbZkYCNWWpw3IctuvFu6a/gI=
-=eTNj
------END PGP SIGNATURE-----
-
---RhwkDzC4iL2Rric6--
+-- 
+Mark Brown <broonie@kernel.org>

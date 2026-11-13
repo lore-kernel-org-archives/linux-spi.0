@@ -1,69 +1,54 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794572362;
-	b=VSR0e/MyY3zWozQXi/17YAAOTznFiP5WMRXjLn5NtzOxXOca79lUvZqfVCf3oxR+fQys
-	 lmsps55qBcnkTvADCdFRVGbsLNQwfVxtb2Dt6BGoNFJB+qH6eVIQM4L/kM7fMCq2HPwyx
-	 Ve8VEPw0tSG9TfSWkD0WC9sGard+a2T67P3PB7YrV6Ty9d0/haZiR5prQE4DleAcJmaD6
-	 Sd1fGgVTL8neocvGd02j103rAqAejkV1BKIM8dWWkCAZms6jh9N7f0WscLVEN3u+xnR1E
-	 7zML3tDI9wJwgf3270BFurJcmJHzkKBxmwqYYos0uXB6wucXESXNTUujp5ClYSY9tww==
+	t=1794572709;
+	b=X35qq7bfRoBqYsky/TyT5HWku0e5z2QW2OUnPP5fM6EVAjMX/CERmqgxYaneYztkE/kb
+	 kNjF7O2KscXMN/EF14PPCbK5CpQAuP7oiNCRf5zWeqFgBzLGqOIIKeLwm+I7urpJS3NIL
+	 7srel2G6CRy1o9P/qYB2Y25Nh8pYjnnSgP5Z+NwB08unHohvro1K1PDpsk7x3cYyJpWdm
+	 p7GRUe+43IZGpWX1pVgCpc4IJ2nK3GZwi5ACr+748oWWh19IdLnnBeapmzemgRs7M85T0
+	 xstVUqZMZF808kAN86EFuEABwVtR5e5TsUabAJGBZW7Uf3BZWPFAhVSstWO1GlcECIA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794572362;
-	h=DMARC-Filter:Received:DKIM-Signature:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To;
-	bh=NInaYM5/ulsk78/rKQK71fJZph826pB2bolPCV0acww=;
-	b=h6f15Rds7aPjKp/hzYZkeEQaNGS6A+rxGNa3z9zV7ufpET17PY/LYLDmy2GrjGt1OQtn
-	 NTls1oPeSq3S68w9U5upV65LEOuL3s/yWr1XEIcvxqfBNGOh/k86FYqHH4f/+Ozf5CecV
-	 vaKR51OLpyTmBRzhi3BYsuT8aW1rWEw7r383fmdjMpovzyFAB/LUeRmY/3zgfBaG7OKtv
-	 CwuZo41Xlgq0bZI2Fjhn7qlx0XnWtZXQGQKZTuaUWcDGaJx4O3P+C6mmAD0LYPNiXzM+n
-	 VBD3Vn9TRRccgYVSiSGvJo1C8oBr8qR4mp51HQufHPaNY6KSV+xZy6dA2UyYAhzgtog==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794572709;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To:
+	 X-Cookie;
+	bh=EqCw5uzE8XALeVKaBC2jrOyc6WeslC8ZsxpNxhukdvo=;
+	b=Nd6DSZ5XvjDpd/oP+rS2AdnjNFdNgkXQ7Jhf/P+ZVjjMW137pPfK/yJEHyms9EcWYVRW
+	 Kfg6FrVDndVX/ZuEhE4mN+nNk7JhbDVKazRDT/y7WTCC6q6AU8GYABiDRglS/hX1F5I9k
+	 aSTuFZDU/QcWdu2hVpGXbU4fpeAJOhM+OVIdzutgiR/yQxW2fD06N4xkRjqoyS+ZBF2fb
+	 EVDY828nki1hJ8j2EEzJDWMPNAvdGiUCmn1Z4bPcNfOdckMHjHrWqXayCTP7EPC+4igWz
+	 oRSca98jcN9p7O/x4Aet4Wd24oQIq+KLUm0g4SoyPI5fF5lFML3jgUkhzgJCpLLzXBA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=codewreck.org;
-	spf=(null) smtp.mailfrom=codewreck.org;
-	dkim=pass header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=E1IES2KV;
-	arc=none smtp.remote-ip=62.210.214.84
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VUt2Xd5q;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A596606A332;
-	Fri, 13 Nov 2026 12:19:19 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4A596606A332
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=codewreck.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC2606A88B;
+	Fri, 13 Nov 2026 12:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=codewreck.org header.i=@codewreck.org header.a=rsa-sha256 header.s=2 header.b=E1IES2KV
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 58E4F14C2D6;
-	Fri, 13 Nov 2026 13:19:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1794572351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NInaYM5/ulsk78/rKQK71fJZph826pB2bolPCV0acww=;
-	b=E1IES2KVgYEB6pOuIqY3HGLBMX1AFtAm0XtC08mfjPnUlijVCi7/vHqpOvEHcBDRZ3KJQa
-	iDJ7mpQjjNoha05y5p1VK+S57OcLA5AR9x9zV+6jd3rt96pj1iKJljZctBdaI2kEduObrJ
-	k3hlUmlXS+nfzkShN13dZgVlh9kAv3NyLsP1zhNc1iPysCy0w/U4l1f+YR88lvVOZ6XLId
-	TEThieEH4us11BfqoC9CRavIV2DKviKArlyArxIVgtDvhIozTenJ3eOtH9RbchW9cp7tVp
-	Jcsd8U4GkSck9wq3bkWB3nCoj4RdiNf86lspYpMTy15LOQ3N3plt1lKa4JEB4Q==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 284c54b0;
-	Fri, 13 Nov 2026 12:19:04 +0000 (UTC)
-Date: Fri, 13 Nov 2026 21:18:49 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Jiawen Liu <1298662399@qq.com>
-Cc: broonie@kernel.org, cl634@andestech.com, william.zhang@broadcom.com,
-	kursad.oney@broadcom.com, jonas.gorski@gmail.com,
-	bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com,
-	f.fainelli@gmail.com, rafal@milecki.pl, olteanv@gmail.com,
-	han.xu@nxp.com, haibo.chen@nxp.com, yogeshgaur.83@gmail.com,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 4/4] spi: nxp-fspi: disable runtime PM on probe failures
-Message-ID: <avcAKdwmS3nZ2Uk_@codewreck.org>
-References: <20260620083931.1120616-1-1298662399@qq.com>
- <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VUt2Xd5q
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B435A1F000C5;
+	Fri, 13 Nov 2026 12:25:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794572709;
+	bh=EqCw5uzE8XALeVKaBC2jrOyc6WeslC8ZsxpNxhukdvo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VUt2Xd5qhFNMwF/hKucrVtY6uk/isDD24fFE/qGb5iUPllT7uwkhuBuR+bWsEbgRC
+	 IlVS3a1+bpURbo/HxPxsomob4gh1JipApkFKhQj/zT2BP2+BnSp/7jh9/SJcrP3yXv
+	 e8AhQAAEIYtTNK2XnlJn5nGg8A2Hz28Qzm0cHW0TUx3we95PwukjnJowZzLwRXCO1a
+	 HAK4BziWDKOuLNyEACboITHwr8MPChLofb1uZc+E2f+UUgQkuaZAhOnJAvRMrI11ne
+	 fuARqwqdvbYzET1VT0uUa5L6OrfSDH2Kx6AkhXzWdruki1RIctj/PBV5oXPRRj4yE9
+	 Hg7YXK5+64LGQ==
+Date: Fri, 13 Nov 2026 12:25:05 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Shuai Liu <847807867@qq.com>
+Cc: linux-spi@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org, dakr@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 0/3] rust: spi: add SPI driver abstractions
+Message-ID: <f8d00405-e8cf-4c77-a75c-9792ea81a546@sirena.org.uk>
+References: <179451185979.339049.12323339081307899766.b4-review@b4>
+ <tencent_097BA6F40A0B8FBC4C130C6EBF58F8048006@qq.com>
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -73,34 +58,43 @@ List-Unsubscribe: <mailto:linux-spi+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ggMePJOQVkw5nMmK"
 Content-Disposition: inline
-In-Reply-To: <tencent_8FC0B8DFAF4AE67AEBA20548045D53A77707@qq.com>
+In-Reply-To: <tencent_097BA6F40A0B8FBC4C130C6EBF58F8048006@qq.com>
+X-Cookie: Flee at once, all is discovered.
 
-Jiawen Liu wrote on Sat, Jun 20, 2026 at 12:39:31PM +0400:
-> @@ -1389,6 +1397,11 @@ static int nxp_fspi_probe(struct platform_device *pdev)
->  		return ret;
->  
->  	return devm_spi_register_controller(&pdev->dev, ctlr);
 
-Should failures in devm_spi_register_controller() also go through the
-error path, or is the current code as intended?
-e.g. something like
----
-ret = devm_spi_register_controller(&pdev->dev, ctlr);
-if (ret)
-	goto err_disable_pm;
-return 0;
----
+--ggMePJOQVkw5nMmK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> +
-> +err_disable_pm:
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	pm_runtime_disable(dev);
-> +	return ret;
->  }
->  
->  static int nxp_fspi_runtime_suspend(struct device *dev)
+On Fri, Nov 13, 2026 at 10:05:28AM +0800, Shuai Liu wrote:
+> Rework the device I/O to map onto the lower-level C APIs, as suggested
+> by Mark Brown [1]: instead of leveraging the C convenience wrappers
+> (spi_write(), spi_read() and spi_write_then_read()), all device I/O is
+> now built on a single `SpiDevice::transfer()` primitive that maps onto
+> spi_sync(). The convenience methods `write()`, `read()` and
+> `write_then_read()` remain as thin wrappers on top of `transfer()`.
 
--- 
-Dominique Martinet | Asmadeus
+Please don't send new patches in reply to old patches or serieses, this
+makes it harder for both people and tools to understand what is going
+on - it can bury things in mailboxes and make it difficult to keep track
+of what current patches are, both for the new patches and the old ones.
+
+--ggMePJOQVkw5nMmK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmr3AaAACgkQJNaLcl1U
+h9B8ZAgAgY6BVG6bG72JQRdVKvYmwEGGsir0CiGx82+qJ6rqrYYNL3cyBAIugk/i
+mHe8gV3P0SBW/dUC/iVvLVadtUQoTPemFeecZPX5wm88L+JWTIs5Mm0C3CoMZ4qt
+0fwPVawILQIRkJc6aSG+okQKY/VxRQOVT7k1Jbsg/Ojo3Tvph33SQvVwLmP54xft
+vSOP+LKoYdPk/uvFPz1bwdD9WvBSpUxPYket26MygkZVSI40jo8t9NnKT6TIkUzq
+5D65nbovb4cwX6NRCMcZOm+T7mPYdNwVkALf9/lgFiianbc7xD5tc/SPBItSjO7w
+VeVGwKMzvOI70QmQpasaRmXERDQmEQ==
+=r8pB
+-----END PGP SIGNATURE-----
+
+--ggMePJOQVkw5nMmK--

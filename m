@@ -1,87 +1,59 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794678533;
-	b=XjiA0pXwQvonUtTK2ALE9r1hTXqBmoDebZyvUB8hrwm2rj8YKTRr5FTbWAKdZ+yNg/CB
-	 tQut4tHf90ksTNL5EXesud2zO/M/eysonWQs0tTJK5kIfyKGGyxYwShnnsRG51gmQ6tIw
-	 UVJC+lZAm9my4U+JIUh/n9JCgAgPhHELf3F546KVVZjvWCTznVyjH4NqEoO+Ax6GDTe9t
-	 x6UohemLfUf0gPSOngO8uLcNTfI0D7/RNaSp5WHehNa+Rml4F/NjnbfExa6tK0Q0PftJy
-	 hKq3t5Cf4eycFjG86CVYLbKlSygMfVuPLavkoMTSvuGn3G5wYqhCTcmCIp5RQPJvb5Q==
+	t=1794743017;
+	b=2FvEYW9VuIt5xpJswcgu0TpJXBPMh1SRJ1pLaXJ8vvxNJddDweJ1Zo0fricB0pKv1N0H
+	 ehM79Q8Cp11SKv5//1mBd7zxxu6FWG65+dnOz4ENPJ0rWTnWlOTCRKJ9bapeh43YJuC5O
+	 +au2mnyORRsDvtkqwPm0LtIHcdETueeNmkPP0JDcroOrQ1SFo33zWJoaTEYnBEqUVL5sG
+	 Z347OvBbL4gCThgF3svKQtCx00gOHr2iEJZwXDV6ZPO4iIE+SFJGTiYm0ZnbHjqHaTX3Q
+	 io1EtgIVtx+8HfrE60fZoD0i5PDdzgrPRz7BPYP4cqC2aebDMaR1bpTsswK0Bhit9qQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794678533;
-	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:From:Date:Subject:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	 X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:X-Developer-Signature:
+	a=rsa-sha256; c=relaxed/relaxed; t=1794743017;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
 	 X-Developer-Key;
-	bh=Z/UcwHcKXUqaXtKk/lpD8kvZeZD8k73uW8qTCjwCp54=;
-	b=1G/K6Sju+zqJ072MGE4CzqVuju74Xcu7dUUEk2qSiUa6Mf65BVGMAS6+AzV5QdxHoyU+
-	 XcFzgyVpAWnAiOW0cPPKEKkriV7Ewab/jR/s2r922QTADbpy0XNRFTkbUYn5IkK9dd7O2
-	 UqW83eZr8d4afxoY83VKEHKyUUEgMKTOuRoiK6zCPPiUBaZQyINVbQMSHIURcPLAcZ4Y2
-	 yzPIHUn33U3SWMlXCO0SJbmbBXTZCgKhv+OtEi/PGAxJY1WWiMu77rfEsNR7u/V015Um3
-	 9XUW1jWlX29QZvyauYUqVL5rBpDKCou77NR4FxgRQJvRSub5DUbCfvya7PvpiNWL7lw==
+	bh=ndCwkyzBkwNimno4N3pad5pkUlTC+Q9Xp+JRgN8DBtg=;
+	b=H1WCpUBYIZ4ejARbZYnuDQPbuvq/bZGuFQC65dJ27et9JIDurwjZ3Q4rJ8tTnSogf+IN
+	 cvRgEEQIfyDfUKYPm178G3DYkw3knvk6r/jZ1sShkAZi8CKzdDsRPoz5z+zodpu6+SsJC
+	 hZyLqt8YIyk3nTKiMMDqIZOIZIoj6A6hRzsKshY0lP6mHbbl7kOjMv6N07ZAGm9T2JTLN
+	 TbMxV8aOLxcvGOpG2iSduu0dA+8HP1LSoRJ0ZRruFhzupNUb1FenROPmIkc0/r8xBRUZ9
+	 xbqxNrBcjIO2K1tfy4vC2t9P/3fzYQy/zGLJ9FgMkvhk2bTOjecy9n0Whcncs8wp6OA==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dmarc=pass header.from=gmail.com;
-	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rRxj0ctq;
-	arc=none smtp.remote-ip=209.85.210.179
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Arf2WU6n;
+	arc=none smtp.remote-ip=100.103.45.18
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5993606A32D
-	for <linux-spi@vger.kernel.org>; Sat, 14 Nov 2026 17:48:52 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B5993606A32D
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14DC606A31E
+	for <linux-spi@vger.kernel.org>; Sun, 15 Nov 2026 11:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=rRxj0ctq
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8a070755c8cso1256168b3a.0
-        for <linux-spi@vger.kernel.org>; Sat, 14 Nov 2026 09:48:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794678532; x=1795283332; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Z/UcwHcKXUqaXtKk/lpD8kvZeZD8k73uW8qTCjwCp54=;
-        b=rRxj0ctqpPtesi/Omr/um2Z61N/3D7qp882DAP9S1NCCR8QNyqo52R9c/iXb9q35Lc
-         wBkDdAXhVY7dKlCcCRu54s6Rw27XQKmcPaIacL4r1OJQ0OS/6D1XSO3hYiNyEMGUeW+c
-         YQEgWGk5c0ehv0Vg0eugObUB8lFMW1vADrq77DK3rPrM1TBLURk3bzDA0AQvSj3OYITk
-         BrUxj8wRR7idJX+JzDgpu9T67rEMPrsdbbqFcX8UugxC2ZODiXHJ3UUg2lTq+EBii9Yh
-         BIOtwQSAwVgHfwUfwEZmbms4UAkpn8cZ+O71VwOiHWklyT3tQIOeLmcQ4meHSXJu7H/D
-         4c7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794678532; x=1795283332;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Z/UcwHcKXUqaXtKk/lpD8kvZeZD8k73uW8qTCjwCp54=;
-        b=bzrQwFuXQdpSZWGEZBs7HZnWnJfR/f/xRjoYXrq9wuhjtg0VSs8W57KO6ts6nLKWHt
-         wQ6D8IU/q+iCYOB4jmhB8JkoKhVZ5xKqtZkaclz3iR9KzvEs345f4ylMV+8XXPPZKMwN
-         HgP8+s1whdP+g28rHuFcCJsHA6zcjEb7H6666LuR3WwyW7H18hnw2HzVfXWZSQ7TSWjO
-         +2C0aO8Q60av9wK6rOI4ygMdVnTsC7LcgCAu3sHTzSXvbFvGxiZJn0yYZt7oXq1gGoIU
-         4kEPuZl9x19lIj8SVG/muKvFsYxhL8cMPpwOnUE2Trg2kgqOjQ/3Ttz/dcRTXJt/S6dG
-         CwAw==
-X-Gm-Message-State: APuU4Z8uDEHxO3RH/MIM/FD20UpH6+9Ez5FWPnGLbaAbi6TA4eT4mtjm
-	ZlG84GnRzQJ1HDh3pdAfTdSaUZyhClUKy9aNkA1g0qirHuIKlQqI9iYqnx9S8t78
-X-Gm-Gg: AYBFou12Mvk3byndtU0GVuOrR7d+ujeILGdItYJSo6299uxan0ZleG//HtrcYnUCNIV
-	TAK2BeFM9g0h1TQWfRcvlMVSfbDVNRWW9vZ07tqnb89N/X+g13Lp5LZiPfRJx4rfY2gqp4CXZlP
-	V8eEpLwhB52O2bPTFW5oCCEM/vsmKyoki2d4su06n79oB3h5wwnvgVh/kognXI6NVG2M+P5t09n
-	yYkHqvCe20Wt///6l97SZLzk3gg3nrJ3G6nZs4zepMn+lT7wQAbOAhkyw+UPisLfhgQ/7zLfnvS
-	Li9HoFIQXthcI50PhcueyPe4sGYsfRsSCLCJjpQrEmk0BQpBu7bcWE4Oo0Q4fPNO7EX7NCDjV5f
-	j62uxkgWJ2EJvcDatet7NTC6qxCY3QCFEQfAan1DST6LcTrNDhfa7anUjaP+cikrwdz8LJhfMfR
-	YvhT8JNxhyk8LPVhgG7fLYIARvO4Jwa7JL4EYEmBF1dSGoZvRfyrIaGZJ4wqdWwACG4nVZ9vaT/
-	zipD7b65R7qq3OEoB+zXC6ZbTBfQ+QT7VpvATw8Bm1Da9vyV5/YgPEoyKEucAmj94prVP5JyU94
-	2R67deBMeuN3pzbxZZ04Q909JCNBd75NwgDhQDrAmpqBiw/AbrPT31xD8waVxkphHM6sb6o2BGH
-	Vzqqin72WV0CqqQ4oOJzFkhnbfIvJLQ==
-X-Received: by 2002:a05:6a21:8203:b0:3e2:490d:5127 with SMTP id adf61e73a8af0-3f7a4dbe495mr6706402637.2.1794678531850;
-        Sat, 14 Nov 2026 09:48:51 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9009:b6e2::7dee])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-cddc18b4352sm2670802a12.24.2026.11.14.09.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Nov 2026 09:48:51 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Sun, 15 Nov 2026 01:48:42 +0800
-Subject: [PATCH] spi: spi-qpic-snand: fix DMA unmapping on probe failure
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Arf2WU6n
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545BD1F000C4;
+	Sun, 15 Nov 2026 11:43:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794743017;
+	bh=ndCwkyzBkwNimno4N3pad5pkUlTC+Q9Xp+JRgN8DBtg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=Arf2WU6nh3QBzMXGb+EO2FgZNI0iBMFe2jr+PJcswFaAKrr4O45TXihEKtQ+YIqtB
+	 I65oMBH6EvAekUYFmyz4Wivz0ArUeUtBvaAwTn68zZEwJ1ZyfxWfQlzVFoPGngUF+e
+	 7PWGymHfcAqNdy902uHrjGojh2Xce7Mz56FjB+7ds165xNr4fQ4sts+kozCQViNd1c
+	 /vQMqXQY4ffktALySp0slffohNF1kwK8Emm/3U+SW2ELsShf7s/yBpNdWjJBZu3Ea+
+	 64f/a8rpAFxQu3Brty7BNIOVT1wd3dtQZIuzjc/lZpUUmX6vT0G5gRWT/r+LfcMSAw
+	 ivUuoT1Jn1IzQ==
+Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 8B2263366BEE;
+	Sun, 15 Nov 2026 11:43:35 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: Joseph CT Chan <jctchan@gmail.com>
+Cc: linux-spi@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
+ Bart Van Assche <bvanassche@acm.org>, 
+ Joseph CT Chan <josephctchan@google.com>
+In-Reply-To: <20261113020352.1741295-1-jctchan@gmail.com>
+References: <20261113020352.1741295-1-jctchan@gmail.com>
+Subject: Re: [PATCH v3 0/2] spi: unoptimize message when queuing it fails
+Message-Id: <179461119119.590303.9535934468622842107.b4-ty@b4>
+Date: Fri, 13 Nov 2026 23:06:31 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -93,58 +65,60 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261115-qpic-snand-v1-1-74df634096ee@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ5AMBBA0avIrDVpCUldRSyqpoxF0UEkjbsrl
- m/xfwTGQMjQZBECnsS0+ASVZ2An40cUNCRDIYtaKVWJbSUr2Bs/CNSuRCeNtqaCFKwBHV3frO1
- +89HPaPf3APf9ANXl5tpuAAAA
-X-Change-ID: 20261115-qpic-snand-e9f3ef0a9ca5
-To: Mark Brown <broonie@kernel.org>, 
- Sricharan Ramabadhran <quic_srichara@quicinc.com>, 
- Varadarajan Narayanan <quic_varada@quicinc.com>, 
- Md Sadre Alam <quic_mdalam@quicinc.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794678527; l=1199;
- i=ustc.gu@gmail.com; s=20261030; h=from:subject:message-id;
- bh=PW6c9S/gzhT1sfHRfpQ0G/XwjJdB33xWHslK5WJM/Mg=;
- b=wat4but5y2s3u9Lfh4bhf/ILk8tlX+ZbL5jq8u2nhvZRjeLummejFXOWVqRDdm2yr0HimJEWD
- ZZ3YOS0ZfyoDxfsTB/wzrGls5bwE7glQnT0i2QSBN3rvMWambq5yTNB
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjDJtbnSeysEBjmOfNYqYUUDS6g7Tfov9W5oGngTBfo=
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1825; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=rEPNX6MqaySi8GrPVbbGlcGh9wUm4m52v7oBHgPgBZY=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLJ+znr+P9ao3o79SS1P145pvHs/HIu5ZsV+6lHcl1/yO
+ 1/dYp80o6OUhUGMi0FWTJElLov7ZX3J6zV8Bxe2wcxhZQIZwsDFKQAT8TFhZNgc8nn18u+xsnVc
+ tturfRe9e5I7l2nb5nen5iYtSnyizTmR4X/UztKXEn+5p+U7Xj8bfuxkel2oUS1fIefkjoUne/Y
+ 7FfMBAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-The probe error path passes the physical MMIO address to
-dma_unmap_resource(). This can differ from the DMA address returned
-by dma_map_resource(), causing cleanup to unmap the wrong range
-and leave the original mapping allocated.
+On Fri, 13 Nov 2026 02:03:50 +0000, Joseph CT Chan wrote:
+> spi: unoptimize message when queuing it fails
+> 
+> From: Joseph CT Chan <josephctchan@google.com>
+> 
+> Hi Mark,
+> 
+> spi_async() and spi_sync() optimize a message before they queue it. If
+> queuing fails, the message is never finalized, so the split transfers
+> and the controller's optimize state leak and the message stays marked
+> as optimized. This happens with -EBUSY while another device holds
+> spi_bus_lock() (for example mmc_spi), with a stopped queue, and with an
+> error from a legacy transfer() callback. Patch 1 unoptimizes the message
+> on those error paths, and patch 2 adds KUnit tests for them.
+> 
+> [...]
 
-Use snandc->base_dma to unmap the resource, matching the remove path.
+Applied to
 
-Fixes: 7304d1909080 ("spi: spi-qpic: add driver for QCOM SPI NAND flash Interface")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/spi/spi-qpic-snand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
-diff --git a/drivers/spi/spi-qpic-snand.c b/drivers/spi/spi-qpic-snand.c
-index b03e2e4f0f0b..6cb6e02d2498 100644
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -1668,7 +1668,7 @@ static int qcom_spi_probe(struct platform_device *pdev)
- err_spi_init:
- 	qcom_nandc_unalloc(snandc);
- err_snand_alloc:
--	dma_unmap_resource(dev, res->start, resource_size(res),
-+	dma_unmap_resource(dev, snandc->base_dma, resource_size(res),
- 			   DMA_BIDIRECTIONAL, 0);
- 	return ret;
- }
+Thanks!
 
----
-base-commit: 793807ca13bf3072fc6d16ce6d90e9ab9beff2a5
-change-id: 20261115-qpic-snand-e9f3ef0a9ca5
+[1/2] spi: unoptimize message when queuing it fails
+      https://git.kernel.org/broonie/spi/c/91db5febb159
+[2/2] spi: add KUnit tests for message optimize state on queue errors
+      https://git.kernel.org/broonie/spi/c/f6fa7376869c
 
-Best regards,
---  
-Felix Gu <ustc.gu@gmail.com>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 

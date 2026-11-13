@@ -1,39 +1,39 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=114.242.206.163
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794548576;
-	b=HqzvhrkB0JWFNmxB2/vptRl5i/B/mJzpAM0h+jTqIk/8pSmdwPwa+TxHkiDEuiI/Qjt2
-	 Z9Tr9K0ZnNE/DsgZyxqupSU4zZ2iGb2FcDyXHbodn6yU5m23fAEVbOsa3wBooOgxyYz7O
-	 cwqB6cYOh/Al59B5yNaRTQMj1LNnHxkPAuy6uAFOzoyUjFrmUql5TE3zEdI+hhxh12ps2
-	 LPJ06/NcZ/FkCA/7rgLp9zuzjfx+4alorEUM2YxJIL09QepL5ckNdt4REvyNqV3/YbXYg
-	 UT4RGd6a9fjy5L9bOZ1sH4pYev2DoykCF9bySzb87cU/JgVQrJxnfogTseQ0KVHFniw==
+	b=yWeqxSCfy/8Kqf+7C0MTxNUTI16qf6nngg7TdTEIMtX7yepE/Iz5uKbGYkeqZSaifE8c
+	 yckWky42qwhm3t3g6/2pKnkNXmyWVrHlRKIgdUqpB7fqVcHYRyZQN/sVTrHKg837gaNAV
+	 Q6DHTMrUSWc8qH51F0nTTR8XoZ8FTJ4gu6ZFZfXpmcC7wQG8fz4CtGT0i0HAFXzMoLGJ8
+	 VhHX76Y0AUdw6ggkKaaTrp/Xq11U4hzLqlVV049HTOhXBNa9XkksFHoDWjs10Uodawmwg
+	 qMKuH4QZiF+jEBpKwdjpgXXpob6mzbEZaCppv+hYgsmdj7FpBz+YZKy0FzZAl/HIxgQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794548576;
 	h=DMARC-Filter:Received:Received:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding:X-CM-TRANSID:X-CM-SenderInfo:
 	 X-Coremail-Antispam;
-	bh=wuYOfInLZ36YS6poBKtPGGI0DNCRM/M6DV39HZ3Oo7E=;
-	b=pHbdMJUPPFwnlaUfahpVx8a7kdCHqcLdiNbR1Wf6Nre0AiownrdB59lhNwd6037BBpjg
-	 a2IltDWTqN6OF7NMPFbc1gSmzA/Jo6Tj2K3lnkkZeqywLUQJurOx3Q6B1v3CK+n3eGiQF
-	 i3XrIMYYZBjTihDgdshwZJ4ey4b6K6qZOBMJufoptDnNDGRkibpd6AYmNy8wEk1xRT8q0
-	 AcgQO0ZK/iIAjfeskQvo5cIdx6ZI0FpZ5MtEPEY4ay4boX1KARxj+QO4tmcBuZSCTDB97
-	 I7ohlQ0ETnGLwnoQexIUSBD1yOlzkVi4Gb76b8uu9uaSI3pqta5Y0eH0DECfQ4vi3LA==
+	bh=Y2c4gWC7HilQCJ9Zmz99cY/PoxHeM2QFnZyYqSm31ZY=;
+	b=gzd5LuKJNtMpRHVO68uZcTxa0siV+BTPhL+WC/QDFoLV1gDsnxIgRd27NU43zoWPbcbG
+	 kfNA8gNijktWSKikeNIn199NxheUsLm5MELEpUkQkdQAtr6uudr/2WBDHv+vYHySJTivr
+	 IEOD+BMkuobO5pHOYqg46UaxubKKQx+S4iEPW4JNS1fgYJUFJR73mS7l7CQEYPaS6WxZy
+	 Ed/SZvvjahUTjeJPwApYky+G6nQB8alS3r/YA522tQhqxc8ZNH+ENi1QaxD81X+sC5vqQ
+	 p6/6FMLNPpQL1c3/BlDY+hPAiv/qAL08lRXKbZmWyMjyEoz9WD5cx+lDW+OTd/qFutQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=none header.from=loongson.cn;
 	spf=pass smtp.mailfrom=loongson.cn;
 	arc=none smtp.remote-ip=114.242.206.163
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4196E606A330
-	for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 05:42:54 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 4196E606A330
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC6F606A32A
+	for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 05:42:55 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 7EC6F606A32A
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.17])
-	by gateway (Coremail) with SMTP id _____8AxXdJdo_Zq2x4fAA--.24438S3;
-	Fri, 13 Nov 2026 13:42:53 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxdvBeo_Zq4R4fAA--.23783S3;
+	Fri, 13 Nov 2026 13:42:54 +0800 (CST)
 Received: from kernelserver (unknown [223.64.69.17])
-	by front1 (Coremail) with SMTP id qMiowJAxFs1ao_ZqMSg0AA--.48458S4;
-	Fri, 13 Nov 2026 13:42:52 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJAxFs1ao_ZqMSg0AA--.48458S5;
+	Fri, 13 Nov 2026 13:42:53 +0800 (CST)
 From: Binbin Zhou <zhoubinbin@loongson.cn>
 To: Binbin Zhou <zhoubb.aaron@gmail.com>,
 	Huacai Chen <chenhuacai@loongson.cn>,
@@ -44,9 +44,9 @@ Cc: Huacai Chen <chenhuacai@kernel.org>,
 	loongarch@lists.linux.dev,
 	linux-spi@vger.kernel.org,
 	Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: [PATCH v2 6/7] spi: loongson: Use bitfield helpers for register access
-Date: Fri, 13 Nov 2026 13:42:42 +0800
-Message-ID: <204c9f81fa9af279974a8a8ca5293c263faa45cd.1794538736.git.zhoubinbin@loongson.cn>
+Subject: [PATCH v2 7/7] spi: loongson: Add interrupt mode support
+Date: Fri, 13 Nov 2026 13:42:43 +0800
+Message-ID: <09d0183cecce30fde0165af5fe3d4b3a362cfc1e.1794538736.git.zhoubinbin@loongson.cn>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1794538736.git.zhoubinbin@loongson.cn>
 References: <cover.1794538736.git.zhoubinbin@loongson.cn>
@@ -60,388 +60,479 @@ List-Owner: <mailto:linux-spi+owner@vger.kernel.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxFs1ao_ZqMSg0AA--.48458S4
-X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/1tbiAQEKCGr2b-sDTgAAsH
-X-Coremail-Antispam: 1Uk129KBj9fXoWfGw13GFyrtFW5tFWUWFWUWrX_yoW8Jw1fJo
-	W7Xas7Xw48u3W8C3Wjqr1FqrW7X345ur4qyrn3Aa4kJ3yayFyDJr9xZrW7uF48W3W3tFW3
-	AFyfKF48Kan2gF4Dl-sFpf9Il3svdjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8wcxFpf
+X-CM-TRANSID:qMiowJAxFs1ao_ZqMSg0AA--.48458S5
+X-CM-SenderInfo: p2kr3uplqex0o6or00hjvr0hdfq/1tbiAQEKCGr2b-sDTwAAsG
+X-Coremail-Antispam: 1Uk129KBj9fXoW3ZFW8GrykWF1DJr48KF1rAFc_yoW8XFy8Wo
+	WxZ3Z3Z3y8ur1xWFyjqr1Fqr47X3W5ur4qyrsay3WkJw4YvryDJry5Xr47uF18u3W3JFy7
+	AFyfGFW8GF4IgrWDl-sFpf9Il3svdjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8wcxFpf
 	9Il3svdxBIdaVrn0xqx4xG64xvF2IEw4CE5I8CrVC2j2Jv73VFW2AGmfu7bjvjm3AaLaJ3
-	UjIYCTnIWjp_UUUY17kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
+	UjIYCTnIWjp_UUUY87kC6x804xWl14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI
 	8IcIk0rVWrJVCq3wAFIxvE14AKwVWUGVWUXwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xG
 	Y2AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14
-	v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
-	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26rWY6Fy7McIj6I8E87Iv
-	67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Xr0_Ar1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUsdb1UUUUU
+	v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAF
+	wI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI
+	0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWrXVW3AwAv7VC2z280
+	aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28Icx
+	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
+	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
+	IY6xIIjxv20xvE14v26ryj6F1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
+	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aV
+	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0HUDJUUUUU==
 
-Replace open-coded read/modify/write sequences with
-loongson_spi_set_bits()/clear_bits()/update_bits(), define register
-bits via GENMASK/BIT, and use FIELD_PREP where the mask is a
-compile-time constant.
+Add an interrupt-driven transfer path alongside polling. The IRQ
+handler drains the RX FIFO, refills TX up to icnt+1 bytes and
+finalizes the transfer when complete; if no IRQ is available the
+driver falls back to polling.
 
-No functional change intended.
+Because a tail shorter than the interrupt period does not raise SPIF,
+the period is chosen to divide the transfer length, so the last batch
+always completes. Messages are also split into bounded chunks to keep
+each transfer within the SPI core timeout, given the low per-byte
+throughput of this controller.
 
 Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
 ---
- drivers/spi/spi-loongson-core.c | 136 ++++++++++++++++++--------------
- drivers/spi/spi-loongson.h      |  67 +++++++++++-----
- 2 files changed, 122 insertions(+), 81 deletions(-)
+ drivers/spi/spi-loongson-core.c | 241 ++++++++++++++++++++++++++++++--
+ drivers/spi/spi-loongson-pci.c  |  28 ++--
+ drivers/spi/spi-loongson-plat.c |  17 ++-
+ drivers/spi/spi-loongson.h      |  23 ++-
+ 4 files changed, 285 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/spi/spi-loongson-core.c b/drivers/spi/spi-loongson-core.c
-index 5991ce7b5603..74f47150cc6b 100644
+index 74f47150cc6b..8d9f85d58dba 100644
 --- a/drivers/spi/spi-loongson-core.c
 +++ b/drivers/spi/spi-loongson-core.c
-@@ -2,6 +2,8 @@
+@@ -1,5 +1,16 @@
+ // SPDX-License-Identifier: GPL-2.0+
  // Loongson SPI Support
++//
++// - Host-only controller with up to 4 chip selects.
++// - Tx/Rx FIFO with 4-bit wide entries;
++//   (1 on Loongson-2K0300, 4 on Loongson-2K3000).
++// - Supports booting the SoC from SPI flash.
++// - Both a polling mode and an interrupt mode are supported; in
++//   interrupt mode the number of bytes per interrupt is chosen from
++//   the FIFO depth (one byte per IRQ on a single-entry FIFO, up to
++//   4 bytes per IRQ on an 4-entry FIFO). The driver automatically
++//   falls back to polling if no IRQ is available.
++//
  // Copyright (C) 2023 Loongson Technology Corporation Limited
  
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/err.h>
-@@ -31,32 +33,54 @@ static const struct loongson_spi_div_table div_table[] = {
- 	{4096, 3, 2 },
- };
- 
--static inline void loongson_spi_write_reg(struct loongson_spi *spi, unsigned char reg,
--					  unsigned char data)
-+static void loongson_spi_write_reg(struct loongson_spi *spi, unsigned int reg,
-+				   unsigned char data)
- {
- 	writeb(data, spi->base + reg);
- }
- 
--static inline char loongson_spi_read_reg(struct loongson_spi *spi, unsigned char reg)
-+static unsigned char loongson_spi_read_reg(struct loongson_spi *spi, unsigned int reg)
- {
- 	return readb(spi->base + reg);
- }
- 
-+static void loongson_spi_set_bits(struct loongson_spi *spi, unsigned int reg,
-+				  unsigned char bits)
-+{
-+	writeb(readb(spi->base + reg) | bits, spi->base + reg);
-+}
-+
-+static void loongson_spi_clear_bits(struct loongson_spi *spi, unsigned int reg,
-+				    unsigned char bits)
-+{
-+	writeb(readb(spi->base + reg) & ~bits, spi->base + reg);
-+}
-+
-+static void loongson_spi_update_bits(struct loongson_spi *spi, unsigned int reg,
-+				     unsigned char mask, unsigned char val)
-+{
-+	unsigned char tmp = readb(spi->base + reg);
-+
-+	tmp &= ~mask;
-+	tmp |= val & mask;
-+	writeb(tmp, spi->base + reg);
-+}
-+
- static void loongson_spi_set_cs(struct spi_device *spi, bool en)
- {
--	int cs;
--	unsigned char mask = (BIT(4) | BIT(0)) << spi_get_chipselect(spi, 0);
--	unsigned char val = en ? mask :  (BIT(0) << spi_get_chipselect(spi, 0));
- 	struct loongson_spi *loongson_spi = spi_controller_get_devdata(spi->controller);
-+	unsigned int cs = spi_get_chipselect(spi, 0);
-+	unsigned char mask, val;
-+
-+	mask = LOONGSON_SPI_SFCS_SW_EN(cs) | LOONGSON_SPI_SFCS_OUT(cs);
-+	val = LOONGSON_SPI_SFCS_SW_EN(cs) | field_prep(LOONGSON_SPI_SFCS_OUT(cs), en);
- 
--	cs = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SFCS_REG) & ~mask;
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SFCS_REG, val | cs);
-+	loongson_spi_update_bits(loongson_spi, LOONGSON_SPI_SFCS_REG, mask, val);
- }
- 
- static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int hz)
- {
- 	unsigned long div;
--	unsigned char val;
- 	unsigned int i;
- 
- 	if (!hz || !loongson_spi->clk_rate)
-@@ -74,15 +98,11 @@ static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int
- 	if (i == ARRAY_SIZE(div_table))
- 		return -EINVAL;
- 
--	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG);
--	val &= ~GENMASK(1, 0);
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG,
--			       val | div_table[i].spr);
-+	loongson_spi_update_bits(loongson_spi, LOONGSON_SPI_SPCR_REG,
-+				 LOONGSON_SPI_SPCR_SPR, div_table[i].spr);
- 
--	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPER_REG);
--	val &= ~GENMASK(1, 0);
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPER_REG,
--			       val | div_table[i].spre);
-+	loongson_spi_update_bits(loongson_spi, LOONGSON_SPI_SPER_REG,
-+				 LOONGSON_SPI_SPER_SPRE, div_table[i].spre);
- 
- 	loongson_spi->hz = hz;
- 
-@@ -92,21 +112,23 @@ static int loongson_spi_set_clk(struct loongson_spi *loongson_spi, unsigned int
- static void loongson_spi_set_mode(struct loongson_spi *loongson_spi,
- 				  struct spi_device *spi)
- {
--	unsigned char val;
-+	unsigned char val = 0;
- 
--	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPCR_REG);
--	val &= ~(LOONGSON_SPI_SPCR_CPOL | LOONGSON_SPI_SPCR_CPHA);
- 	if (spi->mode & SPI_CPOL)
- 		val |= LOONGSON_SPI_SPCR_CPOL;
-+
- 	if (spi->mode & SPI_CPHA)
- 		val |= LOONGSON_SPI_SPCR_CPHA;
- 
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_SPCR_REG, val);
-+	loongson_spi_update_bits(loongson_spi, LOONGSON_SPI_SPCR_REG,
-+				 LOONGSON_SPI_SPCR_CPOL | LOONGSON_SPI_SPCR_CPHA,
-+				 val);
-+
- 	loongson_spi->mode = spi->mode;
- }
- 
- static int loongson_spi_update_state(struct loongson_spi *loongson_spi,
--				struct spi_device *spi, struct spi_transfer *t)
-+				     struct spi_device *spi, struct spi_transfer *t)
- {
- 	int ret;
- 
-@@ -124,13 +146,12 @@ static int loongson_spi_update_state(struct loongson_spi *loongson_spi,
- 
- static int loongson_spi_setup(struct spi_device *spi)
- {
--	struct loongson_spi *loongson_spi;
-+	struct loongson_spi *loongson_spi = spi_controller_get_devdata(spi->controller);
- 
--	loongson_spi = spi_controller_get_devdata(spi->controller);
--	if (spi->bits_per_word % 8)
-+	if (spi->bits_per_word % BITS_PER_BYTE)
- 		return -EINVAL;
- 
--	if (spi_get_chipselect(spi, 0) >= spi->controller->num_chipselect)
-+	if (spi_get_chipselect(spi, 0) >= LOONGSON_SPI_NUM_CS)
- 		return -EINVAL;
- 
- 	loongson_spi->hz = 0;
-@@ -138,41 +159,41 @@ static int loongson_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int loongson_spi_write_read_8bit(struct spi_device *spi, const u8 **tx_buf,
--					u8 **rx_buf, unsigned int num)
-+static int loongson_spi_write_read_8bit(struct spi_device *spi,
-+					const u8 **tx_buf, u8 **rx_buf)
- {
- 	struct loongson_spi *loongson_spi = spi_controller_get_devdata(spi->controller);
--	unsigned char status;
-+	unsigned char status, val = 0;
- 	int ret;
- 
- 	if (tx_buf && *tx_buf)
--		loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, *((*tx_buf)++));
--	else
--		loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, 0);
-+		val = *((*tx_buf)++);
-+
-+	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, val);
- 
- 	ret = readb_poll_timeout(loongson_spi->base + LOONGSON_SPI_SPSR_REG,
--				 status,
--				 !(status & LOONGSON_SPI_SPSR_RFEMPTY),
-+				 status, !(status & LOONGSON_SPI_SPSR_RFEMPTY),
- 				 1, USEC_PER_MSEC);
-+	if (ret)
-+		return ret;
-+
-+	val = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
- 
- 	if (rx_buf && *rx_buf)
--		*(*rx_buf)++ = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
--	else
--		loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
-+		*(*rx_buf)++ = val;
- 
+ #include <linux/bitfield.h>
+@@ -201,9 +212,178 @@ static int loongson_spi_write_read(struct spi_device *spi, struct spi_transfer *
  	return ret;
  }
  
- static int loongson_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	int ret;
--	unsigned int count;
-+	unsigned int count = xfer->len;
- 	const u8 *tx = xfer->tx_buf;
- 	u8 *rx = xfer->rx_buf;
-+	int ret;
- 
--	count = xfer->len;
- 	do {
--		ret = loongson_spi_write_read_8bit(spi, &tx, &rx, count);
-+		ret = loongson_spi_write_read_8bit(spi, &tx, &rx);
- 		if (ret)
- 			break;
- 	} while (--count);
-@@ -183,11 +204,9 @@ static int loongson_spi_write_read(struct spi_device *spi, struct spi_transfer *
++/*
++ * SPIF fires every (icnt + 1) bytes, and a tail shorter than that
++ * does not raise SPIF, which stalls the transfer. Pick the largest
++ * (icnt + 1) that divides len, falling back to 1 byte per interrupt.
++ */
++static unsigned int loongson_spi_calc_icnt(struct loongson_spi *loongson_spi,
++					   unsigned int len)
++{
++	unsigned int icnt_max;
++
++	icnt_max = min_t(unsigned int,
++			 FIELD_MAX(LOONGSON_SPI_SPER_ICNT),
++			 loongson_spi->fifo_depth - 1);
++
++	for (unsigned int icnt = icnt_max; icnt > 0; icnt--)
++		if (!(len % (icnt + 1)))
++			return icnt;
++	return 0;
++}
++
++static irqreturn_t loongson_spi_irq(int irq, void *dev_id)
++{
++	struct loongson_spi *loongson_spi = dev_id;
++	struct spi_controller *ctrl = loongson_spi->controller;
++	unsigned char status, data, limit;
++	bool done = false;
++
++	scoped_guard(spinlock_irqsave, &loongson_spi->lock) {
++		if (!loongson_spi->total)
++			return IRQ_HANDLED;
++
++		status = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPSR_REG);
++
++		if (!(status & LOONGSON_SPI_SPSR_EVENTS))
++			return IRQ_NONE;
++
++		if (status & LOONGSON_SPI_SPSR_WCOL)
++			loongson_spi_write_reg(loongson_spi,
++					       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_WCOL);
++
++		if (!(status & LOONGSON_SPI_SPSR_SPIF))
++			return IRQ_HANDLED;
++
++		loongson_spi_write_reg(loongson_spi,
++				       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_SPIF);
++
++		/* Drain the RX FIFO */
++		while (loongson_spi->count < loongson_spi->total) {
++			status = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPSR_REG);
++			if (status & LOONGSON_SPI_SPSR_RFEMPTY)
++				break;
++
++			data = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_FIFO_REG);
++			if (loongson_spi->rx_ptr)
++				loongson_spi->rx_ptr[loongson_spi->count] = (u8)data;
++
++			loongson_spi->count++;
++		}
++
++		/*
++		 * Refill the TX FIFO only until in-flight bytes reach icnt + 1,
++		 * so the next batch still forms a full interrupt period.
++		 */
++		limit = loongson_spi->icnt + 1;
++		while (loongson_spi->sent < loongson_spi->total &&
++		       (loongson_spi->sent - loongson_spi->count) < limit) {
++			status = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPSR_REG);
++			if (status & LOONGSON_SPI_SPSR_WFFULL)
++				break;
++
++			data = loongson_spi->tx_ptr ?
++			       loongson_spi->tx_ptr[loongson_spi->sent] : 0;
++
++			loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, data);
++			loongson_spi->sent++;
++		}
++
++		if (loongson_spi->count >= loongson_spi->total) {
++			loongson_spi_clear_bits(loongson_spi,
++						LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPIE);
++			done = true;
++		}
++	}
++
++	if (done)
++		spi_finalize_current_transfer(ctrl);
++
++	return IRQ_HANDLED;
++}
++
++static int loongson_spi_transfer_one_irq(struct spi_controller *host, struct spi_device *spi,
++					 struct spi_transfer *xfer)
++{
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(host);
++	unsigned int prefill, n = 0;
++
++	guard(spinlock_irqsave)(&loongson_spi->lock);
++
++	loongson_spi->tx_ptr = xfer->tx_buf;
++	loongson_spi->rx_ptr = xfer->rx_buf;
++	loongson_spi->total = xfer->len;
++	loongson_spi->count = 0;
++	loongson_spi->sent = 0;
++
++	/* Calculate and configure icnt */
++	loongson_spi->icnt = loongson_spi_calc_icnt(loongson_spi, xfer->len);
++	loongson_spi_update_bits(loongson_spi, LOONGSON_SPI_SPER_REG,
++				 LOONGSON_SPI_SPER_ICNT,
++				 FIELD_PREP(LOONGSON_SPI_SPER_ICNT, loongson_spi->icnt));
++
++	/* Clear any stale status */
++	loongson_spi_write_reg(loongson_spi,
++			       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_EVENTS);
++
++	/* Prefill at most icnt + 1 bytes */
++	prefill = min_t(unsigned int, xfer->len, loongson_spi->icnt + 1);
++	for (unsigned int i = 0; i < prefill; i++) {
++		unsigned int data = 0, status;
++
++		status = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_SPSR_REG);
++		if (status & LOONGSON_SPI_SPSR_WFFULL)
++			break;
++
++		if (loongson_spi->tx_ptr)
++			data = loongson_spi->tx_ptr[i];
++		loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_FIFO_REG, data);
++
++		n++;
++	}
++	loongson_spi->sent = n;
++
++	/* Enable the byte-completion interrupt */
++	loongson_spi_set_bits(loongson_spi,
++			      LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPIE);
++
++	return 1;
++}
++
++static void loongson_spi_handle_err(struct spi_controller *host, struct spi_message *msg)
++{
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(host);
++
++	/*
++	 * The SPI core has given up on this message (e.g. timeout) and
++	 * handed the buffers back to the caller. Stop the byte
++	 * interrupt, clear pending status, and mark the transfer dead so
++	 * that a late IRQ cannot write into the now-invalid buffers.
++	 */
++	loongson_spi_clear_bits(loongson_spi,
++				LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPIE);
++
++	loongson_spi_write_reg(loongson_spi,
++			       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_EVENTS);
++
++	scoped_guard(spinlock_irqsave, &loongson_spi->lock) {
++		loongson_spi->tx_ptr = NULL;
++		loongson_spi->rx_ptr = NULL;
++		loongson_spi->total = 0;
++		loongson_spi->count = 0;
++		loongson_spi->sent = 0;
++		loongson_spi->icnt = 0;
++	}
++}
++
  static int loongson_spi_prepare_message(struct spi_controller *ctlr, struct spi_message *m)
  {
  	struct loongson_spi *loongson_spi = spi_controller_get_devdata(ctlr);
--	unsigned char para;
++	int ret;
++
++	ret = spi_split_transfers_maxsize(ctlr, m, LOONGSON_SPI_MAX_XFER_SIZE);
++	if (ret)
++		return ret;
  
--	para = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_REG);
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG,
--			       para & ~LOONGSON_SPI_PARA_MEM_EN);
-+	loongson_spi_clear_bits(loongson_spi,
-+				LOONGSON_SPI_PARA_REG, LOONGSON_SPI_PARA_MEM_EN);
+ 	loongson_spi_clear_bits(loongson_spi,
+ 				LOONGSON_SPI_PARA_REG, LOONGSON_SPI_PARA_MEM_EN);
+@@ -221,10 +401,13 @@ static int loongson_spi_transfer_one(struct spi_controller *ctrl, struct spi_dev
+ 	if (ret)
+ 		return ret;
  
- 	return 0;
+-	if (xfer->len)
+-		return loongson_spi_write_read(spi, xfer);
++	if (!xfer->len)
++		return 0;
++
++	if (loongson_spi->use_irq)
++		return loongson_spi_transfer_one_irq(ctrl, spi, xfer);
+ 
+-	return 0;
++	return loongson_spi_write_read(spi, xfer);
  }
-@@ -211,30 +230,27 @@ static int loongson_spi_transfer_one(struct spi_controller *ctrl, struct spi_dev
+ 
  static int loongson_spi_unprepare_message(struct spi_controller *ctrl, struct spi_message *m)
- {
- 	struct loongson_spi *loongson_spi = spi_controller_get_devdata(ctrl);
--	unsigned char para;
- 
- 	/* Restore the hardware SPI Flash read path */
--	para = loongson_spi_read_reg(loongson_spi, LOONGSON_SPI_PARA_REG);
--	loongson_spi_write_reg(loongson_spi, LOONGSON_SPI_PARA_REG,
--			       para | LOONGSON_SPI_PARA_MEM_EN);
-+	loongson_spi_set_bits(loongson_spi,
-+			      LOONGSON_SPI_PARA_REG, LOONGSON_SPI_PARA_MEM_EN);
- 
- 	return 0;
- }
+@@ -240,15 +423,16 @@ static int loongson_spi_unprepare_message(struct spi_controller *ctrl, struct sp
  
  static void loongson_spi_reginit(struct loongson_spi *loongson_spi_dev)
  {
--	unsigned char val;
--
--	val = loongson_spi_read_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG);
--	val &= ~LOONGSON_SPI_SPCR_SPE;
--	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG, val);
-+	/* Disable SPI */
-+	loongson_spi_clear_bits(loongson_spi_dev,
-+				LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPE);
+-	/* Disable SPI */
++	/* Disable SPI and its interrupt */
+ 	loongson_spi_clear_bits(loongson_spi_dev,
+-				LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPE);
++				LOONGSON_SPI_SPCR_REG,
++				LOONGSON_SPI_SPCR_SPE | LOONGSON_SPI_SPCR_SPIE);
  
--	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPSR_REG,
--			       (LOONGSON_SPI_SPSR_SPIF | LOONGSON_SPI_SPSR_WCOL));
-+	/* Clear status flags (write 1 to clear) */
-+	loongson_spi_write_reg(loongson_spi_dev,
-+			       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_EVENTS);
+ 	/* Clear status flags (write 1 to clear) */
+ 	loongson_spi_write_reg(loongson_spi_dev,
+ 			       LOONGSON_SPI_SPSR_REG, LOONGSON_SPI_SPSR_EVENTS);
  
--	val = loongson_spi_read_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG);
--	val |= LOONGSON_SPI_SPCR_SPE;
--	loongson_spi_write_reg(loongson_spi_dev, LOONGSON_SPI_SPCR_REG, val);
-+	/* Enable SPI */
-+	loongson_spi_set_bits(loongson_spi_dev,
-+			      LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPE);
+-	/* Enable SPI */
++	/* Enable SPI (interrupt remains disabled until a transfer starts) */
+ 	loongson_spi_set_bits(loongson_spi_dev,
+ 			      LOONGSON_SPI_SPCR_REG, LOONGSON_SPI_SPCR_SPE);
+ }
+@@ -280,7 +464,45 @@ static int loongson_spi_get_clk_rate(struct device *dev)
+ 	return 0;
  }
  
- static int loongson_spi_get_clk_rate(struct device *dev)
-@@ -280,7 +296,7 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
+-int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
++static void loongson_spi_get_fifo_depth(struct device *dev)
++{
++	struct spi_controller *controller = dev_get_drvdata(dev);
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(controller);
++	unsigned int depth;
++
++	if (device_property_read_u32(dev, "fifo-depth", &depth)) {
++		loongson_spi->fifo_depth = 1;
++		dev_warn(dev,
++			 "fifo-depth not declared, defaulting to 1 (single-byte)");
++		return;
++	}
++
++	loongson_spi->fifo_depth = depth;
++}
++
++static void loongson_spi_irqinit(struct device *dev, int irq)
++{
++	struct spi_controller *controller = dev_get_drvdata(dev);
++	struct loongson_spi *loongson_spi = spi_controller_get_devdata(controller);
++	int ret;
++
++	if (irq <= 0) {
++		loongson_spi->use_irq = false;
++		return;
++	}
++
++	ret = devm_request_irq(dev, irq, loongson_spi_irq, 0, "loongson-spi", loongson_spi);
++	if (ret) {
++		loongson_spi->use_irq = false;
++		dev_warn(dev, "failed to request IRQ %d with %d, using polling", irq, ret);
++		return;
++	}
++
++	spin_lock_init(&loongson_spi->lock);
++	loongson_spi->use_irq = true;
++}
++
++int loongson_spi_init_controller(struct device *dev, void __iomem *regs, int irq)
+ {
+ 	struct spi_controller *controller;
+ 	struct loongson_spi *spi;
+@@ -295,6 +517,7 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
+ 	controller->prepare_message = loongson_spi_prepare_message;
  	controller->transfer_one = loongson_spi_transfer_one;
  	controller->unprepare_message = loongson_spi_unprepare_message;
++	controller->handle_err = loongson_spi_handle_err;
  	controller->set_cs = loongson_spi_set_cs;
--	controller->num_chipselect = 4;
-+	controller->num_chipselect = LOONGSON_SPI_NUM_CS;
+ 	controller->num_chipselect = LOONGSON_SPI_NUM_CS;
  	dev_set_drvdata(dev, controller);
+@@ -312,8 +535,8 @@ int loongson_spi_init_controller(struct device *dev, void __iomem *regs)
+ 	controller->min_speed_hz = DIV_ROUND_UP_ULL(spi->clk_rate, LOONGSON_SPI_DIV_MAX);
  
- 	spi = spi_controller_get_devdata(controller);
+ 	loongson_spi_reginit(spi);
+-
+-	spi->mode = 0;
++	loongson_spi_get_fifo_depth(dev);
++	loongson_spi_irqinit(dev, irq);
+ 
+ 	return devm_spi_register_controller(dev, controller);
+ }
+diff --git a/drivers/spi/spi-loongson-pci.c b/drivers/spi/spi-loongson-pci.c
+index ccc26efd88fe..5317603dc486 100644
+--- a/drivers/spi/spi-loongson-pci.c
++++ b/drivers/spi/spi-loongson-pci.c
+@@ -7,25 +7,33 @@
+ #include "spi-loongson.h"
+ 
+ static int loongson_spi_pci_register(struct pci_dev *pdev,
+-			const struct pci_device_id *ent)
++				     const struct pci_device_id *ent)
+ {
+-	int ret;
+-	void __iomem *reg_base;
+ 	struct device *dev = &pdev->dev;
+-	int pci_bar = 0;
++	void __iomem *reg_base;
++	int ret, irq = 0;
+ 
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret < 0)
+-		return dev_err_probe(dev, ret, "cannot enable pci device\n");
++		return dev_err_probe(dev, ret, "cannot enable pci device");
+ 
+-	reg_base = pcim_iomap_region(pdev, pci_bar, pci_name(pdev));
++	reg_base = pcim_iomap_region(pdev, 0, pci_name(pdev));
+ 	ret = PTR_ERR_OR_ZERO(reg_base);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to request and remap memory\n");
+-
+-	ret = loongson_spi_init_controller(dev, reg_base);
++		return dev_err_probe(dev, ret, "failed to request and remap memory");
++
++	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
++	if (ret < 0) {
++		dev_warn(dev, "no IRQ available, will use PIO mode");
++	} else {
++		irq = pci_irq_vector(pdev, 0);
++		if (irq < 0)
++			dev_warn(dev, "failed to get IRQ vector, will use PIO mode");
++	}
++
++	ret = loongson_spi_init_controller(dev, reg_base, irq);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to initialize controller\n");
++		return dev_err_probe(dev, ret, "failed to initialize controller");
+ 
+ 	return 0;
+ }
+diff --git a/drivers/spi/spi-loongson-plat.c b/drivers/spi/spi-loongson-plat.c
+index 6f8202264341..82d8505b6b66 100644
+--- a/drivers/spi/spi-loongson-plat.c
++++ b/drivers/spi/spi-loongson-plat.c
+@@ -9,17 +9,26 @@
+ 
+ static int loongson_spi_platform_probe(struct platform_device *pdev)
+ {
+-	int ret;
+-	void __iomem *reg_base;
+ 	struct device *dev = &pdev->dev;
++	void __iomem *reg_base;
++	int ret, irq = 0;
+ 
+ 	reg_base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(reg_base))
+ 		return PTR_ERR(reg_base);
+ 
+-	ret = loongson_spi_init_controller(dev, reg_base);
++	ret = platform_get_irq_optional(pdev, 0);
++	if (ret == -EPROBE_DEFER)
++		return -EPROBE_DEFER;
++
++	if (ret < 0)
++		dev_warn(dev, "no IRQ specified, will use PIO mode");
++	else
++		irq = ret;
++
++	ret = loongson_spi_init_controller(dev, reg_base, irq);
+ 	if (ret)
+-		return dev_err_probe(dev, ret, "failed to initialize controller\n");
++		return dev_err_probe(dev, ret, "failed to initialize controller");
+ 
+ 	return 0;
+ }
 diff --git a/drivers/spi/spi-loongson.h b/drivers/spi/spi-loongson.h
-index 983a39c9b0ae..c46169e8c780 100644
+index c46169e8c780..442f22ee89af 100644
 --- a/drivers/spi/spi-loongson.h
 +++ b/drivers/spi/spi-loongson.h
-@@ -5,34 +5,59 @@
- #ifndef __LINUX_SPI_LOONGSON_H
- #define __LINUX_SPI_LOONGSON_H
+@@ -35,6 +35,7 @@
  
--#include <linux/bits.h>
--#include <linux/pm.h>
--#include <linux/types.h>
-+/* SPI controller register offsets */
-+#define LOONGSON_SPI_SPCR_REG		0x00
-+#define LOONGSON_SPI_SPSR_REG		0x01
-+#define LOONGSON_SPI_FIFO_REG		0x02
-+#define LOONGSON_SPI_SPER_REG		0x03
-+#define LOONGSON_SPI_PARA_REG		0x04
-+#define LOONGSON_SPI_SFCS_REG		0x05
-+#define LOONGSON_SPI_TIMI_REG		0x06
+ /* SPER bits */
+ #define LOONGSON_SPI_SPER_SPRE		GENMASK(1, 0)
++#define LOONGSON_SPI_SPER_ICNT		GENMASK(7, 6)
  
--#define	LOONGSON_SPI_SPCR_REG	0x00
--#define	LOONGSON_SPI_SPSR_REG	0x01
--#define	LOONGSON_SPI_FIFO_REG	0x02
--#define	LOONGSON_SPI_SPER_REG	0x03
--#define	LOONGSON_SPI_PARA_REG	0x04
--#define	LOONGSON_SPI_SFCS_REG	0x05
--#define	LOONGSON_SPI_TIMI_REG	0x06
-+/* SPCR bits */
-+#define LOONGSON_SPI_SPCR_SPR		GENMASK(1, 0)
-+#define LOONGSON_SPI_SPCR_CPHA		BIT(2)
-+#define LOONGSON_SPI_SPCR_CPOL		BIT(3)
-+#define LOONGSON_SPI_SPCR_SPE		BIT(6)
-+#define LOONGSON_SPI_SPCR_SPIE		BIT(7)
+ /* SFC_PARAM bits */
+ #define LOONGSON_SPI_PARA_MEM_EN	BIT(0)
+@@ -54,6 +55,16 @@
  
--/* Bits definition for Loongson SPI register */
--#define	LOONGSON_SPI_PARA_MEM_EN	BIT(0)
--#define	LOONGSON_SPI_SPCR_CPHA	BIT(2)
--#define	LOONGSON_SPI_SPCR_CPOL	BIT(3)
--#define	LOONGSON_SPI_SPCR_SPE	BIT(6)
--#define	LOONGSON_SPI_SPSR_RFEMPTY	BIT(0)
--#define	LOONGSON_SPI_SPSR_WCOL	BIT(6)
--#define	LOONGSON_SPI_SPSR_SPIF	BIT(7)
-+/* SPSR bits */
-+#define LOONGSON_SPI_SPSR_RFEMPTY	BIT(0)
-+#define LOONGSON_SPI_SPSR_RFFULL	BIT(1)
-+#define LOONGSON_SPI_SPSR_WFEMPTY	BIT(2)
-+#define LOONGSON_SPI_SPSR_WFFULL	BIT(3)
-+#define LOONGSON_SPI_SPSR_WCOL		BIT(6)
-+#define LOONGSON_SPI_SPSR_SPIF		BIT(7)
-+
-+/* SPSR event bits: transfer complete (SPIF) or write collision (WCOL) */
-+#define LOONGSON_SPI_SPSR_EVENTS	(LOONGSON_SPI_SPSR_SPIF | \
-+					 LOONGSON_SPI_SPSR_WCOL)
-+
-+/* SPER bits */
-+#define LOONGSON_SPI_SPER_SPRE		GENMASK(1, 0)
-+
-+/* SFC_PARAM bits */
-+#define LOONGSON_SPI_PARA_MEM_EN	BIT(0)
-+
+ #define LOONGSON_SPI_NUM_CS		4
+ 
 +/*
-+ * SFC_SOFTCS layout:
-+ *   bit  cs      : per-CS software-control enable
-+ *   bit  cs + 4  : per-CS output level
-+ *
-+ * The chip select index is a runtime value, so FIELD_PREP() (which
-+ * requires a compile-time constant mask) cannot be used here. These
-+ * helpers keep the shift hidden behind a field-like accessor.
++ * This controller has no DMA and moves one byte per IRQ/polling
++ * iteration, so actual throughput is far below speed_hz while the
++ * SPI core scales its timeout from the theoretical speed_hz.
++ * Split messages into fixed-size chunks so each transfer completes
++ * well inside the core's per-transfer timeout. This is a software
++ * policy, not a hardware limit.
 + */
-+#define LOONGSON_SPI_SFCS_OUT_SHIFT	4
-+#define LOONGSON_SPI_SFCS_SW_EN(cs)	BIT(cs)
-+#define LOONGSON_SPI_SFCS_OUT(cs)	BIT((cs) + LOONGSON_SPI_SFCS_OUT_SHIFT)
++#define LOONGSON_SPI_MAX_XFER_SIZE	SZ_4K
 +
-+#define LOONGSON_SPI_NUM_CS		4
- 
  /* Hardware limits and divider masks */
  #define LOONGSON_SPI_DIV_MIN		2
  #define LOONGSON_SPI_DIV_MAX		4096
+@@ -92,8 +103,18 @@ struct loongson_spi {
+ 	unsigned int		mode;
+ 	u64			clk_rate;
+ 	struct loongson_spi_suspend_store lss;
++
++	spinlock_t		lock;	/* protects tx_ptr, rx_ptr and transfer state */
++	bool			use_irq;
++	const unsigned char	*tx_ptr;
++	unsigned char		*rx_ptr;
++	unsigned int		count;
++	unsigned int		sent;
++	unsigned int		total;
++	unsigned int		icnt;
++	unsigned int		fifo_depth;
+ };
  
--struct device;
--struct spi_controller;
--
- /**
-  * struct loongson_spi_div_table - SPI clock divider encoding
-  * @div:  resulting clock divider (SPI input clock / SPI output clock)
+-int loongson_spi_init_controller(struct device *dev, void __iomem *reg);
++int loongson_spi_init_controller(struct device *dev, void __iomem *regs, int irq);
+ extern const struct dev_pm_ops loongson_spi_dev_pm_ops;
+ #endif /* __LINUX_SPI_LOONGSON_H */
 -- 
 2.52.0
 

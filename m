@@ -1,48 +1,66 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=100.103.45.18
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1794611682;
-	b=c0udejsAEoB+1SKXsOy20E/off73r8GSKoD58p/INEftjVRG+peYAamXpjEtW09anYN+
-	 DNG33+yA/X769Qp4IVEz7a6NFinP3eXJziiTSzsV7YvPUpC7pWTY/ELtffeV8g/WSE6mw
-	 bG3CVei4Ori/LDLQxIj87ZRBnTBzVCdfWS7XJnDhB8r55i3lLB5yo0eFw82//x7AMqf5o
-	 M+LdPk7y/B5n4so/1BQnQY9Na4Nen6A+yR0F+dEfqU/kiBsMiK93+Up2vE5b4aBaqyyPR
-	 WwceuxuE+X0pUUrk/jJwEmNJfoXqnF7SQ9OAh6tdUO+pb3dSjG+wNNgkg57YwPhwmFQ==
+	t=1794616055;
+	b=JRg+I6RVAKi00RaYvso8mONFkvM9+MNLtgFE/QvBlCIVIwPdASGe73H1ru4O0LaPFVdo
+	 +O10XqCab/NO7xitbNEIxJx54+qbaABolEnqYaSqsDhfRNsh2/0KXsNwGHo0kuYA5GRLJ
+	 BLc4SLjAp+GMniT+o9ocgKsw9ITwfbCtzG8aQQJBDjwzXTA3svmFQs4GOFZZxeGJZDInv
+	 mnka/OuSq7y/+vpc3oCN9DOrR5BjPi+PBQLpgIHjh5X/RraJ9ck2HRc0wwFOWbAb4QRkY
+	 YNJ2B8mTSOKDdSWR3okCUFYX9Y8f2X7cEJNgAKdsrKMhTPAUpGQHcD3zCnHD0UlOMKA==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1794611682;
-	h=Received:DKIM-Signature:Received:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:References:
-	 Date:Message-Id:X-Mailer:X-Developer-Signature:X-Developer-Key;
-	bh=pXGSM9Y3EpP8jnrBzAJoxv43kXDNPaxem0R/Fx5BGmM=;
-	b=0EHelChS28p2SY9Z8h65GOyw/QwZWsyIwFAQdhm2ZvEi9FBNYqmC9o+Fq1urV7iEEIDi
-	 ImEEHsk3/kS8gKNiYhE5I4DQ9+KN3Xlj0SFdh+rhlcEbM9tVXop1en15K5C2KX+spLQeo
-	 w/b0WT0qQwmtgwvA9wCar9a8G8tKTiEX2NQCA7E9lah1j5t57vB4AhpyFYa4NJtSYiZLj
-	 OMs0A0lVeNLkWzuf8EQ6Get8Nmwtim5YQS4jMx4GSFpgil0vxnv2IYwx10MkVYXOxOHFw
-	 9PwZf0+JXzmSAXwqg2jqe97DvLq1VQOIG49vnramj59reJweGVAbUIPgPru/dBEPuWQ==
+	a=rsa-sha256; c=relaxed/relaxed; t=1794616055;
+	h=Received:DKIM-Signature:Received:From:To:Cc:In-Reply-To:References:
+	 Subject:Message-Id:Date:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:X-Mailer:X-Developer-Signature:
+	 X-Developer-Key;
+	bh=ki/ePS7jWs9uNuv0DOOM5RNpbzB+sOQfsfxY6BGgUp4=;
+	b=R+qaYF16/oqaTQIl7m75uH3lR99pA/5JZ56FTmvzpKuBK0qARP8pRrNezGpSgBMrdB1X
+	 8S+l6E+04vJF3wPFTAy5wWu0keIYH/xz7dFTSjB8d0NE7zsKqUqJm8wiQX5cTA2Qdnmk/
+	 4uEJFnAPZHhbJW4FwR3lw8mc1Zt617sj53qEiAYHWHfB9OktpsqREZ5MwBTSz2FS4sgSm
+	 VbR8jmyx8T7pKqw3OzhmIb5jTlWIPpw8YqOowQ2FQxIsCHp6/T3K9rJgUKOxN5PTC9OFK
+	 tbddUef4OGG3MZAc4Kxhmck9ReTGlO6EmVpFu7AG5vWBTKtrtX3F6k8ZwtPrpv5/Ivw==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
-	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EVHrIAPA;
+	dkim=pass header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjJgmRfT;
 	arc=none smtp.remote-ip=100.103.45.18
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7C2606A335;
-	Fri, 13 Nov 2026 23:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F4606A329;
+	Sat, 14 Nov 2026 00:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EVHrIAPA
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461B1F000C4;
-	Fri, 13 Nov 2026 23:14:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IjJgmRfT
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C6E1F000C4;
+	Sat, 14 Nov 2026 00:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794611682;
-	bh=pXGSM9Y3EpP8jnrBzAJoxv43kXDNPaxem0R/Fx5BGmM=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=EVHrIAPA8Wn6pkqAi/ZJrxxnCngTzoj3f9VE7VrK5fQqQtpk3Vk+H50eYTjek62Vb
-	 rkuPr4HAka6aT/QEzVS14ihKp4AVkV5n46BZnN4K+E5tFhOugKbJoZ7J8XaQGV82Mp
-	 pD5j8zOc3lGY4n9V1YJZO80cQPx39ae8GP4gdbkgXwxDr8QxmQVOZCTncHhkY7XvR4
-	 woDxioWwlHY9ycLUdUtvTYQlBP/yWXc7q03HrLrPqlgGC9kDlu1nvi7qryK/xddYcC
-	 mPfeOY6Dk+COgktruhoKFA4uEN96yh5iTNJF/LBpet2i+9LqU68+tibm2tvVtd1Gd4
-	 IYcJiNgBXOtmg==
+	s=k20260515; t=1794616055;
+	bh=ki/ePS7jWs9uNuv0DOOM5RNpbzB+sOQfsfxY6BGgUp4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=IjJgmRfTMn0LDXFga6bVNSny1CE35GU8FBWb1A/nhj+KCs9P2O8qjs5GjDMbPKPqd
+	 E/PUv80wtNAHJAVM0RtVz5I1c8MJj6wGZJEWLLHGsbVs2AjKNjWa1Nt0OU//hgiPxZ
+	 V0xbkVIh1I1ZYq211qbIU67Dw+l2r7dahoDDKF5OgrzHu93CVDZOsy5lJ9/lIpumJ0
+	 babkNoNnfauJTkBURAc3vUfPxzEGwjB7OiBWEzwt00she+ujAkoI3kL3nO/xb9Ue8j
+	 e8hU+wOFal6FYl38dONN5BQZVzLdbezqXDNDIhYdqrMX62ASANqLaRdClZsqjIGEZe
+	 J5cBJi7CMPQww==
 Received: from traversing.sirena.org.uk (localhost [IPv6:::1])
-	by traversing.sirena.org.uk (Postfix) with ESMTP id 5498C328C243;
-	Fri, 13 Nov 2026 23:14:37 +0000 (GMT)
+	by traversing.sirena.org.uk (Postfix) with ESMTP id 82FAF329EA01;
+	Sat, 14 Nov 2026 00:27:32 +0000 (GMT)
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, shao.mingyin@zte.com.cn
+Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ pjw@kernel.org, samuel.holland@sifive.com, william.zhang@broadcom.com, 
+ kursad.oney@broadcom.com, jonas.gorski@gmail.com, 
+ bcm-kernel-feedback-list@broadcom.com, anand.gore@broadcom.com, 
+ florian.fainelli@broadcom.com, rafal@milecki.pl, 
+ linux-arm-kernel@lists.infradead.org, sven@kernel.org, j@jannau.net, 
+ neal@gompa.dev, asahi@lists.linux.dev, ryan.wanner@microchip.com, 
+ nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com, 
+ claudiu.beznea@tuxon.dev
+In-Reply-To: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
+References: <20261110233450305Smji446Uhvoxa7r8SHEgl@zte.com.cn>
+Subject: Re: [PATCH v2 0/5] spi: fix division by zero with a zero transfer
+ speed
+Message-Id: <179460764342.448985.18219249061160291658.b4-ty@b4>
+Date: Fri, 13 Nov 2026 22:07:23 +0000
 X-Mailing-List: linux-spi@vger.kernel.org
 List-Id: <linux-spi.vger.kernel.org>
 List-Post: <mailto:linux-spi@vger.kernel.org>
@@ -54,41 +72,62 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] spi: sun6i: Add dual read support for the H616
-From: Mark Brown <broonie@kernel.org>
-To: Arun Iyengar <aiyengar1990@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20261110-spi-sun6i-h616-dual-read-v1-1-59bea5a897d4@gmail.com>
-References: <20261110-spi-sun6i-h616-dual-read-v1-1-59bea5a897d4@gmail.com>
-Date: Fri, 13 Nov 2026 23:14:36 +0000
-Message-Id: <179461167656.590303.12402709871115244251.b4-review@b4>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=789; i=broonie@kernel.org;
- h=from:subject:message-id; bh=rr0+rqD3HhJ16MSAH8jAU6LM9LnKj9iXMGerOv/Xe6k=;
- b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+z7y79hmDSpxcRO3Lgh3ts9fdW/34mcq1FV9bp3Qeb
- N638egum45SFgYxLgZZMUWWuCzul/Ulr9fwHVzYBjOHlQlkCAMXpwBM5N0lRobPh8pUWG86us72
- KvAOWBaedufA7Yd/VQs18jcELY19+LWG4Z9lVk9+2DXFVJ9r5gJZkheL92zg/8j2QWqprv7X/bl
- HJbkB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2160; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=Me9l+RLPg/bosA9FhUgKDZ9QSUrdM0aawNht8FMS9I4=;
+ b=owGbwMvMwCWm/754w+YLFp2Mp9WSGLK+r3rfUD5D64OkT3ut1F3Pz307/66Nyl0pO2dGUduKv
+ MObtK2OdJSyMIhxMciKKbLEZXG/rC95vYbv4MI2mDmsTCBDGLg4BWAiSkoM/8sc1JMDjoSe9+tg
+ WL1+JlPeS5ngTcz2z2+7qO00mFfJJ8PwT81ntu+ddRtNN8hXmmm+e37oV/jxUzYzeJULKuedT7V
+ /wAgA
 X-Developer-Key: i=broonie@kernel.org; a=openpgp;
  fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> The H616 SPI controllers are bound through the "allwinner,sun8i-h3-spi"
-> fallback, whose configuration advertises no dual or quad modes. The
+On Tue, 10 Nov 2026 23:34:50 +0800, shao.mingyin@zte.com.cn wrote:
+> spi: fix division by zero with a zero transfer speed
+> 
+> Five SPI controller drivers compute a clock divider from the transfer
+> speed without checking that it is non-zero.  A SPI device whose
+> max_speed_hz is zero (a DT node without spi-max-frequency, or a device
+> created through the spidev sysfs new_device interface without a speed)
+> therefore reaches the division with speed_hz == 0.  The SPI core clamps
+> such a device to the controller limit only when host->max_speed_hz is
+> set, and none of these five drivers sets it.
+> 
+> [...]
 
-> @@ -785,6 +791,7 @@ static const struct sun6i_spi_cfg sun50i_r329_spi_cfg = {
->  static const struct of_device_id sun6i_spi_match[] = {
->  	{ .compatible = "allwinner,sun6i-a31-spi", .data = &sun6i_a31_spi_cfg },
->  	{ .compatible = "allwinner,sun8i-h3-spi",  .data = &sun8i_h3_spi_cfg },
-> +	{ .compatible = "allwinner,sun50i-h616-spi", .data = &sun50i_h616_spi_cfg },
->  	{ .compatible = "allwinner,sun50i-r329-spi", .data = &sun50i_r329_spi_cfg },
->  	/*
->  	 * A523's SPI controller has a combined RX buffer + FIFO counter
+Applied to
 
-This new compatible needs a corresponding DT binding update.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.5
 
--- 
-Mark Brown <broonie@kernel.org>
+Thanks!
+
+[1/5] spi: sifive: clamp the clock divider to the register range
+      https://git.kernel.org/broonie/spi/c/49071cdbecd3
+[2/5] spi: bcm63xx-hsspi: fix division by zero for devices without a max speed
+      https://git.kernel.org/broonie/spi/c/82ff536b6049
+[3/5] spi: bcmbca-hsspi: fix division by zero for devices without a max speed
+      https://git.kernel.org/broonie/spi/c/167fe08d3ba5
+[4/5] spi: apple: fix division by zero in clock divisor calculation
+      https://git.kernel.org/broonie/spi/c/ee22df21fdf4
+[5/5] spi: atmel: use the maximum divider for an unspecified speed
+      https://git.kernel.org/broonie/spi/c/51953948d6a8
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+

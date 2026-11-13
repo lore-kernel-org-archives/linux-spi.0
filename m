@@ -1,47 +1,47 @@
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=185.11.138.130
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
 	t=1794577831;
-	b=HQ9j7Y6N5/IIAT6GI8uliuWhlG2mNmAEdJ1Rb98gxWQp2iMZn9SKsZmLC5G564wmHvzI
-	 yDWPG1FVcWlLIOAMzcBmKs7jhr+XCSH8A+Y6bP4tcuFXNPehxW1rYjImreQD2U7et18Iw
-	 XTOL4jyqBDvOpZ2JknOTu2naEih0neRcvKYqszp/lkrVPT8kXT/zN46kaaaQgrnGLHynZ
-	 bSAlSOkW5RSHbZ1IkOTz2/WAwYU4XVgAP+V5COax9UsxZckydPWvwXyV2NCuf+QHZZ1Dd
-	 fTFl+10jzz4Pn9qHx22S/xKg8RgudPmP+y4JboC1dNguZFx7T4d8be6mjq2+LrW39BA==
+	b=ooZ1yC5funlzQwAEOSe7I6TNCsBBzxp9B7faECujdBHxGfvDQPmz93cyACAiuXJPhSFx
+	 qePvKFp4vR6RY7vyCJWDysSnpWwO6Q41hClwDgCogLaSbGixnvcUHbhlL2HHC7PSX/nQA
+	 T8vuKhcDJ5FM9pf9T4DCsE9pIKTbmm+to/uMqxJbr8jWE+BorZCsuG3yVZtZVhQmBKSC4
+	 Ul7s7pmZTFvylxU75QT8QYCR+b3noMk6ExkrJ0vHV/qEFKpy0tROkNvcTbpRjij4ISVJf
+	 XnNHFsbqVaP1V0TZ5jGEoMUhuhL+Fc/f8Bhr1QUGdMznXAeuX+dKuyddwvTedy7mA4g==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
 	a=rsa-sha256; c=relaxed/relaxed; t=1794577831;
 	h=DMARC-Filter:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:
 	 Content-Transfer-Encoding;
-	bh=0oMXGLoKcrMltsWL6uMm4zEKFcls2YExOE/JJ6JogwE=;
-	b=dzLWrAaG6kGTgjt74DG5HhsCC2lZl0CaHqhtIR76A+jZxsnR1NpPF+AlxAA30oORfMmb
-	 bRgcgBIhZnqYfq+O0D8a84I75OhFmbpuvEXVm9sKyeKCPJQ1fSnQAewsG4qkltP+I1u49
-	 7I2bnWwcxNYPAIY3H6PqwRUtnEuq3sHJfAaNe40AnyBaZxzssk+VXBqIpb2BhDJNQQN1t
-	 pwc5SisS40Qg0TCADpnvv44/cm8En91GJCxVINBu6hhcdDzwBJZynPcjLK2cZ5F08HezK
-	 ksbD4PAZkmjJYbjcH932dm6Jj3pY/MJXVCIQab24aVNcqE2R7kxZ0HPUoi7uKeSCY5Q==
+	bh=khN6VDPnjL2LqUdtA4sH+OiPa/4+wQB3zpuMWXL1Td4=;
+	b=boyxcGejJHxWzsOdB/DlMDt5AcyzfMyCWOaUMv0hWFFA7fPoqkexpoBIGw8/EHY+7Xaq
+	 /YCjO6XgTb/Q2MkT4aJecvsUEHIEScx9snL2DwIwQsrrP5wPJkSFQ6dxTqfH9JDKANtJ6
+	 4rgLvtza/Echs5JKHHgFxN5ojb2hCG4cwyCSRQGIkfJsHfoh88L6lAdyRso6gW1Kqjwfn
+	 FodWnWrtA5fFg9Hqe6jN+yR7aK3Cgm/V6UNriOx56AV3tRIYh44vzr2V7tD28Agi9wlQi
+	 K6O8rXNN561HFY6bgyajwEFwadoCKqLacf2CvELuj7QZp+DkqMiL0OdqO+Woyd2MiNQ==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=sntech.de;
 	spf=pass smtp.mailfrom=sntech.de;
-	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=RVvrMH6Z;
+	dkim=pass header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=mhdiNYbh;
 	arc=none smtp.remote-ip=185.11.138.130
 Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B6860A381A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23CC606A893
 	for <linux-spi@vger.kernel.org>; Fri, 13 Nov 2026 13:50:29 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org B4B6860A381A
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org E23CC606A893
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=RVvrMH6Z
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.a=rsa-sha256 header.s=gloria202408 header.b=mhdiNYbh
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
 	s=gloria202408; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type;
-	bh=0oMXGLoKcrMltsWL6uMm4zEKFcls2YExOE/JJ6JogwE=; b=RVvrMH6Z/IifApCX991OGZ23zo
-	U6Vu4i6+RouBvXDRHWrfvr7HFsgmiseIqsRipsZ9ImX2YQCuvoeEIatmwXZ/cCRdNuDwyW3N0UpYW
-	ZW5BDSrqajHEYY98UeF+ZPnbZbZwGuFVjUjHSXVF0qQttw0HgEDgasM7H96bd+4S03Csltf78Yd5a
-	Hki/fOYpcK4cGJJr2UVNZ57hREGRnr7tnib2lPzTt33aTrURV6VWWr0PDqx2R/YmFWjFkdGLnOkiU
-	C9JCvxuhhhx/MQEgEWzxg7JwXqKB7EgPrRCBhlnoKU42d794xx/omep2t2N6X81nzDDOMtwvwhVyC
-	Qxp/23eQ==;
+	bh=khN6VDPnjL2LqUdtA4sH+OiPa/4+wQB3zpuMWXL1Td4=; b=mhdiNYbhNfy//abGacUQnpqiZX
+	2CDg297VC+uJbfwGwG5bMY3G+EuHb4u3KQgbHImRd4TW80PhvYIC2EDa7JEnopvoiSzqxrSbQoaWn
+	A8FA7ZOKzkWyDjXzrN1ay9GRbVul4R/FbegW/jYHopGkff1EdH3RD/1Z8Eekd1uOFjNvRStzQM7to
+	3aJcN7Y9/g6NdFcfIZKy+ijWKAsRV5Fbvlk6Q/e32JQajpR9VeAH/v79qpey/mvvMoIX/9beAyP2p
+	HKvaeYLmIcL6Avr36mOEL3e5pRwLfyDJO7JTSrQf0Xwu6y6x0/suVRDqwVcB4wOYx1cLrux91hvHK
+	pFq1wCSg==;
 From: Heiko Stuebner <heiko@sntech.de>
 To: broonie@kernel.org
 Cc: Heiko Stuebner <heiko@sntech.de>,
@@ -52,9 +52,9 @@ Cc: Heiko Stuebner <heiko@sntech.de>,
 	Lee Jones <lee@kernel.org>,
 	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Heiko Stuebner <heiko.stuebner@cherry.de>
-Subject: [PATCH v2 4/6] spi: rockchip: Fix runtime resume error handling
-Date: Fri, 13 Nov 2026 14:50:15 +0100
-Message-ID: <20261113135017.1047959-5-heiko@sntech.de>
+Subject: [PATCH v2 5/6] spi: rockchip: Move to pm_runtime_resume_and_get
+Date: Fri, 13 Nov 2026 14:50:16 +0100
+Message-ID: <20261113135017.1047959-6-heiko@sntech.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261113135017.1047959-1-heiko@sntech.de>
 References: <20261113135017.1047959-1-heiko@sntech.de>
@@ -71,33 +71,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-When enabling the apb-clock any error does get handled, but when an
-error happens enabling the spiclk itself, only the apb-clock is disabled
-but the function then returns successful.
+Currently pm_runtime_get_sync() is used, which increments the usage
+count even if the resume was not successful.
 
-Fix this by also reporting the error on enabling the second clock.
+Move to the more modern pm_runtime_resume_and_get() which handles the
+usage counter better.
 
 Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
 ---
- drivers/spi/spi-rockchip.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rockchip.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 1a81fd94b439..8bb55d52d346 100644
+index 8bb55d52d346..ce1629e5a513 100644
 --- a/drivers/spi/spi-rockchip.c
 +++ b/drivers/spi/spi-rockchip.c
-@@ -994,8 +994,10 @@ static int rockchip_spi_runtime_resume(struct device *dev)
- 		return ret;
+@@ -255,7 +255,7 @@ static void rockchip_spi_set_cs(struct spi_device *spi, bool enable)
  
- 	ret = clk_prepare_enable(rs->spiclk);
--	if (ret < 0)
-+	if (ret < 0) {
- 		clk_disable_unprepare(rs->apb_pclk);
-+		return ret;
-+	}
+ 	if (cs_asserted) {
+ 		/* Keep things powered as long as CS is asserted */
+-		pm_runtime_get_sync(rs->dev);
++		pm_runtime_resume_and_get(rs->dev);
  
- 	return 0;
- }
+ 		if (spi_get_csgpiod(spi, 0))
+ 			ROCKCHIP_SPI_SET_BITS(rs->regs + ROCKCHIP_SPI_SER, 1);
+@@ -734,7 +734,7 @@ static int rockchip_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 
+-	pm_runtime_get_sync(rs->dev);
++	pm_runtime_resume_and_get(rs->dev);
+ 
+ 	cr0 = readl_relaxed(rs->regs + ROCKCHIP_SPI_CTRLR0);
+ 
+@@ -924,7 +924,7 @@ static void rockchip_spi_remove(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr = platform_get_drvdata(pdev);
+ 
+-	pm_runtime_get_sync(&pdev->dev);
++	pm_runtime_resume_and_get(&pdev->dev);
+ 
+ 	spi_unregister_controller(ctlr);
+ 
 -- 
 2.53.0
 
